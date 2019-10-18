@@ -181,6 +181,9 @@ cache::app_directors:
   people:
     backends:
       eqiad: 'people1001.eqiad.wmnet'
+  requesttracker:
+    backends:
+      eqiad: 'moscovium.eqiad.wmnet'
   superset:
     backends:
       eqiad: 'analytics-tool1004.eqiad.wmnet'
@@ -190,9 +193,6 @@ cache::app_directors:
   turnilo:
     backends:
       eqiad: 'an-tool1007.eqiad.wmnet'
-  ununpentium:
-    backends:
-      eqiad: 'ununpentium.wikimedia.org'
   mendelevium:
     backends:
       eqiad: 'mendelevium.eqiad.wmnet'
@@ -356,7 +356,7 @@ cache::alternate_domains:
   research.wikimedia.org:
     director: 'webserver_misc_static'
   rt.wikimedia.org:
-    director: 'ununpentium'
+    director: 'requesttracker'
   scholarships.wikimedia.org:
     director: 'miscweb'
   sitemaps.wikimedia.org:

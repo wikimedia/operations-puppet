@@ -140,7 +140,7 @@ cache::alternate_domains:
   research.wikimedia.org:
     director: 'webserver_misc_static'
   rt.wikimedia.org:
-    director: 'ununpentium'
+    director: 'requesttracker'
   scholarships.wikimedia.org:
     director: 'miscweb'
   sitemaps.wikimedia.org:
