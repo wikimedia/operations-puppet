@@ -1,7 +1,7 @@
-class role::wmcs::toolforge::k8s::apilb {
+class role::wmcs::toolforge::k8s::haproxy {
     system::role { $name: }
 
     include profile::toolforge::base
     include profile::toolforge::infrastructure
-    include profile::toolforge::k8s::apilb
+    include profile::toolforge::k8s::haproxy
 }
