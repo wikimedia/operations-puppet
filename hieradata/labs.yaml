@@ -361,5 +361,11 @@ has_lvs: false
 lvs::configuration::lvs_service_ips: {}
 lvs::configuration::lvs_services: {}
 
-# Dummy value for profile::base
-wikimedia_clusters: {}
+# WMCS clusters are squashed into 'misc'
+wikimedia_clusters:
+  misc:
+    description: "Miscellaneous"
+    id: 8
+    sites:
+      eqiad: []
+      codfw: []
