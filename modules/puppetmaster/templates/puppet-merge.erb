@@ -1,9 +1,29 @@
 #!/bin/sh
 
-# TODO
-# - add locking with flock so that multiple users can't run this script simultaneously.
-
 set -e
+
+die() {
+  echo >&2 "E: $*"
+  exit 1
+}
+
+lock() {
+  LABS_PRIVATE=$1
+  if [ LABS_PRIVATE -eq 1 ]
+  then
+    LOCKFILE=/var/lock/puppet-merge-labs-lock
+  else
+    LOCKFILE=/var/lock/puppet-merge-prod-lock
+  fi
+  LOCKFD=9
+  eval "exec $LOCKFD>\"$LOCKFILE\""
+  trap "rm -f $LOCKFILE" EXIT
+  if ! flock -xn $LOCKFD
+  then
+      trap EXIT
+      die "failed to lock, another puppet-merge running on this host?"
+  fi
+}
 
 # Colorized output helpers
 RED=$(tput bold; tput setaf 1)
@@ -51,6 +71,8 @@ done
 if [ $USAGE -eq 1 ]; then
     echo "$usage" && exit 0;
 fi
+
+lock $LABS_PRIVATE
 
 if [ -f $CONFFILE ]; then
     . $CONFFILE
@@ -261,3 +283,4 @@ if [ $running_user != $git_user ]; then # only loop through other servers if we'
     fi
 fi
 <%- end -%>
+# vim: set syntax=sh:
