@@ -1,4 +1,4 @@
-# profile::rafficserver::tls_material gets various TLS material deployed and ready for ATS consumption
+# profile::trafficserver::tls_material gets various TLS material deployed and ready for ATS consumption
 #
 # [*instance_name*]
 #   ATS instance name
@@ -8,9 +8,6 @@
 #
 # [*ssl_multicert_path*]
 #   ATS ssl_multicert.config absolute path. Defaults to '/etc/trafficserver/ssl_multicert.config'
-#
-# [*server_name*]
-#   Server name, only used in the old LE puppetization. Defaults to FQDN
 #
 # [*certs*]
 #   Optional - specify either this or acme_subjects.
@@ -28,15 +25,6 @@
 # [*acme_certname*]
 #   Optional - specify this if title of the resource and the acme-chief certname differs.
 #
-# [*acme_subjects*]
-#   Optional - Enable the old LE puppetization. specify either this or certs.
-#   This is also incompatible with using acme_chief
-#   Array of certificate subjects, beginning with the canonical one - the rest
-#   will be listed as Subject Alternative Names.
-#   There should be no more than 100 entries in this.
-#   This option will be removed in following changes. If you need to use LE certificates
-#   please migrate to acme-chief ASAP.
-#
 # [*do_ocsp*]
 #   Boolean. Sets up OCSP Stapling for this server. This creates the OCSP data file itself
 #   and ensures a cron is running to keep it up to date.
@@ -45,40 +33,50 @@
 define profile::trafficserver::tls_material(
     String $instance_name,
     String $service_name = 'trafficserver',
+    Stdlib::Absolutepath $tls_material_path = '/etc/trafficserver/tls',
     Stdlib::Absolutepath $ssl_multicert_path = '/etc/trafficserver/ssl_multicert.config',
     Boolean $default_instance = false,
-    String $server_name = $::fqdn,
     Optional[Array[String]] $certs = undef,
-    Optional[Array[String]] $acme_subjects = undef,
     Boolean $acme_chief = false,
     Optional[String] $acme_certname = $title,
     Boolean $do_ocsp = false,
     Optional[String] $ocsp_proxy = undef,
 ){
-    if (!empty($certs) and !empty($acme_subjects)) or ($acme_chief and !empty($acme_subjects)) or (empty($certs) and empty($acme_subjects) and !$acme_chief) {
-        fail('Specify exactly one of certs (and optionally acme_chief) or acme_subjects')
+    if (empty($certs) and !$acme_chief) {
+        fail('Provide $certs or enable $acme_chief support')
     }
 
     unless defined(File['/etc/ssl/dhparam.pem']) {
         class { '::sslcert::dhparam': }
     }
 
-    unless empty($certs) {
-      $certs.each |String $cert| {
-          unless defined(Sslcert::Certificate[$cert]) {
-              sslcert::certificate { $cert:
-                  before => Trafficserver::Instance[$instance_name],
-              }
-          }
-      }
+    unless defined(File[$tls_material_path]) {
+        file { $tls_material_path:
+            ensure => directory,
+            owner  => 'root',
+            group  => 'root',
+        }
     }
 
-    unless empty($acme_subjects) {
-        unless defined(Letsencrypt::Cert::Integrated[$server_name]) {
-            letsencrypt::cert::integrated { $server_name:
-                subjects   => join($acme_subjects, ','),
-                puppet_svc => $service_name,
-                system_svc => $service_name,
+    unless empty($certs) {
+        $certs.each |String $cert| {
+            unless defined(Sslcert::Certificate[$cert]) {
+                sslcert::certificate { $cert:
+                    before => Trafficserver::Instance[$instance_name],
+                }
+            }
+        }
+        unless defined(File["${tls_material_path}/oscerts"]) {
+            file { "${tls_material_path}/oscerts":
+                ensure => link,
+                target => '/etc/ssl',
+            }
+        }
+        if $do_ocsp and !defined(File["${tls_material_path}/osocsp"]) {
+            file { "${tls_material_path}/osocsp":
+                ensure  => link,
+                target  => '/var/cache/ocsp',
+                require => File['/var/cache/ocsp'],
             }
         }
     }
@@ -89,24 +87,11 @@ define profile::trafficserver::tls_material(
                 before => Trafficserver::Instance[$instance_name],
             }
         }
-        if !empty($certs) # all TLS material must be under the same base directory to be used by ATS
-        {
-            file { "/etc/ssl/localcerts/acme-chief-${acme_certname}-live":
+        unless defined(File["${tls_material_path}/acmecerts"]) {
+            file { "${tls_material_path}/acmecerts":
                 ensure  => link,
-                target  => "/etc/acmecerts/${acme_certname}/live",
-                require => [File['/etc/ssl/localcerts'], Acme_Chief::Cert[$acme_certname]],
-            }
-            file { "/etc/ssl/private/acme-chief-${acme_certname}-live":
-                ensure  => link,
-                target  => "/etc/acmecerts/${acme_certname}/live",
-                require => [File['/etc/ssl/private'], Acme_Chief::Cert[$acme_certname]],
-            }
-            if $do_ocsp {
-                file { "/var/cache/ocsp/acme-chief-${acme_certname}-live":
-                    ensure  => link,
-                    target  => "/etc/acmecerts/${acme_certname}/live",
-                    require => File['/var/cache/ocsp'],
-                }
+                target  => '/etc/acmecerts',
+                require => File['/etc/acmecerts'],
             }
         }
     }
@@ -120,9 +105,6 @@ define profile::trafficserver::tls_material(
                 }
             }
         }
-    }
-
-    if $do_ocsp {
         $ocsp_hook = "${service_name}-ocsp"
 
         if !defined(Sslcert::Ocsp::Hook[$ocsp_hook]) {

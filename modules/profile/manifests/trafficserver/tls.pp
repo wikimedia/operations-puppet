@@ -42,21 +42,16 @@ class profile::trafficserver::tls (
 
     $instance_name = 'tls'
     $service_name = "trafficserver-${instance_name}"
+    $paths = trafficserver::get_paths(false, $instance_name)
+    $tls_lua_script_path = "${paths['sysconfdir']}/lua/tls.lua"
+    $tls_material_path = "${paths['sysconfdir']}/tls"
     if !$available_unified_certs[$public_tls_unified_cert_vendor] {
         fail('The specified TLS unified cert vendor is not available')
     }
-    if $available_unified_certs[$public_tls_unified_cert_vendor]['acme_chief'] {
-        $tls_paths = {
-            'cert_path'          => '/etc/acmecerts',
-            'private_key_path'   => '/etc/acmecerts',
-            'ocsp_stapling_path' => '/etc/acmecerts',
-        }
-    } else {
-        $tls_paths = {
-            'cert_path'          => '/etc/ssl/localcerts',
-            'private_key_path'   => '/etc/ssl/private',
-            'ocsp_stapling_path' => '/var/cache/ocsp',
-        }
+    $tls_paths = {
+        'cert_path'          => $tls_material_path,
+        'private_key_path'   => $tls_material_path,
+        'ocsp_stapling_path' => $tls_material_path,
     }
     $paths_tls_settings = merge($tls_settings, $tls_paths)
     $inbound_tls_settings = merge($paths_tls_settings, {'certificates' => [$available_unified_certs[$public_tls_unified_cert_vendor]]})
@@ -69,14 +64,13 @@ class profile::trafficserver::tls (
         }
     }
 
-    $paths = trafficserver::get_paths(false, $instance_name)
-    $tls_lua_script_path = "${paths['sysconfdir']}/lua/tls.lua"
     $websocket_arg = bool2str($websocket_support)
     $global_lua_script = "${tls_lua_script_path} ${websocket_arg}"
 
     profile::trafficserver::tls_material { 'unified':
         instance_name      => $instance_name,
         service_name       => $service_name,
+        tls_material_path  => $tls_material_path,
         ssl_multicert_path => $paths['ssl_multicert'],
         certs              => $unified_certs,
         acme_chief         => $unified_acme_chief,

@@ -59,9 +59,9 @@ profile::trafficserver::tls::unified_certs:
 profile::trafficserver::tls::available_unified_certs:
   globalsign-2018:
     acme_chief: false
-    cert_files: ['globalsign-2018-ecdsa-unified.chained.crt', 'globalsign-2018-rsa-unified.chained.crt']
-    private_key_files: ['globalsign-2018-ecdsa-unified.key', 'globalsign-2018-rsa-unified.key']
-    ocsp_stapling_files: ['globalsign-2018-ecdsa-unified.ocsp', 'globalsign-2018-rsa-unified.ocsp']
+    cert_files: ['oscerts/localcerts/globalsign-2018-ecdsa-unified.chained.crt', 'oscerts/localcerts/globalsign-2018-rsa-unified.chained.crt']
+    private_key_files: ['oscerts/private/globalsign-2018-ecdsa-unified.key', 'oscerts/private/globalsign-2018-rsa-unified.key']
+    ocsp_stapling_files: ['osocsp/globalsign-2018-ecdsa-unified.ocsp', 'osocsp/globalsign-2018-rsa-unified.ocsp']
     default: true
     common_name: 'en.wikipedia.org'
     sni: [
@@ -84,9 +84,9 @@ profile::trafficserver::tls::available_unified_certs:
     critical_threshold: 15
   digicert-2019:
     acme_chief: false
-    cert_files: ['digicert-2019-ecdsa-unified.chained.crt', 'digicert-2019-rsa-unified.chained.crt']
-    private_key_files: ['digicert-2019-ecdsa-unified.key', 'digicert-2019-rsa-unified.key']
-    ocsp_stapling_files: ['digicert-2019-ecdsa-unified.ocsp', 'digicert-2019-rsa-unified.ocsp']
+    cert_files: ['oscerts/localcerts/digicert-2019-ecdsa-unified.chained.crt', 'oscerts/localcerts/digicert-2019-rsa-unified.chained.crt']
+    private_key_files: ['oscerts/private/digicert-2019-ecdsa-unified.key', 'oscerts/private/digicert-2019-rsa-unified.key']
+    ocsp_stapling_files: ['osocsp/digicert-2019-ecdsa-unified.ocsp', 'osocsp/digicert-2019-rsa-unified.ocsp']
     default: true
     common_name: 'en.wikipedia.org'
     sni: [
@@ -109,9 +109,9 @@ profile::trafficserver::tls::available_unified_certs:
     critical_threshold: 15
   lets-encrypt:
     acme_chief: true
-    cert_files: ['unified/live/rsa-2048.chained.crt', 'unified/live/ec-prime256v1.chained.crt']
-    private_key_files: ['unified/live/rsa-2048.key', 'unified/live/ec-prime256v1.key']
-    ocsp_stapling_files: ['unified/live/rsa-2048.ocsp', 'unified/live/ec-prime256v1.ocsp']
+    cert_files: ['acmecerts/unified/live/rsa-2048.chained.crt', 'acmecerts/unified/live/ec-prime256v1.chained.crt']
+    private_key_files: ['acmecerts/unified/live/rsa-2048.key', 'acmecerts/unified/live/ec-prime256v1.key']
+    ocsp_stapling_files: ['acmecerts/unified/live/rsa-2048.ocsp', 'acmecerts/unified/live/ec-prime256v1.ocsp']
     default: true
     common_name: 'en.wikipedia.org'
     sni: [
