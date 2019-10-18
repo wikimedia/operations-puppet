@@ -1,11 +1,12 @@
 #!/bin/sh
 
-set -e
+set -eu
 
-die() {
-  echo >&2 "E: $*"
+if [ "$(whoami)" = "gitpuppet" ]
+then
+  printf "This script should only be run as a real users.  gitpuppet should use /usr/local/bin/puppet-merge.py"
   exit 1
-}
+fi
 
 lock() {
   LABS_PRIVATE=$1
@@ -41,15 +42,12 @@ lock() {
 # Colorized output helpers
 RED=$(tput bold; tput setaf 1)
 GREEN=$(tput bold; tput setaf 2)
-MAGENTA=$(tput bold; tput setaf 9)
 RESET=$(tput sgr0)
 FORCE=0
 USAGE=0
 QUIET=0
 LABS_PRIVATE=0
 DIFF_ONLY=0
-CONFFILE="/etc/puppet-merge.conf"
-THISSCRIPT=`realpath $0`
 
 usage="$(basename ${0}) [-y|--yes] [SHA1]
 
@@ -87,173 +85,13 @@ fi
 
 lock $LABS_PRIVATE
 
-if [ -f $CONFFILE ]; then
-    . $CONFFILE
-fi
-
-sha1=${1:-}
-
-git_user='gitpuppet'
-# We might be running this as root, or as gitpuppet (from an ssh session to a backend)
-running_user=`whoami`
-
-if [ $running_user != $git_user ]; then
-    if [ $LABS_PRIVATE -eq 0 ]; then
-        echo "Checking for pending merges in /labs/private"
-        $THISSCRIPT --labsprivate
-        if [ $? -ne 0 ]; then
-           exit 1
-        fi
-    fi
-fi
-
 if [ $LABS_PRIVATE -eq 1 ]; then
-    BASEDIR="/var/lib/git/labs/private"
+    # if --labsprivate is used just sync the labsprivate repo
+    /usr/local/bin/puppet-merge.py  "$@"
 else
-    BASEDIR="/var/lib/git/operations/puppet"
-fi
-
-cd "${BASEDIR}"
-
-echo "Fetching new commits from $(git config --get remote.origin.url)"
-
-if [ $running_user = $git_user ]; then
-    cd ${BASEDIR} && git fetch
-else
-    su - $git_user -c "cd ${BASEDIR} && git fetch"
-fi
-
-if [ -z ${sha1} ]; then
-    fetch_head_sha1=$(git rev-parse FETCH_HEAD)
-else
-    fetch_head_sha1=$sha1
-fi
-
-submodule_changes="$(git diff --submodule=log HEAD..${fetch_head_sha1} | grep -e '^Submodule ')" || true
-
-# Exit if there are no changes to merge.
-if [ -z "$(git diff HEAD..${fetch_head_sha1})" -a -z "${submodule_changes}" ]; then
-    echo "No changes to merge."
-    exit 0
-fi
-
-
-echo "HEAD is $(git rev-parse HEAD), FETCH_HEAD is ${fetch_head_sha1}.  Reviewing changes..."
-
-# If there are no submodule changes, then just
-# show diff of operations/puppet superproject
-if [ -z "${submodule_changes}" ]; then
-    if [ $QUIET -eq 0 ]; then
-        git diff --color HEAD..${fetch_head_sha1} | cat
-    fi
-else
-    if [ $QUIET -eq 0 ]; then
-        # Else there are submodule changes.
-        # Do some fancy stuff to show diffs
-        # of submodule changes.
-
-        # clone the puppet working directory to a temp directory, excludiing private/
-        tmpdir=$(mktemp -d /tmp/puppet-merge.XXXXXXXXXX)
-        git clone --quiet  "${BASEDIR}" "${tmpdir}"
-
-        # merge and update submodules in $tmpdir
-        (cd "${tmpdir}" && \
-         git merge --quiet --ff-only "${fetch_head_sha1}" && \
-         git submodule update --quiet --init)
-
-        # show the diff between the $BASEDIR puppet directory and the $tmpdir puppet directory
-        if [ $QUIET -eq 0 ]; then
-            diff -uNr -x "private" -x ".git" "${BASEDIR}" "${tmpdir}" || true
-        fi
-
-        # We've shown the diff so we are done with $tmpdir.  Remove it.
-        rm -rf "${tmpdir}"
-    fi
-fi
-
-# If we only requested to see the diffs, just exit as a success, printing the sha1
-# of the commit we looked at.
-if [ $DIFF_ONLY -eq 1 ]; then
-    echo "${fetch_head_sha1}";
-    exit 0;
-fi;
-
-# If cool, merge it!
-echo ""
-echo ""
-echo "------------------------------"
-if [ $QUIET -eq 0 ]; then
-    git log HEAD..${fetch_head_sha1} --format="${MAGENTA}%cn${RESET}: %s (%h)"
-fi
-ncommiters=$(git log HEAD..${fetch_head_sha1} --format=%ce | sort -u | grep -v 'gerrit@wikimedia.org' | wc -l)
-
-expect="yes"
-if [ $ncommiters -ne 1 ]; then
-    echo "${RED}WARNING${RESET}: Revision range includes commits from multiple committers!"
-    expect="multiple"
-fi
-
-confirmed=0
-if [ $FORCE -eq 1 ]; then
-    confirmed=1
-else
-    echo -n "Merge these changes? (${expect}/no)? "
-    read answer
-    if [ "x${answer}" = "x${expect}" ]; then
-        confirmed=1
-    elif [ "x${expect}" = "xyes" ] && [ "x${answer}" = "xy" ]; then
-        confirmed=1
-    fi
-fi
-
-if [ "${confirmed}" -eq "1" ]; then
-    echo "Merging ${fetch_head_sha1}..."
-    cmd="git merge --ff-only ${fetch_head_sha1}"
-    echo "${cmd}"
-    if [ $running_user = $git_user ]; then
-        cd ${BASEDIR} && ${cmd}
-    else
-        su - $git_user -c "cd ${BASEDIR} && ${cmd}"
-    fi
-
-    # If there were submodule changes update and init them
-    if [ -n "${submodule_changes}" ]; then
-        echo "Updating submodules..."
-        cmd="git submodule update --init --no-fetch"
-        echo "${cmd}"
-        if [ $running_user = $git_user ]; then
-            cd ${BASEDIR} && ${cmd}
-        else
-            su - $git_user -c "cd ${BASEDIR} && ${cmd}"
-        fi
-    fi
-
-    # git clean to remove any untracked
-    # (submodule) files and directories
-    echo "Running git clean to clean any untracked files."
-    cmd="git clean -dffx -e /private/"
-    echo "${cmd}"
-    if [ $running_user = $git_user ]; then
-        cd ${BASEDIR} && ${cmd}
-    else
-        su - $git_user -c "cd ${BASEDIR} && ${cmd}"
-    fi
-
-    echo "HEAD is now $(git rev-parse HEAD)."
-
-    if [ -d "/srv/config-master" ]; then
-        if [ $LABS_PRIVATE -eq 1 ]; then
-            echo $(git rev-parse HEAD) > /srv/config-master/labsprivate-sha1.txt
-        else
-            echo $(git rev-parse HEAD) > /srv/config-master/puppet-sha1.txt
-        fi
-    fi
-
-    cd -
-else
-    echo "Aborting merge."
-    cd -
-    exit 1
+    # We want to do a labs merge every time we do an ops merge
+    /usr/local/bin/puppet-merge.py  "$@" --labsprivate
+    /usr/local/bin/puppet-merge.py "$@" --ops
 fi
 
 # From this point continue despite errors on remote masters. After a change
@@ -270,7 +108,7 @@ set +e
 if [ $LABS_PRIVATE -eq 1 ]; then
     PRIVATE_ARG="--labsprivate"
 else
-    PRIVATE_ARG=""
+    PRIVATE_ARG="--ops"
 fi
 
 if [ $running_user != $git_user ]; then # only loop through other servers if we're the actual user command

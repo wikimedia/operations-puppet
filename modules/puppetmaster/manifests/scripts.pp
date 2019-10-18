@@ -22,6 +22,13 @@ class puppetmaster::scripts(
         mode    => '0555',
         content => template('puppetmaster/puppet-merge.erb'),
     }
+    file{'/usr/local/bin/puppet-merge.py':
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/puppetmaster/puppet-merge.py',
+    }
 
     # export and sanitize facts for puppet compiler
     require_package('python3-requests', 'python3-yaml')
