@@ -9,7 +9,7 @@ die() {
 
 lock() {
   LABS_PRIVATE=$1
-  if [ LABS_PRIVATE -eq 1 ]
+  if [ ${LABS_PRIVATE} -eq 1 ]
   then
     LOCKFILE=/var/lock/puppet-merge-labs-lock
   else
