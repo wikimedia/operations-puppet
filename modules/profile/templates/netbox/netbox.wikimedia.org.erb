@@ -32,6 +32,9 @@
 
     ProxyPreserveHost On
 
+    RequestHeader set "X-Forwarded-Proto" expr=%{REQUEST_SCHEME}
+    RequestHeader set "X-Forwarded-SSL" expr=%{HTTPS}
+
     Alias /static /srv/deployment/netbox/deploy/src/netbox/static
 
     # Needed to allow token-based API authentication
