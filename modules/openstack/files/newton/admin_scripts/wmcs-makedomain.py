@@ -55,6 +55,13 @@ if __name__ == "__main__":
         action='store_true',
         help='with --delete, delete all domains in a project'
     )
+    argparser.add_argument(
+        '--orig-project',
+        help='the project that is oiginally owner of the superdomain in which '
+             'the subdomain is being created. Typical values are either '
+             'wmflabsdotorg or admin. Default: wmflabsdotorg',
+        default='wmflabsdotorg',
+    )
 
     args = argparser.parse_args()
 
@@ -82,4 +89,5 @@ if __name__ == "__main__":
                                          args.designate_user,
                                          args.designate_pass,
                                          args.project,
-                                         args.domain)
+                                         args.domain,
+                                         args.orig_project)

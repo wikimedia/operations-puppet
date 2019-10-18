@@ -45,14 +45,14 @@ def deleteDomain(url, user, password, project, domain="", delete_all=False):
         LOG.warning("Domain %s not found" % domain)
 
 
-def createDomain(url, user, password, project, domain, ttl=120):
+def createDomain(url, user, password, project, domain, orig_project, ttl=120):
     auth = v3.Password(
         auth_url=url,
         username=user,
         password=password,
         user_domain_name='Default',
         project_domain_name='Default',
-        project_id='wmflabsdotorg')
+        project_id=orig_project)
 
     createSession = keystone_session.Session(auth=auth)
     createClient = client.Client(session=createSession, region_name='eqiad1-r')
