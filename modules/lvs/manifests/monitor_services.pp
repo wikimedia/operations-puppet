@@ -103,9 +103,9 @@ class lvs::monitor_services(
                 notes_url     => 'https://wikitech.wikimedia.org/wiki/Wikifeeds',
                 ;
             "check_echostore_${dc}":
-                host          => "sessionstore.svc.${dc}.wmnet",
-                description   => "Sessionstore ${dc}",
-                check_command => "check_wmf_service_url!https1://sessionstore.svc.${dc}.wmnet:8081!15!/openapi",
+                host          => "echostore.svc.${dc}.wmnet",
+                description   => "Echotore ${dc}",
+                check_command => "check_wmf_service_url!https1://echostore.svc.${dc}.wmnet:8082!15!/openapi",
                 notes_url     => 'https://www.mediawiki.org/wiki/Kask',
                 ;
 
