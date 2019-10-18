@@ -860,11 +860,6 @@ node /^dumpsdata1002.eqiad.wmnet$/ {
     role(dumps::generation::server::fallback)
 }
 
-# misc. test server, keep (T156208)
-node 'eeden.wikimedia.org' {
-    role(test)
-}
-
 node /^elastic101[8-9]\.eqiad\.wmnet/ {
     role(elasticsearch::cirrus)
 }
