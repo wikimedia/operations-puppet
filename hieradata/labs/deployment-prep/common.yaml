@@ -365,7 +365,7 @@ profile::keyholder::server::agents:
 
   deploy-service:
     trusted_groups:
-      - deploy-service
+      - wikidev
 
   dumpsdeploy:
     trusted_groups:
