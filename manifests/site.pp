@@ -785,12 +785,6 @@ node /^dbproxy10(12|15|20)\.eqiad\.wmnet$/ {
     role(spare::system)
 }
 
-# dbproxy1006 to be decommissioned - T233207
-node 'dbproxy1006.wmnet' {
-    role(spare::system)
-}
-
-
 # new dbproxy hosts to be productionized T223492
 node /^dbproxy200[4]\.codfw\.wmnet$/ {
     role(spare::system)
