@@ -32,6 +32,7 @@ class swift::swiftrepl (
 
     tidy { '/var/log/swiftrepl':
         age     => '15w',
+        recurse => true,
         matches => '*.log',
     }
 
