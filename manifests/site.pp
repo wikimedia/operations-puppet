@@ -1898,10 +1898,6 @@ node 'sodium.wikimedia.org' {
     role(mirrors)
 }
 
-node 'rhodium.eqiad.wmnet' {
-    role(spare::system)
-}
-
 node 'thorium.eqiad.wmnet' {
     # thorium is used to host public Analytics websites like:
     # - https://stats.wikimedia.org (Wikistats)
