@@ -8,7 +8,6 @@ gerrit::server::host: 'gerrit.wikimedia.org'
 gerrit::server::is_replica: true
 gerrit::server::replica_hosts:
     - 'gerrit-replica.wikimedia.org'
-gerrit::server::avatars_host: 'gerrit.wmfusercontent.org'
 gerrit::server::master_host: 'cobalt.wikimedia.org'
 gerrit::server::bacula: 'srv-gerrit-git'
 gerrit::server::config: 'gerrit.config.erb'

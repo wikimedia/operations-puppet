@@ -9,7 +9,6 @@ class gerrit(
     Boolean $use_acmechief = false,
     Optional[Hash] $ldap_config = undef,
     Optional[Stdlib::Ipv6] $ipv6,
-    Optional[Stdlib::Fqdn] $avatars_host = undef,
     Enum['11', '8'] $java_version = '8',
 ) {
 
@@ -31,7 +30,6 @@ class gerrit(
         ipv6             => $ipv6,
         replica_hosts    => $replica_hosts,
         replica          => $replica,
-        avatars_host     => $avatars_host,
         cache_text_nodes => $cache_text_nodes,
         use_acmechief    => $use_acmechief,
     }
