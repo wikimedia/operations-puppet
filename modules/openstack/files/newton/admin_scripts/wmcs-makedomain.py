@@ -7,7 +7,8 @@ as part of a different project.  It does, however, support cross-project
 transfers of such domains.
 
 So, this is a helper script which creates domains in the wmflabsdotorg project,
-waits for them to become ACTIVE and then transfers them.
+(or other arbitrary project) waits for them to become ACTIVE and then transfers
+them.
 
 Note that this only works with the keystone v2.0 API.
 
@@ -18,8 +19,8 @@ import os
 
 import designatemakedomain
 if __name__ == "__main__":
-    argparser = argparse.ArgumentParser('makesubdomain',
-                                        description="Create a subdomain of wmflabs.org")
+    argparser = argparse.ArgumentParser('wmcs-makedomain',
+                                        description="Create a subdomain and transfer ownership")
 
     argparser.add_argument(
         '--designate-user',
