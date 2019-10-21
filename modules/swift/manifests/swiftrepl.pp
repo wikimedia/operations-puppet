@@ -53,22 +53,17 @@ class swift::swiftrepl (
         source => "puppet:///modules/${module_name}/swiftrepl-mw.sh",
     }
 
-    systemd::service { 'swiftrepl-mw.service':
-        ensure  => $ensure,
-        content => template('swift/swiftrepl-mw.service.erb'),
-    }
-
     $timer_interval = $source_site ? {
         'eqiad' => 'Mon *-*-* 08:00:00',
         'codfw' => 'Wed *-*-* 08:00:00',
     }
 
-    systemd::timer { 'swiftrepl-mw':
-        ensure          => $ensure,
-        timer_intervals => [{
-            'start'    => 'OnCalendar',
-            'interval' => $timer_interval,
-        }],
+    systemd::timer::job { 'swiftrepl-mw':
+        command         => '/usr/local/bin/swiftrepl-mw repl commons notcommons unsharded global timeline transcoded',
+        description     => 'Ensure mediawiki containers are synchronized across sites',
+        interval        => {'start' => 'OnCalendar', 'interval' => $timer_interval},
+        logging_enabled => false,
+        user            => 'swiftrepl',
     }
 
     # TODO(filippo) credentials for both source and destination sites are needed
