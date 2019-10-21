@@ -60,8 +60,6 @@ eqiad:
   - db1136
   - db1138
 codfw:
-  - db2048
-  - db2061
   - db2070
   - db2071
   - db2072
