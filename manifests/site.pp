@@ -1898,8 +1898,8 @@ node 'sodium.wikimedia.org' {
     role(mirrors)
 }
 
-node /^rhodium.eqiad.wmnet/ {
-    role(puppetmaster::backend)
+node 'rhodium.eqiad.wmnet' {
+    role(spare::system)
 }
 
 node 'thorium.eqiad.wmnet' {
