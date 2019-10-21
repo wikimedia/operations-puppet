@@ -128,7 +128,7 @@ node 'an-tool1007.eqiad.wmnet' {
 
 # Analytics/Search instance of Apache Airflow
 node 'an-airflow1001.eqiad.wmnet' {
-    role(spare::system)
+    role(search::airflow)
 }
 
 # New Analytics Zookepeer cluster - T227025

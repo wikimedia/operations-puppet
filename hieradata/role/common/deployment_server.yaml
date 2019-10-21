@@ -202,6 +202,8 @@ scap::sources:
     repository: releng/phatality
   design/style-guide:
     repository: design/style-guide
+  search/airflow:
+    repository: search/airflow
 
 profile::kubernetes::deployment_server::git_owner: trebuchet
 profile::kubernetes::deployment_server::git_group: wikidev
