@@ -39,4 +39,10 @@ class profile::gerrit::migration (
         read_only   => 'no',
         hosts_allow => $source_host,
     }
+
+    rsync::server::module { 'gerrit-var-lib':
+        path        => '/var/lib/gerrit2/review_site',
+        read_only   => 'no',
+        hosts_allow => $source_host,
+    }
 }
