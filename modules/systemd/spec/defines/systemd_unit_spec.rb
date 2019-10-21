@@ -27,8 +27,8 @@ describe 'systemd::unit' do
       end
 
       context 'when the corresponding service is defined (implicit name)' do
-        let(:pre_condition) { "service { 'hhvm': ensure => running, provider => 'systemd'}" }
-        let(:title) { 'hhvm' }
+        let(:pre_condition) { "service { 'foobar': ensure => running, provider => 'systemd'}" }
+        let(:title) { 'foobar' }
         let(:params) {
           {
             :ensure => 'present',
@@ -37,8 +37,8 @@ describe 'systemd::unit' do
         }
         it { is_expected.to compile }
         it {
-          is_expected.to contain_exec('systemd daemon-reload for hhvm.service')
-                           .that_comes_before('Service[hhvm]')
+          is_expected.to contain_exec('systemd daemon-reload for foobar.service')
+                           .that_comes_before('Service[foobar]')
         }
         context 'when managing the service restarts' do
           let(:params) {
@@ -50,8 +50,8 @@ describe 'systemd::unit' do
           }
           it { should compile }
           it {
-            is_expected.to contain_exec('systemd daemon-reload for hhvm.service')
-                             .that_notifies('Service[hhvm]')
+            is_expected.to contain_exec('systemd daemon-reload for foobar.service')
+                             .that_notifies('Service[foobar]')
           }
         end
       end

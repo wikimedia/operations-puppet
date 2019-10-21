@@ -30,9 +30,6 @@ describe 'profile::mediawiki::httpd' do
                               .with_period('daily')
                               .with_rotate(30)
         }
-        it { is_expected.to contain_httpd__conf('hhvm_catchall')
-                              .with_ensure('absent')
-        }
         it { is_expected.to contain_file('/etc/apache2/conf-available/50-worker.conf')
                               .with_content(/MaxRequestWorkers\s+50/)
         }

@@ -98,7 +98,6 @@ describe 'profile::mediawiki::webserver' do
             super().merge({:site => 'eqiad'})
           }
           it { is_expected.to compile.with_all_deps }
-          it { is_expected.to contain_cron('hhvm-conditional-restart') }
           it { is_expected.to contain_class('lvs::realserver')
                                 .with_realserver_ips(['1.2.3.4'])
           }
