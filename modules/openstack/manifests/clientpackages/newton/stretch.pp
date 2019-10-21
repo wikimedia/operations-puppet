@@ -46,4 +46,24 @@ class openstack::clientpackages::newton::stretch(
         owner  => 'root',
         group  => 'root',
     }
+
+    # Backport requests header fix https://phabricator.wikimedia.org/T235863
+    # fixes designateclient module
+    file { '/usr/lib/python3/dist-packages/designateclient/v2/client.py':
+        ensure => 'present',
+        source => 'puppet:///modules/openstack/clientpackages/usr/lib/python/dist-packages/designateclient/v2/client.py',
+        mode   => '0644',
+        owner  => 'root',
+        group  => 'root',
+    }
+
+    # Backport requests header fix https://phabricator.wikimedia.org/T235863
+    # fixes designateclient module
+    file { '/usr/lib/python2.7/dist-packages/designateclient/v2/client.py':
+        ensure => 'present',
+        source => 'puppet:///modules/openstack/clientpackages/usr/lib/python/dist-packages/designateclient/v2/client.py',
+        mode   => '0644',
+        owner  => 'root',
+        group  => 'root',
+    }
 }
