@@ -18,15 +18,15 @@
 
 [Unit]
 Description=Airflow scheduler daemon
-After=network.target postgresql.service mysql.service redis.service rabbitmq-server.service
-Wants=postgresql.service mysql.service redis.service rabbitmq-server.service
+After=network.target
 
 [Service]
-EnvironmentFile=/etc/sysconfig/airflow
+SyslogIdentifier=airflow-webserver
+Environment=AIRFLOW_HOME=/etc/airflow
 User=airflow
 Group=airflow
 Type=simple
-ExecStart=/bin/airflow scheduler
+ExecStart=<%= @deploydir %>/venv/bin/airflow scheduler
 Restart=always
 RestartSec=5s
 

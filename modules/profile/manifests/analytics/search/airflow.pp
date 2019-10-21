@@ -78,4 +78,16 @@ class profile::analytics::search::airflow(
         group  => 'airflow',
         mode   => '0755',
     }
+
+    systemd::service { 'airflow-webserver':
+        content => template('profile/analytics/search/airflow/webserver.service.erb'),
+        require => File[$logdir, $piddir, '/etc/airflow/airflow.cfg']
+    }
+    base::service_auto_restart { 'airflow-webserver': }
+
+    systemd::service { 'airflow-scheduler':
+        content => template('profile/analytics/search/airflow/scheduler.service.erb'),
+        require => File[$logdir, $piddir, '/etc/airflow/airflow.cfg']
+    }
+    base::service_auto_restart { 'airflow-scheduler': }
 }
