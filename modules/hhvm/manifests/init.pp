@@ -69,17 +69,18 @@ class hhvm(
     $tmp_dir        = '/var/tmp/hhvm',
     $cache_dir      = '/var/cache/hhvm',
     $malloc_arenas  = undef,
+    Wmflib::Ensure $ensure = absent,
     ) {
 
 
     $ext_pkgs = [ 'hhvm-luasandbox', 'hhvm-tidy', 'hhvm-wikidiff2' ]
 
     package { 'hhvm':
-        ensure => present,
+        ensure => $ensure,
     }
 
     package { $ext_pkgs:
-        ensure => present,
+        ensure => $ensure,
     }
 
     # Helpful for debugging luasandbox crashes
@@ -197,6 +198,7 @@ class hhvm(
     ## Config files
 
     file { '/etc/hhvm/php.ini':
+        ensure  => $ensure,
         content => php_ini($common_defaults, $cli_defaults, $cli_settings),
         owner   => 'root',
         group   => 'root',
@@ -204,6 +206,7 @@ class hhvm(
     }
 
     file { '/etc/hhvm/server.ini':
+        ensure  => $ensure,
         content => php_ini($common_defaults, $fcgi_defaults, $fcgi_settings),
         owner   => 'root',
         group   => 'root',
@@ -212,7 +215,7 @@ class hhvm(
     }
 
     file { "${cache_dir}/cli.hhbc.sq3":
-        ensure => present,
+        ensure => $ensure,
         mode   => '0644',
         owner  => $user,
         group  => $group,
@@ -231,6 +234,7 @@ class hhvm(
     ## Service
 
     file { '/etc/default/hhvm':
+        ensure  => $ensure,
         content => template("hhvm/hhvm.default.${::initsystem}.erb"),
         owner   => 'root',
         group   => 'root',
@@ -239,7 +243,7 @@ class hhvm(
     }
 
     base::service_unit { 'hhvm':
-        ensure           => absent,
+        ensure           => $ensure,
         systemd_override => init_template('hhvm', 'systemd_override'),
         upstart          => upstart_template('hhvm'),
         refresh          => false,
@@ -251,7 +255,7 @@ class hhvm(
     if $::initsystem == 'systemd' {
         # Post-stop script to collect stacktraces
         file { '/usr/local/bin/check-hhvm-stacktraces':
-            ensure => present,
+            ensure => $ensure,
             mode   => '0550',
             owner  => $user,
             group  => $group,
@@ -261,14 +265,14 @@ class hhvm(
     }
 
     file { '/etc/hhvm':
-        ensure => directory,
+        ensure => $ensure,
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
     }
 
     file {  '/usr/local/bin/hhvm-needs-restart':
-        ensure => present,
+        ensure => $ensure,
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
@@ -278,6 +282,7 @@ class hhvm(
     ## Run-time data and logging
 
     rsyslog::conf { 'hhvm':
+        ensure   => $ensure,
         content  => template('hhvm/hhvm.rsyslog.conf.erb'),
         priority => 20,
         require  => File['/etc/logrotate.d/hhvm'],
@@ -285,6 +290,7 @@ class hhvm(
     }
 
     file { '/etc/logrotate.d/hhvm':
+        ensure  => $ensure,
         content => template('hhvm/hhvm.logrotate.erb'),
         owner   => 'root',
         group   => 'root',
@@ -294,7 +300,7 @@ class hhvm(
     }
 
     file { $log_dir:
-        ensure => directory,
+        ensure => $ensure,
         owner  => 'root',
         group  => $group,
         mode   => '0775',
@@ -302,7 +308,7 @@ class hhvm(
     }
 
     file { [ '/run/hhvm', $cache_dir, '/tmp/heaps' ]:
-        ensure => directory,
+        ensure => $ensure,
         owner  => $user,
         group  => $group,
         mode   => '0755',
@@ -317,6 +323,7 @@ class hhvm(
         default   => '/run/hhvm/hhvm.pid',
     }
     cron { 'tidy_perf_maps':
+        ensure  => $ensure,
         command => "/usr/bin/find /tmp -name \"perf-*\" -not -cnewer ${procfile} -delete > /dev/null 2>&1",
         hour    => fqdn_rand(24, 'tidy_perf_maps'),
         minute  => 0,

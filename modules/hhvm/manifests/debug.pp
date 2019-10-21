@@ -2,7 +2,9 @@
 #
 # Debugging symbols and tools for HHVM and related software.
 #
-class hhvm::debug {
+class hhvm::debug(
+  Wmflib::Ensure $ensure = absent,
+  ){
 
     # This class installs packages with debugging symbols and a number
     # of tools:
@@ -19,7 +21,6 @@ class hhvm::debug {
                     'google-perftools',
                     'graphviz',
                     'gv',
-                    'hhvm-dbg',
                     'libc6-dbg',
                     'libcurl3-dbg',
                     'libevent-dbg',
@@ -63,6 +64,7 @@ class hhvm::debug {
     # When invoked with "--full", also dumps core.
 
     file { '/usr/local/sbin/hhvm-dump-debug':
+        ensure => $ensure,
         source => 'puppet:///modules/hhvm/debug/hhvm-dump-debug',
         owner  => 'root',
         group  => 'root',
@@ -81,6 +83,7 @@ class hhvm::debug {
     # Invoke `hhvmadm` with no arguments to see a list of endpoints.
 
     file { '/usr/local/bin/hhvmadm':
+        ensure => $ensure,
         source => 'puppet:///modules/hhvm/debug/hhvmadm',
         owner  => 'root',
         group  => 'root',
@@ -97,17 +100,12 @@ class hhvm::debug {
     }
 
     file { '/usr/local/sbin/install-pkg-src':
+        ensure => $ensure,
         source => 'puppet:///modules/hhvm/debug/install-pkg-src',
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
     }
-
-    exec { '/usr/local/sbin/install-pkg-src hhvm':
-        unless  => '/usr/local/sbin/install-pkg-src --dry-run hhvm | grep -q up-to-date',
-        require => Package['dpkg-dev', 'hhvm'],
-    }
-
 
     ## Memory leaks
 
@@ -122,6 +120,7 @@ class hhvm::debug {
     # method.
 
     file { '/usr/local/sbin/hhvm-collect-heaps':
+        ensure => $ensure,
         source => 'puppet:///modules/hhvm/debug/hhvm-collect-heaps',
         owner  => 'root',
         group  => 'root',
@@ -129,6 +128,7 @@ class hhvm::debug {
     }
 
     file { '/usr/local/sbin/hhvm-diff-heaps':
+        ensure => $ensure,
         source => 'puppet:///modules/hhvm/debug/hhvm-diff-heaps',
         owner  => 'root',
         group  => 'root',

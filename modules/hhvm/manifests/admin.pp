@@ -9,8 +9,8 @@
 #   Port the admin site should listen on (default: 9002).
 #
 class hhvm::admin(
-    Wmflib::Ensure $ensure = present,
     Integer $port   = 9002,
+    Wmflib::Ensure $ensure = absent,
 ) {
     include ::network::constants
 
