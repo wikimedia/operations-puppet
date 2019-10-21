@@ -20,6 +20,7 @@ class swift::swiftrepl (
         comment    => 'swiftrepl user',
         gid        => 'swiftrepl',
         managehome => false,
+        system     => true,
     }
 
     file { [$basedir, '/var/log/swiftrepl']:
