@@ -105,7 +105,7 @@ class lvs::monitor_services(
             "check_echostore_${dc}":
                 host          => "echostore.svc.${dc}.wmnet",
                 description   => "Echotore ${dc}",
-                check_command => "check_wmf_service_url!https1://echostore.svc.${dc}.wmnet:8082!15!/openapi",
+                check_command => "check_wmf_service_url!https://echostore.svc.${dc}.wmnet:8082!15!/openapi",
                 notes_url     => 'https://www.mediawiki.org/wiki/Kask',
                 ;
 
