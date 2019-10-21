@@ -15,4 +15,8 @@ class role::gerrit {
     class { '::httpd':
         modules => ['rewrite', 'headers', 'proxy', 'proxy_http', 'remoteip', 'ssl'],
     }
+
+    if $::fqdn == 'gerrit1001.wikimedia.org' {
+        include ::profile::gerrit::migration
+    }
 }

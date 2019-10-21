@@ -12,25 +12,26 @@ class profile::gerrit::migration (
 
     }
 
-    group { $user_name:
-        ensure => present,
-    }
+    # FIXME
+    # group { $user_name:
+    #     ensure => present,
+    # }
 
-    user { $user_name:
-        ensure     => 'present',
-        gid        => $user_name,
-        shell      => '/bin/bash',
-        home       => "/var/lib/${user_name}",
-        system     => true,
-        managehome => true,
-    }
+    # user { $user_name:
+    #     ensure     => 'present',
+    #     gid        => $user_name,
+    #     shell      => '/bin/bash',
+    #     home       => "/var/lib/${user_name}",
+    #     system     => true,
+    #     managehome => true,
+    # }
 
-    file { $data_dir:
-        ensure => directory,
-        owner  => 'gerrit2',
-        group  => 'gerrit2',
-        mode   => '0664',
-    }
+    # file { $data_dir:
+    #     ensure => directory,
+    #     owner  => 'gerrit2',
+    #     group  => 'gerrit2',
+    #     mode   => '0664',
+    # }
 
     class { '::rsync::server': }
 
