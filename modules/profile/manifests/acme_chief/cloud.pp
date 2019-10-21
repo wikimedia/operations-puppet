@@ -16,12 +16,18 @@ class profile::acme_chief::cloud (
         }
     }
 
+    require_package('python3-keystoneauth1', 'python3-designateclient')
+
     file { '/usr/local/bin/acme-chief-designate-sync.py':
         ensure  => present,
         owner   => 'acme-chief',
         group   => 'acme-chief',
         mode    => '0544',
-        require => Package['acme-chief'],
+        require => [
+            Package['acme-chief'],
+            Package['python3-keystoneauth1'],
+            Package['python3-designateclient'],
+        ],
         source  => 'puppet:///modules/acme_chief/designate-sync.py'
     }
 
@@ -30,7 +36,11 @@ class profile::acme_chief::cloud (
         owner   => 'acme-chief',
         group   => 'acme-chief',
         mode    => '0544',
-        require => Package['acme-chief'],
+        require => [
+            Package['acme-chief'],
+            Package['python3-keystoneauth1'],
+            Package['python3-designateclient'],
+        ],
         source  => 'puppet:///modules/acme_chief/designate-tidyup.py'
     }
     $ensure_tidyup = ($designate_sync_tidyup_enabled and $::fqdn == $active_host)? {
