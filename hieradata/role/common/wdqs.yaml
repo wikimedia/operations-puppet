@@ -27,3 +27,9 @@ profile::wdqs::use_revisions: true
 # exclude wdqs hosts from screen monitoring
 # they are often used to monitor logs, for example by smalyshev
 monitor_screens: false
+profile::tlsproxy::envoy::ensure: present
+profile::tlsproxy::envoy::services:
+  - server_names: ['*']
+    port: 80
+profile::tlsproxy::envoy::global_cert_name: "wdqs.discovery.wmnet"
+profile::tlsproxy::envoy::sni_support: "no"

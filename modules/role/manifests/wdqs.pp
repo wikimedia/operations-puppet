@@ -9,6 +9,7 @@ class role::wdqs {
     require ::profile::wdqs::blazegraph
     require ::profile::wdqs::updater
     require ::profile::wdqs::gui
+    include ::profile::tlsproxy::envoy # TLS termination
 
     system::role { 'wdqs':
         ensure      => 'present',
