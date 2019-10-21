@@ -148,10 +148,10 @@ profile::trafficserver::backend::mapping_rules:
       #replacement: http://puppetboard2001.codfw.wmnet
     - type: map
       target: http://query.wikidata.org/bigdata/ldf
-      replacement: http://wdqs1005.eqiad.wmnet
+      replacement: https://wdqs1005.eqiad.wmnet
     - type: map
       target: http://query.wikidata.org
-      replacement: http://wdqs.discovery.wmnet
+      replacement: https://wdqs.discovery.wmnet
     - type: map
       target: http://racktables.wikimedia.org
       replacement: https://webserver-misc-apps.discovery.wmnet
