@@ -166,12 +166,12 @@ node /^authdns[12]001\.wikimedia\.org$/ {
     role(authdns::server)
 }
 
-# Soon to be primary bacula director and storage daemon
+# Primary bacula director and storage daemon
 node 'backup1001.eqiad.wmnet' {
     role(backup)
 }
 
-# Soon to be codfw storage daemon
+# codfw storage daemon
 node 'backup2001.codfw.wmnet' {
     role(backup::offsite)
 }
@@ -1024,12 +1024,12 @@ node /^(hassaleh|hassium)\.(codfw|eqiad)\.wmnet$/ {
     role(debug_proxy)
 }
 
-# Current backup storage and active director: to be substituted by backup1001
+# Old backup storage and active director: substituted by backup1001
 node 'helium.eqiad.wmnet' {
-    role(backup)
+    role(backup::offsite)
 }
 
-# Current bacula storage replica: to be substituted by backup2001
+# Old bacula storage replica: substituted by backup2001
 node 'heze.codfw.wmnet' {
     role(backup::offsite)
 }
