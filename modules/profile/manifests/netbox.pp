@@ -293,7 +293,7 @@ class profile::netbox (
     systemd::timer::job { 'netbox_dump_run':
         ensure                    => present,
         description               => 'Dump CSVs from Netbox.',
-        command                   => '/srv/deployment/netbox/venv/bin/python /srv/deployment/netbox/deploy/scripts/dumpbackup.py /srv/netbox-dumps',
+        command                   => '/srv/deployment/netbox/deploy/scripts/rotatedump',
         interval                  => {
             'start'    => 'OnCalendar',
             'interval' => $nb_dump_interval,
