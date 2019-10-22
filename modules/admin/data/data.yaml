@@ -157,7 +157,8 @@ groups:
               jdittrich, chelsyx, ovasileva, debt, mgerlach, eyener,
               fdans, mlitn, niharika29, goransm, pmiazga, dsaez, shiladsen, cicalese,
               mirrys, sharvaniharan, mmiller, amire80, rush, tieu, kharlan, gbirke, dedcode,
-              isaacj, jdl, joewalsh, phuedx, bd808, iflorez, mayakpwiki, conniecc1, abi]
+              isaacj, jdl, joewalsh, phuedx, bd808, iflorez, mayakpwiki, conniecc1, abi,
+              cohi]
   ldap-admins:
     gid: 715
     description: ldap admins
@@ -257,7 +258,7 @@ groups:
     description: Gives generic client access to the Analytics (Hadoop) cluster.
         This will grant shell access on Hadoop client nodes and on
         Hadoop NameNodes.
-    members: [debt, goransm, jdittrich, kharlan]
+    members: [debt, goransm, jdittrich, kharlan, cohi]
   analytics-privatedata-users:
     gid: 731
     description: Gives access to the Analytics (Hadoop) cluster as well as private data within.
@@ -3363,6 +3364,15 @@ users:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAgozlHmJxSSkQjDKhjx4ZlMw0hqr+3F+1M2In7CGRCo
     expiry_date: 2020-02-16
     expiry_contact: nruiz@wikimedia.org
+  cohi:
+    ensure: present
+    realname: Corinna Hillebrand
+    email: corinna.hillebrand@wikimedia.de
+    uid: 21149
+    gid: 500
+    name: cohi
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCq57fv655bFwQ7Z/YRa8VD+ngXJ1adSYmZY9BiFLUIkJbLi8u1VaZgOPP05fehVkhlPPrPiN13ilMZTw/p5GADdWi7uBHGZuNAzsk4DZOKME4MaR9V+M8tY+i/uPGu5yyG8a8JrB2bO+h9wW/vV/Yf9ap2azbatAf318/ADI/oYt6nyvnqE06JUMfS318nWhKwbd+P2Ah0GSM71gV2omXsevKzgeepHCz2+w7GZX4dEwSpHWuTyxJx2agjYboths+kQcH9Cs1nI0KkKhkdvIkYmsACx8pWkh2iqayOHmCS21WTTXC1jZam/qzcST/5cbW0C72H3Lm3gNYYXYRFSZVWbW1CqKfVrKhlJMucKy4C29N5sXUH3kbQf2MKM6//AtPQBey2I0u+DjjI2MAkT1QwOtR7EEoEmHuZakoECoQE6YO69HEZqijSweBQk8Tz6EHJ0mPCT3B+YDKeMvOPp9ICC5Eo1+qWaRb1dLEXABisfQfE7anoBe3toMJjTZTQDeU5ZUY39uRgFYOrwiXLFFZtXRDVb+GWb91+hZmte0d0w5EQ4ZWV/98f94BOxvEpMEYhQfi/q+zzlMrVMTAmSlSbGwj7ldPCuT77waHO6ahnNRsWuTUHZhIRhjqCT4eE865EHk/wsJwRXZr6cnU8BX+OW1pw84I3hOG7ZIzBtAL3bQ== corinna.hillebrand@wikimedia.de
 ldap_only_users:
   abartov:
     ensure: present
