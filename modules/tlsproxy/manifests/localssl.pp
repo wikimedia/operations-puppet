@@ -176,6 +176,9 @@ define tlsproxy::localssl(
                 before => Service['nginx']
             }
         }
+        if $do_ocsp {
+            File["/etc/acmecerts/${acme_certname}"] ~> Exec['nginx-reload']
+        }
     }
 
     # used in localssl.erb to template upstream definition name

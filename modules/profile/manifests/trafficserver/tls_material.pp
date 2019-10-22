@@ -113,4 +113,16 @@ define profile::trafficserver::tls_material(
             }
         }
     }
+
+    if $do_ocsp and $acme_chief {
+        # TODO: Remove it as soon as we get rid of nginx on the cp cluster and replace it with
+        # the acme_chief::cert puppet_rsc parameter
+        unless defined(Exec["refresh-tls-material-trafficserver-${instance_name}"]) {
+            exec { "refresh-tls-material-trafficserver-${instance_name}":
+                command     => "/usr/bin/touch ${ssl_multicert_path} && /bin/systemctl reload ${service_name}",
+                refreshonly => true,
+            }
+        }
+        File["/etc/acmecerts/${acme_certname}"] ~> Exec["refresh-tls-material-trafficserver-${instance_name}"]
+    }
 }
