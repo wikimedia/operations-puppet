@@ -67,6 +67,9 @@ discovery::services:
   kartotherian:
     lvs: kartotherian
     active_active: true
+  kibana:
+    lvs: kibana
+    active_active: false
   mathoid:
     lvs: mathoid
     active_active: true
