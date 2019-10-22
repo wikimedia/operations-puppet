@@ -13,7 +13,7 @@ gerrit::server::replica_hosts:
 
 # This affects which server is rsync source for data migration
 # but is not the actual switch for Gerrit. See "is_replica" above.
-gerrit::server::master_host: 'cobalt.wikimedia.org'
+gerrit::server::master_host: 'gerrit1001.wikimedia.org'
 gerrit::server::data_dir: '/srv/gerrit'
 gerrit::server::user_name: 'gerrit2'
 
@@ -25,7 +25,6 @@ gerrit::server::use_acmechief: true
 
 # List of gerrit servers used in firewall rules.
 gerrit::servers:
- - cobalt.wikimedia.org
  - gerrit1001.wikimedia.org
  - gerrit2001.wikimedia.org
 

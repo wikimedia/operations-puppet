@@ -218,8 +218,13 @@ node /^cloudstore100[89]\.wikimedia\.org/ {
 }
 
 # All gerrit servers (swap master status in hiera)
-node 'cobalt.wikimedia.org', 'gerrit1001.wikimedia.org', 'gerrit2001.wikimedia.org' {
+node 'gerrit1001.wikimedia.org', 'gerrit2001.wikimedia.org' {
     role(gerrit)
+}
+
+# The system formerly known as Gerrit. (T222391)
+node 'cobalt.wikimedia.org' {
+    role(spare::system)
 }
 
 # Zookeeper and Etcd discovery service nodes in eqiad
