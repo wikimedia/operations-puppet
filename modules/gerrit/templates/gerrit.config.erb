@@ -108,10 +108,11 @@
     database = <%= @db_name %>
     username = <%= @db_user %>
     url = jdbc:mysql://<%= @db_host %>/<%= @db_name %>?characterSetResults=utf8&characterEncoding=utf8&connectionCollation=utf8_unicode_ci
-[gc]
-    aggressive = true
-    interval = 1 week
-    startTime = Sat 02:00
+; disable gc per T217497
+;[gc]
+;    aggressive = true
+;    interval = 1 week
+;    startTime = Sat 02:00
 [gerrit]
     basePath = <%= @git_dir %>
     canonicalWebUrl = <%= @url %>
