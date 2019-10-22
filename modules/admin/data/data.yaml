@@ -77,7 +77,8 @@ groups:
               musikanimal, jdrewniak, sbisson, jforrester, mbsantos,
               aaron, liw, sbassett, jdl, tarrow, lucaswerkmeister-wmde,
               wmde-leszek, jhuneidi, wmde-fisch, mvolz, dsharpe, brennen, cparle,
-              jfishback, urbanecm, awight, jakob, accraze, alaasarhan, andrew-wmde]
+              jfishback, urbanecm, awight, jakob, accraze, alaasarhan, andrew-wmde,
+              kevinbazira]
     privileges: ['ALL = (www-data,mwdeploy,l10nupdate) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /sbin/restart hhvm',
                  'ALL = NOPASSWD: /sbin/start hhvm',
@@ -231,7 +232,7 @@ groups:
               leila, nettrom, mforns, joal,
               tjones, legoktm, dcausse, bearloga, dstrine,
               marktraceur, accraze,
-              fdans, shiladsen, esanders, risler, nathante, chelsyx, jdl]
+              fdans, shiladsen, esanders, risler, nathante, chelsyx, jdl, kevinbazira]
   statistics-users:
     gid: 726
     description: Access statistics number crunching hosts. NO PRIVS.
@@ -282,7 +283,7 @@ groups:
               cicalese, drossi, fsalutari, nathante, gbirke, isaacj, sbassett, jdl, gsingers,
               niharika29, ryanmax, afandian2, jgleeson, toddleroux, srishakatux, dsharpe, eyener,
               esanders, sukhe, jfishback, iflorez, mayakpwiki, conniecc1, abi, mgerlach, dedcode,
-              lexnasser]
+              lexnasser, kevinbazira]
     system_members: [analytics-search, analytics]
   analytics-admins:
     gid: 732
@@ -467,7 +468,8 @@ groups:
     members: [bd808, eevans, mobrovac, ppchelko, demon, twentyafterfour, thcipriani, dduvall,
               bsitzmann, mholloway-shell, kartik, halfak, ladsgroup, smalyshev, hoo, tgr,
               ssastry, cscott, arlolra, jdlrobson, maxsem, jforrester, niedzielski,
-              pmiazga, phuedx, mbsantos, onimisionipe, mvolz, santhosh, nikerabbit, accraze]
+              pmiazga, phuedx, mbsantos, onimisionipe, mvolz, santhosh, nikerabbit, accraze,
+              kevinbazira]
     privileges: []
 
   deploy-aqs:
@@ -601,7 +603,7 @@ groups:
   ores-admin:
     description: ORES admins
     gid: 782
-    members: [halfak, accraze]
+    members: [halfak, accraze, kevinbazira]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service uwsgi-ores *',
                  'ALL = NOPASSWD: /usr/sbin/service celery-ores-worker *',
                  'ALL = NOPASSWD: /usr/bin/lsof *']
@@ -3382,6 +3384,15 @@ users:
     name: gsingers
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIISv18qbNemqdao4YBxgt881oWOeKJp3tKg0Ke6eRYwm gingersoll@wikimedia.org
+  kevinbazira:
+    ensure: present
+    realname: Kevin Bazira
+    email: kbazira@wikimedia.org
+    uid: 21773
+    gid: 500
+    name: kevinbazira
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEET3VFgjju54aZ7Ok8vdeQ7j45Js52GWNw/BxTxZ1+2 kbazira@wikimedia.org
 ldap_only_users:
   abartov:
     ensure: present
