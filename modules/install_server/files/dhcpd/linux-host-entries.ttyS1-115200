@@ -673,12 +673,6 @@ host an-presto1005 {
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
-host cobalt {
-    hardware ethernet 14:18:77:33:4A:30;
-    fixed-address cobalt.wikimedia.org;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-}
-
 host conf1004 {
     hardware ethernet 30:e1:71:52:05:18;
     fixed-address conf1004.eqiad.wmnet;
