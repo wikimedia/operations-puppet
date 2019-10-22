@@ -3,9 +3,13 @@
 class profile::tendril::webserver (
     $monitor_https = hiera('do_acme', true),
 ) {
-
-    # Please note dbtree doesn't currently work on stretch's php
-    if os_version('debian >= stretch') {
+    # Temporary backwards compatibility
+    if os_version('debian > buster') {
+        fail("Please update ${module_name} to support newer php installed module")
+    } elsif os_version('debian == buster') {
+        $php_module = 'php7.3'
+        require_package('libapache2-mod-php','php-mysql')
+    } elsif os_version('debian == stretch') {
         $php_module = 'php7.0'
         require_package('libapache2-mod-php','php-mysql')
     } else {
