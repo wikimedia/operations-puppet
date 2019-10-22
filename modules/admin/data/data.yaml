@@ -280,7 +280,8 @@ groups:
               ayounsi, mepps, mmiller, seddon, gilles, tstarling, rush, tieu, karen,
               cicalese, drossi, fsalutari, nathante, gbirke, isaacj, sbassett, jdl,
               niharika29, ryanmax, afandian2, jgleeson, toddleroux, srishakatux, dsharpe, eyener,
-              esanders, sukhe, jfishback, iflorez, mayakpwiki, conniecc1, abi, mgerlach, dedcode]
+              esanders, sukhe, jfishback, iflorez, mayakpwiki, conniecc1, abi, mgerlach, dedcode,
+              lexnasser]
     system_members: [analytics-search, analytics]
   analytics-admins:
     gid: 732
@@ -3351,6 +3352,17 @@ users:
     name: rzl
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPtpkeKO3QRiK4rGMkCX5u3T55PPWGId+GFPraW0aNLR rlazarus@rlazarus
+  lexnasser:
+    ensure: present
+    realname: Lex Nasser
+    email: lexnasser@icloud.com
+    uid: 22186
+    gid: 500
+    name: lexnasser
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAgozlHmJxSSkQjDKhjx4ZlMw0hqr+3F+1M2In7CGRCo
+    expiry_date: 2020-02-16
+    expiry_contact: nruiz@wikimedia.org
 ldap_only_users:
   abartov:
     ensure: present
