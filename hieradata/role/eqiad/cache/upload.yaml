@@ -1,3 +1,5 @@
 profile::trafficserver::backend::storage_elements:
     - devname: nvme0n1
       id: disk.0
+profile::cache::ssl::unified::tls_port: 4443
+profile::cache::ssl::unified::use_trafficserver_tls: true
