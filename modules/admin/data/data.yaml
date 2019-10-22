@@ -3828,3 +3828,7 @@ ldap_only_users:
     ensure: present
     realname: Nikki Nikkhoui
     email: nnikkhoui@wikimedia.org
+  keepit-ssh:
+    ensure: present
+    realname: CherRaye Glenn
+    email: cglenn@wikimedia.org
