@@ -3814,3 +3814,7 @@ ldap_only_users:
     ensure: present
     realname: Verena Lindner
     email: verena.lindner@wikimedia.de
+  nikkin:
+    ensure: present
+    realname: Nikki Nikkhoui
+    email: nnikkhoui@wikimedia.org
