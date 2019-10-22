@@ -55,7 +55,7 @@ profile::trafficserver::tls::unified_certs:
   - 'globalsign-2018-rsa-unified'
   - 'digicert-2019-ecdsa-unified'
   - 'digicert-2019-rsa-unified'
-
+profile::trafficserver::tls::unified_acme_chief: true
 profile::trafficserver::tls::available_unified_certs:
   globalsign-2018:
     acme_chief: false

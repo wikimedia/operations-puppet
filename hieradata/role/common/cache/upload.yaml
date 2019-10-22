@@ -53,7 +53,7 @@ profile::cache::varnish::frontend::fe_extra_vcl: ['upload-common', 'normalize_pa
 # Profile::cache::ssl::unified
 profile::cache::ssl::unified::monitoring: true
 profile::cache::ssl::unified::letsencrypt: false
-profile::cache::ssl::unified::acme_chief: false
+profile::cache::ssl::unified::acme_chief: true
 
 # Enable varnishkafka-webrequest instance monitoring.
 profile::cache::kafka::webrequest::monitoring_enabled: true
