@@ -47,7 +47,7 @@ def main():
         unknown('Could not determine host virtualisation status: {}'.format(str(error.returncode)))
 
     virtual_host = False
-    if systemd_detect_virt == 'kvm':
+    if systemd_detect_virt == 'qemu':
         virtual_host = True
 
     # CPUs which were not fixed for SSBD (which was the first) are also not
