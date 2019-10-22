@@ -2,5 +2,6 @@ admin::groups:
   - wmcs-roots
 
 contactgroups: wmcs-team
+mgmt_contactgroups: wmcs-team-email
 
 prometheus::haproxy_exporter::endpoint: 'http://localhost:9900/stats;csv'

@@ -18,3 +18,4 @@ prometheus::node_exporter::collectors_extra:
   - drbd
 
 contactgroups: wmcs-team
+mgmt_contactgroups: wmcs-team-email

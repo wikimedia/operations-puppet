@@ -4,3 +4,4 @@ admin::groups:
 profile::base::enable_microcode: true
 
 contactgroups: wmcs-team
+mgmt_contactgroups: wmcs-team-email

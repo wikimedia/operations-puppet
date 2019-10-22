@@ -22,3 +22,4 @@ profile::wmcs::monitoring::statsd_standby: labmon1002.eqiad.wmnet
 #profile::grafana::secret_key:
 #profile::grafana::admin_password:
 contactgroups: wmcs-team
+mgmt_contactgroups: wmcs-team-email

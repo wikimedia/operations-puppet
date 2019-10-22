@@ -10,3 +10,4 @@ profile::base::ssh_server_settings:
 prometheus::node_exporter::web_listen_address: "%{::ipaddress}:9100"
 
 contactgroups: wmcs-team
+mgmt_contactgroups: wmcs-team-email

@@ -1,4 +1,5 @@
 statsite::instance::graphite_host: 'localhost'
 statsite::instance::extended_counters: 1
 contactgroups: 'wmcs-team'
+mgmt_contactgroups: 'wmcs-team-email'
 profile::openstack::eqiad1::version: 'mitaka'

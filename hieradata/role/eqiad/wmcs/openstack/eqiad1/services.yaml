@@ -2,3 +2,4 @@ admin::groups:
   - wmcs-roots
 
 contactgroups: wmcs-team
+mgmt_contactgroups: wmcs-team-email
