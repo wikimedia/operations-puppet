@@ -108,4 +108,9 @@ class profile::gerrit::server(
     rsyslog::input::file { 'gerrit-apache2-access':
         path => '/var/log/apache2/*access*.log',
     }
+
+    # For admins and assist with T236114
+    package { 'colordiff':
+        ensure => present,
+    }
 }
