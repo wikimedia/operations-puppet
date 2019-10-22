@@ -5,9 +5,6 @@
 # == Parameters:
 # - $ensure: Whether the config should exist. Default present.
 # - $host: Elasticsearch server. Default '127.0.0.1'.
-# - $flush_size: Maximum number of events to buffer before sending.
-#       Default 5000.
-# - $idle_flush_time: Maxmimum seconds to wait between sends. Default 1.
 # - $index: Index to write events to. Default '${title}-%{+YYYY.MM.dd}'.
 # - $prefix: indices with this prefix will be cleaned up. Used by the
 #       `cleanup.yaml.erb` template.
@@ -33,8 +30,6 @@
 define logstash::output::elasticsearch(
     $ensure          = present,
     $host            = '127.0.0.1',
-    $flush_size      = 5000,
-    $idle_flush_time = 1,
     $index           = "${title}-%{+YYYY.MM.dd}",
     $prefix          = "${title}-",
     $port            = 9200,

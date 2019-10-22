@@ -3,9 +3,7 @@ output {
     # We use the http protocol so that the cluster and logstash don't have to
     # be tightly coupled by the binary protocol
     elasticsearch {
-        flush_size      => <%= @flush_size %>
         hosts           => ["<%= @host %>:<%= @port %>"]
-        idle_flush_time => <%= @idle_flush_time %>
         index           => "<%= @index %>"
 <% if @template %>
         manage_template    => true
