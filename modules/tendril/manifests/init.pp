@@ -73,7 +73,7 @@ class tendril (
     # not adding ensure => 'latest' is on purpose
         directory => '/srv/tendril',
         branch    => 'master',
-        owner     => 'www-data',
+        owner     => 'mwdeploy',
         group     => 'www-data',
         require   => File['/srv/tendril'],
     }
