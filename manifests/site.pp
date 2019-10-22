@@ -557,11 +557,6 @@ node /^db2(115|131)\.codfw\.wmnet/ {
     role(mariadb::core)
 }
 
-# To be decommissioned # T231625
-node 'db2060.codfw.wmnet' {
-    role(spare::system)
-}
-
 ## m1 shard
 
 # See also multiinstance misc hosts db1117 and db2078 below
