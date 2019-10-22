@@ -26,9 +26,17 @@ class tendril (
         puppet_svc => 'apache2',
     }
 
+    # Temporary hack while jessie is supported
+    if os_version('debian <= jessie') {
+        $php_mysql_pkg = 'php5-mysql'
+        $php_memcache_pkg = 'php5-memcache'
+    } else {
+        $php_mysql_pkg = 'php-mysql'
+        $php_memcache_pkg = 'php-memcache'
+    }
     require_package(
-        'php5-mysql',
-        'php5-memcache', # do not install -memcached, it won't work
+        $php_mysql_pkg,
+        $php_memcache_pkg, # do not install -memcached, it won't work
         'memcached', # memcached expected by default on localhost
     )
 
