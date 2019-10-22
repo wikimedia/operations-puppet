@@ -1275,6 +1275,36 @@ lvs::configuration::lvs_services:
           hostname: kibana.svc.eqiad.wmnet
         codfw:
           hostname: kibana.svc.codfw.wmnet
+  kibana-ssl:
+    description: "Kibana - HTTPS"
+    class: low-traffic
+    sites:
+    - eqiad
+    - codfw
+    ip: *ip_block032
+    port: 443
+    scheduler: sh
+    depool-threshold: '.5'
+    monitors:
+      ProxyFetch:
+        url:
+        - https://localhost/api/status
+      IdleConnection:
+        timeout-clean-reconnect: 3
+        max-delay: 300
+    conftool:
+      cluster: logstash
+      service: kibana-ssl
+    # FIXME: due to the way checks are created, if the same service hostname is
+    # used for two different checks, only one check will be added to icinga.
+    # See modules/lvs/templates/monitor_lvs.erb
+    #icinga:
+    #  check_command: "check_https_url!kibana.svc.%{::site}.wmnet!/api/status"
+    #  sites:
+    #    eqiad:
+    #      hostname: kibana.svc.eqiad.wmnet
+    #    codfw:
+    #      hostname: kibana.svc.codfw.wmnet
   eventstreams:
     description: "Public EventStreams via HTTP + SSE backed by Kafka. eventstreams.svc.%{::site}.wmnet"
     class: low-traffic
