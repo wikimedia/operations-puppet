@@ -441,7 +441,7 @@ node 'db1100.eqiad.wmnet' {
 }
 
 # See also db1096 db1097 and db1113 below
-node /^db1(070|082|110|130)\.eqiad\.wmnet/ {
+node /^db1(082|110|130)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
 
@@ -709,6 +709,11 @@ node 'db1114.eqiad.wmnet' {
 
 node 'db2102.codfw.wmnet' {
     role(mariadb::core_test)
+}
+
+# To be decommissioned T235464
+node 'db1070.eqiad.wmnet' {
+    role(spare::system)
 }
 
 # old eqiad dbstores

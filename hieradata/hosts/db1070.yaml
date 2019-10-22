@@ -1,4 +1,0 @@
-# db1070
-mariadb::shard: 's5'
-mariadb::binlog_format: 'STATEMENT'
-profile::base::notifications: disabled
