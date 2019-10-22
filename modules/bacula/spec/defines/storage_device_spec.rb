@@ -9,6 +9,19 @@ describe 'bacula::storage::device', :type => :define do
         :max_concur_jobs => '10',
         }
     }
+    let(:facts) do
+      {
+        'lsbdistrelease' => '10.1',
+        'lsbdistid' => 'Debian'
+      }
+    end
+    let(:pre_condition) do
+      "class {'bacula::storage':
+        director            => 'dir.example.com',
+        sd_max_concur_jobs  => 5,
+        sqlvariant          => 'mysql',
+      }"
+    end
 
     context 'without spool_dir, max_spool_size' do
         it 'should create /etc/bacula/sd-devices.d/something.conf' do

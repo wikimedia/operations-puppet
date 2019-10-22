@@ -87,11 +87,7 @@ define mysql::server::config (
 ) {
   include ::mysql::config
 
-  if is_hash($settings) {
-    $content = template('mysql/my.conf.cnf.erb')
-  } else {
-    $content = $settings
-  }
+  $content = $settings
 
   file { "/etc/mysql/conf.d/${name}":
     ensure  => file,
@@ -99,7 +95,7 @@ define mysql::server::config (
     owner   => 'root',
     group   => $mysql::config::root_group,
     mode    => '0644',
-    require => Package['mysql-server'],
+    require => Package['mysql-server-5.5'],
   }
 
   if $notify_service {

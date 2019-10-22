@@ -1,12 +1,16 @@
 source 'https://rubygems.org'
 
-gem 'puppet', ENV['PUPPET_GEM_VERSION'] || '~> 4.10.2'
+gem 'puppet', ENV['PUPPET_GEM_VERSION'] || '~> 5.5.10'
 gem 'xmlrpc' if RUBY_VERSION >= '2.4.0'
 gem 'puppet-strings', '~> 1.0.0'
 gem 'rspec-puppet', '~> 2.6.9'
 gem 'rspec-puppet-facts', '~> 1.7', require: false
 gem 'puppetlabs_spec_helper', '< 2.0.0'
 gem 'safe_yaml', '~> 1.0.5'
+# required by lvm spec_helper
+gem 'puppet-blacksmith', '~> 4.1.2'
+# required by puppetdbquery
+gem 'chronic', '~> 0.10.2'
 
 gem 'rake', '~> 12.0.0'
 gem 'git', '1.3.0'

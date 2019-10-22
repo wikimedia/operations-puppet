@@ -2,7 +2,8 @@
 # install the package and configure elsewhere.
 class mysql::server::package (
     $package_name     = $mysql::params::server_package_name,
-) {
+) inherits mysql::params {
+    include mysql::server
     if $package_name =~ /mariadb/ {
         apt::repository { 'wikimedia-mariadb':
         uri        => 'http://apt.wikimedia.org/wikimedia',
@@ -17,10 +18,7 @@ class mysql::server::package (
     }
 
     package { 'mysql-server':
-        # FIXME - top-scope var without namespace, will break in puppet 2.8
-        # lint:ignore:variable_scope
-        ensure  => $package_ensure,
-        # lint:endignore
+        ensure  => $mysql::server::package_ensure,
         name    => $package_name,
         require => $package_source,
     }

@@ -11,3 +11,5 @@ fixtures:
         stdlib: "../../../../stdlib"
         wmflib: "../../../../wmflib"
         apache: "../../../../apache"
+        sslcert: "../../../../sslcert"
+        monitoring: "../../../../monitoring"

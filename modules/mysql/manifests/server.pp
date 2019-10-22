@@ -18,7 +18,6 @@ class mysql::server (
   $package_name     = $mysql::params::server_package_name,
   $package_ensure   = 'present',
   $service_name     = $mysql::params::service_name,
-  $service_provider = $mysql::params::service_provider,
   $config_hash      = {},
   $enabled          = true,
   $manage_service   = false,
@@ -40,11 +39,10 @@ class mysql::server (
 
   if $manage_service {
     service { 'mysqld':
-      ensure   => ensure_service($enabled),
-      name     => $service_name,
-      enable   => $enabled,
-      require  => Package['mysql-server'],
-      provider => $service_provider,
+      ensure  => ensure_service($enabled),
+      name    => $service_name,
+      enable  => $enabled,
+      require => Package['mysql-server'],
     }
   }
 

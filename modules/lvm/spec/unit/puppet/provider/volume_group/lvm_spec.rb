@@ -37,7 +37,7 @@ describe provider_class do
   describe 'when destroying' do
     it "should execute 'vgremove'" do
       @resource.expects(:[]).with(:name).returns('myvg')
-      @provider.expects(:vgremove).with('myvg')
+      @provider.expects(:vgremove).with('--force', 'myvg')
       @provider.destroy
     end
   end

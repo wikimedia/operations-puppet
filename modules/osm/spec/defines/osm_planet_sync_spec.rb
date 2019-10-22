@@ -5,28 +5,19 @@ describe 'osm::planet_sync', :type => :define do
 
     context 'with ensure present' do
         let(:params) { {
+            :use_proxy   => false,
+            :proxy_host  => 'proxy.example.org',
+            :proxy_port  => 8080,
             :osmosis_dir => '/srv/osmosis',
             :period      => 'minute',
-            :pg_password => 'secret',
         } }
-
-        context 'on Ubuntu Precise' do
-            let(:facts) { {
-                :lsbdistrelease => 'Precise',
-                :lsbdistid      => 'Ubuntu',
-                :memorysize_mb  => 64 * 1024,
-            }}
-
-            it { should contain_cron('planet_sync-somedb') }
-            it { should contain_file('/srv/osmosis/configuration.txt').with_content(/minute/) }
-            it { should contain_file('/usr/local/bin/replicate-osm').with_content(/--input-reader libxml2/) }
-        end
 
         context 'on Debian Jessie' do
             let(:facts) { {
                 :lsbdistrelease => 'Jessie',
                 :lsbdistid      => 'Debian',
                 :memorysize_mb  => 64 * 1024,
+                :processorcount => 4,
             }}
             it { should contain_file('/usr/local/bin/replicate-osm').with_content(/--input-reader xml/) }
         end

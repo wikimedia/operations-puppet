@@ -28,6 +28,7 @@ describe 'lvm', :type => :class do
         }
       }
     end
+    let(:pre_condition) { "file{'/var/backups': ensure => file}" }
 
     it { should contain_physical_volume('/dev/sda2') }
     it { should contain_physical_volume('/dev/sda3') }
@@ -69,6 +70,7 @@ describe 'lvm', :type => :class do
         }
       }
     end
+    let(:pre_condition) { "file{'/mnt/not_mounted': ensure => file}" }
 
     it { should contain_mount('/mnt/not_mounted').with({
         :ensure       => 'present'

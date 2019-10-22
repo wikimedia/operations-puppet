@@ -84,7 +84,6 @@ class postgresql::slave(
         mode    => '0644',
         content => template('postgresql/recovery.conf.erb'),
         before  => Service[$::postgresql::server::service_name],
-        require => Exec["pg_basebackup-${master_server}"],
     }
 
     # Having this file here helps perform slave initialization.
@@ -106,6 +105,9 @@ class postgresql::slave(
             user        => 'postgres',
             unless      => "/usr/bin/test -f ${data_dir}/PG_VERSION",
             before      => Service[$::postgresql::server::service_name],
+        }
+        File["${data_dir}/recovery.conf"] {
+            require => Exec["pg_basebackup-${master_server}"],
         }
     }
 

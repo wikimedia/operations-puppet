@@ -10,6 +10,18 @@ describe 'bacula::director::catalog', :type => :define do
         :dbpassword  => 'bacula',
         }
     }
+    let(:facts) do
+      {
+        'lsbdistrelease' => '10.1',
+        'lsbdistid' => 'Debian'
+      }
+    end
+    let(:pre_condition) do
+      "class {'bacula::director':
+        sqlvariant          => 'mysql',
+        max_dir_concur_jobs => '10',
+      }"
+    end
 
     it 'should create valid content for /etc/bacula/conf.d/catalog-something.conf' do
         should contain_file('/etc/bacula/conf.d/catalog-something.conf').with({

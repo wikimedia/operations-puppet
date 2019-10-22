@@ -10,6 +10,7 @@ describe 'postgresql::user', :type => :define do
     let(:facts) { {
         :lsbdistcodename => 'jessie',
     } }
+    let(:pre_condition) { 'include postgresql::server' }
 
     context 'with ensure present' do
         it { should contain_exec('create_user-something@host.example.com') }
@@ -28,6 +29,7 @@ describe 'postgresql::user', :type => :define do
     let(:facts) { {
         :lsbdistcodename => 'jessie',
     } }
+    let(:pre_condition) { 'include postgresql::server' }
 
     context 'with ensure absent' do
     it { should contain_exec('drop_user-something@host.example.com') }

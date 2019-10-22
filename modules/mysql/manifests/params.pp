@@ -18,8 +18,6 @@ class mysql::params {
     $ssl                 = false
     $restart             = false
 
-    $service_provider    = $::initsystem
-
     $ver                  = '5.5'
 
     $client_package_name  = "mysql-client-${ver}"

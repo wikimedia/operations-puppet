@@ -29,8 +29,8 @@ lastrun = 0
 failcount = 0
 warn = 0
 crit = 0
-disable_grace = 86400  # 24 hours
-fail_grace = 86400  # 24 hours
+disable_grace = 86_400  # 24 hours
+fail_grace = 86_400  # 24 hours
 enabled_only = false
 # init variable
 first_fail_time = Time.now
@@ -89,7 +89,7 @@ end
 if File.exists?(adminlockfile)
        enabled = false
        disabled_message = YAML.load_file(adminlockfile)["disabled_message"]
-       disabled_time = File::stat(adminlockfile).ctime
+       disabled_time = File.stat(adminlockfile).ctime
 end
 
 if File.exists?(summaryfile)
@@ -112,17 +112,14 @@ if File.exists?(summaryfile)
         end
     rescue
         failcount = :failed_to_parse_summary_file
-        summary = nil
     end
 else
     failcount = :no_summary_file
 end
 
 if failcount.is_a?(Symbol)
-  if ! File.exist?(icingafile)
-    FileUtils.touch(icingafile)
-  end
-  first_fail_time = File::stat(icingafile).ctime
+  FileUtils.touch(icingafile) unless File.exist?(icingafile)
+  first_fail_time = File.stat(icingafile).ctime
 elsif File.exist?(icingafile)
   # successful puppet run make sure we clean up any old files
   File.delete(icingafile)

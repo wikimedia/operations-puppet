@@ -2,8 +2,21 @@ require 'spec_helper'
 
 describe 'bacula::client::mysql_bpipe', :type => :define do
     let(:title) { 'something' }
-    let(:facts) { { :processorcount => 4, } }
-
+    let(:facts) do
+      {
+        :processorcount => 4,
+        'lsbdistrelease' => '10.1',
+        'lsbdistid' => 'Debian'
+      }
+    end
+    let(:pre_condition) do
+      "class {'bacula::client':
+        director       => 'dir.example.com',
+        catalog        => 'test',
+        file_retention => 5,
+        job_retention  => 5,
+      }"
+    end
     context 'with per database' do
         let(:params) { {
             :per_database          => true,

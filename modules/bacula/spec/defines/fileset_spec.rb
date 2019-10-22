@@ -3,6 +3,18 @@ require 'spec_helper'
 describe 'bacula::director::fileset', :type => :define do
     let(:title) { 'something' }
     let(:params) { { :includes => ["/", "/var",], } }
+    let(:pre_condition) do
+      "class {'bacula::director':
+        sqlvariant          => 'mysql',
+        max_dir_concur_jobs => '10',
+      }"
+    end
+    let(:facts) do
+      {
+        'lsbdistrelease' => '10.1',
+        'lsbdistid' => 'Debian'
+      }
+    end
 
     it 'should create /etc/bacula/conf.d/fileset-something.conf' do
         should contain_file('/etc/bacula/conf.d/fileset-something.conf').with({

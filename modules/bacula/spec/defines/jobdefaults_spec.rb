@@ -7,6 +7,18 @@ describe 'bacula::director::jobdefaults', :type => :define do
         :pool => 'testpool',
         }
     }
+    let(:facts) do
+      {
+        'lsbdistrelease' => '10.1',
+        'lsbdistid' => 'Debian'
+      }
+    end
+    let(:pre_condition) do
+      "class {'bacula::director':
+        sqlvariant          => 'mysql',
+        max_dir_concur_jobs => '10',
+      }"
+    end
 
     it 'should create /etc/bacula/conf.d/jobdefaults-something.conf' do
         should contain_file('/etc/bacula/conf.d/jobdefaults-something.conf').with({

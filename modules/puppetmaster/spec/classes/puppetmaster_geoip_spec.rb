@@ -1,21 +1,28 @@
 require_relative '../../../../rake_modules/spec_helper'
 
 describe 'puppetmaster::geoip' do
-    let(:node_params) { {'site' => 'eqiad'}}
+    let(:node_params) do
+      {
+        'site' => 'eqiad',
+        'realm' => 'production'
+      }
+    end
     let(:facts) do
       {
+        'lsbdistcodename' => 'stretch',
         'lsbdistrelease' => '9.9',
-        'lsbdistid' => 'Debian'
+        'lsbdistid' => 'Debian',
+        'puppetversion' => '5.5.10',
       }
     end
     let(:pre_condition) {
         '''
-        class puppetmaster { $volatiledir="/tmp" }
-        class passwords::geoip {
-          $user_id="foo"
-          $license_key="meh"
-        }
-        include ::puppetmaster
+        class profile::base ($notifications_enabled = true){}
+        package {"prometheus-node-exporter": ensure => installed}
+        exec{"apt-get update": path => "/usr/bin" }
+        include profile::base
+        include profile::base::puppet
+        include puppetmaster
         '''
     }
     it { should compile }

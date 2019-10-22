@@ -8,6 +8,18 @@ describe 'bacula::director::pool', :type => :define do
         :volume_retention => '10 days',
         }
     }
+    let(:facts) do
+      {
+        'lsbdistrelease' => '10.1',
+        'lsbdistid' => 'Debian'
+      }
+    end
+    let(:pre_condition) do
+      "class {'bacula::director':
+        sqlvariant          => 'mysql',
+        max_dir_concur_jobs => '10',
+      }"
+    end
 
     context 'without label_fmt, max_vol_bytes' do
         it 'should create /etc/bacula/conf.d/pool-something.conf' do

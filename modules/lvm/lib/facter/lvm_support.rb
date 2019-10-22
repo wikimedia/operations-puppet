@@ -33,7 +33,7 @@ vg_list.each_with_index do |vg, i|
   Facter.add("lvm_vg_#{vg}_pvs") do
     setcode do
       pvs = Facter::Core::Execution.execute(
-        "vgs -o pv_name --noheadings  #{vg} 2>/dev/null",
+        "vgs -o pv_name --noheadings #{vg} 2>/dev/null",
         timeout: 60)
       res = nil
       unless pvs.nil?

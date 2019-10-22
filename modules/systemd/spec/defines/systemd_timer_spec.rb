@@ -13,6 +13,8 @@ describe 'systemd::timer' do
     context "On #{os}" do
       let(:facts) { facts.merge(initsystem: 'systemd') }
       let(:title) { 'dummy'}
+      let(:pre_condition) { 'systemd::unit { "dummy.service": content => ""}' }
+
       context 'when using an invalid time spec' do
         let(:params) {
           {
@@ -22,9 +24,6 @@ describe 'systemd::timer' do
         it { is_expected.to compile.and_raise_error(/bananas/) }
       end
       context 'when using a valid time spec' do
-        let(:pre_condition) {
-          'systemd::unit { "dummy.service": content => "",}'
-        }
         let(:params) {
           {
             :timer_intervals => [{'start' => 'OnBootSec', 'interval' => '3 hour 10 sec'}]
@@ -41,10 +40,6 @@ describe 'systemd::timer' do
         it { is_expected.to compile.and_raise_error(/Mooby/) }
       end
       context 'when using a valid calendar spec' do
-        let(:pre_condition) {
-          'systemd::unit { "dummy.service":
-                  content => "",
-}'}
         let(:params) {
           {
             :timer_intervals => [{'start' => 'OnCalendar', 'interval' => 'Mon,Tue *-*-* 00:00:00'}]
@@ -53,10 +48,6 @@ describe 'systemd::timer' do
         it { is_expected.to compile.with_all_deps }
       end
       context 'when using a valid everyday calendar spec' do
-        let(:pre_condition) {
-          'systemd::unit { "dummy.service":
-                  content => "",
-}'}
         let(:params) {
           {
             :timer_intervals => [{'start' => 'OnCalendar', 'interval' => '*-*-* 00:00:00'}]
@@ -65,10 +56,6 @@ describe 'systemd::timer' do
         it { is_expected.to compile.with_all_deps }
       end
       context 'when using a valid calendar (with repetition) spec' do
-        let(:pre_condition) {
-          'systemd::unit { "dummy.service":
-                  content => "",
-}'}
         let(:params) {
           {
             :timer_intervals => [{'start' => 'OnCalendar', 'interval' => 'Mon,Tue *-*-* 00/4:00:00'}]
@@ -77,10 +64,6 @@ describe 'systemd::timer' do
         it { is_expected.to compile.with_all_deps }
       end
       context 'when using a valid everyday calendar (with repetition) spec' do
-        let(:pre_condition) {
-          'systemd::unit { "dummy.service":
-                  content => "",
-}'}
         let(:params) {
           {
             :timer_intervals => [{'start' => 'OnCalendar', 'interval' => '*-*-* 00/4:00:00'}]
@@ -89,10 +72,6 @@ describe 'systemd::timer' do
         it { is_expected.to compile.with_all_deps }
       end
       context 'when using a valid hourly calendar spec' do
-        let(:pre_condition) {
-          'systemd::unit { "dummy.service":
-                  content => "",
-}'}
         let(:params) {
           {
             :timer_intervals => [{'start' => 'OnCalendar', 'interval' => 'Mon,Tue *-*-* *:20:00'}]
@@ -101,10 +80,6 @@ describe 'systemd::timer' do
         it { is_expected.to compile.with_all_deps }
       end
       context 'when using a valid everyday hourly calendar spec' do
-        let(:pre_condition) {
-          'systemd::unit { "dummy.service":
-                  content => "",
-}'}
         let(:params) {
           {
             :timer_intervals => [{'start' => 'OnCalendar', 'interval' => '*-*-* *:20:00'}]
@@ -113,12 +88,17 @@ describe 'systemd::timer' do
         it { is_expected.to compile.with_all_deps }
       end
       context 'when referring to an inexistent unit' do
+        let(:pre_condition) {}
         let(:params) {
           {
             :timer_intervals => [{'start' => 'OnBootSec', 'interval' => '3 hour 10 sec'}]
           }
         }
-        it { is_expected.to compile.and_raise_error(/Could not retrieve dependency/) }
+        it do
+          is_expected.to compile.and_raise_error(
+            /Could not find resource 'Systemd::Unit\[dummy.service\]'/
+          )
+        end
       end
     end
   end
