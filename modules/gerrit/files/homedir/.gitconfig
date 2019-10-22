@@ -1,4 +1,4 @@
-; Re disable gc per T217497
-[gc]
-        auto = 0
-        autopacklimit = 0
+; Renable after 2.15.12 upgrade
+;[gc]
+;        auto = 0
+;        autopacklimit = 0
