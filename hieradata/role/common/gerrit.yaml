@@ -3,17 +3,27 @@ admin::groups:
   - gerrit-admin
 
 gerrit::server::host: 'gerrit.wikimedia.org'
+gerrit::server::config: 'gerrit.config.erb'
+
 # When promoting a master set this to false
 # in the corresponding hosts yaml file.
 gerrit::server::is_replica: true
 gerrit::server::replica_hosts:
     - 'gerrit-replica.wikimedia.org'
-gerrit::server::master_host: 'cobalt.wikimedia.org'
+
+# This affects which server is rsync source for data migration
+# but is not the actual switch for Gerrit. See "is_replica" above.
+gerrit::server::master_host: 'gerrit1001.wikimedia.org'
+gerrit::server::data_dir: '/srv/gerrit'
+gerrit::server::user_name: 'gerrit2'
+
+# External backups
 gerrit::server::bacula: 'srv-gerrit-git'
-gerrit::server::config: 'gerrit.config.erb'
+
+# SSL/TLS certs
 gerrit::server::use_acmechief: true
 
-# list of gerrit servers used in firewall rules
+# List of gerrit servers used in firewall rules.
 gerrit::servers:
  - cobalt.wikimedia.org
  - gerrit1001.wikimedia.org
@@ -51,6 +61,3 @@ gerrit::jetty::replication:
 profile::base::ssh_server_settings:
     authorized_keys_file: '/etc/ssh/userkeys/%u /etc/ssh/userkeys/%u.d/cumin /etc/ssh/userkeys/%u.d/gerrit-scap'
 
-gerrit::server::master_host: 'cobalt.wikimedia.org'
-gerrit::server::data_dir: '/srv/gerrit'
-gerrit::server::user_name: 'gerrit2'
