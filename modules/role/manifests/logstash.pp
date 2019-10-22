@@ -4,4 +4,5 @@ class role::logstash {
     include ::role::kibana
     include ::role::logstash::apifeatureusage
     include ::profile::prometheus::logstash_exporter
+    include ::profile::tlsproxy::envoy # TLS termination
 }

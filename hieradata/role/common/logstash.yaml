@@ -75,3 +75,10 @@ profile::elasticsearch::monitor::shard_size_critical: 350
 # will be unassigned, with no way to reallocate them on another node, which
 # is fine and should not raise an alert. So threshold needs to be > 1/3.
 profile::elasticsearch::monitor::threshold: '>=0.34'
+
+profile::tlsproxy::envoy::ensure: present
+profile::tlsproxy::envoy::services:
+  - server_names: ['*']
+    port: 80
+profile::tlsproxy::envoy::global_cert_name: "kibana.discovery.wmnet"
+profile::tlsproxy::envoy::sni_support: "no"
