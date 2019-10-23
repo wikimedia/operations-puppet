@@ -24,6 +24,9 @@
 # [*transaction_no_activity_timeout_out*]
 #   Specifies how long Traffic Server keeps connections to origin servers open if the transaction stalls.
 #
+# [*send_100_continue_response*]
+#   If enabled, Traffic Server will reply with a "100 continue" iff the UA provides the "Expect: 100-continue" header
+#
 type Trafficserver::HTTP_settings = Struct[{
     'accept_no_activity_timeout'          => Integer[0],
     'connect_attempts_timeout'            => Integer[0],
@@ -32,4 +35,5 @@ type Trafficserver::HTTP_settings = Struct[{
     'post_connect_attempts_timeout'       => Integer[0],
     'transaction_no_activity_timeout_in'  => Integer[0],
     'transaction_no_activity_timeout_out' => Integer[0],
+    'send_100_continue_response'          => Integer[0, 1],
 }]
