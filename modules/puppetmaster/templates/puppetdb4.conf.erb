@@ -1,6 +1,6 @@
 [main]
 server_urls = https://<%= @hosts.join(":#{@port},https://") %>:<%= @port %>
-<% if @broadcast_host -%>
+<% if @command_broadcast -%>
 command_broadcast = true
 <% end -%>
 soft_write_failure = false
