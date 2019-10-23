@@ -21,10 +21,10 @@ end
 <%- if @alt_names %>    ServerAlias <%= @alt_names.sort.join(" ") %><% end %>
     SSLEngine on
     <%= @ssl_settings.join("\n    ") %>
-    SSLCertificateFile      <%= @ssldir %>/certs/<%= @server_name %>.pem
-    SSLCertificateKeyFile   <%= @ssldir %>/private_keys/<%= @server_name %>.pem
-    SSLCACertificateFile    /var/lib/puppet/server/ssl/certs/ca.pem
-    SSLCertificateChainFile /var/lib/puppet/server/ssl/certs/ca.pem
+    SSLCertificateFile      <%= @facts['puppet_config']['ssldir'] %>/certs/<%= @server_name %>.pem
+    SSLCertificateKeyFile   <%= @facts['puppet_config']['ssldir'] %>/private_keys/<%= @server_name %>.pem
+    SSLCACertificateFile    <%= @facts['puppet_config']['master']['localcacert'] %>
+    SSLCertificateChainFile <%= @facts['puppet_config']['master']['localcacert'] %>
     # If Apache complains about invalid signatures on the CRL, you can try disabling
     # CRL checking by commenting the next line, but this is not recommended.
     # NOTE: https://tickets.puppetlabs.com/browse/PUP-2310 says that CRL is not updated. Need to reevaluate this

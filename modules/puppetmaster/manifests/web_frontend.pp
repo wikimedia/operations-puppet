@@ -51,7 +51,6 @@ define puppetmaster::web_frontend(
     Optional[Stdlib::Host]                  $locale_server           = undef,
 ){
     $server_name = $title
-    $ssldir = '/var/lib/puppet/ssl'
     $ssl_settings = ssl_ciphersuite('apache', 'compat')
 
     if $server_name != $::fqdn {
@@ -60,7 +59,7 @@ define puppetmaster::web_frontend(
         # the private repository.
         # We use the private repo for the public key as well as it gets
         # generated on the puppet ca server.
-        file { "${ssldir}/certs/${server_name}.pem":
+        file { "${facts['puppet_config']['ssldir']}/certs/${server_name}.pem":
             content   => secret("${cert_secret_path}/${server_name}_pubkey.pem"),
             owner     => 'puppet',
             group     => 'puppet',
@@ -69,7 +68,7 @@ define puppetmaster::web_frontend(
             show_diff => false,
         }
 
-        file { "${ssldir}/private_keys/${server_name}.pem":
+        file { "${facts['puppet_config']['ssldir']}/private_keys/${server_name}.pem":
             content   => secret("${cert_secret_path}/${server_name}_privkey.pem"),
             owner     => 'puppet',
             group     => 'puppet',

@@ -45,3 +45,6 @@ puppet_config:
   hostpubkey: "/var/lib/puppet/ssl/public_keys/%{facts.fqdn}.pem"
   hostprivkey: "/var/lib/puppet/ssl/private_keys/%{facts.fqdn'}.pem"
   hostcert: "/var/lib/puppet/ssl/certs/%{facts.fqdn}.pem"
+  master:
+    localcacert: '/var/lib/puppet/server/ssl/certs/ca.pem'
+    ssldir: '/var/lib/puppet/server/ssl'
