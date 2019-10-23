@@ -1,11 +1,11 @@
 # Note: This file is managed by puppet.
 
 global
-    pidfile <%= @pid %>
-    log /dev/log  local0
-    log /dev/log  local1 notice
+    pidfile /run/haproxy/haproxy.pid
+    log /dev/log local0
+    log /dev/log local1 notice
     chroot /var/lib/haproxy
-    stats socket <%= @socket %> mode 666 level user
+    stats socket /run/haproxy/haproxy.sock mode 666 level user
     stats timeout 30s
     user haproxy
     group haproxy
