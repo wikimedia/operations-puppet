@@ -64,12 +64,16 @@ elasticsearch::recover_after_nodes: 1
 archiva::proxy::ssl_enabled: false
 archiva::proxy::certificate_name: ssl-cert-snakeoil
 statsite::instance::graphite_host: 'labmon1001.eqiad.wmnet'
-profile::puppetmaster::common::command_broadcast: false
 profile::puppetmaster::frontend::canary_hosts: []
 puppetmaster::servers:
   "%{hiera('puppetmaster')}":
     - { worker: "%{hiera('puppetmaster')}", loadfactor: 10 }
 puppetmaster::locale_servers: {}
+
+# We don't use these feature on VMs.
+profile::backup::ferm_directors: []
+profile::puppetmaster::common::puppetdb_hosts: []
+profile::puppetmaster::common::command_broadcast: false
 
 # Default to Dummy authenticator in JupyterHubs in labs
 jupyterhub::authenticator: dummy
