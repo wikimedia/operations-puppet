@@ -1,4 +1,7 @@
 class base::puppet(
+    Stdlib::Filesource              $ca_source,
+    Boolean                         $manage_ca_file              = false,
+    Stdlib::Unixpath                $ca_file_path                = '/var/lib/puppet/ssl/certs/ca.pem',
     String                          $ca_server                   = '',
     Stdlib::Host                    $server                      = 'puppet',
     Optional[String]                $certname                    = undef,
@@ -49,6 +52,15 @@ class base::puppet(
         ensure => present,
     }
 
+    if $manage_ca_file {
+        file{ $ca_file_path:
+            ensure => file,
+            owner  => 'puppet',
+            group  => 'puppet',
+            mode   => '0444',
+            source => $ca_source,
+        }
+    }
     file { '/etc/puppet/puppet.conf':
         ensure => 'file',
         owner  => 'root',

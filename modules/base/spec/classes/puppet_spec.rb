@@ -18,6 +18,7 @@ describe 'base::puppet' do
   on_supported_os(test_on).each do |os, facts|
     context "On #{os}" do
       let(:facts) { facts}
+      let(:params) { { 'ca_source' => 'puppet:///modules/foo/ca.pem' } }
       it { should compile }
     end
   end

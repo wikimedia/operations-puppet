@@ -4,3 +4,5 @@ profile::base::puppet::environment: production
 profile::base::puppet::facter_major_version: 3
 profile::base::puppet::puppet_major_version: 5
 profile::base::puppet::serialization_format: json
+profile::base::puppet::ca_source: puppet:///modules/profile/base/puppet/ca.production.pem
+profile::base::puppet::manage_ca_file: true
