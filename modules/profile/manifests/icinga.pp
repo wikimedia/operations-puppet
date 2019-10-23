@@ -286,4 +286,19 @@ class profile::icinga(
         trusted_groups => ['metamonitor'],
     }
 
+    systemd::timer::job { 'sync_check_icinga_contacts':
+        ensure                    => present,
+        description               => 'Automatically sync the Icinga contacts to the metamonitoring host',
+        command                   => '/usr/local/bin/sync-check-icinga-contacts',
+        interval                  => {
+            'start'    => 'OnCalendar',
+            # Daily splayed by the hostname ID (e.g. 1001) modulo 24h at minute 19
+            'interval' => "*-*-* ${sprintf('%02d', Integer($::hostname[-4, -1]) % 24)}:19:00",
+        },
+        logging_enabled           => true,
+        monitoring_enabled        => true,
+        monitoring_contact_groups => 'admins',
+        user                      => 'metamonitor',
+        require                   => File['/usr/local/bin/sync-check-icinga-contacts'],
+    }
 }

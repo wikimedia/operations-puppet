@@ -241,6 +241,15 @@ class icinga(
         require => Package['python3-yaml'],
     }
 
+    # Script to sync the contacts configuration for the Icinga meta-monitoring
+    file { '/usr/local/bin/sync-check-icinga-contacts':
+        ensure => present,
+        owner  => 'root',
+        group  => $icinga_group,
+        mode   => '0550',
+        source => 'puppet:///modules/icinga/sync_check_icinga_contacts.sh',
+    }
+
     require_package('python3-clustershell')
     # Script to parse and query the status.dat file
     file { '/usr/local/bin/icinga-status':
