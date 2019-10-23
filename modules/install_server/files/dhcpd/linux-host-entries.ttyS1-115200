@@ -2031,11 +2031,6 @@ host dbproxy2004 {
     fixed-address dbproxy2004.codfw.wmnet;
 }
 
-host dbstore1001 {
-    hardware ethernet C8:1F:66:B8:2A:04;
-    fixed-address dbstore1001.eqiad.wmnet;
-}
-
 host dbstore1003 {
     hardware ethernet D0:94:66:8F:5A:72;
     fixed-address dbstore1003.eqiad.wmnet;
