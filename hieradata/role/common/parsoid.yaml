@@ -7,6 +7,12 @@ profile::lvs::realserver::pools:
   parsoid:
     services:
       - parsoid
+  "parsoid-php":
+    services:
+      - php7.2-fpm
+      - nginx
+      - mcrouter
+      - nutcracker
 
 # switch Parsoid/JS-server to Parsoid/PHP-MW-appserver
 profile::parsoid::use_php: true

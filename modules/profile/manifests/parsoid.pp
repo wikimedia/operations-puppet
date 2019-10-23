@@ -22,6 +22,13 @@ class profile::parsoid(
         require ::profile::mediawiki::php::monitoring
         include ::profile::mediawiki::php::restarts
         require ::profile::mediawiki::webserver
+        # Temporarily allow scap3 to restart php-fpm.
+        # This is going away, see T236275
+        # Also yes, this is all hardcoded as it's going away soon (TM)
+        sudo::user { 'scap3_restart_php':
+            user       => 'deploy-service',
+            privileges => ['ALL=(root) NOPASSWD: /usr/local/sbin/restart-php7.2-fpm'],
+        }
     }
 
     class { '::service::configuration': }

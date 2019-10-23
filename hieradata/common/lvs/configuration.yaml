@@ -550,9 +550,9 @@ lvs::configuration::lvs_services:
       uri: en.wikipedia.org!/wiki/Special:BlankPage
       sites:
         eqiad:
-          hostname: appservers.svc.eqiad.wmnet
+          hostname: parsoid.svc.eqiad.wmnet
         codfw:
-          hostname: appservers.svc.codfw.wmnet
+          hostname: parsoid.svc.codfw.wmnet
   search:
     description: Elasticsearch search for MediaWiki
     class: low-traffic
