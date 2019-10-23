@@ -13,7 +13,7 @@ groups:
               yuvipanda, shrlak, madhuvishy, groovier, khorn, ironholds, katie, chedasaurus,
               cy534, pnorman, mpany, deskana, arnad, nithum, banyek, imarlier, mkroetzsch,
               mtizzoni, panisson, paolotti, ciro, dartar, melodykramer, gtirloni, tbayer, pirroh,
-              bawolff, dkg, juliaglen, cwdent, bmansurov, hpham, atgomez]
+              bawolff, dkg, juliaglen, cwdent, bmansurov, hpham, atgomez, lexnasser]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar, marble, mmarble]
@@ -281,8 +281,7 @@ groups:
               ayounsi, mepps, mmiller, seddon, gilles, tstarling, rush, tieu, karen,
               cicalese, drossi, fsalutari, nathante, gbirke, isaacj, sbassett, jdl,
               niharika29, ryanmax, afandian2, jgleeson, toddleroux, srishakatux, dsharpe, eyener,
-              esanders, sukhe, jfishback, iflorez, mayakpwiki, conniecc1, abi, mgerlach, dedcode,
-              lexnasser]
+              esanders, sukhe, jfishback, iflorez, mayakpwiki, conniecc1, abi, mgerlach, dedcode]
     system_members: [analytics-search, analytics]
   analytics-admins:
     gid: 732
@@ -3354,14 +3353,13 @@ users:
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPtpkeKO3QRiK4rGMkCX5u3T55PPWGId+GFPraW0aNLR rlazarus@rlazarus
   lexnasser:
-    ensure: present
+    ensure: absent
     realname: Lex Nasser
     email: lexnasser@icloud.com
     uid: 22186
     gid: 500
     name: lexnasser
-    ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAgozlHmJxSSkQjDKhjx4ZlMw0hqr+3F+1M2In7CGRCo
+    ssh_keys: []
     expiry_date: 2020-02-16
     expiry_contact: nruiz@wikimedia.org
   cohi:
