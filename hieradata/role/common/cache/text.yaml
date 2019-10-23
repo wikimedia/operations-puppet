@@ -36,13 +36,13 @@ cache::app_directors:
       eqiad: 'appservers.svc.eqiad.wmnet'
     #   codfw: 'appservers.svc.codfw.wmnet'
     be_opts:
-      max_connections: 2000
+      max_connections: 10000
   api:
     backends:
       eqiad: 'api.svc.eqiad.wmnet'
     #   codfw: 'api.svc.codfw.wmnet'
     be_opts:
-      max_connections: 2000
+      max_connections: 10000
   security_audit:
     backends:
       eqiad: 'appservers.svc.eqiad.wmnet'
