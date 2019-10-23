@@ -42,8 +42,9 @@ class profile::openstack::base::wikitech::web(
         source   => 'puppet:///modules/mediawiki/apache/configs/fcgi_headers.conf',
         priority => 0,
     }
-
-    class { '::hhvm::admin': }
+    class { '::hhvm::admin':
+            ensure => absent,
+    }
 
     # Remove old common snippets
     file { '/etc/apache2/sites-enabled/wikimedia-common.incl':

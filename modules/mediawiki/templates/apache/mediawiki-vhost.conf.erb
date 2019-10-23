@@ -36,7 +36,6 @@
     ### Common rewrite rules for all wikis
 
     # Redirect /wiki, /w to the fcgi backend
-    # /w/wiki.phtml is severely underperforming on HHVM
     RewriteRule     ^/w/wiki.phtml$      /w/index.php [L,QSA,NE]
 
     # Primary wiki redirector:

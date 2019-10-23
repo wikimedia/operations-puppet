@@ -26,6 +26,7 @@ class hhvm::admin(
     }
 
     ferm::service { 'hhvm_admin':
+        ensure => $ensure,
         proto  => 'tcp',
         port   => $port,
         srange => '$DOMAIN_NETWORKS',

@@ -37,10 +37,6 @@ class mediawiki::web::prod_sites(String $fcgi_proxy) {
             docroot             => '/srv/mediawiki/docroot/wikidata.org',
             additional_rewrites => {
                 'early' => [
-                    '    RewriteCond %{QUERY_STRING} force_php7',
-                    '    RewriteRule ^/wiki/Special:BlankPage - [E=backend:php7]',
-                    '    RewriteCond %{QUERY_STRING} force_hhvm',
-                    '    RewriteRule ^/wiki/Special:BlankPage - [E=backend:hhvm]',
                     '    Include "sites-enabled/wikidata-uris.incl"'
                 ],
                 'late'  => []
@@ -53,7 +49,7 @@ class mediawiki::web::prod_sites(String $fcgi_proxy) {
             canonical_name      => 'On',
             additional_rewrites => {
                 'early' => [
-                    '    Include "sites-enabled/wikidata-uris.incl"'
+                    'Include "sites-enabled/wikidata-uris.incl"'
                 ],
                 'late'  => []
             },
@@ -145,10 +141,6 @@ class mediawiki::web::prod_sites(String $fcgi_proxy) {
             ],
             additional_rewrites => {
                 'early' => [ # Allow expressly fetching the blank page from either PHP engine
-                    'RewriteCond %{QUERY_STRING} force_php7',
-                    '    RewriteRule ^/wiki/Special:BlankPage - [E=backend:php7]',
-                    '    RewriteCond %{QUERY_STRING} force_hhvm',
-                    '    RewriteRule ^/wiki/Special:BlankPage - [E=backend:hhvm]',
                 ],
                 'late'  => [
                     '    # moved wikistats off NFS',

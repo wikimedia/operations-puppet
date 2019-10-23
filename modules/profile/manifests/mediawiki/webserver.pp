@@ -30,11 +30,9 @@ class profile::mediawiki::webserver(
     # Basic web sites
     class { '::mediawiki::web::sites': }
 
-    if $install_hhvm {
-        class { '::hhvm::admin': }
+    class { '::hhvm::admin':
+            ensure => absent,
     }
-
-
     if $::realm == 'labs' {
         class { '::mediawiki::web::beta_sites': }
     }

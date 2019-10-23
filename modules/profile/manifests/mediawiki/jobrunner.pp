@@ -112,6 +112,7 @@ class profile::mediawiki::jobrunner(
     }
 
     httpd::conf { 'hhvm_jobrunner_port':
+        ensure   => absent,
         priority => 1,
         content  => inline_template("# This file is managed by Puppet\nListen <%= @port %>\nListen <%= @local_only_port %>\n"),
     }
