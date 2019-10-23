@@ -539,7 +539,7 @@ lvs::configuration::lvs_services:
     monitors:
       ProxyFetch:
         url:
-        - https://en.wikipedia.org!/wiki/Special:BlankPage
+        - https://en.wikipedia.org/wiki/Special:BlankPage
       IdleConnection:
         timeout-clean-reconnect: 3
         max-delay: 300
