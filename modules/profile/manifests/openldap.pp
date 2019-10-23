@@ -25,7 +25,7 @@ class profile::openldap (
         certificate    => "/etc/acmecerts/${certname}/live/rsa-2048.crt",
         key            => "/etc/acmecerts/${certname}/live/rsa-2048.key",
         extra_schemas  => ['dnsdomain2.schema', 'nova_sun.schema', 'openssh-ldap.schema',
-                          'puppet.schema', 'sudo.schema'],
+                          'puppet.schema', 'sudo.schema', 'wmf-user.schema'],
         extra_indices  => 'openldap/labs-indices.erb',
         extra_acls     => 'openldap/labs-acls.erb',
         mirrormode     => $mirror_mode,
