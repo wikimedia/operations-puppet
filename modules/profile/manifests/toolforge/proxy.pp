@@ -5,9 +5,11 @@ class profile::toolforge::proxy (
 ) {
     class { '::redis::client::python': }
 
-    $ssl_certificate_name = 'star.wmflabs.org'
-    sslcert::certificate { $ssl_certificate_name:
-        before       => Class['::dynamicproxy'],
+    sslcert::certificate { 'star.wmflabs.org':
+        ensure => absent,
+    }
+    acme_chief::cert { 'toolforge':
+        puppet_rsc => Exec['nginx-reload'],
     }
 
     if $::hostname != $active_proxy {
@@ -21,7 +23,7 @@ class profile::toolforge::proxy (
     class { '::dynamicproxy':
         ssl_settings         => ssl_ciphersuite('nginx', 'compat'),
         luahandler           => 'urlproxy',
-        ssl_certificate_name => $ssl_certificate_name,
+        ssl_certificate_name => 'toolforge',
         redis_replication    => $redis_replication,
         error_config         => {
             title       => 'Wikimedia Toolforge Error',
@@ -34,6 +36,7 @@ class profile::toolforge::proxy (
         banned_description   => 'You have been banned from accessing Toolforge. Please see <a href="https://wikitech.wikimedia.org/wiki/Help:Toolforge/Banned">Help:Toolforge/Banned</a> for more information on why and on how to resolve this.',
         web_domain           => $web_domain,
         https_upgrade        => true,
+        use_acme_chief       => true,
     }
 
 

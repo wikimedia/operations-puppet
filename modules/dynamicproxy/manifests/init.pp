@@ -14,14 +14,14 @@
 
 class dynamicproxy (
     $luahandler,
-    $redis_maxmemory      = '512MB',
-    $ssl_settings         = undef,
-    $ssl_certificate_name = false,
-    $notfound_servers     = [],
-    $set_xff              = false,
-    $redis_replication    = undef,
-    $error_enabled        = false,
-    $error_config         = {
+    $redis_maxmemory          = '512MB',
+    $ssl_settings             = undef,
+    $ssl_certificate_name     = false,
+    $notfound_servers         = [],
+    $set_xff                  = false,
+    $redis_replication        = undef,
+    $error_enabled            = false,
+    $error_config             = {
         title       => 'Wikimedia Labs Error',
         logo        => '/.error/labs-logo.png',
         logo_2x     => '/.error/labs-logo-2x.png',
@@ -30,14 +30,15 @@ class dynamicproxy (
         logo_alt    => 'Wikimedia Labs',
         favicon     => 'https://wikitech.wikimedia.org/static/favicon/wikitech.ico',
     },
-    $error_description    = 'Our servers are currently experiencing a technical problem. This is probably temporary and should be fixed soon. Please try again later.',
-    $error_details        = undef,
-    $banned_ips           = [],
-    $banned_description   = 'You have been banned from accessing this service.',
-    $web_domain           = undef,
+    $error_description        = 'Our servers are currently experiencing a technical problem. This is probably temporary and should be fixed soon. Please try again later.',
+    $error_details            = undef,
+    $banned_ips               = [],
+    $banned_description       = 'You have been banned from accessing this service.',
+    $web_domain               = undef,
     $blocked_user_agent_regex = 'TweetmemeBot', # T73120 - misbehaving crawler
-    $blocked_referer_regex = '',
-    $https_upgrade        = false,
+    $blocked_referer_regex    = '',
+    $https_upgrade            = false,
+    Boolean $use_acme_chief   = false,
 ) {
     if $ssl_certificate_name != false and $ssl_settings == undef {
         fail('ssl_certificate_name set but ssl_settings not set')
