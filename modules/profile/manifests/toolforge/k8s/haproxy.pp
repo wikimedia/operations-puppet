@@ -42,12 +42,23 @@ class profile::toolforge::k8s::haproxy (
         notify  => Service['haproxy'],
     }
 
+    # this file is loaded as environmentfile in the .service file shipped by
+    # the debian package in Buster
+    file { '/etc/default/haproxy':
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
+        content => "EXTRAOPTS='-f /etc/haproxy/conf.d/'\n",
+        notify  => Service['haproxy'],
+    }
+
     service { 'haproxy':
         ensure    => 'running',
         subscribe => [
                   File['/etc/haproxy/haproxy.cfg'],
                   File['/etc/haproxy/conf.d/k8s-api-servers.cfg'],
                   File['/etc/haproxy/conf.d/k8s-ingress.cfg'],
+                  File['/etc/default/haproxy'],
         ],
     }
 }
