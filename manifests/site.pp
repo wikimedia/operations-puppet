@@ -189,6 +189,10 @@ node 'bast3002.wikimedia.org' {
 
 }
 
+node 'bast3004.wikimedia.org' {
+    role(bastionhost::pop)
+}
+
 # Bastion in California
 node 'bast4002.wikimedia.org' {
     role(bastionhost::pop)
@@ -296,6 +300,14 @@ node 'cp3037.esams.wmnet' {
 }
 
 node /^cp30(3[45689]|4[45679])\.esams\.wmnet$/ {
+    role(cache::upload)
+}
+
+node /^cp30(5[02468]|6[024])\.esams\.wmnet$/ {
+    role(cache::text)
+}
+
+node /^cp30(5[13579]|6[135])\.esams\.wmnet$/ {
     role(cache::upload)
 }
 
@@ -797,6 +809,10 @@ node /^dns200[12]\.wikimedia\.org$/ {
 
 }
 
+node /^dns300[12]\.wikimedia\.org$/ {
+    role(recursor)
+}
+
 node /^dns400[12]\.wikimedia\.org$/ {
     role(recursor)
 
@@ -997,8 +1013,8 @@ node /^ganeti[12]00[0-8]\.(codfw|eqiad)\.wmnet$/ {
     role(ganeti)
 }
 
-# new ulsfo ganeti hosts T226444
-node /^ganeti400[1-3]\.ulsfo.wmnet$/ {
+# new edge ganeti hosts T226444
+node /^ganeti[34]00[1-3]\.ulsfo.wmnet$/ {
     role(spare::system)
 }
 
@@ -1305,6 +1321,10 @@ node 'lvs2010.codfw.wmnet' {
 # ESAMS lvs servers
 node /^lvs300[1-4]\.esams\.wmnet$/ {
     role(lvs::balancer)
+}
+
+node /^lvs300[567]\.esams\.wmnet$/ {
+    role(spare::system)
 }
 
 # ULSFO lvs servers
