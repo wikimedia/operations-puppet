@@ -234,10 +234,10 @@ alerts = bigloss,someloss,startloss
 menu = Core
 title = Core Network Infrastructure
 
-+++ cr1-esams
-menu = cr1-esams
-title = cr1-esams.wikimedia.org
-host = cr1-esams.wikimedia.org
++++ cr3-esams
+menu = cr3-esams
+title = cr3-esams.wikimedia.org
+host = cr3-esams.wikimedia.org
 
 +++ cr2-esams
 menu = cr2-esams

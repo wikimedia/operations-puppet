@@ -36,7 +36,7 @@ class netops::monitoring {
         # eqdfw
         'cr2-eqdfw'  => { ipv4 => '208.80.153.198',  ipv6 => '2620:0:860:ffff::5', alarms => false, },
         # esams
-        'cr1-esams'  => { ipv4 => '91.198.174.245',  ipv6 => '2620:0:862:ffff::5', vrrp_peer => 'cr2-esams.wikimedia.org'},
+        'cr3-esams'  => { ipv4 => '91.198.174.245',  ipv6 => '2620:0:862:ffff::5', vrrp_peer => 'cr2-esams.wikimedia.org'},
         'cr2-esams'  => { ipv4 => '91.198.174.244',  ipv6 => '2620:0:862:ffff::3' },
         'cr2-knams'  => { ipv4 => '91.198.174.246',  ipv6 => '2620:0:862:ffff::4' },
         # ulsfo
@@ -76,7 +76,7 @@ class netops::monitoring {
         're0.cr2-eqiad' => { ipv4 => '10.65.0.14',      parents => ['mr1-eqiad'] },
         're0.cr1-codfw' => { ipv4 => '10.193.0.10',     parents => ['mr1-codfw'] },
         're0.cr2-codfw' => { ipv4 => '10.193.0.12',     parents => ['mr1-codfw'] },
-        're0.cr1-esams' => { ipv4 => '10.21.0.116',     parents => ['mr1-esams'] },
+        're0.cr3-esams' => { ipv4 => '10.21.0.119',     parents => ['mr1-esams'] },
         're0.cr2-esams' => { ipv4 => '10.21.0.117',     parents => ['mr1-esams'] },
         're0.cr3-ulsfo' => { ipv4 => '10.128.128.4',    parents => ['mr1-ulsfo'] },
         're0.cr4-ulsfo' => { ipv4 => '10.128.128.5',    parents => ['mr1-ulsfo'] },
@@ -111,7 +111,7 @@ class netops::monitoring {
         'msw1-codfw'    => { ipv4 => '10.193.0.3',   parents => ['cr1-codfw', 'cr2-codfw'], vcp => false },
         'fasw-c-codfw'  => { ipv4 => '10.193.0.57',  parents => ['pfw3-codfw'] },
         # esams
-        'asw-esams'     => { ipv4 => '10.21.0.104',  parents => ['cr1-esams', 'cr2-esams'] },
+        'asw-esams'     => { ipv4 => '10.21.0.104',  parents => ['cr3-esams', 'cr2-esams'] },
         'csw2-esams'    => { ipv4 => '10.21.0.105',  parents => ['asw-esams']  },
         # ulsfo
         'asw2-ulsfo'    => { ipv4 => '10.128.128.7', parents => ['cr3-ulsfo', 'cr4-ulsfo'] },
