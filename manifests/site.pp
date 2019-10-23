@@ -721,10 +721,6 @@ node 'dbstore1001.eqiad.wmnet' {
     role(spare::system)
 }
 
-node 'dbstore2002.codfw.wmnet' {
-    role(spare::system)
-}
-
 # Analytics production replicas
 node /^dbstore100(3|4|5)\.eqiad\.wmnet$/ {
     role(mariadb::dbstore_multiinstance)
