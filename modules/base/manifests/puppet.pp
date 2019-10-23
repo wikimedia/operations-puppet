@@ -5,7 +5,6 @@ class base::puppet(
     Optional[String]                $dns_alt_names               = undef,
     Optional[String]                $environment                 = undef,
     Integer                         $interval                    = 30,
-    Boolean                         $auto_puppetmaster_switching = false,
     Integer[4,5]                    $puppet_major_version        = 5,
     Integer[2,3]                    $facter_major_version        = 3,
     Enum['pson', 'json', 'msgpack'] $serialization_format        = 'json',
@@ -86,17 +85,6 @@ class base::puppet(
         content => template('base/puppet.conf.d/10-main.conf.erb'),
     }
 
-    if $::realm == 'labs' {
-        # Clear master certs if puppet.conf changed
-        exec { 'delete master certs':
-            path        => '/usr/bin:/bin',
-            command     => 'rm -f /var/lib/puppet/ssl/certs/ca.pem; rm -f /var/lib/puppet/ssl/crl.pem; rm -f /root/allowcertdeletion',
-            onlyif      => 'test -f /root/allowcertdeletion',
-            subscribe   => File['/etc/puppet/puppet.conf.d/10-main.conf'],
-            refreshonly => true,
-        }
-    }
-
     # Compile /etc/puppet/puppet.conf from individual files in /etc/puppet/puppet.conf.d
     exec { 'compile puppet.conf':
         path        => '/usr/bin:/bin',
@@ -108,13 +96,6 @@ class base::puppet(
     service {'puppet':
         ensure => stopped,
         enable => false,
-    }
-
-    if ($auto_puppetmaster_switching) and ($::realm != 'labs') {
-        fail('auto_puppetmaster_switching should never, ever be set on a production host.')
-    }
-    if ($auto_puppetmaster_switching) and (defined(Class['role::puppetmaster::standalone'])) {
-        fail('auto_puppetmaster_switching should only be applied on puppet clients; behavior on masters is undefined.')
     }
 
     file { '/usr/local/share/bash/puppet-common.sh':

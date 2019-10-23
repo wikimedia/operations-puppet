@@ -342,7 +342,6 @@ profile::base::puppet::environment: production
 profile::base::puppet::puppet_major_version: 4
 profile::base::puppet::facter_major_version: 2
 profile::base::puppet::serialization_format: pson
-profile::base::puppet::auto_puppetmaster_switching: false
 
 bastion_hosts:
 - 172.16.1.136 # bastion-eqiad1-01.eqiad.wmflabs
