@@ -4,3 +4,10 @@ cluster: wmcs
 # profile::base::notifications: critical
 contactgroups: 'wmcs-team,admins'
 mgmt_contactgroups: 'wmcs-team-email'
+
+admin::groups:
+  - analytics-admins
+
+# Hadoop client packges are installed and configured to talk
+# to the analytics-hadoop cluster.
+profile::hadoop::common::hadoop_cluster_name: 'analytics-hadoop'
