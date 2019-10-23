@@ -170,7 +170,7 @@ roleRef:
   name: nginx-ingress-role
 subjects:
   - kind: ServiceAccount
-    name: nginx-ingress-serviceaccount
+    name: nginx-ingress
     namespace: ingress-nginx
 
 ---
@@ -187,7 +187,7 @@ roleRef:
   name: nginx-ingress-clusterrole
 subjects:
   - kind: ServiceAccount
-    name: nginx-ingress-serviceaccount
+    name: nginx-ingress
     namespace: ingress-nginx
 
 ---
@@ -216,7 +216,7 @@ spec:
         prometheus.io/port: "10254"
         prometheus.io/scrape: "true"
     spec:
-      serviceAccountName: nginx-ingress-serviceaccount
+      serviceAccountName: nginx-ingress
       containers:
         - name: nginx-ingress-controller
           image: quay.io/kubernetes-ingress-controller/nginx-ingress-controller:0.25.1
