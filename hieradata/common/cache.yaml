@@ -35,7 +35,7 @@ cache::nodes:
       #- 'cp3054.esams.wmnet'
       #- 'cp3056.esams.wmnet'
       #- 'cp3058.esams.wmnet'
-      #- 'cp3060.esams.wmnet'
+      - 'cp3060.esams.wmnet'
       #- 'cp3062.esams.wmnet'
       #- 'cp3064.esams.wmnet'
     ulsfo:
