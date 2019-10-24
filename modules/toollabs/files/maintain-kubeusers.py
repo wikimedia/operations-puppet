@@ -13,6 +13,7 @@ Source of canonical truth is the tokenauth.csv file.
 """
 import argparse
 import csv
+import fcntl
 import json
 import logging
 import os
@@ -244,48 +245,142 @@ def write_abac(users, path):
             f.write(json.dumps(rule) + '\n')
 
 
-def write_kubeconfig(user, master):
-    """
-    Write an appropriate .kube/config for given user to access given master.
-
-    See http://kubernetes.io/docs/user-guide/kubeconfig-file/ for format
-    """
-    config = {
-        'apiVersion': 'v1',
-        'kind': 'Config',
-        'clusters': [{
-            'cluster': {
-                'server': master
+def append_config(user, master, config):
+    config["clusters"].append(
+        {
+            "cluster": {
+                "server": master,
             },
-            'name': 'default'
-        }],
-        'users': [{
+            "name": "default",
+        }
+    )
+    config["users"].append(
+        {
             'user': {
                 'token': user.token,
             },
             'name': user.name,
-        }],
-        'contexts': [{
+        }
+    )
+    config["contexts"].append(
+        {
             'context': {
                 'cluster': 'default',
                 'user': user.name,
                 'namespace': user.name,
             },
             'name': 'default'
-        }],
-        'current-context': 'default'
-    }
+        }
+    )
+
+
+def merge_config(user, master, config):
+    for i in range(len(config["clusters"])):
+        if config["clusters"][i]["name"] == "default":
+            config["clusters"][i] = {
+                {
+                    "cluster": {
+                        "server": master,
+                    },
+                    "name": "default",
+                }
+            }
+    for i in range(len(config["users"])):
+        # There is only a token in the old configs
+        # We could also guess which by user.name
+        if "token" in config["users"][i]["user"]:
+            config["users"][i] = {
+                'user': {
+                    'token': user.token,
+                },
+                'name': user.name,
+            }
+    for i in range(len(config["contexts"])):
+        if config["contexts"][i]["name"] == "default":
+            config["contexts"][i] = {
+                'context': {
+                    'cluster': 'default',
+                    'user': user.name,
+                    'namespace': user.name,
+                },
+                'name': 'default'
+            }
+
+
+def write_kubeconfig(user, master):
+    """
+    Write an appropriate .kube/config for given user to access given master.
+
+    See http://kubernetes.io/docs/user-guide/kubeconfig-file/ for format
+    """
     dirpath = os.path.join('/data', 'project', user.name, '.kube')
     path = os.path.join(dirpath, 'config')
+    # If the path exists, merge the configs and do not force the switch to this
+    # cluster
+    if os.path.isfile(path):
+        # If this is not yaml (JSON is YAML), fail with warning on this user.
+        try:
+            with open(path) as oldpath:
+                config = yaml.safe_load(oldpath)
+        except Exception:
+            # We may want to know exactly what mess is in there, so logging the
+            # exception.
+            logging.exception("Invalid config at %s!", path)
+            return
+
+        # At least make sure we are using valid required keys before proceeding
+        if all(
+            k in config
+            for k in (
+                "apiVersion",
+                "kind",
+                "clusters",
+                "users",
+                "contexts",
+                "current-context",
+            )
+        ):
+            # First check if we are using a "virgin" Toolforge 2.0 config
+            is_new = True
+            for i in range(len(config["clusters"])):
+                if config["clusters"][i]["name"] == "default":
+                    is_new = False
+
+            if is_new:
+                # Add the new context for future use and move along
+                append_config(user, master, config)
+            else:
+                # We need to overwrite only the "default" configs
+                merge_config(user, master, config)
+        else:
+            # Don't touch invalid configs
+            logging.warning("Invalid config at %s!", path)
+            return
+    else:
+        # Declare a config, then append the new material
+        config = {
+            'apiVersion': 'v1',
+            'kind': 'Config',
+            'clusters': [],
+            'users': [],
+            'contexts': [],
+            'current-context': 'default',
+        }
+        append_config(user, master, config)
+
     # exist_ok=True is fine here, and not a security issue (Famous last words?).
     os.makedirs(dirpath, mode=0o775, exist_ok=True)
     os.chown(dirpath, int(user.id), int(user.id))
     f = os.open(path, os.O_CREAT | os.O_WRONLY | os.O_NOFOLLOW)
     try:
-        os.write(f, json.dumps(config, indent=4, sort_keys=True).encode('utf-8'))
+        fcntl.flock(f, fcntl.LOCK_EX)
+        os.write(
+            f, yaml.safe_dump(config, encoding="utf-8", default_flow_style=False)
+        )
+        fcntl.flock(f, fcntl.LOCK_UN)
         # uid == gid
         os.fchown(f, int(user.id), int(user.id))
-        os.fchmod(f, 0o400)
+        os.fchmod(f, 0o600)
         logging.info('Wrote config in %s', path)
     except os.error:
         logging.exception('Error creating %s', path)
