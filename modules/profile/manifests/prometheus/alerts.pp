@@ -156,11 +156,7 @@ class profile::prometheus::alerts (
         dashboard_links    => ['https://grafana.wikimedia.org/d/ePFPOkqiz/eventgate?refresh=1m&orgId=1&var-dc=eqiad prometheus/k8s&var-service=eventgate-main&var-kafka_topic=All&var-kafka_broker=All&var-kafka_producer_type=All'],
     }
 
-    monitoring::alerts::http_availability{'http_availability_eqiad': site => 'eqiad'}
-    monitoring::alerts::http_availability{'http_availability_codfw': site => 'codfw'}
-    monitoring::alerts::http_availability{'http_availability_esams': site => 'esams'}
-    monitoring::alerts::http_availability{'http_availability_ulsfo': site => 'ulsfo'}
-    monitoring::alerts::http_availability{'http_availability_eqsin': site => 'eqsin'}
+    monitoring::alerts::http_availability{'global_availability':}
 
     monitoring::alerts::traffic_drop{'traffic_drop_eqiad': site => 'eqiad'}
     monitoring::alerts::traffic_drop{'traffic_drop_codfw': site => 'codfw'}
