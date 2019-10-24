@@ -82,14 +82,18 @@ class role::swift::proxy (
         srange  => "@resolve((${swift_access_ferm}))",
     }
 
-    monitoring::service { 'swift-http-frontend':
-        description   => 'Swift HTTP frontend',
-        check_command => "check_http_url!${::swift::proxy::proxy_service_host}!/monitoring/frontend",
+    $http_s = $use_tls ? {
+        true  => 'https',
+        false => 'http',
+    }
+    monitoring::service { "swift-${http_s}-frontend":
+        description   => "Swift ${http_s} frontend",
+        check_command => "check_${http_s}_url!${::swift::proxy::proxy_service_host}!/monitoring/frontend",
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Swift',
     }
-    monitoring::service { 'swift-http-backend':
-        description   => 'Swift HTTP backend',
-        check_command => "check_http_url!${::swift::proxy::proxy_service_host}!/monitoring/backend",
+    monitoring::service { "swift-${http_s}-backend":
+        description   => "Swift ${http_s} backend",
+        check_command => "check_${http_s}_url!${::swift::proxy::proxy_service_host}!/monitoring/backend",
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Swift',
     }
 }

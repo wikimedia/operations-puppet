@@ -11,12 +11,6 @@ class profile::swift::proxy_tls (
         ocsp_proxy     => $ocsp_proxy,
     }
 
-    monitoring::service { 'swift-https':
-        description   => 'Swift HTTPS',
-        check_command => "check_https_url!${::swift::proxy::proxy_service_host}!/monitoring/frontend",
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Swift',
-    }
-
     ferm::service { 'swift-proxy-https':
         proto   => 'tcp',
         notrack => true,
