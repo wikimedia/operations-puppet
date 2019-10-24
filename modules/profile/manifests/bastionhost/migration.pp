@@ -16,7 +16,7 @@ class profile::bastionhost::migration (
             srange => "@resolve((${src_fqdn}))",
         }
 
-        class { '::rsync::server': }
+        # class { '::rsync::server': }
 
         file { "/srv/${src_host}":
             ensure => 'directory'
