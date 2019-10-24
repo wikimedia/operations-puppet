@@ -453,6 +453,11 @@ host bast3002 {
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
 }
 
+host bast3004 {
+    hardware ethernet B0:26:28:6E:FA:20;
+    fixed-address bast3004.wikimedia.org;
+}
+
 host bast4002 {
     hardware ethernet F4:E9:D4:BA:EE:D0;
     fixed-address bast4002.wikimedia.org;
@@ -1086,6 +1091,31 @@ host cp3059 {
 host cp3060 {
     hardware ethernet B0:26:28:6E:CD:10;
     fixed-address cp3060.esams.wmnet;
+}
+
+host cp3061 {
+    hardware ethernet B0:26:28:6E:FF:B0;
+    fixed-address cp3061.esams.wmnet;
+}
+
+host cp3062 {
+    hardware ethernet B0:26:28:6E:B2:70;
+    fixed-address cp3062.esams.wmnet;
+}
+
+host cp3063 {
+    hardware ethernet B0:26:28:6E:D0:80;
+    fixed-address cp3063.esams.wmnet;
+}
+
+host cp3064 {
+    hardware ethernet B0:26:28:6E:B2:B0;
+    fixed-address cp3064.esams.wmnet;
+}
+
+host cp3065 {
+    hardware ethernet B0:26:28:6E:A1:00;
+    fixed-address cp3065.esams.wmnet;
 }
 
 host cp4009 {
@@ -2773,6 +2803,11 @@ host ganeti3002 {
     fixed-address ganeti3002.esams.wmnet;
 }
 
+host ganeti3003 {
+    hardware ethernet B0:26:28:6E:DD:D0;
+    fixed-address ganeti3003.esams.wmnet;
+}
+
 host ganeti4002 {
     hardware ethernet B0:26:28:3A:EA:00;
     fixed-address ganeti4002.ulsfo.wmnet;
@@ -3312,6 +3347,11 @@ host lvs3004 {
 host lvs3006 {
     hardware ethernet B0:26:28:6E:D2:D0;
     fixed-address lvs3006.esams.wmnet;
+}
+
+host lvs3007 {
+    hardware ethernet B0:26:28:6E:C1:20;
+    fixed-address lvs3007.esams.wmnet;
 }
 
 host lvs4005 {
