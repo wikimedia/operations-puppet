@@ -1059,32 +1059,32 @@ host cp3049 {
 }
 
 host cp3055 {
-    hardware ethernet 4c:d9:8f:88:af:d8;
+    hardware ethernet B0:26:28:6E:A6:20;
     fixed-address cp3055.esams.wmnet;
 }
 
 host cp3056 {
-    hardware ethernet 4c:d9:8f:88:a9:93;
+    hardware ethernet B0:26:28:68:FB:20;
     fixed-address cp3056.esams.wmnet;
 }
 
 host cp3057 {
-    hardware ethernet 4c:d9:8f:88:a6:7a;
+    hardware ethernet B0:26:28:69:00:D0;
     fixed-address cp3057.esams.wmnet;
 }
 
 host cp3058 {
-    hardware ethernet 4c:d9:8f:89:47:6e;
+    hardware ethernet B0:26:28:6E:DC:F0;
     fixed-address cp3058.esams.wmnet;
 }
 
 host cp3059 {
-    hardware ethernet 4c:d9:8f:88:ad:84;
+    hardware ethernet B0:26:28:6E:FC:40;
     fixed-address cp3059.esams.wmnet;
 }
 
 host cp3060 {
-    hardware ethernet 4c:d9:8f:88:af:4c;
+    hardware ethernet B0:26:28:6E:CD:10;
     fixed-address cp3060.esams.wmnet;
 }
 
@@ -2137,7 +2137,7 @@ host dns2002 {
 }
 
 host dns3002 {
-    hardware ethernet 4c:d9:8f:83:65:21;
+    hardware ethernet B0:26:28:6E:DF:40;
     fixed-address dns3002.esams.wmnet;
 }
 
@@ -2769,7 +2769,7 @@ host ganeti4001 {
 }
 
 host ganeti3002 {
-    hardware ethernet 4c:d9:8f:83:6f:92;
+    hardware ethernet B0:26:28:41:23:F0;
     fixed-address ganeti3002.esams.wmnet;
 }
 
@@ -3310,7 +3310,7 @@ host lvs3004 {
 }
 
 host lvs3006 {
-    hardware ethernet 4c:d9:8f:83:97:0c;
+    hardware ethernet B0:26:28:6E:D2:D0;
     fixed-address lvs3006.esams.wmnet;
 }
 
