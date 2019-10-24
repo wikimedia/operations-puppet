@@ -23,7 +23,7 @@ class elasticsearch (
     Optional[Hash[String, Elasticsearch::InstanceParams]] $instances = undef,
     Elasticsearch::InstanceParams $default_instance_params           = {},
     String $java_package                                             = 'openjdk-8-jdk',
-    Enum['5', '6'] $version                                          = '5',
+    Enum['5', '6', '7'] $version                                     = '5',
     Stdlib::Absolutepath $base_data_dir                              = '/srv/elasticsearch',
     Optional[String] $logstash_host                                  = undef,
     Optional[Stdlib::Port] $logstash_gelf_port                       = 12201,
@@ -37,7 +37,7 @@ class elasticsearch (
         '5': {
             $package_name = 'elasticsearch'
         }
-        '6': {
+        /[67]/: {
             $package_name = 'elasticsearch-oss'
         }
         default: { fail("Unsupported elasticsearch version: ${version}") }

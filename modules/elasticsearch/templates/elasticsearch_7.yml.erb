@@ -1,0 +1,220 @@
+# ======================== Elasticsearch Configuration =========================
+#
+# NOTE: Elasticsearch comes with reasonable defaults for most settings.
+#       Before you set out to tweak and tune the configuration, make sure you
+#       understand what are you trying to accomplish and the consequences.
+#
+# The primary way of configuring a node is via this file. This template lists
+# the most important settings you may want to configure for a production cluster.
+#
+# Please consult the documentation for further information on configuration options:
+# https://www.elastic.co/guide/en/elasticsearch/reference/index.html
+#
+# ---------------------------------- Cluster -----------------------------------
+#
+# Use a descriptive name for your cluster:
+#
+cluster.name: <%= @cluster_name %>
+#
+# ------------------------------------ Node ------------------------------------
+#
+# Use a descriptive name for the node:
+#
+node.name: <%= @node_name %>
+#
+# Add custom attributes to the node:
+#
+#node.attr.rack: r1
+#
+# Row/rack awareness attributes
+#
+<% if @awareness_attributes and @awareness_attributes != '' %>cluster.routing.allocation.awareness.attributes: <%= @awareness_attributes %><% end %>
+<% if @row and @row != '' %>node.attr.row: <%=  @row  %><% end %>
+<% if @rack and @rack != '' %>node.attr.rack: <%= @rack %><% end %>
+#
+# Other attributes
+#
+node.attr.hostname: <%= @hostname %>
+node.attr.fqdn: <%= @fqdn %>
+#
+# Allow this node to be eligible as a master node (enabled by default):
+node.master: <%= @master_eligible %>
+# Allow this node to store data (enabled by default):
+node.data: <%= @holds_data %>
+#
+# ----------------------------------- Paths ------------------------------------
+#
+# Path to directory where to store the data (separate multiple locations by comma):
+#
+path.data: <%= @data_dir %>
+#
+# Path to log files:
+#
+path.logs: /var/log/elasticsearch
+#
+# ----------------------------------- Memory -----------------------------------
+#
+# Lock the memory on startup:
+#
+bootstrap.memory_lock: false # we don't have swap anyway
+#
+# Make sure that the heap size is set to about half the memory available
+# on the system and that the owner of the process is allowed to use this
+# limit.
+#
+# Elasticsearch performs poorly when the system is swapping the memory.
+#
+# ---------------------------------- Network -----------------------------------
+#
+# Set the bind address to a specific IP (IPv4 or IPv6):
+#
+#network.host: 192.168.0.1
+#
+# Set a custom port for HTTP:
+#
+http.port: <%= @http_port %>
+#
+# For more information, consult the network module documentation.
+#
+# Set the address other nodes will use to communicate with this node. If not
+# set, it is automatically derived. It must point to an actual IP address.
+#
+<%= @publish_host ? "network.publish_host: #{@publish_host}" : "#network.publish_host: 192.168.0.1" %>
+
+# Set both 'bind_host' and 'publish_host':
+#
+<%= @bind_networks ? "network.host: [ #{Array(@bind_networks).join(',')} ]" : "#network.host: 192.168.0.1" %>
+
+# Set a custom port for the node to node communication (9300 by default):
+#
+transport.tcp.port: <%= @transport_tcp_port %>
+#
+# --------------------------------- Discovery ----------------------------------
+#
+# Pass an initial list of hosts to perform discovery when this node is started:
+# The default list of hosts is ["127.0.0.1", "[::1]"]
+#
+#discovery.seed_hosts: ["host1", "host2"]
+#
+# Bootstrap the cluster using an initial set of master-eligible nodes:
+#
+#cluster.initial_master_nodes: ["node-1", "node-2"]
+#
+# Set to ensure a node sees N other master eligible nodes to be considered
+# operational within the cluster. Its recommended to set it to a higher value
+# than 1 when running more than 2 nodes in the cluster.
+#
+discovery.zen.minimum_master_nodes: <%= @minimum_master_nodes %>
+discovery.zen.ping.unicast.hosts: [<%= @unicast_hosts.collect{ |x| "\"#{x}\"" }.join(', ') %>]
+#
+# For more information, consult the discovery and cluster formation module documentation.
+#
+# ---------------------------------- Gateway -----------------------------------
+#
+# Block initial recovery after a full cluster restart until N nodes are started:
+#
+gateway.recover_after_nodes: <%= @recover_after_nodes %>
+#
+# For more information, consult the gateway module documentation.
+#
+#
+gateway:
+    recover_after_time: <%= @recover_after_time %>
+    expected_nodes: <%= @expected_nodes %>
+#
+# ---------------------------------- Various -----------------------------------
+#
+# Require explicit names when deleting indices:
+#
+#action.destructive_requires_name: true
+#
+# ---------------------------------- Custom settings ---------------------------
+#
+#path.plugins: <%= @plugins_dir %>
+#
+# If a plugin listed here is not installed for current node, the node will not start.
+#
+<%= @plugins_mandatory ? "plugin.mandatory: #{Array(@plugins_mandatory).join(',')}" : '#plugin.mandatory: mapper-attachments' %>
+
+# Specify the pattern of index names allowed to be created automatically
+action.auto_create_index: <%= @auto_create_index %>
+
+# Protect against accidental close/delete operations on all indices. You can
+# still close/delete individual indices.
+action.destructive_requires_name: true
+
+# Allow up to <%= @search_shard_count_limit %> shards to be queried at a time. The default
+# 1k is too low to allow mwgrep to operate.
+action.search.shard_count.limit: <%= @search_shard_count_limit %>
+
+# Enable the disk space aware shard allocator
+cluster.routing.allocation.disk.threshold_enabled: true
+# Stop allocating new shards to nodes with 75% disk utilization
+cluster.routing.allocation.disk.watermark.low: 0.75
+# Move shards off of nodes with 80% disk utilization
+cluster.routing.allocation.disk.watermark.high: 0.80
+# Check disk utilization every 60 seconds
+cluster.info.update.interval: 60s
+
+# Set the number of concurrent recoveries happening on a node:
+#
+# 1. During the initial recovery
+cluster.routing.allocation.node_initial_primaries_recoveries: 3
+
+# 2. During adding/removing nodes, rebalancing, etc
+cluster.routing.allocation.node_concurrent_recoveries: 2
+
+# Set to throttle throughput when recovering (eg. 100mb, by default 20mb):
+indices.recovery.max_bytes_per_sec: 40mb
+
+##
+# Elasticsearch cluster balance configuration
+##
+# This puts much more weight on distributing the shards per index then the defaults.  This will make sure that,
+# for example, each live node gets a copy of enwiki.
+cluster.routing.allocation.balance:
+    shard: 0.195
+    index: 0.8
+
+##
+# Filter cache size
+##
+indices.queries.cache.size: <%= @filter_cache_size %>
+
+<% if @bulk_thread_pool_capacity or @bulk_thread_pool_executors-%>
+##
+# Thread pool settings
+##
+thread_pool:
+<% if @bulk_thread_pool_capacity or @bulk_thread_pool_executors -%>
+    bulk:
+<% if @bulk_thread_pool_executors -%>
+        size: <%= @bulk_thread_pool_executors %>
+<% end -%>
+<% if @bulk_thread_pool_capacity -%>
+        queue_size: <%= @bulk_thread_pool_capacity %>
+<% end -%>
+<% end -%>
+<% end -%>
+
+
+<% unless @load_fixed_bitset_filters_eagerly -%>
+##
+# Bitsets used by nested (parent/child) queries will be loaded lazily.
+# Can reduce significantly heap usage if the cluster does not serve
+# these queries.
+index.load_fixed_bitset_filters_eagerly: false
+
+<% end -%>
+
+<% if @reindex_remote_whitelist and @reindex_remote_whitelist != '' %>
+##
+# Hosts allowed as data sources for reindexing
+reindex.remote.whitelist: "<%= @reindex_remote_whitelist %>"
+<% end %>
+
+<%- if @ltr_cache_size -%>
+##
+# Size the LTR cache to prevent churn under normal and AB testing scenarios
+ltr.caches.max_mem: <%= @ltr_cache_size %>
+<%- end -%>

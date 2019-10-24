@@ -28,8 +28,8 @@ class profile::elasticsearch(
     Enum['Gelf', 'syslog'] $logstash_transport = hiera('profile::elasticsearch::logstash_transport', 'Gelf'),
     String $rack = hiera('profile::elasticsearch::rack'),
     String $row = hiera('profile::elasticsearch::row'),
-    Enum['5.5', '5.6', '6.5'] $version = hiera('profile::elasticsearch::version', '5.5'),
-    Enum['5', '6'] $config_version = hiera('profile::elasticsearch::config_version', '5'),
+    Enum['5.5', '5.6', '6.5', '7.4'] $version = hiera('profile::elasticsearch::version', '5.5'),
+    Enum['5', '6', '7'] $config_version = hiera('profile::elasticsearch::config_version', '5'),
 ) {
 
     # Rather than asking hiera to magically merge these settings for us, we
@@ -93,6 +93,7 @@ class profile::elasticsearch(
         '5.5' => 'elastic55',
         '5.6' => 'elastic56',
         '6.5' => 'elastic65',
+        '7.4' => 'elastic74',
     }
 
     apt::repository { 'wikimedia-elastic':

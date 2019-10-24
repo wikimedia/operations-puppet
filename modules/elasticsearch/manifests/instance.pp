@@ -8,7 +8,7 @@
 #       and you don't want servers without any configuration to join your
 #       cluster.
 # - $version:  Version of elasticsearch to install and configure.
-#       Either 5 or 6.
+#       Either 5, 6 or 7.
 # - $http_port: Port for elasticsearch to live on. Default: 9200
 # - $transport_tcp_port: Port used for inter-node transport. Default: 9300
 # - $node_name: Node name exposed within elasticsearch
@@ -162,20 +162,28 @@ define elasticsearch::instance(
 
     $master_eligible = $::fqdn in $unicast_hosts
 
-    $gc_log_flags = $gc_log ? {
-        true    => [
-            "-Xloggc:/var/log/elasticsearch/${cluster_name}_jvm_gc.%p.log",
-            '-XX:+PrintGCDetails',
-            '-XX:+PrintGCDateStamps',
-            '-XX:+PrintGCTimeStamps',
-            '-XX:+PrintTenuringDistribution',
-            '-XX:+PrintGCCause',
-            '-XX:+PrintGCApplicationStoppedTime',
-            '-XX:+UseGCLogFileRotation',
-            '-XX:NumberOfGCLogFiles=10',
-            '-XX:GCLogFileSize=20M',
-        ],
-        default => [],
+    if $gc_log == true {
+        $gc_log_flags = $version ? {
+            /(5|6)/   => [
+                "-Xloggc:/var/log/elasticsearch/${cluster_name}_jvm_gc.%p.log",
+                '-XX:+PrintGCDetails',
+                '-XX:+PrintGCDateStamps',
+                '-XX:+PrintGCTimeStamps',
+                '-XX:+PrintTenuringDistribution',
+                '-XX:+PrintGCCause',
+                '-XX:+PrintGCApplicationStoppedTime',
+                '-XX:+UseGCLogFileRotation',
+                '-XX:NumberOfGCLogFiles=10',
+                '-XX:GCLogFileSize=20M',
+            ],
+            '7' => [
+                "-Xlog:gc*:file=/var/log/elasticsearch/${cluster_name}_jvm_gc.%p.log::filecount=10,filesize=20000",
+                '-Xlog:gc+age=trace',
+                '-Xlog:safepoint',
+            ],
+        }
+    } else {
+        $gc_log_flags = []
     }
 
     $gc_tune_flags = $tune_gc_larger_old_gen ? {
