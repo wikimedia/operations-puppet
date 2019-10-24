@@ -21,4 +21,5 @@ class role::wmcs::openstack::eqiad1::labweb {
 
     include ::profile::waf::apache2::administrative
 
+    include ::profile::tlsproxy::envoy # TLS termination
 }
