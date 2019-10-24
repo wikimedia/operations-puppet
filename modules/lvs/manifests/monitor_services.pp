@@ -19,7 +19,7 @@ class lvs::monitor_services(
                 host          => "mobileapps.svc.${dc}.wmnet",
                 description   => "Mobileapps LVS ${dc}",
                 check_command => "check_wmf_service!http://mobileapps.svc.${dc}.wmnet:8888!15",
-                contact_group => 'mobileapps',
+                contact_group => 'admins,mobileapps',
                 notes_url     => 'https://wikitech.wikimedia.org/wiki/Mobileapps_(service)',
                 ;
             "check_graphoid_cluster_${dc}":
