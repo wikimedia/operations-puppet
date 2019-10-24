@@ -1,5 +1,3 @@
-# This will be primary when live, it's marked secondary here to avoid MED issues when first installed
-profile::pybal::primary: false
 profile::lvs::interface_tweaks:
   enp175s0f0:
     txqlen: 10000

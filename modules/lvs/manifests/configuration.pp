@@ -21,7 +21,7 @@ class lvs::configuration {
             'production' => $::site ? {
                 'eqiad' => [ 'lvs1014', 'lvs1016' ],
                 'codfw' => [ 'lvs2002', 'lvs2005' ],
-                'esams' => [ 'lvs3002', 'lvs3004', 'lvs3006', 'lvs3007' ],
+                'esams' => [ 'lvs3006', 'lvs3002', 'lvs3004', 'lvs3007' ],
                 'ulsfo' => [ 'lvs4006', 'lvs4007' ],
                 'eqsin' => [ 'lvs5002', 'lvs5003' ],
                 default => undef,

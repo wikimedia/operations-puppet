@@ -197,7 +197,7 @@ lvs_esams:
   __regex: !ruby/regexp /^lvs3.*\.esams\.wmnet$/
 
 lvs_esams_backup:
-  __regex: !ruby/regexp /^lvs300[34]\.esams\.wmnet$/
+  __regex: !ruby/regexp /^lvs300[234]\.esams\.wmnet$/
   profile::pybal::primary: false
 
 labtest:
