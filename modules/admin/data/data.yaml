@@ -158,7 +158,7 @@ groups:
               fdans, mlitn, niharika29, goransm, pmiazga, dsaez, shiladsen, cicalese,
               mirrys, sharvaniharan, mmiller, amire80, rush, tieu, kharlan, gbirke, dedcode,
               isaacj, jdl, joewalsh, phuedx, bd808, iflorez, mayakpwiki, conniecc1, abi,
-              cohi]
+              cohi, keepit-ssh]
   ldap-admins:
     gid: 715
     description: ldap admins
@@ -282,7 +282,7 @@ groups:
               cicalese, drossi, fsalutari, nathante, gbirke, isaacj, sbassett, jdl, gsingers,
               niharika29, ryanmax, afandian2, jgleeson, toddleroux, srishakatux, dsharpe, eyener,
               esanders, sukhe, jfishback, iflorez, mayakpwiki, conniecc1, abi, mgerlach, dedcode,
-              lexnasser, kevinbazira]
+              lexnasser, kevinbazira, keepit-ssh]
     system_members: [analytics-search, analytics]
   analytics-admins:
     gid: 732
@@ -3382,6 +3382,15 @@ users:
     name: gsingers
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIISv18qbNemqdao4YBxgt881oWOeKJp3tKg0Ke6eRYwm gingersoll@wikimedia.org
+  keepit-ssh:
+    ensure: present
+    realname: CherRaye Glenn
+    email: cglenn@wikimedia.org
+    uid: 22337
+    gid: 500
+    name: keepit-ssh
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMeWCU/+GVgchiMCFDFlT+SS2M7xRWtKwuiV31HDz7AU cglenn@CherRayes-MacBook-Pro.local
   kevinbazira:
     ensure: present
     realname: Kevin Bazira
@@ -3852,10 +3861,6 @@ ldap_only_users:
     ensure: present
     realname: Nikki Nikkhoui
     email: nnikkhoui@wikimedia.org
-  keepit-ssh:
-    ensure: present
-    realname: CherRaye Glenn
-    email: cglenn@wikimedia.org
   bawolff:
     ensure: present
     realname: Brian Wolff
