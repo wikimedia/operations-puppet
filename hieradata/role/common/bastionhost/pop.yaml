@@ -8,5 +8,5 @@ profile::base::domain_search:
   - eqsin.wmnet
 admin::groups:
   - all-users
-profile::bastionhost::migration::source_host: bast3002
-profile::bastionhost::migration::dest_host: bast3004
+profile::bastionhost::migration::src_host: bast3002
+profile::bastionhost::migration::dst_host: bast3004

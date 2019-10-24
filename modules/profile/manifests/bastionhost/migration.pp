@@ -1,21 +1,24 @@
 # setup rsync to copy home dirs and tftp data
 # for migrating a bastion host
 class profile::bastionhost::migration (
-    String $source_host = lookup('profile::bastionhost::migration::source_host'),
-    String $dest_host = lookup('profile::bastionhost::migration::dest_host'),
+    String $src_host = lookup('profile::bastionhost::migration::src_host'),
+    String $dst_host = lookup('profile::bastionhost::migration::dst_host'),
 ){
 
-    if $::fqdn == $dest_host {
+    $src_fqdn = "${src_host}.wikimedia.org"
+    $dst_fqdn = "${dst_host}.wikimedia.org"
+
+    if $::fqdn == $dst_fqdn {
 
         ferm::service { 'bast-migration-rsync':
             proto  => 'tcp',
             port   => '873',
-            srange => "@resolve((${source_host}.wikimedia.org))",
+            srange => "@resolve((${src_fqdn}))",
         }
 
         class { '::rsync::server': }
 
-        file { "/srv/${source_host}":
+        file { "/srv/${src_host}":
             ensure => 'directory'
         }
 
@@ -23,14 +26,14 @@ class profile::bastionhost::migration (
 
         $backup_dirs.each |String $backup_dir| {
 
-            file { "/srv/${source_host}/${backup_dir}":
+            file { "/srv/${src_host}/${backup_dir}":
                 ensure => 'directory',
             }
 
             rsync::server::module { $backup_dir:
-                path        => "/srv/${source_host}/${backup_dir}",
+                path        => "/srv/${src_host}/${backup_dir}",
                 read_only   => 'no',
-                hosts_allow => "${source_host}.wikimedia.org",
+                hosts_allow => $src_fqdn,
             }
         }
     }
