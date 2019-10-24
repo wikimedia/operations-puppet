@@ -1315,7 +1315,7 @@ node 'lvs2010.codfw.wmnet' {
 
 # ESAMS lvs servers
 node /^lvs300[1-4]\.esams\.wmnet$/ {
-    role(lvs::balancer)
+    role(spare::system) # TO BE DECOMMED
 }
 
 node /^lvs300[567]\.esams\.wmnet$/ {
