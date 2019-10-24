@@ -37,7 +37,7 @@ chroot /target /bin/sh -c 'echo $(cat /etc/issue.net) auto-installed on $(date).
 cp_mke2fs_args="-F -F -t ext4 -O bigalloc,sparse_super2,^resize_inode,^has_journal,^ext_attr,^extra_isize,^dir_nlink,^dir_index,^filetype -b 4096 -N 16 -I 128 -C 16k -E num_backup_sb=0,packed_meta_blocks=1 -m 0"
 
 case `hostname` in \
-	cp107[5-9]|cp108[0-9]|cp1090)
+	cp107[5-9]|cp108[0-9]|cp1090|cp30[56][0-9])
 		# new cache nodes (mid-2018) use a single NVMe drive (Samsung
 		# pm1725a) for storage, which needs its LBA format changed to
 		# 4K block size before manually partitioning and formatting.
@@ -45,7 +45,7 @@ case `hostname` in \
 		echo ';' | /usr/sbin/sfdisk /dev/nvme0n1
 		/sbin/mke2fs ${cp_mke2fs_args} -L cache-store /dev/nvme0n1p1
 		;; \
-	cp[1-9]*)
+	cp[245]*)
 		# older cache node storage are all partitioned by partman to
 		# match this numbering and we just need to do the 2x mkfs
 		/sbin/mke2fs ${cp_mke2fs_args} -L sda3-varnish /dev/sda3
