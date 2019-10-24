@@ -1063,6 +1063,31 @@ host cp3049 {
     fixed-address cp3049.esams.wmnet;
 }
 
+host cp3050 {
+    hardware ethernet B0:26:28:6E:FE:C0;
+    fixed-address cp3050.esams.wmnet;
+}
+
+host cp3051 {
+    hardware ethernet B0:26:28:6E:BC:30;
+    fixed-address cp3051.esams.wmnet;
+}
+
+host cp3052 {
+    hardware ethernet B0:26:28:69:01:C0;
+    fixed-address cp3052.esams.wmnet;
+}
+
+host cp3053 {
+    hardware ethernet B0:26:28:6E:F6:E0;
+    fixed-address cp3053.esams.wmnet;
+}
+
+host cp3054 {
+    hardware ethernet B0:26:28:6E:A3:70;
+    fixed-address cp3054.esams.wmnet;
+}
+
 host cp3055 {
     hardware ethernet B0:26:28:6E:A6:20;
     fixed-address cp3055.esams.wmnet;
@@ -2166,6 +2191,11 @@ host dns2002 {
     fixed-address dns2002.wikimedia.org;
 }
 
+host dns3001 {
+    hardware ethernet B0:26:28:6E:CF:E0;
+    fixed-address dns3001.wikimedia.org;
+}
+
 host dns3002 {
     hardware ethernet B0:26:28:6E:DF:40;
     fixed-address dns3002.wikimedia.org;
@@ -2798,6 +2828,11 @@ host ganeti4001 {
     fixed-address ganeti4001.ulsfo.wmnet;
 }
 
+host ganeti3001 {
+    hardware ethernet B0:26:28:6E:9F:70;
+    fixed-address ganeti3001.esams.wmnet;
+}
+
 host ganeti3002 {
     hardware ethernet B0:26:28:41:23:F0;
     fixed-address ganeti3002.esams.wmnet;
@@ -3342,6 +3377,11 @@ host lvs3003 {
 host lvs3004 {
     hardware ethernet 90:b1:1c:57:5f:2a;
     fixed-address lvs3004.esams.wmnet;
+}
+
+host lvs3005 {
+    hardware ethernet B0:26:28:41:1E:30;
+    fixed-address lvs3005.esams.wmnet;
 }
 
 host lvs3006 {
