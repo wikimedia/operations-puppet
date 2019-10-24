@@ -27,7 +27,10 @@ class profile::parsoid(
         # Also yes, this is all hardcoded as it's going away soon (TM)
         sudo::user { 'scap3_restart_php':
             user       => 'deploy-service',
-            privileges => ['ALL = (root) NOPASSWD: /usr/local/sbin/check-and-restart-php php7.2-fpm *'],
+            privileges => [
+                'ALL = (root) NOPASSWD: /usr/local/sbin/restart-php7.2-fpm',
+                'ALL = (root) NOPASSWD: /usr/bin/systemctl restart php7.2-fpm',
+            ],
         }
     }
 
