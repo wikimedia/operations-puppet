@@ -1,0 +1,19 @@
+#!/bin/bash
+# Simple script to initialize a node with predetermined weights
+fqdn=$(hostname -f)
+
+function has_service() {
+    # First argument is the service name
+    _selector="name=$fqdn,service=$1"
+    confctl select "$_selector" get | grep -qF $fqdn;
+}
+
+<%- @services.each do |name, weight| -%>
+if has_service "<%= name %>";
+then
+   echo "Initializing service <%= name %> with weight <%= weight %>"
+   confctl select "name=$fqdn,service=<%= name %>" set/pooled=yes:weight=<%= weight %>
+else
+    echo "Service <%= name %> not found."
+fi
+<%- end -%>
