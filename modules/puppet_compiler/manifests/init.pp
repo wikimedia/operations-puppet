@@ -107,8 +107,6 @@ class puppet_compiler(
         rmdirs  => true,
     }
 
-    require_package('openjdk-8-jdk')
-
     class { 'puppetmaster::puppetdb::client':
         hosts => [$::fqdn],
     }

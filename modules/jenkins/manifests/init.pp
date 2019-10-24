@@ -56,7 +56,8 @@ class jenkins(
     String $workspaces_dir = "\${ITEM_ROOTDIR}/workspace"
 )
 {
-    include ::jenkins::common
+    include jenkins::common
+    $java_version = $jenkins::common::java_version
 
     user { 'jenkins':
         home       => '/var/lib/jenkins',
@@ -74,7 +75,7 @@ class jenkins(
         allowdupe => false,
     }
 
-    ensure_packages('openjdk-8-jdk')
+    ensure_packages("openjdk-${java_version}-jdk")
 
     if os_version('debian >= stretch') {
         apt::repository { 'jenkins-thirdparty-ci':
@@ -85,12 +86,16 @@ class jenkins(
 
         package { 'jenkins':
             ensure  => present,
-            require => [Package['openjdk-8-jdk'], Apt::Repository['jenkins-thirdparty-ci'], Exec['apt-get update']],
+            require => [
+                Package["openjdk-${java_version}-jdk"],
+                Apt::Repository['jenkins-thirdparty-ci'],
+                Exec['apt-get update']
+            ],
         }
     } else {
         package { 'jenkins':
             ensure  => present,
-            require => Package['openjdk-8-jdk'],
+            require => Package["openjdk-${java_version}-jdk"],
         }
     }
 
