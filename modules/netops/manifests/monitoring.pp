@@ -113,6 +113,7 @@ class netops::monitoring {
         # esams
         'asw-esams'     => { ipv4 => '10.21.0.104',  parents => ['cr3-esams', 'cr2-esams'] },
         'csw2-esams'    => { ipv4 => '10.21.0.105',  parents => ['asw-esams']  },
+        'asw2-esams'     => { ipv4 => '10.21.0.8',  parents => ['cr3-esams', 'cr2-esams'] },
         # ulsfo
         'asw2-ulsfo'    => { ipv4 => '10.128.128.7', parents => ['cr3-ulsfo', 'cr4-ulsfo'] },
         # eqsin

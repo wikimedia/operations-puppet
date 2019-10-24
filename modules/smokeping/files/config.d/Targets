@@ -254,10 +254,10 @@ menu = csw2-esams
 title = csw2-esams.mgmt.esams.wmnet
 host = csw2-esams.mgmt.esams.wmnet
 
-+++ asw-esams
-menu = asw-esams
-title = asw-esams.mgmt.esams.wmnet
-host = asw-esams.mgmt.esams.wmnet
++++ asw2-esams
+menu = asw2-esams
+title = asw2-esams.mgmt.esams.wmnet
+host = asw2-esams.mgmt.esams.wmnet
 
 ++ Hosts
 menu = Hosts
