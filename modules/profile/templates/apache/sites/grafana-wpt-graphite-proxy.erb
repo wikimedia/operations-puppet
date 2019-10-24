@@ -1,0 +1,11 @@
+# Apache configuration for proxying requests to performance-team's external Graphite instance
+# https://phabricator.wikimedia.org/T231870
+# This file is managed by puppet.
+
+Listen <%= @wpt_graphite_proxy_port %>
+<VirtualHost *:<%= @wpt_graphite_proxy_port %>>
+  <Location "/">
+    ProxyPass "http://wpt-graphite.wmftest.org:8080/"
+  </Location>
+  ProxyRemote "*" "http://webproxy.<%= @site %>.wmnet:8080"
+</VirtualHost>

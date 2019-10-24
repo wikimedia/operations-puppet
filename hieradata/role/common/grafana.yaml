@@ -5,6 +5,7 @@ profile::grafana::ldap_edit_groups:
   - cn=nda,ou=groups,dc=wikimedia,dc=org
   - cn=wmf,ou=groups,dc=wikimedia,dc=org
   - cn=grafana-admin,ou=groups,dc=wikimedia,dc=org
+profile::grafana::wpt_graphite_proxy_port: 33333
 profile::grafana::config:
   auth.proxy:
     enabled: false

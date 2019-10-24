@@ -12,6 +12,7 @@ class profile::grafana (
     $config=hiera('profile::grafana::config', {}),
     $ldap=hiera('profile::grafana::ldap', undef), # Grafana-specific LDAP settings, used by >= 5
     $ldap_config=lookup('ldap', Hash, hash, {}), # Central LDAP settings
+    $wpt_graphite_proxy_port=lookup('profile::grafana::wpt_graphite_proxy_port'),
 ) {
 
     include ::profile::backup::host
@@ -200,6 +201,19 @@ class profile::grafana (
             description   => $admin_domain,
             check_command => "check_http_unauthorized!${admin_domain}!/",
             notes_url     => 'https://wikitech.wikimedia.org/wiki/Grafana.wikimedia.org',
+        }
+    }
+
+    # Configure a local Apache which will serve as a reverse proxy for performance-team's
+    # Graphite instance.  That Apache uses our outbound proxies as its own forward proxy
+    # for those requests.  Despite being a mouthful, this seems preferable to setting the
+    # http_proxy env var for the grafana process itself (and then also needing to set
+    # no_proxy for every datasource URL other than the one of the perf-team Graphite).
+    # https://phabricator.wikimedia.org/T231870
+    # Could be retired if https://github.com/grafana/grafana/issues/15045 is implemented.
+    if $wpt_graphite_proxy_port {
+        httpd::site { 'proxy-wpt-graphite':
+            content => template('profile/apache/sites/grafana-wpt-graphite-proxy.erb'),
         }
     }
 
