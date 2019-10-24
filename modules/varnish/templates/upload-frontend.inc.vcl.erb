@@ -146,19 +146,7 @@ sub cluster_fe_ratelimit {
 			if (vsthrottle.is_denied("maps:" + req.http.X-Client-IP, 1000, 10s)) {
 				return (synth(429, "Too Many Requests"));
 			}
-			# Only process uri's maps understands
-			if (req.url !~ "^/($|\?|robots\.txt|main\.(js|css)|favicon.ico|lib|leaflet|geoshape|geoline|babel|(img/)?(osm|babel|v4))") {
-				return (synth(400, "Bad Request"));
-			}
-			// Also basic validation of tile URI patterns
-			if (req.url ~ "^/osm-intl/" && req.url !~ "^/osm-intl/\d+/\d+/\d+(@\d(\.\d)?+x)?\.(png|json|headers|svg|jpeg)(\?|$)") {
-				return (synth(400, "Bad Request"));
-			}
-			if (req.url ~ "^/img/osm-intl" && req.url !~ "^/img/osm-intl(,([\d\.-]+|a)){3},\d+x\d+(@\d(\.\d)?+x)?.(png|json|headers|svg|jpeg)(\?|$)") {
-				return (synth(400, "Bad Request"));
-			}
 		}
-
 
 		// Thumbor rate limiting: 1000/10s (100/s long term, with 1000 burst)
 		if (req.url ~ "/thumb/") {
