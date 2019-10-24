@@ -445,6 +445,7 @@ class mediawiki::web::prod_sites(String $fcgi_proxy) {
                 'ec.wikimedia.org',
                 'ee.wikimedia.org',
                 'fi.wikimedia.org',
+                'ge.wikimedia.org',
                 'hi.wikimedia.org',
                 'id.wikimedia.org',
                 'id-internal.wikimedia.org',
