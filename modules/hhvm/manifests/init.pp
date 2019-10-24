@@ -211,7 +211,6 @@ class hhvm(
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        notify  => Service['hhvm'],
     }
 
     file { "${cache_dir}/cli.hhbc.sq3":
@@ -223,7 +222,7 @@ class hhvm(
     }
 
     file { "${cache_dir}/fcgi.hhbc.sq3":
-        ensure => present,
+        ensure => $ensure,
         mode   => '0644',
         owner  => $user,
         group  => $group,
@@ -239,7 +238,6 @@ class hhvm(
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        notify  => Service['hhvm'],
     }
 
     base::service_unit { 'hhvm':
@@ -263,7 +261,7 @@ class hhvm(
             before => Base::Service_unit['hhvm'],
         }
     }
-
+# /etc/hhvm can't be removed yet, due to /etc/hhvm/fatal-error.php
     file { '/etc/hhvm':
         ensure => $ensure,
         owner  => 'root',
@@ -304,6 +302,7 @@ class hhvm(
         owner  => 'root',
         group  => $group,
         mode   => '0775',
+        force  => true,
         before => Service['hhvm'],
     }
 
@@ -312,6 +311,7 @@ class hhvm(
         owner  => $user,
         group  => $group,
         mode   => '0755',
+        force  => true,
         before => Service['hhvm'],
     }
 
