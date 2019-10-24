@@ -15,4 +15,5 @@ class role::puppetboard {
     include ::profile::base::firewall
     include ::profile::standard
     include ::profile::puppetboard
+    include ::profile::tlsproxy::envoy # TLS termination
 }
