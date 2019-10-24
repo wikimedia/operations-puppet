@@ -22,7 +22,6 @@ class openstack::wikitech::web(
 
     require_package([
         'python-mysqldb',
-        'python-keystone',
         'php-ldap']
     )
 
