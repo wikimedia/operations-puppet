@@ -112,7 +112,8 @@ class profile::cache::varnish::backend (
     $storage_size = $::hostname ? {
         /^cp[45]0[0-9]{2}$/        => 730,  # Intel S3710 800G (ulsfo + eqsin)
         /^cp10(7[5-9]|8[0-9]|90)$/ => 1490, # Samsung PM1725a 1.6T (new eqiad nodes)
-        /^cp[0-9]{4}$/             => 360,  # Intel S3700 400G (codfw, esams text/upload)
+        /^cp30(5[0-9]|6[0-5])$/    => 1490, # Samsung PM1725b 1.6T (new esams nodes)
+        /^cp[0-9]{4}$/             => 360,  # Intel S3700 400G (codfw, legacy esams text/upload)
         default                    => 6,    # 6 is the bare min, for e.g. virtuals
     }
 
