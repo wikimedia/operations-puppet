@@ -347,7 +347,7 @@ def resolve_dns(name, record):
     if not is_hostname_valid(target):
         logger.error(("Resolved {record} '{target}' for name '{name}' is not a"
                       "recognized hostname").format(
-            record=record, target=target, name=name))
+                          record=record, target=target, name=name))
         return
 
     logger.debug('Resolved {record} {target} for name {name}'.format(
@@ -504,7 +504,7 @@ def validate_hosts(hosts, no_raise=False):
 
         message = ('Signed cert on Puppet not found for hosts {missing} '
                    'and no_raise={no_raise}:\n{output}').format(
-            missing=missing, output=output_string, no_raise=no_raise)
+                       missing=missing, output=output_string, no_raise=no_raise)
 
         if no_raise:
             logger.warning(message)
@@ -530,7 +530,7 @@ def icinga_downtime(host, user, phab_task, title='wmf-auto-reimage'):
     """
     command = ("icinga-downtime -h '{host}' -d 14400 -r "
                "'{title}: user={user} phab_task={phab_task}'").format(
-                    host=host.split('.')[0], title=title, user=user, phab_task=phab_task)
+                   host=host.split('.')[0], title=title, user=user, phab_task=phab_task)
 
     icinga_host = resolve_dns(ICINGA_DOMAIN, 'CNAME')
     run_cumin('icinga_downtime', icinga_host, [command])
@@ -629,7 +629,7 @@ def puppet_check_cert_to_sign(host, fingerprint):
             (fingerprint is None or fingerprint in cert_line)):
         return 0
     elif (cert_line.startswith('+ "{host}"'.format(host=host)) and
-            (fingerprint is None or fingerprint in cert_line)):
+          (fingerprint is None or fingerprint in cert_line)):
         print_line('Puppet cert already signed', host=host)
         return 2
     else:
@@ -982,7 +982,7 @@ def check_uptime(host, minimum=0, maximum=None, installer=False):
     if uptime < minimum or (maximum is not None and uptime > maximum):
         message = ("Uptime for host '{host}' not within expected limits: "
                    "{minimum} <= {uptime} <= {maximum}").format(
-            host=host, minimum=minimum, uptime=uptime, maximum=maximum)
+                       host=host, minimum=minimum, uptime=uptime, maximum=maximum)
         logger.error(message)
         raise RuntimeError(message)
 
