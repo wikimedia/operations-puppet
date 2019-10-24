@@ -11,4 +11,8 @@ class puppet_compiler::packages {
         'python-yaml', 'python-requests', 'python-jinja2', 'nginx',
         'ruby-httpclient', 'ruby-ldap', 'ruby-rgen', "openjdk-${java_version}-jdk"
     )
+    if os_version('debian == buster') {
+        # Required to resolve PUP-8715
+        require_package('ruby-multi-json')
+    }
 }
