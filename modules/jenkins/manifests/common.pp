@@ -3,14 +3,21 @@
 # Dependency common to master and slaves
 #
 class jenkins::common {
-    $java_version = $facts['os']['release']['major'] ? {
-        /10/    => '11',
-        default => '8',
+    case $facts['os']['release']['major'] {
+        /10/: {
+            $java_version = '11'
+            $java_headless = 'openjdk-11-jre-headless'
+            $java_alt_path = '/usr/lib/jvm/java-11-openjdk-amd64/bin/java'
+        } default: {
+            $java_version = '8'
+            $java_headless = 'openjdk-8-jre-headless'
+            $java_alt_path = '/usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java'
+        }
     }
-    ensure_packages("openjdk-${java_version}-jre-headless")
+    ensure_packages($java_headless)
 
     alternatives::select { 'java':
-        path    => "/usr/lib/jvm/java-${java_version}-openjdk-amd64/jre/bin/java",
-        require => Package["openjdk-${java_version}-jre-headless"],
+        path    => $java_alt_path,
+        require => Package[$java_headless],
     }
 }
