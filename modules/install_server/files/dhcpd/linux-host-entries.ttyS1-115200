@@ -2138,7 +2138,7 @@ host dns2002 {
 
 host dns3002 {
     hardware ethernet B0:26:28:6E:DF:40;
-    fixed-address dns3002.esams.wmnet;
+    fixed-address dns3002.wikimedia.org;
 }
 
 host dns4001 {
