@@ -723,11 +723,6 @@ node 'db2102.codfw.wmnet' {
     role(mariadb::core_test)
 }
 
-# To be decommissioned T235464
-node 'db1070.eqiad.wmnet' {
-    role(spare::system)
-}
-
 # Analytics production replicas
 node /^dbstore100(3|4|5)\.eqiad\.wmnet$/ {
     role(mariadb::dbstore_multiinstance)
