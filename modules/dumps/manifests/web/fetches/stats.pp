@@ -52,4 +52,12 @@ class dumps::web::fetches::stats(
         hour        => '5',
         user        => $user,
     }
+
+    # Copies over geoeditors dumps from an rsyncable location.
+    dumps::web::fetches::job { 'geoeditors_dumps':
+        source      => "${src}/geoeditors/public",
+        destination => "${miscdatasetsdir}/geoeditors",
+        hour        => '6',
+        user        => $user,
+    }
 }
