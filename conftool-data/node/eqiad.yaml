@@ -301,8 +301,8 @@ eqiad:
     druid1005.eqiad.wmnet: [druid-public-broker]
     druid1006.eqiad.wmnet: [druid-public-broker]
   labweb:
-      labweb1001.wikimedia.org: [labweb]
-      labweb1002.wikimedia.org: [labweb]
+      labweb1001.wikimedia.org: [labweb, labweb-ssl]
+      labweb1002.wikimedia.org: [labweb, labweb-ssl]
   ores:
     ores1001.eqiad.wmnet: [ores]
     ores1002.eqiad.wmnet: [ores]

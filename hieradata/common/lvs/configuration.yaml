@@ -1620,6 +1620,25 @@ lvs::configuration::lvs_services:
       IdleConnection:
         timeout-clean-reconnect: 3
         max-delay: 30
+  labweb-ssl:
+    description: 'lvs for labweb services: horizon, striker, wikitech - HTTPS'
+    class: low-traffic
+    sites:
+    - eqiad
+    ip: *ip_block041
+    port: 7443
+    depool-threshold: '.5'
+    conftool:
+      cluster: labweb
+      service: labweb-ssl
+    monitors:
+      ProxyFetch:
+        url:
+        - https://wikitech.wikimedia.org:7443
+        http_status: 301
+      IdleConnection:
+        timeout-clean-reconnect: 3
+        max-delay: 30
   wdqs-internal:
     description: Wikidata Query Service - internal
     class: low-traffic
