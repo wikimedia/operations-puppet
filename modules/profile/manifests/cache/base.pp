@@ -22,6 +22,7 @@ class profile::cache::base(
     $allow_iptables = hiera('profile::cache::base::allow_iptables', false),
     $extra_nets = hiera('profile::cache::base::extra_nets', []),
     $extra_trust = hiera('profile::cache::base::extra_trust', []),
+    Optional[Hash[String, Integer]] $default_weights = lookup('profile::cache::base::default_weights', {'default_value' => undef}),
 ) {
     require network::constants
     $wikimedia_nets = flatten(concat($::network::constants::aggregate_networks, $extra_nets))
@@ -111,4 +112,11 @@ class profile::cache::base(
         varnishes  => $purge_varnishes,
     }
     Class[varnish::packages] -> Class[varnish::htcppurger]
+
+    # Node initialization script for conftool
+    if $default_weights != undef {
+        class { 'conftool::scripts::initialize':
+            services => $default_weights,
+        }
+    }
 }
