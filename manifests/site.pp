@@ -139,7 +139,7 @@ node /an-conf100[1-3]\.eqiad\.wmnet/ {
 
 
 # Analytics Presto nodes.
-node /^an-presto100[1-5].eqiad.wmnet$/ {
+node /^an-presto100[1-5]\.eqiad\.wmnet$/ {
     role(analytics_cluster::presto::server)
 }
 
@@ -812,26 +812,26 @@ node 'doc1001.eqiad.wmnet' {
 # Druid analytics-eqiad (non public) servers.
 # These power internal backends and queries.
 # https://wikitech.wikimedia.org/wiki/Analytics/Data_Lake#Druid
-node /^druid100[123].eqiad.wmnet$/ {
+node /^druid100[123]\.eqiad\.wmnet$/ {
     role(druid::analytics::worker)
 }
 
 # Druid public-eqiad servers.
 # These power AQS and wikistats 2.0 and contain non sensitive datasets.
 # https://wikitech.wikimedia.org/wiki/Analytics/Data_Lake#Druid
-node /^druid100[456].eqiad.wmnet$/ {
+node /^druid100[456]\.eqiad\.wmnet$/ {
     role(druid::public::worker)
 }
 
 # nfs server for dumps generation, also rsyncs
 # data to fallback nfs server(s)
-node /^dumpsdata1001.eqiad.wmnet$/ {
+node /^dumpsdata1001\.eqiad\.wmnet$/ {
     role(dumps::generation::server::primary)
 }
 
 # fallback nfs server for dumps generation, also
 # will rsync data to web servers
-node /^dumpsdata1002.eqiad.wmnet$/ {
+node /^dumpsdata1002\.eqiad\.wmnet$/ {
     role(dumps::generation::server::fallback)
 }
 
@@ -1109,7 +1109,7 @@ node /^install[12]002\.wikimedia\.org$/ {
 }
 
 # new icinga systems, replaced einsteinium and tegmen (T201344, T208824)
-node /^icinga[12]001\.wikimedia.org$/ {
+node /^icinga[12]001\.wikimedia\.org$/ {
     role(alerting_host)
 }
 
@@ -1197,16 +1197,16 @@ node /labmon100[12]\.eqiad\.wmnet/ {
     role(wmcs::monitoring)
 }
 
-node /^cloudcontrol100[3-4].wikimedia.org$/ {
+node /^cloudcontrol100[3-4]\.wikimedia\.org$/ {
     role(wmcs::openstack::eqiad1::control)
 }
 
 # New systems to be placed into service by cloud team via T194186
-node /^cloudelastic100[1-4].wikimedia.org$/ {
+node /^cloudelastic100[1-4]\.wikimedia\.org$/ {
     role(elasticsearch::cloudelastic)
 }
 
-node /^cloudnet100[3-4].eqiad.wmnet$/ {
+node /^cloudnet100[3-4]\.eqiad\.wmnet$/ {
     role(wmcs::openstack::eqiad1::net)
 }
 
