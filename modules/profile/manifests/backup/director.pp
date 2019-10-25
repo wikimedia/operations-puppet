@@ -292,7 +292,7 @@ class profile::backup::director(
     }
     nrpe::monitor_service { 'backup_freshness':
         description    => 'Backup freshness',
-        nrpe_command   => '/usr/bin/check_bacula.py',
+        nrpe_command   => '/usr/bin/sudo -u bacula /usr/bin/check_bacula.py',
         critical       => false,
         contact_group  => 'admins',
         check_interval => 60,  # check every hour
