@@ -10,8 +10,8 @@ class apereo_cas (
     Boolean                      $enable_totp            = false,
     Optional[String[1]]          $totp_signing_key       = undef,
     Optional[String[1]]          $totp_encryption_key    = undef,
-    Optional[Stdlib::Filesource] $keystore_source        = undef,
-    Optional[String[1]]          $keystore_content       = undef,
+    Optional[String[1]]          $keystore_source        = undef,
+    Optional[Binary]             $keystore_content       = undef,
     Optional[Stdlib::Filesource] $groovy_source          = undef,
     Stdlib::Unixpath             $u2f_devices_path       = '/etc/cas/config/u2fdevices.json',
     Stdlib::Unixpath             $totp_devices_path      = '/etc/cas/config/totpdevices.json',
@@ -48,6 +48,11 @@ class apereo_cas (
     if $keystore_source and $keystore_content {
         error('you cannot provide $keystore_source and $keystore_content')
     }
+    $_keystore_content = $keystore_content ? {
+        undef   => binary_file($keystore_source),
+        default => $keystore_content,
+    }
+
     $config_dir = "${base_dir}/config"
     $services_dir = "${base_dir}/services"
 
@@ -88,8 +93,7 @@ class apereo_cas (
         owner   => 'root',
         group   => 'root',
         mode    => '0400',
-        content => $keystore_content,
-        source  => $keystore_source,
+        content => $_keystore_content,
         before  => Systemd::Service['cas'],
         notify  => Service['cas'],
     }
