@@ -11,6 +11,7 @@ admin::groups:
   - eventlogging-admins
   - aqs-admins
   - deploy-aqs
+  - deploy-design
   - deploy-phabricator
   - analytics-deployers
   - gerrit-deployers
