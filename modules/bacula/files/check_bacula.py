@@ -230,7 +230,8 @@ def print_icinga_jobs(msg, level, returncode, cats, index, name, show_examples=T
     for this index dictionary key on cats categories, with
     the given name. If show examples is true, also append one example host.
     It also sets retun code with the given level if there are members.
-    Note this function mutates msg and returncode.
+    Return the amended message and the new return code (or the input
+    one if it was not modified).
     """
     if len(cats[index]) > 0:
         if not show_examples:
@@ -244,6 +245,8 @@ def print_icinga_jobs(msg, level, returncode, cats, index, name, show_examples=T
                                                  len(cats[index]),
                                                  first_hostname(cats[index])))
         returncode = level if returncode < level else returncode
+
+    return msg, returncode
 
 
 def print_icinga_status(cats):
@@ -259,17 +262,20 @@ def print_icinga_status(cats):
     returncode = OK
 
     level = CRITICAL
-    print_icinga_jobs(msg, level, returncode, cats, 'jobs_with_all_failures', 'All failures')
-    print_icinga_jobs(msg, level, returncode, cats, 'jobs_with_stale_backups', 'Stale')
-    print_icinga_jobs(msg, level, returncode, cats, 'jobs_with_stale_full_backups',
-                      'Stale-full only')
+    msg, returncode = print_icinga_jobs(msg, level, returncode, cats,
+                                        'jobs_with_all_failures', 'All failures')
+    msg, returncode = print_icinga_jobs(msg, level, returncode, cats,
+                                        'jobs_with_stale_backups', 'Stale')
+    msg, returncode = print_icinga_jobs(msg, level, returncode, cats,
+                                        'jobs_with_stale_full_backups', 'Stale-full only')
 
     level = WARNING
-    print_icinga_jobs(msg, level, returncode, cats, 'jobs_with_no_backups', 'No backups')
+    msg, returncode = print_icinga_jobs(msg, level, returncode, cats,
+                                        'jobs_with_no_backups', 'No backups')
 
     level = OK
-    print_icinga_jobs(msg, level, returncode, cats, 'jobs_with_fresh_backups', 'Fresh',
-                      show_examples=False)
+    msg, returncode = print_icinga_jobs(msg, level, returncode, cats,
+                                        'jobs_with_fresh_backups', 'Fresh', show_examples=False)
 
     print(', '.join(msg) + ' jobs')
     sys.exit(returncode)
