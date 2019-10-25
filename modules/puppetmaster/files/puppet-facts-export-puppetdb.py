@@ -16,7 +16,7 @@ class PuppetDBApi(object):
         config = configparser.ConfigParser()
         config.read(puppetdb_config_file)
         # TODO: add support for multiple urls
-        self.server_url = config['main']['server_urls']
+        self.server_url = config['main']['server_urls'].split(',')[0]
 
     def url_for(self, endpoint):
         return '{url}/pdb/query/v4/{ep}'.format(url=self.server_url, ep=endpoint)
