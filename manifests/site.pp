@@ -290,19 +290,6 @@ node /^cp30(0[78]|10)\.esams\.wmnet$/ {
     role(spare::system)
 }
 
-node /^cp30(3[0123]|4[0123])\.esams\.wmnet$/ {
-    role(cache::text)
-}
-
-# Broken host, decom in T227077
-node 'cp3037.esams.wmnet' {
-    role(spare::system)
-}
-
-node /^cp30(3[45689]|4[45679])\.esams\.wmnet$/ {
-    role(cache::upload)
-}
-
 node /^cp30(5[02468]|6[024])\.esams\.wmnet$/ {
     role(cache::text)
 }

@@ -22,14 +22,6 @@ cache::nodes:
     eqiad_ats:
       - 'cp1075.eqiad.wmnet'
     esams:
-      - 'cp3030.esams.wmnet'
-      # - 'cp3031.esams.wmnet' hw issues: T200806
-      - 'cp3032.esams.wmnet'
-      - 'cp3033.esams.wmnet'
-      - 'cp3040.esams.wmnet'
-      - 'cp3041.esams.wmnet'
-      - 'cp3042.esams.wmnet'
-      - 'cp3043.esams.wmnet'
       - 'cp3050.esams.wmnet'
       - 'cp3052.esams.wmnet'
       - 'cp3054.esams.wmnet'
@@ -77,16 +69,6 @@ cache::nodes:
       - 'cp1088.eqiad.wmnet'
       - 'cp1090.eqiad.wmnet'
     esams_ats:
-      - 'cp3034.esams.wmnet'
-      - 'cp3035.esams.wmnet'
-      - 'cp3036.esams.wmnet'
-      - 'cp3039.esams.wmnet'
-      - 'cp3038.esams.wmnet'
-      - 'cp3044.esams.wmnet'
-      - 'cp3045.esams.wmnet'
-      - 'cp3046.esams.wmnet'
-      - 'cp3047.esams.wmnet'
-      - 'cp3049.esams.wmnet'
       - 'cp3051.esams.wmnet'
       - 'cp3053.esams.wmnet'
       - 'cp3055.esams.wmnet'

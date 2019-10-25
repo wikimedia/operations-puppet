@@ -1,13 +1,5 @@
 esams:
   cache_text:
-    cp3030.esams.wmnet: [varnish-fe, varnish-be, nginx]
-    # cp3031.esams.wmnet: [varnish-fe, varnish-be, nginx] hw issues: T200806
-    cp3032.esams.wmnet: [varnish-fe, varnish-be, nginx]
-    cp3033.esams.wmnet: [varnish-fe, varnish-be, nginx]
-    cp3040.esams.wmnet: [varnish-fe, varnish-be, nginx]
-    cp3041.esams.wmnet: [varnish-fe, varnish-be, nginx]
-    cp3042.esams.wmnet: [varnish-fe, varnish-be, nginx]
-    cp3043.esams.wmnet: [varnish-fe, varnish-be, nginx]
     cp3050.esams.wmnet: [varnish-fe, varnish-be, nginx]
     cp3052.esams.wmnet: [varnish-fe, varnish-be, nginx]
     cp3054.esams.wmnet: [varnish-fe, varnish-be, nginx]
@@ -17,16 +9,6 @@ esams:
     cp3062.esams.wmnet: [varnish-fe, varnish-be, nginx]
     cp3064.esams.wmnet: [varnish-fe, varnish-be, nginx]
   cache_upload:
-    cp3034.esams.wmnet: [varnish-fe, ats-be, nginx]
-    cp3035.esams.wmnet: [varnish-fe, ats-be, nginx]
-    cp3036.esams.wmnet: [varnish-fe, ats-be, nginx]
-    cp3038.esams.wmnet: [varnish-fe, ats-be, nginx]
-    cp3039.esams.wmnet: [varnish-fe, ats-be, nginx]
-    cp3044.esams.wmnet: [varnish-fe, ats-be, nginx]
-    cp3045.esams.wmnet: [varnish-fe, ats-be, nginx]
-    cp3046.esams.wmnet: [varnish-fe, ats-be, nginx]
-    cp3047.esams.wmnet: [varnish-fe, ats-be, nginx]
-    cp3049.esams.wmnet: [varnish-fe, ats-be, nginx]
     cp3051.esams.wmnet: [varnish-fe, ats-be, nginx]
     cp3053.esams.wmnet: [varnish-fe, ats-be, nginx]
     cp3055.esams.wmnet: [varnish-fe, ats-be, nginx]
