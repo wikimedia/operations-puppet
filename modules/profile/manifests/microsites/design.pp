@@ -11,7 +11,6 @@ class profile::microsites::design(
     ensure_resource('file', '/srv/org', {'ensure' => 'directory' })
     ensure_resource('file', '/srv/org/wikimedia', {'ensure' => 'directory' })
     ensure_resource('file', '/srv/org/wikimedia/design', {'ensure' => 'directory' })
-    ensure_resource('file', '/srv/org/wikimedia/design-style-guide', {'ensure' => 'directory' })
     ensure_resource('file', '/srv/org/wikimedia/design-strategy', {'ensure' => 'directory' })
 
     git::clone { 'design/landing-page':
@@ -30,6 +29,12 @@ class profile::microsites::design(
 
     scap::target { 'design/style-guide':
         deploy_user => 'deploy-design',
+    }
+
+    file { '/srv/org/wikimedia/design-style-guide':
+        ensure  => 'link',
+        target  => '/srv/deployment/design/style-guide',
+        require => Scap::Target['design/style-guide'],
     }
 
 }
