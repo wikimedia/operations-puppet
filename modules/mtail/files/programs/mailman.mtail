@@ -1,0 +1,7 @@
+counter mailman_smtp_duration_seconds
+counter mailman_smtp_total
+
+/smtp to (.*) for ([0-9]+) recips, completed in (?P<duration>[0-9.]+) seconds$/ {
+  mailman_smtp_total++
+  mailman_smtp_duration_seconds += $duration
+}

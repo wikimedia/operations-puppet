@@ -1,4 +1,6 @@
-class profile::lists {
+class profile::lists (
+    Array[String] $prometheus_nodes = lookup('prometheus_nodes')
+) {
     include ::network::constants
     include ::mailman
     include ::privateexim::listserve
@@ -121,6 +123,23 @@ class profile::lists {
         description  => 'mailman_queue_size',
         nrpe_command => '/usr/bin/sudo -u list /usr/local/lib/nagios/plugins/check_mailman_queue 25 25 25',
         notes_url    => 'https://wikitech.wikimedia.org/wiki/Mailman',
+    }
+
+    # Mtail program to gather smtp send duration and count
+    class { '::mtail':
+        logs  => ['/var/log/mailman/smtp']
+    }
+
+    mtail::program { 'mailman':
+        ensure => 'present',
+        source => 'puppet:///modules/mtail/programs/mailman.mtail',
+    }
+
+    $prometheus_nodes_ferm = join($prometheus_nodes, ' ')
+    ferm::service { 'mtail':
+        proto  => 'tcp',
+        port   => '3903',
+        srange => "(@resolve((${prometheus_nodes_ferm})) @resolve((${prometheus_nodes_ferm}), AAAA))",
     }
 
     ferm::service { 'mailman-smtp':
