@@ -1,4 +1,7 @@
-class profile::wmcs::services::toolsdb_primary {
+class profile::wmcs::services::toolsdb_primary (
+) {
+    require profile::wmcs::services::toolsdb_apt_pinning
+
     class { '::mariadb::packages_wmf': }
     class { '::mariadb::service': }
     include ::passwords::misc::scripts

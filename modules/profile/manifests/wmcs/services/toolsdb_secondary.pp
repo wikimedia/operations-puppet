@@ -2,7 +2,10 @@
 #
 # This class sets up a the Cloud VPS project libraryupgrader.
 #
-class profile::wmcs::services::toolsdb_secondary{
+class profile::wmcs::services::toolsdb_secondary (
+) {
+    require profile::wmcs::services::toolsdb_apt_pinning
+
     class { '::mariadb::packages_wmf': }
     class { '::mariadb::service': }
     include ::passwords::misc::scripts
