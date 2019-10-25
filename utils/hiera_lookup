@@ -116,6 +116,8 @@ end
 key = ARGV.pop
 abort(usage "\nError: KEY is required") if key.match('^--')
 
+puts "\e[33mpuppet now has this functionality built in.  try the following on the puppet master\e[0m"
+puts " puppet lookup [--explain] --compile --node #{scope['::fqdn']} #{key}\n\n"
 hiera = Hiera.new(:config => cfg)
 if !verbose || scope.include?('::debug')
     Hiera.logger = "noop"
