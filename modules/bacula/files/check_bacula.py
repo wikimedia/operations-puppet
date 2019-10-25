@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 
+import argparse
 import datetime
 import ipaddress
 import os
@@ -15,7 +16,7 @@ UNKNOWN = 3
 
 # TODO: Make these configurable
 DEFAULT_BACKUP_JOB_CONFIG_PATH = '/etc/bacula/jobs.d'
-BCONSOLE_PATH = "/usr/bin/bconsole"
+BCONSOLE_PATH = "/usr/sbin/bconsole"
 
 # We believe no nested patterns are allowed, so a regex should be good enough
 JOB_PATTERN = r'\s*Job\s*\{\s*([^\}]*)\s*\}\s*'
@@ -80,31 +81,39 @@ def read_configured_backups(path):
     return backups
 
 
-def add_job_statuses(backups):
+def get_job_statuses(name, bconsole_path):
+    """
+    Given a job name, execute bconsole (with configurable bconsole_path)
+    and obtain the list of execution attempts and its result, as dictionaries
+    """
+    cmd = [bconsole_path]
+    process = subprocess.Popen(cmd, stdin=subprocess.PIPE, stdout=subprocess.PIPE,
+                               stderr=subprocess.PIPE)
+    out, err = process.communicate(input='list jobname={}'.format(name).encode('utf8'))
+    if process.returncode > 0 or err.decode('utf8') != '':
+        print('ERROR: Run of bconsole failed: {}'.format(err.decode('utf8')))
+        sys.exit(UNKNOWN)
+    lines = out.decode('utf8').splitlines()
+    # Parse output of bconsole ascii boxes, line by line, including the header
+    statuses = list()
+    header = None
+    for line in lines:
+        if line.startswith('|'):  # header or backup job
+            if header is None:
+                header = [h.strip().lower() for h in re.findall(STATUS_COLUMNS_PATTERN, line)]
+            else:
+                cols = [c.strip() for c in re.findall(STATUS_COLUMNS_PATTERN, line)]
+                statuses.append(dict(zip(header, cols)))
+    return statuses
+
+
+def add_job_statuses(backups, bconsole_path):
     """
     Mutates the given dictionary, adding the statuses of each job
     alongside the original dictionary
     """
     for name, options in backups.items():
-        cmd = [BCONSOLE_PATH]
-        process = subprocess.Popen(cmd, stdin=subprocess.PIPE, stdout=subprocess.PIPE,
-                                   stderr=subprocess.PIPE)
-        out, err = process.communicate(input='list jobname={}'.format(name).encode('utf8'))
-        if process.returncode > 0 or err.decode('utf8') != '':
-            print('ERROR: Run of bconsole failed: {}'.format(err.decode('utf8')))
-            sys.exit(UNKNOWN)
-        lines = out.decode('utf8').splitlines()
-        # Parse output of bconsole ascii boxes, line by line, including the header
-        statuses = list()
-        header = None
-        for line in lines:
-            if line.startswith('|'):  # header or backup job
-                if header is None:
-                    header = [h.strip().lower() for h in re.findall(STATUS_COLUMNS_PATTERN, line)]
-                else:
-                    cols = [c.strip() for c in re.findall(STATUS_COLUMNS_PATTERN, line)]
-                    statuses.append(dict(zip(header, cols)))
-        backups[name]['status'] = statuses
+        backups[name]['status'] = get_job_statuses(name, bconsole_path)
 
 
 def iso_date_to_datetime(string):
@@ -249,11 +258,11 @@ def print_icinga_jobs(msg, level, returncode, cats, index, name, show_examples=T
     return msg, returncode
 
 
-def print_icinga_status(cats):
+def print_icinga_status(categories):
     """
     Print status in icinga style and exit with the appropiate error code
     """
-    totaljobs = sum(len(v) for v in cats.values())
+    totaljobs = sum(len(v) for v in categories.values())
     if totaljobs == 0:
         print('UNKNOWN: No backups configured')
         sys.exit(UNKNOWN)
@@ -262,23 +271,49 @@ def print_icinga_status(cats):
     returncode = OK
 
     level = CRITICAL
-    msg, returncode = print_icinga_jobs(msg, level, returncode, cats,
+    msg, returncode = print_icinga_jobs(msg, level, returncode, categories,
                                         'jobs_with_all_failures', 'All failures')
-    msg, returncode = print_icinga_jobs(msg, level, returncode, cats,
+    msg, returncode = print_icinga_jobs(msg, level, returncode, categories,
                                         'jobs_with_stale_backups', 'Stale')
-    msg, returncode = print_icinga_jobs(msg, level, returncode, cats,
+    msg, returncode = print_icinga_jobs(msg, level, returncode, categories,
                                         'jobs_with_stale_full_backups', 'Stale-full only')
 
     level = WARNING
-    msg, returncode = print_icinga_jobs(msg, level, returncode, cats,
+    msg, returncode = print_icinga_jobs(msg, level, returncode, categories,
                                         'jobs_with_no_backups', 'No backups')
 
     level = OK
-    msg, returncode = print_icinga_jobs(msg, level, returncode, cats,
+    msg, returncode = print_icinga_jobs(msg, level, returncode, categories,
                                         'jobs_with_fresh_backups', 'Fresh', show_examples=False)
 
     print(', '.join(msg) + ' jobs')
     sys.exit(returncode)
+
+
+def print_verbose_status(categories):
+    """
+    Prints the full list of jobs that failed and were successful.
+    """
+    for category in sorted(categories):
+        print("\n== " + category + ' (' + str(len(categories[category])) + ") ==\n")
+        for job in sorted(categories[category], key=lambda k: k['name']):
+            print(job['name'])
+
+
+def print_job_status(job, bconsole_path):
+    """
+    Prints the list of job executions for a given job, or an error
+    message if the job doesn't have attempts
+    """
+    statuses = get_job_statuses(job, bconsole_path)
+    if len(statuses) == 0:
+        print('No jobs found for {}'.format(job))
+        sys.exit(-1)
+    for status in statuses:
+        print('{}: type: {}, status: {}, bytes: {}'.format(status['starttime'],
+                                                           status['level'],
+                                                           status['jobstatus'],
+                                                           status['jobbytes']))
 
 
 def calculate_success_rate(backups, from_seconds_ago, to_seconds_ago):
@@ -315,11 +350,52 @@ def calculate_success_rate(backups, from_seconds_ago, to_seconds_ago):
           .format(success_percentage))
 
 
+def read_options():
+    """
+    Handle command line execution arguments
+    """
+    parser = argparse.ArgumentParser(
+        description=('Checks bacula backup freshness status and prints it on standard output.')
+    )
+
+    parser.add_argument('job',
+                        default=None,
+                        nargs='?',
+                        help=('If set, check only the status of this job. '
+                              'Otherwise, check all jobs.'))
+    parser.add_argument('--verbose',
+                        action='store_true',
+                        help=('If set, it prints the full list of jobs in its categories. '
+                              'Otherwise, it prints just a summary for icinga.'))
+    parser.add_argument('--backup_config_path',
+                        default=DEFAULT_BACKUP_JOB_CONFIG_PATH,
+                        help=('Path of the directory with the files where the bacula job '
+                              'configuration is, by default: "{}".'
+                              '').format(DEFAULT_BACKUP_JOB_CONFIG_PATH))
+    parser.add_argument('--bconsole_path',
+                        default=BCONSOLE_PATH,
+                        help=('Full path of the "bconsole" executable, by default: "{}".'
+                              '').format(BCONSOLE_PATH))
+
+    options = parser.parse_args()
+    return options
+
+
 def main():
-    backups = read_configured_backups(DEFAULT_BACKUP_JOB_CONFIG_PATH)
-    add_job_statuses(backups)
-    cats = check_backup_freshness(backups)
-    print_icinga_status(cats)
+    options = read_options()
+    if options.job:
+        # Mode: check single job
+        print_job_status(options.job, options.bconsole_path)
+    else:
+        backups = read_configured_backups(options.backup_config_path)
+        add_job_statuses(backups, options.bconsole_path)
+        categories = check_backup_freshness(backups)
+        if options.verbose:
+            # Mode: verbose (for console)
+            print_verbose_status(categories)
+        else:
+            # Mode: summary (for icinga)
+            print_icinga_status(categories)
     # TODO: check_device_status()
 
 
