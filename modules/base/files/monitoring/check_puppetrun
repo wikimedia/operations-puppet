@@ -27,6 +27,7 @@ lastrun = 0
 failcount = 0
 warn = 0
 crit = 0
+disable_grace = 86400  # 24 hours
 enabled_only = false
 SafeYAML::OPTIONS[:default_mode] = :safe
 
@@ -64,6 +65,10 @@ opt.on("--alert-master-fail", "Alert on failures related to Puppet master issues
     alert_master_fail = true
 end
 
+opt.on("--disable_grace", "iNumber of seconds a host can be disabled before alerting. default: #{disabled_time}") do |f|
+    disable_grace = f
+end
+
 opt.parse!
 
 if warn.zero? || crit.zero?
@@ -74,19 +79,13 @@ end
 if File.exists?(adminlockfile)
        enabled = false
        disabled_message = YAML.load_file(adminlockfile)["disabled_message"]
+       disabled_time = File::stat(adminlockfile).ctime
 end
 
 if File.exists?(summaryfile)
     begin
         summary = YAML.load_file(summaryfile)
-        unless enabled
-            summary["time"]["last_disabled_check"] = Time.now.to_i
-            File.open(summaryfile, 'w') { |f| f.write(YAML.dump summary) }
-        end
         lastrun = summary["time"]["last_run"]
-        if summary["time"].key? "last_disabled_check"
-            last_disabled_check = summary["time"]["last_disabled_check"]
-        end
 
         # machines that outright failed to run like on missing dependencies
         # are treated as huge failures. The yaml file will be valid but
@@ -149,21 +148,16 @@ if failcount == :failed_to_parse_summary_file || failcount == :no_summary_file
 end
 
 time_since_last_run = Time.now.to_i - lastrun
-# If puppet has recently been reenabled, pretend that the time passed since the
-# last run is less. That mutes some unwanted spam
-if last_disabled_check && enabled
-    time_since_last_run = Time.now.to_i - last_disabled_check
-end
 human_time_since_last_run = time_ago(time_since_last_run)
 
-if enabled_only && enabled == false
+if enabled == false && (enabled_only || disabled_time + disable_grace < Time.now)
     puts "OK: Puppet is currently disabled, not alerting. " +
          "Last run #{human_time_since_last_run} ago with #{failcount} failures"
     exit 0
 end
 
 unless enabled
-    puts "WARNING: Puppet is currently disabled, " +
+    puts "WARNING: Puppet has been disabled for longer than #{disable_grace} seconds, " +
          "message: #{disabled_message}, " +
          "last run #{human_time_since_last_run} ago with #{failcount} failures"
     exit 1
