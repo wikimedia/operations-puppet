@@ -2,6 +2,7 @@
 # eqiad and codfw.
 profile::prometheus::snmp_exporter::prometheus_nodes:
   - bast3002.wikimedia.org
+  - bast3004.wikimedia.org
   - bast4002.wikimedia.org
   - bast5001.wikimedia.org
   - prometheus1003.eqiad.wmnet
