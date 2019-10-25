@@ -31,4 +31,13 @@ class trafficserver(
         ensure  => present,
         require => [ Exec['apt-get update'], Systemd::Mask['trafficserver.service'] ],
     }
+
+    # Script used to depool, restart and pool an ATS instance
+    file { '/usr/local/sbin/ats-restart':
+        ensure => present,
+        source => 'puppet:///modules/trafficserver/ats_restart.sh',
+        mode   => '0555',
+        owner  => 'root',
+        group  => 'root',
+    }
 }

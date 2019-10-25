@@ -52,6 +52,7 @@ class profile::trafficserver::backend (
 
     trafficserver::instance { $instance_name:
         paths                 => $paths,
+        conftool_service      => 'ats-be',
         default_instance      => $default_instance,
         port                  => $port,
         http_settings         => $http_settings,
@@ -121,15 +122,6 @@ class profile::trafficserver::backend (
         source      => 'puppet:///modules/mtail/programs/atsbackend.mtail',
         destination => $atsmtail_backend_progs,
         notify      => Service["atsmtail@${instance_name}"],
-    }
-
-    # Script to depool, restart and repool ATS
-    file { '/usr/local/sbin/ats-backend-restart':
-        ensure => present,
-        source => 'puppet:///modules/profile/trafficserver/ats-backend-restart.sh',
-        mode   => '0555',
-        owner  => 'root',
-        group  => 'root',
     }
 
     # Make sure the default varnish.service is never started

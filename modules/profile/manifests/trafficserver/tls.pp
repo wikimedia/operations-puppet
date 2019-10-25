@@ -81,6 +81,7 @@ class profile::trafficserver::tls (
 
     trafficserver::instance { $instance_name:
         paths                     => $paths,
+        conftool_service          => 'nginx', # TODO: Rename it to ats-tls
         port                      => $port,
         keep_alive_origin_servers => 0,
         disable_dns_resolution    => 1,

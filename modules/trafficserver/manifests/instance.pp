@@ -14,6 +14,10 @@
 # [*paths*]
 #   Mapping of trafficserver paths. See Trafficserver::Paths and trafficserver::get_paths()
 #
+# [*conftool_service*]
+#  Service name used on conftool for this trafficserver instance. This will be used to populate the
+#  ats-${instance_name}-restart script with the proper conftool selector
+#
 # [*default_instance*]
 #  Setup ATS default instance. (default: false)
 #  Setting this value to true must be only done in one ATS instance per server. This will trigger the usage of
@@ -193,6 +197,7 @@
 #
 define trafficserver::instance(
     Trafficserver::Paths $paths,
+    String $conftool_service,
     Boolean $default_instance = false,
     Stdlib::Port $port = 8080,
     Integer[0, 1] $keep_alive_origin_servers = 1,
@@ -352,5 +357,15 @@ define trafficserver::instance(
             enable  => true,
         },
         subscribe      => Package[$trafficserver::packages],
+    }
+
+    # Script to depool, restart and repool ATS
+    file { "/usr/local/sbin/ats-${title}-restart":
+        ensure  => present,
+        content => template('trafficserver/ats_instance_restart.sh.erb'),
+        mode    => '0555',
+        owner   => 'root',
+        group   => 'root',
+        require => File['/usr/local/sbin/ats-restart'],
     }
 }

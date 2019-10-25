@@ -4,12 +4,15 @@ set -e
 
 script="$(basename "$0")"
 hostname="$(hostname -f)"
-selector="name=${hostname},service=ats-be"
+usage="Usage: ${script} <conftool_service> <service_name>"
+conftool_service=${1:?$usage}
+service_name=${2:?$usage}
+selector="name=${hostname},service=${conftool_service}"
 
 # Exit immediately if ats-be is not pooled
 if confctl --quiet select "${selector}" get |
         jq ".[\"${hostname}\"].pooled" | grep -q '"no"'; then
-    echo "ats-be is depooled. Exiting." | logger -t "$script" --stderr
+    echo "${conftool_service} is depooled. Exiting." | logger -t "$script" --stderr
     exit 1
 fi
 
@@ -19,7 +22,7 @@ confctl --host --quiet select "${selector}" set/pooled=no
 # Wait a bit for the service to be drained
 sleep 30
 
-/usr/sbin/service trafficserver restart
+/usr/sbin/service "${service_name}" restart
 
 sleep 30
 
