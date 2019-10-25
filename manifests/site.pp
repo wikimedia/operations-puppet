@@ -990,11 +990,20 @@ node /^ganeti[12]00[0-8]\.(codfw|eqiad)\.wmnet$/ {
     role(ganeti)
 }
 
-# new edge ganeti hosts T226444
-node /^ganeti[34]00[1-3]\.ulsfo.wmnet$/ {
+# new esams ganeti cluster
+node /^ganeti300[12]\.esams\.wmnet$/ {
     role(spare::system)
 }
 
+# esams authdns (ns2) - on loan temporarily from unused ganeti cluster above!
+node 'ganeti3003.esams.wmnet' {
+    role(authdns::server)
+}
+
+# new ulsfo ganeti hosts T226444
+node /^ganeti400[123]\.ulsfo\.wmnet$/ {
+    role(spare::system)
+}
 
 # Virtual machine being turned up to run Grafana (T210416)
 node 'grafana1001.eqiad.wmnet' {
