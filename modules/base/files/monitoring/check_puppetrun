@@ -8,6 +8,7 @@
 # The script will use the puppet last_run-summary.yaml
 # file to determine when last Puppet ran
 
+require 'fileutils'
 require 'optparse'
 # safe-yaml has a dependency on time which is not fixed until 1.0.5
 # https://github.com/dtao/safe_yaml/issues/80
@@ -21,6 +22,7 @@ runlockfile = "/var/lib/puppet/state/agent_catalog_run.lock"
 adminlockfile = "/var/lib/puppet/state/agent_disabled.lock"
 summaryfile = "/var/lib/puppet/state/last_run_summary.yaml"
 reportfile = "/var/lib/puppet/state/last_run_report.yaml"
+icingafile = "/var/lib/puppet/state/icinga_puppet_fail.lock"
 enabled = true
 alert_master_fail = false
 lastrun = 0
@@ -28,7 +30,10 @@ failcount = 0
 warn = 0
 crit = 0
 disable_grace = 86400  # 24 hours
+fail_grace = 86400  # 24 hours
 enabled_only = false
+# init variable
+first_fail_time = Time.now
 SafeYAML::OPTIONS[:default_mode] = :safe
 
 opt = OptionParser.new
@@ -65,8 +70,13 @@ opt.on("--alert-master-fail", "Alert on failures related to Puppet master issues
     alert_master_fail = true
 end
 
-opt.on("--disable_grace", "iNumber of seconds a host can be disabled before alerting. default: #{disable_grace}") do |f|
+opt.on("--disable-grace", "Number of seconds a host can be disabled before alerting. default: #{disable_grace}") do |f|
     disable_grace = f
+end
+
+opt.parse!
+opt.on("--fail-grace", "Number of seconds before a puppet failure is CRITICAL instead of WARNING. default: #{fail_grace}") do |f|
+    fail_grace = f
 end
 
 opt.parse!
@@ -108,6 +118,16 @@ else
     failcount = :no_summary_file
 end
 
+if failcount.is_a(Symbol)
+  if ! File.exist?(icingafile)
+    FileUtils.touch(icingafile)
+  end
+  first_fail_time = File::stat(icingafile).ctime
+elsif File.exist?(icingafile)
+  # successful puppet run make sure we clean up any old files
+  File.delete(icingafile)
+end
+
 def time_ago(s)
   units = {
     24 * 60 * 60 => 'day',
@@ -123,7 +143,7 @@ def time_ago(s)
   end
   "Indeterminate amount of time (see time_ago)"
 end
-if alert_master_fail
+if alert_master_fail || first_fail_time - fail_grace > Time.now
   STATUS = 'CRITICAL'
   EXIT = 2
 else
