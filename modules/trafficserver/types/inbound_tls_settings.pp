@@ -57,7 +57,10 @@
 #
 # [*do_ocsp*]
 #   Enables (1) or disables (0) OCSP stapling.
-
+#
+# [*ssl_handshake_timeout_in*]
+#   When enabled this limits the total duration for the server side SSL handshake. Setting it to 0 disables
+#   the timeout.
 type Trafficserver::Inbound_TLS_settings = Struct[{
     'common'                   => Trafficserver::TLS_settings,
     'cert_path'                => Optional[Stdlib::Absolutepath],
@@ -74,4 +77,5 @@ type Trafficserver::Inbound_TLS_settings = Struct[{
     'session_ticket_enable'    => Integer[0, 1],
     'load_elevated'            => Optional[Integer[0, 1]],
     'do_ocsp'                  => Integer[0, 1],
+    'ssl_handshake_timeout_in' => Integer[0],
 }]
