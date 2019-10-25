@@ -36,5 +36,7 @@ esams:
     cp3063.esams.wmnet: [varnish-fe, ats-be, nginx]
     cp3065.esams.wmnet: [varnish-fe, ats-be, nginx]
   dns:
+    dns3001.wikimedia.org: [pdns_recursor]
+    dns3002.wikimedia.org: [pdns_recursor]
     maerlant.wikimedia.org: [pdns_recursor]
     nescio.wikimedia.org: [pdns_recursor]
