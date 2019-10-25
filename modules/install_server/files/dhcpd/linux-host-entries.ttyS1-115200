@@ -3359,26 +3359,6 @@ host lvs2010 {
     fixed-address lvs2010.codfw.wmnet;
 }
 
-host lvs3001 {
-    hardware ethernet 90:b1:1c:45:56:0d;
-    fixed-address lvs3001.esams.wmnet;
-}
-
-host lvs3002 {
-    hardware ethernet 90:b1:1c:57:3b:35;
-    fixed-address lvs3002.esams.wmnet;
-}
-
-host lvs3003 {
-    hardware ethernet 90:b1:1c:57:53:93;
-    fixed-address lvs3003.esams.wmnet;
-}
-
-host lvs3004 {
-    hardware ethernet 90:b1:1c:57:5f:2a;
-    fixed-address lvs3004.esams.wmnet;
-}
-
 host lvs3005 {
     hardware ethernet B0:26:28:41:1E:30;
     fixed-address lvs3005.esams.wmnet;
