@@ -293,10 +293,6 @@ monitoring::groups:
     description: Equipment with asw-c-codfw as uplink
   asw-d-codfw:
     description: Equipment with asw-d-codfw as uplink
-  asw-esams:
-    description: Equipment with asw-esams as uplink
-  csw2-esams:
-    description: Equipment with csw2-esams as uplink
   asw2-esams.mgmt.esams.wmnet:
     description: Equipment with asw2-esams as uplink
 

@@ -249,11 +249,6 @@ menu = cr2-knams
 title = cr2-knams.wikimedia.org
 host = cr2-knams.wikimedia.org
 
-+++ csw2-esams
-menu = csw2-esams
-title = csw2-esams.mgmt.esams.wmnet
-host = csw2-esams.mgmt.esams.wmnet
-
 +++ asw2-esams
 menu = asw2-esams
 title = asw2-esams.mgmt.esams.wmnet

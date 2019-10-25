@@ -1,6 +1,4 @@
-asw-esams.mgmt.esams.wmnet;juniper;up;
 asw2-esams.mgmt.esams.wmnet;juniper;up;
-csw2-esams.mgmt.esams.wmnet;juniper;up;
 cr3-esams.wikimedia.org;juniper;up;
 cr2-esams.wikimedia.org;juniper;up;
 cr2-knams.wikimedia.org;juniper;up;
@@ -40,7 +38,7 @@ mr1-eqsin.wikimedia.org;juniper;up;
 scs-ulsfo.mgmt.ulsfo.wmnet;opengear;up;
 scs-a8-eqiad.mgmt.eqiad.wmnet;opengear;up;
 scs-a1-codfw.mgmt.codfw.wmnet;opengear;up;
-scs-oe11-esams.mgmt.esams.wmnet;opengear;up;
+scs-oe16-esams.mgmt.esams.wmnet;opengear;up;
 scs-c1-codfw.mgmt.codfw.wmnet;opengear;up;
 scs-c1-eqiad.mgmt.eqiad.wmnet;opengear;up;
 scs-eqsin.mgmt.eqsin.wmnet;opengear;up;
