@@ -94,6 +94,16 @@ class profile::lists {
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Mailman',
     }
 
+    prometheus::node_file_count {'track mailman queue depths':
+        paths   => [
+            '/var/lib/mailman/qfiles/in',
+            '/var/lib/mailman/qfiles/bounces',
+            '/var/lib/mailman/qfiles/virgin',
+            '/var/lib/mailman/qfiles/out',
+        ],
+        outfile => '/var/lib/prometheus/node.d/mailman_queues.prom'
+    }
+
     file { '/usr/local/lib/nagios/plugins/check_mailman_queue':
         ensure => present,
         owner  => 'root',
