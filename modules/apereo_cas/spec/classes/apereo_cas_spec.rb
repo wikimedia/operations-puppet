@@ -14,7 +14,7 @@ describe 'apereo_cas' do
   on_supported_os(test_on).each do |os, facts|
     context "on #{os}" do
       let(:facts) { facts }
-      let(:params) { { keystore_source: 'apereo_cas/thekeystore' } }
+      let(:params) { { keystore_source: 'puppet:///modules/apereo_cas/thekeystore' } }
       describe 'test with default settings' do
         it { is_expected.to compile.with_all_deps }
         ['/srv', '/srv/cas', '/srv/cas/overlay-template',
