@@ -183,12 +183,7 @@ node 'bast2002.wikimedia.org' {
 
 }
 
-# Bastion in the Netherlands (replaced bast3001)
-node 'bast3002.wikimedia.org' {
-    role(bastionhost::pop)
-
-}
-
+# Bastion in the Netherlands (replaced bast3002)
 node 'bast3004.wikimedia.org' {
     role(bastionhost::pop)
 }
