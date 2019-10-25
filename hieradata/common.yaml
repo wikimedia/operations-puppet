@@ -929,7 +929,6 @@ http_proxy: "http://webproxy.%{::site}.wmnet:8080"
 authdns_servers:
   - 'authdns1001.wikimedia.org'
   - 'authdns2001.wikimedia.org'
-  - 'multatuli.wikimedia.org'
   - 'ganeti3003.esams.wmnet'
 
 # acme-chief active host
