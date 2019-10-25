@@ -21,18 +21,16 @@ class profile::microsites::design(
         branch    => 'master',
     }
 
-    git::clone { 'design/style-guide':
-        ensure    => 'latest',
-        source    => 'gerrit',
-        directory => '/srv/org/wikimedia/design-style-guide',
-        branch    => 'master',
-    }
-
     git::clone { 'design/strategy':
         ensure    => 'latest',
         source    => 'gerrit',
         directory => '/srv/org/wikimedia/design-strategy',
         branch    => 'master',
     }
+
+    scap::target { 'design/style-guide':
+        deploy_user => 'deploy-service',
+    }
+
 }
 
