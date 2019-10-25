@@ -27,7 +27,7 @@ class profile::idp(
         port  => 443,
     }
 
-    $groovy_source = 'puppet:///modules/profile/idp/global_principala_attribute_predicate.groovy'
+    $groovy_source = 'puppet:///modules/profile/idp/global_principal_attribute_predicate.groovy'
     class { 'apereo_cas':
         server_name            => 'https://idp.wikimedia.org',
         server_prefix          => '/',

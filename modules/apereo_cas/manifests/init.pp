@@ -52,7 +52,7 @@ class apereo_cas (
     $services_dir = "${base_dir}/services"
 
     ensure_packages(['openjdk-11-jdk'])
-    $groovy_file = '/etc/cas/global_principala_attribute_predicate.groovy'
+    $groovy_file = '/etc/cas/global_principal_attribute_predicate.groovy'
     if $groovy_source {
         file{$groovy_file:
             source => $groovy_source,
