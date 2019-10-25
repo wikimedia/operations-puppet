@@ -456,6 +456,8 @@ host bast3002 {
 host bast3004 {
     hardware ethernet B0:26:28:6E:FA:20;
     fixed-address bast3004.wikimedia.org;
+
+    next-server 208.80.154.22; # install1002 (tftp server)
 }
 
 host bast4002 {
