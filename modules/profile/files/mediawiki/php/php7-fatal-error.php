@@ -64,28 +64,39 @@ if ( $newlinePos !== false && $newlinePos < strlen( $trace ) - 1 ) {
 	$trace = substr( $trace, $newlinePos + 1 );
 }
 
+// Should match the structure of exceptions logged by MediaWiki core.
+// so that it blends in with its log channel and the Logstash dashboards
+// written for it.
+//
+// The 'type' and 'channel' are applied later via puppet://logstash/filter-syslog.conf.
 $info = [
+	// Match mediawiki/core: MWExceptionHandler
 	'exception' => [
 		'message' => $message,
 		'file' => "{$err['file']}:{$err['line']}",
 		'trace' => $trace,
 	],
+	'caught_by' => '/etc/php/php7-fatal-error.php (via wmerrors)',
+	// Match wmf-config: logging.php
 	'phpversion' => PHP_VERSION,
 ];
+// Match mediawiki/core: MediaWiki\Logger\Monolog\WikiProcessor
 if ( isset( $_SERVER['UNIQUE_ID'] ) ) {
 	$info['reqId'] = $_SERVER['UNIQUE_ID'];
 }
-if ( isset( $_SERVER['REQUEST_METHOD'] ) ) {
-	$info['http_method'] = $_SERVER['REQUEST_METHOD'];
-}
-if ( isset( $_SERVER['HTTP_HOST'] ) ) {
-	$info['server'] = $_SERVER['HTTP_HOST'];
-}
+// Match Monolog\Processor\WebProcessor
+// https://github.com/Seldaek/monolog/blob/2.0.0/src/Monolog/Processor/WebProcessor.php#L33
 if ( isset( $_SERVER['REQUEST_URI'] ) ) {
 	$info['url'] = $_SERVER['REQUEST_URI'];
 }
 if ( isset( $_SERVER['REMOTE_ADDR'] ) ) {
 	$info['ip'] = $_SERVER['REMOTE_ADDR'];
+}
+if ( isset( $_SERVER['REQUEST_METHOD'] ) ) {
+	$info['http_method'] = $_SERVER['REQUEST_METHOD'];
+}
+if ( isset( $_SERVER['SERVER_NAME'] ) ) {
+	$info['server'] = $_SERVER['SERVER_NAME'];
 }
 
 $syslogMessage = '@cee: ' . json_encode( $info,  JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE );
