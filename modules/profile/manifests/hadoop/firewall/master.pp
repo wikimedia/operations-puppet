@@ -2,9 +2,16 @@
 #
 # Set of common firewall rules for Hadoop Master nodes (active and standby)
 #
+# == Parameters
+# [*cluster_ferm_srange*]
+#   Only hosts in this srange will be allowed to contact non-client related Hadoop master services.
+#
+# [*client_ferm_srrange*]
+#   Hosts must be in this srange to contact Hadoop as a client.
+#
 class profile::hadoop::firewall::master(
-    $analytics_srange       = hiera('profile::hadoop::firewall::master::analytics_srange', '$DOMAIN_NETWORKS'),
-    $analytics_druid_srange = hiera('profile::hadoop::firewall::master::analytics_druid_srange', '$DOMAIN_NETWORKS'),
+    $cluster_ferm_srange    = hiera('profile::hadoop::firewall::master::cluster_ferm_srange', '$DOMAIN_NETWORKS'),
+    $client_ferm_srange     = hiera('profile::hadoop::firewall::master::client_ferm_srange', '$DOMAIN_NETWORKS'),
     $hdfs_ssl_enabled       = hiera('profile::hadoop::firewall::master::hdfs::ssl_enabled', false),
     $yarn_ssl_enabled       = hiera('profile::hadoop::firewall::master::yarn::ssl_enabled', false),
     $mapred_ssl_enabled     = hiera('profile::hadoop::firewall::master::mapred::ssl_enabled', false),
@@ -35,79 +42,79 @@ class profile::hadoop::firewall::master(
     ferm::service{ 'hadoop-hdfs-namenode':
         proto  => 'tcp',
         port   => '8020',
-        srange => $analytics_druid_srange,
+        srange => $client_ferm_srange,
     }
 
     ferm::service{ 'hadoop-hdfs-zkfc':
         proto  => 'tcp',
         port   => '8019',
-        srange => $analytics_srange,
+        srange => $cluster_ferm_srange,
     }
 
     ferm::service{ 'hadoop-hdfs-namenode-http-ui':
         proto  => 'tcp',
         port   => $hadoop_hdfs_namenode_http_port,
-        srange => $analytics_srange,
+        srange => $client_ferm_srange,
     }
 
     ferm::service{ 'hadoop-hdfs-namenode-jmx':
         proto  => 'tcp',
         port   => '9980',
-        srange => $analytics_srange,
+        srange => $cluster_ferm_srange,
     }
 
     ferm::service{ 'hadoop-yarn-resourcemanager-scheduler':
         proto  => 'tcp',
         port   => '8030',
-        srange => $analytics_srange,
+        srange => $cluster_ferm_srange,
     }
 
     ferm::service{ 'hadoop-yarn-resourcemanager-tracker':
         proto  => 'tcp',
         port   => '8031',
-        srange => $analytics_srange,
+        srange => $cluster_ferm_srange,
     }
 
     ferm::service{ 'hadoop-yarn-resourcemanager':
         proto  => 'tcp',
         port   => '8032',
-        srange => $analytics_druid_srange,
+        srange => $client_ferm_srange,
     }
 
     ferm::service{ 'hadoop-yarn-resourcemanager-admin':
         proto  => 'tcp',
         port   => '8033',
-        srange => $analytics_srange,
+        srange => $cluster_ferm_srange,
     }
 
     ferm::service{ 'hadoop-yarn-resourcemanager-http-ui':
         proto  => 'tcp',
         port   => $hadoop_yarn_resourcemanager_http_port,
-        srange => $analytics_srange,
+        srange => $client_ferm_srange,
     }
 
     ferm::service{ 'hadoop-mapreduce-historyserver':
         proto  => 'tcp',
         port   => '10020',
-        srange => $analytics_srange,
+        srange => $client_ferm_srange,
     }
 
     ferm::service{ 'hadoop-mapreduce-historyserver-admin':
         proto  => 'tcp',
         port   => '10033',
-        srange => $analytics_srange,
+        srange => $cluster_ferm_srange,
     }
 
     ferm::service{ 'hadoop-mapreduce-historyserver-http-ui':
         proto  => 'tcp',
         port   => $hadoop_mapreduce_historyserver_http_port,
-        srange => $analytics_srange,
+        srange => $client_ferm_srange,
     }
 
     ferm::service{ 'hadoop-yarn-resourcemanager-jmx':
         proto  => 'tcp',
         port   => '9983',
-        srange => $analytics_srange,
+        srange => $cluster_ferm_srange,
     }
 }
 

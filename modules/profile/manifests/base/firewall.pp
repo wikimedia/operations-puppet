@@ -20,6 +20,8 @@ class profile::base::firewall (
                                                                 {default_value => []}),
     Array[Stdlib::IP::Address] $druid_public_hosts      = lookup('druid_public_hosts',
                                                                 {default_value => []}),
+    Array[Stdlib::IP::Address] $labstore_hosts          = lookup('labstore_hosts',
+                                                                {default_value => []}),
     Array[Stdlib::IP::Address] $mysql_root_clients      = lookup('mysql_root_clients',
                                                                 {default_value => []}),
     Array[Stdlib::IP::Address] $deployment_hosts        = lookup('deployment_hosts',
@@ -37,6 +39,7 @@ class profile::base::firewall (
         kafka_brokers_logging   => $kafka_brokers_logging,
         zookeeper_hosts_main    => $zookeeper_hosts_main,
         druid_public_hosts      => $druid_public_hosts,
+        labstore_hosts          => $labstore_hosts,
         mysql_root_clients      => $mysql_root_clients,
         deployment_hosts        => $deployment_hosts,
     }

@@ -40,8 +40,6 @@ profile::hadoop::common::ensure_ssl_config: true
 profile::hadoop::master::hadoop_user_groups: "analytics-users analytics-privatedata-users analytics-admins analytics-search-users druid"
 
 profile::hadoop::firewall::master::hdfs::ssl_enabled: true
-profile::hadoop::firewall::master::analytics_srange: '$ANALYTICS_NETWORKS'
-profile::hadoop::firewall::master::analytics_druid_srange: '(($ANALYTICS_NETWORKS $DRUID_PUBLIC_HOSTS))'
 
 profile::kerberos::keytabs::keytabs_metadata:
   - role: 'hadoop'
@@ -69,3 +67,8 @@ profile::kerberos::keytabs::keytabs_metadata:
     group: 'analytics'
     filename: 'analytics.keytab'
     parent_dir_grp: 'analytics'
+
+# Hadoop Services must be in this srange to be part of Hadoop.
+profile::hadoop::firewall::master::cluster_ferm_srange: '$ANALYTICS_NETWORKS'
+# Clients must be in this srange to use Hadoop.
+profile::hadoop::firewall::master::client_ferm_srange: '(($ANALYTICS_NETWORKS $DRUID_PUBLIC_HOSTS $LABSTORE_HOSTS))'

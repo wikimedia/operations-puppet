@@ -38,8 +38,11 @@ profile::analytics::database::meta::backup_dest::hive::metastore_host: 'analytic
 profile::analytics::database::meta::backup_dest::oozie_host: 'analytics1030.eqiad.wmnet'
 
 profile::hadoop::firewall::master::hdfs::ssl_enabled: true
-profile::hadoop::firewall::master::analytics_srange: '$ANALYTICS_NETWORKS'
-profile::hadoop::firewall::master::analytics_druid_srange: '(($ANALYTICS_NETWORKS $DRUID_PUBLIC_HOSTS))'
+
+# Hadoop Services must be in this srange to be part of Hadoop.
+profile::hadoop::firewall::master::cluster_ferm_srange: '$ANALYTICS_NETWORKS'
+# Clients must be in this srange to use Hadoop.
+profile::hadoop::firewall::master::client_ferm_srange: '(($ANALYTICS_NETWORKS $DRUID_PUBLIC_HOSTS))'
 
 profile::hadoop::backup::namenode::monitoring_enabled: true
 

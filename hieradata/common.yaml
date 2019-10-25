@@ -443,6 +443,8 @@ puppet_ca_server: puppetmaster1001.eqiad.wmnet
 puppet_ca_source: puppet:///files/puppet/ca.production.pem
 manage_puppet_ca_file: true
 
+# This list is mostly maintained for rsync hosts_allow.
+# Servers listed here can rsync pull from each other.
 statistics_servers:
   - stat1004.eqiad.wmnet
   - stat1005.eqiad.wmnet
@@ -452,9 +454,7 @@ statistics_servers:
   - notebook1004.eqiad.wmnet
   - labstore1006.wikimedia.org
   - labstore1007.wikimedia.org
-labstore_servers:
-  - labstore1006.wikimedia.org
-  - labstore1007.wikimedia.org
+
 scratch_active_server: cloudstore1009.wikimedia.org
 secondary_nfs_servers:
   - cloudstore1008.wikimedia.org
@@ -1311,6 +1311,11 @@ druid_public_hosts:
 - 2620:0:861:102:10:64:16:172 # druid1005.eqiad.wmnet
 - 10.64.48.171                # druid1006.eqiad.wmnet
 - 2620:0:861:107:10:64:48:171 # druid1006.eqiad.wmnet
+labstore_hosts:
+- 208.80.154.7                # labstore1006.wikimedia.org
+- 2620:0:861:1:208:80:154:7   # labstore1006.wikimedia.org
+- 208.80.155.106              # labstore1007.wikimedia.org
+- 2620:0:861:4:208:80:155:106 # labstore1007.wikimedia.org
 
 mysql_root_clients:
 # ipv6 interfaces are not yet allowed due to mysql grants

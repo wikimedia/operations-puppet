@@ -2,7 +2,7 @@
 #
 class profile::statistics::private(
     $statistics_servers  = hiera('statistics_servers'),
-    $labstore_servers    = hiera('labstore_servers'),
+    $labstore_hosts      = hiera('labstore_hosts'),
     $statsd_host         = hiera('statsd'),
     $graphite_host       = hiera('profile::statistics::private::graphite_host'),
     $wmde_secrets        = hiera('wmde_secrets'),
@@ -73,7 +73,7 @@ class profile::statistics::private(
     rsync::server::module { 'dumps-webrequest':
         path        => '/srv/log/webrequest/archive/dumps.wikimedia.org',
         read_only   => 'no',
-        hosts_allow => $labstore_servers,
+        hosts_allow => $labstore_hosts,
         auto_ferm   => true,
     }
 
