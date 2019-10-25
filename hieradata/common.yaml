@@ -930,6 +930,7 @@ authdns_servers:
   - 'authdns1001.wikimedia.org'
   - 'authdns2001.wikimedia.org'
   - 'multatuli.wikimedia.org'
+  - 'ganeti3003.esams.wmnet'
 
 # acme-chief active host
 acmechief_host: 'acmechief1001.eqiad.wmnet'
