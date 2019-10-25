@@ -305,11 +305,11 @@ node /^cp402[1-6]\.ulsfo\.wmnet$/ {
     role(cache::upload)
 }
 
-node /^cp403[012]\.ulsfo\.wmnet$/ {
+node /^cp403[12]\.ulsfo\.wmnet$/ {
     role(cache::text)
 }
 
-node /^cp402[789]\.ulsfo\.wmnet$/ {
+node /^cp40(2[789]|30)\.ulsfo\.wmnet$/ {
     role(cache::text_ats)
 }
 
