@@ -8,5 +8,3 @@ profile::base::domain_search:
   - eqsin.wmnet
 admin::groups:
   - all-users
-profile::bastionhost::migration::src_host: bast3002
-profile::bastionhost::migration::dst_host: bast3004

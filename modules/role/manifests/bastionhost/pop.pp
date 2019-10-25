@@ -8,8 +8,6 @@ class role::bastionhost::pop {
     require ::role::prometheus::ops
     require ::profile::ipmi::mgmt
 
-    include ::profile::bastionhost::migration
-
     class { '::httpd':
         modules => ['proxy', 'proxy_http'],
     }

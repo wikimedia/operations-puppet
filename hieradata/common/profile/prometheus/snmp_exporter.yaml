@@ -1,7 +1,6 @@
 # Allow Prometheus (ops instance) hosts to talk to netmon's snmp_exporter in
 # eqiad and codfw.
 profile::prometheus::snmp_exporter::prometheus_nodes:
-  - bast3002.wikimedia.org
   - bast3004.wikimedia.org
   - bast4002.wikimedia.org
   - bast5001.wikimedia.org
