@@ -55,7 +55,7 @@ class apereo_cas (
     $groovy_file = '/etc/cas/global_principala_attribute_predicate.groovy'
     if $groovy_source {
         file{$groovy_file:
-            source => $groovy_file,
+            source => $groovy_source,
         }
     }
     file {wmflib::dirtree($overlay_dir) + [$base_dir, $services_dir, $config_dir, $overlay_dir]:
