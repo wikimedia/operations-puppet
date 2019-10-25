@@ -285,10 +285,9 @@ node /^cp20(0[39]|15|21)\.codfw\.wmnet$/ {
     role(test)
 }
 
-# ex cp-misc_esams
-node /^cp30(0[78]|10)\.esams\.wmnet$/ {
-    role(spare::system)
-}
+#
+# esams caches
+#
 
 node /^cp30(5[02468]|6[024])\.esams\.wmnet$/ {
     role(cache::text)

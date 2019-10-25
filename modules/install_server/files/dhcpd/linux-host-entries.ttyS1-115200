@@ -960,21 +960,6 @@ host cp2026 {
     fixed-address cp2026.codfw.wmnet;
 }
 
-host cp3007 {
-    hardware ethernet D4:AE:52:88:66:2F;
-    fixed-address cp3007.esams.wmnet;
-}
-
-host cp3008 {
-    hardware ethernet D4:AE:52:8C:61:E3;
-    fixed-address cp3008.esams.wmnet;
-}
-
-host cp3010 {
-    hardware ethernet D4:AE:52:8A:7E:6E;
-    fixed-address cp3010.esams.wmnet;
-}
-
 host cp3050 {
     hardware ethernet B0:26:28:6E:FE:C0;
     fixed-address cp3050.esams.wmnet;
