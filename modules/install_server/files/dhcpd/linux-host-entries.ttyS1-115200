@@ -3404,11 +3404,6 @@ host lvs5003 {
     fixed-address lvs5003.eqsin.wmnet;
 }
 
-host maerlant {
-    hardware ethernet a4:ba:db:30:d1:12;
-    fixed-address maerlant.wikimedia.org;
-}
-
 host maps1001 {
     hardware ethernet 1c:98:ec:21:88:9c;
     fixed-address maps1001.eqiad.wmnet;
@@ -5571,11 +5566,6 @@ host mwmaint1002 {
 host mwmaint2001 {
     hardware ethernet 14:02:ec:3f:47:8c;
     fixed-address mwmaint2001.codfw.wmnet;
-}
-
-host nescio {
-    hardware ethernet a4:ba:db:30:d0:df;
-    fixed-address nescio.wikimedia.org;
 }
 
 host netmon1002 {

@@ -1328,11 +1328,6 @@ node /^lvs500[123]\.eqsin\.wmnet$/ {
     role(lvs::balancer)
 }
 
-node 'maerlant.wikimedia.org' {
-    role(recursor)
-
-}
-
 node /^maps100[1-3]\.eqiad\.wmnet/ {
     role(maps::slave)
 }
@@ -1682,11 +1677,6 @@ node /^ncredir200[12]\.codfw\.wmnet$/ {
 # SWAP (Jupyter Notebook) Servers with Analytics Cluster Access
 node /notebook100[34].eqiad.wmnet/ {
     role(swap)
-}
-
-node 'nescio.wikimedia.org' {
-    role(recursor)
-
 }
 
 node /^netbox(1001|2001)\.wikimedia\.org$/ {

@@ -54,7 +54,7 @@ def main():
     # fixed for L1TF/MDS
     blacklist_ssbd_l1tf = ['dbproxy1001', 'dbproxy1002', 'dbproxy1007', 'dbproxy1008',
                            'es2001', 'es2002', 'es2003', 'es2004']
-    blacklist_mds = ['bast3002', 'maerlant', 'nescio', 'multatuli', 'cp1008', 'helium',
+    blacklist_mds = ['bast3002', 'multatuli', 'cp1008', 'helium',
                      'tungsten', 'dbproxy1003'] + blacklist_ssbd_l1tf
 
     if apt_pkg.version_compare(current_kernelpackage_version, '4.9.107-1') > 0:
