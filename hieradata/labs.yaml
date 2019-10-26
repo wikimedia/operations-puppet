@@ -205,7 +205,7 @@ profile::trafficserver::backend::logs:
     mode: ascii_pipe
 profile::trafficserver::backend::mapping_rules:
   - type: map
-    target: http://upload.wmflabs.org
+    target: http://upload.beta.wmflabs.org
     replacement: http://deployment-ms-fe03.deployment-prep.eqiad.wmflabs
     params:
         - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
