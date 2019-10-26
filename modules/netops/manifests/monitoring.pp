@@ -133,7 +133,8 @@ class netops::monitoring {
         'eqiad' => { ipv4 => '1790945', ipv6 => '1790947', },
         'codfw' => { ipv4 => '1791210', ipv6 => '1791212', },
         'ulsfo' => { ipv4 => '1791307', ipv6 => '1791309', },
-        'eqsin' => { ipv4 => '11645085', ipv6 => '11645088', },
+        # eqsin IPv6 is allowed more permitted failures, as it is noisy.
+        'eqsin' => { ipv4 => '11645085', ipv6 => '11645088', ipv6_failures => 50, },
     }
     create_resources(netops::ripeatlas, $atlas_measurements)
 }
