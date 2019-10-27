@@ -42,14 +42,38 @@ class lxc(
         ensure => present,
     }
 
-    file { '/etc/default/lxc-net':
-        ensure  => 'present',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        content => 'USE_LXC_BRIDGE="true"',
-        require => Package['lxc'],
-        notify  => Service['lxc-net'],
+    if os_version('debian >= buster') {
+        package { 'lxc-templates':
+            ensure => present,
+        }
+
+        require_package(
+            'ebtables',
+            'iptables',
+            'libvirt-clients',
+            'libvirt-daemon-system',
+        )
+
+        exec { 'virsh net-start default':
+            command => '/usr/bin/virsh net-start default',
+            unless  => "/usr/bin/virsh -q net-list --all|/bin/grep -Eq '^\s*default\s+active'",
+            require => [
+                Package['ebtables'],
+                Package['iptables'],
+                Package['libvirt-clients'],
+                Package['libvirt-daemon-system'],
+            ],
+        }
+        exec { 'virsh net-autostart default':
+            command => '/usr/bin/virsh net-autostart default',
+            creates => '/etc/libvirt/qemu/networks/autostart/default.xml',
+            require => [
+                Package['ebtables'],
+                Package['iptables'],
+                Package['libvirt-clients'],
+                Package['libvirt-daemon-system'],
+            ],
+        }
     }
 
     file { '/etc/lxc/default.conf':
@@ -57,7 +81,17 @@ class lxc(
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        source  => 'puppet:///modules/lxc/jessie/etc-lxc-default.conf',
+        source  => "puppet:///modules/lxc/${::lsbdistcodename}/etc-lxc-default.conf",
+        require => Package['lxc'],
+        notify  => Service['lxc-net'],
+    }
+
+    file { '/etc/default/lxc-net':
+        ensure  => 'present',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => 'USE_LXC_BRIDGE="true"',
         require => Package['lxc'],
         notify  => Service['lxc-net'],
     }
