@@ -21,9 +21,10 @@
     # CSP reporting until the rules have been tweaked (T213223)
     Header always set Content-Security-Policy-Report-Only "\
         default-src 'self'; \
-        img-src 'self' data:; \
+        img-src 'self' www.wikimedia.org upload.wikimedia.org data:; \
         object-src 'none'; \
-        script-src 'unsafe-inline' 'self'; \
+        script-src 'unsafe-inline' 'unsafe-eval' 'self'; \
+        style-src 'unsafe-inline' 'self'; \
         sandbox allow-scripts allow-forms allow-popups; \
         form-action 'self'; \
         report-uri  https://meta.wikimedia.org/w/api.php?action=cspreport&format=none&source=doc.wikimedia.org& \
