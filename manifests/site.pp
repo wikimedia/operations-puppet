@@ -312,7 +312,11 @@ node /^cp500[1-6]\.eqsin\.wmnet$/ {
     role(cache::upload)
 }
 
-node /^cp50(0[789]|1[012])\.eqsin\.wmnet$/ {
+node 'cp5007.eqsin.wmnet' {
+    role(cache::text_ats)
+}
+
+node /^cp50(0[89]|1[012])\.eqsin\.wmnet$/ {
     role(cache::text)
 }
 
