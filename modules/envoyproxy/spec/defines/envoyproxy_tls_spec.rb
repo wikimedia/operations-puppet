@@ -66,7 +66,7 @@ describe 'envoyproxy::tls_terminator' do
                                 .with_content(/port_value: 123/)
                                 .without_content(/# Non-SNI support/)
                                 .with_content(/server_names: \["citoid.svc.eqiad.wmnet", "citoid"\]/)
-                                .with_content(/route: { cluster: local_port_1234 }/)
+                                .with_content(/route: { cluster: local_port_1234, timeout: 65s }/)
           }
         end
       end
