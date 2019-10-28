@@ -12,18 +12,20 @@ class puppetmaster::puppetdb(
 ) {
     $puppetdb_pass = hiera('puppetdb::password::rw')
 
-    ensure_packages(['libnginx-mod-http-lua'])
-    # Open to suggestions for a more FHS location
-    file {'/etc/nginx/lua':
-        ensure =>  directory
-    }
-    file{'/etc/nginx/lua/filter_job_id.lua':
-        ensure => file,
-        source => 'puppet:///modules/puppetmaster/filter_job_id.lua'
+    if $filter_job_id {
+        ensure_packages(['libnginx-mod-http-lua'])
+        # Open to suggestions for a more FHS location
+        file {'/etc/nginx/lua':
+            ensure =>  directory
+        }
+        file{'/etc/nginx/lua/filter_job_id.lua':
+            ensure => file,
+            source => 'puppet:///modules/puppetmaster/filter_job_id.lua'
+        }
     }
     ## TLS Termination
     # Set up nginx as a reverse-proxy
-    ::base::expose_puppet_certs { '/etc/nginx':
+    base::expose_puppet_certs { '/etc/nginx':
         ensure          => present,
         provide_private => true,
         require         => Class['nginx'],
@@ -32,7 +34,7 @@ class puppetmaster::puppetdb(
 
     $ssl_settings = ssl_ciphersuite('nginx', 'mid')
     include ::sslcert::dhparam
-    ::nginx::site { 'puppetdb':
+    nginx::site { 'puppetdb':
         ensure  => present,
         content => template('puppetmaster/nginx-puppetdb.conf.erb'),
         require => Class['::sslcert::dhparam'],
