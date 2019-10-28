@@ -1,8 +1,12 @@
 class role::ipsec ($hosts = undef) {
-    include strongswan::monitoring::host
     $puppet_certname = $::fqdn
 
+    # Host IPsec/strongswan alerts are now aggregated into an "Aggregate IPsec Tunnel Status" check which is driven by prometheus
     include profile::prometheus::ipsec_exporter
+
+    file { '/usr/local/lib/nagios/plugins/check_strongswan':
+        ensure => absent,
+    }
 
     if $hosts != undef {
         $targets = $hosts
