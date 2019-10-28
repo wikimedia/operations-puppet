@@ -22,7 +22,7 @@ class PredicateLDAP implements Predicate<MultifactorAuthenticationProvider> {
   @Override
   boolean test(final MultifactorAuthenticationProvider p) {
     // If mfa-force-method only return true for the matching provider(s)
-    if (this.principal.attributes.contains('mfa-force-method')) {
+    if (this.principal.attributes.containsKey('mfa-force-method')) {
       logger.debug(
         'mfa-force-method detected, testing value [{}] against provider [{}] with service [{}]',
         this.principal.attributes['mfa-force-method'], p, this.service
@@ -32,7 +32,7 @@ class PredicateLDAP implements Predicate<MultifactorAuthenticationProvider> {
         return true
       } else { return false }
     // Return true for values in mfa-additional-method and allow other tests
-    } else if (this.principal.attributes.contains('mfa-additional-method')) {
+    } else if (this.principal.attributes.containsKey('mfa-additional-method')) {
       logger.debug(
         'mfa-additional-method detected, testing value [{}] against provider [{}] with service [{}]',
         this.principal.attributes['mfa-additional-method'], p, this.service
