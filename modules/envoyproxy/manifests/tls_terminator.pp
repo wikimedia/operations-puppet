@@ -66,6 +66,7 @@ define envoyproxy::tls_terminator(
     Optional[Stdlib::Port] $redir_port = undef,
     Boolean $access_log = false,
     Float $connect_timeout = 1.0,
+    Float $route_timeout = 65.0,
     Optional[String] $global_cert_path = undef,
     Optional[String] $global_key_path = undef
 ) {

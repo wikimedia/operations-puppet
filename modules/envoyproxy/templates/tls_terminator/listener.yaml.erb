@@ -32,7 +32,7 @@ filter_chains:
           domains: ["*"]
           routes:
           - match: { prefix: "/" }
-            route: { cluster: local_port_<%= upstream['upstream_port'] %>, timeout: 65s }
+            route: { cluster: local_port_<%= upstream['upstream_port'] %>, timeout: <%= @route_timeout %>s }
       http_filters: [{name: envoy.router, typed_config: {}}]
 <%- end -%>
 <%- end -%>
@@ -61,7 +61,7 @@ filter_chains:
           domains: <%= upstream['server_names'] %>
           routes:
           - match: { prefix: "/" }
-            route: { cluster: local_port_<%= upstream['upstream_port'] %> }
+            route: { cluster: local_port_<%= upstream['upstream_port'] %>, timeout: <%= @route_timeout %>s }
         <%- end -%>
       http_filters: [{name: envoy.router, typed_config: {}}]
       http_protocol_options:
