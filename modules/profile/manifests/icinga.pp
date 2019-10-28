@@ -295,7 +295,7 @@ class profile::icinga(
             # Daily splayed by the hostname ID (e.g. 1001) modulo 24h at minute 19
             'interval' => "*-*-* ${sprintf('%02d', Integer($::hostname[-4, -1]) % 24)}:19:00",
         },
-        logging_enabled           => true,
+        logging_enabled           => false,
         monitoring_enabled        => true,
         monitoring_contact_groups => 'admins',
         user                      => 'metamonitor',
