@@ -77,6 +77,7 @@ dns-rec-canary: P{dns2001.wikimedia.org}
 druid-analytics: P{O:druid::analytics::worker}
 druid-public: P{O:druid::public::worker}
 druid: A:druid-analytics or A:druid-public
+druid-canary: P{druid1003.eqiad.wmnet}
 druid-testcluster: P{O:druid::test_analytics::worker}
 dumps: P{O:dumps::generation::server::primary or O:dumps::generation::server::fallback or O:dumps::web::htmldumps}
 elastic: P{O:elasticsearch::cirrus}
