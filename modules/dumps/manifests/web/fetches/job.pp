@@ -43,7 +43,7 @@ define dumps::web::fetches::job(
         command     => "bash -c '/usr/bin/rsync -rt ${delete_option}${exclude_option} --chmod=go-w ${source}/ ${destination}/'",
         environment => "MAILTO=${mailto}",
         user        => $user,
-        require     => User[$user],
+        require     => File[$destination],
         minute      => $minute,
         hour        => $hour,
         month       => $month,
