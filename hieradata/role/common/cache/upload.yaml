@@ -78,3 +78,9 @@ profile::cache::ssl::unified::use_trafficserver_tls: true
 
 # profile::trafficserver::tls
 profile::trafficserver::tls::port: 443
+
+# Default weights for conftool
+profile::cache::base::default_weights:
+  varnish-fe: 1
+  nginx: 1
+  ats-be: 100

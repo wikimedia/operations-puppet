@@ -479,3 +479,10 @@ prometheus::varnishkafka_exporter::config:
 
 # trafficserver settings
 profile::trafficserver::tls::websocket_support: true
+
+# Default weights for conftool
+profile::cache::base::default_weights:
+  varnish-fe: 1
+  nginx: 1
+  varnish-be: 100
+  ats-be: 100

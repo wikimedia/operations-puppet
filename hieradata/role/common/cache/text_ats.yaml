@@ -252,3 +252,10 @@ prometheus::varnishkafka_exporter::config:
 diamond::remove: true
 profile::cache::varnish::frontend::backend_services: [ats-be,varnish-be]
 profile::trafficserver::tls::websocket_support: true
+
+# Default weights for conftool
+profile::cache::base::default_weights:
+  varnish-fe: 1
+  nginx: 1
+  varnish-be: 100
+  ats-be: 100

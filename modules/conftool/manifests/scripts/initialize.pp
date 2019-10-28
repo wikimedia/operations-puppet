@@ -5,7 +5,7 @@
 class conftool::scripts::initialize(Hash[String, Integer] $services) {
     file { '/usr/local/sbin/initialize':
         ensure  => present,
-        content => template('conftool/scripts/initialize.sh.erb'),
+        content => template('conftool/initialize.sh.erb'),
         owner   => 'root',
         group   => 'root',
         mode    => '0555'
