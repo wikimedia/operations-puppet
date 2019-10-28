@@ -7,6 +7,8 @@ class openstack::horizon::source_deploy(
     $instance_network_id,
     $ldap_user_pass,
     $all_regions,
+    $puppet_git_repo_name,
+    $puppet_git_repo_user,
     $venv_dir      = '/srv/deployment/horizon/venv',
     $webserver_hostname = 'horizon.wikimedia.org',
     $maintenance_mode = false,
@@ -17,6 +19,18 @@ class openstack::horizon::source_deploy(
         'virtualenv',
         'gettext',
     )
+
+    $puppet_git_repo_key_path = '/home/horizon/.ssh/instance-puppet-user.priv'
+    $puppet_git_repo_base_path = '/var/lib/git/cloud/'
+
+    file { $puppet_git_repo_key_path:
+        ensure    => file,
+        owner     => 'horizon',
+        group     => 'horizon',
+        mode      => '0600',
+        content   => secret('ssh/instance-puppet-user/instance-puppet-user_privkey.pem'),
+        show_diff => false,
+    }
 
     file { '/etc/openstack-dashboard/local_settings.py':
         content => template("openstack/${version}/horizon/local_settings.py.erb"),
@@ -139,5 +153,12 @@ class openstack::horizon::source_deploy(
         group   => 'horizon',
         mode    => '0755',
         require => File['/var/lib/openstack-dashboard/static'],
+    }
+
+    # Get ready to host a local git repo of instance puppet config
+    file { '/var/lib/git/cloud':
+        ensure => 'directory',
+        owner  => 'horizon',
+        mode   => '0755',
     }
 }

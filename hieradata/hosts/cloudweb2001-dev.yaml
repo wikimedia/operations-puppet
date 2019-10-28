@@ -1,5 +1,7 @@
 profile::openstack::codfw1dev::horizon::webserver_hostname: labtesthorizon.wikimedia.org
 profile::openstack::codfw1dev::horizon::maintenance_mode: false
+profile::openstack::codfw1dev::horizon::puppet_git_repo_name: instance-puppet-dev
+profile::openstack::codfw1dev::horizon::puppet_git_repo_user: instance-puppet-user
 
 striker::apache::server_name: labtesttoolsadmin.wikimedia.org
 

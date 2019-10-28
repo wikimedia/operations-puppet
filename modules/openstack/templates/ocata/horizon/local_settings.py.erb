@@ -548,6 +548,11 @@ CONSOLE_TYPE = False
 PUPPETMASTER_API  = "https://<%= scope.call_function(:hiera, ['labs_puppet_master']) %>:8140/future"
 PUPPET_CONFIG_BACKEND  = "http://<%= scope.call_function(:hiera, ['labs_puppet_master']) %>:8101/v1"
 
+PUPPET_GIT_REPO_URL = "ssh://<%= @puppet_git_repo_user %>@gerrit.wikimedia.org:29418/cloud/<%= @puppet_git_repo_name %>"
+PUPPET_GIT_REPO_PATH = "<%= @puppet_git_repo_base_path -%><%= @puppet_git_repo_name %>"
+PUPPET_GIT_REPO_USER = <%= @puppet_git_repo_user %>
+PUPPET_GIT_REPO_KEY_PATH = "<%= @puppet_git_repo_key_path %>"
+
 LDAP_USER = "uid=novaadmin,ou=people,dc=wikimedia,dc=org"
 ADMIN_USER = "novaadmin"
 ADMIN_PROJECT = "admin"
