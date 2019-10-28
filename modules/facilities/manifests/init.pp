@@ -25,6 +25,29 @@ class facilities {
         model => 'sentry4',
     }
 
+    # esams, single phase PDUs
+    facilities::monitor_pdu_1phase { 'ps1-oe14-ulsfo':
+        ip    => '10.21.0.16',
+        # PoPs don't have row diversity, using rack
+        row   => 'OE14',
+        site  => 'esams',
+        model => 'sentry4',
+    }
+    facilities::monitor_pdu_1phase { 'ps1-oe15-ulsfo':
+        ip    => '10.21.0.17',
+        # PoPs don't have row diversity, using rack
+        row   => 'OE15',
+        site  => 'esams',
+        model => 'sentry4',
+    }
+    facilities::monitor_pdu_1phase { 'ps1-oe16-ulsfo':
+        ip    => '10.21.0.18',
+        # PoPs don't have row diversity, using rack
+        row   => 'OE16',
+        site  => 'esams',
+        model => 'sentry4',
+    }
+
     # eqiad
     # A
     facilities::monitor_pdu_3phase { 'ps1-a1-eqiad':
