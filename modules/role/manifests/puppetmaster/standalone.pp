@@ -33,6 +33,11 @@
 #  Hostname for the puppetmaster. Defaults to fqdn. Is used for SSL
 #  certificates, virtualhost routing, etc
 #
+# [*enable_geoip*]
+#  Enable/disable provisioning ::puppetmaster::geoip for serving clients who
+#  use the ::geoip::data::puppet class in their manifests.
+#  Default: false
+#
 # filtertags: labs-common
 class role::puppetmaster::standalone(
     $autosign = false,
@@ -45,6 +50,7 @@ class role::puppetmaster::standalone(
     $labs_puppet_master = hiera('labs_puppet_master'),
     $storeconfigs = false,
     $puppetdb_host = undef,
+    Boolean $enable_geoip = false,
 ) {
     if ! $use_enc {
         fail('Ldap puppet node definitions are no longer supported.  The $use_enc param must be true.')
@@ -97,6 +103,7 @@ class role::puppetmaster::standalone(
         prevent_cherrypicks => $prevent_cherrypicks,
         extra_auth_rules    => $extra_auth_rules,
         config              => $config,
+        enable_geoip        => $enable_geoip,
     }
 
     # Don't attempt to use puppet-master service on stretch, we're using passenger.

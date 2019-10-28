@@ -37,6 +37,9 @@
 #        String - name of user who should own the git repositories
 #    - $git_group
 #        String - name of group which should own the git repositories
+#    - $enable_geoip
+#        Bool - Provision ::puppetmaster::geoip for serving clients who use
+#        the ::geoip::data::puppet class in their manifests
 class puppetmaster(
     $server_name='puppet',
     $bind_address='*',
@@ -60,6 +63,7 @@ class puppetmaster(
     $prevent_cherrypicks=true,
     $git_user='gitpuppet',
     $git_group='gitpuppet',
+    Boolean $enable_geoip = true,
 ){
 
     $gitdir = '/var/lib/git'
@@ -152,7 +156,9 @@ class puppetmaster(
         has_puppetdb => $has_puppetdb
     }
 
-    include ::puppetmaster::geoip
+    if $enable_geoip {
+        class { '::puppetmaster::geoip': }
+    }
     include ::puppetmaster::gitpuppet
     include ::puppetmaster::generators
 
