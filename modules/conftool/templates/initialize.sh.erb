@@ -12,7 +12,7 @@ function has_service() {
 if has_service "<%= name %>";
 then
    echo "Initializing service <%= name %> with weight <%= weight %>"
-   confctl select "name=$fqdn,service=<%= name %>" set/pooled=yes:weight=<%= weight %>
+   confctl --quiet select "name=$fqdn,service=<%= name %>" set/pooled=yes:weight=<%= weight %>
 else
     echo "Service <%= name %> not found."
 fi
