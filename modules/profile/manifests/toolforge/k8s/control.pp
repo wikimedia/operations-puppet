@@ -53,11 +53,11 @@ class profile::toolforge::k8s::control(
         k8s_etcd_cert_ca   => $k8s_etcd_cert_ca,
     }
 
-    class { 'toolforge::k8s::kubeadm_calico_yaml':
+    class { 'toolforge::k8s::calico_yaml':
         pod_subnet => $pod_subnet,
     }
 
-    class { '::toolforge::k8s::kubeadm_calico_workaround': }
+    class { '::toolforge::k8s::calico_workaround': }
 
-    class { '::toolforge::k8s::kubeadm_nginx_ingress_yaml': }
+    class { '::toolforge::k8s::nginx_ingress_yaml': }
 }

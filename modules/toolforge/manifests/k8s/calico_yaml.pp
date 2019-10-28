@@ -1,4 +1,4 @@
-class toolforge::k8s::kubeadm_calico_yaml(
+class toolforge::k8s::calico_yaml(
     String              $pod_subnet,
 ) {
     require ::toolforge::k8s::kubeadm

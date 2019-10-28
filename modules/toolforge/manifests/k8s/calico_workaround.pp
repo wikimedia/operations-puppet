@@ -1,4 +1,4 @@
-class toolforge::k8s::kubeadm_calico_workaround(
+class toolforge::k8s::calico_workaround(
 ) {
     require ::toolforge::k8s::kubeadm
 
