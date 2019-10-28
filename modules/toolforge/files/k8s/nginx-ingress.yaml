@@ -219,7 +219,7 @@ spec:
       serviceAccountName: nginx-ingress
       containers:
         - name: nginx-ingress-controller
-          image: quay.io/kubernetes-ingress-controller/nginx-ingress-controller:0.25.1
+          image: docker-registry.tools.wmflabs.org/nginx-ingress-controller:0.25.1
           args:
             - /nginx-ingress-controller
             - --http-port=8080
