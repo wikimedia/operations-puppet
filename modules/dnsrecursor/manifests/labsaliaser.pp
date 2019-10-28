@@ -34,8 +34,8 @@ class dnsrecursor::labsaliaser(
 
     file { '/etc/labs-dns-alias.yaml':
         ensure  => present,
-        owner   => 'root',
-        group   => 'root',
+        owner   => 'labsaliaser',
+        group   => 'labsaliaser',
         mode    => '0440',
         content => ordered_yaml($config),
     }
@@ -45,8 +45,8 @@ class dnsrecursor::labsaliaser(
     }
     file { '/usr/local/bin/labs-ip-alias-dump.py':
         ensure  => present,
-        owner   => 'root',
-        group   => 'root',
+        owner   => 'labsaliaser',
+        group   => 'labsaliaser',
         mode    => '0550',
         source  => 'puppet:///modules/dnsrecursor/labs-ip-alias-dump.py',
         require => [
