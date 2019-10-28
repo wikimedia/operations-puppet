@@ -8,6 +8,7 @@
 class profile::mediawiki::httpd(
     Integer $logrotate_retention = hiera('profile::mediawiki::httpd::logrotate_retention', 30),
     Optional[Integer] $workers_limit = hiera('profile::mediawiki::httpd::workers_limit', undef),
+    String $cluster = lookup('cluster'),
 ) {
     tag 'mediawiki', 'mw-apache-config'
 
@@ -147,6 +148,10 @@ class profile::mediawiki::httpd(
         content  => template('mediawiki/apache/server-header.conf.erb'),
     }
 
+    # Expose a SERVERGROUP variable to php-fpm
+    ::httpd::conf { 'wikimedia_cluster':
+        content => "SetEnv SERVERGROUP ${cluster}\n"
+    }
     # Starting with stretch libapache2-mod-security2 includes the following
     # in /etc/apache2/mods-enabled/security2.conf:
     #   # Include OWASP ModSecurity CRS rules if installed
