@@ -29,7 +29,7 @@ class profile::parsoid(
             user       => 'deploy-service',
             privileges => [
                 'ALL = (root) NOPASSWD: /usr/local/sbin/restart-php7.2-fpm',
-                'ALL = (root) NOPASSWD: /usr/bin/systemctl restart php7.2-fpm',
+                'ALL = (root) NOPASSWD: /bin/systemctl restart php7.2-fpm',
             ],
         }
     }
