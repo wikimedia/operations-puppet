@@ -32,7 +32,7 @@ cas.authn.ldap[0].binddn=<%= @ldap_bind_dn %>
 cas.authn.ldap[0].bindcredential=<%= @ldap_bind_pass %>
 
 <%- if @groovy_source -%>
-cas.authn.mfa.globalPrincipalAttributePredicate=<%= @groovy_file -%>
+cas.authn.mfa.globalPrincipalAttributePredicate=file:<%= @groovy_file -%>
 <%- else -%>
 cas.authn.mfa.globalPrincipalAttributeNameTriggers=<%= @mfa_attribute_trigger %>
 cas.authn.mfa.globalPrincipalAttributeValueRegex=<%= @mfa_attribut_value.join('|') %>
