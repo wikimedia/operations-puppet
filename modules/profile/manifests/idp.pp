@@ -11,6 +11,7 @@ class profile::idp(
     String            $totp_signing_key       = lookup('profile::idp::totp_signing_key'),
     String            $totp_encryption_key    = lookup('profile::idp::totp_encryption_key'),
     Hash[String,Hash] $services               = lookup('profile::idp::services'),
+    Array[String[1]]  $ldap_attribute_list    = lookup('profile::idp::ldap_attributes'),
 ){
 
     include passwords::ldap::production
@@ -50,6 +51,7 @@ class profile::idp(
         ldap_uris              => ["ldaps://${ldap_config[ro-server]}:636",
                                     "ldaps://${ldap_config[ro-server-fallback]}:636",],
         ldap_base_dn           => $ldap_config['base-dn'],
+        ldap_attribute_list    => $ldap_attribute_list,
         log_level              => 'DEBUG',
         ldap_bind_pass         => $passwords::ldap::production::proxypass,
         ldap_bind_dn           => "cn=proxyagent,ou=profile,${ldap_config['base-dn']}",

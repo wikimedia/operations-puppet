@@ -18,3 +18,9 @@ profile::idp::services:
       'requiredAttributes':
         '@class': 'java.util.HashMap'
         'memberOf': ['java.util.HashSet', ['cn=wmf,ou=groups,dc=wikimedia,dc=org', 'cn=nda,ou=groups,dc=wikimedia,dc=org']]
+profile::idp::ldap_attributes:
+  - cn
+  - memberOf
+  - mail
+  - mfa-additional-method
+  - mfa-force-method
