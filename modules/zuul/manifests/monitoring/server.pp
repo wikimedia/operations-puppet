@@ -37,10 +37,10 @@ class zuul::monitoring::server (
         dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/zuul-gearman?panelId=10&fullscreen&orgId=1'],
         metric          => 'zuul.geard.queue.waiting',
         contact_group   => 'contint',
-        from            => '15min',
-        percentage      => 30,
+        from            => '10min',
+        percentage      => 100,
         warning         => 90,
-        critical        => 140,
+        critical        => 150,
         notes_link      => 'https://www.mediawiki.org/wiki/Continuous_integration/Zuul',
     }
 }
