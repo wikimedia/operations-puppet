@@ -8,7 +8,7 @@ class puppet_compiler(
     $homedir = '/srv/home/jenkins-deploy',
     ) {
 
-    require ::puppet_compiler::packages
+    require puppet_compiler::packages
 
     $vardir = "${libdir}/puppet"
 
@@ -17,9 +17,14 @@ class puppet_compiler(
         owner  => $user,
         mode   => '0755',
     }
+    file {"${vardir}/yaml":
+        ensure  => directory,
+        owner   => $user,
+        recurse => true,
+    }
 
     if $ensure == 'present' {
-        class { '::puppet_compiler::setup':
+        class { 'puppet_compiler::setup':
             user    => $user,
             vardir  => $vardir,
             homedir => $homedir,
@@ -37,7 +42,7 @@ class puppet_compiler(
         target => '/bin/true',
     }
 
-    include ::puppet_compiler::web
+    include puppet_compiler::web
 
     ## Git cloning
 
@@ -88,7 +93,7 @@ class puppet_compiler(
     # The conftool parser function needs
     # An etcd instance running populated with (fake? synced?) data
 
-    include ::etcd
+    include etcd
     # A new, better approach is to just use confd independently. Here we
     # fake it with a file on disk
     file { '/etc/conftool-state':
@@ -101,7 +106,7 @@ class puppet_compiler(
         source => 'puppet:///modules/puppet_compiler/mediawiki.yaml'
     }
 
-    tidy { "${::puppet_compiler::workdir}/output":
+    tidy { "${puppet_compiler::workdir}/output":
         recurse => true,
         age     => '6w',
         rmdirs  => true,
