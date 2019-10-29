@@ -22,6 +22,8 @@ trafficserver_connections_total:
   values:
   - labels: {protocol: http, source: client}
     value: proxy.process.http.total_client_connections
+  - labels: {protocol: http2, source: client}
+    value: proxy.process.http2.total_client_connections
   - labels: {protocol: http, source: server}
     value: proxy.process.http.total_server_connections
   - labels: {protocol: http, source: parent_proxy}
