@@ -26,7 +26,7 @@ define ferm::filter_log (
     undef   => '',
     default => "dport ${dport}",
   }
-  ferm::rule {"filter log ${name}":
+  ferm::rule { "filter_log_${name}":
     rule => "${_proto} ${_saddr} ${_daddr} ${_sport} ${_dport} DROP;",
     prio => '98',
   }
