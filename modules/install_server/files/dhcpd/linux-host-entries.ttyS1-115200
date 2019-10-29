@@ -2788,31 +2788,37 @@ host icinga2001 {
 host logstash1020 {
     hardware ethernet 14:18:77:33:52:42;
     fixed-address logstash1020.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host logstash1021 {
     hardware ethernet 14:18:77:33:4A:4E;
     fixed-address logstash1021.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host logstash1022 {
     hardware ethernet 14:18:77:33:4A:D2;
     fixed-address logstash1022.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host logstash2020 {
     hardware ethernet 14:18:77:39:6F:37;
     fixed-address logstash2020.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host logstash2021{
     hardware ethernet 14:18:77:33:50:0D;
     fixed-address logstash2021.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host logstash2022 {
     hardware ethernet 18:66:DA:7F:23:F0;
     fixed-address logstash2022.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host kafka-jumbo1001 {
