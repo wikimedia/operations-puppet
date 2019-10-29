@@ -32,6 +32,12 @@ Facter.add('net_driver') do
       state_file = "#{d}/operstate"
       next unless File.exist?(state_file)
 
+      # Firmware version is only available via ethtool, not sysfs.
+      if Facter::Util::Resolution.which('ethtool')
+        ethtool = Facter::Util::Resolution.exec("ethtool -i #{dev}")
+        net_d[dev]['firmware_version'] = /^firmware-version:\s+([^\n]+)\n/.match(ethtool)[1]
+      end
+
       # Speed and duplex are readable only on certain iface states
       # and if ethtool get_settings method is implemented (mostly Ethernet).
       # See: https://www.kernel.org/doc/Documentation/ABI/testing/sysfs-class-net
