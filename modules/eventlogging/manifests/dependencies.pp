@@ -22,7 +22,6 @@ class eventlogging::dependencies {
     }
 
     package {[
-        'python-dateutil',
         'python-jsonschema',
         'python-confluent-kafka',
         'python-snappy',
