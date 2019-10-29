@@ -21,28 +21,12 @@ class eventlogging::dependencies {
         }
     }
 
-    package {[
-        'python-jsonschema',
-        'python-confluent-kafka',
-        'python-snappy',
-        'python-mysqldb',
-        'python-pygments',
-        'python-pykafka',
-        'python-six',
-        'python-sqlalchemy',
-        'python-statsd',
-        'python-yaml',
-        'python-zmq',
-        'python-ua-parser']:
-        ensure => absent,
-    }
-
     # Install all eventlogging dependencies from .debs.
     require_package([
         'python3-dateutil',
         'python3-jsonschema',
         'python3-confluent-kafka',
-        # Python snappy allows python-kafka to consume Snappy compressed data.
+        # Python snappy allows python3-kafka to consume Snappy compressed data.
         'python3-snappy',
         'python3-mysqldb',
         'python3-pygments',
