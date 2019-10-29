@@ -29,7 +29,7 @@ class profile::microsites::design(
     }
 
     scap::target { 'design/style-guide':
-        deploy_user => 'deploy-service',
+        deploy_user => 'deploy-design',
     }
 
 }
