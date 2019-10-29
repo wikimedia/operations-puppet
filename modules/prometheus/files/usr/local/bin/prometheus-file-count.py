@@ -33,27 +33,33 @@ def validate_config(config):
         raise ValueError('--outfile must be defined.')
 
 
-def generate_metric(metric_name, value, labels):
-    metric = GaugeMetricFamily(
-        metric_name,
+def init_metrics(name):
+    count_metric = GaugeMetricFamily(
+        name,
         'count of files in directory',
-        labels=labels.keys()
+        labels=['path']
     )
-    metric.add_metric(value=value, labels=labels.values())
-    return metric
+    errors_metric = GaugeMetricFamily(
+        'node_filecount_errors_total',
+        'total errors in scrape'
+    )
+    return count_metric, errors_metric
 
 
 def main(config):
     errors_count = 0
     metrics = MetricsCollection()
+    count_metric, errors_metric = init_metrics(config.metric)
     for path in config.paths:
         try:
-            metrics.append(generate_metric(config.metric, count_files(path), {'path': path}))
+            count_metric.add_metric(value=count_files(path), labels=[path])
         except OSError:
             errors_count += 1
             if config.debug:
                 print(traceback.format_exc())
-    metrics.append(generate_metric('node_filecount_errors_total', errors_count, {}))
+    errors_metric.add_metric(value=errors_count, labels=[])
+    metrics.append(count_metric)
+    metrics.append(errors_metric)
     generated_metrics = generate_latest(metrics).decode()
     if config.debug:
         print(generated_metrics)
