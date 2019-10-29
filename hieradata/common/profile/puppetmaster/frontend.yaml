@@ -1,1 +1,2 @@
-profile::puppetmaster::frontend::canary_hosts: []
+profile::puppetmaster::frontend::canary_hosts:
+  - puppetmaster1003.eqiad.wmnet
