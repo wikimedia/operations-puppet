@@ -14,9 +14,10 @@ class statistics::compute {
         hosts_allow => $::statistics::servers,
     }
 
-    # Install a job to rsync /srv/published-datasets => $published_datasets_host.
-    # The statistics::published_datasets class should be included on $published_datasets_host.
-    class { '::statistics::rsync::published_datasets': }
+    # Install a job to rsync /srv/published => $published_host.
+    # The statistics::published class should be included on $published_host.
+    class { '::statistics::rsync::published': }
+    $published_path = $::statistics::rsync::published::source
 
     file { "${::statistics::working_path}/mediawiki":
         ensure => 'directory',

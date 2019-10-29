@@ -26,8 +26,8 @@ class statistics::sites::analytics {
 
     # Use hardsync script to hardlink merge files from various stat box published-dataset
     # directories.  These are rsync pushed here from the stat boxes.
-    class { '::statistics::published_datasets':
-        destination => "${document_root}/datasets",
+    class { '::statistics::published':
+        destination => "${document_root}/published",
         require     => Git::Clone['analytics.wikimedia.org'],
     }
 

@@ -27,10 +27,19 @@
    </IfModule>
 
   <IfModule mod_rewrite.c>
-      # Redirect all requests to datasets.wikimedia.org to analytics.wikimedia.org/datasets/archive
+      # Redirect all requests to datasets.wikimedia.org to
+      # analytics.wikimedia.org/published/datasets/archive
       RewriteEngine On
+
       RewriteCond %{HTTP_HOST}  ^datasets.wikimedia.org [nocase]
-      RewriteRule ^(.*)$        https://analytics.wikimedia.org/datasets/archive$1 [last,redirect=301]
+      RewriteRule ^(.*)$        https://analytics.wikimedia.org/published/datasets/archive$1 [last,redirect=301]
+
+      # Redirect all requests to analytics.wikimedia.org/datasets to
+      # analytics.wikimedia.org/published/datasets.
+      # See: https://phabricator.wikimedia.org/T235494
+      RewriteCond %{HTTP_HOST}      ^analytics.wikimedia.org [nocase]
+      RewriteRule ^/datasets(.*)$   https://analytics.wikimedia.org/published/datasets$1 [last,redirect=301]
+
   </IfModule>
 
   LogLevel warn

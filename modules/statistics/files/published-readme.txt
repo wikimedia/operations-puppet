@@ -1,4 +1,4 @@
-For publishers: The contents of this folder will be copied and shared at https://analytics.wikimedia.org/datasets/
+For publishers: The contents of this folder will be copied and shared at https://analytics.wikimedia.org/published/
 For consumers: The contents of this folder come from various analytics machines in WMF's Analytics cluster
 
 BE CAREFUL TO ONLY PUT PUBLIC DATA IN HERE

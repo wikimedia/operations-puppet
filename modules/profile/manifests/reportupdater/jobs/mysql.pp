@@ -3,7 +3,7 @@
 # Installs reportupdater package, and sets up jobs that run reports and generate output from
 # MySQL analytics slaves.  This profile should only be included in a single role.
 #
-# This requires the statistics module for the stats user and the published_datasets_path.
+# This requires the statistics module for the stats user and the published_path.
 #
 class profile::reportupdater::jobs::mysql {
     require statistics
@@ -19,15 +19,15 @@ class profile::reportupdater::jobs::mysql {
     }
 
     # And set up a link for periodic jobs to be included in published reports.
-    # Because periodic is in published_datasets_path, files will be synced to
+    # Because datasets/periodic is in published_path, files will be synced to
     # analytics.wikimedia.org/datasets/periodic/reports
-    file { "${::statistics::compute::published_datasets_path}/periodic":
+    file { "${::statistics::compute::published_path}/datasets/periodic":
         ensure => 'directory',
         owner  => 'root',
         group  => 'wikidev',
         mode   => '0775',
     }
-    file { "${::statistics::compute::published_datasets_path}/periodic/reports":
+    file { "${::statistics::compute::published_path}/datasets/periodic/reports":
         ensure  => 'link',
         target  => "${base_path}/output",
         require => Class['reportupdater'],

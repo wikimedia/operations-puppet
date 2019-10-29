@@ -30,7 +30,7 @@ class profile::swap(
     $rsync_hosts_allow       = hiera('profile::swap::rsync_hosts_allow', undef),
     $dumps_servers           = hiera('dumps_dist_nfs_servers'),
     $dumps_active_server     = hiera('dumps_dist_active_web'),
-    $push_published_datasets = lookup('profile::swap::push_published_datasets', { 'default_value' => true }),
+    $push_published          = lookup('profile::swap::push_published', { 'default_value' => true }),
 
 ) {
 
@@ -58,11 +58,11 @@ class profile::swap(
             group => 'researchers',
         }
 
-        if $push_published_datasets {
-            # Include an rsync from /srv/published-datasets to
-            # thorium.eqiad.wmnet to publish datasets at
-            # analytics.wikimedia.org/datasets.
-            class { '::statistics::rsync::published_datasets': }
+        if $push_published {
+            # Include an rsync from /srv/published to
+            # thorium.eqiad.wmnet to publish data at
+            # analytics.wikimedia.org/published.
+            class { '::statistics::rsync::published': }
         }
     }
     else {
