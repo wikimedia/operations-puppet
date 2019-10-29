@@ -28,13 +28,13 @@ Director {
 Messages {
     Name = Standard
     console = all, !skipped, !saved
-    append = "/var/lib/bacula/log" = all, !skipped
+    append = "/var/log/bacula/log" = all, !skipped
 }
 
 Messages {
     Name = Daemon
     console = all, !skipped, !saved
-    append = "/var/lib/bacula/log" = all, !skipped
+    append = "/var/log/bacula/log" = all, !skipped
 }
 
 @|"sh -c 'for f in /etc/bacula/conf.d/*.conf ; do echo @${f} ; done'"

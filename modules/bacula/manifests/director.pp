@@ -68,6 +68,16 @@ class bacula::director(
         require => Package["bacula-director-${sqlvariant}"],
     }
 
+    logrotate::rule { 'bacula-log':
+        ensure       => present,
+        file_glob    => '/var/log/bacula/log',
+        frequency    => 'weekly',
+        compress     => true,
+        missing_ok   => true,
+        not_if_empty => true,
+        rotate       => 4,
+    }
+
     base::expose_puppet_certs { '/etc/bacula/director':
         provide_private => true,
         user            => 'bacula',
