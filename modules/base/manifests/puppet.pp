@@ -57,7 +57,7 @@ class base::puppet(
             ensure => file,
             owner  => 'puppet',
             group  => 'puppet',
-            mode   => '0444',
+            mode   => '0644',
             source => $ca_source,
         }
     }
