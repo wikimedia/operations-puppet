@@ -182,6 +182,12 @@ class profile::prometheus::ops (
           { 'files' => [ "${targets_path}/mysql-parsercache_*.yaml"] },
         ]
       },
+      {
+        'job_name'        => 'mysql-test',
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/mysql-test_*.yaml"] },
+        ]
+      },
     ]
 
     # Leave only backend hostname (no VCL UUID) from "varnish_backend" metrics
