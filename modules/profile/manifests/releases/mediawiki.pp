@@ -52,7 +52,6 @@ class profile::releases::mediawiki (
         'php7.0-pgsql',
         'php7.0-sqlite3',
         'php7.0-tidy',
-        'php-xdebug',
         'php7.0-phpdbg',
         'php7.0-zip',
         'php7.0-bcmath','php7.0-mbstring',
@@ -72,12 +71,6 @@ class profile::releases::mediawiki (
         'liblua5.1-0-dev',  # luasandbox
     ]:
         ensure => present
-    }
-
-    exec { 'disable php-xdebug on cli':
-        command => '/usr/sbin/phpdismod -v 7.0 -s cli xdebug',
-        onlyif  => '/usr/sbin/phpquery -v 7.0 -s cli -m xdebug',
-        require => Package['php-xdebug'],
     }
 
     class { '::httpd':
