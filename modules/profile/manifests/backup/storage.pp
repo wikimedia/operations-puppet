@@ -19,6 +19,16 @@ class profile::backup::storage(
     # Temporary conditional to handle the 2 separate storage layouts
 
     if os_version('debian >= buster') {
+        # TODO: Remove once all jessies are gone
+        # Downgrade TLS from 1.2 to 1
+        file { '/etc/ssl/openssl.cnf':
+            ensure => present,
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0644',
+            source => 'puppet:///modules/profile/backups/openssl.cnf',
+        }
+
         # New setup:
         # 3 storage devices separated on 2 physical arrays
         mount { '/srv/archive' :
