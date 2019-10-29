@@ -8,6 +8,6 @@ export PYTHONPATH=\${PYTHONPATH}:<%= @refinery_path %>/python
     --input-base  <%= @input_directory_base %> \
     --output-base <%= @output_directory_base %> \
     --projects-file <%= @wiki_file %> \
-    --dump-type pages-meta-history \
+    --dump-type <%= @dump_type %> \
     --log-file <%= @log_file %> \
     --dump-date $(/bin/date +'%Y%m01')

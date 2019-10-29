@@ -14,7 +14,7 @@ class role::statistics::private {
     include ::profile::reportupdater::jobs::hadoop
 
     # This job copies wiktext dumps from the NFS mounts to HDFS
-    include ::profile::analytics::refinery::job::import_wikitext_dumps
+    include ::profile::analytics::refinery::job::import_mediawiki_dumps
 
     # Systemd timers owned by the Search team
     # (leveraging Analytics' refinery)
