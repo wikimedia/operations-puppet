@@ -36,14 +36,31 @@ class profile::releases::mediawiki (
 
     class { '::contint::composer': }
 
-    $php7_packages = ['php7.0-cli', 'php7.0-common', 'php7.0-curl',
-                      'php7.0-gmp', 'php7.0-intl', 'php-memcached',
-                      'php7.0-mysql', 'php-redis', 'php7.0-xmlrpc',
-                      'php7.0-dev', 'php7.0-ldap', 'php7.0-gd',
-                      'php7.0-pgsql', 'php7.0-sqlite3', 'php7.0-tidy',
-                      'php-xdebug', 'php7.0-phpdbg', 'php7.0-zip',
-                      'php7.0-bcmath','php7.0-mbstring', 'php7.0-xml',
-                      'php-imagick', 'php-tideways', 'php-ast']
+    $php7_packages = [
+        'php7.0-cli',
+        'php7.0-common',
+        'php7.0-curl',
+        'php7.0-gmp',
+        'php7.0-intl',
+        'php-memcached',
+        'php7.0-mysql',
+        'php-redis',
+        'php7.0-xmlrpc',
+        'php7.0-dev',
+        'php7.0-ldap',
+        'php7.0-gd',
+        'php7.0-pgsql',
+        'php7.0-sqlite3',
+        'php7.0-tidy',
+        'php-xdebug',
+        'php7.0-phpdbg',
+        'php7.0-zip',
+        'php7.0-bcmath','php7.0-mbstring',
+        'php7.0-xml',
+        'php-imagick',
+        'php-tideways',
+        'php-ast',
+    ]
 
     package { $php7_packages :
         ensure  => present,
