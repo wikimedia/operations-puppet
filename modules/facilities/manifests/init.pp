@@ -106,9 +106,10 @@ class facilities {
         model => 'sentry4',
     }
     facilities::monitor_pdu_3phase { 'ps1-b2-eqiad':
-        ip   => '10.65.0.41',
-        row  => 'b',
-        site => 'eqiad',
+        ip    => '10.65.0.41',
+        row   => 'b',
+        site  => 'eqiad',
+        model => 'sentry4',
     }
     facilities::monitor_pdu_3phase { 'ps1-b3-eqiad':
         ip    => '10.65.0.42',
