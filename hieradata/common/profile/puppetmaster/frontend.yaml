@@ -1,2 +1,3 @@
 profile::puppetmaster::frontend::canary_hosts:
   - puppetmaster1003.eqiad.wmnet
+  - icinga2001.wikimedia.org
