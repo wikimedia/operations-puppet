@@ -35,7 +35,7 @@ Facter.add('net_driver') do
       # Firmware version is only available via ethtool, not sysfs.
       if Facter::Util::Resolution.which('ethtool')
         ethtool = Facter::Util::Resolution.exec("ethtool -i #{dev}")
-        net_d[dev]['firmware_version'] = /^firmware-version:\s+([^\n]+)\n/.match(ethtool)[1]
+        net_d[dev]['firmware_version'] = /^firmware-version:[ \t]+([^\n]*)\n/.match(ethtool)[1]
       end
 
       # Speed and duplex are readable only on certain iface states
