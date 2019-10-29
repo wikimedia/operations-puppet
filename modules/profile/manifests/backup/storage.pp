@@ -26,7 +26,7 @@ class profile::backup::storage(
             owner  => 'root',
             group  => 'root',
             mode   => '0644',
-            source => 'puppet:///modules/profile/backups/openssl.cnf',
+            source => 'puppet:///modules/profile/backup/openssl.cnf',
         }
 
         # New setup:
