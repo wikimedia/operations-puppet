@@ -8,8 +8,6 @@ class role::requesttracker {
     include ::profile::standard
     include ::profile::base::firewall
     include ::profile::requesttracker
+    include ::profile::tlsproxy::envoy # TLS termination
 
-    if os_version('debian == buster') {
-        include ::profile::tlsproxy::envoy # TLS termination
-    }
 }
