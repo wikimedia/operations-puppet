@@ -1227,6 +1227,13 @@ define service {
 
 define service {
     use                      passive-service
+    service_description      check_endpoints
+    hostgroup_name           fundraising-civicrm
+    contact_groups           fr-tech,fr-tech-ops
+}
+
+define service {
+    use                      passive-service
     service_description      check_ipsec
     hostgroup_name           fundraising-civicrm
 }
