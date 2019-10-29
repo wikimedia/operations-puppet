@@ -126,13 +126,17 @@ class profile::lists (
     }
 
     # Mtail program to gather smtp send duration and count
-    class { '::mtail':
-        logs  => ['/var/log/mailman/smtp']
-    }
-
     mtail::program { 'mailman':
         ensure => 'present',
         source => 'puppet:///modules/mtail/programs/mailman.mtail',
+        notify => Service['mtail'],
+    }
+
+    # Mtail program to gather exim logs
+    mtail::program { 'exim':
+        ensure => 'present',
+        source => 'puppet:///modules/mtail/programs/exim.mtail',
+        notify => Service['mtail'],
     }
 
     $prometheus_nodes_ferm = join($prometheus_nodes, ' ')
