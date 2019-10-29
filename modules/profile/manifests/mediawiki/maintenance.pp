@@ -31,6 +31,7 @@ class profile::mediawiki::maintenance {
 
     # Mediawiki maintenance scripts (cron jobs)
     include ::profile::mediawiki::maintenance::wikidata
+    include ::profile::mediawiki::maintenance::growthexperiments
     class { 'mediawiki::maintenance::pagetriage': ensure => $ensure }
     class { 'mediawiki::maintenance::translationnotifications': ensure => $ensure }
     class { 'mediawiki::maintenance::updatetranslationstats': ensure => $ensure }
