@@ -22,6 +22,10 @@ class profile::parsoid(
         require ::profile::mediawiki::php::monitoring
         include ::profile::mediawiki::php::restarts
         require ::profile::mediawiki::webserver
+    }
+
+    # On beta $use_php is not set but we still need sudo for restarts (T236275)
+    if $use_php or $::realm == 'labs' {
         # Temporarily allow scap3 to restart php-fpm.
         # This is going away, see T236275
         # Also yes, this is all hardcoded as it's going away soon (TM)
