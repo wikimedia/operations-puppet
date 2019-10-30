@@ -225,7 +225,7 @@ Components: main>thirdparty/kubeadm-k8s
 UDebComponents:
 Architectures: amd64
 VerifyRelease: 6A030B21BA07F4FB
-ListShellHook: grep-dctrl -e -P '^kubeadm|kubectl|kubelet|kubernetes-cni|cri-tools$' || [ $? -eq 1 ]
+ListShellHook: grep-dctrl \( -P 'kubeadm' -o -P 'kubelet' -o -P 'kubectl' -a -FVersion --lt 1.16 -a -FVersion --ge 1.15 \) -o \( -P 'kubernetes-cni' -o -P 'cri-tools' \) || [ $? -eq 1 ]
 
 Name: thirdparty/kubeadm-k8s-docker.com
 Method: https://download.docker.com/linux/debian/
