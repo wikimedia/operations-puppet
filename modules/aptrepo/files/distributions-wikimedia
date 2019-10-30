@@ -129,7 +129,7 @@ Components: main
  thirdparty/amd-rocm26
  thirdparty/amd-rocm271
  thirdparty/cloudera
- thirdparty/elastic7
+ thirdparty/elastic74
  thirdparty/grafana
  thirdparty/hwraid
 UDebComponents: main
@@ -138,7 +138,7 @@ Update:
  amd-rocm25
  amd-rocm26
  amd-rocm271
- elastic7
+ elastic74
  grafana-stretch
  hp-mcp-stretch
  hwraid-stretch
