@@ -2,3 +2,5 @@ profile::puppetmaster::frontend::canary_hosts:
   - puppetmaster1003.eqiad.wmnet
   - icinga2001.wikimedia.org
   - cumin1001.eqiad.wmnet
+  - rdb1010.eqiad.wmnet
+  - 2620:0:861:107:10:64:48:38 # rdb1010
