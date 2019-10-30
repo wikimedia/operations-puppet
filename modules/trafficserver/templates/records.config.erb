@@ -22,6 +22,7 @@ CONFIG proxy.config.disable_configuration_modification INT 1
 # Network settings
 CONFIG proxy.config.net.connections_throttle INT <%= @network_settings['connections_throttle'] %>
 CONFIG proxy.config.net.sock_option_flag_in INT <%= @network_settings['sock_option_flag_in'] %>
+CONFIG proxy.config.net.default_inactivity_timeout INT <%= @network_settings['default_inactivity_timeout'] %>
 <% end -%>
 <% if @h2_settings -%>
 # HTTP/2 settings

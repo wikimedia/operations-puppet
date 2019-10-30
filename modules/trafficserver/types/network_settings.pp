@@ -15,7 +15,12 @@
 #           SO_LINGER    = 0x4
 #           TCP_FASTOPEN = 0x8
 #
+# [*default_inactivity_timeout*]
+#   The connection inactivity timeout (in seconds) to apply when Traffic Server detects
+#   that no inactivity timeout has been applied by the HTTP state machine.
+#
 type Trafficserver::Network_settings = Struct[{
-    'connections_throttle' => Integer[0],
-    'sock_option_flag_in'  => Integer[0, 0xF],
+    'connections_throttle'       => Integer[0],
+    'sock_option_flag_in'        => Integer[0, 0xF],
+    'default_inactivity_timeout' => Integer[0],
 }]
