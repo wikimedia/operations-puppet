@@ -36,7 +36,7 @@ class profile::idp(
         server_enable_ssl      => false,
         tomcat_proxy           => true,
         groovy_source          => $groovy_source,
-        keystore_content       => wmflib::secret('casserver/thekeystore', true),
+        keystore_content       => secret('casserver/thekeystore'),
         keystore_password      => $keystore_password,
         key_password           => $key_password,
         tgc_signing_key        => $tgc_signing_key,
