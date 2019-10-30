@@ -150,7 +150,7 @@ end
 time_since_last_run = Time.now.to_i - lastrun
 human_time_since_last_run = time_ago(time_since_last_run)
 
-if enabled == false && (enabled_only || disabled_time + disable_grace < Time.now)
+if enabled == false && (enabled_only || disabled_time - disable_grace < Time.now)
     puts "OK: Puppet is currently disabled, not alerting. " +
          "Last run #{human_time_since_last_run} ago with #{failcount} failures"
     exit 0
