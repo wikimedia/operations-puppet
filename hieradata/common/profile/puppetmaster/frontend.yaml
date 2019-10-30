@@ -4,3 +4,4 @@ profile::puppetmaster::frontend::canary_hosts:
   - cumin1001.eqiad.wmnet
   - rdb1010.eqiad.wmnet
   - 2620:0:861:107:10:64:48:38 # rdb1010
+  - prometheus1004.eqiad.wmnet
