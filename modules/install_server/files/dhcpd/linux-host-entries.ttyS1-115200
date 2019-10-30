@@ -475,6 +475,12 @@ host centrallog1001 {
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
+host centrallog2001 {
+    hardware ethernet 70:10:6f:ab:39:5e;
+    fixed-address centrallog2001.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
+}
+
 host cloudbackup2001 {
     hardware ethernet B0:26:28:5A:DD:30;
     fixed-address cloudbackup2001.codfw.wmnet;
@@ -6168,12 +6174,6 @@ host tungsten {
 host weblog1001 {
     hardware ethernet 14:18:77:5B:2E:16;
     fixed-address weblog1001.eqiad.wmnet;
-}
-
-host wezen {
-    hardware ethernet 70:10:6f:ab:39:5e;
-    fixed-address wezen.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
 }
 
 host wdqs1003 {

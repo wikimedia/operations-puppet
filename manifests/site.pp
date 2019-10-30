@@ -2046,7 +2046,7 @@ node /^webperf[12]002\.(codfw|eqiad)\.wmnet/ {
     # lint:endignore
 }
 
-node 'wezen.codfw.wmnet' {
+node 'centrallog2001.codfw.wmnet' {
     role(syslog::centralserver)
 }
 
