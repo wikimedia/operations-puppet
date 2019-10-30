@@ -1,1 +1,1 @@
-profile::puppetmaster::common::command_broadcast: true
+profile::puppetmaster::common::command_broadcast: false
