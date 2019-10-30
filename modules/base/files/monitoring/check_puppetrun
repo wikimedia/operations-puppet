@@ -65,7 +65,7 @@ opt.on("--alert-master-fail", "Alert on failures related to Puppet master issues
     alert_master_fail = true
 end
 
-opt.on("--disable_grace", "iNumber of seconds a host can be disabled before alerting. default: #{disabled_time}") do |f|
+opt.on("--disable_grace", "iNumber of seconds a host can be disabled before alerting. default: #{disable_grace}") do |f|
     disable_grace = f
 end
 
