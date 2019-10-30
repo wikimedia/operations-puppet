@@ -42,6 +42,18 @@ if [ -z "${1}" -o -z "${2}" ]; then
     exit 1
 fi
 
+# Archiva keeps sha1s of every file it has in its repository.
+# If a a .sha1 file exists, use its contents.
+# Else compute the sha1 of the provided file_path now.
+archiva_sha1sum() {
+    file_path="${1}"
+
+    if [ -f ${file_path}.sha1 ]; then
+        cat ${file_path}.sha1 | awk '{print $1}'
+    else
+        sha1sum $file_path | awk '{print $1}'
+    fi
+}
 
 
 artifact_repository_path="${1}"
@@ -54,50 +66,23 @@ else
 fi
 
 
-exitval=0
-
 # First remove any broken links (files that have been deleted from archiva)
 /usr/bin/find -L "${git_fat_path}" -type l -exec rm -v {} \;
 
-# Find all .jar files and symlink them.
-# We sort them so that any jars with identical shas will have the
-# alphanumerically latest jar linked last.
+# Find all artifact files and symlink them.
+# We sort them so that any artifacts with identical shas will have the
+# alphanumerically latest artifacts linked last.
 # The .indexer directory is used by archiva to store its indexes, there is no
 # need to hash the files there.
-find $artifact_repository_path -type f \( -name "*.jar" -o -name "*.war" -o -name "*.zip" -o -name "*.tar.gz" -o -name "*.whl" \) ! -path "*/.indexer/*"  | sort | xargs shasum | while read line; do
-    # get the filenames and their sha1 sums out of the shasum output
-    sha1=$(echo ${line} | awk '{print $1}');
-    file=$(echo ${line} | awk '{print $2}');
-
-    # If  no .jars were found, shasum will operate on empty stdin.
-    # We can stop now if file is ever '-'.
-    if [ "${file}" = '-' ]; then
-        echo "No .jar files found in ${artifact_repository_path} to symlink."
-        break
-    fi
-
-
-    # $archiva_file will be symlinked from $git_fat_file
-    git_fat_file="${git_fat_path}/${sha1}"
-
+for artifact in $(find $artifact_repository_path -type f \( -name "*.jar" -o -name "*.war" -o -name "*.zip" -o -name "*.tar.gz" -o -name "*.whl" \) ! -path "*/.indexer/*"  | sort);  do
     if [ "${real_paths}" = 'yes' ]; then
-        archiva_file=$(real_path "${file}")
-    else
-        archiva_file="${file}"
+        artifact=$(real_path "${artifact}")
     fi
 
-    # Archiva keeps sha1s of every file it downloads in its repository.
-    # Make sure archiva's sha1 sum matches the sha1 we just computed.
-    archiva_sha1=$(awk '{print $1}' ${archiva_file}.sha1)
-    if [ "${sha1}" != "${archiva_sha1}" ]; then
-        echo "WARNING: ${archiva_file} sha1 does not match expected sha1 from archiva: ${sha1} != ${archiva_sha1}.  Not symlinking into git-fat store."
-        test -f "${git_fat_file}" && rm -fv "${git_fat_file}"
-        exitval=1
-        continue
-    fi
+    artifact_sha1="$(archiva_sha1sum ${artifact})"
+    git_fat_file="${git_fat_path}/${artifact_sha1}"
 
     # symlink $git_fat_file -> $archiva_file if it isn't already a link
-    test -L "${git_fat_file}" || /bin/ln -svf "${archiva_file}" "${git_fat_file}"
+    test -L "${git_fat_file}" || /bin/ln -svf "${artifact}" "${git_fat_file}"
 done
 
-exit $exitval
