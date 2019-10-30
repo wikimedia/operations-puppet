@@ -4,7 +4,7 @@
 #
 # infra
 #
-puppetdb_host: puppetdb1001.eqiad.wmnet
+puppetdb_host: puppetdb1002.eqiad.wmnet
 
 # Cloud Services <
 #
