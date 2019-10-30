@@ -94,6 +94,7 @@ class profile::mediawiki::hhvm(
     $statsd_port = $statsd_parts[1]
 
     file { '/etc/hhvm/fatal-error.php':
+        ensure  => absent,
         content => template('mediawiki/hhvm-fatal-error.php.erb'),
         owner   => 'root',
         group   => 'root',
@@ -106,6 +107,7 @@ class profile::mediawiki::hhvm(
     # are just left around
 
     file { '/usr/local/sbin/hhvm_cleanup_cache':
+        ensure => absent,
         source => 'puppet:///modules/profile/mediawiki/hhvm/cleanup_cache.py',
         owner  => 'root',
         group  => 'root',
