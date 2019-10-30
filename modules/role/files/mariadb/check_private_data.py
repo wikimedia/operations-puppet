@@ -28,7 +28,25 @@ deleted_dblist_path = os.path.join(mediawiki_config_path, 'dblists',
 SYSTEM_DBS = ['mysql', 'information_schema', 'performance_schema', 'sys',
               'ops', 'percona']
 # ignore the following user-created databases:
-USER_DATABASES_REGEX = '^([su][0-9]+|p[0-9]+g[0-9]+)\_\_?'
+USER_DATABASES_REGEX = r'^([su][0-9]+|p[0-9]+g[0-9]+)\_\_?'
+
+
+def ignore_comments_and_emptylines(lines):
+    """
+    Given an array of provided file lines, clean up comments and
+    empty lines as defined by:
+    <https://gerrit.wikimedia.org/r/plugins/gitiles/operations/
+    mediawiki-config/+/master/multiversion/MWWikiversions.php#77>
+    """
+    dbs = list()
+    for line in lines:
+        # Strip comments ('#' to end-of-line) and trim whitespace.
+        db = line.split('#')[0].strip()
+        if db.startswith('%%'):
+            raise Exception('Encountered dblist expression inside dblist list file.')
+        elif db != '':
+            dbs.append(db)
+    return dbs
 
 
 def parse_db_file(path, format='txt'):
@@ -38,7 +56,7 @@ def parse_db_file(path, format='txt'):
     content = []
     with open(path, 'r') as f:
         if format == 'txt':
-            content = f.read().splitlines()
+            content = ignore_comments_and_emptylines(f.read().splitlines())
         elif format == 'csv':
             content = list(csv.reader(f))
     return content
