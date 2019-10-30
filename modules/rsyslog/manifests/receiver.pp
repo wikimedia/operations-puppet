@@ -84,4 +84,13 @@ class rsyslog::receiver (
         group  => 'root',
         mode   => '0755',
     }
+
+    rsync::quickdatacopy { 'centrallog':
+        ensure              => present,
+        source_host         => 'centrallog1001.eqiad.wmnet',
+        dest_host           => 'centrallog2001.codfw.wmnet',
+        auto_sync           => false,
+        module_path         => '/srv/syslog',
+        server_uses_stunnel => true,
+    }
 }
