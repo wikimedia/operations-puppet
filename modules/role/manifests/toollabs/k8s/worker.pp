@@ -4,7 +4,7 @@ class role::toollabs::k8s::worker {
     include ::toollabs::base
     include ::toollabs::infrastructure
     include ::profile::base::firewall
-    include ::toollabs::ferm_handlers
+    include ::profile::toolforge::ferm_handlers
 
     $flannel_etcd_url = join(prefix(suffix(hiera('flannel::etcd_hosts'), ':2379'), 'https://'), ',')
 
