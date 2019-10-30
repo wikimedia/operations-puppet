@@ -129,6 +129,12 @@ kubernetes-all: A:kubernetes-etcd or A:kubernetes-masters or A:kubernetes-stagin
 labmon: P{O:wmcs::monitoring}
 labs-nfs: P{O:labs::nfs::misc or O:dumps::distribution::server or O:labs::nfs::secondary or O:labs::nfs::secondary_backup::tools or O:labs::nfs::secondary_backup::misc}
 labweb: P{O:wmcs::openstack::eqiad1::labweb}
+ldap-corp: P{O:openldap::corp}
+ldap-replicas: P{O:openldap::replica}
+ldap-replicas-eqiad: A:ldap-replicas and eqiad
+ldap-replicas-codfw: A:ldap-replicas and codfw
+ldap-main: P{O:openldap::labs}
+ldap-all: A:ldap-corp or A:ldap-replicas or A:ldap-main
 logstash: P{O:logstash::collector or O:logstash::elasticsearch}
 logstash-canary: P{logstash1007.eqiad.wmnet}
 lvs: P{O:lvs::balancer}
@@ -170,8 +176,6 @@ ncredir-codfw: A:ncredir and A:codfw
 ncredir-eqiad: A:ncredir and A:eqiad
 netmon: P{O:network::monitor}
 notebook: P{O:swap}
-openldap: P{O:openldap::corp or O:openldap::labs}
-openldap-canary: P{dubnium.wikimedia.org}
 ores: P{O:ores}
 ores-canary: P{ores1001.eqiad.wmnet}
 ores-eqiad: A:ores and A:eqiad
