@@ -261,12 +261,14 @@ class hhvm(
             before => Base::Service_unit['hhvm'],
         }
     }
-# /etc/hhvm can't be removed yet, due to /etc/hhvm/fatal-error.php
+
     file { '/etc/hhvm':
         ensure => $ensure,
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
+        force  => true,
+
     }
 
     file {  '/usr/local/bin/hhvm-needs-restart':

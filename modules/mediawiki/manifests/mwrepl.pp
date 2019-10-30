@@ -15,6 +15,7 @@ class mediawiki::mwrepl (
         group  => $::mediawiki::users::web,
         mode   => '0775',
         purge  => true,
+        force  => true,
     }
 
     file { '/var/lib/hphpd/hphpd.ini':
