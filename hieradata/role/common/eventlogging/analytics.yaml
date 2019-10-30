@@ -37,6 +37,7 @@ profile::eventlogging::analytics::mysql::consumers:
     # - mysql-m4-master-02
     # - mysql-m4-master-03
 profile::eventlogging::analytics::mysql::db: 'm4-master.eqiad.wmnet/log'
+profile::eventlogging::analytics::mysql::ensure: absent
 
 # In prod, we apply a whitelist (in plugins.py) to only allow certain
 # EventLogging schemas to make it into the eventlogging-valid-mixed topic,
