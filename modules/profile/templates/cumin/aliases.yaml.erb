@@ -131,8 +131,8 @@ labs-nfs: P{O:labs::nfs::misc or O:dumps::distribution::server or O:labs::nfs::s
 labweb: P{O:wmcs::openstack::eqiad1::labweb}
 ldap-corp: P{O:openldap::corp}
 ldap-replicas: P{O:openldap::replica}
-ldap-replicas-eqiad: A:ldap-replicas and eqiad
-ldap-replicas-codfw: A:ldap-replicas and codfw
+ldap-replicas-eqiad: A:ldap-replicas and A:eqiad
+ldap-replicas-codfw: A:ldap-replicas and A:codfw
 ldap-main: P{O:openldap::labs}
 ldap-all: A:ldap-corp or A:ldap-replicas or A:ldap-main
 logstash: P{O:logstash::collector or O:logstash::elasticsearch}
