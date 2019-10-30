@@ -21,26 +21,17 @@ class PredicateLDAP implements Predicate<MultifactorAuthenticationProvider> {
   // based on its weight or other selection criteria
   @Override
   boolean test(final MultifactorAuthenticationProvider p) {
-    // If mfa-force-method only return true for the matching provider(s)
-    if (this.principal.attributes.containsKey('mfa-force-method')) {
+    // If mfa-method only return true for the matching provider(s)
+    if (this.principal.attributes.containsKey('mfa-method')) {
       logger.debug(
-        'mfa-force-method detected, testing value [{}] against provider [{}] with service [{}]',
-        this.principal.attributes['mfa-force-method'], p, this.service
+        'mfa-method detected, testing value [{}] against provider [{}] with service [{}]',
+        this.principal.attributes['mfa-method'], p, this.service
       )
-      if (this.principal.attributes['mfa-force-method'].contains(p.getId())) {
-        logger.info("Selected Provider [{}] for principle [{}]", p.getId(), this.principal)
-        return true
-      } else { return false }
-    // Return true for values in mfa-additional-method and allow other tests
-    } else if (this.principal.attributes.containsKey('mfa-additional-method')) {
-      logger.debug(
-        'mfa-additional-method detected, testing value [{}] against provider [{}] with service [{}]',
-        this.principal.attributes['mfa-additional-method'], p, this.service
-      )
-      if (this.principal.attributes['mfa-additional-method'].contains(p.getId())) {
+      if (this.principal.attributes['mfa-method'].contains(p.getId())) {
         logger.info("Selected Provider [{}] for principle [{}]", p.getId(), this.principal)
         return true
       }
     }
+    return false
   }
 }

@@ -22,5 +22,4 @@ profile::idp::ldap_attributes:
   - cn
   - memberOf
   - mail
-  - mfa-additional-method
-  - mfa-force-method
+  - mfa-method
