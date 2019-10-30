@@ -43,13 +43,14 @@ class ores::base(
         'myspell-ru',
         'aspell-uk',
         'myspell-hr',
-        'hunspell-gl',
-        'hunspell-sr',
-        'hunspell-en-us',
-        'hunspell-en-gb',
         'hunspell-bs',
         'hunspell-ca',
+        'hunspell-en-us',
+        'hunspell-en-gb',
+        'hunspell-eu',
+        'hunspell-gl',
         'hunspell-it',
+        'hunspell-sr',
     ])
 
     # NOTE: aspell-id is imported in our apt up to Stretch:
