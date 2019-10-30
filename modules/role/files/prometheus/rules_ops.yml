@@ -293,14 +293,6 @@ groups:
     expr: sum by(cluster) (apache_accesses_total)
   - record: cluster:apache_sent_kilobytes_total
     expr: sum by(cluster) (apache_sent_kilobytes_total)
-  - record: cluster:hhvm_load:sum
-    expr: sum by(cluster) (hhvm_load)
-  - record: cluster:hhvm_queued:sum
-    expr: sum by(cluster) (hhvm_queued)
-  - record: cluster_segment:hhvm_process_memory_bytes:sum
-    expr: sum by(cluster, segment) (hhvm_process_memory_bytes)
-  - record: cluster_segment:hhvm_process_memory_bytes:avg
-    expr: avg by(cluster, segment) (hhvm_process_memory_bytes)
   - record: instance:node_ipvs_backend_connections_active:rate5m
     expr: sum by(instance) (rate(node_ipvs_backend_connections_active[5m]))
   - record: local_port_local_address_instance:node_ipvs_backend_connections_active:rate5m

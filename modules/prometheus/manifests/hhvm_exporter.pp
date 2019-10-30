@@ -10,10 +10,12 @@
 define prometheus::hhvm_exporter (
     $arguments = '',
 ) {
-    require_package('prometheus-hhvm-exporter')
+    package {'prometheus-hhvm-exporter':
+        ensure => absent,
+    }
 
     file { '/etc/default/prometheus-hhvm-exporter':
-        ensure  => present,
+        ensure  => absent,
         mode    => '0444',
         owner   => 'root',
         group   => 'root',
@@ -22,9 +24,7 @@ define prometheus::hhvm_exporter (
     }
 
     service { 'prometheus-hhvm-exporter':
-        ensure  => running,
-        require => Package['prometheus-hhvm-exporter'],
+        ensure => stopped,
+        enable => mask,
     }
-
-    base::service_auto_restart { 'prometheus-hhvm-exporter': }
 }

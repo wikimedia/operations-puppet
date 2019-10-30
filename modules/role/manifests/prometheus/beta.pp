@@ -58,12 +58,6 @@ class role::prometheus::beta (
         ]
       },
       {
-        'job_name'        => 'hhvm',
-        'file_sd_configs' => [
-          { 'files' => [ "${targets_path}/hhvm_*.yaml"] },
-        ]
-      },
-      {
         'job_name'        => 'memcache',
         'file_sd_configs' => [
           { 'files' => [ "${targets_path}/memcache_*.yaml"] },

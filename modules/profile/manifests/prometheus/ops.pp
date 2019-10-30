@@ -327,19 +327,10 @@ class profile::prometheus::ops (
         labels     => {}
     }
 
-    # Job definition for hhvm_exporter
-    $hhvm_jobs = [
-      {
-        'job_name'        => 'hhvm',
-        'file_sd_configs' => [
-          { 'files' => [ "${targets_path}/hhvm_*.yaml"] },
-        ]
-      },
-    ]
-
     # Generate a list of hosts running hhvm from wikimedia_clusters definition in Hiera
     # TODO: generate the configuration based on hosts with hhvm class applied
     prometheus::cluster_config{ "hhvm_jobrunner_${::site}":
+        ensure  => absent,
         dest    => "${targets_path}/hhvm_jobrunner_${::site}.yaml",
         site    => $::site,
         cluster => 'jobrunner',
@@ -349,6 +340,7 @@ class profile::prometheus::ops (
         }
     }
     prometheus::cluster_config{ "hhvm_appserver_${::site}":
+        ensure  => absent,
         dest    => "${targets_path}/hhvm_appserver_${::site}.yaml",
         site    => $::site,
         cluster => 'appserver',
@@ -358,6 +350,7 @@ class profile::prometheus::ops (
         }
     }
     prometheus::cluster_config{ "hhvm_api_appserver_${::site}":
+        ensure  => absent,
         dest    => "${targets_path}/hhvm_api_appserver_${::site}.yaml",
         site    => $::site,
         cluster => 'api_appserver',
@@ -1380,7 +1373,7 @@ class profile::prometheus::ops (
         max_chunks_to_persist => $max_chunks_to_persist,
         memory_chunks         => $memory_chunks,
         scrape_configs_extra  => array_concat(
-            $mysql_jobs, $varnish_jobs, $trafficserver_jobs, $memcached_jobs, $hhvm_jobs,
+            $mysql_jobs, $varnish_jobs, $trafficserver_jobs, $memcached_jobs,
             $apache_jobs, $etcd_jobs, $etcdmirror_jobs, $mcrouter_jobs, $pdu_jobs,
             $nginx_jobs, $pybal_jobs, $blackbox_jobs, $jmx_exporter_jobs,
             $redis_jobs, $mtail_jobs, $ldap_jobs, $ircd_jobs, $pdns_rec_jobs,

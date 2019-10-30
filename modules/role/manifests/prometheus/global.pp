@@ -31,7 +31,6 @@ class role::prometheus::global {
             '{__name__="mysql_version_info"}',
             '{__name__="mysqld_exporter_build_info"}',
             '{__name__="memcached_version"}',
-            '{__name__="hhvm_build_info"}',
             # Service-level aggregated metrics
             '{__name__=~"^.*:mysql_.*"}',
             '{__name__=~"^.*:memcached_.*"}',
