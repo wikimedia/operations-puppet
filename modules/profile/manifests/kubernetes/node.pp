@@ -20,8 +20,21 @@ class profile::kubernetes::node(
     $kubelet_node_taints = hiera('profile::kubernetes::node::kubelet_node_taints', []),
     $kubeproxy_username = hiera('profile::kubernetes::node::kubeproxy_username', undef),
     $kubeproxy_token = hiera('profile::kubernetes::node::kubeproxy_token', undef),
+    Boolean $rsyslog_hard_disable = lookup('profile::kubernetes::node::disable_rsyslog', {default_value => false}),
 ) {
-    require ::profile::rsyslog::kubernetes
+    # Local logging to syslog file must be disabled in Cloud/Toolforge
+    unless $rsyslog_hard_disable {
+        require ::profile::rsyslog::kubernetes
+
+        rsyslog::input::file { 'kubernetes-json':
+            path               => '/var/log/containers/*.log',
+            reopen_on_truncate => 'on',
+            addmetadata        => 'on',
+            addceetag          => 'on',
+            syslog_tag         => 'kubernetes',
+            priority           => 8,
+        }
+    }
 
     base::expose_puppet_certs { '/etc/kubernetes':
         provide_private => true,
@@ -120,14 +133,5 @@ class profile::kubernetes::node(
         critical        => 850000,
         dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/kubernetes-kubelets?orgId=1'],
         notes_link      => 'https://wikitech.wikimedia.org/wiki/Kubernetes',
-    }
-
-    rsyslog::input::file { 'kubernetes-json':
-        path               => '/var/log/containers/*.log',
-        reopen_on_truncate => 'on',
-        addmetadata        => 'on',
-        addceetag          => 'on',
-        syslog_tag         => 'kubernetes',
-        priority           => 8,
     }
 }
