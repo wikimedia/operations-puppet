@@ -30,6 +30,9 @@
 # [*no_activity_timeout_in*]
 #   Specifies how long Traffic Server keeps connections to clients open if a transaction stalls.
 #
+# [*stream_error_rate_threshold*]
+#   This is the maximum stream error rate Traffic Server allows on an HTTP/2 connection.
+#
 type Trafficserver::H2_settings = Struct[{
     'stream_priority_enabled'        => Integer[0, 1],
     'max_settings_per_frame'         => Integer[0],
@@ -40,4 +43,5 @@ type Trafficserver::H2_settings = Struct[{
     'min_avg_window_update'          => Float[0.0],
     'accept_no_activity_timeout'     => Integer[0],
     'no_activity_timeout_in'         => Integer[0],
+    'stream_error_rate_threshold'    => Float[0.0],
 }]

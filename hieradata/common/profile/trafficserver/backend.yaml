@@ -339,3 +339,4 @@ profile::trafficserver::backend::h2_settings:
   min_avg_window_update: 2560.0
   accept_no_activity_timeout: 180
   no_activity_timeout_in: 180
+  stream_error_rate_threshold: 1.0

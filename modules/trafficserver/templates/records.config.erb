@@ -34,6 +34,7 @@ CONFIG proxy.config.http2.max_priority_frames_per_minute INT <%= @h2_settings['m
 CONFIG proxy.config.http2.min_avg_window_update FLOAT <%= @h2_settings['min_avg_window_update'] %>
 CONFIG proxy.config.http2.accept_no_activity_timeout INT <%= @h2_settings['accept_no_activity_timeout'] %>
 CONFIG proxy.config.http2.no_activity_timeout_in INT <%= @h2_settings['no_activity_timeout_in'] %>
+CONFIG proxy.config.http2.stream_error_rate_threshold FLOAT <%= @h2_settings['stream_error_rate_threshold'] %>
 <% end -%>
 
 CONFIG proxy.config.http.no_dns_just_forward_to_parent INT <%= @disable_dns_resolution %>
