@@ -20,6 +20,7 @@ class profile::mariadb::misc::eventlogging::replication (
     $master_host = hiera('profile::mariadb::misc::eventlogging::replication::master_host'),
     $cutoff_days = hiera('profile::mariadb::misc::eventlogging::replication::cutoff_days'),
     $batch_size  = hiera('profile::mariadb::misc::eventlogging::replication::batch_size'),
+    $ensure      = hiera('profile::mariadb::misc::eventlogging::replication::ensure', 'present'),
 ) {
     $slave_host  = 'localhost'
     $database    = 'log'
@@ -34,7 +35,7 @@ class profile::mariadb::misc::eventlogging::replication (
     require_package('python3-pymysql')
 
     file { '/etc/eventlogging_sync':
-        ensure => 'directory',
+        ensure => ensure_directory($ensure),
         owner  => 'root',
         group  => 'root',
         mode   => '0755',
@@ -43,14 +44,14 @@ class profile::mariadb::misc::eventlogging::replication (
     $log_directory_path = '/var/log/eventlogging_sync'
 
     file { $log_directory_path:
-        ensure => 'directory',
+        ensure => ensure_directory($ensure),
         owner  => 'root',
         group  => 'eventlog',
         mode   => '0775',
     }
 
     file { '/usr/local/bin/eventlogging_sync.sh':
-        ensure => present,
+        ensure => $ensure,
         owner  => 'root',
         group  => 'root',
         mode   => '0500',
@@ -58,7 +59,7 @@ class profile::mariadb::misc::eventlogging::replication (
     }
 
     logrotate::rule { 'eventlogging-sync':
-        ensure        => present,
+        ensure        => $ensure,
         file_glob     => "${log_directory_path}/eventlogging_sync.log",
         frequency     => 'daily',
         copy_truncate => true,
@@ -70,6 +71,7 @@ class profile::mariadb::misc::eventlogging::replication (
     }
 
     rsyslog::conf { 'eventlogging_sync':
+        ensure   => $ensure,
         content  => template('profile/mariadb/misc/eventlogging/eventlogging_sync_rsyslog.conf.erb'),
         priority => 20,
     }
@@ -77,11 +79,12 @@ class profile::mariadb::misc::eventlogging::replication (
     $eventlogging_sync_uid = 'root'
     $eventlogging_sync_gid = 'root'
     base::service_unit { 'eventlogging_sync':
-        ensure  => present,
+        ensure  => $ensure,
         systemd => systemd_template('mariadb/misc/eventlogging/eventlogging_sync'),
     }
 
     nrpe::monitor_service { 'eventlogging_sync':
+        ensure        => $ensure,
         description   => 'eventlogging_sync processes',
         nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:2 -u root -a "/bin/bash /usr/local/bin/eventlogging_sync.sh"',
         critical      => false,
