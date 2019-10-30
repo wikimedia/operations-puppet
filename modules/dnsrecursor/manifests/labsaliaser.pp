@@ -43,6 +43,7 @@ class dnsrecursor::labsaliaser(
     package { 'lua-json':
         ensure => present,
     }
+
     file { '/usr/local/bin/labs-ip-alias-dump.py':
         ensure  => present,
         owner   => 'labsaliaser',
@@ -55,12 +56,26 @@ class dnsrecursor::labsaliaser(
         ],
     }
 
+    # TODO: remove after the timer is established
     cron { 'labs-ip-alias-dump':
-        ensure  => 'present',
+        ensure  => 'absent',
         user    => 'labsaliaser',
         command => 'if ! `/usr/local/bin/labs-ip-alias-dump.py --check-changes-only`; then /usr/local/bin/labs-ip-alias-dump.py; /usr/bin/rec_control reload-lua-script; fi  > /dev/null',
         minute  => 30,
-        require => File[
+    }
+
+    systemd::timer::job { 'labs-ip-alias-dump':
+        ensure          => 'present',
+        # Don't log to file, use journald
+        logging_enabled => false,
+        user            => 'root',
+        description     => 'Update the mapping that splits internal and external DNS for Cloud VPS instances',
+        command         => 'if ! `/usr/local/bin/labs-ip-alias-dump.py --check-changes-only`; then /usr/local/bin/labs-ip-alias-dump.py; /usr/bin/rec_control reload-lua-script; fi  > /dev/null',
+        interval        => {
+        'start'    => 'OnCalendar',
+        'interval' => '*-*-* *:30:00', # hourly at half-past
+        },
+        require         => File[
             '/usr/local/bin/labs-ip-alias-dump.py',
             '/etc/labs-dns-alias.yaml'
         ],
