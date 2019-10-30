@@ -21,7 +21,7 @@ class profile::ci::docker(
     }
     $docker_version = $::lsbdistcodename ? {
         'jessie'  => '18.06.2~ce~3-0~debian',
-        'stretch' => '5:18.09.7~3-0~debian-stretch',
+        'stretch' => '18.06.2~ce~3-0~debian',
     }
     class { '::docker':
         package_name => 'docker-ce',
