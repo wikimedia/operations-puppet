@@ -195,7 +195,7 @@ plugins:
     commands:
       - ['chroot', '{root}', 'passwd', '-ld', 'root']
       - ['SUDO_FORCE_REMOVE=yes chroot {root} apt-get --allow-remove-essential --allow-unauthenticated --assume-yes -o Dpkg::Options::="--force-confold" install sudo-ldap']
-      - ['chroot', '{root}', 'rm', '-f', '/etc/ssh/ssh_host*key*']
+      - ['chroot {root} rm -f /etc/ssh/ssh_host_ed25519_key*']
       - ['chroot', '{root}', 'rm', '-f', '/etc/sudo-ldap.conf']
       - ['chroot', '{root}', 'ln', '-s', '/etc/ldap/ldap.conf', '/etc/sudo-ldap.conf']
       - ['chroot', '{root}', 'rm', '-f', '/etc/resolvconf/resolv.conf.d/original']
