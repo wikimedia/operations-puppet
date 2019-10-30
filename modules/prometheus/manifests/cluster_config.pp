@@ -9,6 +9,7 @@
 # $cluster: The cluster to use.
 # $port:    The port to use for the target.
 # $labels:  Labels to attach to the cluster's hosts.
+# $ensure:  Ensure the target is present/absent
 
 # == Example
 #
@@ -29,9 +30,10 @@ define prometheus::cluster_config(
   String $cluster,
   Stdlib::Port $port,
   Hash $labels,
+  Wmflib::Ensure $ensure = present,
 ) {
     file { $dest:
-        ensure  => present,
+        ensure  => $ensure,
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
