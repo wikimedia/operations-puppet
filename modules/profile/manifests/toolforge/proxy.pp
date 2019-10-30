@@ -5,9 +5,6 @@ class profile::toolforge::proxy (
 ) {
     class { '::redis::client::python': }
 
-    sslcert::certificate { 'star.wmflabs.org':
-        ensure => absent,
-    }
     acme_chief::cert { 'toolforge':
         puppet_rsc => Exec['nginx-reload'],
     }
