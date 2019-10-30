@@ -56,6 +56,17 @@ class dnsrecursor::labsaliaser(
         ],
     }
 
+    file { '/usr/local/bin/labsalias-dump.sh':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0500',
+        source  => 'puppet:///modules/dnsrecursor/labsalias-dump.sh',
+        require => [
+            File['/usr/local/bin/labs-ip-alias-dump.py'],
+        ],
+    }
+
     # TODO: remove after the timer is established
     cron { 'labs-ip-alias-dump':
         ensure  => 'absent',
@@ -70,13 +81,13 @@ class dnsrecursor::labsaliaser(
         logging_enabled => false,
         user            => 'root',
         description     => 'Update the mapping that splits internal and external DNS for Cloud VPS instances',
-        command         => 'if ! `/usr/local/bin/labs-ip-alias-dump.py --check-changes-only`; then /usr/local/bin/labs-ip-alias-dump.py; /usr/bin/rec_control reload-lua-script; fi  > /dev/null',
+        command         => '/usr/local/bin/labsalias-dump.sh',
         interval        => {
         'start'    => 'OnCalendar',
         'interval' => '*-*-* *:30:00', # hourly at half-past
         },
         require         => File[
-            '/usr/local/bin/labs-ip-alias-dump.py',
+            '/usr/local/bin/labsalias-dump.sh',
             '/etc/labs-dns-alias.yaml'
         ],
     }
