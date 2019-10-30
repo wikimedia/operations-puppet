@@ -482,7 +482,7 @@ groups:
   deploy-design:
     gid: 815
     description: Deployers for content on design.wikimedia.org
-    members: [volker-e, ladsgroup, jdrewniak]
+    members: [volker-e, ladsgroup, jdrewniak, twentyafterfour]
     privileges: []
   aqs-admins:
     description: Group of admins for the Analytics Query Service
