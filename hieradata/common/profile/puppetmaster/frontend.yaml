@@ -1,9 +1,1 @@
-profile::puppetmaster::frontend::canary_hosts:
-  - puppetmaster1003.eqiad.wmnet
-  - icinga2001.wikimedia.org
-  - cumin1001.eqiad.wmnet
-  - rdb1010.eqiad.wmnet
-  - 2620:0:861:107:10:64:48:38 # rdb1010
-  - prometheus1004.eqiad.wmnet
-  - debmonitor1001.eqiad.wmnet
-  - 2620:0:861:103:10:64:32:62 # debmonitor1001
+profile::puppetmaster::frontend::canary_hosts: []
