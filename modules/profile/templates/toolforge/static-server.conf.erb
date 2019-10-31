@@ -23,38 +23,12 @@ server {
 
     listen 80;
 
-    <%- if @ssl_certificate_name != false -%>
-    # Serve both HTTP and HTTPS
-    listen 443 default_server ssl http2;
-
-    ssl_certificate /etc/ssl/localcerts/<%= @ssl_certificate_name %>.chained.crt;
-    ssl_certificate_key /etc/ssl/private/<%= @ssl_certificate_name %>.key;
-
-    # Copied from modules/tlsproxy/templates/nginx.conf.erb. Eugh
-    # Enable a shared cache, since it is defined at this level
-    # it will be used for all virtual hosts. 1m = 4000 active sessions,
-    # so we are allowing 200,000 active sessions.
-    ssl_session_cache shared:SSL:50m;
-    ssl_session_timeout 5m;
-
-    <%= @ssl_settings.join("\n    ") %>
-
     # Force https
-    set $evilhack "";
     if ($http_x_forwarded_proto != 'https') {
-        set $evilhack "1";
-    }
-
-    if ($https = "") {
-        set $evilhack "${evilhack}1";
-    }
-
-    if ($evilhack = "11") {
         return 301 https://$host$request_uri;
     }
     # Tell browsers to use https for 24 hours even if they find an http link
     add_header Strict-Transport-Security "max-age=86400";
-    <%- end -%>
 
     # Block requests with no UA string
     if ($http_user_agent = "") {
