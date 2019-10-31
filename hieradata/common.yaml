@@ -869,7 +869,11 @@ hadoop_clusters:
 
     yarn_resourcemanager_zk_state_store_parent_path: '/yarn-rmstore/analytics-hadoop'
 
+    mapred_site_extra_properties:
+      mapreduce.shuffle.ssl.enabled: true
+
     core_site_extra_properties:
+      hadoop.ssl.enabled.protocols: 'TLSv1.2'
       # Allow presto-server to impersonate users.
       # This is what allows presto to access files as users running queries.
       hadoop.proxyuser.presto.hosts: '*'
