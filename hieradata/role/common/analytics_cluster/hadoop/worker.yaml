@@ -35,5 +35,8 @@ profile::hive::client::server_host: an-coord1001.eqiad.wmnet
 profile::hive::client::server_port: 10000
 profile::hive::client::metastore_host: 'an-coord1001.eqiad.wmnet'
 
+# Deploy TLS keys and xml configuration files
+profile::hadoop::common::ensure_ssl_config: true
+
 prometheus::node_exporter::collectors_extra:
   - meminfo_numa
