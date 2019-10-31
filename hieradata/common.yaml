@@ -870,6 +870,7 @@ hadoop_clusters:
     yarn_resourcemanager_zk_state_store_parent_path: '/yarn-rmstore/analytics-hadoop'
 
     mapred_site_extra_properties:
+      mapreduce.ssl.enabled: true
       mapreduce.shuffle.ssl.enabled: true
 
     core_site_extra_properties:
