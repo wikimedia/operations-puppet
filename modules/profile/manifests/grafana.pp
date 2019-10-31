@@ -12,7 +12,7 @@ class profile::grafana (
     $config=hiera('profile::grafana::config', {}),
     $ldap=hiera('profile::grafana::ldap', undef), # Grafana-specific LDAP settings, used by >= 5
     $ldap_config=lookup('ldap', Hash, hash, {}), # Central LDAP settings
-    $wpt_graphite_proxy_port=lookup('profile::grafana::wpt_graphite_proxy_port'),
+    $wpt_graphite_proxy_port=lookup('profile::grafana::wpt_graphite_proxy_port', {'default_value' => undef}),
 ) {
 
     include ::profile::backup::host
