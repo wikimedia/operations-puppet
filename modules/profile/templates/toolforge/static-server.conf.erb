@@ -40,7 +40,16 @@ server {
     <%= @ssl_settings.join("\n    ") %>
 
     # Force https
+    set $evilhack "";
+    if ($http_x_forwarded_proto != 'https') {
+        set $evilhack "1";
+    }
+
     if ($https = "") {
+        set $evilhack "${evilhack}1";
+    }
+
+    if ($evilhack = "11") {
         return 301 https://$host$request_uri;
     }
     # Tell browsers to use https for 24 hours even if they find an http link
