@@ -36,7 +36,7 @@ def parse_stdin(stdin, geoip_dir=''):
     netflow_regex = re.compile(r'^.* (?P<src_ip>.*):(?P<src_port>\d+) >'
                                r'\s+(?P<dst_ip>.*):(?P<dst_port>\d+)'
                                r'\s+protocol: (?P<protocol>\w+)'
-                               r'\s+flags: (?P<flags>.*) frag: (?P<frag>\d+)'
+                               r'\s+(flags: (?P<flags>.*) )?frag: (?P<frag>\d+)'
                                r'\s+packets: \d+ size: (?P<size>\d+) bytes ttl: (?P<ttl>\d+).*')
     netflow_data = defaultdict(Counter)
     netflow_human = []
