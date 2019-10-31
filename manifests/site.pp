@@ -317,11 +317,11 @@ node /^cp500[1-6]\.eqsin\.wmnet$/ {
     role(cache::upload)
 }
 
-node /^cp500[78]\.eqsin\.wmnet$/ {
+node /^cp500[789]\.eqsin\.wmnet$/ {
     role(cache::text_ats)
 }
 
-node /^cp50(09|1[012])\.eqsin\.wmnet$/ {
+node /^cp501[012]\.eqsin\.wmnet$/ {
     role(cache::text)
 }
 
