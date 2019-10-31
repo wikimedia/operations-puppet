@@ -4,13 +4,15 @@
 
   DocumentRoot <%= @document_root %>
 
+  # Enable CORS so labs based dashboards can use data files.
+  # We need to set always and early on so that this header is also set for
+  # redirects.
+  Header always set Access-Control-Allow-Origin "*"
+
   <Directory <%= @document_root %>>
     Options Indexes FollowSymLinks MultiViews
     AllowOverride None
     Require all granted
-
-    # enable CORS requests
-    Header set Access-Control-Allow-Origin "*"
   </Directory>
 
    # Cache json, yaml, csv, and tsv files 1 hour
