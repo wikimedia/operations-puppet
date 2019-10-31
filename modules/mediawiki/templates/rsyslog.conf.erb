@@ -20,33 +20,6 @@ if $programname == "apache2" then {
     stop
 }
 
-# Forward HHVM logs and stack traces to log aggregator.
-if $programname == "hhvm" then {
-    @<%= @log_aggregator %>;MediaWiki
-<% if @forward_syslog -%>
-    @<%= @forward_syslog %>
-<% end -%>
-    stop
-}
-
-if $syslogtag == "hhvm-fatal:" then {
-    @<%= @log_aggregator %>;MediaWiki
-<% if @forward_syslog -%>
-    @<%= @forward_syslog %>
-<% end -%>
-    stop
-}
-
-# Forward messages logged by the kernel and containing the string
-# "hhvm" (such as warnings that the process was killed or respawned)
-# to the log aggregator.
-if $msg contains "hhvm" and $programname == "kernel" then {
-    @<%= @log_aggregator %>;MediaWiki
-<% if @forward_syslog -%>
-    @<%= @forward_syslog %>
-<% end -%>
-}
-
 # Forward PHP7 logs and stacktraces to the log aggregator
 if ($programname startswith 'php7.')  then {
     @<%= @log_aggregator %>;MediaWiki

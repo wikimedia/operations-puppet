@@ -5,8 +5,6 @@
     {"index" : "jenkins", "value" : "kafka local" },
     {"index" : "icinga", "value" : "kafka local" },
     {"index" : "grafana-server",               "value" : "kafka local" },
-    {"index" : "hhvm",                         "value" : "kafka local" },
-    {"index" : "hhvm-fatal",                   "value" : "kafka local" },
     {"index" : "php7.0-fpm",                   "value" : "kafka local" },
     {"index" : "php7.2-fpm",                   "value" : "kafka local" },
     {"index" : "prometheus@analytics",         "value" : "kafka local" },
