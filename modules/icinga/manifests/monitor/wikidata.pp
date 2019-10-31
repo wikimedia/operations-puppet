@@ -25,4 +25,10 @@ class icinga::monitor::wikidata {
         contact_group  => 'admins,wikidata',
         notes_url      => 'https://phabricator.wikimedia.org/project/view/71/',
     }
+
+    monitoring::grafana_alert { 'wikidata-alerts':
+        dashboard_uid => 'TUJ0V-0Zk',
+        contact_group => 'wikidata',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/WMDE/Wikidata/Alerts',
+    }
 }
