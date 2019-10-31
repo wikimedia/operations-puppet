@@ -15,7 +15,7 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger()
 
 
-def mail(subject, body, to_addr):
+def mail(subject, to_addr, body=''):
 
     from_addr = 'Fastnetmon <no-reply@wikimedia.org>'
 
@@ -106,14 +106,14 @@ def main():
         logger.info('START: {event_short}'.format(event_short=event_short))
         extra_data = parse_stdin(sys.stdin.readlines(), args.geoip)
         if args.email:
-            mail(event_short, extra_data, args.email)
+            mail(event_short, args.email, extra_data)
         else:
             logger.info(extra_data)
 
     if args.action == 'unban':
         logger.info('END: {event_short}'.format(event_short=event_short))
         if args.email:
-            mail(event_short)
+            mail(event_short, args.email)
 
 
 if __name__ == '__main__':
