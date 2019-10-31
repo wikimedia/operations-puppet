@@ -12,26 +12,6 @@ class profile::graphite::alerts(
         graphite_url => $graphite_url,
     }
 
-    # Eventlogging
-    #   Warn/Alert if the db inserts of EventLogging data have dropped dramatically
-    #   Since the MySQL consumer is at the bottom of the pipeline
-    #   this metric is a good proxy to make sure events are flowing through the
-    #   kafka pipeline
-    monitoring::graphite_threshold { 'eventlogging_overall_inserted_rate':
-        description     => 'EventLogging overall insertion rate from MySQL consumer',
-        graphite_url    => $graphite_url,
-        dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/eventlogging?panelId=12&fullscreen&orgId=1'],
-        metric          => 'movingAverage(eventlogging.overall.inserted.rate, "10min")',
-        warning         => 50,
-        critical        => 10,
-        percentage      => 20, # At least 3 of the (25 - 10) = 15 readings
-        from            => '25min',
-        until           => '10min',
-        contact_group   => 'analytics',
-        under           => true,
-        notes_link      => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/EventLogging/Administration#Mysql_insertion_rate_dropping_to_zero_due_to_db_failures',
-    }
-
     # Monitor MediaWiki session failures
     # See https://grafana.wikimedia.org/dashboard/db/edit-count
     monitoring::graphite_threshold { 'mediawiki_session_loss':
