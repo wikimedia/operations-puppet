@@ -1,4 +1,4 @@
-class profile::toolforge::k8s::node(
+class profile::toolforge::k8s::worker (
 ) {
     require profile::toolforge::k8s::preflight_checks
 
