@@ -5,19 +5,16 @@ set -e
 
 PATH=/bin:/usr/bin:/usr/local/bin
 LANG=C
-
+CONFIG_VERSION=$(awk -F: '$1=="configuration_version" {for (i=2; i<=NF; i++) print $i}' /var/lib/puppet/state/last_run_report.yaml)
 TSLASTPUPPETRUN=$(stat -c %Z /var/lib/puppet/state/classes.txt)
 NOW=$(date +%s)
-DELTAMIN=$((($NOW-$TSLASTPUPPETRUN)/60))
-BOLD="\033[1m"
-NORM="\033[0m"
-
-echo -n "The last Puppet run was at $(date -d @$TSLASTPUPPETRUN) "
-
-DISABLEDMSG="$(puppet-enabled || true)"
-
+DELTAMIN=$(((NOW-TSLASTPUPPETRUN)/60))
+BOLD="\\033[1m"
+NORM="\\033[0m"
+LAST_RUN=$(date -d @"${TSLASTPUPPETRUN}")
 if [ $DELTAMIN -gt 60 ]; then
-	echo "${BOLD}($DELTAMIN minutes ago)${NORM}. $DISABLEDMSG"
+	MSG="${BOLD}($DELTAMIN minutes ago)${NORM}. $(puppet-enabled || true)"
 else
-	echo "($DELTAMIN minutes ago). $DISABLEDMSG"
+	MSG="($DELTAMIN minutes ago). $(puppet-enabled || true)"
 fi
+printf "The last Puppet run was at %s %b\\nLast puppet commmit: %s\\n" "${LAST_RUN}" "${MSG}" "${CONFIG_VERSION}"
