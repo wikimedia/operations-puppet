@@ -1,7 +1,7 @@
 class profile::toolforge::k8s::control(
-    Array[Stdlib::Fqdn] $etcd_hosts     = lookup('profile::toolforge::k8s::etcd_hosts'),
-    Stdlib::Fqdn        $apiserver      = lookup('profile::toolforge::k8s::apiserver'),
-    String              $node_token     = lookup('profile::toolforge::k8s::node_token'),
+    Array[Stdlib::Fqdn] $etcd_hosts = lookup('profile::toolforge::k8s::etcd_nodes',     {default_value => ['localhost']}),
+    Stdlib::Fqdn        $apiserver  = lookup('profile::toolforge::k8s::apiserver_fqdn', {default_value => 'k8s.example.com'}),
+    String              $node_token = lookup('profile::toolforge::k8s::node_token',     {default_value => 'example.token'}),
 ) {
     require profile::toolforge::k8s::preflight_checks
 

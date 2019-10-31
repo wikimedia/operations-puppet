@@ -13,6 +13,6 @@ backend k8s-ingress
     balance roundrobin
     timeout server 1h
     default-server inter 10s downinter 5s rise 2 fall 2 slowstart 60s maxconn 250 maxqueue 256 weight 100
-<% @k8s_nodes.each do |server| -%>
+<% @worker_nodes.each do |server| -%>
     server <%= server %> <%= server %>:<%= @ingress_port %> check
 <% end -%>

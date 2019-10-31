@@ -1,7 +1,7 @@
 # Note: This file is managed by puppet.
 
 frontend k8s-api
-    bind 0.0.0.0:6443
+    bind 0.0.0.0:<%= @api_port %>
     mode tcp
     option tcplog
     timeout client 1h
@@ -14,6 +14,6 @@ backend k8s-api
     balance roundrobin
     timeout server 1h
     default-server inter 10s downinter 5s rise 2 fall 2 slowstart 60s maxconn 250 maxqueue 256 weight 100
-<% @servers.each_pair do |name, config| -%>
-    server <%= name %> <%= config["fqdn"] %>:<%= config["port"] %> check
+<% @control_nodes.each do |server| -%>
+    server <%= server %> <%= server %>:<%= @api_port %> check
 <% end -%>

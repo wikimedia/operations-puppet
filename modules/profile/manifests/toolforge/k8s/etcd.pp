@@ -1,7 +1,7 @@
 class profile::toolforge::k8s::etcd(
-    Array[Stdlib::Fqdn] $peer_hosts    = lookup('profile::toolforge::k8s::etcd_hosts',   {default_value => ['localhost']}),
+    Array[Stdlib::Fqdn] $peer_hosts    = lookup('profile::toolforge::k8s::etcd_nodes',   {default_value => ['localhost']}),
     Array[Stdlib::Fqdn] $checker_hosts = lookup('profile::toolforge::checker_hosts',     {default_value => ['tools-checker-03.tools.eqiad.wmflabs']}),
-    Array[Stdlib::Fqdn] $k8s_hosts     = lookup('profile::toolforge::k8s_masters_hosts', {default_value => ['localhost']}),
+    Array[Stdlib::Fqdn] $control_nodes = lookup('profile::toolforge::k8s::control_nodes', {default_value => ['localhost']}),
     Boolean             $bootstrap     = lookup('profile::etcd::cluster_bootstrap',      {default_value => false}),
 ) {
     if $bootstrap {
@@ -78,9 +78,9 @@ class profile::toolforge::k8s::etcd(
     File[$etcd_cert_ca]   ~> Service[etcd]
 
     $checker_hosts_string = join(($checker_hosts), ' ')
-    $k8s_hosts_string     = join(($k8s_hosts), ' ')
+    $control_hosts_string = join(($control_nodes), ' ')
     $peer_hosts_string    = join(($peer_hosts), ' ')
-    $firewall_clients     = "@resolve((${checker_hosts_string} ${k8s_hosts_string} ${peer_hosts_string}))"
+    $firewall_clients     = "@resolve((${checker_hosts_string} ${control_hosts_string} ${peer_hosts_string}))"
     ferm::service { 'etcd_clients':
         proto  => 'tcp',
         port   => 2379,
