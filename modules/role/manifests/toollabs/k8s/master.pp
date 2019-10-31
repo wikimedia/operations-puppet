@@ -15,10 +15,6 @@ class role::toollabs::k8s::master(
         $ssl_key_path = '/etc/kubernetes/ssl/server.key'
 
     } else {
-        sslcert::certificate { 'star.tools.wmflabs.org':
-            ensure => absent,
-        }
-
         $ssl_certificate_name = 'toolforge'
         acme_chief::cert { $ssl_certificate_name:
             key_group => 'kube',

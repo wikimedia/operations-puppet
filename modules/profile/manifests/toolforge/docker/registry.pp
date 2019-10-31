@@ -5,9 +5,6 @@ class profile::toolforge::docker::registry(
     $active_node = lookup('profile::toolforge::docker::registry::active_node'),
     $standby_node = lookup('profile::toolforge::docker::registry::standby_node'),
 ) {
-    sslcert::certificate { 'star.tools.wmflabs.org':
-        ensure => absent,
-    }
     $ssl_certificate_name = 'toolforge'
     acme_chief::cert { $ssl_certificate_name:
         before       => Class['::docker::registry'],
