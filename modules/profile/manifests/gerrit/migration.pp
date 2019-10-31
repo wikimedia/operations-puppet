@@ -9,7 +9,6 @@ class profile::gerrit::migration (
         proto  => 'tcp',
         port   => '873',
         srange => "(@resolve((${source_host})) @resolve((${source_host}), AAAA))",
-
     }
 
     # FIXME
@@ -43,6 +42,16 @@ class profile::gerrit::migration (
 
     rsync::server::module { 'gerrit-var-lib':
         path        => '/var/lib/gerrit2/review_site',
+        read_only   => 'no',
+        hosts_allow => $source_host,
+    }
+
+    file { "/srv/home-${source_host}/":
+        ensure => 'directory',
+    }
+
+    rsync::server::module { 'gerrit-home':
+        path        => "/srv/home-${source_host}",
         read_only   => 'no',
         hosts_allow => $source_host,
     }
