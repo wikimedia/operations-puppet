@@ -32,8 +32,9 @@ class bacula::client(
                     $catalog,
                     $file_retention,
                     $job_retention,
+                    $directorpassword,
                     $fdport='9102',
-                    $directorpassword=sha1($::uniqueid)) {
+) {
 
     package { 'bacula-fd':
         ensure => installed,

@@ -16,17 +16,18 @@ class profile::backup::host(
     String              $pool           = lookup('profile::backup::pool'),
     Stdlib::Host        $director       = lookup('profile::backup::director'),
     Array[String]       $days           = lookup('profile::backup::days'),
+    String              $director_seed  = lookup('profile::backup::director_seed'),
 ){
-
 
     # TODO: $ferm_directors is temporary to help with the migration, we should
     # fall back to $director and remove this hiera call when done
     if $enable {
         class { 'bacula::client':
-            director       => $director,
-            catalog        => 'production',
-            file_retention => '30 days',
-            job_retention  => '30 days',
+            director         => $director,
+            catalog          => 'production',
+            file_retention   => '30 days',
+            job_retention    => '30 days',
+            directorpassword => fqdn_rand_string(32, '', $director_seed)
         }
 
         # This will use uniqueid fact to distribute (hopefully evenly) machines on

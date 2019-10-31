@@ -11,10 +11,11 @@ describe 'bacula::client::mysql_bpipe', :type => :define do
     end
     let(:pre_condition) do
       "class {'bacula::client':
-        director       => 'dir.example.com',
-        catalog        => 'test',
-        file_retention => 5,
-        job_retention  => 5,
+        director         => 'dir.example.com',
+        catalog          => 'test',
+        file_retention   => 5,
+        job_retention    => 5,
+        directorpassword => 'SECRET',
       }"
     end
     context 'with per database' do
