@@ -6,6 +6,10 @@ class profile::toolforge::docker::registry(
     $standby_node = lookup('profile::toolforge::docker::registry::standby_node'),
 ) {
     sslcert::certificate { 'star.tools.wmflabs.org':
+        ensure => absent,
+    }
+    $ssl_certificate_name = 'toolforge'
+    acme_chief::cert { $ssl_certificate_name:
         before       => Class['::docker::registry'],
     }
 
@@ -20,7 +24,8 @@ class profile::toolforge::docker::registry(
         docker_username      => $user,
         docker_password_hash => $hash,
         allow_push_from      => $builders,
-        ssl_certificate_name => 'star.tools.wmflabs.org',
+        use_acme_chief_certs => true,
+        ssl_certificate_name => $ssl_certificate_name,
         ssl_settings         => ssl_ciphersuite('nginx', 'compat'),
     }
 

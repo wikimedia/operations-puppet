@@ -4,6 +4,7 @@ class docker::registry::web(
     $allow_push_from,
     $ssl_settings,
     $use_puppet_certs=false,
+    $use_acme_chief_certs=false,
     $ssl_certificate_name=undef,
     $http_endpoint=false,
     $http_allowed_hosts=[],

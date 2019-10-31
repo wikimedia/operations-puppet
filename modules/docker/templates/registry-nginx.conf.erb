@@ -13,6 +13,9 @@ server {
 <%- if @use_puppet_certs %>
     ssl_certificate     /etc/nginx/ssl/cert.pem;
     ssl_certificate_key /etc/nginx/ssl/server.key;
+<%- elsif @use_acme_chief_certs -%>
+    ssl_certificate /etc/acmecerts/<%= @ssl_certificate_name %>/live/rsa-2048.chained.crt;
+    ssl_certificate_key /etc/acmecerts/<%= @ssl_certificate_name %>/live/rsa-2048.key;
 <%- else -%>
     ssl_certificate /etc/ssl/localcerts/<%= @ssl_certificate_name %>.chained.crt;
     ssl_certificate_key /etc/ssl/private/<%= @ssl_certificate_name %>.key;

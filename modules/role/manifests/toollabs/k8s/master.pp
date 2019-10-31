@@ -15,13 +15,16 @@ class role::toollabs::k8s::master(
         $ssl_key_path = '/etc/kubernetes/ssl/server.key'
 
     } else {
-        $ssl_certificate_name = 'star.tools.wmflabs.org'
-        sslcert::certificate { $ssl_certificate_name:
-            group        => 'kube',
+        sslcert::certificate { 'star.tools.wmflabs.org':
+            ensure => absent,
         }
 
-        $ssl_cert_path = "/etc/ssl/localcerts/${ssl_certificate_name}.chained.crt"
-        $ssl_key_path = "/etc/ssl/private/${ssl_certificate_name}.key"
+        $ssl_certificate_name = 'toolforge'
+        acme_chief::cert { $ssl_certificate_name:
+            key_group => 'kube',
+        }
+        $ssl_cert_path = "/etc/acmecerts/${ssl_certificate_name}/live/rsa-2048.chained.crt"
+        $ssl_key_path = "/etc/acmecerts/${ssl_certificate_name}/live/rsa-2048.key"
     }
 
     # Set our host allowed paths
