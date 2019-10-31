@@ -1,0 +1,14 @@
+# This file is managed by puppet
+
+[rsync]
+accept = 1873
+client = no
+
+CAfile = <%= scope.call_function('puppet_ssldir', []) + "/certs/ca.pem" %>
+cert   = <%= scope.call_function('puppet_ssldir', []) + "/certs/#{@fqdn}.pem" %>
+key    = <%= scope.call_function('puppet_ssldir', []) + "/private_keys/#{@fqdn}.pem" %>
+
+verifyChain = yes
+
+exec = /usr/bin/rsync
+execargs = rsync --daemon --config <%= @rsync_conf %>

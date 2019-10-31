@@ -3,3 +3,5 @@ cluster: misc
 profile::openldap::management::cron_active: false
 profile::ldap::client::labs::restricted_to: false
 profile::ldap::client::labs::restricted_from: false
+
+rsync::server::wrap_with_stunnel: false

@@ -19,6 +19,7 @@ class rsync::server(
   $use_ipv6   = false,
   $rsync_opts = [],
   $rsyncd_conf = {},
+  Boolean $wrap_with_stunnel = false,
 ) inherits rsync {
 
   $rsync_fragments = '/etc/rsync.d'
@@ -40,10 +41,29 @@ class rsync::server(
       $address = ''
   }
 
-  service { 'rsync':
+  if $wrap_with_stunnel {
+    package { 'stunnel4':
+      ensure => present,
+      before => Service['stunnel'],
+    }
+    file { '/etc/stunnel/rsync.conf':
+      ensure  => present,
+      mode    => '0444',
+      owner   => 'root',
+      group   => 'root',
+      content => template('rsync/stunnel.conf.erb'),
+    }
+    service { 'stunnel4':
+      ensure    => running,
+      enable    => true,
+      subscribe => [ Exec['compile fragments'], File['/etc/default/rsync'], File['/etc/stunnel/rsync.conf'] ],
+    }
+  } else {
+    service { 'rsync':
       ensure    => running,
       enable    => true,
       subscribe => [ Exec['compile fragments'], File['/etc/default/rsync'] ],
+    }
   }
 
   if $motd_file != 'UNSET' {

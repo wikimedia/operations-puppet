@@ -67,10 +67,16 @@ define rsync::server::module (
   if $auto_ferm and $hosts_allow {
       $hosts_allow_ferm = join($hosts_allow, ' ')
 
+      # rsync::server is always used with include semantics, so we must do this.
+      $port = lookup('rsync::server::wrap_with_stunnel') ? {  # lint:ignore:wmf_styleguide
+          true  => '1873',
+          false => '873',
+      }
+
       ferm::service { "rsyncd_access_${name}":
           ensure => $ensure,
           proto  => 'tcp',
-          port   => '873',
+          port   => $port,
           srange => "@resolve((${hosts_allow_ferm}))",
       }
 
@@ -78,7 +84,7 @@ define rsync::server::module (
           ferm::service { "rsyncd_access_${name}_ipv6":
               ensure => $ensure,
               proto  => 'tcp',
-              port   => '873',
+              port   => $port,
               srange => "@resolve((${hosts_allow_ferm}),AAAA)",
           }
       }

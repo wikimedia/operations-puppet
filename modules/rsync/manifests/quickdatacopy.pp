@@ -22,6 +22,9 @@
 #
 # [*bwlimit*] Optionally limit the maxmium bandwith used
 #
+# [*server_uses_stunnel*]
+# For TLS-wrapping rsync.  Must be set here, and must be set true on rsync::server::wrap_with_stunnel
+# in the server's hiera.
 define rsync::quickdatacopy(
   Stdlib::Fqdn $source_host,
   Stdlib::Fqdn $dest_host,
@@ -30,7 +33,11 @@ define rsync::quickdatacopy(
   Boolean $auto_sync = true,
   Wmflib::Ensure $ensure = present,
   Optional[Integer] $bwlimit = undef,
+  Boolean $server_uses_stunnel = false,  # Must match rsync::server::wrap_with_stunnel as looked up via hiera by the *server*!
   ) {
+      if ($title =~ /\s/) {
+          fail('the title of rsync::quickdatacopy must not include whitespace')
+      }
 
       if $source_host == $::fqdn {
 
@@ -47,6 +54,17 @@ define rsync::quickdatacopy(
       }
 
       if $dest_host == $::fqdn {
+
+          if $server_uses_stunnel {
+              $ssl_wrapper_path = "/usr/local/sbin/sync-${title}-ssl-wrapper"
+              file { $ssl_wrapper_path:
+                  ensure  => $ensure,
+                  owner   => 'root',
+                  group   => 'root',
+                  mode    => '0755',
+                  content => template('rsync/quickdatacopy-ssl-wrapper.erb'),
+              }
+          }
 
           file { "/usr/local/sbin/sync-${title}":
               ensure  => $ensure,

@@ -1,0 +1,29 @@
+#!/bin/sh
+# This file is managed by Puppet
+#
+# This script is expected to be used as the --rsh argument to rsync.
+# It will wrap rsync's communication in stunnel, and validate the
+# server's cert vs the Puppet CA.
+
+set -eu
+
+function cleanup() {
+    [ -f "$CONFIG" ] && rm -f "$CONFIG"
+}
+trap cleanup EXIT
+
+CONFIG=$(mktemp -t sync-ssl-wrapper.stunnel.conf.XXXXXXXX)
+
+RSYNC_SSL_PORT=${RSYNC_SSL_PORT:-1873}
+
+cat > "$CONFIG" <<EOF
+foreground  = yes
+client      = yes
+connect     = $1:$RSYNC_SSL_PORT
+CAfile      = <%= scope.call_function('puppet_ssldir', []) + "/certs/ca.pem" %>
+cert        = <%= scope.call_function('puppet_ssldir', []) + "/certs/#{@fqdn}.pem" %>
+key         = <%= scope.call_function('puppet_ssldir', []) + "/private_keys/#{@fqdn}.pem" %>
+verifyChain = yes
+EOF
+
+/usr/bin/stunnel4 "$CONFIG"
