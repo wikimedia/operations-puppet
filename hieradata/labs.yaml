@@ -72,7 +72,11 @@ puppetmaster::servers:
 puppetmaster::locale_servers: {}
 
 # We don't use these feature on VMs.
+profile::backup::enable: false
 profile::backup::ferm_directors: []
+profile::backup::pool: ''
+profile::backup::director: 'backup.example.com'
+profile::backup::days: []
 profile::puppetmaster::common::puppetdb_hosts: []
 profile::puppetmaster::common::command_broadcast: false
 

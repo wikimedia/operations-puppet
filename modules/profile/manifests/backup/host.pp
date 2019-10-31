@@ -11,15 +11,17 @@
 # where backup is not set up. In that case we shortcircuit the class to be
 # effectively a noop
 class profile::backup::host(
-    Boolean $enable = hiera('profile::backup::enable', false),
-    Array[String] $ferm_directors = hiera('profile::backup::ferm_directors')
+    Boolean             $enable         = lookup('profile::backup::enable'),
+    Array[Stdlib::Host] $ferm_directors = lookup('profile::backup::ferm_directors'),
+    String              $pool           = lookup('profile::backup::pool'),
+    Stdlib::Host        $director       = lookup('profile::backup::director'),
+    Array[String]       $days           = lookup('profile::backup::days'),
 ){
+
+
     # TODO: $ferm_directors is temporary to help with the migration, we should
     # fall back to $director and remove this hiera call when done
     if $enable {
-        $pool     = hiera('profile::backup::pool')
-        $director = hiera('profile::backup::director')
-        $days     = hiera('profile::backup::days')
         class { 'bacula::client':
             director       => $director,
             catalog        => 'production',
