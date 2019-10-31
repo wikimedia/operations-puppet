@@ -3,7 +3,7 @@ Display varnish hitrate in dstat
 
 Usage: dstat --varnish-hit
 
-  Copyright 2016 Emanuele Rocca <ema@wikimedia.org>
+  Copyright 2016-2019 Emanuele Rocca <ema@wikimedia.org>
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -41,18 +41,25 @@ class dstat_plugin(dstat):  # noqa F821 undefined name 'dstat'
         }
 
     def check(self):
-        if os.system("varnishstat -1 > /dev/null") != 0:
+        if os.system("varnishstat -n frontend -1 -t 0 > /dev/null") != 0:
             raise Exception('Non-zero exit code from varnishstat')
 
     def varnishstat(self, frontend=False):
-        cmd = "varnishstat -1 -f MAIN.cache_hit -f MAIN.cache_miss"
+        cmd = "varnishstat -t 0 -1 -f MAIN.cache_hit -f MAIN.cache_miss"
 
         if frontend:
             cmd += " -n frontend"
 
+        cmd += " 2> /dev/null"
+
         data = os.popen(cmd)
+        output = [l for l in data.readlines()]
+
+        if not output:
+            return {'cache_hit': 0.0, 'cache_miss': 0.0}
+
         total = {}
-        for line in data.readlines():
+        for line in output:
             row = line.split()
             if not row:
                 continue
