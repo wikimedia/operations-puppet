@@ -1,0 +1,96 @@
+varnishtest "Test X-Cache-Status' interpretation of X-Cache"
+
+server s1 {
+    rxreq
+    txresp -hdr "X-Cache-Int-Testing: cp4029 miss, cp4027 hit/5"
+
+    rxreq
+    txresp -hdr "X-Cache-Int-Testing: cp4029 hit, cp4027 pass"
+
+    rxreq
+    txresp -hdr "X-Cache-Int-Testing: cp4029 miss, cp4027 int"
+
+    rxreq
+    txresp -hdr "X-Cache-Int-Testing: cp4029 int, cp4027 miss"
+
+    rxreq
+    txresp -hdr "X-Cache-Int-Testing: cp4029 pass, cp4027 pass"
+
+    rxreq
+    txresp -hdr "X-Cache-Int-Testing: cp4029 miss, cp4027 pass"
+
+    rxreq
+    txresp -hdr "X-Cache-Int-Testing: cp4029 miss, cp4027 miss"
+
+    rxreq
+    txresp -hdr "X-Cache-Int-Testing: cp4029 pass, cp4027 miss"
+
+    rxreq
+    txresp -hdr "X-Cache-Int-Testing: cp4029 banana, cp4027 potato"
+} -start
+
+varnish v1 -arg "-p vcl_path=${vcl_path} -p vcc_err_unref=false -p vcc_allow_inline_c=true -p cc_command='${cc_command}'" -vcl+backend {
+   backend vtc_backend {
+       .host = "${s1_addr}"; .port = "${s1_port}";
+   }
+
+   include "${basepath}/usr/share/varnish/tests/wikimedia_misc-frontend.vcl";
+}
+
+# Attach the "wikimedia_misc" label to wikimedia_misc-frontend.vcl
+varnish v1 -cli "vcl.label wikimedia_misc vcl1"
+
+varnish v1 -vcl {
+    backend vtc_backend {
+        .host = "${s1_addr}"; .port = "${s1_port}";
+    }
+
+    include "${basepath}/usr/share/varnish/tests/wikimedia_text-frontend.vcl";
+} -start
+
+client c1 {
+    txreq -url "/1" -hdr "Host: it.wikipedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+    expect resp.status == 200
+    expect resp.http.X-Cache-Status == "hit-front"
+
+    txreq -url "/2" -hdr "Host: it.wikipedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+    expect resp.status == 200
+    expect resp.http.X-Cache-Status == "hit-local"
+
+    txreq -url "/3" -hdr "Host: it.wikipedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+    expect resp.status == 200
+    expect resp.http.X-Cache-Status == "int-front"
+
+    txreq -url "/4" -hdr "Host: it.wikipedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+    expect resp.status == 200
+    expect resp.http.X-Cache-Status == "int-local"
+
+    txreq -url "/5" -hdr "Host: it.wikipedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+    expect resp.status == 200
+    expect resp.http.X-Cache-Status == "pass"
+
+    txreq -url "/6" -hdr "Host: it.wikipedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+    expect resp.status == 200
+    expect resp.http.X-Cache-Status == "pass"
+
+    txreq -url "/7" -hdr "Host: it.wikipedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+    expect resp.status == 200
+    expect resp.http.X-Cache-Status == "miss"
+
+    txreq -url "/8" -hdr "Host: it.wikipedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+    expect resp.status == 200
+    expect resp.http.X-Cache-Status == "miss"
+
+    txreq -url "/9" -hdr "Host: it.wikipedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+    expect resp.status == 200
+    expect resp.http.X-Cache-Status == "unknown"
+} -run

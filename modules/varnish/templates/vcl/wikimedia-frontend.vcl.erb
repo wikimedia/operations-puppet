@@ -512,9 +512,9 @@ sub deliver_synth_ {
 			set resp.http.X-Cache-Status = "int-local";
 		} elsif (resp.http.X-Cache-Status ~ "int") {
 			set resp.http.X-Cache-Status = "int-remote";
-		} elsif (resp.http.X-Cache-Status ~ "miss") {
+		} elsif (resp.http.X-Cache-Status ~ "miss$") {
 			set resp.http.X-Cache-Status = "miss";
-		} elsif (resp.http.X-Cache-Status ~ "pass") {
+		} elsif (resp.http.X-Cache-Status ~ "pass$") {
 			set resp.http.X-Cache-Status = "pass";
 		} else {
 			set resp.http.X-Cache-Status = "unknown";
