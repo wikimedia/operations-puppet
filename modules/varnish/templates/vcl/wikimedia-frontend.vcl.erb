@@ -368,8 +368,8 @@ sub vcl_recv {
 
 		// Block requests from common bot User-Agents that originate from bot_blocked_nets.
 		// For now, we define our list of common bot UAs as just one that has often been
-		// associated with trouble in the past.
-		if (std.ip(req.http.X-Client-IP, "192.0.2.1") ~ bot_blocked_nets && req.http.User-Agent ~ "^python-requests") {
+		// associated with trouble in the past, plus the blank or empty UA.
+		if (std.ip(req.http.X-Client-IP, "192.0.2.1") ~ bot_blocked_nets && (!req.http.User-Agent || req.http.User-Agent ~ "^python-requests")) {
 			return (synth(403, "Scripted requests from your IP have been blocked, please contact noc@wikimedia.org, and see also https://meta.wikimedia.org/wiki/User-Agent_policy"));
 		}
 	}
