@@ -137,4 +137,16 @@ class netops::monitoring {
         'eqsin' => { ipv4 => '11645085', ipv6 => '11645088', ipv6_failures => 50, },
     }
     create_resources(netops::ripeatlas, $atlas_measurements)
+
+    # SCS -- Serial Console Servers
+    $scs = {
+        'scs-a8-eqiad'   => { ipv4 => '10.65.0.11',    parents => ['msw1-eqiad'] },
+        'scs-c1-eqiad'   => { ipv4 => '10.65.0.22',    parents => ['msw1-eqiad'] },
+        'scs-a1-codfw'   => { ipv4 => '10.193.0.14',   parents => ['msw1-codfw'] },
+        'scs-c1-codfw'   => { ipv4 => '10.193.0.15',   parents => ['msw1-codfw'] },
+        'scs-oe16-esams' => { ipv4 => '10.21.0.9',     parents => ['mr1-esams'] },
+        'scs-ulsfo'      => { ipv4 => '10.128.128.11', parents => ['mr1-ulsfo'] },
+        'scs-eqsin'      => { ipv4 => '10.132.128.5',  parents => ['mr1-eqsin'] },
+    }
+    create_resources(netops::check, $scs)
 }
