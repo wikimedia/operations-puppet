@@ -21,6 +21,7 @@
 """Collect Toolforge tool usage data from Nginx access logs and store in a
 MySQL/MariaDB database for further analysis."""
 
+from distutils.version import StrictVersion
 import argparse
 import collections
 import datetime
@@ -65,45 +66,29 @@ class ToolViews(object):
     def get_tools(self):
         dn = 'ou=servicegroups,{}'.format(self.config['ldap']['basedn'])
         conn = ldap3.Connection(
-            ldap3.ServerPool([
-                ldap3.Server(s)
-                for s in self.config['ldap']['servers']
-            ], ldap3.POOLING_STRATEGY_ROUND_ROBIN, active=True, exhaust=True),
-            read_only=True,
+            self.config['ldap']['servers'],
             user=self.config['ldap']['user'],
+            password=self.config['ldap']['password'],
             auto_bind=True,
-            password=self.config['ldap']['password'])
-
-        groups = []
+            auto_range=True,
+            read_only=True,
+        )
         try:
-            conn.search(
+            groups = conn.extend.standard.paged_search(
                 dn,
                 '(&(objectclass=groupofnames)(cn=tools.*))',
-                ldap3.SEARCH_SCOPE_WHOLE_SUBTREE,
                 attributes=['cn'],
                 time_limit=5,
                 paged_size=256,
+                generator=True,
             )
-            for resp in conn.response:
-                groups.append(resp['attributes']['cn'][0].split('.')[1])
-
-            cookie = conn.result['controls']['1.2.840.113556.1.4.319']['value']['cookie']
-            while cookie:
-                conn.search(
-                    dn,
-                    '(&(objectclass=groupofnames)(cn=tools.*))',
-                    ldap3.SEARCH_SCOPE_WHOLE_SUBTREE,
-                    attributes=['cn'],
-                    time_limit=5,
-                    paged_size=256,
-                    paged_cookie=cookie,
-                )
-                cookie = conn.result['controls']['1.2.840.113556.1.4.319']['value']['cookie']
-                for resp in conn.response:
-                    groups.append(resp['attributes']['cn'][0].split('.')[1])
+            return [
+                group['attributes']['cn'][0].split('.')[1]
+                for group in groups
+            ]
         except Exception:
             logger.exception('Exception getting LDAP data for %s', dn)
-        return groups
+        return []
 
     @staticmethod
     def field_map(dictseq, name, func):
@@ -206,6 +191,12 @@ class ToolViews(object):
 
 
 def main():
+    # T237080: Verify that the version of ldap3 is new enough
+    if StrictVersion(ldap3.__version__) < StrictVersion('1.2.2'):
+        raise AssertionError(
+            'toolviews needs ldap3>=1.2.2, found {}'.format(ldap3.__version__)
+        )
+
     parser = argparse.ArgumentParser(
         description='Load tool analytics into database')
     parser.add_argument(
