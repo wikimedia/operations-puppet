@@ -2745,6 +2745,7 @@ host gerrit1001 {
 host gerrit2001 {
     hardware ethernet 14:18:77:5B:0D:7E;
     fixed-address gerrit2001.wikimedia.org;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host graphite1004 {
