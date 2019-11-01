@@ -18,16 +18,15 @@
     # Lower caching length (T184255)
     Header set Cache-Control "s-maxage=3600, must-revalidate, max-age=0"
 
-    # CSP reporting until the rules have been tweaked (T213223)
-    Header always set Content-Security-Policy-Report-Only "\
-        default-src 'self'; \
-        img-src 'self' data:; \
+    # CSP to sandbox content (T213223)
+    Header always set Content-Security-Policy "\
+        default-src 'self' data:; \
+        img-src 'self' data: piwik.wikimedia.org; \
         object-src 'none'; \
-        script-src 'unsafe-inline' 'unsafe-eval' 'self'; \
+        script-src 'unsafe-inline' 'unsafe-eval' 'self' piwik.wikimedia.org; \
         style-src 'unsafe-inline' 'self'; \
         sandbox allow-scripts allow-forms allow-popups; \
         form-action 'self'; \
-        report-uri  https://meta.wikimedia.org/w/api.php?action=cspreport&format=none&source=doc.wikimedia.org& \
         "
 
     # Back-compat for T73060: Redirect mediawiki-core/master/php/html/ to mediawiki-core/master/php/
