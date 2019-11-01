@@ -1,58 +1,41 @@
-# temp allow rsyncing gerrit data to new server
+# Allow rsyncing gerrit data to another server for
+# migrations and reinstalls.
 class profile::gerrit::migration (
-    $source_host = lookup(gerrit::server::master_host),
-    $data_dir  = lookup(gerrit::server::data_dir),
-    $user_name = lookup(gerrit::server::user_name),
+    $src_host = lookup(gerrit::server::rsync_src_host),
+    $dst_host = lookup(gerrit::server::rsync_dst_host),
+    $data_dir = lookup(gerrit::server::rsync_data_dir),
 ) {
 
-    ferm::service { 'gerrit-migration-rsync':
-        proto  => 'tcp',
-        port   => '873',
-        srange => "(@resolve((${source_host})) @resolve((${source_host}), AAAA))",
-    }
+    if $::fqdn == $dst_host {
 
-    # FIXME
-    # group { $user_name:
-    #     ensure => present,
-    # }
+        ferm::service { 'gerrit-migration-rsync':
+            proto  => 'tcp',
+            port   => '873',
+            srange => "(@resolve((${src_host})) @resolve((${src_host}), AAAA))",
+        }
 
-    # user { $user_name:
-    #     ensure     => 'present',
-    #     gid        => $user_name,
-    #     shell      => '/bin/bash',
-    #     home       => "/var/lib/${user_name}",
-    #     system     => true,
-    #     managehome => true,
-    # }
+        class { '::rsync::server': }
 
-    # file { $data_dir:
-    #     ensure => directory,
-    #     owner  => 'gerrit2',
-    #     group  => 'gerrit2',
-    #     mode   => '0664',
-    # }
+        rsync::server::module { 'gerrit-data':
+            path        => $data_dir,
+            read_only   => 'no',
+            hosts_allow => $src_host,
+        }
 
-    class { '::rsync::server': }
+        rsync::server::module { 'gerrit-var-lib':
+            path        => '/var/lib/gerrit2/review_site',
+            read_only   => 'no',
+            hosts_allow => $src_host,
+        }
 
-    rsync::server::module { 'gerrit-data':
-        path        => $data_dir,
-        read_only   => 'no',
-        hosts_allow => $source_host,
-    }
+        file { "/srv/home-${src_host}/":
+            ensure => 'directory',
+        }
 
-    rsync::server::module { 'gerrit-var-lib':
-        path        => '/var/lib/gerrit2/review_site',
-        read_only   => 'no',
-        hosts_allow => $source_host,
-    }
-
-    file { "/srv/home-${source_host}/":
-        ensure => 'directory',
-    }
-
-    rsync::server::module { 'gerrit-home':
-        path        => "/srv/home-${source_host}",
-        read_only   => 'no',
-        hosts_allow => $source_host,
+        rsync::server::module { 'gerrit-home':
+            path        => "/srv/home-${src_host}",
+            read_only   => 'no',
+            hosts_allow => $src_host,
+        }
     }
 }

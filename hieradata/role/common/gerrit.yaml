@@ -11,9 +11,9 @@ gerrit::server::is_replica: true
 gerrit::server::replica_hosts:
     - 'gerrit-replica.wikimedia.org'
 
-# This affects which server is rsync source for data migration
-# but is not the actual switch for Gerrit. See "is_replica" above.
-gerrit::server::master_host: 'gerrit1001.wikimedia.org'
+# Settings for rsyncing app data for migrations or reinstalls
+gerrit::server::rsync_src_host: 'gerrit1001.wikimedia.org'
+gerrit::server::rsync_dst_host: 'gerrit2001.wikimedia.org'
 gerrit::server::data_dir: '/srv/gerrit'
 gerrit::server::user_name: 'gerrit2'
 
