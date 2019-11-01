@@ -10,6 +10,7 @@ class role::gerrit {
     include ::profile::base::firewall
     include ::passwords::gerrit
     include ::profile::gerrit::server
+    include ::profile::gerrit::migration
     include ::profile::waf::apache2::administrative
 
     class { '::httpd':
