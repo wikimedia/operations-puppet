@@ -53,6 +53,10 @@ class profile::reportupdater::jobs::hadoop {
         output_dir  => 'metrics/published_cx2_translations',
     }
 
+    reportupdater::job { 'reference-previews':
+        output_dir => 'metrics/reference-previews',
+    }
+
     reportupdater::job { 'wmcs':
         output_dir => 'metrics/wmcs',
     }
