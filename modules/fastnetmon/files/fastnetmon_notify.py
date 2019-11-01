@@ -113,7 +113,7 @@ def main():
     if args.action == 'unban':
         logger.info('END: {event_short}'.format(event_short=event_short))
         if args.email:
-            mail(event_short, args.email)
+            mail(event_short, args.email, 'RECOVERY: event has ended.')
 
 
 if __name__ == '__main__':
