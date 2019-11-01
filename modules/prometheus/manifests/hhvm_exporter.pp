@@ -20,11 +20,5 @@ define prometheus::hhvm_exporter (
         owner   => 'root',
         group   => 'root',
         content => "ARGS=\"${arguments}\"",
-        notify  => Service['prometheus-hhvm-exporter'],
-    }
-
-    service { 'prometheus-hhvm-exporter':
-        ensure => stopped,
-        enable => mask,
     }
 }
