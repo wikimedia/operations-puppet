@@ -10,7 +10,7 @@ class profile::mariadb::cloudinfra (
         proto   => 'tcp',
         port    => 3306,
         notrack => true,
-        srange  => '(@resolve(cloud-puppetmaster-01.cloudinfra.eqiad.wmflabs) @resolve(cloud-puppetmaster-02.cloudinfra.eqiad.wmflabs))',
+        srange  => '(@resolve(cloud-puppetmaster-01.cloudinfra.eqiad.wmflabs) @resolve(cloud-puppetmaster-02.cloudinfra.eqiad.wmflabs) @resolve(cloud-puppetmaster-03.cloudinfra.eqiad.wmflabs) @resolve(cloud-puppetmaster-04.cloudinfra.eqiad.wmflabs))',
     }
 
     ferm::service { 'mariadb_replication':

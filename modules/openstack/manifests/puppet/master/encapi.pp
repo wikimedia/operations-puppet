@@ -25,6 +25,7 @@ class openstack::puppet::master::encapi(
     $python_version = $::lsbdistcodename ? {
         'jessie'  => 'python3.4',
         'stretch' => 'python3.5',
+        'buster'  => 'python3.7',
     }
 
     file { "/usr/local/lib/${python_version}/dist-packages/labspuppetbackend.py":
