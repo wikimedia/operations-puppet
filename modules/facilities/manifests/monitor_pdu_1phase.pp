@@ -10,10 +10,13 @@ define facilities::monitor_pdu_1phase(
     Integer $breaker = 30,
     Boolean $redundant = true,
     String $model = 'sentry3',
+    Hash[String, String] $mgmt_parents = lookup('monitoring::mgmt_parents'),  # lint:ignore:wmf_styleguide
 ) {
+
     @monitoring::host { $title:
         ip_address => $ip,
         group      => 'pdus',
+        parents    => $mgmt_parents[$site],
     }
 
     facilities::monitor_pdu_service { "${title}-infeed-load-tower-A-single-phase":

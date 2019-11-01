@@ -417,3 +417,10 @@ monitoring::groups:
     description: Syslog servers (eqiad)
   syslog_codfw:
     description: Syslog servers (codfw)
+
+monitoring::mgmt_parents:
+  eqiad: msw1-eqiad
+  codfw: msw1-codfw
+  ulsfo: mr1-ulsfo
+  esams: mr1-esams
+  eqsin: mr1-eqsin

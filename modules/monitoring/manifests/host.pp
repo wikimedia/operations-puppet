@@ -12,6 +12,7 @@ define monitoring::host (
     $contact_group         = hiera('contactgroups', 'admins'),
     $mgmt_contact_group    = 'admins',
     $notifications_enabled = '1',
+    Hash[String, String] $mgmt_parents = lookup('monitoring::mgmt_parents'), # lint:ignore:wmf_styleguide
     ) {
 
     $nagios_address = $host_fqdn ? {
@@ -69,6 +70,7 @@ define monitoring::host (
                 "${title}.mgmt" => {
                     ensure                => $ensure,
                     host_name             => "${title}.mgmt",
+                    parents               => $mgmt_parents[$::site],
                     address               => $facts['ipmi_lan']['ipaddress'],
                     hostgroups            => 'mgmt',
                     check_command         => 'check_ping!500,20%!2000,100%',

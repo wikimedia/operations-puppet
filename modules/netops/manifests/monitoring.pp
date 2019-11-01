@@ -57,25 +57,25 @@ class netops::monitoring {
         ospf           => true,
     }
     $mgmt_routers = {
-        'mr1-eqiad'  => { ipv4 => '208.80.154.199',  ipv6 => '2620:0:861:ffff::6' },
-        'mr1-codfw'  => { ipv4 => '208.80.153.196',  ipv6 => '2620:0:860:ffff::6' },
-        'mr1-esams'  => { ipv4 => '91.198.174.247',  ipv6 => '2620:0:862:ffff::1' },
-        'mr1-ulsfo'  => { ipv4 => '198.35.26.194',   ipv6 => '2620:0:863:ffff::6' },
-        'mr1-eqsin'  => { ipv4 => '103.102.166.128', ipv6 => '2001:df2:e500:ffff::1' },
+        'mr1-eqiad'  => { ipv4 => '208.80.154.199',  ipv6 => '2620:0:861:ffff::6', parents => ['asw2-a-eqiad'] },
+        'mr1-codfw'  => { ipv4 => '208.80.153.196',  ipv6 => '2620:0:860:ffff::6', parents => ['asw-a-codfw'] },
+        'mr1-esams'  => { ipv4 => '91.198.174.247',  ipv6 => '2620:0:862:ffff::1', parents => ['asw2-esams.mgmt.esams.wmnet'] },
+        'mr1-ulsfo'  => { ipv4 => '198.35.26.194',   ipv6 => '2620:0:863:ffff::6', parents => ['asw2-ulsfo'] },
+        'mr1-eqsin'  => { ipv4 => '103.102.166.128', ipv6 => '2001:df2:e500:ffff::1', parents => ['asw1-eqsin'] },
     }
     create_resources(netops::check, $mgmt_routers, $mgmt_routers_defaults)
 
     # OOB interfaces -- no SNMP for these
     $oob = {
-        'mr1-eqiad.oob' => { ipv4 => '198.32.107.153',  ipv6 => '2607:f6f0:205::153', },
-        'mr1-codfw.oob' => { ipv4 => '216.117.46.36',   },
-        'mr1-esams.oob' => { ipv4 => '164.138.24.90',   },
-        'mr1-ulsfo.oob' => { ipv4 => '198.24.47.102',   ipv6 => '2607:fb58:9000:7::2', },
-        'mr1-eqsin.oob' => { ipv4 => '27.111.227.106',  ipv6 => '2403:b100:3001:9::2', },
-        're0.cr1-eqiad' => { ipv4 => '10.65.0.12',      parents => ['mr1-eqiad'] },
-        're0.cr2-eqiad' => { ipv4 => '10.65.0.14',      parents => ['mr1-eqiad'] },
-        're0.cr1-codfw' => { ipv4 => '10.193.0.10',     parents => ['mr1-codfw'] },
-        're0.cr2-codfw' => { ipv4 => '10.193.0.12',     parents => ['mr1-codfw'] },
+        'mr1-eqiad.oob' => { ipv4 => '198.32.107.153',  ipv6 => '2607:f6f0:205::153', parents => ['mr1-eqiad'] },
+        'mr1-codfw.oob' => { ipv4 => '216.117.46.36', parents => ['mr1-codfw'] },
+        'mr1-esams.oob' => { ipv4 => '164.138.24.90', parents => ['mr1-esams'] },
+        'mr1-ulsfo.oob' => { ipv4 => '198.24.47.102',   ipv6 => '2607:fb58:9000:7::2',  parents => ['mr1-ulsfo'] },
+        'mr1-eqsin.oob' => { ipv4 => '27.111.227.106',  ipv6 => '2403:b100:3001:9::2',  parents => ['mr1-eqsin'] },
+        're0.cr1-eqiad' => { ipv4 => '10.65.0.12',      parents => ['msw1-eqiad'] },
+        're0.cr2-eqiad' => { ipv4 => '10.65.0.14',      parents => ['msw1-eqiad'] },
+        're0.cr1-codfw' => { ipv4 => '10.193.0.10',     parents => ['msw1-codfw'] },
+        're0.cr2-codfw' => { ipv4 => '10.193.0.12',     parents => ['msw1-codfw'] },
         're0.cr3-esams' => { ipv4 => '10.21.0.119',     parents => ['mr1-esams'] },
         're0.cr2-esams' => { ipv4 => '10.21.0.117',     parents => ['mr1-esams'] },
         're0.cr3-ulsfo' => { ipv4 => '10.128.128.4',    parents => ['mr1-ulsfo'] },
@@ -101,14 +101,14 @@ class netops::monitoring {
         'asw2-b-eqiad'  => { ipv4 => '10.65.0.25',   parents => ['cr1-eqiad', 'cr2-eqiad'] },
         'asw2-c-eqiad'  => { ipv4 => '10.65.0.26',   parents => ['cr1-eqiad', 'cr2-eqiad'] },
         'asw2-d-eqiad'  => { ipv4 => '10.65.0.27',   parents => ['cr1-eqiad', 'cr2-eqiad'] },
-        'msw1-eqiad'    => { ipv4 => '10.65.0.10',   parents => ['cr1-eqiad', 'cr2-eqiad'], vcp => false },
+        'msw1-eqiad'    => { ipv4 => '10.65.0.10',   parents => ['mr1-eqiad'], vcp => false },
         'fasw-c-eqiad'  => { ipv4 => '10.65.0.30',   parents => ['pfw3-eqiad'] },
         # codfw
         'asw-a-codfw'   => { ipv4 => '10.193.0.16',  parents => ['cr1-codfw', 'cr2-codfw'] },
         'asw-b-codfw'   => { ipv4 => '10.193.0.17',  parents => ['cr1-codfw', 'cr2-codfw'] },
         'asw-c-codfw'   => { ipv4 => '10.193.0.18',  parents => ['cr1-codfw', 'cr2-codfw'] },
         'asw-d-codfw'   => { ipv4 => '10.193.0.19',  parents => ['cr1-codfw', 'cr2-codfw'] },
-        'msw1-codfw'    => { ipv4 => '10.193.0.3',   parents => ['cr1-codfw', 'cr2-codfw'], vcp => false },
+        'msw1-codfw'    => { ipv4 => '10.193.0.3',   parents => ['mr1-codfw'], vcp => false },
         'fasw-c-codfw'  => { ipv4 => '10.193.0.57',  parents => ['pfw3-codfw'] },
         # esams
         'asw2-esams.mgmt.esams.wmnet'     => { ipv4 => '10.21.0.8',  parents => ['cr3-esams', 'cr2-esams'] },
@@ -121,10 +121,10 @@ class netops::monitoring {
 
     # RIPE Atlases -- no SNMP for these
     $atlas = {
-        'ripe-atlas-eqiad' => { ipv4 => '208.80.155.69',  ipv6 => '2620:0:861:202:208:80:155:69',  },
-        'ripe-atlas-codfw' => { ipv4 => '208.80.152.244', ipv6 => '2620:0:860:201:208:80:152:244', },
-        'ripe-atlas-ulsfo' => { ipv4 => '198.35.26.244',  ipv6 => '2620:0:863:201:198:35:26:244',  },
-        'ripe-atlas-eqsin' => { ipv4 => '103.102.166.20', ipv6 => '2001:df2:e500:201:103:102:166:20', },
+        'ripe-atlas-eqiad' => { ipv4 => '208.80.155.69',  ipv6 => '2620:0:861:202:208:80:155:69', parents => ['asw2-b-eqiad'] },
+        'ripe-atlas-codfw' => { ipv4 => '208.80.152.244', ipv6 => '2620:0:860:201:208:80:152:244', parents => ['asw-a-codfw'] },
+        'ripe-atlas-ulsfo' => { ipv4 => '198.35.26.244',  ipv6 => '2620:0:863:201:198:35:26:244', parents => ['asw2-ulsfo'] },
+        'ripe-atlas-eqsin' => { ipv4 => '103.102.166.20', ipv6 => '2001:df2:e500:201:103:102:166:20', parents => ['asw1-eqsin'] },
     }
     create_resources(netops::check, $atlas)
 
