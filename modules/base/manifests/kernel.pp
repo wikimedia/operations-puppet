@@ -93,4 +93,15 @@ class base::kernel(
         group  => 'root',
         mode   => '0555',
     }
+
+    nrpe::monitor_service { 'cpu_microcode_status':
+        ensure         => 'present',
+        description    => 'Check whether microcode mitigations for CPU vulnerabilities are applied',
+        nrpe_command   => '/usr/lib/nagios/plugins/check_microcode',
+        require        => File['/usr/lib/nagios/plugins/check_microcode'],
+        contact_group  => 'admins',
+        check_interval => 1440,
+        retry_interval => 5,
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/Microcode',
+    }
 }
