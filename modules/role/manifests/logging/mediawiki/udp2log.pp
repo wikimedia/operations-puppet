@@ -101,6 +101,20 @@ class role::logging::mediawiki::udp2log(
         ensure => absent
     }
 
+    file { '/usr/local/bin/logspam-watch':
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/role/logging/logspam-watch.sh',
+    }
+
+    file { '/usr/local/bin/logspam':
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/role/logging/logspam.pl',
+    }
+
     # This Redis instance is used to receive PHP stack traces from
     # MediaWiki app servers, for processing by Arc Lamp on webperf#2 servers.
     # (see profile::webperf::arclamp).
