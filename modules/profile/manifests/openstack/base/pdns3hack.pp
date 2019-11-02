@@ -1,9 +1,9 @@
-# why this hack? We detected in the last minute that designate in Mitaka only
-# works with pdns v3, which is only in Debian jessie.
-# Once we move to Openstack > Mitaka (hopefully soon) this hack shouldn't be
-# required. Why you didn't include all this in the serverpackages.pp tree?
-# because that is present in every single cloud server, and we only want this hack
-# to be present in cloudservices nodes.
+# Why this hack? When installing OpenStack Mitaka on Stretch, we detected in
+# the last minute that designate in Mitaka only works with pdns v3, which is
+# only in Debian jessie.
+# Now that we've moved to Openstack Newton on the cloudservices boxes this hack
+# shouldn't be required. However, Designate uses different drivers for pdns
+# v4, so switching over will require some work.
 class profile::openstack::base::pdns3hack(
 ) {
     requires_os('debian >= stretch')
