@@ -25,7 +25,7 @@ class openstack::wikitech::web(
         'php-ldap']
     )
 
-    backup::set {'a-backup': }
+    backup::set {'cloudweb-srv-backup': }
 
     httpd::site { $webserver_hostname:
         content => template('openstack/wikitech/wikitech-web.wikimedia.org.erb'),

@@ -93,8 +93,8 @@ class profile::backup::director(
     bacula::director::fileset { 'a-sqldata':
         includes     => [ '/a/sqldata' ]
     }
-    bacula::director::fileset { 'a-backup':
-        includes => [ '/a/backup' ]
+    bacula::director::fileset { 'cloudweb-srv-backup':
+        includes => [ '/srv/backup' ]
     }
     # TODO: remove this when geowiki site is no longer needed.
     # https://phabricator.wikimedia.org/T190059
