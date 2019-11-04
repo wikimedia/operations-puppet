@@ -4,7 +4,6 @@ class profile::microsites::static_bugzilla {
     include ::bugzilla_static
 
     backup::set { 'bugzilla-static' : }
-    backup::set { 'bugzilla-backup' : }
 
     monitoring::service { 'static-bugzilla-http':
         description   => 'Static Bugzilla HTTP',

@@ -170,9 +170,6 @@ class profile::backup::director(
     bacula::director::fileset { 'bugzilla-static':
         includes => [ '/srv/org/wikimedia/static-bugzilla' ]
     }
-    bacula::director::fileset { 'bugzilla-backup':
-        includes => [ '/srv/org/wikimedia/bugzilla-backup' ]
-    }
     bacula::director::fileset { 'rt-static':
         includes => [ '/srv/org/wikimedia/static-rt' ]
     }
