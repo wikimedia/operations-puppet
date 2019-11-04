@@ -3856,3 +3856,7 @@ ldap_only_users:
     ensure: present
     realname: CherRaye Glenn
     email: cglenn@wikimedia.org
+  bawolff:
+    ensure: present
+    realname: Brian Wolff
+    email: bwolff@wikimedia.org
