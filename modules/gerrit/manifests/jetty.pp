@@ -191,6 +191,14 @@ class gerrit::jetty(
         require => File['/var/lib/gerrit2'],
     }
 
+    file { '/var/lib/gerrit2/review_site/tmp':
+        ensure  => directory,
+        owner   => 'gerrit2',
+        group   => 'gerrit2',
+        mode    => '0775',
+        require => File['/var/lib/gerrit2'],
+    }
+
     file { '/var/lib/gerrit2/review_site/bin/gerrit.war':
       ensure  => 'link',
       target  => '/srv/deployment/gerrit/gerrit/gerrit.war',
