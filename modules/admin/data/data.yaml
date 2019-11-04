@@ -17,7 +17,7 @@ groups:
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
-              marble, mmarble, raz-shuty]
+              marble, mmarble, raz-shuty, jeroendedauw]
   wikidev:
     gid: 500
     description: container group for primary user groups.
@@ -3682,9 +3682,8 @@ ldap_only_users:
     realname: Christoph Neuroth
     email: christoph.neuroth+wikimedia@gmail.com
   jeroendedauw:
-    ensure: present
+    ensure: absent
     realname: Jeroen De Dauw
-    email: jeroendedauw@gmail.com
   jkroll:
     ensure: present
     realname: Johannes Kroll
