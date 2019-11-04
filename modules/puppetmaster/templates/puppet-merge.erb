@@ -21,7 +21,20 @@ lock() {
   if ! flock -xn $LOCKFD
   then
       trap EXIT
-      die "failed to lock, another puppet-merge running on this host?"
+      # Any subprocess of the script that holds the lock will also have an open
+      # filehandle to $LOCKFILE.  Grab just one such PID for pstree (doesn't
+      # matter which).
+      PSTREE=$(pstree -su $(fuser $LOCKFILE 2>/dev/null | awk '{print $1}'))
+      # If given an empty command line, or a nonexistent PID, pstree -su will
+      # output all processes on the system, which isn't helpful.  Normal usage
+      # of this script should only ever yield a single line of pstree output.
+      if [ $(echo "$PSTREE" | wc -l) -eq 1 ]
+      then
+        PSTREE="locking process tree: $PSTREE"
+      else
+        PSTREE="could not determine lock holder"
+      fi
+      die "failed to lock, another puppet-merge running on this host?\n${PSTREE}"
   fi
 }
 
