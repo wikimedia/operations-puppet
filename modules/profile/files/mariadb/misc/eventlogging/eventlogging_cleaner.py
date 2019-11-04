@@ -536,10 +536,10 @@ if __name__ == '__main__':
         )
         sys.exit(1)
 
-    if args.older_than < 90:
+    if args.older_than < 0:
         log.error(
             "Attempt to delete data older than ({}) days "
-            "(any value less than 90 is not supported)"
+            "(any value less than 0 is not supported)"
             .format(args.older_than)
         )
         sys.exit(1)
