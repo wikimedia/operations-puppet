@@ -139,14 +139,17 @@ def get_expected_freshness(schedule):
     TODO: Make thresholds configurable and less arbitrary
     """
     if schedule.startswith('Hourly'):
-        expected_freshness = 3 * 3600  # 3 hours
-        expected_full_freshness = 48 * 3600  # 2 days
+        # Full weekly, incremental hourly
+        expected_freshness = 3 * 3600
+        expected_full_freshness = 8 * 24 * 3600
     elif schedule.startswith('Weekly'):
-        expected_freshness = 48 * 3600  # 2 days
-        expected_full_freshness = 8 * 24 * 3600  # 8 days
+        # Only fulls, weekly
+        expected_freshness = 8 * 24 * 3600
+        expected_full_freshness = 8 * 24 * 3600
     else:  # We assume Monthly
-        expected_freshness = 8 * 24 * 3600  # 8 days
-        expected_full_freshness = 32 * 24 * 3600  # 32 days
+        # Fulls monthly, diffs every other fortnite, incr. daily
+        expected_freshness = 2 * 24 * 3600
+        expected_full_freshness = 32 * 24 * 3600
     return expected_freshness, expected_full_freshness
 
 
