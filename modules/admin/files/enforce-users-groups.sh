@@ -8,7 +8,14 @@ set -e
 # cleanup is needed.
 
 # for $LAST_SYSTEM_UID
-. /etc/adduser.conf
+#. /etc/adduser.conf
+# We're in the process of managing adduser config to Puppet and to lower
+# the upper boundary for system users to 499 in that config. We do however
+# have a number of users which have been created in the 500-999 range, so
+# set the upper boundary for the enforce-users-groups script to the old
+# value. If/when we migrate legacy users to the new upper limit we can
+# read the value from adduser.conf again
+LAST_SYSTEM_UID=999
 
 ARCHIVE_DIR='/var/userarchive'
 EXCLUDE=("nobody" \
