@@ -10,6 +10,9 @@ class mediawiki::packages {
     # PDF and DjVu
     require_package('ghostscript', 'djvulibre-bin', 'librsvg2-bin', 'libtiff-tools', 'poppler-utils')
 
+    # ploticus for EasyTimeline extension (T237304)
+    require_package('ploticus')
+
     # Score
     require_package('lilypond', 'timidity', 'freepats', 'fluidsynth', 'fluid-soundfont-gs', 'fluid-soundfont-gm')
 
