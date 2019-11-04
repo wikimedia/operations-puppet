@@ -12,7 +12,7 @@ class profile::analytics::refinery::job::test::refine {
 
     # Update this when you want to change the version of the refinery job jar
     # being used for the refine job.
-    $refinery_version = '0.0.97'
+    $refinery_version = '0.0.105'
 
     # Use this value by default
     Profile::Analytics::Refinery::Job::Refine_job {

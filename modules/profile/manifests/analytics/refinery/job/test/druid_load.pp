@@ -7,7 +7,7 @@ class profile::analytics::refinery::job::test::druid_load {
 
     # Update this when you want to change the version of the refinery job jar
     # being used for the druid load jobs.
-    $refinery_version = '0.0.83'
+    $refinery_version = '0.0.105'
 
     # Use this value as default refinery_job_jar.
     Profile::Analytics::Refinery::Job::Eventlogging_to_druid_job {
