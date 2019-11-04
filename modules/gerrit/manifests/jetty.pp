@@ -72,48 +72,32 @@ class gerrit::jetty(
         '-XX:GCLogFileSize=2M',
     ]
 
-    if os_version('debian == buster') {
-        if $java_version == '11' {
-            require_package('openjdk-11-jdk')
-            require_package('openjdk-11-dbg')
-        } else {
-            apt::repository { 'wikimedia-openjdk8':
-                uri        => 'http://apt.wikimedia.org/wikimedia',
-                dist       => 'buster-wikimedia',
-                components => 'component/jdk8',
-                notify     => Exec['apt_update_jdk8'],
-            }
-
-            # First installs can trip without this
-            exec {'apt_update_jdk8':
-                command     => '/usr/bin/apt-get update',
-                refreshonly => true,
-                logoutput   => true,
-            }
-
-            package { 'openjdk-8-jdk':
-                ensure  => present,
-                require => Apt::Repository['wikimedia-openjdk8'],
-            }
-            package { 'openjdk-8-dbg':
-                ensure  => present,
-                require => Apt::Repository['wikimedia-openjdk8'],
-            }
-        }
+    if $java_version == '11' {
+        require_package('openjdk-11-jdk')
+        require_package('openjdk-11-dbg')
     } else {
-        require_package([
-            'openjdk-8-jdk',
-            'openjdk-8-dbg',
-            'libmysql-java',
-        ])
-
-        # before buster we used the mysql-connector from distro package
-        file { '/var/lib/gerrit2/review_site/lib/mysql-connector-java.jar':
-            ensure  => 'link',
-            target  => '/usr/share/java/mysql-connector-java.jar',
-            require => [File['/var/lib/gerrit2/review_site/lib'], Package['libmysql-java']],
+        apt::repository { 'wikimedia-openjdk8':
+            uri        => 'http://apt.wikimedia.org/wikimedia',
+            dist       => 'buster-wikimedia',
+            components => 'component/jdk8',
+            notify     => Exec['apt_update_jdk8'],
         }
 
+        # First installs can trip without this
+        exec {'apt_update_jdk8':
+            command     => '/usr/bin/apt-get update',
+            refreshonly => true,
+            logoutput   => true,
+        }
+
+        package { 'openjdk-8-jdk':
+            ensure  => present,
+            require => Apt::Repository['wikimedia-openjdk8'],
+        }
+        package { 'openjdk-8-dbg':
+            ensure  => present,
+            require => Apt::Repository['wikimedia-openjdk8'],
+        }
     }
 
     require_package([
