@@ -84,7 +84,7 @@ class profile::mariadb::misc::eventlogging::sanitization(
     # %Y%m%d%H%M%S. If the file is not existent, the script will fail gracefully
     # without doing any action to the db. This is useful to avoid gaps in
     # records sanitized if the script fails and does not commit a new timestamp.
-    $eventlogging_cleaner_command = "/usr/local/bin/eventlogging_cleaner --whitelist ${whitelist_path} --yaml --older-than 90 --start-ts-file ${state_directory_path}/eventlogging_cleaner --batch-size 10000 --sleep-between-batches 2 ${extra_parameters}"
+    $eventlogging_cleaner_command = "/usr/local/bin/eventlogging_cleaner --whitelist ${whitelist_path} --yaml --older-than 0 --start-ts-file ${state_directory_path}/eventlogging_cleaner --batch-size 10000 --sleep-between-batches 2 ${extra_parameters}"
 
     systemd::timer::job { 'eventlogging_db_sanitization':
         description               => 'Apply Analytics data retetion policies to the Eventlogging database',
