@@ -78,4 +78,16 @@ class role::toollabs::k8s::worker {
     ferm::rule {'rest-of-eqiad1-region':
         rule => 'saddr 172.16.0.0/21 proto tcp dport (1:8472 8473:10249 10251:10254 10256:65535) ACCEPT;'
     }
+
+    # Rotate docker logs
+    logrotate::rule { 'docker':
+        ensure        => present,
+        file_glob     => '/var/lib/docker/containers/*/*.log',
+        not_if_empty  => true,
+        rotate        => 3,
+        size          => '100M',
+        compress      => true,
+        missing_ok    => true,
+        copy_truncate => true,
+    }
 }
