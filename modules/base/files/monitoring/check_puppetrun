@@ -118,7 +118,7 @@ else
     failcount = :no_summary_file
 end
 
-if failcount.is_a(Symbol)
+if failcount.is_a?(Symbol)
   if ! File.exist?(icingafile)
     FileUtils.touch(icingafile)
   end
