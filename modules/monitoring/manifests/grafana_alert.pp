@@ -32,11 +32,13 @@ define monitoring::grafana_alert(
     $contact_group = 'admins',
     $notes_url     = undef,
 ) {
+    $notes_urls = monitoring::build_notes_url($notes_url, ["${grafana_url}/d/${dashboard_uid}/"])
+
     monitoring::service { $title:
         ensure        => $ensure,
         description   => "${title} grafana alert",
         check_command => "check_grafana_alert!${dashboard_uid}!${grafana_url}",
         contact_group => $contact_group,
-        notes_url     => $notes_url,
+        notes_url     => $notes_urls,
     }
 }
