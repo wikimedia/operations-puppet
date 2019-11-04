@@ -1132,7 +1132,7 @@ users:
     gid: 500
     name: ladsgroup
     realname: Amir Sarabadani
-    ssh_keys: [ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJuLuPFsHiu4OohMH4CYehzDbdrGO/o6XFvCCX4Mzeyx amir@amir-GL552VW]
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC02OaZBRdIocZp57HGOh8/+IdAwOZiZgrHAsFcNQbCk3Go7NGYxk4jxhIp7JmnK0wA653FiflYNqI3gkQg/pgWYqQldQu1d7VomAW1EcHWWlJhMyUkWaTd/eQnZLXPGJkc6vI+PQiJMnjtTwI2WD5brljFafJLvMs4j9tJWfmkFvtLbhO48uMAOO+2FVLhrYw7j//PrO8mQrfAZUHbUCU909xyR7+/hRPSudz9K/VPAVXnzp9qbByrmLiKZWvnFKslyemcuhMYqJBHHR/j8+P7VUySU+xJkxuK8ueJRSxu56Mfer6p8zoSa8qVhoaS7opq3UNP8H8cSDgdxYFLUuBF]
     uid: 3182
     email: amir.sarabadani@wikimedia.de
   manybubbles:
