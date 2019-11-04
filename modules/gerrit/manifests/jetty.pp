@@ -327,6 +327,11 @@ class gerrit::jetty(
         },
     }
 
+    file { '/etc/gerrit':
+        ensure => link,
+        target => '/var/lib/gerrit2/review_site/etc',
+    }
+
     file { '/etc/default/gerrit':
         content => template('gerrit/gerrit.default.erb'),
         owner   => 'root',
