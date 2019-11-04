@@ -497,4 +497,16 @@ class profile::logstash::collector (
         startmsg_regex => '^\\\\[[0-9,-\\\\ \\\\:]+\\\\]',
     }
 
+    mtail::program { 'logstash':
+        ensure => present,
+        notify => Service['mtail'],
+        source => 'puppet:///modules/mtail/programs/logstash.mtail',
+    }
+
+    $prometheus_nodes_ferm = join($prometheus_nodes, ' ')
+    ferm::service { 'mtail':
+        proto  => 'tcp',
+        port   => '3903',
+        srange => "(@resolve((${prometheus_nodes_ferm})) @resolve((${prometheus_nodes_ferm}), AAAA))",
+    }
 }
