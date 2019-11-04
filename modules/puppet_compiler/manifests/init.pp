@@ -15,7 +15,7 @@ class puppet_compiler(
     file { [$libdir, $vardir, $workdir]:
         ensure  => ensure_directory($ensure),
         owner   => $user,
-        mode    => '0755',
+        mode    => '0644',
         recurse => true,
     }
     file {"${vardir}/yaml":
