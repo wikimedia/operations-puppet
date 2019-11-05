@@ -53,10 +53,17 @@ class rsync::server(
       group   => 'root',
       content => template('rsync/stunnel.conf.erb'),
     }
+    file_line { 'enable_stunnel':
+      ensure   => present,
+      path     => '/etc/default/stunnel4',
+      line     => 'ENABLED=1  # Managed by puppet',
+      match    => '^ENABLED=',
+      multiple => false,
+    }
     service { 'stunnel4':
       ensure    => running,
       enable    => true,
-      subscribe => [ Exec['compile fragments'], File['/etc/default/rsync'], File['/etc/stunnel/rsync.conf'] ],
+      subscribe => [ Exec['compile fragments'], File['/etc/default/rsync'], File['/etc/stunnel/rsync.conf'], File_line['enable_stunnel'] ],
     }
   }
 
