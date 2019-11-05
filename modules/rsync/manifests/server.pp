@@ -58,12 +58,14 @@ class rsync::server(
       enable    => true,
       subscribe => [ Exec['compile fragments'], File['/etc/default/rsync'], File['/etc/stunnel/rsync.conf'] ],
     }
-  } else {
-    service { 'rsync':
-      ensure    => running,
-      enable    => true,
-      subscribe => [ Exec['compile fragments'], File['/etc/default/rsync'] ],
-    }
+  }
+
+  # TODO: When we have migrated all rsync usage off of cleartext and to use $wrap_with_stunnel,
+  # we can ensure=>stopped this.
+  service { 'rsync':
+    ensure    => running,
+    enable    => true,
+    subscribe => [ Exec['compile fragments'], File['/etc/default/rsync'] ],
   }
 
   if $motd_file != 'UNSET' {
