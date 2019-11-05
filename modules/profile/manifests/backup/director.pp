@@ -90,9 +90,6 @@ class profile::backup::director(
     bacula::director::fileset { 'root':
         includes     => [ '/' ]
     }
-    bacula::director::fileset { 'a-sqldata':
-        includes     => [ '/a/sqldata' ]
-    }
     bacula::director::fileset { 'cloudweb-srv-backup':
         includes => [ '/srv/backup' ]
     }
@@ -103,9 +100,6 @@ class profile::backup::director(
     }
     bacula::director::fileset { 'home':
         includes => [ '/home' ]
-    }
-    bacula::director::fileset { 'mnt-a':
-        includes => [ '/mnt/a' ]
     }
     bacula::director::fileset { 'roothome':
         includes => [ '/root' ]
