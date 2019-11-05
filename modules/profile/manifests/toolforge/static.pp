@@ -3,7 +3,7 @@ class profile::toolforge::static (
 ) {
     $resolver             = join($::nameservers, ' ')
 
-    sslcert::certificate { 'star.tools.wmflabs.org': ensure => absent }
+    sslcert::certificate { 'star.wmflabs.org': ensure => absent }
     nginx::site { 'static-server':
         content => template('profile/toolforge/static-server.conf.erb'),
     }
