@@ -28,6 +28,9 @@ profile::hadoop::common::config_override:
   hdfs_trash_checkpoint_interval: 1440
   hdfs_trash_interval: 43200
 
+# Deploy TLS keys and xml configuration files
+profile::hadoop::common::ensure_ssl_config: true
+
 profile::analytics::database::meta::backup_dest::hive::metastore_host: 'an-coord1001.eqiad.wmnet'
 profile::analytics::database::meta::backup_dest::oozie_host: 'an-coord1001.eqiad.wmnet'
 

@@ -29,6 +29,9 @@ profile::hadoop::common::config_override:
   hdfs_trash_checkpoint_interval: 1440
   hdfs_trash_interval: 43200
 
+# Deploy TLS keys and xml configuration files
+profile::hadoop::common::ensure_ssl_config: true
+
 # Ensure that users in these posix groups have home directories in HDFS.
 profile::hadoop::master::hadoop_user_groups: "analytics-users analytics-privatedata-users analytics-admins analytics-search-users druid"
 
