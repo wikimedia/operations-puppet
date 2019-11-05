@@ -80,7 +80,6 @@ Components: main
  thirdparty/grafana
  thirdparty/hwraid
  thirdparty/k8s
- thirdparty/kubeadm-k8s
  thirdparty/mono-project-stretch
  thirdparty/oath
  thirdparty/php72
@@ -100,8 +99,6 @@ Update:
  mono-project-stretch
  tor-stretch
  thirdparty/docker-ci
- thirdparty/kubeadm-k8s-kubernetes.io
- thirdparty/kubeadm-k8s-docker.com
 # NOTE:  Cloudera does not (yet) provide Stretch packages.  We use the Jessie ones,
 # along with a fake equivs to satisfy hadoop-mapreduce's (unnecessary) dependency on libssl1.0.0
 # which is not available in Stretch.  Once Cloudera releases Stretch packages, we can
@@ -132,6 +129,7 @@ Components: main
  thirdparty/elastic74
  thirdparty/grafana
  thirdparty/hwraid
+ thirdparty/kubeadm-k8s
 UDebComponents: main
 Update:
 # sorted list, leading whitespace matters!
@@ -142,6 +140,8 @@ Update:
  grafana-stretch
  hp-mcp-stretch
  hwraid-stretch
+ thirdparty/kubeadm-k8s-kubernetes.io
+ thirdparty/kubeadm-k8s-docker.com
 # NOTE:  Cloudera does not (yet) provide Stretch/Buster packages.  We use the Jessie ones,
 # along with a fake equivs to satisfy hadoop-mapreduce's (unnecessary) dependency on libssl1.0.0
 # which is not available in Stretch.  Once Cloudera releases Stretch/Buster packages, we can
