@@ -17,7 +17,8 @@ class role::toollabs::k8s::master(
     } else {
         $ssl_certificate_name = 'toolforge'
         acme_chief::cert { $ssl_certificate_name:
-            key_group => 'kube',
+            key_group  => 'kube',
+            puppet_svc => 'kube-apiserver',
         }
         $ssl_cert_path = "/etc/acmecerts/${ssl_certificate_name}/live/rsa-2048.chained.crt"
         $ssl_key_path = "/etc/acmecerts/${ssl_certificate_name}/live/rsa-2048.key"

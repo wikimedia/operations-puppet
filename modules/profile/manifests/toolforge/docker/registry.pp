@@ -7,7 +7,8 @@ class profile::toolforge::docker::registry(
 ) {
     $ssl_certificate_name = 'toolforge'
     acme_chief::cert { $ssl_certificate_name:
-        before       => Class['::docker::registry'],
+        before     => Class['::docker::registry'],
+        puppet_rsc => Exec['nginx-reload'],
     }
 
     $builders = [ipresolve($builder_host, 4, $::nameservers[0])]
