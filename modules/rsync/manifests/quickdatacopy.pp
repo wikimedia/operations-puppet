@@ -56,6 +56,10 @@ define rsync::quickdatacopy(
       if $dest_host == $::fqdn {
 
           if $server_uses_stunnel {
+              package { 'stunnel4':
+                  ensure => present,
+              }
+
               $ssl_wrapper_path = "/usr/local/sbin/sync-${title}-ssl-wrapper"
               file { $ssl_wrapper_path:
                   ensure  => $ensure,
