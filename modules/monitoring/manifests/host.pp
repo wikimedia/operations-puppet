@@ -12,7 +12,7 @@ define monitoring::host (
     $contact_group         = hiera('contactgroups', 'admins'),
     $mgmt_contact_group    = 'admins',
     $notifications_enabled = '1',
-    Hash[String, String] $mgmt_parents = lookup('monitoring::mgmt_parents'), # lint:ignore:wmf_styleguide
+    Hash[String, String] $mgmt_parents = lookup('monitoring::mgmt_parents', {'default_value' => {}}), # lint:ignore:wmf_styleguide
     ) {
 
     $nagios_address = $host_fqdn ? {
