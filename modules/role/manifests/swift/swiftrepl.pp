@@ -1,4 +1,6 @@
-class role::swift::swiftrepl {
+class role::swift::swiftrepl (
+  $ensure = lookup('role::swift::swiftrepl::ensure', { 'default_value' => 'present' }), # lint:ignore:wmf_styleguide
+) {
     system::role { 'swift::swiftrepl':
         description => 'swift replication for mediawiki filebackend',
     }
@@ -17,6 +19,7 @@ class role::swift::swiftrepl {
     }
 
     class { '::swift::swiftrepl':
+        ensure           => $ensure,
         destination_site => $destination_site,
         source_site      => $source_site,
     }
