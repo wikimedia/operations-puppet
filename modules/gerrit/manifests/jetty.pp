@@ -340,14 +340,8 @@ class gerrit::jetty(
         require => File['/etc/default/gerrit'],
     }
 
-    # TEMP - revert and always enable once T176532 is resolved
-    $ensure_monitor_process = $replica ? {
-        false   => present,
-        default => absent,
-    }
-
     nrpe::monitor_service { 'gerrit':
-        ensure       => $ensure_monitor_process,
+        ensure       => 'present',
         description  => 'gerrit process',
         nrpe_command => "/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:1 --ereg-argument-array '^${java_home}/bin/java .*-jar /var/lib/gerrit2/review_site/bin/gerrit.war daemon -d /var/lib/gerrit2/review_site'",
         notes_url    => 'https://wikitech.wikimedia.org/wiki/Gerrit',
