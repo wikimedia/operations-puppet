@@ -11,11 +11,12 @@ class profile::smokeping (
     class{ '::smokeping::web': }
 
     rsync::quickdatacopy { 'var-lib-smokeping':
-        ensure      => present,
-        auto_sync   => true,
-        source_host => $active_server,
-        dest_host   => $passive_server,
-        module_path => '/var/lib/smokeping',
+        ensure              => present,
+        auto_sync           => true,
+        source_host         => $active_server,
+        dest_host           => $passive_server,
+        module_path         => '/var/lib/smokeping',
+        server_uses_stunnel => true,  # testing for T237424
     }
 
     ferm::service { 'smokeping-http':
