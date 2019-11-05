@@ -33,7 +33,17 @@ class profile::base(
     String $cluster = lookup('cluster'),
     Boolean $enable_adduser = lookup('profile::base::enable_adduser')
 ) {
-    require ::profile::base::certificates
+    # Sanity checks for cluster - T234232
+    if ! has_key($wikimedia_clusters, $cluster) {
+        fail("Cluster ${cluster} not defined in wikimedia_clusters")
+    }
+
+    if ! has_key($wikimedia_clusters[$cluster]['sites'], $::site) {
+        fail("Site ${::site} not found in cluster ${cluster}")
+    }
+
+    contain profile::base::puppet
+    require profile::base::certificates
     class { '::apt':
         use_proxy     => $use_apt_proxy,
         purge_sources => $purge_apt_sources,
@@ -46,20 +56,10 @@ class profile::base(
         mode   => '0755',
     }
 
-    # Sanity checks for cluster - T234232
-    if ! has_key($wikimedia_clusters, $cluster) {
-        fail("Cluster ${cluster} not defined in wikimedia_clusters")
-    }
-
-    if ! has_key($wikimedia_clusters[$cluster]['sites'], $::site) {
-        fail("Site ${::site} not found in cluster ${cluster}")
-    }
-
     if $enable_adduser {
         class {'adduser': }
     }
 
-    include ::profile::base::puppet
 
     class { '::grub::defaults': }
 
