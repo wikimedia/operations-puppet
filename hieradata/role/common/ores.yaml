@@ -220,5 +220,3 @@ profile::prometheus::statsd_exporter::mappings:
     name: ores_uwsgi_worker_vsz_size
     labels:
       workerid: "$2"
-
-statsd: 'localhost:9125' # profile::ores::web::statsd
