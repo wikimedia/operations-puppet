@@ -58,6 +58,14 @@ define rsync::server::module (
 ){
   include ::rsync::server
 
+  if $hosts_allow {
+    # To support stunnel, always accept from localhost.
+    $frag_hosts_allow = ('localhost' in $hosts_allow) ? {
+      false => $hosts_allow + 'localhost',
+      true  => $hosts_allow,
+    }
+  }
+
   file { "${rsync::server::rsync_fragments}/frag-${name}":
     ensure  => $ensure,
     content => template('rsync/module.erb'),

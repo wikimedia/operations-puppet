@@ -18,5 +18,5 @@ max connections = <%= @max_connections %>
 <% if @comment %>comment               = <%= @comment %><% end %>
 <% if @secrets_file %>secrets file = <%= @secrets_file %><% end %>
 <% if @auth_users %>auth users = <%= Array(@auth_users).join(', ')%><% end %>
-<% if @hosts_allow %>hosts allow = <%= Array(@hosts_allow).join(' ').gsub('::/64','::') %><% end %>
+<% if @frag_hosts_allow %>hosts allow = <%= Array(@frag_hosts_allow).join(' ').gsub('::/64','::') %><% end %>
 <% if @hosts_deny %>hosts deny = <%= Array(@hosts_deny).join(' ').gsub('::/64', '::') %><% end %>
