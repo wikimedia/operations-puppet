@@ -1,4 +1,4 @@
-require 'spec_helper'
+require_relative '../../../../rake_modules/spec_helper'
 
 describe 'puppetmaster::base_repo' do
     let(:pre_condition) {

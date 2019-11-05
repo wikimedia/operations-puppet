@@ -39,3 +39,9 @@ kernel_details:
   sysctl_settings:
     net.ipv4.tcp_min_snd_mss: true
 acmechief_host: 'acmechief1001.eqiad.wmnet'
+puppet_config:
+  localcacert: '/var/lib/puppet/ssl/certs/ca.pem'
+  ssldir: '/var/lib/puppet/ssl'
+  hostpubkey: "/var/lib/puppet/ssl/public_keys/%{facts.fqdn}.pem"
+  hostprivkey: "/var/lib/puppet/ssl/private_keys/%{facts.fqdn'}.pem"
+  hostcert: "/var/lib/puppet/ssl/certs/%{facts.fqdn}.pem"
