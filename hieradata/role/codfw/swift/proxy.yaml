@@ -5,3 +5,4 @@ lvs::realserver::realserver_ips:
 admin::groups:
   - swift-roots
 role::swift::proxy::use_tls: true
+role::swift::swiftrepl::ensure: 'absent'
