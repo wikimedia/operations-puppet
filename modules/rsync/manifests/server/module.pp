@@ -67,25 +67,38 @@ define rsync::server::module (
   if $auto_ferm and $hosts_allow {
       $hosts_allow_ferm = join($hosts_allow, ' ')
 
-      # rsync::server is always used with include semantics, so we must do this.
-      $port = lookup('rsync::server::wrap_with_stunnel') ? {  # lint:ignore:wmf_styleguide
-          true  => '1873',
-          false => '873',
-      }
-
       ferm::service { "rsyncd_access_${name}":
           ensure => $ensure,
           proto  => 'tcp',
-          port   => $port,
+          port   => 873,
           srange => "@resolve((${hosts_allow_ferm}))",
+      }
+
+      # rsync::server is always used with include semantics, so we must do this.
+      if lookup('rsync::server::wrap_with_stunnel') {  # lint:ignore:wmf_styleguide
+          ferm::service { "rsyncd_access_${name}_tls":
+              ensure => $ensure,
+              proto  => 'tcp',
+              port   => 1873,
+              srange => "@resolve((${hosts_allow_ferm}))",
+          }
       }
 
       if $auto_ferm_ipv6 {
           ferm::service { "rsyncd_access_${name}_ipv6":
               ensure => $ensure,
               proto  => 'tcp',
-              port   => $port,
+              port   => 873,
               srange => "@resolve((${hosts_allow_ferm}),AAAA)",
+          }
+          # rsync::server is always used with include semantics, so we must do this.
+          if lookup('rsync::server::wrap_with_stunnel') {  # lint:ignore:wmf_styleguide
+              ferm::service { "rsyncd_access_${name}_ipv6_tls":
+                  ensure => $ensure,
+                  proto  => 'tcp',
+                  port   => 1873,
+                  srange => "@resolve((${hosts_allow_ferm}),AAAA)",
+              }
           }
       }
   }

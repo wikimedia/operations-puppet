@@ -61,7 +61,7 @@ class rsync::server(
   }
 
   # TODO: When we have migrated all rsync usage off of cleartext and to use $wrap_with_stunnel,
-  # we can ensure=>stopped this.
+  # we can ensure=>stopped this.  https://phabricator.wikimedia.org/T237424
   service { 'rsync':
     ensure    => running,
     enable    => true,
