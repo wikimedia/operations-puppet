@@ -1,15 +1,15 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 import argparse
-import json
 import logging
 import socket
 import sys
 import time
 
-from urllib2 import Request, URLError, urlopen
-
 from prometheus_client import start_http_server, Summary
 from prometheus_client.core import GaugeMetricFamily, REGISTRY
+
+import requests
+
 
 log = logging.getLogger(__name__)
 
@@ -19,34 +19,36 @@ class PrometheusWMFElasticsearchExporter(object):
     scrape_duration = Summary(
         'wmf_elasticsearch_scrape_duration_seconds', 'WMF Elasticsearch exporter scrape duration')
 
-    def __init__(self, elasticsearch_port):
-        self.base_url = 'http://localhost:%d' % (elasticsearch_port)
-        self.latency_url = self.base_url + '/_nodes/latencyStats'
+    def __init__(self, port):
+        self.base_url = "http://localhost:{port}".format(port=port)
+        self.latency_url = "{base_url}/_nodes/latencyStats".format(base_url=self.base_url)
 
     @scrape_duration.time()
     def collect(self):
         try:
-            req = Request(self.latency_url)
-            response = urlopen(req)
-            data = json.load(response)
+            response = requests.get(self.latency_url)
+            nodes = response.json()['nodes']
             hostname = socket.gethostname()
-            nodes = data['nodes']
 
             # we only want to collect latencies for the local node, so let's
             # filter out everything else reported names are something like:
             # elastic1034-production-search-eqiad
-            latencies = next(n['latencies'] for _, n in nodes.iteritems() if
-                             n['name'].startswith(hostname))
+            node_latencies = next(node['latencies'] for _, node in nodes.items()
+                                  if node['name'].startswith(hostname))
 
             per_node_latency = GaugeMetricFamily('elasticsearch_per_node_latency',
                                                  'Per node latency percentiles',
                                                  labels=['bucket', 'percentile'])
 
-            for handler, latency in latencies.iteritems():
-                for lat in latency:
-                    per_node_latency.add_metric([handler, str(lat['percentile'])], lat['latencyMs'])
+            for handler, latencies in node_latencies.items():
+                for latency in latencies:
+                    per_node_latency.add_metric(
+                        [handler, str(latency['percentile'])],
+                        latency['latencyMs']
+                    )
             yield per_node_latency
-        except URLError:
+        except requests.exceptions.RequestException as e:
+            log.error('Encountered %s while querying %s', e, self.latency_url)
             return
 
 
@@ -57,7 +59,7 @@ def main():
     parser.add_argument('-d', '--debug', action='store_true',
                         help='Enable debug logging')
     parser.add_argument('-p', '--port', type=int, default=9200,
-                        help='Port to connect to elasticsearch on localhost')
+                        help='Elasticsearch port on localhost')
     args = parser.parse_args()
 
     if args.debug:
