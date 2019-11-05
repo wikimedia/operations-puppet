@@ -22,8 +22,10 @@
 ################################################################
 
 ## GC configuration
+<% if @java_package == 'openjdk-8-jdk' -%>
 -XX:+UseParNewGC
 -XX:+UseConcMarkSweepGC
+<% end -%>
 -XX:CMSInitiatingOccupancyFraction=75
 -XX:+UseCMSInitiatingOccupancyOnly
 

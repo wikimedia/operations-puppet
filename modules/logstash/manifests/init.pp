@@ -20,12 +20,13 @@
 #   }
 #
 class logstash (
-    String $heap_memory       = '192m',
-    Integer $pipeline_workers = $::processorcount,
-    String $java_package      = 'openjdk-8-jdk',
-    Boolean $gc_log           = true,
-    Integer $jmx_exporter_port = undef,
-    String $jmx_exporter_config = undef,
+    String $heap_memory            = '192m',
+    Integer $pipeline_workers      = $::processorcount,
+    String $java_package           = 'openjdk-8-jdk',
+    Boolean $gc_log                = true,
+    Integer $jmx_exporter_port     = undef,
+    String $jmx_exporter_config    = undef,
+    Integer[5,7] $logstash_version = 5,
 ) {
     require_package($java_package)
 
@@ -34,35 +35,61 @@ class logstash (
         require => Package[$java_package],
     }
 
-    # This creates the deploy-service user on targets
-    scap::target { 'logstash/plugins':
-        deploy_user => 'deploy-service',
+    if $gc_log == true {
+        $gc_log_flags = $java_package ? {
+            'openjdk-8-jdk'  => [
+                '-Xloggc:/var/log/logstash/logstash_jvm_gc.%p.log',
+                '-XX:+PrintGCDetails',
+                '-XX:+PrintGCDateStamps',
+                '-XX:+PrintGCTimeStamps',
+                '-XX:+PrintTenuringDistribution',
+                '-XX:+PrintGCCause',
+                '-XX:+PrintGCApplicationStoppedTime',
+                '-XX:+UseGCLogFileRotation',
+                '-XX:NumberOfGCLogFiles=10',
+                '-XX:GCLogFileSize=20M',
+            ],
+            'openjdk-11-jdk' => [
+                '-Xlog:gc*:file=/var/log/logstash/logstash_jvm_gc.%p.log::filecount=10,filesize=20000',
+                '-Xlog:gc+age=trace',
+                '-Xlog:safepoint',
+            ],
+            default          => fail("java_package: ${java_package} not yet supported"),
+        }
+    } else {
+        $gc_log_flags = []
     }
 
-    $gc_log_flags = $gc_log ? {
-        true    => [
-            '-Xloggc:/var/log/logstash/logstash_jvm_gc.%p.log',
-            '-XX:+PrintGCDetails',
-            '-XX:+PrintGCDateStamps',
-            '-XX:+PrintGCTimeStamps',
-            '-XX:+PrintTenuringDistribution',
-            '-XX:+PrintGCCause',
-            '-XX:+PrintGCApplicationStoppedTime',
-            '-XX:+UseGCLogFileRotation',
-            '-XX:NumberOfGCLogFiles=10',
-            '-XX:GCLogFileSize=20M',
-        ],
-        default => [],
+    if $logstash_version == 5 {
+
+        # This creates the deploy-service user on targets
+        scap::target { 'logstash/plugins':
+            deploy_user => 'deploy-service',
+        }
+
+        $plugin_zip_path = '/srv/deployment/logstash/plugins/target/releases/plugins-latest.zip'
+
+        exec { 'install-logstash-plugins':
+            command => "/usr/share/logstash/bin/logstash-plugin install file://${plugin_zip_path} && /usr/bin/sha256sum ${plugin_zip_path} > /etc/logstash/plugins.sha256sum",
+            # Only install plugins if hash of latest does not match stored state
+            unless  => "/usr/bin/test \"$(/bin/cat /etc/logstash/plugins.sha256sum)\" = \"$(/usr/bin/sha256sum ${plugin_zip_path})\"",
+            # Intentionally does not notify Service['logstash'], preferring a manual rolling restart of logstash servers
+            require => Package['logstash'],
+            before  => Service['logstash'],
+        }
+
     }
 
-    $plugin_zip_path = '/srv/deployment/logstash/plugins/target/releases/plugins-latest.zip'
-    exec { 'install-logstash-plugins':
-        command => "/usr/share/logstash/bin/logstash-plugin install file://${plugin_zip_path} && /usr/bin/sha256sum ${plugin_zip_path} > /etc/logstash/plugins.sha256sum",
-        # Only install plugins if hash of latest does not match stored state
-        unless  => "/usr/bin/test \"$(/bin/cat /etc/logstash/plugins.sha256sum)\" = \"$(/usr/bin/sha256sum ${plugin_zip_path})\"",
-        # Intentionally does not notify Service['logstash'], preferring a manual rolling restart of logstash servers
-        require => Package['logstash'],
-        before  => Service['logstash'],
+    if $logstash_version == 7 {
+
+        # install plugins from offline plugin pack built using bin/logstash-plugin prepare-offline-pack
+
+        # lint:ignore:puppet_url_without_modules
+        logstash::plugin{'logstash-output-statsd':
+            source => 'puppet:///volatile/logstash/plugins/logstash-output-statsd-3.2.0.zip',
+        }
+        # lint:endignore
+
     }
 
     file { '/etc/default/logstash':
