@@ -44,7 +44,7 @@ class rsync::server(
   if $wrap_with_stunnel {
     package { 'stunnel4':
       ensure => present,
-      before => Service['stunnel'],
+      before => Service['stunnel4'],
     }
     file { '/etc/stunnel/rsync.conf':
       ensure  => present,
