@@ -7,7 +7,7 @@
 
 set -eu
 
-function cleanup() {
+cleanup() {
     [ -f "$CONFIG" ] && rm -f "$CONFIG"
 }
 trap cleanup EXIT
