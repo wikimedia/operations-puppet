@@ -289,46 +289,42 @@ class profile::prometheus::ops (
       },
     ]
 
-    prometheus::class_config{ "trafficserver_backend_text_${::site}":
-        dest       => "${targets_path}/trafficserver_backend_text_${::site}.yaml",
-        site       => $::site,
-        cluster    => 'cache_text',
-        class_name => 'profile::trafficserver::backend',
-        port       => 9122,
-        labels     => {
+    prometheus::cluster_config{ "trafficserver_backend_text_${::site}":
+        dest    => "${targets_path}/trafficserver_backend_text_${::site}.yaml",
+        site    => $::site,
+        cluster => 'cache_text',
+        port    => 9122,
+        labels  => {
           'layer'   => 'backend',
           'cluster' => 'cache_text',
         }
     }
-    prometheus::class_config{ "trafficserver_backend_upload_${::site}":
-        dest       => "${targets_path}/trafficserver_backend_upload_${::site}.yaml",
-        site       => $::site,
-        cluster    => 'cache_upload',
-        class_name => 'profile::trafficserver::backend',
-        port       => 9122,
-        labels     => {
+    prometheus::cluster_config{ "trafficserver_backend_upload_${::site}":
+        dest    => "${targets_path}/trafficserver_backend_upload_${::site}.yaml",
+        site    => $::site,
+        cluster => 'cache_upload',
+        port    => 9122,
+        labels  => {
           'layer'   => 'backend',
           'cluster' => 'cache_upload',
         }
     }
-    prometheus::class_config{ "trafficserver_tls_text_${::site}":
-        dest       => "${targets_path}/trafficserver_tls_text_${::site}.yaml",
-        site       => $::site,
-        cluster    => 'cache_text',
-        class_name => 'profile::trafficserver::tls',
-        port       => 9322,
-        labels     => {
+    prometheus::cluster_config{ "trafficserver_tls_text_${::site}":
+        dest    => "${targets_path}/trafficserver_tls_text_${::site}.yaml",
+        site    => $::site,
+        cluster => 'cache_text',
+        port    => 9322,
+        labels  => {
           'layer'   => 'tls',
           'cluster' => 'cache_text',
         }
     }
-    prometheus::class_config{ "trafficserver_tls_upload_${::site}":
-        dest       => "${targets_path}/trafficserver_tls_upload_${::site}.yaml",
-        site       => $::site,
-        cluster    => 'cache_upload',
-        class_name => 'profile::trafficserver::tls',
-        port       => 9322,
-        labels     => {
+    prometheus::cluster_config{ "trafficserver_tls_upload_${::site}":
+        dest    => "${targets_path}/trafficserver_tls_upload_${::site}.yaml",
+        site    => $::site,
+        cluster => 'cache_upload',
+        port    => 9322,
+        labels  => {
           'layer'   => 'tls',
           'cluster' => 'cache_upload',
         }
