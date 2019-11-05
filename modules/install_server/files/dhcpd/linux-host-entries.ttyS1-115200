@@ -2116,6 +2116,12 @@ host dumpsdata1002 {
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
 }
 
+host dumpsdata1003 {
+    hardware ethernet B0:26:28:B3:DF:FA;
+    fixed-address dumpsdata1003.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
+}
+
 host elastic1018 {
     hardware ethernet B0:83:FE:BE:E6:93;
     fixed-address elastic1018.eqiad.wmnet;
