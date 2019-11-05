@@ -5,7 +5,7 @@ set -e
 
 PATH=/bin:/usr/bin:/usr/local/bin
 LANG=C
-CONFIG_VERSION=$(awk -F: '$1=="configuration_version" {$1=""; print $0}' /var/lib/puppet/state/last_run_report.yaml)
+CONFIG_VERSION=$(awk -F\" '/^configuration_version:/ {$1="";print}' /var/lib/puppet/state/last_run_report.yaml)
 TSLASTPUPPETRUN=$(stat -c %Z /var/lib/puppet/state/classes.txt)
 NOW=$(date +%s)
 DELTAMIN=$(((NOW-TSLASTPUPPETRUN)/60))
@@ -17,4 +17,4 @@ if [ $DELTAMIN -gt 60 ]; then
 else
 	MSG="($DELTAMIN minutes ago). $(puppet-enabled || true)"
 fi
-printf "The last Puppet run was at %s %b\\nLast puppet commmit: %s\\n" "${LAST_RUN}" "${MSG}" "${CONFIG_VERSION}"
+printf "The last Puppet run was at %s %b\\nLast puppet commit: %s\\n" "${LAST_RUN}" "${MSG}" "${CONFIG_VERSION}"
