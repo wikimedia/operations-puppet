@@ -264,6 +264,10 @@ class profile::backup::director(
         includes => [ '/srv/xenon/' ]
     }
 
+    bacula::director::fileset { 'analytics-meta-mysql-lvm-backup':
+        includes => [ '/srv/backup/mysql/analytics-meta' ]
+    }
+
     # The console should be on the director
     class { 'bacula::console':
         director   => $::fqdn,

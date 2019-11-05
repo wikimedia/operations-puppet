@@ -38,3 +38,5 @@ profile::hadoop::firewall::master::analytics_srange: '$ANALYTICS_NETWORKS'
 profile::hadoop::firewall::master::analytics_druid_srange: '(($ANALYTICS_NETWORKS $DRUID_PUBLIC_HOSTS))'
 
 profile::hadoop::backup::namenode::monitoring_enabled: true
+
+profile::analytics::database::meta::backup_dest::enable_backup: true

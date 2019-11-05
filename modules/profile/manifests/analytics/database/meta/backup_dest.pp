@@ -6,7 +6,8 @@
 class profile::analytics::database::meta::backup_dest(
     $hive_metastore_host = hiera('profile::analytics::database::meta::backup_dest::hive::metastore_host'),
     $oozie_host          = hiera('profile::analytics::database::meta::backup_dest::oozie_host'),
-    $use_kerberos        = hiera('profile::analytics::database::meta::backup_dest::use_kerberos', false)
+    $use_kerberos        = hiera('profile::analytics::database::meta::backup_dest::use_kerberos', false),
+    $enable_backup       = hiera('profile::analytics::database::meta::backup_dest::enable_backup', false),
 ) {
 
     # Need hadoop to copy versioned LVM snapshot into HDFS.
@@ -36,6 +37,12 @@ class profile::analytics::database::meta::backup_dest(
         owner  => 'root',
         group  => $backup_dir_group,
         mode   => '0750',
+    }
+
+    # Bacula backups for /srv/backup/mysql/analytics-meta
+    if $enable_backup {
+        include ::profile::backup::host
+        backup::set { 'analytics-meta-mysql-lvm-backup': }
     }
 
     class { '::rsync::server': }
