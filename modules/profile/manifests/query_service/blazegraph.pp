@@ -13,8 +13,14 @@ class profile::query_service::blazegraph(
     String $contact_groups = hiera('contactgroups', 'admins'),
     Integer[0] $lag_warning  = hiera('profile::query_service::lag_warning', 1200),
     Integer[0] $lag_critical = hiera('profile::query_service::lag_critical', 3600),
+    Optional[String] $sparql_query_stream = hiera('profile::query_service::sparql_query_stream', undef),
+    Optional[String] $event_service_endpoint = hiera('profile::query_service::event_service_endpoint', undef)
 ) {
     require ::profile::query_service::common
+
+    if $sparql_query_stream and !$event_service_endpoint {
+        fail('profile::query_service::event_service_endpoint must be provided when profile::query_service::sparql_query_stream is set')
+    }
 
     $username = 'blazegraph'
     $instance_name = "${deploy_name}-blazegraph"
@@ -25,6 +31,14 @@ class profile::query_service::blazegraph(
         '-XX:G1NewSizePercent=20',
         '-XX:+ParallelRefProcEnabled',
     ]
+
+    $event_service_jvm_opts = $sparql_query_stream ? {
+        default => [
+            "-Dwdqs.event-gate-endpoint=${event_service_endpoint}",
+            "-Dwdqs.event-gate-sparql-query-stream=${sparql_query_stream}"
+        ],
+        undef   => []
+    }
 
     $prometheus_agent_port_blazegraph = 9102
     $prometheus_agent_config_blazegraph = "/etc/${deploy_name}/${instance_name}-prometheus-jmx.yaml"
@@ -55,7 +69,7 @@ class profile::query_service::blazegraph(
         port                  => 9999,
         config_file_name      => 'RWStore.properties',
         heap_size             => $heap_size,
-        extra_jvm_opts        => $default_extra_jvm_opts + $extra_jvm_opts +  "-javaagent:${prometheus_agent_path}=${prometheus_agent_port_blazegraph}:${prometheus_agent_config_blazegraph}"
+        extra_jvm_opts        => $default_extra_jvm_opts + $event_service_jvm_opts + $extra_jvm_opts + "-javaagent:${prometheus_agent_path}=${prometheus_agent_port_blazegraph}:${prometheus_agent_config_blazegraph}"
     }
 
     class { 'query_service::monitor::blazegraph':
