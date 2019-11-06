@@ -8,12 +8,12 @@ class swift::swiftrepl (
     $account = 'mw:media'
 
     group { 'swiftrepl':
-        ensure => $ensure,
+        ensure => present, # don't clean up groups to avoid gid reuse
         name   => 'swiftrepl',
     }
 
     user { 'swiftrepl':
-        ensure     => $ensure,
+        ensure     => present, # don't clean up users to avoid uid reuse
         name       => 'swiftrepl',
         home       => $basedir,
         shell      => '/bin/sh',
