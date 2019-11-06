@@ -34,4 +34,13 @@ class toolforge::k8s::kubeadm_init_yaml(
         mode    => '0400',
         require => File['/etc/kubernetes/psp'],
     }
+
+    file { '/etc/kubernetes/toolforge-tool-role.yaml':
+        ensure  => present,
+        source  => 'puppet:///modules/toolforge/k8s/toolforge-tool-role.yaml',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0400',
+        require => File['/etc/kubernetes'],
+    }
 }
