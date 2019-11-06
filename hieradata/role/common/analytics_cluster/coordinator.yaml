@@ -88,3 +88,17 @@ profile::analytics::refinery::job::project_namespace_map::http_proxy: 'http://we
 
 profile::base::debdeploy::exclude_mounts:
   - /mnt/hdfs
+
+profile::kerberos::keytabs::keytabs_metadata:
+  - role: 'hive'
+    owner: 'hive'
+    group: 'hive'
+    filename: 'hive.keytab'
+  - role: 'oozie'
+    owner: 'oozie'
+    group: 'oozie'
+    filename: 'HTTP-oozie.keytab'
+  - role: 'analytics'
+    owner: 'analytics'
+    group: 'analytics'
+    filename: 'analytics.keytab'

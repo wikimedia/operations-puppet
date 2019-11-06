@@ -28,6 +28,13 @@ profile::zookeeper::firewall::srange: '$ANALYTICS_NETWORKS'
 profile::zookeeper::prometheus_instance: 'analytics'
 profile::zookeeper::monitoring_enabled: true
 
+profile::kerberos::keytabs::keytabs_metadata:
+  - role: 'druid'
+    owner: 'druid'
+    group: 'druid'
+    filename: 'druid.keytab'
+
+
 # -- Druid common configuration
 
 # The logical name of this druid cluster
