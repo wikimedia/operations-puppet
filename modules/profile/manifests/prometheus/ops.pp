@@ -1080,6 +1080,13 @@ class profile::prometheus::ops (
         port       => 3903,
     }
 
+    prometheus::class_config{ "mtail_lists_server_${::site}":
+        dest       => "${targets_path}/mtail_lists_server_${::site}.yaml",
+        site       => $::site,
+        class_name => 'profile::lists',
+        port       => 3903,
+    }
+
     $ldap_jobs = [
       {
         'job_name'        => 'ldap',
