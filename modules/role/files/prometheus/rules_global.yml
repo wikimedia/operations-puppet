@@ -39,3 +39,15 @@ groups:
   - record: job:nginx_requests:avail2m
     expr: sum by(cluster) (cluster_status:nginx_http_requests_total:rate2m{status=~"5.."})
       / sum by(cluster) (cluster_status:nginx_http_requests_total:rate2m{status=~"[12345].."})
+  - record: site_cluster_layer:trafficserver_requests:avail5m
+    expr: sum by(site, cluster, layer) (cluster_layer_code:trafficserver_responses_total:rate5m{code=~"5.."})
+      / sum by(site, cluster, layer) (cluster_layer_code:trafficserver_responses_total:rate5m{code=~"[12345].."})
+  - record: job:trafficserver_requests:avail5m
+    expr: sum by(cluster, layer) (cluster_layer_code:trafficserver_responses_total:rate5m{code=~"5.."})
+      / sum by(cluster, layer) (cluster_layer_code:trafficserver_responses_total:rate5m{code=~"[12345].."})
+  - record: site_cluster_layer:trafficserver_requests:avail2m
+    expr: sum by(site, cluster, layer) (cluster_layer_code:trafficserver_responses_total:rate2m{code=~"5.."})
+      / sum by(site, cluster, layer) (cluster_layer_code:trafficserver_responses_total:rate2m{code=~"[12345].."})
+  - record: job:trafficserver_requests:avail2m
+    expr: sum by(cluster, layer) (cluster_layer_code:trafficserver_responses_total:rate2m{code=~"5.."})
+      / sum by(cluster, layer) (cluster_layer_code:trafficserver_responses_total:rate2m{code=~"[12345].."})
