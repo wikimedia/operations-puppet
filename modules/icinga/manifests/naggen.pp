@@ -7,14 +7,9 @@ class icinga::naggen (
     String $icinga_group,
 ){
     include ::icinga
-    $dbarg = $::use_puppetdb ? {
-        true    => '--puppetdb',
-        default => '--activerecord',
-    }
 
     file { '/etc/icinga/objects/puppet_hosts.cfg':
-      content => generate(
-          '/usr/local/bin/naggen2', $dbarg, '--type', 'hosts'),
+      content => generate('/usr/local/bin/naggen2', '--type', 'hosts'),
       backup  => false,
       owner   => $icinga_user,
       group   => $icinga_group,
@@ -23,8 +18,7 @@ class icinga::naggen (
     }
 
     file { '/etc/icinga/objects/puppet_services.cfg':
-      content => generate(
-          '/usr/local/bin/naggen2', $dbarg, '--type', 'services'),
+      content => generate('/usr/local/bin/naggen2', '--type', 'services'),
       backup  => false,
       owner   => $icinga_user,
       group   => $icinga::icinga_group,
