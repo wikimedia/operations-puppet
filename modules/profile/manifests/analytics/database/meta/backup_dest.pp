@@ -6,7 +6,7 @@
 class profile::analytics::database::meta::backup_dest(
     $hive_metastore_host = hiera('profile::analytics::database::meta::backup_dest::hive::metastore_host'),
     $oozie_host          = hiera('profile::analytics::database::meta::backup_dest::oozie_host'),
-    $use_kerberos        = hiera('profile::analytics::database::meta::bakcup_dest::use_kerberos', false)
+    $use_kerberos        = hiera('profile::analytics::database::meta::backup_dest::use_kerberos', false)
 ) {
 
     # Need hadoop to copy versioned LVM snapshot into HDFS.
