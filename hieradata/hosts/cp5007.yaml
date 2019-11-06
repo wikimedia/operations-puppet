@@ -1,2 +1,0 @@
-profile::trafficserver::tls::port: 443
-profile::trafficserver::tls::systemd_hardening: false
