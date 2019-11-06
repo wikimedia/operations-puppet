@@ -1,0 +1,93 @@
+# Based on apache-fast-test's baseurls file. (Set of various urls we want to
+# check on a new host when reimaged.)
+
+# main
+https://en.wikipedia.org:
+- path: /wiki/Main_Page
+  assert_status: 200
+  assert_body_contains: Wikipedia, the free encyclopedia
+- path: /wiki/Special:Export/Pulsar
+  assert_status: 200
+  assert_body_contains: <model>wikitext</model>
+- path: /wiki/Barack_Obama
+  assert_status: 200
+  assert_body_contains: Barack Obama
+- path: /w/wiki.phtml?title=foo&action=info
+  assert_status: 200
+  assert_body_contains: Information for "Foo"
+
+https://en.wikiversity.org:
+- path: /wiki/Wikiversity:Main_Page
+  assert_status: 200
+  assert_body_contains: Wikiversity
+
+https://de.wikipedia.org:
+- path: /wiki/Wikipedia:Hauptseite
+  assert_status: 200
+  assert_body_contains: Wikipedia – Die freie Enzyklopädie
+
+# T75274 (Pages ending with .Z show garbage due to x-compress being sent)
+https://fr.wikipedia.org:
+- path: /wiki/K.A.Z
+  request_headers: {Accept-Encoding: "deflate, gzip"}
+  assert_status: 200
+  assert_headers: {Content-Encoding: gzip}
+  assert_body_contains: Kazuhito Iwaike
+
+#  Nonexistent.conf - a non-existent domain per RFC 6761
+http://asdf.invalid:
+- path: /
+  assert_status: 200
+  assert_body_contains: Domain not configured
+
+# wwwportals
+http://www.wikipedia.org:
+- path: /wiki/it:Saturno_(astronomia)
+  assert_status: 301
+  assert_headers: {Location: https://www.wikipedia.org/wiki/it:Saturno_(astronomia)}
+
+https://en.wiktionary.org:
+- path: /wiki/fanfarone
+  assert_status: 200
+  assert_body_contains: Wiktionary
+
+# redirects.conf
+http://wikimedia.org:
+- path: /research
+  assert_status: 301
+  assert_headers: {Location: https://wikimedia.org/research}
+
+# Url shortner
+https://w.wiki:
+- path: /
+  assert_status: 301
+  assert_headers: {Location: https://meta.wikimedia.org/wiki/Special:UrlShortener}
+
+# Short url support
+https://es.wikibooks.org:
+- path: /s/22u
+  assert_status: 301
+  assert_headers: {Location: https://es.wikibooks.org/wiki/Especial:ShortUrl/22u}
+- path: /wiki/Especial:ShortUrl/22u
+  assert_status: 301
+  assert_headers: {Location: https://es.wikibooks.org/wiki/Wikichicos/Grandes_felinos}
+
+https://ta.wikinews.org:
+- path: /s/9p5
+  assert_status: 301
+  assert_headers: {Location: https://ta.wikinews.org/wiki/%E0%AE%9A%E0%AE%BF%E0%AE%B1%E0%AE%AA%E0%AF%8D%E0%AE%AA%E0%AF%81:ShortUrl/9p5}
+
+# Donate wiki
+https://donate.wikimedia.org:
+- path: /
+  assert_status: 302
+  assert_headers: {Location: https://donate.wikimedia.org/wiki/Special:FundraiserRedirector}
+- path: /w/index.php?title=Special:LandingPage&country=IT&uselang=en
+  assert_status: 200
+  assert_body_contains: €
+
+# Meta (uses wikimedia-common.incl)
+https://meta.wikimedia.org:
+- path: /wiki/List_of_Wikipedias
+  assert_status: 200
+  assert_body_contains: List of Wikipedias
