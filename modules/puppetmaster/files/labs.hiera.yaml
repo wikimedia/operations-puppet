@@ -1,6 +1,5 @@
 :backends:
   - httpyaml
-  - mwyaml
   - nuyaml
   # the nuyaml3 backend searches the private and secret datadir if the hierarchy
   # entry is prefixed with either private or secret.  newer version of puppet
@@ -10,9 +9,6 @@
   - secret
 :nuyaml:
   :datadir: /etc/puppet/hieradata
-:mwyaml:
-  :host: https://wikitech.wikimedia.org
-  :cache_ttl: 120
 :private:
   :datadir: /etc/puppet/private/hieradata
 :secret:

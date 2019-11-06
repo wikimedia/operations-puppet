@@ -171,8 +171,6 @@ class puppetmaster(
 
     $hiera_source = "puppet:///modules/puppetmaster/${hiera_config}.hiera.yaml"
 
-    # This is required for the mwyaml hiera backend
-    require_package('ruby-httpclient')
     class { '::puppetmaster::hiera':
         source => $hiera_source,
     }
