@@ -13,4 +13,7 @@ class role::statistics::explorer::gpu {
     include ::profile::analytics::cluster::users
     include ::profile::analytics::refinery
     include ::profile::analytics::cluster::packages::hadoop
+
+    include ::profile::kerberos::client
+    include ::profile::kerberos::keytabs
 }

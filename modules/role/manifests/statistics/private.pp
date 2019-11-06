@@ -46,4 +46,7 @@ class role::statistics::private {
     # Deploy performance/asoranking repository
     # to this node.
     include ::profile::analytics::asoranking
+
+    include ::profile::kerberos::client
+    include ::profile::kerberos::keytabs
 }

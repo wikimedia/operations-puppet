@@ -7,6 +7,7 @@ class role::analytics_cluster::hadoop::worker {
     }
     include ::profile::hadoop::worker
     include ::profile::analytics::cluster::users
+    include ::profile::kerberos::client
     include ::profile::kerberos::keytabs
     include ::profile::base::firewall
     include ::profile::standard

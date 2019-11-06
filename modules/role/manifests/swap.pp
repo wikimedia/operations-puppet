@@ -21,4 +21,7 @@ class role::swap {
     # have any special analytics system users on it
     # for interacting with HDFS.
     include ::profile::analytics::cluster::users
+
+    include ::profile::kerberos::client
+    include ::profile::kerberos::keytabs
 }

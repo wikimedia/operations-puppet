@@ -18,6 +18,9 @@ class role::druid::public::worker {
     include ::profile::prometheus::druid_exporter
     include ::profile::druid::conftool
 
+    include ::profile::kerberos::client
+    include ::profile::kerberos::keytabs
+
     # Zookeeper is co-located on some public druid hosts, but not all.
     if $::fqdn in $::profile::druid::common::zookeeper_hosts {
         include profile::zookeeper::server
