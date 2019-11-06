@@ -15,7 +15,7 @@ discovery::app_routes:
   eventgate-main: "%{::site}"
   sessionstore: "%{::site}"
   termbox: "%{::site}"
-  eventschemas: "%{::site}"
+  schema: "%{::site}"
   aqs: 'eqiad'
   docker-registry: 'codfw'
   wikifeeds: "%{::site}"
