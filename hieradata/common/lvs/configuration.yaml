@@ -1822,13 +1822,13 @@ lvs::configuration::lvs_services:
     - eqiad
     - codfw
     ip: *ip_block049
-    port: 8190
+    port: 443
     depool-threshold: '.5'
     conftool:
       cluster: eventschemas
       service: eventschemas
     icinga:
-      check_command: "check_http_lvs_on_port!schema.svc.%{::site}.wmnet!8190!/repositories/"
+      check_command: "check_https_lvs_on_port!schema.svc.%{::site}.wmnet!443!/repositories/"
       critical: false
       sites:
         eqiad:
@@ -1838,7 +1838,7 @@ lvs::configuration::lvs_services:
     monitors:
       ProxyFetch:
         url:
-        - http://localhost:8190/repositories/
+        - https://localhost/repositories/
       IdleConnection:
         max-delay: 300
         timeout-clean-reconnect: 3

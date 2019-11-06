@@ -141,6 +141,8 @@ cache::alternate_domains:
     director: 'webserver_misc_static'
   rt.wikimedia.org:
     director: 'requesttracker'
+  schema.wikimedia.org:
+    director: 'schema'
   scholarships.wikimedia.org:
     director: 'miscweb'
   sitemaps.wikimedia.org:

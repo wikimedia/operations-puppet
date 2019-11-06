@@ -167,6 +167,9 @@ profile::trafficserver::backend::mapping_rules:
       target: http://rt.wikimedia.org
       replacement: https://rt.discovery.wmnet
     - type: map
+      target: http://schema.wikimedia.org
+      replacement: https://schema.discovery.wmnet
+    - type: map
       target: http://scholarships.wikimedia.org
       replacement: https://webserver-misc-apps.discovery.wmnet
     - type: map
