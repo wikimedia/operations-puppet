@@ -87,6 +87,7 @@ class profile::analytics::database::meta::backup_dest(
 
     $hdfs_backup_script = '/usr/local/bin/analytics-meta-backup-to-hdfs'
     file { $hdfs_backup_script:
+        ensure => absent,
         source => 'puppet:///modules/profile/analytics/database/meta/backup_dest/backup_to_hdfs.sh',
         mode   => '0755',
         owner  => 'root',
@@ -102,15 +103,12 @@ class profile::analytics::database::meta::backup_dest(
     }
 
     kerberos::systemd_timer { 'analytics-database-meta-snapshot-copy-to-hdfs':
+        ensure                    => absent,
         description               => 'Copies mylvmbackup snapshots of the analytics-meta MySQL instance to HDFS',
         command                   => "${hdfs_backup_script} ${analytics_meta_backup_dir} ${analytics_meta_hdfs_backup_dir}",
         interval                  => '*-*-* 00:30:00',
         user                      => 'root',
         monitoring_contact_groups => 'analytics',
         use_kerberos              => $use_kerberos,
-        require                   => [
-            Cdh::Hadoop::Directory[$analytics_meta_hdfs_backup_dir],
-            File['/usr/local/bin/analytics-meta-backup-to-hdfs'],
-        ],
     }
 }
