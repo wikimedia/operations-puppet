@@ -21,7 +21,7 @@ Facter.add(:puppet_config) do
           puppet_config[setting] = Puppet[setting]
         else
           puppet_config[section] = {} unless puppet_config.key?(section)
-          puppet_config[section][settings] = Puppet.settings.values(
+          puppet_config[section][setting] = Puppet.settings.values(
             Puppet[:environment].to_sym, section
           ).print(setting)
         end
