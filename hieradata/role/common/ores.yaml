@@ -25,12 +25,11 @@ profile::prometheus::statsd_exporter::mappings:
       context: "$2"
       model: "$3"
 
-  - match: ores.*.scores_request.*.*.*
+  - match: ores.*.scores_request.*.*
     name: ores_scores_request_duration
     labels:
       context: "$2"
       model: "$3"
-      revids: "$4"
 
   - match: ores.*.revision_scored.*.*
     name: ores_revision_scored_count
@@ -38,12 +37,11 @@ profile::prometheus::statsd_exporter::mappings:
       context: "$2"
       model: "$3"
 
-  - match: ores.*.datasources_extracted.*.*.*
+  - match: ores.*.datasources_extracted.*.*
     name: ores_datasources_extracted_duration
     labels:
       context: "$2"
       model: "$3"
-      revids: "$4"
 
   - match: ores.*.score_processed.*.*
     name: ores_score_processed_duration
@@ -220,3 +218,10 @@ profile::prometheus::statsd_exporter::mappings:
     name: ores_uwsgi_worker_vsz_size
     labels:
       workerid: "$2"
+
+  # some metrics are totals of more specific metrics.  drop these duplicates as
+  # they can be calculated by not applying filters
+  - match: "."
+    name: drop_undefined
+    action: 'drop'
+    match_type: 'regex'
