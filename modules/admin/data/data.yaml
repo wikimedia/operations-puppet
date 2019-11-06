@@ -3859,3 +3859,7 @@ ldap_only_users:
     ensure: present
     realname: Brian Wolff
     email: bwolff@wikimedia.org
+  dwisehaupt:
+    ensure: present
+    realname: Dallas Wisehaupt
+    email: dwisehaupt@wikimedia.org
