@@ -24,6 +24,12 @@ class profile::base::certificates (
     sslcert::ca { 'GlobalSign_Organization_Validation_CA_-_SHA256_-_G2':
         source  => 'puppet:///modules/base/ca/GlobalSign_Organization_Validation_CA_-_SHA256_-_G2.crt',
     }
+    sslcert::ca { 'GlobalSign_RSA_OV_SSL_CA_2018.crt':
+        source  => 'puppet:///modules/base/ca/GlobalSign_RSA_OV_SSL_CA_2018.crt',
+    }
+    sslcert::ca { 'GlobalSign_ECC_OV_SSL_CA_2018.crt':
+        source  => 'puppet:///modules/base/ca/GlobalSign_ECC_OV_SSL_CA_2018.crt',
+    }
 
     if has_key($puppet_ca_content, $puppetmaster_key) {
         exec { 'clear-old-puppet-ssl':
