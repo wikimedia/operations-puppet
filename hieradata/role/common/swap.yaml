@@ -5,7 +5,8 @@ admin::groups:
   - analytics-admins
   - statistics-privatedata-users
   - analytics-privatedata-users
-profile::swap::rsync_hosts_allow: notebook*.*.wmnet
+profile::swap::rsync_hosts_allow:
+  - notebook*.*.wmnet
 
 profile::hadoop::common::hadoop_cluster_name: 'analytics-hadoop'
 profile::oozie::client::oozie_host: 'an-coord1001.eqiad.wmnet'
