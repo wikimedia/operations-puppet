@@ -16,7 +16,7 @@ profile::citoid::zotero_host: deployment-zotero01.deployment-prep.eqiad.wmflabs
 profile::citoid::zotero_port: 1969
 profile::changeprop::purge_host: deployment-cache-text05.deployment-prep.eqiad.wmflabs
 profile::changeprop::ores_uris: ['http://deployment-ores01.deployment-prep.eqiad.wmflabs:8081']
-profile::changeprop::event_service_uri: http://deployment-eventgate-1.deployment-prep.eqiad.wmflabs:8292/v1/events
+profile::changeprop::event_service_uri: http://deployment-eventgate-3.deployment-prep.eqiad.wmflabs:8292/v1/events
 profile::changeprop::restbase_uri: http://deployment-restbase02.deployment-prep.eqiad.wmflabs:7231
 profile::changeprop::purge_port: 4827
 # Used to sync the setting between all Kafka clusters and clients.
@@ -143,7 +143,7 @@ profile::restbase::graphoid_uri: http://deployment-sca01.deployment-prep.eqiad.w
 profile::restbase::mobileapps_uri: http://deployment-mcs01.deployment-prep.eqiad.wmflabs:8888
 profile::restbase::mathoid_uri: http://deployment-docker-mathoid01.deployment-prep.eqiad.wmflabs:10044
 profile::restbase::aqs_uri: https://wikimedia.org/api/rest_v1/metrics
-profile::restbase::event_service_uri: http://deployment-eventgate-1.deployment-prep.eqiad.wmflabs:8292/v1/events
+profile::restbase::event_service_uri: http://deployment-eventgate-3.deployment-prep.eqiad.wmflabs:8292/v1/events
 profile::restbase::proton_uri: http://deployment-chromium01.deployment-prep.eqiad.wmflabs:24766
 profile::restbase::citoid_uri: http://deployment-docker-citoid01.deployment-prep.eqiad.wmflabs:1970
 profile::restbase::cxserver_uri: http://deployment-docker-cxserver01.deployment-prep.eqiad.wmflabs:8080
