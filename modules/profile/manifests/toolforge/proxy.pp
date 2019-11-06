@@ -2,11 +2,17 @@ class profile::toolforge::proxy (
     Array[String] $proxies      = lookup('profile::toolforge::proxies', {default_value => ['tools-proxy-03']}),
     String        $active_proxy = lookup('profile::toolforge::active_proxy_host', {default_value => 'tools-proxy-03'}),
     Stdlib::Fqdn  $web_domain   = lookup('profile::toolforge::web_domain', {default_value => 'tools.wmflabs.org'}),
+    Boolean       $do_https     = lookup('profile::toolforge::proxy::do_https', {default_value => true}),
 ) {
     class { '::redis::client::python': }
 
-    acme_chief::cert { 'toolforge':
-        puppet_rsc => Exec['nginx-reload'],
+    # toolsbeta support: running without SSL
+    $ssl_cert_name = undef
+    if $do_https {
+        $ssl_cert_name = 'toolforge'
+        acme_chief::cert { $ssl_cert_name:
+            puppet_rsc => Exec['nginx-reload'],
+        }
     }
 
     if $::hostname != $active_proxy {
@@ -20,7 +26,7 @@ class profile::toolforge::proxy (
     class { '::dynamicproxy':
         ssl_settings         => ssl_ciphersuite('nginx', 'compat'),
         luahandler           => 'urlproxy',
-        ssl_certificate_name => 'toolforge',
+        ssl_certificate_name => $ssl_cert_name,
         redis_replication    => $redis_replication,
         error_config         => {
             title       => 'Wikimedia Toolforge Error',
@@ -32,7 +38,7 @@ class profile::toolforge::proxy (
         },
         banned_description   => 'You have been banned from accessing Toolforge. Please see <a href="https://wikitech.wikimedia.org/wiki/Help:Toolforge/Banned">Help:Toolforge/Banned</a> for more information on why and on how to resolve this.',
         web_domain           => $web_domain,
-        https_upgrade        => true,
+        https_upgrade        => $do_https,
         use_acme_chief       => true,
     }
 
@@ -119,9 +125,11 @@ class profile::toolforge::proxy (
         desc  => 'HTTP webserver for the entire world',
     }
 
-    ferm::service{ 'https':
-        proto => 'tcp',
-        port  => '443',
-        desc  => 'HTTPS webserver for the entire world',
+    if $do_https {
+        ferm::service { 'https':
+            proto => 'tcp',
+            port  => '443',
+            desc  => 'HTTPS webserver for the entire world',
+        }
     }
 }
