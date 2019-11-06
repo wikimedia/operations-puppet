@@ -37,32 +37,36 @@
 #
 define rsync::server::module (
   $path,
-  $ensure          = present,
-  $comment         = undef,
-  $read_only       = 'yes',
-  $write_only      = 'no',
-  $list            = 'yes',
-  $uid             = '0',
-  $gid             = '0',
-  $incoming_chmod  = '0644',
-  $outgoing_chmod  = '0644',
-  $max_connections = '0',
-  $lock_file       = '/var/run/rsyncd.lock',
-  $chroot          = true,
-  $auto_ferm       = false,
-  $auto_ferm_ipv6  = false,
-  $secrets_file    = undef,
-  $auth_users      = undef,
-  $hosts_allow     = undef,
-  $hosts_deny      = undef,
+  $ensure                                              = present,
+  $comment                                             = undef,
+  $read_only                                           = 'yes',
+  $write_only                                          = 'no',
+  $list                                                = 'yes',
+  $uid                                                 = '0',
+  $gid                                                 = '0',
+  $incoming_chmod                                      = '0644',
+  $outgoing_chmod                                      = '0644',
+  $max_connections                                     = '0',
+  $lock_file                                           = '/var/run/rsyncd.lock',
+  $chroot                                              = true,
+  $auto_ferm                                           = false,
+  $auto_ferm_ipv6                                      = false,
+  $secrets_file                                        = undef,
+  $auth_users                                          = undef,
+  Optional[Variant[String,Array[String]]] $hosts_allow = undef,
+  Optional[Variant[String,Array[String]]] $hosts_deny  = undef,
 ){
   include ::rsync::server
 
   if $hosts_allow {
+    $hosts_allow_as_array = $hosts_allow ? {
+      Array  => $hosts_allow,
+      String => split($hosts_allow, /\s+/),
+    }
     # To support stunnel, always accept from localhost.
-    $frag_hosts_allow = ('localhost' in $hosts_allow) ? {
-      false => $hosts_allow + 'localhost',
-      true  => $hosts_allow,
+    $frag_hosts_allow = ('localhost' in $hosts_allow_as_array) ? {
+      false => $hosts_allow_as_array + 'localhost',
+      true  => $hosts_allow_as_array,
     }
   }
 
