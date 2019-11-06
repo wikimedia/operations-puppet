@@ -7,12 +7,13 @@ class profile::toolforge::proxy (
     class { '::redis::client::python': }
 
     # toolsbeta support: running without SSL
-    $ssl_cert_name = undef
     if $do_https {
         $ssl_cert_name = 'toolforge'
         acme_chief::cert { $ssl_cert_name:
             puppet_rsc => Exec['nginx-reload'],
         }
+    } else {
+        $ssl_cert_name = undef
     }
 
     if $::hostname != $active_proxy {
