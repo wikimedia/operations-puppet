@@ -1,2 +1,0 @@
-mtail::logs:
-  - /var/log/logstash/logstash-plain.log

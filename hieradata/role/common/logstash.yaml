@@ -82,3 +82,6 @@ profile::tlsproxy::envoy::services:
     port: 80
 profile::tlsproxy::envoy::global_cert_name: "kibana.discovery.wmnet"
 profile::tlsproxy::envoy::sni_support: "no"
+
+mtail::logs:
+  - /var/log/logstash/logstash-plain.log
