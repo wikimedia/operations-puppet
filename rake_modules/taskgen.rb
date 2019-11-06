@@ -57,9 +57,9 @@ class TaskGen < ::Rake::TaskLib
     end
     events.each do |p|
       p[:KIND] = p[:kind].to_s.upcase
-      puts format(format, p)
+      puts format(format, p).red
     end
-    puts "Nothing found" if events.length.zero?
+    puts "Nothing found".green if events.length.zero?
   end
 
   private
@@ -107,7 +107,7 @@ class TaskGen < ::Rake::TaskLib
     PuppetLint.configuration.send('disable_wmf_styleguide')
     PuppetLint::RakeTask.new :puppet_lint do |config|
       config.fail_on_warnings = true  # be strict
-      config.log_format = '%{path}:%{line} %{KIND} %{message} (%{check})'
+      config.log_format = '%{path}:%{line} %{KIND} %{message} (%{check})'.red
       config.pattern = changed
     end
     [:puppet_lint]
@@ -139,7 +139,7 @@ class TaskGen < ::Rake::TaskLib
           failures = 1
         end
       end
-      abort("dhcp configuration: NOT OK") if failures == 1
+      abort("dhcp configuration: NOT OK".red) if failures == 1
       puts "dhcp configuration: END TEST"
       puts "=============================="
     end
@@ -159,7 +159,7 @@ class TaskGen < ::Rake::TaskLib
         setup_wmf_lint_check
         problems = linter_problems changed[:new]
         print_wmf_style_violations(problems)
-        abort("wmf-styleguide: NOT OK")
+        abort("wmf-styleguide: NOT OK".red)
       end
 
       desc 'Check regressions for the wmf style guide'
@@ -199,11 +199,11 @@ class TaskGen < ::Rake::TaskLib
       system("git grep -I -n -P -f typos -- #{shell_files}")
       case $CHILD_STATUS.exitstatus
       when 0
-        fail "Typo found!"
+        fail "Typo found!".red
       when 1
-        puts "No typo found."
+        puts "No typo found.".green
       else
-        fail "Some error occurred"
+        fail "Some error occurred".red
       end
     end
     [:typos]
@@ -339,7 +339,7 @@ class TaskGen < ::Rake::TaskLib
     end
     desc "Run spec tests found in modules"
     multitask :spec => spec_modules.map{ |m| "spec:#{m}" } do
-      raise "Modules that failed to pass the spec tests: #{@failed_specs.join ', '}" unless @failed_specs.empty?
+      raise "Modules that failed to pass the spec tests: #{@failed_specs.join ', '}".red unless @failed_specs.empty?
     end
     [:spec]
   end
@@ -360,9 +360,9 @@ class TaskGen < ::Rake::TaskLib
         task module_name do
           tox_ini = "modules/#{module_name}/tox.ini"
           if @changed_files.include?(tox_ini)
-            raise "Running tox in #{module_name} failed" unless system("tox -r -c #{tox_ini}")
+            raise "Running tox in #{module_name} failed".red unless system("tox -r -c #{tox_ini}")
           else
-            raise "Running tox in #{module_name} failed" unless system("tox -c #{tox_ini}")
+            raise "Running tox in #{module_name} failed".red unless system("tox -c #{tox_ini}")
           end
         end
       end
@@ -385,7 +385,7 @@ class TaskGen < ::Rake::TaskLib
           desc 'Run tox for the admin data file'
           task :admin do
             res = system('tox -e admin')
-            raise "Tox tests for admin/data/data.yaml failed!" unless res
+            raise "Tox tests for admin/data/data.yaml failed!".red unless res
           end
           tasks << 'tox:admin'
         end
@@ -394,7 +394,7 @@ class TaskGen < ::Rake::TaskLib
           desc 'Run tox for mtail'
           task :mtail do
             res = system("tox -e mtail")
-            raise 'Tests for mtail failed!' unless res
+            raise 'Tests for mtail failed!'.red unless res
           end
           tasks << 'tox:mtail'
         end
@@ -403,7 +403,7 @@ class TaskGen < ::Rake::TaskLib
           desc 'Run tox for tslua'
           task :tslua do
             res = system("tox -e tslua")
-            raise 'Tests for tslua failed!' unless res
+            raise 'Tests for tslua failed!'.red unless res
           end
           tasks << 'tox:tslua'
         end
@@ -412,7 +412,7 @@ class TaskGen < ::Rake::TaskLib
           desc 'Run tox for nagios_common'
           task :nagios_common do
             res = system("tox -e nagios_common")
-            raise 'Tests for nagios_common failed!' unless res
+            raise 'Tests for nagios_common failed!'.red unless res
           end
           tasks << 'tox:nagios_common'
         end
@@ -421,7 +421,7 @@ class TaskGen < ::Rake::TaskLib
           desc 'Run tox for grafana'
           task :grafana do
             res = system("tox -e grafana")
-            raise 'Tests for grafana failed!' unless res
+            raise 'Tests for grafana failed!'.red unless res
           end
           tasks << 'tox:grafana'
         end
@@ -430,7 +430,7 @@ class TaskGen < ::Rake::TaskLib
           desc 'Run tox for sonofgridengine'
           task :sonofgridengine do
             res = system("tox -e sonofgridengine")
-            raise 'Tests for sonofgridengine failed!' unless res
+            raise 'Tests for sonofgridengine failed!'.red unless res
           end
           tasks << 'tox:sonofgridengine'
         end
@@ -443,13 +443,13 @@ class TaskGen < ::Rake::TaskLib
           desc 'Run flake8 on python files via tox'
           task :flake8 do
             shell_tox_files = Shellwords.join(tox_files)
-            raise "Flake8 failed" unless system("tox -e pep8 #{shell_tox_files}")
+            raise "Flake8 failed".red unless system("tox -e pep8 #{shell_tox_files}")
           end
           tasks << 'tox:flake8'
         end
         desc 'Check commit message'
         task :commit_message do
-          raise 'Invalid commit message' unless system("tox -e commit-message")
+          raise 'Invalid commit message'.red unless system("tox -e commit-message")
         end
         tasks << 'tox:commit_message'
       end
