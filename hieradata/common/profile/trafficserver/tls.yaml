@@ -11,6 +11,9 @@ profile::trafficserver::tls::mapping_rules:
     target: wss://phabricator.wikimedia.org
     replacement: "ws://%{::ipaddress}:3120"
   - type: map
+    target: wss://stream.wikimedia.org
+    replacement: "ws://%{::ipaddress}:3120"
+  - type: map
     target: /
     replacement: "http://%{::ipaddress}:3120"
 profile::trafficserver::tls::inbound_tls_settings:
