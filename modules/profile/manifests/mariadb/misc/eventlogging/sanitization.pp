@@ -20,7 +20,7 @@ class profile::mariadb::misc::eventlogging::sanitization(
 
     if !defined(Group['eventlog']) {
         group { 'eventlog':
-            ensure => 'present',
+            ensure => absent,
             system => true,
         }
     }
@@ -29,6 +29,7 @@ class profile::mariadb::misc::eventlogging::sanitization(
     $state_directory_path = '/srv/eventlogging_cleaner'
 
     user { 'eventlogcleaner':
+        ensure     => absent,
         gid        => 'eventlog',
         shell      => '/bin/false',
         home       => '/nonexistent',
@@ -44,7 +45,7 @@ class profile::mariadb::misc::eventlogging::sanitization(
     ])
 
     file { '/usr/local/bin/eventlogging_cleaner':
-        ensure  => present,
+        ensure  => absent,
         owner   => 'eventlogcleaner',
         group   => 'eventlog',
         mode    => '0550',
@@ -67,7 +68,7 @@ class profile::mariadb::misc::eventlogging::sanitization(
     }
 
     logrotate::rule { 'eventlogging-cleaner':
-        ensure        => present,
+        ensure        => absent,
         file_glob     => "${log_directory_path}/eventlogging_cleaner.log",
         frequency     => 'daily',
         copy_truncate => true,
@@ -87,6 +88,7 @@ class profile::mariadb::misc::eventlogging::sanitization(
     $eventlogging_cleaner_command = "/usr/local/bin/eventlogging_cleaner --whitelist ${whitelist_path} --yaml --older-than 0 --start-ts-file ${state_directory_path}/eventlogging_cleaner --batch-size 10000 --sleep-between-batches 2 ${extra_parameters}"
 
     systemd::timer::job { 'eventlogging_db_sanitization':
+        ensure                    => absent,
         description               => 'Apply Analytics data retetion policies to the Eventlogging database',
         command                   => $eventlogging_cleaner_command,
         interval                  => {
