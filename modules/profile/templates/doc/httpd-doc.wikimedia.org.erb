@@ -21,7 +21,7 @@
     # CSP reporting until the rules have been tweaked (T213223)
     Header always set Content-Security-Policy-Report-Only "\
         default-src 'self'; \
-        img-src 'self' www.wikimedia.org upload.wikimedia.org data:; \
+        img-src 'self' data:; \
         object-src 'none'; \
         script-src 'unsafe-inline' 'unsafe-eval' 'self'; \
         style-src 'unsafe-inline' 'self'; \
