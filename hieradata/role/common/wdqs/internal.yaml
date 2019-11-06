@@ -11,6 +11,8 @@ profile::query_service::blazegraph_extra_jvm_opts:
   - '-Dwdqs.throttling-filter.time-bucket-capacity-in-seconds=240'
   - '-Dwdqs.throttling-filter.time-bucket-refill-amount-in-seconds=120'
   - '-Dwdqs.throttling-filter.ban-duration-in-minutes=60'
+profile::query_service::sparql_query_stream: 'wdqs-internal.sparql-query'
+profile::query_service::event_service_endpoint: 'http://eventgate-analytics.discovery.wmnet:31192/v1/events?hasty=true'
 profile::query_service::nodes:
   - 'wdqs1003.eqiad.wmnet'
   - 'wdqs1008.eqiad.wmnet'
