@@ -26,15 +26,10 @@ class icinga::monitor::performance {
         notes_url     => 'https://phabricator.wikimedia.org/T203485',
     }
 
-    monitoring::grafana_alert { 'webpagereplay-desktop-alerts':
-        dashboard_uid => '000000491',
+    monitoring::grafana_alert { 'webpagereplay-enwiki-alerts':
+        dashboard_uid => '000000748',
         contact_group => 'team-performance',
         notes_url     => 'https://phabricator.wikimedia.org/T203485',
     }
 
-    monitoring::grafana_alert { 'webpagereplay-mobile-alerts':
-        dashboard_uid => '000000490',
-        contact_group => 'team-performance',
-        notes_url     => 'https://phabricator.wikimedia.org/T203485',
-    }
 }
