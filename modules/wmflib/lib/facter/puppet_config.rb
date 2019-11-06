@@ -18,12 +18,12 @@ Facter.add(:puppet_config) do
     desired_settings.each_pair do |section, settings|
       settings.each do |setting|
         if section == :main
-          puppet_config[setting] = Puppet[setting]
+          puppet_config[setting.to_s] = Puppet[setting]
         else
-          puppet_config[section] = {} unless puppet_config.key?(section)
-          puppet_config[section][setting] = Puppet.settings.values(
+          puppet_config[section.to_s] = {} unless puppet_config.key?(section.to_s)
+          puppet_config[section.to_s][setting.to_s] = Puppet.settings.values(
             Puppet[:environment].to_sym, section
-          ).print(setting)
+          ).interpolate(setting.to_s)
         end
       end
     end
