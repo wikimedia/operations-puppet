@@ -8,6 +8,8 @@ class profile::puppetmaster::frontend(
     $web_hostname = hiera('profile::puppetmaster::frontend::web_hostname', 'puppet'),
     $prevent_cherrypicks = hiera('profile::puppetmaster::frontend::prevent_cherrypicks', true),
     Stdlib::Host $ca_server = lookup('puppet_ca_server'),
+    Stdlib::Filesource $ca_source = lookup('puppet_ca_source'),
+    Boolean $manage_ca_file = lookup('manage_puppet_ca_file'),
     Hash[String, Puppetmaster::Backends] $servers = hiera('puppetmaster::servers', {}),
     Hash[Stdlib::Host, Stdlib::Host] $locale_servers = lookup('puppetmaster::locale_servers'),
     $ssl_ca_revocation_check = hiera('profile::puppetmaster::frontend::ssl_ca_revocation_check', 'chain'),
@@ -24,7 +26,14 @@ class profile::puppetmaster::frontend(
 ) {
     backup::set { 'var-lib-puppet-ssl': }
     backup::set { 'var-lib-puppet-volatile': }
-
+    if $manage_ca_file {
+        file{$facts['puppet_config']['master']['localcacert']:
+            ensure => file,
+            owner  => 'puppet',
+            group  => 'puppet',
+            source => $ca_source,
+        }
+    }
     # Puppet frontends are git masters at least for their datacenter
     if $ca_server == $::fqdn {
         $ca = true
