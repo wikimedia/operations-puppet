@@ -23,7 +23,7 @@ Facter.add(:puppet_config) do
           puppet_config[section.to_s] = {} unless puppet_config.key?(section.to_s)
           puppet_config[section.to_s][setting.to_s] = Puppet.settings.values(
             Puppet[:environment].to_sym, section
-          ).interpolate(setting.to_s)
+          ).interpolate(setting)
         end
       end
     end
