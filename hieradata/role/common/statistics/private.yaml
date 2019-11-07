@@ -26,3 +26,9 @@ profile::hive::client::metastore_host: 'an-coord1001.eqiad.wmnet'
 
 profile::base::debdeploy::exclude_mounts:
   - /mnt/hdfs
+
+profile::kerberos::keytabs::keytabs_metadata:
+  - role: 'analytics'
+    owner: 'analytics'
+    group: 'analytics'
+    filename: 'analytics.keytab'
