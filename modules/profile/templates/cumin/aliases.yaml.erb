@@ -257,6 +257,7 @@ zookeeper-main-eqiad: P{O:configcluster_stretch} and A:eqiad
 zookeeper-main-codfw: P{O:configcluster} and A:codfw
 zookeeper-druid-public: P{O:druid::public::worker} and P{C:profile::zookeeper::server}
 zookeeper-druid-analytics: P{O:druid::analytics::worker} and P{C:profile::zookeeper::server}
+zookeeper-analytics: P{O:analytics_cluster::zookeeper}
 
 # Miscellaneous groups
 misc-analytics: P{O:statistics::web or O:statistics::cruncher or O:statistics::private or O:piwik or O:analytics_cluster::coordinator or O:kafka::monitoring or O:analytics_cluster::webserver} or A:eventlogging
