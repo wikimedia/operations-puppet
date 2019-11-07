@@ -8,6 +8,13 @@ profile::hadoop::common::hadoop_cluster_name: 'analytics-hadoop'
 profile::hue::database_host: 'an-coord1001.eqiad.wmnet'
 profile::hue::hive_server_host: 'an-coord1001.eqiad.wmnet'
 profile::hue::monitoring_enabled: true
+
+# Kerberos config
+profile::hue::kerberos_keytab: '/etc/security/keytabs/hue/hue.keytab'
+profile::hue::kerberos_principal: 'hue/_HOST@WIKIMEDIA'
+profile::hue::kerberos_kinit_path: '/usr/bin/kinit'
+profile::hue::oozie_security_enabled: true
+
 profile::oozie::client::oozie_host: 'an-coord1001.eqiad.wmnet'
 
 # Hive Client settings.
@@ -18,6 +25,13 @@ profile::hive::client::zookeeper_cluster_name: main-eqiad
 profile::hive::client::server_host: an-coord1001.eqiad.wmnet
 profile::hive::client::server_port: 10000
 profile::hive::client::metastore_host: 'an-coord1001.eqiad.wmnet'
+
+# These kerberos configs are needed since Hue looks into hive-site.xml
+# to know how to authenticate to Hive.
+profile::hive::client::hive_metastore_sasl_enabled: true
+profile::hive::client::hive_metastore_kerberos_principal: 'hive/_HOST@WIKIMEDIA'
+profile::hive::client::hive_server2_authentication: 'KERBEROS'
+profile::hive::client::hive_server2_authentication_kerberos_principal: 'hive/_HOST@WIKIMEDIA'
 
 # TLS Terminator settings
 profile::tlsproxy::instance::ssl_compatibility_mode: strong

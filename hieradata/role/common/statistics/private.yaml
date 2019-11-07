@@ -24,6 +24,15 @@ profile::hive::client::server_host: an-coord1001.eqiad.wmnet
 profile::hive::client::server_port: 10000
 profile::hive::client::metastore_host: 'an-coord1001.eqiad.wmnet'
 
+# These kerberos configs are needed since some options needs to be in sync
+# between client and coordinator (or where hive server/metastore runs).
+profile::hive::client::hive_metastore_sasl_enabled: true
+profile::hive::client::hive_metastore_kerberos_principal: 'hive/_HOST@WIKIMEDIA'
+profile::hive::client::hive_server2_authentication: 'KERBEROS'
+profile::hive::client::hive_server2_authentication_kerberos_principal: 'hive/_HOST@WIKIMEDIA'
+
+profile::statistics::private::use_kerberos: true
+
 profile::base::debdeploy::exclude_mounts:
   - /mnt/hdfs
 

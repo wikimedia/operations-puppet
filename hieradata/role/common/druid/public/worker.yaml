@@ -50,6 +50,8 @@ profile::druid::daemons_autoreload: false
 profile::druid::ferm_srange: '$DRUID_PUBLIC_HOSTS'
 
 profile::druid::common::properties:
+  druid.hadoop.security.kerberos.principal: "druid/%{::fqdn}@WIKIMEDIA"
+  druid.hadoop.security.kerberos.keytab: '/etc/security/keytabs/druid/druid.keytab'
   druid.metadata.storage.type: mysql
   druid.metadata.storage.connector.host: an-coord1001.eqiad.wmnet
   # druid.metadata.storage.connector.password is set in the private repo.

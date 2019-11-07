@@ -41,6 +41,10 @@ profile::presto::server::config_properties:
   # presto co-located with HDFS nodes. If we were, we would
   # set this to 'flat'.
   node-scheduler.network-topology: legacy
+  http-server.authentication.type: 'KERBEROS'
+  http.server.authentication.krb5.service-name: 'presto'
+  http.server.authentication.krb5.keytab: '/etc/security/keytabs/presto/presto.keytab'
+  http.authentication.krb5.config: '/etc/krb5.conf'
 profile::presto::server::catalogs:
   # Each catalog hash should contain a single properties has that will
   # end up being passed to the presto::properties define.  This will render
@@ -61,6 +65,15 @@ profile::presto::server::catalogs:
       # TODO: do we want to disable non managed tables?
       hive.non-managed-table-writes-enabled: true
       hive.non-managed-table-creates-enabled: true
+      hive.metastore.authentication.type: 'KERBEROS'
+      hive.metastore.service.principal: 'hive/an-coord1001.eqiad.wmnet@WIKIMEDIA'
+      hive.metastore.client.principal: 'presto/an-coord1001.eqiad.wmnet@WIKIMEDIA'
+      hive.metastore.client.keytab: '/etc/security/keytabs/presto/presto.keytab'
+      hive.hdfs.authentication.type: 'KERBEROS'
+      hive.hdfs.impersonation.enabled: true
+      hive.hdfs.presto.principal: 'presto/an-coord1001.eqiad.wmnet@WIKIMEDIA'
+      hive.hdfs.presto.keytab: '/etc/security/keytabs/presto/presto.keytab'
+      hive.hdfs.wire-encryption.enabled: true
 profile::presto::server::ferm_srange: $ANALYTICS_NETWORKS
 
 
@@ -88,6 +101,26 @@ profile::analytics::refinery::job::project_namespace_map::http_proxy: 'http://we
 
 profile::base::debdeploy::exclude_mounts:
   - /mnt/hdfs
+
+
+profile::analytics::cluster::client::kerberos_enabled: true
+profile::hadoop::balancer::use_kerberos: true
+profile::oozie::server::use_kerberos: true
+profile::hive::server::use_kerberos: true
+profile::hadoop::spark2::use_kerberos: true
+profile::analytics::refinery::job::camus::use_kerberos: true
+profile::hive::client::hive_metastore_sasl_enabled: true
+profile::hive::client::hive_metastore_kerberos_keytab_file: '/etc/security/keytabs/hive/hive.keytab'
+profile::hive::client::hive_metastore_kerberos_principal: 'hive/_HOST@WIKIMEDIA'
+profile::hive::client::hive_server2_authentication: 'KERBEROS'
+profile::hive::client::hive_server2_authentication_kerberos_principal: 'hive/_HOST@WIKIMEDIA'
+profile::hive::client::hive_server2_authentication_kerberos_keytab: '/etc/security/keytabs/hive/hive.keytab'
+profile::oozie::server::oozie_service_kerberos_enabled: true
+profile::oozie::server::local_realm: 'ANALYTICS.EQIAD.WMFLABS'
+profile::oozie::server::oozie_service_keytab_file: '/etc/security/keytabs/oozie/HTTP-oozie.keytab'
+profile::oozie::server::oozie_service_kerberos_principal: 'oozie/_HOST@WIKIMEDIA'
+profile::oozie::server::oozie_authentication_type: 'kerberos'
+profile::oozie::server::oozie_authentication_kerberos_principal: 'HTTP/_HOST@WIKIMEDIA'
 
 profile::kerberos::keytabs::keytabs_metadata:
   - role: 'hive'

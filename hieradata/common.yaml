@@ -884,14 +884,58 @@ hadoop_clusters:
 
     yarn_resourcemanager_zk_state_store_parent_path: '/yarn-rmstore/analytics-hadoop'
 
+    hdfs_site_extra_properties:
+      dfs.cluster.administrators: 'hdfs analytics-admins,ops'
+      dfs.block.access.token.enable: 'true'
+      dfs.namenode.keytab.file: '/etc/security/keytabs/hadoop/hdfs.keytab'
+      dfs.namenode.kerberos.principal: 'hdfs/_HOST@WIKIMEDIA'
+      dfs.secondary.namenode.keytab.file: '/etc/security/keytabs/hadoop/hdfs.keytab'
+      dfs.secondary.namenode.kerberos.principal: 'hdfs/_HOST@WIKIMEDIA'
+      dfs.journalnode.keytab.file: '/etc/security/keytabs/hadoop/hdfs.keytab'
+      dfs.journalnode.kerberos.principal: 'hdfs/_HOST@WIKIMEDIA'
+      dfs.journalnode.kerberos.internal.spnego.principal: 'HTTP/_HOST@WIKIMEDIA'
+      dfs.web.authentication.kerberos.keytab: '/etc/security/keytabs/hadoop/HTTP.keytab'
+      dfs.web.authentication.kerberos.principal: 'HTTP/_HOST@WIKIMEDIA'
+      dfs.datanode.keytab.file: '/etc/security/keytabs/hadoop/hdfs.keytab'
+      dfs.datanode.kerberos.principal: 'hdfs/_HOST@WIKIMEDIA'
+      dfs.encrypt.data.transfer: 'true'
+      dfs.data.transfer.protection: 'privacy'
+      # This is required to allow the datanode to start:
+      # https://hadoop.apache.org/docs/r2.6.0/hadoop-project-dist/hadoop-common/SecureMode.html#Secure_DataNode
+      dfs.http.policy: 'HTTPS_ONLY'
+      dfs.encrypt.data.transfer.cipher.suites: 'AES/CTR/NoPadding'
+      dfs.encrypt.data.transfer.cipher.key.bitlength: '128'
+
     mapred_site_extra_properties:
       mapreduce.ssl.enabled: true
       mapreduce.shuffle.ssl.enabled: true
 
+    yarn_site_extra_properties:
+      yarn.resourcemanager.principal: 'yarn/_HOST@WIKIMEDIA'
+      yarn.resourcemanager.keytab: '/etc/security/keytabs/hadoop/yarn.keytab'
+      yarn.nodemanager.principal: 'yarn/_HOST@WIKIMEDIA'
+      yarn.nodemanager.keytab: '/etc/security/keytabs/hadoop/yarn.keytab'
+      yarn.nodemanager.container-executor.class: 'org.apache.hadoop.yarn.server.nodemanager.LinuxContainerExecutor'
+      yarn.nodemanager.linux-container-executor.group: 'yarn'
+
+    yarn_nodemanager_container_executor_config:
+      yarn.nodemanager.linux-container-executor.group: 'yarn'
+      min.user.id: '100'
+      allowed.system.users: 'nobody,hive'
+      banned.users: 'root,hdfs,yarn,mapred,bin'
+
     core_site_extra_properties:
       hadoop.ssl.enabled.protocols: 'TLSv1.2'
-      # Allow presto-server to impersonate users.
-      # This is what allows presto to access files as users running queries.
+      hadoop.rpc.protection: 'privacy'
+      hadoop.security.authentication: 'kerberos'
+      # Allow services to impersonate users.
+      # This is what allows to access files as users running queries.
+      # Example for hive:
+      # https://www.cloudera.com/documentation/enterprise/5-16-x/topics/cdh_sg_hiveserver2_security.html#concept_vxf_pgx_nm
+      hadoop.proxyuser.hive.hosts: '*'
+      hadoop.proxyuser.hive.groups: '*'
+      hadoop.proxyuser.oozie.hosts: '*'
+      hadoop.proxyuser.oozie.groups: '*'
       hadoop.proxyuser.presto.hosts: '*'
       hadoop.proxyuser.presto.groups: '*'
 
