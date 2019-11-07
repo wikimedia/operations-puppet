@@ -545,6 +545,10 @@ INSTANCE_TLD = '<%= @dhcp_domain %>'
 # Disable instance consoles for Horizon users
 CONSOLE_TYPE = False
 
+# start in yaml mode by default
+PUPPET_TABLE_MODE = False
+
+
 PUPPETMASTER_API  = "https://<%= scope.call_function(:hiera, ['labs_puppet_master']) %>:8140/future"
 PUPPET_CONFIG_BACKEND  = "http://<%= scope.call_function(:hiera, ['labs_puppet_master']) %>:8101/v1"
 
