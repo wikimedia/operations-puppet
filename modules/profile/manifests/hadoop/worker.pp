@@ -14,7 +14,6 @@ class profile::hadoop::worker(
     $cluster_name       = hiera('profile::hadoop::common::hadoop_cluster_name'),
     $monitoring_enabled = hiera('profile::hadoop::worker::monitoring_enabled', false),
     $ferm_srange        = hiera('profile::hadoop::worker::ferm_srange', '$DOMAIN_NETWORKS'),
-    $use_kerberos       = hiera('profile::hadoop::worker::use_kerberos', false),
 ) {
     require ::profile::analytics::cluster::packages::common
     require ::profile::hadoop::common
