@@ -17,11 +17,6 @@ class toollabs::maintain_kubeusers(
         mode   => '0555',
     }
 
-    systemd::service { 'maintain-kubeusers':
-        ensure  => 'absent',
-        content => systemd_template('maintain-kubeusers'),
-    }
-
     $timer_command = "/usr/bin/timeout 5m \
                         /usr/local/bin/maintain-kubeusers \
                         --once \
