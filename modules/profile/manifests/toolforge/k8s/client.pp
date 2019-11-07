@@ -2,7 +2,15 @@ class profile::toolforge::k8s::client(
     $master_host = hiera('k8s::master_host'),
     $etcd_hosts = hiera('flannel::etcd_hosts', [$master_host]),
 ){
-    require_package('kubernetes-client')
+    class {'::toolforge::k8s::kubeadmrepo': }
+
+    package {'kubernetes-client':
+        ensure => absent,
+    }
+
+    package { 'kubectl':
+        ensure => 'latest',
+    }
 
     package { 'toollabs-webservice':
         ensure => latest,
