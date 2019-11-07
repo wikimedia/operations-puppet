@@ -85,13 +85,6 @@ define labstore::nfs_mount(
         }
     }
 
-    # 8/23/2016 cleanup can be removed after a week
-    if !defined(File['/usr/local/sbin/nfs-mount-manager.sh']) {
-        file { '/usr/local/sbin/nfs-mount-manager.sh':
-            ensure => absent,
-        }
-    }
-
     if !defined(File['/usr/local/sbin/nfs-mount-manager']) {
         file { '/usr/local/sbin/nfs-mount-manager':
             ensure => present,
