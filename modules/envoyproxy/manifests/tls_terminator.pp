@@ -58,6 +58,8 @@
 #     Default is undefined.
 # @param access_log
 #     If true, sets up the access log for the TLS terminator.
+# @param websockets
+#     If true, allows websocket upgrades.
 # @param connect_timeout
 #     The time is seconds to wait before declaring a connection timeout to the
 #     upstream resource
@@ -65,6 +67,7 @@ define envoyproxy::tls_terminator(
   Array[Envoyproxy::Tlsconfig] $upstreams = [],
     Optional[Stdlib::Port] $redir_port = undef,
     Boolean $access_log = false,
+    Boolean $websockets = false,
     Float $connect_timeout = 1.0,
     Float $route_timeout = 65.0,
     Optional[String] $global_cert_path = undef,
