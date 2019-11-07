@@ -84,14 +84,13 @@ class profile::wmcs::instance(
 
         base::service_auto_restart { 'diamond': }
 
-        diamond::collector::minimalpuppetagent { 'minimal-puppet-agent': }
-
-        diamond::collector { 'SSHSessions':
+        diamond::collector { 'MinimalPuppetAgent':
             ensure => 'absent',
         }
     }
 
     class { '::prometheus::node_ssh_open_sessions': }
+    class { '::prometheus::node_puppet_agent': }
 
     hiera_include('classes', [])
 
