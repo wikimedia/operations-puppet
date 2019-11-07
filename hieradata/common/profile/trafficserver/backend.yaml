@@ -180,10 +180,8 @@ profile::trafficserver::backend::mapping_rules:
       target: http://stats.wikimedia.org
       replacement: https://thorium.eqiad.wmnet
     - type: map
-      target: ws://stream.wikimedia.org
-      replacement: ws://eventstreams.discovery.wmnet:8092
-    - type: map
       target: http://stream.wikimedia.org
+      # XXX pipe requests to /v2/stream/.+ ?
       replacement: http://eventstreams.discovery.wmnet:8092
     - type: map
       target: http://superset.wikimedia.org
