@@ -250,6 +250,9 @@ labs_keystone_hosts:
     - "cloudcontrol1004.wikimedia.org"
 puppetmaster: "puppetmaster.cloudinfra.wmflabs.org"
 puppet_ca_server: ""
+puppet_ca_source: puppet:///files/puppet/ca.labs.pem
+manage_puppet_ca_file: false
+
 keystone_public_port: '5000'
 
 # All labs instances have internet connectivity, so do not bother with proxies
@@ -342,8 +345,6 @@ profile::base::puppet::environment: production
 profile::base::puppet::puppet_major_version: 4
 profile::base::puppet::facter_major_version: 2
 profile::base::puppet::serialization_format: pson
-profile::base::puppet::ca_source: puppet:///modules/profile/base/puppet/ca.labs.pem
-profile::base::puppet::manage_ca_file: false
 
 bastion_hosts:
 - 172.16.1.136 # bastion-eqiad1-01.eqiad.wmflabs

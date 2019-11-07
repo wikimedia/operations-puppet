@@ -10,6 +10,7 @@ datacenters:
   - ulsfo
   - eqsin
 
+
 # Main statsd instance
 statsd: statsd.eqiad.wmnet:8125
 statsd_exporter_port: 9125
@@ -429,6 +430,8 @@ wikimedia_clusters:
 
 puppetmaster: "puppet"
 puppet_ca_server: puppetmaster1001.eqiad.wmnet
+puppet_ca_source: puppet:///files/puppet/ca.production.pem
+manage_puppet_ca_file: true
 
 statistics_servers:
   - stat1004.eqiad.wmnet
