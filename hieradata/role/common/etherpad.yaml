@@ -5,3 +5,4 @@ profile::tlsproxy::envoy::services:
 profile::tlsproxy::envoy::global_cert_name: "etherpad.discovery.wmnet"
 profile::tlsproxy::envoy::sni_support: "no"
 profile::tlsproxy::envoy::tls_port: 7443
+profile::tlsproxy::envoy::websockets: true
