@@ -488,19 +488,19 @@ host cloudbackup2002 {
 }
 
 host cloudcephmon1001 {
-    hardware ethernet 4C:D9:8F:66:20:69;
+    hardware ethernet B0:26:28:38:FF:00;
     fixed-address cloudcephmon1001.wikimedia.org;
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host cloudcephmon1002 {
-    hardware ethernet 4C:D9:8F:66:30:D7;
+    hardware ethernet B0:26:28:3A:92:20;
     fixed-address cloudcephmon1002.wikimedia.org;
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host cloudcephmon1003 {
-    hardware ethernet 4C:D9:8F:66:1E:C9;
+    hardware ethernet B0:26:28:38:FB:F0;
     fixed-address cloudcephmon1003.wikimedia.org;
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
