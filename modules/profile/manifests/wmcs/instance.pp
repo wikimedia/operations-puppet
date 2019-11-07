@@ -90,7 +90,6 @@ class profile::wmcs::instance(
     }
 
     class { '::prometheus::node_ssh_open_sessions': }
-    class { '::prometheus::node_puppet_agent': }
 
     hiera_include('classes', [])
 
