@@ -17,7 +17,6 @@ class profile::analytics::refinery::job::data_purge (
     $public_druid_snapshots_log_file = "${profile::analytics::refinery::log_dir}/drop-druid-public-snapshots.log"
     $mediawiki_dumps_log_file        = "${profile::analytics::refinery::log_dir}/drop-mediawiki-dumps.log"
     $el_unsanitized_log_file         = "${profile::analytics::refinery::log_dir}/drop-el-unsanitized-events.log"
-    $data_quality_hourly_log_file    = "${profile::analytics::refinery::log_dir}/drop-data-quality-hourly.log"
 
     # Shortcut to refinery path
     $refinery_path = $profile::analytics::refinery::path
@@ -276,17 +275,6 @@ class profile::analytics::refinery::job::data_purge (
         description  => 'Drop pages_meta_current dumps data from HDFS after 80 days.',
         command      => "${refinery_path}/bin/refinery-drop-older-than --base-path /wmf/data/raw/mediawiki/dumps/siteinfo_namespaces --path-format '(?P<year>[0-9]{4})(?P<month>[0-9]{2})01' --older-than <%= @dumps_retention_days %> --log-file <%= @mediawiki_dumps_log_file %> --skip-trash --execute b5ced2ce9e4be85f144a2228ade9125d",
         interval     => '*-*-20 05:00:00',
-        user         => 'analytics',
-        use_kerberos => $use_kerberos,
-    }
-
-    # Drop old records in data quality hourly table. Runs once a day.
-    kerberos::systemd_timer { 'drop-data-quality-hourly':
-        ensure       => absent,
-        description  => 'Drop old records in data quality hourly table.',
-        command      => "${refinery_path}/bin/refinery-drop-older-than --database='wmf' --tables='data_quality_hourly' --base-path='/wmf/data/wmf/data_quality/hourly' --path-format='.+/.+/year=(?P<year>[0-9]+)(/month=(?P<month>[0-9]+)(/day=(?P<day>[0-9]+)(/hour=(?P<hour>[0-9]+))?)?)?' --older-than='90' --skip-trash --execute='e96222d1885ff1b86d61a455b151c094' --log-file='${data_quality_hourly_log_file}'",
-        interval     => '*-*-* 00:00:00',
-        environment  => $systemd_env,
         user         => 'analytics',
         use_kerberos => $use_kerberos,
     }
