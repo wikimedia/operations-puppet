@@ -20,7 +20,7 @@ class profile::toolforge::grid::node::web (
     include profile::toolforge::k8s::client
 
     # We have a tmp file problem to clean up
-    package { 'tmpreaper':
+    package { ['tmpreaper', 'python-yaml'] :
         ensure => 'installed',
     }
 
