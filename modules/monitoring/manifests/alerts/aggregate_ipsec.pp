@@ -11,6 +11,7 @@ define monitoring::alerts::aggregate_ipsec(
         critical        => 2,
         method          => 'ge',
         prometheus_url  => "http://prometheus.svc.${site}.wmnet/ops",
+        notes_link      => 'https://wikitech.wikimedia.org/wiki/Monitoring/strongswan',
     }
 
 }
