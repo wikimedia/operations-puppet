@@ -1,13 +1,13 @@
 # == Class: profile::phabricator::monitoring
 #
 class profile::phabricator::monitoring (
-    $phabricator_active_server = hiera('phabricator_active_server')
+    Stdlib::Fqdn $phabricator_active_server = hiera('phabricator_active_server'),
+    Stdlib::Ensure::Service $phd_service_ensure = hiera('profile::phabricator::main::phd_service_ensure', 'running'),
 ){
 
-    # Only monitor services on the active_server (at least until codfw is in prod).
-    # They are all paging because the "sms" contact group is added.
-    # https monitoring is on virtual host 'phabricator', should not be duplicated.
-    if $::hostname == $phabricator_active_server {
+    # All checks are paging because the "sms" contact group is added.
+    # Only monitor PHD if it is actually set to be running in Hiera.
+    if $phd_service_ensure == 'running' {
 
         $phab_contact_groups = 'admins,phabricator'
 
@@ -24,7 +24,11 @@ class profile::phabricator::monitoring (
             contact_group => $phab_contact_groups,
             notes_url     => 'https://wikitech.wikimedia.org/wiki/Phabricator',
         }
+    }
 
+    # https monitoring is on the virtual host 'phabricator'.
+    # It should not be duplicated.
+    if $::hostname == $phabricator_active_server {
         monitoring::host { 'phabricator.wikimedia.org':
             host_fqdn => 'phabricator.wikimedia.org',
         }
