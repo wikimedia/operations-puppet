@@ -176,4 +176,8 @@ class profile::base(
         ip           => '10.64.16.149', # graphite1004
         host_aliases => 'statsd',
     }
+
+    if $facts['is_virtual'] == false {
+        class { 'prometheus::node_nic_firmware': }
+    }
 }
