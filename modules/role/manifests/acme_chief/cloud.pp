@@ -4,5 +4,9 @@ class role::acme_chief::cloud {
     include ::profile::base::firewall
     include ::profile::acme_chief
     include ::profile::acme_chief::cloud
+
+    if ($::labsproject in ['tools', 'toolsbeta']) {
+        include ::profile::toolforge::prometheus_fixu
+    }
 }
 
