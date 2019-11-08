@@ -58,7 +58,7 @@
 -%>
   # If wstunnel is enabled, proxy to the client notification service
   <IfModule mod_proxy_wstunnel.c>
-  ProxyPass "/ws/" "ws://<%= @fqdn %>:<%= client['port'] %>"
+  ProxyPass "/ws/" "ws://<%= @fqdn %>:<%= client['port'] %>/ws/"
   </IfModule>
 <%- end %>
 
