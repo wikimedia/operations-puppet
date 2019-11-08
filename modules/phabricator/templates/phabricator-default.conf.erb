@@ -53,6 +53,15 @@
       SetHandler "proxy:unix:/run/php/fpm-www.sock|fcgi://localhost/"
   </FilesMatch>
 
+<% if @settings['notification.servers'] != []
+   client = @settings['notification.servers'].select{ |x| x['type'] == 'client' }.pop
+-%>
+  # If wstunnel is enabled, proxy to the client notification service
+  <IfModule mod_proxy_wstunnel.c>
+  ProxyPass "/ws/" "ws://<%= @fqdn %>:<%= client['port'] %>"
+  </IfModule>
+<%- end %>
+
   LogLevel warn
   ErrorLog /var/log/apache2/phabricator_error.log
   CustomLog /var/log/apache2/phabricator_access.log wmf

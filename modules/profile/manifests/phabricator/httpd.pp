@@ -2,6 +2,7 @@
 #
 class profile::phabricator::httpd (
     Boolean $enable_forensic_log = hiera('profile::phabricator::httpd::enable_forensic_log', false),
+    Boolean $aphlict_enabled = lookup('phabricator_aphlict_enabled', {'default_value' => false}),
 ) {
 
     $httpd_base_modules = [ 'headers', 'rewrite', 'remoteip' ]
@@ -38,5 +39,10 @@ class profile::phabricator::httpd (
             source  => 'puppet:///modules/phabricator/apache/log_forensic.conf',
             require => Httpd::Mod_conf['log_forensic'],
         }
+    }
+
+    # Proxy websockets to aphlict if present
+    if $aphlict_enabled {
+        ::httpd::mod_conf { 'proxy_wstunnel': }
     }
 }
