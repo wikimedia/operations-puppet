@@ -6,7 +6,7 @@ class role::acme_chief::cloud {
     include ::profile::acme_chief::cloud
 
     if ($::labsproject in ['tools', 'toolsbeta']) {
-        include ::profile::toolforge::prometheus_fixu
+        include ::profile::toolforge::prometheus_fixup
     }
 }
 
