@@ -5,6 +5,6 @@ class profile::wikistats::db {
 
     class { '::mariadb::config':
         basedir => '/usr',
-        datadir => '/srv/sqldata',
+        datadir => '/var/lib/mysql',
     }
 }
