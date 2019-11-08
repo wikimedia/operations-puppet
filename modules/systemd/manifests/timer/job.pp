@@ -84,8 +84,7 @@
 define systemd::timer::job(
     String $description,
     String $command,
-    # TODO: add type definition once we move past puppet 4.10, see https://tickets.puppetlabs.com/browse/PUP-7650
-    $interval,
+    Systemd::Timer::Schedule $interval,
     String $user,
     Hash[String, String] $environment = {},
     Boolean $monitoring_enabled = true,
