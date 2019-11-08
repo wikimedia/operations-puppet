@@ -81,6 +81,8 @@
 
   RewriteRule ^/rsrc/(.*)     -                       [L,QSA]
   RewriteRule ^/favicon.ico   -                       [L,QSA]
+  # /ws/ is taken care of by ProxyPass above
+  RewriteRule ^/ws/           -                       [L]
   RewriteRule ^/project/sprint/board/(.*) /project/board/$1 [L,QSA,R=301]
   RewriteRule ^/maniphest/task/create/? /maniphest/task/edit/form/1/ [L,QSA,NE,R=301]
   RewriteRule ^(.*)$          /index.php?__path__=$1  [B,L,QSA]
