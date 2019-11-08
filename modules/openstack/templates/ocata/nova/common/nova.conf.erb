@@ -13,8 +13,12 @@ pybasedir = /usr/lib/python2.7/dist-packages
 #use_rootwrap_daemon = True ### FIXME may be used only in compute nodes?
 notification_driver = messagingv2
 
-# keystone
-auth_strategy = keystone
+
+# Schedule things that are for some reason not in the [scheduler] section
+ram_allocation_ratio=1.0
+disk_allocation_ratio=1.5
+cpu_allocation_ratio=4.0
+default_schedule_zone = <%= @default_schedule_zone %>
 
 # Prevent '.novalocal' from being appended to every hostname
 dhcp_domain =
@@ -44,30 +48,24 @@ ec2_dmz_host=<%= @nova_api_host_ip %>
 api_paste_config=/etc/nova/api-paste.ini
 enabled_apis = osapi_compute,metadata
 
-# quotas
-quota_cores = 8
-quota_instances = 8
-quota_ram = 16384
-quota_floating_ips = 0
-quota_fixed_ips = 200
-max_age = 30
-
 # nova-scheduler
-scheduler_driver=filter_scheduler
 wmf_scheduler_hosts_pool = <%= @scheduler_pool.join(",") %>
-scheduler_default_filters = <%= @scheduler_filters.join(",") %>
-scheduler_weight_classes=nova.scheduler.weights.metrics.MetricsWeigher
-scheduler_host_subset_size = 2
-ram_allocation_ratio=1.0
-disk_allocation_ratio=1.5
-cpu_allocation_ratio=4.0
-default_schedule_zone = <%= @default_schedule_zone %>
 
 # networking
 use_neutron = True
 firewall_driver = nova.virt.firewall.NoopFirewallDriver
 default_floating_pool = ext-nat
 linuxnet_interface_driver = nova.network.linux_net.LinuxBridgeInterfaceDriver
+
+[quota]
+# quotas
+cores = 8
+instances = 8
+ram = 16384
+max_age = 30
+
+[api]
+auth_strategy = keystone
 
 [api_database]
 connection = mysql://<%= @db_user %>:<%= @db_pass %>@<%= @db_host %>/<%= @db_name_api %>
@@ -78,6 +76,14 @@ max_overflow = 25
 max_pool_size = 3
 pool_timeout = 60
 idle_timeout = 1800
+
+[scheduler]
+driver=filter_scheduler
+
+[filter_scheduler]
+enabled_filters = <%= @scheduler_filters.join(",") %>
+weight_classes=nova.scheduler.weights.metrics.MetricsWeigher
+host_subset_size = 2
 
 [glance]
 host=<%= @glance_host %>
