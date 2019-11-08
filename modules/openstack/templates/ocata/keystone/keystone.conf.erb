@@ -1,0 +1,115 @@
+[DEFAULT]
+debug = false
+member_role_name = user
+log_file = keystone.log
+log_dir = /var/log/keystone
+log_config_append = /etc/keystone/logging.conf
+# Login info for wikitech, for project page updates
+wiki_host=<%= @osm_host %>
+wiki_page_prefix=<%= @wiki_status_page_prefix %>
+wiki_consumer_token=<%= @wiki_status_consumer_token %>
+wiki_consumer_secret=<%= @wiki_status_consumer_secret %>
+wiki_access_token=<%= @wiki_status_access_token %>
+wiki_access_secret=<%= @wiki_status_access_secret %>
+
+[assignment]
+driver = sql
+
+[auth]
+methods = external,password,token,wmtotp
+
+# Override the default password plugin with a custom
+#  one that checks source IPs.
+password = whitelist
+
+<% @labs_networks.each do |subnet| -%>
+password_whitelist = novaobserver:<%=subnet%>
+password_whitelist = deployment-prep-dns-manager:<%=subnet%>
+password_whitelist = traffic-cloud-dns-manager:<%=subnet%>
+password_whitelist = tools-dns-manager:<%=subnet%>
+<% end -%>
+<% @prod_networks.each do |subnet| -%>
+password_whitelist = *:<%=subnet%>
+<% end -%>
+
+[oath]
+
+wikitech_host = <%=@osm_host %>
+wikitech_consumer_token = <%= @wiki_consumer_token %>
+wikitech_consumer_secret = <%= @wiki_consumer_secret %>
+wikitech_access_token = <%= @wiki_access_token %>
+wikitech_access_secret = <%= @wiki_access_secret %>
+
+[cache]
+
+[catalog]
+driver = sql
+
+[cors]
+[cors.subdomain]
+[credential]
+
+[database]
+connection = mysql://<%= @db_user %>:<%= @db_pass %>@<%= @db_host %>/<%= @db_name %>
+max_pool_size = <%= @db_max_pool_size %>
+
+[domain_config]
+[endpoint_filter]
+[endpoint_policy]
+[eventlet_server]
+public_workers = <%= @public_workers %>
+admin_workers = <%= @admin_workers %>
+
+[eventlet_server_ssl]
+[federation]
+[fernet_tokens]
+[identity]
+driver = ldap
+[identity_mapping]
+[kvs]
+
+[ldap]
+url = <% @ldap_hosts.each do |ldap_host| %>ldap://<%= ldap_host %>,<% end %>
+tree_dn = <%= @ldap_base_dn %>
+user_tree_dn = ou=people,<%= @ldap_base_dn %>
+user_id_attribute = <%= @ldap_user_id_attribute %>
+user_name_attribute = <%= @ldap_user_name_attribute %>
+user = <%= @ldap_user_dn %>
+password = <%= @ldap_user_pass %>
+
+[matchmaker_redis]
+[memcache]
+[oauth1]
+[os_inherit]
+[oslo_messaging_amqp]
+
+[oslo_messaging_notifications]
+driver = wmfkeystonehooks
+
+[oslo_messaging_rabbit]
+[oslo_middleware]
+[oslo_policy]
+[paste_deploy]
+
+[policy]
+driver = rules
+
+[resource]
+[revoke]
+[role]
+[saml]
+[shadow_users]
+[signing]
+[ssl]
+
+[token]
+provider = uuid
+driver = sql
+expiration = 613440
+
+[tokenless_auth]
+[trust]
+
+[wmfhooks]
+admin_pass = <%= @ldap_user_pass %>
+auth_url = <%= @auth_protocol %>://<%= @fqdn %>:<%= @auth_port %>/v3
