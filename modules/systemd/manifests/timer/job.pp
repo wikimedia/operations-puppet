@@ -112,6 +112,7 @@ define systemd::timer::job(
     # Sanitize the title for use on the filesystem
     $safe_title = regsubst($title, '[^\w\-]', '_', 'G')
 
+
     $intervals = $interval ? {
 #        Systemd::Timer::Schedule           => [$interval],
 #        Array[Systemd::Timer::Schedule, 1] => $interval,
@@ -130,6 +131,24 @@ define systemd::timer::job(
         ensure          => $ensure,
         timer_intervals => $intervals,
         unit_name       => "${title}.service",
+    }
+
+    if $ensure == 'present' and  length($intervals.filter |$interval| {$interval['start'] =~ /OnUnit(In)?[Aa]ctive/}) > 0 {
+        # Without this, we will happily install the timer unit and the service unit,
+        # and activate the timer unit -- but as far as systemd is concerned, that
+        # doesn't *do* anything, because the service unit has never been activated
+        # nor deactivated (and those times are what the OnActiveUnitSec and
+        # OnInactiveUnitSec timer intervals care about).
+        #
+        # So we need to start the service unit once, to set the timer in motion.
+        $exec_label = "systemd start for ${title}.service"
+        exec { $exec_label:
+            command     => "/bin/systemctl start '${title}.service'",
+            refreshonly => true,
+            onlyif      => "/bin/systemctl show '${title}.service' | grep -q '^ExecMainStartTimestampMonotonic=0$'"
+        }
+        # Whenever the timer gets modified
+        Systemd::Timer[$title] ~> Exec[$exec_label]
     }
 
     if $logging_enabled {

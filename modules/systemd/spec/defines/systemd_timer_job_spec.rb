@@ -72,6 +72,24 @@ describe 'systemd::timer::job' do
                           .with_ensure('present')
                           .with_content(/Description=Some description/)
         }
+        it { is_expected.not_to contain_exec('systemd start for dummy-test.service') }
+      end
+      context "with OnActiveUnitSec" do
+        let(:params) {
+          {
+            description: 'Some description',
+            command: '/bin/true',
+            interval: [{start: 'OnCalendar', interval: 'Mon,Tue *-*-* 00:00:00'},
+                       {start: 'OnUnitInactiveSec', interval: '3600s'},],
+            user: 'root',
+          }
+        }
+        it { is_expected.to compile.with_all_deps }
+        it { is_expected.to contain_exec('systemd start for dummy-test.service') }
+        it {
+          is_expected.to contain_systemd__timer('dummy-test')
+                           .that_notifies('Exec[systemd start for dummy-test.service]')
+        }
       end
     end
   end
