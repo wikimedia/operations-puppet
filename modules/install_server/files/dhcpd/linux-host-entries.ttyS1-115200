@@ -505,6 +505,24 @@ host cloudcephmon1003 {
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
+host cloudcephosd1001 {
+    hardware ethernet B0:26:28:40:7D:B0;
+    fixed-address cloudcephosd1001.wikimedia.org;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
+}
+
+host cloudcephosd1002 {
+    hardware ethernet B0:26:28:40:6E:E0;
+    fixed-address cloudcephosd1002.wikimedia.org;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
+}
+
+host cloudcephosd1003 {
+    hardware ethernet B0:26:28:40:77:60;
+    fixed-address cloudcephosd1003.wikimedia.org;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
+}
+
 host cloudcontrol1003 {
     hardware ethernet 30:e1:71:5f:6e:5c;
     fixed-address cloudcontrol1003.wikimedia.org;
