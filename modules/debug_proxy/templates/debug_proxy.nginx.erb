@@ -45,21 +45,7 @@ server {
         proxy_pass $scheme://$debug_host;
         proxy_pass_request_headers on;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        # Swap whatever cookie we had for PHP_ENGINE with what we extracted
-        set_by_lua_block $cookies {
-            local cookie_snippet_to_set = "PHP_ENGINE=" .. ngx.var.php_engine;
-            local current_engine = ngx.var.cookie_PHP_ENGINE;
-            if (ngx.var.http_cookie == nil) then
-                return cookie_snippet_to_set;
-            elseif (current_engine == nil) then
-                return ngx.var.http_cookie .. ";" .. cookie_snippet_to_set;
-            else
-                local php_engine_cookie = "PHP_ENGINE=" .. current_engine;
-                return string.gsub(ngx.var.http_cookie, php_engine_cookie, cookie_snippet_to_set);
-            end
-        }
         proxy_http_version 1.1;
-        proxy_set_header Cookie $cookies;
         proxy_set_header Host $host;
         proxy_pass_header Server;
         proxy_read_timeout 180s;
