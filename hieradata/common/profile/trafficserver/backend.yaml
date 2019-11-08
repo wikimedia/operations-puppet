@@ -123,7 +123,7 @@ profile::trafficserver::backend::mapping_rules:
       #replacement: http://webperf2001.codfw.wmnet
     - type: map
       target: ws://phabricator.wikimedia.org/ws/
-      replacement: wss:///phabricator.discovery.wmnet/ws/
+      replacement: wss://phabricator.discovery.wmnet/ws/
     - type: map
       target: http://phabricator.wikimedia.org
       replacement: https://phabricator.discovery.wmnet
