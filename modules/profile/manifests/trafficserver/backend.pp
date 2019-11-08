@@ -94,6 +94,10 @@ class profile::trafficserver::backend (
         source    => 'puppet:///modules/profile/trafficserver/rb-mw-mangling.lua',
     }
 
+    trafficserver::lua_script { 'x-wikimedia-debug-routing':
+        source    => 'puppet:///modules/profile/trafficserver/x-wikimedia-debug-routing.lua',
+    }
+
     # Monitoring
     profile::trafficserver::monitoring { "trafficserver_${instance_name}_monitoring":
         paths                    => $paths,

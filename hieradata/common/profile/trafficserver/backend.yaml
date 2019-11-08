@@ -245,6 +245,8 @@ profile::trafficserver::backend::mapping_rules:
           - '@pparam="5B 5D 26 27 2B 3D"'
           - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
           - '@pparam=/etc/trafficserver/lua/rb-mw-mangling.lua'
+          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
+          - '@pparam=/etc/trafficserver/lua/x-wikimedia-debug-routing.lua'
 profile::trafficserver::backend::caching_rules:
     - primary_destination: dest_host
       value: cxserver.discovery.wmnet
