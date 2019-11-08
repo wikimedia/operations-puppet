@@ -377,3 +377,21 @@ wikimedia_clusters:
     sites:
       eqiad: []
       codfw: []
+  cache_text:
+    description: "Text caches"
+    id: 20
+    sites:
+      eqiad: []
+      codfw: []
+      esams: []
+      ulsfo: []
+      eqsin: []
+  cache_upload:
+    description: "Upload caches"
+    id: 22
+    sites:
+      eqiad: []
+      codfw: []
+      esams: []
+      ulsfo: []
+      eqsin: []
