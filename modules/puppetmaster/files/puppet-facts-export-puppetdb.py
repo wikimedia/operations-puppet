@@ -4,11 +4,13 @@ import os
 import shutil
 import subprocess
 import tempfile
+import urllib3
+urllib3.disable_warnings(urllib3.exceptions.SubjectAltNameWarning)
+
+from datetime import datetime, timedelta
 
 import requests
 import yaml
-
-from datetime import datetime, timedelta
 
 
 class PuppetDBApi(object):
@@ -22,7 +24,9 @@ class PuppetDBApi(object):
         return '{url}/pdb/query/v4/{ep}'.format(url=self.server_url, ep=endpoint)
 
     def get(self, endpoint):
-        cacert = '/var/lib/puppet/server/ssl/ca/ca_crt.pem'
+        # use the localcacert value whichshould be avalible on all machines
+        cacert = subprocess.check_output(
+            ['puppet', 'config', 'print', 'localcacert']).decode().strip()
         return requests.get(self.url_for(endpoint), verify=cacert).json()
 
 
