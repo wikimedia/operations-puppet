@@ -87,7 +87,7 @@ define rsync::server::module (
       }
 
       # rsync::server is always used with include semantics, so we must do this.
-      if lookup('rsync::server::wrap_with_stunnel') {  # lint:ignore:wmf_styleguide
+      if lookup('rsync::server::wrap_with_stunnel', {'default_value' => false}) {  # lint:ignore:wmf_styleguide
           ferm::service { "rsyncd_access_${name}_tls":
               ensure => $ensure,
               proto  => 'tcp',
@@ -104,7 +104,7 @@ define rsync::server::module (
               srange => "@resolve((${hosts_allow_ferm}),AAAA)",
           }
           # rsync::server is always used with include semantics, so we must do this.
-          if lookup('rsync::server::wrap_with_stunnel') {  # lint:ignore:wmf_styleguide
+          if lookup('rsync::server::wrap_with_stunnel', {'default_value' => false}) {  # lint:ignore:wmf_styleguide
               ferm::service { "rsyncd_access_${name}_ipv6_tls":
                   ensure => $ensure,
                   proto  => 'tcp',
