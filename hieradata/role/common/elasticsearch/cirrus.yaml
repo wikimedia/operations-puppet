@@ -97,4 +97,6 @@ profile::mjolnir::kafka_bulk_daemon::topics:
   - codfw.swift.search_glent.upload-complete
   - eqiad.swift.search_popularity_score.upload-complete
   - codfw.swift.search_popularity_score.upload-complete
+  - eqiad.swift.search_mjolnir_model.upload-complete
+  - codfw.swift.search_mjolnir_model.upload-complete
 profile::elasticsearch::cirrus::enable_remote_search: true
