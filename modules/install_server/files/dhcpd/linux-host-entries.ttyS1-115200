@@ -2309,6 +2309,81 @@ host elastic1052 {
     fixed-address elastic1052.eqiad.wmnet;
 }
 
+host elastic1053 {
+    hardware ethernet 4C:D9:8F:80:74:92;
+    fixed-address elastic1053.eqiad.wmnet;
+}
+
+host elastic1054 {
+    hardware ethernet 4C:D9:8F:80:23:A0;
+    fixed-address elastic1054.eqiad.wmnet;
+}
+
+host elastic1055 {
+    hardware ethernet 4C:D9:8F:80:6A:13;
+    fixed-address elastic1055.eqiad.wmnet;
+}
+
+host elastic1056 {
+    hardware ethernet 4C:D9:8F:80:67:8F;
+    fixed-address elastic1056.eqiad.wmnet;
+}
+
+host elastic1057 {
+    hardware ethernet 4C:D9:8F:80:75:02;
+    fixed-address elastic1057.eqiad.wmnet;
+}
+
+host elastic1058 {
+    hardware ethernet 4C:D9:8F:80:55:1D;
+    fixed-address elastic1058.eqiad.wmnet;
+}
+
+host elastic1059 {
+    hardware ethernet 4C:D9:8F:80:70:B4;
+    fixed-address elastic1059.eqiad.wmnet;
+}
+
+host elastic1060 {
+    hardware ethernet 4C:D9:8F:80:1F:48;
+    fixed-address elastic1060.eqiad.wmnet;
+}
+
+host elastic1061 {
+    hardware ethernet 4C:D9:8F:80:85:0A;
+    fixed-address elastic1061.eqiad.wmnet;
+}
+
+host elastic1062 {
+    hardware ethernet 4C:D9:8F:80:41:29;
+    fixed-address elastic1062.eqiad.wmnet;
+}
+
+host elastic1063 {
+    hardware ethernet 4C:D9:8F:80:62:F8;
+    fixed-address elastic1063.eqiad.wmnet;
+}
+
+host elastic1064 {
+    hardware ethernet 4C:D9:8F:80:69:93;
+    fixed-address elastic1064.eqiad.wmnet;
+}
+
+host elastic1065 {
+    hardware ethernet 4C:D9:8F:80:59:7B;
+    fixed-address elastic1065.eqiad.wmnet;
+}
+
+host elastic1066 {
+    hardware ethernet 4C:D9:8F:80:53:7B;
+    fixed-address elastic1066.eqiad.wmnet;
+}
+
+host elastic1067 {
+    hardware ethernet 4C:D9:8F:80:69:6B;
+    fixed-address elastic1067.eqiad.wmnet;
+}
+
 host elastic2025 {
     hardware ethernet 94:18:82:6f:08:f4;
     fixed-address elastic2025.codfw.wmnet;
