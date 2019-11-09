@@ -223,10 +223,10 @@ class profile::netbox (
         if $report['check_interval'] {
             ::nrpe::monitor_service { "check_netbox_${repname}":
                 ensure         => $active_ensure,
-                description    => "Check the Netbox report ${repname} for fail status.",
+                description    => "Netbox report ${repname}.",
                 nrpe_command   => "/usr/bin/python3 /usr/local/lib/nagios/plugins/check_netbox_report.py ${check_args} ${reports}",
                 check_interval => $report['check_interval'],
-                notes_url      => 'https://wikitech.wikimedia.org/wiki/Netbox#Reports',
+                notes_url      => "https://netbox.wikipedia.org/extras/reports/${reports}",
                 contact_group  => 'team-dcops',
             }
         }
