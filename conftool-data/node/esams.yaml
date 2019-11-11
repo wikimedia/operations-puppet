@@ -1,6 +1,6 @@
 esams:
   cache_text:
-    cp3050.esams.wmnet: [varnish-fe, varnish-be, nginx]
+    cp3050.esams.wmnet: [varnish-fe, ats-be, nginx]
     cp3052.esams.wmnet: [varnish-fe, varnish-be, nginx]
     cp3054.esams.wmnet: [varnish-fe, varnish-be, nginx]
     cp3056.esams.wmnet: [varnish-fe, varnish-be, nginx]
