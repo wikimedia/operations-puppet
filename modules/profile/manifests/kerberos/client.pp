@@ -29,5 +29,10 @@ class profile::kerberos::client (
         mode   => '0755',
     }
 
+    motd::script { 'kerberos-client-info':
+        priority => 1,
+        content  => template('profile/kerberos/client/motd.erb'),
+    }
+
     require_package ('krb5-user')
 }
