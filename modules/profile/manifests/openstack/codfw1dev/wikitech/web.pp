@@ -15,10 +15,4 @@ class profile::openstack::codfw1dev::wikitech::web(
     }
 
     class {'::openstack::wikitech::wikitech_static_sync': }
-
-    cron { 'tor_exit_node_update':
-        command => '/usr/local/bin/mwscript extensions/TorBlock/maintenance/loadExitNodes.php --wiki=labswiki --force > /dev/null',
-        user    => 'www-data',
-        minute  => '*/20',
-    }
 }
