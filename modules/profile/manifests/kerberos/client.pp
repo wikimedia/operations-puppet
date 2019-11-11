@@ -31,7 +31,7 @@ class profile::kerberos::client (
 
     motd::script { 'kerberos-client-info':
         priority => 1,
-        content  => template('profile/kerberos/client/motd.erb'),
+        source   => 'puppet:///modules/profile/kerberos/client/motd.sh',
     }
 
     require_package ('krb5-user')
