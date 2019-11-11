@@ -26,8 +26,8 @@ profile::netbox::netbox_report_checks:
     -   name: accounting
         class: 'accounting.Accounting'
         alert: true
-        check_interval: null
-        run_interval: '*-*-* 23:12:00' # once a day at 23:12 UTC
+        check_interval: 5
+        run_interval: '*-*-* *:08/30:00' # every 30 minutes
     -   name: cables
         class: 'cables.Cables'
         alert: true
@@ -37,7 +37,7 @@ profile::netbox::netbox_report_checks:
         class: 'librenms.LibreNMS'
         alert: true
         check_interval: 5
-        run_interval: '*-*-* *:06/30:00' # every 30 minutes
+        run_interval: '*-*-* *:07/30:00' # every 30 minutes
 
 profile::netbox::ganeti_sync_profiles:
     - profile: eqiad
