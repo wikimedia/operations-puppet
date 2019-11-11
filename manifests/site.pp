@@ -1209,6 +1209,16 @@ node /^cloudcontrol100[3-4]\.wikimedia\.org$/ {
     role(wmcs::openstack::eqiad1::control)
 }
 
+# new systems provisioning in process T228102
+node /^cloudcephmon100[1-3]\.wikimedia\.org$/ {
+    role(spare::system)
+}
+
+# new systems provisioning in process T224188
+node /^cloudcephosd100[1-3]\.wikimedia\.org$/ {
+    role(spare::system)
+}
+
 # New systems to be placed into service by cloud team via T194186
 node /^cloudelastic100[1-4]\.wikimedia\.org$/ {
     role(elasticsearch::cloudelastic)
