@@ -17,6 +17,7 @@ describe("Busted unit testing framework", function()
     it("test - valid X-Wikimedia-Debug eqiad", function()
       stub(ts.client_request, "set_url_host")
       stub(ts, "hook")
+      stub(ts.http, "config_int_set")
 
       require("x-wikimedia-debug-routing")
 
@@ -25,11 +26,13 @@ describe("Busted unit testing framework", function()
       do_remap()
 
       assert.stub(ts.client_request.set_url_host).was.called_with("mwdebug1001.eqiad.wmnet")
+      assert.stub(ts.http.config_int_set).was.called_with(TS_LUA_CONFIG_HTTP_CACHE_HTTP, 0)
     end)
 
     it("test - X-Wikimedia-Debug with hostname only", function()
       stub(ts.client_request, "set_url_host")
       stub(ts, "hook")
+      stub(ts.http, "config_int_set")
 
       require("x-wikimedia-debug-routing")
 
@@ -38,6 +41,7 @@ describe("Busted unit testing framework", function()
       do_remap()
 
       assert.stub(ts.client_request.set_url_host).was.called_with("mwdebug2002.codfw.wmnet")
+      assert.stub(ts.http.config_int_set).was.called_with(TS_LUA_CONFIG_HTTP_CACHE_HTTP, 0)
     end)
 
     it("test - X-Wikimedia-Debug with invalid value", function()

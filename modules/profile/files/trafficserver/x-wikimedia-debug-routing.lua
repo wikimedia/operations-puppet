@@ -36,10 +36,8 @@ function do_remap()
     if debug_map[backend] then
         ts.client_request.set_url_host(debug_map[backend])
 
-        -- Do not return cached pages if XWD is valid
-        ts.hook(TS_LUA_HOOK_CACHE_LOOKUP_COMPLETE, function()
-            ts.http.set_cache_lookup_status(TS_LUA_CACHE_LOOKUP_MISS)
-        end)
+        -- Skip the cache if XWD is valid
+        ts.http.config_int_set(TS_LUA_CONFIG_HTTP_CACHE_HTTP, 0)
 
         return TS_LUA_REMAP_DID_REMAP_STOP
     else
