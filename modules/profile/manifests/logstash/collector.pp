@@ -490,6 +490,18 @@ class profile::logstash::collector (
         notes_link      => 'https://wikitech.wikimedia.org/wiki/Logstash',
     }
 
+    monitoring::check_prometheus { 'logstash-ingestion-errors':
+        description     => 'Logstash Elasticsearch indexing errors',
+        dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/logstash'],
+        query           => "rate(logstash_elasticsearch_index_failure_total{instance=\"${::hostname}:3903\"}[5m])",
+        warning         => 0.02,
+        critical        => 0.03,
+        method          => 'ge',
+        retries         => 2,
+        prometheus_url  => "http://prometheus.svc.${::site}.wmnet/ops",
+        notes_link      => 'https://wikitech.wikimedia.org/wiki/Logstash',
+    }
+
     # Ship logstash server logs to ELK using startmsg_regex pattern to join multi-line events based on datestamp
     # example: [2018-11-30T16:13:48,043]
     rsyslog::input::file { 'logstash-multiline':
