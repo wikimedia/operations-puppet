@@ -36,7 +36,7 @@ prometheus_nodes:
 arclamp_host: webperf1002.eqiad.wmnet
 
 # Which of our redundant unified cert vendors to use in each DC
-public_tls_unified_cert_vendor: "globalsign-2018"
+public_tls_unified_cert_vendor: "globalsign-2019"
 
 # Reasonable expected max RTT in ms to furthest core DC
 # (given worst alternate network paths, and plus a small fudge factor)
