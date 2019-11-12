@@ -72,7 +72,7 @@ class profile::toolforge::k8s::etcd(
         use_client_certs => true,
     }
 
-    # restart the service if a cert file changes
+    # restart the etcd service if a cert file changes
     File[$etcd_cert_pub]  ~> Service[etcd]
     File[$etcd_cert_priv] ~> Service[etcd]
     File[$etcd_cert_ca]   ~> Service[etcd]
@@ -94,9 +94,12 @@ class profile::toolforge::k8s::etcd(
         srange => $firewall_peers,
     }
 
-    # from role::toollabs::etcd::expose_metrics
+    #
+    # this is for metrics collections. The etcd server requires client certs
+    # to fetch metrics. We have a nginx proxy to hide the TLS details from the
+    # prometheus client.
+    #
     $exposed_port = '9051'
-
     nginx::site { 'expose_etcd_metrics':
         content => template('profile/toolforge/k8s/etcd/etcd_expose_metrics.nginx.erb'),
     }
@@ -105,4 +108,9 @@ class profile::toolforge::k8s::etcd(
         proto => 'tcp',
         port  => $exposed_port,
     }
+
+    # restart the nginx service if a cert file changes
+    File[$etcd_cert_pub]  ~> Service[nginx]
+    File[$etcd_cert_priv] ~> Service[nginx]
+    File[$etcd_cert_ca]   ~> Service[nginx]
 }

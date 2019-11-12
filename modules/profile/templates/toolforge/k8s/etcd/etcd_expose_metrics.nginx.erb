@@ -11,5 +11,8 @@ server {
       proxy_buffering off;
       proxy_http_version 1.1;
       proxy_set_header Host $host;
+      proxy_ssl_trusted_certificate <%= @etcd_cert_ca %>;
+      proxy_ssl_certificate         <%= @etcd_cert_pub %>;
+      proxy_ssl_certificate_key     <%= @etcd_cert_priv %>;
     }
 }
