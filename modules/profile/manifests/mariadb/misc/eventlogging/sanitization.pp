@@ -20,7 +20,7 @@ class profile::mariadb::misc::eventlogging::sanitization(
 
     if !defined(Group['eventlog']) {
         group { 'eventlog':
-            ensure => absent,
+            ensure => present,
             system => true,
         }
     }
