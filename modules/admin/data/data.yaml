@@ -81,8 +81,6 @@ groups:
               jfishback, urbanecm, awight, jakob, accraze, alaasarhan, andrew-wmde,
               kevinbazira]
     privileges: ['ALL = (www-data,mwdeploy,l10nupdate) NOPASSWD: ALL',
-                 'ALL = NOPASSWD: /sbin/restart hhvm',
-                 'ALL = NOPASSWD: /sbin/start hhvm',
                  'ALL = NOPASSWD: /usr/sbin/apache2ctl',
                  'ALL = NOPASSWD: /etc/init.d/apache2',
                  'ALL = NOPASSWD: /usr/bin/renice',
