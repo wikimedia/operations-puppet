@@ -171,6 +171,8 @@ class puppetmaster(
 
     $hiera_source = "puppet:///modules/puppetmaster/${hiera_config}.hiera.yaml"
 
+    # This is required to talk to our custom enc
+    require_package('ruby-httpclient')
     class { '::puppetmaster::hiera':
         source => $hiera_source,
     }
