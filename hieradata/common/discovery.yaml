@@ -121,6 +121,6 @@ discovery::services:
   echostore:
     lvs: echostore
     active_active: true
-schema:
-  lvs: schema
-  active_active: true
+  schema:
+    lvs: schema
+    active_active: true
