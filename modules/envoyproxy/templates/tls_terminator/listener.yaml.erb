@@ -38,6 +38,7 @@ filter_chains:
           - match: { prefix: "/" }
             route: { cluster: local_port_<%= upstream['upstream_port'] %>, timeout: <%= @route_timeout %>s }
       http_filters: [{name: envoy.router, typed_config: {}}]
+      server_header_transformation: APPEND_IF_ABSENT
 <%- end -%>
 <%- end -%>
 <%- if @global_cert_path != nil && @global_key_path != nil -%>
@@ -74,4 +75,5 @@ filter_chains:
       http_filters: [{name: envoy.router, typed_config: {}}]
       http_protocol_options:
         accept_http_10: true
+      server_header_transformation: APPEND_IF_ABSENT
 <%- end -%>
