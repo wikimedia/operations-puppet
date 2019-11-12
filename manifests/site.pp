@@ -362,10 +362,6 @@ node /^db2(071|072|092|103|116|130)\.codfw\.wmnet/ {
     role(mariadb::core)
 }
 
-node 'db2048.codfw.wmnet' {
-    role(spare::system)
-}
-
 # s2 (large wikis) core production dbs on eqiad
 # eqiad master
 node 'db1122.eqiad.wmnet' {
