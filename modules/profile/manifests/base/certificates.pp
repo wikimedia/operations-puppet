@@ -30,6 +30,11 @@ class profile::base::certificates (
     sslcert::ca { 'GlobalSign_ECC_OV_SSL_CA_2018.crt':
         source  => 'puppet:///modules/base/ca/GlobalSign_ECC_OV_SSL_CA_2018.crt',
     }
+    # This is a cross-sign for the above GlobalSign_ECC_OV_SSL_CA_2018 to reach
+    # the more-widely-known R3 root instead of its default R5 root.
+    sslcert::ca { 'GlobalSign_ECC_Root_CA_R5_R3_Cross.crt':
+        source  => 'puppet:///modules/base/ca/GlobalSign_ECC_Root_CA_R5_R3_Cross.crt',
+    }
 
     if has_key($puppet_ca_content, $puppetmaster_key) {
         exec { 'clear-old-puppet-ssl':
