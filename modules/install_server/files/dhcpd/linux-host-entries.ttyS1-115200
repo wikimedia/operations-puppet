@@ -1904,6 +1904,30 @@ host db2131 {
     fixed-address db2131.codfw.wmnet;
 }
 
+host db2132 {
+    hardware ethernet 4C:D9:8F:9B:31:80;
+    fixed-address db2132.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
+}
+
+host db2133 {
+    hardware ethernet 4C:D9:8F:9B:70:63;
+    fixed-address db2133.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
+}
+
+host db2134 {
+    hardware ethernet 4C:D9:8F:9B:38:40;
+    fixed-address db2134.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
+}
+
+host db2135 {
+    hardware ethernet 4C:D9:8F:9B:37:62;
+    fixed-address db2135.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
+}
+
 host dbprov1001 {
     hardware ethernet B0:26:28:23:50:90;
     fixed-address dbprov1001.eqiad.wmnet;
