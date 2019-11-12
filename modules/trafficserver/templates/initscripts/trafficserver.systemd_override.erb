@@ -49,6 +49,7 @@ ReadWritePaths=<%= @paths['runtimedir'] %>
 ReadWritePaths=<%= @paths['cachedir'] %>
 <% if @do_ocsp -%>
 ReadWritePaths=/var/cache/ocsp
+ReadWritePaths=<%= @paths['sysconfdir'] %>
 <% end -%>
 <% end -%>
 <% if @service_name != 'trafficserver' -%>
