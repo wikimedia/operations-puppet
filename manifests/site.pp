@@ -249,8 +249,13 @@ node 'cp1008.wikimedia.org' {
     role(spare::system)
 }
 
-# cp107[1-4]: to be decommed T229586
-node /^cp107[1-4]\.eqiad\.wmnet$/ {
+#to be decommed T229586, but check with alex first
+node 'cp1071.eqiad.wmnet' {
+    role(test)
+}
+
+# cp107[2-4]: to be decommed T229586
+node /^cp107[2-4]\.eqiad\.wmnet$/ {
     role(spare::system)
 }
 
