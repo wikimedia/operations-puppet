@@ -13,23 +13,18 @@ import sys
 # format: service principal name, name of key tab file, user owner, group owner,
 #         target directory below /etc/security/keytabs
 keytab_specs = {
-    'druid': ('druid', 'druid', 'druid', 'druid', 'druid'),
     'hdfs': ('hdfs', 'hdfs', 'hdfs', 'hadoop', 'hadoop'),
     'HTTP': ('HTTP', 'HTTP', 'hdfs', 'hadoop', 'hadoop'),
     'mapred': ('mapred', 'mapred', 'mapred', 'hadoop', 'hadoop'),
     'yarn': ('yarn', 'yarn', 'yarn', 'hadoop', 'hadoop'),
-    'hive': ('hive', 'hive', 'hive', 'hive', 'hive'),
-    'oozie': ('oozie', 'oozie', 'oozie', 'oozie', 'oozie'),
     'HTTP-oozie': ('HTTP', 'HTTP-oozie', 'oozie', 'oozie', 'oozie'),
-    'analytics': ('analytics', 'analytics', 'analytics', 'analytics', 'analytics'),
-    'hue': ('hue', 'hue', 'hue', 'hue', 'hue'),
 }
 
 actions = ['create_princ', 'create_keytab', 'merge_keytab', 'delete_keytab']
 
 
 def parse_args(argv):
-    p = argparse.ArgumentParser()
+    p = argparse.ArgumentParser(formatter_class=argparse.RawTextHelpFormatter)
     p.add_argument('--realm', action='store', required=True,
                    help='The Kerberos realm for which the service principles will be generated')
     p.add_argument('--refresh-keytab', action='store_true', default=False,
@@ -39,11 +34,20 @@ def parse_args(argv):
     p.add_argument('--refresh-principals', action='store_true', default=False,
                    help='If set, an existing service principal is removed/recreated')
     p.add_argument('host_file', action='store',
-                   help="Read all host definitions from a CSV file. Format for each row:"
-                        " FQDN,({}),({})".format(
+                   help="Read all host definitions from a CSV file.\n"
+                        "Format for each row: FQDN,({}),role\n"
+                        "The role should be the username related to "
+                        "a service,\nand it will instruct this script about how to "
+                        "generate the keytab. \nBy default:\n"
+                        "- principal name => role\n"
+                        "- keytab filename => role.keytab\n"
+                        "- target sub-directory => role/role.keytab\n"
+                        "Special handling for the following roles "
+                        "(hardcoded in this script):\n{}"
+                        .format(
                             '|'.join(['create_princ', 'create_keytab',
                                       'merge_keytab', 'delete_keytab']),
-                            '|'.join(keytab_specs.keys())))
+                            ','.join(keytab_specs.keys())))
 
     args = p.parse_args(argv)
 
@@ -61,9 +65,22 @@ def create_service_principal(principal, hostname, realm):
 
 
 def create_keytab(role, hostname, refresh, realm, output_base_dir):
-    principal = keytab_specs.get(role)[0]
-    keytab_name = keytab_specs.get(role)[1]
-    target_directory = keytab_specs.get(role)[4]
+    """
+    Create a keytab from a certain role. A role is a set of metadata related
+    to a keytab (like name, target sub-directory, etc..) that some daemons
+    need to function properly (for example, the Hadoop ones). In case no role
+    is mapped in this file, then we assume that no special metadata is needed
+    (principal, keytab name and target subdir will all have the same value,
+    the role's parameter one).
+    """
+    try:
+        principal = keytab_specs.get(role)[0]
+        keytab_name = keytab_specs.get(role)[1]
+        target_directory = keytab_specs.get(role)[4]
+    except KeyError:
+        principal = role
+        keytab_name = role
+        target_directory = role
     keytab_file = os.path.join(output_base_dir, hostname, target_directory, keytab_name + '.keytab')
     keytab_directory = os.path.join(output_base_dir, hostname, target_directory)
 
@@ -87,8 +104,20 @@ def create_keytab(role, hostname, refresh, realm, output_base_dir):
 
 
 def delete_keytab(role, hostname, realm, output_base_dir):
-    keytab_name = keytab_specs.get(role)[1]
-    target_directory = keytab_specs.get(role)[4]
+    """
+    Delete a keytab from a certain role. A role is a set of metadata related
+    to a keytab (like name, target sub-directory, etc..) that some daemons
+    need to function properly (for example, the Hadoop ones). In case no role
+    is mapped in this file, then we assume that no special metadata is needed
+    (principal, keytab name and target subdir will all have the same value,
+    the role's parameter one).
+    """
+    try:
+        keytab_name = keytab_specs.get(role)[1]
+        target_directory = keytab_specs.get(role)[4]
+    except KeyError:
+        keytab_name = role
+        target_directory = role
     keytab_file = os.path.join(output_base_dir, hostname, target_directory, keytab_name + '.keytab')
 
     if not os.path.exists(keytab_file):
@@ -100,8 +129,20 @@ def delete_keytab(role, hostname, realm, output_base_dir):
 
 
 def merge_keytab(target_role, new_keytab, hostname, realm, refresh, output_base_dir):
-    keytab_name = keytab_specs.get(target_role)[1]
-    target_directory = keytab_specs.get(target_role)[4]
+    """
+    Merge a keytab from a certain role. A role is a set of metadata related
+    to a keytab (like name, target sub-directory, etc..) that some daemons
+    need to function properly (for example, the Hadoop ones). In case no role
+    is mapped in this file, then we assume that no special metadata is needed
+    (principal, keytab name and target subdir will all have the same value,
+    the role's parameter one).
+    """
+    try:
+        keytab_name = keytab_specs.get(target_role)[1]
+        target_directory = keytab_specs.get(target_role)[4]
+    except KeyError:
+        keytab_name = target_role
+        target_directory = target_role
     keytab_directory = os.path.join(output_base_dir, hostname, target_directory)
     target_keytab_filename = os.path.join(output_base_dir, hostname, target_directory,
                                           keytab_name + '.keytab')
