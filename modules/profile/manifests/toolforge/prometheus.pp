@@ -1,16 +1,18 @@
-# == Class: role::prometheus::tools
-#
-# This role provides both project-wide host discovery/monitoring (via cron
+# This profile provides both project-wide host discovery/monitoring (via cron
 # prometheus-labs-targets) and kubernetes discovery/monitoring via Prometheus'
 # native k8s support.
-#
-# filtertags: labs-project-tools
-class role::prometheus::tools {
-    $bearer_token_file = '/srv/prometheus/tools/k8s.token'
-    $master_host = hiera('k8s::master_host')
-    $targets_path = '/srv/prometheus/tools/targets'
 
+class profile::toolforge::prometheus (
+    Stdlib::Fqdn  $legacy_k8s_master_host = lookup('k8s::master_host'),
+    Array[String] $legacy_k8s_users       = lookup('k8s_infrastructure_users')
+) {
     require ::profile::labs::lvm::srv
+    include ::profile::prometheus::blackbox_exporter
+
+    class { '::prometheus::wmcs_scripts': }
+
+    $bearer_token_file = '/srv/prometheus/tools/k8s.token'
+    $targets_path = '/srv/prometheus/tools/targets'
 
     class { '::httpd':
         modules => ['proxy', 'proxy_http'],
@@ -25,11 +27,11 @@ class role::prometheus::tools {
                 'bearer_token_file'     => $bearer_token_file,
                 'scheme'                => 'https',
                 'tls_config'            => {
-                    'server_name' => $master_host,
+                    'server_name' => $legacy_k8s_master_host,
                 },
                 'kubernetes_sd_configs' => [
                     {
-                        'api_server'        => "https://${master_host}:6443",
+                        'api_server'        => "https://${legacy_k8s_master_host}:6443",
                         'bearer_token_file' => $bearer_token_file,
                         'role'              => 'endpoints',
                     },
@@ -56,7 +58,7 @@ class role::prometheus::tools {
                 },
                 'kubernetes_sd_configs' => [
                     {
-                        'api_server'        => "https://${master_host}:6443",
+                        'api_server'        => "https://${legacy_k8s_master_host}:6443",
                         'bearer_token_file' => $bearer_token_file,
                         'role'              => 'node',
                     },
@@ -141,8 +143,7 @@ class role::prometheus::tools {
         proxy_pass => 'http://localhost:9902/tools',
     }
 
-    $users = hiera('k8s_infrastructure_users')
-    $client_token = $users['prometheus']['token']
+    $client_token = $legacy_k8s_users['prometheus']['token']
 
     file { $bearer_token_file:
         ensure  => present,
@@ -167,9 +168,6 @@ class role::prometheus::tools {
             ]
         }]),
     }
-
-    include ::role::prometheus::blackbox_exporter
-    include ::prometheus::wmcs_scripts
 
     cron { 'prometheus_tools_project_targets':
         ensure  => present,
