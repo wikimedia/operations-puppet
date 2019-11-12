@@ -22,4 +22,9 @@ class role::dumps::distribution::server {
 
     include ::profile::dumps::distribution::mirrors::rsync_config
 
+    # Kerberos client and credentials to fetch data from
+    # the Analytics Hadoop cluster.
+    include ::profile::kerberos::client
+    include ::profile::kerberos::keytabs
+
 }

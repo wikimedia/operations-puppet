@@ -1244,6 +1244,11 @@ node /labstore100[45]\.eqiad\.wmnet/ {
     # include ::profile::base::firewall
 }
 
+# The following nodes pull data periodically
+# from the Analytics Hadoop cluster. Every new
+# host needs a kerberos keytab generated,
+# according to the details outlined in the
+# role's hiera configuration.
 node /labstore100[67]\.wikimedia\.org/ {
     role(dumps::distribution::server)
 }

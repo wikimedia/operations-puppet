@@ -11,3 +11,12 @@ admin::groups:
 # Hadoop client packges are installed and configured to talk
 # to the analytics-hadoop cluster.
 profile::hadoop::common::hadoop_cluster_name: 'analytics-hadoop'
+
+# In order to fetch data from the Analytics Hadoop Cluster,
+# a Kerberos keytab is needed to allow automated jobs to
+# authenticate.
+profile::kerberos::keytabs::keytabs_metadata:
+  - role: 'dumpsgen'
+    owner: 'dumpsgen'
+    group: 'dumpsgen'
+    filename: 'dumpsgen.keytab'
