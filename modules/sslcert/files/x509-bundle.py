@@ -23,6 +23,18 @@ import glob
 import os
 from subprocess import check_output
 
+# Roots in our trust store which we refuse to consider as a valid root for
+# constructing chains because important public CA sets do not include this
+# root, and thus we should use a longer cross-signed chain (which should be
+# deployed separately, as we do with intermediates in general) to reach an
+# alternate root.  Note this is by the descriptive title of the file rather
+# than the hash, as the hash can be shared and the variants aren't necessarily
+# in stable order.
+blacklist_roots = [
+    # The deployed cross for this is GlobalSign_ECC_Root_CA_R5_R3_Cross.crt
+    'GlobalSign_ECC_Root_CA_-_R5.pem'
+]
+
 
 def file_exists(fname):
     """Helper for argparse to do check if a filename argument exists"""
@@ -91,9 +103,11 @@ def traverse_tree(cert, cadir):
 
         paths.append(output)
 
-    # short ascending by path length, pick the first (i.e. shortest)
-    shortest_path = sorted(paths, key=len)[0]
-    return shortest_path
+    # Sort the possible paths and return the shortest which does not end in a
+    # blacklisted root certificate name
+    for certpath in sorted(paths, key=len):
+        if os.readlink(certpath[-1]) not in blacklist_roots:
+            return certpath
 
 
 def main():
