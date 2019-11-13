@@ -348,11 +348,11 @@ node /^es10(20|21|22|23|24|25)\.eqiad\.wmnet/ {
 
 # s1 (enwiki) core production dbs on eqiad
 # eqiad master
-node 'db1067.eqiad.wmnet' {
+node 'db1083.eqiad.wmnet' {
     role(mariadb::core)
 }
 # eqiad replicas
-node /^db1(080|083|089|106|118|119|134)\.eqiad\.wmnet/ {
+node /^db1(067|080|089|106|118|119|134)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
 
