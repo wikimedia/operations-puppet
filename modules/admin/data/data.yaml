@@ -293,11 +293,6 @@ groups:
                  as the ability to sudo to certain Analytics Cluster system users.
     members: &analytics_admins_members [joal, nuria, mforns, milimetric, fdans]
     privileges: ['ALL = (hdfs)  NOPASSWD: ALL',
-                 'ALL = (yarn)  NOPASSWD: ALL',
-                 'ALL = (oozie) NOPASSWD: ALL',
-                 'ALL = (hive)  NOPASSWD: ALL',
-                 'ALL = (turnilo)  NOPASSWD: ALL',
-                 'ALL = (superset)  NOPASSWD: ALL',
                  'ALL = (analytics)  NOPASSWD: ALL',
                  'ALL = NOPASSWD: /bin/journalctl *',
                  'ALL = NOPASSWD: /bin/systemctl start *',
