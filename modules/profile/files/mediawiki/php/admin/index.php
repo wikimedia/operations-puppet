@@ -1,11 +1,8 @@
 <?php
 /*
 
- Admin cli interface for php-fpm.
-It is thought to be a php-fpm version of the admin interface HHVM
-provides. It also supports a /metrics endpoint where we expose data
+Admin cli interface for php-fpm. It supports a /metrics endpoint where we expose data
 in a format prometheus likes.
-
 */
 require('lib.php');
 

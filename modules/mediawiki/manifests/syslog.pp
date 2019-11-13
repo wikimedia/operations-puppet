@@ -2,7 +2,7 @@
 #
 # Hosts running MediaWiki configure Apache and HHVM to log to syslog.
 # This Puppet class configures rsyslog to handle log messages from
-# Apache and HHVM by writing them to disk and forwarding them to the
+# Apache by writing them to disk and forwarding them to the
 # MediaWiki log aggregator via UDP. It also sets up log rotation for the
 # local log files.
 #

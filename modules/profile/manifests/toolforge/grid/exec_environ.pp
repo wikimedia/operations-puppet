@@ -717,7 +717,6 @@ class profile::toolforge::grid::exec_environ {
         include ::profile::toolforge::genpp::python_exec_jessie
         # No obvious package available for libgdal
         package { [
-            'hhvm',                        # T78783
             'libboost-python1.55.0',
             'libmpc3',
             'libproj0',
@@ -808,7 +807,6 @@ class profile::toolforge::grid::exec_environ {
         }
 
         package { [
-            'hhvm',                         # T78783
             'libboost-python-dev',          # T213965
             'libmpc3',
             'libproj12',
@@ -865,14 +863,6 @@ class profile::toolforge::grid::exec_environ {
     package { 'misctools':
         ensure => latest,
     }
-
-    # The hhvm deb starts a demon process automatically that we don't need
-    # running.
-    service { 'hhvm':
-        ensure  => 'stopped',
-        require => Package['hhvm'],
-    }
-
 
     # T65000
     require_package('imagemagick')

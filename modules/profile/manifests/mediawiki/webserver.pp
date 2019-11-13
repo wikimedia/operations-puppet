@@ -6,7 +6,6 @@ class profile::mediawiki::webserver(
     Mediawiki::Vhost_feature_flags $vhost_feature_flags = lookup('profile::mediawiki::vhost_feature_flags', {'default_value' => {}}),
     String $ocsp_proxy = hiera('http_proxy', ''),
     Array[String] $prometheus_nodes = lookup('prometheus_nodes'),
-    Boolean $install_hhvm = lookup('profile::mediawiki::install_hhvm', {'default_value' => true}),
 ) {
     include ::lvs::configuration
     include ::profile::mediawiki::httpd
@@ -30,9 +29,6 @@ class profile::mediawiki::webserver(
     # Basic web sites
     class { '::mediawiki::web::sites': }
 
-    class { '::hhvm::admin':
-            ensure => absent,
-    }
     if $::realm == 'labs' {
         class { '::mediawiki::web::beta_sites': }
     }
@@ -65,26 +61,6 @@ class profile::mediawiki::webserver(
             check_command => "check_etcd_mw_config_lastindex!${::site}",
             notes_url     => 'https://wikitech.wikimedia.org/wiki/Etcd',
         }
-
-        # Restart HHVM if it is running since more than 3 days or
-        # memory occupation exceeds 50% of the available RAM
-        # This should prevent a series of cpu usage surges we've been seeing
-        # on long-running HHVM processes. T147773
-
-        # first load the list of all nodes in the current DC
-        $pool_nodes = profile::lvs_pool_nodes(keys($::profile::lvs::realserver::pools), $::lvs::configuration::lvs_services)
-        # If we are not in a pool it's not savy to restart hhvm
-        if member($pool_nodes, $::fqdn) and $install_hhvm {
-            $times = cron_splay($pool_nodes, 'daily', 'hhvm-conditional-restarts')
-            cron { 'hhvm-conditional-restart':
-                ensure  => absent,
-                command => '/usr/local/bin/hhvm-needs-restart > /dev/null && /usr/local/sbin/run-no-puppet /usr/local/sbin/restart-hhvm > /dev/null 2>&1',
-                hour    => $times['hour'],
-                minute  => $times['minute'],
-            }
-        } else {
-            cron {'hhvm-conditional-restart': ensure => absent }
-        }
     }
 
     ferm::service { 'mediawiki-http':
@@ -102,7 +78,7 @@ class profile::mediawiki::webserver(
     # /var/tmp/systemd-private-$ID-apache2.service-$RANDOM. That works fine for
     # /var/tmp, but fails for /tmp (so the reload only exposes the issue)
     #
-    # Disable PrivateTmp on stretch for now; we can revisit this when phasing out HHVM.
+    # TODO Fix private temp.
     #
     # To disable, ship a custom systemd override when running on stretch
     if os_version('debian >= stretch') {
@@ -121,8 +97,6 @@ class profile::mediawiki::webserver(
     # If a service check happens to run while we are performing a
     # graceful restart of Apache, we want to try again before declaring
     # defeat. See T103008.
-    # We want to avoid false alarms during scheduled HHVM restarts (T147773),
-    # so a higher retry_interval is needed.
     monitoring::service { 'appserver http':
         description    => 'Apache HTTP',
         check_command  => 'check_http_wikipedia',
@@ -131,23 +105,6 @@ class profile::mediawiki::webserver(
         notes_url      => 'https://wikitech.wikimedia.org/wiki/Application_servers',
     }
 
-    if $install_hhvm {
-        monitoring::service { 'appserver_http_hhvm':
-            ensure         => absent,
-            description    => 'HHVM rendering',
-            check_command  => 'check_http_wikipedia_main',
-            retries        => 2,
-            retry_interval => 2,
-            notes_url      => 'https://wikitech.wikimedia.org/wiki/Application_servers',
-        }
-
-        nrpe::monitor_service { 'hhvm':
-            ensure       => absent,
-            description  => 'HHVM processes',
-            nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1: -C hhvm',
-            notes_url    => 'https://wikitech.wikimedia.org/wiki/Application_servers',
-        }
-    }
     if $has_tls {
         # TLSproxy instance to accept traffic on port 443
         require ::profile::tlsproxy::instance

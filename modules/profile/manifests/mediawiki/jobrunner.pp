@@ -111,10 +111,6 @@ class profile::mediawiki::jobrunner(
         }
     }
 
-    httpd::conf { 'hhvm_jobrunner_port':
-        ensure   => absent,
-        priority => 1,
-    }
     httpd::conf { 'jobrunner_port':
         ensure   => present,
         priority => 1,
@@ -124,9 +120,6 @@ class profile::mediawiki::jobrunner(
     httpd::site { 'php7_jobrunner':
         priority => 1,
         content  => template('profile/mediawiki/jobrunner/site.conf.erb'),
-    }
-    httpd::site { 'hhvm_jobrunner':
-        ensure => absent,
     }
 
     ::monitoring::service { 'jobrunner_http':

@@ -83,13 +83,6 @@ class profile::mediawiki::httpd(
         notify => Service['apache2'],
     }
 
-
-    # HHVM catchall is now outdated, remove it if present.
-    ::httpd::conf { 'hhvm_catchall':
-        ensure   => absent,
-        priority => 50,
-    }
-
     # Add headers lost by mod_proxy_fastcgi
     ::httpd::conf { 'fcgi_headers':
         source   => 'puppet:///modules/mediawiki/apache/configs/fcgi_headers.conf',

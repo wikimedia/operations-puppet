@@ -8,8 +8,6 @@ class role::mediawiki::jobrunner {
     include ::role::mediawiki::common
 
     include ::profile::prometheus::apache_exporter
-    include ::profile::prometheus::hhvm_exporter
-
     include ::profile::mediawiki::jobrunner
     include ::profile::mediawiki::videoscaler
     include ::profile::mediawiki::php::monitoring

@@ -2,7 +2,6 @@ class profile::mediawiki::common(
     $logstash_host = hiera('logstash_host'),
     $logstash_syslog_port = hiera('logstash_syslog_port'),
     $log_aggregator = hiera('udp2log_aggregator'),
-    Boolean $install_hhvm = lookup('profile::mediawiki::install_hhvm', {'default_value' => true}),
     $php_version = lookup('profile::mediawiki::php::php_version', {'default_value' => undef}),
     $php_restarts = lookup('profile::mediawiki::php::restarts::ensure', {'default_value' => undef})
 ){
@@ -38,21 +37,11 @@ class profile::mediawiki::common(
     # Install scap
     include ::profile::mediawiki::scap_client
 
-    # mwrepl is only supported under hhvm at the moment
-    if $install_hhvm {
-        class { '::mediawiki::mwrepl': }
-    }
-
     class { '::mediawiki::syslog':
         log_aggregator => $log_aggregator,
     }
 
     include ::profile::rsyslog::udp_localhost_compat
-
-    # These should properly be included in the role. Bear with me for now.
-    if $install_hhvm {
-        include ::profile::mediawiki::hhvm
-    }
     include ::profile::mediawiki::php
 
     # furl is a cURL-like command-line tool for making FastCGI requests.
