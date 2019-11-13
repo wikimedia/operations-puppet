@@ -1,4 +1,5 @@
 counter logstash_elasticsearch_index_failure_total
+counter logstash_elasticsearch_index_errors_total by error
 counter logstash_log_level_total by level
 
 /^\[(?P<date>\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2},\d{3})\]\[(?P<level>\S+) *\]\[(?P<logger>\S+) *\]/ {
@@ -6,5 +7,8 @@ counter logstash_log_level_total by level
 
   / Could not index event to Elasticsearch\./ {
     logstash_elasticsearch_index_failure_total++
+      /"type"=>"(?P<error>[^"]+)"/ {
+        logstash_elasticsearch_index_errors_total[$error]++
+      }
   }
 }

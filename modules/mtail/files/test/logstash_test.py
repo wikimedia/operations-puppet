@@ -15,6 +15,10 @@ class LogstashTest(unittest.TestCase):
         s = self.store.get_samples('logstash_elasticsearch_index_failure_total')
         self.assertIn(('', 8), s)
 
+        s = self.store.get_samples('logstash_elasticsearch_index_errors_total')
+        self.assertIn(('error=mapper_parsing_exception', 4), s)
+        self.assertIn(('error=illegal_argument_exception', 2), s)
+
     def testErrors(self):
         s = self.store.get_samples('logstash_log_level_total')
         self.assertIn(('level=INFO', 7), s)
