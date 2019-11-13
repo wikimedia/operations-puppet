@@ -1907,7 +1907,6 @@ host db2131 {
 host db2132 {
     hardware ethernet 4C:D9:8F:9B:31:80;
     fixed-address db2132.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host db2133 {
