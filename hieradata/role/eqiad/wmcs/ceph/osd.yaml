@@ -4,7 +4,7 @@ profile::ceph::k8s::apiserver: 'cloudcephmon1001.wikimedia.org'
 profile::ceph::k8s::docker::settings:
   log-driver: json-file
 #docker-ce version
-profile::ceph::k8s::docker::version: '5:19.03.0~3-0~debian-stretch'
+profile::ceph::k8s::docker::version: '5:19.03.4~3-0~debian-stretch'
 profile::ceph::k8s::pause_image: 'docker-registry.tools.wmflabs.org/pause:3.1'
 profile::ceph::k8s::pod_subnet: '192.168.0.0/16'
 profile::ceph::k8s::version: '1.15.5'

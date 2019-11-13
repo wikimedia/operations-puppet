@@ -7,7 +7,7 @@ class profile::ceph::k8s::node(
 ) {
     apt::repository { 'thirdparty-kubeadm-k8s':
         uri        => 'http://apt.wikimedia.org/wikimedia',
-        dist       => 'stretch-wikimedia',
+        dist       => 'buster-wikimedia',
         components => 'thirdparty/kubeadm-k8s',
     }
 
