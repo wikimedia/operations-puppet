@@ -1751,7 +1751,7 @@ users:
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDGd7k8tpFmG0m7qe1tD9M7QGQCioHi/kDuSlA8FpSRAsmDWcARisV1/29lpdHUCy4tJ0s3zaEcoGUjy3630El1Ch+dn+NiQSKBcW9fFZ0yhr4uEoOTcamou3L/tpr6ky0hzvX/BNmZTL9ZF2v3PUyb7jAmDs0/1rVSRJ0Egy3+tRR7TttKXdUArGda9/CznW7tQ1BWBIWQ3CeA9Um+uUckF0JFa/IKRdZ5LADrQ/w3wVqcN9WyXza30ITXYKQWkiJPnW+oU/j5r2huY8rTVjaKxTVFf8qVBJXPULUgdgGJqbAkJ34wAW200xij830pTPkh+P/b33/CtUeM+9k9sY0f west@malum]
     uid: 1097
     comment: Research fellow, Wikimedia Google account, but MOU needs to be extended every six months
-    expiry_date: 2019-11-16
+    expiry_date: 2020-11-14
     expiry_contact: halfak@wikimedia.org
     email: rwest@wikimedia.org
   jhernandez:
