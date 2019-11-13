@@ -34,8 +34,8 @@ class profile::query_service::blazegraph(
 
     $event_service_jvm_opts = $sparql_query_stream ? {
         default => [
-            "-Dwdqs.event-gate-endpoint=${event_service_endpoint}",
-            "-Dwdqs.event-gate-sparql-query-stream=${sparql_query_stream}"
+            "-Dwdqs.event-sender-filter.event-gate-endpoint=${event_service_endpoint}",
+            "-Dwdqs.event-sender-filter.event-gate-sparql-query-stream=${sparql_query_stream}"
         ],
         undef   => []
     }
