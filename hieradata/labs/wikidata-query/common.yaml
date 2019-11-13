@@ -2,6 +2,7 @@ profile::query_service::logstash_host: 'deployment-logstash2.deployment-prep.eqi
 profile::query_service::deploy_mode: 'manual'
 profile::query_service::package_dir: '/srv/wdqs/blazegraph'
 profile::query_service::data_dir: '/srv/wdqs/blazegraph'
+profile::query_service::log_dir: '/var/log/wdqs'
 profile::query_service::endpoint: ''
 profile::query_service::use_kafka_for_updates: false
 profile::query_service::cluster_names: []
