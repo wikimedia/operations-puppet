@@ -49,6 +49,21 @@ profile::elasticsearch::instances:
           - elastic1050.eqiad.wmnet
           - elastic1051.eqiad.wmnet
           - elastic1052.eqiad.wmnet
+          - elastic1053.eqiad.wmnet
+          - elastic1054.eqiad.wmnet
+          - elastic1055.eqiad.wmnet
+          - elastic1056.eqiad.wmnet
+          - elastic1057.eqiad.wmnet
+          - elastic1058.eqiad.wmnet
+          - elastic1059.eqiad.wmnet
+          - elastic1060.eqiad.wmnet
+          - elastic1061.eqiad.wmnet
+          - elastic1062.eqiad.wmnet
+          - elastic1063.eqiad.wmnet
+          - elastic1064.eqiad.wmnet
+          - elastic1065.eqiad.wmnet
+          - elastic1066.eqiad.wmnet
+          - elastic1067.eqiad.wmnet
 
         # TODO at what point do we need to update this number?
         expected_nodes: 35
@@ -77,24 +92,34 @@ profile::elasticsearch::instances:
           - elastic1032.eqiad.wmnet
           - elastic1033.eqiad.wmnet
           - elastic1034.eqiad.wmnet
+          - elastic1053.eqiad.wmnet
+          - elastic1054.eqiad.wmnet
 
           # row B
           - elastic1028.eqiad.wmnet
           - elastic1036.eqiad.wmnet
           - elastic1037.eqiad.wmnet
           - elastic1038.eqiad.wmnet
+          - elastic1055.eqiad.wmnet
+          - elastic1056.eqiad.wmnet
 
           # row C
           - elastic1022.eqiad.wmnet
           - elastic1029.eqiad.wmnet
           - elastic1040.eqiad.wmnet
           - elastic1041.eqiad.wmnet
+          - elastic1057.eqiad.wmnet
+          - elastic1058.eqiad.wmnet
 
           # row D
           - elastic1018.eqiad.wmnet
           - elastic1019.eqiad.wmnet
           - elastic1020.eqiad.wmnet
           - elastic1023.eqiad.wmnet
+          - elastic1060.eqiad.wmnet
+          - elastic1061.eqiad.wmnet
+          - elastic1062.eqiad.wmnet
+          - elastic1063.eqiad.wmnet
 
         expected_nodes: 18
 
@@ -134,14 +159,19 @@ profile::elasticsearch::instances:
           - elastic1043.eqiad.wmnet
           - elastic1051.eqiad.wmnet
           - elastic1052.eqiad.wmnet
+          - elastic1059.eqiad.wmnet
 
           # row D
           - elastic1024.eqiad.wmnet
           - elastic1025.eqiad.wmnet
           - elastic1026.eqiad.wmnet
           - elastic1027.eqiad.wmnet
+          - elastic1064.eqiad.wmnet
+          - elastic1065.eqiad.wmnet
+          - elastic1066.eqiad.wmnet
+          - elastic1067.eqiad.wmnet
 
-        expected_nodes: 17
+        expected_nodes: 18
 
         # We should be able to run "OK" with 11 servers.
         recover_after_nodes: 11
