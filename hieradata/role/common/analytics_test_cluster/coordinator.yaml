@@ -105,6 +105,10 @@ profile::kerberos::keytabs::keytabs_metadata:
     owner: 'analytics'
     group: 'analytics'
     filename: 'analytics.keytab'
+  - role: 'presto'
+    owner: 'presto'
+    group: 'presto'
+    filename: 'presto.keytab'
 
 profile::analytics::cluster::client::kerberos_enabled: true
 profile::hadoop::balancer::use_kerberos: true
