@@ -4,7 +4,7 @@
 
 class profile::toolforge::prometheus (
     Stdlib::Fqdn  $legacy_k8s_master_host = lookup('k8s::master_host'),
-    Array[String] $legacy_k8s_users       = lookup('k8s_infrastructure_users')
+    $legacy_k8s_users                     = lookup('k8s_infrastructure_users')
 ) {
     require ::profile::labs::lvm::srv
     include ::profile::prometheus::blackbox_exporter
