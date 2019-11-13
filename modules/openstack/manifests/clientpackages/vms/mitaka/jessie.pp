@@ -1,4 +1,8 @@
 # this is the class for use by VM instances in Cloud VPS. Don't use for HW servers
+#
+# We no longer have openstack mitaka API servers. This class can eventually go
+# away safely when no Jessie VMs are left in CloudVPS.
+#
 class openstack::clientpackages::vms::mitaka::jessie(
 ) {
     requires_realm('labs')

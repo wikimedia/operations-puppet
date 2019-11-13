@@ -2,5 +2,11 @@
 class openstack::clientpackages::vms::newton::buster(
 ) {
     requires_realm('labs')
-    notify { "${title}: no special configuration yet": }
+    # It seems we don't need any special magic for this Debian/Openstack combo.
+    # That's OK. All config this combo gets was probably applied via:
+    #
+    # role::wmcs::instance
+    #  profile::openstack::eqiad1::clientpackages::vms
+    #   profile::openstack::base::clientpackages::vms
+    #    openstack::clientpackages::vms::common
 }
