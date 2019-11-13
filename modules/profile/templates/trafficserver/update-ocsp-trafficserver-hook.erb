@@ -1,3 +1,8 @@
 #!/bin/bash
-touch <%= @ssl_multicert_path %>
-/bin/systemctl reload <%= @service_name %> >/dev/null 2>&1 || exit 99
+# Skip the reload if the service is not active. This happens
+# when the update-ocsp-all execution is triggered by ExecStartPre
+# on the trafficserver service unit
+if /bin/systemctl is-active --quiet <%= @service_name %>; then
+    touch <%= @ssl_multicert_path %>
+    /bin/systemctl reload <%= @service_name %> >/dev/null 2>&1 || exit 99
+fi
