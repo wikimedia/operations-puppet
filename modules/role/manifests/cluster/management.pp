@@ -20,6 +20,7 @@ class role::cluster::management {
     include ::profile::spicerack
     include ::profile::debdeploy
     include ::profile::mediawiki::web_testing
+    include ::profile::httpbb
 
     include ::profile::mariadb::wmf_root_client
     include ::profile::mariadb::backup::transfer
