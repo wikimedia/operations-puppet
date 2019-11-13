@@ -73,11 +73,11 @@ def create_keytab(role, hostname, refresh, realm, output_base_dir):
     (principal, keytab name and target subdir will all have the same value,
     the role's parameter one).
     """
-    try:
+    if role in keytab_specs:
         principal = keytab_specs.get(role)[0]
         keytab_name = keytab_specs.get(role)[1]
         target_directory = keytab_specs.get(role)[4]
-    except KeyError:
+    else:
         principal = role
         keytab_name = role
         target_directory = role
@@ -112,10 +112,10 @@ def delete_keytab(role, hostname, realm, output_base_dir):
     (principal, keytab name and target subdir will all have the same value,
     the role's parameter one).
     """
-    try:
+    if role in keytab_specs:
         keytab_name = keytab_specs.get(role)[1]
         target_directory = keytab_specs.get(role)[4]
-    except KeyError:
+    else:
         keytab_name = role
         target_directory = role
     keytab_file = os.path.join(output_base_dir, hostname, target_directory, keytab_name + '.keytab')
@@ -137,10 +137,10 @@ def merge_keytab(target_role, new_keytab, hostname, realm, refresh, output_base_
     (principal, keytab name and target subdir will all have the same value,
     the role's parameter one).
     """
-    try:
+    if target_role in keytab_specs:
         keytab_name = keytab_specs.get(target_role)[1]
         target_directory = keytab_specs.get(target_role)[4]
-    except KeyError:
+    else:
         keytab_name = target_role
         target_directory = target_role
     keytab_directory = os.path.join(output_base_dir, hostname, target_directory)
