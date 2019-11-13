@@ -21,6 +21,38 @@ server {
 }
 
 server {
+    # TLS termination, CDN nodes connect here
+    listen [::]:7443 default_server deferred backlog=16384 reuseport ipv6only=on fastopen=150 ssl http2;
+    listen 7443 default_server deferred backlog=16384 reuseport fastopen=150 ssl http2;
+    server_name <%= @public_server_name -%>;
+    ssl on;
+
+    error_log /var/log/nginx/<%= @public_server_name -%>-tls.error.log;
+    access_log /var/log/nginx/<%= @public_server_name -%>-tls.access.log;
+
+    ssl_certificate /etc/ssl/localcerts/<%= @internal_server_name %>.chained.crt;
+    ssl_certificate_key /etc/ssl/private/<%= @internal_server_name %>.key;
+
+    <%= @ssl_config.join("\n    ") %>
+
+    keepalive_timeout 10;
+
+    include /etc/nginx/snippets/debmonitor_static.conf;
+
+    location / {
+        include /etc/nginx/snippets/debmonitor_proxy.conf;
+
+        proxy_set_header X-Client-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto https;
+
+        # Unset SSL Credential headers
+        proxy_set_header X-Client-Cert-Subject-Dn "";
+        proxy_set_header X-Client-Cert-Verify "";
+    }
+}
+
+server {
     # Internal-only HTTPS listener for debmonitor clients to POST their package lists.
     # Clients will be authenticating with the Puppet certificate to ensure that each
     # host can update only its own packages.
