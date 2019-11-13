@@ -37,7 +37,7 @@ profile::trafficserver::backend::mapping_rules:
       #replacement: https://dbmonitor2001.wikimedia.org
     - type: map
       target: http://debmonitor.wikimedia.org
-      replacement: https://debmonitor.discovery.wmnet
+      replacement: https://debmonitor.discovery.wmnet:7443
     - type: map
       target: http://design.wikimedia.org
       replacement: https://webserver-misc-static.discovery.wmnet
