@@ -41,6 +41,19 @@ class presto::server(
     require_package('presto-cli')
     require_package('presto-server')
 
+    # Explicitly adding the 'presto' user
+    # to the catalog, even if created by the presto-server package,
+    # to allow other resources to require it.
+    user { 'presto':
+        gid        => 'presto',
+        comment    => 'Presto',
+        home       => '/var/lib/presto',
+        shell      => '/bin/bash',
+        managehome => false,
+        system     => true,
+        require    => Package['presto-server'],
+    }
+
     $default_config_properties = {
         'coordinator'                        => false,
         'node-scheduler.include-coordinator' => false,
