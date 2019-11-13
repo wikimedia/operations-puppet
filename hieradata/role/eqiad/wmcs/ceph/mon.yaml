@@ -1,0 +1,16 @@
+contactgroups: wmcs-team
+mgmt_contactgroups: wmcs-team-email
+profile::ceph::docker::settings:
+  log-driver: json-file
+#docker-ce version
+profile::ceph::docker::version: '5:19.03.0~3-0~debian-stretch'
+profile::ceph::etcd::bootstrap: true
+profile::ceph::k8s::apiserver: 'cloudcephmon1001.wikimedia.org'
+profile::ceph::k8s::pause_image: 'docker-registry.tools.wmflabs.org/pause:3.1'
+profile::ceph::k8s::pod_subnet: '192.168.0.0/16'
+profile::ceph::k8s::version: '1.15.5'
+profile::ceph::k8s::pkg_release: '00'
+profile::ceph::mon_hosts:
+  - cloudcephmon1001.wikimedia.org
+  - cloudcephmon1002.wikimedia.org
+  - cloudcephmon1003.wikimedia.org
