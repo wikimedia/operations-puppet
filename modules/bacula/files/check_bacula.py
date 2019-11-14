@@ -332,12 +332,12 @@ def calculate_success_rate(backups, from_seconds_ago, to_seconds_ago):
     failures = 0
     for backup_name in backups:
         for job in backups[backup_name]['status']:
-            if (older(iso_date_to_datetime(job['starttime']), from_seconds_ago) and
+            if (older(iso_date_to_datetime(job['starttime']), from_seconds_ago) or
                     not older(iso_date_to_datetime(job['starttime']), to_seconds_ago)):
                 continue
             # success conditions for full backups
             if job['level'] == 'F':
-                if job['jobstatus'] == 'T' and job['jobbytes'] > 0:
+                if job['jobstatus'] == 'T' and job['jobbytes'] != '0':
                     successful += 1
                 else:
                     failures += 1
@@ -392,6 +392,7 @@ def main():
     else:
         backups = read_configured_backups(options.backup_config_path)
         add_job_statuses(backups, options.bconsole_path)
+        # TODO: calculate_success_rate(backups, 7 * 24 * 3600, 0)
         categories = check_backup_freshness(backups)
         if options.verbose:
             # Mode: verbose (for console)
