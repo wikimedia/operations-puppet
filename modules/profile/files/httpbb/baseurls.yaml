@@ -43,9 +43,9 @@ http://asdf.invalid:
 # wwwportals
 http://www.wikipedia.org:
 - path: /wiki/it:Saturno_(astronomia)
-  assert_status: 301
+  assert_status: 302
   assert_headers:
-      Location: https://www.wikipedia.org/wiki/it:Saturno_(astronomia)
+      Location: http://it.wikipedia.org/wiki/Saturno_(astronomia)
 
 https://en.wiktionary.org:
 - path: /wiki/fanfarone
@@ -57,7 +57,7 @@ http://wikimedia.org:
 - path: /research
   assert_status: 301
   assert_headers:
-      Location: https://wikimedia.org/research
+      Location: https://wikimedia.qualtrics.com/SE/?SID=SV_6R04ammTX8uoJFP
 
 # Url shortner
 https://w.wiki:
