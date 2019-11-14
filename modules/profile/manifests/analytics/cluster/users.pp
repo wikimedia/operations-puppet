@@ -33,6 +33,14 @@ class profile::analytics::cluster::users {
         system => true,
     }
 
+    # The analytics-privatedata user will be used to run
+    # cronjobs and similar by users.
+    # T238306
+    user { 'analytics-privatedata':
+        ensure => present,
+        system => true,
+    }
+
     # When Kerberos is enabled, indexation jobs will run on workers
     # as user 'druid'.
     class { '::druid::cdh::hadoop::user': }
