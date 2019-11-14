@@ -125,7 +125,6 @@ fullviews:
   - global_group_permissions
   - global_group_restrictions
   - global_user_groups
-  - globalblocks
   - localuser
   - wikiset
   - wb_changes
