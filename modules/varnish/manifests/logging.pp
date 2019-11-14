@@ -56,11 +56,6 @@ class varnish::logging(
         notify => Service['varnishmtail'],
     }
 
-    # Client connection stats from the 'X-Connection-Properties'
-    # header set by the SSL terminators.
-    ::varnish::logging::xcps { 'xcps':
-    }
-
     ::varnish::logging::xcache { 'xcache':
     }
 
