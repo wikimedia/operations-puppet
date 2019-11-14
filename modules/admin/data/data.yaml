@@ -13,7 +13,7 @@ groups:
               yuvipanda, shrlak, madhuvishy, groovier, khorn, ironholds, katie, chedasaurus,
               cy534, pnorman, mpany, deskana, arnad, nithum, banyek, imarlier, mkroetzsch,
               mtizzoni, panisson, paolotti, ciro, dartar, melodykramer, gtirloni, tbayer, pirroh,
-              bawolff, dkg, juliaglen, cwdent, bmansurov, hpham, atgomez]
+              bawolff, dkg, juliaglen, cwdent, bmansurov, hpham, atgomez, tgr]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -71,7 +71,7 @@ groups:
               gjg, halfak, hashar, hoo, kaldari, kartik, krinkle,
               maxsem, mattflaschen, marktraceur, milimetric, mlitn, andyrussg,
               nikerabbit, reedy, ssastry, samwilson, phedenskog,
-              tgr, phuedx, ejegg, twentyafterfour, legoktm, catrope,
+              phuedx, ejegg, twentyafterfour, legoktm, catrope,
               mobrovac, nuria, thcipriani, joal, eevans, mforns, dcausse,
               bsitzmann, mholloway-shell, dduvall, dereckson,
               ladsgroup, zfilipin, addshore, niharika29, ppchelko, pmiazga,
@@ -151,7 +151,7 @@ groups:
               jforrester, jkatz, jmorgan, kaldari, nathante,
               leila, mattflaschen, milimetric, nettrom, bearloga,
               nuria, ori, otto, cooltey, tonina,
-              mforns, jdlrobson, dr0ptp4kt, tgr, marktraceur, jhernandez, joal,
+              mforns, jdlrobson, dr0ptp4kt, marktraceur, jhernandez, joal,
               daisy, mholloway-shell, ebernhardson, niedzielski,
               neilpquinn-wmf, dbrant, maxsem,
               jminor, etonkovidova, sbisson, addshore, matmarex, elukey,
@@ -240,7 +240,7 @@ groups:
     members: [halfak, jdlrobson, jmorgan, bearloga,
               mattflaschen, mhurd, awight, jforrester,
               marktraceur, nuria, leila, gilles,
-              dbrant, tgr, dr0ptp4kt, brion, bsitzmann, amire80,
+              dbrant, dr0ptp4kt, brion, bsitzmann, amire80,
               dduvall, nettrom, mforns, jkatz, ebernhardson,
               mlitn, joal, kartik, nikerabbit, pcoombe,
               neilpquinn-wmf, maxsem, jminor, dstrine,
@@ -273,7 +273,7 @@ groups:
               bsitzmann, dbrant, nettrom, leila, jmm,
               ezachte, mforns, reedy, west1, phuedx, awight,
               joal, akosiaris, jkatz, tonina, pearley, ktsouroupidou,
-              andyrussg, niedzielski, maxsem, hoo, daniel, krinkle, tgr,
+              andyrussg, niedzielski, maxsem, hoo, daniel, krinkle, 
               ebernhardson, addshore, jminor, neilpquinn-wmf,
               dcausse, bd808, tjones, mobrovac, jdrewniak, ejegg, jdcc, ori,
               amire80, kartik, pcoombe, foks, jsamra, kemayo, jkumalah,
@@ -462,7 +462,7 @@ groups:
     gid: 763
     description: Service deploy users
     members: [bd808, eevans, mobrovac, ppchelko, demon, twentyafterfour, thcipriani, dduvall,
-              bsitzmann, mholloway-shell, kartik, halfak, ladsgroup, smalyshev, hoo, tgr,
+              bsitzmann, mholloway-shell, kartik, halfak, ladsgroup, smalyshev, hoo,
               ssastry, cscott, arlolra, jdlrobson, maxsem, jforrester, niedzielski,
               pmiazga, phuedx, mbsantos, onimisionipe, mvolz, santhosh, nikerabbit, accraze,
               kevinbazira]
@@ -712,7 +712,7 @@ groups:
   proton-admins:
     description: Admins for the proton service
     gid: 807
-    members: [pmiazga, bsitzmann, mholloway-shell, mbsantos, tgr, eevans, mobrovac, ppchelko]
+    members: [pmiazga, bsitzmann, mholloway-shell, mbsantos, eevans, mobrovac, ppchelko]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service proton *',
                  'ALL = (proton) NOPASSWD: ALL']
   gpu-testers:
@@ -1293,12 +1293,11 @@ users:
     ssh_keys: []
     uid: 2688
   tgr:
-    ensure: present
+    ensure: absent
     gid: 500
     name: tgr
     realname: Gergo Tisza
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCpZLnfaAbbxvapFDFwIg2kYLn+6Xk8IvB9WXfY5TU+tgakaTynli0WgZYwNVY/cFYnXuBL+QoQZEgj3RUQ6an2URygck4Y88WcHT+9WzjZXhPWBxysfeClbjyjhNFnb8qfWep9xWfIDZp0r+K/hgKF9rAUSRcCUVzF6GRVZ0F52W9fTNxW5kT5L8mrSG+t8vV0IQT1P8IL43I3yiXJJhaAm4nnZJOALBl9rKLJD4wFPKp0P0yJ9tZgTEIzubDusW9cjfP/2niiCVItUyAqlU815AoFiyx7GkT0hWB6FxLHVA4ch06+zI2f2vUJR2w9P9jjYjbophu/fT/r7ov0PKnH
-        gtisza@wikimedia.org]
+    ssh_keys: []
     uid: 2355
     email: gtisza@wikimedia.org
   avar:
