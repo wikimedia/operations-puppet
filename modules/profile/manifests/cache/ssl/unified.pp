@@ -50,7 +50,6 @@ class profile::cache::ssl::unified(
             # These certs are deployed to all caches and OCSP stapled,
             # ready for use in $certs_active as options
             $certs = [
-                'digicert-2019-ecdsa-unified', 'digicert-2019-rsa-unified',
                 'globalsign-2019-ecdsa-unified', 'globalsign-2019-rsa-unified',
                 'digicert-2019a-ecdsa-unified', 'digicert-2019a-rsa-unified',
             ]
