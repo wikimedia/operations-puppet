@@ -28,7 +28,7 @@ describe 'apereo_cas' do
             directory: '/srv/cas/overlay-template'
           )
           is_expected.to contain_file('/etc/cas/config/cas.properties').with(
-            owner: 'root',
+            owner: 'cas',
             group: 'root',
             mode: '0400'
           ).with_content(
@@ -63,12 +63,12 @@ describe 'apereo_cas' do
             /cas\.(tgc|webflow|authn\.mfa\.u2f)\.crypto\.(signing|encryption)\.key/
           )
           is_expected.to contain_file('/etc/cas/config/log4j2.xml').with(
-            owner: 'root',
+            owner: 'cas',
             group: 'root',
             mode: '0400'
           )
           is_expected.to contain_file('/etc/cas/thekeystore').with(
-            owner: 'root',
+            owner: 'cas',
             group: 'root',
             mode: '0400'
           )

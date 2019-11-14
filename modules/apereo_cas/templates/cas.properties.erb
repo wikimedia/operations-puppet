@@ -6,6 +6,7 @@ server.servlet.context-path=<%= @server_prefix %>
 cas.server.name=<%= @server_name %>
 cas.server.prefix=<%= @server_name %><%= @server_prefix %>
 server.ssl.enabled=<%= @server_enable_ssl %>
+server.tomcat.basedir=<%= @tomcat_basedir %>
 <%- if @tomcat_proxy -%>
 cas.server.tomcat.http.enabled=false
 cas.server.tomcat.httpProxy.enabled=true

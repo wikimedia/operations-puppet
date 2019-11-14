@@ -4,8 +4,10 @@ After=network.target remote-fs.target nss-lookup.target
 Documentation=https://apereo.github.io/cas/6.0.x/
 
 [Service]
+User=<%= @daemon_user %>
 ExecStart=/usr/bin/java -jar <%= @overlay_dir %>/build/libs/cas.war
 Restart=always
+AmbientCapabilities=CAP_NET_BIND_SERVICE
 
 [Install]
 WantedBy=multi-user.target

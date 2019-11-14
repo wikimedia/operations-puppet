@@ -13,15 +13,17 @@ class apereo_cas (
     Optional[Stdlib::Filesource] $keystore_source        = undef,
     Optional[String[1]]          $keystore_content       = undef,
     Optional[Stdlib::Filesource] $groovy_source          = undef,
-    Stdlib::Unixpath             $u2f_devices_path       = '/etc/cas/config/u2fdevices.json',
-    Stdlib::Unixpath             $totp_devices_path      = '/etc/cas/config/totpdevices.json',
-    Stdlib::Unixpath             $keystore_path          = '/etc/cas/thekeystore',
+    Stdlib::Unixpath             $overlay_dir            = '/srv/cas/overlay-template',
+    Stdlib::Unixpath             $devices_dir            = '/srv/cas/devices',
+    Stdlib::Unixpath             $base_dir               = '/etc/cas',
+    Stdlib::Unixpath             $log_dir                = '/var/log/cas',
+    Stdlib::Unixpath             $tomcat_basedir         = "${log_dir}/tomcat",
+    Stdlib::Unixpath             $u2f_devices_path       = "${devices_dir}/u2fdevices.json",
+    Stdlib::Unixpath             $totp_devices_path      = "${devices_dir}/totpdevices.json",
+    Stdlib::Unixpath             $keystore_path          = "${base_dir}/thekeystore",
     String[1]                    $keystore_password      = 'changeit',
     String[1]                    $key_password           = 'changeit',
-    Stdlib::Filesource           $log4j_source           = 'puppet:///modules/apereo_cas/log4j2.xml',
     String                       $overlay_repo           = 'operations/software/cas-overlay-template',
-    Stdlib::Unixpath             $overlay_dir            = '/srv/cas/overlay-template',
-    Stdlib::Unixpath             $base_dir               = '/etc/cas',
     Stdlib::HTTPSUrl             $server_name            = "https://${facts['fqdn']}:8443",
     Stdlib::Port                 $server_port            = 8443,
     Stdlib::Unixpath             $server_prefix          = '/cas',
@@ -40,6 +42,7 @@ class apereo_cas (
     Apereo_cas::LogLevel         $log_level              = 'WARN',
     String                       $mfa_attribute_trigger  = 'memberOf',
     Array[String[1]]             $mfa_attribut_value     = ['mfa'],
+    String                       $daemon_user            = 'cas',
     Hash[String, Hash]           $services               = {}
 ) {
     if $keystore_source == undef and $keystore_content == undef {
@@ -52,14 +55,28 @@ class apereo_cas (
     $services_dir = "${base_dir}/services"
 
     ensure_packages(['openjdk-11-jdk'])
+    user{$daemon_user:
+        ensure   => present,
+        comment  => 'apereo cas user',
+        home     => $tomcat_basedir,
+        shell    => '/usr/sbin/nologin',
+        password => '!',
+        system   => true,
+    }
     $groovy_file = '/etc/cas/global_principal_attribute_predicate.groovy'
     if $groovy_source {
         file{$groovy_file:
             source => $groovy_source,
         }
     }
-    file {wmflib::dirtree($overlay_dir) + [$base_dir, $services_dir, $config_dir, $overlay_dir]:
+    file {wmflib::dirtree($overlay_dir) + [$services_dir, $config_dir, $overlay_dir]:
         ensure => directory,
+    }
+    file{[$devices_dir, $base_dir, $log_dir]:
+        ensure  => directory,
+        owner   => $daemon_user,
+        mode    => '0600',
+        recurse => true,
     }
     git::clone {$overlay_repo:
         ensure    => 'latest',
@@ -67,7 +84,7 @@ class apereo_cas (
     }
     file {"${config_dir}/cas.properties":
         ensure  => file,
-        owner   => 'root',
+        owner   => $daemon_user,
         group   => 'root',
         mode    => '0400',
         content => template('apereo_cas/cas.properties.erb'),
@@ -75,17 +92,17 @@ class apereo_cas (
         notify  => Service['cas'],
     }
     file {"${config_dir}/log4j2.xml":
-        ensure => file,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0400',
-        source => $log4j_source,
-        before => Systemd::Service['cas'],
-        notify => Service['cas'],
+        ensure  => file,
+        owner   => $daemon_user,
+        group   => 'root',
+        mode    => '0400',
+        content => template('apereo_cas/log4j2.xml.erb'),
+        before  => Systemd::Service['cas'],
+        notify  => Service['cas'],
     }
     file {$keystore_path:
         ensure  => file,
-        owner   => 'root',
+        owner   => $daemon_user,
         group   => 'root',
         mode    => '0400',
         content => $keystore_content,
