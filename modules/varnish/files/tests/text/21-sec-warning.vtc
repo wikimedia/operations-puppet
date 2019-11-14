@@ -30,9 +30,6 @@ logexpect l0 -v v1 {
     expect * 1001 VCL_call SYNTH
 } -start
 
-# with seed=55, std.random(0,100) returns 0.716
-varnish v1 -cliok "debug.srandom 55"
-
 client c1 {
     txreq -url "/wiki/Main_Page" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https" -hdr "X-Connection-Properties: H2=0; SSR=0; SSL=TLSv1; C=ECDHE-ECDSA-AES128-SHA; EC=prime256v1;"
     rxresp
@@ -45,9 +42,6 @@ client c1 {
     rxresp
     expect resp.status == 200
 } -run
-
-# reset the seed
-varnish v1 -cliok "debug.srandom 55"
 
 client c2 {
     txreq -url "/wiki/Main_Page" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https" -hdr "X-Connection-Properties: H2=0; SSR=0; SSL=TLSv1.2; C=ECDHE-ECDSA-AES128-SHA; EC=prime256v1;"
