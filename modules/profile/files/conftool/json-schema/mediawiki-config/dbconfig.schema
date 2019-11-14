@@ -7,8 +7,7 @@
             "patternProperties": {
                 "DEFAULT": {"type": "string"},
                 "^s[124-8]$": {"type": "string"},
-                "^s1[01]$": {"type": "string"},
-                "wikitech": {"type": "string"}
+                "^s1[01]$": {"type": "string"}
             },
             "additionalProperties": false
         },
@@ -65,8 +64,7 @@
             "patternProperties": {
                 "DEFAULT": {"$ref": "#/definitions/sectionInstances"},
                 "^s[124-8]$": {"$ref": "#/definitions/sectionInstances"},
-                "^s1[01]$": {"$ref": "#/definitions/sectionInstances"},
-                "wikitech": {"$ref": "#/definitions/sectionInstances"}
+                "^s1[01]$": {"$ref": "#/definitions/sectionInstances"}
             },
             "additionalProperties": false
         },

@@ -45,7 +45,7 @@
         "sections": {
             "type": "object",
             "patternProperties": {
-                "^(s[1-8]|s1[01]|wikitech)$": {"$ref": "#/definitions/section"}
+                "^(s[1-8]|s1[01])$": {"$ref": "#/definitions/section"}
             },
             "additionalProperties": false
         },
