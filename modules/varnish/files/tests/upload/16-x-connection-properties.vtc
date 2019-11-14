@@ -4,64 +4,60 @@ server s1 {
     rxreq
     expect req.url == "/1"
 
-    expect req.http.X-CP-HTTP2 == "0"
-    expect req.http.X-CP-TLS-Version == "TLSv1.2"
-    expect req.http.X-CP-TLS-Session-Reused == 0
-    expect req.http.X-CP-Key-Exchange == "prime256v1"
-    expect req.http.X-CP-Auth == "ECDSA"
-    expect req.http.X-CP-Cipher == "AES256-GCM-SHA384"
-    expect req.http.X-CP-Full-Cipher == "ECDHE-ECDSA-AES256-GCM-SHA384"
+    expect req.http.x-tls-prot == "h1"
+    expect req.http.x-tls-vers == "TLSv1.2"
+    expect req.http.x-tls-sess == "new"
+    expect req.http.x-tls-keyx == "prime256v1"
+    expect req.http.x-tls-auth == "ECDSA"
+    expect req.http.x-tls-ciph == "AES256-GCM-SHA384"
 
     txresp
 
     rxreq
     expect req.url == "/2"
 
-    expect req.http.X-CP-HTTP2 == "0"
-    expect req.http.X-CP-TLS-Version == "TLSv1"
-    expect req.http.X-CP-TLS-Session-Reused == 1
-    expect req.http.X-CP-Key-Exchange == "prime256v1"
-    expect req.http.X-CP-Auth == "ECDSA"
-    expect req.http.X-CP-Cipher == "AES128-SHA"
-    expect req.http.X-CP-Full-Cipher == "ECDHE-ECDSA-AES128-SHA"
+    expect req.http.x-tls-prot == "h1"
+    expect req.http.x-tls-vers == "TLSv1"
+    expect req.http.x-tls-sess == "reused"
+    expect req.http.x-tls-keyx == "prime256v1"
+    expect req.http.x-tls-auth == "ECDSA"
+    expect req.http.x-tls-ciph == "AES128-SHA"
 
     txresp
 
     rxreq
     expect req.url == "/3"
 
-    expect req.http.X-CP-HTTP2 == "1"
-    expect req.http.X-CP-TLS-Version == "TLSv1.2"
-    expect req.http.X-CP-TLS-Session-Reused == 1
-    expect req.http.X-CP-Key-Exchange == "X25519"
-    expect req.http.X-CP-Auth == "ECDSA"
-    expect req.http.X-CP-Cipher == "AES256-GCM-SHA384"
-    expect req.http.X-CP-Full-Cipher == "ECDHE-ECDSA-AES256-GCM-SHA384"
+    expect req.http.x-tls-prot == "h2"
+    expect req.http.x-tls-vers == "TLSv1.2"
+    expect req.http.x-tls-sess == "reused"
+    expect req.http.x-tls-keyx == "X25519"
+    expect req.http.x-tls-auth == "ECDSA"
+    expect req.http.x-tls-ciph == "AES256-GCM-SHA384"
 
     txresp
 
     rxreq
     expect req.url == "/4"
 
-    expect req.http.X-CP-HTTP2 == "0"
-    expect req.http.X-CP-TLS-Version == "TLSv1"
-    expect req.http.X-CP-TLS-Session-Reused == 1
-    expect req.http.X-CP-Key-Exchange == "RSA"
-    expect req.http.X-CP-Auth == "RSA"
-    expect req.http.X-CP-Cipher == "AES128-SHA"
-    expect req.http.X-CP-Full-Cipher == "AES128-SHA"
+    expect req.http.x-tls-prot == "h1"
+    expect req.http.x-tls-vers == "TLSv1"
+    expect req.http.x-tls-sess == "reused"
+    expect req.http.x-tls-keyx == "RSA"
+    expect req.http.x-tls-auth == "RSA"
+    expect req.http.x-tls-ciph == "AES128-SHA"
 
     txresp
 
     rxreq
     expect req.url == "/5"
 
-    expect req.http.X-CP-HTTP2 == "1"
-    expect req.http.X-CP-TLS-Version == "TLSv1.2"
-    expect req.http.X-CP-TLS-Session-Reused == 0
-    expect req.http.X-CP-Key-Exchange == "X25519"
-    expect req.http.X-CP-Auth == "ECDSA"
-    expect req.http.X-CP-Cipher == "CHACHA20-POLY1305-SHA256"
+    expect req.http.x-tls-prot == "h2"
+    expect req.http.x-tls-vers == "TLSv1.2"
+    expect req.http.x-tls-sess == "new"
+    expect req.http.x-tls-keyx == "X25519"
+    expect req.http.x-tls-auth == "ECDSA"
+    expect req.http.x-tls-ciph == "CHACHA20-POLY1305-SHA256"
 
     txresp
 
@@ -69,12 +65,12 @@ server s1 {
     rxreq
     expect req.url == "/6"
 
-    expect req.http.X-CP-HTTP2 == <undef>
-    expect req.http.X-CP-TLS-Version == <undef>
-    expect req.http.X-CP-TLS-Session-Reused == <undef>
-    expect req.http.X-CP-Key-Exchange == <undef>
-    expect req.http.X-CP-Auth == <undef>
-    expect req.http.X-CP-Cipher == <undef>
+    expect req.http.x-tls-prot == <undef>
+    expect req.http.x-tls-vers == <undef>
+    expect req.http.x-tls-sess == <undef>
+    expect req.http.x-tls-keyx == <undef>
+    expect req.http.x-tls-auth == <undef>
+    expect req.http.x-tls-ciph == <undef>
 
     txresp
 } -start

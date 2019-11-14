@@ -69,72 +69,65 @@ sub https_deliver_hsts {
 
 // *** X-Connection-Properties parsing recv code
 sub log_xcps_info {
-	set req.http.X-CP-HTTP2 = regsub(req.http.X-Connection-Properties, "^H2=([01]);.*", "\1");
-	if (req.http.X-CP-HTTP2 == "1") {
-		set req.http.X-CP-Proto = "h2";
+	set req.http.x-tls-prot = regsub(req.http.X-Connection-Properties, "^H2=([01]);.*", "\1");
+	if (req.http.x-tls-prot == "1") {
+		set req.http.x-tls-prot = "h2";
 	} else {
-		set req.http.X-CP-Proto = "h1";
+		set req.http.x-tls-prot = "h1";
 	}
 
-	set req.http.X-CP-TLS-Version = regsub(req.http.X-Connection-Properties, ".* SSL=(TLSv1(\.[123])?);.*", "\1");
-
-	set req.http.X-CP-TLS-Session-Reused = regsub(req.http.X-Connection-Properties, ".* SSR=([01]);.*", "\1");
-	if (req.http.X-CP-TLS-Session-Reused == "1") {
-		set req.http.X-CP-Sess = "reused";
+	set req.http.x-tls-sess = regsub(req.http.X-Connection-Properties, ".* SSR=([01]);.*", "\1");
+	if (req.http.x-tls-sess == "1") {
+		set req.http.x-tls-sess = "reused";
 	} else {
-		set req.http.X-CP-Sess = "new";
+		set req.http.x-tls-sess = "new";
 	}
 
-	set req.http.X-CP-Key-Exchange = regsub(req.http.X-Connection-Properties, ".* EC=([A-Za-z0-9]+);.*", "\1");
+	set req.http.x-tls-vers = regsub(req.http.X-Connection-Properties, ".* SSL=(TLSv1(\.[123])?);.*", "\1");
+	set req.http.x-tls-keyx = regsub(req.http.X-Connection-Properties, ".* EC=([A-Za-z0-9]+);.*", "\1");
 
-	set req.http.X-CP-Full-Cipher = regsub(req.http.X-Connection-Properties, ".* C=([A-Z0-9-]+);.*", "\1");
+	set req.http.x-tls-auth = regsub(req.http.X-Connection-Properties, ".* C=([A-Z0-9-]+);.*", "\1");
+	if (req.http.x-tls-auth ~ "^(ECDHE-(ECDSA|RSA)|DHE-RSA|TLS13)-") {
+		set req.http.x-tls-ciph = regsub(req.http.x-tls-auth, "^(ECDHE-(ECDSA|RSA)|DHE-RSA|TLS13)-", "");
 
-	set req.http.X-CP-Auth = req.http.X-CP-Full-Cipher;
-
-	if (req.http.X-CP-Auth ~ "^(ECDHE-(ECDSA|RSA)|DHE-RSA|TLS13)-") {
-		set req.http.X-CP-Cipher = regsub(req.http.X-CP-Auth, "^(ECDHE-(ECDSA|RSA)|DHE-RSA|TLS13)-", "");
-
-		if (req.http.X-CP-Auth ~ "^ECDHE-ECDSA") {
-			set req.http.X-CP-Auth = "ECDSA";
-		} else if (req.http.X-CP-Auth ~ "^ECDHE-RSA") {
-			set req.http.X-CP-Auth = "RSA";
-		} else if (req.http.X-CP-Auth ~ "^DHE-RSA") {
-			set req.http.X-CP-Auth = "RSA";
-			set req.http.X-CP-Key-Exchange = "DHE";
+		if (req.http.x-tls-auth ~ "^ECDHE-ECDSA") {
+			set req.http.x-tls-auth = "ECDSA";
+		} else if (req.http.x-tls-auth ~ "^ECDHE-RSA") {
+			set req.http.x-tls-auth = "RSA";
+		} else if (req.http.x-tls-auth ~ "^DHE-RSA") {
+			set req.http.x-tls-auth = "RSA";
+			set req.http.x-tls-keyx = "DHE";
 		} else {
 			// TLS13
-			set req.http.X-CP-Auth = "ECDSA";
+			set req.http.x-tls-auth = "ECDSA";
 		}
 	} else {
-		set req.http.X-CP-Cipher = req.http.X-CP-Auth;
-		set req.http.X-CP-Auth = "RSA";
-		set req.http.X-CP-Key-Exchange = "RSA";
+		set req.http.x-tls-ciph = req.http.x-tls-auth;
+		set req.http.x-tls-auth = "RSA";
+		set req.http.x-tls-keyx = "RSA";
 	}
 
 	// Starting with TLSv1.3, CHACHA20-POLY1305 will be renamed into
 	// CHACHA20-POLY1305-SHA256. Do the renaming now in VCL to avoid stats skew
 	// later on.
-	set req.http.X-CP-Cipher = regsub(req.http.X-CP-Cipher, "^CHACHA20-POLY1305$", "CHACHA20-POLY1305-SHA256");
+	set req.http.x-tls-ciph = regsub(req.http.x-tls-ciph, "^CHACHA20-POLY1305$", "CHACHA20-POLY1305-SHA256");
 
 	// Condensed form logged as "tls" for TLS analytics via varnishkafka webrequest
-	std.log("tls: vers=" + req.http.X-CP-TLS-Version
-		+ ";keyx=" + req.http.X-CP-Key-Exchange
-		+ ";auth=" + req.http.X-CP-Auth
-		+ ";ciph=" + req.http.X-CP-Cipher
-		+ ";prot=" + req.http.X-CP-Proto
-		+ ";sess=" + req.http.X-CP-Sess);
+	std.log("tls: vers=" + req.http.x-tls-vers
+		+ ";keyx=" + req.http.x-tls-keyx
+		+ ";auth=" + req.http.x-tls-auth
+		+ ";ciph=" + req.http.x-tls-ciph
+		+ ";prot=" + req.http.x-tls-prot
+		+ ";sess=" + req.http.x-tls-sess);
 
 	<%- if !@varnish_testing -%>
 	// Keep these in the test VCL version to ease testing
-	unset req.http.X-CP-HTTP2;
-	unset req.http.X-CP-Proto;
-	unset req.http.X-CP-TLS-Version;
-	unset req.http.X-CP-TLS-Session-Reused;
-	unset req.http.X-CP-Sess;
-	unset req.http.X-CP-Key-Exchange;
-	unset req.http.X-CP-Auth;
-	unset req.http.X-CP-Cipher;
-	unset req.http.X-CP-Full-Cipher;
+	unset req.http.x-tls-prot;
+	unset req.http.x-tls-vers;
+	unset req.http.x-tls-sess;
+	unset req.http.x-tls-keyx;
+	unset req.http.x-tls-auth;
+	unset req.http.x-tls-ciph;
 	<%- end -%>
 }
 
