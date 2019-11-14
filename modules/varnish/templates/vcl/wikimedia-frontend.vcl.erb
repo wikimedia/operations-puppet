@@ -70,10 +70,20 @@ sub https_deliver_hsts {
 // *** X-Connection-Properties parsing recv code
 sub log_xcps_info {
 	set req.http.X-CP-HTTP2 = regsub(req.http.X-Connection-Properties, "^H2=([01]);.*", "\1");
+	if (req.http.X-CP-HTTP2 == "1") {
+		set req.http.X-CP-Proto = "h2";
+	} else {
+		set req.http.X-CP-Proto = "h1";
+	}
 
 	set req.http.X-CP-TLS-Version = regsub(req.http.X-Connection-Properties, ".* SSL=(TLSv1(\.[123])?);.*", "\1");
 
 	set req.http.X-CP-TLS-Session-Reused = regsub(req.http.X-Connection-Properties, ".* SSR=([01]);.*", "\1");
+	if (req.http.X-CP-TLS-Session-Reused == "1") {
+		set req.http.X-CP-Sess = "reused";
+	} else {
+		set req.http.X-CP-Sess = "new";
+	}
 
 	set req.http.X-CP-Key-Exchange = regsub(req.http.X-Connection-Properties, ".* EC=([A-Za-z0-9]+);.*", "\1");
 
@@ -121,13 +131,17 @@ sub log_xcps_info {
 	std.log("tls: vers=" + req.http.X-CP-TLS-Version
 		+ ";keyx=" + req.http.X-CP-Key-Exchange
 		+ ";auth=" + req.http.X-CP-Auth
-		+ ";ciph=" + req.http.X-CP-Cipher);
+		+ ";ciph=" + req.http.X-CP-Cipher
+		+ ";prot=" + req.http.X-CP-Proto
+		+ ";sess=" + req.http.X-CP-Sess);
 
 	<%- if !@varnish_testing -%>
 	// Keep these in the test VCL version to ease testing
 	unset req.http.X-CP-HTTP2;
+	unset req.http.X-CP-Proto;
 	unset req.http.X-CP-TLS-Version;
 	unset req.http.X-CP-TLS-Session-Reused;
+	unset req.http.X-CP-Sess;
 	unset req.http.X-CP-Key-Exchange;
 	unset req.http.X-CP-Auth;
 	unset req.http.X-CP-Cipher;
