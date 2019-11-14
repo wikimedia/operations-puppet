@@ -219,12 +219,6 @@ groups:
     expr: sum without(server) (rate(varnish_backend_req[5m]))
   - record: instance_layer_job:varnish_main_uptime:resets5m
     expr: sum by(instance, layer, job) (resets(varnish_main_uptime[5m]))
-  - record: auth_cipher_key_exchange_version:xcps_tls:sum
-    expr: sum by(auth, cipher, key_exchange, version) (xcps_tls)
-  - record: none:xcps_h2:sum
-    expr: sum(xcps_h2)
-  - record: none:xcps_tls_sess_reused:sum
-    expr: sum(xcps_tls_sess_reused)
   - record: cluster_status:varnish_thumbnails:irate5m
     expr: sum by(cluster, status) (irate(varnish_thumbnails[5m]))
   - record: job_x_cache:varnish_x_cache:rate5m

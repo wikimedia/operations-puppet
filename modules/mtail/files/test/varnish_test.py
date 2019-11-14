@@ -45,35 +45,6 @@ class VarnishMediaTest(unittest.TestCase):
         self.assertIn(('status=200', 2), s)
 
 
-class VarnishXcpsTest(unittest.TestCase):
-    def setUp(self):
-        self.store = mtail_store.MtailMetricStore(
-                os.path.join(test_dir, '../programs/varnishxcps.mtail'),
-                os.path.join(test_dir, 'logs/varnish.test'))
-
-    def testH2(self):
-        s = self.store.get_samples('xcps_h2')
-        self.assertIn(('', 1), s)
-
-    def testReusedSessions(self):
-        s = self.store.get_samples('xcps_tls_sess_reused')
-        self.assertIn(('', 1), s)
-
-    def testTLS(self):
-        s = self.store.get_samples('xcps_tls')
-        labels, count = s[0][0], s[0][1]
-        expected = [
-            'version=TLSv1.2',
-            'key_exchange=X25519',
-            'auth=ECDSA',
-            'cipher=CHACHA20-POLY1305-SHA256',
-        ]
-        for value in expected:
-            self.assertIn(value, labels)
-
-        self.assertEquals(1, count)
-
-
 class VarnishReqStatsTest(unittest.TestCase):
     def setUp(self):
         self.store = mtail_store.MtailMetricStore(

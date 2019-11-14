@@ -36,7 +36,6 @@ class role::prometheus::global {
             '{__name__=~"^.*:memcached_.*"}',
             '{__name__=~"^.*:varnish_.*"}',
             '{__name__=~"^.*:trafficserver_.*"}',
-            '{__name__=~"^.*:xcps_.*"}',
             # blackbox_exporter probes results
             '{__name__=~"^probe_.*"}',
             # Bird prefix export count
