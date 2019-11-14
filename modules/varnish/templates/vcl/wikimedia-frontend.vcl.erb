@@ -116,17 +116,6 @@ sub log_xcps_info {
 	// later on.
 	set req.http.X-CP-Cipher = regsub(req.http.X-CP-Cipher, "^CHACHA20-POLY1305$", "CHACHA20-POLY1305-SHA256");
 
-	// Log values to shared memory logs. They can be extracted with:
-	// varnishncsa -F "%{VCL_Log:CP-TLS-Version}x"
-	// (These drive our grafana cipher dashboards, which are kinda broken...)
-	std.log("CP-HTTP2: " + req.http.X-CP-HTTP2);
-	std.log("CP-TLS-Version: " + req.http.X-CP-TLS-Version);
-	std.log("CP-TLS-Session-Reused: " + req.http.X-CP-TLS-Session-Reused);
-	std.log("CP-Key-Exchange: " + req.http.X-CP-Key-Exchange);
-	std.log("CP-Auth: " + req.http.X-CP-Auth);
-	std.log("CP-Cipher: " + req.http.X-CP-Cipher);
-	std.log("CP-Full-Cipher: " + req.http.X-CP-Full-Cipher);
-
 	// Condensed form logged as "tls" for TLS analytics via varnishkafka webrequest
 	std.log("tls: vers=" + req.http.X-CP-TLS-Version
 		+ ";keyx=" + req.http.X-CP-Key-Exchange
