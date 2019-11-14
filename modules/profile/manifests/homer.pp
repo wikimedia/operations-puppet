@@ -16,12 +16,16 @@ class profile::homer (){
         deploy_user => 'deploy-homer',
     }
 
-    ::keyholder::agent { 'homer':
+    keyholder::agent { 'homer':
         trusted_groups => ['ops'],
     }
 
-    class { '::homer':
-        private_git_peer => $homer_peers[0],
+    if $homer_peers.empty {
+        warning('no homer peers found in puppetdb')
+    } else {
+        class { 'homer':
+            private_git_peer => $homer_peers[0],
+        }
     }
 
 }
