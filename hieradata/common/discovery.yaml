@@ -109,6 +109,9 @@ discovery::services:
   eventgate-main:
     lvs: eventgate-main
     active_active: true
+  eventgate-logging-external:
+    lvs: eventgate-logging-external
+    active_active: true
   sessionstore:
     lvs: sessionstore
     active_active: true
