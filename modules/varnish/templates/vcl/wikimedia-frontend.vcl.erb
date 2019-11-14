@@ -344,6 +344,16 @@ sub vcl_recv {
 		call https_recv_redirect;
 	}
 
+	if(req.restarts == 0) {
+		call analytics_recv;
+		call translation_engine_recv;
+		// Parse X-Connection-Properties and log TLS/HTTP2 connection
+		// information, which is also sent via varnishkafka to Analytics.
+		if (req.http.X-Connection-Properties) {
+			call log_xcps_info;
+		}
+	}
+
 	if (req.url ~ "^/beacon\/[^/?]+") {
 		// Logging beacon endpoints
 		//
@@ -353,19 +363,8 @@ sub vcl_recv {
 		return (synth(204, ""));
 	}
 
-	if(req.restarts == 0) {
-		call analytics_recv;
-		call translation_engine_recv;
-	}
-
 	call cluster_fe_recv_pre_purge;
 	call wm_common_recv_purge;
-
-	// Parse X-Connection-Properties and log TLS/HTTP2 connection information.
-	// Log entries are extracted by varnishmtail and consumed by Prometheus.
-	if (req.http.X-Connection-Properties) {
-		call log_xcps_info;
-	}
 
 	// The idea here is to block our worst clients (in TLS terms: those
 	// using TLSv1.0 or TLSv1.1)
