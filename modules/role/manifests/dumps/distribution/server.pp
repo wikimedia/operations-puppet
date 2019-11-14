@@ -22,6 +22,9 @@ class role::dumps::distribution::server {
 
     include ::profile::dumps::distribution::mirrors::rsync_config
 
+    # Deploy some Analytics tools to ease pulling data from Hadoop
+    include ::profile::analytics::refinery::repository
+
     # Kerberos client and credentials to fetch data from
     # the Analytics Hadoop cluster.
     include ::profile::kerberos::client
