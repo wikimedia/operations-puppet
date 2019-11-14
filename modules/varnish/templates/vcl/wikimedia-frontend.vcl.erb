@@ -420,7 +420,7 @@ sub vcl_recv {
 			|| (!req.http.user-agent || req.http.user-agent ~ "[Bb]ot")
 		)
 		&& req.url != "/sec-warning" && req.url !~ "^/static/images/"
-		&& std.random(0,100) < 4.0) {
+		&& std.random(0,100) < 10.0) {
 			set req.http.Location = "https://" + req.http.Host + "/sec-warning";
 			return (synth(302, "Browser Connection Security Redirect"));
 	}
