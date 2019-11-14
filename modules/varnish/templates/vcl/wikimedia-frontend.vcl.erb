@@ -87,24 +87,14 @@ sub log_xcps_info {
 	set req.http.x-tls-keyx = regsub(req.http.X-Connection-Properties, ".* EC=([A-Za-z0-9]+);.*", "\1");
 
 	set req.http.x-tls-auth = regsub(req.http.X-Connection-Properties, ".* C=([A-Z0-9-]+);.*", "\1");
-	if (req.http.x-tls-auth ~ "^(ECDHE-(ECDSA|RSA)|DHE-RSA|TLS13)-") {
-		set req.http.x-tls-ciph = regsub(req.http.x-tls-auth, "^(ECDHE-(ECDSA|RSA)|DHE-RSA|TLS13)-", "");
-
-		if (req.http.x-tls-auth ~ "^ECDHE-ECDSA") {
-			set req.http.x-tls-auth = "ECDSA";
-		} else if (req.http.x-tls-auth ~ "^ECDHE-RSA") {
-			set req.http.x-tls-auth = "RSA";
-		} else if (req.http.x-tls-auth ~ "^DHE-RSA") {
-			set req.http.x-tls-auth = "RSA";
-			set req.http.x-tls-keyx = "DHE";
-		} else {
-			// TLS13
-			set req.http.x-tls-auth = "ECDSA";
-		}
-	} else {
-		set req.http.x-tls-ciph = req.http.x-tls-auth;
+	set req.http.x-tls-ciph = regsub(req.http.x-tls-auth, "^(ECDHE-(ECDSA|RSA)|DHE-RSA)-", "");
+	if (req.http.x-tls-auth ~ "^ECDHE-RSA") {
 		set req.http.x-tls-auth = "RSA";
-		set req.http.x-tls-keyx = "RSA";
+	} else if (req.http.x-tls-auth ~ "^DHE-RSA") {
+		set req.http.x-tls-auth = "RSA";
+		set req.http.x-tls-keyx = "DHE";
+	} else {
+		set req.http.x-tls-auth = "ECDSA";
 	}
 
 	// Starting with TLSv1.3, CHACHA20-POLY1305 will be renamed into
