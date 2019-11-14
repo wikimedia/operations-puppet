@@ -2,12 +2,9 @@
 #
 # This class installs & manages Homer, a network configuration management tool.
 
-class profile::homer (){
-
-    $homer_peers = query_nodes('Class[profile::homer]').filter |$value| { $value != $::fqdn }
-    if $homer_peers.length > 1 {
-        fail('Profile::Homer supports only two hosts.')
-    }
+class profile::homer (
+    Stdlib::Host $private_git_peer = lookup('profile::homer::private_git_peer'),
+){
 
     require_package('virtualenv', 'make')
 
@@ -20,12 +17,7 @@ class profile::homer (){
         trusted_groups => ['ops'],
     }
 
-    if $homer_peers.empty {
-        warning('no homer peers found in puppetdb')
-    } else {
-        class { 'homer':
-            private_git_peer => $homer_peers[0],
-        }
+    class { 'homer':
+        private_git_peer => $private_git_peer,
     }
-
 }
