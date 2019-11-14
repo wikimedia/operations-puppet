@@ -70,13 +70,19 @@ class lvs::monitor_services(
                 host          => "eventgate-analytics.svc.${dc}.wmnet",
                 description   => "eventgate-analytics LVS ${dc}",
                 check_command => "check_wmf_service!http://eventgate-analytics.svc.${dc}.wmnet:31192!15",
-                notes_url     => 'https://wikitech.wikimedia.org/wiki/Event*#EventGate_(repository)',
+                notes_url     => 'https://wikitech.wikimedia.org/wiki/Event_Platform/EventGate',
                 ;
             "check_eventgate_main_cluster_${dc}":
                 host          => "eventgate-main.svc.${dc}.wmnet",
                 description   => "eventgate-main LVS ${dc}",
                 check_command => "check_wmf_service!http://eventgate-main.svc.${dc}.wmnet:32192!15",
-                notes_url     => 'https://wikitech.wikimedia.org/wiki/Event*#EventGate_(repository)',
+                notes_url     => 'https://wikitech.wikimedia.org/wiki/Event_Platform/EventGate',
+                ;
+            "check_eventgate_logging_external_cluster_${dc}":
+                host          => "eventgate-logging-external.svc.${dc}.wmnet",
+                description   => "eventgate-logging-external LVS ${dc}",
+                check_command => "check_wmf_service!https://eventgate-logging-external.svc.${dc}.wmnet:43192!15",
+                notes_url     => 'https://wikitech.wikimedia.org/wiki/Event_Platform/EventGate',
                 ;
             "check_docker_registry_cluster_${dc}":
                 host          => "docker-registry.svc.${dc}.wmnet",

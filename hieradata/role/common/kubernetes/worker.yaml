@@ -39,6 +39,7 @@ profile::lvs::realserver::pools:
   blubberoid: {}
   eventgate-analytics: {}
   eventgate-main: {}
+  eventgate-logging-external: {}
   citoid: {}
   cxserver: {}
   restrouter: {}

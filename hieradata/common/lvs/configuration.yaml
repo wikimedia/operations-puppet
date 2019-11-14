@@ -194,6 +194,9 @@ lvs::configuration::lvs_service_ips:
   echostore: &ip_block058
     eqiad: 10.2.2.49
     codfw: 10.2.1.49
+  eventgate-logging-external: &ip_block059
+    eqiad: 10.2.2.50
+    codfw: 10.2.1.50
 
 lvs::configuration::lvs_services:
   text:
@@ -1814,6 +1817,33 @@ lvs::configuration::lvs_services:
           hostname: eventgate-main.svc.eqiad.wmnet
         codfw:
           hostname: eventgate-main.svc.codfw.wmnet
+  eventgate-logging-external:
+    description: "EventGate Analytics endpoint, eventgate-logging-external.svc.%{::site}.wmnet"
+    class: low-traffic
+    sites:
+    - eqiad
+    - codfw
+    ip: *ip_block059
+    port: 43192 # This is the TLS port, regular HTTP is on 33192
+    depool-threshold: '.5'
+    monitors:
+      ProxyFetch:
+        url:
+        - http://localhost/_info
+      IdleConnection:
+        timeout-clean-reconnect: 3
+        max-delay: 300
+    conftool:
+      cluster: kubernetes
+      service: eventgate-logging-external
+    icinga:
+      check_command: "check_https_lvs_on_port!eventgate-logging-external.svc.%{::site}.wmnet!43192!/_info"
+      critical: false
+      sites:
+        eqiad:
+          hostname: eventgate-logging-external.svc.eqiad.wmnet
+        codfw:
+          hostname: eventgate-logging-external.svc.codfw.wmnet
 
   schema:
     description: Event Schema HTTP service
