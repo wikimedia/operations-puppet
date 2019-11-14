@@ -14,7 +14,6 @@ define varnish::logging::xcps {
     include ::varnish::common
 
     mtail::program { 'varnishxcps':
-        source => 'puppet:///modules/mtail/programs/varnishxcps.mtail',
-        notify => Service['varnishmtail'],
+        ensure => absent
     }
 }
