@@ -367,6 +367,16 @@ sub vcl_recv {
 		call log_xcps_info;
 	}
 
+	// The idea here is to block our worst clients (in TLS terms: those
+	// using TLSv1.0 or TLSv1.1)
+	// This will remain in place until the
+	// future removal of protocol-level support.
+	if (req.http.X-Connection-Properties ~ "SSL=TLSv1(\.1)?;"
+		&& req.url ~ "^/wiki/" && req.url !~ ":" && req.method == "GET"
+		&& std.random(0,100) < 1.0) {
+		set req.http.Location = "https://" + req.http.Host + "/sec-warning";
+		return (synth(302, "Browser Connection Security Redirect"));
+	}
 	// Browser sec warning
 	if (req.url == "/sec-warning") {
 		return (synth(200, "Browser Connection Security Warning"));
@@ -565,6 +575,12 @@ sub vcl_synth {
 			set resp.http.Cache-Control = "private, s-maxage=0, max-age=0, must-revalidate";
 		}
 
+		// Browser sec warning (TLSv1.1/TLSv1.1 intercepted request)
+		if (resp.reason == "Browser Connection Security Redirect") {
+			set resp.http.Location = req.http.Location;
+			set resp.http.Content-Length = "0";
+			return (deliver);
+		}
 		// Browser sec warning
 		if (resp.reason == "Browser Connection Security Warning") {
 			set resp.http.Connection = "keep-alive";
