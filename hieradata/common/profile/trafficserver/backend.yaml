@@ -325,6 +325,10 @@ profile::trafficserver::backend::logs:
     filters:
     - purge
     mode: ascii_pipe
+profile::trafficserver::backend::network_settings:
+  connections_throttle: 0
+  sock_option_flag_in: 0x5
+  default_inactivity_timeout: 360
 profile::trafficserver::backend::http_settings:
   accept_no_activity_timeout: 180
   connect_attempts_timeout: 180
