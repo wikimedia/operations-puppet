@@ -32,15 +32,6 @@ class zuul::monitoring::server (
     }
 
     monitoring::graphite_threshold{ 'zuul_gearman_wait_queue':
-        ensure          => $ensure,
-        description     => 'Work requests waiting in Zuul Gearman server',
-        dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/zuul-gearman?panelId=10&fullscreen&orgId=1'],
-        metric          => 'zuul.geard.queue.waiting',
-        contact_group   => 'contint',
-        from            => '10min',
-        percentage      => 100,
-        warning         => 90,
-        critical        => 150,
-        notes_link      => 'https://www.mediawiki.org/wiki/Continuous_integration/Zuul',
+        ensure => absent,
     }
 }
