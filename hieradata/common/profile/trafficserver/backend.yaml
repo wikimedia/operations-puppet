@@ -233,6 +233,8 @@ profile::trafficserver::backend::mapping_rules:
       params:
           - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
           - '@pparam=/etc/trafficserver/lua/rb-mw-mangling.lua'
+          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
+          - '@pparam=/etc/trafficserver/lua/x-wikimedia-debug-routing.lua'
     - type: map
       target: /
       replacement: https://appservers-rw.discovery.wmnet
