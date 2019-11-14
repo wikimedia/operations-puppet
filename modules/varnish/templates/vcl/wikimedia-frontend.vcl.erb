@@ -40,14 +40,9 @@ include "<%= @vcl %>.inc.vcl";
 sub https_recv_redirect {
 	if (req.http.X-Forwarded-Proto != "https") {
 		if (req.method == "GET" || req.method == "HEAD") {
-			// This is all of our unified cert wildcard domains,
-			// as well as matching beta.wmflabs.org names handled via LE.
-			if (req.http.Host ~ "((^|\.)(wikipedia|wikimedia|wikibooks|wikinews|wikiquote|wikisource|wikiversity|wikivoyage|wikidata|wikimediafoundation|wiktionary|mediawiki|wmfusercontent)(\.beta\.wmflabs)?\.org|^w\.wiki|^upload\.beta\.wmflabs\.org)$") {
-				set req.http.Location = "https://" + req.http.Host + req.url;
-				return (synth(301, "TLS Redirect"));
-			}
-		}
-		else {
+			set req.http.Location = "https://" + req.http.Host + req.url;
+			return (synth(301, "TLS Redirect"));
+		} else {
 			return (synth(403, "Insecure Request Forbidden - use HTTPS - https://lists.wikimedia.org/pipermail/mediawiki-api-announce/2016-May/000110.html"));
 		}
 	}
