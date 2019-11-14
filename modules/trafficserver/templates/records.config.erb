@@ -138,8 +138,8 @@ CONFIG proxy.config.log.max_secs_per_buffer INT 0
 # Bumped from the default (9216) to address the following error: "Skipping the
 # current log entry because its size exceeds the maximum payload space in a log
 # buffer"
-CONFIG proxy.config.log.log_buffer_size INT 18432
-CONFIG proxy.config.log.max_line_size INT 18432
+CONFIG proxy.config.log.log_buffer_size INT 73728
+CONFIG proxy.config.log.max_line_size INT 73728
 
 <% if @inbound_tls_settings -%>
 # Incoming TLS settings
