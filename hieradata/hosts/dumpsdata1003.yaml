@@ -1,0 +1,17 @@
+profile::dumps::basedatadir: '/data/xmldatadumps'
+profile::dumps::miscdumpsdir: '/data/otherdumps'
+profile::dumps::xmldumpspublicdir: '/data/xmldatadumps/public'
+profile::dumps::dumpstempdir: '/data/xmldatadumps/temp'
+
+# this is currently a dumps generation fallback host,
+# we configure cleanups of old files there the
+# same way we do the active generating host
+profile::dumps::cleanup::isreplica: false
+
+profile::dumps::nfs::clients_wanted: 'generation'
+
+profile::dumps::rsyncer:
+  dumps_user: 'dumpsgen'
+  dumps_group: 'dumpsgen'
+  dumps_deploygroup: 'wikidev'
+  dumps_mntpoint: '/data'
