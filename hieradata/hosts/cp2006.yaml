@@ -1,2 +1,3 @@
 profile::cache::ssl::unified::tls_port: 4443
 profile::cache::ssl::unified::use_trafficserver_tls: true
+profile::trafficserver::tls::port: 443
