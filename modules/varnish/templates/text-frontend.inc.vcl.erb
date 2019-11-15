@@ -86,11 +86,6 @@ sub cluster_fe_recv_pre_purge {
 		return (synth(403, "Noise"));
 	}
 
-	// Requests with Host header set to an IP address make little sense and cause 50x noise T236130
-	if (req.http.Host ~ "^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$") {
-		return (synth(403, "Noise"));
-	}
-
 	// FIXME: we're seeing an issue with Range requests and gzip/gunzip.
 	// Disable Range requests for now.
 	unset req.http.Range;

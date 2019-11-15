@@ -42,15 +42,15 @@ client c1 {
     rxresp
     expect resp.status == 200
 
+    # OK: IP address
+    txreq -hdr "Host: 127.0.0.1" -hdr "X-Forwarded-Proto: https"
+    rxresp
+    expect resp.status == 200
+
     # OK: varnishcheck
     txreq -hdr "Host: varnishcheck"
     rxresp
     expect resp.status == 200
-
-    # KO: IP address
-    txreq -hdr "Host: 127.0.0.1" -hdr "X-Forwarded-Proto: https"
-    rxresp
-    expect resp.status == 403
 
     # KO: Missing Host header
     txreq -hdr "X-Forwarded-Proto: https"
