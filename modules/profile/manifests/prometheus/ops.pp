@@ -349,39 +349,6 @@ class profile::prometheus::ops (
         labels     => {}
     }
 
-    # Generate a list of hosts running hhvm from wikimedia_clusters definition in Hiera
-    # TODO: generate the configuration based on hosts with hhvm class applied
-    prometheus::cluster_config{ "hhvm_jobrunner_${::site}":
-        ensure  => absent,
-        dest    => "${targets_path}/hhvm_jobrunner_${::site}.yaml",
-        site    => $::site,
-        cluster => 'jobrunner',
-        port    => 9192,
-        labels  => {
-            'cluster' => 'jobrunner'
-        }
-    }
-    prometheus::cluster_config{ "hhvm_appserver_${::site}":
-        ensure  => absent,
-        dest    => "${targets_path}/hhvm_appserver_${::site}.yaml",
-        site    => $::site,
-        cluster => 'appserver',
-        port    => 9192,
-        labels  => {
-            'cluster' => 'appserver'
-        }
-    }
-    prometheus::cluster_config{ "hhvm_api_appserver_${::site}":
-        ensure  => absent,
-        dest    => "${targets_path}/hhvm_api_appserver_${::site}.yaml",
-        site    => $::site,
-        cluster => 'api_appserver',
-        port    => 9192,
-        labels  => {
-            'cluster' => 'api_appserver'
-        }
-    }
-
     # Job definition for apache_exporter
     $apache_jobs = [
       {
