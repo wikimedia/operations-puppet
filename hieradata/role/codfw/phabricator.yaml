@@ -14,10 +14,9 @@ lvs::realserver::realserver_ips:
   - "208.80.153.250"
   - "2620:0:860:ed1a::3:fa"
 
-phabricator::mysql::master: "m3-master.eqiad.wmnet"
+phabricator::mysql::master: "m3-master.codfw.wmnet"
 phabricator::mysql::master::port: 3306
-# todo: replace with a codfw slave (do we have a phab db server in codfw?)
-phabricator::mysql::slave: "m3-slave.eqiad.wmnet"
+phabricator::mysql::slave: "m3-slave.codfw.wmnet"
 phabricator::mysql::slave::port: 3323
 
 phabricator_cluster_search:
