@@ -189,6 +189,9 @@ profile::trafficserver::backend::mapping_rules:
       # XXX pipe requests to /v2/stream/.+ ?
       replacement: http://eventstreams.discovery.wmnet:8092
     - type: map
+      target: http://stream.wikimedia.org/produce/logging/
+      replacement: https://eventgate-logging-external.discovery.wmnet:43192/ # TLS port
+    - type: map
       target: http://superset.wikimedia.org
       replacement: https://analytics-tool1004.eqiad.wmnet
     - type: map

@@ -93,6 +93,12 @@ cache::app_directors:
       port: 9001
     backends:
       eqiad: 'etherpad1001.eqiad.wmnet'
+  eventgate-logging-external:
+    be_opts:
+      port: 33192 # non-TLS port
+    backends:
+      eqiad: 'eventgate-logging-external.svc.eqiad.wmnet'
+      codfw: 'eventgate-logging-external.svc.codfw.wmnet'
   eventstreams:
     be_opts:
       port: 8092
@@ -366,6 +372,8 @@ cache::alternate_domains:
       '^/v2/stream/.+':
         director: 'eventstreams'
         caching: 'pipe'
+      '^/produce/logging/.*':
+        director: 'eventgate-logging-external'
   superset.wikimedia.org:
     director: 'superset'
   ticket.wikimedia.org:

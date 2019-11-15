@@ -157,6 +157,8 @@ cache::alternate_domains:
       '^/v2/stream/.+':
         director: 'eventstreams'
         caching: 'pipe'
+      '^/produce/logging/':
+        director: 'eventgate-logging-external'
   superset.wikimedia.org:
     director: 'superset'
   ticket.wikimedia.org:
