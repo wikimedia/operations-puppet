@@ -1,0 +1,6 @@
+[client]
+user=<%= scope.lookupvar('passwords::mysql::phabricator::metrics_user') %>
+password=<%= scope.lookupvar('passwords::mysql::phabricator::metrics_pass') %>
+database=phabricator_maniphest
+host=m3-slave.<%= @domain %>
+port=3323
