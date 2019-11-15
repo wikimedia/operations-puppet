@@ -27,13 +27,13 @@ function is_installed() {
 which decommission && decommission
 
 # Let's first stop and mask the web servers
-for service in apache2 nginx prometheus-apache-exporter prometheus-hhvm-exporter prometheus-nutcracker-exporter;
+for service in apache2 nginx prometheus-apache-exporter prometheus-php-fpm-exporter prometheus-nutcracker-exporter prometheus-mcrouter-exporter;
 do
   stop_and_mask "${service}"
 done
 
-# Now let's check for nutcracker and hhvm/php-fpm
-for service in nutcracker hhvm;
+# Now let's check for nutcracker, mcrouter and php-fpm
+for service in nutcracker mcrouter php7.2-fpm;
 do
   is_installed "${service}" && stop_and_mask "${service}"
 done
@@ -49,7 +49,7 @@ done
 
 # Remove our own logrotate rules so they don't spam us
 pushd /etc/logrotate.d
-rm -f hhvm mediawiki_apache nginx nutcracker
+rm -f php7_2-fpm_check_restart php7.2-fpm mediawiki_apache nginx nutcracker mcrouter
 popd
 
 # Remove any trace of tmpreaper to avoid daily cronspam
