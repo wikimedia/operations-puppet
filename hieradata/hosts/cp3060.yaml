@@ -1,1 +1,3 @@
 profile::cache::varnish::backend::storage_parts: [ 'nvme0n1p1', 'nvme0n1p1' ]
+profile::cache::ssl::unified::tls_port: 4443
+profile::cache::ssl::unified::use_trafficserver_tls: true
