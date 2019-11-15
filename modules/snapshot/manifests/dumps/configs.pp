@@ -132,6 +132,7 @@ class snapshot::dumps::configs(
                 revsMargin           => '100',
                 maxrevs              => '20000',
                 lbzip2threads        => '10',
+                emptyAbstracts       => '1',
                 wikis => {
                     wikidatawiki => {
                         pagesPerChunkHistory  => "${wikidatachunkhistory1},${$wikidatachunkhistory2}",
