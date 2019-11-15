@@ -204,6 +204,8 @@ sub normalize_request {
 	        )\.org
 	        # w.wiki is separate as a singular hostname, no wildcards:
 	        | w\.wiki
+	        # This is used by internal healthchecking
+	        | varnishcheck
 	    )$
 	"}) {
 	    set req.http.Host = "invalid";
