@@ -143,7 +143,12 @@ done
 ###############
 # send email
 ###############
-cat <<EOF | /usr/bin/mail -r "${sender_address}" -s "XML Dumps FAQ monthly update" "xmldatadumps-l@lists.wikimedia.org"
+if [ -e '/usr/bin/s-nail' ]; then
+    MAILCMD='/usr/bin/s-nail'
+else
+    MAILCMD='/usr/bin/mail'
+fi
+cat <<EOF | $MAILCMD -r "${sender_address}" -s "XML Dumps FAQ monthly update" "xmldatadumps-l@lists.wikimedia.org"
 
 Greetings XML Dump users and contributors!
 
