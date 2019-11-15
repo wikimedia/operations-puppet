@@ -111,6 +111,9 @@ profile::trafficserver::backend::mapping_rules:
       target: http://noc.wikimedia.org
       replacement: http://mwmaint1002.eqiad.wmnet
       #replacement: http://mwmaint2001.codfw.wmnet
+      params:
+          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
+          - '@pparam=/etc/trafficserver/lua/x-wikimedia-debug-routing.lua'
     - type: map
       target: http://ores.wikimedia.org
       replacement: http://ores.discovery.wmnet:8081
