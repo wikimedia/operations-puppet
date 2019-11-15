@@ -1,0 +1,3 @@
+# db2134
+mariadb::binlog_format: 'ROW'
+profile::base::notifications: disabled

@@ -337,7 +337,7 @@ node /^cumin[12]001\.(eqiad|codfw)\.wmnet$/ {
 # MariaDB 10
 
 # Spare codfw hosts to be provisioned #T234608
-node /^db21(34|35)\.codfw\.wmnet/ {
+node /^db21(35)\.codfw\.wmnet/ {
     role(spare::system)
 }
 
@@ -621,6 +621,9 @@ node 'db2065.codfw.wmnet' {
     role(mariadb::misc::phabricator)
 }
 
+node 'db2134.codfw.wmnet' {
+    role(mariadb::misc::phabricator)
+}
 
 ## m4 shard
 
