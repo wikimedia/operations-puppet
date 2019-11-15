@@ -49,3 +49,9 @@ gmysql-host=<%= @pdns_db_host %>
 gmysql-user=pdns
 gmysql-dbname=pdns
 gmysql-password=<%= @pdns_db_password %>
+
+<% if @dns_webserver then %>
+webserver=yes
+api=yes
+api-key=<%= @dns_api_key %>
+<% end %>

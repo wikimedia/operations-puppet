@@ -18,15 +18,17 @@
     - host: 208.80.154.135
       port: 5354
     options:
-      connection: mysql://pdns:<password>@208.80.154.135/pdns
+      api_endpoint: http://208.80.154.135:8081
+      api_token: changeme
       host: 208.80.154.135
       port: '53'
-    type: powerdns
+    type: pdns4
   - masters:
     - host: 208.80.154.135
       port: 5354
     options:
-      connection: mysql://pdns:<password>@208.80.154.11/pdns
+      api_endpoint: http://208.80.154.11:8081
+      api_token: changeme
       host: 208.80.154.11
       port: '53'
-    type: powerdns
+    type: pdns4

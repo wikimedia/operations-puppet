@@ -14,7 +14,9 @@ class pdns_server(
     $dns_auth_soa_name,
     $pdns_db_host,
     $pdns_db_password,
-    $dns_auth_query_address = ''
+    $dns_auth_query_address = '',
+    $dns_webserver = false,
+    $dns_api_key = '',
 ) {
 
     package { [ 'pdns-server',

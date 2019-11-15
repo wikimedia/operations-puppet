@@ -15,7 +15,8 @@
     - host: 208.80.153.76
       port: 5354
     options:
-      connection: mysql://pdns:<password>@208.80.153.76/pdns
-      host: 208.80.153.76
-      port: '53'
-    type: powerdns
+        host: 208.80.153.76
+        port: 53
+        api_endpoint: http://208.80.153.76:8081
+        api_token: changeme
+    type: pdns4
