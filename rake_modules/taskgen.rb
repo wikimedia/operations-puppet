@@ -116,7 +116,7 @@ class TaskGen < ::Rake::TaskLib
   end
 
   def setup_dhcp
-    changed = @changed_files.select{ |x| File.fnmatch("modules/install_server/files/dhcpd/*", x) }
+    changed = filter_files_by("modules/install_server/files/dhcpd/*")
     return [] if changed.empty?
     unless File.exists?('/usr/sbin/dhcpd')
       puts 'dhcp: skipping tests as dhcpd is not available'
