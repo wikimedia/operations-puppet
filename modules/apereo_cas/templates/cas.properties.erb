@@ -1,3 +1,19 @@
+<%-
+def get_addresses(hostnames)
+  answers = []
+  hostnames.each do |hostname|
+    Resolv::DNS.open do |dns|
+      [Resolv::DNS::Resource::IN::A, Resolv::DNS::Resource::IN::AAAA].each do |rrtype|
+        answer = dns.getresources(hostname, rrtype)
+        next if answer.empty?
+        answers << answer.map { |ans| ans.address.to_s }
+      end
+    end
+  end
+  raise Puppet::Error, "#{hostnames.join(',')} do not resolve" if answers.empty?
+  answers.flatten.sort
+end
+-%>
 server.ssl.keyStore=file:<%= @keystore_path %>
 server.ssl.keyStorePassword=<%= @keystore_password %>
 server.ssl.keyPassword=<%= @key_password %>
@@ -18,10 +34,17 @@ cas.server.tomcat.httpProxy.scheme=https
 cas.server.tomcat.httpProxy.protocol=HTTP/1.1
 <%- end -%>
 
+<%- unless @prometheus_nodes.empty? %>
+management.metrics.export.prometheus.enabled=true
+management.endpoints.web.exposure.include=prometheus
+management.endpoint.prometheus.enabled=true
+cas.monitor.endpoints.endpoint.prometheus.access=IP_ADDRESS
+cas.monitor.endpoints.endpoint.prometheus.requiredIpAddresses=<%= get_addresses(@prometheus_nodes).join(',') %>
+<%- end -%>
+
 cas.serviceRegistry.json.location=file:<%= @services_dir %>
 logging.config: file:/etc/cas/config/log4j2.xml
 logging.level.org.apereo=<%= @log_level %>
-management.metrics.export.prometheus.enabled=<%= @enable_prometheus %>
 
 cas.authn.accept.users=
 

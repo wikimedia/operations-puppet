@@ -146,6 +146,22 @@ describe 'apereo_cas' do
             )
           end
         end
+        context 'prometheus_nodes' do
+          # If we use a host with ipv6 then CI fails if a user without IPv6 tests localy
+          # So we use ns0 and ns1 as they are IPv4 only and somewhat stable
+          before(:each) { params.merge!(prometheus_nodes: ['ns0.wikimedia.org', 'ns1.wikimedia.org']) }
+          it { is_expected.to compile }
+          it do
+            is_expected.to contain_file('/etc/cas/config/cas.properties').with_content(
+              /management.metrics.export.prometheus.enabled=true\n
+               management.endpoints.web.exposure.include=prometheus\n
+               management.endpoint.prometheus.enabled=true\n
+               cas.monitor.endpoints.endpoint.prometheus.access=IP_ADDRESS\n
+               cas.monitor.endpoints.endpoint.prometheus.requiredIpAddresses=208.80.153.231,208.80.154.238\n
+              /x
+            )
+          end
+        end
       end
     end
   end
