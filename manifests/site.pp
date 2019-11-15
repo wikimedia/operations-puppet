@@ -2003,7 +2003,7 @@ node /^cloudvirt10[0-3][0-9]\.eqiad\.wmnet$/ {
 
 
 # Wikidata query service
-node /^wdqs100[4-6]\.eqiad\.wmnet$/ {
+node /^wdqs100[4-7]\.eqiad\.wmnet$/ {
     role(wdqs)
 }
 
@@ -2012,7 +2012,7 @@ node /^wdqs200[1-3]\.codfw\.wmnet$/ {
 }
 
 # Wikidata query service internal
-node /^wdqs100[378]\.eqiad\.wmnet$/ {
+node /^wdqs100[38]\.eqiad\.wmnet$/ {
     role(wdqs::internal)
 }
 

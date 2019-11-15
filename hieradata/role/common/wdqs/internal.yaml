@@ -13,7 +13,6 @@ profile::query_service::blazegraph_extra_jvm_opts:
   - '-Dwdqs.throttling-filter.ban-duration-in-minutes=60'
 profile::query_service::nodes:
   - 'wdqs1003.eqiad.wmnet'
-  - 'wdqs1007.eqiad.wmnet'
   - 'wdqs1008.eqiad.wmnet'
   - 'wdqs2004.codfw.wmnet'
   - 'wdqs2005.codfw.wmnet'
