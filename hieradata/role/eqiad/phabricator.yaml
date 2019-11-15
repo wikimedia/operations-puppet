@@ -7,7 +7,7 @@ lvs::realserver::realserver_ips:
 phabricator::mysql::master: "m3-master.eqiad.wmnet"
 phabricator::mysql::slave: "m3-slave.eqiad.wmnet"
 
-phabricator_aphlict_enabled: true
+phabricator_aphlict_enabled: false
 
 phabricator_cluster_search:
   - type: 'elasticsearch'
