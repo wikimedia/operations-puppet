@@ -12,7 +12,7 @@ class profile::openstack::codfw1dev::pdns::auth::service(
         db_pass        => $db_pass,
         db_host        => ipresolve($host,4),
         pdns_webserver => true,
-        pdns_api_key   => pdns_api_key,
+        pdns_api_key   => $pdns_api_key,
     }
 
     class {'::profile::openstack::base::pdns::auth::monitor::pdns_control':}
