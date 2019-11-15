@@ -165,6 +165,51 @@ sub normalize_request {
 		// Unparseable / empty Host header
 		return (synth(400, ""));
 	}
+
+	// Check that the normalized hostname actually matches our SAN set from
+	// the Unified multi/wildcard certificate we use for prod cache cluster
+	// termination.  This won't eliminate every bad hostname down at the
+	// applayer (e.g. nosuchlanguage.wikimedia.org), but it does precisely
+	// match the wildcarding of the certificate itself and greatly limits
+	// the potential bad cases.
+	// --
+	// RFC 2616 Section 5.2 notes that 400 responses are also required
+	// if the hostname isn't one we recognize as legit *on the server*,
+	// meaning our own list of hostnames:
+	// "3. If the host as determined by rule 1 or 2 is not a valid host on
+	// the server, the response MUST be a 400 (Bad Request) error message."
+	// RFC 723x is less-clear on this case, but this is still a reasonable
+	// stance.  There are reasonable reasons that 404, 410, 421 and others
+	// are inappropriate if we receive a request accidentally for some
+	// legitimate domainname on the Internet which doesn't belong to us.
+	// --
+	// This regex exactly matches the canonical domains SAN list used in
+	// our Unified certificates, according to the normal SAN rules where a
+	// wildcard only matches a single DNS label.  It's encoded here as a
+	// VCL Long String with delimiters {""} containing a PCRE regex with
+	// the x-flag to allow expansion with whitespace, newlines, and
+	// comments for clarity:
+
+<% if @realm == "production" -%>
+	if (req.http.Host !~ {"(?x) # Allow inline comments and ignore ws
+	    ^(  # The outer () here are to keep the anchors ^$ separate
+	        # All of the .org domains which all have leading wildcards:
+	        ([^.]+\.)? ( # any leading singular dns label, but not multiple
+	            # all of these have exactly *.domain.org + *.m.domain.org
+	            (m\.)?(wik(i(pedia|data|books|news|quote|source|versity|voyage)|tionary)|mediawiki)
+	            # wikimedia is special: it's like above + *.planet
+	            | ((m|planet)\.)?wikimedia
+	            # these two have only the root wildcard (no m nor planet)
+	            | (wmfusercontent|wikimediafoundation)
+	        )\.org
+	        # w.wiki is separate as a singular hostname, no wildcards:
+	        | w\.wiki
+	    )$
+	"}) {
+	    set req.http.Host = "invalid";
+	    return (synth(400, ""));
+	}
+<% end -%>
 }
 
 // Must be done at the top of vcl_recv, in our varnish-frontend layer only,
@@ -323,7 +368,8 @@ sub vcl_recv {
 			call log_xcps_info;
 		}
 
-		// This unwraps proxy-style URLs and sanitizes the Host header (lowercase, no port, no funny chars)
+		// This unwraps proxy-style URLs and sanitizes the Host header
+		// (lowercase, no port, no funny chars, matches cert SAN, etc)
 		call normalize_request;
 
 		// Possibly switch to separate VCL
