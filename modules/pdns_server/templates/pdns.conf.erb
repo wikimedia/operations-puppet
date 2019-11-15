@@ -54,4 +54,6 @@ gmysql-password=<%= @pdns_db_password %>
 webserver=yes
 api=yes
 api-key=<%= @dns_api_key %>
+webserver-address=<%= @ipaddress %>
+webserver-allow-from=<%- @dns_api_allow_from.each do |entry| -%><%= entry -%>,<%- end -%>
 <% end %>

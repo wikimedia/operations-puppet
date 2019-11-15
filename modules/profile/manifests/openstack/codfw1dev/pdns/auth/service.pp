@@ -8,11 +8,12 @@ class profile::openstack::codfw1dev::pdns::auth::service(
     #  for unclear reasons 'localhost' doesn't work properly
     #  with the version of Mariadb installed on Jessie.
     class {'::profile::openstack::base::pdns::auth::service':
-        host           => $host,
-        db_pass        => $db_pass,
-        db_host        => ipresolve($host,4),
-        pdns_webserver => true,
-        pdns_api_key   => $pdns_api_key,
+        host                => $host,
+        db_pass             => $db_pass,
+        db_host             => ipresolve($host,4),
+        pdns_webserver      => true,
+        pdns_api_key        => $pdns_api_key,
+        pdns_api_allow_from => ['127.0.0.1', ipresolve($host,4), ipresolve($host,6)]
     }
 
     class {'::profile::openstack::base::pdns::auth::monitor::pdns_control':}

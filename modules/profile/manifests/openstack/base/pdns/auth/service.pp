@@ -5,6 +5,7 @@ class profile::openstack::base::pdns::auth::service(
     $db_pass = hiera('profile::openstack::base::pdns::db_pass'),
     $pdns_webserver = hiera('profile::openstack::base::pdns::pdns_webserver', false),
     $pdns_api_key = hiera('profile::openstack::base::pdns::pdns_api_key', ''),
+    $pdns_api_allow_from = hiera('profile::openstack::base::pdns::pdns_api_allow_from', ''),
     ) {
 
     class { '::pdns_server':
@@ -16,6 +17,7 @@ class profile::openstack::base::pdns::auth::service(
         pdns_db_password       => $db_pass,
         dns_webserver          => $pdns_webserver,
         dns_api_key            => $pdns_api_key,
+        dns_api_allow_from     => $pdns_api_allow_from,
     }
 
     ferm::service { 'udp_dns_rec':

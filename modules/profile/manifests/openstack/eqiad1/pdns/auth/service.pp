@@ -12,10 +12,12 @@ class profile::openstack::eqiad1::pdns::auth::service(
     #  for unclear reasons 'localhost' doesn't work properly
     #  with the version of Mariadb installed on Jessie.
     class {'::profile::openstack::base::pdns::auth::service':
-        host           => $host,
-        host_secondary => $host_secondary,
-        db_pass        => $db_pass,
-        db_host        => ipresolve($::fqdn,4),
+        host                => $host,
+        host_secondary      => $host_secondary,
+        db_pass             => $db_pass,
+        db_host             => ipresolve($::fqdn,4),
+        pdns_api_allow_from => ['127.0.0.1', ipresolve($host,4), ipresolve($host,6),
+                                ipresolve($host_secondary,4), ipresolve($host_secondary,6)]
     }
 
     class {'::profile::openstack::base::pdns::auth::monitor::pdns_control':}
