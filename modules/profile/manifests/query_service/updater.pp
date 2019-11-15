@@ -1,5 +1,6 @@
 class profile::query_service::updater (
     String $options = hiera('profile::query_service::updater_options'),
+    Boolean $merging_mode = hiera('profile::query_service::merging_mode', false),
     Stdlib::Port $logstash_logback_port = hiera('logstash_logback_port'),
     Stdlib::Unixpath $package_dir = hiera('profile::query_service::package_dir'),
     Stdlib::Unixpath $data_dir = hiera('profile::query_service::data_dir'),
@@ -62,9 +63,13 @@ class profile::query_service::updater (
         true    => [ '--oldRevision', '3' ],
         default => [],
     }
+    $updater_mode = $merging_mode ? {
+        true    => ['-m', 'MERGING'],
+        default => [],
+    }
 
     # 0 - Main, 120 - Property, 146 - Lexeme
-    $extra_updater_options = $poller_options + $fetch_constraints_options + $dump_options + $revision_options + [ '--entityNamespaces', '0,120,146' ]
+    $extra_updater_options = $updater_mode + $poller_options + $fetch_constraints_options + $dump_options + $revision_options + [ '--entityNamespaces', '0,120,146' ]
 
     class { 'query_service::updater':
         package_dir           => $package_dir,
