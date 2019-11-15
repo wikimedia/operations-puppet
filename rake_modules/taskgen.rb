@@ -1,6 +1,7 @@
 require 'fileutils'
 require 'git'
 require 'set'
+require 'json'
 require 'yaml'
 require 'rake'
 require 'rake/tasklib'
@@ -29,7 +30,8 @@ class TaskGen < ::Rake::TaskLib
       :spec,
       :tox,
       :dhcp,
-      :per_module_tox
+      :per_module_tox,
+      :conftool_schema
     ]
     @git = GitOps.new(path)
     @changed_files = @git.changes_in_head
@@ -312,6 +314,27 @@ class TaskGen < ::Rake::TaskLib
       puts "hieradata/common.yaml: OK".green
     end
     [:common_yaml]
+  end
+
+  def setup_conftool_schema
+    schema_files = filter_files_by("modules/profile/files/conftool/json-schema/**/*.schema")
+    return [] if schema_files.empty?
+    desc 'Check json schema files for conftool'
+    failures = 0
+    task :conftool_schema do
+      schema_files.each do |fn|
+        begin
+          JSON.parse(File.open(fn).read)
+        rescue JSON::ParserError => e
+          puts "Error parsing #{fn}".red
+          puts e.message
+          failures += 1
+        end
+      end
+      abort("JSON schema validation: FAILED".red) if failures
+      puts "JSON schema validation: OK".green
+    end
+    [:conftool_schema]
   end
 
   def setup_spec
