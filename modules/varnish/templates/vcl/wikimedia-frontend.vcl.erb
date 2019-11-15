@@ -311,6 +311,15 @@ sub vcl_recv {
 	unset req.http.X-ATS-Debug; // We use this header for the XDebug Traffic Server plugin
 
 	if (req.restarts == 0) {
+		// Parse X-Connection-Properties and log TLS/HTTP2 connection
+		// information, which is sent via varnishkafka to Analytics.
+		// If we don't do this super-early, some rejected/invalid
+		// requests from early checks won't have any TLS analytics,
+		// which is very confusing and looks like plain-HTTP.
+		if (req.http.X-Connection-Properties) {
+			call log_xcps_info;
+		}
+
 		// This unwraps proxy-style URLs and sanitizes the Host header (lowercase, no port, no funny chars)
 		call normalize_request;
 
@@ -347,11 +356,6 @@ sub vcl_recv {
 	if(req.restarts == 0) {
 		call analytics_recv;
 		call translation_engine_recv;
-		// Parse X-Connection-Properties and log TLS/HTTP2 connection
-		// information, which is also sent via varnishkafka to Analytics.
-		if (req.http.X-Connection-Properties) {
-			call log_xcps_info;
-		}
 	}
 
 	if (req.url ~ "^/beacon\/[^/?]+") {
