@@ -200,6 +200,7 @@ $private_tables = [
     'msg_resource',
     'oathauth_users',
     'oauth_accepted_consumer',
+    'oauth2_access_tokens',
     'oauth_registered_consumer',
     'objectcache',
     'old_growth',
