@@ -1,4 +1,4 @@
 # db1131
-# candidate master for s6
 mariadb::shard: 's6'
+mariadb::mysql_role: 'master'
 mariadb::binlog_format: 'STATEMENT'
