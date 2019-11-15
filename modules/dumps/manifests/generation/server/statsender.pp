@@ -11,8 +11,11 @@ class dumps::generation::server::statsender(
         source => 'puppet:///modules/dumps/generation/get_dump_stats.sh',
     }
 
-    require_package('heirloom-mailx')
-
+    if os_version('debian >= buster') {
+        require_package('s-nail')
+    } else {
+        require_package('heirloom-mailx')
+    }
     cron { 'dumps-stats-sender':
         ensure      => 'present',
         environment => 'MAILTO=ops-dumps@wikimedia.org',
