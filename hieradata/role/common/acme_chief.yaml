@@ -137,6 +137,7 @@ profile::acme_chief::certificates:
         CN: 'tendril.wikimedia.org'
         SNI:
         - 'tendril.wikimedia.org'
+        - 'dbtree.wikimedia.org'
         challenge: dns-01
         authorized_regexes:
         - '^dbmonitor[12]001\.wikimedia\.org$'
