@@ -844,9 +844,14 @@ node /^dumpsdata1001\.eqiad\.wmnet$/ {
     role(dumps::generation::server::primary)
 }
 
+# temporary: for reimaging and new role
+node /^dumpsdata1002\.eqiad\.wmnet$/ {
+    role(spare::system)
+}
+
 # fallback nfs server for dumps generation, also
 # will rsync data to web servers
-node /^dumpsdata100[2,3]\.eqiad\.wmnet$/ {
+node /^dumpsdata1003\.eqiad\.wmnet$/ {
     role(dumps::generation::server::fallback)
 }
 
