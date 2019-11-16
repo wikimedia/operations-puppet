@@ -2163,7 +2163,7 @@ host dumpsdata1001 {
 host dumpsdata1002 {
     hardware ethernet 18:66:DA:FA:5E:A8;
     fixed-address dumpsdata1002.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host dumpsdata1003 {
