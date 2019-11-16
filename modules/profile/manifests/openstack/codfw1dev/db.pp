@@ -8,6 +8,8 @@ class profile::openstack::codfw1dev::db(
     Stdlib::Fqdn        $puppetmaster = lookup('profile::openstack::codfw1dev::puppetmaster::web_hostname'),
     Stdlib::Compat::Array $labweb_hosts = lookup('profile::openstack::codfw1dev::labweb_hosts'),
     Array[Stdlib::Fqdn] $prometheus_nodes  = lookup('prometheus_nodes'),
+    Array[String] $mysql_root_clients = hiera('mysql_root_clients', []),
+    Array[String] $maintenance_hosts = hiera('maintenance_hosts'),
 ) {
     include ::profile::standard
 
@@ -48,4 +50,26 @@ class profile::openstack::codfw1dev::db(
         ensure => 'present',
         rule   => "saddr (${labweb_ips} ${labweb_ip6s}) proto tcp dport (3306) ACCEPT;",
     }
+
+    # mysql monitoring and administration from root clients/tendril
+    $mysql_root_clients_str = join($mysql_root_clients, ' ')
+    ferm::service { 'mysql_admin_standard':
+        proto  => 'tcp',
+        port   => '3306',
+        srange => "(${mysql_root_clients_str})",
+    }
+    ferm::service { 'mysql_admin_alternative':
+        proto  => 'tcp',
+        port   => '3307',
+        srange => "(${mysql_root_clients_str})",
+    }
+
+    # mysql from deployment master servers and maintenance hosts (T98682, T109736)
+    $maintenance_hosts_str = join($maintenance_hosts, ' ')
+    ferm::service { 'mysql_deployment_mwmaint':
+        proto  => 'tcp',
+        port   => '3306',
+        srange => "(\$DEPLOYMENT_HOSTS ${maintenance_hosts_str})",
+    }
+
 }
