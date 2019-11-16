@@ -32,7 +32,7 @@ class profile::analytics::cluster::client(
             require ::profile::kerberos::client
 
             # The following requires a keytab for the analytics user deployed on the host.
-            $kerberos_prefix = "${::profile::kerberos::client::run_command_script} analytics "
+            $kerberos_prefix = "/usr/bin/sudo ${::profile::kerberos::client::run_command_script} analytics "
             sudo::user { 'nagios-check_hadoop_mount_readability':
                 user       => 'nagios',
                 privileges => ["ALL = NOPASSWD: ${::profile::kerberos::client::run_command_script} analytics /usr/local/lib/nagios/plugins/check_mountpoint_readability"],
