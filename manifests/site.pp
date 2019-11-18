@@ -332,11 +332,6 @@ node /^cumin[12]001\.(eqiad|codfw)\.wmnet$/ {
 
 # MariaDB 10
 
-# Spare codfw hosts to be provisioned #T234608
-node /^db21(35)\.codfw\.wmnet/ {
-    role(spare::system)
-}
-
 # Spare external store eqiad hosts to be provisioned #T235659
 node /^es10(20|21|22|23|24|25)\.eqiad\.wmnet/ {
     role(spare::system)
@@ -644,7 +639,7 @@ node 'db1133.eqiad.wmnet' {
     }
 }
 
-node /^db20(70)\.codfw\.wmnet/ {
+node /^db2(070|135)\.codfw\.wmnet/ {
     class { '::role::mariadb::misc':
         shard => 'm5',
     }
