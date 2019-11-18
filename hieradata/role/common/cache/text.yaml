@@ -279,14 +279,14 @@ cache::alternate_domains:
     director: 'gerrit'
   git.wikimedia.org:
     director: 'phabricator'
-  grafana-beta.wikimedia.org:
-    director: 'grafana1002'
-    caching: 'pass'
   grafana-labs-admin.wikimedia.org:
     director: 'labmon1001'
     caching: 'pass'
   grafana-labs.wikimedia.org:
     director: 'labmon1001'
+    caching: 'pass'
+  grafana-next.wikimedia.org:
+    director: 'grafana1002'
     caching: 'pass'
   grafana.wikimedia.org:
     director: 'grafana1001'
