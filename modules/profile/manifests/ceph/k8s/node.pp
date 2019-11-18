@@ -70,4 +70,11 @@ class profile::ceph::k8s::node(
         path    => '/usr/sbin/ebtables-legacy',
         require => Package['kubeadm'],   # ebtables is a kubelet dependency, which is a kubeadm dep
     }
+
+    # Configure ferm to preserve the docker iptable chains
+    ferm::conf { 'docker-preserve':
+        ensure => present,
+        prio   => 20,
+        source => 'puppet:///modules/profile/ceph/docker-preserve',
+    }
 }
