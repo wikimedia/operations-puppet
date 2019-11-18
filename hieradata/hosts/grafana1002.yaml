@@ -1,1 +1,9 @@
 profile::grafana::readonly_domain: grafana-beta.wikimedia.org
+profile::grafana::config:
+  panels:
+    disable_sanitize_html: true
+
+lookup_options:
+  profile::grafana::config:
+    merge:
+      strategy: deep
