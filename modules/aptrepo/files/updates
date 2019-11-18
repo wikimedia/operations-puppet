@@ -245,6 +245,16 @@ Architectures: amd64
 VerifyRelease: 7EA0A9C3F273FCD8
 ListShellHook: grep-dctrl -e -P '^docker-ce|docker-ce-cli|containerd\.io$' || [ $? -eq 1 ]
 
+Name: thirdparty/openstack-ocata-stretch
+Method: http://debian.ultimum.io/
+Components: ocata>thirdparty/openstack-ocata-stretch ocata-backports>thirdparty/openstack-ocata-stretch
+UDebComponents:
+Suite: debian-stretch
+Architectures: amd64 source
+VerifyRelease: A01DE90EC8DA19A7
+Config: Acquire::ForceIPv4=true
+ListHook: /usr/local/bin/reprepro-update-filter-wmcs-openstack-ocata.sh
+
 Name: amd-rocm271
 Method: http://repo.radeon.com/rocm/apt/2.7.1/
 Suite: xenial

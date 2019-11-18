@@ -82,6 +82,7 @@ Components: main
  thirdparty/k8s
  thirdparty/mono-project-stretch
  thirdparty/oath
+ thirdparty/openstack-ocata-stretch
  thirdparty/php72
  thirdparty/tor
 UDebComponents: main component/node10
@@ -99,6 +100,7 @@ Update:
  mono-project-stretch
  tor-stretch
  thirdparty/docker-ci
+ thirdparty/openstack-ocata-stretch
 # NOTE:  Cloudera does not (yet) provide Stretch packages.  We use the Jessie ones,
 # along with a fake equivs to satisfy hadoop-mapreduce's (unnecessary) dependency on libssl1.0.0
 # which is not available in Stretch.  Once Cloudera releases Stretch packages, we can
