@@ -677,8 +677,8 @@ class WMFBackup:
             if self.name != match.group(1):
                 continue
             timestamp = datetime.datetime.strptime(match.group(2), DATE_FORMAT)
-            if (timestamp < (datetime.datetime.now() - datetime.timedelta(days=days)) and
-               timestamp > datetime.datetime(2018, 1, 1)):
+            if (timestamp < (datetime.datetime.now() - datetime.timedelta(days=days))
+               and timestamp > datetime.datetime(2018, 1, 1)):
                 self.logger.debug('purging backup {}'.format(path))
                 try:
                     if os.path.isdir(path):

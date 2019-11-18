@@ -32,7 +32,7 @@ def get_address(contact_name):
     with open(CONTACTS_FILE, 'r') as contacts_data:
         contact_data = contacts_data.read()
     contact_data = contact_data.split('contact_name')
-    regex = re.compile('address1\s+[\da-f]+@.*(.*?)')
+    regex = re.compile(r'address1\s+[\da-f]+@.*(.*?)')
     for contact in contact_data:
         if contact_name + '\n' in contact:
             address1 = regex.search(contact).group(0).split('address1')
@@ -78,7 +78,7 @@ def list_contacts_sms(CONTACTS_FILE):
         contact_data = contact_data.split('define contact')
     for contact in contact_data:
         # print(contact)
-        regex = re.compile('address1\s+[\da-f]+@.*(.*?)')
+        regex = re.compile(r'address1\s+[\da-f]+@.*(.*?)')
         try:
             if regex.search(contact):
                 contact_name = contact.split('contact_name')

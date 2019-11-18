@@ -103,8 +103,7 @@ def send_email(email_address, principal, password, realm):
     except smtplib.SMTPException as e:
         print(
             "Error: unable to send email to " + email_address + ". Reason: "
-            + str(e) +
-            "\nThe easiest option is to fix the problem with SMTP, and then "
+            + str(e) + "\nThe easiest option is to fix the problem with SMTP, and then "
             "delete and re-create the principal.")
 
 

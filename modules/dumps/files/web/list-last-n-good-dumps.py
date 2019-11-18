@@ -3,11 +3,12 @@
 generate a list of directories and/or files of the last
 so many good dump runs
 """
-import re
-import sys
 import getopt
 import os
-from subprocess import Popen, PIPE
+import re
+import sys
+
+from subprocess import PIPE, Popen
 
 
 #############################################################
@@ -139,8 +140,8 @@ class OutputPaths():
     def get_output_paths(self, num, temp=True):
         """return list of all output file paths"""
         return [self.get_abs_outdirpath(
-            fillin_fname_templ(self.templs[templ_name], num) +
-            (".tmp" if temp else "")) for templ_name in self.templs.keys()]
+            fillin_fname_templ(self.templs[templ_name], num)
+            + (".tmp" if temp else "")) for templ_name in self.templs.keys()]
 
     def list_wanted(self, name):
         """return true if an outputted list of the specific type is wanted
@@ -154,8 +155,8 @@ class OutputPaths():
         """list all dump subdirs matching the given regexp"""
         subdirs = os.listdir(self.dumpsdir)
         return [subdir for subdir in subdirs
-                if re.match(self.match, subdir) and
-                os.path.isdir(os.path.join(self.dumpsdir, subdir))]
+                if re.match(self.match, subdir)
+                and os.path.isdir(os.path.join(self.dumpsdir, subdir))]
 
 
 class DumpList():
@@ -422,9 +423,9 @@ class DumpList():
                 # the moment, we don't care.
                 return
             raise DumpListError(
-                "command '" + command_string +
-                ("' failed with return code %s " % proc.returncode) +
-                " and error '" + error.decode('utf-8') + "'")
+                "command '" + command_string
+                + ("' failed with return code %s " % proc.returncode)
+                + " and error '" + error.decode('utf-8') + "'")
 
     def get_toplevelfiles(self):
         """

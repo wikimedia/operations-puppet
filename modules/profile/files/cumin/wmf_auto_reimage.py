@@ -62,8 +62,8 @@ def parse_args():
         parser.error("Duplicate hosts detected: {dup}".format(dup=duplicates))
 
     # Ensure Phab task is properly formatted
-    if (args.phab_task_id is not None and
-            lib.PHAB_TASK_PATTERN.search(args.phab_task_id) is None):
+    if (args.phab_task_id is not None
+            and lib.PHAB_TASK_PATTERN.search(args.phab_task_id) is None):
         parser.error(("Invalid Phabricator task ID '{task}', expected in "
                       "the form T12345").format(task=args.phab_task_id))
 

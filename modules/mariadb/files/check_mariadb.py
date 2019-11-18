@@ -91,8 +91,8 @@ class WMFMariaDB:
         return self is not None and self.host is not None and \
             other_instance is not None and other_instance.host is not None and \
             self.host == other_instance.host and self.port == other_instance.port and \
-            ((self.socket is None and other_instance.socket is None) or
-             self.socket == other_instance.socket)
+            ((self.socket is None and other_instance.socket is None)
+             or self.socket == other_instance.socket)
 
     @staticmethod
     def get_credentials(host, port, database):
@@ -510,7 +510,7 @@ def get_status(options):
         uptime = get_var(mysql, 'Uptime', type='STATUS')
         ssl = get_var(mysql, 'Ssl_cipher', type='STATUS')
         ssl_expiration = get_var(mysql, 'Ssl_server_not_after', type='STATUS')
-        threads_connected = get_var(mysql, 'Threads\_connected', type='STATUS')
+        threads_connected = get_var(mysql, r'Threads\_connected', type='STATUS')
         total_queries = get_var(mysql, 'Queries', type='STATUS')
         now = time.time()  # get the time here for more exact QPS calculations
         if options.slave_status:
@@ -644,8 +644,8 @@ def icinga_check(options):
 
     # QPS and latencies (cannot yet generate alarms)
     # Note the monitoring will create ~10 QPS more than if monitoring wasn't active
-    qps = ((second_status['total_queries'] - status['total_queries']) /
-           (second_status['datetime'] - status['datetime']))
+    qps = ((second_status['total_queries'] - status['total_queries'])
+           / (second_status['datetime'] - status['datetime']))
     ok_msg.append('{:.2f} QPS'.format(qps))
 
     ok_msg.append('connection latency: {:.6f}s'.format(status['connection_latency']))

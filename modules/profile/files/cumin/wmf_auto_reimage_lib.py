@@ -625,15 +625,14 @@ def puppet_check_cert_to_sign(host, fingerprint):
     else:
         cert_line = ''
 
-    if (cert_line.startswith('  "{host}"'.format(host=host)) and
-            (fingerprint is None or fingerprint in cert_line)):
+    if (cert_line.startswith('  "{host}"'.format(host=host))
+            and (fingerprint is None or fingerprint in cert_line)):
         return 0
-    elif (cert_line.startswith('+ "{host}"'.format(host=host)) and
-          (fingerprint is None or fingerprint in cert_line)):
+    if (cert_line.startswith('+ "{host}"'.format(host=host))
+            and (fingerprint is None or fingerprint in cert_line)):
         print_line('Puppet cert already signed', host=host)
         return 2
-    else:
-        raise RuntimeError('Unable to find cert to sign in: {line}'.format(line=cert_line))
+    raise RuntimeError('Unable to find cert to sign in: {line}'.format(line=cert_line))
 
 
 def puppet_remove_local_cert(host, installer=False):

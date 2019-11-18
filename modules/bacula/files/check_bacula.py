@@ -331,8 +331,8 @@ def calculate_success_rate(backups, from_seconds_ago, to_seconds_ago):
     failures = 0
     for backup_name in backups:
         for job in backups[backup_name]['status']:
-            if (older(iso_date_to_datetime(job['starttime']), from_seconds_ago) or
-                    not older(iso_date_to_datetime(job['starttime']), to_seconds_ago)):
+            if (older(iso_date_to_datetime(job['starttime']), from_seconds_ago)
+                    or not older(iso_date_to_datetime(job['starttime']), to_seconds_ago)):
                 continue
             # success conditions for full backups
             if job['level'] == 'F':

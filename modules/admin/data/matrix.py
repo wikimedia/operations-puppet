@@ -92,9 +92,7 @@ for group_name in sorted(groups.keys()):
 
     members = set(users) & set(group_members)
     print(GROUP_BEGIN + ROW_SEPARATOR.join(
-        [group_name] +
-        ['OK' if u in members else ' '
-            for u in users]))
+        [group_name] + ['OK' if u in members else ' ' for u in users]))
 
 if args.wikitext:
     print('|}')

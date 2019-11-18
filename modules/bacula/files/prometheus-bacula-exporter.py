@@ -8,7 +8,7 @@ import signal
 import subprocess
 import sys
 import time
-from prometheus_client.core import GaugeMetricFamily, REGISTRY, CounterMetricFamily
+from prometheus_client.core import GaugeMetricFamily, REGISTRY
 from prometheus_client import start_http_server
 
 DEFAULT_PORT = 9133  # http port to listen to
@@ -170,9 +170,8 @@ class Bacula(object):
         with the dictionary key 'executions'
         """
         pool = Pool(processes=self.parallel_threads)
-        results = [pool.apply_async(self.get_job_executions, args=(name,),
-                                    callback=self.add_job_result)
-                   for name in self.backups]
+        for name in self.backups:
+            pool.apply_async(self.get_job_executions, args=(name,), callback=self.add_job_result)
         pool.close()
         pool.join()
 
@@ -191,11 +190,11 @@ class Bacula(object):
         # reverse order)
         for i in range(len(executions) - 1, -1, -1):
             execution = executions[i]
-            if (execution['type'] == 'B' and execution['jobstatus'] == 'T' and
-                    latest_good_backup is None):
+            if (execution['type'] == 'B' and execution['jobstatus'] == 'T'
+                    and latest_good_backup is None):
                 latest_good_backup = execution['endtime']
-            if (execution['type'] == 'B' and execution['level'] == 'F' and
-                    execution['jobstatus'] == 'T' and execution['jobbytes'] != '0'):
+            if (execution['type'] == 'B' and execution['level'] == 'F'
+                    and execution['jobstatus'] == 'T' and execution['jobbytes'] != '0'):
                 latest_full_good_backup = execution['endtime']
                 break
         return latest_good_backup, latest_full_good_backup
@@ -205,8 +204,8 @@ class Bacula(object):
         Returns true if given timestamp is older than the given time interval in seconds,
         false otherwise
         """
-        return (timestamp <= datetime.datetime.now() -
-                datetime.timedelta(seconds=interval_in_seconds))
+        return (timestamp <= datetime.datetime.now()
+                - datetime.timedelta(seconds=interval_in_seconds))
 
     def calculate_success_rate(self, from_seconds_ago, to_seconds_ago):
         """

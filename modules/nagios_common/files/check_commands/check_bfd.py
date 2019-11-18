@@ -51,8 +51,8 @@ def main():
             adminDown_count += 1
 
     if return_code == 0:
-        print('OK:' + ' UP: ' + str(up_count) + ' AdminDown: ' +
-              str(adminDown_count) + ' Down: ' + str(down_count))
+        print('OK:' + ' UP: ' + str(up_count) + ' AdminDown: '
+              + str(adminDown_count) + ' Down: ' + str(down_count))
         print("OK: UP: {} AdminDown: {} Down: {}".format(up_count, adminDown_count, down_count))
     else:
         print("CRIT: Down: {}".format(down_count))

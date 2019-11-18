@@ -89,8 +89,8 @@ def get_data(host, port, database, user, password, dc):
             sys.exit(5)
         data = cursor.fetchall()
         # Check we have a number of reasonable results depending on the dc
-        if (((len(data) < 10 or len(data) > 1000) and dc in ['eqiad', 'codfw']) or
-                (len(data) > 0 and dc not in ['eqiad', 'codfw'])):
+        if (((len(data) < 10 or len(data) > 1000) and dc in ['eqiad', 'codfw'])
+                or (len(data) > 0 and dc not in ['eqiad', 'codfw'])):
             logger.error('The number of obtained results is different than expected')
             sys.exit(6)
     db.close()

@@ -80,7 +80,7 @@ ACCOUNT_CREATION_SQL = {
         GRANT labsdbuser TO '{username}'@'%';
         SET DEFAULT ROLE labsdbuser FOR '{username}'@'%';
     """,
-    'legacy': """
+    'legacy': r"""
         CREATE USER '{username}'@'%'
                IDENTIFIED BY PASSWORD '{password_hash}';
         GRANT SELECT, SHOW VIEW ON `%\_p`.* TO '{username}'@'%';

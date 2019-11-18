@@ -29,7 +29,7 @@ def main():
     kernel_version_uname = os.uname().version
 
     for i in kernel_version_uname.split():
-        if re.search("^[0-9]+\.[0-9]+\.[0-9]+-", i):
+        if re.search(r'^[0-9]+\.[0-9]+\.[0-9]+-', i):
             current_kernelpackage_version = i
             break
     else:

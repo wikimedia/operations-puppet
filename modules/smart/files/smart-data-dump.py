@@ -241,7 +241,7 @@ def _parse_smart_attributes(output, disk, attributes):
         try:
             metric_value = raw_value.split(' ')[0]
             attributes[metric_name].labels(disk.disk_id).set(metric_value)
-        except ValueError as e:
+        except ValueError:
             log.error('Unparseable %r', line)
 
 

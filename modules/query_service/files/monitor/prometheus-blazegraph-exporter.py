@@ -19,12 +19,12 @@ import argparse
 import logging
 import sys
 import time
-import requests
-import re
 
-from dateutil.parser import parse
 from xml.etree import ElementTree
 
+import requests
+
+from dateutil.parser import parse
 from prometheus_client import start_http_server, Summary
 from prometheus_client.core import CounterMetricFamily, GaugeMetricFamily, REGISTRY
 
@@ -83,7 +83,7 @@ class PrometheusBlazeGraphExporter(object):
                 # empty line finishes the table
                 if len(alloc_line.strip()) == 0:
                     break
-                parts = re.split("\s+", alloc_line)
+                parts = alloc_line.split()
 
                 # second value must be a digit
                 if not parts[1].isdigit():

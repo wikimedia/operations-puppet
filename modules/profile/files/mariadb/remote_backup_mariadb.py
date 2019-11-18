@@ -280,8 +280,8 @@ def get_prepare_cmd(section, config):
     cmd.extend(['/usr/bin/python3', '/usr/local/bin/backup_mariadb.py'])
     cmd.extend([section, '--type', config['type']])
     # snapshots have to be "only_postprocess"ed always
-    if (config['type'] == 'snapshot' or
-            ('only_postprocess' in config and config['only_postprocess'])):
+    if (config['type'] == 'snapshot'
+            or ('only_postprocess' in config and config['only_postprocess'])):
         cmd.append('--only-postprocess')
 
     cmd.extend(['--backup-dir', DEFAULT_TRANSFER_DIR])
@@ -392,8 +392,8 @@ def run(section, config, port):
     given config
     """
 
-    if (('only_postprocess' in config and config['only_postprocess']) or
-            config['type'] != 'snapshot'):
+    if (('only_postprocess' in config and config['only_postprocess'])
+            or config['type'] != 'snapshot'):
         result = prepare_backup(section, config)
     else:
         result, path = run_transfer(section, config, port)

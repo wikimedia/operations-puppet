@@ -2,11 +2,11 @@
 
 import argparse
 import datetime
-import operator
 import logging
+import operator
 import os
-import sys
 import subprocess
+import sys
 
 from dateutil.parser import parse
 
@@ -198,7 +198,7 @@ def main():
     logging.debug(args)
     try:
         vg, lv = args.volume.split('/')
-    except:
+    except Exception:
         logging.critical('source is a bad format {}'.format(args.volume))
         help()
 

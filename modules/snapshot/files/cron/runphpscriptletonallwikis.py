@@ -112,7 +112,7 @@ def do_main():
                                                  ["wikilist=", "multiversion",
                                                   "scriptpath=", "scriptlet=",
                                                   "scriptletfile="])
-    except:
+    except Exception:
         usage("Unknown option specified")
 
     for (opt, val) in options:

@@ -51,7 +51,7 @@ class KubeClient(object):
             for servicedata in servicelist['items']:
                 services.append(KubeClient._resp_to_service(servicedata))
             return services
-        except:
+        except Exception:
             log.error("The services list was not correctly parsed.")
             raise
 

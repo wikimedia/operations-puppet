@@ -303,8 +303,8 @@ class DumpsCleaner():
         dirpath = os.path.join(self.dumpsdir, wiki, dirname)
         files = os.listdir(dirpath)
         files = [filename for filename in files
-                 if not is_keeper(filename, self.preserve_patterns) or
-                 file_is_redundant(filename, files)]
+                 if not is_keeper(filename, self.preserve_patterns)
+                 or file_is_redundant(filename, files)]
         for filename in files:
             to_remove = os.path.join(dirpath, filename)
             if self.dryrun:
