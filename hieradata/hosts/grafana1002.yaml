@@ -1,7 +1,11 @@
 profile::grafana::readonly_domain: grafana-beta.wikimedia.org
+
+# TODO: merge these to the defaults when grafana 6.x is the used everywhere.
 profile::grafana::config:
   panels:
     disable_sanitize_html: true
+  security:
+    cookie_secure: true
 
 lookup_options:
   profile::grafana::config:
