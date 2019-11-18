@@ -247,7 +247,7 @@ ListShellHook: grep-dctrl -e -P '^docker-ce|docker-ce-cli|containerd\.io$' || [ 
 
 Name: thirdparty/openstack-ocata-stretch
 Method: http://debian.ultimum.io/
-Components: ocata>thirdparty/openstack-ocata-stretch ocata-backports>thirdparty/openstack-ocata-stretch
+Components: ocata>thirdparty/openstack-ocata-stretch
 UDebComponents:
 Suite: debian-stretch
 Architectures: amd64 source
