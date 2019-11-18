@@ -20,7 +20,7 @@ class profile::graphite::base(
     $storage_dir      = '/var/lib/carbon',
     $auth             = true,
     $hostname         = 'graphite.wikimedia.org',
-    $cors_origins     = [ 'https://grafana.wikimedia.org' ],
+    $cors_origins     = [ 'https://grafana.wikimedia.org', 'https://grafana-beta.wikimedia.org' ],
     $c_relay_settings = {},
     $cluster_servers  = undef,
     $uwsgi_max_request_duration_seconds = undef,  # lint:ignore:wmf_styleguide
