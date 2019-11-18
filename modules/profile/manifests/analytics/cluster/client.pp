@@ -35,7 +35,7 @@ class profile::analytics::cluster::client(
             $kerberos_prefix = "/usr/bin/sudo ${::profile::kerberos::client::run_command_script} analytics "
             sudo::user { 'nagios-check_hadoop_mount_readability':
                 user       => 'nagios',
-                privileges => ["ALL = NOPASSWD: ${::profile::kerberos::client::run_command_script} analytics /usr/local/lib/nagios/plugins/check_mountpoint_readability"],
+                privileges => ["ALL = NOPASSWD: ${::profile::kerberos::client::run_command_script} analytics /usr/local/lib/nagios/plugins/check_mountpoint_readability ${cdh::hadoop::mount::mount_point}"],
             }
         } else {
             $kerberos_prefix = ''
