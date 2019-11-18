@@ -183,10 +183,10 @@ END
     output = []
 
     if server == 'apache'
-      if ciphersuite == 'strong'
-        output.push('SSLProtocol all -SSLv2 -SSLv3 -TLSv1 -TLSv1.1')
-      else
+      if ciphersuite == 'compat'
         output.push('SSLProtocol all -SSLv2 -SSLv3')
+      else
+        output.push('SSLProtocol all -SSLv2 -SSLv3 -TLSv1 -TLSv1.1')
       end
       output.push("SSLCipherSuite #{cipherlist}")
       # Note: missing config to restrict ECDH curves
@@ -198,10 +198,10 @@ END
         output.push("Header always set Strict-Transport-Security \"#{hsts_val}\"")
       end
     else # nginx
-      if ciphersuite == 'strong'
-        output.push('ssl_protocols TLSv1.2;')
-      else
+      if ciphersuite == 'compat'
         output.push('ssl_protocols TLSv1 TLSv1.1 TLSv1.2;')
+      else
+        output.push('ssl_protocols TLSv1.2;')
       end
       output.push("ssl_ciphers #{cipherlist};")
       if libssl_has_x25519
