@@ -20,6 +20,11 @@ metadata:
     size: 3
 
 # Tables we 1:1 to a view
+#
+#  Note that the maintain-view script will ignore tables
+#   that don't exist.  So for example globalblocks is only
+#   present in centralauth but we want it there so it stays
+#   in this list.
 fullviews:
   - abuse_filter_action
   - article_assessment
@@ -125,6 +130,7 @@ fullviews:
   - global_group_permissions
   - global_group_restrictions
   - global_user_groups
+  - globalblocks
   - localuser
   - wikiset
   - wb_changes
