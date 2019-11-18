@@ -1,5 +1,11 @@
-class mediawiki::maintenance::wikidata( $ensure = present, $ensure_testwiki = present ) {
-    require ::mediawiki::users
+class profile::mediawiki::maintenance::wikidata {
+    $ensure = mediawiki::state('primary_dc') ? {
+        $::site => 'present',
+        default => 'absent',
+    }
+    # We don't need to get more specific here at the moment.
+    $ensure_testwiki = $ensure
+    require ::profile::mediawiki::common
 
     $dispatch_log_file = '/var/log/wikidata/dispatchChanges-wikidatawiki.log'
     $test_dispatch_log_file = '/var/log/wikidata/dispatchChanges-testwikidatawiki.log'
@@ -69,4 +75,11 @@ class mediawiki::maintenance::wikidata( $ensure = present, $ensure_testwiki = pr
         require => File['/var/log/wikidata'],
     }
 
+    # Update the cached query service maxlag value every minute
+    # We don't need to ensure present/absent as the wrapper will ensure nothing
+    # is run unless we're in the master dc
+    profile::mediawiki::periodic_job { 'wikidata-updateQueryServiceLag':
+        command  => '/usr/local/bin/mwscript extensions/Wikidata.org/maintenance/updateQueryServiceLag.php --wiki wikidatawiki --cluster wdqs --prometheus prometheus.svc.eqiad.wmnet --prometheus prometheus.svc.codfw.wmnet >> /var/log/wikidata/updateQueryServiceLag.log 2>&1',
+        interval => '*-*-* *:*:00'
+    }
 }
