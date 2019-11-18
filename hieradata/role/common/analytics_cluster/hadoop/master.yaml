@@ -62,5 +62,5 @@ profile::kerberos::keytabs::keytabs_metadata:
   - role: 'analytics'
     owner: 'analytics'
     group: 'analytics'
-    filename: 'analytics'
+    filename: 'analytics.keytab'
     parent_dir_grp: 'analytics'
