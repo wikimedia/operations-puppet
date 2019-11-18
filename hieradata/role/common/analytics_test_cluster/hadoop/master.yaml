@@ -64,5 +64,10 @@ profile::kerberos::keytabs::keytabs_metadata:
     group: 'hdfs'
     filename: 'HTTP.keytab'
     parent_dir_grp: 'hadoop'
+  - role: 'analytics'
+    owner: 'analytics'
+    group: 'analytics'
+    filename: 'analytics'
+    parent_dir_grp: 'analytics'
 
 profile::base::notifications: disabled
