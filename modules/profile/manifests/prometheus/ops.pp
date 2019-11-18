@@ -907,13 +907,13 @@ class profile::prometheus::ops (
     prometheus::jmx_exporter_config{ "wdqs_blazegraph_${::site}":
         dest              => "${targets_path}/jmx_wdqs_blazegraph_${::site}.yaml",
         class_name        => 'profile::query_service::blazegraph',
-        instance_selector => 'wdqs_blazegraph',
+        instance_selector => 'wdqs-blazegraph',
         site              => $::site,
     }
     prometheus::jmx_exporter_config { "wdqs_updater_${::site}":
         dest              => "${targets_path}/jmx_wdqs_updater_${::site}.yaml",
         class_name        => 'profile::query_service::updater',
-        instance_selector => 'wdqs_updater',
+        instance_selector => 'wdqs-updater',
         site              => $::site,
     }
 
