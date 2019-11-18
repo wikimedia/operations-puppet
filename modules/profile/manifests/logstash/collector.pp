@@ -447,26 +447,6 @@ class profile::logstash::collector (
         increment       => [ '%{channel}.%{level}' ],
     }
 
-    logstash::output::statsd { 'OOM_channel_rate':
-        ensure          => absent,
-        host            => '127.0.0.1',
-        port            => '9125',
-        guard_condition => '[type] == "hhvm" and [message] =~ "request has exceeded memory limit"',
-        namespace       => 'logstash.rate',
-        sender          => 'oom',
-        increment       => [ '%{level}' ],
-    }
-
-    logstash::output::statsd { 'HHVM_channel_rate':
-        ensure          => absent,
-        host            => '127.0.0.1',
-        port            => '9125',
-        guard_condition => '[type] == "hhvm" and [message] !~ "request has exceeded memory limit"',
-        namespace       => 'logstash.rate',
-        sender          => 'hhvm',
-        increment       => [ '%{level}' ],
-    }
-
     logstash::output::statsd { 'Apache2_channel_rate':
         host            => '127.0.0.1',
         port            => '9125',
