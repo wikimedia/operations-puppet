@@ -127,4 +127,22 @@
     <logger name="com.bigdata.util.concurrent.Haltable" level="off"/>
     <logger name="com.bigdata.rdf.internal.LexiconConfiguration" level="off"/> <!-- disabled temp. ref: T207643 -->
 
+    <!-- Needed for testing the merging updater: https://phabricator.wikimedia.org/T231411 -->
+    <appender name="UPDATED_ENTITY_IDS" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file><%= @log_dir %>/<%= @title %>-updated-entity-ids-%d{yyyy-MM-dd}.%i.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- daily rollover -->
+            <fileNamePattern>updatedEntityIds.%d{yyyy-MM-dd}.gz</fileNamePattern>
+            <maxFileSize>100MB</maxFileSize>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%msg%n</pattern>
+        </encoder>
+    </appender>
+    <!-- additivity=false ensures entityIds only go to the corresponding log -->
+    <logger name="UPDATED_ENTITY_IDS" level="INFO" additivity="false">
+        <appender-ref ref="UPDATED_ENTITY_IDS"/>
+    </logger>
+
 </configuration>
