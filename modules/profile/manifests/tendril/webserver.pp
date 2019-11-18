@@ -26,6 +26,8 @@ class profile::tendril::webserver (
                     ],
     }
 
+    $ssl_settings = ssl_ciphersuite('apache', 'strong', true)
+
     httpd::site { 'dbtree.wikimedia.org':
         content => template('dbtree/dbtree.wikimedia.org.erb'),
     }
