@@ -16,7 +16,7 @@ if [ -z "$TERM" ] || [ "$TERM" = unknown ] || [ "$TERM" = dumb ]; then
 	export TERM=dumb
 fi
 
-# Allow overriding of PHP version or flags (e.g. "hhvm -d hhvm.stats.enable_hot_profiler=1")
+# Allow overriding of PHP version or flags 
 [ "$PHP" = "" ] && PHP=php
 
 if [ "`whoami`" != "$MEDIAWIKI_WEB_USER" ] ; then

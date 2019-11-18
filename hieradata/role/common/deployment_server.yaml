@@ -19,20 +19,6 @@ admin::groups:
 # screen sessions are common on deployment servers (T165348)
 monitor_screens: false
 
-# LightProcesses print an alarming error message when HHVM shuts down,
-# which is often on the deployment servers, which run a bunch of scripts
-# with a short runtime as part of the deployment process.
-mediawiki::hhvm::extra_fcgi:
-  hhvm:
-    server:
-      light_process_count: 0
-      light_process_file_prefix: ''
-mediawiki::hhvm::extra_cli:
-  hhvm:
-    server:
-      light_process_count: 0
-      light_process_file_prefix: ''
-
 # We still don't enable fpm here
 profile::mediawiki::php::enable_fpm: false
 

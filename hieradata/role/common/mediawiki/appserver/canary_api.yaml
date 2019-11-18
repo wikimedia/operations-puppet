@@ -13,14 +13,12 @@ profile::mediawiki::httpd::logrotate_retention: 12
 profile::lvs::realserver::pools:
   api:
     services:
-      - hhvm
       - php7.2-fpm
       - apache2
       - mcrouter
       - nutcracker
   "api-https":
     services:
-      - hhvm
       - php7.2-fpm
       - apache2
       - mcrouter

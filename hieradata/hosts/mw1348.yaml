@@ -1,3 +1,0 @@
-profile::mediawiki::apc_shm_size: 4096M
-profile::mediawiki::install_hhvm: false
-profile::mediawiki::vhost_feature_flags: {}

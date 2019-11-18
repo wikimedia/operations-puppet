@@ -4,17 +4,11 @@ admin::groups:
   - perf-roots
 
 nutcracker::verbosity: "4"
-mediawiki::hhvm::extra_fcgi:
-  hhvm:
-    server:
-      connection_timeout_seconds: 86400
-  max_execution_time: 86400
 
 profile::lvs::realserver::use_safe_restart: true
 profile::lvs::realserver::pools:
   jobrunner:
     services:
-      - hhvm
       - php7.2-fpm
       - apache2
       - mcrouter
@@ -22,7 +16,6 @@ profile::lvs::realserver::pools:
       - nginx
   videoscaler:
     services:
-      - hhvm
       - php7.2-fpm
       - apache2
       - mcrouter

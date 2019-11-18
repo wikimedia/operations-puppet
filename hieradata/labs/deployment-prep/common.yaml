@@ -218,16 +218,6 @@ profile::memcached::port: '11211'
 "misc::syslog-server::basepath": /data/project/syslog
 "profile::cxserver::apertium_uri": http://apertium-beta.wmflabs.org
 role::deployment::mediawiki::key_fingerprint: f0:54:06:fa:17:27:97:a2:cc:69:a0:a7:df:4c:0a:e3
-mediawiki::hhvm::extra_fcgi:
-    hhvm:
-        xenon:
-          # Beta Cluster: Sample an HHVM thread once every 30 seconds
-          # (in production, this is once every 600s/10min)
-          # https://phabricator.wikimedia.org/T195312
-          period: 30
-        pcre_cache_type: lru
-        enable_reusable_tc: true
-
 # Enable php-fpm
 profile::mediawiki::php::enable_fpm: true
 profile::php_fpm::fcgi_port: 8000

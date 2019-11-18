@@ -5,7 +5,7 @@ admin::groups:
   - snapshot-users
 profile::mediawiki::php::enable_fpm: false
 profile::mediawiki::php::php_version: "7.2"
-profile::base::debdeploy::filter_services:
-  hhvm:
-    - '*'
 profile::mediawiki::apc_shm_size: 128M
+profile::base::debdeploy::filter_services:
+  php7.2-fpm:
+    - '*'

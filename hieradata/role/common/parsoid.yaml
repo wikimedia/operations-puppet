@@ -19,7 +19,6 @@ profile::parsoid::use_php: true
 has_lvs: true
 
 profile::mediawiki::php::php_version: "7.2"
-profile::mediawiki::install_hhvm: false
 profile::mediawiki::webserver::has_tls: true
 
 nutcracker::verbosity: "4"
