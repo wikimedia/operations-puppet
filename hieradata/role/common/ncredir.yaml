@@ -1,3 +1,2 @@
 mtail::service_ensure: absent
 profile::ncredir::monitoring: true
-profile::ncredir::hsts_max_age: 604800
