@@ -24,3 +24,4 @@ profile::idp::ldap_attributes:
   - mail
   - mfa-method
 profile::tlsproxy::instance::ssl_compatibility_mode: strong
+profile::base::enable_adduser: true
