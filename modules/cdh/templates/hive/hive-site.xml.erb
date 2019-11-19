@@ -88,6 +88,10 @@ if (@metastore_host == @fqdn)
     <name>hive.metastore.sasl.enabled</name>
     <value><%= @hive_metastore_sasl_enabled %></value>
   </property>
+  <property>
+    <name>hive.server2.thrift.sasl.qop</name>
+    <value>auth-conf</value>
+  </property>
 <% end -%>
 
   <property>
