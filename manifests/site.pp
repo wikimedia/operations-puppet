@@ -209,7 +209,7 @@ node 'bromine.eqiad.wmnet', 'vega.codfw.wmnet' {
     role(webserver_misc_static)
 }
 
-node 'centrallog1001.eqiad.wmnet' {
+node 'centrallog1001.eqiad.wmnet', 'centrallog2001.codfw.wmnet' {
     role(syslog::centralserver)
 }
 
@@ -2047,10 +2047,6 @@ node /^webperf[12]001\.(codfw|eqiad)\.wmnet/ {
 # VMs for performance team profiling tools (T194390)
 node /^webperf[12]002\.(codfw|eqiad)\.wmnet/ {
     role(webperf::profiling_tools)
-}
-
-node 'centrallog2001.codfw.wmnet' {
-    role(syslog::centralserver)
 }
 
 # https://www.mediawiki.org/wiki/Parsoid
