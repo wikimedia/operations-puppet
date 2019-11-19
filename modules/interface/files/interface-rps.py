@@ -103,7 +103,7 @@ def cmd_failable(cmd):
     subprocess.call(cmd, shell=True)
 
 
-def get_cpu_list(device, numa_filter):
+def get_cpu_list(device, numa_filter, avoid_cpu0):
     """Get a list of all CPUs by their number (e.g. [0, 1, 2, 3])"""
     path_cpu = '/sys/devices/system/cpu/'
     cpu_nodes = glob.glob(os.path.join(path_cpu, 'cpu[0-9]*'))
@@ -128,8 +128,12 @@ def get_cpu_list(device, numa_filter):
         thread_siblings = get_value(path_threads).split(',')
         cores.append(int(thread_siblings[0]))
 
-    # return a (unique) sorted set of CPUs without their HT siblings
-    return sorted(set(cores))
+    # return a (unique) sorted set of CPUs without their HT siblings, and
+    # without CPU 0 if the config said to avoid it (T236208)
+    cores = set(cores)
+    if avoid_cpu0:
+        cores.remove(0)
+    return sorted(cores)
 
 
 def get_queues(device, qtype):
@@ -243,6 +247,7 @@ def get_options(device):
         'rss_pattern': None,
         'qdisc':       None,
         'numa_filter': True,
+        'avoid_cpu0':  False,
     }
     config_file = os.path.join('/etc/interface-rps.d/', device)
     if os.path.isfile(config_file):
@@ -254,6 +259,8 @@ def get_options(device):
             opts['qdisc'] = config.get('Options', 'qdisc')
         if config.has_option('Options', 'numa_filter'):
             opts['numa_filter'] = config.getboolean('Options', 'numa_filter')
+        if config.has_option('Options', 'avoid_cpu0'):
+            opts['avoid_cpu0'] = config.getboolean('Options', 'avoid_cpu0')
 
     return opts
 
@@ -267,7 +274,7 @@ def main():
 
     opts = get_options(device)
 
-    cpu_list = get_cpu_list(device, opts['numa_filter'])
+    cpu_list = get_cpu_list(device, opts['numa_filter'], opts['avoid_cpu0'])
     rx_queues = get_queues(device, 'rx')
     tx_queues = get_queues(device, 'tx')
     driver = os.path.basename(

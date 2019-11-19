@@ -10,7 +10,9 @@
 # - $qdisc
 #   Options qdisc string to populate mq subqueues, e.g.:
 #   "fq flow_limit 422"
-define interface::rps($interface=$name, $rss_pattern='', $qdisc='') {
+# - $avoid_cpu0:
+#   If true, don't use CPU 0, to avoid contention issues (T236208)
+define interface::rps($interface=$name, $rss_pattern='', $qdisc='', $avoid_cpu0='') {
     require interface::rpstools
     require interface::rps::modparams
 
