@@ -1,7 +1,7 @@
 class profile::openstack::codfw1dev::pdns::auth::service(
     $host = hiera('profile::openstack::codfw1dev::pdns::host'),
     $db_pass = hiera('profile::openstack::codfw1dev::pdns::db_pass'),
-    $pdns_api_key = hiera('profile::openstack::codfw1dev::pdns::api_key'),
+    String $pdns_api_key = lookup('profile::openstack::codfw1dev::pdns::api_key'),
     ) {
 
     # We're patching in our ipv4 address for db_host here;

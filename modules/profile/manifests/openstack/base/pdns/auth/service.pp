@@ -4,7 +4,7 @@ class profile::openstack::base::pdns::auth::service(
     $db_host = hiera('profile::openstack::base::pdns::db_host'),
     $db_pass = hiera('profile::openstack::base::pdns::db_pass'),
     $pdns_webserver = hiera('profile::openstack::base::pdns::pdns_webserver', false),
-    $pdns_api_key = hiera('profile::openstack::base::pdns::pdns_api_key', ''),
+    String $pdns_api_key = lookup('profile::openstack::base::pdns::pdns_api_key', {'default_value' => ''}),
     $pdns_api_allow_from = hiera('profile::openstack::base::pdns::pdns_api_allow_from', ''),
     ) {
 

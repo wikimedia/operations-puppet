@@ -3,6 +3,7 @@ class profile::openstack::eqiad1::pdns::auth::service(
     $host_secondary = hiera('profile::openstack::eqiad1::pdns::host_secondary'),
     $db_pass = hiera('profile::openstack::eqiad1::pdns::db_pass'),
     $monitor_target_fqdn = hiera('profile::openstack::eqiad1::pdns::monitor_target_fqdn'),
+    String $pdns_api_key = lookup('profile::openstack::eqiad1::pdns::api_key'),
     ) {
 
     $host_ip = ipresolve($host,4)
@@ -16,6 +17,8 @@ class profile::openstack::eqiad1::pdns::auth::service(
         host_secondary      => $host_secondary,
         db_pass             => $db_pass,
         db_host             => ipresolve($::fqdn,4),
+        pdns_webserver      => true,
+        pdns_api_key        => pdns_api_key,
         pdns_api_allow_from => ['127.0.0.1', ipresolve($host,4), ipresolve($host,6),
                                 ipresolve($host_secondary,4), ipresolve($host_secondary,6)]
     }
