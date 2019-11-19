@@ -45,7 +45,11 @@ class profile::phabricator::main (
         $dump_enabled = true
         $rsync_cfg_enabled = true
         $ferm_ensure = 'present'
-        $aphlict_ensure = 'present'
+        if $aphlict_enabled {
+            $aphlict_ensure = 'present'
+        } else {
+            $aphlict_ensure = 'absent'
+        }
     } else {
         $dump_enabled = false
         $rsync_cfg_enabled = false

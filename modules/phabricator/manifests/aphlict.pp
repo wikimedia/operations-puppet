@@ -2,7 +2,7 @@
 # Aphlict is the phabricator real-time notification relay service.
 # Docs: https://secure.phabricator.com/book/phabricator/article/notifications/
 class phabricator::aphlict(
-    Wmflib::Ensure $ensure    = 'present',
+    Wmflib::Ensure $ensure,
     String $user              = 'aphlict',
     String $group             = 'aphlict',
     Stdlib::Unixpath $basedir = '/srv/phab'
