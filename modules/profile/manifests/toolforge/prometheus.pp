@@ -180,7 +180,7 @@ class profile::toolforge::prometheus (
                         'replacement'  => "${new_k8s_apiserver_fqdn}:${new_k8s_apiserver_port}",
                     },
                     {
-                        'source_labels' => '[__meta_kubernetes_node_name]',
+                        'source_labels' => ['__meta_kubernetes_node_name'],
                         'regex'         => '(.+)',
                         'target_label'  => '__metrics_path__',
                         # lint:ignore:single_quote_string_with_variables
@@ -201,9 +201,6 @@ class profile::toolforge::prometheus (
                     {
                         'api_server' => "https://${new_k8s_apiserver_fqdn}:${new_k8s_apiserver_port}",
                         'role'       => 'pod',
-                        # this namespace is not an arbitrary name; it was
-                        # created inside the k8s cluster with that name
-                        'namespace'  => 'ingress-nginx',
                         'tls_config' => {
                             'insecure_skip_verify' => true,
                             'cert_file'            => $cert_pub,
