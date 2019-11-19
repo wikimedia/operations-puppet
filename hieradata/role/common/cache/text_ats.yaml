@@ -259,3 +259,7 @@ profile::cache::base::default_weights:
   nginx: 1
   varnish-be: 100
   ats-be: 100
+
+# profile::cache::ssl
+profile::cache::ssl::unified::tls_port: 4443
+profile::cache::ssl::unified::use_trafficserver_tls: true
