@@ -2042,15 +2042,11 @@ node 'weblog1001.eqiad.wmnet'
 # VMs for performance team replacing hafnium (T179036)
 node /^webperf[12]001\.(codfw|eqiad)\.wmnet/ {
     role(webperf::processors_and_site)
-    # lint:ignore:wmf_styleguide
-    # lint:endignore
 }
 
 # VMs for performance team profiling tools (T194390)
 node /^webperf[12]002\.(codfw|eqiad)\.wmnet/ {
     role(webperf::profiling_tools)
-    # lint:ignore:wmf_styleguide
-    # lint:endignore
 }
 
 node 'centrallog2001.codfw.wmnet' {
