@@ -7,9 +7,10 @@ profile::trafficserver::tls::mapping_rules:
   - type: map
     target: wss://etherpad.wikimedia.org
     replacement: "ws://%{::ipaddress}:3120"
-  - type: map
-    target: wss://phabricator.wikimedia.org
-    replacement: "ws://%{::ipaddress}:3120"
+# ws temporary disabled in phabricator T238593
+# - type: map
+#   target: wss://phabricator.wikimedia.org
+#   replacement: "ws://%{::ipaddress}:3120"
   - type: map
     target: /
     replacement: "http://%{::ipaddress}:3120"

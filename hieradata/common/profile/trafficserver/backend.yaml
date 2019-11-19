@@ -124,9 +124,10 @@ profile::trafficserver::backend::mapping_rules:
       target: http://performance.wikimedia.org
       replacement: https://performance.discovery.wmnet
       #replacement: http://webperf2001.codfw.wmnet
-    - type: map
-      target: ws://phabricator.wikimedia.org/ws/
-      replacement: wss://phabricator.discovery.wmnet/ws/
+# ws temporary disabled in phabricator T238593
+#   - type: map
+#     target: ws://phabricator.wikimedia.org/ws/
+#     replacement: wss://phabricator.discovery.wmnet/ws/
     - type: map
       target: http://phabricator.wikimedia.org
       replacement: https://phabricator.discovery.wmnet
