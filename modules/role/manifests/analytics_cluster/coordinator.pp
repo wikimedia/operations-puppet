@@ -71,6 +71,8 @@ class role::analytics_cluster::coordinator {
     # Include a cron to clean HDFS /tmp dir.
     include ::profile::analytics::refinery::job::hdfs_cleaner
 
+    include ::profile::geoip
+
     include ::profile::kerberos::client
     include ::profile::kerberos::keytabs
 
