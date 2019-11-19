@@ -17,6 +17,7 @@ class profile::icinga::ircbot(
         '/var/log/icinga/irc-performance.log' => '#wikimedia-perf-bots',
         '/var/log/icinga/irc-fundraising.log' => '#wikimedia-fundraising',
         '/var/log/icinga/irc-reading-web.log' => '#wikimedia-reading-web-bots',
+        '/var/log/icinga/irc-dcops.log'       => '#wikimedia-dcops',
     }
 
     $password_file = '/etc/icinga/.irc_secret'
