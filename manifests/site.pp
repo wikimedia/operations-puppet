@@ -489,8 +489,13 @@ node 'db2118.codfw.wmnet' {
     role(mariadb::core)
 }
 
-node /^db2(061|077|120|121|122)\.codfw\.wmnet/ {
+node /^db2(077|120|121|122)\.codfw\.wmnet/ {
     role(mariadb::core)
+}
+
+# db2061 will be decommissioned # T238526
+node 'db2061.codfw.wmnet' {
+    role(spare::system)
 }
 
 # s8 (wikidata) core production dbs on eqiad
