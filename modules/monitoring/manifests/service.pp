@@ -1,20 +1,20 @@
 define monitoring::service(
-    $description,
-    $check_command,
-    $notes_url,
-    $host                  = $::hostname,
-    $retries               = 3,
-    $group                 = undef,
-    $ensure                = present,
-    $critical              = false,
-    $passive               = false,
-    $freshness             = 36000,
-    $check_interval        = 1,
-    $retry_interval        = 1,
-    $contact_group         = hiera('contactgroups', 'admins'),
-    $config_dir            = '/etc/nagios',
-    $event_handler         = undef,
-    $notifications_enabled = $::profile::base::notifications_enabled,
+    Optional[String] $description,
+    String $check_command,
+    String $notes_url,
+    Stdlib::Host $host      = $::hostname,
+    Integer $retries        = 3,
+    Optional[String] $group = undef,
+    Wmflib::Ensure $ensure  = present,
+    Boolean $critical       = false,
+    Boolean $passive        = false,
+    Integer $freshness      = 36000,
+    Integer $check_interval = 1,
+    Integer $retry_interval = 1,
+    String $contact_group   = hiera('contactgroups', 'admins'), # FIXME, defines should not have calls to hiera/lookup
+    Stdlib::Unixpath $config_dir = '/etc/nagios',
+    Optional[Variant[Boolean,String]] $event_handler = undef,
+    Optional[Variant[Integer[0, 1],Boolean,String]] $notifications_enabled = $::profile::base::notifications_enabled, # FIXME, base modules should not reference variables in the profile name space
 )
 {
     # the list of characters is the default for illegal_object_name_chars
