@@ -3,8 +3,10 @@
 # native k8s support.
 
 class profile::toolforge::prometheus (
-    Stdlib::Fqdn  $legacy_k8s_master_host = lookup('k8s::master_host'),
-    $legacy_k8s_users                     = lookup('k8s_infrastructure_users')
+    Stdlib::Fqdn $legacy_k8s_master_host = lookup('k8s::master_host'),
+    $legacy_k8s_users                    = lookup('k8s_infrastructure_users'),
+    Stdlib::Fqdn $new_k8s_apiserver_fqdn = lookup('profile::toolforge::k8s::apiserver_fqdn', {default_value => 'k8s.tools.eqiad1.wikimedia.cloud'}),
+    Stdlib::Port $new_k8s_apiserver_port = lookup('profile::toolforge::k8s::apiserver_port', {default_value => 6443}),
 ) {
     require ::profile::labs::lvm::srv
     include ::profile::prometheus::blackbox_exporter
@@ -16,6 +18,19 @@ class profile::toolforge::prometheus (
 
     class { '::httpd':
         modules => ['proxy', 'proxy_http'],
+    }
+
+    # the certs are used by prometheus to auth to the new k8s API and are
+    # generated in the new k8s control nodes using the wmcs-k8s-get-cert script
+    $certname  = 'toolforge-k8s-prometheus'
+    $cert_pub  = "/etc/ssl/localcerts/${certname}.crt"
+    $cert_priv = "/etc/ssl/private/${certname}.key"
+    sslcert::certificate { $certname:
+        ensure  => present,
+        chain   => false,
+        group   => 'prometheus',
+        require => Package['prometheus'], # group is defined by the package?
+        notify  => Service['prometheus@tools'],
     }
 
     prometheus::server { 'tools':
@@ -135,6 +150,118 @@ class profile::toolforge::prometheus (
                     'files' => [ "${targets_path}/toolsdb-node.yml" ]
                 }
             ]
+            },
+            {
+                'job_name'              => 'new-k8s-nodes',
+                'scheme'                => 'https',
+                'tls_config'            => {
+                    'insecure_skip_verify' => true,
+                    'cert_file'            => $cert_pub,
+                    'key_file'             => $cert_priv,
+                },
+                'kubernetes_sd_configs' => [
+                    {
+                        'api_server' => "https://${new_k8s_apiserver_fqdn}:${new_k8s_apiserver_port}",
+                        'role'       => 'node',
+                        'tls_config' => {
+                            'insecure_skip_verify' => true,
+                            'cert_file'            => $cert_pub,
+                            'key_file'             => $cert_priv,
+                        },
+                    },
+                ],
+                'relabel_configs'       => [
+                    {
+                        'action' => 'labelmap',
+                        'regex'  => '__meta_kubernetes_node_label_(.+)',
+                    },
+                    {
+                        'target_label' => '__address__',
+                        'replacement'  => "${new_k8s_apiserver_fqdn}:${new_k8s_apiserver_port}",
+                    },
+                    {
+                        'source_labels' => '[__meta_kubernetes_node_name]',
+                        'regex'         => '(.+)',
+                        'target_label'  => '__metrics_path__',
+                        # lint:ignore:single_quote_string_with_variables
+                        'replacement'   => '/api/v1/nodes/${1}/proxy/metrics',
+                        # lint:endignore
+                    },
+                ]
+            },
+            {
+                'job_name'              => 'new-k8s-ingress-nginx',
+                'scheme'                => 'https',
+                'tls_config'            => {
+                    'insecure_skip_verify' => true,
+                    'cert_file'            => $cert_pub,
+                    'key_file'             => $cert_priv,
+                },
+                'kubernetes_sd_configs' => [
+                    {
+                        'api_server' => "https://${new_k8s_apiserver_fqdn}:${new_k8s_apiserver_port}",
+                        'role'       => 'pod',
+                        # this namespace is not an arbitrary name; it was
+                        # created inside the k8s cluster with that name
+                        'namespace'  => 'ingress-nginx',
+                        'tls_config' => {
+                            'insecure_skip_verify' => true,
+                            'cert_file'            => $cert_pub,
+                            'key_file'             => $cert_priv,
+                        },
+                    },
+                ],
+                'relabel_configs'       => [
+                    {
+                        'action' => 'labelmap',
+                        'regex'  => '__meta_kubernetes_node_label_(.+)',
+                    },
+                    {
+                        'target_label' => '__address__',
+                        'replacement'  => "${new_k8s_apiserver_fqdn}:${new_k8s_apiserver_port}",
+                    },
+                    {
+                        'target_label' => '__metrics_path__',
+                        # this service is not an arbitrary name; it was created
+                        # inside the k8s cluster with that specific name
+                        'replacement'  => '/api/v1/namespaces/ingress-nginx/services/nginx-ingress-metrics/proxy/metrics',
+                    },
+                ]
+            },
+            {
+                'job_name'              => 'new-k8s-api',
+                'scheme'                => 'https',
+                'tls_config'            => {
+                    'insecure_skip_verify' => true,
+                    'cert_file'            => $cert_pub,
+                    'key_file'             => $cert_priv,
+                },
+                'kubernetes_sd_configs' => [
+                    {
+                        'api_server' => "https://${new_k8s_apiserver_fqdn}:${new_k8s_apiserver_port}",
+                        'role'       => 'endpoints',
+                        'tls_config' => {
+                            'insecure_skip_verify' => true,
+                            'cert_file'            => $cert_pub,
+                            'key_file'             => $cert_priv,
+                        },
+                    },
+                ],
+                'relabel_configs'       => [
+                    {
+                        'action' => 'labelmap',
+                        'regex'  => '__meta_kubernetes_node_label_(.+)',
+                    },
+                    {
+                        'target_label' => '__address__',
+                        'replacement'  => "${new_k8s_apiserver_fqdn}:${new_k8s_apiserver_port}",
+                    },
+                    {
+                        'source_labels' => '[__meta_kubernetes_namespace, __meta_kubernetes_service_name, __meta_kubernetes_endpoint_port_name]',
+                        'regex'         => 'default;kubernetes;https',
+                        'action'        => 'keep',
+                    },
+                ]
             },
         ]
     }

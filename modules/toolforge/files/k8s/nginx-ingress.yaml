@@ -193,6 +193,7 @@ subjects:
 ---
 # change: pod listens on 8080/tcp for http
 # change: no 443/tcp for the pod
+# change: declare port 10254 for prometheus metrics
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -249,6 +250,8 @@ spec:
           ports:
             - name: http
               containerPort: 8080
+            - name: metrics
+              containerPort: 10254
           livenessProbe:
             failureThreshold: 3
             httpGet:
