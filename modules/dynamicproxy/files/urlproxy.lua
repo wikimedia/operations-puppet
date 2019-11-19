@@ -40,37 +40,13 @@ if routes_arr then
 end
 
 if not route then
-    -- No routes defined for this uri, try the default (admin) prefix instead
-    rest = ngx.var.uri
-    routes_arr = red:hgetall('prefix:admin')
-    if routes_arr then
-        local routes = red:array_to_hash(routes_arr)
-        for pattern, backend in pairs(routes) do
-            if ngx.re.match(rest, pattern) then
-                route = backend
-                break
-            end
-        end
-    end
+    -- No routes defined for this URI, hope nginx can handle this! (new k8s cluster?)
+    ngx.exit(ngx.OK)
 end
 
 -- Use a connection pool of 256 connections with a 32s idle timeout
 -- This also closes the current redis connection.
 red:set_keepalive(1000 * 32, 256)
 
-if route then
-    ngx.var.backend = route
-    ngx.exit(ngx.OK)
-else
-    -- Oh noes!  Even the admin prefix is dead!
-    -- Fall back to the static site
-    if rest then
-        -- the URI had a slash, so the user clearly expected /something/
-        -- there.  Fail because there is no registered webservice.
-        ngx.exit(503)
-    else
-        ngx.var.backend = ''
-        ngx.exit(ngx.OK)
-    end
-end
-
+ngx.var.backend = route
+ngx.exit(ngx.OK)

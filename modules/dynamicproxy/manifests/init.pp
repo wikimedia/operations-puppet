@@ -13,6 +13,8 @@
 #limitations under the License.
 
 class dynamicproxy (
+    Stdlib::Fqdn $k8s_vip_fqdn,
+    Stdlib::Port $k8s_vip_fqdn_port,
     $luahandler,
     $redis_maxmemory          = '512MB',
     $ssl_settings             = undef,

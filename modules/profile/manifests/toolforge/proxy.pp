@@ -5,6 +5,8 @@ class profile::toolforge::proxy (
     Boolean             $do_https     = lookup('profile::toolforge::proxy::do_https',   {default_value => true}),
     Array[Stdlib::Fqdn] $prometheus   = lookup('prometheus_nodes',                      {default_value => ['localhost']}),
     String              $statsd       = lookup('statsd',                                {default_value => 'localhost:8125'}),
+    Stdlib::Fqdn        $k8s_vip_fqdn = lookup('profile::toolforge::k8s::apiserver_fqdn',{default_value => 'k8s.tools.eqiad1.wikimedia.cloud'}),
+    Stdlib::Port        $k8s_vip_port = lookup('profile::toolforge::k8s::ingress_port', {default_value => 30000}),
 ) {
     class { '::redis::client::python': }
 
@@ -30,6 +32,8 @@ class profile::toolforge::proxy (
         ssl_settings         => ssl_ciphersuite('nginx', 'compat'),
         luahandler           => 'urlproxy',
         ssl_certificate_name => $ssl_cert_name,
+        k8s_vip_fqdn         => $k8s_vip_fqdn,
+        k8s_vip_fqdn_port    => $k8s_vip_port,
         redis_replication    => $redis_replication,
         error_config         => {
             title       => 'Wikimedia Toolforge Error',
