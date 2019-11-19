@@ -16,8 +16,18 @@ trafficserver_connect_failures_total:
   values:
   - labels: {protocol: http}
     value: proxy.process.http.err_connect_fail_count_stat
+trafficserver_active_connections_count:
+  documentation: Current active connections.
+  type: gauge
+  values:
+    - labels: {protocol: http, source: client}
+      value: proxy.process.http.current_active_client_connections
+    - labels: {protocol: http2, source: client}
+      value: proxy.process.http2.current_active_client_connections
+    - labels: {protocol: websocket, source: client}
+      value: proxy.process.http.websocket.current_active_client_connections
 trafficserver_connections_total:
-  documentation: Connection count.
+  documentation: Total connections since server installation.
   type: counter
   values:
   - labels: {protocol: http, source: client}
