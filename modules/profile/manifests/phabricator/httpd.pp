@@ -44,5 +44,9 @@ class profile::phabricator::httpd (
     # Proxy websockets to aphlict if present
     if $aphlict_enabled {
         ::httpd::mod_conf { 'proxy_wstunnel': }
+    } else {
+        ::httpd::mod_conf { 'proxy_wstunnel':
+            ensure => 'absent',
+        }
     }
 }
