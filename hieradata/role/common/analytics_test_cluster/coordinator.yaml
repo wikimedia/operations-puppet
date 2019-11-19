@@ -45,6 +45,10 @@ profile::presto::server::config_properties:
   query.max-memory: 2GB
   query.max-memory-per-node: 2GB
   query.max-total-memory-per-node: 2GB
+  hive.metastore.authentication.type: 'KERBEROS'
+  hive.metastore.service.principal: 'hive/analytics1030.eqiad.wmnet@WIKIMEDIA'
+  hive.metastore.client.principal: 'presto/analytics1030.eqiad.wmnet@WIKIMEDIA'
+  hive.metastore.client.keytab: '/etc/security/keytabs/presto/presto.keytab'
 
 profile::presto::server::catalogs:
   # Each catalog hash should contain a single properties has that will
@@ -66,6 +70,11 @@ profile::presto::server::catalogs:
       # TODO: do we want to disable non managed tables?
       hive.non-managed-table-writes-enabled: true
       hive.non-managed-table-creates-enabled: true
+      hive.hdfs.authentication.type: 'KERBEROS'
+      hive.hdfs.impersonation.enabled: true
+      hive.hdfs.presto.principal: 'presto/analytics1030.eqiad.wmnet@WIKIMEDIA'
+      hive.hdfs.presto.keytab: '/etc/security/keytabs/presto/presto.keytab'
+      hive.hdfs.wire-encryption.enabled: true
 profile::presto::server::ferm_srange: $ANALYTICS_NETWORKS
 
 
