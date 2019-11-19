@@ -69,38 +69,48 @@ sub https_deliver_hsts {
 
 // *** X-Connection-Properties parsing recv code
 sub log_xcps_info {
-	set req.http.x-tls-prot = regsub(req.http.X-Connection-Properties, "^H2=([01]);.*", "\1");
-	if (req.http.x-tls-prot == "1") {
-		set req.http.x-tls-prot = "h2";
+	// Sanity-check the overall format defined by the config of ATS-TLS
+	if (req.http.X-Connection-Properties !~ "^H2=[01]; SSR=[01]; SSL=[^; ]+; C=[^; ]+; EC=[^; ]+;$") {
+		set req.http.x-tls-prot = "invalid";
+		set req.http.x-tls-sess = "invalid";
+		set req.http.x-tls-vers = "invalid";
+		set req.http.x-tls-keyx = "invalid";
+		set req.http.x-tls-auth = "invalid";
+		set req.http.x-tls-ciph = "invalid";
 	} else {
-		set req.http.x-tls-prot = "h1";
+		set req.http.x-tls-prot = regsub(req.http.X-Connection-Properties, "^H2=([01]);.*", "\1");
+		if (req.http.x-tls-prot == "1") {
+			set req.http.x-tls-prot = "h2";
+		} else {
+			set req.http.x-tls-prot = "h1";
+		}
+
+		set req.http.x-tls-sess = regsub(req.http.X-Connection-Properties, ".* SSR=([01]);.*", "\1");
+		if (req.http.x-tls-sess == "1") {
+			set req.http.x-tls-sess = "reused";
+		} else {
+			set req.http.x-tls-sess = "new";
+		}
+
+		set req.http.x-tls-vers = regsub(req.http.X-Connection-Properties, ".* SSL=([^; ]+);.*", "\1");
+		set req.http.x-tls-keyx = regsub(req.http.X-Connection-Properties, ".* EC=([^; ]+);.*", "\1");
+
+		set req.http.x-tls-auth = regsub(req.http.X-Connection-Properties, ".* C=([^; ]+);.*", "\1");
+		set req.http.x-tls-ciph = regsub(req.http.x-tls-auth, "^(ECDHE-(ECDSA|RSA)|DHE-RSA)-", "");
+		if (req.http.x-tls-auth ~ "^ECDHE-RSA") {
+			set req.http.x-tls-auth = "RSA";
+		} else if (req.http.x-tls-auth ~ "^DHE-RSA") {
+			set req.http.x-tls-auth = "RSA";
+			set req.http.x-tls-keyx = "DHE";
+		} else {
+			set req.http.x-tls-auth = "ECDSA";
+		}
+
+		// Starting with TLSv1.3, CHACHA20-POLY1305 will be renamed into
+		// CHACHA20-POLY1305-SHA256. Do the renaming now in VCL to avoid stats skew
+		// later on.
+		set req.http.x-tls-ciph = regsub(req.http.x-tls-ciph, "^CHACHA20-POLY1305$", "CHACHA20-POLY1305-SHA256");
 	}
-
-	set req.http.x-tls-sess = regsub(req.http.X-Connection-Properties, ".* SSR=([01]);.*", "\1");
-	if (req.http.x-tls-sess == "1") {
-		set req.http.x-tls-sess = "reused";
-	} else {
-		set req.http.x-tls-sess = "new";
-	}
-
-	set req.http.x-tls-vers = regsub(req.http.X-Connection-Properties, ".* SSL=(TLSv1(\.[123])?);.*", "\1");
-	set req.http.x-tls-keyx = regsub(req.http.X-Connection-Properties, ".* EC=([A-Za-z0-9]+);.*", "\1");
-
-	set req.http.x-tls-auth = regsub(req.http.X-Connection-Properties, ".* C=([A-Z0-9-]+);.*", "\1");
-	set req.http.x-tls-ciph = regsub(req.http.x-tls-auth, "^(ECDHE-(ECDSA|RSA)|DHE-RSA)-", "");
-	if (req.http.x-tls-auth ~ "^ECDHE-RSA") {
-		set req.http.x-tls-auth = "RSA";
-	} else if (req.http.x-tls-auth ~ "^DHE-RSA") {
-		set req.http.x-tls-auth = "RSA";
-		set req.http.x-tls-keyx = "DHE";
-	} else {
-		set req.http.x-tls-auth = "ECDSA";
-	}
-
-	// Starting with TLSv1.3, CHACHA20-POLY1305 will be renamed into
-	// CHACHA20-POLY1305-SHA256. Do the renaming now in VCL to avoid stats skew
-	// later on.
-	set req.http.x-tls-ciph = regsub(req.http.x-tls-ciph, "^CHACHA20-POLY1305$", "CHACHA20-POLY1305-SHA256");
 
 	// Condensed form logged as "tls" for TLS analytics via varnishkafka webrequest
 	std.log("tls: vers=" + req.http.x-tls-vers
