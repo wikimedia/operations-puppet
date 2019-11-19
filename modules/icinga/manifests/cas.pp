@@ -7,7 +7,7 @@ class icinga::cas (
     String[1]                  $authn_header     = 'CAS-User',
     String[1]                  $attribute_prefix = 'X-CAS-',
     Boolean                    $debug            = false,
-    Boolean                    $validate_saml    = true,
+    Boolean                    $validate_saml    = false,
     String[1]                  $apache_owner     = 'www-data',
     String[1]                  $apache_group     = 'www-data',
     Optional[Array[String[1]]] $required_groups  = [],

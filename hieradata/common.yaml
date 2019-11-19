@@ -1533,4 +1533,4 @@ ldap:
   users_cn: 'ou=people'
 apereo_cas:
   login_url: 'https://idp.wikimedia.org/login'
-  validate_url: 'https://idp.wikimedia.org/samlValidate'
+  validate_url: 'https://idp.wikimedia.org/serviceValidate'
