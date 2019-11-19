@@ -1356,7 +1356,8 @@ users:
     gid: 500
     name: ezachte
     realname: Erik Zachte
-    ssh_keys: []
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDO4nsmOD2zgf2nvLyH522TdM/ie5tWHDdN5HuZSod6QOv0s8sVwz37zuAbK7DxB1DS9TT5WKK2IEKYddkd5f6fMxWNSY+B86rtUm/rzljn5Aen+1lsvhWFn48HL9VT9Ulyc1wME93olBCMPMTLOKbWz5ARydIw+uNeO10mqqDOQ18smPaWGj+I2HTMNuQ4SU1r+5/BbVUDAbv44vN0T2vLtQnUUnCGLoQ5pkG8UMu5+ysrm0eVrjcbP6DeQ+L+Eq0o+kBtkrDWg1Jmnfa7wG7ShYWgDolLZSmSZxZG5a+18fJLe9IqMHrpL0XDaP4LityhjKNnFTCtQ5moVVk2J+3lTUEJCsG8nmOU4VP7+jMSDetYL7reCU8Tu/1he+kHCvjppFxFf+G0fqRQwaQYWIIOuNSRRoiBmrsN+uQft4fTvxQuiTg23g7xMcJsSuvuGkPYp3hAdg8VIWsBAeY8XzO4Hpg3Zog7ybX/w2eWpkOKaFvwNXywQUH/k5OgEqUoHYOA57hC1Y5oMSG6lVn7qTykwrc/H8SsJbiIRgJ6aGJA2k20+Y64w/OIDZInxfMuWYG4jdw3KiLZWpFhQoBaz7EteDDALfZW9no/TuGBmTyPhn9Bu3GQuHa2a5JtFFuqKC2R8D5JWQQWiGZaYzlcGPqktJ/1jbKyXFIJDivkHXjXyw== erikzachte@infodisiac.com
     uid: 523
     email: erikzachte@infodisiac.com
   jamesur:
