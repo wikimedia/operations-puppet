@@ -97,7 +97,7 @@
         <file><%= @log_dir %>/<%= @title %>-sparql.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <!-- daily rollover -->
-            <fileNamePattern><%= @log_dir %>/<%= @title %>.%d{yyyy-MM-dd}-sparql.%i.log.gz</fileNamePattern>
+            <fileNamePattern><%= @log_dir %>/<%= @title %>-sparql.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
             <maxFileSize>1500MB</maxFileSize>
             <maxHistory>3</maxHistory>
         </rollingPolicy>
@@ -129,15 +129,16 @@
 
     <!-- Needed for testing the merging updater: https://phabricator.wikimedia.org/T231411 -->
     <appender name="UPDATED_ENTITY_IDS" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file><%= @log_dir %>/<%= @title %>-updated-entity-ids-%d{yyyy-MM-dd}.%i.log</file>
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+        <file><%= @log_dir %>/<%= @title %>-updated-entity-ids.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <!-- daily rollover -->
-            <fileNamePattern>updatedEntityIds.%d{yyyy-MM-dd}.gz</fileNamePattern>
+            <fileNamePattern><%= @log_dir %>/<%= @title %>-updated-entity-ids.%d{yyyy-MM-dd}.gz</fileNamePattern>
             <maxFileSize>100MB</maxFileSize>
             <maxHistory>30</maxHistory>
         </rollingPolicy>
         <encoder>
             <pattern>%msg%n</pattern>
+            <outputPatternAsHeader>false</outputPatternAsHeader>
         </encoder>
     </appender>
     <!-- additivity=false ensures entityIds only go to the corresponding log -->
