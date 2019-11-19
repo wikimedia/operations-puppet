@@ -257,7 +257,9 @@ class profile::toolforge::prometheus (
                         'replacement'  => "${new_k8s_apiserver_fqdn}:${new_k8s_apiserver_port}",
                     },
                     {
-                        'source_labels' => '[__meta_kubernetes_namespace, __meta_kubernetes_service_name, __meta_kubernetes_endpoint_port_name]',
+                        'source_labels' => ['__meta_kubernetes_namespace',
+                                            '__meta_kubernetes_service_name',
+                                            '__meta_kubernetes_endpoint_port_name'],
                         'regex'         => 'default;kubernetes;https',
                         'action'        => 'keep',
                     },
