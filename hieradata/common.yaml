@@ -458,7 +458,7 @@ dumps_nfs_clients:
     - snapshot1009.eqiad.wmnet
 dumps_datadir_mount_type: nfs
 dumps_nfs_server: dumpsdata1001.eqiad.wmnet
-dumps_cron_nfs_server: dumpsdata1001.eqiad.wmnet
+dumps_cron_nfs_server: dumpsdata1002.eqiad.wmnet
 dumps_managed_subdirs: []
 dumps_misc_cronrunner: false
 

@@ -843,15 +843,15 @@ node /^druid100[456]\.eqiad\.wmnet$/ {
     role(druid::public::worker)
 }
 
-# nfs server for dumps generation, also rsyncs
+# nfs server for xml dumps generation, also rsyncs xml dumps
 # data to fallback nfs server(s)
 node /^dumpsdata1001\.eqiad\.wmnet$/ {
-    role(dumps::generation::server::alldumps)
+    role(dumps::generation::server::xmldumps)
 }
 
-# temporary, until it takes on misc crons role
+# nfs server for misc dumps generation, also rsyncs misc dumps
 node /^dumpsdata1002\.eqiad\.wmnet$/ {
-    role(dumps::generation::server::spare)
+    role(dumps::generation::server::misccrons)
 }
 
 # fallback nfs server for dumps generation, also

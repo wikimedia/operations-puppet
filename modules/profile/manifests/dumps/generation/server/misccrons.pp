@@ -11,9 +11,9 @@ class profile::dumps::generation::server::misccrons(
         $miscinternaldests = $internals.map |$i| {"${i}::data/otherdumps/"}.join(',')
         $miscpublicdests = $publics.map |$p| {"${p}::data/xmldatadumps/public/other/"}.join(',')
 
-        class { '::dumps::generation::server::rsyncer':
+        class { '::dumps::generation::server::rsyncer_misc':
             miscdumpsdir   => $miscdumpsdir,
-            miscremotedirs => "${miscinternaldests},${miscpublicdests}",
+            miscremotedirs => $miscpublicdests,
             miscsubdirs    => $miscsubdirs,
             miscremotesubs => $miscinternaldests,
         }
