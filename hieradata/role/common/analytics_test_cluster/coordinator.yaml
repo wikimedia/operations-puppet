@@ -122,6 +122,11 @@ profile::kerberos::keytabs::keytabs_metadata:
     owner: 'presto'
     group: 'presto'
     filename: 'presto.keytab'
+  - role: 'hadoop'
+    owner: 'hdfs'
+    group: 'hdfs'
+    filename: 'hdfs.keytab'
+    parent_dir_grp: 'hadoop'
 
 profile::analytics::cluster::client::kerberos_enabled: true
 profile::hadoop::balancer::use_kerberos: true

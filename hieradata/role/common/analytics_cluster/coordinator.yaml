@@ -102,3 +102,8 @@ profile::kerberos::keytabs::keytabs_metadata:
     owner: 'analytics'
     group: 'analytics'
     filename: 'analytics.keytab'
+  - role: 'hadoop'
+    owner: 'hdfs'
+    group: 'hdfs'
+    filename: 'hdfs.keytab'
+    parent_dir_grp: 'hadoop'
