@@ -14,6 +14,7 @@ class profile::backup::director(
     $dbport = hiera('profile::backup::director::dbport'),
     $dbuser = hiera('profile::backup::director::dbuser'),
     $dbpass = hiera('profile::backup::director::dbpass'),
+    $prometheus_nodes = hiera('prometheus_nodes'),
 ){
     include ::profile::base::firewall
 
@@ -295,9 +296,21 @@ class profile::backup::director(
         notes_url      => 'https://wikitech.wikimedia.org/wiki/Backups#Monitoring',
     }
 
+    # install the prometheus exporter for bacula
+    class { 'bacula::director::prometheus_exporter':
+        port => '9133',
+    }
+    base::service_auto_restart { 'prometheus-bacula-exporter': }
+
     ferm::service { 'bacula-director':
         proto  => 'tcp',
         port   => '9101',
         srange => '$PRODUCTION_NETWORKS',
+    }
+    $prometheus_nodes_ferm = join($prometheus_nodes, ' ')
+    ferm::service { 'bacula-prometheus-exporter':
+        proto  => 'tcp',
+        port   => '9133',
+        srange => "@resolve((${prometheus_nodes_ferm}))",
     }
 }

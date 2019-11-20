@@ -1,0 +1,14 @@
+[Unit]
+Description=Prometheus exporter for Bacula
+After=network.target
+
+[Service]
+User=bacula
+Group=bacula
+Type=simple
+ExecStart=/usr/local/bin/prometheus-bacula-exporter -P <%= @port %>
+KillSignal=SIGINT
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
