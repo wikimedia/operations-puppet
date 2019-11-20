@@ -43,7 +43,7 @@ def main():
     os.makedirs(factsdir)
     conf = os.environ.get('PUPPETDB_CONFIG_FILE', '/etc/puppet/puppetdb.conf')
     pdb = PuppetDBApi(conf)
-    for node in pdb.get('nodes'):
+    for i, node in enumerate(pdb.get('nodes')):
         if node.get('deactivated', True) is not None:
             continue
         nodename = node['certname']
@@ -58,12 +58,14 @@ def main():
         yaml_data['boardproductname'] = '424242'
         yaml_data['serialnumber'] = '42424242'
         del yaml_data['trusted']
-        print('Writing {}'.format(filename))
         with open(filename, 'w') as fh:
             contents = yaml.dump({'name': nodename, 'values': yaml_data,
                                   'timestamp': ts, 'expiration': exp})
             fh.write('--- !ruby/object:Puppet::Node::Facts\n' + contents)
+        if i % 25 == 0:
+            print('Wrote {} hosts...'.format(i))
     subprocess.check_call(['tar', 'cJvf', outfile, '--directory', tmpdir, 'yaml'])
+    print('Facts exported to {}'.format(outfile))
     shutil.rmtree(tmpdir)
 
 

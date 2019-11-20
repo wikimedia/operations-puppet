@@ -20,7 +20,7 @@ RUBY_SCRIPT
 # Gather all the facts from one of the masters.
 master=${PUPPET_MASTER:-$(ruby -e "${RUBY_SCRIPT}" < hieradata/common/puppetmaster.yaml)}
 printf "\\n### Syncing facts from %s\\n" "${master}"
-ssh "$master" 'sudo /usr/local/bin/puppet-facts-export &>/dev/null'
+ssh "$master" 'sudo /usr/local/bin/puppet-facts-export'
 # tunnel via your localhost without ever the file touching the disk
 for COMPILER in $COMPILERS
 do
