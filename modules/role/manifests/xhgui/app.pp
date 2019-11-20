@@ -1,9 +1,7 @@
 # == Class: role::xhgui::app
 #
-# This class is deprecated!
-#
-# It provisions XHGui for Debian Jessie with Apache and PHP 5, and
-# assumes no other web services use Apaache on the same host.
+# This class provisions XHGui with Apache and PHP
+# and assumes no other web services use Apaache on the same host.
 # It is being replaced by role::webperf::profiling_tools and
 # profile::webperf::xhgui.
 #
@@ -28,8 +26,18 @@
 #
 class role::xhgui::app {
 
+    if os_version('debian == buster') {
+        $mongo_driver='php-mongodb'
+        $httpd_php='php7.3'
+        $php_ini='/etc/php/7.3/fpm/php.ini'
+    } else {
+        $mongo_driver='php5-mongo'
+        $httpd_php='php5'
+        $php_ini='/etc/php5/apache2/php.ini'
+    }
+
     class { '::httpd':
-        modules => ['authnz_ldap', 'php5', 'rewrite'],
+        modules => ['authnz_ldap', $httpd_php, 'rewrite'],
     }
 
     include ::profile::standard
@@ -51,10 +59,10 @@ class role::xhgui::app {
 
     system::role { 'xhgui::app': }
 
-    require_package('php5-mongo')
+    require_package($mongo_driver)
 
     file_line { 'set_php_memory_limit':
-        path   => '/etc/php5/apache2/php.ini',
+        path   => $php_ini,
         match  => '^;?memory_limit\s*=',
         line   => 'memory_limit = 512M',
         notify => Class['::httpd'],
@@ -63,7 +71,7 @@ class role::xhgui::app {
     file_line { 'enable_php_opcache':
         line   => 'opcache.enable=1',
         match  => '^;?opcache.enable\s*\=',
-        path   => '/etc/php5/apache2/php.ini',
+        path   => $php_ini,
         notify => Class['::httpd'],
     }
 
