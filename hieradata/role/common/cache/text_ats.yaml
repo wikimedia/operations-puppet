@@ -110,10 +110,6 @@ cache::alternate_domains:
     director: 'performance'
   phabricator.wikimedia.org:
     director: 'phabricator'
-    subpaths:
-      '^/ws/':
-        director: 'phab_aphlict'
-        caching: 'websockets'
   phab.wmfusercontent.org:
     director: 'phabricator'
   pivot.wikimedia.org:
