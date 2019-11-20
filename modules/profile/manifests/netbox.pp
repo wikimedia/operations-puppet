@@ -211,7 +211,7 @@ class profile::netbox (
     # Generate report checker icinga checks from Hier data
     $nb_report_checks.each |$report| {
         $repname = $report['name']
-        $reports = $report['classes']
+        $reportclass = $report['class']
 
         if $report['alert'] {
             $check_args = ''
@@ -219,14 +219,13 @@ class profile::netbox (
         else {
             $check_args = '-w'
         }
-        # FIXME probably enable these on all frontends
         if $report['check_interval'] {
             ::nrpe::monitor_service { "check_netbox_${repname}":
                 ensure         => $active_ensure,
                 description    => "Netbox report ${repname}.",
-                nrpe_command   => "/usr/bin/python3 /usr/local/lib/nagios/plugins/check_netbox_report.py ${check_args} ${reports}",
+                nrpe_command   => "/usr/bin/python3 /usr/local/lib/nagios/plugins/check_netbox_report.py ${check_args} ${reportclass}",
                 check_interval => $report['check_interval'],
-                notes_url      => "https://netbox.wikimedia.org/extras/reports/${reports}",
+                notes_url      => "https://netbox.wikimedia.org/extras/report/${reportclass}/",
                 contact_group  => 'team-dcops',
             }
         }
@@ -240,8 +239,8 @@ class profile::netbox (
         if $report['run_interval'] {
             systemd::timer::job { "netbox_report_${repname}_run":
                 ensure                    => $active_ensure,
-                description               => "Run reports ${reports} in Netbox.",
-                command                   => "/usr/bin/python3 /usr/local/lib/nagios/plugins/check_netbox_report.py -n -r ${reports}",
+                description               => "Run report ${reportclass} in Netbox.",
+                command                   => "/srv/deployment/netbox/venv/bin/python /srv/deployment/netbox/deploy/src/netbox/manage.py runreport ${reportclass}",
                 interval                  => {
                     'start'    => 'OnCalendar',
                     'interval' => $report['run_interval']

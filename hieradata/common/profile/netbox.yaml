@@ -14,32 +14,32 @@ profile::netbox::netbox_api: https://netbox.wikimedia.org/
 profile::netbox::ganeti_sync_interval: 15
 profile::netbox::netbox_report_checks:
     -   name: puppetdb
-        classes: 'puppetdb.PuppetDB'
+        class: 'puppetdb.PuppetDB'
         alert: true
         check_interval: 5
         run_interval: '*-*-* *:06/30:00' # every 30 minutes
     -   name: coherence
-        classes: 'coherence.Coherence'
+        class: 'coherence.Coherence'
         alert: true
         check_interval: 5
         run_interval: '*-*-* *:09/30:00' # every 30 minutes
     -   name: management
-        classes: 'management.ManagementConsole'
+        class: 'management.ManagementConsole'
         alert: true
         check_interval: 5
         run_interval: '*-*-* *:03/30:00' # every 30 minutes
     -   name: accounting
-        classes: 'accounting.Accounting'
+        class: 'accounting.Accounting'
         alert: true
         check_interval: null
         run_interval: '*-*-* 23:12:00' # once a day at 23:12 UTC
     -   name: cables
-        classes: 'cables.Cables'
+        class: 'cables.Cables'
         alert: true
         check_interval: 5
         run_interval: '*-*-* *:06/30:00' # every 30 minutes
     -   name: librenms
-        classes: 'librenms.LibreNMS'
+        class: 'librenms.LibreNMS'
         alert: true
         check_interval: 5
         run_interval: '*-*-* *:06/30:00' # every 30 minutes

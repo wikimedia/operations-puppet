@@ -1,14 +1,16 @@
 #!/bin/env python3
+"""
+check_netbox_report.py: Return nagios status code based on the state of a specified report class.
+"""
+
 
 import argparse
 import logging
-import os
 import sys
 
 from yaml import safe_load
 
 import pynetbox
-import requests
 
 
 STATUS_OK = 0
@@ -19,7 +21,7 @@ STATUS_NAMES = {
     STATUS_OK: "OK",
     STATUS_WARNING: "WARNING",
     STATUS_CRITICAL: "CRITICAL",
-    STATUS_UNKNOWN: "UKNOWN",
+    STATUS_UNKNOWN: "UNKNOWN",
 }
 
 logger = logging.getLogger()
@@ -54,17 +56,13 @@ def parse_args():
     """
     parser = argparse.ArgumentParser()
 
-    parser.add_argument("reports", help="Report(s) to alert on.", nargs="+")
+    parser.add_argument("report", help="Report to alert on.")
     parser.add_argument(
         "-c",
         "--config",
         help="The path to the config file to load. Default: %(default)s.",
         default="/etc/netbox/report_check.yaml",
     )
-    parser.add_argument(
-        "-r", "--run", help="Run the report before returning the result.", action="store_true"
-    )
-    parser.add_argument("-n", "--noalert", help="Always return OK status.", action="store_true")
     parser.add_argument(
         "-w",
         "--warn",
@@ -77,36 +75,20 @@ def parse_args():
     return args
 
 
-def run_report(report_result):
-    """Run a particular report based on the result object returned from Pynetbox
+def print_status(status, failurestatus, message):
+    """Print status in coherent format, and return status value.
 
-    We do this directly with requests since pynetbox does not have a mechanism to do this.
-
-    Arguments:
-        report_result (:obj:`pynetbox.core.response.Record`): the result object obtained from
-        pynetbox
-
-    Raises:
-        Exception: if non-200 result occurs.
-
-    """
-    logger.info("Running report %s", report_result.name)
-    # for some reason the URL field switches the scheme, but we know better
-    url = (report_result.url + "run/").replace("http://", "https://")
-    headers = {
-        "Authorization": "Token {}".format(report_result.api.token),
-        "Accept": "application/json",
-        "User-agent": "wmf-icinga/{} (root@wikimedia.org)".format(os.path.basename(__file__)),
-    }
-    result = requests.post(url, headers=headers)
-    if result.status_code != 200:
-        raise RunReportError("Failed to run report {} {}".format(result.status_code, result.text))
+    This allows externally overriding critical statuses for UI purposes."""
+    if status == STATUS_CRITICAL:
+        status = failurestatus
+    print("{} {}".format(message, STATUS_NAMES[status]))
+    return status
 
 
 def main():
     """Main routine.
 
-    Loop through each specified report, run if requested and summarize results.
+    Take the first argument, and check the result of the report of that class.
 
     Returns:
         int: The Nagios status code result.
@@ -118,58 +100,24 @@ def main():
     failedstatus = STATUS_CRITICAL
     if args.warn:
         failedstatus = STATUS_WARNING
-    if args.noalert:
-        failedstatus = STATUS_OK
 
+    report = args.report
     netboxconfig = safe_load(open(args.config, "r"))
     api = pynetbox.api(url=netboxconfig["url"], token=netboxconfig["token"])
     try:
-        # We have to get all reports rather than getting them one at a time, because .get()
-        # returns report objects that are not fully populated.
-        all_reports = {"{}.{}".format(r.module, r.name): r for r in api.extras.reports.all()}
-    except pynetbox.core.query.RequestError:
-        logger.error("Exception trying to get report data.")
-        return STATUS_UNKNOWN
+        robj = api.extras.reports.get(report)
+    except pynetbox.core.query.RequestError as ex:
+        logger.error("Excepting getting report %s: %s", report, ex)
+        return print_status(
+            STATUS_UNKNOWN,
+            failedstatus,
+            "Netbox exception getting report data for report {}".format(report)
+        )
 
-    results = {}
-    for report in args.reports:
-        if report not in all_reports:
-            logger.warning(
-                "Report not in report list: %s (report list has: %s)",
-                report,
-                tuple(all_reports.keys()),
-            )
-            results[report] = STATUS_UNKNOWN
-            continue
-        repobj = all_reports[report]
-        if args.run:
-            try:
-                run_report(repobj.result)
-            except RunReportError:
-                logger.error("Exception trying to run report %s", report)
-                results[report] = STATUS_UNKNOWN
-                continue
+    if robj.result.failed:
+        return print_status(STATUS_CRITICAL, failedstatus, "Netbox report {}".format(report))
 
-            # refetch the object to refresh
-            repobj = api.extras.reports.get(report)
-
-        if repobj.result.failed:
-            results[report] = failedstatus
-        else:
-            results[report] = STATUS_OK
-
-    # Summarize results. Status return priority is
-    # 'failedstatus' then UNKNOWN then OK
-    endresult = STATUS_OK
-    for report, result in results.items():
-        if endresult == STATUS_OK:
-            endresult = result
-        elif endresult == STATUS_WARNING and result == failedstatus:
-            endresult = result
-        print("{} {}".format(report, STATUS_NAMES[result]))
-
-    # FIXME we could put some perfdata here based on the contents of the reports
-    return endresult
+    return print_status(STATUS_OK, failedstatus, "Netbox report {}".format(report))
 
 
 if __name__ == "__main__":
