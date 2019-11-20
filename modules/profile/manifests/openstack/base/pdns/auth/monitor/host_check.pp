@@ -5,7 +5,7 @@ class profile::openstack::base::pdns::auth::monitor::host_check(
 
     monitoring::service { "${target_host} Resolution":
         description   => 'Auth DNS',
-        check_command => "check_dns!${target_host}",
+        check_command => "check_dns!${target_fqdn}",
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Troubleshooting',
     }
 
