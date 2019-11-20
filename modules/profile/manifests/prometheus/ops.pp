@@ -1370,6 +1370,30 @@ class profile::prometheus::ops (
         port       => 9199,
     }
 
+    # jobs for the bacula exporter (stats about executed production backups,
+    # used and available, resources, etc.
+    # Normally there would be only a single director on the primary datacenter,
+    # but it can be switched over to the secondary, and in the future there may
+    # be more than 1 active at the same time
+    # Because it can take a long time to run, decrease the frequency and timeout.
+    $bacula_jobs = [
+        {
+            'job_name'        => 'bacula',
+            'scheme'          => 'http',
+            'scrape_timeout'  => '60s',
+            'file_sd_configs' => [
+                { 'files' => [ "${targets_path}/bacula_*.yaml" ] }
+            ],
+        },
+    ]
+
+    prometheus::class_config{ "bacula_${::site}":
+        dest       => "${targets_path}/bacula_${::site}.yaml",
+        site       => $::site,
+        class_name => 'role::backup',
+        port       => 9133,
+    }
+
     prometheus::server { 'ops':
         listen_address        => '127.0.0.1:9900',
         storage_retention     => $storage_retention,
@@ -1385,7 +1409,7 @@ class profile::prometheus::ops (
             $kafka_burrow_jobs, $logstash_jobs, $haproxy_jobs, $statsd_exporter_jobs,
             $mjolnir_jobs, $rsyslog_jobs, $php_jobs, $php_fpm_jobs, $icinga_jobs, $docker_registry_jobs,
             $gerrit_jobs, $routinator_jobs, $rpkicounter_jobs, $varnishkafka_jobs, $bird_jobs, $ncredir_jobs,
-            $cloud_dev_pdns_jobs, $cloud_dev_pdns_rec_jobs,
+            $cloud_dev_pdns_jobs, $cloud_dev_pdns_rec_jobs, $bacula_jobs,
         ),
         global_config_extra   => $config_extra,
     }
