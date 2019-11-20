@@ -276,11 +276,11 @@ node /^cp10(7[68]|8[02468]|90)\.eqiad\.wmnet$/ {
     role(cache::upload)
 }
 
-node /^cp20(1[369]|23)\.codfw\.wmnet$/ {
+node /^cp20(1[69]|23)\.codfw\.wmnet$/ {
     role(cache::text)
 }
 
-node /^cp20(0[1467]|1[02])\.codfw\.wmnet$/ {
+node /^cp20(0[1467]|1[023])\.codfw\.wmnet$/ {
     role(cache::text_ats)
 }
 

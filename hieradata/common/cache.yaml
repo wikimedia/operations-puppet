@@ -1,7 +1,6 @@
 cache::nodes:
   text:
     codfw:
-      - 'cp2013.codfw.wmnet'
       - 'cp2016.codfw.wmnet'
       - 'cp2019.codfw.wmnet'
       - 'cp2023.codfw.wmnet'
@@ -12,6 +11,7 @@ cache::nodes:
       - 'cp2007.codfw.wmnet'
       - 'cp2010.codfw.wmnet'
       - 'cp2012.codfw.wmnet'
+      - 'cp2013.codfw.wmnet'
     eqiad:
       - 'cp1077.eqiad.wmnet'
       - 'cp1079.eqiad.wmnet'
