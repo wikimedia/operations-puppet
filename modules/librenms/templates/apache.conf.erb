@@ -1,8 +1,9 @@
 <VirtualHost *:80>
     ServerName <%= @sitename %>
     ServerAdmin noc@wikimedia.org
-    RewriteEngine on
-    RewriteRule ^/(.*)$ https://<%= @sitename %>/$1 [L,R=301]
+    <Location />
+        Require all denied
+    </Location>
 </VirtualHost>
 
 <VirtualHost *:443>
