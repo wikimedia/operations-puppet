@@ -3888,7 +3888,7 @@ host ms-be1056 {
 }
 
 host ms-be1057 {
-    hardware ethernet ;
+    hardware ethernet 48:df:37:89:53:40;
     fixed-address ms-be1057.eqiad.wmnet;
 }
 
