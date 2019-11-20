@@ -43,6 +43,7 @@ fi
 DEPLOY_SKIP_RELOAD=""
 DEPLOY_INITIAL=""
 PULL_SKIP_REVIEW=""
+VERBOSE=0
 while :; do
     case "$1" in
         --skip-reload)
@@ -55,6 +56,10 @@ while :; do
             ;;
         --skip-review)
             PULL_SKIP_REVIEW="--skip-review"
+            shift
+            ;;
+        --verbose)
+            VERBOSE=1
             shift
             ;;
         *)
@@ -73,8 +78,24 @@ else
     REMOTE="ssh://${1}${WORKINGDIR}"
     PULL_SKIP_REVIEW="--skip-review"
 fi
-echo "Pulling the current revision from $REMOTE"
-sudo -u authdns authdns-git-pull $PULL_SKIP_REVIEW $REMOTE
 
-echo "Deploying via utils/deploy-check.py..."
-utils/deploy-check.py --deploy $DEPLOY_INITIAL $DEPLOY_SKIP_RELOAD
+# Force --verbose on if there's no (possibly implied) --skip-review, because we
+# can't do a review with the stdout/err descriptors redirected...
+if [ -z "$PULL_SKIP_REVIEW" ]; then
+    VERBOSE=1
+fi
+
+PULL_CMD="sudo -u authdns authdns-git-pull $PULL_SKIP_REVIEW $REMOTE"
+DEPLOY_CMD="utils/deploy-check.py --deploy $DEPLOY_INITIAL $DEPLOY_SKIP_RELOAD"
+
+if [ $VERBOSE -eq 1 ]; then
+    echo "Pulling the current revision from $REMOTE"
+    $PULL_CMD
+    echo "Deploying via utils/deploy-check.py..."
+    $DEPLOY_CMD
+else
+    TMPF=$(mktemp)
+    trap "rm -f $TMPF" EXIT
+    ($PULL_CMD && $DEPLOY_CMD) >$TMPF 2>&1 || (cat $TMPF && exit 1)
+    echo "OK - authdns updated successfully"
+fi
