@@ -51,6 +51,10 @@
 
     LogLevel warn
 
+    # Needed to avoid broken URL report generation in Superset.
+    # T238461
+    ProxyPreserveHost on
+
     ProxyPass /health_check !
     ProxyPass / http://localhost:9080/
     ProxyPassReverse / http://localhost:9080/
