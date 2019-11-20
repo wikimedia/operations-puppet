@@ -9,7 +9,7 @@
 #
 # [*central_hosts*]
 #   A list of host (and optional port) to forward syslog events to.
-#   (e.g. ["centrallog1001.eqiad.wmnet"] or ["deployment-logstash2.deployment-prep.eqiad.wmflabs:10514"])
+#   (e.g. ["centrallog1001.eqiad.wmnet"] or ["deployment-logstash03.deployment-prep.eqiad.wmflabs:10514"])
 #
 # [*central_hosts_tls*]
 #   A list of host:port (port is *required*) to forward syslog using TLS.

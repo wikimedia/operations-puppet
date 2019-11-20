@@ -1,6 +1,6 @@
 ---
 profile::base::remote_syslog:
-  - "deployment-logstash2.deployment-prep.eqiad.wmflabs:10514"
+  - "deployment-logstash03.deployment-prep.eqiad.wmflabs:10514"
 profile::base::purge_apt_sources: true
 # No LVS nor etcd-based load-balancing here
 has_lvs: false
@@ -11,7 +11,7 @@ service::configuration::mwapi_host: http://deployment-mediawiki-07.deployment-pr
 service::configuration::restbase_uri: http://deployment-restbase02.deployment-prep.eqiad.wmflabs:7231
 #service::configuration::http_proxy:
 service::configuration::statsd_host: labmon1001.eqiad.wmnet
-service::configuration::logstash_host: deployment-logstash2.deployment-prep.eqiad.wmflabs
+service::configuration::logstash_host: deployment-logstash03.deployment-prep.eqiad.wmflabs
 profile::citoid::zotero_host: deployment-zotero01.deployment-prep.eqiad.wmflabs
 profile::citoid::zotero_port: 1969
 profile::changeprop::purge_host: deployment-cache-text05.deployment-prep.eqiad.wmflabs
@@ -173,7 +173,7 @@ profile::cassandra::instances:
   "deployment-restbase02.deployment-prep.eqiad.wmflabs": {}
 profile::cassandra::settings:
   listen_address: '%{::ipaddress}'
-  logstash_host: deployment-logstash2.deployment-prep.eqiad.wmflabs
+  logstash_host: deployment-logstash03.deployment-prep.eqiad.wmflabs
   target_version: '3.x'
   additional_jvm_opts:
     - '-javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=7800:/etc/cassandra/prometheus_jmx_exporter.yaml'
@@ -181,7 +181,7 @@ profile::cassandra::settings:
     rpc_address: '%{::ipaddress}'
 # end cassandra
 udp2log_aggregator: deployment-fluorine02.deployment-prep.eqiad.wmflabs:8420
-logstash_host: deployment-logstash2.deployment-prep.eqiad.wmflabs
+logstash_host: deployment-logstash03.deployment-prep.eqiad.wmflabs
 logstash_syslog_port: 10514
 logstash_gelf_port: 12201
 # TCP json_lines input
@@ -503,7 +503,7 @@ deployment_hosts:
 - '172.16.4.19' # deployment-deploy02.deployment-prep.eqiad.wmflabs
 
 profile::rsyslog::kafka_shipper::kafka_brokers:
-  - 'deployment-logstash2.deployment-prep.eqiad.wmflabs:9093'
+  - 'deployment-logstash03.deployment-prep.eqiad.wmflabs:9093'
 
 cache::nodes:
     text:
