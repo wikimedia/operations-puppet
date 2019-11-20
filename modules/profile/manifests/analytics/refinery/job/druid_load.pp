@@ -44,26 +44,26 @@ class profile::analytics::refinery::job::druid_load(
     # Note that this data set does not belong to EventLogging, but the
     # eventlogging_to_druid_job wrapper is compatible and very convenient!
     profile::analytics::refinery::job::eventlogging_to_druid_job { 'netflow':
-        job_config => {
-            database           => 'wmf',
-            timestamp_column   => 'stamp_inserted',
-            dimensions         => 'as_dst,as_path,peer_as_dst,as_src,ip_dst,ip_proto,ip_src,peer_as_src,port_dst,port_src,tag2,tcp_flags,country_ip_src,country_ip_dst',
-            metrics            => 'bytes,packets',
-            hourly_hours_until => 3,
+        hourly_hours_until => 3,
+        job_config         => {
+            database         => 'wmf',
+            timestamp_column => 'stamp_inserted',
+            dimensions       => 'as_dst,as_path,peer_as_dst,as_src,ip_dst,ip_proto,ip_src,peer_as_src,port_dst,port_src,tag2,tcp_flags,country_ip_src,country_ip_dst',
+            metrics          => 'bytes,packets',
         },
     }
     # This second round serves as sanitization, after 90 days of data loading.
     # Note that some dimensions are not present, thus nullifying their values.
     profile::analytics::refinery::job::eventlogging_to_druid_job { 'netflow-sanitization':
-        job_config => {
-            ensure_hourly    => 'absent',
+        ensure_hourly    => 'absent',
+        daily_days_since => 91,
+        daily_days_until => 90,
+        job_config       => {
             database         => 'wmf',
             table            => 'netflow',
             timestamp_column => 'stamp_inserted',
             dimensions       => 'as_dst,as_path,peer_as_dst,as_src,peer_as_src,tag2,country_ip_src,country_ip_dst',
             metrics          => 'bytes,packets',
-            daily_days_since => 91,
-            daily_days_until => 90,
         },
     }
 }
