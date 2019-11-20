@@ -14,7 +14,6 @@ WARNING = 1
 CRITICAL = 2
 UNKNOWN = 3
 
-# TODO: Make these configurable
 DEFAULT_BACKUP_JOB_CONFIG_PATH = '/etc/bacula/jobs.d'
 BCONSOLE_PATH = "/usr/sbin/bconsole"
 
