@@ -254,6 +254,7 @@ class profile::analytics::refinery::job::data_purge (
     kerberos::systemd_timer { 'drop-mediawiki-pages_meta_history-dumps':
         description  => 'Drop pages_meta_history dumps data from HDFS after 80 days.',
         command      => "${refinery_path}/bin/refinery-drop-older-than --base-path /wmf/data/raw/mediawiki/dumps/pages_meta_history --path-format '(?P<year>[0-9]{4})(?P<month>[0-9]{2})01' --older-than <%= @dumps_retention_days %> --log-file <%= @mediawiki_dumps_log_file %> --skip-trash --execute 88d1df6aee62b8562ab3d31964ba6b49",
+        environment  => $systemd_env,
         interval     => '*-*-20 06:00:00',
         user         => 'analytics',
         use_kerberos => $use_kerberos,
@@ -264,6 +265,7 @@ class profile::analytics::refinery::job::data_purge (
     kerberos::systemd_timer { 'drop-mediawiki-pages_meta_current-dumps':
         description  => 'Drop pages_meta_current dumps data from HDFS after 80 days.',
         command      => "${refinery_path}/bin/refinery-drop-older-than --base-path /wmf/data/raw/mediawiki/dumps/pages_meta_current --path-format '(?P<year>[0-9]{4})(?P<month>[0-9]{2})01' --older-than <%= @dumps_retention_days %> --log-file <%= @mediawiki_dumps_log_file %> --skip-trash --execute 7fd55f34e12cb3a6c586a29043ae5402",
+        environment  => $systemd_env,
         interval     => '*-*-20 07:00:00',
         user         => 'analytics',
         use_kerberos => $use_kerberos,
@@ -274,28 +276,9 @@ class profile::analytics::refinery::job::data_purge (
     kerberos::systemd_timer { 'drop-mediawiki-siteinfo_namespaces-dumps':
         description  => 'Drop pages_meta_current dumps data from HDFS after 80 days.',
         command      => "${refinery_path}/bin/refinery-drop-older-than --base-path /wmf/data/raw/mediawiki/dumps/siteinfo_namespaces --path-format '(?P<year>[0-9]{4})(?P<month>[0-9]{2})01' --older-than <%= @dumps_retention_days %> --log-file <%= @mediawiki_dumps_log_file %> --skip-trash --execute b5ced2ce9e4be85f144a2228ade9125d",
+        environment  => $systemd_env,
         interval     => '*-*-20 05:00:00',
         user         => 'analytics',
         use_kerberos => $use_kerberos,
     }
-
-    # Old file and timer for dumps imports - Marking them as absent for cleanup
-    $xmldumps_retention_days = 80
-    file { '/usr/local/bin/refinery-drop-mediawiki-xmldumps-pages_meta_history':
-        ensure  => absent,
-        content => template('profile/analytics/refinery/job/refinery-drop-mediawiki-xmldumps-pages_meta_history.sh.erb'),
-        mode    => '0550',
-        owner   => 'analytics',
-
-    }
-    kerberos::systemd_timer { 'mediawiki-drop-xmldumps-pages_meta_history':
-        ensure       => absent,
-        description  => 'Drop xmldumps pages_meta_history data from HDFS after 80 days.',
-        command      => '/usr/local/bin/refinery-drop-mediawiki-xmldumps-pages_meta_history',
-        interval     => '*-*-20 06:00:00',
-        user         => 'analytics',
-        use_kerberos => $use_kerberos,
-        require      => File['/usr/local/bin/refinery-drop-mediawiki-xmldumps-pages_meta_history'],
-    }
-
 }
