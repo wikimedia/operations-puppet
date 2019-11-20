@@ -3,13 +3,24 @@
 -- This file is managed by Puppet.
 --
 
-local PROXY_HOSTNAME=''
+HOSTNAME = nil
+
+function read_config()
+    local configfile = ts.get_config_dir() .. "/lua/default.lua.conf"
+    dofile(configfile)
+    assert(HOSTNAME ~= nil, "Cannot read HOSTNAME from " .. configfile)
+end
+
 function __init__(argtb)
-    PROXY_HOSTNAME = argtb[1]
+    read_config()
+end
+
+function __reload__()
+    read_config()
 end
 
 function get_hostname()
-    return PROXY_HOSTNAME
+    return HOSTNAME
 end
 
 function cache_status_to_string(status)
