@@ -8,6 +8,9 @@ class authdns::scripts {
     require_package('python3-git')
     require_package('python3-jinja2')
 
+    # And this is needed by 'authdns-update' itself
+    require_package('clustershell')
+
     file { '/usr/local/sbin/authdns-update':
         ensure => present,
         mode   => '0555',

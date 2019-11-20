@@ -14,8 +14,9 @@ PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 # Source the configuration file
 [ -f $CONFFILE ] && . $CONFFILE
 
-SSH_OPTIONS="-oCheckHostIP=no -oUserKnownHostsFile=/dev/null -oBatchMode=yes"
-SSH_USER="-l authdns -i /srv/authdns/.ssh/id_ed25519"
+# Per-node timeouts: 10s connect + 45s execution
+CLUSH_OPTIONS="-S -B -n -t 10 -u 45"
+SSH_OPTIONS="-l authdns -i /srv/authdns/.ssh/id_ed25519 -oCheckHostIP=no -oUserKnownHostsFile=/dev/null"
 
 if [ -z "$NAMESERVERS" -o -z "$FQDN" ]; then
     echo "Missing config file options, system misconfigured"
@@ -36,22 +37,22 @@ echo "Updating $FQDN (self)..."
 # this might seem silly at first, ssh'ing to self; however, this is a paranoid
 # step to ensure that we're running in the exact same way as the slaves and if
 # it fails, it fail for all of them, instead of having a split-brain.
-ssh $SSH_OPTIONS $SSH_USER $FQDN authdns-local-update
+ssh $SSH_OPTIONS $FQDN authdns-local-update
 
-for slave in $NAMESERVERS; do
-    if [ "$FQDN" = "$slave" ]; then
+OTHERS_OPT=""
+for other in $NAMESERVERS; do
+    if [ "$FQDN" = "$other" ]; then
         continue
     fi
     for skip in $SKIP; do
-        if [ "$skip" = "$slave" ]; then
-            echo ""; echo "Skipping $slave."
+        if [ "$skip" = "$other" ]; then
+            echo ""; echo "Skipping $other."
             continue 2
         fi
     done
-
-    echo ""; echo "Updating $slave..."
-    # sync from us
-    ssh $SSH_OPTIONS $SSH_USER $slave authdns-local-update $FQDN
+    OTHERS_OPT="${OTHERS_OPT} -w ${other}"
 done
 
-echo ""; echo "DONE!"
+clush $CLUSH_OPTIONS -o "${SSH_OPTIONS}" $OTHERS_OPT authdns-local-update $FQDN
+
+echo ""; echo "OK - authdns-update successful on all nodes!"
