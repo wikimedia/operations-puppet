@@ -17,7 +17,7 @@ groups:
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
-              marble, mmarble, raz-shuty, jeroendedauw]
+              marble, mmarble, raz-shuty, jeroendedauw, nharateh]
   wikidev:
     gid: 500
     description: container group for primary user groups.
@@ -3547,9 +3547,8 @@ ldap_only_users:
     realname: Marielle Volz
     email: mvolz@wikimedia.org
   nharateh:
-    ensure: present
+    ensure: absent
     realname: Natalia Harateh
-    email: nharateh@wikimedia.org
   nirzar:
     ensure: absent
     realname: Nirzar Pangarkar
