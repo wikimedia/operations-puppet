@@ -64,7 +64,7 @@ cache::app_directors:
     be_opts:
       port: 8080
     backends:
-      #eqiad: 'cxserver.svc.eqiad.wmnet'
+      eqiad: 'cxserver.svc.eqiad.wmnet'
       codfw: 'cxserver.svc.codfw.wmnet'
   webserver_misc_static:
     backends:
