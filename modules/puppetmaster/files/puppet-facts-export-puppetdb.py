@@ -19,15 +19,21 @@ class PuppetDBApi(object):
         config.read(puppetdb_config_file)
         # TODO: add support for multiple urls
         self.server_url = config['main']['server_urls'].split(',')[0]
+        self._cacert = None
+
+    @property
+    def cacert(self):
+        if self._cacert is None:
+            self._cacert = subprocess.check_output(
+                ['puppet', 'config', 'print', 'localcacert']).decode().strip()
+        return self._cacert
 
     def url_for(self, endpoint):
         return '{url}/pdb/query/v4/{ep}'.format(url=self.server_url, ep=endpoint)
 
     def get(self, endpoint):
         # use the localcacert value whichshould be avalible on all machines
-        cacert = subprocess.check_output(
-            ['puppet', 'config', 'print', 'localcacert']).decode().strip()
-        return requests.get(self.url_for(endpoint), verify=cacert).json()
+        return requests.get(self.url_for(endpoint), verify=self.cacert).json()
 
 
 def main():
