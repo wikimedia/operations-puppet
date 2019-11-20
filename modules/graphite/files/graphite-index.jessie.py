@@ -32,5 +32,5 @@ def format_entry(wsp_path):
 with tempfile.NamedTemporaryFile('wt', delete=False) as tmp:
     for whisper in iter_glob(settings.WHISPER_DIR, '*.wsp'):
         tmp.write(format_entry(whisper) + '\n')
-    os.chmod(tmp.name, 0644)
+    os.chmod(tmp.name, 0o644)
     shutil.move(tmp.name, settings.INDEX_FILE)

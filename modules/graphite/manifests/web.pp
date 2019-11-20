@@ -96,10 +96,11 @@ class graphite::web(
         require => Package['graphite-web'],
     }
 
-    # django 1.9 compat, remove once the jessie -> stretch migration is completed
+    # django 1.9 compat, remove once the jessie -> stretch or buster migration is completed
     $syncdb_command = $::lsbdistcodename ? {
+        buster  => '/usr/bin/graphite-manage migrate --run-syncdb --noinput',
         stretch  => '/usr/bin/graphite-manage migrate --run-syncdb --noinput',
-        default  => '/usr/bin/graphite-manage syncdb --noinput',
+        jessie  => '/usr/bin/graphite-manage syncdb --noinput',
     }
 
     exec { 'graphite_syncdb':
@@ -149,13 +150,13 @@ class graphite::web(
     }
 
     file { '/usr/local/sbin/graphite-index':
-        source  => 'puppet:///modules/graphite/graphite-index.py',
+        source  => "puppet:///modules/graphite/graphite-index.${::lsbdistcodename}.py",
         mode    => '0555',
         require => Uwsgi::App['graphite-web'],
     }
 
     file { '/usr/local/sbin/graphite-auth':
-        source  => 'puppet:///modules/graphite/graphite-auth.py',
+        source  => "puppet:///modules/graphite/graphite-auth.${::lsbdistcodename}.py",
         mode    => '0555',
         require => Uwsgi::App['graphite-web'],
     }

@@ -17,7 +17,14 @@ class graphite(
     $storage_dir         = '/var/lib/carbon',
     $whisper_lock_writes = false,
 ) {
-    package { [ 'graphite-carbon', 'python-whisper' ]:
+
+    $required_packages = $::lsbdistcodename ? {
+        buster  => [ 'graphite-carbon', 'python3-whisper' ],
+        stretch => [ 'graphite-carbon', 'python-whisper' ],
+        jessie  => [ 'graphite-carbon', 'python-whisper' ],
+    }
+
+    package { $required_packages:
         ensure => installed,
     }
 

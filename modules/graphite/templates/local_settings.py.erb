@@ -74,6 +74,8 @@ from graphite.app_settings import *
 
 CORS_ORIGINS = <%= Array(@cors_origins).inspect %>
 
-MIDDLEWARE_CLASSES += (
-    'cors.CorsMiddleware',
-)
+# jessie/stretch backwards compat
+if 'MIDDLEWARE_CLASSES' in locals():
+    MIDDLEWARE_CLASSES += ('cors.CorsMiddleware',)
+elif 'MIDDLEWARE' in locals():
+    MIDDLEWARE += ('cors.CorsMiddleware',)
