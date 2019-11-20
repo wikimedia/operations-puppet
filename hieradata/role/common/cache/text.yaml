@@ -217,7 +217,7 @@ cache::app_directors:
     be_opts:
       port: 8748
     backends:
-      #eqiad: 'blubberoid.svc.eqiad.wmnet'
+      eqiad: 'blubberoid.svc.eqiad.wmnet'
       codfw: 'blubberoid.svc.codfw.wmnet'
   docker_registry:
       be_opts:
