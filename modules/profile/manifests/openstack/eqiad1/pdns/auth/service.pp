@@ -18,7 +18,7 @@ class profile::openstack::eqiad1::pdns::auth::service(
         db_pass             => $db_pass,
         db_host             => ipresolve($::fqdn,4),
         pdns_webserver      => true,
-        pdns_api_key        => pdns_api_key,
+        pdns_api_key        => $pdns_api_key,
         pdns_api_allow_from => ['127.0.0.1', ipresolve($host,4), ipresolve($host,6),
                                 ipresolve($host_secondary,4), ipresolve($host_secondary,6)]
     }
