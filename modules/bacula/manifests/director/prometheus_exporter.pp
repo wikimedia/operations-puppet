@@ -7,7 +7,7 @@ class bacula::director::prometheus_exporter(
         source => 'puppet:///modules/bacula/prometheus-bacula-exporter.py',
         owner  => 'bacula',
         group  => 'bacula',
-        mode   => '0644',
+        mode   => '0554',
     }
     systemd::service { 'prometheus-bacula-exporter':
         ensure  => present,

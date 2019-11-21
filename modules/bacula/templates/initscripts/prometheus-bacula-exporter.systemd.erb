@@ -6,7 +6,7 @@ After=network.target
 User=bacula
 Group=bacula
 Type=simple
-ExecStart=/usr/local/bin/prometheus-bacula-exporter -P <%= @port %>
+ExecStart=/usr/local/bin/prometheus-bacula-exporter.py -P <%= @port %>
 KillSignal=SIGINT
 Restart=always
 
