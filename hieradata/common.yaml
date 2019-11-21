@@ -951,6 +951,19 @@ authdns_servers:
   - 'authdns2001.wikimedia.org'
   - 'ganeti3003.esams.wmnet'
 
+# .. and this is the set of public IPs they provide service on, which is
+# consumed by both authdns servers and the icinga monitoring of them.
+# XXX - probably a better way to do this without common.yaml, and some
+# restructuring to do in general, all of which may fall out when monitoring is
+# redone anyways...
+authdns_addrs:
+  ns0-v4:
+    address: '208.80.154.238'
+  ns1-v4:
+    address: '208.80.153.231'
+  ns2-v4:
+    address: '91.198.174.239'
+
 # acme-chief active host
 acmechief_host: 'acmechief1001.eqiad.wmnet'
 

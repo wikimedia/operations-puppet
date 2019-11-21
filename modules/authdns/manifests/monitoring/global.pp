@@ -7,7 +7,7 @@
 # Obviously, its view will be limited to how they're routed
 #  *from the monitoring machine*, which is imperfect but
 #  better than nothing.
-define authdns::monitoring::global($address, $prefixlen=undef) {
+define authdns::monitoring::global($address) {
     $hostlabel = $title # just for semantic clarity below
 
     @monitoring::host { $hostlabel: ip_address => $address }

@@ -3,4 +3,4 @@ profile::authdns::acmechief_target::acmechief_hosts:
 - acmechief2001.codfw.wmnet
 - acmechief-test1001.eqiad.wmnet
 - acmechief-test2001.codfw.wmnet
-
+profile::authdns::server::gitrepo: 'https://gerrit.wikimedia.org/r/operations/dns.git'
