@@ -326,6 +326,7 @@ class BaculaCollector(object):
                                   'Number of files processed on the last job execution',
                                   labels=['bacula_job'])
             g.add_metric([job], last_execution['jobfiles'])
+            yield g
             g = GaugeMetricFamily('bacula_job_last_execution_job_bytes',
                                   'Total bytes processed on the last job execution',
                                   labels=['bacula_job'])
