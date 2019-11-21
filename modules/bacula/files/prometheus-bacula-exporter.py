@@ -32,6 +32,23 @@ class Bacula(object):
         self.bconsole_path = bconsole_path
         self.backups = None
 
+    def get_expected_freshness(self, schedule):
+        """
+        Given a schedule (actually, a JobDefs name, which on Wikimedia
+        always start with Hourly, Weekly or Monthly), provide a pair of
+        expected fresnhess of any backup, and full backups, in seconds
+        TODO: Make thresholds configurable and/or not WMF-specific
+        """
+        if schedule.startswith('Hourly'):
+            # Full weekly, incremental hourly
+            return 3 * 3600, 8 * 24 * 3600
+        elif schedule.startswith('Weekly'):
+            # Only fulls, weekly
+            return 8 * 24 * 3600, 8 * 24 * 3600
+        else:  # We assume Monthly
+            # Fulls monthly, diffs every other fortnite, incr. daily
+            return 2 * 24 * 3600, 32 * 24 * 3600
+
     def read_configuration_file(self, path):
         """
         Open path parameter file for reading and parse its job configuration,
@@ -63,6 +80,9 @@ class Bacula(object):
                     job_properties['job_type'] = value.lower()
                 elif key == 'jobdefs':  # handle special case JobDefs
                     job_properties['schedule'] = value
+                    expected_freshness, expected_full_freshness = self.get_expected_freshness(value)
+                    job_properties['expected_freshness'] = expected_freshness
+                    job_properties['expected_full_freshness'] = expected_full_freshness
                 elif key in job_properties.keys():  # TODO: Should we detect duplicates?
                     job_properties[key] = value
             if job_properties['job_type'] != 'backup' or job_properties['name'] is None:
@@ -169,26 +189,42 @@ class Bacula(object):
                 break
         return latest_good_backup, latest_full_good_backup
 
-    def add_expected_freshness(self):
+    def older(self, timestamp, interval_in_seconds):
         """
-        Given a schedule (actually, a JobDefs name, which on Wikimedia
-        always start with Hourly, Weekly or Monthly), provide a pair of
-        expected fresnhess of any backup, and full backups, in seconds
-        TODO: Make thresholds configurable
+        Returns true if given timestamp is older than the given time interval in seconds,
+        false otherwise
         """
-        for name in self.backups:
-            if schedule.startswith('Hourly'):
-                # Full weekly, incremental hourly
-                self.backups[name]['expected_freshness'] = 3 * 3600
-                self.backups[name]['expected_full_freshness'] = 8 * 24 * 3600
-            elif schedule.startswith('Weekly'):
-                # Only fulls, weekly
-                self.backups[name]['expected_freshness'] = 8 * 24 * 3600
-                self.backups[name]['expected_full_freshness'] = 8 * 24 * 3600
-            else:  # We assume Monthly
-                # Fulls monthly, diffs every other fortnite, incr. daily
-                self.backups[name]['expected_freshness'] = 2 * 24 * 3600
-                self.backups[name]['expected_full_freshness'] = 32 * 24 * 3600
+        return (timestamp <= datetime.datetime.now() -
+                datetime.timedelta(seconds=interval_in_seconds))
+
+    def calculate_success_rate(self, from_seconds_ago, to_seconds_ago):
+        """
+        Returns the total number of backups, and the total number of successful
+        backups in the given period [now() - from_seconds_ago, now() - to_seconds_ago]
+        from_seconds_ago is expected to be larger than to_seconds_ago.
+        """
+        successful = 0
+        failures = 0
+        for job in self.backups:
+            executions = self.backups[job]['executions']
+            for i in range(len(executions) - 1, -1, -1):
+                execution = executions[i]
+                if self.older(execution['starttime'], from_seconds_ago):
+                    break
+                if not self.older(execution['starttime'], to_seconds_ago):
+                    continue
+                # success conditions for full backups
+                if execution['level'] == 'F':
+                    if execution['jobstatus'] == 'T' and execution['jobbytes'] > 0:
+                        successful += 1
+                    else:
+                        failures += 1
+                # success conditions for non-full backups
+                elif execution['jobstatus'] == 'T':
+                    successful += 1
+                else:
+                    failures += 1
+        return successful + failures, successful
 
 
 class BaculaCollector(object):
@@ -339,6 +375,47 @@ class BaculaCollector(object):
             g.add_metric([job], bacula.backups[job]['expected_full_freshness'])
             yield g
 
+    def get_success_rate(self, bacula):
+        """
+        Provide metrics regarding total count and succesful count of attempted backup
+        jobs in the last week
+        """
+        # last month
+        total, succesful = bacula.calculate_success_rate(from_seconds_ago=30 * 24 * 3600,
+                                                         to_seconds_ago=0)
+        g = GaugeMetricFamily('bacula_backups_last_month',
+                              'Number of backups attempted in the last month')
+        g.add_metric([], total)
+        yield g
+        g = GaugeMetricFamily('bacula_backups_last_month_successful',
+                              'Number of succesful backups completed in the last month')
+        g.add_metric([], succesful)
+        yield g
+
+        # last week
+        total, succesful = bacula.calculate_success_rate(from_seconds_ago=7 * 24 * 3600,
+                                                         to_seconds_ago=0)
+        g = GaugeMetricFamily('bacula_backups_last_week',
+                              'Number of backups attempted in the last week')
+        g.add_metric([], total)
+        yield g
+        g = GaugeMetricFamily('bacula_backups_last_week_successful',
+                              'Number of succesful backups completed in the last week')
+        g.add_metric([], succesful)
+        yield g
+
+        # last day
+        total, succesful = bacula.calculate_success_rate(from_seconds_ago=24 * 3600,
+                                                         to_seconds_ago=0)
+        g = GaugeMetricFamily('bacula_backups_last_day',
+                              'Number of backups attempted in the last day')
+        g.add_metric([], total)
+        yield g
+        g = GaugeMetricFamily('bacula_backups_last_day_successful',
+                              'Number of succesful backups completed in the last day')
+        g.add_metric([], succesful)
+        yield g
+
     def collect(self):
         """
         Gather metrics
@@ -348,8 +425,8 @@ class BaculaCollector(object):
         bacula.add_job_executions()
         yield from self.get_good_backup_dates(bacula)  # noqa: E999
         yield from self.get_last_executed_job_metrics(bacula)  # noqa: E999
-        bacula.add_expected_fressness()
         yield from self.get_expected_freshness(bacula)  # noqa: E999
+        yield from self.get_success_rate(bacula)  # noqa: E999
 
 
 def sigint(sig, frame):
