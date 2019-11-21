@@ -102,7 +102,7 @@ def transform_data_to_prometheus(data):
     # core:                <-- group
     #   s1:                <-- section (shard)
     #     master:          <-- role
-    #       - db1067:9104  <-- list of sockets
+    #       - db1083:9104  <-- list of sockets
     #     slave:
     #       - db1089:11311
     #       - db1091:9104
@@ -151,7 +151,7 @@ def transform_data_to_prometheus(data):
     #     shard: s1
     #     role: master
     #   targets:
-    #     - db1067:9104
+    #     - db1083:9104
     # - labels:
     #     shard: s1
     #     role: slave

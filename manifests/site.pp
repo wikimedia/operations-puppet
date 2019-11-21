@@ -343,10 +343,14 @@ node 'db1083.eqiad.wmnet' {
     role(mariadb::core)
 }
 # eqiad replicas
-node /^db1(067|080|089|106|118|119|134)\.eqiad\.wmnet/ {
+node /^db1(080|089|106|118|119|134)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
 
+# To be decommissioned # T238297
+node 'db1067.eqiad.wmnet' {
+    role(spare::system)
+}
 # s1 (enwiki) core production dbs on codfw
 # codfw master
 node 'db2112.codfw.wmnet' {
