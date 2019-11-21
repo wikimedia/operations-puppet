@@ -30,6 +30,10 @@ class role::xhgui::app {
         $mongo_driver='php-mongodb'
         $httpd_php='php7.3'
         $php_ini='/etc/php/7.3/fpm/php.ini'
+    } elsif os_version('debian == stretch') {
+        $mongo_driver='php-mongodb'
+        $httpd_php='php7.0'
+        $php_ini='/etc/php/7.0/fpm/php.ini'
     } else {
         $mongo_driver='php5-mongo'
         $httpd_php='php5'
