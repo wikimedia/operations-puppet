@@ -343,8 +343,10 @@ groups:
   - record: cluster:puppet_agent_resources_total:count
     expr: count by (cluster) (puppet_agent_resources_total)
 
+
 - name: pdu
   rules:
+  # Sentry 3 https://github.com/librenms/librenms/blob/master/mibs/sentry/Sentry3-MIB
   - record: instance_row:pdu_infeedPower:sum
     expr: sum by(instance, row) (pdu_infeedPower)
   - record: instance_row:pdu_infeedVoltage:max
@@ -357,6 +359,10 @@ groups:
     expr: max by(instance, row) (pdu_infeedLoadValue)
   - record: instance_row:pdu_infeedLoadValue:min
     expr: min by(instance, row) (pdu_infeedLoadValue)
+
+  # Sentry 4 https://github.com/librenms/librenms/blob/master/mibs/sentry/Sentry4-MIB
+  - record: instance_row:pdu_st4InputCordActivePower:sum
+    expr: sum by(instance, row) (pdu_st4InputCordActivePower)
 
 - name: ipsec
   rules:
