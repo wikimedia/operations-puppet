@@ -780,11 +780,9 @@ host webperf2002 {
 host xhgui1001 {
     hardware ethernet aa:00:00:68:50:8a;
     fixed-address xhgui1001.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host xhgui2001 {
     hardware ethernet aa:00:00:d8:e9:14;
     fixed-address xhgui2001.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
