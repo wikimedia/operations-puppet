@@ -23,9 +23,12 @@ from keystoneclient.v3 import client as keystone_client
 from novaclient import client as novaclient
 from oslo_log import log as logging
 
+import git
+import os
 import pipes
 import requests
 import subprocess
+import tempfile
 
 LOG = logging.getLogger(__name__)
 central_api = central_rpcapi.CentralAPI()
@@ -137,6 +140,52 @@ class BaseAddressWMFHandler(BaseAddressHandler):
         except requests.exceptions.ConnectionError:
             # No prefix, no problem!
             pass
+
+    def _get_repo(self):
+        repo_path = tempfile.mkdtemp(prefix="instance-puppet")
+        repo_url = cfg.CONF[self.name].puppet_git_repo_url
+        repo_user = cfg.CONF[self.name].puppet_git_repo_user
+        repo_key = cfg.CONF[self.name].puppet_git_repo_key_path
+        git_ssh_cmd = (
+            '/usr/bin/ssh -v -i %s -l %s -o "StrictHostKeyChecking=no"' %
+            (repo_key, repo_user))
+        LOG.debug("git_ssh_cmd: %s" % git_ssh_cmd)
+        LOG.debug("repo_url: %s" % repo_url)
+
+        repo = git.Repo.clone_from(repo_url, repo_path,
+                                   env={'GIT_SSH_COMMAND': git_ssh_cmd})
+        assert repo.__class__ is git.Repo
+        assert git.Repo.init(repo_path).__class__ is git.Repo
+
+        LOG.debug("repo_path: %s" % repo_path)
+        repo.git.update_environment(GIT_SSH_COMMAND=git_ssh_cmd)
+
+        return repo
+
+    def _delete_puppet_git_config(self, projectid, fqdn):
+        repo_user = cfg.CONF[self.name].puppet_git_repo_user
+
+        # set up repo object and rebase everything
+        repo = self.get_repo()
+        repo_path = repo.working_tree_dir
+        repo.remotes.origin.pull(rebase=True)
+
+        rolesfilepath = os.path.join(projectid, "%s.roles" % fqdn)
+        if os.path.exists(os.path.join(repo_path, rolesfilepath)):
+            repo.index.remove([rolesfilepath], working_tree=True)
+
+        hierafilepath = os.path.join(projectid, "%s.yaml" % fqdn)
+        if os.path.exists(os.path.join(repo_path, hierafilepath)):
+            repo.index.remove([hierafilepath], working_tree=True)
+
+        committer = git.Actor(repo_user, "root@wmflabs.org")
+
+        message = "Deleted by designate during VM deletion"
+        repo.index.commit(message, committer=committer)
+
+        # and push
+        LOG.debug("pushing")
+        repo.remotes.origin.push()
 
     def _delete_proxies_for_ip(self, project, ip):
         project_proxies = self._get_proxy_list_for_project(project)

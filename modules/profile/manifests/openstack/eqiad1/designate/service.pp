@@ -21,6 +21,8 @@ class profile::openstack::eqiad1::designate::service(
     $labweb_hosts = hiera('profile::openstack::eqiad1::labweb_hosts'),
     $region = hiera('profile::openstack::eqiad1::region'),
     $coordination_host = hiera('profile::openstack::eqiad1::designate_host'),
+    $puppet_git_repo_name = lookup('profile::openstack::eqiad1::horizon::puppet_git_repo_name'),
+    $puppet_git_repo_user = lookup('profile::openstack::eqiad1::horizon::puppet_git_repo_user'),
 ) {
 
     require ::profile::openstack::eqiad1::clientpackages
@@ -48,6 +50,8 @@ class profile::openstack::eqiad1::designate::service(
         labweb_hosts                         => $labweb_hosts,
         region                               => $region,
         coordination_host                    => $coordination_host,
+        puppet_git_repo_name                 => $puppet_git_repo_name,
+        puppet_git_repo_user                 => $puppet_git_repo_user,
     }
 
     class {'::openstack::designate::monitor':

@@ -31,6 +31,8 @@ class openstack::designate::service(
     $keystone_auth_port,
     $region,
     $coordination_host,
+    $puppet_git_repo_name,
+    $puppet_git_repo_user,
     ) {
 
     $keystone_host_ip   = ipresolve($keystone_host,4)
@@ -211,5 +213,18 @@ class openstack::designate::service(
         require =>  [
             Package['designate'],
         ],
+    }
+
+    # We'll need this key to push to the instance-puppet repo
+    $puppet_git_repo_key_path = '/var/lib/designate/.ssh/instance-puppet-user.priv'
+
+    # Get ready to host a local git repo of instance puppet config
+    file { $puppet_git_repo_key_path:
+        ensure    => file,
+        owner     => 'designate',
+        group     => 'designate',
+        mode      => '0600',
+        content   => secret('ssh/instance-puppet-user/instance-puppet-user_privkey.pem'),
+        show_diff => false,
     }
 }

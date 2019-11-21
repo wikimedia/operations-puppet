@@ -41,6 +41,10 @@ cfg.CONF.register_opts([
     cfg.StrOpt('fqdn_format', default=None),
     cfg.StrOpt('puppet_master_host', default=None),
     cfg.StrOpt('puppet_config_backend', default=None),
+    cfg.StrOpt('puppet_git_repo_url', default=None),
+    cfg.StrOpt('puppet_git_repo_user', default=None),
+    cfg.StrOpt('puppet_git_repo_key_path', default=None),
+
     cfg.StrOpt('region', default=None),
 ], group='handler:wmf_sink')
 

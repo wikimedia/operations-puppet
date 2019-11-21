@@ -22,6 +22,8 @@ class profile::openstack::codfw1dev::designate::service(
     $labweb_hosts = hiera('profile::openstack::codfw1dev::labweb_hosts'),
     $region = hiera('profile::openstack::codfw1dev::region'),
     $coordination_host = hiera('profile::openstack::codfw1dev::designate_host'),
+    $puppet_git_repo_name = lookup('profile::openstack::codfw1dev::horizon::puppet_git_repo_name'),
+    $puppet_git_repo_user = lookup('profile::openstack::codfw1dev::horizon::puppet_git_repo_user'),
 ) {
 
     class{'::profile::openstack::base::designate::service':
@@ -48,6 +50,8 @@ class profile::openstack::codfw1dev::designate::service(
         labweb_hosts                         => $labweb_hosts,
         region                               => $region,
         coordination_host                    => $coordination_host,
+        puppet_git_repo_name                 => $puppet_git_repo_name,
+        puppet_git_repo_user                 => $puppet_git_repo_user,
     }
     contain '::profile::openstack::base::designate::service'
 

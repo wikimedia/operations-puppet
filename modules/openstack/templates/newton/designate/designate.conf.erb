@@ -301,6 +301,11 @@ puppet_config_backend  = "http://<%= @puppetmaster_hostname %>:8101/v1"
 # This is the region that the proxy endpoint lives in:
 region = "<%= @region %>"
 
+# For managing the instance-puppet git repo
+puppet_git_repo_url = "ssh://<%= @puppet_git_repo_user %>@gerrit.wikimedia.org:29418/cloud/<%= @puppet_git_repo_name %>"
+puppet_git_repo_user = "<%= @puppet_git_repo_user %>"
+puppet_git_repo_key_path = "<%= @puppet_git_repo_key_path %>"
+
 #------------------------
 # Neutron Floating Handler
 #------------------------
