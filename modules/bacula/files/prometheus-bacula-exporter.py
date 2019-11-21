@@ -169,6 +169,27 @@ class Bacula(object):
                 break
         return latest_good_backup, latest_full_good_backup
 
+    def add_expected_freshness(self):
+        """
+        Given a schedule (actually, a JobDefs name, which on Wikimedia
+        always start with Hourly, Weekly or Monthly), provide a pair of
+        expected fresnhess of any backup, and full backups, in seconds
+        TODO: Make thresholds configurable
+        """
+        for name in self.backups:
+            if schedule.startswith('Hourly'):
+                # Full weekly, incremental hourly
+                self.backups[name]['expected_freshness'] = 3 * 3600
+                self.backups[name]['expected_full_freshness'] = 8 * 24 * 3600
+            elif schedule.startswith('Weekly'):
+                # Only fulls, weekly
+                self.backups[name]['expected_freshness'] = 8 * 24 * 3600
+                self.backups[name]['expected_full_freshness'] = 8 * 24 * 3600
+            else:  # We assume Monthly
+                # Fulls monthly, diffs every other fortnite, incr. daily
+                self.backups[name]['expected_freshness'] = 2 * 24 * 3600
+                self.backups[name]['expected_full_freshness'] = 32 * 24 * 3600
+
 
 class BaculaCollector(object):
     """
@@ -211,93 +232,112 @@ class BaculaCollector(object):
         """
         for job in bacula.backups:
             executions = bacula.backups[job]['executions']
-            if len(executions) > 0:
-                last_execution = executions[-1]
-                g = GaugeMetricFamily('bacula_job_last_execution_job_id',
-                                      'Job Id of the last job execution',
-                                      labels=['job'])
-                g.add_metric([job], last_execution['jobid'])
-                yield g
-                g = GaugeMetricFamily('bacula_job_last_execution_purged_files',
-                                      'Purged files of the last job execution',
-                                      labels=['job'])
-                g.add_metric([job], last_execution['purgedfiles'])
-                yield g
-                g = GaugeMetricFamily('bacula_job_last_execution_type',
-                                      'Type of the last job execution (ord("B") for backup, etc.)',
-                                      labels=['job'])
-                g.add_metric([job], ord(last_execution['type']))
-                yield g
-                g = GaugeMetricFamily('bacula_job_last_execution_level',
-                                      ('Level of the last job execution '
-                                       '(ord("F") for full backup, etc.)'),
-                                      labels=['job'])
-                g.add_metric([job], ord(last_execution['level']))
-                yield g
-                g = GaugeMetricFamily('bacula_job_last_execution_job_status',
-                                      ('Job Status of the last job execution '
-                                       '(ord("T") for successful, etc.)'),
-                                      labels=['job'])
-                g.add_metric([job], ord(last_execution['jobstatus']))
-                yield g
-                g = GaugeMetricFamily('bacula_job_last_execution_sched_time',
-                                      'Scheduled time of the last job execution timestamp',
-                                      labels=['job'])
-                g.add_metric([job], last_execution['schedtime'].timestamp()
-                             if last_execution['schedtime'] is not None else 0)
-                yield g
-                g = GaugeMetricFamily('bacula_job_last_execution_start_time',
-                                      'Start time of the last job execution timestamp',
-                                      labels=['job'])
-                g.add_metric([job], last_execution['starttime'].timestamp()
-                             if last_execution['starttime'] is not None else 0)
-                yield g
-                g = GaugeMetricFamily('bacula_job_last_execution_end_time',
-                                      'End time of the last job execution timestamp',
-                                      labels=['job'])
-                g.add_metric([job], last_execution['endtime'].timestamp()
-                             if last_execution['endtime'] is not None else 0)
-                yield g
-                g = GaugeMetricFamily('bacula_job_last_execution_real_end_time',
-                                      'Real end time of the last job execution timestamp',
-                                      labels=['job'])
-                g.add_metric([job], last_execution['realendtime'].timestamp()
-                             if last_execution['realendtime'] is not None else 0)
-                yield g
-                g = GaugeMetricFamily('bacula_job_last_execution_job_files',
-                                      'Number of files processed on the last job execution',
-                                      labels=['job'])
-                g.add_metric([job], last_execution['jobfiles'])
-                g = GaugeMetricFamily('bacula_job_last_execution_job_bytes',
-                                      'Total bytes processed on the last job execution',
-                                      labels=['job'])
-                g.add_metric([job], last_execution['jobbytes'])
-                yield g
-                g = GaugeMetricFamily('bacula_job_last_execution_read_bytes',
-                                      'Total bytes read on the last job execution',
-                                      labels=['job'])
-                g.add_metric([job], last_execution['readbytes'])
-                yield g
-                g = GaugeMetricFamily('bacula_job_last_execution_job_errors',
-                                      'Job errors found on the last job execution',
-                                      labels=['job'])
-                g.add_metric([job], last_execution['joberrors'])
-                yield g
-                g = GaugeMetricFamily('bacula_job_last_execution_job_missing_files',
-                                      'Job missing files on the last job execution',
-                                      labels=['job'])
-                g.add_metric([job], last_execution['jobmissingfiles'])
-                yield g
-                g = GaugeMetricFamily('bacula_job_last_execution_pool_id',
-                                      'Pool Id used on the last job execution',
-                                      labels=['job'])
-                g.add_metric([job], last_execution['poolid'])
-                yield g
-                g = GaugeMetricFamily('bacula_job_last_execution_file_set_id',
-                                      'File Set Id used on the last job execution',
-                                      labels=['job'])
-                g.add_metric([job], last_execution['filesetid'])
-                yield g
+            if len(executions) == 0:
+                continue
+            last_execution = executions[-1]
+            g = GaugeMetricFamily('bacula_job_last_execution_job_id',
+                                  'Job Id of the last job execution',
+                                  labels=['bacula_job'])
+            g.add_metric([job], last_execution['jobid'])
+            yield g
+            g = GaugeMetricFamily('bacula_job_last_execution_purged_files',
+                                  'Purged files of the last job execution',
+                                  labels=['bacula_job'])
+            g.add_metric([job], last_execution['purgedfiles'])
+            yield g
+            g = GaugeMetricFamily('bacula_job_last_execution_type',
+                                  'Type of the last job execution (ord("B") for backup, etc.)',
+                                  labels=['bacula_job'])
+            g.add_metric([job], ord(last_execution['type']))
+            yield g
+            g = GaugeMetricFamily('bacula_job_last_execution_level',
+                                  ('Level of the last job execution '
+                                   '(ord("F") for full backup, etc.)'),
+                                  labels=['bacula_job'])
+            g.add_metric([job], ord(last_execution['level']))
+            yield g
+            g = GaugeMetricFamily('bacula_job_last_execution_job_status',
+                                  ('Job Status of the last job execution '
+                                   '(ord("T") for successful, etc.)'),
+                                  labels=['bacula_job'])
+            g.add_metric([job], ord(last_execution['jobstatus']))
+            yield g
+            g = GaugeMetricFamily('bacula_job_last_execution_sched_time',
+                                  'Scheduled time of the last job execution timestamp',
+                                  labels=['bacula_job'])
+            g.add_metric([job], last_execution['schedtime'].timestamp()
+                         if last_execution['schedtime'] is not None else 0)
+            yield g
+            g = GaugeMetricFamily('bacula_job_last_execution_start_time',
+                                  'Start time of the last job execution timestamp',
+                                  labels=['bacula_job'])
+            g.add_metric([job], last_execution['starttime'].timestamp()
+                         if last_execution['starttime'] is not None else 0)
+            yield g
+            g = GaugeMetricFamily('bacula_job_last_execution_end_time',
+                                  'End time of the last job execution timestamp',
+                                  labels=['bacula_job'])
+            g.add_metric([job], last_execution['endtime'].timestamp()
+                         if last_execution['endtime'] is not None else 0)
+            yield g
+            g = GaugeMetricFamily('bacula_job_last_execution_real_end_time',
+                                  'Real end time of the last job execution timestamp',
+                                  labels=['bacula_job'])
+            g.add_metric([job], last_execution['realendtime'].timestamp()
+                         if last_execution['realendtime'] is not None else 0)
+            yield g
+            g = GaugeMetricFamily('bacula_job_last_execution_job_files',
+                                  'Number of files processed on the last job execution',
+                                  labels=['bacula_job'])
+            g.add_metric([job], last_execution['jobfiles'])
+            g = GaugeMetricFamily('bacula_job_last_execution_job_bytes',
+                                  'Total bytes processed on the last job execution',
+                                  labels=['bacula_job'])
+            g.add_metric([job], last_execution['jobbytes'])
+            yield g
+            g = GaugeMetricFamily('bacula_job_last_execution_read_bytes',
+                                  'Total bytes read on the last job execution',
+                                  labels=['bacula_job'])
+            g.add_metric([job], last_execution['readbytes'])
+            yield g
+            g = GaugeMetricFamily('bacula_job_last_execution_job_errors',
+                                  'Job errors found on the last job execution',
+                                  labels=['bacula_job'])
+            g.add_metric([job], last_execution['joberrors'])
+            yield g
+            g = GaugeMetricFamily('bacula_job_last_execution_job_missing_files',
+                                  'Job missing files on the last job execution',
+                                  labels=['bacula_job'])
+            g.add_metric([job], last_execution['jobmissingfiles'])
+            yield g
+            g = GaugeMetricFamily('bacula_job_last_execution_pool_id',
+                                  'Pool Id used on the last job execution',
+                                  labels=['bacula_job'])
+            g.add_metric([job], last_execution['poolid'])
+            yield g
+            g = GaugeMetricFamily('bacula_job_last_execution_file_set_id',
+                                  'File Set Id used on the last job execution',
+                                  labels=['bacula_job'])
+            g.add_metric([job], last_execution['filesetid'])
+            yield g
+
+    def get_expected_freshness(self, bacula):
+        """
+        Returns metrics related to expected backup freshness
+        """
+        for job in bacula.backups:
+            g = GaugeMetricFamily('bacula_job_expected_freshness_seconds',
+                                  ('Maximum amount of time (in seconds) that '
+                                   'should pass between backups for this job'),
+                                  labels=['bacula_job'])
+            g.add_metric([job], bacula.backups[job]['expected_freshness'])
+            yield g
+            g = GaugeMetricFamily('bacula_job_expected_full_freshness_seconds',
+                                  ('Maximum amount of time (in seconds) that '
+                                   'should pass between full backups for this job'),
+                                  labels=['bacula_job'])
+            g.add_metric([job], bacula.backups[job]['expected_full_freshness'])
+            yield g
 
     def collect(self):
         """
@@ -308,6 +348,8 @@ class BaculaCollector(object):
         bacula.add_job_executions()
         yield from self.get_good_backup_dates(bacula)  # noqa: E999
         yield from self.get_last_executed_job_metrics(bacula)  # noqa: E999
+        bacula.add_expected_fressness()
+        yield from self.get_expected_freshness(bacula)  # noqa: E999
 
 
 def sigint(sig, frame):
