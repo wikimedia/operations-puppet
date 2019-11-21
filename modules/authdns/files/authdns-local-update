@@ -42,7 +42,7 @@ fi
 
 DEPLOY_SKIP_RELOAD=""
 DEPLOY_INITIAL=""
-PULL_ARGS=""
+PULL_SKIP_REVIEW=""
 while :; do
     case "$1" in
         --skip-reload)
@@ -54,7 +54,7 @@ while :; do
             shift
             ;;
         --skip-review)
-            PULL_ARGS="--skip-review"
+            PULL_SKIP_REVIEW="--skip-review"
             shift
             ;;
         *)
@@ -71,10 +71,10 @@ if [ -z "$1" ]; then
     REMOTE=$ORIGIN
 else
     REMOTE="ssh://${1}${WORKINGDIR}"
-    PULL_ARGS="--skip-review"
+    PULL_SKIP_REVIEW="--skip-review"
 fi
 echo "Pulling the current revision from $REMOTE"
-sudo -u authdns authdns-git-pull $PULL_ARGS $REMOTE
+sudo -u authdns authdns-git-pull $PULL_SKIP_REVIEW $REMOTE
 
 echo "Deploying via utils/deploy-check.py..."
 utils/deploy-check.py --deploy $DEPLOY_INITIAL $DEPLOY_SKIP_RELOAD
