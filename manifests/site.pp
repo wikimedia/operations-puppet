@@ -849,9 +849,9 @@ node /^dumpsdata1001\.eqiad\.wmnet$/ {
     role(dumps::generation::server::alldumps)
 }
 
-# temporary: for reimaging and new role
+# temporary, until it takes on misc crons role
 node /^dumpsdata1002\.eqiad\.wmnet$/ {
-    role(spare::system)
+    role(dumps::generation::server::spare)
 }
 
 # fallback nfs server for dumps generation, also
