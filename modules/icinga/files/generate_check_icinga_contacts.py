@@ -84,7 +84,7 @@ def parse_icinga_file(filename, unique_key):
             if object_type[-1] == '{':
                 object_type = object_type[:-1]
             current_object = {}
-        elif line == '}\n' and in_object:
+        elif line.strip().endswith('}') and in_object:
             in_object = False
             if 'use' in current_object:
                 new_object = objects[object_type + '_templates'][current_object['use']]
