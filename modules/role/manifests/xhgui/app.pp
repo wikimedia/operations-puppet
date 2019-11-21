@@ -29,14 +29,17 @@ class role::xhgui::app {
     if os_version('debian == buster') {
         $mongo_driver='php-mongodb'
         $httpd_php='php7.3'
-        $php_ini='/etc/php/7.3/fpm/php.ini'
+        $httpd_php_module='libapache2-mod-php'
+        $php_ini='/etc/php/7.3/apache2/php.ini'
     } elsif os_version('debian == stretch') {
         $mongo_driver='php-mongodb'
         $httpd_php='php7.0'
-        $php_ini='/etc/php/7.0/fpm/php.ini'
+        $httpd_php_module='libapache2-mod-php'
+        $php_ini='/etc/php/7.0/apache2/php.ini'
     } else {
         $mongo_driver='php5-mongo'
         $httpd_php='php5'
+        $httpd_php_module='libapache2-mod-php5'
         $php_ini='/etc/php5/apache2/php.ini'
     }
 
@@ -63,7 +66,7 @@ class role::xhgui::app {
 
     system::role { 'xhgui::app': }
 
-    require_package($mongo_driver)
+    require_package($mongo_driver, $httpd_php_module)
 
     file_line { 'set_php_memory_limit':
         path   => $php_ini,
