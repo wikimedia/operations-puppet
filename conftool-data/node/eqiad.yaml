@@ -130,7 +130,7 @@ eqiad:
   videoscaler: *jobrunner
   cache_text:
     cp1075.eqiad.wmnet: [varnish-fe, ats-be, nginx]
-    cp1077.eqiad.wmnet: [varnish-fe, varnish-be, nginx]
+    cp1077.eqiad.wmnet: [varnish-fe, ats-be, nginx]
     cp1079.eqiad.wmnet: [varnish-fe, varnish-be, nginx]
     cp1081.eqiad.wmnet: [varnish-fe, varnish-be, nginx]
     cp1083.eqiad.wmnet: [varnish-fe, varnish-be, nginx]
