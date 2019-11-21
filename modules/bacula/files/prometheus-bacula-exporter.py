@@ -250,13 +250,13 @@ class BaculaCollector(object):
                 executions)
             g = GaugeMetricFamily('bacula_job_last_good_backup',
                                   'Timestamp of the latest good backup for a given job',
-                                  labels=['job'])
+                                  labels=['bacula_job'])
             g.add_metric([job], latest_good_backup.timestamp()
                          if latest_good_backup is not None else 0)
             yield g
             g = GaugeMetricFamily('bacula_job_last_good_full_backup',
                                   'Timestamp of the latest good full backup for a given job',
-                                  labels=['job'])
+                                  labels=['bacula_job'])
             g.add_metric([job], latest_good_full_backup.timestamp()
                          if latest_good_full_backup is not None else 0)
             yield g
