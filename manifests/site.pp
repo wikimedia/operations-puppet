@@ -1976,7 +1976,7 @@ node /^snapshot1007\.eqiad\.wmnet/ {
     role(dumps::generation::worker::dumper_monitor)
 }
 node /^snapshot1008\.eqiad\.wmnet/ {
-    role(dumps::generation::worker::dumper_misc_crons)
+    role(dumps::generation::worker::dumper_misc_crons_only)
 }
 
 # Thumbor servers for MediaWiki image scaling

@@ -1,4 +1,4 @@
-class role::dumps::generation::worker::dumper_misc_crons {
+class role::dumps::generation::worker::dumper_misc_crons_only {
     include ::profile::standard
     include ::profile::base::firewall
 
