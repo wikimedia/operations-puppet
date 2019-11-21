@@ -95,7 +95,7 @@ make_statusfiles_tarball() {
 	( cd "$xmldumpsdir"; /usr/bin/find "." -maxdepth 3 -regextype sed -regex ".*/latest/.*\.txt" | /usr/bin/xargs -s 1048576 /bin/tar rfp "$tarballpath" )
         # if no files found, there will be no tarball created either
 	if [ -f "$tarballpath" ]; then
-            /bin/gzip -S tmp "$tarballpath"
+            /bin/gzip -S '.tmp' "$tarballpath"
 	    mv "${tarballpath}.tmp" "$tarballpathgz"
         fi
     fi
