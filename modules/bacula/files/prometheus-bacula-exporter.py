@@ -3,6 +3,7 @@ import argparse
 import datetime
 import os
 import re
+import signal
 import subprocess
 import sys
 import time
@@ -309,6 +310,14 @@ class BaculaCollector(object):
         yield from self.get_last_executed_job_metrics(bacula)  # noqa: E999
 
 
+def sigint(sig, frame):
+    """
+    Exit cleanly when a sigint signal is received.
+    """
+    print('SIGINT received by the process', file=sys.stderr)
+    sys.exit(0)
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--port', '-P', type=int,
@@ -316,6 +325,7 @@ def main():
                         default=DEFAULT_PORT)
     options = parser.parse_args()
 
+    signal.signal(signal.SIGINT, sigint)
     start_http_server(options.port)
     REGISTRY.register(BaculaCollector())
     while True:
