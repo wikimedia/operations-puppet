@@ -244,25 +244,25 @@ class BaculaCollector(object):
                                       'Scheduled time of the last job execution timestamp',
                                       labels=['job'])
                 g.add_metric([job], last_execution['schedtime'].timestamp()
-                             if last_execution['jobstatus'] is not None else 0)
+                             if last_execution['schedtime'] is not None else 0)
                 yield g
                 g = GaugeMetricFamily('bacula_job_last_execution_start_time',
                                       'Start time of the last job execution timestamp',
                                       labels=['job'])
                 g.add_metric([job], last_execution['starttime'].timestamp()
-                             if last_execution['jobstatus'] is not None else 0)
+                             if last_execution['starttime'] is not None else 0)
                 yield g
                 g = GaugeMetricFamily('bacula_job_last_execution_end_time',
                                       'End time of the last job execution timestamp',
                                       labels=['job'])
                 g.add_metric([job], last_execution['endtime'].timestamp()
-                             if last_execution['jobstatus'] is not None else 0)
+                             if last_execution['endtime'] is not None else 0)
                 yield g
                 g = GaugeMetricFamily('bacula_job_last_execution_real_end_time',
                                       'Real end time of the last job execution timestamp',
                                       labels=['job'])
                 g.add_metric([job], last_execution['realendtime'].timestamp()
-                             if last_execution['jobstatus'] is not None else 0)
+                             if last_execution['realendtime'] is not None else 0)
                 yield g
                 g = GaugeMetricFamily('bacula_job_last_execution_job_files',
                                       'Number of files processed on the last job execution',
