@@ -6,7 +6,6 @@ class openstack::serverpackages::ocata::stretch(
         uri        => 'http://apt.wikimedia.org/wikimedia/',
         dist       => 'stretch-wikimedia',
         components => 'openstack-ocata-stretch',
-        trust_repo => true,
         source     => false,
         notify     => Exec['openstack-ocata-stretch-apt-upgrade'],
     }
