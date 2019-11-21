@@ -108,4 +108,13 @@ class role::xhgui::app {
     -> httpd::site { 'xhgui_apache_site':
         content => template('profile/webperf/xhgui/httpd.conf.erb'),
     }
+
+    rsync::quickdatacopy { 'srv-mongod':
+        ensure              => present,
+        auto_sync           => true,
+        source_host         => 'tungsten.eqiad.wmnet',
+        dest_host           => 'xhgui1001.eqiad.wmnet',
+        module_path         => '/srv/mongod',
+        server_uses_stunnel => true,
+    }
 }
