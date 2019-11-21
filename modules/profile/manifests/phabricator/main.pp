@@ -194,11 +194,7 @@ class profile::phabricator::main (
     ]
 
     $cache_text_nodes = pick($cache_nodes['text'], {})
-    if $::site == 'codfw' {
-        $trusted_proxies = pick($cache_text_nodes["${::site}_ats"], [])
-    } else {
-        $trusted_proxies = $cache_text_nodes[$::site] + pick($cache_text_nodes["${::site}_ats"], [])
-    }
+    $trusted_proxies = pick($cache_text_nodes[$::site], []) + pick($cache_text_nodes["${::site}_ats"], [])
 
     # lint:ignore:arrow_alignment
     class { '::phabricator':
