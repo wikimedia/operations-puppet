@@ -86,7 +86,7 @@ class rsyslog::receiver (
     }
 
     rsync::quickdatacopy { 'centrallog':
-        ensure              => present,
+        ensure              => absent,
         source_host         => 'centrallog1001.eqiad.wmnet',
         dest_host           => 'centrallog2001.codfw.wmnet',
         auto_sync           => false,

@@ -1,1 +1,0 @@
-rsync::server::wrap_with_stunnel: true
