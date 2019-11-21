@@ -86,7 +86,8 @@ def get_exceptions(dumplog):
     timestamp = -1
     state = IN_LOG
     while True:
-        line = dumplog.readline()
+        # redact entries with password arguments in them
+        line = re.sub(' -p[^\s]*', ' -pXXXXX', dumplog.readline())
         if (line.startswith('Preparing') or line.startswith('getting/checking text') or
                 line.startswith('Spawning database subprocess')):
             # ugh we have some junk lines in the log with no timestamp
