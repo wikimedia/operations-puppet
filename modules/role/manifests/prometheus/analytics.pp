@@ -209,30 +209,13 @@ class role::prometheus::analytics {
         }
     }
 
-    $kafka_burrow_jobs = [
-      {
-        'job_name'        => 'burrow',
-        'scheme'          => 'http',
-        'file_sd_configs' => [
-          { 'files' => [ "${targets_path}/burrow_*.yaml" ]}
-        ],
-      },
-    ]
-
-    prometheus::class_config{ "burrow_analytics_${::site}":
-        dest       => "${targets_path}/burrow_analytics_${::site}.yaml",
-        site       => $::site,
-        class_name => 'role::kafka::monitoring',
-        port       => 9000,
-    }
-
     prometheus::server { 'analytics':
         listen_address        => '127.0.0.1:9905',
         storage_retention     => $storage_retention,
         max_chunks_to_persist => $max_chunks_to_persist,
         memory_chunks         => $memory_chunks,
         global_config_extra   => $config_extra,
-        scrape_configs_extra  => array_concat($jmx_exporter_jobs, $druid_jobs, $kafka_burrow_jobs, $mysql_jobs),
+        scrape_configs_extra  => array_concat($jmx_exporter_jobs, $druid_jobs, $mysql_jobs),
     }
 
     prometheus::web { 'analytics':
