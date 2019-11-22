@@ -481,12 +481,12 @@ node /^db2(076|114|117|124)\.codfw\.wmnet/ {
 
 # s7 (centralauth, meta et al.) core production dbs on eqiad
 # eqiad master
-node 'db1062.eqiad.wmnet' {
+node 'db1086.eqiad.wmnet' {
     role(mariadb::core)
 }
 
 # See also db1090, db1098 and db1101 below
-node /^db1(069|079|086|094|136)\.eqiad\.wmnet/ {
+node /^db1(062|069|079|094|136)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
 
