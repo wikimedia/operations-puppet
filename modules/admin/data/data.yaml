@@ -13,7 +13,7 @@ groups:
               yuvipanda, shrlak, madhuvishy, groovier, khorn, ironholds, katie, chedasaurus,
               cy534, pnorman, mpany, deskana, arnad, nithum, banyek, imarlier, mkroetzsch,
               mtizzoni, panisson, paolotti, ciro, dartar, melodykramer, gtirloni, tbayer, pirroh,
-              bawolff, dkg, juliaglen, cwdent, bmansurov, hpham, atgomez, maxsem]
+              bawolff, dkg, juliaglen, cwdent, bmansurov, hpham, atgomez]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -1147,13 +1147,6 @@ users:
     realname: Nik Everett
     ssh_keys: []
     uid: 3304
-  maxsem:
-    ensure: absent
-    gid: 500
-    name: maxsem
-    realname: Max Semenik
-    ssh_keys: []
-    uid: 1220
   mattflaschen:
     ensure: present
     gid: 500
@@ -3544,6 +3537,10 @@ ldap_only_users:
     ensure: present
     realname: Lydia Pintscher
     email: lydia.pintscher@wikimedia.de
+  maxsem:
+    ensure: present
+    realname: Max Semenik
+    email: maxsem.wiki@gmail.com
   mhernandez:
     ensure: present
     realname: Megan Hernandez
