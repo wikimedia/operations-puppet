@@ -29,27 +29,13 @@ chroot /target /bin/sh -c 'echo $(cat /etc/issue.net) auto-installed on $(date).
 # Disable IPv6 privacy extensions before the first boot
 [ -f /target/etc/sysctl.d/10-ipv6-privacy.conf ] && rm -f /target/etc/sysctl.d/10-ipv6-privacy.conf
 
-# cpNNNN mkfs options are tweaked for our use-case with the whole FS filled by
-# a single-digit count of files and no need for extra integrity in case of
-# drive failure, no journalling, no extra fs features.  bigalloc with 16k
-# cluster size maximizes available space for a single file on the newest
-# drives, and is close enough to optimal on the older ones.
-cp_mke2fs_args="-F -F -t ext4 -O bigalloc,sparse_super2,^resize_inode,^has_journal,^ext_attr,^extra_isize,^dir_nlink,^dir_index,^filetype -b 4096 -N 16 -I 128 -C 16k -E num_backup_sb=0,packed_meta_blocks=1 -m 0"
-
 case `hostname` in \
 	cp107[5-9]|cp108[0-9]|cp1090|cp30[56][0-9])
 		# new cache nodes (mid-2018) use a single NVMe drive (Samsung
-		# pm1725a) for storage, which needs its LBA format changed to
-		# 4K block size before manually partitioning and formatting.
+		# pm1725[ab]) for storage, which needs its LBA format changed
+		# to 4K block size before manually partitioning.
 		in-target /usr/sbin/nvme format /dev/nvme0n1 -l 2
 		echo ';' | /usr/sbin/sfdisk /dev/nvme0n1
-		/sbin/mke2fs ${cp_mke2fs_args} -L cache-store /dev/nvme0n1p1
-		;; \
-	cp[245]*)
-		# older cache node storage are all partitioned by partman to
-		# match this numbering and we just need to do the 2x mkfs
-		/sbin/mke2fs ${cp_mke2fs_args} -L sda3-varnish /dev/sda3
-		/sbin/mke2fs ${cp_mke2fs_args} -L sdb3-varnish /dev/sdb3
 		;; \
 esac
 
