@@ -248,6 +248,18 @@ class profile::prometheus::alerts (
         prometheus_url  => "http://prometheus.svc.${::site}.wmnet/global",
     }
 
+    monitoring::check_prometheus { 'prometheus-job-unavailable':
+        description     => 'Prometheus jobs reduced availability',
+        dashboard_links => ['https://grafana.wikimedia.org/d/NEJu05xZz/prometheus-targets'],
+        query           => 'site_job:up:avail',
+        warning         => 0.6,
+        critical        => 0.5,
+        method          => 'le',
+        retries         => 2,
+        # Icinga will query the site-local Prometheus 'global' instance
+        prometheus_url  => "http://prometheus.svc.${::site}.wmnet/global",
+    }
+
     # Perform aggregate ipsec checks per-datacenter (site) to ease downtimes/maintenance
     $datacenters.each |String $datacenter| {
         monitoring::alerts::aggregate_ipsec{"aggregate_ipsec_${datacenter}": site => $datacenter }
