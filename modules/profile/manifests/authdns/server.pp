@@ -5,7 +5,7 @@ class profile::authdns::server (
     Array[String] $authdns_servers = lookup('authdns_servers'),
     Stdlib::HTTPSUrl $gitrepo = lookup('profile::authdns::server::gitrepo'),
 ) {
-    include ::profile::base::firewall
+    include ::profile::dns::ferm
     include ::profile::authdns::acmechief_target
 
     class { 'prometheus::node_gdnsd': }
@@ -21,17 +21,6 @@ class profile::authdns::server (
         gitrepo            => $gitrepo,
         lvs_services       => $lvs_services,
         discovery_services => $discovery_services,
-    }
-
-    ferm::service { 'udp_dns_auth':
-        proto   => 'udp',
-        notrack => true,
-        port    => '53',
-    }
-
-    ferm::service { 'tcp_dns_auth':
-        proto => 'tcp',
-        port  => '53',
     }
 
     $authdns_ns_ferm = join($authdns_servers, ' ')
