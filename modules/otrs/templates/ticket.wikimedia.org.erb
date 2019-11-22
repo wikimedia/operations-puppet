@@ -3,7 +3,7 @@
     ServerName ticket.wikimedia.org
 
     <IfModule mod_remoteip.c>
-        RemoteIPHeader X-Real-IP
+        RemoteIPHeader X-Client-IP
         RemoteIPInternalProxy <%= @trusted_proxies.join(' ') %>
     </IfModule>
 
