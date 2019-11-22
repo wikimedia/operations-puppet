@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 import argparse
 import datetime
+from multiprocessing import Pool
 import os
 import re
 import signal
@@ -20,6 +21,7 @@ UNKNOWN = 3
 
 DEFAULT_JOB_CONFIG_PATH = '/etc/bacula/jobs.d'
 DEFAULT_BCONSOLE_PATH = '/usr/sbin/bconsole'
+DEFAULT_PARALLEL_THREADS = 4
 JOB_PATTERN = r'\s*Job\s*\{\s*([^\}]*)\s*\}\s*'
 OPTION_PATTERN = r'\s*([^\=]+)\s*=\s*\"?([^\"\n]+)\"?\s*'
 
@@ -27,9 +29,11 @@ OPTION_PATTERN = r'\s*([^\=]+)\s*=\s*\"?([^\"\n]+)\"?\s*'
 class Bacula(object):
 
     def __init__(self, config_path=DEFAULT_JOB_CONFIG_PATH,
-                 bconsole_path=DEFAULT_BCONSOLE_PATH):
+                 bconsole_path=DEFAULT_BCONSOLE_PATH,
+                 parallel_threads=DEFAULT_PARALLEL_THREADS):
         self.config_path = config_path
         self.bconsole_path = bconsole_path
+        self.parallel_threads = parallel_threads
         self.backups = None
 
     def get_expected_freshness(self, schedule):
@@ -155,15 +159,22 @@ class Bacula(object):
                 i += 1
             if 'type' in execution and execution['type'] == 'B' and 'name' in execution:
                 executions.append(execution)
-        return executions
+        return {'name': name, 'executions': executions}
+
+    def add_job_result(self, result):
+        self.backups[result['name']]['executions'] = result['executions']
 
     def add_job_executions(self):
         """
-        Mutates the given dictionary, adding the statuses of each job
-        alongside the original dictionary
+        Adds a list of the executions, in id order, of each job in the backups,
+        with the dictionary key 'executions'
         """
-        for name, options in self.backups.items():
-            self.backups[name]['executions'] = self.get_job_executions(name)
+        pool = Pool(processes=self.parallel_threads)
+        results = [pool.apply_async(self.get_job_executions, args=(name,),
+                                    callback=self.add_job_result)
+                   for name in self.backups]
+        pool.close()
+        pool.join()
 
     def get_dates_of_last_good_backups(self, executions):
         """
