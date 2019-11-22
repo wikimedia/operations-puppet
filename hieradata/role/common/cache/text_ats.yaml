@@ -101,6 +101,7 @@ cache::alternate_domains:
     director: 'thorium'
   noc.wikimedia.org:
     director: 'noc'
+    caching: 'pass'
   ores.wikimedia.org:
     director: 'ores'
   people.wikimedia.org:

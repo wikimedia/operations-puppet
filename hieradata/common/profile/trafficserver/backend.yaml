@@ -273,6 +273,9 @@ profile::trafficserver::backend::caching_rules:
       value: mendelevium.eqiad.wmnet
       action: never-cache
     - primary_destination: dest_host
+      value: mwmaint1002.eqiad.wmnet
+      action: never-cache
+    - primary_destination: dest_host
       value: puppetmaster1001.eqiad.wmnet
       action: never-cache
     - primary_destination: dest_host
