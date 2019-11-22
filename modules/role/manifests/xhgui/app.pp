@@ -111,7 +111,7 @@ class role::xhgui::app {
 
     rsync::quickdatacopy { 'srv-mongod':
         ensure              => present,
-        auto_sync           => true,
+        auto_sync           => false,
         source_host         => 'tungsten.eqiad.wmnet',
         dest_host           => 'xhgui2001.codfw.wmnet',
         module_path         => '/srv/mongod',
