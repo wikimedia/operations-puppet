@@ -24,12 +24,11 @@ end
     <%= @ssl_settings.join("\n    ") %>
     CASVersion 2
     CASCertificatePath <%= @certificate_path %>
-    CASCookiePath <%= @cookie_path %>
+    CASCookiePath <%= @cookie_path %><% if @cookie_path[-1] != '/' %>/<% end %>
     CASLoginURL <%= @apereo_cas['login_url'] %>
     CASValidateURL <%= @apereo_cas['validate_url'] %>
     CASAttributePrefix <%= @attribute_prefix %>
     CASDebug <%= bool_2_on_off(@debug) %>
-    CASValidateSAML <%= bool_2_on_off(@validate_saml) %>
 
     DocumentRoot /usr/share/icinga/htdocs
 

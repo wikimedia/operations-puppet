@@ -8,7 +8,6 @@ class profile::idp::client::httpd (
     String[1]                     $authn_header     = lookup('profile::idp::client::httpd::authn_header'),
     String[1]                     $attribute_prefix = lookup('profile::idp::client::httpd::attribute_prefix'),
     Boolean                       $debug            = lookup('profile::idp::client::httpd::debug'),
-    Boolean                       $validate_saml    = lookup('profile::idp::client::httpd::validate_saml'),
     String[1]                     $apache_owner     = lookup('profile::idp::client::httpd::apache_owner'),
     String[1]                     $apache_group     = lookup('profile::idp::client::httpd::apache_group'),
     Optional[Array[String[1]]]    $required_groups  = lookup('profile::idp::client::httpd::required_groups'),
