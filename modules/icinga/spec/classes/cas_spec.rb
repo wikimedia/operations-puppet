@@ -20,8 +20,8 @@ describe 'icinga::cas' do
       # validate_url: "https://idp.example.org/cas/samlValidate",
       # authn_header: "CAS-User",
       # attribute_prefix: "X-CAS-",
-      # debug: false,
-      # validate_saml: true,
+      debug: true,
+      # validate_saml: false,
       # apache_owner: "www-data",
       # apache_group: "www-data",
       required_groups: ['foo', 'bar'],
@@ -54,6 +54,10 @@ describe 'icinga::cas' do
             \s+Require\s+cas-attribute\s+memberOf:foo
             \s+Require\s+cas-attribute\s+memberOf:bar
             /x
+          ).with_content(
+            /CASDebug On/
+          ).with_content(
+            /CASValidateSAML Off/
           )
         end
       end
