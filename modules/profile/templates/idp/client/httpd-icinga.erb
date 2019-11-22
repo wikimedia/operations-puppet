@@ -15,18 +15,18 @@ end
     # https://httpoxy.org/
     RequestHeader unset Proxy early
     SSLEngine On
-    SSLCertificateFile /etc/acmecerts/cas-icinga/live/ec-prime256v1.crt
-    SSLCertificateChainFile /etc/acmecerts/cas-icinga/live/ec-prime256v1.chain.crt
-    SSLCertificateKeyFile /etc/acmecerts/cas-icinga/live/ec-prime256v1.key
-    SSLCertificateFile /etc/acmecerts/cas-icinga/live/rsa-2048.crt
-    SSLCertificateChainFile /etc/acmecerts/cas-icinga/live/rsa-2048.chain.crt
-    SSLCertificateKeyFile /etc/acmecerts/cas-icinga/live/rsa-2048.key
+    SSLCertificateFile /etc/acmecerts/<%= @acme_chief_cert %>/live/ec-prime256v1.crt
+    SSLCertificateChainFile /etc/acmecerts/<%= @acme_chief_cert %>/live/ec-prime256v1.chain.crt
+    SSLCertificateKeyFile /etc/acmecerts/<%= @acme_chief_cert %>/live/ec-prime256v1.key
+    SSLCertificateFile /etc/acmecerts/<%= @acme_chief_cert %>/live/rsa-2048.crt
+    SSLCertificateChainFile /etc/acmecerts/<%= @acme_chief_cert %>/live/rsa-2048.chain.crt
+    SSLCertificateKeyFile /etc/acmecerts/<%= @acme_chief_cert %>/live/rsa-2048.key
     <%= @ssl_settings.join("\n    ") %>
     CASVersion 2
     CASCertificatePath <%= @certificate_path %>
     CASCookiePath <%= @cookie_path %>
-    CASLoginURL <%= @login_url %>
-    CASValidateURL <%= @validate_url %>
+    CASLoginURL <%= @apereo_cas['login_url'] %>
+    CASValidateURL <%= @apereo_cas['validate_url'] %>
     CASAttributePrefix <%= @attribute_prefix %>
     CASDebug <%= bool_2_on_off(@debug) %>
     CASValidateSAML <%= bool_2_on_off(@validate_saml) %>
@@ -59,8 +59,7 @@ end
 
     # Shortcut to access unhandled (non-acked) alerts
     RedirectMatch ^/alerts$ https://<%= @virtual_host %>/cgi-bin/icinga/status.cgi?allunhandledproblems&sortobject=services&sorttype=2&sortoption=3
-    RedirectMatch ^/$ https://<%= @virtual_host %>/icinga
-    ErrorLog /var/log/apache2/cas-icinga.log
+    ErrorLog /var/log/apache2/<%= @virtual_host %>_error.log
     LogLevel warn
 </VirtualHost>
 
@@ -73,6 +72,6 @@ end
     RewriteCond %{SERVER_PORT} !^443$
     RewriteRule ^/(.*)$ https://<%= @virtual_host %>/$1 [L,R=301]
 
-    ErrorLog /var/log/apache2/cas-icinga.log
+    ErrorLog /var/log/apache2/<%= @virtual_host %>_error.log
     LogLevel warn
 </VirtualHost>

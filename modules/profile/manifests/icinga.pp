@@ -23,9 +23,6 @@ class profile::icinga(
     Stdlib::Unixpath              $status_file           = lookup('profile::icinga::status_file'),
     String                        $apache2_htpasswd_salt = lookup('profile::icinga::apache2_htpasswd_salt'),
     Hash[String, String]          $apache2_auth_users    = lookup('profile::icinga::apache2_auth_users'),
-    Stdlib::Host                  $cas_virtual_host      = lookup('profile::icinga::cas_virtual_host'),
-    Boolean                       $cas_debug             = lookup('profile::icinga::cas_debug'),
-    Array[String]                 $cas_required_groups   = lookup('profile::icinga::cas_required_groups'),
     Array[String]                 $datacenters           = lookup('datacenters'),
 ){
     $is_passive = !($::fqdn == $active_host)
@@ -41,7 +38,7 @@ class profile::icinga(
     class { 'facilities': }
     class { 'lvs::monitor': }
     # Experimental load-balancer monitoring for services using service-checker
-    class { '::lvs::monitor_services':
+    class { 'lvs::monitor_services':
         main_datacenters => ['eqiad', 'codfw'],
         all_datacenters  => $datacenters,
     }
@@ -91,25 +88,25 @@ class profile::icinga(
         icinga_group => $icinga_group,
     }
 
-    class { '::profile::bird::anycast_monitoring': }
-    class { '::profile::prometheus::alerts': }
-    class { '::profile::maps::alerts': }
-    class { '::profile::cache::kafka::alerts': }
-    class { '::profile::mediawiki::alerts': }
-    class { '::profile::swift::alerts': }
+    class { 'profile::bird::anycast_monitoring': }
+    class { 'profile::prometheus::alerts': }
+    class { 'profile::maps::alerts': }
+    class { 'profile::cache::kafka::alerts': }
+    class { 'profile::mediawiki::alerts': }
+    class { 'profile::swift::alerts': }
 
-    class { '::profile::prometheus::icinga_exporter': }
+    class { 'profile::prometheus::icinga_exporter': }
 
     # Check that the public eventstreams endpoint's recentchange stream has data.
     # See also: T215013. (The default params use the public endpoint.)
-    class { '::profile::eventstreams::monitoring': }
+    class { 'profile::eventstreams::monitoring': }
 
-    class { '::icinga::monitor::etcd_mw_config':
+    class { 'icinga::monitor::etcd_mw_config':
         icinga_user => $icinga_user,
     }
 
 
-    class { '::snmp::mibs': }
+    class { 'snmp::mibs': }
 
     create_resources(monitoring::group, $monitoring_groups)
 
@@ -132,7 +129,7 @@ class profile::icinga(
         true  => 0,
     }
 
-    class { '::icinga':
+    class { 'icinga':
         enable_notifications  => $enable_notifications,
         enable_event_handlers => $enable_event_handlers,
         ensure_service        => $ensure_service,
@@ -142,8 +139,8 @@ class profile::icinga(
         retention_file        => $retention_file,
     }
 
-    class { '::sslcert::dhparam': }
-    class { '::icinga::web':
+    class { 'sslcert::dhparam': }
+    class { 'icinga::web':
         icinga_user           => $icinga_user,
         icinga_group          => $icinga_group,
         virtual_host          => $virtual_host,
@@ -152,20 +149,14 @@ class profile::icinga(
         ldap_server           => $ldap_config['ro-server'],
         ldap_server_fallback  => $ldap_config['ro-server-fallback'],
     }
-    class {'icinga::cas':
-        virtual_host    => $cas_virtual_host,
-        login_url       => $cas['login_url'],
-        validate_url    => $cas['validate_url'],
-        debug           => $cas_debug,
-        required_groups => $cas_required_groups,
-    }
+    include profile::idp::client::httpd
 
-    class { '::icinga::naggen':
+    class { 'icinga::naggen':
         icinga_user  => $icinga_user,
         icinga_group => $icinga_group,
     }
 
-    class { '::profile::icinga::ircbot':
+    class { 'profile::icinga::ircbot':
         ensure => $ircbot_present,
     }
 
