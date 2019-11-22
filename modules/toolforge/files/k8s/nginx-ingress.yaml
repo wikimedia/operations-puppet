@@ -194,6 +194,7 @@ subjects:
 # change: pod listens on 8080/tcp for http
 # change: no 443/tcp for the pod
 # change: declare port 10254 for prometheus metrics
+# change: --default-backend-service=tool-fourohfour/fourohfour
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -229,6 +230,7 @@ spec:
             - --udp-services-configmap=$(POD_NAMESPACE)/udp-services
             - --publish-service=$(POD_NAMESPACE)/ingress-nginx
             - --annotations-prefix=nginx.ingress.kubernetes.io
+            - --default-backend-service=tool-fourohfour/fourohfour
           securityContext:
             allowPrivilegeEscalation: true
             capabilities:
