@@ -5692,11 +5692,6 @@ host phab1001 {
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
-host phab1003 {
-    hardware ethernet D0:94:66:5F:4B:28;
-    fixed-address phab1003.eqiad.wmnet;
-}
-
 host phab2001 {
     hardware ethernet 14:18:77:5B:0C:FA;
     fixed-address phab2001.codfw.wmnet;
