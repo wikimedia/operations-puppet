@@ -113,7 +113,7 @@ class role::xhgui::app {
         ensure              => present,
         auto_sync           => true,
         source_host         => 'tungsten.eqiad.wmnet',
-        dest_host           => 'xhgui1001.eqiad.wmnet',
+        dest_host           => 'xhgui2001.codfw.wmnet',
         module_path         => '/srv/mongod',
         server_uses_stunnel => true,
     }
