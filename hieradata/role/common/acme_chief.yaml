@@ -144,6 +144,13 @@ profile::acme_chief::certificates:
         challenge: dns-01
         authorized_regexes:
         - '^netbox(1001|2001)\.wikimedia\.org$'
+    smokeping:
+        CN: 'smokeping.wikimedia.org'
+        SNI:
+        - 'smokeping.wikimedia.org'
+        challenge: dns-01
+        authorized_regexes:
+        - '^netmon(1002|2001)\.wikimedia\.org$'
     tendril:
         CN: 'tendril.wikimedia.org'
         SNI:
