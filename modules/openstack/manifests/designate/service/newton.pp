@@ -11,6 +11,7 @@ class openstack::designate::service::newton
         'designate-api',
         'designate-doc',
         'designate-central',
+        'python-git',
     ]
 
     package { $packages:
