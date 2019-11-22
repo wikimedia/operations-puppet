@@ -5,6 +5,24 @@ class profile::httpbb {
     httpbb::test_suite {'baseurls.yaml':
         source => 'puppet:///modules/profile/httpbb/baseurls.yaml'
     }
+    httpbb::test_suite {'test_foundation.yaml':
+        source => 'puppet:///modules/profile/httpbb/test_foundation.yaml'
+    }
+    httpbb::test_suite {'test_main.yaml':
+        source => 'puppet:///modules/profile/httpbb/test_main.yaml'
+    }
+    httpbb::test_suite {'test_remnant.yaml':
+        source => 'puppet:///modules/profile/httpbb/test_remnant.yaml'
+    }
+    httpbb::test_suite {'test_search.yaml':
+        source => 'puppet:///modules/profile/httpbb/test_search.yaml'
+    }
+    httpbb::test_suite {'test_secure.yaml':
+        source => 'puppet:///modules/profile/httpbb/test_secure.yaml'
+    }
+    httpbb::test_suite {'test_wikimania_wikimedia.yaml':
+        source => 'puppet:///modules/profile/httpbb/test_wikimania_wikimedia.yaml'
+    }
 
     systemd::timer::job { 'git_pull_httpbb':
         ensure          => present,

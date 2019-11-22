@@ -1,0 +1,4 @@
+https://search.wikimedia.org:
+- path: /?search=cthuluh
+  assert_status: 200
+  assert_body_contains: <span class="language">en</span>:<span class="key">Cthulhu_Mythos</span>

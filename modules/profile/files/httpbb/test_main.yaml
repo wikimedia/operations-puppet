@@ -1,0 +1,97 @@
+# This file tests some urls for wikis in the main.conf file
+
+https://www.mediawiki.org:
+- path: /wiki/User_hub
+  assert_status: 200
+  assert_body_contains: User hub - MediaWiki
+- path: /wiki/Wikimedia_Technology
+  assert_status: 200
+  assert_body_contains: Wikimedia Technology - MediaWiki
+- path: /wiki/MediaWiki
+  assert_status: 200
+  assert_body_contains: MediaWiki is a collaboration and documentation platform
+- path: /upload/test
+  assert_status: 302
+  assert_headers:
+    Location: https://upload.wikimedia.org/mediawiki/test
+
+https://upload.wikimedia.org:
+- path: /mediawiki/test
+  assert_status: 404
+
+https://wikidata.org:
+- path: /wiki/Wikidata:Main_Page
+  assert_status: 301
+  assert_headers:
+    Location: https://www.wikidata.org/wiki/Wikidata:Main_Page
+
+https://www.wikidata.org:
+- path: /
+  assert_status: 301
+  assert_headers:
+    Location: https://www.wikidata.org/wiki/Wikidata:Main_Page
+
+https://test.wikidata.org:
+- path: /wiki/Q77119
+  assert_status: 200
+  assert_body_contains: baYjnvuD
+- path: /prop/statement/P13344
+  assert_status: 303
+  assert_headers:
+    Location: https://test.wikidata.org/wiki/Property:P13344
+- path: /wiki/Property:P13344
+  assert_status: 200
+  assert_body_contains: rbkKZufs
+- path: /wiki/Wikidata:Main_Page
+  assert_status: 200
+  assert_body_contains: test instance
+
+https://vote.wikimedia.org:
+- path: /wiki/Main_Page
+  assert_status: 200
+  assert_body_contains: Wikimedia Vote Wiki
+
+https://es.wikibooks.org:
+- path: /wiki/Portada
+  assert_status: 200
+  assert_body_contains: Wikilibros
+
+https://en.wikinews.org:
+- path: /wiki/Main_Page
+  assert_status: 200
+  assert_body_contains: Wikinews, the free news source
+
+https://de.wikipedia.org:
+- path: /wiki/Portal:Geographie
+  assert_status: 200
+  assert_body_contains: Portal:Geographie – Wikipedia
+
+https://it.wikiquote.org:
+- path: /wiki/Pagina_principale
+  assert_status: 200
+  assert_body_contains: Wikiquote
+
+https://en.wikisource.org:
+- path: /wiki/Main_Page
+  assert_status: 200
+  assert_body_contains: Wikisource, the free library
+
+https://www.wikiversity.org:
+- path: /
+  assert_status: 200
+  assert_body_contains: Wikiversity
+
+https://ru.wikiversity.org:
+- path: /wiki/%D0%97%D0%B0%D0%B3%D0%BB%D0%B0%D0%B2%D0%BD%D0%B0%D1%8F_%D1%81%D1%82%D1%80%D0%B0%D0%BD%D0%B8%D1%86%D0%B0
+  assert_status: 200
+  assert_body_contains: Викиверситет
+
+https://en.wikivoyage.org:
+- path: /wiki/Main_Page
+  assert_status: 200
+  assert_body_contains: Wikivoyage – The free worldwide travel guide that you can edit
+
+https://en.wiktionary.org:
+- path: /wiki/Wiktionary:Main_Page
+  assert_status: 200
+  assert_body_contains: Wiktionary, the free dictionary

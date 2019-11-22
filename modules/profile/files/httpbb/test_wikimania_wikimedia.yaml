@@ -1,0 +1,59 @@
+https://wikimania2017.wikimedia.org:
+- path: /
+  assert_status: 301
+  assert_headers:
+    Location: https://wikimania2017.wikimedia.org/wiki/Special:MyLanguage/Wikimania
+- path: /wiki/Special:MyLanguage/Wikimania
+  assert_status: 200
+  assert_body_contains: Wikimania - Wikimania
+
+https://wikimaniateam.wikimedia.org:
+- path: /wiki/Main_Page
+  assert_status: 200
+  assert_body_contains: WikimaniaTeam
+
+https://br.wikimedia.org:
+- path: /wiki/P%C3%A1gina_principal
+  assert_status: 200
+  assert_body_contains: Wikimedia Brasil
+
+https://login.wikimedia.org:
+- path: /wiki/Special:Log/renameuser
+  assert_status: 200
+  assert_body_contains: User rename log - Wikimedia Login Wiki
+
+https://transitionteam.wikimedia.org:
+- path: /wiki/Main_Page
+  assert_status: 200
+  assert_body_contains: Transition Team Wiki
+
+https://iegcom.wikimedia.org:
+- path: /wiki/Main_Page
+  assert_status: 200
+  assert_body_contains: Individual Engagement Grants Committee Wiki
+
+https://www.wikimedia.org:
+- path: /wiki/Main_Page
+  assert_status: 301
+  assert_headers:
+    Location: https://foundation.wikimedia.org/wiki/Main_Page
+
+https://zero.wikimedia.org:
+- path: /wiki/Main_Page
+  assert_status: 404
+
+https://legalteam.wikimedia.org:
+- path: /wiki/Main_Page
+  assert_status: 200
+  assert_body_contains: Legal Team Wiki
+
+https://totoro.wikimedia.org:
+- path: /wiki/Main_Page
+  assert_status: 301
+  assert_headers:
+    Location: https://foundation.wikimedia.org/wiki/Main_Page
+
+https://foundation.wikimedia.org:
+- path: /wiki/Main_Page
+  assert_status: 200
+  assert_body_contains: Wikimedia Foundation Governance Wiki

@@ -1,0 +1,29 @@
+https://foundation.wikimedia.org:
+- path: /wiki/Home
+  assert_status: 200
+  assert_body_contains: Wikimedia Foundation Governance Wiki
+- path: /fundraising.html
+  assert_status: 301
+  assert_headers:
+    Location: https://foundation.wikimedia.org/wiki/Fundraising
+- path: /wiki/Fundraising
+  assert_status: 302
+  assert_headers:
+    Location: https://donate.wikimedia.org/wiki/Special:FundraiserRedirector?rdfrom=%2F%2Ffoundation.wikimedia.org%2Fw%2Findex.php%3Ftitle%3DFundraising%26redirect%3Dno
+
+https://donate.wikimedia.org:
+- path: /
+  assert_status: 302
+  assert_headers:
+    Location: https://donate.wikimedia.org/wiki/Special:FundraiserRedirector
+- path: /wiki/Special:FundraiserRedirector
+  assert_status: 302
+  assert_headers:
+    Location: https://donate.wikimedia.org/w/index.php?title=Special:LandingPage&country=XX&utm_medium=spontaneous&utm_source=fr-redir&utm_campaign=spontaneous
+- path: /wiki/Special:FundraiserRedirector?rdfrom=%2F%2Ffoundation.wikimedia.org%2Fw%2Findex.php%3Ftitle%3DFundraising%26redirect%3Dno
+  assert_status: 302
+  assert_headers:
+    Location: https://donate.wikimedia.org/w/index.php?title=Special:LandingPage&country=XX&utm_medium=spontaneous&utm_source=fr-redir&utm_campaign=spontaneous&rdfrom=%2F%2Ffoundation.wikimedia.org%2Fw%2Findex.php%3Ftitle%3DFundraising%26redirect%3Dno
+- path: /w/index.php?title=Special:LandingPage
+  assert_status: 200
+  assert_body_contains: Make your donation now - Wikimedia Foundation

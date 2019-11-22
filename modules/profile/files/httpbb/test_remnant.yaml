@@ -1,0 +1,171 @@
+https://meta.wikimedia.org:
+- path: /wiki/Pagina_principale
+  assert_status: 200
+  assert_body_contains: Pagina principale - Meta
+- path: /wiki/Special:MyLanguage/Meta:Babylon
+  assert_status: 200
+  assert_body_contains: Meta:Babylon - Meta
+- path: /wiki/Grants:APG
+  assert_status: 200
+  assert_body_contains: Grants:APG - Meta
+
+https://wikisource.org:
+- path: /wiki/Main_Page
+  assert_status: 200
+  assert_body_contains: Wikisource
+- path: /wiki/Index:Mamma_mia_che_vo%27_sap%C3%A9%3F!_(1909).djvu
+  assert_status: 404
+
+https://commons.wikimedia.org:
+- path: /wiki/Main_Page
+  assert_status: 200
+  assert_body_contains: Wikimedia Commons
+- path: /wiki/File:Lycidae-Kadavoor-2017-05-22-001.jpg
+  assert_status: 200
+  assert_body_contains: File:Lycidae-Kadavoor-2017-05-22-001.jpg - Wikimedia Commons
+
+https://grants.wikimedia.org:
+- path: /wiki/Main_Page
+  assert_status: 200
+  assert_body_contains: Wikimedia Foundation Grants Discussion
+
+https://internal.wikimedia.org:
+- path: /wiki/Main_Page
+  assert_status: 200
+  assert_body_contains: Internal
+
+https://board.wikimedia.org:
+- path: /wiki/Main_Page
+  assert_status: 200
+  assert_body_contains: Board
+
+https://boardgovcom.wikimedia.org:
+- path: /wiki/Main_Page
+  assert_status: 200
+  assert_body_contains: Board Governance Committee
+
+https://spcom.wikimedia.org:
+- path: /wiki/Main_Page
+  assert_status: 200
+  assert_body_contains: Spcom
+
+https://affcom.wikimedia.org:
+- path: /wiki/Main_Page
+  assert_status: 200
+  assert_body_contains: Affcom
+
+https://incubator.wikimedia.org:
+- path: /wiki/Incubator:Main_Page
+  assert_status: 200
+  assert_body_contains: Welcome to Wikimedia Incubator!
+
+https://species.wikimedia.org:
+- path: /wiki/Sitta_europaea_caesia
+  assert_status: 200
+  assert_body_contains: Sitta europaea caesia - Wikispecies
+- path: /wiki/Certhioidea
+  assert_status: 200
+  assert_body_contains: Certhioidea - Wikispecies
+- path: /wiki/File:Eurasian_Nuthatch_(Sitta_europaea)_(W1CDR0001520_BD24).ogg
+  assert_status: 200
+  assert_body_contains: File:Eurasian Nuthatch (Sitta europaea) (W1CDR0001520 BD24).ogg - Wikispecies
+
+https://searchcom.wikimedia.org:
+- path: /wiki/Main_Page
+  assert_status: 200
+  assert_body_contains: Search Committee
+
+https://usability.wikimedia.org:
+- path: /wiki/Main_Page
+  assert_status: 200
+  assert_body_contains: Wikimedia Usability Initiative
+
+https://strategy.wikimedia.org:
+- path: /wiki/Process/Background
+  assert_status: 200
+  assert_body_contains: Process/Background - Strategic Planning
+
+https://office.wikimedia.org:
+- path: /wiki/Main_Page
+  assert_status: 200
+  assert_body_contains: Wikimedia Office
+
+https://chair.wikimedia.org:
+- path: /wiki/Index
+  assert_status: 200
+  assert_body_contains: Wikimedia Board Chair
+
+https://advisory.wikimedia.org:
+- path: /wiki/Main_Page
+  assert_status: 200
+  assert_body_contains: Advisory Board
+
+https://auditcom.wikimedia.org:
+- path: /wiki/Main_Page
+  assert_status: 200
+  assert_body_contains: Audit Committee
+
+https://quality.wikimedia.org:
+- path: /wiki/Portal
+  assert_status: 200
+  assert_body_contains: Wikimedia Quality
+
+https://otrs-wiki.wikimedia.org:
+- path: /wiki/Main_Page
+  assert_status: 200
+  assert_body_contains: OTRS Wiki
+
+https://exec.wikimedia.org:
+- path: /wiki/Main_Page
+  assert_status: 200
+  assert_body_contains: Wikimedia Executive
+
+https://collab.wikimedia.org:
+- path: /wiki/Main_Page
+  assert_status: 200
+  assert_body_contains: Collab
+
+https://outreach.wikimedia.org:
+- path: /wiki/Main_Page/es
+  assert_status: 200
+  assert_body_contains: Portada - Outreach Wiki
+
+https://movementroles.wikimedia.org:
+- path: /wiki/Main_Page
+  assert_status: 200
+  assert_body_contains: Movement Roles
+
+https://checkuser.wikimedia.org:
+- path: /wiki/Main_Page
+  assert_status: 200
+  assert_body_contains: CheckUser Wiki
+
+https://steward.wikimedia.org:
+- path: /wiki/Main_Page
+  assert_status: 200
+  assert_body_contains: Steward Wiki
+
+https://ombudsmen.wikimedia.org:
+- path: /wiki/Main_Page
+  assert_status: 200
+  assert_body_contains: Ombudsmen Wiki
+
+https://projectcom.wikimedia.org:
+- path: /wiki/Main_Page
+  assert_status: 200
+  assert_body_contains: Project Grants Committee
+
+https://techconduct.wikimedia.org:
+- path: /wiki/Main_Page
+  assert_status: 200
+  assert_body_contains: CoC committee
+
+https://electcom.wikimedia.org:
+- path: /wiki/Main_Page
+  assert_status: 200
+  assert_body_contains: MediaWiki
+
+https://advisors.wikimedia.org:
+- path: /wiki/Main_Page
+  assert_status: 200
+  assert_body_contains: Advisors

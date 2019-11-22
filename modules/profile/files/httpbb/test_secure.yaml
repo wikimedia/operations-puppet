@@ -1,0 +1,17 @@
+https://secure.wikimedia.org:
+- path: /
+  assert_status: 301
+  assert_headers:
+    Location: https://www.wikimedia.org/
+- path: /otrs/
+  assert_status: 301
+  assert_headers:
+    Location: https://ticket.wikimedia.org/otrs/
+- path: /wikipedia/mediawiki/wiki/Citoid
+  assert_status: 301
+  assert_headers:
+    Location: https://www.mediawiki.org/wiki/Citoid
+- path: /wikipedia/en/wiki/FooBar
+  assert_status: 301
+  assert_headers:
+    Location: https://en.wikipedia.org/wiki/FooBar
