@@ -17,6 +17,7 @@ profile::icinga::active_host: icinga1001.wikimedia.org
 profile::icinga::partners:
   - 'icinga2001.wikimedia.org'
 profile::idp::client::httpd::acme_chief_cert: cas-icinga
+profile::idp::client::httpd::document_root: /usr/share/icinga/htdocs
 profile::idp::client::httpd::vhost_content: 'profile/idp/client/httpd-icinga.erb'
 profile::idp::client::httpd::virtual_host: cas-icinga.wikimedia.org
 profile::idp::client::httpd::required_groups:

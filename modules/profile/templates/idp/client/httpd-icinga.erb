@@ -1,14 +1,4 @@
 # vim: filetype=apache
-<%-
-def bool_2_on_off(value)
-  if value.is_a?(TrueClass)
-    return 'On'
-  elsif value.is_a?(FalseClass)
-    return 'Off'
-  end
-  return value
-end
--%>
 <VirtualHost *:443>
     ServerName <%= @virtual_host %>
     ServerAdmin noc@wikimedia.org
@@ -22,15 +12,11 @@ end
     SSLCertificateChainFile /etc/acmecerts/<%= @acme_chief_cert %>/live/rsa-2048.chain.crt
     SSLCertificateKeyFile /etc/acmecerts/<%= @acme_chief_cert %>/live/rsa-2048.key
     <%= @ssl_settings.join("\n    ") %>
-    CASVersion 2
-    CASCertificatePath <%= @certificate_path %>
-    CASCookiePath <%= @cookie_path %><% if @cookie_path[-1] != '/' %>/<% end %>
-    CASLoginURL <%= @apereo_cas['login_url'] %>
-    CASValidateURL <%= @apereo_cas['validate_url'] %>
-    CASAttributePrefix <%= @attribute_prefix %>
-    CASDebug <%= bool_2_on_off(@debug) %>
+    <%- @cas_settings.each_pair do |key, setting| -%>
+    <%= key %> <%= setting %>
+    <%-end -%>
 
-    DocumentRoot /usr/share/icinga/htdocs
+    DocumentRoot <%= @document_root %>
 
     <DirectoryMatch (/usr/share/icinga/htdocs|/usr/lib/cgi-bin/icinga|/etc/icinga/stylesheets)>
         Options FollowSymLinks
@@ -39,16 +25,15 @@ end
         DirectoryIndex index.html
         AllowOverride None
 
-        AuthType CAS
-        CASAuthNHeader <%= @authn_header %>
-<%- if @required_groups.empty? -%>
-        Require valid-user
-<%- else -%>
-        # Implicit RequireAny
-<%-   @required_groups.each do |required_group| -%>
-        Require cas-attribute memberOf:<%= required_group %>
-<%-   end -%>
-<%- end -%>
+        <%- @cas_auth_settings.each_pair do |key, setting| -%>
+          <%- if setting.is_a?(Array) -%>
+            <%- setting.each do |_setting| -%>
+        <%= key %> <%= _setting %>
+            <%- end -%>
+          <%- else -%>
+        <%= key %> <%= setting %>
+          <%- end -%>
+        <%- end -%>
 
     </DirectoryMatch>
 
