@@ -27,6 +27,7 @@ import git
 import os
 import pipes
 import requests
+import shutil
 import subprocess
 import tempfile
 
@@ -87,6 +88,7 @@ class BaseAddressWMFHandler(BaseAddressHandler):
 
         # Clean up the puppet config for this instance, if there is one
         self._delete_puppet_config(data['tenant_id'], fqdn)
+        self._delete_puppet_git_config(data['tenant_id'], fqdn)
 
         # Finally, delete any proxy records pointing to this instance.
         #
@@ -166,7 +168,7 @@ class BaseAddressWMFHandler(BaseAddressHandler):
         repo_user = cfg.CONF[self.name].puppet_git_repo_user
 
         # set up repo object and rebase everything
-        repo = self.get_repo()
+        repo = self._get_repo()
         repo_path = repo.working_tree_dir
         repo.remotes.origin.pull(rebase=True)
 
@@ -186,6 +188,7 @@ class BaseAddressWMFHandler(BaseAddressHandler):
         # and push
         LOG.debug("pushing")
         repo.remotes.origin.push()
+        shutil.rmtree(repo.working_tree_dir)
 
     def _delete_proxies_for_ip(self, project, ip):
         project_proxies = self._get_proxy_list_for_project(project)
