@@ -26,7 +26,7 @@ cache::nodes:
       - 'cp3050.esams.wmnet'
       - 'cp3052.esams.wmnet'
       - 'cp3054.esams.wmnet'
-      # - 'cp3056.esams.wmnet' # HW issues: T236497
+      - 'cp3056.esams.wmnet'
       - 'cp3058.esams.wmnet'
       - 'cp3060.esams.wmnet'
       - 'cp3062.esams.wmnet'
