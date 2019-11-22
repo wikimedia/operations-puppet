@@ -51,3 +51,8 @@ groups:
   - record: job:trafficserver_requests:avail2m
     expr: sum by(cluster, layer) (cluster_layer_code:trafficserver_responses_total:rate2m{code=~"5.."})
       / sum by(cluster, layer) (cluster_layer_code:trafficserver_responses_total:rate2m{code=~"[12345].."})
+
+- name: jobs
+  rules:
+  - record: site_job:up:avail
+    expr: sum by (job, site) (up) / count by (job, site) (up)
