@@ -368,4 +368,13 @@ define trafficserver::instance(
         group   => 'root',
         require => File['/usr/local/sbin/ats-restart'],
     }
+
+    # logrotate configuration
+    file { "/etc/logrotate.d/ats-${title}":
+        ensure  => present,
+        content => template('trafficserver/logrotate.erb'),
+        mode    => '0444',
+        owner   => 'root',
+        group   => 'root',
+    }
 }
