@@ -8,6 +8,7 @@ class bacula::director::prometheus_exporter(
         owner  => 'bacula',
         group  => 'bacula',
         mode   => '0554',
+        notify => Service['prometheus-bacula-exporter'],
     }
     systemd::service { 'prometheus-bacula-exporter':
         ensure  => present,
