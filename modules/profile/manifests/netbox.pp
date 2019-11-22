@@ -225,7 +225,7 @@ class profile::netbox (
                 description    => "Netbox report ${repname}.",
                 nrpe_command   => "/usr/bin/python3 /usr/local/lib/nagios/plugins/check_netbox_report.py ${check_args} ${reportclass}",
                 check_interval => $report['check_interval'],
-                notes_url      => "https://netbox.wikimedia.org/extras/report/${reportclass}/",
+                notes_url      => "https://netbox.wikimedia.org/extras/reports/${reportclass}/",
                 contact_group  => 'team-dcops',
             }
         }
