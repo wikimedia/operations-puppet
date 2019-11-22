@@ -13,7 +13,7 @@ groups:
               yuvipanda, shrlak, madhuvishy, groovier, khorn, ironholds, katie, chedasaurus,
               cy534, pnorman, mpany, deskana, arnad, nithum, banyek, imarlier, mkroetzsch,
               mtizzoni, panisson, paolotti, ciro, dartar, melodykramer, gtirloni, tbayer, pirroh,
-              bawolff, dkg, juliaglen, cwdent, bmansurov, hpham, atgomez]
+              bawolff, dkg, juliaglen, cwdent, bmansurov, hpham, atgomez, maxsem]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -69,7 +69,7 @@ groups:
     members: [dr0ptp4kt, anomie, aude, awjrichards, bd808,
               brion, cscott, daniel, demon, ebernhardson, esanders, gilles,
               gjg, halfak, hashar, hoo, kaldari, kartik, krinkle,
-              maxsem, mattflaschen, marktraceur, milimetric, mlitn, andyrussg,
+              mattflaschen, marktraceur, milimetric, mlitn, andyrussg,
               nikerabbit, reedy, ssastry, samwilson, phedenskog,
               tgr, phuedx, ejegg, twentyafterfour, legoktm, catrope,
               mobrovac, nuria, thcipriani, joal, eevans, mforns, dcausse,
@@ -151,7 +151,7 @@ groups:
               nuria, ori, otto, cooltey, tonina,
               mforns, jdlrobson, dr0ptp4kt, tgr, marktraceur, jhernandez, joal,
               daisy, mholloway-shell, ebernhardson, niedzielski,
-              neilpquinn-wmf, dbrant, maxsem,
+              neilpquinn-wmf, dbrant,
               jminor, etonkovidova, sbisson, addshore, matmarex, elukey,
               nikerabbit, dstrine, jsamra, jkumalah,
               jdittrich, chelsyx, ovasileva, debt, mgerlach, eyener,
@@ -241,7 +241,7 @@ groups:
               dbrant, tgr, dr0ptp4kt, brion, bsitzmann, amire80,
               dduvall, nettrom, mforns, jkatz, ebernhardson,
               mlitn, joal, kartik, nikerabbit, pcoombe,
-              neilpquinn-wmf, maxsem, jminor, dstrine,
+              neilpquinn-wmf, jminor, dstrine,
               ladsgroup, ovasileva, shiladsen, abi]
   statistics-admins:
     posix_name: stats
@@ -271,7 +271,7 @@ groups:
               bsitzmann, dbrant, nettrom, leila, jmm,
               ezachte, mforns, reedy, west1, phuedx, awight,
               joal, akosiaris, jkatz, tonina, pearley, ktsouroupidou,
-              andyrussg, niedzielski, maxsem, hoo, daniel, krinkle, tgr,
+              andyrussg, niedzielski, hoo, daniel, krinkle, tgr,
               ebernhardson, addshore, jminor, neilpquinn-wmf,
               dcausse, bd808, tjones, mobrovac, jdrewniak, ejegg, jdcc, ori,
               amire80, kartik, pcoombe, foks, jsamra, kemayo, jkumalah,
@@ -461,7 +461,7 @@ groups:
     description: Service deploy users
     members: [bd808, eevans, mobrovac, ppchelko, demon, twentyafterfour, thcipriani, dduvall,
               bsitzmann, mholloway-shell, kartik, halfak, ladsgroup, smalyshev, hoo, tgr,
-              ssastry, cscott, arlolra, jdlrobson, maxsem, jforrester, niedzielski,
+              ssastry, cscott, arlolra, jdlrobson, jforrester, niedzielski,
               pmiazga, phuedx, mbsantos, onimisionipe, mvolz, santhosh, nikerabbit, accraze,
               kevinbazira]
     privileges: []
@@ -1135,13 +1135,12 @@ users:
     ssh_keys: []
     uid: 3304
   maxsem:
-    ensure: present
+    ensure: absent
     gid: 500
     name: maxsem
     realname: Max Semenik
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDfuBTpiiDX2o68s2Lyc2LDT1r39IN3V4bzPVsdZEcJKcti9chfO2BK1xUGZ+KWbUSvQn8TtT0MDTTDDlXEK/oc+MlNn5o+K/xY6lUkyQuWLHZi8GaOuLaqude9myv+u+RGvuvTvre2bVNwAZ94XpSa5gN9BUdrZHeeLGw1NxE9g+675mRxg/2nBM7sPYr7S9MFTxNuW9HUfyXoGx0NZrsTR7gLz0H4ET6HYgLMXVVKIaNLyKkfDdJ/ywmd61LGdp+jUjWjPeClrhutyk/3z//fauC/S1OtyD1IP29Eg3wJbxWaWRnanAq5EueEopz2lOProwOVPnwTYNLk2GRa/xiV msemenik@MaxSem.corp.wikimedia.org]
+    ssh_keys: []
     uid: 1220
-    email: msemenik@wikimedia.org
   mattflaschen:
     ensure: present
     gid: 500
