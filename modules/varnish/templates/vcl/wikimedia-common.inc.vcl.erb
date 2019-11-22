@@ -364,10 +364,6 @@ sub wm_common_recv_early {
 	if ( req.http.host ~ "^varnishcheck" ) {
 		return (synth(200, "healthcheck"));
 	}
-
-	if (req.http.X-Wikimedia-Debug || req.http.X-Wikimedia-Security-Audit == "1") {
-		return (pass);
-	}
 }
 
 sub wm_common_hit {

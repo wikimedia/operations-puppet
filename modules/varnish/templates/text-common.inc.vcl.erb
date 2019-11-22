@@ -159,6 +159,10 @@ sub text_common_recv {
 		return (pass);
 	}
 
+	if (req.http.X-Wikimedia-Debug || req.http.X-Wikimedia-Security-Audit == "1") {
+		return (pass);
+	}
+
 	// The cookies below represent mobile preferences that can be set for anonymous users.
 	if (req.http.X-Subdomain) {
 		// Do not cache the beta variant of the mobile site. T228861
