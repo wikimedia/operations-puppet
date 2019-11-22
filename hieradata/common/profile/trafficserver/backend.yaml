@@ -147,6 +147,9 @@ profile::trafficserver::backend::mapping_rules:
       target: http://puppetboard.wikimedia.org
       replacement: https://puppetboard.discovery.wmnet
     - type: map
+      target: http://cas-puppetboard.wikimedia.org
+      replacement: https://puppetboard.discovery.wmnet
+    - type: map
       target: http://query.wikidata.org/bigdata/ldf
       replacement: https://wdqs1005.eqiad.wmnet
     - type: map

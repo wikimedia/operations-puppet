@@ -332,6 +332,9 @@ cache::alternate_domains:
   puppetboard.wikimedia.org:
     director: 'puppetboard'
     caching: 'pass'
+  cas-puppetboard.wikimedia.org:
+    director: 'puppetboard'
+    caching: 'pass'
   query.wikidata.org:
     director: 'wdqs_director'
     subpaths:
