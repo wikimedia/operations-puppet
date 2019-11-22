@@ -1,0 +1,56 @@
+#####################################################################
+### THIS FILE IS MANAGED BY PUPPET
+#####################################################################
+# vim: filetype=apache
+<%- @directory = @directory_root -%>
+<VirtualHost *:80>
+    ServerName <%= @virtual_host %>
+    ServerAdmin noc@wikimedia.org
+
+    <%- @cas_settings.each_pair do |key, setting| -%>
+    <%= key %> <%= setting %>
+    <%-end -%>
+    # Not really used but needed
+    DocumentRoot <%= @directory %>/static
+
+    # https://httpoxy.org/
+    RequestHeader unset Proxy early
+    ProxyPreserveHost On
+    ProxyPassMatch "^/(static|offline)/" !
+    ProxyPass / http://127.0.0.1:<%= @port %>/
+    ProxyPassReverse / http://127.0.0.1:<%= @port %>/
+
+    RewriteEngine On
+
+    # The X-WEBAUTH-USER should only be set by us.
+    RequestHeader unset X-WEBAUTH-USER
+
+    # Rewrite REMOTE_USER envvar into X-WEBAUTH-USER header.
+    RewriteRule .* - [E=WEBAUTH_USER:%{LA-U:REMOTE_USER}]
+    RequestHeader set X-WEBAUTH-USER %{WEBAUTH_USER}e env=WEBAUTH_USER
+
+    Alias /static <%= @directory %>/static
+    Alias /offline <%= @directory %>/static
+
+    <Directory <%= @directory %>/static>
+        Options FollowSymLinks MultiViews
+        AllowOverride None
+        Require all granted
+    </Directory>
+
+    <Proxy *>
+      <%- @cas_auth_settings.each_pair do |key, setting| -%>
+        <%- if setting.is_a?(Array) -%>
+          <%- setting.each do |_setting| -%>
+      <%= key %> <%= _setting %>
+          <%- end -%>
+        <%- else -%>
+      <%= key %> <%= setting %>
+        <%- end -%>
+      <%- end -%>
+    </Proxy>
+
+    LogLevel warn
+    CustomLog /var/log/apache2/<%= @virtual_host %>-access.log wmf
+    ErrorLog /var/log/apache2/<%= @virtual_host %>-error.log
+</VirtualHost>

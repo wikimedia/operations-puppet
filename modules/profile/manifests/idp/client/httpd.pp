@@ -1,5 +1,4 @@
 class profile::idp::client::httpd (
-    String[1]                     $acme_chief_cert  = lookup('profile::idp::client::httpd::acme_chief_cert'),
     String[1]                     $vhost_content    = lookup('profile::idp::client::httpd::vhost_content'),
     Stdlib::Host                  $virtual_host     = lookup('profile::idp::client::httpd::virtual_host'),
     Stdlib::Unixpath              $document_root    = lookup('profile::idp::client::httpd::document_root'),
@@ -12,6 +11,8 @@ class profile::idp::client::httpd (
     String[1]                     $apache_owner     = lookup('profile::idp::client::httpd::apache_owner'),
     String[1]                     $apache_group     = lookup('profile::idp::client::httpd::apache_group'),
     Optional[Array[String[1]]]    $required_groups  = lookup('profile::idp::client::httpd::required_groups'),
+    Optional[String[1]]           $acme_chief_cert  = lookup('profile::idp::client::httpd::acme_chief_cert',
+                                                            {'default_value' => undef}),
 ) {
     ensure_packages(['libapache2-mod-auth-cas'])
 
@@ -39,8 +40,10 @@ class profile::idp::client::httpd (
     }
     $cas_auth_settings = merge($cas_base_auth, {'Require' => $cas_auth_require})
 
-    acme_chief::cert { $acme_chief_cert:
-        puppet_svc => 'apache2',
+    if $acme_chief_cert {
+        acme_chief::cert { $acme_chief_cert:
+            puppet_svc => 'apache2',
+        }
     }
 
     httpd::mod_conf{'auth_cas':}

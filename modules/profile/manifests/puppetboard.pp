@@ -87,6 +87,9 @@ class profile::puppetboard (
     httpd::site { 'puppetboard.wikimedia.org':
         content => template('profile/puppetboard/puppetboard.wikimedia.org.erb'),
     }
+    class {'profile::idp::client::httpd':
+        document_root => $directory,
+    }
 
     monitoring::service { 'puppetboard-http':
         description   => 'puppetboard.wikimedia.org',
