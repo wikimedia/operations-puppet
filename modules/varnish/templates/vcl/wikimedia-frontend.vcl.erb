@@ -414,10 +414,15 @@ sub vcl_recv {
 	// This will remain in place until the
 	// future removal of protocol-level support.
 	if (req.http.X-Connection-Properties ~ "SSL=TLSv1(\.1)?;"
-		&& req.url ~ "^/wiki/" && req.url !~ ":" && req.method == "GET"
+		&& req.method == "GET"
+		&& (
+			(req.url ~ "^/wiki/" && req.url !~ ":")
+			|| (!req.http.user-agent || req.http.user-agent ~ "[Bb]ot")
+		)
+		&& req.url != "/sec-warning" && req.url !~ "^/static/images/"
 		&& std.random(0,100) < 1.0) {
-		set req.http.Location = "https://" + req.http.Host + "/sec-warning";
-		return (synth(302, "Browser Connection Security Redirect"));
+			set req.http.Location = "https://" + req.http.Host + "/sec-warning";
+			return (synth(302, "Browser Connection Security Redirect"));
 	}
 	// Browser sec warning
 	if (req.url == "/sec-warning") {
