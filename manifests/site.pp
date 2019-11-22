@@ -1077,8 +1077,12 @@ node /^icinga[12]001\.wikimedia\.org$/ {
 }
 
 # Phabricator
-node /^(phab1001\.eqiad|phab1003\.eqiad|phab2001\.codfw)\.wmnet$/ {
+node /^(phab1001\.eqiad|phab2001\.codfw)\.wmnet$/ {
     role(phabricator)
+}
+
+node 'phab1003.eqiad.wmnet' {
+    role(spare::system)
 }
 
 # Kafka Brokers - main-eqiad and main-codfw Kafka clusters.
