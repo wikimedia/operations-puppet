@@ -739,7 +739,19 @@ groups:
     gid: 814
     description: deploy gerrit
     members: *gerrit_root_members
-
+  airflow-search-admins:
+    gid: 816
+    description: administrators of the Apache Airflow service
+    members: [ebernhardson, dcausse, gehel, bearloga, chelsyx]
+    privileges: ['ALL = NOPASSWD: /usr/sbin/service airflow-webserver *',
+                 'ALL = NOPASSWD: /usr/sbin/service airflow-scheduler *',
+                 'ALL = NOPASSWD: /bin/systemctl start airflow-scheduler',
+                 'ALL = NOPASSWD: /bin/systemctl restart airflow-scheduler',
+                 'ALL = NOPASSWD: /bin/systemctl stop airflow-scheduler',
+                 'ALL = NOPASSWD: /bin/systemctl start airflow-scheduler',
+                 'ALL = NOPASSWD: /bin/systemctl stop airflow-scheduler',
+                 'ALL = NOPASSWD: /bin/systemctl restart airflow-scheduler',
+                 'ALL = (airflow) NOPASSWD: /srv/deployment/search/airflow/venv/bin/airflow *']
 users:
   rush:
     ensure: present
