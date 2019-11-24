@@ -31,7 +31,7 @@ class snapshot::addschanges(
             ensure      => 'present',
             environment => 'MAILTO=ops-dumps@wikimedia.org',
             user        => $user,
-            command     => "python3 ${repodir}/generatemiscdumps.py --configfile ${confsdir}/addschanges.conf --dumptype incrdumps --quiet",
+            command     => "python3 ${repodir}/generatemiscdumps.py --configfile ${confsdir}/addschanges.conf --dumptype incrdumps --quiet --skiplocks",
             minute      => '50',
             hour        => '20',
         }
