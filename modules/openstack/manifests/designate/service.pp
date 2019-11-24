@@ -77,6 +77,9 @@ class openstack::designate::service(
         recurse => true,
     }
 
+    # We'll need this key to push to the instance-puppet repo
+    $puppet_git_repo_key_path = '/var/lib/designate/.ssh/instance-puppet-user.priv'
+
     file {
         '/etc/designate/designate.conf':
             owner   => 'designate',
@@ -214,9 +217,6 @@ class openstack::designate::service(
             Package['designate'],
         ],
     }
-
-    # We'll need this key to push to the instance-puppet repo
-    $puppet_git_repo_key_path = '/var/lib/designate/.ssh/instance-puppet-user.priv'
 
     # Get ready to host a local git repo of instance puppet config
     file { $puppet_git_repo_key_path:

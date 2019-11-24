@@ -7,5 +7,5 @@ profile::openldap::hash_passwords: SHA
 profile::openldap::read_only: false
 profile::openldap::certname: ldap-codfw1dev
 profile::openldap::sync_pass: none
-profile::openstack::codfw1dev::horizon::puppet_git_repo_name: instance-puppet
+profile::openstack::codfw1dev::horizon::puppet_git_repo_name: instance-puppet-dev
 profile::openstack::codfw1dev::horizon::puppet_git_repo_user: instance-puppet-user
