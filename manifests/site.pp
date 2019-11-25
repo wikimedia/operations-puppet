@@ -163,7 +163,7 @@ node 'auth2001.codfw.wmnet' {
 }
 
 node /^authdns[12]001\.wikimedia\.org$/ {
-    role(authdns::server)
+    role(dns::auth)
 }
 
 # Primary bacula director and storage daemon
@@ -801,28 +801,8 @@ node /^debmonitor[12]001\.(codfw|eqiad)\.wmnet$/ {
     role(debmonitor::server)
 }
 
-node /^dns100[12]\.wikimedia\.org$/ {
-    role(recursor)
-
-}
-
-node /^dns200[12]\.wikimedia\.org$/ {
-    role(recursor)
-
-}
-
-node /^dns300[12]\.wikimedia\.org$/ {
-    role(recursor)
-}
-
-node /^dns400[12]\.wikimedia\.org$/ {
-    role(recursor)
-
-}
-
-node /^dns500[12]\.wikimedia\.org$/ {
-    role(recursor)
-
+node /^dns[12345]00[12]\.wikimedia\.org$/ {
+    role(dnsbox)
 }
 
 # https://doc.wikimedia.org (T211974)
@@ -1027,7 +1007,7 @@ node /^ganeti300[12]\.esams\.wmnet$/ {
 
 # esams authdns (ns2) - on loan temporarily from unused ganeti cluster above!
 node 'ganeti3003.esams.wmnet' {
-    role(authdns::server)
+    role(dns::auth)
 }
 
 # new ulsfo ganeti hosts T226444

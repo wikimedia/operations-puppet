@@ -312,8 +312,8 @@ wikimedia_clusters:
     sites:
       eqiad: []
       codfw: []
-  recursor:
-    description: "DNS Recursor and NTP Servers"
+  dnsbox:
+    description: "DNS and NTP Combo Infra Boxes"
     id: 69
     sites:
       eqiad: []

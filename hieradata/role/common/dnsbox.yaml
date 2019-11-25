@@ -1,4 +1,4 @@
-cluster: recursor
+cluster: dnsbox
 
 prometheus::node_exporter::collectors_extra:
   - 'ntp'

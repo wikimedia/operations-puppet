@@ -1145,7 +1145,7 @@ class profile::prometheus::ops (
     prometheus::class_config{ "pdnsrec_${::site}":
         dest       => "${targets_path}/pdnsrec_${::site}.yaml",
         site       => $::site,
-        class_name => 'role::dnsrecursor',
+        class_name => 'role::dns::recursor',
         port       => 9199,
     }
 
