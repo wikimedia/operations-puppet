@@ -43,6 +43,7 @@
 
     # Shortcut to access unhandled (non-acked) alerts
     RedirectMatch ^/alerts$ https://<%= @virtual_host %>/cgi-bin/icinga/status.cgi?allunhandledproblems&sortobject=services&sorttype=2&sortoption=3
+    RedirectMatch ^/$ https://icinga.wikimedia.org/icinga
     ErrorLog /var/log/apache2/<%= @virtual_host %>_error.log
     LogLevel warn
 </VirtualHost>
