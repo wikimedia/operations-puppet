@@ -11,7 +11,7 @@ class openstack::nova::placement::service::ocata (
     file { '/etc/init.d/nova-placement-api':
         owner   => 'root',
         group   => 'root',
-        mode    => '0751',
+        mode    => '0755',
         content => template('openstack/ocata/nova/placement/nova-placement-api.erb'),
     }
 }
