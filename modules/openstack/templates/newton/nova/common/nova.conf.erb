@@ -145,3 +145,13 @@ tenant_name = admin
 user_domain_id = default
 user_domain_name = default
 username = novaadmin
+
+[placement]
+os_region_name = <%= @region %>
+project_domain_name = Default
+project_name = admin
+auth_type = password
+user_domain_name = Default
+auth_url = http://<%= @keystone_host %>:35357/v3
+username = novaadmin
+password = <%= @ldap_user_pass %>
