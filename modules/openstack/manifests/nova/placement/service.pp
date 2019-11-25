@@ -6,7 +6,7 @@ class openstack::nova::placement::service(
 
     class { "openstack::nova::placement::service::${version}": }
 
-    service { 'nova-placement':
+    service { 'nova-placement-api':
         ensure    => $active,
         subscribe => [
                       File['/etc/nova/nova.conf'],
