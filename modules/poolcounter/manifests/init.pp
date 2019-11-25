@@ -3,12 +3,16 @@
 
 class poolcounter {
 
-    package { 'poolcounter':
-        ensure => 'installed',
-    }
+    require_package('poolcounter', 'poolcounter-prometheus-exporter')
 
     service { 'poolcounter':
         ensure  => 'running',
         require => Package['poolcounter'],
+    }
+
+    systemd::service { 'poolcounter-prometheus-exporter':
+        ensure  => 'present',
+        content => systemd_template('poolcounter-prometheus-exporter'),
+        require => Package['poolcounter-prometheus-exporter'],
     }
 }
