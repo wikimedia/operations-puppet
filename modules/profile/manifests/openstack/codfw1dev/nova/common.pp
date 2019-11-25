@@ -1,5 +1,6 @@
 class profile::openstack::codfw1dev::nova::common(
     $version = hiera('profile::openstack::codfw1dev::version'),
+    $region = hiera('profile::openstack::codfw1dev::region'),
     $db_pass = hiera('profile::openstack::codfw1dev::nova::db_pass'),
     $db_host = hiera('profile::openstack::codfw1dev::nova::db_host'),
     $db_name = hiera('profile::openstack::codfw1dev::nova::db_name'),
@@ -19,6 +20,7 @@ class profile::openstack::codfw1dev::nova::common(
 
     class {'::profile::openstack::base::nova::common':
         version                      => $version,
+        region                       => $region,
         db_pass                      => $db_pass,
         db_host                      => $db_host,
         db_name                      => $db_name,

@@ -1,5 +1,6 @@
 class profile::openstack::eqiad1::nova::common(
     $version = hiera('profile::openstack::eqiad1::version'),
+    $region = hiera('profile::openstack::eqiad1::region'),
     $db_pass = hiera('profile::openstack::eqiad1::nova::db_pass'),
     $db_host = hiera('profile::openstack::eqiad1::nova::db_host'),
     $db_name = hiera('profile::openstack::eqiad1::nova::db_name'),
@@ -19,6 +20,7 @@ class profile::openstack::eqiad1::nova::common(
     require ::profile::openstack::eqiad1::clientpackages
     class {'::profile::openstack::base::nova::common':
         version                      => $version,
+        region                       => $region,
         db_pass                      => $db_pass,
         db_host                      => $db_host,
         db_name                      => $db_name,

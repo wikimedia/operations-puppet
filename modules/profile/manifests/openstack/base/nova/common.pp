@@ -1,5 +1,6 @@
 class profile::openstack::base::nova::common(
     $version = hiera('profile::openstack::base::version'),
+    $region = hiera('profile::openstack::base::region'),
     $db_user = hiera('profile::openstack::base::nova::db_user'),
     $db_pass = hiera('profile::openstack::base::nova::db_pass'),
     $db_host = hiera('profile::openstack::base::nova::db_host'),
@@ -23,6 +24,7 @@ class profile::openstack::base::nova::common(
 
     class {'::openstack::nova::common':
         version                      => $version,
+        region                       => $region,
         db_user                      => $db_user,
         db_pass                      => $db_pass,
         db_host                      => $db_host,

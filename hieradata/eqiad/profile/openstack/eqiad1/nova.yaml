@@ -1,3 +1,4 @@
+profile::openstack::eqiad1::region: 'eqiad1-r'
 profile::openstack::eqiad1::nova::db_host: 'm5-master.eqiad.wmnet'
 profile::openstack::eqiad1::nova::db_name: 'nova_eqiad1'
 profile::openstack::eqiad1::nova::db_name_api: 'nova_api_eqiad1'

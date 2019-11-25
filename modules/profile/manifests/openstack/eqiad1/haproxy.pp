@@ -61,6 +61,17 @@ class profile::openstack::eqiad1::haproxy(
         port_backend     => $nova_osapi_compute_listen_port,
     }
 
+    # Unlike other nova services, the port used by the placement
+    #  service is determined by the debian packaged init script.
+    #  Rather than try to re-puppetize that file I'm
+    #  just hard-coding the backend port (8778) here
+    profile::openstack::base::haproxy::site { 'nova_placement':
+        servers          => [$nova_controller, $nova_controller_standby],
+        healthcheck_path => '/',
+        port_frontend    => 8779,
+        port_backend     => 8778,
+    }
+
     profile::openstack::base::haproxy::site { 'nova_metadata':
         servers          => [$nova_controller, $nova_controller_standby],
         healthcheck_path => '/',
