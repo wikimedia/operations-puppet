@@ -1,6 +1,5 @@
-profile::grafana::readonly_domain: grafana-next.wikimedia.org
-
-# TODO: merge these to the defaults when grafana 6.x is the used everywhere.
+# TODO: merge these to the class defaults once grafana 6.x is used
+# everywhere (incl. cloud).
 profile::grafana::config:
   panels:
     disable_sanitize_html: true
