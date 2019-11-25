@@ -1,0 +1,23 @@
+# ES-specific
+# NOTE: cluster_name must be kept in sync with the backend
+# node config in hieradata/role/common/logstash/elasticsearch.yaml
+profile::elasticsearch::dc_settings:
+    cluster_name: production-elk7-codfw
+    unicast_hosts:
+      - logstash2020.codfw.wmnet
+      - logstash2021.codfw.wmnet
+      - logstash2022.codfw.wmnet
+    cluster_hosts:
+      - logstash2020.codfw.wmnet
+      - logstash2021.codfw.wmnet
+      - logstash2022.codfw.wmnet
+      - logstash2023.codfw.wmnet
+      - logstash2024.codfw.wmnet
+      - logstash2025.codfw.wmnet
+
+# Kibana
+role::kibana::auth_realm: WMF Labs (use wiki login name not shell) - nda/ops/wmf
+# TODO: Convert to read the servers from ldap::ro-server and ldap::ro-server-fallback once Kibana converted to a profile
+role::kibana::ldap_authurl: ldaps://ldap-ro.codfw.wikimedia.org ldap-ro.eqiad.wikimedia.org/ou=people,dc=wikimedia,dc=org?cn
+
+profile::logstash::collector::input_kafka_consumer_group_id: 'logstash7-codfw'

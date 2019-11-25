@@ -1,0 +1,18 @@
+# ES-specific
+# NOTE: cluster_name must be kept in sync with the backend
+# node config in hieradata/role/common/logstash/elasticsearch.yaml
+profile::elasticsearch::dc_settings:
+    cluster_name: production-elk7-eqiad
+    unicast_hosts:
+        - logstash1020.eqiad.wmnet
+        - logstash1021.eqiad.wmnet
+        - logstash1022.eqiad.wmnet
+    cluster_hosts:
+        - logstash1020.eqiad.wmnet
+        - logstash1021.eqiad.wmnet
+        - logstash1022.eqiad.wmnet
+        - logstash1023.eqiad.wmnet
+        - logstash1024.eqiad.wmnet
+        - logstash1025.eqiad.wmnet
+
+profile::logstash::collector::input_kafka_consumer_group_id: 'logstash7-eqiad'

@@ -1,0 +1,90 @@
+role::logstash::apifeatureusage::elastic_hosts:
+  - search.svc.codfw.wmnet
+  - search.svc.eqiad.wmnet
+cluster: logstash
+admin::groups:
+  - logstash-roots
+  - elasticsearch-roots
+
+# ES-specific
+# NOTE: cluster_name must be kept in sync with the backend
+# node config in hieradata/role/common/logstash/elasticsearch.yaml
+profile::elasticsearch::rack: ''
+profile::elasticsearch::row: ''
+profile::elasticsearch::ferm_srange: ''
+profile::elasticsearch::instances: {}
+profile::elasticsearch::dc_settings: {}
+profile::elasticsearch::base_data_dir: '/srv/elasticsearch'
+profile::elasticsearch::version: '7.4'
+profile::elasticsearch::common_settings:
+    awareness_attributes: ''
+    auto_create_index: true
+    short_cluster_name: elk7
+    expected_nodes: 6
+    heap_memory: '4G'
+    # The ES nodes that are run on the same box as Logstash+Kibana are only used
+    # as client nodes to communicate with the backing cluster.
+    holds_data: false
+    minimum_master_nodes: 2
+    recover_after_nodes: 2
+    recover_after_time: '1m'
+
+    send_logs_to_logstash: false
+    curator_uses_unicast_hosts: false
+    http_port: 9200
+    transport_tcp_port: 9300
+
+# Logstash specific
+logstash::heap_memory: 1g
+logstash::java_package: openjdk-11-jdk
+logstash::logstash_version: 7
+
+# Kibana
+role::kibana::vhost: logstash-next.wikimedia.org
+role::kibana::serveradmin: noc@wikimedia.org
+role::kibana::auth_type: ldap
+role::kibana::auth_realm: Developer account (use wiki login name not shell) - nda/ops/wmf
+# TODO: Convert to read the servers from ldap::ro-server and ldap::ro-server-fallback once Kibana converted to a profile
+role::kibana::ldap_authurl: ldaps://ldap-ro.eqiad.wikimedia.org ldap-ro.codfw.wikimedia.org/ou=people,dc=wikimedia,dc=org?cn
+role::kibana::ldap_binddn: cn=proxyagent,ou=profile,dc=wikimedia,dc=org
+role::kibana::ldap_groups:
+  - cn=ops,ou=groups,dc=wikimedia,dc=org
+  - cn=nda,ou=groups,dc=wikimedia,dc=org
+  - cn=wmf,ou=groups,dc=wikimedia,dc=org
+
+profile::prometheus::statsd_exporter::relay_address: ''  # unset to disable relaying
+
+profile::prometheus::statsd_exporter::mappings:
+  # All others default "channel" to "sender"
+  - match: 'logstash.rate.*.*'
+    name: 'logstash_events_total'
+    labels:
+      channel: '$1'
+      level: '$2'
+  # Sender.channel delimited rule
+  - match: 'logstash.rate.*.*.*'
+    name: 'logstash_${1}_events_total'
+    labels:
+      channel: '$2'
+      level: '$3'
+
+# these checks should not be here - T218691
+profile::elasticsearch::monitor::shard_size_warning: 150
+profile::elasticsearch::monitor::shard_size_critical: 350
+
+# the logstash cluster has 3 data nodes, and each shard has 3 replica (each
+# shard is present on each node). If one node is lost, 1/3 of the shards
+# will be unassigned, with no way to reallocate them on another node, which
+# is fine and should not raise an alert. So threshold needs to be > 1/3.
+profile::elasticsearch::monitor::threshold: '>=0.34'
+
+# reusing kibana.discovery.wmnet to squelch PCC missing secret() errors
+profile::tlsproxy::envoy::ensure: present
+profile::tlsproxy::envoy::services:
+  - server_names: ['*']
+    port: 80
+profile::tlsproxy::envoy::global_cert_name: "kibana.discovery.wmnet"
+profile::tlsproxy::envoy::sni_support: "no"
+
+mtail::logs:
+  - /var/log/logstash/logstash-plain.log

@@ -1299,6 +1299,11 @@ node /^logstash[12]02[0-2]\.(eqiad|codfw)\.wmnet$/ {
     role(logstash::elasticsearch7)
 }
 
+# ELK 7 logstash collectors (Ganeti)
+node /^logstash[12]02[345]\.(eqiad|codfw)\.wmnet$/ {
+    role(logstash7)
+}
+
 # eqiad logstash collectors (Ganeti)
 node /^logstash100[7-9]\.eqiad\.wmnet$/ {
     role(logstash)
