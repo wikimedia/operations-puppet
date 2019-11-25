@@ -2,7 +2,7 @@ class profile::kubernetes::deployment_server::helmfile(
     Hash[String, Any] $services=hiera('profile::kubernetes::deployment_server::services', {}),
     Hash[String, Any] $services_secrets=hiera('profile::kubernetes::deployment_server_secrets::services', {}),
     Hash[String, Any] $admin_services_secrets=hiera('profile::kubernetes::deployment_server_secrets::admin_services', {}),
-    Array[Stdlib::Fqdn] $prometheus_nodes = lookup('prometheus_nodes'),
+    Array[Stdlib::Fqdn] $prometheus_nodes = lookup('prometheus_all_nodes'),
 ){
 
     require_package('helmfile')
@@ -65,29 +65,38 @@ class profile::kubernetes::deployment_server::helmfile(
           }
         }
         $merged_services.map |String $svcname, Hash $data| {
-            $secrets_dir="/srv/deployment-charts/helmfile.d/services/${environment}/${svcname}/private"
-            file { $secrets_dir:
-                ensure  => directory,
-                owner   => $data['owner'],
-                group   => $data['group'],
-                require => Git::Clone['operations/deployment-charts'],
-            }
-            # Add here values provided by puppet, like the IPs of the prometheus nodes.
-            file { "${secrets_dir}/general.yaml":
-                ensure  => present,
-                owner   => $data['owner'],
-                group   => $data['group'],
-                mode    => $data['mode'],
-                content => template('profile/kubernetes/deployment_server_general.yaml.erb')
-            }
-            # write private section only if there is any secret defined.
-            if $data[$environment] {
-                file { "${secrets_dir}/secrets.yaml":
+            unless $svcname == 'admin' {
+                $secrets_dir="/srv/deployment-charts/helmfile.d/services/${environment}/${svcname}/private"
+                file { $secrets_dir:
+                    ensure  => directory,
+                    owner   => $data['owner'],
+                    group   => $data['group'],
+                    require => Git::Clone['operations/deployment-charts'],
+                }
+                if $environment == 'staging' {
+                    $dc = 'eqiad'
+                }
+                else {
+                    $dc = $environment
+                }
+                $filtered_prometheus_nodes = $prometheus_nodes.filter |$node| { "${dc}.wmnet" in $node }
+                # Add here values provided by puppet, like the IPs of the prometheus nodes.
+                file { "${secrets_dir}/general.yaml":
+                    ensure  => present,
                     owner   => $data['owner'],
                     group   => $data['group'],
                     mode    => $data['mode'],
-                    content => ordered_yaml($data[$environment]),
-                    require => [ Git::Clone['operations/deployment-charts'], File[$secrets_dir], ]
+                    content => template('profile/kubernetes/deployment_server_general.yaml.erb')
+                }
+                # write private section only if there is any secret defined.
+                if $data[$environment] {
+                    file { "${secrets_dir}/secrets.yaml":
+                        owner   => $data['owner'],
+                        group   => $data['group'],
+                        mode    => $data['mode'],
+                        content => ordered_yaml($data[$environment]),
+                        require => [ Git::Clone['operations/deployment-charts'], File[$secrets_dir], ]
+                    }
                 }
             }
         }

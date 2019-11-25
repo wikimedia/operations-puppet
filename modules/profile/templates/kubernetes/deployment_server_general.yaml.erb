@@ -1,8 +1,8 @@
-<%- unless @prometheus_nodes.empty? -%>
+<%- unless @filtered_prometheus_nodes.empty? -%>
 tls:
   telemetry:
     prometheus_nodes:
-<%- @prometheus_nodes.each do |node| -%>
+<%- @filtered_prometheus_nodes.each do |node| -%>
       - <%= scope.function_ipresolve([node]) %>
 <%- end -%>
 <%- end -%>
