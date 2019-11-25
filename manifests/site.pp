@@ -298,7 +298,11 @@ node /^cp20(0[39]|15|21)\.codfw\.wmnet$/ {
 # esams caches
 #
 
-node /^cp30(5[02468]|6[024])\.esams\.wmnet$/ {
+node 'cp3064.esams.wmnet' {
+    role(cache::text)
+}
+
+node /^cp30(5[02468]|6[02])\.esams\.wmnet$/ {
     role(cache::text_ats)
 }
 
