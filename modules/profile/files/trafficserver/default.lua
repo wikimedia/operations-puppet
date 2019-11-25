@@ -42,6 +42,7 @@ end
 
 function do_not_cache()
     ts.http.config_int_set(TS_LUA_CONFIG_HTTP_CACHE_HTTP, 0)
+    ts.http.config_int_set(TS_LUA_CONFIG_HTTP_CACHE_MAX_OPEN_WRITE_RETRIES, 1)
 end
 
 --- Add header to Vary
