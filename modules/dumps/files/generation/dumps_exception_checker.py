@@ -77,7 +77,7 @@ def safe_set(name, key, value):
         name[key] = value
 
 
-def get_exceptions(dumplog):
+def get_exceptions(dumplog, logpath):
     '''
     read and return all exceptions with their timestamps, and I guess
     this is all the stacktraces too, with a timestamp for each
@@ -96,7 +96,7 @@ def get_exceptions(dumplog):
             if -1 in exceptions:
                 # if there's a stack trace last in the file, figure
                 # out a plausible timestamp from the mtime of the log file
-                timestamp = get_timestamp_from_mtime(dumplog)
+                timestamp = get_timestamp_from_mtime(logpath)
                 safe_set(exceptions, timestamp, exceptions[-1])
                 del exceptions[-1]
             return exceptions
@@ -171,8 +171,9 @@ def get_exceptions_for_wiki(wiki, basedir, start_time, end_time, rundate):
     in the dumplog.txt file for the wiki for the latest run, if any, and return
     the list
     '''
-    with open(os.path.join(basedir, wiki, rundate, 'dumplog.txt'), 'rt') as dumplog:
-        exceptions = get_exceptions(dumplog)
+    logpath = os.path.join(basedir, wiki, rundate, 'dumplog.txt')
+    with open(logpath, 'rt') as dumplog:
+        exceptions = get_exceptions(dumplog, logpath)
         return filter_exceptions(exceptions, start_time, end_time)
 
 
