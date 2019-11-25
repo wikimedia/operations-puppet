@@ -618,6 +618,7 @@ node 'db1128.eqiad.wmnet' {
 
 
 # codfw
+# db2065 will be decommissioned T228258
 node 'db2065.codfw.wmnet' {
     role(mariadb::misc::phabricator)
 }
