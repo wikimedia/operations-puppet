@@ -18,6 +18,16 @@ statsd_exporter_port: 9125
 # Debmonitor instance
 debmonitor: debmonitor.discovery.wmnet
 
+# List of all prometheus nodes (ops instance)
+prometheus_all_nodes:
+  - bast3004.wikimedia.org
+  - bast4002.wikimedia.org
+  - bast5001.wikimedia.org
+  - prometheus1003.eqiad.wmnet
+  - prometheus1004.eqiad.wmnet
+  - prometheus2003.codfw.wmnet
+  - prometheus2004.codfw.wmnet
+
 # NOTE: Do *not* add new clusters *per site* anymore,
 # the site name will automatically be appended now,
 # and a different IP prefix will be used.
