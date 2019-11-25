@@ -88,7 +88,7 @@ class profile::logstash::collector (
     ferm::service { 'grafana_dashboard_definition_storage':
         proto  => 'tcp',
         port   => '9200',
-        srange => '@resolve(grafana1001.eqiad.wmnet) @resolve(grafana1002.eqiad.wmnet)',
+        srange => '@resolve((grafana1001.eqiad.wmnet grafana1002.eqiad.wmnet))',
     }
 
     $maintenance_hosts_str = join($maintenance_hosts, ' ')
