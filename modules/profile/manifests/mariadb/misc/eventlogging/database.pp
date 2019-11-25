@@ -35,12 +35,10 @@ class profile::mariadb::misc::eventlogging::database (
     $mariadb_basedir = '/opt/wmf-mariadb101'
     $mariadb_socket = '/run/mysqld/mysqld.sock'
 
-    # History context: there used to be a distinction between
-    # EL master and slaves, namely that only the master was not
-    # in read only mode. The Analytics team removed this constraint
-    # before deploying the eventlogging_cleaner script (T156933),
-    # that needed to DELETE/UPDATE rows on the job database without
-    # running as root for obvious reasons.
+    # History context: there used to be two hosts with the 'log'
+    # database, on representing the master and the other the replica.
+    # After T159170 we keep only one instance as read-only replica
+    # in case historical queries are needed (for data not yet in Hadoop).
     class { 'mariadb::config':
         basedir       => $mariadb_basedir,
         config        => 'profile/mariadb/misc/eventlogging/eventlogging.my.cnf.erb',
@@ -48,7 +46,7 @@ class profile::mariadb::misc::eventlogging::database (
         tmpdir        => '/srv/tmp',
         socket        => $mariadb_socket,
         port          => 3306,
-        read_only     => 0,
+        read_only     => 1,
         ssl           => 'puppet-cert',
         p_s           => 'off',
         binlog_format => 'MIXED',
