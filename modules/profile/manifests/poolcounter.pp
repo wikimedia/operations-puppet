@@ -1,4 +1,7 @@
-class profile::poolcounter {
+class profile::poolcounter(
+    $prometheus_nodes = lookup('prometheus_nodes'),
+    $exporter_port = lookup('profile::poolcounter::exporter_port'),
+) {
     class {'::poolcounter' : }
 
     # Process running
@@ -21,5 +24,22 @@ class profile::poolcounter {
         port    => '7531',
         srange  => '$DOMAIN_NETWORKS',
         notrack => true,
+    }
+
+    require_package('poolcounter-prometheus-exporter')
+
+    systemd::service { 'poolcounter-prometheus-exporter':
+        ensure  => 'present',
+        content => systemd_template('poolcounter-prometheus-exporter'),
+        require => Package['poolcounter-prometheus-exporter'],
+        restart => true,
+    }
+
+    $prometheus_nodes_str = join($prometheus_nodes, ' ')
+    $ferm_srange = "(@resolve((${prometheus_nodes_str})) @resolve((${prometheus_nodes_str}), AAAA))"
+    ferm::service { 'poolcounter-prometheus-exporter':
+        proto  => 'tcp',
+        port   => $exporter_port,
+        srange => $ferm_srange,
     }
 }

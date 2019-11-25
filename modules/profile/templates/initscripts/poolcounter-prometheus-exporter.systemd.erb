@@ -4,7 +4,7 @@ Documentation=https://github.com/Wikia/poolcounter-prometheus-exporter
 
 [Service]
 ExecStart=/usr/bin/poolcounter-prometheus-exporter
-Environment=EXPORTER_LISTEN_ADDRESS=localhost:9106
+Environment=EXPORTER_LISTEN_ADDRESS=localhost:<%= @exporter_port %>
 User=poolcounter
 Restart=always
 
