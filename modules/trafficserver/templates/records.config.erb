@@ -135,6 +135,8 @@ CONFIG proxy.config.log.max_space_mb_headroom INT 0
 CONFIG proxy.config.log.rolling_enabled INT 0
 # Flush logs immediately
 CONFIG proxy.config.log.max_secs_per_buffer INT 0
+# React immediatelly to log files being rotated
+CONFIG proxy.config.log.file_stat_frequency INT 1
 # Bumped from the default (9216) to address the following error: "Skipping the
 # current log entry because its size exceeds the maximum payload space in a log
 # buffer"
