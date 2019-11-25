@@ -10,7 +10,7 @@ class role::dnsrecursor {
         realserver_ips => $lvs::configuration::service_ips['dns_rec'][$::site],
     }
 
-    include ::profile::dnsrecursor
+    include ::profile::dns::recursor
     include ::profile::bird::anycast
     include ::profile::prometheus::pdns_rec_exporter
 }

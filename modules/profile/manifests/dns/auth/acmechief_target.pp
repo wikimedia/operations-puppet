@@ -1,5 +1,5 @@
-class profile::authdns::acmechief_target(
-    $acmechief_hosts=hiera('profile::authdns::acmechief_target::acmechief_hosts'),
+class profile::dns::auth::acmechief_target(
+    $acmechief_hosts=hiera('profile::dns::auth::acmechief_target::acmechief_hosts'),
 ) {
     user { 'acme-chief':
         ensure => present,

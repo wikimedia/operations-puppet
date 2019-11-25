@@ -1,6 +1,6 @@
 # A profile class for a dns recursor
 
-class profile::dnsrecursor (
+class profile::dns::recursor (
   Optional[Hash[String, Wmflib::Advertise_vip]] $advertise_vips = lookup('profile::bird::advertise_vips', {'default_value' => {}})
   ) {
     include ::network::constants

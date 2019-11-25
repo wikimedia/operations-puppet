@@ -3,5 +3,5 @@ class role::authdns::server {
     system::role { 'authdns': description => 'Authoritative DNS server' }
 
     include ::profile::standard
-    include ::profile::authdns::server
+    include ::profile::dns::auth
 }

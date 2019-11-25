@@ -1,12 +1,12 @@
-class profile::authdns::server (
+class profile::dns::auth (
     Hash $lvs_services = lookup('lvs::configuration::lvs_services'),
     Hash $discovery_services = lookup('discovery::services'),
     Hash[String, Hash[String, String]] $authdns_addrs = lookup('authdns_addrs'),
     Array[String] $authdns_servers = lookup('authdns_servers'),
-    Stdlib::HTTPSUrl $gitrepo = lookup('profile::authdns::server::gitrepo'),
+    Stdlib::HTTPSUrl $gitrepo = lookup('profile::dns::auth::gitrepo'),
 ) {
     include ::profile::dns::ferm
-    include ::profile::authdns::acmechief_target
+    include ::profile::dns::auth::acmechief_target
 
     class { 'prometheus::node_gdnsd': }
 
