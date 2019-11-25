@@ -162,6 +162,9 @@ class BaseAddressWMFHandler(BaseAddressHandler):
         LOG.debug("repo_path: %s" % repo_path)
         repo.git.update_environment(GIT_SSH_COMMAND=git_ssh_cmd)
 
+        repo.config_writer().set_value("user", "name", repo_user).release()
+        repo.config_writer().set_value("user", "email", 'root@wmflabs.org').release()
+
         return repo
 
     def _delete_puppet_git_config(self, projectid, fqdn):
@@ -181,14 +184,29 @@ class BaseAddressWMFHandler(BaseAddressHandler):
             repo.index.remove([hierafilepath], working_tree=True)
 
         committer = git.Actor(repo_user, "root@wmflabs.org")
+        author = git.Actor(repo_user, "root@wmflabs.org")
 
         message = "Deleted by designate during VM deletion"
-        repo.index.commit(message, committer=committer)
+        repo.index.commit(message, committer=committer, author=author)
 
         # and push
         LOG.debug("pushing")
-        repo.remotes.origin.push()
+        self._git_push(repo)
         shutil.rmtree(repo.working_tree_dir)
+
+    # There are inevitable race conditions pushing to git;
+    #  if we retry here we ought to get through eventually.
+    def _git_push(self, repo):
+        # bitmask for a rejected push:
+        rejected = 8
+        error = 1024
+        for i in range(0, 10):
+            repo.remotes.origin.pull(rebase=True)
+            info = repo.remotes.origin.push()[0]
+            if not (info.flags & (rejected | error)):
+                # success!
+                break
+            LOG.warning("push to instance puppet repo failed with %s, retry %s" % (info.flags, i))
 
     def _delete_proxies_for_ip(self, project, ip):
         project_proxies = self._get_proxy_list_for_project(project)
