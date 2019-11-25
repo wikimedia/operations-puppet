@@ -302,17 +302,17 @@ monitoring::groups:
   thumbor_codfw:
     description: Thumbor image scaling (codfw)
 
-# Recursor
-  recursor_eqiad:
-    description: DNS Recursor and NTP Servers (eqiad)
-  recursor_codfw:
-    description: DNS Recursor and NTP Servers (codfw)
-  recursor_esams:
-    description: DNS Recursor and NTP Servers (esams)
-  recursor_ulsfo:
-    description: DNS Recursor and NTP Servers (ulsfo)
-  recursor_eqsin:
-    description: DNS Recursor and NTP Servers (eqsin)
+# DNS Boxes
+  dnsbox_eqiad:
+    description: DNS and NTP Combo Infra Boxes (eqiad)
+  dnsbox_codfw:
+    description: DNS and NTP Combo Infra Boxes (codfw)
+  dnsbox_esams:
+    description: DNS and NTP Combo Infra Boxes (esams)
+  dnsbox_ulsfo:
+    description: DNS and NTP Combo Infra Boxes (ulsfo)
+  dnsbox_eqsin:
+    description: DNS and NTP Combo Infra Boxes (eqsin)
 
 # Spare
   spare_eqiad:
