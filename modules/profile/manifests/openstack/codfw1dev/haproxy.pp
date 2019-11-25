@@ -10,6 +10,7 @@ class profile::openstack::codfw1dev::haproxy(
     Stdlib::Port $neutron_bind_port = lookup('profile::openstack::codfw1dev::neutron::bind_port'),
     Stdlib::Port $nova_metadata_listen_port = lookup('profile::openstack::codfw1dev::nova::metadata_listen_port'),
     Stdlib::Port $nova_osapi_compute_listen_port = lookup('profile::openstack::codfw1dev::nova::osapi_compute_listen_port'),
+    Stdlib::Port $placement_api_port = lookup('profile::openstack::codfw1dev::nova::placement_api_port'),
 ) {
     profile::openstack::base::haproxy::site { 'designate':
         servers          => [$designate_host, $designate_host_standby],
@@ -68,8 +69,8 @@ class profile::openstack::codfw1dev::haproxy(
         servers             => [$nova_controller, $nova_controller_standby],
         healthcheck_options => ['http-check expect status 401'],
         healthcheck_path    => '/',
-        port_frontend       => 8779,
-        port_backend        => 8778,
+        port_frontend       => 8778,
+        port_backend        => $placement_api_port,
     }
 
     profile::openstack::base::haproxy::site { 'nova_metadata':
