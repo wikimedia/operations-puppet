@@ -389,6 +389,24 @@ host logstash1009 {
     fixed-address logstash1009.eqiad.wmnet;
 }
 
+host logstash1023 {
+    hardware ethernet aa:00:00:1b:0f:aa;
+    fixed-address logstash1023.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
+}
+
+host logstash1024 {
+    hardware ethernet aa:00:00:76:9a:51;
+    fixed-address logstash1024.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
+}
+
+host logstash1025 {
+    hardware ethernet aa:00:00:7a:86:44;
+    fixed-address logstash1025.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
+}
+
 host logstash2004 {
     hardware ethernet aa:00:00:b8:ec:a0;
     fixed-address logstash2004.codfw.wmnet;
@@ -402,6 +420,24 @@ host logstash2005 {
 host logstash2006 {
     hardware ethernet aa:00:00:6b:b7:01;
     fixed-address logstash2006.codfw.wmnet;
+}
+
+host logstash2023 {
+    hardware ethernet aa:00:00:a9:b5:8c;
+    fixed-address logstash2023.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
+}
+
+host logstash2024 {
+    hardware ethernet aa:00:00:5c:74:ac;
+    fixed-address logstash2024.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
+}
+
+host logstash2025 {
+    hardware ethernet aa:00:00:b7:fe:53;
+    fixed-address logstash2025.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host matomo1001 {
