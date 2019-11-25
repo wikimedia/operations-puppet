@@ -8,7 +8,9 @@
     ServerAdmin noc@wikimedia.org
 
     <%- @cas_settings.each_pair do |key, setting| -%>
+      <%- unless setting.nil? -%>
     <%= key %> <%= setting %>
+      <%-end -%>
     <%-end -%>
     # Not really used but needed
     DocumentRoot <%= @directory %>/static

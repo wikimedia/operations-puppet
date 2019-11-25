@@ -13,7 +13,9 @@
     SSLCertificateKeyFile /etc/acmecerts/<%= @acme_chief_cert %>/live/rsa-2048.key
     <%= @ssl_settings.join("\n    ") %>
     <%- @cas_settings.each_pair do |key, setting| -%>
+      <%- unless setting.nil? -%>
     <%= key %> <%= setting %>
+      <%-end -%>
     <%-end -%>
 
     DocumentRoot <%= @document_root %>
