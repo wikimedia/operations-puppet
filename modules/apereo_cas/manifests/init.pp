@@ -62,6 +62,19 @@ class apereo_cas (
         $ensure_rsync = 'present'
     } else {
         $ensure_rsync = 'absent'
+
+        systemd::timer::job { 'idp-u2f-sync':
+            ensure             => 'present',
+            description        => 'Mirror U2F device data from failover host to active IDP server',
+            command            => "/usr/bin/rsync --delete --delete-after -aSOrd ${idp_primary}/u2f_devices/u2fdevices.json ${u2f_devices_path}",
+            interval           => {
+                'start'    => 'OnCalendar',
+                'interval' => '*-*-* *:00:00', # Each hour
+            },
+            logging_enabled    => false,
+            monitoring_enabled => true,
+            user               => $daemon_user,
+        }
     }
 
     if $idp_primary and $idp_failover {

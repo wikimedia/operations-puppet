@@ -15,6 +15,10 @@ describe 'apereo_cas' do
     context "on #{os}" do
       let(:facts) { facts }
       let(:params) { { keystore_source: 'puppet:///modules/apereo_cas/thekeystore' } }
+      let(:pre_condition) do
+        "class profile::base ( $notifications_enabled = 1 ){}
+        include profile::base"
+      end
       describe 'test with default settings' do
         it { is_expected.to compile.with_all_deps }
         ['/srv', '/srv/cas', '/srv/cas/overlay-template',
