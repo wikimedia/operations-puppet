@@ -183,15 +183,17 @@ class BaseAddressWMFHandler(BaseAddressHandler):
         if os.path.exists(os.path.join(repo_path, hierafilepath)):
             repo.index.remove([hierafilepath], working_tree=True)
 
-        committer = git.Actor(repo_user, "root@wmflabs.org")
-        author = git.Actor(repo_user, "root@wmflabs.org")
+        if repo.index.diff(repo.head.commit):
+            LOG.debug("Removing instance-puppet entries")
+            committer = git.Actor(repo_user, "root@wmflabs.org")
+            author = git.Actor(repo_user, "root@wmflabs.org")
 
-        message = "Deleted by designate during VM deletion"
-        repo.index.commit(message, committer=committer, author=author)
+            message = "Deleted by designate during VM deletion"
+            repo.index.commit(message, committer=committer, author=author)
 
-        # and push
-        LOG.debug("pushing")
-        self._git_push(repo)
+            # and push
+            self._git_push(repo)
+
         shutil.rmtree(repo.working_tree_dir)
 
     # There are inevitable race conditions pushing to git;
