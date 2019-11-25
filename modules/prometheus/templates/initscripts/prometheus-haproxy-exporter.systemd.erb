@@ -5,7 +5,7 @@ Description=Prometheus exporter for Haproxy
 Restart=always
 User=prometheus
 Group=prometheus
-ExecStart=/usr/bin/haproxy_exporter --haproxy.scrape-uri=<%= @endpoint %> --web.listen-address :<%= @listen_port %>
+ExecStart=<%= @exec_binary %> --haproxy.scrape-uri=<%= @endpoint %> --web.listen-address :<%= @listen_port %>
 
 [Install]
 WantedBy=multi-user.target
