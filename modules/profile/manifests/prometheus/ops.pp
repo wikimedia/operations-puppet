@@ -470,10 +470,16 @@ class profile::prometheus::ops (
     ]
 
     # Gather etcd metrics from machines exposing them via http
+    prometheus::class_config{ "etcd_servers_${::site}_stretch":
+        dest       => "${targets_path}/etcd_${::site}_stretch.yaml",
+        site       => $::site,
+        class_name => 'role::configcluster_stretch',
+        port       => 4001,
+    }
     prometheus::class_config{ "etcd_servers_${::site}":
         dest       => "${targets_path}/etcd_${::site}.yaml",
         site       => $::site,
-        class_name => 'profile::etcd::tlsproxy',
+        class_name => 'role::configcluster',
         port       => 2379,
     }
 
