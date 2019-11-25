@@ -26,7 +26,7 @@ class openstack::nova::placement::monitor(
         ensure        => $ensure,
         critical      => $critical,
         description   => 'nova-placement-api http',
-        check_command => 'check_http_on_port!8779',
+        check_command => 'check_http_on_port!8778',
         contact_group => $contact_groups,
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Troubleshooting',
     }
