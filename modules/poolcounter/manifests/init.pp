@@ -14,5 +14,6 @@ class poolcounter {
         ensure  => 'present',
         content => systemd_template('poolcounter-prometheus-exporter'),
         require => Package['poolcounter-prometheus-exporter'],
+        restart => true,
     }
 }
