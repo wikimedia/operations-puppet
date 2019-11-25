@@ -57,13 +57,18 @@ class profile::analytics::search::airflow(
     $sql_user = $::passwords::mysql::airflow::search::user # lint:ignore:wmf_styleguide
     $sql_pass = $::passwords::mysql::airflow::search::password # lint:ignore:wmf_styleguide
     $sql_alchemy_conn = "mysql://${sql_user}:${sql_pass}@${mysql_host}/${db}"
+
     file { '/etc/airflow/airflow.cfg':
-        ensure  => 'file',
+        ensure  => present,
         # Since this stores passwords limit read access
         owner   => 'root',
         group   => 'airflow',
         mode    => '0440',
-        content => template('profile/analytics/search/airflow/airflow.cfg.erb')
+        content => template('profile/analytics/search/airflow/airflow.cfg.erb'),
+        require => [
+            File['/etc/airflow'],
+            Group['airflow'],
+        ]
     }
 
     # Ensure places the daemons will write are available
