@@ -24,20 +24,10 @@ class profile::trafficserver::backend (
     Wmflib::UserIpPort $atsmtail_backend_port=hiera('profile::trafficserver::backend::atsmtail_backend_port', 3904),
     Boolean $systemd_hardening=hiera('profile::trafficserver::backend::systemd_hardening', true),
 ){
+    # Add hostname as a parameter to the default global Lua plugin
     $global_lua_script = $default_lua_script? {
         ''      => '',
-        default => "/etc/trafficserver/lua/${default_lua_script}.lua",
-    }
-
-    # Add hostname to the configuration file read by the default global Lua
-    # plugin
-    file { "/etc/trafficserver/lua/${default_lua_script}.lua.conf":
-        ensure  => present,
-        owner   => root,
-        group   => root,
-        mode    => '0444',
-        content => "HOSTNAME = '${::hostname}'",
-        notify  => Service['trafficserver'],
+        default => "/etc/trafficserver/lua/${default_lua_script}.lua ${::hostname}",
     }
 
     $errorpage = {

@@ -66,16 +66,7 @@ class profile::trafficserver::tls (
     }
 
     $websocket_arg = bool2str($websocket_support)
-
-    # Write configuration file for global TLS Lua script
-    file { "${tls_lua_script_path}.conf":
-        ensure  => present,
-        owner   => root,
-        group   => root,
-        mode    => '0444',
-        content => "WEBSOCKET_SUPPORT = ${websocket_arg}",
-        notify  => Service[$service_name],
-    }
+    $global_lua_script = "${tls_lua_script_path} ${websocket_arg}"
 
     profile::trafficserver::tls_material { 'unified':
         instance_name      => $instance_name,
@@ -101,7 +92,7 @@ class profile::trafficserver::tls (
         inbound_tls_settings      => $inbound_tls_settings,
         enable_xdebug             => $enable_xdebug,
         mapping_rules             => $mapping_rules,
-        global_lua_script         => $tls_lua_script_path,
+        global_lua_script         => $global_lua_script,
         enable_caching            => false,
         log_formats               => $log_formats,
         log_filters               => $log_filters,
