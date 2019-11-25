@@ -22,4 +22,10 @@ defaults
     timeout http-request 15s
     timeout http-keep-alive 15s
 
+listen stats
+    bind 127.0.0.1:8404
+    mode http
+    stats enable
+    stats uri /stats
+
 # Put custom blocks in /etc/haproxy/conf.d

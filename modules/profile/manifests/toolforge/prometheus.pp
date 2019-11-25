@@ -262,6 +262,15 @@ class profile::toolforge::prometheus (
                     },
                 ]
             },
+            {
+                'job_name'       => 'new-k8s-haproxy',
+                'scheme'         => 'http',
+                'static_configs' => [
+                    {
+                        'targets' => ["${new_k8s_apiserver_fqdn}:9901"],
+                    },
+                ],
+            },
         ]
     }
 

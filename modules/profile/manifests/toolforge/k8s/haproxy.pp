@@ -61,4 +61,6 @@ class profile::toolforge::k8s::haproxy (
                   File['/etc/default/haproxy'],
         ],
     }
+
+    class { 'prometheus::haproxy_exporter': }
 }
