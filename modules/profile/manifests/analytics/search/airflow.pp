@@ -48,7 +48,7 @@ class profile::analytics::search::airflow(
     }
 
     file { '/etc/airflow':
-        ensure => 'dir',
+        ensure => 'directory',
         owner  => 'root',
         group  => 'root',
         mode   => '0755',
