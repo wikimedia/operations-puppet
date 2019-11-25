@@ -1294,6 +1294,11 @@ node /^logstash101[0-2]\.eqiad\.wmnet$/ {
     include ::role::kafka::logging # lint:ignore:wmf_styleguide
 }
 
+# ELK 7 ES only backends (no kafka-logging brokers)
+node /^logstash[12]02[0-2]\.(eqiad|codfw)\.wmnet$/ {
+    role(logstash::elasticsearch7)
+}
+
 # eqiad logstash collectors (Ganeti)
 node /^logstash100[7-9]\.eqiad\.wmnet$/ {
     role(logstash)

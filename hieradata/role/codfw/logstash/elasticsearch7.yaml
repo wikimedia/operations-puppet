@@ -1,0 +1,13 @@
+profile::elasticsearch::dc_settings:
+    cluster_name: production-elk7-codfw
+    unicast_hosts:
+      - logstash2020.codfw.wmnet
+      - logstash2021.codfw.wmnet
+      - logstash2022.codfw.wmnet
+    cluster_hosts:
+      - logstash2020.codfw.wmnet
+      - logstash2021.codfw.wmnet
+      - logstash2022.codfw.wmnet
+      - logstash2023.codfw.wmnet
+      - logstash2024.codfw.wmnet
+      - logstash2025.codfw.wmnet

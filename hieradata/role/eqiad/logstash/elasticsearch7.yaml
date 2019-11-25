@@ -1,0 +1,13 @@
+profile::elasticsearch::dc_settings:
+    cluster_name: production-elk7-eqiad
+    unicast_hosts:
+      - logstash1020.eqiad.wmnet
+      - logstash1021.eqiad.wmnet
+      - logstash1022.eqiad.wmnet
+    cluster_hosts:
+      - logstash1020.eqiad.wmnet
+      - logstash1021.eqiad.wmnet
+      - logstash1022.eqiad.wmnet
+      - logstash1023.eqiad.wmnet
+      - logstash1024.eqiad.wmnet
+      - logstash1025.eqiad.wmnet
