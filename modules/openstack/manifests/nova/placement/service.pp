@@ -1,7 +1,7 @@
 # This is the placement-api service for Openstack Nova.
 class openstack::nova::placement::service(
     String $version,
-    String $active,
+    Boolean $active,
     ) {
 
     class { "openstack::nova::placement::service::${version}": }
