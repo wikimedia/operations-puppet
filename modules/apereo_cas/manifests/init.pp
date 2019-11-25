@@ -43,7 +43,9 @@ class apereo_cas (
     String                       $mfa_attribute_trigger  = 'memberOf',
     Array[String[1]]             $mfa_attribut_value     = ['mfa'],
     String                       $daemon_user            = 'cas',
-    Hash[String, Hash]           $services               = {}
+    Hash[String, Hash]           $services               = {},
+    Optional[Stdlib::Fqdn]       $idp_primary            = undef,
+    Optional[Stdlib::Fqdn]       $idp_failover           = undef,
 ) {
     if $keystore_source == undef and $keystore_content == undef {
         error('you must provide either $keystore_source or $keystore_content')
@@ -53,6 +55,25 @@ class apereo_cas (
     }
     $config_dir = "${base_dir}/config"
     $services_dir = "${base_dir}/services"
+
+    $is_idp_primary = $trusted['certname'] == $idp_primary
+
+    if $is_idp_primary {
+        $ensure_rsync = 'present'
+    } else {
+        $ensure_rsync = 'absent'
+    }
+
+    if $idp_primary and $idp_failover {
+        rsync::server::module { 'u2f_devices':
+            ensure         => $ensure_rsync,
+            path           => $u2f_devices_path,
+            read_only      => 'yes',
+            hosts_allow    => [$idp_failover],
+            auto_ferm      => true,
+            auto_ferm_ipv6 => true,
+        }
+    }
 
     ensure_packages(['openjdk-11-jdk'])
     user{$daemon_user:

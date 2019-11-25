@@ -12,6 +12,8 @@ class profile::idp(
     String            $totp_encryption_key    = lookup('profile::idp::totp_encryption_key'),
     Hash[String,Hash] $services               = lookup('profile::idp::services'),
     Array[String[1]]  $ldap_attribute_list    = lookup('profile::idp::ldap_attributes'),
+    Stdlib::Fqdn      $idp_primary            = lookup('profile::idp::idp_primary'),
+    Stdlib::Fqdn      $idp_failover           = lookup('profile::idp::idp_failover'),
 ){
 
     include passwords::ldap::production
@@ -26,6 +28,10 @@ class profile::idp(
     ferm::service {'cas-https':
         proto => 'tcp',
         port  => 443,
+    }
+
+    class { 'rsync::server':
+        wrap_with_stunnel => true,
     }
 
     $groovy_source = 'puppet:///modules/profile/idp/global_principal_attribute_predicate.groovy'
@@ -56,5 +62,7 @@ class profile::idp(
         ldap_bind_pass         => $passwords::ldap::production::proxypass,
         ldap_bind_dn           => "cn=proxyagent,ou=profile,${ldap_config['base-dn']}",
         services               => $services,
+        idp_primary            => $idp_primary,
+        idp_failover           => $idp_failover,
     }
 }
