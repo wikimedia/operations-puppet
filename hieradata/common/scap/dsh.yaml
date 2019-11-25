@@ -96,6 +96,9 @@ scap::dsh::groups:
   discovery-analytics:
     hosts:
       - stat1007.eqiad.wmnet
+  search-airflow:
+    hosts:
+      - an-airflow1001.eqiad.wmnet
   librenms:
     hosts:
       - netmon1002.wikimedia.org
