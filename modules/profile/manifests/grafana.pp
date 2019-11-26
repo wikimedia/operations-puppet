@@ -236,19 +236,4 @@ class profile::grafana (
         require => Git::Clone['operations/software/grafana/simple-json-datasource'],
     }
 
-    rsync::quickdatacopy { 'grafana-plugins':
-        ensure              => absent,
-        source_host         => 'grafana1001.eqiad.wmnet',
-        dest_host           => 'grafana1002.eqiad.wmnet',
-        module_path         => '/var/lib/grafana/plugins',
-        server_uses_stunnel => true,  # testing for T237424
-    }
-    rsync::quickdatacopy { 'grafana-pngs':
-        ensure              => absent,
-        source_host         => 'grafana1001.eqiad.wmnet',
-        dest_host           => 'grafana1002.eqiad.wmnet',
-        module_path         => '/var/lib/grafana/png',
-        server_uses_stunnel => true,  # testing for T237424
-        auto_sync           => true,
-    }
 }
