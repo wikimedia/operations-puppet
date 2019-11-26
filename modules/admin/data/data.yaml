@@ -751,7 +751,7 @@ groups:
                  'ALL = NOPASSWD: /bin/systemctl start airflow-webserver',
                  'ALL = NOPASSWD: /bin/systemctl stop airflow-webserver',
                  'ALL = NOPASSWD: /bin/systemctl restart airflow-webserver',
-                 'ALL = (airflow) NOPASSWD: /srv/deployment/search/airflow/venv/bin/airflow *']
+                 'ALL = (airflow) NOPASSWD: /usr/bin/env AIRFLOW_HOME=/etc/airflow /srv/deployment/search/airflow/venv/bin/airflow *']
 users:
   rush:
     ensure: present
