@@ -66,7 +66,7 @@ class apereo_cas (
         systemd::timer::job { 'idp-u2f-sync':
             ensure             => 'present',
             description        => 'Mirror U2F device data from failover host to active IDP server',
-            command            => "/usr/bin/rsync --delete --delete-after -aSOrd ${idp_primary}/u2f_devices/u2fdevices.json ${u2f_devices_path}",
+            command            => "/usr/bin/rsync --delete --delete-after -aSOrd rsync://${idp_primary}/u2f_devices/u2fdevices.json ${u2f_devices_path}",
             interval           => {
                 'start'    => 'OnCalendar',
                 'interval' => '*-*-* *:00:00', # Each hour
