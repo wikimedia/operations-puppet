@@ -38,7 +38,7 @@ class netops::monitoring {
         # esams
         'cr3-esams'  => { ipv4 => '91.198.174.245',  ipv6 => '2620:0:862:ffff::5', vrrp_peer => 'cr2-esams.wikimedia.org'},
         'cr2-esams'  => { ipv4 => '91.198.174.244',  ipv6 => '2620:0:862:ffff::3' },
-        'cr2-knams'  => { ipv4 => '91.198.174.246',  ipv6 => '2620:0:862:ffff::4' },
+        'cr3-knams'  => { ipv4 => '91.198.174.246',  ipv6 => '2620:0:862:ffff::4' },
         # ulsfo
         'cr3-ulsfo'  => { ipv4 => '198.35.26.192',   ipv6 => '2620:0:863:ffff::1', alarms => false, vrrp_peer => 'cr4-ulsfo.wikimedia.org'},
         'cr4-ulsfo'  => { ipv4 => '198.35.26.193',   ipv6 => '2620:0:863:ffff::2', alarms => false, },

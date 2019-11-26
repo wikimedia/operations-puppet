@@ -244,10 +244,10 @@ menu = cr2-esams
 title = cr2-esams.wikimedia.org
 host = cr2-esams.wikimedia.org
 
-+++ cr2-knams
-menu = cr2-knams
-title = cr2-knams.wikimedia.org
-host = cr2-knams.wikimedia.org
++++ cr3-knams
+menu = cr3-knams
+title = cr3-knams.wikimedia.org
+host = cr3-knams.wikimedia.org
 
 +++ asw2-esams
 menu = asw2-esams
