@@ -4,8 +4,14 @@ class profile::dns::recursor (
   Optional[Hash[String, Wmflib::Advertise_vip]] $advertise_vips = lookup('profile::bird::advertise_vips', {'default_value' => {}})
   ) {
     include ::network::constants
-    include ::profile::dns::ferm
     include ::lvs::configuration
+    include ::profile::dns::ferm
+    include ::profile::bird::anycast
+    include ::profile::prometheus::pdns_rec_exporter
+
+    class { '::lvs::realserver':
+        realserver_ips => $lvs::configuration::service_ips['dns_rec'][$::site],
+    }
 
     $all_anycast_vips = $advertise_vips.map |$vip_fqdn,$vip_params| { $vip_params['address'] }
 
