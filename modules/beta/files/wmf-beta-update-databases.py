@@ -36,14 +36,32 @@ def do_wait(procs):
         f.close()
 
 
+def ignore_comments_and_emptylines(lines):
+    """
+    Given an array of provided file lines, clean up comments and
+    empty lines as defined by:
+    <https://gerrit.wikimedia.org/r/plugins/gitiles/operations/
+    mediawiki-config/+/master/multiversion/MWWikiversions.php#77>
+    """
+    dbs = list()
+    for line in lines:
+        # Strip comments ('#' to end-of-line) and trim whitespace.
+        db = line.split('#')[0].strip()
+        if db.startswith('%%'):
+            raise Exception('Encountered dblist expression inside dblist list file.')
+        elif db != '':
+            dbs.append(db)
+    return dbs
+
+
 def run_updates(staging, cores):
     """
     run update.php on each wiki found in dblist
     """
     procs = []
     with open(staging, "r") as dblist:
-        for db in dblist:
-            db = db.strip()
+        dbs = ignore_comments_and_emptylines(dblist)
+        for db in dbs:
             f = os.tmpfile()
             cmd = ("echo '%(db)s'; /usr/local/bin/mwscript update.php --wiki=%(db)s --quick"
                    % {'db': db})
