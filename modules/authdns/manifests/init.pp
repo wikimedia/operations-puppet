@@ -24,6 +24,20 @@ class authdns(
         }
     }
 
+    # The package would create this as well if missing, but we need to create
+    # directories and files owned by these before the package is even
+    # installed...
+    group { 'gdnsd': ensure => present, }
+    user { 'gdnsd':
+        ensure     => present,
+        gid        => 'gdnsd',
+        shell      => '/bin/false',
+        comment    => '',
+        home       => '/var/run/gdnsd',
+        managehome => false,
+        require    => Group['gdnsd'],
+    }
+
     package { 'gdnsd':
         ensure => installed,
     }
