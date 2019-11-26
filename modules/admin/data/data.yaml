@@ -742,7 +742,7 @@ groups:
   airflow-search-admins:
     gid: 816
     description: administrators of the Apache Airflow service
-    members: [ebernhardson, dcausse, gehel, bearloga, chelsyx]
+    members: [ebernhardson, dcausse, bearloga, chelsyx]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service airflow-webserver *',
                  'ALL = NOPASSWD: /usr/sbin/service airflow-scheduler *',
                  'ALL = NOPASSWD: /bin/systemctl start airflow-scheduler',
