@@ -150,7 +150,7 @@ class profile::mediawiki::httpd(
 
     # Expose a SERVERGROUP variable to php-fpm
     ::httpd::conf { 'wikimedia_cluster':
-        content => "SetEnv SERVERGROUP ${cluster}\n"
+        content => "SetEnvIf Request_URI \".\" SERVERGROUP=${cluster}\n"
     }
     # Starting with stretch libapache2-mod-security2 includes the following
     # in /etc/apache2/mods-enabled/security2.conf:
