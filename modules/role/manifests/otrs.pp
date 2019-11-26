@@ -10,4 +10,5 @@ class role::otrs {
     include ::profile::standard
     include ::profile::base::firewall
     include ::profile::otrs
+    include ::profile::tlsproxy::envoy # TLS termination
 }
