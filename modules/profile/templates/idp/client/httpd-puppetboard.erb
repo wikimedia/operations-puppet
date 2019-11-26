@@ -2,7 +2,7 @@
 ### THIS FILE IS MANAGED BY PUPPET
 #####################################################################
 # vim: filetype=apache
-<%- @directory = @directory_root -%>
+<%- @directory = @document_root -%>
 <VirtualHost *:80>
     ServerName <%= @virtual_host %>
     ServerAdmin noc@wikimedia.org
