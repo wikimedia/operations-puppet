@@ -24,10 +24,36 @@ class profile::trafficserver::backend (
     Wmflib::UserIpPort $atsmtail_backend_port=hiera('profile::trafficserver::backend::atsmtail_backend_port', 3904),
     Boolean $systemd_hardening=hiera('profile::trafficserver::backend::systemd_hardening', true),
 ){
-    # Add hostname as a parameter to the default global Lua plugin
     $global_lua_script = $default_lua_script? {
         ''      => '',
-        default => "/etc/trafficserver/lua/${default_lua_script}.lua ${::hostname}",
+        default => "/etc/trafficserver/lua/${default_lua_script}.lua",
+    }
+
+    # Add hostname to the configuration file read by the default global Lua
+    # plugin
+    file { "/etc/trafficserver/lua/${default_lua_script}.lua.conf":
+        ensure  => present,
+        owner   => root,
+        group   => root,
+        mode    => '0444',
+        content => "lua_hostname = '${::hostname}'\n",
+        notify  => Service['trafficserver'],
+    }
+
+    file { '/usr/local/lib/nagios/plugins/check_default_ats_lua_conf':
+        ensure  => present,
+        owner   => root,
+        group   => root,
+        mode    => '0555',
+        content => "#!/usr/bin/lua\ndofile('${default_lua_script}.lua.conf')\nassert(lua_hostname)\n",
+        require => File["/etc/trafficserver/lua/${default_lua_script}.lua.conf"],
+    }
+
+    nrpe::monitor_service { 'default_ats_lua_conf':
+        description  => 'Default ATS Lua configuration file',
+        nrpe_command => '/usr/local/lib/nagios/plugins/check_default_ats_lua_conf',
+        require      => File['/usr/local/lib/nagios/plugins/check_default_ats_lua_conf'],
+        notes_url    => 'https://wikitech.wikimedia.org/wiki/ATS',
     }
 
     $errorpage = {

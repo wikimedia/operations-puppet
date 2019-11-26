@@ -4,9 +4,22 @@ define trafficserver::lua_infra(
 ) {
     require_package('lua-busted')
 
+    file { "${config_prefix}/lua/":
+        ensure => directory,
+        mode   => '0755',
+        owner  => $trafficserver::user,
+    }
+
+    file { "${config_prefix}/lua/mock.helper.lua":
+        ensure => present,
+        owner  => $trafficserver::user,
+        source => 'puppet:///modules/profile/trafficserver/mock.helper.lua',
+    }
+
     exec { "unit_tests_${service_name}":
-        command     => "/usr/bin/busted --lpath=${config_prefix}/lua/?.lua ${config_prefix}/lua/*",
+        command     => "/usr/bin/busted --helper=${config_prefix}/lua/mock.helper.lua --lpath=${config_prefix}/lua/?.lua ${config_prefix}/lua/*",
         refreshonly => true,
+        require     => File["${config_prefix}/lua/mock.helper.lua"],
     }
 
     # When a reload is issued, Traffic Server checks if config files have
@@ -15,11 +28,5 @@ define trafficserver::lua_infra(
     exec { "trigger_lua_reload_${config_prefix}":
         command     => "/usr/bin/touch ${config_prefix}/remap.config",
         refreshonly => true,
-    }
-
-    file { "${config_prefix}/lua/":
-        ensure => directory,
-        mode   => '0755',
-        owner  => $trafficserver::user,
     }
 }

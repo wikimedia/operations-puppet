@@ -3,14 +3,20 @@
 -- This file is managed by Puppet.
 --
 
-local PROXY_HOSTNAME=''
-function __init__(argtb)
-    PROXY_HOSTNAME = argtb[1]
+function read_config()
+    local configfile = ts.get_config_dir() .. "/lua/default.lua.conf"
+
+    ts.error("Reading " .. configfile)
+
+    dofile(configfile)
+    assert(lua_hostname, "lua_hostname not set by " .. configfile)
+
+    ts.error("read_config() returning " .. lua_hostname)
+
+    return lua_hostname
 end
 
-function get_hostname()
-    return PROXY_HOSTNAME
-end
+local HOSTNAME = read_config()
 
 function cache_status_to_string(status)
     if status == TS_LUA_CACHE_LOOKUP_MISS then
@@ -34,7 +40,7 @@ end
 
 function do_global_send_response()
     local cache_status = cache_status_to_string(ts.http.get_cache_lookup_status())
-    ts.client_response.header['X-Cache-Int'] = get_hostname() .. " " .. cache_status
+    ts.client_response.header['X-Cache-Int'] = HOSTNAME .. " " .. cache_status
 
     ts.client_response.header['X-ATS-Timestamp'] = os.time()
     return 0

@@ -1,10 +1,17 @@
-local WEBSOCKET_SUPPORT=false
+function read_config()
+    local configfile = ts.get_config_dir() .. "/lua/tls.lua.conf"
 
-function __init__(argtb)
-    if argtb[1] == 'true' then
-        WEBSOCKET_SUPPORT = true
-    end
+    ts.error("Reading " .. configfile)
+
+    dofile(configfile)
+    assert(lua_websocket_support ~= nil, "lua_websocket_support not set by " .. configfile)
+
+    ts.error("read_config() returning " .. tostring(lua_websocket_support))
+
+    return lua_websocket_support
 end
+
+local WEBSOCKET_SUPPORT = read_config()
 
 function get_websocket_support()
     return WEBSOCKET_SUPPORT

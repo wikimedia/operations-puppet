@@ -13,7 +13,7 @@ _G.TS_LUA_CACHE_LOOKUP_MISS = 0
 _G.TS_LUA_CACHE_LOOKUP_HIT_FRESH = 1
 
 _G.ts.client_request.get_uri = function() return "/" end
-_G.get_hostname = function() return 'pass-test-hostname' end
+_G.read_config = function() return 'pass-test-hostname' end
 _G.ts.server_response.get_status = function() return 200 end
 
 describe("Busted unit testing framework", function()

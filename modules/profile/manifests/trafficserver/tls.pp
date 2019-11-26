@@ -66,7 +66,32 @@ class profile::trafficserver::tls (
     }
 
     $websocket_arg = bool2str($websocket_support)
-    $global_lua_script = "${tls_lua_script_path} ${websocket_arg}"
+
+    # Write configuration file for global TLS Lua script
+    file { "${tls_lua_script_path}.conf":
+        ensure  => present,
+        owner   => root,
+        group   => root,
+        mode    => '0444',
+        content => "lua_websocket_support = ${websocket_arg}\n",
+        notify  => Service[$service_name],
+    }
+
+    file { '/usr/local/lib/nagios/plugins/check_tls_lua_conf':
+        ensure  => present,
+        owner   => root,
+        group   => root,
+        mode    => '0555',
+        content => "#!/usr/bin/lua\ndofile('${tls_lua_script_path}.conf')\nassert(lua_websocket_support ~= nil)\n",
+        require => File["${tls_lua_script_path}.conf"],
+    }
+
+    nrpe::monitor_service { 'tls_lua_conf':
+        description  => 'TLS Lua configuration file',
+        nrpe_command => '/usr/local/lib/nagios/plugins/check_tls_lua_conf',
+        require      => File['/usr/local/lib/nagios/plugins/check_tls_lua_conf'],
+        notes_url    => 'https://wikitech.wikimedia.org/wiki/ATS',
+    }
 
     profile::trafficserver::tls_material { 'unified':
         instance_name      => $instance_name,
@@ -92,7 +117,7 @@ class profile::trafficserver::tls (
         inbound_tls_settings      => $inbound_tls_settings,
         enable_xdebug             => $enable_xdebug,
         mapping_rules             => $mapping_rules,
-        global_lua_script         => $global_lua_script,
+        global_lua_script         => $tls_lua_script_path,
         enable_caching            => false,
         log_formats               => $log_formats,
         log_filters               => $log_filters,
