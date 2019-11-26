@@ -109,8 +109,7 @@ profile::trafficserver::backend::mapping_rules:
       replacement: https://thorium.eqiad.wmnet
     - type: map
       target: http://noc.wikimedia.org
-      replacement: http://mwmaint1002.eqiad.wmnet
-      #replacement: http://mwmaint2001.codfw.wmnet
+      replacement: https://mwmaint.discovery.wmnet
       params:
           - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
           - '@pparam=/etc/trafficserver/lua/x-wikimedia-debug-routing.lua'
