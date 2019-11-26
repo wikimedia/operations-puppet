@@ -37,6 +37,8 @@ class nagios_common::commands(
         'python3-requests',
         # check_bfd
         'python3-cffi-backend',
+        # check_dns_query
+        'libnet-dns-perl',
     ])
 
     file { "${config_dir}/commands":
@@ -52,6 +54,7 @@ class nagios_common::commands(
         'check_all_memcached.php',
         'check_bfd.py',
         'check_bgp',
+        'check_dns_query',
         'check_dsh_groups',
         'check_etcd_mw_config_lastindex.py',
         'check_grafana_alert.py',

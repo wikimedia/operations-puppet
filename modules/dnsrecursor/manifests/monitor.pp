@@ -8,7 +8,7 @@ define dnsrecursor::monitor() {
     monitoring::service { "recursive dns ${title}":
         host          => $title,
         description   => 'Recursive DNS',
-        check_command => 'check_dns!www.wikipedia.org',
+        check_command => 'check_dns_query!www.wikipedia.org',
         notes_url     => 'https://wikitech.wikimedia.org/wiki/DNS',
     }
 }

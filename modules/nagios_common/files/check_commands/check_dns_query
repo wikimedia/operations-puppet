@@ -1,0 +1,143 @@
+#!/usr/bin/perl
+use strict;
+use warnings;
+
+package Local::CheckDNSQuery;
+
+# Copyright 2019 Brandon Brandon
+# Copyright 2019 Wikimedia Foundation, Inc.
+#
+# This nagios plugin is free software, and comes with ABSOLUTELY NO WARRANTY.
+# It may be used, redistributed and/or modified under the terms of the GNU
+# General Public Licence (see http://www.fsf.org/licensing/licenses/gpl.txt).
+#
+# Checks a DNS server for a positive response with one or more records for a
+# given name and query type.  Will explicitly query twice (once per transport)
+# over UDP and TCP to verify both transports are working, as both are required
+# of a functioning DNS server.  The timeout applies separately to each
+# transport, which are queried serially.  If either transport fails to respond,
+# responds with an error, responds with zero records (in the header or in the
+# actual response data), mismatches the header answer count and response data
+# answer count, or times out, this check will return a critical error.  The UDP
+# query ignores truncated responses and will fail on them.
+#
+# Examples:
+#   Send an A-query for "www.wikipedia.org" to server 10.3.0.1:
+#       check_dns_query -H 10.3.0.1 -d www.wikipedia.org
+#   As above, but AAAA and with custom 3s timeout on port 5353:
+#       check_dns_query -H 10.3.0.1 -p 5353 -q AAAA -t 3 -d www.wikipedia.org -a
+#   Check an authserver for an authoritative answer:
+#       check_dns_query -H 208.80.153.231 -q MX -a -d wikipedia.org
+#
+# TODO: Allow checking response counts, types, even data?  So far we have no
+# use of these, though, and defining them is a bit circular and/or redundant
+#
+
+use Monitoring::Plugin::Getopt;
+use Monitoring::Plugin::Functions;
+use Net::DNS 1.07;
+
+sub get_options {
+    my $ng = Monitoring::Plugin::Getopt->new(
+        usage   => 'Usage: %s -H <host> -d <domainname> [-p <port>] [-q <qtype>] [-t <timeout>] [-a]',
+        version => 1,
+        blurb   => 'Execute a DNS query and validate a non-empty, non-error response',
+    );
+
+    $ng->arg(
+        spec     => 'host|H=s',
+        help     => 'Hostname or IP address of the DNS server to check against',
+        required => 1,
+    );
+
+    $ng->arg(
+        spec     => 'domainname|d=s',
+        help     => 'Domainname to query for, required',
+        required => 1,
+    );
+
+    $ng->arg(
+        spec     => 'port|p=i',
+        help     => 'DNS port, default: %s',
+        default  => 53,
+    );
+
+    $ng->arg(
+        spec     => 'qtype|q=s',
+        help     => 'DNS query type, default: %s',
+        default  => 'A',
+    );
+
+    $ng->arg(
+        spec     => 'authoritative|a',
+        help     => 'Only accept an authoritative answer',
+    );
+
+    $ng->getopts();
+    return $ng;
+}
+
+sub execute_check {
+    my $ng = shift;
+    my $reso = Net::DNS::Resolver->new(
+        nameservers => [ $ng->host ],
+        port        => $ng->port,
+        recurse     => !$ng->authoritative,
+        tcp_timeout => $ng->timeout,
+        udp_timeout => $ng->timeout,
+        retrans     => $ng->timeout,
+        retry       => 1,
+        igntc       => 1,
+    );
+
+    foreach my $p (qw/udp tcp/) {
+        my $packet = $reso->send($ng->domainname, $ng->qtype);
+
+        # Check for no response packet at all, in which case the resolver
+        # object has the error
+        if (!defined $packet) {
+            plugin_exit(CRITICAL, $reso->error_string());
+        }
+
+        # Check header fields for basics
+        my $hdr = $packet->header;
+        if ($hdr->rcode ne 'NOERROR' || $hdr->ancount < 1) {
+            plugin_exit(CRITICAL, "Error response or zero answers:\n"
+                . $packet->string());
+        }
+
+        # If given -a, check for AA flag:
+        if ($ng->authoritative && !$hdr->aa) {
+            plugin_exit(CRITICAL, "Non-authoritative answer:\n"
+                . $packet->string());
+        }
+
+        # Check that the actual records are there with the same count
+        my @ans = $packet->answer;
+        if ($hdr->ancount != scalar(@ans)) {
+            plugin_exit(CRITICAL, "Answer count does not match records:\n"
+                . $packet->string());
+        }
+
+        if ($ng->verbose) {
+            print "======= $p =======\n";
+            print $packet->string();
+        }
+
+        $reso->usevc(1); # Switch to TCP for second go-round
+    }
+
+    return;
+}
+
+sub run {
+    execute_check(get_options());
+    plugin_exit(OK, "Success");
+}
+
+# call run() if are we running interactively or via ePN
+__PACKAGE__->run() if ( !caller || (caller)[0] eq 'Embed::Persistent' );
+
+1;
+
+# vim: ts=4 sw=4 sts=4 et

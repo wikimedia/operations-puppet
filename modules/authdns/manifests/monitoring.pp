@@ -9,7 +9,8 @@ class authdns::monitoring {
     #  to real hosts could be fluid due to routing/anycast.
     monitoring::service { 'auth dns':
         description   => 'Auth DNS',
-        check_command => 'check_dns!www.wikipedia.org',
+        # TODO: this will move to alternate port to facilitate the blended DNS role
+        check_command => 'check_dns_query_auth_port!53!www.wikipedia.org',
         notes_url     => 'https://wikitech.wikimedia.org/wiki/DNS',
     }
 
