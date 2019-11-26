@@ -67,7 +67,7 @@ class apereo_cas (
     if $idp_primary and $idp_failover {
         rsync::server::module { 'u2f_devices':
             ensure         => $ensure_rsync,
-            path           => $u2f_devices_path,
+            path           => $devices_dir,
             read_only      => 'yes',
             hosts_allow    => [$idp_failover],
             auto_ferm      => true,
