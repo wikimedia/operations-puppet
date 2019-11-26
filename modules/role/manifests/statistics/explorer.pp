@@ -19,6 +19,7 @@ class role::statistics::explorer {
     include ::profile::analytics::refinery
     include ::profile::analytics::cluster::packages::hadoop
 
+    include ::profile::analytics::client::limits
     include ::profile::kerberos::client
     include ::profile::kerberos::keytabs
 }
