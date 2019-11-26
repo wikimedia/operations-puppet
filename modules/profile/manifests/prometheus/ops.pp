@@ -1404,6 +1404,7 @@ class profile::prometheus::ops (
       {
         'job_name'        => 'poolcounter_exporter',
         'scheme'          => 'http',
+        'metrics_path'    => '/prometheus',
         'file_sd_configs' => [
           { 'files' => [ "${targets_path}/poolcounter_exporter_*.yaml" ]}
         ],
