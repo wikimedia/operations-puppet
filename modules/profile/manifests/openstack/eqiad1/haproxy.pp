@@ -66,10 +66,11 @@ class profile::openstack::eqiad1::haproxy(
     #  Rather than try to re-puppetize that file I'm
     #  just hard-coding the backend port (8778) here
     profile::openstack::base::haproxy::site { 'nova_placement':
-        servers          => [$nova_controller, $nova_controller_standby],
-        healthcheck_path => '/',
-        port_frontend    => 8779,
-        port_backend     => 8778,
+        servers             => [$nova_controller, $nova_controller_standby],
+        healthcheck_options => ['http-check expect status 401'],
+        healthcheck_path    => '/',
+        port_frontend       => 8779,
+        port_backend        => 8778,
     }
 
     profile::openstack::base::haproxy::site { 'nova_metadata':

@@ -6,6 +6,9 @@ frontend <%= @title %>_frontend
 
 backend <%= @title %>_backend
     balance leastconn
+<% @healthcheck_options.each do |option| -%>
+    <%= option %>
+<% end -%>
     option httpchk HEAD <%= @healthcheck_path %> HTTP/1.0\r\nUser-agent:\ haproxy-healthcheck
 <% @servers.each do |server| -%>
     server <%= server %> <%= scope.function_ipresolve([server]) %>:<%= @port_backend %> check inter 1s rise 2 fall 4

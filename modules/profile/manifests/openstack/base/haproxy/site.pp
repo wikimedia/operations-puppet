@@ -22,6 +22,10 @@
 #   Array of Stdlib::Fqdn
 #   A list of backend servers providing the service.
 #
+# [*healthcheck_options*]
+#   Array of Strings
+#   A list of healthcheck (http-check) options
+#
 # === Examples
 #
 #  profile::openstack::base::haproxy::site { 'nova_metadata':
@@ -35,6 +39,7 @@ define profile::openstack::base::haproxy::site(
     Stdlib::Port $port_backend,
     Stdlib::Port $port_frontend,
     Stdlib::Compat::String $healthcheck_path,
+    Array[String] $healthcheck_options = [],
     Wmflib::Ensure $ensure = present,
 ) {
     include profile::openstack::base::haproxy
