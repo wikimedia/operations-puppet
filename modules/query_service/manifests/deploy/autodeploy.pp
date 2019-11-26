@@ -31,7 +31,7 @@ class query_service::deploy::autodeploy(
 
     cron { 'autodeploy':
         ensure  => present,
-        command => "/usr/local/bin/${deploy_name}-autodeploy ${deploy_name} ${package_dir} >> ${$autodeployment_log} 2>&1",
+        command => "/usr/local/bin/query-service-autodeploy ${deploy_name} ${package_dir} >> ${$autodeployment_log} 2>&1",
         user    => $deploy_user,
         minute  => 0,
         hour    => [5, 11, 17, 23],
