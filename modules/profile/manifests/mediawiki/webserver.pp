@@ -70,30 +70,6 @@ class profile::mediawiki::webserver(
         srange  => '$DOMAIN_NETWORKS',
     }
 
-    # The apache2 systemd unit in stretch enables PrivateTmp by default
-    # This makes "systemctl reload apache" fail with error code 226/EXIT_NAMESPACE
-    # (which is a failure to setup a mount namespace). This is specific to our
-    # mediawiki setup: Normally, with PrivateTmp enabled, /tmp would appear as
-    # /tmp/systemd-private-$ID-apache2.service-$RANDOM and /var/tmp would appear as
-    # /var/tmp/systemd-private-$ID-apache2.service-$RANDOM. That works fine for
-    # /var/tmp, but fails for /tmp (so the reload only exposes the issue)
-    #
-    # TODO Fix private temp.
-    #
-    # To disable, ship a custom systemd override when running on stretch
-    if os_version('debian >= stretch') {
-        systemd::unit { 'apache2.service':
-            ensure   => present,
-            content  => "[Service]\nPrivateTmp=false\n",
-            override => true,
-        }
-
-        # TODO: remove once we have finished any transition
-        file { '/etc/systemd/system/apache2.service.d/override.conf':
-            ensure  => absent,
-        }
-    }
-
     # If a service check happens to run while we are performing a
     # graceful restart of Apache, we want to try again before declaring
     # defeat. See T103008.

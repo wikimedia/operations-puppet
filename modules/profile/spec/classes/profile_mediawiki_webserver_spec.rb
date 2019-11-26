@@ -50,10 +50,6 @@ describe 'profile::mediawiki::webserver' do
         }
         it { is_expected.to contain_class('mediawiki::packages::fonts') }
         it { is_expected.to contain_class('mediawiki::web::prod_sites') }
-        it { is_expected.to contain_systemd__unit('apache2.service')
-                              .with_override(true)
-                              .with_content(/PrivateTmp=false/)
-        }
         it { is_expected.to contain_mediawiki__web__vhost('wikipedia.org')
                               .with_feature_flags({})
         }
