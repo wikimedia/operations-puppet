@@ -38,6 +38,30 @@ function cache_status_to_string(status)
     return "bug"
 end
 
+function pass()
+    ts.http.config_int_set(TS_LUA_CONFIG_HTTP_CACHE_HTTP, 0)
+    ts.http.config_int_set(TS_LUA_CONFIG_HTTP_CACHE_MAX_OPEN_READ_RETRIES, -1)
+    ts.http.config_int_set(TS_LUA_CONFIG_HTTP_CACHE_MAX_OPEN_WRITE_RETRIES, 1)
+    -- We should also set proxy.config.cache.enable_read_while_writer to 0 but
+    -- there seems to be no TS_LUA_CONFIG_ option for it.
+    return 0
+end
+
+function do_global_read_request()
+    local cookie = ts.client_request.header['Cookie']
+
+    if cookie then
+        cookie = cookie:lower()
+        if string.find(cookie, 'session') or string.find(cookie, 'token') then
+            return pass()
+        end
+    end
+
+    if ts.client_request.header['Authorization'] then
+        return pass()
+    end
+end
+
 function do_global_send_response()
     local cache_status = cache_status_to_string(ts.http.get_cache_lookup_status())
     ts.client_response.header['X-Cache-Int'] = HOSTNAME .. " " .. cache_status
