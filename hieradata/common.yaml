@@ -950,6 +950,7 @@ authdns_servers:
   - 'authdns1001.wikimedia.org'
   - 'authdns2001.wikimedia.org'
   - 'ganeti3003.esams.wmnet'
+  - 'dns4002.wikimedia.org'
 
 # .. and this is the set of public IPs they provide service on, which is
 # consumed by both authdns servers and the icinga monitoring of them.
