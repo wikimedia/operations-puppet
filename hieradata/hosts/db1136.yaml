@@ -1,4 +1,4 @@
 # db1136
-# candidate master
+# candidate master s7
 mariadb::shard: 's7'
 mariadb::binlog_format: 'STATEMENT'
