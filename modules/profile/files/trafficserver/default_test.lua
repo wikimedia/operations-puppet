@@ -20,7 +20,6 @@ describe("Busted unit testing framework", function()
   describe("script for ATS Lua Plugin", function()
     stub(ts, "debug")
     stub(ts, "hook")
-    stub(ts.http, "config_int_set")
 
     it("test - do_global_read_response Set-Cookie", function()
 
@@ -33,7 +32,7 @@ describe("Busted unit testing framework", function()
       _G.ts.server_response.header['Set-Cookie'] = 'banana potato na'
       _G.ts.server_response.header['Cache-Control'] = 'public, max-age=10'
       do_global_read_response()
-      assert.stub(ts.http.config_int_set).was.called_with(TS_LUA_CONFIG_HTTP_CACHE_HTTP, 0)
+      assert.is_nil(_G.ts.server_response.header['Cache-Control'])
     end)
 
     it("test - do_global_read_response cacheable Cookie", function()
@@ -68,7 +67,7 @@ describe("Busted unit testing framework", function()
       _G.ts.server_response.header['Vary'] = 'Accept-Encoding,Cookie,Authorization'
       _G.ts.client_request.header['Cookie'] = 'centralauth_Token=BANANA; WMF-Last-Access=30-Aug-2019; WMF-Last-Access-Global=30-Aug-2019'
       do_global_read_response()
-      assert.stub(ts.http.config_int_set).was.called_with(TS_LUA_CONFIG_HTTP_CACHE_HTTP, 0)
+      assert.is_nil(_G.ts.server_response.header['Cache-Control'])
     end)
 
     it("test - do_global_read_response large Content-Length", function()
@@ -86,7 +85,7 @@ describe("Busted unit testing framework", function()
       -- Large enough object
       _G.ts.server_response.header['Content-Length'] = '1073741825'
       do_global_read_response()
-      assert.stub(ts.http.config_int_set).was.called_with(TS_LUA_CONFIG_HTTP_CACHE_HTTP, 0)
+      assert.is_nil(_G.ts.server_response.header['Cache-Control'])
 
       -- PKP headers sanitation
       _G.ts.server_response.header['Public-Key-Pins'] = 'test'
@@ -106,7 +105,8 @@ describe("Busted unit testing framework", function()
       -- 503 response with Cache-Control
       _G.ts.server_response.get_status = function() return 503 end
       do_global_read_response()
-      assert.stub(ts.http.config_int_set).was.called_with(TS_LUA_CONFIG_HTTP_CACHE_HTTP, 0)
+      assert.is_nil(_G.ts.server_response.header['Cache-Control'])
+      assert.are.equals('public, max-age=10', _G.ts.ctx['Cache-Control'])
     end)
 
     it("test - do_global_read_response Vary-slotting for X-Forwarded-Proto", function()
@@ -137,6 +137,13 @@ describe("Busted unit testing framework", function()
 
       assert.are.equals(0, do_global_send_response())
       assert.are.equals('pass-test-hostname hit', ts.client_response.header['X-Cache-Int'])
+    end)
+
+    it("test - restore_cc_data restore Cache-Control", function()
+      _G.ts.client_response.header = {}
+      _G.ts.ctx['Cache-Control'] = 'public, max-age=10'
+      restore_cc_data()
+      assert.are.equals('public, max-age=10', _G.ts.client_response.header['Cache-Control'])
     end)
   end)
 end)
