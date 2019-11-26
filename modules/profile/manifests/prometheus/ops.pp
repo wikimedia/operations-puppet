@@ -1400,6 +1400,23 @@ class profile::prometheus::ops (
         port       => 9133,
     }
 
+    $poolcounter_exporter_jobs = [
+      {
+        'job_name'        => 'poolcounter_exporter',
+        'scheme'          => 'http',
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/poolcounter_exporter_*.yaml" ]}
+        ],
+      },
+    ]
+
+    prometheus::class_config{ "poolcounter_exporter_${::site}":
+        dest       => "${targets_path}/poolcounter_exporter_${::site}.yaml",
+        site       => $::site,
+        class_name => 'role::poolcounter::server',
+        port       => 9106,
+    }
+
     prometheus::server { 'ops':
         listen_address        => '127.0.0.1:9900',
         storage_retention     => $storage_retention,
@@ -1415,7 +1432,7 @@ class profile::prometheus::ops (
             $kafka_burrow_jobs, $logstash_jobs, $haproxy_jobs, $statsd_exporter_jobs,
             $mjolnir_jobs, $rsyslog_jobs, $php_jobs, $php_fpm_jobs, $icinga_jobs, $docker_registry_jobs,
             $gerrit_jobs, $routinator_jobs, $rpkicounter_jobs, $varnishkafka_jobs, $bird_jobs, $ncredir_jobs,
-            $cloud_dev_pdns_jobs, $cloud_dev_pdns_rec_jobs, $bacula_jobs,
+            $cloud_dev_pdns_jobs, $cloud_dev_pdns_rec_jobs, $bacula_jobs, $poolcounter_exporter_jobs,
         ),
         global_config_extra   => $config_extra,
     }
