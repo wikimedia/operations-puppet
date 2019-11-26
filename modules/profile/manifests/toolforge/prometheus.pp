@@ -277,7 +277,7 @@ class profile::toolforge::prometheus (
                 'scheme'         => 'http',
                 'static_configs' => [
                     {
-                        'targets' => map($proxies) |$element| { $value = "${element}:9133" },
+                        'targets' => map($proxies) |$element| { $value = "${element}:9113" },
                     },
                 ],
             },
