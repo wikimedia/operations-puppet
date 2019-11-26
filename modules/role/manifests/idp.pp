@@ -7,4 +7,5 @@ class role::idp {
     include ::profile::standard
     include ::profile::base::firewall
     include ::profile::idp
+    include ::profile::backup::host
 }

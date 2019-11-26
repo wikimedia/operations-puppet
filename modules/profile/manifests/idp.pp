@@ -34,6 +34,8 @@ class profile::idp(
         wrap_with_stunnel => true,
     }
 
+    backup::set { 'idp': }
+
     $groovy_source = 'puppet:///modules/profile/idp/global_principal_attribute_predicate.groovy'
     class { 'apereo_cas':
         server_name            => 'https://idp.wikimedia.org',
