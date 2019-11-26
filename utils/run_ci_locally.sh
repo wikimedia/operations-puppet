@@ -43,7 +43,7 @@ if ! (docker info > /dev/null); then
     exit 1
 fi
 
-IMG_VERSION=${IMG_VERSION:-"0.5.4-s1"}
+IMG_VERSION=${IMG_VERSION:-"0.5.5"}
 IMG_NAME=docker-registry.wikimedia.org/releng/operations-puppet:$IMG_VERSION
 CONT_NAME=puppet-tests-${IMG_VERSION}
 
