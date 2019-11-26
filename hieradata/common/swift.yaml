@@ -50,6 +50,9 @@ swift::storagehosts:
   - ms-be1054.eqiad.wmnet
   - ms-be1055.eqiad.wmnet
   - ms-be1056.eqiad.wmnet
+  - ms-be1057.eqiad.wmnet
+  - ms-be1058.eqiad.wmnet
+  - ms-be1059.eqiad.wmnet
   - ms-be2016.codfw.wmnet
   - ms-be2017.codfw.wmnet
   - ms-be2018.codfw.wmnet
