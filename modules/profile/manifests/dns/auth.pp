@@ -6,8 +6,22 @@ class profile::dns::auth (
     Stdlib::HTTPSUrl $gitrepo = lookup('profile::dns::auth::gitrepo'),
     $conftool_prefix = hiera('conftool_prefix'),
 ) {
-    include ::profile::dns::ferm
     include ::profile::dns::auth::acmechief_target
+    include ::profile::dns::ferm
+
+    # Authdns needs additional rules beyond profile::dns::ferm, for its special
+    # port 5353 monitoring listeners.  These can be tracked like normal since
+    # they're not high volume.  Icinga hosts have special ferm access in
+    # general, but humans will also sometimes want to hit these...
+    ferm::service { 'udp_dns_auth_monitor':
+        proto => 'udp',
+        port  => '5353',
+    }
+
+    ferm::service { 'tcp_dns_auth_monitor':
+        proto => 'tcp',
+        port  => '5353',
+    }
 
     class { 'prometheus::node_gdnsd': }
 
