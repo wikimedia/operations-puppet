@@ -19,7 +19,6 @@ class ganeti(
 
     package { [
             'ganeti',
-            'ganeti-instance-debootstrap',
             'drbd8-utils',
             'ovmf',
             ] :
