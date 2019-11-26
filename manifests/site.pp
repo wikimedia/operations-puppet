@@ -465,8 +465,12 @@ node 'db1131.eqiad.wmnet' {
 }
 
 # See also db1096 db1098 and db1113 below
-node /^db1(061|085|088|093)\.eqiad\.wmnet/ {
+node /^db1(085|088|093)\.eqiad\.wmnet/ {
     role(mariadb::core)
+}
+
+node 'db1061.eqiad.wmnet' {
+    role(spare::system)
 }
 
 # s6 core production dbs on codfw
