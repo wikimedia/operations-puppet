@@ -3,4 +3,5 @@ admin::groups:
   - oit
 mtail::logs:
   - /var/log/exim4/mainlog
+# NOTE: this is what enables mtail to read the files in the exim4 log directory
 mtail::group: 'adm'
