@@ -9,27 +9,31 @@
 # be in the main config file's options stanza in the ops/dns repo.
 
 listen = {
-    # Our primary IPv4 traffic on port 53 comes in here:
-    # Use one thread+socket per physical CPU, per listen address, makes
-    # handling query-rate spikes even easier
-    0.0.0.0 = {
+    # Our primary traffic on port 53 comes in here over any of these public
+    # addresses.  Using one thread+socket per physical CPU, per listen address,
+    # makes handling query-rate spikes even easier.
+<%- @service_listeners.each do |lsnr| -%>
+    "<%= lsnr %>" = {
         udp_threads = <%= @physicalcorecount %>
         tcp_threads = <%= @physicalcorecount %>
     }
-
-    # No IPv6 usage for our authdns yet, but leave it running minimally
-    # in case of healthchecks or testing or whatever
-    :: = {
-        udp_threads = 1
-        tcp_threads = 1
-    }
+<%- end -%>
 
     # PROXY protocol listener on port 535 of IPv4 localhost.
-    # This is for future experimentation with e.g. DNS-over-TLS
+    # This is for future experimentation with e.g. DNS-over-TLS.
     127.0.0.1:535 = {
         tcp_proxy = true
         tcp_threads = <%= @physicalcorecount %>
     }
+
+    # These are monitor listeners, so they only get one thread per protocol per
+    # listen address, as they're not expecting "real" traffic.
+<%- @monitor_listeners.each do |lsnr| -%>
+    "<%= lsnr %>" = {
+        udp_threads = 1
+        tcp_threads = 1
+    }
+<%- end -%>
 }
 
 # Lock memory against swapout

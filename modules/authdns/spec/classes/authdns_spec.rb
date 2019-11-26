@@ -19,6 +19,9 @@ describe 'authdns' do
       let(:params) { {
                        :lvs_services => {},
                        :discovery_services => {},
+                       :conftool_prefix => '/conftooltest/v42',
+                       :service_listeners => ['127.0.0.1', '127.0.0.2:1234'],
+                       :monitor_listeners => ['[2001:db8::1]:4321', '192.0.2.1'],
                      } }
       let(:pre_condition) { [
                               'define git::clone($directory, $origin, $branch,$owner,$group) {}',

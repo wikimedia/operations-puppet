@@ -4,6 +4,7 @@ class profile::dns::auth (
     Hash[String, Hash[String, String]] $authdns_addrs = lookup('authdns_addrs'),
     Array[String] $authdns_servers = lookup('authdns_servers'),
     Stdlib::HTTPSUrl $gitrepo = lookup('profile::dns::auth::gitrepo'),
+    $conftool_prefix = hiera('conftool_prefix'),
 ) {
     include ::profile::dns::ferm
     include ::profile::dns::auth::acmechief_target
@@ -16,11 +17,24 @@ class profile::dns::auth (
         { interface => 'lo', prefixlen => '32' }
     )
 
+    $service_listeners = $authdns_addrs.map |$aspec| { $aspec[1]['address'] }
+    $monitor_listeners = [
+        # Port 53 monitoring on the host-level IPs, for legacy for now
+        $::ipaddress,
+        $::ipaddress6,
+        # Any-address, both protocols, port 5353, for blended-role monitoring
+        '0.0.0.0:5353',
+        '[::]:5353',
+    ]
+
     class { 'authdns':
         nameservers        => $authdns_servers,
         gitrepo            => $gitrepo,
         lvs_services       => $lvs_services,
         discovery_services => $discovery_services,
+        conftool_prefix    => $conftool_prefix,
+        service_listeners  => $service_listeners,
+        monitor_listeners  => $monitor_listeners,
     }
 
     $authdns_ns_ferm = join($authdns_servers, ' ')

@@ -4,10 +4,12 @@
 class authdns(
     $lvs_services,
     $discovery_services,
+    $conftool_prefix,
+    $service_listeners,
+    $monitor_listeners,
     $nameservers = [ $::fqdn ],
     $gitrepo = undef,
     $monitoring = true,
-    $conftool_prefix = hiera('conftool_prefix'),
 ) {
     require ::authdns::account
     require ::authdns::scripts
