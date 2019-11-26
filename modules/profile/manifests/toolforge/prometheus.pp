@@ -3,10 +3,11 @@
 # native k8s support.
 
 class profile::toolforge::prometheus (
-    Stdlib::Fqdn $legacy_k8s_master_host = lookup('k8s::master_host'),
-    $legacy_k8s_users                    = lookup('k8s_infrastructure_users'),
-    Stdlib::Fqdn $new_k8s_apiserver_fqdn = lookup('profile::toolforge::k8s::apiserver_fqdn', {default_value => 'k8s.tools.eqiad1.wikimedia.cloud'}),
-    Stdlib::Port $new_k8s_apiserver_port = lookup('profile::toolforge::k8s::apiserver_port', {default_value => 6443}),
+    Stdlib::Fqdn  $legacy_k8s_master_host = lookup('k8s::master_host'),
+    $legacy_k8s_users                     = lookup('k8s_infrastructure_users'),
+    Stdlib::Fqdn  $new_k8s_apiserver_fqdn = lookup('profile::toolforge::k8s::apiserver_fqdn', {default_value => 'k8s.tools.eqiad1.wikimedia.cloud'}),
+    Stdlib::Port  $new_k8s_apiserver_port = lookup('profile::toolforge::k8s::apiserver_port', {default_value => 6443}),
+    Array[Stdlib::Fqdn] $proxies          = lookup('profile::toolforge::proxies',             {default_value => ['tools-proxy-04.eqiad.wmflabs']}),
 ) {
     require ::profile::labs::lvm::srv
     include ::profile::prometheus::blackbox_exporter
@@ -268,6 +269,15 @@ class profile::toolforge::prometheus (
                 'static_configs' => [
                     {
                         'targets' => ["${new_k8s_apiserver_fqdn}:9901"],
+                    },
+                ],
+            },
+            {
+                'job_name'       => 'frontproxy-nginx',
+                'scheme'         => 'http',
+                'static_configs' => [
+                    {
+                        'targets' => map($proxies) |$element| { $value = "${element}:9133" },
                     },
                 ],
             },
