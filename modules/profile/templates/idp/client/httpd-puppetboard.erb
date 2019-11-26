@@ -19,8 +19,8 @@
     RequestHeader unset Proxy early
     ProxyPreserveHost On
     ProxyPassMatch "^/(static|offline)/" !
-    ProxyPass / http://127.0.0.1:<%= @port %>/
-    ProxyPassReverse / http://127.0.0.1:<%= @port %>/
+    ProxyPass / http://127.0.0.1:8001/
+    ProxyPassReverse / http://127.0.0.1:8001/
 
     RewriteEngine On
 
