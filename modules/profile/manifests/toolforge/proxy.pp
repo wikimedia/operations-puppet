@@ -1,8 +1,9 @@
 class profile::toolforge::proxy (
-    Array[String] $proxies      = lookup('profile::toolforge::proxies', {default_value => ['tools-proxy-03']}),
-    String        $active_proxy = lookup('profile::toolforge::active_proxy_host', {default_value => 'tools-proxy-03'}),
-    Stdlib::Fqdn  $web_domain   = lookup('profile::toolforge::web_domain', {default_value => 'tools.wmflabs.org'}),
-    Boolean       $do_https     = lookup('profile::toolforge::proxy::do_https', {default_value => true}),
+    Array[String]       $proxies      = lookup('profile::toolforge::proxies',           {default_value => ['tools-proxy-03']}),
+    String              $active_proxy = lookup('profile::toolforge::active_proxy_host', {default_value => 'tools-proxy-03'}),
+    Stdlib::Fqdn        $web_domain   = lookup('profile::toolforge::web_domain',        {default_value => 'tools.wmflabs.org'}),
+    Boolean             $do_https     = lookup('profile::toolforge::proxy::do_https',   {default_value => true}),
+    Array[Stdlib::Fqdn] $prometheus   = lookup('prometheus_nodes',                      {default_value => ['localhost']}),
 ) {
     class { '::redis::client::python': }
 
@@ -132,5 +133,16 @@ class profile::toolforge::proxy (
             port  => '443',
             desc  => 'HTTPS webserver for the entire world',
         }
+    }
+
+    # prometheus nginx metrics
+    class { 'prometheus::nginx_exporter': }
+
+    $prometheus_hosts = join($prometheus, ' ')
+    ferm::service { 'prometheus_nginx_exporter':
+        proto  => 'tcp',
+        port   => '9113', # this is the default
+        desc   => 'prometheus nginx exporter',
+        srange => "@resolve((${prometheus_hosts}))",
     }
 }
