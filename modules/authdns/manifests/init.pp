@@ -27,7 +27,10 @@ class authdns(
     # The package would create this as well if missing, but we need to create
     # directories and files owned by these before the package is even
     # installed...
-    group { 'gdnsd': ensure => present, }
+    group { 'gdnsd':
+        ensure => present,
+        system => true,
+    }
     user { 'gdnsd':
         ensure     => present,
         gid        => 'gdnsd',
@@ -35,6 +38,7 @@ class authdns(
         comment    => '',
         home       => '/var/run/gdnsd',
         managehome => false,
+        system     => true,
         require    => Group['gdnsd'],
     }
 
