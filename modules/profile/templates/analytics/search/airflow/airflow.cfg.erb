@@ -2,11 +2,11 @@
 # The folder where your airflow pipelines live, most likely a
 # subfolder in a code repository
 # This path must be absolute
-dags_folder = <%= @airflowdir %>/dags
+dags_folder = <%= @airflow_dir %>/dags
 
 # The folder where airflow should store its log files
 # This path must be absolute
-base_log_folder = <%= @logdir %>
+base_log_folder = <%= @log_dir %>
 
 # Airflow can store logs remotely in AWS S3, Google Cloud Storage or Elastic Search.
 # Users must supply an Airflow connection id that provides access to the storage
@@ -39,7 +39,7 @@ simple_log_format = %%(asctime)s %%(levelname)s - %%(message)s
 # Log filename format
 log_filename_template = {{ ti.dag_id }}/{{ ti.task_id }}/{{ ts }}/{{ try_number }}.log
 log_processor_filename_template = {{ filename }}.log
-dag_processor_manager_log_location = <%= @logdir %>/dag_processor_manager/dag_processor_manager.log
+dag_processor_manager_log_location = <%= @log_dir %>/dag_processor_manager/dag_processor_manager.log
 
 # Hostname by providing a path to a callable, which will resolve the hostname
 # The format is "package:function". For example,
@@ -115,7 +115,7 @@ max_active_runs_per_dag = 16
 load_examples = False
 
 # Where your Airflow plugins are stored
-plugins_folder = <%= @airflowdir %>/plugins
+plugins_folder = <%= @airflow_dir %>/plugins
 
 # Secret key to save connection passwords in the db
 fernet_key = 
@@ -475,7 +475,7 @@ print_stats_interval = 30
 # This is used by the health check in the "/health" endpoint
 scheduler_health_check_threshold = 30
 
-child_process_log_directory = <%= @logdir %>/scheduler
+child_process_log_directory = <%= @log_dir %>/scheduler
 
 # Local task jobs periodically heartbeat to the DB. If the job has
 # not heartbeat in this many seconds, the scheduler will mark the
@@ -678,7 +678,7 @@ git_password =
 git_sync_root = /git
 git_sync_dest = repo
 # Mount point of the volume if git-sync is being used.
-# i.e. <%= @airflowdir %>/dags
+# i.e. <%= @airflow_dir %>/dags
 git_dags_folder_mount_point =
 
 # To get Git-sync SSH authentication set up follow this format

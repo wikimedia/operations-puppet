@@ -13,4 +13,17 @@ profile::hive::client::server_host: an-coord1001.eqiad.wmnet
 profile::hive::client::server_port: 10000
 profile::hive::client::metastore_host: 'an-coord1001.eqiad.wmnet'
 
+# Airflow settings and defaults.
+profile::analytics::search::airflow::webserver_port: 8778
 profile::analytics::search::airflow::mysql_host: 'an-coord1001.eqiad.wmnet'
+profile::analytics::search::airflow::db_name: 'search_airflow'
+profile::analytics::search::airflow::deploy_target: 'search/airflow'
+profile::analytics::search::airflow::deploy_target_plugins: 'wikimedia/discovery/analytics'
+profile::analytics::search::airflow::deploy_user: 'deploy-service'
+profile::analytics::search::airflow::deploy_dir: '/srv/deployment/search/airflow'
+profile::analytics::search::airflow::airflow_dir: '/srv/deployment/wikimedia/search/analytics/airflow'
+profile::analytics::search::airflow::log_dir: '/var/log/airflow'
+profile::analytics::search::airflow::pid_dir: '/var/run/airflow'
+profile::analytics::search::airflow::conf_dir: '/etc/airflow'
+profile::analytics::search::airflow::conf_file: 'airflow.cfg'
+

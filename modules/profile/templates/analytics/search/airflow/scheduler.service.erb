@@ -22,11 +22,11 @@ After=network.target
 
 [Service]
 SyslogIdentifier=airflow-webserver
-Environment=AIRFLOW_HOME=/etc/airflow
+Environment=AIRFLOW_HOME=<%= @conf_dir %>
 User=airflow
 Group=airflow
 Type=simple
-ExecStart=<%= @deploydir %>/venv/bin/airflow scheduler
+ExecStart=<%= @deploy_dir %>/venv/bin/airflow scheduler
 Restart=always
 RestartSec=5s
 

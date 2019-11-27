@@ -22,13 +22,13 @@ After=network.target
 
 [Service]
 SyslogIdentifier=airflow-webserver
-Environment=AIRFLOW_HOME=/etc/airflow
+Environment=AIRFLOW_HOME=<%= @conf_dir %>
 User=airflow
 Group=airflow
 Type=simple
-ExecStart=<%= @deploydir %>/venv/bin/airflow webserver \
+ExecStart=<%= @deploy_dir %>/venv/bin/airflow webserver \
         -p <%= @webserver_port %> \
-        --pid <%= @piddir %>/webserver.pid
+        --pid <%= @pid_dir %>/webserver.pid
 Restart=on-failure
 RestartSec=5s
 PrivateTmp=true
