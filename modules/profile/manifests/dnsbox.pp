@@ -11,6 +11,27 @@ class profile::dnsbox(
     # roll out this setup to the dnsbox fleet.
     if $include_auth {
         include ::profile::dns::auth
-        # XXX also need to put some minimal glue here, in the form of puppet and systemd dependencies, to ensure that the recdns service requires the gdnsd service to happen first.  At the systemd layer this will probably be with add-in fragments defining the runtime relationship...
+
+        # This is the puppet-level glue, to ensure that it operates on these
+        # services in the appropriate order to avoid unnecessary mayhem.
+        Service['gdnsd'] -> Service['pdns-recursor']
+
+        # This is the systemd-level glue to ensure pdns-recursor cannot be
+        # running unless gdnsd is already running
+        $sysd_glue = '/etc/systemd/system/pdns-recursor.service.d/rec-needs-auth.conf'
+        file { $sysd_glue:
+            ensure => present,
+            mode   => '0444',
+            owner  => 'root',
+            group  => 'root',
+            source => 'puppet:///modules/profile/dnsbox/rec-needs-auth.conf',
+        }
+        exec { 'systemd reload for rec-needs-auth glue':
+            refreshonly => true,
+            command     => '/bin/systemctl daemon-reload',
+            subscribe   => File[$sysd_glue],
+            before      => Service['pdns-recursor'],
+            require     => Service['gdnsd'],
+        }
     }
 }
