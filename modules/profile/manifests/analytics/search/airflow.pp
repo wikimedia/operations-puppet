@@ -73,7 +73,7 @@ class profile::analytics::search::airflow(
 
     # Ensure places the daemons will write are available
     file { [$logdir, $piddir]:
-        ensure => 'dir',
+        ensure => 'directory',
         owner  => 'airflow',
         group  => 'airflow',
         mode   => '0755',
