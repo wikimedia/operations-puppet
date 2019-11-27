@@ -60,7 +60,7 @@ class profile::idp(
                                     "ldaps://${ldap_config[ro-server-fallback]}:636",],
         ldap_base_dn           => $ldap_config['base-dn'],
         ldap_attribute_list    => $ldap_attribute_list,
-        log_level              => 'DEBUG',
+        log_level              => 'WARN',
         ldap_bind_pass         => $passwords::ldap::production::proxypass,
         ldap_bind_dn           => "cn=proxyagent,ou=profile,${ldap_config['base-dn']}",
         services               => $services,
