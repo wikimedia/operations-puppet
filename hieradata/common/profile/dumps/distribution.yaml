@@ -23,16 +23,17 @@ profile::dumps::distribution::nfs_clients:
   - notebook1004.eqiad.wmnet
 
 profile::dumps::distribution::mirrors:
-  - url: 'http://wikipedia.c3sl.ufpr.br'
-    hostname: 'sagres.c3sl.ufpr.br'
-    ipv4: ['sagres.c3sl.ufpr.br']
-    ipv6: ['sagres.c3sl.ufpr.br']
-    contactname: 'Carlos Carvalho'
-    contactaddy: 'carlos@fisica.ufpr.br'
-    institution: 'C3SL'
-    addedby: 'atg'
-    addeddate: 'Sept 6 2011'
-    active: 'yes'
+# dead?
+#  - url: 'http://wikipedia.c3sl.ufpr.br'
+#    hostname: 'sagres.c3sl.ufpr.br'
+#    ipv4: ['sagres.c3sl.ufpr.br']
+#    ipv6: ['sagres.c3sl.ufpr.br']
+#    contactname: 'Carlos Carvalho'
+#    contactaddy: 'carlos@fisica.ufpr.br'
+#    institution: 'C3SL'
+#    addedby: 'atg'
+#    addeddate: 'Sept 6 2011'
+#    active: 'yes'
   - url: 'https://wikimedia.bytemark.co.uk'
     hostname: 'wikimedia.bytemark.co.uk'
     ipv4: ['wikimedia.bytemark.co.uk']
