@@ -29,5 +29,11 @@ class package_builder::hooks(
         basepath     => $basepath,
     }
 
+    package_builder::pbuilder_hook { 'bullseye':
+        distribution => 'bullseye',
+        components   => 'main',
+        basepath     => $basepath,
+    }
+
     File["${basepath}/hooks"] -> Package_builder::Pbuilder_hook <| |>
 }
