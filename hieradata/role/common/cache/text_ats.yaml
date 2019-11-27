@@ -162,7 +162,7 @@ cache::alternate_domains:
   superset.wikimedia.org:
     director: 'superset'
   ticket.wikimedia.org:
-    director: 'mendelevium'
+    director: 'otrs'
     caching: 'pass'
   toolsadmin.wikimedia.org:
     director: 'labweb'

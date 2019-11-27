@@ -192,7 +192,7 @@ cache::app_directors:
   turnilo:
     backends:
       eqiad: 'an-tool1007.eqiad.wmnet'
-  mendelevium:
+  otrs:
     backends:
       eqiad: 'mendelevium.eqiad.wmnet'
   logstash_director:
@@ -377,7 +377,7 @@ cache::alternate_domains:
   superset.wikimedia.org:
     director: 'superset'
   ticket.wikimedia.org:
-    director: 'mendelevium'
+    director: 'otrs'
     caching: 'pass'
   toolsadmin.wikimedia.org:
     director: 'labweb'
