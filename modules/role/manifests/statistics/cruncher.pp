@@ -13,4 +13,7 @@ class role::statistics::cruncher {
 
     # Reportupdater jobs that get data from MySQL analytics slaves
     include ::profile::reportupdater::jobs::mysql
+
+    include ::profile::analytics::client::limits
+
 }

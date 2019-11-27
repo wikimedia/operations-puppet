@@ -47,6 +47,8 @@ class role::statistics::private {
     # to this node.
     include ::profile::analytics::asoranking
 
+    include ::profile::analytics::client::limits
+
     include ::profile::kerberos::client
     include ::profile::kerberos::keytabs
 }
