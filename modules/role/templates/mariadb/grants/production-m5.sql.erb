@@ -168,6 +168,6 @@ GRANT ALL PRIVILEGES ON nova_api_eqiad1.* TO 'nova'@'208.80.154.132' IDENTIFIED 
 -- Access to nova database from  cloudcontrol1003.wikimedia.org and cloudcontrol1004.wikimedia.org
 GRANT ALL PRIVILEGES ON nova.* TO 'nova'@'208.80.154.23' IDENTIFIED BY '<%= @nova_dbpass %>' WITH MAX_USER_CONNECTIONS 100;
 GRANT ALL PRIVILEGES ON nova.* TO 'nova'@'208.80.154.132' IDENTIFIED BY '<%= @nova_dbpass %>' WITH MAX_USER_CONNECTIONS 100;
--- Access to nova_cell0 database from cloudcontrol1003.wikimedia.org and cloudcontrol1004.wikimedia.org
-GRANT ALL PRIVILEGES ON nova_cell0.* TO 'nova'@'208.80.154.23' IDENTIFIED BY '<%= @nova_dbpass %>' WITH MAX_USER_CONNECTIONS 100;
-GRANT ALL PRIVILEGES ON nova_cell0.* TO 'nova'@'208.80.154.132' IDENTIFIED BY '<%= @nova_dbpass %>' WITH MAX_USER_CONNECTIONS 100;
+-- Access to nova_cell0_eqiad1 database from cloudcontrol1003.wikimedia.org and cloudcontrol1004.wikimedia.org
+GRANT ALL PRIVILEGES ON nova_cell0_eqiad1.* TO 'nova'@'208.80.154.23' IDENTIFIED BY '<%= @nova_dbpass %>' WITH MAX_USER_CONNECTIONS 100;
+GRANT ALL PRIVILEGES ON nova_cell0_eqiad1.* TO 'nova'@'208.80.154.132' IDENTIFIED BY '<%= @nova_dbpass %>' WITH MAX_USER_CONNECTIONS 100;
