@@ -45,7 +45,7 @@ class profile::trafficserver::backend (
         owner   => root,
         group   => root,
         mode    => '0555',
-        content => "#!/usr/bin/lua\ndofile('${default_lua_script}.lua.conf')\nassert(lua_hostname)\n",
+        content => "#!/usr/bin/lua\ndofile('/etc/trafficserver/lua/${default_lua_script}.lua.conf')\nassert(lua_hostname)\nprint('OK')\n",
         require => File["/etc/trafficserver/lua/${default_lua_script}.lua.conf"],
     }
 

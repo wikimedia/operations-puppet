@@ -82,7 +82,7 @@ class profile::trafficserver::tls (
         owner   => root,
         group   => root,
         mode    => '0555',
-        content => "#!/usr/bin/lua\ndofile('${tls_lua_script_path}.conf')\nassert(lua_websocket_support ~= nil)\n",
+        content => "#!/usr/bin/lua\ndofile('${tls_lua_script_path}.conf')\nassert(lua_websocket_support ~= nil)\nprint('OK')\n",
         require => File["${tls_lua_script_path}.conf"],
     }
 
