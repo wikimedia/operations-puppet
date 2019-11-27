@@ -1,12 +1,12 @@
 function read_config()
     local configfile = ts.get_config_dir() .. "/lua/tls.lua.conf"
 
-    ts.error("Reading " .. configfile)
+    ts.debug("Reading " .. configfile)
 
     dofile(configfile)
     assert(lua_websocket_support ~= nil, "lua_websocket_support not set by " .. configfile)
 
-    ts.error("read_config() returning " .. tostring(lua_websocket_support))
+    ts.debug("read_config() returning " .. tostring(lua_websocket_support))
 
     return lua_websocket_support
 end

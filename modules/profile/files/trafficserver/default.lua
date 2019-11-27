@@ -6,12 +6,12 @@
 function read_config()
     local configfile = ts.get_config_dir() .. "/lua/default.lua.conf"
 
-    ts.error("Reading " .. configfile)
+    ts.debug("Reading " .. configfile)
 
     dofile(configfile)
     assert(lua_hostname, "lua_hostname not set by " .. configfile)
 
-    ts.error("read_config() returning " .. lua_hostname)
+    ts.debug("read_config() returning " .. lua_hostname)
 
     return lua_hostname
 end
