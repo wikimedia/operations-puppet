@@ -7,6 +7,8 @@
 # == Parameters:
 # - $heap_memory: amount of memory to allocate to logstash.
 # - $pipeline_workers: number of worker threads to run to process filters
+# - $pipeline_batch_size: batch size to reach per worker before executing a flush
+# - $pipeline_batch_delay: execute a flush after this many milliseconds except when batch size has been reached
 # - $java_package: which java package to install
 # - $gc_log: turn off/on garbage collector plain text logs
 # - $jmx_exporter_port: if defined, what port to listen on
@@ -22,6 +24,8 @@
 class logstash (
     String $heap_memory            = '192m',
     Integer $pipeline_workers      = $::processorcount,
+    Integer $pipeline_batch_size   = 125,
+    Integer $pipeline_batch_delay  = 50,
     String $java_package           = 'openjdk-8-jdk',
     Boolean $gc_log                = true,
     Integer $jmx_exporter_port     = undef,
@@ -121,10 +125,12 @@ class logstash (
 
     file { '/etc/logstash/logstash.yml':
         content => ordered_yaml({
-            'path.data'        => '/var/lib/logstash',
-            'path.config'      => '/etc/logstash/conf.d',
-            'path.logs'        => '/var/log/logstash',
-            'pipeline.workers' => $pipeline_workers,
+            'path.data'            => '/var/lib/logstash',
+            'path.config'          => '/etc/logstash/conf.d',
+            'path.logs'            => '/var/log/logstash',
+            'pipeline.workers'     => $pipeline_workers,
+            'pipeline.batch.size'  => $pipeline_batch_size,
+            'pipeline.batch.delay' => $pipeline_batch_delay,
         }),
         owner   => 'root',
         group   => 'root',

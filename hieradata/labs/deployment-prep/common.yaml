@@ -514,6 +514,7 @@ swift::storage::container_replicator_concurrency: 1
 swift::storage::container_replicator_interval: 1200 # seconds
 
 logstash::heap_memory: 1G
+logstash::pipeline_batch_size: 1000
 profile::services_proxy::ensure: absent
 profile::mediawiki::deployment::server::rsync_host: deployment-deploy01.deployment-prep.eqiad.wmflabs
 profile::mediawiki::apc_shm_size: 128M

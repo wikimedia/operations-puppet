@@ -36,6 +36,7 @@ profile::elasticsearch::common_settings:
 
 # Logstash specific
 logstash::heap_memory: 1g
+logstash::pipeline_batch_size: 1000
 
 # Kibana
 role::kibana::vhost: logstash.wikimedia.org
