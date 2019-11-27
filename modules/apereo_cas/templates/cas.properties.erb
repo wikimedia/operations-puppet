@@ -8,6 +8,9 @@ cas.server.prefix=<%= @server_name %><%= @server_prefix %>
 server.ssl.enabled=<%= @server_enable_ssl %>
 server.tomcat.basedir=<%= @tomcat_basedir %>
 <%- if @tomcat_proxy -%>
+# we proxy from nginx over localhost
+server.tomcat.internal-proxies=127\\.0\\.0\\.1
+
 cas.server.tomcat.http.enabled=false
 cas.server.tomcat.httpProxy.enabled=true
 cas.server.tomcat.httpProxy.secure=true
