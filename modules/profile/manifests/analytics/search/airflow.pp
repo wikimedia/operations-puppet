@@ -15,6 +15,7 @@ class profile::analytics::search::airflow(
         'python3-virtualenv',
         'virtualenv',
         'python3-pip',
+        'python3-mysqldb',
     ])
 
     group { 'airflow':
