@@ -1845,7 +1845,7 @@ lvs::configuration::lvs_services:
     monitors:
       ProxyFetch:
         url:
-        - http://localhost/_info
+        - https://localhost/_info
       IdleConnection:
         timeout-clean-reconnect: 3
         max-delay: 300
