@@ -193,7 +193,7 @@ profile::trafficserver::backend::mapping_rules:
       replacement: https://analytics-tool1004.eqiad.wmnet
     - type: map
       target: http://ticket.wikimedia.org
-      replacement: http://mendelevium.eqiad.wmnet
+      replacement: https://ticket.discovery.wmnet:1443
     - type: map
       target: http://toolsadmin.wikimedia.org
       replacement: https://labweb.svc.eqiad.wmnet:7443
