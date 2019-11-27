@@ -17,11 +17,11 @@ class mediawiki::maintenance::updatequerypages( $ensure = present ) {
     }
 
     # add cron jobs - usage: <cluster>@<day of month> (monthday currently unused, only sets cronjob name)
-    # Wikidata has its mostlinked job disabled: T234948
+    # Wikidata has several jobs disabled: T234948, T239072
     mediawiki::maintenance::updatequerypages::ancientpages { ['s1@11', 's2@12', 's3@13', 's4@14', 's5@15', 's6@16', 's7@17', 's8@18', 'wikitech@19']: }
     mediawiki::maintenance::updatequerypages::fewestrevisions { ['s1@11', 's2@12', 's3@13', 's4@14', 's5@15', 's6@16', 's7@17', 's8@18', 'wikitech@19']: }
     mediawiki::maintenance::updatequerypages::wantedpages { ['s1@11', 's2@12', 's3@13', 's4@14', 's5@15', 's6@16', 's7@17', 's8@18', 'wikitech@19']: }
-    mediawiki::maintenance::updatequerypages::mostrevisions { ['s1@11', 's2@12', 's3@13', 's4@14', 's5@15', 's6@16', 's7@17', 's8@18', 'wikitech@19']: }
+    mediawiki::maintenance::updatequerypages::mostrevisions { ['s1@11', 's2@12', 's3@13', 's4@14', 's5@15', 's6@16', 's7@17', 'wikitech@19']: }
     mediawiki::maintenance::updatequerypages::mostlinked { ['s1@11', 's2@12', 's3@13', 's4@14', 's5@15', 's6@16', 's7@17', 'wikitech@19']: }
     mediawiki::maintenance::updatequerypages::deadendpages { ['s1@11', 's2@12', 's3@13', 's4@14', 's5@15', 's6@16', 's7@17', 's8@18', 'wikitech@19']: }
 
