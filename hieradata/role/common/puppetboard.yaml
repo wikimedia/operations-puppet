@@ -9,4 +9,4 @@ profile::idp::client::httpd::vhost_content: 'profile/idp/client/httpd-puppetboar
 profile::idp::client::httpd::virtual_host: cas-puppetboard.wikimedia.org
 profile::idp::client::httpd::required_groups:
   - 'cn=ops,ou=groups,dc=wikimedia,dc=org'
-profile::idp::client::httpd::proxied_as: https://cas-puppetboard.wikimedia.org/
+profile::idp::client::httpd::proxied_as: https://cas-puppetboard.wikimedia.org
