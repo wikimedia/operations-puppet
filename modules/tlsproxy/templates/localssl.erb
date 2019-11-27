@@ -2,7 +2,7 @@
 # This file is managed by Puppet!
 upstream local_fe_<%= @basename %> {
 <%- @upstream_ports.each do |upstream_port| -%>
-    server <%= @ipaddress %>:<%= upstream_port %> max_fails=0;
+    server <%= @upstream_ip %>:<%= upstream_port %> max_fails=0;
 <%- end -%>
 }
 
