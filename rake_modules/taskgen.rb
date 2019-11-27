@@ -102,8 +102,8 @@ class TaskGen < ::Rake::TaskLib
       end
     end
     py_files[default] += files_unknown_version
-    puts "python2 files: #{py_files[:py2].length}".green
-    puts "python3 files: #{py_files[:py3].length}".green
+    puts "python2 files: #{py_files[:py2].length}".green unless py_files[:py2].empty?
+    puts "python3 files: #{py_files[:py3].length}".green unless py_files[:py3].empty?
     py_files
   end
 
@@ -494,7 +494,7 @@ class TaskGen < ::Rake::TaskLib
         # Get all python files that don't have a tox.ini in their module
         py_files = sort_python_files(filter_files_by("*.py"))
 
-        unless python2_files.empty?
+        unless py_files[:py2].empty?
           desc 'Run flake8 on python2 files via tox'
           task :flake8 do
             shell_python2_files = Shellwords.join(py_files[:py2])
@@ -503,7 +503,7 @@ class TaskGen < ::Rake::TaskLib
           tasks << 'tox:flake8'
         end
 
-        unless python3_files.empty?
+        unless py_files[:py3].empty?
           desc 'Run flake8 on python3 files via tox'
           task :flake8_3 do
             shell_python3_files = Shellwords.join(py_files[:py3])
