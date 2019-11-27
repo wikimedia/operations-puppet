@@ -79,7 +79,7 @@ groups:
               aaron, liw, sbassett, jdl, tarrow, lucaswerkmeister-wmde,
               wmde-leszek, jhuneidi, wmde-fisch, mvolz, dsharpe, brennen, cparle,
               jfishback, urbanecm, awight, jakob, accraze, alaasarhan, andrew-wmde,
-              kevinbazira]
+              kevinbazira, mstyles]
     privileges: ['ALL = (www-data,mwdeploy,l10nupdate) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /usr/sbin/apache2ctl',
                  'ALL = NOPASSWD: /etc/init.d/apache2',
@@ -102,7 +102,7 @@ groups:
   elasticsearch-roots:
     gid: 709
     description: manage elasticsearch nodes
-    members: [ebernhardson, dcausse, onimisionipe]
+    members: [ebernhardson, dcausse, onimisionipe, mstyles]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   dataset-admins:
     gid: 710
@@ -133,7 +133,7 @@ groups:
   cloudelastic-roots:
     gid: 809
     description: manage cloudelastic nodes
-    members: [ebernhardson, dcausse, onimisionipe, bd808]
+    members: [ebernhardson, dcausse, onimisionipe, bd808, mstyles]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   udp2log-users:
     gid: 713
@@ -231,7 +231,7 @@ groups:
               leila, nettrom, mforns, joal,
               tjones, legoktm, dcausse, bearloga, dstrine,
               marktraceur, accraze,
-              fdans, shiladsen, esanders, risler, nathante, chelsyx, jdl, kevinbazira]
+              fdans, shiladsen, esanders, risler, nathante, chelsyx, jdl, kevinbazira, mstyles]
   statistics-users:
     gid: 726
     description: Access statistics number crunching hosts. NO PRIVS.
@@ -282,7 +282,7 @@ groups:
               cicalese, drossi, fsalutari, nathante, gbirke, isaacj, sbassett, jdl, gsingers,
               niharika29, ryanmax, afandian2, jgleeson, toddleroux, srishakatux, dsharpe, eyener,
               esanders, sukhe, jfishback, iflorez, mayakpwiki, conniecc1, abi, mgerlach, dedcode,
-              lexnasser, kevinbazira, keepit-ssh, jiji, cohi]
+              lexnasser, kevinbazira, keepit-ssh, jiji, cohi, mstyles]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata]
   analytics-admins:
@@ -398,7 +398,7 @@ groups:
   wdqs-admins:
     gid: 755
     description: Admins for the WikiData Query Service project
-    members: [smalyshev, hoo, onimisionipe, ebernhardson, dcausse]
+    members: [smalyshev, hoo, onimisionipe, ebernhardson, dcausse, mstyles]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service wdqs-blazegraph *',
                  'ALL = NOPASSWD: /usr/sbin/service wdqs-categories *',
                  'ALL = NOPASSWD: /usr/sbin/service wdqs-updater *',
@@ -536,7 +536,7 @@ groups:
   analytics-search-users:
     gid: 771
     description: Group of users for managing search related analytics jobs
-    members: [ebernhardson, dcausse, gehel, bearloga, chelsyx]
+    members: [ebernhardson, dcausse, gehel, bearloga, chelsyx, mstyles]
     privileges: ['ALL = (analytics-search) NOPASSWD: ALL']
     system_members: [analytics-search]
   parsoid-test-roots:
@@ -742,7 +742,7 @@ groups:
   airflow-search-admins:
     gid: 816
     description: administrators of the Apache Airflow service
-    members: [ebernhardson, dcausse, bearloga, chelsyx]
+    members: [ebernhardson, dcausse, bearloga, chelsyx, mstyles]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service airflow-webserver *',
                  'ALL = NOPASSWD: /usr/sbin/service airflow-scheduler *',
                  'ALL = NOPASSWD: /bin/systemctl start airflow-scheduler',
@@ -1986,6 +1986,14 @@ users:
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC95t2F3S61Za6Y+mZUs4abK95cXm9FedpnUJe2ii3byeFG5QPL9E8+zcZ70o2Mt0NjM5Nitla/Tb+U2BRjk3/YmWEkZxd9crUFRi3IVHjKhEOYhLSSjb2NJdNyWUoUgkQ8DspVDotsnIupdLuHY0Dyh+O4dFI7xnRKIUShm/B//BDCu03PXR4ikYkmtR/+LeKbMh3qSGgvfgv/G4hIiKjyiQt7Md+ROW0YqMp6yAtqIJ+2in1hU3mxy47vfVOFTcL5nNLOLoxJGVSsm0ancVbzrkqruk1o/iFxuz9AzxnX8EAozaNUH7PP3/ybD7ocK7v4SiYpibT2epWPkORgUV7h dcausse_prod@dizzy]
     uid: 12338
     email: dcausse@wikimedia.org
+  mstyles:
+    ensure: present
+    gid: 500
+    name: mstyles
+    realname: Maryum Styles
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCaLBJ+guuL2hbt5VyIMycRVmM6+DeN+VW+QAViAHzlIO/lQDuX91/AixG7AXm3ETGSYfOpP0NxOsdM25nIe5Mr7fWAn41vNhjyN18JKFyMlm+gROb6mAxCWmdeWADmX57hayTMSrPHepgyw+g1/ywuo8sNPiAusI7YZhhT23k1QLk3n+yloYXXdnc5ngmfeIyyUQ73xCep7b30tRNxpqTTJN18QD62HftN98cBElal/hKg10h86GgMx7QJm2cPRDvjwAOz4hhxVzvEixe09In7Qe3ioQUuPgzxBdrXkOUvG2md91TK3+QTer9TNlzpPuVivRnKRTu7dltAsk3xWvuOOI65vaT0yNpq6fWxLAZvDtZEC0Tjl0UPj7POPdAElcpo9Rp+XM4XuUVkxV1NM+Ccy+tDuxkVAsKMyvLjqU0YL66DvHSFLcybk2SNutiHlscQCYFQUWt16sp+pXjutb1Jf7A7s4epH8IuyHQ0mZis8C+Tw5hcb2SM9W/gRyOtcLdr2L/tZMnpBNeiR4QBJRmP29nt4mubK5hpnerK+0/JwQT8c6Bz7pcoZS6+Pw0corvo4tJmbFmgjGUjEc7HxEnWYcN1us+xgBmmUR9l1Zp1XjQGdVFd9e0xJmOJ3pT63IbZOSbOXmaJnr2ceyECI7M5Akjdp+hlBerHpcplZZicNQ== mstyles@wikimedia.org]
+    uid: 22524
+    email: mstyles@wikimedia.org
   tjones:
     ensure: present
     gid: 500
