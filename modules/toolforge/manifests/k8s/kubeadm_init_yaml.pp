@@ -5,7 +5,7 @@ class toolforge::k8s::kubeadm_init_yaml(
     Stdlib::Unixpath    $k8s_etcd_cert_priv,
     Stdlib::Unixpath    $k8s_etcd_cert_ca,
     Array[Stdlib::Fqdn] $etcd_hosts,
-    String              $kubernetes_version = '1.15.1',
+    String              $kubernetes_version = '1.15.5',
     String              $node_token = undef,
 ) {
     require ::toolforge::k8s::kubeadm
