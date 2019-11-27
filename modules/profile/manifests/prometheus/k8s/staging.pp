@@ -160,6 +160,11 @@ class profile::prometheus::k8s::staging (
                     'regex'         => true,
                 },
                 {
+                    'action'        => 'drop',
+                    'source_labels' => ['envoy_cluster_name'],
+                    'regex'         => '^admin_interface$',
+                },
+                {
                     'action'        => 'replace',
                     'source_labels' => ['__meta_kubernetes_pod_annotation_prometheus_io_path'],
                     'target_label'  => '__metrics_path__',

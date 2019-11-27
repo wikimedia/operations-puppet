@@ -213,6 +213,11 @@ class profile::prometheus::k8s (
                     'regex'         => true,
                 },
                 {
+                    'action'        => 'drop',
+                    'source_labels' => ['envoy_cluster_name'],
+                    'regex'         => '^admin_interface$',
+                },
+                {
                     'action'        => 'replace',
                     'source_labels' => ['__address__', '__meta_kubernetes_pod_annotation_envoyproxy_io_port'],
                     'regex'         => '([^:]+)(?::\d+)?;(\d+)',
