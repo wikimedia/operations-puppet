@@ -258,6 +258,29 @@ class profile::prometheus::alerts (
         retries         => 2,
         # Icinga will query the site-local Prometheus 'global' instance
         prometheus_url  => "http://prometheus.svc.${::site}.wmnet/global",
+        notes_link      => 'https://wikitech.wikimedia.org/wiki/Prometheus#Prometheus_job_unavailable',
+    }
+
+    # Check metrics from Prometheus exporters about the underlying service
+    # health (e.g. was the exporter able to gather metrics from the service?)
+    # Upon changing this list the expression on this panel needs updating too:
+    # https://grafana.wikimedia.org/d/NEJu05xZz/prometheus-targets?orgId=1&fullscreen&panelId=5
+    [ 'apache_up', 'elasticsearch_node_stats_up', 'etherpad_up',
+      'haproxy_up', 'ipsec_up', 'mcrouter_up',
+      'memcached_up', 'mysql_up', 'nutcracker_up', 'openldap_up',
+      'pg_up', 'phpfpm_up', 'redis_up', 'varnish_up' ].each |String $metric| {
+        monitoring::check_prometheus { "${metric}_unavailable":
+            description     => "${metric} has reduced availability",
+            dashboard_links => ['https://grafana.wikimedia.org/d/NEJu05xZz/prometheus-targets'],
+            query           => "sum(${metric}) / count(${metric})",
+            warning         => 0.9,
+            critical        => 0.8,
+            method          => 'le',
+            retries         => 2,
+            # Icinga will query the site-local Prometheus 'global' instance
+            prometheus_url  => "http://prometheus.svc.${::site}.wmnet/global",
+            notes_link      => 'https://wikitech.wikimedia.org/wiki/Prometheus#Prometheus\'_exporters_"up"_metrics_unavailable',
+        }
     }
 
     # Perform aggregate ipsec checks per-datacenter (site) to ease downtimes/maintenance
