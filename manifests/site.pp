@@ -469,10 +469,6 @@ node /^db1(085|088|093)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
 
-node 'db1061.eqiad.wmnet' {
-    role(spare::system)
-}
-
 # s6 core production dbs on codfw
 # codfw master
 node 'db2129.codfw.wmnet' {
