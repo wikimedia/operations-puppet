@@ -3081,10 +3081,10 @@ host labmon1001 {
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
 }
 
-host labmon1002 {
+host cloudmetrics1002 {
     hardware ethernet 30:e1:71:70:1b:d4;
-    fixed-address labmon1002.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
+    fixed-address cloudmetrics1002.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host cloudservices1003 {

@@ -32,7 +32,7 @@ profile::puppetmaster::frontend::allow_from: [.wmflabs]
 puppetmaster: cloudinfra-internal-puppetmaster01.cloudinfra.eqiad.wmflabs
 puppetmaster::hiera_config: labs
 puppetmaster::enable_geoip: false
-profile::openstack::eqiad1::statsd_host: labmon1002.eqiad.wmnet
+profile::openstack::eqiad1::statsd_host: cloudmetrics1002.eqiad.wmnet
 puppetmaster::locale_servers:
   cloud-puppetmaster-01.cloudinfra.eqiad.wmflabs: cloud-puppetmaster-04.cloudinfra.eqiad.wmflabs
 profile::puppetmaster::frontend::canary_hosts:
