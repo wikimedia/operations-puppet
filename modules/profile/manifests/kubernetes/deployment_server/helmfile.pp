@@ -89,12 +89,19 @@ class profile::kubernetes::deployment_server::helmfile(
                     content => template('profile/kubernetes/deployment_server_general.yaml.erb')
                 }
                 # write private section only if there is any secret defined.
-                if $data[$environment] {
+                $raw_data = $data[$environment]
+                if $raw_data {
+                    # Substitute the value of any key in the form <somekey>: secret__<somevalue>
+                    # with <somekey>: secret(<somevalue>)
+                    # This allows to avoid having to copy/paste certs inside of yaml files directly,
+                    # for example.
+                    $secret_data = wmflib::inject_secret($raw_data)
+
                     file { "${secrets_dir}/secrets.yaml":
                         owner   => $data['owner'],
                         group   => $data['group'],
                         mode    => $data['mode'],
-                        content => ordered_yaml($data[$environment]),
+                        content => ordered_yaml($secret_data),
                         require => [ Git::Clone['operations/deployment-charts'], File[$secrets_dir], ]
                     }
                 }
