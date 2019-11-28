@@ -54,15 +54,26 @@ if ( $statsd_host && $statsd_port ) {
 	@socket_sendto( $sock, $stat, strlen( $stat ), 0, $statsd_host, $statsd_port );
 }
 
-ob_start();
-debug_print_backtrace( DEBUG_BACKTRACE_IGNORE_ARGS, 500 );
-$trace = ob_get_clean();
-
-// Remove the first line which just says "#0 unknown"
-$newlinePos = strpos( $trace, "\n" );
-if ( $newlinePos !== false && $newlinePos < strlen( $trace ) - 1 ) {
-	$trace = substr( $trace, $newlinePos + 1 );
+// Obtain a trace
+// Based on mediawiki-core: MWExceptionHandler::prettyPrintTrace()
+$traceData = debug_backtrace( DEBUG_BACKTRACE_IGNORE_ARGS, 500 );
+$trace = '';
+foreach ( $traceData as $level => $frame ) {
+	if ( isset( $frame['file'] ) && isset( $frame['line'] ) ) {
+		$trace .= "#{$level} {$frame['file']}({$frame['line']}): ";
+	} else {
+		$trace .= "#{$level} [internal function]: ";
+	}
+	if ( isset( $frame['class'] ) && isset( $frame['type'] ) && isset( $frame['function'] ) ) {
+		$trace .= $frame['class'] . $frame['type'] . $frame['function'];
+	} elseif ( isset( $frame['function'] ) ) {
+		$trace .= $frame['function'];
+	} else {
+		$trace .= 'NO_FUNCTION_GIVEN';
+	}
+	$trace .= "()\n";
 }
+unset( $traceData, $level, $frame );
 
 // Should match the structure of exceptions logged by MediaWiki core.
 // so that it blends in with its log channel and the Logstash dashboards
