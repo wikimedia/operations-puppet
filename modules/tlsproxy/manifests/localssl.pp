@@ -94,7 +94,7 @@ define tlsproxy::localssl(
     Array[Stdlib::Host]    $server_aliases    = [],
     Boolean                $default_server    = false,
     Stdlib::IP::Address    $upstream_ip       = $::ipaddress,
-    Array[Stdlib::Port]    $upstream_ports    = ['80'],
+    Array[Stdlib::Port]    $upstream_ports    = [80],
     Stdlib::Port           $tls_port          = 443,
     Optional[Stdlib::Port] $redir_port        = undef,
     Boolean                $do_ocsp           = false,

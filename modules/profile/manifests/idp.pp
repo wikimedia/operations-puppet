@@ -19,7 +19,7 @@ class profile::idp(
     include passwords::ldap::production
     class{ 'sslcert::dhparam': }
     tlsproxy::localssl {'idp':
-        upstream_ports  => ['8080'],
+        upstream_ports  => [8080],
         default_server  => true,
         acme_chief      => true,
         ssl_ecdhe_curve => false,
