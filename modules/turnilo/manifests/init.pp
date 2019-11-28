@@ -29,16 +29,6 @@ class turnilo(
     $scap_repo         = 'analytics/turnilo/deploy',
 ) {
 
-    # Nodejs 10 upgrade - T210705
-    if os_version('debian == stretch') {
-        apt::repository { 'wikimedia-node10':
-            uri        => 'http://apt.wikimedia.org/wikimedia',
-            dist       => 'stretch-wikimedia',
-            components => 'component/node10',
-            before     => Package['nodejs'],
-        }
-    }
-
     package { ['nodejs', 'firejail']:
         ensure => 'present'
     }
@@ -91,6 +81,7 @@ class turnilo(
         readable_by => 'all',
         base_dir    => '/var/log',
         group       => 'root',
+        force_stop  => true,
     }
 
     systemd::service { 'turnilo':
