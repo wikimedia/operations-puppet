@@ -270,7 +270,7 @@ class profile::prometheus::alerts (
       'memcached_up', 'mysql_up', 'nutcracker_up', 'openldap_up',
       'pg_up', 'phpfpm_up', 'redis_up', 'varnish_up' ].each |String $metric| {
         monitoring::check_prometheus { "${metric}_unavailable":
-            description     => "${metric} has reduced availability",
+            description     => "${metric} reduced availability",
             dashboard_links => ['https://grafana.wikimedia.org/d/NEJu05xZz/prometheus-targets'],
             query           => "sum(${metric}) / count(${metric})",
             warning         => 0.9,
@@ -279,7 +279,7 @@ class profile::prometheus::alerts (
             retries         => 2,
             # Icinga will query the site-local Prometheus 'global' instance
             prometheus_url  => "http://prometheus.svc.${::site}.wmnet/global",
-            notes_link      => 'https://wikitech.wikimedia.org/wiki/Prometheus#Prometheus\'_exporters_"up"_metrics_unavailable',
+            notes_link      => 'https://wikitech.wikimedia.org/wiki/Prometheus#Prometheus_exporters_"up"_metrics_unavailable',
         }
     }
 
