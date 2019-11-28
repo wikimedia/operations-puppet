@@ -111,7 +111,8 @@ class netops::monitoring {
         'msw1-codfw'    => { ipv4 => '10.193.0.3',   parents => ['mr1-codfw'], vcp => false },
         'fasw-c-codfw'  => { ipv4 => '10.193.0.57',  parents => ['pfw3-codfw'] },
         # esams
-        'asw2-esams.mgmt.esams.wmnet'     => { ipv4 => '10.21.0.8',  parents => ['cr3-esams', 'cr2-esams'] },
+        # fully qualified due to a more recent JunOS; see PR1383295
+        'asw2-esams.mgmt.esams.wmnet' => { ipv4 => '10.21.0.8',  parents => ['cr3-esams', 'cr2-esams'] },
         # ulsfo
         'asw2-ulsfo'    => { ipv4 => '10.128.128.7', parents => ['cr3-ulsfo', 'cr4-ulsfo'] },
         # eqsin
@@ -123,6 +124,7 @@ class netops::monitoring {
     $atlas = {
         'ripe-atlas-eqiad' => { ipv4 => '208.80.155.69',  ipv6 => '2620:0:861:202:208:80:155:69', parents => ['asw2-b-eqiad'] },
         'ripe-atlas-codfw' => { ipv4 => '208.80.152.244', ipv6 => '2620:0:860:201:208:80:152:244', parents => ['asw-a-codfw'] },
+        'ripe-atlas-esams' => { ipv4 => '91.198.174.132', ipv6 => '2620:0:862:201:91:198:174:132', parents => ['asw2-esams.mgmt.esams.wmnet'] },
         'ripe-atlas-ulsfo' => { ipv4 => '198.35.26.244',  ipv6 => '2620:0:863:201:198:35:26:244', parents => ['asw2-ulsfo'] },
         'ripe-atlas-eqsin' => { ipv4 => '103.102.166.20', ipv6 => '2001:df2:e500:201:103:102:166:20', parents => ['asw1-eqsin'] },
     }
@@ -132,6 +134,7 @@ class netops::monitoring {
     $atlas_measurements = {
         'eqiad' => { ipv4 => '1790945', ipv6 => '1790947', },
         'codfw' => { ipv4 => '1791210', ipv6 => '1791212', },
+        'esams' => { ipv4 => '23449935', ipv6 => '23449938', },
         'ulsfo' => { ipv4 => '1791307', ipv6 => '1791309', },
         # eqsin IPv6 is allowed more permitted failures, as it is noisy.
         'eqsin' => { ipv4 => '11645085', ipv6 => '11645088', ipv6_failures => 50, },
