@@ -597,9 +597,7 @@ node 'db1132.eqiad.wmnet' {
 
 # db2067 will be decommissioned # T238183 T233185
 node 'db2067.codfw.wmnet' {
-    class { '::role::mariadb::misc':
-        shard => 'm2',
-    }
+    role(spare::system)
 }
 
 node 'db2133.codfw.wmnet' {
