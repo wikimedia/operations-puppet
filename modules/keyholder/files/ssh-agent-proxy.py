@@ -119,6 +119,11 @@ def get_key_perms(auth_dir, key_dir):
 class SshAgentProxyServer(socketserver.ThreadingUnixStreamServer):
     """A threaded server that listens on a UNIX domain socket and handles
     requests by filtering them and proxying them to a backend SSH agent."""
+    # Mark threads as daemon in order to prevent Python 3.7+ classes that
+    # inherit from ThreadingMixIn to keep track of each created thread to be
+    # able to wait for them on exit, hence creating a memory leak during the
+    # daemon lifetime.
+    daemon_threads = True
 
     def __init__(self, server_address, agent_address, key_perms):
         super().__init__(server_address, SshAgentProxyHandler)
