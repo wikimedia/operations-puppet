@@ -23,6 +23,11 @@
 #
 # [*max_latency*]
 #   Maximum RTT between current cluster nodes. Required
+# [*adv_client_port*]
+#   Port to advertise to clients. If you're using an auth/TLS terminator
+#   (as we do in v2 for RBAC) you will need to advertise its port to the public
+#   rather than port 2379 (where etcd listens). Required
+#
 class profile::etcd::v3(
     # Configuration
     String $cluster_name = hiera('profile::etcd::v3::cluster_name'),
@@ -31,6 +36,7 @@ class profile::etcd::v3(
     Boolean $use_client_certs = hiera('profile::etcd::v3::use_client_certs'),
     String $allow_from = hiera('profile::etcd::v3::allow_from'),
     Integer $max_latency = hiera('profile::etcd::v3::max_latency'),
+    Stdlib::Port $adv_client_port = lookup('profile::etcd::v3::adv_client_port')
 ) {
     # Parameters mangling
     $cluster_state = $cluster_bootstrap ? {
@@ -51,9 +57,6 @@ class profile::etcd::v3(
     $adv_client_port = 4001
 
     # Service
-    # Until we're able to move to v3, we're going to serve
-    # the v2 store on port 4001, proxied by nginx that does all the
-    # auth stuff for etcd.
     class { '::etcd::v3':
         cluster_name     => $cluster_name,
         cluster_state    => $cluster_state,

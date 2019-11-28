@@ -6,6 +6,7 @@ profile::etcd::v3::discovery: "dns:v3.%{::domain}"
 profile::etcd::v3::use_client_certs: false
 profile::etcd::v3::allow_from: "$DOMAIN_NETWORKS"
 profile::etcd::v3::max_latency: 10
+profile::etcd::v3::adv_client_port: 4001
 # This cert is generated using puppet-ecdsacert, and includes
 # all the hostnames for the etcd machines in the SANs
 # Will need to be regenerated if we add servers to the cluster.
