@@ -207,6 +207,12 @@ class profile::prometheus::k8s::staging (
                 },
             ],
         },
+        {
+            'job_name'        => 'calico-felix',
+            'file_sd_configs' =>  [
+                { 'files' =>  [ "${targets_path}/calico-felix_*.yaml" ] },
+            ],
+        },
     ]
 
     prometheus::server { 'k8s-staging':
@@ -225,6 +231,13 @@ class profile::prometheus::k8s::staging (
     prometheus::rule { 'rules_k8s-staging.yml':
         instance => 'k8s-staging',
         source   => 'puppet:///modules/profile/prometheus/rules_k8s.yml',
+    }
+
+    prometheus::class_config { 'calico-felix-staging':
+        dest       => "${targets_path}/calico-felix_${::site}.yaml",
+        site       => $::site,
+        class_name => 'role::kubernetes::staging::worker',
+        port       => 9091,
     }
 
     file { $bearer_token_file:
