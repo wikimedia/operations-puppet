@@ -626,9 +626,9 @@ node 'db2134.codfw.wmnet' {
     role(mariadb::misc::phabricator)
 }
 
-# T234826
+## Analytics Backup Multi-instance
 node 'db1108.eqiad.wmnet' {
-    role(insetup)
+    role(mariadb::misc::analytics::backup)
 }
 
 ## m5 shard
