@@ -358,7 +358,14 @@ define trafficserver::instance(
     }
 
     ## Service
-    $do_ocsp = !empty($inbound_tls_settings) and num2bool($inbound_tls_settings['do_ocsp']) # used in the systemd template
+    $do_ocsp = !empty($inbound_tls_settings) and num2bool($inbound_tls_settings['do_ocsp'])
+    # We only need to update prefetched OCSP staples iff non-acme chief certificates
+    # are being deployed in the server
+    if $do_ocsp {
+        $update_ocsp = $inbound_tls_settings['certificates'].any |$certificate| { !$certificate['acme_chief'] } # used in the systemd template
+    } else {
+        $update_ocsp = false
+    }
 
     systemd::service { $service_name:
         content        => init_template('trafficserver', 'systemd_override'),

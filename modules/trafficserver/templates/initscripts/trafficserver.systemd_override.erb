@@ -1,5 +1,5 @@
 [Service]
-<% if @do_ocsp -%>
+<% if @update_ocsp -%>
 ExecStartPre=/usr/local/sbin/update-ocsp-all
 <% end -%>
 ExecStart=
