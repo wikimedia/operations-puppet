@@ -84,14 +84,15 @@ cat $allList | while read wiki; do
 			filename="$wiki-$today-cirrussearch-$type"
 			targetFile="$targetDir/$filename.json.gz"
 			if [ "$dryrun" == "true" ]; then
-				echo "$php $multiVersionScript extensions/CirrusSearch/maintenance/dumpIndex.php --wiki=$wiki --indexType=$type 2> /var/log/cirrusdump/cirrusdump-$filename.log | $gzip > $targetFile"
+				echo "$php $multiVersionScript extensions/CirrusSearch/maintenance/dumpIndex.php --wiki=$wiki --indexType=$type 2> /var/log/cirrusdump/cirrusdump-$filename.log | $gzip > ${targetFile}.tmp"
 			else
 				$php $multiVersionScript \
 					extensions/CirrusSearch/maintenance/dumpIndex.php \
 					--wiki=$wiki \
 					--indexType=$type \
 					2> /var/log/cirrusdump/cirrusdump-$filename.log \
-					| $gzip > $targetFile
+					| $gzip > ${targetFile}.tmp
+				mv ${targetFile}.tmp $targetFile
 			fi
 		done
 	fi
@@ -106,7 +107,7 @@ for cluster in $clusters; do
 	filename="cirrus-metastore-$cluster-$today"
 	targetFile="$targetDir/$filename.json.gz"
 	if [ "$dryrun" == "true" ]; then
-		echo "$php $multiVersionScript extensions/CirrusSearch/maintenance/metastore.php --wiki=metawiki --dump --cluster=$cluster 2>> /var/log/cirrusdump/cirrusdump-$filename.log | $gzip > $targetFile"
+		echo "$php $multiVersionScript extensions/CirrusSearch/maintenance/metastore.php --wiki=metawiki --dump --cluster=$cluster 2>> /var/log/cirrusdump/cirrusdump-$filename.log | $gzip > ${targetFile}.tmp"
 	else
 		$php $multiVersionScript \
 			extensions/CirrusSearch/maintenance/metastore.php \
@@ -114,7 +115,8 @@ for cluster in $clusters; do
 			--dump \
 			--cluster=$cluster \
 			2>> /var/log/cirrusdump/cirrusdump-$filename.log \
-			| $gzip > $targetFile
+			| $gzip > ${targetFile}.tmp
+		mv ${targetFile}.tmp $targetFile
 	fi
 done
 
