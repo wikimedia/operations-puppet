@@ -1418,6 +1418,23 @@ class profile::prometheus::ops (
         port       => 9106,
     }
 
+    $apereo_cas_jobs = [
+        {
+            'job_name'        => 'idp',
+            'metrics_path'    => '/actuator/prometheus',
+            'scheme'          => 'https',
+            'file_sd_configs' => [
+                { 'files' => [ "${targets_path}/apereo_cas_exporter_${::site}.yaml" ] }
+            ],
+        }
+    ]
+    prometheus::class_config{ "apereo_cas_exporter_${::site}":
+        dest       => "${targets_path}/apereo_cas_exporter_${::site}.yaml",
+        site       => $::site,
+        class_name => 'role::idp',
+        port       => 443,
+    }
+
     prometheus::server { 'ops':
         listen_address        => '127.0.0.1:9900',
         storage_retention     => $storage_retention,
@@ -1434,6 +1451,7 @@ class profile::prometheus::ops (
             $mjolnir_jobs, $rsyslog_jobs, $php_jobs, $php_fpm_jobs, $icinga_jobs, $docker_registry_jobs,
             $gerrit_jobs, $routinator_jobs, $rpkicounter_jobs, $varnishkafka_jobs, $bird_jobs, $ncredir_jobs,
             $cloud_dev_pdns_jobs, $cloud_dev_pdns_rec_jobs, $bacula_jobs, $poolcounter_exporter_jobs,
+            $apereo_cas_jobs,
         ),
         global_config_extra   => $config_extra,
     }
