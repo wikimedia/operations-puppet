@@ -16,24 +16,7 @@ class package_builder(
     class { '::package_builder::environments':
         basepath => $basepath,
     }
-    systemd::timer::job { 'package_builder: Clean up build directory':
-        ensure      => present,
-        description => 'Delete builds older the 2 weeks',
-        command     => "/usr/bin/find ${basepath}/build -type f -daystart -mtime +14 -delete",
-        interval    => {
-            'start'    => 'OnCalendar',
-            'interval' => '*-*-* 2:00:00',  # Every day at 2:00
-        }
-    }
-    systemd::timer::job { 'package_builder: Clean up result directory':
-        ensure      => present,
-        description => 'Delete results older the 6 months',
-        command     => "/usr/bin/find ${basepath}/result -type f -daystart -mtime +180 -delete",
-        interval    => {
-            'start'    => 'OnCalendar',
-            'interval' => '*-*-* 3:00:00',  # Every day at 3:00
-        }
-    }
+
     if os_version('debian == jessie') {
         $php_dev='php5-dev'
         $dh_php='dh-php5'
