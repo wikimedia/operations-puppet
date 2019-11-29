@@ -79,7 +79,7 @@ class keyholder($require_encrypted_keys='yes') {
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
-        notify => Service['keyholder-agent'],
+        notify => Service['keyholder-proxy'],
     }
 
     # The `keyholder-agent` service is responsible for running
