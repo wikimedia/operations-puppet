@@ -197,7 +197,7 @@ class profile::prometheus::alerts (
         method          => 'ge',
         retries         => 2,
         prometheus_url  => "http://prometheus.svc.${::site}.wmnet/ops",
-        notes_link      => 'https://wikitech.wikimedia.org/wiki/Logstash',
+        notes_link      => 'https://wikitech.wikimedia.org/wiki/Logstash#Indexing_errors',
     }
 
     monitoring::check_prometheus { 'kafka logging-eqiad consumer lag':
