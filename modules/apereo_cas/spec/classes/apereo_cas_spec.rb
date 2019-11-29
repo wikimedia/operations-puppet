@@ -157,7 +157,7 @@ describe 'apereo_cas' do
                management.endpoints.web.exposure.include=prometheus\n
                management.endpoint.prometheus.enabled=true\n
                cas.monitor.endpoints.endpoint.prometheus.access=IP_ADDRESS\n
-               cas.monitor.endpoints.endpoint.prometheus.requiredIpAddresses=208.80.153.231,208.80.154.238\n
+              cas.monitor.endpoints.endpoint.prometheus.requiredIpAddresses=127.0.0.1,208.80.153.231,208.80.154.238\n
               /x
             )
           end
