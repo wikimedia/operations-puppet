@@ -1,0 +1,2 @@
+prometheus::node_exporter::collectors_extra:
+  - qdisc
