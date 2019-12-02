@@ -38,6 +38,10 @@ class profile::idp(
 
     backup::set { 'idp': }
 
+    $jmx_port = 9200
+    $jmx_config = '/etc/prometheus/cas_jmx_exporter.yaml'
+    $jmx_jar = '/usr/share/java/prometheus/jmx_prometheus_javaagent.jar'
+    $java_opts = "-javaagent:${jmx_jar}=${facts['networking']['ip']}:${jmx_port}:${jmx_config}"
     $groovy_source = 'puppet:///modules/profile/idp/global_principal_attribute_predicate.groovy'
     class { 'apereo_cas':
         server_name            => 'https://idp.wikimedia.org',
@@ -69,5 +73,15 @@ class profile::idp(
         services               => $services,
         idp_primary            => $idp_primary,
         idp_failover           => $idp_failover,
+        java_opts              => $java_opts,
     }
+    profile::prometheus::jmx_exporter{ "idp_${facts['networking']['hostname']}":
+        hostname         => $facts['networking']['hostname'],
+        port             => $jmx_port,
+        prometheus_nodes => $prometheus_nodes,
+        config_dir       => $jmx_config.dirname,
+        config_file      => $jmx_config,
+        source           => file('profile/idp/cas_jmx_exporter.yaml'),
+    }
+
 }

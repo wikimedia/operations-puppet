@@ -46,6 +46,7 @@ class apereo_cas (
     Hash[String, Hash]            $services               = {},
     Optional[Stdlib::Fqdn]        $idp_primary            = undef,
     Optional[Stdlib::Fqdn]        $idp_failover           = undef,
+    Optional[String[1]]           $java_opts              = undef,
 ) {
     if $keystore_source == undef and $keystore_content == undef {
         error('you must provide either $keystore_source or $keystore_content')
