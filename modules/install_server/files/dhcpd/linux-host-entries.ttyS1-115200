@@ -2124,6 +2124,7 @@ host dns4001 {
 host dns4002 {
     hardware ethernet F4:E9:D4:BA:BF:70;
     fixed-address dns4002.wikimedia.org;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host dns5001 {
