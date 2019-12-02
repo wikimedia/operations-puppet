@@ -1426,6 +1426,9 @@ class profile::prometheus::ops (
             'file_sd_configs' => [
                 { 'files' => [ "${targets_path}/apereo_cas_exporter_${::site}.yaml" ] }
             ],
+            'tls_config'        => {
+                'server_name'   => 'idp.wikimedia.org',
+            },
         }
     ]
     prometheus::class_config{ "apereo_cas_exporter_${::site}":
