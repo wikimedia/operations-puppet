@@ -126,6 +126,8 @@ def main():
                     logger.warning('DBList "%s" not found', svc)
                 else:
                     for wikidb in dblist.text.splitlines():
+                        if wikidb.startswith('#'):
+                            continue
                         db_fqdn = '{}.{}'.format(wikidb, zone)
                         dns.ensure_recordset(zone_id, db_fqdn, 'CNAME', [fqdn])
                         # Take a small break to be nicer to Designate
