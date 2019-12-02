@@ -2,6 +2,7 @@ class k8s::proxy(
     String $master_host,
     String $proxy_mode = 'iptables',
     Boolean $masquerade_all = true,
+    String $metrics_bind_address = '127.0.0.1',
     String $kubeconfig = '/etc/kubernetes/kubeconfig',
 ) {
     require_package('kubernetes-node')

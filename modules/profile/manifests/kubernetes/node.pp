@@ -21,6 +21,7 @@ class profile::kubernetes::node(
     $kubeproxy_username = hiera('profile::kubernetes::node::kubeproxy_username', undef),
     $kubeproxy_token = hiera('profile::kubernetes::node::kubeproxy_token', undef),
     Boolean $rsyslog_hard_disable = lookup('profile::kubernetes::node::disable_rsyslog', {default_value => false}),
+    String $kubeproxy_metrics_bind_address = lookup('profile::kubernetes::node::kubeproxy_metrics_bind_address', {default_value => '127.0.0.1'}),
 ) {
     # Local logging to syslog file must be disabled in Cloud/Toolforge
     unless $rsyslog_hard_disable {
@@ -83,10 +84,11 @@ class profile::kubernetes::node(
     }
 
     class { '::k8s::proxy':
-        master_host    => $master_fqdn,
-        masquerade_all => $masquerade_all,
-        kubeconfig     => $kubeproxy_config,
-        require        => Class['::k8s::infrastructure_config'],
+        master_host          => $master_fqdn,
+        masquerade_all       => $masquerade_all,
+        metrics_bind_address => $kubeproxy_metrics_bind_address,
+        kubeconfig           => $kubeproxy_config,
+        require              => Class['::k8s::infrastructure_config'],
     }
 
     # Set the host as a router for IPv6 in order to allow pods to have an IPv6
@@ -118,6 +120,11 @@ class profile::kubernetes::node(
             ferm::service { 'kubelet-http-readonly-prometheus':
                 proto  => 'tcp',
                 port   => '10255',
+                srange => "(@resolve((${prometheus_ferm_nodes})) @resolve((${prometheus_ferm_nodes}), AAAA))"
+            }
+            ferm::service { 'kube-proxy-http-readonly-prometheus':
+                proto  => 'tcp',
+                port   => '10249',
                 srange => "(@resolve((${prometheus_ferm_nodes})) @resolve((${prometheus_ferm_nodes}), AAAA))"
             }
         }
