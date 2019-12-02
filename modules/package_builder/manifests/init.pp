@@ -23,7 +23,7 @@ class package_builder(
         command     => "/usr/bin/find ${basepath}/build -type f -daystart -mtime +14 -delete",
         interval    => {
             'start'    => 'OnCalendar',
-            'interval' => '*-*-* 2:00:00',  # Every day at 2:00
+            'interval' => '*-*-* 02:00:00',  # Every day at 2:00
         }
     }
     systemd::timer::job { 'package_builder: Clean up result directory':
@@ -33,7 +33,7 @@ class package_builder(
         command     => "/usr/bin/find ${basepath}/result -type f -daystart -mtime +180 -delete",
         interval    => {
             'start'    => 'OnCalendar',
-            'interval' => '*-*-* 3:00:00',  # Every day at 3:00
+            'interval' => '*-*-* 03:00:00',  # Every day at 3:00
         }
     }
     if os_version('debian == jessie') {
