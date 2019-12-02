@@ -9,7 +9,33 @@ class elasticsearch::packages (
 ) {
     include ::java::tools
 
-    require_package($java_package)
+    if os_version('debian == buster') and $java_package == 'openjdk-8-jdk' {
+
+        apt::repository { 'openjdk-8':
+            uri        => 'http://apt.wikimedia.org/wikimedia',
+            dist       => 'buster-wikimedia',
+            components => 'component/jdk8',
+            notify     => Exec['apt_update_java8'],
+        }
+
+        exec {'apt_update_java8':
+            command     => '/usr/bin/apt-get update',
+            refreshonly => true,
+        }
+
+        package { 'openjdk-8-jdk':
+            ensure  => present,
+            require => [
+                Apt::Repository['openjdk-8'],
+                Exec['apt_update_java8'],
+            ],
+        }
+
+    } else {
+
+        require_package($java_package)
+
+    }
 
     package { 'elasticsearch':
         ensure  => present,
