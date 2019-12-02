@@ -216,7 +216,7 @@ while [ 1 ]; do
     if [ "$do_rsync_xml" ]; then
 
         # rsync of xml/sql dumps for public wikis
-        for dest in $xmlremotedirs_list; do
+        for dest in ${xmlremotedirs_list[@]}; do
             # do this for each remote; if we do it once and then do all the rsyncs
             # back to back, the status files in the tarball may be quite stale
             # by the time they arrive at the last host
@@ -247,7 +247,7 @@ while [ 1 ]; do
 
        # rsync of misc dumps to public-facing hosts, not necessarily to/from the same tree as the public wikis
        # these hosts must get all the contents we have available
-       for dest in $miscremotedirs_list; do
+       for dest in ${miscremotedirs_list[@]}; do
            if [ "$dryrun" ]; then
                echo /usr/bin/rsync -a  --contimeout=600 --timeout=600 --bwlimit=$BWLIMIT ${miscdumpsdir}/* "$dest"
            else
@@ -261,7 +261,7 @@ while [ 1 ]; do
        # rsync of limited subdirs of misc dumps to internal, not necessarily to/from the same tree as the public wikis
        # these internal hosts only need data they will use in future misc dumps generation, not the entire tree
        for subdir in $miscsubdirs_list; do
-	   for dest in $miscremotesubs_list; do
+	   for dest in ${miscremotesubs_list[@]}; do
                if [ "$dryrun" ]; then
                    echo /usr/bin/rsync -a  --contimeout=600 --timeout=600 --bwlimit=$BWLIMIT ${miscdumpsdir}/${subdir} "$dest"
                else
