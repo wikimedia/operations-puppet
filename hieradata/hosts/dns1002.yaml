@@ -2,3 +2,4 @@ profile::base::nameservers:
   - '208.80.154.10'  # dns1001
   - '208.80.153.77'  # dns2001
   - '208.80.153.111' # dns2002
+profile::dnsbox::include_auth: true
