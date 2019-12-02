@@ -49,30 +49,6 @@ class openstack::util::admin_scripts(
         source => "puppet:///modules/openstack/${version}/admin_scripts/wmcs-live-migrate.py",
     }
 
-    file { '/root/wmcs-nova-quota-sync':
-        ensure => 'directory',
-        owner  => 'root',
-    }
-
-    # Script to check and/or fix quotas.  With luck this won't be
-    #  needed in Pike or later.
-    file { '/usr/local/sbin/wmcs-nova-quota-sync':
-        ensure => 'present',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-        source => "puppet:///modules/openstack/${version}/admin_scripts/wmcs-nova-quota-sync/wmcs-nova-quota-sync.py",
-    }
-
-    file { '/root/wmcs-nova-quota-sync/readme.md':
-        ensure  => 'present',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0555',
-        source  => "puppet:///modules/openstack/${version}/admin_scripts/wmcs-nova-quota-sync/readme.md",
-        require => File['/root/wmcs-nova-quota-sync'],
-    }
-
     # Set up keystone services (example script)
     file { '/root/wmcs-prod-example.sh':
         ensure => 'present',
