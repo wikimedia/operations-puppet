@@ -46,6 +46,15 @@ class dumps::nfs(
         options => "nlm_udpport=${lockd_udp} nlm_tcpport=${lockd_tcp}",
     }
 
+    service { 'rpc-statd':
+        ensure    => 'running',
+        enable    => true,
+        require   => [
+            File['/etc/default/nfs-common'],
+        ],
+        subscribe => File['/etc/default/nfs-common'],
+    }
+
     monitoring::service { 'nfs':
         description   => 'NFS',
         check_command => 'check_tcp!2049',
