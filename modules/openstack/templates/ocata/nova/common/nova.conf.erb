@@ -118,16 +118,6 @@ lock_path = /var/lock/nova
 [vnc]
 enabled=False
 
-[spice]
-html5proxy_host=<%= @nova_controller %>
-html5proxy_port=6082
-html5proxy_base_url=https://<%= @spice_hostname %>/spice_sec_auto.html
-server_listen = 0.0.0.0
-server_proxyclient_address = $my_ip
-enabled = true
-agent_enabled=True
-keymap=en-us
-
 [conductor]
 workers = 6
 
