@@ -35,11 +35,12 @@ cas.server.tomcat.httpProxy.protocol=HTTP/1.1
 <%- end -%>
 
 <%- unless @prometheus_nodes.empty? %>
+management.metrics.tags.application=${spring.application.name}
 management.metrics.export.prometheus.enabled=true
 management.endpoints.web.exposure.include=prometheus
 management.endpoint.prometheus.enabled=true
 cas.monitor.endpoints.endpoint.prometheus.access=IP_ADDRESS
-cas.monitor.endpoints.endpoint.prometheus.requiredIpAddresses=127.0.0.1,<%= get_addresses(@prometheus_nodes).join(',') %>
+cas.monitor.endpoints.endpoint.prometheus.requiredIpAddresses=::1,127.0.0.1,<%= get_addresses(@prometheus_nodes).join(',') %>
 <%- end -%>
 
 cas.serviceRegistry.json.location=file:<%= @services_dir %>
