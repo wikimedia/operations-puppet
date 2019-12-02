@@ -41,11 +41,9 @@ remove_unused_base_images=True
 glance_api_servers=<%= @glance_host %>:9292
 
 # APIs
-s3_host=<%= @nova_controller %>
 cc_host=<%= @nova_controller %>
 ec2_url=http://<%= @nova_api_host %>:8773/services/Cloud
 ec2_dmz_host=<%= @nova_api_host_ip %>
-api_paste_config=/etc/nova/api-paste.ini
 enabled_apis = osapi_compute,metadata
 
 # nova-scheduler
@@ -161,3 +159,6 @@ user_domain_name = Default
 auth_url = http://<%= @keystone_host %>:35357/v3
 username = novaadmin
 password = <%= @ldap_user_pass %>
+
+[wsgi]
+api_paste_config=/etc/nova/api-paste.ini
