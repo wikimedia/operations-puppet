@@ -111,6 +111,34 @@ class profile::prometheus::k8s (
             ]
         },
         {
+            'job_name'              => 'k8s-node-proxy',
+            'bearer_token_file'     => $bearer_token_file,
+            'kubernetes_sd_configs' => [
+                {
+                    'api_server'        => "https://${master_host}:6443",
+                    'bearer_token_file' => $bearer_token_file,
+                    'role'              => 'node',
+                },
+            ],
+            'relabel_configs'       => [
+                # Map kubernetes node labels to prometheus metric labels
+                {
+                    'action' => 'labelmap',
+                    'regex'  => '__meta_kubernetes_node_label_(.+)',
+                },
+                {
+                    # Force read-only API for talking to kubeproxy. Listens on
+                    # port 10249 so rewrite the __address__ label to use that
+                    # port. It's also HTTP, not HTTPS
+                    'action'        => 'replace',  # Redundant but clearer
+                    'source_labels' => ['__address__'],
+                    'target_label'  => '__address__',
+                    'regex'         => '([\d\.]+):(\d+)',
+                    'replacement'   => "\${1}:10249",
+                },
+            ]
+        },
+        {
             'job_name'              => 'k8s-pods',
             'bearer_token_file'     => $bearer_token_file,
             # Note: We dont verify the cert on purpose. Issues IP SAN based
