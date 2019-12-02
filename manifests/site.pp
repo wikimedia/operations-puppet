@@ -355,6 +355,11 @@ node /^db1(080|089|106|118|119|134)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
 
+# Test host
+node 'db1107.eqiad.wmnet' {
+    role(mariadb::core_test)
+}
+
 # s1 (enwiki) core production dbs on codfw
 # codfw master
 node 'db2112.codfw.wmnet' {
@@ -618,13 +623,7 @@ node 'db2134.codfw.wmnet' {
     role(mariadb::misc::phabricator)
 }
 
-## m4 shard
-
-node 'db1107.eqiad.wmnet' {
-    role(mariadb::misc::eventlogging::master)
-}
-
-# These replicas have an m4 custom replication protocol.
+## Eventlogging shard
 
 node 'db1108.eqiad.wmnet' {
     role(mariadb::misc::eventlogging::replica)

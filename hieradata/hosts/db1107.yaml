@@ -1,0 +1,4 @@
+# db1107
+mariadb::shard: 'test-s1'
+mariadb::package: 'wmf-mariadb103'
+profile::base::notifications: disabled
