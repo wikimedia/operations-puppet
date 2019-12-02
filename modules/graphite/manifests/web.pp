@@ -66,7 +66,14 @@ class graphite::web(
     validate_bool($remote_user_auth)
 
     require_package('memcached')
-    require_package('python-memcache')
+
+    $python_version = $::lsbdistcodename ? {
+        buster  => 'python3',
+        stretch => 'python',
+        jessie  => 'python',
+    }
+
+    require_package("${python_version}-memcache")
     require_package('libapache2-mod-uwsgi')
 
     # graphite >= 1.0 is in backports (>= stretch)
@@ -109,7 +116,7 @@ class graphite::web(
         subscribe => File['/etc/graphite/local_settings.py'],
         creates   => '/var/lib/graphite-web/graphite.db',
         require   => [
-            Package['graphite-web', 'python-memcache'],
+            Package['graphite-web', "${python_version}-memcache"],
             File['/var/lib/graphite-web'],
         ],
     }
@@ -132,7 +139,7 @@ class graphite::web(
             # So, some messy stuff to only include our optional configuration settings iff
             # they are provided.
             uwsgi => merge({
-                'plugins'   => 'python',
+                'plugins'   => $python_version,
                 'socket'    => '/run/uwsgi/graphite-web.sock',
                 'stats'     => '/run/uwsgi/graphite-web-stats.sock',
                 'wsgi-file' => '/usr/share/graphite-web/graphite.wsgi',

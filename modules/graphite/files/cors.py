@@ -7,11 +7,18 @@
 
 """
 import re
+import django
 
 from django.conf import settings
 
+if django.VERSION >= (1, 10):
+    from django.utils.deprecation import MiddlewareMixin
+    middleware_base_class = MiddlewareMixin
+else:
+    middleware_base_class = object
 
-class CorsMiddleware(object):
+
+class CorsMiddleware(middleware_base_class):
     """Django middleware for adding CORS headers to responses."""
     def process_response(self, request, response):
         origin = request.META.get('HTTP_ORIGIN', '')
