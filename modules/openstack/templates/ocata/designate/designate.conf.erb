@@ -20,12 +20,6 @@ state_path = /var/lib/designate
 # Log directory
 log_dir = /var/log/designate
 
-# Driver used for issuing notifications
-notification_driver = messagingv2
-
-# Notification Topics
-notification_topics = notifications
-
 # Use "sudo designate-rootwrap /etc/designate/rootwrap.conf" to use the real
 # root filter facility.
 # Change to "sudo" to skip the filtering and just run the comand directly
@@ -56,7 +50,7 @@ quota_domain_recordsets = 10000
 max_domain_name_len = 255
 
 # Maximum record name length
-max_record_name_len = 255
+max_recordset_name_len = 255
 
 # Minimum TTL
 #min_ttl = None
@@ -316,6 +310,10 @@ puppet_git_repo_key_path = "<%= @puppet_git_repo_key_path %>"
 #control_exchange = 'neutron'
 #format = '%(octet0)s-%(octet1)s-%(octet2)s-%(octet3)s.%(domain)s'
 
+[oslo_messaging_notifications]
+driver = messagingv2
+topics = notifications
+
 [oslo_messaging_rabbit]
 rabbit_hosts=<%= @rabbit_host_primary %>:5672,<%= @rabbit_host_secondary %>:5672
 rabbit_retry_interval=1
@@ -333,7 +331,6 @@ backend_url = memcached://<%= @coordination_host %>:11000
 <% end %>
 
 [service:worker]
-enabled = True
 #workers = None
 #threads = 1000
 #threshold_percentage = 100
