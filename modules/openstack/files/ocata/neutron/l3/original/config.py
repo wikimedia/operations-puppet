@@ -97,10 +97,6 @@ OPTS = [
                help=_('Iptables mangle mark used to mark ingress from '
                       'external network. This mark will be masked with '
                       '0xffff so that only the lower 16 bits will be used.')),
-    cfg.StrOpt('routing_source_ip', default='',
-               help=_('WMF defined src nat IP option')),
-    cfg.StrOpt('dmz_cidr', default='',
-               help=_('WMF defined src nat exclusions "src_range:dst_range,<repeat>')),
 ]
 
 OPTS += config.EXT_NET_BRIDGE_OPTS
