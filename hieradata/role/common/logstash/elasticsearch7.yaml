@@ -19,7 +19,7 @@ profile::elasticsearch::common_settings:
     short_cluster_name: elk7
     awareness_attributes: ''
     expected_nodes: 6
-    heap_memory: '30G'
+    heap_memory: '24G'
     minimum_master_nodes: 2
     recover_after_nodes: 2
     recover_after_time: '1m'
