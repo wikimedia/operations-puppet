@@ -14,9 +14,13 @@
 #   }
 #
 class kibana (
-    $default_app_id = 'dashboard/default'
+    $default_app_id = 'dashboard/default',
+    $kibana_package = 'kibana'
 ) {
-    require_package('kibana')
+    package { 'kibana':
+        ensure => 'present',
+        name   => $kibana_package,
+    }
 
     # ugly hack to solve https://phabricator.wikimedia.org/T192279 / https://github.com/elastic/kibana/issues/12915
     file { '/usr/share/kibana/optimize/bundles/stateSessionStorageRedirect.style.css':
