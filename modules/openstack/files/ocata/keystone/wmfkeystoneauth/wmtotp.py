@@ -62,7 +62,7 @@ class Wmtotp(base.AuthMethodHandler):
 
     method = METHOD_NAME
 
-    def authenticate(self, request, auth_payload, auth_context):
+    def authenticate(self, request, auth_payload):
         """Try to authenticate against the identity backend."""
         response_data = {}
         user_info = auth_plugins.UserAuthInfo.create(auth_payload, self.method)
