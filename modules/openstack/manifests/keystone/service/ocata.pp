@@ -95,5 +95,13 @@ class openstack::keystone::service::ocata(
             mode    => '0644',
             notify  => Service[$wsgi_server],
             recurse => true;
+        '/usr/bin/keystone-wsgi-admin':
+            ensure  => 'present',
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0755',
+            source  => 'puppet:///modules/openstack/ocata/keystone/keystone-wsgi-admin',
+            notify  => Service[$wsgi_server],
+            require => Package['keystone'];
     }
 }

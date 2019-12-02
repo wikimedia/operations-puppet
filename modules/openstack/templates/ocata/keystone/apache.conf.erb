@@ -19,7 +19,7 @@ Listen <%= @admin_bind_port %>
 <VirtualHost *:<%= @admin_bind_port %>>
     WSGIDaemonProcess keystone-admin processes=5 threads=1 user=keystone group=keystone display-name=%{GROUP}
     WSGIProcessGroup keystone-admin
-    WSGIScriptAlias / /usr/bin/keystone-wsgi-admin
+    WSGIScriptAlias / /usr/bin/keystone-wsgi-admin.py
     WSGIApplicationGroup %{GLOBAL}
     WSGIPassAuthorization On
     ErrorLogFormat "%{cu}t %M"
