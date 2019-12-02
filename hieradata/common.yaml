@@ -950,6 +950,7 @@ authdns_servers:
   - 'authdns1001.wikimedia.org'
   - 'authdns2001.wikimedia.org'
   - 'ganeti3003.esams.wmnet'
+  - 'dns3002.wikimedia.org'
   - 'dns4001.wikimedia.org'
   - 'dns4002.wikimedia.org'
 
