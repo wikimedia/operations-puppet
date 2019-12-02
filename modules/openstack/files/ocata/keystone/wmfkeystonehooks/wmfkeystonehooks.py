@@ -30,7 +30,6 @@ from keystone.resource import controllers as resource_controllers
 from keystone.common import controller
 from keystone.common import validation
 from keystone.resource import schema
-from keystone import notifications
 
 import designatemakedomain
 import ldapgroups
@@ -379,12 +378,14 @@ def create_project(self, request, project):
     if not ref.get('parent_id'):
         ref['parent_id'] = ref.get('domain_id')
 
-    initiator = notifications._get_request_audit_info(request.context_dict)
     try:
-        ref = self.resource_api.create_project(ref['id'], ref,
-                                               initiator=initiator)
+        ref = self.resource_api.create_project(
+            ref['id'],
+            ref,
+            initiator=request.audit_initiator)
     except (exception.DomainNotFound, exception.ProjectNotFound) as e:
         raise exception.ValidationError(e)
+
     return resource_controllers.ProjectV3.wrap_member(request.context_dict, ref)
 
 
