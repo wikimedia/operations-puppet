@@ -262,10 +262,11 @@ class profile::prometheus::k8s::staging (
     }
 
     prometheus::class_config { 'calico-felix-staging':
-        dest       => "${targets_path}/calico-felix_${::site}.yaml",
-        site       => $::site,
-        class_name => 'role::kubernetes::staging::worker',
-        port       => 9091,
+        dest           => "${targets_path}/calico-felix_${::site}.yaml",
+        site           => $::site,
+        class_name     => 'role::kubernetes::staging::worker',
+        hostnames_only => false,
+        port           => 9091,
     }
 
     file { $bearer_token_file:

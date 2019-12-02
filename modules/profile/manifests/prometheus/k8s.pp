@@ -262,10 +262,11 @@ class profile::prometheus::k8s (
     }
 
     prometheus::class_config { 'calico-felix':
-        dest       => "${targets_path}/calico-felix_{::site}.yaml",
-        site       => $::site,
-        class_name => 'role::kubernetes::worker',
-        port       => 9091,
+        dest           => "${targets_path}/calico-felix_${::site}.yaml",
+        site           => $::site,
+        class_name     => 'role::kubernetes::worker',
+        hostnames_only => false,
+        port           => 9091,
     }
 
     file { $bearer_token_file:
