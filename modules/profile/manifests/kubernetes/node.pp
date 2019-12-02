@@ -21,7 +21,7 @@ class profile::kubernetes::node(
     $kubeproxy_username = hiera('profile::kubernetes::node::kubeproxy_username', undef),
     $kubeproxy_token = hiera('profile::kubernetes::node::kubeproxy_token', undef),
     Boolean $rsyslog_hard_disable = lookup('profile::kubernetes::node::disable_rsyslog', {default_value => false}),
-    String $kubeproxy_metrics_bind_address = lookup('profile::kubernetes::node::kubeproxy_metrics_bind_address', {default_value => '127.0.0.1'}),
+    Optional[String] $kubeproxy_metrics_bind_address = lookup('profile::kubernetes::node::kubeproxy_metrics_bind_address', {default_value => undef}),
 ) {
     # Local logging to syslog file must be disabled in Cloud/Toolforge
     unless $rsyslog_hard_disable {

@@ -47,7 +47,8 @@ class profile::toolforge::k8s::client(
         }
 
         class { '::k8s::proxy':
-            master_host => $master_host,
+            master_host          => $master_host,
+            metrics_bind_address => undef,
         }
     }
 

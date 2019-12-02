@@ -11,6 +11,8 @@ end
 if @masquerade_all
 	daemon_args.push("--masquerade-all=true")
 end
-daemon_args.push("--metrics-bind-address='#{@metrics_bind_address}'")
+if @metrics_bind_address
+	daemon_args.push("--metrics-bind-address='#{@metrics_bind_address}'")
+end
 -%>
 DAEMON_ARGS="<%= daemon_args.join(' ') %>"

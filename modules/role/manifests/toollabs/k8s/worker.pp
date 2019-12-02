@@ -37,10 +37,11 @@ class role::toollabs::k8s::worker {
 
 
     class { '::profile::kubernetes::node':
-        use_cni        => false,
-        infra_pod      => 'docker-registry.tools.wmflabs.org/pause:2.0',
-        require        => Class[::profile::docker::flannel],
-        prod_firewalls => false,
+        use_cni                        => false,
+        infra_pod                      => 'docker-registry.tools.wmflabs.org/pause:2.0',
+        require                        => Class[::profile::docker::flannel],
+        prod_firewalls                 => false,
+        kubeproxy_metrics_bind_address => undef,
     }
 
     # Firewall!  Kubelet opens some scary ports to the outside world,

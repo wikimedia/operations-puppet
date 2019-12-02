@@ -33,7 +33,8 @@ class profile::toolforge::k8s::webproxy (
     }
 
     class { '::k8s::proxy':
-        master_host => $master_host,
+        master_host          => $master_host,
+        metrics_bind_address => undef,
     }
 
     # The kubelet service is installed automatically as part of the kubernetes-node
