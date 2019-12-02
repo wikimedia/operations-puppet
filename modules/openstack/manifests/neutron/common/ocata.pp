@@ -6,6 +6,7 @@ class openstack::neutron::common::ocata(
     $db_user,
     $db_host,
     $region,
+    $dhcp_domain,
     $ldap_user_pass,
     $rabbit_user,
     $rabbit_pass,

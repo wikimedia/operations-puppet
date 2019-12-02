@@ -1,6 +1,7 @@
 class profile::openstack::eqiad1::neutron::common(
     $version = hiera('profile::openstack::eqiad1::version'),
     $region = hiera('profile::openstack::eqiad1::region'),
+    $dhcp_domain = hiera('profile::openstack::eqiad1::nova::dhcp_domain'),
     $db_pass = hiera('profile::openstack::eqiad1::neutron::db_pass'),
     $db_host = hiera('profile::openstack::eqiad1::neutron::db_host'),
     $nova_controller = hiera('profile::openstack::eqiad1::nova_controller'),
@@ -23,6 +24,7 @@ class profile::openstack::eqiad1::neutron::common(
         db_pass                 => $db_pass,
         db_host                 => $db_host,
         region                  => $region,
+        dhcp_domain             => $dhcp_domain,
         ldap_user_pass          => $ldap_user_pass,
         rabbit_pass             => $rabbit_pass,
         tld                     => $tld,

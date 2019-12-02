@@ -1,6 +1,7 @@
 class profile::openstack::base::neutron::common(
     $version = hiera('profile::openstack::base::version'),
     $region = hiera('profile::openstack::base::region'),
+    $dhcp_domain = hiera('profile::openstack::base::nova::dhcp_domain'),
     $db_user = hiera('profile::openstack::base::neutron::db_user'),
     $db_pass = hiera('profile::openstack::base::neutron::db_pass'),
     $db_host = hiera('profile::openstack::base::neutron::db_host'),
@@ -32,6 +33,7 @@ class profile::openstack::base::neutron::common(
         db_user                 => $db_user,
         db_host                 => $db_host,
         region                  => $region,
+        dhcp_domain             => $dhcp_domain,
         ldap_user_pass          => $ldap_user_pass,
         rabbit_pass             => $rabbit_pass,
         rabbit_user             => $rabbit_user,

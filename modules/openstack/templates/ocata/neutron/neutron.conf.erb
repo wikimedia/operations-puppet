@@ -27,7 +27,7 @@ l3_ha_network_type = vxlan
 # run 2 dhcp agents per for HA
 dhcp_agents_per_network = 2
 
-dns_domain = <%= @tld %>
+dns_domain = <%= @dhcp_domain %>
 
 # https://docs.openstack.org/mitaka/networking-guide/config-az.html#l3-high-availability
 # make routers HA "by default"
