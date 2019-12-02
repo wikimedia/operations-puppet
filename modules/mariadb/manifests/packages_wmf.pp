@@ -6,24 +6,11 @@ class mariadb::packages_wmf(
     $package   = 'undefined',
     ) {
 
-    if os_version('debian == stretch') {
-        require_package (
-            'libaio1',            # missing dependency on packages < 10.0.27
-            'percona-toolkit',
-            'libjemalloc1',       # missing dependency on packages < 10.0.27
-            'grc',
-            'python3-pymysql',    # for mariadb_check.py
-        )
-    }
-    elsif os_version('debian == buster') {
-        require_package (
-            'libaio1',            # missing dependency on packages < 10.0.27
-            'percona-toolkit',
-            'libjemalloc2',       # buster ships libjemalloc2
-            'grc',
-            'python3-pymysql',    # for mariadb_check.py
-        )
-    }
+    require_package (
+        'percona-toolkit',
+        'grc',
+        'python3-pymysql',    # for mariadb_check.py
+    )
 
     # Do not try to install xtrabackup on stretch, it has been removed.
     if os_version('debian < stretch') {
