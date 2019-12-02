@@ -294,7 +294,8 @@ class KeystoneHooks(notifier.Driver):
             CONF.wmfhooks.admin_user,
             CONF.wmfhooks.admin_pass,
             project_id,
-            '{}.wmflabs.org.'.format(project_id)
+            '{}.wmflabs.org.'.format(project_id),
+            'wmflabsdotorg'
         )
 
         LOG.warning("Completed wmf hooks for project creation: %s" % project_id)
