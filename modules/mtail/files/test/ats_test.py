@@ -21,6 +21,10 @@ class ATSBackendTest(unittest.TestCase):
         bucket_samples = self.store.get_samples('trafficserver_backend_requests_seconds_bucket')
         self.assertIn(('le=0.1,method=GET,backend=appservers-rw.discovery.wmnet', 1),
                       bucket_samples)
+        self.assertIn(('le=0.07,method=GET,backend=swift.discovery.wmnet', 1),
+                      bucket_samples)
+        self.assertIn(('le=0.25,method=GET,backend=swift.discovery.wmnet', 3),
+                      bucket_samples)
 
         sum_samples = self.store.get_samples('trafficserver_backend_requests_seconds_sum')
         self.assertIn(('status=304,method=GET,backend=swift.discovery.wmnet', 0.055),

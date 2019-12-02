@@ -20,23 +20,32 @@ counter trafficserver_backend_connections_total by backend
   # these statements "fall through", so the histogram is cumulative. The
   # collecting system can compute the percentile bands by taking the ratio of
   # each bucket value over the final bucket.
-  $ttfb < 10 {
-    trafficserver_backend_requests_seconds_bucket["0.01"][$method][$backend]++
+  $ttfb < 45 {
+    trafficserver_backend_requests_seconds_bucket["0.045"][$method][$backend]++
   }
-  $ttfb < 50 {
-    trafficserver_backend_requests_seconds_bucket["0.05"][$method][$backend]++
+  $ttfb < 70 {
+    trafficserver_backend_requests_seconds_bucket["0.07"][$method][$backend]++
   }
   $ttfb < 100 {
     trafficserver_backend_requests_seconds_bucket["0.1"][$method][$backend]++
   }
+  $ttfb < 150 {
+    trafficserver_backend_requests_seconds_bucket["0.15"][$method][$backend]++
+  }
+  $ttfb < 250 {
+    trafficserver_backend_requests_seconds_bucket["0.25"][$method][$backend]++
+  }
+  $ttfb < 350 {
+    trafficserver_backend_requests_seconds_bucket["0.35"][$method][$backend]++
+  }
   $ttfb < 500 {
     trafficserver_backend_requests_seconds_bucket["0.5"][$method][$backend]++
   }
-  $ttfb < 1000 {
-    trafficserver_backend_requests_seconds_bucket["1.0"][$method][$backend]++
+  $ttfb < 750 {
+    trafficserver_backend_requests_seconds_bucket["0.75"][$method][$backend]++
   }
-  $ttfb < 5000 {
-    trafficserver_backend_requests_seconds_bucket["5.0"][$method][$backend]++
+  $ttfb < 1200 {
+    trafficserver_backend_requests_seconds_bucket["1.2"][$method][$backend]++
   }
   trafficserver_backend_requests_seconds_bucket["+Inf"][$method][$backend]++
 }
