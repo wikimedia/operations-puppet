@@ -13,7 +13,7 @@ groups:
               yuvipanda, shrlak, madhuvishy, groovier, khorn, ironholds, katie, chedasaurus,
               cy534, pnorman, mpany, deskana, arnad, nithum, banyek, imarlier, mkroetzsch,
               mtizzoni, panisson, paolotti, ciro, dartar, melodykramer, gtirloni, tbayer, pirroh,
-              bawolff, dkg, juliaglen, cwdent, bmansurov, hpham, atgomez]
+              bawolff, dkg, juliaglen, cwdent, bmansurov, hpham, atgomez, dfoy]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -265,7 +265,7 @@ groups:
                  This will grant shell access on Hadoop client nodes and on
                  Hadoop NameNodes.  Some files in HDFS have sensitive data in them.
                  Those files are group readable by the analytics-privatedata-users group.
-    members: [milimetric, dfoy, aude, jforrester,
+    members: [milimetric, aude, jforrester,
               halfak, dr0ptp4kt, bearloga, elukey, ppchelko, mneisler,
               nuria, otto, jgreen, sguebo, thargrove,
               bsitzmann, dbrant, nettrom, leila, jmm,
@@ -2113,13 +2113,12 @@ users:
     ssh_keys: []
     uid: 12576
   dfoy:
-    ensure: present
+    ensure: absent
     gid: 500
     name: dfoy
     realname: Dan Foy
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDcPoXJg9IgK5+067Fe5pzHVDmCEKbjFJClxcrTOoAqe9+xZfWIdMJKWV1h4Wj0fYiGJZDBwwrvwlPN+9pMiR1OwjB3BA0XTWVGBWeLwMsNRvCs9RDSLl7iI8N8v0oa58PAMquVDsVufILCC5H1fz8LfxywPrwDaR0y5vDXTlj2/FirXuZLC8lgOJXdLNp31SRoSZ/0Q/gISqBknGnqF9vTFRPq31B9OP3EAzpPAXVneGCcKp+EeG02AXss0S2Dvz8XDYWuduQVYVJCpJkHHdxdhCMA30BD6eiaJ0iyWS2NpAngBrCTXnlacdRJXsiVyBXpisyHRLQdyjHK6p2ijwJN dfoy@wikimedia.org]
+    ssh_keys: []
     uid: 2318
-    email: dfoy@wikimedia.org
   vbaranetsky:
     ensure: absent
     gid: 500
