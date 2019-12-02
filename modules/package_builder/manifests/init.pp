@@ -16,7 +16,7 @@ class package_builder(
     class { '::package_builder::environments':
         basepath => $basepath,
     }
-    systemd::timer::job { 'package_builder: Clean up build directory':
+    systemd::timer::job { 'package_builder_Clean_up_build_directory':
         ensure      => present,
         user        => 'root',
         description => 'Delete builds older the 2 weeks',
@@ -26,7 +26,7 @@ class package_builder(
             'interval' => '*-*-* 02:00:00',  # Every day at 2:00
         }
     }
-    systemd::timer::job { 'package_builder: Clean up result directory':
+    systemd::timer::job { 'package_builder_Clean_up_result_directory':
         ensure      => present,
         user        => 'root',
         description => 'Delete results older the 6 months',
