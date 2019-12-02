@@ -38,6 +38,7 @@ profile::elasticsearch::common_settings:
 logstash::heap_memory: 1g
 logstash::java_package: openjdk-11-jdk
 logstash::logstash_version: 7
+logstash::logstash_package: logstash-oss
 
 # Kibana
 role::kibana::vhost: logstash-next.wikimedia.org

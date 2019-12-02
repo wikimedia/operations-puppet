@@ -27,6 +27,7 @@ class logstash (
     Integer $pipeline_batch_size   = 125,
     Integer $pipeline_batch_delay  = 50,
     String $java_package           = 'openjdk-8-jdk',
+    String $logstash_package       = 'logstash',
     Boolean $gc_log                = true,
     Integer $jmx_exporter_port     = undef,
     String $jmx_exporter_config    = undef,
@@ -36,6 +37,7 @@ class logstash (
 
     package { 'logstash':
         ensure  => 'present',
+        name    => $logstash_package,
         require => Package[$java_package],
     }
 
