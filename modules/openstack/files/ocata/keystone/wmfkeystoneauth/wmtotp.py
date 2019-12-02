@@ -64,6 +64,7 @@ class Wmtotp(base.AuthMethodHandler):
 
     def authenticate(self, request, auth_payload, auth_context):
         """Try to authenticate against the identity backend."""
+        response_data = {}
         user_info = auth_plugins.UserAuthInfo.create(auth_payload, self.method)
 
         # Before we do anything else, make sure that this user is allowed
@@ -71,8 +72,6 @@ class Wmtotp(base.AuthMethodHandler):
         password_whitelist.check_whitelist(user_info.user_id,
                                            request.environ['REMOTE_ADDR'])
 
-        # FIXME(gyee): identity.authenticate() can use some refactoring since
-        # all we care is password matches
         try:
             self.identity_api.authenticate(
                 request,
@@ -115,4 +114,7 @@ class Wmtotp(base.AuthMethodHandler):
             msg = _('2FA is not enabled; login forbidden')
             raise exception.Unauthorized(msg)
 
-        auth_context['user_id'] = user_info.user_id
+        response_data['user_id'] = user_info.user_id
+
+        return base.AuthHandlerResponse(status=True, response_body=None,
+                                        response_data=response_data)
