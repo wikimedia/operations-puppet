@@ -2,11 +2,17 @@
 counter trafficserver_backend_requests_seconds_bucket by le, method, backend
 counter trafficserver_backend_requests_seconds_sum by status, method, backend
 counter trafficserver_backend_requests_seconds_count by status, method, backend
+counter trafficserver_backend_connections_total by backend
 
 # Log entries representing cache hits have OriginStatus:000.
 # Match OriginStatus:[1-9][0-9][0-9] to exclude those.
-/TTFetchHeaders:(?P<ttfb>[0-9.]+).*OriginServer:(?P<backend>\S+).*ReqMethod:(?P<method>[A-Z]+).*OriginStatus:(?P<status>[1-9][0-9][0-9])/ {
+/ConnReuse:(?P<conn_reuse>[0-9]+).*TTFetchHeaders:(?P<ttfb>[0-9.]+).*OriginServer:(?P<backend>\S+).*ReqMethod:(?P<method>[A-Z]+).*OriginStatus:(?P<status>[1-9][0-9][0-9])/ {
   trafficserver_backend_requests_seconds_count[$status][$method][$backend]++
+
+  # A new TCP connection was established if conn_reuse is 0
+  $conn_reuse == 0 {
+    trafficserver_backend_connections_total[$backend]++
+  }
 
   # ttfb is in milliseconds, and we want seconds.
   trafficserver_backend_requests_seconds_sum[$status][$method][$backend] += $ttfb / 1000.0

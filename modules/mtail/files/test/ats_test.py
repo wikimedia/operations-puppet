@@ -15,6 +15,9 @@ class ATSBackendTest(unittest.TestCase):
         s = self.store.get_samples('trafficserver_backend_requests_seconds_count')
         self.assertIn(('status=200,method=GET,backend=swift.discovery.wmnet', 2), s)
 
+        s = self.store.get_samples('trafficserver_backend_connections_total')
+        self.assertIn(('backend=swift.discovery.wmnet', 1), s)
+
         bucket_samples = self.store.get_samples('trafficserver_backend_requests_seconds_bucket')
         self.assertIn(('le=0.1,method=GET,backend=appservers-rw.discovery.wmnet', 1),
                       bucket_samples)
