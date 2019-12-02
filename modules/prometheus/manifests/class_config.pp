@@ -10,6 +10,7 @@
 # $port:    The port to use for the target.
 # $labels:  Labels to attach to every host. 'Cluster' will be added automagically as well
 # $class_parameters: hash of parameters for the class
+# $hostnames_only: Split on first dot, keeping only the hostname. Defaults to true.
 #
 # == Example
 #
@@ -30,6 +31,7 @@ define prometheus::class_config(
     Stdlib::Port $port,
     Hash $labels = {},
     Hash $class_parameters = {},
+    Boolean $hostnames_only = true,
 ) {
     $query = template('prometheus/puppetdb_query_string.erb')
     $servers = keys(query_resources(false, $query, true))

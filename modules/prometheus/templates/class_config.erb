@@ -7,10 +7,15 @@ all = []
 @site_clusters.each do |cluster, val|
   targets = val[@site].select { |server| @servers.include?(server) }
   if targets.length > 0
+    if @hostnames_only
+        p_targets = targets.map{|t| "#{t.split('.')[0]}:#{@port}" }
+    else
+        p_targets = targets.map{|t| "#{t}:#{@port}" }
+    end
     all.push(
       {
         'labels' => @labels.merge({'cluster' => cluster, 'site' => @site}),
-        'targets' => targets.map{|t| "#{t.split('.')[0]}:#{@port}" },
+        'targets' => p_targets,
       }
     )
   end
