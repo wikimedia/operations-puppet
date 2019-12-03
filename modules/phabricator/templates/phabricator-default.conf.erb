@@ -53,15 +53,6 @@
       SetHandler "proxy:unix:/run/php/fpm-www.sock|fcgi://localhost/"
   </FilesMatch>
 
-<% if @settings['notification.servers'] != []
-   client = @settings['notification.servers'].select{ |x| x['type'] == 'client' }.pop
--%>
-  # If wstunnel is enabled, proxy to the client notification service
-  <IfModule mod_proxy_wstunnel.c>
-  ProxyPass "/ws/" "ws://<%= @fqdn %>:<%= client['port'] %>/ws/"
-  </IfModule>
-<%- end %>
-
   LogLevel warn
   ErrorLog /var/log/apache2/phabricator_error.log
   CustomLog /var/log/apache2/phabricator_access.log wmf
@@ -81,8 +72,6 @@
 
   RewriteRule ^/rsrc/(.*)     -                       [L,QSA]
   RewriteRule ^/favicon.ico   -                       [L,QSA]
-  # /ws/ is taken care of by ProxyPass above
-  RewriteRule ^/ws/           -                       [L]
   RewriteRule ^/project/sprint/board/(.*) /project/board/$1 [L,QSA,R=301]
   RewriteRule ^/maniphest/task/create/? /maniphest/task/edit/form/1/ [L,QSA,NE,R=301]
   RewriteRule ^(.*)$          /index.php?__path__=$1  [B,L,QSA]
