@@ -25,5 +25,8 @@ input {
     ssl_truststore_location => "<%= @ssl_truststore_location %>"
     ssl_truststore_password => "<%= @ssl_truststore_password %>"
 <% end -%>
+<% if @ssl_endpoint_identification_algorithm -%>
+    ssl_endpoint_identification_algorithm => "<%=@ssl_endpoint_identification_algorithm %>"
+<% end -%>
   }
 }

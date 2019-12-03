@@ -43,6 +43,7 @@ define logstash::input::kafka(
     Optional[Enum['PLAINTEXT','SSL','SASL_PLAINTEXT','SASL_SSL']] $security_protocol = undef,
     Optional[Stdlib::Unixpath] $ssl_truststore_location                              = undef,
     Optional[String] $ssl_truststore_password                                        = undef,
+    Optional[String] $ssl_endpoint_identification_algorithm                          = undef,
     Optional[String] $group_id                                                       = undef,
     Integer $consumer_threads                                                        = 1,
 ) {
