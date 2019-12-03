@@ -69,7 +69,7 @@ class profile::query_service::updater (
         default => [],
     }
 
-    $async_import_option = $async_import_option ? {
+    $async_import_option = $async_import ? {
         true    => ['--import-async'],
         default => [],
     }
