@@ -39,22 +39,22 @@ class mariadb::service (
             $systemd = false
             $vendor  = 'mariadb'
         }
-        'wmf-mariadb101', 'wmf-mariadb102', 'wmf-mariadb103': {
+        'wmf-mariadb101', 'wmf-mariadb102', 'wmf-mariadb103', 'wmf-mariadb104': {
             $systemd = true
             $vendor  = 'mariadb'
         }
-        'wmf-mysql57', 'wmf-mysql80': {
+        'wmf-mysql80': {
             $systemd = true
             $vendor = 'mysql'
         }
-        'wmf-mysql56': {
-            $systemd = false
+        'wmf-percona-server80': {
+            $systemd = true
             $vendor = 'mysql'
         }
         default: {
             fail("Invalid package version \"${installed_package}\". \
 The only allowed versions are: wmf-mariadb10, wmf-mariadb101, wmf-mariadb102, \
-wmf-mariadb103, wmf-mysql57 or wmf-mysql80")
+wmf-mariadb103, wmf-mariadb104, wmf-mysql57 or wmf-mysql80")
         }
     }
 

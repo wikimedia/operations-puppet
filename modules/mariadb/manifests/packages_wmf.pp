@@ -34,7 +34,7 @@ class mariadb::packages_wmf(
     }
 
     case $mariadb_package {
-        'wmf-mariadb101', 'wmf-mariadb102', 'wmf-mariadb103', 'wmf-mysql57', 'wmf-mysql80':
+        'wmf-mariadb101', 'wmf-mariadb102', 'wmf-mariadb103', 'wmf-mariadb104', 'wmf-percona-server80', 'wmf-mysql80':
         {
             require_package( $mariadb_package )
         }
@@ -55,7 +55,7 @@ class mariadb::packages_wmf(
         {
             fail("Invalid package version \"${mariadb_package}\". \
 The only allowed versions are: wmf-mariadb10, wmf-mariadb101, wmf-mariadb102, \
-wmf-mariadb103, wmf-mysql57 or wmf-mysql80")
+wmf-mariadb103, wmf-percona-server80 or wmf-mysql80")
         }
     }
 }
