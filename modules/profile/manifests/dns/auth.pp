@@ -58,6 +58,15 @@ class profile::dns::auth (
         monitor_listeners  => $monitor_listeners,
     }
 
+    # Create explicit /etc/hosts entries for all authdns IPv4 to reach each
+    # other by-hostname without working recdns
+    create_resources('host', $authdns_servers.reduce({}) |$data,$kv| {
+        $data + { $kv[0] => {
+            ip => $kv[1],
+            host_aliases => split($kv[0], '[.]')[0]
+        }}
+    })
+
     $authdns_ns_ferm = join($authdns_servers.keys(), ' ')
     ferm::service { 'authdns_update_ssh':
         proto  => 'tcp',
