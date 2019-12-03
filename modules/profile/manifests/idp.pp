@@ -81,7 +81,7 @@ class profile::idp(
         prometheus_nodes => $prometheus_nodes,
         config_dir       => $jmx_config.dirname,
         config_file      => $jmx_config,
-        source           => file('profile/idp/cas_jmx_exporter.yaml'),
+        content          => file('profile/idp/cas_jmx_exporter.yaml'),
     }
 
 }
