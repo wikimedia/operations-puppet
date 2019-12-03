@@ -4,8 +4,9 @@
 # Tests to perform basic validation on data.yaml
 
 import os
+import re
 import unittest
-from collections import Counter, Iterable
+from collections import Counter, Iterable, defaultdict
 
 import yaml
 
@@ -24,11 +25,26 @@ def flatten(not_flat):
 class DataTest(unittest.TestCase):
 
     admins = None
+    bad_privileges_re = [
+        re.compile(r'systemctl (?:\*|edit)')
+    ]
 
     @classmethod
     def setUpClass(cls):
         with open(os.path.join(os.path.dirname(__file__), 'data.yaml')) as f:
             cls.admins = yaml.safe_load(f)
+
+    def test_for_backdoor_sudo(self):
+        """Ensure sudo commands which are too permissive are not added"""
+        bad_privileges = defaultdict(list)
+        for group, val in self.admins['groups'].items():
+            for privilege in val.get('privileges', []):
+                for priv_re in self.bad_privileges_re:
+                    if priv_re.search(privilege):
+                        bad_privileges[group].append(privilege)
+        self.assertEqual(
+                {}, bad_privileges,
+                'The following groups define banned privileges: %r' % bad_privileges)
 
     def test_group_gids_are_uniques(self):
         """Ensure no two groups uses the same gid"""
