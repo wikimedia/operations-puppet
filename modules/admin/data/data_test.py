@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 # 2014 Chase Pettet
 # Tests to perform basic validation on data.yaml
@@ -15,7 +15,7 @@ def flatten(not_flat):
     '''flatten a complex list of lists'''
     # https://stackoverflow.com/a/2158532/3075306
     for element in not_flat:
-        if isinstance(element, Iterable) and not isinstance(element, basestring):
+        if isinstance(element, Iterable) and not isinstance(element, str):
             for sub_list in flatten(element):
                 yield sub_list
         else:
@@ -49,7 +49,7 @@ class DataTest(unittest.TestCase):
     def test_group_gids_are_uniques(self):
         """Ensure no two groups uses the same gid"""
         gids = filter(None, [
-            v.get('gid', None) for k, v in self.admins['groups'].iteritems()])
+            v.get('gid', None) for k, v in self.admins['groups'].items()])
         dupes = [k for k, v in Counter(gids).items() if v > 1]
         self.assertEqual([], dupes, 'Duplicate group GIDs: %r' % dupes)
 
