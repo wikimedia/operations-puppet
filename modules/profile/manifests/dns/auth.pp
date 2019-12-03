@@ -67,11 +67,12 @@ class profile::dns::auth (
         }}
     })
 
-    $authdns_ns_ferm = join($authdns_servers.keys(), ' ')
+    # Hardcode the same IPv4 addrs as above in the inter-authdns ferm rules for
+    # ssh access as well
     ferm::service { 'authdns_update_ssh':
         proto  => 'tcp',
         port   => '22',
-        srange => "(@resolve((${authdns_ns_ferm})) @resolve((${authdns_ns_ferm}), AAAA))",
+        srange => "(${authdns_servers.values().join(' ')})",
     }
 
     # Enable TFO, which gdnsd-3.x supports by default if enabled
