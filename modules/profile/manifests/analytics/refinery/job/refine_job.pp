@@ -90,6 +90,13 @@ define profile::analytics::refinery::job::refine_job (
         interval           => $interval,
         monitoring_enabled => $monitoring_enabled,
         use_kerberos       => $use_kerberos,
+        # In DataFrameToHive we issue CREATE/ALTER sql statement to Hive if needed.
+        # Spark is not aware of this code and by default it retrieves Delegation Tokens
+        # only for HDFS/Hive-Metastore/HBase. When the JDBC connection to the Hive Server 2
+        # is established (with Kerberos enabled), some credentials will be needed to be able
+        # to login as $user. These credentials are explicitly provided as keytab, that is copied
+        # (securely) by Yarn to its distributed cache.
+        use_keytab         => $use_kerberos,
     }
 
     # Look back over a 24 period before 4 hours ago and ensure that all expected

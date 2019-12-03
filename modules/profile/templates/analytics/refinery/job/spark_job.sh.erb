@@ -10,6 +10,9 @@ PYTHONPATH=<%= @refinery_path %>/python <%= @refinery_path %>/bin/is-yarn-app-ru
 <% if @spark_opts -%>
 <%= Array(@spark_opts).join(" ") %> \
 <% end -%>
+<% if @spark_keytab_extra_opts -%>
+<%= @spark_keytab_extra_opts %> \
+<% end -%>
 <%= @jar %> \
 <% if @job_opts -%>
 <%= Array(@job_opts).join(" ") %> "${@}"

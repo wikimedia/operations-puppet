@@ -41,10 +41,17 @@ define profile::analytics::refinery::job::spark_job(
     $ensure              = 'present',
     $monitoring_enabled  = true,
     $use_kerberos        = false,
+    $use_keytab          = false,
 )
 {
     require ::profile::analytics::refinery
     $refinery_path = $profile::analytics::refinery::path
+
+    if $use_kerberos and $use_keytab {
+        $spark_keytab_extra_opts = "--principal ${user}/${trusted['certname']}@WIKIMEDIA --keytab /etc/security/keytabs/${user}/${user}.keytab"
+    } else {
+        $spark_keytab_extra_opts = undef
+    }
 
     $script = "/usr/local/bin/${job_name}"
 
