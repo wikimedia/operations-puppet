@@ -41,6 +41,10 @@ client c1 {
     rxresp
     expect resp.status == 403
 
+    txreq -url "/" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https" -hdr "X-Client-IP: 192.241.194.113" -hdr "User-Agent: Go-http-client/2.0"
+    rxresp
+    expect resp.status == 403
+
     txreq -url "/" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https" -hdr "X-Client-IP: 192.241.194.113"
     rxresp
     expect resp.status == 403
