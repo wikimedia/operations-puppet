@@ -53,6 +53,11 @@ query_cache_size        = 16M
 # enable socket authentication
 plugin-load = unix_socket=auth_socket.so
 
+# Required for search/airflow installation. This will also
+# be the mariadb default some day, as the old behaviour
+# is deprecated.
+explicit_defaults_for_timestamp = on
+
 [mysqldump]
 
 quick
