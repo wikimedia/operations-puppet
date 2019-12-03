@@ -7,7 +7,8 @@ class profile::prometheus::pdns_rec_exporter (
     require_package('prometheus-pdns-rec-exporter')
 
     service { 'prometheus-pdns-rec-exporter':
-        ensure  => running,
+        ensure => running,
+        after  => Service['pdns-recursor'],
     }
 
     base::service_auto_restart { 'prometheus-pdns-rec-exporter': }
