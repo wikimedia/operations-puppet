@@ -103,13 +103,14 @@ class profile::analytics::refinery::job::camus(
 
 
     # Imports Mediawiki (EventBus) events that are produced via eventgate-analytics
+    # TODO: These are no longer all 'mediawiki' events.  Rename this job.
     camus::job { 'mediawiki_analytics_events':
         kafka_brokers         => $kafka_brokers_jumbo,
         check                 => $monitoring_enabled,
         # Don't need to write _IMPORTED flags for event data
         check_dry_run         => true,
         # Only check high volume topics that will almost certainly have data every hour.
-        check_topic_whitelist => "${primary_mediawiki_dc}.mediawiki.(api-request|cirrussearch-request)",
+        check_topic_whitelist => "(${primary_mediawiki_dc}.mediawiki.(api-request|cirrussearch-request)|.+\\.sparql-query)",
         interval              => '*-*-* *:00/15:00',
     }
 

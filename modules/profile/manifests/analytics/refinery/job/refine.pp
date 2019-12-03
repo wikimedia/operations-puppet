@@ -68,9 +68,12 @@ class profile::analytics::refinery::job::refine(
         'mediawiki_revision_tags_change',
         'mediawiki_revision_visibility_change',
         'mediawiki_user_blocks_change',
-        # resource_change isn't strictly 'mediawiki', but mediawiki is a source of resource changes.
-        # Anyway this job will refine it just fine.
+        # These aren't strictly 'mediawiki', but they work the same way as the
+        # MediaWiki EventBus tables.  We should rename this job.
         'resource_change',
+        'cqs_external_sparql_query',
+        'wdqs_external_sparql_query',
+        'wdqs_internal_sparql_query',
     ]
     $mediawiki_event_table_whitelist_regex = "^(${join($mediawiki_event_tables, '|')})$"
 
