@@ -51,7 +51,7 @@ class Bacula(object):
             return 8 * 24 * 3600, 8 * 24 * 3600
         else:  # We assume Monthly
             # Fulls monthly, diffs every other fortnite, incr. daily
-            return 2 * 24 * 3600, 32 * 24 * 3600
+            return 2 * 24 * 3600, 36 * 24 * 3600
 
     def read_configuration_file(self, path):
         """

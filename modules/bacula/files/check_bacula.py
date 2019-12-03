@@ -148,7 +148,7 @@ def get_expected_freshness(schedule):
     else:  # We assume Monthly
         # Fulls monthly, diffs every other fortnite, incr. daily
         expected_freshness = 2 * 24 * 3600
-        expected_full_freshness = 32 * 24 * 3600
+        expected_full_freshness = 36 * 24 * 3600
     return expected_freshness, expected_full_freshness
 
 
