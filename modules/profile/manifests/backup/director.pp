@@ -26,15 +26,12 @@ class profile::backup::director(
     if os_version('debian >= buster') {
         $file_storage_production = 'FileStorageProduction'
         $file_storage_archive = 'FileStorageArchive'
-        $file_storage_databases = 'FileStorageDatabases'
-        $scheduled_pools = [ $pool, 'databases', ]
     } else {
         $file_storage_production = 'FileStorage1'
         $file_storage_archive = 'FileStorage2'
-        $scheduled_pools = [ $pool, ]
     }
 
-    # One pool for all, except databases
+    # One pool for all
     bacula::director::pool { $pool:
         max_vols         => 60,
         storage          => "${onsite_sd}-${file_storage_production}",
@@ -60,17 +57,6 @@ class profile::backup::director(
         max_vol_bytes    => '536870912000',
     }
 
-    # Databases-only pool
-    if os_version('debian >= buster') {
-        bacula::director::pool { 'Databases':
-            max_vols         => 60,
-            storage          => "${onsite_sd}-${file_storage_databases}",
-            volume_retention => '30 days',
-            label_fmt        => 'databases',
-            max_vol_bytes    => '536870912000',
-        }
-    }
-
     # Off site pool for off site backups
     bacula::director::pool { $offsite_pool:
         max_vols         => 60,
@@ -88,31 +74,25 @@ class profile::backup::director(
         backup::monthlyschedule { $day:  # schedules are pool-independent
             day => $day,
         }
-        $scheduled_pools.each |String $scheduled_pool| {
-            backup::monthlyjobdefaults { "${scheduled_pool}-${day}":
-                day  => $day,
-                pool => $scheduled_pool,
-            }
+        backup::monthlyjobdefaults { "${pool}-${day}": # job defaults depend on pool&schedule
+            day  => $day,
+            pool => $pool,
         }
         # weekly
         backup::weeklyschedule { $day:
             day => $day,
         }
-        $scheduled_pools.each |String $scheduled_pool| {
-            backup::weeklyjobdefaults { "${scheduled_pool}-${day}":
-                day  => $day,
-                pool => $scheduled_pool,
-            }
+        backup::weeklyjobdefaults { "${pool}-${day}":
+            day  => $day,
+            pool => $pool,
         }
         # hourly
         backup::hourlyschedule { $day:
             day => $day,
         }
-        $scheduled_pools.each |String $scheduled_pool| {
-            backup::hourlyjobdefaults { "${scheduled_pool}-${day}":
-                day  => $day,
-                pool => $scheduled_pool,
-            }
+        backup::hourlyjobdefaults { "${pool}-${day}":
+            day  => $day,
+            pool => $pool,
         }
     }
 
