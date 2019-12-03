@@ -1571,11 +1571,6 @@ host db1140 {
     fixed-address db1140.eqiad.wmnet;
 }
 
-host db2065 {
-    hardware ethernet 40:a8:f0:35:1e:2c;
-    fixed-address db2065.codfw.wmnet;
-}
-
 host db2070 {
     hardware ethernet 40:a8:f0:35:08:e0;
     fixed-address db2070.codfw.wmnet;
