@@ -416,11 +416,13 @@ host auth2001 {
 host authdns1001 {
     hardware ethernet D0:94:66:5F:53:A8;
     fixed-address authdns1001.wikimedia.org;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host authdns2001 {
     hardware ethernet D0:94:66:5F:81:7F;
     fixed-address authdns2001.wikimedia.org;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host backup1001 {
@@ -2084,36 +2086,43 @@ host druid1006 {
 host dns1001 {
     hardware ethernet D0:94:66:5F:5A:1D;
     fixed-address dns1001.wikimedia.org;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host dns1002 {
     hardware ethernet D0:94:66:5F:6E:82;
     fixed-address dns1002.wikimedia.org;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host dns2001 {
     hardware ethernet D0:94:66:5F:6A:40;
     fixed-address dns2001.wikimedia.org;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host dns2002 {
     hardware ethernet D0:94:66:5F:48:3A;
     fixed-address dns2002.wikimedia.org;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host dns3001 {
     hardware ethernet B0:26:28:6E:CF:E0;
     fixed-address dns3001.wikimedia.org;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host dns3002 {
     hardware ethernet B0:26:28:6E:DF:40;
     fixed-address dns3002.wikimedia.org;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host dns4001 {
     hardware ethernet F4:E9:D4:BA:F3:90;
     fixed-address dns4001.wikimedia.org;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host dns4002 {
@@ -2125,11 +2134,13 @@ host dns4002 {
 host dns5001 {
     hardware ethernet F4:E9:D4:D0:AC:00;
     fixed-address dns5001.wikimedia.org;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host dns5002 {
     hardware ethernet F4:E9:D4:D0:78:70;
     fixed-address dns5002.wikimedia.org;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host dumpsdata1001 {
