@@ -15,7 +15,7 @@ class profile::analytics::search::airflow(
     Stdlib::Unixpath $log_dir     = lookup('profile::analytics::search::airflow::log_dir'),
     Stdlib::Unixpath $pid_dir     = lookup('profile::analytics::search::airflow::pid_dir'),
     Stdlib::Unixpath $conf_dir    = lookup('profile::analytics::search::airflow::conf_dir'),
-    Stdlib::Unixpath $conf_file   = lookup('profile::analytics::search::airflow::conf_file'),
+    String $conf_file             = lookup('profile::analytics::search::airflow::conf_file'),
 ) {
     include ::passwords::mysql::airflow::search
 
