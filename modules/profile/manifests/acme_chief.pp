@@ -39,7 +39,7 @@ class profile::acme_chief (
     String $http_proxy = hiera('http_proxy'),
     String $active_host = hiera('profile::acme_chief::active'),
     String $passive_host = hiera('profile::acme_chief::passive'),
-    Array[String] $authdns_servers = hiera('authdns_servers'),
+    Hash[Stdlib::Fqdn, Stdlib::IP::Address::Nosubnet] $authdns_servers = lookup('authdns_servers'),
 ) {
     if(!empty($shared_acme_certificates)) {
         $acme_chief_certificates = $certificates + $shared_acme_certificates
@@ -48,12 +48,12 @@ class profile::acme_chief (
     }
 
     class { '::acme_chief::server':
-        accounts        => $accounts,
-        certificates    => $acme_chief_certificates,
-        challenges      => $challenges,
-        http_proxy      => $http_proxy,
-        active_host     => $active_host,
-        passive_host    => $passive_host,
-        authdns_servers => $authdns_servers,
+        accounts      => $accounts,
+        certificates  => $acme_chief_certificates,
+        challenges    => $challenges,
+        http_proxy    => $http_proxy,
+        active_host   => $active_host,
+        passive_host  => $passive_host,
+        authdns_hosts => $authdns_servers.keys(),
     }
 }

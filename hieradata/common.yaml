@@ -945,21 +945,23 @@ jenkins_agent_username: 'jenkins-slave'
 http_proxy: "http://webproxy.%{::site}.wmnet:8080"
 
 # This is the "live" authdns server set, which feeds into any other tooling
-# that needs to operate on them (including themselves)
+# that needs to operate on them (including themselves).  It includes redundant
+# IP address information so that authdns tooling can operate in the face of
+# recdns issues.
 authdns_servers:
-  - 'authdns1001.wikimedia.org'
-  - 'authdns2001.wikimedia.org'
-  - 'ganeti3003.esams.wmnet'
-  - 'dns1001.wikimedia.org'
-  - 'dns1002.wikimedia.org'
-  - 'dns2001.wikimedia.org'
-  - 'dns2002.wikimedia.org'
-  - 'dns3001.wikimedia.org'
-  - 'dns3002.wikimedia.org'
-  - 'dns4001.wikimedia.org'
-  - 'dns4002.wikimedia.org'
-  - 'dns5001.wikimedia.org'
-  - 'dns5002.wikimedia.org'
+  'authdns1001.wikimedia.org': 208.80.154.134
+  'authdns2001.wikimedia.org': 208.80.153.17
+  'ganeti3003.esams.wmnet': 10.20.0.33
+  'dns1001.wikimedia.org': 208.80.154.10
+  'dns1002.wikimedia.org': 208.80.155.108
+  'dns2001.wikimedia.org': 208.80.153.77
+  'dns2002.wikimedia.org': 208.80.153.111
+  'dns3001.wikimedia.org': 91.198.174.61
+  'dns3002.wikimedia.org': 91.198.174.62
+  'dns4001.wikimedia.org': 198.35.26.7
+  'dns4002.wikimedia.org': 198.35.26.8
+  'dns5001.wikimedia.org': 103.102.166.8
+  'dns5002.wikimedia.org': 103.102.166.9
 
 # .. and this is the set of public IPs they provide service on, which is
 # consumed by both authdns servers and the icinga monitoring of them.

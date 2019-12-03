@@ -2,7 +2,7 @@ class profile::dns::auth (
     Hash $lvs_services = lookup('lvs::configuration::lvs_services'),
     Hash $discovery_services = lookup('discovery::services'),
     Hash[String, Hash[String, String]] $authdns_addrs = lookup('authdns_addrs'),
-    Array[String] $authdns_servers = lookup('authdns_servers'),
+    Hash[Stdlib::Fqdn, Stdlib::IP::Address::Nosubnet] $authdns_servers = lookup('authdns_servers'),
     Stdlib::HTTPSUrl $gitrepo = lookup('profile::dns::auth::gitrepo'),
     Boolean $mon_host53 = lookup('profile::dns::auth::mon_host53', {default_value => false}),
     $conftool_prefix = lookup('conftool_prefix'),
@@ -49,7 +49,7 @@ class profile::dns::auth (
     ]
 
     class { 'authdns':
-        nameservers        => $authdns_servers,
+        authdns_servers    => $authdns_servers,
         gitrepo            => $gitrepo,
         lvs_services       => $lvs_services,
         discovery_services => $discovery_services,
@@ -58,7 +58,7 @@ class profile::dns::auth (
         monitor_listeners  => $monitor_listeners,
     }
 
-    $authdns_ns_ferm = join($authdns_servers, ' ')
+    $authdns_ns_ferm = join($authdns_servers.keys(), ' ')
     ferm::service { 'authdns_update_ssh':
         proto  => 'tcp',
         port   => '22',

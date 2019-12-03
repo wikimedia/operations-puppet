@@ -6,7 +6,7 @@ class acme_chief::server (
     Wmflib::Ensure $http_challenge_support = absent,
     String $active_host = '',
     String $passive_host = '',
-    Array[String] $authdns_servers = [],
+    Array[Stdlib::Fqdn] $authdns_hosts = [],
 ) {
     $is_active = $::fqdn == $active_host
 
@@ -46,8 +46,8 @@ class acme_chief::server (
                 zone_update_cmd          => $challenges['dns-01']['zone_update_cmd'],
                 issuing_ca               => $challenges['dns-01']['issuing_ca'],
                 ns_records               => $challenges['dns-01']['ns_records'],
-                sync_dns_servers         => $authdns_servers,
-                validation_dns_servers   => $authdns_servers,
+                sync_dns_servers         => $authdns_hosts,
+                validation_dns_servers   => $authdns_hosts,
             }
         },
         default => {},

@@ -7,7 +7,7 @@ class authdns(
     $conftool_prefix,
     $service_listeners,
     $monitor_listeners,
-    $nameservers = [ $::fqdn ],
+    Hash[Stdlib::Fqdn, Stdlib::IP::Address::Nosubnet] $authdns_servers,
     $gitrepo = undef,
     $monitoring = true,
 ) {
