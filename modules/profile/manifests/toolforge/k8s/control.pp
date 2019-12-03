@@ -3,7 +3,6 @@ class profile::toolforge::k8s::control(
     Stdlib::Fqdn        $apiserver  = lookup('profile::toolforge::k8s::apiserver_fqdn', {default_value => 'k8s.example.com'}),
     String              $node_token = lookup('profile::toolforge::k8s::node_token',     {default_value => 'example.token'}),
     String              $calico_version = lookup('profile::toolforge::k8s::calico_version', {default_value => 'v3.8.0'}),
-    String              $calicoctl_sha = lookup('profile::toolforge::k8s::calicoctl_sha', {default_value => 'e4074ba195baa36955f378998f0bc7f3486580a7999c9038ce9bfcd1430592a2'}),
 ) {
     require profile::toolforge::k8s::preflight_checks
 
@@ -58,7 +57,6 @@ class profile::toolforge::k8s::control(
     class { 'toolforge::k8s::calico_yaml':
         pod_subnet     => $pod_subnet,
         calico_version => $calico_version,
-        calicoctl_sha  => $calicoctl_sha,
     }
 
     class { '::toolforge::k8s::calico_workaround': }
