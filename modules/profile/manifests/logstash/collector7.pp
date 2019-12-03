@@ -49,42 +49,6 @@ class profile::logstash::collector7 (
 
     ## Inputs (10)
 
-    logstash::input::udp2log { 'mediawiki':
-        port => 8324,
-        tags => ['input-udp2log-mediawiki-8324'],
-    }
-
-    ferm::service { 'logstash_udp2log':
-        proto   => 'udp',
-        port    => '8324',
-        notrack => true,
-        srange  => '$DOMAIN_NETWORKS',
-    }
-
-    logstash::input::syslog { 'syslog':
-        port => 10514,
-        tags => ['input-syslog-10514'],
-    }
-
-    ferm::service { 'logstash_syslog_udp':
-        proto   => 'udp',
-        port    => '10514',
-        notrack => true,
-        srange  => '($DOMAIN_NETWORKS $NETWORK_INFRA $MGMT_NETWORKS)',
-    }
-
-    ferm::service { 'logstash_syslog_tcp':
-        proto   => 'tcp',
-        port    => '10514',
-        notrack => true,
-        srange  => '($DOMAIN_NETWORKS $NETWORK_INFRA $MGMT_NETWORKS)',
-    }
-    nrpe::monitor_service { 'logstash_syslog_tcp':
-        description  => 'logstash syslog TCP port',
-        nrpe_command => '/usr/lib/nagios/plugins/check_tcp -H 127.0.0.1 -p 10514',
-        notes_url    => 'https://wikitech.wikimedia.org/wiki/Logstash',
-    }
-
     ferm::service { 'grafana_dashboard_definition_storage':
         proto  => 'tcp',
         port   => '9200',
@@ -96,49 +60,6 @@ class profile::logstash::collector7 (
         proto  => 'tcp',
         port   => '9200',
         srange => "(\$DEPLOYMENT_HOSTS ${maintenance_hosts_str})",
-    }
-
-    logstash::input::gelf { 'gelf':
-        port => 12201,
-        tags => ['input-gelf-12201'],
-    }
-
-    ferm::service { 'logstash_gelf':
-        proto   => 'udp',
-        port    => '12201',
-        notrack => true,
-        srange  => '$DOMAIN_NETWORKS',
-    }
-
-    logstash::input::udp { 'logback':
-        port  => 11514,
-        codec => 'json',
-        tags  => ['input-udp-logback-11514'],
-    }
-
-    ferm::service { 'logstash_udp':
-        proto   => 'udp',
-        port    => '11514',
-        notrack => true,
-        srange  => '$DOMAIN_NETWORKS',
-    }
-
-    logstash::input::tcp { 'json_lines':
-        port  => 11514,
-        codec => 'json_lines',
-        tags  => ['input-tcp-json_lines-11514'],
-    }
-
-    ferm::service { 'logstash_json_lines':
-        proto   => 'tcp',
-        port    => '11514',
-        notrack => true,
-        srange  => '$DOMAIN_NETWORKS',
-    }
-    nrpe::monitor_service { 'logstash_json_lines_tcp':
-        description  => 'logstash JSON linesTCP port',
-        nrpe_command => '/usr/lib/nagios/plugins/check_tcp -H 127.0.0.1 -p 11514',
-        notes_url    => 'https://wikitech.wikimedia.org/wiki/Logstash',
     }
 
     # logstash collectors in both sites pull messages from both kafka clusters
