@@ -40,6 +40,34 @@ class DataTest(unittest.TestCase):
     def setUpClass(cls):
         with open(os.path.join(os.path.dirname(__file__), 'data.yaml')) as f:
             cls.admins = yaml.safe_load(f)
+        with open(os.path.join(os.path.dirname(__file__), 'system_users.txt')) as f:
+            cls.system_users = set(i.strip() for i in f.readlines() if i[0] != '#')
+
+    def test_shell_user_is_not_system_user(self):
+        """Ensure shell accounts don't use one of the system user account usernames"""
+        present_users = set(
+            username
+            for username, val in self.admins['users'].items()
+            if val['ensure'] == 'present'
+        )
+        system_users = self.system_users.intersection(present_users)
+        self.assertEqual(
+            set(), system_users,
+            'The following shell account(s) are reserve system users: %r' % system_users
+        )
+
+    def test_ldap_user_is_not_system_user(self):
+        """Ensure LDAP accounts don't use one of the system user account usernames"""
+        present_users = set(
+            username
+            for username, val in self.admins['ldap_only_users'].items()
+            if val['ensure'] == 'present'
+        )
+        system_users = self.system_users.intersection(present_users)
+        self.assertEqual(
+            set(), system_users,
+            'The following shell account(s) are reserved system users: %r' % system_users
+        )
 
     def test_for_backdoor_sudo(self):
         """Ensure sudo commands which are too permissive are not added"""
