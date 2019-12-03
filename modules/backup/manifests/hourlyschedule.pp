@@ -1,20 +1,17 @@
 # Same for hourly backups
-define backup::hourlyschedule($pool) {
-    bacula::director::schedule { "Hourly-${name}":
+define backup::hourlyschedule(
+    String $day,
+) {
+    bacula::director::schedule { "Hourly-${day}":
         # lint:ignore:arrow_alignment
         runs => [
             { 'level' => 'Full',
-              'at'    => "${name} at 02:05",
+              'at'    => "${day} at 02:05",
             },
             { 'level' => 'Incremental',
               'at'    => 'hourly',
             },
                 ],
         # lint:endignore
-    }
-
-    bacula::director::jobdefaults { "Hourly-${name}-${pool}":
-        when => "Hourly-${name}",
-        pool => $pool,
     }
 }

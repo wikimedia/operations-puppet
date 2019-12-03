@@ -69,14 +69,31 @@ class profile::backup::director(
     # One schedule per day of the week.
     # Setting execution times so that it is unlikely jobs will run concurrently
     # with cron.{hourly,daily,monthly} or other cronscripts
-    backup::schedule { $days:
-        pool => $pool,
-    }
-    backup::weeklyschedule { $days:
-        pool => $pool,
-    }
-    backup::hourlyschedule { $days:
-        pool    => $pool,
+    $days.each |String $day| {
+        # monthly
+        backup::monthlyschedule { $day:  # schedules are pool-independent
+            day => $day,
+        }
+        backup::monthlyjobdefaults { "${pool}-${day}": # job defaults depend on pool&schedule
+            day  => $day,
+            pool => $pool,
+        }
+        # weekly
+        backup::weeklyschedule { $day:
+            day => $day,
+        }
+        backup::weeklyjobdefaults { "${pool}-${day}":
+            day  => $day,
+            pool => $pool,
+        }
+        # hourly
+        backup::hourlyschedule { $day:
+            day => $day,
+        }
+        backup::hourlyjobdefaults { "${pool}-${day}":
+            day  => $day,
+            pool => $pool,
+        }
     }
 
     bacula::director::catalog { 'production':

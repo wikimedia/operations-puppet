@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'backup::hourlyschedule', :type => :define do
+describe 'backup::monthlyschedule', :type => :define do
     let(:title) { 'something' }
     let(:params) { {
         :day => 'oneday',
@@ -12,6 +12,6 @@ describe 'backup::hourlyschedule', :type => :define do
         ]
     end
     it 'should create bacula::director::schedule' do
-        should contain_bacula__director__schedule('Hourly-oneday')
+        should contain_bacula__director__schedule('Monthly-1st-oneday')
     end
 end
