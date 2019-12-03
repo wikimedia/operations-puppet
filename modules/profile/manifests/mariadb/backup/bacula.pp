@@ -5,7 +5,7 @@ class profile::mariadb::backup::bacula (
 ) {
     if $active {
         backup::set { 'mysql-srv-backups-dumps-latest':
-            jobdefaults => 'Monthly-1st-Wed-databases',
+            jobdefaults => 'Monthly-1st-Wed-Databases',
         }
     }
 }
