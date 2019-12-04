@@ -45,7 +45,7 @@ profile::openstack::eqiad1::nova::physical_interface_mappings:
 #   cloudvirt1021: pooled
 #   cloudvirt1022: depooled, emergency spare
 #   cloudvirt1023: depooled, emergency spare
-#   cloudvirt1024: depooled due to hardware issues -- T230289
+#   cloudvirt1024: depooled, emergency spare, also host of some video rendering VMs
 #   cloudvirt1025: pooled
 #   cloudvirt1026: pooled
 #   cloudvirt1027: pooled
