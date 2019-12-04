@@ -93,7 +93,9 @@ class profile::statistics::private(
     }
 
     # Discovery team statistics scripts and cron jobs
-    class { '::statistics::discovery': }
+    class { '::statistics::discovery':
+        use_kerberos => $use_kerberos
+    }
 
     # WMDE releated statistics & analytics scripts.
     class { '::statistics::wmde':

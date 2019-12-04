@@ -1,6 +1,8 @@
 # = Class: statistics::discovery
 # Maintainer: Mikhail Popov (bearloga)
-class statistics::discovery {
+class statistics::discovery (
+    $use_kerberos = false,
+) {
     Class['::statistics'] -> Class['::statistics::discovery']
 
     include ::passwords::mysql::research
@@ -52,7 +54,7 @@ class statistics::discovery {
     }
 
     logrotate::conf { 'wikimedia-discovery-stats':
-        ensure  => present,
+        ensure  => absent,
         content => template('statistics/discovery-stats.logrotate.erb'),
         require => File[$log_dir],
     }
@@ -61,9 +63,26 @@ class statistics::discovery {
     # - Remaining data from previous day is likely to have finished processing.
     # - It's ~9/10p Pacific time, so we're not likely to hinder people's work
     #   on analytics cluster, although we use `nice` & `ionice` as a courtesy.
+    kerberos::systemd_timer { 'wikimedia-discovery-golden':
+        description       => 'Discovery golden daily run',
+        command           => "${dir}/golden/main.sh",
+        interval          => '*-*-* 05:00:00',
+        user              => $user,
+        logfile_basedir   => $log_dir,
+        logfile_name      => 'golden-daily.log',
+        logfile_owner     => $user,
+        logfile_group     => $group,
+        syslog_force_stop => true,
+        use_kerberos      => $use_kerberos,
+        require           => [
+            Class['::statistics::compute'],
+            Git::Clone['wikimedia/discovery/golden'],
+            Mariadb::Config::Client['discovery-stats']
+        ],
+    }
 
     cron { 'wikimedia-discovery-golden':
-        ensure  => present,
+        ensure  => absent,
         command => "cd ${dir}/golden && sh main.sh >> ${log_dir}/golden-daily.log 2>&1",
         hour    => '5',
         minute  => '0',
