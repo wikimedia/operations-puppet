@@ -15,8 +15,6 @@ class role::ci::slave::labs {
         description => 'CI package building',
     }
 
-    include ::profile::ci::package_builder
-
     include contint::composer
     include contint::slave_scripts
 
