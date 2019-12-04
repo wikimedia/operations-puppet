@@ -8,7 +8,7 @@ apache::logrotate::rotate: 3
 # The current production aka "active" server.
 # Enables dumps and opens firewall holes for http/smtp/aphlict.
 # Switching backend for caching servers needs to be done in DNS.
-phabricator_server: 'phab1001.eqiad.wmnet'
+phabricator_server: 'phab1003.eqiad.wmnet'
 
 # List of all Phabricator servers.
 # Used in firewall as sources who are allowed to rsync from the above.
