@@ -71,8 +71,6 @@ class phabricator (
     Integer $opcache_validate = 0,
     Stdlib::Ensure::Service $phd_service_ensure = running,
 ) {
-    validate_hash($conf_files)
-
     $deploy_root = "/srv/deployment/${deploy_target}"
 
     # base dependencies to ensure the phabricator deployment root exists
