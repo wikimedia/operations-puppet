@@ -11,6 +11,7 @@ class profile::trafficserver::backend (
     Optional[Trafficserver::H2_settings] $h2_settings=hiera('profile::trafficserver::backend::h2_settings', undef),
     Boolean $enable_xdebug=hiera('profile::trafficserver::backend::enable_xdebug', false),
     Boolean $enable_compress=hiera('profile::trafficserver::backend::enable_compress', true),
+    Boolean $origin_coalescing=hiera('profile::trafficserver::backend::origin_coalescing', true),
     Array[TrafficServer::Mapping_rule] $mapping_rules=hiera('profile::trafficserver::backend::mapping_rules', []),
     Array[TrafficServer::Caching_rule] $caching_rules=hiera('profile::trafficserver::backend::caching_rules', []),
     Optional[TrafficServer::Negative_Caching] $negative_caching=hiera('profile::trafficserver::backend::negative_caching', undef),
@@ -88,6 +89,7 @@ class profile::trafficserver::backend (
         outbound_tls_settings => $outbound_tls_settings,
         enable_xdebug         => $enable_xdebug,
         enable_compress       => $enable_compress,
+        origin_coalescing     => $origin_coalescing,
         global_lua_script     => $global_lua_script,
         storage               => $storage,
         ram_cache_size        => 2147483648, # 2G

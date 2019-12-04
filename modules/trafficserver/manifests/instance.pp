@@ -103,6 +103,9 @@
 #   Enable the Collapsed Forwarding plugin. (default: false)
 #   https://docs.trafficserver.apache.org/en/latest/admin-guide/plugins/collapsed_forwarding.en.html
 #
+# [*origin_coalescing*]
+#   Enable request coalescing for in-flight origin server requests. (default: true)
+#
 # [*global_lua_script*]
 #   The name of the global Lua script to define in plugin.config. (default: '').
 #
@@ -211,6 +214,7 @@ define trafficserver::instance(
     Boolean $enable_xdebug = false,
     Boolean $enable_compress = false,
     Boolean $collapsed_forwarding = false,
+    Boolean $origin_coalescing = true,
     String $global_lua_script = '',
     Array[Trafficserver::Mapping_rule] $mapping_rules = [],
     Boolean $enable_caching = true,
