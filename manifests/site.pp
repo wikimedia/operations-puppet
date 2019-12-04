@@ -1804,7 +1804,11 @@ node /^puppetboard[12]001\.(codfw|eqiad)\.wmnet$/ {
     role(puppetboard)
 }
 
-node /^puppetdb[12]00[12]\.(codfw|eqiad)\.wmnet$/ {
+node /^puppetdb[12]001\.(codfw|eqiad)\.wmnet$/ {
+    role(spare::system)
+}
+
+node /^puppetdb[12]002\.(codfw|eqiad)\.wmnet$/ {
     role(puppetmaster::puppetdb)
 }
 

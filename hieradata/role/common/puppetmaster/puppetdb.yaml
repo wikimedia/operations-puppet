@@ -1,4 +1,17 @@
 cluster: puppet
 profile::puppetdb::jvm_opts: '-Xmx6g'
 profile::puppetdb::puppetboard_hosts: 'puppetboard1001.eqiad.wmnet puppetboard2001.codfw.wmnet'
-profile::puppetdb::rsyslog::elk: true
+profile::puppetdb::rsyslog::elk: false
+profile::puppetdb::database::users:
+  replication@puppetdb2002-ipv4:
+    user: replication
+    database: replication
+    cidr: 10.192.0.147/32
+    attrs: REPLICATION
+  puppetdb@puppetdb2002-ipv4:
+    user: puppetdb
+    database: puppetdb
+    cidr: 10.192.0.147/32
+profile::puppetdb::master: puppetdb1002.eqiad.wmnet
+profile::puppetdb::slaves: [puppetdb2002.codfw.wmnet]
+profile::puppetdb::puppetboard_hosts: 'puppetboard1001.eqiad.wmnet puppetboard2001.codfw.wmnet'
