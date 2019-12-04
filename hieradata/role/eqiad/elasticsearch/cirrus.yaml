@@ -9,25 +9,12 @@ profile::elasticsearch::instances:
 
         # ES-specific: Not default
         unicast_hosts: # this is also the list of master eligible nodes
-          - elastic1030.eqiad.wmnet
           - elastic1036.eqiad.wmnet
           - elastic1040.eqiad.wmnet
+          - elastic1054.eqiad.wmnet
 
 
         cluster_hosts:
-          - elastic1018.eqiad.wmnet
-          - elastic1019.eqiad.wmnet
-          - elastic1020.eqiad.wmnet
-          - elastic1022.eqiad.wmnet
-          - elastic1023.eqiad.wmnet
-          - elastic1024.eqiad.wmnet
-          - elastic1025.eqiad.wmnet
-          - elastic1026.eqiad.wmnet
-          - elastic1027.eqiad.wmnet
-          - elastic1028.eqiad.wmnet
-          - elastic1029.eqiad.wmnet
-          - elastic1030.eqiad.wmnet
-          - elastic1031.eqiad.wmnet
           - elastic1032.eqiad.wmnet
           - elastic1033.eqiad.wmnet
           - elastic1034.eqiad.wmnet
@@ -87,8 +74,6 @@ profile::elasticsearch::instances:
 
         cluster_hosts:
           # row A
-          - elastic1030.eqiad.wmnet
-          - elastic1031.eqiad.wmnet
           - elastic1032.eqiad.wmnet
           - elastic1033.eqiad.wmnet
           - elastic1034.eqiad.wmnet
@@ -96,7 +81,6 @@ profile::elasticsearch::instances:
           - elastic1054.eqiad.wmnet
 
           # row B
-          - elastic1028.eqiad.wmnet
           - elastic1036.eqiad.wmnet
           - elastic1037.eqiad.wmnet
           - elastic1038.eqiad.wmnet
@@ -104,18 +88,12 @@ profile::elasticsearch::instances:
           - elastic1056.eqiad.wmnet
 
           # row C
-          - elastic1022.eqiad.wmnet
-          - elastic1029.eqiad.wmnet
           - elastic1040.eqiad.wmnet
           - elastic1041.eqiad.wmnet
           - elastic1057.eqiad.wmnet
           - elastic1058.eqiad.wmnet
 
           # row D
-          - elastic1018.eqiad.wmnet
-          - elastic1019.eqiad.wmnet
-          - elastic1020.eqiad.wmnet
-          - elastic1023.eqiad.wmnet
           - elastic1060.eqiad.wmnet
           - elastic1061.eqiad.wmnet
           - elastic1062.eqiad.wmnet
@@ -162,10 +140,6 @@ profile::elasticsearch::instances:
           - elastic1059.eqiad.wmnet
 
           # row D
-          - elastic1024.eqiad.wmnet
-          - elastic1025.eqiad.wmnet
-          - elastic1026.eqiad.wmnet
-          - elastic1027.eqiad.wmnet
           - elastic1064.eqiad.wmnet
           - elastic1065.eqiad.wmnet
           - elastic1066.eqiad.wmnet

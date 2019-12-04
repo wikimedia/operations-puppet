@@ -79,7 +79,7 @@ es_codfw_rack_d7:
   profile::elasticsearch::row:  D
 
 es_eqiad_rack_a3:
-  __regex: !ruby/regexp /^(elastic10(30|31|32|33|34|35|54)|relforge1001)\.eqiad\.wmnet$/
+  __regex: !ruby/regexp /^(elastic10(32|33|34|35|54)|relforge1001)\.eqiad\.wmnet$/
   profile::elasticsearch::rack: A3
   profile::elasticsearch::row:  A
 
@@ -114,18 +114,13 @@ es_eqiad_rack_b5:
   profile::elasticsearch::row:  B
 
 es_eqiad_rack_b6:
-  __regex: !ruby/regexp /^elastic10(28|46|47)\.eqiad\.wmnet$/
+  __regex: !ruby/regexp /^elastic10(46|47)\.eqiad\.wmnet$/
   profile::elasticsearch::rack: B6
   profile::elasticsearch::row:  B
 
 es_eqiad_rack_c3:
   __regex: !ruby/regexp /^elastic10(57|58)\.eqiad\.wmnet$/
   profile::elasticsearch::rack: C3
-  profile::elasticsearch::row:  C
-
-es_eqiad_rack_c4:
-  __regex: !ruby/regexp /^elastic10(22|29)\.eqiad\.wmnet$/
-  profile::elasticsearch::rack: C4
   profile::elasticsearch::row:  C
 
 es_eqiad_rack_c5:
@@ -149,12 +144,12 @@ es_eqiad_rack_d1:
   profile::elasticsearch::row:  D
 
 es_eqiad_rack_d3:
-  __regex: !ruby/regexp /^elastic10(17|18|19|20|62|63)\.eqiad\.wmnet$/
+  __regex: !ruby/regexp /^elastic10(62|63)\.eqiad\.wmnet$/
   profile::elasticsearch::rack: D3
   profile::elasticsearch::row:  D
 
 es_eqiad_rack_d4:
-  __regex: !ruby/regexp /^elastic10(23|24|25|26|27|64)\.eqiad\.wmnet$/
+  __regex: !ruby/regexp /^elastic1064\.eqiad\.wmnet$/
   profile::elasticsearch::rack: D4
   profile::elasticsearch::row:  D
 

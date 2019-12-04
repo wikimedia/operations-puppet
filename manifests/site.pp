@@ -821,14 +821,21 @@ node /^dumpsdata1003\.eqiad\.wmnet$/ {
 }
 
 node /^elastic101[8-9]\.eqiad\.wmnet/ {
-    role(elasticsearch::cirrus)
+    role(spare::system)
 }
 
 node /^elastic102[023456789]\.eqiad\.wmnet/ {
-    role(elasticsearch::cirrus)
+    role(spare::system)
 }
 
-node /^elastic10[3-5][0-9]\.eqiad\.wmnet/ {
+node /^elastic103[01]\.eqiad\.wmnet/ {
+    role(spare::system)
+}
+
+node /^elastic103[2-9]\.eqiad\.wmnet/ {
+    role(elasticsearch::cirrus)
+}
+node /^elastic10[4-5][0-9]\.eqiad\.wmnet/ {
     role(elasticsearch::cirrus)
 }
 
