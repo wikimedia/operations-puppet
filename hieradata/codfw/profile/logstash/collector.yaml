@@ -1,2 +1,0 @@
-# set kafka consumer group id for logstash kafka input plugin
-profile::logstash::collector::input_kafka_consumer_group_id: 'logstash-codfw'
