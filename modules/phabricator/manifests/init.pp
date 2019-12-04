@@ -115,7 +115,7 @@ class phabricator (
     }
 
     package { [
-        'python-pygments',
+        'python3-pygments',
         'python-phabricator',
         'apachetop',
         'subversion',
