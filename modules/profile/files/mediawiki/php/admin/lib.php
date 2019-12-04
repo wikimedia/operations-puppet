@@ -1,7 +1,8 @@
 <?php
 // Monitoring helper for PHP-FPM 7.x
 define('MW_PATH', '/srv/mediawiki');
-
+// Only consider blocks <5M for the fragmentation
+define('BLOCK_SIZE', 5*1024*1024);
 
 function opcache_stats(bool $full = false): array {
 	// first of all, check if opcache is enabled
@@ -26,6 +27,31 @@ function apcu_stats(bool $limited = true, bool $sma_limited = false): array {
 		$sma_info = [];
 	}
 	return array_merge($cache_info, $sma_info);
+}
+
+// Returns  % of APCu fragmentation
+// This code is part of https://github.com/krakjoe/apcu/blob/master/apc.php
+function apcu_frag() {
+	$mem=apcu_sma_info();
+	$nseg = $freeseg = $fragsize = $freetotal = 0;
+	for($i=0; $i<$mem['num_seg']; $i++) {
+		$ptr = 0;
+		foreach($mem['block_lists'][$i] as $block) {
+			if ($block['offset'] != $ptr) {
+				++$nseg;
+			}
+			$ptr = $block['offset'] + $block['size'];
+			if($block['size']<BLOCK_SIZE) $fragsize+=$block['size'];
+				$freetotal+=$block['size'];
+		}
+		$freeseg += count($mem['block_lists'][$i]);
+	}
+	if ($freeseg > 1) {
+		$frag = $fragsize/$freetotal*100;
+	} else {
+		$frag = 0;
+	}
+	return round($frag, 5, PHP_ROUND_HALF_UP);
 }
 
 /*
@@ -94,6 +120,7 @@ class PrometheusMetric {
 function prometheus_metrics(): array {
 	$oc = opcache_stats();
 	$ac = apcu_stats();
+	$af = apcu_frag();
 	$defs = [
 		[
 			'name' => 'php_opcache_enabled',
@@ -245,6 +272,12 @@ function prometheus_metrics(): array {
 			'desc' => '',
 			'value' => $ac['seg_size'],
 		],
+		[
+			'name' => 'php_apcu_fragmentation',
+			'type' => 'gauge',
+			'desc' => 'APCu fragementation percentage',
+			'value' => $af,
+		],
 	];
 	$metrics = [];
 	foreach ($defs as $metric_def) {
@@ -283,6 +316,10 @@ function show_prometheus_metrics() {
 
 function show_apcu_info() {
 	print json_encode(apcu_stats());
+}
+
+function show_apcu_frag() {
+	print json_encode(array('fragmentation:'=>apcu_frag()));
 }
 
 function dump_apcu_full() {

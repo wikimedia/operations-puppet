@@ -13,6 +13,7 @@ Supported urls:
   /apcu-info       Show basic APCu stats
   /apcu-meta       Dump meta information for all objects in APCu to /tmp/apcu_dump_meta
   /apcu-free       Clear all data from APCu
+  /apcu-frag       APCu fragmenation percentage
   /opcache-info    Show basic opcache stats
   /opcache-meta    Dump meta information for all objects in opcache to /tmp/opcache_dump_meta
   /opcache-free    Clear all data from opcache
@@ -34,6 +35,9 @@ switch ($_SERVER['SCRIPT_NAME']) {
 	case '/apcu-free':
 		// this is an administrative action
 		clear_apcu();
+		break;
+	case '/apcu-frag':
+		show_apcu_frag();
 		break;
 	case '/opcache-info':
 		show_opcache_info();
