@@ -66,7 +66,7 @@ class profile::mediawiki::maintenance::wikidata {
 
     # Migrating item terms for the new term store
     cron { 'wikidata-rebuildItemTerms':
-        ensure  => absent,
+        ensure  => $ensure,
         command => '/usr/bin/timeout 3500s /usr/local/bin/mwscript extensions/Wikibase/repo/maintenance/rebuildItemTerms.php --wiki wikidatawiki --batch-size 150 --sleep 2 --from-id $(/bin/sed -n \'/Rebuilding Q[[:digit:]]\+ till Q\([[:digit:]]\+\)/ { s//\1/; p; }\' /var/log/wikidata/wikidata-rebuildItemTerms.log* | /usr/bin/sort -rn | /usr/bin/head -1) >> /var/log/wikidata/wikidata-rebuildItemTerms.log 2>&1',
         user    => $::mediawiki::users::web,
         minute  => 30,
