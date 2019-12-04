@@ -29,3 +29,13 @@ class ATSBackendTest(unittest.TestCase):
         sum_samples = self.store.get_samples('trafficserver_backend_requests_seconds_sum')
         self.assertIn(('status=304,method=GET,backend=swift.discovery.wmnet', 0.055),
                       sum_samples)
+
+    def testBackendClientMetrics(self):
+        s = self.store.get_samples('trafficserver_backend_client_ttfb_sum')
+        self.assertIn(('backend=appservers-rw.discovery.wmnet', 140), s)
+
+        s = self.store.get_samples('trafficserver_backend_client_cache_read_time_sum')
+        self.assertIn(('backend=swift.discovery.wmnet', 10), s)
+
+        s = self.store.get_samples('trafficserver_backend_client_cache_write_time_sum')
+        self.assertIn(('backend=appservers-rw.discovery.wmnet', 3), s)
