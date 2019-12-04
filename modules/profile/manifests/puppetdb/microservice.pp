@@ -3,7 +3,7 @@ class profile::puppetdb::microservice (
     Boolean             $enabled       = lookup('profile::puppetdb::microservice::enabled'),
     Stdlib::Port        $port          = lookup('profile::puppetdb::microservice::port'),
     Stdlib::Port        $uwsgi_port    = lookup('profile::puppetdb::microservice::uwsgi_port'),
-    Array[Stdlib::Host] $allowed_hosts = lookup('profile::netbox::frontends'),
+    Array[Stdlib::Host] $allowed_hosts = lookup('profile::puppetdb::microservice::allowed_hosts'),
 ) {
     $ssl_settings = ssl_ciphersuite('nginx', 'strong', true)
     $ensure = $enabled ? {

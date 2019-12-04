@@ -4,9 +4,7 @@ profile::netbox::service_hostname: netbox.wikimedia.org
 
 profile::netbox::netbox_api: "https://%{hiera('profile::netbox::service_hostname')}/"
 
-profile::netbox::frontends:
-    - netbox1001.wikimedia.org
-    - netbox2001.wikimedia.org
+profile::netbox::frontends: "%{alias('netbox_frontend')}"
 
 profile::netbox::service_hostname: netbox.wikimedia.org
 profile::netbox::netbox_api: https://netbox.wikimedia.org/

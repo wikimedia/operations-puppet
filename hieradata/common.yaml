@@ -18,6 +18,11 @@ statsd_exporter_port: 9125
 # Debmonitor instance
 debmonitor: debmonitor.discovery.wmnet
 
+# Netbox frontend servers
+netbox_frontend:
+  - netbox1001.wikimedia.org
+  - netbox2001.wikimedia.org
+
 # List of all prometheus nodes (ops instance)
 prometheus_all_nodes:
   - bast3004.wikimedia.org

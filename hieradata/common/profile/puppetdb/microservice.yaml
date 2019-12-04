@@ -1,4 +1,4 @@
 profile::puppetdb::microservice::enabled: true
 profile::puppetdb::microservice::port: 8090
 profile::puppetdb::microservice::uwsgi_port: 8091
-profile::puppetdb::microservice::alowed_hosts: []
+profile::puppetdb::microservice::allowed_hosts: "%{alias('netbox_frontend')}"
