@@ -985,18 +985,8 @@ node /^ganeti[12]00[0-8]\.(codfw|eqiad)\.wmnet$/ {
     role(ganeti)
 }
 
-# new esams ganeti cluster
-node /^ganeti300[12]\.esams\.wmnet$/ {
-    role(spare::system)
-}
-
-# esams authdns (ns2) - on loan temporarily from unused ganeti cluster above!
-node 'ganeti3003.esams.wmnet' {
-    role(dns::auth)
-}
-
-# new ulsfo ganeti hosts T226444
-node /^ganeti400[123]\.ulsfo\.wmnet$/ {
+# new edge ganeti hosts T226444
+node /^ganeti[34]00[1-3]\.ulsfo.wmnet$/ {
     role(spare::system)
 }
 
