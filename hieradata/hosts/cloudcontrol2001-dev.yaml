@@ -9,5 +9,3 @@ prometheus_nodes:
     - cloudmetrics1002.eqiad.wmnet
     - prometheus2003.codfw.wmnet
     - prometheus2004.codfw.wmnet
-
-profile::openstack::codfw1dev::version: ocata
