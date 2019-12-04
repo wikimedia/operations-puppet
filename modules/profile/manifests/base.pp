@@ -159,7 +159,8 @@ class profile::base(
         class { '::smart': }
     }
 
-    # This is repsonsible for ~75%+ of all recdns queries...
+    # This is responsible for ~75%+ of all recdns queries...
+    # https://phabricator.wikimedia.org/T239862
     host { 'statsd.eqiad.wmnet':
         ip           => '10.64.16.149', # graphite1004
         host_aliases => 'statsd',
