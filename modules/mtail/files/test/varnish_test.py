@@ -67,37 +67,37 @@ class VarnishBackendTest(unittest.TestCase):
 
     def testRespStatus(self):
         s = self.store.get_samples('varnish_backend_requests_seconds_count')
-        self.assertIn(('status=200,method=GET,backend=be_wdqs_svc_eqiad_wmnet', 12), s)
-        self.assertIn(('status=204,method=GET,backend=be_matomo1001_eqiad_wmnet', 2), s)
-        self.assertIn(('status=200,method=POST,backend=be_matomo1001_eqiad_wmnet', 1), s)
-        self.assertIn(('status=301,method=GET,backend=be_cp1065_eqiad_wmnet', 1), s)
+        self.assertIn(('status=200,method=GET,backend=be_wdqs_svc_xmp_eggnet', 12), s)
+        self.assertIn(('status=204,method=GET,backend=be_matomo01_xmp_eggnet', 2), s)
+        self.assertIn(('status=200,method=POST,backend=be_matomo01_xmp_eggnet', 1), s)
+        self.assertIn(('status=301,method=GET,backend=be_cp65_xmp_eggnet', 1), s)
 
         bucket_samples = self.store.get_samples('varnish_backend_requests_seconds_bucket')
-        self.assertIn(('le=0.01,method=GET,backend=be_cp1065_eqiad_wmnet', 1),
+        self.assertIn(('le=0.01,method=GET,backend=be_cp65_xmp_eggnet', 1),
                       bucket_samples)
-        self.assertIn(('le=0.05,method=GET,backend=be_cp1065_eqiad_wmnet', 1),
+        self.assertIn(('le=0.05,method=GET,backend=be_cp65_xmp_eggnet', 1),
                       bucket_samples)
-        self.assertIn(('le=0.1,method=GET,backend=be_cp1065_eqiad_wmnet', 1),
+        self.assertIn(('le=0.1,method=GET,backend=be_cp65_xmp_eggnet', 1),
                       bucket_samples)
-        self.assertIn(('le=0.5,method=GET,backend=be_cp1065_eqiad_wmnet', 1),
+        self.assertIn(('le=0.5,method=GET,backend=be_cp65_xmp_eggnet', 1),
                       bucket_samples)
-        self.assertIn(('le=1.0,method=GET,backend=be_cp1065_eqiad_wmnet', 1),
+        self.assertIn(('le=1.0,method=GET,backend=be_cp65_xmp_eggnet', 1),
                       bucket_samples)
-        self.assertIn(('le=5.0,method=GET,backend=be_cp1065_eqiad_wmnet', 1),
+        self.assertIn(('le=5.0,method=GET,backend=be_cp65_xmp_eggnet', 1),
                       bucket_samples)
-        self.assertIn(('le=+Inf,method=GET,backend=be_cp1065_eqiad_wmnet', 1),
+        self.assertIn(('le=+Inf,method=GET,backend=be_cp65_xmp_eggnet', 1),
                       bucket_samples)
 
         sum_samples = self.store.get_samples('varnish_backend_requests_seconds_sum')
-        self.assertIn(('status=301,method=GET,backend=be_cp1065_eqiad_wmnet', 0.001797),
+        self.assertIn(('status=301,method=GET,backend=be_cp65_xmp_eggnet', 0.001797),
                       sum_samples)
-        self.assertIn(('status=200,method=GET,backend=be_wdqs_svc_eqiad_wmnet', 1.229273),
+        self.assertIn(('status=200,method=GET,backend=be_wdqs_svc_xmp_eggnet', 1.229273),
                       sum_samples)
-        self.assertIn(('status=200,method=GET,backend=be_phab1003_eqiad_wmnet', 1.245995),
+        self.assertIn(('status=200,method=GET,backend=be_phab01_xmp_eggnet', 1.245995),
                       sum_samples)
-        self.assertIn(('status=200,method=GET,backend=be_labmon1001_eqiad_wmnet', 0.049231),
+        self.assertIn(('status=200,method=GET,backend=be_labmon01_xmp_eggnet', 0.049231),
                       sum_samples)
-        self.assertIn(('status=200,method=POST,backend=be_matomo1001_eqiad_wmnet', 0.061224),
+        self.assertIn(('status=200,method=POST,backend=be_matomo01_xmp_eggnet', 0.061224),
                       sum_samples)
 
 
