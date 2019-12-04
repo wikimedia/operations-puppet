@@ -141,4 +141,14 @@ class profile::kubernetes::node(
         dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/kubernetes-kubelets?orgId=1'],
         notes_link      => 'https://wikitech.wikimedia.org/wiki/Kubernetes',
     }
+
+    # kube-proxy on startup sets the following. However sysctl values may be
+    # changed after that. Enforce them in puppet as well to avoid nasty
+    # surprises
+    sysctl::parameters { 'kube_proxy_conntrack':
+        values   => {
+            'net.netfilter.nf_conntrack_max' => 1048576,
+        },
+        priority => 75,
+    }
 }
