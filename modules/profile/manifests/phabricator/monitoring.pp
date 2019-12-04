@@ -1,7 +1,7 @@
 # == Class: profile::phabricator::monitoring
 #
 class profile::phabricator::monitoring (
-    Stdlib::Fqdn $phabricator_active_server = hiera('phabricator_active_server'),
+    Stdlib::Fqdn $active_server = hiera('phabricator_server'),
     Stdlib::Ensure::Service $phd_service_ensure = hiera('profile::phabricator::main::phd_service_ensure', 'running'),
 ){
 
@@ -28,7 +28,7 @@ class profile::phabricator::monitoring (
 
     # https monitoring is on the virtual host 'phabricator'.
     # It should not be duplicated.
-    if $::hostname == $phabricator_active_server {
+    if $::fqdn == $active_server {
         monitoring::host { 'phabricator.wikimedia.org':
             host_fqdn => 'phabricator.wikimedia.org',
         }

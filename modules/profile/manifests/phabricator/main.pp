@@ -40,8 +40,7 @@ class profile::phabricator::main (
     include passwords::mysql::phabricator
 
     # dumps are only enabled on the active server set in Hiera
-    $phabricator_active_server = hiera('phabricator_active_server')
-    if $::hostname == $phabricator_active_server {
+    if $::fqdn == $active_server {
         $dump_enabled = true
         $ferm_ensure = 'present'
         if $aphlict_enabled {
@@ -74,7 +73,7 @@ class profile::phabricator::main (
             },
             {
                 'type'      => 'admin',
-                'host'      => $phabricator_active_server,
+                'host'      => $active_server,
                 'port'      => 22281,
                 'protocol'  => 'http',
             }
