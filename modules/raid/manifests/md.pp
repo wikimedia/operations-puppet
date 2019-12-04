@@ -1,5 +1,7 @@
 # MD RAID controller
-class raid::md {
+class raid::md (
+    Enum['present', 'absent'] $cron_ensure = 'present',
+) {
   include raid
 
   # T162013 - reduce raid resync speeds on clustered etcd noes with software RAID
@@ -12,6 +14,7 @@ class raid::md {
   $dow = fqdn_rand(5, 'md_checkarray') + 1
   # Replace the default mdadm script from upstream with our own
   file { '/etc/cron.d/mdadm':
+      ensure  => $cron_ensure,
       content => template('raid/mdadm-cron.erb'),
       owner   => 'root',
       group   => 'root',
