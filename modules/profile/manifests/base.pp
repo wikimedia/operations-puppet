@@ -158,4 +158,10 @@ class profile::base(
     if $check_smart and $facts['is_virtual'] == false {
         class { '::smart': }
     }
+
+    # This is repsonsible for ~75%+ of all recdns queries...
+    host { 'statsd.eqiad.wmnet':
+        ip           => '10.64.16.149', # graphite1004
+        host_aliases => 'statsd',
+    }
 }
