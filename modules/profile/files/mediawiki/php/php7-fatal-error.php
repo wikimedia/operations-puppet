@@ -122,13 +122,16 @@ if ( $statsd_host && $statsd_port ) {
 	@socket_sendto( $sock, $stat, strlen( $stat ), 0, $statsd_host, $statsd_port );
 }
 
-// Should match the structure of exceptions logged by MediaWiki core.
+// Match wmf-config: logging.php
+$isParsoidCluster = ( $_SERVER['SERVERGROUP'] ?? null ) === 'parsoid';
+
+// This should array match the structure of exceptions logged by MediaWiki core.
 // so that it blends in with its log channel and the Logstash dashboards
 // written for it.
-//
-// The 'type' and 'channel' are applied later via puppet://logstash/filter-syslog.conf.
 $info = [
 	// Match mediawiki/core: MWExceptionHandler
+	'channel' => 'fatal',
+	'message' => "PHP Fatal error: {$message} in {$err['file']} on line {$err['line']}",
 	'exception' => [
 		'message' => $message,
 		'file' => "{$err['file']}:{$err['line']}",
@@ -137,10 +140,17 @@ $info = [
 	'caught_by' => '/etc/php/php7-fatal-error.php (via wmerrors)',
 	// Match wmf-config: logging.php
 	'phpversion' => PHP_VERSION,
+	// Avoid sending Parsoid-PHP fatals to MediaWiki logs (T239867).
+	// Match wmf-config: logging.php
+	// Match mediawiki/core: CeeFormatter
+	'type' => $isParsoidCluster ? 'parsoid-php' : 'mediawiki',
+	'normalized_message' => $message . ' in ' . basename( $err['file'] ),
 ];
-// Match mediawiki/core: MediaWiki\Logger\Monolog\WikiProcessor
 if ( isset( $_SERVER['UNIQUE_ID'] ) ) {
+	// Match mediawiki/core: MediaWiki\Logger\Monolog\WikiProcessor
 	$info['reqId'] = $_SERVER['UNIQUE_ID'];
+	// Match mediawiki/core: MWExceptionHandler
+	$info['message'] = '[' . $info['reqId'] . '] ' . $info['message'];
 }
 // Match Monolog\Processor\WebProcessor
 // https://github.com/Seldaek/monolog/blob/2.0.0/src/Monolog/Processor/WebProcessor.php#L33
@@ -165,7 +175,7 @@ if ( $overflow > 0 ) {
 	if ( strlen( $syslogMessage ) - strlen( $trace ) < $maxLength ) {
 		$info['exception']['trace'] = substr( $trace, 0, -$overflow );
 	} else {
-		// Truncate everything
+		// Truncate everything to no more than ~1600 chars
 		array_walk_recursive( $info, function ( &$item ) use ( $maxLength ) {
 			$item = substr( $item, 0, $maxLength / 20 );
 		} );
