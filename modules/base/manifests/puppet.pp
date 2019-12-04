@@ -16,6 +16,7 @@ class base::puppet(
 
     $crontime          = fqdn_rand(60, 'puppet-params-crontime')
 
+    # On buster simply install the distro defaults of facter/puppet
     if os_version('debian < buster') {
       if $puppet_major_version == 5 {
         apt::repository {'component-puppet5':
@@ -23,7 +24,24 @@ class base::puppet(
           dist       => "${::lsbdistcodename}-wikimedia",
           components => 'component/puppet5',
           before     => Package['puppet'],
+          notify     => Exec['apt_update_puppet5'],
         }
+
+        apt::pin { 'puppet5-stretch':
+            pin      => 'release c=component/puppet5',
+            priority => '1002',
+            before   => Package['puppet'],
+        }
+
+        exec {'apt_update_puppet5':
+            command     => '/usr/bin/apt-get update',
+            refreshonly => true,
+        }
+
+        Package['puppet'] {
+            require => [Apt::Repository['component-puppet5'], Exec['apt_update_puppet5']],
+        }
+
       } elsif $puppet_major_version == 4 {
         apt::repository {'component-puppet5':
           ensure => absent,
@@ -36,19 +54,34 @@ class base::puppet(
           dist       => "${::lsbdistcodename}-wikimedia",
           components => 'component/facter3',
           before     => Package['facter'],
+          notify     => Exec['apt_update_facter'],
         }
+
+        apt::pin { 'facter3-stretch':
+            pin      => 'release c=component/facter3',
+            priority => '1002',
+            before   => Package['facter'],
+        }
+
+        Package['facter'] {
+            require => [Apt::Repository['component-facter3'], Exec['apt_update_facter']],
+        }
+
+        exec {'apt_update_facter':
+            command     => '/usr/bin/apt-get update',
+            refreshonly => true,
+        }
+
       } elsif $facter_major_version == 2 {
         apt::repository {'component-facter3':
           ensure => absent,
         }
       }
-    } elsif $facter_major_version != 3 or puppet_major_version != 5 {
-      warning('buster only supports puppet5 and facter3')
     }
 
     # augparse is required to resolve the augeasversion in facter3
     # facter needs virt-what for proper "virtual"/"is_virtual" resolution
-    package { [ 'puppet', 'facter', 'augeas-tools', 'virt-what' ]:
+    package { [ 'facter', 'puppet', 'augeas-tools', 'virt-what' ]:
         ensure => present,
     }
 
