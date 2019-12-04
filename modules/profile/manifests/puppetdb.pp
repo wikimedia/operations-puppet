@@ -10,7 +10,7 @@ class profile::puppetdb(
     Integer $microservice_port = hiera('profile::puppetdb::microservice::port', 0),
     Integer $microservice_uwsgi_port = hiera('profile::puppetdb::microservice::uwsgi_port', 0),
     Optional[Array] $microservice_allowed_hosts = lookup('profile::netbox::frontends', {'default_value' => undef}),
-    Boolean $elk_logging = lookup('profile::puppetdb::rsyslog::elk', {'default_value' => false}),
+    Boolean $elk_logging = lookup('profile::puppetdb::elk_logging'),
     Boolean $filter_job_id = lookup('profile::puppetdb::filter_job_id'),
 ) {
 
@@ -66,7 +66,7 @@ class profile::puppetdb(
     if $elk_logging {
         # Ship PuppetDB logs to ELK
         rsyslog::input::file { 'puppetdb':
-            path => '/var/log/puppetlabs/puppetdb/puppetdb.log',
+            path => '/var/log/puppetdb/puppetdb.log',
         }
     }
 

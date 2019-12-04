@@ -1,1 +1,2 @@
 profile::puppetdb::filter_job_id: false
+profile::puppetdb::elk_logging: true
