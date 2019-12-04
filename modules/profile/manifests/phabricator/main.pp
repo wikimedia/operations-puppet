@@ -509,7 +509,7 @@ class profile::phabricator::main (
         ensure      => present,
         source_host => $active_server,
         dest_host   => $passive_server,
-        auto_sync   => true,
+        auto_sync   => false,
         module_path => '/srv/repos',
       }
     }
