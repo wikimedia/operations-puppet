@@ -2841,6 +2841,7 @@ host ganeti3002 {
 host ganeti3003 {
     hardware ethernet B0:26:28:6E:DD:D0;
     fixed-address ganeti3003.esams.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host ganeti4001 {
