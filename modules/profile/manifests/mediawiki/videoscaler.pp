@@ -10,6 +10,12 @@ class profile::mediawiki::videoscaler()
         components => 'component/vp9',
     }
 
+    apt::pin { 'ffmpeg-vp9-stretch':
+        pin      => 'release c=component/vp9',
+        priority => '1001',
+        before   => Package['ffmpeg'],
+    }
+
     package { 'ffmpeg':
         ensure  => present,
         require => [ Apt::Repository['ffmpeg-vp9'], Exec['apt-get update']],
