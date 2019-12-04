@@ -22,7 +22,7 @@ class profile::phabricator::main (
     Stdlib::Fqdn $phab_diffusion_ssh_host = hiera('phabricator_diffusion_ssh_host', 'git-ssh.wikimedia.org'),
     Array $cluster_search = hiera('phabricator_cluster_search'),
     Optional[String] $active_server = hiera('phabricator_server', undef),
-    Optional[String] $passive_server = hiera('phabricator_server_failover', undef),
+    Array $phabricator_servers = hiera('phabricator_servers', undef),
     Boolean $logmail = hiera('phabricator_logmail', false),
     Boolean $aphlict_enabled = hiera('phabricator_aphlict_enabled', false),
     Hash $rate_limits = hiera('profile::phabricator::main::rate_limits'),
@@ -43,7 +43,6 @@ class profile::phabricator::main (
     $phabricator_active_server = hiera('phabricator_active_server')
     if $::hostname == $phabricator_active_server {
         $dump_enabled = true
-        $rsync_cfg_enabled = true
         $ferm_ensure = 'present'
         if $aphlict_enabled {
             $aphlict_ensure = 'present'
@@ -52,7 +51,6 @@ class profile::phabricator::main (
         }
     } else {
         $dump_enabled = false
-        $rsync_cfg_enabled = false
         $ferm_ensure = 'absent'
         $aphlict_ensure = 'absent'
 
@@ -401,17 +399,14 @@ class profile::phabricator::main (
         require         => Package[$deploy_target]
     }
 
-    if $rsync_cfg_enabled {
-        class { '::rsync::server': }
-
-        $rsync_clients = ['labstore1006.wikimedia.org', 'labstore1007.wikimedia.org']
-        rsync::server::module { 'srvdumps':
+    # Allow dumps servers to pull dump files.
+    $rsync_clients = ['labstore1006.wikimedia.org', 'labstore1007.wikimedia.org']
+    rsync::server::module { 'srvdumps':
             path           => '/srv/dumps',
             read_only      => 'yes',
             hosts_allow    => $rsync_clients,
             auto_ferm      => true,
             auto_ferm_ipv6 => true,
-        }
     }
 
     # Backup repositories
@@ -455,7 +450,7 @@ class profile::phabricator::main (
     }
 
     # ssh between phabricator servers for clustering support
-    $phabricator_servers_ferm = join(hiera('phabricator_servers'), ' ')
+    $phabricator_servers_ferm = join($phabricator_servers, ' ')
     ferm::service { 'ssh_cluster':
         port   => '22',
         proto  => 'tcp',
@@ -504,14 +499,14 @@ class profile::phabricator::main (
         require      => Package[$deploy_target],
     }
 
-    if $active_server != undef {
-      rsync::quickdatacopy { 'srv-repos':
-        ensure      => present,
-        source_host => $active_server,
-        dest_host   => $passive_server,
-        auto_sync   => false,
-        module_path => '/srv/repos',
-      }
+    # Allow pulling /srv/repos data from the active server.
+    rsync::server::module { 'srv-repos':
+        ensure         => 'present',
+        read_only      => 'yes',
+        path           => '/srv/repos',
+        hosts_allow    => $phabricator_servers,
+        auto_ferm      => true,
+        auto_ferm_ipv6 => true,
     }
 
     # Ship apache error logs to ELK - T141895
