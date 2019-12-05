@@ -26,7 +26,7 @@ class profile::mediawiki::videoscaler()
 
     package { $ffmpeg_packages:
         ensure  => present,
-        require => Apt::Repository['ffmpeg-vp9'],
+        require => [ Apt::Repository['ffmpeg-vp9'], Exec['apt_update_ffmpeg']],
     }
 
     # Needed to make sure the revised ffmpeg gets installed on fresh installs
