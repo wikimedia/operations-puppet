@@ -1423,6 +1423,23 @@ class profile::prometheus::ops (
         port       => 9106,
     }
 
+    $atlas_exporter_jobs = [
+      {
+        'job_name'        => 'atlas_exporter',
+        'scheme'          => 'http',
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/atlas_exporter_*.yaml" ]}
+        ],
+      },
+    ]
+
+    prometheus::class_config{ "atlas_exporter_${::site}":
+        dest       => "${targets_path}/atlas_exporter_${::site}.yaml",
+        site       => $::site,
+        class_name => 'profile::atlasexporter',
+        port       => 9107,
+    }
+
     $apereo_cas_jobs = [
         {
             'job_name'        => 'idp',
@@ -1459,7 +1476,7 @@ class profile::prometheus::ops (
             $mjolnir_jobs, $rsyslog_jobs, $php_jobs, $php_fpm_jobs, $icinga_jobs, $docker_registry_jobs,
             $gerrit_jobs, $routinator_jobs, $rpkicounter_jobs, $varnishkafka_jobs, $bird_jobs, $ncredir_jobs,
             $cloud_dev_pdns_jobs, $cloud_dev_pdns_rec_jobs, $bacula_jobs, $poolcounter_exporter_jobs,
-            $apereo_cas_jobs,
+            $apereo_cas_jobs, $atlas_exporter_jobs,
         ),
         global_config_extra   => $config_extra,
     }
