@@ -3,7 +3,7 @@ Description=Monitors RIPE Atlas probe output and makes it available to Prometheu
 Documentation=https://github.com/czerwonk/atlas_exporter
 
 [Service]
-ExecStart=/usr/bin/atlas_exporter -config.file <%= @config_file %> -web.listen-address :<%= @exporter_port %>
+ExecStart=/bin/sh -c '/usr/bin/atlas_exporter -config.file <%= @config_file %> -web.listen-address :<%= @exporter_port %> 2>&1 | grep -v level=info'
 User=prometheus
 Restart=always
 
