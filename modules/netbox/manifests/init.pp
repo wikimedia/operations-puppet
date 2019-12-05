@@ -40,8 +40,8 @@
 # [*directory*]
 #   Path to the netbox app
 #
-# [*reports_path*]
-#   The path which the reports repository will be cloned to
+# [*extras_path*]
+#   The path which the extras repository will be cloned to
 #
 # [*ensure*]
 #   installs/removes config files
@@ -93,7 +93,7 @@ class netbox(
     Stdlib::Unixpath $config_path = '/srv/deployment/netbox/deploy',
     Stdlib::Unixpath $venv_path = '/srv/deployment/netbox/venv',
     Stdlib::Unixpath $directory = '/srv/deployment/netbox/deploy/src',
-    Stdlib::Unixpath $reports_path = '/srv/deployment/netbox-reports',
+    Stdlib::Unixpath $extras_path = '/srv/deployment/netbox-extras',
     Wmflib::Ensure $ensure='present',
     Optional[Stdlib::Fqdn] $ldap_server = undef,
     Boolean $include_ldap = false,

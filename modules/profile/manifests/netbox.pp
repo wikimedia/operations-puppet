@@ -67,7 +67,7 @@ class profile::netbox (
     $nb_swift_ca_cert =  $nb_ganeti_ca_cert
     $puppetdb_api = "https://${puppetdb_host}:${puppetdb_microservice_port}/"
 
-    $reports_path = '/srv/deployment/netbox-reports'
+    $extras_path = '/srv/deployment/netbox-extras/'
 
     # Used for LDAP auth
     include passwords::ldap::production
@@ -80,7 +80,7 @@ class profile::netbox (
         db_password      => $db_password,
         secret_key       => $secret_key,
         ldap_password    => $proxypass,
-        reports_path     => $reports_path,
+        extras_path      => $extras_path,
         swift_auth_url   => $swift_auth_url,
         swift_user       => $swift_user,
         swift_key        => $swift_key,
@@ -147,9 +147,9 @@ class profile::netbox (
     # FIXME service::uwsgi seems to create the directory /etc/netbox/, counter intuitively.
     #
 
-    git::clone { 'operations/software/netbox-reports':
+    git::clone { 'operations/software/netbox-extras':
         ensure    => 'latest',
-        directory => $reports_path,
+        directory => $extras_path,
     }
 
     # Configuration for the Netbox-Ganeti synchronizer
