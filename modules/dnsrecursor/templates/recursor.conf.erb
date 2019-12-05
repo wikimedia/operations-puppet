@@ -27,8 +27,7 @@ setgid=pdns
 setuid=pdns
 
 daemon=yes
-# can later raise threads to 1/core (and +ulimit) on version 4.1+ w/ proper reuseport
-threads=4
+threads=<%= @threads %>
 pdns-distributes-queries=no
 reuseport=yes
 
@@ -38,7 +37,7 @@ local-port=53
 
 # available since: 3.6
 #loglevel=1
-log-common-errors=yes
+log-common-errors=<%= @log_common_errors %>
 # suppress logging of questions and answers
 quiet=yes
 # trace	if we should output heaps of logging

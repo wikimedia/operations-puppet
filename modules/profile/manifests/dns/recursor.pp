@@ -16,14 +16,16 @@ class profile::dns::recursor (
     $all_anycast_vips = $advertise_vips.map |$vip_fqdn,$vip_params| { $vip_params['address'] }
 
     class { '::dnsrecursor':
-        version_hostname => true,
-        allow_from       => $network::constants::aggregate_networks,
-        listen_addresses => [
+        version_hostname  => true,
+        allow_from        => $network::constants::aggregate_networks,
+        listen_addresses  => [
             $facts['ipaddress'],
             $facts['ipaddress6'],
             $lvs::configuration::service_ips['dns_rec'][$::site],
             $all_anycast_vips,
         ],
+        log_common_errors => 'no',
+        threads           => $facts['physicalcorecount'],
     }
 
     ::dnsrecursor::monitor { [ $facts['ipaddress'], $facts['ipaddress6'] ]: }
