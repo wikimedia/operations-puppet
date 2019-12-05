@@ -23,7 +23,7 @@ class profile::mediawiki::videoscaler()
         before   => Package[$ffmpeg_packages],
     }
 
-    package { 'ffmpeg':
+    package { $ffmpeg_packages:
         ensure  => present,
         require => [ Apt::Repository['ffmpeg-vp9'], Exec['apt-get update']],
     }
