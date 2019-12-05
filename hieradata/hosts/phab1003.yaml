@@ -18,4 +18,4 @@ phabricator::vcs::address::v6: "2620:0:861:107:10:64:48:22"
 phabricator_logmail: true
 
 profile::phabricator::httpd::enable_forensic_log: false
-profile::phabricator::main::phd_service_ensure: running
+profile::phabricator::main::phd_service_ensure: stopped
