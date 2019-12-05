@@ -23,6 +23,7 @@ After=network.target
 [Service]
 SyslogIdentifier=airflow-webserver
 Environment=AIRFLOW_HOME=<%= @conf_dir %>
+Environment=PATH=<%= @deploy_dir %>/venv/bin:/bin:/usr/bin
 User=airflow
 Group=airflow
 Type=simple
