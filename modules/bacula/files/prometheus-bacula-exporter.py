@@ -219,6 +219,8 @@ class Bacula(object):
             executions = self.backups[job]['executions']
             for i in range(len(executions) - 1, -1, -1):
                 execution = executions[i]
+                if execution['starttime'] is None:
+                    continue
                 if self.older(execution['starttime'], from_seconds_ago):
                     break
                 if not self.older(execution['starttime'], to_seconds_ago):
