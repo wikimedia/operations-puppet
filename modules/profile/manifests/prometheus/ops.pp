@@ -1098,6 +1098,11 @@ class profile::prometheus::ops (
                     'regex'  => '(\w{40}-\d+)',
                     'action' => 'drop',
                 },
+                # Logstash 7 plugin IDs
+                { 'source_labels' => ['plugin_id'],
+                    'regex'  => '(\w{64})',
+                    'action' => 'drop',
+                },
             ],
         },
     ]
