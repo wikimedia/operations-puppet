@@ -1,8 +1,9 @@
 # basic profile for every CloudVPS instance
 class profile::wmcs::instance(
-    Boolean $mount_nfs      = lookup('mount_nfs', {default_value => true}),
-    Boolean $diamond_remove = lookup('diamond::remove', {default_value => false}),
-    String  $sudo_flavor    = lookup('sudo_flavor', {default_value => 'sudoldap'}),
+    Boolean      $mount_nfs      = lookup('mount_nfs',                         {default_value => true}),
+    Boolean      $diamond_remove = lookup('diamond::remove',                   {default_value => false}),
+    String       $sudo_flavor    = lookup('sudo_flavor',                       {default_value => 'sudoldap'}),
+    Stdlib::Fqdn $metrics_server = lookup('statsite::instance::graphite_host', {default_value => 'localhost'}),
 ) {
     # force sudo on buster
     if $sudo_flavor == 'sudo' or os_version('debian >= buster') {
@@ -65,7 +66,8 @@ class profile::wmcs::instance(
     # icinga, so collect puppet freshness metrics via diamond/graphite
     if ! $diamond_remove {
         # Prefix labs metrics with project name
-        $path_prefix   = $::labsproject
+        $path_prefix  = $::labsproject
+        $server_ip    = ipresolve($metrics_server, 4)
 
         class { '::diamond':
             path_prefix   => $path_prefix,
@@ -76,7 +78,7 @@ class profile::wmcs::instance(
                 # Diamond needs its bools in string-literals.
                 enabled => 'true',
                 # lint:endignore
-                host    => '10.64.37.13', # labmon1001
+                host    =>  $server_ip,
                 port    => '2003',
                 batch   => '20',
             },

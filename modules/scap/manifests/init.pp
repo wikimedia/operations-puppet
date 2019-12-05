@@ -13,7 +13,8 @@ class scap (
     $deployment_server = 'deployment',
     $wmflabs_master = 'deployment-deploy01.deployment-prep.eqiad.wmflabs',
     $version = 'present',
-    Stdlib::Port::Unprivileged $php7_admin_port = 9181,
+    Stdlib::Port::Unprivileged $php7_admin_port   = 9181,
+    Stdlib::Fqdn               $cloud_statsd_host = 'labmon1001.eqiad.wmflabs',
 ) {
     require git::lfs
 

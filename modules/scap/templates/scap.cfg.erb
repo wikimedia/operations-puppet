@@ -100,7 +100,7 @@ udp2log_host: mwlog1001.eqiad.wmnet
 # Wikimedia Foundation beta cluster configuration
 git_server: <%= @wmflabs_master %>
 master_rsync: <%= @wmflabs_master %>
-statsd_host: labmon1001.eqiad.wmnet
+statsd_host: <%= @cloud_statsd_host %>
 udp2log_host: deployment-fluorine02.deployment-prep.eqiad.wmflabs
 wmf_realm: labs
 # No pybal in labs, but pretend that there is anyway

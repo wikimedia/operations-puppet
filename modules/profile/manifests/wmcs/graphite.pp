@@ -1,4 +1,6 @@
-class profile::wmcs::graphite {
+class profile::wmcs::graphite (
+    Stdlib::Fqdn $graphite_host = lookup('statsite::instance::graphite_host', {default_value => 'localhost'}),
+) {
 
     include graphite::wmcs::archiver
 
@@ -27,13 +29,13 @@ class profile::wmcs::graphite {
     ferm::service { 'carbon_c_relay-local_relay_udp':
         proto  => 'udp',
         port   => '1903',
-        srange => '@resolve(labmon1001.eqiad.wmnet)',
+        srange => "@resolve(${graphite_host})",
     }
 
     ferm::service { 'carbon_c_relay-local_relay_tcp':
         proto  => 'tcp',
         port   => '1903',
-        srange => '@resolve(labmon1001.eqiad.wmnet)',
+        srange => "@resolve(${graphite_host})",
     }
 
     ferm::service { 'statsite_udp':

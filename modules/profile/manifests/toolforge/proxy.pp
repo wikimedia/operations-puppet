@@ -4,6 +4,7 @@ class profile::toolforge::proxy (
     Stdlib::Fqdn        $web_domain   = lookup('profile::toolforge::web_domain',        {default_value => 'tools.wmflabs.org'}),
     Boolean             $do_https     = lookup('profile::toolforge::proxy::do_https',   {default_value => true}),
     Array[Stdlib::Fqdn] $prometheus   = lookup('prometheus_nodes',                      {default_value => ['localhost']}),
+    String              $statsd       = lookup('statsd',                                {default_value => 'localhost:8125'}),
 ) {
     class { '::redis::client::python': }
 
@@ -110,7 +111,7 @@ class profile::toolforge::proxy (
         minute          => '*/1',
         parser          => 'toolsweblogster.UrlFirstSegmentLogster', # Nothing more specific yet
         logfile         => '/var/log/nginx/access.log',
-        logster_options => "-o statsd --statsd-host=labmon1001.eqiad.wmnet:8125 --metric-prefix=${graphite_metric_prefix}.",
+        logster_options => "-o statsd --statsd-host=${statsd} --metric-prefix=${graphite_metric_prefix}.",
         require         => File['/usr/local/lib/python2.7/dist-packages/toolsweblogster.py'],
     }
 
