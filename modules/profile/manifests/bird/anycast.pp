@@ -8,7 +8,7 @@
 class profile::bird::anycast(
   Boolean $bfd = lookup('profile::bird::bfd', {'default_value' => true}),
   Optional[Array[Stdlib::IP::Address::V4::Nosubnet]] $neighbors_list = lookup('profile::bird::neighbors_list', {'default_value' => []}),
-  Optional[String] $bind_service = lookup('profile::bird::bind_service', {'default_value' => undef}),
+  Optional[String] $bind_anycast_service = lookup('profile::bird::bind_anycast_service', {'default_value' => undef}),
   Optional[Hash[String, Wmflib::Advertise_vip]] $advertise_vips = lookup('profile::bird::advertise_vips', {'default_value' => {}}),
   Optional[Array[Stdlib::Fqdn]] $prometheus_nodes = hiera('prometheus_nodes', undef),
 ){
@@ -53,14 +53,16 @@ class profile::bird::anycast(
       }
   }
 
-  class { '::bird::anycast_healthchecker': }
+  class { '::bird::anycast_healthchecker':
+      bind_service => $bind_anycast_service,
+  }
 
   require ::profile::bird::anycast_healthchecker_monitoring
 
   class { '::bird':
       config_template => 'bird/bird_anycast.conf.erb',
       neighbors       => $neighbors_list,
-      bind_service    => $bind_service,
+      bind_service    => 'anycast-healthchecker.service',
       bfd             => $bfd,
       require         => Class['::bird::anycast_healthchecker'],
   }

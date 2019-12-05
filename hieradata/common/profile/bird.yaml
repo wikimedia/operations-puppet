@@ -1,3 +1,0 @@
-# By default bind bird to anycast-healthchecker
-# If anycast-healthchecker process goes down, bird goes down as well
-profile::bird::bind_service: 'anycast-healthchecker.service'
