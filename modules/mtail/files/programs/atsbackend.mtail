@@ -1,12 +1,18 @@
 # client<->ats-be metrics
+# histogram trafficserver_backend_client_ttfb
+counter trafficserver_backend_client_ttfb_bucket by le, backend
 counter trafficserver_backend_client_ttfb_sum by backend
+counter trafficserver_backend_client_ttfb_count by backend
+
 counter trafficserver_backend_client_cache_read_time_sum by backend
 counter trafficserver_backend_client_cache_write_time_sum by backend
 
 # ats-be<->origin metrics
+# histogram trafficserver_backend_requests_seconds
 counter trafficserver_backend_requests_seconds_bucket by le, method, backend
 counter trafficserver_backend_requests_seconds_sum by status, method, backend
 counter trafficserver_backend_requests_seconds_count by status, method, backend
+
 counter trafficserver_backend_connections_total by backend
 
 # This block matches all log lines, regardless of the cache status. Hits,
@@ -15,6 +21,37 @@ counter trafficserver_backend_connections_total by backend
   trafficserver_backend_client_ttfb_sum[$backend] += $client_ttfb
   trafficserver_backend_client_cache_read_time_sum[$backend] += $cache_read_time
   trafficserver_backend_client_cache_write_time_sum[$backend] += $cache_write_time
+
+  trafficserver_backend_client_ttfb_count[$backend]++
+
+  $client_ttfb < 45 {
+    trafficserver_backend_client_ttfb_bucket["0.045"][$backend]++
+  }
+  $client_ttfb < 70 {
+    trafficserver_backend_client_ttfb_bucket["0.07"][$backend]++
+  }
+  $client_ttfb < 100 {
+    trafficserver_backend_client_ttfb_bucket["0.1"][$backend]++
+  }
+  $client_ttfb < 150 {
+    trafficserver_backend_client_ttfb_bucket["0.15"][$backend]++
+  }
+  $client_ttfb < 250 {
+    trafficserver_backend_client_ttfb_bucket["0.25"][$backend]++
+  }
+  $client_ttfb < 350 {
+    trafficserver_backend_client_ttfb_bucket["0.35"][$backend]++
+  }
+  $client_ttfb < 500 {
+    trafficserver_backend_client_ttfb_bucket["0.5"][$backend]++
+  }
+  $client_ttfb < 750 {
+    trafficserver_backend_client_ttfb_bucket["0.75"][$backend]++
+  }
+  $client_ttfb < 1200 {
+    trafficserver_backend_client_ttfb_bucket["1.2"][$backend]++
+  }
+  trafficserver_backend_client_ttfb_bucket["+Inf"][$backend]++
 }
 
 # Log entries representing cache hits have OriginStatus:000.
