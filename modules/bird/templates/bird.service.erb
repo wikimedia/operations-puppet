@@ -1,6 +1,5 @@
 [Unit]
 Description=BIRD Internet Routing Daemon (IPv4)
-
 <%- if @bind_service -%>
 After=<%= @bind_service %>
 BindsTo=<%= @bind_service %>
@@ -13,9 +12,13 @@ ExecStartPre=/usr/sbin/bird -p
 ExecReload=/usr/sbin/birdc configure
 ExecStart=/usr/sbin/bird -f -u $BIRD_RUN_USER -g $BIRD_RUN_GROUP $BIRD_ARGS
 Restart=on-abort
+# The sleep here gives some time for routers and traffic to react to route
+# withdrawal after bird shuts down, before we allow other bound underlying
+# systemd services to stop as well (e.g. dns daemons)
+ExecStopPost=/bin/sleep 10
 
-[Install]
 <%- if @bind_service -%>
+[Install]
 ## https://github.com/systemd/systemd/issues/720
 WantedBy=<%= @bind_service %>
 <%- end -%>
