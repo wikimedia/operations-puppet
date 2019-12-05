@@ -28,7 +28,7 @@ class bird(
   $neighbors,
   $config_template,
   $bfd = true,
-  $bind_service = '',
+  Optional[String] $bind_service = undef,
   $routerid= $::ipaddress,
   ){
 

@@ -12,7 +12,9 @@
 # The actual services checks are configured with bird::anycast_healthchecker_check
 #
 #
-class bird::anycast_healthchecker(){
+class bird::anycast_healthchecker(
+  Optional[String] $bind_service = undef,
+){
 
   require_package('anycast-healthchecker')
 

@@ -3,6 +3,10 @@ Description=Anycast healthchecker
 After=network.target
 Requires=network.target
 Documentation=https://github.com/unixsurfer/anycast_healthchecker/blob/master/README.rst
+<%- if @bind_service -%>
+After=<%= @bind_service %>
+BindsTo=<%= @bind_service %>
+<%- end -%>
 
 [Service]
 Type=simple
@@ -14,3 +18,6 @@ Restart=on-failure
 
 [Install]
 WantedBy=multi-user.target
+# Note no wantedby on the bind_service here, because we should be able to keep
+# the healthechecker and bird explicitly-stopped while cycling the liveness of
+# the underlying service manually.

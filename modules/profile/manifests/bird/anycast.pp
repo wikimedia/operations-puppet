@@ -8,7 +8,7 @@
 class profile::bird::anycast(
   Boolean $bfd = lookup('profile::bird::bfd', {'default_value' => true}),
   Optional[Array[Stdlib::IP::Address::V4::Nosubnet]] $neighbors_list = lookup('profile::bird::neighbors_list', {'default_value' => []}),
-  Optional[String] $bind_service = lookup('profile::bird::bind_service', {'default_value' => ''}),
+  Optional[String] $bind_service = lookup('profile::bird::bind_service', {'default_value' => undef}),
   Optional[Hash[String, Wmflib::Advertise_vip]] $advertise_vips = lookup('profile::bird::advertise_vips', {'default_value' => {}}),
   Optional[Array[Stdlib::Fqdn]] $prometheus_nodes = hiera('prometheus_nodes', undef),
 ){
