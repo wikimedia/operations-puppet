@@ -12,4 +12,21 @@ class toolforge::k8s::calico_yaml(
         mode    => '0400',
         require => File['/etc/kubernetes'],
     }
+
+    file { '/etc/kubernetes/calicoctl.yaml':
+        ensure  => present,
+        content => template('toolforge/k8s/calicoctl.yaml.erb'),
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0400',
+        require => File['/etc/kubernetes'],
+    }
+
+    file { '/root/.bash_aliases':
+        ensure => present,
+        source => 'puppet:///modules/toolforge/k8s/root-bash-aliases',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0644',
+    }
 }

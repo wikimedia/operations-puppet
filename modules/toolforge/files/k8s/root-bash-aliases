@@ -1,0 +1,5 @@
+# This file is managed by puppet. Do not edit directly.
+# Aliases for root on control plane nodes
+
+# calicoctl is installed as a pod, use 'calicoctl apply -f - < my_manifest.yaml'
+alias calicoctl="kubectl exec -i -n kube-system calicoctl /calicoctl -- "
