@@ -3881,6 +3881,10 @@ ldap_only_users:
     ensure: present
     realname: Brian Wolff
     email: bwolff@wikimedia.org
+  rxy:
+    ensure: present
+    realname: NDA On File
+    email: wikitech.rxy@rxy.jp
   dwisehaupt:
     ensure: present
     realname: Dallas Wisehaupt
