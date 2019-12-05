@@ -73,6 +73,9 @@ discovery::services:
   kibana:
     lvs: kibana
     active_active: false
+  kibana-next:
+    lvs: kibana-next
+    active_active: false
   mathoid:
     lvs: mathoid
     active_active: true

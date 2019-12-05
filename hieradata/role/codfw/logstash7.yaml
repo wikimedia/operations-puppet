@@ -1,3 +1,6 @@
+lvs::realserver::realserver_ips:
+    - '10.2.1.51' # kibana-next.svc.codfw.wmnet
+
 # ES-specific
 # NOTE: cluster_name must be kept in sync with the backend
 # node config in hieradata/role/common/logstash/elasticsearch.yaml

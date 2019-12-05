@@ -197,6 +197,12 @@ lvs::configuration::lvs_service_ips:
   eventgate-logging-external: &ip_block059
     eqiad: 10.2.2.50
     codfw: 10.2.1.50
+  kibana-next: &ip_block060
+    eqiad: 10.2.2.51
+    codfw: 10.2.1.51
+  logstash-next: &ip_block061
+    eqiad: 10.2.2.52
+    codfw: 10.2.1.52
 
 lvs::configuration::lvs_services:
   text:
@@ -1345,6 +1351,33 @@ lvs::configuration::lvs_services:
     #      hostname: kibana.svc.eqiad.wmnet
     #    codfw:
     #      hostname: kibana.svc.codfw.wmnet
+  kibana-next-ssl:
+    description: Kibana next
+    class: low-traffic
+    sites:
+    - eqiad
+    - codfw
+    ip: *ip_block060
+    port: 443
+    scheduler: sh
+    depool-threshold: '.5'
+    monitors:
+      ProxyFetch:
+        url:
+        - http://localhost/api/status
+      IdleConnection:
+        timeout-clean-reconnect: 3
+        max-delay: 300
+    conftool:
+      cluster: logstash-next
+      service: kibana-next-ssl
+    icinga:
+      check_command: "check_https_url!kibana-next.svc.%{::site}.wmnet!/api/status"
+      sites:
+        eqiad:
+          hostname: kibana-next.svc.eqiad.wmnet
+        codfw:
+          hostname: kibana-next.svc.codfw.wmnet
   eventstreams:
     description: "Public EventStreams via HTTP + SSE backed by Kafka. eventstreams.svc.%{::site}.wmnet"
     class: low-traffic
