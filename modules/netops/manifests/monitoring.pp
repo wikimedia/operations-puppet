@@ -4,11 +4,16 @@
 #
 # === Parameters
 #
+# [*atlas_measurements*]
+# a hash of datacenter => ipv4 and ipv6 measurement IDs
+#
 # === Examples
 #
 #  include netops::monitoring
 
-class netops::monitoring {
+class netops::monitoring(
+    Hash[String, Hash] $atlas_measurements,
+) {
     include passwords::network
 
     # core routers
@@ -131,14 +136,6 @@ class netops::monitoring {
     create_resources(netops::check, $atlas)
 
     # RIPE Atlas Anchor measurements -- implicit dependency on the above host checks
-    $atlas_measurements = {
-        'eqiad' => { ipv4 => '1790945', ipv6 => '1790947', },
-        'codfw' => { ipv4 => '1791210', ipv6 => '1791212', },
-        'esams' => { ipv4 => '23449935', ipv6 => '23449938', },
-        'ulsfo' => { ipv4 => '1791307', ipv6 => '1791309', },
-        # eqsin IPv6 is allowed more permitted failures, as it is noisy.
-        'eqsin' => { ipv4 => '11645085', ipv6 => '11645088', ipv6_failures => 50, },
-    }
     create_resources(netops::ripeatlas, $atlas_measurements)
 
     # SCS -- Serial Console Servers

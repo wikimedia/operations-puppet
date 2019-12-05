@@ -1,0 +1,11 @@
+[Unit]
+Description=Monitors RIPE Atlas probe output and makes it available to Prometheus
+Documentation=https://github.com/czerwonk/atlas_exporter
+
+[Service]
+ExecStart=/usr/bin/atlas_exporter -config.file <%= @config_file %> -web.listen-address :<%= @exporter_port %>
+User=prometheus
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

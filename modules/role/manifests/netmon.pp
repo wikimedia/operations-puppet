@@ -6,6 +6,7 @@ class role::netmon {
     require ::role::network::monitor
     # needed by librenms and netbox web servers
     class { '::sslcert::dhparam': }
+    include ::profile::atlasexporter
     include ::profile::backup::host
     include ::profile::librenms
     include ::profile::rancid

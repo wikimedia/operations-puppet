@@ -24,6 +24,7 @@ class profile::icinga(
     String                        $apache2_htpasswd_salt = lookup('profile::icinga::apache2_htpasswd_salt'),
     Hash[String, String]          $apache2_auth_users    = lookup('profile::icinga::apache2_auth_users'),
     Array[String]                 $datacenters           = lookup('datacenters'),
+    Hash[String, Hash]            $atlas_measurements    = lookup('ripeatlas_measurements'),
 ){
     $is_passive = !($::fqdn == $active_host)
 
@@ -34,7 +35,9 @@ class profile::icinga(
         address => '',
     }
 
-    class { 'netops::monitoring': }
+    class { 'netops::monitoring':
+        atlas_measurements => $atlas_measurements,
+    }
     class { 'facilities': }
     class { 'lvs::monitor': }
     # Experimental load-balancer monitoring for services using service-checker

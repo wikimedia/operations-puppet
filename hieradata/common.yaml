@@ -1565,3 +1565,22 @@ ldap:
 apereo_cas:
   login_url: 'https://idp.wikimedia.org/login'
   validate_url: 'https://idp.wikimedia.org/serviceValidate'
+
+ripeatlas_measurements:
+  eqiad:
+    ipv4: '1790945'
+    ipv6: '1790947'
+  codfw:
+    ipv4: '1791210'
+    ipv6: '1791212'
+  esams:
+    ipv4: '23449935'
+    ipv6: '23449938'
+  ulsfo:
+    ipv4: '1791307'
+    ipv6: '1791309'
+  eqsin:
+    ipv4: '11645085'
+    ipv6: '11645088'
+    # eqsin IPv6 is allowed more permitted failures, as it is noisy.
+    ipv6_failures: 50
