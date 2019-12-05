@@ -3889,3 +3889,7 @@ ldap_only_users:
     ensure: present
     realname: Dallas Wisehaupt
     email: dwisehaupt@wikimedia.org
+  dhorn:
+    ensure: present
+    realname: Danny Horn
+    email: dhorn@wikimedia.org
