@@ -11,6 +11,7 @@ class profile::openstack::codfw1dev::horizon::dashboard_source_deploy(
     $puppet_git_repo_name = hiera('profile::openstack::codfw1dev::horizon::puppet_git_repo_name'),
     $puppet_git_repo_user = hiera('profile::openstack::codfw1dev::horizon::puppet_git_repo_user'),
     $maintenance_mode = hiera('profile::openstack::codfw1dev::horizon::maintenance_mode'),
+    $secret_key = hiera('profile::openstack::codfw1dev::horizon::secret_key'),
     ) {
 
     require ::profile::openstack::codfw1dev::clientpackages
@@ -27,5 +28,6 @@ class profile::openstack::codfw1dev::horizon::dashboard_source_deploy(
         puppet_git_repo_name => $puppet_git_repo_name,
         puppet_git_repo_user => $puppet_git_repo_user,
         maintenance_mode     => $maintenance_mode,
+        secret_key           => $secret_key,
     }
 }

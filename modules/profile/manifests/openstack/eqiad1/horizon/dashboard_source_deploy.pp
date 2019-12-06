@@ -11,6 +11,7 @@ class profile::openstack::eqiad1::horizon::dashboard_source_deploy(
     $puppet_git_repo_name = hiera('profile::openstack::eqiad1::horizon::puppet_git_repo_name'),
     $puppet_git_repo_user = hiera('profile::openstack::eqiad1::horizon::puppet_git_repo_user'),
     $maintenance_mode = hiera('profile::openstack::eqiad1::horizon::maintenance_mode'),
+    $secret_key = hiera('profile::openstack::eqiad1::horizon::secret_key'),
     ) {
 
     require ::profile::openstack::eqiad1::clientpackages
@@ -27,5 +28,6 @@ class profile::openstack::eqiad1::horizon::dashboard_source_deploy(
         puppet_git_repo_name => $puppet_git_repo_name,
         puppet_git_repo_user => $puppet_git_repo_user,
         maintenance_mode     => $maintenance_mode,
+        secret_key           => $secret_key,
     }
 }

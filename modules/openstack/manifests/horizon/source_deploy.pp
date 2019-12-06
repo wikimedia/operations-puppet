@@ -9,6 +9,7 @@ class openstack::horizon::source_deploy(
     $all_regions,
     $puppet_git_repo_name,
     $puppet_git_repo_user,
+    $secret_key,
     $venv_dir      = '/srv/deployment/horizon/venv',
     $webserver_hostname = 'horizon.wikimedia.org',
     $maintenance_mode = false,

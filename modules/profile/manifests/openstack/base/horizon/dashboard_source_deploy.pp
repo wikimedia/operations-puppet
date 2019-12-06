@@ -11,6 +11,7 @@ class profile::openstack::base::horizon::dashboard_source_deploy(
     $puppet_git_repo_name = hiera('profile::openstack::base::horizon::puppet_git_repo_name'),
     $puppet_git_repo_user = hiera('profile::openstack::base::horizon::puppet_git_repo_user'),
     $maintenance_mode = hiera('profile::openstack::base::horizon::maintenance_mode'),
+    $secret_key = hiera('profile::openstack::base::horizon::secret_key'),
     ) {
 
     class { '::openstack::horizon::source_deploy':
@@ -26,6 +27,7 @@ class profile::openstack::base::horizon::dashboard_source_deploy(
         puppet_git_repo_name => $puppet_git_repo_name,
         puppet_git_repo_user => $puppet_git_repo_user,
         maintenance_mode     => $maintenance_mode,
+        secret_key           => $secret_key,
     }
     contain '::openstack::horizon::source_deploy'
 
