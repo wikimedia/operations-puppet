@@ -10,8 +10,6 @@ class profile::dns::recursor (
     include ::profile::bird::anycast
     include ::profile::prometheus::pdns_rec_exporter
 
-    class { '::lvs::realserver': } # Temporary, to unconfigure previous address
-
     # The $legacy_vip is to support the old lvs recdns IP in codfw and eqiad
     # temporarily, since there are a few trailing edge cases using it (a few
     # PDUs that are difficult to reconfigure, and an odd service daemon or two
@@ -22,7 +20,6 @@ class profile::dns::recursor (
             address   => $legacy_vip,
             interface => 'lo',
             options   => 'label lo:legacy',
-            require   => Class['::lvs::realserver'],
             before    => Class['::dnsrecursor'],
         }
         $legacy_vips = [ $legacy_vip ]
