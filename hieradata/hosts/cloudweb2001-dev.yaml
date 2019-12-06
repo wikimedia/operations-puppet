@@ -5,7 +5,7 @@ profile::openstack::codfw1dev::horizon::puppet_git_repo_user: instance-puppet-us
 
 striker::apache::server_name: labtesttoolsadmin.wikimedia.org
 
-profile::openstack::codfw1dev::version: ocata
+profile::openstack::codfw1dev::version: train
 
 
 profile::openstack::codfw1dev::labweb_hosts:
