@@ -7,7 +7,7 @@ class profile::atlasexporter(
     $prometheus_nodes = lookup('prometheus_nodes'),
     $exporter_port    = lookup('profile::atlasexporter::exporter_port'),
 ) {
-    class {'netops::atlasexporter':
+    class { 'netops::atlasexporter':
         atlas_measurements => $atlas_measurements,
         exporter_port      => $exporter_port,
     }
@@ -17,5 +17,13 @@ class profile::atlasexporter(
         proto  => 'tcp',
         port   => $exporter_port,
         srange => $ferm_srange,
+    }
+
+    # Generate a textfile exporter that provides atlas_measurement_label,
+    # with metadata about each measurement ID, suitable for joining against
+    # other metrics (similar to node_hwmon_sensor_label).
+    file {'/var/lib/prometheus/node.d/atlas_metadata.prom':
+        ensure  => 'file',
+        content => template('profile/atlasexporter/atlas_metadata.prom.erb'),
     }
 }

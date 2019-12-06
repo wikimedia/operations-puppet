@@ -1,0 +1,11 @@
+# HELP atlas_measurement_label Annotation metric for human-readable measurement metadata
+# TYPE atlas_measurement_label gauge
+<% @atlas_measurements.each do |dc,vv| -%>
+<% vv.each do |v4_or_v6, measurement_id| -%>
+<%# We only want the ipv4 or ipv6 sub-keys, which contain measurement ids. -%>
+<%# (There are also sub-keys for number of allowed failures before Icinga alerts.) -%>
+<% if v4_or_v6 == 'ipv4' or v4_or_v6 == 'ipv6' -%>
+atlas_measurement_label{measurement="<%= measurement_id %>",site="<%= dc %>",ip_version="<%= v4_or_v6 %>"} 1
+<% end -%>
+<% end -%>
+<% end -%>
