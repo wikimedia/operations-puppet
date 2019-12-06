@@ -1,9 +1,0 @@
-domain (ip ip6) {
-    table filter {
-        chain (DOCKER DOCKER-USER DOCKER-INGRESS DOCKER-ISOLATION-STAGE-1 DOCKER-ISOLATION-STAGE-2 FORWARD) @preserve;
-    }
-
-    table nat {
-        chain (DOCKER DOCKER-INGRESS PREROUTING OUTPUT POSTROUTING) @preserve;
-    }
-}
