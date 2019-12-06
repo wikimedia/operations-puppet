@@ -5,6 +5,10 @@ import os
 
 from django.utils.translation import ugettext_lazy as _
 
+from horizon.utils import secret_key
+
+from openstack_dashboard.settings import HORIZON_CONFIG
+
 from openstack_dashboard import exceptions
 
 DEBUG = False
@@ -65,27 +69,7 @@ OPENSTACK_API_VERSIONS = {
 # valid options would be "AUTO", "VNC", "SPICE" or "RDP"
 # CONSOLE_TYPE = "AUTO"
 
-# Default OpenStack Dashboard configuration.
-HORIZON_CONFIG = {
-    'user_home': 'openstack_dashboard.views.get_user_home',
-    'ajax_queue_limit': 10,
-    'auto_fade_alerts': {
-        'delay': 3000,
-        'fade_duration': 1500,
-        'types': ['alert-success', 'alert-info']
-    },
-    'help_url': "https://wikitech.wikimedia.org/wiki/Horizon",
-    'exceptions': {'recoverable': exceptions.RECOVERABLE,
-                   'not_found': exceptions.NOT_FOUND,
-                   'unauthorized': exceptions.UNAUTHORIZED},
-    'customization_module': 'horizon.overrides',
-}
-
-# Specify a regular expression to validate user passwords.
-# HORIZON_CONFIG["password_validator"] = {
-#     "regex": '.*',
-#     "help_text": _("Your password does not meet the requirements.")
-# }
+HORIZON_CONFIG['help_url'] = "https://wikitech.wikimedia.org/wiki/Horizon"
 
 # Disable simplified floating IP address management for deployments with
 # multiple floating IP pools or complex network requirements.
@@ -107,7 +91,8 @@ STATIC_ROOT = "/var/lib/openstack-dashboard/static"
 # requests routed to the same dashboard instance or you set the same SECRET_KEY
 # for all of them.
 from horizon.utils import secret_key
-SECRET_KEY = secret_key.generate_or_read_from_file('/var/lib/openstack-dashboard/secret_key')
+SECRET_KEY = secret_key.generate_or_read_from_file(
+    os.path.join(LOCAL_PATH, '.secret_key_store'))
 
 # We recommend you use memcached for development; otherwise after every reload
 # of the django development server, you will have to login again.
