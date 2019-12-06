@@ -6,7 +6,10 @@ define monitoring::alerts::traffic_drop(
   ) {
     monitoring::check_prometheus { $title:
         description     => "Varnish traffic drop between 30min ago and now at ${site}",
-        query           => "sum(job_method_status:varnish_requests:rate5m{method=\"GET\",job=\"varnish-text\", site=\"${site}\"}) * 100 / sum(job_method_status:varnish_requests:rate5m{method=\"GET\",job=\"varnish-text\", site=\"${site}\"} offset 30m)",
+        # The 'and sum(...)' below enforces a minimum 15000rps that we must have dropped below
+        # before we are allowed to alert.  A simple ratio is very sensitive to slight traffic
+        # variations when you have low absolute traffic.
+        query           => "sum(job_method_status:varnish_requests:rate5m{method=\"GET\",job=\"varnish-text\", site=\"${site}\"}) * 100 / sum(job_method_status:varnish_requests:rate5m{method=\"GET\",job=\"varnish-text\", site=\"${site}\"} offset 30m) and sum(job_method_status:varnish_requests:rate5m{method=\"GET\",job=\"varnish-text\",site=\"${site}\"} offset 30m) > 15000",
         prometheus_url  => 'http://prometheus.svc.eqiad.wmnet/global',
         method          => 'le',
         retries         => 2,
