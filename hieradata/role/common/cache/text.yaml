@@ -122,9 +122,9 @@ cache::app_directors:
   hadoop_ui:
     backends:
       eqiad: 'analytics-tool1001.eqiad.wmnet'
-  labmon1001:
+  cloudmetrics1001:
     backends:
-      eqiad: 'labmon1001.eqiad.wmnet'
+      eqiad: 'cloudmetrics1001.eqiad.wmnet'
   cloudmetrics1002:
     backends:
       eqiad: 'cloudmetrics1002.eqiad.wmnet'

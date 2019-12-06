@@ -1156,12 +1156,7 @@ node /cloudvirt200[1-3]-dev\.codfw\.wmnet/ {
 }
 
 # WMCS Graphite and StatsD hosts
-node /labmon100[1]\.eqiad\.wmnet/ {
-    role(wmcs::monitoring)
-}
-
-# WMCS Graphite and StatsD hosts
-node /cloudmetrics100[2]\.eqiad\.wmnet/ {
+node /cloudmetrics100[1-2]\.eqiad\.wmnet/ {
     role(wmcs::monitoring)
 }
 

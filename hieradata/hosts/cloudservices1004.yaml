@@ -1,7 +1,7 @@
-# prometheus-pdns-exporter is scrapped by labmons
+# prometheus-pdns-exporter is scrapped by cloudmetrics
 # prometheus-node-exporter by prod servers
 prometheus_nodes:
-    - labmon1001.eqiad.wmnet
+    - cloudmetrics1001.eqiad.wmnet
     - cloudmetrics1002.eqiad.wmnet
     - prometheus1003.eqiad.wmnet
     - prometheus1004.eqiad.wmnet

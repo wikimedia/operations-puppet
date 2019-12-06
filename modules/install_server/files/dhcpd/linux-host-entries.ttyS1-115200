@@ -3009,10 +3009,10 @@ host kubestage1002 {
      fixed-address kubestage1002.eqiad.wmnet;
 }
 
-host labmon1001 {
+host cloudmetrics1001 {
     hardware ethernet 14:58:d0:5f:84:20;
-    fixed-address labmon1001.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
+    fixed-address cloudmetrics1001.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host cloudmetrics1002 {
