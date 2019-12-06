@@ -24,9 +24,9 @@
 
     WSGIDaemonProcess horizon user=horizon group=horizon processes=3 threads=10 python-path=<%= @venv_dir %>/lib/python3.5/site-packages display-name=horizon
     WSGIProcessGroup horizon
-    WSGIScriptAlias / /srv/deployment/horizon/venv/lib/python3.5/site-packages/openstack_dashboard/wsgi.py process-group=horizon
+    WSGIScriptAlias / <%= @venv_dir %>/lib/python3.5/site-packages/openstack_dashboard/wsgi.py process-group=horizon
 
-    <Directory /srv/deployment/horizon/venv/lib/python3.5/site-packages/openstack_dashboard>
+    <Directory <%= @venv_dir %>/lib/python3.5/site-packages/openstack_dashboard>
         <Files "wsgi.py">
             Options Indexes FollowSymLinks MultiViews
             AllowOverride None
