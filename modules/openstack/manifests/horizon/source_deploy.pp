@@ -22,7 +22,6 @@ class openstack::horizon::source_deploy(
     )
 
     $puppet_git_repo_key_path = '/home/horizon/.ssh/instance-puppet-user.priv'
-    $puppet_git_repo_base_path = '/var/lib/git/cloud/'
 
     file { '/etc/openstack-dashboard/local_settings.py':
         content => template("openstack/${version}/horizon/local_settings.py.erb"),
@@ -145,13 +144,6 @@ class openstack::horizon::source_deploy(
         group   => 'horizon',
         mode    => '0755',
         require => File['/var/lib/openstack-dashboard/static'],
-    }
-
-    # Get ready to host a local git repo of instance puppet config
-    file { '/var/lib/git/cloud':
-        ensure => 'directory',
-        owner  => 'horizon',
-        mode   => '0755',
     }
 
     # Get ready to host a local git repo of instance puppet config
