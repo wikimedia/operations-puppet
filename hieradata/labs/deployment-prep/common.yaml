@@ -110,7 +110,6 @@ lvs::configuration::lvs_service_ips:
   api: {}
   citoid: {}
   cxserver: {}
-  dns_rec: {}
   graphoid: {}
   mathoid: {}
   mobile: {}

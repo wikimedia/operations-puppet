@@ -5,14 +5,11 @@ class profile::dns::recursor (
   Optional[String] $bind_service = lookup('profile::dns::recursor::bind_service', {'default_value' => undef}),
 ) {
     include ::network::constants
-    include ::lvs::configuration
     include ::profile::dns::ferm
     include ::profile::bird::anycast
     include ::profile::prometheus::pdns_rec_exporter
 
-    class { '::lvs::realserver':
-        realserver_ips => $lvs::configuration::service_ips['dns_rec'][$::site],
-    }
+    class { '::lvs::realserver': } # Temporary, to unconfigure previous address
 
     $all_anycast_vips = $advertise_vips.map |$vip_fqdn,$vip_params| { $vip_params['address'] }
 
@@ -22,7 +19,6 @@ class profile::dns::recursor (
         listen_addresses  => [
             $facts['ipaddress'],
             $facts['ipaddress6'],
-            $lvs::configuration::service_ips['dns_rec'][$::site],
             $all_anycast_vips,
         ],
         allow_from_listen => false,
