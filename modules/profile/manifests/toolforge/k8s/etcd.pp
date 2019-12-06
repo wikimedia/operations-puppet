@@ -11,7 +11,7 @@ class profile::toolforge::k8s::etcd(
     }
 
     # for $peers_list we need a string like this:
-    # node1=https://node1.eqiad.wmflabs:2380,node2=https://node2.eqiad.wmflabs:2380,node3=https://node3.eqiad.wmflabs:2380
+    # node1=https://node1.project.eqiad.wmflabs:2380,node2=https://node2.project.eqiad.wmflabs:2380,node3=https://node3.project.eqiad.wmflabs:2380
     $protocol    = 'https://'
     $port        = ':2380'
     $peers_list_array = map($peer_hosts) |$element| {
