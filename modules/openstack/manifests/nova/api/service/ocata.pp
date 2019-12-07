@@ -16,4 +16,21 @@ class openstack::nova::api::service::ocata
         source  => 'puppet:///modules/openstack/ocata/nova/api/manager.py',
         require => Package['nova-api'],
     }
+
+    # firstboot/user_data things:
+    file { '/usr/lib/python2.7/dist-packages/wmfnovamiddleware':
+        source  => 'puppet:///modules/openstack/ocata/nova/api/wmfnovamiddleware',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
+        recurse => true,
+    }
+    file { '/etc/nova/firstboot.sh':
+        ensure  => 'present',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
+        source  => 'puppet:///modules/openstack/nova/firstboot.sh',
+        require => Package['nova-api'],
+    }
 }

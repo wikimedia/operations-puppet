@@ -38,19 +38,23 @@ use = call:nova.api.openstack.urlmap:urlmap_factory
 # NOTE: this is deprecated in favor of openstack_compute_api_v21_legacy_v2_compatible
 [composite:openstack_compute_api_legacy_v2]
 use = call:nova.api.auth:pipeline_factory
-noauth2 = cors compute_req_id faultwrap sizelimit noauth2 legacy_ratelimit osapi_compute_app_legacy_v2
-keystone = cors compute_req_id faultwrap sizelimit authtoken keystonecontext legacy_ratelimit osapi_compute_app_legacy_v2
-keystone_nolimit = cors compute_req_id faultwrap sizelimit authtoken keystonecontext osapi_compute_app_legacy_v2
+noauth2 = cors compute_req_id faultwrap sizelimit noauth2 legacy_ratelimit inject_user_data osapi_compute_app_legacy_v2
+keystone = cors compute_req_id faultwrap sizelimit authtoken keystonecontext legacy_ratelimit inject_user_data osapi_compute_app_legacy_v2
+keystone_nolimit = cors compute_req_id faultwrap sizelimit authtoken keystonecontext inject_user_data osapi_compute_app_legacy_v2
 
 [composite:openstack_compute_api_v21]
 use = call:nova.api.auth:pipeline_factory_v21
-noauth2 = cors compute_req_id faultwrap sizelimit noauth2 osapi_compute_app_v21
-keystone = cors compute_req_id faultwrap sizelimit authtoken keystonecontext osapi_compute_app_v21
+noauth2 = cors compute_req_id faultwrap sizelimit noauth2 inject_user_data osapi_compute_app_v21
+keystone = cors compute_req_id faultwrap sizelimit authtoken keystonecontext inject_user_data osapi_compute_app_v21
 
 [composite:openstack_compute_api_v21_legacy_v2_compatible]
 use = call:nova.api.auth:pipeline_factory_v21
-noauth2 = cors compute_req_id faultwrap sizelimit noauth2 legacy_v2_compatible osapi_compute_app_v21
-keystone = cors compute_req_id faultwrap sizelimit authtoken keystonecontext legacy_v2_compatible osapi_compute_app_v21
+noauth2 = cors compute_req_id faultwrap sizelimit noauth2 legacy_v2_compatible inject_user_data osapi_compute_app_v21
+keystone = cors compute_req_id faultwrap sizelimit authtoken keystonecontext legacy_v2_compatible inject_user_data osapi_compute_app_v21
+
+[filter:inject_user_data]
+paste.filter_factory = wmfnovamiddleware.userdata:InjectUserData.factory
+ignore_req_list = GET,PUT,DELETE,PATCH
 
 [filter:request_id]
 paste.filter_factory = oslo_middleware:RequestId.factory
