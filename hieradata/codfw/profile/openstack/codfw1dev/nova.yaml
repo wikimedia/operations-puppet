@@ -20,6 +20,8 @@ profile::openstack::codfw1dev::nova::live_migration_uri: 'test'
 profile::openstack::codfw1dev::nova::physical_interface_mappings:
   cloudinstances2b: 'eth1.2105'
 
+# currently we only schedule on cloudvirt2001-dev.  cloudvirt2002-dev is idle, and 2003-dev is
+#  set aside for ceph testing
 profile::openstack::codfw1dev::nova::scheduler_pool:
   - cloudvirt2001-dev
 
