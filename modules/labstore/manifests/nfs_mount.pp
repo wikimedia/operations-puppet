@@ -144,7 +144,7 @@ define labstore::nfs_mount(
         # Puppet will normally get stuck and freeze raising load and effectively
         # failing to run
         exec { "create-${mount_path}":
-            command   => "/usr/bin/timeout -k 5s 20s /bin/mkdir ${mount_path}",
+            command   => "/usr/bin/timeout -k 5s 20s /bin/mkdir -p ${mount_path}",
             unless    => "/usr/bin/timeout -k 5s 60s /usr/bin/test -d ${mount_path}",
             logoutput => true,
             require   => Mount[$mount_path],
