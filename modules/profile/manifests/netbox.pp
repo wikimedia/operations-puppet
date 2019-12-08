@@ -73,6 +73,9 @@ class profile::netbox (
     include passwords::ldap::production
     $proxypass = $passwords::ldap::production::proxypass
 
+    # packages required by netbox-extras
+    require_package('python3-git', 'python3-pynetbox', 'python3-requests')
+
     class { '::netbox':
         service_hostname => $nb_service_hostname,
         directory        => '/srv/deployment/netbox/deploy/src',
@@ -195,9 +198,6 @@ class profile::netbox (
         mode    => '0440',
         content => template('profile/netbox/netbox-scripts.cfg.erb'),
     }
-
-    # packages required by report checker
-    require_package('python3-pynetbox', 'python3-requests')
 
     # Deploy the report checker
     file { '/usr/local/lib/nagios/plugins/check_netbox_report.py':

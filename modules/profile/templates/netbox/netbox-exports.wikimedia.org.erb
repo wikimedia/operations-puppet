@@ -1,0 +1,34 @@
+#####################################################################
+### THIS FILE IS MANAGED BY PUPPET
+#####################################################################
+# vim: filetype=apache
+
+<%- if @has_acme -%>
+<VirtualHost *:443>
+    SSLEngine on
+    SSLCertificateFile /etc/acmecerts/netbox/live/ec-prime256v1.crt
+    SSLCertificateChainFile /etc/acmecerts/netbox/live/ec-prime256v1.chain.crt
+    SSLCertificateKeyFile /etc/acmecerts/netbox/live/ec-prime256v1.key
+    SSLCertificateFile /etc/acmecerts/netbox/live/rsa-2048.crt
+    SSLCertificateChainFile /etc/acmecerts/netbox/live/rsa-2048.chain.crt
+    SSLCertificateKeyFile /etc/acmecerts/netbox/live/rsa-2048.key
+    <%= @ssl_settings.join("\n    ") %>
+<%- else -%>
+<VirtualHost *:80>
+<%- end -%>
+    ServerName <%= @service_hostname %>
+    ServerAlias <%= @fqdn %>
+    ServerAdmin noc@wikimedia.org
+
+    DocumentRoot <%= @repo_path %>
+    <Directory <%= @repo_path %>>
+      AllowOverride None
+      Require all granted
+    </Directory>
+
+    # Possible values include: debug, info, notice, warn, error, crit,
+    # alert, emerg.
+    LogLevel warn
+    CustomLog /var/log/apache2/<%= @service_hostname %>-access.log wmf
+    ErrorLog /var/log/apache2/<%= @service_hostname %>-error.log
+</VirtualHost>

@@ -1,0 +1,11 @@
+# MANAGED BY PUPPET
+[core]
+	repositoryformatversion = 0
+	filemode = true
+	bare = true
+
+<% @frontends.each do |fe| %>
+[remote "<%= fe %>"]
+	url = https://<%= fe %>/<%= @title %>.git/
+	fetch = +refs/heads/*:refs/remotes/<%= fe %>/*
+<% end %>

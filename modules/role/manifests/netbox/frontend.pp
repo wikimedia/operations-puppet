@@ -16,6 +16,7 @@ class role::netbox::frontend {
     system::role { 'netbox::frontend': description => 'Netbox frontend server' }
 
     include ::profile::netbox
+    include ::profile::netbox::automation
     include ::profile::base::firewall
     # Fixme consider adding this later
     # include ::profile::backup::host

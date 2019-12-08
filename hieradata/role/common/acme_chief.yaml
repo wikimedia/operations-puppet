@@ -138,6 +138,9 @@ profile::acme_chief::certificates:
         CN: 'netbox.wikimedia.org'
         SNI:
         - 'netbox.wikimedia.org'
+        - 'netbox1001.wikimedia.org'
+        - 'netbox2001.wikimedia.org'
+        - 'netbox-exports.wikimedia.org'
         challenge: dns-01
         authorized_regexes:
         - '^netbox(1001|2001)\.wikimedia\.org$'
