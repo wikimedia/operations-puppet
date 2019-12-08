@@ -434,6 +434,50 @@ def extract_tables(join_def):
     return [x["table"] for x in join_def["table"]]
 
 
+def read_dblist(db_list, mwroot):
+    """Read a dblist from disk."""
+    dbs_file = "{}/dblists/{}.dblist".format(mwroot, db_list)
+    with open(dbs_file) as f:
+        lines = f.read().splitlines()
+    if not lines:
+        raise RuntimeError("No databases found in dblist {}".format(db_list))
+    dbs = []
+    for line in lines:
+        # Strip comments and trim whitespace
+        comment = line.find("#")
+        if comment:
+            line = line[:comment]
+        line = line.strip()
+        if line.startswith("%%"):
+            if dbs:
+                raise RuntimeError(
+                    "Encountered a dblist expression inside dblist {}".format(
+                        db_list)
+                )
+            dbs = eval_dblist(line, mwroot)
+            break
+        elif line:
+            dbs.append(line)
+    return dbs
+
+
+def eval_dblist(expr, mwroot):
+    """Evaluate a dblist expression."""
+    expr = expr.trim("% ")
+    terms = expr.split()
+    # assume the expr is well formed and that the first element is always
+    # a list name
+    dbs = set(read_dblist(terms.pop(0)))
+    # assume the rest of the terms are well formed and (op, list) pairs
+    for op, term in zip(*[iter(terms)] * 2):
+        part = set(read_dblist(term, mwroot))
+        if op == "+":
+            dbs = dbs.union(part)
+        elif op == "-":
+            dbs = dbs.difference(part)
+    return sorted(list(dbs))
+
+
 def main():
     exit_status = 0
     argparser = argparse.ArgumentParser(
@@ -556,9 +600,7 @@ def main():
     )
 
     # This will include private and deleted dbs at this stage
-    all_dbs_file = "{}/dblists/all.dblist".format(args.mediawiki_config)
-    with open(all_dbs_file) as all_f:
-        all_available_dbs = all_f.read().splitlines()
+    all_available_dbs = read_dblist("all", args.mediawiki_config)
     all_available_dbs = all_available_dbs + config["add_to_all_dbs"]
 
     # argparse will ensure we are declaring explicitly
@@ -569,10 +611,8 @@ def main():
     # purge all sensitive dbs so they are never attempted
     allowed_dbs = dbs
     for db_list in sensitive_db_lists:
-        path = "{}/dblists/{}.dblist".format(args.mediawiki_config, db_list)
-        with open(path) as db_file:
-            pdbs = [db for db in db_file.read().splitlines()]
-            allowed_dbs = [x for x in allowed_dbs if x not in pdbs]
+        pdbs = read_dblist(db_list, args.mediawiki_config)
+        allowed_dbs = [x for x in allowed_dbs if x not in pdbs]
 
     logging.debug("Removing %s dbs as sensitive", len(dbs) - len(allowed_dbs))
     if not allowed_dbs:
@@ -582,10 +622,7 @@ def main():
     # assign all metadata from lists
     dbs_with_metadata = {x: {} for x in allowed_dbs}
     for db_list, meta in dbs_metadata.items():
-        path = "{}/dblists/{}.dblist".format(args.mediawiki_config, db_list)
-        with open(path) as db_file:
-            mdbs = [db for db in db_file.read().splitlines()]
-        for db in mdbs:
+        for db in read_dblist(db_list, args.mediawiki_config):
             if db in dbs_with_metadata:
                 dbs_with_metadata[db].update(meta)
 
