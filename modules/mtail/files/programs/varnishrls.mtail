@@ -6,7 +6,7 @@ counter varnish_resourceloader_resp by status, cache_control, x_cache
 } else {
     # Match: /w/load.php, /w/load.php?query, /w/load.php/path
     # Do not match: /w/loadXphp,  /w/load.phpXX?query
-    /^url \/w\/load\.php([\?\/].*)?\tcache_status (?P<x_cache>.*)\thttp_status (?P<status>[0-9]{3}).*\tcache_control (-|.*max-age=(?P<maxage>[0-9]+)).*\tinm (?P<inm>[[:print:]]+)\t.*$/ {
+    /^side c\turl \/w\/load\.php([\?\/].*)?\tcache_status (?P<x_cache>.*)\thttp_status (?P<status>[0-9]{3}).*\tcache_control (-|.*max-age=(?P<maxage>[0-9]+)).*\tinm (?P<inm>[[:print:]]+)\t.*$/ {
         $inm != "-" {
             varnish_resourceloader_inm++
         }

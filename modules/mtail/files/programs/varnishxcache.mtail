@@ -3,7 +3,7 @@ counter varnish_x_cache by x_cache, status
 /\thttp_method PURGE\t/ {
     # noop
 } else {
-    /^.*\tcache_status (?P<x_cache>.*)\thttp_status (?P<status>[0-9][0-9][0-9])/ {
+    /^side c.*\tcache_status (?P<x_cache>.*)\thttp_status (?P<status>[0-9][0-9][0-9])/ {
         varnish_x_cache[$x_cache][$status]++
     }
 }
