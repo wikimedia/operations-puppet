@@ -1,7 +1,3 @@
-lvs::realserver::realserver_ips:
-    - '10.2.2.51' # kibana-next.svc.eqiad.wmnet
-    - '10.2.2.52' # logstash-next.svc.eqiad.wmnet
-
 # ES-specific
 # NOTE: cluster_name must be kept in sync with the backend
 # node config in hieradata/role/common/logstash/elasticsearch.yaml
