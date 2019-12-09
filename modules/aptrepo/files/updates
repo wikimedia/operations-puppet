@@ -282,3 +282,12 @@ Architectures: amd64
 GetInRelease: no
 VerifyRelease: 0253D0B26FF974DB
 ListShellHook: grep-dctrl -X -S getenvoy-envoy || [ $? -eq 1 ]
+
+Name: thirdparty/ceph-nautilus-buster
+Method: https://mirror.croit.io/debian-nautilus
+Components: main>thirdparty/ceph-nautilus-buster
+UDebComponents:
+Suite: buster
+Architectures: amd64
+VerifyRelease: 718C1F180B5A84A3
+ListShellHook: grep-dctrl -e -S '^(ceph|nfs-ganesha)$' || [ $? -eq 1 ]

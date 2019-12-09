@@ -126,6 +126,7 @@ Components: main
  thirdparty/amd-rocm25
  thirdparty/amd-rocm26
  thirdparty/amd-rocm271
+ thirdparty/ceph-nautilus-buster
  thirdparty/cloudera
  thirdparty/elastic74
  thirdparty/grafana
@@ -141,6 +142,7 @@ Update:
  grafana-stretch
  hp-mcp-stretch
  hwraid-stretch
+ thirdparty/ceph-nautilus-buster
  thirdparty/kubeadm-k8s-kubernetes.io
  thirdparty/kubeadm-k8s-docker.com
 # NOTE:  Cloudera does not (yet) provide Stretch/Buster packages.  We use the Jessie ones,
