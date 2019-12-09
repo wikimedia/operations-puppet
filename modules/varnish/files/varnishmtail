@@ -11,8 +11,10 @@ fmt_http_status='http_status %s'
 fmt_http_method='http_method %m'
 fmt_cache_control='cache_control %{Cache-Control}o'
 fmt_inm='inm %{If-None-Match}i'
+fmt_ttfb='ttfb %{Varnish:time_firstbyte}x'
+fmt_cache_int='cache_int %{X-Cache-Int}o'
 
-FMT="${fmt_side}\t${fmt_url}\t${fmt_cache_status}\t${fmt_http_status}\t${fmt_http_method}\t${fmt_cache_control}\t${fmt_inm}\t"
+FMT="${fmt_side}\t${fmt_url}\t${fmt_cache_status}\t${fmt_http_status}\t${fmt_http_method}\t${fmt_cache_control}\t${fmt_inm}\t${fmt_ttfb}\t${fmt_cache_int}\t"
 
 # Pass -c and -b to log requests from clients (tls terminators) and to backends (origin)
 /usr/bin/varnishncsa -n frontend -c -b -F "${FMT}" | mtail -progs "${PROGS}" -logs /dev/stdin

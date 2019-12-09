@@ -1,12 +1,19 @@
-side c	url /	cache_status int-front	http_status 301	http_method GET	cache_control -	inm -	
-side c	url /w/index.php	cache_status hit-front	http_status 304	http_method GET	cache_control private, s-maxage=0, max-age=0, must-revalidate	inm -	
-side c	url /api/rest_v1/metrics/pageviews/per-article/fr.wikipedia.org/all-access/user/S%C3%A9lection_sexuelle/daily/20171126/20171201	cache_status hit-front	http_status 200	http_method HEAD	cache_control s-maxage=86400, max-age=86400	inm -
-side c	url /w/load.php?example	cache_status hit-front	http_status 200	http_method GET	cache_control public, max-age=2592000, s-maxage=2592000	inm -	
-side c	url /w/load.php?example	cache_status hit-front	http_status 200	http_method HEAD	cache_control public, max-age=2592000, s-maxage=2592000	inm -	
-side c	url /w/load.php?example	cache_status hit-front	http_status 304	http_method GET	cache_control public, max-age=300, s-maxage=300	inm W/\"1adp3u3\"	
-side c	url /w/load.php	cache_status hit-front	http_status 304	http_method GET	cache_control -	inm -	
-side c	url /w/load_php42	cache_status miss	http_status 404	http_method GET	cache_control -	inm -	
-side c	url /wikipedia/commons/5/51/Tang_Shaoyi.jpg	cache_status int-front	http_status 301	http_method GET	cache_control -	inm -	
-side c	url /wikipedia/commons/thumb/5/51/Flag_of_North_Korea.svg/250px-Flag_of_North_Korea.svg.png	cache_status hit-front	http_status 200	http_method GET	cache_control -	inm -	
-side c	url /wikipedia/en/thumb/f/fd/Portal-puzzle.svg/16px-Portal-puzzle.svg.png	cache_status hit-front	http_status 200	http_method GET	cache_control -	inm -	
-side c	url /test_for_invalid_method	cache_status hit-front	http_status 200	http_method FOOZ	cache_control -	inm -	
+side c	url /	cache_status int-front	http_status 301	http_method GET	cache_control -	inm -	ttfb 0.000055	cache_int -	
+side c	url /w/index.php	cache_status hit-front	http_status 304	http_method GET	cache_control private, s-maxage=0, max-age=0, must-revalidate	inm -	ttfb 0.000055	cache_int -	
+side c	url /api/rest_v1/metrics/pageviews/per-article/fr.wikipedia.org/all-access/user/S%C3%A9lection_sexuelle/daily/20171126/20171201	cache_status hit-front	http_status 200	http_method HEAD	cache_control s-maxage=86400, max-age=86400	inm -	ttfb 0.000055	cache_int -	
+side c	url /w/load.php?example	cache_status hit-front	http_status 200	http_method GET	cache_control public, max-age=2592000, s-maxage=2592000	inm -	ttfb 0.000055	cache_int -	
+side c	url /w/load.php?example	cache_status hit-front	http_status 200	http_method HEAD	cache_control public, max-age=2592000, s-maxage=2592000	inm -	ttfb 0.000055	cache_int -	
+side c	url /w/load.php?example	cache_status hit-front	http_status 304	http_method GET	cache_control public, max-age=300, s-maxage=300	inm W/\"1adp3u3\"	ttfb 0.000055	cache_int -	
+side c	url /w/load.php	cache_status hit-front	http_status 304	http_method GET	cache_control -	inm -	ttfb 0.000055	cache_int -	
+side c	url /w/load_php42	cache_status miss	http_status 404	http_method GET	cache_control -	inm -	ttfb 0.000055	cache_int -	
+side c	url /wikipedia/commons/5/51/Tang_Shaoyi.jpg	cache_status int-front	http_status 301	http_method GET	cache_control -	inm -	ttfb 0.000055	cache_int -	
+side c	url /wikipedia/commons/thumb/5/51/Flag_of_North_Korea.svg/250px-Flag_of_North_Korea.svg.png	cache_status hit-front	http_status 200	http_method GET	cache_control -	inm -	ttfb 0.000055	cache_int -	
+side c	url /wikipedia/en/thumb/f/fd/Portal-puzzle.svg/16px-Portal-puzzle.svg.png	cache_status hit-front	http_status 200	http_method GET	cache_control -	inm -	ttfb 0.000055	cache_int -	
+side c	url /test_for_invalid_method	cache_status hit-front	http_status 200	http_method FOOZ	cache_control -	inm -	ttfb 0.000055	cache_int -	
+side b	url /w/api.php	cache_status -	http_status 200	http_method GET	cache_control s-maxage=300, max-age=300, public	inm -	ttfb 0.155195	cache_int cp3062 miss	
+side c	url /w/api.php	cache_status miss	http_status 200	http_method GET	cache_control s-maxage=300, max-age=300, public inm -	ttfb 0.155500	cache_int cp3062 miss, cp3050 miss	
+side b	url /wiki/1974_in_South_Korea	cache_status -	http_status 200	http_method GET	cache_control s-maxage=1209600, must-revalidate, max-age=0	inm -	ttfb 0.020517	cache_int cp3052 hit	
+side c	url /wiki/1974_in_South_Korea	cache_status hit-local	http_status 200	http_method GET	cache_control private, s-maxage=0, max-age=0, must-revalidate	inm -	ttfb 0.020841	cache_int cp3052 hit, cp3050 miss	
+side c	url /api/rest_v1/page/summary/Computational_Neuroscience	cache_status hit-front	http_status 200	http_method GET	cache_control s-maxage=1209600, max-age=300	inm -	ttfb 0.000267	cache_int cp1085 pass, cp3064 hit/6, cp3052 hit/15	     
+side b	url /api/rest_v1/page/summary/Computational_Neuroscience	cache_status -	http_status 200	http_method GET	cache_control s-maxage=1209600, max-age=300	inm W/\"189104616/8e737b90-e553-11e9-8da9-8bed7e4ce8d4\"	ttfb 0.000247	cache_int cp1085 pass, cp3064 hit/5	 
+side b	url /api/rest_v1/page/summary/Computational_Neuroscience	cache_status -	http_status 200	http_method GET	cache_control s-maxage=1209600, max-age=300	inm W/\"189104616/8e737b90-e553-11e9-8da9-8bed7e4ce8d4\"	ttfb 0.000301	cache_int cp1085 pass, cp3064 hit/5	 

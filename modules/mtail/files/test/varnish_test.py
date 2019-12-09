@@ -14,7 +14,7 @@ class VarnishXcacheTest(unittest.TestCase):
     def testCacheStatus(self):
         s = self.store.get_samples('varnish_x_cache')
         self.assertIn(('x_cache=int-front,status=301', 2), s)
-        self.assertIn(('x_cache=hit-front,status=200', 6), s)
+        self.assertIn(('x_cache=hit-front,status=200', 7), s)
 
 
 class VarnishRlsTest(unittest.TestCase):
@@ -53,10 +53,34 @@ class VarnishReqStatsTest(unittest.TestCase):
 
     def testRespStatus(self):
         s = self.store.get_samples('varnish_requests')
-        self.assertIn(('status=200,method=GET', 3), s)
+        self.assertIn(('status=200,method=GET', 6), s)
         self.assertIn(('status=301,method=GET', 2), s)
         self.assertIn(('status=200,method=HEAD', 2), s)
         self.assertIn(('status=200,method=invalid', 1), s)
+
+
+class VarnishTTFBTest(unittest.TestCase):
+    def setUp(self):
+        self.store = mtail_store.MtailMetricStore(
+                os.path.join(test_dir, '../programs/varnishttfb.mtail'),
+                os.path.join(test_dir, 'logs/varnish.test'))
+
+    def testTTFBCount(self):
+        s = self.store.get_samples('varnish_frontend_origin_ttfb_count')
+        self.assertIn(('origin=cp3052,cache_status=hit', 1), s)
+        self.assertIn(('origin=cp3064,cache_status=hit', 2), s)
+        self.assertIn(('origin=cp3062,cache_status=miss', 1), s)
+
+    def testTTFBSum(self):
+        s = self.store.get_samples('varnish_frontend_origin_ttfb_sum')
+        self.assertIn(('origin=cp3062,cache_status=miss', 155.195), s)
+        self.assertIn(('origin=cp3064,cache_status=hit', 0.548), s)
+
+    def testTTFBBucket(self):
+        s = self.store.get_samples('varnish_frontend_origin_ttfb_bucket')
+        self.assertIn(('le=0.5,origin=cp3062,cache_status=miss', 1), s)
+        self.assertIn(('le=+Inf,origin=cp3062,cache_status=miss', 1), s)
+        self.assertIn(('le=0.045,origin=cp3064,cache_status=hit', 2), s)
 
 
 class VarnishBackendTest(unittest.TestCase):
