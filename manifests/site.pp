@@ -989,8 +989,12 @@ node /^ganeti[12]00[0-8]\.(codfw|eqiad)\.wmnet$/ {
     role(ganeti)
 }
 
+node /^ganeti[4]00[123]\.ulsfo\.wmnet$/ {
+    role(ganeti)
+}
+
 # new edge ganeti hosts T226444
-node /^ganeti[34]00[1-3]\.ulsfo.wmnet$/ {
+node /^ganeti[3]00[1-3]\.ulsfo.wmnet$/ {
     role(spare::system)
 }
 

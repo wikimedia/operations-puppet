@@ -231,6 +231,7 @@ wikimedia_clusters:
     sites:
       eqiad: []
       codfw: []
+      ulsfo: []
   scb:
     description: "Service Cluster B"
     id: 53
