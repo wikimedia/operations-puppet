@@ -319,7 +319,7 @@ function show_apcu_info() {
 }
 
 function show_apcu_frag() {
-	print json_encode(array('fragmentation:'=>apcu_frag()));
+	print json_encode(array('fragmentation'=>apcu_frag()));
 }
 
 function dump_apcu_full() {
