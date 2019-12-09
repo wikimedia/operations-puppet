@@ -3,7 +3,6 @@
 class profile::dnsbox(
     Boolean $include_auth = lookup('profile::dnsbox::include_auth', {default_value => false}),
 ) {
-    include ::profile::standard
     include ::profile::dns::recursor
     include ::profile::ntp
 
