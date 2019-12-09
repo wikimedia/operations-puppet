@@ -33,9 +33,9 @@ class dnsrecursor(
     $wmf_authdns_semi = join($wmf_authdns, ';')
     $forward_zones = "wmnet=${wmf_authdns_semi}, 10.in-addr.arpa=${wmf_authdns_semi}"
 
-    # systemd unit fragment to raise ulimits
+    # systemd unit fragment to raise ulimits and other things
     $sysd_dir = '/etc/systemd/system/pdns-recursor.service.d'
-    $sysd_frag = "${sysd_dir}/ulimits.conf"
+    $sysd_frag = "${sysd_dir}/override.conf"
 
     file { $sysd_dir:
         ensure => directory,
@@ -45,11 +45,11 @@ class dnsrecursor(
     }
 
     file { $sysd_frag:
-        ensure => present,
-        mode   => '0444',
-        owner  => 'root',
-        group  => 'root',
-        source => 'puppet:///modules/dnsrecursor/ulimits.conf',
+        ensure  => present,
+        mode    => '0444',
+        owner   => 'root',
+        group   => 'root',
+        content => template('dnsrecursor/override.conf.erb'),
     }
 
     exec { "systemd reload for ${sysd_frag}":
