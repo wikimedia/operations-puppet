@@ -299,6 +299,10 @@ eqiad:
     logstash1007.eqiad.wmnet: [kibana, kibana-ssl, logstash, logstash-log4j, logstash-gelf, logstash-json, logstash-syslog, logstash-udp2log]
     logstash1008.eqiad.wmnet: [kibana, kibana-ssl, logstash, logstash-log4j, logstash-gelf, logstash-json, logstash-syslog, logstash-udp2log]
     logstash1009.eqiad.wmnet: [kibana, kibana-ssl, logstash, logstash-log4j, logstash-gelf, logstash-json, logstash-syslog, logstash-udp2log]
+  logstash-next:
+    logstash1023.eqiad.wmnet: [kibana-next-ssl]
+    logstash1024.eqiad.wmnet: [kibana-next-ssl]
+    logstash1025.eqiad.wmnet: [kibana-next-ssl]
   ldap-ro:
     ldap-eqiad-replica01.wikimedia.org: [ldap-ro, ldap-ro-ssl]
     ldap-eqiad-replica02.wikimedia.org: [ldap-ro, ldap-ro-ssl]
