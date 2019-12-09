@@ -28,6 +28,11 @@ class profile::java::analytics {
                 Exec['apt_update_java8'],
             ],
         }
+
+        alternatives::select { 'java':
+            path    => '/usr/lib/jvm/java-8-openjdk-amd64/bin/java',
+            require => Package['openjdk-8-jdk']
+        }
     } else {
         package { 'openjdk-8-jdk':
             ensure  => present,
