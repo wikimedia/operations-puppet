@@ -24,5 +24,6 @@ profile::openstack::codfw1dev::nova::physical_interface_mappings:
 #  set aside for ceph testing
 profile::openstack::codfw1dev::nova::scheduler_pool:
   - cloudvirt2001-dev
+  - cloudvirt2002-dev
 
 profile::openstack::codfw1dev::nova::default_schedule_zone: 'nova'
