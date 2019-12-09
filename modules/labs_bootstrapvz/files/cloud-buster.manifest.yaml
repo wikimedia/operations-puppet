@@ -125,6 +125,10 @@ packages:
     - xfsprogs
     - zsh
 plugins:
+  cloud_init:
+    username: cloudinit
+    disable_modules:
+      - ssh
   file_copy:
     mkdirs:
       -
@@ -132,16 +136,6 @@ plugins:
         permissions: "0555"
         owner: root
     files:
-      -
-        src: /etc/bootstrap-vz/firstscripts/firstboot.sh
-        dst: /root/firstboot.sh
-        permissions: "755"
-        owner: root
-      -
-        src: /etc/bootstrap-vz/firstscripts/firstbootrc
-        dst: /etc/rc.local
-        permissions: "755"
-        owner: root
       -
         src: /etc/systemd/timesyncd.conf
         dst: /etc/systemd/timesyncd.conf

@@ -68,18 +68,6 @@ class labs_bootstrapvz() {
         require => File["${bootstrap_filepath}/manifests"],
     }
 
-    file { "${bootstrap_filepath}/firstscripts/firstboot.sh":
-        mode    => '0555',
-        source  => 'puppet:///modules/labs_bootstrapvz/firstboot.sh',
-        require => File["${bootstrap_filepath}/firstscripts"],
-    }
-
-    file { "${bootstrap_filepath}/firstscripts/firstbootrc":
-        mode    => '0555',
-        source  => 'puppet:///modules/labs_bootstrapvz/firstbootrc',
-        require => File["${bootstrap_filepath}/firstscripts"],
-    }
-
     $projectregex = "s/${::labsproject}/_PROJECT_/g"
     $fqdnregex = "s/${::fqdn}/_FQDN_/g"
 

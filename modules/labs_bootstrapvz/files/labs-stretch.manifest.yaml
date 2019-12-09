@@ -116,6 +116,10 @@ plugins:
   puppet:
     assets: /etc/bootstrap-vz/puppet
     enable_agent: false
+  cloud_init:
+    username: cloudinit
+    disable_modules:
+      - ssh
   file_copy:
     mkdirs:
       -
@@ -123,16 +127,6 @@ plugins:
         permissions: "0555"
         owner: root
     files:
-      -
-        src: /etc/bootstrap-vz/firstscripts/firstboot.sh
-        dst: /root/firstboot.sh
-        permissions: "755"
-        owner: root
-      -
-        src: /etc/bootstrap-vz/firstscripts/firstbootrc
-        dst: /etc/rc.local
-        permissions: "755"
-        owner: root
       -
         src: /etc/ldap.conf
         dst: /etc/ldap.conf
