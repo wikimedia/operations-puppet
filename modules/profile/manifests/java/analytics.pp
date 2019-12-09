@@ -30,7 +30,7 @@ class profile::java::analytics {
         }
 
         alternatives::select { 'java':
-            path    => '/usr/lib/jvm/java-8-openjdk-amd64/bin/java',
+            path    => '/usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java',
             require => Package['openjdk-8-jdk']
         }
     } else {
