@@ -1,0 +1,3 @@
+# The host is OOW and the BBU was reported broken
+# in T239045
+profile::base::check_raid_policy: 'WriteThrough'
