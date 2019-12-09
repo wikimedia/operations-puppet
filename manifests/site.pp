@@ -1759,7 +1759,7 @@ node /^planet[12]001\.(eqiad|codfw)\.wmnet$/ {
 
 # LDAP servers relied on by OIT for mail
 node /(dubnium|pollux)\.wikimedia\.org/ {
-    role(openldap::corp)
+    role(spare::system)
 }
 
 node /poolcounter[12]00[345]\.(codfw|eqiad)\.wmnet/ {
