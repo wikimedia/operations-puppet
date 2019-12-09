@@ -1,8 +1,9 @@
 # A profile class for a dns recursor
 
 class profile::dns::recursor (
-  Optional[Hash[String, Wmflib::Advertise_vip]] $advertise_vips = lookup('profile::bird::advertise_vips', {'default_value' => {}})
-  ) {
+  Optional[Hash[String, Wmflib::Advertise_vip]] $advertise_vips = lookup('profile::bird::advertise_vips', {'default_value' => {}}),
+  Optional[String] $bind_service = lookup('profile::dns::recursor::bind_service', {'default_value' => undef}),
+) {
     include ::network::constants
     include ::lvs::configuration
     include ::profile::dns::ferm
@@ -26,6 +27,7 @@ class profile::dns::recursor (
         ],
         log_common_errors => 'no',
         threads           => $facts['physicalcorecount'],
+        bind_service      => $bind_service,
     }
 
     ::dnsrecursor::monitor { [ $facts['ipaddress'], $facts['ipaddress6'] ]: }

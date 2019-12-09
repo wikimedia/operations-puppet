@@ -1,2 +1,8 @@
 [Service]
 LimitNOFILE=32768
+<%- if @bind_service -%>
+
+[Unit]
+After=<%= @bind_service %>
+BindsTo=<%= @bind_service %>
+<%- end -%>

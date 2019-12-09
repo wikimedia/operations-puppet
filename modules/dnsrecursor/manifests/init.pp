@@ -22,6 +22,7 @@ class dnsrecursor(
     $dnssec                   = 'off', # T226088 T227415 - off until at least 4.1.x
     $threads                  = 4,
     $log_common_errors        = 'yes',
+    $bind_service             = undef,
 ) {
 
     include ::network::constants
