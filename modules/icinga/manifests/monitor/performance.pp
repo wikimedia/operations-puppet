@@ -26,8 +26,67 @@ class icinga::monitor::performance {
         notes_url     => 'https://phabricator.wikimedia.org/T203485',
     }
 
-    monitoring::grafana_alert { 'webpagereplay-enwiki-alerts':
-        dashboard_uid => '000000748',
+    monitoring::grafana_alert { 'webpagereplay-en-wikipedia-org-alerts':
+        dashboard_uid => '2kP3FjAZk',
+        contact_group => 'team-performance',
+        notes_url     => 'https://phabricator.wikimedia.org/T203485',
+    }
+
+    monitoring::grafana_alert { 'webpagereplay-ca-wikipedia-org-alerts':
+        dashboard_uid => '2kP3FjAZE',
+        contact_group => 'team-performance',
+        notes_url     => 'https://phabricator.wikimedia.org/T203485',
+    }
+
+    monitoring::grafana_alert { 'webpagereplay-de-wikipedia-org-alerts':
+        dashboard_uid => '2kP3FjAZB',
+        contact_group => 'team-performance',
+        notes_url     => 'https://phabricator.wikimedia.org/T203485',
+    }
+
+    monitoring::grafana_alert { 'webpagereplay-en-wikipedia-beta-wmflabs-org-alerts':
+        dashboard_uid => '2kP3FjAZE',
+        contact_group => 'team-performance',
+        notes_url     => 'https://phabricator.wikimedia.org/T203485',
+    }
+
+    monitoring::grafana_alert { 'webpagereplay-es-wikipedia-org-alerts':
+        dashboard_uid => '2kP3FjAZZ',
+        contact_group => 'team-performance',
+        notes_url     => 'https://phabricator.wikimedia.org/T203485',
+    }
+
+    monitoring::grafana_alert { 'webpagereplay-fr-wikipedia-org-alerts':
+        dashboard_uid => '2kP3FjAZX',
+        contact_group => 'team-performance',
+        notes_url     => 'https://phabricator.wikimedia.org/T203485',
+    }
+
+    monitoring::grafana_alert { 'webpagereplay-js-wikipedia-org-alerts':
+        dashboard_uid => '2kP3FjAZXX',
+        contact_group => 'team-performance',
+        notes_url     => 'https://phabricator.wikimedia.org/T203485',
+    }
+
+    monitoring::grafana_alert { 'webpagereplay-nl-wikipedia-org-alerts':
+        dashboard_uid => '2kP3FjAZC',
+        contact_group => 'team-performance',
+        notes_url     => 'https://phabricator.wikimedia.org/T203485',
+    }
+    monitoring::grafana_alert { 'webpagereplay-sv-wikipedia-org-alerts':
+        dashboard_uid => '2kP3FjAZA',
+        contact_group => 'team-performance',
+        notes_url     => 'https://phabricator.wikimedia.org/T203485',
+    }
+
+    monitoring::grafana_alert { 'webpagereplay-www-mediawiki-org-alerts':
+        dashboard_uid => '2kP3FjAXX',
+        contact_group => 'team-performance',
+        notes_url     => 'https://phabricator.wikimedia.org/T203485',
+    }
+
+    monitoring::grafana_alert { 'webpagereplay-zh-wikipedia-org-alerts':
+        dashboard_uid => '2kP3FjDGT',
         contact_group => 'team-performance',
         notes_url     => 'https://phabricator.wikimedia.org/T203485',
     }
