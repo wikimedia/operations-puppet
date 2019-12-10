@@ -23,3 +23,6 @@ profile::wmcs::monitoring::statsd_standby: cloudmetrics1002.eqiad.wmnet
 #profile::grafana::admin_password:
 contactgroups: wmcs-team
 mgmt_contactgroups: wmcs-team-email
+# cloudmetrics
+statsite::instance::graphite_host: 'labmon1001.eqiad.wmflabs'
+statsite::instance::extended_counters: 1
