@@ -13,7 +13,7 @@ groups:
               yuvipanda, shrlak, madhuvishy, groovier, khorn, ironholds, katie, chedasaurus,
               cy534, pnorman, mpany, deskana, arnad, nithum, banyek, imarlier, mkroetzsch,
               mtizzoni, panisson, paolotti, ciro, dartar, melodykramer, gtirloni, tbayer, pirroh,
-              bawolff, dkg, juliaglen, cwdent, bmansurov, hpham, atgomez, dfoy]
+              bawolff, dkg, juliaglen, cwdent, bmansurov, hpham, atgomez, dfoy, alaasarhan]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -78,7 +78,7 @@ groups:
               musikanimal, jdrewniak, sbisson, jforrester, mbsantos,
               aaron, liw, sbassett, jdl, tarrow, lucaswerkmeister-wmde,
               wmde-leszek, jhuneidi, wmde-fisch, mvolz, dsharpe, brennen, cparle,
-              jfishback, urbanecm, awight, jakob, accraze, alaasarhan, andrew-wmde,
+              jfishback, urbanecm, awight, jakob, accraze, andrew-wmde,
               kevinbazira, mstyles]
     privileges: ['ALL = (www-data,mwdeploy,l10nupdate) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /usr/sbin/apache2ctl',
@@ -3263,14 +3263,12 @@ users:
     uid: 10133
     email: jakob.warkotsch@wikimedia.de
   alaasarhan:
-    ensure: present
+    ensure: absent
     gid: 500
     name: alaasarhan
-    ssh_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCvOHlh3TmyQS07L9YIM+n34twu2bBVA+/kvD/XA7YU1bnp0MjcHvqa0Fc/ZiLAXByM3wYcukojn80M1+ASxpJ89BmH7t7MpzvYX/qwPSL03WnNeaNaJ6aBhBmI9IwCZaJV9dQItgnD6fEhKJWb6VNRwmwBI8zh+muWLhZjwilKPb50tCumSmsP+iF6Pjz9JzhkHGqVEGM62UugO90aMX+Wrfd39XOgcG+smiOPy0NNw6E3VqcqffWPagdsIbAZPspiuBNmGnHR5LZWWISljrblhiYRZzl27H7n0d+wUvAHrtFxiFDf/AmUn1pRSWTxhyPC6EOS+dVngW0BDG/JN62gD3mL8HPUav7v1wVQWIBCHdZLLlPq/6FdbS8Pu6gsfy6pkpIk/huE1Nfu9B0Zijhu1JVbegkJUN/kKkTG+TvSJpcLkndANIymkX44lOePUxRdHaycDFu9XXFFCNHJaKuPB00tusOmXwKqPX6idSaqsk0tf1+ju5QEzWLK425adhSsX9Y/SWhtBJ3EPa5RGDgD0Zs98evfaiE6bjJZqWrsMARoot8Pl1BovcXCRz6cxoovhplgw7VRM9G9J/WVQa4eHFMQUJN+Qinq1wODQoDEH5cejjF7CViewIDVF+hejEjbBa/iACT6mwoV8+prOOG36eALii9mL49nZVvxTOBs2w== alaasarhan@alsa
     realname: Alaa Sarhan
+    ssh_keys: []
     uid: 20943
-    email: alaa.sarhan@wikimedia.de
   mayakpwiki:
     ensure: present
     gid: 500
