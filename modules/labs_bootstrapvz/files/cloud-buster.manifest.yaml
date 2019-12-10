@@ -132,7 +132,7 @@ plugins:
   file_copy:
     mkdirs:
       -
-        dir: /etc/systemd/system/getty@ttyS1.service.d
+        dir: /etc/systemd/system/serial-getty@ttyS0.service.d
         permissions: "0555"
         owner: root
     files:
@@ -191,8 +191,8 @@ plugins:
         src: /etc/ssl/certs/ca-certificates.crt
         dst: /etc/ssl/certs/ca-certificates.crt
       -
-        src: /etc/systemd/system/getty@ttyS1.service.d/puppet-override.conf
-        dst: /etc/systemd/system/getty@ttyS1.service.d/puppet-override.conf
+        src: /etc/systemd/system/serial-getty@ttyS0.service.d/puppet-override.conf
+        dst: /etc/systemd/system/serial-getty@ttyS0.service.d/puppet-override.conf
         permissions: "0444"
         owner: root
 
@@ -208,7 +208,6 @@ plugins:
       #- ['chroot', '{root}', 'update-grub']
       - ['cp', '-r', '/etc/modprobe.d', '{root}/etc/']
       - ['chroot', '{root}', 'puppet', 'agent', '--disable']
-      - ['chroot', '{root}', 'systemctl', 'enable', 'getty@ttyS1.service']
       #  without DNS working.  Puppet will re-enable it.
       - ['chroot', '{root}', 'systemctl', 'disable', 'systemd-timesyncd']
   unattended_upgrades:
