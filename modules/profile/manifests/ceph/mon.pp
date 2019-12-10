@@ -4,6 +4,7 @@
 class profile::ceph::mon(
     Array[Stdlib::Fqdn]            $mon_hosts     = lookup('profile::ceph::mon::hosts'),
     Array[Stdlib::IP::Address::V4] $mon_addrs     = lookup('profile::ceph::mon::addrs'),
+    Array[Stdlib::IP::Address::V4] $osd_addrs     = lookup('profile::ceph::osd::addrs'),
     Stdlib::AbsolutePath           $admin_keyring = lookup('profile::ceph::admin_keyring'),
     Stdlib::Unixpath               $data_dir      = lookup('profile::ceph::data_dir'),
     String                         $admin_secret  = lookup('profile::ceph::admin_secret'),
@@ -45,7 +46,7 @@ class profile::ceph::mon(
         data_dir => $data_dir,
     }
 
-    $ferm_srange = join($mon_addrs, ' ')
+    $ferm_srange = join(concat($mon_addrs, $osd_addrs), ' ')
     ferm::service { 'ceph_mgr_v2':
         proto  => 'tcp',
         port   => 6800,

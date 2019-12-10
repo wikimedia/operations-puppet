@@ -1190,7 +1190,7 @@ node /^cloudcephmon100[1-3]\.wikimedia\.org$/ {
 
 # new systems deployment in process T225320
 node /^cloudcephosd100[1-3]\.wikimedia\.org$/ {
-    role(spare::system)
+    role(wmcs::ceph::osd)
 }
 
 # New systems to be placed into service by cloud team via T194186

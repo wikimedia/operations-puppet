@@ -1,6 +1,6 @@
-class role::wmcs::ceph::mon {
+class role::wmcs::ceph::osd {
     system::role { $name: }
     include ::profile::standard
     include ::profile::base::firewall
-    include ::profile::ceph::mon
+    include ::profile::ceph::osd
 }
