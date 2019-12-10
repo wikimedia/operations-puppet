@@ -2,7 +2,6 @@ require("default")
 
 _G.ts = {
   http = {},
-  ctx = {},
   server_response = { header = {} },
   server_request = { header = {} },
   client_response = { header = {} },
@@ -20,6 +19,7 @@ describe("Busted unit testing framework", function()
   before_each(function()
       _G.ts.server_response.header = {}
       _G.ts.client_response.header = {}
+      stub(ts.http, "set_server_resp_no_store")
   end)
 
   describe("script for ATS Lua Plugin", function()
@@ -27,17 +27,16 @@ describe("Busted unit testing framework", function()
     stub(ts, "hook")
 
     it("test - do_global_read_response Set-Cookie", function()
-
       -- Without Set-Cookie
       _G.ts.server_response.header['Cache-Control'] = 'public, max-age=10'
       do_global_read_response()
-      assert.are.equals('public, max-age=10', _G.ts.server_response.header['Cache-Control'])
+      assert.stub(ts.http.set_server_resp_no_store).was_not_called()
 
       -- With Set-Cookie
       _G.ts.server_response.header['Set-Cookie'] = 'banana potato na'
       _G.ts.server_response.header['Cache-Control'] = 'public, max-age=10'
       do_global_read_response()
-      assert.is_nil(_G.ts.server_response.header['Cache-Control'])
+      assert.stub(ts.http.set_server_resp_no_store).was.called_with(1)
     end)
 
     it("test - do_global_read_response cacheable Cookie", function()
@@ -45,7 +44,7 @@ describe("Busted unit testing framework", function()
       -- Cookie does not contain Session / Token
       _G.ts.client_request.header['Cookie'] = 'WMF-Last-Access=30-Aug-2019; WMF-Last-Access-Global=30-Aug-2019'
       do_global_read_response()
-      assert.are.equals('public, max-age=10', _G.ts.server_response.header['Cache-Control'])
+      assert.stub(ts.http.set_server_resp_no_store).was_not_called()
     end)
 
     it("test - do_global_read_response uncacheable Cookie but no Vary", function()
@@ -53,7 +52,7 @@ describe("Busted unit testing framework", function()
       -- Cookie contains Session / Token but there is no Vary
       _G.ts.client_request.header['Cookie'] = 'centralauth_Token=BANANA; WMF-Last-Access=30-Aug-2019; WMF-Last-Access-Global=30-Aug-2019'
       do_global_read_response()
-      assert.are.equals('public, max-age=10', _G.ts.server_response.header['Cache-Control'])
+      assert.stub(ts.http.set_server_resp_no_store).was_not_called()
     end)
 
     it("test - do_global_read_response uncacheable Cookie and not Vary:Cookie", function()
@@ -62,7 +61,7 @@ describe("Busted unit testing framework", function()
       _G.ts.server_response.header['Vary'] = 'Accept-Encoding,Authorization'
       _G.ts.client_request.header['Cookie'] = 'centralauth_Token=BANANA; WMF-Last-Access=30-Aug-2019; WMF-Last-Access-Global=30-Aug-2019'
       do_global_read_response()
-      assert.are.equals('public, max-age=10', _G.ts.server_response.header['Cache-Control'])
+      assert.stub(ts.http.set_server_resp_no_store).was_not_called()
     end)
 
     it("test - do_global_read_response uncacheable Cookie (Session) and Vary:Cookie", function()
@@ -71,7 +70,7 @@ describe("Busted unit testing framework", function()
       _G.ts.server_response.header['Vary'] = 'Accept-Encoding,Cookie,Authorization'
       _G.ts.client_request.header['Cookie'] = 'nlwikiSession=banana; nlwikiUserID=999999; nlwikiUserName=thisisauser'
       do_global_read_response()
-      assert.is_nil(_G.ts.server_response.header['Cache-Control'])
+      assert.stub(ts.http.set_server_resp_no_store).was.called_with(1)
     end)
 
     it("test - do_global_read_response uncacheable Cookie (lowercase session) and Vary:Cookie", function()
@@ -80,24 +79,24 @@ describe("Busted unit testing framework", function()
       _G.ts.server_response.header['Vary'] = 'Accept-Encoding,Cookie,Authorization'
       _G.ts.client_request.header['Cookie'] = 'dewiki_BPsession=test'
       do_global_read_response()
-      assert.is_nil(_G.ts.server_response.header['Cache-Control'])
+      assert.stub(ts.http.set_server_resp_no_store).was.called_with(1)
     end)
 
     it("test - do_global_read_response large Content-Length", function()
       -- No Content-Length
       _G.ts.server_response.header['Cache-Control'] = 'public, max-age=10'
       do_global_read_response()
-      assert.are.equals('public, max-age=10', _G.ts.server_response.header['Cache-Control'])
+      assert.stub(ts.http.set_server_resp_no_store).was_not_called()
 
       -- Small enough object
       _G.ts.server_response.header['Content-Length'] = '120'
       do_global_read_response()
-      assert.are.equals('public, max-age=10', _G.ts.server_response.header['Cache-Control'])
+      assert.stub(ts.http.set_server_resp_no_store).was_not_called()
 
       -- Large enough object
       _G.ts.server_response.header['Content-Length'] = '1073741825'
       do_global_read_response()
-      assert.is_nil(_G.ts.server_response.header['Cache-Control'])
+      assert.stub(ts.http.set_server_resp_no_store).was.called_with(1)
 
       -- PKP headers sanitation
       _G.ts.server_response.header['Public-Key-Pins'] = 'test'
@@ -111,13 +110,12 @@ describe("Busted unit testing framework", function()
       -- 200 response with Cache-Control
       _G.ts.server_response.header['Cache-Control'] = 'public, max-age=10'
       do_global_read_response()
-      assert.are.equals('public, max-age=10', _G.ts.server_response.header['Cache-Control'])
+      assert.stub(ts.http.set_server_resp_no_store).was_not_called()
 
       -- 503 response with Cache-Control
       _G.ts.server_response.get_status = function() return 503 end
       do_global_read_response()
-      assert.is_nil(_G.ts.server_response.header['Cache-Control'])
-      assert.are.equals('public, max-age=10', _G.ts.ctx['Cache-Control'])
+      assert.stub(ts.http.set_server_resp_no_store).was.called_with(1)
     end)
 
     it("test - do_global_read_response Vary-slotting for X-Forwarded-Proto", function()
@@ -148,12 +146,6 @@ describe("Busted unit testing framework", function()
 
       assert.are.equals(0, do_global_send_response())
       assert.are.equals('pass-test-hostname hit', ts.client_response.header['X-Cache-Int'])
-    end)
-
-    it("test - restore_cc_data restore Cache-Control", function()
-      _G.ts.ctx['Cache-Control'] = 'public, max-age=10'
-      restore_cc_data()
-      assert.are.equals('public, max-age=10', _G.ts.client_response.header['Cache-Control'])
     end)
   end)
 end)

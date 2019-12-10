@@ -70,34 +70,8 @@ function do_global_send_response()
     return 0
 end
 
-function restore_cc_data()
-    -- Restore original Cache-Control/Expires values that might have been saved
-    -- by do_not_cache()
-    for _, hname in ipairs({'Cache-Control', 'Expires'}) do
-        if ts.ctx[hname] then
-            ts.client_response.header[hname] = ts.ctx[hname]
-        end
-    end
-
-    return 0
-end
-
 function do_not_cache()
-    -- Ensure that the current response won't be cached by unsetting
-    -- Cache-Control/Expires. We cache responses only if Cache-Control or
-    -- Expires allow caching (proxy.config.http.cache.required_headers = 2).
-    for _, hname in ipairs({'Cache-Control', 'Expires'}) do
-        if ts.server_response.header[hname] then
-            -- Save it for later, to be restored in restore_cc_data()
-            ts.ctx[hname] = ts.server_response.header[hname]
-
-            ts.server_response.header[hname] = nil
-        end
-    end
-
-    if ts.ctx['Cache-Control'] or ts.ctx['Expires'] then
-        ts.hook(TS_LUA_HOOK_SEND_RESPONSE_HDR, restore_cc_data)
-    end
+    ts.http.set_server_resp_no_store(1)
 end
 
 
