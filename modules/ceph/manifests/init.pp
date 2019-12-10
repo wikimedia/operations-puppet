@@ -12,8 +12,24 @@
 class ceph (
     Array[Stdlib::Fqdn]            $mon_hosts,
     Array[Stdlib::IP::Address::V4] $mon_addrs,
+    Stdlib::Unixpath               $data_dir,
     String                         $fsid,
 ) {
+    group { 'ceph':
+        ensure => present,
+        system => true,
+    }
+    user { 'ceph':
+        ensure     => present,
+        gid        => 'ceph',
+        shell      => '/usr/sbin/nologin',
+        comment    => 'Ceph storage service',
+        home       => $data_dir,
+        managehome => false,
+        system     => true,
+        require    => Group['ceph'],
+    }
+
     # Setup package repos here on in profile
 
     package { 'ceph-common':

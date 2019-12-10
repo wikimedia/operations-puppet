@@ -21,6 +21,7 @@ class profile::ceph::mon(
     }
 
     class { 'ceph':
+        data_dir  => $data_dir,
         fsid      => $fsid,
         mon_addrs => $mon_addrs,
         mon_hosts => $mon_hosts,
@@ -49,20 +50,24 @@ class profile::ceph::mon(
         proto  => 'tcp',
         port   => 6800,
         srange => "@resolve((${ferm_srange}))",
+        before => Class['ceph'],
     }
     ferm::service { 'ceph_mgr_v1':
         proto  => 'tcp',
         port   => 6801,
         srange => "@resolve((${ferm_srange}))",
+        before => Class['ceph'],
     }
     ferm::service { 'ceph_mon_peers_v1':
         proto  => 'tcp',
         port   => 6789,
         srange => "@resolve((${ferm_srange}))",
+        before => Class['ceph'],
     }
     ferm::service { 'ceph_mon_peers_v2':
         proto  => 'tcp',
         port   => 3300,
         srange => "@resolve((${ferm_srange}))",
+        before => Class['ceph'],
     }
 }
