@@ -1,0 +1,15 @@
+contactgroups: 'wmcs-team'
+mgmt_contactgroups: 'wmcs-team-email'
+profile::ceph::admin_keyring: '/etc/ceph/ceph.client.admin.keyring'
+profile::ceph::data_dir: '/var/lib/ceph'
+profile::ceph::fsid: '5917e6d9-06a0-4928-827a-f489384975b1'
+# Providing static addresses for the Ceph hosts. This is used by the service
+# connection string and FERM rules
+profile::ceph::mon::addrs:
+  - '208.80.154.148'
+  - '208.80.154.149'
+  - '208.80.154.150'
+profile::ceph::mon::hosts:
+  - 'cloudcephmon1001.wikimedia.org'
+  - 'cloudcephmon1002.wikimedia.org'
+  - 'cloudcephmon1003.wikimedia.org'

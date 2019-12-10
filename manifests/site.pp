@@ -1185,7 +1185,7 @@ node /^cloudcontrol100[3-4]\.wikimedia\.org$/ {
 
 # new systems deployment in process T225320
 node /^cloudcephmon100[1-3]\.wikimedia\.org$/ {
-    role(spare::system)
+    role(wmcs::ceph::mon)
 }
 
 # new systems deployment in process T225320
