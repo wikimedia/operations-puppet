@@ -195,6 +195,7 @@ subjects:
 # change: no 443/tcp for the pod
 # change: declare port 10254 for prometheus metrics
 # change: --default-backend-service=tool-fourohfour/fourohfour
+# change: 3 pod replicas instead of 1
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -204,7 +205,7 @@ metadata:
     app.kubernetes.io/name: ingress-nginx
     app.kubernetes.io/part-of: ingress-nginx
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       app.kubernetes.io/name: ingress-nginx
