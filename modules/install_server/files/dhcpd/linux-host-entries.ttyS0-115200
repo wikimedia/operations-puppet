@@ -286,6 +286,24 @@ host kraz {
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
 }
 
+host kubetcd1004 {
+    hardware ethernet aa:00:00:54:44:3a;
+    fixed-address kubetcd1004.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
+}
+
+host kubetcd1005 {
+    hardware ethernet aa:00:00:1d:ea:60;
+    fixed-address kubetcd1005.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
+}
+
+host kubetcd1006 {
+    hardware ethernet aa:00:00:40:42:16;
+    fixed-address kubetcd1006.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
+}
+
 host kubetcd2001 {
     hardware ethernet aa:00:00:70:df:e9;
     fixed-address kubetcd2001.codfw.wmnet;
@@ -304,6 +322,24 @@ host kubetcd2003 {
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
 }
 
+host kubetcd2004 {
+    hardware ethernet aa:00:00:a7:c8:1f;
+    fixed-address kubetcd2004.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
+}
+
+host kubetcd2005 {
+    hardware ethernet aa:00:00:34:e1:f3;
+    fixed-address kubetcd2005.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
+}
+
+host kubetcd2006 {
+    hardware ethernet aa:00:00:98:00:b3;
+    fixed-address kubetcd2006.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
+}
+
 host kubestagetcd1001 {
     hardware ethernet aa:00:00:3b:54:53;
     fixed-address kubestagetcd1001.eqiad.wmnet;
@@ -320,6 +356,24 @@ host kubestagetcd1003 {
     hardware ethernet aa:00:00:60:a7:fe;
     fixed-address kubestagetcd1003.eqiad.wmnet;
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
+}
+
+host kubestagetcd1004 {
+    hardware ethernet aa:00:00:75:c3:74;
+    fixed-address kubestagetcd1004.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
+}
+
+host kubestagetcd1005 {
+    hardware ethernet aa:00:00:a1:4a:75;
+    fixed-address kubestagetcd1005.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
+}
+
+host kubestagetcd1006 {
+    hardware ethernet aa:00:00:30:d0:54;
+    fixed-address kubestagetcd1006.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host kubernetes1005 {
