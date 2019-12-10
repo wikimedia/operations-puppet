@@ -6,12 +6,21 @@ counter varnish_frontend_origin_ttfb_count by origin, cache_status
 /^side b\t.*\tttfb (?P<ttfb>[0-9\.]+)\tcache_int (cp10[0-9][0-9].*, )?(?P<origin>cp[0-9]+) (?P<cache_status>(hit|miss|pass))/ {
     varnish_frontend_origin_ttfb_count[$origin][$cache_status]++
 
-    # varnishncsa reports ttfb in seconds, convert to milliseconds
-    varnish_frontend_origin_ttfb_sum[$origin][$cache_status] += $ttfb * 1000.0
+    # varnishncsa reports ttfb in seconds
+    varnish_frontend_origin_ttfb_sum[$origin][$cache_status] += $ttfb
 
-    # Define the following buckets: 45, 70, 100, 150, 250, 350, 500, 750, and
-    # 1200 milliseconds
+    # Define the following milliseconds buckets:
+    # 1, 5, 10, 45, 70, 100, 150, 250, 350, 500, and 1200
 
+    $ttfb < 0.001 {
+        varnish_frontend_origin_ttfb_bucket["0.001"][$origin][$cache_status]++
+    }
+    $ttfb < 0.005 {
+        varnish_frontend_origin_ttfb_bucket["0.005"][$origin][$cache_status]++
+    }
+    $ttfb < 0.01 {
+        varnish_frontend_origin_ttfb_bucket["0.01"][$origin][$cache_status]++
+    }
     $ttfb < 0.045 {
         varnish_frontend_origin_ttfb_bucket["0.045"][$origin][$cache_status]++
     }
@@ -32,9 +41,6 @@ counter varnish_frontend_origin_ttfb_count by origin, cache_status
     }
     $ttfb < 0.5 {
         varnish_frontend_origin_ttfb_bucket["0.5"][$origin][$cache_status]++
-    }
-    $ttfb < 0.75 {
-        varnish_frontend_origin_ttfb_bucket["0.75"][$origin][$cache_status]++
     }
     $ttfb < 1.2 {
         varnish_frontend_origin_ttfb_bucket["1.2"][$origin][$cache_status]++

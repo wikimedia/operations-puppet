@@ -73,11 +73,12 @@ class VarnishTTFBTest(unittest.TestCase):
 
     def testTTFBSum(self):
         s = self.store.get_samples('varnish_frontend_origin_ttfb_sum')
-        self.assertIn(('origin=cp3062,cache_status=miss', 155.195), s)
-        self.assertIn(('origin=cp3064,cache_status=hit', 0.548), s)
+        self.assertIn(('origin=cp3062,cache_status=miss', 0.155195), s)
+        self.assertIn(('origin=cp3064,cache_status=hit', 0.000548), s)
 
     def testTTFBBucket(self):
         s = self.store.get_samples('varnish_frontend_origin_ttfb_bucket')
+        self.assertIn(('le=0.001,origin=cp3064,cache_status=hit', 2), s)
         self.assertIn(('le=0.5,origin=cp3062,cache_status=miss', 1), s)
         self.assertIn(('le=+Inf,origin=cp3062,cache_status=miss', 1), s)
         self.assertIn(('le=0.045,origin=cp3064,cache_status=hit', 2), s)
