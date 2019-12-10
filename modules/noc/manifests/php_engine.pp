@@ -10,13 +10,6 @@ class noc::php_engine($catchall_ensure=present) {
         ensure => absent,
     }
 
-    # We are removing hhvm_catchall
-    httpd::conf { 'hhvm_catchall':
-        ensure   => absent,
-        source   => 'puppet:///modules/mediawiki/apache/configs/hhvm_catchall.conf',
-        priority => 50,
-    }
-
     httpd::conf { 'php_catchall':
         ensure   => $catchall_ensure,
         source   => 'puppet:///modules/mediawiki/apache/configs/php_catchall.conf',
