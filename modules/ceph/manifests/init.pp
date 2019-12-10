@@ -30,10 +30,9 @@ class ceph (
         require    => Group['ceph'],
     }
 
-    # Setup package repos here on in profile
-
     package { 'ceph-common':
-        ensure => present,
+        ensure  => present,
+        require => User['ceph'],
     }
 
     file { '/etc/ceph/ceph.conf':
