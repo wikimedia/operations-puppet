@@ -58,6 +58,16 @@ class profile::hadoop::worker(
         srange => $ferm_srange,
     }
 
+    # Needed to ease enabling Kerberos and Linux containers
+    file { '/usr/local/sbin/set_yarn_dir_ownership':
+        ensure => 'present',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0550',
+        source => 'puppet:///modules/profile/hadoop/worker/set_yarn_dir_ownership',
+    }
+
+
     if $monitoring_enabled {
         # Icinga process alerts for DataNode and NodeManager
         nrpe::monitor_service { 'hadoop-hdfs-datanode':

@@ -1,0 +1,53 @@
+#!/bin/bash
+
+# This file is needed to support the Kerberos enable procedure.
+# After enabling Yarn Linux containers support, a simple map reduce job
+# gets permission denied errors (and fails) due to (previously created)
+# dirs on the linux fs owned by username 'yarn'.
+# Containers in fact allows to run a map-reduce job as the user
+# who submitted it, but this means creating log dirs etc.. not
+# anymore as 'yarn'.
+#
+# The script can run in two modes:
+# - 'user': it sets ownership of Yarn user dirs as the user who
+#           created them. For example:
+#           chown -R elukey /var/lib/hadoop/data/b/yarn/local/usercache/elukey
+#
+# - 'yarn': it sets ownership of Yarn user dirs as 'yarn'. This is
+#           what normally happens when Kerberos and Linux containers
+#           are not used, so it is ideal to be used in a rollback scenario.
+#
+
+HADOOP_DATA_DIR="/var/lib/hadoop/data"
+YARN_USERCACHE_SUBDIR="yarn/local/usercache"
+
+if [ -z "$1" ]; then echo "Usage: ${0} (yarn|user)"; exit 1; fi
+
+if [ "$1" == "user" ]
+then
+    echo -e "Running in user mode, setting yarn dirs owned by users..\n\n"
+    for DATADIR in $(ls $HADOOP_DATA_DIR)
+    do
+        for USER in $(ls $HADOOP_DATA_DIR/$DATADIR/$YARN_USERCACHE_SUBDIR)
+        do
+            id $USER > /dev/null
+            if [ $? != 0 ]
+            then
+                echo -e "\nSkipping user ${USER}, no user found in the OS..."
+            else
+                echo -e "\nExecuting: chown -R ${USER} ${HADOOP_DATA_DIR}/${DATADIR}/${YARN_USERCACHE_SUBDIR}/${USER}"
+                chown -R $USER $HADOOP_DATA_DIR/$DATADIR/$YARN_USERCACHE_SUBDIR/$USER
+            fi
+        done
+    done
+else
+    echo "Running in yarn mode, setting yarn dirs owned by yarn.."
+    for DATADIR in $(ls $HADOOP_DATA_DIR)
+    do
+        for USER in $(ls $HADOOP_DATA_DIR/$DATADIR/$YARN_USERCACHE_SUBDIR)
+        do
+            echo -e "\nExecuting: chown -R yarn ${HADOOP_DATA_DIR}/${DATADIR}/${YARN_USERCACHE_SUBDIR}/${USER}"
+            chown -R yarn $HADOOP_DATA_DIR/$DATADIR/$YARN_USERCACHE_SUBDIR/$USER
+        done
+    done
+fi
