@@ -17,6 +17,11 @@ _G.read_config = function() return 'pass-test-hostname' end
 _G.ts.server_response.get_status = function() return 200 end
 
 describe("Busted unit testing framework", function()
+  before_each(function()
+      _G.ts.server_response.header = {}
+      _G.ts.client_response.header = {}
+  end)
+
   describe("script for ATS Lua Plugin", function()
     stub(ts, "debug")
     stub(ts, "hook")
@@ -36,7 +41,6 @@ describe("Busted unit testing framework", function()
     end)
 
     it("test - do_global_read_response cacheable Cookie", function()
-      _G.ts.server_response.header = {}
       _G.ts.server_response.header['Cache-Control'] = 'public, max-age=10'
       -- Cookie does not contain Session / Token
       _G.ts.client_request.header['Cookie'] = 'WMF-Last-Access=30-Aug-2019; WMF-Last-Access-Global=30-Aug-2019'
@@ -81,7 +85,6 @@ describe("Busted unit testing framework", function()
 
     it("test - do_global_read_response large Content-Length", function()
       -- No Content-Length
-      _G.ts.server_response.header = {}
       _G.ts.server_response.header['Cache-Control'] = 'public, max-age=10'
       do_global_read_response()
       assert.are.equals('public, max-age=10', _G.ts.server_response.header['Cache-Control'])
@@ -105,7 +108,6 @@ describe("Busted unit testing framework", function()
     end)
 
     it("test - do_global_read_response 503 error with Cache-Control", function()
-      _G.ts.server_response.header = {}
       -- 200 response with Cache-Control
       _G.ts.server_response.header['Cache-Control'] = 'public, max-age=10'
       do_global_read_response()
@@ -149,7 +151,6 @@ describe("Busted unit testing framework", function()
     end)
 
     it("test - restore_cc_data restore Cache-Control", function()
-      _G.ts.client_response.header = {}
       _G.ts.ctx['Cache-Control'] = 'public, max-age=10'
       restore_cc_data()
       assert.are.equals('public, max-age=10', _G.ts.client_response.header['Cache-Control'])
