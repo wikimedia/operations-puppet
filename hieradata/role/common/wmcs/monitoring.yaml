@@ -24,5 +24,5 @@ profile::wmcs::monitoring::statsd_standby: cloudmetrics1002.eqiad.wmnet
 contactgroups: wmcs-team
 mgmt_contactgroups: wmcs-team-email
 # cloudmetrics
-statsite::instance::graphite_host: 'labmon1001.eqiad.wmflabs'
+statsite::instance::graphite_host: labmon1001.eqiad.wmnet
 statsite::instance::extended_counters: 1
