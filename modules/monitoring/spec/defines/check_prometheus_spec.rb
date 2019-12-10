@@ -113,6 +113,15 @@ describe 'monitoring::check_prometheus' do
             )
           end
         end
+        context 'query unescaped single quote (\')' do
+          before { params.merge!(query: 'query(\'value)') }
+          it do
+            is_expected.to raise_error(
+              Puppet::Error,
+              /Query cannot contain single quotes/
+            )
+          end
+        end
         context 'dashboard_links incorrect endpoint' do
           before { params.merge!(dashboard_links: ['http://example.org']) }
           it do

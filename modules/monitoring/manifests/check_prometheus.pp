@@ -95,9 +95,12 @@ define monitoring::check_prometheus(
     String $contact_group   = 'admins',
     Stdlib::HTTPUrl $notes_link = 'https://wikitech.wikimedia.org/wiki/Monitoring/Missing_notes_link',
 ) {
-    # don't allow unescaped `!` https://stackoverflow.com/a/28738919/3075306
+    # don't allow unescaped `!` or ' https://stackoverflow.com/a/28738919/3075306
     if $query =~ /(?<!\\)(?:(\\\\)*)[!]/ {
         fail('All exclamation marks in the query parameter must be escaped e.g. \!')
+    }
+    if $query =~ /\'/ {
+        fail('Query cannot contain single quotes')
     }
     $notes_urls = monitoring::build_notes_url($notes_link, $dashboard_links)
 
