@@ -12,7 +12,7 @@
     "modify_image": "rule:admin_or_glanceadmin",
     "publicize_image": "rule:admin_or_glanceadmin",
     "copy_from": "rule:admin_or_glanceadmin",
-    "manage_image_cache": "rule:admin_or_glance_admin",
+    "manage_image_cache": "rule:admin_or_glanceadmin",
 
     "download_image": "",
     "upload_image": "rule:admin_or_glanceadmin",
