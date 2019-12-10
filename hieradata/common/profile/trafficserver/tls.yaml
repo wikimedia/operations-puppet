@@ -35,7 +35,7 @@ profile::trafficserver::tls::inbound_tls_settings:
   ssl_handshake_timeout_in: 60
 profile::trafficserver::tls::log_formats:
   - name: wmf-tls
-    format: 'Date:%<cqtd> Time:%<cqtt> Client-IP:%<chi> HTTPVersion:%<cqhv> SSL:%<cqssl> SSLVersion:%<cqssv> SSLCipher:%<cqssc> SSLCurve:%<cqssu> ReqMethod:%<cqhm> RespStatus:%<pssc> OriginStatus:%<sssc> ReqURL:%<cquuc> BereqURL:%<cqtx> ReqHeader:User-Agent:%<{User-agent}cqh> ReqHeader:Host:%<{Host}cqh>'
+    format: 'Date:%<cqtd> Time:%<cqtt> Client-IP:%<chi> HTTPVersion:%<cqhv> SSL:%<cqssl> SSLVersion:%<cqssv> SSLCipher:%<cqssc> SSLCurve:%<cqssu> ReqMethod:%<cqhm> RespStatus:%<pssc> OriginStatus:%<sssc> ReqURL:%<cquuc> ReqHeader:User-Agent:%<{User-agent}cqh> ReqHeader:Host:%<{Host}cqh>'
 profile::trafficserver::tls::logs:
   - filename: tls
     format: wmf-tls
