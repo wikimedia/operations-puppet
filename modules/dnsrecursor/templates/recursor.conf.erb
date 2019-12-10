@@ -48,7 +48,11 @@ max-mthreads=512
 delegation-only=com,net
 
 # If set, only allow these comma separated netmasks to recurse
+<%- if @allow_from_listen -%>
 allow-from=<%= (@allow_from + flatten_ips(@listen_addresses)).join(", ") %>
+<%- else -%>
+allow-from=<%= @allow_from.join(", ") %>
+<%- end -%>
 
 # Zones for which we forward queries, comma separated domain=ip pairs
 forward-zones=<%= @forward_zones -%>, <%= @additional_forward_zones -%>

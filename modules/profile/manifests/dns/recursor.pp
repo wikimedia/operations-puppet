@@ -25,6 +25,7 @@ class profile::dns::recursor (
             $lvs::configuration::service_ips['dns_rec'][$::site],
             $all_anycast_vips,
         ],
+        allow_from_listen => false,
         log_common_errors => 'no',
         threads           => $facts['physicalcorecount'],
         bind_service      => $bind_service,

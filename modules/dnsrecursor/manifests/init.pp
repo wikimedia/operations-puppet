@@ -23,6 +23,7 @@ class dnsrecursor(
     $threads                  = 4,
     $log_common_errors        = 'yes',
     $bind_service             = undef,
+    $allow_from_listen        = true,
 ) {
 
     include ::network::constants
