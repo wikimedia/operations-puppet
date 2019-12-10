@@ -16,6 +16,7 @@ class systemd::slice::all_users (
 
     $systemd_packages = [
         'systemd',
+        'systemd-sysv',
         'udev',
         'libsystemd0',
         'libpam-systemd',
