@@ -51,8 +51,8 @@ function do_global_read_request()
     local cookie = ts.client_request.header['Cookie']
 
     if cookie then
-        cookie = cookie:lower()
-        if string.find(cookie, 'session') or string.find(cookie, 'token') then
+        -- Equivalent to req.http.Cookie ~ "([sS]ession|Token)=" in VCL
+        if string.match(cookie, '[sS]ession=') or string.find(cookie, 'Token=') then
             return pass()
         end
     end
@@ -120,11 +120,10 @@ end
 
 function uncacheable_cookie(cookie, vary)
     if cookie and vary then
-        cookie = cookie:lower()
         vary = vary:lower()
 
-        -- Vary:Cookie and Cookie ~ "session|token"
-        if string.find(vary, 'cookie') and (string.find(cookie, 'session') or string.find(cookie, 'token')) then
+        -- Vary:Cookie and Cookie ~ "([sS]ession|Token)="
+        if string.find(vary, 'cookie') and (string.match(cookie, '[sS]ession=') or string.find(cookie, 'Token=')) then
             return true
         end
     end

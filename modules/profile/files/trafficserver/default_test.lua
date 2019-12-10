@@ -61,11 +61,20 @@ describe("Busted unit testing framework", function()
       assert.are.equals('public, max-age=10', _G.ts.server_response.header['Cache-Control'])
     end)
 
-    it("test - do_global_read_response uncacheable Cookie and Vary:Cookie", function()
+    it("test - do_global_read_response uncacheable Cookie (Session) and Vary:Cookie", function()
       _G.ts.server_response.header['Cache-Control'] = 'public, max-age=10'
       -- Cookie contains Session / Token and the response is Vary:Cookie
       _G.ts.server_response.header['Vary'] = 'Accept-Encoding,Cookie,Authorization'
-      _G.ts.client_request.header['Cookie'] = 'centralauth_Token=BANANA; WMF-Last-Access=30-Aug-2019; WMF-Last-Access-Global=30-Aug-2019'
+      _G.ts.client_request.header['Cookie'] = 'nlwikiSession=banana; nlwikiUserID=999999; nlwikiUserName=thisisauser'
+      do_global_read_response()
+      assert.is_nil(_G.ts.server_response.header['Cache-Control'])
+    end)
+
+    it("test - do_global_read_response uncacheable Cookie (lowercase session) and Vary:Cookie", function()
+      _G.ts.server_response.header['Cache-Control'] = 'public, max-age=10'
+      -- Cookie contains Session / Token and the response is Vary:Cookie
+      _G.ts.server_response.header['Vary'] = 'Accept-Encoding,Cookie,Authorization'
+      _G.ts.client_request.header['Cookie'] = 'dewiki_BPsession=test'
       do_global_read_response()
       assert.is_nil(_G.ts.server_response.header['Cache-Control'])
     end)
