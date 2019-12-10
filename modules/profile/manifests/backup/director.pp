@@ -4,17 +4,17 @@
 # of profile::backup::director. That's cause they are reused in other profile
 # classes in the same hierarchy and is consistent with our code guidelines
 class profile::backup::director(
-    $pool = hiera('profile::backup::pool'),
-    $days = hiera('profile::backup::days'),
-    $offsite_pool = hiera('profile::backup::director::offsite_pool'),
-    $onsite_sd = hiera('profile::backup::director::onsite_sd'),
-    $offsite_sd = hiera('profile::backup::director::offsite_sd'),
-    $dbhost = hiera('profile::backup::director::dbhost'),
-    $dbschema = hiera('profile::backup::director::dbschema'),
-    $dbport = hiera('profile::backup::director::dbport'),
-    $dbuser = hiera('profile::backup::director::dbuser'),
-    $dbpass = hiera('profile::backup::director::dbpass'),
-    $prometheus_nodes = hiera('prometheus_nodes'),
+    String              $pool             = lookup('profile::backup::pool'),
+    Array[String]       $days             = lookup('profile::backup::days'),
+    String              $offsite_pool     = lookup('profile::backup::director::offsite_pool'),
+    String              $onsite_sd        = lookup('profile::backup::director::onsite_sd'),
+    String              $offsite_sd       = lookup('profile::backup::director::offsite_sd'),
+    Stdlib::Host        $dbhost           = lookup('profile::backup::director::dbhost'),
+    String              $dbschema         = lookup('profile::backup::director::dbschema'),
+    Stdlib::Port        $dbport           = lookup('profile::backup::director::dbport'),
+    String              $dbuser           = lookup('profile::backup::director::dbuser'),
+    String              $dbpass           = lookup('profile::backup::director::dbpass'),
+    Array[Stdlib::Host] $prometheus_nodes = lookup('prometheus_nodes'),
 ){
     include ::profile::base::firewall
 
