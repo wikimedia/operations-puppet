@@ -6,7 +6,7 @@
 # Example:
 #
 #   $ python matrix.py hashar thcipriani|column -t
-#   grp/user             hashar  thcipriani
+#   groups/user          hashar  thcipriani
 #   bastiononly          -       OK
 #   contint-admins       OK      OK
 #   contint-roots        OK      -
@@ -58,7 +58,7 @@ parser.add_argument('user',
 args = parser.parse_args()
 users = args.user
 
-TOP_LEFT = 'grp/users'
+TOP_LEFT = 'groups/users'
 if args.wikitext:
     HEADER_SEPARATOR = '\n! '
     TOP_LEFT = '! ' + TOP_LEFT
