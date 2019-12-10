@@ -28,7 +28,7 @@ APCU_FRAGMENTATION=$(php7adm /apcu-frag |jq .fragmentation 2>&1)
 
 if [ "${APCU_FRAGMENTATION%.*}" -ge "$APCU_FRAGMENTATION_LIMIT" ]; then
     echo "Fragmentation is at ${APCU_FRAGMENTATION%.*}%, freeing APCu cache"
-    "php7adm /apcu-free"
+    /usr/local/bin/php7adm /apcu-free
 else
     echo "Fragmentation is at ${APCU_FRAGMENTATION%.*}%, nothing to do here"
 fi
