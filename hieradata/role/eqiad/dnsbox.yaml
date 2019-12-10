@@ -1,0 +1,2 @@
+# Legacy anycast recdns address, temporary for trailing edge cases
+profile::dns::recursor::legacy_vip: '208.80.154.254'

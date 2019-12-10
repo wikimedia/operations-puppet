@@ -3,6 +3,7 @@
 class profile::dns::recursor (
   Optional[Hash[String, Wmflib::Advertise_vip]] $advertise_vips = lookup('profile::bird::advertise_vips', {'default_value' => {}}),
   Optional[String] $bind_service = lookup('profile::dns::recursor::bind_service', {'default_value' => undef}),
+  Optional[Stdlib::IP::Address::Nosubnet] $legacy_vip = lookup('profile::dns::recursor::legacy_vip', {'default_value' => undef}),
 ) {
     include ::network::constants
     include ::profile::dns::ferm
@@ -11,16 +12,36 @@ class profile::dns::recursor (
 
     class { '::lvs::realserver': } # Temporary, to unconfigure previous address
 
+    # The $legacy_vip is to support the old lvs recdns IP in codfw and eqiad
+    # temporarily, since there are a few trailing edge cases using it (a few
+    # PDUs that are difficult to reconfigure, and an odd service daemon or two
+    # that hasn't been restarted in a while).  Will be removed later!
+    if $legacy_vip {
+        interface::ip { 'lo-legacy-vip':
+            ensure    => present,
+            address   => $legacy_vip,
+            interface => 'lo',
+            options   => 'label lo:legacy',
+            require   => Class['::lvs::realserver'],
+            before    => Class['::dnsrecursor'],
+        }
+        $legacy_vips = [ $legacy_vip ]
+    } else {
+        $legacy_vips = []
+    }
+
     $all_anycast_vips = $advertise_vips.map |$vip_fqdn,$vip_params| { $vip_params['address'] }
+
+    $listen_addrs = [
+        $facts['ipaddress'],
+        $facts['ipaddress6'],
+        $all_anycast_vips,
+    ] + $legacy_vips
 
     class { '::dnsrecursor':
         version_hostname  => true,
         allow_from        => $network::constants::aggregate_networks,
-        listen_addresses  => [
-            $facts['ipaddress'],
-            $facts['ipaddress6'],
-            $all_anycast_vips,
-        ],
+        listen_addresses  => $listen_addrs,
         allow_from_listen => false,
         log_common_errors => 'no',
         threads           => $facts['physicalcorecount'],
