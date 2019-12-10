@@ -224,6 +224,35 @@ class profile::analytics::refinery::job::data_purge (
         use_kerberos => $use_kerberos,
     }
 
+    # Drop sanitized EventLogging data for growth schemas after 270 days of collection. Runs once a day.
+    # NOTE: The tables parameter uses a double $$ sign. Systemd will transform this into a single $ sign.
+    # So, if you want to make changes to this job, make sure to execute all tests (DRY-RUN) with just 1
+    # single $ sign, to get the correct checksum. And then add the double $$ sign here.
+    kerberos::systemd_timer { 'drop-el-helppanel-events':
+        description  => 'Drop HelpPanel data from the event_sanitized database after 270 days.',
+        command      => "${refinery_path}/bin/refinery-drop-older-than --database='event_sanitized' --tables='^helppanel$$' --base-path='/wmf/data/event_sanitized/HelpPanel' --path-format='year=(?P<year>[0-9]+)(/month=(?P<month>[0-9]+)(/day=(?P<day>[0-9]+)(/hour=(?P<hour>[0-9]+))?)?)?' --older-than='270' --skip-trash --execute='e1447ccd3a6f808d038e2f4656e5a016'",
+        interval     => '*-*-* 04:40:00',
+        environment  => $systemd_env,
+        user         => 'analytics',
+        use_kerberos => $use_kerberos,
+    }
+    kerberos::systemd_timer { 'drop-el-homepagevisit-events':
+        description  => 'Drop HomepageVisit data from the event_sanitized database after 270 days.',
+        command      => "${refinery_path}/bin/refinery-drop-older-than --database='event_sanitized' --tables='^homepagevisit$$' --base-path='/wmf/data/event_sanitized/HomepageVisit' --path-format='year=(?P<year>[0-9]+)(/month=(?P<month>[0-9]+)(/day=(?P<day>[0-9]+)(/hour=(?P<hour>[0-9]+))?)?)?' --older-than='270' --skip-trash --execute='22e0daca11d3085a43149b3bf963b392'",
+        interval     => '*-*-* 04:45:00',
+        environment  => $systemd_env,
+        user         => 'analytics',
+        use_kerberos => $use_kerberos,
+    }
+    kerberos::systemd_timer { 'drop-el-homepagemodule-events':
+        description  => 'Drop HomepageModule data from the event_sanitized database after 270 days.',
+        command      => "${refinery_path}/bin/refinery-drop-older-than --database='event_sanitized' --tables='^homepagemodule$$' --base-path='/wmf/data/event_sanitized/HomepageModule' --path-format='year=(?P<year>[0-9]+)(/month=(?P<month>[0-9]+)(/day=(?P<day>[0-9]+)(/hour=(?P<hour>[0-9]+))?)?)?' --older-than='270' --skip-trash --execute='98a07ca21191bdaf1e6ce8c59093377a'",
+        interval     => '*-*-* 04:50:00',
+        environment  => $systemd_env,
+        user         => 'analytics',
+        use_kerberos => $use_kerberos,
+    }
+
     # drop data older than 2-3 months from cu_changes table, which is sqooped in
     # runs once a day (but only will delete data on the needed date)
     $geoeditors_private_retention_days = 60
