@@ -491,8 +491,13 @@ node 'db1086.eqiad.wmnet' {
 }
 
 # See also db1090, db1098 and db1101 below
-node /^db1(062|069|079|094|136)\.eqiad\.wmnet/ {
+node /^db1(069|079|094|136)\.eqiad\.wmnet/ {
     role(mariadb::core)
+}
+
+# db1062 will be decommissioned T239188
+node 'db1062.eqiad.wmnet' {
+    role(spare::system)
 }
 
 #
