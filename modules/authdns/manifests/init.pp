@@ -58,12 +58,14 @@ class authdns(
         content => template("${module_name}/config-options.erb"),
         require => File['/etc/gdnsd'],
         notify  => Service['gdnsd'],
+        before  => Exec['authdns-local-update'],
     }
     file { '/etc/gdnsd/zones':
         ensure => 'directory',
         owner  => 'root',
         group  => 'root',
         mode   => '0755',
+        before => Exec['authdns-local-update'],
     }
 
     # This abstracts the GeoIP2-City database path from the configuration
@@ -76,6 +78,7 @@ class authdns(
     file { '/etc/gdnsd/geoip/GeoIP2-City.mmdb':
         ensure => 'link',
         target => '/usr/share/GeoIP/GeoIP2-City.mmdb',
+        before => Exec['authdns-local-update'],
     }
 
     # Shared cookie secret to avoid cookie validity disruptions
@@ -103,6 +106,7 @@ class authdns(
         owner   => 'root',
         group   => 'root',
         content => template("${module_name}/wikimedia-authdns.conf.erb"),
+        before  => Exec['authdns-local-update'],
     }
 
     # do the initial clone via puppet
@@ -120,13 +124,6 @@ class authdns(
         user        => root,
         refreshonly => true,
         timeout     => 60,
-        require     => [
-                File['/etc/wikimedia-authdns.conf'],
-                File['/etc/gdnsd/config-options'],
-                File['/etc/gdnsd/geoip'],
-                File['/etc/gdnsd/geoip/GeoIP2-City.mmdb'],
-                File['/etc/gdnsd/zones'],
-            ],
         # we prepare the config even before the package gets installed, leaving
         # no window where service would be started and answer with REFUSED
         before      => Package['gdnsd'],
