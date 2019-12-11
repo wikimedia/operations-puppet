@@ -17,8 +17,6 @@ describe 'authdns' do
     context "On #{os}" do
       let(:facts) { facts }
       let(:params) { {
-                       :service_listeners => ['127.0.0.1', '127.0.0.2:1234'],
-                       :monitor_listeners => ['[2001:db8::1]:4321', '192.0.2.1'],
                        :authdns_servers => { 'foo' => '192.0.2.1' },
                      } }
       let(:pre_condition) { [

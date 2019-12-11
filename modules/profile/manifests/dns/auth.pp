@@ -6,6 +6,7 @@ class profile::dns::auth (
     include ::profile::dns::auth::acmechief_target
     include ::profile::dns::ferm
     include ::profile::dns::auth::discovery
+    include ::profile::dns::auth::config
 
     # Monitor gdnsd checkconf via NRPE
     class { 'authdns::monitor_conf': }
@@ -45,19 +46,9 @@ class profile::dns::auth (
         { interface => 'lo', prefixlen => '32' }
     )
 
-    $service_listeners = $authdns_addrs.map |$aspec| { $aspec[1]['address'] }
-
-    $monitor_listeners = [
-        # Any-address, both protocols, port 5353, for blended-role monitoring
-        '0.0.0.0:5353',
-        '[::]:5353',
-    ]
-
     class { 'authdns':
-        authdns_servers   => $authdns_servers,
-        gitrepo           => $gitrepo,
-        service_listeners => $service_listeners,
-        monitor_listeners => $monitor_listeners,
+        authdns_servers => $authdns_servers,
+        gitrepo         => $gitrepo,
     }
 
     # Create explicit /etc/hosts entries for all authdns IPv4 to reach each

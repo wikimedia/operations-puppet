@@ -2,18 +2,15 @@
 # A class to implement Wikimedia's authoritative DNS system
 #
 class authdns(
-    $service_listeners,
-    $monitor_listeners,
     Hash[Stdlib::Fqdn, Stdlib::IP::Address::Nosubnet] $authdns_servers,
     $gitrepo = undef,
 ) {
     require ::authdns::account
     require ::authdns::scripts
-    require ::geoip::data::puppet
 
-    # The package would create this as well if missing, but we need to create
-    # directories and files owned by these before the package is even
-    # installed...
+    # The package would create this as well if missing, but this allows
+    # puppetization to create directories and files owned by these before the
+    # package is even installed...
     group { 'gdnsd':
         ensure => present,
         system => true,
@@ -33,69 +30,14 @@ class authdns(
         ensure => installed,
     }
 
+    # Ensure that 'restarts' are converted to seamless reloads; it never needs
+    # a true restart under any remotely normal conditions.
     service { 'gdnsd':
         ensure     => 'running',
         hasrestart => true,
         hasstatus  => true,
         restart    => 'service gdnsd reload',
         require    => Package['gdnsd'],
-    }
-
-    # the package creates this, but we want to set up the config before we
-    # install the package, so that the daemon starts up with a well-known
-    # config that leaves no window where it'd refuse to answer properly
-    file { '/etc/gdnsd':
-        ensure => 'directory',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-    }
-    file { '/etc/gdnsd/config-options':
-        ensure  => 'present',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        content => template("${module_name}/config-options.erb"),
-        require => File['/etc/gdnsd'],
-        notify  => Service['gdnsd'],
-        before  => Exec['authdns-local-update'],
-    }
-    file { '/etc/gdnsd/zones':
-        ensure => 'directory',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-        before => Exec['authdns-local-update'],
-    }
-
-    # This abstracts the GeoIP2-City database path from the configuration
-    file { '/etc/gdnsd/geoip':
-        ensure => 'directory',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-    }
-    file { '/etc/gdnsd/geoip/GeoIP2-City.mmdb':
-        ensure => 'link',
-        target => '/usr/share/GeoIP/GeoIP2-City.mmdb',
-        before => Exec['authdns-local-update'],
-    }
-
-    # Shared cookie secret to avoid cookie validity disruptions
-    file { '/etc/gdnsd/secrets':
-        ensure => 'directory',
-        owner  => 'gdnsd',
-        group  => 'gdnsd',
-        mode   => '0500',
-    }
-    file { '/etc/gdnsd/secrets/dnscookies.key':
-        ensure    => 'present',
-        owner     => 'gdnsd',
-        group     => 'gdnsd',
-        mode      => '0400',
-        content   => secret('dns/dnscookies.key'),
-        show_diff => false,
-        notify    => Service['gdnsd'],
     }
 
     $workingdir = '/srv/authdns/git' # export to template
