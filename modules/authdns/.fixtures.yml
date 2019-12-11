@@ -1,9 +1,0 @@
-fixtures:
-    symlinks:
-      authdns: "#{source_dir}"
-      apt: "../../../../apt"
-      geoip: "../../../../geoip"
-      wmflib: "../../../../wmflib"
-      stdlib: "../../../../stdlib"
-      nrpe: "../../../../nrpe"
-      monitoring: "../../../../monitoring"
