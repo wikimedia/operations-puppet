@@ -34,6 +34,7 @@ class phabricator::vcs (
         managehome => true,
         home       => "/var/lib/${vcs_user}",
         system     => true,
+        password   => '*',
     }
 
     file { "${basedir}/phabricator/scripts/ssh/":
