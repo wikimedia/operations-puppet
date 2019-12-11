@@ -18,12 +18,12 @@ class profile::dns::auth::update (
 
     # Create explicit /etc/hosts entries for all authdns IPv4 to reach each
     # other by-hostname without working recdns
-    create_resources('host', $authdns_servers.reduce({}) |$data,$kv| {
-        $data + { $kv[0] => {
-            ip => $kv[1],
-            host_aliases => split($kv[0], '[.]')[0]
-        }}
-    })
+    $authdns_servers.each |$s_name,$s_ip| {
+        host { $s_name:
+            ip           => $s_ip,
+            host_aliases => split($s_name, '[.]')[0],
+        }
+    }
 
     # Hardcode the same IPv4 addrs as above in the inter-authdns ferm rules for
     # ssh access as well
