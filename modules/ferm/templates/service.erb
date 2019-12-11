@@ -2,7 +2,13 @@
 #
 # <%= @desc %>
 <% if @srange -%>
+<% if @drange -%>
+&RD_SERVICE(<%= @proto %>, <%= @port %>, <%= @srange %>, <%= @drange %>);
+<% else -%>
 &R_SERVICE(<%= @proto %>, <%= @port %>, <%= @srange %>);
+<% end -%>
+<% elsif @drange -%>
+&D_SERVICE(<%= @proto %>, <%= @port %>, <%= @drange %>);
 <% else -%>
 &SERVICE(<%= @proto %>, <%= @port %>);
 <% end -%>

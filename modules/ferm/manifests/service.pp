@@ -5,6 +5,9 @@
 # If $srange is not provided, all source addresses will be allowed.
 # otherwise only traffic coming from $srange will be allowed.
 #
+# If $drange is not provided, all dest addresses will be allowed.
+# otherwise only traffic incoming to $drange will be allowed.
+#
 define ferm::service(
     $proto,
     $port,
@@ -12,6 +15,7 @@ define ferm::service(
     $desc    = '',
     $prio    = '10',
     $srange  = undef,
+    $drange  = undef,
     $notrack = false,
 ) {
     @file { "/etc/ferm/conf.d/${prio}_${name}":
