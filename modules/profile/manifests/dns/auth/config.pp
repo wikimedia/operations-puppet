@@ -1,6 +1,14 @@
 class profile::dns::auth::config(
     Hash[String, Hash[String, String]] $authdns_addrs = lookup('authdns_addrs'),
 ) {
+    # Create the loopback IPs used for public service (defined here since we
+    # also create the matching listener config here)
+    create_resources(
+        interface::ip,
+        $authdns_addrs,
+        { interface => 'lo', prefixlen => '32' }
+    )
+
     $service_listeners = $authdns_addrs.map |$aspec| { $aspec[1]['address'] }
 
     $monitor_listeners = [
