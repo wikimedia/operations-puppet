@@ -1,4 +1,4 @@
-# == Class authdns::monitoring
+# == Class authdns::scripts
 # Scripts used by the authdns system. These used to be in a package,
 # but we don't do that anymore and provisioning them here instead.
 #
