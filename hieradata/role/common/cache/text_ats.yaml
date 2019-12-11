@@ -87,6 +87,8 @@ cache::alternate_domains:
     director: 'hadoop_ui'
   iegreview.wikimedia.org:
     director: 'miscweb'
+  intake-logging.wikimedia.org:
+    director: 'eventgate_logging_external'
   integration.wikimedia.org:
     director: 'contint1001'
   labtesthorizon.wikimedia.org:
@@ -157,8 +159,6 @@ cache::alternate_domains:
       '^/v2/stream/.+':
         director: 'eventstreams'
         caching: 'pipe'
-      '^/produce/logging/':
-        director: 'eventgate_logging_external'
   superset.wikimedia.org:
     director: 'superset'
   ticket.wikimedia.org:
