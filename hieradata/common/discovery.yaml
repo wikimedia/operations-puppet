@@ -73,9 +73,6 @@ discovery::services:
   kibana:
     lvs: kibana
     active_active: false
-  kibana-next-ssl:
-    lvs: kibana-next-ssl
-    active_active: false
   mathoid:
     lvs: mathoid
     active_active: true
