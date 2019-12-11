@@ -19,7 +19,7 @@ class role::alerting_host {
     include ::profile::certspotter
     include ::profile::scap::dsh
 
-    include ::profile::dns::auth::monitoring
+    include ::profile::dns::auth::monitoring::global
 
     class { '::httpd::mpm':
         mpm => 'prefork'
