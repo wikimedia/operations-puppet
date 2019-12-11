@@ -1,6 +1,9 @@
 class profile::dns::auth::config(
     Hash[String, Hash[String, String]] $authdns_addrs = lookup('authdns_addrs'),
 ) {
+    include ::network::constants
+    include ::profile::base::firewall
+
     # Create the loopback IPs used for public service (defined here since we
     # also create the matching listener config here)
     $authdns_addrs.each |$alabel,$adata| {
@@ -11,6 +14,22 @@ class profile::dns::auth::config(
     }
 
     $service_listeners = $authdns_addrs.map |$aspec| { $aspec[1]['address'] }
+
+    ferm::service { 'udp_dns_auth':
+        proto   => 'udp',
+        notrack => true,
+        prio    => '05',
+        port    => '53',
+        drange  => "(${service_listeners.join(' ')})",
+    }
+
+    ferm::service { 'tcp_dns_auth':
+        proto   => 'tcp',
+        notrack => true,
+        prio    => '05',
+        port    => '53',
+        drange  => "(${service_listeners.join(' ')})",
+    }
 
     $monitor_listeners = [
         # Any-address, both protocols, port 5353, for blended-role monitoring

@@ -1,4 +1,7 @@
 class profile::dns::auth::monitoring {
+    include ::network::constants
+    include ::profile::base::firewall
+
     # Metrics!
     class { 'prometheus::node_gdnsd': }
 
@@ -16,19 +19,17 @@ class profile::dns::auth::monitoring {
         notes_url     => 'https://wikitech.wikimedia.org/wiki/DNS',
     }
 
-    # Authdns needs additional rules beyond profile::dns::ferm, for its special
-    # port 5353 monitoring listeners.  These can be tracked like normal since
-    # they're not high volume.  Icinga hosts have special ferm access in
-    # general, but humans will also sometimes want to hit these...
+    # port 5353 monitoring listeners (which humans and other tools may hit!)
     ferm::service { 'udp_dns_auth_monitor':
-        proto  => 'udp',
-        port   => '5353',
-        srange => '$PRODUCTION_NETWORKS',
+        proto   => 'udp',
+        notrack => true,
+        port    => '5353',
+        srange  => "(${network::constants::aggregate_networks.join(' ')})",
     }
-
     ferm::service { 'tcp_dns_auth_monitor':
-        proto  => 'tcp',
-        port   => '5353',
-        srange => '$PRODUCTION_NETWORKS',
+        proto   => 'tcp',
+        notrack => true,
+        port    => '5353',
+        srange  => "(${network::constants::aggregate_networks.join(' ')})",
     }
 }

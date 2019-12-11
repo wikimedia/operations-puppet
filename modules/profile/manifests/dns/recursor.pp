@@ -6,7 +6,7 @@ class profile::dns::recursor (
   Optional[Stdlib::IP::Address::Nosubnet] $legacy_vip = lookup('profile::dns::recursor::legacy_vip', {'default_value' => undef}),
 ) {
     include ::network::constants
-    include ::profile::dns::ferm
+    include ::profile::base::firewall
     include ::profile::bird::anycast
     include ::profile::prometheus::pdns_rec_exporter
 
@@ -43,6 +43,24 @@ class profile::dns::recursor (
         log_common_errors => 'no',
         threads           => $facts['physicalcorecount'],
         bind_service      => $bind_service,
+    }
+
+    ferm::service { 'udp_dns_recursor':
+        proto   => 'udp',
+        notrack => true,
+        prio    => '07',
+        port    => '53',
+        drange  => "(${listen_addrs.join(' ')})",
+        srange  => "(${network::constants::aggregate_networks}.join(' ')})",
+    }
+
+    ferm::service { 'tcp_dns_recursor':
+        proto   => 'tcp',
+        notrack => true,
+        prio    => '07',
+        port    => '53',
+        drange  => "(${listen_addrs.join(' ')})",
+        srange  => "(${network::constants::aggregate_networks}.join(' ')})",
     }
 
     ::dnsrecursor::monitor { [ $facts['ipaddress'], $facts['ipaddress6'] ]: }
