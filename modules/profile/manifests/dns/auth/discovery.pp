@@ -44,6 +44,14 @@ class profile::dns::auth::discovery(
         before => Exec['authdns-local-update'],
     }
 
+    file { '/usr/local/bin/authdns-check-active-passive':
+        ensure => 'present',
+        mode   => '0555',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/profile/dns/auth/authdns-check-active-passive',
+    }
+
     class { 'confd':
         prefix => $conftool_prefix,
     }
