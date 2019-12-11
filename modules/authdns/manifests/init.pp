@@ -15,15 +15,6 @@ class authdns(
     require ::authdns::scripts
     require ::geoip::data::puppet
 
-    if os_version('debian == stretch') {
-        apt::pin { 'gdnsd':
-            pin      => 'release a=stretch-backports',
-            package  => 'gdnsd',
-            priority => '1001',
-            before   => Package['gdnsd'],
-        }
-    }
-
     # The package would create this as well if missing, but we need to create
     # directories and files owned by these before the package is even
     # installed...
