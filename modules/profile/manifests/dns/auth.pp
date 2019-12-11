@@ -9,6 +9,9 @@ class profile::dns::auth (
     include ::profile::dns::auth::acmechief_target
     include ::profile::dns::ferm
 
+    # Monitor gdnsd checkconf via NRPE
+    class { 'authdns::monitor_conf': }
+
     # This monitors the specific authdns server directly via
     #  its own fqdn, which won't generally be one of the listener
     #  addresses we really care about.  This gives a more-direct

@@ -1,7 +1,6 @@
-# == Class authdns::monitoring
-# Monitoring checks for authdns, specific to Wikimedia setup
-#
-class authdns::monitoring {
+# == Class authdns::monitor_conf
+# Custom check to monitor checkconf status of a gdnsd server
+class authdns::monitor_conf {
     # This is a local NRPE check to validate that the authdns server's config
     # and zonefiles still load.  This is an important gaurd against e.g.
     # puppet-deploying an invalid configuration, which might otherwise only

@@ -9,7 +9,6 @@ class authdns(
     $monitor_listeners,
     Hash[Stdlib::Fqdn, Stdlib::IP::Address::Nosubnet] $authdns_servers,
     $gitrepo = undef,
-    $monitoring = true,
 ) {
     require ::authdns::account
     require ::authdns::scripts
@@ -138,10 +137,6 @@ class authdns(
         # we prepare the config even before the package gets installed, leaving
         # no window where service would be started and answer with REFUSED
         before      => Package['gdnsd'],
-    }
-
-    if $monitoring {
-        include ::authdns::monitoring
     }
 
     # Discovery Magic
