@@ -1,0 +1,22 @@
+admin::groups:
+  - wmcs-roots
+
+profile::base::enable_microcode: true
+
+contactgroups: wmcs-team
+mgmt_contactgroups: wmcs-team-email
+
+profile::ceph::data_dir: '/var/lib/ceph'
+profile::ceph::client::rbd::keyfile_group: 'nova'
+profile::ceph::client::rbd::client_name: 'eqiad1-compute'
+profile::ceph::client::rbd::keyfile_owner: 'nova'
+profile::ceph::fsid: '5917e6d9-06a0-4928-827a-f489384975b1'
+# Providing static addresses for the Ceph hosts. This is used by the service connection string
+profile::ceph::mon::addrs:
+  - '208.80.154.148'
+  - '208.80.154.149'
+  - '208.80.154.150'
+profile::ceph::mon::hosts:
+  - 'cloudcephmon1001.wikimedia.org'
+  - 'cloudcephmon1002.wikimedia.org'
+  - 'cloudcephmon1003.wikimedia.org'
