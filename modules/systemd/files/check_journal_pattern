@@ -1,0 +1,38 @@
+#!/bin/bash
+
+# Usage:
+#    check_journal_pattern since pattern [systemd_unit_name]
+#
+# This plugin greps the output of journalctl for the given pattern, alerting if
+# there has been any match since the specified time (eg: 1 hour ago). See
+# systemd.time(7) for an explanation of valid values for 'since'.
+#
+# Example usage:
+#   check_journal_pattern '1 hour ago' 'Connection reset by peer' apache
+#
+# To match all of journald, for example to also search kernel logs, the
+# parameter 'systemd_unit_name' can be omitted:
+#   check_journal_pattern '1 day ago' 'microcode updated'
+#
+
+if [ "$#" -lt 2 ]; then
+    echo "Usage:  check_journal_pattern since pattern [systemd_unit_name]"
+    exit 3
+fi
+
+since=$1
+pattern=$2
+if [ -n "$3" ]; then
+    unit="-u $3"
+    msg="for unit $3"
+else
+    unit=""
+fi
+
+if /bin/journalctl --since="${since}" ${unit} | /bin/grep -Eq "${pattern}"; then
+    echo "CRITICAL: matches found in journal $msg"
+    exit 2
+else
+    echo "OK: no matches found in journal $msg"
+    exit 0
+fi

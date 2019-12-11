@@ -1,7 +1,7 @@
 # == Class systemd ==
 #
-# This class just defines a guard against running on non-systemd systems, and
-# a few constants.
+# This class defines a guard against running on non-systemd systems, a few
+# constants, and the check_journal_pattern nrpe plugin.
 #
 class systemd {
     if $::initsystem != 'systemd' {
@@ -13,4 +13,12 @@ class systemd {
     # Directories for base units and overrides
     $base_dir = '/lib/systemd/system'
     $override_dir = '/etc/systemd/system'
+
+    file { '/usr/local/lib/nagios/plugins/check_journal_pattern':
+        ensure => present,
+        source => 'puppet:///modules/systemd/check_journal_pattern',
+        mode   => '0555',
+        owner  => 'root',
+        group  => 'root',
+    }
 }
