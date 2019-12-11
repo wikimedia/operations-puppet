@@ -64,10 +64,10 @@ cache::alternate_domains:
   git.wikimedia.org:
     director: 'phabricator'
   grafana-labs-admin.wikimedia.org:
-    director: 'cloudmetrics1002'
+    director: 'labmon1001'
     caching: 'pass'
   grafana-labs.wikimedia.org:
-    director: 'cloudmetrics1002'
+    director: 'labmon1001'
     caching: 'pass'
   grafana-next.wikimedia.org:
     director: 'grafana1002'
@@ -76,7 +76,7 @@ cache::alternate_domains:
     director: 'grafana1002'
     caching: 'pass'
   graphite-labs.wikimedia.org:
-    director: 'cloudmetrics1002'
+    director: 'labmon1001'
   graphite.wikimedia.org:
     director: 'graphite'
   horizon.wikimedia.org:

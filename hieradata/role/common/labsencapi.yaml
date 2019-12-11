@@ -1,5 +1,5 @@
 profile::puppetmaster::labsencapi::mysql_host: "m5-master.eqiad.wmnet"
 profile::puppetmaster::labsencapi::mysql_db: "labspuppet"
 profile::puppetmaster::labsencapi::mysql_username: "labspuppet"
-profile::puppetmaster::labsencapi::statsd_host: "cloudmetrics1002.eqiad.wmnet"
+profile::puppetmaster::labsencapi::statsd_host: "labmon1001.eqiad.wmnet"
 profile::puppetmaster::labsencapi::statsd_prefix: "labs.puppetbackend"
