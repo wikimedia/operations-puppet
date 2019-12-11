@@ -629,10 +629,14 @@ node 'db1133.eqiad.wmnet' {
     }
 }
 
-node /^db2(070|135)\.codfw\.wmnet/ {
+node /^db2(135)\.codfw\.wmnet/ {
     class { '::role::mariadb::misc':
         shard => 'm5',
     }
+}
+
+node 'db2070.codfw.wmnet' {
+    role(spare::system)
 }
 
 # misc multiinstance
