@@ -11,6 +11,38 @@ class profile::ceph::mon(
     String                         $fsid          = lookup('profile::ceph::fsid'),
     String                         $mon_secret    = lookup('profile::ceph::mon::secret'),
 ) {
+    include ::network::constants
+    # Limit the client connections to the hypervisors in eqiad and codfw
+    $client_networks = [
+        $network::constants::all_network_subnets['production']['eqiad']['private']['labs-hosts1-b-eqiad']['ipv4'],
+        $network::constants::all_network_subnets['production']['codfw']['private']['labs-hosts1-b-codfw']['ipv4'],
+    ]
+    $ferm_srange = join(concat($mon_addrs, $osd_addrs, $client_networks), ' ')
+    ferm::service { 'ceph_mgr_v2':
+        proto  => 'tcp',
+        port   => 6800,
+        srange => "(${ferm_srange})",
+        before => Class['ceph'],
+    }
+    ferm::service { 'ceph_mgr_v1':
+        proto  => 'tcp',
+        port   => 6801,
+        srange => "(${ferm_srange})",
+        before => Class['ceph'],
+    }
+    ferm::service { 'ceph_mon_peers_v1':
+        proto  => 'tcp',
+        port   => 6789,
+        srange => "(${ferm_srange})",
+        before => Class['ceph'],
+    }
+    ferm::service { 'ceph_mon_peers_v2':
+        proto  => 'tcp',
+        port   => 3300,
+        srange => "@resolve((${ferm_srange}))",
+        before => Class['ceph'],
+    }
+
     if os_version('debian == buster') {
         apt::repository { 'thirdparty-ceph-nautilus-buster':
             uri        => 'http://apt.wikimedia.org/wikimedia',
@@ -46,29 +78,4 @@ class profile::ceph::mon(
         data_dir => $data_dir,
     }
 
-    $ferm_srange = join(concat($mon_addrs, $osd_addrs), ' ')
-    ferm::service { 'ceph_mgr_v2':
-        proto  => 'tcp',
-        port   => 6800,
-        srange => "@resolve((${ferm_srange}))",
-        before => Class['ceph'],
-    }
-    ferm::service { 'ceph_mgr_v1':
-        proto  => 'tcp',
-        port   => 6801,
-        srange => "@resolve((${ferm_srange}))",
-        before => Class['ceph'],
-    }
-    ferm::service { 'ceph_mon_peers_v1':
-        proto  => 'tcp',
-        port   => 6789,
-        srange => "@resolve((${ferm_srange}))",
-        before => Class['ceph'],
-    }
-    ferm::service { 'ceph_mon_peers_v2':
-        proto  => 'tcp',
-        port   => 3300,
-        srange => "@resolve((${ferm_srange}))",
-        before => Class['ceph'],
-    }
 }
