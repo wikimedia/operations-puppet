@@ -1973,10 +1973,14 @@ node 'tungsten.eqiad.wmnet' {
 #  key: profile::openstack::eqiad1::nova::scheduler_pool
 # We try to keep a few empty as emergency fail-overs
 #  or transition hosts for maintenance to come
-node /^cloudvirt10[0-3][0-9]\.eqiad\.wmnet$/ {
+node /^cloudvirt10(([013][0-9])|(2([01]|[3-9])))\.eqiad\.wmnet$/ {
     role(wmcs::openstack::eqiad1::virt)
 }
 
+# CloudVPS testing ceph base storage on hypervisors T239918
+node 'cloudvirt1022.eqiad.wmnet' {
+    role(wmcs::openstack::eqiad1::virt_ceph)
+}
 
 # Wikidata query service
 node /^wdqs100[4-7]\.eqiad\.wmnet$/ {
