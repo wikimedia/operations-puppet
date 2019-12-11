@@ -2,9 +2,6 @@
 # A class to implement Wikimedia's authoritative DNS system
 #
 class authdns(
-    $lvs_services,
-    $discovery_services,
-    $conftool_prefix,
     $service_listeners,
     $monitor_listeners,
     Hash[Stdlib::Fqdn, Stdlib::IP::Address::Nosubnet] $authdns_servers,
@@ -126,10 +123,6 @@ class authdns(
         require     => [
                 File['/etc/wikimedia-authdns.conf'],
                 File['/etc/gdnsd/config-options'],
-                File['/etc/gdnsd/discovery-geo-resources'],
-                File['/etc/gdnsd/discovery-metafo-resources'],
-                File['/etc/gdnsd/discovery-states'],
-                File['/etc/gdnsd/discovery-map'],
                 File['/etc/gdnsd/geoip'],
                 File['/etc/gdnsd/geoip/GeoIP2-City.mmdb'],
                 File['/etc/gdnsd/zones'],
@@ -138,48 +131,4 @@ class authdns(
         # no window where service would be started and answer with REFUSED
         before      => Package['gdnsd'],
     }
-
-    # Discovery Magic
-
-    file { '/etc/gdnsd/discovery-geo-resources':
-        ensure  => 'present',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        content => template("${module_name}/discovery-geo-resources.erb"),
-        notify  => Service['gdnsd'],
-    }
-
-    file { '/etc/gdnsd/discovery-metafo-resources':
-        ensure  => 'present',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        content => template("${module_name}/discovery-metafo-resources.erb"),
-        notify  => Service['gdnsd'],
-    }
-
-    file { '/etc/gdnsd/discovery-states':
-        ensure  => 'present',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        content => template("${module_name}/discovery-states.erb"),
-        notify  => Service['gdnsd'],
-    }
-
-    file { '/etc/gdnsd/discovery-map':
-        ensure => 'present',
-        mode   => '0444',
-        owner  => 'root',
-        group  => 'root',
-        source => "puppet:///modules/${module_name}/discovery-map",
-        notify => Service['gdnsd'],
-    }
-
-    class { 'confd':
-        prefix => $conftool_prefix,
-    }
-
-    create_resources(::authdns::discovery_statefile, $discovery_services, { lvs_services => $lvs_services })
 }

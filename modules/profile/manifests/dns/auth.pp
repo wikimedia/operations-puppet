@@ -1,13 +1,11 @@
 class profile::dns::auth (
-    Hash $lvs_services = lookup('lvs::configuration::lvs_services'),
-    Hash $discovery_services = lookup('discovery::services'),
     Hash[String, Hash[String, String]] $authdns_addrs = lookup('authdns_addrs'),
     Hash[Stdlib::Fqdn, Stdlib::IP::Address::Nosubnet] $authdns_servers = lookup('authdns_servers'),
     Stdlib::HTTPSUrl $gitrepo = lookup('profile::dns::auth::gitrepo'),
-    $conftool_prefix = lookup('conftool_prefix'),
 ) {
     include ::profile::dns::auth::acmechief_target
     include ::profile::dns::ferm
+    include ::profile::dns::auth::discovery
 
     # Monitor gdnsd checkconf via NRPE
     class { 'authdns::monitor_conf': }
@@ -56,13 +54,10 @@ class profile::dns::auth (
     ]
 
     class { 'authdns':
-        authdns_servers    => $authdns_servers,
-        gitrepo            => $gitrepo,
-        lvs_services       => $lvs_services,
-        discovery_services => $discovery_services,
-        conftool_prefix    => $conftool_prefix,
-        service_listeners  => $service_listeners,
-        monitor_listeners  => $monitor_listeners,
+        authdns_servers   => $authdns_servers,
+        gitrepo           => $gitrepo,
+        service_listeners => $service_listeners,
+        monitor_listeners => $monitor_listeners,
     }
 
     # Create explicit /etc/hosts entries for all authdns IPv4 to reach each
