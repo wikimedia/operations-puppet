@@ -64,6 +64,10 @@ sudo-command-line() {
         LBUFFER="sudo $LBUFFER"
     fi
 }
+if [ $commands[kubectl] ]
+then
+  source <(kubectl completion zsh)
+fi
 zle -N sudo-command-line
 # Defined shortcut keys: [Esc] [Esc]
 bindkey "\e\e" sudo-command-line
