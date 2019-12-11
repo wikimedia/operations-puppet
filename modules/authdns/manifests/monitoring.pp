@@ -2,17 +2,6 @@
 # Monitoring checks for authdns, specific to Wikimedia setup
 #
 class authdns::monitoring {
-    # This monitors the specific authdns server directly via
-    #  its own fqdn, which won't generally be one of the listener
-    #  addresses we really care about.  This gives a more-direct
-    #  view of reality, though, as the mapping of listener addresses
-    #  to real hosts could be fluid due to routing/anycast.
-    monitoring::service { 'auth dns':
-        description   => 'Auth DNS',
-        check_command => 'check_dns_query_auth_port!5353!www.wikipedia.org',
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/DNS',
-    }
-
     # This is a local NRPE check to validate that the authdns server's config
     # and zonefiles still load.  This is an important gaurd against e.g.
     # puppet-deploying an invalid configuration, which might otherwise only
