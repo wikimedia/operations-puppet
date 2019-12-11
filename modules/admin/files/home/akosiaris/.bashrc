@@ -72,3 +72,7 @@ fi
 if [ -f ~/.variables ]; then
 	. ~/.variables
 fi
+
+# kubectl/helm completion
+hash kubectl 2>/dev/null && source <(kubectl completion bash)
+hash helm 2>/dev/null && source <(helm completion bash)
