@@ -9,7 +9,7 @@ class profile::dns::auth (
     include ::profile::dns::auth::update
 
     # Monitor gdnsd checkconf via NRPE
-    class { 'authdns::monitor_conf': }
+    class { 'gdnsd::monitor_conf': }
 
     # This monitors the specific authdns server directly via
     #  its own fqdn, which won't generally be one of the listener
@@ -46,7 +46,7 @@ class profile::dns::auth (
         { interface => 'lo', prefixlen => '32' }
     )
 
-    class { 'authdns': }
+    class { 'gdnsd': }
 
     # Create explicit /etc/hosts entries for all authdns IPv4 to reach each
     # other by-hostname without working recdns

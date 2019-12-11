@@ -1,7 +1,4 @@
-# == Class authdns
-# A class to implement Wikimedia's authoritative DNS system
-#
-class authdns {
+class gdnsd {
     # The package would create this as well if missing, but this allows
     # puppetization to create directories and files owned by these before the
     # package is even installed...
