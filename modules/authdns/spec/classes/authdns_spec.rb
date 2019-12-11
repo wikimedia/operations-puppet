@@ -3,7 +3,7 @@ test_on = {
   supported_os: [
     {
       'operatingsystem'        => 'Debian',
-      'operatingsystemrelease' => ['9'],
+      'operatingsystemrelease' => ['10'],
       # the puppet gem
     }
   ]
@@ -16,16 +16,8 @@ describe 'authdns' do
   on_supported_os(test_on).each do |os, facts|
     context "On #{os}" do
       let(:facts) { facts }
-      let(:params) { {
-                       :authdns_servers => { 'foo' => '192.0.2.1' },
-                     } }
+      let(:params) { { } }
       let(:pre_condition) { [
-                              'define git::clone($directory, $origin, $branch,$owner,$group) {}',
-                              'define ssh::userkey($content) {}',
-                              'define sudo::user($privileges) {}',
-                              'class confd($prefix) {}',
-                              'package{ "git": }',
-                              'include ::apt',
                               'class profile::base { $notifications_enabled = "1" }',
                               'include ::profile::base'
                             ] }

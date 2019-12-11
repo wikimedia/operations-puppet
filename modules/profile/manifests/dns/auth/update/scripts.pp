@@ -1,8 +1,7 @@
-# == Class authdns::scripts
-# Scripts used by the authdns system. These used to be in a package,
-# but we don't do that anymore and provisioning them here instead.
+# == Class profile::dns::auth::update::scripts
+# Scripts used by the authdns-update system
 #
-class authdns::scripts {
+class profile::dns::auth::update::scripts {
     # These are needed by gen-zones.py in the ops/dns repo, which
     # authdns-local-update will indirectly execute
     require_package('python3-git')
@@ -16,7 +15,7 @@ class authdns::scripts {
         mode   => '0555',
         owner  => 'root',
         group  => 'root',
-        source => "puppet:///modules/${module_name}/authdns-update",
+        source => 'puppet:///modules/profile/dns/auth/authdns-update',
     }
 
     file { '/usr/local/sbin/authdns-local-update':
@@ -24,7 +23,7 @@ class authdns::scripts {
         mode   => '0555',
         owner  => 'root',
         group  => 'root',
-        source => "puppet:///modules/${module_name}/authdns-local-update",
+        source => 'puppet:///modules/profile/dns/auth/authdns-local-update',
     }
 
     file { '/usr/local/sbin/authdns-git-pull':
@@ -32,6 +31,6 @@ class authdns::scripts {
         mode   => '0555',
         owner  => 'root',
         group  => 'root',
-        source => "puppet:///modules/${module_name}/authdns-git-pull",
+        source => 'puppet:///modules/profile/dns/auth/authdns-git-pull',
     }
 }

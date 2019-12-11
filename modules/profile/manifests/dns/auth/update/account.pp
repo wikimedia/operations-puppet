@@ -1,7 +1,6 @@
-# == Class authdns::account
-# Sets up user, group, sudo SSH keys & git-shell commands for authdns
-#
-class authdns::account {
+# == Class profile::dns::auth::update::account
+# Sets up user, group, sudo SSH keys & git-shell commands for authdns-update
+class profile::dns::auth::update::account {
     $user  = 'authdns'
     $group = 'authdns'
     $home  = '/srv/authdns'

@@ -1,12 +1,12 @@
 class profile::dns::auth (
     Hash[String, Hash[String, String]] $authdns_addrs = lookup('authdns_addrs'),
     Hash[Stdlib::Fqdn, Stdlib::IP::Address::Nosubnet] $authdns_servers = lookup('authdns_servers'),
-    Stdlib::HTTPSUrl $gitrepo = lookup('profile::dns::auth::gitrepo'),
 ) {
     include ::profile::dns::auth::acmechief_target
     include ::profile::dns::ferm
     include ::profile::dns::auth::discovery
     include ::profile::dns::auth::config
+    include ::profile::dns::auth::update
 
     # Monitor gdnsd checkconf via NRPE
     class { 'authdns::monitor_conf': }
@@ -46,10 +46,7 @@ class profile::dns::auth (
         { interface => 'lo', prefixlen => '32' }
     )
 
-    class { 'authdns':
-        authdns_servers => $authdns_servers,
-        gitrepo         => $gitrepo,
-    }
+    class { 'authdns': }
 
     # Create explicit /etc/hosts entries for all authdns IPv4 to reach each
     # other by-hostname without working recdns
