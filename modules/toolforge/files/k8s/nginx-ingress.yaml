@@ -241,6 +241,10 @@ spec:
                 - NET_BIND_SERVICE
             # www-data -> 33
             runAsUser: 33
+          resources:
+            requests:
+              cpu: "0.5"
+              memory: "1Gi"
           env:
             - name: POD_NAME
               valueFrom:
