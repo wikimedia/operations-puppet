@@ -51,7 +51,7 @@ class profile::dns::recursor (
         prio    => '07',
         port    => '53',
         drange  => "(${listen_addrs.join(' ')})",
-        srange  => "(${network::constants::aggregate_networks}.join(' ')})",
+        srange  => "(${network::constants::aggregate_networks.join(' ')})",
     }
 
     ferm::service { 'tcp_dns_recursor':
