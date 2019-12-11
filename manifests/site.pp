@@ -495,12 +495,6 @@ node /^db1(069|079|094|136)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
 
-# db1062 will be decommissioned T239188
-node 'db1062.eqiad.wmnet' {
-    role(spare::system)
-}
-
-#
 # s7 (centralauth, meta et al.) core production dbs on codfw
 # codfw master
 node 'db2118.codfw.wmnet' {
