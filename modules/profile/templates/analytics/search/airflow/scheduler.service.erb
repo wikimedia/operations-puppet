@@ -21,7 +21,7 @@ Description=Airflow scheduler daemon
 After=network.target
 
 [Service]
-SyslogIdentifier=airflow-webserver
+SyslogIdentifier=airflow-scheduler
 Environment=AIRFLOW_HOME=<%= @conf_dir %>
 User=airflow
 Group=airflow
