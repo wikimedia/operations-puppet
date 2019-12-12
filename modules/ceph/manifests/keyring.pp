@@ -43,8 +43,8 @@
 #   The object storage daemon capabilities to grant this keyring
 #   The default is 'undef'.
 #
-# [*secret*]
-#   Optional base64 secret used to create the keyring
+# [*keydata*]
+#   Optional base64 keydata used to create the keyring
 #   The default is 'undef'.
 #
 define ceph::keyring(
@@ -58,10 +58,10 @@ define ceph::keyring(
     Optional[String]     $cap_mgr = undef,
     Optional[String]     $cap_mon = undef,
     Optional[String]     $cap_osd = undef,
-    Optional[String]     $secret  = undef,
+    Optional[String]     $keydata = undef,
 ) {
-    # If a secret was provided use ceph-authtool, else use ceph auth get-or-create
-    if $secret {
+    # If a keydata was provided use ceph-authtool, else use ceph auth get-or-create
+    if $keydata {
         $opt_prefix = '--cap'
     } else {
         $opt_prefix = undef
@@ -83,10 +83,10 @@ define ceph::keyring(
 
         $opts = "${mds_opts} ${mgr_opts} ${mon_opts} ${osd_opts}"
 
-        if $secret {
+        if $keydata {
             exec { "ceph-keyring-${name}":
                 command => "/usr/bin/ceph-authtool --create-keyring ${keyring} \
-                            -n ${name} --add-key=${secret} ${opts}",
+                            -n ${name} --add-key=${keydata} ${opts}",
                 creates => $keyring,
             }
         } else {

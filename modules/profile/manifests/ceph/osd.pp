@@ -7,7 +7,7 @@ class profile::ceph::osd(
     Array[Stdlib::IP::Address::V4] $osd_addrs     = lookup('profile::ceph::osd::addrs'),
     Stdlib::AbsolutePath           $admin_keyring = lookup('profile::ceph::admin_keyring'),
     Stdlib::Unixpath               $data_dir      = lookup('profile::ceph::data_dir'),
-    String                         $admin_secret  = lookup('profile::ceph::admin_secret'),
+    String                         $admin_keydata = lookup('profile::ceph::admin_keydata'),
     String                         $fsid          = lookup('profile::ceph::fsid'),
 ) {
     include ::network::constants
@@ -39,15 +39,17 @@ class profile::ceph::osd(
     }
 
     class { 'ceph':
-        data_dir  => $data_dir,
-        fsid      => $fsid,
-        mon_addrs => $mon_addrs,
-        mon_hosts => $mon_hosts,
+        data_dir            => $data_dir,
+        enable_libvirt_rbd  => false,
+        enable_v2_messenger => true,
+        fsid                => $fsid,
+        mon_addrs           => $mon_addrs,
+        mon_hosts           => $mon_hosts,
     }
 
     class { 'ceph::admin':
         admin_keyring => $admin_keyring,
-        admin_secret  => $admin_secret,
+        admin_keydata => $admin_keydata,
         data_dir      => $data_dir,
     }
 

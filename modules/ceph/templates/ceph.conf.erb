@@ -6,10 +6,21 @@
   fsid = <%= @fsid %>
 
   mon initial members = <%= @mon_hosts.map{|h| "#{h.split('.')[0]}"}.join(',') %>
+<% if @enable_v2_messenger -%>
   mon host = <%= @mon_addrs.map{|i| "[v2:#{i}:3300/0,v1:#{i}:6789/0]"}.join(',') %>
-
+<% end -%>
 <% @mon_hosts.each do |host| -%>
+
 [mon.<%= host.split('.')[0] %>]
     host = <%= host.split('.')[0] %>
     mon addr = <%= scope.function_ipresolve([host, 4]) %>
 <% end %>
+<% if @enable_libvirt_rbd -%>
+
+[client]
+    rbd cache = true
+    rbd cache writethrough until flush = true
+    admin socket = /var/run/ceph/guests/$cluster-$type.$id.$pid.$cctid.asok
+    log file = /var/log/ceph/qemu/qemu-guest-$pid.log
+    rbd concurrent management ops = 20
+<% end -%>

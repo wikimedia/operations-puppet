@@ -7,14 +7,14 @@
 #        Path to the base Ceph data directory
 #    - $admin_keyring
 #        File name and path to install the admin keyring
-#    - $mon_secret
+#    - $mon_keydata
 #        base64 encoded key used to create the monitor keyring
 #    - $fsid
 #        Ceph filesystem ID
 class ceph::mon(
     Stdlib::AbsolutePath $admin_keyring,
     Stdlib::Unixpath     $data_dir,
-    String               $mon_secret,
+    String               $mon_keydata,
     String               $fsid,
 ) {
     Class['ceph::admin'] -> Class['ceph::mon']
@@ -31,7 +31,7 @@ class ceph::mon(
     ceph::keyring { 'mon.':
         cap_mon => 'allow *',
         keyring => $keyring,
-        secret  => $mon_secret,
+        keydata => $mon_keydata,
         notify  => Exec['import-keyring-admin'],
     }
 
