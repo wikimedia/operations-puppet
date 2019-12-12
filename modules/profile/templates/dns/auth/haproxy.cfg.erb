@@ -30,8 +30,8 @@ listen stats
     stats enable
     stats uri /
 
-<% @listen_addrs.each do |listen_addr| -%>
-listen dns_<%= listen_addr %>
-    bind <%= listen_addr %>:853 ssl tfo allow-0rtt curves X25519:X448:P-256 crt <%= @kchained_path %>
+<% @authdns_addrs.each do |label, data| -%>
+listen dns_<%= label %>
+    bind <%= data['address'] %>:853 ssl tfo allow-0rtt curves X25519:X448:P-256 crt <%= @kchained_path %>
     server gdnsd 127.0.0.1:535 send-proxy-v2
 <% end -%>

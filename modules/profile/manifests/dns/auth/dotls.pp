@@ -19,8 +19,6 @@ class profile::dns::auth::dotls(
         notify      => Service['haproxy'],
     }
 
-    $listen_addrs = $authdns_addrs.map |$aspec| { $aspec[1]['address'] }
-
     file { '/etc/haproxy/haproxy.cfg':
         ensure  => present,
         mode    => '0444',
