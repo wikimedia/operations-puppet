@@ -34,7 +34,9 @@ class profile::dns::auth::dotls(
     }
 
     service { 'haproxy':
-        ensure => 'running',
+        ensure  => 'running',
+        restart => 'systemctl reload haproxy.service',
+        require => Service['gdnsd'],
     }
 
     class { 'prometheus::haproxy_exporter':
