@@ -33,6 +33,9 @@ FILE_PATHS = {
 
 ERROR_MESSAGE = '\033[91m{msg}\033[0m'
 
+"""int: reserved exit code: puppet-merge did not preform a merge operation"""
+PUPPET_MERGE_NO_MERGE = 99
+
 
 def get_args():
     """parse arguments"""
@@ -64,12 +67,14 @@ def setuid(username):
 
 def git(args, repo_dir, stdout=PIPE):
     """perform a git command"""
-    command = ['git'].extend(shlex.split(args))
+    command = shlex.split("git {}".format(args))
     try:
         result = run(command, cwd=repo_dir, stdout=stdout, stderr=PIPE, check=True)
     except CalledProcessError as error:
         raise SystemExit('failed to run `{}`\n{}'.format(' '.join(command), error))
-    return result.stdout.decode()
+    if isinstance(result.stdout, bytes):
+        return result.stdout.decode()
+    return result.stdout
 
 
 def confirm_merge(commiters):
@@ -102,7 +107,7 @@ def main():
     changes = git('diff --color HEAD..{}'.format(target_sha1), config['repo'])
     if not changes:
         print('No changes to merge.')
-        return 0
+        return PUPPET_MERGE_NO_MERGE
     if not args.quiet:
         print(changes)
     if args.diffs:
@@ -112,9 +117,9 @@ def main():
         git('log HEAD..{} --format="%C(bold magenta)%cn%C(reset): %s (%h)"'.format(
             target_sha1),
             config['repo'], None)
-    if not args.force:
+    if not args.yes:
         commiters = git('log HEAD..{} --format=%ce'.format(target_sha1), config['repo'])
-        confirm_merge(commiters)
+        confirm_merge(commiters.split('\n'))
     head_sha1_old = git('rev-parse HEAD', config['repo'])
     print('HEAD is currently {}'.format(head_sha1_old))
     git('merge --ff-only {}'.format(target_sha1), config['repo'], None)

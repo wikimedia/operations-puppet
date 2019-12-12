@@ -1,7 +1,7 @@
 #!/bin/sh
 
 set -eu
-
+git_user=gitpuppet
 if [ "$(whoami)" = "gitpuppet" ]
 then
   printf "This script should only be run as a real users.  gitpuppet should use /usr/local/bin/puppet-merge.py"
@@ -85,6 +85,11 @@ fi
 
 lock $LABS_PRIVATE
 
+# From this point continue despite errors on remote masters. After a change
+# has been merged on the local master a remote merge failure should not
+# cause all remaining masters to be aborted and left out of sync.
+set +e
+
 if [ $LABS_PRIVATE -eq 1 ]; then
     # if --labsprivate is used just sync the labsprivate repo
     /usr/local/bin/puppet-merge.py  "$@"
@@ -94,10 +99,12 @@ else
     /usr/local/bin/puppet-merge.py "$@" --ops
 fi
 
-# From this point continue despite errors on remote masters. After a change
-# has been merged on the local master a remote merge failure should not
-# cause all remaining masters to be aborted and left out of sync.
-set +e
+# puppet-merge.py exits with 99 if no merge was performed
+if [ $? -eq 99 ]; then
+  exit 0
+elif [ $? -ne 0 ]; then
+  exit $?
+fi
 
 <%- if @servers.has_key?(@fqdn) -%>
 # Note: The "true" command is passed on purpose to show that the command passed
@@ -106,32 +113,34 @@ set +e
 # the $sha1 and possible --labsprivate switch) are used.
 
 if [ $LABS_PRIVATE -eq 1 ]; then
-    PRIVATE_ARG="--labsprivate"
+  PRIVATE_ARG="--labsprivate"
+  BASEDIR="/var/lib/git/labs/private"
 else
-    PRIVATE_ARG="--ops"
+  PRIVATE_ARG="--ops"
+  BASEDIR="/var/lib/git/operations/puppet"
 fi
 
-if [ $running_user != $git_user ]; then # only loop through other servers if we're the actual user command
-  <%- @servers.each do |frontend, workers| -%>
-    <%- workers.map{ |w| w['worker']}.select{|name| name != @fqdn}.each do |worker| -%>
-    if [ $running_user = $git_user ]; then
-        ssh -t -t <%= worker -%> true ${PRIVATE_ARG} ${fetch_head_sha1} 2>&1
-    else
-        su - $git_user -c "ssh -t -t <%= worker -%> true ${PRIVATE_ARG} ${fetch_head_sha1} 2>&1"
-    fi
-    if [ $? -eq 0 ]; then
-        echo "${GREEN}OK${RESET}: puppet-merge on <%= worker %> succeeded"
-    else
-        echo "${RED}ERROR${RESET}: puppet-merge on <%= worker %> failed"
-    fi
-    <%- end -%>
-  <%- end -%>
+if [ -z ${1:-} ]; then
+  fetch_head_sha1=$(git rev-parse FETCH_HEAD)
+else
+  fetch_head_sha1=${1}
+fi
 
-    # Only run this once, and only if we're merging the prod repo
-    if [ $LABS_PRIVATE -eq 0 ]; then
-        echo "Now running conftool-merge to sync any changes to conftool data"
-        /usr/local/bin/conftool-merge
-    fi
+<%- @servers.each do |frontend, workers| -%>
+  <%- workers.map{ |w| w['worker']}.select{|name| name != @fqdn}.each do |worker| -%>
+su - $git_user -c "ssh -t -t <%= worker -%> true ${PRIVATE_ARG} ${fetch_head_sha1} 2>&1"
+if [ $? -eq 0 ]; then
+  echo "${GREEN}OK${RESET}: puppet-merge on <%= worker %> succeeded"
+else
+  echo "${RED}ERROR${RESET}: puppet-merge on <%= worker %> failed"
+fi
+  <%- end -%>
+<%- end -%>
+
+# Only run this once, and only if we're merging the prod repo
+if [ $LABS_PRIVATE -eq 0 ]; then
+    echo "Now running conftool-merge to sync any changes to conftool data"
+    /usr/local/bin/conftool-merge
 fi
 <%- end -%>
 # vim: set syntax=sh:
