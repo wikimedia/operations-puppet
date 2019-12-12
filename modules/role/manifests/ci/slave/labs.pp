@@ -6,7 +6,6 @@ class role::ci::slave::labs {
         description => 'CI Jenkins slave on labs' }
 
     include ::profile::ci::worker_localhost
-    include ::profile::zuul::cloner
 
     include ::apt::unattendedupgrades
 
