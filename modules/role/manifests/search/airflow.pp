@@ -8,6 +8,7 @@ class role::search::airflow {
     include ::profile::standard
     include ::profile::base::firewall
 
+    include ::profile::analytics::cluster::users
     include ::profile::analytics::cluster::client
     include ::profile::analytics::search::airflow
 }
