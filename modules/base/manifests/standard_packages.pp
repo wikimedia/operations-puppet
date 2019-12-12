@@ -162,7 +162,7 @@ class base::standard_packages {
     if os_version('debian == buster') {
         package {['libbind9-140', 'libdns162', 'libevent-2.0-5', 'libisc160',
                   'libisccc140', 'libisccfg140', 'liblwres141', 'libonig4',
-                  'libperl5.24', 'ruby2.3', 'libruby2.3', 'libunbound2']:
+                  'libperl5.24', 'ruby2.3', 'libruby2.3', 'libunbound2', 'git-core']:
             ensure => absent,
         }
 
