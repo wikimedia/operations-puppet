@@ -98,12 +98,12 @@ else
     /usr/local/bin/puppet-merge.py  "$@" --labsprivate
     /usr/local/bin/puppet-merge.py "$@" --ops
 fi
-
+exit_code=$?
 # puppet-merge.py exits with 99 if no merge was performed
-if [ $? -eq 99 ]; then
+if [ ${exit_code} -eq 99 ]; then
   exit 0
-elif [ $? -ne 0 ]; then
-  exit $?
+elif [ ${exit_code} -ne 0 ]; then
+  exit ${exit_code}
 fi
 
 <%- if @servers.has_key?(@fqdn) -%>
