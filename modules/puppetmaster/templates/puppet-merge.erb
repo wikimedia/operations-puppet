@@ -35,7 +35,7 @@ lock() {
       else
         PSTREE="could not determine lock holder"
       fi
-      die "failed to lock, another puppet-merge running on this host?\n${PSTREE}"
+      printf "E: failed to lock, another puppet-merge running on this host?\n%s" "${PSTREE}" >&2
   fi
 }
 
