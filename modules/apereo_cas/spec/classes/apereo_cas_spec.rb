@@ -76,13 +76,8 @@ describe 'apereo_cas' do
             group: 'root',
             mode: '0400'
           )
-          is_expected.to contain_exec('build cas war').with(
-            command: '/srv/cas/overlay-template/build.sh package',
-            creates: '/srv/cas/overlay-template/build/libs/cas.war',
-            cwd: '/srv/cas/overlay-template'
-          )
           is_expected.to contain_exec('update cas war').with(
-            command: '/srv/cas/overlay-template/build.sh update',
+            command: '/srv/cas/overlay-template/gradlew build',
             cwd: '/srv/cas/overlay-template',
             refreshonly: true
           )

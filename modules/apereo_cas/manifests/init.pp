@@ -147,23 +147,17 @@ class apereo_cas (
         before  => Systemd::Service['cas'],
         notify  => Service['cas'],
     }
-    exec{'build cas war':
-        command => "${overlay_dir}/build.sh package",
-        creates => "${overlay_dir}/build/libs/cas.war",
-        cwd     => $overlay_dir,
-        require => Git::Clone[$overlay_repo]
-    }
     exec{'update cas war':
-        command     => "${overlay_dir}/build.sh update",
+        command     => "${overlay_dir}/gradlew build",
         cwd         => $overlay_dir,
-        require     => Exec['build cas war' ],
+        require     => Git::Clone[$overlay_repo],
         subscribe   => Git::Clone[$overlay_repo],
         notify      => Service['cas'],
         refreshonly => true,
     }
     systemd::service {'cas':
         content => template('apereo_cas/cas.service.erb'),
-        require => Exec['build cas war' ],
+        require => Git::Clone[$overlay_repo],
     }
     $services.each |String $service, Hash $config| {
         apereo_cas::service {$service:
