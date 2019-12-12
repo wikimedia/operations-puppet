@@ -68,6 +68,13 @@
             },
             "additionalProperties": false
         },
+        "externalLoads": {
+            "type": "object",
+            "patternProperties": {
+                "^es[123]|x1$": {"$ref": "#/definitions/sectionInstances"}
+            },
+            "additionalProperties": false
+        },
         "hostsByName": {
             "type": "object",
             "patternProperties": {
@@ -81,10 +88,11 @@
                 "groupLoadsBySection": { "$ref": "#/definitions/groupLoadsBySection" },
                 "hostsByName": { "$ref": "#/definitions/hostsByName" },
                 "readOnlyBySection":  { "$ref": "#/definitions/readOnlyBySection" },
-                "sectionLoads": { "$ref": "#/definitions/sectionLoads" }
+                "sectionLoads": { "$ref": "#/definitions/sectionLoads" },
+                "externalLoads": { "$ref": "#/definitions/externalLoads" }
             },
             "additionalProperties": false,
-            "required": ["groupLoadsBySection", "readOnlyBySection", "sectionLoads"]
+            "required": ["groupLoadsBySection", "readOnlyBySection", "sectionLoads", "externalLoads"]
         }
     },
     "type": "object",

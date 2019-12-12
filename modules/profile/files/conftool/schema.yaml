@@ -79,3 +79,5 @@ dbconfig-section:
       default: false
     ro_reason:
       default: "PLACEHOLDER"
+    flavor:
+      default: "regular"
