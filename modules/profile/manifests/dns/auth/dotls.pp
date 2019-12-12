@@ -39,6 +39,32 @@ class profile::dns::auth::dotls(
         require => Service['gdnsd'],
     }
 
+    # This is the systemd-level glue to ensure haproxy cannot be
+    # running unless gdnsd is already running
+
+    $sysd_dir = '/etc/systemd/system/haproxy.service.d'
+    $sysd_glue = "${sysd_dir}/dot-needs-auth.conf"
+    file { $sysd_dir:
+        ensure => directory,
+        mode   => '0555',
+        owner  => 'root',
+        group  => 'root',
+    }
+    file { $sysd_glue:
+        ensure => present,
+        mode   => '0444',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/profile/dns/auth/dot-needs-auth.conf',
+    }
+    exec { 'systemd reload for dot-needs-auth glue':
+        refreshonly => true,
+        command     => '/bin/systemctl daemon-reload',
+        subscribe   => File[$sysd_glue],
+        before      => Service['haproxy'],
+        require     => Service['gdnsd'],
+    }
+
     class { 'prometheus::haproxy_exporter':
         endpoint => 'http://127.0.0.1:8404/?stats;csv',
     }
