@@ -156,6 +156,28 @@ class profile::prometheus::alerts (
         dashboard_links    => ['https://grafana.wikimedia.org/d/ePFPOkqiz/eventgate?refresh=1m&orgId=1&var-dc=eqiad prometheus/k8s&var-service=eventgate-main&var-kafka_topic=All&var-kafka_broker=All&var-kafka_producer_type=All'],
     }
 
+    ['eqiad', 'codfw'].each |String $site| {
+        monitoring::check_prometheus { "eventgate_logging_external_latency_${site}":
+            description     => 'Elevated latency for eventgate-logging-external',
+            query           => 'service_method:service_runner_request_duration_seconds:90pct5m{service="eventgate-logging-external"}',
+            prometheus_url  => "http://prometheus.svc.${site}.wmnet/k8s",
+            warning         => 0.5,
+            critical        => 1,
+            method          => 'ge',
+            dashboard_links => ["https://grafana.wikimedia.org/d/ePFPOkqiz/eventgate?orgId=1&refresh=1m&var-dc=${site} prometheus/k8s&var-service=eventgate-logging-external"],
+        }
+
+        monitoring::check_prometheus { "eventgate_logging_external_errors_${site}":
+            description     => 'Elevated errors for eventgate-logging-external',
+            query           => 'service_status:service_runner_request_duration_seconds:50pct5m{service="eventgate-logging-external",status="5xx"}',
+            prometheus_url  => "http://prometheus.svc.${site}.wmnet/k8s",
+            warning         => 0.5,
+            critical        => 1,
+            method          => 'ge',
+            dashboard_links => ["https://grafana.wikimedia.org/d/ePFPOkqiz/eventgate?orgId=1&refresh=1m&var-dc=${site} prometheus/k8s&var-service=eventgate-logging-external"],
+        }
+    }
+
     monitoring::alerts::http_availability{'global_availability':}
 
     monitoring::alerts::traffic_drop{'traffic_drop_eqiad': site => 'eqiad'}
