@@ -5,27 +5,24 @@
 # === Parameters
 #
 # [*cluster_name*]
-#   name of the cluster. This parameter is needed.
+#   name of the cluster. Required
 #
 # [*cluster_bootstrap*]
-#   Boolean. set to true if we're just bootstrapping the cluster.
+#   Boolean. true if just bootstrapping the cluster. Defaults to false
 #
 # [*discovery*]
 #   Can be either 'dns:domain_name', which means that the cluster composition will be
 #   discovered with _etcd-server._tcp.$cluster_name, or a comma-separated list
-#   of peers in the form name=peer_url
+#   of peers in the form name=peer_url. Required
 #
 # [*use_client_certs*]
-#   Boolean. Wether to set up TLS client cert based auth
+#   Boolean. Whether to set up TLS client cert based auth. Required
 #
 # [*allow_from*]
-#   Networks authorized to connect to the server.
-#
-# [*do_backup*]
-#   Boolean. Whether to back up the data on etcd or not
+#   Networks authorized to connect to the server. Required
 #
 # [*max_latency*]
-#   Maximum RTT between current cluster nodes
+#   Maximum RTT between current cluster nodes. Required
 class profile::etcd::v3(
     # Configuration
     String $cluster_name = hiera('profile::etcd::v3::cluster_name'),
@@ -35,7 +32,6 @@ class profile::etcd::v3(
     String $allow_from = hiera('profile::etcd::v3::allow_from'),
     Integer $max_latency = hiera('profile::etcd::v3::max_latency'),
 ) {
-    $adv_client_port = 4001
     # Parameters mangling
     $cluster_state = $cluster_bootstrap ? {
         true    => 'new',
@@ -52,15 +48,7 @@ class profile::etcd::v3(
         $certname = $::fqdn
     }
 
-    # TLS certs *for etcd use* in peer-to-peer communications.
-    # Tlsproxy will use other certificates.
-
-    sslcert::certificate { $certname:
-        skip_private => false,
-        group        => 'etcd',
-        require      => Package['etcd-server'],
-        before       => Service['etcd'],
-    }
+    $adv_client_port = 4001
 
     # Service
     # Until we're able to move to v3, we're going to serve
@@ -100,4 +88,15 @@ class profile::etcd::v3(
         port   => 2380,
         srange => '$DOMAIN_NETWORKS',
     }
+
+    # TLS certs *for etcd use* in peer-to-peer communications.
+    # Tlsproxy will use other certificates.
+
+    sslcert::certificate { $certname:
+        skip_private => false,
+        group        => 'etcd',
+        require      => Package['etcd-server'],
+        before       => Service['etcd'],
+    }
+
 }

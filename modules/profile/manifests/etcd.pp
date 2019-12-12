@@ -5,28 +5,28 @@
 # === Parameters
 #
 # [*cluster_name*]
-#   name of the cluster. This parameter is needed.
+#   name of the cluster. Required
 #
 # [*cluster_bootstrap*]
-#   Boolean. set to true if we're just bootstrapping the cluster.
+#   Boolean. true if just bootstrapping the cluster. Defaults to false
 #
 # [*discovery*]
 #   Can be either 'dns:domain_name', which means that the cluster composition will be
 #   discovered with _etcd-server._tcp.$cluster_name, or a comma-separated list
-#   of peers in the form name=peer_url
+#   of peers in the form name=peer_url. Required
 #
 # [*use_client_certs*]
-#   Boolean. Wether to set up TLS client cert based auth
+#   Boolean. Whether to set up TLS client cert based auth. Required
 #
 # [*use_proxy*]
 #   Boolean. If true, we want clients to connect to etcd via a proxy.
-#   The proxy can be set up with profile::etcd::proxy
+#   The proxy can be set up with profile::etcd::proxy. Required
 #
 # [*allow_from*]
-#   Networks authorized to connect to the server.
+#   Networks authorized to connect to the server. Required
 #
 # [*do_backup*]
-#   Boolean. Whether to back up the data on etcd or not
+#   Boolean. Whether to back up the data on etcd or not. Required
 #
 # [*client_port*]
 #   Integer. The port clients will use. Defaults to 2379
@@ -56,38 +56,38 @@ class profile::etcd(
     if $discovery =~ /dns:(.*)/ {
         $peers_list = undef
         $srv_dns = $1
-    }
-    else {
+    } else {
         $peers_list = $discovery
         $srv_dns = undef
     }
 
+    $adv_client_port = $client_port
     if $use_proxy {
         $real_client_port = $client_port - 1
-        $adv_client_port = $client_port
     }
     else {
         $real_client_port = $client_port
-        $adv_client_port = $client_port
     }
 
-    # Service & firewalls
+    # Service
     class { '::etcd':
         host               => $::fqdn,
         cluster_name       => $cluster_name,
         cluster_state      => $cluster_state,
-        client_port        => $real_client_port,
-        adv_client_port    => $adv_client_port,
         srv_dns            => $srv_dns,
         peers_list         => $peers_list,
+        client_port        => $real_client_port,
+        adv_client_port    => $adv_client_port,
         use_ssl            => true,
         use_client_certs   => $use_client_certs,
         election_timeout   => $election_timeout,
         heartbeat_interval => $heartbeat_interval,
     }
 
+    # Monitoring
     class { '::etcd::monitoring': }
 
+    # Firewall
     ferm::service{'etcd_clients':
         proto  => 'tcp',
         port   => $adv_client_port,
