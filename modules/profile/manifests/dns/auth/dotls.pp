@@ -41,9 +41,32 @@ class profile::dns::auth::dotls(
         endpoint => 'http://127.0.0.1:8404/?stats;csv',
     }
 
-    # XXX needs ferm rules for port 853
-    # XXX needs monitoring, probably NRPE+kdig for now?
+    $service_listeners = $authdns_addrs.map |$aspec| { $aspec[1]['address'] }
+    ferm::service { 'tcp_dotls_auth':
+        proto   => 'tcp',
+        notrack => true,
+        prio    => '06',
+        port    => '853',
+        drange  => "(${service_listeners.join(' ')})",
+    }
+
+    # Provides "kdig" command used by check_dotls below
     package { 'knot-dnsutils':
         ensure => present,
+    }
+
+    file { '/usr/local/lib/nagios/plugins/check_dotls':
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/profile/dns/auth/check_dotls',
+    }
+
+    nrpe::monitor_service { 'check_dotls':
+        description  => 'AuthDNS-over-TLS Works',
+        nrpe_command => '/usr/local/lib/nagios/plugins/check_dotls',
+        require      => File['/usr/local/lib/nagios/plugins/check_dotls'],
+        notes_url    => 'https://wikitech.wikimedia.org/wiki/DNS',
     }
 }

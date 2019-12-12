@@ -1,0 +1,10 @@
+#!/bin/sh
+
+if   /usr/bin/kdig +short +tls-ca @ns0.wikimedia.org wikipedia.org A >dev/null \
+  && /usr/bin/kdig +short +tls-ca @ns1.wikimedia.org wikipedia.org A >dev/null \
+  && /usr/bin/kdig +short +tls-ca @ns2.wikimedia.org wikipedia.org A >dev/null ; then
+    echo "OK: ns[012] kdig DoTLS check success"
+    exit 0
+fi
+echo "CRITICAL: ns[012] kdig DoTLS check failure"
+exit 2
