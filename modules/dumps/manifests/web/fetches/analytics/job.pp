@@ -60,7 +60,7 @@ define dumps::web::fetches::analytics::job(
 
     kerberos::systemd_timer { "analytics-dumps-fetch-${title}":
         description  => "Copy ${title} files from Hadoop HDFS.",
-        command      => "bash -c '/usr/bin/rsync -rt ${delete_option}${exclude_option} --chmod=go-w ${source}/ ${destination}/'",
+        command      => "/bin/bash -c '/usr/bin/rsync -rt ${delete_option}${exclude_option} --chmod=go-w ${source}/ ${destination}/'",
         interval     => $interval,
         user         => $user,
         use_kerberos => $use_kerberos,
