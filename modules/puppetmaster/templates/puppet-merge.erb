@@ -4,7 +4,7 @@ set -eu
 git_user=gitpuppet
 if [ "$(whoami)" = "gitpuppet" ]
 then
-  printf "This script should only be run as a real users.  gitpuppet should use /usr/local/bin/puppet-merge.py"
+  printf "This script should only be run as a real users.  gitpuppet should use /usr/local/bin/puppet-merge.py\n"
   exit 1
 fi
 
@@ -35,7 +35,7 @@ lock() {
       else
         PSTREE="could not determine lock holder"
       fi
-      printf "E: failed to lock, another puppet-merge running on this host?\n%s" "${PSTREE}" >&2
+      printf "E: failed to lock, another puppet-merge running on this host?\n%s\n" "${PSTREE}" >&2
       exit 1
   fi
 }
