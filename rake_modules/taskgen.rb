@@ -351,7 +351,7 @@ class TaskGen < ::Rake::TaskLib
     schema_files = filter_files_by("modules/profile/files/conftool/json-schema/**/*.schema")
     return [] if schema_files.empty?
     desc 'Check json schema files for conftool'
-    failures = 0
+    failures = false
     task :conftool_schema do
       schema_files.each do |fn|
         begin
@@ -359,7 +359,7 @@ class TaskGen < ::Rake::TaskLib
         rescue JSON::ParserError => e
           puts "Error parsing #{fn}".red
           puts e.message
-          failures += 1
+          failures = true
         end
       end
       abort("JSON schema validation: FAILED".red) if failures
