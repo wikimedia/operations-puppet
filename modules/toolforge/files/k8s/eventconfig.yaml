@@ -1,0 +1,9 @@
+kind: Configuration
+apiVersion: eventratelimit.admission.k8s.io/v1alpha1
+limits:
+- type: Namespace
+  qps: 20
+  burst: 100
+- type: Server
+  qps: 500
+  burst: 5000

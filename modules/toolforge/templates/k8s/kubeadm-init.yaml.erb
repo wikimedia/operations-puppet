@@ -27,7 +27,22 @@ clusterName: "<%= @labsproject -%>"
 apiServer:
   extraArgs:
     runtime-config: "settings.k8s.io/v1alpha1=true"
-    enable-admission-plugins: PodSecurityPolicy,PodPreset
+    tls-cipher-suites: TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
+    profiling: "false"
+    enable-admission-plugins: PodSecurityPolicy,PodPreset,EventRateLimit,NodeRestriction
+  extraVolumes:
+    name: "/etc/kubernetes/admission"
+    hostPath: "/etc/kubernetes/admission"
+    mountPath: "/etc/kubernetes/admission"
+    readOnly: true
+    pathType: Directory
+controller-manager:
+  extraArgs:
+    profiling: "false"
+    terminated-pod-gc-threshold: 5000  # Default is 12500
+scheduler:
+  extraArgs:
+    profiling: "false"
 etcd:
   external:
     caFile: "<%= @k8s_etcd_cert_ca -%>"

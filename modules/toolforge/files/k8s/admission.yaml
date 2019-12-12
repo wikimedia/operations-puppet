@@ -1,0 +1,5 @@
+apiVersion: apiserver.k8s.io/v1alpha1 # use v1 when upgrading to 1.17
+kind: AdmissionConfiguration
+plugins:
+- name: EventRateLimit
+  path: /etc/kubernetes/admission/eventconfig.yaml
