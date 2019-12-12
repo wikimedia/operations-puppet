@@ -413,13 +413,17 @@ sub vcl_recv {
 	// using TLSv1.0 or TLSv1.1)
 	// This will remain in place until the
 	// future removal of protocol-level support.
-	if (req.http.X-Connection-Properties ~ "SSL=TLSv1(\.1)?;"
-		&& req.method == "GET"
-		&& req.http.host != "wikitech.wikimedia.org"
-		&& req.url != "/sec-warning" && req.url !~ "^/static/images/") {
-			set req.http.Location = "https://" + req.http.Host + "/sec-warning";
-			return (synth(302, "Browser Connection Security Redirect"));
+	if (req.http.X-Connection-Properties ~ "SSL=TLSv1(\.1)?;") {
+		if (req.method == "GET" || req.method == "HEAD") {
+			if (req.http.host != "wikitech.wikimedia.org" && req.url != "/sec-warning" && req.url !~ "^/static/images/") {
+				set req.http.Location = "https://" + req.http.Host + "/sec-warning";
+				return (synth(302, "Browser Connection Security Redirect"));
+			}
+		} else {
+			return (synth(400, "Browser Connection Security Warning"));
+		}
 	}
+
 	// Browser sec warning
 	if (req.url == "/sec-warning") {
 		return (synth(200, "Browser Connection Security Warning"));
