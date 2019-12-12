@@ -40,6 +40,15 @@ class acme_chief::server (
         require => Package['acme-chief']
     }
 
+    # Temporary Hack (really)! - T240614
+    # authdnsNNNN no longer listen on port 53, and acme_chief wants to validate
+    # all auth servers (ugh) and can't configure an alternate port.  It works
+    # for the 10/12 which are also recdns (dnsNNNN) because they have a recdns
+    # answering on 53 and the acme data being queried has a zero TTL anyways.
+    # Not sure of the right fix for this, but this will get us through the
+    # weekend.
+    $validation_hosts = filter($authdns_hosts) |$hname| { $hname =~ /^dns/ }
+
     $challenge_conf = has_key($challenges, 'dns-01')? {
         true    => {
             'dns-01' => {
@@ -47,7 +56,7 @@ class acme_chief::server (
                 issuing_ca               => $challenges['dns-01']['issuing_ca'],
                 ns_records               => $challenges['dns-01']['ns_records'],
                 sync_dns_servers         => $authdns_hosts,
-                validation_dns_servers   => $authdns_hosts,
+                validation_dns_servers   => $validation_hosts,
             }
         },
         default => {},
