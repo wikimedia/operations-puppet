@@ -2,6 +2,7 @@ class dumps::web::fetches::stats(
     $src = undef,
     $miscdatasetsdir = undef,
     $user = undef,
+    $use_kerberos = false,
 ) {
     # Each of these jobs have a readme.html file rendered by  dumps::web::html.
     # We need to make sure the rsync --delete does not delete these files
@@ -12,36 +13,72 @@ class dumps::web::fetches::stats(
 
     # Copies over the mediacounts files from an rsyncable location.
     dumps::web::fetches::job { 'mediacounts':
+        ensure      => absent,
         source      => "${src}/mediacounts",
         destination => "${miscdatasetsdir}/mediacounts",
         minute      => '41',
         user        => $user,
     }
 
+    dumps::web::fetches::analytics::job { 'mediacounts':
+        source       => "${src}/mediacounts",
+        destination  => "${miscdatasetsdir}/mediacounts",
+        interval     => '*-*-* *:41:00',
+        user         => $user,
+        use_kerberos => $use_kerberos,
+    }
+
     # Copies over files with pageview statistics per page and project,
     # using the current definition of pageviews, from an rsyncable location.
     dumps::web::fetches::job { 'pageview':
+        ensure      => absent,
         source      => "${src}/{pageview,projectview}/legacy/hourly",
         destination => "${miscdatasetsdir}/pageviews",
         minute      => '51',
         user        => $user,
     }
 
+    dumps::web::fetches::analytics::job { 'pageview':
+        source       => "${src}/{pageview,projectview}/legacy/hourly",
+        destination  => "${miscdatasetsdir}/pageviews",
+        interval     => '*-*-* *:51:00',
+        user         => $user,
+        use_kerberos => $use_kerberos,
+    }
+
     # Copies over files with unique devices statistics per project,
     # using the last access cookie method, from an rsyncable location.
     dumps::web::fetches::job { 'unique_devices':
+        ensure      => absent,
         source      => "${src}/unique_devices",
         destination => "${miscdatasetsdir}/unique_devices",
         minute      => '31',
         user        => $user,
     }
 
+    dumps::web::fetches::analytics::job { 'unique_devices':
+        source       => "${src}/unique_devices",
+        destination  => "${miscdatasetsdir}/unique_devices",
+        interval     => '*-*-* *:31:00',
+        user         => $user,
+        use_kerberos => $use_kerberos,
+    }
+
     # Copies over clickstream files from an rsyncable location.
     dumps::web::fetches::job { 'clickstream':
+        ensure      => absent,
         source      => "${src}/clickstream",
         destination => "${miscdatasetsdir}/clickstream",
         hour        => '4',
         user        => $user,
+    }
+
+    dumps::web::fetches::analytics::job { 'clickstream':
+        source       => "${src}/clickstream",
+        destination  => "${miscdatasetsdir}/clickstream",
+        interval     => '*-*-* *:04:00',
+        user         => $user,
+        use_kerberos => $use_kerberos,
     }
 
     # Copies over mediawiki history dumps from an rsyncable location.

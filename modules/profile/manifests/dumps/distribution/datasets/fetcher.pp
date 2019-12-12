@@ -2,6 +2,7 @@ class profile::dumps::distribution::datasets::fetcher(
     $xmldumpsdir = lookup('profile::dumps::distribution::xmldumpspublicdir'),
     $miscdatasetsdir = lookup('profile::dumps::distribution::miscdumpsdir'),
     $rsyncer_settings = lookup('profile::dumps::distribution::rsync_config'),
+    $use_kerberos = lookup('profile::dumps::distribution::datasets::fetcher', { 'default_value' => false }),
 ) {
 
     $user = $rsyncer_settings['dumps_user']
@@ -18,6 +19,7 @@ class profile::dumps::distribution::datasets::fetcher(
         src             => 'stat1007.eqiad.wmnet::hdfs-archive',
         miscdatasetsdir => $miscdatasetsdir,
         user            => $user,
+        use_kerberos    => $use_kerberos,
     }
 
     class {'dumps::web::fetches::stat_dumps':
