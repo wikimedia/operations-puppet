@@ -1,0 +1,37 @@
+global
+    log /dev/log        local0
+    log /dev/log        local1 notice
+    chroot /var/lib/haproxy
+    stats socket /run/haproxy/admin.sock mode 660 level admin expose-fd listeners
+    stats timeout 30s
+    user haproxy
+    group haproxy
+    daemon
+    maxconn 16384
+    ca-base /etc/ssl/certs
+    crt-base /etc/ssl/private
+    tune.ssl.default-dh-param 2048
+    ssl-default-bind-options force-tlsv13
+    ssl-default-bind-ciphersuites TLS_CHACHA20_POLY1305_SHA256:TLS_AES_256_GCM_SHA384:TLS_AES_128_GCM_SHA256
+
+defaults
+    log global
+    mode tcp
+    option tcplog
+    option dontlognull
+    timeout queue 15s
+    timeout connect 10s
+    timeout client 15m
+    timeout server 15m
+
+listen stats
+    bind 127.0.0.1:8404
+    mode http
+    stats enable
+    stats uri /
+
+<% @listen_addrs.each do |listen_addr| -%>
+listen dns
+    bind <%= @listen_addr %>:853 ssl tfo allow-0rtt curves X25519:X448:P-256 crt <%= @kchained_path %>
+    server gdnsd 127.0.0.1:535 send-proxy-v2
+<% end -%>
