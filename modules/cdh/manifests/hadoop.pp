@@ -471,6 +471,7 @@ class cdh::hadoop(
     # for a small change like this one.
     augeas { 'allow-ipv6-hadoop':
         incl    => '/usr/lib/hadoop/libexec/hadoop-config.sh',
+        lens    => 'Shellvars_list.lns',
         changes => [
             'rm # Disable ipv6 as it can cause issues',
             'rm HADOOP_OPTS="$HADOOP_OPTS -Djava.net.preferIPv4Stack=true'
