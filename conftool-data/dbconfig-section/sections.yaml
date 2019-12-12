@@ -9,6 +9,10 @@ eqiad:
   - s8
   - s10  # Replaces wikitech; used for production wikitech
   - s11  # Replaces wikitech; used for labstestwikitech
+  - es1
+  - es2
+  - es3
+  - x1
 codfw:
   - s1
   - s2
@@ -20,3 +24,7 @@ codfw:
   - s8
   - s10  # Replaces wikitech; used for production wikitech
   - s11  # Replaces wikitech; used for labstestwikitech
+  - es1
+  - es2
+  - es3
+  - x1
