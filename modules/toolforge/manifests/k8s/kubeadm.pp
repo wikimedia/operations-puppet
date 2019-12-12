@@ -28,7 +28,7 @@ class toolforge::k8s::kubeadm(
         mode    => '0444',
         content => @(ARGS/L),
         KUBELET_EXTRA_ARGS="--read-only-port=0 --protect-kernel-defaults=true\
-        --tls-cipher-suites=TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE\
+         --tls-cipher-suites=TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE\
         _RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,\
         TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,\
         TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,\
