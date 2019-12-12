@@ -114,21 +114,13 @@ fi
 
 if [ $LABS_PRIVATE -eq 1 ]; then
   PRIVATE_ARG="--labsprivate"
-  BASEDIR="/var/lib/git/labs/private"
 else
   PRIVATE_ARG="--ops"
-  BASEDIR="/var/lib/git/operations/puppet"
-fi
-
-if [ -z ${1:-} ]; then
-  fetch_head_sha1=$(git rev-parse FETCH_HEAD)
-else
-  fetch_head_sha1=${1}
 fi
 
 <%- @servers.each do |frontend, workers| -%>
   <%- workers.map{ |w| w['worker']}.select{|name| name != @fqdn}.each do |worker| -%>
-su - $git_user -c "ssh -t -t <%= worker -%> true ${PRIVATE_ARG} ${fetch_head_sha1} 2>&1"
+su - $git_user -c "ssh -t -t <%= worker -%> true ${PRIVATE_ARG} ${1:-} 2>&1"
 if [ $? -eq 0 ]; then
   echo "${GREEN}OK${RESET}: puppet-merge on <%= worker %> succeeded"
 else
