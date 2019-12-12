@@ -18,6 +18,7 @@ keytab_specs = {
     'mapred': ('mapred', 'mapred', 'mapred', 'hadoop', 'hadoop'),
     'yarn': ('yarn', 'yarn', 'yarn', 'hadoop', 'hadoop'),
     'HTTP-oozie': ('HTTP', 'HTTP-oozie', 'oozie', 'oozie', 'oozie'),
+    'airflow-search': ('analytics-search', 'airflow', 'airflow', 'airflow', 'airflow'),
 }
 
 actions = ['create_princ', 'create_keytab', 'merge_keytab', 'delete_keytab']

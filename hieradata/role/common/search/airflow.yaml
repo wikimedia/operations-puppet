@@ -27,3 +27,13 @@ profile::analytics::search::airflow::pid_dir: '/var/run/airflow'
 profile::analytics::search::airflow::conf_dir: '/etc/airflow'
 profile::analytics::search::airflow::conf_file: 'airflow.cfg'
 
+# The airflow keytab contains, for the moment, credentials
+# for the analytics-search principal. Airflow is not going to
+# impersonate users, so this is the best and easiest
+# strategy for the moment.
+profile::kerberos::keytabs::keytabs_metadata:
+  - role: 'airflow'
+    owner: 'airflow'
+    group: 'airflow'
+    filename: 'airflow.keytab'
+    parent_dir_grp: 'airflow'
