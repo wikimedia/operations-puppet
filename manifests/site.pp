@@ -635,10 +635,6 @@ node /^db2(135)\.codfw\.wmnet/ {
     }
 }
 
-node 'db2070.codfw.wmnet' {
-    role(spare::system)
-}
-
 # misc multiinstance
 node 'db1117.eqiad.wmnet' {
     role(mariadb::misc::multiinstance)
