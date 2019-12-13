@@ -74,7 +74,8 @@ def send_email(email_address, principal, password, realm):
         Hi!
 
         If you are receiving this message it means that you requested
-        a Kerberos account to use the Analytics Hadoop Test cluster.
+        a Kerberos account within the Wikimedia Foundation production
+        servers.
 
         Your kerberos username is {}, that should be the same as the one
         that you use on Analytics Hadoop clients (like stat1007, etc..).
