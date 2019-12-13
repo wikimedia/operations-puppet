@@ -121,6 +121,7 @@ class profile::analytics::refinery::job::refine(
         'gwtoolsetUploadMediafileJob',
         'gwtoolsetUploadMetadataJob',
         'MessageGroupStatsRebuildJob',
+        'fetchGoogleCloudVisionAnnotations',
     ]
     $job_table_blacklist = sprintf('.*(%s)$', join($problematic_jobs, '|'))
 
