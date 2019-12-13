@@ -105,4 +105,8 @@ class releases (
     package { 'php-curl':
         ensure => present,
     }
+
+    package { 'python3-pygerrit2':
+        ensure => present,
+    }
 }
