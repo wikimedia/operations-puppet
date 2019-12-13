@@ -9,7 +9,6 @@ class role::analytics_cluster::hadoop::client {
     include ::profile::standard
     include ::profile::base::firewall
     require ::profile::hadoop::common
-    include ::profile::analytics::hdfs_tools
 
     include ::profile::kerberos::client
     include ::profile::kerberos::keytabs
