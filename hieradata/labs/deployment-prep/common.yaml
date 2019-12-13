@@ -484,6 +484,12 @@ profile::mediawiki::webserver::has_tls: false
 profile::mediawiki::php::php_version: "7.2"
 profile::mediawiki::vhost_feature_flags: {}
 
+# Beta Cluster has no mwdebug servers or X-Wikimedia-Debug routing,
+# so make sure tideways is installed on its main app server for now,
+# so that XWD works as expected (e.g. to record profiles to XHGui).
+# - T180761.
+profile::mediawiki::php::enable_request_profiling: true
+
 wikimail_smarthost:
 - 'deployment-mx02.deployment-prep.eqiad.wmflabs'
 
