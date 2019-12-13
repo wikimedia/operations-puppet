@@ -36,6 +36,7 @@ class toolforge::k8s::kubeadm(
     file { '/etc/default/kubelet':
         ensure  => 'present',
         mode    => '0444',
+        notify  => Service['kubelet'],
         content => @(ARGS/L),
         KUBELET_EXTRA_ARGS="--read-only-port=0 --protect-kernel-defaults=true\
          --tls-cipher-suites=TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE\
@@ -47,5 +48,11 @@ class toolforge::k8s::kubeadm(
         --pod-infra-container-image=docker-registry.tools.wmflabs.org/pause:3.1\
         "
         |-ARGS
+    }
+
+    # If kubelet is failing, there's no notice offered by kubernetes directly
+    # the node can still show "ready" in some situations (?!?).
+    service { 'kubelet':
+        ensure => 'running'
     }
 }
