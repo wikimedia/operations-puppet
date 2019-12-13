@@ -1,0 +1,22 @@
+#!/usr/bin/env stap
+#
+# session_close.stp - trace origin server connection teardown
+#
+# Print a message every time a origin server connection is closed.
+#
+# Sample output:
+# Closing connection after 6 transactions VC_EVENT_EOS
+# Closing connection after 1 transactions VC_EVENT_EOS
+# Closing connection after 3 transactions VC_EVENT_INACTIVITY_TIMEOUT
+#
+probe process("/usr/bin/traffic_server").statement("eventHandler@./proxy/http/HttpSessionManager.cc:225") {
+    printf("Closing connection after %d transactions", $s->transact_count)
+
+    if ($event == 104) {
+        println(" VC_EVENT_EOS")
+    } else if ($event == 105) {
+        println(" VC_EVENT_INACTIVITY_TIMEOUT")
+    } else {
+        println(" unknown event ", $event)
+    }
+}
