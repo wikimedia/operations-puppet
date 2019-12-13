@@ -1,5 +1,6 @@
 # Based on apache-fast-test's baseurls file. (Set of various urls we want to
 # check on a new host when reimaged.)
+# TODO: Split this file out into distinct logical sets of tests.
 
 # main
 https://en.wikipedia.org:
@@ -98,3 +99,10 @@ https://meta.wikimedia.org:
 - path: /wiki/List_of_Wikipedias
   assert_status: 200
   assert_body_contains: List of Wikipedias
+
+# Assert the query string is kept in an HTTP->HTTPS redirect.
+http://donate.wikimedia.org:
+- path: /?foo
+  assert_status: 301
+  assert_headers:
+      Location: https://donate.wikimedia.org/?foo
