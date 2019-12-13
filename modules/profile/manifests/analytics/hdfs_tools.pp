@@ -20,4 +20,10 @@ class profile::analytics::hdfs_tools {
     # analytics/hdfs-tools/deploy repository is deployed via scap at this path.
     # You must deploy this yourself; puppet will not do it for you.
     $path = '/srv/deployment/analytics/hdfs-tools/deploy'
+
+    # Create a symlink in /usr/local/bin to hdfs-rsync for easy access!
+    file { '/usr/local/bin/hdfs-rsync':
+        target  => "${path}/bin/hdfs-rsync",
+        require => Scap::Target['analytics/hdfs-tools/deploy'],
+    }
 }
