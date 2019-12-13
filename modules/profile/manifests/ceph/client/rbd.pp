@@ -27,21 +27,23 @@ class profile::ceph::client::rbd(
     # The keydata used in this step is pre-created on one of the ceph mon hosts
     # typically with the 'ceph auth get-or-create' command
     file { "/etc/ceph/ceph.client.${client_name}.keyring":
-        ensure  => present,
-        mode    => '0440',
-        owner   => $keyfile_owner,
-        group   => $keyfile_group,
-        content => "[client.${client_name}]\n        key = ${keydata}\n",
-        require => Package['ceph-common'],
+        ensure    => present,
+        mode      => '0440',
+        owner     => $keyfile_owner,
+        group     => $keyfile_group,
+        content   => "[client.${client_name}]\n        key = ${keydata}\n",
+        show_diff => false,
+        require   => Package['ceph-common'],
     }
     #TODO libvirt dependency
     file { '/etc/ceph/libvirt-secret.xml':
-        ensure  => present,
-        mode    => '0400',
-        owner   => 'root',
-        group   => 'root',
-        content => template('profile/ceph/libvirt-secret.xml.erb'),
-        require => Package['ceph-common'],
+        ensure    => present,
+        mode      => '0400',
+        owner     => 'root',
+        group     => 'root',
+        content   => template('profile/ceph/libvirt-secret.xml.erb'),
+        show_diff => false,
+        require   => Package['ceph-common'],
     }
 
     # Add the keydata to libvirt, which is referenced by nova-compute in nova.conf
