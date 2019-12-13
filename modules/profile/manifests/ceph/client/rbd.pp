@@ -31,7 +31,7 @@ class profile::ceph::client::rbd(
         mode    => '0440',
         owner   => $keyfile_owner,
         group   => $keyfile_group,
-        content => "[client.${client_name}]\n        key = ${keydata}",
+        content => "[client.${client_name}]\n        key = ${keydata}\n",
         require => Package['ceph-common'],
     }
 }
