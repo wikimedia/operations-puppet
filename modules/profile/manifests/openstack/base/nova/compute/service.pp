@@ -5,7 +5,10 @@ class profile::openstack::base::nova::compute::service(
     $network_flat_tagged_base_interface = hiera('profile::openstack::base::nova::network_flat_tagged_base_interface'),
     $network_flat_interface_vlan = hiera('profile::openstack::base::nova::network_flat_interface_vlan'),
     Boolean $legacy_vlan_naming = lookup('legacy_vlan_naming', {default_value => true}),
-    Array[Stdlib::Fqdn] $all_cloudvirts = lookup('profile::openstack::base::nova::all_cloudvirts')
+    Array[Stdlib::Fqdn] $all_cloudvirts = lookup('profile::openstack::base::nova::all_cloudvirts'),
+    Optional[String] $ceph_rbd_pool = lookup('profile::ceph::client::rbd::pool', {'default_value' => undef}),
+    Optional[String] $ceph_rbd_client_name = lookup('profile::ceph::client::rbd::client_name', {'default_value' => undef}),
+    Optional[String] $libvirt_rbd_uuid = lookup('profile::ceph::client::rbd::libvirt_rbd_uuid', {'default_value' => undef}),
     ) {
 
     require_package('conntrack')
@@ -108,10 +111,13 @@ class profile::openstack::base::nova::compute::service(
     }
 
     class {'::openstack::nova::compute::service':
-        version        => $version,
-        certpath       => $certpath,
-        all_cloudvirts => $all_cloudvirts,
-        require        => Mount['/var/lib/nova/instances'],
+        version              => $version,
+        certpath             => $certpath,
+        all_cloudvirts       => $all_cloudvirts,
+        ceph_rbd_pool        => $ceph_rbd_pool,
+        ceph_rbd_client_name => $ceph_rbd_client_name,
+        libvirt_rbd_uuid     => $libvirt_rbd_uuid,
+        require              => Mount['/var/lib/nova/instances'],
     }
     contain '::openstack::nova::compute::service'
 }
