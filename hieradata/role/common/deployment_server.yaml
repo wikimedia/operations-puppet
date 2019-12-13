@@ -103,6 +103,8 @@ scap::sources:
   analytics/refinery:
     repository: analytics/refinery
     scap_repository: analytics/refinery/scap
+  analytics/hdfs-tools/deploy:
+    repository: analytics/hdfs-tools/deploy
   changeprop/deploy:
     repository: mediawiki/services/change-propagation/deploy
 #    lvs_service: changeprop

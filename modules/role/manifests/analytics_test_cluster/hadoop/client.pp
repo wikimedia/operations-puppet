@@ -8,4 +8,5 @@ class role::analytics_test_cluster::hadoop::client {
 
     include ::profile::base::firewall
     require ::profile::hadoop::common
+    include ::profile::analytics::hdfs_tools
 }
