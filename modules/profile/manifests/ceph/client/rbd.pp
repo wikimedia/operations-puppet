@@ -48,8 +48,9 @@ class profile::ceph::client::rbd(
 
     # Add the keydata to libvirt, which is referenced by nova-compute in nova.conf
     exec { 'check-virsh-secret':
-        command => '/usr/bin/virsh secret-define --file /etc/ceph/libvirt-secret.xml',
-        unless  => "/usr/bin/virsh secret-list | grep -Eq \"^ ${libvirt_rbd_uuid}\"",
-        require => File['/etc/ceph/libvirt-secret.xml'],
+        command   => '/usr/bin/virsh secret-define --file /etc/ceph/libvirt-secret.xml',
+        logoutput => false,
+        unless    => "/usr/bin/virsh secret-list | grep -q ${libvirt_rbd_uuid}",
+        require   => File['/etc/ceph/libvirt-secret.xml'],
     }
 }
