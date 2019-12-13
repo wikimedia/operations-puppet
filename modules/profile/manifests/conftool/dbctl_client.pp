@@ -22,6 +22,7 @@ class profile::conftool::dbctl_client() {
         check_interval => 5,
         retry_interval => 5,
         retries        => 3,
-        notes_url      => 'https://wikitech.wikimedia.org/wiki/Dbctl#Uncommitted_dbctl_diffs'
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/Dbctl#Uncommitted_dbctl_diffs',
+        timeout        => 20,
     }
 }
