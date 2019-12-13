@@ -1,1 +1,2 @@
 profile::cache::varnish::backend::storage_parts: [ 'nvme0n1p1', 'nvme0n1p1' ]
+profile::trafficserver::backend::enable_xdebug: true
