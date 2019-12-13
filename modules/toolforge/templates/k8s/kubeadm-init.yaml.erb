@@ -30,6 +30,7 @@ apiServer:
     tls-cipher-suites: TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
     profiling: "false"
     enable-admission-plugins: PodSecurityPolicy,PodPreset,EventRateLimit,NodeRestriction
+    admission-control-config-file: /etc/kubernetes/admission/admission.yaml
   extraVolumes:
     name: "/etc/kubernetes/admission"
     hostPath: "/etc/kubernetes/admission"
