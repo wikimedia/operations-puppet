@@ -122,6 +122,7 @@ Architectures: source amd64 i386
 Components: main
 # sorted list, leading whitespace matters!
  component/cergen
+ component/ci
  component/jdk8
  thirdparty/amd-rocm25
  thirdparty/amd-rocm26
