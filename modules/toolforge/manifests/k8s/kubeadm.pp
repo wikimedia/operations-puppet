@@ -23,6 +23,16 @@ class toolforge::k8s::kubeadm(
 
     include ::toolforge::k8s::kubeadm_docker_service
 
+    sysctl::parameters { 'kubelet':
+        values   => {
+            # Required by the protect-kernel-defaults option
+            'vm.overcommit_memory' => 1,
+            'kernel.panic'         => 10,
+            'kernel.panic_on_oops' => 1,
+        },
+        priority => 90,
+    }
+
     file { '/etc/default/kubelet':
         ensure  => 'present',
         mode    => '0444',
