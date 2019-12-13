@@ -31,6 +31,9 @@ apiServer:
     profiling: "false"
     enable-admission-plugins: PodSecurityPolicy,PodPreset,EventRateLimit,NodeRestriction
     admission-control-config-file: /etc/kubernetes/admission/admission.yaml
+    <% if @encryption_key -%>
+    encryption-provider-config: /etc/kubernetes/admission/encryption-conf.yaml
+    <% end -%>
   extraVolumes:
     name: "/etc/kubernetes/admission"
     hostPath: "/etc/kubernetes/admission"

@@ -3,6 +3,7 @@ class profile::toolforge::k8s::control(
     Stdlib::Fqdn        $apiserver  = lookup('profile::toolforge::k8s::apiserver_fqdn', {default_value => 'k8s.example.com'}),
     String              $node_token = lookup('profile::toolforge::k8s::node_token',     {default_value => 'example.token'}),
     String              $calico_version = lookup('profile::toolforge::k8s::calico_version', {default_value => 'v3.8.0'}),
+    Optional[String]    $encryption_key = lookup('profile::toolforge::k8s::encryption_key', {default_value => undef}),
 ) {
     require profile::toolforge::k8s::preflight_checks
 
@@ -52,6 +53,7 @@ class profile::toolforge::k8s::control(
         k8s_etcd_cert_pub  => $k8s_etcd_cert_pub,
         k8s_etcd_cert_priv => $k8s_etcd_cert_priv,
         k8s_etcd_cert_ca   => $k8s_etcd_cert_ca,
+        encryption_key     => $encryption_key,
     }
 
     class { 'toolforge::k8s::calico_yaml':

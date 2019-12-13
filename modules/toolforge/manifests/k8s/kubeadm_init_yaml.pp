@@ -7,6 +7,7 @@ class toolforge::k8s::kubeadm_init_yaml(
     Array[Stdlib::Fqdn] $etcd_hosts,
     String              $kubernetes_version = '1.15.5',
     String              $node_token = undef,
+    Optional[String]    $encryption_key = undef,
 ) {
     require ::toolforge::k8s::kubeadm
 
@@ -67,5 +68,19 @@ class toolforge::k8s::kubeadm_init_yaml(
         group   => 'root',
         mode    => '0444',
         require => File['/etc/kubernetes/admission'],
+    }
+
+    # This should never be set in the public repo for hiera. Keep it in a
+    # private repo on a standalone puppetmaster since it is a simple shared key.
+    if $encryption_key {
+        file { '/etc/kubernetes/admission/encryption-conf.yaml':
+            ensure    => present,
+            content   => template('toolforge/k8s/kubeadm-init.yaml.erb'),
+            owner     => 'root',
+            group     => 'root',
+            mode      => '0400',
+            require   => File['/etc/kubernetes/admission'],
+            show_diff => false,
+        }
     }
 }
