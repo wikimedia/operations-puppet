@@ -25,8 +25,6 @@ network::aggregate_networks:
   - 2620:0:860:124::/64 # labs-support1-d-codfw. Not on proper boundray aggregation wise
   - 2620:0:861:117::/64 # labs-support1-a-eqiad. Not on proper boundary aggregation wise
   - 2620:0:860:118::/63 # labs-hosts and support
-  - 10.68.0.0/16 # NOTE The 10.0.0.0/8 allocations are deprecated
-  - 10.196.0.0/16 # NOTE The 10.0.0.0/8 allocations are deprecated
   - 127.0.0.0/8 # localhost is always implicitly trusted
   - '::1/128'
 
@@ -261,33 +259,9 @@ network::subnets:
   labs:
     eqiad:
       private:
-        labs-instances1-a-eqiad:
-          ipv4: 10.68.0.0/24
-          ipv6: 2620:0:861:201::/64
-        labs-instances1-b-eqiad:
-          ipv4: 10.68.16.0/21
-          ipv6: 2620:0:861:202::/64
         cloud-instances2-b-eqiad:
           ipv4: 172.16.0.0/21
-        labs-instances1-c-eqiad:
-          ipv4: 10.68.32.0/24
-          ipv6: 2620:0:861:203::/64
-        labs-instances1-d-eqiad:
-          ipv4: 10.68.48.0/24
-          ipv6: 2620:0:861:204::/64
     codfw:
       private:
-        labs-instances1-a-codfw:
-          ipv4: 10.196.0.0/24
-          ipv6: 2620:0:860:201::/64
-        labs-instances1-b-codfw:
-          ipv4: 10.196.16.0/21
-          ipv6: 2620:0:860:202::/64
         cloud-instances2-b-codfw:
           ipv4: 172.16.128.0/21
-        labs-instances1-c-codfw:
-          ipv4: 10.196.32.0/24
-          ipv6: 2620:0:860:203::/64
-        labs-instances1-d-codfw:
-          ipv4: 10.196.48.0/24
-          ipv6: 2620:0:860:204::/64
