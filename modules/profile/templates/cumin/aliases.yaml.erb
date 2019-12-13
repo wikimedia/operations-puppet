@@ -14,7 +14,7 @@ acmechief: P{O:acme_chief}
 all-mw-codfw: (A:mw-api or A:mw or A:mw-jobrunner) and A:codfw
 all-mw-eqiad: (A:mw-api or A:mw or A:mw-jobrunner) and A:eqiad
 an-conf: P{O:analytics_cluster::zookeeper}
-analytics-all-eqiad: A:hadoop or A:aqs or A:druid or A:notebook or A:kafka-jumbo or A:misc-analytics or A:analytics-airflow or A:analytics-tools or A:analytics-web
+analytics-all-eqiad: A:hadoop or A:aqs or A:druid or A:notebook or A:kafka-jumbo or A:misc-analytics or A:analytics-airflow or A:analytics-tools or A:analytics-web or A:presto
 analytics-airflow: P{O:search::airflow}
 analytics-tools: P{O:analytics_cluster::hadoop::ui or O:analytics_cluster::turnilo or O:analytics_cluster::superset or O:analytics_cluster::superset::staging}
 analytics-web: P{O:analytics_cluster::webserver}
