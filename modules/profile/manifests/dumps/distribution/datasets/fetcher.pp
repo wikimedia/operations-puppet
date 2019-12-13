@@ -2,7 +2,7 @@ class profile::dumps::distribution::datasets::fetcher(
     $xmldumpsdir = lookup('profile::dumps::distribution::xmldumpspublicdir'),
     $miscdatasetsdir = lookup('profile::dumps::distribution::miscdumpsdir'),
     $rsyncer_settings = lookup('profile::dumps::distribution::rsync_config'),
-    $use_kerberos = lookup('profile::dumps::distribution::datasets::fetcher', { 'default_value' => false }),
+    $use_kerberos = lookup('profile::dumps::distribution::datasets::fetcher::use_kerberos', { 'default_value' => false }),
 ) {
 
     $user = $rsyncer_settings['dumps_user']

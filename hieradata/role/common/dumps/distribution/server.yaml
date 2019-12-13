@@ -12,6 +12,8 @@ admin::groups:
 # to the analytics-hadoop cluster.
 profile::hadoop::common::hadoop_cluster_name: 'analytics-hadoop'
 
+profile::dumps::distribution::datasets::fetcher::use_kerberos: true
+
 # In order to fetch data from the Analytics Hadoop Cluster,
 # a Kerberos keytab is needed to allow automated jobs to
 # authenticate.
