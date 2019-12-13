@@ -42,21 +42,9 @@ class profile::wmcs::monitoring (
             srange => "(@resolve(${monitoring_standby}) @resolve(${monitoring_standby}, AAAA))",
         }
 
-        package { 'rssh':
-            ensure => present,
-        }
-
-        file { '/etc/rssh.conf':
-            ensure  => present,
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0444',
-            content => "allowrsync\nuser=_graphite:011:100000:\n",
-        }
-
         user { '_graphite':
             ensure => present,
-            shell  => '/usr/bin/rssh',
+            shell  => '/bin/rbash',
         }
     } else {
         $cron_ensure = 'present'
