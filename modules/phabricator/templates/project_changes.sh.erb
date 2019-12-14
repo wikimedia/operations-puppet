@@ -141,17 +141,25 @@ END
 
 # echo "result_new_user_assignees"
 # see https://phabricator.wikimedia.org/T195780
+# and https://phabricator.wikimedia.org/T227388
 result_new_user_assignees=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -P $sql_port -u$sql_user $sql_name << END
 SELECT DISTINCT CONCAT("https://phabricator.wikimedia.org/p/", u.userName) AS userName,
     CONCAT("https://phabricator.wikimedia.org/T", t.id) AS id,
-    from_unixtime(t.dateModified) AS claimed
+    from_unixtime(t.dateModified) AS claimedOn
     FROM phabricator_maniphest.maniphest_task t
     JOIN phabricator_user.user u ON u.userName = t.ownerOrdering
     WHERE t.dateModified > UNIX_TIMESTAMP(DATE_SUB(NOW(), INTERVAL 6 WEEK))
-    AND u.dateCreated > UNIX_TIMESTAMP(DATE_SUB(NOW(), INTERVAL 6 WEEK))
+    AND u.dateCreated > UNIX_TIMESTAMP(DATE_SUB(NOW(), INTERVAL 8 WEEK))
     AND u.isDisabled = 0
     AND t.ownerOrdering IS NOT NULL
-    ORDER BY userName, claimed;
+    AND t.closerPHID IS NULL
+    AND t.ownerOrdering IN
+        (SELECT t.ownerOrdering FROM phabricator_maniphest.maniphest_task t
+        JOIN phabricator_user.user u
+        WHERE u.userName = t.ownerOrdering
+        AND u.dateCreated > UNIX_TIMESTAMP(DATE_SUB(NOW(), INTERVAL 8 WEEK))
+        GROUP BY t.ownerOrdering HAVING COUNT(t.ownerOrdering) < 4)
+    ORDER BY userName, claimedOn;
 
 END
 )
