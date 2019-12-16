@@ -1773,7 +1773,7 @@ lvs::configuration::lvs_services:
     - eqiad
     - codfw
     ip: *ip_block059
-    port: 43192 # This is the TLS port, regular HTTP is on 33192
+    port: 4392 # This is the TLS port, regular HTTP is on 33192
     depool-threshold: '.5'
     monitors:
       ProxyFetch:
@@ -1786,7 +1786,7 @@ lvs::configuration::lvs_services:
       cluster: kubernetes
       service: eventgate-logging-external
     icinga:
-      check_command: "check_https_lvs_on_port!eventgate-logging-external.svc.%{::site}.wmnet!43192!/_info"
+      check_command: "check_https_lvs_on_port!eventgate-logging-external.svc.%{::site}.wmnet!4392!/_info"
       critical: false
       sites:
         eqiad:

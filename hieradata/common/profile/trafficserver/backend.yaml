@@ -190,7 +190,7 @@ profile::trafficserver::backend::mapping_rules:
       replacement: http://eventstreams.discovery.wmnet:8092
     - type: map
       target: http://intake-logging.wikimedia.org
-      replacement: https://eventgate-logging-external.discovery.wmnet:43192 # TLS port
+      replacement: https://eventgate-logging-external.discovery.wmnet:4392 # TLS port
     - type: map
       target: http://superset.wikimedia.org
       replacement: https://analytics-tool1004.eqiad.wmnet

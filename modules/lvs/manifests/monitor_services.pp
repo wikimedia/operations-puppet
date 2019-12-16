@@ -81,7 +81,7 @@ class lvs::monitor_services(
             "check_eventgate_logging_external_cluster_${dc}":
                 host          => "eventgate-logging-external.svc.${dc}.wmnet",
                 description   => "eventgate-logging-external LVS ${dc}",
-                check_command => "check_wmf_service!https://eventgate-logging-external.svc.${dc}.wmnet:43192!15",
+                check_command => "check_wmf_service!https://eventgate-logging-external.svc.${dc}.wmnet:4392!15",
                 notes_url     => 'https://wikitech.wikimedia.org/wiki/Event_Platform/EventGate',
                 ;
             "check_docker_registry_cluster_${dc}":
