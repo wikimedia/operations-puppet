@@ -19,7 +19,7 @@ class ganeti(
 
     package { [
             'ganeti',
-            'drbd8-utils',
+            'drbd-utils',
             'ovmf',
             ] :
         ensure => installed,
@@ -35,7 +35,7 @@ class ganeti(
             ensure => 'present',
         }
 
-        # Disable the systemd service shipped with drbd8-utils. Ganeti handles
+        # Disable the systemd service shipped with the drbd package. Ganeti handles
         # DRBD on its own
         service { 'drbd':
             ensure => 'stopped',
