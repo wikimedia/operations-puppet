@@ -132,7 +132,6 @@ aft_article_revision_feedback_select_rollup,arfsr_count,K
 archive,ar_id,K
 archive,ar_namespace,K
 archive,ar_title,K
-archive,ar_comment,F
 archive,ar_comment_id,F
 archive,ar_user,K
 archive,ar_user_text,K
