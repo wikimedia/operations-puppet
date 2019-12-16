@@ -111,7 +111,7 @@ groups:
   releasers-mediawiki:
     gid: 711
     description: people who upload mediawiki releases
-    members: [catrope, demon, hashar, legoktm, reedy, thcipriani, twentyafterfour]
+    members: [catrope, demon, hashar, legoktm, reedy, thcipriani, twentyafterfour, brennen]
     privileges: ['ALL = (jenkins) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /usr/sbin/service jenkins *']
   releasers-mobile:
@@ -206,7 +206,7 @@ groups:
   contint-roots:
     gid: 720
     description: users who have full root on jenkins servers
-    members: [hashar, thcipriani]
+    members: [hashar, thcipriani, brennen]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   logstash-roots:
     gid: 722
