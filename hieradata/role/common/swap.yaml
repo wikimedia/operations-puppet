@@ -31,3 +31,9 @@ profile::analytics::cluster::client::kerberos_enabled: true
 
 profile::base::debdeploy::exclude_mounts:
   - /mnt/hdfs
+
+profile::kerberos::keytabs::keytabs_metadata:
+  - role: 'analytics-privatedata'
+    owner: 'analytics-privatedata'
+    group: 'analytics-privatedata'
+    filename: 'analytics-privatedata.keytab'
