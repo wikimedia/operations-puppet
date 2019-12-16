@@ -3451,6 +3451,10 @@ ldap_only_users:
     ensure: present
     realname: A Shahrestani
     email: ashahrestani@wikimedia.org
+  asikingarmager:
+    ensure: present
+    realname: Eli Asikin-Garmager
+    email: easikingarmager@wikimedia.org
   audiohazel:
     ensure: absent
     realname: Victoria Coleman
