@@ -75,7 +75,7 @@ class toolforge::k8s::kubeadm_init_yaml(
     if $encryption_key {
         file { '/etc/kubernetes/admission/encryption-conf.yaml':
             ensure    => present,
-            content   => template('toolforge/k8s/kubeadm-init.yaml.erb'),
+            content   => template('toolforge/k8s/encryption-conf.yaml.erb'),
             owner     => 'root',
             group     => 'root',
             mode      => '0400',
