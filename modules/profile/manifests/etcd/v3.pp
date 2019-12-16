@@ -54,8 +54,6 @@ class profile::etcd::v3(
         $certname = $::fqdn
     }
 
-    $adv_client_port = 4001
-
     # Service
     class { '::etcd::v3':
         cluster_name     => $cluster_name,
