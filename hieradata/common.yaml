@@ -909,6 +909,8 @@ hadoop_clusters:
     mapred_site_extra_properties:
       mapreduce.ssl.enabled: true
       mapreduce.shuffle.ssl.enabled: true
+      mapreduce.jobhistory.principal: 'mapred/_HOST@WIKIMEDIA'
+      mapreduce.jobhistory.keytab: '/etc/security/keytabs/hadoop/mapred.keytab'
 
     yarn_site_extra_properties:
       yarn.resourcemanager.principal: 'yarn/_HOST@WIKIMEDIA'
