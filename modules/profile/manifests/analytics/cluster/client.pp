@@ -6,6 +6,7 @@
 class profile::analytics::cluster::client(
     $monitoring_enabled = lookup('profile::analytics::cluster::client::monitoring_enabled', { 'default_value' => true }),
     $kerberos_enabled = lookup('profile::analytics::cluster::client::kerberos_enabled', { 'default_value' => false }),
+    $include_spark = lookup('profile::analytics::cluster::client::include_spark', { 'default_value' => true }),
 ) {
     require ::profile::analytics::cluster::packages::hadoop
 
@@ -14,8 +15,10 @@ class profile::analytics::cluster::client(
     require ::profile::hive::client
     require ::profile::oozie::client
 
-    # Spark 2 is manually packaged by us, it is not part of CDH.
-    require ::profile::hadoop::spark2
+    if $include_spark {
+        # Spark 2 is manually packaged by us, it is not part of CDH.
+        require ::profile::hadoop::spark2
+    }
 
     # These don't require any extra configuration,
     # so no role class is needed.
