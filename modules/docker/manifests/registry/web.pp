@@ -8,6 +8,7 @@ class docker::registry::web(
     $ssl_certificate_name=undef,
     $http_endpoint=false,
     $http_allowed_hosts=[],
+    $cors=false,
 ) {
     if (!$use_puppet_certs and ($ssl_certificate_name == undef)) {
         fail('Either puppet certs should be used, or an ssl cert name should be provided')

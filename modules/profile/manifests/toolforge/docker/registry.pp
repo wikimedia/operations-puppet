@@ -25,6 +25,7 @@ class profile::toolforge::docker::registry(
         use_acme_chief_certs => true,
         ssl_certificate_name => $ssl_certificate_name,
         ssl_settings         => ssl_ciphersuite('nginx', 'compat'),
+        cors                 => true,
     }
 
     # This may deliberately be un-set for some cases, like toolsbeta

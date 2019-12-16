@@ -95,6 +95,9 @@ server {
       }
 
       add_header 'Docker-Distribution-Api-Version' 'registry/2.0' always;
+      <%- if @cors -%>
+      add_header Access-Control-Allow-Origin '*';
+      <%- end -%>
 
       proxy_pass http://registry;
       proxy_redirect off;
