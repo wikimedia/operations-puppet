@@ -40,6 +40,13 @@
 #     host
 #   More details can be found in https://docs.trafficserver.apache.org/en/8.0.x/admin-guide/files/records.config.en.html#proxy-config-http-server-session-sharing-match
 #
+# [*server_session_pool*]
+#   Re-use origin server connections from a global or per-thread pool of all
+#   server sessions. (default: thread)
+#   Valid values:
+#     thread
+#     global
+#
 # [*disable_dns_resolution*]
 #   Disables (1) or enables (0) DNS resolution of hosts defined on remapping rules (default: 0)
 #
@@ -206,6 +213,7 @@ define trafficserver::instance(
     Integer[0, 1] $keep_alive_origin_servers = 1,
     Integer[0, 1] $disable_dns_resolution = 0,
     Enum['none', 'both', 'ip', 'host'] $server_session_sharing = 'both',
+    Enum['thread', 'global'] $server_session_pool = 'thread',
     Optional[Trafficserver::Network_settings] $network_settings = undef,
     Optional[Trafficserver::HTTP_settings] $http_settings = undef,
     Optional[Trafficserver::H2_settings] $h2_settings = undef,

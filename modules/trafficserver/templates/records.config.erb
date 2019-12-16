@@ -10,8 +10,6 @@ CONFIG proxy.config.http.server_ports STRING <%= @port %> <%= @port %>:ipv6
 
 CONFIG proxy.config.admin.user_id STRING <%= @user %>
 
-# Allow origin server connection reuse for requests with Authorization
-CONFIG proxy.config.http.auth_server_session_private INT 0
 CONFIG proxy.config.http.insert_request_via_str INT 0
 CONFIG proxy.config.http.insert_client_ip INT 0
 CONFIG proxy.config.http.insert_squid_x_forwarded_for INT <%= @x_forwarded_for %>
@@ -57,7 +55,11 @@ CONFIG proxy.config.http.max_post_size INT <%= @http_settings['max_post_size'] %
 CONFIG proxy.config.http.keep_alive_enabled_out INT <%= @keep_alive_origin_servers %>
 CONFIG proxy.config.http.keep_alive_post_out INT <%= @keep_alive_origin_servers %>
 
+# Origin server connection reuse
 CONFIG proxy.config.http.server_session_sharing.match STRING <%= @server_session_sharing %>
+CONFIG proxy.config.http.server_session_sharing.pool STRING <%= @server_session_pool %>
+# Allow origin server connection reuse for requests with Authorization
+CONFIG proxy.config.http.auth_server_session_private INT 0
 
 <% if @enable_caching -%>
 <% if @required_headers -%>
