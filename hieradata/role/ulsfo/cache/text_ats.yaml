@@ -1,0 +1,1 @@
+profile::trafficserver::backend::enable_compress: false
