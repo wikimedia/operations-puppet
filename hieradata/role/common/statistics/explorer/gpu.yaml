@@ -26,6 +26,8 @@ profile::hive::client::hive_metastore_kerberos_principal: 'hive/_HOST@WIKIMEDIA'
 profile::hive::client::hive_server2_authentication: 'KERBEROS'
 profile::hive::client::hive_server2_authentication_kerberos_principal: 'hive/_HOST@WIKIMEDIA'
 
+profile::analytics::cluster::client::kerberos_enabled: true
+
 profile::base::debdeploy::exclude_mounts:
   - /mnt/hdfs
 
