@@ -11,6 +11,8 @@ global
     ca-base /etc/ssl/certs
     crt-base /etc/ssl/private
     tune.ssl.default-dh-param 2048
+    tune.ssl.lifetime 43200
+    tune.ssl.maxrecord 1400
     ssl-default-bind-options force-tlsv13
     ssl-default-bind-ciphersuites TLS_CHACHA20_POLY1305_SHA256:TLS_AES_256_GCM_SHA384:TLS_AES_128_GCM_SHA256
 
