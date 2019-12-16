@@ -8,10 +8,16 @@
 # who submitted it, but this means creating log dirs etc.. not
 # anymore as 'yarn'.
 #
+# User cache dirs must be readable by the yarn user for use by
+# MapReduce and Spark shuffler processes.  They will have
+# their group setuid bit enabled to make sure that all subdirectories
+# that are created are group owned by yarn.
+#
 # The script can run in two modes:
 # - 'user': it sets ownership of Yarn user dirs as the user who
 #           created them. For example:
-#           chown -R elukey /var/lib/hadoop/data/b/yarn/local/usercache/elukey
+#           chown -R elukey:yarn /var/lib/hadoop/data/b/yarn/local/usercache/elukey
+#           chmod -R g+s /var/lib/hadoop/data/b/yarn/local/usercache/elukey
 #
 # - 'yarn': it sets ownership of Yarn user dirs as 'yarn'. This is
 #           what normally happens when Kerberos and Linux containers
@@ -35,8 +41,10 @@ then
             then
                 echo -e "\nSkipping user ${USER}, no user found in the OS..."
             else
-                echo -e "\nExecuting: chown -R ${USER} ${HADOOP_DATA_DIR}/${DATADIR}/${YARN_USERCACHE_SUBDIR}/${USER}"
-                chown -R $USER $HADOOP_DATA_DIR/$DATADIR/$YARN_USERCACHE_SUBDIR/$USER
+                echo -e "\nExecuting: chown -R ${USER}:yarn ${HADOOP_DATA_DIR}/${DATADIR}/${YARN_USERCACHE_SUBDIR}/${USER}"
+                chown -R ${USER}:yarn $HADOOP_DATA_DIR/$DATADIR/$YARN_USERCACHE_SUBDIR/$USER
+                echo -e "\nExecuting: chmod -R g+s ${HADOOP_DATA_DIR}/${DATADIR}/${YARN_USERCACHE_SUBDIR}/${USER}"
+                chmod -R g+s $HADOOP_DATA_DIR/$DATADIR/$YARN_USERCACHE_SUBDIR/$USER
             fi
         done
     done
