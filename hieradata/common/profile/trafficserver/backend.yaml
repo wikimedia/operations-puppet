@@ -250,6 +250,27 @@ profile::trafficserver::backend::mapping_rules:
           # Re-use origin server connections if origin IP and port match
           - '@plugin=/usr/lib/trafficserver/modules/conf_remap.so'
           - '@pparam=proxy.config.http.server_session_sharing.match=2'
+    # The following seems redundant, given that the next and final catchall
+    # remap does pretty much the same. However, here we do not specify
+    # server_session_sharing.match=2 to ensure requests for wikidata are mapped
+    # to different connections than the rest. The reason is that wikidata
+    # requests result in very frequent errors at the TLS termination layer,
+    # 97.8% of all errors right now on mw1266, each of which causes the
+    # ats-be<->nginx connection to be closed.
+    - type: map
+      target: http://www.wikidata.org
+      replacement: https://appservers-rw.discovery.wmnet
+      params:
+          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
+          - '@pparam=/etc/trafficserver/lua/normalize-path.lua'
+          # decode    :  /  @  !  $  (  )  *  ,  ;
+          - '@pparam="3A 2F 40 21 24 28 29 2A 2C 3B"'
+          # encode    [  ]  &  '  +  =
+          - '@pparam="5B 5D 26 27 2B 3D"'
+          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
+          - '@pparam=/etc/trafficserver/lua/rb-mw-mangling.lua'
+          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
+          - '@pparam=/etc/trafficserver/lua/x-wikimedia-debug-routing.lua'
     - type: map
       target: /
       replacement: https://appservers-rw.discovery.wmnet
