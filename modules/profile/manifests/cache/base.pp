@@ -109,7 +109,7 @@ class profile::cache::base(
     class { 'varnish::htcppurger':
         host_regex => $purge_host_regex,
         mc_addrs   => $purge_multicasts,
-        varnishes  => $purge_varnishes,
+        caches     => $purge_varnishes,
     }
     Class[varnish::packages] -> Class[varnish::htcppurger]
 

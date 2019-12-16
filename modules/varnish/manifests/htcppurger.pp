@@ -7,8 +7,8 @@
 # [*mc_addrs*]
 #   Required - Array of multicast addresses to subscribe.
 #
-# [*varnishes*]
-#   Required - Array of 'IP:Port[,delay]' for local varnish instances to forward to.
+# [*caches*]
+#   Required - Array of 'IP:Port[,delay]' for local cache instances to forward to.
 #
 # [*host_regex*]
 #   Required - Regex filter for hosts to PURGE, empty string '' for no filtering
@@ -33,7 +33,7 @@
 class varnish::htcppurger(
     $mc_addrs,
     $host_regex,
-    $varnishes,
+    $caches,
 ) {
     package { 'vhtcpd':
         ensure => present,
@@ -46,20 +46,11 @@ class varnish::htcppurger(
         $regex_arg = ''
     }
 
-    file { '/etc/default/vhtcpd':
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
+    systemd::service { 'vhtcpd':
+        ensure  => present,
         require => Package['vhtcpd'],
-        content => template('varnish/vhtcpd-default.erb'),
-    }
-
-    service { 'vhtcpd':
-        ensure     => running,
-        require    => Package['vhtcpd'],
-        subscribe  => File['/etc/default/vhtcpd'],
-        hasstatus  => true,
-        hasrestart => true,
+        restart => true,
+        content => systemd_template('vhtcpd'),
     }
 
     nrpe::monitor_service { 'vhtcpd':
