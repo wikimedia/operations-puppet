@@ -1,29 +1,13 @@
-# == Class profile::analytic::cluster::client
+# == Class profile::analytic::cluster::hdfs_mount
 #
-# Includes common client classes for working
-# with hadoop and other Analytics Cluster services.
+# Include a FUSE mountpoint under /mnt/hdfs to access HDFS.
 #
-class profile::analytics::cluster::client(
-    $monitoring_enabled = lookup('profile::analytics::cluster::client::monitoring_enabled', { 'default_value' => true }),
-    $kerberos_enabled = lookup('profile::analytics::cluster::client::kerberos_enabled', { 'default_value' => false }),
+class profile::analytics::cluster::hdfs_mount(
+    $monitoring_enabled = lookup('profile::analytics::cluster::hdfs_mount::monitoring_enabled', { 'default_value' => true }),
+    $kerberos_enabled = lookup('profile::analytics::cluster::hdfs_mount::kerberos_enabled', { 'default_value' => false }),
 ) {
-    require ::profile::analytics::cluster::packages::hadoop
-
     # Include Hadoop ecosystem client classes.
     require ::profile::hadoop::common
-    require ::profile::hive::client
-    require ::profile::oozie::client
-
-    # Spark 2 is manually packaged by us, it is not part of CDH.
-    require ::profile::hadoop::spark2
-
-    # These don't require any extra configuration,
-    # so no role class is needed.
-    class { '::cdh::pig': }
-    class { '::cdh::sqoop': }
-    class { '::cdh::mahout': }
-
-    include ::profile::analytics::hdfs_tools
 
     # Mount HDFS via Fuse on Analytics client nodes.
     # This will mount HDFS at /mnt/hdfs read only.
@@ -60,13 +44,4 @@ class profile::analytics::cluster::client(
             notes_url      => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hadoop/Administration#Fixing_HDFS_mount_at_/mnt/hdfs',
         }
     }
-
-    # Install other useful packages for client nodes.
-    # Packages that should exist on both clients and workers
-    # belong in the profile::analytics::cluster::packages::hadoop class.
-    require_package(
-        'kafkacat',
-        'jupyter-notebook',
-        's-nail',
-    )
 }
