@@ -209,13 +209,13 @@ class profile::prometheus::alerts (
         notes_link      => 'https://phabricator.wikimedia.org/T202307',
     }
 
-    # Logstash Elasticsearch indexing failures - T236343
+    # Logstash Elasticsearch indexing failures - T236343 T240667
     monitoring::check_prometheus { 'logstash_ingestion_errors':
         description     => 'Logstash Elasticsearch indexing errors',
         dashboard_links => ['https://logstash.wikimedia.org/goto/1cee1f1b5d4e6c5e06edb3353a2a4b83', 'https://grafana.wikimedia.org/dashboard/db/logstash'],
         query           => 'sum(rate(logstash_elasticsearch_index_failure_total[5m]))',
-        warning         => 0.1,
-        critical        => 0.5,
+        warning         => 1,
+        critical        => 8,
         method          => 'ge',
         retries         => 2,
         prometheus_url  => "http://prometheus.svc.${::site}.wmnet/ops",
