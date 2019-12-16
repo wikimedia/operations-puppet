@@ -4,6 +4,8 @@ define('MW_PATH', '/srv/mediawiki');
 // Only consider blocks <5M for the fragmentation
 define('BLOCK_SIZE', 5*1024*1024);
 
+$sma_info = null;
+
 function opcache_stats(bool $full = false): array {
 	// first of all, check if opcache is enabled
 	$stats = opcache_get_status($full);
@@ -13,8 +15,7 @@ function opcache_stats(bool $full = false): array {
 	return $stats;
 }
 
-
-function apcu_stats(bool $limited = true, bool $sma_limited = false): array {
+function apcu_stats(bool $limited = true ): array {
 	if (!function_exists('apcu_cache_info')) {
 		return [];
 	}
@@ -22,7 +23,9 @@ function apcu_stats(bool $limited = true, bool $sma_limited = false): array {
 	if ($cache_info === false) {
 		$cache_info = [];
 	}
-	$sma_info = apcu_sma_info($sma_limited);
+	if ($sma_info === null) {
+		$sma_info = apcu_sma_info();
+	}
 	if ($sma_info === false) {
 		$sma_info = [];
 	}
@@ -32,11 +35,16 @@ function apcu_stats(bool $limited = true, bool $sma_limited = false): array {
 // Returns  % of APCu fragmentation
 // This code is part of https://github.com/krakjoe/apcu/blob/master/apc.php
 function apcu_frag() {
-	$mem=apcu_sma_info();
+	if ($sma_info === null) {
+		$sma_info = apcu_sma_info();
+	}
+	if ($sma_info === false) {
+		$sma_info = [];
+	}
 	$nseg = $freeseg = $fragsize = $freetotal = 0;
-	for($i=0; $i<$mem['num_seg']; $i++) {
+	for($i=0; $i<$sma_info['num_seg']; $i++) {
 		$ptr = 0;
-		foreach($mem['block_lists'][$i] as $block) {
+		foreach($sma_info['block_lists'][$i] as $block) {
 			if ($block['offset'] != $ptr) {
 				++$nseg;
 			}
@@ -44,7 +52,7 @@ function apcu_frag() {
 			if($block['size']<BLOCK_SIZE) $fragsize+=$block['size'];
 				$freetotal+=$block['size'];
 		}
-		$freeseg += count($mem['block_lists'][$i]);
+		$freeseg += count($sma_info['block_lists'][$i]);
 	}
 	if ($freeseg > 1) {
 		$frag = $fragsize/$freetotal*100;
