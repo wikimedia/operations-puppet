@@ -50,7 +50,7 @@ hostlist wikimedia_nets = <; <%= scope.lookupvar('network::constants::aggregate_
 hostlist relay_from_hosts = <; @[] ; 127.0.0.1 ; ::1 ; <%= scope.lookupvar('network::constants::aggregate_networks').join(" ; ") %>
 
 # Administration
-log_selector = +address_rewrite +all_parents +delivery_size +deliver_time +incoming_interface +incoming_port +smtp_confirmation +smtp_protocol_error +smtp_syntax_error +tls_cipher +tls_peerdn
+log_selector = +address_rewrite +all_parents +delivery_size +deliver_time +incoming_interface +incoming_port +smtp_connection +smtp_confirmation +smtp_protocol_error +smtp_syntax_error +tls_cipher +tls_peerdn
 message_logs = false
 
 # Policy control
