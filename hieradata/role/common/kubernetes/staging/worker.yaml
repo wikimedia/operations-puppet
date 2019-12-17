@@ -1,11 +1,14 @@
 profile::calico::kubernetes::etcd_endpoints:
-- https://kubestagetcd1001.eqiad.wmnet:2379
-- https://kubestagetcd1001.eqiad.wmnet:2379
+- https://kubestagetcd1004.eqiad.wmnet:2379
+- https://kubestagetcd1005.eqiad.wmnet:2379
+- https://kubestagetcd1006.eqiad.wmnet:2379
 profile::calico::kubernetes::bgp_peers:
 - kubestage1001.eqiad.wmnet
 - kubestage1002.eqiad.wmnet
 - cr1-eqiad.wikimedia.org
 - cr2-eqiad.wikimedia.org
+# TODO: Migrate to k8s API, calico v2.2 doesn't support anything than etcdv2
+profile::calico::kubernetes::calico_datastore_type: etcdv2
 cluster: kubernetes
 profile::docker::storage::physical_volumes: "/dev/md1"
 profile::docker::storage::vg_to_remove: 'todelete'

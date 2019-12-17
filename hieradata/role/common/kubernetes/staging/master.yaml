@@ -17,7 +17,8 @@ profile::kubernetes::master::service_account_private_key_file: "/etc/kubernetes/
 profile::kubernetes::master::service_cluster_ip_range: 10.64.76.0/24
 profile::kubernetes::master::service_node_port_range: '1-65535'
 profile::kubernetes::master::etcd_urls:
- - https://kubestagetcd1001.eqiad.wmnet:2379
- - https://kubestagetcd1002.eqiad.wmnet:2379
- - https://kubestagetcd1003.eqiad.wmnet:2379
+ - https://kubestagetcd1004.eqiad.wmnet:2379
+ - https://kubestagetcd1005.eqiad.wmnet:2379
+ - https://kubestagetcd1006.eqiad.wmnet:2379
 profile::kubernetes::master::prometheus_url: http://prometheus.svc.eqiad.wmnet/k8s-staging
+profile::kubernetes::master::storage_backend: etcd3
