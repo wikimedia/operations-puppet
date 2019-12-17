@@ -28,7 +28,8 @@ profile::analytics::search::airflow::conf_dir: '/etc/airflow'
 profile::analytics::search::airflow::conf_file: 'airflow.cfg'
 
 
-profile::analytics::cluster::client::kerberos_enabled: true
+profile::analytics::cluster::hdfs_mount::kerberos_enabled: true
+profile::analytics::cluster::hdfs_mount::monitoring_user: 'airflow'
 
 # The airflow keytab contains, for the moment, credentials
 # for the analytics-search principal. Airflow is not going to

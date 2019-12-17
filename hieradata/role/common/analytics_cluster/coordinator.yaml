@@ -103,7 +103,7 @@ profile::base::debdeploy::exclude_mounts:
   - /mnt/hdfs
 
 
-profile::analytics::cluster::client::kerberos_enabled: true
+profile::analytics::cluster::hdfs_mount::kerberos_enabled: true
 profile::hadoop::balancer::use_kerberos: true
 profile::oozie::server::use_kerberos: true
 profile::hive::server::use_kerberos: true

@@ -5,6 +5,7 @@
 class profile::analytics::cluster::hdfs_mount(
     $monitoring_enabled = lookup('profile::analytics::cluster::hdfs_mount::monitoring_enabled', { 'default_value' => true }),
     $kerberos_enabled = lookup('profile::analytics::cluster::hdfs_mount::kerberos_enabled', { 'default_value' => false }),
+    $monitoring_user = lookup('profile::analytics::cluster::hdfs_mount::monitoring_user', { 'default_value' => 'analytics' }),
 ) {
     # Include Hadoop ecosystem client classes.
     require ::profile::hadoop::common
@@ -18,10 +19,10 @@ class profile::analytics::cluster::hdfs_mount(
             require ::profile::kerberos::client
 
             # The following requires a keytab for the analytics user deployed on the host.
-            $kerberos_prefix = "/usr/bin/sudo -u analytics ${::profile::kerberos::client::run_command_script} analytics "
+            $kerberos_prefix = "/usr/bin/sudo -u ${monitoring_user} ${::profile::kerberos::client::run_command_script} ${monitoring_user} "
             sudo::user { 'nagios-check_hadoop_mount_readability':
                 user       => 'nagios',
-                privileges => ["ALL = (analytics) NOPASSWD: ${::profile::kerberos::client::run_command_script} analytics /usr/local/lib/nagios/plugins/check_mountpoint_readability ${cdh::hadoop::mount::mount_point}"],
+                privileges => ["ALL = (${monitoring_user}) NOPASSWD: ${::profile::kerberos::client::run_command_script} ${monitoring_user} /usr/local/lib/nagios/plugins/check_mountpoint_readability ${cdh::hadoop::mount::mount_point}"],
             }
         } else {
             $kerberos_prefix = ''

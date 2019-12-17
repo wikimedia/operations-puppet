@@ -16,6 +16,7 @@ profile::dumps::distribution::datasets::fetcher::use_kerberos: true
 
 profile::analytics::cluster::hdfs_mount::monitorning_enabled: true
 profile::analytics::cluster::hdfs_mount::kerberos_enabled: true
+profile::analytics::cluster::hdfs_mount::monitoring_user: 'dumpsgen'
 
 # In order to fetch data from the Analytics Hadoop Cluster,
 # a Kerberos keytab is needed to allow automated jobs to
