@@ -9,12 +9,14 @@ class profile::calico::kubernetes(
     $calico_version = hiera('profile::calico::kubernetes::calico_version'),
     $registry = hiera('profile::calico::kubernetes::docker::registry'),
     $kubeconfig = hiera('profile::kubernetes::node::kubelet_config'),
+    $datastore_type = hiera('profile::calico::kubernetes::calico_datastore_type', 'etcdv2'),
     $prometheus_nodes = hiera('prometheus_nodes', []),
 ) {
 
     class { '::calico':
         etcd_endpoints => $etcd_endpoints,
         calico_version => $calico_version,
+        datastore_type => $datastore_type,
         registry       => $registry,
     }
 

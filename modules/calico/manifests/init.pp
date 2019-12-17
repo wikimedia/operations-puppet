@@ -5,6 +5,7 @@ class calico(
     $etcd_endpoints,
     $registry,
     $calico_version='2.0',
+    $datastore_type='etcdv2',
 ) {
     file { '/etc/calico':
         ensure => directory,
