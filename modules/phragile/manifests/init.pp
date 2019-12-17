@@ -35,6 +35,10 @@ class phragile(
         "${php_module}-curl",
         "${php_module}-mysql",
         "${php_module}-mcrypt",
+        "${php_module}-mbstring",
+        "${php_module}-dom",
+        "${php_module}-xmlwriter",
+        "${php_module}-zip",
     )
 
     group { 'phragile':
