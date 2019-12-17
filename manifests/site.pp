@@ -820,18 +820,6 @@ node /^dumpsdata1003\.eqiad\.wmnet$/ {
     role(dumps::generation::server::xmlfallback)
 }
 
-node /^elastic101[8-9]\.eqiad\.wmnet/ {
-    role(spare::system)
-}
-
-node /^elastic102[023456789]\.eqiad\.wmnet/ {
-    role(spare::system)
-}
-
-node /^elastic103[01]\.eqiad\.wmnet/ {
-    role(spare::system)
-}
-
 node /^elastic103[2-9]\.eqiad\.wmnet/ {
     role(elasticsearch::cirrus)
 }
