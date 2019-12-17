@@ -91,4 +91,9 @@ class icinga::monitor::performance {
         notes_url     => 'https://phabricator.wikimedia.org/T203485',
     }
 
+    monitoring::grafana_alert { 'webpagereplay-ru-wikipedia-org-alerts':
+        dashboard_uid => '2kP3FjAZP',
+        contact_group => 'team-performance',
+        notes_url     => 'https://phabricator.wikimedia.org/T203485',
+    }
 }
