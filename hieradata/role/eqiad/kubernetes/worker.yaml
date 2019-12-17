@@ -1,7 +1,7 @@
 profile::calico::kubernetes::etcd_endpoints:
-- https://etcd1001.eqiad.wmnet:2379
-- https://etcd1002.eqiad.wmnet:2379
-- https://etcd1003.eqiad.wmnet:2379
+- https://kubetcd1004.eqiad.wmnet:2379
+- https://kubetcd1005.eqiad.wmnet:2379
+- https://kubetcd1006.eqiad.wmnet:2379
 profile::calico::kubernetes::bgp_peers:
 - kubernetes1001.eqiad.wmnet
 - kubernetes1002.eqiad.wmnet
@@ -21,7 +21,8 @@ profile::calico::kubernetes::bgp_peers:
 - kubernetes1016.eqiad.wmnet
 - cr1-eqiad.wikimedia.org
 - cr2-eqiad.wikimedia.org
-# enable this when coredns is deployed not before
+# TODO: Migrate to k8s API, calico v2.2 doesn't support anything than etcdv2
+profile::calico::kubernetes::calico_datastore_type: etcdv2
 profile::kubernetes::node::kubelet_cluster_dns: "10.64.72.3"
 profile::kubernetes::node::kubelet_cluster_domain: 'cluster.local'
 profile::rsyslog::kubernetes::kubernetes_url: https://kubemaster.svc.eqiad.wmnet:6443
