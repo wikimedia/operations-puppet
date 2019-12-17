@@ -1,50 +1,60 @@
-lvs::configuration::lvs_service_ips:
-  apaches: &ip_block001
-    eqiad: 1.2.3.4
-  api: &ip_block002
-    eqiad: 1.2.3.5
-
-lvs::configuration::lvs_services:
+service::catalog:
   apaches:
-    description: "Main"
-    class: high-traffic1
-    sites:
-      - eqiad
-    ip: *ip_block001
-    scheduler: sh
-    depool-threshold: '.5'
-    conftool:
-      cluster: appserver
-      service: apache2
-    monitors:
-      IdleConnection:
-        timeout-clean-reconnect: 3
-        max-delay: 300
-    icinga:
-      uri: en.wikipedia.org!/wiki/Special:BlankPage
+    description: Main
+    encryption: false
+    ip:
+      eqiad:
+        default: 1.2.3.4
+    lvs:
+      class: high-traffic1
+      conftool:
+        cluster: appserver
+        service: apache2
+      depool_threshold: '.5'
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+      scheduler: sh
+    monitoring:
+      critical: true
+      check_command: check_http_lvs!en.wikipedia.org!/wiki/Special:BlankPage
       sites:
         eqiad:
           hostname: appservers.svc.eqiad.wmnet
-  api:
-    description: "Api"
-    class: high-traffic1
+    port: 80
     sites:
-      - eqiad
-    ip: *ip_block002
-    scheduler: sh
-    depool-threshold: '.5'
-    conftool:
-      cluster: appserver
-      service: apache2
-    monitors:
-      IdleConnection:
-        timeout-clean-reconnect: 3
-        max-delay: 300
-    icinga:
-      uri: en.wikipedia.org!/wiki/Special:BlankPage
+    - eqiad
+    state: production
+  api:
+    description: Api
+    encryption: false
+    ip:
+      eqiad:
+        default: 1.2.3.5
+    lvs:
+      class: high-traffic1
+      conftool:
+        cluster: appserver
+        service: apache2
+      depool_threshold: '.5'
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+      scheduler: sh
+    monitoring:
+      critical: true
+      check_command: check_http_lvs!en.wikipedia.org!/wiki/Special:BlankPage
       sites:
         eqiad:
           hostname: api.svc.eqiad.wmnet
+    port: 80
+    sites:
+    - eqiad
+    state: production
 
 
 profile::mediawiki::vhost_feature_flags: {}

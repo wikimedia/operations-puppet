@@ -1,9 +1,9 @@
 # DNS Service Discovery Config
 class profile::dns::auth::discovery(
     Hash $discovery_services = lookup('discovery::services'),
-    Hash $lvs_services = lookup('lvs::configuration::lvs_services'),
     String $conftool_prefix = lookup('conftool_prefix'),
 ) {
+    $lvs_services = wmflib::service::get_lvs_services()
     file { '/etc/gdnsd/discovery-geo-resources':
         ensure  => 'present',
         owner   => 'root',

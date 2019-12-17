@@ -1,0 +1,2656 @@
+# Service catalog.
+# This entry includes all the information about the WMF internal and external load-balanced services.
+# Every entry in the hash must have a label (the service name) and its body must adhere to the
+# Wmflib::Service type. Refer to the documentation of that type, and all the sub-types, for details.
+service::catalog:
+  apaches: # TODO: rename to "appservers"
+    description: Main MediaWiki application server cluster, appservers.svc.%{::site}.wmnet
+    encryption: false
+    ip: &appservers_ips
+      codfw:
+        default: 10.2.1.1
+      eqiad:
+        default: 10.2.2.1
+    lvs:
+      class: low-traffic
+      conftool:
+        cluster: appserver
+        service: apache2
+      depool_threshold: '.7'
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+        ProxyFetch:
+          url:
+          - http://en.wikipedia.org/wiki/Special:BlankPage
+      scheduler: wrr
+    monitoring:
+      check_command: check_http_https!en.wikipedia.org!/wiki/Special:BlankPage
+      critical: true
+      sites:
+        codfw:
+          hostname: appservers.svc.codfw.wmnet
+        eqiad:
+          hostname: appservers.svc.eqiad.wmnet
+    port: 80
+    sites:
+    - eqiad
+    - codfw
+    state: production
+  apertium:
+    description: Machine Translation service. apertium.svc.%{::site}.wmnet
+    encryption: false
+    ip:
+      codfw:
+        default: 10.2.1.11
+      eqiad:
+        default: 10.2.2.11
+    lvs:
+      class: low-traffic
+      conftool:
+        cluster: scb
+        service: apertium
+      depool_threshold: '.5'
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+        ProxyFetch:
+          url:
+          - http://localhost/listPairs
+      scheduler: wrr
+    monitoring:
+      check_command: check_http_lvs_on_port!apertium.svc.%{::site}.wmnet!2737!/listPairs
+      critical: true
+      sites:
+        codfw:
+          hostname: apertium.svc.codfw.wmnet
+        eqiad:
+          hostname: apertium.svc.eqiad.wmnet
+    port: 2737
+    sites:
+    - codfw
+    - eqiad
+    state: production
+  api:
+    description: MediaWiki API cluster, api.svc.%{::site}.wmnet
+    encryption: false
+    ip: &api_ips
+      codfw:
+        default: 10.2.1.22
+      eqiad:
+        default: 10.2.2.22
+    lvs:
+      class: low-traffic
+      conftool:
+        cluster: api_appserver
+        service: apache2
+      depool_threshold: '.7'
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+        ProxyFetch:
+          url:
+          - http://en.wikipedia.org/w/api.php
+      scheduler: wrr
+    monitoring:
+      check_command: check_http_https!en.wikipedia.org!/w/api.php?action=query&meta=siteinfo
+      critical: true
+      sites:
+        codfw:
+          hostname: api.svc.codfw.wmnet
+        eqiad:
+          hostname: api.svc.eqiad.wmnet
+    port: 80
+    sites:
+    - eqiad
+    - codfw
+    state: production
+  api-https:
+    description: MediaWiki API cluster, api.svc.%{::site}.wmnet
+    encryption: true
+    ip: *api_ips
+    lvs:
+      class: low-traffic
+      conftool:
+        cluster: api_appserver
+        service: nginx
+      depool_threshold: '.7'
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+        ProxyFetch:
+          url:
+          - https://en.wikipedia.org/w/api.php
+      scheduler: wrr
+    monitoring:
+      check_command: check_http_https!en.wikipedia.org!/w/api.php?action=query&meta=siteinfo
+      critical: true
+      sites:
+        codfw:
+          hostname: api.svc.codfw.wmnet
+        eqiad:
+          hostname: api.svc.eqiad.wmnet
+    port: 443
+    sites:
+    - eqiad
+    - codfw
+    state: production
+  appservers-https:
+    description: Main MediaWiki application server cluster, appservers.svc.%{::site}.wmnet
+      (https)
+    encryption: true
+    ip: *appservers_ips
+    lvs:
+      class: low-traffic
+      conftool:
+        cluster: appserver
+        service: nginx
+      depool_threshold: '.7'
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+        ProxyFetch:
+          url:
+          - https://en.wikipedia.org/wiki/Special:BlankPage
+      scheduler: wrr
+    monitoring:
+      check_command: check_http_https!en.wikipedia.org!/wiki/Special:BlankPage
+      critical: true
+      sites:
+        codfw:
+          hostname: appservers.svc.codfw.wmnet
+        eqiad:
+          hostname: appservers.svc.eqiad.wmnet
+    port: 443
+    sites:
+    - eqiad
+    - codfw
+    state: production
+  aqs:
+    description: Analytics Query Service, aqs.svc.%{::site}.wmnet
+    encryption: false
+    ip:
+      eqiad:
+        default: 10.2.2.12
+    lvs:
+      class: low-traffic
+      conftool:
+        cluster: aqs
+        service: aqs
+      depool_threshold: '.5'
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+        ProxyFetch:
+          url:
+          - http://localhost/
+      scheduler: wrr
+    monitoring:
+      check_command: check_http_lvs_on_port!aqs.svc.%{::site}.wmnet!7232!/
+      critical: true
+      sites:
+        eqiad:
+          hostname: aqs.svc.eqiad.wmnet
+    port: 7232
+    sites:
+    - eqiad
+    state: production
+  blubberoid:
+    description: Blubberoid, blubberoid.svc.%{::site}.wmnet
+    encryption: false
+    ip: &blubberoid_ips
+      codfw:
+        default: 10.2.1.31
+      eqiad:
+        default: 10.2.2.31
+    lvs:
+      class: low-traffic
+      conftool:
+        cluster: kubernetes
+        service: blubberoid
+      depool_threshold: '.5'
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+      scheduler: wrr
+    port: 8748
+    sites:
+    - eqiad
+    - codfw
+    state: production
+  blubberoid-https:
+    description: Blubberoid, blubberoid.svc.%{::site}.wmnet (https)
+    encryption: true
+    ip: *blubberoid_ips
+    lvs:
+      class: low-traffic
+      conftool:
+        cluster: kubernetes
+        service: blubberoid
+      depool_threshold: '.5'
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+      scheduler: wrr
+    monitoring:
+      check_command: check_https_port_status!4666!200!/?spec
+      critical: false
+      sites:
+        codfw:
+          hostname: blubberoid.svc.codfw.wmnet
+        eqiad:
+          hostname: blubberoid.svc.eqiad.wmnet
+    port: 4666
+    sites:
+    - eqiad
+    - codfw
+    state: production
+  citoid:
+    description: Citation lookup service, citoid.svc.%{::site}.wmnet
+    encryption: false
+    ip: &citoid_ips
+      codfw:
+        default: 10.2.1.19
+      eqiad:
+        default: 10.2.2.19
+    lvs:
+      class: low-traffic
+      conftool:
+        cluster: kubernetes
+        service: citoid
+      depool_threshold: '.5'
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+        ProxyFetch:
+          url:
+          - http://localhost/_info
+      scheduler: wrr
+    monitoring:
+      check_command: check_http_lvs_on_port!citoid.svc.%{::site}.wmnet!1970!/_info
+      contact_group: admins,parsoid
+      critical: true
+      sites:
+        codfw:
+          hostname: citoid.svc.codfw.wmnet
+        eqiad:
+          hostname: citoid.svc.eqiad.wmnet
+    port: 1970
+    sites:
+    - eqiad
+    - codfw
+    state: production
+  cloudceph:
+    description: "CloudVPS Ceph Cluster Stats, cloudceph.svc.%{::site}.wmnet"
+    encryption: false
+    ip:
+      eqiad:
+        default: 10.2.2.51
+    lvs:
+      class: low-traffic
+      conftool:
+        cluster: cloudceph
+        service: cloudceph
+      depool_threshold: '.5'
+      enabled: true
+      monitors:
+        ProxyFetch:
+          url:
+            - http://localhost:9283/
+        IdleConnection:
+            timeout-clean-reconnect: 3
+            max-delay: 300
+      scheduler: wrr
+    monitoring:
+      check_command: check_http_on_port!9283
+      critical: false
+      sites:
+        eqiad:
+          hostname: cloudceph.svc.eqiad.wmnet
+    port: 9283
+    sites:
+    - eqiad
+    state: production
+  cloudelastic-chi-https:
+    description: Elasticsearch prod replica for WMF Cloud (Chi Cluster) - Prod MW
+      AppServer Port - HTTPS
+    encryption: true
+    ip:
+      eqiad: &id004
+        cloudelasticlb: 208.80.154.241
+        cloudelasticlb6: 2620:0:861:ed1a::3:241
+    lvs:
+      class: high-traffic2
+      conftool:
+        cluster: cloudelastic
+        service: cloudelastic-chi-ssl
+      depool_threshold: '.5'
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+        ProxyFetch:
+          url:
+          - https://localhost/
+      scheduler: wrr
+    port: 9243
+    sites:
+    - eqiad
+    state: production
+  cloudelastic-chi-https-public:
+    description: Elasticsearch prod replica for WMF Cloud (Chi Cluster) - Public Internet
+      Port - HTTPS
+    encryption: true
+    ip:
+      eqiad: *id004
+    lvs:
+      class: high-traffic2
+      conftool:
+        cluster: cloudelastic
+        service: cloudelastic-chi-ssl-public
+      depool_threshold: '.5'
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+        ProxyFetch:
+          url:
+          - https://localhost/
+      scheduler: wrr
+    port: 8243
+    sites:
+    - eqiad
+    state: production
+  cloudelastic-omega-https:
+    description: Elasticsearch prod replica for WMF Cloud (Omega Cluster) - Prod MW
+      AppServer Port - HTTPS
+    encryption: true
+    ip:
+      eqiad: *id004
+    lvs:
+      class: high-traffic2
+      conftool:
+        cluster: cloudelastic
+        service: cloudelastic-omega-ssl
+      depool_threshold: '.5'
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+        ProxyFetch:
+          url:
+          - https://localhost/
+      scheduler: wrr
+    port: 9443
+    sites:
+    - eqiad
+    state: production
+  cloudelastic-omega-https-public:
+    description: Elasticsearch prod replica for WMF Cloud (Omega Cluster) - Public
+      Internet Port - HTTPS
+    encryption: true
+    ip:
+      eqiad: *id004
+    lvs:
+      class: high-traffic2
+      conftool:
+        cluster: cloudelastic
+        service: cloudelastic-omega-ssl-public
+      depool_threshold: '.5'
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+        ProxyFetch:
+          url:
+          - https://localhost/
+      scheduler: wrr
+    port: 8443
+    sites:
+    - eqiad
+    state: production
+  cloudelastic-psi-https:
+    description: Elasticsearch prod replica for WMF Cloud (Psi Cluster) - Prod MW
+      AppServer Port - HTTPS
+    encryption: true
+    ip:
+      eqiad: *id004
+    lvs:
+      class: high-traffic2
+      conftool:
+        cluster: cloudelastic
+        service: cloudelastic-psi-ssl
+      depool_threshold: '.5'
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+        ProxyFetch:
+          url:
+          - https://localhost/
+      scheduler: wrr
+    port: 9643
+    sites:
+    - eqiad
+    state: production
+  cloudelastic-psi-https-public:
+    description: Elasticsearch prod replica for WMF Cloud (Psi Cluster) - Public Internet
+      Port - HTTPS
+    encryption: true
+    ip:
+      eqiad: *id004
+    lvs:
+      class: high-traffic2
+      conftool:
+        cluster: cloudelastic
+        service: cloudelastic-psi-ssl-public
+      depool_threshold: '.5'
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+        ProxyFetch:
+          url:
+          - https://localhost/
+      scheduler: wrr
+    port: 8643
+    sites:
+    - eqiad
+    state: production
+  cxserver:
+    description: Content Translation service, cxserver.svc.%{::site}.wmnet
+    encryption: false
+    ip:
+      codfw:
+        default: 10.2.1.18
+      eqiad:
+        default: 10.2.2.18
+    lvs:
+      class: low-traffic
+      conftool:
+        cluster: kubernetes
+        service: cxserver
+      depool_threshold: '.5'
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+        ProxyFetch:
+          url:
+          - http://localhost/_info
+      scheduler: wrr
+    monitoring:
+      check_command: check_http_lvs_on_port!cxserver.svc.%{::site}.wmnet!8080!/_info
+      critical: true
+      sites:
+        codfw:
+          hostname: cxserver.svc.codfw.wmnet
+        eqiad:
+          hostname: cxserver.svc.eqiad.wmnet
+    port: 8080
+    sites:
+    - eqiad
+    - codfw
+    state: production
+  cxserver-https:
+    description: Content Translation service, cxserver.svc.%{::site}.wmnet
+    encryption: true
+    ip:
+      codfw:
+        default: 10.2.1.18
+      eqiad:
+        default: 10.2.2.18
+    lvs:
+      class: low-traffic
+      conftool:
+        cluster: kubernetes
+        service: cxserver
+      depool_threshold: '.5'
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+        ProxyFetch:
+          url:
+          - https://localhost/_info
+      scheduler: wrr
+    port: 4002
+    sites:
+    - eqiad
+    - codfw
+    state: production
+  docker-registry:
+    description: docker registry service
+    encryption: true
+    ip:
+      codfw:
+        default: 10.2.1.44
+      eqiad:
+        default: 10.2.2.44
+    lvs:
+      class: low-traffic
+      conftool:
+        cluster: docker-registry
+        service: docker-registry
+      depool_threshold: '.5'
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+      scheduler: wrr
+    monitoring:
+      check_command: check_https_url!docker-registry.svc.%{::site}.wmnet!/v2/
+      critical: true
+      sites:
+        codfw:
+          hostname: docker-registry.svc.codfw.wmnet
+        eqiad:
+          hostname: docker-registry.svc.eqiad.wmnet
+    port: 443
+    sites:
+    - eqiad
+    - codfw
+    state: production
+  druid-public-broker:
+    description: Broker query service for the Druid Public Cluster
+    encryption: false
+    ip:
+      eqiad:
+        default: 10.2.2.38
+    lvs:
+      class: low-traffic
+      conftool:
+        cluster: druid-public
+        service: druid-public-broker
+      depool_threshold: '.5'
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+        ProxyFetch:
+          url:
+          - http://localhost/status
+      scheduler: wrr
+    monitoring:
+      check_command: check_http_lvs_on_port!druid-public-broker.svc.%{::site}.wmnet!8082!/status
+      critical: false
+      sites:
+        eqiad:
+          hostname: druid-public-broker.svc.eqiad.wmnet
+    port: 8082
+    sites:
+    - eqiad
+    state: production
+  echostore:
+    description: Echo store, echostore.svc.%{::site}.wmnet
+    encryption: true
+    ip:
+      codfw:
+        default: 10.2.1.49
+      eqiad:
+        default: 10.2.2.49
+    lvs:
+      class: low-traffic
+      conftool:
+        cluster: kubernetes
+        service: echostore
+      depool_threshold: '.5'
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+        ProxyFetch:
+          url:
+          - https://localhost/healthz
+      scheduler: wrr
+    monitoring:
+      check_command: check_https_port_status!8082!200!/healthz
+      critical: false
+      sites:
+        codfw:
+          hostname: echostore.svc.codfw.wmnet
+        eqiad:
+          hostname: echostore.svc.eqiad.wmnet
+    port: 8082
+    sites:
+    - eqiad
+    - codfw
+    state: production
+  eventgate-analytics:
+    description: EventGate Analytics endpoint, TLS enabled. https://eventgate-analytics.svc.%{::site}.wmnet
+    encryption: true
+    ip:
+      codfw:
+        default: 10.2.1.42
+      eqiad:
+        default: 10.2.2.42
+    lvs:
+      class: low-traffic
+      conftool:
+        cluster: kubernetes
+        service: eventgate-analytics
+      depool_threshold: '.5'
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+        ProxyFetch:
+          url:
+          - https://localhost/_info
+      scheduler: wrr
+    monitoring:
+      check_command: check_https_lvs_on_port!eventgate-analytics.svc.%{::site}.wmnet!4192!/_info
+      critical: true
+      sites:
+        codfw:
+          hostname: eventgate-analytics.svc.codfw.wmnet
+        eqiad:
+          hostname: eventgate-analytics.svc.eqiad.wmnet
+    port: 4192
+    sites:
+    - eqiad
+    - codfw
+    state: production
+  eventgate-analytics-http:
+    description: EventGate Analytics endpoint, eventgate-analytics.svc.%{::site}.wmnet
+    encryption: false
+    ip:
+      codfw:
+        default: 10.2.1.42
+      eqiad:
+        default: 10.2.2.42
+    lvs:
+      class: low-traffic
+      conftool:
+        cluster: kubernetes
+        service: eventgate-analytics
+      depool_threshold: '.5'
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+        ProxyFetch:
+          url:
+          - http://localhost/_info
+      scheduler: wrr
+    monitoring:
+      check_command: check_http_lvs_on_port!eventgate-analytics.svc.%{::site}.wmnet!31192!/_info
+      critical: true
+      sites:
+        codfw:
+          hostname: eventgate-analytics.svc.codfw.wmnet
+        eqiad:
+          hostname: eventgate-analytics.svc.eqiad.wmnet
+    port: 31192
+    sites:
+    - eqiad
+    - codfw
+    state: production
+  eventgate-logging-external:
+    description: EventGate Analytics endpoint, eventgate-logging-external.svc.%{::site}.wmnet
+    encryption: true
+    ip:
+      codfw:
+        default: 10.2.1.50
+      eqiad:
+        default: 10.2.2.50
+    lvs:
+      class: low-traffic
+      conftool:
+        cluster: kubernetes
+        service: eventgate-logging-external
+      depool_threshold: '.5'
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+        ProxyFetch:
+          url:
+          - https://localhost/_info
+      scheduler: wrr
+    monitoring:
+      check_command: check_https_lvs_on_port!eventgate-logging-external.svc.%{::site}.wmnet!4392!/_info
+      critical: false
+      sites:
+        codfw:
+          hostname: eventgate-logging-external.svc.codfw.wmnet
+        eqiad:
+          hostname: eventgate-logging-external.svc.eqiad.wmnet
+    port: 4392
+    sites:
+    - eqiad
+    - codfw
+    state: production
+  eventgate-main:
+    description: EventGate main endpoint, TLS enabled, https://eventgate-main.svc.%{::site}.wmnet
+    encryption: true
+    ip:
+      codfw:
+        default: 10.2.1.45
+      eqiad:
+        default: 10.2.2.45
+    lvs:
+      class: low-traffic
+      conftool:
+        cluster: kubernetes
+        service: eventgate-main
+      depool_threshold: '.5'
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+        ProxyFetch:
+          url:
+          - https://localhost/_info
+      scheduler: wrr
+    monitoring:
+      check_command: check_https_lvs_on_port!eventgate-main.svc.%{::site}.wmnet!4292!/_info
+      critical: true
+      sites:
+        codfw:
+          hostname: eventgate-main.svc.codfw.wmnet
+        eqiad:
+          hostname: eventgate-main.svc.eqiad.wmnet
+    port: 4292
+    sites:
+    - eqiad
+    - codfw
+    state: production
+  eventgate-main-http:
+    description: EventGate main endpoint, non TLS enabled, eventgate-main.svc.%{::site}.wmnet
+    encryption: false
+    ip:
+      codfw:
+        default: 10.2.1.45
+      eqiad:
+        default: 10.2.2.45
+    lvs:
+      class: low-traffic
+      conftool:
+        cluster: kubernetes
+        service: eventgate-main
+      depool_threshold: '.5'
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+        ProxyFetch:
+          url:
+          - http://localhost/_info
+      scheduler: wrr
+    monitoring:
+      check_command: check_http_lvs_on_port!eventgate-main.svc.%{::site}.wmnet!32192!/_info
+      critical: true
+      sites:
+        codfw:
+          hostname: eventgate-main.svc.codfw.wmnet
+        eqiad:
+          hostname: eventgate-main.svc.eqiad.wmnet
+    port: 32192
+    sites:
+    - eqiad
+    - codfw
+    state: production
+  eventstreams:
+    description: Public EventStreams via HTTP + SSE backed by Kafka. eventstreams.svc.%{::site}.wmnet
+    encryption: false
+    ip:
+      codfw:
+        default: 10.2.1.34
+      eqiad:
+        default: 10.2.2.34
+    lvs:
+      class: low-traffic
+      conftool:
+        cluster: scb
+        service: eventstreams
+      depool_threshold: '.5'
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+        ProxyFetch:
+          url:
+          - http://localhost/_info
+      scheduler: wrr
+    monitoring:
+      check_command: check_http_lvs_on_port!eventstreams.svc.%{::site}.wmnet!8092!/_info
+      critical: false
+      sites:
+        codfw:
+          hostname: eventstreams.svc.codfw.wmnet
+        eqiad:
+          hostname: eventstreams.svc.eqiad.wmnet
+    port: 8092
+    sites:
+    - eqiad
+    - codfw
+    state: production
+  git-ssh:
+    description: Git - to Phabricator hosting, git-ssh.wikimedia.org
+    encryption: true
+    ip:
+      codfw:
+        git-ssh4: 208.80.153.250
+        git-ssh6: 2620:0:860:ed1a::3:fa
+      eqiad:
+        git-ssh4: 208.80.154.250
+        git-ssh6: 2620:0:861:ed1a::3:16
+    lvs:
+      class: high-traffic2
+      conftool:
+        cluster: phabricator
+        service: git-ssh
+      depool_threshold: '.6'
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+      scheduler: wrr
+    port: 22
+    sites:
+    - eqiad
+    - codfw
+    state: production
+  graphoid:
+    description: Graph-rendering service, graphoid.svc.%{::site}.wmnet
+    encryption: false
+    ip:
+      codfw:
+        default: 10.2.1.15
+      eqiad:
+        default: 10.2.2.15
+    lvs:
+      class: low-traffic
+      conftool:
+        cluster: scb
+        service: graphoid
+      depool_threshold: '.5'
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+        ProxyFetch:
+          url:
+          - http://localhost/_info
+      scheduler: wrr
+    monitoring:
+      check_command: check_http_lvs_on_port!graphoid.svc.%{::site}.wmnet!19000!/_info
+      contact_group: admins,parsoid
+      critical: true
+      sites:
+        codfw:
+          hostname: graphoid.svc.codfw.wmnet
+        eqiad:
+          hostname: graphoid.svc.eqiad.wmnet
+    port: 19000
+    sites:
+    - eqiad
+    - codfw
+    state: production
+  jobrunner:
+    description: JobRunner LVS interface (https). jobrunner.svc.%{::site}.wmnet
+    encryption: true
+    ip:
+      codfw:
+        default: 10.2.1.26
+      eqiad:
+        default: 10.2.2.26
+    lvs:
+      class: low-traffic
+      conftool:
+        cluster: jobrunner
+        service: nginx
+      depool_threshold: '.2'
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+        ProxyFetch:
+          url:
+          - https://localhost/w/health-check.php
+      scheduler: wrr
+    monitoring:
+      check_command: check_https_url!jobrunner.svc.%{::site}.wmnet!/w/health-check.php
+      critical: true
+      sites:
+        codfw:
+          hostname: jobrunner.svc.codfw.wmnet
+        eqiad:
+          hostname: jobrunner.svc.eqiad.wmnet
+    port: 443
+    sites:
+    - eqiad
+    - codfw
+    state: production
+  kartotherian:
+    description: Kartotherian, kartotherian.svc.%{::site}.wmnet
+    encryption: false
+    ip:
+      codfw:
+        default: 10.2.1.13
+      eqiad:
+        default: 10.2.2.13
+    lvs:
+      class: low-traffic
+      conftool:
+        cluster: maps
+        service: kartotherian
+      depool_threshold: '.5'
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+      scheduler: wrr
+    monitoring:
+      check_command: check_http_lvs_on_port!kartotherian.svc.%{::site}.wmnet!6533!/osm-intl/6/23/24.png
+      critical: false
+      sites:
+        codfw:
+          hostname: kartotherian.svc.codfw.wmnet
+        eqiad:
+          hostname: kartotherian.svc.eqiad.wmnet
+    port: 6533
+    sites:
+    - codfw
+    - eqiad
+    state: production
+  kartotherian-ssl:
+    description: Kartotherian, kartotherian.svc.%{::site}.wmnet - HTTPS
+    encryption: true
+    ip:
+      codfw:
+        default: 10.2.1.13
+      eqiad:
+        default: 10.2.2.13
+    lvs:
+      class: low-traffic
+      conftool:
+        cluster: maps
+        service: kartotherian-ssl
+      depool_threshold: '.5'
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+        ProxyFetch:
+          url:
+          - https://localhost/
+      scheduler: wrr
+    monitoring:
+      check_command: check_https_url!kartotherian.svc.%{::site}.wmnet!/osm-intl/6/23/24.png
+      critical: true
+      sites:
+        codfw:
+          hostname: kartotherian.svc.codfw.wmnet
+        eqiad:
+          hostname: kartotherian.svc.eqiad.wmnet
+    port: 443
+    sites:
+    - codfw
+    - eqiad
+    state: production
+  kibana:
+    description: Kibana
+    encryption: false
+    ip:
+      codfw:
+        default: 10.2.1.33
+      eqiad:
+        default: 10.2.2.33
+    lvs:
+      class: low-traffic
+      conftool:
+        cluster: logstash
+        service: kibana
+      depool_threshold: '.5'
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+        ProxyFetch:
+          url:
+          - http://localhost/api/status
+      scheduler: sh
+    monitoring:
+      check_command: check_http_lvs_on_port!kibana.svc.%{::site}.wmnet!80!/api/status
+      critical: true
+      sites:
+        codfw:
+          hostname: kibana.svc.codfw.wmnet
+        eqiad:
+          hostname: kibana.svc.eqiad.wmnet
+    port: 80
+    sites:
+    - eqiad
+    - codfw
+    state: production
+  kibana-ssl:
+    description: Kibana - HTTPS
+    encryption: true
+    ip:
+      codfw:
+        default: 10.2.1.33
+      eqiad:
+        default: 10.2.2.33
+    lvs:
+      class: low-traffic
+      conftool:
+        cluster: logstash
+        service: kibana-ssl
+      depool_threshold: '.5'
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+        ProxyFetch:
+          url:
+          - https://localhost/api/status
+      scheduler: sh
+    port: 443
+    sites:
+    - eqiad
+    - codfw
+    state: production
+  kubemaster:
+    description: Kubernetes master service. kubemaster.svc.%{::site}.wmnet
+    encryption: true
+    ip:
+      codfw:
+        default: 10.2.1.8
+      eqiad:
+        default: 10.2.2.8
+    lvs:
+      class: low-traffic
+      conftool:
+        cluster: kubernetes
+        service: kubemaster
+      depool_threshold: '.5'
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+      scheduler: wrr
+    port: 6443
+    sites:
+    - eqiad
+    - codfw
+    state: production
+  labweb:
+    description: 'lvs for labweb services: horizon, striker, wikitech'
+    encryption: false
+    ip:
+      eqiad:
+        default: 10.2.2.40
+    lvs:
+      class: low-traffic
+      conftool:
+        cluster: labweb
+        service: labweb
+      depool_threshold: '.5'
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 30
+          timeout-clean-reconnect: 3
+        ProxyFetch:
+          http_status: 301
+          url:
+          - http://localhost
+      scheduler: wrr
+    monitoring:
+      check_command: check_http_on_port!80
+      critical: false
+      sites:
+        eqiad:
+          hostname: labweb.svc.eqiad.wmnet
+    port: 80
+    sites:
+    - eqiad
+    state: production
+  labweb-ssl:
+    description: 'lvs for labweb services: horizon, striker, wikitech - HTTPS'
+    encryption: true
+    ip:
+      eqiad:
+        default: 10.2.2.40
+    lvs:
+      class: low-traffic
+      conftool:
+        cluster: labweb
+        service: labweb-ssl
+      depool_threshold: '.5'
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 30
+          timeout-clean-reconnect: 3
+        ProxyFetch:
+          http_status: 301
+          url:
+          - https://wikitech.wikimedia.org:7443
+      scheduler: wrr
+    port: 7443
+    sites:
+    - eqiad
+    state: production
+  ldap-ro:
+    description: Ldap for cloud and developer accounts
+    encryption: false
+    ip:
+      codfw:
+        default: 208.80.153.252
+      eqiad:
+        default: 208.80.154.252
+    lvs:
+      class: high-traffic2
+      conftool:
+        cluster: ldap-ro
+        service: ldap-ro
+      depool_threshold: '.5'
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 30
+          timeout-clean-reconnect: 3
+      scheduler: wrr
+    port: 389
+    sites:
+    - codfw
+    - eqiad
+    state: production
+  ldap-ro-ssl:
+    description: Ldap for cloud and developer accounts (ssl access)
+    encryption: true
+    ip:
+      codfw:
+        default: 208.80.153.252
+      eqiad:
+        default: 208.80.154.252
+    lvs:
+      class: high-traffic2
+      conftool:
+        cluster: ldap-ro
+        service: ldap-ro-ssl
+      depool_threshold: '.5'
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 30
+          timeout-clean-reconnect: 3
+      scheduler: wrr
+    port: 636
+    sites:
+    - codfw
+    - eqiad
+    state: production
+  logstash-gelf:
+    description: Logstash ingestion gelf
+    encryption: false
+    ip:
+      eqiad:
+        default: 10.2.2.36
+    lvs:
+      class: low-traffic
+      conftool:
+        cluster: logstash
+        service: logstash-gelf
+      depool_threshold: '.5'
+      enabled: true
+      monitors:
+        UDP:
+          icmp-timeout: 20
+          interval: 10
+      protocol: udp
+      scheduler: sh
+    port: 12201
+    sites:
+    - eqiad
+    state: production
+  logstash-json-tcp:
+    description: Logstash ingestion json tcp
+    encryption: false
+    ip:
+      eqiad:
+        default: 10.2.2.36
+    lvs:
+      class: low-traffic
+      conftool:
+        cluster: logstash
+        service: logstash-json
+      depool_threshold: '.5'
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+      scheduler: sh
+# TODO: uncomment when we have unique identifiers for monitoring.
+#    monitoring:
+#      check_command: check_tcp!11514
+#      critical: true
+#      sites:
+#        eqiad:
+#          hostname: logstash.svc.eqiad.wmnet
+    port: 11514
+    sites:
+    - eqiad
+    state: production
+  logstash-json-udp:
+    description: Logstash ingestion json udp
+    encryption: false
+    ip:
+      eqiad:
+        default: 10.2.2.36
+    lvs:
+      class: low-traffic
+      conftool:
+        cluster: logstash
+        service: logstash-json
+      depool_threshold: '.5'
+      enabled: true
+      monitors:
+        UDP:
+          icmp-timeout: 20
+          interval: 10
+      protocol: udp
+      scheduler: wrr
+    port: 11514
+    sites:
+    - eqiad
+    state: production
+  logstash-syslog-tcp:
+    description: Logstash ingestion syslog tcp
+    encryption: false
+    ip:
+      eqiad:
+        default: 10.2.2.36
+    lvs:
+      class: low-traffic
+      conftool:
+        cluster: logstash
+        service: logstash-syslog
+      depool_threshold: '.5'
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+      protocol: tcp
+      scheduler: wrr
+    monitoring:
+      check_command: check_tcp!10514
+      critical: true
+      sites:
+        eqiad:
+          hostname: logstash.svc.eqiad.wmnet
+    port: 10514
+    sites:
+    - eqiad
+    state: production
+  logstash-syslog-udp:
+    description: Logstash ingestion syslog udp
+    encryption: false
+    ip:
+      eqiad:
+        default: 10.2.2.36
+    lvs:
+      class: low-traffic
+      conftool:
+        cluster: logstash
+        service: logstash-syslog
+      depool_threshold: '.5'
+      enabled: true
+      monitors:
+        UDP:
+          icmp-timeout: 20
+          interval: 10
+      protocol: udp
+      scheduler: wrr
+    port: 10514
+    sites:
+    - eqiad
+    state: production
+  logstash-udp2log:
+    description: Logstash ingestion udp2log
+    encryption: false
+    ip:
+      eqiad:
+        default: 10.2.2.36
+    lvs:
+      class: low-traffic
+      conftool:
+        cluster: logstash
+        service: logstash-udp2log
+      depool_threshold: '.5'
+      enabled: true
+      monitors:
+        UDP:
+          icmp-timeout: 20
+          interval: 10
+      protocol: udp
+      scheduler: wrr
+    port: 8324
+    sites:
+    - eqiad
+    state: production
+  mathoid:
+    description: Mathematical rendering service, mathoid.svc.%{::site}.wmnet
+    encryption: false
+    ip:
+      codfw:
+        default: 10.2.1.20
+      eqiad:
+        default: 10.2.2.20
+    lvs:
+      class: low-traffic
+      conftool:
+        cluster: kubernetes
+        service: mathoid
+      depool_threshold: '.5'
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+        ProxyFetch:
+          url:
+          - http://localhost/_info
+      scheduler: wrr
+    monitoring:
+      check_command: check_http_lvs_on_port!mathoid.svc.%{::site}.wmnet!10042!/_info
+      critical: true
+      sites:
+        codfw:
+          hostname: mathoid.svc.codfw.wmnet
+        eqiad:
+          hostname: mathoid.svc.eqiad.wmnet
+    port: 10042
+    sites:
+    - eqiad
+    - codfw
+    state: production
+  mobileapps:
+    description: A service for use by mobile apps. Provides DOM manipulation, aggregation,
+      JSON flattening. mobileapps.svc.%{::site}.wmnet
+    encryption: false
+    ip:
+      codfw:
+        default: 10.2.1.14
+      eqiad:
+        default: 10.2.2.14
+    lvs:
+      class: low-traffic
+      conftool:
+        cluster: scb
+        service: mobileapps
+      depool_threshold: '.5'
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+      scheduler: wrr
+    monitoring:
+      check_command: check_http_lvs_on_port!mobileapps.svc.%{::site}.wmnet!8888!/_info
+      contact_group: mobileapps
+      critical: true
+      sites:
+        codfw:
+          hostname: mobileapps.svc.codfw.wmnet
+        eqiad:
+          hostname: mobileapps.svc.eqiad.wmnet
+    port: 8888
+    sites:
+    - eqiad
+    - codfw
+    state: production
+  ncredir:
+    description: Non canonical redirect service
+    encryption: false
+    ip: &id005
+      codfw:
+        ncredirlb: 208.80.153.232
+        ncredirlb6: 2620:0:860:ed1a::9
+      eqiad:
+        ncredirlb: 208.80.154.232
+        ncredirlb6: 2620:0:861:ed1a::9
+      esams:
+        ncredirlb: 91.198.174.194
+        ncredirlb6: 2620:0:862:ed1a::3
+      ulsfo:
+        ncredirlb: 198.35.26.98
+        ncredirlb6: 2620:0:863:ed1a::3
+      eqsin:
+        ncredirlb: 103.102.166.226
+        ncredirlb6: 2001:df2:e500:ed1a::3
+    lvs:
+      class: high-traffic1
+      conftool:
+        cluster: ncredir
+        service: nginx
+      depool_threshold: '.5'
+      enabled: true
+      monitors:
+        ProxyFetch:
+          url:
+          - http://en.wikipedia.com/_status
+      scheduler: wrr
+    monitoring:
+      check_command: check_http_https!en.wikipedia.com!/_status
+      critical: true
+      sites:
+        codfw:
+          hostname: ncredir-lb.codfw.wikimedia.org
+        eqiad:
+          hostname: ncredir-lb.eqiad.wikimedia.org
+        esams:
+          hostname: ncredir-lb.esams.wikimedia.org
+        eqsin:
+          hostname: ncredir-lb.eqsin.wikimedia.org
+        ulsfo:
+          hostname: ncredir-lb.ulsfo.wikimedia.org
+    port: 80
+    sites:
+    - eqiad
+    - codfw
+    - esams
+    - ulsfo
+    - eqsin
+    state: production
+  ncredir-https:
+    description: Non canonical redirect service
+    encryption: true
+    ip: *id005
+    lvs:
+      class: high-traffic1
+      conftool:
+        cluster: ncredir
+        service: nginx
+      depool_threshold: '.5'
+      enabled: true
+      monitors:
+        ProxyFetch:
+          url:
+          - https://en.wikipedia.com/_status
+      scheduler: wrr
+    port: 443
+    sites:
+    - eqiad
+    - codfw
+    - esams
+    - ulsfo
+    - eqsin
+    state: production
+  ores:
+    description: Objective Revision Evaluation Service. ores.svc.%{::site}.wmnet
+    encryption: false
+    ip:
+      codfw:
+        default: 10.2.1.10
+      eqiad:
+        default: 10.2.2.10
+    lvs:
+      class: low-traffic
+      conftool:
+        cluster: ores
+        service: ores
+      depool_threshold: '.5'
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+        ProxyFetch:
+          url:
+          - http://localhost/v2/scores/
+      scheduler: wrr
+    monitoring:
+      check_command: check_http_lvs_on_port!ores.svc.%{::site}.wmnet!8081!/v2/scores/
+      critical: true
+      sites:
+        codfw:
+          hostname: ores.svc.codfw.wmnet
+        eqiad:
+          hostname: ores.svc.eqiad.wmnet
+    port: 8081
+    sites:
+    - eqiad
+    - codfw
+    state: production
+  parsoid:
+    description: Parsoid wikitext parser for VisualEditor (%{::site})
+    encryption: false
+    ip:
+      codfw:
+        default: 10.2.1.28
+      eqiad:
+        default: 10.2.2.28
+    lvs:
+      class: low-traffic
+      conftool:
+        cluster: parsoid
+        service: parsoid
+      depool_threshold: '.5'
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+        ProxyFetch:
+          url:
+          - http://localhost/
+      scheduler: wrr
+    monitoring:
+      check_command: check_http_on_port!8000
+      contact_group: admins,parsoid
+      critical: true
+      sites:
+        codfw:
+          hostname: parsoid.svc.codfw.wmnet
+        eqiad:
+          hostname: parsoid.svc.eqiad.wmnet
+    port: 8000
+    sites:
+    - eqiad
+    - codfw
+    state: production
+  parsoid-php:
+    description: Parsoid/PHP wikitext parser for VisualEditor (%{::site})
+    encryption: true
+    ip:
+      codfw:
+        default: 10.2.1.28
+      eqiad:
+        default: 10.2.2.28
+    lvs:
+      class: low-traffic
+      conftool:
+        cluster: parsoid
+        service: parsoid-php
+      depool_threshold: '.6'
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+        ProxyFetch:
+          url:
+          - https://en.wikipedia.org/wiki/Special:BlankPage
+      scheduler: wrr
+    monitoring:
+      check_command: check_https_url!en.wikipedia.org!/wiki/Special:BlankPage
+      critical: true
+      sites:
+        codfw:
+          hostname: parsoid.svc.codfw.wmnet
+        eqiad:
+          hostname: parsoid.svc.eqiad.wmnet
+    port: 443
+    sites:
+    - eqiad
+    - codfw
+    state: production
+  prometheus:
+    description: Prometheus monitoring
+    encryption: false
+    ip:
+      codfw:
+        default: 10.2.1.25
+      eqiad:
+        default: 10.2.2.25
+    lvs:
+      class: low-traffic
+      conftool:
+        cluster: prometheus
+        service: prometheus
+      depool_threshold: '.5'
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+        ProxyFetch:
+          url:
+          - http://localhost/
+      scheduler: wrr
+    monitoring:
+      check_command: check_http_lvs_on_port!prometheus.svc.%{::site}.wmnet!80!/
+      critical: true
+      sites:
+        codfw:
+          hostname: prometheus.svc.codfw.wmnet
+        eqiad:
+          hostname: prometheus.svc.eqiad.wmnet
+    port: 80
+    sites:
+    - eqiad
+    - codfw
+    state: production
+  proton:
+    description: Proton PDF rendering service. proton.svc%{::site}.wmnet
+    encryption: false
+    ip:
+      codfw:
+        default: 10.2.1.21
+      eqiad:
+        default: 10.2.2.21
+    lvs:
+      class: low-traffic
+      conftool:
+        cluster: proton
+        service: proton
+      depool_threshold: '.5'
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+        ProxyFetch:
+          url:
+          - http://localhost/_info
+      scheduler: wrr
+    monitoring:
+      check_command: check_http_lvs_on_port!proton.svc.%{::site}.wmnet!24766!/_info
+      critical: true
+      sites:
+        codfw:
+          hostname: proton.svc.codfw.wmnet
+        eqiad:
+          hostname: proton.svc.eqiad.wmnet
+    port: 24766
+    sites:
+    - eqiad
+    - codfw
+    state: production
+  recommendation-api:
+    description: Service for recommendation API. recommandation-api.svc%{::site}.wmnet
+    encryption: false
+    ip:
+      codfw:
+        default: 10.2.1.37
+      eqiad:
+        default: 10.2.2.37
+    lvs:
+      class: low-traffic
+      conftool:
+        cluster: scb
+        service: recommendation-api
+      depool_threshold: '.5'
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+        ProxyFetch:
+          url:
+          - http://localhost/robots.txt
+      scheduler: wrr
+    monitoring:
+      check_command: check_http_lvs_on_port!recommendation-api.svc.%{::site}.wmnet!9632!/robots.txt
+      critical: true
+      sites:
+        codfw:
+          hostname: recommendation-api.svc.codfw.wmnet
+        eqiad:
+          hostname: recommendation-api.svc.eqiad.wmnet
+    port: 9632
+    sites:
+    - eqiad
+    - codfw
+    state: production
+  restbase:
+    description: RESTBase, restbase.svc.%{::site}.wmnet
+    encryption: false
+    ip:
+      codfw:
+        default: 10.2.1.17
+      eqiad:
+        default: 10.2.2.17
+    lvs:
+      class: low-traffic
+      conftool:
+        cluster: restbase
+        service: restbase
+      depool_threshold: '.5'
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+        ProxyFetch:
+          url:
+          - http://localhost/
+      scheduler: wrr
+    monitoring:
+      check_command: check_http_lvs_on_port!restbase.svc.%{::site}.wmnet!7231!/
+      critical: true
+      sites:
+        codfw:
+          hostname: restbase.svc.codfw.wmnet
+        eqiad:
+          hostname: restbase.svc.eqiad.wmnet
+    port: 7231
+    sites:
+    - eqiad
+    - codfw
+    state: production
+  restbase-backend:
+    description: RESTBase backend, restbase.svc.%{::site}.wmnet
+    encryption: false
+    ip:
+      codfw:
+        default: 10.2.1.17
+      eqiad:
+        default: 10.2.2.17
+    lvs:
+      class: low-traffic
+      conftool:
+        cluster: restbase
+        service: restbase-backend
+      depool_threshold: '.5'
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+        ProxyFetch:
+          url:
+          - http://localhost/
+      scheduler: wrr
+    port: 7233
+    sites:
+    - eqiad
+    - codfw
+    state: production
+  restbase-https:
+    description: RESTBase, restbase.svc.%{::site}.wmnet - HTTPS
+    encryption: true
+    ip:
+      codfw:
+        default: 10.2.1.17
+      eqiad:
+        default: 10.2.2.17
+    lvs:
+      class: low-traffic
+      conftool:
+        cluster: restbase
+        service: restbase-ssl
+      depool_threshold: '.5'
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+        ProxyFetch:
+          url:
+          - https://localhost/
+      scheduler: wrr
+    port: 7443
+    sites:
+    - eqiad
+    - codfw
+    state: production
+  restrouter:
+    description: RESTRouter, restrouter.svc.%{::site}.wmnet
+    encryption: false
+    ip:
+      codfw:
+        default: 10.2.1.48
+      eqiad:
+        default: 10.2.2.48
+    lvs:
+      class: low-traffic
+      conftool:
+        cluster: kubernetes
+        service: restrouter
+      depool_threshold: '.5'
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+        ProxyFetch:
+          url:
+          - http://localhost/
+      scheduler: wrr
+    monitoring:
+      check_command: check_http_lvs_on_port!restrouter.svc.%{::site}.wmnet!7231!/
+      critical: false
+      sites:
+        codfw:
+          hostname: restrouter.svc.codfw.wmnet
+        eqiad:
+          hostname: restrouter.svc.eqiad.wmnet
+    port: 7231
+    sites:
+    - eqiad
+    - codfw
+    state: production
+  schema:
+    description: Event Schema HTTP service
+    encryption: true
+    ip:
+      codfw:
+        default: 10.2.1.43
+      eqiad:
+        default: 10.2.2.43
+    lvs:
+      class: low-traffic
+      conftool:
+        cluster: eventschemas
+        service: eventschemas
+      depool_threshold: '.5'
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+        ProxyFetch:
+          url:
+          - https://localhost/repositories/
+      scheduler: wrr
+    monitoring:
+      check_command: check_https_lvs_on_port!schema.svc.%{::site}.wmnet!443!/repositories/
+      critical: false
+      sites:
+        codfw:
+          hostname: schema.svc.codfw.wmnet
+        eqiad:
+          hostname: schema.svc.eqiad.wmnet
+    port: 443
+    sites:
+    - eqiad
+    - codfw
+    state: production
+  search:
+    description: Elasticsearch search for MediaWiki
+    encryption: false
+    ip:
+      codfw:
+        default: 10.2.1.30
+      eqiad:
+        default: 10.2.2.30
+    lvs:
+      class: low-traffic
+      conftool:
+        cluster: elasticsearch
+        service: elasticsearch
+      depool_threshold: '.5'
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+        ProxyFetch:
+          url:
+          - http://localhost/
+      scheduler: wrr
+    monitoring:
+      check_command: check_http_on_port!9200
+      critical: true
+      sites:
+        codfw:
+          hostname: search.svc.codfw.wmnet
+        eqiad:
+          hostname: search.svc.eqiad.wmnet
+    port: 9200
+    sites:
+    - eqiad
+    - codfw
+    state: production
+  search-https:
+    description: Elasticsearch search for MediaWiki - HTTPS
+    encryption: true
+    ip:
+      codfw:
+        default: 10.2.1.30
+      eqiad:
+        default: 10.2.2.30
+    lvs:
+      class: low-traffic
+      conftool:
+        cluster: elasticsearch
+        service: elasticsearch-ssl
+      depool_threshold: '.5'
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+        ProxyFetch:
+          url:
+          - https://localhost/
+      scheduler: wrr
+# TODO: enable once fixed in puppet
+#    monitoring:
+#      check_command: check_https_on_port!9243
+#      critical: true
+#      sites:
+#        codfw:
+#          hostname: search.svc.codfw.wmnet
+#        eqiad:
+#          hostname: search.svc.eqiad.wmnet
+    port: 9243
+    sites:
+    - eqiad
+    - codfw
+    state: production
+  search-omega-https:
+    description: Elasticsearch search for MediaWiki (Omega cluster) - HTTPS
+    encryption: true
+    ip:
+      codfw:
+        default: 10.2.1.30
+      eqiad:
+        default: 10.2.2.30
+    lvs:
+      class: low-traffic
+      conftool:
+        cluster: elasticsearch
+        service: elasticsearch-omega-ssl
+      depool_threshold: '.5'
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+        ProxyFetch:
+          url:
+          - https://localhost/
+      scheduler: wrr
+# TODO: enable once fixed in puppet
+#    monitoring:
+#      check_command: check_https_on_port!9443
+#      critical: true
+#      sites:
+#        codfw:
+#          hostname: search.svc.codfw.wmnet
+#        eqiad:
+#          hostname: search.svc.eqiad.wmnet
+    port: 9443
+    sites:
+    - eqiad
+    - codfw
+    state: production
+  search-psi-https:
+    description: Elasticsearch search for MediaWiki (Psi cluster) - HTTPS
+    encryption: true
+    ip:
+      codfw:
+        default: 10.2.1.30
+      eqiad:
+        default: 10.2.2.30
+    lvs:
+      class: low-traffic
+      conftool:
+        cluster: elasticsearch
+        service: elasticsearch-psi-ssl
+      depool_threshold: '.5'
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+        ProxyFetch:
+          url:
+          - https://localhost/
+      scheduler: wrr
+    monitoring:
+      check_command: check_https_on_port!9643
+      critical: true
+      sites:
+        codfw:
+          hostname: search.svc.codfw.wmnet
+        eqiad:
+          hostname: search.svc.eqiad.wmnet
+    port: 9643
+    sites:
+    - eqiad
+    - codfw
+    state: production
+  sessionstore:
+    description: Session store, sessionstore.svc.%{::site}.wmnet
+    encryption: true
+    ip:
+      codfw:
+        default: 10.2.1.29
+      eqiad:
+        default: 10.2.2.29
+    lvs:
+      class: low-traffic
+      conftool:
+        cluster: kubernetes
+        service: sessionstore
+      depool_threshold: '.5'
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+        ProxyFetch:
+          url:
+          - https://localhost/healthz
+      scheduler: wrr
+    monitoring:
+      check_command: check_https_port_status!8081!200!/healthz
+      critical: true
+      sites:
+        codfw:
+          hostname: sessionstore.svc.codfw.wmnet
+        eqiad:
+          hostname: sessionstore.svc.eqiad.wmnet
+    port: 8081
+    sites:
+    - eqiad
+    - codfw
+    state: production
+  swift:
+    description: Swift/Ceph media storage
+    encryption: false
+    ip:
+      codfw:
+        default: 10.2.1.27
+      eqiad:
+        default: 10.2.2.27
+    lvs:
+      class: low-traffic
+      conftool:
+        cluster: swift
+        service: swift-fe
+      depool_threshold: '.5'
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+        ProxyFetch:
+          url:
+          - http://localhost/monitoring/backend
+      scheduler: wrr
+    monitoring:
+      check_command: check_http_https!localhost!/monitoring/backend
+      critical: true
+      sites:
+        codfw:
+          hostname: ms-fe.svc.codfw.wmnet
+        eqiad:
+          hostname: ms-fe.svc.eqiad.wmnet
+    port: 80
+    sites:
+    - codfw
+    - eqiad
+    state: production
+  swift-https:
+    description: Swift/Ceph media storage
+    encryption: true
+    ip:
+      codfw:
+        default: 10.2.1.27
+      eqiad:
+        default: 10.2.2.27
+    lvs:
+      class: low-traffic
+      conftool:
+        cluster: swift
+        service: nginx
+      depool_threshold: '.5'
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+        ProxyFetch:
+          url:
+          - https://localhost/monitoring/backend
+      scheduler: wrr
+    monitoring:
+      check_command: check_http_https!localhost!/monitoring/backend
+      critical: true
+      sites:
+        codfw:
+          hostname: ms-fe.svc.codfw.wmnet
+        eqiad:
+          hostname: ms-fe.svc.eqiad.wmnet
+    port: 443
+    sites:
+    - codfw
+    - eqiad
+    state: production
+  termbox:
+    description: Wikidata Termbox SSR termbox.svc.%{::site}.wmnet
+    encryption: false
+    ip:
+      codfw:
+        default: 10.2.1.46
+      eqiad:
+        default: 10.2.2.46
+    lvs:
+      class: low-traffic
+      conftool:
+        cluster: kubernetes
+        service: termbox
+      depool_threshold: '.5'
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+        ProxyFetch:
+          url:
+          - http://localhost/_info
+      scheduler: wrr
+    monitoring:
+      check_command: check_http_lvs_on_port!termbox.svc.%{::site}.wmnet!3030!/_info
+      critical: true
+      sites:
+        codfw:
+          hostname: termbox.svc.codfw.wmnet
+        eqiad:
+          hostname: termbox.svc.eqiad.wmnet
+    port: 3030
+    sites:
+    - eqiad
+    - codfw
+    state: production
+  text:
+    description: Main wiki platform LVS service, text.%{::site}.wikimedia.org (Varnish)
+    encryption: false
+    ip:
+      codfw: &id006
+        testlb: 208.80.153.225
+        testlb6: 2620:0:860:ed1a::2
+        textlb: 208.80.153.224
+        textlb6: 2620:0:860:ed1a::1
+      eqiad: &id007
+        testlb: 208.80.154.225
+        testlb6: 2620:0:861:ed1a::2
+        textlb: 208.80.154.224
+        textlb6: 2620:0:861:ed1a::1
+      eqsin: &id008
+        testlb: 103.102.166.225
+        testlb6: 2001:df2:e500:ed1a::2
+        textlb: 103.102.166.224
+        textlb6: 2001:df2:e500:ed1a::1
+      esams: &id009
+        testlb: 91.198.174.193
+        testlb6: 2620:0:862:ed1a::2
+        textlb: 91.198.174.192
+        textlb6: 2620:0:862:ed1a::1
+      ulsfo: &id010
+        testlb: 198.35.26.97
+        testlb6: 2620:0:863:ed1a::2
+        textlb: 198.35.26.96
+        textlb6: 2620:0:863:ed1a::1
+    lvs:
+      class: high-traffic1
+      conftool:
+        cluster: cache_text
+        service: varnish-fe
+      depool_threshold: '.5'
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+      scheduler: sh
+    monitoring:
+      check_command: check_http_https!en.wikipedia.org!/wiki/Special:BlankPage
+      critical: true
+      sites:
+        codfw:
+          hostname: text-lb.codfw.wikimedia.org
+        eqiad:
+          hostname: text-lb.eqiad.wikimedia.org
+        eqsin:
+          hostname: text-lb.eqsin.wikimedia.org
+        esams:
+          hostname: text-lb.esams.wikimedia.org
+        ulsfo:
+          hostname: text-lb.ulsfo.wikimedia.org
+    port: 80
+    sites:
+    - codfw
+    - eqiad
+    - esams
+    - ulsfo
+    - eqsin
+    state: production
+  text-https:
+    description: Main wiki platform LVS service, text.%{::site}.wikimedia.org (nginx)
+    encryption: true
+    ip:
+      codfw: *id006
+      eqiad: *id007
+      eqsin: *id008
+      esams: *id009
+      ulsfo: *id010
+    lvs:
+      class: high-traffic1
+      conftool:
+        cluster: cache_text
+        service: nginx
+      depool_threshold: '.5'
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+        ProxyFetch:
+          url:
+          - https://varnishcheck.wikimedia.org/from/pybal
+      scheduler: sh
+    port: 443
+    sites:
+    - codfw
+    - eqiad
+    - esams
+    - ulsfo
+    - eqsin
+    state: production
+  thumbor:
+    description: Thumbor image scaling
+    encryption: false
+    ip:
+      codfw:
+        default: 10.2.1.24
+      eqiad:
+        default: 10.2.2.24
+    lvs:
+      class: low-traffic
+      conftool:
+        cluster: thumbor
+        service: thumbor
+      depool_threshold: '.5'
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+        ProxyFetch:
+          timeout: 10
+          url:
+          - http://localhost/healthcheck
+      scheduler: wrr
+    monitoring:
+      check_command: check_http_lvs_on_port_timeout!thumbor.svc.%{::site}.wmnet!8800!/healthcheck!20
+      critical: true
+      sites:
+        codfw:
+          hostname: thumbor.svc.codfw.wmnet
+        eqiad:
+          hostname: thumbor.svc.eqiad.wmnet
+    port: 8800
+    sites:
+    - eqiad
+    - codfw
+    state: production
+  upload:
+    description: Images and other media, upload.%{::site}.wikimedia.org
+    encryption: false
+    ip:
+      codfw: &id011
+        uploadlb: 208.80.153.240
+        uploadlb6: 2620:0:860:ed1a::2:b
+      eqiad: &id012
+        uploadlb: 208.80.154.240
+        uploadlb6: 2620:0:861:ed1a::2:b
+      eqsin: &id013
+        uploadlb: 103.102.166.240
+        uploadlb6: 2001:df2:e500:ed1a::2:b
+      esams: &id014
+        uploadlb: 91.198.174.208
+        uploadlb6: 2620:0:862:ed1a::2:b
+      ulsfo: &id015
+        uploadlb: 198.35.26.112
+        uploadlb6: 2620:0:863:ed1a::2:b
+    lvs:
+      class: high-traffic2
+      conftool:
+        cluster: cache_upload
+        service: varnish-fe
+      depool_threshold: '.5'
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+      scheduler: sh
+    monitoring:
+      check_command: check_http_https!upload.wikimedia.org!/monitoring/backend
+      critical: true
+      sites:
+        codfw:
+          hostname: upload-lb.codfw.wikimedia.org
+        eqiad:
+          hostname: upload-lb.eqiad.wikimedia.org
+        eqsin:
+          hostname: upload-lb.eqsin.wikimedia.org
+        esams:
+          hostname: upload-lb.esams.wikimedia.org
+        ulsfo:
+          hostname: upload-lb.ulsfo.wikimedia.org
+    port: 80
+    sites:
+    - codfw
+    - eqiad
+    - esams
+    - ulsfo
+    - eqsin
+    state: production
+  upload-https:
+    description: Images and other media, upload.%{::site}.wikimedia.org
+    encryption: true
+    ip:
+      codfw: *id011
+      eqiad: *id012
+      eqsin: *id013
+      esams: *id014
+      ulsfo: *id015
+    lvs:
+      class: high-traffic2
+      conftool:
+        cluster: cache_upload
+        service: nginx
+      depool_threshold: '.5'
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+        ProxyFetch:
+          url:
+          - https://varnishcheck.wikimedia.org/from/pybal
+      scheduler: sh
+    port: 443
+    sites:
+    - codfw
+    - eqiad
+    - esams
+    - ulsfo
+    - eqsin
+    state: production
+  videoscaler:
+    description: Videoscaler LVS interface (https). videoscaler.svc.%{::site}.wmnet
+    encryption: true
+    ip:
+      codfw:
+        default: 10.2.1.5
+      eqiad:
+        default: 10.2.2.5
+    lvs:
+      class: low-traffic
+      conftool:
+        cluster: videoscaler
+        service: nginx
+      depool_threshold: '.2'
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+        ProxyFetch:
+          url:
+          - https://localhost/w/health-check.php
+      scheduler: wrr
+    monitoring:
+      check_command: check_https_url!videoscaler.svc.%{::site}.wmnet!/w/health-check.php
+      critical: true
+      sites:
+        codfw:
+          hostname: videoscaler.svc.codfw.wmnet
+        eqiad:
+          hostname: videoscaler.svc.eqiad.wmnet
+    port: 443
+    sites:
+    - eqiad
+    - codfw
+    state: production
+  wdqs:
+    description: Wikidata Query Service
+    encryption: false
+    ip:
+      codfw:
+        default: 10.2.1.32
+      eqiad:
+        default: 10.2.2.32
+    lvs:
+      class: low-traffic
+      conftool:
+        cluster: wdqs
+        service: wdqs
+      depool_threshold: '.5'
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+        ProxyFetch:
+          url:
+          - http://localhost/readiness-probe
+      scheduler: wrr
+    monitoring:
+      check_command: check_http_lvs_on_port!wdqs.svc.%{::site}.wmnet!80!/readiness-probe
+      critical: true
+      sites:
+        codfw:
+          hostname: wdqs.svc.codfw.wmnet
+        eqiad:
+          hostname: wdqs.svc.eqiad.wmnet
+    port: 80
+    sites:
+    - eqiad
+    - codfw
+    state: production
+  wdqs-heavy-queries:
+    description: Wikidata Query Service for heavy queries
+    encryption: false
+    ip:
+      codfw:
+        default: 10.2.1.32
+      eqiad:
+        default: 10.2.2.32
+    lvs:
+      class: low-traffic
+      conftool:
+        cluster: wdqs
+        service: wdqs-heavy-queries
+      depool_threshold: '.5'
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+        ProxyFetch:
+          url:
+          - http://localhost/readiness-probe
+      scheduler: wrr
+    port: 8888
+    sites:
+    - eqiad
+    - codfw
+    state: production
+  wdqs-internal:
+    description: Wikidata Query Service - internal
+    encryption: false
+    ip:
+      codfw:
+        default: 10.2.1.41
+      eqiad:
+        default: 10.2.2.41
+    lvs:
+      class: low-traffic
+      conftool:
+        cluster: wdqs-internal
+        service: wdqs
+      depool_threshold: '.5'
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+        ProxyFetch:
+          url:
+          - http://localhost/readiness-probe
+      scheduler: wrr
+    monitoring:
+      check_command: check_http_lvs_on_port!wdqs-internal.svc.%{::site}.wmnet!80!/readiness-probe
+      critical: true
+      sites:
+        codfw:
+          hostname: wdqs-internal.svc.codfw.wmnet
+        eqiad:
+          hostname: wdqs-internal.svc.eqiad.wmnet
+    port: 80
+    sites:
+    - eqiad
+    - codfw
+    state: production
+  wdqs-ssl:
+    description: Wikidata Query Service - HTTPS
+    encryption: true
+    ip:
+      codfw:
+        default: 10.2.1.32
+      eqiad:
+        default: 10.2.2.32
+    lvs:
+      class: low-traffic
+      conftool:
+        cluster: wdqs
+        service: wdqs-ssl
+      depool_threshold: '.5'
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+        ProxyFetch:
+          url:
+          - https://localhost/readiness-probe
+      scheduler: wrr
+    monitoring:
+      check_command: check_https_url!wdqs.svc.%{::site}.wmnet!/readiness-probe
+      critical: true
+      sites:
+        codfw:
+          hostname: wdqs.svc.codfw.wmnet
+        eqiad:
+          hostname: wdqs.svc.eqiad.wmnet
+    port: 443
+    sites:
+    - eqiad
+    - codfw
+    state: production
+  wikifeeds:
+    description: A node webservice supporting featured wiki content feeds. termbox.svc.%{::site}.wmnet
+    encryption: false
+    ip:
+      codfw:
+        default: 10.2.1.47
+      eqiad:
+        default: 10.2.2.47
+    lvs:
+      class: low-traffic
+      conftool:
+        cluster: kubernetes
+        service: wikifeeds
+      depool_threshold: '.5'
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+        ProxyFetch:
+          url:
+          - http://localhost/_info
+      scheduler: wrr
+    monitoring:
+      check_command: check_http_lvs_on_port!wikifeeds.svc.%{::site}.wmnet!8889!/_info
+      critical: false
+      sites:
+        codfw:
+          hostname: wikifeeds.svc.codfw.wmnet
+        eqiad:
+          hostname: wikifeeds.svc.eqiad.wmnet
+    port: 8889
+    sites:
+    - eqiad
+    - codfw
+    state: production
+  zotero:
+    description: Zotero, zotero.svc.%{::site}.wmnet
+    encryption: false
+    ip:
+      codfw:
+        default: 10.2.1.16
+      eqiad:
+        default: 10.2.2.16
+    lvs:
+      class: low-traffic
+      conftool:
+        cluster: kubernetes
+        service: zotero
+      depool_threshold: '.5'
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+      scheduler: wrr
+    monitoring:
+      check_command: check_http_zotero_lvs_on_port!zotero.svc.%{::site}.wmnet!1969!/export?format=wikipedia
+      critical: true
+      sites:
+        codfw:
+          hostname: zotero.svc.codfw.wmnet
+        eqiad:
+          hostname: zotero.svc.eqiad.wmnet
+    port: 1969
+    sites:
+    - eqiad
+    - codfw
+    state: production

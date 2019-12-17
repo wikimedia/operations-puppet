@@ -71,7 +71,6 @@ class lvs::configuration {
     }
 
     # NOTE! This hash is referenced in many other manifests
-    $service_ips = hiera('lvs::configuration::lvs_service_ips')
-    $lvs_services = hiera('lvs::configuration::lvs_services')
-
+    $service_ips = wmflib::service::get_ipblocks()
+    $lvs_services = wmflib::service::get_lvs_services()
 }

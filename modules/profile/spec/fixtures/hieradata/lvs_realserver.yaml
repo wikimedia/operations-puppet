@@ -1,63 +1,80 @@
-lvs::configuration::lvs_service_ips:
-  text: &ip_block001
-    testsite:
-      textlb: 1.1.1.1
-      textlb6: 2620:0:861:102:1:1:1:1
-    eqiad:
-      textlb: 8.8.8.8
-      textlb6: 2620:0:861:102:8:8:8:8
-lvs::configuration::lvs_services:
-  text:
-    description: "Main wiki platform LVS service, text.%{::site}.wikimedia.org (Varnish)"
-    class: high-traffic1
-    sites:
-      - testsite
-      - testsite1
-    ip: *ip_block001
-    scheduler: sh
-    depool-threshold: '.5'
-    conftool:
-      cluster: cache_text
-      service: nginx
-    monitors:
-      IdleConnection:
-        timeout-clean-reconnect: 3
-        max-delay: 300
+service::catalog:
   apaches:
-    description: "Main wiki platform LVS service, text.%{::site}.wikimedia.org (Varnish)"
-    class: high-traffic1
+    description: Main wiki platform LVS service, text.%{::site}.wikimedia.org (Varnish)
+    encryption: false
+    ip:
+      eqiad: &id001
+        textlb: 8.8.8.8
+        textlb6: 2620:0:861:102:8:8:8:8
+      testsite: &id002
+        textlb: 1.1.1.1
+        textlb6: 2620:0:861:102:1:1:1:1
+    lvs:
+      class: high-traffic1
+      conftool:
+        cluster: appserver
+        service: apache2
+      depool_threshold: '.5'
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+      scheduler: sh
+    port: 80
     sites:
-      - testsite
-      - testsite1
-      - eqiad
-    ip: *ip_block001
-    scheduler: sh
-    depool-threshold: '.5'
-    conftool:
-      cluster: appserver
-      service: apache2
-    monitors:
-      IdleConnection:
-        timeout-clean-reconnect: 3
-        max-delay: 300
+    - testsite
+    - testsite1
+    - eqiad
+    state: production
   appservers-https:
-    description: "Main wiki platform LVS service, text.%{::site}.wikimedia.org (Varnish)"
-    class: high-traffic1
-    sites:
-      - testsite
-      - testsite1
-      - eqiad
-    ip: *ip_block001
-    scheduler: sh
-    depool-threshold: '.5'
+    description: Main wiki platform LVS service, text.%{::site}.wikimedia.org (Varnish)
+    encryption: true
+    ip:
+      eqiad: *id001
+      testsite: *id002
+    lvs:
+      class: high-traffic1
+      conftool:
+        cluster: appserver
+        service: nginx
+      depool_threshold: '.5'
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+      scheduler: sh
     port: 443
-    conftool:
-      cluster: appserver
-      service: nginx
-    monitors:
-      IdleConnection:
-        timeout-clean-reconnect: 3
-        max-delay: 300
+    sites:
+    - testsite
+    - testsite1
+    - eqiad
+    state: production
+  text:
+    description: Main wiki platform LVS service, text.%{::site}.wikimedia.org (Varnish)
+    encryption: false
+    ip:
+      eqiad: *id001
+      testsite: *id002
+    lvs:
+      class: high-traffic1
+      conftool:
+        cluster: cache_text
+        service: nginx
+      depool_threshold: '.5'
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+      scheduler: sh
+    port: 80
+    sites:
+    - testsite
+    - testsite1
+    state: production
+
 
 etcd_client_srv_domain: example.com
 etcd_host: ''
