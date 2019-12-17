@@ -158,7 +158,7 @@ groups:
               fdans, mlitn, niharika29, goransm, pmiazga, dsaez, shiladsen, cicalese,
               mirrys, sharvaniharan, mmiller, amire80, rush, tieu, kharlan, gbirke, dedcode,
               isaacj, jdl, joewalsh, phuedx, bd808, iflorez, mayakpwiki, conniecc1, abi,
-              cohi, keepit-ssh]
+              cohi, keepit-ssh, kzeta]
   ldap-admins:
     gid: 715
     description: ldap admins
@@ -282,7 +282,7 @@ groups:
               cicalese, drossi, fsalutari, nathante, gbirke, isaacj, sbassett, jdl, gsingers,
               niharika29, ryanmax, afandian2, jgleeson, toddleroux, srishakatux, dsharpe, eyener,
               esanders, sukhe, jfishback, iflorez, mayakpwiki, conniecc1, abi, mgerlach, dedcode,
-              lexnasser, kevinbazira, keepit-ssh, jiji, cohi, mstyles, accraze]
+              lexnasser, kevinbazira, keepit-ssh, jiji, cohi, mstyles, accraze, kzeta]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata]
   analytics-admins:
@@ -3419,6 +3419,15 @@ users:
     name: nikkin
     ssh_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDjpUNj7h4VqfTXaV30XanPldBV8IW1tb8LGEkv8eYn7TXW/LhOnUsx5ql9pQBoXP6yZN/ijDsbAaUOucJzrgh321WokoJGasUAQmfRbOA2yzNWBn1D4PFqBruzFtgM9gsHjPO0JVHfAOvH2ugklLEEhOav3ZzACtykNqPJDJ6v5kq+lCJzr9Dg11tjeNZ/QcaImOT7DuUMNcKxu7rF/Ju9sTsoy4R0G0CQjervTA1SPt1kLXEqBCWeg8b21zal701chFnCPnZFp0xou5+jrWih3x5TgTKTkBqGF+TPfmTNAij5mwWGc9a9Ywum7zGWwagJ1ZgyEqNKQelZgXZ0Q3Vl3qWaAzMWN8Ut6YtfjU/QSjG9in2lRzrbh8HfHrbTO9vgPgmxtFXdpVYQLzP6V5R/v/BFHvoHsivnARQXSlPdCOevdclPfCIdUZ1UegZGuUP4CQhnBO/vgX4daYNRcBNU6yWXp+WL/ptBQn5R7TTbXXQIXL2653PikrciJ10/lQ91bLs86SugpPWsk5c+NmYe+jwcua30JS8qgdkYZeBK4xlbDaVFvv6oOq7mIHNoWav4IHhUDw57YRaYn6Q6brNEgg9sjOkv0fJ/tLFLgqlUiKSgLQh7JhMuKB3q0CVwCMYCwPLhttRg7DTYgWRzHI3PZxToXvRs+gCsxpq3JIGbgw== nnikkhoui@wikimedia.org
+  kzeta:
+    ensure: present
+    realname: Kate Zimmerman
+    email: kzimmerman@wikimedia.org
+    uid: 20435
+    gid: 500
+    name: kzeta
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPMWu5DNleqah845EhqYF3yYqVBhHCFseT1lEq5dzym1 kzimmerman@wikimedia.org
 ldap_only_users:
   abartov:
     ensure: present
