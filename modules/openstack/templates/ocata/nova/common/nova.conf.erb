@@ -119,6 +119,17 @@ lock_path = /var/lock/nova
 [vnc]
 enabled=False
 
+# Why enable Spice when we aren't set up with a spice proxy?
+# It's because enabling this results in a serial1 interface being
+# created in new VMs, which we can connect to with virsh for
+# debugging.
+#
+# Additionally, our Stretch image seems to not boot at
+# all without this.
+[spice]
+enabled = True
+agent_enabled = False
+
 [conductor]
 workers = 4
 
