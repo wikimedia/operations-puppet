@@ -44,8 +44,9 @@ class jupyterhub (
         'texlive-xetex',
         'texlive-fonts-recommended',
         'texlive-generic-recommended',
-        # For pyhive
+        # For pyhive and impyla
         'libsasl2-dev',
+        'libsasl2-modules-gssapi-mit',
     )
 
     $deploy_repository = 'analytics/jupyterhub/deploy'
