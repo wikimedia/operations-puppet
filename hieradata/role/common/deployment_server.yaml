@@ -163,7 +163,7 @@ scap::sources:
   scholarships/scholarships:
     repository: wikimedia/wikimania-scholarships
   wikimedia/discovery/analytics:
-    repository: discovery/analytics
+    repository: wikimedia/discovery/analytics
   wdqs/wdqs:
     repository: wikidata/query/deploy
 #    lvs_service: wdqs
