@@ -1,6 +1,6 @@
 [Service]
 User=vhtcpd
-ExecStart=/usr/sbin/vhtcpd -m <%= @mc_addrs.join(' -m ') -%> -c  <%= @caches.join(' -c ') -%> <% if @regex_arg.length > 0 -%>-r <%= @regex_arg -%><% end -%> startfg
+ExecStart=/usr/sbin/vhtcpd -m <%= @mc_addrs.join(' -m ') -%> -c <%= @caches.join(' -c ') -%> <%= @regex_arg -%> startfg
 Restart=on-failure
 
 #ProtectKernelModules=yes
