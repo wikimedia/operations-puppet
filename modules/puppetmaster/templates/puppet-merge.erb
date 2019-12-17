@@ -17,11 +17,13 @@ lock() {
     LOCKFILE=/var/lock/puppet-merge-prod-lock
   fi
   LOCKFD=9
-  eval "exec $LOCKFD>\"$LOCKFILE\""
+  eval "exec ${LOCKFD}>\"$LOCKFILE\""
   trap "rm -f $LOCKFILE" EXIT
   if ! flock -xn $LOCKFD
   then
       trap EXIT
+      # Close our own fd to the lockfile before checking ownership below.
+      eval "exec ${LOCKFD}>&-"
       # Any subprocess of the script that holds the lock will also have an open
       # filehandle to $LOCKFILE.  Grab just one such PID for pstree (doesn't
       # matter which).
