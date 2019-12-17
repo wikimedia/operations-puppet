@@ -3,6 +3,8 @@ cluster: dnsbox
 prometheus::node_exporter::collectors_extra:
   - 'ntp'
 
+prometheus::haproxy_exporter::endpoint: 'http://127.0.0.1:8404/?stats;csv'
+
 profile::bird::advertise_vips:
   recdns.anycast.wmnet:
     address: 10.3.0.1 # VIP to advertise (limited to a /32)

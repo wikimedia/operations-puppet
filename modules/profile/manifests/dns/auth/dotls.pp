@@ -2,6 +2,8 @@ class profile::dns::auth::dotls(
     Hash[String, Hash[String, String]] $authdns_addrs = lookup('authdns_addrs'),
     String $cert_name = lookup('profile::dns::auth::dotls', {default_value => 'dotls-for-authdns'}),
 ) {
+    include ::profile::prometheus::haproxy_exporter
+
     # HAProxy needs the full chained cert *and* the private key in a single
     # file, which we're calling the "kchained" variant here:
     $chained_path = "/etc/acmecerts/${cert_name}/live/ec-prime256v1.chained.crt"
@@ -67,10 +69,6 @@ class profile::dns::auth::dotls(
         subscribe   => File[$sysd_glue],
         before      => Service['haproxy'],
         require     => Service['gdnsd'],
-    }
-
-    class { 'prometheus::haproxy_exporter':
-        endpoint => 'http://127.0.0.1:8404/?stats;csv',
     }
 
     $service_listeners = $authdns_addrs.map |$aspec| { $aspec[1]['address'] }
