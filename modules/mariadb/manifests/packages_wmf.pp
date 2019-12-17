@@ -20,10 +20,10 @@ class mariadb::packages_wmf(
         require_package('mariadb-backup')
     }
 
-    # if not defined, default to 10.1 on stretch, 10.0 elsewhere
+    # if not defined, default to 10.4 on buster, 10.1 on stretch, 10.0 elsewhere
     if $package == 'undefined' {
         if os_version('debian == buster'){
-            $mariadb_package = 'wmf-mariadb103'
+            $mariadb_package = 'wmf-mariadb104'
         } elsif os_version('debian == stretch') {
             $mariadb_package = 'wmf-mariadb101'
         } else {

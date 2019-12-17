@@ -1,6 +1,6 @@
 class role::mariadb::core_test {
     if os_version('debian >= buster') {
-        $default_package = 'wmf-mariadb103'
+        $default_package = 'wmf-mariadb104'
     } else {
         $default_package = 'wmf-mariadb101'
     }
@@ -53,7 +53,7 @@ class role::mariadb::core_test {
     }
 
     if $package in ['wmf-mariadb', 'wmf-mariadb10', 'wmf-mariadb101',
-                    'wmf-mariadb102', 'wmf-mariadb103'] {
+                    'wmf-mariadb102', 'wmf-mariadb103', 'wmf-mariadb104'] {
         $config_template = 'production.my.cnf.erb'
     } else {
         $config_template = 'core-mysql.my.cnf.erb'
