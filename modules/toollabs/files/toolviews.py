@@ -50,6 +50,7 @@ class ToolViews(object):
         r'(?P<bytes>\d+) '
         r'"(?P<referer>[^"]*)" '
         r'"(?P<ua>[^"]*)"'
+        r'(?P<extra>.*)'
     )
 
     UPSERT_SQL = (
@@ -155,7 +156,8 @@ class ToolViews(object):
                 if r['tool'] not in self.tools:
                     if tool not in ('.well-known', 'index.php', 'robots.txt'):
                         logger.info('Unknown tool "%s"', tool)
-                    tool = 'admin'
+                    # fourohfour is the default route handler
+                    tool = 'fourohfour'
                 stats[tool][r['datetime']] += 1
 
         rows = []
