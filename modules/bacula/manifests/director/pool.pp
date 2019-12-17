@@ -9,7 +9,7 @@
 #       The size of each volume if not autodiscovered (i.e. a Tape)
 #   $storage
 #       The storage archive device this pool's volume are in
-#   $volume_retetion
+#   $volume_retention
 #       For how long should the Catalog hold info about each volume
 #   $recycle
 #       yes, no, defaults to yes. Whether this pool's volumes will be recycled
@@ -29,9 +29,10 @@
 #
 # Sample Usage:
 #       bacula::director::pool { 'company':
-#           max_vols   => 10,
-#           storage     => 'mystor',
+#           max_vols         => 10,
+#           storage          => 'mystor',
 #           volume_retention => '20 days',
+#       }
 #
 define bacula::director::pool(
                             $max_vols,
