@@ -21,7 +21,8 @@ class profile::calico::kubernetes(
     }
 
     class { '::calico::cni':
-        kubeconfig => $kubeconfig,
+        kubeconfig     => $kubeconfig,
+        datastore_type => $datastore_type,
     }
 
     $bgp_peers_ferm = join($bgp_peers, ' ')

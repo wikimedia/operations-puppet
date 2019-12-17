@@ -2,7 +2,10 @@
 #
 # Installs and configure the cni plugins for calico.
 
-class calico::cni($kubeconfig) {
+class calico::cni(
+    $kubeconfig,
+    $datastore_type='etcdv2',
+) {
     require ::calico
 
     package { 'cni':
