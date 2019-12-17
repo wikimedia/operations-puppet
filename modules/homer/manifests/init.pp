@@ -4,10 +4,19 @@
 #
 # == Parameters:
 # - $private_git_peer: FQDN or IP of the private repo peer to sync to at each commit.
+# - $nb_token: Token to use to authenticate to Netbox
+# - $nb_api: Netbox URL
 #
 class homer(
     Stdlib::Host $private_git_peer,
+    String $nb_token,
+    Stdlib::HTTPSUrl $nb_api,
 ) {
+
+  $public_repo = '/srv/homer/public'
+  $private_repo = '/srv/homer/private'
+  $output_dir = '/srv/homer/output'
+
   file { '/srv/homer':
       ensure  => directory,
       owner   => 'root',
@@ -16,7 +25,7 @@ class homer(
       require => Scap::Target['homer/deploy'],
   }
 
-  file { '/srv/homer/output':
+  file { $output_dir:
       ensure  => directory,
       owner   => 'root',
       group   => 'ops',
@@ -27,7 +36,7 @@ class homer(
 # Clone the public data
   git::clone { 'operations/homer/public':
       ensure    => 'latest',
-      directory => '/srv/homer/public',
+      directory => $public_repo,
       owner     => 'root',
       group     => 'ops',
       mode      => '0440',
@@ -44,7 +53,7 @@ class homer(
 
   file { '/etc/homer/config.yaml':
       ensure  => present,
-      source  => 'puppet:///modules/homer/config.yaml',
+      content => template('homer/config.yaml.erb'),
       owner   => 'root',
       group   => 'ops',
       mode    => '0440',
@@ -61,7 +70,7 @@ class homer(
   }
 
   # Set git config and hooks for the private repo
-  $private_repo_git_dir = '/srv/homer/private/.git'
+  $private_repo_git_dir = "${private_repo}/.git"
   file { "${private_repo_git_dir}/config":
       ensure  => present,
       owner   => 'root',
@@ -78,4 +87,3 @@ class homer(
       source => 'puppet:///modules/homer/private-git/hooks',
   }
 }
-

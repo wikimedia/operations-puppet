@@ -1,0 +1,25 @@
+base_paths:
+  # Base path of public configuration.
+  public: <%= @public_repo %>
+  # [optional] Base path of private configuration.
+  private: <%= @private_repo %>
+  output: <%= @output_dir %>
+netbox:
+    # Netbox URL
+    url: <%= @nb_api %>
+    # Netbox token
+    token: <%= @nb_token %>
+    inventory:
+        device_roles:
+            - asw
+            - cr
+            - msw
+            - mr
+        device_statuses:
+            - Active
+            - Staged
+transports:
+  junos:
+    ignore_warning:
+      - statement must contain additional statements
+      - statement has no contents

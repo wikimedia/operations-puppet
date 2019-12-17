@@ -1,6 +1,0 @@
-base_paths:
-  # Base path of public configuration.
-  public: /srv/homer/public
-  # [optional] Base path of private configuration.
-  private: /srv/homer/private
-  output: /srv/homer/output
