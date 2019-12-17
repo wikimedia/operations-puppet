@@ -33,6 +33,7 @@ profile::hive::client::hive_server2_authentication_kerberos_principal: 'hive/_HO
 
 profile::analytics::cluster::client::kerberos_enabled: true
 
+profile::analytics::search::jobs::use_kerberos: true
 profile::statistics::private::use_kerberos: true
 
 profile::base::debdeploy::exclude_mounts:
