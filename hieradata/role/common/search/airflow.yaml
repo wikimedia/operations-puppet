@@ -27,6 +27,9 @@ profile::analytics::search::airflow::pid_dir: '/var/run/airflow'
 profile::analytics::search::airflow::conf_dir: '/etc/airflow'
 profile::analytics::search::airflow::conf_file: 'airflow.cfg'
 
+
+profile::analytics::cluster::client::kerberos_enabled: true
+
 # The airflow keytab contains, for the moment, credentials
 # for the analytics-search principal. Airflow is not going to
 # impersonate users, so this is the best and easiest
