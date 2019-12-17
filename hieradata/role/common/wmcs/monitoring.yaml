@@ -16,13 +16,13 @@ profile::grafana::ldap_edit_groups:
   - cn=wmf,ou=groups,dc=wikimedia,dc=org
   - cn=grafana-admin,ou=groups,dc=wikimedia,dc=org
   - cn=project-bastion,ou=groups,dc=wikimedia,dc=org
-profile::wmcs::monitoring::statsd_master: labmon1001.eqiad.wmnet
-profile::wmcs::monitoring::statsd_standby: cloudmetrics1002.eqiad.wmnet
+profile::wmcs::monitoring::statsd_master: cloudmetrics1002.eqiad.wmnet
+profile::wmcs::monitoring::statsd_standby: labmon1001.eqiad.wmnet
 # In private repo
 #profile::grafana::secret_key:
 #profile::grafana::admin_password:
 contactgroups: wmcs-team
 mgmt_contactgroups: wmcs-team-email
 # cloudmetrics
-statsite::instance::graphite_host: labmon1001.eqiad.wmnet
+statsite::instance::graphite_host: cloudmetrics1002.eqiad.wmnet
 statsite::instance::extended_counters: 1

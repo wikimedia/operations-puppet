@@ -53,7 +53,7 @@ profile::standard::enable_ip6_mapped: false
 profile::base::remote_syslog: []
 
 # Labs statsd instance
-statsd: labmon1001.eqiad.wmnet:8125
+statsd: cloudmetrics1002.eqiad.wmnet:8125
 
 # Other overrides
 elasticsearch::version: 2
@@ -64,7 +64,7 @@ elasticsearch::expected_nodes: 1
 elasticsearch::recover_after_nodes: 1
 archiva::proxy::ssl_enabled: false
 archiva::proxy::certificate_name: ssl-cert-snakeoil
-statsite::instance::graphite_host: 'labmon1001.eqiad.wmnet'
+statsite::instance::graphite_host: 'cloudmetrics1002.eqiad.wmnet'
 profile::puppetmaster::frontend::canary_hosts: []
 puppetmaster::servers:
   "%{hiera('puppetmaster')}":

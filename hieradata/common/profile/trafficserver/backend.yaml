@@ -64,16 +64,16 @@ profile::trafficserver::backend::mapping_rules:
       replacement: https://grafana1002.eqiad.wmnet
     - type: map
       target: http://grafana-labs-admin.wikimedia.org
-      replacement: http://labmon1001.eqiad.wmnet
+      replacement: http://cloudmetrics1002.eqiad.wmnet
     - type: map
       target: http://grafana-labs.wikimedia.org
-      replacement: http://labmon1001.eqiad.wmnet
+      replacement: http://cloudmetrics1002.eqiad.wmnet
     - type: map
       target: http://grafana.wikimedia.org
       replacement: https://grafana1002.eqiad.wmnet
     - type: map
       target: http://graphite-labs.wikimedia.org
-      replacement: http://labmon1001.eqiad.wmnet
+      replacement: http://cloudmetrics1002.eqiad.wmnet
     - type: map
       target: http://graphite.wikimedia.org
       replacement: https://graphite.discovery.wmnet
@@ -281,7 +281,7 @@ profile::trafficserver::backend::caching_rules:
       value: grafana1002.eqiad.wmnet
       action: never-cache
     - primary_destination: dest_host
-      value: labmon1001.eqiad.wmnet
+      value: cloudmetrics1002.eqiad.wmnet
       action: never-cache
     - primary_destination: dest_host
       value: mendelevium.eqiad.wmnet
