@@ -5,6 +5,6 @@ class profile::mediawiki::maintenance::growthexperiments {
     # /var/log/mediawiki/mediawiki_job_growthexperiments-deleteOldSurveys/syslog.log
     profile::mediawiki::periodic_job { 'growthexperiments-deleteOldSurveys':
         command  => '/usr/local/bin/foreachwikiindblist /srv/mediawiki/dblists/growthexperiments.dblist extensions/GrowthExperiments/maintenance/deleteOldSurveys.php --cutoff 335',
-        interval => '*-*-1,15 3:15:00',
+        interval => '*-*-01,15 03:15:00',
     }
 }
