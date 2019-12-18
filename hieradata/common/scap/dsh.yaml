@@ -3,13 +3,13 @@
 scap::dsh::scap_proxies:
   - "mw1268.eqiad.wmnet" # A7 eqiad
   - "mw1285.eqiad.wmnet" # B7 eqiad
-  - "mw1314.eqiad.wmnet" # B7 eqiad
-  - "mw1320.eqiad.wmnet" # C6 eqiad
+  - "mw1313.eqiad.wmnet" # B7 eqiad
+  - "mw1319.eqiad.wmnet" # C6 eqiad
   - "mw1251.eqiad.wmnet" # D5 eqiad
-  - "mw2255.codfw.wmnet" # B3 codfw
+  - "mw2254.codfw.wmnet" # B3 codfw
   - "mw2188.codfw.wmnet" # C4 codfw
-  - "mw2216.codfw.wmnet" # A3 codfw
-  - "mw2290.codfw.wmnet" # D4 codfw
+  - "mw2215.codfw.wmnet" # A3 codfw
+  - "mw2289.codfw.wmnet" # D4 codfw
 
 scap::dsh::scap_masters:
   - "deploy1001.eqiad.wmnet"
