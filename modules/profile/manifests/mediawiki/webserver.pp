@@ -145,11 +145,4 @@ class profile::mediawiki::webserver(
         srange => "(@resolve((${prometheus_nodes_ferm})) @resolve((${prometheus_nodes_ferm}), AAAA))",
     }
 
-    if ($::fqdn == 'mwdebug1002.eqiad.wmnet') {
-        motd::script { 'mwdebug1002_warning':
-            ensure   => 'present',
-            priority => 1,
-            content  => file('profile/mediawiki/mwdebug1002_warning.sh'),
-        }
-    }
 }
