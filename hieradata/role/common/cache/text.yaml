@@ -65,7 +65,7 @@ cache::app_directors:
       port: 8080
     backends:
       eqiad: 'cxserver.svc.eqiad.wmnet'
-      codfw: 'cxserver.svc.codfw.wmnet'
+      # codfw: 'cxserver.svc.codfw.wmnet'
   webserver_misc_static:
     backends:
       eqiad: 'bromine.eqiad.wmnet'
@@ -98,7 +98,7 @@ cache::app_directors:
       port: 33192 # non-TLS port
     backends:
       eqiad: 'eventgate-logging-external.svc.eqiad.wmnet'
-      codfw: 'eventgate-logging-external.svc.codfw.wmnet'
+      # codfw: 'eventgate-logging-external.svc.codfw.wmnet'
   eventstreams:
     be_opts:
       port: 8092
@@ -220,7 +220,7 @@ cache::app_directors:
       port: 8748
     backends:
       eqiad: 'blubberoid.svc.eqiad.wmnet'
-      codfw: 'blubberoid.svc.codfw.wmnet'
+      # codfw: 'blubberoid.svc.codfw.wmnet'
   docker_registry:
       be_opts:
         port: 81
