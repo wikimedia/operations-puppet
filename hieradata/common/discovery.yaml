@@ -101,7 +101,7 @@ discovery::services:
     lvs: blubberoid
     active_active: true
   eventgate-analytics:
-    lvs: eventgate-analytics-http
+    lvs: eventgate-analytics
     active_active: true
   docker-registry:
     lvs: docker-registry

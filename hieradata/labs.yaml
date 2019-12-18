@@ -11,6 +11,7 @@ discovery::app_routes:
   mobileapps: "%{::site}"
   graphoid: "%{::site}"
   mathoid: "%{::site}"
+  eventgate-analytics-http: "%{::site}"
   eventgate-analytics: "%{::site}"
   eventgate-main: "%{::site}"
   eventgate-logging-external: "%{::site}"

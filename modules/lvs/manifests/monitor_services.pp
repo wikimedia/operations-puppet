@@ -69,6 +69,12 @@ class lvs::monitor_services(
             "check_eventgate_analytics_cluster_${dc}":
                 host          => "eventgate-analytics.svc.${dc}.wmnet",
                 description   => "eventgate-analytics LVS ${dc}",
+                check_command => "check_wmf_service!https://eventgate-analytics.svc.${dc}.wmnet:4192!15",
+                notes_url     => 'https://wikitech.wikimedia.org/wiki/Event_Platform/EventGate',
+                ;
+            "check_eventgate_analytics_http_cluster_${dc}":
+                host          => "eventgate-analytics.svc.${dc}.wmnet",
+                description   => "eventgate-analytics-http LVS ${dc}",
                 check_command => "check_wmf_service!http://eventgate-analytics.svc.${dc}.wmnet:31192!15",
                 notes_url     => 'https://wikitech.wikimedia.org/wiki/Event_Platform/EventGate',
                 ;
