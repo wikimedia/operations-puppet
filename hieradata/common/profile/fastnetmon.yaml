@@ -1,0 +1,10 @@
+---
+
+profile::fastnetmon::thresholds_overrides:
+  wmcs_eqiad_gw:
+    hosts: # Include netmask, IPV4 only
+      - 185.15.56.1/32
+    thresholds: # disabled if not present/commented out
+      pps: 200000
+      mbps: 1000
+      #flows:

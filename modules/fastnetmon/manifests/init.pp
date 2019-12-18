@@ -7,12 +7,18 @@
 #  [*networks*]
 #    List of Networks we care about
 #    Default: []
+#
+#  [*thresholds_overrides*]
+#    Dict of exceptions to the global thresholds
+#    Default: []
+#
 #  [*graphite_host*]
 #    Hostname of the Graphite ingester
 #    Optional
 
 class fastnetmon(
   Array[Stdlib::IP::Address,1] $networks = [],
+  Hash[String, Hash[String, Any]] $thresholds_overrides = [],
   Optional[Stdlib::Host] $graphite_host = undef,
   ) {
 

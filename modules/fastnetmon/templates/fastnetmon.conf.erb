@@ -180,20 +180,28 @@ graphite_prefix = fastnetmon
 # Works only for Linux
 monitor_local_ip_addresses = off
 
-# Create group of hosts with non-standard thresholds
-# You should create this group before (in configuration file) specifying any limits
-hostgroup = my_hosts:10.10.10.221/32,10.10.10.222/32 # TODO, per DC groups?
-
-# Configure this group
-my_hosts_enable_ban = off
-
-my_hosts_ban_for_pps = off
-my_hosts_ban_for_bandwidth = off
-my_hosts_ban_for_flows = off
-
-my_hosts_threshold_pps = 20000
-my_hosts_threshold_mbps = 1000
-my_hosts_threshold_flows = 3500
+<% @thresholds_overrides.each do | groupname, attributes| -%>
+hostgroup = <%= groupname %>:<%= attributes['hosts'].join(',') %>
+<%= groupname %>_enable_ban = on
+<% if attributes['thresholds']['pps'] %>
+<%= groupname %>_ban_for_pps = on
+<%= groupname %>_threshold_pps = <%= attributes['thresholds']['pps'] %>
+<% else %>
+<%= groupname %>_ban_for_pps = off
+<% end -%>
+<% if attributes['thresholds']['mbps'] %>
+<%= groupname %>_ban_for_bandwidth = on
+<%= groupname %>_threshold_bandwidth = <%= attributes['thresholds']['mbps'] %>
+<% else %>
+<%= groupname %>_ban_for_bandwidth = off
+<% end -%>
+<% if attributes['thresholds']['flows'] %>
+<%= groupname %>_ban_for_flows = on
+<%= groupname %>_threshold_flows = <%= attributes['thresholds']['flows'] %>
+<% else %>
+<%= groupname %>_ban_for_flows = off
+<% end -%>
+<% end -%>
 
 # Path to pid file for checking "if another copy of tool is running", it's useful when you run multiple instances of tool
 pid_path = /var/run/fastnetmon.pid

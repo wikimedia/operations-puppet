@@ -1,13 +1,16 @@
 # == Class profile::fastnetmon
 # Sets up Fastnetmon: netflow collector and DDoS detection
-class profile::fastnetmon () {
+class profile::fastnetmon (
+  Hash[String, Hash[String, Any]] $thresholds_overrides = lookup('profile::fastnetmon::thresholds_overrides'),
+  ) {
 
     include network::constants
 
     ensure_resource('class', 'geoip')
 
     class { '::fastnetmon':
-        networks      => $::network::constants::external_networks,
+        networks             => $::network::constants::external_networks,
+        thresholds_overrides => $thresholds_overrides,
     }
 
     ferm::service { 'FNM-netflow':
