@@ -21,6 +21,7 @@ class ganeti(
             'ganeti',
             'drbd-utils',
             'ovmf',
+            'ganeti-instance-debootstrap',
             ] :
         ensure => installed,
     }
