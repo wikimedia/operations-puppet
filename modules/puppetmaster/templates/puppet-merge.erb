@@ -110,10 +110,10 @@ fi
 # puppet-merge.py exits with 99 if no merge was performed
 if [ ${PROD_EXIT} -eq 99 -a ${LABS_EXIT} -eq 99 ]; then
   exit 0
-elif [ ${PROD_EXIT} -ne 0 -a ${PROD_EXIT} -ne 99]; then
+elif [ ${PROD_EXIT} -ne 0 -a ${PROD_EXIT} -ne 99 ]; then
   printf 'problems merging production'
   exit ${PROD_EXIT}
-elif [ ${LABS_EXIT} -ne 0 -a ${LABS_EXIT} -ne 99]; then
+elif [ ${LABS_EXIT} -ne 0 -a ${LABS_EXIT} -ne 99 ]; then
   printf 'problems merging LABS'
   exit ${LABS_EXIT}
 fi
