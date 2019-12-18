@@ -324,3 +324,7 @@ eqiad:
   ncredir:
     ncredir1001.eqiad.wmnet: [nginx]
     ncredir1002.eqiad.wmnet: [nginx]
+  cloudceph:
+    cloudcephmon1001.wikimedia.org: [cloudceph]
+    cloudcephmon1002.wikimedia.org: [cloudceph]
+    cloudcephmon1003.wikimedia.org: [cloudceph]

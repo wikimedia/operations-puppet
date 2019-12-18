@@ -183,6 +183,8 @@ lvs::configuration::lvs_service_ips:
   eventgate-logging-external: &ip_block059
     eqiad: 10.2.2.50
     codfw: 10.2.1.50
+  cloudceph: &ip_block060
+    eqiad: 10.2.2.51
 
 lvs::configuration::lvs_services:
   text:
@@ -2010,3 +2012,27 @@ lvs::configuration::lvs_services:
           hostname: echostore.svc.eqiad.wmnet
         codfw:
           hostname: echostore.svc.codfw.wmnet
+  cloudceph:
+    description: "CloudVPS Ceph Cluster Stats, cloudceph.svc.%{::site}.wmnet"
+    class: low-traffic
+    sites:
+    - eqiad
+    ip: *ip_block060
+    port: 9283
+    depool-threshold: '.5'
+    monitors:
+      ProxyFetch:
+        url:
+          - http://localhost:9283/
+      IdleConnection:
+        timeout-clean-reconnect: 3
+        max-delay: 300
+    conftool:
+      cluster: cloudceph
+      service: cloudceph
+    icinga:
+      critical: false
+      check_command: check_http_on_port!9283
+      sites:
+        eqiad:
+          hostname: cloudceph.svc.eqiad.wmnet
