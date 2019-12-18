@@ -1017,7 +1017,6 @@ sub vcl_synth {
 		if (resp.reason == "Browser Connection Security Warning") {
 			set resp.http.Connection = "keep-alive";
 			set resp.http.Cache-Control = "public, max-age=3600, s-maxage=3600";
-			set resp.http.Content-Type = "text/html; charset=utf-8";
 			call browser_sec_synth;
 			return (deliver);
 		}
