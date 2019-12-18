@@ -65,7 +65,8 @@ It also runs the conftool merge if necessary.
 
 SHA1 equals HEAD if not specified
 "
-
+# preserve arguments before we shift them all
+ORIG_ARGS="$@"
 TEMP=$(getopt -o yhqd --long yes,help,quiet,labsprivate,diffs -n "$0" -- "$@")
 if [ $? != 0 ] ; then echo "Terminating..." >&2 ; exit 1 ; fi
 
@@ -95,18 +96,26 @@ set +e
 
 if [ $LABS_PRIVATE -eq 1 ]; then
     # if --labsprivate is used just sync the labsprivate repo
-    /usr/local/bin/puppet-merge.py  "$@"
+    /usr/local/bin/puppet-merge.py  "$ORIG_ARGS"
+    LABS_EXIT=$?
+    # fake the production exit
+    PROD_EXIT=99
 else
     # We want to do a labs merge every time we do an ops merge
-    /usr/local/bin/puppet-merge.py  "$@" --labsprivate
-    /usr/local/bin/puppet-merge.py "$@" --ops
+    /usr/local/bin/puppet-merge.py  "$ORIG_ARGS" --labsprivate
+    LABS_EXIT=$?
+    /usr/local/bin/puppet-merge.py "$ORIG_ARGS" --ops
+    PROD_EXIT=$?
 fi
-exit_code=$?
 # puppet-merge.py exits with 99 if no merge was performed
-if [ ${exit_code} -eq 99 ]; then
+if [ ${PROD_EXIT} -eq 99 -a ${LABS_EXIT} -eq 99 ]; then
   exit 0
-elif [ ${exit_code} -ne 0 ]; then
-  exit ${exit_code}
+elif [ ${PROD_EXIT} -ne 0 -a ${PROD_EXIT} -ne 99]; then
+  printf 'problems merging production'
+  exit ${PROD_EXIT}
+elif [ ${LABS_EXIT} -ne 0 -a ${LABS_EXIT} -ne 99]; then
+  printf 'problems merging LABS'
+  exit ${LABS_EXIT}
 fi
 
 <%- if @servers.has_key?(@fqdn) -%>
