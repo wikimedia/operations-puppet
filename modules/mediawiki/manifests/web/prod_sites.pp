@@ -453,6 +453,7 @@ class mediawiki::web::prod_sites(String $fcgi_proxy) {
                 'mai.wikimedia.org',
                 'mk.wikimedia.org',
                 'mx.wikimedia.org',
+                'ng.wikimedia.org',
                 'nl.wikimedia.org',
                 'no.wikimedia.org',
                 'noboard-chapters.wikimedia.org',
