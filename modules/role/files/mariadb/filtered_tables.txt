@@ -133,8 +133,6 @@ archive,ar_id,K
 archive,ar_namespace,K
 archive,ar_title,K
 archive,ar_comment_id,F
-archive,ar_user,K
-archive,ar_user_text,K
 archive,ar_timestamp,K
 archive,ar_minor_edit,K
 archive,ar_rev_id,K
@@ -315,9 +313,6 @@ image,img_bits,K
 image,img_media_type,K
 image,img_major_mime,K
 image,img_minor_mime,K
-image,img_description,K
-image,img_user,K
-image,img_user_text,K
 image,img_timestamp,K
 image,img_sha1,K
 imagelinks,il_from,K
@@ -333,8 +328,6 @@ interwiki,iw_wikiid,K
 ipblocks,ipb_id,K
 ipblocks,ipb_address,K
 ipblocks,ipb_user,K
-ipblocks,ipb_by,K
-ipblocks,ipb_reason,K
 ipblocks,ipb_reason_id,K
 ipblocks,ipb_timestamp,K
 ipblocks,ipb_auto,K
@@ -346,7 +339,6 @@ ipblocks,ipb_range_end,K
 ipblocks,ipb_enable_autoblock,K
 ipblocks,ipb_deleted,K
 ipblocks,ipb_block_email,K
-ipblocks,ipb_by_text,K
 ipblocks,ipb_allow_usertalk,K
 ipblocks,ipb_parent_block_id,K
 iwlinks,iwl_from,K
@@ -370,14 +362,11 @@ logging,log_id,K
 logging,log_type,K
 logging,log_action,K
 logging,log_timestamp,K
-logging,log_user,K
 logging,log_namespace,K
 logging,log_title,K
-logging,log_comment,K
 logging,log_comment_id,K
 logging,log_params,K
 logging,log_deleted,K
-logging,log_user_text,K
 logging,log_page,K
 machine_vision_freebase_mapping,mvfm_freebase_id,K
 machine_vision_freebase_mapping,mvfm_wikidata_id,K
@@ -431,10 +420,7 @@ oldimage,oi_size,K
 oldimage,oi_width,K
 oldimage,oi_height,K
 oldimage,oi_bits,K
-oldimage,oi_description,K
 oldimage,oi_description_id,K
-oldimage,oi_user,K
-oldimage,oi_user_text,K
 oldimage,oi_timestamp,K
 oldimage,oi_metadata,K
 oldimage,oi_media_type,K
@@ -508,7 +494,6 @@ povwatch_subscribers,pws_user,K
 protected_titles,pt_namespace,K
 protected_titles,pt_title,K
 protected_titles,pt_user,K
-protected_titles,pt_reason,K
 protected_titles,pt_reason_id,K
 protected_titles,pt_timestamp,K
 protected_titles,pt_expiry,K
@@ -517,11 +502,8 @@ reading_list_project,rlp_id,K
 reading_list_project,rlp_project,K
 recentchanges,rc_id,K
 recentchanges,rc_timestamp,K
-recentchanges,rc_user,K
-recentchanges,rc_user_text,K
 recentchanges,rc_namespace,K
 recentchanges,rc_title,K
-recentchanges,rc_comment,K
 recentchanges,rc_comment_id,K
 recentchanges,rc_minor,K
 recentchanges,rc_bot,K
