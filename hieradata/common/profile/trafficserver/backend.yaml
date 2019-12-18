@@ -323,6 +323,7 @@ profile::trafficserver::backend::caching_rules:
       value: webserver-misc-apps.discovery.wmnet
       action: never-cache
 profile::trafficserver::backend::default_lua_script: 'default'
+profile::trafficserver::backend::enable_compress: false
 profile::trafficserver::backend::outbound_tls_settings:
   common:
     cipher_suite: '-ALL:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384'
