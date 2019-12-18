@@ -1,6 +1,7 @@
 {
     "ALLOWED_HOSTS": ["<%= @public_server_name -%>", "<%= @internal_server_name -%>"],
     "PROXY_HOSTS": <%= @proxy_hosts %>,
+    "PROXY_IMAGES": <%= @proxy_images %>,
     "SECRET_KEY": "<%= @django_secret_key %>",
     "STATIC_ROOT": "<%= @static_path %>",
     "MYSQL": {
