@@ -13,6 +13,7 @@ discovery::app_routes:
   mathoid: "%{::site}"
   eventgate-analytics-http: "%{::site}"
   eventgate-analytics: "%{::site}"
+  eventgate-main-http: "%{::site}"
   eventgate-main: "%{::site}"
   eventgate-logging-external: "%{::site}"
   sessionstore: "%{::site}"

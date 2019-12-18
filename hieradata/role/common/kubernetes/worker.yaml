@@ -39,7 +39,7 @@ profile::lvs::realserver::pools:
   zotero: {}
   blubberoid: {}
   eventgate-analytics: {}
-  eventgate-main-http: {}
+  eventgate-main: {}
   eventgate-logging-external: {}
   citoid: {}
   cxserver: {}

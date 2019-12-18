@@ -107,7 +107,7 @@ discovery::services:
     lvs: docker-registry
     active_active: false
   eventgate-main:
-    lvs: eventgate-main-http
+    lvs: eventgate-main
     active_active: true
   eventgate-logging-external:
     lvs: eventgate-logging-external
