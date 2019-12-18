@@ -1696,7 +1696,7 @@ node /^netmon(1002|2001)\.wikimedia\.org$/ {
 }
 
 # Network insights (netflow/pmacct, etc.)
-node /^netflow(1001|2001)\.(eqiad|codfw)\.wmnet$/ {
+node /^netflow[1-5]001\.(eqiad|codfw|ulsfo|esams|eqsin)\.wmnet$/ {
     role(netinsights)
 }
 
