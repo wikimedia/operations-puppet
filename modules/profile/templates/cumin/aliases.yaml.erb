@@ -125,7 +125,7 @@ kafka-mirror-maker-main-eqiad: A:kafka-main-eqiad and A:kafka-mirror-maker
 kubernetes-etcd: P{O:etcd::kubernetes}
 kubernetes-etcd-network: P{O:etcd::networking}
 kubernetes-masters: P{O:kubernetes::master}
-kubernetes-staging: P{O:kubernetes::staging::etcd or O:kubernetes::staging::master or O:kubernetes::staging::worker}
+kubernetes-staging: P{O:etcd::v3::kubernetes::staging or O:kubernetes::staging::master or O:kubernetes::staging::worker}
 kubernetes-workers: P{O:kubernetes::worker}
 kubernetes-all: A:kubernetes-etcd or A:kubernetes-masters or A:kubernetes-staging or A:kubernetes-workers or A:kubernetes-etcd-network
 labmon: P{O:wmcs::monitoring}

@@ -924,13 +924,8 @@ node 'furud.codfw.wmnet' {
 
 # Etcd cluster for kubernetes
 # TODO: Rename the eqiad etcds to the codfw etcds naming scheme
-node /^(kub)?etcd[12]00[123]\.(eqiad|codfw)\.wmnet$/ {
+node /^etcd100[123]\.(eqiad|codfw)\.wmnet$/ {
     role(etcd::kubernetes)
-}
-
-# Etcd cluster for kubernetes staging
-node /^kubestagetcd100[123]\.eqiad\.wmnet$/ {
-    role(kubernetes::staging::etcd)
 }
 
 # Etcd clusters for kubernetes, v3
