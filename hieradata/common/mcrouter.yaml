@@ -5,15 +5,15 @@ mcrouter::shards:
   proxies:
     eqiad:
       A:
-        host: 10.64.0.64 # mw1269, A7
+        host: 10.64.0.65 # mw1270, A7
         port: 11214
         ssl: true
       B:
-        host: 10.64.16.51 # mw1286, B7
+        host: 10.64.16.52 # mw1287, B7
         port: 11214
         ssl: true
       C:
-        host: 10.64.32.42 # mw1321, C6
+        host: 10.64.32.41 # mw1320, C6
         port: 11214
         ssl: true
       D:
@@ -22,11 +22,11 @@ mcrouter::shards:
         ssl: true
     codfw:
       A:
-        host: 10.192.0.61 # mw2235, A3
+        host: 10.192.0.61 # mw2236, A3
         port: 11214
         ssl: true
       B:
-        host: 10.192.16.54 # mw2255, B3
+        host: 10.192.16.55 # mw2256, B3
         port: 11214
         ssl: true
       C:
@@ -34,7 +34,7 @@ mcrouter::shards:
         port: 11214
         ssl: true
       D:
-        host: 10.192.48.93 # mw2271, D3
+        host: 10.192.48.94 # mw2272, D3
         port: 11214
         ssl: true
   wancache:
