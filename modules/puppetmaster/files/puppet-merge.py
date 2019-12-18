@@ -43,7 +43,8 @@ def get_args():
     parser.add_argument('-y', '--yes', action='store_true',
                         help='Automatic yes to prompts; assume "yes" as answer to all prompts')
     parser.add_argument('-q', '--quiet', action='store_true', help='Limit output')
-    parser.add_argument('-d', '--diffs', help='Only produce diffs do not perform the git merge')
+    parser.add_argument('-d', '--diffs', action='store_true',
+                        help='Only produce diffs do not perform the git merge')
     group = parser.add_mutually_exclusive_group(required=True)
     group.add_argument('-p', '--labsprivate', action='store_true',
                        help='work on the labs private repo')
