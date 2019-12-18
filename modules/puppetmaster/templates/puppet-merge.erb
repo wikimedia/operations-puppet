@@ -102,9 +102,9 @@ if [ $LABS_PRIVATE -eq 1 ]; then
     PROD_EXIT=99
 else
     # We want to do a labs merge every time we do an ops merge
-    /usr/local/bin/puppet-merge.py  "$ORIG_ARGS" --labsprivate
+    /usr/local/bin/puppet-merge.py --labsprivate $ORIG_ARGS
     LABS_EXIT=$?
-    /usr/local/bin/puppet-merge.py "$ORIG_ARGS" --ops
+    /usr/local/bin/puppet-merge.py --ops $ORIG_ARGS
     PROD_EXIT=$?
 fi
 # puppet-merge.py exits with 99 if no merge was performed
