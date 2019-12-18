@@ -93,10 +93,16 @@ def parse_users(yamldata):
                     groups.append(group)
 
             if table == 'users':
+                if 'krb' in userdata:
+                    krb_state = userdata['krb']
+                else:
+                    krb_state = 'absent'
+
                 users[username] = {
                     'ensure': userdata['ensure'],
                     'realname': userdata['realname'],
                     'ldap_only': False,
+                    'krb': krb_state,
                     'uid': userdata['uid'],
                     'prod_groups': groups,
                     'has_server_access': (len(userdata['ssh_keys']) > 0),
@@ -340,6 +346,17 @@ def offboard_analytics(username):
     print()
 
 
+def offboard_kerberos(username):
+
+    yamldata = fetch_yaml_data()
+    users = parse_users(yamldata)
+
+    if username not in users:
+        return
+    elif users[username]['krb'] == 'present':
+        print (username, 'has a Kerberos user principal, make sure to remove it')
+
+
 def remove_user_from_project(user_phid, project_phid, phab_client):
     t = {}
     t['type'] = 'members.remove'
@@ -436,6 +453,8 @@ def main():
     if options.ldap_username:
         offboard_ldap(options.ldap_username, options.remove_all_groups,
                       options.turn_volunteer, options.dry_run, options.disableuser)
+
+        offboard_kerberos(options.ldap_username)
 
         if not options.skip_analytics:
             offboard_analytics(options.ldap_username)

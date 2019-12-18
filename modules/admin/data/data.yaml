@@ -1891,6 +1891,7 @@ users:
     - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCQoCbWXpMPwiJa8zQPFpUKP9hgtAxeMa6Eol3SBxqUC5hspYZ9fgYLMB2HlqSNrGdMopMltMBDOi3/90NZQ32vZVrK0KZt04icPINibgjUBzHdI0xlvurgE2AOdVUuswDDsUzFk0eUInCrymZ13mKC7dS9IE+lqbIxM0VIHgctI/dW5rATnDDsRv/L68tpsZtoZlOunomR6uqWGws99TZm/652wikMpmjUy4Gb1ruvuOwbJUQp7erb+V5+zq6JzuCwuJQzwscz1lg4qwPZ9din2CKNn8ZfMgQ8LtZyrBOVVrSTS/DB0H4JdILJUtaqc7HOhGC7w1wN+tYyD1Xj/MYJ Moritz Muehlenhoff production NEO key
     uid: 11984
     email: mmuhlenhoff@wikimedia.org
+    krb: present
   pcoombe:
     ensure: present
     gid: 500
