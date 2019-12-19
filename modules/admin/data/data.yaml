@@ -158,7 +158,7 @@ groups:
               fdans, mlitn, niharika29, goransm, pmiazga, dsaez, shiladsen, cicalese,
               mirrys, sharvaniharan, mmiller, amire80, rush, tieu, kharlan, gbirke, dedcode,
               isaacj, jdl, joewalsh, phuedx, bd808, iflorez, mayakpwiki, conniecc1, abi,
-              cohi, keepit-ssh, kzeta]
+              cohi, keepit-ssh, kzeta, snowick]
   ldap-admins:
     gid: 715
     description: ldap admins
@@ -282,7 +282,7 @@ groups:
               cicalese, drossi, fsalutari, nathante, gbirke, isaacj, sbassett, jdl, gsingers,
               niharika29, ryanmax, afandian2, jgleeson, toddleroux, srishakatux, dsharpe, eyener,
               esanders, sukhe, jfishback, iflorez, mayakpwiki, conniecc1, abi, mgerlach, dedcode,
-              lexnasser, kevinbazira, keepit-ssh, jiji, cohi, mstyles, accraze, kzeta]
+              lexnasser, kevinbazira, keepit-ssh, jiji, cohi, mstyles, accraze, kzeta, snowick]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata]
   analytics-admins:
@@ -3429,6 +3429,14 @@ users:
     name: kzeta
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPMWu5DNleqah845EhqYF3yYqVBhHCFseT1lEq5dzym1 kzimmerman@wikimedia.org
+  snowick:
+    ensure: present
+    realname: Shay Nowick
+    email: snowick@wikimedia.org
+    uid: 22737
+    gid: 500
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDKZ/yB2DOeQzTuQtZB7atQF/7O2vkXttGQfBw1M5vmLJH4GZ07gqqeoJdAXbeOtH73Ta1KYEF2aAL4uWXbuhgBxChjMMApDZI4Vp9/T8HXlT85+G2eusdZcqg1M8bWxuUIH1WIoCVBppiWBaRH2sJwIa09F2gzK6Hqqe+E1Skd5+x44xR9DXi7Vql2u7SgQ2OHNbDAHEF3OUCUR76d2LifiALUd4LjbmI3Nrn2BbzL6thgDZB5jVU2jv7plH0utEfhKla4A9f4wyzzvRiso7M/TIs6QuZJMSLv3gJbQ6UnPn0OnK1pbnr6H6uWRwbJTty+e72JMKepoPnW756rPYgvlG6MARYlJ0bTYoiof4QW5ZRRWn41YHOs4Zb/53in7BJ0lhq3Q6NdyMdPQFRe7uJfJQ1VGaF3xTmf0ZtA77YYBAdkidGUpPi60BEZAtZqgRO+NFkjFn2dQgsnConvHiMJgFd1ZUQXAkZuzvEPTEWzHi7zr5zkb6gc3maptlD+Nfafvju6RuhZKmM6B+KMODuF7XT+OY/nOT4Zqk5vaMYFaWE66QXgkSC9fFdWgrmmWpPprhm6u1QVu5X1k92spi5yvqEKHDzxNzQNOdJn6UZBNL1B18ZYwZIB/TKO9u7EArJxtU/wDBzc2SybFwNJsePX9DOBUOX5iX/MhGhgRsckDQ== snowick@Shays-MacBook-Pro.local
 ldap_only_users:
   abartov:
     ensure: present
