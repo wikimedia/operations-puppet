@@ -972,8 +972,8 @@ node /^ganeti[4]00[123]\.ulsfo\.wmnet$/ {
 }
 
 # new edge ganeti hosts T226444
-node /^ganeti[3]00[1-3]\.ulsfo.wmnet$/ {
-    role(spare::system)
+node /^ganeti[3]00[123]\.esams\.wmnet$/ {
+    role(ganeti)
 }
 
 # Virtual machine being turned up to run Grafana (T210416)

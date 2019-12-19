@@ -22,6 +22,10 @@ profile::ganeti::ganeti01.svc.ulsfo.wmnet::nodes:
   - ganeti4001.ulsfo.wmnet
   - ganeti4002.ulsfo.wmnet
   - ganeti4003.ulsfo.wmnet
+profile::ganeti::ganeti01.svc.esams.wmnet::nodes:
+  - ganeti3001.esams.wmnet
+  - ganeti3002.esams.wmnet
+  - ganeti3003.esams.wmnet
 profile::ganeti::rapi_nodes:
     - netbox1001.wikimedia.org
     - netbox2001.wikimedia.org
