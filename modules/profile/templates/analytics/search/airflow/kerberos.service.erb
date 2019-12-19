@@ -17,18 +17,20 @@
 # under the License.
 
 [Unit]
-Description=Airflow scheduler daemon
-After=network.target airflow-kerberos.service
+Description=Airflow kerberos ticket renewer
+After=network.target
 
 [Service]
-SyslogIdentifier=airflow-scheduler
+SyslogIdentifier=airflow-kerberos
 Environment=AIRFLOW_HOME=<%= @conf_dir %>
 User=<%= @service_user %>
 Group=<%= @service_group %>
 Type=simple
-ExecStart=<%= @deploy_dir %>/venv/bin/airflow scheduler
-Restart=always
+ExecStart=<%= @deploy_dir %>/venv/bin/airflow kerberos
+        --pid <%= @pid_dir %>/kerberos.pid
+Restart=on-failure
 RestartSec=5s
+PrivateTmp=true
 
 [Install]
 WantedBy=multi-user.target

@@ -134,7 +134,7 @@ task_runner = StandardTaskRunner
 default_impersonation =
 
 # What security module to use (for example kerberos):
-security =
+security = kerberos
 
 # If set to False enables some unsecure features like Charts and Ad Hoc Queries.
 # In 2.0 will default to True.
@@ -579,12 +579,12 @@ authenticate = False
 # docker_image_slave = puckel/docker-airflow
 
 [kerberos]
-ccache = /tmp/airflow_krb5_ccache
+ccache = /tmp/airflow_<%= @service_user %>_krb5_ccache
 # gets augmented with fqdn
-principal = airflow
+principal = <%= @service_user %>
 reinit_frequency = 3600
 kinit_path = kinit
-keytab = airflow.keytab
+keytab = /etc/security/keytabs/<%= @service_user %>/<%= @service_user %>.keytab
 
 
 [github_enterprise]

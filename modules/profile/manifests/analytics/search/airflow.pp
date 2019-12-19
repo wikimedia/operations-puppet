@@ -4,6 +4,8 @@
 # in the analytics cluster.
 #
 class profile::analytics::search::airflow(
+    String $service_user          = lookup('profile::analytics::search::airflow::service_user'),
+    String $service_group         = lookup('profile::analytics::search::airflow::service_group'),
     Stdlib::Port $webserver_port  = lookup('profile::analytics::search::airflow::webserver_port'),
     Stdlib::Fqdn $mysql_host      = lookup('profile::analytics::search::airflow::mysql_host'),
     String $db_name               = lookup('profile::analytics::search::airflow::db_name'),
@@ -27,18 +29,13 @@ class profile::analytics::search::airflow(
         'python3-mysqldb',
     ])
 
+    # airflow User/group to be dropped after deploy removes from servers
     group { 'airflow':
-        ensure => present
+        ensure => absent
     }
 
     user { 'airflow':
-        ensure     => present,
-        gid        => 'airflow',
-        shell      => '/bin/false',
-        home       => '/nonexistent',
-        system     => true,
-        managehome => false,
-        require    => Group['airflow'],
+        ensure => absent,
     }
 
 
@@ -67,7 +64,7 @@ class profile::analytics::search::airflow(
         ensure  => present,
         # Since this stores passwords limit read access
         owner   => 'root',
-        group   => 'airflow',
+        group   => $service_group,
         mode    => '0440',
         content => template('profile/analytics/search/airflow/airflow.cfg.erb'),
         require => Group['airflow'],
@@ -76,8 +73,8 @@ class profile::analytics::search::airflow(
     # Ensure places the daemons will write to are available.
     file { [$log_dir, $pid_dir]:
         ensure => 'directory',
-        owner  => 'airflow',
-        group  => 'airflow',
+        owner  => $service_user,
+        group  => $service_group,
         mode   => '0755',
     }
 
@@ -94,4 +91,11 @@ class profile::analytics::search::airflow(
     }
 
     base::service_auto_restart { 'airflow-scheduler': }
+
+    systemd::service { 'airflow-kerberos':
+        content => template('profile/analytics/search/airflow/kerberos.service.erb'),
+        require => File[$log_dir, $pid_dir, "${conf_dir}/${conf_file}"],
+    }
+
+    base::service_auto_restart { 'airflow-kerberos': }
 }
