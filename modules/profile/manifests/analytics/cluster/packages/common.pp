@@ -43,6 +43,7 @@ class profile::analytics::cluster::packages::common {
         'libgomp1',
         # For pyhive
         'libsasl2-dev',
+        'libsasl2-modules-gssapi-mit'
     )
 
     # These packages need to be reviewed in the context of Debian Buster
