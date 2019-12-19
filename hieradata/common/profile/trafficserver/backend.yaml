@@ -105,9 +105,6 @@ profile::trafficserver::backend::mapping_rules:
       target: http://maps.wikimedia.org
       replacement: https://kartotherian.discovery.wmnet
     - type: map
-      target: http://metrics.wikimedia.org
-      replacement: https://thorium.eqiad.wmnet
-    - type: map
       target: http://noc.wikimedia.org
       replacement: https://mwmaint.discovery.wmnet
       params:

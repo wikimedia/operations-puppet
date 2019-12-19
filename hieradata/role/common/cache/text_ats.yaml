@@ -99,8 +99,6 @@ cache::alternate_domains:
     director: 'cloudweb2001_dev'
   logstash.wikimedia.org:
     director: 'logstash_director'
-  metrics.wikimedia.org:
-    director: 'thorium'
   noc.wikimedia.org:
     director: 'noc'
     caching: 'pass'
