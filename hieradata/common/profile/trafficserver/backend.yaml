@@ -27,7 +27,7 @@ profile::trafficserver::backend::mapping_rules:
       #replacement: http://puppetmaster2001.codfw.wmnet
     - type: map
       target: http://cxserver.wikimedia.org
-      replacement: http://cxserver.discovery.wmnet:8080
+      replacement: https://cxserver.discovery.wmnet:4002
     - type: map
       target: http://datasets.wikimedia.org
       replacement: https://thorium.eqiad.wmnet
