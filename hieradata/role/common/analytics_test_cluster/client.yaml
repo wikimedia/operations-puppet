@@ -42,6 +42,7 @@ profile::hadoop::spark2::extra_settings:
   spark.io.encryption.enabled: true
   spark.io.encryption.keySizeBits: 128
   spark.io.encryption.keygen.algorithm: HmacSHA1
+  spark.network.crypto.saslFallback: false
 
 profile::analytics::cluster::hdfs_mount::kerberos_enabled: true
 

@@ -60,6 +60,7 @@ profile::hadoop::spark2::extra_settings:
   spark.io.encryption.enabled: true
   spark.io.encryption.keySizeBits: 128
   spark.io.encryption.keygen.algorithm: HmacSHA1
+  spark.network.crypto.saslFallback: false
 
 profile::kerberos::keytabs::keytabs_metadata:
   - role: 'hadoop'
