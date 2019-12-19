@@ -264,11 +264,7 @@ node /^cp1099\.eqiad\.wmnet$/ {
     role(spare::system)
 }
 
-node 'cp1089.eqiad.wmnet' {
-    role(cache::text)
-}
-
-node /^cp10(7[579]|8[1357])\.eqiad\.wmnet$/ {
+node /^cp10(7[579]|8[13579])\.eqiad\.wmnet$/ {
     role(cache::text_ats)
 }
 
