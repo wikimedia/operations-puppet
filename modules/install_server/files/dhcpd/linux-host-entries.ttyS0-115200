@@ -612,6 +612,12 @@ host netflow2001 {
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
+host netflow3001 {
+    hardware ethernet aa:00:00:f1:d3:9e;
+    fixed-address netflow3001.esams.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
+}
+
 host netflow4001 {
     hardware ethernet aa:00:00:01:9e:83;
     fixed-address netflow4001.ulsfo.wmnet;
