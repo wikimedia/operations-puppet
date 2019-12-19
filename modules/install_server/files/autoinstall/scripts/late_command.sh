@@ -12,6 +12,20 @@ chmod go-rwx /target/root/.ssh/authorized_keys
 apt-install lsb-release
 LSB_RELEASE=$(chroot /target /usr/bin/lsb_release --codename --short)
 
+# We need to pin add the puppet and facter components before installing puppet
+# until WMCS also uses puppet 5 / facter 3 (then we can simply import the new
+# versions to the main component
+# https://phabricator.wikimedia.org/T219803
+if printf $LSB_RELEASE | grep -qv buster
+then
+  BASE_REPO="http://apt.wikimedia.org/wikimedia ${LSB_RELEASE}-wikimedia component"
+  printf 'deb %s/puppet5\n' "$BASE_REPO" > /target/etc/apt/sources.list.d/component-puppet5.list
+  printf 'deb %s/facter3\n' "$BASE_REPO" > /target/etc/apt/sources.list.d/component-facter3.list
+  # we dont use this service, also the reimage script assumes it is the first to run puppet
+  in-target systemctl mask puppet.service
+  in-target apt-get update
+fi
+
 # openssh-server: to make the machine accessible
 # puppet: because we'll need it soon anyway
 # lldpd: announce the machine on the network
