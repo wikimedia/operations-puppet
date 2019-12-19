@@ -4,9 +4,7 @@
 #
 # Parameters
 #    - $mon_hosts
-#        List of monitor FQDN hostnames
-#    - $mon_addrs
-#        List of monitor IPv4 addresses
+#        Hash that defines the ceph monitor hosts, and public and private IPv4 information
 #    - $fsid
 #        Ceph filesystem ID
 #    - $enable_v2_messenger
@@ -14,14 +12,18 @@
 #    - $enable_libvirt_rbd
 #        Configure Ceph for libvirt based RBD clients
 #        Currently requires openstack::nova::compute::service::ocata::stretch
+#    - $osd_hosts [Optional]
+#        Hash that defines the ceph object storage hosts, and public and private IPv4 information
 #
 class ceph (
-    Array[Stdlib::Fqdn]            $mon_hosts,
-    Array[Stdlib::IP::Address::V4] $mon_addrs,
-    Boolean                        $enable_libvirt_rbd,
-    Boolean                        $enable_v2_messenger,
-    Stdlib::Unixpath               $data_dir,
-    String                         $fsid,
+    Boolean                     $enable_libvirt_rbd,
+    Boolean                     $enable_v2_messenger,
+    Hash[String,Hash]           $mon_hosts,
+    Stdlib::IP::Address         $cluster_network,
+    Stdlib::IP::Address         $public_network,
+    Stdlib::Unixpath            $data_dir,
+    String                      $fsid,
+    Optional[Hash[String,Hash]] $osd_hosts = {},
 ) {
     group { 'ceph':
         ensure => present,

@@ -2,14 +2,15 @@
 #
 # This profile configures Ceph monitor hosts with the mon and mgr daemons
 class profile::ceph::mon(
-    Array[Stdlib::Fqdn]            $mon_hosts     = lookup('profile::ceph::mon::hosts'),
-    Array[Stdlib::IP::Address::V4] $mon_addrs     = lookup('profile::ceph::mon::addrs'),
-    Array[Stdlib::IP::Address::V4] $osd_addrs     = lookup('profile::ceph::osd::addrs'),
-    Stdlib::AbsolutePath           $admin_keyring = lookup('profile::ceph::admin_keyring'),
-    Stdlib::Unixpath               $data_dir      = lookup('profile::ceph::data_dir'),
-    String                         $admin_keydata = lookup('profile::ceph::admin_keydata'),
-    String                         $fsid          = lookup('profile::ceph::fsid'),
-    String                         $mon_keydata   = lookup('profile::ceph::mon::keydata'),
+    Hash[String,Hash]    $mon_hosts       = lookup('profile::ceph::mon::hosts'),
+    Hash[String,Hash]    $osd_hosts       = lookup('profile::ceph::osd::hosts'),
+    Stdlib::AbsolutePath $admin_keyring   = lookup('profile::ceph::admin_keyring'),
+    Stdlib::IP::Address  $cluster_network = lookup('profile::ceph::cluster_network'),
+    Stdlib::IP::Address  $public_network  = lookup('profile::ceph::public_network'),
+    Stdlib::Unixpath     $data_dir        = lookup('profile::ceph::data_dir'),
+    String               $admin_keydata   = lookup('profile::ceph::admin_keydata'),
+    String               $fsid            = lookup('profile::ceph::fsid'),
+    String               $mon_keydata     = lookup('profile::ceph::mon::keydata'),
 ) {
     include ::network::constants
     # Limit the client connections to the hypervisors in eqiad and codfw
@@ -17,6 +18,10 @@ class profile::ceph::mon(
         $network::constants::all_network_subnets['production']['eqiad']['private']['labs-hosts1-b-eqiad']['ipv4'],
         $network::constants::all_network_subnets['production']['codfw']['private']['labs-hosts1-b-codfw']['ipv4'],
     ]
+
+    $mon_addrs = $mon_hosts.map | $key, $value | { $value['public']['addr'] }
+    $osd_addrs = $osd_hosts.map | $key, $value | { $value['public']['addr'] }
+
     $ferm_srange = join(concat($mon_addrs, $osd_addrs, $client_networks), ' ')
     ferm::service { 'ceph_mgr_v2':
         proto  => 'tcp',
@@ -39,7 +44,7 @@ class profile::ceph::mon(
     ferm::service { 'ceph_mon_peers_v2':
         proto  => 'tcp',
         port   => 3300,
-        srange => "@resolve((${ferm_srange}))",
+        srange => "(${ferm_srange})",
         before => Class['ceph'],
     }
 
@@ -54,12 +59,14 @@ class profile::ceph::mon(
     }
 
     class { 'ceph':
+        cluster_network     => $cluster_network,
         data_dir            => $data_dir,
         enable_libvirt_rbd  => false,
         enable_v2_messenger => true,
         fsid                => $fsid,
-        mon_addrs           => $mon_addrs,
         mon_hosts           => $mon_hosts,
+        osd_hosts           => $osd_hosts,
+        public_network      => $public_network,
     }
 
     class { 'ceph::admin':
@@ -79,5 +86,4 @@ class profile::ceph::mon(
     class { 'ceph::mgr':
         data_dir => $data_dir,
     }
-
 }

@@ -1,0 +1,22 @@
+profile::ceph::osd::hosts:
+  'cloudcephosd1001.wikimedia.org':
+    public:
+      addr: '208.80.154.151'
+    cluster:
+      addr: '10.64.16.144'
+      prefix: '22'
+      iface: 'ens2f1np1'
+  'cloudcephosd1002.wikimedia.org':
+    public:
+      addr: '208.80.154.152'
+    cluster:
+      addr: '10.64.16.145'
+      prefix: '22'
+      iface: 'ens2f1np1'
+  'cloudcephosd1003.wikimedia.org':
+    public:
+      addr: '208.80.154.153'
+    cluster:
+      addr: '10.64.16.146'
+      prefix: '22'
+      iface: 'ens2f1np1'

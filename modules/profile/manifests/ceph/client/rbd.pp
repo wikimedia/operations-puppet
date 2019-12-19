@@ -3,25 +3,27 @@
 # This profile will configure clients for connecting to Ceph rados block storage
 # using the native kernel driver or librbd
 class profile::ceph::client::rbd(
-    Array[Stdlib::Fqdn]            $mon_hosts           = lookup('profile::ceph::mon::hosts'),
-    Array[Stdlib::IP::Address::V4] $mon_addrs           = lookup('profile::ceph::mon::addrs'),
-    Boolean                        $enable_v2_messenger = lookup('profile::ceph::client::rbd::enable_v2_messenger'),
-    Stdlib::Unixpath               $data_dir            = lookup('profile::ceph::data_dir'),
-    String                         $client_name         = lookup('profile::ceph::client::rbd::client_name'),
-    String                         $fsid                = lookup('profile::ceph::fsid'),
-    String                         $keydata             = lookup('profile::ceph::client::rbd::keydata'),
-    String                         $keyfile_group       = lookup('profile::ceph::client::rbd::keyfile_group'),
-    String                         $keyfile_owner       = lookup('profile::ceph::client::rbd::keyfile_owner'),
-    String                         $libvirt_rbd_uuid    = lookup('profile::ceph::client::rbd::libvirt_rbd_uuid'),
+    Boolean             $enable_v2_messenger = lookup('profile::ceph::client::rbd::enable_v2_messenger'),
+    Hash[String,Hash]   $mon_hosts           = lookup('profile::ceph::mon::hosts'),
+    Stdlib::IP::Address $cluster_network     = lookup('profile::ceph::cluster_network'),
+    Stdlib::IP::Address $public_network      = lookup('profile::ceph::public_network'),
+    Stdlib::Unixpath    $data_dir            = lookup('profile::ceph::data_dir'),
+    String              $client_name         = lookup('profile::ceph::client::rbd::client_name'),
+    String              $fsid                = lookup('profile::ceph::fsid'),
+    String              $keydata             = lookup('profile::ceph::client::rbd::keydata'),
+    String              $keyfile_group       = lookup('profile::ceph::client::rbd::keyfile_group'),
+    String              $keyfile_owner       = lookup('profile::ceph::client::rbd::keyfile_owner'),
+    String              $libvirt_rbd_uuid    = lookup('profile::ceph::client::rbd::libvirt_rbd_uuid'),
 ) {
 
     class { 'ceph':
+        cluster_network     => $cluster_network,
         data_dir            => $data_dir,
         enable_libvirt_rbd  => true,
         enable_v2_messenger => $enable_v2_messenger,
         fsid                => $fsid,
-        mon_addrs           => $mon_addrs,
         mon_hosts           => $mon_hosts,
+        public_network      => $public_network,
     }
 
     # The keydata used in this step is pre-created on one of the ceph mon hosts

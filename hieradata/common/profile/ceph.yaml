@@ -1,0 +1,2 @@
+profile::ceph::admin_keyring: '/etc/ceph/ceph.client.admin.keyring'
+profile::ceph::data_dir: '/var/lib/ceph'

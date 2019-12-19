@@ -1,0 +1,10 @@
+profile::ceph::mon::hosts:
+  'cloudcephmon1001.wikimedia.org':
+    public:
+      addr: '208.80.154.148'
+  'cloudcephmon1002.wikimedia.org':
+    public:
+      addr: '208.80.154.149'
+  'cloudcephmon1003.wikimedia.org':
+    public:
+      addr: '208.80.154.150'

@@ -8,7 +8,7 @@ profile::base::debdeploy::filter_services:
   qemu-system-x86:
     - '*'
 profile::base::enable_microcode: true
-profile::ceph::data_dir: '/var/lib/ceph'
+
 profile::ceph::client::rbd::keyfile_group: 'libvirt-qemu'
 profile::ceph::client::rbd::client_name: 'eqiad1-compute'
 profile::ceph::client::rbd::keyfile_owner: 'nova'
@@ -16,13 +16,3 @@ profile::ceph::client::rbd::pool: 'compute'
 profile::ceph::client::rbd::enable_v2_messenger: false
 # This key is shared across all the libvirt / nova hosts
 profile::ceph::client::rbd::libvirt_rbd_uuid: 'ab1c8650-2983-45be-a9ea-4cdc6185155d'
-profile::ceph::fsid: '5917e6d9-06a0-4928-827a-f489384975b1'
-# Providing static addresses for the Ceph hosts. This is used by the service connection string
-profile::ceph::mon::addrs:
-  - '208.80.154.148'
-  - '208.80.154.149'
-  - '208.80.154.150'
-profile::ceph::mon::hosts:
-  - 'cloudcephmon1001.wikimedia.org'
-  - 'cloudcephmon1002.wikimedia.org'
-  - 'cloudcephmon1003.wikimedia.org'
