@@ -64,6 +64,11 @@ then
 fi
 # At this point, all (the rest of) our disk are belong to LVM.
 
+# We're about to need these tools; offical Debian packages don't include them
+#  by default.
+export DEBIAN_FRONTEND=noninteractive
+apt-get -yq install curl puppet nscd
+
 # Get hostname and domain from metadata
 hostname=`curl http://169.254.169.254/openstack/latest/meta_data.json/ | sed -r 's/^.*hostname\": \"//'  | sed -r 's/[\"\.].*$//g'`
 project=`curl http://169.254.169.254/openstack/latest/meta_data.json/ | sed -r 's/^.*project_id\": \"//'  | sed -r 's/\".*$//g'`
