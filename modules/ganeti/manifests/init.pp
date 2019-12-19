@@ -17,6 +17,9 @@ class ganeti(
     ) {
     include ::ganeti::kvm
 
+    # We're not using ganeti-instance-debootstrap to create images (we PXE-boot
+    # the same images we use for baremetal servers), but /usr/share/ganeti/os/debootstrap
+    # is needed as an OS provider for "gnt-instance add"
     package { [
             'ganeti',
             'drbd-utils',
