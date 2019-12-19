@@ -56,7 +56,7 @@ define osm::planet_sync (
     String $osmosis_dir                     = '/srv/osmosis',
     String $expire_dir                      = '/srv/osm_expire',
     String $period                          = 'minute',
-    String $hour                            = '*',
+    Array[Integer] $hours                    = [],
     String $day                             = '*',
     String $minute                          = '*/30',
     Boolean $flat_nodes                     = false,
@@ -137,7 +137,7 @@ define osm::planet_sync (
         command  => "/usr/local/bin/replicate-osm >> ${osm_log_dir}/osm2pgsql.log 2>&1",
         user     => 'osmupdater',
         monthday => $day,
-        hour     => $hour,
+        hour     => $hours,
         minute   => $minute,
     }
 
@@ -145,7 +145,7 @@ define osm::planet_sync (
         ensure  => $ensure,
         command => "/usr/bin/find ${expire_dir} -mtime +30 -type f -exec rm {} \\;",
         user    => 'osmupdater',
-        hour    => $hour,
+        hour    => $hours,
         minute  => $minute,
     }
 }
