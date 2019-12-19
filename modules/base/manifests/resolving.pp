@@ -9,6 +9,7 @@ class base::resolving (
 
     if $::realm == 'labs' {
         $labs_tld = hiera('labs_tld')
+        $labs_site = lookup('labs_site', {'default_value' => $::site})
         # Thanks to dhcp, resolvconf is constantly messing with our resolv.conf.  Disable it.
         file { '/sbin/resolvconf':
             owner  => 'root',

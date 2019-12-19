@@ -15,6 +15,7 @@ labsldapconfig:
   secondary_hostname: "cloudservices2002-dev.wikimedia.org"
 
 labs_tld: "cloud"
+labs_site: "codfw1dev"
 
 ntp_peers:
     eqiad: []
