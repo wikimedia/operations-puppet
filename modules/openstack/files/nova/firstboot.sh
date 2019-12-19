@@ -109,12 +109,6 @@ nscd -i hosts
 # set mailname
 echo $fqdn > /etc/mailname
 
-if [[ $domain = *"codfw1dev"* ]]; then
-# Test clusters need to use a proxy for apt
-    echo 'Acquire::http::Proxy "http://208.80.153.75:5001";' > /etc/apt/apt.conf.d/01proxy
-    echo 'Acquire::https::Proxy "https://208.80.153.75:5001";' >> /etc/apt/apt.conf.d/01proxy
-fi
-
 apt-get update
 DEBIAN_FRONTEND=noninteractive apt-get --force-yes -y -o "Dpkg::Options::=--force-confdef" -o "Dpkg::Options::=--force-confold" dist-upgrade
 
