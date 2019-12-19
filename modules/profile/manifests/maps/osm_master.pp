@@ -1,7 +1,7 @@
 class profile::maps::osm_master (
     $planet_sync_period       = hiera('profile::maps::osm_master::planet_sync_period', 'day'),
     $planet_sync_day          = hiera('profile::maps::osm_master::planet_sync_day', '*/2'),
-    $planet_sync_hour         = hiera('profile::maps::osm_master::planet_sync_hour', '1'),
+    $planet_sync_hour         = hiera('profile::maps::osm_master::planet_sync_hour', '1,13'),
     $planet_sync_minute       = hiera('profile::maps::osm_master::planet_sync_minute', '27'),
     $maps_hosts               = hiera('profile::maps::hosts'),
     $kartotherian_pass        = hiera('profile::maps::osm_master::kartotherian_pass'),
