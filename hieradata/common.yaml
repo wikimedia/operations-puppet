@@ -85,6 +85,8 @@ wikimedia_clusters:
       eqiad: []
       codfw: []
       esams: []
+      ulsfo: []
+      eqsin: []
   kubernetes:
     description: "Kubernetes"
     id: 9
