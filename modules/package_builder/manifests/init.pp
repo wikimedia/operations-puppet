@@ -143,7 +143,7 @@ class package_builder(
     # buster, simplifies fetching the source for older distros by using
     # "apt-get source foo=VERSION" on the package build host
     ['jessie', 'buster'].each |String $dist| {
-        apt::repository{'jessie-wikimedia_source_only':
+        apt::repository{"${dist}-wikimedia_source_only":
             uri        => 'http://apt.wikimedia.org/wikimedia',
             dist       => "${dist}-wikimedia",
             bin        => false,
