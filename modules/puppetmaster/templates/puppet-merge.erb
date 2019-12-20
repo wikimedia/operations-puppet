@@ -1,6 +1,6 @@
 #!/bin/sh
 
-<%- if @facts['networking']['fqdn'] != @ca_server -%>
+<%- if @facts['fqdn'] != @ca_server -%>
 printf "To ensure consistent locking please run puppet-merge from: %s\n" <%= @ca_server %>
 exit 1
 <%- end -%>
