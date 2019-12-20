@@ -51,11 +51,14 @@ check_remote_error() {
   repo=$3
   RED=$(tput bold; tput setaf 1)
   GREEN=$(tput bold; tput setaf 2)
+  CYAN=$(tput bold; tput setaf 6)
   RESET=$(tput sgr0)
   if [ ${exit_code} -eq 0 ]; then
-  echo "${GREEN}OK${RESET}: puppet-merge on ${worker} (${repo}) succeeded"
-    else
-  echo "${RED}ERROR${RESET}: puppet-merge on ${worker} (${repo}) failed"
+    echo "${GREEN}OK${RESET}: puppet-merge on ${worker} (${repo}) succeeded"
+  elif [ ${exit_code} -eq 99 ]; then
+    echo "${CYAN}NO CHANGE${RESET}: puppet-merge on ${worker} (${repo}) no change"
+  else
+    echo "${RED}ERROR${RESET}: puppet-merge on ${worker} (${repo}) failed"
   fi
 }
 
@@ -146,9 +149,9 @@ for worker in <%= workers.join(' ') %>; do
     check_remote_error $? ${worker} 'labs'
   else
     su - $git_user -c "ssh -t -t ${worker} true --ops ${1:-} 2>&1"
-    check_remote_error $? ${worker} 'labs'
-    su - $git_user -c "ssh -t -t ${worker} true --labsprivate ${1:-} 2>&1"
     check_remote_error $? ${worker} 'ops'
+    su - $git_user -c "ssh -t -t ${worker} true --labsprivate ${1:-} 2>&1"
+    check_remote_error $? ${worker} 'labs'
   fi
 done
 
