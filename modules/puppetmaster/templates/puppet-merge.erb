@@ -41,11 +41,20 @@ lock() {
       exit 1
   fi
 }
+check_remote_error() {
+  exit_code=$1
+  worker=$2
+  repo=$3
+  RED=$(tput bold; tput setaf 1)
+  GREEN=$(tput bold; tput setaf 2)
+  RESET=$(tput sgr0)
+  if [ ${exit_code} -eq 0 ]; then
+  echo "${GREEN}OK${RESET}: puppet-merge on ${worker} (${repo}) succeeded"
+    else
+  echo "${RED}ERROR${RESET}: puppet-merge on ${worker} (${repo}) failed"
+  fi
+}
 
-# Colorized output helpers
-RED=$(tput bold; tput setaf 1)
-GREEN=$(tput bold; tput setaf 2)
-RESET=$(tput sgr0)
 FORCE=0
 USAGE=0
 QUIET=0
@@ -124,22 +133,21 @@ fi
 # worker end that does the actual work. Note that args (including
 # the $sha1 and possible --labsprivate switch) are used.
 
-if [ $LABS_PRIVATE -eq 1 ]; then
-  PRIVATE_ARG="--labsprivate"
-else
-  PRIVATE_ARG="--ops"
-fi
-
-<%- @servers.each do |frontend, workers| -%>
-  <%- workers.map{ |w| w['worker']}.select{|name| name != @fqdn}.each do |worker| -%>
-su - $git_user -c "ssh -t -t <%= worker -%> true ${PRIVATE_ARG} ${1:-} 2>&1"
-if [ $? -eq 0 ]; then
-  echo "${GREEN}OK${RESET}: puppet-merge on <%= worker %> succeeded"
-else
-  echo "${RED}ERROR${RESET}: puppet-merge on <%= worker %> failed"
-fi
-  <%- end -%>
-<%- end -%>
+<%-
+workers = @servers.values.map do |workers_map|
+  workers_map.map { |name| name['worker'] }.select { |name| name != @fqdn }.flatten
+end
+-%>
+for worker in <%= workers.join(' ') %>; do
+  if [ $LABS_PRIVATE -eq 1 ]; then
+    su - $git_user -c "ssh -t -t ${worker} true --labsprivate ${1:-} 2>&1"
+  else
+    su - $git_user -c "ssh -t -t ${worker} true --ops ${1:-} 2>&1"
+    check_remote_error $? ${worker}
+    su - $git_user -c "ssh -t -t ${worker} true --labsprivate ${1:-} 2>&1"
+  fi
+  check_remote_error $? ${worker}
+done
 
 # Only run this once, and only if we're merging the prod repo
 if [ $LABS_PRIVATE -eq 0 ]; then
