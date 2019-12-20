@@ -68,20 +68,29 @@ QUIET=0
 LABS_PRIVATE=0
 DIFF_ONLY=0
 
-usage="$(basename ${0}) [-y|--yes] [SHA1]
+usage="$(basename ${0}) [-y|--yes] [-p|--labsprivate] [-q|--quiet] [-d|--diffs] [SHA1]
 
 Fetches changes from origin and from all submodules.
-Shows diffs between HEAD and FETCH_HEAD, including diffs
-of submodule changes.
+Shows diffs between HEAD and SHA1 (default FETCH_HEAD)
+and prompts for confirmation.
 
 If the changes are acceptable, HEAD will be fast-forwarded
-to FETCH_HEAD.
+to SHA1.
 
-It also runs the conftool merge if necessary.
+It also runs conftool-merge if necessary.
 
-SHA1 equals HEAD if not specified
+SHA1 equals FETCH_HEAD if not specified.
+
+If no SHA1 is specified, and --labsprivate is not specified,
+runs on both the ops and labsprivate repos.
+
+-y / --yes: skip prompting for confirmation
+-p / --labsprivate: merge only the labsprivate repo
+-d / --diffs: only show diffs, don't perform any merges
+-q / --quiet: don't output diffs
 "
 # preserve arguments before we shift them all
+# Our original arguments get passed on, unchanged, to puppet-merge.py.
 ORIG_ARGS="$@"
 TEMP=$(getopt -o yhqd --long yes,help,quiet,labsprivate,diffs -n "$0" -- "$@")
 if [ $? != 0 ] ; then echo "Terminating..." >&2 ; exit 1 ; fi
@@ -105,6 +114,10 @@ fi
 
 lock $LABS_PRIVATE
 
+# This will either be empty (if a sha1/treeish was passed to us, and thus,
+# is included already in $ORIG_ARGS), or it will contain 'FETCH_HEAD'.
+# This way, puppet-merge.py always receives some treeish.
+FETCH_HEAD_OR_EMPTY=$([ -n "${1:-}" ] || echo FETCH_HEAD)
 # From this point continue despite errors on remote masters. After a change
 # has been merged on the local master a remote merge failure should not
 # cause all remaining masters to be aborted and left out of sync.
@@ -112,15 +125,20 @@ set +e
 
 if [ $LABS_PRIVATE -eq 1 ]; then
     # if --labsprivate is used just sync the labsprivate repo
-    /usr/local/bin/puppet-merge.py  "$ORIG_ARGS"
+    /usr/local/bin/puppet-merge.py $ORIG_ARGS $FETCH_HEAD_OR_EMPTY
     LABS_EXIT=$?
     # fake the production exit
     PROD_EXIT=99
 else
-    # We want to do a labs merge every time we do an ops merge
-    /usr/local/bin/puppet-merge.py --labsprivate $ORIG_ARGS
-    LABS_EXIT=$?
-    /usr/local/bin/puppet-merge.py --ops $ORIG_ARGS
+    # We want to do a labs merge every time we do an ops merge -- except if
+    # the user gave us an explicit sha1, which only makes sense for one repo.
+    if [ -n "${FETCH_HEAD_OR_EMPTY}" ]; then
+      /usr/local/bin/puppet-merge.py --labsprivate $ORIG_ARGS $FETCH_HEAD_OR_EMPTY
+      LABS_EXIT=$?
+    else
+      LABS_EXIT=99
+    fi
+    /usr/local/bin/puppet-merge.py --ops $ORIG_ARGS $FETCH_HEAD_OR_EMPTY
     PROD_EXIT=$?
 fi
 # puppet-merge.py exits with 99 if no merge was performed
@@ -134,9 +152,9 @@ elif [ ${LABS_EXIT} -ne 0 -a ${LABS_EXIT} -ne 99 ]; then
   exit ${LABS_EXIT}
 fi
 
-# In the event that no SHA1 was provided by the user, grab the SHAs that
-# were exported by the Python script, so that we merge on the remote hosts
-# exactly the set of changes we prompted the local user to confirm merging.
+# Grab the SHAs that were exported by the Python script, so that
+# on the remote hosts, we merge exactly the set of changes we prompted
+# the local user to confirm merging.
 LABSPRIVATE_SHA=$(cat /srv/config-master/labsprivate-sha1.txt)
 OPS_SHA=$(cat /srv/config-master/puppet-sha1.txt)
 

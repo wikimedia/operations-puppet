@@ -1,14 +1,13 @@
 #!/usr/bin/env python3
 """
 Fetches changes from origin and shows diffs between HEAD
-and FETCH_HEAD
+and the given SHA1.
 
 If the changes are acceptable, HEAD will be fast-forwarded
-to FETCH_HEAD.
+to SHA1.
 
-It also runs the conftool merge if necessary.
-
-SHA1 equals HEAD if not specified
+One of --labsprivate or --ops must be specified, as must a
+SHA1 (or 'FETCH_HEAD', or something understood by git-rev-parse).
 """
 
 import os
@@ -33,7 +32,7 @@ FILE_PATHS = {
 
 ERROR_MESSAGE = '\033[91m{msg}\033[0m'
 
-"""int: reserved exit code: puppet-merge did not preform a merge operation"""
+"""int: reserved exit code: puppet-merge did not perform a merge operation"""
 PUPPET_MERGE_NO_MERGE = 99
 
 
@@ -44,13 +43,14 @@ def get_args():
                         help='Automatic yes to prompts; assume "yes" as answer to all prompts')
     parser.add_argument('-q', '--quiet', action='store_true', help='Limit output')
     parser.add_argument('-d', '--diffs', action='store_true',
-                        help='Only produce diffs do not perform the git merge')
+                        help='Only produce diffs; do not perform the git merge')
     group = parser.add_mutually_exclusive_group(required=True)
     group.add_argument('-p', '--labsprivate', action='store_true',
                        help='work on the labs private repo')
     group.add_argument('-o', '--ops', action='store_true', help='work on the ops production repo')
-    parser.add_argument('sha1', nargs='?', default='FETCH_HEAD',
-                        help='the sha1 commit to merge. Default: %(default)s')
+    parser.add_argument('sha1',
+                        help=('the sha1 commit to merge. '
+                              'Must be provided (in a pinch, you can pass FETCH_HEAD).'))
     return parser.parse_args()
 
 
@@ -63,7 +63,7 @@ def setuid(username):
     try:
         os.setuid(uid)
     except OSError as error:
-        raise SystemExit('unable to setuid to : {}\n{}'.format(uid, error))
+        raise SystemExit('unable to setuid to: {}\n{}'.format(uid, error))
 
 
 def git(args, repo_dir, stdout=PIPE):
@@ -78,11 +78,11 @@ def git(args, repo_dir, stdout=PIPE):
     return result.stdout
 
 
-def confirm_merge(commiters):
+def confirm_merge(committers):
     """ask the user to confirm the merge"""
     confirm = 'yes'
-    unique_commiters = set(i for i in commiters if i and i != 'gerrit@wikimedia.org')
-    if len(unique_commiters) > 1:
+    unique_committers = set(i for i in committers if i and i != 'gerrit@wikimedia.org')
+    if len(unique_committers) > 1:
         print('{}: Revision range includes commits from multiple committers!'.format(
             ERROR_MESSAGE.format(msg='WARNING')))
         confirm = 'multiple'
@@ -102,7 +102,7 @@ def main():
         setuid(git_user)
 
     remote_url = git('config --get remote.origin.url', config['repo'])
-    print('Fetching new commits from :{}'.format(remote_url))
+    print('Fetching new commits from: {}'.format(remote_url))
     git('fetch', config['repo'])
     head_sha1_old = git('rev-parse HEAD', config['repo'])
     target_sha1 = git('rev-parse {}'.format(args.sha1), config['repo'])
@@ -120,8 +120,8 @@ def main():
             target_sha1),
             config['repo'], None)
     if not args.yes:
-        commiters = git('log HEAD..{} --format=%ce'.format(target_sha1), config['repo'])
-        confirm_merge(commiters.split('\n'))
+        committers = git('log HEAD..{} --format=%ce'.format(target_sha1), config['repo'])
+        confirm_merge(committers.split('\n'))
     print('HEAD is currently {}'.format(head_sha1_old))
     git('merge --ff-only {}'.format(target_sha1), config['repo'], None)
     print('Running git clean to clean any untracked files.')
