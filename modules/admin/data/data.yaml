@@ -3529,6 +3529,10 @@ ldap_only_users:
     ensure: present
     realname: Harumi Monroy
     email: hmonroy@wikimedia.org
+  ifried:
+    ensure: present
+    realname: Ilana Fried
+    email: ifried@wikimedia.org
   jaufrecht:
     ensure: present
     realname: Joel Aufrecht
