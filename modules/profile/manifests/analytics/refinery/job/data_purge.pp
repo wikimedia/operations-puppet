@@ -139,7 +139,7 @@ class profile::analytics::refinery::job::data_purge (
     kerberos::systemd_timer { 'refinery-drop-mediawiki-history-dumps':
         description  => 'Drop mediawiki history dump versions older than 6 months.',
         command      => "${refinery_path}/bin/refinery-drop-older-than --base-path='/wmf/data/archive/mediawiki/history' --path-format='(?P<year>[0-9]+)-(?P<month>[0-9]+)' --older-than='${mediawiki_history_dumps_retention_days}' --skip-trash --execute='40f24e7bbccb397671dfa3266c5ebd2f'",
-        interval     => '*-*-1 00:00:00',
+        interval     => '*-*-01 00:00:00',
         environment  => $systemd_env,
         user         => 'analytics',
         use_kerberos => $use_kerberos,
