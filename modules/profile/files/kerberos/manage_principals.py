@@ -122,7 +122,7 @@ def main():
             [random.choice(string.ascii_letters + string.digits) for n in range(32)])
         ret = create_user_principal(principal, password, realm)
         if ret == 0:
-            print("Principal successfully created.")
+            print("Principal successfully created. Make sure to update data.yaml in Puppet.")
         else:
             sys.exit(1)
         if email_address:
@@ -130,7 +130,7 @@ def main():
     elif action == "delete":
         ret = delete_user_principal(principal, realm)
         if ret == 0:
-            print("Principal successfully deleted.")
+            print("Principal successfully deleted. Make sure to update data.yaml in Puppet.")
         else:
             sys.exit(1)
 
