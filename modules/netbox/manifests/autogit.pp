@@ -50,14 +50,14 @@ define netbox::autogit (
     file { "${repofullpath}/hooks/post-update":
         source => 'puppet:///modules/netbox/autogit-post-update.sh',
         owner  => $owner,
-        group  => $owner,
+        group  => $group,
         mode   => '0550',
     }
 
     file { "${repofullpath}/config":
         owner   => $owner,
         group   => $group,
-        mode    => '0660',
+        mode    => '0640',
         content => template('netbox/autogit-config.erb'),
     }
 }
