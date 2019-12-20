@@ -16,7 +16,7 @@
 <%- else -%>
 <VirtualHost *:80>
 <%- end -%>
-    ServerName <%= @service_hostname %>
+    ServerName <%= @automation_service_hostname %>
     ServerAlias <%= @fqdn %>
     ServerAdmin noc@wikimedia.org
 
@@ -29,6 +29,6 @@
     # Possible values include: debug, info, notice, warn, error, crit,
     # alert, emerg.
     LogLevel warn
-    CustomLog /var/log/apache2/<%= @service_hostname %>-access.log wmf
-    ErrorLog /var/log/apache2/<%= @service_hostname %>-error.log
+    CustomLog /var/log/apache2/<%= @automation_service_hostname %>-access.log wmf
+    ErrorLog /var/log/apache2/<%= @automation_service_hostname %>-error.log
 </VirtualHost>
