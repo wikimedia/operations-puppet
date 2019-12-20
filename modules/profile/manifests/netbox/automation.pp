@@ -40,6 +40,7 @@ class profile::netbox::automation (
     }
 
     # Configuration for Netbox extras dns scripts
+    $dns_repo_path = "${repo_path}/dns.git/"
     file { '/etc/netbox/dns.cfg':
         owner   => 'netbox',
         group   => 'netbox',
