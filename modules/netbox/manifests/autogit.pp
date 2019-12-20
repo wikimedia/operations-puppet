@@ -48,7 +48,7 @@ define netbox::autogit (
 
     # Deploy a post-update script so we can serve this via http.
     file { "${repofullpath}/hooks/post-update":
-        source => 'puppet:///modules/netbox/files/autogit-post-update.sh',
+        source => 'puppet:///modules/netbox/autogit-post-update.sh',
         owner  => $owner,
         group  => $owner,
         mode   => '0550',
