@@ -134,10 +134,16 @@ elif [ ${LABS_EXIT} -ne 0 -a ${LABS_EXIT} -ne 99 ]; then
   exit ${LABS_EXIT}
 fi
 
+# In the event that no SHA1 was provided by the user, grab the SHAs that
+# were exported by the Python script, so that we merge on the remote hosts
+# exactly the set of changes we prompted the local user to confirm merging.
+LABSPRIVATE_SHA=$(cat /srv/config-master/labsprivate-sha1.txt)
+OPS_SHA=$(cat /srv/config-master/puppet-sha1.txt)
+
 # Note: The "true" command is passed on purpose to show that the command passed
 # to the SSH sessions is irrelevant. It's the SSH forced command trick on the
-# worker end that does the actual work. Note that args (including
-# the $sha1 and possible --labsprivate switch) are used.
+# worker end that does the actual work. Note that args (the SHA1 and
+# --labsprivate/--ops switch) are used.
 <%-
 workers = @servers.values.map do |workers_map|
   workers_map.map { |name| name['worker'] }.select { |name| name != @fqdn }.flatten
@@ -145,12 +151,12 @@ end
 -%>
 for worker in <%= workers.join(' ') %>; do
   if [ $LABS_PRIVATE -eq 1 ]; then
-    su - $git_user -c "ssh -t -t ${worker} true --labsprivate ${1:-} 2>&1"
+    su - $git_user -c "ssh -t -t ${worker} true --labsprivate ${1:-${LABSPRIVATE_SHA}} 2>&1"
     check_remote_error $? ${worker} 'labs'
   else
-    su - $git_user -c "ssh -t -t ${worker} true --ops ${1:-} 2>&1"
+    su - $git_user -c "ssh -t -t ${worker} true --ops ${1:-${OPS_SHA}} 2>&1"
     check_remote_error $? ${worker} 'ops'
-    su - $git_user -c "ssh -t -t ${worker} true --labsprivate ${1:-} 2>&1"
+    su - $git_user -c "ssh -t -t ${worker} true --labsprivate ${1:-${LABSPRIVATE_SHA}} 2>&1"
     check_remote_error $? ${worker} 'labs'
   fi
 done
