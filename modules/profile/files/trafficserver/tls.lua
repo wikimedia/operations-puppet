@@ -80,3 +80,10 @@ function do_global_send_request()
         ts.server_request.header['Connection'] = 'close'
     end
 end
+
+function do_global_send_response()
+    -- This header is used internally for analytics purposes and should not be
+    -- sent to clients. See https://wikitech.wikimedia.org/wiki/X-Analytics and
+    -- https://phabricator.wikimedia.org/T196558
+    ts.client_response.header['X-Analytics'] = nil
+end

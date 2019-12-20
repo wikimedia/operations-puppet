@@ -4,6 +4,7 @@ _G.ts = {
   http = {},
   server_request = { header = {} },
   client_request = { client_addr = {}, header = {} },
+  client_response = { header = {} },
 }
 
 _G.ts.client_request.client_addr.get_addr = function() return "127.0.0.1", 1234, 2 end
@@ -59,6 +60,12 @@ describe("Busted unit testing framework", function()
       do_global_send_request()
       assert.are.equals('websocket', _G.ts.server_request.header['Upgrade'])
       assert.are.equals('Upgrade', _G.ts.server_request.header['Connection'])
+    end)
+
+    it("test - do_global_send_response", function()
+      _G.ts.client_response.header['X-Analytics'] = 'https=1;nocookies=1'
+      do_global_send_response()
+      assert.is_nil(_G.ts.client_response.header['X-Analytics'])
     end)
   end)
 end)
