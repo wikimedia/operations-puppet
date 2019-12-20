@@ -104,12 +104,13 @@ def main():
     remote_url = git('config --get remote.origin.url', config['repo'])
     print('Fetching new commits from :{}'.format(remote_url))
     git('fetch', config['repo'])
+    head_sha1_old = git('rev-parse HEAD', config['repo'])
     target_sha1 = git('rev-parse {}'.format(args.sha1), config['repo'])
-    changes = git('diff --color HEAD..{}'.format(target_sha1), config['repo'])
-    if not changes:
+    if head_sha1_old == target_sha1:
         print('No changes to merge.')
         return PUPPET_MERGE_NO_MERGE
     if not args.quiet:
+        changes = git('diff --color HEAD..{}'.format(target_sha1), config['repo'])
         print(changes)
     if args.diffs:
         print(target_sha1)
@@ -121,7 +122,6 @@ def main():
     if not args.yes:
         commiters = git('log HEAD..{} --format=%ce'.format(target_sha1), config['repo'])
         confirm_merge(commiters.split('\n'))
-    head_sha1_old = git('rev-parse HEAD', config['repo'])
     print('HEAD is currently {}'.format(head_sha1_old))
     git('merge --ff-only {}'.format(target_sha1), config['repo'], None)
     print('Running git clean to clean any untracked files.')
