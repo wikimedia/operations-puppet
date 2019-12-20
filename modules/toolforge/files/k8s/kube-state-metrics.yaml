@@ -127,7 +127,6 @@ rules:
   - list
   - watch
 ---
-# change: run pods in control nodes
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -170,11 +169,6 @@ spec:
       nodeSelector:
         kubernetes.io/os: linux
       serviceAccountName: kube-state-metrics
-      tolerations:
-      - key: CriticalAddonsOnly
-        operator: Exists
-      - effect: NoSchedule
-        key: node-role.kubernetes.io/master
 ---
 apiVersion: v1
 kind: ServiceAccount
