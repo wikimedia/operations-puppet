@@ -83,6 +83,7 @@ class profile::puppetmaster::frontend(
         prevent_cherrypicks => $prevent_cherrypicks,
         allow_from          => $allow_from,
         extra_auth_rules    => $extra_auth_rules,
+        ca_server           => $ca_server,
     }
     class { 'apache::mod::rewrite': }
 

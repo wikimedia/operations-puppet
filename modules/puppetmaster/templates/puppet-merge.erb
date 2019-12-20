@@ -1,5 +1,9 @@
 #!/bin/sh
 
+<%- if @facts['networking']['fqdn'] != @ca_server -%>
+printf "To ensure consistent locking please run puppet-merge from: %s\n" <%= @ca_server %>
+exit 1
+<%- end -%>
 set -eu
 git_user=gitpuppet
 if [ "$(whoami)" = "gitpuppet" ]
@@ -127,12 +131,10 @@ elif [ ${LABS_EXIT} -ne 0 -a ${LABS_EXIT} -ne 99 ]; then
   exit ${LABS_EXIT}
 fi
 
-<%- if @servers.has_key?(@fqdn) -%>
 # Note: The "true" command is passed on purpose to show that the command passed
 # to the SSH sessions is irrelevant. It's the SSH forced command trick on the
 # worker end that does the actual work. Note that args (including
 # the $sha1 and possible --labsprivate switch) are used.
-
 <%-
 workers = @servers.values.map do |workers_map|
   workers_map.map { |name| name['worker'] }.select { |name| name != @fqdn }.flatten
@@ -141,12 +143,13 @@ end
 for worker in <%= workers.join(' ') %>; do
   if [ $LABS_PRIVATE -eq 1 ]; then
     su - $git_user -c "ssh -t -t ${worker} true --labsprivate ${1:-} 2>&1"
+    check_remote_error $? ${worker} 'labs'
   else
     su - $git_user -c "ssh -t -t ${worker} true --ops ${1:-} 2>&1"
-    check_remote_error $? ${worker}
+    check_remote_error $? ${worker} 'labs'
     su - $git_user -c "ssh -t -t ${worker} true --labsprivate ${1:-} 2>&1"
+    check_remote_error $? ${worker} 'ops'
   fi
-  check_remote_error $? ${worker}
 done
 
 # Only run this once, and only if we're merging the prod repo
@@ -154,5 +157,4 @@ if [ $LABS_PRIVATE -eq 0 ]; then
     echo "Now running conftool-merge to sync any changes to conftool data"
     /usr/local/bin/conftool-merge
 fi
-<%- end -%>
 # vim: set syntax=sh:

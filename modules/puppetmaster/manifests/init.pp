@@ -64,6 +64,7 @@ class puppetmaster(
     $git_user='gitpuppet',
     $git_group='gitpuppet',
     Boolean $enable_geoip = true,
+    Stdlib::Host $ca_server = $facts['fqdn'],
 ){
 
     $gitdir = '/var/lib/git'
@@ -153,7 +154,8 @@ class puppetmaster(
     }
 
     class { '::puppetmaster::scripts' :
-        has_puppetdb => $has_puppetdb
+        has_puppetdb => $has_puppetdb,
+        ca_server    => $ca_server,
     }
 
     if $enable_geoip {

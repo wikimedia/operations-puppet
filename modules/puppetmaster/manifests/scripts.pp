@@ -10,8 +10,9 @@
 #   The cron to remove these is run only every 8 hours, however,
 #   to prevent excess load on the prod puppetmasters.
 class puppetmaster::scripts(
-    $keep_reports_minutes = 960, # 16 hours
-    $has_puppetdb = true,
+    Integer      $keep_reports_minutes = 960, # 16 hours
+    Boolean      $has_puppetdb         = true,
+    Stdlib::Host $ca_server            = $facts['fqdn'],
 ) {
     $servers = hiera('puppetmaster::servers', {})
 

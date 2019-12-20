@@ -36,6 +36,7 @@ class profile::puppetmaster::backend(
         prevent_cherrypicks => $prevent_cherrypicks,
         allow_from          => $allow_from,
         extra_auth_rules    => $extra_auth_rules,
+        ca_server           => $ca_server,
     }
 
     $puppetmaster_frontend_ferm = join(keys($puppetmasters), ' ')
