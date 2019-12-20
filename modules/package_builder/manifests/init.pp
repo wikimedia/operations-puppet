@@ -140,14 +140,27 @@ class package_builder(
     }
 
     # Ship an apt configuration to integrate deb-src entries for jessie and
-    # trusty, simplifies fetching the source for older distros by using
+    # buster, simplifies fetching the source for older distros by using
     # "apt-get source foo=VERSION" on the package build host
-    file { '/etc/apt/sources.list.d/package-build-deb-src.list':
-        ensure => present,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
-        source => 'puppet:///modules/package_builder/package-build-deb-src.list',
+    ['jessie', 'buster'].each |String $dist| {
+        apt::repository{'jessie-wikimedia_source_only':
+            uri        => 'http://apt.wikimedia.org/wikimedia',
+            dist       => "${dist}-wikimedia",
+            bin        => false,
+            components => 'main',
+        }
+        apt::repository{"${dist}_source_only":
+            uri        => 'http://mirrors.wikimedia.org/debian/',
+            dist       => $dist,
+            bin        => false,
+            components => 'main non-free contrib',
+        }
+        apt::repository{"${dist}-security_source_only":
+            uri        => 'http://security.debian.org/',
+            dist       => $dist,
+            bin        => false,
+            components => 'main non-free contrib',
+        }
     }
 
     file { '/etc/lintianrc':

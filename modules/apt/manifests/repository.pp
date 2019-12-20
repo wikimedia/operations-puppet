@@ -2,6 +2,7 @@ define apt::repository(
     Optional[Stdlib::HTTPUrl] $uri         = undef,
     Optional[String]          $dist        = undef,
     Optional[String]          $components  = undef,
+    Boolean                   $bin         = true,
     Boolean                   $source      = true,
     Boolean                   $comment_old = false,
     Optional[String]          $keyfile     = undef,
@@ -17,7 +18,10 @@ define apt::repository(
         $trustedline = ''
     }
 
-    $binline = "deb ${trustedline}${uri} ${dist} ${components}\n"
+    $binline = $bin ? {
+        true    => "deb ${trustedline}${uri} ${dist} ${components}\n",
+        default => '',
+    }
     $srcline = $source ? {
         true    => "deb-src ${trustedline}${uri} ${dist} ${components}\n",
         default => '',
