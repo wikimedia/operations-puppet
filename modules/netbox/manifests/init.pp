@@ -109,12 +109,20 @@ class netbox(
     Integer $redis_database = 0,
 ) {
     require_package('virtualenv', 'python3-pip', 'python3-pynetbox')
+    $home_path = '/var/lib/netbox'
+
+    file { $home_path:
+        ensure => directory,
+        owner  => 'netbox',
+        group  => 'netbox',
+        mode   => '0755',
+    }
 
     user { 'netbox':
         ensure  => $ensure,
         comment => 'This is the global owner for all Netbox things.',
         system  => true,
-        home    => '/var/lib/netbox',
+        home    => $home_path,
         shell   => '/bin/bash'
     }
 
