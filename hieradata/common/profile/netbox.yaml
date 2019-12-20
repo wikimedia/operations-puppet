@@ -1,6 +1,5 @@
 profile::netbox::active_server: netbox1001.wikimedia.org
 profile::netbox::service_hostname: netbox.wikimedia.org
-profile::netbox::automation_git_hostname: netbox-exports.wikimedia.org
 profile::netbox::netbox_api: "https://%{hiera('profile::netbox::service_hostname')}/"
 
 profile::netbox::frontends: "%{alias('netbox_frontend')}"

@@ -1,0 +1,2 @@
+profile::netbox::automation::git_hostname: netbox-exports.wikimedia.org
+profile::netbox::automation::dns_min_records: 2000

@@ -12,10 +12,12 @@
 #       include profile::netbox::automation
 #
 class profile::netbox::automation (
-    Stdlib::Fqdn $automation_service_hostname = lookup('profile::netbox::automation_git_hostname'),
+    Stdlib::Fqdn $automation_service_hostname = lookup('profile::netbox::automation::git_hostname'),
     Array[Stdlib::Fqdn] $frontends = lookup('netbox_frontend', {'default_value' => []}),
     Boolean $has_acme = lookup('profile::netbox::acme', {'default_value' => true}),
-
+    Stdlib::HTTPSUrl $nb_api = lookup('profile::netbox::netbox_api'),
+    String $nb_ro_token = lookup('profile::netbox::tokens::read_only'),
+    Integer $dns_min_records = lookup('profile::netbox::automation::dns_min_records'),
 ) {
     $ssl_settings = ssl_ciphersuite('apache', 'strong', true)
 
@@ -35,5 +37,13 @@ class profile::netbox::automation (
     httpd::site { $automation_service_hostname:
         content => template('profile/netbox/netbox-exports.wikimedia.org.erb'),
         require => Acme_chief::Cert['netbox'],
+    }
+
+    # Configuration for Netbox extras dns scripts
+    file { '/etc/netbox/dns.cfg':
+        owner   => 'netbox',
+        group   => 'netbox',
+        mode    => '0440',
+        content => template('profile/netbox/dns.cfg.erb'),
     }
 }
