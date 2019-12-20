@@ -29,7 +29,7 @@ define netbox::autogit (
     $repofullpath = "${repo_path}/${title}.git"
     $creates="${repofullpath}/config"
 
-    file { $repofullpath:
+    file { [$repo_path, $repofullpath]:
         ensure => directory,
         owner  => $owner,
         group  => $group,
