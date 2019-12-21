@@ -1,3 +1,21 @@
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="XXXXboundary text"
+
+This is a multipart config in MIME format.
+It contains a cloud-init config followed by
+a first boot script.
+
+--XXXXboundary text
+MIME-Version: 1.0
+Content-Type: text/cloud-config; charset="us-ascii"
+
+#cloud-config
+growpart:
+    mode: false
+
+--XXXXboundary text
+MIME-Version: 1.0
+Content-Type: text/text/x-shellscript; charset="us-ascii"
 #!/bin/bash
 
 set -x
@@ -11,6 +29,10 @@ echo 'Enabling console logging for puppet while it does the initial run'
 echo 'daemon.* |/dev/console' > /etc/rsyslog.d/60-puppet.conf
 systemctl restart rsyslog.service
 
+# We're about to need these tools; offical Debian packages don't include them
+#  by default.
+export DEBIAN_FRONTEND=noninteractive
+apt-get -yq install curl puppet nscd lvm2 parted
 
 # If we don't have a LVM volume group, we'll create it,
 # and allocate the remainder of the disk to it,
@@ -63,11 +85,6 @@ then
   /usr/sbin/update-grub
 fi
 # At this point, all (the rest of) our disk are belong to LVM.
-
-# We're about to need these tools; offical Debian packages don't include them
-#  by default.
-export DEBIAN_FRONTEND=noninteractive
-apt-get -yq install curl puppet nscd
 
 # Get hostname and domain from metadata
 hostname=`curl http://169.254.169.254/openstack/latest/meta_data.json/ | sed -r 's/^.*hostname\": \"//'  | sed -r 's/[\"\.].*$//g'`
@@ -148,3 +165,4 @@ puppet agent -t
 
 # Remove the non-root login restriction
 rm /etc/block-ldap-key-lookup
+--XXXXboundary text
