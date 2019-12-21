@@ -46,6 +46,7 @@ class profile::toolforge::grid::exec_environ {
 
     # Packages in all OSs
     require_package(
+        'fish',                      # T219054, T241290
         'fonts-arabeyes',
         'fonts-arphic-ukai',
         'fonts-arphic-uming',
