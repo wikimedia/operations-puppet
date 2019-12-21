@@ -29,6 +29,14 @@ echo 'Enabling console logging for puppet while it does the initial run'
 echo 'daemon.* |/dev/console' > /etc/rsyslog.d/60-puppet.conf
 systemctl restart rsyslog.service
 
+echo "Enabling root console on serial0"
+mkdir /etc/systemd/system/serial-getty@ttyS0.service.d
+cat <<EOT >> /etc/systemd/system/serial-getty@ttyS0.service.d/override.conf
+[Service]
+ExecStart=
+ExecStart=-/sbin/agetty --autologin root --noclear %I $TERM
+EOT
+
 # We're about to need these tools; offical Debian packages don't include them
 #  by default.
 export DEBIAN_FRONTEND=noninteractive
@@ -162,6 +170,10 @@ done
 # before, the puppet code that ensures the symlinks are created, etc may not
 # have run)
 puppet agent -t
+
+@log resetting ttys0
+systemctl enable serial-getty@ttyS0.service
+systemctl restart serial-getty@ttyS0.service
 
 # Remove the non-root login restriction
 rm /etc/block-ldap-key-lookup
