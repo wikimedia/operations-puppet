@@ -14,6 +14,21 @@ class openstack::keystone::service::ocata::stretch(
         ensure  => present,
     }
 
+    # pull in python-ldap version 3+ from the buster repo.
+    #  older versions don't handle unicode properly.
+    #  T229227
+    apt::repository { 'stretch-wikimedia-component-python-ldap-bpo':
+        uri        => 'http://apt.wikimedia.org/wikimedia',
+        dist       => stretch-wikimedia,
+        components => 'component/python-ldap-bpo',
+        before     => Package['keystone'],
+        notify     => Exec['apt_update_python_ldap'],
+    }
+    exec {'apt_update_python_ldap':
+        command     => '/usr/bin/apt-get update',
+        refreshonly => true,
+    }
+
     $packages = [
         'keystone',
         'alembic',
@@ -45,7 +60,7 @@ class openstack::keystone::service::ocata::stretch(
         'python-unicodecsv',
         'python-warlock',
         'ldapvi',
-        'python-pyldap',
+        'python-ldap',
         'python-ldappool',
         'python3-ldap3',
         'ruby-ldap',
@@ -54,15 +69,5 @@ class openstack::keystone::service::ocata::stretch(
 
     package { $packages:
         ensure  => 'present',
-    }
-
-    #
-    # TODO: this was true for Newton. Is still true for Ocata?
-    #
-    # keystone in stretch can't work with python-ldap, which could be
-    # declared by ldap::client::utils
-    package { 'python-ldap':
-        ensure => 'absent',
-        before => Class['::ldap::client::utils'],
     }
 }

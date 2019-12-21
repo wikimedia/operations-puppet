@@ -66,6 +66,7 @@ Components: main
  component/puppet5
  component/puppetdb4
  component/pyall
+ component/python-ldap-bpo
  component/spicerack
  component/thumbor
  component/vp9
