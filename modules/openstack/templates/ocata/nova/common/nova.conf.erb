@@ -64,7 +64,7 @@ max_age = 30
 
 [api]
 auth_strategy = keystone
-default_user_data_file = /etc/nova/firstboot.sh
+default_user_data_file = /etc/nova/userdata.txt
 
 [api_database]
 connection = mysql://<%= @db_user %>:<%= @db_pass %>@<%= @db_host %>/<%= @db_name_api %>

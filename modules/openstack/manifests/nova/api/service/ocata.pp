@@ -25,12 +25,12 @@ class openstack::nova::api::service::ocata
         mode    => '0644',
         recurse => true,
     }
-    file { '/etc/nova/firstboot.sh':
+    file { '/etc/nova/userdata.txt':
         ensure  => 'present',
         owner   => 'root',
         group   => 'root',
         mode    => '0644',
-        source  => 'puppet:///modules/openstack/nova/firstboot.sh',
+        source  => 'puppet:///modules/openstack/nova/userdata.txt',
         require => Package['nova-api'],
     }
 }
