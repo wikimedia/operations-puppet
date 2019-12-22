@@ -1,3 +1,4 @@
+---
 # This file was generated reading the documentation and concatenating the
 # required yaml files together. The source repo is:
 # https://github.com/kubernetes/ingress-nginx
@@ -12,7 +13,6 @@ metadata:
     app.kubernetes.io/part-of: ingress-nginx
 
 ---
-
 kind: ConfigMap
 apiVersion: v1
 metadata:
@@ -21,6 +21,9 @@ metadata:
   labels:
     app.kubernetes.io/name: ingress-nginx
     app.kubernetes.io/part-of: ingress-nginx
+data:
+  # T241310: pass the incoming X-Forwarded-* headers to upstreams
+  use-forwarded-headers: "true"
 
 ---
 kind: ConfigMap
