@@ -581,7 +581,7 @@ authenticate = False
 [kerberos]
 ccache = /tmp/airflow_<%= @service_user %>_krb5_ccache
 # gets augmented with fqdn
-principal = <%= @service_user %>
+principal = <%= @service_user %>/<%= @fqdn %>@WIKIMEDIA
 reinit_frequency = 3600
 kinit_path = kinit
 keytab = /etc/security/keytabs/<%= @service_user %>/<%= @service_user %>.keytab
