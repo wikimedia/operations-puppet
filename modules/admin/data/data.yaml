@@ -762,6 +762,7 @@ users:
         cpettet@wikimedia.org]
     uid: 4610
     email: cpettet@wikimedia.org
+    krb: present
   dzahn:
     ensure: present
     gid: 500
