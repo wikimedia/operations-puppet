@@ -1219,7 +1219,7 @@ host contint1001 {
 host contint2001 {
      hardware ethernet 14:18:77:5B:2C:B2;
      fixed-address contint2001.wikimedia.org;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host cumin1001 {
