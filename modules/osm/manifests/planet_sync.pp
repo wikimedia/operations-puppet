@@ -56,7 +56,7 @@ define osm::planet_sync (
     String $osmosis_dir                     = '/srv/osmosis',
     String $expire_dir                      = '/srv/osm_expire',
     String $period                          = 'minute',
-    Array[Integer] $hours                    = [],
+    Variant[String, Array[Integer]] $hours  = [],
     String $day                             = '*',
     String $minute                          = '*/30',
     Boolean $flat_nodes                     = false,
