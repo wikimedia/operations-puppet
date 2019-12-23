@@ -1243,7 +1243,7 @@ node 'cloudbackup2002.codfw.wmnet' {
     role(wmcs::nfs::primary_backup::misc)
 }
 
-# Will become corp replicas, initially adding as spare role to ensure ferm is applied
+# LDAP servers with a replica of OIT's user directory (used by mail servers)
 node /^ldap-corp[1-2]001\.wikimedia\.org$/ {
     role(openldap::corp)
 }
@@ -1740,11 +1740,6 @@ node /^ping[12]001\.(eqiad|codfw)\.wmnet$/ {
 # virtual machines hosting https://wikitech.wikimedia.org/wiki/Planet.wikimedia.org
 node /^planet[12]001\.(eqiad|codfw)\.wmnet$/ {
     role(planet)
-}
-
-# LDAP servers relied on by OIT for mail
-node /(dubnium|pollux)\.wikimedia\.org/ {
-    role(spare::system)
 }
 
 node /poolcounter[12]00[345]\.(codfw|eqiad)\.wmnet/ {
