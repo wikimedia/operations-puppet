@@ -31,13 +31,8 @@ profile::analytics::search::airflow::conf_file: 'airflow.cfg'
 profile::analytics::cluster::hdfs_mount::kerberos_enabled: true
 profile::analytics::cluster::hdfs_mount::monitoring_user: 'airflow'
 
-# The airflow keytab contains, for the moment, credentials
-# for the analytics-search principal. Airflow is not going to
-# impersonate users, so this is the best and easiest
-# strategy for the moment.
 profile::kerberos::keytabs::keytabs_metadata:
-  - role: 'airflow'
-    owner: 'airflow'
-    group: 'airflow'
-    filename: 'airflow.keytab'
-    parent_dir_grp: 'airflow'
+  - role: 'analytics-search'
+    owner: 'analytics-search'
+    group: 'analytics-search'
+    filename: 'analytics-search.keytab'
