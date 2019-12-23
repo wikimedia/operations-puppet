@@ -95,7 +95,7 @@ class role::xhgui::app {
     }
 
     git::clone { 'operations/software/xhgui':
-        ensure    => 'latest',
+        ensure    => 'present',
         directory => '/srv/xhgui',
         branch    => 'wmf_deploy',
     }
