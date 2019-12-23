@@ -890,6 +890,7 @@ users:
         - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC3UFojv43WYMDf9WoD18t5tKosJE5liMQp2w3ibTiuXUuj6c67E9g2UqNNK9O2hej2vo7KYsLG5VmguzhHYLxFRWKHflicrgDWEdMIiR2lxUtcUDJggwcS0PGnocstiYNFNQRCcvC/XbqW7k2741V5UsVoE4MIe+e0a3KiHGN3HLbkStz/07I1r8e0H16fbJUwfKE95gtzI/rOGT9J9LBjuS5QBuWyPk2dv5HSaRlQp83L3KeVBUUZgN82TnNj/QSLH7bmK0/5L6bLof+UnYPiA6teJAKpB9RlwO9z3DQIVnjO3TDo9MHZct3kob1YWm1uLoz+rKoBtD6E5rLJH8Tj otto@kleiner.local
     uid: 2129
     email: aotto@wikimedia.org
+    krb: present
   cmjohnson:
     ensure: present
     gid: 500
@@ -936,6 +937,7 @@ users:
         abaso@wikimedia.org]
     uid: 2962
     email: abaso@wikimedia.org
+    krb: present
   werdna:
     ensure: absent
     gid: 500
@@ -953,6 +955,7 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDXPJxqf813pFtWacyC7aqeHqMT64rd6PNl4LHT/xyISgw5eY9++MMC0cR0snenbwkMVGWnoU00ULxwHYvVSle4AzeJj4cSeGFQepp6c1opCFsI6zzZZgk0+laubyymzBTP0SJmqsEljYh+D+tP9v3IffzXss5Ss30OgA7TSsOxf4PkasKIKG9O+bxhxqhJ+sRy4u5wEKWkfes0MYMppEZNy3CCIMoIGund5HiWnbjdkjfCeCC0zvLNH4mAYN0PysyLsxPFXASACMQQariaDjgvU52lcHi3zimbmyAlLKOh7xclXo7yq6Q/O9far9MWeOECZrMWpsos2n0PXE8omRKx bjorsch@asus-laptop
     uid: 2248
     email: bjorsch@wikimedia.org
+    krb: present
   aude:
     ensure: present
     gid: 500
@@ -970,6 +973,7 @@ users:
         - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCulokpl40WsFOcV33oY/vKQSrThJYWkFq8vfd8Go9r0LaTp8K05r1uMpU6TzKUUszs+/MKxGuVKNT6GMPHzqnzqVnWp8ZN7CZ1uoqb7f0Q9MC/9Sa7Dx9aNngZoncAUuIN5t+xYDTRkLnCIo9vu6M49j9xuMYs0Tk8GefOpWUWMmdkULqmO46p8rd+1R0Uz1qMdqiNbHrvVH8XNjN5FUTg0Spl9QkwMdAGinE00qGyjPbf7XXQsAwPum24RwnijL/WMKpt1ye2diWja+JqtpStzWEvFNzDOBlZGfqzegCBHp3Nw/8z6IAvCzOYjxkGXgwqNRXjUpjcw0adDFgE7x25C1hr01Wu8J9Y+sV/mGDZf7k5ZYFnRsETcqUdbTd15C9OJD2CROBnEAUeErleDB9UNdbXEGawuxQFmUTJp98pz8stW6hCSGlgnIhCAKuEV4LR88H1/GBGRom+NuBfGRfhYC9jzWUR2oFGZo8oj2ufQO1jp01F4q5JTnTtsNi4QouyV8bgOnHRoXeFvaAlOHxR5o/8XAaK6J5JDhSQTRiyIEDcUxJrr3oeeLj4HT72rb4EHXQtiVoRkSyldjk4ugTbM9BURqeIq5X0OSmJve+A21PuKQPz2/vqiNPPf0S0IO7FpR41Bbg/IbYe0fh5SZtxNMZnQtXzddzRKm6asWOKYw== awight-wmde-production
     uid: 4974
     email: adam.wight@wikimedia.de
+    krb: present
   awjrichards:
     ensure: present
     gid: 500
@@ -989,6 +993,7 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDLPSfU/UrxB4Se7Hi0xjTOMMj2DDaUFcxf8y0wk4nNODo/iFuU57ccgmAXJO5uy3x0Hzk20lr1HsoawaPjUw1oR0yUrUn2LvIBRZ0htI/WsIcUoqOJIWp23jqAmJy2whbW8JgaJlojXD9d5T5KgqtcIFFcoWAOXcJrjzCHmVv1GurooiUmimby0EQHylzv2EV+fT2cZz4Umz+iPCOrLS+ArT04LdzvEFZWaiiCFlnoiYQnnOMuuFup+fcp4A5Ex5x16FzBYNWWjrmzKJRGImGXtNMchRfRklB4bGTcy1u1XvB8OL0r3KwUmxP/jZE8VX3B3FQ4eCJimNmYWgABuYmQDVHILdb3NYeWwkJhzwDTllZQ5Ayou4GOT+jz7ebINCyDiV+xq14yptjt9HgPSpeHvQeBQ+PagAz852Sgh/ZchAJkl/x0lFHqJ2QAIXZWuPG35nx+KxvIzhQa9Qd5vEgBSItoyZqwEW9KcFTPFP+PuVMMyN8Wnopy/HaecVGlkg71MXUQ2y6wna9DEQX6ic5Khb/WsM5yxHlH/dwZa7Tc9dJhI+/OyXG80Ts0PWsKWnk2BuUJp4GkRJk1EZkWv9C8aJ6hlNv0USoTxE89bjC+mGvwFfpnQtgkJupWB57TWn3VClYwMhG98yd0DskZBXP01bf5b4rn4+ehDdRbwN/dNw== bd808+cluster@freeside
     uid: 3518
     email: bdavis@wikimedia.org
+    krb: present
   brion:
     ensure: present
     gid: 500
@@ -1021,6 +1026,7 @@ users:
     ssh_keys: [ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKGn8ICH7EqpRV1ADQ9xBZki5AzMlMAbvpGv/3becvam cchen@Connies-MacBook-Pro.local]
     uid: 21734
     email: cchen@wikimedia.org
+    krb: present
   cmcmahon:
     ensure: absent
     gid: 500
@@ -1044,6 +1050,7 @@ users:
         ebernhardson@wikimedia.org]
     uid: 3088
     email: ebernhardson@wikimedia.org
+    krb: present
   esanders:
     ensure: present
     gid: 500
@@ -1061,6 +1068,7 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC6rWxdWJ+Yh8nbepD73tlikm1vdCGkPei2Sy2imlxG2G0DY/FaGreg5PyRqa56YK7KVs6cfoSQ30wO5/Gx2emZpKRz9mlWq4u37Z0/DCzXq4vZnUt13PXxPn5bX1k8oEVH4obKT3FsLPfly3f1/zsqd7rPx5KY5GVRqEwEyf1TPrTRX6SMhhs9zLveFggAGkcNG0oeHhHhcyMUgUHhA/f5WByhv+nQslrVNkD5oQOlAQeneHZKH5T65T0yH2z83aW1ndQL0LEGFxBlVH5m0LdXxCqN2WXI3e8kjALqXDLvH2cLG4HePk3EYvRm1sfLMOHOrZQs06GhBHb7xYJqq4R7 cardno:000610394992
     uid: 4319
     email: gdubuc@wikimedia.org
+    krb: present
   gjg:
     ensure: present
     gid: 500
@@ -1080,6 +1088,7 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDI6xBPpUqjfZl0AkSgS4sMLqaLdaVIUzZdCmNvzw+TbITw6PWOtMAOnP5A8HOn7aqnSH0ZYYWN/AzMz+9zT6+5JvxOfY43pCmT6qJv3e6mtCkkdy79kCH+b8S9NtrhttxMt9iem2RP1sbJiXLfcinOHuezd2Q05BoY97Aoo8z2/tRRvkPnHA2QU3fxAMS/PBle1ZytN2XJtz565AS7vzrts0su/jTej1ikLNZtMITZIrgB4o9KVcF5FHsmTIBehVwOEQRNYc6AwK+GWDQ1ZDS9m07/VmSIAO8krFPJ8y1M/EvMSP/VR78ABXOYTNlgzTCSuLFjocFMARBOnpA5Nfg5 halfak@graphite2
     uid: 2041
     email: ahalfaker@wikimedia.org
+    krb: present
   hashar:
     ensure: present
     gid: 500
@@ -1132,6 +1141,7 @@ users:
         krinkle @ krinkle-mbp003]
     uid: 2008
     email: ttijhof@wikimedia.org
+    krb: present
   ladsgroup:
     ensure: present
     gid: 500
@@ -1140,6 +1150,7 @@ users:
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC02OaZBRdIocZp57HGOh8/+IdAwOZiZgrHAsFcNQbCk3Go7NGYxk4jxhIp7JmnK0wA653FiflYNqI3gkQg/pgWYqQldQu1d7VomAW1EcHWWlJhMyUkWaTd/eQnZLXPGJkc6vI+PQiJMnjtTwI2WD5brljFafJLvMs4j9tJWfmkFvtLbhO48uMAOO+2FVLhrYw7j//PrO8mQrfAZUHbUCU909xyR7+/hRPSudz9K/VPAVXnzp9qbByrmLiKZWvnFKslyemcuhMYqJBHHR/j8+P7VUySU+xJkxuK8ueJRSxu56Mfer6p8zoSa8qVhoaS7opq3UNP8H8cSDgdxYFLUuBF]
     uid: 3182
     email: amir.sarabadani@wikimedia.de
+    krb: present
   manybubbles:
     ensure: absent
     gid: 500
@@ -1174,6 +1185,7 @@ users:
         dandreescu@wikimedia.org]
     uid: 2543
     email: dandreescu@wikimedia.org
+    krb: present
   mlitn:
     ensure: present
     gid: 500
@@ -1303,6 +1315,7 @@ users:
         gtisza@wikimedia.org]
     uid: 2355
     email: gtisza@wikimedia.org
+    krb: present
   avar:
     ensure: absent
     gid: 500
@@ -1420,6 +1433,7 @@ users:
         nuria@wikimedia.org-production]
     uid: 4193
     email: nruiz@wikimedia.org
+    krb: present
   csalvia:
     ensure: absent
     gid: 500
@@ -1452,6 +1466,7 @@ users:
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC6V4LDEfUUkEA/ZCH8GaMU3XVQe8zB9BYyUgcKydtc8xuGv/Pyz4u0fwJwUNCu7bQ9DMT3wvKg5docnfmnkpfWvDLITg2ank8gx2fEwwI/DnX4fn/44fhCd8LIWD0bJkE984vz+gSyU5oV/RZyKZ1kgaBOpZExDN2GH5jIYQyqghM6BqNpwGdcAGeBEliP79xmdpp2LDA+KEE/+CcvV/wZ2phPwEbcDBXc04esrY+U967Q2dLMRzydmxUKU4nVD7TaHvKlEpBOT2L99HLdSdAVNn0/2ksV9QPDanpeqpK7DkdK1+cbDdqqR2IrE3bHNeZpa623SA7mKBH4/unrarcqbLA7xrtLAt8bIfk5etu72WmkXj9MVqFBfyR4NDqqmdhoziSj9VxRHryuJvduzXkPio4y4qS2J2R55T9CK8+GPZbvqM3HHI9c8FFDpfpiBZ/UMeiF/GUIOFumFVF4Jx76SSPqGT6XXY7bVQdePWX6+pu86w4HAFBkWEzyr4JJn1ViMn0VRNikpMS/oCZOa+MHMY6FgDKy80otLz9euaIy/QaCWg+PR48OZNK+0x2ygSvXG2KvDCBOJSoWeo9Nky4zUOzei8OxyAdg58bUQkYs+dqVW2fbqfry3BOtuoXTI7cOIb1TdAo7BainNb2V72gHqRiuZnpjwrlpjTD6bJtL8w== aaharoni@wikimedia.org]
     uid: 2076
     email: aaharoni@wikimedia.org
+    krb: present
   legoktm:
     ensure: present
     gid: 500
@@ -1666,6 +1681,7 @@ users:
         eeggleston@wikimedia.org]
     uid: 3649
     email: eeggleston@wikimedia.org
+    krb: present
   twentyafterfour:
     ensure: present
     gid: 500
@@ -1704,6 +1720,7 @@ users:
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAmjVSpmltf5d+0BTwdxRL6HmtvBKT8G2tsyET/Q0QJSu7jAEKoXHtsQlpWLJJecOe/9kCUDc5X3/1EOBTvlSOKRz4iPCgscGjIr4C8wT6tbboE5VkLlBPZqyC0pi0dTsILu599CPCBkwpr2K1yUwXwAJ0W3Y0XmsmJQmsDRyWP0Ck69EQ1NOfYp44NpZXdm63DzvIozNHRXNfyGQDHp8aNokegeuyd/cjDEVsUotH7ll0NoayStezJsL364i/yc9MWGEhHxsBRNaK9W9OPb6guaNwdXbwCiIgu+5WkTcJ9WauBl3DrY529aGQoqEps61VGeYkHKk/p+12TDPOZdKcYw== morten@fjord]
     uid: 3290
     email: mwang@wikimedia.org
+    krb: present
   mforns:
     ensure: present
     gid: 500
@@ -1712,6 +1729,7 @@ users:
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDbO6Vkqy7ojVxQwNIFn9n6afGHsVci0UF2izNId6/3qDD2qHEKqew9JfkqQyOiff2bZXDNFp4KE3jSmAuFq2nRJKE+YJXX4t6CfwhWY4cUdbVNtWugV+bb8MuOblWs5VbxENqPS8WuvT3lyib4q6Gvlg43QJaKy292D9yHmx9sz3k/JADgYcwK6+tA5Qtby6PTup9lgVzhXdl7hxS5TPcUmMk/k7CZNx1KD5kcbHIPtggMTC9izO4se/kQB/vdggwV2JRAycKStg7GD+kj7yUJhN/G8UDyMZTPgLZcAtRHAsMETL5pYEk9MqD5WLVrVhWr5cuUXTh4pYgHGuQSdJVD mforns@zenmote]
     uid: 10668
     email: mforns@wikimedia.org
+    krb: present
   edenhill:
     ensure: absent
     gid: 500
@@ -1804,6 +1822,7 @@ users:
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC0s1xlbcCS1VrAzJNqS+dzOWtBhZtD5hlCzt9SyS0dkjsmrpoO90dUtpYM/nfkkXcXcwfRc71YV2d/MPz2RlwJdIi+EoIQO5eGvrBH7bVo83S80moQ/SpwRFy9eGn855tKVxwMbWmRG0mVVX9lodbmK6AqaKnu7/q8zikb6aHOBOK2rRI9y/rhTc03pqTuZVJuTibxv+hZXKORtBh41bkRXSlMXExOcHALCpUNzGRQm/uVzrdN8qcgSNm/i90eN4L8SIOv2s2PmMIENtsPgF/ELIB/IM3EArfp+4IqcSE02CKGrFMax9ZL4O8oVS9/ML6wlRkVxrj1+bobMH3kr7ANzM5Trw6cg5JU811dOhTFsv09iHmHuo7znn+6siLj0y88Wg+ppzSf/N5x8oevSlobLwuN0YujTPuTutIMUKcPQ4P/2TfcicAF5mKUd5fYhf1LPjZXj8Ks7Jb6QKoKiNkXYylxH3hGy0ckA0xDOBtowXV9mUeWmMVSANNs9Lm/4OxpOgNwBJdXr9XQakFMird6N/chxeoyD3gccbEA5JRHiP3XNPmmPKFYBoOpBt28DEU88k554ZEpnJEZ14z7R+Iy8rQZyxRLmfVMpw6KN+DYm89R4fycNn2BfAqOetA1FctdGuBnFgJtKGWXjg94Mfehje+S8JJBY62SJKff0xZD0Q== lap@debian]
     uid: 3609
     email: agreen@wikimedia.org
+    krb: present
   mobrovac:
     ensure: present
     gid: 500
@@ -1828,6 +1847,7 @@ users:
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCpc0uajJje5PSoka43J7el6BDoyiLsKjofgXCJHKs4lOJN7MCRM6uYYwnT2R8e1KyRCdotkTXWBgH8CYhYaqp9Pt3QBg/Rx7BurkHxk+4xe0n3N2rtllYxPkar0xjpt8HUVa24V+MwJhbvpvJtHvtqklBEVWl1t64K9ZHn2ZKNJdD/aGIZGvJcZfzGx3JOIQqlzdoiZf/FcC2za1cUt9a/NQs8hJvpNLdfqxz6Hw4ZYMIrLeTanIKAEoGxmMEiKXul1qX4qj3BCjVREZCdYWM1d7rA763UXTsnr0b0DLHZQs5pQX2afKtZ5HAdffZx2XzTs7fSzRApkUpg4Z3CNjynZamusR79hjKaDfl1wBxtlsVBGY72c0VVaJ4pqEQK/RtFvgRhBKz5TLbbYwF4g1eEQ1R8VF5loJgXe0erhasLn5Y440jBKLSGI3wdEpzMtGm52HTm9alASgHFTR2AIWDFk+7lj0GklgklC4W3PdJlD0Wdz2m2RmTWzJbIFJDlfSYYKuEcz2w5GYUdc9y6B0atSPG1iuqclmQrXEpvjyK1ckQxEjHWzCtvz+DqJC6mnwapxoFk+Z4Me92xJuGxzvC2M1O/MrVEsPot9cNpJvKsX6CG4dX7numBjvpS6aOhsIfsyOBId0v8REySd80+ndFS9TODG1YYoZAvfb8xnQTPyQ== joal@wikimedia.org]
     uid: 11654
     email: jallemandou@wikimedia.org
+    krb: present
   daisy:
     ensure: present
     gid: 500
@@ -1900,6 +1920,7 @@ users:
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCmw1FPftHdsd15oLtKOEcqgZY/pHPvkb1UJQT5vwIRdBvEPOMHB/KNNHpx6YcSSXLWjptiI4BwrotavvFCWtLKSKm8Qx2b76aDpW52i0zjcItQsf+SY+nYwYOtRFmHAiMthBc4FnFK+d+T9HCM1w03nsYhYKuYE2Z/p3u754VyClBI/QxBMCBeaq1bkj4OtUmLnHW1bifcsGVW8pvQIFVEIFXoPg/rZQHM6IiiorDI3VHbZxQI5fUcdQtdLF+IE8xiU+1dNUa1p+rGAkoMo3viwVZVOtK0qAaN/+nsKvBb/dZt/srkWwcnzvkPNIn8SJXiDFV7OIfd33dSqUm9UmtX peter@Peters-MBP.home]
     uid: 3428
     email: pcoombe@wikimedia.org
+    krb: present
   mholloway-shell:
     ensure: present
     gid: 500
@@ -1939,6 +1960,7 @@ users:
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDA6j1BKp5iz7VLQ+yy/IOlwjSfpbdMHUjUgtUtN/CNYSsrlig9heWxR6vd0UURaLB1WgeFgsc0Co3339bpqAUA08oBwfCjdScqkE/qu74jYlFBaA3hqd0rS9/UbWR5uCbNZVsv9ckvMGv8iq0syarW/Vvk5KVM0DppxY/2Tvcj/HfDUXHXpHr8+0iSwsiknjOuRj8a89FcABS2ilHhLY1GkUpJAV0UkMMYt4Kz99PWVx5DSvcKO7oraT/bTiD3GKzKIXm76CBWoC7jsTrCpPF6Ow0kLs8bnvUE9MAjFxkxNDPW8PE3hssV3x02xc6yUanYHLrNC1F8xMRH2OJWOG3h nquinn@wikimedia.org]
     uid: 12049
     email: nquinn@wikimedia.org
+    krb: present
   dkg:
     ensure: absent
     gid: 500
@@ -1987,6 +2009,7 @@ users:
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC95t2F3S61Za6Y+mZUs4abK95cXm9FedpnUJe2ii3byeFG5QPL9E8+zcZ70o2Mt0NjM5Nitla/Tb+U2BRjk3/YmWEkZxd9crUFRi3IVHjKhEOYhLSSjb2NJdNyWUoUgkQ8DspVDotsnIupdLuHY0Dyh+O4dFI7xnRKIUShm/B//BDCu03PXR4ikYkmtR/+LeKbMh3qSGgvfgv/G4hIiKjyiQt7Md+ROW0YqMp6yAtqIJ+2in1hU3mxy47vfVOFTcL5nNLOLoxJGVSsm0ancVbzrkqruk1o/iFxuz9AzxnX8EAozaNUH7PP3/ybD7ocK7v4SiYpibT2epWPkORgUV7h dcausse_prod@dizzy]
     uid: 12338
     email: dcausse@wikimedia.org
+    krb: present
   mstyles:
     ensure: present
     gid: 500
@@ -1995,6 +2018,7 @@ users:
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCaLBJ+guuL2hbt5VyIMycRVmM6+DeN+VW+QAViAHzlIO/lQDuX91/AixG7AXm3ETGSYfOpP0NxOsdM25nIe5Mr7fWAn41vNhjyN18JKFyMlm+gROb6mAxCWmdeWADmX57hayTMSrPHepgyw+g1/ywuo8sNPiAusI7YZhhT23k1QLk3n+yloYXXdnc5ngmfeIyyUQ73xCep7b30tRNxpqTTJN18QD62HftN98cBElal/hKg10h86GgMx7QJm2cPRDvjwAOz4hhxVzvEixe09In7Qe3ioQUuPgzxBdrXkOUvG2md91TK3+QTer9TNlzpPuVivRnKRTu7dltAsk3xWvuOOI65vaT0yNpq6fWxLAZvDtZEC0Tjl0UPj7POPdAElcpo9Rp+XM4XuUVkxV1NM+Ccy+tDuxkVAsKMyvLjqU0YL66DvHSFLcybk2SNutiHlscQCYFQUWt16sp+pXjutb1Jf7A7s4epH8IuyHQ0mZis8C+Tw5hcb2SM9W/gRyOtcLdr2L/tZMnpBNeiR4QBJRmP29nt4mubK5hpnerK+0/JwQT8c6Bz7pcoZS6+Pw0corvo4tJmbFmgjGUjEc7HxEnWYcN1us+xgBmmUR9l1Zp1XjQGdVFd9e0xJmOJ3pT63IbZOSbOXmaJnr2ceyECI7M5Akjdp+hlBerHpcplZZicNQ== mstyles@wikimedia.org]
     uid: 22524
     email: mstyles@wikimedia.org
+    krb: present
   tjones:
     ensure: present
     gid: 500
@@ -2003,6 +2027,7 @@ users:
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDFBwfxSdeDwBy5ypWAfsfnmwqJ3R2ks+T9wbnqq30zPyOvZjzequ6vA5JzboCce6OqZ5+mLg3LPQqczlTXbJakWJTjGz7a1Wjhhb6m1/UWWXWjBbSzRwk6Mit77Vq0zlEm06//rFzsukMIMliwmjZcVrIP8Wyb74pABfpM1NvgDXFYjzbbBxY+LugiIk7sl9quDYWUTR6SETnTGOIET7ONZuZfFAHQltyvhUZkLmV9VbNZXxspoWRLyKJZjMkhHvnIeA55IrDBIdJ0VsruFjEn7wvZodjXAjS4xWvIH68vIiXiL3LTCmZjBk0pNEjfpAjvZ5MX8/bgR4ab2/7H6Voj tjones@wikimedia.org]
     uid: 12510
     email: tjones@wikimedia.org
+    krb: present
   srijan:
     ensure: absent
     gid: 500
@@ -2018,6 +2043,7 @@ users:
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC27kIX/UKoi5f1hXxao9nU6pQgL/LazvOBB7jm2D66hQgb+xt8JKNLJPQGIVZC9cQNwj52LotGRV9sDoY5eZC7iCPQr4tQt3YhJh7fJuzPd9wKglL+KoHNZamDP10GejKsk26Jv1Ltf6PKDiNLPimq/cki4PUvp1FDWbc+K50jk+ALa9QfPnIN2h+zz89BhgW5pAZ5M0xANyqI68wawFRSyuepxp/S841AVaLJH4qar5LSjr/2h6rrvhlpjAL43cWaKbqHKzksHV4iyJURk7fVeyoAJ64cou3rdDvbVcjl3laa8/DHznJUaRFoJ91a/olFZbLFfWkT4fJLjoWFn8XrxCixb9TGjd6X4bHZhCObCfdwKogLTWFZEGnlVnMxRdxc1oBkPkbd5rsaRo5s07WTV0WIIFsFktnm5fzwLZ0qNCSWq3Ao+g/NNgeCSedXZrJPE3KJK2XSmL16qccqoncrZOrd1GhIfRJuJ/tPvjpKtosbR5/O+lAIHQTsBTA11yzyqXeB6oXLsGjF92hHCkVJFBVrJHxurGarv4JZ72WUOtWXFo0VCgMz6LdWf8GzWd4Z+yvCYgP9s3fzfclQY0i4oX+RDg6Iy3nAmJqdUVgaEc8Tc5zSldQAf63xI5y8hUrlecINBcMuBiEo9UXb9MiU43XggafGd6VoRbHKWoUrbQ== mpopov@wikimedia.org]
     uid: 12625
     email: mpopov@wikimedia.org
+    krb: present
   johnflewis:
     ensure: absent
     gid: 500
@@ -2034,6 +2060,7 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQEAzgRlylV838q00yOqBhigvoFWYSCZK8H9f8hR83AGsxY+guW335xYjWwgtvTPTJm5hZghIMB2RnHjt9uI8IEGic4kF3o7aM/002JWTpfCi0bEbJLNifJ9SkgTskHdYMAZwoN54ruMWLExG4arcF0wvz/z9o0eRTdzhZ1bdfggasrAcGH8CLhtKonjBTjaTyas758/EliZ8hiO9aPrQG4fYYdEDSUpS2ADKIcAm+sxujItjSSaIPGWFdRZDm7xkhvTK/n850/q9S7iu34uwxqp2Q1TuoTioWmDByjZO0FFj07pQsRQ5CdQ8unQairUMvDzY9nmyoRn5t4crnUmhbG4cw== rsa-key-20160809-wmfprod
     uid: 2178
     email: adam.shorland@wikimedia.de
+    krb: present
   tarrow:
     ensure: present
     gid: 500
@@ -2191,6 +2218,7 @@ users:
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC9rdkfGRw7mI6lt3UfwWcsWBn+qOV+xx7VhI5vB4rcjSgbiO8sI5aEpdOTHTsQm1DEIth3JzaJ66H5UAkUJrFHyDxbfqhoghOLe1+DTy3At/WldmP8QEuBGJZ2GDdhJvU0LyMd7eFVl8poQBWeVPz7Ds+9IFDc41YmCUNGJb0Z/Vwu8IkIutVFe58e3Q2hwAOgtta+QwT1x6TSzoQC+ElOkBxl+8XPjK1/lJ8+VK1HHpL8rl3XzGB4XEhLecVtnzLAkkm6qRvGV0iCTbDyF1VBDytcPIvMW+2NX4jcYXOj9C4zHMLdLLHjQr/4BuDEXa7WJQw4h+8I7/UjTC7FtSUt5OB2/pr9SPssLhHZaw3kQ3vwNTz7u6Fq0jX4c+cN0VDnnjF78cI77RmxbUZ4RPyTa9nrS+738utJ4fh06qNpx+B3tCq1Fu//PU5MepQq5zPczU4KUEBceQuzjXexpoXT5XOoMnZfWs3xhYzAyv9lmYC+RSq7+ZXHR5GH+DdRv1OOuJjVvWRSErav5kZ0g0SE/8tJ+QQUV4e4TldP+ru3sB34VGnAdrhnyoUQYKhFCv3iW6NA9KzceY+Fm6PWUQKXLjHYaL+Q2v9SrAztfQvzOUdxNre8GSXIanQLg/LSCYMd3SuLqBjlxCDm3Xed+T7zmNjAdLWD9gfnVxQwxZ0KNw== ltoscano@ltoscanowmf1553.local]
     uid: 13926
     email: ltoscano@wikimedia.org
+    krb: present
   jdcc:
     ensure: present
     gid: 500
@@ -2378,6 +2406,7 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC5L9UMTDwcCoGmMhnQciOLMAr+tJ4A/HCVCGfmkqPLBfsncfly7hSBxxPc6UZ7960FCwak8UJrH642/rtJ7Sr/AT7vfs14DpKXqV+ju5s7NAE7YnZY2tvlgx6HLiVo/vj1kw0/MQajzj6GyfbPtbgnTXNoTlqq2qiIIu8oLi0KGmVyKWlZH4mkIOjX6tFWj95nBDBll5XIT/B3UpGFVCbePfH0wo2wj4P+rZbLFty5FhKW5vm3k6O0IiRfmFHOv7EzUsYlh5LM1YK3oN2wuSSHG5ml917u41C2QNkGkXbu3NSWT2bzFwA02Zf4Q8WolVneXHuUmvYHNn9OiJpjuWLmhh3UhYQTaSjstx0ppHUakD/KD3N8jyZrApfk70zTkvcixu8x2tLZYcRUnM0mm2ObBwITOCdt3nUO6WITqM/yppuI3pi7BAfwjGwIel72TTxdlsJxUnP2nz3769IAbGCjBYokqA4migqc/s5A1UEznTTrkdsrOXjFAeuvT6K5SZMRTUqxdzU4r7WFnKKrnfUDbVMvAIkoCyQLJ/izKh0mEA85Nbz54EXKU5jbp85S8x3EHok+Q+Nng1IjF1H5XQeHRCAycX8It2DI5dl6XXj8j115+k5Yu56Q5diBcqk3ejvf0WRgsnR7S8b/EhqNBZ1hyRQaU/k4DX5NEB07cZDsNw== jiji@arizona
     uid: 19933
     email: emouzeli@wikimedia.org
+    krb: present
   cwhite:
     ensure: present
     gid: 500
@@ -2552,6 +2581,7 @@ users:
     email: tiziano.piccardi@epfl.ch
     expiry_date: 2020-05-29
     expiry_contact: leila@wikimedia.org
+    krb: present
   fdans:
     ensure: present
     gid: 500
@@ -2561,6 +2591,7 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCusvafyr2JyFMUuWJ3N7NMIrKXVGk3dpEhdeqkJIZdRU5+Zyq7sA47bKBP13M06oFhtDQv/77rsqKSS1zy4CSFs9RPR/WDzeRcuHRxxWbtA0+6A0pfmvxCfrF/008Scw5TH4MJPAuQjCFc5obqfNzgwAiOVikMAhpgYloywPBSMG9mPek7KSJ6b2bZy8Z7+gnesFqzaZ1o/UET+5lmyaMlFWhaKiSzNt/naa6prumQvuEvJf6tIOqsoEs/BsL4mTKTLuSnw/iEA9m/oJaOjyPnbHbn07ZHLRVoA/CwyJEf0VwfornPVAc/Uar6e7QdA+6/PSruHE/sVfj7B93pjgKUiFEfHZz90qZYnObbl47odVRvv182IfmugNOkTMJ199pKTzIvhNldto2zKH1aOgbBtNnkpZ6KLu3d1e1yTdRdcGS0jZsgyLZZSC6kFD/6JztfEbtcdO4aCsIR1tNT9ZxepwlZLavv76MVKxA57D4We7/TZ9ZSMRBCY0HUATAUjWBjxOsl47zj26Z3QGHI837xt4nD8lk97mH8x2owNUjp+zrqL57cYWe5nNNryi8T9nU0oGxNvG0twTHJlhDodHtJyWMXKMUymYrvCCXkLX4tlGpikWCUuHhW3MPpvRRay6nUHKE/DSg9mqgeD2f1p6xn2T3MmvarHUdhZqiQjTYtcQ== fdans@wikimedia.org
     uid: 16067
     email: fdans@wikimedia.org
+    krb: present
   musikanimal:
     ensure: present
     gid: 500
@@ -2605,6 +2636,7 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDDqwfn3ofrvHW/tLwTlVnQW0J5bD6LXJWRiVnmwILhDZK7JzWxKHDWXylO865AuHPHii6i5A6vFIu9/R72iKtAmd+X+MhIOH3+K7ErqX2S8tIIHghAac96VSNZnlDW/XTuOvFOB8TUhh+SEctlvNes3a9C5Ysxp+VYW7YLRQG+PYs3/A6ifWsPS1dwtGQtysWhkjfGvFNy31VmVVJMng54SH14uxpS+Fc87xRLbpXUVL6Pd7ixKsEfF0z6Rf0V8zS8VmchiJf7Q/EllH7c/6UFZu/fHvVnY653/Miei/6wgdtKrOX5ajai5ZbM6tWbHX4GUz3BncjrrD8Qe6nSJIMz goransm@Ubuntu-1604-xenial-64-minimal
     uid: 16664
     email: goran.milovanovic_ext@wikimedia.de
+    krb: present
   pnorman:
     ensure: absent
     gid: 500
@@ -2711,6 +2743,7 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDeOMOSO3ikwLFsjLLdXCeeHmewcb/ioL37EPSiEr2vzRvTxKjiCTEO3/SKae26oCzYDfFM3KPtDBwoUf5Bd/qZOzBOQ8JDiU484e/fnDKOgCvRRDRynKGrfHp4CudbX5PhMvt2p8PpCoRjf6x9okoonkvCEqIIrRkdrkt4rPVTxMB44Iq4vzZ0iNMnnV75kNbkY1zh5xJFx0iZart/3lGl8NUnXh3bzSZno9P0jSx8XVsNoh5OUE7Ynvz2rlLyp+4R0uyaslPfuiHwQEcxzp5FfygJiOGJ095tOUYgk+Br05XL7UVeeQhfMNAknz5YsCTjMLG6HuDTCudZjRG3ZBwh0rRTYV9Y03PYNyT+RAfA5R9X2FZw1GqC7zs8n2mpbWwPLyLwcVH9c72mg9HYB+Is9GjIUvISGJeSA7WlfrtuxrIYZNzfWMHQd+ZuCz00lkxlfsYfqXdZiuu+rtY3bsON/SiIvW5ZaqHcMuJAdJjEscx+1TRMhgs2LFmaZNyhzJYw9TeKfsfx+5cipy1z4o/tmjDLCxbe1C+wacFRmOv48/R5JiptUXWBbw3CC3d6TqcSxynntmiEB0wPGTSkKexRiq/+wVSrQnZCQMgQPvfqqTPcDoKrqB+Pve6XLhL+N1X0rT7mRYwkZ+a0+g6774i+KZPumx3hVYP5MhW0CXOAEw== miriam@miriam-WMF
     uid: 18005
     email: mredi@wikimedia.org
+    krb: present
   aborrero:
     ensure: present
     gid: 500
@@ -2794,6 +2827,7 @@ users:
     - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCyCPFZyyNoNnyQH0dk/+XYmVpnxri8Z5nOg1vW6r82UAPjtquqAp79a6XEs28F5yRDob9z3wtqK1U9seVt6wf3t5+4k4B0cBR8oplLPBfI/CTAKdqugI0XwvjYxEp3KV77sF9SVOfFexhs1vOD5WRnJnQ3WpBkCo9bW7X/xq+oMchz8knCvHQ7NqAe+poJLHjMjJnaRSnZviQn5RSyset13c0kzevxDzvE7BugYR3p329ZrKpp17wPVOt4lnoXnokItZF9WqY4/nLaZIAieCuXLrA8rNIvsciNvKeMuWhaPd1v5UdFMG/jQ2jaHA74Sxxds7VgCrhJK9YHtyXV4JYmbiDGbh4nIsgpSd3w8dnRM/6TcxWMmnLkePS1uzYOfaTp/SONFoNqwPrF3hsm9Pg9O4f4vdSxoZ/3B7hO7yD/BlYrYVU7UDOgwuxjBTX2JhnZpCgmAX9P9sNMprHrcGDrLpeqGBH6E6Vx/z6QwBpatf/Q8WVJJU2Q5wqBvqEibl5rmDE8b+Eyw/k1gRoxNYp7bV81e5ht4e7hLbXkFVdn64JCavKur6mXCbGFPlklgCA/svpJLUl7dcdm+s67V615r8CzIyDwl7e8sGc+586X4zM1Uqvy84xL5l/ASLTObSkU5p3xgNWyEWYm+fTu0l0PdgoOxtEFg8nM89N/XdAFHw== mneisler@wikimedia.org
     uid: 18650
     email: mneisler@wikimedia.org
+    krb: present
   risler:
     ensure: present
     gid: 500
@@ -2862,6 +2896,7 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDNPlFL254lviLfkoOv+E8qTftETMs2dDt5VJQwlHeDKmadd46U2Yd71UUR+GviN5zs6RBnb5NGTABhIOZ+XgRTq+Rjzz0hC1O0YrbTBofN3vp4/rxiYxOoE3sfJRDHVG2daKePMAA12vX/W1slqWF1BWeV5/r61gvcVBHq98GbqQ4cl1h+A2Y/xJTwZy6toarj+uN75T8XlmRxyiLd4UEmAvaS3W6cL02VJL2cooSt352ah3Jn1Nafti9nUReXl7+b0N3FnTSX8SDFrmfnRoxuvjx+/xI5ALCUbODFqosjJCJ0IqzVFvuOJ++eJAsNX/oh3E99D0HkKbFsb3bCN5bYZPFYWI2hVP5K9BFURLpmWFCCzO+kE2bub/ekyo/jLRHfRK2eDCvxSaYRU1XM7OMXCGZ3FjuvY0nLVEDr022rs4YolQeiinstVEdNIOCPSxAbTqYvmQdWs4pnh8riJoGLca85YobfUzm3IX8qDlOXfQZewERJSSkKY4z++b7Np3+goQ6wEo57cp5K7i81/18jawId58ESEQ3TnoTUuY6ibobTRBxfSUdW+JAOQlapJldemw1QtS3yK17CLP5PO9LMJCqVgGROO/YRUTwaL8pA7fcq3xoubUXDhLBeNlsFuddteQUbpsCsG5ymh4gxEhASmHCvSULYEbHFoHnanfSJnQ== mmiller@wikimedia.org
     uid: 19062
     email: mmiller@wikimedia.org
+    krb: present
   seddon:
     ensure: present
     realname: Joseph Seddon
@@ -3044,6 +3079,7 @@ users:
     email: nathante@uw.edu
     expiry_date: 2019-12-31
     expiry_contact: halfak@wikimedia.org
+    krb: present
   isaacj:
     ensure: present
     realname: Isaac Johnson
@@ -3198,6 +3234,7 @@ users:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAPE0Y9KGVkwRR1edkEe2/5LShc9s6nynwFQg+v9Uemd sukhe@sukhe
     uid: 21131
     email: ssingh@wikimedia.org
+    krb: present
   wpao:
     ensure: present
     gid: 500
@@ -3236,6 +3273,7 @@ users:
     email: iflorez-ctr@wikimedia.org
     expiry_date: 2020-05-31
     expiry_contact: gfields@wikimedia.org
+    krb: present
   jeh:
     ensure: present
     gid: 500
@@ -3254,6 +3292,7 @@ users:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDoseoHpPEYpbXzJZ6FL+R7S3AKk3nv7lGoVzCTJF8Br acraze@Andys-MacBook-Pro.local
     uid: 21437
     email: acraze@wikimedia.org
+    krb: present
   jakob:
     ensure: present
     gid: 500
@@ -3281,6 +3320,7 @@ users:
     email: mayakp.wiki@gmail.com
     expiry_date: 2020-01-26
     expiry_contact: kzimmerman@wikimedia.org
+    krb: present
   kemayo:
     ensure: present
     realname: David Lynch
@@ -3317,6 +3357,7 @@ users:
     name: mgerlach
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINj/yFpJoyyIYy8DaRkA92YOQbsZyNh/l3OfQSezZ5t6 martin@nitram
+    krb: present
   jkumalah:
     ensure: present
     realname: Jerrie Kumalah
@@ -3326,6 +3367,7 @@ users:
     name: jkumalah
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKtmaRXYmgqNYVDr+ISthBNCwkgo0eAvfKgw20PTuzD+ jkumalah@Jerries-MacBook-Pro.local
+    krb: present
   andrew-wmde:
     ensure: present
     realname: Andrew Kostka
@@ -3344,6 +3386,7 @@ users:
     name: dedcode
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICXUWuz8fmG9LkK3vLeAFJF1+uQV7eNR1eiDdfpYcTIq djellel@dedmac.local
+    krb: present
   eyener:
     ensure: present
     realname: Erin Yener
@@ -3355,6 +3398,7 @@ users:
     name: eyener
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBLrqCmWRtknGqk3RLECTbNP0QY/oIOImBi22qhDdqoz eyener@Erins-MacBook-Pro.local
+    krb: present
   rzl:
     ensure: present
     realname: Reuven Lazarus
@@ -3375,6 +3419,7 @@ users:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOBTDDmL8isvso6xqOJB5qkk3n8xuM0XxFc1Q34ZnZRj
     expiry_date: 2020-02-16
     expiry_contact: nruiz@wikimedia.org
+    krb: present
   cohi:
     ensure: present
     realname: Corinna Hillebrand
@@ -3411,6 +3456,7 @@ users:
     name: kevinbazira
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEET3VFgjju54aZ7Ok8vdeQ7j45Js52GWNw/BxTxZ1+2 kbazira@wikimedia.org
+    krb: present
   nikkin:
     ensure: present
     realname: Nikki Nikkhoui
