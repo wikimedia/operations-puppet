@@ -46,6 +46,12 @@ profile::netbox::ganeti_sync_profiles:
     - profile: codfw
       url: ganeti01.svc.codfw.wmnet
       port: 5080
+    - profile: ulsfo
+      url: ganeti01.svc.ulsfo.wmnet
+      port: 5080
+    - profile: esams
+      url: ganeti01.svc.esams.wmnet
+      port: 5080
 
 profile::netbox::dump_interval: '*-*-* *:37:00'
 
