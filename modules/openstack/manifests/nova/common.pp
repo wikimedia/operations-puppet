@@ -45,11 +45,12 @@ class openstack::nova::common(
 
     file {
         '/etc/nova/nova.conf':
-            content => template("openstack/${version}/nova/common/nova.conf.erb"),
-            owner   => 'nova',
-            group   => 'nogroup',
-            mode    => '0440',
-            require => Package['nova-common'];
+            content   => template("openstack/${version}/nova/common/nova.conf.erb"),
+            owner     => 'nova',
+            group     => 'nogroup',
+            mode      => '0440',
+            show_diff => false,
+            require   => Package['nova-common'];
         '/etc/nova/api-paste.ini':
             content => template("openstack/${version}/nova/common/api-paste.ini.erb"),
             owner   => 'nova',

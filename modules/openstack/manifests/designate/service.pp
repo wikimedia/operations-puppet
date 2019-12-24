@@ -82,18 +82,19 @@ class openstack::designate::service(
 
     file {
         '/etc/designate/designate.conf':
-            owner   => 'designate',
-            group   => 'designate',
-            mode    => '0440',
-            content => template("openstack/${version}/designate/designate.conf.erb"),
-            notify  => Service[
+            owner     => 'designate',
+            group     => 'designate',
+            mode      => '0440',
+            show_diff => false,
+            content   => template("openstack/${version}/designate/designate.conf.erb"),
+            notify    => Service[
               'designate-api',
               'designate-sink',
               'designate-central',
               'designate-mdns',
               'designate-producer',
               'designate-worker'],
-            require => Package['designate-common'];
+            require   => Package['designate-common'];
         '/etc/designate/api-paste.ini':
             content => template("openstack/${version}/designate/api-paste.ini.erb"),
             owner   => 'designate',

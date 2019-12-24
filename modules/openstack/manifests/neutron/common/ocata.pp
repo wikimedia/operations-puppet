@@ -21,11 +21,12 @@ class openstack::neutron::common::ocata(
     class { "openstack::neutron::common::ocata::${::lsbdistcodename}": }
 
     file { '/etc/neutron/neutron.conf':
-            owner   => 'neutron',
-            group   => 'neutron',
-            mode    => '0660',
-            content => template('openstack/ocata/neutron/neutron.conf.erb'),
-            require => Package['neutron-common'];
+            owner     => 'neutron',
+            group     => 'neutron',
+            mode      => '0660',
+            show_diff => false,
+            content   => template('openstack/ocata/neutron/neutron.conf.erb'),
+            require   => Package['neutron-common'];
     }
 
     file { '/etc/neutron/policy.json':

@@ -42,13 +42,14 @@ class openstack::keystone::service::ocata(
             source  => 'puppet:///modules/openstack/ocata/keystone/keystone_logrotate',
             require => Package['keystone'];
         '/etc/keystone/keystone.conf':
-            ensure  => 'present',
-            owner   => 'keystone',
-            group   => 'keystone',
-            mode    => '0444',
-            content => template('openstack/ocata/keystone/keystone.conf.erb'),
-            notify  => Service[$wsgi_server],
-            require => Package['keystone'];
+            ensure    => 'present',
+            owner     => 'keystone',
+            group     => 'keystone',
+            mode      => '0444',
+            show_diff => false,
+            content   => template('openstack/ocata/keystone/keystone.conf.erb'),
+            notify    => Service[$wsgi_server],
+            require   => Package['keystone'];
         '/etc/keystone/keystone-paste.ini':
             ensure  => 'present',
             owner   => 'root',
@@ -74,11 +75,12 @@ class openstack::keystone::service::ocata(
             notify  => Service[$wsgi_server],
             require => Package['keystone'];
         '/etc/keystone/keystone.my.cnf':
-            ensure  => 'present',
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0400',
-            content => template('openstack/ocata/keystone/keystone.my.cnf.erb');
+            ensure    => 'present',
+            owner     => 'root',
+            group     => 'root',
+            mode      => '0400',
+            show_diff => false,
+            content   => template('openstack/ocata/keystone/keystone.my.cnf.erb');
         '/usr/lib/python2.7/dist-packages/wmfkeystoneauth':
             ensure  => 'present',
             owner   => 'root',
