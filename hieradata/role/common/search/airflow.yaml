@@ -31,7 +31,7 @@ profile::analytics::search::airflow::conf_file: 'airflow.cfg'
 
 
 profile::analytics::cluster::hdfs_mount::kerberos_enabled: true
-profile::analytics::cluster::hdfs_mount::monitoring_user: 'airflow'
+profile::analytics::cluster::hdfs_mount::monitoring_user: 'analytics-search'
 
 profile::kerberos::keytabs::keytabs_metadata:
   - role: 'analytics-search'
