@@ -2,7 +2,7 @@ class profile::swift::alerts {
     ['eqiad', 'codfw'].each |String $site| {
         monitoring::check_prometheus { "swift-${site}-container-availability":
             description     => "swift ${site} container availability low",
-            dashboard_links => ["https://grafana.wikimedia.org/dashboard/file/swift?panelId=8&fullscreen&orgId=1&var-DC=${site}"],
+            dashboard_links => ["https://grafana.wikimedia.org/d/OPgmB1Eiz/swift?panelId=8&fullscreen&orgId=1&var-DC=${site}"],
             query           => 'swift_dispersion_container_pct_found',
             warning         => 95,
             critical        => 90,
@@ -14,7 +14,7 @@ class profile::swift::alerts {
 
         monitoring::check_prometheus { "swift-${site}-object-availability":
             description     => "swift ${site} object availability low",
-            dashboard_links => ["https://grafana.wikimedia.org/dashboard/file/swift?panelId=8&fullscreen&orgId=1&var-DC=${site}"],
+            dashboard_links => ["https://grafana.wikimedia.org/d/OPgmB1Eiz/swift?panelId=8&fullscreen&orgId=1&var-DC=${site}"],
             query           => 'swift_dispersion_object_pct_found',
             warning         => 95,
             critical        => 90,
@@ -26,7 +26,7 @@ class profile::swift::alerts {
 
         monitoring::check_prometheus { "swift-${site}-media-uploads":
             description     => "mediawiki originals uploads (hourly) for ${site}",
-            dashboard_links => ["https://grafana.wikimedia.org/dashboard/file/swift?panelId=9&fullscreen&orgId=1&var-DC=${site}"],
+            dashboard_links => ["https://grafana.wikimedia.org/d/OPgmB1Eiz/swift?panelId=26&fullscreen&orgId=1&var-DC=${site}"],
             query           => 'swift_container_stats_objects_total{class="originals"} - swift_container_stats_objects_total{class="originals"} offset 1h',
             warning         => 2000,
             critical        => 3000,
