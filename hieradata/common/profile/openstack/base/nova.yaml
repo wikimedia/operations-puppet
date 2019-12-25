@@ -3,10 +3,10 @@ profile::openstack::base::nova::db_name: 'nova'
 profile::openstack::base::nova::db_name_api: 'nova_api'
 profile::openstack::base::nova::compute_dev: '/dev/md1'
 profile::openstack::base::nova::rabbit_user: 'nova'
-profile::openstack::base::nova::compute_workers: '4'
+profile::openstack::base::nova::compute_workers: '3'
 profile::openstack::base::nova::metadata_listen_port: 8775
 profile::openstack::base::nova::placement_api_port: 8778
-profile::openstack::base::nova::metadata_workers: '4'
+profile::openstack::base::nova::metadata_workers: '3'
 profile::openstack::base::nova::osapi_compute_listen_port: 8774
 
 # The order of this list directly affects scheduler performance

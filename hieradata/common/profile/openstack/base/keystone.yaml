@@ -1,8 +1,8 @@
 profile::openstack::base::keystone::db_name: 'keystone'
 profile::openstack::base::keystone::db_user: 'keystone'
-profile::openstack::base::keystone::db_max_pool_size: '5'
-profile::openstack::base::keystone::admin_workers: '10'
-profile::openstack::base::keystone::public_workers: '10'
+profile::openstack::base::keystone::db_max_pool_size: '4'
+profile::openstack::base::keystone::admin_workers: '8'
+profile::openstack::base::keystone::public_workers: '8'
 profile::openstack::base::keystone::auth_protocol: 'http'
 profile::openstack::base::keystone::auth_port: 35357
 profile::openstack::base::keystone::public_port: 5000
