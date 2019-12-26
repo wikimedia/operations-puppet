@@ -159,7 +159,7 @@ groups:
               fdans, mlitn, niharika29, goransm, pmiazga, dsaez, shiladsen, cicalese,
               mirrys, sharvaniharan, mmiller, amire80, rush, kharlan, gbirke, dedcode,
               isaacj, jdl, joewalsh, phuedx, bd808, iflorez, mayakpwiki, conniecc1, abi,
-              cohi, keepit-ssh, kzeta, snowick]
+              cohi, keepit-ssh, kzeta, snowick, aarora]
   ldap-admins:
     gid: 715
     description: ldap admins
@@ -283,7 +283,8 @@ groups:
               cicalese, drossi, fsalutari, nathante, gbirke, isaacj, sbassett, jdl, gsingers,
               niharika29, ryanmax, afandian2, jgleeson, toddleroux, srishakatux, dsharpe, eyener,
               esanders, sukhe, jfishback, iflorez, mayakpwiki, conniecc1, abi, mgerlach, dedcode,
-              lexnasser, kevinbazira, keepit-ssh, jiji, cohi, mstyles, accraze, kzeta, snowick]
+              lexnasser, kevinbazira, keepit-ssh, jiji, cohi, mstyles, accraze, kzeta, snowick,
+              aarora]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata]
   analytics-admins:
@@ -3481,6 +3482,16 @@ users:
     gid: 500
     ssh_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDKZ/yB2DOeQzTuQtZB7atQF/7O2vkXttGQfBw1M5vmLJH4GZ07gqqeoJdAXbeOtH73Ta1KYEF2aAL4uWXbuhgBxChjMMApDZI4Vp9/T8HXlT85+G2eusdZcqg1M8bWxuUIH1WIoCVBppiWBaRH2sJwIa09F2gzK6Hqqe+E1Skd5+x44xR9DXi7Vql2u7SgQ2OHNbDAHEF3OUCUR76d2LifiALUd4LjbmI3Nrn2BbzL6thgDZB5jVU2jv7plH0utEfhKla4A9f4wyzzvRiso7M/TIs6QuZJMSLv3gJbQ6UnPn0OnK1pbnr6H6uWRwbJTty+e72JMKepoPnW756rPYgvlG6MARYlJ0bTYoiof4QW5ZRRWn41YHOs4Zb/53in7BJ0lhq3Q6NdyMdPQFRe7uJfJQ1VGaF3xTmf0ZtA77YYBAdkidGUpPi60BEZAtZqgRO+NFkjFn2dQgsnConvHiMJgFd1ZUQXAkZuzvEPTEWzHi7zr5zkb6gc3maptlD+Nfafvju6RuhZKmM6B+KMODuF7XT+OY/nOT4Zqk5vaMYFaWE66QXgkSC9fFdWgrmmWpPprhm6u1QVu5X1k92spi5yvqEKHDzxNzQNOdJn6UZBNL1B18ZYwZIB/TKO9u7EArJxtU/wDBzc2SybFwNJsePX9DOBUOX5iX/MhGhgRsckDQ== snowick@Shays-MacBook-Pro.local
+  aarora:
+    ensure: present
+    realname: Akhil Arora
+    email: arora.akhilcs@gmail.com
+    uid: 22764
+    gid: 500
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDMnomWTASEzJqGKtpCqUA8g+Wcz4RmcpD5qRbuiXurptrXPQaoogl2U/RfnyInPZQAoc4QgM3JGLvjaNfIGIkCNPq8H3oWc4DeUE+OTfbH3/L8UvvB8CQ8KEOC92C9GBCDAfva5hY94CziKeFZvFEFLpxVRLWkdZcXVzQGZmVX09Rf+KANf/9/XH8WtlLvtfT7e0d5f4aTYNJ96VtLih5BneA+CYlRM/xXzDiH5Am31ffPduKAeFfMMdDYRJAVHayVGqAaGHo+T38mHNibtt9hZFVWr/nnbOnNo2EIE1JVtoUHR6p4Jzr+XR/d6rgJWmvn7gfdewzfCMHNSPPSTeiuOPnnvJeF1OeiASu7FeHOndeB3VKQyUGcAr+6luAs4Wg4CoAz+zzEOvUYPoK7DZKuvyUeXoVjBWb1UkW6OizYjqiTxjNM8HPQ6vCtkM0sV3dAPfGJqDCy9rtmgCwfdeKch54Cw4QdKBkoMa/C2ciJFqHemo3YvGrsghRgekfObo5euOUVSf1pVqr2igmNtaSiEMXs0/06fzdn88ojQgBSHW/XSIQ+Yi47ZLIGE5R7Ht+9LH9pIDlujR81bxvrGoLICeZbTg1lZPMhAcFuNa84lpiKKgPxONC7cxqtizclghZW/KtGA2gfszazg1uyGI7xFEhGhfWi3NwQ9zqOxrGg6Q== aarora@tsf-452-wpa-3-166.epfl.ch
+    expiry_date: 2020-06-05
+    expiry_contact: lzia@wikimedia.org
 ldap_only_users:
   abartov:
     ensure: present
