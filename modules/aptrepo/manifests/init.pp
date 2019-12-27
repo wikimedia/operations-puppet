@@ -100,6 +100,15 @@ class aptrepo (
         source => 'puppet:///modules/aptrepo/reprepro-update-filter-wmcs-openstack-ocata.sh',
         before => File["${basedir}/conf/updates"],
     }
+    # extra filter for openstack pike
+    file { '/usr/local/bin/reprepro-update-filter-wmcs-openstack-pike.sh':
+        ensure => present,
+        mode   => '0755',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/aptrepo/reprepro-update-filter-wmcs-openstack-pike.sh',
+        before => File["${basedir}/conf/updates"],
+    }
 
     file { "${basedir}/conf/updates":
         ensure       => present,
