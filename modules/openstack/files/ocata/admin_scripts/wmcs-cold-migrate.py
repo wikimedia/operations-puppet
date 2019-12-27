@@ -54,7 +54,7 @@ class NovaInstance(object):
         token = self.session.get_token()
 
         glanceendpoint = self.session.get_endpoint(service_type='image')
-        gclient = glanceclient.Client('1', glanceendpoint, token=token)
+        gclient = glanceclient.Client('2', glanceendpoint, token=token)
         image = gclient.images.get(image_id)
 
         # Because the glance devs can't be bothered to update their python
