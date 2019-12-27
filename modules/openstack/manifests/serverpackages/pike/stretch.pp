@@ -1,9 +1,9 @@
 class openstack::serverpackages::pike::stretch(
 ){
     apt::repository { 'openstack-pike-stretch':
-        uri        => 'http://osbpo.debian.net/debian',
-        dist       => 'stretch-pike-backports',
-        components => 'main',
+        uri        => 'http://apt.wikimedia.org/wikimedia/',
+        dist       => 'stretch-wikimedia',
+        components => 'thirdparty/openstack-pike-stretch',
         source     => false,
         notify     => Exec['openstack-pike-stretch-apt-upgrade'],
     }
