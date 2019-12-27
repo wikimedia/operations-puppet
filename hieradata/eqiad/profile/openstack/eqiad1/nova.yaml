@@ -34,7 +34,7 @@ profile::openstack::eqiad1::nova::physical_interface_mappings:
 #   cloudvirt1010: does not exist (formerly a leased system)
 #   cloudvirt1011: does not exist (formerly a leased system)
 #   cloudvirt1012: pooled
-#   cloudvirt1013: pooled
+#   cloudvirt1013: depooled due to random crashes -- T241313
 #   cloudvirt1014: pooled
 #   cloudvirt1015: depooled due to hardware issues -- T220853
 #   cloudvirt1016: pooled
@@ -45,7 +45,7 @@ profile::openstack::eqiad1::nova::physical_interface_mappings:
 #   cloudvirt1021: pooled
 #   cloudvirt1022: depooled, test box for ceph development
 #   cloudvirt1023: depooled, emergency spare
-#   cloudvirt1024: depooled, emergency spare, also host of some video rendering VMs
+#   cloudvirt1024: pooled
 #   cloudvirt1025: pooled
 #   cloudvirt1026: pooled
 #   cloudvirt1027: pooled
@@ -72,12 +72,12 @@ profile::openstack::eqiad1::nova::scheduler_pool:
   - cloudvirt1008
   - cloudvirt1009
   - cloudvirt1012
-  - cloudvirt1013
   - cloudvirt1014
   - cloudvirt1016
   - cloudvirt1017
   - cloudvirt1018
   - cloudvirt1021
+  - cloudvirt1024
   - cloudvirt1025
   - cloudvirt1026
   - cloudvirt1027
