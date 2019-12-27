@@ -10,4 +10,4 @@ labs_keystone_hosts:
     - "cloudcontrol2001-dev.wikimedia.org"
     - "cloudcontrol2003-dev.wikimedia.org"
 
-profile::openstack::codfw1dev::version: ocata
+profile::openstack::codfw1dev::version: pike
