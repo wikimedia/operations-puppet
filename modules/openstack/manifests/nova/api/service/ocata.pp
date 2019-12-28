@@ -7,16 +7,6 @@ class openstack::nova::api::service::ocata
         ensure => 'present',
     }
 
-    # TEMP HOTPATCH for T198950
-    file { '/usr/lib/python2.7/dist-packages/nova/api/manager.py':
-        ensure  => 'present',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0644',
-        source  => 'puppet:///modules/openstack/ocata/nova/api/manager.py',
-        require => Package['nova-api'],
-    }
-
     # firstboot/user_data things:
     file { '/usr/lib/python2.7/dist-packages/wmfnovamiddleware':
         source  => 'puppet:///modules/openstack/ocata/nova/api/wmfnovamiddleware',
