@@ -2,13 +2,15 @@
 
 some_failed=0
 
-for config in /etc/update-ocsp.d/*.conf; do
-    /usr/local/sbin/update-ocsp --config $config
-    if [ $? -ne 0 ]; then
-        echo "OCSP update failed for $config"
-        some_failed=1
-    fi
-done
+if ls /etc/update-ocsp.d/*.conf >/dev/null; then
+    for config in /etc/update-ocsp.d/*.conf; do
+        /usr/local/sbin/update-ocsp --config $config
+        if [ $? -ne 0 ]; then
+            echo "OCSP update failed for $config"
+            some_failed=1
+        fi
+    done
+fi
 
 run-parts /etc/update-ocsp.d/hooks
 
