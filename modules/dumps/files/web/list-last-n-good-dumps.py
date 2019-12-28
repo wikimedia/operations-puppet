@@ -208,7 +208,7 @@ class DumpList():
             return dirs_reported, None
 
         text = get_dir_status(os.path.join(dir_to_check, dir_first))
-        if "in-progress" in text:
+        if text is not None and "in-progress" in text:
             dir_in_progress = dir_first
             dirs.pop(0)
         for day in dirs:
