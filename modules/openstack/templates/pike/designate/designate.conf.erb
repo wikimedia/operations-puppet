@@ -20,12 +20,6 @@ state_path = /var/lib/designate
 # Log directory
 log_dir = /var/log/designate
 
-# Driver used for issuing notifications
-notification_driver = messagingv2
-
-# Notification Topics
-notification_topics = notifications
-
 # Use "sudo designate-rootwrap /etc/designate/rootwrap.conf" to use the real
 # root filter facility.
 # Change to "sudo" to skip the filtering and just run the comand directly
@@ -326,6 +320,10 @@ ssl = False
 rabbit_userid = <%= @rabbit_user %>
 rabbit_password = <%= @rabbit_pass %>
 
+[oslo_messaging_notifications]
+driver = messagingv2
+topics = notifications
+
 <% if @coordination_host %>
 [coordination]
 backend_url = memcached://<%= @coordination_host %>:11000
@@ -339,6 +337,9 @@ backend_url = memcached://<%= @coordination_host %>:11000
 #poll_retry_interval = 15
 #poll_max_retries = 10
 #poll_delay = 5
+
+# Pike complains about this being deprecated but also fails if it's missing
+enabled = True
 notify = True
 
 [service:producer]
