@@ -56,7 +56,7 @@ quota_domain_recordsets = 10000
 max_domain_name_len = 255
 
 # Maximum record name length
-max_record_name_len = 255
+max_recordset_name_len = 255
 
 # Minimum TTL
 #min_ttl = None
@@ -320,10 +320,9 @@ puppet_git_repo_key_path = "<%= @puppet_git_repo_key_path %>"
 rabbit_hosts=<%= @rabbit_host_primary %>:5672,<%= @rabbit_host_secondary %>:5672
 rabbit_retry_interval=1
 rabbit_retry_backoff=2
-rabbit_max_retries=0
 rabbit_durable_queues=true
 rabbit_ha_queues=true
-rabbit_use_ssl = False
+ssl = False
 rabbit_userid = <%= @rabbit_user %>
 rabbit_password = <%= @rabbit_pass %>
 
@@ -333,7 +332,6 @@ backend_url = memcached://<%= @coordination_host %>:11000
 <% end %>
 
 [service:worker]
-enabled = True
 #workers = None
 #threads = 1000
 #threshold_percentage = 100
