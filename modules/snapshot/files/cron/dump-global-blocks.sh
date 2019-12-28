@@ -63,11 +63,11 @@ dump_tables() {
         outputfile="${dir}/${today}-${t}.gz"
         if [ "$dryrun" == "true" ]; then
             echo "would run:"
-            echo -n "$mysqldump" -u "$db_user" -p"$db_pass" -h "$host" --opt --quick --skip-add-locks --skip-lock-tables centralauth "$t"
+            echo -n "$mysqldump" -u "$db_user" -p"$db_pass" -h "$host" -P "$port" --opt --quick --skip-add-locks --skip-lock-tables centralauth "$t"
             echo  "| $gzip > $outputfile"
         else
             # echo "dumping $t into $outputfile"
-            "$mysqldump" -u "$db_user" -p"$db_pass" -h "$host" --opt --quick --skip-add-locks --skip-lock-tables centralauth "$t" | "$gzip" > "$outputfile"
+            "$mysqldump" -u "$db_user" -p"$db_pass" -h "$host" -P "$port" --opt --quick --skip-add-locks --skip-lock-tables centralauth "$t" | "$gzip" > "$outputfile"
         fi
     done
 }
@@ -112,6 +112,11 @@ done
 outputdir="${cronsdir}/globalblocks"
 
 host=`get_db_host "$multiversion"` || exit 1
+if [[ $host == *":"* ]]; then
+    IFS=: read host port <<< "$host"
+else
+    port="3306"
+fi
 db_user=`get_db_user "$multiversion"` || exit 1
 db_pass=`get_db_pass "$multiversion"` || exit 1
 
