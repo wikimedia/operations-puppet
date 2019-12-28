@@ -9,7 +9,7 @@ class profile::query_service::updater (
     String $deploy_name = hiera('profile::query_service::deploy_name'),
     Boolean $log_sparql = hiera('profile::query_service::log_sparql', false),
     Array[String] $prometheus_nodes = hiera('prometheus_nodes'),
-    Boolean $use_kafka_for_updates = hiera('profile::query_service::use_kafka_for_updates', true),
+    Boolean $use_kafka_for_updates = hiera('profile::query_service::use_kafka_for_updates', false),
     String $kafka_options = hiera('profile::query_service::kafka_updater_options', '-b 700'),
     String $kafka_reporting_topic = hiera('profile::query_service::kafka_reporting_topic', 'eqiad.mediawiki.revision-create'),
     Array[String] $cluster_names = hiera('profile::query_service::cluster_names', [ 'eqiad', 'codfw' ]),
