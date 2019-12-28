@@ -1,0 +1,2 @@
+  profile::query_service::use_kafka_for_updates: false
+  
