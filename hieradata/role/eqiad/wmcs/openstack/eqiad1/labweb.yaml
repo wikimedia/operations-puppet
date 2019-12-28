@@ -51,7 +51,7 @@ striker::uwsgi::config:
 apache::logrotate::period: 'daily'
 apache::logrotate::rotate: 30
 
-profile::openstack::eqiad1::version: ocata
+profile::openstack::eqiad1::version: train
 
 #lvs::realserver::realserver_ips:
 #    - '10.2.2.40' # labweb.svc.eqiad.wmnet

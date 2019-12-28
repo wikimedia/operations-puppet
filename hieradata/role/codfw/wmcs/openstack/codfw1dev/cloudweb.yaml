@@ -51,7 +51,7 @@ striker::uwsgi::config:
 apache::logrotate::period: 'daily'
 apache::logrotate::rotate: 30
 
-profile::openstack::codfw1dev::version: ocata
+profile::openstack::codfw1dev::version: train
 
 profile::openstack::base::nutcracker::redis::shards:
   jobqueue:
