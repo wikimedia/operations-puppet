@@ -13,14 +13,13 @@
 #    under the License.
 
 import collections
+
 import netaddr
 from neutron_lib import constants as lib_constants
 from neutron_lib.utils import helpers
 from oslo_log import log as logging
 
-import six
-
-from neutron._i18n import _, _LE, _LW
+from neutron._i18n import _
 from neutron.agent.l3 import namespaces
 from neutron.agent.linux import ip_lib
 from neutron.agent.linux import iptables_manager
@@ -53,6 +52,7 @@ class RouterInfo(object):
                  use_ipv6=False):
         self.agent = agent
         self.router_id = router_id
+        self.agent_conf = agent_conf
         self.ex_gw_port = None
         self._snat_enabled = None
         self.fip_map = {}
@@ -74,8 +74,8 @@ class RouterInfo(object):
             use_ipv6=use_ipv6,
             namespace=self.ns_name)
         self.initialize_address_scope_iptables()
+        self.initialize_metadata_iptables()
         self.routes = []
-        self.agent_conf = agent_conf
         self.driver = interface_driver
         self.process_monitor = None
         # radvd is a neutron.agent.linux.ra.DaemonMonitor
@@ -116,6 +116,9 @@ class RouterInfo(object):
             return
         # enable_snat by default if it wasn't specified by plugin
         self._snat_enabled = self._router.get('enable_snat', True)
+
+    def is_router_master(self):
+        return True
 
     def get_internal_device_name(self, port_id):
         return (INTERNAL_DEV_PREFIX + port_id)[:self.driver.DEV_NAME_LEN]
@@ -160,13 +163,17 @@ class RouterInfo(object):
         """Filter Floating IPs to be hosted on this agent."""
         return self.router.get(lib_constants.FLOATINGIP_KEY, [])
 
-    def floating_forward_rules(self, floating_ip, fixed_ip):
+    def floating_forward_rules(self, fip):
+        fixed_ip = fip['fixed_ip_address']
+        floating_ip = fip['floating_ip_address']
+        to_source = '-s %s/32 -j SNAT --to-source %s' % (fixed_ip, floating_ip)
+        if self.iptables_manager.random_fully:
+            to_source += ' --random-fully'
         return [('PREROUTING', '-d %s/32 -j DNAT --to-destination %s' %
                  (floating_ip, fixed_ip)),
                 ('OUTPUT', '-d %s/32 -j DNAT --to-destination %s' %
                  (floating_ip, fixed_ip)),
-                ('float-snat', '-s %s/32 -j SNAT --to-source %s' %
-                 (fixed_ip, floating_ip))]
+                ('float-snat', to_source)]
 
     def floating_mangle_rules(self, floating_ip, fixed_ip, internal_mark):
         mark_traffic_to_floating_ip = (
@@ -214,9 +221,7 @@ class RouterInfo(object):
         # Loop once to ensure that floating ips are configured.
         for fip in floating_ips:
             # Rebuild iptables rules for the floating ip.
-            fixed = fip['fixed_ip_address']
-            fip_ip = fip['floating_ip_address']
-            for chain, rule in self.floating_forward_rules(fip_ip, fixed):
+            for chain, rule in self.floating_forward_rules(fip):
                 self.iptables_manager.ipv4['nat'].add_rule(chain, rule,
                                                            tag='floating_ip')
 
@@ -297,11 +302,14 @@ class RouterInfo(object):
         except RuntimeError:
             # any exception occurred here should cause the floating IP
             # to be set in error state
-            LOG.warning(_LW("Unable to configure IP address for "
-                            "floating IP: %s"), fip['id'])
+            LOG.warning("Unable to configure IP address for "
+                        "floating IP: %s", fip['id'])
 
     def add_floating_ip(self, fip, interface_name, device):
         raise NotImplementedError()
+
+    def migrate_centralized_floating_ip(self, fip, interface_name, device):
+        pass
 
     def gateway_redirect_cleanup(self, rtr_interface):
         pass
@@ -317,6 +325,9 @@ class RouterInfo(object):
 
     def get_router_cidrs(self, device):
         return set([addr['cidr'] for addr in device.addr.list()])
+
+    def get_centralized_fip_cidr_set(self):
+        return set()
 
     def process_floating_ip_addresses(self, interface_name):
         """Configure IP addresses on router's external gateway interface.
@@ -335,7 +346,7 @@ class RouterInfo(object):
         existing_cidrs = self.get_router_cidrs(device)
         new_cidrs = set()
         gw_cidrs = self._get_gw_ips_cidr()
-
+        centralized_fip_cidrs = self.get_centralized_fip_cidr_set()
         floating_ips = self.get_floating_ips()
         # Loop once to ensure that floating ips are configured.
         for fip in floating_ips:
@@ -343,6 +354,7 @@ class RouterInfo(object):
             ip_cidr = common_utils.ip_to_cidr(fip_ip)
             new_cidrs.add(ip_cidr)
             fip_statuses[fip['id']] = lib_constants.FLOATINGIP_STATUS_ACTIVE
+
             if ip_cidr not in existing_cidrs:
                 fip_statuses[fip['id']] = self.add_floating_ip(
                     fip, interface_name, device)
@@ -356,6 +368,12 @@ class RouterInfo(object):
                           {'old': self.fip_map[fip_ip],
                            'new': fip['fixed_ip_address']})
                 fip_statuses[fip['id']] = self.move_floating_ip(fip)
+            elif (ip_cidr in centralized_fip_cidrs and
+                fip.get('host') == self.host):
+                LOG.debug("Floating IP is migrating from centralized "
+                          "to distributed: %s", fip)
+                fip_statuses[fip['id']] = self.migrate_centralized_floating_ip(
+                    fip, interface_name, device)
             elif fip_statuses[fip['id']] == fip['status']:
                 # mark the status as not changed. we can't remove it because
                 # that's how the caller determines that it was removed
@@ -436,8 +454,7 @@ class RouterInfo(object):
         for fixed_ip in fixed_ips:
             ip_lib.send_ip_addr_adv_notif(ns_name,
                                           interface_name,
-                                          fixed_ip['ip_address'],
-                                          self.agent_conf.send_arp_for_ha)
+                                          fixed_ip['ip_address'])
 
     def internal_network_added(self, port):
         network_id = port['network_id']
@@ -466,22 +483,38 @@ class RouterInfo(object):
 
     def _get_existing_devices(self):
         ip_wrapper = ip_lib.IPWrapper(namespace=self.ns_name)
-        ip_devs = ip_wrapper.get_devices(exclude_loopback=True,
-                                         exclude_gre_devices=True)
+        ip_devs = ip_wrapper.get_devices()
         return [ip_dev.name for ip_dev in ip_devs]
+
+    def _update_internal_ports_cache(self, port):
+        # NOTE(slaweq): self.internal_ports is a list of port objects but
+        # when it is updated in _process_internal_ports() method,
+        # but it can be based only on indexes of elements in
+        # self.internal_ports as index of element to updated is unknown.
+        # It has to be done based on port_id and this method is doing exactly
+        # that.
+        for index, p in enumerate(self.internal_ports):
+            if p['id'] == port['id']:
+                self.internal_ports[index] = port
+                break
+        else:
+            self.internal_ports.append(port)
 
     @staticmethod
     def _get_updated_ports(existing_ports, current_ports):
-        updated_ports = dict()
+        updated_ports = []
         current_ports_dict = {p['id']: p for p in current_ports}
         for existing_port in existing_ports:
             current_port = current_ports_dict.get(existing_port['id'])
             if current_port:
-                if (sorted(existing_port['fixed_ips'],
+                fixed_ips_changed = (
+                    sorted(existing_port['fixed_ips'],
                            key=helpers.safe_sort_key) !=
-                        sorted(current_port['fixed_ips'],
-                               key=helpers.safe_sort_key)):
-                    updated_ports[current_port['id']] = current_port
+                    sorted(current_port['fixed_ips'],
+                           key=helpers.safe_sort_key))
+                mtu_changed = existing_port['mtu'] != current_port['mtu']
+                if fixed_ips_changed or mtu_changed:
+                    updated_ports.append(current_port)
         return updated_ports
 
     @staticmethod
@@ -503,7 +536,9 @@ class RouterInfo(object):
                   self.router_id)
         self.radvd.disable()
 
-    def internal_network_updated(self, interface_name, ip_cidrs):
+    def internal_network_updated(self, interface_name, ip_cidrs, mtu):
+        self.driver.set_mtu(interface_name, mtu, namespace=self.ns_name,
+                            prefix=INTERNAL_DEV_PREFIX)
         self.driver.init_router_port(
             interface_name,
             ip_cidrs=ip_cidrs,
@@ -534,7 +569,7 @@ class RouterInfo(object):
         for p in new_ports:
             self.internal_network_added(p)
             LOG.debug("appending port %s to internal_ports cache", p)
-            self.internal_ports.append(p)
+            self._update_internal_ports_cache(p)
             enable_ra = enable_ra or self._port_has_ipv6_subnet(p)
             for subnet in p['subnets']:
                 if ipv6_utils.is_ipv6_pd_enabled(subnet):
@@ -554,17 +589,15 @@ class RouterInfo(object):
                     del self.pd_subnets[subnet['id']]
 
         updated_cidrs = []
-        if updated_ports:
-            for index, p in enumerate(internal_ports):
-                if not updated_ports.get(p['id']):
-                    continue
-                self.internal_ports[index] = updated_ports[p['id']]
-                interface_name = self.get_internal_device_name(p['id'])
-                ip_cidrs = common_utils.fixed_ip_cidrs(p['fixed_ips'])
-                LOG.debug("updating internal network for port %s", p)
-                updated_cidrs += ip_cidrs
-                self.internal_network_updated(interface_name, ip_cidrs)
-                enable_ra = enable_ra or self._port_has_ipv6_subnet(p)
+        for p in updated_ports:
+            self._update_internal_ports_cache(p)
+            interface_name = self.get_internal_device_name(p['id'])
+            ip_cidrs = common_utils.fixed_ip_cidrs(p['fixed_ips'])
+            LOG.debug("updating internal network for port %s", p)
+            updated_cidrs += ip_cidrs
+            self.internal_network_updated(
+                interface_name, ip_cidrs, p['mtu'])
+            enable_ra = enable_ra or self._port_has_ipv6_subnet(p)
 
         # Check if there is any pd prefix update
         for p in internal_ports:
@@ -618,6 +651,15 @@ class RouterInfo(object):
                          namespace=ns_name,
                          prefix=EXTERNAL_DEV_PREFIX,
                          mtu=ex_gw_port.get('mtu'))
+        if self.agent_conf.external_network_bridge:
+            # NOTE(slaweq): for OVS implementations remove the DEAD VLAN tag
+            # on ports. DEAD VLAN tag is added to each newly created port
+            # and should be removed by L2 agent but if
+            # external_network_bridge is set than external gateway port is
+            # created in this bridge and will not be touched by L2 agent.
+            # This is related to lp#1767422
+            self.driver.remove_vlan_tag(
+                self.agent_conf.external_network_bridge, interface_name)
 
     def _get_external_gw_ips(self, ex_gw_port):
         gateway_ips = []
@@ -665,6 +707,11 @@ class RouterInfo(object):
             self.driver.configure_ipv6_ra(ns_name, interface_name,
                                           n_const.ACCEPT_RA_DISABLED)
         self.driver.configure_ipv6_forwarding(ns_name, interface_name, enabled)
+        # This will make sure the 'all' setting is the same as the interface,
+        # which is needed for forwarding to work.  Don't disable once it's
+        # been enabled so as to not send spurious MLDv2 packets out.
+        if enabled:
+            self.driver.configure_ipv6_forwarding(ns_name, 'all', enabled)
 
     def _external_gateway_added(self, ex_gw_port, interface_name,
                                 ns_name, preserve_ips):
@@ -706,8 +753,7 @@ class RouterInfo(object):
         for fixed_ip in ex_gw_port['fixed_ips']:
             ip_lib.send_ip_addr_adv_notif(ns_name,
                                           interface_name,
-                                          fixed_ip['ip_address'],
-                                          self.agent_conf.send_arp_for_ha)
+                                          fixed_ip['ip_address'])
 
     def is_v6_gateway_set(self, gateway_ips):
         """Check to see if list of gateway_ips has an IPv6 gateway.
@@ -802,19 +848,21 @@ class RouterInfo(object):
             self._prevent_snat_for_internal_traffic_rule(interface_name))
         # Makes replies come back through the router to reverse DNAT
         ext_in_mark = self.agent_conf.external_ingress_mark
-        snat_internal_traffic_to_floating_ip = (
-            'snat', '-m mark ! --mark %s/%s '
-                    '-m conntrack --ctstate DNAT '
-                    '-j SNAT --to-source %s'
-                    % (ext_in_mark, n_const.ROUTER_MARK_MASK, ex_gw_ip))
+        to_source = ('-m mark ! --mark %s/%s '
+                     '-m conntrack --ctstate DNAT '
+                     '-j SNAT --to-source %s'
+                     % (ext_in_mark, n_const.ROUTER_MARK_MASK, ex_gw_ip))
+        if self.iptables_manager.random_fully:
+            to_source += ' --random-fully'
+        snat_internal_traffic_to_floating_ip = ('snat', to_source)
         return [dont_snat_traffic_to_internal_ports_if_not_to_floating_ip,
                 snat_internal_traffic_to_floating_ip]
 
     def external_gateway_nat_snat_rules(self, ex_gw_ip, interface_name):
-        snat_normal_external_traffic = (
-            'snat', '-o %s -j SNAT --to-source %s' %
-                    (interface_name, ex_gw_ip))
-        return [snat_normal_external_traffic]
+        to_source = '-o %s -j SNAT --to-source %s' % (interface_name, ex_gw_ip)
+        if self.iptables_manager.random_fully:
+            to_source += ' --random-fully'
+        return [('snat', to_source)]
 
     def external_gateway_mangle_rules(self, interface_name):
         mark = self.agent_conf.external_ingress_mark
@@ -878,7 +926,7 @@ class RouterInfo(object):
 
         except n_exc.FloatingIpSetupException:
             # All floating IPs must be put in error state
-            LOG.exception(_LE("Failed to process floating IPs."))
+            LOG.exception("Failed to process floating IPs.")
             fip_statuses = self.put_fips_in_error_state()
         finally:
             self.update_fip_statuses(fip_statuses)
@@ -904,7 +952,7 @@ class RouterInfo(object):
         except (n_exc.FloatingIpSetupException,
                 n_exc.IpTablesApplyException):
                 # All floating IPs must be put in error state
-                LOG.exception(_LE("Failed to process floating IPs."))
+                LOG.exception("Failed to process floating IPs.")
                 fip_statuses = self.put_fips_in_error_state()
         finally:
             self.update_fip_statuses(fip_statuses)
@@ -972,6 +1020,21 @@ class RouterInfo(object):
         iptables_manager.ipv6['mangle'].add_rule(
             'PREROUTING', copy_address_scope_for_existing)
 
+    def initialize_metadata_iptables(self):
+        # Always mark incoming metadata requests, that way any stray
+        # requests that arrive before the filter metadata redirect
+        # rule is installed will be dropped.
+        mark_metadata_for_internal_interfaces = (
+            '-d 169.254.169.254/32 '
+            '-i %(interface_name)s '
+            '-p tcp -m tcp --dport 80 '
+            '-j MARK --set-xmark %(value)s/%(mask)s' %
+            {'interface_name': INTERNAL_DEV_PREFIX + '+',
+             'value': self.agent_conf.metadata_access_mark,
+             'mask': n_const.ROUTER_MARK_MASK})
+        self.iptables_manager.ipv4['mangle'].add_rule(
+            'PREROUTING', mark_metadata_for_internal_interfaces)
+
     def _get_port_devicename_scopemark(self, ports, name_generator):
         devicename_scopemark = {lib_constants.IP_VERSION_4: dict(),
                                 lib_constants.IP_VERSION_6: dict()}
@@ -979,7 +1042,7 @@ class RouterInfo(object):
             device_name = name_generator(p['id'])
             ip_cidrs = common_utils.fixed_ip_cidrs(p['fixed_ips'])
             port_as_marks = self.get_port_address_scope_mark(p)
-            for ip_version in {ip_lib.get_ip_version(cidr)
+            for ip_version in {common_utils.get_ip_version(cidr)
                                for cidr in ip_cidrs}:
                 devicename_scopemark[ip_version][device_name] = (
                     port_as_marks[ip_version])
@@ -1029,7 +1092,7 @@ class RouterInfo(object):
                 iptables['filter'].add_rule(
                     'scope',
                     self.address_scope_filter_rule(device_name, mark))
-        for subnet_id, prefix in six.iteritems(self.pd_subnets):
+        for subnet_id, prefix in self.pd_subnets.items():
             if prefix != n_const.PROVISIONAL_IPV6_PD_PREFIX:
                 self._process_pd_iptables_rules(prefix, subnet_id)
 
@@ -1098,8 +1161,8 @@ class RouterInfo(object):
             self.agent.pd.sync_router(self.router['id'])
             self._process_external_on_delete()
         else:
-            LOG.warning(_LW("Can't gracefully delete the router %s: "
-                            "no router namespace found."), self.router['id'])
+            LOG.warning("Can't gracefully delete the router %s: "
+                        "no router namespace found.", self.router['id'])
 
     @common_utils.exception_logger()
     def process(self):
@@ -1119,10 +1182,8 @@ class RouterInfo(object):
         self.routes_updated(self.routes, self.router['routes'])
         self.routes = self.router['routes']
 
-        # Update ex_gw_port and enable_snat on the router info cache
+        # Update ex_gw_port on the router info cache
         self.ex_gw_port = self.get_ex_gw_port()
         self.fip_map = dict([(fip['floating_ip_address'],
                               fip['fixed_ip_address'])
                              for fip in self.get_floating_ips()])
-        # TODO(Carl) FWaaS uses this.  Why is it set after processing is done?
-        self.enable_snat = self.router.get('enable_snat')

@@ -18,14 +18,16 @@ from neutron_lib import constants
 from oslo_config import cfg
 
 from neutron._i18n import _
-from neutron.agent.common import config
+from neutron.common import constants as common_consts
+from neutron.conf.agent import common as config
 
 
 OPTS = [
     cfg.StrOpt('agent_mode', default=constants.L3_AGENT_MODE_LEGACY,
                choices=(constants.L3_AGENT_MODE_DVR,
                         constants.L3_AGENT_MODE_DVR_SNAT,
-                        constants.L3_AGENT_MODE_LEGACY),
+                        constants.L3_AGENT_MODE_LEGACY,
+                        common_consts.L3_AGENT_MODE_DVR_NO_EXTERNAL),
                help=_("The working mode for the agent. Allowed modes are: "
                       "'legacy' - this preserves the existing behavior "
                       "where the L3 agent is deployed on a centralized "
@@ -37,15 +39,17 @@ OPTS = [
                       "enables centralized SNAT support in conjunction "
                       "with DVR.  This mode must be used for an L3 agent "
                       "running on a centralized node (or in single-host "
-                      "deployments, e.g. devstack)")),
+                      "deployments, e.g. devstack). "
+                      "'dvr_no_external' - this mode enables only East/West "
+                      "DVR routing functionality for a L3 agent that runs on "
+                      "a compute host, the North/South functionality such "
+                      "as DNAT and SNAT will be provided by the centralized "
+                      "network node that is running in 'dvr_snat' mode. "
+                      "This mode should be used when there is no "
+                      "external network connectivity on the compute host.")),
     cfg.PortOpt('metadata_port',
                 default=9697,
                 help=_("TCP Port used by Neutron metadata namespace proxy.")),
-    cfg.IntOpt('send_arp_for_ha',
-               deprecated_for_removal=True,
-               default=3,
-               help=_("Send this many gratuitous ARPs for HA setup, if "
-                      "less than or equal to 0, the feature is disabled")),
     cfg.BoolOpt('handle_internal_only_routers',
                 default=True,
                 help=_("Indicates that this L3 agent should also handle "
@@ -60,7 +64,8 @@ OPTS = [
                       "This value should be set to the UUID of that external "
                       "network. To allow L3 agent support multiple external "
                       "networks, both the external_network_bridge and "
-                      "gateway_external_network_id must be left empty.")),
+                      "gateway_external_network_id must be left empty."),
+               deprecated_for_removal=True),
     cfg.StrOpt('ipv6_gateway', default='',
                help=_("With IPv6, the network used for the external gateway "
                       "does not need to have an associated subnet, since the "
