@@ -2,3 +2,4 @@ profile::query_service::blazegraph_options:
   - '-Dhttp.proxyHost=webproxy.eqiad.wmnet'
   - '-Dhttp.proxyPort=8080'
   - '-XX:+ExitOnOutOfMemoryError'
+profile::query_service::async_import: true
