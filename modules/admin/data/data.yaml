@@ -13,7 +13,8 @@ groups:
               yuvipanda, shrlak, madhuvishy, groovier, khorn, ironholds, katie, chedasaurus,
               cy534, pnorman, mpany, deskana, arnad, nithum, banyek, imarlier, mkroetzsch,
               mtizzoni, panisson, paolotti, ciro, dartar, melodykramer, gtirloni, tbayer, pirroh,
-              bawolff, dkg, juliaglen, cwdent, hpham, atgomez, dfoy, alaasarhan, onimisionipe]
+              bawolff, dkg, juliaglen, cwdent, hpham, atgomez, dfoy, alaasarhan, onimisionipe,
+              tieu]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -156,7 +157,7 @@ groups:
               nikerabbit, dstrine, jsamra, jkumalah,
               jdittrich, chelsyx, ovasileva, debt, mgerlach, eyener,
               fdans, mlitn, niharika29, goransm, pmiazga, dsaez, shiladsen, cicalese,
-              mirrys, sharvaniharan, mmiller, amire80, rush, tieu, kharlan, gbirke, dedcode,
+              mirrys, sharvaniharan, mmiller, amire80, rush, kharlan, gbirke, dedcode,
               isaacj, jdl, joewalsh, phuedx, bd808, iflorez, mayakpwiki, conniecc1, abi,
               cohi, keepit-ssh, kzeta, snowick]
   ldap-admins:
@@ -278,7 +279,7 @@ groups:
               jdlrobson, chelsyx, ovasileva, flemmerich, filippo, pmiazga, faidon,
               piccardi, fdans, eevans, anomie, demon, ladsgroup, musikanimal,
               kaldari, goransm, ema, dsaez, shiladsen, rho, mirrys, slaporte, jk,
-              ayounsi, mepps, mmiller, seddon, gilles, tstarling, rush, tieu, karen,
+              ayounsi, mepps, mmiller, seddon, gilles, tstarling, rush, karen,
               cicalese, drossi, fsalutari, nathante, gbirke, isaacj, sbassett, jdl, gsingers,
               niharika29, ryanmax, afandian2, jgleeson, toddleroux, srishakatux, dsharpe, eyener,
               esanders, sukhe, jfishback, iflorez, mayakpwiki, conniecc1, abi, mgerlach, dedcode,
@@ -2924,12 +2925,11 @@ users:
     ssh_keys: []
     uid: 19707
   tieu:
-    ensure: present
+    ensure: absent
     realname: Tim Eulitz
     name: tieu
     gid: 500
-    ssh_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAAEAQC15PwObygxXGHN8jiJEL4Z7kR6Mqg4ynKIgcCA3LpC0RiEWQGvIR0vZZEkYKTYZ8JeDY6qKYSXgELikG1wIDQANGK05P/5LRRvpoBzb8xipniLMQc/8md3Mqu+bHMOwpXhe5gPvAHcQPMYyozQSWaPwIAWHdhjlwuEdkzH4V5hTTVGzpwMBqW09yHYzbcSX5ohl+4KdFxuU7BfInhjRu4uVCk8AJOe4W1mGI4Rghcdm/gAaP0MOFgYPJ+kXIK+nj9lTzmaquUuxqGUXha14SfP2U3CyreW09nQnrr+5WWGvD8stM2cTkYF1WirfmP/73RCh0cDsjhj/GPJ8u7CRzwD5tHQpzeLEGMkTYhJ88MnKgNgGC2xabUS5S6n3KiHkKYUBpzfhAWPm9nlMHCL2HKeD2hgHWJ0kX+4zBV5Vxqa+FbR919jC+K2rOIom3kpUFDWAdx2YhcB1SYC1lFdG40LfsdIurSl4GJysCoL3oELUGVznHZT2GCekFn7EDTHPihiWKhUgwNAJ7jhHR6lc/Kvfx4p19353DixljNeoE2/t0HRFNovyFAYCIugT0YbzFwv/haPnoqHpITwrxmyBifUYEX79MDlr/mYY5mOR4vcJELOij9D82CFDPcQZYYjpl6O3CmyR7V28ucqGCgmVxbqVfVTKUdVqWjSQskbVADhuG1q2LXvkArczJx8cDuAtn2aZqG1rvXo2XDMCv66pvRk/h7z1K2wd+BEJ508GfglJvjCfVs8mM4ZXCIt+4Eg2MXr01lNXehDsSdiiiB7ut6o8w+bU7ZLBqB4gmYPdJwtsoVDuba/ddSPlNVOwu9/v/gqE1JOEyDcpmjVaFljA+3/2oOA2DOoYRPYPmR8tAVgovMpPV26r9AtIGm18rW+LVqA8vo9eaebjQ/cYa05VigJnJvW3JthjE4jHCJmGjP0TLViADx6GfbTJ1bepDzuefbHkRGhoPx0ut5n9W3xYk05qOoWdFo8l+KlSaKax0NqmIIo1dFsYRDmUI4DiNBwU6wlxoJ21MS/8a6l09GNUcAi2ep73ewVmZlZ1gyAWO5qqCQ+kg0149DthfD05mJ1faZuZ/YaQXQFGbJ8iB+aFsDlmH0dw8LvY93ipHrn8N18OwPUFBD65slHchbn++OSCIC1ww5E7+2XZRIjwWy0i4A5t9dZ7JfxbuEO20Mpg6NZYYs9ZFfq0BGukO1X8j0hlEo+MXObvSOjG4NBGLPPTX0M9AKpQgt4mCQAMHQKBzyjFNK5Dx5YwCflIL9OFWAxEX0LhlsJ0Ckr/0Sdt8I4ufHSVP8VxN8C6zb/gNyj3Tbwo5gQNSoOtpUaHPZBEKJA7jrGMbpXEA3R/D9U5/QKOcoL tim.eulitz@wikimedia.de
+    ssh_keys: []
     uid: 19170
   tonina:
     ensure: present
@@ -3715,10 +3715,6 @@ ldap_only_users:
     ensure: present
     realname: Wes Moran
     email: westonnh@gmail.com
-  tieu:
-    ensure: present
-    realname: Tim Fabian Eulitz
-    email: tim.eulitz@wikimedia.de
   tnegrin:
     ensure: present
     realname: Toby Negrin
