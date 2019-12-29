@@ -12,6 +12,7 @@ Content-Type: text/cloud-config; charset="us-ascii"
 #cloud-config
 growpart:
     mode: false
+manage_etc_hosts: false
 
 --XXXXboundary text
 MIME-Version: 1.0
