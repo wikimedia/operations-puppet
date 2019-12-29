@@ -50,7 +50,7 @@ driver = sql
 [credential]
 
 [database]
-connection = mysql://<%= @db_user %>:<%= @db_pass %>@<%= @db_host %>/<%= @db_name %>
+connection = mysql+pymysql://<%= @db_user %>:<%= @db_pass %>@<%= @db_host %>/<%= @db_name %>
 max_pool_size = <%= @db_max_pool_size %>
 
 [domain_config]
