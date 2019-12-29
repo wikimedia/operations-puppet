@@ -61,19 +61,13 @@ class extdist(
         group     => 'extdist',
     }
 
-    if os_version('debian >= stretch') {
-        $php_cli = 'php-cli'
-    } else {
-        $php_cli = 'php5-cli'
-    }
-
-    require_package('python3-requests', $php_cli)
+    require_package('python3-requests', 'php-cli')
 
     git::clone { 'integration/composer':
         ensure             => latest,
         directory          => $composer_dir,
         branch             => 'master',
-        require            => [File[$composer_dir], User['extdist'], Package[$php_cli]],
+        require            => [File[$composer_dir], User['extdist'], Package['php-cli']],
         recurse_submodules => true,
         owner              => 'extdist',
         group              => 'extdist',
