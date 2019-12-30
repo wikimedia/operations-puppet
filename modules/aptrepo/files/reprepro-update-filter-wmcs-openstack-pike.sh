@@ -55,6 +55,7 @@ migrate
 msgpack-python
 python-oslo.i18n
 python-oslo.serialization
+python-oslo.middleware
 requests
 testresources
 vine
