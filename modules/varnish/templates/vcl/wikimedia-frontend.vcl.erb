@@ -28,7 +28,7 @@ include "wikimedia-common_<%= @vcl %>.inc.vcl";
 include "analytics.inc.vcl";
 include "browsersec.inc.vcl";
 include "translation-engine.inc.vcl";
-// provides the acl "blocked_nets" and "bot_blocked_nets".
+// provides the acl "blocked_nets", "bot_blocked_nets", and "public_cloud_nets".
 // The file can be found on the private puppet repo under
 // modules/secret/secrets/varnish/blocked-nets.inc.vcl
 include "blocked-nets.inc.vcl";

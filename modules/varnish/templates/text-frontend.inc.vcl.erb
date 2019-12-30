@@ -263,6 +263,7 @@ sub cluster_fe_ratelimit {
 	//       * all WMF IPs (including labs)
 	//       * seemingly-authenticated requests (simple cookie check)
 	//   * RB and MW API, Wikidata: 1000/10s (100/s long term, with 1000 burst)
+	//   * All others from public cloud IPs: 100/10s (10/s long term, with 100 burst)
 	//   * All others: 1000/50s (20/s long term, with 1000 burst)
 	//       (current data leads us to believe sustaining 20/s should be
 	//       nearly impossible against standard MW outputs without
@@ -274,7 +275,9 @@ sub cluster_fe_ratelimit {
 				return (synth(429, "Too Many Requests"));
 			}
 		} else {
-			if (vsthrottle.is_denied("general:" + req.http.X-Client-IP, 1000, 50s)) {
+			if (std.ip(req.http.X-Client-IP, "192.0.2.1") ~ public_cloud_nets && vsthrottle.is_denied("cloud:" + req.http.X-Client-IP, 100, 10s)) {
+				return (synth(429, "Too Many Requests"));
+			} else if (vsthrottle.is_denied("general:" + req.http.X-Client-IP, 1000, 50s)) {
 				return (synth(429, "Too Many Requests"));
 			}
 		}
