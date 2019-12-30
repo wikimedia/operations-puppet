@@ -49,7 +49,19 @@ python-tinyrpc
 python-tooz
 python-weakrefmethod
 python-wsgi-intercept
-ryu"
+ryu
+jinja2
+migrate
+msgpack-python
+python-oslo.i18n
+python-oslo.serialization
+requests
+testresources
+vine
+python-amqp
+python-webob
+kombu
+python-tenacity"
 
 OLD_FILE="$1"
 NEW_FILE="$2"

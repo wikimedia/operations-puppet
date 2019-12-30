@@ -256,6 +256,16 @@ VerifyRelease: 56056AB2FEE4EECB
 Config: Acquire::ForceIPv4=true
 ListHook: /usr/local/bin/reprepro-update-filter-wmcs-openstack-pike.sh
 
+Name: thirdparty/openstack-pike-stretch-nochange
+Method: http://osbpo.debian.net/debian
+Components: main>thirdparty/openstack-pike-stretch
+UDebComponents:
+Suite: stretch-pike-backports-nochange
+Architectures: amd64 source
+VerifyRelease: 56056AB2FEE4EECB
+Config: Acquire::ForceIPv4=true
+ListHook: /usr/local/bin/reprepro-update-filter-wmcs-openstack-pike.sh
+
 Name: amd-rocm271
 Method: http://repo.radeon.com/rocm/apt/2.7.1/
 Suite: xenial
