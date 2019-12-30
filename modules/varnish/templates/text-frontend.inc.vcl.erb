@@ -86,10 +86,6 @@ sub cluster_fe_recv_pre_purge {
 		return (synth(403, "Noise"));
 	}
 
-	if (req.http.host == "en.wikipedia.org" && req.url ~ "^/wiki/Main_Page\?test=test[0-9\.]+") {
-		set req.url = "/wiki/Main_Page";
-	}
-
 	// FIXME: we're seeing an issue with Range requests and gzip/gunzip.
 	// Disable Range requests for now.
 	unset req.http.Range;
