@@ -22,6 +22,8 @@ keystone
 neutron
 nova
 pyroute2
+chardet
+python-urllib3
 python-cliff
 python-debtcollector
 python-keystoneauth1
