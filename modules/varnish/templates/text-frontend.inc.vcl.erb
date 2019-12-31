@@ -90,6 +90,11 @@ sub cluster_fe_recv_pre_purge {
 		set req.url = "/wiki/Main_Page";
 	}
 
+	// https://phabricator.wikimedia.org/T241421
+	if (req.http.host == "en.wikipedia.org" && req.url ~ "/w/api.php\?.*srsearch=.*") {
+		return (synth(403, "Requests from your IP have been blocked, please contact noc@wikimedia.org"));
+	}
+
 	// FIXME: we're seeing an issue with Range requests and gzip/gunzip.
 	// Disable Range requests for now.
 	unset req.http.Range;

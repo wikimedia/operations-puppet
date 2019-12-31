@@ -48,4 +48,9 @@ client c1 {
     txreq -url "/" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https" -hdr "X-Client-IP: 192.241.194.113"
     rxresp
     expect resp.status == 403
+
+    # https://phabricator.wikimedia.org/T241421
+    txreq -url "/w/api.php?action=query&list=search&srsearch=expensive+query" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https" -hdr "X-Client-IP: 18.208.0.1" -hdr "User-Agent: wikipedia (https://github.com/goldsmith/Wikipedia/)"
+    rxresp
+    expect resp.status == 403
 } -run
