@@ -21,6 +21,8 @@ class graphite::wmcs::archiver {
         group  => '_graphite',
     }
 
+    require_package('python-yaml')
+
     file { '/usr/local/bin/archive-instances':
         source => 'puppet:///modules/graphite/archive-instances.py',
         owner  => '_graphite',
@@ -30,7 +32,7 @@ class graphite::wmcs::archiver {
 
     cron { 'archive-deleted-instances':
         ensure  => present,
-        command => '/usr/local/bin/archive-instances',
+        command => '/usr/local/bin/archive-instances > /dev/null',
         user    => '_graphite',
         minute  => 0,
         hour    => 13,
