@@ -43,3 +43,25 @@ class ATSBackendTest(unittest.TestCase):
         bucket_samples = self.store.get_samples('trafficserver_backend_client_ttfb_bucket')
         self.assertIn(('le=0.25,backend=swift.discovery.wmnet', 3),
                       bucket_samples)
+
+
+class ATSBackendTimingTest(unittest.TestCase):
+    def setUp(self):
+        self.store = mtail_store.MtailMetricStore(
+                os.path.join(test_dir, '../programs/atsbackendtiming.mtail'),
+                os.path.join(test_dir, 'logs/atsbackendtiming.test'))
+
+    def testBackendTiming(self):
+        s = self.store.get_samples('ats_backend_timing_count')
+        self.assertIn(('', 3), s)
+        s = self.store.get_samples('ats_backend_timing_sum')
+        self.assertIn(('', 0.7525828999999999), s)
+        s = self.store.get_samples('ats_backend_timing_bucket')
+        self.assertIn((u'le=0.25', 2), s)
+        self.assertIn((u'le=0.5', 2), s)
+        self.assertIn((u'le=1', 2), s)
+        self.assertIn((u'le=2.5', 2), s)
+        self.assertIn((u'le=5', 2), s)
+        self.assertIn((u'le=10', 3), s)
+        self.assertIn((u'le=15', 3), s)
+        self.assertIn((u'le=+Inf', 3), s)

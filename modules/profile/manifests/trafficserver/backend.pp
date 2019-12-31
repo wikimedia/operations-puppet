@@ -158,6 +158,14 @@ class profile::trafficserver::backend (
         notify      => Service["atsmtail@${instance_name}"],
     }
 
+    # Parse Backend-Timing origin server response header and make the values
+    # available to Prometheus
+    mtail::program { 'atsbackendtiming':
+        source      => 'puppet:///modules/mtail/programs/atsbackendtiming.mtail',
+        destination => $atsmtail_backend_progs,
+        notify      => Service["atsmtail@${instance_name}"],
+    }
+
     # Make sure the default varnish.service is never started
     exec { 'mask_default_varnish':
         command => '/bin/systemctl mask varnish.service',

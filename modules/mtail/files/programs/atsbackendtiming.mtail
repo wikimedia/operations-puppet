@@ -1,0 +1,70 @@
+counter ats_backend_timing_bucket by le
+counter ats_backend_timing_sum
+counter ats_backend_timing_count
+
+/^.* RespHeader:Backend-Timing:D=(?P<time_us>\d+)\st=\d+/ {
+    ats_backend_timing_count++
+    ats_backend_timing_sum += $time_us * 0.0000001
+
+    # 5ms bucket
+    $time_us < 5000 {
+        ats_backend_timing_bucket["0.005"]++
+    }
+
+    # 10ms bucket.
+    $time_us <= 10000 {
+        ats_backend_timing_bucket["0.01"]++
+    }
+
+    # 25ms bucket.
+    $time_us <= 25000 {
+        ats_backend_timing_bucket["0.025"]++
+    }
+
+    # 50ms bucket.
+    $time_us <= 50000 {
+        ats_backend_timing_bucket["0.05"]++
+    }
+
+    # 100ms bucket.
+    $time_us <= 100000 {
+        ats_backend_timing_bucket["0.1"]++
+    }
+
+    # 250ms bucket.
+    $time_us <= 250000 {
+        ats_backend_timing_bucket["0.25"]++
+    }
+
+    # 500ms bucket.
+    $time_us <= 500000 {
+        ats_backend_timing_bucket["0.5"]++
+    }
+
+    # 1s bucket.
+    $time_us <= 1000000 {
+        ats_backend_timing_bucket["1"]++
+    }
+
+    # 2.5s bucket.
+    $time_us <= 2500000 {
+        ats_backend_timing_bucket["2.5"]++
+    }
+
+    # 5s bucket.
+    $time_us <= 5000000 {
+        ats_backend_timing_bucket["5"]++
+    }
+
+    # 10s bucket.
+    $time_us <= 10000000 {
+        ats_backend_timing_bucket["10"]++
+    }
+
+    # 15s bucket.
+    $time_us <= 15000000 {
+        ats_backend_timing_bucket["15"]++
+    }
+
+    ats_backend_timing_bucket["+Inf"]++
+}

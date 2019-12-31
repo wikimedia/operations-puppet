@@ -124,26 +124,3 @@ class VarnishBackendTest(unittest.TestCase):
                       sum_samples)
         self.assertIn(('status=200,method=POST,backend=be_matomo01_xmp_eggnet', 0.061224),
                       sum_samples)
-
-
-class VarnishBackendTimingTest(unittest.TestCase):
-    def setUp(self):
-        self.store = mtail_store.MtailMetricStore(
-                os.path.join(test_dir, '../programs/varnishbackendtiming.mtail'),
-                os.path.join(test_dir, 'logs/varnishbackendtiming.test'))
-
-    def testRespStatus(self):
-        s = self.store.get_samples('varnish_backend_timing_count')
-        self.assertIn(('', 10), s)
-        s = self.store.get_samples('varnish_backend_timing_sum')
-        self.assertIn(('', 0.1529112), s)
-        s = self.store.get_samples('varnish_backend_timing_bucket')
-        self.assertIn((u'le=0.1', 5), s)
-        self.assertIn((u'le=0.25', 8), s)
-        self.assertIn((u'le=0.5', 10), s)
-        self.assertIn((u'le=1', 10), s)
-        self.assertIn((u'le=2.5', 10), s)
-        self.assertIn((u'le=5', 10), s)
-        self.assertIn((u'le=10', 10), s)
-        self.assertIn((u'le=15', 10), s)
-        self.assertIn((u'le=+Inf', 10), s)

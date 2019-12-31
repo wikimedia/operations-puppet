@@ -36,11 +36,6 @@ class varnish::logging::backend(
         require => File['/usr/local/bin/varnishmtail-backend'],
     }
 
-    # Parse Backend-Timing origin server response header and make the values
-    # available to Prometheus
-    ::varnish::logging::backendtiming { 'backendtiming':
-    }
-
     mtail::program { 'varnishbackend':
         source      => 'puppet:///modules/mtail/programs/varnishbackend.mtail',
         destination => '/etc/varnishmtail-backend',
