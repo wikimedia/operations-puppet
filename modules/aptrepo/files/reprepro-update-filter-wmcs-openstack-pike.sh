@@ -40,8 +40,11 @@ python-oslo.privsep
 python-oslo.rootwrap
 python-oslo.utils
 python-os-vif
-python-os-win
 python-os-xenapi
+python-os-win
+python-os-brick
+python-os-traits
+python-pypowervm
 python-swiftclient
 python-taskflow
 python-tenacity
@@ -49,6 +52,8 @@ python-tinyrpc
 python-tooz
 python-weakrefmethod
 python-wsgi-intercept
+python-neutron-lib
+python-neutronclient
 ryu
 jinja2
 migrate
@@ -62,7 +67,19 @@ vine
 python-amqp
 python-webob
 kombu
-python-tenacity"
+python-tenacity
+python-cursive
+python-pbr
+stevedore
+python-glance-store
+python-castellan
+python-cursive
+python-glanceclient
+python-neutronclient
+openvswitch
+python-ovsdbapp
+python-scrypt
+python-bcrypt"
 
 OLD_FILE="$1"
 NEW_FILE="$2"
