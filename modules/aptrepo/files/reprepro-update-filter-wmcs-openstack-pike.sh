@@ -54,6 +54,7 @@ python-weakrefmethod
 python-wsgi-intercept
 python-neutron-lib
 python-neutronclient
+python-cinderclient
 ryu
 jinja2
 migrate
