@@ -46,6 +46,8 @@ python-os-xenapi
 python-os-win
 python-os-brick
 python-os-traits
+python-os-client-config
+python-osc-lib
 python-pypowervm
 python-swiftclient
 python-taskflow
