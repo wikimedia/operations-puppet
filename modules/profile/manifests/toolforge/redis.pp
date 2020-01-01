@@ -52,7 +52,5 @@ class profile::toolforge::redis (
         require  => Labs_lvm::Volume['redis-disk'],
     }
 
-    diamond::collector { 'Redis':
-        require => Class['::redis::client::python'],
-    }
+    ::prometheus::redis_exporter { '6379': }
 }
