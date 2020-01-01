@@ -153,7 +153,6 @@ fullviews:
 
 # Deliberately excluded:
 # - abusefilterprivatedetails  T187455
-# - spamblacklist              T178052
 # - suppress                   T178052
 # - oathauth_users             T218165
 # - titleblacklist             T178052
