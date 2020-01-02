@@ -103,5 +103,5 @@ class profile::toolforge::grid::base (
         content => $active_proxy,
     }
 
-    diamond::collector::localcrontab { 'localcrontabcollector': }
+    class { 'profile::prometheus::node_local_crontabs': }
 }

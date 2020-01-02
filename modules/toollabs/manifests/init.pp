@@ -161,5 +161,7 @@ class toollabs (
         source => 'puppet:///modules/toollabs/log-command-invocation',
     }
 
-    diamond::collector::localcrontab { 'localcrontabcollector': }
+    # lint:ignore:wmf_styleguide
+    class { 'profile::prometheus::node_local_crontabs': }
+    # lint:endignore
 }
