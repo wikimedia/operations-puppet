@@ -8,7 +8,7 @@ class contint::composer {
     require ::contint::deployment_dir
 
     git::clone { 'jenkins CI Composer':
-        ensure             => 'latest',
+        ensure             => 'present',
         directory          => '/srv/deployment/integration/composer',
         origin             => 'https://gerrit.wikimedia.org/r/integration/composer.git',
         recurse_submodules => true,
