@@ -23,6 +23,7 @@ neutron
 nova
 pyroute2
 chardet
+python-novaclient
 python-urllib3
 python-cliff
 python-debtcollector
