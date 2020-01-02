@@ -13,7 +13,7 @@ groups:
               yuvipanda, shrlak, madhuvishy, groovier, khorn, ironholds, katie, chedasaurus,
               cy534, pnorman, mpany, deskana, arnad, nithum, banyek, imarlier, mkroetzsch,
               mtizzoni, panisson, paolotti, ciro, dartar, melodykramer, gtirloni, tbayer, pirroh,
-              bawolff, dkg, juliaglen, cwdent, hpham, atgomez, dfoy, alaasarhan]
+              bawolff, dkg, juliaglen, cwdent, hpham, atgomez, dfoy, alaasarhan, onimisionipe]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -92,7 +92,7 @@ groups:
     members: [bearloga, tjones, cparle, pearley, bpirkle, ktsouroupidou,
               ezachte, jamesur, jdlrobson, sguebo, thargrove,
               leila, santhosh, amire80, foks, chelsyx, dbarratt, karen,
-              onimisionipe, kharlan, abi, nikkin, bmansurov]
+              kharlan, abi, nikkin, bmansurov]
     privileges: ['ALL = (www-data) NOPASSWD: ALL']
   cassandra-test-roots:
     gid: 708
@@ -102,7 +102,7 @@ groups:
   elasticsearch-roots:
     gid: 709
     description: manage elasticsearch nodes
-    members: [ebernhardson, dcausse, onimisionipe, mstyles]
+    members: [ebernhardson, dcausse, mstyles]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   dataset-admins:
     gid: 710
@@ -133,7 +133,7 @@ groups:
   cloudelastic-roots:
     gid: 809
     description: manage cloudelastic nodes
-    members: [ebernhardson, dcausse, onimisionipe, bd808, mstyles]
+    members: [ebernhardson, dcausse, bd808, mstyles]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   udp2log-users:
     gid: 713
@@ -367,7 +367,7 @@ groups:
   maps-admins:
     gid: 753
     description: admin for maps clusters
-    members: [eevans, sbisson, catrope, mholloway-shell, mbsantos, onimisionipe]
+    members: [eevans, sbisson, catrope, mholloway-shell, mbsantos]
     # TODO: Revisit this when moving into production
     privileges: ['ALL = NOPASSWD: /usr/sbin/service cassandra *',
                  'ALL = NOPASSWD: /bin/systemctl mask cassandra.service',
@@ -384,7 +384,7 @@ groups:
   maps-roots:
     gid: 752
     description: Root level access for Maps/OSM servers
-    members: [onimisionipe,]
+    members: []
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   kartotherian-admin:
     description: Group of kartotherian admins
@@ -398,7 +398,7 @@ groups:
   wdqs-admins:
     gid: 755
     description: Admins for the WikiData Query Service project
-    members: [smalyshev, hoo, onimisionipe, ebernhardson, dcausse, mstyles]
+    members: [smalyshev, hoo, ebernhardson, dcausse, mstyles]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service wdqs-blazegraph *',
                  'ALL = NOPASSWD: /usr/sbin/service wdqs-categories *',
                  'ALL = NOPASSWD: /usr/sbin/service wdqs-updater *',
@@ -418,7 +418,7 @@ groups:
   wdqs-roots:
     gid: 806
     description: Root level access for WikiData Query Service project
-    members: [onimisionipe]
+    members: []
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   mailman-admins:
     gid: 757
@@ -463,7 +463,7 @@ groups:
     members: [bd808, eevans, mobrovac, ppchelko, demon, twentyafterfour, thcipriani, dduvall,
               bsitzmann, mholloway-shell, kartik, halfak, ladsgroup, smalyshev, hoo, tgr,
               ssastry, cscott, arlolra, jdlrobson, jforrester, niedzielski, bmansurov,
-              pmiazga, phuedx, mbsantos, onimisionipe, mvolz, santhosh, nikerabbit, accraze,
+              pmiazga, phuedx, mbsantos, mvolz, santhosh, nikerabbit, accraze,
               kevinbazira]
     privileges: []
 
@@ -3051,16 +3051,12 @@ users:
     expiry_date: 2020-07-31
     expiry_contact: gdubuc@wikimedia.org
   onimisionipe:
-    ensure: present
+    ensure: absent
     realname: Mathew Onipe
     name: onimisionipe
     gid: 500
-    ssh_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCzc2xF3S5UnIFMnK0gbGBhYvsN+xjiJejtEZUnGb23vJTX7N955C7dBdHkTHpcV7+yWqpzzWkJCpnRs5Q0P+JyQ5hOikv7WrKcsjIODuUpMzkRIlWzmGwuA6fXvJqAcyqSdXeQAAczUnlItMl0BB0L0LsB5xY7aqkt0atm1CPkQcFKBc90KJiW8Tkuh5MiYIXe18o+mCI/Q+yPfUxaqQZ0rp9pmFk1L021D3BL7YNpTZYSwbulnxc/y++VD1Ot/2kmCX2HhB9APVP36VZwqDcb+Ik2ZMsrtxIBz2qQjsbUnZvS9rqqJrF8MQhLmfe/M1gK8pbR0yV8DXHSSG3uJ1Db matt@matt
+    ssh_keys: []
     uid: 19981
-    email: monipe@wikimedia.org
-    expiry_date: 2019-12-31
-    expiry_contact: gehel@wikimedia.org
   kharlan:
     ensure: present
     realname: Kosta Harlan
