@@ -20,4 +20,7 @@ class role::analytics_cluster::presto::server {
 
     include ::profile::hadoop::common
     include ::profile::presto::server
+
+    include ::profile::kerberos::client
+    include ::profile::kerberos::keytabs
 }

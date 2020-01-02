@@ -38,4 +38,19 @@ profile::presto::server::catalogs:
       # TODO: do we want to disable non managed tables?
       hive.non-managed-table-writes-enabled: true
       hive.non-managed-table-creates-enabled: true
+      hive.metastore.authentication.type: 'KERBEROS'
+      hive.metastore.service.principal: 'hive/an-coord1001.eqiad.wmnet@WIKIMEDIA'
+      hive.metastore.client.principal: 'presto/an-coord1001.eqiad.wmnet@WIKIMEDIA'
+      hive.metastore.client.keytab: '/etc/security/keytabs/presto/presto.keytab'
+      hive.hdfs.authentication.type: 'KERBEROS'
+      hive.hdfs.impersonation.enabled: true
+      hive.hdfs.presto.principal: "presto/%{::hostname}.eqiad.wmnet@WIKIMEDIA"
+      hive.hdfs.presto.keytab: '/etc/security/keytabs/presto/presto.keytab'
+      hive.hdfs.wire-encryption.enabled: true
 profile::presto::server::ferm_srange: $ANALYTICS_NETWORKS
+
+profile::kerberos::keytabs::keytabs_metadata:
+  - role: 'presto'
+    owner: 'presto'
+    group: 'presto'
+    filename: 'presto.keytab'
