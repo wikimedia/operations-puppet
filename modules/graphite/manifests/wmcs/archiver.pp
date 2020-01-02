@@ -25,6 +25,7 @@ class graphite::wmcs::archiver {
         'python-yaml',
         'python-keystoneclient',
         'python-keystoneauth1',
+        'python-novaclient',
     ])
 
     file { '/usr/local/bin/archive-instances':
