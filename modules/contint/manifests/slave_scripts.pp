@@ -7,7 +7,7 @@ class contint::slave_scripts {
     require ::contint::deployment_dir
 
     git::clone { 'jenkins CI slave scripts':
-        ensure             => 'latest',
+        ensure             => 'present',
         directory          => '/srv/deployment/integration/slave-scripts',
         origin             => 'https://gerrit.wikimedia.org/r/integration/jenkins.git',
         recurse_submodules => true,
