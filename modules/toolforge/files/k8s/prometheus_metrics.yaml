@@ -12,6 +12,7 @@ rules:
   - services/proxy
   - endpoints
   - pods
+  - pods/proxy
   verbs: ["get", "list", "watch"]
 - apiGroups:
   - extensions
@@ -32,7 +33,6 @@ roleRef:
 subjects:
 - kind: User
   name: prometheus
-  namespace: default
 ---
 # for prometheus to scrape metrics in an URL like:
 # https://APIFQDN:6443/api/v1/namespaces/ingress-nginx/services/nginx-ingress-metrics/proxy/metrics
