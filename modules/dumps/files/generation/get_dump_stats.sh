@@ -126,7 +126,7 @@ fi
 # choose random wiki not enwiki
 wikirandom_index=$(( $RANDOM % $totaldumped ))
 wikirandom=${allsubdirs_array[$wikirandom_index]}
-if [ "$wikirandom" == "enwiki" ]; then
+if [ "$wikirandom" == "enwiki" -o "$wikirandom" == "10wikipedia" ]; then
     # try again, we'll get some other wiki this time... surely?
     wikirandom_index=$( $RANDOM % $totaldumped )
     wikirandom=${allsubdirs_array[$wikirandom]}
