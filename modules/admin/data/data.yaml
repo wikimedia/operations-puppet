@@ -3600,6 +3600,10 @@ ldap_only_users:
     ensure: present
     realname: Kai Nissen
     email: kai.nissen@wikimedia.de
+  krli:
+    ensure: present
+    realname: Kris Litson
+    email: kris.litson@wikimedia.de
   ldoan:
     ensure: present
     realname: Linnea Doan
