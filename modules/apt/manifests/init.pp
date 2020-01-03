@@ -1,6 +1,7 @@
 class apt(
-    $purge_sources = false,
-    $use_proxy = true,
+    Boolean $purge_sources     = false,
+    Boolean $purge_preferences = false,
+    Boolean $use_proxy         = true,
 ) {
     exec { 'apt-get update':
         path        => '/usr/bin',
@@ -46,6 +47,14 @@ class apt(
         mode    => '0755',
         recurse => $purge_sources,
         purge   => $purge_sources,
+    }
+    file { '/etc/apt/preferences.d':
+        ensure  => directory,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0755',
+        recurse => $purge_preferences,
+        purge   => $purge_preferences,
     }
 
     if $use_proxy {

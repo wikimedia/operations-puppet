@@ -1,6 +1,7 @@
 class profile::base(
-    $use_apt_proxy = hiera('profile::base::use_apt_proxy', true),
-    $purge_apt_sources = hiera('profile::base::purge_apt_sources', false),
+    Boolean $use_apt_proxy = lookup('profile::base::use_apt_proxy'),
+    Boolean $purge_apt_sources = lookup('profile::base::purge_apt_sources'),
+    Boolean $purge_apt_preferences = lookup('profile::base::purge_apt_preferences'),
     $domain_search = hiera('profile::base::domain_search', $::domain), # lint:ignore:wmf_styleguide
     $nameservers   = hiera('profile::base::nameservers', $::nameservers), # lint:ignore:wmf_styleguide
     $remote_syslog = hiera('profile::base::remote_syslog', []),
@@ -44,9 +45,10 @@ class profile::base(
 
     contain profile::base::puppet
     require profile::base::certificates
-    class { '::apt':
-        use_proxy     => $use_apt_proxy,
-        purge_sources => $purge_apt_sources,
+    class { 'apt':
+        use_proxy         => $use_apt_proxy,
+        purge_sources     => $purge_apt_sources,
+        purge_preferences => $purge_apt_preferences,
     }
 
     file { ['/usr/local/sbin', '/usr/local/share/bash']:

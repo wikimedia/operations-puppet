@@ -262,6 +262,8 @@ keystone_public_port: '5000'
 
 # All labs instances have internet connectivity, so do not bother with proxies
 profile::base::use_apt_proxy: false
+profile::base::purge_apt_sources: false
+profile::base::purge_apt_preferences: false
 
 # By default, nag project admins about puppet breakage
 send_puppet_failure_emails: true
