@@ -4,28 +4,15 @@
 class cergen {
 
     if os_version('debian == buster') {
-        package { 'cergen':
-            ensure  => 'present',
-            require => [
-                        Exec['apt_update_cergen'],
-                        Apt::Repository['buster-cergen'],
-                        ],
+        apt::package_from_component { 'cergen':
+            component => 'component/cergen',
+            packages  => ['cergen']
         }
 
+        # This is needed by networkx, ideally this would be fixed in
+        # the cergen package itself
         package { 'python3-lib2to3':
             ensure => 'present',
-        }
-
-        apt::repository { 'buster-cergen':
-            uri        => 'http://apt.wikimedia.org/wikimedia',
-            dist       => 'buster-wikimedia',
-            components => 'component/cergen',
-            notify     => Exec['apt_update_cergen'],
-        }
-
-        exec {'apt_update_cergen':
-            command     => '/usr/bin/apt-get update',
-            refreshonly => true,
         }
     } else {
         package { 'cergen':
