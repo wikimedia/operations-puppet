@@ -249,7 +249,6 @@ prometheus::varnishkafka_exporter::config:
     - 'varnishkafka'
 
   num_entries_to_get: 2
-profile::cache::varnish::frontend::backend_services: [ats-be,varnish-be]
 profile::trafficserver::tls::websocket_support: true
 
 # Default weights for conftool

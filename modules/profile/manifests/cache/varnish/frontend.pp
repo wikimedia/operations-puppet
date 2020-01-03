@@ -11,7 +11,7 @@ class profile::cache::varnish::frontend (
     $alternate_domains = hiera('cache::alternate_domains', {}),
     $separate_vcl = hiera('profile::cache::varnish::separate_vcl', []),
     $fe_transient_gb = hiera('profile::cache::varnish::frontend::transient_gb', 0),
-    $backend_services = hiera('profile::cache::varnish::frontend::backend_services', ['varnish-be']),
+    $backend_services = hiera('profile::cache::varnish::frontend::backend_services', ['ats-be']),
 ) {
     require ::profile::cache::base
     $wikimedia_nets = $profile::cache::base::wikimedia_nets
