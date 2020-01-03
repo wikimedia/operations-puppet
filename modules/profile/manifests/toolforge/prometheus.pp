@@ -339,19 +339,22 @@ class profile::toolforge::prometheus (
                 'relabel_configs'       => [
                     {
                         'action' => 'labelmap',
-                        'regex'  => '__meta_kubernetes_node_label_(.+)',
+                        'regex'  => '__meta_kubernetes_pod_label_(.+)',
                     },
                     {
                         'target_label' => '__address__',
                         'replacement'  => "${new_k8s_apiserver_fqdn}:${new_k8s_apiserver_port}",
                     },
                     {
-                        'target_label' => '__metrics_path__',
-                        # this service is not an arbitrary name; it was created
-                        # inside the k8s cluster with that specific name
-                        'replacement'  => '/api/v1/namespaces/metrics/services/cadvisor/proxy/metrics',
+                        'source_labels' => ['__meta_kubernetes_pod_name'],
+                        'regex'         => '(.+)',
+                        'target_label'  => '__metrics_path__',
+                        # lint:ignore:single_quote_string_with_variables
+                        'replacement'   => '/api/v1/namespaces/metrics/pods/${1}/proxy/metrics',
+                        # lint:endignore
                     },
                 ]
+
             },
         ]
     }

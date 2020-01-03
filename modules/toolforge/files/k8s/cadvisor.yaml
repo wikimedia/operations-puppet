@@ -3,7 +3,6 @@
 #
 # many changes, but specially:
 # * run it in the metrics namespace
-# * add a service so our external prometheus can read the /metrics endpoint
 # * user internal docker image to make our admission controller happy
 apiVersion: v1
 kind: Namespace
@@ -140,18 +139,3 @@ spec:
       - hostPath:
           path: /dev/disk
         name: disk
----
-# created by us, not included in original upstream docs
-apiVersion: v1
-kind: Service
-metadata:
-  labels:
-    app: cadvisor
-  name: cadvisor
-  namespace: metrics
-spec:
-  ports:
-  - port: 8080
-    targetPort: http
-  selector:
-    app: cadvisor
