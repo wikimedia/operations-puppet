@@ -1,12 +1,17 @@
+profile::backup::director_seed: changeme
+
+profile::base::domain_search:
+  - eqiad.wmflabs
+  - codfw.wmflabs
+
+scap::deployment_server: deploy1001.devtools.eqiad.wmflabs
+
+# Phabricator
 profile::standard::has_default_mail_relay: false
 phabricator_logmail: false
 
 apache::logrotate::period: "daily"
 apache::logrotate::rotate: 3
-
-profile::base::domain_search:
-  - eqiad.wmflabs
-  - codfw.wmflabs
 
 profile::phabricator::main::rate_limits:
 # Number of requests per minute for logged out users (per client IP)
@@ -18,8 +23,6 @@ profile::phabricator::main::rate_limits:
 profile::phabricator::main::phd_service_ensure: running
 phabricator_phd_taskmasters: 4
 
-scap::deployment_server: deploy1001.devtools.eqiad.wmflabs
-
 profile::tlsproxy::envoy::ensure: present
 profile::tlsproxy::envoy::services:
   - server_names: ['*']
@@ -28,4 +31,3 @@ profile::tlsproxy::envoy::global_cert_name: "phabricator-stage-1001.devtools.eqi
 profile::tlsproxy::envoy::sni_support: "no"
 profile::tlsproxy::envoy::websockets: true
 
-profile::backup::director_seed: changeme
