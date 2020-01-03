@@ -6,7 +6,12 @@
 #  The component name on the repository, e.g. 'component/vp9',
 #
 # [*packages*]
-#  An array of packages to install.
+#  An array of packages to install. If the package you're installing is not
+#  available in Debian or the "main" component of our repository, it's sufficient
+#  to only specify the target package and have apt pull in all dependencies. If
+#  however you're installing a more recent version of a package which also exists
+#  in Debian main, then you also need to list the dependencies so that the pinning
+#  configuration is also applied to them.
 #
 # [*distro*]
 #  The distribution for which the packages are built, defaults to the
