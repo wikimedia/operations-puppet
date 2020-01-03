@@ -6,3 +6,5 @@ phabricator_servers:
 # all other IPs are used by phabricator::vcs (aka git-ssh.wikimedia.org)
 profile::base::ssh_server_settings:
   listen_address: "172.16.0.185"
+
+phabricator::vcs::address::v4: "172.16.0.189"
