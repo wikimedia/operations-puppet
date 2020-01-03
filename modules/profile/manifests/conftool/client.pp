@@ -10,13 +10,12 @@
 # === Parameters
 #
 class profile::conftool::client(
-    $srv_domain = lookup('etcd_client_srv_domain'),
-    $host = lookup('etcd_host'),
-    $port = lookup('etcd_port'),
-    $namespace      = dirname(lookup('conftool_prefix')),
-    $tcpircbot_host = lookup('tcpircbot_host', {'default_value' => 'icinga.wikimedia.org'}),
-    $tcpircbot_port = lookup('tcpircbot_port', {'default_value' => 9200}),
-    $protocol = lookup('profile::conftool::client::protocol', {'default_value' => 'https'})
+    Stdlib::Host           $srv_domain     = lookup('etcd_client_srv_domain'),
+    Stdlib::Unixpath       $namespace      = dirname(lookup('conftool_prefix')),
+    Stdlib::Host           $tcpircbot_host = lookup('tcpircbot_host'),
+    Stdlib::Port           $tcpircbot_port = lookup('tcpircbot_port'),
+    Optional[Stdlib::Host] $host           = lookup('etcd_host', {'default_value' => undef}),
+    Optional[Stdlib::Port] $port           = lookup('etcd_port', {'default_value' => undef}),
 ) {
 
     if os_version('debian >= stretch') {
@@ -38,7 +37,6 @@ class profile::conftool::client(
         srv_domain => $srv_domain,
         host       => $host,
         port       => $port,
-        protocol   => $protocol,
     }
 
     ::etcd::client::config { '/root/.etcdrc':

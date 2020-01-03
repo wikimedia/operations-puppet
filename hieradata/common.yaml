@@ -979,8 +979,8 @@ kerberos_kdc_servers:
 
 # Etcd client global configuration
 etcd_client_srv_domain: "conftool.%{::site}.wmnet"
-etcd_host: ''
-etcd_port: ''
+etcd_host: ~
+etcd_port: ~
 
 # Conftool global prefix (will be per-dc)
 conftool_prefix: "/conftool/v1"

@@ -3,19 +3,11 @@
 #
 # This file is by default owned by root and will not be world-readable
 define etcd::client::config(
-    $ensure = present,
-    $owner = 'root',
-    $group = 'root',
-    $world_readable = false,
-    $settings = {
-        username   => undef,
-        password   => undef,
-        host       => undef,
-        port       => undef,
-        srv_domain => undef,
-        ca_cert    => undef,
-        protocol   => undef,
-    },
+    Wmflib::Ensure         $ensure         = present,
+    String[1]              $owner          = 'root',
+    String[1]              $group          = 'root',
+    Boolean                $world_readable = false,
+    Etcd::Client::Settings $settings       = {},
     ) {
 
     $file_perms = $world_readable ? {
