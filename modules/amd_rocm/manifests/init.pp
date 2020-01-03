@@ -30,18 +30,6 @@ class amd_rocm (
         ensure => present,
     }
 
-    apt::repository { "amd-rocm${version}":
-        uri        => 'http://apt.wikimedia.org/wikimedia',
-        dist       => "${::lsbdistcodename}-wikimedia",
-        components => "thirdparty/amd-rocm${version}",
-        notify     => Exec['apt_update_rocm'],
-    }
-
-    exec {'apt_update_rocm':
-        command     => '/usr/bin/apt-get update',
-        refreshonly => true,
-    }
-
     # Note: the miopen-opencl package is imported
     # in the amd-rocm component, but not listed
     # in the packages below for the following reason:
@@ -71,11 +59,8 @@ class amd_rocm (
         'rocm-libs',
     ]
 
-    package { $packages:
-        ensure  => 'present',
-        require => [
-            Exec['apt_update_rocm'],
-            Apt::Repository["amd-rocm${version}"],
-        ],
+    apt::package_from_component { "amd-rocm${version}":
+        component => "thirdparty/amd-rocm${version}",
+        packages  => $packages,
     }
 }
