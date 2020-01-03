@@ -65,6 +65,9 @@ def collect_stats_from_romc_smi(registry):
                 # format example: 14
                 gpu_stats['fan'].labels(card=card).set(
                     rocm_metrics[card][metric].strip())
+            elif metric == 'Fan Speed (level)':
+                # we care only about the percentage value
+                continue
             else:
                 log.warning(
                     "Metric {} listed in rocm-smi's JSON  but not parsed"
