@@ -338,6 +338,11 @@ class profile::toolforge::prometheus (
                 ],
                 'relabel_configs'       => [
                     {
+                        'action'        => 'keep',
+                        'regex'         => 'cadvisor',
+                        'source_labels' => ['__meta_kubernetes_pod_label_app'],
+                    },
+                    {
                         'action' => 'labelmap',
                         'regex'  => '__meta_kubernetes_pod_label_(.+)',
                     },
@@ -347,14 +352,13 @@ class profile::toolforge::prometheus (
                     },
                     {
                         'source_labels' => ['__meta_kubernetes_pod_name'],
-                        'regex'         => '(.+)',
+                        'regex'         => '(cadvisor-[a-zA-Z1-9]+)',
                         'target_label'  => '__metrics_path__',
                         # lint:ignore:single_quote_string_with_variables
                         'replacement'   => '/api/v1/namespaces/metrics/pods/${1}/proxy/metrics',
                         # lint:endignore
                     },
                 ]
-
             },
         ]
     }
