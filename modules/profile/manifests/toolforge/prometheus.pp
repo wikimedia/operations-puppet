@@ -317,6 +317,42 @@ class profile::toolforge::prometheus (
                     },
                 ]
             },
+            {
+                'job_name'              => 'new-k8s-cadvisor',
+                'scheme'                => 'https',
+                'tls_config'            => {
+                    'insecure_skip_verify' => true,
+                    'cert_file'            => $cert_pub,
+                    'key_file'             => $cert_priv,
+                },
+                'kubernetes_sd_configs' => [
+                    {
+                        'api_server' => "https://${new_k8s_apiserver_fqdn}:${new_k8s_apiserver_port}",
+                        'role'       => 'pod',
+                        'tls_config' => {
+                            'insecure_skip_verify' => true,
+                            'cert_file'            => $cert_pub,
+                            'key_file'             => $cert_priv,
+                        },
+                    },
+                ],
+                'relabel_configs'       => [
+                    {
+                        'action' => 'labelmap',
+                        'regex'  => '__meta_kubernetes_node_label_(.+)',
+                    },
+                    {
+                        'target_label' => '__address__',
+                        'replacement'  => "${new_k8s_apiserver_fqdn}:${new_k8s_apiserver_port}",
+                    },
+                    {
+                        'target_label' => '__metrics_path__',
+                        # this service is not an arbitrary name; it was created
+                        # inside the k8s cluster with that specific name
+                        'replacement'  => '/api/v1/namespaces/metrics/services/cadvisor/proxy/metrics',
+                    },
+                ]
+            },
         ]
     }
 
