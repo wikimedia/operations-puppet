@@ -36,9 +36,14 @@ class toolforge::k8s::kubeadm_init_yaml(
         require => File['/etc/kubernetes/psp'],
     }
 
+    # Remove after file is cleaned up
     file { '/etc/kubernetes/toolforge-tool-role.yaml':
+        ensure => absent,
+    }
+
+    file { '/etc/kubernetes/toolforge-tool-roles.yaml':
         ensure  => present,
-        source  => 'puppet:///modules/toolforge/k8s/toolforge-tool-role.yaml',
+        source  => 'puppet:///modules/toolforge/k8s/toolforge-tool-roles.yaml',
         owner   => 'root',
         group   => 'root',
         mode    => '0400',
