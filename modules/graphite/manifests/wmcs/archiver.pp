@@ -37,7 +37,7 @@ class graphite::wmcs::archiver {
 
     cron { 'archive-deleted-instances':
         ensure  => present,
-        command => '/usr/local/bin/archive-instances > /dev/null',
+        command => '/usr/local/bin/archive-instances > /dev/null 2>&1',
         user    => '_graphite',
         minute  => 0,
         hour    => 13,
