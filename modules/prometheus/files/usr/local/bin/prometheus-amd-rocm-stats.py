@@ -49,24 +49,24 @@ def collect_stats_from_romc_smi(registry):
 
     for card in rocm_metrics:
         for metric in rocm_metrics[card]:
-            if metric == 'Current GPU use':
-                # format example: 0%
+            if metric == 'GPU use (%)':
+                # format example: 42
                 gpu_stats['usage'].labels(card=card).set(
-                    rocm_metrics[card][metric].rstrip('%'))
-            elif metric == 'Temperature (Sensor #1)':
-                # format example: 27.0 c
+                    rocm_metrics[card][metric].strip())
+            elif metric == 'Temperature (Sensor #1) (c)':
+                # format example: 27.0
                 gpu_stats['temperature'].labels(card=card).set(
-                    rocm_metrics[card][metric].rstrip('c').strip())
-            elif metric == 'Average Graphics Package Power':
-                # format example: 7.0W
+                    rocm_metrics[card][metric].strip())
+            elif metric == 'Average Graphics Package Power (W)':
+                # format example: 7.0
                 gpu_stats['power'].labels(card=card).set(
-                    rocm_metrics[card][metric].rstrip('W'))
-            elif metric == 'Fan Level':
-                # format example: 38 (14%)
+                    rocm_metrics[card][metric].strip())
+            elif metric == 'Fan Speed (%)':
+                # format example: 14
                 gpu_stats['fan'].labels(card=card).set(
-                    rocm_metrics[card]['Fan Level'].split('(')[1].split('%')[0])
+                    rocm_metrics[card][metric].strip())
             else:
-                log.warn(
+                log.warning(
                     "Metric {} listed in rocm-smi's JSON  but not parsed"
                     .format(metric))
 
