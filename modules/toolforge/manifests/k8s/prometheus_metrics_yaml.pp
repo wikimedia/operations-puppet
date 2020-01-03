@@ -31,4 +31,10 @@ class toolforge::k8s::prometheus_metrics_yaml(
         source  => 'puppet:///modules/toolforge/k8s/kube-state-metrics.yaml',
         require => File['/etc/kubernetes'],
     }
+
+    file { '/etc/kubernetes/cadvisor.yaml':
+        ensure  => present,
+        source  => 'puppet:///modules/toolforge/k8s/cadvisor.yaml',
+        require => File['/etc/kubernetes'],
+    }
 }

@@ -1,0 +1,157 @@
+# this file was generated from:
+#  https://github.com/google/cadvisor/tree/master/deploy/kubernetes
+#
+# many changes, but specially:
+# * run it in the metrics namespace
+# * add a service so our external prometheus can read the /metrics endpoint
+# * user internal docker image to make our admission controller happy
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: metrics
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  labels:
+    app: cadvisor
+  name: cadvisor
+  namespace: metrics
+---
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: cadvisor
+rules:
+  - apiGroups: ['policy']
+    resources: ['podsecuritypolicies']
+    verbs:     ['use']
+    resourceNames:
+    - cadvisor
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: cadvisor
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cadvisor
+subjects:
+- kind: ServiceAccount
+  name: cadvisor
+  namespace: metrics
+---
+apiVersion: policy/v1beta1
+kind: PodSecurityPolicy
+metadata:
+  name: cadvisor
+spec:
+  seLinux:
+    rule: RunAsAny
+  supplementalGroups:
+    rule: RunAsAny
+  runAsUser:
+    rule: RunAsAny
+  fsGroup:
+    rule: RunAsAny
+  volumes:
+  - '*'
+  allowedHostPaths:
+  - pathPrefix: "/"
+  - pathPrefix: "/var/run"
+  - pathPrefix: "/sys"
+  - pathPrefix: "/var/lib/docker"
+  - pathPrefix: "/dev/disk"
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  annotations:
+    seccomp.security.alpha.kubernetes.io/pod: docker/default
+  labels:
+    app: cadvisor
+  name: cadvisor
+  namespace: metrics
+spec:
+  selector:
+    matchLabels:
+      app: cadvisor
+      name: cadvisor
+  template:
+    metadata:
+      labels:
+        app: cadvisor
+        name: cadvisor
+    spec:
+      automountServiceAccountToken: false
+      containers:
+      - image: docker-registry.tools.wmflabs.org/cadvisor:0.30.2
+        name: cadvisor
+        args:
+          - --housekeeping_interval=10s                    # kubernetes default args
+          - --max_housekeeping_interval=15s
+          - --event_storage_event_limit=default=0
+          - --event_storage_age_limit=default=0
+          - --disable_metrics=percpu,sched,tcp,udp         # enable only diskIO, cpu, memory, network, disk
+          - --docker_only                                  # only show stats for docker containers
+        ports:
+        - containerPort: 8080
+          name: http
+          protocol: TCP
+        resources:
+          limits:
+            cpu: 300m
+            memory: 2000Mi
+          requests:
+            cpu: 150m
+            memory: 200Mi
+        volumeMounts:
+        - mountPath: /rootfs
+          name: rootfs
+          readOnly: true
+        - mountPath: /var/run
+          name: var-run
+          readOnly: true
+        - mountPath: /sys
+          name: sys
+          readOnly: true
+        - mountPath: /var/lib/docker
+          name: docker
+          readOnly: true
+        - mountPath: /dev/disk
+          name: disk
+          readOnly: true
+      serviceAccountName: cadvisor
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - hostPath:
+          path: /
+        name: rootfs
+      - hostPath:
+          path: /var/run
+        name: var-run
+      - hostPath:
+          path: /sys
+        name: sys
+      - hostPath:
+          path: /var/lib/docker
+        name: docker
+      - hostPath:
+          path: /dev/disk
+        name: disk
+---
+# created by us, not included in original upstream docs
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: cadvisor
+  name: cadvisor
+  namespace: metrics
+spec:
+  ports:
+  - port: 8080
+    targetPort: http
+  selector:
+    app: cadvisor
