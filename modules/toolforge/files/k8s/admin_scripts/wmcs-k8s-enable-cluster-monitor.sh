@@ -55,7 +55,7 @@ metadata:
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: view
+  name: tool-observer
 subjects:
   - kind: ServiceAccount
     name: ${tool}-obs
