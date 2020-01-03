@@ -17,7 +17,7 @@ server s1 {
     expect req.url == "/2"
 
     expect req.http.x-tls-prot == "h1"
-    expect req.http.x-tls-vers == "TLSv1"
+    expect req.http.x-tls-vers == "TLSv1.2"
     expect req.http.x-tls-sess == "reused"
     expect req.http.x-tls-keyx == "prime256v1"
     expect req.http.x-tls-auth == "ECDSA"
@@ -34,18 +34,6 @@ server s1 {
     expect req.http.x-tls-keyx == "X25519"
     expect req.http.x-tls-auth == "ECDSA"
     expect req.http.x-tls-ciph == "AES256-GCM-SHA384"
-
-    txresp
-
-    rxreq
-    expect req.url == "/4"
-
-    expect req.http.x-tls-prot == "h1"
-    expect req.http.x-tls-vers == "TLSv1"
-    expect req.http.x-tls-sess == "reused"
-    expect req.http.x-tls-keyx == "RSA"
-    expect req.http.x-tls-auth == "RSA"
-    expect req.http.x-tls-ciph == "AES128-SHA"
 
     txresp
 
@@ -87,13 +75,10 @@ client c1 {
     txreq -url "/1" -hdr "X-Forwarded-Proto: https" -hdr "Host: upload.wikimedia.org" -hdr "X-Connection-Properties: H2=0; SSR=0; SSL=TLSv1.2; C=ECDHE-ECDSA-AES256-GCM-SHA384; EC=prime256v1;"
     rxresp
 
-    txreq -url "/2" -hdr "X-Forwarded-Proto: https" -hdr "Host: upload.wikimedia.org" -hdr "X-Connection-Properties: H2=0; SSR=1; SSL=TLSv1; C=ECDHE-ECDSA-AES128-SHA; EC=prime256v1;"
+    txreq -url "/2" -hdr "X-Forwarded-Proto: https" -hdr "Host: upload.wikimedia.org" -hdr "X-Connection-Properties: H2=0; SSR=1; SSL=TLSv1.2; C=ECDHE-ECDSA-AES128-SHA; EC=prime256v1;"
     rxresp
 
     txreq -url "/3" -hdr "X-Forwarded-Proto: https" -hdr "Host: upload.wikimedia.org" -hdr "X-Connection-Properties: H2=1; SSR=1; SSL=TLSv1.2; C=ECDHE-ECDSA-AES256-GCM-SHA384; EC=X25519;"
-    rxresp
-
-    txreq -url "/4" -hdr "X-Forwarded-Proto: https" -hdr "Host: upload.wikimedia.org" -hdr "X-Connection-Properties: H2=0; SSR=1; SSL=TLSv1; C=AES128-SHA; EC=UNDEF;"
     rxresp
 
     txreq -url "/5" -hdr "X-Forwarded-Proto: https" -hdr "Host: upload.wikimedia.org" -hdr "X-Connection-Properties: H2=1; SSR=0; SSL=TLSv1.2; C=ECDHE-ECDSA-CHACHA20-POLY1305; EC=X25519;"
