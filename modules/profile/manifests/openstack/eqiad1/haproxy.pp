@@ -49,10 +49,11 @@ class profile::openstack::eqiad1::haproxy(
     }
 
     profile::openstack::base::haproxy::site { 'neutron':
-        servers          => [$nova_controller, $nova_controller_standby],
-        healthcheck_path => '/',
-        port_frontend    => 9696,
-        port_backend     => $neutron_bind_port,
+        servers             => [$nova_controller, $nova_controller_standby],
+        healthcheck_options => ['http-check expect status 405'],
+        healthcheck_path    => '/',
+        port_frontend       => 9696,
+        port_backend        => $neutron_bind_port,
     }
 
     profile::openstack::base::haproxy::site { 'nova_api':
