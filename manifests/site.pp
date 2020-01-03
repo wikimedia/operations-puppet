@@ -265,7 +265,7 @@ node /^cp1099\.eqiad\.wmnet$/ {
 }
 
 node /^cp10(7[579]|8[13579])\.eqiad\.wmnet$/ {
-    role(cache::text_ats)
+    role(cache::text)
 }
 
 node /^cp10(7[68]|8[02468]|90)\.eqiad\.wmnet$/ {
@@ -273,7 +273,7 @@ node /^cp10(7[68]|8[02468]|90)\.eqiad\.wmnet$/ {
 }
 
 node /^cp20(0[1467]|1[02369]|23)\.codfw\.wmnet$/ {
-    role(cache::text_ats)
+    role(cache::text)
 }
 
 node /^cp20(0[258]|1[1478]|2[02456])\.codfw\.wmnet$/ {
@@ -291,7 +291,7 @@ node /^cp20(0[39]|15|21)\.codfw\.wmnet$/ {
 #
 
 node /^cp30(5[02468]|6[024])\.esams\.wmnet$/ {
-    role(cache::text_ats)
+    role(cache::text)
 }
 
 node /^cp30(5[13579]|6[135])\.esams\.wmnet$/ {
@@ -307,7 +307,7 @@ node /^cp402[1-6]\.ulsfo\.wmnet$/ {
 }
 
 node /^cp40(2[789]|3[012])\.ulsfo\.wmnet$/ {
-    role(cache::text_ats)
+    role(cache::text)
 }
 
 #
@@ -319,7 +319,7 @@ node /^cp500[1-6]\.eqsin\.wmnet$/ {
 }
 
 node /^cp50(0[789]|1[012])\.eqsin\.wmnet$/ {
-    role(cache::text_ats)
+    role(cache::text)
 }
 
 node /^cumin[12]001\.(eqiad|codfw)\.wmnet$/ {

@@ -10,224 +10,6 @@ prometheus::node_exporter::collectors_extra:
 cache::ssl_dyn_rec: true
 mtail::service_ensure: absent
 cache::websocket_support: true
-# The contents of this hash control our DC->DC routing for varnish backend
-# daemons.  There should be a key for every cache datacenter.  The values must
-# be a core datacenter (eqiad or codfw), or at least must lead indirectly to
-# a core datacenter when traversing the table recursively.  A loop between
-# the two core datacenters is expected and normal here.  The only reason to
-# edit this is to remove a datacenter from active service (due to fault or
-# maintenance) by routing around it from the edge sites.
-#
-cache::route_table:
-  eqiad: 'codfw'
-  codfw: 'eqiad'
-  ulsfo: 'codfw'
-  esams: 'eqiad'
-  eqsin: 'codfw'
-cache::app_def_be_opts:
-  port: 80
-  connect_timeout: '3s'
-  first_byte_timeout: '63s'
-  between_bytes_timeout: '31s'
-  max_connections: 1000
-cache::app_directors:
-  appservers:
-    backends:
-      eqiad: 'appservers.svc.eqiad.wmnet'
-    #   codfw: 'appservers.svc.codfw.wmnet'
-    be_opts:
-      max_connections: 10000
-  api:
-    backends:
-      eqiad: 'api.svc.eqiad.wmnet'
-    #   codfw: 'api.svc.codfw.wmnet'
-    be_opts:
-      max_connections: 10000
-  security_audit:
-    backends:
-      eqiad: 'appservers.svc.eqiad.wmnet'
-      # codfw: 'appservers.svc.codfw.wmnet'
-  appservers_debug:
-    be_opts:
-      max_connections: 20
-    backends:
-      eqiad: 'hassium.eqiad.wmnet'
-      # codfw: 'hassaleh.codfw.wmnet'
-  restbase_backend:
-    be_opts:
-      port: 7231
-      max_connections: 5000
-    backends:
-      eqiad: 'restbase.svc.eqiad.wmnet'
-      codfw: 'restbase.svc.codfw.wmnet'
-  cxserver_backend:
-    be_opts:
-      port: 8080
-    backends:
-      eqiad: 'cxserver.svc.eqiad.wmnet'
-      codfw: 'cxserver.svc.codfw.wmnet'
-  webserver_misc_static:
-    backends:
-      eqiad: 'bromine.eqiad.wmnet'
-      codfw: 'vega.codfw.wmnet'
-  labweb:
-    backends:
-      eqiad: 'labweb.svc.eqiad.wmnet'
-  # PSA: DO NOT CONFUSE DB Monitor (database) with deb Monitor (Debian packages)
-  dbtree:
-    backends:
-      eqiad: 'dbmonitor1001.wikimedia.org'
-      # codfw: 'dbmonitor2001.wikimedia.org' # Active/Passive setup
-  debmonitor:
-    backends:
-      eqiad: 'debmonitor1001.eqiad.wmnet'
-      # codfw: 'debmonitor2001.codfw.wmnet' # Active/Passive setup
-  doc:
-    backends:
-      eqiad: 'doc1001.eqiad.wmnet'
-  cloudweb2001_dev:
-    backends:
-      eqiad: 'cloudweb2001-dev.wikimedia.org'
-  etherpad1001:
-    be_opts:
-      port: 9001
-    backends:
-      eqiad: 'etherpad1001.eqiad.wmnet'
-  eventgate_logging_external:
-    be_opts:
-      port: 33192 # non-TLS port
-    backends:
-      eqiad: 'eventgate-logging-external.svc.eqiad.wmnet'
-      codfw: 'eventgate-logging-external.svc.codfw.wmnet'
-  eventstreams:
-    be_opts:
-      port: 8092
-      max_connections: 25  # https://phabricator.wikimedia.org/T196553
-    backends:
-      eqiad: 'eventstreams.svc.eqiad.wmnet'
-      codfw: 'eventstreams.svc.codfw.wmnet'
-  contint1001:
-    backends:
-      eqiad: 'contint1001.wikimedia.org'
-  grafana1001:
-    backends:
-      eqiad: 'grafana1001.eqiad.wmnet'
-  grafana1002:
-    backends:
-      eqiad: 'grafana1002.eqiad.wmnet'
-  graphite:
-    backends:
-      eqiad: 'graphite1004.eqiad.wmnet'
-#     codfw: 'graphite2003.codfw.wmnet'
-  hadoop_ui:
-    backends:
-      eqiad: 'analytics-tool1001.eqiad.wmnet'
-  cloudmetrics1001:
-    backends:
-      eqiad: 'cloudmetrics1001.eqiad.wmnet'
-  cloudmetrics1002:
-    backends:
-      eqiad: 'cloudmetrics1002.eqiad.wmnet'
-  matomo1001:
-    backends:
-      eqiad: 'matomo1001.eqiad.wmnet'
-  miscweb:
-    backends:
-      eqiad: 'miscweb1001.eqiad.wmnet'
-  netmon1002:
-    backends:
-      eqiad: 'netmon1002.wikimedia.org'
-  netmon2001:
-    backends:
-      eqiad: 'netmon2001.wikimedia.org'
-  noc:
-    backends:
-      eqiad: 'mwmaint1002.eqiad.wmnet'
-      codfw: 'mwmaint2001.codfw.wmnet'
-  performance:
-    backends:
-      eqiad: 'webperf1001.eqiad.wmnet'
-      # codfw: 'webperf2001.codfw.wmnet'
-  gerrit:
-    backends:
-      eqiad: 'gerrit.wikimedia.org'
-      # codfw: 'gerrit2001.wikimedia.org'
-  phabricator:
-    backends:
-      eqiad: 'phab1001.eqiad.wmnet'
-      # codfw: 'phab2001.codfw.wmnet'
-  planet:
-    backends:
-      eqiad: 'planet1001.eqiad.wmnet'
-      # codfw: 'planet2001.codfw.wmnet'
-  puppetboard:
-    backends:
-      eqiad: 'puppetboard1001.eqiad.wmnet'
-      codfw: 'puppetboard2001.codfw.wmnet'
-  pybal_config:
-    backends:
-      eqiad: 'puppetmaster1001.eqiad.wmnet'
-      codfw: 'puppetmaster2001.codfw.wmnet'
-  releases:
-    backends:
-      eqiad: 'releases1001.eqiad.wmnet'
-      # codfw: 'releases2001.codfw.wmnet'
-  releases_jenkins:
-    backends:
-      eqiad: 'releases1001.eqiad.wmnet'
-  parsoid_testing:
-    be_opts:
-      port: 8001
-    backends:
-      eqiad: 'scandium.eqiad.wmnet'
-  people:
-    backends:
-      eqiad: 'people1001.eqiad.wmnet'
-  requesttracker:
-    backends:
-      eqiad: 'moscovium.eqiad.wmnet'
-  superset:
-    backends:
-      eqiad: 'analytics-tool1004.eqiad.wmnet'
-  thorium:
-    backends:
-      eqiad: 'thorium.eqiad.wmnet'
-  turnilo:
-    backends:
-      eqiad: 'an-tool1007.eqiad.wmnet'
-  otrs:
-    backends:
-      eqiad: 'mendelevium.eqiad.wmnet'
-  logstash_director:
-    backends:
-      eqiad: 'kibana.svc.eqiad.wmnet'
-      # codfw: 'kibana.svc.codfw.wmnet'
-  wdqs_director:
-    backends:
-      eqiad: 'wdqs.svc.eqiad.wmnet'
-      codfw: 'wdqs.svc.codfw.wmnet'
-  wdqs_director_ldf:
-    backends:
-      eqiad: 'wdqs1005.eqiad.wmnet'
-  ores:
-    be_opts:
-      port: 8081
-    backends:
-      eqiad: 'ores.svc.eqiad.wmnet'
-      codfw: 'ores.svc.codfw.wmnet'
-  blubberoid:
-    be_opts:
-      port: 8748
-    backends:
-      eqiad: 'blubberoid.svc.eqiad.wmnet'
-      codfw: 'blubberoid.svc.codfw.wmnet'
-  docker_registry:
-      be_opts:
-        port: 81
-        max_connections: 5
-      backends:
-        #eqiad: 'registry1001.eqiad.wmnet'
-        codfw: 'registry2001.codfw.wmnet'
 cache::req_handling:
   cxserver.wikimedia.org:
     director: 'cxserver_backend'
@@ -397,18 +179,11 @@ cache::alternate_domains:
 # NOTE: Add the public WMCS IP space when T209011 is done
 profile::cache::base::extra_nets: ['172.16.0.0/12']
 profile::cache::base::admission_policy: 'none'
-profile::cache::varnish::backend::storage_parts: ['sda3', 'sdb3']
 profile::cache::base::purge_host_regex: ''
 profile::cache::base::purge_multicasts: ['239.128.0.112','239.128.0.115']
-profile::cache::base::purge_varnishes: ['127.0.0.1:3128', '127.0.0.1:3127']
+profile::cache::base::purge_varnishes: ['127.0.0.1:3128', '127.0.0.1:3127,1.0']
 profile::cache::base::fe_runtime_params:
     - default_ttl=86400
-    - http_max_hdr=128 # temp mitigation for T226840
-profile::cache::base::be_runtime_params:
-    - default_ttl=86400
-    - timeout_idle=120
-    - nuke_limit=1000
-    - lru_interval=31
     - http_max_hdr=128 # temp mitigation for T226840
 profile::cache::varnish::cache_be_opts:
     port: 3128
@@ -438,14 +213,10 @@ profile::cache::varnish::frontend::fe_vcl_config:
 profile::cache::varnish::frontend::fe_jemalloc_conf: 'lg_dirty_mult:8,lg_chunk:16'
 profile::cache::varnish::frontend::fe_extra_vcl: ['text-common', 'misc-common', 'normalize_path', 'geoip']
 profile::cache::varnish::frontend::transient_gb: 5
-profile::cache::varnish::backend::be_vcl_config:
-    pass_random: true
-profile::cache::varnish::backend::be_extra_vcl: ['text-common', 'misc-common', 'normalize_path']
-profile::cache::varnish::backend::cron_restarts: true
 # Profile::cache::ssl::unified
 profile::cache::ssl::unified::monitoring: true
 profile::cache::ssl::unified::letsencrypt: false
-profile::cache::ssl::unified::acme_chief: true
+profile::cache::ssl::unified::acme_chief: false
 
 # Enable varnishkafka-* instance monitoring.
 profile::cache::kafka::webrequest::monitoring_enabled: true
@@ -478,8 +249,7 @@ prometheus::varnishkafka_exporter::config:
     - 'varnishkafka'
 
   num_entries_to_get: 2
-
-# trafficserver settings
+profile::cache::varnish::frontend::backend_services: [ats-be,varnish-be]
 profile::trafficserver::tls::websocket_support: true
 
 # Default weights for conftool
