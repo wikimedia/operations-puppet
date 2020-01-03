@@ -1,4 +1,5 @@
 profile::standard::has_default_mail_relay: false
+phabricator_logmail: false
 
 apache::logrotate::period: "daily"
 apache::logrotate::rotate: 3
@@ -14,7 +15,10 @@ profile::phabricator::main::rate_limits:
 # This is the number of concurrent connections per client IP:
   connection: 0
 
+profile::phabricator::main::phd_service_ensure: running
 phabricator_phd_taskmasters: 4
+
+scap::deployment_server: deploy1001.devtools.eqiad.wmflabs
 
 profile::tlsproxy::envoy::ensure: present
 profile::tlsproxy::envoy::services:
@@ -23,3 +27,5 @@ profile::tlsproxy::envoy::services:
 profile::tlsproxy::envoy::global_cert_name: "phabricator-stage-1001.devtools.eqiad.wmflabs"
 profile::tlsproxy::envoy::sni_support: "no"
 profile::tlsproxy::envoy::websockets: true
+
+profile::backup::director_seed: changeme

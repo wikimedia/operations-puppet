@@ -1,0 +1,8 @@
+phabricator_server: phabricator-stage-1001.devtools.eqiad.wmflabs
+phabricator_servers:
+- phabricator-stage-1001.devtools.eqiad.wmflabs
+
+# this provides the listen_address for sshd_config, used for admin logins
+# all other IPs are used by phabricator::vcs (aka git-ssh.wikimedia.org)
+profile::base::ssh_server_settings:
+  listen_address: "172.16.0.185"
