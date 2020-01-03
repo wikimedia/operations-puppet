@@ -46,16 +46,9 @@ class profile::spicerack(
     # Packages required by spicerack cookbooks
     require_package('python3-dateutil', 'python3-requests')
 
-    apt::repository { 'wikimedia-spicerack':
-        uri        => 'http://apt.wikimedia.org/wikimedia',
-        dist       => 'stretch-wikimedia',
-        components => 'component/spicerack',
-        before     => Package['spicerack'],
-    }
-
-    # Needs to be installed directly because of the above apt::repository - T178575
-    package { 'spicerack':
-        ensure  => 'installed',
+    apt::package_from_component { 'spicerack':
+        component => 'component/spicerack',
+        packages  => ['spicerack']
     }
 
     $cookbooks_dir = '/srv/deployment/spicerack'
