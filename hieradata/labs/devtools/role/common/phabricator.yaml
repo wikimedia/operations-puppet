@@ -1,0 +1,25 @@
+profile::standard::has_default_mail_relay: false
+
+apache::logrotate::period: "daily"
+apache::logrotate::rotate: 3
+
+profile::base::domain_search:
+  - eqiad.wmflabs
+  - codfw.wmflabs
+
+profile::phabricator::main::rate_limits:
+# Number of requests per minute for logged out users (per client IP)
+# logged in users are permitted 4x the request rate of logged-out users
+  request: 0
+# This is the number of concurrent connections per client IP:
+  connection: 0
+
+phabricator_phd_taskmasters: 4
+
+profile::tlsproxy::envoy::ensure: present
+profile::tlsproxy::envoy::services:
+  - server_names: ['*']
+    port: 80
+profile::tlsproxy::envoy::global_cert_name: "phabricator-stage-1001.devtools.eqiad.wmflabs"
+profile::tlsproxy::envoy::sni_support: "no"
+profile::tlsproxy::envoy::websockets: true
