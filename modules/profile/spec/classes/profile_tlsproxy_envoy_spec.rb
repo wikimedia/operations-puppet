@@ -28,8 +28,6 @@ describe 'profile::tlsproxy::envoy' do
       context "global TLS, non-SNI" do
         let(:params) {
           {
-            ensure: 'present',
-            sni_support: 'no',
             services: [{server_names: ['*'], port: 80, cert_name: 'test'}],
             global_cert_name: 'example',
           }
@@ -55,7 +53,6 @@ describe 'profile::tlsproxy::envoy' do
       context "SNI-only" do
         let(:params) {
           {
-            ensure: 'present',
             tls_port: 4443,
             sni_support: 'strict',
             services: [

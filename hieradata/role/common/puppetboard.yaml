@@ -1,10 +1,5 @@
 cluster: puppet
-profile::envoy::ensure: present
-profile::tlsproxy::envoy::services:
-  - server_names: ['*']
-    port: 80
 profile::tlsproxy::envoy::global_cert_name: "puppetboard.discovery.wmnet"
-profile::tlsproxy::envoy::sni_support: "no"
 profile::idp::client::httpd::vhost_content: 'profile/idp/client/httpd-puppetboard.erb'
 profile::idp::client::httpd::virtual_host: cas-puppetboard.wikimedia.org
 profile::idp::client::httpd::required_groups:

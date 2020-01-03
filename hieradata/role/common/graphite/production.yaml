@@ -3,12 +3,7 @@ admin::groups:
   - perf-roots
   - graphite-admins
 graphite::web::uwsgi_processes: 16
-profile::envoy::ensure: present
-profile::tlsproxy::envoy::services:
-  - server_names: ['*']
-    port: 80
 profile::tlsproxy::envoy::global_cert_name: "graphite.discovery.wmnet"
-profile::tlsproxy::envoy::sni_support: "no"
 profile::idp::client::httpd::vhost_content: 'profile/idp/client/httpd-graphite.erb'
 profile::idp::client::httpd::virtual_host: 'cas-graphite.wikimedia.org'
 profile::idp::client::httpd::document_root: '/usr/share/graphite-web'

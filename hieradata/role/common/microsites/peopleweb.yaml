@@ -4,12 +4,7 @@ profile::base::domain_search:
   - codfw.wmnet
 admin::groups:
   - all-users
-profile::envoy::ensure: present
-profile::tlsproxy::envoy::services:
-  - server_names: ['*']
-    port: 80
 profile::tlsproxy::envoy::global_cert_name: "peopleweb.discovery.wmnet"
-profile::tlsproxy::envoy::sni_support: "no"
 profile::microsites::peopleweb::sitename: 'people.wikimedia.org'
 profile::microsites::peopleweb::docroot: '/srv/org/wikimedia/publichtml'
 profile::idp::client::httpd::vhost_content: 'profile/idp/client/httpd-people.erb'

@@ -32,21 +32,15 @@
 #   profile::tlsproxy::envoy::global_cert_name: "appserver"
 #
 class profile::tlsproxy::envoy(
-    Wmflib::Ensure $ensure = lookup('profile::envoy::ensure'),
-    Enum['strict', 'yes', 'no'] $sni_support = lookup('profile::tlsproxy::envoy::sni_support'),
-    Stdlib::Port $tls_port = lookup('profile::tlsproxy::envoy::tls_port', { 'default_value' => 443 }),
-    Array[Struct[
-        {
-        'server_names' => Array[Variant[Stdlib::Fqdn, Enum['*']]],
-        'port' => Stdlib::Port,
-        'cert_name' => Optional[String]
-        }
-    ]] $services = lookup('profile::tlsproxy::envoy::services'),
-    Optional[String] $global_cert_name = lookup('profile::tlsproxy::envoy::global_cert_name', {'default_value' => undef}),
-    Optional[Boolean] $websockets = lookup('profile::tlsproxy::envoy::websockets', {'default_value' => false}),
-
+    Enum['strict', 'yes', 'no'] $sni_support      = lookup('profile::tlsproxy::envoy::sni_support'),
+    Stdlib::Port                $tls_port         = lookup('profile::tlsproxy::envoy::tls_port'),
+    Boolean                     $websockets       = lookup('profile::tlsproxy::envoy::websockets'),
+    Array[Profile::Tlsproxy::Envoy::Service] $services = lookup('profile::tlsproxy::envoy::services'),
+    Optional[String]            $global_cert_name = lookup('profile::tlsproxy::envoy::global_cert_name',
+                                                          {'default_value' => undef}),
 ) {
-    require ::profile::envoy
+    require profile::envoy
+    $ensure = $profile::envoy::ensure
     if os_version('debian jessie') and $tls_port !~ Stdlib::Port::Unprivileged {
             fail('Envoy can only work with unprivileged ports under jessie.')
     }

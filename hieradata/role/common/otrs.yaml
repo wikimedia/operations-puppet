@@ -9,10 +9,5 @@ profile::otrs::exim_database_user: exim
 profile::standard::has_default_mail_relay: false
 
 # envoy for TLS termination behind ATS
-profile::envoy::ensure: present
-profile::tlsproxy::envoy::services:
-  - server_names: ['*']
-    port: 80
 profile::tlsproxy::envoy::global_cert_name: "ticket.discovery.wmnet"
-profile::tlsproxy::envoy::sni_support: "no"
 profile::tlsproxy::envoy::tls_port: 1443
