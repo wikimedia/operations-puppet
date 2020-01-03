@@ -8,7 +8,6 @@ class role::phabricator {
     }
 
     include ::profile::standard
-    include ::lvs::realserver
     include ::profile::base::firewall
     include ::profile::backup::host
     include ::profile::phabricator::main
@@ -18,4 +17,8 @@ class role::phabricator {
     include ::profile::waf::apache2::administrative
     include ::profile::tlsproxy::envoy # TLS termination
     include ::rsync::server # copy repo data between servers
+
+    if $::realm == 'production' {
+        include ::lvs::realserver
+    }
 }
