@@ -91,6 +91,7 @@ profile::cache::base::fe_runtime_params:
 profile::cache::base::be_runtime_params:
     - default_ttl=3600
     - timeout_idle=120
+profile::cache::base::performance_tweaks: false
 profile::cache::varnish::cache_be_opts:
     port: 3128
     connect_timeout: '3s'

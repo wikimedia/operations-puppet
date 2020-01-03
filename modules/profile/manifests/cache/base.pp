@@ -20,6 +20,7 @@ class profile::cache::base(
     $logstash_json_lines_port = hiera('logstash_json_lines_port', undef),
     $log_slow_request_threshold = hiera('profile::cache::base::log_slow_request_threshold', '60.0'),
     $allow_iptables = hiera('profile::cache::base::allow_iptables', false),
+    $performance_tweaks = hiera('profile::cache::base::performance_tweaks', true),
     $extra_nets = hiera('profile::cache::base::extra_nets', []),
     $extra_trust = hiera('profile::cache::base::extra_trust', []),
     Optional[Hash[String, Integer]] $default_weights = lookup('profile::cache::base::default_weights', {'default_value' => undef}),
@@ -54,8 +55,7 @@ class profile::cache::base(
     class { 'tlsproxy::prometheus': }
     class { 'prometheus::node_vhtcpd': }
 
-    # TODO: Spin off a profile::cache::base::production?
-    if $::realm == 'production' {
+    if $performance_tweaks {
         # Only production needs system perf tweaks
         class { '::cpufrequtils': }
         class { 'cacheproxy::performance': }
