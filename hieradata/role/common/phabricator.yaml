@@ -21,28 +21,6 @@ profile::base::domain_search:
   - eqiad.wmnet
   - codfw.wmnet
 
-phabricator_cluster_search:
-  - type: 'elasticsearch'
-    path: '/phabricator'
-    port: 9243
-    version: 5
-    hosts:
-      - protocol: 'https'
-        host: 'search.svc.eqiad.wmnet'
-        roles:
-          read: true
-          write: true
-  - type: 'elasticsearch'
-    path: '/phabricator'
-    port: 9243
-    version: 5
-    hosts:
-      - protocol: 'https'
-        host: 'search.svc.codfw.wmnet'
-        roles:
-          read: true
-          write: true
-
 profile::phabricator::main::rate_limits:
 # Number of requests per minute for logged out users (per client IP)
 # logged in users are permitted 4x the request rate of logged-out users
