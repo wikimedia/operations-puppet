@@ -8,3 +8,5 @@ profile::base::ssh_server_settings:
   listen_address: "172.16.0.185"
 
 phabricator::vcs::address::v4: "172.16.0.189"
+
+profile::tlsproxy::envoy::global_cert_name: "phabricator-stage-1001.devtools.eqiad.wmflabs"
