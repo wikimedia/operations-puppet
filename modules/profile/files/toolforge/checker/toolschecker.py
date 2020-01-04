@@ -296,29 +296,47 @@ def grid_start_stretch():
 @check("/k8s/nodes/ready")
 def kubernetes_nodes_ready_check():
     """Check that no nodes are in NonReady but Schedulable state"""
+
+    def check_nodes(nodes):
+        for node in nodes:
+            is_ready = False
+            for condition in node["status"]["conditions"]:
+                if condition["type"] == "Ready" and condition["status"] == "True":
+                    is_ready = True
+                    break
+            if not is_ready:
+                if node["spec"].get("unschedulable", False):
+                    # If node isn't ready but is marked as unschedulable
+                    # (cordoned), is ok
+                    continue
+                return False
+        return True
+
     with open(os.path.join(__dir__, 'kube-config.yaml')) as dotfile:
         config = yaml.safe_load(dotfile)
-    # Read credentials for legacy k8s cluster
-    apiserver = config["clusters"][0]["cluster"]["server"]
-    token = config["users"][0]["user"]["token"]
 
+    # Legacy Kubernetes cluster
     r = requests.get(
-        "{}/api/v1/nodes".format(apiserver),
-        headers={"Authorization": "Bearer {}".format(token)},
+        "{}/api/v1/nodes".format(config["clusters"][0]["cluster"]["server"]),
+        headers={
+            "Authorization": "Bearer {}".format(
+                config["users"][0]["user"]["token"]
+            ),
+        },
     )
-    for node in r.json()["items"]:
-        is_ready = False
-        for condition in node["status"]["conditions"]:
-            if condition["type"] == "Ready" and condition["status"] == "True":
-                is_ready = True
-                break
-        if not is_ready:
-            if node["spec"].get("unschedulable", False):
-                # If node isn't ready but is marked as unschedulable
-                # (cordoned), is ok
-                continue
-            return False
-    return True
+    legacy = check_nodes(r.json()["items"])
+
+    # 2020 Kubernetes cluster
+    r = requests.get(
+        "{}/api/v1/nodes".format(config["clusters"][1]["cluster"]["server"]),
+        cert=(
+            os.path.join(__dir__, "client.crt"),
+            os.path.join(__dir__, "client.key"),
+        )
+    )
+    modern = check_nodes(r.json()["items"])
+
+    return legacy and modern
 
 
 @check("/ldap")

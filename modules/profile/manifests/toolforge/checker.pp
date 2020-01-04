@@ -156,6 +156,22 @@ class profile::toolforge::checker {
         source => '/data/project/toolschecker/.kube/config',
         before => File[$wsgi_file],
     }
+    file { "${install_dir}/client.crt":
+        ensure => present,
+        owner  => 'www-data',
+        group  => 'www-data',
+        mode   => '0400',
+        source => '/data/project/toolschecker/.toolskube/client.crt',
+        before => File[$wsgi_file],
+    }
+    file { "${install_dir}/client.key":
+        ensure => present,
+        owner  => 'www-data',
+        group  => 'www-data',
+        mode   => '0400',
+        source => '/data/project/toolschecker/.toolskube/client.key',
+        before => File[$wsgi_file],
+    }
 
     # Allow the www-data user to perform actions as related tools.
     sudo::user { 'www-data':
