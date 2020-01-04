@@ -30,3 +30,24 @@ profile::tlsproxy::envoy::services:
 profile::tlsproxy::envoy::sni_support: "no"
 profile::tlsproxy::envoy::websockets: true
 
+phabricator_cluster_search:
+- hosts:
+  - host: search.devtools.eqiad.wmflabs
+    protocol: https
+    roles:
+      read: true
+      write: true
+  path: /phabricator
+  port: 9243
+  type: elasticsearch
+  version: 5
+- hosts:
+  - host: search.devtools.codfw.wmflabs
+    protocol: https
+    roles:
+      read: true
+      write: true
+  path: /phabricator
+  port: 9243
+  type: elasticsearch
+  version: 5

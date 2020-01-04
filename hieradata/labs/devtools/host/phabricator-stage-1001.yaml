@@ -1,3 +1,5 @@
+puppetmaster: puppetmaster-1001.devtools.eqiad.wmflabs
+
 phabricator_server: phabricator-stage-1001.devtools.eqiad.wmflabs
 phabricator_servers:
 - phabricator-stage-1001.devtools.eqiad.wmflabs
