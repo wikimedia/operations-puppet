@@ -22,7 +22,6 @@
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 # DEALINGS IN THE SOFTWARE.
 import configparser
-import json
 import logging.config
 import os
 import socket
@@ -297,8 +296,9 @@ def grid_start_stretch():
 @check("/k8s/nodes/ready")
 def kubernetes_nodes_ready_check():
     """Check that no nodes are in NonReady but Schedulable state"""
-    with open(os.path.join(__dir__, 'kubernetes.json')) as dotfile:
-        config = json.load(dotfile)
+    with open(os.path.join(__dir__, 'kube-config.yaml')) as dotfile:
+        config = yaml.safe_load(dotfile)
+    # Read credentials for legacy k8s cluster
     apiserver = config["clusters"][0]["cluster"]["server"]
     token = config["users"][0]["user"]["token"]
 

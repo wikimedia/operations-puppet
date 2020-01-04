@@ -146,6 +146,9 @@ class profile::toolforge::checker {
     }
 
     file { "${install_dir}/kubernetes.json":
+        ensure => absent,
+    }
+    file { "${install_dir}/kube-config.yaml":
         ensure => present,
         owner  => 'www-data',
         group  => 'www-data',
