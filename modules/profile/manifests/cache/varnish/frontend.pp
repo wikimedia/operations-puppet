@@ -17,18 +17,10 @@ class profile::cache::varnish::frontend (
     $wikimedia_nets = $profile::cache::base::wikimedia_nets
     $wikimedia_trust = $profile::cache::base::wikimedia_trust
 
-    $cluster_nodes = $cache_nodes[$cache_cluster]
-
-    # The distinction between Varnish and ATS nodes is needed because both must
-    # be listed as backends by Varnish frontends, but IPsec needs to be
-    # configured only for Varnish nodes.
-    $varnish_backends = pick($cluster_nodes[$::site], [])
-    $ats_backends = pick($cluster_nodes["${::site}_ats"], [])
-
     $directors = {
         'cache_local' => {
             'dc'       => $::site,
-            'backends' => $varnish_backends + $ats_backends,
+            'backends' => $cache_nodes[$cache_cluster]["${::site}_ats"],
             'be_opts'  => $fe_cache_be_opts,
         },
     }
