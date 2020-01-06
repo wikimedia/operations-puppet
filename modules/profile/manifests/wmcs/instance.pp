@@ -43,6 +43,15 @@ class profile::wmcs::instance(
         ensure => present,
     }
 
+    # We are using nfsv4, which doesn't require rpcbind on clients. T241710
+    # However, removing the package removes nfs-common.
+    if $facts['nfscommon_version'] {
+        service { 'rpcbind':
+            ensure => 'stopped',
+            enable => false,
+        }
+    }
+
     # Allows per-host overriding of NFS mounts
     if $mount_nfs {
         require profile::wmcs::nfsclient
