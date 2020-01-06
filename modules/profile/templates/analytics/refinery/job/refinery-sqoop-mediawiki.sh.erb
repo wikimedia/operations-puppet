@@ -9,7 +9,7 @@ export PYTHONPATH=\${PYTHONPATH}:<%= @refinery_path %>/python
     --labsdb \
     --output-dir <%= @output_directory_labs %> \
     --wiki-file <%= @wiki_file_labs %> \
-    --tables archive,change_tag,change_tag_def,ipblocks,ipblocks_restrictions,logging,page,pagelinks,redirect,revision,user,user_groups \
+    --tables archive,change_tag,change_tag_def,content,content_models,ipblocks,ipblocks_restrictions,logging,page,pagelinks,redirect,revision,slots,slot_roles,user,user_groups,wbc_entity_usage \
     --user <%= @labs_db_user %> \
     --password-file <%= @db_password_labs %> \
     --partition-name snapshot \
