@@ -4,6 +4,7 @@ import argparse
 import logging
 import re
 import smtplib
+import socket
 import sys
 
 from collections import Counter, defaultdict
@@ -100,7 +101,10 @@ def main():
                             choices=['ban', 'unban', 'attack_details'])
 
     args = arg_parser.parse_args()
-    event_short = 'Possible DDoS to {target} ({pps}pps)'.format(target=args.target, pps=args.pps)
+
+    target_fqdn = socket.getfqdn(args.target)
+    event_short = 'Possible DDoS to {target_fqdn} {target} ({pps}pps)'.format(
+        target_fqdn=target_fqdn, target=args.target, pps=args.pps)
 
     if args.action in ['ban', 'attack_details']:
         logger.info('START: {event_short}'.format(event_short=event_short))
