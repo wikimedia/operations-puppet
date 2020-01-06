@@ -747,12 +747,15 @@ groups:
     members: [ebernhardson, dcausse, bearloga, chelsyx, mstyles]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service airflow-webserver *',
                  'ALL = NOPASSWD: /usr/sbin/service airflow-scheduler *',
+                 'ALL = NOPASSWD: /usr/sbin/service airflow-kerberos *',
                  'ALL = NOPASSWD: /bin/systemctl start airflow-scheduler',
                  'ALL = NOPASSWD: /bin/systemctl restart airflow-scheduler',
                  'ALL = NOPASSWD: /bin/systemctl stop airflow-scheduler',
                  'ALL = NOPASSWD: /bin/systemctl start airflow-webserver',
                  'ALL = NOPASSWD: /bin/systemctl stop airflow-webserver',
                  'ALL = NOPASSWD: /bin/systemctl restart airflow-webserver',
+                 'ALL = NOPASSWD: /bin/systemctl stop airflow-kerberos',
+                 'ALL = NOPASSWD: /bin/systemctl restart airflow-kerberos',
                  'ALL = (analytics-search) NOPASSWD: /usr/bin/env AIRFLOW_HOME=/etc/airflow /srv/deployment/search/airflow/venv/bin/airflow *']
 users:
   rush:
