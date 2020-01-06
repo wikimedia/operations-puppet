@@ -26,9 +26,10 @@ Environment=AIRFLOW_HOME=<%= @conf_dir %>
 User=<%= @service_user %>
 Group=<%= @service_group %>
 Type=simple
-ExecStart=<%= @deploy_dir %>/venv/bin/airflow kerberos --pid <%= @pid_dir %>/kerberos.pid
+ExecStart=<%= @deploy_dir %>/venv/bin/airflow kerberos --pid <%= @run_dir %>/kerberos.pid
 Restart=on-failure
 RestartSec=5s
 
 [Install]
 WantedBy=multi-user.target
+PrivateTmp=true

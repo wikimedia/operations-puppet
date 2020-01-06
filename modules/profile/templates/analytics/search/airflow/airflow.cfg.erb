@@ -579,7 +579,7 @@ authenticate = False
 # docker_image_slave = puckel/docker-airflow
 
 [kerberos]
-ccache = /tmp/airflow_<%= @service_user %>_krb5_ccache
+ccache = <%= @run_dir %>/airflow_<%= @service_user %>_krb5_ccache
 # gets augmented with fqdn
 principal = <%= @service_user %>/<%= @fqdn %>@WIKIMEDIA
 reinit_frequency = 3600

@@ -29,7 +29,7 @@ Group=<%= @service_group %>
 Type=simple
 ExecStart=<%= @deploy_dir %>/venv/bin/airflow webserver \
         -p <%= @webserver_port %> \
-        --pid <%= @pid_dir %>/webserver.pid
+        --pid <%= @run_dir %>/webserver.pid
 Restart=on-failure
 RestartSec=5s
 PrivateTmp=true

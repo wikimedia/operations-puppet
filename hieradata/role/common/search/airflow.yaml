@@ -25,7 +25,7 @@ profile::analytics::search::airflow::deploy_user: 'deploy-service'
 profile::analytics::search::airflow::deploy_dir: '/srv/deployment/search/airflow'
 profile::analytics::search::airflow::airflow_dir: '/srv/deployment/wikimedia/discovery/analytics/airflow'
 profile::analytics::search::airflow::log_dir: '/var/log/airflow'
-profile::analytics::search::airflow::pid_dir: '/var/run/airflow'
+profile::analytics::search::airflow::run_dir: '/var/run/airflow'
 profile::analytics::search::airflow::conf_dir: '/etc/airflow'
 profile::analytics::search::airflow::conf_file: 'airflow.cfg'
 

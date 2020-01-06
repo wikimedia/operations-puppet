@@ -15,7 +15,7 @@ class profile::analytics::search::airflow(
     Stdlib::Unixpath $deploy_dir  = lookup('profile::analytics::search::airflow::deploy_dir'),
     Stdlib::Unixpath $airflow_dir = lookup('profile::analytics::search::airflow::airflow_dir'),
     Stdlib::Unixpath $log_dir     = lookup('profile::analytics::search::airflow::log_dir'),
-    Stdlib::Unixpath $pid_dir     = lookup('profile::analytics::search::airflow::pid_dir'),
+    Stdlib::Unixpath $run_dir     = lookup('profile::analytics::search::airflow::run_dir'),
     Stdlib::Unixpath $conf_dir    = lookup('profile::analytics::search::airflow::conf_dir'),
     String $conf_file             = lookup('profile::analytics::search::airflow::conf_file'),
 ) {
@@ -71,7 +71,7 @@ class profile::analytics::search::airflow(
     }
 
     # Ensure places the daemons will write to are available.
-    file { [$log_dir, $pid_dir]:
+    file { [$log_dir, $run_dir]:
         ensure => 'directory',
         owner  => $service_user,
         group  => $service_group,
@@ -80,21 +80,21 @@ class profile::analytics::search::airflow(
 
     systemd::service { 'airflow-webserver':
         content => template('profile/analytics/search/airflow/webserver.service.erb'),
-        require => File[$log_dir, $pid_dir, "${conf_dir}/${conf_file}"],
+        require => File[$log_dir, $run_dir, "${conf_dir}/${conf_file}"],
     }
 
     base::service_auto_restart { 'airflow-webserver': }
 
     systemd::service { 'airflow-scheduler':
         content => template('profile/analytics/search/airflow/scheduler.service.erb'),
-        require => File[$log_dir, $pid_dir, "${conf_dir}/${conf_file}"],
+        require => File[$log_dir, $run_dir, "${conf_dir}/${conf_file}"],
     }
 
     base::service_auto_restart { 'airflow-scheduler': }
 
     systemd::service { 'airflow-kerberos':
         content => template('profile/analytics/search/airflow/kerberos.service.erb'),
-        require => File[$log_dir, $pid_dir, "${conf_dir}/${conf_file}"],
+        require => File[$log_dir, $run_dir, "${conf_dir}/${conf_file}"],
     }
 
     base::service_auto_restart { 'airflow-kerberos': }
