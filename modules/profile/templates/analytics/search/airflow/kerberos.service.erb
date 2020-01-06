@@ -29,7 +29,6 @@ Type=simple
 ExecStart=<%= @deploy_dir %>/venv/bin/airflow kerberos --pid <%= @pid_dir %>/kerberos.pid
 Restart=on-failure
 RestartSec=5s
-PrivateTmp=true
 
 [Install]
 WantedBy=multi-user.target
