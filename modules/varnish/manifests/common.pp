@@ -45,14 +45,7 @@ class varnish::common(
         mode   => '0555',
     }
 
-    # Scripts to depool, restart and repool varnish backends and frontends
-    file { '/usr/local/sbin/varnish-backend-restart':
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        source => 'puppet:///modules/varnish/varnish-backend-restart',
-    }
-
+    # Scripts to depool, restart and repool varnish frontends
     file { '/usr/local/sbin/varnish-frontend-restart':
         owner  => 'root',
         group  => 'root',
