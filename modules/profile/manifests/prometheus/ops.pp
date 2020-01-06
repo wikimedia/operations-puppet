@@ -203,8 +203,7 @@ class profile::prometheus::ops (
       {
         'job_name'        => 'varnish-text',
         'file_sd_configs' => [
-          { 'files' => [ "${targets_path}/varnish-text_*.yaml",
-                            "${targets_path}/varnish-text-ats_*.yaml"] },
+          { 'files' => ["${targets_path}/varnish-text_*.yaml"] },
         ],
         'metric_relabel_configs' => [$varnish_be_uuid_relabel],
       },
@@ -243,8 +242,8 @@ class profile::prometheus::ops (
         class_name => 'role::cache::upload',
         port       => 3903,
     }
-    prometheus::class_config{ "varnish-text-ats_mtail_${::site}":
-        dest       => "${targets_path}/varnish-text-ats_mtail_${::site}.yaml",
+    prometheus::class_config{ "varnish-text_mtail_${::site}":
+        dest       => "${targets_path}/varnish-text_mtail_${::site}.yaml",
         site       => $::site,
         class_name => 'role::cache::text',
         port       => 3903,
