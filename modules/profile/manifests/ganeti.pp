@@ -27,10 +27,10 @@
 
 class profile::ganeti (
     String $ganeti_cluster_name = lookup('profile::ganeti::ganeti_cluster_name', { default_value => "ganeti01.svc.${::site}.wmnet" }),
-    Array[Stdlib::Fqdn] $ganeti_nodes = hiera("profile::ganeti::${ganeti_cluster_name}::nodes", []),
-    Array[Stdlib::Fqdn] $rapi_nodes = hiera('profile::ganeti::rapi_nodes', []),
-    Optional[String] $rapi_ro_user = hiera('profile::ganeti::rapi::ro_user', undef),
-    Optional[String] $rapi_ro_password = hiera('profile::ganeti::rapi::ro_password', undef),
+    Array[Stdlib::Fqdn] $ganeti_nodes = lookup("profile::ganeti::${ganeti_cluster_name}::nodes", { default_value => [] }),
+    Array[Stdlib::Fqdn] $rapi_nodes = lookup('profile::ganeti::rapi_nodes', { default_value => [] }),
+    Optional[String] $rapi_ro_user = lookup('profile::ganeti::rapi::ro_user', { default_value => undef }),
+    Optional[String] $rapi_ro_password = lookup('profile::ganeti::rapi::ro_password', { default_value => undef }),
 ) {
 
     class { '::ganeti': }
