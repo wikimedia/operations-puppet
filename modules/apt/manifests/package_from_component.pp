@@ -45,13 +45,10 @@ define apt::package_from_component(
         notify     => Exec['apt-get update'],
     }
 
-    # We already pin o=Wikimedia with priority 1001
-    unless $distro == "${::lsbdistcodename}-wikimedia" or $priority == 1001 {
-        apt::pin { "apt_pin_${title}":
-            pin      => "release c=${component}",
-            priority => $priority,
-            before   => Package[$packages],
-        }
+    apt::pin { "apt_pin_${title}":
+        pin      => "release c=${component}",
+        priority => $priority,
+        before   => Package[$packages],
     }
 
     package { $packages:
