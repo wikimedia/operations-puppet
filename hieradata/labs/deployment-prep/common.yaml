@@ -447,31 +447,6 @@ profile::recommendation_api::wdqs_uri: http://wdqs-test.wmflabs.org
 
 profile::webperf::site::server_name: performance-beta.wmflabs.org
 
-# Eventstreams config
-profile::eventstreams::kafka_cluster_name: main
-profile::eventstreams::client_ip_connection_limit: 1
-profile::eventstreams::streams:
-  page-create:
-    topics: ["%{::site}.mediawiki.page-create"]
-  page-delete:
-    topics: ["%{::site}.mediawiki.page-delete"]
-  page-move:
-    topics: ["%{::site}.mediawiki.page-move"]
-  page-undelete:
-    topics: ["%{::site}.mediawiki.page-undelete"]
-  page-properties-change:
-    topics: ["%{::site}.mediawiki.page-properties-change"]
-  page-links-change:
-    topics: ["%{::site}.mediawiki.page-links-change"]
-  revision-create:
-    topics: ["%{::site}.mediawiki.revision-create"]
-  revision-score:
-    topics: ["%{::site}.mediawiki.revision-score"]
-  recentchange:
-    topics: ["%{::site}.mediawiki.recentchange"]
-  test:
-    topics: ["%{::site}.test.event"]
-
 profile::kubernetes::deployment_server::git_owner: trebuchet
 profile::kubernetes::deployment_server::git_group: wikidev
 
