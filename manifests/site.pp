@@ -981,6 +981,11 @@ node /^ganeti[3]00[123]\.esams\.wmnet$/ {
     role(ganeti)
 }
 
+# new ganeti hosts in eqsin T228099
+node /^ganeti[5]00[123]\.eqsin\.wmnet$/ {
+    role(ganeti)
+}
+
 # Virtual machine being turned up to run Grafana (T210416)
 node 'grafana1001.eqiad.wmnet' {
     role(grafana)

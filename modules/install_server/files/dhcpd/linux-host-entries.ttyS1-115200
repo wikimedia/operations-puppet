@@ -2788,6 +2788,24 @@ host ganeti4003 {
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
+host ganeti5001 {
+    hardware ethernet D0:94:66:81:90:90;
+    fixed-address ganeti5001.eqsin.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
+}
+
+host ganeti5002 {
+    hardware ethernet 4C:D9:8F:51:A1:0D;
+    fixed-address ganeti5002.eqsin.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
+}
+
+host ganeti5003 {
+    hardware ethernet 4C:D9:8F:51:A5:20;
+    fixed-address ganeti5003.eqsin.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
+}
+
 host gerrit1001 {
     hardware ethernet 4C:D9:8F:63:90:92;
     fixed-address gerrit1001.wikimedia.org;
