@@ -48,6 +48,7 @@ define apt::package_from_component(
     apt::pin { "apt_pin_${title}":
         pin      => "release c=${component}",
         priority => $priority,
+        package  => join($packages, ' '),
         before   => Package[$packages],
     }
 
