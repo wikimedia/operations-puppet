@@ -2,7 +2,6 @@ class profile::cache::varnish::frontend (
     $cache_nodes = hiera('cache::nodes'),
     $cache_cluster = hiera('cache::cluster'),
     $conftool_prefix = hiera('conftool_prefix'),
-    $common_vcl_config = hiera('profile::cache::varnish::common_vcl_config'),
     $fe_vcl_config = hiera('profile::cache::varnish::frontend::fe_vcl_config'),
     $fe_cache_be_opts = hiera('profile::cache::varnish::cache_be_opts'),
     $fe_jemalloc_conf = hiera('profile::cache::varnish::frontend::fe_jemalloc_conf'),
@@ -29,7 +28,7 @@ class profile::cache::varnish::frontend (
         realserver_ips => $lvs::configuration::service_ips[$cache_cluster][$::site],
     }
 
-    $vcl_config = $common_vcl_config + $fe_vcl_config + {
+    $vcl_config = $fe_vcl_config + {
         req_handling      => $req_handling,
         alternate_domains => $alternate_domains
     }

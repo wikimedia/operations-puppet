@@ -97,7 +97,7 @@ profile::cache::varnish::cache_be_opts:
     between_bytes_timeout: '33s'
     max_connections: 5000
     probe: 'varnish'
-profile::cache::varnish::common_vcl_config:
+profile::cache::varnish::frontend::fe_vcl_config:
     allowed_methods: '^(GET|HEAD|OPTIONS|POST|PURGE|PUT|DELETE)$'
     purge_host_regex: '^(?!(upload|maps)\.beta\.wmflabs\.org)'
     static_host: 'en.wikipedia.beta.wmflabs.org'
@@ -106,7 +106,6 @@ profile::cache::varnish::common_vcl_config:
     upload_domain: 'upload.beta.wmflabs.org'
     upload_webp_hits_threshold: 1000
     maps_domain: 'maps.beta.wmflabs.org'
-profile::cache::varnish::frontend::fe_vcl_config:
     varnish_probe_ms: 100
     keep: '1d'
 profile::cache::varnish::frontend::fe_jemalloc_conf: 'lg_dirty_mult:8,lg_chunk:17'
