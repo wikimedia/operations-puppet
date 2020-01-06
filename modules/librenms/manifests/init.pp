@@ -122,35 +122,13 @@ class librenms(
         source => 'puppet:///modules/librenms/logrotate',
     }
 
-    apt::repository { 'wikimedia-php72':
-        uri        => 'http://apt.wikimedia.org/wikimedia',
-        dist       => 'stretch-wikimedia',
-        components => 'component/php72',
-        notify     => Exec['apt_update_php'],
-    }
+    # Package requirements from https://docs.librenms.org/Installation/Installation-Ubuntu-1804-Apache/
+    $php72_packages = ['php7.2-cli', 'php7.2-curl', 'php7.2-gd', 'php7.2-json', 'php7.2-mbstring', 'php7.2-mysql', 'php7.2-snmp',
+'php7.2-xml', 'php7.2-zip', 'php7.2-ldap', 'libapache2-mod-php7.2']
 
-    # First installs can trip without this
-    exec {'apt_update_php':
-        command     => '/usr/bin/apt-get update',
-        refreshonly => true,
-        logoutput   => true,
-    }
-
-  # Package requirements from https://docs.librenms.org/Installation/Installation-Ubuntu-1804-Apache/
-    package { [
-        'php7.2-cli',
-        'php7.2-curl',
-        'php7.2-gd',
-        'php7.2-json',
-        'php7.2-mbstring',
-        'php7.2-mysql',
-        'php7.2-snmp',
-        'php7.2-xml',
-        'php7.2-zip',
-        'php7.2-ldap',
-        'libapache2-mod-php7.2']:
-            ensure  => present,
-            require => Apt::Repository['wikimedia-php72'],
+    apt::package_from_component { 'librenms_php72':
+        component => 'component/php72',
+        packages  => $php72_packages,
     }
 
     package { [
