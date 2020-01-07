@@ -5,7 +5,8 @@ class profile::gerrit::server(
     Stdlib::Ipv4 $ipv4 = hiera('gerrit::service::ipv4'),
     Stdlib::Fqdn $host = hiera('gerrit::server::host'),
     Array[Stdlib::Fqdn] $replica_hosts = hiera('gerrit::server::replica_hosts'),
-    String $bacula = hiera('gerrit::server::bacula'),
+    Boolean $backups_enabled = hiera('gerrit::server::backups_enabled'),
+    String $backup_set = hiera('gerrit::server::backup_set'),
     Array[Stdlib::Fqdn] $gerrit_servers = hiera('gerrit::servers'),
     String $config = hiera('gerrit::server::config'),
     Hash $cache_nodes = hiera('cache::nodes', {}),
@@ -54,8 +55,8 @@ class profile::gerrit::server(
         port  => 'https',
     }
 
-    if $bacula != undef and !$is_replica {
-        backup::set { $bacula:
+    if $backups_enabled and $backup_set != undef {
+        backup::set { $backup_set:
             jobdefaults => "Hourly-${profile::backup::host::day}-${profile::backup::host::pool}"
         }
     }

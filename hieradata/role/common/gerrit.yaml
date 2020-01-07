@@ -18,7 +18,8 @@ gerrit::server::rsync_data_dir: '/srv/gerrit'
 gerrit::server::rsync_user_name: 'gerrit2'
 
 # External backups
-gerrit::server::bacula: 'srv-gerrit-git'
+gerrit::server::backups_enabled: true
+gerrit::server::backup_set: 'srv-gerrit-git'
 
 # SSL/TLS certs
 gerrit::server::use_acmechief: true
