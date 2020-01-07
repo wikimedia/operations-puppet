@@ -14,6 +14,7 @@ rules:
   resources: ["pods", "nodes"]
   verbs: ["get", "list", "watch"]
 ---
+# changes: use the 'metrics' namespace
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
@@ -25,8 +26,9 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: metrics-server
-  namespace: kube-system
+  namespace: metrics
 ---
+# changes: use the 'metrics' namespace
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
@@ -39,8 +41,9 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: metrics-server
-  namespace: kube-system
+  namespace: metrics
 ---
+# changes: use the 'metrics' namespace
 apiVersion: apiregistration.k8s.io/v1beta1
 kind: APIService
 metadata:
@@ -48,27 +51,29 @@ metadata:
 spec:
   service:
     name: metrics-server
-    namespace: kube-system
+    namespace: metrics
   group: metrics.k8s.io
   version: v1beta1
   insecureSkipTLSVerify: true
   groupPriorityMinimum: 100
   versionPriority: 100
 ---
+# changes: use the 'metrics' namespace
 apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: metrics-server
-  namespace: kube-system
+  namespace: metrics
 ---
-# changes to the deployment:
-# mount the metrics-server-certs secret
-# add args to use certs
+# changes: mount the metrics-server-certs secret
+# changes: add args to use certs
+# changes: use the 'metrics' namespace
+# changes: use our internal docker registry
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: metrics-server
-  namespace: kube-system
+  namespace: metrics
   labels:
     k8s-app: metrics-server
 spec:
@@ -91,7 +96,7 @@ spec:
           secretName: metrics-server-certs
       containers:
       - name: metrics-server
-        image: k8s.gcr.io/metrics-server-amd64:v0.3.6
+        image: docker-registry.tools.wmflabs.org/metrics-server-amd64:v0.3.6
         args:
           - --secure-port=4443
           - --kubelet-insecure-tls
@@ -115,11 +120,12 @@ spec:
       nodeSelector:
         beta.kubernetes.io/os: linux
 ---
+# changes: use the 'metrics' namespace
 apiVersion: v1
 kind: Service
 metadata:
   name: metrics-server
-  namespace: kube-system
+  namespace: metrics
   labels:
     kubernetes.io/name: "Metrics-server"
     kubernetes.io/cluster-service: "true"
@@ -148,6 +154,7 @@ rules:
   - list
   - watch
 ---
+# changes: use the 'metrics' namespace
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
@@ -159,4 +166,20 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: metrics-server
-  namespace: kube-system
+  namespace: metrics
+---
+# a PSP for metrics-server to use. In a next iteration, try to use one with
+# less privileges
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: metrics-server-psp
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: privileged-psp
+subjects:
+- kind: ServiceAccount
+  name: metrics-server
+  namespace: metrics
+root@tools-k8s-control-3:

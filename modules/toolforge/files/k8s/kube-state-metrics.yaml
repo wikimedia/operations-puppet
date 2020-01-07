@@ -1,5 +1,6 @@
 # From https://github.com/kubernetes/kube-state-metrics
 # cat examples/standard/* > kube-state-metrics.yaml (plus adding --- separators)
+# changes: use the 'metrics' namespace
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
@@ -14,7 +15,7 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: kube-state-metrics
-  namespace: kube-system
+  namespace: metrics
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
@@ -127,6 +128,8 @@ rules:
   - list
   - watch
 ---
+# changes: use the 'metrics' namespace
+# changes: use our internal docker registry
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -134,7 +137,7 @@ metadata:
     app.kubernetes.io/name: kube-state-metrics
     app.kubernetes.io/version: v1.8.0
   name: kube-state-metrics
-  namespace: kube-system
+  namespace: metrics
 spec:
   replicas: 1
   selector:
@@ -147,7 +150,7 @@ spec:
         app.kubernetes.io/version: v1.8.0
     spec:
       containers:
-      - image: quay.io/coreos/kube-state-metrics:v1.8.0
+      - image: docker-registry.tools.wmflabs.org/coreos/kube-state-metrics:v1.8.0
         livenessProbe:
           httpGet:
             path: /healthz
@@ -177,9 +180,10 @@ metadata:
     app.kubernetes.io/name: kube-state-metrics
     app.kubernetes.io/version: v1.8.0
   name: kube-state-metrics
-  namespace: kube-system
+  namespace: metrics
 ---
 # changes: don't name the port, delete telemetry port. Delete ClusterIP: None
+# changes: use the 'metrics' namespace
 apiVersion: v1
 kind: Service
 metadata:
@@ -187,10 +191,25 @@ metadata:
     app.kubernetes.io/name: kube-state-metrics
     app.kubernetes.io/version: v1.8.0
   name: kube-state-metrics
-  namespace: kube-system
+  namespace: metrics
 spec:
   ports:
   - port: 8080
     targetPort: http-metrics
   selector:
     app.kubernetes.io/name: kube-state-metrics
+---
+# this is created by us. A privileged PSP for this to run.
+# In a next iteration, try using a less privileged PSP.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: kube-state-metrics-psp
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: privileged-psp
+subjects:
+- kind: ServiceAccount
+  name: kube-state-metrics
+  namespace: metrics

@@ -313,7 +313,7 @@ class profile::toolforge::prometheus (
                         'target_label' => '__metrics_path__',
                         # this service is not an arbitrary name; it was created
                         # inside the k8s cluster with that specific name
-                        'replacement'  => '/api/v1/namespaces/kube-system/services/kube-state-metrics/proxy/metrics',
+                        'replacement'  => '/api/v1/namespaces/metrics/services/kube-state-metrics/proxy/metrics',
                     },
                 ]
             },
