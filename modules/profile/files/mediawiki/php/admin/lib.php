@@ -16,6 +16,7 @@ function opcache_stats(bool $full = false): array {
 }
 
 function apcu_stats(bool $limited = true ): array {
+	global $sma_info;
 	if (!function_exists('apcu_cache_info')) {
 		return [];
 	}
@@ -35,6 +36,7 @@ function apcu_stats(bool $limited = true ): array {
 // Returns  % of APCu fragmentation
 // This code is part of https://github.com/krakjoe/apcu/blob/master/apc.php
 function apcu_frag() {
+	global $sma_info;
 	if ($sma_info === null) {
 		$sma_info = apcu_sma_info();
 	}
