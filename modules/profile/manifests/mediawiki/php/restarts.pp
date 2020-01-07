@@ -2,6 +2,7 @@ class profile::mediawiki::php::restarts(
     Boolean $has_lvs = lookup('has_lvs'),
     Wmflib::Ensure $ensure=lookup('profile::mediawiki::php::restarts::ensure'),
     Integer $opcache_limit=lookup('profile::mediawiki::php::restarts::opcache_limit'),
+    Hash $pools = lookup('profile::lvs::realserver::pools', {'default_value' => {}}),
 ) {
     require profile::mediawiki::php
     require profile::mediawiki::php::monitoring
@@ -10,6 +11,7 @@ class profile::mediawiki::php::restarts(
     unless $::profile::mediawiki::php::enable_fpm {
         fail('Profile mediawiki::php::restarts can only be included if FPM is enabled')
     }
+
     # Service name
     $service = $::profile::mediawiki::php::fpm_programname
     # Check, then restart php-fpm if needed.
@@ -26,12 +28,8 @@ class profile::mediawiki::php::restarts(
     # If the server is part of a load-balanced cluster, we need to coordinate the cronjobs across
     # the cluster
     if $has_lvs {
-        # realserver gives us the pools the server is included in, plus the lvs configuration
-        require profile::lvs::realserver
-
-        $pools = keys($::profile::lvs::realserver::pools)
         # All the nodes we have to orchestrate with
-        $all_nodes = profile::lvs_pool_nodes($pools, $::lvs::configuration::lvs_services)
+        $all_nodes = $pools.keys().map | $pool | { wmflib::service::get_pool_nodes($pool) }.flatten()
     }
     else {
         # We need to add the php restart script here.
@@ -64,5 +62,4 @@ class profile::mediawiki::php::restarts(
         logfile_basedir   => '/var/log/mediawiki',
         syslog_identifier => "${service}_check_restart"
     }
-
 }
