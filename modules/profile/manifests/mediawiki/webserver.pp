@@ -7,7 +7,6 @@ class profile::mediawiki::webserver(
     String $ocsp_proxy = hiera('http_proxy', ''),
     Array[String] $prometheus_nodes = lookup('prometheus_nodes'),
 ) {
-    include ::lvs::configuration
     include ::profile::mediawiki::httpd
     $fcgi_proxy = mediawiki::fcgi_endpoint($fcgi_port, $fcgi_pool)
 
@@ -85,12 +84,13 @@ class profile::mediawiki::webserver(
         # TLSproxy instance to accept traffic on port 443
         require ::profile::tlsproxy::instance
 
-        # Get the cert name from
+        # Get the cert name from the service catalog.
         if $has_lvs {
+            $services = wmflib::service::fetch()
             $all_certs = $::profile::lvs::realserver::pools.map |$pool, $data| {
-                $lvs = pick($::lvs::configuration::lvs_services[$pool], {})
-                if $lvs != {} and $lvs['icinga'] {
-                    pick($lvs['icinga']['sites'][$::site]['hostname'], $::fqdn)
+                $service = pick($services[$pool], {})
+                if $service != undef and $service['monitoring'] {
+                    pick($service['monitoring']['sites'][$::site]['hostname'], $::fqdn)
                 }
                 else {
                     $::fqdn
