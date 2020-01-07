@@ -1964,6 +1964,12 @@ node 'tungsten.eqiad.wmnet' {
     role(xhgui::app)
 }
 
+# new url-downloaders (T224551)
+# https://wikitech.wikimedia.org/wiki/Url-downloader
+node /^urldownloader[12]00[12]\.wikimedia\.org/ {
+    role(spare::system)
+}
+
 # To see cloudvirt nodes active in the scheduler look at hiera:
 #  key: profile::openstack::eqiad1::nova::scheduler_pool
 # We try to keep a few empty as emergency fail-overs
