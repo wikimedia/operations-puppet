@@ -135,7 +135,7 @@ class cdh::hue(
     $database_engine            = 'sqlite3',
 
     $kerberos_keytab            = undef,
-    $kerbersos_principal        = undef,
+    $kerberos_principal         = undef,
     $kerberos_kinit_path        = undef,
 
     $oozie_security_enabled     = false,
