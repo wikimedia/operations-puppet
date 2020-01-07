@@ -18,14 +18,18 @@ profile::ganeti::ganeti01.svc.eqiad.wmnet::nodes:
   - ganeti1006.eqiad.wmnet
   - ganeti1007.eqiad.wmnet
   - ganeti1008.eqiad.wmnet
-profile::ganeti::ganeti01.svc.ulsfo.wmnet::nodes:
-  - ganeti4001.ulsfo.wmnet
-  - ganeti4002.ulsfo.wmnet
-  - ganeti4003.ulsfo.wmnet
 profile::ganeti::ganeti01.svc.esams.wmnet::nodes:
   - ganeti3001.esams.wmnet
   - ganeti3002.esams.wmnet
   - ganeti3003.esams.wmnet
+profile::ganeti::ganeti01.svc.ulsfo.wmnet::nodes:
+  - ganeti4001.ulsfo.wmnet
+  - ganeti4002.ulsfo.wmnet
+  - ganeti4003.ulsfo.wmnet
+profile::ganeti::ganeti01.svc.eqsin.wmnet::nodes:
+  - ganeti5001.eqsin.wmnet
+  - ganeti5002.eqsin.wmnet
+  - ganeti5003.eqsin.wmnet
 profile::ganeti::rapi_nodes:
     - netbox1001.wikimedia.org
     - netbox2001.wikimedia.org

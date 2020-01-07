@@ -967,22 +967,20 @@ node 'francium.eqiad.wmnet' {
     role(dumps::web::htmldumps)
 }
 
-# Virtualization hosts
+# Ganeti virtualization hosts
 node /^ganeti[12]00[0-8]\.(codfw|eqiad)\.wmnet$/ {
     role(ganeti)
 }
 
-node /^ganeti[4]00[123]\.ulsfo\.wmnet$/ {
+node /^ganeti300[123]\.esams\.wmnet$/ {
     role(ganeti)
 }
 
-# new edge ganeti hosts T226444
-node /^ganeti[3]00[123]\.esams\.wmnet$/ {
+node /^ganeti400[123]\.ulsfo\.wmnet$/ {
     role(ganeti)
 }
 
-# new ganeti hosts in eqsin T228099
-node /^ganeti[5]00[123]\.eqsin\.wmnet$/ {
+node /^ganeti500[123]\.eqsin\.wmnet$/ {
     role(ganeti)
 }
 
