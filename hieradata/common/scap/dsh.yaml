@@ -41,18 +41,19 @@ scap::dsh::groups:
       - {'cluster': 'testserver', 'service': 'apache2'}
       - {'cluster': 'parsoid', 'service': 'parsoid-php'}
     hosts:
-      - snapshot1005.eqiad.wmnet
+      - cloudweb2001-dev.wikimedia.org
       - deploy1001.eqiad.wmnet
       - deploy2001.codfw.wmnet
+      - labweb1001.wikimedia.org
+      - labweb1002.wikimedia.org
       - mwmaint1002.eqiad.wmnet
       - mwmaint2001.codfw.wmnet
+      - scandium.eqiad.wmnet
+      - snapshot1005.eqiad.wmnet
       - snapshot1006.eqiad.wmnet
       - snapshot1007.eqiad.wmnet
       - snapshot1008.eqiad.wmnet
       - snapshot1009.eqiad.wmnet
-      - labweb1001.wikimedia.org
-      - labweb1002.wikimedia.org
-      - scandium.eqiad.wmnet
   parsoid:
     conftool:
       - {'cluster': 'parsoid', 'service': 'parsoid'}
