@@ -7,7 +7,7 @@ class gerrit::proxy(
     Hash $cache_text_nodes                       = $::gerrit::cache_text_nodes,
     Boolean $use_acmechief                       = false,
     Optional[Stdlib::Ipv6] $ipv6,
-    Optional[Array[Stdlib::Fqdn]] $replica_hosts   = $::gerrit::reploca_hosts,
+    Optional[Array[Stdlib::Fqdn]] $replica_hosts   = $::gerrit::replica_hosts,
     ) {
 
     if $replica {
