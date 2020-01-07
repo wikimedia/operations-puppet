@@ -1,8 +1,15 @@
 gerrit::service::ipv4: '208.80.154.78'
 gerrit::service::ipv6: '2620:0:861:3:208:80:154:78'
 
+# do NOT be a replica
+# do monitor SSH access, do Bacula backups, do have crons, use as TLS host
 gerrit::server::is_replica: false
 
+# jetty
 gerrit::jetty::heap_limit: 5g
-
 gerrit::jetty::replication: {}
+
+# monitoring
+do_paging: false
+profile::base::notifications: disabled
+monitor_screens: false
