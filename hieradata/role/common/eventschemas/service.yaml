@@ -4,9 +4,15 @@ profile::lvs::realserver::pools:
     services:
       - nginx
 
+profile::eventschemas::service::server_name: "schema.svc.%{::site}.wmnet"
+profile::eventschemas::service::server_alias: [schema.discovery.wmnet, schema.wikimedia.org]
+# Allow JS to request resources from this public https domain only.
+profile::eventschemas::service::allow_origin: https://schema.wikimedia.org
+
 profile::tlsproxy::envoy::ensure: present
 profile::tlsproxy::envoy::services:
   - server_names: ['*']
     port: 8190
 profile::tlsproxy::envoy::global_cert_name: "schema.discovery.wmnet"
 profile::tlsproxy::envoy::sni_support: "no"
+

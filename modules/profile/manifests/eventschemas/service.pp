@@ -10,12 +10,14 @@ class profile::eventschemas::service(
     # lint:endignore
     $server_alias = hiera('profile::eventschemas::service::server_alias', undef),
     $port         = hiera('profile::eventschemas::service::port', 8190),
+    $allow_origin = hiera('profile::eventschemas::service::allow_origin', undef),
 ) {
     include ::profile::eventschemas::repositories
     class { '::eventschemas::service':
         server_name  => $server_name,
         server_alias => $server_alias,
         port         => $port,
+        allow_origin => $allow_origin,
     }
 
     ferm::service { 'eventschemas_service_http':

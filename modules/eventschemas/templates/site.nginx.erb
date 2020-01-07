@@ -15,7 +15,7 @@ server {
         charset utf-8;
 
         # Enable browser access for pretty-autoindex javascript.
-        add_header  Access-Control-Allow-Origin "http://<%= @server_name %>";
+        add_header  Access-Control-Allow-Origin "<%= @allow_origin || "http://#{@server_name}" %>";
     }
 
     # Deny all files that start with . (e.g. .git).

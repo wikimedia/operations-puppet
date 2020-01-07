@@ -23,7 +23,8 @@
 # == Parameters
 #
 # [*server_name*]
-#   Default: schema.svc.${::site}.wmnet
+#   Default: schema.svc.${::site}.wmnet.
+#   Will also be used for Access-Control-Allow-Origin if $allow_origin is not set.
 #
 # [*server_alias*]
 #   Default: undef
@@ -31,10 +32,15 @@
 # [*port*]
 #   Default: 8190
 #
+# [*allow_origin*]
+#   This will default to server_name.  Set this to something else
+#   Default: undef
+#
 class eventschemas::service(
     String $server_name  = "schema.svc.${::site}.wmnet",
-    Optional[String] $server_alias = undef,
+    Optional[Array] $server_alias = undef,
     $port = 8190,
+    String $allow_origin = undef,
 ) {
     require ::eventschemas
 
@@ -46,6 +52,11 @@ class eventschemas::service(
         ensure  => 'directory',
         source  => 'puppet:///modules/eventschemas/site',
         recurse => 'remote',
+    }
+
+    # Use $allow_origin or $server_name for pretty-autoindex client side requests
+    file { "${document_root}/config.js":
+        content => template('eventschemas/pretty-autoindex-config.js.erb')
     }
 
     # Symlink the cloned schema repositories_path into the document root.

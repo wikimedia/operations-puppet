@@ -1,6 +1,6 @@
 var conf = {
       name: 'Event Schemas',
-      address: './repositories',
+      address: '<%= @allow_origin || "http://#{@server_name}" %>/repositories',
 
       visibilityOptions: {
           size: {
