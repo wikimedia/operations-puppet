@@ -30,7 +30,7 @@ profile::openstack::eqiad1::nova::physical_interface_mappings:
 #   cloudvirt1006: pooled
 #   cloudvirt1007: pooled
 #   cloudvirt1008: pooled
-#   cloudvirt1009: pooled
+#   cloudvirt1009: depooled, is overloaded already
 #   cloudvirt1010: does not exist (formerly a leased system)
 #   cloudvirt1011: does not exist (formerly a leased system)
 #   cloudvirt1012: pooled
@@ -70,7 +70,6 @@ profile::openstack::eqiad1::nova::scheduler_pool:
   - cloudvirt1006
   - cloudvirt1007
   - cloudvirt1008
-  - cloudvirt1009
   - cloudvirt1012
   - cloudvirt1014
   - cloudvirt1017
