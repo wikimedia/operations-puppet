@@ -67,6 +67,18 @@ if (@metastore_host == @fqdn)
     <value>SchemaTable</value>
   </property>
 
+  <!-- Store hive delegation tokens in the database (as opposed to in memory, default case)
+       This allows Hue/Oozie/etc.. to be resilient to hive credentials expired errors when
+       kerberos is enabled, like suggested in:
+       https://mapr.com/support/s/article/Intermittent-Hue-Hiv-connectivity-issue-in-MapR-SASL-secure-cluster?language=en_US
+       See errors reported in https://phabricator.wikimedia.org/T238560
+  -->
+
+  <property>
+    <name>hive.cluster.delegation.token.store.class</name>
+    <value>org.apache.hadoop.hive.thrift.DBTokenStore</value>
+  </property>
+
 <% end -%>
 
 <% if @hive_metastore_kerberos_keytab_file -%>
