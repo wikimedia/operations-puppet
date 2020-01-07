@@ -1,0 +1,8 @@
+gerrit::service::ipv4: '208.80.154.78'
+gerrit::service::ipv6: '2620:0:861:3:208:80:154:78'
+
+gerrit::server::is_replica: false
+
+gerrit::jetty::heap_limit: 5g
+
+gerrit::jetty::replication: {}
