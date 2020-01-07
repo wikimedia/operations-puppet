@@ -342,7 +342,7 @@ def offboard_analytics(username):
 
     for group in shell_groups:
         if group in pii_sensitive_groups:
-            print(group, "grants access to Hadoop/Hive, check PII leftovers")
+            print(group, "grants access to Hadoop/Hive, check PII leftovers and Hue account.")
     print()
 
 
