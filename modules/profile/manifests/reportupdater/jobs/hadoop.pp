@@ -60,4 +60,8 @@ class profile::reportupdater::jobs::hadoop {
     reportupdater::job { 'wmcs':
         output_dir => 'metrics/wmcs',
     }
+
+    reportupdater::job { 'structured-data':
+        output_dir => 'metrics/structured-data',
+    }
 }
