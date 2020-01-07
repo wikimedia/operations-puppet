@@ -217,8 +217,9 @@ node 'gerrit1001.wikimedia.org', 'gerrit2001.wikimedia.org' {
     role(gerrit)
 }
 
+# temp. Gerrit machine for testing 2.16 upgrade (T239151)
 node 'gerrit1002.wikimedia.org' {
-    role(spare::system)
+    role(gerrit)
 }
 
 # Zookeeper and Etcd discovery service nodes in eqiad
