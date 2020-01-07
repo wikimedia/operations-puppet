@@ -832,6 +832,30 @@ host serpens {
     fixed-address serpens.wikimedia.org;
 }
 
+host urldownloader1001.wikimedia.org {
+    hardware ethernet aa:00:00:d2:7d:c6;
+    fixed-address urldownloader1001.wikimedia.org;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
+}
+
+host urldownloader1002.wikimedia.org {
+    hardware ethernet aa:00:00:63:50:b5;
+    fixed-address urldownloader1002.wikimedia.org;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
+}
+
+host urldownloader2001.wikimedia.org {
+    hardware ethernet aa:00:00:6c:78:cd;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
+    fixed-address urldownloader2001.wikimedia.org;
+}
+
+host urldownloader2002.wikimedia.org {
+    hardware ethernet aa:00:00:fe:d1:2e;
+    fixed-address urldownloader2002.wikimedia.org;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
+}
+
 host vega {
     hardware ethernet aa:00:00:26:27:bf;
     fixed-address vega.codfw.wmnet;
