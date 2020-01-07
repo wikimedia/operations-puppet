@@ -2,7 +2,7 @@
 ### THIS FILE IS MANAGED BY PUPPET
 ######################################################################
 
-http_port <%= @url_downloader_ip %>:<%= @url_downloader_port %>
+http_port <%= @url_downloader_port %>
 hierarchy_stoplist cgi-bin ?
 
 acl everything src all
@@ -62,8 +62,6 @@ http_access deny all
 http_reply_access allow all
 
 icp_access deny all
-
-tcp_outgoing_address <%= @url_downloader_ip %>
 
 reply_body_max_size 1010 MB all
 

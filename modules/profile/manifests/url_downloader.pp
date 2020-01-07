@@ -1,25 +1,7 @@
 # Class: profile::url_downloader
 #
-# A profile class for assigning the url_downloader role to a host. The host needs
-# to have the $url_downloader_ip variable set at hiera otherwise it defaults to
-# $::ipaddress
-#
-# Parameters:
-#
-# Actions:
-#       Use the url_downloader module class to configure a squid service
-#       Setup firewall rules
-#       Setup monitoring rules
-#       Pin our packages
-#
-# Requires:
-#       Module url_downloader
-#       ferm
-#       nagios definitions for wmf
-#
 class profile::url_downloader (
-    $url_downloader_ip = hiera('profile::url_downloader::url_downloader_ip', $::ipaddress),
-    $url_downloader_port = hiera('profile::url_downloader::url_downloader_port', '8080'),
+    Stdlib::Port $url_downloader_port = lookup('profile::url_downloader::url_downloader_port'),
 ) {
 
     include network::constants
