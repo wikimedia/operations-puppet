@@ -33,11 +33,11 @@ apiServer:
     admission-control-config-file: /etc/kubernetes/admission/admission.yaml
     <% if @encryption_key %>encryption-provider-config: /etc/kubernetes/admission/encryption-conf.yaml<% end %>
   extraVolumes:
-    name: "/etc/kubernetes/admission"
-    hostPath: "/etc/kubernetes/admission"
-    mountPath: "/etc/kubernetes/admission"
-    readOnly: true
-    pathType: Directory
+    - name: "/etc/kubernetes/admission"
+      hostPath: "/etc/kubernetes/admission"
+      mountPath: "/etc/kubernetes/admission"
+      readOnly: true
+      pathType: Directory
 controller-manager:
   extraArgs:
     profiling: "false"
