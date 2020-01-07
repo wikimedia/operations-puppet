@@ -5,7 +5,7 @@
 #
 
 class pybal::web (
-    Hash $services,
+    Hash[String, Wmflib::Service] $services,
     Stdlib::Unixpath $root_dir,
     Wmflib::Ensure $ensure = 'present',
 ) {
@@ -18,7 +18,7 @@ class pybal::web (
 
     $pools_dir = "${root_dir}/pybal"
     # All datacenters declared in all services
-    $datacenters = unique(flatten($services.map |$k, $v| { $v[sites]}))
+    $datacenters = $services.map |$k, $v| { $v['sites']}.flatten().unique()
     $dc_dirs = prefix($datacenters, "${pools_dir}/")
 
     file { $pools_dir:
@@ -42,8 +42,8 @@ class pybal::web (
             $svc_file = "${pools_dir}/${dc}/${svc_name}"
             pybal::conf_file { $svc_file:
                 dc      => $dc,
-                cluster => $svc['conftool']['cluster'],
-                service => $svc['conftool']['service']
+                cluster => $svc['lvs']['conftool']['cluster'],
+                service => $svc['lvs']['conftool']['service']
             }
         }
     }

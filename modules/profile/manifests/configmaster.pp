@@ -1,7 +1,7 @@
 class profile::configmaster(
     $conftool_prefix = hiera('conftool_prefix'),
 ) {
-    include ::lvs::configuration
+
     $vhostnames = [
         'config-master.eqiad.wmnet',
         'config-master.codfw.wmnet',
@@ -42,7 +42,7 @@ class profile::configmaster(
     class { '::pybal::web':
         ensure   => present,
         root_dir => $root_dir,
-        services => $::lvs::configuration::lvs_services
+        services => wmflib::service::fetch()
     }
 
     apache::site { 'config-master':
