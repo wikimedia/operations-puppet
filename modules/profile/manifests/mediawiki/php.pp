@@ -33,9 +33,6 @@ class profile::mediawiki::php(
     Optional[Boolean] $enable_php_core_dumps = lookup('profile::mediawiki::php:::enable_php_core_dumps', {'default_value' => false}),
     ) {
 
-    # Needed for the restart script
-    require ::lvs::configuration
-
     if os_version('debian == stretch') {
         # We get our packages for our repositories again
         file { '/etc/apt/preferences.d/php_wikidiff2.pref':
@@ -275,11 +272,6 @@ class profile::mediawiki::php(
                 'extension'                       => 'tideways_xhprof.so',
                 'tideways_xhprof.clock_use_rdtsc' => '0',
             }
-        }
-
-        # TODO: remove once we're done with the transition
-        file { '/usr/local/bin/restart-php-fpm':
-            ensure  => absent,
         }
     }
     ## Install excimer, our php profiler, if we're on a newer version of php
