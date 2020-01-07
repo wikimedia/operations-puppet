@@ -42,7 +42,7 @@ define apt::package_from_component(
         uri        => $uri,
         dist       => $distro,
         components => $component,
-        notify     => Exec['apt-get update'],
+        notify     => Exec["exec_apt_${title}"],
     }
 
     apt::pin { "apt_pin_${title}":
@@ -54,6 +54,11 @@ define apt::package_from_component(
 
     package { $packages:
         ensure  => present,
-        require => [Apt::Repository["repository_${title}"], Exec['apt-get update']],
+        require => [Apt::Repository["repository_${title}"], Exec["exec_apt_${title}"]],
+    }
+
+    exec {"exec_apt_${title}":
+        command     => '/usr/bin/apt-get update',
+        refreshonly => true,
     }
 }
