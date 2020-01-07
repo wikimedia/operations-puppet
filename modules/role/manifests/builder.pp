@@ -6,6 +6,7 @@ class role::builder {
     include ::profile::docker::storage::loopback
     include ::profile::docker::engine
     include ::profile::docker::builder
+    include ::profile::docker::reporter
     include role::systemtap::devserver
 
     system::role { 'builder':
