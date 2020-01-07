@@ -11,8 +11,15 @@ acl AUTOINSTALL urlpath_regex ^/autoinstall/
 cache deny AUTOINSTALL
 acl apache rep_header Server ^Apache
 cache_replacement_policy heap LFUDA
+<%- if scope.function_os_version(['debian >= stretch']) -%>
+cache_dir aufs /var/spool/squid 1000 16 256
+access_log /var/log/squid/access.log squid
+coredump_dir /var/spool/squid
+<%- else -%>
 cache_dir aufs /var/spool/squid3 1000 16 256
 access_log /var/log/squid3/access.log squid
+coredump_dir /var/spool/squid3
+<% end -%>
 logfile_rotate 10
 cache_store_log none
 hosts_file /etc/hosts
@@ -61,4 +68,3 @@ http_reply_access allow all
 icp_access deny all
 cache_effective_user proxy
 cache_effective_group proxy
-coredump_dir /var/spool/squid3
