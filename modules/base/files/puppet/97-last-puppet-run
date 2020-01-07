@@ -5,7 +5,7 @@ set -e
 
 PATH=/bin:/usr/bin:/usr/local/bin
 LANG=C
-CONFIG_VERSION=$(awk -F\" '/^configuration_version:/ {$1="";print}' /var/lib/puppet/state/last_run_report.yaml)
+CONFIG_VERSION=$(grep -A1 '^configuration_version:' /var/lib/puppet/state/last_run_report.yaml| ruby -ryaml -e 'puts YAML.load(STDIN.read)["configuration_version"]')
 TSLASTPUPPETRUN=$(stat -c %Z /var/lib/puppet/state/classes.txt)
 NOW=$(date +%s)
 DELTAMIN=$(((NOW-TSLASTPUPPETRUN)/60))
