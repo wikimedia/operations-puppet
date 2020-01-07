@@ -89,7 +89,8 @@ class profile::analytics::refinery::job::refine(
             transform_functions             => 'org.wikimedia.analytics.refinery.job.refine.deduplicate_eventbus',
             # Get JSONSchemas from the HTTP schema service.
             # Schema URIs are extracted from the $schema field in each event.
-            schema_base_uri                 => "http://schema.svc.${::site}.wmnet:8190/repositories/mediawiki/jsonschema",
+            # TODO: make this support multiple base URIs for resolving schema from both primary and secondary instead of mediawiki.
+            schema_base_uri                 => 'https://schema.discovery.wmnet/repositories/mediawiki/jsonschema',
         }),
         interval     => '*-*-* *:20:00',
         use_kerberos => $use_kerberos,
