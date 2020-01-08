@@ -3115,6 +3115,7 @@ users:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICZipDQ0KYnTOf0E3//nyKTUFjCso0ribmE7NxrqRIlk sbassett@wikimedia.org
     uid: 20088
     email: sbassett@wikimedia.org
+    krb: present
   jdl:
     ensure: present
     realname: Jason David Linehan
