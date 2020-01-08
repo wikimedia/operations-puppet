@@ -1,4 +1,4 @@
 # db1114
 mariadb::shard: 'test-s1'
-mariadb::package: 'wmf-mariadb103'
+mariadb::package: 'wmf-percona-server80'
 profile::base::notifications: disabled
