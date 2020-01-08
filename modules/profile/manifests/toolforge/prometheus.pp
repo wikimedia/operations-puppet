@@ -352,7 +352,7 @@ class profile::toolforge::prometheus (
                     },
                     {
                         'source_labels' => ['__meta_kubernetes_pod_name'],
-                        'regex'         => '(cadvisor-[a-zA-Z1-9]+)',
+                        'regex'         => '(cadvisor-[a-zA-Z0-9]+)',
                         'target_label'  => '__metrics_path__',
                         # lint:ignore:single_quote_string_with_variables
                         'replacement'   => '/api/v1/namespaces/metrics/pods/${1}/proxy/metrics',
