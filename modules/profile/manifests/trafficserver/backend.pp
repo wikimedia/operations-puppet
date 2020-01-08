@@ -92,7 +92,7 @@ class profile::trafficserver::backend (
         origin_coalescing     => $origin_coalescing,
         global_lua_script     => $global_lua_script,
         storage               => $storage,
-        ram_cache_size        => 8589934592, # 8G
+        ram_cache_size        => 2147483648, # 2G
         mapping_rules         => $mapping_rules,
         caching_rules         => $caching_rules,
         negative_caching      => $negative_caching,
