@@ -1,7 +1,7 @@
 class profile::query_service::updater (
     String $options = hiera('profile::query_service::updater_options'),
     Boolean $merging_mode = hiera('profile::query_service::merging_mode', false),
-    Boolean $async_import = hiera('profile::query_service::async_import', false),
+    Boolean $async_import = hiera('profile::query_service::async_import', true),
     Stdlib::Port $logstash_logback_port = hiera('logstash_logback_port'),
     Stdlib::Unixpath $package_dir = hiera('profile::query_service::package_dir'),
     Stdlib::Unixpath $data_dir = hiera('profile::query_service::data_dir'),
