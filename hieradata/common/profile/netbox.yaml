@@ -52,6 +52,9 @@ profile::netbox::ganeti_sync_profiles:
     - profile: esams
       url: ganeti01.svc.esams.wmnet
       port: 5080
+    - profile: eqsin
+      url: ganeti01.svc.eqsin.wmnet
+      port: 5080
 
 profile::netbox::dump_interval: '*-*-* *:37:00'
 
