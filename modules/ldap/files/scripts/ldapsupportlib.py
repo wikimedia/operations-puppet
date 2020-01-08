@@ -5,10 +5,10 @@
 # puppet:///modules/ldap/scripts/ldapsupportlib.py
 #####################################################################
 
-import os
-import traceback
 import getpass
+import os
 import sys
+import traceback
 sys.path.append('/etc/ldap')
 
 try:
@@ -112,6 +112,12 @@ class LDAPSupportLib:
                 # fallback to /etc/ldap/ldap.conf, which will likely
                 # have less information
                 f = open("/etc/ldap/ldap.conf")
+            else:
+                sys.stderr.write(
+                    'unable to open file: {}\nEnsure you have the correct permissions'.format(
+                        conffile))
+                sys.exit(1)
+
         for line in f:
             if line.strip() == "":
                 continue
@@ -144,7 +150,7 @@ class LDAPSupportLib:
         except ldap.NO_SUCH_OBJECT:
             sys.stderr.write("Unable to locate the bind DN account.\n")
             sys.exit(1)
-        except ldap.UNWILLING_TO_PERFORM, msg:
+        except ldap.UNWILLING_TO_PERFORM as msg:
             sys.stderr.write(
                 ("The LDAP server was unwilling to perform the action requested.\n"
                  "Error was: %s\n") % msg[0]["info"])

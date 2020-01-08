@@ -52,8 +52,15 @@ class ldap::client::utils($ldapconfig) {
             shell  => '/bin/false',
         }
     }
+    $python3_version = $facts['os']['release']['major'] ? {
+        8       => '3.4',
+        9       => '3.5',
+        10      => '3.7',
+        default => '3.7',
+    }
 
-    file { '/usr/local/lib/python2.7/dist-packages/ldapsupportlib.py':
+    file { ['/usr/local/lib/python2.7/dist-packages/ldapsupportlib.py',
+            "/usr/local/lib/${python3_version}/dist-packages/ldapsupportlib.py"]:
         owner  => 'root',
         group  => 'root',
         mode   => '0444',

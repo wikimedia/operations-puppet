@@ -31,7 +31,7 @@
 
 define apt::package_from_component(
     String $component,
-    Array[String] $packages,
+    Array[String] $packages = [$name],
     String $distro = "${::lsbdistcodename}-wikimedia",
     Stdlib::HTTPUrl $uri = 'http://apt.wikimedia.org/wikimedia',
     Integer $priority = 1001,
