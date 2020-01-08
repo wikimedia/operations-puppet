@@ -505,7 +505,7 @@ groups:
   perf-team:
     gid: 796
     description: performance team members with access to 'webperf' and 'xhgui' servers
-    members: [krinkle, gilles, phedenskog, aaron]
+    members: [krinkle, gilles, phedenskog, aaron, dpifke]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   perf-roots:
     gid: 766
@@ -3503,6 +3503,14 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDMnomWTASEzJqGKtpCqUA8g+Wcz4RmcpD5qRbuiXurptrXPQaoogl2U/RfnyInPZQAoc4QgM3JGLvjaNfIGIkCNPq8H3oWc4DeUE+OTfbH3/L8UvvB8CQ8KEOC92C9GBCDAfva5hY94CziKeFZvFEFLpxVRLWkdZcXVzQGZmVX09Rf+KANf/9/XH8WtlLvtfT7e0d5f4aTYNJ96VtLih5BneA+CYlRM/xXzDiH5Am31ffPduKAeFfMMdDYRJAVHayVGqAaGHo+T38mHNibtt9hZFVWr/nnbOnNo2EIE1JVtoUHR6p4Jzr+XR/d6rgJWmvn7gfdewzfCMHNSPPSTeiuOPnnvJeF1OeiASu7FeHOndeB3VKQyUGcAr+6luAs4Wg4CoAz+zzEOvUYPoK7DZKuvyUeXoVjBWb1UkW6OizYjqiTxjNM8HPQ6vCtkM0sV3dAPfGJqDCy9rtmgCwfdeKch54Cw4QdKBkoMa/C2ciJFqHemo3YvGrsghRgekfObo5euOUVSf1pVqr2igmNtaSiEMXs0/06fzdn88ojQgBSHW/XSIQ+Yi47ZLIGE5R7Ht+9LH9pIDlujR81bxvrGoLICeZbTg1lZPMhAcFuNa84lpiKKgPxONC7cxqtizclghZW/KtGA2gfszazg1uyGI7xFEhGhfWi3NwQ9zqOxrGg6Q== aarora@tsf-452-wpa-3-166.epfl.ch
     expiry_date: 2020-06-05
     expiry_contact: lzia@wikimedia.org
+  dpifke:
+    ensure: present
+    realname: Dave Pifke
+    email: dpifke@wikimedia.org
+    uid: 22904
+    gid: 500
+    ssh_keys:
+     - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDJoAB1ApJcEDqA+EfSbjQFuikAEkZk9M+4i3em5o9TFDR5YopmNIRXpR3fxt7LIJCNwXABlNrnbNZw41ABN4XL07VqrFY8efERVbBbwlvdFxD7mgVn41qlypzNR4tRTzoVtJ32X7KEru8zstO/l7Sqxio3Y8bRcsbp/Yw7z1fRHdBMbFXcabW88xtfJZ4aGrtUlrkwWe25KUyBK7tAQyETSkUg+GOXDy1NAlIOYpcYbGoGvk8rhG64tYeGW/fVBf7sSYcP51LOsCQv5bdTLZ0y5kqqmIqKEiXV9kQsggqtqAyAHYwy5yd9wrTMhncrItLFPHE/Ui8h2sVuorMje7Smp0KSO0bIpOkU+6jbi7Zi83r1dHq0ZmWvKsQF2CKbSLTBGRcssREFxKCVXErmp92LYlvu6NjjeiaSW7ADKBsHeqPwOP4cwXHyydcXGRKtYoNUP3QPGcqk340FR+ajdPvP1ulHVOH/X65ix4RsQHyKlaHhz9/BNFwhdk1dNCGeaeRVjTcb6tNPIXyzJsXTKMGnXMKBXuhXHEJ2/r9GGHQQ7joBRYj/PUfyWhfs36kU+ypubp0FzJYhX6Z+LArD3SDrTCXsfT2oUDKL51TVJj6Rf/EbSOga/BNOfg5KBLxshbv611Er5yKgRoUgvE/VpJoXJvIpBP6QlzxXJ4OFrNxdjw== cardno:000611339167
 ldap_only_users:
   abartov:
     ensure: present
