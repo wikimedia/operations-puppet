@@ -22,11 +22,10 @@ After=network.target
 
 [Service]
 SyslogIdentifier=airflow-kerberos
-Environment=AIRFLOW_HOME=<%= @conf_dir %>
 User=<%= @service_user %>
 Group=<%= @service_group %>
 Type=simple
-ExecStart=<%= @deploy_dir %>/venv/bin/airflow kerberos --pid <%= @run_dir %>/kerberos.pid
+ExecStart=<%= @airflow_wrapper %> kerberos --pid <%= @run_dir %>/kerberos.pid
 Restart=on-failure
 RestartSec=5s
 PrivateTmp=true

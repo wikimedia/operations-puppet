@@ -22,11 +22,10 @@ After=network.target airflow-kerberos.service
 
 [Service]
 SyslogIdentifier=airflow-scheduler
-Environment=AIRFLOW_HOME=<%= @conf_dir %>
 User=<%= @service_user %>
 Group=<%= @service_group %>
 Type=simple
-ExecStart=<%= @deploy_dir %>/venv/bin/airflow scheduler
+ExecStart=<%= @airflow_wrapper %> scheduler
 Restart=always
 RestartSec=5s
 

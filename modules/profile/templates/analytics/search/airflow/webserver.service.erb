@@ -22,12 +22,10 @@ After=network.target airflow-kerberos.service
 
 [Service]
 SyslogIdentifier=airflow-webserver
-Environment=AIRFLOW_HOME=<%= @conf_dir %>
-Environment=PATH=<%= @deploy_dir %>/venv/bin:/bin:/usr/bin
 User=<%= @service_user %>
 Group=<%= @service_group %>
 Type=simple
-ExecStart=<%= @deploy_dir %>/venv/bin/airflow webserver \
+ExecStart=<<%= @airflow_wrapper %> webserver \
         -p <%= @webserver_port %> \
         --pid <%= @run_dir %>/webserver.pid
 Restart=on-failure

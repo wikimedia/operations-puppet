@@ -1,0 +1,13 @@
+#!/bin/bash
+# This file is managed by Puppet.
+#
+# Wrapper script to invoke airflow from the correct context
+#
+if [ "$(whoami)" != "<%= @service_user %>" ]; then
+    echo ERROR: Must be run as service_user: <%= @service_user %>
+    exit 1
+fi
+
+export AIRFLOW_HOME="<%= @conf_dir %>"
+source "<%= @deploy_dir %>/venv/bin/activate"
+airflow "$*"

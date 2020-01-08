@@ -38,6 +38,15 @@ class profile::analytics::search::airflow(
         ensure => absent,
     }
 
+    # wrapper script to run the airflow command in the right context
+    $airflow_wrapper = '/usr/local/bin/airflow'
+    file { $airflow_wrapper:
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0555',
+        content => template('profile/analytics/search/airflow/airflow.sh.erb'),
+    }
 
     # Deploy upstream airflow code + dependencies
     scap::target { $deploy_target:
@@ -80,21 +89,21 @@ class profile::analytics::search::airflow(
 
     systemd::service { 'airflow-webserver':
         content => template('profile/analytics/search/airflow/webserver.service.erb'),
-        require => File[$log_dir, $run_dir, "${conf_dir}/${conf_file}"],
+        require => File[$log_dir, $run_dir, "${conf_dir}/${conf_file}", $airflow_wrapper],
     }
 
     base::service_auto_restart { 'airflow-webserver': }
 
     systemd::service { 'airflow-scheduler':
         content => template('profile/analytics/search/airflow/scheduler.service.erb'),
-        require => File[$log_dir, $run_dir, "${conf_dir}/${conf_file}"],
+        require => File[$log_dir, $run_dir, "${conf_dir}/${conf_file}", $airflow_wrapper],
     }
 
     base::service_auto_restart { 'airflow-scheduler': }
 
     systemd::service { 'airflow-kerberos':
         content => template('profile/analytics/search/airflow/kerberos.service.erb'),
-        require => File[$log_dir, $run_dir, "${conf_dir}/${conf_file}"],
+        require => File[$log_dir, $run_dir, "${conf_dir}/${conf_file}", $airflow_wrapper],
     }
 
     base::service_auto_restart { 'airflow-kerberos': }
