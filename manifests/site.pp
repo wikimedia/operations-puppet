@@ -222,6 +222,10 @@ node 'gerrit1001.wikimedia.org', 'gerrit2001.wikimedia.org' {
     role(gerrit)
 }
 
+node 'gerrit-test.wikimedia.org' {
+    role(spare::system)
+}
+
 # Zookeeper and Etcd discovery service nodes in eqiad
 node /^conf100[456]\.eqiad\.wmnet$/ {
     role(configcluster_stretch)
