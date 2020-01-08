@@ -3218,6 +3218,7 @@ users:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIVizg41yHoKMzYqsBQjMbcQa5YKjrZyQIxuM4nrfKv5 dsharpe@Davids-MBP
     uid: 20828
     email: dsharpe@wikimedia.org
+    krb: present
   juliaglen:
     ensure: absent
     gid: 500
