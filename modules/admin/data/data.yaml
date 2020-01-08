@@ -3651,6 +3651,10 @@ ldap_only_users:
     ensure: present
     realname: Michael Grosse
     email: michael.grosse@wikimedia.de
+  moushirael:
+    ensure: present
+    realname: Moushira Elamrawy
+    email: melamrawy-ctr@wikimedia.org
   pginer:
     ensure: present
     realname: Pau Giner
