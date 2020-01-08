@@ -11,7 +11,7 @@ profile::restbase::logging_label: restbase
 profile::restbase::cassandra_datacenters:
     - "eqiad"
     - "codfw"
-profile::restbase::parsoid_uri: "http://parsoid.discovery.wmnet:8000"
+profile::restbase::parsoid_uri: "https://parsoid-php.discovery.wmnet/w/rest.php"
 profile::restbase::graphoid_uri: "http://graphoid.discovery.wmnet:19000"
 profile::restbase::mobileapps_uri: "http://mobileapps.discovery.wmnet:8888"
 profile::restbase::mathoid_uri: "http://mathoid.discovery.wmnet:10042"
