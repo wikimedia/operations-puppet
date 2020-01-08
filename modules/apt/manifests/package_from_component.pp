@@ -52,6 +52,7 @@ define apt::package_from_component(
             priority => $priority,
             package  => join($packages, ' '),
             before   => Package[$packages],
+            notify   => Exec["exec_apt_${title}"],
         }
     }
 
