@@ -466,7 +466,7 @@ groups:
               bsitzmann, mholloway-shell, kartik, halfak, ladsgroup, smalyshev, hoo, tgr,
               ssastry, cscott, arlolra, jdlrobson, jforrester, niedzielski, bmansurov,
               pmiazga, phuedx, mbsantos, mvolz, santhosh, nikerabbit, accraze,
-              kevinbazira]
+              kevinbazira, clarakosi]
     privileges: []
 
   deploy-aqs:
@@ -3511,6 +3511,14 @@ users:
     gid: 500
     ssh_keys:
      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDJoAB1ApJcEDqA+EfSbjQFuikAEkZk9M+4i3em5o9TFDR5YopmNIRXpR3fxt7LIJCNwXABlNrnbNZw41ABN4XL07VqrFY8efERVbBbwlvdFxD7mgVn41qlypzNR4tRTzoVtJ32X7KEru8zstO/l7Sqxio3Y8bRcsbp/Yw7z1fRHdBMbFXcabW88xtfJZ4aGrtUlrkwWe25KUyBK7tAQyETSkUg+GOXDy1NAlIOYpcYbGoGvk8rhG64tYeGW/fVBf7sSYcP51LOsCQv5bdTLZ0y5kqqmIqKEiXV9kQsggqtqAyAHYwy5yd9wrTMhncrItLFPHE/Ui8h2sVuorMje7Smp0KSO0bIpOkU+6jbi7Zi83r1dHq0ZmWvKsQF2CKbSLTBGRcssREFxKCVXErmp92LYlvu6NjjeiaSW7ADKBsHeqPwOP4cwXHyydcXGRKtYoNUP3QPGcqk340FR+ajdPvP1ulHVOH/X65ix4RsQHyKlaHhz9/BNFwhdk1dNCGeaeRVjTcb6tNPIXyzJsXTKMGnXMKBXuhXHEJ2/r9GGHQQ7joBRYj/PUfyWhfs36kU+ypubp0FzJYhX6Z+LArD3SDrTCXsfT2oUDKL51TVJj6Rf/EbSOga/BNOfg5KBLxshbv611Er5yKgRoUgvE/VpJoXJvIpBP6QlzxXJ4OFrNxdjw== cardno:000611339167
+  clarakosi:
+    ensure: present
+    realname: Clara Andrew-Wani
+    email: candrew@wikimedia.org
+    uid: 20254
+    gid: 500
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDD9i9cztTgBWMuqJbJUYEpRf5c++ZsmxzMkGRGNi9V3uIKeDI2STAI+lAZjPSVA4Dl2x8F62/DFRNcXzzIMWrgcYdyqwyTJMnMXjbR/Zzk62Lq08gm9zfwEsrzcg+0M1xf9k6Awo/l0pFvuplvSJHZgR6rCvvTV5+t16XHj57/iNeia9GmkEHhYBRdp2diP35QPuxo+cN01U1vx8BTDb/GQLUnSG3mK841DioIFf4uoNwLoUtYVOwCI7zjKlL0qEfL+ik4suk53gcj+9MgPmWQFgKmjHl0zt2VYva96a3ewAu38T5QXyBAgtC3Pf6pJxPQ99Naylz/7fq1fi+jE6P7bWcd/kf2kMPs9dVzz1BBvgMXRD64yAZWjU23z7WiYvJCdstwiyTrqrDsQBCmKeA+UhMlcoZ+bQq4w/ltyHa6TT2EOnxnf+oxDe+MhcqN6o7khPcSDx0jwWWdIYtdkoq94KDGnl2THcZL1MkkeFOd/XKN1+BpEXD+Y1eYuxoP/rwxj6/2G87MOt6cF2u6nHbP7pJ6x9J/LndJNBwktsN0OAelmlc01bn5DQaGyGsoX6+tbGe8BUtpp7ujXvCl7nooT9N6lBseyUWsBKX89hUGk0a4WKdA/pKLEnDeDxrx0ieCcZ1aXl85gKdvJWSaxNs0rgrcQTHoaNwMtIcdCCsbAw== candrew@wikimedia.org
 ldap_only_users:
   abartov:
     ensure: present
@@ -3958,10 +3966,6 @@ ldap_only_users:
     ensure: present
     realname: Jaime Anstee
     email: janstee@wikimedia.org
-  clarakosi:
-    ensure: present
-    realname: Clara Andrew-Wani
-    email: candrew@wikimedia.org
   annet:
     ensure: present
     realname: Anne Tomasevich
