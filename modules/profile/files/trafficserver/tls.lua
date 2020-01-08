@@ -45,18 +45,18 @@ function do_global_send_request()
         x_tls_sess = 'reused'
     end
 
-    x_tls_ciph = string.gsub(x_tls_ciph, "^DHE-RSA", "")
-    x_tls_ciph = string.gsub(x_tls_ciph, "^ECDHE-ECDSA", "")
-    x_tls_ciph = string.gsub(x_tls_ciph, "^ECDHE-RSA", "")
+    x_tls_ciph = string.gsub(x_tls_ciph, "^DHE%-RSA%-", "")
+    x_tls_ciph = string.gsub(x_tls_ciph, "^ECDHE%-ECDSA%-", "")
+    x_tls_ciph = string.gsub(x_tls_ciph, "^ECDHE%-RSA%-", "")
 
     -- Starting with TLSv1.3, CHACHA20-POLY1305 will be renamed into
     -- CHACHA20-POLY1305-SHA256. Do the renaming now in Lua to avoid stats
     -- skew later on
-    x_tls_ciph = string.gsub(x_tls_ciph, "^CHACHA20-POLY1305$", "CHACHA20-POLY1305-SHA256")
+    x_tls_ciph = string.gsub(x_tls_ciph, "^CHACHA20%-POLY1305$", "CHACHA20-POLY1305-SHA256")
 
-    if string.match(x_tls_auth, "^ECDHE-RSA") then
+    if string.match(x_tls_auth, "^ECDHE%-RSA") then
         x_tls_auth = "RSA"
-    elseif string.match(x_tls_auth, "^DHE-RSA") then
+    elseif string.match(x_tls_auth, "^DHE%-RSA") then
         x_tls_auth = "RSA"
         x_tls_keyx = "DHE"
     else
