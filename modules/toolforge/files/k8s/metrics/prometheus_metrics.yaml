@@ -33,22 +33,3 @@ roleRef:
 subjects:
 - kind: User
   name: prometheus
----
-# for prometheus to scrape metrics in an URL like:
-# https://APIFQDN:6443/api/v1/namespaces/ingress-nginx/services/nginx-ingress-metrics/proxy/metrics
-# this is our invention, not part of upstream docs. Should be applied after the
-# ingress is deployed.
-apiVersion: v1
-kind: Service
-metadata:
-  name: nginx-ingress-metrics
-  namespace: ingress-nginx
-spec:
-  selector:
-      app.kubernetes.io/name: ingress-nginx
-      app.kubernetes.io/part-of: ingress-nginx
-  ports:
-    - protocol: TCP
-      port: 10254
-      targetPort: 10254
-

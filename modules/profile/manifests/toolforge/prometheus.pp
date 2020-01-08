@@ -211,18 +211,26 @@ class profile::toolforge::prometheus (
                 ],
                 'relabel_configs'       => [
                     {
+                        'action'        => 'keep',
+                        'regex'         => 'ingress-nginx',
+                        'source_labels' => ['__meta_kubernetes_pod_label_app_kubernetes_io_name'],
+                    },
+                    {
                         'action' => 'labelmap',
-                        'regex'  => '__meta_kubernetes_node_label_(.+)',
+                        'regex'  => '__meta_kubernetes_pod_label_(.+)',
                     },
                     {
                         'target_label' => '__address__',
                         'replacement'  => "${new_k8s_apiserver_fqdn}:${new_k8s_apiserver_port}",
                     },
                     {
-                        'target_label' => '__metrics_path__',
-                        # this service is not an arbitrary name; it was created
-                        # inside the k8s cluster with that specific name
-                        'replacement'  => '/api/v1/namespaces/ingress-nginx/services/nginx-ingress-metrics/proxy/metrics',
+                        'source_labels' => ['__meta_kubernetes_pod_name'],
+                        'regex'         => '(nginx-ingress-[a-zA-Z0-9]+-[a-zA-Z0-9]+)',
+                        'target_label'  => '__metrics_path__',
+                        # lint:ignore:single_quote_string_with_variables
+                        # PORT is not arbitrary! the pod is listening on that one
+                        'replacement'   => '/api/v1/namespaces/ingress-nginx/pods/${1}:10254/proxy/metrics',
+                        # lint:endignore
                     },
                 ]
             },
