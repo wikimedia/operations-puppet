@@ -3727,6 +3727,10 @@ ldap_only_users:
   siddharth11:
     ensure: absent
     realname: Siddarth Parmar
+  sihe:
+    ensure: present
+    realname: Silvan Heintze
+    email: silvan.heintze@wikimedia.de
   spatton:
     ensure: present
     realname: Sam Patton
