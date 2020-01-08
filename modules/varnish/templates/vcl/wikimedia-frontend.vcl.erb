@@ -347,6 +347,7 @@ sub vcl_recv {
 	unset req.http.X-Next-Is-Cache;
 	unset req.http.Proxy; // https://httpoxy.org/
 	unset req.http.X-ATS-Debug; // We use this header for the XDebug Traffic Server plugin
+	unset req.http.X-Analytics-TLS; // Used by atskafka
 
 	if (req.restarts == 0) {
 		// IP processing is req->req mangling that shouldn't be re-done on restart
