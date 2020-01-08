@@ -2,7 +2,7 @@ class toolforge::k8s::metrics_yaml(
 ) {
     require ::toolforge::k8s::kubeadm # because /etc/kubernetes
 
-    file { '/etc/kubernentes/metrics/':
+    file { '/etc/kubernetes/metrics/':
         ensure  => directory,
         require => File['/etc/kubernetes'],
     }
@@ -17,7 +17,7 @@ class toolforge::k8s::metrics_yaml(
     file { '/etc/kubernetes/metrics/prometheus_metrics.yaml':
         ensure  => present,
         source  => 'puppet:///modules/toolforge/k8s/metrics/prometheus_metrics.yaml',
-        require => File['/etc/kubernetes'],
+        require => File['/etc/kubernetes/metrics'],
     }
 
     # for this to work you need to generate a x509 cert and create a k8s secret
@@ -28,18 +28,18 @@ class toolforge::k8s::metrics_yaml(
     file { '/etc/kubernetes/metrics/metrics-server.yaml':
         ensure  => present,
         source  => 'puppet:///modules/toolforge/k8s/metrics/metrics-server.yaml',
-        require => File['/etc/kubernetes'],
+        require => File['/etc/kubernetes/metrics'],
     }
 
     file { '/etc/kubernetes/metrics/kube-state-metrics.yaml':
         ensure  => present,
         source  => 'puppet:///modules/toolforge/k8s/metrics/kube-state-metrics.yaml',
-        require => File['/etc/kubernetes'],
+        require => File['/etc/kubernetes/metrics'],
     }
 
     file { '/etc/kubernetes/metrics/cadvisor.yaml':
         ensure  => present,
         source  => 'puppet:///modules/toolforge/k8s/metrics/cadvisor.yaml',
-        require => File['/etc/kubernetes'],
+        require => File['/etc/kubernetes/metrics'],
     }
 }
