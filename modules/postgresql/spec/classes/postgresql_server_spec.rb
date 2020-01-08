@@ -1,7 +1,13 @@
 require 'spec_helper'
 
 describe 'postgresql::server', :type => :class do
-    let(:facts) { { :lsbdistcodename => 'jessie' } }
+    let(:facts) do
+      {
+        'lsbdistcodename' => 'jessie',
+        'lsbdistrelease' => '8.6',
+        'lsbdistid' => 'Debian'
+      }
+    end
 
     context 'ensure present' do
         let(:params) { {

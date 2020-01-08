@@ -7,9 +7,13 @@ describe 'postgresql::user', :type => :define do
         :password => 'soemthing',
         :ensure   => 'present',
     } }
-    let(:facts) { {
-        :lsbdistcodename => 'jessie',
-    } }
+    let(:facts) do
+      {
+        'lsbdistcodename' => 'jessie',
+        'lsbdistrelease' => '8.6',
+        'lsbdistid' => 'Debian'
+      }
+    end
     let(:pre_condition) { 'include postgresql::server' }
 
     context 'with ensure present' do
@@ -26,9 +30,13 @@ describe 'postgresql::user', :type => :define do
         :password => 'soemthing',
         :ensure   => 'absent',
     } }
-    let(:facts) { {
-        :lsbdistcodename => 'jessie',
-    } }
+    let(:facts) do
+      {
+        'lsbdistcodename' => 'jessie',
+        'lsbdistrelease' => '8.6',
+        'lsbdistid' => 'Debian'
+      }
+    end
     let(:pre_condition) { 'include postgresql::server' }
 
     context 'with ensure absent' do

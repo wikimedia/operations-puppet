@@ -45,7 +45,6 @@ class postgresql::server(
         "postgresql-${pgversion}",
         "postgresql-${pgversion}-debversion",
         "postgresql-client-${pgversion}",
-        "postgresql-contrib-${pgversion}",
         'libdbi-perl',
         'libdbd-pg-perl',
         $::lsbdistcodename ? {
@@ -55,6 +54,14 @@ class postgresql::server(
         'check-postgres',
     ]:
         ensure => $ensure,
+    }
+
+    # The contrib package got dropped from Postgres in 10, it's only a virtual
+    # package and not needed starting with Buster
+    if os_version('debian < buster') {
+        package { "postgresql-contrib-${pgversion}":
+            ensure => $ensure,
+        }
     }
 
     class { '::postgresql::dirs':

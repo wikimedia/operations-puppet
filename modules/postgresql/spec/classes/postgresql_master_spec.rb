@@ -1,7 +1,14 @@
 require 'spec_helper'
 
 describe 'postgresql::master', :type => :class do
-    let(:facts) { { :lsbdistcodename => 'jessie' } }
+    let(:facts) do
+      {
+        'lsbdistcodename' => 'jessie',
+        'lsbdistrelease' => '8.6',
+        'lsbdistid' => 'Debian'
+      }
+    end
+
     let(:params) { {
         :ensure           => 'present',
         :master_server    => 'test',
@@ -26,7 +33,14 @@ describe 'postgresql::master', :type => :class do
 end
 
 describe 'postgresql::master', :type => :class do
-    let(:facts) { { :lsbdistcodename => 'jessie' } }
+    let(:facts) do
+      {
+        'lsbdistcodename' => 'jessie',
+        'lsbdistrelease' => '8.6',
+        'lsbdistid' => 'Debian'
+      }
+    end
+
     let(:params) { {
         :ensure           => 'absent',
         :master_server    => 'test',

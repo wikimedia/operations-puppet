@@ -7,7 +7,13 @@ describe 'postgresql::slave', :type => :class do
         :replication_pass => 'pass',
         }
     }
-    let(:facts) { { :lsbdistcodename => 'jessie' } }
+    let(:facts) do
+      {
+        'lsbdistcodename' => 'jessie',
+        'lsbdistrelease' => '8.6',
+        'lsbdistid' => 'Debian'
+      }
+    end
 
     context 'ensure present' do
         it { should contain_class('postgresql::server') }
@@ -34,7 +40,13 @@ describe 'postgresql::slave', :type => :class do
         :root_dir         => '/srv/postgres',
         }
     }
-    let(:facts) { { :lsbdistcodename => 'jessie' } }
+    let(:facts) do
+      {
+        'lsbdistcodename' => 'jessie',
+        'lsbdistrelease' => '8.6',
+        'lsbdistid' => 'Debian'
+      }
+    end
 
     context 'ensure present' do
         it { should contain_class('postgresql::server') }
@@ -64,7 +76,13 @@ describe 'postgresql::slave', :type => :class do
         :replication_pass => 'pass',
         }
     }
-    let(:facts) { { :lsbdistcodename => 'jessie' } }
+    let(:facts) do
+      {
+        'lsbdistcodename' => 'jessie',
+        'lsbdistrelease' => '8.6',
+        'lsbdistid' => 'Debian'
+      }
+    end
 
     context 'ensure absent' do
         it { should contain_class('postgresql::server') }
