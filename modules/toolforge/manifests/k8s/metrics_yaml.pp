@@ -1,6 +1,11 @@
-class toolforge::k8s::prometheus_metrics_yaml(
+class toolforge::k8s::metrics_yaml(
 ) {
     require ::toolforge::k8s::kubeadm # because /etc/kubernetes
+
+    file { '/etc/kubernentes/metrics/':
+        ensure  => directory,
+        require => File['/etc/kubernetes'],
+    }
 
     # for this to work you need to generate a x509 cert using the admin script
     # the generated certs should be then moved as secrets to the private repo
@@ -9,9 +14,9 @@ class toolforge::k8s::prometheus_metrics_yaml(
     #
     # See also: profile::toolforge::prometheus
     # See also: https://wikitech.wikimedia.org/wiki/Portal:Toolforge/Admin/Deploying_k8s
-    file { '/etc/kubernetes/prometheus_metrics.yaml':
+    file { '/etc/kubernetes/metrics/prometheus_metrics.yaml':
         ensure  => present,
-        source  => 'puppet:///modules/toolforge/k8s/prometheus_metrics.yaml',
+        source  => 'puppet:///modules/toolforge/k8s/metrics/prometheus_metrics.yaml',
         require => File['/etc/kubernetes'],
     }
 
@@ -20,21 +25,21 @@ class toolforge::k8s::prometheus_metrics_yaml(
     #   root:~# wmcs-k8s-secret-for-cert -n kube-system -s metrics-server-certs -a metrics-server
     #
     # See also: https://wikitech.wikimedia.org/wiki/Portal:Toolforge/Admin/Deploying_k8s
-    file { '/etc/kubernetes/metrics-server.yaml':
+    file { '/etc/kubernetes/metrics/metrics-server.yaml':
         ensure  => present,
-        source  => 'puppet:///modules/toolforge/k8s/metrics-server.yaml',
+        source  => 'puppet:///modules/toolforge/k8s/metrics/metrics-server.yaml',
         require => File['/etc/kubernetes'],
     }
 
-    file { '/etc/kubernetes/kube-state-metrics.yaml':
+    file { '/etc/kubernetes/metrics/kube-state-metrics.yaml':
         ensure  => present,
-        source  => 'puppet:///modules/toolforge/k8s/kube-state-metrics.yaml',
+        source  => 'puppet:///modules/toolforge/k8s/metrics/kube-state-metrics.yaml',
         require => File['/etc/kubernetes'],
     }
 
-    file { '/etc/kubernetes/cadvisor.yaml':
+    file { '/etc/kubernetes/metrics/cadvisor.yaml':
         ensure  => present,
-        source  => 'puppet:///modules/toolforge/k8s/cadvisor.yaml',
+        source  => 'puppet:///modules/toolforge/k8s/metrics/cadvisor.yaml',
         require => File['/etc/kubernetes'],
     }
 }

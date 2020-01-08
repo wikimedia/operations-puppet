@@ -67,5 +67,5 @@ class profile::toolforge::k8s::control(
 
     class { '::toolforge::k8s::admin_scripts': }
 
-    class { '::toolforge::k8s::prometheus_metrics_yaml': }
+    class { '::toolforge::k8s::metrics_yaml': }
 }
