@@ -3437,6 +3437,7 @@ users:
     name: cohi
     ssh_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCq57fv655bFwQ7Z/YRa8VD+ngXJ1adSYmZY9BiFLUIkJbLi8u1VaZgOPP05fehVkhlPPrPiN13ilMZTw/p5GADdWi7uBHGZuNAzsk4DZOKME4MaR9V+M8tY+i/uPGu5yyG8a8JrB2bO+h9wW/vV/Yf9ap2azbatAf318/ADI/oYt6nyvnqE06JUMfS318nWhKwbd+P2Ah0GSM71gV2omXsevKzgeepHCz2+w7GZX4dEwSpHWuTyxJx2agjYboths+kQcH9Cs1nI0KkKhkdvIkYmsACx8pWkh2iqayOHmCS21WTTXC1jZam/qzcST/5cbW0C72H3Lm3gNYYXYRFSZVWbW1CqKfVrKhlJMucKy4C29N5sXUH3kbQf2MKM6//AtPQBey2I0u+DjjI2MAkT1QwOtR7EEoEmHuZakoECoQE6YO69HEZqijSweBQk8Tz6EHJ0mPCT3B+YDKeMvOPp9ICC5Eo1+qWaRb1dLEXABisfQfE7anoBe3toMJjTZTQDeU5ZUY39uRgFYOrwiXLFFZtXRDVb+GWb91+hZmte0d0w5EQ4ZWV/98f94BOxvEpMEYhQfi/q+zzlMrVMTAmSlSbGwj7ldPCuT77waHO6ahnNRsWuTUHZhIRhjqCT4eE865EHk/wsJwRXZr6cnU8BX+OW1pw84I3hOG7ZIzBtAL3bQ== corinna.hillebrand@wikimedia.de
+    krb: present
   gsingers:
     ensure: present
     realname: Grant Ingersoll
