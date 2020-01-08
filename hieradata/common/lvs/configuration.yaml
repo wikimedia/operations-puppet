@@ -1789,7 +1789,7 @@ lvs::configuration::lvs_services:
           hostname: eventgate-analytics.svc.eqiad.wmnet
         codfw:
           hostname: eventgate-analytics.svc.codfw.wmnet
-  eventgate-main:
+  eventgate-main-http:
     description: "EventGate main endpoint, eventgate-main.svc.%{::site}.wmnet"
     class: low-traffic
     sites:
