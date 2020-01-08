@@ -1735,7 +1735,7 @@ lvs::configuration::lvs_services:
           hostname: blubberoid.svc.eqiad.wmnet
         codfw:
           hostname: blubberoid.svc.codfw.wmnet
-  eventgate-analytics:
+  eventgate-analytics-http:
     description: "EventGate Analytics endpoint, eventgate-analytics.svc.%{::site}.wmnet"
     class: low-traffic
     sites:
