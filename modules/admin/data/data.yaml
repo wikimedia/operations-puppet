@@ -3037,6 +3037,7 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDUGwDQt0/RIZ0YhzjVHZL8YqRF1I6lKxJIhNOFq/rlZiQ0Lvt6awwzAVn/uDSizANiv2tiWbVoyBPhX46MBPzMBBTKbSLL3uUYS3tG4kC1DiawzOcumr3oIVoFrJf3vX4m51P6vySMFCmmwG8N10YFHj0YFYJ5tPSMNk0KqYTflzw7gFbObhpbopUDarOdF3p3jpprEIdZetVfSLIWgeT8H9COR8+TbygyB6vKYon8M+2+M+bdC3wNTVHfY6UoYQJaL+ptoO26qSbyFoQJtzu8bfpvFBT+gl1wCWoG+Ygho7QcqxQtHIjCC0gKX2m7huMfpbbscNBF6BbKCGbzmTViV6e3Q9hacCMfUhN579u16ryU6wr1zeCjTZL5UqrcztFgPWEGOnAF4QH4gi4cAl2728ptJ0fKt2Gyfj1QmOc+HTWeYE4BRww8CS/JUjhElTx98hAYtBk/Rsv0/QOYW/Gr0lpdFaJfWb5a5MGnuXv5XiEpR0R566bVcc2aK0b5walIHPg19cT0gwPvadgnjNzys2HXwrdDfEFAjlJWH0BvTeXQpXQT1+7YccsPRH65p9TW3shYZOWrUgWsyC6r5DN5ChW7jpvQyVtdCycYNlrH87KRDM179gqX6msBuRaIWhW2i00CzZ5D3PCn8O0ISPAgc2OelSCm38b8KR2Gr4GVuQ== gabriel.birke@wikimedia.de
     uid: 12490
     email: gabriel.birke@wikimedia.de
+    krb: present
   drossi:
     ensure: present
     gid: 500
