@@ -284,7 +284,7 @@ groups:
               niharika29, ryanmax, afandian2, jgleeson, toddleroux, srishakatux, dsharpe, eyener,
               esanders, sukhe, jfishback, iflorez, mayakpwiki, conniecc1, abi, mgerlach, dedcode,
               lexnasser, kevinbazira, keepit-ssh, jiji, cohi, mstyles, accraze, kzeta, snowick,
-              aarora, zpapierski]
+              aarora, zpapierski, knissen]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata]
   analytics-admins:
@@ -3530,6 +3530,14 @@ users:
     gid: 500
     ssh_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDD9i9cztTgBWMuqJbJUYEpRf5c++ZsmxzMkGRGNi9V3uIKeDI2STAI+lAZjPSVA4Dl2x8F62/DFRNcXzzIMWrgcYdyqwyTJMnMXjbR/Zzk62Lq08gm9zfwEsrzcg+0M1xf9k6Awo/l0pFvuplvSJHZgR6rCvvTV5+t16XHj57/iNeia9GmkEHhYBRdp2diP35QPuxo+cN01U1vx8BTDb/GQLUnSG3mK841DioIFf4uoNwLoUtYVOwCI7zjKlL0qEfL+ik4suk53gcj+9MgPmWQFgKmjHl0zt2VYva96a3ewAu38T5QXyBAgtC3Pf6pJxPQ99Naylz/7fq1fi+jE6P7bWcd/kf2kMPs9dVzz1BBvgMXRD64yAZWjU23z7WiYvJCdstwiyTrqrDsQBCmKeA+UhMlcoZ+bQq4w/ltyHa6TT2EOnxnf+oxDe+MhcqN6o7khPcSDx0jwWWdIYtdkoq94KDGnl2THcZL1MkkeFOd/XKN1+BpEXD+Y1eYuxoP/rwxj6/2G87MOt6cF2u6nHbP7pJ6x9J/LndJNBwktsN0OAelmlc01bn5DQaGyGsoX6+tbGe8BUtpp7ujXvCl7nooT9N6lBseyUWsBKX89hUGk0a4WKdA/pKLEnDeDxrx0ieCcZ1aXl85gKdvJWSaxNs0rgrcQTHoaNwMtIcdCCsbAw== candrew@wikimedia.org
+  knissen:
+    ensure: present
+    realname: Kai Nissen
+    email: kai.nissen@wikimedia.de
+    uid: 2197
+    gid: 500
+    ssh_keys:
+     - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDc58bfUYS6EsCKBZOxmQLpLsZp+Juyjgvl6tlG/TPR/ kani@C107
 ldap_only_users:
   abartov:
     ensure: present
@@ -3649,10 +3657,6 @@ ldap_only_users:
     ensure: present
     realname: Jessica Robell
     email: jrobell@wikimedia.org
-  knissen:
-    ensure: present
-    realname: Kai Nissen
-    email: kai.nissen@wikimedia.de
   krli:
     ensure: present
     realname: Kris Litson
