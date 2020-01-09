@@ -1969,7 +1969,7 @@ node 'tungsten.eqiad.wmnet' {
 # new url-downloaders (T224551)
 # https://wikitech.wikimedia.org/wiki/Url-downloader
 node /^urldownloader[12]00[12]\.wikimedia\.org/ {
-    role(spare::system)
+    role(url_downloader)
 }
 
 # To see cloudvirt nodes active in the scheduler look at hiera:
