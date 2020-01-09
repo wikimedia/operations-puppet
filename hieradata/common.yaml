@@ -1397,6 +1397,7 @@ shared_acme_certificates:
     authorized_regexes:
     - '^ncredir100[12]\.eqiad\.wmnet$'
     - '^ncredir200[12]\.codfw\.wmnet$'
+    - '^ncredir300[12]\.esams\.wmnet$'
     prevalidate: true
     skip_invalid_snis: true
   non-canonical-redirect-2:
@@ -1445,6 +1446,7 @@ shared_acme_certificates:
     authorized_regexes:
     - '^ncredir100[12]\.eqiad\.wmnet$'
     - '^ncredir200[12]\.codfw\.wmnet$'
+    - '^ncredir300[12]\.esams\.wmnet$'
     prevalidate: true
     skip_invalid_snis: true
   non-canonical-redirect-3:
@@ -1491,6 +1493,7 @@ shared_acme_certificates:
     authorized_regexes:
     - '^ncredir100[12]\.eqiad\.wmnet$'
     - '^ncredir200[12]\.codfw\.wmnet$'
+    - '^ncredir300[12]\.esams\.wmnet$'
     prevalidate: true
     skip_invalid_snis: true
   non-canonical-redirect-4:
@@ -1525,6 +1528,7 @@ shared_acme_certificates:
     authorized_regexes:
     - '^ncredir100[12]\.eqiad\.wmnet$'
     - '^ncredir200[12]\.codfw\.wmnet$'
+    - '^ncredir300[12]\.esams\.wmnet$'
     prevalidate: true
     skip_invalid_snis: true
   non-canonical-redirect-5:
@@ -1575,6 +1579,7 @@ shared_acme_certificates:
     authorized_regexes:
     - '^ncredir100[12]\.eqiad\.wmnet$'
     - '^ncredir200[12]\.codfw\.wmnet$'
+    - '^ncredir300[12]\.esams\.wmnet$'
     prevalidate: true
     skip_invalid_snis: true
   non-canonical-redirect-6:
@@ -1625,6 +1630,7 @@ shared_acme_certificates:
     authorized_regexes:
     - '^ncredir100[12]\.eqiad\.wmnet$'
     - '^ncredir200[12]\.codfw\.wmnet$'
+    - '^ncredir300[12]\.esams\.wmnet$'
     prevalidate: true
     skip_invalid_snis: true
 ldap:

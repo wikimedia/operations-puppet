@@ -1676,6 +1676,10 @@ node /^ncredir200[12]\.codfw\.wmnet$/ {
     role(ncredir)
 }
 
+node /^ncredir300[12]\.esams\.wmnet$/ {
+    role(ncredir)
+}
+
 # SWAP (Jupyter Notebook) Servers with Analytics Cluster Access
 node /notebook100[34].eqiad.wmnet/ {
     role(swap)

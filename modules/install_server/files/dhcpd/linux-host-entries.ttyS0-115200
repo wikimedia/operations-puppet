@@ -571,6 +571,16 @@ host ncredir2002 {
     fixed-address ncredir2002.codfw.wmnet;
 }
 
+host ncredir3001 {
+    hardware ethernet aa:00:00:19:55:e5;
+    fixed-address ncredir3001.esams.wmnet;
+}
+
+host ncredir3002 {
+    hardware ethernet aa:00:00:a6:55:cd;
+    fixed-address ncredir3002.esams.wmnet;
+}
+
 host neon {
     hardware ethernet aa:00:00:7d:1a:57;
     fixed-address neon.eqiad.wmnet;
