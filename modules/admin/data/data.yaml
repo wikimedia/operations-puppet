@@ -3263,6 +3263,7 @@ users:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOvQPxrbAfdwDNnWroKYoHrSLGgAudhmpRbryJ3Vd6eL jfishback@wikimedia.org
     uid: 21257
     email: jfishback@wikimedia.org
+    krb: present
   urbanecm:
     ensure: present
     gid: 500
