@@ -88,6 +88,16 @@ class profile::wmcs::prometheus(
         },
     ]
 
+    $ceph_jobs = [
+      {
+        'job_name'        => "ceph_${::site}",
+        'scheme'          => 'http',
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/ceph_${::site}.yaml" ]}
+        ],
+      },
+    ]
+
     file { "${targets_path}/blackbox_http_keystone.yaml":
       content => ordered_yaml([{
         'targets' => ['cloudcontrol1003.wikimedia.org:5000/v3', # keystone
@@ -135,6 +145,13 @@ class profile::wmcs::prometheus(
         }]);
     }
 
+    prometheus::class_config{ "ceph_${::site}":
+        dest       => "${targets_path}/ceph_${::site}.yaml",
+        site       => $::site,
+        class_name => 'role::wmcs::ceph::mon',
+        port       => 9283,
+    }
+
     prometheus::server { 'labs':
         listen_address        => ':9900',
         storage_retention     => $storage_retention,
@@ -143,6 +160,7 @@ class profile::wmcs::prometheus(
         scrape_configs_extra  => array_concat(
             $blackbox_jobs, $rabbitmq_jobs, $pdns_jobs,
             $pdns_rec_jobs, $openstack_jobs, $redis_jobs,
+            $ceph_jobs,
         ),
     }
 
