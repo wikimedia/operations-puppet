@@ -12,8 +12,10 @@ maximum_object_size 1010 MB
 cache_replacement_policy heap LFUDA
 <%- if scope.function_os_version(['debian >= stretch']) -%>
 access_log /var/log/squid/access.log squid
+coredump_dir /var/spool/squid
 <%- else -%>
 access_log /var/log/squid3/access.log squid
+coredump_dir /var/spool/squid3
 <% end -%>
 log_mime_hdrs on
 hosts_file /etc/hosts
@@ -78,5 +80,3 @@ cache_effective_group proxy
 visible_hostname url-downloader.wikimedia.org
 
 via off
-
-coredump_dir /var/spool/squid3
