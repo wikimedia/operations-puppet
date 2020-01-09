@@ -2899,6 +2899,7 @@ users:
     - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDMquf0ywthSAksqXIMATkeQt8ui6B2JxWES4zEMQVYtPlVUNnFGQyAbYN/Fe5kn1pEERkmMFJb+hin0d4V09r6al1LtJmFzyDBw9dfsmbPjUDwY+1T8ADNzBXgtySQ3W5U1KLd2YeQRXmirD26/uhaGwXEcq8GLN/BlFdqvpjeM5/9ESGvE0gP1gfmM+uxb4PyYMMAUpK8SxAGN5cBbSO45kdPOSKt1jd6kF2ZjLGCATzwC0a1USAz5ivVyaPnzVzFY3jjLaACRitwWWEycNdqXha5Vk7Y7xyOr64jaPQSzZq5XWWxrTWsNC7Qzy398a5cFbXL6k7/CgpDGYRbdB3M+ibGJllZcDznzNM6u4XGewHwjzIwlcxFHwBX6pG1n3GXOayGlPSj0VGelw363klpi7FKxw2g4Q2cp3SvYuEet+psU5qI8MexOQjoH7uK0M5axiTVN2muSTuulpUwcyxzunLMxr5PkoHmHVz7Ap+4L4PNencMiZ77PHm7gz3dBVrB70UTnvSxaYDwPZvj/OcPhvlMPLe70KZs5OAyjqCADNNF8m11mG7a4MJUb8a0uT3jamX7zAwgj/kVibGN0tBrZID+scpuNXRN6gfbOactUJ9glXvxKFtFerXVTDQXqpZxSUbp45+sNvHvQwxdU/PFzFzR46+bOXlIz1HZanX7Ow== mepps@saturn
     uid: 16947
     email: mepps@wikimedia.org
+    krb: present
   mmiller:
     ensure: present
     realname: Marshall Miller
