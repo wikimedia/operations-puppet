@@ -3619,6 +3619,24 @@ host mc2036 {
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
 }
 
+host mc-gp2001 {
+    hardware ethernet B0:26:28:CD:0D:F0;
+    fixed-address mc-gp2001.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
+}
+
+host mc-gp2002 {
+    hardware ethernet B0:26:28:CC:F7:C0;
+    fixed-address mc-gp2002.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
+}
+
+host mc-gp2003 {
+    hardware ethernet B0:26:28:CD:09:B0;
+    fixed-address mc-gp2003.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
+}
+
 host sodium {
     hardware ethernet f4:e9:d4:94:c5:90;
     fixed-address sodium.wikimedia.org;
