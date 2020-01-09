@@ -102,7 +102,7 @@ class lvs::monitor_services(
                 host        => "sessionstore.svc.${dc}.wmnet",
                 description => "Sessionstore ${dc}",
                 target      => "https://sessionstore.svc.${dc}.wmnet:8081",
-                params      => {'spec_segment' => '/openapi'},
+                params      => {'spec_segment' => ['/openapi']},
                 notes_url   => 'https://www.mediawiki.org/wiki/Kask',
                 ;
             "check_termbox_${dc}":
@@ -121,7 +121,7 @@ class lvs::monitor_services(
                 host        => "echostore.svc.${dc}.wmnet",
                 description => "Echostore ${dc}",
                 target      => "https://echostore.svc.${dc}.wmnet:8082",
-                params      => {'spec_segment' => '/openapi'},
+                params      => {'spec_segment' => ['/openapi']},
                 notes_url   => 'https://www.mediawiki.org/wiki/Kask',
                 ;
         }
