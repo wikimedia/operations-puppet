@@ -4,22 +4,19 @@ define apt::pin (
     $package=$name,
     $ensure=present,
 ) {
-    $filename = $name =~ /\.pref$/ ? {
-        true    => $name,
-        default => "${name.regsubst('\W', '_', 'G')}.pref"
+    # Validate that $name does not already have a ".pref" suffix.
+    if $name =~ /\.pref$/ {
+        fail('$name must not have a ".pref" suffix.')
     }
 
-    $_notify = defined('$notify') ? {
-        true => $notify,
-        default => Exec['apt-get update'],
-    }
+    $filename = regsubst( $name, '\W', '_', 'G' )
 
-    file { "/etc/apt/preferences.d/${filename}":
+    file { "/etc/apt/preferences.d/${filename}.pref":
         ensure  => $ensure,
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
         content => "Package: ${package}\nPin: ${pin}\nPin-Priority: ${priority}\n",
-        notify  => $_notify,
+        notify  => Exec['apt-get update'],
     }
 }
