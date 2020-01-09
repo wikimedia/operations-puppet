@@ -10,7 +10,7 @@ class gerrit::jetty(
     Stdlib::HTTPSUrl $url = "https://${::gerrit::host}/r",
     Stdlib::HTTPSUrl $gitiles_url = "https://${::gerrit::host}/g",
     String $db_name = 'reviewdb',
-    String $db_user = 'gerrit',
+    Optional[String] $db_user = undef,
     String $git_dir = 'git',
     Optional[String] $ssh_host_key = undef,
     String $heap_limit = '32g',

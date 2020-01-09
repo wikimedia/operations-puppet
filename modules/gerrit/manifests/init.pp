@@ -12,6 +12,7 @@ class gerrit(
     Enum['11', '8'] $java_version = '8',
     Optional[String] $scap_user = undef,
     Optional[String] $scap_key_name = undef,
+    Optional[String] $db_user = undef,
 ) {
 
     class { '::gerrit::jetty':
@@ -25,6 +26,7 @@ class gerrit(
         java_version  => $java_version,
         scap_user     => $scap_user,
         scap_key_name => $scap_key_name,
+        db_user       => $db_user,
     }
 
     class { '::gerrit::proxy':

@@ -17,6 +17,7 @@ class profile::gerrit::server(
     Boolean $is_replica = hiera('gerrit::server::is_replica', false),
     Optional[String] $scap_user = hiera('gerrit::server::scap_user', 'gerrit2'),
     Optional[String] $scap_key_name = hiera('gerrit::server::scap_key_name', 'gerrit'),
+    Optional[String] $db_user = hiera('gerrit::server::db_user', 'gerrit'),
 ) {
 
     interface::alias { 'gerrit server':
@@ -94,6 +95,7 @@ class profile::gerrit::server(
         java_version     => $java_version,
         scap_user        => $scap_user,
         scap_key_name    => $scap_key_name,
+        db_user          => $db_user,
     }
 
     class { '::gerrit::replication_key':
