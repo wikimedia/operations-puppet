@@ -21,7 +21,7 @@
 #   The blackbox exporter endpoint to scrape.
 #
 # [*timeout*]
-#   The scrape request timeout.
+#   The scrape request timeout in seconds.
 #
 # [*relabel_configs*]
 #   Prometheus relabeling configuration.

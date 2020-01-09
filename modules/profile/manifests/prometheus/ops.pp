@@ -1457,7 +1457,7 @@ class profile::prometheus::ops (
     $exported_blackbox_jobs = $blackbox_check_endpoint_jobs_raw.map |$job| {
         {
             'job_name'        => "swagger_${job['parameters']['job_name']}",
-            'scrape_timeout'  => $job['parameters']['timeout'],
+            'scrape_timeout'  => "${job['parameters']['timeout']}s",
             'static_configs'  => [{'targets' => $job['parameters']['targets']}],
             'params'          => $job['parameters']['params'],
             'metrics_path'    => $job['parameters']['metrics_path'],

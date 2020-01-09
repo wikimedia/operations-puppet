@@ -2,6 +2,7 @@ define monitoring::openapi_service (  # aka swagger
     String $target,
     String $description,
     String $notes_url,
+    String $active_host           = $::profile::icinga::active_host,
     Wmflib::Ensure $ensure        = 'present',
     String $site                  = $::site,
     Hash $params                  = {},
@@ -15,13 +16,16 @@ define monitoring::openapi_service (  # aka swagger
     String $contact_group         = lookup('contactgroups', {'default_value' => 'admins'}), # lint:ignore:wmf_styleguide
     String $notifications_enabled = $::profile::base::notifications_enabled,
 ) {
-    # Set up swagger exporter job if targets have been defined.
-    prometheus::blackbox_check_endpoint { $title:
-        targets          => [$target],
-        site             => $site,
-        params           => $params,
-        timeout          => $timeout,
-        exporter_address => '127.0.0.1:9220'  # from Prometheus host perspective
+    # only export if this is the active host
+    if ($::fqdn == $active_host) {
+        # Set up swagger exporter job if targets have been defined.
+        prometheus::blackbox_check_endpoint { $title:
+            targets          => [$target],
+            site             => $site,
+            params           => $params,
+            timeout          => $timeout,
+            exporter_address => '127.0.0.1:9220'  # from Prometheus host perspective
+        }
     }
 
     if ($params['spec_segment'] != undef) {
