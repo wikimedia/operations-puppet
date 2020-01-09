@@ -756,12 +756,8 @@ groups:
                  'ALL = NOPASSWD: /bin/systemctl restart airflow-webserver',
                  'ALL = NOPASSWD: /bin/systemctl stop airflow-kerberos',
                  'ALL = NOPASSWD: /bin/systemctl restart airflow-kerberos',
-                 'ALL = (analytics-search) NOPASSWD: /usr/local/bin/airflow *']
-  otrs-roots:
-    gid: 817
-    description: People having root on the OTRS hosts
-    members: [dsharpe]
-    privileges: ['ALL = (ALL) NOPASSWD: ALL']
+                 'ALL = (analytics-search) NOPASSWD: /usr/local/bin/airflow *',
+                 'ALL = (analytics-search) NOPASSWD: /usr/bin/env AIRFLOW_HOME=/etc/airflow /srv/deployment/search/airflow/venv/bin/airflow *']
 users:
   rush:
     ensure: present

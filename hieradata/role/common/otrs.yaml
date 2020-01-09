@@ -16,6 +16,3 @@ profile::tlsproxy::envoy::services:
 profile::tlsproxy::envoy::global_cert_name: "ticket.discovery.wmnet"
 profile::tlsproxy::envoy::sni_support: "no"
 profile::tlsproxy::envoy::tls_port: 1443
-
-admin::groups:
-  - otrs-roots
