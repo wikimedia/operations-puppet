@@ -1093,10 +1093,6 @@ node /^(phab1001\.eqiad|phab2001\.codfw)\.wmnet$/ {
     role(phabricator)
 }
 
-node 'phab1003.eqiad.wmnet' {
-    role(spare::system)
-}
-
 # Kafka Brokers - main-eqiad and main-codfw Kafka clusters.
 node /kafka100[123]\.eqiad\.wmnet/ {
     role(spare::system)
