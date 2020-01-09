@@ -14,19 +14,11 @@ class tor(
     Array[String] $fingerprints,
 ) {
 
-    apt::repository { 'thirdparty-tor':
-        uri        => $apt_uri,
-        dist       => $apt_dist,
-        components => 'thirdparty/tor',
-    }
-
-    package { 'libzstd1':
-        ensure => 'present',
-    }
-
-    package { 'tor':
-        ensure  => 'present',
-        require => [ Apt::Repository['thirdparty-tor'],Package['libzstd1'],Exec['apt-get update']],
+    apt::package_from_component { 'thirdparty-tor':
+        component => 'thirdparty/tor',
+        packages  => ['tor'],
+        distro    => $apt_dist,
+        uri       => $apt_uri,
     }
 
     # status monitor for tor - https://www.atagar.com/arm/
