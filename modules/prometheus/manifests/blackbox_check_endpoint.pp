@@ -21,7 +21,7 @@
 #   The blackbox exporter endpoint to scrape.
 #
 # [*timeout*]
-#   The scrape request timeout.
+#   The scrape request timeout in seconds.
 #
 # [*relabel_configs*]
 #   Prometheus relabeling configuration.
@@ -33,7 +33,7 @@ define prometheus::blackbox_check_endpoint (
     String $job_name = $title,
     Hash $params = {},
     String $metrics_path = '/probe',
-    String $timeout = '10s',
+    Integer $timeout = 10,
     String $exporter_address = '127.0.0.1:9115',
     Array[Hash] $relabel_configs = [
         {
