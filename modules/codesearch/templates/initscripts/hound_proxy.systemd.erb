@@ -1,0 +1,19 @@
+[Unit]
+Description=hound proxy gunicorn daemon
+After=network.target
+
+[Service]
+PIDFile=/run/gunicorn/pid
+User=www-data
+Group=www-data
+RuntimeDirectory=gunicorn
+WorkingDirectory=/srv/codesearch
+ExecStart=/usr/bin/gunicorn3 --pid /run/gunicorn/pid   \
+          -w 4 -b 0.0.0.0:3002 app:app
+ExecReload=/bin/kill -s HUP $MAINPID
+ExecStop=/bin/kill -s TERM $MAINPID
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
+
