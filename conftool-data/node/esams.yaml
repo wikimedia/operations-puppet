@@ -20,3 +20,6 @@ esams:
   dns:
     dns3001.wikimedia.org: [pdns_recursor]
     dns3002.wikimedia.org: [pdns_recursor]
+  ncredir:
+    ncredir3001.esams.wmnet: [nginx]
+    ncredir3002.esams.wmnet: [nginx]

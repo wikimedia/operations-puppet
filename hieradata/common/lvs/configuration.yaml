@@ -167,6 +167,9 @@ lvs::configuration::lvs_service_ips:
     eqiad:
       ncredirlb: 208.80.154.232
       ncredirlb6: 2620:0:861:ed1a::9
+    esams:
+      ncredirlb: 91.198.174.194
+      ncredirlb6: 2620:0:862:ed1a::3
   cloudelastic: &ip_block055
     eqiad:
       cloudelasticlb: 208.80.154.241
@@ -1979,6 +1982,7 @@ lvs::configuration::lvs_services:
     sites:
     - eqiad
     - codfw
+    - esams
     ip: *ip_block054
     depool-threshold: '.5'
     monitors:
@@ -1996,12 +2000,15 @@ lvs::configuration::lvs_services:
           hostname: ncredir-lb.eqiad.wikimedia.org
         codfw:
           hostname: ncredir-lb.codfw.wikimedia.org
+        esams:
+          hostname: ncredir-lb.esams.wikimedia.org
   ncredir-https:
     description: "Non canonical redirect service"
     class: high-traffic1
     sites:
     - eqiad
     - codfw
+    - esams
     ip: *ip_block054
     port: 443
     depool-threshold: '.5'
