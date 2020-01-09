@@ -147,7 +147,7 @@ profile::trafficserver::backend::mapping_rules:
       replacement: https://puppetboard.discovery.wmnet
     - type: map
       target: http://query.wikidata.org/bigdata/ldf
-      replacement: https://wdqs1005.eqiad.wmnet
+      replacement: https://wdqs1005.eqiad.wmnet/bigdata/ldf
     - type: map
       target: http://query.wikidata.org
       replacement: https://wdqs.discovery.wmnet
