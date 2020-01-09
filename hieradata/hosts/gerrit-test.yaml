@@ -8,6 +8,9 @@ gerrit::server::is_replica: false
 # No backups on the test server
 gerrit::server::backups_enabled: false
 
+# test server does not get write access to DB, readonly
+gerrit::server::db_user: 'gerritro'
+
 # jetty
 gerrit::jetty::heap_limit: 5g
 gerrit::jetty::replication: {}
