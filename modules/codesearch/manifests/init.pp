@@ -31,13 +31,6 @@ class codesearch(
         require => Package['docker-engine'],
     }
 
-    file { [$hound_dir, $clone_dir]:
-        ensure => directory,
-        owner  => 'codesearch',
-        group  => 'codesearch',
-        mode   => '0755',
-    }
-
     git::clone {'labs/codesearch':
         ensure    => latest,
         directory => $clone_dir,
