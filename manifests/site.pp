@@ -998,11 +998,6 @@ node 'grafana1002.eqiad.wmnet' {
     role(grafana)
 }
 
-# debug_proxy hosts; Varnish backend for X-Wikimedia-Debug reqs
-node /^(hassaleh|hassium)\.(codfw|eqiad)\.wmnet$/ {
-    role(debug_proxy)
-}
-
 # Old backup storage and active director: substituted by backup1001
 node 'helium.eqiad.wmnet' {
     role(backup::offsite)
