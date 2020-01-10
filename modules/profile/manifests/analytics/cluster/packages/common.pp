@@ -83,21 +83,9 @@ class profile::analytics::cluster::packages::common {
         # See: https://gerrit.wikimedia.org/r/c/operations/puppet/+/480041/
         # and: https://phabricator.wikimedia.org/T229347
         # python3.7 will assist with a Spark & Buster upgrade.
-        apt::repository { 'component-pyall':
-            uri        => 'http://apt.wikimedia.org/wikimedia',
-            dist       => "${::lsbdistcodename}-wikimedia",
-            components => 'component/pyall',
-            before     => [Package['python3.7'], Package['libpython3.7']],
-        }
-        if !defined(Package['python3.7']) {
-            package { 'python3.7':
-                ensure => 'installed',
-            }
-        }
-        if !defined(Package['libpython3.7']) {
-            package { 'libpython3.7':
-                ensure => 'installed',
-            }
+        apt::package_from_component { 'component-pyall':
+            component => 'component/pyall',
+            packages  => ['python3.7', 'libpython3.7']
         }
     }
 
