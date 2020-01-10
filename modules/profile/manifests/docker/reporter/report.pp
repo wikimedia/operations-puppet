@@ -19,6 +19,7 @@ define profile::docker::reporter::report(
         interval           => {'start' => 'OnCalendar', 'interval' => $interval},
         user               => 'root',
         environment        => {'http_proxy' => $proxy},
+        syslog_identifier  => "docker-report-${title}",
         # TODO: enable monitoring
         monitoring_enabled => false,
 
