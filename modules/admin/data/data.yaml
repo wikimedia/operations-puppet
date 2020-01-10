@@ -1030,7 +1030,7 @@ users:
     gid: 500
     name: conniecc1
     realname: Connie Chen
-    ssh_keys: [ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKGn8ICH7EqpRV1ADQ9xBZki5AzMlMAbvpGv/3becvam cchen@Connies-MacBook-Pro.local]
+    ssh_keys: [ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIME9W3hj5s1qi+8q5mco3IeBNFjPrAbgZkyfOramqpZe cchen@Connies-MacBook-Pro.local]
     uid: 21734
     email: cchen@wikimedia.org
     krb: present
