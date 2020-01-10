@@ -75,27 +75,17 @@ class jenkins(
         allowdupe => false,
     }
 
-    ensure_packages("openjdk-${java_version}-jdk")
+    require_package("openjdk-${java_version}-jdk")
 
     if os_version('debian >= stretch') {
-        apt::repository { 'jenkins-thirdparty-ci':
-            uri        => 'http://apt.wikimedia.org/wikimedia',
-            dist       => "${::lsbdistcodename}-wikimedia",
-            components => 'thirdparty/ci',
+        apt::package_from_component { 'jenkins-thirdparty-ci':
+            component => 'thirdparty/ci',
+            packages  => ['jenkins']
         }
 
-        package { 'jenkins':
-            ensure  => present,
-            require => [
-                Package["openjdk-${java_version}-jdk"],
-                Apt::Repository['jenkins-thirdparty-ci'],
-                Exec['apt-get update']
-            ],
-        }
     } else {
         package { 'jenkins':
             ensure  => present,
-            require => Package["openjdk-${java_version}-jdk"],
         }
     }
 
