@@ -27,7 +27,7 @@ class codesearch(
     user { 'codesearch':
         ensure  => present,
         system  => true,
-        group   => 'docker',
+        groups  => 'docker',
         require => Package['docker-engine'],
     }
 
