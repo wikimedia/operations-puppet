@@ -48,35 +48,12 @@ class thumbor (
     require_package('binutils') # The find_library() function in ctypes/Python uses objdump
 
     if (os_version('debian == stretch')) {
-        apt::repository {'wikimedia-thumbor':
-            uri        => 'http://apt.wikimedia.org/wikimedia',
-            dist       => 'stretch-wikimedia',
-            components => 'component/thumbor',
-            notify     => Exec['apt-get update'],
-            before     => [ Package['librsvg2-2'], Package['librsvg2-common'],
-                            Package['librsvg2-bin'], Package['python-thumbor-wikimedia'] ]
+        apt::package_from_component { 'wikimedia-thumbor':
+            component => 'component/thumbor',
+            packages  => ['librsvg2-2', 'librsvg2-common', 'librsvg2-bin',
+                          'python-thumbor-wikimedia'],
+            priority  => 1002,
         }
-
-        apt::pin { 'wikimedia-thumbor':
-            pin      => 'release c=component/thumbor',
-            priority => '1002',
-            before   => [ Package['librsvg2-2'], Package['librsvg2-common'],
-                          Package['librsvg2-bin'] ]
-        }
-    }
-
-    # We are not planning on installing other jessie servers - T214597
-    package { 'python-thumbor-wikimedia':
-        ensure          => installed,
-    }
-    package { 'librsvg2-2':
-        ensure          => installed,
-    }
-    package { 'librsvg2-bin':
-        ensure          => installed,
-    }
-    package { 'librsvg2-common':
-        ensure          => installed,
     }
 
     file { '/usr/local/lib/thumbor/':
