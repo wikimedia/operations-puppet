@@ -2,7 +2,7 @@
 # hosted at <http://transparency.wikimedia.org>.
 #
 class profile::microsites::transparency(
-    $ldap_config = lookup('ldap', Hash, hash, {}),
+    Hash $ldap_config = lookup('ldap', Hash, hash, {}),
 ){
 
     include ::passwords::ldap::production

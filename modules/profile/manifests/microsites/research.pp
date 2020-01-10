@@ -1,7 +1,7 @@
 # https://research.wikimedia.org (T183916)
 class profile::microsites::research(
-  $server_name = hiera('profile::microsites::research::server_name'),
-  $server_admin = hiera('profile::microsites::research::server_admin'),
+  $server_name = lookup('profile::microsites::research::server_name'),
+  $server_admin = lookup('profile::microsites::research::server_admin'),
 ) {
 
     httpd::site { 'research.wikimedia.org':

@@ -1,7 +1,7 @@
 # https://sitemaps.wikimedia.org/
 class profile::microsites::sitemaps(
-  $server_name = hiera('profile::microsites::sitemaps::server_name'),
-  $server_admin = hiera('profile::microsites::sitemaps::server_admin'),
+  $server_name = lookup('profile::microsites::sitemaps::server_name'),
+  $server_admin = lookup('profile::microsites::sitemaps::server_admin'),
 ) {
 
     httpd::site { $server_name:

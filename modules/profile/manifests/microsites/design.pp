@@ -1,7 +1,7 @@
 # https://design.wikimedia.org (T185282)
 class profile::microsites::design(
-  $server_name = hiera('profile::microsites::design::server_name'),
-  $server_admin = hiera('profile::microsites::design::server_admin'),
+  $server_name = lookup('profile::microsites::design::server_name'),
+  $server_admin = lookup('profile::microsites::design::server_admin'),
 ) {
 
     httpd::site { 'design.wikimedia.org':

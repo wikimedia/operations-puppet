@@ -1,6 +1,6 @@
 # static HTML archive of old RT tickets (T180641)
 class profile::microsites::static_rt(
-    $ldap_config = lookup('ldap', Hash, hash, {}),
+    Hash $ldap_config = lookup('ldap', Hash, hash, {}),
 ){
 
     backup::set { 'rt-static' : }

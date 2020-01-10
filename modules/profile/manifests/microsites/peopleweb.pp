@@ -1,6 +1,6 @@
 # let users publish their own HTML in their home dirs
 class profile::microsites::peopleweb (
-    $deployment_server = hiera('deployment_server'),
+    $deployment_server = lookup('deployment_server'),
 ){
 
     include ::profile::waf::apache2::administrative
