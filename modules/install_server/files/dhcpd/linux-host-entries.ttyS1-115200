@@ -2610,6 +2610,7 @@ host es2023 {
 host es2024 {
     hardware ethernet B0:26:28:F5:2C:04 ;
     fixed-address es2024.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host es2025 {
