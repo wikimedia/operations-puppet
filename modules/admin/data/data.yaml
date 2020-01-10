@@ -3609,6 +3609,10 @@ ldap_only_users:
     ensure: present
     realname: Greta Doci
     email: greta.doci@wikimedia.de
+  hnowlan:
+    ensure: present
+    realname: Hugh Nowlan
+    email: hnowlan@wikimedia.org
   ha78na:
     ensure: present
     realname: Hana Worku
