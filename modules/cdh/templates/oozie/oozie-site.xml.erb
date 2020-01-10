@@ -503,4 +503,11 @@
 
 <% end # if @smtp_host -%>
 
+<% if @spark_defaults_config_dir -%>
+    <property>
+        <name>oozie.service.SparkConfigurationService.spark.configurations</name>
+        <value>*=<%= @spark_defaults_config_dir %></value>
+    </property>
+<% end -%>
+
 </configuration>

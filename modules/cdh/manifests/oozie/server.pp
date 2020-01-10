@@ -85,6 +85,7 @@ class cdh::oozie::server(
     $oozie_authentication_kerberos_principal     = "HTTP/localhost@${local_realm}",
     $oozie_authentication_kerberos_name_rules    = 'DEFAULT',
     $use_kerberos                                = false,
+    $spark_defaults_config_dir                   = undef,
 ) {
     # cdh::oozie::server requires Hadoop client and configs are installed.
     Class['cdh::hadoop'] -> Class['cdh::oozie::server']
