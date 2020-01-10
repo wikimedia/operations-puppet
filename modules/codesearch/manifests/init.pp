@@ -18,11 +18,17 @@ class codesearch(
         'python3-yaml',
     ])
 
+    group { 'codesearch':
+        ensure => present,
+        name   => 'codesearch',
+        system => true,
+    }
+
     user { 'codesearch':
-        ensure     => present,
-        system     => true,
-        membership => ['docker'],
-        require    => Package['docker-engine'],
+        ensure  => present,
+        system  => true,
+        group   => 'docker',
+        require => Package['docker-engine'],
     }
 
     file { [$hound_dir, $clone_dir]:
