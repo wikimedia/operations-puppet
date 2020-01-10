@@ -230,18 +230,6 @@ host grafana1002 {
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
-host hassaleh {
-    hardware ethernet aa:00:00:3f:8c:a0;
-    fixed-address hassaleh.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-}
-
-host hassium {
-    hardware ethernet aa:00:00:aa:c7:02;
-    fixed-address hassium.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-}
-
 host idp1001 {
     hardware ethernet aa:00:00:43:ae:c7;
     fixed-address idp1001.wikimedia.org;
