@@ -1358,6 +1358,10 @@ node /^mc20(19|2[0-9]|3[0-6])\.codfw\.wmnet/ {
     role(mediawiki::memcached)
 }
 
+node /^mc-gp200[1-3]\.codfw\.wmnet/ {
+    role(mediawiki::memcached::gutter)
+}
+
 # OTRS - ticket.wikimedia.org
 node 'mendelevium.eqiad.wmnet' {
     role(otrs)
