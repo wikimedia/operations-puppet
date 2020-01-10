@@ -78,27 +78,9 @@ class gerrit::jetty(
         require_package('openjdk-11-jdk')
         require_package('openjdk-11-dbg')
     } else {
-        apt::repository { 'wikimedia-openjdk8':
-            uri        => 'http://apt.wikimedia.org/wikimedia',
-            dist       => 'buster-wikimedia',
-            components => 'component/jdk8',
-            notify     => Exec['apt_update_jdk8'],
-        }
-
-        # First installs can trip without this
-        exec {'apt_update_jdk8':
-            command     => '/usr/bin/apt-get update',
-            refreshonly => true,
-            logoutput   => true,
-        }
-
-        package { 'openjdk-8-jdk':
-            ensure  => present,
-            require => Apt::Repository['wikimedia-openjdk8'],
-        }
-        package { 'openjdk-8-dbg':
-            ensure  => present,
-            require => Apt::Repository['wikimedia-openjdk8'],
+        apt::package_from_component { 'wikimedia-openjdk8':
+            component => 'component/jdk8',
+            packages  => ['openjdk-8-jdk', 'openjdk-8-dbg']
         }
     }
 
