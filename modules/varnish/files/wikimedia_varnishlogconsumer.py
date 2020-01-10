@@ -21,14 +21,89 @@
 
 """
 
+
 import argparse
+import json
 import logging
 import logstash
 import os
 import sys
+import traceback
 from urllib.parse import urlparse
 
+from collections import OrderedDict
+from datetime import date, datetime
 from subprocess import PIPE, Popen
+
+
+# https://github.com/urbaniak/cee-formatter/blob/master/cee_formatter.py
+# "cee" was MITRE' standard for logging, we're using the "@cee:" token in logs
+# to identify JSON-formatted logs via mmjsonparse rsyslog module.
+
+class CEEFormatter(logging.Formatter):
+    IGNORED_FIELDS = (
+        'args',
+        'asctime',
+        'created',
+        'exc_info',
+        'levelno',
+        'module',
+        'msecs',
+        'message',
+        'msg',
+        'name',
+        'pathname',
+        'process',
+        'relativeCreated',
+        'thread',
+    )
+
+    def __init__(self, *args, **kwargs):
+        self.ignored_fields = kwargs.get('ignored_fields', self.IGNORED_FIELDS)
+
+        super(CEEFormatter, self).__init__(*args, **kwargs)
+
+    def jsonhandler(self, obj):
+        if isinstance(obj, datetime) and self.datefmt:
+            return obj.strftime(self.datefmt)
+        elif isinstance(obj, date) or isinstance(obj, datetime):
+            return obj.isoformat()
+        try:
+            return str(obj)
+        except Exception:
+            return '<object of type \'{}\' cannot be converted to str>'.format(
+                type(obj).__name__
+            )
+
+    def format(self, log_record):
+        record = OrderedDict()
+
+        record['time'] = datetime.utcfromtimestamp(log_record.created)
+
+        record['message'] = log_record.getMessage()
+        record['pid'] = log_record.process
+        record['tid'] = log_record.thread
+        record['level'] = log_record.levelname
+        record['logger'] = log_record.name
+
+        if log_record.exc_info:
+            record['exception'] = '\n'.join(
+                traceback.format_exception(*log_record.exc_info)
+            )
+
+        for k in sorted(log_record.__dict__.keys()):
+            if log_record.__dict__[k] is not None and k not in self.ignored_fields:
+                record[k] = log_record.__dict__[k]
+
+        if record['threadName'] == 'MainThread':
+            del record['threadName']
+
+        if record['processName'] == 'MainProcess':
+            del record['processName']
+
+        return '@cee: %s' % (
+            json.dumps(record, default=self.jsonhandler)
+        )
 
 
 def parse_logstash_server_string(server_string):
@@ -113,6 +188,7 @@ class BaseVarnishLogConsumer(object):
             )
         else:
             handler = logging.StreamHandler(sys.stdout)
+            handler.setFormatter(CEEFormatter())
 
         handler.setLevel(logging.DEBUG)
 
