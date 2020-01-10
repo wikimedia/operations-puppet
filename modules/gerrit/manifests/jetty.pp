@@ -22,7 +22,7 @@ class gerrit::jetty(
     String $smtp_encryption = 'none',
     Optional[Hash] $ldap_config = undef,
     # You must also change $java_home when changing versions.
-    Enum['11', '8'] $java_version = '8',
+    Integer[8, 11] $java_version = 8,
     Optional[String] $scap_user = undef,
     Optional[String] $scap_key_name = undef,
     ) {
@@ -74,7 +74,7 @@ class gerrit::jetty(
         '-XX:GCLogFileSize=2M',
     ]
 
-    if $java_version == '11' {
+    if $java_version == 11 {
         require_package('openjdk-11-jdk')
         require_package('openjdk-11-dbg')
     } else {

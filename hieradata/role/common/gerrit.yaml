@@ -25,8 +25,18 @@ gerrit::server::rsync_user_name: 'gerrit2'
 gerrit::server::backups_enabled: true
 gerrit::server::backup_set: 'srv-gerrit-git'
 
+# Database
+gerrit::server::db_user: 'gerrit'
+
 # SSL/TLS certs
 gerrit::server::use_acmechief: true
+
+# Java
+gerrit::server::java_version: 8
+
+## Deployment
+gerrit::server::scap_user: 'gerrit2'
+gerrit::server::scap_key_name: 'gerrit'
 
 # List of gerrit servers used in firewall rules.
 gerrit::servers:

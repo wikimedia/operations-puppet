@@ -121,3 +121,18 @@ scap::sources:
 
 # Database (MySQL, will not be used in future)
 gerrit::server::db_user: 'gerrit'
+
+## Java
+gerrit::server::java_version: 8
+
+## Deployment
+gerrit::server::scap_user: 'gerrit2'
+gerrit::server::scap_key_name: 'gerrit'
+
+## Database
+gerrit::server::db_user: 'gerrit'
+
+## TLS
+gerrit::server::use_acmechief: false
+
+gerrit::service::ipv6: undef

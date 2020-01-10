@@ -9,7 +9,7 @@ class gerrit(
     Boolean $use_acmechief = false,
     Optional[Hash] $ldap_config = undef,
     Optional[Stdlib::Ipv6] $ipv6,
-    Enum['11', '8'] $java_version = '8',
+    Integer[8, 11] $java_version = 8,
     Optional[String] $scap_user = undef,
     Optional[String] $scap_key_name = undef,
     Optional[String] $db_user = undef,
