@@ -1,15 +1,15 @@
 # server hosting Mediawiki releases
 # https://releases.wikimedia.org/mediawiki/
 class profile::releases::mediawiki (
-    $sitename = hiera('profile::releases::mediawiki::sitename'),
-    $sitename_jenkins = hiera('profile::releases::mediawiki::sitename_jenkins'),
-    $prefix = hiera('profile::releases::mediawiki::prefix'),
-    $http_port = hiera('profile::releases::mediawiki::http_port'),
-    $server_admin = hiera('profile::releases::mediawiki::server_admin'),
-    $active_server = hiera('releases_server'),
-    $passive_server = hiera('releases_server_failover'),
-    $jenkins_agent_username = hiera('jenkins_agent_username'),
-    $jenkins_agent_key = hiera('profile::releases::mediawiki::jenkins_agent_key'),
+    $sitename = lookup('profile::releases::mediawiki::sitename'),
+    $sitename_jenkins = lookup('profile::releases::mediawiki::sitename_jenkins'),
+    $prefix = lookup('profile::releases::mediawiki::prefix'),
+    $http_port = lookup('profile::releases::mediawiki::http_port'),
+    $server_admin = lookup('profile::releases::mediawiki::server_admin'),
+    $active_server = lookup('releases_server'),
+    $passive_server = lookup('releases_server_failover'),
+    $jenkins_agent_username = lookup('jenkins_agent_username'),
+    $jenkins_agent_key = lookup('profile::releases::mediawiki::jenkins_agent_key'),
 ){
     class { '::jenkins':
         access_log => true,

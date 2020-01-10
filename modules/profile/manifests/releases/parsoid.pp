@@ -1,8 +1,8 @@
 # server hosting (an archive of) Parsoid releases
 # https://releases.wikimedia.org/parsoid/
 class profile::releases::parsoid (
-    $active_server = hiera('releases_server'),
-    $passive_server = hiera('releases_server_failover'),
+    $active_server = lookup('releases_server'),
+    $passive_server = lookup('releases_server_failover'),
 ){
     file { '/srv/org/wikimedia/releases/parsoid':
         ensure => 'directory',

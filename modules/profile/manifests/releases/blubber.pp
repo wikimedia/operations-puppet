@@ -1,7 +1,7 @@
 # https://releases.wikimedia.org/blubber
 class profile::releases::blubber (
-    $active_server = hiera('releases_server'),
-    $passive_server = hiera('releases_server_failover'),
+    $active_server = lookup('releases_server'),
+    $passive_server = lookup('releases_server_failover'),
 ){
     file { '/srv/org/wikimedia/releases/blubber':
         ensure => 'directory',

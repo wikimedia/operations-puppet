@@ -1,8 +1,8 @@
 # server hosting Mediawiki releases
 # https://releases.wikimedia.org/mediawiki/
 class profile::releases::reprepro(
-    $active_server = hiera('releases_server'),
-    $passive_server = hiera('releases_server_failover'),
+    $active_server = lookup('releases_server'),
+    $passive_server = lookup('releases_server_failover'),
 ){
 
   class { '::releases::reprepro': }
