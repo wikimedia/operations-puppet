@@ -4,7 +4,7 @@ profile::base::domain_search:
   - eqiad.wmflabs
   - codfw.wmflabs
 
-scap::deployment_server: deploy1001.devtools.eqiad.wmflabs
+scap::deployment_server: deploy-1002.devtools.eqiad.wmflabs
 
 # Phabricator
 profile::standard::has_default_mail_relay: false
