@@ -35,7 +35,7 @@ class codesearch(
         ensure    => latest,
         directory => $clone_dir,
         branch    => 'master',
-        require   => [File[$clone_dir], User['codesearch']],
+        require   => User['codesearch'],
         owner     => 'codesearch',
         group     => 'codesearch',
     }
@@ -44,7 +44,7 @@ class codesearch(
         ensure    => latest,
         directory => $puppet_dir,
         branch    => 'production',
-        require   => [File[$puppet_dir], User['codesearch']],
+        require   => User['codesearch'],
         owner     => 'codesearch',
         group     => 'codesearch',
     }
