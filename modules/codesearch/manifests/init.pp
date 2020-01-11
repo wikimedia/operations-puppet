@@ -10,8 +10,12 @@ class codesearch(
     $clone_dir  = "${base_dir}/codesearch"
     $puppet_dir = "${base_dir}/puppet"
 
+    apt::package_from_component { 'thirdparty-kubeadm-k8s':
+        components => 'thirdparty/kubeadm-k8s',
+        packages   => 'docker-ce',
+    }
+
     require_package([
-        'docker-engine',
         'gunicorn3',
         'python3-flask',
         'python3-requests',
@@ -28,7 +32,7 @@ class codesearch(
         ensure  => present,
         system  => true,
         groups  => 'docker',
-        require => Package['docker-engine'],
+        require => Package['docker-ce'],
     }
 
     git::clone {'labs/codesearch':
