@@ -4,8 +4,6 @@ profile::base::domain_search:
   - eqiad.wmflabs
   - codfw.wmflabs
 
-scap::deployment_server: deploy-1002.devtools.eqiad.wmflabs
-
 # Phabricator
 profile::standard::has_default_mail_relay: false
 phabricator_logmail: false
@@ -51,3 +49,89 @@ phabricator_cluster_search:
   port: 9243
   type: elasticsearch
   version: 5
+
+# Deployment server, scap, acme-chief
+
+deployment_server: deploy-1002.devtools.eqiad.wmflabs
+scap::deployment_server: deploy-1002.devtools.eqiad.wmflabs
+
+has_lvs: false
+has_tls: false
+
+mcrouter::has_ssl: false
+mcrouter::port: 11213
+mcrouter::shards:
+  wancache:
+    eqiad:
+      shard01:
+        host: deployment-memc04
+        port: 11211
+      shard02:
+        host: deployment-memc05
+        port: 11211
+      shard03:
+        host: deployment-memc08
+        port: 11211
+profile::kubernetes::deployment_server::git_group: wikidev
+profile::kubernetes::deployment_server::git_owner: trebuchet
+profile::mediawiki::apc_shm_size: 128M
+profile::mediawiki::deployment::server::rsync_host: deploy1001.devtools.eqiad.wmflabs
+profile::mediawiki::php::enable_fpm: true
+profile::mediawiki::php::php_version: '7.3'
+profile::rsyslog::kafka_shipper::kafka_brokers: []
+profile::services_proxy::ensure: absent
+profile::services_proxy::services:
+  dummy:
+    hostname: dummy.example.net
+    localport: 9999
+    port: 9999
+    scheme: https
+    timeout: 600
+redis::shards:
+  sessions:
+    eqiad:
+      shard01:
+        host: 172.16.5.76
+        port: 6379
+      shard02:
+        host: 172.16.5.17
+        port: 6379
+      shard03:
+        host: 172.16.5.12
+        port: 6379
+      shard04:
+        host: 172.16.5.2
+        port: 6379
+scap::dsh::groups:
+  librenms:
+    hosts:
+    - deployment-netbox.deployment-prep.eqiad.wmflabs
+  mediawiki-api-canaries:
+    hosts: []
+  mediawiki-appserver-canaries:
+    hosts:
+    - deployment-mediawiki-07.deployment-prep.eqiad.wmflabs
+  mediawiki-installation:
+    hosts:
+    - deployment-jobrunner03.deployment-prep.eqiad.wmflabs
+    - deployment-mediawiki-09.deployment-prep.eqiad.wmflabs
+    - deployment-mediawiki-07.deployment-prep.eqiad.wmflabs
+    - deployment-snapshot01.deployment-prep.eqiad.wmflabs
+    - deployment-deploy01.deployment-prep.eqiad.wmflabs
+    - deployment-deploy02.deployment-prep.eqiad.wmflabs
+    - deployment-mwmaint01.deployment-prep.eqiad.wmflabs
+    - deployment-mediawiki-parsoid10.deployment-prep.eqiad.wmflabs
+  restbase-betacluster:
+    hosts:
+    - deployment-restbase01.deployment-prep.eqiad.wmflabs
+    - deployment-restbase02.deployment-prep.eqiad.wmflabs
+  webperf:
+    hosts:
+    - deployment-webperf11.deployment-prep.eqiad.wmflabs
+scap::sources:
+  gerrit/gerrit:
+    repository: operations/software/gerrit
+  gervert/deploy:
+    repository: operations/software/gerrit/tools/gervert/deploy
+  phabricator/deployment:
+    repository: phabricator/deployment
