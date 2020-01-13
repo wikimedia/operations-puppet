@@ -7,6 +7,7 @@ class openstack::designate::service::pike
     $packages = [
         'designate-sink',
         'designate-common',
+        'designate-mdns',
         'designate',
         'designate-api',
         'designate-doc',
