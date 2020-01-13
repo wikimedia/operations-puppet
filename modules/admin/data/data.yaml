@@ -2619,6 +2619,7 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC5jAvhIngD3svnIyBaHkhZTPEJc80jM363NfWUaFNcdi7n/VudTa3t8vL9jb1OZBUWnL/gfIW4VeLU4rKsfQkcpw6BpL9Qmr50Ewex9eU2pN3/tu1JN9OGNoJry8q81ZaxpH2wJD0JmCC4nlL84Ie7YjZQdcDpeDp4NL/eqEN30DilejVc34cMFpxcH2UYtJnoHGgSPBNsRvftrSniENKlWBrNF+Gjeg+awidUnlpTfGA0q8AGa5Fo69GkHxAzUymgNgeCY6w2H/HqgFcKT53YWgkViBZC0vi3Y0X0EDxnTgYbbKmSij7JU7Z4qJzzd+Tscd/xcO20hPsAYXcW/nF5 musikanimal@wikimedia.org
     uid: 11106
     email: lziemba@wikimedia.org
+    krb: present
   samtar:
     ensure: absent
     gid: 500
