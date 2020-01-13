@@ -5,5 +5,6 @@ mailman::lists::ipv6: '2620:0:861:1:208:80:154:21'
 mtail::logs:
   - /var/log/exim4/mainlog
   - /var/log/mailman/smtp
+  - /var/log/mailman/subscribe
 # NOTE: this is what enables mtail to read the files in the exim4 log directory
 mtail::group: 'adm'

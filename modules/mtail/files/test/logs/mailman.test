@@ -1,0 +1,116 @@
+# /var/log/mailman/smtp
+Jan 14 20:46:07 2020 (25896) <redacted@redacted> smtp to wikimediaua for 1 recips, completed in 5.010 seconds
+Jan 14 20:46:12 2020 (25896) <redacted@redacted> smtp to wikimediaua for 6 recips, completed in 5.020 seconds
+Jan 14 20:46:21 2020 (25896) <redacted@redacted> smtp to wikimk-l for 1 recips, completed in 5.020 seconds
+Jan 14 20:46:30 2020 (25896) <redacted@redacted> smtp to mediawiki-commits for 14 recips, completed in 5.030 seconds
+Jan 14 20:47:19 2020 (25896) <redacted@redacted> smtp to mediawiki-commits for 14 recips, completed in 5.030 seconds
+Jan 14 20:47:29 2020 (25896) <redacted@redacted> smtp to mediawiki-commits for 14 recips, completed in 5.030 seconds
+Jan 14 20:47:53 2020 (25896) <redacted@redacted> smtp to mediawiki-commits for 14 recips, completed in 5.030 seconds
+Jan 14 20:52:35 2020 (25896) <redacted@redacted> smtp to mediawiki-commits for 14 recips, completed in 5.040 seconds
+Jan 14 20:52:40 2020 (25896) <redacted@redacted> smtp to mediawiki-commits for 1 recips, completed in 5.010 seconds
+Jan 14 20:52:45 2020 (25896) <redacted@redacted> smtp to mediawiki-commits for 8 recips, completed in 5.010 seconds
+Jan 14 20:54:07 2020 (25896) <redacted@redacted> smtp to mediawiki-commits for 14 recips, completed in 5.040 seconds
+Jan 14 20:56:11 2020 (25896) <redacted@redacted> smtp to mediawiki-commits for 14 recips, completed in 5.030 seconds
+Jan 14 20:56:32 2020 (25896) <redacted@redacted> smtp to mediawiki-commits for 14 recips, completed in 5.030 seconds
+Jan 14 20:57:00 2020 (25896) <redacted@redacted> smtp to wikidata-bugs for 22 recips, completed in 5.040 seconds
+Jan 14 20:57:14 2020 (25896) <redacted@redacted> smtp to mediawiki-commits for 14 recips, completed in 5.030 seconds
+Jan 14 20:57:51 2020 (25896) <redacted@redacted> smtp to mediawiki-commits for 14 recips, completed in 5.040 seconds
+Jan 14 20:57:56 2020 (25896) <redacted@redacted> smtp to mediawiki-commits for 1 recips, completed in 5.030 seconds
+Jan 14 20:58:01 2020 (25896) <redacted@redacted> smtp to mediawiki-commits for 8 recips, completed in 5.020 seconds
+Jan 14 21:00:09 2020 (25896) <redacted@redacted> smtp to mediawiki-commits for 14 recips, completed in 5.050 seconds
+Jan 14 21:08:09 2020 (25896) <redacted@redacted> smtp to wikidata for 808 recips, completed in 5.210 seconds
+Jan 14 21:08:15 2020 (25896) <redacted@redacted> smtp to libraries for 283 recips, completed in 5.130 seconds
+Jan 14 21:08:20 2020 (25896) <redacted@redacted> smtp to libraries for 1 recips, completed in 5.020 seconds
+Jan 14 21:08:25 2020 (25896) <redacted@redacted> smtp to libraries for 166 recips, completed in 5.100 seconds
+Jan 14 21:08:52 2020 (25896) <redacted@redacted> smtp to mediawiki-commits for 14 recips, completed in 5.020 seconds
+Jan 14 21:13:13 2020 (25896) <redacted@redacted> smtp to mediawiki-commits for 14 recips, completed in 5.030 seconds
+Jan 14 21:13:28 2020 (25896) <redacted@redacted> smtp to mediawiki-commits for 14 recips, completed in 5.030 seconds
+Jan 14 21:13:33 2020 (25896) <redacted@redacted> smtp to mediawiki-commits for 14 recips, completed in 5.020 seconds
+Jan 14 21:13:38 2020 (25896) <redacted@redacted> smtp to mediawiki-commits for 1 recips, completed in 5.050 seconds
+Jan 14 21:13:43 2020 (25896) <redacted@redacted> smtp to mediawiki-commits for 8 recips, completed in 5.030 seconds
+Jan 14 21:13:48 2020 (25896) <redacted@redacted> smtp to mediawiki-commits for 14 recips, completed in 5.050 seconds
+Jan 14 21:13:53 2020 (25896) <redacted@redacted> smtp to wikidata for 808 recips, completed in 5.150 seconds
+Jan 14 21:13:58 2020 (25896) <redacted@redacted> smtp to analytics for 231 recips, completed in 5.090 seconds
+Jan 14 21:14:03 2020 (25896) <redacted@redacted> smtp to wiki-research-l for 501 recips, completed in 5.100 seconds
+Jan 14 21:15:21 2020 (25896) <redacted@redacted> smtp to daily-article-l for 1 recips, completed in 5.010 seconds
+Jan 14 21:16:14 2020 (25896) <redacted@redacted> smtp to wiki-research-l for 1 recips, completed in 5.010 seconds
+Jan 14 21:22:18 2020 (25896) <redacted@redacted> smtp to mediawiki-commits for 14 recips, completed in 5.040 seconds
+Jan 14 21:24:14 2020 (25896) <redacted@redacted> smtp to wikidata for 1 recips, completed in 5.010 seconds
+Jan 14 21:25:02 2020 (25896) <redacted@redacted> smtp to wikita-l for 1 recips, completed in 5.010 seconds
+Jan 14 21:27:43 2020 (25896) <redacted@redacted> smtp to mediawiki-commits for 14 recips, completed in 5.030 seconds
+Jan 14 21:27:48 2020 (25896) <redacted@redacted> smtp to mediawiki-commits for 14 recips, completed in 5.050 seconds
+Jan 14 21:27:53 2020 (25896) <redacted@redacted> smtp to mediawiki-commits for 1 recips, completed in 5.020 seconds
+Jan 14 21:27:58 2020 (25896) <redacted@redacted> smtp to mediawiki-commits for 8 recips, completed in 5.020 seconds
+Jan 14 21:28:25 2020 (25896) <redacted@redacted> smtp to wikidata for 1 recips, completed in 5.010 seconds
+Jan 14 21:28:30 2020 (25896) <redacted@redacted> smtp to wikidata for 3 recips, completed in 5.020 seconds
+Jan 14 21:29:39 2020 (25896) <redacted@redacted> smtp to wikidata-bugs for 22 recips, completed in 5.050 seconds
+Jan 14 21:30:03 2020 (25896) <redacted@redacted> smtp to mediawiki-commits for 14 recips, completed in 5.050 seconds
+Jan 14 21:30:08 2020 (25896) <redacted@redacted> smtp to mediawiki-commits for 1 recips, completed in 5.020 seconds
+Jan 14 21:30:13 2020 (25896) <redacted@redacted> smtp to mediawiki-commits for 8 recips, completed in 5.020 seconds
+Jan 14 21:30:22 2020 (25896) <redacted@redacted> smtp to wikidata for 809 recips, completed in 5.270 seconds
+Jan 14 21:33:10 2020 (25896) <redacted@redacted> smtp to wikinews-l for 1 recips, completed in 5.020 seconds
+Jan 14 21:34:38 2020 (25896) <redacted@redacted> smtp to mediawiki-api for 1 recips, completed in 5.010 seconds
+Jan 14 21:35:02 2020 (25896) <redacted@redacted> smtp to wikimediaua for 62 recips, completed in 5.060 seconds
+# /var/log/mailman/subscribe
+Jan 14 03:01:00 2020 (8463) daily-article-l: pending redacted@redacted  0.0.0.0
+Jan 14 03:21:48 2020 (20444) daily-article-l: pending User Name  <redacted@redacted>  1234:5678:90ab:cdef:fedc:ba0:9876:5432
+Jan 14 03:56:33 2020 (5052) wikidata: pending User Name <redacted@redacted>  0.0.0.0
+Jan 14 03:57:17 2020 (5222) wikidata: new (digest) User Name <redacted@redacted>, via web confirmation
+Jan 14 04:46:12 2020 (30067) daily-article-l: pending user <redacted@redacted>  0.0.0.0
+Jan 14 05:12:07 2020 (12043) daily-article-l: pending User Name <redacted@redacted>  0.0.0.0
+Jan 14 05:13:03 2020 (12250) daily-article-l: new User Name <redacted@redacted>, via web confirmation
+Jan 14 05:23:25 2020 (17130) daily-article-l: pending User name <redacted@redacted>  1234:5678:90a:bcde::ffff:fff
+Jan 14 10:22:55 2020 (16768) daily-article-l: deleted redacted@redacted; web confirmation
+Jan 14 10:30:50 2020 (22305) translators-l: pending User Name <redacted@redacted>  0.0.0.0
+Jan 14 10:31:22 2020 (22449) translators-l: new (digest) User Name <redacted@redacted>, via web confirmation
+Jan 14 10:31:47 2020 (22554) daily-article-l: pending User <redacted@redacted>  0.0.0.0
+Jan 14 10:32:08 2020 (22639) daily-article-l: pending User <redacted@redacted>  0.0.0.0
+Jan 14 10:42:15 2020 (29187) daily-image-l: pending User Name  <redacted@redacted>  0.0.0.0
+Jan 14 10:49:29 2020 (30843) daily-article-l: pending redacted@redacted  0.0.0.0
+Jan 14 11:04:19 2020 (4279) wikimediapt: new User Name <redacted@redacted>, via admin approval
+Jan 14 11:07:00 2020 (5432) daily-article-l: deleted redacted@redacted; web confirmation
+Jan 14 11:11:26 2020 (13229) daily-article-l: new redacted@redacted, via web confirmation
+Jan 14 11:17:04 2020 (15498) daily-article-he: pending User <redacted@redacted>  0.0.0.0
+Jan 14 12:14:18 2020 (16727) mediawiki-announce: pending redacted@redacted  0.0.0.0
+Jan 14 12:16:41 2020 (17231) mediawiki-announce: pending User Name <redacted@redacted>  0.0.0.0
+Jan 14 12:17:23 2020 (17403) mediawiki-announce: new User Name <redacted@redacted>, via web confirmation
+Jan 14 12:22:07 2020 (21380) daily-article-l: deleted redacted@redacted; web confirmation
+Jan 14 12:25:09 2020 (22159) wikimedia-l: pending User <redacted@redacted>  0.0.0.0
+Jan 14 12:26:09 2020 (22373) wikimedia-l: new User Name <redacted@redacted>, via web confirmation
+Jan 14 12:29:08 2020 (22971) daily-article-l: deleted redacted@redacted; web confirmation
+Jan 14 12:54:05 2020 (25893) wikimedia_nyc: deleted redacted@redacted; email confirmation
+Jan 14 13:06:14 2020 (10025) daily-article-l: pending redacted@redacted 0.0.0.0
+Jan 14 13:06:41 2020 (10147) daily-article-l: new user name <redacted@redacted>, via web confirmation
+Jan 14 13:10:52 2020 (13883) daily-article-l: pending redacted@redacted  0.0.0.0
+Jan 14 13:23:52 2020 (19645) wikitech-ambassadors: deleted redacted@redacted; web confirmation
+Jan 14 13:30:53 2020 (24057) wikimedia-medicine: pending redacted@redacted  0.0.0.0
+Jan 14 13:34:24 2020 (27097) sectrainings: new User Name <redacted@redacted>, admin mass sub
+Jan 14 13:34:32 2020 (27126) daily-article-l: new User  <redacted@redacted>, via web confirmation
+Jan 14 13:40:25 2020 (31385) wikitech-l: pending User Name <redacted@redacted>  0.0.0.0
+Jan 14 14:01:22 2020 (10022) publicpolicy: new redacted@redacted, admin mass sub
+Jan 14 14:01:22 2020 (10022) publicpolicy: new redacted@redacted, admin mass sub
+Jan 14 14:13:50 2020 (14390) daily-article-l: pending User Name <redacted@redacted>  0.0.0.0
+Jan 14 14:21:53 2020 (21779) open-glam: new redacted@redacted, admin mass sub
+Jan 14 14:33:07 2020 (27259) wikimedia-l: pending User Name <redacted@redacted>  0.0.0.0
+Jan 14 14:35:23 2020 (27515) wikimedia-l: new (digest) User Name <redacted@redacted>, via web confirmation
+Jan 14 15:30:59 2020 (20780) mediawiki-l: pending User Name <redacted@redacted>  0.0.0.0
+Jan 14 15:32:21 2020 (21488) daily-article-l: pending redacted@redacted  0.0.0.0
+Jan 14 15:48:50 2020 (30234) mediawiki-l: pending User Name <redacted@redacted>  0.0.0.0
+Jan 14 16:40:03 2020 (25893) daily-article-l: new redacted@redacted, via email confirmation
+Jan 14 17:39:30 2020 (25788) daily-article-l: pending User <redacted@redacted>  0.0.0.0
+Jan 14 17:40:12 2020 (25975) daily-article-l: new User <redacted@redacted>, via web confirmation
+Jan 14 17:53:57 2020 (32244) daily-article-l: pending user <redacted@redacted>  0.0.0.0
+Jan 14 17:56:35 2020 (32741) glam: pending User's <redacted@redacted>  0.0.0.0
+Jan 14 18:00:50 2020 (25893) glam: new User's <redacted@redacted>, via email confirmation
+Jan 14 18:06:51 2020 (25893) daily-article-l: deleted redacted@redacted; email confirmation
+Jan 14 19:30:48 2020 (17533) daily-article-l: pending "User N." <redacted@redacted>  0.0.0.0
+Jan 14 19:34:28 2020 (18934) daily-article-l: new "User N." <redacted@redacted>, via web confirmation
+Jan 14 20:05:52 2020 (4310) discovery: pending u <redacted@redacted>  0.0.0.0
+Jan 14 20:14:51 2020 (8432) daily-article-l: deleted redacted@redacted; via the member options page
+Jan 14 20:39:36 2020 (25893) daily-article-l: deleted redacted@redacted; email confirmation
+Jan 14 20:43:26 2020 (24191) daily-article-l: pending useruser <redacted@redacted>  0.0.0.0
+Jan 14 20:46:01 2020 (25260) wikimediaua: deleted redacted@redacted; web confirmation
+Jan 14 21:15:15 2020 (8277) daily-article-l: pending User <redacted@redacted>  0.0.0.0
+Jan 14 21:16:08 2020 (8538) wiki-research-l: pending User Name <redacted@redacted>  0.0.0.0
+Jan 14 21:24:08 2020 (12699) wikidata: pending User Name <redacted@redacted>  0.0.0.0
+Jan 14 21:28:20 2020 (25893) wikidata: new User Name <redacted@redacted>, via email confirmation
