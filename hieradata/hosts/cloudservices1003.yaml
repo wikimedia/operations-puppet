@@ -5,3 +5,5 @@ prometheus_nodes:
     - cloudmetrics1002.eqiad.wmnet
     - prometheus1003.eqiad.wmnet
     - prometheus1004.eqiad.wmnet
+
+profile::openstack::codfw1dev::version: 'pike'
