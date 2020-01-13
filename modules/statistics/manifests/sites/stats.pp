@@ -80,7 +80,8 @@ class statistics::sites::stats {
 
     # 2) it is then linked to serve at http://stats.wikimedia.org/v2
     file { $wikistats_v2_link:
-        ensure => 'link',
-        target => "${wikistats_source_directory}/dist",
+        ensure  => 'link',
+        target  => "${wikistats_source_directory}/dist",
+        require => File[$wikistats_source_directory],
     }
 }
