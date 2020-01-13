@@ -4,9 +4,10 @@ After=varnish-frontend.service
 Requires=varnish-frontend.service
 
 [Service]
-ExecStart=/usr/local/bin/varnishtlsinspector --varnishd-instance-name frontend --logstash-server=<%= scope['::varnish::common::logstash_host'] %>:<%= scope['::varnish::common::logstash_json_lines_port'] %>
+ExecStart=/usr/local/bin/varnishtlsinspector --varnishd-instance-name frontend
 Restart=always
 RestartSec=5s
+SyslogIdentifier=%N
 
 [Install]
 WantedBy=multi-user.target
