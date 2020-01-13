@@ -6,7 +6,13 @@ class smokeping::web {
         mode   => '0555',
     }
 
+    acme_chief::cert { 'smokeping':
+        puppet_svc => 'apache2',
+    }
+
+    $ssl_settings = ssl_ciphersuite('apache', 'strong', true)
+
     httpd::site { 'smokeping.wikimedia.org':
-        source => 'puppet:///modules/smokeping/apache.conf',
+        content => template('smokeping/apache.conf.erb'),
     }
 }

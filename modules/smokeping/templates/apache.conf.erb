@@ -1,14 +1,25 @@
 <VirtualHost *:80>
     ServerName smokeping.wikimedia.org
     ServerAdmin noc@wikimedia.org
+    <Location />
+        Require all denied
+    </Location>
+</VirtualHost>
 
+<VirtualHost *:443>
+    ServerName smokeping.wikimedia.org
+    # https://httpoxy.org/
+    RequestHeader unset Proxy early
+
+    SSLEngine on
+    SSLCertificateFile /etc/acmecerts/smokeping/live/ec-prime256v1.crt
+    SSLCertificateChainFile /etc/acmecerts/smokeping/live/ec-prime256v1.chain.crt
+    SSLCertificateKeyFile /etc/acmecerts/smokeping/live/ec-prime256v1.key
+    SSLCertificateFile /etc/acmecerts/smokeping/live/rsa-2048.crt
+    SSLCertificateChainFile /etc/acmecerts/smokeping/live/rsa-2048.chain.crt
+    SSLCertificateKeyFile /etc/acmecerts/smokeping/live/rsa-2048.key
+    <%= @ssl_settings.join("\n    ") %>
     DocumentRoot /var/www
-
-    RewriteEngine On
-    RewriteCond %{HTTP:X-Forwarded-Proto} !https
-    RewriteCond %{REQUEST_URI} !^/status$
-    RewriteRule ^/(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,E=ProtoRedirect]
-    Header always merge Vary X-Forwarded-Proto env=ProtoRedirect
 
     <Directory /var/www>
         Options Indexes FollowSymLinks MultiViews

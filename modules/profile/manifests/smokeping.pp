@@ -20,9 +20,13 @@ class profile::smokeping (
     }
 
     ferm::service { 'smokeping-http':
-        proto  => 'tcp',
-        port   => '80',
-        srange => '$CACHES',
+        proto => 'tcp',
+        port  => '80',
+    }
+
+    ferm::service { 'smokeping-https':
+        proto => 'tcp',
+        port  => '443',
     }
 
     backup::set { 'smokeping': }
