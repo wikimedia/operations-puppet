@@ -21,7 +21,7 @@ class openstack::designate::monitor (
         ensure        => $ensure,
         critical      => $critical,
         description   => 'designate-sink process',
-        nrpe_command  => "/usr/lib/nagios/plugins/check_procs -c 1: --ereg-argument-array '^/usr/bin/python /usr/bin/designate-sink'",
+        nrpe_command  => "/usr/lib/nagios/plugins/check_procs -c 1: --ereg-argument-array '^/usr/bin/python.* /usr/bin/designate-sink'",
         contact_group => $contact_groups,
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Troubleshooting',
     }
@@ -30,7 +30,7 @@ class openstack::designate::monitor (
         ensure        => $ensure,
         critical      => $critical,
         description   => 'designate-api process',
-        nrpe_command  => "/usr/lib/nagios/plugins/check_procs -c 1: --ereg-argument-array '^/usr/bin/python /usr/bin/designate-api'",
+        nrpe_command  => "/usr/lib/nagios/plugins/check_procs -c 1: --ereg-argument-array '^/usr/bin/python.* /usr/bin/designate-api'",
         contact_group => $contact_groups,
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Troubleshooting',
     }
@@ -39,7 +39,7 @@ class openstack::designate::monitor (
         ensure        => $ensure,
         critical      => $critical,
         description   => 'designate-central process',
-        nrpe_command  => "/usr/lib/nagios/plugins/check_procs -c 1: --ereg-argument-array '^/usr/bin/python /usr/bin/designate-central'",
+        nrpe_command  => "/usr/lib/nagios/plugins/check_procs -c 1: --ereg-argument-array '^/usr/bin/python.* /usr/bin/designate-central'",
         contact_group => $contact_groups,
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Troubleshooting',
     }
@@ -48,7 +48,7 @@ class openstack::designate::monitor (
         ensure        => $ensure,
         critical      => $critical,
         description   => 'designate-mdns process',
-        nrpe_command  => "/usr/lib/nagios/plugins/check_procs -c 1: --ereg-argument-array '^/usr/bin/python /usr/bin/designate-mdns'",
+        nrpe_command  => "/usr/lib/nagios/plugins/check_procs -c 1: --ereg-argument-array '^/usr/bin/python.* /usr/bin/designate-mdns'",
         contact_group => $contact_groups,
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Troubleshooting',
     }
@@ -57,7 +57,7 @@ class openstack::designate::monitor (
         ensure        => $ensure,
         critical      => $critical,
         description   => 'designate-worker process',
-        nrpe_command  => "/usr/lib/nagios/plugins/check_procs -c 1: --ereg-argument-array '^/usr/bin/python /usr/bin/designate-worker'",
+        nrpe_command  => "/usr/lib/nagios/plugins/check_procs -c 1: --ereg-argument-array '^/usr/bin/python.* /usr/bin/designate-worker'",
         contact_group => $contact_groups,
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Troubleshooting',
     }
@@ -66,7 +66,7 @@ class openstack::designate::monitor (
         ensure        => $ensure,
         critical      => $critical,
         description   => 'designate-producer process',
-        nrpe_command  => "/usr/lib/nagios/plugins/check_procs -c 1: --ereg-argument-array '^/usr/bin/python /usr/bin/designate-producer'",
+        nrpe_command  => "/usr/lib/nagios/plugins/check_procs -c 1: --ereg-argument-array '^/usr/bin/python.* /usr/bin/designate-producer'",
         contact_group => $contact_groups,
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Troubleshooting',
     }
