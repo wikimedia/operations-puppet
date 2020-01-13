@@ -34,7 +34,7 @@ class openstack::nova::compute::monitor(
     nrpe::monitor_service { 'ensure_single_nova_compute_proc':
         ensure        => $ensure,
         description   => 'nova-compute proc maximum',
-        nrpe_command  => "/usr/lib/nagios/plugins/check_procs -c 1:1 -p 1 --ereg-argument-array '^/usr/bin/pytho[n] /usr/bin/nova-compute'",
+        nrpe_command  => "/usr/lib/nagios/plugins/check_procs -c 1:1 -p 1 --ereg-argument-array '^/usr/bin/pytho[n].* /usr/bin/nova-compute'",
         retries       => 5,
         contact_group => $contact_groups,
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Troubleshooting',
@@ -48,7 +48,7 @@ class openstack::nova::compute::monitor(
     nrpe::monitor_service { 'ensure_nova_compute_running':
         ensure        => $ensure,
         description   => 'nova-compute proc minimum',
-        nrpe_command  => "/usr/lib/nagios/plugins/check_procs -c 1:2 --ereg-argument-array '^/usr/bin/pytho[n] /usr/bin/nova-compute'",
+        nrpe_command  => "/usr/lib/nagios/plugins/check_procs -c 1:2 --ereg-argument-array '^/usr/bin/pytho[n].* /usr/bin/nova-compute'",
         retries       => 1,
         contact_group => $contact_groups,
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Troubleshooting',
