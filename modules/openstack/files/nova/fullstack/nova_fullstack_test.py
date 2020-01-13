@@ -592,7 +592,7 @@ def main():
             logging.error("max server(s) with prepend {} -- skipping creation".format(prepend))
             continue
 
-        cimage = nova_conn.images.find(name=args.image)
+        cimage = nova_conn.glance.find_image(args.image)
         cflavor = nova_conn.flavors.find(name=args.flavor)
 
         try:
