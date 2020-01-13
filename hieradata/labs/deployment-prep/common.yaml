@@ -267,6 +267,11 @@ scap::dsh::groups:
           - deployment-webperf11.deployment-prep.eqiad.wmflabs
 
 
+# Etcd client global configuration
+etcd_client_srv_domain: "conftool.deployment-prep.eqiad.wmflabs"
+etcd_host: ~
+etcd_port: ~
+
 "profile::etcd::tlsproxy::read_only": false
 profile::etcd::tlsproxy::listen_port: 2379
 profile::etcd::tlsproxy::upstream_port: 2378
