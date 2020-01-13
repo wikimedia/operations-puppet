@@ -39,6 +39,7 @@ define dumps::web::fetches::analytics::job(
     Boolean $use_kerberos = false,
     Wmflib::Ensure $ensure = present,
     Optional[String] $exclude = undef,
+    Boolean $use_hdfs_rsync = false,
 ) {
     if !defined(File[$destination]) {
         file { $destination:
@@ -53,14 +54,21 @@ define dumps::web::fetches::analytics::job(
         default => ''
     }
 
+    # Quotes around the exclude value are on purpose to force
+    # to parse it as a single value
     $exclude_option = $exclude ? {
         undef   => '',
-        default => " --exclude ${exclude}"
+        default => " --exclude \"${exclude}\""
+    }
+
+    $command = $use_hdfs_rsync ? {
+        true    => "/bin/bash -c '/usr/local/bin/hdfs-rsync -r -t ${delete_option}${exclude_option} --chmod=go-w ${source} ${destination}'",
+        default => "/bin/bash -c '/usr/bin/rsync -rt ${delete_option}${exclude_option} --chmod=go-w ${source}/ ${destination}/'"
     }
 
     kerberos::systemd_timer { "analytics-dumps-fetch-${title}":
         description  => "Copy ${title} files from Hadoop HDFS.",
-        command      => "/bin/bash -c '/usr/bin/rsync -rt ${delete_option}${exclude_option} --chmod=go-w ${source}/ ${destination}/'",
+        command      => $command,
         interval     => $interval,
         user         => $user,
         use_kerberos => $use_kerberos,

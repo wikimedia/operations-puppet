@@ -1,5 +1,6 @@
 class dumps::web::fetches::stats(
     $src = undef,
+    $src_hdfs = undef,
     $miscdatasetsdir = undef,
     $user = undef,
     $use_kerberos = false,
@@ -8,6 +9,9 @@ class dumps::web::fetches::stats(
     # We need to make sure the rsync --delete does not delete these files
     # which are put in place on the local destination host by puppet.
     Dumps::Web::Fetches::Job {
+        exclude => 'readme.html'
+    }
+    Dumps::Web::Fetches::Analytics::Job {
         exclude => 'readme.html'
     }
 
@@ -88,6 +92,16 @@ class dumps::web::fetches::stats(
         destination => "${miscdatasetsdir}/mediawiki_history",
         hour        => '5',
         user        => $user,
+    }
+
+    # Copying only the last 2 dumps explicitely (--delete will take care of deleting old ones)
+    dumps::web::fetches::analytics::job { 'mediawiki_history_dumps':
+        source         => "hdfs://${src_hdfs}/mediawiki/history/{\$(/bin/date --date=\"\$(/bin/date +%Y-%m-15) -1 month\" +\"%Y-%m\"),\$(/bin/date --date=\"\$(/bin/date +%Y-%m-15) -2 month\" +\"%Y-%m\")}",
+        destination    => "file://${miscdatasetsdir}/mediawiki_history/",
+        interval       => '*-*-* 05:00:00',
+        user           => $user,
+        use_kerberos   => $use_kerberos,
+        use_hdfs_rsync => true,
     }
 
     # Copies over geoeditors dumps from an rsyncable location.
