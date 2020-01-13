@@ -9,8 +9,6 @@ class role::memcached {
     include ::profile::base::firewall
     include profile::memcached::instance
     include profile::memcached::memkeys
+    include profile::memcached::performance
 
-    interface::rps {
-        $facts['interface_primary']:
-    }
 }
