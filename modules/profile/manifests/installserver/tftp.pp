@@ -21,8 +21,10 @@ class profile::installserver::tftp {
 
     class { '::install_server::tftp_server': }
 
-    ferm::rule { 'tftp':
-        rule => 'proto udp dport tftp { saddr $PRODUCTION_NETWORKS ACCEPT; }'
+    ferm::service { 'tftp':
+        proto  => 'udp',
+        port   => 'tftp',
+        srange => '$PRODUCTION_NETWORKS',
     }
 
     backup::set { 'srv-tftpboot': }
@@ -32,5 +34,4 @@ class profile::installserver::tftp {
         nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -u nobody --ereg-argument-array=\'.*/usr/sbin/atftpd .*\'',
         notes_url    => 'https://wikitech.wikimedia.org/wiki/Monitoring/atftpd',
     }
-
 }
