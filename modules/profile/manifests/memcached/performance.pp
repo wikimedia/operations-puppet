@@ -8,4 +8,6 @@ class profile::memcached::performance {
     interface::rps {
         $facts['interface_primary']:
     }
+
+    class { 'base::mysterious_sysctl': }
 }
