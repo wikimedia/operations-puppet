@@ -18,7 +18,7 @@ class openstack::nova::api::monitor(
         ensure        => $ensure,
         critical      => $critical,
         description   => 'nova-api process',
-        nrpe_command  => "/usr/lib/nagios/plugins/check_procs -c 1: --ereg-argument-array '^/usr/bin/python /usr/bin/nova-api'",
+        nrpe_command  => "/usr/lib/nagios/plugins/check_procs -c 1: --ereg-argument-array '^/usr/bin/python.* /usr/bin/nova-api'",
         contact_group => $contact_groups,
     }
 
