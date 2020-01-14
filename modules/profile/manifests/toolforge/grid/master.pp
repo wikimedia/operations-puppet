@@ -46,15 +46,15 @@ class profile::toolforge::grid::master (
 
     sonofgridengine::collectors::queues { 'webgrid-lighttpd':
         store  => "${collectors}/queues",
-        config => 'toollabs/gridengine/queue-webgrid.erb',
+        config => 'profile/toolforge/grid/queue-webgrid.erb',
     }
 
     sonofgridengine::collectors::queues { 'webgrid-generic':
         store  => "${collectors}/queues",
-        config => 'toollabs/gridengine/queue-webgrid.erb',
+        config => 'profile/toolforge/grid/queue-webgrid.erb',
     }
 
-    # These things are done on toollabs::master because they
+    # These things are done on the grid master because they
     # need to be done exactly once per project (they live on the
     # shared filesystem), and there can only be exactly one
     # gridmaster in this setup.  They could have been done on
