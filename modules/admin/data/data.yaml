@@ -35,7 +35,8 @@ groups:
               akosiaris, mark, ariel, cmjohnson, otto, robh, tstarling,
               ori, jmm, jynus, ema, elukey, gehel, volans, marostegui,
               ayounsi, herron, aborrero, bstorm, vgutierrez, jiji, cwhite,
-              crusnov, cdanis, fsero, jbond, jeh, dzahn, phamhi, sukhe, pt1979, rzl]
+              crusnov, cdanis, fsero, jbond, jeh, dzahn, phamhi, sukhe, pt1979,
+              rzl, hnowlan]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   ops-adm-group:
     # No gid for this group on purpose, it's a system provided one
@@ -3548,6 +3549,14 @@ users:
     ssh_keys:
      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFpYzzNQaWunmpWx6X7+9kKECizTwJFxk5pndfHjZgJq jwang@Jennifers-MBP.corp.wikimedia.org
     krb: present
+  hnowlan:
+    ensure: present
+    realname: Hugh Nowlan
+    email: hnowlan@wikimedia.org
+    uid: 22908
+    gid: 500
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICIFfF8+3TrSBaPBKPwbmnBM7e0C9/TFHs9/2hHiq+3t nosmo@ocasey
 ldap_only_users:
   abartov:
     ensure: present
@@ -3628,10 +3637,6 @@ ldap_only_users:
     ensure: present
     realname: Greta Doci
     email: greta.doci@wikimedia.de
-  hnowlan:
-    ensure: present
-    realname: Hugh Nowlan
-    email: hnowlan@wikimedia.org
   ha78na:
     ensure: present
     realname: Hana Worku
