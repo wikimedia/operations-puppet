@@ -27,7 +27,7 @@ service::catalog:
           - http://en.wikipedia.org/wiki/Special:BlankPage
       scheduler: wrr
     monitoring:
-      check_command: check_http_https!en.wikipedia.org!/wiki/Special:BlankPage
+      check_command: check_http_lvs!en.wikipedia.org!/wiki/Special:BlankPage
       critical: true
       sites:
         codfw:
@@ -99,7 +99,7 @@ service::catalog:
           - http://en.wikipedia.org/w/api.php
       scheduler: wrr
     monitoring:
-      check_command: check_http_https!en.wikipedia.org!/w/api.php?action=query&meta=siteinfo
+      check_command: check_http_lvs!en.wikipedia.org!/w/api.php?action=query&meta=siteinfo
       critical: true
       sites:
         codfw:
@@ -131,7 +131,7 @@ service::catalog:
           - https://en.wikipedia.org/w/api.php
       scheduler: wrr
     monitoring:
-      check_command: check_http_https!en.wikipedia.org!/w/api.php?action=query&meta=siteinfo
+      check_command: check_https_url!en.wikipedia.org!/w/api.php?action=query&meta=siteinfo
       critical: true
       sites:
         codfw:
@@ -164,7 +164,7 @@ service::catalog:
           - https://en.wikipedia.org/wiki/Special:BlankPage
       scheduler: wrr
     monitoring:
-      check_command: check_http_https!en.wikipedia.org!/wiki/Special:BlankPage
+      check_command: check_https_url!en.wikipedia.org!/wiki/Special:BlankPage
       critical: true
       sites:
         codfw:
@@ -1480,7 +1480,7 @@ service::catalog:
           - http://en.wikipedia.com/_status
       scheduler: wrr
     monitoring:
-      check_command: check_http_https!en.wikipedia.com!/_status
+      check_command: check_http_lvs!en.wikipedia.com!/_status
       critical: true
       sites:
         codfw:
@@ -1517,6 +1517,20 @@ service::catalog:
           url:
           - https://en.wikipedia.com/_status
       scheduler: wrr
+    monitoring:
+      check_command: check_https_url!en.wikipedia.com!/_status
+      critical: true
+      sites:
+        codfw:
+          hostname: ncredir-lb.codfw.wikimedia.org
+        eqiad:
+          hostname: ncredir-lb.eqiad.wikimedia.org
+        esams:
+          hostname: ncredir-lb.esams.wikimedia.org
+        eqsin:
+          hostname: ncredir-lb.eqsin.wikimedia.org
+        ulsfo:
+          hostname: ncredir-lb.ulsfo.wikimedia.org
     port: 443
     sites:
     - eqiad
@@ -2112,7 +2126,7 @@ service::catalog:
           - http://localhost/monitoring/backend
       scheduler: wrr
     monitoring:
-      check_command: check_http_https!localhost!/monitoring/backend
+      check_command: check_http_lvs!localhost!/monitoring/backend
       critical: true
       sites:
         codfw:
@@ -2148,7 +2162,7 @@ service::catalog:
           - https://localhost/monitoring/backend
       scheduler: wrr
     monitoring:
-      check_command: check_http_https!localhost!/monitoring/backend
+      check_command: check_https_url!localhost!/monitoring/backend
       critical: true
       sites:
         codfw:
@@ -2238,7 +2252,7 @@ service::catalog:
           timeout-clean-reconnect: 3
       scheduler: sh
     monitoring:
-      check_command: check_http_https!en.wikipedia.org!/wiki/Special:BlankPage
+      check_command: check_http_lvs!en.wikipedia.org!/wiki/Special:BlankPage
       critical: true
       sites:
         codfw:
@@ -2283,6 +2297,20 @@ service::catalog:
           url:
           - https://varnishcheck.wikimedia.org/from/pybal
       scheduler: sh
+    monitoring:
+      check_command: check_https_url!en.wikipedia.org!/wiki/Special:BlankPage
+      critical: true
+      sites:
+        codfw:
+          hostname: text-lb.codfw.wikimedia.org
+        eqiad:
+          hostname: text-lb.eqiad.wikimedia.org
+        eqsin:
+          hostname: text-lb.eqsin.wikimedia.org
+        esams:
+          hostname: text-lb.esams.wikimedia.org
+        ulsfo:
+          hostname: text-lb.ulsfo.wikimedia.org
     port: 443
     sites:
     - codfw
@@ -2360,7 +2388,7 @@ service::catalog:
           timeout-clean-reconnect: 3
       scheduler: sh
     monitoring:
-      check_command: check_http_https!upload.wikimedia.org!/monitoring/backend
+      check_command: check_http_lvs!upload.wikimedia.org!/monitoring/backend
       critical: true
       sites:
         codfw:
@@ -2405,6 +2433,20 @@ service::catalog:
           url:
           - https://varnishcheck.wikimedia.org/from/pybal
       scheduler: sh
+    monitoring:
+      check_command: check_https_url!upload.wikimedia.org!/monitoring/backend
+      critical: true
+      sites:
+        codfw:
+          hostname: upload-lb.codfw.wikimedia.org
+        eqiad:
+          hostname: upload-lb.eqiad.wikimedia.org
+        eqsin:
+          hostname: upload-lb.eqsin.wikimedia.org
+        esams:
+          hostname: upload-lb.esams.wikimedia.org
+        ulsfo:
+          hostname: upload-lb.ulsfo.wikimedia.org
     port: 443
     sites:
     - codfw
