@@ -85,6 +85,10 @@ class profile::cache::varnish::frontend (
         }
     }
 
+    class { 'prometheus::node_varnishd_mmap_count':
+        service => 'varnish-frontend.service',
+    }
+
     # lint:ignore:arrow_alignment
     varnish::instance { "${cache_cluster}-frontend":
         instance_name      => 'frontend',
