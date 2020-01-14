@@ -9,7 +9,11 @@
         Require all granted
     </Directory>
 
-    # Send /historical to t-a root, because foundation site links to this otherwise-missing location...
-    RewriteCond %{REQUEST_URI} ^/historical
-    RewriteRule .* https://transparency-archive.wikimedia.org/ [R=302,L]
+    <Location />
+        RewriteEngine On
+
+        # Send /historical to t-a root, because foundation site links to this otherwise-missing location...
+        RewriteCond %{REQUEST_URI} ^/historical
+        RewriteRule .* https://transparency-archive.wikimedia.org/ [R=302,L]
+    </Location>
 </VirtualHost>
