@@ -18,7 +18,6 @@ class puppet_compiler(
         mode   => '0644',
     }
     File[$libdir] {
-        owner   => $user,
         recurse => true,
     }
 
