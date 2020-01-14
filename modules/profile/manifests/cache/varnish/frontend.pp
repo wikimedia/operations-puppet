@@ -74,6 +74,17 @@ class profile::cache::varnish::frontend (
         $fe_transient_storage = ''
     }
 
+    # Raise maximum number of memory map areas per process from 65530 to
+    # 262120. See https://www.kernel.org/doc/Documentation/sysctl/vm.txt.
+    # Varnish frontend crashes with "Error in munmap(): Cannot allocate
+    # memory" are likely due to the varnish child process reaching this limit.
+    # https://phabricator.wikimedia.org/T242417
+    sysctl::parameters { 'maximum map count':
+        values => {
+            'vm.max_map_count' => 262120,
+        }
+    }
+
     # lint:ignore:arrow_alignment
     varnish::instance { "${cache_cluster}-frontend":
         instance_name      => 'frontend',
