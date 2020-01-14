@@ -13,4 +13,11 @@ class openstack::neutron::l3_agent::pike(
             content => template('openstack/pike/neutron/l3_agent.ini.erb'),
             require => Package['neutron-l3-agent'];
     }
+
+    # neutron-l3-agent Depends radvd on Pike, but we don't use and don't
+    # configure it. To prevent icinga from reporting a unit in bad shape, just
+    # disable it.
+    systemd::mask { 'radvd':
+        before => Package['neutron-l3-agent'],
+    }
 }
