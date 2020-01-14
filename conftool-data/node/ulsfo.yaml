@@ -16,3 +16,6 @@ ulsfo:
   dns:
     dns4001.wikimedia.org: [pdns_recursor]
     dns4002.wikimedia.org: [pdns_recursor]
+  ncredir:
+    ncredir4001.ulsfo.wmnet: [nginx]
+    ncredir4002.ulsfo.wmnet: [nginx]
