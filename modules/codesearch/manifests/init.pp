@@ -22,6 +22,13 @@ class codesearch(
         'python3-yaml',
     ])
 
+    file { $hound_dir:
+        ensure => directory,
+        owner  => 'codesearch',
+        group  => 'codesearch',
+        mode   => '0755',
+    }
+
     group { 'codesearch':
         ensure => present,
         name   => 'codesearch',
