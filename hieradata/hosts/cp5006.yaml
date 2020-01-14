@@ -1,0 +1,20 @@
+profile::trafficserver::tls::http_settings:
+    accept_no_activity_timeout: 180
+    connect_attempts_timeout: 3
+    keep_alive_no_activity_timeout_in: 120
+    keep_alive_no_activity_timeout_out: 120
+    post_connect_attempts_timeout: 3
+    transaction_no_activity_timeout_in: 200
+    transaction_no_activity_timeout_out: 180
+    send_100_continue_response: 1
+    max_post_size: 104857600
+profile::trafficserver::backend::http_settings:
+    accept_no_activity_timeout: 180
+    connect_attempts_timeout: 10
+    keep_alive_no_activity_timeout_in: 120
+    keep_alive_no_activity_timeout_out: 120
+    post_connect_attempts_timeout: 10
+    transaction_no_activity_timeout_in: 200
+    transaction_no_activity_timeout_out: 180
+    send_100_continue_response: 0
+    max_post_size: 0
