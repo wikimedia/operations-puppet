@@ -204,6 +204,9 @@ profile::trafficserver::backend::mapping_rules:
       target: http://transparency.wikimedia.org
       replacement: https://webserver-misc-static.discovery.wmnet
     - type: map
+      target: http://transparency-archive.wikimedia.org
+      replacement: https://webserver-misc-static.discovery.wmnet
+    - type: map
       target: http://transparency-private.wikimedia.org
       replacement: https://webserver-misc-static.discovery.wmnet
     - type: map
