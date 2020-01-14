@@ -42,6 +42,7 @@ class profile::openstack::base::keystone::service(
     $second_region_designate_host_standby = hiera('profile::openstack::base::second_region_designate_host_standby'),
     $labweb_hosts = hiera('profile::openstack::base::labweb_hosts'),
     String $wsgi_server = lookup('profile::openstack::base::keystone::wsgi_server'),
+    Stdlib::IP::Address::V4::CIDR $instance_ip_range = lookup('profile::openstack::base::keystone::instance_ip_range', {default_value => '0.0.0.0/0'}),
     ) {
 
     include ::network::constants
@@ -79,6 +80,7 @@ class profile::openstack::base::keystone::service(
         wiki_access_token           => $wiki_access_token,
         wiki_access_secret          => $wiki_access_secret,
         wsgi_server                 => $wsgi_server,
+        instance_ip_range           => $instance_ip_range,
     }
     contain '::openstack::keystone::service'
 

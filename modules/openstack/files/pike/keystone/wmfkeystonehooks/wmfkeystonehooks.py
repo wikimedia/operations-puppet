@@ -79,7 +79,10 @@ wmfkeystone_opts = [
                help='ldap dn for project records'),
     cfg.IntOpt('minimum_gid_number',
                default=40000,
-               help='Starting gid number for posix groups')]
+               help='Starting gid number for posix groups'),
+    cfg.StrOpt('instance_ip_range',
+               default='172.16.0.0/21',
+               help='Range of instances to accept SSH from by default')]
 
 
 CONF = cfg.CONF
@@ -242,7 +245,7 @@ class KeystoneHooks(notifier.Driver):
                                                        'tcp',
                                                        22,
                                                        22,
-                                                       cidr='172.16.0.0/21'))
+                                                       cidr=CONF.wmfhooks.instance_ip_range))
             except (exceptions.NeutronClientException):
                 LOG.warning("Port 22 security rule already exists.")
 

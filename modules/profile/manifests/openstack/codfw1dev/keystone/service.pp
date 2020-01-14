@@ -32,6 +32,7 @@ class profile::openstack::codfw1dev::keystone::service(
     $public_port = hiera('profile::openstack::base::keystone::public_port'),
     Boolean $daemon_active = lookup('profile::openstack::codfw1dev::keystone::daemon_active'),
     String $wsgi_server = lookup('profile::openstack::codfw1dev::keystone::wsgi_server'),
+    Stdlib::IP::Address::V4::CIDR $instance_ip_range = lookup('profile::openstack::codfw1dev::keystone::instance_ip_range', {default_value => '0.0.0.0/0'}),
     ) {
 
     class {'::profile::openstack::base::keystone::service':
@@ -65,6 +66,7 @@ class profile::openstack::codfw1dev::keystone::service(
         second_region_designate_host_standby => $second_region_designate_host_standby,
         labweb_hosts                         => $labweb_hosts,
         wsgi_server                          => $wsgi_server,
+        instance_ip_range                    => $instance_ip_range,
     }
     contain '::profile::openstack::base::keystone::service'
 

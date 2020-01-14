@@ -35,6 +35,7 @@ class profile::openstack::eqiad1::keystone::service(
     $glance_host = hiera('profile::openstack::eqiad1::glance_host'),
     Boolean $daemon_active = lookup('profile::openstack::eqiad1::keystone::daemon_active'),
     String $wsgi_server = lookup('profile::openstack::eqiad1::keystone::wsgi_server'),
+    Stdlib::IP::Address::V4::CIDR $instance_ip_range = lookup('profile::openstack::eqiad1::keystone::instance_ip_range', {default_value => '0.0.0.0/0'}),
     ) {
 
     require ::profile::openstack::eqiad1::clientpackages
@@ -69,6 +70,7 @@ class profile::openstack::eqiad1::keystone::service(
         second_region_designate_host_standby => $second_region_designate_host_standby,
         labweb_hosts                         => $labweb_hosts,
         wsgi_server                          => $wsgi_server,
+        instance_ip_range                    => $instance_ip_range,
     }
     contain '::profile::openstack::base::keystone::service'
 

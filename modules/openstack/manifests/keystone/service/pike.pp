@@ -26,6 +26,7 @@ class openstack::keystone::service::pike(
     $wiki_access_token,
     $wiki_access_secret,
     String $wsgi_server,
+    Stdlib::IP::Address::V4::CIDR $instance_ip_range,
 ) {
     class { "openstack::keystone::service::pike::${::lsbdistcodename}": }
 
