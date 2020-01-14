@@ -2603,7 +2603,7 @@ host es2022 {
 }
 
 host es2023 {
-    hardware ethernet B0:26:28:F5:16:C8;
+    hardware ethernet B0:26:28:F5:16:CA;
     fixed-address es2023.codfw.wmnet;
 }
 
