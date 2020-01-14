@@ -68,6 +68,11 @@ archiva::proxy::ssl_enabled: false
 archiva::proxy::certificate_name: ssl-cert-snakeoil
 statsite::instance::graphite_host: 'cloudmetrics1002.eqiad.wmnet'
 profile::puppetdb::jvm_opts: '-Xmx4G'
+profile::puppetdb::elk_logging: false
+profile::puppetdb::filter_job_id: false
+profile::puppetdb::ca_path: '/etc/ssl/certs/Puppet_Internal_CA.pem'
+profile::puppetdb::puppetboard_hosts: ''
+profile::puppetdb::ssldir: ~
 profile::puppetmaster::frontend::canary_hosts: []
 puppetmaster::servers:
   "%{hiera('puppetmaster')}":

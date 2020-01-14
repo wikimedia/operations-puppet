@@ -1,4 +1,4 @@
-profile::puppetdb::java_opts: '-Xmx4G'
+profile::puppetdb::jvm_opts: '-Xmx4G'
 profile::puppetdb::elk_logging: true
 profile::puppetdb::filter_job_id: false
 profile::puppetdb::ca_path: '/etc/ssl/certs/Puppet_Internal_CA.pem'
