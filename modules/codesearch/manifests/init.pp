@@ -11,8 +11,8 @@ class codesearch(
     $puppet_dir = "${base_dir}/puppet"
 
     apt::package_from_component { 'thirdparty-kubeadm-k8s':
-        components => 'thirdparty/kubeadm-k8s',
-        packages   => 'docker-ce',
+        component => 'thirdparty/kubeadm-k8s',
+        packages  => ['docker-ce'],
     }
 
     require_package([
