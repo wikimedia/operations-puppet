@@ -136,7 +136,7 @@ class profile::mail::mx (
 
     nrpe::monitor_service { 'check_exim_queue':
         description    => 'exim queue',
-        nrpe_command   => '/usr/local/lib/nagios/plugins/check_exim_queue -w 1000 -c 3000',
+        nrpe_command   => '/usr/local/lib/nagios/plugins/check_exim_queue -w 2000 -c 4000',
         check_interval => 30,
         retry_interval => 10,
         timeout        => 20,
