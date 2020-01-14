@@ -36,11 +36,10 @@ class profile::puppet_compiler(
     # Conftool + etcd are needed for the conftool function to work
     # do not bother with hiera here, for now.
     class { '::profile::conftool::client':
-        srv_domain => '',
+        srv_domain => 'puppet-diffs.eqiad.wmflabs',
         host       => '127.0.0.1',
         port       => 2379,
         namespace  => dirname('/conftool/v1'),
-        protocol   => 'http',
     }
 
     class {'::openstack::puppet::master::enc':
