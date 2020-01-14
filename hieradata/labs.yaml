@@ -67,6 +67,7 @@ elasticsearch::recover_after_nodes: 1
 archiva::proxy::ssl_enabled: false
 archiva::proxy::certificate_name: ssl-cert-snakeoil
 statsite::instance::graphite_host: 'cloudmetrics1002.eqiad.wmnet'
+profile::puppetdb::java_opts: '-Xmx4G'
 profile::puppetmaster::frontend::canary_hosts: []
 puppetmaster::servers:
   "%{hiera('puppetmaster')}":
