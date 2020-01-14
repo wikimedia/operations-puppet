@@ -1562,12 +1562,22 @@ node /^mw227[1-7]\.codfw\.wmnet$/ {
 # Row A
 
 # mw2215-2223 are in rack A3
-node /^mw22(1[5-9]|2[0123])\.codfw\.wmnet$/ {
+
+node /^mw22(1[56])\.codfw\.wmnet$/ {
+    role(mediawiki::appserver::canary_api)
+}
+
+node /^mw22(1[7-9]|2[0123])\.codfw\.wmnet$/ {
     role(mediawiki::appserver::api)
 }
 
 # mw2244-mw2245,mw2251-2253 are rack A4
-node /^mw22(4[45]|5[1-3])\.codfw\.wmnet$/ {
+
+node /^mw22(4[45])\.codfw\.wmnet$/ {
+    role(mediawiki::appserver::canary_api)
+}
+
+node /^mw22(5[1-3])\.codfw\.wmnet$/ {
     role(mediawiki::appserver::api)
 }
 
