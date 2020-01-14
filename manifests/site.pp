@@ -348,13 +348,8 @@ node 'db1083.eqiad.wmnet' {
     role(mariadb::core)
 }
 # eqiad replicas
-node /^db1(080|089|106|118|119|134)\.eqiad\.wmnet/ {
+node /^db1(080|089|106|107|118|119|134)\.eqiad\.wmnet/ {
     role(mariadb::core)
-}
-
-# Test host
-node 'db1107.eqiad.wmnet' {
-    role(mariadb::core_test)
 }
 
 # s1 (enwiki) core production dbs on codfw
