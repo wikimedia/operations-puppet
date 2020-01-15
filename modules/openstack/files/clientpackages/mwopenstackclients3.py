@@ -12,9 +12,6 @@ from keystoneclient.v3 import client as keystone_client
 from novaclient import client as nova_client
 from designateclient.v2 import client as designateclient
 
-logging.warning("You are loading the python2 version of this library.  " +
-                "Time to upgrade your script to python3!")
-
 
 class Clients(object):
     """Wrapper class for creating OpenStack clients."""
