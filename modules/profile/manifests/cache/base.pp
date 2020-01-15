@@ -34,6 +34,7 @@ class profile::cache::base(
     require ::profile::prometheus::varnish_exporter
     require ::profile::cache::ssl::unified
     require ::profile::standard
+    require ::profile::base::systemd
 
     # FIXME: this cannot be required or it will cause a dependency cycle. It might be a good idea not to include it here
     include ::profile::cache::kafka::webrequest
