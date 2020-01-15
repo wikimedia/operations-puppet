@@ -71,7 +71,7 @@ class profile::netbox::postgres (
                     ensure   => present,
                     user     => 'replication',
                     database => 'netbox',
-                    password => $replication_password,
+                    password => $db_password,
                     cidr     => "${sec_ip6}/128",
                     master   => $on_primary,
                 }
@@ -107,7 +107,7 @@ class profile::netbox::postgres (
                     ensure   => present,
                     user     => 'netbox',
                     database => 'netbox',
-                    password => $replication_password,
+                    password => $db_password,
                     cidr     => "${fe_ip6}/128",
                     master   => $on_primary,
                 }
