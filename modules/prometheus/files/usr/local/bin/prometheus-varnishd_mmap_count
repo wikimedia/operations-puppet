@@ -24,8 +24,8 @@ OUTFILE="${2:-/var/lib/prometheus/node.d/varnishd_mmap_count.prom}"
 # Exit successfully if the service is not running
 /bin/systemctl is-active $UNIT > /dev/null || exit 0
 
-VPID=$(ps h -u vcache -o pid)
-MMAP_COUNT=$(/usr/bin/wc -l < /proc/${VPID}/maps)
+VPID=$(ps h -u vcache -o pid | awk 'NR == 1 {print $1 ; exit}')
+MMAP_COUNT=$(/usr/bin/wc -l < /proc/"${VPID}"/maps)
 
 cat <<EOF > "${OUTFILE}.$$"
 # HELP varnishd_mmap_count Number of varnishd memory map areas
