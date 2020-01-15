@@ -13,9 +13,6 @@ $wgLDAPWriterPassword = array( 'labs' => "<%= @wikitech_nova_ldap_user_pass %>" 
 $wgOpenStackManagerLDAPUser         = 'uid=novaadmin,ou=people,dc=wikimedia,dc=org';
 $wgOpenStackManagerLDAPUsername     = 'novaadmin';
 $wgOpenStackManagerLDAPUserPassword = "<%= @wikitech_nova_ldap_user_pass %>";
-$wgOpenStackManagerProject          = "admin";
-# This is the ID for the project named above:
-$wgOpenStackManagerProjectId        = "admin";
 
 # Used in BlockIpComplete hooks which enable PhabBanBot to disable Phabricator
 # accounts linked to users blocked on Wikitech.
