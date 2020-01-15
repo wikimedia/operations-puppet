@@ -209,6 +209,19 @@ profile::acme_chief::certificates:
         - '^cp30[3-6][0-9]\.esams\.wmnet$'
         - '^cp40[2-3][0-9]\.ulsfo\.wmnet$'
         - '^cp50[0-1][0-9]\.eqsin\.wmnet$'
+    wikiworkshop:
+        CN: 'wikiworkshop.org'
+        SNI:
+        - 'wikiworkshop.org'
+        - 'www.wikiworkshop.org'
+        staging_time: 604800
+        challenge: dns-01
+        authorized_regexes:
+        - '^cp10[7-9][0-9]\.eqiad\.wmnet$'
+        - '^cp20[0-2][0-9]\.codfw\.wmnet$'
+        - '^cp30[3-6][0-9]\.esams\.wmnet$'
+        - '^cp40[2-3][0-9]\.ulsfo\.wmnet$'
+        - '^cp50[0-1][0-9]\.eqsin\.wmnet$'
 profile::acme_chief::challenges:
   dns-01:
     zone_update_cmd: /usr/local/bin/acme-chief-gdnsd-sync.py
