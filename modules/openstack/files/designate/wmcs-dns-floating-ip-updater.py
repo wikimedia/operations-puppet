@@ -282,35 +282,40 @@ def update(config, envfile):
                 logger.exception('Failed to create %s', delegated_PTR_FQDN)
 
 
-argparser = argparse.ArgumentParser(
-    description='Update reverse DNS records for floating IPs')
-argparser.add_argument(
-    '-v', '--verbose', action='count', default=0, dest='loglevel',
-    help='Increase logging verbosity')
-argparser.add_argument(
-    '--config-file',
-    help='Path to config file',
-    default='/etc/wmcs-dns-floating-ip-updater.yaml',
-    type=argparse.FileType('r')
-)
-argparser.add_argument(
-    '--envfile',
-    help='Path to OpenStack authentication YAML file',
-    default='/etc/novaadmin.yaml',
-)
-args = argparser.parse_args()
+def main():
+    argparser = argparse.ArgumentParser(
+        description='Update reverse DNS records for floating IPs')
+    argparser.add_argument(
+        '-v', '--verbose', action='count', default=0, dest='loglevel',
+        help='Increase logging verbosity')
+    argparser.add_argument(
+        '--config-file',
+        help='Path to config file',
+        default='/etc/wmcs-dns-floating-ip-updater.yaml',
+        type=argparse.FileType('r')
+    )
+    argparser.add_argument(
+        '--envfile',
+        help='Path to OpenStack authentication YAML file',
+        default='/etc/novaadmin.yaml',
+    )
+    args = argparser.parse_args()
 
-logging.basicConfig(
-    level=max(logging.DEBUG, logging.WARNING - (10 * args.loglevel)),
-    format='%(asctime)s %(name)-12s %(levelname)-8s: %(message)s',
-    datefmt='%Y-%m-%dT%H:%M:%SZ'
-)
-logging.captureWarnings(True)
-# Quiet some noisy 3rd-party loggers
-logging.getLogger('requests').setLevel(logging.WARNING)
-logging.getLogger('urllib3').setLevel(logging.WARNING)
-logging.getLogger('iso8601.iso8601').setLevel(logging.WARNING)
+    logging.basicConfig(
+        level=max(logging.DEBUG, logging.WARNING - (10 * args.loglevel)),
+        format='%(asctime)s %(name)-12s %(levelname)-8s: %(message)s',
+        datefmt='%Y-%m-%dT%H:%M:%SZ'
+    )
+    logging.captureWarnings(True)
+    # Quiet some noisy 3rd-party loggers
+    logging.getLogger('requests').setLevel(logging.WARNING)
+    logging.getLogger('urllib3').setLevel(logging.WARNING)
+    logging.getLogger('iso8601.iso8601').setLevel(logging.WARNING)
 
-config = yaml.safe_load(args.config_file)
+    config = yaml.safe_load(args.config_file)
 
-update(config, args.envfile)
+    update(config, args.envfile)
+
+
+if __name__ == '__main__':
+    main()
