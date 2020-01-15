@@ -27,6 +27,10 @@ define netops::ripeatlas(
     Integer $ipv6_failures=35,
     $group='network',
 ) {
+    $notes_url = monitoring::build_notes_url(
+      'https://wikitech.wikimedia.org/wiki/Network_monitoring#Atlas_alerts',
+      ['https://grafana.wikimedia.org/d/K1qm1j-Wz/ripe-atlas'])
+
     if $ipv4 {
         monitoring::service { "atlas-ping-${title}-ipv4":
             description    => "IPv4 ping to ${title}",
@@ -34,7 +38,7 @@ define netops::ripeatlas(
             host           => "ripe-atlas-${title}",
             group          => $group,
             check_interval => 5,
-            notes_url      => 'https://wikitech.wikimedia.org/wiki/Network_monitoring#Atlas_alerts',
+            notes_url      => $notes_url,
         }
     }
 
@@ -45,7 +49,7 @@ define netops::ripeatlas(
             host           => "ripe-atlas-${title} IPv6",
             group          => $group,
             check_interval => 5,
-            notes_url      => 'https://wikitech.wikimedia.org/wiki/Network_monitoring#Atlas_alerts',
+            notes_url      => $notes_url,
         }
     }
 }
