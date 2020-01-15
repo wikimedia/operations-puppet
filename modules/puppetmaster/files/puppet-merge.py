@@ -101,7 +101,7 @@ def main():
     if running_user != git_user:
         setuid(git_user)
 
-    remote_url = git('config --get remote.origin.url', config['repo'])
+    remote_url = git('config --get remote.origin.url', config['repo']).rstrip(os.linesep)
     print('Fetching new commits from: {}'.format(remote_url))
     git('fetch', config['repo'])
     head_sha1_old = git('rev-parse HEAD', config['repo'])
@@ -127,7 +127,7 @@ def main():
     print('Running git clean to clean any untracked files.')
     git('clean -dffx -e /private/', config['repo'], None)
     head_sha1_new = git('rev-parse HEAD', config['repo'])
-    print('HEAD is now {}'.format(head_sha1_new))
+    print('All done! HEAD is now {}'.format(head_sha1_new))
     if os.path.isdir(os.path.dirname(config['sha1'])):
         with open(config['sha1'], 'w') as sha1_fd:
             sha1_fd.write('{}\n'.format(head_sha1_new))

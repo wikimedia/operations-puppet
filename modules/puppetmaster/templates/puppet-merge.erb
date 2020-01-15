@@ -167,7 +167,11 @@ workers = @servers.values.map do |workers_map|
   workers_map.map { |name| name['worker'] }.select { |name| name != @fqdn }.flatten
 end
 -%>
+CYAN=$(tput bold; tput setaf 6)
+RESET=$(tput sgr0)
+
 for worker in <%= workers.join(' ') %>; do
+  echo "${CYAN}===> Starting run${RESET} on ${worker}..."
   if [ $LABS_PRIVATE -eq 1 ]; then
     su - $git_user -c "ssh -t -t ${worker} true --labsprivate ${1:-${LABSPRIVATE_SHA}} 2>&1"
     check_remote_error $? ${worker} 'labs'
@@ -177,6 +181,7 @@ for worker in <%= workers.join(' ') %>; do
     su - $git_user -c "ssh -t -t ${worker} true --labsprivate ${1:-${LABSPRIVATE_SHA}} 2>&1"
     check_remote_error $? ${worker} 'labs'
   fi
+  echo
 done
 
 # Only run this once, and only if we're merging the prod repo
