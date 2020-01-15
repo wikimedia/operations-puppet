@@ -1,0 +1,9 @@
+# systemd global configuration file.See systemd-system.conf(5).
+#
+# This file is managed by Puppet!
+#
+
+[Manager]
+DefaultCPUAccounting=<%= @cpu_accounting %>
+DefaultBlockIOAccounting=<%= @blockio_accounting %>
+DefaultMemoryAccounting=<%= @memory_accounting %>

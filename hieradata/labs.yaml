@@ -344,6 +344,10 @@ profile::base::firewall::enable_logging: true
 profile::base::firewall::log::log_rate: 1/second
 profile::base::firewall::log::log_burst: 5
 
+profile::base::systemd::cpu_accounting: 'no'
+profile::base::systemd::blockio_accounting: 'no'
+profile::base::systemd::memory_accounting: 'no'
+
 # Cumin
 profile::openstack::eqiad1::cumin::project_masters: []
 profile::openstack::eqiad1::cumin::project_pub_key: undef
