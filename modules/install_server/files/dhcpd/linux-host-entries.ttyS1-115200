@@ -5835,6 +5835,12 @@ host puppetmaster2002 {
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
+host puppetmaster2003 {
+    hardware ethernet 4C:D9:8F:AF:52:58;
+    fixed-address puppetmaster2003.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
+}
+
 host rdb2004 {
     hardware ethernet B0:83:FE:E4:5E:1A;
     fixed-address rdb2004.codfw.wmnet;
