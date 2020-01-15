@@ -1785,6 +1785,10 @@ node 'puppetmaster1003.eqiad.wmnet' {
     role(puppetmaster::backend)
 }
 
+node 'puppetmaster2003.codfw.wmnet' {
+    role(spare::system)
+}
+
 node /^puppetboard[12]001\.(codfw|eqiad)\.wmnet$/ {
     role(puppetboard)
 }
