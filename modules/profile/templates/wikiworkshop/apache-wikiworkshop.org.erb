@@ -1,0 +1,30 @@
+<VirtualHost *:80>
+    ServerName wikiworkshop.org
+    ServerAlias www.wikiworkshop.org
+    ServerAdmin noc@wikimedia.org
+    DocumentRoot /srv/org/wikimedia/wikiworkshop
+
+    ServerSignature On
+
+    LogLevel warn
+    ErrorLog /var/log/apache2/wikiworkshop.org.error.log
+    CustomLog /var/log/apache2/wikiworkshop.org.access.log wmf
+
+    <Directory />
+        Options FollowSymLinks
+        AllowOverride None
+    </Directory>
+
+    <Directory /srv/org/wikimedia/wikiworkshop>
+        Header set Cache-Control "max-age=3600, must-revalidate"
+        Options Indexes FollowSymLinks MultiViews
+        AllowOverride None
+        Require all granted
+    </Directory>
+
+    <Location />
+        RewriteEngine On
+        RewriteCond %{HTTP_HOST} =www.wikiworkshop.org [NC]
+        RewriteRule ^(.*)$ https://wikiworkshop.org/$1 [R=301,L]
+    </Location>
+</VirtualHost>

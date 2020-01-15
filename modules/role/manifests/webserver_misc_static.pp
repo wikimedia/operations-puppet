@@ -18,6 +18,7 @@ class role::webserver_misc_static {
     include ::profile::microsites::design          # https://design.wikimedia.org (T185282)
     include ::profile::microsites::sitemaps        # https://sitemaps.wikimedia.org
     include ::profile::microsites::bienvenida      # https://bienvenida.wikimedia.org (T207816)
+    include ::profile::microsites::wikiworkshop    # https://wikiworkshop.org (T242374)
     # TLS termination
     include ::profile::tlsproxy::envoy
 }
