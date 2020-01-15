@@ -153,3 +153,4 @@ profile::prometheus::statsd_exporter::mappings:
     match_type: 'regex'
 
 profile::ores::logstash_host: localhost
+service::configuration::logstash_host: localhost
