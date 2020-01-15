@@ -1743,7 +1743,7 @@ node /^pc20(09)\.codfw\.wmnet$/ {
 }
 
 # virtual machines for https://wikitech.wikimedia.org/wiki/Ping_offload
-node /^ping[12]001\.(eqiad|codfw)\.wmnet$/ {
+node /^ping[123]001\.(eqiad|codfw|esams)\.wmnet$/ {
     role(ping_offload)
 }
 

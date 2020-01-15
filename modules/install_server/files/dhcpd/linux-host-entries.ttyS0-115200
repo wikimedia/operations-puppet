@@ -683,6 +683,11 @@ host ping2001 {
     fixed-address ping2001.codfw.wmnet;
 }
 
+host ping3001 {
+    hardware ethernet aa:00:00:76:21:9c;
+    fixed-address ping3001.esams.wmnet;
+}
+
 host planet1001 {
     hardware ethernet aa:00:00:19:24:b9;
     fixed-address planet1001.eqiad.wmnet;
