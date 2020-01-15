@@ -314,7 +314,11 @@ def main():
 
     config = yaml.safe_load(args.config_file)
 
-    update(config, args.envfile)
+    try:
+        update(config, args.envfile)
+    except Exception:
+        logger.exception('Failed to update')
+        exit(1)
 
 
 if __name__ == '__main__':
