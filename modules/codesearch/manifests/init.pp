@@ -59,9 +59,23 @@ class codesearch(
         owner     => 'codesearch',
         group     => 'codesearch',
     }
-    # TODO: Alias production to master on initial clone with:
-    #  git symbolic-ref refs/remotes/origin/master refs/remotes/origin/production
-    #  git symbolic-ref refs/heads/master refs/heads/production
+
+    # Alias production to master for puppet
+    exec { 'puppet alias origin/master':
+        command => 'git symbolic-ref refs/remotes/origin/master refs/remotes/origin/production',
+        cwd     => $puppet_dir,
+        user    => 'codesearch',
+        creates => "${puppet_dir}/.git/refs/remotes/origin/master",
+        require => Git::Clone['operations/puppet'],
+    }
+
+    exec { 'puppet alias master':
+        command => 'git symbolic-ref refs/heads/master refs/heads/production',
+        cwd     => $puppet_dir,
+        user    => 'codesearch',
+        creates => "${puppet_dir}/.git/refs/heads/master",
+        require => Git::Clone['operations/puppet'],
+    }
 
     # TODO: Migrate to a systemd timer
     cron { 'codesearch-write-config':
