@@ -153,7 +153,7 @@ class profile::wmcs::prometheus(
     }
 
     prometheus::server { 'labs':
-        listen_address        => ':9900',
+        listen_address        => '127.0.0.1:9900',
         storage_retention     => $storage_retention,
         max_chunks_to_persist => $max_chunks_to_persist,
         memory_chunks         => $memory_chunks,
@@ -164,8 +164,14 @@ class profile::wmcs::prometheus(
         ),
     }
 
+    httpd::site{ 'prometheus':
+        priority => 10,
+        source   => 'puppet:///modules/profile/wmcs/prometheus/prometheus-apache.erb',
+    }
+
     prometheus::web { 'labs':
         proxy_pass => 'http://localhost:9900/labs',
+        require    => Httpd::Site['prometheus'],
     }
 
 
