@@ -1,5 +1,11 @@
 #! /bin/bash
 
+if ! lvdisplay | grep . >> /dev/null
+then
+    echo "$0: lvm is not active on this host; unable to create a volume."
+    exit 1
+fi
+
 device="$1"
 if ! /sbin/parted -s $device mkpart primary $(
     /sbin/parted -s $device print free |
