@@ -2597,6 +2597,11 @@ host es2020 {
     fixed-address es2020.codfw.wmnet;
 }
 
+host es2021 {
+    hardware ethernet B0:26:28:F5:06:0C;
+    fixed-address es2021.codfw.wmnet;
+}
+
 host es2022 {
     hardware ethernet B0:26:28:F5:30:F0 ;
     fixed-address es2022.codfw.wmnet;
