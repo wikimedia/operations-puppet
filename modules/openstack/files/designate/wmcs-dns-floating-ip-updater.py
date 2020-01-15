@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 #
 # Copyright (c) 2017 Wikimedia Foundation and contributors
 #
@@ -26,7 +26,7 @@ logger = logging.getLogger(__name__)
 
 PROJECT_ZONE_TEMPLATE = "{project}.wmflabs.org."
 FQDN_TEMPLATE = "instance-{server}.{project}.wmflabs.org."
-FQDN_REGEX = FQDN_TEMPLATE.replace('.', '\.').format(
+FQDN_REGEX = FQDN_TEMPLATE.replace(r'.', r'\.').format(
     server='(.*)', project='{project}')
 MANAGED_DESCRIPTION = "MANAGED BY dns-floating-ip-updater.py IN PUPPET - DO NOT UPDATE OR DELETE"
 
@@ -98,8 +98,8 @@ def update(config, envfile):
                 if match:
                     # Matches instances for this project, managed by this script
                     if (
-                        match.group(1) in server_addresses and
-                        set(recordset['records']) != set(server_addresses[match.group(1)])
+                        match.group(1) in server_addresses
+                        and set(recordset['records']) != set(server_addresses[match.group(1)])
                     ):
                         # ... But instance has a different set of IPs. Update!
                         if recordset['description'] == MANAGED_DESCRIPTION:
@@ -174,7 +174,7 @@ def update(config, envfile):
         # Generate PTR record data, handling rewriting for RFC 2317 delegation as
         # configured
         for IP in IPs:
-            PTR_FQDN = ipaddress.ip_address(IP.decode('ascii')).reverse_pointer + '.'
+            PTR_FQDN = ipaddress.ip_address(IP).reverse_pointer + '.'
             delegated_PTR_FQDN = floating_ip_ptr_fqdn_matching_regex.sub(
                 config['floating_ip_ptr_fqdn_replacement_pattern'],
                 PTR_FQDN
@@ -186,8 +186,8 @@ def update(config, envfile):
                     public_PTRs[delegated_PTR_FQDN] = [A_FQDN]
             else:
                 logger.warning(
-                    "Not handling %s" +
-                    " because it doesn't end with %s",
+                    "Not handling %s"
+                    + " because it doesn't end with %s",
                     delegated_PTR_FQDN,
                     config['floating_ip_ptr_zone']
                 )
@@ -197,7 +197,7 @@ def update(config, envfile):
     # project-proxy handles. If any IP has more than 10 reverse mappings then we
     # will try to figure out a reasonable truncated list.
     proxies = (k for k in public_PTRs if len(public_PTRs[k]) > 10)
-    proxy_fqdn_re = re.compile(FQDN_TEMPLATE.replace('.', '\.').format(
+    proxy_fqdn_re = re.compile(FQDN_TEMPLATE.replace(r'.', r'\.').format(
         server='(.*)', project='(.*)'))
     for ptr in proxies:
         logger.info("Trimming FQDN list for %s", ptr)
