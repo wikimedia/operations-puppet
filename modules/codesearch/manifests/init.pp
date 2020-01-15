@@ -77,13 +77,15 @@ class codesearch(
         require => Git::Clone['operations/puppet'],
     }
 
-    # TODO: Migrate to a systemd timer
-    cron { 'codesearch-write-config':
-        command => "${clone_dir}/write_config.py",
-        user    => 'codesearch',
-        minute  => '0',
-        hour    => '0',
-        require => [
+    systemd::timer::job { 'codesearch-write-config':
+        description => 'Generate hound configuration files',
+        command     => "${clone_dir}/write_config.py",
+        user        => 'codesearch',
+        interval    => {
+            'start'    => 'OnCalendar',
+            'interval' => '*-*-* 00:00:00',  # Every day at midnight
+        },
+        require     => [
             Git::Clone['labs/codesearch'],
             User['codesearch'],
         ],
