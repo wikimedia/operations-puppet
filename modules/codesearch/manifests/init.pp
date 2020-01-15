@@ -5,6 +5,7 @@
 #
 class codesearch(
     Optional[Stdlib::Unixpath] $base_dir = undefined,
+    Hash[String, Integer] $ports = undefined,
 ){
     $hound_dir  = "${base_dir}/hound"
     $clone_dir  = "${base_dir}/codesearch"
@@ -95,6 +96,30 @@ class codesearch(
         ensure  => present,
         content => template('codesearch/initscripts/hound_proxy.service.erb'),
         restart => true,
-        require => [Git::Clone['labs/codesearch'], Package['gunicorn3']]
+        require => [
+            Git::Clone['labs/codesearch'],
+            Package['gunicorn3'],
+            File['/etc/codesearch_ports.json'],
+        ]
+    }
+
+    file { '/etc/codesearch_ports.json':
+        ensure  => present,
+        content => ordered_json($ports),
+        owner   => 'codesearch',
+        require => User['codesearch'],
+    }
+
+    $ports.each |String $name, Integer $port| {
+        systemd::service { "hound-${name}":
+            ensure  => present,
+            content => template('codesearch/initscripts/hound.service.erb'),
+            restart => true,
+            require => [
+                Package['docker-ce'],
+                Git::Clone['operations/puppet'],
+                Systemd::Timer::Job['codesearch-write-config'],
+            ]
+        }
     }
 }

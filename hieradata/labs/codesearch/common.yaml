@@ -1,1 +1,15 @@
 profile::codesearch::base_dir: '/srv'
+profile::codesearch::ports:
+    search: 6080
+    extensions: 6081
+    skins: 6082
+    things: 6083
+    core: 6084
+    ooui: 6085
+    operations: 6086
+    armchairgm: 6087
+    milkshake: 6088
+    bundled: 6089
+    deployed: 6090
+    pywikibot: 6091
+    services: 6092

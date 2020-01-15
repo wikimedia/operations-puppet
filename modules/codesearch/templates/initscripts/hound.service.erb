@@ -1,0 +1,20 @@
+[Unit]
+Description=hound-<%= @name =>
+After=docker.service
+Requires=docker.service
+
+[Service]
+TimeoutStartSec=0
+ExecStartPre=-/usr/bin/docker kill hound-<%= @name =>
+ExecStartPre=-/usr/bin/docker rm -f hound-<%= @name =>
+ExecStartPre=/usr/bin/docker pull etsy/hound
+ExecStart=/usr/bin/docker run -p <%= @port =>:6080 --name hound-<%= @name => \
+    -v /srv/hound/hound-<%= @name =>:/data \
+    -v /srv/puppet:/operations/puppet \
+    etsy/hound
+ExecStop=/usr/bin/docker stop hound-<%= @name =>
+RuntimeMaxSec=86400
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
