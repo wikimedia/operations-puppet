@@ -67,11 +67,11 @@ class profile::netbox::postgres (
                 }
                 # User for monitoring check running on secondary server
                 # who needs replication user rights and uses IPv6 (T185504)
-                postgresql::user { "netbox@${secondary}-ipv6":
+                postgresql::user { "replication-monitoring@${secondary}-ipv6":
                     ensure   => present,
                     user     => 'replication',
                     database => 'netbox',
-                    password => $db_password,
+                    password => $replication_password,
                     cidr     => "${sec_ip6}/128",
                     master   => $on_primary,
                 }
