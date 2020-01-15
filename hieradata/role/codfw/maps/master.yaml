@@ -18,7 +18,7 @@ profile::cassandra::single_instance::seeds:
   - '10.192.32.146' # maps2003.codfw.wmnet
   - '10.192.48.57' # maps2004.codfw.wmnet
 
-profile::maps::osm_master::planet_sync_day: '*'
+profile::maps::osm_master::planet_sync_hours: '*/2'
 profile::maps::osm_master::disable_replication_cron: false
 profile::maps::osm_master::disable_admin_cron: true
 
