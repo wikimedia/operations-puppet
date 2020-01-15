@@ -311,3 +311,12 @@ Suite: buster
 Architectures: amd64
 VerifyRelease: 718C1F180B5A84A3
 ListShellHook: grep-dctrl -e -S '^(ceph|nfs-ganesha)$' || [ $? -eq 1 ]
+
+Name: bigtop14
+Method: http://repos.bigtop.apache.org/releases/1.4.0/debian/9
+Components: main>thirdparty/bigtop14
+UDebComponents:
+Suite: bigtop
+Architectures: amd64 source
+VerifyRelease: DBBF9D42B7B4BD70
+ListShellHook: grep-dctrl -e -S '^(avro-libs|bigtop-jsvc|bigtop-tomcat|bigtop-utils|crunch|hadoop|hbase|hive|hue|impala|kite|llama|mahout|oozie|parquet|parquet-format|pig|pig-udf-datafu|sentry|solr|flume-ng|spark-core|sqoop|sqoop2|whirr|zookeeper)$' || [ $? -eq 1 ]

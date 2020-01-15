@@ -70,6 +70,7 @@ Components: main
  component/spicerack
  component/thumbor
  component/vp9
+ thirdparty/bigtop14
  thirdparty/ci
  thirdparty/cloudera
  thirdparty/confluent
@@ -89,6 +90,7 @@ Components: main
 UDebComponents: main component/node10
 Update:
 # sorted list, leading whitespace matters!
+ bigtop14
  confluent-stretch
  elastic55
  elastic56
