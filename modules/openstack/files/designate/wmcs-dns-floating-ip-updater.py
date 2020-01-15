@@ -17,6 +17,7 @@ import argparse
 import ipaddress
 import logging
 import re
+import time
 import yaml
 
 import mwopenstackclients
@@ -313,12 +314,20 @@ def main():
     logging.getLogger('iso8601.iso8601').setLevel(logging.WARNING)
 
     config = yaml.safe_load(args.config_file)
+    retries = config.get("retries", 2)
+    retry_interval = config.get("retries", 120)
 
-    try:
-        update(config, args.envfile)
-    except Exception:
-        logger.exception('Failed to update')
-        exit(1)
+    retry = 0
+    while retry <= retries:
+        try:
+            update(config, args.envfile)
+            exit(0)
+        except Exception:
+            retry += 1
+            logger.exception("Failed to update, retrying %s out of %s" % (retry, retries))
+            time.sleep(retry_interval)
+
+    exit(1)
 
 
 if __name__ == '__main__':

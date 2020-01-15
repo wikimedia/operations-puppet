@@ -21,6 +21,8 @@ class openstack::designate::dns_floating_ip_updater(
         'floating_ip_ptr_zone'                     => $floating_ip_ptr_zone,
         'floating_ip_ptr_fqdn_matching_regex'      => $floating_ip_ptr_fqdn_matching_regex,
         'floating_ip_ptr_fqdn_replacement_pattern' => $floating_ip_ptr_fqdn_replacement_pattern,
+        'retries' => 2,
+        'retry_interval' => 120,
     }
 
     file { '/etc/wmcs-dns-floating-ip-updater.yaml':
@@ -54,9 +56,9 @@ class openstack::designate::dns_floating_ip_updater(
             command                   => '/usr/local/sbin/wmcs-dns-floating-ip-updater',
             interval                  => {
                 'start'    => 'OnCalendar',
-                'interval' => '*-*-* *:00/10:00', # Every 10 minutes
+                'interval' => '*-*-* *:00/15:00', # Every 15 minutes
             },
-            max_runtime_seconds       => 590,  # kill if running after 9m50s
+            max_runtime_seconds       => 890,  # kill if running after 14m50s
             logging_enabled           => false,
             monitoring_enabled        => true,
             monitoring_contact_groups => 'wmcs-team',
