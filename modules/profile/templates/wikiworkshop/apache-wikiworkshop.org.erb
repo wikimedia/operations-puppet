@@ -25,6 +25,6 @@
     <Location />
         RewriteEngine On
         RewriteCond %{HTTP_HOST} =www.wikiworkshop.org [NC]
-        RewriteRule ^(.*)$ https://wikiworkshop.org/$1 [R=301,L]
+        RewriteRule .* https://wikiworkshop.org/ [R=301,L]
     </Location>
 </VirtualHost>
