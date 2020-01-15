@@ -6016,6 +6016,21 @@ host restbase2020 {
     fixed-address restbase2020.codfw.wmnet;
 }
 
+host restbase2021 {
+    hardware ethernet 4C:D9:8F:A9:D5:AE;
+    fixed-address restbase2021.codfw.wmnet;
+}
+
+host restbase2022 {
+    hardware ethernet 4C:D9:8F:A8:06:6A;
+    fixed-address restbase2022.codfw.wmnet;
+}
+
+host restbase2023 {
+    hardware ethernet 4C:D9:8F:AA:28:6D;
+    fixed-address restbase2023.codfw.wmnet;
+}
+
 host restbase-dev1004 {
     hardware ethernet 30:e1:71:5c:a2:f8;
     fixed-address restbase-dev1004.eqiad.wmnet;
