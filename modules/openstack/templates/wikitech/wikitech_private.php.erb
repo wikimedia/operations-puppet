@@ -17,7 +17,11 @@ $wgOpenStackManagerProject          = "admin";
 # This is the ID for the project named above:
 $wgOpenStackManagerProjectId        = "admin";
 
-
+# Used in BlockIpComplete hooks which enable PhabBanBot to disable Phabricator
+# accounts linked to users blocked on Wikitech.
 $wmfPhabricatorApiToken = "<%= @phabricator_api_token %>";
+
+# Used in BlockIpComplete hooks which disable Gerrit accounts linked to users
+# blocked on Wikitech.
 $wmfGerritApiUser = "<%= @gerrit_api_user %>";
 $wmfGerritApiPassword = "<%= @gerrit_api_password %>";
