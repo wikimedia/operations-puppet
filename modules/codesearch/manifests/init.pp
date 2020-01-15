@@ -62,7 +62,7 @@ class codesearch(
 
     # Alias production to master for puppet
     exec { 'puppet alias origin/master':
-        command => 'git symbolic-ref refs/remotes/origin/master refs/remotes/origin/production',
+        command => '/usr/bin/git symbolic-ref refs/remotes/origin/master refs/remotes/origin/production',
         cwd     => $puppet_dir,
         user    => 'codesearch',
         creates => "${puppet_dir}/.git/refs/remotes/origin/master",
@@ -70,7 +70,7 @@ class codesearch(
     }
 
     exec { 'puppet alias master':
-        command => 'git symbolic-ref refs/heads/master refs/heads/production',
+        command => '/usr/bin/git symbolic-ref refs/heads/master refs/heads/production',
         cwd     => $puppet_dir,
         user    => 'codesearch',
         creates => "${puppet_dir}/.git/refs/heads/master",
