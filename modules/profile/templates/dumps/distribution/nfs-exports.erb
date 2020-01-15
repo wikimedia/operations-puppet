@@ -6,5 +6,4 @@
 #		to NFS clients.  See exports(5).
 #
 
-/srv  *(ro,fsid=0,sec=sys,sync,no_subtree_check,root_squash,nocrossmnt)
-/srv/dumps  -ro,sec=sys,no_subtree_check,all_squash,nocrossmnt <%= Array(@nfs_clients).join(' ') %>
+/srv/dumps/xmldatadumps/public  -ro,fsid=0,sec=sys,no_subtree_check,all_squash,nocrossmnt <%= Array(@nfs_clients).join(' ') %>

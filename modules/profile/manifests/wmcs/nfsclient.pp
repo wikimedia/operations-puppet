@@ -149,7 +149,7 @@ class profile::wmcs::nfsclient(
             project     => $::labsproject,
             options     => ['ro', 'soft', 'timeo=300', 'retrans=3'],
             mount_path  => "/mnt/nfs/dumps-${server}",
-            share_path  => '/dumps',
+            share_path  => '',
             server      => $server,
             lookupcache => $lookupcache,
         }
@@ -164,7 +164,7 @@ class profile::wmcs::nfsclient(
             mode   => '0755',
         }
 
-        $dumps_share_root = "/mnt/nfs/dumps-${dumps_active_server}/xmldatadumps"
+        $dumps_share_root = "/mnt/nfs/dumps-${dumps_active_server}"
 
         $defaults = {
             ensure => 'link',
@@ -173,19 +173,19 @@ class profile::wmcs::nfsclient(
 
         $symlinks = {
             '/public/dumps/public' => {
-                target  => "${dumps_share_root}/public",
+                target  => "${dumps_share_root}/",
             },
             '/public/dumps/incr' => {
-                target  => "${dumps_share_root}/incr",
+                target  => "${dumps_share_root}/other/incr",
             },
             '/public/dumps/pagecounts-all-sites' => {
-                target  => "${dumps_share_root}/public/other/pagecounts-all-sites",
+                target  => "${dumps_share_root}/other/pagecounts-all-sites",
             },
             '/public/dumps/pagecounts-raw' => {
-                target  => "${dumps_share_root}/public/other/pagecounts-raw",
+                target  => "${dumps_share_root}/other/pagecounts-raw",
             },
             '/public/dumps/pageviews' => {
-                target  => "${dumps_share_root}/public/other/pageviews",
+                target  => "${dumps_share_root}/other/pageviews",
             },
         }
 
