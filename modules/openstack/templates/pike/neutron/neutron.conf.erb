@@ -45,8 +45,8 @@ notify_nova_on_port_data_changes = True
 agent_down_time = <%= @agent_down_time %>
 
 # db connection contention
-api_workers = 10
-rpc_workers = 25
+api_workers = 8
+rpc_workers = 10
 
 [agent]
 root_helper = sudo neutron-rootwrap /etc/neutron/rootwrap.conf
@@ -57,6 +57,7 @@ log_agent_heartbeats = <%= @log_agent_heartbeats %>
 
 [database]
 connection = mysql://<%= @db_user %>:<%= @db_pass %>@<%= @db_host %>/neutron
+max_overflow = 25
 
 [keystone_authtoken]
 auth_plugin = password
