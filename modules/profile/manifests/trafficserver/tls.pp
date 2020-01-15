@@ -109,7 +109,7 @@ class profile::trafficserver::tls (
         conftool_service          => 'nginx', # TODO: Rename it to ats-tls
         port                      => $port,
         keep_alive_origin_servers => 0,
-        disable_dns_resolution    => 1,
+        disable_dns_resolution    => 0,
         server_session_sharing    => 'none',
         network_settings          => $network_settings,
         http_settings             => $http_settings,
