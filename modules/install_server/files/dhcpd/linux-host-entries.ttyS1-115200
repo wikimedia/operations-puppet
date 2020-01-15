@@ -2912,25 +2912,25 @@ host logstash2022 {
 }
 
 host logstash2026 {
-    hardware ethernet 4C:D9:8F:A9:DA:A1;
+    hardware ethernet B0:26:28:CD:0C:A0;
     fixed-address logstash2026.codfw.wmnet;
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host logstash2027 {
-    hardware ethernet 4C:D9:8F:AA:06:A9;
+    hardware ethernet B0:26:28:CC:E4:50;
     fixed-address logstash2027.codfw.wmnet;
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host logstash2028 {
-    hardware ethernet 4C:D9:8F:A9:E3:99;
+    hardware ethernet  B0:26:28:CD:04:60;
     fixed-address logstash2028.codfw.wmnet;
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host logstash2029 {
-    hardware ethernet 4C:D9:8F:A9:CE:2C;
+    hardware ethernet B0:26:28:CC:DB:C0;
     fixed-address logstash2029.codfw.wmnet;
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
