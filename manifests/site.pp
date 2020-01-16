@@ -940,11 +940,6 @@ node 'neon.eqiad.wmnet' {
     role(kubernetes::staging::master)
 }
 
-# Etcd cluster for "virtual" networking
-node /^etcd100[456]\.eqiad\.wmnet$/ {
-    role(etcd::networking)
-}
-
 # Etherpad (virtual machine)
 node 'etherpad1001.eqiad.wmnet' {
     role(etherpad)

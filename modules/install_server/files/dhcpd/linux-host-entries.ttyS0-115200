@@ -171,24 +171,6 @@ host etcd1003 {
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
 }
 
-host etcd1004 {
-    hardware ethernet aa:00:00:24:5f:97;
-    fixed-address etcd1004.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-}
-
-host etcd1005 {
-    hardware ethernet aa:00:00:bf:3f:d7;
-    fixed-address etcd1005.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-}
-
-host etcd1006 {
-    hardware ethernet aa:00:00:dd:26:03;
-    fixed-address etcd1006.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-}
-
 host etherpad1001 {
     hardware ethernet AA:00:00:EE:AD:01;
     fixed-address etherpad1001.eqiad.wmnet;
