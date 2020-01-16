@@ -195,9 +195,9 @@ host fermium {
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
 }
 
-host gerrit-test {
+host gerrit1002 {
     hardware ethernet aa:00:00:20:41:37;
-    fixed-address gerrit-test.wikimedia.org;
+    fixed-address gerrit1002.wikimedia.org;
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
