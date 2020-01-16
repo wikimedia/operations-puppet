@@ -313,8 +313,8 @@ VerifyRelease: 718C1F180B5A84A3
 ListShellHook: grep-dctrl -e -S '^(ceph|nfs-ganesha)$' || [ $? -eq 1 ]
 
 Name: bigtop14
-Method: http://repos.bigtop.apache.org/releases/1.4.0/debian/9
-Components: main>thirdparty/bigtop14
+Method: http://repos.bigtop.apache.org/releases/1.4.0/debian/9/amd64
+Components: contrib>thirdparty/bigtop14
 UDebComponents:
 Suite: bigtop
 Architectures: amd64 source
