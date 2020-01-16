@@ -2,7 +2,7 @@ class mediawiki::maintenance::pagetriage( $ensure = present ) {
 
     require ::mediawiki::users
 
-    system::role { 'mediawiki::maintenance::pagetriage': description => 'Mediawiki Maintenance Server: pagetriage extension' }
+    system::role { 'mediawiki::maintenance::pagetriage': description => 'MediaWiki Maintenance Server: pagetriage extension' }
 
     cron { 'pagetriage_cleanup_en':
         ensure   => $ensure,

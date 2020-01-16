@@ -54,7 +54,7 @@ profile::graphoid::error_headers:
 ### BEGIN EVENTSTREAMS ###
 # EventStreams is configured in discovery.yaml to be active/active.
 # It runs in both primary datacenters and is backed by the local
-# 'main' Kafka cluster there.  If eqiad is the active Mediawiki
+# 'main' Kafka cluster there.  If eqiad is the active MediaWiki
 # DC, then the EventStreams instance in codfw consuming
 # from main-codfw relies on MirrorMaker to replicate events
 # from main-eqiad. This should usually be fine. If MirrorMaker

@@ -29,7 +29,7 @@ class profile::mediawiki::maintenance {
         mode   => '0555'
     }
 
-    # Mediawiki maintenance scripts (cron jobs)
+    # MediaWiki maintenance scripts (cron jobs)
     include ::profile::mediawiki::maintenance::wikidata
     include ::profile::mediawiki::maintenance::growthexperiments
     class { 'mediawiki::maintenance::pagetriage': ensure => $ensure }

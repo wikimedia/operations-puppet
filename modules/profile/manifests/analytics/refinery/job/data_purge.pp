@@ -268,7 +268,7 @@ class profile::analytics::refinery::job::data_purge (
     # runs once a day (but only will delete data on the needed date)
     $geoeditors_private_retention_days = 60
     kerberos::systemd_timer { 'mediawiki-raw-cu-changes-drop-month':
-        description  => 'Drop raw Mediawiki cu_changes from Hive/HDFS following data retention policies.',
+        description  => 'Drop raw MediaWiki cu_changes from Hive/HDFS following data retention policies.',
         command      => "${refinery_path}/bin/refinery-drop-older-than --database='wmf_raw' --tables='mediawiki_private_cu_changes' --base-path='/wmf/data/raw/mediawiki_private/tables/cu_changes' --path-format='month=(?P<year>[0-9]+)-(?P<month>[0-9]+)' --older-than='${geoeditors_private_retention_days}' --skip-trash --execute='9d9f8adf2eb7de69c9c3634e45e1f7d9'",
         environment  => $systemd_env,
         interval     => '*-*-* 05:00:00',

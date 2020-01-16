@@ -137,7 +137,7 @@ def mysql_mapper(event):
     The WMF EventLogging Analytics MySQL log database has a lot of curious
     legacy compatibility problems.  This function converts an event
     to a format that the MySQL database expects.  If an event comes from
-    a non-Mediawiki bot, it will be mapped to 'None' and thus excluded from the stream.
+    a non-MediaWiki bot, it will be mapped to 'None' and thus excluded from the stream.
     """
     if 'userAgent' in event and isinstance(event['userAgent'], dict):
         # Get rid of unwanted bots. T67508
@@ -154,7 +154,7 @@ def mysql_mapper(event):
         event['userAgent'] = json.dumps(event['userAgent'])
 
     # jrm.py expects an integer `timestamp` field to convert into
-    #  Mediawiki timestamp. Inject it into the event.
+    #  MediaWiki timestamp. Inject it into the event.
     if 'dt' in event:
         # Use the time from `dt`
         event['timestamp'] = int(dateutil.parser.parse(event['dt']).strftime("%s"))

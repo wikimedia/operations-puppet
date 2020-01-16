@@ -1,4 +1,4 @@
-# server hosting Mediawiki releases
+# server hosting MediaWiki releases
 # https://releases.wikimedia.org/mediawiki/
 class profile::releases::reprepro(
     $active_server = lookup('releases_server'),

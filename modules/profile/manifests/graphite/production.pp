@@ -1,7 +1,7 @@
 # == Class: profile::graphite::production
 #
 # Set up graphite instance for production.
-# Also includes icinga checks for anomalies for Mediawiki, EL & Swift metrics
+# Also includes icinga checks for anomalies for MediaWiki, EL & Swift metrics
 # Instance requires people to authenticate via LDAP before they can see metrics.
 #
 class profile::graphite::production {

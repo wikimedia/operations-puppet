@@ -1,7 +1,7 @@
 # == Class profile::analytics::refinery::repository
 #
 # Deploy the analytics/refinery repository without any
-# Hadoop or Mediawiki dependency. This profile is meant to be
+# Hadoop or MediaWiki dependency. This profile is meant to be
 # mostly used as part of profile::analytics::refinery, but it
 # may also be deployed to hosts that don't need the full Refinery
 # potential but only a specific subset (for example, the eventlogging

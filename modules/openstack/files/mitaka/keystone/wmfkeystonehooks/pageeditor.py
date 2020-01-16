@@ -27,7 +27,7 @@ LOG = logging.getLogger('nova.%s' % __name__)
 wiki_opts = [
     cfg.StrOpt('wiki_host',
                default='deployment.wikimedia.beta.wmflabs.org',
-               help='Mediawiki host to receive updates.'),
+               help='MediaWiki host to receive updates.'),
     cfg.StrOpt('wiki_page_prefix',
                default='InstanceStatus_',
                help='Created pages will have form <prefix>_<instancename>.'),

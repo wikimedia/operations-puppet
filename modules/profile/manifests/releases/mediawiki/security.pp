@@ -1,4 +1,4 @@
-# server hosting Mediawiki releases
+# server hosting MediaWiki releases
 # https://releases.wikimedia.org/mediawiki/
 class profile::releases::mediawiki::security (
     $deployment_server = lookup('deployment_server'),

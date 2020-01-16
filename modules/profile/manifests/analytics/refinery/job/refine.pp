@@ -77,7 +77,7 @@ class profile::analytics::refinery::job::refine(
     ]
     $mediawiki_event_table_whitelist_regex = "^(${join($mediawiki_event_tables, '|')})$"
 
-    # Refine Mediawiki event data.
+    # Refine MediaWiki event data.
     profile::analytics::refinery::job::refine_job { 'mediawiki_events':
         job_config   => merge($default_config, {
             input_path                      => '/wmf/data/raw/event',

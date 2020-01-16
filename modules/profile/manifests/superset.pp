@@ -82,7 +82,7 @@ class profile::superset(
         # Use MySQL research user to access mysql DBs.
         include ::passwords::mysql::research
         $password_mapping = {
-            # Mediawiki analytics slave database.
+            # MediaWiki analytics slave database.
             "mysql://${::passwords::mysql::research::user}@analytics-store.eqiad.wmnet" =>
                 $::passwords::mysql::research::pass,
             # EventLogging mysql slave database.

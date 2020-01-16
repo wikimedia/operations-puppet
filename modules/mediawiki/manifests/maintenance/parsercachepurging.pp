@@ -1,6 +1,6 @@
 class mediawiki::maintenance::parsercachepurging( $ensure = present ) {
 
-    system::role { 'mediawiki::maintenance::parsercachepurging': description => 'Mediawiki Maintenance Server: parser cache purging' }
+    system::role { 'mediawiki::maintenance::parsercachepurging': description => 'MediaWiki Maintenance Server: parser cache purging' }
 
     cron { 'parser_cache_purging':
         ensure  => $ensure,

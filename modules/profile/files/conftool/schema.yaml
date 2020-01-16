@@ -14,7 +14,7 @@ discovery:
       type: "int"
       default: 300
 
-# Etcd-based configuration for Mediawiki, read by appservers using EtcdConfig.
+# Etcd-based configuration for MediaWiki, read by appservers using EtcdConfig.
 mwconfig:
   path: "mediawiki-config"
   tags:
@@ -55,7 +55,7 @@ dbconfig-instance:
     host_ip:
       default: "0.0.0.0"
     port:
-      default: 3306  # This must be the same as assumed default by Mediawiki!
+      default: 3306  # This must be the same as assumed default by MediaWiki!
     sections:
       default: {}
     note:

@@ -41,7 +41,7 @@
     # Primary wiki redirector:
     RewriteRule ^/wiki /w/index.php [L]
 <%- if @public_rewrites -%>
-    # Make robots.txt editable via Mediawiki:robots.txt
+    # Make robots.txt editable via MediaWiki:robots.txt
     RewriteRule ^/robots\.txt$ /w/robots.php [L]
     # Primary wiki redirector:
     RewriteRule ^/$ /w/index.php

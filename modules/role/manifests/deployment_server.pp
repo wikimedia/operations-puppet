@@ -1,4 +1,4 @@
-# Mediawiki Deployment Server (prod)
+# MediaWiki Deployment Server (prod)
 class role::deployment_server {
     include ::profile::standard
     include ::profile::base::firewall

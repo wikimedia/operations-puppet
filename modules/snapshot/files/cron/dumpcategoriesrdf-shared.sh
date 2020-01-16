@@ -4,7 +4,7 @@
 # modules/snapshot/cron/dumpcategoriesrdf-shared.sh
 #############################################################
 #
-# Shared variable and function declarations for creating Mediawiki category dumps
+# Shared variable and function declarations for creating MediaWiki category dumps
 
 source /usr/local/etc/dump_functions.sh
 

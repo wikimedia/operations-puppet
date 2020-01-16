@@ -2,7 +2,7 @@ class role::mediawiki::maintenance {
     include ::profile::standard
     include ::profile::base::firewall
 
-    # Mediawiki
+    # MediaWiki
     include ::role::mediawiki::common
     include ::profile::mediawiki::maintenance
 

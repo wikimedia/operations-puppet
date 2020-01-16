@@ -54,7 +54,7 @@ class wikistats::updates (
                 'un@17', # Uncylomedias
                 'wx@18', # Wikimedia Special
                 'mh@18', # Miraheze
-                'mw@19', # Mediawikis
+                'mw@19', # MediaWikis
                 'sw@20', # Shoutwikis
                 'ro@21', # Rodovid
                 'wk@21', # Wikkii

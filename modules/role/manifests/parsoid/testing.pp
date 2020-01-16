@@ -18,7 +18,7 @@ class role::parsoid::testing {
     include ::profile::parsoid::vd_client
     include ::profile::parsoid::testing
 
-    ## Mediawiki
+    ## MediaWiki
     # We don't include things like automatic php restarts
     # or prometheus exporters, as this is just a testing
     # installation.

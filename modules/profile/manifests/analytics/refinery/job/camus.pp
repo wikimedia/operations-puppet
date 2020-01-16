@@ -79,7 +79,7 @@ class profile::analytics::refinery::job::camus(
         interval              => '*-*-* *:05:00',
     }
 
-    # Import Mediawiki events into
+    # Import MediaWiki events into
     # /wmf/data/raw/event once every hour.
     # Also check that camus is always finding data in the revision-create
     # topic from the primary mediawiki datacenter.
@@ -90,7 +90,7 @@ class profile::analytics::refinery::job::camus(
         default => mediawiki::state('primary_dc'),
     }
 
-    # Imports Mediawiki (EventBus) events that are produced via eventgate-main
+    # Imports MediaWiki (EventBus) events that are produced via eventgate-main
     camus::job { 'mediawiki_events':
         kafka_brokers         => $kafka_brokers_jumbo,
         check                 => $monitoring_enabled,
@@ -102,7 +102,7 @@ class profile::analytics::refinery::job::camus(
     }
 
 
-    # Imports Mediawiki (EventBus) events that are produced via eventgate-analytics
+    # Imports MediaWiki (EventBus) events that are produced via eventgate-analytics
     # TODO: These are no longer all 'mediawiki' events.  Rename this job.
     camus::job { 'mediawiki_analytics_events':
         kafka_brokers         => $kafka_brokers_jumbo,
