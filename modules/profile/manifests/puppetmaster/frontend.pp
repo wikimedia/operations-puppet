@@ -52,6 +52,9 @@ class profile::puppetmaster::frontend(
                 ca_secret => $mcrouter_ca_secret,
             }
         }
+
+        # Ship cassandra-ca-manager (precursor of cergen)
+        class { '::cassandra::ca_manager': }
     }
 
     class { '::puppetmaster::ca_server':
