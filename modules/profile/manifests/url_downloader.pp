@@ -104,9 +104,5 @@ class profile::url_downloader (
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Url-downloader',
     }
 
-    if os_version('debian >= buster') {
-        base::service_auto_restart { 'squid': }
-    } else {
-        base::service_auto_restart { 'squid3': }
-    }
+    base::service_auto_restart { 'squid': }
 }
