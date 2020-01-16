@@ -16,3 +16,6 @@ eqsin:
   dns:
     dns5001.wikimedia.org: [pdns_recursor]
     dns5002.wikimedia.org: [pdns_recursor]
+  ncredir:
+    ncredir5001.eqsin.wmnet: [nginx]
+    ncredir5002.eqsin.wmnet: [nginx]
