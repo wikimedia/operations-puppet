@@ -1,7 +1,7 @@
 # http://apt.wikimedia.org/wikimedia/
 class profile::aptrepo::wikimedia (
-    $primary_server = lookup('install_server'),
-    $secondary_server = lookup('install_server_failover'),
+    Stdlib::Fqdn $primary_server = lookup('install_server'),
+    Stdlib::Fqdn $secondary_server = lookup('install_server_failover'),
 ){
     $basedir = '/srv/wikimedia'
 
