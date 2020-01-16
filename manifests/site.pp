@@ -22,11 +22,6 @@ node 'acmechief-test2001.codfw.wmnet' {
     role(acme_chief)
 }
 
-# url-downloaders
-node /^(actinium|alcyone|alsafi|aluminium)\.wikimedia\.org$/ {
-    role(url_downloader)
-}
-
 # The Hadoop master node:
 # - primary active NameNode
 # - YARN ResourceManager

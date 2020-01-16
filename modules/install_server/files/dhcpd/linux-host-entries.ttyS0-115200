@@ -37,30 +37,6 @@ host acrux {
     fixed-address acrux.codfw.wmnet;
 }
 
-host actinium {
-    hardware ethernet aa:00:00:1c:4b:fe;
-    fixed-address actinium.wikimedia.org;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-}
-
-host alcyone {
-    hardware ethernet aa:00:00:e9:8a:d0;
-    fixed-address alcyone.wikimedia.org;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-}
-
-host alsafi {
-    hardware ethernet aa:00:00:c7:16:43;
-    fixed-address alsafi.wikimedia.org;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-}
-
-host aluminium {
-    hardware ethernet aa:00:00:81:9e:0f;
-    fixed-address aluminium.wikimedia.org;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-}
-
 host archiva1001 {
     hardware ethernet aa:00:00:ca:1f:fb;
     fixed-address archiva1001.wikimedia.org;
