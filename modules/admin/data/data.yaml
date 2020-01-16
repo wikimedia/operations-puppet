@@ -159,7 +159,7 @@ groups:
               fdans, mlitn, niharika29, goransm, pmiazga, dsaez, shiladsen, cicalese,
               mirrys, sharvaniharan, mmiller, amire80, rush, kharlan, gbirke, dedcode,
               isaacj, jdl, joewalsh, phuedx, bd808, iflorez, mayakpwiki, conniecc1, abi,
-              cohi, keepit-ssh, kzeta, snowick, aarora]
+              cohi, keepit-ssh, kzeta, snowick, aarora, jiawang]
   ldap-admins:
     gid: 715
     description: ldap admins
@@ -284,7 +284,7 @@ groups:
               niharika29, ryanmax, afandian2, jgleeson, toddleroux, srishakatux, dsharpe, eyener,
               esanders, sukhe, jfishback, iflorez, mayakpwiki, conniecc1, abi, mgerlach, dedcode,
               lexnasser, kevinbazira, keepit-ssh, jiji, cohi, mstyles, accraze, kzeta, snowick,
-              aarora, zpapierski, knissen]
+              aarora, zpapierski, knissen, jiawang]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata]
   analytics-admins:
@@ -3538,6 +3538,14 @@ users:
     gid: 500
     ssh_keys:
      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDc58bfUYS6EsCKBZOxmQLpLsZp+Juyjgvl6tlG/TPR/ kani@C107
+  jiawang:
+    ensure: present
+    realname: Jennifer Wang
+    email: jwang@wikimedia.org
+    uid: 22970
+    gid: 500
+    ssh_keys:
+     - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFpYzzNQaWunmpWx6X7+9kKECizTwJFxk5pndfHjZgJq jwang@Jennifers-MBP.corp.wikimedia.org
 ldap_only_users:
   abartov:
     ensure: present
