@@ -77,7 +77,7 @@ profile::kubernetes::deployment_server::git_owner: trebuchet
 profile::mediawiki::apc_shm_size: 128M
 profile::mediawiki::deployment::server::rsync_host: deploy1001.devtools.eqiad.wmflabs
 profile::mediawiki::php::enable_fpm: true
-profile::mediawiki::php::php_version: '7.3'
+profile::mediawiki::php::php_version: '7.2'
 profile::rsyslog::kafka_shipper::kafka_brokers: []
 profile::services_proxy::ensure: absent
 profile::services_proxy::services:
