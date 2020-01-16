@@ -104,8 +104,8 @@ def main():
     remote_url = git('config --get remote.origin.url', config['repo']).rstrip(os.linesep)
     print('Fetching new commits from: {}'.format(remote_url))
     git('fetch', config['repo'])
-    head_sha1_old = git('rev-parse HEAD', config['repo'])
-    target_sha1 = git('rev-parse {}'.format(args.sha1), config['repo'])
+    head_sha1_old = git('rev-parse HEAD', config['repo']).rstrip(os.linesep)
+    target_sha1 = git('rev-parse {}'.format(args.sha1), config['repo']).rstrip(os.linesep)
     if head_sha1_old == target_sha1:
         print('No changes to merge.')
         return PUPPET_MERGE_NO_MERGE
@@ -126,7 +126,7 @@ def main():
     git('merge --ff-only {}'.format(target_sha1), config['repo'], None)
     print('Running git clean to clean any untracked files.')
     git('clean -dffx -e /private/', config['repo'], None)
-    head_sha1_new = git('rev-parse HEAD', config['repo'])
+    head_sha1_new = git('rev-parse HEAD', config['repo']).rstrip(os.linesep)
     print('All done! HEAD is now {}'.format(head_sha1_new))
     if os.path.isdir(os.path.dirname(config['sha1'])):
         with open(config['sha1'], 'w') as sha1_fd:
