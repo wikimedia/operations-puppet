@@ -64,11 +64,7 @@ class profile::ganeti (
 
     # Interactive script to create instances
     file { '/usr/local/bin/makevm':
-        ensure => present,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        source => 'puppet:///modules/profile/ganeti/makevm.sh',
+        ensure => absent,
     }
 
     motd::script { 'ganeti-master-motd':
