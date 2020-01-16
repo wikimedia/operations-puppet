@@ -2595,6 +2595,7 @@ host es2019 {
 host es2020 {
     hardware ethernet B0:26:28:F5:28:02;
     fixed-address es2020.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer-bootif/";
 }
 
 host es2021 {
