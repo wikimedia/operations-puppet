@@ -41,6 +41,13 @@ class phabricator::tools (
         mode   => '0755',
     }
 
+    file { '/srv/dumps/WARNING_NEVER_PUT_PRIVATE_DATA_HERE_THIS_IS_SYNCED_TO_PUBLIC':
+        ensure => 'present',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+    }
+
     $dump_script = "${directory}/public_task_dump.py 1>/dev/null"
 
     file { $dump_script:
