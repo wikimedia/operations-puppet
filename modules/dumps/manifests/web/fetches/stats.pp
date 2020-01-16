@@ -25,11 +25,12 @@ class dumps::web::fetches::stats(
     }
 
     dumps::web::fetches::analytics::job { 'mediacounts':
-        source       => "${src}/mediacounts",
-        destination  => "${miscdatasetsdir}/mediacounts",
-        interval     => '*-*-* *:41:00',
-        user         => $user,
-        use_kerberos => $use_kerberos,
+        source         => "${src_hdfs}/mediacounts/",
+        destination    => "${miscdatasetsdir}/mediacounts/",
+        interval       => '*-*-* *:41:00',
+        user           => $user,
+        use_kerberos   => $use_kerberos,
+        use_hdfs_rsync => true,
     }
 
     # Copies over files with pageview statistics per page and project,
