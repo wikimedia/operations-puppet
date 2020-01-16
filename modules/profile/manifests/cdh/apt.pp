@@ -10,11 +10,19 @@
 #
 class profile::cdh::apt (
     $pin_release = hiera('profile::cdh::apt::pin_release', true),
+    $use_bigtop  = hiera('profile::cdh::apt::use_bigtop', false),
 ){
-    apt::repository { 'thirdparty-cloudera':
+
+    if $use_bigtop {
+        $thirdparty_component_name = 'bigtop14'
+    } else {
+        $thirdparty_component_name = 'cloudera'
+    }
+
+    apt::repository { "thirdparty-${thirdparty_component_name}":
         uri        => 'http://apt.wikimedia.org/wikimedia',
         dist       => "${::lsbdistcodename}-wikimedia",
-        components => 'thirdparty/cloudera',
+        components => "thirdparty/${thirdparty_component_name}",
         notify     => Exec['apt_update_cdh'],
     }
 
@@ -24,9 +32,9 @@ class profile::cdh::apt (
     }
 
     if $pin_release {
-        apt::pin { 'thirdparty-cloudera':
+        apt::pin { "thirdparty-${thirdparty_component_name}":
             ensure   => $ensure_pin,
-            pin      => 'release c=thirdparty/cloudera',
+            pin      => "release c=thirdparty/${thirdparty_component_name}",
             priority => '1002',
             notify   => Exec['apt_update_cdh'],
         }
