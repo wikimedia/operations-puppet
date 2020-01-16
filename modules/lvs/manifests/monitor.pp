@@ -47,19 +47,13 @@ class lvs::monitor() {
         }
         $monitoring['sites'].each |$sitename, $host| {
             $hostname = $host['hostname']
-            # The condition  will be removed in a followup patch. 
-            # It's just for reproducing the status-quo of the magic of 
-            # lvs::monitor::http_https as much as possible.
-            # Our final solution will be using the name of the pool in the title anyways.
+            $service_title = "${hostname}_${n}"
+            $service_title_v6 = "${service_title}_v6"
             if $data['encryption'] {
-                $service_title = "${hostname}_https"
                 $description = 'LVS HTTPS'
-                $service_title_v6 = "${hostname}_ipv6_https"
             }
             else {
-                $service_title = $hostname
                 $description = 'LVS HTTP'
-                $service_title_v6 = "${hostname}_ipv6"
             }
             # Add ipv4 monitoring if present
             if $hostname in $hosts {

@@ -1268,13 +1268,12 @@ service::catalog:
           max-delay: 300
           timeout-clean-reconnect: 3
       scheduler: sh
-# TODO: uncomment when we have unique identifiers for monitoring.
-#    monitoring:
-#      check_command: check_tcp!11514
-#      critical: true
-#      sites:
-#        eqiad:
-#          hostname: logstash.svc.eqiad.wmnet
+    monitoring:
+      check_command: check_tcp!11514
+      critical: true
+      sites:
+        eqiad:
+          hostname: logstash.svc.eqiad.wmnet
     port: 11514
     sites:
     - eqiad
@@ -1979,15 +1978,14 @@ service::catalog:
           url:
           - https://localhost/
       scheduler: wrr
-# TODO: enable once fixed in puppet
-#    monitoring:
-#      check_command: check_https_on_port!9243
-#      critical: true
-#      sites:
-#        codfw:
-#          hostname: search.svc.codfw.wmnet
-#        eqiad:
-#          hostname: search.svc.eqiad.wmnet
+    monitoring:
+      check_command: check_https_on_port!9243
+      critical: true
+      sites:
+        codfw:
+          hostname: search.svc.codfw.wmnet
+        eqiad:
+          hostname: search.svc.eqiad.wmnet
     port: 9243
     sites:
     - eqiad
@@ -2016,15 +2014,14 @@ service::catalog:
           url:
           - https://localhost/
       scheduler: wrr
-# TODO: enable once fixed in puppet
-#    monitoring:
-#      check_command: check_https_on_port!9443
-#      critical: true
-#      sites:
-#        codfw:
-#          hostname: search.svc.codfw.wmnet
-#        eqiad:
-#          hostname: search.svc.eqiad.wmnet
+    monitoring:
+      check_command: check_https_on_port!9443
+      critical: true
+      sites:
+        codfw:
+          hostname: search.svc.codfw.wmnet
+        eqiad:
+          hostname: search.svc.eqiad.wmnet
     port: 9443
     sites:
     - eqiad
