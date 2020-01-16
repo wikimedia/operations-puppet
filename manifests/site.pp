@@ -222,7 +222,7 @@ node 'gerrit1001.wikimedia.org', 'gerrit2001.wikimedia.org' {
     role(gerrit)
 }
 
-node 'gerrit-test.wikimedia.org' {
+node 'gerrit1002.wikimedia.org' {
     role(spare::system)
 }
 
