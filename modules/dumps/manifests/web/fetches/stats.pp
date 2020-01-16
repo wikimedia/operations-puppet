@@ -96,8 +96,8 @@ class dumps::web::fetches::stats(
 
     # Copying only the last 2 dumps explicitely (--delete will take care of deleting old ones)
     dumps::web::fetches::analytics::job { 'mediawiki_history_dumps':
-        source         => "hdfs://${src_hdfs}/mediawiki/history/{\$(/bin/date --date=\"\$(/bin/date +%Y-%m-15) -1 month\" +\"%Y-%m\"),\$(/bin/date --date=\"\$(/bin/date +%Y-%m-15) -2 month\" +\"%Y-%m\")}",
-        destination    => "file://${miscdatasetsdir}/mediawiki_history/",
+        source         => "${src_hdfs}/mediawiki/history/{\$(/bin/date --date=\"\$(/bin/date +%Y-%m-15) -1 month\" +\"%Y-%m\"),\$(/bin/date --date=\"\$(/bin/date +%Y-%m-15) -2 month\" +\"%Y-%m\")}",
+        destination    => "${miscdatasetsdir}/mediawiki_history/",
         interval       => '*-*-* 05:00:00',
         user           => $user,
         use_kerberos   => $use_kerberos,

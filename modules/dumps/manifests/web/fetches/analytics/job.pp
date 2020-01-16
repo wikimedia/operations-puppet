@@ -62,7 +62,7 @@ define dumps::web::fetches::analytics::job(
     }
 
     $command = $use_hdfs_rsync ? {
-        true    => "/bin/bash -c '/usr/local/bin/hdfs-rsync -r -t ${delete_option}${exclude_option} --chmod=go-w ${source} ${destination}'",
+        true    => "/bin/bash -c '/usr/local/bin/hdfs-rsync -r -t ${delete_option}${exclude_option} --chmod=go-w hdfs://${source} file://${destination}'",
         default => "/bin/bash -c '/usr/bin/rsync -rt ${delete_option}${exclude_option} --chmod=go-w ${source}/ ${destination}/'"
     }
 
