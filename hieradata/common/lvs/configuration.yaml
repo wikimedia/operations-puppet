@@ -2006,6 +2006,8 @@ lvs::configuration::lvs_services:
           hostname: ncredir-lb.codfw.wikimedia.org
         esams:
           hostname: ncredir-lb.esams.wikimedia.org
+        ulsfo:
+          hostname: ncredir-lb.ulsfo.wikimedia.org
   ncredir-https:
     description: "Non canonical redirect service"
     class: high-traffic1
