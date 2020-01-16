@@ -62,11 +62,6 @@ class profile::ganeti (
         source => 'puppet:///modules/profile/ganeti/id_rsa.pub',
     }
 
-    # Interactive script to create instances
-    file { '/usr/local/bin/makevm':
-        ensure => absent,
-    }
-
     motd::script { 'ganeti-master-motd':
         ensure => present,
         source => 'puppet:///modules/profile/ganeti/motd',
