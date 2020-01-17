@@ -16,7 +16,7 @@ profile::openstack::codfw1dev::rabbit_monitor_user: 'monitoring'
 profile::openstack::codfw1dev::rabbit_file_handles: 8192
 profile::openstack::codfw1dev::osm_host: 'labtestwikitech.wikimedia.org'
 profile::openstack::codfw1dev::ldap_hosts: ['cloudservices2002-dev.wikimedia.org']
-profile::openstack::codfw1dev::ldap_proxyuser_pass: 'lt-Eche0ieng8UaNoo'
+profile::openstack::codfw1dev::ldap_proxyuser_pass: 'Eche0ieng8UaNoo'
 profile::openstack::codfw1dev::region: 'codfw1dev-r'
 profile::openstack::codfw1dev::labweb_hosts:
   - cloudweb2001-dev.wikimedia.org
