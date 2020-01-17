@@ -103,6 +103,11 @@ class codesearch(
         ]
     }
 
+    ferm::service { 'codesearch':
+        proto => 'tcp',
+        port  => '3002',
+    }
+
     file { '/etc/codesearch_ports.json':
         ensure  => present,
         content => ordered_json($ports),
