@@ -261,3 +261,17 @@ profile::cache::base::default_weights:
 # profile::cache::ssl
 profile::cache::ssl::unified::tls_port: 4443
 profile::cache::ssl::unified::use_trafficserver_tls: true
+
+profile::trafficserver::tls::extra_certs:
+  wikiworkshop:
+    acme_chief: true
+    cert_files: ['acmecerts/wikiworkshop/live/rsa-2048.chained.crt', 'acmecerts/wikiworkshop/live/ec-prime256v1.chained.crt']
+    private_key_files: ['acmecerts/wikiworkshop/live/rsa-2048.key', 'acmecerts/wikiworkshop/live/ec-prime256v1.key']
+    ocsp_stapling_files: ['acmecerts/wikiworkshop/live/rsa-2048.ocsp', 'acmecerts/wikiworkshop/live/ec-prime256v1.ocsp']
+    default: false
+    common_name: 'wikiworkshop.org'
+    sni: [
+      'wikiworkshop.org', 'www.wikiworkshop.org'
+    ]
+    warning_threshold: 30
+    critical_threshold: 15

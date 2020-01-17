@@ -135,7 +135,6 @@ profile::trafficserver::tls::available_unified_certs:
     ]
     warning_threshold: 30
     critical_threshold: 15
-
 profile::trafficserver::tls::http_settings:
   accept_no_activity_timeout: 180
   connect_attempts_timeout: 180

@@ -23,6 +23,7 @@ class profile::trafficserver::tls (
     Boolean $systemd_hardening=hiera('profile::trafficserver::tls::systemd_hardening', true),
     Hash[String, Trafficserver::TLS_certificate] $available_unified_certs=hiera('profile::trafficserver::tls::available_unified_certs'),
     String $public_tls_unified_cert_vendor=hiera('public_tls_unified_cert_vendor'),
+    Optional[Hash[String, Trafficserver::TLS_certificate]] $extra_certs=hiera('profile::trafficserver::tls::extra_certs', undef),
 ){
     $errorpage = {
         title       => 'Wikimedia Error',
@@ -55,7 +56,21 @@ class profile::trafficserver::tls (
         'ocsp_stapling_path' => $tls_material_path,
     }
     $paths_tls_settings = merge($tls_settings, $tls_paths)
-    $inbound_tls_settings = merge($paths_tls_settings, {'certificates' => [$available_unified_certs[$public_tls_unified_cert_vendor]]})
+
+    if !empty($extra_certs) {
+        $extra_certs.each |String $extra_cert_name, Trafficserver::TLS_certificate $extra_cert| {
+            if $extra_cert['default'] {
+                fail("${extra_cert} cannot be the default certificate")
+            }
+            if !$extra_cert['acme_chief'] {
+                fail("${extra_cert} must be an acme-chief managed certificate")
+            }
+        }
+        $available_certs = [$available_unified_certs[$public_tls_unified_cert_vendor]] + values($extra_certs)
+    } else {
+        $available_certs = [$available_unified_certs[$public_tls_unified_cert_vendor]]
+    }
+    $inbound_tls_settings = merge($paths_tls_settings, {'certificates' => $available_certs})
     if $inbound_tls_settings['do_ocsp'] == 1 and empty($inbound_tls_settings['ocsp_stapling_path']) {
         fail('The provided Inbound TLS settings are insufficient to ensure prefetched OCSP stapling responses')
     }
@@ -102,6 +117,20 @@ class profile::trafficserver::tls (
         acme_chief         => $unified_acme_chief,
         do_ocsp            => num2bool($inbound_tls_settings['do_ocsp']),
         ocsp_proxy         => $ocsp_proxy,
+    }
+
+    if !empty($extra_certs) {
+        $extra_certs_names = keys($extra_certs)
+
+        profile::trafficserver::tls_material { $extra_certs_names:
+            instance_name      => $instance_name,
+            service_name       => $service_name,
+            tls_material_path  => $tls_material_path,
+            ssl_multicert_path => $paths['ssl_multicert'],
+            acme_chief         => true,
+            do_ocsp            => num2bool($inbound_tls_settings['do_ocsp']),
+            ocsp_proxy         => $ocsp_proxy,
+        }
     }
 
     trafficserver::instance { $instance_name:
