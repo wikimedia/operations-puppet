@@ -58,37 +58,3 @@ pybal() {
   _pybal_query "$host"
 }
 
-
-hhvm_rolling_restart() {
-    set -e
-    sudo -v  # Acquire and/or extend sudo up-front.
-
-    local base_dir="/srv/pybal-config/pybal/eqiad"
-    local temp_dir="$(/bin/mktemp --directory --tmpdir="$HOME" pybal.XXXXXXXXXX)"
-    local pools=( apaches api rendering )
-
-    echo "* Creating backups..."
-
-    pushd "$base_dir" &>/dev/null
-    cp "${pools[@]}" "$temp_dir"
-    md5sum "${pools[@]}" > "${temp_dir}/checksum"
-
-    for i in {0..1}; do
-        echo "---"
-        echo "* Doing mwXXX${i}.eqiad.wmnet..."
-        md5sum --quiet --check --strict "${temp_dir}/checksum"
-        for pool in "${pools[@]}"; do
-            sudo sed -i'' -e "s/\(mw...${i}.eqiad.wmnet.*\)True/\1False/" "$pool"
-        done
-        echo "* Sleeping for 30 seconds to drain connections..."
-        sleep 30
-        sudo salt "mw*${i}.eqiad.wmnet" cmd.run "status hhvm 2>/dev/null | grep -q running && restart hhvm"
-        pushd "$temp_dir" &>/dev/null
-        sudo cp "${pools[@]}" "${base_dir}"
-        popd &>/dev/null
-        md5sum --check --strict "${temp_dir}/checksum"
-    done
-
-    popd &>/dev/null
-    rm -rf "$temp_dir"
-}

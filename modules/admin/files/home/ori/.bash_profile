@@ -35,7 +35,6 @@ export PATH="${PATH}:${HOME}/.bin"
 export DEBFULLNAME="Ori Livneh" DEBEMAIL="ori@wikimedia.org"
 export PYTHONSTARTUP="${HOME}/.pythonrc"
 export PROMPT_COMMAND="history -a; history -n"
-export HHVM="$(pidof -s /usr/bin/hhvm 2>/dev/null)"
 export LESS="FIKMQRX" GROFF_NO_SGR=1
 
 
@@ -72,7 +71,6 @@ reqs()       {
 }
 service()    { sudo service "$@"; }
 perf()       { sudo perf "$@"; }
-gdbh()       { sudo gdb -p "$(pidof -s hhvm)"; }
 redis-cli()  { command redis-cli -a "$(grep -Po '(?<=masterauth )\S+' /etc/redis/redis.conf)" "$@"; }
 fields()     { tail -1 "${@:---}" | awk 'END { for (i = 1; i <= NF; i++) printf("%s : %s\n", i, $i) }'; }
 field()      { local fieldnum="$1"; shift; awk -v field="$fieldnum" '{print $(field)}' "${@}"; }

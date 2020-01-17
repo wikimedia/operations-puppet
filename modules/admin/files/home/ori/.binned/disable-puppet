@@ -15,7 +15,7 @@
 #   $ disable-puppet 1d
 #
 #   Disable Puppet for 30 minutes, with reason:
-#   $ disable-puppet 30m "experimenting with HHVM config"
+#   $ disable-puppet 30m "experimenting with PHP config"
 #
 #
 case "$1" in
@@ -39,7 +39,7 @@ case "$1" in
     echo >&2 "  $ ${SCRIPT} 1d                                                "
     echo >&2 "                                                                "
     echo >&2 "  Disable Puppet for 30 minutes, with reason:                   "
-    echo >&2 "  $ ${SCRIPT} 30m \"experimenting with HHVM config\"            "
+    echo >&2 "  $ ${SCRIPT} 30m \"experimenting with PHP config\"            "
     echo >&2
     exit 0
     ;;
