@@ -36,7 +36,7 @@ class squid3(
         require => Package[$squid],
     }
 
-    logrotate::conf { 'squid3':
+    logrotate::conf { $squid:
         ensure => $ensure,
         source => "puppet:///modules/squid3/${squid}-logrotate",
     }
