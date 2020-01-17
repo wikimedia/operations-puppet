@@ -1090,7 +1090,6 @@ node /kafka100[123]\.eqiad\.wmnet/ {
     role(spare::system)
 }
 
-# eqiad kafka main servers, pushing into service via T226274
 node /kafka-main100[4-5]\.eqiad\.wmnet/ {
     role(spare::system)
 }
@@ -1101,6 +1100,10 @@ node /kafka-main100[123]\.eqiad\.wmnet/ {
 
 node /kafka-main200[123]\.codfw\.wmnet/ {
     role(kafka::main)
+}
+
+node /kafka-main200[4-5]\.codfw\.wmnet/ {
+    role(spare::system)
 }
 
 node /kafka200[123]\.codfw\.wmnet/ {
