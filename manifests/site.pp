@@ -1224,19 +1224,11 @@ node /labstore200[1-2]\.codfw\.wmnet/ {
     role(spare::system)
 }
 
-node 'labstore2003.codfw.wmnet' {
-    role(spare::system)
-}
-
 # During upgrades and transitions, this will
 #  duplicate the work of labstore1003 (but on
 #  a different day of the week)
 node 'cloudbackup2001.codfw.wmnet' {
     role(wmcs::nfs::primary_backup::tools)
-}
-
-node 'labstore2004.codfw.wmnet' {
-    role(spare::system)
 }
 
 # During upgrades and transitions, this will

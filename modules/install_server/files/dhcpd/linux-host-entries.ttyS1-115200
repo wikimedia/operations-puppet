@@ -3156,18 +3156,6 @@ host labstore2002 {
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
 }
 
-host labstore2003 {
-    hardware ethernet 78:2b:cb:76:1b:45;
-    fixed-address labstore2003.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-}
-
-host labstore2004 {
-    hardware ethernet 78:2b:cb:76:24:6b;
-    fixed-address labstore2004.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-}
-
 host labsdb1009 {
     hardware ethernet 1c:98:ec:1a:6b:68;
     fixed-address labsdb1009.eqiad.wmnet;
