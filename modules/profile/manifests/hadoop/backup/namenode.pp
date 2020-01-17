@@ -44,7 +44,7 @@ class profile::hadoop::backup::namenode(
         use_kerberos => $use_kerberos,
     }
 
-    $retention_days = 30
+    $retention_days = 20
     systemd::timer::job { 'hadoop-namenode-backup-prune':
         description               => "Deletes namenode's fsimage backups in ${destination} older than ${retention_days} days.",
         command                   => "/usr/bin/find ${destination} -mtime +${retention_days} -delete",
