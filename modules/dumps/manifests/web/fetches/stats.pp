@@ -44,11 +44,12 @@ class dumps::web::fetches::stats(
     }
 
     dumps::web::fetches::analytics::job { 'pageview':
-        source       => "${src}/{pageview,projectview}/legacy/hourly",
-        destination  => "${miscdatasetsdir}/pageviews",
-        interval     => '*-*-* *:51:00',
-        user         => $user,
-        use_kerberos => $use_kerberos,
+        source         => "${src_hdfs}/{pageview,projectview}/legacy/hourly/",
+        destination    => "${miscdatasetsdir}/pageviews/",
+        interval       => '*-*-* *:51:00',
+        user           => $user,
+        use_kerberos   => $use_kerberos,
+        use_hdfs_rsync => true,
     }
 
     # Copies over files with unique devices statistics per project,
@@ -62,11 +63,12 @@ class dumps::web::fetches::stats(
     }
 
     dumps::web::fetches::analytics::job { 'unique_devices':
-        source       => "${src}/unique_devices",
-        destination  => "${miscdatasetsdir}/unique_devices",
-        interval     => '*-*-* *:31:00',
-        user         => $user,
-        use_kerberos => $use_kerberos,
+        source         => "${src_hdfs}/unique_devices/",
+        destination    => "${miscdatasetsdir}/unique_devices/",
+        interval       => '*-*-* *:31:00',
+        user           => $user,
+        use_kerberos   => $use_kerberos,
+        use_hdfs_rsync => true,
     }
 
     # Copies over clickstream files from an rsyncable location.
@@ -79,11 +81,12 @@ class dumps::web::fetches::stats(
     }
 
     dumps::web::fetches::analytics::job { 'clickstream':
-        source       => "${src}/clickstream",
-        destination  => "${miscdatasetsdir}/clickstream",
-        interval     => '*-*-* *:04:00',
-        user         => $user,
-        use_kerberos => $use_kerberos,
+        source         => "${src_hdfs}/clickstream/",
+        destination    => "${miscdatasetsdir}/clickstream/",
+        interval       => '*-*-* *:04:00',
+        user           => $user,
+        use_kerberos   => $use_kerberos,
+        use_hdfs_rsync => true,
     }
 
     # Copies over mediawiki history dumps from an rsyncable location.
@@ -107,9 +110,19 @@ class dumps::web::fetches::stats(
 
     # Copies over geoeditors dumps from an rsyncable location.
     dumps::web::fetches::job { 'geoeditors_dumps':
+        ensure      => absent,
         source      => "${src}/geoeditors/public",
         destination => "${miscdatasetsdir}/geoeditors",
         hour        => '6',
         user        => $user,
+    }
+
+    dumps::web::fetches::analytics::job { 'geoeditors_dumps':
+        source         => "${src_hdfs}/geoeditors/public/",
+        destination    => "${miscdatasetsdir}/geoeditors/",
+        interval       => '*-*-* 06:00:00',
+        user           => $user,
+        use_kerberos   => $use_kerberos,
+        use_hdfs_rsync => true,
     }
 }
