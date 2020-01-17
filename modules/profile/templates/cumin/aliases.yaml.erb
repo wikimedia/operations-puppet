@@ -63,7 +63,7 @@ db-core-codfw: A:db-core and A:codfw
 db-core-eqiad: A:db-core and A:eqiad
 db-dbproxy: P{O:mariadb::proxy::master or O:mariadb::proxy::replicas}
 db-dbstore: P{O:mariadb::backup or O:mariadb::dbstore_multiinstance or O:mariadb::backups_and_dbstore_multiinstance}
-db-labsdb: P{O:labs::db::wikireplica_analytics or O:labs::db::wikireplica_web}
+db-labsdb: P{O:labs::db::wikireplica_analytics or O:labs::db::wikireplica_web or O:labs::db::wikireplica_analytics::dedicated}
 db-misc-servers: P{O:mariadb::sanitarium_multiinstance}
 db-parsercache: P{O:mariadb::parsercache}
 dbmonitor: P{O:tendril}
@@ -102,7 +102,7 @@ hadoop-worker: P{O:analytics_cluster::hadoop::worker}
 hadoop-worker-canary: P{analytics1042.eqiad.wmnet}
 hadoop-worker-test: P{O:analytics_test_cluster::hadoop::worker}
 hadoop-hdfs-journal-test: P{C:cdh::hadoop::journalnode} and A:hadoop-worker-test
-hadoop-testcluster: P{O:analytics_test_cluster::hadoop::master or O:analytics_test_cluster::hadoop::standby or O:analytics_test_cluster::hadoop::worker or O:analytics_test_cluster::hadoop::ui or O:analytics_test_cluster::coordinator or O:analytics_test_cluster::client}
+hadoop-testcluster: P{O:analytics_test_cluster::hadoop::master or O:analytics_test_cluster::hadoop::standby or O:analytics_test_cluster::hadoop::worker or O:analytics_test_cluster::hadoop::ui or O:analytics_test_cluster::coordinator or O:analytics_test_cluster::client or druid::test_analytics::worker}
 icinga: P{O:alerting_host}
 idp: P{O:idp}
 installserver: P{O:installserver}
@@ -256,6 +256,7 @@ wdqs-public: P{O:wdqs}
 wdqs-test: P{O:wdqs::test}
 weblog: P{O:logging::webrequest::ops}
 webperf: P{O:webperf::processors_and_site or O:webperf::profiling_tools}
+xhgui: P{O:xhgui::app}
 zookeeper-main-eqiad: P{O:configcluster_stretch} and A:eqiad
 zookeeper-main-codfw: P{O:configcluster} and A:codfw
 zookeeper-druid-public: P{O:druid::public::worker} and P{C:profile::zookeeper::server}
@@ -264,7 +265,7 @@ zookeeper-analytics: P{O:analytics_cluster::zookeeper}
 
 # Miscellaneous groups
 misc-analytics: P{O:statistics::web or O:statistics::cruncher or O:statistics::private or O:piwik or O:analytics_cluster::coordinator or O:kafka::monitoring or O:analytics_cluster::webserver} or A:eventlogging
-misc-apache: P{O:microsites::peopleweb or C:grafana::production or O:requesttracker or O:otrs or O:webserver_misc_static or O:webserver_misc_apps} or A:planet or A:releases
+misc-apache: P{O:microsites::peopleweb or C:grafana::production or O:doc or O:requesttracker or O:otrs or O:webserver_misc_static or O:webserver_misc_apps} or A:planet or A:releases
 misc-devel: P{O:webperf::processors_and_site or O:webperf::profiling_tools or O:ve or O:archiva or O:docker::registry} or A:debugproxy or A:mwlog
 misc-nonprod: P{O:spare::system or O:test or O:pybaltest}
 misc-ops: A:installserver or A:cumin or A:url-downloader or A:icinga or A:netmon or A:puppetboard or A:debmonitor or A:debmonitor or A:backup or A:ping or A:rpki or P{O:logging::webrequest::ops or O:builder or O:syslog::centralserver or O:pmacct or O:mirrors}
