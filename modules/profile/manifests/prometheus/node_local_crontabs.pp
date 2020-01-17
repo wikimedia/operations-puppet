@@ -17,7 +17,7 @@ class profile::prometheus::node_local_crontabs {
         ensure     => 'present',
         user       => 'prometheus',
         privileges => [
-            'ALL=(root) NOPASSWD: /bin/ls /var/spool/cron/crontabs/',
+            'ALL=(root) NOPASSWD: /bin/ls -1 /var/spool/cron/crontabs/',
         ],
     }
 }
