@@ -3538,6 +3538,7 @@ users:
     gid: 500
     ssh_keys:
      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDc58bfUYS6EsCKBZOxmQLpLsZp+Juyjgvl6tlG/TPR/ kani@C107
+    krb: present
   jiawang:
     ensure: present
     realname: Jennifer Wang
@@ -3546,6 +3547,7 @@ users:
     gid: 500
     ssh_keys:
      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFpYzzNQaWunmpWx6X7+9kKECizTwJFxk5pndfHjZgJq jwang@Jennifers-MBP.corp.wikimedia.org
+    krb: present
 ldap_only_users:
   abartov:
     ensure: present
