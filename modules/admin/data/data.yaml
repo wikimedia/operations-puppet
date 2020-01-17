@@ -4031,3 +4031,7 @@ ldap_only_users:
     ensure: present
     realname: Danny Horn
     email: dhorn@wikimedia.org
+  rudolphampofo:
+    ensure: present
+    realname: Rudolph Ampofo
+    email: rampofo@wikimedia.org
