@@ -1,5 +1,4 @@
 profile::mediawiki::php::php_version: "7.2"
-profile::mediawiki::install_hhvm: false
 profile::mediawiki::webserver::has_tls: false
 has_lvs: false
 
