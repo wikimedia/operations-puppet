@@ -9,24 +9,9 @@ class profile::java::analytics {
 
     if os_version('debian == buster') {
 
-        apt::repository { 'openjdk-8':
-            uri        => 'http://apt.wikimedia.org/wikimedia',
-            dist       => 'buster-wikimedia',
-            components => 'component/jdk8',
-            notify     => Exec['apt_update_java8'],
-        }
-
-        exec {'apt_update_java8':
-            command     => '/usr/bin/apt-get update',
-            refreshonly => true,
-        }
-
-        package { 'openjdk-8-jdk':
-            ensure  => present,
-            require => [
-                Apt::Repository['openjdk-8'],
-                Exec['apt_update_java8'],
-            ],
+        apt::package_from_component { 'openjdk-8':
+            component => 'component/jdk8',
+            packages  => ['openjdk-8-jdk'],
         }
 
         alternatives::select { 'java':
