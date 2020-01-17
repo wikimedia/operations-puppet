@@ -1,6 +1,6 @@
 # phabricator instance
 #
-# filtertags: labs-project-deployment-prep labs-project-phabricator
+# filtertags: labs-project-deployment-prep labs-project-devtools
 class profile::phabricator::main (
     Hash $cache_nodes = hiera('cache::nodes', {}),
     String $domain = hiera('phabricator_domain', 'phabricator.wikimedia.org'),

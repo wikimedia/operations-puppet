@@ -2,7 +2,7 @@
 #
 # Sets up scap and the corresponding apache site, and rsync daemon.
 #
-# filtertags: labs-project-deployment-prep labs-project-phabricator labs-project-striker
+# filtertags: labs-project-deployment-prep labs-project-devtools labs-project-striker
 class profile::mediawiki::deployment::server(
     $apache_fqdn = hiera('apache_fqdn', $::fqdn),
     $deployment_group = hiera('deployment_group', 'wikidev'),
