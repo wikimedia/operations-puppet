@@ -66,7 +66,7 @@ class phabricator (
     String $mysql_admin_pass  = '',
     String $serveradmin       = '',
     Array $serveraliases      = [],
-    String $deploy_user       = 'phab-deploy',
+    String $deploy_user       = undef,
     String $deploy_target     = 'phabricator/deployment',
     Integer $opcache_validate = 0,
     Stdlib::Ensure::Service $phd_service_ensure = running,

@@ -11,6 +11,7 @@ class profile::phabricator::main (
     Integer $mysql_slave_port = hiera('phabricator::mysql::slave::port', 3323),
     Stdlib::Unixpath $phab_root_dir = '/srv/phab',
     String $deploy_target = 'phabricator/deployment',
+    Optional[String] $deploy_user = hiera('phabricator_deploy_user', 'phab-deploy'),
     Optional[String] $phab_app_user = hiera('phabricator_app_user', undef),
     Optional[String] $phab_app_pass = hiera('phabricator_app_pass', undef),
     Optional[String] $phab_daemons_user = hiera('phabricator_daemons_user', undef),
@@ -196,6 +197,7 @@ class profile::phabricator::main (
     # lint:ignore:arrow_alignment
     class { '::phabricator':
         deploy_target    => $deploy_target,
+        deploy_user      => $deploy_user,
         phabdir          => $phab_root_dir,
         serveraliases    => [ $altdom,
                               'bugzilla.wikimedia.org',
