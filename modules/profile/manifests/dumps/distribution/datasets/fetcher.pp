@@ -16,12 +16,10 @@ class profile::dumps::distribution::datasets::fetcher(
     }
 
     class {'dumps::web::fetches::stats':
-        src             => '/mnt/hdfs/wmf/data/archive',
         src_hdfs        => '/wmf/data/archive',
         miscdatasetsdir => $miscdatasetsdir,
         user            => $user,
         use_kerberos    => $use_kerberos,
-        require         => Class['cdh::hadoop::mount']
     }
 
     class {'dumps::web::fetches::stat_dumps':

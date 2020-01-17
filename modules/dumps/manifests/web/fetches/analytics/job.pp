@@ -1,15 +1,15 @@
 # == Define dumps::web::fetches::analytics::job
 #
-# Regularly copies files from $source to $destination.
-# Supports systemd timers and Kerberos.
+# Regularly copies files from $hdfs_source to $local_destination.
+# Uses hdfs-rsync, systemd timers and Kerberos.
 #
 # == Parameters
 #
-# [*source*]
-#   Source directory to pull data from.
+# [*hdfs_source*]
+#   HDFS Source directory to pull data from.
 #
-# [*destination*]
-#   Destination directory to put data into.
+# [*local_destination*]
+#   Destination directory on local filesystem  to put data into.
 #
 # [*interval*]
 #   Systemd interval that the timer will use.
@@ -31,18 +31,17 @@
 #   Ensure status of systemd timer.
 #
 define dumps::web::fetches::analytics::job(
-    String $source,
-    String $destination,
+    String $hdfs_source,
+    String $local_destination,
     String $interval,
     String $user,
     Boolean $delete = true,
     Boolean $use_kerberos = false,
     Wmflib::Ensure $ensure = present,
     Optional[String] $exclude = undef,
-    Boolean $use_hdfs_rsync = false,
 ) {
-    if !defined(File[$destination]) {
-        file { $destination:
+    if !defined(File[$local_destination]) {
+        file { $local_destination:
             ensure => 'directory',
             owner  => $user,
             group  => 'root',
@@ -61,14 +60,9 @@ define dumps::web::fetches::analytics::job(
         default => " --exclude \"${exclude}\""
     }
 
-    $command = $use_hdfs_rsync ? {
-        true    => "/bin/bash -c '/usr/local/bin/hdfs-rsync -r -t ${delete_option}${exclude_option} --chmod=go-w hdfs://${source} file://${destination}'",
-        default => "/bin/bash -c '/usr/bin/rsync -rt ${delete_option}${exclude_option} --chmod=go-w ${source}/ ${destination}/'"
-    }
-
     kerberos::systemd_timer { "analytics-dumps-fetch-${title}":
         description  => "Copy ${title} files from Hadoop HDFS.",
-        command      => $command,
+        command      => "/bin/bash -c '/usr/local/bin/hdfs-rsync -r -t ${delete_option}${exclude_option} --chmod=go-w hdfs://${hdfs_source} file://${local_destination}'",
         interval     => $interval,
         user         => $user,
         use_kerberos => $use_kerberos,
