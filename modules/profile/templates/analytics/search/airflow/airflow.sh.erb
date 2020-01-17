@@ -9,5 +9,8 @@ if [ "$(whoami)" != "<%= @service_user %>" ]; then
 fi
 
 export AIRFLOW_HOME="<%= @conf_dir %>"
+# skein is a library used by custom airflow plugins to submit
+# jobs to the yarn cluster.
+export SKEIN_CONFIG="<%= @run_dir %>/skein"
 source "<%= @deploy_dir %>/venv/bin/activate"
 airflow "$@"
