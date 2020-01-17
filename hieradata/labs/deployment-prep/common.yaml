@@ -4,7 +4,7 @@ profile::base::remote_syslog:
 profile::base::purge_apt_sources: true
 # No LVS nor etcd-based load-balancing here
 has_lvs: false
-profile::lvs::realserver::use_conftool: true
+profile::lvs::realserver::use_conftool: false
 "puppetmaster::scripts::keep_reports_minutes": 360
 puppetmaster::autosigner: true
 service::configuration::mwapi_host: http://deployment-mediawiki-07.deployment-prep.eqiad.wmflabs
