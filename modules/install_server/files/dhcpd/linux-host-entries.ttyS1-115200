@@ -3144,18 +3144,6 @@ host cloudstore1009 {
     fixed-address cloudstore1009.wikimedia.org;
 }
 
-host labstore2001 {
-    hardware ethernet 78:2b:cb:76:1c:d2;
-    fixed-address labstore2001.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-}
-
-host labstore2002 {
-    hardware ethernet 78:2b:cb:75:8e:43;
-    fixed-address labstore2002.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-}
-
 host labsdb1009 {
     hardware ethernet 1c:98:ec:1a:6b:68;
     fixed-address labsdb1009.eqiad.wmnet;

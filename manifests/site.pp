@@ -1220,10 +1220,6 @@ node /labstore100[67]\.wikimedia\.org/ {
     role(dumps::distribution::server)
 }
 
-node /labstore200[1-2]\.codfw\.wmnet/ {
-    role(spare::system)
-}
-
 # During upgrades and transitions, this will
 #  duplicate the work of labstore1003 (but on
 #  a different day of the week)
