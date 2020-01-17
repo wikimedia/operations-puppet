@@ -123,6 +123,7 @@ class codesearch(
             require => [
                 Package['docker-ce'],
                 Git::Clone['operations/puppet'],
+                Systemd::Service['hound_proxy'],
                 Systemd::Timer::Job['codesearch-write-config'],
             ]
         }

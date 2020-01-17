@@ -1,13 +1,16 @@
 [Unit]
 Description=hound-<%= @name %>
-After=docker.service
-Requires=docker.service
+After=docker.service hound_proxy.service
+Requires=docker.service hound_proxy.service
 
 [Service]
+User=codesearch
 TimeoutStartSec=0
+Environment="HOUND_NAME=<%= @name %>"
 ExecStartPre=-/usr/bin/docker kill hound-<%= @name %>
 ExecStartPre=-/usr/bin/docker rm -f hound-<%= @name %>
 ExecStartPre=/usr/bin/docker pull etsy/hound
+ExecStartPre=/srv/codesearch/wait.py
 ExecStart=/usr/bin/docker run -p <%= @port %>:6080 --name hound-<%= @name %> \
     -v /srv/hound/hound-<%= @name %>:/data \
     -v /srv/puppet:/operations/puppet \
