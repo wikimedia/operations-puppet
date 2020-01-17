@@ -1225,7 +1225,7 @@ node /labstore200[1-2]\.codfw\.wmnet/ {
 }
 
 node 'labstore2003.codfw.wmnet' {
-    role(wmcs::nfs::primary_backup::tools)
+    role(spare::system)
 }
 
 # During upgrades and transitions, this will
@@ -1236,7 +1236,7 @@ node 'cloudbackup2001.codfw.wmnet' {
 }
 
 node 'labstore2004.codfw.wmnet' {
-    role(wmcs::nfs::primary_backup::misc)
+    role(spare::system)
 }
 
 # During upgrades and transitions, this will
