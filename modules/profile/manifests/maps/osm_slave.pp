@@ -17,6 +17,8 @@ class profile::maps::osm_slave(
         pg_master   => $master,
         pg_user     => 'replication',
         pg_password => $replication_pass,
+        critical    => 16777216, # 16Mb
+        warning     => 2097152, # 2Mb
     }
 
     $prometheus_command = "/usr/bin/prometheus_postgresql_replication_lag -m ${master} -P ${replication_pass}"
