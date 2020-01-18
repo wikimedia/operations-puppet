@@ -45,11 +45,12 @@ profile::acme_chief::certificates:
         CN: 'gerrit.wikimedia.org'
         SNI:
         - 'gerrit.wikimedia.org'
-        - 'gerrit-new.wikimedia.org'
+        - 'gerrit-test.wikimedia.org'
         - 'gerrit-replica.wikimedia.org'
         challenge: dns-01
         authorized_hosts:
         - 'gerrit1001.wikimedia.org'
+        - 'gerrit1002.wikimedia.org'
         - 'gerrit2001.wikimedia.org'
     icinga:
         CN: 'icinga.wikimedia.org'
