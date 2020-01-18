@@ -196,7 +196,7 @@ host fermium {
 }
 
 host gerrit1002 {
-    hardware ethernet aa:00:00:20:41:37;
+    hardware ethernet aa:00:00:15:60:57;
     fixed-address gerrit1002.wikimedia.org;
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
