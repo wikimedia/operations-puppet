@@ -1,5 +1,11 @@
+gerrit::server::host: 'gerrit-test.wikimedia.org'
+
 gerrit::service::ipv4: '208.80.154.78'
 gerrit::service::ipv6: '2620:0:861:3:208:80:154:78'
+
+# List of gerrit servers used in firewall rules.
+gerrit::servers:
+ - gerrit1002.wikimedia.org
 
 # do NOT be a replica
 # do monitor SSH access, do have crons, use as TLS host
