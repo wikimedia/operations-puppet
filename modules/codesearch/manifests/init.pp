@@ -23,6 +23,17 @@ class codesearch(
         'python3-yaml',
     ])
 
+    if os_version('debian == buster') {
+        # We need iptables 1.8.3+ for compatibility with docker
+        # (see comments on <https://gerrit.wikimedia.org/r/565752>)
+        apt::pin { 'iptables':
+            pin      => 'release a=buster-backports',
+            package  => 'iptables',
+            priority => '1001',
+            before   => Package['docker-ce'],
+        }
+    }
+
     file { $hound_dir:
         ensure => directory,
         owner  => 'codesearch',
