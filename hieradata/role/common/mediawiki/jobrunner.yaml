@@ -1,4 +1,5 @@
 cluster: jobrunner
+has_lvs: true
 admin::groups:
   - deployment
   - perf-roots
