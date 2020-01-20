@@ -1,8 +1,12 @@
 #!/usr/bin/python
 """
 """
-
-import configparser
+from __future__ import print_function
+try:
+    import configparser
+except ImportError:
+    # Python 2
+    import ConfigParser as configparser
 import argparse
 
 from keystoneclient.auth.identity import generic
@@ -50,7 +54,7 @@ class NovaProject(object):
         dest_groups = self.dest_neutronclient.list_security_groups()['security_groups']
         dest_group_dict = {group["name"]: group for group in dest_groups}
         for source_group in source_groups:
-            if source_group.name in dest_group_dict.keys():
+            if source_group.name in dest_group_dict:
                 dest_group = dest_group_dict[source_group.name]
                 for rule in dest_group['security_group_rules']:
                     if rule['direction'] == 'ingress':
