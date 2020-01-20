@@ -30,8 +30,12 @@ running in the target region.
 - deactivate glance image
 """
 from __future__ import print_function
-
-import configparser
+from builtins import range
+try:
+    import configparser
+except ImportError:
+    # Python 2
+    import ConfigParser as configparser
 import argparse
 import json
 import requests
@@ -151,6 +155,7 @@ class NovaInstance(object):
 
         resp = requests.post(url, headers={'X-Auth-Token': token})
         if resp:
+            # XXX: should this be checking resp.ok?
             return True
         else:
             raise Exception("Image manipulation got status: " + resp.status_code)
@@ -173,7 +178,7 @@ class NovaInstance(object):
             print("exception caught while attempting dig for %s" % fqdn)
             return False
 
-        ips = r.strip().split('\n')
+        ips = r.decode('utf-8').strip().split('\n')
         if accept_multiples:
             if target_ip not in ips:
                 print("Got wrong ip %s for %s, should include %s" % (r, fqdn, target_ip))
@@ -236,6 +241,7 @@ class NovaInstance(object):
         if resp.status_code == 400 and resp.text == 'No such project':
             return []
         elif not resp:
+            # XXX: this should never happen
             raise Exception("Proxy service request got status " +
                             str(resp.status_code))
         project_proxies = resp.json()['routes']
@@ -297,7 +303,7 @@ class NovaInstance(object):
             return False
 
         if command == 'hostname':
-            if r.strip().lower() != instance.name.lower():
+            if r.decode('utf-8').strip().lower() != instance.name.lower():
                 print("ssh test to %s failed.  Returned hostname %s but expected %s" %
                       (target_ip, r.strip().lower(), instance.name.lower()))
                 return False
@@ -478,7 +484,7 @@ class NovaInstance(object):
         r = subprocess.call(args)
         if r:
             print("rsync to new host failed.")
-            return(1)
+            return 1
 
         print("Instance copied.  Now updating nova db...")
         host_moved = True
@@ -505,7 +511,7 @@ class NovaInstance(object):
         self.dest_instance.reboot()
         self.wait_for_status('ACTIVE', source=False)
 
-        for i in xrange(11):
+        for i in range(11):
             if self.ssh_test(source=False):
                 break
             else:
@@ -517,7 +523,7 @@ class NovaInstance(object):
             exit(1)
 
         # Check that the new VM is showing up in dns
-        for i in xrange(21):
+        for i in range(21):
             if self.dns_test(source=False, accept_multiples=True):
                 break
 
@@ -534,7 +540,7 @@ class NovaInstance(object):
             # we need to do some kind of clever cleanup here
             pass
 
-        for i in xrange(11):
+        for i in range(11):
             if self.dns_test(source=False):
                 break
             else:
