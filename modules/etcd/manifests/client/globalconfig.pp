@@ -11,6 +11,8 @@ class etcd::client::globalconfig(
 
     require_package('python-etcd')
 
+    $ca_cert = undef
+
     file { '/etc/etcd':
         ensure => directory,
         owner  => 'root',
@@ -24,7 +26,7 @@ class etcd::client::globalconfig(
             host            => $host,
             port            => $port,
             srv_domain      => $srv_domain,
-            ca_cert         => $facts['puppet_config']['localcacert'],
+            ca_cert         => $ca_cert,
             protocol        => 'https',
             allow_reconnect => true,
         },
