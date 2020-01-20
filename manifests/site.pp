@@ -1782,7 +1782,7 @@ node /^puppetmaster[12]001\.(codfw|eqiad)\.wmnet$/ {
     role(puppetmaster::frontend)
 }
 
-node /^puppetmaster[12]003\.(codfw|eqiad)\.wmnet$/ {
+node /^puppetmaster[12]00[23]\.(codfw|eqiad)\.wmnet$/ {
     role(puppetmaster::backend)
 }
 
