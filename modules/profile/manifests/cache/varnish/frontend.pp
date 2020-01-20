@@ -11,6 +11,7 @@ class profile::cache::varnish::frontend (
     $separate_vcl = hiera('profile::cache::varnish::separate_vcl', []),
     $fe_transient_gb = hiera('profile::cache::varnish::frontend::transient_gb', 0),
     $backend_services = hiera('profile::cache::varnish::frontend::backend_services', ['ats-be']),
+    Boolean $has_lvs = lookup('has_lvs', {'default_value' => true}),
 ) {
     require ::profile::cache::base
     $wikimedia_nets = $profile::cache::base::wikimedia_nets
@@ -24,8 +25,11 @@ class profile::cache::varnish::frontend (
         },
     }
 
-    class { '::lvs::realserver':
-        realserver_ips => $lvs::configuration::service_ips[$cache_cluster][$::site],
+    if $has_lvs {
+        # TODO: convert to use profile::lvs::realserver
+        class { '::lvs::realserver':
+            realserver_ips => $lvs::configuration::service_ips[$cache_cluster][$::site],
+        }
     }
 
     $vcl_config = $fe_vcl_config + {
