@@ -1,6 +1,5 @@
 class profile::thumbor(
     $memcached_servers_nutcracker = hiera('thumbor_memcached_servers_nutcracker'),
-    $logstash_host = hiera('logstash_host'),
     $logstash_port = hiera('logstash_logback_port'),
     $swift_sharded_containers = hiera_array('swift::proxy::shard_container_list'),
     $swift_private_containers = hiera_array('swift::proxy::private_container_list'),
@@ -15,8 +14,13 @@ class profile::thumbor(
         thumbor_memcached_servers => $memcached_servers_nutcracker,
     }
 
+    # rsyslog forwards json messages sent to localhost along to logstash via kafka
+    class { '::profile::rsyslog::udp_json_logback_compat':
+        port => $logstash_port,
+    }
+
     class { '::thumbor':
-        logstash_host => $logstash_host,
+        logstash_host => 'localhost',
         logstash_port => $logstash_port,
         statsd_port   => $statsd_port,
     }
