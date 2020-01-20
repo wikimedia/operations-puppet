@@ -15,6 +15,7 @@
   - Confirm migration (oddly called 'confirm resize' in nova parlance)
   - Restart instance (optional)
 """
+from __future__ import print_function
 
 import argparse
 import time
@@ -38,49 +39,49 @@ class NovaInstance(object):
         while self.instance.status != desiredstatus:
             if self.instance.status != oldstatus:
                 oldstatus = self.instance.status
-                print "Current status is %s; waiting for it to change to %s." % (
-                    self.instance.status, desiredstatus)
+                print("Current status is %s; waiting for it to change to %s." % (
+                    self.instance.status, desiredstatus))
 
             time.sleep(1)
             self.refresh_instance()
 
     def migrate(self, leave_stopped=False):
-        print "Instance %s is now on host %s with state %s" % (
+        print("Instance %s is now on host %s with state %s" % (
             self.instance_id,
             self.instance._info['OS-EXT-SRV-ATTR:host'],
-            self.instance.status)
+            self.instance.status))
 
         if self.instance.status != 'SHUTOFF':
             self.instance.stop()
             self.wait_for_status('SHUTOFF')
 
         if self.instance.status != 'SHUTOFF':
-            print "Failed to stop instance, aborting."
+            print("Failed to stop instance, aborting.")
             exit(1)
 
         self.instance.migrate()
         self.wait_for_status('VERIFY_RESIZE')
 
         if self.instance.status != 'VERIFY_RESIZE':
-            print "Failed to migrate instance, aborting."
+            print("Failed to migrate instance, aborting.")
             exit(1)
 
         self.instance.confirm_resize()
         self.wait_for_status('SHUTOFF')
 
         if self.instance.status != 'SHUTOFF':
-            print "Failed to confirm migrate, aborting."
+            print("Failed to confirm migrate, aborting.")
             exit(1)
 
         if not leave_stopped:
             self.instance.start()
             self.wait_for_status('ACTIVE')
 
-        print
-        print "Instance %s is now on host %s with status %s" % (
+        print()
+        print("Instance %s is now on host %s with status %s" % (
             self.instance_id,
             self.instance._info['OS-EXT-SRV-ATTR:host'],
-            self.instance.status)
+            self.instance.status))
 
 
 if __name__ == "__main__":
