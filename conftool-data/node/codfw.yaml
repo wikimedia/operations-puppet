@@ -302,12 +302,12 @@ codfw:
   kubernetes:
     acrab.codfw.wmnet: [kubemaster]
     acrux.codfw.wmnet: [kubemaster]
-    kubernetes2001.codfw.wmnet: [kubesvc, mathoid, zotero, blubberoid, eventgate-analytics, eventgate-main, citoid, eventgate-logging-external, cxserver, sessionstore, termbox, wikifeeds, restrouter, echostore]
-    kubernetes2002.codfw.wmnet: [kubesvc, mathoid, zotero, blubberoid, eventgate-analytics, eventgate-main, citoid, eventgate-logging-external, cxserver, sessionstore, termbox, wikifeeds, restrouter, echostore]
-    kubernetes2003.codfw.wmnet: [kubesvc, mathoid, zotero, blubberoid, eventgate-analytics, eventgate-main, citoid, eventgate-logging-external, cxserver, sessionstore, termbox, wikifeeds, restrouter, echostore]
-    kubernetes2004.codfw.wmnet: [kubesvc, mathoid, zotero, blubberoid, eventgate-analytics, eventgate-main, citoid, eventgate-logging-external, cxserver, sessionstore, termbox, wikifeeds, restrouter, echostore]
-    kubernetes2005.codfw.wmnet: [kubesvc, mathoid, zotero, blubberoid, eventgate-analytics, eventgate-main, citoid, eventgate-logging-external, cxserver, sessionstore, termbox, wikifeeds, restrouter, echostore]
-    kubernetes2006.codfw.wmnet: [kubesvc, mathoid, zotero, blubberoid, eventgate-analytics, eventgate-main, citoid, eventgate-logging-external, cxserver, sessionstore, termbox, wikifeeds, restrouter, echostore]
+    kubernetes2001.codfw.wmnet: [kubesvc]
+    kubernetes2002.codfw.wmnet: [kubesvc]
+    kubernetes2003.codfw.wmnet: [kubesvc]
+    kubernetes2004.codfw.wmnet: [kubesvc]
+    kubernetes2005.codfw.wmnet: [kubesvc]
+    kubernetes2006.codfw.wmnet: [kubesvc]
   ores:
     ores2001.codfw.wmnet: [ores]
     ores2002.codfw.wmnet: [ores]
