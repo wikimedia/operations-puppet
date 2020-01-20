@@ -13,6 +13,7 @@ them.
 Note that this only works with the keystone v2.0 API.
 
 """
+from __future__ import print_function
 
 import argparse
 import os
@@ -68,11 +69,11 @@ if __name__ == "__main__":
 
     if args.delete and args.all:
         if args.domain:
-            print "--domain should not be specified unless if --delete and --all are true"
+            print("--domain should not be specified unless if --delete and --all are true")
             exit(1)
     else:
         if not args.domain:
-            print "--domain must be specified unless you are doing --delete --all"
+            print("--domain must be specified unless you are doing --delete --all")
             exit(1)
         else:
             if not args.domain.endswith('.'):
