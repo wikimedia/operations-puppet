@@ -1782,16 +1782,8 @@ node /^puppetmaster[12]001\.(codfw|eqiad)\.wmnet$/ {
     role(puppetmaster::frontend)
 }
 
-node /^puppetmaster[12]002\.(codfw|eqiad)\.wmnet$/ {
+node /^puppetmaster[12]003\.(codfw|eqiad)\.wmnet$/ {
     role(puppetmaster::backend)
-}
-
-node 'puppetmaster1003.eqiad.wmnet' {
-    role(puppetmaster::backend)
-}
-
-node 'puppetmaster2003.codfw.wmnet' {
-    role(spare::system)
 }
 
 node /^puppetboard[12]001\.(codfw|eqiad)\.wmnet$/ {
