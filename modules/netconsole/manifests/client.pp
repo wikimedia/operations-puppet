@@ -1,9 +1,9 @@
-# == Class: netconsole
+# == Class: netconsole::client
 # Configure netconsole to log kernel messages to a remote server.
 # See https://www.kernel.org/doc/Documentation/networking/netconsole.txt
 #
 
-class netconsole (
+class netconsole::client (
     Wmflib::Ensure $ensure = present,
     Optional[String] $dev_name = undef,
     Optional[Stdlib::Ipv4] $local_ip = undef,

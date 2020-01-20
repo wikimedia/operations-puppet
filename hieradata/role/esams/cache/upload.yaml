@@ -1,3 +1,3 @@
-profile::netconsole::ensure: present
-profile::netconsole::remote_ip: 10.20.0.50
-profile::netconsole::remote_mac: b0:26:28:6e:fe:c0
+profile::netconsole::client::ensure: present
+profile::netconsole::client::remote_ip: 10.20.0.50
+profile::netconsole::client::remote_mac: b0:26:28:6e:fe:c0

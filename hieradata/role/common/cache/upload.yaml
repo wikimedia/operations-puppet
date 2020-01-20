@@ -82,4 +82,4 @@ profile::cache::base::default_weights:
   varnish-fe: 1
   nginx: 1
   ats-be: 100
-profile::netconsole::ensure: absent
+profile::netconsole::client::ensure: absent

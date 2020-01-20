@@ -134,7 +134,7 @@ profile::cache::ssl::wikibase::letsencrypt: true
 profile::cache::ssl::wikibase::le_subjects: ['wikibase.wmflabs.org']
 profile::cache::ssl::wikibase::monitoring: false
 
-profile::netconsole::ensure: absent
+profile::netconsole::client::ensure: absent
 profile::trafficserver::backend::storage_elements:
   - devname: vdb
   - pathname: /var/cache/trafficserver
