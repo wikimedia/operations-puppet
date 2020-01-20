@@ -5,6 +5,7 @@ class role::cache::upload {
     }
 
     include ::profile::standard
+    include ::profile::netconsole
 
     include ::profile::cache::base
     include ::profile::cache::ssl::unified
