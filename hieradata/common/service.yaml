@@ -219,7 +219,7 @@ service::catalog:
       class: low-traffic
       conftool:
         cluster: kubernetes
-        service: blubberoid
+        service: kubesvc
       depool_threshold: '.5'
       enabled: true
       monitors:
@@ -240,7 +240,7 @@ service::catalog:
       class: low-traffic
       conftool:
         cluster: kubernetes
-        service: blubberoid
+        service: kubesvc
       depool_threshold: '.5'
       enabled: true
       monitors:
@@ -273,7 +273,7 @@ service::catalog:
       class: low-traffic
       conftool:
         cluster: kubernetes
-        service: citoid
+        service: kubesvc
       depool_threshold: '.5'
       enabled: true
       monitors:
@@ -493,7 +493,7 @@ service::catalog:
       class: low-traffic
       conftool:
         cluster: kubernetes
-        service: cxserver
+        service: kubesvc
       depool_threshold: '.5'
       enabled: true
       monitors:
@@ -529,7 +529,7 @@ service::catalog:
       class: low-traffic
       conftool:
         cluster: kubernetes
-        service: cxserver
+        service: kubesvc
       depool_threshold: '.5'
       enabled: true
       monitors:
@@ -621,7 +621,7 @@ service::catalog:
       class: low-traffic
       conftool:
         cluster: kubernetes
-        service: echostore
+        service: kubesvc
       depool_threshold: '.5'
       enabled: true
       monitors:
@@ -657,7 +657,7 @@ service::catalog:
       class: low-traffic
       conftool:
         cluster: kubernetes
-        service: eventgate-analytics
+        service: kubesvc
       depool_threshold: '.5'
       enabled: true
       monitors:
@@ -693,7 +693,7 @@ service::catalog:
       class: low-traffic
       conftool:
         cluster: kubernetes
-        service: eventgate-analytics
+        service: kubesvc
       depool_threshold: '.5'
       enabled: true
       monitors:
@@ -729,7 +729,7 @@ service::catalog:
       class: low-traffic
       conftool:
         cluster: kubernetes
-        service: eventgate-logging-external
+        service: kubesvc
       depool_threshold: '.5'
       enabled: true
       monitors:
@@ -765,7 +765,7 @@ service::catalog:
       class: low-traffic
       conftool:
         cluster: kubernetes
-        service: eventgate-main
+        service: kubesvc
       depool_threshold: '.5'
       enabled: true
       monitors:
@@ -801,7 +801,7 @@ service::catalog:
       class: low-traffic
       conftool:
         cluster: kubernetes
-        service: eventgate-main
+        service: kubesvc
       depool_threshold: '.5'
       enabled: true
       monitors:
@@ -1389,7 +1389,7 @@ service::catalog:
       class: low-traffic
       conftool:
         cluster: kubernetes
-        service: mathoid
+        service: kubesvc
       depool_threshold: '.5'
       enabled: true
       monitors:
@@ -1846,7 +1846,7 @@ service::catalog:
       class: low-traffic
       conftool:
         cluster: kubernetes
-        service: restrouter
+        service: kubesvc
       depool_threshold: '.5'
       enabled: true
       monitors:
@@ -2064,7 +2064,7 @@ service::catalog:
       class: low-traffic
       conftool:
         cluster: kubernetes
-        service: sessionstore
+        service: kubesvc
       depool_threshold: '.5'
       enabled: true
       monitors:
@@ -2172,7 +2172,7 @@ service::catalog:
       class: low-traffic
       conftool:
         cluster: kubernetes
-        service: termbox
+        service: kubesvc
       depool_threshold: '.5'
       enabled: true
       monitors:
@@ -2597,7 +2597,7 @@ service::catalog:
       class: low-traffic
       conftool:
         cluster: kubernetes
-        service: wikifeeds
+        service: kubesvc
       depool_threshold: '.5'
       enabled: true
       monitors:
@@ -2633,7 +2633,7 @@ service::catalog:
       class: low-traffic
       conftool:
         cluster: kubernetes
-        service: zotero
+        service: kubesvc
       depool_threshold: '.5'
       enabled: true
       monitors:
