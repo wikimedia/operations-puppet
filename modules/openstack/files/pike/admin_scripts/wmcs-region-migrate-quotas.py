@@ -1,8 +1,13 @@
 #!/usr/bin/python
 """
 """
+from __future__ import print_function
 
-import configparser
+try:
+    import configparser
+except ImportError:
+    # Python 2
+    import ConfigParser as configparser
 import argparse
 
 from keystoneclient.auth.identity import generic
