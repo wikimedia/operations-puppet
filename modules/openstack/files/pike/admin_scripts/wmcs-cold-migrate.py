@@ -20,8 +20,11 @@ from keystoneclient.auth.identity import generic
 from keystoneclient import session as keystone_session
 from novaclient import client
 
+if sys.version_info[0] >= 3:
+    raw_input = input
 
-class ScriptConfig():
+
+class ScriptConfig:
 
     def __init__(self, datacenter, destination, mysql_password,
                  nova_db_server, nova_db, cleanup, leak):
@@ -130,7 +133,7 @@ class NovaInstance(object):
 
         logging.info("instance {} ({}) is now on host {} with state {}".format(
                      self.instance_id, self.instance_name, source, self.instance.status))
-        if (source == destination):
+        if source == destination:
             logging.warning("source and destination host are the same. Nothing to do.")
             exit(0)
 
@@ -157,7 +160,7 @@ class NovaInstance(object):
         r = subprocess.call(args)
         if r:
             logging.error("rsync to new host failed.")
-            return(1)
+            return 1
 
         logging.info("{} instance copied. Now updating nova db...".format(self.instance_name))
         host_moved = self.update_nova_db(config)
@@ -171,7 +174,7 @@ class NovaInstance(object):
             logging.info("instance is active.")
             confirm = config.cleanup
             if confirm != "leak":
-                while (confirm != "cleanup"):
+                while confirm != "cleanup":
                     confirm = raw_input(
                         "Verify that %s is healthy, then type "
                         "'cleanup' to delete old instance files:  " % instance_fqdn)
@@ -183,7 +186,7 @@ class NovaInstance(object):
                 undefine_status = subprocess.call(undefine_args)
                 if undefine_status:
                     logging.error("undefine of {} on {} failed.".format(virshid, source))
-                    return(1)
+                    return 1
 
                 logging.info("cleaning up old instance files on {}".format(source))
                 rmimage_args = ["ssh", "-i", "/root/.ssh/compute-hosts-key",
@@ -192,7 +195,7 @@ class NovaInstance(object):
                 rmimage_status = subprocess.call(rmimage_args)
                 if rmimage_status:
                     logging.error("cleanup of {} on {} failed.".format(imagedir, source))
-                    return(1)
+                    return 1
 
         if activated_image:
             self.activate_image(image_id, deactivate=True)
