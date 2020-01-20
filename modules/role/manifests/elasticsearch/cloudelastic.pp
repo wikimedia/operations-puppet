@@ -13,7 +13,7 @@ class role::elasticsearch::cloudelastic {
     # for this case, either :P
     include ::lvs::configuration # lint:ignore:wmf_styleguide
     class { '::lvs::realserver':
-        realserver_ips => $lvs::configuration::service_ips['cloudelastic'][$::site],
+        realserver_ips => $lvs::configuration::service_ips['cloudelastic-chi-https'][$::site],
     }
 
     # To be enabled after elasticsearch is setup as kafka topic has not been created
