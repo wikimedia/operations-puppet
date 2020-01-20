@@ -1,0 +1,12 @@
+[Unit]
+Description=Netconsole server
+After=network.target
+Documentation=https://www.kernel.org/doc/Documentation/networking/netconsole.txt
+
+[Service]
+Type=simple
+ExecStart=/bin/nc.openbsd -k -u -l <%= @port %>
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
