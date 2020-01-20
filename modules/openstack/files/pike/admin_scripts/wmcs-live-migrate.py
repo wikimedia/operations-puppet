@@ -12,6 +12,7 @@
  during the suspension, but does not manifest as a reboot
  on the instance.
 """
+from __future__ import print_function
 
 import argparse
 import time
@@ -36,25 +37,25 @@ class NovaInstance(object):
         while self.instance.status != desiredstatus:
             if self.instance.status != oldstatus:
                 oldstatus = self.instance.status
-                print "Current status is %s; waiting for it to change to %s." % (
-                    self.instance.status, desiredstatus)
+                print("Current status is %s; waiting for it to change to %s." % (
+                    self.instance.status, desiredstatus))
 
             time.sleep(1)
             self.refresh_instance()
 
     def migrate(self, destination):
-        print "Instance %s is now on host %s with state %s" % (
+        print("Instance %s is now on host %s with state %s" % (
             self.instance_id,
             self.instance._info['OS-EXT-SRV-ATTR:host'],
-            self.instance.status)
+            self.instance.status))
 
         self.instance.live_migrate(destination, True, True)
         self.wait_for_status('MIGRATING')
         self.wait_for_status('ACTIVE')
 
         if self.instance.status != 'ACTIVE':
-            print "Failed to migrate instance, best to check by hand and see what happened."
-            return(1)
+            print("Failed to migrate instance, best to check by hand and see what happened.")
+            return 1
 
         imagedir = "/var/lib/nova/instances/%s" % self.instance_id
         former = "%s/disk.big" % imagedir
@@ -65,11 +66,11 @@ class NovaInstance(object):
                 "ls", future]
         r = subprocess.call(args)
         if r:
-            print ("Instance migrated but has unusual disk arrangement, so there will be "
-                   "no post-migration shrinking.")
-            return(0)
+            print("Instance migrated but has unusual disk arrangement, so there will be "
+                  "no post-migration shrinking.")
+            return 0
 
-        print "Instance has migrated.  Now suspending and recompressing..."
+        print("Instance has migrated.  Now suspending and recompressing...")
         self.instance.suspend()
         self.wait_for_status('SUSPENDED')
 
@@ -78,8 +79,8 @@ class NovaInstance(object):
                 "mv", future, former]
         r = subprocess.call(args)
         if r:
-            print "Unable to backup the instance's disk; aborting."
-            return(1)
+            print("Unable to backup the instance's disk; aborting.")
+            return 1
 
         args = ["ssh", "-i", "/root/.ssh/compute-hosts-key",
                 "nova@%s.eqiad.wmnet" % destination,
@@ -87,25 +88,25 @@ class NovaInstance(object):
                 former, future]
         r = subprocess.call(args)
         if r:
-            print "Failed to recompress the original image.  Possible disaster."
-            return(1)
+            print("Failed to recompress the original image.  Possible disaster.")
+            return 1
 
         args = ["ssh", "-i", "/root/.ssh/compute-hosts-key",
                 "nova@%s.eqiad.wmnet" % destination,
                 "rm", former]
         r = subprocess.call(args)
         if r:
-            print "Failed to clean up the original uncompressed disk image.  Weird."
-            return(1)
+            print("Failed to clean up the original uncompressed disk image.  Weird.")
+            return 1
 
         self.instance.resume()
         self.wait_for_status('ACTIVE')
 
-        print
-        print "Instance %s is now on host %s with status %s" % (
+        print()
+        print("Instance %s is now on host %s with status %s" % (
             self.instance_id,
             self.instance._info['OS-EXT-SRV-ATTR:host'],
-            self.instance.status)
+            self.instance.status))
 
 
 if __name__ == "__main__":
@@ -146,7 +147,7 @@ if __name__ == "__main__":
                "nova@%s.eqiad.wmnet" % args.destination, "true"]
     r = subprocess.call(sshargs)
     if r:
-        print "Remote execution failed; this whole enterprise is doomed."
+        print("Remote execution failed; this whole enterprise is doomed.")
         exit(1)
 
     novaclient = client.Client(args.nova_user,
