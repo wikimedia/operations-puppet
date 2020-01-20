@@ -46,6 +46,32 @@ class profile::analytics::cluster::packages::common {
         'libsasl2-modules-gssapi-mit'
     )
 
+    if os_version('debian == stretch') {
+        require_package('libssl1.0.2')
+
+        # Hadoop links incorrectly against libcrypto
+        # https://issues.apache.org/jira/browse/HADOOP-12845.
+        # It links against the soname (libcrypto.so), but not the
+        # actual library provided by the libssl* deb packages.
+        # There's a workaround: the libssl-dev package provides a
+        # symlink (which is otherwise needed during compile time).
+        # Debian Stretch provides two versions of OpenSSL (1.0.2 and 1.1),
+        # as there was a large API change in OpenSSL and not all packages
+        # could be converted to use OpenSSL 1.1 in time for the Buster release.
+        # As such, the libssl-dev package on Stretch provides a symlink
+        # to OpenSSL 1.1, which is incompatible with the CDH packages
+        # provided for Jessie/Stretch. So, on Buster we can use libssl-dev,
+        # but on Stretch we need to provide the symlink manually via
+        # Puppet.
+        # More info: https://phabricator.wikimedia.org/T240934#5817219
+        file { '/usr/lib/x86_64-linux-gnu/libcrypto.so':
+            ensure => 'link',
+            target => '/usr/lib/x86_64-linux-gnu/libcrypto.so.1.0.2',
+        }
+    } elsif os_version('debian == buster') {
+        require_package('libssl1.1', 'libssl-dev')
+    }
+
     # These packages need to be reviewed in the context of Debian Buster
     # to figure out if we need to rebuild them or simply copy them over in reprepro.
     if os_version('debian <= stretch') {
