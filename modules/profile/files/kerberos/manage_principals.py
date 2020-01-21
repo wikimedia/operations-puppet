@@ -55,6 +55,16 @@ def delete_user_principal(principal, realm):
         return -1
 
 
+def does_principal_exist(principal, realm):
+    try:
+        subprocess.check_output(
+            ['/usr/sbin/kadmin.local', 'get_principal', principal+'@'+realm],
+            stderr=subprocess.STDOUT)
+        return True
+    except subprocess.CalledProcessError:
+        return False
+
+
 def get_principal_info(principal, realm):
     try:
         subprocess.call(
@@ -118,6 +128,9 @@ def main():
     if action == "get":
         get_principal_info(principal, realm)
     elif action == "create":
+        if does_principal_exist(principal, realm):
+            print("Principal already created (or an error occurred with kadmin), skipping.")
+            sys.exit(1)
         password = ''.join(
             [random.choice(string.ascii_letters + string.digits) for n in range(32)])
         ret = create_user_principal(principal, password, realm)
