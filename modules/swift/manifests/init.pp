@@ -66,12 +66,22 @@ class swift (
             ensure => directory,
             mode   => '0755',
     }
-    file { '/var/log/swift':
+
+    if !defined(File['/srv/log']) {
+        file { '/srv/log':
+            ensure => 'directory',
+            mode   => '0755',
+            owner  => 'root',
+            group  => 'root',
+        }
+    }
+
+    file { '/srv/log/swift':
         ensure  => directory,
         require => Package['swift'],
         owner   => 'root',
         group   => 'root',
-        mode    => '0775',
+        mode    => '0755',
     }
 
     logrotate::conf { 'swift':
