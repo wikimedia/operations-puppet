@@ -188,7 +188,7 @@ hostgroup = <%= groupname %>:<%= attributes['hosts'].join(',') %>
 <% end -%>
 <% if attributes['thresholds']['mbps'] %>
 <%= groupname %>_ban_for_bandwidth = on
-<%= groupname %>_threshold_bandwidth = <%= attributes['thresholds']['mbps'] %>
+<%= groupname %>_threshold_mpbs = <%= attributes['thresholds']['mbps'] %>
 <% else %>
 <%= groupname %>_ban_for_bandwidth = off
 <% end -%>
