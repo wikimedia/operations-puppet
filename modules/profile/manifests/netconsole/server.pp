@@ -13,4 +13,10 @@ class profile::netconsole::server (
       ensure => $ensure,
       port   => $port,
     }
+
+    ferm::service { 'netconsole-server':
+        ensure => $ensure,
+        proto  => 'udp',
+        port   => $port,
+    }
 }

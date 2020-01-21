@@ -8,4 +8,5 @@ class role::ganeti {
     include ::profile::standard
     include ::profile::ganeti
     include ::profile::base::firewall
+    include ::profile::netconsole::server
 }
