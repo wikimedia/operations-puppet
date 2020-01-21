@@ -13,7 +13,9 @@ gerrit::server::replica_hosts:
 
 # Settings for rsyncing app data for migrations or reinstalls
 gerrit::server::rsync_src_host: 'gerrit1001.wikimedia.org'
-gerrit::server::rsync_dst_host: 'gerrit2001.wikimedia.org'
+gerrit::server::rsync_dst_hosts:
+  - 'gerrit1002.wikimedia.org'
+  - 'gerrit2001.wikimedia.org'
 gerrit::server::rsync_data_dir: '/srv/gerrit'
 gerrit::server::rsync_user_name: 'gerrit2'
 
