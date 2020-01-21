@@ -72,6 +72,12 @@
 #   (especially when testing Kerberos in the Hadoop Test cluster).
 #   Default: /usr/lib/hadoop/lib/native
 #
+# [*encryption_enabled*]
+#   Enable encryption of RPC calls and IO files created by the shuffler.
+#   This option is a convenient way to enable the right/suggested set of options
+#   on all Spark 2 client/worker node.
+#   Default: true
+#
 class profile::hadoop::spark2(
     $install_yarn_shuffle_jar = hiera('profile::hadoop::spark2::install_yarn_shuffle_jar', true),
     $install_oozie_sharelib   = hiera('profile::hadoop::spark2::install_oozie_sharelib', false),
@@ -83,6 +89,7 @@ class profile::hadoop::spark2(
     $ui_port                  = hiera('profile::hadoop::spark2::ui_port', 4040),
     $port_max_retries         = hiera('profile::hadoop::spark2::port_max_retries', 100),
     $executor_env_ld_lib_path = hiera('profile::hadoop::spark2::executor_env_ld_lib_path', '/usr/lib/hadoop/lib/native'),
+    $encryption_enabled       = hiera('profile::hadoop::spark2::encryption_enabled', true),
 ) {
     require ::profile::hadoop::common
 

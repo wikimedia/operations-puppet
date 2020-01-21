@@ -41,3 +41,14 @@ spark.yarn.archive                                  hdfs:///user/spark/share/lib
 <% @extra_settings.sort.each do |key, value| -%>
 <%= key %>   <%= value %>
 <% end -%>
+
+<% if @encryption_enabled -%>
+spark.authenticate                                  true
+spark.io.encryption.enabled                         true
+spark.io.encryption.keySizeBits                     256
+spark.io.encryption.keygen.algorithm                HmacSHA256
+spark.network.crypto.enabled                        true
+spark.network.crypto.keyFactoryAlgorithm            PBKDF2WithHmacSHA256
+spark.network.crypto.keyLength                      256
+spark.network.crypto.saslFallback                   false
+<% end -%>

@@ -34,16 +34,6 @@ profile::kerberos::keytabs::keytabs_metadata:
     group: 'analytics'
     filename: 'analytics.keytab'
 
-profile::hadoop::spark2::extra_settings:
-  spark.authenticate: true
-  spark.network.crypto.enabled: true
-  spark.network.crypto.keyLength: 256
-  spark.network.crypto.keyFactoryAlgorithm: PBKDF2WithHmacSHA256
-  spark.io.encryption.enabled: true
-  spark.io.encryption.keySizeBits: 256
-  spark.io.encryption.keygen.algorithm: HmacSHA256
-  spark.network.crypto.saslFallback: false
-
 profile::analytics::cluster::hdfs_mount::kerberos_enabled: true
 
 profile::swap::push_published: false
