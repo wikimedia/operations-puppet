@@ -10,6 +10,7 @@ class role::mirrors {
     include ::profile::standard
     include mirrors::serve
     include mirrors::tails
+    class { 'mirrors::openstack': }
     include ::profile::base::firewall
 
     include mirrors::ubuntu
