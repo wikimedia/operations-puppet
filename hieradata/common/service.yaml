@@ -63,7 +63,7 @@ service::catalog:
           - http://localhost/listPairs
       scheduler: wrr
     monitoring:
-      check_command: check_http_lvs_on_port!apertium.svc.%{::site}.wmnet!2737!/listPairs
+      check_command: check_http_lvs_on_port!apertium.discovery.wmnet!2737!/listPairs
       critical: true
       sites:
         codfw:
@@ -198,7 +198,7 @@ service::catalog:
           - http://localhost/
       scheduler: wrr
     monitoring:
-      check_command: check_http_lvs_on_port!aqs.svc.%{::site}.wmnet!7232!/
+      check_command: check_http_lvs_on_port!aqs.svc.eqiad.wmnet!7232!/
       critical: true
       sites:
         eqiad:
@@ -285,7 +285,7 @@ service::catalog:
           - http://localhost/_info
       scheduler: wrr
     monitoring:
-      check_command: check_http_lvs_on_port!citoid.svc.%{::site}.wmnet!1970!/_info
+      check_command: check_http_lvs_on_port!citoid.discovery.wmnet!1970!/_info
       contact_group: admins,parsoid
       critical: true
       sites:
@@ -299,7 +299,7 @@ service::catalog:
     - codfw
     state: production
   cloudceph:
-    description: "CloudVPS Ceph Cluster Stats, cloudceph.svc.%{::site}.wmnet"
+    description: "CloudVPS Ceph Cluster Stats, cloudceph.svc.eqiad.wmnet"
     encryption: false
     ip:
       eqiad:
@@ -505,7 +505,7 @@ service::catalog:
           - http://localhost/_info
       scheduler: wrr
     monitoring:
-      check_command: check_http_lvs_on_port!cxserver.svc.%{::site}.wmnet!8080!/_info
+      check_command: check_http_lvs_on_port!cxserver.discovery.wmnet!8080!/_info
       critical: true
       sites:
         codfw:
@@ -566,7 +566,7 @@ service::catalog:
           timeout-clean-reconnect: 3
       scheduler: wrr
     monitoring:
-      check_command: check_https_url!docker-registry.svc.%{::site}.wmnet!/v2/
+      check_command: check_https_url!docker-registry.discovery.wmnet!/v2/
       critical: true
       sites:
         codfw:
@@ -600,7 +600,7 @@ service::catalog:
           - http://localhost/status
       scheduler: wrr
     monitoring:
-      check_command: check_http_lvs_on_port!druid-public-broker.svc.%{::site}.wmnet!8082!/status
+      check_command: check_http_lvs_on_port!druid-public-broker.svc.eqiad.wmnet!8082!/status
       critical: false
       sites:
         eqiad:
@@ -669,7 +669,7 @@ service::catalog:
           - https://localhost/_info
       scheduler: wrr
     monitoring:
-      check_command: check_https_lvs_on_port!eventgate-analytics.svc.%{::site}.wmnet!4192!/_info
+      check_command: check_https_lvs_on_port!eventgate-analytics.discovery.wmnet!4192!/_info
       critical: true
       sites:
         codfw:
@@ -705,7 +705,7 @@ service::catalog:
           - http://localhost/_info
       scheduler: wrr
     monitoring:
-      check_command: check_http_lvs_on_port!eventgate-analytics.svc.%{::site}.wmnet!31192!/_info
+      check_command: check_http_lvs_on_port!eventgate-analytics.discovery.wmnet!31192!/_info
       critical: true
       sites:
         codfw:
@@ -741,7 +741,7 @@ service::catalog:
           - https://localhost/_info
       scheduler: wrr
     monitoring:
-      check_command: check_https_lvs_on_port!eventgate-logging-external.svc.%{::site}.wmnet!4392!/_info
+      check_command: check_https_lvs_on_port!eventgate-logging-external.discovery.wmnet!4392!/_info
       critical: false
       sites:
         codfw:
@@ -777,7 +777,7 @@ service::catalog:
           - https://localhost/_info
       scheduler: wrr
     monitoring:
-      check_command: check_https_lvs_on_port!eventgate-main.svc.%{::site}.wmnet!4292!/_info
+      check_command: check_https_lvs_on_port!eventgate-main.discovery.wmnet!4292!/_info
       critical: true
       sites:
         codfw:
@@ -813,7 +813,7 @@ service::catalog:
           - http://localhost/_info
       scheduler: wrr
     monitoring:
-      check_command: check_http_lvs_on_port!eventgate-main.svc.%{::site}.wmnet!32192!/_info
+      check_command: check_http_lvs_on_port!eventgate-main.discovery.wmnet!32192!/_info
       critical: true
       sites:
         codfw:
@@ -849,7 +849,7 @@ service::catalog:
           - http://localhost/_info
       scheduler: wrr
     monitoring:
-      check_command: check_http_lvs_on_port!eventstreams.svc.%{::site}.wmnet!8092!/_info
+      check_command: check_http_lvs_on_port!eventstreams.discovery.wmnet!8092!/_info
       critical: false
       sites:
         codfw:
@@ -912,7 +912,7 @@ service::catalog:
           - http://localhost/_info
       scheduler: wrr
     monitoring:
-      check_command: check_http_lvs_on_port!graphoid.svc.%{::site}.wmnet!19000!/_info
+      check_command: check_http_lvs_on_port!graphoid.discovery.wmnet!19000!/_info
       contact_group: admins,parsoid
       critical: true
       sites:
@@ -949,7 +949,7 @@ service::catalog:
           - https://localhost/w/health-check.php
       scheduler: wrr
     monitoring:
-      check_command: check_https_url!jobrunner.svc.%{::site}.wmnet!/w/health-check.php
+      check_command: check_https_url!jobrunner.discovery.wmnet!/w/health-check.php
       critical: true
       sites:
         codfw:
@@ -982,7 +982,7 @@ service::catalog:
           timeout-clean-reconnect: 3
       scheduler: wrr
     monitoring:
-      check_command: check_http_lvs_on_port!kartotherian.svc.%{::site}.wmnet!6533!/osm-intl/6/23/24.png
+      check_command: check_http_lvs_on_port!kartotherian.discovery.wmnet!6533!/osm-intl/6/23/24.png
       critical: false
       sites:
         codfw:
@@ -1018,7 +1018,7 @@ service::catalog:
           - https://localhost/
       scheduler: wrr
     monitoring:
-      check_command: check_https_url!kartotherian.svc.%{::site}.wmnet!/osm-intl/6/23/24.png
+      check_command: check_https_url!kartotherian.discovery.wmnet!/osm-intl/6/23/24.png
       critical: true
       sites:
         codfw:
@@ -1054,7 +1054,7 @@ service::catalog:
           - http://localhost/api/status
       scheduler: sh
     monitoring:
-      check_command: check_http_lvs_on_port!kibana.svc.%{::site}.wmnet!80!/api/status
+      check_command: check_http_lvs_on_port!kibana.discovery.wmnet!80!/api/status
       critical: true
       sites:
         codfw:
@@ -1401,7 +1401,7 @@ service::catalog:
           - http://localhost/_info
       scheduler: wrr
     monitoring:
-      check_command: check_http_lvs_on_port!mathoid.svc.%{::site}.wmnet!10042!/_info
+      check_command: check_http_lvs_on_port!mathoid.discovery.wmnet!10042!/_info
       critical: true
       sites:
         codfw:
@@ -1435,7 +1435,7 @@ service::catalog:
           timeout-clean-reconnect: 3
       scheduler: wrr
     monitoring:
-      check_command: check_http_lvs_on_port!mobileapps.svc.%{::site}.wmnet!8888!/_info
+      check_command: check_http_lvs_on_port!mobileapps.discovery.wmnet!8888!/_info
       contact_group: mobileapps
       critical: true
       sites:
@@ -1549,7 +1549,7 @@ service::catalog:
           - http://localhost/v2/scores/
       scheduler: wrr
     monitoring:
-      check_command: check_http_lvs_on_port!ores.svc.%{::site}.wmnet!8081!/v2/scores/
+      check_command: check_http_lvs_on_port!ores.discovery.wmnet!8081!/v2/scores/
       critical: true
       sites:
         codfw:
@@ -1694,7 +1694,7 @@ service::catalog:
           - http://localhost/_info
       scheduler: wrr
     monitoring:
-      check_command: check_http_lvs_on_port!proton.svc.%{::site}.wmnet!24766!/_info
+      check_command: check_http_lvs_on_port!proton.discovery.wmnet!24766!/_info
       critical: true
       sites:
         codfw:
@@ -1730,7 +1730,7 @@ service::catalog:
           - http://localhost/robots.txt
       scheduler: wrr
     monitoring:
-      check_command: check_http_lvs_on_port!recommendation-api.svc.%{::site}.wmnet!9632!/robots.txt
+      check_command: check_http_lvs_on_port!recommendation-api.discovery.wmnet!9632!/robots.txt
       critical: true
       sites:
         codfw:
@@ -1766,7 +1766,7 @@ service::catalog:
           - http://localhost/
       scheduler: wrr
     monitoring:
-      check_command: check_http_lvs_on_port!restbase.svc.%{::site}.wmnet!7231!/
+      check_command: check_http_lvs_on_port!restbase.discovery.wmnet!7231!/
       critical: true
       sites:
         codfw:
@@ -1858,7 +1858,7 @@ service::catalog:
           - http://localhost/
       scheduler: wrr
     monitoring:
-      check_command: check_http_lvs_on_port!restrouter.svc.%{::site}.wmnet!7231!/
+      check_command: check_http_lvs_on_port!restrouter.discovery.wmnet!7231!/
       critical: false
       sites:
         codfw:
@@ -1894,7 +1894,7 @@ service::catalog:
           - https://localhost/repositories/
       scheduler: wrr
     monitoring:
-      check_command: check_https_lvs_on_port!schema.svc.%{::site}.wmnet!443!/repositories/
+      check_command: check_https_lvs_on_port!schema.discovery.wmnet!443!/repositories/
       critical: false
       sites:
         codfw:
@@ -2184,7 +2184,7 @@ service::catalog:
           - http://localhost/_info
       scheduler: wrr
     monitoring:
-      check_command: check_http_lvs_on_port!termbox.svc.%{::site}.wmnet!3030!/_info
+      check_command: check_http_lvs_on_port!termbox.discovery.wmnet!3030!/_info
       critical: true
       sites:
         codfw:
@@ -2316,7 +2316,7 @@ service::catalog:
           - http://localhost/healthcheck
       scheduler: wrr
     monitoring:
-      check_command: check_http_lvs_on_port_timeout!thumbor.svc.%{::site}.wmnet!8800!/healthcheck!20
+      check_command: check_http_lvs_on_port_timeout!thumbor.discovery.wmnet!8800!/healthcheck!20
       critical: true
       sites:
         codfw:
@@ -2437,7 +2437,7 @@ service::catalog:
           - https://localhost/w/health-check.php
       scheduler: wrr
     monitoring:
-      check_command: check_https_url!videoscaler.svc.%{::site}.wmnet!/w/health-check.php
+      check_command: check_https_url!videoscaler.discovery.wmnet!/w/health-check.php
       critical: true
       sites:
         codfw:
@@ -2473,7 +2473,7 @@ service::catalog:
           - http://localhost/readiness-probe
       scheduler: wrr
     monitoring:
-      check_command: check_http_lvs_on_port!wdqs.svc.%{::site}.wmnet!80!/readiness-probe
+      check_command: check_http_lvs_on_port!wdqs.discovery.wmnet!80!/readiness-probe
       critical: true
       sites:
         codfw:
@@ -2537,7 +2537,7 @@ service::catalog:
           - http://localhost/readiness-probe
       scheduler: wrr
     monitoring:
-      check_command: check_http_lvs_on_port!wdqs-internal.svc.%{::site}.wmnet!80!/readiness-probe
+      check_command: check_http_lvs_on_port!wdqs-internal.discovery.wmnet!80!/readiness-probe
       critical: true
       sites:
         codfw:
@@ -2573,7 +2573,7 @@ service::catalog:
           - https://localhost/readiness-probe
       scheduler: wrr
     monitoring:
-      check_command: check_https_url!wdqs.svc.%{::site}.wmnet!/readiness-probe
+      check_command: check_https_url!wdqs.discovery.wmnet!/readiness-probe
       critical: true
       sites:
         codfw:
@@ -2609,7 +2609,7 @@ service::catalog:
           - http://localhost/_info
       scheduler: wrr
     monitoring:
-      check_command: check_http_lvs_on_port!wikifeeds.svc.%{::site}.wmnet!8889!/_info
+      check_command: check_http_lvs_on_port!wikifeeds.discovery.wmnet!8889!/_info
       critical: false
       sites:
         codfw:
@@ -2642,7 +2642,8 @@ service::catalog:
           timeout-clean-reconnect: 3
       scheduler: wrr
     monitoring:
-      check_command: check_http_zotero_lvs_on_port!zotero.svc.%{::site}.wmnet!1969!/export?format=wikipedia
+
+      check_command: check_http_zotero_lvs_on_port!zotero.discovery.wmnet!1969!/export?format=wikipedia
       critical: true
       sites:
         codfw:
