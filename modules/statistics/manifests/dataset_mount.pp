@@ -34,7 +34,7 @@ class statistics::dataset_mount (
 
         mount { "/mnt/nfs/dumps-${server}":
             ensure  => 'mounted',
-            device  => "${server}:/dumps",
+            device  => "${server}:/",
             fstype  => 'nfs',
             options => 'ro,bg,tcp,rsize=8192,wsize=8192,timeo=14,intr',
             atboot  => true,
@@ -42,7 +42,15 @@ class statistics::dataset_mount (
         }
     }
 
-    file { '/mnt/data/':
+    file { ['/mnt/data',
+            '/mnt/data/xmldatadumps/']:
+        ensure => 'directory',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+    }
+
+    file { '/mnt/data/xmldatadumps/public':
         ensure  => 'link',
         target  => "/mnt/nfs/dumps-${dumps_active_server}",
         require => Mount["/mnt/nfs/dumps-${dumps_active_server}"],
