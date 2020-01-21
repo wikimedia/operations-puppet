@@ -29,7 +29,7 @@ class profile::mediawiki::php::restarts(
     # the cluster
     if $has_lvs {
         # All the nodes we have to orchestrate with
-        $all_nodes = $pools.keys().map | $pool | { wmflib::service::get_pool_nodes($pool) }.flatten()
+        $all_nodes = $pools.keys().map | $pool | { wmflib::service::get_pool_nodes($pool) }.flatten().unique()
     }
     else {
         # We need to add the php restart script here.
