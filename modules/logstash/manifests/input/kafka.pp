@@ -14,7 +14,7 @@
 # - $group_id: Kafka consumer group id. Default: None (use logstash implemented default of "logstash")
 # - $type: Log type to be passed to Logstash. Default: none.
 # - $codec: Codec to decode input. Default 'plain'.
-# - $bootstrap_servers: Kafka servers to boostrap from. This list should be
+# - $bootstrap_servers: Kafka servers to bootstrap from. This list should be
 #      a string in the form of `host1:port1,host2:port2. For more info, see:
 #      https://www.elastic.co/guide/en/logstash/current/plugins-inputs-kafka.html
 # - $plugin_id: Name associated with Logstash metrics
@@ -27,7 +27,7 @@
 # == Sample usage:
 #
 #   logstash::input::kafka { 'some_topic':
-#       boostrap_servers => 'kafka1001:9092,kafka1002:9092',
+#       bootstrap_servers => 'kafka1001:9092,kafka1002:9092',
 #   }
 #
 define logstash::input::kafka(

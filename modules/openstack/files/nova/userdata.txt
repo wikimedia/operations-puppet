@@ -60,7 +60,7 @@ then
   root_dev=$(lsblk --nodeps -o NAME -n | head -n 1)
 
   echo 'Creating the volume group'
-  # There seems to be a bug in boostrapvz that (can?)
+  # There seems to be a bug in bootstrapvz that (can?)
   # create the gpt of the image with the "wrong" size,
   # where the extent of the disk is the sum of the
   # existing partitions rather than the actual size of
