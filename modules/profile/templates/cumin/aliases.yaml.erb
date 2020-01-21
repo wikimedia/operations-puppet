@@ -125,7 +125,7 @@ kubernetes-etcd: P{O:etcd::kubernetes}
 kubernetes-masters: P{O:kubernetes::master}
 kubernetes-staging: P{O:etcd::v3::kubernetes::staging or O:kubernetes::staging::master or O:kubernetes::staging::worker}
 kubernetes-workers: P{O:kubernetes::worker}
-kubernetes-all: A:kubernetes-etcd or A:kubernetes-masters or A:kubernetes-staging or A:kubernetes-workers or A:kubernetes-etcd-network
+kubernetes-all: A:kubernetes-etcd or A:kubernetes-masters or A:kubernetes-staging or A:kubernetes-workers
 cloudmetrics: P{O:wmcs::monitoring}
 labs-nfs: P{O:labs::nfs::misc or O:dumps::distribution::server or O:labs::nfs::secondary or O:labs::nfs::secondary_backup::tools or O:labs::nfs::secondary_backup::misc}
 labweb: P{O:wmcs::openstack::eqiad1::labweb}
@@ -269,7 +269,7 @@ zookeeper-analytics: P{O:analytics_cluster::zookeeper}
 # Miscellaneous groups
 misc-analytics: P{O:statistics::web or O:statistics::cruncher or O:statistics::private or O:piwik or O:analytics_cluster::coordinator or O:kafka::monitoring or O:analytics_cluster::webserver} or A:eventlogging
 misc-apache: P{O:microsites::peopleweb or C:grafana::production or O:doc or O:requesttracker or O:otrs or O:webserver_misc_static or O:webserver_misc_apps} or A:planet or A:releases
-misc-devel: P{O:webperf::processors_and_site or O:webperf::profiling_tools or O:ve or O:archiva or O:docker::registry} or A:debugproxy or A:mwlog
+misc-devel: P{O:webperf::processors_and_site or O:webperf::profiling_tools or O:ve or O:archiva or O:docker::registry} or A:mwlog
 misc-nonprod: P{O:spare::system or O:test or O:pybaltest}
 misc-ops: A:installserver or A:cumin or A:url-downloader or A:icinga or A:netmon or A:puppetboard or A:debmonitor or A:debmonitor or A:backup or A:ping or A:rpki or P{O:logging::webrequest::ops or O:builder or O:syslog::centralserver or O:pmacct or O:mirrors}
 misc-others: P{O:mw_rc_irc or O:etherpad or O:tor_relay or O:lists or O:netinsights}
