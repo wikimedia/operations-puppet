@@ -333,7 +333,7 @@ node /^es10(20|21|22|23|24|25)\.eqiad\.wmnet/ {
 }
 
 # Spare external store codfw hosts to be provisioned # T241336
-node /^es20(22|23|24|25)\.codfw\.wmnet/ {
+node /^es20(23|24|25)\.codfw\.wmnet/ {
     role(spare::system)
 }
 
@@ -894,7 +894,7 @@ node 'es2020.codfw.wmnet' {
     role(mariadb::core)
 }
 
-node /^es202[1]\.codfw\.wmnet/ {
+node /^es202[12]\.codfw\.wmnet/ {
     role(mariadb::core)
 }
 
