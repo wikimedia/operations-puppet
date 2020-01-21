@@ -93,11 +93,27 @@ class role::prometheus::beta (
       },
     ]
 
+    $mcrouter_jobs = [
+      {
+        'job_name'        => 'mcrouter',
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/mcrouter_*.yaml"] },
+        ]
+      },
+    ]
     prometheus::class_config{ "memcached_${::site}":
         dest       => "${targets_path}/memcached_${::site}.yaml",
         site       => $::site,
         class_name => 'profile::prometheus::memcached_exporter',
         port       => 9150,
+        labels     => {}
+    }
+
+    prometheus::class_config{ "mcrouter_${::site}":
+        dest       => "${targets_path}/mcrouter_${::site}.yaml",
+        site       => $::site,
+        class_name => 'profile::prometheus::mcrouter_exporter',
+        port       => 9151,
         labels     => {}
     }
 
@@ -122,7 +138,7 @@ class role::prometheus::beta (
         listen_address       => '127.0.0.1:9903',
         external_url         => 'https://beta-prometheus.wmflabs.org/beta',
         scrape_configs_extra => array_concat($varnish_jobs, $mysql_jobs, $web_jobs,
-            $cassandra_jobs, $jmx_exporter_jobs, $memcached_jobs),
+            $cassandra_jobs, $jmx_exporter_jobs, $memcached_jobs, $mcrouter_jobs),
         storage_retention    => $storage_retention,
     }
 
