@@ -18,12 +18,8 @@ cache::req_handling:
     director: 'kartotherian'
 # Profile parameters
 # Profile::cache::base
-# NOTE: Add the public WMCS IP space when T209011 is done
-profile::cache::base::extra_nets: ['172.16.0.0/12']
-profile::cache::base::admission_policy: 'none'
 profile::cache::base::purge_host_regex: '[um][pa][lp][os]'
 profile::cache::base::purge_multicasts: ['239.128.0.112', '239.128.0.113', '239.128.0.114', '239.128.0.115']
-profile::cache::base::purge_varnishes: ['127.0.0.1:3128', '127.0.0.1:3127,1.0']
 profile::cache::varnish::cache_be_opts:
     port: 3128
     connect_timeout: '5s'
@@ -46,12 +42,6 @@ profile::cache::varnish::frontend::fe_vcl_config:
     keep: '1d'
 profile::cache::varnish::frontend::fe_jemalloc_conf: 'lg_dirty_mult:8,lg_chunk:17'
 profile::cache::varnish::frontend::fe_extra_vcl: ['normalize_path']
-profile::cache::varnish::frontend::vm_max_map_count: 262120
-
-# Enable varnishkafka-webrequest instance monitoring.
-profile::cache::kafka::webrequest::monitoring_enabled: true
-profile::cache::kafka::webrequest::kafka_cluster_name: jumbo-eqiad
-profile::cache::kafka::webrequest::ssl_enabled: true
 
 profile::cache::upload::upload_webp_hits_threshold: 100
 

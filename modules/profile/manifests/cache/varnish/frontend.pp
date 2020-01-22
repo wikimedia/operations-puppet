@@ -13,7 +13,6 @@ class profile::cache::varnish::frontend (
     $fe_transient_gb = hiera('profile::cache::varnish::frontend::transient_gb', 0),
     $backend_services = hiera('profile::cache::varnish::frontend::backend_services', ['ats-be']),
     Boolean $has_lvs = lookup('has_lvs', {'default_value' => true}),
-    Integer $vm_max_map_count = lookup('profile::cache::varnish::frontend::vm_max_map_count', {'default_value' => 65530}),
 ) {
     require ::profile::cache::base
     $wikimedia_nets = $profile::cache::base::wikimedia_nets
@@ -77,6 +76,8 @@ class profile::cache::varnish::frontend (
     # Varnish frontend crashes with "Error in munmap(): Cannot allocate
     # memory" are likely due to the varnish child process reaching this limit.
     # https://phabricator.wikimedia.org/T242417
+    $vm_max_map_count = 262120
+
     sysctl::parameters { 'maximum map count':
         values => {
             'vm.max_map_count' => $vm_max_map_count,

@@ -11,19 +11,18 @@ class profile::cache::base(
     $packages_version = hiera('profile::cache::base::packages_version', 'installed'),
     $purge_host_regex = hiera('profile::cache::base::purge_host_regex', ''),
     $purge_multicasts = hiera('profile::cache::base::purge_multicasts', ['239.128.0.112']),
-    $purge_varnishes = hiera('profile::cache::base::purge_varnishes', ['127.0.0.1:3128', '127.0.0.1:3127']),
     $logstash_host = hiera('logstash_host', undef),
     $logstash_syslog_port = hiera('logstash_syslog_port', undef),
     $logstash_json_lines_port = hiera('logstash_json_lines_port', undef),
     $log_slow_request_threshold = hiera('profile::cache::base::log_slow_request_threshold', '60.0'),
     $allow_iptables = hiera('profile::cache::base::allow_iptables', false),
     $performance_tweaks = hiera('profile::cache::base::performance_tweaks', true),
-    $extra_nets = hiera('profile::cache::base::extra_nets', []),
     $extra_trust = hiera('profile::cache::base::extra_trust', []),
     Optional[Hash[String, Integer]] $default_weights = lookup('profile::cache::base::default_weights', {'default_value' => undef}),
 ) {
     require network::constants
-    $wikimedia_nets = flatten(concat($::network::constants::aggregate_networks, $extra_nets))
+    # NOTE: Add the public WMCS IP space when T209011 is done
+    $wikimedia_nets = flatten(concat($::network::constants::aggregate_networks, '172.16.0.0/12'))
     $wikimedia_trust = flatten(concat($::network::constants::aggregate_networks, $extra_trust))
 
     # Needed profiles
@@ -99,7 +98,7 @@ class profile::cache::base(
     class { 'varnish::htcppurger':
         host_regex => $purge_host_regex,
         mc_addrs   => $purge_multicasts,
-        caches     => $purge_varnishes,
+        caches     => ['127.0.0.1:3128', '127.0.0.1:3127,1.0'],
     }
     Class[varnish::packages] -> Class[varnish::htcppurger]
 

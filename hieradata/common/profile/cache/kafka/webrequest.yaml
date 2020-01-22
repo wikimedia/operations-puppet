@@ -1,0 +1,3 @@
+profile::cache::kafka::webrequest::monitoring_enabled: true
+profile::cache::kafka::webrequest::kafka_cluster_name: jumbo-eqiad
+profile::cache::kafka::webrequest::ssl_enabled: true
