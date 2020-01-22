@@ -1902,10 +1902,6 @@ node 'thorium.eqiad.wmnet' {
     role(analytics_cluster::webserver)
 }
 
-node 'torrelay1001.wikimedia.org' {
-    role(spare::system)
-}
-
 # stat1004 contains all the tools and libraries to access
 # the Analytics Cluster services, but should not be used
 # for local data processing.

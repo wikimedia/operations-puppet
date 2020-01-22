@@ -6173,11 +6173,6 @@ host theemin {
     fixed-address theemin.codfw.wmnet;
 }
 
-host torrelay1001 {
-    hardware ethernet D0:94:66:5F:56:7C;
-    fixed-address torrelay1001.wikimedia.org;
-}
-
 host tungsten {
     hardware ethernet 78:2b:cb:0a:04:12;
     fixed-address tungsten.eqiad.wmnet;
