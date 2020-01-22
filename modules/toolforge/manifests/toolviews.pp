@@ -1,6 +1,5 @@
-# == Class: toollabs::toolviews
 # Process dynamicproxy access logs to compute usage data for Toolforge tools.
-class toollabs::toolviews (
+class toolforge::toolviews (
     $mysql_host,
     $mysql_db,
     $mysql_user,
@@ -14,7 +13,7 @@ class toollabs::toolviews (
 
     file { '/etc/toolviews.yaml':
         ensure  => file,
-        content => template('toollabs/toolviews.yaml.erb'),
+        content => template('toolforge/toolviews.yaml.erb'),
         owner   => 'root',
         group   => 'root',
         mode    => '0400',
@@ -22,7 +21,7 @@ class toollabs::toolviews (
 
     file { '/usr/local/bin/toolviews.py':
         ensure  => file,
-        source  => 'puppet:///modules/toollabs/toolviews.py',
+        source  => 'puppet:///modules/toolforge/toolviews.py',
         owner   => 'root',
         group   => 'root',
         mode    => '0544',
@@ -43,7 +42,7 @@ class toollabs::toolviews (
     }
     file { '/etc/logrotate.d/nginx-postrotate/toolviews':
         ensure  => file,
-        source  => 'puppet:///modules/toollabs/toolviews.sh',
+        source  => 'puppet:///modules/toolforge/toolviews.sh',
         owner   => 'root',
         group   => 'root',
         mode    => '0544',

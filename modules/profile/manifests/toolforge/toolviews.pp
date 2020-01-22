@@ -7,7 +7,7 @@ class profile::toolforge::toolviews (
     $mysql_user     = lookup('profile::toolforge::toolviews::mysql_user',     {default_value => 'example_user'}),
     $mysql_password = lookup('profile::toolforge::toolviews::mysql_password', {default_value => 'example_passwd'}),
 ){
-    class { '::toollabs::toolviews':
+    class { '::toolforge::toolviews':
         mysql_host     => $mysql_host,
         mysql_db       => $mysql_db,
         mysql_user     => $mysql_user,
