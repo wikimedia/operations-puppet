@@ -4,7 +4,7 @@
 #
 class profile::trafficserver::tls (
     String $user=hiera('profile::trafficserver::tls::user', 'trafficserver'),
-    Stdlib::Port $port=hiera('profile::trafficserver::tls::port', 8443),
+    Stdlib::Port $port=hiera('profile::trafficserver::tls::port', 443),
     Optional[Trafficserver::Network_settings] $network_settings=hiera('profile::trafficserver::tls::network_settings', undef),
     Optional[Trafficserver::HTTP_settings] $http_settings=hiera('profile::trafficserver::tls::http_settings', undef),
     Optional[Trafficserver::H2_settings] $h2_settings=hiera('profile::trafficserver::tls::h2_settings', undef),

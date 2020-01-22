@@ -8,8 +8,6 @@ prometheus::node_exporter::collectors_extra:
   - qdisc
   - meminfo_numa
 mtail::service_ensure: absent
-cache::ssl_dyn_rec: true
-cache::tune_for_media: true
 cache::req_handling:
   upload.wikimedia.org:
     director: 'swift'
@@ -49,10 +47,6 @@ profile::cache::varnish::frontend::fe_vcl_config:
 profile::cache::varnish::frontend::fe_jemalloc_conf: 'lg_dirty_mult:8,lg_chunk:17'
 profile::cache::varnish::frontend::fe_extra_vcl: ['upload-common', 'normalize_path']
 profile::cache::varnish::frontend::vm_max_map_count: 262120
-# Profile::cache::ssl::unified
-profile::cache::ssl::unified::monitoring: true
-profile::cache::ssl::unified::letsencrypt: false
-profile::cache::ssl::unified::acme_chief: true
 
 # Enable varnishkafka-webrequest instance monitoring.
 profile::cache::kafka::webrequest::monitoring_enabled: true
@@ -70,10 +64,6 @@ prometheus::varnishkafka_exporter::config:
     - 'varnishkafka'
 
   num_entries_to_get: 2
-
-# profile::cache::ssl
-profile::cache::ssl::unified::tls_port: 4443
-profile::cache::ssl::unified::use_trafficserver_tls: true
 
 # profile::trafficserver::tls
 profile::trafficserver::tls::port: 443

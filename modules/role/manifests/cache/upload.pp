@@ -8,7 +8,6 @@ class role::cache::upload {
     include ::profile::netconsole::client
 
     include ::profile::cache::base
-    include ::profile::cache::ssl::unified
     include ::profile::cache::varnish::frontend
     include ::profile::trafficserver::backend
     include ::profile::trafficserver::tls

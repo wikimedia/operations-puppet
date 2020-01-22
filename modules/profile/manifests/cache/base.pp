@@ -32,7 +32,6 @@ class profile::cache::base(
     # Needed profiles
     require ::profile::conftool::client
     require ::profile::prometheus::varnish_exporter
-    require ::profile::cache::ssl::unified
     require ::profile::standard
     require ::profile::base::systemd
 
@@ -52,8 +51,12 @@ class profile::cache::base(
         }
     }
 
+    # FIXME: Remove as soon as puppet runs on every cp node
+    class { '::nginx':
+        ensure => absent,
+    }
+
     class { 'conftool::scripts': }
-    class { 'tlsproxy::prometheus': }
     class { 'prometheus::node_vhtcpd': }
 
     if $performance_tweaks {

@@ -6,7 +6,6 @@ class role::cache::text {
     }
     include ::profile::standard
     include ::profile::cache::base
-    include ::profile::cache::ssl::unified
     include ::profile::cache::varnish::frontend
     include ::profile::cache::varnish::frontend::text
     include ::profile::trafficserver::backend
