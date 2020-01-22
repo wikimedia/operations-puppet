@@ -118,7 +118,6 @@ profile::cache::varnish::frontend::fe_vcl_config:
     upload_domain: 'upload.beta.wmflabs.org'
     upload_webp_hits_threshold: 1000
     maps_domain: 'maps.beta.wmflabs.org'
-    enable_geoiplookup: true
     varnish_probe_ms: 100
     keep: '1d'
 profile::cache::varnish::frontend::fe_jemalloc_conf: 'lg_dirty_mult:8,lg_chunk:17'

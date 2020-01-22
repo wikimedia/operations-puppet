@@ -164,6 +164,8 @@ define varnish::instance(
           File["/etc/varnish/wikimedia-common_${vcl_name}.inc.vcl"] ]
     })
 
+    $enable_geoiplookup = $vcl == 'text-frontend'
+
     systemd::service { "varnish${instancesuffix}":
         content        => systemd_template('varnish'),
         service_params => {

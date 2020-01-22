@@ -21,7 +21,7 @@ CapabilityBoundingSet=<%= @capabilities %>
 PIDFile=%t/%p.pid
 Restart=on-failure
 KillMode=process
-<% if @vcl_config.fetch("enable_geoiplookup", false) -%>
+<% if @enable_geoiplookup -%>
 Environment="CC_COMMAND=exec gcc -std=gnu99 -g -O2 -fstack-protector-strong -Wformat -Werror=format-security -Wall -pthread -fpic -shared -Wl,-x -L/usr/local/lib/ -o %%o %%s -lmaxminddb"
 <% else -%>
 Environment="CC_COMMAND=exec gcc -std=gnu99 -g -O2 -fstack-protector-strong -Wformat -Werror=format-security -Wall -pthread -fpic -shared -Wl,-x -o %%o %%s"

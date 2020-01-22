@@ -204,7 +204,6 @@ profile::cache::varnish::frontend::fe_vcl_config:
     pass_random: true
     upload_domain: 'upload.wikimedia.org'
     maps_domain: 'maps.wikimedia.org'
-    enable_geoiplookup: true
     admission_policy: 'none'
     # RTT is ~0, but 100ms is to accomodate small local hiccups, similar to
     # the +100 added in $::profile::cache::base::core_probe_timeout_ms
