@@ -10,8 +10,8 @@
 # Example: /ci
 #
 class profile::ci::proxy_jenkins (
-    $http_port = hiera('profile::ci::proxy_jenkins::http_port'),
-    $prefix = hiera('profile::ci::proxy_jenkins::prefix'),
+    Stdlib::Port $http_port = hiera('profile::ci::proxy_jenkins::http_port'),
+    String $prefix = hiera('profile::ci::proxy_jenkins::prefix'),
 ) {
 
   # run jenkins behind Apache and have pretty URLs / proxy port 80
