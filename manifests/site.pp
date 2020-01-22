@@ -1899,9 +1899,8 @@ node 'thorium.eqiad.wmnet' {
     role(analytics_cluster::webserver)
 }
 
-# new tor relay server, replaced radium T196701
 node 'torrelay1001.wikimedia.org' {
-    role(tor_relay)
+    role(spare::system)
 }
 
 # stat1004 contains all the tools and libraries to access
