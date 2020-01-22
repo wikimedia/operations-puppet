@@ -2688,6 +2688,30 @@ host ganeti1008 {
     fixed-address ganeti1008.eqiad.wmnet;
 }
 
+host ganeti1019 {
+    hardware ethernet 4C:D9:8F:66:2F:67;
+    fixed-address ganeti1019.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
+}
+
+host ganeti1020 {
+    hardware ethernet 4C:D9:8F:66:2A:67;
+    fixed-address ganeti1020.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
+}
+
+host ganeti1021 {
+    hardware ethernet 4C:D9:8F:66:35:F3;
+    fixed-address ganeti1021.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
+}
+
+host ganeti1022 {
+    hardware ethernet 4C:D9:8F:66:2C:B7;
+    fixed-address ganeti1022.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
+}
+
 host ganeti2001 {
     hardware ethernet 44:A8:42:12:C8:FE;
     fixed-address ganeti2001.codfw.wmnet;
