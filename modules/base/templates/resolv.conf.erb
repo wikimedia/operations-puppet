@@ -4,7 +4,7 @@
 #####################################################################
 # Resolver configuration for site <%= @site %>
 <%- ip = scope.lookupvar('::ipaddress') -%>
-search <%= Array(@domain_search).join(' ') %>
+search <%= @facts['domain'] %> <%= Array(@domain_search).reject{ |d| d == @facts['domain'] }.join(' ') %>
 options timeout:1 attempts:3
 <% @nameservers.select{|ns| ns != ip }.each do |nameserver| -%>
 nameserver <%= nameserver %>

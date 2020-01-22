@@ -16,14 +16,14 @@ describe 'base::resolving' do
                          .with_mode('0444')
         content = catalogue.resource('file', '/etc/resolv.conf').send(:parameters)[:content]
 
-        expect(content).to match(/search example.com\noptions timeout:1 attempts:3\nnameserver 1.2.3.4\n/)
+        expect(content).to match(/search example.com\s\noptions timeout:1 attempts:3\nnameserver 1.2.3.4\n/)
       end
       context "when nameservers are overridden" do
         let(:params) { {'nameservers' => ['2.2.2.2']}}
         it "nameserver is changed in resolv.conf" do
           content = catalogue.resource('file', '/etc/resolv.conf').send(:parameters)[:content]
 
-          expect(content).to match(/search example.com\noptions timeout:1 attempts:3\nnameserver 2.2.2.2\n/)
+          expect(content).to match(/search example.com\s\noptions timeout:1 attempts:3\nnameserver 2.2.2.2\n/)
         end
       end
     end
@@ -42,7 +42,7 @@ describe 'base::resolving' do
       it "contains a correct resolv.conf" do
         content = catalogue.resource('file', '/etc/resolv.conf').send(:parameters)[:content]
 
-        expect(content).to match(/search fun.testdc.foo.bar testdc.foo.bar \nnameserver 1.2.3.4\noptions timeout:2 ndots:1/)
+        expect(content).to match(/search example.com fun.testdc.foo.bar testdc.foo.bar \nnameserver 1.2.3.4\noptions timeout:2 ndots:1/)
       end
     end
 end
