@@ -3547,6 +3547,24 @@ host mc1036 {
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
 }
 
+host mc-gp1001 {
+    hardware ethernet B0:26:28:CC:FD:90;
+    fixed-address mc-gp1001.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
+}
+
+host mc-gp1002 {
+    hardware ethernet B0:26:28:CC:F4:20;
+    fixed-address mc-gp1002.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
+}
+
+host mc-gp1003 {
+    hardware ethernet B0:26:28:CC:F9:40;
+    fixed-address mc-gp1003.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
+}
+
 host mc2019 {
     hardware ethernet 94:18:82:79:36:ac;
     fixed-address mc2019.codfw.wmnet;
