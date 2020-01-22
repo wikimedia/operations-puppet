@@ -334,7 +334,7 @@ node /^es10(20|21|22|23|24|25)\.eqiad\.wmnet/ {
 }
 
 # Spare external store codfw hosts to be provisioned # T241336
-node /^es20(24|25)\.codfw\.wmnet/ {
+node /^es20(25)\.codfw\.wmnet/ {
     role(spare::system)
 }
 
@@ -907,6 +907,9 @@ node 'es2023.codfw.wmnet' {
     role(mariadb::core)
 }
 
+node /^es202[4]\.codfw\.wmnet/ {
+    role(mariadb::core)
+}
 
 # Disaster recovery hosts for external storage
 # These nodes are in process of being decommissioned
