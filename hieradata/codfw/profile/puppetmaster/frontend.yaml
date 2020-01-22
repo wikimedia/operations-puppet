@@ -1,0 +1,2 @@
+profile::puppetmaster::frontend::canary_hosts:
+- puppetmaster2003.codfw.wmnet
