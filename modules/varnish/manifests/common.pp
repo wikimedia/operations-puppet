@@ -24,6 +24,8 @@ class varnish::common(
     # Python version
     if os_version('debian == stretch') {
         $python_version = '3.5'
+    } elsif os_version('debian == buster') {
+        $python_version = '3.7'
     }
 
     # Mount /var/lib/varnish as tmpfs to avoid Linux flushing mlocked
