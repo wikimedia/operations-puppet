@@ -40,23 +40,24 @@
 #
 # filtertags: labs-common
 class role::puppetmaster::standalone(
-    $autosign = false,
-    $prevent_cherrypicks = false,
-    $allow_from = ['10.0.0.0/8', '172.16.0.0/21'],
-    $git_sync_minutes = '10',
-    $extra_auth_rules = '',
-    $server_name = $::fqdn,
-    $use_enc = true,
-    $labs_puppet_master = hiera('labs_puppet_master'),
-    $storeconfigs = false,
-    $puppetdb_host = undef,
-    Boolean $enable_geoip = false,
+                                $autosign = false,
+    Boolean                     $prevent_cherrypicks = false,
+    Array[Stdlib::IP::Address]  $allow_from = ['10.0.0.0/8', '172.16.0.0/21'],
+    Integer[1,30]               $git_sync_minutes = 10,
+    String                      $extra_auth_rules = '',
+    Stdlib::Host                $server_name = $::fqdn,
+    Stdlib::Host                $labs_puppet_master = lookup('labs_puppet_master'),
+                                $storeconfigs = false,
+    Boolean                     $enable_geoip = false,
+    Boolean                     $command_broadcast = false,
+    Optional[Variant[Array[Stdlib::Host], Stdlib::Host]] $puppetdb_host = undef,
 ) {
-    if ! $use_enc {
-        fail('Ldap puppet node definitions are no longer supported.  The $use_enc param must be true.')
+    $puppetdb_hosts = ($puppetdb_host =~ Stdlib::Host) ? {
+        true    => [$puppetdb_host],
+        default => $puppetdb_host,
     }
 
-    class {'::openstack::puppet::master::enc':
+    class {'openstack::puppet::master::enc':
         puppetmaster => $labs_puppet_master,
     }
 
@@ -89,7 +90,8 @@ class role::puppetmaster::standalone(
             }
         }
         class { 'puppetmaster::puppetdb::client':
-            hosts => [$puppetdb_host],
+            hosts             => $puppetdb_hosts,
+            command_broadcast => $command_broadcast,
         }
         $config = merge($base_config, $puppetdb_config, $env_config)
     } else {
