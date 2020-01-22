@@ -47,7 +47,7 @@ ProtectSystem=strict
 ReadWritePaths=<%= @paths['logdir'] %>
 ReadWritePaths=<%= @paths['runtimedir'] %>
 ReadWritePaths=<%= @paths['cachedir'] %>
-<% if @do_ocsp -%>
+<% if @update_ocsp -%>
 ReadWritePaths=/var/cache/ocsp
 ReadWritePaths=<%= @paths['sysconfdir'] %>
 <% end -%>
