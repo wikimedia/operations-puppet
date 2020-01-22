@@ -1,4 +1,4 @@
--- TODO: add it to maintain-replicas
+-- TODO: add it to maintain-views.py
 -- This only has to be run once per host
 -- And there is no checks that the underlying tables exist
 CREATE DATABASE IF NOT EXISTS `heartbeat_p`;
