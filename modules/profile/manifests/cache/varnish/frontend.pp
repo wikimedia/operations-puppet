@@ -12,6 +12,7 @@ class profile::cache::varnish::frontend (
     $fe_transient_gb = hiera('profile::cache::varnish::frontend::transient_gb', 0),
     $backend_services = hiera('profile::cache::varnish::frontend::backend_services', ['ats-be']),
     Boolean $has_lvs = lookup('has_lvs', {'default_value' => true}),
+    Integer $vm_max_map_count = lookup('profile::cache::varnish::frontend::vm_max_map_count', {'default_value' => 65530}),
 ) {
     require ::profile::cache::base
     $wikimedia_nets = $profile::cache::base::wikimedia_nets
@@ -79,18 +80,29 @@ class profile::cache::varnish::frontend (
     }
 
     # Raise maximum number of memory map areas per process from 65530 to
-    # 262120. See https://www.kernel.org/doc/Documentation/sysctl/vm.txt.
+    # $vm_max_map_count. See https://www.kernel.org/doc/Documentation/sysctl/vm.txt.
     # Varnish frontend crashes with "Error in munmap(): Cannot allocate
     # memory" are likely due to the varnish child process reaching this limit.
     # https://phabricator.wikimedia.org/T242417
     sysctl::parameters { 'maximum map count':
         values => {
-            'vm.max_map_count' => 262120,
+            'vm.max_map_count' => $vm_max_map_count,
         }
     }
 
     class { 'prometheus::node_varnishd_mmap_count':
         service => 'varnish-frontend.service',
+    }
+
+    monitoring::check_prometheus { 'varnishd-mmap-count':
+        description     => 'Varnish number of memory map areas',
+        query           => "scalar(varnishd_mmap_count{instance=\"${::hostname}:9100\"})",
+        method          => 'gt',
+        warning         => $vm_max_map_count - 5000,
+        critical        => $vm_max_map_count - 1000,
+        prometheus_url  => "http://prometheus.svc.${::site}.wmnet/ops",
+        notes_link      => 'https://wikitech.wikimedia.org/wiki/Varnish',
+        dashboard_links => ["https://grafana.wikimedia.org/dashboard/db/cache-host-drilldown?fullscreen&orgId=1&panelId=76&var-site=${::site} prometheus/ops&var-instance=${::hostname}"],
     }
 
     # lint:ignore:arrow_alignment

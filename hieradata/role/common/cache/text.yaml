@@ -214,6 +214,7 @@ profile::cache::varnish::separate_vcl: ['misc']
 profile::cache::varnish::frontend::fe_jemalloc_conf: 'lg_dirty_mult:8,lg_chunk:16'
 profile::cache::varnish::frontend::fe_extra_vcl: ['text-common', 'misc-common', 'normalize_path', 'geoip']
 profile::cache::varnish::frontend::transient_gb: 5
+profile::cache::varnish::frontend::vm_max_map_count: 262120
 # Profile::cache::ssl::unified
 profile::cache::ssl::unified::monitoring: true
 profile::cache::ssl::unified::letsencrypt: false
