@@ -960,8 +960,9 @@ node 'etherpad1001.eqiad.wmnet' {
     role(etherpad)
 }
 
+# Etherpad on buster (virtual machine)
 node 'etherpad1002.eqiad.wmnet' {
-    role(spare::system)
+    role(etherpad)
 }
 
 # Receives log data from Kafka processes it, and broadcasts
