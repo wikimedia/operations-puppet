@@ -7,7 +7,6 @@ define varnish::instance(
     $vcl = '',
     $storage='-s malloc,1G',
     $jemalloc_conf=undef,
-    $cache_route='',
     $backend_caches={},
     $extra_vcl = [],
     $separate_vcl = [],
@@ -36,7 +35,6 @@ define varnish::instance(
 
     $extra_vcl_variable_to_make_puppet_parser_happy = suffix($extra_vcl, " ${instancesuffix}")
     varnish::wikimedia_vcl { $extra_vcl_variable_to_make_puppet_parser_happy:
-        cache_route        => $cache_route,
         generate_extra_vcl => true,
         vcl_config         => $vcl_config,
         before             => Service["varnish${instancesuffix}"],
@@ -73,7 +71,6 @@ define varnish::instance(
         varnish::wikimedia_vcl { "/etc/varnish/wikimedia-common_${vcl_name}.inc.vcl":
             template_path   => "${module_name}/vcl/wikimedia-common.inc.vcl.erb",
             vcl_config      => $vcl_config,
-            cache_route     => $cache_route,
             backend_caches  => $backend_caches,
             inst            => $inst,
             is_separate_vcl => $vcl_name in $separate_vcl,
@@ -85,7 +82,6 @@ define varnish::instance(
             require         => File["/etc/varnish/${vcl_name}.inc.vcl"],
             template_path   => "${module_name}/vcl/wikimedia-${layer}.vcl.erb",
             vcl_config      => $vcl_config,
-            cache_route     => $cache_route,
             backend_caches  => $backend_caches,
             vcl             => $vcl_name,
             is_separate_vcl => $vcl_name in $separate_vcl,
@@ -101,7 +97,6 @@ define varnish::instance(
             varnish_testing => true,
             template_path   => "${module_name}/vcl/wikimedia-common.inc.vcl.erb",
             vcl_config      => $vcl_config,
-            cache_route     => $cache_route,
             backend_caches  => $backend_caches,
             inst            => $inst,
             is_separate_vcl => $vcl_name in $separate_vcl,
@@ -114,7 +109,6 @@ define varnish::instance(
             varnish_testing => true,
             template_path   => "${module_name}/vcl/wikimedia-${layer}.vcl.erb",
             vcl_config      => $vcl_config,
-            cache_route     => $cache_route,
             backend_caches  => $backend_caches,
             vcl             => $vcl_name,
             is_separate_vcl => $vcl_name in $separate_vcl,
@@ -124,7 +118,6 @@ define varnish::instance(
             template_path  => "varnish/${vcl_name}.inc.vcl.erb",
             notify         => Exec["load-new-vcl-file${instancesuffix}"],
             vcl_config     => $vcl_config,
-            cache_route    => $cache_route,
             backend_caches => $backend_caches,
         }
 
@@ -133,7 +126,6 @@ define varnish::instance(
             varnish_testing => true,
             template_path   => "varnish/${vcl_name}.inc.vcl.erb",
             vcl_config      => $vcl_config,
-            cache_route     => $cache_route,
             backend_caches  => $backend_caches,
         }
     }

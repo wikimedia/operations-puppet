@@ -2,7 +2,6 @@ define varnish::wikimedia_vcl(
     $varnish_testing = false,
     $template_path = '',
     $vcl_config = {},
-    $cache_route = '',
     $backend_caches = {},
     $vcl = '',
     $inst = '',
