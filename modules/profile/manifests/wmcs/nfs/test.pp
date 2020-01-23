@@ -77,19 +77,19 @@ class profile::wmcs::nfs::test(
         'test'   => {
             port       => '7790',
             device     => '/dev/drbd1',
-            disk       => '/dev/misc/test',
+            disk       => '/dev/vd/test',
             mount_path => '/srv/test',
         },
         'tools'  => {
             port       => '7791',
             device     => '/dev/drbd4',
-            disk       => '/dev/tools/tools-project',
+            disk       => '/dev/vd/tools-project',
             mount_path => '/srv/tools',
         },
         'misc' => {
             port       => '7792',
             device     => '/dev/drbd3',
-            disk       => '/dev/misc/misc-project',
+            disk       => '/dev/vd/misc-project',
             mount_path => '/srv/misc',
         },
     }
@@ -140,29 +140,5 @@ class profile::wmcs::nfs::test(
         mode   => '0644',
         owner  => 'root',
         group  => 'root',
-    }
-
-    if($drbd_role == 'primary') {
-        class { 'profile::prometheus::node_directory_size':
-            directory_size_paths => {
-                'misc_home'     => { 'path' => '/exp/project/*/home', 'filter' => '*/tools/*' },
-                'misc_project'  => { 'path' => '/exp/project/*/project', 'filter' => '*/tools/*' },
-                'tools_home'    => { 'path' => '/exp/project/tools/home/*' },
-                'tools_project' => { 'path' => '/exp/project/tools/project/*' },
-                'paws'          => { 'path' => '/exp/project/tools/project/paws/userhomes/*' },
-            },
-        }
-    }
-
-    if($drbd_role != 'primary') {
-        cron { 'logcleanup':
-            ensure      => absent,
-            environment => 'MAILTO=labs-admin@lists.wikimedia.org',
-            command     => '/usr/local/sbin/logcleanup --config /etc/logcleanup-config.yaml',
-            user        => 'root',
-            minute      => '0',
-            hour        => '14',
-            require     => [File['/usr/local/sbin/logcleanup'], File['/etc/logcleanup-config.yaml']],
-        }
     }
 }
