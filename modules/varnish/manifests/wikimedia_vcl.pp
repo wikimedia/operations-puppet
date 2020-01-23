@@ -7,8 +7,6 @@ define varnish::wikimedia_vcl(
     $vcl = '',
     $inst = '',
     $generate_extra_vcl = false,
-    $app_directors={},
-    $app_def_be_opts={},
     $is_separate_vcl=false,
     $wikimedia_nets=[],
     $wikimedia_trust=[],

@@ -66,54 +66,22 @@ probe varnish {
 }
 
 <%
-# backend_caches and app_directors (two different kinds of backend!)
-# refactoring here is a W-I-P
-#
 # Expected data format:
 # @backend_caches = { # always defined
-#     'cache_eqiad' => {
-#         'dc'       => 'eqiad',
-#         'service'  => 'foo',
-#         'backends' => [ "backend1", "backend2" ], # required: array
+#     'cache_local' => {
+#         'dc'       => 'esams',
+#         'backends' => [ "cp3050.esams.wmnet", "cp3052.esams.wmnet", ... ],
 #         'be_opts'  => { # every option is required!
-#             'port' = 80,
+#             'port' = 3128,
 #             'connect_timeout' = '2s',
 #             'first_byte_timeout' = '4s',
 #             'between_bytes_timeout' = '3s',
 #             'max_connections' = 100, # per-backend!
+#             'probe' = 'varnish',
 #         },
 #     },
 # }
 #
-#
-# @app_def_be_opts = { # exactly these 5 options supported/required
-#     'port' = 80,
-#     'connect_timeout' = '2s',
-#     'first_byte_timeout' = '4s',
-#     'between_bytes_timeout' = '3s',
-#     'max_connections' = 100, # per-backend!
-# }
-# @app_directors = { # not always defined (e.g. frontends, for now)
-#     'foo' => {
-#         'backends' => {
-#             # At least one core DC must be defined here
-#             # If more than one DC, service is active:active
-#             'eqiad' => 'foo.svc.eqiad.wmnet',
-#             'codfw' => 'foo.svc.codfw.wmnet',
-#         },
-#         'be_opts' => { # optional overrides of app_def_be_opts
-#             'port' = 80,
-#             'connect_timeout' = '2s',
-#             'first_byte_timeout' = '4s',
-#             'between_bytes_timeout' = '3s',
-#             'max_connections' = 100, # per-backend!
-#         },
-#         'probe'   => { # optional probe
-#             'url'     => '/piwik.php',
-#             'timeout' => '3s',
-#         },
-#     },
-# }
 #
 # Note that backend hosts defined by more than one director will take their
 # options from the first director to define them!  We could fix this by putting
@@ -152,38 +120,6 @@ backend <%= name %> {
 <% end # backend loop -%>
 <% end # director loop -%>
 
-# Generated list of applayer backend hosts for director consumption
-
-<%
-apphost_seen = {}
-@app_directors.keys.sort.each do |director_name|
-	director = @app_directors[director_name]
-	be_opts = @app_def_be_opts.merge(director['be_opts'] || {})
-        if director['backends'].key?(@site)
-		backend = director['backends'][@site]
-		next if apphost_seen.key?(backend)
-		apphost_seen[backend] = 1
-		name = 'be_' + backend.gsub(/[-.]/, '_')
--%>
-
-backend <%= name %> {
-	.host = "<%= backend %>";
-	.port = "<%= be_opts['port'] %>";
-	.connect_timeout = <%= be_opts['connect_timeout'] %>;
-	.first_byte_timeout = <%= be_opts['first_byte_timeout'] %>;
-	.between_bytes_timeout = <%= be_opts['between_bytes_timeout'] %>;
-	.max_connections = <%= be_opts['max_connections'] %>;
-	<%- if director.key?('probe') -%>
-	.probe = {
-		.url = "<%= director['probe']['url'] %>";
-		.timeout = <%= director['probe']['timeout'] %>;
-	}
-	<%- end -%>
-}
-
-<% end # @site if-condition -%>
-<% end # app_directors loop -%>
-
 <% end # !varnish_testing -%>
 
 sub wm_common_directors_init {
@@ -212,23 +148,6 @@ include "directors.<%= @inst %>.vcl";
 <% end #director loop -%>
 
 <% end #dynamic_backend_caches -%>
-
-<%
-@app_directors.keys.sort.each do |director_name|
-        if @app_directors[director_name]['backends'].key?(@site)
-		backend = @app_directors[director_name]['backends'][@site]
-		if @varnish_testing
-			name = "vtc_backend";
-		else
-			name = 'be_' + backend.gsub(/[-.]/, '_')
-		end
--%>
-	new <%= director_name %> = directors.random();
-	<%= director_name %>.add_backend(<%= name %>, 100);
-
-<% end # @site if-condition -%>
-<% end # app_directors loop -%>
-
 } # end wm_common_directors_init
 
 sub wm_common_domains_init {

@@ -7,8 +7,6 @@ define varnish::instance(
     $vcl = '',
     $storage='-s malloc,1G',
     $jemalloc_conf=undef,
-    $app_directors={},
-    $app_def_be_opts={},
     $cache_route='',
     $backend_caches={},
     $extra_vcl = [],
@@ -78,8 +76,6 @@ define varnish::instance(
             cache_route     => $cache_route,
             backend_caches  => $backend_caches,
             inst            => $inst,
-            app_directors   => $app_directors,
-            app_def_be_opts => $app_def_be_opts,
             is_separate_vcl => $vcl_name in $separate_vcl,
             wikimedia_nets  => $wikimedia_nets,
             wikimedia_trust => $wikimedia_trust,
@@ -92,8 +88,6 @@ define varnish::instance(
             cache_route     => $cache_route,
             backend_caches  => $backend_caches,
             vcl             => $vcl_name,
-            app_directors   => $app_directors,
-            app_def_be_opts => $app_def_be_opts,
             is_separate_vcl => $vcl_name in $separate_vcl,
         }
 
@@ -110,8 +104,6 @@ define varnish::instance(
             cache_route     => $cache_route,
             backend_caches  => $backend_caches,
             inst            => $inst,
-            app_directors   => $app_directors,
-            app_def_be_opts => $app_def_be_opts,
             is_separate_vcl => $vcl_name in $separate_vcl,
             wikimedia_nets  => $wikimedia_nets,
             wikimedia_trust => $wikimedia_trust,
@@ -125,8 +117,6 @@ define varnish::instance(
             cache_route     => $cache_route,
             backend_caches  => $backend_caches,
             vcl             => $vcl_name,
-            app_directors   => $app_directors,
-            app_def_be_opts => $app_def_be_opts,
             is_separate_vcl => $vcl_name in $separate_vcl,
         }
 
