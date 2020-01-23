@@ -181,10 +181,10 @@ eqiad:
     cp1088.eqiad.wmnet: [varnish-fe, ats-be, ats-tls]
     cp1090.eqiad.wmnet: [varnish-fe, ats-be, ats-tls]
   scb:
-    scb1001.eqiad.wmnet: [mobileapps, graphoid, apertium, eventstreams, "recommendation-api"]
-    scb1002.eqiad.wmnet: [mobileapps, graphoid, apertium, eventstreams, "recommendation-api"]
-    scb1003.eqiad.wmnet: [mobileapps, graphoid, apertium, eventstreams, "recommendation-api"]
-    scb1004.eqiad.wmnet: [mobileapps, graphoid, apertium, eventstreams, "recommendation-api"]
+    scb1001.eqiad.wmnet: [mobileapps, graphoid, apertium, "recommendation-api"]
+    scb1002.eqiad.wmnet: [mobileapps, graphoid, apertium, "recommendation-api"]
+    scb1003.eqiad.wmnet: [mobileapps, graphoid, apertium, "recommendation-api"]
+    scb1004.eqiad.wmnet: [mobileapps, graphoid, apertium, "recommendation-api"]
     # TODO: This is wrong, but is on purpose right now. We want to be able to
     # gradually increase mathoid traffic sent to kubernetes and we currently
     # don't support a service being provided by >1 clusters, so reuse scb for now
