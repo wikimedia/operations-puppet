@@ -333,7 +333,8 @@ def phabricator_task_update(phab_client, task_id, message):
     message     -- the message to add
     """
     try:
-        phab_client.maniphest.update(id=task_id[1:], comments=message)
+        phab_client.maniphest.edit(
+            objectIdentifier=task_id, transactions=[{'type': 'comment', 'value': message}])
         logger.info("Updated Phabricator task '{id}'".format(id=task_id))
     except Exception:
         logger.exception("Unable to update Phabricator task '{id}'".format(
