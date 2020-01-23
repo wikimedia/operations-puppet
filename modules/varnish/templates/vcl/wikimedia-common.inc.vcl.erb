@@ -124,7 +124,7 @@ backend <%= name %> {
 
 sub wm_common_directors_init {
 <% if @dynamic_backend_caches -%>
-include "directors.<%= @inst %>.vcl";
+include "directors.frontend.vcl";
 <% else -%>
 <% @backend_caches.keys.sort.each do |director_name| -%>
 	new <%= director_name %> = directors.shard();
@@ -300,7 +300,7 @@ sub wm_common_pass {
 sub wm_common_synth {
 	if (resp.reason == "healthcheck") {
 		set resp.reason = "OK";
-		synthetic("Varnish <%= @inst %> running on <%= @hostname %> is up");
+		synthetic("Varnish frontend running on <%= @hostname %> is up");
 	}
 }
 

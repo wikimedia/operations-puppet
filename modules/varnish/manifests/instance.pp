@@ -42,20 +42,18 @@ define varnish::instance(
 
     # Write the dynamic backend caches configuration, if we need it
     if $instance_name == '' {
-        $inst = 'backend'
         $runtime_parameters = $::varnish::common::be_runtime_params
     } else {
-        $inst = $instance_name
         $runtime_parameters = $::varnish::common::fe_runtime_params
     }
 
     # Raise an icinga critical if the Varnish child process has been started
     # more than once; that means it has died unexpectedly. If the metric has
     # value 1, it means that everything is fine.
-    $prometheus_labels = "instance=~\"${::hostname}:.*\",layer=\"${inst}\""
+    $prometheus_labels = "instance=~\"${::hostname}:.*\",layer=\"frontend\""
 
-    monitoring::check_prometheus { "varnish-${inst}-check-child-start":
-        description     => "Varnish ${inst} child restarted",
+    monitoring::check_prometheus { 'varnish-frontend-check-child-start':
+        description     => 'Varnish frontend child restarted',
         dashboard_links => ["https://grafana.wikimedia.org/dashboard/db/varnish-machine-stats?panelId=66&fullscreen&orgId=1&var-server=${::hostname}&var-datasource=${::site} prometheus/ops"],
         query           => "scalar(varnish_mgt_child_start{${prometheus_labels}})",
         method          => 'ge',
@@ -72,7 +70,6 @@ define varnish::instance(
             template_path   => "${module_name}/vcl/wikimedia-common.inc.vcl.erb",
             vcl_config      => $vcl_config,
             backend_caches  => $backend_caches,
-            inst            => $inst,
             is_separate_vcl => $vcl_name in $separate_vcl,
             wikimedia_nets  => $wikimedia_nets,
             wikimedia_trust => $wikimedia_trust,
@@ -98,7 +95,6 @@ define varnish::instance(
             template_path   => "${module_name}/vcl/wikimedia-common.inc.vcl.erb",
             vcl_config      => $vcl_config,
             backend_caches  => $backend_caches,
-            inst            => $inst,
             is_separate_vcl => $vcl_name in $separate_vcl,
             wikimedia_nets  => $wikimedia_nets,
             wikimedia_trust => $wikimedia_trust,

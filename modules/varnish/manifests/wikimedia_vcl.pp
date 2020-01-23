@@ -4,7 +4,6 @@ define varnish::wikimedia_vcl(
     $vcl_config = {},
     $backend_caches = {},
     $vcl = '',
-    $inst = '',
     $generate_extra_vcl = false,
     $is_separate_vcl=false,
     $wikimedia_nets=[],
