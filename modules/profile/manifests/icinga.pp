@@ -77,6 +77,7 @@ class profile::icinga(
     class { 'icinga::monitor::reading_web': }
     class { 'icinga::monitor::traffic': }
     class { 'icinga::monitor::gerrit': }
+    class { 'icinga::monitor::librenms': }
 
     # check planet for cert expiration and regular content updates
     # warn/crit = hours before content is considered stale
