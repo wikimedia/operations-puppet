@@ -54,6 +54,12 @@ profile::trafficserver::backend::mapping_rules:
       target: ws://etherpad.wikimedia.org
       replacement: wss://etherpad1001.eqiad.wmnet:7443
     - type: map
+      target: http://etherpad-new.wikimedia.org
+      replacement: https://etherpad1002.eqiad.wmnet:7443
+    - type: map
+      target: ws://etherpad-new.wikimedia.org
+      replacement: wss://etherpad1002.eqiad.wmnet:7443
+    - type: map
       target: http://gerrit.wmfusercontent.org
       replacement: https://gerrit.wikimedia.org
     - type: map
