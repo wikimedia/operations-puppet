@@ -22,7 +22,7 @@ class profile::netbox::automation (
     $ssl_settings = ssl_ciphersuite('apache', 'strong', true)
 
     # Create automation git repositories
-    $repo_path = '/srv/automation'
+    $repo_path = '/srv/netbox-exports'
     $repos = ['dns']
 
     $repos.each |String $repo| {
