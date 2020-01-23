@@ -1320,7 +1320,6 @@ host cp4031 {
 host cp4032 {
     hardware ethernet F4:E9:D4:BA:56:90;
     fixed-address cp4032.ulsfo.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host cp5001 {
