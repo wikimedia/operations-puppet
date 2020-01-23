@@ -48,3 +48,4 @@ profile::lvs::realserver::pools:
   termbox: {}
   wikifeeds: {}
   echostore: {}
+  eventstreams: {}

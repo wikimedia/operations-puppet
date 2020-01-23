@@ -299,6 +299,12 @@ profile::kubernetes::deployment_server::services:
     mode: '0640'
     namespace: eventgate-logging-external
     owner: mwdeploy
+  eventstreams:
+    username: eventstreams
+    group: wikidev
+    namespace: eventstreams
+    mode: '0640'
+    owner: mwdeploy
 
 # Specified in the private repo in this form
 #profile::kubernetes::deployment_server::tokens:
@@ -331,6 +337,8 @@ profile::kubernetes::deployment_server::services:
 #  echostore:
 #    token: dummy
 #  eventgate-logging-external:
+#    token: dummy
+#  eventstreams:
 #    token: dummy
 #
 
