@@ -25,31 +25,49 @@ if !defined('$realm') {
 }
 
 if $realm == 'labs' {
-    # Pull the project name from the certname.
-    # Labs certs are <hostname>.<projname>.<site>.wmflabs
+    # Pull the project name from the certname. CloudVPS VM certs can be:
+    #  * <hostname>.<projname>.<site>.wmflabs
+    #  * <hostname>.<projname>.<deployment>.wikimedia.cloud
+    #
+    # See following page for additional context:
+    # https://wikitech.wikimedia.org/wiki/Wikimedia_Cloud_Services_team/EnhancementProposals/DNS_domain_usage#Resolution
     $pieces = split($trusted['certname'], '[.]')
 
-    if $pieces[3] == 'wmflabs' {
+    if size($pieces) == 4 {
+        # current / legacy FQDN.
+        # This whole branch will go away eventually
+        if $pieces[3] != 'wmflabs' {
+            fail("Badly-formed puppet certname. Unknown TLD in ${trusted['certname']}")
+        }
         if $pieces[2] != $site {
-            fail("Incorrect site in certname.  Should be ${site} but is ${pieces[2]}")
+            fail("Incorrect site in certname. Should be ${site} but is ${pieces[2]}")
         }
-    } elsif $pieces[3] == 'cloud' {
-        if $pieces[2] != 'codfw1dev' and $pieces[2] != 'wikimedia' {
-            fail("Incorrect site in certname.  Should be wikimedia but is ${pieces[2]}")
+        $labsproject = $pieces[1]
+        $wmcs_deployment = 'eqiad1'
+    } elsif size($pieces) == 5 {
+        # new FQDN
+        if $pieces[4] != 'cloud' {
+            fail("Expected FQDN to end in '.cloud'. Got ${trusted['certname']}")
         }
+        if $pieces[3] != 'wikimedia' {
+            fail("Expected FQDN to end in '.wikimedia.cloud'. Got ${trusted['certname']}")
+        }
+        $labsproject = $pieces[1] # $wmcs_project may make more sense
+        $wmcs_deployment = $pieces[2]
     } else {
-        fail("Badly-formed puppet certname. Unknown tld in ${trusted['certname']}")
+        fail("Unknown puppet certname FQDN: ${trusted['certname']}")
     }
+
+    # some final checks before we move on
     if $pieces[0] != $::hostname {
         fail("Cert hostname ${pieces[0]} does not match reported hostname ${::hostname}")
     }
-
-    $labsproject = $pieces[1]
-
     if $::labsproject == undef {
         fail('Failed to determine $::labsproject')
     }
-
+    if $::wmcs_deployment == undef {
+        fail('Failed to determine $::wmcs_deployment')
+    }
     if $::projectgroup == undef {
         $projectgroup = "project-${labsproject}"
     }
