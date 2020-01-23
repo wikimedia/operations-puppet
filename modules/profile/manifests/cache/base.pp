@@ -9,7 +9,6 @@ class profile::cache::base(
     $cache_cluster = hiera('cache::cluster'),
     $statsd_host = hiera('statsd'),
     $packages_version = hiera('profile::cache::base::packages_version', 'installed'),
-    $varnish_version = hiera('profile::cache::base::varnish_version', 5),
     $purge_host_regex = hiera('profile::cache::base::purge_host_regex', ''),
     $purge_multicasts = hiera('profile::cache::base::purge_multicasts', ['239.128.0.112']),
     $purge_varnishes = hiera('profile::cache::base::purge_varnishes', ['127.0.0.1:3128', '127.0.0.1:3127']),
@@ -65,11 +64,9 @@ class profile::cache::base(
     # Basic varnish classes
     class { '::varnish::packages':
         version         => $packages_version,
-        varnish_version => $varnish_version,
     }
 
     class { '::varnish::common':
-        varnish_version            => $varnish_version,
         log_slow_request_threshold => $log_slow_request_threshold,
         logstash_host              => $logstash_host,
         logstash_json_lines_port   => $logstash_json_lines_port,

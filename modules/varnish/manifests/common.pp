@@ -1,5 +1,4 @@
 class varnish::common(
-    $varnish_version=5,
     $log_slow_request_threshold='60.0',
     $logstash_host=undef,
     $logstash_json_lines_port=undef,

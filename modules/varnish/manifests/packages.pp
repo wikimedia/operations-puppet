@@ -1,4 +1,4 @@
-class varnish::packages($version='installed', $varnish_version=5) {
+class varnish::packages($version='installed') {
     package { [
         'varnish',
         'varnish-dbg',
