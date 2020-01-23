@@ -40,12 +40,6 @@ define varnish::instance(
         before             => Service["varnish${instancesuffix}"],
     }
 
-    # Write the dynamic backend caches configuration, if we need it
-    if $instance_name == '' {
-        $runtime_parameters = $::varnish::common::be_runtime_params
-    } else {
-        $runtime_parameters = $::varnish::common::fe_runtime_params
-    }
 
     # Raise an icinga critical if the Varnish child process has been started
     # more than once; that means it has died unexpectedly. If the metric has
@@ -63,7 +57,7 @@ define varnish::instance(
         notes_link      => 'https://wikitech.wikimedia.org/wiki/Varnish',
     }
 
-    $runtime_params = join(prefix($runtime_parameters, '-p '), ' ')
+    $runtime_params = join(prefix($::varnish::common::fe_runtime_params, '-p '), ' ')
 
     array_concat([$vcl], $separate_vcl).each |String $vcl_name| {
         varnish::wikimedia_vcl { "/etc/varnish/wikimedia-common_${vcl_name}.inc.vcl":
