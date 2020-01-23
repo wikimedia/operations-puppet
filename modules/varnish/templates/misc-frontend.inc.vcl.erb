@@ -1,5 +1,3 @@
-include "misc-common.inc.vcl";
-
 sub cluster_fe_vcl_switch {
 // XXX testing whether this works at all - note this duplicates similar code in text-frontend, as apparently request data is re-set on VCL switching.  If this works, next week we'll want to factor this out a little differently...
 	// Rewrite sitemap requests for itwiki into the sitemaps backend.
@@ -38,7 +36,25 @@ sub cluster_fe_recv {
 }
 
 sub cluster_fe_recv_tail {
-    call misc_recv_pass;
+    if (req.method != "GET" && req.method != "HEAD") {
+        // We only deal with GET and HEAD
+        return (pass);
+    }
+
+    // don't cache authorized requests
+    if (req.http.Authorization) {
+        return (pass);
+    }
+
+    // Don't cache cookie requests. Cache requests with google analytics cookies and our
+    // own global WMF-Last-Access, WMF-Last-Access-Global GeoIP, and CP cookies.
+    set req.http.NC-Cookie = regsuball(req.http.Cookie, "(?i)(^|;\s*)(_ga[-_a-z]*|_utm[-_a-z]*|_pk_(id|ses)\.[^=]*|WMF-Last-Access(-Global)?|GeoIP|CP)=[^;]*", "");
+    set req.http.NC-Cookie = regsub(req.http.NC-Cookie, "^;?\s*", "");
+    if (req.http.NC-Cookie != "") {
+        unset req.http.NC-Cookie;
+        return (pass);
+    }
+    unset req.http.NC-Cookie;
 }
 
 sub cluster_fe_hash { }
