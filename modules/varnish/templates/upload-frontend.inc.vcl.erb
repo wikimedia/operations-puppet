@@ -1,5 +1,32 @@
-// Varnish VCL include file for upload frontends
-include "upload-common.inc.vcl";
+include "normalize_path.inc.vcl";
+
+/******************************************************************************
+ * upload.wikimedia.org:
+ * MW seems to use PHP's rawurlencode() directly when translating from
+ * MediaWiki File titles to storage URLs, without additional exceptions.
+ * Therefore, all 16 characters from the Customizable Set are all changed to
+ * zero-values here (force-encode) to obtain complete normalization:
+ *****************************************************************************/
+
+sub normalize_upload_path { C{
+    static const size_t upload_decoder_ring[256] = {
+      // 0x00-0x1F (all unprintable)
+        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      //  ! " # $ % & ' ( ) * + , - . / 0 1 2 3 4 5 6 7 8 9 : ; < = > ?
+        0,0,0,2,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,2,
+      //@ A B C D E F G H I J K L M N O P Q R S T U V W X Y Z [ \ ] ^ _
+        0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,1,
+      //` a b c d e f g h i j k l m n o p q r s t u v w x y z { | } ~ <DEL>
+        0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,1,0,
+      // 0x80-0xFF (all unprintable)
+        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+    };
+
+    normalize_path_encoding(ctx, upload_decoder_ring);
+}C }
 
 // For: Temporary experiment in reducing facebookexternalhit / facebookexternalua traffic to cache_upload
 acl fb_nets {
@@ -26,7 +53,9 @@ sub cluster_fe_vcl_switch { }
 
 sub cluster_fe_recv_pre_purge {
 	// Normalize paths before purging
-	call upload_normalize_path;
+	if (req.http.host ~ "^upload\.wikimedia\.org$") {
+		call normalize_upload_path;
+	}
 }
 
 sub cluster_fe_recv {
@@ -57,7 +86,16 @@ sub cluster_fe_recv {
 		}
 	}
 
-	call upload_common_recv;
+	unset req.http.X-Range;
+
+	if (req.http.host != "<%= @vcl_config.fetch('upload_domain') %>"
+	    && req.http.host != "<%= @vcl_config.fetch('maps_domain') %>") {
+		return (synth(404, "Requested domainname does not exist on this server"));
+	}
+
+	if (req.http.Range) {
+		set req.hash_ignore_busy = true;
+	}
 
 	if (req.http.host == "<%= @vcl_config.fetch('upload_domain') %>") {
 		// Look for a "download" request parameter
@@ -169,7 +207,14 @@ sub cluster_fe_ratelimit {
 
 sub cluster_fe_miss {
 	call cluster_fe_ratelimit;
-	call upload_common_miss;
+
+	// Convert range requests into pass
+	if (req.http.Range) {
+		// Varnish strips the Range header before copying req into bereq. Save it into
+		// a header and restore it in cluster_fe_backend_fetch
+		set req.http.X-Range = req.http.Range;
+		return (pass);
+	}
 }
 
 sub cluster_fe_pass {
@@ -177,7 +222,10 @@ sub cluster_fe_pass {
 }
 
 sub cluster_fe_backend_fetch {
-	call upload_common_set_range;
+	if (bereq.http.X-Range) {
+		set bereq.http.Range = bereq.http.X-Range;
+		unset bereq.http.X-Range;
+	}
 }
 
 sub cluster_fe_backend_response_early { }
@@ -224,12 +272,22 @@ sub cluster_fe_backend_response {
 	}
 <% end -%>
 
-	call upload_common_backend_response;
+	// Debugging T144257. Don't cache 200 responses with CL:0.
+	if (beresp.http.Content-Length == "0" && beresp.status == 200) {
+		// HFM
+		set beresp.ttl = 10m;
+		set beresp.grace = 0s;
+		set beresp.keep = 0s;
+		set beresp.uncacheable = true;
+	}
 	return (deliver);
 }
 
 sub cluster_fe_deliver {
-	call upload_common_deliver;
+	if (resp.http.X-Content-Range) {
+		set resp.http.Content-Range = resp.http.X-Content-Range;
+		unset resp.http.X-Content-Range;
+	}
 
 	// The upload cluster does not serve page views or authenticated requests, so keep
 	// it cookie-free to avoid pointless network traffic and to improve cacheability.
