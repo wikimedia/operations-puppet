@@ -170,10 +170,6 @@ class profile::backup::filesets() {
                     ]
     }
 
-    bacula::director::fileset { 'tor':
-        includes => [ '/var/lib/tor/', '/var/lib/tor-instances/' ]
-    }
-
     bacula::director::fileset { 'arclamp-application-data':
         includes => [ '/srv/xenon/' ]
     }
