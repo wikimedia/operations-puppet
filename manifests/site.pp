@@ -955,11 +955,6 @@ node 'neon.eqiad.wmnet' {
     role(kubernetes::staging::master)
 }
 
-# Etherpad (virtual machine)
-node 'etherpad1001.eqiad.wmnet' {
-    role(etherpad)
-}
-
 # Etherpad on buster (virtual machine)
 node 'etherpad1002.eqiad.wmnet' {
     role(etherpad)
