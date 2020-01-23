@@ -16,7 +16,7 @@ class mirrors::openstack {
     systemd::timer::job { 'update-openstack-mirror':
         ensure              => present,
         description         => 'Update mirror for openstack repository',
-        command             => "${rsync_cmd} 1>/dev/null 2>/dev/null",
+        command             => $rsync_cmd,
         interval            => {
             'start'    => 'OnCalendar',
             'interval' => '*-*-* 08:00:00', # daily at 08:00 UTC as requested
