@@ -3,6 +3,7 @@ define varnish::instance(
     $vcl_config,
     $ports,
     $admin_port,
+    $runtime_params,
     $instance_name='',
     $vcl = '',
     $storage='-s malloc,1G',
@@ -56,8 +57,6 @@ define varnish::instance(
         prometheus_url  => "http://prometheus.svc.${::site}.wmnet/ops",
         notes_link      => 'https://wikitech.wikimedia.org/wiki/Varnish',
     }
-
-    $runtime_params = join(prefix($::varnish::common::fe_runtime_params, '-p '), ' ')
 
     array_concat([$vcl], $separate_vcl).each |String $vcl_name| {
         varnish::wikimedia_vcl { "/etc/varnish/wikimedia-common_${vcl_name}.inc.vcl":

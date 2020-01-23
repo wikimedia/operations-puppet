@@ -1,6 +1,5 @@
 class varnish::common(
     $varnish_version=5,
-    $fe_runtime_params=[],
     $log_slow_request_threshold='60.0',
     $logstash_host=undef,
     $logstash_json_lines_port=undef,

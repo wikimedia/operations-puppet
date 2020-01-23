@@ -13,7 +13,6 @@ class profile::cache::base(
     $purge_host_regex = hiera('profile::cache::base::purge_host_regex', ''),
     $purge_multicasts = hiera('profile::cache::base::purge_multicasts', ['239.128.0.112']),
     $purge_varnishes = hiera('profile::cache::base::purge_varnishes', ['127.0.0.1:3128', '127.0.0.1:3127']),
-    $fe_runtime_params = hiera('profile::cache::base::fe_runtime_params', []),
     $logstash_host = hiera('logstash_host', undef),
     $logstash_syslog_port = hiera('logstash_syslog_port', undef),
     $logstash_json_lines_port = hiera('logstash_json_lines_port', undef),
@@ -71,7 +70,6 @@ class profile::cache::base(
 
     class { '::varnish::common':
         varnish_version            => $varnish_version,
-        fe_runtime_params          => $fe_runtime_params,
         log_slow_request_threshold => $log_slow_request_threshold,
         logstash_host              => $logstash_host,
         logstash_json_lines_port   => $logstash_json_lines_port,
