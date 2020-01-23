@@ -2272,7 +2272,7 @@ service::catalog:
       class: high-traffic1
       conftool:
         cluster: cache_text
-        service: nginx
+        service: ats-tls
       depool_threshold: '.5'
       enabled: true
       monitors:
@@ -2394,7 +2394,7 @@ service::catalog:
       class: high-traffic2
       conftool:
         cluster: cache_upload
-        service: nginx
+        service: ats-tls
       depool_threshold: '.5'
       enabled: true
       monitors:

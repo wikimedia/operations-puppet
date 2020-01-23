@@ -24,7 +24,7 @@ class profile::trafficserver::tls (
     Hash[String, Trafficserver::TLS_certificate] $available_unified_certs=hiera('profile::trafficserver::tls::available_unified_certs'),
     String $public_tls_unified_cert_vendor=hiera('public_tls_unified_cert_vendor'),
     Optional[Hash[String, Trafficserver::TLS_certificate]] $extra_certs=hiera('profile::trafficserver::tls::extra_certs', undef),
-    String $conftool_service=hiera('profile::trafficserver::tls::conftool_service', 'nginx'), # TODO: Rename it to ats-tls
+    String $conftool_service=hiera('profile::trafficserver::tls::conftool_service', 'ats-tls'),
 ){
     $errorpage = {
         title       => 'Wikimedia Error',
