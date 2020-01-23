@@ -1118,6 +1118,7 @@ host cp4025 {
 host cp4026 {
     hardware ethernet F4:E9:D4:BA:5B:20;
     fixed-address cp4026.ulsfo.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host cp4027 {
