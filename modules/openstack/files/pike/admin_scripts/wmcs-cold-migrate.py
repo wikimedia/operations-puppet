@@ -10,7 +10,6 @@
 
 import argparse
 import os
-import requests
 import subprocess
 import time
 import logging
@@ -51,36 +50,23 @@ class NovaInstance(object):
 
     # Returns True if the status changed, otherwise False
     def activate_image(self, image_id, deactivate=False):
-        token = self.session.get_token()
-
-        glanceendpoint = self.session.get_endpoint(service_type='image')
-        gclient = glanceclient.Client('1', glanceendpoint, token=token)
+        gclient = glanceclient.Client('2', session=session)
         image = gclient.images.get(image_id)
+        changed = False
 
-        # Because the glance devs can't be bothered to update their python
-        #  bindings when new features are added, we have to do this the
-        #  old-fasioned way.
         logging.info("Needed image is {}".format(image.status))
         if deactivate:
-            action = 'deactivate'
-            if image.status == 'deactivated':
-                # Nothing to do
-                return False
-            logging.info("deactivating image {}".format(image_id))
-        else:
-            action = 'reactivate'
             if image.status == 'active':
-                # Nothing to do
-                return False
-            logging.info("activating image {}".format(image_id))
-
-        url = "%s/v2/images/%s/actions/%s" % (glanceendpoint, image_id, action)
-
-        resp = requests.post(url, headers={'X-Auth-Token': token})
-        if resp:
-            return True
+                logging.info("deactivating image {}".format(image_id))
+                gclient.images.deactivate(image_id)
+                changed = True
         else:
-            raise Exception("Image manipulation got status: " + resp.status_code)
+            if image.status == 'deactivated':
+                logging.info("activating image {}".format(image_id))
+                gclient.images.reactivate(image_id)
+                changed = True
+
+        return changed
 
     def refresh_instance(self):
         self.instance = self.novaclient.servers.get(self.instance_id)
