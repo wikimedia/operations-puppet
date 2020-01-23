@@ -1,9 +1,5 @@
 varnishtest "Swizzling TTLs by up to 5% reduction if >=60s"
 
-# Using backend to test here, because frontend has randomized admission
-# probabilities which reduce ttl dramatically for hit-for-miss,
-# probabilistically sometimes causing this test to fail there.
-#
 # Also note x-swiz-ttl tests use a lower bound that's ~1s lower than the
 # expected range, because rarely varnish actually recalculates a
 # slightly-shorter ttl by the time it's read in vcl_deliver (e.g. for the 30s
@@ -40,10 +36,10 @@ varnish v1 -arg "-p vcl_path=${vcl_path} -p vcc_err_unref=false -p vcc_allow_inl
        .host = "${s1_addr}"; .port = "${s1_port}";
    }
 
-   include "${basepath}/usr/share/varnish/tests/wikimedia_misc-backend.vcl";
+   include "${basepath}/usr/share/varnish/tests/wikimedia_misc-frontend.vcl";
 }
 
-# Attach the "wikimedia_misc" label to wikimedia_misc-backend.vcl
+# Attach the "wikimedia_misc" label to wikimedia_misc-frontend.vcl
 varnish v1 -cli "vcl.label wikimedia_misc vcl1"
 
 varnish v1 -vcl {
@@ -59,41 +55,41 @@ varnish v1 -vcl {
         set resp.http.x-swiz-ttl = obj.ttl;
     }
 
-    include "${basepath}/usr/share/varnish/tests/wikimedia_text-backend.vcl";
+    include "${basepath}/usr/share/varnish/tests/wikimedia_text-frontend.vcl";
 } -start
 
 client c1 {
-    txreq -url "/30" -hdr "Host: en.wikipedia.org"
+    txreq -url "/30" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
     expect resp.http.x-orig-ttl == 30.000
     expect resp.http.x-swiz-ttl <= 30
     expect resp.http.x-swiz-ttl >= 29
 
-    txreq -url "/300" -hdr "Host: en.wikipedia.org"
+    txreq -url "/300" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
     expect resp.http.x-orig-ttl == 300.000
     expect resp.http.x-swiz-ttl <= 300
     expect resp.http.x-swiz-ttl >= 284
 
-    txreq -url "/3000" -hdr "Host: en.wikipedia.org"
+    txreq -url "/3000" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
     expect resp.http.x-orig-ttl == 3000.000
     expect resp.http.x-swiz-ttl <= 3000
     expect resp.http.x-swiz-ttl >= 2849
 
-    txreq -url "/30000" -hdr "Host: en.wikipedia.org"
+    txreq -url "/30000" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
     expect resp.http.x-orig-ttl == 30000.000
     expect resp.http.x-swiz-ttl <= 30000
     expect resp.http.x-swiz-ttl >= 28499
 
-    txreq -url "/300000" -hdr "Host: en.wikipedia.org"
+    txreq -url "/300000" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
     expect resp.http.x-orig-ttl == 300000.000
     expect resp.http.x-swiz-ttl <= 86400
     expect resp.http.x-swiz-ttl >= 82079
 
-    txreq -url "/3000000" -hdr "Host: en.wikipedia.org"
+    txreq -url "/3000000" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
     expect resp.http.x-orig-ttl == 3000000.000
     expect resp.http.x-swiz-ttl <= 86400
