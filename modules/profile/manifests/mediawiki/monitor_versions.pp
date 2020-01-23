@@ -1,0 +1,26 @@
+class profile::mediawiki::monitor_versions(
+  $deployment_host = lookup('deployment_server'),
+) {
+
+    require_package('python3-requests')
+
+    file { '/usr/local/lib/nagios/plugins/check_mw_versions':
+        source => 'puppet:///modules/mediawiki/monitor_versions/check_mw_versions.py',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+    }
+
+    nrpe::monitor_service { 'mw_wikiversion_difference':
+        ensure         => present,
+        description    => 'Ensure local MW versions match expected deployment',
+        nrpe_command   => "check_mw_versions -m ${deployment_host}",
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/Application_servers',
+        critical       => false,
+        check_interval => 5,
+        retry_interval => 5,
+        retries        => 3,
+        timeout        => 20,
+    }
+
+}
