@@ -156,6 +156,12 @@ host etherpad1001 {
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
 }
 
+host etherpad1002 {
+    hardware ethernet aa:00:00:70:0e:8b;
+    fixed-address etherpad1002.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
+}
+
 host failoid1001 {
     hardware ethernet aa:00:00:42:2c:99;
     fixed-address failoid1001.eqiad.wmnet;
