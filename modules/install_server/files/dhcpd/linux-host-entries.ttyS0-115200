@@ -6,127 +6,130 @@
 host acmechief1001 {
     hardware ethernet aa:00:00:e0:70:79;
     fixed-address acmechief1001.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host acmechief2001 {
     hardware ethernet aa:00:00:11:4e:70;
     fixed-address acmechief2001.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host acmechief-test1001 {
     hardware ethernet aa:00:00:43:e6:18;
     fixed-address acmechief-test1001.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host acmechief-test2001 {
     hardware ethernet aa:00:00:43:0c:cb;
     fixed-address acmechief-test2001.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host acrab {
     hardware ethernet aa:00:00:81:ee:df;
     fixed-address acrab.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host acrux {
     hardware ethernet aa:00:00:9f:ec:d4;
     fixed-address acrux.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host archiva1001 {
     hardware ethernet aa:00:00:ca:1f:fb;
     fixed-address archiva1001.wikimedia.org;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host analytics-tool1001 {
     hardware ethernet aa:00:00:ed:b1:fd;
     fixed-address analytics-tool1001.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host analytics-tool1004 {
     hardware ethernet aa:00:00:cc:a2:a4;
     fixed-address analytics-tool1004.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host an-tool1005 {
     hardware ethernet aa:00:00:ae:a1:8c;
     fixed-address an-tool1005.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host an-tool1006 {
     hardware ethernet aa:00:00:97:e8:24;
     fixed-address an-tool1006.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host an-tool1007 {
     hardware ethernet aa:00:00:7c:c5:b3;
     fixed-address an-tool1007.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host an-airflow1001 {
     hardware ethernet aa:00:00:97:85:12;
     fixed-address an-airflow1001.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host argon {
     hardware ethernet aa:00:00:fe:6b:df;
     fixed-address argon.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host boron {
     hardware ethernet aa:00:00:78:d4:48;
     fixed-address boron.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host bromine {
     hardware ethernet aa:00:00:f1:36:3a;
     fixed-address bromine.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host chlorine {
     hardware ethernet aa:00:00:37:a8:4d;
     fixed-address chlorine.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host dbmonitor1001 {
     hardware ethernet aa:00:00:d6:5c:05;
     fixed-address dbmonitor1001.wikimedia.org;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host dbmonitor2001 {
     hardware ethernet aa:00:00:de:d7:57;
     fixed-address dbmonitor2001.wikimedia.org;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host debmonitor1001 {
     hardware ethernet aa:00:00:99:e1:5d;
     fixed-address debmonitor1001.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host debmonitor2001 {
     hardware ethernet aa:00:00:7f:2e:e7;
     fixed-address debmonitor2001.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 # ganeti VM used for d-i testing
 host d-i-test {
     hardware ethernet aa:00:00:3b:60:cb;
     fixed-address d-i-test.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host doc1001 {
     hardware ethernet aa:00:00:d2:27:b3;
     fixed-address doc1001.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host etcd1001 {
@@ -156,13 +159,13 @@ host etherpad1001 {
 host failoid1001 {
     hardware ethernet aa:00:00:42:2c:99;
     fixed-address failoid1001.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
+
 }
 
 host failoid2001 {
     hardware ethernet aa:00:00:ab:64:ee;
     fixed-address failoid2001.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
+
 }
 
 host fermium {
@@ -174,30 +177,27 @@ host fermium {
 host gerrit1002 {
     hardware ethernet aa:00:00:15:60:57;
     fixed-address gerrit1002.wikimedia.org;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host grafana1001 {
     hardware ethernet aa:00:00:01:5b:3a;
     fixed-address grafana1001.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host grafana1002 {
     hardware ethernet aa:00:00:52:b7:27;
     fixed-address grafana1002.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host idp1001 {
     hardware ethernet aa:00:00:43:ae:c7;
     fixed-address idp1001.wikimedia.org;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host idp2001 {
     hardware ethernet aa:00:00:f6:e9:2b;
     fixed-address idp2001.wikimedia.org;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host install1002 {
@@ -219,11 +219,13 @@ host install2002 {
 host kafkamon1001 {
     hardware ethernet aa:00:00:ed:c5:11;
     fixed-address kafkamon1001.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host kafkamon2001 {
     hardware ethernet aa:00:00:ca:30:e0;
     fixed-address kafkamon2001.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host kraz {
@@ -235,19 +237,16 @@ host kraz {
 host kubetcd1004 {
     hardware ethernet aa:00:00:54:44:3a;
     fixed-address kubetcd1004.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host kubetcd1005 {
     hardware ethernet aa:00:00:1d:ea:60;
     fixed-address kubetcd1005.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host kubetcd1006 {
     hardware ethernet aa:00:00:40:42:16;
     fixed-address kubetcd1006.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host kubetcd2001 {
@@ -271,19 +270,16 @@ host kubetcd2003 {
 host kubetcd2004 {
     hardware ethernet aa:00:00:a7:c8:1f;
     fixed-address kubetcd2004.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host kubetcd2005 {
     hardware ethernet aa:00:00:34:e1:f3;
     fixed-address kubetcd2005.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host kubetcd2006 {
     hardware ethernet aa:00:00:98:00:b3;
     fixed-address kubetcd2006.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host kubestagetcd1001 {
@@ -307,142 +303,146 @@ host kubestagetcd1003 {
 host kubestagetcd1004 {
     hardware ethernet aa:00:00:75:c3:74;
     fixed-address kubestagetcd1004.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host kubestagetcd1005 {
     hardware ethernet aa:00:00:a1:4a:75;
     fixed-address kubestagetcd1005.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host kubestagetcd1006 {
     hardware ethernet aa:00:00:30:d0:54;
     fixed-address kubestagetcd1006.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host kubernetes1005 {
     hardware ethernet aa:00:00:46:b6:6f;
     fixed-address kubernetes1005.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host kubernetes1006 {
     hardware ethernet aa:00:00:08:91:88;
     fixed-address kubernetes1006.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host kubernetes2005 {
     hardware ethernet aa:00:00:e5:cc:53;
     fixed-address kubernetes2005.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host kubernetes2006 {
     hardware ethernet aa:00:00:81:03:e8;
     fixed-address kubernetes2006.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host ldap-corp1001.wikimedia.org {
     hardware ethernet aa:00:00:12:a2:94;
     fixed-address ldap-corp1001.wikimedia.org;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host ldap-corp2001.wikimedia.org {
     hardware ethernet aa:00:00:92:e4:22;
     fixed-address ldap-corp2001.wikimedia.org;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host ldap-replica2001.wikimedia.org {
     hardware ethernet aa:00:00:c9:cc:14;
     fixed-address ldap-replica2001.wikimedia.org;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host ldap-replica2002.wikimedia.org {
     hardware ethernet aa:00:00:e7:5d:40;
     fixed-address ldap-replica2002.wikimedia.org;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host ldap-eqiad-replica01.wikimedia.org {
     hardware ethernet aa:00:00:7f:6d:5b;
     fixed-address ldap-eqiad-replica01.wikimedia.org;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host ldap-eqiad-replica02.wikimedia.org {
     hardware ethernet aa:00:00:32:2c:7a;
     fixed-address ldap-eqiad-replica02.wikimedia.org;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host logstash1007 {
     hardware ethernet aa:00:00:83:d6:d4;
     fixed-address logstash1007.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host logstash1008 {
     hardware ethernet aa:00:00:dd:60:7b;
     fixed-address logstash1008.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host logstash1009 {
     hardware ethernet aa:00:00:bf:62:dc;
     fixed-address logstash1009.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host logstash1023 {
     hardware ethernet aa:00:00:1b:0f:aa;
     fixed-address logstash1023.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host logstash1024 {
     hardware ethernet aa:00:00:76:9a:51;
     fixed-address logstash1024.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host logstash1025 {
     hardware ethernet aa:00:00:7a:86:44;
     fixed-address logstash1025.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host logstash2004 {
     hardware ethernet aa:00:00:b8:ec:a0;
     fixed-address logstash2004.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host logstash2005 {
     hardware ethernet aa:00:00:9a:96:89;
     fixed-address logstash2005.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host logstash2006 {
     hardware ethernet aa:00:00:6b:b7:01;
     fixed-address logstash2006.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host logstash2023 {
     hardware ethernet aa:00:00:a9:b5:8c;
     fixed-address logstash2023.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host logstash2024 {
     hardware ethernet aa:00:00:5c:74:ac;
     fixed-address logstash2024.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host logstash2025 {
     hardware ethernet aa:00:00:b7:fe:53;
     fixed-address logstash2025.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host matomo1001 {
     hardware ethernet aa:00:00:eb:c3:90;
     fixed-address matomo1001.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host mendelevium {
@@ -454,180 +454,185 @@ host mendelevium {
 host miscweb1001 {
     hardware ethernet aa:00:00:bd:7e:44;
     fixed-address miscweb1001.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host miscweb2001 {
     hardware ethernet aa:00:00:4b:9d:24;
     fixed-address miscweb2001.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host moscovium {
     hardware ethernet aa:00:00:b5:db:29;
     fixed-address moscovium.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host mwdebug1001 {
     hardware ethernet aa:00:00:6e:80:dc;
     fixed-address mwdebug1001.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host mwdebug1002 {
     hardware ethernet aa:00:00:14:d6:e0;
     fixed-address mwdebug1002.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host mwdebug2001 {
     hardware ethernet aa:00:00:a4:ba:ce;
     fixed-address mwdebug2001.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host mwdebug2002 {
     hardware ethernet aa:00:00:ff:45:1e;
     fixed-address mwdebug2002.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host mx1001 {
     hardware ethernet aa:00:00:b2:f5:b7;
     fixed-address mx1001.wikimedia.org;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host mx2001 {
     hardware ethernet aa:00:00:d2:18:cf;
     fixed-address mx2001.wikimedia.org;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host ncredir1001 {
     hardware ethernet aa:00:00:a1:a7:44;
     fixed-address ncredir1001.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host ncredir1002 {
     hardware ethernet aa:00:00:5b:ac:65;
     fixed-address ncredir1002.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host ncredir2001 {
     hardware ethernet aa:00:00:8b:d5:4c;
     fixed-address ncredir2001.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host ncredir2002 {
     hardware ethernet aa:00:00:2e:96:d4;
     fixed-address ncredir2002.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host ncredir3001 {
     hardware ethernet aa:00:00:19:55:e5;
     fixed-address ncredir3001.esams.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host ncredir3002 {
     hardware ethernet aa:00:00:a6:55:cd;
     fixed-address ncredir3002.esams.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host ncredir4001 {
     hardware ethernet aa:00:00:39:c6:fc;
     fixed-address ncredir4001.ulsfo.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host ncredir4002 {
     hardware ethernet aa:00:00:df:1c:ab;
     fixed-address ncredir4002.ulsfo.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host ncredir5001 {
     hardware ethernet aa:00:00:6d:16:c7;
     fixed-address ncredir5001.eqsin.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host ncredir5002 {
     hardware ethernet aa:00:00:fa:c0:b0;
     fixed-address ncredir5002.eqsin.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host neon {
     hardware ethernet aa:00:00:7d:1a:57;
     fixed-address neon.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host netbox1001 {
    hardware ethernet aa:00:00:84:f1:9d;
    fixed-address netbox1001.wikimedia.org;
-   option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host netbox2001 {
    hardware ethernet aa:00:00:30:be:b1;
    fixed-address netbox2001.wikimedia.org;
-   option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host netboxdb1001 {
    hardware ethernet aa:00:00:6e:fd:09;
    fixed-address netboxdb1001.eqiad.wmnet;
-   option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host netboxdb2001 {
    hardware ethernet aa:00:00:cd:7d:3c;
    fixed-address netboxdb2001.codfw.wmnet;
-   option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host netflow1001 {
     hardware ethernet aa:00:00:3a:1d:c3;
     fixed-address netflow1001.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host netflow2001 {
     hardware ethernet aa:00:00:b4:c1:eb;
     fixed-address netflow2001.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host netflow3001 {
     hardware ethernet aa:00:00:f1:d3:9e;
     fixed-address netflow3001.esams.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host netflow4001 {
     hardware ethernet aa:00:00:01:9e:83;
     fixed-address netflow4001.ulsfo.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host netflow5001 {
     hardware ethernet aa:00:00:13:2f:96;
     fixed-address netflow5001.eqsin.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host orespoolcounter1003 {
     hardware ethernet aa:00:00:79:14:8b;
     fixed-address orespoolcounter1003.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host orespoolcounter1004 {
     hardware ethernet aa:00:00:96:a5:b7;
     fixed-address orespoolcounter1004.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host orespoolcounter2003 {
     hardware ethernet aa:00:00:f2:09:cd;
     fixed-address orespoolcounter2003.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host orespoolcounter2004 {
     hardware ethernet aa:00:00:4c:94:74;
     fixed-address orespoolcounter2004.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host oresrdb2001 {
@@ -639,102 +644,109 @@ host oresrdb2001 {
 host people1001 {
     hardware ethernet aa:00:00:1f:b1:51;
     fixed-address people1001.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host ping1001 {
     hardware ethernet aa:00:00:33:10:e2;
     fixed-address ping1001.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host ping2001 {
     hardware ethernet aa:00:00:e3:6f:5c;
     fixed-address ping2001.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host ping3001 {
     hardware ethernet aa:00:00:76:21:9c;
     fixed-address ping3001.esams.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host planet1001 {
     hardware ethernet aa:00:00:19:24:b9;
     fixed-address planet1001.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host planet2001 {
     hardware ethernet aa:00:00:76:5e:11;
     fixed-address planet2001.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host poolcounter1004 {
     hardware ethernet aa:00:00:fb:32:eb;
     fixed-address poolcounter1004.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host poolcounter1005 {
     hardware ethernet aa:00:00:dd:33:4b;
     fixed-address poolcounter1005.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host poolcounter2003 {
     hardware ethernet aa:00:00:18:7f:35;
     fixed-address poolcounter2003.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host poolcounter2004 {
     hardware ethernet aa:00:00:e8:a0:ad;
     fixed-address poolcounter2004.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host proton1001 {
     hardware ethernet aa:00:00:ec:82:4e;
     fixed-address proton1001.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host proton1002 {
     hardware ethernet aa:00:00:b0:88:fc;
     fixed-address proton1002.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host proton2001 {
     hardware ethernet aa:00:00:99:0e:eb;
     fixed-address proton2001.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host proton2002 {
     hardware ethernet aa:00:00:5e:15:99;
     fixed-address proton2002.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host puppetboard1001 {
     hardware ethernet aa:00:00:51:0e:81;
     fixed-address puppetboard1001.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host puppetboard2001 {
     hardware ethernet aa:00:00:e0:47:7f;
     fixed-address puppetboard2001.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host puppetdb1002 {
     hardware ethernet aa:00:00:63:08:62;
     fixed-address puppetdb1002.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host puppetdb2002 {
     hardware ethernet aa:00:00:94:67:50;
     fixed-address puppetdb2002.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host elnath {
     hardware ethernet aa:00:00:9b:fc:ae;
     fixed-address elnath.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 # ganeti VMs used for pybal testing/development
@@ -747,139 +759,158 @@ host pybal-test2001 {
 host pybal-test2002 {
     hardware ethernet aa:00:00:f8:8d:e1;
     fixed-address pybal-test2002.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host pybal-test2003 {
     hardware ethernet aa:00:00:c9:59:b0;
     fixed-address pybal-test2003.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host releases1001 {
     hardware ethernet aa:00:00:11:7b:19;
     fixed-address releases1001.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host registry1001 {
     hardware ethernet aa:00:00:85:e5:d2;
     fixed-address registry1001.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host registry1002 {
     hardware ethernet aa:00:00:9d:f3:e7;
     fixed-address registry1002.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host registry2001 {
     hardware ethernet aa:00:00:a9:96:a2;
     fixed-address registry2001.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host registry2002 {
     hardware ethernet aa:00:00:5a:cb:48;
     fixed-address registry2002.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host releases2001 {
     hardware ethernet aa:00:00:ae:36:40;
     fixed-address releases2001.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host rpki1001 {
     hardware ethernet aa:00:00:64:75:b9;
     fixed-address rpki1001.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host rpki2001 {
     hardware ethernet aa:00:00:b9:9b:6d;
     fixed-address rpki2001.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host seaborgium {
     hardware ethernet aa:00:00:4d:be:84;
     fixed-address seaborgium.wikimedia.org;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 # schema* (Ganeti VMs)
 host schema1001 {
     hardware ethernet aa:00:00:d0:90:00;
     fixed-address schema1001.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host schema1002 {
     hardware ethernet aa:00:00:a0:5c:cf;
     fixed-address schema1002.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host schema2001 {
     hardware ethernet aa:00:00:25:b5:b3;
     fixed-address schema2001.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host schema2002 {
     hardware ethernet aa:00:00:f6:d7:82;
     fixed-address schema2002.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host serpens {
     hardware ethernet aa:00:00:0e:a4:81;
     fixed-address serpens.wikimedia.org;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host urldownloader1001.wikimedia.org {
     hardware ethernet aa:00:00:d2:7d:c6;
     fixed-address urldownloader1001.wikimedia.org;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host urldownloader1002.wikimedia.org {
     hardware ethernet aa:00:00:63:50:b5;
     fixed-address urldownloader1002.wikimedia.org;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host urldownloader2001.wikimedia.org {
     hardware ethernet aa:00:00:6c:78:cd;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
     fixed-address urldownloader2001.wikimedia.org;
 }
 
 host urldownloader2002.wikimedia.org {
     hardware ethernet aa:00:00:fe:d1:2e;
     fixed-address urldownloader2002.wikimedia.org;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host vega {
     hardware ethernet aa:00:00:26:27:bf;
     fixed-address vega.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host webperf1001 {
     hardware ethernet aa:00:00:5e:f4:43;
     fixed-address webperf1001.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host webperf1002 {
     hardware ethernet aa:00:00:35:39:15;
     fixed-address webperf1002.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host webperf2001 {
     hardware ethernet aa:00:00:02:8b:11;
     fixed-address webperf2001.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host webperf2002 {
     hardware ethernet aa:00:00:f3:97:f1;
     fixed-address webperf2002.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host xhgui1001 {
     hardware ethernet aa:00:00:68:50:8a;
     fixed-address xhgui1001.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host xhgui2001 {
     hardware ethernet aa:00:00:d8:e9:14;
     fixed-address xhgui2001.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
