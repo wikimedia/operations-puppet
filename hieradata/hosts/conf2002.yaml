@@ -1,1 +1,1 @@
-profile::etcd::replication::active: false
+profile::etcd::replication::active: true
