@@ -56,9 +56,6 @@ cache::alternate_domains:
   doc.wikimedia.org:
     director: 'doc'
   etherpad.wikimedia.org:
-    director: 'etherpad1001'
-    caching: 'websockets'
-  etherpad-new.wikimedia.org:
     director: 'etherpad1002'
     caching: 'websockets'
   gerrit.wmfusercontent.org:
