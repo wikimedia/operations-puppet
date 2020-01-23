@@ -14,20 +14,20 @@
 
             <h3>Contents</h3>
             <p>
-                This data set contains a historical record of all*
-                events and states of Wikimedia wikis since 2001.
-                (*) It includes data about revisions (reverts, tags, ...),
-                users (renames, groups, blocks, bot/human, registered/anonymous, edit count, ...)
-                and pages (moves, redirects, deletions, restores, ...).
-                For further details visit the Wikitech page with the
-                <a href="https://wikitech.wikimedia.org/wiki/Analytics/Data_Lake/Edits/MediaWiki_history#Schema">
-                data set schema and other important information</a>.
+                This data set contains a historical record of revision, user and page events of Wikimedia wikis since 2001.
+                The data is denormalized, meaning that all events for user, page and revision are stored in the same schema.
+                This leads to some fields being always null for some events (for instance fields about page are null in events about user).
+                Events about users and pages have been processed to rebuild an as coherent as possible history in term of user-renames
+                and page-moves (see <a href="https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Page_and_user_history_reconstruction">
+                the page and user history reconstruction wikitech page</a>).  Also, some precomputed fields have been added to facilitate analyses,
+                such as edit-count per user and per page, reverting and reverted revisions and more. For further details visit
+                <a href="https://wikitech.wikimedia.org/wiki/Analytics/Data_Lake/Edits/Mediawiki_history_dumps#Technical_Documentation">the Mediawiki history dumps dataset wikitech page</a>, containing the schema and links to some code examples.
             </p>
 
             <h3>Updates</h3>
             <p>
                 The updates for this data set are monthly, around the end of the month's first week.
-                And each update contains a full dump since 2001 (the beginning of MediaWiki-time) up to the current month.
+                Each update contains a full dump since 2001 (the beginning of MediaWiki-time) up to the current month.
                 The reason for this particularity is the underlying data, the MediaWiki databases.
                 Every time a user gets renamed, a revision reverted, a page moved, etc. the
                 existing related records in the logging table are updated accordingly.
@@ -42,11 +42,11 @@
             <h3>Versioning</h3>
             <p>
                 Each update receives the name of the last featured month, in YYYY-MM format.
-                For example: if the dump spans from 2001 to August 2019, it will be named 2019-08
-                (even if it will be released on the first days of September 2019).
-                There will be a folder for each version at the root of the download URL.
-                Note that, for storage reasons, only a short number of versions will be available.
-                Versions older than 6 months will be removed.
+                For example if the dump spans from 2001 to August 2019 (included), it will be named 2019-08
+                even if it will be released on the first days of September 2019.
+                There is a folder for each available month at the root of the download URL, and for storage
+                reasons only the last two versions are available. This shouldn't be problematic as every
+                version contains the whole historical dataset.
             </p>
 
             <h3>Partitioning</h3>
@@ -74,7 +74,8 @@
 
             <h3>File format</h3>
             <p>
-                The file format is TSV, because it doesn't contain meta-data (like JSON), thus making the download lighter.
+                The file format is tab-separated-value (TSV) instead of JSON in order to reduce the file sizes
+                (JSON repeats field names for every record).
                 Even if MediaWiki history data is pretty flat, it has some fields that are arrays of strings.
                 The encoding of such arrays is the following:
                 <span class="code">array(&lt;value1&gt;,&lt;value2&gt;,...,&lt;valueN&gt;)</span>.
@@ -85,16 +86,15 @@
 
             <h3>Directory structure</h3>
             <p>
-                When choosing a file (or set of files) for download, the URL should look like this:<br/>
-                <span class="code">/&lt;version&gt;/&lt;wiki&gt;/&lt;time range&gt;.tsv.bz2</span><br/>
-                Where &lt;snapshot&gt; is YYYY-MM, i.e. 2019-08;
-                &lt;wiki&gt; is the wiki_db, i.e. enwiki or commonswiki;
-                and &lt;time_range&gt; is either YYYY-MM for big wikis, YYYY for medium wikis, or all-time for the rest.
+                When choosing a file (or set of files) to download, the URL should look like this:<br/>
+                <span class="code">/&lt;version&gt;/&lt;wiki&gt;/&lt;version&gt;.&lt;wiki&gt;.&lt;time range&gt;.tsv.bz2</span><br/>
+                Where version is the YYYY-MM formated snapshot i.e. 2019-12; &lt;wiki&gt; is the wiki database name, i.e. enwiki or commonswiki;
+                and &lt;time_range&gt; is either YYYY-MM for big wikis, YYYY for medium wikis, or all-time for the rest (see partitionning above).
                 Examples of dump files:
                 <ul>
-                    <li class="code">/2019-08/wikidatawiki/2019-05.tsv.bz2</li>
-                    <li class="code">/2019-08/ptwiki/2018.tsv.bz2</li>
-                    <li class="code">/2019-08/cawikinews/all-time.tsv.bz2</li>
+                    <li class="code">/2019-12/wikidatawiki/2019-12.wikidatawiki.2019-05.tsv.bz2</li>
+                    <li class="code">/2019-12/ptwiki/2019-12.ptwiki.2018.tsv.bz2</li>
+                    <li class="code">/2019-12/cawikinews/2019-12.cawikinews.all-time.tsv.bz2</li>
                 </ul>
             </p>
 
