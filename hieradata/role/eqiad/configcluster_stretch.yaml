@@ -9,3 +9,4 @@ profile::etcd::replication::destination_path: /conftool
 profile::etcd::replication::dst_url: https://conf1005.eqiad.wmnet:2379
 # only conf1005 is active if this is not the master DC.
 profile::etcd::replication::active: false
+profile::etcd::tlsproxy::read_only: false
