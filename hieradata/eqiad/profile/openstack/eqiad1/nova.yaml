@@ -28,7 +28,7 @@ profile::openstack::eqiad1::nova::physical_interface_mappings:
 #   cloudvirt1004: pooled
 #   cloudvirt1005: pooled
 #   cloudvirt1006: pooled
-#   cloudvirt1007: depooled, ceph testing T243327
+#   cloudvirt1007: pooled
 #   cloudvirt1008: pooled
 #   cloudvirt1009: depooled, is overloaded already
 #   cloudvirt1010: does not exist (formerly a leased system)
@@ -68,6 +68,7 @@ profile::openstack::eqiad1::nova::scheduler_pool:
   - cloudvirt1004
   - cloudvirt1005
   - cloudvirt1006
+  - cloudvirt1007
   - cloudvirt1008
   - cloudvirt1012
   - cloudvirt1014
