@@ -4212,7 +4212,7 @@ host mc-gp2003 {
 host sodium {
     hardware ethernet f4:e9:d4:94:c5:90;
     fixed-address sodium.wikimedia.org;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host ms-be1016 {
@@ -6752,7 +6752,6 @@ host puppetmaster1002 {
 host puppetmaster1003 {
     hardware ethernet D0:94:66:5E:C8:02;
     fixed-address puppetmaster1003.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host puppetmaster2001 {
@@ -7151,7 +7150,6 @@ host stat1004 {
 host stat1005 {
     hardware ethernet 18:66:DA:FA:0B:C4;
     fixed-address stat1005.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host stat1006 {
