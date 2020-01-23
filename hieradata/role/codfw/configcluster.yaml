@@ -9,7 +9,6 @@ profile::etcd::replication::destination_path: /conftool
 profile::etcd::replication::src_port: 4001
 # only conf2002 is active
 profile::etcd::replication::active: false
-profile::etcd::tlsproxy::read_only: false
 profile::zookeeper::cluster_name: main-codfw
 
 # Raise election timeout to account for disk latencies during raid resyncs
