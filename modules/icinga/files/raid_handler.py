@@ -29,7 +29,7 @@ COMMAND_FILE = '/var/lib/icinga/rw/icinga.cmd'
 CHECK_NRPE_PATH = '/usr/lib/nagios/plugins/check_nrpe'
 
 NRPE_REMOTE_COMMAND = 'get_raid_status_{}'
-ACK_MESSAGE = 'RAID handler auto-ack: {}'
+ACK_MESSAGE = 'RAID handler auto-ack: https://phabricator.wikimedia.org/T{task_id}'
 ICINGA_URL = ('https://icinga.wikimedia.org/cgi-bin/icinga/extinfo.cgi?type=2&'
               'host={host}&service={service}')
 
@@ -183,28 +183,31 @@ def open_phabricator_task(
     description = '{description_prefix}\n```\n{raid_status}\n```'.format(
         description_prefix=description_prefix, raid_status=raid_status)
 
-    task = phab_client.maniphest.createtask(
-        title=PHABRICATOR_TASK_TITLE.format(host=host),
-        projectPHIDs=project_ids, description=description)
+    task = phab_client.maniphest.edit(transactions=[
+        {'type': 'title', 'value': PHABRICATOR_TASK_TITLE.format(host=host)},
+        {'type': 'description', 'value': description},
+        {'type': 'projects.set', 'value': project_ids},
+    ])
+    task_id = task.object['id']
 
-    logger.debug('Opened Phabricator task: {}'.format(task))
-    return task
+    logger.debug('Opened Phabricator task: {}'.format(task_id))
+    return task_id
 
 
-def acknowledge_nagios_alert(host, service_description, task_uri):
+def acknowledge_nagios_alert(host, service_description, task_id):
     """ Acknowledge the Nagios/Icinga alert
 
         Arguments:
         host                -- the hostname of the affected host
         service_description -- the Nagios/Icinga service description
-        task_uri            -- the URI of the related Phabricator task
+        task_id             -- the ID of the related Phabricator task
     """
 
     message = (
         '[{time}] ACKNOWLEDGE_SVC_PROBLEM;{host};{service};2;1;0;'
         'nagiosadmin;{message}\n'
     ).format(time=int(time.time()), host=host, service=service_description,
-             message=ACK_MESSAGE.format(task_uri))
+             message=ACK_MESSAGE.format(task_id=task_id))
 
     with open(COMMAND_FILE, 'w') as f:
         f.write(message)
@@ -260,16 +263,16 @@ def main():
 
     icinga_url = ICINGA_URL.format(
         host=args.host_address, service=args.service_description)
-    task = open_phabricator_task(phab_client, project_ids, args.host_address,
-                                 args.raid_type, raid_status, icinga_url)
+    task_id = open_phabricator_task(phab_client, project_ids, args.host_address,
+                                    args.raid_type, raid_status, icinga_url)
 
     acknowledge_nagios_alert(
-        args.host_address, args.service_description, task['uri'])
+        args.host_address, args.service_description, task_id)
 
     logger.info(
         ("RAID Handler executed for host '{}' and RAID type '{}'. "
          "Created task ID '{}'").format(
-            args.host_address, args.raid_type, task['id']))
+            args.host_address, args.raid_type, task_id))
 
     logger.debug('RAID Handler completed')
 
