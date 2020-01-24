@@ -100,6 +100,25 @@ class profile::wmcs::nfs::test(
         },
     }
 
+    $cluster_ips_ferm = join([$nfs_host1_ip, $nfs_host2_ip], ' ')
+    ferm::service { 'drbd-test':
+        proto  => 'tcp',
+        port   => '7790',
+        srange => "(${cluster_ips_ferm})",
+    }
+
+    ferm::service { 'drbd-misc':
+        proto  => 'tcp',
+        port   => '7791',
+        srange => "(${cluster_ips_ferm})",
+    }
+
+    ferm::service { 'drbd-tools':
+        proto  => 'tcp',
+        port   => '7792',
+        srange => "(${cluster_ips_ferm})",
+    }
+
     create_resources(labstore::drbd::resource, $drbd_resource_config, $drbd_defaults)
 
     # state managed manually
