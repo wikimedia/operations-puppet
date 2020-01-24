@@ -76,5 +76,5 @@ if __name__ == "__main__":
         # The final line of format_exc() will be e.g.
         # "URLError: <urlopen error [Errno -2] Name or service not known>"
         # which is useful to give to Icinga
-        print 'CRITICAL - %s failed with %s' % (sys.argv[0], tb_lines[-1])
-        sys.exit(2)
+        print 'UNKNOWN - %s failed with %s' % (sys.argv[0], tb_lines[-1])
+        sys.exit(3)
