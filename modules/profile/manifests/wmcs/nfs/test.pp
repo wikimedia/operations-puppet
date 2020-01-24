@@ -36,7 +36,6 @@ class profile::wmcs::nfs::test(
   Stdlib::IP::Address $nfs_host1_ip = lookup('profile::wmcs::nfs::test::nfs_host1_ip'),
   Stdlib::IP::Address $nfs_host2_ip = lookup('profile::wmcs::nfs::test::nfs_host2_ip'),
 ) {
-    require ::profile::openstack::eqiad1::clientpackages
     require ::profile::openstack::eqiad1::observerenv
 
     class {'::labstore':
