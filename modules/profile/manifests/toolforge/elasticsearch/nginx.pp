@@ -17,7 +17,7 @@ class profile::toolforge::elasticsearch::nginx(
         mode      => '0440',
         content   => secret('labs/toollabs/elasticsearch/htpasswd'),
         show_diff => false,
-        require   => Class['nginx'],
+        require   => Package['nginx-common'], # deploys /etc/nginx
     }
 
     ferm::service { 'nginx-http':
