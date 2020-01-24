@@ -85,7 +85,8 @@ python-neutronclient
 openvswitch
 python-ovsdbapp
 python-scrypt
-python-bcrypt"
+python-bcrypt
+python-openstackclient"
 
 OLD_FILE="$1"
 NEW_FILE="$2"
