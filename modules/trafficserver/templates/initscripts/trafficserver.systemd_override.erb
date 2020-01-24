@@ -8,6 +8,7 @@ ExecStart=/usr/bin/traffic_manager --nosyslog
 <% else -%>
 ExecStart=/usr/bin/traffic_manager --run-root=<%= @paths['prefix'] %> --nosyslog
 <% end -%>
+PIDFile=<%= @paths['runtimedir'] %>/manager.lock
 Restart=always
 RestartSec=1
 ExecReload=
