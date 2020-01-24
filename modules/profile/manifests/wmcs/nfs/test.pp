@@ -102,8 +102,6 @@ class profile::wmcs::nfs::test(
 
     create_resources(labstore::drbd::resource, $drbd_resource_config, $drbd_defaults)
 
-    Interface::Ip['drbd-replication'] -> Labstore::Drbd::Resource[keys($drbd_resource_config)]
-
     # state managed manually
     service { 'drbd':
         enable => false,

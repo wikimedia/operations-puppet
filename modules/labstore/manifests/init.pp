@@ -36,12 +36,14 @@ class labstore (
         content => 'options lockd nlm_udpport=32768 nlm_tcpport=32769',
     }
 
-    file { '/etc/default/nfs-common':
-        ensure => present,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        source => 'puppet:///modules/labstore/nfs-common',
+    if ( $::realm != 'labs' ) {
+        file { '/etc/default/nfs-common':
+            ensure => present,
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0555',
+            source => 'puppet:///modules/labstore/nfs-common',
+        }
     }
 
     file { '/etc/default/nfs-kernel-server':
