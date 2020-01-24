@@ -24,7 +24,15 @@ ban_details_records_count = 1000
 
 # How long (in seconds) we should keep an IP in blocked state
 # If you set 0 here it completely disables unban capability
-ban_time = 1900
+#
+# Every (ban_time/2) seconds, a background thread scans the list of active bans
+# (basically the list of believed-ongoing attacks).  First it checks if the
+# ban is old enough to consider unbanning it.  If so, if unban_only_if_attack_finished
+# is set, then it checks if there's still elevated traffic to that IP.
+#
+# We set a short ban_time so that our Icinga integration can know quickly when
+# an attack has ended.
+ban_time = 120
 
 # Check if the attack is still active, before triggering an unban callback with this option
 # If the attack is still active, check each run of the unban watchdog
