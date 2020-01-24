@@ -4,6 +4,7 @@ class role::wmcs::nfs::primary {
     }
 
     include ::profile::standard
+    include ::profile::ldap::client::labs
     include ::profile::wmcs::nfs::primary
     include ::profile::wmcs::nfs::maintain_dbusers
 }

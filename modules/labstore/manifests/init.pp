@@ -20,9 +20,6 @@ class labstore (
         ensure => present,
     }
 
-    $ldapincludes = ['openldap', 'nss', 'utils']
-    class { 'profile::ldap::client::labs': ldapincludes => $ldapincludes }
-
     file { '/usr/local/sbin/snapshot-manager':
         ensure => present,
         owner  => 'root',

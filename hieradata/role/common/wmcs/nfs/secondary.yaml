@@ -4,6 +4,7 @@ profile::wmcs::nfs::rsync::user: root
 profile::wmcs::nfs::rsync::group: root
 profile::wmcs::nfs::rsync::datapath: /exp
 profile::wmcs::nfs::secondary::monitor_iface: eno1
+profile::ldap::client::labs::ldapincludes: ['openldap', 'nss', 'utils']
 profile::wmcs::nfs::secondary::cluster_ip: "208.80.155.119"
 # the snapshots created by the backup process cannot be checked
 # by the check_disk nrpe plugin so need to be excluded.
