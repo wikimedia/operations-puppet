@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 """
 Simple script that generates a YAML file classifying all instances
 on the tools project into groups based on the role they perform.

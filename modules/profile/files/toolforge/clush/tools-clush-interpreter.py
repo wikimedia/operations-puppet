@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 import argparse
 
 import yaml
@@ -20,4 +20,4 @@ with open(args.hostgroups) as f:
     if args.action == "map":
         print("\n".join(groups[args.group]))
     if args.action == "list":
-        print("\n".join(groups.keys()))
+        print("\n".join(groups))
