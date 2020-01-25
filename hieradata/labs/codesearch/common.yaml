@@ -13,3 +13,4 @@ profile::codesearch::ports:
     deployed: 6090
     pywikibot: 6091
     services: 6092
+    libraries: 6093
