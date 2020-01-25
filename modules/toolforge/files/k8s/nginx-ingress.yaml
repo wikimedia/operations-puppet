@@ -24,6 +24,8 @@ metadata:
 data:
   # T241310: pass the incoming X-Forwarded-* headers to upstreams
   use-forwarded-headers: "true"
+  # T243580: set default client_max_body_size to match dynamicproxy's setting
+  proxy-body-size: 128M
 
 ---
 kind: ConfigMap
