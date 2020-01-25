@@ -104,10 +104,11 @@ class codesearch(
     }
 
     systemd::service { 'hound_proxy':
-        ensure  => present,
-        content => template('codesearch/initscripts/hound_proxy.service.erb'),
-        restart => true,
-        require => [
+        ensure    => present,
+        content   => template('codesearch/initscripts/hound_proxy.service.erb'),
+        restart   => true,
+        subscribe => File['/etc/codesearch_ports.json'],
+        require   => [
             Git::Clone['labs/codesearch'],
             Package['gunicorn3'],
             File['/etc/codesearch_ports.json'],
