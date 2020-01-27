@@ -81,6 +81,9 @@ class profile::backup::filesets() {
     bacula::director::fileset { 'bugzilla-static':
         includes => [ '/srv/org/wikimedia/static-bugzilla' ]
     }
+    bacula::director::fileset { 'static-codereview':
+        includes => [ '/srv/org/wikimedia/static-codereview' ]
+    }
     bacula::director::fileset { 'rt-static':
         includes => [ '/srv/org/wikimedia/static-rt' ]
     }
