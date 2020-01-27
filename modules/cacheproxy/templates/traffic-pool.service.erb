@@ -1,9 +1,9 @@
 # traffic-pool.service
 #
-# On shutdown, *before* nginx/varnish are stopped, this will depool the node
+# On shutdown, *before* trafficserver-tls/varnish are stopped, this will depool the node
 # for all services and then sleep 45 seconds
 #
-# On startup, *after* nginx/varnish have been started successfully, iff the
+# On startup, *after* trafficserver-tls/varnish have been started successfully, iff the
 # file /var/lib/traffic-pool/pool-once exists, this will delete that file,
 # sleep 45 seconds, and then pool the node for all services.  The file is
 # expected to only be created by human action when immediate repool after a
@@ -14,7 +14,7 @@
 
 [Unit]
 Description=Traffic Services Pool Control
-After=varnish.service varnish-frontend.service nginx.service
+After=varnish.service varnish-frontend.service trafficserver-tls.service
 
 [Service]
 Type=oneshot
