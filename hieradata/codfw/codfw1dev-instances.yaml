@@ -20,7 +20,7 @@ labs_site: "codfw1dev"
 ntp_peers:
     eqiad: []
     codfw:
-    - 'ntp-1.cloudinfra.codfw1dev.cloud'
+    - 'ntp-1.cloudinfra.codfw1dev.wikimedia.cloud'
     ulsfo: []
     eqsin: []
     esams: []

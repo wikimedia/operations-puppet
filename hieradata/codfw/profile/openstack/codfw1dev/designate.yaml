@@ -1,8 +1,8 @@
 profile::openstack::codfw1dev::designate::db_host: 'clouddb2001-dev.codfw.wmnet'
 profile::openstack::codfw1dev::designate::wmflabsdotorg_project: 'wmflabsdotorg'
 
-# This is .codfw1dev.cloud.
-profile::openstack::codfw1dev::designate::domain_id_internal_forward: '8d67f102-5984-4e4d-a15a-e94ccd6d9eaf'
+# This is .codfw1dev.wikimedia.cloud.
+profile::openstack::codfw1dev::designate::domain_id_internal_forward: '4c754100-1790-4858-a583-9de93c9e8b3d'
 
 # This is 16.172.in-addr.arpa.
 profile::openstack::codfw1dev::designate::domain_id_internal_reverse: '187fdc06-c5d2-46e1-ab71-97d34dd067ce'
