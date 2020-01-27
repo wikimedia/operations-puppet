@@ -19,8 +19,7 @@ class openstack::puppet::master::encapi(
                     'python3-yaml',
                     'python-flask',
                     'python-pymysql',
-                    'python-statsd',
-                    'python-yaml')
+                    'python-statsd')
 
     $python_version = $::lsbdistcodename ? {
         'jessie'  => 'python3.4',
