@@ -4071,17 +4071,17 @@ host mc1036 {
 }
 
 host mc-gp1001 {
-    hardware ethernet B0:26:28:CC:FD:90;
+    hardware ethernet B0:26:28:CC:F9:40;
     fixed-address mc-gp1001.eqiad.wmnet;
 }
 
 host mc-gp1002 {
-    hardware ethernet B0:26:28:CC:F4:20;
+    hardware ethernet B0:26:28:CC:FD:90;
     fixed-address mc-gp1002.eqiad.wmnet;
 }
 
 host mc-gp1003 {
-    hardware ethernet B0:26:28:CC:F9:40;
+    hardware ethernet B0:26:28:CC:F4:20;
     fixed-address mc-gp1003.eqiad.wmnet;
 }
 
