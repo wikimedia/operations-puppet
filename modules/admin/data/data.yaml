@@ -4043,3 +4043,7 @@ ldap_only_users:
     ensure: present
     realname: Rudolph Ampofo
     email: rampofo@wikimedia.org
+  spramudya:
+    ensure: present
+    realname: Sakti Pramudya
+    email: spramudya@wikimedia.org
