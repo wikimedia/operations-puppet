@@ -96,4 +96,10 @@ class icinga::monitor::performance {
         contact_group => 'team-performance',
         notes_url     => 'https://phabricator.wikimedia.org/T203485',
     }
+
+    monitoring::grafana_alert { 'perceptionsurvey-alerts':
+        dashboard_uid => '000000551',
+        contact_group => 'team-performance',
+        notes_url     => 'https://phabricator.wikimedia.org/T203485',
+    }
 }
