@@ -1,8 +1,15 @@
 #!/bin/bash
+set -e
 set +C  # OK to clobber out-of-date SVGs
 shopt -s globstar nullglob
 
 for log in /srv/xenon/**/*.log; do
+    if [ ! -r "$log" ]; then
+        # It's possible for the log to be removed between when the
+        # shell glob is calculated and when all files are processed.
+        # See T243762.
+        continue
+    fi
     dir="$(dirname "$log")"
     period="$(basename "$dir")"
     time="$(basename "$log" ".log")"
