@@ -3125,6 +3125,56 @@ host ganeti1008 {
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
+host ganeti1009 {
+        hardware ethernet 4C:D9:8F:66:1D:C9;
+        fixed-address ganeti1009.eqiad.wmnet;
+}
+
+host ganeti1010 {
+        hardware ethernet 4C:D9:8F:66:1D:D9;
+        fixed-address ganeti1010.eqiad.wmnet;
+}
+
+host ganeti1011 {
+        hardware ethernet 4C:D9:8F:66:0B:B2;
+        fixed-address ganeti1011.eqiad.wmnet;
+}
+
+host ganeti1012 {
+        hardware ethernet 4C:D9:8F:65:FD:91;
+        fixed-address ganeti1012.eqiad.wmnet;
+}
+
+host ganeti1013 {
+        hardware ethernet 4C:D9:8F:66:2A:6F;
+        fixed-address ganeti1013.eqiad.wmnet;
+}
+
+host ganeti1014 {
+        hardware ethernet 4C:D9:8F:65:F3:91;
+        fixed-address ganeti1014.eqiad.wmnet;
+}
+
+host ganeti1015 {
+        hardware ethernet 4C:D9:8F:66:31:7F;
+        fixed-address ganeti1015.eqiad.wmnet;
+}
+
+host ganeti1016 {
+        hardware ethernet 4C:D9:8F:49:87:B2;
+        fixed-address ganeti1016.eqiad.wmnet;
+}
+
+host ganeti1017 {
+        hardware ethernet 4C:D9:8F:66:20:F9;
+        fixed-address ganeti1017.eqiad.wmnet;
+}
+
+host ganeti1018 {
+        hardware ethernet 4C:D9:8F:66:3C:FD;
+        fixed-address ganeti1018.eqiad.wmnet;
+}
+
 host ganeti1019 {
     hardware ethernet 4C:D9:8F:66:2F:67;
     fixed-address ganeti1019.eqiad.wmnet;
