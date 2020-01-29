@@ -14,7 +14,7 @@ labsldapconfig:
   hostname: "cloudservices2002-dev.wikimedia.org"
   secondary_hostname: "cloudservices2002-dev.wikimedia.org"
 
-labs_tld: "cloud"
+labs_tld: "wikimedia.cloud"
 labs_site: "codfw1dev"
 
 ntp_peers:
@@ -24,3 +24,12 @@ ntp_peers:
     ulsfo: []
     eqsin: []
     esams: []
+
+# VM instances require these keys because they are looked up by observerenv and
+# observerenv is present in every VM instance. Can't place this in horizon
+# (which we may or may not have for codfw1dev anyway) The eqiad1 counterparts
+# are in hieradata/labs.yaml. I think this is a more suitable place for this..
+# perhaps.
+profile::openstack::codfw1dev::region: 'codfw1dev-r'
+profile::openstack::codfw1dev::keystone_host: 'openstack.codfw1dev.wikimediacloud.org'
+profile::openstack::codfw1dev::observer_password: 'lt-RiBeyokCO81bVvcX'
