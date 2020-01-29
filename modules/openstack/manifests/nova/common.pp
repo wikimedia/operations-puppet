@@ -21,6 +21,7 @@ class openstack::nova::common(
     $metadata_workers,
     Stdlib::Port $metadata_listen_port,
     Stdlib::Port $osapi_compute_listen_port,
+    String       $dhcp_domain,
     ) {
 
     class { "openstack::nova::common::${version}::${::lsbdistcodename}": }
@@ -56,6 +57,12 @@ class openstack::nova::common(
             owner   => 'nova',
             group   => 'nogroup',
             mode    => '0440',
+            require => Package['nova-common'];
+        '/etc/nova/vendor_data.json':
+            content => template('openstack/nova/vendor_data.json.erb'),
+            owner   => 'nova',
+            group   => 'nogroup',
+            mode    => '0444',
             require => Package['nova-common'];
     }
 }

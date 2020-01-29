@@ -16,6 +16,8 @@ class profile::openstack::codfw1dev::nova::common(
     $metadata_proxy_shared_secret = hiera('profile::openstack::codfw1dev::neutron::metadata_proxy_shared_secret'),
     Stdlib::Port $metadata_listen_port = lookup('profile::openstack::codfw1dev::nova::metadata_listen_port'),
     Stdlib::Port $osapi_compute_listen_port = lookup('profile::openstack::codfw1dev::nova::osapi_compute_listen_port'),
+    String       $dhcp_domain               = lookup('profile::openstack::codfw1dev::nova::dhcp_domain',
+                                                    {default_value => 'example.com'}),
     ) {
 
     class {'::profile::openstack::base::nova::common':
@@ -36,6 +38,7 @@ class profile::openstack::codfw1dev::nova::common(
         metadata_listen_port         => $metadata_listen_port,
         metadata_proxy_shared_secret => $metadata_proxy_shared_secret,
         osapi_compute_listen_port    => $osapi_compute_listen_port,
+        dhcp_domain                  => $dhcp_domain,
     }
     contain '::profile::openstack::base::nova::common'
 }

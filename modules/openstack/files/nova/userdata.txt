@@ -96,6 +96,7 @@ fi
 # At this point, all (the rest of) our disk are belong to LVM.
 
 # Get hostname and domain from metadata
+domain="$(curl http://169.254.169.254/openstack/latest/vendor_data.json | sed -r 's/^.*domain\": \"//' | sed -r 's/\"}//g')"
 hostname=`curl http://169.254.169.254/openstack/latest/meta_data.json/ | sed -r 's/^.*hostname\": \"//'  | sed -r 's/[\"\.].*$//g'`
 project=`curl http://169.254.169.254/openstack/latest/meta_data.json/ | sed -r 's/^.*project_id\": \"//'  | sed -r 's/\".*$//g'`
 ip=`curl http://169.254.169.254/1.0/meta-data/local-ipv4 2> /dev/null`
@@ -103,19 +104,11 @@ ip=`curl http://169.254.169.254/1.0/meta-data/local-ipv4 2> /dev/null`
 # from here on out make sure our hostname is the hostname from metadata:
 hostnamectl set-hostname $hostname
 
-# domain is the last two domain sections, e.g. eqiad.wmflabs
-domain=`hostname -d | sed -r 's/.*\.([^.]+\.[^.]+)$/\1/'`
-
-if [ -z $domain ]; then
-   echo "hostname -d failed, trying to parse dhcp lease"
-   domain=`grep "option domain-name " /var/lib/dhcp/dhclient.*.leases | head -n1 | cut -d \" -f2`
+# Double check the domain makes sense
+dhcp_domain=$(grep "option domain-name " /var/lib/dhcp/dhclient.*.leases | head -n1 | cut -d \" -f2)
+if [ "$domain" != "$dhcp_domain" ] ; then
+    echo "WARNING: the metadata domain (${domain}) and DHCP domain (${dhcp_domain}) don't match" >&2
 fi
-
-if [ -z $domain ]; then
-    echo "Unable to determine domain; all is lost."
-    exit 1
-fi
-
 
 fqdn=${hostname}.${project}.${domain}
 master="puppet"
