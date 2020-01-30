@@ -1133,6 +1133,7 @@ users:
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDSeIBX9aSlrQZ+PCGjvz/SNDNdhH3nOvjYAIy2jiY980FqIrOISkSuW8JQK2xpWqmrbeOEMOFF0wcb3/XSCQ8DuWMaT4arx7nq3OMgPv/6RaRiZOwj62NgJwTqjZuaQh82kau1e8O6A+sg8CZXtGBJsahGkRBoPmR2IEh2Jg0h3zmomdEdltblGUXH+C7yCQx9vPqJ1FH91sbJ74H5qcBeVsO9UJxHnBFQ1LCwqfORShNz6EDMs3UCGV+FvRpRAJ49R7PifTjqyIoUhZVGMYLWEtFHuOlI1rfhsy04uYb6+w3hdnOUE4wPGK5oDGJC+ceZyEkxs5pzDDGlEPlKaStfwTTiyuTD1u6vaXBFvf7wwKj7NqQRb0UWANrPAdp0/AChzeyczRlT6SMpF3SBhCB/by1H0dov+hFwd81I1mCqTKqxKgr4tFYHZEjNCEBDau5vGxFU7r8aWsPAlYw8gANDD6wXhaXEgn1ttClKSktNB7ZWGh5KNvbJnj+Rg1vaaPSg/ckBNGbVSTEqZP/m9IYExRyb75uth7bbB7VZdJToSf0QRtJJBULfvBCMTa7Ep7rSP6yKPXnea3oAxIB7LW2fR3rDUTXygORHMu2carEe6vhvW5pX6ebjso9VzLIkD+x0j+FvRNPKBKNEhwVBt4c31e62hVPO8vi5fhPXmpszBQ== kmistry@wikimedia.org]
     uid: 3033
     email: kmistry@wikimedia.org
+    krb: present
   khorn:
     ensure: absent
     gid: 500
