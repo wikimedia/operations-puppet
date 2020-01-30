@@ -7,7 +7,7 @@ import sys
 import yaml
 
 from keystoneclient import client as keystone_client
-from keystoneclient import session as keystone_session
+from keystoneauth1 import session as keystone_session
 from keystoneclient.auth.identity import generic
 from novaclient import client as nova_client
 
