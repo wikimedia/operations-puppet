@@ -13,12 +13,11 @@ import yaml
 
 
 def flatten(not_flat):
-    '''flatten a complex list of lists'''
+    """flatten a complex list of lists"""
     # https://stackoverflow.com/a/2158532/3075306
     for element in not_flat:
         if isinstance(element, Iterable) and not isinstance(element, str):
-            for sub_list in flatten(element):
-                yield sub_list
+            yield from flatten(element)
         else:
             yield element
 
