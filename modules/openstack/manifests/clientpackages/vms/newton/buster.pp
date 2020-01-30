@@ -2,11 +2,18 @@
 class openstack::clientpackages::vms::newton::buster(
 ) {
     requires_realm('labs')
-    # It seems we don't need any special magic for this Debian/Openstack combo.
-    # That's OK. All config this combo gets was probably applied via:
-    #
-    # role::wmcs::instance
-    #  profile::openstack::eqiad1::clientpackages::vms
-    #   profile::openstack::base::clientpackages::vms
-    #    openstack::clientpackages::vms::common
+
+    $python3packages = [
+        'python3-keystoneauth1',
+        'python3-keystoneclient',
+        'python3-novaclient',
+        'python3-glanceclient',
+        'python3-openstackclient',
+        'python3-designateclient',
+        'python3-neutronclient',
+    ]
+
+    package{ $python3packages:
+        ensure => 'present',
+    }
 }
