@@ -27,6 +27,16 @@ import redis
 import yaml
 
 
+# arclamp-log will exit with an error if TIMEOUT_SECS elapse with no new
+# messages arriving. This ensures that arclamp-log is restarted if the
+# connection to redis is interrupted (see T215740). It is set to a high value
+# (30m) to avoid crash-looping on the beta cluster, where profiler samples are
+# infrequent.
+#
+# TODO: Use health-checks instead, once available in our version of redis-py.
+#   See <https://github.com/andymccurdy/redis-py#connections>.
+TIMEOUT_SECS = 60 * 30
+
 parser = argparse.ArgumentParser()
 # Configuration keys:
 #
@@ -125,7 +135,12 @@ def get_tag(raw_stack):
     return m.group(1) if m else None
 
 
-for message in pubsub.listen():
+while True:
+    message = pubsub.get_message(timeout=TIMEOUT_SECS)
+
+    if message is None:
+        raise RuntimeError("Timed out while waiting for message.")
+
     # T169249 skip the subscription confirmation message
     if message['type'] != 'message':
         continue
