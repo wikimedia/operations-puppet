@@ -46,17 +46,16 @@ report_variables      NONE
 
 
 class HostProcessorTest(unittest.TestCase):
-    @classmethod
     @patch("grid_configurator.grid_configurator.HostProcessor._get_regions")
     @patch("grid_configurator.grid_configurator.HostProcessor._hosts")
     @patch("grid_configurator.grid_configurator.session.Session", autospec=True)
-    def setupClass(cls, mock_get_regions, mock_get_servers, mock_session):
+    def setUp(self, mock_get_regions, mock_get_servers, mock_session):
         tmp_dir = tempfile.mkdtemp()
         os.mkdir(os.path.join(tmp_dir, "exechosts"))
-        HostProcessorTest.exec_dir = os.path.join(tmp_dir, "exechosts")
+        self.exec_dir = os.path.join(tmp_dir, "exechosts")
         existing_exec_host_one = "toolsbeta-sgeexec-0000.toolsbeta.eqiad.wmflabs"
         with open(
-            os.path.join(HostProcessorTest.exec_dir, existing_exec_host_one), "w"
+            os.path.join(self.exec_dir, existing_exec_host_one), "w"
         ) as input_file:
             input_file.write(
                 """\
@@ -73,7 +72,7 @@ report_variables      NONE
             )
         existing_exec_host_two = "toolsbeta-sgeexec-0002.toolsbeta.eqiad.wmflabs"
         with open(
-            os.path.join(HostProcessorTest.exec_dir, existing_exec_host_two), "w"
+            os.path.join(self.exec_dir, existing_exec_host_two), "w"
         ) as input_file:
             input_file.write(
                 """\
@@ -90,7 +89,7 @@ report_variables      NONE
             )
         mock_get_regions.return_value = ["region"]
         mock_get_servers.return_value = OPENSTACK_MOCK_HOSTS
-        cls.host_proc_object = grid_configurator.HostProcessor(
+        self.host_proc_object = grid_configurator.HostProcessor(
             "http://dummycontrol1003.wikimedia.org:5000/v3",
             "not-a-password",
             grid_configurator.GRID_HOST_PREFIX,
@@ -120,7 +119,7 @@ toolsbeta-sgecron-0000.toolsbeta.eqiad.wmflabs
                 "qconf",
                 "-Ae",
                 os.path.join(
-                    self.__class__.exec_dir,
+                    self.exec_dir,
                     "toolsbeta-sgeexec-0002.toolsbeta.eqiad.wmflabs",
                 ),
             ],

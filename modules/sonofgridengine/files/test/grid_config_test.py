@@ -21,9 +21,8 @@ class GridConfigInitTest(unittest.TestCase):
 
 
 class GridConfigUsageTest(unittest.TestCase):
-    @classmethod
-    def setupClass(cls):
-        cls.conf_object = grid_configurator.GridConfig(
+    def setUp(self):
+        self.conf_object = grid_configurator.GridConfig(
             "dummy",
             "dummy_intance",
             ["qconf", "-Aq"],

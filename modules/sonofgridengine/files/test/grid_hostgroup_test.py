@@ -17,9 +17,8 @@ OPENSTACK_MOCK_HOSTS = {
 
 
 class GridHostGroupTest(unittest.TestCase):
-    @classmethod
-    def setupClass(cls):
-        cls.conf_object = grid_configurator.GridHostGroup("@dummies")
+    def setUp(self):
+        self.conf_object = grid_configurator.GridHostGroup("@dummies")
 
     @patch("grid_configurator.grid_configurator.subprocess.run")
     def test_check_exists(self, mock_run):
