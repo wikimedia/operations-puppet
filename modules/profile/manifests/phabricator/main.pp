@@ -99,15 +99,14 @@ class profile::phabricator::main (
         $dump_enabled = false
         $ferm_ensure = 'absent'
         $aphlict_ensure = 'absent'
+    }
 
-        # on standby/staging servers allow http from
-        # deployment servers for testing changes
-        ferm::service { 'phabmain_http_deployment':
-            ensure => present,
-            proto  => 'tcp',
-            port   => '80',
-            srange => '$DEPLOYMENT_HOSTS',
-        }
+    # allow http from deployment servers for testing
+    ferm::service { 'phabmain_http_deployment':
+        ensure => present,
+        proto  => 'tcp',
+        port   => '80',
+        srange => '$DEPLOYMENT_HOSTS',
     }
 
     if $aphlict_enabled {
@@ -431,13 +430,6 @@ class profile::phabricator::main (
         phab_bot => {
             root_dir => "${phab_root_dir}/phabricator/",
         },
-    }
-
-    ferm::service { 'phabmain_http':
-        ensure => $ferm_ensure,
-        proto  => 'tcp',
-        port   => '80',
-        srange => '($CACHES $DEPLOYMENT_HOSTS)',
     }
 
     # receive mail from mail smarthosts
