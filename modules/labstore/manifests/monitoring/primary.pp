@@ -84,9 +84,8 @@ class labstore::monitoring::primary(
     }
 
     nrpe::monitor_service { 'check_nfs_status':
-        critical      => $critical,
-        description   => 'NFS served over cluster IP',
-        nrpe_command  => "/usr/lib/nagios/plugins/check_rpc -H ${cluster_ip} -C nfs -c4 -t",
+        description   => 'NFS port is open on cluster IP',
+        nrpe_command  => "/usr/lib/nagios/plugins/check_tcp -H ${cluster_ip} -p 2049 --timeout=2",
         contact_group => $contact_groups,
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Data_Services/Admin/Labstore',
     }

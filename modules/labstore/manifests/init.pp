@@ -11,8 +11,16 @@ class labstore (
 
     require_package('nfs-kernel-server')
     require_package('lvm2')
+
+    file { '/etc/idmapd.conf':
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+        source => 'puppet:///modules/labstore/idmapd.conf',
+    }
+
     require_package('nfs-common')
-    require_package('rpcbind')
     require_package('nfsd-ldap')
 
     # Nethogs is useful to monitor NFS client resource utilization
@@ -28,14 +36,6 @@ class labstore (
         source => 'puppet:///modules/labstore/snapshot-manager.py',
     }
 
-    file { '/etc/modprobe.d/nfs-lockd.conf':
-        ensure  => present,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0644',
-        content => 'options lockd nlm_udpport=32768 nlm_tcpport=32769',
-    }
-
     if ( $::realm != 'labs' ) {
         file { '/etc/default/nfs-common':
             ensure => present,
@@ -43,6 +43,18 @@ class labstore (
             group  => 'root',
             mode   => '0555',
             source => 'puppet:///modules/labstore/nfs-common',
+        }
+
+        service { 'rpcbind':
+            ensure => stopped,
+        }
+
+        exec { '/bin/systemctl mask rpcbind.service':
+            creates => '/etc/systemd/system/rpcbind.service',
+        }
+
+        exec { '/bin/systemctl mask rpcbind.socket':
+            creates => '/etc/systemd/system/rpcbind.socket',
         }
     }
 
@@ -52,5 +64,13 @@ class labstore (
         group   => 'root',
         mode    => '0555',
         content => template('labstore/nfs-kernel-server.erb'),
+    }
+
+    # For some reason, on stretch, this isn't created during install of the nfs
+    # server, which causes failures in the nfsdcltrack init
+    file { '/var/lib/nfs/nfsdcltrack/':
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
     }
 }

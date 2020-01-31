@@ -18,7 +18,7 @@ class profile::wmcs::nfsclient(
         project     => $::labsproject,
         options     => ['rw', $mode],
         mount_path  => '/mnt/nfs/labstore-secondary-project',
-        share_path  => "/project/${::labsproject}/project",
+        share_path  => "/srv/misc/shared/${::labsproject}/project",
         server      => 'nfs-tools-project.svc.eqiad.wmnet',
         lookupcache => $lookupcache,
     }
@@ -28,7 +28,7 @@ class profile::wmcs::nfsclient(
         project     => $::labsproject,
         options     => ['rw', 'hard'],
         mount_path  => '/mnt/nfs/labstore-secondary-home',
-        share_path  => "/project/${::labsproject}/home",
+        share_path  => "/srv/misc/shared/${::labsproject}/home",
         server      => 'nfs-tools-project.svc.eqiad.wmnet',
         lookupcache => $lookupcache,
     }
@@ -80,7 +80,7 @@ class profile::wmcs::nfsclient(
             options     => ['rw', 'hard'],
             mount_path  => '/mnt/nfs/secondary-maps',
             server      => 'nfs-maps.wikimedia.org',
-            share_path  => '/project/maps',
+            share_path  => '/srv/maps',
             lookupcache => $lookupcache,
         }
 
@@ -110,7 +110,7 @@ class profile::wmcs::nfsclient(
             options     => ['rw', 'hard'],
             mount_path  => '/mnt/nfs/labstore-secondary-tools-home',
             server      => 'nfs-tools-project.svc.eqiad.wmnet',
-            share_path  => '/project/tools/home',
+            share_path  => '/srv/tools/shared/tools/home',
             lookupcache => $lookupcache,
         }
 
@@ -120,7 +120,7 @@ class profile::wmcs::nfsclient(
             options     => ['rw', 'hard'],
             mount_path  => '/mnt/nfs/labstore-secondary-tools-project',
             server      => 'nfs-tools-project.svc.eqiad.wmnet',
-            share_path  => '/project/tools/project',
+            share_path  => '/srv/tools/shared/tools/project',
             lookupcache => $lookupcache,
         }
 

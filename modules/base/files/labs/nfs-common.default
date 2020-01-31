@@ -3,7 +3,7 @@
 # for the NEED_ options are "yes" and "no".
 
 # Do you want to start the statd daemon? It is not needed for NFSv4.
-NEED_STATD=
+NEED_STATD="no"
 
 # Options for rpc.statd.
 #   Should rpc.statd listen on a specific port? This is especially useful
@@ -13,7 +13,11 @@ NEED_STATD=
 STATDOPTS=
 
 # Do you want to start the idmapd daemon? It is only needed for NFSv4.
-NEED_IDMAPD=yes
+NEED_IDMAPD="yes"
 
 # Do you want to start the gssd daemon? It is required for Kerberos mounts.
-NEED_GSSD=
+NEED_GSSD="no"
+NEED_LOCKD="no"
+
+RPCNFSDOPTS="-N 2 -N 3"
+RPCMOUNTDOPTS="--manage-gids -N 2 -N 3"

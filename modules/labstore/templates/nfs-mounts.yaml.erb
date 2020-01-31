@@ -5,8 +5,7 @@ volumes_served:
   <% end %>
 <% end -%>
 public:
-  scratch: '/exp/scratch *(rw,sec=sys,sync,no_subtree_check,root_squash)'
-  root: '/exp *(ro,fsid=0,sec=sys,sync,subtree_check,root_squash,nocrossmnt)'
+  scratch: '/srv/scratch *(rw,sec=sys,sync,no_subtree_check,root_squash)'
 private:
   account-creation-assistance:
     gid: 50088

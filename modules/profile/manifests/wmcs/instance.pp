@@ -48,7 +48,12 @@ class profile::wmcs::instance(
     if $facts['nfscommon_version'] {
         service { 'rpcbind':
             ensure => 'stopped',
-            enable => false,
+        }
+        exec { '/bin/systemctl mask rpcbind.service':
+            creates => '/etc/systemd/system/rpcbind.service',
+        }
+        exec { '/bin/systemctl mask rpcbind.socket':
+            creates => '/etc/systemd/system/rpcbind.socket',
         }
     }
 

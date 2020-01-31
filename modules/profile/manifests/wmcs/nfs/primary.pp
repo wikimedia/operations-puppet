@@ -118,18 +118,22 @@ class profile::wmcs::nfs::primary(
     }
 
     # state via nfs-manage
-    if $::lsbdistcodename == 'stretch' {
+    if os_version('debian >= stretch') {
         service { 'nfs-server':
             enable => false,
         }
+        $nfs_start_command = 'systemctl start nfs-server'
+        $nfs_stop_command = 'systemctl stop nfs-server'
     } else {
         service { 'nfs-kernel-server':
             enable => false,
         }
+        $nfs_start_command = '/usr/sbin/service nfs-kernel-server start'
+        $nfs_stop_command = '/usr/sbin/service nfs-kernel-server stop'
     }
 
     file { '/usr/local/sbin/nfs-manage':
-        content => template('role/labs/nfs/nfs-manage.sh.erb'),
+        content => template('profile/wmcs/nfs/nfs-manage.sh.erb'),
         mode    => '0744',
         owner   => 'root',
         group   => 'root',

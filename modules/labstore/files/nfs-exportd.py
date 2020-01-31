@@ -53,21 +53,30 @@ class Project:
     """
 
     EXPORTS_TEMPLATE = (
-        "/exp/project/{name} "
-        + "-rw,nohide,fsid=00000000000000000-{gid}-0000000000"
-        + ",no_subtree_check,async,no_root_squash "
+        "/srv/{vol}/shared/{name} "
+        + "-rw,nohide,no_subtree_check,async,no_root_squash "
         + "{instance_ips}"
     )
 
-    def __init__(self, name, gid, instance_ips, volumes):
+    def __init__(self, name, gid, instance_ips, volume):
         self.name = name
         self.instance_ips = instance_ips
-        self.volumes = volumes
+        self.volume = volume
         self.gid = gid
-        self.path = os.path.join("/exp/project/", name)
 
     def get_exports(self):
+        if self.name == "maps":
+            return (
+                "/srv/{name} "
+                + "-rw,nohide,no_subtree_check,async,no_root_squash "
+                + "{instance_ips}"
+            ).format(
+                name=self.name,
+                gid=self.gid,
+                instance_ips=" ".join(self.instance_ips),
+            )
         return Project.EXPORTS_TEMPLATE.format(
+            vol=self.volume,
             name=self.name,
             gid=self.gid,
             instance_ips=" ".join(self.instance_ips),
@@ -165,7 +174,10 @@ def get_projects_with_nfs(mounts_config, observer_pass, auth_url):
             continue
         ips = get_instance_ips(name, observer_pass, regions, auth_url)
         if ips:
-            project = Project(name, config["gid"], ips, mounts)
+            vol = "misc"
+            if name == "tools":
+                vol = "tools"
+            project = Project(name, config["gid"], ips, vol)
             projects.append(project)
             logging.debug(
                 "project %s has %s instances", name, len(project.instance_ips)

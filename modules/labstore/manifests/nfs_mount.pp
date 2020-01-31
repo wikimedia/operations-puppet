@@ -50,7 +50,6 @@ define labstore::nfs_mount(
                 'intr',
                 'sec=sys',
                 'proto=tcp',
-                'port=0',
                 'noatime',
                 "lookupcache=${lookupcache}",
                 'nofsc',
@@ -174,10 +173,6 @@ define labstore::nfs_mount(
             group   => 'root',
             mode    => '0444',
             content => "options nfs nfs4_disable_idmapping=1\n",
-        }
-
-        file { '/etc/idmapd.conf':
-            ensure => absent,
         }
     }
 }
