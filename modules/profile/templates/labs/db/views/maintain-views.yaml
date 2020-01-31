@@ -298,7 +298,7 @@ customviews:
     source: actor
     view: select actor_id, actor_user, actor_name
     where: >
-      exists( select 1 from revision JOIN revision_actor_temp ON(revactor_rev = rev_id) where rev_deleted&4 = 0 )
+      exists( select 1 from revision JOIN revision_actor_temp ON(revactor_rev = rev_id) where revactor_actor = actor_id AND rev_deleted&4 = 0 )
   archive:
     source: archive
     view: >
