@@ -23,8 +23,9 @@ def write_file(path, generated_metrics):
 
 
 def count_files(path):
-    """ Non-recursive file count excluding directories. """
-    files = [x for x in os.listdir(path) if os.path.isfile(os.path.join(path, x))]
+    """Non-recursive file count excluding directories
+       (but including links/special files)."""
+    files = [x for x in os.listdir(path) if not os.path.isdir(os.path.join(path, x))]
     return len(files)
 
 
