@@ -445,7 +445,11 @@ def read_dblist(db_list, mwroot):
     for line in lines:
         # Strip comments and trim whitespace
         comment = line.find("#")
-        if comment:
+        if comment == 0:
+            # Ignore lines that are only comments
+            continue
+        if comment != -1:
+            # Remove inline comments
             line = line[:comment]
         line = line.strip()
         if line.startswith("%%"):
