@@ -249,7 +249,7 @@ customviews:
       OR exists( select 1 from filearchive where fa_actor = actor_id AND fa_deleted&4 = 0 )
       OR exists( select 1 from recentchanges where rc_actor = actor_id AND rc_deleted&4 = 0 )
       OR exists( select 1 from logging where log_actor = actor_id AND log_deleted&4 = 0 AND $INSERTED_EXPR$ )
-      OR exists( select 1 from revision JOIN revision_actor_temp ON(revactor_rev = rev_id) where rev_deleted&4 = 0 )
+      OR exists( select 1 from revision JOIN revision_actor_temp ON(revactor_rev = rev_id) where revactor_actor = actor_id AND rev_deleted&4 = 0 )
     logging_where:
       *allowed_logtypes
   actor_user:
