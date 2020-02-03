@@ -36,6 +36,11 @@ class profile::cassandra(
         default => present,
     }
 
+    # rsyslog forwards json messages sent to localhost along to logstash via kafka
+    if $cassandra_real_settings['logstash_host'] == 'localhost' {
+        class { '::profile::rsyslog::udp_json_logback_compat': }
+    }
+
     class { '::cassandra::metrics':
         graphite_host => $graphite_host,
         whitelist     => $metrics_whitelist,
