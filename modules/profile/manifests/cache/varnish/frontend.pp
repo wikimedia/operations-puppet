@@ -106,6 +106,14 @@ class profile::cache::varnish::frontend (
         dashboard_links => ["https://grafana.wikimedia.org/dashboard/db/cache-host-drilldown?fullscreen&orgId=1&panelId=76&var-site=${::site} prometheus/ops&var-instance=${::hostname}"],
     }
 
+    # Monitor number of varnish file descriptors. Initially added to track
+    # T243634 but generally useful.
+    prometheus::node_file_count {'track vcache fds':
+        paths   => [ '/proc/$(pgrep -u vcache)/fd' ],
+        outfile => '/var/lib/prometheus/node.d/vcache_fds.prom',
+        metric  => 'node_varnish_filedescriptors_total',
+    }
+
     # lint:ignore:arrow_alignment
     varnish::instance { "${cache_cluster}-frontend":
         instance_name      => 'frontend',
