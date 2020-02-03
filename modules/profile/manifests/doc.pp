@@ -22,9 +22,8 @@ class profile::doc {
 
     git::clone { 'integration/docroot':
         directory => '/srv/docroot',
-        owner     => 'nobody',
-        group     => 'wikidev',
-        shared    => true,
+        owner     => 'doc-uploader',
+        group     => 'doc-uploader',
     }
 
     ferm::service { 'doc-http':
