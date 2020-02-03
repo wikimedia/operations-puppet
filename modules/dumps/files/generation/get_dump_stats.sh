@@ -102,9 +102,10 @@ elif [ -z "$sender_address" ]; then
 fi
 
 cd "$dumpsbasedir"
-allsubdirs=$( find . -mindepth 1 -maxdepth 1 -name '*wik*' -type d | sed -e 's|\./||g;' )
+# skip 10wiki, it's irrelevant to our stats
+allsubdirs=$( find . -mindepth 1 -maxdepth 1 -name '*wik*' -type d | sed -e 's|\./||g;' | grep -v 10wiki )
 allsubdirs_array=( $allsubdirs )
-emptysubdirs=$( find . -mindepth 1 -maxdepth 1 -name '*wik*' -type d -empty | sed -e 's|\./||g;' )
+emptysubdirs=$( find . -mindepth 1 -maxdepth 1 -name '*wik*' -type d -empty | sed -e 's|\./||g;' | grep -v 10wiki )
 emptysubdirs_array=( $emptysubdirs )
 totaldumped=$(( ${#allsubdirs_array[@]} - ${#emptysubdirs_array[@]} ))
 
@@ -126,7 +127,7 @@ fi
 # choose random wiki not enwiki
 wikirandom_index=$(( $RANDOM % $totaldumped ))
 wikirandom=${allsubdirs_array[$wikirandom_index]}
-if [ "$wikirandom" == "enwiki" -o "$wikirandom" == "10wikipedia" ]; then
+if [ "$wikirandom" == "enwiki" ]; then
     # try again, we'll get some other wiki this time... surely?
     wikirandom_index=$( $RANDOM % $totaldumped )
     wikirandom=${allsubdirs_array[$wikirandom]}
