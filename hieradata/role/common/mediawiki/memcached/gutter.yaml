@@ -1,4 +1,4 @@
-cluster: memcached
+cluster: memcached_gutter
 admin::groups:
   - perf-roots
 profile::memcached::version: 'present'

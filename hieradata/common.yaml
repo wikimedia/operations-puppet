@@ -173,6 +173,12 @@ wikimedia_clusters:
     sites:
       eqiad: []
       codfw: []
+  memcached_gutter:
+    description: "Memcached gutter pool"
+    id: 34
+    sites:
+      codfw: []
+      eqiad: []
   fundraising:
     description: "Fundraising"
     id: 35
