@@ -17,7 +17,7 @@ import sys
 
 import glanceclient
 from keystoneclient.auth.identity import generic
-from keystoneclient import session as keystone_session
+from keystoneauth1 import session as keystone_session
 from novaclient import client
 
 if sys.version_info[0] >= 3:

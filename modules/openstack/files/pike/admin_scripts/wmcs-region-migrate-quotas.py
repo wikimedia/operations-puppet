@@ -11,7 +11,7 @@ except ImportError:
 import argparse
 
 from keystoneclient.auth.identity import generic
-from keystoneclient import session as keystone_session
+from keystoneauth1 import session as keystone_session
 from novaclient import client
 from neutronclient.v2_0 import client as neutronclient
 

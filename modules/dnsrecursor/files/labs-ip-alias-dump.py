@@ -7,7 +7,7 @@ import argparse
 import itertools
 
 from keystoneclient.auth.identity import generic
-from keystoneclient import session as keystone_session
+from keystoneauth1 import session as keystone_session
 
 from keystoneclient.v3 import client as keystone_client
 
