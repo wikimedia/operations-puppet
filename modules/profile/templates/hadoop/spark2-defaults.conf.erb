@@ -44,9 +44,13 @@ spark.yarn.archive                                  hdfs:///user/spark/share/lib
 
 <% if @encryption_enabled -%>
 spark.authenticate                                  true
-spark.io.encryption.enabled                         true
-spark.io.encryption.keySizeBits                     256
-spark.io.encryption.keygen.algorithm                HmacSHA256
+# Spark IO encryption settings are not enabled (but listed anyway)
+# since in some use cases (like Refine) they caused exceptions like
+# 'java.io.IOException: Stream is corrupted' when shuffle files were
+# compressed with lz4.
+# spark.io.encryption.enabled                         true
+# spark.io.encryption.keySizeBits                     256
+# spark.io.encryption.keygen.algorithm                HmacSHA256
 spark.network.crypto.enabled                        true
 spark.network.crypto.keyFactoryAlgorithm            PBKDF2WithHmacSHA256
 spark.network.crypto.keyLength                      256
