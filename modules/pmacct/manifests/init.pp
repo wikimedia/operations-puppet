@@ -71,4 +71,6 @@ class pmacct(
         ensure => running,
         enable => true,
     }
+
+    base::service_auto_restart { 'nfacctd': }
 }
