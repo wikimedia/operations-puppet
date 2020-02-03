@@ -10,24 +10,24 @@
 # [*statsd_host*]
 #   The statsd host to send stats to.
 #
-# [*forward_syslog*]
-#   Host and port to forward syslog events to. Disable forwarding by passing an
-#   empty string (default).
-#
 # [*mtail_progs*]
 #   Directory with mtail programs. Defaults to /etc/mtail.
 #
 class varnish::logging(
     $cache_cluster,
     $statsd_host,
-    $forward_syslog='',
     $mtail_progs='/etc/mtail',
 ){
     require_package('python3-logstash')
 
     rsyslog::conf { 'varnish':
-        content  => template('varnish/rsyslog.conf.erb'),
+        ensure   => absent,
         priority => 80,
+    }
+
+    rsyslog::conf { 'varnish_pipeline':
+        content  => template('varnish/rsyslog.conf.erb'),
+        priority => 20,
     }
 
     exec { 'mask_default_mtail':

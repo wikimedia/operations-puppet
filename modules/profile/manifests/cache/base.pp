@@ -85,16 +85,9 @@ class profile::cache::base(
     ###########################################################################
     # Analytics/Logging stuff
     ###########################################################################
-    if $logstash_host != undef and $logstash_syslog_port != undef {
-        $forward_syslog = "${logstash_host}:${logstash_syslog_port}"
-    } else {
-        $forward_syslog = ''
-    }
-
     class { '::varnish::logging':
-        cache_cluster  => $cache_cluster,
-        statsd_host    => $statsd_host,
-        forward_syslog => $forward_syslog,
+        cache_cluster => $cache_cluster,
+        statsd_host   => $statsd_host,
     }
 
     # auto-depool on shutdown + conditional one-shot auto-pool on start
