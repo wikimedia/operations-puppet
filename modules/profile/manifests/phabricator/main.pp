@@ -450,6 +450,12 @@ class profile::phabricator::main (
         srange => inline_template('(<%= @mail_smarthost.map{|x| "@resolve(#{x}, AAAA)" }.join(" ") %>)'),
     }
 
+    monitoring::service { 'smtp':
+        description   => 'Phabricator SMTP',
+        check_command => 'check_smtp',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Mail#Troubleshooting',
+    }
+
     # ssh between phabricator servers for clustering support
     $phabricator_servers_ferm = join($phabricator_servers, ' ')
     ferm::service { 'ssh_cluster':
