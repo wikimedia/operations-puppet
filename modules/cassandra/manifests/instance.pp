@@ -459,7 +459,9 @@ define cassandra::instance(
         }
 
         file { "${config_directory}/tls/server.key":
-            content   => secret("cassandra/${tls_cluster_name}/${tls_hostname}/${tls_hostname}.kst"),
+            # NB: using binary_file here under the hood to make PCC happy.
+            # See also https://phabricator.wikimedia.org/T236481
+            content   => wmflib::secret("cassandra/${tls_cluster_name}/${tls_hostname}/${tls_hostname}.kst", true),
             owner     => 'cassandra',
             group     => 'cassandra',
             mode      => '0400',
@@ -467,7 +469,9 @@ define cassandra::instance(
         }
 
         file { "${config_directory}/tls/server.trust":
-            content => secret("cassandra/${tls_cluster_name}/truststore"),
+            # NB: using binary_file here under the hood to make PCC happy.
+            # See also https://phabricator.wikimedia.org/T236481
+            content => wmflib::secret("cassandra/${tls_cluster_name}/truststore", true),
             owner   => 'cassandra',
             group   => 'cassandra',
             mode    => '0400',
