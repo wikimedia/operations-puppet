@@ -40,12 +40,10 @@ class profile::doc {
     file { '/srv/docroot/org/wikimedia/doc':
         ensure  => 'directory',
         owner   => 'doc-uploader',
-        group   => 'wikidev',
+        group   => 'doc-uploader',
         mode    => '0755',
         require => Git::Clone['integration/docroot'],
     }
-
-    class {'::deployment::umask_wikidev': }
 
     backup::set { 'srv-docroot-org-wikimedia-doc': }
 
@@ -57,7 +55,7 @@ class profile::doc {
         read_only      => 'no',
         path           => '/srv/docroot/org/wikimedia/doc',
         uid            => 'doc-uploader',
-        gid            => 'wikidev',
+        gid            => 'doc-uploader',
         incoming_chmod => 'D775,F664',
         hosts_allow    => ['contint1001.wikimedia.org', 'contint2001.wikimedia.org'],
         auto_ferm      => true,
