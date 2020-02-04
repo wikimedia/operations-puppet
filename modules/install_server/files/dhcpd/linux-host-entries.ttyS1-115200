@@ -556,6 +556,11 @@ host centrallog2001 {
     fixed-address centrallog2001.codfw.wmnet;
 }
 
+host cescout1001 {
+    hardware ethernet 4C:D9:8F:60:AB:0C;
+    fixed-address cescout1001.eqiad.wmnet;
+}
+
 host cloudbackup2001 {
     hardware ethernet B0:26:28:5A:DD:30;
     fixed-address cloudbackup2001.codfw.wmnet;
