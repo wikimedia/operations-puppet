@@ -38,7 +38,6 @@ class profile::cache::base(
     include ::profile::prometheus::varnishkafka_exporter
 
     # Globals we need to include
-    include ::lvs::configuration
     include ::network::constants
 
     if ! $allow_iptables {

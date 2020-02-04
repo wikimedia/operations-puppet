@@ -21,7 +21,7 @@ class profile::cache::varnish::frontend (
     if $has_lvs {
         # TODO: convert to use profile::lvs::realserver
         class { '::lvs::realserver':
-            realserver_ips => $lvs::configuration::service_ips[$cache_cluster][$::site],
+            realserver_ips => wmflib::service::fetch()[$cache_cluster]['ip'][$::site]
         }
     }
 
