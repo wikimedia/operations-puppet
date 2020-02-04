@@ -13,40 +13,33 @@ class profile::lvs::realserver(
     Hash $pools = hiera('profile::lvs::realserver::pools', {}),
     Boolean $use_conftool = hiera('profile::lvs::realserver::use_conftool'),
 ) {
+    $present_pools = $pools.keys()
+    $services = wmflib::service::fetch().filter |$lvs_name, $svc| {$lvs_name in $present_pools}
     require ::lvs::configuration
-
-    # Extract all the realserver IPs from the lvs_configuration
-    $realserver_ips_raw = $pools.map |$lvs_name, $pool| {
-        $ips = $::lvs::configuration::lvs_services[$lvs_name]['ip']
-        if !($::site in $ips) {
-            undef
-        }
-        elsif $ips[$::site] =~ String {
-            $ips[$::site]
-        }
-        else {
-            $ips[$::site].map |$lbl, $ip| {
-                $ip
-            }
-        }
+    $ips = $services.filter |$lvs_name, $svc| {
+        $::site in $svc['ip']
     }
-    $realserver_ips = unique(flatten($realserver_ips_raw).filter |$ip| { $ip != undef})
+    .map |$lvs_name, $svc| {
+        $svc['ip'][$::site].values()
+    }
+    .flatten()
+    .unique()
+
     class { '::lvs::realserver':
-        realserver_ips => $realserver_ips,
+        realserver_ips => $ips,
     }
 
     if $use_conftool {
         require ::profile::conftool::client
-        $all_services = $pools.map |$lvs_name, $pool| {
+        $pools.map |$lvs_name, $pool| {
             $pool['services']
-        }
-        unique(flatten($all_services)).each |$service| {
+        }.flatten().unique().each |$service| {
             # Extract all the pools in which the service is included.
             $service_pools = $pools.filter |$lvs_name, $pool| { $service in $pool['services'] }
             conftool::scripts::safe_service_restart { $service:
                 lvs_pools       => keys($service_pools),
                 lvs_class_hosts => $::lvs::configuration::lvs_class_hosts,
-                lvs_services    => $::lvs::configuration::lvs_services
+                services        => $services,
             }
         }
     }

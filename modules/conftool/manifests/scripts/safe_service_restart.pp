@@ -16,7 +16,7 @@
 # === Parameters
 # [*lvs_pools*]   names of the lvs pools we want to depool
 #
-# [*lvs_services*] Lvs services, as defined in lvs::configuration::lvs_services
+# [*services*] The relevant part of the service catalog
 #
 # [*lvs_class_hosts*] LVS hosts classes, as defined in lvs::configuration::lvs_class_hosts.
 #
@@ -24,29 +24,24 @@
 # and will just be a stub.
 define conftool::scripts::safe_service_restart(
     Array[String] $lvs_pools,
-    Hash $lvs_services,
+    Hash[String, Wmflib::Service] $services,
     Hash $lvs_class_hosts,
 ) {
     # Only require the other conftool scrips if lvs pools are declared.
     if $lvs_pools != [] {
         require ::conftool::scripts
         # Find the base cli arguments shared by all scripts.
-        $combined = $lvs_pools.map |$pool| {
-            $service = $lvs_services[$pool]
-            $port = $service['port'] ? {
-                Stdlib::Port => $service['port'],
-                default      => 80,
-            }
-            $uris = $lvs_class_hosts[$service['class']].map |$host| { "http://${host}:9090/pools/${pool}_${port}" }
-            [$uris, [$service['conftool']['service']]]
-        }.reduce |$stored, $current| {
-            [$stored[0] + $current[0], $stored[1] + $current[1]]
+        $uris = $lvs_pools.map |$pool| {
+            $service = $services[$pool]
+            $port = $service['port']
+            $lvs_class_hosts[$service['lvs']['class']].map |$host| { "http://${host}:9090/pools/${pool}_${port}" }
+#            $uris, [$service['conftool']['service']]]
         }
-        if $combined {
-            $uri_str = join($combined[0], ' ')
-            $pool_str = join($combined[1], ' ')
-            $base_cli_args = "--lvs-urls ${uri_str} --pools ${pool_str}"
-        }
+        .flatten().unique().join(' ')
+        $pools = $lvs_pools.map |$pool| {
+            $services[$pool]['lvs']['conftool']['service']
+        }.unique().join(' ')
+        $base_cli_args = "--lvs-urls ${uris} --pools ${pools}"
         # TODO: move to sbin as well. Now here for historical reasons.
         file { "/usr/local/bin/depool-${title}":
             ensure  => present,
@@ -64,6 +59,7 @@ define conftool::scripts::safe_service_restart(
             content => template('conftool/safe-pool.erb')
         }
     }
+    # This file will be created independently of the presence of pools to remove or not.
     file { "/usr/local/sbin/restart-${title}":
         ensure  => present,
         content => template('conftool/safe-restart.erb'),
