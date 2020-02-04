@@ -221,28 +221,16 @@ host idp2001 {
     fixed-address idp2001.wikimedia.org;
 }
 
-host install1002 {
-    hardware ethernet aa:00:00:3c:d7:80;
-    fixed-address install1002.wikimedia.org;
-    next-server 208.80.153.53; # install2002 (tftp server)
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-}
-
 host install1003 {
     hardware ethernet aa:00:00:a0:d3:c0;
     fixed-address install1003.wikimedia.org;
-}
-
-host install2002 {
-    hardware ethernet aa:00:00:6b:d7:3f;
-    fixed-address install2002.wikimedia.org;
-    next-server 208.80.154.22; # install1002 (tftp server)
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
+    next-server 208.80.153.51; # install2003 (tftp server)
 }
 
 host install2003 {
     hardware ethernet aa:00:00:cd:6f:fc;
     fixed-address install2003.wikimedia.org;
+    next-server 208.80.154.32; # install1003 (tftp server)
 }
 
 host irc2001 {
