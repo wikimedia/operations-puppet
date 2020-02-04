@@ -163,5 +163,6 @@ function do_global_send_request()
     -- We have also observed Swift returning Content-Type: gzip with
     -- non-gzipped content, which confuses varnish-fe making it occasionally
     -- return 503.
-    ts.server_request.header['Accept-Encoding'] = nil
+    -- XXX: commented out temporarily to assess impact on ongoing outage
+    --ts.server_request.header['Accept-Encoding'] = nil
 end
