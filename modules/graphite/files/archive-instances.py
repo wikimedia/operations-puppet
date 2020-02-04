@@ -24,7 +24,7 @@ import yaml
 from keystoneclient.auth.identity.v3 import Password as KeystonePassword
 from keystoneclient.client import Client as KeystoneClient
 from keystoneclient.exceptions import Unauthorized as KeystoneUnauthorisedException
-from keystoneclient.session import Session as KeystoneSession
+from keystoneauth1.session import Session as KeystoneSession
 from novaclient import client as novaclient
 
 WHISPER_PATH = '/srv/carbon/whisper'
