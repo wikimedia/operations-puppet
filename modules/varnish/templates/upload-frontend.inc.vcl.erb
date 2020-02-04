@@ -147,7 +147,7 @@ sub cluster_fe_ratelimit {
 				return (synth(429, "Too Many Requests"));
 			}
 			// below is attempted mitigation of https://phabricator.wikimedia.org/T244278
-			if (req.http.referer && req.http.referer !~ "((^|\.)(wikipedia|wikimedia|wikibooks|wikinews|wikiquote|wikisource|wikiversity|wikivoyage|wikidata|wikimediafoundation|wiktionary|mediawiki|wmfusercontent)\.org|^w\.wiki)(/|$)") {
+			if (req.http.referer && req.http.referer !~ "^https?://(([^/]*\.)*(wikipedia|wikimedia|wikibooks|wikinews|wikiquote|wikisource|wikiversity|wikivoyage|wikidata|wikimediafoundation|wiktionary|mediawiki|wmfusercontent|wmflabs)\.org|w\.wiki)(/|$)") {
 				return (synth(429, "Too Many Requests"));
 			}
 		}
