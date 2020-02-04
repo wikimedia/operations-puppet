@@ -172,6 +172,12 @@ monitoring::groups:
   memcached_codfw:
     description: codfw memcached
 
+
+# Memcached gutter pool
+  memcached_gutter_eqiad:
+    description: eqiad memcached gutter
+  memcached_gutter_codfw:
+    description: codfw memcached gutter
 # MySQL
   mysql_eqiad:
     description: eqiad mysql core
