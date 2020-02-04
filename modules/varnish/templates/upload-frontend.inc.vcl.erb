@@ -146,6 +146,10 @@ sub cluster_fe_ratelimit {
 			if (vsthrottle.is_denied("maps:" + req.http.X-Client-IP, 1000, 10s)) {
 				return (synth(429, "Too Many Requests"));
 			}
+			// below is attempted mitigation of https://phabricator.wikimedia.org/T244278
+			if (req.http.referer && req.http.referer ~ "^https://twpkinfo\.com") {
+				return (synth(429, "Too Many Requests"));
+			}
 		}
 
 		// Thumbor rate limiting: 1000/10s (100/s long term, with 1000 burst)
