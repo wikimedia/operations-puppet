@@ -43,3 +43,5 @@ profile::mediawiki::php::restarts::opcache_limit: 200
 # Have more php workers. This might not help the peak performance but will give us room
 # for being more resilient
 profile::mediawiki::php::fpm_workers_multiplier: 4.5
+# Register stack traces for any request taking more than 5 seconds
+profile::mediawiki::php::slowlog_limit: 5
