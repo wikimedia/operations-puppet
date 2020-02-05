@@ -6550,126 +6550,151 @@ host mw2290 {
 host mw2310 {
     hardware ethernet 4C:D9:8F:AF:2C:45;
     fixed-address mw2310.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host mw2311 {
     hardware ethernet 4C:D9:8F:AF:64:FA;
     fixed-address mw2311.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host mw2312 {
     hardware ethernet 4C:D9:8F:AF:36:07;
     fixed-address mw2312.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host mw2313 {
     hardware ethernet 4C:D9:8F:AF:5F:1C;
     fixed-address mw2313.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host mw2314 {
     hardware ethernet 4C:D9:8F:AF:4A:E5;
     fixed-address mw2314.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host mw2315 {
     hardware ethernet 4C:D9:8F:AF:5C:EE;
     fixed-address mw2315.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host mw2316 {
     hardware ethernet 4C:D9:8F:AF:4D:4B;
     fixed-address mw2316.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host mw2317 {
     hardware ethernet 4C:D9:8F:AF:74:86;
     fixed-address mw2317.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host mw2318 {
     hardware ethernet 4C:D9:8F:AF:52:80;
     fixed-address mw2318.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host mw2319 {
     hardware ethernet 4C:D9:8F:AF:35:47;
     fixed-address mw2319.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host mw2320 {
     hardware ethernet 4C:D9:8F:AF:52:40;
     fixed-address mw2320.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host mw2321 {
     hardware ethernet 4C:D9:8F:AF:31:76;
     fixed-address mw2321.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host mw2322 {
     hardware ethernet 4C:D9:8F:AF:1F:E7;
     fixed-address mw2322.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host mw2323 {
     hardware ethernet 4C:D9:8F:AF:47:4A;
     fixed-address mw2323.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host mw2324 {
     hardware ethernet 4C:D9:8F:AF:2B:AD;
     fixed-address mw2324.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host mw2325 {
     hardware ethernet 4C:D9:8F:AF:6D:22;
     fixed-address mw2325.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host mw2326 {
     hardware ethernet 4C:D9:8F:AF:2B:D5;
     fixed-address mw2326.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host mw2327 {
     hardware ethernet 4C:D9:8F:AF:54:66;
     fixed-address mw2327.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host mw2328 {
     hardware ethernet 4C:D9:8F:AF:4D:E3;
     fixed-address mw2328.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host mw2329 {
     hardware ethernet 4C:D9:8F:AF:66:C0;
     fixed-address mw2329.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host mw2330 {
     hardware ethernet 4C:D9:8F:AF:5E:74;
     fixed-address mw2330.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host mw2331 {
     hardware ethernet 4C:D9:8F:AF:1D:6B;
     fixed-address mw2331.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host mw2332 {
     hardware ethernet 4C:D9:8F:AF:78:BA;
     fixed-address mw2332.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host mw2333 {
     hardware ethernet 4C:D9:8F:AF:58:F2;
     fixed-address mw2333.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host mw2334 {
     hardware ethernet 4C:D9:8F:AF:55:0E;
     fixed-address mw2334.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host mwmaint1002 {
