@@ -1395,7 +1395,6 @@ host cp5011 {
 host cp5012 {
     hardware ethernet F4:E9:D4:CF:F0:00;
     fixed-address cp5012.eqsin.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host contint1001 {
