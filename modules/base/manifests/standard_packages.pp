@@ -45,6 +45,12 @@ class base::standard_packages {
         'zsh',
     ])
 
+    # linux-perf exists only from stretch onwards, once we are free of
+    # jessie, remove the if and move the the array above
+    if os_version('debian > jessie') {
+        require_package('linux-perf')
+    }
+
     package { 'tzdata': ensure => latest }
 
     # pxz was removed in buster. In xz >= 5.2 (so stretch and later), xz has
