@@ -24,7 +24,13 @@
 #   Maximum number of sequential requests (over the same TCP conn)
 #   that memcached will process before yielding to another connection
 #   (to avoid starving clients). Sets the '-R' option in memcached.
-#   Default: undef (memcached's default is 20)
+#   Default: 200 (memcached's default is 20)
+#
+# [*threads*]
+#   Processing threads used by memcached. Sets the '-t' option in memcached.
+#   Before 1.5.x, the extensive use of locks was limiting the scalability
+#   up to a maximum of 8.
+#   Default: undef (memcached's default is 4)
 #
 class profile::memcached::instance (
     $growth_factor    = lookup('profile::memcached::growth_factor'),
@@ -33,6 +39,8 @@ class profile::memcached::instance (
     $port             = lookup('profile::memcached::port'),
     $size             = lookup('profile::memcached::size'),
     $max_seq_reqs     = lookup('profile::memcached::max_seq_reqs', {'default_value' => 200}),
+    $threads          = lookup('profile::memcached::threads', {'default_value' => undef}),
+
 ) {
     include ::profile::prometheus::memcached_exporter
 
@@ -42,10 +50,18 @@ class profile::memcached::instance (
     }
 
     if $max_seq_reqs {
-        $extra_options = merge($base_extra_options, {'-R' => $max_seq_reqs})
+        $max_seq_reqs_opt = {'-R' => $max_seq_reqs}
     } else {
-        $extra_options = $base_extra_options
+        $max_seq_reqs_opt = {}
     }
+
+    if $threads {
+        $threads_opt = {'-t' => $threads}
+    } else {
+        $threads_opt = {}
+    }
+
+    $extra_options = $base_extra_options + $max_seq_reqs_opt + $threads_opt
 
     class { '::memcached':
         size          => $size,
