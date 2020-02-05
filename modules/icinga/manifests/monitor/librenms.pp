@@ -4,7 +4,8 @@
 class icinga::monitor::librenms {
     monitoring::service { 'librenms_alerts':
         check_command => 'check_librenms',
-        description   => 'Check alerts defined in LibreNMS',
+        description   => 'LibreNMS has a critical alert',
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Network_monitoring#LibreNMS_alerts',
+        critical      => true,
     }
 }
