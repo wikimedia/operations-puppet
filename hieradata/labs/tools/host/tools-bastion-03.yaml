@@ -1,3 +1,0 @@
-prometheus::node_exporter::collectors_extra:
-  - nfs
-  - mountstats
