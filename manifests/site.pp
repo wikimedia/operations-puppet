@@ -1945,6 +1945,11 @@ node /^snapshot1008\.eqiad\.wmnet/ {
     role(dumps::generation::worker::dumper_misc_crons_only)
 }
 
+# Used for various d-i tests
+node 'theemin.codfw.wmnet' {
+    role(test)
+}
+
 # Thumbor servers for MediaWiki image scaling
 node /^thumbor100[1234]\.eqiad\.wmnet/ {
     role(thumbor::mediawiki)
