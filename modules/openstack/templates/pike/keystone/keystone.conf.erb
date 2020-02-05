@@ -63,6 +63,8 @@ admin_workers = <%= @admin_workers %>
 [eventlet_server_ssl]
 [federation]
 [fernet_tokens]
+max_active_keys = 18
+
 [identity]
 driver = ldap
 [identity_mapping]
