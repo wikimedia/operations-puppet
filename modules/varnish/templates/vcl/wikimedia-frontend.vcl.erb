@@ -364,13 +364,6 @@ sub vcl_recv {
 			call log_xcps_info;
 		}
 
-		// This unwraps proxy-style URLs and sanitizes the Host header
-		// (lowercase, no port, no funny chars, matches cert SAN, etc)
-		call normalize_request;
-
-		// Possibly switch to separate VCL
-		call cluster_fe_vcl_switch;
-
 		// Block requests from IPs in blocked_nets. It is important to do this
 		// early but after recv_fe_ip_processing has been called, as the procedure
 		// takes care of writing X-Client-IP if it the request did not come
@@ -389,6 +382,13 @@ sub vcl_recv {
 		if (req.http.User-Agent == "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)" && vsthrottle.is_denied("node-fetch:" + req.http.X-Client-IP, 10, 10s)) {
 			return (synth(429, "Scripted requests from your IP have been blocked, please contact noc@wikimedia.org, and see also https://meta.wikimedia.org/wiki/User-Agent_policy"));
 		}
+
+		// This unwraps proxy-style URLs and sanitizes the Host header
+		// (lowercase, no port, no funny chars, matches cert SAN, etc)
+		call normalize_request;
+
+		// Possibly switch to separate VCL
+		call cluster_fe_vcl_switch;
 	}
 
 	call wm_common_recv_early;
