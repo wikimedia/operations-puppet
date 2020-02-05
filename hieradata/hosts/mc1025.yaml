@@ -1,0 +1,7 @@
+# Test to see if memcached 1.4.x can work in our settings with more threads
+# (hopefully reducing latencies when the traffic increases).
+# Due to heavy use of locking, 1.4.x is difficult to scale:
+# https://memcached.org/blog/modern-lru/
+# "Multithreaded scalability is heavily limited by the LRU locking. With the original LRU, scaling beyond 8 worker threads was difficult."
+# If this turns up to be a problem, just revert the change and restart memcached.
+profile::memcached::threads: 8
