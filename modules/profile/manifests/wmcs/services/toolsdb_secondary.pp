@@ -1,6 +1,6 @@
 # = Class: profile::wmcs::services::toolsdb_secondary
 #
-# This class sets up a the Cloud VPS project libraryupgrader.
+# This class sets up MariaDB for a secondary tools database.
 #
 class profile::wmcs::services::toolsdb_secondary (
 ) {
