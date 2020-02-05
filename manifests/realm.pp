@@ -20,42 +20,36 @@ $site = $facts['ipaddress'] ? {
     default                                                   => '(undefined)'
 }
 
-if !defined('$realm') {
-    $realm = hiera('realm', 'production')
-}
-
-if $realm == 'labs' {
+# All WMCS hosts reside in one of the following domains
+# - *.wmflabs
+# - *.wikimedia.cloud
+$wmcs_domains = ['.wmflabs', '.wikimedia.cloud']
+if $wmcs_domains.any |Stdlib::Fqdn $domain| { $trusted['certname'] =~ "${domain}$" } {
+    $realm = 'labs'
     # Pull the project name from the certname. CloudVPS VM certs can be:
     #  * <hostname>.<projname>.<site>.wmflabs
     #  * <hostname>.<projname>.<deployment>.wikimedia.cloud
     #
     # See following page for additional context:
     # https://wikitech.wikimedia.org/wiki/Wikimedia_Cloud_Services_team/EnhancementProposals/DNS_domain_usage#Resolution
-    $pieces = split($trusted['certname'], '[.]')
+    $pieces = $trusted['certname'].split('.')
 
-    if size($pieces) == 4 {
-        # current / legacy FQDN.
-        # This whole branch will go away eventually
-        if $pieces[3] != 'wmflabs' {
-            fail("Badly-formed puppet certname. Unknown TLD in ${trusted['certname']}")
-        }
+    # current / legacy FQDN.
+    # This whole branch will go away eventually
+    if $pieces[-1] == 'wmflabs' {
         if $pieces[2] != $site {
             fail("Incorrect site in certname. Should be ${site} but is ${pieces[2]}")
         }
         $labsproject = $pieces[1]
-        $wmcs_deployment = 'eqiad1'
-    } elsif size($pieces) == 5 {
-        # new FQDN
-        if $pieces[4] != 'cloud' {
-            fail("Expected FQDN to end in '.cloud'. Got ${trusted['certname']}")
+        $wmcs_deployment = $pieces[2] ? {
+            'eqiad' => 'eqiad1',
+            'codfw' => 'codfw1dev',
+            default => fail("site (${pieces[2]}) is not supported")
         }
-        if $pieces[3] != 'wikimedia' {
-            fail("Expected FQDN to end in '.wikimedia.cloud'. Got ${trusted['certname']}")
-        }
+    } else {
+        # new FQDN wikimedia.cloud
         $labsproject = $pieces[1] # $wmcs_project may make more sense
         $wmcs_deployment = $pieces[2]
-    } else {
-        fail("Unknown puppet certname FQDN: ${trusted['certname']}")
     }
 
     # some final checks before we move on
@@ -68,9 +62,15 @@ if $realm == 'labs' {
     if $::wmcs_deployment == undef {
         fail('Failed to determine $::wmcs_deployment')
     }
-    if $::projectgroup == undef {
-        $projectgroup = "project-${labsproject}"
-    }
+    $projectgroup = "project-${labsproject}"
+    $dnsconfig = lookup('labsdnsconfig',Hash, 'hash', {})
+    $nameservers = [
+        ipresolve($dnsconfig['recursor'], 4),
+        ipresolve($dnsconfig['recursor_secondary'], 4)
+    ]
+} else {
+    $realm = 'production'
+    $nameservers = [ '10.3.0.1' ] # anycast
 }
 
 # This is used to define the fallback site and is to be used by applications that
@@ -115,15 +115,6 @@ else {
 # TODO: create hash of all LVS service IPs
 
 # Set some basic variables
-
-# DNS
-# TODO - factor this and related things better
-if $realm == 'labs' {
-    $dnsconfig = hiera_hash('labsdnsconfig', {})
-    $nameservers = [ ipresolve($dnsconfig['recursor'],4), ipresolve($dnsconfig['recursor_secondary'],4) ]
-} else {
-    $nameservers = [ '10.3.0.1' ] # anycast
-}
 
 # Temporary: puppetdb switch
 # Note: $settings::storeconfigs_backend is a ruby symbol, thus it
