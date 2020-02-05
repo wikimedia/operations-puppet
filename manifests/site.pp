@@ -981,6 +981,16 @@ node /^ganeti[12]00[0-8]\.(codfw|eqiad)\.wmnet$/ {
     role(ganeti)
 }
 
+# new Ganeti hosts - replacing ganeti100[1-4] (T228924)
+node /^ganeti(1009|101[0-2])\.eqiad\.wmnet$/ {
+    role(spare::system)
+}
+
+# new Ganeti hosts - expansion (T228924)
+node /^ganeti101[3-8]\.eqiad\.wmnet$/ {
+    role(spare::system)
+}
+
 node /^ganeti300[123]\.esams\.wmnet$/ {
     role(ganeti)
 }
