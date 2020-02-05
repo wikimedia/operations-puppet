@@ -31,15 +31,17 @@
 #   -Xmx argument. Default: 2G
 #
 class profile::presto::server(
-    String $cluster_name      = hiera('profile::presto::cluster_name'),
-    String $discovery_uri     = hiera('profile::presto::discovery_uri'),
-    Hash   $node_properties   = hiera('profile::presto::server::node_properties',   {}),
-    Hash   $config_properties = hiera('profile::presto::server::config_properties', {}),
-    Hash   $catalogs          = hiera('profile::presto::server::catalogs',          {}),
-    Hash   $log_properties    = hiera('profile::presto::server::log_properties',    {}),
-    String $heap_max          = hiera('profile::presto::server::heap_max',          '2G'),
-    String $ferm_srange       = hiera('profile::presto::server::ferm_srange',       '$DOMAIN_NETWORKS'),
-
+    String $cluster_name            = hiera('profile::presto::cluster_name'),
+    String $discovery_uri           = hiera('profile::presto::discovery_uri'),
+    Hash   $node_properties         = hiera('profile::presto::server::node_properties',   {}),
+    Hash   $config_properties       = hiera('profile::presto::server::config_properties', {}),
+    Hash   $catalogs                = hiera('profile::presto::server::catalogs',          {}),
+    Hash   $log_properties          = hiera('profile::presto::server::log_properties',    {}),
+    String $heap_max                = hiera('profile::presto::server::heap_max',          '2G'),
+    String $ferm_srange             = hiera('profile::presto::server::ferm_srange',       '$DOMAIN_NETWORKS'),
+    Boolean $use_kerberos           = hiera('profile::presto::use_kerberos', false),
+    Optional[String] $ssl_truststore_password = hiera('profile::presto::ssl_truststore_password', undef),
+    Optional[String] $ssl_keystore_password   = hiera('profile::presto::ssl_keystore_password', undef),
 ) {
 
     $default_node_properties = {
@@ -58,9 +60,69 @@ class profile::presto::server(
         'node-scheduler.network-topology'    => 'flat',
     }
 
+    if $use_kerberos {
+        $hostname_suffix = $::realm ? {
+            'labs'  => '.eqiad.wmflabs',
+            default => "${::site}.wmnet",
+        }
+
+        $hostname_tls_cn = "${::hostname}.${hostname_suffix}"
+        $ssl_keystore_path = '/etc/presto/keystore.jks'
+        file { $ssl_keystore_path:
+            content => secret("certificates/presto_${cluster_name}/${hostname_tls_cn}/${hostname_tls_cn}.keystore.jks"),
+            owner   => 'presto',
+            group   => 'presto',
+            mode    => '0440',
+            require => Package['presto-server'],
+        }
+
+        $ssl_truststore_path = '/etc/presto/truststore.jks'
+        file { $ssl_truststore_path:
+            content => secret("certificates/presto_${cluster_name}/root_ca/truststore.jks"),
+            owner   => 'presto',
+            group   => 'presto',
+            mode    => '0444',
+            require => Package['presto-server'],
+        }
+
+        file { '/usr/local/bin/presto':
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0555',
+            content => template('profile/presto/presto_client_ssl_kerberos.erb'),
+            require => Package['presto-server'],
+        }
+    }
+
+    if $ssl_keystore_password {
+        $default_ssl_properties = {
+            'http-server.https.keystore.path' => $ssl_keystore_path,
+            'http-server.https.keystore.key' => $ssl_keystore_password,
+            'internal-communication.https.required' => true,
+            'internal-communication.https.keystore.path' => $ssl_keystore_path,
+            'internal-communication.https.keystore.key' => $ssl_keystore_password,
+            'http-server.https.port' => '8281',
+            'http-server.http.enabled' => false,
+            'http-server.https.enabled' => true,
+        }
+    } else {
+        $default_ssl_properties = {}
+    }
+
+    if $use_kerberos {
+        $default_kerberos_properties = {
+            'http-server.authentication.type' => 'KERBEROS',
+            'http.authentication.krb5.config' => '/etc/krb5.conf',
+            'http.server.authentication.krb5.keytab' => '/etc/security/keytabs/presto/presto.keytab',
+            'http.server.authentication.krb5.service-name' => 'presto',
+        }
+    } else {
+        $default_kerberos_properties = {}
+    }
+
     # Merge in any overrides for properties
     $_node_properties = $default_node_properties + $node_properties
-    $_config_properties = $default_config_properties + $config_properties
+    $_config_properties = $default_config_properties + $config_properties + $default_ssl_properties + $default_kerberos_properties
 
     class { '::presto::server':
         node_properties   => $_node_properties,
@@ -70,11 +132,20 @@ class profile::presto::server(
         heap_max          => $heap_max,
     }
 
-    ferm::service{ 'presto-http':
-        proto  => 'tcp',
-        port   => $_config_properties['http-server.http.port'],
-        srange => $ferm_srange,
+    if $ssl_keystore_password {
+        ferm::service{ 'presto-https':
+            proto  => 'tcp',
+            port   => $_config_properties['http-server.https.port'],
+            srange => $ferm_srange,
+        }
+    } else {
+        ferm::service{ 'presto-http':
+            proto  => 'tcp',
+            port   => $_config_properties['http-server.http.port'],
+            srange => $ferm_srange,
+        }
     }
+
     ferm::service{ 'presto-jmx-rmiregistry':
         proto  => 'tcp',
         port   => $_config_properties['jmx.rmiregistry.port'],

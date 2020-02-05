@@ -1,0 +1,12 @@
+#!/bin/bash
+
+/usr/bin/presto \
+--truststore-path <%= @ssl_truststore_path %> \
+--truststore-password <%= @ssl_truststore_password %> \
+<% if @use_kerberos -%>
+--krb5-config-path /etc/krb5.conf \
+--krb5-principal $(whoami)@WIKIMEDIA  \
+--krb5-remote-service-name presto \
+--krb5-credential-cache-path /tmp/krb5cc_$(id -u) \
+<%- end -%>
+$@
