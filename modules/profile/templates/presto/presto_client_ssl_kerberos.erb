@@ -1,6 +1,7 @@
 #!/bin/bash
 
 /usr/bin/presto \
+--server <%= @discovery_uri %> \
 --truststore-path <%= @ssl_truststore_path %> \
 --truststore-password <%= @ssl_truststore_password %> \
 <% if @use_kerberos -%>
