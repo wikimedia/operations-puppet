@@ -151,8 +151,16 @@ class ToolViews(object):
         ):
             if 200 <= r['status'] < 300:
                 # Status codes of 200 to 299 are 'success' codes.
-                # We don't care about client or server errors
-                tool = r['tool']
+                # We don't care about client or server errors or redirects
+
+                if r["vhost"] == "tools.wmflabs.org":
+                    # Path based routing (legacy)
+                    # FIXME: add support for toolsbeta?
+                    tool = r["tool"]
+                else:
+                    # Host based routing
+                    tool = r["vhost"].split(".")[0]
+
                 if r['tool'] not in self.tools:
                     if tool not in ('.well-known', 'index.php', 'robots.txt'):
                         logger.info('Unknown tool "%s"', tool)
