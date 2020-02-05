@@ -40,3 +40,6 @@ profile::mediawiki::php::restarts::ensure: present
 # We set the restart watermark at 200 MB, which is approximately how much
 # opcache one full day of deployments consume.
 profile::mediawiki::php::restarts::opcache_limit: 200
+# Have more php workers. This might not help the peak performance but will give us room 
+# for being more resilient
+profile::mediawiki::php::fpm_workers_multiplier: 4.5
