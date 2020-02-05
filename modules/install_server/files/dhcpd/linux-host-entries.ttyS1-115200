@@ -1360,7 +1360,6 @@ host cp5005 {
 host cp5006 {
     hardware ethernet F4:E9:D4:D0:24:F0;
     fixed-address cp5006.eqsin.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host cp5007 {
