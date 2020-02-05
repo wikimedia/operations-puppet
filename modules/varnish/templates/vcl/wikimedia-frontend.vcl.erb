@@ -385,9 +385,7 @@ sub vcl_recv {
 
 		// This unwraps proxy-style URLs and sanitizes the Host header
 		// (lowercase, no port, no funny chars, matches cert SAN, etc)
-		if (req.http.User-Agent !~ "^FortiGate") {
-			call normalize_request;
-		}
+		call normalize_request;
 
 		// Possibly switch to separate VCL
 		call cluster_fe_vcl_switch;
