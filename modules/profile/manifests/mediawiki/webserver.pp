@@ -6,6 +6,7 @@ class profile::mediawiki::webserver(
     Mediawiki::Vhost_feature_flags $vhost_feature_flags = lookup('profile::mediawiki::vhost_feature_flags', {'default_value' => {}}),
     String $ocsp_proxy = hiera('http_proxy', ''),
     Array[String] $prometheus_nodes = lookup('prometheus_nodes'),
+    Integer $tls_keepalive_requests = lookup('profile::mediawiki::webserver::tls_keepalive_requests', {'default_value' => 100}),
 ) {
     include ::profile::mediawiki::httpd
     $fcgi_proxy = mediawiki::fcgi_endpoint($fcgi_port, $fcgi_pool)
@@ -103,14 +104,15 @@ class profile::mediawiki::webserver(
         }
 
         tlsproxy::localssl { 'unified':
-            server_name    => 'www.wikimedia.org',
-            certs          => $certs,
-            certs_active   => $certs,
-            default_server => true,
-            do_ocsp        => false,
-            upstream_ports => [80],
-            access_log     => true,
-            ocsp_proxy     => $ocsp_proxy,
+            server_name        => 'www.wikimedia.org',
+            certs              => $certs,
+            certs_active       => $certs,
+            default_server     => true,
+            do_ocsp            => false,
+            upstream_ports     => [80],
+            access_log         => true,
+            ocsp_proxy         => $ocsp_proxy,
+            keepalive_requests => $tls_keepalive_requests,
         }
 
         monitoring::service { 'appserver https':
