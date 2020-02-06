@@ -2,6 +2,11 @@
 
 GRANT USAGE
     ON *.* TO 'haproxy'@'10.64.0.165';
+    
+-- haproxy@dbproxy1012
+
+GRANT USAGE
+    ON *.* TO 'haproxy'@'10.64.0.134';
 
 -- haproxy@dbproxy1014
 
@@ -23,6 +28,13 @@ GRANT USAGE
 
 GRANT ALL PRIVILEGES
     ON `bacula`.* TO 'bacula'@'10.64.16.18';
+    
+GRANT USAGE
+    ON *.* TO 'bacula'@'10.64.0.134'
+    IDENTIFIED BY PASSWORD '*F1F25EA591EF45D1777BCC5540F5AF7CC4D6D235';
+
+GRANT ALL PRIVILEGES
+    ON `bacula`.* TO 'bacula'@'10.64.0.134';
 
 -- bacula9
 
@@ -39,6 +51,13 @@ GRANT USAGE
 
 GRANT ALL PRIVILEGES
     ON `bacula9`.* TO 'bacula9'@'10.64.16.18';
+    
+GRANT USAGE
+    ON *.* TO 'bacula9'@'10.64.0.134'
+    IDENTIFIED BY PASSWORD '*F1F25EA591EF45D1777BCC5540F5AF7CC4D6D235';
+
+GRANT ALL PRIVILEGES
+    ON `bacula9`.* TO 'bacula9'@'10.64.0.134';
 
 -- etherpadlite
 
@@ -55,6 +74,13 @@ GRANT USAGE
 
 GRANT ALL PRIVILEGES
     ON `etherpadlite`.* TO 'etherpadlite'@'10.64.16.18';
+    
+GRANT USAGE
+    ON *.* TO 'etherpadlite'@'10.64.0.134'
+    IDENTIFIED BY PASSWORD '*BB9BC9FF217E05F42991AC64A9A70BE54275E306';
+
+GRANT ALL PRIVILEGES
+    ON `etherpadlite`.* TO 'etherpadlite'@'10.64.0.134';
 
 -- librenms
 
@@ -72,6 +98,13 @@ GRANT USAGE
 GRANT ALL PRIVILEGES
     ON `librenms`.* TO 'librenms'@'10.64.16.18';
 
+GRANT USAGE
+    ON *.* TO 'librenms'@'10.64.0.134'
+    IDENTIFIED BY PASSWORD '*AD0D2C74067568FE1E34E75191C2137762AC0A49';
+
+GRANT ALL PRIVILEGES
+    ON `librenms`.* TO 'librenms'@'10.64.0.134';
+
 -- rt
 
 GRANT USAGE
@@ -87,6 +120,13 @@ GRANT USAGE
 
 GRANT ALL PRIVILEGES
     ON `rt`.* TO 'rt'@'10.64.16.18';
+    
+GRANT USAGE
+    ON *.* TO 'rt'@'10.64.0.134'
+    IDENTIFIED BY PASSWORD '*876E1392F4CCBAD0362B8BEC583772EB50DCB02C';
+
+GRANT ALL PRIVILEGES
+    ON `rt`.* TO 'rt'@'10.64.0.134';
 
 -- racktables
 GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, REFERENCES, INDEX,
@@ -100,6 +140,8 @@ GRANT ALTER, CREATE, SELECT, INSERT, UPDATE, DELETE
     ON rddmarc.* TO 'rddmarc'@'10.64.0.165' IDENTIFIED BY '<%=@rddmarc_pass%>';
 GRANT ALTER, CREATE, SELECT, INSERT, UPDATE, DELETE
     ON rddmarc.* TO 'rddmarc'@'10.64.16.18' IDENTIFIED BY '<%=@rddmarc_pass%>';
+GRANT ALTER, CREATE, SELECT, INSERT, UPDATE, DELETE
+    ON rddmarc.* TO 'rddmarc'@'10.64.0.134' IDENTIFIED BY '<%=@rddmarc_pass%>';
 
 -- haproxy@dbproxy2001
 
