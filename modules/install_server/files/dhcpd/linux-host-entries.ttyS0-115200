@@ -207,7 +207,6 @@ host install1002 {
 host install1003 {
     hardware ethernet aa:00:00:77:3b:95;
     fixed-address install1003.eqiad.wmnet;
-    next-server 208.80.153.53; # install2002 (tftp server)
 }
 
 host install2002 {
@@ -220,7 +219,6 @@ host install2002 {
 host install2003 {
     hardware ethernet aa:00:00:f1:29:90;
     fixed-address install2003.codfw.wmnet;
-    next-server 208.80.154.22; # install1002 (tftp server)
 }
 
 host kafkamon1001 {
