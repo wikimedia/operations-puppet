@@ -45,6 +45,8 @@ class profile::base(
 
     contain profile::base::puppet
     require profile::base::certificates
+    # Ensure we update the CA certificates before managing any services
+    Exec['update-ca-certificates'] -> Service<| |>
     class { 'apt':
         use_proxy         => $use_apt_proxy,
         purge_sources     => $purge_apt_sources,
