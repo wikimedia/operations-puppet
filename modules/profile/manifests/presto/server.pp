@@ -111,6 +111,7 @@ class profile::presto::server(
 
     if $use_kerberos {
         $default_kerberos_properties = {
+            'internal-communication.kerberos.enabled' => true,
             'http-server.authentication.type' => 'KERBEROS',
             'http.authentication.krb5.config' => '/etc/krb5.conf',
             'http.server.authentication.krb5.keytab' => '/etc/security/keytabs/presto/presto.keytab',
