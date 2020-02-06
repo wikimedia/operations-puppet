@@ -10,5 +10,5 @@ profile::trafficserver::tls::http_settings:
     max_post_size: 104857600
     keep_alive_enabled_out: 1
     keep_alive_post_out: 1
-    server_session_sharing_match: none
+    server_session_sharing_match: ip
     server_session_sharing_pool: thread
