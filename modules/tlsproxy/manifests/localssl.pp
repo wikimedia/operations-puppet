@@ -70,6 +70,11 @@
 #   Timeout (in seconds) for HTTP keepalive connections. The zero value disables
 #   keep-alive client connections. Defaults to 60 seconds.
 #
+# [*keepalive_requests*]
+#   The maximum number of requests that can be served through one keep-alive
+#   connection. After the maximum number of requests are made, the connection
+#   is closed. Defaults to 100 requests.
+#
 # [*read_timeout*]
 #   Timeout (in seconds) for reading a response from the proxied server. The
 #   timeout is set only between two successive read operations, not for the
@@ -85,26 +90,27 @@
 #  to true.
 
 define tlsproxy::localssl(
-    Array                  $certs             = [],
-    Array                  $certs_active      = [],
-    Array                  $acme_subjects     = [],
-    Boolean                $acme_chief        = false,
-    String[1]              $acme_certname     = $title,
-    Stdlib::Host           $server_name       = $::fqdn,
-    Array[Stdlib::Host]    $server_aliases    = [],
-    Boolean                $default_server    = false,
-    Stdlib::IP::Address    $upstream_ip       = $::ipaddress,
-    Array[Stdlib::Port]    $upstream_ports    = [80],
-    Stdlib::Port           $tls_port          = 443,
-    Optional[Stdlib::Port] $redir_port        = undef,
-    Boolean                $do_ocsp           = false,
-    Boolean                $skip_private      = false,
-    Boolean                $access_log        = false,
-    Integer                $keepalive_timeout = 60,
-    Integer                $read_timeout      = 180,
-    String                 $ocsp_proxy        = '',
-    Boolean                $only_get_requests = false,
-    Boolean                $ssl_ecdhe_curve   = true,
+    Array                  $certs              = [],
+    Array                  $certs_active       = [],
+    Array                  $acme_subjects      = [],
+    Boolean                $acme_chief         = false,
+    String[1]              $acme_certname      = $title,
+    Stdlib::Host           $server_name        = $::fqdn,
+    Array[Stdlib::Host]    $server_aliases     = [],
+    Boolean                $default_server     = false,
+    Stdlib::IP::Address    $upstream_ip        = $::ipaddress,
+    Array[Stdlib::Port]    $upstream_ports     = [80],
+    Stdlib::Port           $tls_port           = 443,
+    Optional[Stdlib::Port] $redir_port         = undef,
+    Boolean                $do_ocsp            = false,
+    Boolean                $skip_private       = false,
+    Boolean                $access_log         = false,
+    Integer                $keepalive_timeout  = 60,
+    Integer                $keepalive_requests = 100,
+    Integer                $read_timeout       = 180,
+    String                 $ocsp_proxy         = '',
+    Boolean                $only_get_requests  = false,
+    Boolean                $ssl_ecdhe_curve    = true,
 ) {
     if (!empty($certs) and !empty($acme_subjects)) or ($acme_chief and !empty($acme_subjects)) or (empty($certs) and empty($acme_subjects) and !$acme_chief) {
         fail('Specify exactly one of certs (and optionally acme_chief) or acme_subjects')

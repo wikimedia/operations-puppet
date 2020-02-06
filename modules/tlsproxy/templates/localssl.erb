@@ -45,6 +45,7 @@ server {
 	<%- end -%>
 
 	keepalive_timeout <%= @keepalive_timeout %>;
+	keepalive_requests <%= @keepalive_requests %>;
 
 <% if !@acme_subjects.empty? -%>
 	include /etc/acme/challenge-nginx.conf;
