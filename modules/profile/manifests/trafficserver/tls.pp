@@ -139,7 +139,6 @@ class profile::trafficserver::tls (
         conftool_service       => $conftool_service,
         port                   => $port,
         disable_dns_resolution => 0,
-        server_session_sharing => 'none',
         network_settings       => $network_settings,
         http_settings          => $http_settings,
         h2_settings            => $h2_settings,

@@ -395,6 +395,8 @@ profile::trafficserver::backend::http_settings:
   max_post_size: 0
   keep_alive_enabled_out: 1
   keep_alive_post_out: 1
+  server_session_sharing_match: both
+  server_session_sharing_pool: thread
 profile::trafficserver::backend::h2_settings:
   stream_priority_enabled: 0
   max_settings_per_frame: 7

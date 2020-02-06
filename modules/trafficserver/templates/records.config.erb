@@ -53,11 +53,11 @@ CONFIG proxy.config.http.max_post_size INT <%= @http_settings['max_post_size'] %
 # keep-alive configuration for connections against origin servers
 CONFIG proxy.config.http.keep_alive_enabled_out INT <%= @http_settings['keep_alive_enabled_out'] %>
 CONFIG proxy.config.http.keep_alive_post_out INT <%= @http_settings['keep_alive_post_out'] %>
-<% end -%>
 
 # Origin server connection reuse
-CONFIG proxy.config.http.server_session_sharing.match STRING <%= @server_session_sharing %>
-CONFIG proxy.config.http.server_session_sharing.pool STRING <%= @server_session_pool %>
+CONFIG proxy.config.http.server_session_sharing.match STRING <%= @http_settings['server_session_sharing_match'] %>
+CONFIG proxy.config.http.server_session_sharing.pool STRING <%= @http_settings['server_session_sharing_pool'] %>
+<% end -%>
 # Allow origin server connection reuse for requests with Authorization
 CONFIG proxy.config.http.auth_server_session_private INT 0
 

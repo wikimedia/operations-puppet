@@ -33,8 +33,25 @@
 #
 # [*keep_alive_enabled_out*]
 #   Enables (1) or disables (0) keep alive on connections with origin servers for GET/HEAD requests
+#
 # [*keep_alive_post_out*]
 #   Enables (1) or disables (0) keep alive on connections with origin servers for POST/PUT requests
+#
+# [*server_session_sharing_match*]
+#   Enable and set the ability to re-use server connections across client connections.
+#   Valid values:
+#     none
+#     both
+#     ip
+#     host
+#   More details can be found in https://docs.trafficserver.apache.org/en/8.0.x/admin-guide/files/records.config.en.html#proxy-config-http-server-session-sharing-match
+#
+# [*server_session_sharing_pool*]
+#   Re-use origin server connections from a global or per-thread pool of all
+#   server sessions.
+#   Valid values:
+#     thread
+#     global
 type Trafficserver::HTTP_settings = Struct[{
     'accept_no_activity_timeout'          => Integer[0],
     'connect_attempts_timeout'            => Integer[0],
@@ -47,4 +64,6 @@ type Trafficserver::HTTP_settings = Struct[{
     'max_post_size'                       => Integer[0],
     'keep_alive_enabled_out'              => Integer[0, 1],
     'keep_alive_post_out'                 => Integer[0, 1],
+    'server_session_sharing_match'        => Enum['none', 'both', 'ip', 'host'],
+    'server_session_sharing_pool'         => Enum['thread', 'global'],
 }]
