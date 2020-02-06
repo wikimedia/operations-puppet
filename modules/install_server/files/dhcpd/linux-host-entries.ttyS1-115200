@@ -6555,7 +6555,7 @@ host mw2310 {
 host mw2311 {
     hardware ethernet 4C:D9:8F:AF:64:FA;
     fixed-address mw2311.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer-bootif/";
 }
 
 host mw2312 {
