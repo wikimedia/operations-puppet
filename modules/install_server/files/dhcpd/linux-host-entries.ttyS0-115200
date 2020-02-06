@@ -558,13 +558,11 @@ host ncredir4002 {
 host ncredir5001 {
     hardware ethernet aa:00:00:6d:16:c7;
     fixed-address ncredir5001.eqsin.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host ncredir5002 {
     hardware ethernet aa:00:00:fa:c0:b0;
     fixed-address ncredir5002.eqsin.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host neon {
