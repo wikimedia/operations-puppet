@@ -153,19 +153,16 @@ host etcd1003 {
 host etherpad1002 {
     hardware ethernet aa:00:00:70:0e:8b;
     fixed-address etherpad1002.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host failoid1001 {
     hardware ethernet aa:00:00:42:2c:99;
     fixed-address failoid1001.eqiad.wmnet;
-
 }
 
 host failoid2001 {
     hardware ethernet aa:00:00:ab:64:ee;
     fixed-address failoid2001.codfw.wmnet;
-
 }
 
 host fermium {
@@ -203,7 +200,6 @@ host idp2001 {
 host install1002 {
     hardware ethernet aa:00:00:3c:d7:80;
     fixed-address install1002.wikimedia.org;
-
     next-server 208.80.153.53; # install2002 (tftp server)
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
 }
@@ -212,13 +208,11 @@ host install1003 {
     hardware ethernet aa:00:00:77:3b:95;
     fixed-address install1003.eqiad.wmnet;
     next-server 208.80.153.53; # install2002 (tftp server)
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host install2002 {
     hardware ethernet aa:00:00:6b:d7:3f;
     fixed-address install2002.wikimedia.org;
-
     next-server 208.80.154.22; # install1002 (tftp server)
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
 }
@@ -226,9 +220,7 @@ host install2002 {
 host install2003 {
     hardware ethernet aa:00:00:f1:29:90;
     fixed-address install2003.codfw.wmnet;
-
     next-server 208.80.154.22; # install1002 (tftp server)
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-installer/";
 }
 
 host kafkamon1001 {
