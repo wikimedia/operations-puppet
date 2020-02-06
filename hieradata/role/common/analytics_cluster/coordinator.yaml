@@ -30,6 +30,7 @@ profile::hive::metastore::monitoring_enabled: true
 profile::hive::metastore::ferm_srange: '$ANALYTICS_NETWORKS'
 
 # Presto (Coordinator) Server settings
+profile::presto::use_kerberos: true
 profile::presto::cluster_name: analytics-presto
 profile::presto::discovery_uri: http://an-coord1001.eqiad.wmnet:8280
 profile::presto::server::heap_max: 4G
