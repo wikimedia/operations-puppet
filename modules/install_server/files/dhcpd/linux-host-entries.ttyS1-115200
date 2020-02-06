@@ -1229,7 +1229,6 @@ host cp3064 {
 host cp3065 {
     hardware ethernet B0:26:28:6E:A1:00;
     fixed-address cp3065.esams.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host cp4009 {
