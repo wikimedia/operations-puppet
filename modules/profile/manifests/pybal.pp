@@ -34,8 +34,7 @@ class profile::pybal(
             /^lvs300[567]$/ => "[ '91.198.174.244', '91.198.174.245' ]", # cr2-esams,cr3-esams
             /^lvs400[56]$/  => '198.35.26.192',   # cr3-ulsfo
             'lvs4007'       => '198.35.26.193',   # cr4-ulsfo
-            'lvs5001'       => '103.102.166.129', # cr1-eqsin
-            /^lvs500[23]$/  => '103.102.166.130', # cr2-eqsin
+            /^lvs500[123]$/ => "[ '103.102.166.129', '103.102.166.130' ]", # cr1-eqsin,cr2-eqsin
             default         => '(unspecified)'
             },
         'bgp-nexthop-ipv4'    => $facts['ipaddress'],
