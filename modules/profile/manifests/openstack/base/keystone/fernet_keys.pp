@@ -17,7 +17,7 @@ class profile::openstack::base::keystone::fernet_keys(
         user                      => 'root',
     }
 
-    rsync::server::module { 'keystone':
+    rsync::server::module { 'keystonefernetkeys':
         path        => '/etc/keystone/fernet-keys',
         uid         => 'keystone',
         gid         => 'keystone',
@@ -30,7 +30,7 @@ class profile::openstack::base::keystone::fernet_keys(
     $other_hosts.each |String $thishost| {
         systemd::timer::job { "keystone_sync_keys_to_${thishost}":
             description               => "Sync keys for Keystone fernet tokens to ${thishost}",
-            command                   => "/usr/bin/rsync -a ${thishost}:/etc/keystone/fernet-keys/* /etc/keystone/fernet-keys/",
+            command                   => "/usr/bin/rsync -a rsync://${thishost}/keystonefernetkeys/* /etc/keystone/fernet-keys/",
             interval                  => {
             'start'    => 'OnCalendar',
             'interval' => "*-*-* ${sync_time}",
@@ -38,7 +38,7 @@ class profile::openstack::base::keystone::fernet_keys(
             logging_enabled           => true,
             monitoring_enabled        => false,
             monitoring_contact_groups => 'wmcs-team',
-            user                      => 'root',
+            user                      => 'keystone',
         }
     }
 }
