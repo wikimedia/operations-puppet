@@ -12,7 +12,7 @@ class uwsgi {
         $plugins = [ 'uwsgi-plugin-python', 'uwsgi-plugin-python3', 'uwsgi-plugin-rack-ruby2.1' ]
     } elsif os_version('debian == stretch') {
         $plugins = [ 'uwsgi-plugin-python', 'uwsgi-plugin-python3', 'uwsgi-plugin-rack-ruby2.3' ]
-    } elsif $::lsbdistcodename  == 'buster' { # TODO: Replace it with os_version after buster gets released
+    } elsif os_version('debian == buster') {
         $plugins = [ 'uwsgi-plugin-python', 'uwsgi-plugin-python3', 'uwsgi-plugin-rack-ruby2.5' ]
     }
 
