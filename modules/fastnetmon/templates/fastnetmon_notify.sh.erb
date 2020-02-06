@@ -1,0 +1,6 @@
+#!/bin/bash
+# Workaround as Fastnetmon can't pass parameters to the notify script
+/usr/local/bin/fastnetmon_notify.py --email noc@wikimedia.org \
+    --geoip /usr/share/GeoIP/ \
+    <% if @icinga_dir %>--icinga-dir <%= @icinga_dir %><% end %> \
+    "$@"

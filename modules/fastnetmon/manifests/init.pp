@@ -15,11 +15,16 @@
 #  [*graphite_host*]
 #    Hostname of the Graphite ingester
 #    Optional
+#
+#  [*icinga_dir*]
+#    Directory to write a notification file in the event of an attack, to be picked up by an Icinga check
+#    Optional
 
 class fastnetmon(
   Array[Stdlib::IP::Address,1] $networks = [],
   Hash[String, Hash[String, Any]] $thresholds_overrides = [],
   Optional[Stdlib::Host] $graphite_host = undef,
+  Optional[Stdlib::Unixpath] $icinga_dir = undef,
   ) {
 
     require_package('fastnetmon','python3-geoip2')
@@ -53,11 +58,20 @@ class fastnetmon(
     }
 
     file { '/usr/local/bin/fastnetmon_notify':
-        ensure => present,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        source => 'puppet:///modules/fastnetmon/fastnetmon_notify',
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0555',
+        content => template('fastnetmon/fastnetmon_notify.sh.erb'),
+    }
+
+    if $icinga_dir {
+        file { $icinga_dir:
+            ensure => directory,
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0755',
+        }
     }
 
     service { 'fastnetmon':

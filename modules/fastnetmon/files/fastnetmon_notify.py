@@ -2,6 +2,7 @@
 
 import argparse
 import logging
+import os
 import re
 import smtplib
 import socket
@@ -93,6 +94,8 @@ def main():
     arg_parser = argparse.ArgumentParser(description='FastNetMon notify')
     arg_parser.add_argument('--email', help='Send email')
     arg_parser.add_argument('--geoip', help='GeoIP binaries folder', default='')
+    arg_parser.add_argument('--icinga-dir', help='If set, create/rm files in this '
+                                                 'directory on a ban/unban event')
     arg_parser.add_argument('target', help='Target')
     arg_parser.add_argument('direction', help='Traffic direction')
     arg_parser.add_argument('pps', help='Packets per seconds')
@@ -113,11 +116,18 @@ def main():
             mail(event_short, args.email, extra_data)
         else:
             logger.info(extra_data)
+        if args.icinga_dir:
+            open(os.path.join(args.icinga_dir, args.target), 'w').close()
 
     if args.action == 'unban':
         logger.info('END: {event_short}'.format(event_short=event_short))
         if args.email:
             mail(event_short, args.email, 'RECOVERY: event has ended.')
+        if args.icinga_dir:
+            try:
+                os.remove(os.path.join(args.icinga_dir, args.target))
+            except FileNotFoundError:
+                pass
 
 
 if __name__ == '__main__':

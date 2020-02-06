@@ -8,9 +8,28 @@ class profile::fastnetmon (
 
     ensure_resource('class', 'geoip')
 
+    $icinga_dir = '/run/fastnetmon_icinga'
+
     class { '::fastnetmon':
         networks             => $::network::constants::external_networks,
         thresholds_overrides => $thresholds_overrides,
+        icinga_dir           => $icinga_dir,
+    }
+
+    $nrpe_path = '/usr/local/lib/nagios/plugins/check_fastnetmon'
+    file { $nrpe_path:
+        ensure => present,
+        source => 'puppet:///modules/profile/fastnetmon/check_fastnetmon.sh',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+    }
+    nrpe::monitor_service { 'fastnetmon':
+        description     => 'fastnetmon alerts',
+        nrpe_command    => "${nrpe_path} ${icinga_dir}",
+        notes_url       => 'https://wikitech.wikimedia.org/wiki/Monitoring/Missing_notes_link', # TODO
+        dashboard_links => [ 'https://w.wiki/8oU', ],
+        retries         => 15,
     }
 
     ferm::service { 'FNM-netflow':
