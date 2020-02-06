@@ -548,13 +548,11 @@ host ncredir3002 {
 host ncredir4001 {
     hardware ethernet aa:00:00:39:c6:fc;
     fixed-address ncredir4001.ulsfo.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host ncredir4002 {
     hardware ethernet aa:00:00:df:1c:ab;
     fixed-address ncredir4002.ulsfo.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host ncredir5001 {
