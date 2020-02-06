@@ -6,6 +6,7 @@ class role::wmcs::openstack::codfw1dev::control {
     include ::profile::openstack::codfw1dev::rabbitmq
     include ::profile::openstack::codfw1dev::keystone::apache
     include ::profile::openstack::codfw1dev::keystone::service
+    include ::profile::openstack::codfw1dev::keystone::fernet_keys
     include ::profile::openstack::codfw1dev::envscripts
     include ::profile::openstack::codfw1dev::keystone::bootstrap
     include ::profile::openstack::codfw1dev::glance
