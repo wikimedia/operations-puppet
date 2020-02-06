@@ -21,7 +21,7 @@ class uwsgi {
 
     exec { 'remove_uwsgi_initd':
         command => '/usr/sbin/update-rc.d -f uwsgi remove',
-        onlyif  => '/usr/sbin/update-rc.d -n -f uwsgi remove | /bin/grep -Pq rc..d',
+        onlyif  => 'test -n "$(/usr/bin/find /etc/rc?.d -name \'[KS][0-9][0-9]uwsgi\')"',
         require => Package['uwsgi'],
     }
 
