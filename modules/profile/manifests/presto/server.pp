@@ -45,8 +45,9 @@ class profile::presto::server(
 ) {
 
     $default_node_properties = {
-        'node.enviroment' => $cluster_name,
-        'node.data-dir'   => '/srv/presto',
+        'node.enviroment'              => $cluster_name,
+        'node.data-dir'                => '/srv/presto',
+        'node.internal-address-source' => 'FQDN',
     }
 
     $default_config_properties = {
