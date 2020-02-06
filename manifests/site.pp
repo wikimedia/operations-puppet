@@ -991,6 +991,11 @@ node /^ganeti101[3-8]\.eqiad\.wmnet$/ {
     role(spare::system)
 }
 
+# new Ganeti hosts - expansion (T224603)
+node /^ganeti20(09|1[0-8])\.codfw\.wmnet$/ {
+    role(spare::system)
+}
+
 node /^ganeti300[123]\.esams\.wmnet$/ {
     role(ganeti)
 }
