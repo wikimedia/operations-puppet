@@ -31,6 +31,10 @@
 #   Any positive value will limit the size of post bodies. If a request is received with a post body larger
 #   than this limit the response will be terminated with 413 - Request Entity Too Large
 #
+# [*keep_alive_enabled_out*]
+#   Enables (1) or disables (0) keep alive on connections with origin servers for GET/HEAD requests
+# [*keep_alive_post_out*]
+#   Enables (1) or disables (0) keep alive on connections with origin servers for POST/PUT requests
 type Trafficserver::HTTP_settings = Struct[{
     'accept_no_activity_timeout'          => Integer[0],
     'connect_attempts_timeout'            => Integer[0],
@@ -41,4 +45,6 @@ type Trafficserver::HTTP_settings = Struct[{
     'transaction_no_activity_timeout_out' => Integer[0],
     'send_100_continue_response'          => Integer[0, 1],
     'max_post_size'                       => Integer[0],
+    'keep_alive_enabled_out'              => Integer[0, 1],
+    'keep_alive_post_out'                 => Integer[0, 1],
 }]

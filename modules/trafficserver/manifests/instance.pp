@@ -28,9 +28,6 @@
 # [*port*]
 #   Bind trafficserver to this port (default: 8080).
 #
-# [*keep_alive_origin_servers*]
-#   Enables (1) or disables (0) keep alive on connections with origin servers. (default: 1)
-#
 # [*server_session_sharing*]
 #   Enable and set the ability to re-use server connections across client connections. (default: both)
 #   Valid values:
@@ -210,7 +207,6 @@ define trafficserver::instance(
     String $conftool_service,
     Boolean $default_instance = false,
     Stdlib::Port $port = 8080,
-    Integer[0, 1] $keep_alive_origin_servers = 1,
     Integer[0, 1] $disable_dns_resolution = 0,
     Enum['none', 'both', 'ip', 'host'] $server_session_sharing = 'both',
     Enum['thread', 'global'] $server_session_pool = 'thread',

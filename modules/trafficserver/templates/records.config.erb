@@ -50,10 +50,10 @@ CONFIG proxy.config.http.keep_alive_no_activity_timeout_out INT <%= @http_settin
 CONFIG proxy.config.http.accept_no_activity_timeout INT <%= @http_settings['accept_no_activity_timeout'] %>
 CONFIG proxy.config.http.send_100_continue_response INT <%= @http_settings['send_100_continue_response'] %>
 CONFIG proxy.config.http.max_post_size INT <%= @http_settings['max_post_size'] %>
-<% end -%>
 # keep-alive configuration for connections against origin servers
-CONFIG proxy.config.http.keep_alive_enabled_out INT <%= @keep_alive_origin_servers %>
-CONFIG proxy.config.http.keep_alive_post_out INT <%= @keep_alive_origin_servers %>
+CONFIG proxy.config.http.keep_alive_enabled_out INT <%= @http_settings['keep_alive_enabled_out'] %>
+CONFIG proxy.config.http.keep_alive_post_out INT <%= @http_settings['keep_alive_post_out'] %>
+<% end -%>
 
 # Origin server connection reuse
 CONFIG proxy.config.http.server_session_sharing.match STRING <%= @server_session_sharing %>

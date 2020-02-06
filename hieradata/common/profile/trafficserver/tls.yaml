@@ -145,6 +145,8 @@ profile::trafficserver::tls::http_settings:
   transaction_no_activity_timeout_out: 180
   send_100_continue_response: 1
   max_post_size: 104857600
+  keep_alive_enabled_out: 0
+  keep_alive_post_out: 0
 profile::trafficserver::tls::h2_settings:
   stream_priority_enabled: 0
   max_settings_per_frame: 7

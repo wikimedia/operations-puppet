@@ -393,6 +393,8 @@ profile::trafficserver::backend::http_settings:
   transaction_no_activity_timeout_out: 180
   send_100_continue_response: 0
   max_post_size: 0
+  keep_alive_enabled_out: 1
+  keep_alive_post_out: 1
 profile::trafficserver::backend::h2_settings:
   stream_priority_enabled: 0
   max_settings_per_frame: 7
