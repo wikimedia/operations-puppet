@@ -136,7 +136,6 @@ profile::cassandra::settings:
     internode_encryption: dc
     permissions_validity_in_ms: 600000
     trickle_fsync: false
-  logstash_host: 'localhost'
 
 service::configuration::log_dir: "/var/log"
 

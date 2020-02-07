@@ -22,9 +22,10 @@ class profile::cassandra(
     $ferm_seeds = split($all_seeds[1], ',')
 
     $base_settings = {
-        'instances' => $instances,
-        'rack'      => $rack,
-        'seeds'     => $seeds,
+        'instances'     => $instances,
+        'rack'          => $rack,
+        'seeds'         => $seeds,
+        'logstash_host' => 'localhost',
     }
     $cassandra_real_settings = merge($base_settings, $cassandra_settings)
 
