@@ -28,8 +28,8 @@ class profile::presto::client(
 
         file { $ssl_truststore_path:
             content => secret("certificates/presto_${cluster_name}/root_ca/truststore.jks"),
-            owner   => 'presto',
-            group   => 'presto',
+            owner   => 'root',
+            group   => 'root',
             mode    => '0444',
             require => Package['presto-cli'],
         }
