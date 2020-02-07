@@ -30,18 +30,26 @@
 # [*heap_max*]
 #   -Xmx argument. Default: 2G
 #
+#  [*presto_clusters_secrets*]
+#    Hash of available/configured Presto clusters and their secret properties,
+#    like passwords, etc..
+#    The following values will be checked in the hash table only if TLS/Kerberos
+#    configs are enabled (see in the code for the exact values).
+#      - 'ssl_keystore_password'
+#      - 'ssl_trustore_password'
+#    Default: {}
+#
 class profile::presto::server(
-    String $cluster_name            = hiera('profile::presto::cluster_name'),
-    String $discovery_uri           = hiera('profile::presto::discovery_uri'),
-    Hash   $node_properties         = hiera('profile::presto::server::node_properties',   {}),
-    Hash   $config_properties       = hiera('profile::presto::server::config_properties', {}),
-    Hash   $catalogs                = hiera('profile::presto::server::catalogs',          {}),
-    Hash   $log_properties          = hiera('profile::presto::server::log_properties',    {}),
-    String $heap_max                = hiera('profile::presto::server::heap_max',          '2G'),
-    String $ferm_srange             = hiera('profile::presto::server::ferm_srange',       '$DOMAIN_NETWORKS'),
-    Boolean $use_kerberos           = hiera('profile::presto::use_kerberos', false),
-    Optional[String] $ssl_truststore_password = hiera('profile::presto::ssl_truststore_password', undef),
-    Optional[String] $ssl_keystore_password   = hiera('profile::presto::ssl_keystore_password', undef),
+    String $cluster_name      = hiera('profile::presto::cluster_name'),
+    String $discovery_uri     = hiera('profile::presto::discovery_uri'),
+    Hash   $node_properties   = hiera('profile::presto::server::node_properties',   {}),
+    Hash   $config_properties = hiera('profile::presto::server::config_properties', {}),
+    Hash   $catalogs          = hiera('profile::presto::server::catalogs',          {}),
+    Hash   $log_properties    = hiera('profile::presto::server::log_properties',    {}),
+    String $heap_max          = hiera('profile::presto::server::heap_max',          '2G'),
+    String $ferm_srange       = hiera('profile::presto::server::ferm_srange',       '$DOMAIN_NETWORKS'),
+    Boolean $use_kerberos     = hiera('profile::presto::use_kerberos', false),
+    Optional[Hash[String, Hash[String, String]]] $presto_clusters_secrets = hiera('presto_clusters_secrets', {}),
 ) {
 
     $default_node_properties = {
@@ -86,6 +94,7 @@ class profile::presto::server(
             require => Package['presto-server'],
         }
 
+        $ssl_truststore_password = $presto_clusters_secrets[$cluster_name]['ssl_truststore_password']
         file { '/usr/local/bin/presto':
             owner   => 'root',
             group   => 'root',
@@ -95,7 +104,8 @@ class profile::presto::server(
         }
     }
 
-    if $ssl_keystore_password {
+    if $presto_clusters_secrets[$cluster_name] {
+        $ssl_keystore_password = $presto_clusters_secrets[$cluster_name]['ssl_keystore_password']
         $default_ssl_properties = {
             'http-server.https.keystore.path' => $ssl_keystore_path,
             'http-server.https.keystore.key' => $ssl_keystore_password,
@@ -134,7 +144,7 @@ class profile::presto::server(
         heap_max          => $heap_max,
     }
 
-    if $ssl_keystore_password {
+    if $presto_clusters_secrets[$cluster_name] {
         ferm::service{ 'presto-https':
             proto  => 'tcp',
             port   => $_config_properties['http-server.https.port'],
