@@ -536,13 +536,11 @@ host ncredir2002 {
 host ncredir3001 {
     hardware ethernet aa:00:00:19:55:e5;
     fixed-address ncredir3001.esams.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host ncredir3002 {
     hardware ethernet aa:00:00:a6:55:cd;
     fixed-address ncredir3002.esams.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host ncredir4001 {
