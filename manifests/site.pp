@@ -1013,8 +1013,12 @@ node 'grafana1001.eqiad.wmnet' {
     role(spare::system)
 }
 
-# Virtual machine being turned up to run Grafana 6.x (T220838)
+# Virtual machines for Grafana 6.x (T220838, T244357)
 node 'grafana1002.eqiad.wmnet' {
+    role(grafana)
+}
+
+node 'grafana2001.codfw.wmnet' {
     role(grafana)
 }
 

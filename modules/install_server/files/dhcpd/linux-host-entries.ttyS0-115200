@@ -187,6 +187,11 @@ host grafana1002 {
     fixed-address grafana1002.eqiad.wmnet;
 }
 
+host grafana2001 {
+    hardware ethernet aa:00:00:8d:e8:1b;
+    fixed-address grafana2001.codfw.wmnet;
+}
+
 host idp1001 {
     hardware ethernet aa:00:00:43:ae:c7;
     fixed-address idp1001.wikimedia.org;
