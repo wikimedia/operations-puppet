@@ -16,6 +16,8 @@ class presto::client(String $discovery_uri = 'http://localhost:8080') {
     require_package('presto-cli')
 
     presto::properties { 'config':
+        owner      => 'root',
+        group      => 'root',
         properties => {
             'discovery.uri' => $discovery_uri,
         }

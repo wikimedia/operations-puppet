@@ -12,6 +12,7 @@ profile::oozie::client::oozie_host: 'an-coord1001.eqiad.wmnet'
 
 profile::presto::cluster_name: analytics-presto
 profile::presto::discovery_uri: https://an-coord1001.eqiad.wmnet:8281
+profile::presto::use_kerberos: true
 
 # Hive Client settings.
 # Hive configuration is common to multiple clients, but because of role based
