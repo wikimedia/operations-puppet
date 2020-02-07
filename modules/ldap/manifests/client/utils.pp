@@ -53,9 +53,9 @@ class ldap::client::utils($ldapconfig) {
         }
     }
     $python3_version = $facts['os']['release']['major'] ? {
-        8       => '3.4',
-        9       => '3.5',
-        10      => '3.7',
+        '8'     => '3.4',
+        '9'     => '3.5',
+        '10'    => '3.7',
         default => '3.7',
     }
 
