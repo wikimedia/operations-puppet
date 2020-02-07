@@ -1102,6 +1102,11 @@ node /^install[12]002\.wikimedia\.org$/ {
     role(installserver)
 }
 
+# new buster install servers, without APT repo, private IPs (T224576)
+node /^install[12]003\.(codfw|eqiad)\.wmnet$/ {
+    role(spare::system)
+}
+
 # new icinga systems, replaced einsteinium and tegmen (T201344, T208824)
 node /^icinga[12]001\.wikimedia\.org$/ {
     role(alerting_host)
