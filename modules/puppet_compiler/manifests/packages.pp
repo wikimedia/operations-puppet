@@ -15,4 +15,9 @@ class puppet_compiler::packages {
         # Required to resolve PUP-8715
         require_package('ruby-multi-json')
     }
+    # Required to fix PUP-8187
+    file {'/usr/lib/ruby/vendor_ruby/puppet/application/master.rb':
+        ensure  => present,
+        content => file('puppet_compiler/puppet_master_pup-8187.rb.nocheck'),
+    }
 }
