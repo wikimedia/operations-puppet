@@ -1,0 +1,13 @@
+---
+## Version-specific settings that override the values in cfg/config.yaml
+master:
+  components:
+    - apiserver
+    - scheduler
+    - controllermanager
+    - calico
+    # kubernetes is a component to cover the config file /etc/kubernetes/config that is referred to in the benchmark
+    - kubernetes
+  calico:
+    confs:
+      - /etc/kubernetes/calico.yaml
