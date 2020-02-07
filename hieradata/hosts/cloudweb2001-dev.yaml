@@ -68,3 +68,7 @@ striker::uwsgi::config:
     SERVER_URL: https://labtestwikitech.wikimedia.org
     USER: Striker
 profile::mediawiki::apc_shm_size: 128M
+
+labsldapconfig:
+  hostname: cloudservices2002-dev.wikimedia.org
+  secondary_hostname: cloudservices2002-dev.wikimedia.org
