@@ -1264,31 +1264,26 @@ host cp4026 {
 host cp4027 {
     hardware ethernet F4:E9:D4:BA:D0:F0;
     fixed-address cp4027.ulsfo.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host cp4028 {
     hardware ethernet F4:E9:D4:BA:70:60;
     fixed-address cp4028.ulsfo.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host cp4029 {
     hardware ethernet F4:E9:D4:BA:77:F0;
     fixed-address cp4029.ulsfo.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host cp4030 {
     hardware ethernet F4:E9:D4:BA:54:80;
     fixed-address cp4030.ulsfo.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host cp4031 {
     hardware ethernet F4:E9:D4:BA:C6:E0;
     fixed-address cp4031.ulsfo.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host cp4032 {
