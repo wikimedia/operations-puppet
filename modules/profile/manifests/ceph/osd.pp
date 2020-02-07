@@ -23,10 +23,14 @@ class profile::ceph::osd(
     # with the `ms bind port min` and `ms bind port max` ceph config parameters.
 
     # The cluster interface is used for OSD data replication and heartbeat network traffic
-    interface::ip { 'osd-cluster':
+    interface::manual{ 'osd-cluster':
+        interface => $osd_hosts["$::fqdn"]['cluster']['iface'],
+    }
+    interface::ip { 'osd-cluster-ip':
         interface => $osd_hosts["$::fqdn"]['cluster']['iface'],
         address   => $osd_hosts["$::fqdn"]['cluster']['addr'],
         prefixlen => $osd_hosts["$::fqdn"]['cluster']['prefix'],
+        require   => Interface::Manual['osd-cluster'],
         before    => Class['ceph'],
     }
 
