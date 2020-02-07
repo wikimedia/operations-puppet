@@ -2,6 +2,7 @@ profile::ceph::osd::hosts:
   'cloudcephosd1001.wikimedia.org':
     public:
       addr: '208.80.154.151'
+      iface: 'ens2f0np0'
     cluster:
       addr: '10.64.16.144'
       prefix: '22'
@@ -9,6 +10,7 @@ profile::ceph::osd::hosts:
   'cloudcephosd1002.wikimedia.org':
     public:
       addr: '208.80.154.152'
+      iface: 'ens2f0np0'
     cluster:
       addr: '10.64.16.145'
       prefix: '22'
@@ -16,6 +18,7 @@ profile::ceph::osd::hosts:
   'cloudcephosd1003.wikimedia.org':
     public:
       addr: '208.80.154.153'
+      iface: 'ens2f0np0'
     cluster:
       addr: '10.64.16.146'
       prefix: '22'

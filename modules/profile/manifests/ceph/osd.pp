@@ -29,6 +29,32 @@ class profile::ceph::osd(
         prefixlen => $osd_hosts["$::fqdn"]['cluster']['prefix'],
         before    => Class['ceph'],
     }
+
+    # Tune the MTU on both the cluster and public network
+    interface::setting { 'osd-cluster-mtu':
+        interface => $osd_hosts["$::fqdn"]['cluster']['iface'],
+        setting   => 'mtu',
+        value     => '9000',
+        before    => Class['ceph'],
+        notify    => Exec['set-osd-cluster-mtu'],
+    }
+    interface::setting { 'osd-public-mtu':
+        interface => $osd_hosts["$::fqdn"]['public']['iface'],
+        setting   => 'mtu',
+        value     => '9000',
+        before    => Class['ceph'],
+        notify    => Exec['set-osd-public-mtu'],
+    }
+    # Make sure the interface is in sync with configuration changes
+    exec { 'set-osd-cluster-mtu':
+        command     => "/usr/sbin/ip link set mtu 9000 ${osd_hosts["$::fqdn"]['cluster']['iface']}",
+        refreshonly => true,
+    }
+    exec { 'set-osd-public-mtu':
+        command     => "/usr/sbin/ip link set mtu 9000 ${osd_hosts["$::fqdn"]['public']['iface']}",
+        refreshonly => true,
+    }
+
     $ferm_cluster_srange = join($osd_hosts.map | $key, $value | { $value['cluster']['addr'] }, ' ')
     ferm::service { 'ceph_osd_cluster_range':
         proto  => 'tcp',
