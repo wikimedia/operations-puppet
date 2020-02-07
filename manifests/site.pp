@@ -1099,7 +1099,7 @@ node /^idp[12]001\.wikimedia\.org$/ {
 
 # replaced carbon and install1001/install2001 (T132757, T84380, T156440)
 node /^install[12]002\.wikimedia\.org$/ {
-    role(installserver)
+    role(installserver::apt)
 }
 
 # new buster install servers, without APT repo, private IPs (T224576)

@@ -1,5 +1,6 @@
-class role::installserver {
-    system::role { 'installserver': }
+# Sets up a DHCP, TFTP and webproxy and an APT repo
+class role::installserver::apt {
+    system::role { 'installserver-and-apt-repo': }
 
     include ::profile::standard
     include ::profile::base::firewall
