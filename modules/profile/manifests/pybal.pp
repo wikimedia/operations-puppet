@@ -12,6 +12,7 @@ class profile::pybal(
 ) {
     # Includes all the common configs.
     include ::lvs::configuration
+    $services = wmflib::service::get_services_for_lvs($::lvs::configuration::lvs_class, $::site)
 
     $ipv4_address = ipresolve($::fqdn, 4)
 
@@ -53,7 +54,7 @@ class profile::pybal(
     }
     class { '::pybal::configuration':
         global_options  => $global_options,
-        lvs_services    => $::lvs::configuration::lvs_services,
+        services        => $services,
         lvs_class_hosts => $lvs::configuration::lvs_class_hosts,
         site            => $::site,
         conftool_prefix => $conftool_prefix,
@@ -62,11 +63,10 @@ class profile::pybal(
     }
 
     class { '::pybal::monitoring':
-        config_host     => $config_host,
-        config_source   => $config_source,
-        etcd_port       => $etcd_port,
-        lvs_services    => $::lvs::configuration::lvs_services,
-        lvs_class_hosts => $lvs::configuration::lvs_class_hosts,
+        config_host   => $config_host,
+        config_source => $config_source,
+        etcd_port     => $etcd_port,
+        services      => $services,
     }
 
     # Sites with MediaWiki appservers need runcommand

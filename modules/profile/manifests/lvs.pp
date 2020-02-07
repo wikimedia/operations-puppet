@@ -9,6 +9,8 @@ class profile::lvs(
 ){
     require ::lvs::configuration
 
+    $services = wmflib::service::get_services_for_lvs($::lvs::configuration::lvs_class, $::site)
+
     ## Kernel setup
 
     # defaults to "performance"
@@ -19,11 +21,8 @@ class profile::lvs(
 
     ## LVS IPs setup
     # Obtain all the IPs configured for this class of load-balancers,
-    # as a string. This is based on
-    # $::lvs::configuration::lvs_grain_class
-    # and
-    # $::lvs::configuration::lvs_services
-    $service_ips = template('profile/lvs/service_ips.erb')
+    # as an array.
+    $service_ips = wmflib::service::get_ips_for_services($services, $::site)
 
     # Bind balancer IPs to the loopback interface
     class { '::lvs::realserver':

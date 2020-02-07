@@ -16,14 +16,7 @@ class profile::lvs::realserver(
     $present_pools = $pools.keys()
     $services = wmflib::service::fetch().filter |$lvs_name, $svc| {$lvs_name in $present_pools}
     require ::lvs::configuration
-    $ips = $services.filter |$lvs_name, $svc| {
-        $::site in $svc['ip']
-    }
-    .map |$lvs_name, $svc| {
-        $svc['ip'][$::site].values()
-    }
-    .flatten()
-    .unique()
+    $ips = wmflib::service::get_ips_for_services($services, $::site)
 
     class { '::lvs::realserver':
         realserver_ips => $ips,

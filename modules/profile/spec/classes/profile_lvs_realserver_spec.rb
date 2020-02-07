@@ -3,7 +3,7 @@ test_on = {
   supported_os: [
     {
       'operatingsystem'        => 'Debian',
-      'operatingsystemrelease' => ['8', '9'],
+      'operatingsystemrelease' => ['9', '10'],
     }
   ]
 }
@@ -44,7 +44,7 @@ describe 'profile::lvs::realserver' do
         }
         it { is_expected.to compile.with_all_deps }
         it { is_expected.to contain_class('lvs::realserver')
-                              .with_realserver_ips(["8.8.8.8", "2620:0:861:102:8:8:8:8"])
+                              .with_realserver_ips(["8.8.8.8", "2620:0:861:102:8:8:8:8"].sort)
         }
         it { is_expected.to contain_conftool__scripts__safe_service_restart('nginx')
                               .with_lvs_pools(['appservers-https'])

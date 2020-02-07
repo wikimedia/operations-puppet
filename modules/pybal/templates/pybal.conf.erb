@@ -25,43 +25,44 @@ bgp-med = <%= @global_options.fetch('bgp-med') %>
 # LVS service definitions
 #
 
-<% @lvs_services.sort.each do |servicename, service|
-if service['sites'].include?(@site) and @lvs_class_hosts[service['class']].include?(scope.lookupvar("::hostname")) then
-    serviceip = service['ip'][@site]
-    if serviceip.class.eql?(String) then
-        serviceip = { servicename => service['ip'][@site] }
-    end
+<% @services.sort.each do |servicename, service|
+   serviceip = service['ip'][@site]
 -%>
-<% serviceip.sort.each do |subservicename, subserviceip| -%>
+<% serviceip.sort.each do |subservicename, subserviceip|
+if subservicename == 'default'
+   subservicename = servicename
+end
+lvs = service['lvs']
+-%>
 # SERVICE <%= subservicename %>
-# Class: <%= service['class'] %>
+# Class: <%= lvs['class'] %>
 # Description: <%= service['description'] %>
-# LVS balancers: <%= @lvs_class_hosts[service['class']].join(" ") %>
-<% if service.fetch('protocol', 'tcp') != 'tcp' -%>
-[<%= subservicename %>_<%= service.fetch('port', 80) %>_<%= service.fetch('protocol') %>]
+# LVS balancers: <%= @lvs_class_hosts[lvs['class']].join(" ") %>
+<% if lvs.fetch('protocol', 'tcp') != 'tcp' -%>
+[<%= subservicename %>_<%= service['port'] %>_<%= lvs['protocol'] %>]
 <% else -%>
-[<%= subservicename %>_<%= service.fetch('port', 80) %>]
+[<%= subservicename %>_<%= service['port'] %>]
 <% end -%>
-protocol = <%= service.fetch('protocol', "tcp") %>
+protocol = <%= lvs.fetch('protocol', "tcp") %>
 ip = <%= subserviceip %>
-port = <%= service.fetch('port', 80) %>
-scheduler = <%= service.fetch('scheduler', "wrr") %>
-ops = <%= service.fetch('ops', false) %>
+port = <%= service['port'] %>
+scheduler = <%= lvs.fetch('scheduler', "wrr") %>
+ops = false
 
 <% if @config == 'etcd' -%>
-<%- conftool = service['conftool'] -%>
+<%- conftool = lvs['conftool'] -%>
 config = etcd://<%= @config_host %><%= @conftool_prefix %>/pools/<%= @site %>/<%= conftool['cluster'] %>/<%= conftool['service'] %>/
 <%- else -%>
 config = http://<%= @config_host %>/pybal/<%= @site %>/<%= servicename %>
 <% end -%>
 
-<%- if service.has_key? 'bgp' -%>
-bgp = <%= service.fetch('bgp') %>
+<%- if lvs.has_key? 'bgp' -%>
+bgp = <%= lvs.fetch('bgp') %>
 <%- end -%>
-depool-threshold = <%= service.fetch('depool-threshold', ".5") %>
-monitors = <%= service['monitors'].keys.sort.inspect %>
+depool-threshold = <%= lvs['depool_threshold'] %>
+monitors = <%= lvs['monitors'].keys.sort.inspect %>
 
-<% service['monitors'].sort.each do |monitorname, monitor| -%>
+<% lvs['monitors'].sort.each do |monitorname, monitor| -%>
 # <%= monitorname %> monitor configuration
 <% monitor.keys.sort.each do |param|
 value = monitor[param] -%>
@@ -71,5 +72,4 @@ value = monitor[param] -%>
 
 <% end -%>
 
-<% end -%>
 <% end -%>

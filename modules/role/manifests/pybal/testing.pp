@@ -9,16 +9,17 @@ class role::pybal::testing {
         'bgp'             => 'no',
         'dry-run'         => 'yes',
     }
+    # TODO: fix this.\
+    $services = wmflib::service::get_services_for_lvs('secondary', $::site)
 
     $lvs_class_hosts_stub = {
         'high-traffic1' => [$::hostname],
         'high-traffic2' => [$::hostname],
         'low-traffic'   => [$::hostname],
     }
-
     class { 'pybal::configuration':
         global_options  => $opts,
-        lvs_services    => hiera('lvs::configuration::lvs_services'),
+        services        => $services,
         lvs_class_hosts => $lvs_class_hosts_stub,
         site            => hiera('pybal::configuration::site', 'eqiad'),
         config          => hiera('pybal::configuration::config', 'http'),

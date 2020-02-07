@@ -1,11 +1,21 @@
+# == Class pybal::configuration
+# Writes the pybal configuration to disk.
+#
+# Parameters:
+# $services - hash of services that are present on this load-balancer
+# lvs_class_hosts - comes from lvs::configuration.
+# config - wether to fetch the config from etcd or http
+# global_options - pybal global options
+# config_host - the fqdn:port for the host to get config from
+# conftool_prefix - the prefix to use in queries to etcd
 class pybal::configuration(
-    $lvs_services,
-    $lvs_class_hosts,
-    $site,
-    $config='http',
-    $global_options={},
-    $config_host="config-master.${site}.wmnet",
-    $conftool_prefix = '/conftool/v1',
+    Hash[String, Wmflib::Service] $services,
+    Hash $lvs_class_hosts,
+    String $site,
+    Enum['etcd', 'http'] $config='http',
+    Hash $global_options={},
+    String $config_host="config-master.${site}.wmnet",
+    String $conftool_prefix = '/conftool/v1',
 ) {
 
     # Generate PyBal config file
