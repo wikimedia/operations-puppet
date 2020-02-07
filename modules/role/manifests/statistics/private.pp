@@ -51,4 +51,6 @@ class role::statistics::private {
 
     include ::profile::kerberos::client
     include ::profile::kerberos::keytabs
+
+    include ::profile::presto::client
 }

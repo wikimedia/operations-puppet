@@ -24,14 +24,14 @@ class profile::presto::client(
 
     if $presto_clusters_secrets[$cluster_name] {
         $ssl_truststore_password = $presto_clusters_secrets[$cluster_name]['ssl_truststore_password']
-        $ssl_truststore_path = '/etc/presto/keystore.jks'
+        $ssl_truststore_path = '/etc/presto/truststore.jks'
 
         file { $ssl_truststore_path:
             content => secret("certificates/presto_${cluster_name}/root_ca/truststore.jks"),
             owner   => 'presto',
             group   => 'presto',
             mode    => '0444',
-            require => Package['presto-client'],
+            require => Package['presto-cli'],
         }
 
         file { '/usr/local/bin/presto':
@@ -39,7 +39,7 @@ class profile::presto::client(
             group   => 'root',
             mode    => '0555',
             content => template('profile/presto/presto_client_ssl_kerberos.erb'),
-            require => Package['presto-client'],
+            require => Package['presto-cli'],
         }
     }
 

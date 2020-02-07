@@ -22,4 +22,6 @@ class role::statistics::explorer {
     include ::profile::analytics::client::limits
     include ::profile::kerberos::client
     include ::profile::kerberos::keytabs
+
+    include ::profile::presto::client
 }
