@@ -11,14 +11,21 @@ region_recs = clients.keystoneclient().regions.list()
 regions = [region.id for region in region_recs]
 
 pieces = certname.split('.')
-if len(pieces) != 4:
+
+if len(pieces) == 4:
+    if pieces[3] != 'wmflabs':
+        sys.exit('certname %s does not end with wmflabs' % certname)
+    if pieces[2] != 'eqiad' and pieces[2] != 'codfw':
+        sys.exit('certname %s is for an invalid site' % certname)
+elif len(pieces) == 5:
+    if pieces[4] != 'cloud':
+        sys.exit('certname %s does not end with cloud' % certname)
+    if pieces[3] != 'wikimedia':
+        sys.exit('certname %s ends with cloud but does not include wikimedia' % certname)
+    if pieces[2] != 'eqiad1' and pieces[2] != 'codfw1dev':
+        sys.exit('certname %s is for an invalid deployment' % certname)
+else:
     sys.exit('certname %s is formatted incorrectly' % certname)
-
-if pieces[2] != 'eqiad' and pieces[2] != 'codfw1dev' and pieces[2] != 'wikimedia':
-    sys.exit('certname %s is for an invalid site' % certname)
-
-if pieces[3] != 'wmflabs' and pieces[3] != 'cloud':
-    sys.exit('certname %s does not end with wmflabs or cloud' % certname)
 
 certhostname = pieces[0]
 certproject = pieces[1]
