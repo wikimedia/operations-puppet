@@ -60,7 +60,7 @@ class ldap::client::utils($ldapconfig) {
     }
 
     file { ['/usr/local/lib/python2.7/dist-packages/ldapsupportlib.py',
-            "/usr/local/lib/${python3_version}/dist-packages/ldapsupportlib.py"]:
+            "/usr/local/lib/python${python3_version}/dist-packages/ldapsupportlib.py"]:
         owner  => 'root',
         group  => 'root',
         mode   => '0444',
