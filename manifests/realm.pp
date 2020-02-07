@@ -253,6 +253,7 @@ $private_tables = [
     'user_newtalk',
     'vote_log',
     'watchlist',
+    'watchlist_expiry',
     'wikimedia_editor_tasks_counts',
     'wikimedia_editor_tasks_keys',
     'wikimedia_editor_tasks_targets_passed' ]
