@@ -13,6 +13,7 @@ class gerrit(
     Optional[String] $scap_user = undef,
     Optional[String] $scap_key_name = undef,
     Optional[String] $db_user = undef,
+    Optional[String] $db_pass = undef,
 ) {
 
     class { '::gerrit::jetty':
@@ -27,6 +28,7 @@ class gerrit(
         scap_user     => $scap_user,
         scap_key_name => $scap_key_name,
         db_user       => $db_user,
+        db_pass       => $db_pass,
     }
 
     class { '::gerrit::proxy':

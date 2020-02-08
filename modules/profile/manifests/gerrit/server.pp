@@ -18,6 +18,7 @@ class profile::gerrit::server(
     Optional[String] $scap_user = hiera('gerrit::server::scap_user', 'gerrit2'),
     Optional[String] $scap_key_name = hiera('gerrit::server::scap_key_name', 'gerrit'),
     Optional[String] $db_user = lookup('gerrit::server::db_user'),
+    Optional[String] $db_pass = lookup('gerrit::server::db_pass'),
 ) {
 
     interface::alias { 'gerrit server':
@@ -96,6 +97,7 @@ class profile::gerrit::server(
         scap_user        => $scap_user,
         scap_key_name    => $scap_key_name,
         db_user          => $db_user,
+        db_pass          => $db_pass,
     }
 
     class { '::gerrit::replication_key':

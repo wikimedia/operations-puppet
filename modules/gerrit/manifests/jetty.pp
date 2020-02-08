@@ -11,6 +11,7 @@ class gerrit::jetty(
     Stdlib::HTTPSUrl $gitiles_url = "https://${::gerrit::host}/g",
     String $db_name = 'reviewdb',
     Optional[String] $db_user = undef,
+    Optional[String] $db_pass = undef,
     String $git_dir = 'git',
     Optional[String] $ssh_host_key = undef,
     String $heap_limit = '32g',
@@ -41,7 +42,6 @@ class gerrit::jetty(
 
     # Private config
     $email_key = $passwords::gerrit::gerrit_email_key
-    $db_pass = $passwords::gerrit::gerrit_db_pass
     $phab_token = $passwords::gerrit::gerrit_phab_token
     $prometheus_bearer_token = $passwords::gerrit::prometheus_bearer_token
 
