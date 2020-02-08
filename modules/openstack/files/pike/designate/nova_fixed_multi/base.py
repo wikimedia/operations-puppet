@@ -87,6 +87,7 @@ class BaseAddressMultiHandler(BaseAddressHandler):
         """
         LOG.debug('Using DomainID: %s' % cfg.CONF[self.name].domain_id)
         zone = self.get_zone(cfg.CONF[self.name].domain_id)
+        legacy_zone = self.get_zone(cfg.CONF[self.name].legacy_domain_id)
         LOG.debug('Domain: %r' % zone)
 
         data = extra.copy()
@@ -150,6 +151,17 @@ class BaseAddressMultiHandler(BaseAddressHandler):
                                     resource_type,
                                     resource_id)
 
+            event_data['zone'] = legacy_zone['name']
+            for fmt in cfg.CONF[self.name].get('legacy_format'):
+                self._create_record(context,
+                                    fmt,
+                                    legacy_zone,
+                                    event_data,
+                                    addr,
+                                    managed,
+                                    resource_type,
+                                    resource_id)
+
     def _delete(self, managed=True, resource_id=None, resource_type='instance',
                 criterion={}):
         """
@@ -181,6 +193,29 @@ class BaseAddressMultiHandler(BaseAddressHandler):
 
             central_api.delete_record(context, cfg.CONF[self.name].domain_id,
                                       record['recordset_id'], record['id'])
+
+        legacy_zone_id = cfg.CONF[self.name].get('legacy_domain_id')
+        if legacy_zone_id:
+            legacy_crit = criterion.copy()
+            legacy_crit['zone_id'] = legacy_zone_id
+
+            if managed:
+                legacy_crit.update({
+                    'managed': managed,
+                    'managed_plugin_name': self.get_plugin_name(),
+                    'managed_plugin_type': self.get_plugin_type(),
+                    'managed_resource_id': resource_id,
+                    'managed_resource_type': resource_type
+                })
+
+            records = central_api.find_records(context, legacy_crit)
+
+            for record in records:
+                LOG.warn('Deleting legacy record %s in recordset %s' % (record['id'],
+                                                                        record['recordset_id']))
+
+                central_api.delete_record(context, legacy_zone_id,
+                                          record['recordset_id'], record['id'])
 
         reverse_zone_id = cfg.CONF[self.name].get('reverse_domain_id')
         if reverse_zone_id:
