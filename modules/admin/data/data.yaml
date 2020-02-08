@@ -81,7 +81,7 @@ groups:
               aaron, liw, sbassett, jdl, tarrow, lucaswerkmeister-wmde,
               wmde-leszek, jhuneidi, wmde-fisch, mvolz, dsharpe, brennen, cparle,
               jfishback, urbanecm, awight, jakob, accraze, andrew-wmde,
-              kevinbazira, mstyles, zpapierski]
+              kevinbazira, mstyles, zpapierski, clarakosi]
     privileges: ['ALL = (www-data,mwdeploy,l10nupdate) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /usr/sbin/apache2ctl',
                  'ALL = NOPASSWD: /etc/init.d/apache2',
