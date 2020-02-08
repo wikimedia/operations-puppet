@@ -34,7 +34,7 @@ class profile::wmcs::services::postgres::osm_primary (
         proxy_host => "webproxy.${::site}.wmnet",
         proxy_port => 8080,
         period     => 'day',
-        hours      => ['1'],
+        hours      => [1],
         minute     => '17',
     }
     # Add coastlines
