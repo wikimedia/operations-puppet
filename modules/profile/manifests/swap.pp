@@ -31,13 +31,15 @@ class profile::swap(
     $dumps_servers           = hiera('dumps_dist_nfs_servers'),
     $dumps_active_server     = hiera('dumps_dist_active_web'),
     $push_published          = lookup('profile::swap::push_published', { 'default_value' => true }),
-
+    $use_dumps_mounts        = lookup('profile::swap::use_dumps_mounts', { 'default_value' => true }),
 ) {
 
-    # Mount mediawiki dataset dumps. T176091
-    class { '::statistics::dataset_mount':
-        dumps_servers       => $dumps_servers,
-        dumps_active_server => $dumps_active_server,
+    if $use_dumps_mounts {
+        # Mount mediawiki dataset dumps. T176091
+        class { '::statistics::dataset_mount':
+            dumps_servers       => $dumps_servers,
+            dumps_active_server => $dumps_active_server,
+        }
     }
 
     # If posix groups are not given, then use labsproject in labs, or wikidev in production.
