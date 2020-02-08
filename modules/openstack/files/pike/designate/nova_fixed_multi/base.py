@@ -45,6 +45,34 @@ class BaseAddressMultiHandler(BaseAddressHandler):
                 data["octet%s" % i] = ip_data[i]
         return data
 
+    def _create_record(self, context, format, zone, event_data, addr,
+                       managed, resource_type, resource_id):
+        recordset_values = {
+            'zone_id': zone['id'],
+            'name': format % event_data,
+            'type': 'A' if addr['version'] == 4 else 'AAAA'}
+
+        recordset = self._find_or_create_recordset(
+            context, **recordset_values)
+
+        record_values = {
+            'data': addr['address']}
+
+        if managed:
+            record_values.update({
+                'managed': managed,
+                'managed_plugin_name': self.get_plugin_name(),
+                'managed_plugin_type': self.get_plugin_type(),
+                'managed_resource_type': resource_type,
+                'managed_resource_id': resource_id})
+
+        LOG.warn('Creating record in %s / %s with values %r',
+                 zone['id'], recordset['id'], record_values)
+        central_api.create_record(context,
+                                  zone['id'],
+                                  recordset['id'],
+                                  Record(**record_values))
+
     def _create(self, addresses, extra, managed=True,
                 resource_type=None, resource_id=None):
         """
@@ -113,31 +141,14 @@ class BaseAddressMultiHandler(BaseAddressHandler):
                                               Record(**record_values))
 
             for fmt in cfg.CONF[self.name].get('format'):
-                recordset_values = {
-                    'zone_id': zone['id'],
-                    'name': fmt % event_data,
-                    'type': 'A' if addr['version'] == 4 else 'AAAA'}
-
-                recordset = self._find_or_create_recordset(
-                    context, **recordset_values)
-
-                record_values = {
-                    'data': addr['address']}
-
-                if managed:
-                    record_values.update({
-                        'managed': managed,
-                        'managed_plugin_name': self.get_plugin_name(),
-                        'managed_plugin_type': self.get_plugin_type(),
-                        'managed_resource_type': resource_type,
-                        'managed_resource_id': resource_id})
-
-                LOG.warn('Creating record in %s / %s with values %r',
-                         zone['id'], recordset['id'], record_values)
-                central_api.create_record(context,
-                                          zone['id'],
-                                          recordset['id'],
-                                          Record(**record_values))
+                self._create_record(context,
+                                    fmt,
+                                    zone,
+                                    event_data,
+                                    addr,
+                                    managed,
+                                    resource_type,
+                                    resource_id)
 
     def _delete(self, managed=True, resource_id=None, resource_type='instance',
                 criterion={}):
