@@ -82,6 +82,11 @@ class profile::trafficserver::tls (
     }
 
     $websocket_arg = bool2str($websocket_support)
+    if $http_settings['keep_alive_enabled_out'] == 1 {
+        $keepalive_arg = 'true'  # lint:ignore:quoted_booleans
+    } else {
+        $keepalive_arg = 'false' # lint:ignore:quoted_booleans
+    }
 
     # Write configuration file for global TLS Lua script
     file { "${tls_lua_script_path}.conf":
@@ -89,7 +94,7 @@ class profile::trafficserver::tls (
         owner   => root,
         group   => root,
         mode    => '0444',
-        content => "lua_websocket_support = ${websocket_arg}\n",
+        content => "lua_websocket_support = ${websocket_arg}\nlua_keepalive_support = ${keepalive_arg}\n",
         notify  => Service[$service_name],
     }
 

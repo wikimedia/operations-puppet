@@ -13,6 +13,7 @@ _G.ts.client_request.get_ssl_protocol = function() return "TLSv1.2" end
 _G.ts.client_request.get_ssl_cipher = function() return "ECDHE-ECDSA-AES256-GCM-SHA384" end
 _G.ts.client_request.get_ssl_curve = function() return "X25519" end
 _G.get_websocket_support = function() return false end
+_G.get_keepalive_support = function() return false end
 
 describe("Busted unit testing framework", function()
   describe("script for ATS Lua Plugin", function()
@@ -38,7 +39,13 @@ describe("Busted unit testing framework", function()
       assert.are.equals('tls: vers=TLSv1.2;keyx=X25519;auth=ECDSA;ciph=AES256-GCM-SHA384;prot=h1;sess=new', _G.ts.server_request.header['X-Analytics-TLS'])
       assert.are.equals('H2=0; SSR=0; SSL=TLSv1.2; C=ECDHE-ECDSA-AES256-GCM-SHA384; EC=X25519;', _G.ts.server_request.header['X-Connection-Properties'])
 
+      -- With keepalive enabled
+      _G.get_keepalive_support = function() return true end
+      do_global_send_request()
+      assert.are.equals('keep-alive', _G.ts.server_request.header['Connection'])
+
       -- With websocket support disabled and client requesting a connection upgrade
+      _G.get_keepalive_support = function() return false end
       _G.ts.client_request.header['Upgrade'] = 'websocket'
       _G.ts.client_request.header['Connection'] = 'Upgrade'
       do_global_send_request()

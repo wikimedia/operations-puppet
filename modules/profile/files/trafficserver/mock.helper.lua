@@ -5,4 +5,5 @@ _G.ts.debug = function(msg) return true end
 _G.dofile = function()
     lua_hostname = "pass-test-hostname"
     lua_websocket_support = false
+    lua_keepalive_support = false
 end

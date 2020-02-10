@@ -5,16 +5,21 @@ function read_config()
 
     dofile(configfile)
     assert(lua_websocket_support ~= nil, "lua_websocket_support not set by " .. configfile)
+    assert(lua_keepalive_support ~= nil, "lua_keepalive_support not set by " .. configfile)
 
     ts.debug("read_config() returning " .. tostring(lua_websocket_support))
 
-    return lua_websocket_support
+    return lua_websocket_support, lua_keepalive_support
 end
 
-local WEBSOCKET_SUPPORT = read_config()
+local WEBSOCKET_SUPPORT, KEEPALIVE_SUPPORT = read_config()
 
 function get_websocket_support()
     return WEBSOCKET_SUPPORT
+end
+
+function get_keepalive_support()
+    return KEEPALIVE_SUPPORT
 end
 
 function do_global_send_request()
@@ -77,7 +82,11 @@ function do_global_send_request()
         ts.server_request.header['Upgrade'] = ts.client_request.header['Upgrade']
         ts.server_request.header['Connection'] = ts.client_request.header['Connection']
     else
-        ts.server_request.header['Connection'] = 'close'
+        if get_keepalive_support() then
+            ts.server_request.header['Connection'] = 'keep-alive'
+        else
+            ts.server_request.header['Connection'] = 'close'
+        end
     end
 end
 
