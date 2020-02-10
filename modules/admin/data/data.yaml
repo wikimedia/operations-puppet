@@ -3440,7 +3440,7 @@ users:
     name: lexnasser
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOBTDDmL8isvso6xqOJB5qkk3n8xuM0XxFc1Q34ZnZRj
-    expiry_date: 2020-02-16
+    expiry_date: 2020-04-30
     expiry_contact: nruiz@wikimedia.org
     krb: present
   cohi:
