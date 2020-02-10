@@ -25,11 +25,12 @@ class profile::fastnetmon (
         mode   => '0555',
     }
     nrpe::monitor_service { 'fastnetmon':
-        description     => 'fastnetmon alerts',
+        description     => 'fastnetmon is alerting',
         nrpe_command    => "${nrpe_path} ${icinga_dir}",
         notes_url       => 'https://wikitech.wikimedia.org/wiki/Monitoring/Missing_notes_link', # TODO
         dashboard_links => [ 'https://w.wiki/8oU', ],
         retries         => 15,
+        critical        => true,
     }
 
     ferm::service { 'FNM-netflow':
