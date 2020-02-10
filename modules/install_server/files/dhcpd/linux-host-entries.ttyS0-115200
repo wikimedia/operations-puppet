@@ -517,13 +517,11 @@ host mx2001 {
 host ncredir1001 {
     hardware ethernet aa:00:00:a1:a7:44;
     fixed-address ncredir1001.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host ncredir1002 {
     hardware ethernet aa:00:00:5b:ac:65;
     fixed-address ncredir1002.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host ncredir2001 {
