@@ -43,7 +43,10 @@ class profile::analytics::cluster::packages::common {
         'libgomp1',
         # For pyhive
         'libsasl2-dev',
-        'libsasl2-modules-gssapi-mit'
+        'libsasl2-modules-gssapi-mit',
+        # For any package that requires gss-api libs,
+        # like requests-kerberos (used by presto-python-client).
+        'libkrb5-dev',
     )
 
     if os_version('debian == stretch') {
