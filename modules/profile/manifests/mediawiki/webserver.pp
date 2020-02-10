@@ -1,6 +1,7 @@
 class profile::mediawiki::webserver(
     Boolean $has_lvs = hiera('has_lvs'),
     Boolean $has_tls = hiera('profile::mediawiki::webserver::has_tls'),
+    Boolean $stream_to_logstash = lookup('profile::mediawiki::webserver::stream_to_logstash', {'default_value' => false}),
     Optional[Wmflib::UserIpPort] $fcgi_port = hiera('profile::php_fpm::fcgi_port', undef),
     String $fcgi_pool = hiera('profile::mediawiki::fcgi_pool', 'www'),
     Mediawiki::Vhost_feature_flags $vhost_feature_flags = lookup('profile::mediawiki::vhost_feature_flags', {'default_value' => {}}),
@@ -137,6 +138,21 @@ class profile::mediawiki::webserver(
         ensure => present,
         notify => undef,
         source => 'puppet:///modules/mtail/programs/mediawiki_access_log.mtail',
+    }
+    # Stream to logstash, we are using an if condition to avoid breaking beta T244472
+    if  $stream_to_logstash {
+        if defined('$::_role'){
+            $server_role = $::_role.split('/')[-1]
+        } else {
+            $server_role = 'generic'
+        }
+        rsyslog::input::file { "${server_role}-mediawiki-apache2-access":
+            path               => '/var/log/apache2/other_vhosts_access.log',
+            reopen_on_truncate => 'on',
+            addmetadata        => 'on',
+            addceetag          => 'off',
+            syslog_tag         => "${server_role}-mw-access",
+        }
     }
 
     $prometheus_nodes_ferm = join($prometheus_nodes, ' ')
