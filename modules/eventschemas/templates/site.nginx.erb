@@ -35,7 +35,7 @@ server {
     }
 
     # Serve minified .js and .css files from the gzipped files.
-    gzip_static on;
-    gzip_proxied  any;
+    gzip_static always;
+    gzip_proxied any;
     gzip_vary on;
 }
