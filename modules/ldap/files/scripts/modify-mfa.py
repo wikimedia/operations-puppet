@@ -90,7 +90,7 @@ def main():
 
     (options, args) = parser.parse_args()
     if len(args) != 1:
-        print('must pass a username', file=sys.stderr)
+        parser.error("must pass a username")
     username = args[0]
 
     if options.enable and options.disable:
