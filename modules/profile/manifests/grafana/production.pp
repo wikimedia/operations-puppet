@@ -1,10 +1,18 @@
 # == Class: profile::grafana::production
 #
-# Grafana is a dashboarding webapp for Graphite.
+# Grafana is a dashboarding web application.
 # It powers <https://grafana.wikimedia.org>.
 #
 class profile::grafana::production {
     include ::profile::grafana
+
+    rsync::quickdatacopy { 'var-lib-grafana':
+      ensure              => present,
+      source_host         => 'grafana1002.eqiad.wmnet',
+      dest_host           => 'grafana2001.codfw.wmnet',
+      module_path         => '/var/lib/grafana',
+      server_uses_stunnel => true,
+    }
 
     # On Grafana 5 and later, datasource configurations are stored in Puppet
     # as YAML and pushed to Grafana that way, which reads them at startup.

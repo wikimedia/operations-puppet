@@ -1,0 +1,12 @@
+# TODO: merge these to the class defaults once grafana 6.x is used
+# everywhere (incl. cloud).
+profile::grafana::config:
+  panels:
+    disable_sanitize_html: true
+  security:
+    cookie_secure: true
+
+lookup_options:
+  profile::grafana::config:
+    merge:
+      strategy: deep
