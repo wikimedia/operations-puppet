@@ -143,7 +143,7 @@ class profile::trafficserver::tls (
         paths                  => $paths,
         conftool_service       => $conftool_service,
         port                   => $port,
-        disable_dns_resolution => 0,
+        disable_dns_resolution => 1,
         network_settings       => $network_settings,
         http_settings          => $http_settings,
         h2_settings            => $h2_settings,
