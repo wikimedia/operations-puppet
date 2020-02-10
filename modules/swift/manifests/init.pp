@@ -84,6 +84,12 @@ class swift (
         mode    => '0755',
     }
 
+    file { '/var/log/swift':
+        ensure  => link,
+        target  => '/srv/log/swift',
+        require => File['/srv/log/swift'],
+    }
+
     logrotate::conf { 'swift':
         ensure => present,
         source => 'puppet:///modules/swift/swift.logrotate.conf',
