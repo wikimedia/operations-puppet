@@ -5,7 +5,7 @@ class profile::mediawiki::monitor_versions(
     require_package('python3-requests')
 
     file { '/usr/local/lib/nagios/plugins/check_mw_versions':
-        source => 'puppet:///modules/mediawiki/monitor_versions/check_mw_versions.py',
+        source => 'puppet:///modules/profile/mediawiki/monitor_versions/check_mw_versions.py',
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
