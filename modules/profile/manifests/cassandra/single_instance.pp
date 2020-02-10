@@ -7,11 +7,14 @@ class profile::cassandra::single_instance(
   $super_pass = hiera('profile::cassandra::single_instance::super_pass'),
   $jmx_exporter_enabled = hiera('profile::cassandra::single_instance::jmx_exporter_enabled'),
 ) {
+  # localhost udp endpoint for logging pipeline
+  class { '::profile::rsyslog::udp_json_logback_compat': }
 
   class { '::cassandra':
     cluster_name            => $cluster_name,
     seeds                   => $cassandra_hosts,
     dc                      => $dc,
+    logstash_host           => 'localhost',
     default_instance_params => {
       data_directory_base    => '/srv/cassandra',
       commitlog_directory    => '/srv/cassandra/commitlog',
