@@ -14,7 +14,7 @@ class profile::mediawiki::monitor_versions(
     nrpe::monitor_service { 'mw_wikiversion_difference':
         ensure         => present,
         description    => 'Ensure local MW versions match expected deployment',
-        nrpe_command   => "check_mw_versions -m ${deployment_host}",
+        nrpe_command   => "/usr/local/lib/nagios/plugins/check_mw_versions --deployhost ${deployment_host}",
         notes_url      => 'https://wikitech.wikimedia.org/wiki/Application_servers',
         critical       => false,
         check_interval => 5,
