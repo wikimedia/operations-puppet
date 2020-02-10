@@ -24,7 +24,11 @@ class profile::presto::client(
 
     if $presto_clusters_secrets[$cluster_name] {
         $ssl_truststore_password = $presto_clusters_secrets[$cluster_name]['ssl_truststore_password']
+
+        # Needed by the presto-cli tool to validate the coordinator's TLS cert
         $ssl_truststore_path = '/etc/presto/truststore.jks'
+        # Needed by libs like presto-python-client to validate the coordinator's TLS cert
+        $ssl_ca_cert_path = '/etc/presto/ca.crt.pem'
 
         file { $ssl_truststore_path:
             content => secret("certificates/presto_${cluster_name}/root_ca/truststore.jks"),
@@ -32,6 +36,13 @@ class profile::presto::client(
             group   => 'root',
             mode    => '0444',
             require => Package['presto-cli'],
+        }
+
+        file { $ssl_ca_cert_path:
+            content => secret("certificates/presto_${cluster_name}/root_ca/ca.crt.pem"),
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0444',
         }
 
         file { '/usr/local/bin/presto':
