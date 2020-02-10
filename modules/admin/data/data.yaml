@@ -3656,6 +3656,10 @@ ldap_only_users:
     ensure: present
     realname: Ilana Fried
     email: ifried@wikimedia.org
+  itamar:
+    ensure: present
+    realname: Itamar Givon
+    email: itamar.givon@wikimedia.de
   jaufrecht:
     ensure: present
     realname: Joel Aufrecht
