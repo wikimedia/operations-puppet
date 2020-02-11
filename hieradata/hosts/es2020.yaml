@@ -2,4 +2,3 @@
 mariadb::shard: 'es4'
 mariadb::binlog_format: 'ROW'
 mariadb::mysql_role: 'master'
-profile::base::notifications: disabled
