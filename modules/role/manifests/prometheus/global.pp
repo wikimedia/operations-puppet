@@ -36,7 +36,6 @@ class role::prometheus::global {
             '{__name__=~"^.*:memcached_.*"}',
             '{__name__=~"^.*:varnish_.*"}',
             '{__name__=~"^.*:trafficserver_.*"}',
-            '{__name__=~"^.*:gdnsd_.*"}',
             # blackbox_exporter probes results
             '{__name__=~"^probe_.*"}',
             # Bird prefix export count
@@ -46,6 +45,8 @@ class role::prometheus::global {
             '{__name__=~"^swift_container_stats.*"}',
             # IPsec Status metrics
             '{__name__="ipsec_status"}',
+            # Global authdns metrics
+            '{__name__=~"^gdnsd_.*"}',
           ],
         },
         'static_configs' => [
