@@ -85,7 +85,11 @@ probe varnish {
 		"GET /check HTTP/1.1"
 		"Host: varnishcheck"
 		"User-agent: Varnish backend check"
+<% if @vcl_config.fetch('varnish_probe_connection', 'close') == 'keep-alive' -%>
+		"Connection: keep-alive";
+<% else -%>
 		"Connection: close";
+<% end -%>
 	.timeout = <%= @vcl_config.fetch('varnish_probe_ms') %>ms;
 	.interval = 100ms;
 	.window = 5;
