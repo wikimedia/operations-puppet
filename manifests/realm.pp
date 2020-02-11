@@ -28,7 +28,7 @@ if $trusted['certname'] =~ '\.wmflabs$' or $trusted['certname'] =~ '\.wikimedia.
     #
     # See following page for additional context:
     # https://wikitech.wikimedia.org/wiki/Wikimedia_Cloud_Services_team/EnhancementProposals/DNS_domain_usage#Resolution
-    $pieces = $trusted['certname'].split('.')
+    $pieces = $trusted['certname'].split('[.]')
 
     # current / legacy FQDN.
     # This whole branch will go away eventually
