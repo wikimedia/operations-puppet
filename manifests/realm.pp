@@ -20,11 +20,7 @@ $site = $facts['ipaddress'] ? {
     default                                                   => '(undefined)'
 }
 
-# All WMCS hosts reside in one of the following domains
-# - *.wmflabs
-# - *.wikimedia.cloud
-$wmcs_domains = ['.wmflabs', '.wikimedia.cloud']
-if $wmcs_domains.any |$domain| { $trusted['certname'] =~ "${domain}$" } {
+if $trusted['certname'] =~ '\.wmflabs$' or $trusted['certname'] =~ '\.wikimedia.cloud$' {
     $realm = 'labs'
     # Pull the project name from the certname. CloudVPS VM certs can be:
     #  * <hostname>.<projname>.<site>.wmflabs
