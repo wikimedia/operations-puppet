@@ -25,6 +25,22 @@ class facilities {
         model => 'sentry4',
     }
 
+    # eqsin, single phase PDUs
+    facilities::monitor_pdu_1phase { 'ps1-603-eqsin':
+        ip    => '10.132.128.10',
+        # PoPs don't have row diversity, using rack
+        row   => '603',
+        site  => 'eqsin',
+        model => 'sentry4',
+    }
+    facilities::monitor_pdu_1phase { 'ps1-604-eqsin':
+        ip    => '10.132.128.11',
+        # PoPs don't have row diversity, using rack
+        row   => '604',
+        site  => 'eqsin',
+        model => 'sentry4',
+    }
+
     # esams, single phase PDUs
     facilities::monitor_pdu_1phase { 'ps1-oe14-esams':
         ip    => '10.21.0.16',
