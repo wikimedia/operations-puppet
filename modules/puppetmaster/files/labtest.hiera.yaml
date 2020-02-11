@@ -10,10 +10,11 @@
 :httpyaml:
   :url_prefix: http://labtest-puppetmaster.wikimedia.org:8100/v1/
 :hierarchy:
-  - "cloud/%{::wmcs_deployment}/%{::labsproject}/hosts/%{::hostname}"
-  - "cloud/%{::wmcs_deployment}/%{::labsproject}/common"
-  - "cloud/%{::wmcs_deployment}"
-  - "cloud"
+  - "labs/%{::labsproject}/host/%{::hostname}"
+  - "labs/%{::labsproject}/common"
+  - "%{::site}/codfw1dev-instances"
+  - "private/%{::site}/codfw1dev-instances"
+  - "labs"
   - "secret/%{::labsproject}"
   - "private/%{::labsproject}"
   - common

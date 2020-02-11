@@ -16,10 +16,10 @@
 :httpyaml:
   :url_prefix: http://puppetmaster.cloudinfra.wmflabs.org:8100/v1/
 :hierarchy:
-  - "cloud/%{::wmcs_deployment}/%{::labsproject}/hosts/%{::hostname}"
-  - "cloud/%{::wmcs_deployment}/%{::labsproject}/common"
-  - "cloud/%{::wmcs_deployment}"
-  - "cloud"
+  - "labs/hosts/%{::hostname}"
+  - "labs/%{::labsproject}/host/%{::hostname}"
+  - "labs/%{::labsproject}/common"
+  - "labs"
   - "secret/%{::labsproject}"
   - "private/labs/%{::labsproject}/common"
   - "private/%{::labsproject}"
