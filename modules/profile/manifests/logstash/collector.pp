@@ -438,6 +438,18 @@ class profile::logstash::collector (
         require         => File['/etc/logstash/elasticsearch-template.json'],
     }
 
+    # Output logs tagged "deprecated-input" to eqiad Kafka for ingest by elk7.
+    # These are logs that have arrived via a "legacy" (non-kafka) logstash input.
+    # The elk7 cluster ingests via Kafka only.
+    logstash::output::kafka{ 'deprecated':
+        guard_condition         => '"deprecated-input" in [tags] and "es" in [tags]',
+        codec                   => 'json',
+        priority                => 90,
+        bootstrap_servers       => $kafka_config_eqiad['brokers']['ssl_string'],
+        ssl_truststore_location => '/etc/logstash/kafka-logging-truststore-eqiad.jks',
+        ssl_truststore_password => $input_kafka_ssl_truststore_password,
+    }
+
     logstash::output::statsd { 'MW_channel_rate':
         host            => '127.0.0.1',
         port            => '9125',

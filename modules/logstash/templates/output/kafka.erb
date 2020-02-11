@@ -1,0 +1,22 @@
+output {
+
+<% if @guard_condition %>if <%= @guard_condition %> {<% end %>
+
+  kafka {
+    topic_id                => ["<%= @topic %>"]
+    codec                   => "<%= @codec %>"
+    bootstrap_servers       => "<%= @bootstrap_servers %>"
+<%- unless @plugin_id.empty? -%>
+    id                      => "<%= @plugin_id %>"
+<%- end -%>
+    security_protocol       => "SSL"
+    ssl_truststore_location => "<%= @ssl_truststore_location %>"
+    ssl_truststore_password => "<%= @ssl_truststore_password %>"
+<% if @ssl_endpoint_identification_algorithm -%>
+    ssl_endpoint_identification_algorithm => "<%=@ssl_endpoint_identification_algorithm %>"
+<% end -%>
+  }
+
+<% if @guard_condition %>}<% end %>
+
+}
