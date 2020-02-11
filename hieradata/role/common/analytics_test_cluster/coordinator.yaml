@@ -3,6 +3,9 @@ cluster: analytics
 admin::groups:
   - analytics-admins
 
+# Testing Apache BigTop in T244499
+profile::cdh::apt::use_bigtop: true
+
 profile::hadoop::common::hadoop_cluster_name: 'analytics-test-hadoop'
 
 # Periodical backups of the analytics-meta mysql database.

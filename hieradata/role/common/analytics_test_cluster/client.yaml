@@ -3,6 +3,9 @@ admin::groups:
   - analytics-privatedata-users
 cluster: analytics
 
+# Testing Apache BigTop in T244499
+profile::cdh::apt::use_bigtop: true
+
 # Configure hive client profile to copy hive-site.xml from stat1004
 # to HDFS.  This is here because it only needs to happen from one node.
 # profile::hive::client::ensure_hive_site_in_hdfs: true

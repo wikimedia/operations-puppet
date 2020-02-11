@@ -11,6 +11,9 @@ admin::groups_no_ssh:
   # for deploying files to HDFS.
   - analytics-search-users
 
+# Testing Apache BigTop in T244499
+profile::cdh::apt::use_bigtop: true
+
 profile::hadoop::common::hadoop_cluster_name: 'analytics-test-hadoop'
 
 # Deploy TLS keys and xml configuration files
