@@ -12,3 +12,7 @@ profile::trafficserver::tls::http_settings:
     keep_alive_post_out: 1
     server_session_sharing_match: ip
     server_session_sharing_pool: thread
+profile::cache::varnish::frontend::runtime_params:
+    - default_ttl=86400
+    - http_max_hdr=128 # temp mitigation for T226840
+    - idle_send_timeout=125
