@@ -4,33 +4,6 @@
     ServerName stats.wikimedia.org
     ServerAdmin noc@wikimedia.org
 
-    DocumentRoot /srv/stats.wikimedia.org/htdocs
-    <Directory "/srv/stats.wikimedia.org/htdocs">
-        Options Indexes FollowSymLinks MultiViews
-        AllowOverride None
-        Require all granted
-    </Directory>
-
-    # Wikistats V2 is a single page (index.html) website.
-    # Caching of the default page should not happen for long
-    # periods of time, since changes to its content (CSS, js, etc..)
-    # due to a deployment may end up in a broken user experience
-    # (until the cache revalidates its content or the operator manually
-    # drops it).
-    <Directory "/srv/stats.wikimedia.org/htdocs/v2">
-        <Files "index.html">
-            Header set Cache-Control "max-age=10"
-        </Files>
-    </Directory>
-
-    # Allow CGI scripts for this site
-    <Directory "/srv/stats.wikimedia.org/cgi-bin">
-        Require all granted
-        AddHandler cgi-script .pl
-    </Directory>
-
-    ScriptAlias /cgi-bin/ /srv/stats.wikimedia.org/cgi-bin/
-
     ErrorLog /var/log/apache2/error.log
     # Possible values include: debug, info, notice, warn, error, crit,
     # alert, emerg.
@@ -39,6 +12,45 @@
     CustomLog /var/log/apache2/access.log wmf
     ServerSignature On
 
+    DocumentRoot /srv/stats.wikimedia.org/htdocs
+    <Directory "/srv/stats.wikimedia.org/htdocs">
+        Options Indexes FollowSymLinks MultiViews
+        AllowOverride None
+        Require all granted
+    </Directory>
+
+
+
+    # --- Wikistats v2 ---
+    # Wikistats v2 is a single page (index.html) website.
+    # Caching of the default page should not happen for long
+    # periods of time, since changes to its content (CSS, js, etc..)
+    # due to a deployment may end up in a broken user experience
+    # (until the cache revalidates its content or the operator manually
+    # drops it).
+    <Directory "/srv/stats.wikimedia.org/htdocs">
+        <Files "index.html">
+            Header set Cache-Control "max-age=10"
+        </Files>
+    </Directory>
+
+    # Wikistats v2 was in beta under /v2/ URLs.  It has now moved to
+    # the root domain. Redirect requests from /v2 to the docroot.
+    RedirectMatch permanent ^/v2(.*) $1
+
+
+
+    # --- Wikistats v1 ---
+    # Allow CGI scripts for this site
+    <Directory "/srv/stats.wikimedia.org/cgi-bin">
+        Require all granted
+        AddHandler cgi-script .pl
+    </Directory>
+    ScriptAlias /cgi-bin/ /srv/stats.wikimedia.org/cgi-bin/
+
+
+
+    # --- Internal reportcards ---
     Alias /extended /srv/stats.wikimedia.org/htdocs/reportcard/extended
     Alias /staff /srv/stats.wikimedia.org/htdocs/reportcard/staff
 
@@ -64,7 +76,9 @@
         Require user pediapress
     </Directory>
 
-    
+
+
+    # --- Internal Geowiki ---
     # Force https and use http auth for geowiki's private data
     <Directory "<%= scope.lookupvar('::statistics::sites::stats::geowiki_private_directory') %>">
         RewriteEngine On
@@ -77,6 +91,7 @@
         AuthUserFile "<%= scope.lookupvar('::statistics::sites::stats::geowiki_private_htpasswd_file') %>"
         Require valid-user
     </Directory>
+
 </VirtualHost>
 
 # vim: filetype=apache
