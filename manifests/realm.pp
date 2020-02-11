@@ -24,7 +24,7 @@ $site = $facts['ipaddress'] ? {
 # - *.wmflabs
 # - *.wikimedia.cloud
 $wmcs_domains = ['.wmflabs', '.wikimedia.cloud']
-if $wmcs_domains.any |Stdlib::Fqdn $domain| { $trusted['certname'] =~ "${domain}$" } {
+if $wmcs_domains.any |$domain| { $trusted['certname'] =~ "${domain}$" } {
     $realm = 'labs'
     # Pull the project name from the certname. CloudVPS VM certs can be:
     #  * <hostname>.<projname>.<site>.wmflabs
