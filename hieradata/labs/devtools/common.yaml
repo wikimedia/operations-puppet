@@ -136,3 +136,10 @@ scap::sources:
     repository: operations/software/gerrit/tools/gervert/deploy
   phabricator/deployment:
     repository: phabricator/deployment
+
+
+# Gerrit
+
+# Database (MySQL, will not be used in future)
+gerrit::server::db_user: 'gerrit'
+
