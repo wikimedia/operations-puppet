@@ -192,4 +192,13 @@ class openstack::util::admin_scripts(
         owner  => 'root',
         group  => 'root',
     }
+
+    # Script to update virtual machine extra specs (flavor options)
+    file { '/usr/local/sbin/wmcs-vm-extra-specs':
+        ensure => 'present',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+        source => "puppet:///modules/openstack/${version}/admin_scripts/wmcs-vm-extra-specs.py",
+    }
 }
