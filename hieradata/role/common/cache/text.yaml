@@ -78,6 +78,8 @@ cache::alternate_domains:
     director: 'cloudmetrics1002'
   graphite.wikimedia.org:
     director: 'graphite'
+  cas-graphite.wikimedia.org:
+    director: 'graphite'
   horizon.wikimedia.org:
     director: 'labweb'
   wikitech.wikimedia.org:

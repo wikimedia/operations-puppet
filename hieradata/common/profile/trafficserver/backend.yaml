@@ -78,6 +78,9 @@ profile::trafficserver::backend::mapping_rules:
       target: http://graphite.wikimedia.org
       replacement: https://graphite.discovery.wmnet
     - type: map
+      target: http://cas-graphite.wikimedia.org
+      replacement: https://graphite.discovery.wmnet
+    - type: map
       target: http://horizon.wikimedia.org
       replacement: https://labweb.svc.eqiad.wmnet:7443
     - type: map
