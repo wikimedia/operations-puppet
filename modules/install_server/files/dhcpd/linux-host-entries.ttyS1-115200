@@ -2376,7 +2376,7 @@ host dns2001 {
 }
 
 host dns2002 {
-    hardware ethernet D0:94:66:5F:48:3A;
+    hardware ethernet B0:26:28:DA:02:40;
     fixed-address dns2002.wikimedia.org;
 }
 
