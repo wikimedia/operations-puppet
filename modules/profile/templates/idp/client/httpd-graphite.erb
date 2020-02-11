@@ -1,0 +1,42 @@
+# Apache configuration for graphite.wikimedia.org
+# This file is managed by Puppet.
+<VirtualHost *:80>
+    ServerName <%= @hostname %>
+    DocumentRoot <%= @document_root %>
+    <%- @cas_settings.each_pair do |key, setting| -%>
+      <%- unless setting.nil? -%>
+    <%= key %> <%= setting %>
+      <%-end -%>
+    <%-end -%>
+    <Location />
+        Order allow,deny
+        Allow from all
+        <LimitExcept OPTIONS>
+        <%- @cas_auth_settings.each_pair do |key, setting| -%>
+          <%- if setting.is_a?(Array) -%>
+            <%- setting.each do |_setting| -%>
+          <%= key %> <%= _setting %>
+            <%- end -%>
+          <%- else -%>
+          <%= key %> <%= setting %>
+          <%- end -%>
+        <%- end -%>
+        </LimitExcept OPTIONS>
+        # uWSGI reverse-proxy
+        uWSGIsocket /run/uwsgi/graphite-web.sock
+        uWSGIForceWSGIScheme https
+        uWSGImaxVars 192
+        SetHandler uwsgi-handler
+    </Location>
+
+    Alias /static/ /usr/share/graphite-web/static/
+    <Location "/static/">
+        SetHandler None
+    </Location>
+
+    <Location ~ "/(render|metrics|events/get_data)">
+        Satisfy Any
+        Allow from all
+    </Location>
+
+</VirtualHost>
