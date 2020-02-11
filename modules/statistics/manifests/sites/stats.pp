@@ -32,20 +32,6 @@ class statistics::sites::stats {
         show_diff => false,
     }
 
-    # Allow rsync to /srv/stats.wikimedia.org.
-    # Files are pushed here by ezachte for wikistats 1 updates.
-    rsync::server::module { 'stats.wikimedia.org':
-        # Ezachte is no longer updating stats.wikimedia.org.
-        # Ensure it is no longer writable by remote rsync from statistics servers.
-        # https://phabricator.wikimedia.org/T205113#5062563
-        ensure      => 'absent',
-        path        => $wikistats_web_directory,
-        read_only   => 'no',
-        list        => 'yes',
-        hosts_allow => $::statistics::servers,
-        auto_ferm   => true,
-    }
-
     httpd::site { 'stats.wikimedia.org':
         content => template('statistics/stats.wikimedia.org.erb'),
     }
