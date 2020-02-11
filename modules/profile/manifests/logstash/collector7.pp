@@ -134,6 +134,19 @@ class profile::logstash::collector7 (
         consumer_threads                      => 3,
     }
 
+    logstash::input::kafka { 'deprecated-eqiad':
+        topics_pattern                        => 'deprecated.*',
+        group_id                              => $input_kafka_consumer_group_id,
+        tags                                  => ['input-kafka-deprecated', 'kafka-logging-eqiad'],
+        codec                                 => 'json',
+        bootstrap_servers                     => $kafka_config_eqiad['brokers']['ssl_string'],
+        security_protocol                     => 'SSL',
+        ssl_truststore_location               => '/etc/logstash/kafka-logging-truststore-eqiad.jks',
+        ssl_truststore_password               => $input_kafka_ssl_truststore_password,
+        ssl_endpoint_identification_algorithm => '',
+        consumer_threads                      => 3,
+    }
+
     logstash::input::kafka { 'rsyslog-logback-codfw':
         topics_pattern                        => 'logback.*',
         group_id                              => $input_kafka_consumer_group_id,
