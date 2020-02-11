@@ -5,6 +5,8 @@ admin::groups:
 gerrit::server::host: 'gerrit.wikimedia.org'
 gerrit::server::config: 'gerrit.config.erb'
 
+gerrit::server::db_user: 'gerrit'
+
 # When promoting a master set this to false
 # in the corresponding hosts yaml file.
 gerrit::server::is_replica: true
