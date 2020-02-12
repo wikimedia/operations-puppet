@@ -12,7 +12,7 @@
 # - $topic: Kafka topic. Default: $title.
 # - $topics_pattern: Kafka topic pattern. Default: None. Supersedes $topic if set.
 # - $group_id: Kafka consumer group id. Default: None (use logstash implemented default of "logstash")
-# - $type: Log type to be passed to Logstash. Default: 'kafka'.
+# - $type: Log type to be passed to Logstash. Default: none.
 # - $codec: Codec to decode input. Default 'plain'.
 # - $bootstrap_servers: Kafka servers to boostrap from. This list should be
 #      a string in the form of `host1:port1,host2:port2. For more info, see:
@@ -37,7 +37,7 @@ define logstash::input::kafka(
     $tags                                                                            = [$title],
     $topic                                                                           = $title,
     Optional[String] $topics_pattern                                                 = undef,
-    $type                                                                            = 'kafka',
+    Optional[String] $type                                                           = undef,
     String $codec                                                                    = 'plain',
     $plugin_id                                                                       = "input/kafka/${title}",
     Optional[Enum['PLAINTEXT','SSL','SASL_PLAINTEXT','SASL_SSL']] $security_protocol = undef,

@@ -13,7 +13,9 @@ input {
 <%- if @group_id -%>
     group_id                => "<%= @group_id %>"
 <%- end -%>
+<%- if @type -%>
     type                    => "<%= @type %>"
+<%- end -%>
     codec                   => "<%= @codec %>"
     consumer_threads        => <%= @consumer_threads %>
     bootstrap_servers       => "<%= @bootstrap_servers %>"
