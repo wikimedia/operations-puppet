@@ -1,0 +1,28 @@
+:backends:
+  - nuyaml3
+  # the nuyaml3 backend searches the private datadir if the hierarchy
+  # entry is prefixed with either private.  newer version of puppet
+  # require all top level keys i.e. backends to be defined in this array
+  # we have also created an empty custom backend to keep the hiera cli happy
+  - private3
+:nuyaml3:
+  :datadir: /etc/puppet/hieradata
+  :expand_path:
+    - common
+    - "%{::site}"
+:private3:
+  :datadir: /etc/puppet/private/hieradata
+:hierarchy:
+  - "pontoon"
+  - "hosts/%{::hostname}"
+  - "regex/%{::fqdn}"
+  - "%{::site}"
+  - "private/hosts/%{::hostname}" # Currently only used for labtest hosts
+  - "private/%{::site}"
+  - "role/%{::site}/%{::_role}"
+  - "role/common/%{::_role}"
+  - "private/role/%{::site}/%{::_role}"
+  - "private/role/common/%{::_role}"
+  - "common"
+  - "private/common"
+  - "auto"
