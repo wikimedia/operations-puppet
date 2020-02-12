@@ -5536,6 +5536,198 @@ host mw1348 {
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
+host mw1349 {
+        hardware ethernet 4C:D9:8F:89:30:14;
+        fixed-address mw1349.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
+}
+
+host mw1350 {
+        hardware ethernet 4C:D9:8F:89:2F:0C;
+        fixed-address mw1350.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
+}
+
+host mw1352 {
+        hardware ethernet 4C:D9:8F:89:12:5B;
+        fixed-address mw1352.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
+}
+
+host mw1353 {
+        hardware ethernet 4C:D9:8F:89:12:23;
+        fixed-address mw1353.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
+}
+
+host mw1354 {
+        hardware ethernet 4C:D9:8F:89:3A:92;
+        fixed-address mw1354.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
+}
+
+host mw1355 {
+        hardware ethernet 4C:D9:8F:89:2D:D3;
+        fixed-address mw1355.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
+}
+
+host mw1356 {
+        hardware ethernet 4C:D9:8F:89:23:96;
+        fixed-address mw1356.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
+}
+
+host mw1357 {
+        hardware ethernet 4C:D9:8F:89:11:B3;
+        fixed-address mw1357.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
+}
+
+host mw1358 {
+        hardware ethernet 4C:D9:8F:89:5C:7D;
+        fixed-address mw1358.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
+}
+
+host mw1359 {
+        hardware ethernet 4C:D9:8F:89:2B:21;
+        fixed-address mw1359.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
+}
+
+host mw1360 {
+        hardware ethernet 4C:D9:8F:89:27:38;
+        fixed-address mw1360.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
+}
+
+host mw1361 {
+        hardware ethernet 4C:D9:8F:89:24:06;
+        fixed-address mw1361.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
+}
+
+host mw1362 {
+        hardware ethernet 4C:D9:8F:89:33:57;
+        fixed-address mw1362.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
+}
+
+host mw1363 {
+        hardware ethernet 4C:D9:8F:89:0B:88;
+        fixed-address mw1363.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
+}
+
+host mw1364 {
+        hardware ethernet 4C:D9:8F:89:29:F9;
+        fixed-address mw1364.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
+}
+
+host mw1365 {
+        hardware ethernet 4C:D9:8F:89:28:68;
+        fixed-address mw1365.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
+}
+
+host mw1366 {
+        hardware ethernet 4C:D9:8F:89:2D:DB;
+        fixed-address mw1366.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
+}
+
+host mw1367 {
+        hardware ethernet 4C:D9:8F:89:23:D6;
+        fixed-address mw1367.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
+}
+
+host mw1368 {
+        hardware ethernet 4C:D9:8F:89:54:2A;
+        fixed-address mw1368.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
+}
+
+host mw1369 {
+        hardware ethernet 4C:D9:8F:89:23:0D;
+        fixed-address mw1369.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
+}
+
+host mw1370 {
+        hardware ethernet 4C:D9:8F:84:E2:8E;
+        fixed-address mw1370.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
+}
+
+host mw1371 {
+        hardware ethernet 4C:D9:8F:89:0B:98;
+        fixed-address mw1371.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
+}
+
+host mw1372 {
+        hardware ethernet 4C:D9:8F:89:30:04;
+        fixed-address mw1372.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
+}
+
+host mw1373 {
+        hardware ethernet 4C:D9:8F:89:37:79;
+        fixed-address mw1373.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
+}
+
+host mw1374 {
+        hardware ethernet 4C:D9:8F:89:2F:54;
+        fixed-address mw1374.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
+}
+
+host mw1375 {
+        hardware ethernet 4C:D9:8F:89:22:F5;
+        fixed-address mw1375.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
+}
+
+host mw1376 {
+        hardware ethernet 4C:D9:8F:89:5B:C5;
+        fixed-address mw1376.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
+}
+
+host mw1377 {
+        hardware ethernet 4C:D9:8F:89:28:A0;
+        fixed-address mw1377.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
+}
+
+host mw1378 {
+        hardware ethernet 4C:D9:8F:89:0D:59;
+        fixed-address mw1378.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
+}
+
+host mw1382 {
+        hardware ethernet 4C:D9:8F:89:30:34;
+        fixed-address mw1382.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
+}
+
+host mw1383 {
+        hardware ethernet 4C:D9:8F:89:30:BD;
+        fixed-address mw1383.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
+}
+
+host mw1384 {
+        hardware ethernet 4C:D9:8F:89:2C:AA;
+        fixed-address mw1384.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
+}
+
 host mw2135 {
     hardware ethernet B0:83:FE:DE:FA:62;
     fixed-address mw2135.codfw.wmnet;
