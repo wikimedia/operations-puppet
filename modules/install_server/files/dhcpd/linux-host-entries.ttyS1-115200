@@ -492,7 +492,7 @@ host authdns1001 {
 }
 
 host authdns2001 {
-    hardware ethernet D0:94:66:5F:81:7F;
+    hardware ethernet B0:26:28:D9:DE:70;
     fixed-address authdns2001.wikimedia.org;
 }
 
