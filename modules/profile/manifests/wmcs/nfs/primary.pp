@@ -72,6 +72,24 @@ class profile::wmcs::nfs::primary(
         }
     }
 
+    $cluster_ips_ferm = join(['192.168.0.1', '192.168.0.2'], ' ')
+    ferm::service { 'drbd-test':
+        proto  => 'tcp',
+        port   => '7790',
+        srange => "(${cluster_ips_ferm})",
+    }
+
+    ferm::service { 'drbd-misc':
+        proto  => 'tcp',
+        port   => '7791',
+        srange => "(${cluster_ips_ferm})",
+    }
+
+    ferm::service { 'drbd-tools':
+        proto  => 'tcp',
+        port   => '7792',
+        srange => "(${cluster_ips_ferm})",
+    }
     # TODO: hiera this
     # TODO: use hiera in maintain_dbusers too when this is hiera'd
 
@@ -188,5 +206,12 @@ class profile::wmcs::nfs::primary(
             hour        => '14',
             require     => [File['/usr/local/sbin/logcleanup'], File['/etc/logcleanup-config.yaml']],
         }
+    }
+
+    # TODO: lots of terrible hardcoding exists throughout this class.
+    ferm::service { 'labstore_nfs_monitor':
+        proto  => 'tcp',
+        port   => '2049',
+        srange => '(@resolve((labstore1004.eqiad.wmnet)) @resolve((labstore1005.eqiad.wmnet}), AAAA))',
     }
 }
