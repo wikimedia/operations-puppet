@@ -104,7 +104,7 @@ profile::base::debdeploy::exclude_mounts:
   - /mnt/hdfs
 
 profile::analytics::refinery::job::refine::use_kerberos: true
-
+profile::analytics::refinery::job::data_purge::use_kerberos: true
 profile::analytics::cluster::hdfs_mount::kerberos_enabled: true
 profile::hadoop::balancer::use_kerberos: true
 profile::oozie::server::use_kerberos: true
