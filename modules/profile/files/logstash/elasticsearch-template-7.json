@@ -1,0 +1,106 @@
+{
+  "index_patterns" : "logstash-*",
+  "version" : 60001,
+  "settings" : {
+    "index.refresh_interval" : "5s",
+    "number_of_shards": 1,
+    "number_of_replicas" : 2,
+    "index.mapping.total_fields.limit": 2048,
+    "analysis" : {
+      "analyzer" : {
+        "default" : {
+          "type" : "standard",
+          "stopwords" : "_none_"
+        }
+      }
+    }
+  },
+  "mappings" : {
+    "date_detection" : false,
+    "numeric_detection": false,
+    "dynamic_templates" : [ {
+      "message_field" : {
+        "path_match" : "message",
+        "match_mapping_type" : "string",
+        "mapping" : {
+          "type" : "text", "norms" : false, "index_options": "docs", "copy_to": "all"
+        }
+      }
+    }, {
+      "string_fields" : {
+        "match" : "*",
+        "match_mapping_type" : "string",
+        "mapping" : {
+          "type" : "text", "norms" : false, "index_options": "docs", "copy_to": "all",
+          "fields" : {
+            "keyword" : { "type": "keyword" }
+          }
+        }
+      }
+    },
+    {
+      "boolean_to_string" : {
+        "match_mapping_type" : "boolean",
+        "mapping" : {
+          "type" : "text", "norms": false, "index_options": "docs", "copy_to": "all",
+          "fields": {
+            "keyword" : { "type": "keyword" }
+          }
+        }
+      }
+    },
+    {
+      "double_to_string" : {
+        "match_mapping_type" : "double",
+        "mapping" : {
+          "type" : "text", "index" : true, "norms": false, "index_options": "docs", "copy_to": "all",
+          "fields": {
+            "keyword" : { "type": "keyword" }
+          }
+        }
+      }
+    },
+    {
+      "long_to_string" : {
+        "match_mapping_type" : "long",
+        "mapping" : {
+          "type" : "text", "index" : true, "norms": false, "index_options": "docs", "copy_to": "all",
+          "fields": {
+            "keyword" : { "type": "keyword" }
+          }
+        }
+      }
+    }
+ ],
+    "properties" : {
+      "all": { "type": "text", "norms": "false" },
+      "@timestamp": { "type": "date", "index" : true, "doc_values": true },
+      "@version": { "type": "keyword", "index" : true, "doc_values": true },
+      "geoip"  : {
+        "dynamic": true,
+        "properties" : {
+          "ip": { "type": "ip" },
+          "location" : { "type" : "geo_point", "doc_values" : true },
+          "latitude" : { "type" : "half_float" },
+          "longitude" : { "type" : "half_float" }
+        }
+      },
+      "host" : { "type" : "keyword","index" : true, "doc_values" : true, "copy_to": "all" },
+      "level" : { "type" : "keyword", "index" : true, "doc_values" : true, "copy_to": "all" },
+      "message" : { "type" : "text", "index" : true, "norms" : false, "index_options": "docs", "copy_to": "all" },
+      "normalized_message" : {
+        "type": "text", "index" : true, "norms" : false, "index_options": "docs", "copy_to": "all",
+        "fields": {
+          "keyword": { "type": "keyword", "index": true, "doc_values": true }
+        }
+      },
+      "sequence_id" : { "type": "long", "doc_values" : "true" },
+      "tags" : { "type" : "keyword", "index" : true, "doc_values": true, "copy_to": "all" },
+      "type" : { "type" : "keyword", "index" : true, "doc_values": true, "copy_to": "all" },
+      "udp_sender" : { "type" : "keyword", "index" : true, "doc_values": true, "copy_to": "all" },
+      "request_time" : { "type" : "float", "doc_values": true },
+      "upstream_time" : { "type" : "float", "doc_values": true },
+      "response_size" : { "type" : "long", "doc_values": true }
+    }
+  }
+}

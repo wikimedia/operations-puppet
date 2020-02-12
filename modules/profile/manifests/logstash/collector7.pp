@@ -375,13 +375,13 @@ class profile::logstash::collector7 (
 
     ## Outputs (90)
     # Template for Elasticsearch index creation
-    #file { '/etc/logstash/elasticsearch-template.json':
-    #    ensure => present,
-    #    source => 'puppet:///modules/profile/logstash/elasticsearch-template.json',
-    #    owner  => 'root',
-    #    group  => 'root',
-    #    mode   => '0444',
-    #}
+    file { '/etc/logstash/elasticsearch-template-7.json':
+        ensure => present,
+        source => 'puppet:///modules/profile/logstash/elasticsearch-template-7.json',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+    }
     # lint:endignore
 
     logstash::output::elasticsearch { 'logstash':
@@ -390,6 +390,8 @@ class profile::logstash::collector7 (
         index           => '%{[@metadata][index_name]}-%{+YYYY.MM.dd}',
         manage_indices  => true,
         priority        => 90,
+        template        => '/etc/logstash/elasticsearch-template-7.json',
+        require         => File['/etc/logstash/elasticsearch-template-7.json'],
     }
 
     logstash::output::statsd { 'MW_channel_rate':
