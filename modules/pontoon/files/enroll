@@ -1,0 +1,41 @@
+#!/bin/bash
+
+set -eu
+
+opts=$(getopt --options c: --longoptions config: -n 'parse-options' -- "$@")
+
+eval set -- $opts
+while true; do
+    case "$1" in
+    --config|-c)
+        shift
+        config=$1
+        ;;
+    --)
+        shift
+        break
+        ;;
+    *)
+        break
+        ;;
+    esac
+done
+
+shift; shift
+
+puppetmaster=$(modules/pontoon/files/enc.py --config $config --hosts-for-role puppetmaster::pontoon | head -1)
+
+if [ -z "$puppetmaster" ]; then
+  echo "unable to find puppet master"
+  exit 1
+fi
+
+for host in $@; do
+  echo "enrolling $host to $puppetmaster"
+  ssh $host -- "\
+    sudo puppet config --section agent set server $puppetmaster; \
+    sudo find /var/lib/puppet/ssl -type f -delete; \
+    (cd /var/lib/puppet/client && sudo ln -s ../ssl); \
+    sudo run-puppet-agent \
+    "
+done

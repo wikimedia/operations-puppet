@@ -1,0 +1,38 @@
+graphite::production:
+  - pontoon-graphite-03.monitoring.eqiad.wmflabs
+
+syslog::centralserver:
+  - pontoon-log-01.monitoring.eqiad.wmflabs
+
+puppetmaster::pontoon:
+  - pontoon-puppet-01.monitoring.eqiad.wmflabs
+
+puppetmaster::puppetdb:
+  - pontoon-puppetdb-01.monitoring.eqiad.wmflabs
+
+builder:
+  - pontoon-builder-01.monitoring.eqiad.wmflabs
+
+prometheus:
+  - pontoon-prometheus-01.monitoring.eqiad.wmflabs
+
+grafana:
+  - pontoon-grafana-01.monitoring.eqiad.wmflabs
+
+logstash::elasticsearch7:
+  - pontoon-elastic7-01.monitoring.eqiad.wmflabs
+
+kafka::logging:
+  - pontoon-kafka-01.monitoring.eqiad.wmflabs
+
+logstash7:
+  - pontoon-logstash7-02.monitoring.eqiad.wmflabs
+
+configcluster:
+  - pontoon-conf-01.monitoring.eqiad.wmflabs
+
+alerting_host:
+  - pontoon-icinga-01.monitoring.eqiad.wmflabs
+
+acme_chief:
+  - pontoon-acmechief-01.monitoring.eqiad.wmflabs

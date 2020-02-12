@@ -1,0 +1,37 @@
+## Minimal defaults to get catalogs to compile
+profile::base::labs::unattended_wmf: 'present'
+profile::base::labs::unattended_distro: 'present'
+profile::openstack::eqiad1::version: 'rocky'
+
+mail_smarthost:
+- 'mx-out01.wmflabs.org'
+- 'mx-out02.wmflabs.org'
+wikimail_smarthost:
+- 'mx-out01.wmflabs.org'
+- 'mx-out02.wmflabs.org'
+
+ntp_peers:
+    eqiad:
+    - 'ntp-01.cloudinfra.wmflabs.org'
+    - 'ntp-02.cloudinfra.wmflabs.org'
+    codfw: []
+    ulsfo: []
+    eqsin: []
+    esams: []
+
+## Customizations
+#pontoon::stack: 'your_stack'
+
+profile::base::use_apt_proxy: false
+
+## SSH access
+bastion_hosts:
+  - 172.16.0.0/12
+## hosts using "CACHES" in firewall config
+cache_hosts:
+  - 172.16.0.0/12
+
+## Puppet CA management
+manage_puppet_ca_file: false
+puppetmaster: "%{alias('__master_for_role_puppetmaster__pontoon')}"
+puppet_ca_server: "%{alias('__master_for_role_puppetmaster__pontoon')}"
