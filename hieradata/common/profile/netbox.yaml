@@ -8,11 +8,16 @@ profile::netbox::netbox_api: https://netbox.wikimedia.org/
 
 profile::netbox::ganeti_sync_interval: 15
 profile::netbox::netbox_report_checks:
-    -   name: puppetdb
-        class: 'puppetdb.PuppetDB'
+    -   name: puppetdb_physical
+        class: 'puppetdb.PhysicalHosts'
         alert: true
         check_interval: 5
         run_interval: '*-*-* *:06/30:00' # every 30 minutes
+    -   name: puppetdb_virtual
+        class: 'puppetdb.VirtualMachines'
+        alert: false
+        check_interval: 5
+        run_interval: '*-*-* *:03/30:00' # every 30 minutes
     -   name: coherence
         class: 'coherence.Coherence'
         alert: true
