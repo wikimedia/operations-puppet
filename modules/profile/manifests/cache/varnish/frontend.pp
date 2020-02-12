@@ -109,7 +109,6 @@ class profile::cache::varnish::frontend (
     # lint:ignore:arrow_alignment
     varnish::instance { "${cache_cluster}-frontend":
         instance_name      => 'frontend',
-        layer              => 'frontend',
         vcl                => "${cache_cluster}-frontend",
         separate_vcl       => $separate_vcl_frontend,
         extra_vcl          => $fe_extra_vcl,

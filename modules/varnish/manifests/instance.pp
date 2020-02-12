@@ -1,5 +1,4 @@
 define varnish::instance(
-    $layer,
     $vcl_config,
     $ports,
     $admin_port,
@@ -62,7 +61,7 @@ define varnish::instance(
     array_concat([$vcl], $separate_vcl).each |String $vcl_name| {
         varnish::wikimedia_vcl { "/etc/varnish/wikimedia_${vcl_name}.vcl":
             require         => File["/etc/varnish/${vcl_name}.inc.vcl"],
-            template_path   => "${module_name}/vcl/wikimedia-${layer}.vcl.erb",
+            template_path   => "${module_name}/vcl/wikimedia-frontend.vcl.erb",
             vcl_config      => $vcl_config,
             backend_caches  => $backend_caches,
             backend_options => $backend_options,
@@ -80,7 +79,7 @@ define varnish::instance(
         varnish::wikimedia_vcl { "/usr/share/varnish/tests/wikimedia_${vcl_name}.vcl":
             require         => File['/usr/share/varnish/tests'],
             varnish_testing => true,
-            template_path   => "${module_name}/vcl/wikimedia-${layer}.vcl.erb",
+            template_path   => "${module_name}/vcl/wikimedia-frontend.vcl.erb",
             vcl_config      => $vcl_config,
             backend_caches  => $backend_caches,
             backend_options => $backend_options,
