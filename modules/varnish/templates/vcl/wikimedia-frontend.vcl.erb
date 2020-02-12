@@ -94,58 +94,33 @@ probe varnish {
 
 <%
 # Expected data format:
-# @backend_caches = { # always defined
-#     'cache_local' => {
-#         'dc'       => 'esams',
-#         'backends' => [ "cp3050.esams.wmnet", "cp3052.esams.wmnet", ... ],
-#         'be_opts'  => { # every option is required!
-#             'port' = 3128,
-#             'connect_timeout' = '2s',
-#             'first_byte_timeout' = '4s',
-#             'between_bytes_timeout' = '3s',
-#             'max_connections' = 100, # per-backend!
-#             'probe' = 'varnish',
-#         },
-#     },
+# @backend_caches = [ "cp3050.esams.wmnet", "cp3052.esams.wmnet", ... ]
+# @backend_options = { # every option is required!
+#     'port' = 3128,
+#     'connect_timeout' = '2s',
+#     'first_byte_timeout' = '4s',
+#     'between_bytes_timeout' = '3s',
+#     'max_connections' = 100, # per-backend!
+#     'probe' = 'varnish',
 # }
-#
-#
-# Note that backend hosts defined by more than one director will take their
-# options from the first director to define them!  We could fix this by putting
-# the director name into the backend host's "backend" name as well, but so far
-# we have no cases where this is necessary! (whereas we do have cases of
-# duplicate backend hosts where the options are always identical, for
-# vslp-vs-random cache backends)
 %>
 
 <% if not @varnish_testing -%>
 
 # Generated list of cache backend hosts for director consumption
 
-<%
-becache_seen = {}
-@backend_caches.keys.sort.each do |director_name|
-	director = @backend_caches[director_name]
-	be_opts	= director['be_opts']
-	[*director['backends']].each do |backend|
-		next if backend == :undef
-		next if becache_seen.key?(backend)
-		becache_seen[backend] = 1
-		name = 'be_' + backend.gsub(/[-.]/, '_')
--%>
-
-backend <%= name %> {
+<% @backend_caches.sort.each do |backend| -%>
+backend <%= 'be_' + backend.gsub(/[-.]/, '_') %> {
 	.host = "<%= backend %>";
-	.port = "<%= be_opts['port'] %>";
-	.connect_timeout = <%= be_opts['connect_timeout'] %>;
-	.first_byte_timeout = <%= be_opts['first_byte_timeout'] %>;
-	.between_bytes_timeout = <%= be_opts['between_bytes_timeout'] %>;
-	.max_connections = <%= be_opts['max_connections'] %>;
+	.port = "<%= @backend_options['port'] %>";
+	.connect_timeout = <%= @backend_options['connect_timeout'] %>;
+	.first_byte_timeout = <%= @backend_options['first_byte_timeout'] %>;
+	.between_bytes_timeout = <%= @backend_options['between_bytes_timeout'] %>;
+	.max_connections = <%= @backend_options['max_connections'] %>;
 	.probe = varnish;
 }
 
-<% end # backend loop -%>
-<% end # director loop -%>
+<% end # backend_caches loop -%>
 
 <% end # !varnish_testing -%>
 
@@ -443,27 +418,21 @@ sub vcl_init {
 <% if @dynamic_backend_caches -%>
 include "directors.frontend.vcl";
 <% else -%>
-<% @backend_caches.keys.sort.each do |director_name| -%>
-	new <%= director_name %> = directors.shard();
-	new <%= director_name %>_random = directors.random();
+	new cache_local = directors.shard();
+	new cache_local_random = directors.random();
 <% if @varnish_testing -%>
 	// "vtc_backend" is the backend name we use in all VTC tests
-	<%= director_name %>.add_backend(vtc_backend);
-	<%= director_name %>_random.add_backend(vtc_backend, 100);
+	cache_local.add_backend(vtc_backend);
+	cache_local_random.add_backend(vtc_backend, 100);
 <% else
-	director = @backend_caches[director_name]
-	backends = director['backends']
-	backends.each do |backend|
-		name = 'be_' + backend.gsub(/[-.]/, '_')
+@backend_caches.sort.each do |backend|
+	name = 'be_' + backend.gsub(/[-.]/, '_')
 -%>
-	<%= director_name %>.add_backend(<%= name %>);
-	<%= director_name %>_random.add_backend(<%= name %>, 100);
+	cache_local.add_backend(<%= name %>);
+	cache_local_random.add_backend(<%= name %>, 100);
 <% 	end #backends loop -%>
 <% end #if @varnish_testing -%>
-	<%= director_name %>.reconfigure();
-
-<% end #director loop -%>
-
+	cache_local.reconfigure();
 <% end #dynamic_backend_caches -%>
 
 	call wm_domains_init;

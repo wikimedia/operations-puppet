@@ -8,7 +8,8 @@ define varnish::instance(
     $vcl = '',
     $storage='-s malloc,1G',
     $jemalloc_conf=undef,
-    $backend_caches={},
+    $backend_caches=[],
+    $backend_options={},
     $extra_vcl = [],
     $separate_vcl = [],
     $wikimedia_nets = [],
@@ -64,6 +65,7 @@ define varnish::instance(
             template_path   => "${module_name}/vcl/wikimedia-${layer}.vcl.erb",
             vcl_config      => $vcl_config,
             backend_caches  => $backend_caches,
+            backend_options => $backend_options,
             vcl             => $vcl_name,
             is_separate_vcl => $vcl_name in $separate_vcl,
             wikimedia_nets  => $wikimedia_nets,
@@ -81,6 +83,7 @@ define varnish::instance(
             template_path   => "${module_name}/vcl/wikimedia-${layer}.vcl.erb",
             vcl_config      => $vcl_config,
             backend_caches  => $backend_caches,
+            backend_options => $backend_options,
             vcl             => $vcl_name,
             is_separate_vcl => $vcl_name in $separate_vcl,
             wikimedia_nets  => $wikimedia_nets,
@@ -88,10 +91,11 @@ define varnish::instance(
         }
 
         varnish::wikimedia_vcl { "/etc/varnish/${vcl_name}.inc.vcl":
-            template_path  => "varnish/${vcl_name}.inc.vcl.erb",
-            notify         => Exec["load-new-vcl-file${instancesuffix}"],
-            vcl_config     => $vcl_config,
-            backend_caches => $backend_caches,
+            template_path   => "varnish/${vcl_name}.inc.vcl.erb",
+            notify          => Exec["load-new-vcl-file${instancesuffix}"],
+            vcl_config      => $vcl_config,
+            backend_caches  => $backend_caches,
+            backend_options => $backend_options,
         }
 
         varnish::wikimedia_vcl { "/usr/share/varnish/tests/${vcl_name}.inc.vcl":
@@ -100,6 +104,7 @@ define varnish::instance(
             template_path   => "varnish/${vcl_name}.inc.vcl.erb",
             vcl_config      => $vcl_config,
             backend_caches  => $backend_caches,
+            backend_options => $backend_options,
         }
     }
 

@@ -19,14 +19,6 @@ class profile::cache::varnish::frontend (
     $wikimedia_nets = $profile::cache::base::wikimedia_nets
     $wikimedia_trust = $profile::cache::base::wikimedia_trust
 
-    $directors = {
-        'cache_local' => {
-            'dc'       => $::site,
-            'backends' => $cache_nodes[$cache_cluster]["${::site}_ats"],
-            'be_opts'  => $fe_cache_be_opts,
-        },
-    }
-
     if $has_lvs {
         # TODO: convert to use profile::lvs::realserver
         class { '::lvs::realserver':
@@ -126,7 +118,8 @@ class profile::cache::varnish::frontend (
         runtime_params     => join(prefix($runtime_params, '-p '), ' '),
         storage            => "-s malloc,${fe_mem_gb}G ${fe_transient_storage}",
         jemalloc_conf      => $fe_jemalloc_conf,
-        backend_caches     => $directors,
+        backend_caches     => $cache_nodes[$cache_cluster]["${::site}_ats"],
+        backend_options    => $fe_cache_be_opts,
         vcl_config         => $vcl_config,
         wikimedia_nets     => $wikimedia_nets,
         wikimedia_trust    => $wikimedia_trust,
