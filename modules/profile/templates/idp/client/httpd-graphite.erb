@@ -1,7 +1,7 @@
 # Apache configuration for graphite.wikimedia.org
 # This file is managed by Puppet.
 <VirtualHost *:80>
-    ServerName <%= @hostname %>
+    ServerName <%= @virtual_host %>
     DocumentRoot <%= @document_root %>
     <%- @cas_settings.each_pair do |key, setting| -%>
       <%- unless setting.nil? -%>
