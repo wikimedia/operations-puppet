@@ -1,0 +1,20 @@
+<% if @vcl_config.fetch('alternate_domains', {}).length > 0 and not @is_separate_vcl -%>
+import re2;
+<% end -%>
+
+sub wm_domains_init {
+<% if @vcl_config.fetch('alternate_domains', {}).length > 0 and not @is_separate_vcl -%>
+       // Domains for which we need to switch to an alternate VCL file T164609
+       new alternate_domains = re2.set(anchor=both, case_sensitive=false, literal=false);
+<%
+       @vcl_config['alternate_domains'].keys.sort.each do |reqhost|
+       if not @vcl_config['alternate_domains'][reqhost].fetch("regex_key", false)
+           reqhost = '\Q' + reqhost + '\E'
+       end
+-%>
+       alternate_domains.add("<%= reqhost %>");
+<%  end #reqhost loop -%>
+
+       alternate_domains.compile();
+<%  end #alternate_domains if -%>
+}

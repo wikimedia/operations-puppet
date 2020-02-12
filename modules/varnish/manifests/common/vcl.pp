@@ -17,6 +17,13 @@ class varnish::common::vcl($vcl_config={}) {
         content => template('varnish/analytics.inc.vcl.erb'),
     }
 
+    file { '/etc/varnish/alternate-domains.inc.vcl':
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => template('varnish/alternate-domains.inc.vcl.erb'),
+    }
+
     # ACL blocked_nets to be found on the private puppet repo under
     # modules/secret/secrets/varnish/blocked-nets.inc.vcl
     file { '/etc/varnish/blocked-nets.inc.vcl':

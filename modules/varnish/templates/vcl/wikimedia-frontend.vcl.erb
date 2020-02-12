@@ -18,23 +18,136 @@ C{
    const double adm_param = <%= ((@vcl_config.fetch("fe_mem_gb").to_i/1024.0)**0.9064392)/(2.0**-18.16135) %>;
 }C
 <% end -%>
-// only used in recv_fe_ip_processing on frontends
+
+import std;
+# this is needed by geoip.inc.vcl, and in general is the only way to sanely do
+# Set-Cookie in the face of multiple independent cookies being set from
+# different code.
+import header;
+
+import directors;
 import netmapper;
 
 // rate limiting
 import vsthrottle;
 
-include "wikimedia-common_<%= @vcl %>.inc.vcl";
 include "analytics.inc.vcl";
+include "alternate-domains.inc.vcl";
 include "browsersec.inc.vcl";
+include "errorpage.inc.vcl";
 include "translation-engine.inc.vcl";
+
 // provides the acl "blocked_nets", "bot_blocked_nets", and "public_cloud_nets".
 // The file can be found on the private puppet repo under
 // modules/secret/secrets/varnish/blocked-nets.inc.vcl
 include "blocked-nets.inc.vcl";
 
+# ACLs
+
+acl local_host {
+       "127.0.0.1";
+}
+
+acl local_tls_terminator {
+       "<%= @ipaddress %>"; // note this matches nginx proxy_pass for TLS
+}
+
+// external trusted proxies aren't allowed to set XCIP (via XFF) to wikimedia_nets
+acl wikimedia_nets {
+<% @wikimedia_nets.each do |entry|
+       subnet, mask = entry.split("/", 2)
+-%>
+       "<%= subnet %>"/<%= mask %>;
+<% end -%>
+}
+
+// Only wikimedia_trust can fake X-F-P
+acl wikimedia_trust {
+<% @wikimedia_trust.each do |entry|
+       subnet, mask = entry.split("/", 2)
+-%>
+       "<%= subnet %>"/<%= mask %>;
+<% end -%>
+<% if @realm == "production" -%>
+       ! "10.68.0.0"/16; # temporary hack, do not treat labs like production
+<% end -%>
+}
+
 /* Include the VCL file for this role */
 include "<%= @vcl %>.inc.vcl";
+
+# Backend probes
+
+# frontends in front of other varnish instances should send
+# probes that don't depend on the app backend
+probe varnish {
+	.request =
+		"GET /check HTTP/1.1"
+		"Host: varnishcheck"
+		"User-agent: Varnish backend check"
+		"Connection: close";
+	.timeout = <%= @vcl_config.fetch('varnish_probe_ms') %>ms;
+	.interval = 100ms;
+	.window = 5;
+	.threshold = 3;
+}
+
+<%
+# Expected data format:
+# @backend_caches = { # always defined
+#     'cache_local' => {
+#         'dc'       => 'esams',
+#         'backends' => [ "cp3050.esams.wmnet", "cp3052.esams.wmnet", ... ],
+#         'be_opts'  => { # every option is required!
+#             'port' = 3128,
+#             'connect_timeout' = '2s',
+#             'first_byte_timeout' = '4s',
+#             'between_bytes_timeout' = '3s',
+#             'max_connections' = 100, # per-backend!
+#             'probe' = 'varnish',
+#         },
+#     },
+# }
+#
+#
+# Note that backend hosts defined by more than one director will take their
+# options from the first director to define them!  We could fix this by putting
+# the director name into the backend host's "backend" name as well, but so far
+# we have no cases where this is necessary! (whereas we do have cases of
+# duplicate backend hosts where the options are always identical, for
+# vslp-vs-random cache backends)
+%>
+
+<% if not @varnish_testing -%>
+
+# Generated list of cache backend hosts for director consumption
+
+<%
+becache_seen = {}
+@backend_caches.keys.sort.each do |director_name|
+	director = @backend_caches[director_name]
+	be_opts	= director['be_opts']
+	[*director['backends']].each do |backend|
+		next if backend == :undef
+		next if becache_seen.key?(backend)
+		becache_seen[backend] = 1
+		name = 'be_' + backend.gsub(/[-.]/, '_')
+-%>
+
+backend <%= name %> {
+	.host = "<%= backend %>";
+	.port = "<%= be_opts['port'] %>";
+	.connect_timeout = <%= be_opts['connect_timeout'] %>;
+	.first_byte_timeout = <%= be_opts['first_byte_timeout'] %>;
+	.between_bytes_timeout = <%= be_opts['between_bytes_timeout'] %>;
+	.max_connections = <%= be_opts['max_connections'] %>;
+	.probe = varnish;
+}
+
+<% end # backend loop -%>
+<% end # director loop -%>
+
+<% end # !varnish_testing -%>
 
 // *** HTTPS-forcing recv code
 sub https_recv_redirect {
@@ -326,14 +439,154 @@ sub recv_fe_ip_processing {
 }
 
 sub vcl_init {
-	call wm_common_directors_init;
-	call wm_common_domains_init;
+# directors
+<% if @dynamic_backend_caches -%>
+include "directors.frontend.vcl";
+<% else -%>
+<% @backend_caches.keys.sort.each do |director_name| -%>
+	new <%= director_name %> = directors.shard();
+	new <%= director_name %>_random = directors.random();
+<% if @varnish_testing -%>
+	// "vtc_backend" is the backend name we use in all VTC tests
+	<%= director_name %>.add_backend(vtc_backend);
+	<%= director_name %>_random.add_backend(vtc_backend, 100);
+<% else
+	director = @backend_caches[director_name]
+	backends = director['backends']
+	backends.each do |backend|
+		name = 'be_' + backend.gsub(/[-.]/, '_')
+-%>
+	<%= director_name %>.add_backend(<%= name %>);
+	<%= director_name %>_random.add_backend(<%= name %>, 100);
+<% 	end #backends loop -%>
+<% end #if @varnish_testing -%>
+	<%= director_name %>.reconfigure();
 
-	// again, netmapper only used in frontends, for recv_fe_ip_processing
+<% end #director loop -%>
+
+<% end #dynamic_backend_caches -%>
+
+	call wm_domains_init;
+
 	// args here are map-name (for .map()), data file, and seconds between mtime checks for reload
 	netmapper.init("trusted_proxies", "<%= @netmapper_dir %>/trusted_proxies.json", 89);
 	netmapper.init("carriers", "<%= @netmapper_dir %>/carriers.json", 89);
-	/* Function vcl_init in <%= @vcl %>.inc.vcl will be appended here */
+}
+
+sub wm_recv_early {
+	unset req.http.X-CDIS; // clear internal cache-disposition header
+
+	// To pass this check, the method must be in allowed_methods (even OPTIONS must be there to be supported),
+	// Additionally, if OPTIONS is allowed, it must be accompanied by Origin:
+	if (req.method !~ "<%= @vcl_config.fetch("allowed_methods", "^(GET|HEAD|POST|OPTIONS|PURGE)$") %>"
+		|| (req.method == "OPTIONS" && !req.http.Origin)) {
+		return (synth(405, "Method not allowed"));
+	}
+
+	if ( req.http.host ~ "^varnishcheck" ) {
+		return (synth(200, "healthcheck"));
+	}
+}
+
+sub wm_recv_purge {
+	/* Support HTTP PURGE */
+	if (req.method == "PURGE") {
+		if (client.ip !~ local_host) {
+			return (synth(405, "Method not allowed"));
+		} elsif (req.http.Host ~ "<%= @vcl_config.fetch('purge_host_regex') %>") {
+			set req.hash_ignore_busy = true;
+			return (purge);
+		} else {
+			return (synth(204, "Domain not cached here"));
+		}
+	}
+}
+
+sub wm_recv_pass {
+<%
+    def uc_action(uc)
+        if uc == "pass"
+            return "return (pass);"
+        elsif uc == "pipe"
+            return "return (pipe);"
+        elsif uc == "websockets"
+            return %Q[if (req.http.upgrade ~ "(?i)websocket") { return (pipe); } else { return (pass); }]
+        elsif uc == "normal"
+            return ""
+        else
+            raise Error, "Invalid caching action #{uc}"
+        end
+    end
+
+    caching = []
+    caching_default = false
+    if @is_separate_vcl
+	req_handling = @vcl_config['alternate_domains']
+    else
+	req_handling = @vcl_config['req_handling']
+    end
+
+    req_handling.keys.sort.each do |reqhost|
+        if reqhost == 'default'
+            host_cmp = %Q[x] # unused below
+        elsif reqhost =~ /^[-.A-Za-z0-9]+$/
+            host_cmp = %Q[if (req.http.host == "#{reqhost}")]
+        else
+            host_cmp = %Q[if (req.http.host ~ "#{reqhost}")]
+        end
+
+        need_host = false
+        host_action = false
+        options = req_handling[reqhost]
+        if options.has_key?('caching')
+            host_action = uc_action(options['caching'])
+            need_host = true
+        end
+
+        if options.has_key?('subpaths')
+            path_ifs = []
+            options['subpaths'].keys.sort.each do |subpath|
+                path_options = options['subpaths'][subpath]
+                path_cmp = %Q[if (req.url ~ "#{subpath}")]
+                if path_options.has_key?('caching')
+                    need_host = true
+                    path_action = uc_action(path_options['caching'])
+                    path_ifs.push(%Q[#{path_cmp} {\n             #{path_action}\n        }])
+                else
+                    path_ifs.push(%Q[#{path_cmp} {\n        }])
+                end
+            end
+            if need_host
+                if host_action
+                    path_ifs.push(%Q[e {\n            #{host_action}\n        }])
+                end
+                host_action = path_ifs.join(' els')
+            end
+        end
+
+        if need_host
+            if reqhost == 'default'
+                caching_default = host_action
+            else
+                caching.push(%Q[#{host_cmp} {\n        #{host_action}\n    }])
+            end
+        end
+    end
+
+    if caching.empty?
+        if caching_default
+            caching_vcl = caching_default
+        else
+            caching_vcl = %Q[]
+        end
+    else
+        if caching_default
+            caching.push(%Q[e {\n        #{caching_default}\n    }])
+        end
+        caching_vcl = caching.join(' els');
+    end
+%>
+    <%= caching_vcl %>
 }
 
 sub vcl_recv {
@@ -391,7 +644,7 @@ sub vcl_recv {
 		call cluster_fe_vcl_switch;
 	}
 
-	call wm_common_recv_early;
+	call wm_recv_early;
 
 	set req.backend_hint = cache_local.backend();
 
@@ -414,7 +667,7 @@ sub vcl_recv {
 	}
 
 	call cluster_fe_recv_pre_purge;
-	call wm_common_recv_purge;
+	call wm_recv_purge;
 
 	// The idea here is to block our worst clients (in TLS terms: those
 	// using TLSv1.0 or TLSv1.1)
@@ -438,7 +691,7 @@ sub vcl_recv {
 
 
 	call cluster_fe_recv;
-	call wm_common_recv_pass;
+	call wm_recv_pass;
 	call cluster_fe_recv_tail;
 
 	return (hash); // no default VCL
@@ -455,20 +708,20 @@ sub vcl_purge {
 }
 
 sub vcl_hit {
-	call wm_common_hit;
+	set req.http.X-CDIS = "hit";
 	call cluster_fe_hit;
 	// no default VCL.
 	return (deliver);
 }
 
 sub vcl_miss {
-	call wm_common_miss;
+	set req.http.X-CDIS = "miss";
 	call cluster_fe_miss;
 	return (fetch); // no default VCL (which is just "return (fetch)" anyways)
 }
 
 sub vcl_pass {
-	call wm_common_pass;
+	set req.http.X-CDIS = "pass";
 
 <% if @vcl_config.fetch("pass_random", false) -%>
 	// pass-traffic should not use consistent hashing, to avoid unecessary
@@ -494,6 +747,112 @@ sub vcl_pipe {
 
 sub vcl_backend_fetch {
     call cluster_fe_backend_fetch;
+}
+
+sub wm_backend_response {
+	// This prevents the application layer from setting this in a response.
+	// We'll be setting this same variable internally in VCL in hit-for-pass
+	// cases later.
+	unset beresp.http.X-CDIS;
+
+	/* Don't cache private, no-cache, no-store objects */
+	if (beresp.http.Cache-Control ~ "(private|no-cache|no-store)") {
+		set beresp.ttl = 0s;
+		// translated to hit-for-pass below
+	}
+	// Set a maximum cap on the TTL for 404s. Objects that don't exist now may
+	// be created later on, and we want to put a limit on the amount of time
+	// it takes for new resources to be visible.
+	elsif (beresp.status == 404 && beresp.ttl > <%= @vcl_config.fetch("ttl_cap_404", "10m") %>) {
+		set beresp.ttl = <%= @vcl_config.fetch("ttl_cap_404", "10m") %>;
+	}
+
+	// Set keep, which influences the amount of time objects are kept available
+	// in cache for IMS requests (TTL+grace+keep). Scale keep to the app-provided
+	// TTL.
+	if (beresp.ttl > 0s) {
+		if (beresp.http.ETag || beresp.http.Last-Modified) {
+			if (beresp.ttl < <%= @vcl_config.fetch("keep", "7d") %>) {
+				set beresp.keep = beresp.ttl;
+			} else {
+				set beresp.keep = <%= @vcl_config.fetch("keep", "7d") %>;
+			}
+		}
+
+		// Hard TTL cap on all fetched objects (default 1d)
+		if (beresp.ttl > <%= @vcl_config.fetch("ttl_cap", "1d") %>) {
+			set beresp.ttl = <%= @vcl_config.fetch("ttl_cap", "1d") %>;
+		}
+
+		set beresp.grace = <%= @vcl_config.fetch("def_grace", "20m") %>;
+	}
+
+	// Swizzled random reduction of all TTLs by up to 5%, to avoid various
+	// possible cases of stampedes of aligned natural expiries.
+	// Note VCL supports DURATION*REAL natively, and DURATIONs do support
+	// fractional seconds, so this doesn't technically need a guard
+	// condition against short TTLs.
+	// However, sub-second TTLs like 0.97s might poke edge cases in VCL,
+	// which would be a good reason to not do this for TTLs < 2s.
+	// Furthermore, swizzling a stampede of very short TTLs such that they
+	// expire milliseconds apart may do more perf harm than good.  60s
+	// seems like a reasonably-conservative cutoff, where the swizzle will
+	// be spreading things by ~3s.
+	if (beresp.ttl >= 60s) {
+		set beresp.ttl = beresp.ttl * std.random(0.95, 1.0);
+	}
+
+	// Compress compressible things if the backend didn't already, but
+	// avoid explicitly-defined CL < 860 bytes.  We've seen varnish do
+	// gzipping on CL:0 302 responses, resulting in output that has CE:gzip
+	// and CL:20 and sends a pointless gzip header.
+	// Very small content may actually inflate from gzipping, and
+	// sub-one-packet content isn't saving a lot of latency for the gzip
+	// costs (to the server and the client, who must also decompress it).
+	// The magic 860 number comes from Akamai, Google recommends anywhere
+	// from 150-1000.  See also:
+	// https://webmasters.stackexchange.com/questions/31750/what-is-recommended-minimum-object-size-for-gzip-performance-benefits
+	if (beresp.http.content-type ~ "json|text|html|script|xml|icon|ms-fontobject|ms-opentype|x-font|sla"
+		&& (!beresp.http.Content-Length || std.integer(beresp.http.Content-Length, 0) >= 860)) {
+			set beresp.do_gzip = true;
+	}
+	// SVGs served by MediaWiki are part of the interface. That makes them
+	// very hot objects, as a result the compression time overhead is a
+	// non-issue. Several of them tend to be requested at the same time,
+	// as the browser finds out about them when parsing stylesheets that
+	// contain multiple. This means that the "less than 1 packet" rationale
+	// for not compressing very small objects doesn't apply either. Lastly,
+	// since they're XML, they contain a fair amount of repetitive content
+	// even when small, which means that gzipped SVGs tend to be
+	// consistantly smaller than their uncompressed version, even when tiny.
+	// For all these reasons, it makes sense to have a lower threshold for
+	// SVG. Applying it to XML in general is a more unknown tradeoff, as it
+	// would affect small API responses that are more likely to be cold
+	// objects due to low traffic to specific API URLs.
+	if (beresp.http.content-type ~ "svg" && (!beresp.http.Content-Length || std.integer(beresp.http.Content-Length, 0) >= 150)) {
+		set beresp.do_gzip = true;
+	}
+
+	// set a 601s hit-for-pass object based on response conditions in vcl_backend_response:
+	//    Calculated TTL <= 0 + Status < 500 + No underlying cache hit:
+	//    These are generally uncacheable responses.  The 5xx exception
+	//    avoids us accidentally replacing a good stale/grace object with
+	//    an hfp (and then repeatedly passing on potentially-cacheable
+	//    content) due to an isolated 5xx response, and the exception for
+	//    underlying cache hits (detected from X-Cache-Int) is to avoid
+	//    creating a persist HFP object when a lower-level varnish
+	//    returned an expired object under grace-mode rules.
+	if (
+		beresp.ttl <= 0s
+		&& beresp.status < 500
+		&& (!beresp.http.X-Cache-Int || beresp.http.X-Cache-Int !~ " hit")
+	) {
+		set beresp.grace = 31s;
+		set beresp.keep = 0s;
+		set beresp.http.X-CDIS = "pass";
+		// XXX: HFP for now, but this requires further work: T180712
+		return(pass(601s));
+	}
 }
 
 sub vcl_backend_response {
@@ -544,14 +903,35 @@ C{
 }
 <% end -%>
 	call cluster_fe_backend_response_early; // e.g. to fix up Vary-slotting in bereq
-	call wm_common_backend_response;
+	call wm_backend_response;
 	call cluster_fe_backend_response;
 	// default vcl_(fetch|backend_response) invokes here, unless cluster VCL unconditionally returns!
 }
 
+sub wm_xcache_deliver {
+	if (req.method != "PURGE") {
+		// we copy through from beresp->resp->req here for the initial hit-for-pass case
+		if (resp.http.X-CDIS) {
+			set req.http.X-CDIS = resp.http.X-CDIS;
+			unset resp.http.X-CDIS;
+		}
+
+		if (!req.http.X-CDIS) {
+			set req.http.X-CDIS = "bug";
+		}
+
+		// X-Cache-Int gets appended-to as we traverse cache layers
+		if (resp.http.X-Cache-Int) {
+			set resp.http.X-Cache-Int = resp.http.X-Cache-Int + ", <%= @hostname %> " + req.http.X-CDIS;
+		} else {
+			set resp.http.X-Cache-Int = "<%= @hostname %> " + req.http.X-CDIS;
+		}
+	}
+}
+
 // Common code in frontend vcl_deliver + vcl_synth
 sub deliver_synth_ {
-	call wm_common_xcache_deliver;
+	call wm_xcache_deliver;
 
 	// At the frontends, copy X-Cache-Int to X-Cache and delete X-Cache-Int
 	// This prevents double-set of X-Cache in log parsing on varnish4.
@@ -605,8 +985,27 @@ sub deliver_synth_ {
 }
 
 sub vcl_deliver {
-	call wm_common_deliver_hitcount;
-	call wm_common_deliver_error_with_empty_body;
+	// hit count
+	if (req.method != "PURGE") {
+		if(req.http.X-CDIS == "hit") {
+			// obj.hits isn't known in vcl_hit, and not useful for other states
+			set req.http.X-CDIS = "hit/" + obj.hits;
+		}
+	}
+    // Provides custom error html if error response has no body
+    if (resp.http.Content-Length == "0" && resp.status >= 400) {
+        # Varnish doesn't define status codes from RFC6585
+        if (resp.status == 428) {
+            return(synth(resp.status, "Precondition Required"));
+        } elseif (resp.status == 429) {
+            return(synth(resp.status, "Too Many Requests"));
+        } elseif (resp.status == 431) {
+            return(synth(resp.status, "Request Header Fields Too Large"));
+        } elseif (resp.status == 511) {
+            return(synth(resp.status, "Network Authentication Required"));
+        }
+        return(synth(resp.status));
+    }
 	call deliver_synth_;
 	call cluster_fe_deliver;
 	return (deliver); // no default VCL (which is just "return (deliver)" anyways)
@@ -649,7 +1048,11 @@ sub vcl_synth {
 		}
 	}
 
-	call wm_common_synth;
+	if (resp.reason == "healthcheck") {
+		set resp.reason = "OK";
+		synthetic("Varnish frontend running on <%= @hostname %> is up");
+	}
+
 	return (deliver);
 }
 
@@ -663,3 +1066,4 @@ sub vcl_backend_error {
 	call backend_error_errorpage;
 	return (deliver);
 }
+# vim: set autoindent noexpandtab tabstop=4 shiftwidth=4:

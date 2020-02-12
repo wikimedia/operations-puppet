@@ -59,15 +59,6 @@ define varnish::instance(
     }
 
     array_concat([$vcl], $separate_vcl).each |String $vcl_name| {
-        varnish::wikimedia_vcl { "/etc/varnish/wikimedia-common_${vcl_name}.inc.vcl":
-            template_path   => "${module_name}/vcl/wikimedia-common.inc.vcl.erb",
-            vcl_config      => $vcl_config,
-            backend_caches  => $backend_caches,
-            is_separate_vcl => $vcl_name in $separate_vcl,
-            wikimedia_nets  => $wikimedia_nets,
-            wikimedia_trust => $wikimedia_trust,
-        }
-
         varnish::wikimedia_vcl { "/etc/varnish/wikimedia_${vcl_name}.vcl":
             require         => File["/etc/varnish/${vcl_name}.inc.vcl"],
             template_path   => "${module_name}/vcl/wikimedia-${layer}.vcl.erb",
@@ -75,24 +66,15 @@ define varnish::instance(
             backend_caches  => $backend_caches,
             vcl             => $vcl_name,
             is_separate_vcl => $vcl_name in $separate_vcl,
-        }
-
-        # These versions of wikimedia-common_${vcl_name}.vcl and wikimedia_${vcl_name}.vcl
-        # are exactly the same as those under /etc/varnish but without any
-        # backends defined. The goal is to make it possible to run the VTC test
-        # files under /usr/share/varnish/tests without having to modify any VCL
-        # file by hand.
-        varnish::wikimedia_vcl { "/usr/share/varnish/tests/wikimedia-common_${vcl_name}.inc.vcl":
-            require         => File['/usr/share/varnish/tests'],
-            varnish_testing => true,
-            template_path   => "${module_name}/vcl/wikimedia-common.inc.vcl.erb",
-            vcl_config      => $vcl_config,
-            backend_caches  => $backend_caches,
-            is_separate_vcl => $vcl_name in $separate_vcl,
             wikimedia_nets  => $wikimedia_nets,
             wikimedia_trust => $wikimedia_trust,
         }
 
+        # This version of wikimedia_${vcl_name}.vcl is exactly the same as the
+        # one under /etc/varnish but without any backends defined. The goal is
+        # to make it possible to run the VTC test files under
+        # /usr/share/varnish/tests without having to modify any VCL file by
+        # hand.
         varnish::wikimedia_vcl { "/usr/share/varnish/tests/wikimedia_${vcl_name}.vcl":
             require         => File['/usr/share/varnish/tests'],
             varnish_testing => true,
@@ -101,6 +83,8 @@ define varnish::instance(
             backend_caches  => $backend_caches,
             vcl             => $vcl_name,
             is_separate_vcl => $vcl_name in $separate_vcl,
+            wikimedia_nets  => $wikimedia_nets,
+            wikimedia_trust => $wikimedia_trust,
         }
 
         varnish::wikimedia_vcl { "/etc/varnish/${vcl_name}.inc.vcl":
@@ -128,11 +112,9 @@ define varnish::instance(
     $vcl_files = array_concat([
         File["/etc/varnish/${vcl}.inc.vcl"],
         File["/etc/varnish/wikimedia_${vcl}.vcl"],
-        File["/etc/varnish/wikimedia-common_${vcl}.inc.vcl"],
         File[suffix(prefix($extra_vcl, '/etc/varnish/'),'.inc.vcl')],
     ], $separate_vcl.map |$vcl_name| {
-        [ File["/etc/varnish/wikimedia_${vcl_name}.vcl"],
-          File["/etc/varnish/wikimedia-common_${vcl_name}.inc.vcl"] ]
+        File["/etc/varnish/wikimedia_${vcl_name}.vcl"]
     })
 
     $enable_geoiplookup = $vcl == 'text-frontend'
