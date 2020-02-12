@@ -36,7 +36,7 @@
 
     # Wikistats v2 was in beta under /v2/ URLs.  It has now moved to
     # the root domain. Redirect requests from /v2 to the docroot.
-    RedirectMatch permanent ^/v2(.*) $1
+    RedirectMatch permanent ^/v2(.*) /$1
 
 
 
