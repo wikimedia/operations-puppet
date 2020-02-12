@@ -205,6 +205,7 @@ class profile::analytics::refinery::job::data_purge (
         spark_max_executors => '128',
         spark_extra_opts    => '--conf spark.ui.retainedStage=20 --conf spark.ui.retainedTasks=1000 --conf spark.ui.retainedJobs=100',
         interval            => '*-*-* *:02:00',
+        use_kerberos        => $use_kerberos,
     }
     # Execute 2nd sanitization pass, after 45 days of collection.
     # Runs once per day at a less busy time.
@@ -219,6 +220,7 @@ class profile::analytics::refinery::job::data_purge (
         spark_max_executors => '128',
         spark_extra_opts    => '--conf spark.ui.retainedStage=20 --conf spark.ui.retainedTasks=1000 --conf spark.ui.retainedJobs=100',
         interval            => '*-*-* 06:00:00',
+        use_kerberos        => $use_kerberos,
     }
 
     # Drop unsanitized EventLogging data from the event database after retention period.
