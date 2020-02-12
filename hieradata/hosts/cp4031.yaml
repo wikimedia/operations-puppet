@@ -8,9 +8,9 @@ profile::trafficserver::tls::http_settings:
     transaction_no_activity_timeout_out: 180
     send_100_continue_response: 1
     max_post_size: 104857600
-    keep_alive_enabled_out: 1
-    keep_alive_post_out: 1
-    server_session_sharing_match: ip
+    keep_alive_enabled_out: 0
+    keep_alive_post_out: 0
+    server_session_sharing_match: none
     server_session_sharing_pool: thread
 profile::cache::varnish::frontend::runtime_params:
     - default_ttl=86400
