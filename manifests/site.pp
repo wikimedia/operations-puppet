@@ -1037,6 +1037,12 @@ node 'kraz.wikimedia.org' {
     role(mw_rc_irc)
 }
 
+# Replacement of irc.wikimedia.org
+# see T232483
+node 'irc2001.wikimedia.org' {
+    role(spare::system)
+}
+
 # cloudservices1003/1004 hosts openstack-designate
 # and the powerdns auth and recursive services for instances in eqiad1.
 node /^cloudservices100[34]\.wikimedia\.org$/ {

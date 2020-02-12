@@ -226,6 +226,11 @@ host install2003 {
     fixed-address install2003.codfw.wmnet;
 }
 
+host irc2001 {
+    hardware ethernet aa:00:00:53:f8:01;
+    fixed-address irc2001.codfw.wmnet;
+}
+
 host kafkamon1001 {
     hardware ethernet aa:00:00:ed:c5:11;
     fixed-address kafkamon1001.eqiad.wmnet;
