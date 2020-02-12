@@ -719,11 +719,6 @@ node /^dbproxy10(02|03|07|08|12|13|14|16|17|21)\.eqiad\.wmnet$/ {
     role(mariadb::proxy::master)
 }
 
-# To be decommissioned - T244463
-node 'dbproxy1001.eqiad.wmnet' {
-    role(spare::system)
-}
-
 # Passive codfw proxies for misc databases
 node /^dbproxy20(01|02|03)\.codfw\.wmnet$/ {
     role(mariadb::proxy::master)
