@@ -1,6 +1,6 @@
 # db1095
 # Buffer pool sizes/instance enabled
-profile::mariadb::dbstore_multiinstance::num_instances: 2
-profile::mariadb::dbstore_multiinstance::s2: '185G'
-profile::mariadb::dbstore_multiinstance::s3: '185G'
+profile::mariadb::dbstore_multiinstance::num_instances: 0
+#profile::mariadb::dbstore_multiinstance::s2: '185G'
+#profile::mariadb::dbstore_multiinstance::s3: '185G'
 profile::base::notifications: disabled

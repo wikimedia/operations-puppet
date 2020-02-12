@@ -1,4 +1,7 @@
 # db1140
 # Buffer pool sizes/instance enabled
-profile::mariadb::dbstore_multiinstance::num_instances: 1
-profile::mariadb::dbstore_multiinstance::x1: '192G'
+profile::mariadb::dbstore_multiinstance::num_instances: 3
+profile::mariadb::dbstore_multiinstance::x1: '100G'
+profile::mariadb::dbstore_multiinstance::s2: '150G'
+profile::mariadb::dbstore_multiinstance::s3: '150G'
+
