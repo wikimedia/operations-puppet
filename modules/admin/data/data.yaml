@@ -3073,6 +3073,7 @@ users:
     email: flavia.salutari@telecom-paristech.fr
     expiry_date: 2020-07-31
     expiry_contact: gdubuc@wikimedia.org
+    krb: present
   onimisionipe:
     ensure: absent
     realname: Mathew Onipe
