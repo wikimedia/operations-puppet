@@ -82,7 +82,7 @@ class profile::trafficserver::tls (
     }
 
     $websocket_arg = bool2str($websocket_support)
-    if $http_settings['keep_alive_enabled_out'] == 1 {
+    if !empty($http_settings) and $http_settings['keep_alive_enabled_out'] == 1 {
         $keepalive_arg = 'true'  # lint:ignore:quoted_booleans
     } else {
         $keepalive_arg = 'false' # lint:ignore:quoted_booleans
