@@ -87,10 +87,13 @@ class profile::analytics::refinery::job::data_purge (
     # NOTE: The tables parameter uses a double $$ sign. Systemd will transform this into a single $ sign.
     # So, if you want to make changes to this job, make sure to execute all tests (DRY-RUN) with just 1
     # single $ sign, to get the correct checksum. And then add the double $$ sign here.
+    # Also, we need the systemd to escape our \w, AND we need puppet to do the same.  So we use
+    # \\\\w to result in \\w in systemd which then ends up executing with a \w.  DRY-RUN with just
+    # \w to get the proper checksum.
     $event_refined_to_drop.each |String $dataset, String $checksum| {
         kerberos::systemd_timer { "refinery-drop-refined-event.${dataset}":
             description  => "Drop refined event.${dataset} data imported on Hive/HDFS following data retention policies.",
-            command      => "${refinery_path}/bin/refinery-drop-older-than --database='event' --tables='^${dataset}$$' --base-path='/wmf/data/event/${dataset}' --path-format='datacenter=\\w+(/year=(?P<year>[0-9]+)(/month=(?P<month>[0-9]+)(/day=(?P<day>[0-9]+)(/hour=(?P<hour>[0-9]+))?)?)?)?' --older-than='90' --skip-trash --execute='${checksum}'",
+            command      => "${refinery_path}/bin/refinery-drop-older-than --database='event' --tables='^${dataset}$$' --base-path='/wmf/data/event/${dataset}' --path-format='datacenter=\\\\w+(/year=(?P<year>[0-9]+)(/month=(?P<month>[0-9]+)(/day=(?P<day>[0-9]+)(/hour=(?P<hour>[0-9]+))?)?)?)?' --older-than='90' --skip-trash --execute='${checksum}'",
             interval     => '*-*-* 00:00:00',
             environment  => $systemd_env,
             user         => 'analytics',
