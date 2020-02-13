@@ -400,6 +400,7 @@ profile::trafficserver::backend::http_settings:
   keep_alive_post_out: 1
   server_session_sharing_match: both
   server_session_sharing_pool: thread
+  allow_half_open: 1
 profile::trafficserver::backend::h2_settings:
   stream_priority_enabled: 0
   max_settings_per_frame: 7

@@ -52,6 +52,10 @@
 #   Valid values:
 #     thread
 #     global
+#
+# [*allow_half_open*]
+#   Enables (1) or disables (0) support for connection half open for client side.
+#   If it's enabled after client sends FIN, the connection is still there.
 type Trafficserver::HTTP_settings = Struct[{
     'accept_no_activity_timeout'          => Integer[0],
     'connect_attempts_timeout'            => Integer[0],
@@ -66,4 +70,5 @@ type Trafficserver::HTTP_settings = Struct[{
     'keep_alive_post_out'                 => Integer[0, 1],
     'server_session_sharing_match'        => Enum['none', 'both', 'ip', 'host'],
     'server_session_sharing_pool'         => Enum['thread', 'global'],
+    'allow_half_open'                     => Integer[0,1],
 }]
