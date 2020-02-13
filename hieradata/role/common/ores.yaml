@@ -59,6 +59,9 @@ profile::prometheus::statsd_exporter::mappings:
   - match: ores.*.uwsgi.core.unrouted_signals
     name: ores_uwsgi_unrouted_signals_total
 
+  - match: ores.*.uwsgi.core.busy_workers
+    name: ores_uwsgi_busy_workers_count
+
   - match: ores.*.uwsgi.rss_size
     name: ores_uwsgi_rss_size_bytes
 
