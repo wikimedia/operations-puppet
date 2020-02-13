@@ -20,10 +20,6 @@ class apt(
         purge   => true,
     }
 
-    file { '/usr/local/bin/apt2xml':
-        ensure  => absent,
-    }
-
     # prefer Wikimedia APT repository packages in all cases
     apt::pin { 'wikimedia':
         package  => '*',
