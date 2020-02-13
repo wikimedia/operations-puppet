@@ -222,7 +222,7 @@ class profile::netbox (
         if $report['check_interval'] {
             ::nrpe::monitor_service { "check_netbox_${repname}":
                 ensure         => $active_ensure,
-                description    => "Netbox report ${repname}.",
+                description    => "Netbox report ${repname}",
                 nrpe_command   => "/usr/bin/python3 /usr/local/lib/nagios/plugins/check_netbox_report.py ${check_args} ${reportclass}",
                 check_interval => $report['check_interval'],
                 notes_url      => "https://netbox.wikimedia.org/extras/reports/${reportclass}/",
@@ -239,7 +239,7 @@ class profile::netbox (
         if $report['run_interval'] {
             systemd::timer::job { "netbox_report_${repname}_run":
                 ensure                    => $active_ensure,
-                description               => "Run report ${reportclass} in Netbox.",
+                description               => "Run report ${reportclass} in Netbox",
                 command                   => "/srv/deployment/netbox/venv/bin/python /srv/deployment/netbox/deploy/src/netbox/manage.py runreport ${reportclass}",
                 interval                  => {
                     'start'    => 'OnCalendar',
