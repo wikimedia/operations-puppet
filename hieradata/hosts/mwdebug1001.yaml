@@ -1,0 +1,1 @@
+profile::mediawiki::webserver::stream_to_logstash: true
