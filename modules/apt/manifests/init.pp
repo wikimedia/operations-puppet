@@ -20,17 +20,8 @@ class apt(
         purge   => true,
     }
 
-    package { 'python-apt':
-        ensure => installed,
-    }
-
     file { '/usr/local/bin/apt2xml':
-        ensure  => present,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0755',
-        source  => 'puppet:///modules/apt/apt2xml.py',
-        require => Package['python-apt'],
+        ensure  => absent,
     }
 
     # prefer Wikimedia APT repository packages in all cases
