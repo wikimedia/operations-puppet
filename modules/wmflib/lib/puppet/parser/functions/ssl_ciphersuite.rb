@@ -159,6 +159,7 @@ END
     nginx_always_ok = true
     dhe_ok = true
     libssl_has_x25519 = true
+    tls1_3 = function_os_version(['debian >= buster'])
     unless function_os_version(['debian >= jessie'])
       nginx_always_ok = false
       libssl_has_x25519 = false
@@ -183,12 +184,19 @@ END
     output = []
 
     if server == 'apache'
+      if tls1_3
+        cipherlist = ciphersuites[ciphersuite].reject{|x| x =~ /^TLS_/}.join(':')
+        cipherlist_tls1_3 = ciphersuites[ciphersuite].reject{|x| x !~ /^TLS_/}.join(':')
+      end
       if ciphersuite == 'compat'
         output.push('SSLProtocol all -SSLv2 -SSLv3')
       else
         output.push('SSLProtocol all -SSLv2 -SSLv3 -TLSv1 -TLSv1.1')
       end
       output.push("SSLCipherSuite #{cipherlist}")
+      if tls1_3
+        output.push("SSLCipherSuite TLSv1.3 #{cipherlist_tls1_3}")
+      end
       # Note: missing config to restrict ECDH curves
       output.push('SSLHonorCipherOrder On')
       if dhe_ok
@@ -198,10 +206,16 @@ END
         output.push("Header always set Strict-Transport-Security \"#{hsts_val}\"")
       end
     else # nginx
+      compat_protocols = 'TLSv1 TLSv1.1 TLSv1.2'
+      protocols = 'TLSv1.2'
+      if tls1_3
+        compat_protocols += ' TLSv1.3'
+        protocols += ' TLSv1.3'
+      end
       if ciphersuite == 'compat'
-        output.push('ssl_protocols TLSv1 TLSv1.1 TLSv1.2;')
+        output.push("ssl_protocols #{compat_protocols};")
       else
-        output.push('ssl_protocols TLSv1.2;')
+        output.push("ssl_protocols #{protocols};")
       end
       output.push("ssl_ciphers #{cipherlist};")
       if libssl_has_x25519
