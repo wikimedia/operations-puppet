@@ -110,9 +110,6 @@ class thumbor (
     # an array of strings, to use it as a parameter to thumbor::instance below
     $ports = prefix(range($listen_port + 1, $listen_port + $instance_count), '')
 
-    nginx::site { 'thumbor':
-        content => template('thumbor/nginx.conf.erb'),
-    }
     # lint:ignore:wmf_styleguide
     class {'haproxy': logging => true}
     haproxy::site { 'thumbor':
