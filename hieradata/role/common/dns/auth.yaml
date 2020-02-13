@@ -7,3 +7,4 @@ profile::dns::auth::gitrepo: 'https://gerrit.wikimedia.org/r/operations/dns.git'
 prometheus::haproxy_exporter::endpoint: 'http://127.0.0.1:8404/?stats;csv'
 admin::groups:
  - dns-admins
+ - fr-tech-admins

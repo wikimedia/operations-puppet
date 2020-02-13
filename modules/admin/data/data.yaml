@@ -618,6 +618,10 @@ groups:
     gid: 785
     description: admins for the eventbus clusters - unsed after T232122
     members: []
+  fr-tech-admins:
+    gid: 787
+    description: fundraising tech admins
+    members: &fr_tech_admins [dwisehaupt]
   gitpuppet:
     gid: 998
     description: Private repo users
@@ -763,7 +767,7 @@ groups:
   dns-admins:
     gid: 817
     description: People allowed to merge DNS changes
-    members: []
+    members: [*fr_tech_admins]
     privileges:
       - 'ALL = NOPASSWD: /usr/local/sbin/authdns-update'
 users:
@@ -3571,6 +3575,14 @@ users:
     gid: 500
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICIFfF8+3TrSBaPBKPwbmnBM7e0C9/TFHs9/2hHiq+3t nosmo@ocasey
+  dwisehaupt:
+    ensure: present
+    realname: Dallas Wisehaupt
+    email: dwisehaupt@wikimedia.org
+    uid: 22909
+    gid: 500
+    ssh_keys:
+    -  'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIE8kx1WqBtWgXOKp6VjWZ/V5L4QbD/3vavM8nI24EPKQ dwisehaupt@darksmog'
 ldap_only_users:
   abartov:
     ensure: present
@@ -4046,10 +4058,6 @@ ldap_only_users:
     ensure: present
     realname: NDA On File
     email: wikitech.rxy@rxy.jp
-  dwisehaupt:
-    ensure: present
-    realname: Dallas Wisehaupt
-    email: dwisehaupt@wikimedia.org
   dannyh:
     ensure: present
     realname: Danny Horn
