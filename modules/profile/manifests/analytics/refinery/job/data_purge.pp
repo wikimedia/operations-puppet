@@ -72,32 +72,6 @@ class profile::analytics::refinery::job::data_purge (
         use_kerberos => $use_kerberos,
     }
 
-
-    # keep this many days of mediawiki application logs
-    $mediawiki_log_retention_days = 90
-
-
-    # TODO: Remove once job is absented
-    kerberos::systemd_timer { 'refinery-drop-apiaction-partitions':
-        ensure       => 'absent',
-        description  => 'Drop API action data imported on HDFS following data retention policies.',
-        command      => "${refinery_path}/bin/refinery-drop-older-than --database='wmf_raw' --tables='apiaction' --base-path='/wmf/data/raw/mediawiki/mediawiki_ApiAction' --path-format='hourly/(?P<year>[0-9]+)(/(?P<month>[0-9]+)(/(?P<day>[0-9]+)(/(?P<hour>[0-9]+))?)?)?' --older-than='${mediawiki_log_retention_days}' --skip-trash --execute='51eb7c7bed06738502a721619ced5b6a'",
-        interval     => '*-*-* 00/4:15:00',
-        environment  => $systemd_env,
-        user         => 'analytics',
-        use_kerberos => $use_kerberos,
-    }
-    # TODO: Remove once job is absented
-    kerberos::systemd_timer { 'refinery-drop-cirrussearchrequestset-partitions':
-        ensure       => 'absent',
-        description  => 'Drop CirrusSearch request data imported on HDFS following data retention policies.',
-        command      => "${refinery_path}/bin/refinery-drop-older-than --database='wmf_raw' --tables='cirrussearchrequestset' --base-path='/wmf/data/raw/mediawiki/mediawiki_CirrusSearchRequestSet' --path-format='hourly/(?P<year>[0-9]+)(/(?P<month>[0-9]+)(/(?P<day>[0-9]+)(/(?P<hour>[0-9]+))?)?)?' --older-than='${mediawiki_log_retention_days}' --skip-trash --execute='228d759e52307f6631658859706507bd'",
-        interval     => '*-*-* 00/4:25:00',
-        environment  => $systemd_env,
-        user         => 'analytics',
-        use_kerberos => $use_kerberos,
-    }
-
     # keep this many days of druid webrequest sampled
     # Currently being tested as systemd timer, see below
     $druid_webrequest_sampled_retention_days = 60
