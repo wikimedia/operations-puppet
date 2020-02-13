@@ -760,6 +760,12 @@ groups:
                  'ALL = NOPASSWD: /bin/systemctl restart airflow-kerberos',
                  'ALL = (analytics-search) NOPASSWD: /usr/local/bin/airflow *',
                  'ALL = (analytics-search) NOPASSWD: /usr/bin/env AIRFLOW_HOME=/etc/airflow /srv/deployment/search/airflow/venv/bin/airflow *']
+  dns-admins:
+    gid: 817
+    description: People allowed to merge DNS changes
+    members: []
+    privileges:
+      - 'ALL = NOPASSWD: /usr/local/sbin/authdns-update'
 users:
   rush:
     ensure: present
