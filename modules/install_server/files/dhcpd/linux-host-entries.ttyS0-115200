@@ -655,19 +655,16 @@ host people1001 {
 host ping1001 {
     hardware ethernet aa:00:00:33:10:e2;
     fixed-address ping1001.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host ping2001 {
     hardware ethernet aa:00:00:e3:6f:5c;
     fixed-address ping2001.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host ping3001 {
     hardware ethernet aa:00:00:76:21:9c;
     fixed-address ping3001.esams.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host planet1001 {
@@ -812,13 +809,11 @@ host releases2001 {
 host rpki1001 {
     hardware ethernet aa:00:00:64:75:b9;
     fixed-address rpki1001.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host rpki2001 {
     hardware ethernet aa:00:00:b9:9b:6d;
     fixed-address rpki2001.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host seaborgium {
