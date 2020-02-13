@@ -328,13 +328,13 @@ email_backend = airflow.utils.email.send_email_smtp
 # the airflow.utils.email.send_email_smtp function, you have to configure an
 # smtp server here
 smtp_host = localhost
-smtp_starttls = True
+smtp_starttls = False
 smtp_ssl = False
 # Uncomment and set the user/pass settings if you want to use SMTP AUTH
 # smtp_user = airflow
 # smtp_password = airflow
 smtp_port = 25
-smtp_mail_from = airflow@example.com
+smtp_mail_from = noreply@wikimedia.org
 
 
 [celery]
