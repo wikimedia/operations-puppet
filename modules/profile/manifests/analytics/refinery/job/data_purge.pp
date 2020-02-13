@@ -52,7 +52,53 @@ class profile::analytics::refinery::job::data_purge (
         use_kerberos => $use_kerberos,
     }
 
-    # Keep this many days of eventlogging data.
+    # Keep this many days of raw event data (all data that comes via EventGate instances).
+    $event_raw_retention_days = 90
+    kerberos::systemd_timer { 'refinery-drop-raw-event':
+        description  => 'Drop raw event (/wmf/data/raw/event) data imported on HDFS following data retention policies.',
+        command      => "${refinery_path}/bin/refinery-drop-older-than --base-path='/wmf/data/raw/event' --path-format='.+/hourly/(?P<year>[0-9]+)(/(?P<month>[0-9]+)(/(?P<day>[0-9]+)(/(?P<hour>[0-9]+))?)?)?' --older-than='${event_raw_retention_days}' --skip-trash --execute='209837413aff8d4332104e7dc454a27d'",
+        interval     => '*-*-* 00/4:20:00',
+        environment  => $systemd_env,
+        user         => 'analytics',
+        use_kerberos => $use_kerberos,
+    }
+
+    # Keep this many days of refined event data (all data that comes via EventGate instances).
+    $event_refined_retention_days = 90
+    # Most (non EventLogging legacy) event data does not contain PII, so we keep it indefinetly.
+    # Only tables with PII must be purged after $event_refined_retention_days.
+    #
+    # Maps dataset (table + base path in /wmf/data/event/$table) to the refinery-drop-older-than
+    # --execute checksum to use.  A refinery-drop-refined-event job will be declared for
+    # each entry in this hash.
+    #
+    $event_refined_to_drop = {
+        'mediawiki_api_request'          => 'f976e1561e04e03ed3089731ed57a9c4',
+        'mediawiki_cirrussearch_request' => 'aba3737734d5794356ad97282d083e1c',
+    }
+
+    # Since we are only dropping very specific event data, we don't want to use
+    # refinery-drop-older-than with a --base-path of /wmf/data/event.
+    # Doing so would cause it to hdfs dfs -ls glob EVERY event dataset path and then
+    # prune the results for directories to drop.  By separating each dataset drop
+    # into an individual job and using a --base-path specific to that dataset's LOCATION path,
+    # we avoid having to ls glob and parse all other event dataset paths.
+    #
+    # NOTE: The tables parameter uses a double $$ sign. Systemd will transform this into a single $ sign.
+    # So, if you want to make changes to this job, make sure to execute all tests (DRY-RUN) with just 1
+    # single $ sign, to get the correct checksum. And then add the double $$ sign here.
+    $event_refined_to_drop.each |String $dataset, String $checksum| {
+        kerberos::systemd_timer { "refinery-drop-refined-event.${dataset}":
+            description  => "Drop refined event.${dataset} data imported on Hive/HDFS following data retention policies.",
+            command      => "${refinery_path}/bin/refinery-drop-older-than --database='event' --tables='^${dataset}$$' --base-path='/wmf/data/event/${dataset}' --path-format='datacenter=\\w+(/year=(?P<year>[0-9]+)(/month=(?P<month>[0-9]+)(/day=(?P<day>[0-9]+)(/hour=(?P<hour>[0-9]+))?)?)?)?' --older-than='90' --skip-trash --execute='${checksum}'",
+            interval     => '*-*-* 00:00:00',
+            environment  => $systemd_env,
+            user         => 'analytics',
+            use_kerberos => $use_kerberos,
+        }
+    }
+
+    # Keep this many days of raw eventlogging data.
     $eventlogging_retention_days = 90
     kerberos::systemd_timer { 'refinery-drop-eventlogging-partitions':
         description  => 'Drop Eventlogging data imported on HDFS following data retention policies.',
@@ -203,6 +249,10 @@ class profile::analytics::refinery::job::data_purge (
 
     # Drop unsanitized EventLogging data from the event database after retention period.
     # Runs once a day.
+    # NOTE: The regexes here don't include underscores '_' when matching table names or directory paths.
+    # No EventLogging (legacy) generated datasets have underscores, while all EventGate generated datasets do.
+    # This implicitly excludes non EventLogging (legacy) datasets from being deleted.
+    # Some EventGate datasets do need to be deleted.  This is done above by the refinery-drop-event job.
     # NOTE: The tables parameter uses a double $$ sign. Systemd will transform this into a single $ sign.
     # So, if you want to make changes to this job, make sure to execute all tests (DRY-RUN) with just 1
     # single $ sign, to get the correct checksum. And then add the double $$ sign here.
