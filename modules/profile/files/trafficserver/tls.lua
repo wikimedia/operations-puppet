@@ -68,7 +68,7 @@ function do_global_send_request()
         x_tls_auth = "ECDSA"
     end
 
-    ts.server_request.header['X-Analytics-TLS'] = string.format("tls: vers=%s;keyx=%s;auth=%s;ciph=%s;prot=%s;sess=%s", x_tls_vers, x_tls_keyx, x_tls_auth, x_tls_ciph, x_tls_prot, x_tls_sess)
+    ts.server_request.header['X-Analytics-TLS'] = string.format("vers=%s;keyx=%s;auth=%s;ciph=%s;prot=%s;sess=%s", x_tls_vers, x_tls_keyx, x_tls_auth, x_tls_ciph, x_tls_prot, x_tls_sess)
 
     header_content = string.format("H2=%i; SSR=%i; SSL=%s; C=%s; EC=%s;",
                                    http2, ssl_reused, ssl_protocol, ssl_cipher, ssl_curve)
