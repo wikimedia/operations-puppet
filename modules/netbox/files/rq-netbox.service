@@ -1,0 +1,12 @@
+[Unit]
+Description=Netbox RQ Worker
+After=network.target
+
+[Service]
+WorkingDirectory=/srv/deployment/netbox/deploy/src/netbox
+ExecStart=/srv/deployment/netbox/venv/bin/python \
+    /srv/deployment/netbox/deploy/src/netbox/manage.py  \
+    rqworker
+
+[Install]
+WantedBy=multi-user.target

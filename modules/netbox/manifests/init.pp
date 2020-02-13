@@ -80,6 +80,10 @@
 # [*redis_database*]
 #   The database to select in the Redis host.
 #
+# [*redis_cache_database*]
+#   The database to select in the Redis host for caching.
+#
+#
 class netbox(
     Stdlib::Fqdn $service_hostname,
     String $secret_key,
@@ -107,6 +111,7 @@ class netbox(
     Stdlib::Port $redis_port = undef,
     String $redis_password = undef,
     Integer $redis_database = 0,
+    Integer $redis_cache_database = 1,
 ) {
     require_package('virtualenv', 'python3-pip', 'python3-pynetbox')
     $home_path = '/var/lib/netbox'
@@ -135,7 +140,7 @@ class netbox(
         require => [Scap::Target['netbox/deploy'],
                     User['netbox']],
         before  => Uwsgi::App['netbox'],
-        notify  => Service['uwsgi-netbox'],
+        notify  => [Service['uwsgi-netbox'], Service['rq-netbox']],
     }
 
     if $include_ldap {
@@ -147,7 +152,7 @@ class netbox(
             content => template('netbox/ldap_config.py.erb'),
             require => Scap::Target['netbox/deploy'],
             before  => Uwsgi::App['netbox'],
-            notify  => Service['uwsgi-netbox'],
+            notify  => [Service['uwsgi-netbox'], Service['rq-netbox']],
         }
     }
 
@@ -193,6 +198,12 @@ class netbox(
       core_limit      => '30G',
   }
 
+  systemd::service { 'rq-netbox':
+      ensure  => $ensure,
+      content => file('netbox/rq-netbox.service'),
+  }
+
   base::service_auto_restart { 'uwsgi-netbox': }
+  base::service_auto_restart { 'rq-netbox': }
 
 }
