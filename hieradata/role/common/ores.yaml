@@ -34,7 +34,7 @@ profile::prometheus::statsd_exporter::mappings:
       source: "$3"
 
   # counters
-  - match: "^ores\\.([a-z]*)([0-9]*)\\.(precache_cache_hit|precache_cache_miss|revision_scored|store_cache_hit|score_cache_miss|score_errored)\\.([a-z]*)$"
+  - match: "^ores\\.([a-z]*)([0-9]*)\\.(precache_cache_hit|precache_cache_miss|revision_scored|score_cache_hit|score_cache_miss|score_errored)\\.([a-z]*)$"
     name: "ores_${3}_total"
     match_type: regex
     labels:
