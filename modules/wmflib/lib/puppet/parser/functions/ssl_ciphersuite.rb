@@ -84,9 +84,9 @@ module Puppet::Parser::Functions
     # Forward-Secret + AEAD
     'strong' => [
       '-ALL',
-      'TLS13-CHACHA20-POLY1305-SHA256',
-      'TLS13-AES-256-GCM-SHA384',
-      'TLS13-AES-128-GCM-SHA256',
+      'TLS_CHACHA20_POLY1305_SHA256',
+      'TLS_AES_256_GCM_SHA384',
+      'TLS_AES_128_GCM_SHA256',
       'ECDHE-ECDSA-CHACHA20-POLY1305',
       'ECDHE-ECDSA-AES256-GCM-SHA384',
       'ECDHE-ECDSA-AES128-GCM-SHA256',
