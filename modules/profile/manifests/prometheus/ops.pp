@@ -722,26 +722,6 @@ class profile::prometheus::ops (
         port       => 9197,
     }
 
-    # Job definition for nginx exporter
-    $nginx_jobs = [
-      {
-        'job_name'        => 'nginx',
-        'file_sd_configs' => [
-          { 'files' => [ "${targets_path}/nginx_*.yaml" ]}
-        ],
-      },
-    ]
-
-    prometheus::cluster_config{ "nginx_thumbor_${::site}":
-        dest    => "${targets_path}/nginx_thumbor_${::site}.yaml",
-        site    => $::site,
-        cluster => 'thumbor',
-        port    => 8800,
-        labels  => {
-            'cluster' => 'thumbor'
-        },
-    }
-
     # Job definition for pybal
     $pybal_jobs = [
       {
@@ -1453,7 +1433,7 @@ class profile::prometheus::ops (
         scrape_configs_extra  => array_concat(
             $mysql_jobs, $varnish_jobs, $trafficserver_jobs, $memcached_jobs,
             $apache_jobs, $etcd_jobs, $etcdmirror_jobs, $mcrouter_jobs, $pdu_jobs,
-            $nginx_jobs, $pybal_jobs, $blackbox_jobs, $jmx_exporter_jobs,
+            $pybal_jobs, $blackbox_jobs, $jmx_exporter_jobs,
             $redis_jobs, $mtail_jobs, $ldap_jobs, $ircd_jobs, $pdns_rec_jobs,
             $etherpad_jobs, $elasticsearch_jobs, $wmf_elasticsearch_jobs,
             $blazegraph_jobs, $nutcracker_jobs, $postgresql_jobs, $ipsec_jobs,
