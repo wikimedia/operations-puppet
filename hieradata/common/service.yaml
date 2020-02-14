@@ -75,6 +75,9 @@ service::catalog:
     - codfw
     - eqiad
     state: production
+    discovery:
+      - dnsdisc: apertium
+        active_active: true
   api:
     description: MediaWiki API cluster, api.svc.%{::site}.wmnet
     encryption: false
@@ -143,6 +146,11 @@ service::catalog:
     - eqiad
     - codfw
     state: production
+    discovery: &api_discovery
+    - dnsdisc: api-rw
+      active_active: false
+    - dnsdisc: api-ro
+      active_active: true
   appservers-https:
     description: Main MediaWiki application server cluster, appservers.svc.%{::site}.wmnet
       (https)
@@ -176,6 +184,11 @@ service::catalog:
     - eqiad
     - codfw
     state: production
+    discovery: &appservers-disc
+      - dnsdisc: appservers-ro
+        active_active: true
+      - dnsdisc: appservers-rw
+        active_active: false
   aqs:
     description: Analytics Query Service, aqs.svc.%{::site}.wmnet
     encryption: false
@@ -261,6 +274,9 @@ service::catalog:
     - eqiad
     - codfw
     state: production
+    discovery:
+    - dnsdisc: blubberoid
+      active_active: true
   citoid:
     description: Citation lookup service, citoid.svc.%{::site}.wmnet
     encryption: false
@@ -298,6 +314,9 @@ service::catalog:
     - eqiad
     - codfw
     state: production
+    discovery:
+    - dnsdisc: citoid
+      active_active: true
   cloudceph:
     description: "CloudVPS Ceph Cluster Stats, cloudceph.svc.eqiad.wmnet"
     encryption: false
@@ -545,6 +564,9 @@ service::catalog:
     - eqiad
     - codfw
     state: production
+    discovery:
+    - dnsdisc: cxserver
+      active_active: true
   docker-registry:
     description: docker registry service
     encryption: true
@@ -578,6 +600,9 @@ service::catalog:
     - eqiad
     - codfw
     state: production
+    discovery:
+    - dnsdisc: docker-registry
+      active_active: false
   druid-public-broker:
     description: Broker query service for the Druid Public Cluster
     encryption: false
@@ -645,6 +670,9 @@ service::catalog:
     - eqiad
     - codfw
     state: production
+    discovery:
+    - dnsdisc: echostore
+      active_active: true
   eventgate-analytics:
     description: EventGate Analytics endpoint, TLS enabled. https://eventgate-analytics.svc.%{::site}.wmnet
     encryption: true
@@ -681,6 +709,9 @@ service::catalog:
     - eqiad
     - codfw
     state: production
+    discovery:
+    - dnsdisc: eventgate-analytics
+      active_active: true
   eventgate-analytics-http:
     description: EventGate Analytics endpoint, eventgate-analytics.svc.%{::site}.wmnet
     encryption: false
@@ -753,6 +784,9 @@ service::catalog:
     - eqiad
     - codfw
     state: production
+    discovery:
+    - dnsdisc: eventgate-logging-external
+      active_active: true 
   eventgate-main:
     description: EventGate main endpoint, TLS enabled, https://eventgate-main.svc.%{::site}.wmnet
     encryption: true
@@ -789,6 +823,9 @@ service::catalog:
     - eqiad
     - codfw
     state: production
+    discovery:
+    - dnsdisc: eventgate-main
+      active_active: true 
   eventgate-main-http:
     description: EventGate main endpoint, non TLS enabled, eventgate-main.svc.%{::site}.wmnet
     encryption: false
@@ -861,6 +898,9 @@ service::catalog:
     - eqiad
     - codfw
     state: production
+    discovery:
+    - dnsdisc: eventstreams
+      active_active: true
   git-ssh:
     description: Git - to Phabricator hosting, git-ssh.wikimedia.org
     encryption: true
@@ -925,6 +965,9 @@ service::catalog:
     - eqiad
     - codfw
     state: production
+    discovery:
+    - dnsdisc: graphoid
+      active_active: true
   jobrunner:
     description: JobRunner LVS interface (https). jobrunner.svc.%{::site}.wmnet
     encryption: true
@@ -961,6 +1004,9 @@ service::catalog:
     - eqiad
     - codfw
     state: production
+    discovery:
+    - dnsdisc: jobrunner
+      active_active: false
   kartotherian:
     description: Kartotherian, kartotherian.svc.%{::site}.wmnet
     encryption: false
@@ -1030,6 +1076,9 @@ service::catalog:
     - codfw
     - eqiad
     state: production
+    discovery:
+    - dnsdisc: kartotherian
+      active_active: true
   kibana:
     description: Kibana
     encryption: false
@@ -1094,6 +1143,9 @@ service::catalog:
     - eqiad
     - codfw
     state: production
+    discovery:
+    - dnsdisc: kibana
+      active_active: false
   kubemaster:
     description: Kubernetes master service. kubemaster.svc.%{::site}.wmnet
     encryption: true
@@ -1412,6 +1464,9 @@ service::catalog:
     - eqiad
     - codfw
     state: production
+    discovery:
+    - dnsdisc: mathoid
+      active_active: true
   mobileapps:
     description: A service for use by mobile apps. Provides DOM manipulation, aggregation,
       JSON flattening. mobileapps.svc.%{::site}.wmnet
@@ -1447,6 +1502,9 @@ service::catalog:
     - eqiad
     - codfw
     state: production
+    discovery:
+    - dnsdisc: mobileapps
+      active_active: true
   ncredir:
     description: Non canonical redirect service
     encryption: false
@@ -1574,6 +1632,9 @@ service::catalog:
     - eqiad
     - codfw
     state: production
+    discovery:
+    - dnsdisc: ores
+      active_active: true
   parsoid:
     description: Parsoid wikitext parser for VisualEditor (%{::site})
     encryption: false
@@ -1611,6 +1672,9 @@ service::catalog:
     - eqiad
     - codfw
     state: production
+    discovery:
+    - dnsdisc: parsoid
+      active_active: true
   parsoid-php:
     description: Parsoid/PHP wikitext parser for VisualEditor (%{::site})
     encryption: true
@@ -1647,6 +1711,9 @@ service::catalog:
     - eqiad
     - codfw
     state: production
+    discovery:
+    - dnsdisc: parsoid-php
+      active_active: false
   prometheus:
     description: Prometheus monitoring
     encryption: false
@@ -1719,6 +1786,9 @@ service::catalog:
     - eqiad
     - codfw
     state: production
+    discovery:
+    - dnsdisc: proton
+      active_active: true
   recommendation-api:
     description: Service for recommendation API. recommandation-api.svc%{::site}.wmnet
     encryption: false
@@ -1755,6 +1825,9 @@ service::catalog:
     - eqiad
     - codfw
     state: production
+    discovery:
+    - dnsdisc: recommendation-api
+      active_active: true
   restbase:
     description: RESTBase, restbase.svc.%{::site}.wmnet
     encryption: false
@@ -1847,6 +1920,11 @@ service::catalog:
     - eqiad
     - codfw
     state: production
+    discovery:
+    - dnsdisc: restbase
+      active_active: true
+    - dnsdisc: restbase-async
+      active_active: true
   restrouter:
     description: RESTRouter, restrouter.svc.%{::site}.wmnet
     encryption: false
@@ -1883,6 +1961,9 @@ service::catalog:
     - eqiad
     - codfw
     state: production
+    discovery:
+    - dnsdisc: restrouter
+      active_active: true
   schema:
     description: Event Schema HTTP service
     encryption: true
@@ -1919,6 +2000,9 @@ service::catalog:
     - eqiad
     - codfw
     state: production
+    discovery:
+    - dnsdisc: schema
+      active_active: true
   search:
     description: Elasticsearch search for MediaWiki
     encryption: false
@@ -1991,6 +2075,9 @@ service::catalog:
     - eqiad
     - codfw
     state: production
+    discovery:
+    - dnsdisc: search
+      active_active: true
   search-omega-https:
     description: Elasticsearch search for MediaWiki (Omega cluster) - HTTPS
     encryption: true
@@ -2099,6 +2186,9 @@ service::catalog:
     - eqiad
     - codfw
     state: production
+    discovery:
+    - dnsdisc: sessionstore
+      active_active: true
   swift:
     description: Swift/Ceph media storage
     encryption: false
@@ -2171,6 +2261,13 @@ service::catalog:
     - codfw
     - eqiad
     state: production
+    discovery:
+    - dnsdisc: swift
+      active_active: true
+    - dnsdisc: swift-rw # TODO: remove this from DNS!
+      active_active: false
+    - dnsdisc: swift-ro # TODO: remove this from DNS!
+      active_active: true
   termbox:
     description: Wikidata Termbox SSR termbox.svc.%{::site}.wmnet
     encryption: false
@@ -2207,6 +2304,9 @@ service::catalog:
     - eqiad
     - codfw
     state: production
+    discovery:
+    - dnsdisc: termbox
+      active_active: true
   text:
     description: Main wiki platform LVS service, text.%{::site}.wikimedia.org (Varnish)
     encryption: false
@@ -2488,6 +2588,9 @@ service::catalog:
     - eqiad
     - codfw
     state: production
+    discovery:
+    - dnsdisc: videoscaler
+      active_active: false
   wdqs:
     description: Wikidata Query Service
     encryption: false
@@ -2588,6 +2691,9 @@ service::catalog:
     - eqiad
     - codfw
     state: production
+    discovery:
+    - dnsdisc: wdqs-internal
+      active_active: true
   wdqs-ssl:
     description: Wikidata Query Service - HTTPS
     encryption: true
@@ -2624,6 +2730,9 @@ service::catalog:
     - eqiad
     - codfw
     state: production
+    discovery:
+    - dnsdisc: wdqs
+      active_active: true
   wikifeeds:
     description: A node webservice supporting featured wiki content feeds. termbox.svc.%{::site}.wmnet
     encryption: false
@@ -2660,6 +2769,9 @@ service::catalog:
     - eqiad
     - codfw
     state: production
+    discovery:
+    - dnsdisc: wikifeeds
+      active_active: true
   zotero:
     description: Zotero, zotero.svc.%{::site}.wmnet
     encryption: false
@@ -2681,7 +2793,6 @@ service::catalog:
           timeout-clean-reconnect: 3
       scheduler: wrr
     monitoring:
-
       check_command: check_http_zotero_lvs_on_port!zotero.discovery.wmnet!1969!/export?format=wikipedia
       critical: true
       sites:
@@ -2694,3 +2805,7 @@ service::catalog:
     - eqiad
     - codfw
     state: production
+    discovery:
+    - dnsdisc: zotero
+      active_active: true
+

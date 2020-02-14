@@ -1,9 +1,11 @@
 # DNS Service Discovery Config
 class profile::dns::auth::discovery(
-    Hash $discovery_services = lookup('discovery::services'),
     String $conftool_prefix = lookup('conftool_prefix'),
 ) {
-    $lvs_services = wmflib::service::get_lvs_services()
+    # Create a list of all available discovery services.
+    $discovery_services = wmflib::service::fetch().filter |$n, $svc| { 'discovery' in $svc }
+        .map|$n, $svc| { $svc['discovery'].map |$record| {$record + {'ip' => $svc['ip']}}}.flatten()
+
     file { '/etc/gdnsd/discovery-geo-resources':
         ensure  => 'present',
         owner   => 'root',
@@ -56,8 +58,9 @@ class profile::dns::auth::discovery(
         prefix => $conftool_prefix,
     }
 
-    $discovery_services.each |$svc_name,$svc_data| {
+    $discovery_services.each |$svc_data| {
         $keyspace = '/discovery'
+        $svc_name = $svc_data['dnsdisc']
         $check = $svc_data['active_active'] ? {
             false => '/usr/local/bin/authdns-check-active-passive',
             true  => undef,

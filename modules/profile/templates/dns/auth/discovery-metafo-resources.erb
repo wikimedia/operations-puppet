@@ -1,5 +1,4 @@
-<% @discovery_services.keys.sort.each do |svc| -%>
-<% if ! @discovery_services[svc]['active_active'] -%>
+<% @discovery_services.select{|data|  !data['active_active'] }.map{|data| data['dnsdisc']}.sort.each do |svc| -%>
 disc-<%= svc %> => {
     datacenters => [ geo, fail ],
     dcmap => {
@@ -7,5 +6,4 @@ disc-<%= svc %> => {
         fail => %geoip!disc-failoid,
     },
 }
-<% end -%>
 <% end -%>

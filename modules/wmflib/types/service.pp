@@ -25,6 +25,7 @@
 #     - monitoring_setup means we want to introduce monitoring, but we still don't
 #     want to page.
 #     - finally production means the setup is complete and live in production.
+# @param Optional[Array] Array of discovery records related to the current service, if any
 #
 type Wmflib::Service = Struct[
     {
@@ -35,6 +36,7 @@ type Wmflib::Service = Struct[
     'encryption'  => Boolean, # Wether we need TLS to connect
     'lvs'         => Wmflib::Service::Lvs,
     'monitoring'  => Optional[Wmflib::Service::Monitoring],
-    'state'       => Enum['service_setup', 'lvs_setup', 'monitoring_setup', 'production']
+    'state'       => Enum['service_setup', 'lvs_setup', 'monitoring_setup', 'production'],
+    'discovery'   => Optional[Wmflib::Service::Discovery],
     }
 ]

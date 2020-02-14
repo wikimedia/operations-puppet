@@ -1,15 +1,14 @@
-<% @discovery_services.keys.sort.each do |svc| -%>
-<% if @discovery_services[svc]['active_active'] -%>
-disc-<%= svc %> => {
+<% @discovery_services.sort_by{|svc| svc['dnsdisc']}.each do |svc| -%>
+<% if svc['active_active'] -%>
+disc-<%= svc['dnsdisc'] %> => {
 <% else -%>
-disc-geo-<%= svc %> => {
+disc-geo-<%= svc['dnsdisc'] %> => {
 <% end -%>
     map => discovery-map,
-    service_types => discovery-state-<%= svc %>,
+    service_types => discovery-state-<%= svc['dnsdisc'] %>,
     dcmap => {
-    <%- dsvc = @discovery_services[svc]['lvs'] -%>
-    <%- @lvs_services[dsvc]['ip'].keys.sort.each do |dc| -%>
-        <%= dc %> => <%= @lvs_services[dsvc]['ip'][dc] %>
+    <%- svc['ip'].keys.sort.each do |dc| -%>
+        <%= dc %> => <%= svc['ip'][dc].values.pop %>
     <%- end -%>
     }
 }
