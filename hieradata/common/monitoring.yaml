@@ -84,6 +84,12 @@ monitoring::groups:
   ganeti_eqsin:
     description: Ganeti virt cluster eqsin
 
+# IRC Events
+  irc_events_eqiad:
+    description: MediaWiki events on IRC eqiad
+  irc_events_codfw:
+    description: MediaWiki events on IRC codfw
+
 # Kafka jumbo
   kafka_jumbo_eqiad:
     description: Kafka jumbo cluster in eqiad

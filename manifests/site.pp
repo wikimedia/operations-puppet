@@ -1040,7 +1040,7 @@ node 'kraz.wikimedia.org' {
 # Replacement of irc.wikimedia.org
 # see T232483
 node 'irc2001.wikimedia.org' {
-    role(spare::system)
+    role(mediawiki::irc_events)
 }
 
 # cloudservices1003/1004 hosts openstack-designate

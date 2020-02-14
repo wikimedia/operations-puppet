@@ -453,6 +453,12 @@ wikimedia_clusters:
     sites:
       eqiad: []
       codfw: []
+  irc_events:
+    description: "MediaWiki events on IRC"
+    id: 89
+    sites:
+      eqiad: []
+      codfw: []
 
 puppetmaster: "puppet"
 puppet_ca_server: puppetmaster1001.eqiad.wmnet
