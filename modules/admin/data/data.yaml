@@ -4054,3 +4054,7 @@ ldap_only_users:
     ensure: present
     realname: Sakti Pramudya
     email: spramudya@wikimedia.org
+  amooney:
+    ensure: present
+    realname: Amanda Mooney
+    email: amooney@wikimedia.org
