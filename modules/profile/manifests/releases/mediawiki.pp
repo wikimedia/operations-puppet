@@ -100,7 +100,7 @@ class profile::releases::mediawiki (
     ferm::service { 'releases_http':
         proto  => 'tcp',
         port   => '80',
-        srange => '$CACHES',
+        srange => "(${::ipaddress} ${::ipaddress6})",
     }
 
     backup::set { 'srv-org-wikimedia': }
