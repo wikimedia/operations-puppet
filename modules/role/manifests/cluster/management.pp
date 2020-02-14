@@ -27,4 +27,6 @@ class role::cluster::management {
 
     include ::profile::netops::ripeatlas::cli
     include ::profile::homer
+
+    include ::profile::sre::os_updates
 }
