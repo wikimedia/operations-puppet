@@ -19,5 +19,6 @@ class puppetmaster::hiera (
         group  => 'root',
         mode   => '0444',
         source => $source,
+        notify => Service['apache2'],
     }
 }
