@@ -130,11 +130,16 @@ define tlsproxy::localssl(
     $fastopen_pending_max = hiera('tlsproxy::localssl::fastopen_pending_max', 150)
 
     # Ensure that exactly one definition exists with default_server = true
-    # for a given port. If multiple defines have default_server set to true,
-    # this resource will conflict.
+    # for a given port. If multiple defines on the same port have default_server
+    # set to true this resource will conflict.
+    # we configure this resource as an exec which does nothing and should
+    # never trigger.  We define the resource so it still allows us to catch multiple
+    # definitions of default_server but shouldn't show as a change in puppet reporting
     if $default_server {
-        notify { "tlsproxy localssl default_server on port ${tls_port}":
-            message => "tlsproxy::localssl instance ${title} on port ${tls_port} with server name ${server_name} is the default server.",
+        exec { "tlsproxy localssl default_server on port ${tls_port}":
+            command     => '/bin/true',
+            onlyif      => '/bin/false',
+            refreshonly => true,
         }
     }
 
@@ -192,7 +197,7 @@ define tlsproxy::localssl(
     $basename = regsubst($title, '[\W_]', '-', 'G')
 
     nginx::site { $name:
-        require => Notify["tlsproxy localssl default_server on port ${tls_port}"],    # Ensure a default_server has been defined
+        require => Exec["tlsproxy localssl default_server on port ${tls_port}"],    # Ensure a default_server has been defined
         content => template('tlsproxy/localssl.erb')
     }
 }
