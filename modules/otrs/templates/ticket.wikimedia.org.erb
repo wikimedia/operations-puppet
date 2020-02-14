@@ -9,6 +9,7 @@
 
     # Make an access log, so we know when people abuse OTRS's insecure interface
     CustomLog /var/log/apache2/otrs-access.log wmf
+    CustomLog /var/log/apache2/otrs-access-json.log wmfjson
 
     ScriptAlias /otrs/ "/opt/otrs/bin/cgi-bin/"
     Alias /otrs-web/ "/opt/otrs/var/httpd/htdocs/"
