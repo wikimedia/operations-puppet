@@ -98,6 +98,7 @@ class profile::icinga(
     class { 'profile::cache::kafka::alerts': }
     class { 'profile::mediawiki::alerts': }
     class { 'profile::swift::alerts': }
+    class { 'profile::ceph::alerts': }
 
     class { 'profile::prometheus::icinga_exporter': }
 
