@@ -1,13 +1,13 @@
 # https://noc.wikimedia.org/
-class role::noc::site {
+class profile::noc {
 
-    system::role { 'noc::site': description => 'noc.wikimedia.org' }
+    include profile::mediawiki::common
 
     ferm::service { 'noc-http':
         proto  => 'tcp',
         port   => 'http',
         srange => '($CACHES $CUMIN_MASTERS)',
     }
-    include ::profile::mediawiki::common
-    include ::noc
+
+    class { '::noc': }
 }
