@@ -1026,7 +1026,7 @@ service::configuration::log_dir: "/var/log"
 admin::groups:
   - restbase-roots
   - restbase-admins
-profile::tlsproxy::envoy::ensure: present
+profile::envoy::ensure: present
 profile::tlsproxy::envoy::tls_port: 7443
 profile::tlsproxy::envoy::services:
   - server_names: ['*']

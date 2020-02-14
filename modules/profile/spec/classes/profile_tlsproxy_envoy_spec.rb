@@ -17,7 +17,7 @@ describe 'profile::tlsproxy::envoy' do
           'expected value'
         }
       end
-      let(:node_params) { {site: 'eqiad'}}
+      let(:node_params) { {site: 'eqiad', test_name: 'tlsproxy_envoy'}}
       let(:facts) { facts.merge({ initsystem: 'systemd' }) }
       let(:pre_condition) {
         [
@@ -32,8 +32,6 @@ describe 'profile::tlsproxy::envoy' do
             sni_support: 'no',
             services: [{server_names: ['*'], port: 80, cert_name: 'test'}],
             global_cert_name: 'example',
-            prometheus_nodes: ['foo.example.com'],
-            cluster: 'test',
           }
         }
         if facts[:lsbdistcodename] != 'jessie'
@@ -64,8 +62,6 @@ describe 'profile::tlsproxy::envoy' do
               {server_names: ['citoid.discovery.wmnet', 'citoid'], port: 8080, cert_name: 'citoid'},
               {server_names: ['blubberoid.discovery.wmnet', 'blubberoid'], port: 8081, cert_name: 'blubberoid'}
             ],
-            prometheus_nodes: ['foo.example.com'],
-            cluster: 'test',
           }
         }
         it { is_expected.to compile.with_all_deps }

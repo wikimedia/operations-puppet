@@ -9,7 +9,7 @@ profile::eventschemas::service::server_alias: [schema.discovery.wmnet, schema.wi
 # Allow JS to request resources from this public https domain only.
 profile::eventschemas::service::allow_origin: https://schema.wikimedia.org
 
-profile::tlsproxy::envoy::ensure: present
+profile::envoy::ensure: present
 profile::tlsproxy::envoy::services:
   - server_names: ['*']
     port: 8190

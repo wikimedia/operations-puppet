@@ -30,7 +30,7 @@ profile::phabricator::main::rate_limits:
 
 phabricator_phd_taskmasters: 4
 
-profile::tlsproxy::envoy::ensure: present
+profile::envoy::ensure: present
 profile::tlsproxy::envoy::services:
   - server_names: ['*']
     port: 80

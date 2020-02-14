@@ -1,4 +1,4 @@
-profile::tlsproxy::envoy::ensure: present
+profile::envoy::ensure: present
 profile::tlsproxy::envoy::services:
   - server_names: ['*']
     port: 80

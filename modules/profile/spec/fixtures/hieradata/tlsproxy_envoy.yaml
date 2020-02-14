@@ -1,0 +1,3 @@
+prometheus_nodes: ['foo.example.com']
+cluster: 'test'
+profile::envoy::ensure: present

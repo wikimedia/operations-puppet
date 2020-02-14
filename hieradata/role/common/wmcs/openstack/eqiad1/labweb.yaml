@@ -1,5 +1,5 @@
 profile::prometheus::memcached_exporter::arguments: '--memcached.address=localhost:11000'
-profile::tlsproxy::envoy::ensure: present
+profile::envoy::ensure: present
 profile::tlsproxy::envoy::services:
   - server_names: ['*']
     port: 80

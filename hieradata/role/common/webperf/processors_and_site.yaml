@@ -7,7 +7,7 @@ graphite_host: graphite-in.eqiad.wmnet
 
 profile::webperf::site::server_name: performance.wikimedia.org
 profile::webperf::site::xhgui_host: tungsten.eqiad.wmnet
-profile::tlsproxy::envoy::ensure: present
+profile::envoy::ensure: present
 profile::tlsproxy::envoy::services:
   - server_names: ['*']
     port: 80

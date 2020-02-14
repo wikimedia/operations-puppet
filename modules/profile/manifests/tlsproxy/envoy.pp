@@ -6,7 +6,7 @@
 # Example hiera setups for common use-cases.
 #
 # Set up a global TLS proxy to apache listening on TCP port 444.
-#   profile::tlsproxy::envoy::ensure: present
+#   profile::envoy::ensure: present
 #   profile::tlsproxy::envoy::sni_support: no
 #   profile::tlsproxy::envoy::tls_port: 444
 #   profile::tlsproxy::envoy::services:
@@ -18,7 +18,7 @@
 # The "virtual host" for '*.test' doesn't have a cert_name, so it will
 # only be served with the global certificate.
 #
-#   profile::tlsproxy::envoy::ensure: present
+#   profile::envoy::ensure: present
 #   profile::tlsproxy::envoy::sni_support: yes
 #   profile::tlsproxy::envoy::services:
 #      - server_names: ['service1', '*.service1.production']
@@ -32,7 +32,7 @@
 #   profile::tlsproxy::envoy::global_cert_name: "appserver"
 #
 class profile::tlsproxy::envoy(
-    Wmflib::Ensure $ensure = lookup('profile::tlsproxy::envoy::ensure'),
+    Wmflib::Ensure $ensure = lookup('profile::envoy::ensure'),
     Enum['strict', 'yes', 'no'] $sni_support = lookup('profile::tlsproxy::envoy::sni_support'),
     Stdlib::Port $tls_port = lookup('profile::tlsproxy::envoy::tls_port', { 'default_value' => 443 }),
     Array[Struct[
@@ -44,45 +44,11 @@ class profile::tlsproxy::envoy(
     ]] $services = lookup('profile::tlsproxy::envoy::services'),
     Optional[String] $global_cert_name = lookup('profile::tlsproxy::envoy::global_cert_name', {'default_value' => undef}),
     Optional[Boolean] $websockets = lookup('profile::tlsproxy::envoy::websockets', {'default_value' => false}),
-    Array[String] $prometheus_nodes = lookup('prometheus_nodes'),
-    String $cluster = lookup('cluster'),
-) {
-    if os_version('debian jessie') {
-        if $tls_port !~ Stdlib::Port::Unprivileged {
-            fail('Envoy can only work with unprivileged ports under jessie.')
-        }
-        group { 'envoy':
-            ensure => present,
-        }
-        user { 'envoy':
-            ensure     => present,
-            gid        => 'envoy',
-            shell      => '/bin/false',
-            home       => '/nonexistent',
-            system     => true,
-            managehome => false,
-        }
 
-        $pkg_name = 'getenvoy-envoy'
-        apt::repository { 'getenvoy-jessie':
-            uri        => 'http://apt.wikimedia.org/wikimedia',
-            dist       => 'jessie-wikimedia',
-            components => 'thirdparty/envoyproxy',
-            before     => Package[$pkg_name]
-        }
-        # We need to install a full systemd unit as the package doesn't have one.
-        $use_override = false
-    } else {
-        $pkg_name = 'envoyproxy'
-        $use_override = true
-    }
-    $admin_port = 9631
-    class { '::envoyproxy':
-        ensure          => $ensure,
-        admin_port      => $admin_port,
-        pkg_name        => $pkg_name,
-        use_override    => $use_override,
-        service_cluster => $cluster,
+) {
+    require ::profile::envoy
+    if os_version('debian jessie') and $tls_port !~ Stdlib::Port::Unprivileged {
+            fail('Envoy can only work with unprivileged ports under jessie.')
     }
 
     # ensure all the needed certs are present. Given these are internal services,
@@ -144,16 +110,6 @@ class profile::tlsproxy::envoy(
             proto   => 'tcp',
             notrack => true,
             port    => $tls_port,
-        }
-        # metrics collection from prometheus can just fetch data pulling via GET from
-        # /stats/prometheus on the admin port
-        $prometheus_ferm_nodes = join($prometheus_nodes, ' ')
-        $ferm_srange = "(@resolve((${prometheus_ferm_nodes})) @resolve((${prometheus_ferm_nodes}), AAAA))"
-
-        ferm::service { 'prometheus-envoy-admin':
-            proto  => 'tcp',
-            port   => $admin_port,
-            srange => $ferm_srange,
         }
     }
 }

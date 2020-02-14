@@ -82,7 +82,7 @@ profile::elasticsearch::monitor::shard_size_critical: 350
 profile::elasticsearch::monitor::threshold: '>=0.34'
 
 # reusing kibana.discovery.wmnet to squelch PCC missing secret() errors
-profile::tlsproxy::envoy::ensure: present
+profile::envoy::ensure: present
 profile::tlsproxy::envoy::services:
   - server_names: ['*']
     port: 80
