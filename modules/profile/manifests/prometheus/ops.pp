@@ -1453,6 +1453,23 @@ class profile::prometheus::ops (
         }
     }
 
+    # Jobs maintained by perf-team:
+    $webperf_jobs = [
+      {
+        'job_name'        => 'webperf_navtiming',
+        'scheme'          => 'http',
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/webperf_navtiming_*.yaml" ]}
+        ],
+      },
+    ]
+    prometheus::class_config{ "webperf_navtiming_${::site}":
+        dest       => "${targets_path}/webperf_navtiming_${::site}.yaml",
+        site       => $::site,
+        class_name => 'profile::webperf::processors',
+        port       => 9230,
+    }
+
     prometheus::server { 'ops':
         listen_address        => '127.0.0.1:9900',
         storage_retention     => $storage_retention,
@@ -1470,7 +1487,7 @@ class profile::prometheus::ops (
             $gerrit_jobs, $routinator_jobs, $rpkicounter_jobs, $varnishkafka_jobs, $bird_jobs, $ncredir_jobs,
             $cloud_dev_pdns_jobs, $cloud_dev_pdns_rec_jobs, $bacula_jobs, $poolcounter_exporter_jobs,
             $apereo_cas_jobs, $atlas_exporter_jobs, $exported_blackbox_jobs, $cadvisor_jobs,
-            $envoy_jobs
+            $envoy_jobs, $webperf_jobs
         ),
         global_config_extra   => $config_extra,
     }

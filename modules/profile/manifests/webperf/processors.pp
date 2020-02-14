@@ -14,7 +14,8 @@
 #
 class profile::webperf::processors(
     $statsd = hiera('statsd'),
-    $graphite_host = hiera('graphite_host')
+    $graphite_host = hiera('graphite_host'),
+    $prometheus_nodes = hiera('prometheus_nodes')
 ) {
     $statsd_parts = split($statsd, ':')
     $statsd_host = $statsd_parts[0]
@@ -51,6 +52,19 @@ class profile::webperf::processors(
         kafka_brokers => $kafka_brokers,
         statsd_host   => $statsd_host,
         statsd_port   => $statsd_port,
+    }
+
+    # navtiming exports Prometheus metrics on port 9230.
+    if $::realm == 'labs' {
+        $ferm_srange = '$LABS_NETWORKS'
+    } else {
+        $prometheus_ferm_nodes = join($prometheus_nodes, ' ')
+        $ferm_srange = "(@resolve((${prometheus_ferm_nodes})) @resolve((${prometheus_ferm_nodes}), AAAA))"
+    }
+    ferm::service { 'prometheus-navtiming-exporter':
+        proto  => 'tcp',
+        port   => '9230',
+        srange => $ferm_srange,
     }
 
     # Make a valid target for coal, and set up what's needed for the consumer
