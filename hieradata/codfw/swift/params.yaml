@@ -53,6 +53,11 @@ swift::params::accounts:
         account_name: 'AUTH_netbox'
         auth:         'https://ms-fe.svc.codfw.wmnet'
         user:         'netbox:attachments'
+    performance_arclamp: # https://phabricator.wikimedia.org/T244776
+        access:       '.admin'
+        account_name: 'AUTH_performance'
+        auth:         'https://ms-fe.svc.codfw.wmnet'
+        user:         'performance:arclamp'
 # keys are to be defined in private repo, e.g.:
 #swift::params::account_keys:
 #    super_admin: <key>
