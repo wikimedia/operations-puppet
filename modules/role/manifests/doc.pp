@@ -12,6 +12,6 @@ class role::doc {
     include ::profile::standard
     include ::profile::base::firewall
     include ::profile::backup::host
+    include ::profile::tlsproxy::envoy
     include ::profile::doc
-
 }
