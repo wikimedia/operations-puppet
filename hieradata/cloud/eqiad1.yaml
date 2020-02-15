@@ -2,34 +2,12 @@
 cluster: misc
 datacenters: [eqiad]
 has_nrpe: false
-discovery::app_routes:
-  mediawiki: "%{::site}"
-  parsoid: "%{::site}"
-  restbase: "%{::site}"
-  restrouter: "%{::site}"
-  mobileapps: "%{::site}"
-  graphoid: "%{::site}"
-  mathoid: "%{::site}"
-  eventgate-analytics-http: "%{::site}"
-  eventgate-analytics: "%{::site}"
-  eventgate-main-http: "%{::site}"
-  eventgate-main: "%{::site}"
-  eventgate-logging-external: "%{::site}"
-  sessionstore: "%{::site}"
-  termbox: "%{::site}"
-  schema: "%{::site}"
-  aqs: 'eqiad'
-  docker-registry: 'codfw'
-  wikifeeds: "%{::site}"
 # dns
 labsdnsconfig:
   recursor: 'cloud-recursor0.wikimedia.org'
   recursor_secondary: 'cloud-recursor1.wikimedia.org'
 
-profile::base::enable_adduser: false
 profile::base::overlayfs: true
-profile::base::labs::unattended_wmf: 'present'
-profile::base::labs::unattended_distro: 'present'
 profile::base::check_raid: false
 profile::openstack::eqiad1::version: 'mitaka'
 profile::openstack::base::region: "eqiad1-r"
@@ -48,8 +26,6 @@ profile::prometheus::varnishkafka_exporter::stats_default:
         'description': 'Number of topics in the metadata cache.'
         'labels': ['client_id']
 
-profile::standard::has_default_mail_relay: true
-profile::standard::enable_ip6_mapped: false
 # Additional base overrides
 profile::base::remote_syslog: []
 
@@ -251,16 +227,10 @@ labs_keystone_hosts:
     - "cloudcontrol1003.wikimedia.org"
     - "cloudcontrol1004.wikimedia.org"
 puppetmaster: "puppetmaster.cloudinfra.wmflabs.org"
-puppet_ca_server: ""
 puppet_ca_source: puppet:///files/puppet/ca.labs.pem
 manage_puppet_ca_file: false
 
 keystone_public_port: '5000'
-
-# All labs instances have internet connectivity, so do not bother with proxies
-profile::base::use_apt_proxy: false
-profile::base::purge_apt_sources: false
-profile::base::purge_apt_preferences: false
 
 # By default, nag project admins about puppet breakage
 send_puppet_failure_emails: true
@@ -345,12 +315,7 @@ cumin_masters:
 
 # Url to use for reaching graphite
 graphite_url: 'https://graphite-labs.wikimedia.org'
-profile::base::puppet::interval: 30
 profile::base::puppet::dns_alt_names: ~
-profile::base::puppet::environment: production
-profile::base::puppet::puppet_major_version: 4
-profile::base::puppet::facter_major_version: 2
-profile::base::puppet::serialization_format: pson
 
 bastion_hosts:
 - 172.16.1.136 # bastion-eqiad1-01.bastion.eqiad.wmflabs
