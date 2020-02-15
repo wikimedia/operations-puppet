@@ -4,6 +4,7 @@ class role::wmcs::monitoring {
     include ::profile::standard
     include ::profile::grafana
     include ::profile::base::firewall
+    include ::profile::tlsproxy::envoy # TLS termination
     include ::profile::wmcs::graphite
     include ::profile::wmcs::monitoring
     include ::profile::wmcs::prometheus

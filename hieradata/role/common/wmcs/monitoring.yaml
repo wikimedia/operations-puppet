@@ -66,3 +66,11 @@ profile::grafana::config:
   session:
     provider: file
     file: sessions.db
+
+# envoy for TLS termination for grafana-labs/grafana-labs-admin behind ATS
+profile::tlsproxy::envoy::ensure: present
+profile::tlsproxy::envoy::services:
+  - server_names: ['*']
+    port: 80
+profile::tlsproxy::envoy::global_cert_name: "grafana-labs.discovery.wmnet"
+profile::tlsproxy::envoy::sni_support: "no"
