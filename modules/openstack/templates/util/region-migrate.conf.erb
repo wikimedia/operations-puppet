@@ -6,10 +6,10 @@ password = <%= @ldap_user_pass %>
 ssh_root_key_path = /home/andrew/vps_root_key
 <% if @site == "eqiad" -%>
 vps_domain = eqiad.wmflabs
-dns_server = cloud-ns0.wikimedia.org
+dns_server = ns0.openstack.eqiad1.wikimediacloud.org
 <% elsif @site == "codfw" -%>
-vps_domain = codfw.labtest
-dns_server = labtest-ns0.wikimedia.org
+vps_domain = codfw1dev.wikimedia.cloud
+dns_server = ns0.openstack.codfw1dev.wikimediacloud.org
 <% end %>
 
 [source]

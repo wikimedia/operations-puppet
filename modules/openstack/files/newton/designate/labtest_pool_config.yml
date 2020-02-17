@@ -7,7 +7,7 @@
   - host: 208.80.153.76
     port: 53
   ns_records:
-  - hostname: codfw1dev-ns0.wikimedia.org.
+  - hostname: ns0.openstack.codfw1dev.wikimediacloud.org.
     priority: 1
 
   targets:

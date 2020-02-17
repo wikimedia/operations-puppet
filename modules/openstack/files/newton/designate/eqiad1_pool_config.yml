@@ -9,9 +9,9 @@
   - host: 208.80.154.11
     port: 53
   ns_records:
-  - hostname: cloud-ns0.wikimedia.org.
+  - hostname: ns0.openstack.eqiad1.wikimediacloud.org.
     priority: 10
-  - hostname: cloud-ns1.wikimedia.org.
+  - hostname: ns1.openstack.eqiad1.wikimediacloud.org.
     priority: 11
   targets:
   - masters:

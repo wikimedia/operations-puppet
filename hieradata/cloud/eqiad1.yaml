@@ -4,8 +4,8 @@ datacenters: [eqiad]
 has_nrpe: false
 # dns
 labsdnsconfig:
-  recursor: 'cloud-recursor0.wikimedia.org'
-  recursor_secondary: 'cloud-recursor1.wikimedia.org'
+  recursor: 'ns-recursor0.openstack.eqiad1.wikimediacloud.org'
+  recursor_secondary: 'ns-recursor1.openstack.eqiad1.wikimediacloud.org'
 
 profile::base::overlayfs: true
 profile::base::check_raid: false
