@@ -255,11 +255,20 @@ class acme_chief::server (
         notes_url    => 'https://wikitech.wikimedia.org/wiki/Acme-chief',
     }
 
-    if $is_active {
-        exec { '/usr/local/bin/acme-chief-certs-sync':
-            user    => 'acme-chief',
-            timeout => 60,
-            require => [User['acme-chief'], File['/etc/acme-chief/cert-sync.conf']],
-        }
+    $timer_ensure = $is_active ? {
+        true  => 'present',
+        false => 'absent'
+    }
+    systemd::timer::job {'acme-chief-certs-sync':
+        ensure             => $timer_ensure,
+        description        => 'Sync acme-chief certificates',
+        command            => '/usr/local/bin/acme-chief-certs-sync',
+        interval           => {
+            'start'    => 'OnCalendar',
+            'interval' => '*-*-* *:00/30:00', # every 30 min
+        },
+        user               => 'acme-chief',
+        monitoring_enabled => false,
+        require            => [User['acme-chief'], File['/etc/acme-chief/cert-sync.conf']],
     }
 }
