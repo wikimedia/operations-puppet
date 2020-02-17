@@ -28,6 +28,7 @@ class profile::cache::base(
     # Needed profiles
     require ::profile::conftool::client
     require ::profile::prometheus::varnish_exporter
+    require ::profile::prometheus::cadvisor_exporter
     require ::profile::standard
     require ::profile::base::systemd
 
