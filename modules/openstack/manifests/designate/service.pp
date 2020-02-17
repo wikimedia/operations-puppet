@@ -12,6 +12,7 @@ class openstack::designate::service(
     $db_host,
     $db_name,
     $domain_id_internal_forward,
+    $domain_id_internal_forward_legacy,
     $domain_id_internal_reverse,
     $puppetmaster_hostname,
     $nova_controller,
