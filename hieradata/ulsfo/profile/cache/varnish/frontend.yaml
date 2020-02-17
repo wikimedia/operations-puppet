@@ -1,0 +1,4 @@
+profile::cache::varnish::frontend::runtime_params:
+    - default_ttl=86400
+    - http_max_hdr=128 # temp mitigation for T226840
+    - idle_send_timeout=125
