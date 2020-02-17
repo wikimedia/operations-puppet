@@ -24,12 +24,18 @@ class profile::prometheus::ops_mysql (
             source => 'puppet:///modules/profile/prometheus/mysqld_exporter_config.py',
             mode   => '0555',
         }
-        exec { 'generate-mysqld-exporter-config':
-            command => "/usr/local/sbin/mysqld_exporter_config.py ${::site} '${targets_path}'",
-            require => [ File['/etc/prometheus/zarcillo.cnf'],
-                        File['/usr/local/sbin/mysqld_exporter_config.py'],
-                        Package['python3-pymysql'],
-                        Package['python3-yaml'],
+        systemd::timer::job{'generate-mysqld-exporter-config':
+            ensure      => 'present',
+            description => 'generates prometheus-mysqld-exporter targets from zarcillo',
+            user        => 'root',
+            command     => "/usr/local/sbin/mysqld_exporter_config.py ${::site} '${targets_path}'",
+            interval    => {
+                'start'    => 'OnCalendar',
+                'interval' => '*-*-* *:00/30:00', # every 30 min
+            },
+            require     => [
+                File['/etc/prometheus/zarcillo.cnf', '/usr/local/sbin/mysqld_exporter_config.py'],
+                Package['python3-pymysql', 'python3-yaml'],
             ],
         }
     }
