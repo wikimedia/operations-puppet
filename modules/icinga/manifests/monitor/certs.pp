@@ -33,8 +33,10 @@ class icinga::monitor::certs {
         notes_url     => 'https://phabricator.wikimedia.org/tag/toolforge/',
     }
 
+    # TODO: remove this, now using LE automatic cert renew
     # *.wmflabs.org (labs wildcard cert, testing tools.wmflabs.org)
     monitoring::service { 'https_wmflabs':
+        ensure        => 'absent',
         description   => 'HTTPS-wmflabs',
         check_command => 'check_ssl_http!tools.wmflabs.org',
         host          => 'tools.wmflabs.org',
