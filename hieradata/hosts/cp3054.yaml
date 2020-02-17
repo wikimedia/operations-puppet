@@ -1,0 +1,3 @@
+profile::base::systemd::cpu_accounting: 'yes'
+profile::base::systemd::blockio_accounting: 'yes'
+profile::base::systemd::memory_accounting: 'yes'
