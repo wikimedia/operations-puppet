@@ -104,9 +104,18 @@ class query_service::common(
     # not exist, puppet will raise an error and skip the File[$data_file]
     # resource (and only that resource). It means that puppet will be in error
     # until data import is started, but that's a reasonable behaviour.
+    # This works as:
+    # if $data_file dose not exist then:
+    #    * this resource state is not clean so run the command
+    #    * command returns false so the resource fales
+    #    * file{$data_file} resource dose not run as a dependecy fails
+    # else
+    #  The file exists so the exec resource state is clean and dose not need to run command
+    #  This causes the exec resource to succeed without running command
+    #  and so the file can mange permissions
     exec { "${data_file} exists":
-        command => '/bin/true',
-        onlyif  => "/usr/bin/test -e ${data_file}",
+        command => '/bin/false',
+        creates => $data_file,
     }
     file { $data_file:
         ensure  => file,
