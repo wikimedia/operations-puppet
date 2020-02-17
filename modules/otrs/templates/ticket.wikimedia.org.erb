@@ -4,7 +4,7 @@
 
     <IfModule mod_remoteip.c>
         RemoteIPHeader X-Client-IP
-        RemoteIPInternalProxy <%= @trusted_proxies.join(' ') %>
+        RemoteIPInternalProxy <%= @fqdn %> <%= @trusted_proxies.join(' ') %>
     </IfModule>
 
     # Make an access log, so we know when people abuse OTRS's insecure interface
