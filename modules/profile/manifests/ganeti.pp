@@ -93,7 +93,7 @@ class profile::ganeti (
             ensure  => present,
             owner   => 'gnt-rapi',
             group   => 'gnt-masterd',
-            mode    => '0440',
+            mode    => '0640',
             content => '',
         }
 
