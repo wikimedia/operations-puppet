@@ -1,0 +1,32 @@
+<%- n = @listener['name'] -%>
+address:
+  socket_address: {protocol: TCP, address: 0.0.0.0, port_value: <%= @listener['port'] %>}
+filter_chains:
+- filters:
+  - name:  envoy.http_connection_manager
+    typed_config:
+      "@type": type.googleapis.com/envoy.config.filter.network.http_connection_manager.v2.HttpConnectionManager
+      access_log:
+      - name: envoy.file_access_log
+        config:
+          path: "/var/log/envoy/<%= n %>.log"
+      stat_prefix: <%= n %>_egress
+      http_filters:
+      - name: envoy.router
+        typed_config: {}
+      route_config:
+        name: <%= n %>_route
+        virtual_hosts:
+        - name: <%= n %>
+          domains: ["*"]
+          routes:
+          - match:
+              prefix: "/"
+            route:
+  <%- if @listener['http_host'] -%>
+              host_rewrite: <%= @listener['http_host'] %>
+  <%- end -%>
+              cluster: <%= @listener['cluster'] %>
+              timeout: <%= @listener['timeout'] %>
+              # No retry logic - for now.
+              num_retries: 0
