@@ -171,6 +171,11 @@ host fermium {
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
 }
 
+host flowspec1001 {
+    hardware ethernet aa:00:00:6d:1e:7d;
+    fixed-address flowspec1001.eqiad.wmnet;
+}
+
 host gerrit1002 {
     hardware ethernet aa:00:00:15:60:57;
     fixed-address gerrit1002.wikimedia.org;
