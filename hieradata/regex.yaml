@@ -280,3 +280,5 @@ mediawiki_test_environment:
     opcache.memory_consumption: 300
   profile::mediawiki::php::restarts::opcache_limit: 100
   profile::mediawiki::php::enable_request_profiling: true
+  role::mediawiki::common::use_envoy_proxy: true
+  profile::envoy::ensure: present
