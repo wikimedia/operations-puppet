@@ -29,4 +29,8 @@ class role::deployment_server {
     backup::set {'home': }
     # proxy for connection to other servers
     include ::profile::services_proxy
+
+    system::role { 'deployment_server':
+        description => 'Deployment server for MediaWiki and related code',
+    }
 }
