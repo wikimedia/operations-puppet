@@ -52,7 +52,7 @@ class profile::lvs(
         description     => 'At least one CPU core of an LVS is saturated, packet drops are likely',
         warning         => 0.35,  # Unit: core-busy-seconds/second
         critical        => 0.7,
-        query           => "sum by (cpu) (irate(node_cpu_seconds_total(mode!=\"idle\",instance=~\"${::hostname}:.*\"}[5m]))",
+        query           => "sum by (cpu) (irate(node_cpu_seconds_total(mode\\!=\"idle\",instance=~\"${::hostname}:.*\"}[5m]))",
         prometheus_url  => "http://prometheus.svc.${::site}.wmnet/ops",
         dashboard_links => ["https://grafana.wikimedia.org/d/000000377/host-overview?var-server=${::hostname}&var-datasource=${::site} prometheus/ops"],
         nagios_critical => false,  # TODO set this to true Soon
