@@ -38,7 +38,6 @@ class profile::lvs(
         notes_url    => 'https://wikitech.wikimedia.org/wiki/Monitoring/check_rp_filter_disabled',
     }
 
-    # TODO: check this for false positives and then consider making it page
     monitoring::check_prometheus { 'excessive-lvs-rx-traffic':
         description     => 'Excessive RX traffic on an LVS (units megabits/sec)',
         warning         => 1600,
@@ -47,6 +46,16 @@ class profile::lvs(
         prometheus_url  => "http://prometheus.svc.${::site}.wmnet/ops",
         dashboard_links => ["https://grafana.wikimedia.org/d/000000377/host-overview?var-server=${::hostname}&var-datasource=${::site} prometheus/ops"],
         nagios_critical => true,
+    }
+
+    monitoring::check_prometheus { 'lvs-cpu-saturated':
+        description     => 'At least one CPU core of an LVS is saturated, packet drops are likely',
+        warning         => 0.35,  # Unit: core-busy-seconds/second
+        critical        => 0.7,
+        query           => "sum by (cpu) (irate(node_cpu_seconds_total(mode!=\"idle\",instance=~\"${::hostname}:.*\"}[5m]))",
+        prometheus_url  => "http://prometheus.svc.${::site}.wmnet/ops",
+        dashboard_links => ["https://grafana.wikimedia.org/d/000000377/host-overview?var-server=${::hostname}&var-datasource=${::site} prometheus/ops"],
+        nagios_critical => false,  # TODO set this to true Soon
     }
 
     # Set up tagged interfaces to all subnets with real servers in them
