@@ -1465,6 +1465,26 @@ node /^mw12(3[8-9]|4[0-9]|5[0-8])\.eqiad\.wmnet$/ {
     role(mediawiki::appserver)
 }
 
+#mw1349-mw1362 are in rack D1
+node /^mw13(49|5[0-9]|6[0-2])\.eqiad\.wmnet$/ {
+    role(spare::system)
+}
+
+#mw1363-mw1365 are in rack D3
+node /^mw13(6[3-5])\.eqiad\.wmnet$/ {
+    role(spare::system)
+}
+
+#mw1366-mw1382 are in rack D6
+node /^mw13(6[6-9]|7[0-9]|8[0-2])\.eqiad\.wmnet$/ {
+    role(spare::system)
+}
+
+#mw1383-mw1384 are in rack D8
+node /^mw13(8[3-4])\.eqiad\.wmnet$/ {
+    role(spare::system)
+}
+
 # API (serving api traffic)
 
 # Row A
