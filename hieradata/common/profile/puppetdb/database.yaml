@@ -1,0 +1,4 @@
+profile::puppetdb::database::shared_buffers: '7680MB'
+profile::puppetdb::database::users: {}
+profile::puppetdb::database::replication_lag_crit: 16777216
+profile::puppetdb::database::replication_lag_warn: 1048576

@@ -3,13 +3,16 @@
 # Sets up a puppetdb postgresql database.
 #
 class profile::puppetdb::database(
-    $master = hiera('profile::puppetdb::master'),
-    $slaves = hiera('profile::puppetdb::slaves', []),
-    $shared_buffers = hiera('profile::puppetdb::database::shared_buffers', '7680MB'),
-    $replication_password = hiera('puppetdb::password::replication'),
-    $puppetdb_password =  hiera('puppetdb::password::rw'),
-    $users = hiera('profile::puppetdb::database::users', {}),
-    $ssldir = hiera('profile::puppetdb::database::ssldir', undef),
+    Stdlib::Host $master         = lookup('profile::puppetdb::master'),
+    String $shared_buffers       = lookup('profile::puppetdb::database::shared_buffers'),
+    String $replication_password = lookup('puppetdb::password::replication'),
+    String $puppetdb_password    = lookup('puppetdb::password::rw'),
+    Hash   $users                = lookup('profile::puppetdb::database::users'),
+    Integer$replication_lag_crit = lookup('profile::puppetdb::database::replication_lag_crit'),
+    Integer$replication_lag_warn = lookup('profile::puppetdb::database::replication_lag_warn'),
+    Optional[Array[Stdlib::Host]] $slaves = lookup('profile::puppetdb::slaves'),
+    Optional[Stdlib::Unixpath]    $ssldir = lookup('profile::puppetdb::database::ssldir',
+                                                  {'default_value' => undef}),
 ) {
     $pgversion = $::lsbdistcodename ? {
         'buster'  => '11',
@@ -38,6 +41,8 @@ class profile::puppetdb::database(
             pg_user     => 'replication',
             pg_password => $replication_password,
             pg_database => 'puppetdb',
+            critical    => $replication_lag_crit,
+            warning     => $replication_lag_warn,
         }
     }
 
