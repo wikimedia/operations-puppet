@@ -1,6 +1,5 @@
 cluster: cache_upload
 cache::cluster: upload
-cache::lua_support: true
 admin::groups:
   - perf-roots
   - varnish-log-readers
