@@ -1471,7 +1471,11 @@ node /^mw12(3[8-9]|4[0-9]|5[0-8])\.eqiad\.wmnet$/ {
 }
 
 #mw1349-mw1362 are in rack D1
-node /^mw13(49|5[0-9]|6[0-2])\.eqiad\.wmnet$/ {
+node /^mw1349\.eqiad\.wmnet$/ {
+    role(mediawiki::appserver)
+}
+
+node /^mw13(5[0-9]|6[0-2])\.eqiad\.wmnet$/ {
     role(spare::system)
 }
 
