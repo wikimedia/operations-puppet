@@ -1443,11 +1443,16 @@ node /^mwdebug100[12]\.eqiad\.wmnet$/ {
 
 # Row A
 
-# mw1261 - mw1275 are in rack A7
+# mw1261 - mw1266 are in rack A5
 node /^mw126[1-5]\.eqiad\.wmnet$/ {
     role(mediawiki::canary_appserver)
 }
-node /^mw12(6[6-9]|7[0-5])\.eqiad\.wmnet$/ {
+node /^mw1266\.eqiad\.wmnet$/ {
+    role(mediawiki::appserver)
+}
+
+# mw1267 - mw1275 are in rack A7
+node /^mw12(6[7-9]|7[0-5])\.eqiad\.wmnet$/ {
     role(mediawiki::appserver)
 }
 
@@ -1522,8 +1527,13 @@ node /^mw13(39|4[0-8])\.eqiad\.wmnet$/ {
 }
 
 # Row D
-# mw1221-mw1235 are in rack D5
-node /^mw12(2[1-9]|3[0-5])\.eqiad\.wmnet$/ {
+# mw1221-mw1226 are in rack D5
+node /^mw122[1-6]\.eqiad\.wmnet$/ {
+    role(mediawiki::appserver::api)
+}
+
+# mw1227-mw1235 are in rack D5
+node /^mw12(2[7-9]|3[0-5])\.eqiad\.wmnet$/ {
     role(mediawiki::appserver::api)
 }
 
@@ -1594,25 +1604,14 @@ node /^mw22(6[8-9]|70)\.codfw\.wmnet$/ {
 
 # Row C
 
-# mw2163-mw2186 are in rack C3
+# mw2163-mw2186, mw2271-mw2277 are in rack C3
 # mw2187-mw2199 are in rack C4
 
-node /^mw216[34]\.codfw\.wmnet$/ {
+node /^mw2(16[34]|27[12])\.codfw\.wmnet$/ {
     role(mediawiki::canary_appserver)
 }
 
-node /^mw21(6[5-9]|[7-9][0-9])\.codfw\.wmnet$/ {
-    role(mediawiki::appserver)
-}
-
-# Row D
-
-#mw2271-77 are in rack D3
-node /^mw227[12]\.codfw\.wmnet$/ {
-    role(mediawiki::canary_appserver)
-}
-
-node /^mw227[3-7]\.codfw\.wmnet$/ {
+node /^mw2(16[5-9]|1[7-9][0-9]|27[3-7])\.codfw\.wmnet$/ {
     role(mediawiki::appserver)
 }
 
@@ -1654,7 +1653,7 @@ node /^mw226[1-2]\.codfw\.wmnet$/ {
 
 # Row C
 
-# mw2200-2214 are in rack C4
+# mw2200-2212,mw2214 are in rack C4
 node /^mw22(0[0-9]|1[0124])\.codfw\.wmnet$/ {
     role(mediawiki::appserver::api)
 }
