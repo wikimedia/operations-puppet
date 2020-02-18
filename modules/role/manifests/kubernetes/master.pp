@@ -7,4 +7,8 @@ class role::kubernetes::master {
     if hiera('has_lvs', true) {
         include profile::lvs::realserver
     }
+
+    system::role { 'kubernetes::master':
+        description => 'Kubernetes master server',
+    }
 }
