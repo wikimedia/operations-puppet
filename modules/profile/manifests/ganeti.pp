@@ -83,7 +83,7 @@ class profile::ganeti (
             ensure  => present,
             owner   => 'gnt-rapi',
             group   => 'gnt-masterd',
-            mode    => '0440',
+            mode    => '0640',
             content => "${rapi_ro_user} {HA1}${ro_password_hash} read\n",
         }
     }
