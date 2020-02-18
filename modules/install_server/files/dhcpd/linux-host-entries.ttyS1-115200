@@ -2132,12 +2132,6 @@ host dbprov2002 {
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
-host dbproxy1002 {
-    hardware ethernet 84:2b:2b:fd:be:a3;
-    fixed-address dbproxy1002.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
-}
-
 host dbproxy1003 {
     hardware ethernet 84:2b:2b:fc:af:c2;
     fixed-address dbproxy1003.eqiad.wmnet;
