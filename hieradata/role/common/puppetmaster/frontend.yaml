@@ -1,6 +1,7 @@
 admin::groups:
   - gitpuppet
   - datacenter-ops
+  - fr-tech-admins
 profile::base::domain_search:
   - wikimedia.org
   - eqiad.wmnet

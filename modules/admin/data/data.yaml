@@ -622,6 +622,7 @@ groups:
     gid: 787
     description: fundraising tech admins
     members: &fr_tech_admins [dwisehaupt]
+    privileges: ['ALL = NOPASSWD: /usr/bin/cat /srv/private/modules/secret/secrets/nagios/contacts.cfg']
   gitpuppet:
     gid: 998
     description: Private repo users
