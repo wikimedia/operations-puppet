@@ -2323,7 +2323,7 @@ host dns1002 {
 }
 
 host dns2001 {
-    hardware ethernet D0:94:66:5F:6A:40;
+    hardware ethernet B0:26:28:D9:F3:C0;
     fixed-address dns2001.wikimedia.org;
 }
 
