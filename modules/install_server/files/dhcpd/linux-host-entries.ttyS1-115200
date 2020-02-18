@@ -2864,32 +2864,32 @@ host es1019 {
 }
 
 host es1020 {
-    hardware ethernet B0:26:28:F5:23:72;
+    hardware ethernet B0:26:28:F5:23:70;
     fixed-address es1020.eqiad.wmnet;
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 host es1021 {
-    hardware ethernet B0:26:28:F5:22:F4;
+    hardware ethernet B0:26:28:F5:22:F2;
     fixed-address es1021.eqiad.wmnet;
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 host es1022 {
-    hardware ethernet B0:26:28:F5:35:DE;
+    hardware ethernet B0:26:28:F5:35:DC;
     fixed-address es1022.eqiad.wmnet;
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 host es1023 {
-    hardware ethernet B0:26:28:F5:1B:C8;
+    hardware ethernet B0:26:28:F5:1B:C6;
     fixed-address es1023.eqiad.wmnet;
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 host es1024 {
-    hardware ethernet B0:26:28:F5:14:0C;
+    hardware ethernet B0:26:28:F5:14:0A;
     fixed-address es1024.eqiad.wmnet;
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 host es1025 {
-    hardware ethernet B0:26:28:F2:93:3E;
+    hardware ethernet B0:26:28:F2:93:3C;
     fixed-address es1025.eqiad.wmnet;
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
