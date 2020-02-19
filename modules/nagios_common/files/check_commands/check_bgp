@@ -296,9 +296,6 @@ sub collect {
         if ( $state eq 'Established' ) {
             $counts{up}++;
         }
-        elsif ( $state eq 'Idle' ) {
-            $counts{shutdown}++;
-        }
         else {
             $counts{down}++;
             my $asn = $bgp->get( $peer, 'PeerRemoteAs' ) || "unknown";
