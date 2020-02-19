@@ -45,6 +45,10 @@ class snapshot::cron(
         user      => $miscdumpsuser,
         filesonly => $filesonly,
     }
+    class { '::snapshot::cron::dump_machine_vision':
+        user      => $miscdumpsuser,
+        filesonly => $filesonly,
+    }
     class { '::snapshot::addschanges':
         user      => $miscdumpsuser,
         filesonly => $filesonly,
