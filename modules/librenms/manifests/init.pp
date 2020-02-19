@@ -88,6 +88,16 @@ class librenms(
         recurse => true,
         require => Group['librenms'],
     }
+    # librenms writes the session files as 0644 as such we
+    # disable recurse and only manage the directory
+    file { "${install_dir}/storage/framework/sessions/":
+        ensure  => directory,
+        owner   => 'www-data',
+        group   => 'librenms',
+        mode    => '0660',
+        recurse => false,
+        require => Group['librenms'],
+    }
 
     file { $rrd_dir:
         ensure  => directory,
