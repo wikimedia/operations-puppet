@@ -167,13 +167,6 @@ PASSTHROUGH = {
 <% if @redis_host %>
 WEBHOOKS_ENABLED = True
 REDIS = {
-    # note this is temporary and should be removed post-upgrade.
-    'HOST': '<%= @redis_host %>',
-    'PORT': <%= @redis_port %>,
-    'PASSWORD': '<%= @redis_password %>',
-    'DATABASE': <%= @redis_database %>,
-    'DEFAULT_TIMEOUT': 300,
-    # end of temporary bit.
     'webhooks': {
         'HOST': '<%= @redis_host %>',
         'PORT': <%= @redis_port %>,
