@@ -1612,9 +1612,14 @@ node /^mw22(6[8-9]|70)\.codfw\.wmnet$/ {
     role(mediawiki::appserver)
 }
 
-#mw2310-24 are in rack B3
-node /^mw23(1[0-9]|2[0-4])\.codfw\.wmnet$/ {
+#mw2317-24 are in rack B3
+node /^mw23(1[7-9]|2[0-4])\.codfw\.wmnet$/ {
     role(spare::system)
+}
+
+#mw2310-2316 are in rack B3
+node /^mw23(1[0-6])\.codfw\.wmnet$/ {
+    role(mediawiki::appserver)
 }
 
 #mw2325-34 are in rack B6
