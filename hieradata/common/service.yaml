@@ -826,7 +826,7 @@ service::catalog:
     - codfw
     state: production
   eventgate-logging-external:
-    description: EventGate Analytics endpoint, eventgate-logging-external.svc.%{::site}.wmnet
+    description: EventGate logging endpoint, eventgate-logging-external.svc.%{::site}.wmnet and intake-logging.wikimedia.org
     encryption: true
     ip:
       codfw:
@@ -863,6 +863,46 @@ service::catalog:
     state: production
     discovery:
     - dnsdisc: eventgate-logging-external
+      active_active: true
+  eventgate-analytics-external:
+    description: EventGate analytics external endpoint, eventgate-analytics-external.svc.%{::site}.wmnet and intake-analytics.wikimedia.org
+    encryption: true
+    ip:
+      codfw:
+        default: 10.2.1.52
+      eqiad:
+        default: 10.2.2.52
+    lvs:
+      class: low-traffic
+      conftool:
+        cluster: kubernetes
+        service: kubesvc
+      depool_threshold: '.5'
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+        ProxyFetch:
+          url:
+          - https://localhost/_info
+      scheduler: wrr
+      protocol: tcp
+    monitoring:
+      check_command: check_https_lvs_on_port!eventgate-analytics-external.discovery.wmnet!4692!/_info
+      critical: false
+      sites:
+        codfw:
+          hostname: eventgate-analytics-external.svc.codfw.wmnet
+        eqiad:
+          hostname: eventgate-analytics-external.svc.eqiad.wmnet
+    port: 4692
+    sites:
+    - eqiad
+    - codfw
+    state: service_setup
+    discovery:
+    - dnsdisc: eventgate-analytics-external
       active_active: true
   eventgate-main-to-delete:
     description: EventGate main endpoint, TLS enabled, https://eventgate-main.svc.%{::site}.wmnet (TO BE REMOVED - T245203)
