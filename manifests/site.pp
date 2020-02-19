@@ -1480,19 +1480,34 @@ node /^mw13(49|5[0-5])\.eqiad\.wmnet$/ {
     role(mediawiki::appserver)
 }
 
-#mw1363-mw1365 are in rack D3
-node /^mw13(6[3-5])\.eqiad\.wmnet$/ {
+#mw1363 is in rack D3
+node /^mw1363\.eqiad\.wmnet$/ {
     role(spare::system)
 }
 
-#mw1366-mw1382 are in rack D6
-node /^mw13(6[6-9]|7[0-9]|8[0-2])\.eqiad\.wmnet$/ {
+#mw1364-mw1365 are in rack D3
+node /^mw136[45]\.eqiad\.wmnet$/ {
+    role(mediawiki::appserver)
+}
+
+#mw1366-mw1373 are in rack D6
+node /^mw13(6[6-9]|7[0-3])\.eqiad\.wmnet$/ {
+    role(mediawiki::appserver)
+}
+
+#mw1374-mw1382 are in rack D6
+node /^mw13(7[4-9]|8[0-2])\.eqiad\.wmnet$/ {
     role(spare::system)
 }
 
-#mw1383-mw1384 are in rack D8
-node /^mw13(8[3-4])\.eqiad\.wmnet$/ {
+#mw1383 is in rack D8
+node /^mw1383\.eqiad\.wmnet$/ {
     role(spare::system)
+}
+
+#mw1384 is in rack D8
+node /^mw1384\.eqiad\.wmnet$/ {
+    role(mediawiki::appserver)
 }
 
 # API (serving api traffic)
