@@ -1,0 +1,33 @@
+[global.config]
+  as = 14907  # Not in use (per peer-group AS#)
+  router-id = "<%= @ipaddress %>"
+
+[global.apply-policy.config]
+default-import-policy = "reject-route"
+default-export-policy = "accept-route"
+
+<%- @network_infra.each_pair do |site,prefixes| -%>
+
+[[peer-groups]]
+  [peer-groups.config]
+    peer-group-name = "<%= site %>"
+    local-as = <%= @asns[site] %>
+    peer-as = <%= @asns[site] %>
+  [[peer-groups.afi-safis]]
+    [peer-groups.afi-safis.config]
+      afi-safi-name = "ipv4-flowspec"
+
+<%- prefixes.each do |prefix| -%>
+[[dynamic-neighbors]]
+  [dynamic-neighbors.config]
+    prefix = "<%= prefix %>"
+    peer-group = "<%= site %>"
+  [dynamic-neighbors.route-reflector.config]
+    route-reflector-client = true
+    route-reflector-cluster-id = "<%= @ipaddress %>"
+  [dynamic-neighbors.graceful-restart.config]
+    enabled = true
+    restart-time = 120
+    notification-enabled = true
+ <% end -%>
+ <% end -%>

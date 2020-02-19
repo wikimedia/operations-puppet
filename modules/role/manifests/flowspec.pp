@@ -1,0 +1,13 @@
+# == Class role::flowspec
+#
+# Install and manage a Flowspec controller and its requirements
+#
+class role::flowspec {
+
+  system::role { 'flowspec':
+      description => 'Flowspec network controller',
+  }
+  include profile::standard
+  include profile::base::firewall
+  include profile::flowspec
+}

@@ -1682,3 +1682,10 @@ ripeatlas_measurements:
     ipv6: '11645088'
     # eqsin IPv6 is allowed more permitted failures, as it is noisy.
     ipv6_failures: 50
+
+asns:
+  eqiad: 65001
+  codfw: 65002
+  esams: 65003
+  ulsfo: 65004
+  eqsin: 65005

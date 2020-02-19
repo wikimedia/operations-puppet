@@ -946,6 +946,10 @@ node 'flerovium.eqiad.wmnet' {
     role(analytics_cluster::hadoop::client)
 }
 
+node 'flowspec1001.eqiad.wmnet' {
+    role(flowspec)
+}
+
 # Backup system, see T176506.
 # This is a reserved system. Ask Otto or Faidon.
 node 'furud.codfw.wmnet' {
