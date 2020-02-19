@@ -61,10 +61,10 @@
     <%- end -%>
 
     <%- if @port -%>
-    ProxyPass / http://127.0.0.1:<%= @port %>/
+    ProxyPass / http://127.0.0.1:<%= @port %>/ disablereuse=on
     ProxyPassReverse / http://127.0.0.1:<%= @port %>/
     <%- else -%>
-    ProxyPass / http://127.0.0.1:8001/
+    ProxyPass / http://127.0.0.1:8001/ disablereuse=on
     ProxyPassReverse / http://127.0.0.1:8001/
     <%- end -%>
 
