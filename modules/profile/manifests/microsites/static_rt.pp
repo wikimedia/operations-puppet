@@ -33,6 +33,9 @@ class profile::microsites::static_rt(
     #    notes_url     => 'https://wikitech.wikimedia.org/wiki/RT',
     #}
 
+    class {'rsync::server':
+        ensure_service => 'stopped'
+    }
     rsync::quickdatacopy { 'srv-org-wikimedia-static-rt':
       ensure      => absent,
       auto_sync   => false,
