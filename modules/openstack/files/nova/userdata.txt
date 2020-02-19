@@ -56,6 +56,9 @@ EOT
 # and allocate the remainder of the disk to it,
 if ! /sbin/vgdisplay -c vd
 then
+  # Locate root device, can be vda or sda depending on OS image
+  root_dev=$(lsblk --nodeps -o NAME -n | head -n 1)
+
   echo 'Creating the volume group'
   # There seems to be a bug in boostrapvz that (can?)
   # create the gpt of the image with the "wrong" size,
@@ -66,16 +69,16 @@ then
   # error if that is not the case (because then the
   # 'fix' parameter becomes an answer to a question
   # that is never asked.)
-  script -c "/sbin/parted /dev/vda print fix" /dev/null
+  script -c "/sbin/parted /dev/$root_dev print fix" /dev/null
 
   # the tail|sed|cut is just to get the start and
   # end of the last unpartitioned span on the disk
-  /sbin/parted -s /dev/vda print
-  /sbin/parted -ms /dev/vda print
-  /sbin/parted -s /dev/vda print free
-  /sbin/parted -ms /dev/vda print free
-  if /sbin/parted -s /dev/vda mkpart primary $(
-      /sbin/parted -ms /dev/vda print free |
+  /sbin/parted -s /dev/$root_dev print
+  /sbin/parted -ms /dev/$root_dev print
+  /sbin/parted -s /dev/$root_dev print free
+  /sbin/parted -ms /dev/$root_dev print free
+  if /sbin/parted -s /dev/$root_dev mkpart primary $(
+      /sbin/parted -ms /dev/$root_dev print free |
       /usr/bin/tail -n 1 |
       /usr/bin/cut -d : -f 2,3 --output-delimiter=' '
     )
@@ -83,15 +86,15 @@ then
     # this tail|cut is to to grab the partition
     # number of the space we just allocated (which
     # is, by necessity, the last partition
-    part=$( /sbin/parted -ms /dev/vda print |
+    part=$( /sbin/parted -ms /dev/$root_dev print |
             /usr/bin/tail -n 1 |
             /usr/bin/cut -d : -f 1 )
 
     if [ "$part" != "" ]; then
       if [ "$part" -gt 1 ]; then
-        /sbin/parted -s /dev/vda set $part lvm on
-        /sbin/pvcreate /dev/vda$part
-        /sbin/vgcreate vd /dev/vda$part
+        /sbin/parted -s /dev/$root_dev set $part lvm on
+        /sbin/pvcreate /dev/$root_dev$part
+        /sbin/vgcreate vd /dev/$root_dev$part
         /sbin/partprobe
       fi
     fi
