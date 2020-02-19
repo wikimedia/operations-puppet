@@ -1,0 +1,26 @@
+acmechief_host: traffic-acmechief01.traffic.eqiad.wmflabs
+apt::use_experimental: true
+profile::cache::base::varnish_version: 5
+puppetmaster::enable_geoip: true
+shared_acme_certificates:
+  non-canonical-redirect-1:
+    CN: wikipedia.com.traffic.wmflabs.org
+    SNI:
+    - wikipedia.com.traffic.wmflabs.org
+    - '*.wikipedia.com.traffic.wmflabs.org'
+    - '*.en-wp.com.traffic.wmflabs.org'
+    - en-wp.com.traffic.wmflabs.org
+    - '*.en-wp.org.traffic.wmflabs.org'
+    - en-wp.org.traffic.wmflabs.org
+    authorized_hosts:
+    - traffic-ncredir.traffic.eqiad.wmflabs
+    authorized_regexes:
+    - ^traffic-ncredir.*\.traffic\.eqiad\.wmflabs$
+    challenge: dns-01
+    prevalidate: true
+    skip_invalid_snis: true
+    staging_time: 604800
+profile::base::systemd::cpu_accounting: 'yes'
+profile::base::systemd::blockio_accounting: 'yes'
+profile::base::systemd::memory_accounting: 'yes'
+profile::prometheus::cadvisor_exporter::port: 4194
