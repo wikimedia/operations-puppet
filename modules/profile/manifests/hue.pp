@@ -37,7 +37,6 @@ class profile::hue (
 
     # These don't require any extra configuration,
     # so no role class is needed.
-    class { '::cdh::pig': }
     class { '::cdh::sqoop': }
     class { '::cdh::mahout': }
 
