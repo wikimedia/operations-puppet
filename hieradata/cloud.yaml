@@ -10,6 +10,7 @@ discovery::app_routes:
   eventgate-main-http: "%{::site}"
   eventgate-main: "%{::site}"
   eventgate-logging-external: "%{::site}"
+  eventgate-analytics-external: "%{::site}"
   sessionstore: "%{::site}"
   termbox: "%{::site}"
   schema: "%{::site}"
