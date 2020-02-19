@@ -7,7 +7,6 @@ prometheus::node_exporter::collectors_extra:
   - qdisc
   - meminfo_numa
 mtail::service_ensure: absent
-cache::websocket_support: true
 cache::req_handling:
   cxserver.wikimedia.org:
     caching: 'pass'

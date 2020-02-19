@@ -58,12 +58,7 @@ server {
 <% end -%>
 		proxy_pass http://local_fe_<%= @basename %>;
 		proxy_http_version 1.1;
-<% if @websocket_support -%>
-		proxy_set_header Upgrade $http_upgrade;
-		proxy_set_header Connection $connection_upgrade;
-<% else -%>
 		proxy_set_header Connection close; # should be default
-<% end -%>
 
 		# this should be in sync with Varnish's first_byte_timeout
 		# and PHP's max_execution_time

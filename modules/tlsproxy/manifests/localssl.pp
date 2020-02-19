@@ -123,7 +123,6 @@ define tlsproxy::localssl(
     # TODO: move this define to the profile module too?
     require ::profile::tlsproxy::instance
 
-    $websocket_support = hiera('cache::websocket_support', false)
     $nginx_proxy_request_buffering = hiera('tlsproxy::localssl::proxy_request_buffering', 'on')
     # Maximum number of pending TCP Fast Open requests before falling back to
     # regular 3WHS. https://tools.ietf.org/html/rfc7413#section-5.1

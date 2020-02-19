@@ -1,6 +1,5 @@
 # This defines the actual nginx daemon/instance which tlsproxy "sites" belong to
 class profile::tlsproxy::instance(
-    Boolean $websocket_support = hiera('cache::websocket_support', false),
     Boolean $nginx_ssl_dyn_rec = hiera('cache::ssl_dyn_rec', false),
     Boolean $nginx_tune_for_media = hiera('cache::tune_for_media', false),
     String $nginx_client_max_body_size = hiera('tlsproxy::nginx_client_max_body_size', '100m'),
