@@ -1482,7 +1482,7 @@ node /^mw13(49|5[0-5])\.eqiad\.wmnet$/ {
 
 #mw1363 is in rack D3
 node /^mw1363\.eqiad\.wmnet$/ {
-    role(spare::system)
+    role(mediawiki::appserver::api)
 }
 
 #mw1364-mw1365 are in rack D3
@@ -1497,12 +1497,12 @@ node /^mw13(6[6-9]|7[0-3])\.eqiad\.wmnet$/ {
 
 #mw1374-mw1382 are in rack D6
 node /^mw13(7[4-9]|8[0-2])\.eqiad\.wmnet$/ {
-    role(spare::system)
+    role(mediawiki::appserver::api)
 }
 
 #mw1383 is in rack D8
 node /^mw1383\.eqiad\.wmnet$/ {
-    role(spare::system)
+    role(mediawiki::appserver::api)
 }
 
 #mw1384 is in rack D8
