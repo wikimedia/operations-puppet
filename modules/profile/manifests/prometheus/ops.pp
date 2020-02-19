@@ -417,6 +417,24 @@ class profile::prometheus::ops (
         port       => 9245,
     }
 
+    # Job definition for cadvisor exporter
+    $cadvisor_jobs = [
+      {
+        'job_name'        => 'cadvisor',
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/cadvisor_*.yaml"] },
+        ]
+      },
+    ]
+
+    prometheus::class_config{ "cadvisor_${::site}":
+        dest       => "${targets_path}/cadvisor_${::site}.yaml",
+        site       => $::site,
+        class_name => 'profile::prometheus::cadvisor_exporter',
+        port       => 4194,
+        labels     => {}
+    }
+
     # Job definition for varnishkafka exporter
     $varnishkafka_jobs = [
       {
@@ -1442,7 +1460,7 @@ class profile::prometheus::ops (
             $mjolnir_jobs, $rsyslog_jobs, $php_jobs, $php_fpm_jobs, $icinga_jobs, $docker_registry_jobs,
             $gerrit_jobs, $routinator_jobs, $rpkicounter_jobs, $varnishkafka_jobs, $bird_jobs, $ncredir_jobs,
             $cloud_dev_pdns_jobs, $cloud_dev_pdns_rec_jobs, $bacula_jobs, $poolcounter_exporter_jobs,
-            $apereo_cas_jobs, $atlas_exporter_jobs, $exported_blackbox_jobs
+            $apereo_cas_jobs, $atlas_exporter_jobs, $exported_blackbox_jobs, $cadvisor_jobs
         ),
         global_config_extra   => $config_extra,
     }
