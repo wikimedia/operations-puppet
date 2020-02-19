@@ -2,6 +2,8 @@
 set -u
 
 action=$(basename "${0}")
+
+# Mangle service name, used for printing too.
 _service="${1:-all services}"
 # Keep compatibility with the old model allowing to select any generic tag
 service="${_service//service=/}"
@@ -13,26 +15,17 @@ if [[ $service =~ "=" ]]; then
 fi
 
 host=$(hostname -f)
-old_action=""
-msg=""
 
-# Get message to print on screen, and the old action
+# Get message to print on screen.
 case $action in
     "pool")
-    old_action="set/pooled=yes"
-    msg="Pooling ${service} on ${host}"
+    echo "Pooling ${service} on ${host}"
     ;;
     "depool")
-    old_action="set/pooled=no"
-    msg="Depooling ${service} on ${host}"
-    ;;
-    "drain")
-    old_action="set/weight=0"
-    msg="Draining ${service} on ${host}"
+    echo "Depooling ${service} on ${host}"
     ;;
     "decommission")
-    old_action="set/pooled=inactive"
-    msg="Decommissioning ${service} on ${host}"
+    echo "Decommissioning ${service} on ${host}"
     ;;
     *)
     echo "Invalid command: ${0}"
@@ -48,20 +41,5 @@ function do_action() {
     fi
 }
 
-function do_old_action() {
-    if [ "${1}" == "all services" ]; then
-        confctl --quiet --find --action $old_action "${host}"
-    else
-        confctl --quiet select "service=${1},name=${host}" $old_action
-    fi
-}
 
-echo "${msg}"
 do_action "${service}"
-retval=$?
-# Compatibility with confctl < 1.0
-if [ $retval -eq 2 ]; then
-    do_old_action "${service}"
-    retval=$?
-fi
-exit $retval
