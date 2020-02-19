@@ -1,10 +1,9 @@
+# lint:ignore:wmf_styleguide
+# This should be converted to a profile
+
 class role::swift::swiftrepl (
   $ensure = lookup('role::swift::swiftrepl::ensure', { 'default_value' => 'present' }), # lint:ignore:wmf_styleguide
 ) {
-    system::role { 'swift::swiftrepl':
-        description => 'swift replication for mediawiki filebackend',
-    }
-
     include ::profile::standard
 
     $source_site = $::site
@@ -24,3 +23,4 @@ class role::swift::swiftrepl (
         source_site      => $source_site,
     }
 }
+# lint:endignore
