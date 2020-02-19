@@ -3,13 +3,14 @@
 #
 # filtertags: labs-project-monitoring
 class profile::prometheus::ops (
-    $prometheus_nodes_ = hiera('prometheus_nodes'),
+    $prometheus_nodes = lookup('prometheus_nodes'),
     $storage_retention = hiera('prometheus::server::storage_retention', '3024h'), # 4.5 months
     $max_chunks_to_persist = hiera('prometheus::server::max_chunks_to_persist', '524288'),
     $memory_chunks = hiera('prometheus::server::memory_chunks', '1048576'),
     $targets_path = lookup('prometheus::server::target_path', String, 'first', '/srv/prometheus/ops/targets'),
     $bastion_hosts = hiera('bastion_hosts', []),
-    $netmon_server = hiera('netmon_server'),
+    $netmon_server = lookup('netmon_server'),
+    Wmflib::Ensure $ensure_rsync = lookup('profile::prometheus::ops::ensure_rsync')
 ){
 
     include ::passwords::gerrit
@@ -1537,12 +1538,15 @@ class profile::prometheus::ops (
     }
 
     # Used for  migrations / hardware refresh, but not continuously
+    class {'rsync::server':
+        ensure_service => ensure_service($ensure_rsync)
+    }
     rsync::server::module { 'prometheus-ops':
-        ensure         => absent,
+        ensure         => $ensure_rsync,
         path           => '/srv/prometheus/ops/metrics',
         uid            => 'prometheus',
         gid            => 'prometheus',
-        hosts_allow    => hiera('prometheus_nodes'),
+        hosts_allow    => $prometheus_nodes,
         auto_ferm      => true,
         auto_ferm_ipv6 => true,
     }

@@ -20,6 +20,7 @@ class rsync::server(
   $rsync_opts = [],
   $rsyncd_conf = {},
   Boolean $wrap_with_stunnel = false,
+  Enum['running', 'stopped'] $ensure_service = 'running',
 ) inherits rsync {
 
   $rsync_fragments = '/etc/rsync.d'
@@ -61,16 +62,16 @@ class rsync::server(
       multiple => false,
     }
     service { 'stunnel4':
-      ensure    => running,
+      ensure    => $ensure_service,
       enable    => true,
       subscribe => [ Exec['compile fragments'], File['/etc/default/rsync'], File['/etc/stunnel/rsync.conf'], File_line['enable_stunnel'] ],
     }
   }
 
   # TODO: When we have migrated all rsync usage off of cleartext and to use $wrap_with_stunnel,
-  # we can ensure=>stopped this.  https://phabricator.wikimedia.org/T237424
+  # we can ensure => stopped this.  https://phabricator.wikimedia.org/T237424
   service { 'rsync':
-    ensure    => running,
+    ensure    => $ensure_service,
     enable    => true,
     subscribe => [ Exec['compile fragments'], File['/etc/default/rsync'] ],
   }
