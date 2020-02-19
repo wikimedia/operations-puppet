@@ -1,6 +1,6 @@
 class ores::base(
-    $config_path = '/srv/deployment/ores/deploy',
-    $venv_path = '/srv/deployment/ores/deploy/venv',
+    Stdlib::Unixpath $config_path = '/srv/deployment/ores/deploy',
+    Stdlib::Unixpath $venv_path = '/srv/deployment/ores/deploy/venv',
 ) {
     # Let's use a virtualenv for maximum flexibility - we can convert
     # this to deb packages in the future if needed. We also install build tools
@@ -16,6 +16,11 @@ class ores::base(
     # It requires the enchant debian package
     require_package('enchant')
 
+    # this package got renamed in buster
+    $hunspell_nl = os_version('debian < buster') ? {
+        true    => 'myspell-nl',
+        default => 'hunspell-nl',
+    }
     # Spellcheck packages for supported languages
     require_package([
         'aspell-ar',
@@ -23,7 +28,8 @@ class ores::base(
         'aspell-pl',
         'aspell-sv',
         'aspell-ro',
-        'hunspell-vi',
+        'aspell-is',
+        'aspell-uk',
         'myspell-cs',
         'myspell-de-at',
         'myspell-de-ch',
@@ -35,14 +41,12 @@ class ores::base(
         'myspell-fr',
         'myspell-he',
         'myspell-hu',
-        'aspell-is',
         'myspell-lv',
         'myspell-nb',
-        'myspell-nl',
         'myspell-pt',
         'myspell-ru',
-        'aspell-uk',
         'myspell-hr',
+        $hunspell_nl,
         'hunspell-bs',
         'hunspell-ca',
         'hunspell-en-us',
@@ -51,6 +55,7 @@ class ores::base(
         'hunspell-gl',
         'hunspell-it',
         'hunspell-sr',
+        'hunspell-vi',
     ])
 
     # NOTE: aspell-id is imported in our apt up to Stretch:
