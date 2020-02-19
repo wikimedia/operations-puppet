@@ -42,12 +42,6 @@ class lvs::monitor_services(
                 target      => "http://restbase.svc.${dc}.wmnet:7231/en.wikipedia.org/v1",
                 notes_url   => 'https://wikitech.wikimedia.org/wiki/RESTBase',
                 ;
-            "check_restrouter_cluster_${dc}":
-                host        => "restrouter.svc.${dc}.wmnet",
-                description => "Restrouter LVS ${dc}",
-                target      => "http://restrouter.svc.${dc}.wmnet:7231/en.wikipedia.org/v1",
-                notes_url   => 'https://wikitech.wikimedia.org/wiki/RESTBase',
-                ;
             "check_mathoid_cluster_${dc}":
                 host        => "mathoid.svc.${dc}.wmnet",
                 description => "Mathoid LVS ${dc}",
