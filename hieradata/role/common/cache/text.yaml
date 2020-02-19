@@ -86,6 +86,8 @@ cache::alternate_domains:
     director: 'miscweb'
   intake-logging.wikimedia.org:
     director: 'eventgate_logging_external'
+  intake-analytics.wikimedia.org:
+    director: 'eventgate_analytics_external'
   integration.wikimedia.org:
     director: 'contint1001'
   labtesthorizon.wikimedia.org:
