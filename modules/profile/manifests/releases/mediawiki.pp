@@ -85,9 +85,9 @@ class profile::releases::mediawiki (
         content => template('releases/apache-jenkins.conf.erb'),
     }
 
-    monitoring::service { 'http_releases':
-        description   => "HTTP ${sitename}",
-        check_command => "check_http_url!${sitename}!/",
+    monitoring::service { 'https_releases':
+        description   => "HTTPS ${sitename}",
+        check_command => "check_https_url!${sitename}!/",
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Releases.wikimedia.org',
     }
 
