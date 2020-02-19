@@ -4,7 +4,9 @@ class profile::dns::auth::discovery(
 ) {
     # Create a list of all available discovery services.
     $discovery_services = wmflib::service::fetch().filter |$n, $svc| { 'discovery' in $svc }
-        .map|$n, $svc| { $svc['discovery'].map |$record| {$record + {'ip' => $svc['ip']}}}.flatten()
+        .map|$n, $svc| { $svc['discovery'].map |$record| {$record + {'ip' => $svc['ip']}}}
+        .flatten()
+        .unique()
 
     file { '/etc/gdnsd/discovery-geo-resources':
         ensure  => 'present',
