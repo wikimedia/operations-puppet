@@ -32,6 +32,7 @@ class profile::mediawiki::php(
     Boolean $enable_request_profiling = lookup('profile::mediawiki::php::enable_request_profiling', {'default_value' => false}),
     Optional[Boolean] $enable_php_core_dumps = lookup('profile::mediawiki::php:::enable_php_core_dumps', {'default_value' => false}),
     Integer $slowlog_limit = lookup('profile::mediawiki::php::slowlog_limit', {'default_value' => 15}),
+    Boolean $phpdbg = lookup('profile::mediawiki::php::phpdbg', {'default_value' => false}),
     ) {
 
     if os_version('debian == stretch') {
@@ -210,6 +211,12 @@ class profile::mediawiki::php(
         'wddx',
     ]:
         package_name => '',
+    }
+
+    if $phpdbg {
+      package { "php${php_version}-phpdbg":
+        ensure => present
+      }
     }
 
     ### FPM configuration
