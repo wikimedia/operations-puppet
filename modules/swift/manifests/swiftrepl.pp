@@ -28,6 +28,7 @@ class swift::swiftrepl (
         owner   => 'swiftrepl',
         group   => 'swiftrepl',
         mode    => '0750',
+        force   => true,
         require => User['swiftrepl'],
     }
 
