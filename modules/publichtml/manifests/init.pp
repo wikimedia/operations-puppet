@@ -42,9 +42,9 @@ class publichtml(
         group   => 'root',
     }
 
-    monitoring::service { 'http-peopleweb':
-        description   => 'HTTP-peopleweb',
-        check_command => "check_http_url!${sitename}!http://${sitename}",
+    monitoring::service { 'https-peopleweb':
+        description   => 'HTTPS-peopleweb',
+        check_command => "check_https_url!${sitename}!https://${sitename}",
         notes_url     => 'https://wikitech.wikimedia.org/wiki/People.wikimedia.org',
     }
 }
