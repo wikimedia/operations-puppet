@@ -32,14 +32,13 @@ class profile::tendril::webserver (
         content => template('dbtree/dbtree.wikimedia.org.erb'),
     }
 
-    # HTTP(S) monitoring
-    monitoring::service { 'http-dbtree':
-        description   => 'HTTP-dbtree',
-        check_command => 'check_http_url!dbtree.wikimedia.org!http://dbtree.wikimedia.org',
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Dbtree.wikimedia.org',
-    }
-
+    # HTTPS monitoring, if enabled
     if $monitor_https {
+        monitoring::service { 'https-dbtree':
+            description   => 'HTTPS-dbtree',
+            check_command => 'check_https_url!dbtree.wikimedia.org!https://dbtree.wikimedia.org',
+            notes_url     => 'https://wikitech.wikimedia.org/wiki/Dbtree.wikimedia.org',
+        }
         monitoring::service { 'https-tendril':
             description   => 'HTTPS-tendril',
             check_command => 'check_ssl_http_letsencrypt!tendril.wikimedia.org',
