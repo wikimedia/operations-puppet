@@ -55,6 +55,12 @@ eqiad:
     mw1332.eqiad.wmnet: [apache2,nginx]
     mw1333.eqiad.wmnet: [apache2,nginx]
     mw1349.eqiad.wmnet: [apache2,nginx]
+    mw1350.eqiad.wmnet: [apache2,nginx]
+    mw1351.eqiad.wmnet: [apache2,nginx]
+    mw1352.eqiad.wmnet: [apache2,nginx]
+    mw1353.eqiad.wmnet: [apache2,nginx]
+    mw1354.eqiad.wmnet: [apache2,nginx]
+    mw1355.eqiad.wmnet: [apache2,nginx]
   api_appserver:
     mw1221.eqiad.wmnet: [apache2,nginx]
     mw1222.eqiad.wmnet: [apache2,nginx]
