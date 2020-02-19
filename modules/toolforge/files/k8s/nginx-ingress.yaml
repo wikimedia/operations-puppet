@@ -26,6 +26,8 @@ data:
   use-forwarded-headers: "true"
   # T243580: set default client_max_body_size to match dynamicproxy's setting
   proxy-body-size: 128M
+  # T245426: set proxy_read_timeout to match dynamicproxy's setting
+  proxy-read-timeout: "3600"
 
 ---
 kind: ConfigMap
