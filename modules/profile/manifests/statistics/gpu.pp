@@ -2,12 +2,13 @@
 #
 class profile::statistics::gpu {
 
-    class { 'amd_rocm':
-        version => '271',
+    $hosts_with_gpu = ['stat1005']
+
+    if $::hostname in $hosts_with_gpu {
+        class { 'amd_rocm':
+            version => '271',
+        }
+
+        class { 'prometheus::node_amd_rocm': }
     }
-
-    class { 'prometheus::node_amd_rocm': }
-
-    # Wide range of packages that we deploy across all the stat nodes.
-    include ::profile::analytics::cluster::packages::statistics
 }

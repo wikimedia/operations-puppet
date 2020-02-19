@@ -1974,18 +1974,15 @@ node 'thorium.eqiad.wmnet' {
 }
 
 # stat1004 contains all the tools and libraries to access
-# the Analytics Cluster services, but should not be used
-# for local data processing.
+# the Analytics Cluster services.
 node 'stat1004.eqiad.wmnet' {
     role(statistics::explorer)
 }
 
 # stat1005 contains all the tools and libraries to access
-# the Analytics Cluster services, but should not be used
-# for local data processing.
-# Testing GPU for T148843
+# the Analytics Cluster services. It also offers a GPU.
 node 'stat1005.eqiad.wmnet' {
-    role(statistics::explorer::gpu)
+    role(statistics::explorer)
 }
 
 # stat1006 is a general purpose number cruncher for

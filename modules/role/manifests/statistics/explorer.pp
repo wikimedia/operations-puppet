@@ -24,4 +24,6 @@ class role::statistics::explorer {
     include ::profile::kerberos::keytabs
 
     include ::profile::presto::client
+
+    include ::profile::statistics::gpu
 }
