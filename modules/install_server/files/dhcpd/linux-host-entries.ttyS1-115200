@@ -2774,13 +2774,13 @@ host elastic2054 {
 }
 
 host elastic2055 {
-    hardware ethernet 4C:D9:8F:AA:03:CD;
+    hardware ethernet B0:26:28:CC:E4:F0;
     fixed-address elastic2055.codfw.wmnet;
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host elastic2056 {
-    hardware ethernet 4C:D9:8F:AA:69:26;
+    hardware ethernet B0:26:28:CC:EB:C0;
     fixed-address elastic2056.codfw.wmnet;
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
@@ -2798,13 +2798,13 @@ host elastic2058 {
 }
 
 host elastic2059 {
-    hardware ethernet 4C:D9:8F:A9:E5:73;
+    hardware ethernet B0:26:28:CD:07:50;
     fixed-address elastic2059.codfw.wmnet;
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host elastic2060 {
-    hardware ethernet 4C:D9:8F:A9:D3:64;
+    hardware ethernet B0:26:28:CC:E3:A0;
     fixed-address elastic2060.codfw.wmnet;
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
