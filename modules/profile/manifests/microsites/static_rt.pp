@@ -27,9 +27,9 @@ class profile::microsites::static_rt(
         priority => 20,
     }
 
-    #monitoring::service { 'static-rt-http':
-    #    description   => 'Static RT HTTP',
-    #    check_command => 'check_http_url!static-rt.wikimedia.org!/',
+    #monitoring::service { 'static-rt-https':
+    #    description   => 'Static RT HTTPS',
+    #    check_command => 'check_https_url!static-rt.wikimedia.org!/',
     #    notes_url     => 'https://wikitech.wikimedia.org/wiki/RT',
     #}
 
