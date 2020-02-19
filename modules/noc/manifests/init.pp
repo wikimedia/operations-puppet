@@ -54,9 +54,9 @@ class noc {
     }
 
     # Monitoring
-    monitoring::service { 'http-noc':
-        description   => 'HTTP-noc',
-        check_command => 'check_http_url!noc.wikimedia.org!http://noc.wikimedia.org',
+    monitoring::service { 'https-noc':
+        description   => 'HTTPS-noc',
+        check_command => 'check_https_url!noc.wikimedia.org!https://noc.wikimedia.org',
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Noc.wikimedia.org',
     }
 
