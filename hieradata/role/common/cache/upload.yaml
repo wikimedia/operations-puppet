@@ -16,6 +16,9 @@ cache::req_handling:
   maps.wikimedia.org:
     director: 'kartotherian'
 # Profile parameters
+profile::base::systemd::cpu_accounting: 'yes'
+profile::base::systemd::blockio_accounting: 'yes'
+profile::base::systemd::memory_accounting: 'yes'
 # Profile::cache::base
 profile::cache::base::purge_host_regex: '[um][pa][lp][os]'
 profile::cache::base::purge_multicasts: ['239.128.0.112', '239.128.0.113', '239.128.0.114', '239.128.0.115']
