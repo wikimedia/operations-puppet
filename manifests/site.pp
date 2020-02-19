@@ -2051,7 +2051,7 @@ node 'stat1007.eqiad.wmnet' {
 }
 
 # NOTE: new snapshot hosts must also be manually added to
-# hieradata/common.yaml:dumps_nfs_clients for dump fs nfs mount,
+# hieradata/common.yaml:dumps_nfs_clients for dump nfs mount,
 # hieradata/common/scap/dsh.yaml for mediawiki installation,
 # and to hieradata/hosts/ if running dumps for enwiki or wikidata.
 node /^snapshot100[569]\.eqiad\.wmnet/ {
@@ -2062,6 +2062,9 @@ node /^snapshot1007\.eqiad\.wmnet/ {
 }
 node /^snapshot1008\.eqiad\.wmnet/ {
     role(dumps::generation::worker::dumper_misc_crons_only)
+}
+node /^snapshot1010\.eqiad\.wmnet/ {
+    role(dumps::generation::worker::testbed)
 }
 
 # Used for various d-i tests
