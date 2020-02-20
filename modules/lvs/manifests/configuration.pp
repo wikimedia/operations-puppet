@@ -69,8 +69,4 @@ class lvs::configuration {
         'lvs5003'      => 'secondary',
         default        => 'unknown',
     }
-
-    # NOTE! This hash is referenced in many other manifests
-    $service_ips = wmflib::service::get_ipblocks()
-    $lvs_services = wmflib::service::get_lvs_services()
 }
