@@ -332,7 +332,8 @@ def kubernetes_nodes_ready_check():
         cert=(
             os.path.join(__dir__, "client.crt"),
             os.path.join(__dir__, "client.key"),
-        )
+        ),
+        verify=False,
     )
     modern = check_nodes(r.json()["items"])
 
