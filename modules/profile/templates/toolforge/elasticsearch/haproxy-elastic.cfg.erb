@@ -1,0 +1,38 @@
+# Note: This file is managed by puppet.
+
+# Users with read-write access enabled to the APIs
+userlist http_auth_users
+    group rw_users
+<% @elastic_users.each do |user| -%>
+    user <%= user['name'] %> password <%= user['password'] %> groups rw_users
+<% end -%>
+
+frontend elastic_frontend
+    bind *:80
+
+    # Add CORS headers
+    capture request header origin len 128
+    http-response add-header Access-Control-Allow-Origin %[capture.req.hdr(0)] if { capture.req.hdr(0) -m found }
+    rspadd Access-Control-Allow-Methods:\ GET,\ POST,\ PUT,\ DELETE,\ OPTIONS  if { capture.req.hdr(0) -m found }
+    rspadd Access-Control-Allow-Credentials:\ true  if { capture.req.hdr(0) -m found }
+    rspadd Access-Control-Allow-Headers:\ Authorization,\ Content-Type,\ Accept,\ Origin,\ User-Agent,\ DNT,\ Cache-Control,\ X-Mx-ReqToken,\ Keep-Alive,\ X-Requested-With,\ If-Modified-Since if { capture.req.hdr(0) -m found }
+    rspadd Access-Control-Max-Age:\ 1728000
+
+    default_backend elastic_backend
+
+backend elastic_backend
+    # Limit unauthenticated users to the methods GET, HEAD and OPTIONS
+    acl ro_method_acl method GET HEAD OPTIONS
+    acl rw_users_acl http_auth_group(http_auth_users) rw_users
+    http-request deny if !ro_method_acl !rw_users_acl
+
+    # Enabling load balancing when the cluster is healthy
+    option httpchk GET /_cat/health
+    http-check expect rstring \b(green|yellow)\b
+    http-request set-header X-Client-IP %[req.hdr_ip(X-Forwarded-For)]
+
+    balance leastconn
+<% @elastic_settings['cluster_hosts'].each do |server| -%>
+    server <%= server %> <%= scope.function_ipresolve([server]) %>:<%= @elastic_settings['http_port'] %> check inter 1s rise 2 fall 4
+<% end -%>
+

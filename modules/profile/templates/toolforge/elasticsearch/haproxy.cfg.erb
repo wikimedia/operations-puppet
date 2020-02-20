@@ -1,0 +1,28 @@
+global
+    chroot /var/lib/haproxy
+    daemon
+    group haproxy
+    log /dev/log local0
+    stats socket <%= @socket %> mode 666 level user
+    user haproxy
+
+defaults
+    log global
+    maxconn 2048
+    mode http
+    option dontlognull
+    option forwardfor
+    option redispatch
+    retries 3
+    timeout client 50s
+    timeout connect 10s
+    timeout http-keep-alive 10s
+    timeout http-request 5s
+    timeout server 50s
+
+listen stats
+    bind 127.0.0.1:9900
+    mode http
+    stats enable
+    stats uri /stats
+
