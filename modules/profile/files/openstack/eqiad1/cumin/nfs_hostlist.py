@@ -42,6 +42,7 @@ from cumin import query
 class NfsConfig:
     """This object an the interface with nfs-mounts.yaml
     """
+
     def __init__(self, yaml_path="/etc/nfs-mounts.yaml"):
         with open(yaml_path) as yaml_file:
             nfs_config = yaml.safe_load(yaml_file)
@@ -70,8 +71,8 @@ def get_all_hosts(projects):
     :return String
     """
     config = cumin.Config()
-    projects_q = ['O{{project:{}}}'.format(project) for project in projects]
-    cumin_query = '({})'.format(' or '.join(projects_q))
+    projects_q = ["O{{project:{}}}".format(project) for project in projects]
+    cumin_query = "({})".format(" or ".join(projects_q))
     return query.Query(config).execute(cumin_query)
 
 
@@ -80,19 +81,32 @@ def exclude_disabled_hosts(hosts):
     Look up the hosts that have NFS disabled explicitly through the mount_nfs
     hiera key, and exclude them from the list of all hosts
     :param hosts: List|Nodeset
-    :return List|Nodeset
+    :return Set|Nodeset
     """
 
     try:
-        # Query to find hosts/host prefixes with NFS explicitly disabled through hiera
-        resp = requests.get('https://openstack-browser.toolforge.org/api/hierakey/mount_nfs')
+        # Query to find hosts/host prefixes with NFS explicitly disabled through
+        # hiera
+        resp = requests.get(
+            "https://openstack-browser.toolforge.org/api/hierakey/mount_nfs"
+        )
         skipped_host_prefixes = [
-            pfx for svrs in resp.json()['servers'].values() for pfx, nfs in svrs.items() if not nfs]
+            pfx
+            for svrs in resp.json()["servers"].values()
+            for pfx, nfs in svrs.items()
+            if not nfs
+        ]
 
-        # Find all hosts that match a hostname/host prefix in the list of NFS disabled hosts
+        # Find all hosts that match a hostname/host prefix in the list of
+        # NFS disabled hosts
         scrub_hosts = set(
-            [host for pfx in skipped_host_prefixes for host in hosts if host.startswith(pfx)]
-            )
+            [
+                host
+                for pfx in skipped_host_prefixes
+                for host in hosts
+                if host.startswith(pfx)
+            ]
+        )
     except Exception as e:
         sys.exit(e)
 
@@ -109,10 +123,10 @@ def write_hostlist(dest, projects):
     target_hosts = exclude_disabled_hosts(all_hosts)
 
     if dest:
-        with open(dest, 'w') as f:
-            f.write('\n'.join(target_hosts))
+        with open(dest, "w") as f:
+            f.write("\n".join(target_hosts))
     else:
-        print('\n'.join(target_hosts))
+        print("\n".join(target_hosts))
 
 
 def get_args():
@@ -129,9 +143,9 @@ def get_args():
         help="Location of the nfs-mounts.yaml file",
     )
     arg_p.add_argument(
-        '--target_file',
-        '-f',
-        help='File path to write list of hosts| Optional: Defaults to stdout',
+        "--target_file",
+        "-f",
+        help="File path to write list of hosts| Optional: Defaults to stdout",
     )
 
     proj_group = arg_p.add_mutually_exclusive_group(required=True)
@@ -174,13 +188,17 @@ def main():
     args = get_args()
 
     nfs_config = NfsConfig(args.config)
-    mounts = set(args.mounts) if not args.all_mounts else nfs_config.valid_mounts
+    mounts = (
+        set(args.mounts) if not args.all_mounts else nfs_config.valid_mounts
+    )
     if not nfs_config.valid_mounts.issuperset(mounts):
         print("Invalid mounts: {}".format(mounts))
         exit(1)
 
     projects = (
-        set(args.projects) if not args.all_projects else nfs_config.valid_projects
+        set(args.projects)
+        if not args.all_projects
+        else nfs_config.valid_projects
     )
     if not nfs_config.valid_projects.issuperset(projects):
         print("Invalid projects: {}".format(projects))
@@ -194,5 +212,5 @@ def main():
     write_hostlist(args.target_file, projects)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
