@@ -73,8 +73,8 @@ class profile::analytics::refinery::job::data_purge (
     # each entry in this hash.
     #
     $event_refined_to_drop = {
-        'mediawiki_api_request'          => 'f976e1561e04e03ed3089731ed57a9c4',
-        'mediawiki_cirrussearch_request' => 'aba3737734d5794356ad97282d083e1c',
+        'mediawiki_api_request'          => 'e06eaf4f3c6894fe7b943d9b40f83ace',
+        'mediawiki_cirrussearch_request' => 'e93b86033b2025f8a793c8b170e6474f',
     }
 
     # Since we are only dropping very specific event data, we don't want to use
