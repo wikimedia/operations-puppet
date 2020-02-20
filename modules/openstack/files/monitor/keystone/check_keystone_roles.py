@@ -23,7 +23,7 @@ import sys
 
 import mwopenstackclients
 
-SpecialProjects = ['admin', 'wmflabsdotorg']
+SpecialProjects = ['admin', 'wmflabsdotorg', 'cloudinfra']
 
 OK = 0
 WARNING = 1
