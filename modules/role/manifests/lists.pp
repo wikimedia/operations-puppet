@@ -13,6 +13,7 @@ class role::lists {
     class { '::httpd':
         modules => [
             'ssl',
+            'cgi',
             'headers',
             'rewrite',
             'alias',
