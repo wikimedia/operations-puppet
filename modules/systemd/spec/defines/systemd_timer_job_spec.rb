@@ -56,6 +56,23 @@ describe 'systemd::timer::job' do
         it { is_expected.to compile.with_all_deps }
         it { is_expected.not_to contain_systemd__syslog('dummy-test') }
       end
+      context "with several intervals" do
+        let(:params) {
+          {
+            description: 'Some description',
+            command: '/bin/true',
+            interval: [{start: 'OnCalendar', interval: 'Mon,Tue *-*-* 00:00:00'},
+                       {start: 'OnCalendar', interval: 'Wed,Thu *-*-* 00:00:00'},],
+            user: 'root',
+          }
+        }
+        it { is_expected.to compile.with_all_deps }
+        it {
+         is_expected.to contain_systemd__unit('dummy-test.service')
+                          .with_ensure('present')
+                          .with_content(/Description=Some description/)
+        }
+      end
     end
   end
 end

@@ -12,6 +12,7 @@
 #
 # [*interval*]
 #   Systemd interval to use. See Systemd::Timer::Schedule for the format.
+#   Several intervals can be provided as Array[See Systemd::Timer::Schedule]
 #
 # [*user*]
 #   User that runs the Systemd unit.
@@ -85,6 +86,7 @@ define systemd::timer::job(
     String $description,
     String $command,
     # TODO: add type definition once we move past puppet 4.10, see https://tickets.puppetlabs.com/browse/PUP-7650
+    # Variant[Systemd::Timer::Schedule, Array[Systemd::Timer::Schedule, 1]] $interval,
     $interval,
     String $user,
     Hash[String, String] $environment = {},
@@ -104,6 +106,15 @@ define systemd::timer::job(
     # Sanitize the title for use on the filesystem
     $safe_title = regsubst($title, '[^\w\-]', '_', 'G')
 
+    $intervals = $interval ? {
+#        Systemd::Timer::Schedule           => [$interval],
+#        Array[Systemd::Timer::Schedule, 1] => $interval,
+        Hash    => [$interval],
+        Array   => $interval,
+        # TODO: we can get rid of the default as soon as $interval is properly typed
+        default => fail('Illegal value for $interval parameter'),
+    }
+
     systemd::unit { "${title}.service":
         ensure  => $ensure,
         content => template('systemd/timer_service.erb'),
@@ -111,7 +122,7 @@ define systemd::timer::job(
 
     systemd::timer { $title:
         ensure          => $ensure,
-        timer_intervals => [$interval],
+        timer_intervals => $intervals,
         unit_name       => "${title}.service",
     }
 
