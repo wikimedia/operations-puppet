@@ -8,6 +8,7 @@ class tendril (
     $ldap_authurl,
     $ldap_groups,
     $auth_name,
+    $cas_enable=false,
 ) {
 
     include passwords::ldap::production
@@ -18,8 +19,12 @@ class tendril (
 
     $ssl_settings = ssl_ciphersuite('apache', 'strong', true)
 
-    httpd::site { $site_name:
-        content => template("tendril/apache/${site_name}.erb");
+    if $cas_enable {
+        include profile::idp::client::httpd # lint:ignore:wmf_styleguide
+    } else {
+        httpd::site { $site_name:
+          content => template("tendril/apache/${site_name}.erb");
+      }
     }
 
     acme_chief::cert { 'tendril':

@@ -1,0 +1,53 @@
+<VirtualHost *:443>
+    ServerName <%= @site_name %>
+    # https://httpoxy.org/
+    RequestHeader unset Proxy early
+    SSLEngine On
+    SSLCertificateFile /etc/acmecerts/tendril/live/ec-prime256v1.crt
+    SSLCertificateChainFile /etc/acmecerts/tendril/live/ec-prime256v1.chain.crt
+    SSLCertificateKeyFile /etc/acmecerts/tendril/live/ec-prime256v1.key
+    SSLCertificateFile /etc/acmecerts/tendril/live/rsa-2048.crt
+    SSLCertificateChainFile /etc/acmecerts/tendril/live/rsa-2048.chain.crt
+    SSLCertificateKeyFile /etc/acmecerts/tendril/live/rsa-2048.key
+    <%= @ssl_settings.join("\n    ") %>
+    DocumentRoot <%= @docroot %>
+    php_admin_flag short_open_tag on
+    <%- @cas_settings.each_pair do |key, setting| -%>
+      <%- unless setting.nil? -%>
+    <%= key %> <%= setting %>
+      <%-end -%>
+    <%-end -%>
+
+    <Directory "<%= @docroot %>">
+        SSLRequireSSL
+        Options +ExecCGI +FollowSymLinks
+        DirectoryIndex index.php
+        Order allow,deny
+        Allow from all
+        <LimitExcept OPTIONS>
+        <%- @cas_auth_settings.each_pair do |key, setting| -%>
+          <%- if setting.is_a?(Array) -%>
+            <%- setting.each do |_setting| -%>
+          <%= key %> <%= _setting %>
+            <%- end -%>
+          <%- else -%>
+          <%= key %> <%= setting %>
+          <%- end -%>
+        <%- end -%>
+        </LimitExcept OPTIONS>
+        AllowOverride None
+        RewriteEngine on
+        RewriteCond %{REQUEST_FILENAME} !-f
+        RewriteCond %{REQUEST_FILENAME} !-d
+        RewriteRule ^.*$ /index.php [NC,L,QSA]
+    </Directory>
+</VirtualHost>
+
+<VirtualHost *:80>
+    ServerName <%= @site_name %>
+    DocumentRoot <%= @docroot %>
+
+    RewriteEngine on
+    RewriteCond %{SERVER_PORT} !^443$
+    RewriteRule ^/(.*)$ https://<%= @site_name %>/$1 [L,R=301]
+</VirtualHost>
