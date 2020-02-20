@@ -104,6 +104,10 @@ profile::kubernetes::deployment_server::services:
     username: eventstreams
     group: wikidev
     mode: '0640'
+  eventgate-analytics-external:
+    username: eventgate-analytics-external
+    group: wikidev
+    mode: '0640'
 
 
 # Specified in the private repo in this form
@@ -155,6 +159,8 @@ profile::kubernetes::deployment_server::services:
 #  eventgate-logging-external:
 #    token: dummy
 #  eventstreams:
+#    token: dummy
+#  eventgate-analytics-external:
 #    token: dummy
 
 profile::ci::kubernetes_config::user: jenkins
