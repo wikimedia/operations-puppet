@@ -6,8 +6,6 @@ class profile::statistics::private(
     $statsd_host         = hiera('statsd'),
     $graphite_host       = hiera('profile::statistics::private::graphite_host'),
     $wmde_secrets        = hiera('wmde_secrets'),
-    $dumps_servers       = hiera('dumps_dist_nfs_servers'),
-    $dumps_active_server = hiera('dumps_dist_active_web'),
     $use_kerberos        = hiera('profile::statistics::private::use_kerberos', false),
 ) {
 
@@ -22,11 +20,6 @@ class profile::statistics::private(
 
     # include stuff common to statistics compute nodes
     class { '::statistics::compute': }
-
-    class { '::statistics::dataset_mount':
-        dumps_servers       => $dumps_servers,
-        dumps_active_server => $dumps_active_server,
-    }
 
     # Directory to host datasets that are generated locally and synced over
     # via rsync fetch jobs running on the dumps distribution servers

@@ -7,6 +7,7 @@ class role::statistics::cruncher {
     include ::profile::base::firewall
 
     include ::profile::statistics::cruncher
+    include ::profile::statistics::dataset_mount
 
     # Include analytics/refinery deployment target.
     include ::profile::analytics::refinery

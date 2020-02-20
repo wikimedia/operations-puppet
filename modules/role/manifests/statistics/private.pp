@@ -10,6 +10,8 @@ class role::statistics::private {
 
     include ::profile::statistics::private
 
+    include ::profile::statistics::dataset_mount
+
     # Run Hadoop/Hive reportupdater jobs here.
     include ::profile::reportupdater::jobs::hadoop
 
