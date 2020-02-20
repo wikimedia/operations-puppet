@@ -1,0 +1,4 @@
+# es1021
+mariadb::shard: 'es4'
+mariadb::binlog_format: 'ROW'
+profile::base::notifications: disabled

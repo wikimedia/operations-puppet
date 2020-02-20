@@ -329,7 +329,7 @@ node /^cumin[12]001\.(eqiad|codfw)\.wmnet$/ {
 # MariaDB 10
 
 # Spare external store eqiad hosts to be provisioned #T235659
-node /^es10(21|22|23|24|25)\.eqiad\.wmnet/ {
+node /^es10(22|23|24|25)\.eqiad\.wmnet/ {
     role(spare::system)
 }
 
@@ -886,6 +886,11 @@ node /^es201[89]\.codfw\.wmnet/ {
 ## eqiad servers
 # master
 node 'es1020.eqiad.wmnet' {
+    role(mariadb::core)
+}
+
+# slaves
+node 'es1021.eqiad.wmnet' {
     role(mariadb::core)
 }
 
