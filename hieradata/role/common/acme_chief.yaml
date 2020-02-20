@@ -121,6 +121,7 @@ profile::acme_chief::certificates:
         challenge: dns-01
         authorized_hosts:
         - 'fermium.wikimedia.org'
+        - 'lists1001.wikimedia.org'
     mirrors:
         CN: 'mirrors.wikimedia.org'
         SNI:
