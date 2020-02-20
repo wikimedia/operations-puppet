@@ -393,6 +393,11 @@ host ldap-eqiad-replica02.wikimedia.org {
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
+host lists1001 {
+    hardware ethernet aa:00:00:77:5e:7b;
+    fixed-address lists1001.wikimedia.org;
+}
+
 host logstash1007 {
     hardware ethernet aa:00:00:83:d6:d4;
     fixed-address logstash1007.eqiad.wmnet;
