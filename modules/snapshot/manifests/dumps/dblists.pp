@@ -6,7 +6,7 @@ class snapshot::dumps::dblists {
     $wikidatawiki_dblist = join($wikidatawiki, "\n")
 
     $bigwikis = ['arwiki', 'dewiki', 'commonswiki', 'frwiki', 'eswiki', 'hewiki',
-                'huwiki', 'itwiki', 'jawiki', 'metawiki', 'nlwiki', 'plwiki',
+                'huwiki', 'itwiki', 'jawiki', 'kowiki', 'metawiki', 'nlwiki', 'plwiki',
                 'ptwiki', 'ruwiki', 'svwiki', 'ukwiki', 'viwiki', 'zhwiki']
     $bigwikis_dblist = join($bigwikis, "\n")
 

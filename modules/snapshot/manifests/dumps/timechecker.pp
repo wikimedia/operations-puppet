@@ -4,7 +4,7 @@ class snapshot::dumps::timechecker(
 )  {
     $repodir = $snapshot::dumps::dirs::repodir
     $wikis = ['arwiki', 'dewiki', 'commonswiki', 'frwiki', 'eswiki',
-              'hewiki', 'huwiki', 'itwiki', 'jawiki', 'metawiki',
+              'hewiki', 'huwiki', 'itwiki', 'jawiki', 'kowiki', 'metawiki',
               'nlwiki', 'plwiki', 'ptwiki', 'ruwiki', 'zhwiki',
               'enwiki', 'svwiki', 'ukwiki', 'viwiki', 'wikidatawiki']
     $wikis_list = join($wikis, ',')

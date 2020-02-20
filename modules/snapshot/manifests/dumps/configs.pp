@@ -94,6 +94,9 @@ class snapshot::dumps::configs(
                     viwiki => {
                         pagesPerChunkHistory  => '719707,1063490,1741893,2882696,4031680,4715318',
                     },
+                    kowiki => {
+                        pagesPerChunkHistory  => '76864,162548,273027,403202,711116,1020845',
+                    },
                 },
             },
             en => {
