@@ -995,6 +995,10 @@ node 'fermium.wikimedia.org' {
     role(lists)
 }
 
+node 'lists1001.wikimedia.org' {
+    role(lists)
+}
+
 # HTML dumps from Restbase
 node 'francium.eqiad.wmnet' {
     role(dumps::web::htmldumps)
