@@ -2,7 +2,7 @@
 # activates rsync for push from the primary to secondary
 class aptrepo::rsync (
     $primary_server,
-    $secondary_server,
+    $secondary_servers,
 ){
     # only activate rsync/firewall hole on the server that is NOT active
     if $::fqdn == $primary_server {
@@ -38,11 +38,13 @@ class aptrepo::rsync (
         }
     }
 
-    cron { 'rsync-aptrepo':
-        ensure  => $ensure_cron,
-        user    => 'root',
-        command => "rsync -avp --delete /srv/ rsync://${secondary_server}/install-srv > /dev/null",
-        hour    => '*/6',
-        minute  => '42',
+    $secondary_servers.each |String $secondary_server| {
+        cron { "rsync-aptrepo-${secondary_server}":
+            ensure  => $ensure_cron,
+            user    => 'root',
+            command => "rsync -avp --delete /srv/ rsync://${secondary_server}/install-srv > /dev/null",
+            hour    => '*/6',
+            minute  => '42',
+        }
     }
 }

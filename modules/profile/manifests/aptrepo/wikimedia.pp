@@ -1,7 +1,7 @@
 # http://apt.wikimedia.org/wikimedia/
 class profile::aptrepo::wikimedia (
     Stdlib::Fqdn $primary_server = lookup('install_server'),
-    Stdlib::Fqdn $secondary_server = lookup('install_server_failover'),
+    Array[Stdlib::Fqdn] $secondary_servers = lookup('install_servers_failover'),
 ){
     $basedir = '/srv/wikimedia'
 
@@ -26,7 +26,7 @@ class profile::aptrepo::wikimedia (
     backup::set { 'srv-wikimedia': }
 
     class { 'aptrepo::rsync':
-        primary_server   => $primary_server,
-        secondary_server => $secondary_server,
+        primary_server    => $primary_server,
+        secondary_servers => $secondary_servers,
     }
 }
