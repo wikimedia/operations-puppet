@@ -16,18 +16,18 @@ default-export-policy = "accept-route"
   [[peer-groups.afi-safis]]
     [peer-groups.afi-safis.config]
       afi-safi-name = "ipv4-flowspec"
+  [peer-groups.route-reflector.config]
+    route-reflector-client = true
+    route-reflector-cluster-id = "<%= @ipaddress %>"
+  [peer-groups.graceful-restart.config]
+    enabled = true
+    restart-time = 120
+    notification-enabled = true
 
 <%- prefixes.each do |prefix| -%>
 [[dynamic-neighbors]]
   [dynamic-neighbors.config]
     prefix = "<%= prefix %>"
     peer-group = "<%= site %>"
-  [dynamic-neighbors.route-reflector.config]
-    route-reflector-client = true
-    route-reflector-cluster-id = "<%= @ipaddress %>"
-  [dynamic-neighbors.graceful-restart.config]
-    enabled = true
-    restart-time = 120
-    notification-enabled = true
  <% end -%>
  <% end -%>
