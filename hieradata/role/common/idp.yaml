@@ -1,3 +1,4 @@
+profile::tlsproxy::envoy::acme_cert_name: idp
 profile::idp::services:
   icinga:
     class: 'org.apereo.cas.services.RegexRegisteredService'
