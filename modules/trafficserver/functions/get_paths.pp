@@ -1,6 +1,8 @@
 function trafficserver::get_paths(Boolean $default_instance, String $instance_name) >> Hash {
     $libdir = '/usr/lib/trafficserver'
     $libexecdir = "${libdir}/modules"
+    $secretsdir = "/run/trafficserver-${instance_name}-secrets"
+    $stekfile = "${secretsdir}/tickets.key"
     if $default_instance { # debian layout -- https://github.com/apache/trafficserver/blob/master/config.layout
       $base_path = undef
       $prefix = '/usr'
@@ -43,5 +45,7 @@ function trafficserver::get_paths(Boolean $default_instance, String $instance_na
         cachedir      => $cachedir,
         records       => "${sysconfdir}/records.config",
         ssl_multicert => "${sysconfdir}/ssl_multicert.config",
+        secretsdir    => $secretsdir,
+        stekfile      => $stekfile,
     }
 }

@@ -29,7 +29,10 @@
 #   Boolean. Sets up OCSP Stapling for this server. This creates the OCSP data file itself
 #   and ensures a cron is running to keep it up to date.
 #   ACME support is provided via acme-chief only.
-
+#
+# [*secrets_fullpath*]
+#   Optional - Directory containing secrets for this ATS instance. Currently only the STEK
+#   file is stored on this directory.
 define profile::trafficserver::tls_material(
     String $instance_name,
     String $service_name = 'trafficserver',
@@ -41,6 +44,7 @@ define profile::trafficserver::tls_material(
     Optional[String] $acme_certname = $title,
     Boolean $do_ocsp = false,
     Optional[String] $ocsp_proxy = undef,
+    Optional[Stdlib::Absolutepath] $secrets_fullpath = undef,
 ){
     if (empty($certs) and !$acme_chief) {
         fail('Provide $certs or enable $acme_chief support')
@@ -55,6 +59,13 @@ define profile::trafficserver::tls_material(
             ensure => directory,
             owner  => 'root',
             group  => 'root',
+        }
+    }
+
+    if $secrets_fullpath and !defined(File["${tls_material_path}/secrets"]) {
+        file {"${tls_material_path}/secrets":
+            ensure => link,
+            target => $secrets_fullpath,
         }
     }
 

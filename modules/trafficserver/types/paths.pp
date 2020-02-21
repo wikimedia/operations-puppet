@@ -15,4 +15,6 @@ type Trafficserver::Paths = Struct[{
     'cachedir'      => Stdlib::Absolutepath,
     'records'       => Stdlib::Absolutepath,
     'ssl_multicert' => Stdlib::Absolutepath,
+    'secretsdir'    => Stdlib::Absolutepath,
+    'stekfile'      => Stdlib::Absolutepath,
 }]

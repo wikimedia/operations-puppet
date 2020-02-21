@@ -81,6 +81,10 @@ class profile::trafficserver::tls (
         }
     }
 
+    if $inbound_tls_settings['session_ticket_enable'] == 1 and empty($inbound_tls_settings['session_ticket_filename']) {
+        fail('Invalid TLS session ticket settings. Please provide a ticket filename')
+    }
+
     $websocket_arg = bool2str($websocket_support)
     if !empty($http_settings) and $http_settings['keep_alive_enabled_out'] == 1 {
         $keepalive_arg = 'true'  # lint:ignore:quoted_booleans
@@ -114,6 +118,10 @@ class profile::trafficserver::tls (
         notes_url    => 'https://wikitech.wikimedia.org/wiki/ATS',
     }
 
+    systemd::tmpfile { "trafficserver_${instance_name}_secrets_tmpfile":
+        content => "d ${paths['secretsdir']} 0700 root root -",
+    }
+
     profile::trafficserver::tls_material { 'unified':
         instance_name      => $instance_name,
         service_name       => $service_name,
@@ -123,6 +131,7 @@ class profile::trafficserver::tls (
         acme_chief         => $unified_acme_chief,
         do_ocsp            => num2bool($inbound_tls_settings['do_ocsp']),
         ocsp_proxy         => $ocsp_proxy,
+        secrets_fullpath   => $paths['secretsdir'],
     }
 
     if !empty($extra_certs) {
@@ -137,6 +146,39 @@ class profile::trafficserver::tls (
             do_ocsp            => num2bool($inbound_tls_settings['do_ocsp']),
             ocsp_proxy         => $ocsp_proxy,
         }
+    }
+
+    if $inbound_tls_settings['session_ticket_enable'] == 1 {
+        $ensure_stek = present
+        require_package('python3-pystemd')
+    } else {
+        $ensure_stek = absent
+    }
+
+    file { '/usr/local/sbin/ats-stek-manager':
+        ensure => $ensure_stek,
+        source => 'puppet:///modules/profile/trafficserver/ats_stek_manager.py',
+        owner  => root,
+        group  => root,
+        mode   => '0544',
+    }
+
+    systemd::timer::job { "trafficserver_${instance_name}_stek_job":
+        ensure      => $ensure_stek,
+        description => "trafficserver-${instance_name} STEK manager",
+        command     => "/usr/local/sbin/ats-stek-manager ${paths['stekfile']}",
+        interval    => [
+            {
+            'start'    => 'OnCalendar',
+            'interval' => '*-*-* 00/8:00:00', # every 8 hours
+            },
+            {
+            'start'    => 'OnBootSec',
+            'interval' => '0sec',
+            },
+        ],
+        user        => 'root',
+        require     => File['/usr/local/sbin/ats-stek-manager'],
     }
 
     trafficserver::instance { $instance_name:
