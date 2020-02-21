@@ -1,0 +1,15 @@
+nagios_group: analytics_eqiad
+cluster: analytics
+admin::groups:
+  - analytics-admins
+
+profile::kerberos::keytabs::keytabs_metadata:
+  - role: 'analytics'
+    owner: 'analytics'
+    group: 'analytics'
+    filename: 'analytics.keytab'
+  - role: 'hadoop'
+    owner: 'hdfs'
+    group: 'hdfs'
+    filename: 'hdfs.keytab'
+    parent_dir_grp: 'hadoop'
