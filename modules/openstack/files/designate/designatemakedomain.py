@@ -20,7 +20,7 @@ from oslo_log import log as logging
 LOG = logging.getLogger('keystone.%s' % __name__)
 
 
-def deleteDomain(url, user, password, project, domain="", delete_all=False):
+def deleteDomain(url, user, password, project, domain="", region='eqiad1-r', delete_all=False):
     auth = v3.Password(
         auth_url=url,
         username=user,
@@ -30,7 +30,7 @@ def deleteDomain(url, user, password, project, domain="", delete_all=False):
         project_id=project)
 
     targetSession = keystone_session.Session(auth=auth)
-    targetClient = client.Client(session=targetSession, region_name='eqiad1-r')
+    targetClient = client.Client(session=targetSession, region_name=region)
 
     domains = targetClient.zones.list()
     for thisdomain in domains:
@@ -45,7 +45,7 @@ def deleteDomain(url, user, password, project, domain="", delete_all=False):
         LOG.warning("Domain %s not found" % domain)
 
 
-def createDomain(url, user, password, project, domain, orig_project, ttl=120):
+def createDomain(url, user, password, project, domain, orig_project, region='eqiad1-r', ttl=120):
     auth = v3.Password(
         auth_url=url,
         username=user,
@@ -55,7 +55,7 @@ def createDomain(url, user, password, project, domain, orig_project, ttl=120):
         project_id=orig_project)
 
     createSession = keystone_session.Session(auth=auth)
-    createClient = client.Client(session=createSession, region_name='eqiad1-r')
+    createClient = client.Client(session=createSession, region_name=region)
 
     auth = v3.Password(
         auth_url=url,
@@ -70,7 +70,7 @@ def createDomain(url, user, password, project, domain, orig_project, ttl=120):
     # Fixme:  Once we move to a more modern version of designateclient (newton?)
     #  we should pass sudo-project-id=wmflabsdotorg here, change createSession
     #  to use the 'admin' project, and remove novaadmin's 'admin' role from wmflabsdotorg.
-    targetClient = client.Client(session=targetSession, region_name='eqiad1-r')
+    targetClient = client.Client(session=targetSession, region_name=region)
 
     # Create the zone in the initial wmflabsdotorg project.  This
     #  is needed since wmflabs.org lives in that project and

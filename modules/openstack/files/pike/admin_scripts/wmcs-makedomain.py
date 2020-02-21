@@ -39,6 +39,11 @@ if __name__ == "__main__":
         default=os.environ.get('OS_AUTH_URL', None)
     )
     argparser.add_argument(
+        '--region',
+        help='keystone/designate region',
+        default=os.environ.get('OS_REGION_NAME', None)
+    )
+    argparser.add_argument(
         '--project',
         help='project for domain creation',
         required=True,
@@ -85,6 +90,7 @@ if __name__ == "__main__":
                                          args.designate_pass,
                                          args.project,
                                          args.domain,
+                                         args.region,
                                          args.all)
     else:
         designatemakedomain.createDomain(args.keystone_url,
@@ -92,4 +98,5 @@ if __name__ == "__main__":
                                          args.designate_pass,
                                          args.project,
                                          args.domain,
-                                         args.orig_project)
+                                         args.orig_project,
+                                         region=args.region)
