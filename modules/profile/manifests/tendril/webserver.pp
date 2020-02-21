@@ -2,6 +2,7 @@
 # Add Apache sites and monitoring for http/https.
 class profile::tendril::webserver (
     $monitor_https = hiera('do_acme', true),
+    $monitor_auth  = hiera('monitor_auth', true),
 ) {
     # Temporary backwards compatibility
     if os_version('debian > buster') {
@@ -44,6 +45,10 @@ class profile::tendril::webserver (
             check_command => 'check_ssl_http_letsencrypt!tendril.wikimedia.org',
             notes_url     => 'https://wikitech.wikimedia.org/wiki/Tendril',
         }
+    }
+
+    # TODO: Remove when fully migrated to CAS
+    if $monitor_auth {
         monitoring::service { 'https-tendril-unauthorized':
             description   => 'Tendril requires authentication',
             check_command => 'check_https_unauthorized!tendril.wikimedia.org!/!401',
