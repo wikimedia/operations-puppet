@@ -29,4 +29,12 @@ class profile::aptrepo::wikimedia (
         primary_server    => $primary_server,
         secondary_servers => $secondary_servers,
     }
+
+    if $primary_server == $::fqdn {
+        monitoring::service { 'https':
+            description   => 'HTTPS',
+            check_command => 'check_ssl_http_letsencrypt_ocsp!apt.wikimedia.org',
+            notes_url     => 'https://wikitech.wikimedia.org/wiki/APT_repository',
+        }
+    }
 }
