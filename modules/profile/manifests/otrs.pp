@@ -30,7 +30,7 @@ class profile::otrs(
     }
 
     class { '::httpd':
-        modules => ['headers', 'rewrite', 'remoteip', 'perl'],
+        modules => ['headers', 'rewrite', 'perl'],
     }
 
     # TODO: On purpose here since it references a file not in a module which is
