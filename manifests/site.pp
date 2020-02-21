@@ -1681,6 +1681,11 @@ node /^mw23(2[5-9]|3[0-4])\.codfw\.wmnet$/ {
     role(spare::system)
 }
 
+#mw2366-76 are in rack D3
+node /^mw23(6[6-9]|7[0-6])\.codfw\.wmnet$/ {
+    role(spare::system)
+}
+
 # Row C
 
 # mw2163-mw2186, mw2271-mw2277 are in rack C3
