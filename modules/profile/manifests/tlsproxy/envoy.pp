@@ -38,11 +38,16 @@ class profile::tlsproxy::envoy(
     Array[Profile::Tlsproxy::Envoy::Service] $services = lookup('profile::tlsproxy::envoy::services'),
     Optional[String]  $global_cert_name = lookup('profile::tlsproxy::envoy::global_cert_name',
                                                 {'default_value' => undef}),
+    Optional[String]  $acme_cert_name   = lookup('profile::tlsproxy::envoy::acme_cert_name',
+                                                {'default_value' => undef}),
 ) {
     require profile::envoy
     $ensure = $profile::envoy::ensure
     if os_version('debian jessie') and $tls_port !~ Stdlib::Port::Unprivileged {
             fail('Envoy can only work with unprivileged ports under jessie.')
+    }
+    if $global_cert_name and $acme_cert_name {
+        fail('\$global_cert_name and \$acme_chief are mutually exclusive please only provide one')
     }
 
     # ensure all the needed certs are present. Given these are internal services,
@@ -80,16 +85,25 @@ class profile::tlsproxy::envoy(
         $global_key_path = undef
     }
     else {
-        unless $global_cert_name {
-            fail('If you want non-sni TLS to be supported, you need to define profile::tlsproxy::envoy::global_cert_name')
+        if $global_cert_name {
+            sslcert::certificate { $global_cert_name:
+                ensure => $ensure,
+                group  => 'envoy',
+                notify => Service['envoyproxy.service'],
+            }
+            $global_cert_path = "/etc/ssl/localcerts/${global_cert_name}.crt"
+            $global_key_path = "/etc/ssl/private/${global_cert_name}.key"
+        } elsif $acme_cert_name {
+            acme_chief::cert {$acme_cert_name:
+                puppet_svc => 'envoyproxy.service'
+            }
+            $global_cert_path = "/etc/acmecerts/${acme_cert_name}/live/ec-prime256v1.crt"
+            $global_key_path = "/etc/acmecerts/${acme_cert_name}/live/ec-prime256v1.key"
+        } else {
+            fail(['If you want non-sni TLS to be supported, you need to define ',
+                  'profile::tlsproxy::envoy::global_cert_name or ',
+                  'profile::tlsproxy::envoy::acme_cert_name'].join(' '))
         }
-        sslcert::certificate { $global_cert_name:
-            ensure => $ensure,
-            group  => 'envoy',
-            notify => Service['envoyproxy.service'],
-        }
-        $global_cert_path = "/etc/ssl/localcerts/${global_cert_name}.crt"
-        $global_key_path = "/etc/ssl/private/${global_cert_name}.key"
     }
 
     if $ensure == 'present' {
