@@ -154,6 +154,8 @@ def purge_leaks(delete=False):
     for domain in proxy_recordsets:
         if domain == 'wmflabs.org.':
             continue
+        if domain == 'wmcloud.org.':
+            continue
         if domain == 'proxy-eqiad1.wmflabs.org.':
             continue
         rset = proxy_recordsets[domain]
