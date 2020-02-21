@@ -59,4 +59,20 @@ class profile::configmaster(
         srange => '$PRODUCTION_NETWORKS',
     }
 
+    file { '/usr/local/lib/nagios/plugins/disc_desired_state':
+        ensure => present,
+        owner  => root,
+        group  => root,
+        mode   => '0444',
+        source => 'puppet:///modules/profile/configmaster/disc_desired_state.py',
+    }
+
+    nrpe::monitor_service { 'discovery-diffs':
+        description    => 'DNS Discovery operations diffs',
+        nrpe_command   => '/usr/local/lib/nagios/plugins/disc_desired_state',
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/DNS/Discovery#Discrepancy',
+        retries        => 2, # We have a spectrum between 4 and 8 hours
+        check_interval => 240, # 4h
+        retry_interval => 240,
+    }
 }
