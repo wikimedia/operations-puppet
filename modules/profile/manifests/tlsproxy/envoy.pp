@@ -32,12 +32,12 @@
 #   profile::tlsproxy::envoy::global_cert_name: "appserver"
 #
 class profile::tlsproxy::envoy(
-    Enum['strict', 'yes', 'no'] $sni_support      = lookup('profile::tlsproxy::envoy::sni_support'),
-    Stdlib::Port                $tls_port         = lookup('profile::tlsproxy::envoy::tls_port'),
-    Boolean                     $websockets       = lookup('profile::tlsproxy::envoy::websockets'),
+    Profile::Tlsproxy::Envoy::Sni        $sni_support = lookup('profile::tlsproxy::envoy::sni_support'),
+    Stdlib::Port                         $tls_port    = lookup('profile::tlsproxy::envoy::tls_port'),
+    Boolean                              $websockets  = lookup('profile::tlsproxy::envoy::websockets'),
     Array[Profile::Tlsproxy::Envoy::Service] $services = lookup('profile::tlsproxy::envoy::services'),
-    Optional[String]            $global_cert_name = lookup('profile::tlsproxy::envoy::global_cert_name',
-                                                          {'default_value' => undef}),
+    Optional[String]  $global_cert_name = lookup('profile::tlsproxy::envoy::global_cert_name',
+                                                {'default_value' => undef}),
 ) {
     require profile::envoy
     $ensure = $profile::envoy::ensure
