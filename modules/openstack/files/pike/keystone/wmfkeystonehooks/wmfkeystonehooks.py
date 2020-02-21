@@ -44,6 +44,9 @@ wmfkeystone_opts = [
     cfg.StrOpt('admin_pass',
                default='',
                help='Admin password, used to authenticate with other services'),
+    cfg.StrOpt('region',
+               default='eqiad1-r',
+               help='Openstack region (e.g. eqiad1-r'),
     cfg.StrOpt('auth_url',
                default='',
                help='Keystone URL, used to authenticate with other services'),
@@ -149,7 +152,8 @@ class KeystoneHooks(notifier.Driver):
         #    CONF.wmfhooks.admin_user,
         #    CONF.wmfhooks.admin_pass,
         #    project_id,
-        #    all=True)
+        #    all=True,
+        #    region=CONF.wmfhooks.region)
 
     def _create_project_page(self, project_id):
         # Create wikitech project page
@@ -298,7 +302,8 @@ class KeystoneHooks(notifier.Driver):
             CONF.wmfhooks.admin_pass,
             project_id,
             '{}.wmflabs.org.'.format(project_id),
-            'wmflabsdotorg'
+            'wmflabsdotorg',
+            CONF.wmfhooks.region
         )
 
         LOG.warning("Completed wmf hooks for project creation: %s" % project_id)

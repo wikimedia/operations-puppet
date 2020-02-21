@@ -14,6 +14,7 @@ class openstack::keystone::service::pike(
     $ldap_user_name_attribute,
     $ldap_user_dn,
     $ldap_user_pass,
+    $region,
     $auth_protocol,
     $auth_port,
     $wiki_status_page_prefix,
