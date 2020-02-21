@@ -769,7 +769,18 @@ groups:
     members: [*fr_tech_admins]
     privileges:
       - 'ALL = NOPASSWD: /usr/local/sbin/authdns-update'
+  reprepro:
+    gid: 901
+    system: true
+    members: []
 users:
+  reprepro:
+    ensure: present
+    system: true
+    uid: 901
+    gid: 901
+    home_dir: '/var/lib/reprepro'
+    shell: '/bin/sh'
   rush:
     ensure: present
     gid: 500
