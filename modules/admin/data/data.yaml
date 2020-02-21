@@ -3706,6 +3706,10 @@ ldap_only_users:
     ensure: present
     realname: Kris Litson
     email: kris.litson@wikimedia.de
+  ldickinson:
+    ensure: present
+    realname: Lauren Dickinson
+    email: ldickinson@wikimedia.org
   ldoan:
     ensure: present
     realname: Linnea Doan
