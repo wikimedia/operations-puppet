@@ -4,4 +4,8 @@ class role::kubernetes::staging::master {
 
     # Sets up docker on the machine
     include ::profile::kubernetes::master
+
+    system::role { 'kubernetes::staging::master':
+        description => 'Kubernetes master server (staging setup)',
+    }
 }
