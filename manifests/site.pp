@@ -142,6 +142,11 @@ node /^an-presto100[1-5]\.eqiad\.wmnet$/ {
     role(analytics_cluster::presto::server)
 }
 
+# new APT repositories (NOT DHCP/TFTP)
+node /^apt[12]001\.wikimedia\.org/ {
+    role(spare::system)
+}
+
 # Analytics Query Service
 node /aqs100[456789]\.eqiad\.wmnet/ {
     role(aqs)
