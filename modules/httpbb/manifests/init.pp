@@ -19,7 +19,7 @@ class httpbb(
 
     file { '/usr/local/bin/httpbb':
         ensure => link,
-        target => "${install_dir}/httpbb.py",
+        target => "${install_dir}/httpbb/main.py",
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
