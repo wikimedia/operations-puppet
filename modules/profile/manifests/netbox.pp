@@ -76,6 +76,9 @@ class profile::netbox (
     # packages required by netbox-extras
     require_package('python3-git', 'python3-pynetbox', 'python3-requests')
 
+    # rsyslog forwards json messages sent to localhost along to logstash via kafka
+    class { '::profile::rsyslog::udp_json_logback_compat': }
+
     class { '::netbox':
         service_hostname => $nb_service_hostname,
         directory        => '/srv/deployment/netbox/deploy/src',
