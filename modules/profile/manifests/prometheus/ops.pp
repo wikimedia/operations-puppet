@@ -813,7 +813,7 @@ class profile::prometheus::ops (
 
     prometheus::jmx_exporter_config{ "logstash_${::site}":
         dest       => "${targets_path}/jmx_logstash_${::site}.yaml",
-        class_name => 'role::logstash',
+        class_name => 'logstash',
         site       => $::site,
     }
 
