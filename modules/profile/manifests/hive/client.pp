@@ -10,7 +10,6 @@ class profile::hive::client(
     $zookeeper_cluster_name                         = hiera('profile::hive::client::zookeeper_cluster_name', undef),
     $hive_server_opts                               = hiera('profile::hive::client::hive_server_opts', undef),
     $hive_metastore_opts                            = hiera('profile::hive::client::hive_metastore_opts', undef),
-    $ensure_hive_site_in_hdfs                       = hiera('profile::hive::client::ensure_hive_site_in_hdfs', false),
     $java_home                                      = hiera('profile::hive::client::java_home', '/usr/lib/jvm/java-8-openjdk-amd64/jre'),
     $hive_metastore_sasl_enabled                    = hiera('profile::hive::client::hive_metastore_sasl_enabled', undef),
     $hive_metastore_kerberos_keytab_file            = hiera('profile::hive::client::hive_metastore_kerberos_keytab_file', undef),
@@ -83,13 +82,4 @@ class profile::hive::client(
         owner   => 'root',
         group   => 'root',
     }
-
-    # We need hive-site.xml in HDFS.  This can be included
-    # on any node with a Hive client, but we really only
-    # want to include it in one place.  Set the
-    # profile::hive::client::ensure_hive_site_in_hdfs for only one node please!
-    if $ensure_hive_site_in_hdfs {
-        include ::profile::hive::site_hdfs
-    }
-
 }

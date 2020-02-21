@@ -21,6 +21,7 @@ profile::hive::client::server_port: 10000
 profile::hive::client::metastore_host: 'an-coord1001.eqiad.wmnet'
 
 profile::analytics::cluster::hdfs_mount::kerberos_enabled: true
+profile::hive::site_hdfs::use_kerberos: true
 
 profile::base::debdeploy::exclude_mounts:
   - /mnt/hdfs

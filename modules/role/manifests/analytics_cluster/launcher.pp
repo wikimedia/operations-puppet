@@ -13,6 +13,8 @@ class role::analytics_cluster::launcher {
     # for interacting with HDFS.
     include ::profile::analytics::cluster::users
 
+    include ::profile::hive::site_hdfs
+
     include ::profile::kerberos::client
     include ::profile::kerberos::keytabs
 

@@ -17,7 +17,7 @@ class profile::hive::site_hdfs (
     # notices that it has changed.
     kerberos::exec { 'put-hive-site-in-hdfs':
         command      => "/bin/bash -c '/usr/bin/hdfs dfs -put -f ${cdh::hive::config_directory}/hive-site.xml ${hdfs_path} && /usr/bin/hdfs dfs -chmod 664 ${hdfs_path} && /usr/bin/hdfs dfs -chown hive:analytics ${hdfs_path}'",
-        user         => 'analytics',
+        user         => 'hdfs',
         refreshonly  => true,
         subscribe    => File["${cdh::hive::config_directory}/hive-site.xml"],
         use_kerberos => $use_kerberos,

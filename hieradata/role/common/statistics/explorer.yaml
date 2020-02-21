@@ -6,8 +6,6 @@ admin::groups:
   - gpu-users
 cluster: analytics
 
-profile::hive::site_hdfs::use_kerberos: true
-
 profile::hadoop::common::hadoop_cluster_name: 'analytics-hadoop'
 
 profile::oozie::client::oozie_host: 'an-coord1001.eqiad.wmnet'
