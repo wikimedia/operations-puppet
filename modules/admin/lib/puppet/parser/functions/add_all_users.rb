@@ -3,7 +3,7 @@ module Puppet::Parser::Functions
     myhash = args[0]
     users = []
     myhash['users'].each do |name, data|
-      users.push name if data['ensure'] == 'present'
+      users.push name if data['ensure'] == 'present' && !data.fetch('system', false)
     end
     myhash['groups']['all-users']['members'] = users
     return myhash

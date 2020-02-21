@@ -42,14 +42,15 @@
 #  An array of strings containing the SSH public keys.
 #
 define admin::user (
-    Wmflib::Ensure $ensure              = present,
-    Optional[Integer] $uid              = undef,
-    Optional[Integer] $gid              = undef,
-    Array[String] $groups               = [],
-    String $comment                     = '',
-    String $shell                       = '/bin/bash',
+    Wmflib::Ensure          $ensure     = present,
+    Optional[Integer]       $uid        = undef,
+    Optional[Integer]       $gid        = undef,
+    Array[String]           $groups     = [],
+    String                  $comment    = '',
+    String                  $shell      = '/bin/bash',
     Optional[Array[String]] $privileges = undef,
-    Array[String] $ssh_keys             = [],
+    Array[String]           $ssh_keys   = [],
+    Stdlib::Unixpath        $home_dir   = "/home/${name}",
 ) {
 
     user { $name:
@@ -67,7 +68,7 @@ define admin::user (
     # This is all absented by the above /home/${user} cleanup
     # Puppet chokes if we try to absent subfiles to /home/${user}
     if $ensure == 'present' {
-        file { "/home/${name}":
+        file { $home_dir:
             ensure       => ensure_directory($ensure),
             source       => [
                 "puppet:///modules/admin/home/${name}/",

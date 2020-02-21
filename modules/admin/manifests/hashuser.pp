@@ -14,29 +14,57 @@
 define admin::hashuser (
     Boolean $ensure_ssh_key = true,
 ) {
-
     $uinfo = $::admin::data['users'][$name]
 
-    if has_key($uinfo, 'gid') {
-        $group_id = $uinfo['gid']
+    if $uinfo['system'] {
+        # ensure system users specify a home dir
+        unless $uinfo.has_key('home_dir') {
+            fail("${name}: system user defined without home_dir")
+        }
+        # Ensure system users are defined in the range 900 - 950
+        unless $uinfo['uid'] =~ Integer[900,950] {
+            fail("${name}: system user defined with uid (${uinfo['uid']})")
+        }
+        $privileges = []
+        $ssh_keys = []
+        $groups = []
+        $comment = $name
+        $shell = $uinfo.has_key('shell') ? {
+            true    => $uinfo['shell'],
+            default => '/usr/sbin/nologin',
+        }
     } else {
-        $group_id = $uinfo['uid']
+        # ideally we would check that uid's are above 1000 but due to legacy that's not true
+        if $gid =~ Integer[900,950] {
+            fail("${name}: system user defined with incorrect git (${gid})")
+        }
+        $privileges = $uinfo['privileges']
+        $shell = $uinfo['shell']
+        $groups = $uinfo['groups']
+        $comment = $uinfo['realname']
+        $ssh_keys = ($uinfo.has_key('ssh_keys') and $ensure_ssh_key) ? {
+            true    => $uinfo['ssh_keys'],
+            default => [],
+        }
     }
-
-    if has_key($uinfo, 'ssh_keys') and $ensure_ssh_key {
-        $key_set = $uinfo['ssh_keys']
-    } else {
-        $key_set = []
+    $gid = $uinfo.has_key('gid') ? {
+        true    => $uinfo['gid'],
+        default => $uinfo['uid']
+    }
+    $home_dir = $uinfo.has_key('home_dir') ? {
+        true    => $uinfo['home_dir'],
+        default => "/home/${name}",
     }
 
     admin::user { $name:
         ensure     => $uinfo['ensure'],
         uid        => $uinfo['uid'],
-        gid        => $group_id,
-        groups     => $uinfo['groups'],
-        comment    => $uinfo['realname'],
-        shell      => $uinfo['shell'],
-        privileges => $uinfo['privileges'],
-        ssh_keys   => $key_set,
+        gid        => $gid,
+        groups     => $groups,
+        comment    => $comment,
+        shell      => $shell,
+        privileges => $privileges,
+        ssh_keys   => $ssh_keys,
+        home_dir   => $home_dir,
     }
 }

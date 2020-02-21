@@ -29,11 +29,15 @@ class admin(
     $uinfo = $data['users']
     $users = keys($uinfo)
 
-    #making sure to include always_groups
+    $system_users = $uinfo.filter |$user, $config| { $config['system'] == true }.keys
+    $system_groups = $data['groups'].filter |$group, $config| { $config['system'] == true }.keys
+
+    # making sure to include always_groups
     # These are groups containing users with SSH access
-    $regular_groups = concat($always_groups, $groups)
+    $regular_groups = $always_groups + $groups
+
     # These are all groups configured
-    $all_groups = concat($regular_groups, $groups_no_ssh)
+    $all_groups = $regular_groups + $groups_no_ssh + $system_groups
 
     # Note: the unique_users() custom function eliminates the need for virtual users.
 
@@ -64,6 +68,10 @@ class admin(
     }
 
     admin::hashuser { $users_set_nossh:
+        ensure_ssh_key => false,
+    }
+
+    admin::hashuser { $system_users:
         ensure_ssh_key => false,
     }
 
