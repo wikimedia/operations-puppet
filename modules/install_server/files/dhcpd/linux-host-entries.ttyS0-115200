@@ -73,6 +73,11 @@ host an-airflow1001 {
     fixed-address an-airflow1001.eqiad.wmnet;
 }
 
+host an-launcher1001 {
+    hardware ethernet aa:00:00:9c:3b:2b;
+    fixed-address an-launcher1001.eqiad.wmnet;
+}
+
 host argon {
     hardware ethernet aa:00:00:fe:6b:df;
     fixed-address argon.eqiad.wmnet;
