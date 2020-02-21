@@ -27,9 +27,6 @@
 # [*logstash_port*]
 #   GELF logging port. Default: 12201
 #
-# [*logstash_port_logback*]
-#   Logback logging port. Default: 11514
-
 # [*log_dir*]
 #   Local root log directory. The service's logs will be placed in its
 #   subdirectory. Default: /srv/log
@@ -49,7 +46,6 @@ class service::configuration(
     $statsd_port   = 8125,
     $logstash_host = 'localhost',
     $logstash_port = 12201,
-    $logstash_port_logback = 11514,
     $log_dir       = '/srv/log',
     $rsyslog_udp_port = 10514,
     $use_dev_pkgs  = false,

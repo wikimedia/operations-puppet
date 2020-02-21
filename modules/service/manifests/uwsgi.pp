@@ -153,14 +153,14 @@ define service::uwsgi(
               log-route => ['local .*', 'logstash .*'],
               logger    => [
                   "local file:${local_logfile}",
-                  "logstash socket:${service::configuration::logstash_host}:${service::configuration::logstash_port_logback}",
+                  "logstash socket:${service::configuration::logstash_host}:11514",
               ]
           }
       } else {
           $log_config_local = {
               log-route => ['logstash .*'],
               logger    => [
-                  "logstash socket:${service::configuration::logstash_host}:${service::configuration::logstash_port_logback}",
+                  "logstash socket:${service::configuration::logstash_host}:11514",
               ]
           }
       }
