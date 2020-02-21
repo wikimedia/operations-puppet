@@ -1,8 +1,8 @@
+# lint:ignore:wmf_styleguide
+# This should be converted to a profile
+
 # filtertags: labs-project-deployment-prep
 class role::swift::stats_reporter {
-    system::role { 'swift::stats_reporter':
-        description => 'swift statistics reporter',
-    }
 
     include ::profile::standard
     include ::swift::params
@@ -17,4 +17,5 @@ class role::swift::stats_reporter {
         statsd_port   => hiera('swift::stats_reporter::statsd_port', '8125'),
     }
 }
+# lint:endignore
 
