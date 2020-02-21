@@ -90,6 +90,24 @@ class BaseAddressWMFHandler(BaseAddressHandler):
         self._delete_puppet_config(data['tenant_id'], fqdn)
         self._delete_puppet_git_config(data['tenant_id'], fqdn)
 
+        # For good measure, look around for things associated with the old domain as well
+        if cfg.CONF[self.name].legacy_domain_id:
+            legacy_zone = self.get_zone(cfg.CONF[self.name].legacy_domain_id)
+            legacy_data = data.copy()
+            legacy_data['zone'] = legacy_zone['name']
+            legacy_fqdn = cfg.CONF[self.name].fqdn_format % legacy_data
+            legacy_fqdn = legacy_fqdn.rstrip('.').encode('utf8')
+            if cfg.CONF[self.name].puppet_master_host:
+                LOG.debug('Cleaning puppet key %s' % legacy_fqdn)
+                self._run_remote_command(cfg.CONF[self.name].puppet_master_host,
+                                         cfg.CONF[self.name].certmanager_user,
+                                         'sudo puppet cert clean %s' %
+                                         pipes.quote(legacy_fqdn))
+
+            # Clean up the puppet config for this instance, if there is one
+            self._delete_puppet_config(legacy_data['tenant_id'], legacy_fqdn)
+            self._delete_puppet_git_config(legacy_data['tenant_id'], legacy_fqdn)
+
         # Finally, delete any proxy records pointing to this instance.
         #
         # For that, we need the IP which we can dig out of the old DNS record.
