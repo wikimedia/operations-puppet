@@ -51,6 +51,11 @@ for var in "${PASSWD_USERS[@]}"
 do
     username=`echo $var | cut -d ':' -f 1`
     uid=`echo $var | cut -d ':' -f 3`
+    # skip dynamic User
+    if [ "$(awk -F: '{print $5}' <<<${var})" == "Dynamic User" ]
+    then
+      continue
+    fi
 
     # A few global accounts of dubious nature are ignored
     if in_array EXCLUDE $username; then
