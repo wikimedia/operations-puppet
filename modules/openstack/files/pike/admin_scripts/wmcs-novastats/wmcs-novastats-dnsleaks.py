@@ -113,7 +113,11 @@ def purge_duplicates(delete=False):
         # we need a fresh copy of all instances so we don't accidentally
         #  delete things that have been created since we last checked.
         instances = clients.allinstances(allregions=True)
-        all_nova_instances = ["%s.%s.eqiad.wmflabs." % (instance.name.lower(), instance.tenant_id)
+        all_nova_instances_legacy = ["%s.%s.eqiad.wmflabs." % (instance.name.lower(),
+                                                               instance.tenant_id)
+                                     for instance in instances]
+        all_nova_instances = ["%s.%s.eqiad1.wikimedia.cloud." % (instance.name.lower(),
+                                                                 instance.tenant_id)
                               for instance in instances]
         all_nova_shortname_instances = ["%s.eqiad.wmflabs." % (instance.name.lower())
                                         for instance in instances]
@@ -128,7 +132,9 @@ def purge_duplicates(delete=False):
             if recordset['type'] == 'A':
                 # For an A record, we can just delete the whole recordset
                 #  if it's for a missing instance.
-                if name not in all_nova_instances and name not in all_nova_shortname_instances:
+                if (name not in all_nova_instances and
+                        name not in all_nova_shortname_instances and
+                        name not in all_nova_instances_legacy):
                     print "%s is linked to missing instance %s" % (recordsetid, name)
                     if delete:
                         delete_recordset(endpoint, token, zone['id'], recordsetid)
@@ -141,7 +147,9 @@ def purge_duplicates(delete=False):
                 originalrecords = recordset['records']
                 goodrecords = []
                 for record in originalrecords:
-                    if record in all_nova_instances or name in all_nova_shortname_instances:
+                    if (record.lower() in all_nova_instances or
+                            record.lower() in all_nova_shortname_instances or
+                            record.lower() in all_nova_instances_legacy):
                         goodrecords += [record]
                     else:
                         print "PTR %s is linked to missing instance %s" % (recordsetid, record)
