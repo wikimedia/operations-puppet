@@ -58,7 +58,11 @@ def purge_duplicates(delete=False):
         prefixes = all_prefixes(project.id)
         instances = clients.allinstances(project.id, allregions=True)
 
-        all_nova_instances = ["%s.%s.eqiad.wmflabs" % (instance.name, instance.tenant_id)
+        all_nova_instances_legacy = ["%s.%s.eqiad.wmflabs" % (instance.name.lower(),
+                                                              instance.tenant_id)
+                                     for instance in instances]
+        all_nova_instances = ["%s.%s.eqiad1.wikimedia.cloud" % (instance.name.lower(),
+                                                                instance.tenant_id)
                               for instance in instances]
         all_nova_shortname_instances = ["%s.eqiad.wmflabs" % (instance.name)
                                         for instance in instances]
@@ -67,6 +71,7 @@ def purge_duplicates(delete=False):
             if not prefix.endswith('wmflabs'):
                 continue
             if (prefix not in all_nova_instances and
+                    prefix not in all_nova_instances_legacy and
                     prefix not in all_nova_shortname_instances):
                 print "stray prefix: %s" % prefix
                 if delete:
