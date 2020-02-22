@@ -228,7 +228,6 @@ labs_keystone_hosts:
     - "cloudcontrol1004.wikimedia.org"
 puppetmaster: "puppetmaster.cloudinfra.wmflabs.org"
 puppet_ca_source: puppet:///files/puppet/ca.labs.pem
-manage_puppet_ca_file: false
 
 keystone_public_port: '5000'
 
