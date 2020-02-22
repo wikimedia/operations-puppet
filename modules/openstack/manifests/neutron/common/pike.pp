@@ -20,6 +20,7 @@ class openstack::neutron::common::pike(
 
     class { "openstack::neutron::common::pike::${::lsbdistcodename}": }
 
+    $controller_hosts = [$nova_controller, $nova_controller_standby]
     file { '/etc/neutron/neutron.conf':
             owner     => 'neutron',
             group     => 'neutron',

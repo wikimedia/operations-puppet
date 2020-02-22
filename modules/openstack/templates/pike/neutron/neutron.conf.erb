@@ -42,7 +42,6 @@ l3_ha = True
 # maximum number of network nodes to use for the HA router
 max_l3_agents_per_router = 2
 
-rpc_backend = rabbit
 rpc_response_timeout = 3
 
 #notify_nova_on_port_status_changes = True
@@ -67,7 +66,7 @@ connection = mysql+pymysql://<%= @db_user %>:<%= @db_pass %>@<%= @db_host %>/neu
 max_overflow = 25
 
 [keystone_authtoken]
-auth_plugin = password
+auth_type = password
 auth_uri = <%= @keystone_public_uri %>
 auth_url = <%= @keystone_admin_uri %>
 password = <%= @ldap_user_pass %>
@@ -76,6 +75,7 @@ project_name = admin
 region_name = <%= @region %>
 user_domain_id = default
 username = novaadmin
+memcached_servers = <%= @controller_hosts.map{|host| "#{host}:11211"}.join(",") %>
 
 [matchmaker_redis]
 
