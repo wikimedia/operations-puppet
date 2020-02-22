@@ -71,10 +71,10 @@ default_user_data_file = /etc/nova/userdata.txt
 vendordata_jsonfile_path = /etc/nova/vendor_data.json
 
 [api_database]
-connection = mysql://<%= @db_user %>:<%= @db_pass %>@<%= @db_host %>/<%= @db_name_api %>
+connection = mysql+pymysql://<%= @db_user %>:<%= @db_pass %>@<%= @db_host %>/<%= @db_name_api %>
 
 [database]
-connection = mysql://<%= @db_user %>:<%= @db_pass %>@<%= @db_host %>/<%= @db_name %>
+connection = mysql+pymysql://<%= @db_user %>:<%= @db_pass %>@<%= @db_host %>/<%= @db_name %>
 max_overflow = 25
 max_pool_size = 3
 pool_timeout = 60
