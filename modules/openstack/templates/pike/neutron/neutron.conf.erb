@@ -56,7 +56,7 @@ log_agent_heartbeats = <%= @log_agent_heartbeats %>
 [cors.subdomain]
 
 [database]
-connection = mysql://<%= @db_user %>:<%= @db_pass %>@<%= @db_host %>/neutron
+connection = mysql+pymysql://<%= @db_user %>:<%= @db_pass %>@<%= @db_host %>/neutron
 max_overflow = 25
 
 [keystone_authtoken]
