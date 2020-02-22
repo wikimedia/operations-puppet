@@ -97,6 +97,8 @@ user_domain_name = default
 project_name = admin
 username = novaadmin
 password = <%= @ldap_user_pass %>
+memcache_servers = <%= @controller_hosts.map{|host| "#{host}:11211"}.join(",") %>
+
 
 [oslo_messaging_rabbit]
 rabbit_retry_interval=1

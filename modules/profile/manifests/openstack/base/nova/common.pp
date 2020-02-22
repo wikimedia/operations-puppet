@@ -24,6 +24,8 @@ class profile::openstack::base::nova::common(
                                                     {default_value => 'example.com'}),
     ) {
 
+    $controller_hosts = [$nova_controller, $nova_controller_standby]
+
     class {'::openstack::nova::common':
         version                      => $version,
         region                       => $region,
@@ -33,6 +35,7 @@ class profile::openstack::base::nova::common(
         db_name                      => $db_name,
         db_name_api                  => $db_name_api,
         nova_controller              => $nova_controller,
+        controller_hosts             => $controller_hosts,
         keystone_host                => $keystone_host,
         scheduler_filters            => $scheduler_filters,
         scheduler_pool               => $scheduler_pool,
