@@ -23,9 +23,6 @@ disk_allocation_ratio=1.5
 cpu_allocation_ratio=4.0
 default_schedule_zone = <%= @default_schedule_zone %>
 
-# Prevent '.novalocal' from being appended to every hostname
-dhcp_domain =
-
 # compute
 compute_driver=libvirt.LibvirtDriver
 notification_topics=notifications
