@@ -12,6 +12,8 @@ default_log_levels = eventlet.wsgi=WARN
 # Show debugging output in logs (sets DEBUG log level output)
 #debug = false
 
+transport_url = rabbit://<%= @rabbit_user %>:<%= @rabbit_pass %>@<%= @rabbit_host_primary %>:5672,<%= @rabbit_user %>:<%= @rabbit_pass %>@<%= @rabbit_host_secondary %>:5672
+
 # Top-level directory for maintaining designate's state
 state_path = /var/lib/designate
 
@@ -68,12 +70,6 @@ max_recordset_name_len = 255
 # API Service
 #-----------------------
 [service:api]
-# Address to bind the API server
-api_host = 0.0.0.0
-
-# Port the bind the API server to
-api_port = 9001
-
 # Authentication strategy to use - can be either "noauth" or "keystone"
 auth_strategy = keystone
 
@@ -127,7 +123,7 @@ default_limit_admin = 10000
 # Keystone Middleware
 #-----------------------
 [keystone_authtoken]
-auth_plugin = password
+auth_type = password
 auth_uri = <%= @keystone_public_uri %>
 auth_url = <%= @keystone_admin_uri %>
 password = <%= @ldap_user_pass %>
@@ -315,14 +311,11 @@ puppet_git_repo_key_path = "<%= @puppet_git_repo_key_path %>"
 #format = '%(octet0)s-%(octet1)s-%(octet2)s-%(octet3)s.%(domain)s'
 
 [oslo_messaging_rabbit]
-rabbit_hosts=<%= @rabbit_host_primary %>:5672,<%= @rabbit_host_secondary %>:5672
 rabbit_retry_interval=1
 rabbit_retry_backoff=2
 rabbit_durable_queues=true
 rabbit_ha_queues=true
 ssl = False
-rabbit_userid = <%= @rabbit_user %>
-rabbit_password = <%= @rabbit_pass %>
 
 [oslo_messaging_notifications]
 driver = messagingv2
