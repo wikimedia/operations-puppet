@@ -1,5 +1,6 @@
 class openstack::keystone::service::pike(
     $keystone_host,
+    $controller_hosts,
     $osm_host,
     $db_name,
     $db_user,

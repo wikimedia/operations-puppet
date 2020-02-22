@@ -6,6 +6,7 @@ class openstack::keystone::service(
     $version,
     $token_driver,
     $keystone_host,
+    $controller_hosts,
     $osm_host,
     $db_name,
     $db_user,
@@ -37,6 +38,7 @@ class openstack::keystone::service(
 ) {
     class { "openstack::keystone::service::${version}":
         keystone_host               => $keystone_host,
+        controller_hosts            => $controller_hosts,
         osm_host                    => $osm_host,
         db_name                     => $db_name,
         db_user                     => $db_user,

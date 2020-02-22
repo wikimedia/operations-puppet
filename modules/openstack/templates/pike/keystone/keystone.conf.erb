@@ -41,6 +41,8 @@ wikitech_access_token = <%= @wiki_access_token %>
 wikitech_access_secret = <%= @wiki_access_secret %>
 
 [cache]
+backend = oslo_cache.memcache_pool
+memcache_servers = <%= @controller_hosts.map{|host| "#{host}:11211"}.join(",") %>
 
 [catalog]
 driver = sql
@@ -81,6 +83,7 @@ password = <%= @ldap_user_pass %>
 
 [matchmaker_redis]
 [memcache]
+# deprecated in favor of [cache]
 [oauth1]
 [os_inherit]
 [oslo_messaging_amqp]

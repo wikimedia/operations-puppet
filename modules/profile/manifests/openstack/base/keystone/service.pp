@@ -48,11 +48,13 @@ class profile::openstack::base::keystone::service(
     include ::network::constants
     $prod_networks = join($::network::constants::production_networks, ' ')
     $labs_networks = join($::network::constants::labs_networks, ' ')
+    $controller_hosts = [$nova_controller, $nova_controller_standby]
 
     class {'::openstack::keystone::service':
         active                      => $daemon_active,
         version                     => $version,
         keystone_host               => $keystone_host,
+        controller_hosts            => $controller_hosts,
         osm_host                    => $osm_host,
         db_name                     => $db_name,
         db_user                     => $db_user,
