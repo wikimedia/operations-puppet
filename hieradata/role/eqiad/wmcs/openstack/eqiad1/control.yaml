@@ -5,3 +5,9 @@ contactgroups: wmcs-team
 mgmt_contactgroups: wmcs-team-email
 
 prometheus::haproxy_exporter::endpoint: 'http://localhost:9900/stats;csv'
+
+profile::memcached::version: 'present'
+profile::memcached::growth_factor: '1.05'
+profile::memcached::extended_options: []
+profile::memcached::size: '2000'
+profile::memcached::port: '11211'

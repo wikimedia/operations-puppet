@@ -23,4 +23,5 @@ class role::wmcs::openstack::eqiad1::control {
     include ::profile::ldap::client::labs
     include ::profile::openstack::eqiad1::pdns::dns_floating_ip_updater
     include ::profile::openstack::eqiad1::nova::fullstack::service
+    include ::profile::memcached::instance
 }
