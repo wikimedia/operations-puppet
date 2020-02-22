@@ -31,7 +31,7 @@ class profile::spicerack(
     Integer $ganeti_timeout = hiera('profile::spicerack::ganeti_rapi_timeout', 30),
     Stdlib::HTTPUrl $netbox_api = lookup('netbox::api_url'),
     String $netbox_token = lookup('netbox::rw_token'),
-
+    String $http_proxy = lookup('http_proxy'),
 ) {
     # Ensure pre-requisite profiles are included
     require ::profile::conftool::client
