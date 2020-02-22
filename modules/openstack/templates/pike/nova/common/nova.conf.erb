@@ -51,12 +51,6 @@ enabled_apis = osapi_compute,metadata
 # nova-scheduler
 wmf_scheduler_hosts_pool = <%= @scheduler_pool.join(",") %>
 
-# networking
-use_neutron = True
-firewall_driver = nova.virt.firewall.NoopFirewallDriver
-default_floating_pool = ext-nat
-linuxnet_interface_driver = nova.network.linux_net.LinuxBridgeInterfaceDriver
-
 [quota]
 # quotas
 cores = 8
@@ -155,6 +149,7 @@ tenant_name = admin
 user_domain_id = default
 user_domain_name = default
 username = novaadmin
+default_floating_pool = ext-nat
 
 [placement]
 os_region_name = <%= @region %>
