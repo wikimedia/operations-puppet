@@ -16,7 +16,6 @@ profile::openstack::base::nova::osapi_compute_listen_port: 8774
 # - Resource/overcommit checks
 profile::openstack::base::nova::scheduler_filters: [
   'ComputeFilter', # operational and enabled
-  'SchedulerPoolFilter', # wmcs available hosts
   'AvailabilityZoneFilter', # matches requested zone
   'ServerGroupAffinityFilter', # has group members instances
   'ServerGroupAntiAffinityFilter', # does NOT have group member instances
