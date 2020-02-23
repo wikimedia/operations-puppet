@@ -33,6 +33,7 @@ class profile::openstack::codfw1dev::keystone::service(
     Boolean $daemon_active = lookup('profile::openstack::codfw1dev::keystone::daemon_active'),
     String $wsgi_server = lookup('profile::openstack::codfw1dev::keystone::wsgi_server'),
     Stdlib::IP::Address::V4::CIDR $instance_ip_range = lookup('profile::openstack::codfw1dev::keystone::instance_ip_range', {default_value => '0.0.0.0/0'}),
+    String $wmcloud_domain_owner = lookup('profile::openstack::codfw1dev::keystone::wmcloud_domain_owner'),
     ) {
 
     class {'::profile::openstack::base::keystone::service':
@@ -67,6 +68,7 @@ class profile::openstack::codfw1dev::keystone::service(
         labweb_hosts                         => $labweb_hosts,
         wsgi_server                          => $wsgi_server,
         instance_ip_range                    => $instance_ip_range,
+        wmcloud_domain_owner                 => $wmcloud_domain_owner,
     }
     contain '::profile::openstack::base::keystone::service'
 

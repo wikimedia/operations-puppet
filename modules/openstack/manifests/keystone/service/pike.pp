@@ -29,6 +29,7 @@ class openstack::keystone::service::pike(
     $wiki_access_secret,
     String $wsgi_server,
     Stdlib::IP::Address::V4::CIDR $instance_ip_range,
+    String $wmcloud_domain_owner,
 ) {
     class { "openstack::keystone::service::pike::${::lsbdistcodename}": }
 

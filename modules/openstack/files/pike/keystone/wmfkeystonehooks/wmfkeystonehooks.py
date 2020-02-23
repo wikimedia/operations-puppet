@@ -68,6 +68,9 @@ wmfkeystone_opts = [
     cfg.StrOpt('toolforge_project_id',
                default='tools',
                help='ID of toolforge project, no need for bastion add.'),
+    cfg.StrOpt('wmcloud_domain_owner',
+               default='cloudinfra',
+               help='ID of toolforge project, no need for bastion add.'),
     cfg.StrOpt('ldap_base_dn',
                default='dc=wikimedia,dc=org',
                help='ldap dn for posix groups'),
@@ -295,7 +298,51 @@ class KeystoneHooks(notifier.Driver):
         self._create_project_page(project_id)
 
         # This bit will take a while:
-        LOG.warning("Creating default designate domain for project %s" % project_id)
+        if CONF.wmfhooks.region.endswith('-r'):
+            deployment = CONF.wmfhooks.region[:-2]
+
+            LOG.warning("Creating default .wmcloud.org domain for project %s" % project_id)
+            designatemakedomain.createDomain(
+                CONF.wmfhooks.auth_url,
+                CONF.wmfhooks.admin_user,
+                CONF.wmfhooks.admin_pass,
+                project_id,
+                '{}.{}.wmcloud.org.'.format(project_id, deployment),
+                CONF.wmfhooks.wmcloud_domain_owner,
+                CONF.wmfhooks.region
+            )
+
+            LOG.warning("Creating default "
+                        "svc.<project>.<deployment>.wikimedia.cloud for project %s" %
+                        project_id)
+            designatemakedomain.createDomain(
+                CONF.wmfhooks.auth_url,
+                CONF.wmfhooks.admin_user,
+                CONF.wmfhooks.admin_pass,
+                project_id,
+                'svc.{}.{}.wikimedia.cloud.'.format(project_id, deployment),
+                CONF.wmfhooks.wmcloud_domain_owner,
+                CONF.wmfhooks.region
+            )
+        else:
+            LOG.warning("Unfamiliar region format; "
+                        "unable to create .wmcloud.org domain for %s" % project_id)
+
+        if CONF.wmfhooks.region == 'eqiad1-r':
+            # Special case shortcut domains for eqiad1
+            LOG.warning("Creating shortcut .wmcloud.org domain for project %s in eqiad1-r" %
+                        project_id)
+            designatemakedomain.createDomain(
+                CONF.wmfhooks.auth_url,
+                CONF.wmfhooks.admin_user,
+                CONF.wmfhooks.admin_pass,
+                project_id,
+                '{}.wmcloud.org.'.format(project_id),
+                CONF.wmfhooks.wmcloud_domain_owner,
+                CONF.wmfhooks.region
+            )
+
+        LOG.warning("Creating default .wmflabs.org domain for project %s" % project_id)
         designatemakedomain.createDomain(
             CONF.wmfhooks.auth_url,
             CONF.wmfhooks.admin_user,
