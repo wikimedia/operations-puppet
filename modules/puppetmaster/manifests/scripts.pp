@@ -72,15 +72,4 @@ class puppetmaster::scripts(
         hour    => [0, 8, 16], # Run every 8 hours, to prevent excess load
         minute  => 27, # Run at a time when hopefully no other cron jobs are
     }
-
-    # Helper script to clean stored data about a server we're reimaging.
-    if $::realm == 'production' {
-        file { '/usr/local/sbin/install-console':
-            ensure => 'present',
-            owner  => 'root',
-            group  => 'root',
-            mode   => '0544',
-            source => 'puppet:///modules/puppetmaster/install-console',
-        }
-    }
 }
