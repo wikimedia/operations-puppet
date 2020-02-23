@@ -4,4 +4,6 @@ class profile::wmcs::nfs::backup::primary::base {
     file {'/srv/backup':
         ensure  => 'directory',
     }
+
+    include ::profile::base::firewall
 }
