@@ -10,7 +10,6 @@ class openstack::nova::common(
     $controller_hosts,
     $keystone_host,
     $scheduler_filters,
-    $scheduler_pool,
     $ldap_user_pass,
     $rabbit_user,
     $rabbit_primary_host,

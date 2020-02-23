@@ -14,72 +14,10 @@ profile::openstack::eqiad1::nova::physical_interface_mappings:
   cloudinstances2b: 'eth1.1105'
 
 
-# Nova is permitted to schedule new VMs on the following
-#  hosts.  Nodes currently allocated for eqiad1 are
-#  cloudvirt1001 through cloudvirt1030.
+# The behavior formerly managed by the scheduler_pool is now
+# handled by novas host aggregates.  Documentation can
+# be found at
 #
-# Ideally we would have three empty lifeboat hosts.
-#  That number is reduced due to current rebuilds
-#  and hardware issues in progress.
+#  https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Host_aggregates
 #
-#   cloudvirt1001: pooled
-#   cloudvirt1002: pooled
-#   cloudvirt1003: pooled
-#   cloudvirt1004: pooled
-#   cloudvirt1005: pooled
-#   cloudvirt1006: pooled
-#   cloudvirt1007: pooled
-#   cloudvirt1008: pooled
-#   cloudvirt1009: depooled, is overloaded already
-#   cloudvirt1010: does not exist (formerly a leased system)
-#   cloudvirt1011: does not exist (formerly a leased system)
-#   cloudvirt1012: pooled
-#   cloudvirt1013: pooled
-#   cloudvirt1014: pooled
-#   cloudvirt1015: depooled due to hardware issues T220853 and Ceph testing T243327
-#   cloudvirt1016: depooled due to memory issue T241882 and Ceph testing T243327
-#   cloudvirt1017: pooled
-#   cloudvirt1018: pooled
-#   cloudvirt1019: depooled, active host of database VMs
-#   cloudvirt1020: depooled, active host of database VMs
-#   cloudvirt1021: pooled
-#   cloudvirt1022: pooled
-#   cloudvirt1023: depooled, emergency spare
-#   cloudvirt1024: depooled, disk issues T241884
-#   cloudvirt1025: pooled
-#   cloudvirt1026: pooled
-#   cloudvirt1027: pooled
-#   cloudvirt1028: pooled
-#   cloudvirt1029: pooled
-#   cloudvirt1030: pooled
-#
-# There are some hypervisors that are visible to nova
-#  but will never be in the general scheduler pool
-#  because they're reserved for hand-created special-purpose
-#  instances.  They are:
-#
-# cloudvirt1019 and 1020: reserved for cloud-wide DB instances
-#
-#
-profile::openstack::eqiad1::nova::scheduler_pool:
-  - cloudvirt1001
-  - cloudvirt1002
-  - cloudvirt1003
-  - cloudvirt1004
-  - cloudvirt1005
-  - cloudvirt1006
-  - cloudvirt1007
-  - cloudvirt1008
-  - cloudvirt1012
-  - cloudvirt1013
-  - cloudvirt1014
-  - cloudvirt1017
-  - cloudvirt1018
-  - cloudvirt1021
-  - cloudvirt1022
-  - cloudvirt1025
-  - cloudvirt1026
-  - cloudvirt1027
-  - cloudvirt1028
-  - cloudvirt1029
-  - cloudvirt1030
+# profile::openstack::eqiad1::nova::scheduler_pool:
