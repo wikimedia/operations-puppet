@@ -29,6 +29,7 @@ class role::kibana (
 ) {
 
     include ::kibana
+    include profile::idp::client::httpd
 
     $httpd_base_modules = ['proxy_http',
                         'proxy',
