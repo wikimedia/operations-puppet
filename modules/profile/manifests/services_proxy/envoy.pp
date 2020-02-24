@@ -31,8 +31,15 @@ class profile::services_proxy::envoy(
     # a discovery record.
     $all_services.each |$n, $svc| {
         if 'discovery' in $svc {
-            envoyproxy::cluster { "${n}_cluster":
-                content => template('profile/services_proxy/envoy_service_cluster.yaml.erb')
+            $svc['discovery'].each |$discovery| {
+                # TODO: remove this - the result is somewhat
+                # undeterministic this way.
+                if !defined(Envoyproxy::Cluster["${discovery['dnsdisc']}_cluster"]) {
+                    envoyproxy::cluster { "${discovery['dnsdisc']}_cluster":
+                        content => template('profile/services_proxy/envoy_service_cluster.yaml.erb')
+
+                    }
+                }
             }
         }
     }
