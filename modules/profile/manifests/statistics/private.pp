@@ -1,7 +1,6 @@
 # == Class profile::statistics::private
 #
 class profile::statistics::private(
-    $statistics_servers  = hiera('statistics_servers'),
     $labstore_hosts      = hiera('labstore_hosts'),
     $statsd_host         = hiera('statsd'),
     $graphite_host       = hiera('profile::statistics::private::graphite_host'),
@@ -9,17 +8,9 @@ class profile::statistics::private(
     $use_kerberos        = hiera('profile::statistics::private::use_kerberos', false),
 ) {
 
-    require ::profile::analytics::cluster::packages::statistics
-    require ::profile::analytics::cluster::repositories::statistics
+    include ::profile::statistics::base
 
     class {'::deployment::umask_wikidev': }
-
-    class { '::statistics':
-        servers      => $statistics_servers,
-    }
-
-    # include stuff common to statistics compute nodes
-    class { '::statistics::compute': }
 
     # Directory to host datasets that are generated locally and synced over
     # via rsync fetch jobs running on the dumps distribution servers

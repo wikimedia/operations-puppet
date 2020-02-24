@@ -1,22 +1,9 @@
 # == Class profile::statistics::cruncher
 #
-class profile::statistics::cruncher(
-    $statistics_servers = hiera('statistics_servers'),
-) {
+class profile::statistics::cruncher {
 
-    require ::profile::analytics::cluster::packages::statistics
-    require ::profile::analytics::cluster::repositories::statistics
-
-    include ::profile::analytics::cluster::gitconfig
-
+    include ::profile::statistics::base
     include ::deployment::umask_wikidev
-
-    class { '::statistics':
-        servers      => $statistics_servers,
-    }
-
-    # include stuff common to statistics compute nodes
-    include ::statistics::compute
 
     # This file will render at
     # /etc/mysql/conf.d/researchers-client.cnf.

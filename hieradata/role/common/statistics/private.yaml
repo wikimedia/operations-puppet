@@ -15,6 +15,10 @@ profile::hadoop::common::hadoop_cluster_name: 'analytics-hadoop'
 
 profile::oozie::client::oozie_host: 'an-coord1001.eqiad.wmnet'
 
+# Moving jobs to an-launcher1001
+# T243934
+profile::reportupdater::jobs::hadoop::ensure_jobs: 'absent'
+
 profile::presto::cluster_name: analytics-presto
 profile::presto::discovery_uri: https://an-coord1001.eqiad.wmnet:8281
 profile::presto::use_kerberos: true
