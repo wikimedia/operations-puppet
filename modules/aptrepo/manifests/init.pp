@@ -66,6 +66,10 @@ class aptrepo (
         require    => Group['reprepro'],
     }
 
+    if os_version('debian >= buster') {
+        require_package('python-apt')
+    }
+
     $deb822_validate_cmd = '/usr/bin/python -c "import apt_pkg; f=\'%\'; list(apt_pkg.TagFile(f))"'
 
     file { $basedir:
