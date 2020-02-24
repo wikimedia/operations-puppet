@@ -13,7 +13,7 @@ profile::openstack::codfw1dev::nova::network_flat_interface: 'eth1.2105'
 profile::openstack::codfw1dev::nova::osapi_compute_listen_port: 18774
 profile::openstack::codfw1dev::nova::placement_api_port: 18778
 profile::openstack::codfw1dev::nova::flat_network_bridge: 'br2105'
-profile::openstack::codfw1dev::nova::fixed_range: '172.16.128.0/21'
+profile::openstack::codfw1dev::nova::fixed_range: '172.16.128.0/24'
 profile::openstack::codfw1dev::nova::zone: 'codfw'
 profile::openstack::codfw1dev::nova::db_host: 'clouddb2001-dev.codfw.wmnet'
 profile::openstack::codfw1dev::nova::live_migration_uri: 'test'

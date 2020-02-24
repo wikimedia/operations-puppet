@@ -20,6 +20,6 @@ class profile::openstack::base::neutron::service(
     # restricted proxy for apt
     ferm::rule{'forward-proxy':
         ensure => 'present',
-        rule   => 'saddr (172.16.128.0/21 10.196.16.0/21) proto tcp dport (5001) ACCEPT;',
+        rule   => 'saddr (172.16.128.0/24 10.196.16.0/21) proto tcp dport (5001) ACCEPT;',
     }
 }
