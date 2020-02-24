@@ -18,11 +18,11 @@ class httpbb(
     }
 
     file { '/usr/local/bin/httpbb':
-        ensure => link,
-        target => "${install_dir}/httpbb/main.py",
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
+        ensure  => file,
+        content => template('httpbb/httpbb.sh.erb'),
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0555',
     }
 
     file { $tests_dir:
