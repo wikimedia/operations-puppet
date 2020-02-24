@@ -15,6 +15,9 @@ class role::analytics_cluster::launcher {
 
     include ::profile::hive::site_hdfs
 
+    # Include analytics/refinery deployment target.
+    include ::profile::analytics::refinery
+
     include ::profile::kerberos::client
     include ::profile::kerberos::keytabs
 
