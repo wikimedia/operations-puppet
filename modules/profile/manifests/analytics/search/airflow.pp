@@ -29,15 +29,6 @@ class profile::analytics::search::airflow(
         'python3-mysqldb',
     ])
 
-    # airflow User/group to be dropped after deploy removes from servers
-    group { 'airflow':
-        ensure => absent
-    }
-
-    user { 'airflow':
-        ensure => absent,
-    }
-
     # wrapper script to run the airflow command in the right context
     $airflow_wrapper = '/usr/local/bin/airflow'
     file { $airflow_wrapper:
