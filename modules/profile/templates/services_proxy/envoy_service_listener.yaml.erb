@@ -29,4 +29,5 @@ filter_chains:
               cluster: <%= @listener['cluster'] %>
               timeout: <%= @listener['timeout'] %>
               # No retry logic - for now.
-              num_retries: 0
+              retry_policy:
+                num_retries: 0
