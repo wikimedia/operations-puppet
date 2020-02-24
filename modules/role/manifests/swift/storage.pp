@@ -43,33 +43,14 @@ class role::swift::storage {
     $swift_access_ferm = join($swift_access, ' ')
     $swift_rsync_access_ferm = join($swift_backends, ' ')
 
+    # Optimize ferm rule aggregating all ports, it includes:
+    # - base object server (6000)
+    # - container server (6001)
+    # - account server (6002)
+    # - per-disk object-server ports T222366 (6010:6030)
     ferm::service { 'swift-object-server':
         proto   => 'tcp',
-        port    => '6000',
-        notrack => true,
-        srange  => "@resolve((${swift_access_ferm}))",
-    }
-
-    # Per-disk object-server ports T222366
-    range(6010, 6030).each |$port| {
-        ferm::service { "swift-object-server-${port}":
-            proto   => 'tcp',
-            port    => $port,
-            notrack => true,
-            srange  => "@resolve((${swift_access_ferm}))",
-        }
-    }
-
-    ferm::service { 'swift-container-server':
-        proto   => 'tcp',
-        port    => '6001',
-        notrack => true,
-        srange  => "@resolve((${swift_access_ferm}))",
-    }
-
-    ferm::service { 'swift-account-server':
-        proto   => 'tcp',
-        port    => '6002',
+        port    => '(6000:6002 6010:6030)',
         notrack => true,
         srange  => "@resolve((${swift_access_ferm}))",
     }
