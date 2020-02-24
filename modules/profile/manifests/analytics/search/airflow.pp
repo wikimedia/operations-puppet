@@ -112,7 +112,7 @@ class profile::analytics::search::airflow(
     # /etc/mysql/conf.d/analytics-research-client.cnf. This is only readable to
     # users in analytics-privatedata-users group, $service_user must be externally
     # configured as a member of this group.
-    statistics::mysql_credentials { 'analytics-research':
-        group => 'analytics-privatedata-users',
+    statistics::mysql_credentials { $service_group:
+        group => $service_group,
     }
 }
