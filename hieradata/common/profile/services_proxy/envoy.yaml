@@ -50,11 +50,11 @@ profile::services_proxy::envoy::listeners:
 # Codfw ports are at 62xx
   - name: swift-eqiad
     port: 6101
-    cluster: swift_eqiad
+    cluster: swift-https_eqiad
     timeout: '50s'
   - name: swift-codfw
     port: 6201
-    cluster: swift_codfw
+    cluster: swift-https_codfw
     timeout: '50s'
   - name: search-chi-eqiad
     port: 6102
