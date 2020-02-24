@@ -107,4 +107,12 @@ class profile::analytics::search::airflow(
     }
 
     base::service_auto_restart { 'airflow-kerberos': }
+
+    # Include analytics mediawiki sql replica credentials at
+    # /etc/mysql/conf.d/analytics-research-client.cnf. This is only readable to
+    # users in analytics-privatedata-users group, $service_user must be externally
+    # configured as a member of this group.
+    statistics::mysql_credentials { 'analytics-research':
+        group => 'analytics-privatedata-users',
+    }
 }
