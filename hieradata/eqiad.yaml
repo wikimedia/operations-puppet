@@ -19,8 +19,8 @@ labsdnsconfig:
   host: 'ns0.openstack.eqiad1.wikimediacloud.org'
   host_secondary: 'ns1.openstack.eqiad1.wikimediacloud.org'
   dbserver: 'localhost'
-  recursor: 'ns-recursor0.eqiad1.wikimediacloud.org'
-  recursor_secondary: 'ns-recursor1.eqiad1.wikimedia.org'
+  recursor: 'ns-recursor0.openstack.eqiad1.wikimediacloud.org'
+  recursor_secondary: 'ns-recursor1.openstack.eqiad1.wikimediacloud.org'
 
 labsldapconfig:
   hostname: ldap-labs.eqiad.wikimedia.org
