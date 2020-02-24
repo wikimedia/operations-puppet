@@ -78,6 +78,16 @@ host an-launcher1001 {
     fixed-address an-launcher1001.eqiad.wmnet;
 }
 
+host apt1001 {
+    hardware ethernet aa:00:00:ff:c9:11;
+    fixed-address apt1001.wikimedia.org;
+}
+
+host apt2001 {
+    hardware ethernet aa:00:00:78:4b:ac;
+    fixed-address apt2001.wikimedia.org;
+}
+
 host argon {
     hardware ethernet aa:00:00:fe:6b:df;
     fixed-address argon.eqiad.wmnet;
