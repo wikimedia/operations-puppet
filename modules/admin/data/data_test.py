@@ -28,6 +28,8 @@ class DataTest(unittest.TestCase):
     bad_privileges_re = [
         re.compile(r'systemctl (?:\*|edit)')
     ]
+    system_gid_min = 900
+    system_gid_max = 950
 
     @classmethod
     def setUpClass(cls):
@@ -46,12 +48,41 @@ class DataTest(unittest.TestCase):
                 {}, bad_privileges,
                 'The following groups define banned privileges: %r' % bad_privileges)
 
+    def test_group_system_gid_range(self):
+        """Ensure system group GID's are in the correct range"""
+        groups = [group for group, config in self.admins['groups'].items()
+                  if config.get('system') and not
+                  self.system_gid_min <= config.get('gid') <= self.system_gid_max]
+        self.assertEqual([], groups, 'System Groups with invalid GID: %r' % groups)
+
+    def test_group_standard_gid_range(self):
+        """Ensure groups GID's are in the correct range"""
+        # some standard groups don't have a gid so we mock it as 1000 below
+        groups = [group for group, config in self.admins['groups'].items()
+                  if not config.get('system')
+                  and self.system_gid_min <= config.get('gid', 1000) <= self.system_gid_max]
+        self.assertEqual([], groups, 'System Groups with invalid GID: %r' % groups)
+
     def test_group_gids_are_uniques(self):
         """Ensure no two groups uses the same gid"""
         gids = filter(None, [
             v.get('gid', None) for k, v in self.admins['groups'].items()])
         dupes = [k for k, v in Counter(gids).items() if v > 1]
         self.assertEqual([], dupes, 'Duplicate group GIDs: %r' % dupes)
+
+    def test_user_system_gid_range(self):
+        """Ensure users UID's are in the correct range"""
+        users = [user for user, config in self.admins['users'].items()
+                 if config.get('system') and not
+                 self.system_gid_min <= config.get('uid') <= self.system_gid_max]
+        self.assertEqual([], users, 'System Groups with invalid UID: %r' % users)
+
+    def test_user_standard_gid_range(self):
+        """Ensure users UID's are in the correct range"""
+        users = [user for user, config in self.admins['users'].items()
+                 if not config.get('system')
+                 and self.system_gid_min <= config.get('uid') <= self.system_gid_max]
+        self.assertEqual([], users, 'System Groups with invalid UID: %r' % users)
 
     def test_absent_members(self):
         """Ensure absent users in the absent group and have ensure => absent"""
