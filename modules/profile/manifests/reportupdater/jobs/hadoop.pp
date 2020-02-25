@@ -39,38 +39,45 @@ class profile::reportupdater::jobs::hadoop(
 
     # Set up a job to create browser reports on hive db.
     reportupdater::job { 'browser':
-        ensure     => $ensure_jobs,
-        output_dir => 'metrics/browser',
+        ensure       => $ensure_jobs,
+        output_dir   => 'metrics/browser',
+        use_kerberos => true,
     }
 
     reportupdater::job { 'interlanguage':
-        ensure     => $ensure_jobs,
-        output_dir => 'metrics/interlanguage',
+        ensure       => $ensure_jobs,
+        output_dir   => 'metrics/interlanguage',
+        use_kerberos => true,
     }
 
     reportupdater::job { 'pingback':
-        ensure     => $ensure_jobs,
-        output_dir => 'metrics/pingback',
+        ensure       => $ensure_jobs,
+        output_dir   => 'metrics/pingback',
+        use_kerberos => true,
     }
 
     reportupdater::job { 'published_cx2_translations':
-        ensure      => $ensure_jobs,
-        config_file => "${base_path}/jobs/reportupdater-queries/published_cx2_translations/config-hive.yaml",
-        output_dir  => 'metrics/published_cx2_translations',
+        ensure       => $ensure_jobs,
+        config_file  => "${base_path}/jobs/reportupdater-queries/published_cx2_translations/config-hive.yaml",
+        output_dir   => 'metrics/published_cx2_translations',
+        use_kerberos => true,
     }
 
     reportupdater::job { 'reference-previews':
-        ensure     => $ensure_jobs,
-        output_dir => 'metrics/reference-previews',
+        ensure       => $ensure_jobs,
+        output_dir   => 'metrics/reference-previews',
+        use_kerberos => true,
     }
 
     reportupdater::job { 'wmcs':
-        ensure     => $ensure_jobs,
-        output_dir => 'metrics/wmcs',
+        ensure       => $ensure_jobs,
+        output_dir   => 'metrics/wmcs',
+        use_kerberos => true,
     }
 
     reportupdater::job { 'structured-data':
-        ensure     => $ensure_jobs,
-        output_dir => 'metrics/structured-data',
+        ensure       => $ensure_jobs,
+        output_dir   => 'metrics/structured-data',
+        use_kerberos => true,
     }
 }
