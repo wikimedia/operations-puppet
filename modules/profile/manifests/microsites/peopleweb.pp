@@ -1,6 +1,8 @@
 # let users publish their own HTML in their home dirs
 class profile::microsites::peopleweb (
-    $deployment_server = lookup('deployment_server'),
+    Stdlib::Host     $deployment_server = lookup('deployment_server'),
+    Stdlib::Host     $sitename          = lookup('profile::microsites::peopleweb::sitename'),
+    Stdlib::Unixpath $docroot           = lookup('profile::microsites::peopleweb::docroot'),
 ){
 
     include ::profile::waf::apache2::administrative
@@ -25,9 +27,21 @@ class profile::microsites::peopleweb (
         mpm => 'prefork'
     }
 
-    class { '::publichtml':
-        sitename     => 'people.wikimedia.org',
-        server_admin => 'noc@wikimedia.org',
+    file{$docroot.wmflib::dirtree() + $docroot:
+        ensure => directory
+    }
+    file { "${docroot}/index.html":
+        content => template('profile/microsites/peopleweb/index.html.erb'),
+        mode    => '0444',
+        owner   => 'root',
+        group   => 'root',
+    }
+    include profile::idp::client::httpd
+
+    monitoring::service { 'https-peopleweb':
+        description   => 'HTTPS-peopleweb',
+        check_command => "check_https_url!${sitename}!https://${sitename}",
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/People.wikimedia.org',
     }
 
     motd::script { 'people-motd':

@@ -10,3 +10,10 @@ profile::tlsproxy::envoy::services:
     port: 80
 profile::tlsproxy::envoy::global_cert_name: "peopleweb.discovery.wmnet"
 profile::tlsproxy::envoy::sni_support: "no"
+profile::microsites::peopleweb::sitename: 'people.wikimedia.org'
+profile::microsites::peopleweb::docroot: '/srv/org/wikimedia/publichtml'
+profile::idp::client::httpd::vhost_content: 'profile/idp/client/httpd-people.erb'
+profile::idp::client::httpd::document_root: "%{alias('profile::microsites::peopleweb::docroot')}"
+profile::idp::client::httpd::virtual_host: "%{alias('profile::microsites::peopleweb::sitename')}"
+profile::idp::client::httpd::proxied_as: "http://%{hiera('profile::microsites::peopleweb::sitename')}"
+profile::idp::client::httpd::priority: 50

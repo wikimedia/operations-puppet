@@ -13,4 +13,5 @@ profile::idp::client::httpd::validate_saml: false
 profile::idp::client::httpd::apache_owner: www-data
 profile::idp::client::httpd::apache_group: www-data
 profile::idp::client::httpd::required_groups: []
+profile::idp::client::httpd::priority: 99
 

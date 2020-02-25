@@ -5,10 +5,16 @@
 # vim: filetype=apache
 
 <VirtualHost *:80>
-    ServerAdmin <%= @server_admin %>
-    ServerName <%= @sitename %>
+    ServerAdmin noc@wikimedia.org
+    ServerName <%= @virtual_host %>
 
-    DocumentRoot <%= @docroot %>
+    DocumentRoot <%= @document_root %>
+    <%- @cas_settings.each_pair do |key, setting| -%>
+      <%- unless setting.nil? -%>
+    <%= key %> <%= setting %>
+      <%-end -%>
+    <%-end -%>
+
 
     UserDir public_html
 

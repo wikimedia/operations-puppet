@@ -24,6 +24,7 @@ class profile::idp::client::httpd (
     Boolean                       $debug            = lookup('profile::idp::client::httpd::debug'),
     String[1]                     $apache_owner     = lookup('profile::idp::client::httpd::apache_owner'),
     String[1]                     $apache_group     = lookup('profile::idp::client::httpd::apache_group'),
+    Integer[1,99]                 $priority         = lookup('profile::idp::client::httpd::priority'),
     Optional[Array[String[1]]]    $required_groups  = lookup('profile::idp::client::httpd::required_groups'),
     Optional[String[1]]           $acme_chief_cert  = lookup('profile::idp::client::httpd::acme_chief_cert',
                                                             {'default_value' => undef}),
@@ -71,7 +72,7 @@ class profile::idp::client::httpd (
     }
     httpd::site {$virtual_host:
         content  => template($vhost_content),
-        priority => 99,
+        priority => $priority,
     }
 }
 
