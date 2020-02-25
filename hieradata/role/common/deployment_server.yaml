@@ -311,6 +311,12 @@ profile::kubernetes::deployment_server::services:
     mode: '0640'
     namespace: eventgate-analytics-external
     owner: mwdeploy
+  changeprop:
+    username: changeprop
+    group: wikidev
+    namespace: changeprop
+    mode: '0640'
+    owner: mwdeploy
 
 # Specified in the private repo in this form
 #profile::kubernetes::deployment_server::tokens:
@@ -347,6 +353,8 @@ profile::kubernetes::deployment_server::services:
 #  eventstreams:
 #    token: dummy
 #  eventgate-analytics-external:
+#    token: dummy
+#  changeprop:
 #    token: dummy
 #
 

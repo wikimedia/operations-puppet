@@ -108,6 +108,10 @@ profile::kubernetes::deployment_server::services:
     username: eventgate-analytics-external
     group: wikidev
     mode: '0640'
+  changeprop:
+    username: changeprop
+    group: wikidev
+    mode: '0640'
 
 
 # Specified in the private repo in this form
@@ -161,6 +165,8 @@ profile::kubernetes::deployment_server::services:
 #  eventstreams:
 #    token: dummy
 #  eventgate-analytics-external:
+#    token: dummy
+#  changeprop:
 #    token: dummy
 
 profile::ci::kubernetes_config::user: jenkins
