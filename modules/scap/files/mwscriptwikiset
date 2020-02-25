@@ -31,7 +31,7 @@ unset SCRIPTARGS[1] # dblist file name
 SCRIPTARGS="${SCRIPTARGS[@]}"
 
 # Run the script on all wikis in the dblist
-for DBNAME in $(cat $MEDIAWIKI_DEPLOYMENT_DIR/dblists/$LISTFILE)
+for DBNAME in $(grep -v '^#' $MEDIAWIKI_DEPLOYMENT_DIR/dblists/$LISTFILE)
 do
 	echo "-------------------------------------"
 	echo "$DBNAME"
