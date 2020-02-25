@@ -5,7 +5,6 @@
 # profile::idp::client::httpd::document_root:
 profile::idp::client::httpd::cookie_path: /var/cache/apache2/mod_auth_cas
 profile::idp::client::httpd::certificate_path: /etc/ssl/certs
-profile::idp::client::httpd::apereo_cas: "%{alias('apereo_cas')}"
 profile::idp::client::httpd::authn_header: CAS-User
 profile::idp::client::httpd::attribute_prefix: X-CAS-
 profile::idp::client::httpd::debug: false
@@ -14,4 +13,5 @@ profile::idp::client::httpd::apache_owner: www-data
 profile::idp::client::httpd::apache_group: www-data
 profile::idp::client::httpd::required_groups: []
 profile::idp::client::httpd::priority: 99
+profile::idp::client::httpd::validate_saml: false
 

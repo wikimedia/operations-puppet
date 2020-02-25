@@ -13,18 +13,19 @@
 # @param acme_cheif_cert the name of the acme chief certificate to use
 # @param proxied_as This URL represents the URL that end users may see in the event that Apache server is proxied
 class profile::idp::client::httpd (
+    Hash[String, Stdlib::HTTPUrl] $apereo_cas       = lookup('apereo_cas', Hash, 'hash'),
     String[1]                     $vhost_content    = lookup('profile::idp::client::httpd::vhost_content'),
     Stdlib::Host                  $virtual_host     = lookup('profile::idp::client::httpd::virtual_host'),
     Stdlib::Unixpath              $document_root    = lookup('profile::idp::client::httpd::document_root'),
     Stdlib::Unixpath              $cookie_path      = lookup('profile::idp::client::httpd::cookie_path'),
     Stdlib::Unixpath              $certificate_path = lookup('profile::idp::client::httpd::certificate_path'),
-    Hash[String, Stdlib::HTTPUrl] $apereo_cas       = lookup('profile::idp::client::httpd::apereo_cas'),
     String[1]                     $authn_header     = lookup('profile::idp::client::httpd::authn_header'),
     String[1]                     $attribute_prefix = lookup('profile::idp::client::httpd::attribute_prefix'),
     Boolean                       $debug            = lookup('profile::idp::client::httpd::debug'),
     String[1]                     $apache_owner     = lookup('profile::idp::client::httpd::apache_owner'),
     String[1]                     $apache_group     = lookup('profile::idp::client::httpd::apache_group'),
     Integer[1,99]                 $priority         = lookup('profile::idp::client::httpd::priority'),
+    Boolean                       $validate_saml    = lookup('profile::idp::client::httpd::validate_saml'),
     Optional[Array[String[1]]]    $required_groups  = lookup('profile::idp::client::httpd::required_groups'),
     Optional[String[1]]           $acme_chief_cert  = lookup('profile::idp::client::httpd::acme_chief_cert',
                                                             {'default_value' => undef}),
@@ -46,6 +47,7 @@ class profile::idp::client::httpd (
         'CASValidateURL'     => $apereo_cas['validate_url'],
         'CASAttributePrefix' => $attribute_prefix,
         'CASDebug'           => $debug ? { true => 'On', default => 'Off' },
+        'CASValidateSAML'    => $validate_saml ? { true => 'On', default => 'Off' },
         'CASRootProxiedAs'   => $proxied_as,
     }
     $cas_base_auth = {
