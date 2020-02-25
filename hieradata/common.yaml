@@ -746,6 +746,7 @@ hadoop_clusters:
       yarn.nodemanager.linux-container-executor.group: 'yarn'
       spark.authenticate: true
       spark.network.crypto.enabled: true
+      spark.executorEnv.LD_LIBRARY_PATH: '/usr/lib/hadoop/lib/native'
 
     yarn_nodemanager_container_executor_config:
       yarn.nodemanager.linux-container-executor.group: 'yarn'
