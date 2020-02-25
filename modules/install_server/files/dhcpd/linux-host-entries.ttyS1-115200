@@ -2312,7 +2312,7 @@ host dns1001 {
 }
 
 host dns1002 {
-    hardware ethernet D0:94:66:5F:6E:82;
+    hardware ethernet D0:26:28:D9:E0:70;
     fixed-address dns1002.wikimedia.org;
 }
 
