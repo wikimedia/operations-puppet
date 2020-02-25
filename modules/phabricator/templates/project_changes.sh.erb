@@ -164,6 +164,23 @@ SELECT DISTINCT CONCAT("https://phabricator.wikimedia.org/p/", u.userName) AS us
 END
 )
 
+#echo "result_herald_rules"
+result_herald_rules=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -P $sql_port -u $sql_user $sql_name << END
+ SELECT CONCAT("https://phabricator.wikimedia.org/H", h.id) AS heraldRule,
+    u.userName AS author
+    FROM phabricator_herald.herald_rule h
+    INNER JOIN phabricator_user.user u
+    WHERE h.authorPHID = u.phid
+    AND h.isDisabled = 0
+    AND h.authorPHID NOT IN
+        (SELECT trs.authorPHID FROM phabricator_maniphest.maniphest_transaction trs
+        INNER JOIN phabricator_user.user u
+        WHERE FROM_UNIXTIME(trs.dateModified) >= (NOW() - INTERVAL 6 MONTH)
+        AND trs.authorPHID = u.phid)
+    ORDER BY heraldRule;
+END
+)
+
 # echo "result_cookie_licked_tasks"
 # see https://phabricator.wikimedia.org/T228575
 result_cookie_licked_tasks=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -P $sql_port -u$sql_user $sql_name << END
@@ -218,6 +235,10 @@ ${result_inactive_users_assigned_tasks}
 
 USER ACCOUNTS WHO BECAME AN ASSIGNEE LAST WEEK AND HAD LESS THAN 5 TASKS EVER ASSIGNED:
 ${result_new_user_assignees}
+
+
+ACTIVE HERALD RULES AUTHORED BY ACCOUNTS INACTIVE FOR 6 MONTHS:
+${result_herald_rules}
 
 
 OPEN TASKS THAT HAVE BEEN ASSIGNED TO THE SAME USER FOR MORE THAN FOUR YEARS:
