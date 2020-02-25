@@ -297,8 +297,13 @@ def grid_start_stretch():
 def kubernetes_nodes_ready_check():
     """Check that no nodes are in NonReady but Schedulable state"""
 
-    def check_nodes(nodes):
-        for node in nodes:
+    def check_nodes(server, token, verify=True):
+        r = requests.get(
+            "{}/api/v1/nodes".format(server),
+            headers={"Authorization": "Bearer {}".format(token)},
+            verify=verify,
+        )
+        for node in r.json()["items"]:
             is_ready = False
             for condition in node["status"]["conditions"]:
                 if condition["type"] == "Ready" and condition["status"] == "True":
@@ -312,30 +317,21 @@ def kubernetes_nodes_ready_check():
                 return False
         return True
 
-    with open(os.path.join(__dir__, 'kube-config.yaml')) as dotfile:
+    with open(os.path.join(__dir__, "kube-config.yaml")) as dotfile:
         config = yaml.safe_load(dotfile)
 
     # Legacy Kubernetes cluster
-    r = requests.get(
-        "{}/api/v1/nodes".format(config["clusters"][0]["cluster"]["server"]),
-        headers={
-            "Authorization": "Bearer {}".format(
-                config["users"][0]["user"]["token"]
-            ),
-        },
+    legacy = check_nodes(
+        config["clusters"][0]["cluster"]["server"],
+        config["users"][0]["user"]["token"],
     )
-    legacy = check_nodes(r.json()["items"])
 
     # 2020 Kubernetes cluster
-    r = requests.get(
-        "{}/api/v1/nodes".format(config["clusters"][1]["cluster"]["server"]),
-        cert=(
-            os.path.join(__dir__, "client.crt"),
-            os.path.join(__dir__, "client.key"),
-        ),
+    modern = check_nodes(
+        config["clusters"][1]["cluster"]["server"],
+        config["users"][1]["user"]["token"],
         verify=False,
     )
-    modern = check_nodes(r.json()["items"])
 
     return legacy and modern
 
