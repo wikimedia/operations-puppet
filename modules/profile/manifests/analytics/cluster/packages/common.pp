@@ -6,7 +6,9 @@
 # - profile::analytics::cluster::packages::hadoop
 # - profile::analytics::cluster::packages::statistics
 #
-class profile::analytics::cluster::packages::common {
+class profile::analytics::cluster::packages::common(
+    $use_bigtop_settings = lookup('profile::analytics::cluster::packages::common::use_bigtop_settings', { 'default_value' => false }),
+) {
 
     # Install MaxMind databases for geocoding UDFs
     class { '::geoip': }
@@ -49,7 +51,13 @@ class profile::analytics::cluster::packages::common {
         'libkrb5-dev',
     )
 
-    if os_version('debian == stretch') {
+    if os_version('debian == stretch') and $use_bigtop_settings {
+        # Apache BigTop 1.4+ ships with Hadoop 2.8+,
+        # compatible with openssl 1.1.0 shipped by Stretch.
+        # The -dev package is needed to create the libcrypto.so
+        # symlink under /usr/lib/x86_64-linux-gnu.
+        require_package('libssl-dev')
+    } elsif os_version('debian == stretch') {
         require_package('libssl1.0.2')
 
         # Hadoop links incorrectly against libcrypto
