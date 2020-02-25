@@ -218,6 +218,7 @@ class base::monitoring::host(
         monitoring::check_prometheus { 'smart_healthy':
             description     => 'Device not healthy (SMART)',
             dashboard_links => ["https://grafana.wikimedia.org/dashboard/db/host-overview?var-server=${::hostname}&var-datasource=${::site} prometheus/ops"],
+            contact_group   => $contact_group,
             query           => "device_smart_healthy{instance=\"${::hostname}:9100\"}",
             method          => 'le',
             warning         => 0,
@@ -235,6 +236,7 @@ class base::monitoring::host(
     monitoring::check_prometheus { 'edac_correctable_errors':
         description     => 'Memory correctable errors (EDAC)',
         dashboard_links => ["https://grafana.wikimedia.org/dashboard/db/host-overview?orgId=1&var-server=${::hostname}&var-datasource=${::site} prometheus/ops"],
+        contact_group   => $contact_group,
         query           => "sum(increase(node_edac_correctable_errors_total{instance=\"${::hostname}:9100\"}[4d]))",
         warning         => 2,
         critical        => 4,
@@ -253,6 +255,7 @@ class base::monitoring::host(
     monitoring::check_prometheus { 'edac_syslog_events':
         description     => 'EDAC syslog messages',
         dashboard_links => ["https://grafana.wikimedia.org/dashboard/db/host-overview?orgId=1&var-server=${::hostname}&var-datasource=${::site} prometheus/ops"],
+        contact_group   => $contact_group,
         query           => "sum(increase(edac_events{hostname=\"${::hostname}\"}[4d]))",
         warning         => 2,
         critical        => 4,
@@ -269,6 +272,7 @@ class base::monitoring::host(
     monitoring::check_prometheus { 'filesystem_avail_bigger_than_size':
         description     => 'Filesystem available is greater than filesystem size',
         dashboard_links => ["https://grafana.wikimedia.org/dashboard/db/host-overview?orgId=1&var-server=${::hostname}&var-datasource=${::site} prometheus/ops"],
+        contact_group   => $contact_group,
         query           => "node_filesystem_avail_bytes{instance=\"${::hostname}:9100\"} > node_filesystem_size_bytes",
         # The query returns node_filesystem_avail_bytes metrics that match the condition. warning/critical
         # are required but placeholders in this case.
