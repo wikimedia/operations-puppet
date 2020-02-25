@@ -1,4 +1,3 @@
-profile::pybal::bgp: no
 profile::pybal::primary: false
 profile::pybal::override_bgp_med: 101
 profile::lvs::interface_tweaks:
