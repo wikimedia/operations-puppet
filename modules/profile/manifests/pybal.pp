@@ -8,7 +8,8 @@ class profile::pybal(
     $config_source = hiera('profile::pybal::config_source'),
     $config_host = hiera('profile::pybal::config_host'),
     $wikimedia_clusters = hiera('wikimedia_clusters'),
-    $etcd_port = hiera('profile::pybal::etcd_port', 2379)
+    $etcd_port = hiera('profile::pybal::etcd_port', 2379),
+    Optional[Integer] $override_bgp_med = lookup('profile::pybal::override_bgp_med', {'default_value' => undef}),
 ) {
     # Includes all the common configs.
     include ::lvs::configuration
@@ -16,10 +17,9 @@ class profile::pybal(
 
     $ipv4_address = ipresolve($::fqdn, 4)
 
-    if $primary {
-        $bgp_med = 0
-    } else {
-        $bgp_med = 100
+    $bgp_med = $override_bgp_med ? {
+        undef   => $primary ? { true => 0, default => 100},
+        default => $override_bgp_med,
     }
 
     $global_options = {
