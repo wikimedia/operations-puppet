@@ -8,4 +8,5 @@ class role::logstash7 {
     #include ::role::logstash::apifeatureusage
     include ::profile::prometheus::logstash_exporter
     include ::profile::tlsproxy::envoy # TLS termination
+    include ::profile::lvs::realserver
 }
