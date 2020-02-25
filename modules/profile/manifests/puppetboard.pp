@@ -28,6 +28,10 @@ class profile::puppetboard (
 
     require_package('make', 'python3-pip', 'virtualenv')
 
+    # rsyslog forwards json messages sent to localhost along to logstash via kafka
+    class { '::profile::rsyslog::udp_json_logback_compat': }
+
+
     file { "${base_path}/settings.py":
         ensure  => present,
         owner   => 'deploy-puppetboard',
