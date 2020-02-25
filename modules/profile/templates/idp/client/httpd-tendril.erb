@@ -1,5 +1,5 @@
 <VirtualHost *:443>
-    ServerName <%= @site_name %>
+    ServerName <%= @virtual_host %>
     # https://httpoxy.org/
     RequestHeader unset Proxy early
     SSLEngine On
@@ -10,7 +10,7 @@
     SSLCertificateChainFile /etc/acmecerts/tendril/live/rsa-2048.chain.crt
     SSLCertificateKeyFile /etc/acmecerts/tendril/live/rsa-2048.key
     <%= @ssl_settings.join("\n    ") %>
-    DocumentRoot <%= @docroot %>
+    DocumentRoot <%= @document_root %>
     php_admin_flag short_open_tag on
     <%- @cas_settings.each_pair do |key, setting| -%>
       <%- unless setting.nil? -%>
@@ -18,7 +18,7 @@
       <%-end -%>
     <%-end -%>
 
-    <Directory "<%= @docroot %>">
+    <Directory "<%= @document_root %>">
         SSLRequireSSL
         Options +ExecCGI +FollowSymLinks
         DirectoryIndex index.php
@@ -44,10 +44,10 @@
 </VirtualHost>
 
 <VirtualHost *:80>
-    ServerName <%= @site_name %>
-    DocumentRoot <%= @docroot %>
+    ServerName <%= @virtual_host %>
+    DocumentRoot <%= @document_root %>
 
     RewriteEngine on
     RewriteCond %{SERVER_PORT} !^443$
-    RewriteRule ^/(.*)$ https://<%= @site_name %>/$1 [L,R=301]
+    RewriteRule ^/(.*)$ https://<%= @virtual_host %>/$1 [L,R=301]
 </VirtualHost>
