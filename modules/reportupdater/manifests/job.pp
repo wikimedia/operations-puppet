@@ -39,6 +39,7 @@ define reportupdater::job(
     $repository = 'reportupdater-queries',
     $config_file = undef,
     $output_dir = $title,
+    $query_dir = undef,
     $interval = '*-*-* *:00:00',
     $monitoring_enabled = true,
     $ensure = present,
@@ -55,7 +56,10 @@ define reportupdater::job(
     $path            = "${::reportupdater::job_repositories_path}/${repository}"
 
     # Path of the query configuration directory inside of $repository_name.
-    $query_path      = "${path}/${title}"
+    $query_path = $query_dir ? {
+        undef   => "${path}/${title}",
+        default => "${path}/${query_dir}",
+    }
 
     # Path at which the job will store its report output.
     $output_path     = "${::reportupdater::output_path}/${output_dir}"

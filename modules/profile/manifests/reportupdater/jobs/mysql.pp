@@ -36,31 +36,40 @@ class profile::reportupdater::jobs::mysql {
     # Set up various jobs to be executed by reportupdater
     # creating several reports on mysql research db.
     reportupdater::job { 'flow-beta-features':
+        ensure     => absent,
         output_dir => 'metrics/beta-feature-enables',
     }
     reportupdater::job { 'edit-beta-features':
+        ensure     => absent,
         output_dir => 'metrics/beta-feature-enables',
     }
     reportupdater::job { 'language':
+        ensure     => absent,
         output_dir => 'metrics/beta-feature-enables',
     }
     reportupdater::job { 'published_cx2_translations':
+        ensure      => absent,
         config_file => "${base_path}/jobs/reportupdater-queries/published_cx2_translations/config-mysql.yaml",
         output_dir  => 'metrics/published_cx2_translations',
     }
     reportupdater::job { 'mt_engines':
+        ensure     => absent,
         output_dir => 'metrics/mt_engines',
     }
     reportupdater::job { 'cx':
+        ensure     => absent,
         output_dir => 'metrics/cx',
     }
     reportupdater::job { 'ee':
+        ensure     => absent,
         output_dir => 'metrics/echo',
     }
     reportupdater::job { 'ee-beta-features':
+        ensure     => absent,
         output_dir => 'metrics/beta-feature-enables',
     }
     reportupdater::job { 'page-creation':
+        ensure     => absent,
         output_dir => 'metrics/page-creation',
     }
 }

@@ -12,9 +12,6 @@ class role::statistics::private {
 
     include ::profile::statistics::dataset_mount
 
-    # Run Hadoop/Hive reportupdater jobs here.
-    include ::profile::reportupdater::jobs::hadoop
-
     # This job copies wiktext dumps from the NFS mounts to HDFS
     include ::profile::analytics::refinery::job::import_mediawiki_dumps
 

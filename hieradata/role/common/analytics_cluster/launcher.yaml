@@ -30,6 +30,9 @@ profile::hive::client::hive_server2_authentication_kerberos_principal: 'hive/_HO
 profile::analytics::cluster::hdfs_mount::kerberos_enabled: true
 profile::hive::site_hdfs::use_kerberos: true
 
+profile::statistics::base::enable_stat_host_addons: false
+profile::statistics::base::mysql_credentials_group: 'analytics'
+
 profile::base::debdeploy::exclude_mounts:
   - /mnt/hdfs
 

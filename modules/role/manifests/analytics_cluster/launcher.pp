@@ -21,7 +21,7 @@ class role::analytics_cluster::launcher {
     include ::profile::statistics::base
 
     # Run Hadoop/Hive reportupdater jobs here.
-    include ::profile::reportupdater::jobs::hadoop
+    include ::profile::reportupdater::jobs
 
     include ::profile::kerberos::client
     include ::profile::kerberos::keytabs
