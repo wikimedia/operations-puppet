@@ -74,6 +74,14 @@ profile::idp::services:
           'cn=nda,ou=groups,dc=wikimedia,dc=org',
           'cn=wmf,ou=groups,dc=wikimedia,dc=org',
         ]]
+  people:
+    class: 'org.apereo.cas.services.RegexRegisteredService'
+    id: 7
+    service_id: 'https://people.wikimedia.org(/.*)?'
+    attribute_release_policy:
+      '@class': 'org.apereo.cas.services.ReturnAllAttributeReleasePolicy'
+    access_strategy:
+      '@class': 'org.apereo.cas.services.DefaultRegisteredServiceAccessStrategy'
 profile::idp::ldap_attributes:
   - cn
   - memberOf
