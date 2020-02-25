@@ -69,6 +69,7 @@ lvs::interfaces::vlan_data:
       'lvs2004': 'eno2:208.80.153.9'
       'lvs2005': 'eno2:208.80.153.10'
       'lvs2006': 'eno2:208.80.153.11'
+      'lvs2009': 'ens2f1np1:208.80.153.20'
       'lvs2010': 'ens2f1np1:208.80.153.21'
   public1-b-codfw:
     id: "2002"
@@ -80,6 +81,7 @@ lvs::interfaces::vlan_data:
       'lvs2004': 'eno1:208.80.153.36'
       'lvs2005': 'eno1:208.80.153.37'
       'lvs2006': 'eno1:208.80.153.38'
+      'lvs2009': 'ens3f0np0:208.80.153.57'
       'lvs2010': 'ens3f0np0:208.80.153.58'
   public1-c-codfw:
     id: "2003"
@@ -91,6 +93,7 @@ lvs::interfaces::vlan_data:
       'lvs2004': 'ens1f0:208.80.153.71'
       'lvs2005': 'ens1f0:208.80.153.72'
       'lvs2006': 'ens1f0:208.80.153.73'
+      'lvs2009': 'ens2f0np0:208.80.153.81'
       'lvs2010': 'ens3f1np1:208.80.153.82'
   public1-d-codfw:
     id: "2004"
@@ -102,6 +105,7 @@ lvs::interfaces::vlan_data:
       'lvs2004': 'ens1f1:208.80.153.103'
       'lvs2005': 'ens1f1:208.80.153.104'
       'lvs2006': 'ens1f1:208.80.153.105'
+      'lvs2009': 'ens3f1np1:208.80.153.114'
       'lvs2010': 'ens2f0np0:208.80.153.115'
   private1-a-codfw:
     id: "2017"
@@ -110,6 +114,7 @@ lvs::interfaces::vlan_data:
       'lvs2004': 'eno2:10.192.1.4'
       'lvs2005': 'eno2:10.192.1.5'
       'lvs2006': 'eno2:10.192.1.6'
+      'lvs2009': 'ens2f1np1:10.192.1.9'
       'lvs2010': 'ens2f1np1:10.192.1.13'
   private1-b-codfw:
     id: "2018"
@@ -118,6 +123,7 @@ lvs::interfaces::vlan_data:
       'lvs2001': 'eno2:10.192.17.1'
       'lvs2002': 'eno2:10.192.17.2'
       'lvs2003': 'eno2:10.192.17.3'
+      'lvs2009': 'ens3f0np0:10.192.17.9'
       'lvs2010': 'ens3f0np0:10.192.17.10'
   private1-c-codfw:
     id: "2019"
@@ -140,6 +146,7 @@ lvs::interfaces::vlan_data:
       'lvs2004': 'ens1f1:10.192.49.4'
       'lvs2005': 'ens1f1:10.192.49.5'
       'lvs2006': 'ens1f1:10.192.49.6'
+      'lvs2009': 'ens3f1np1:10.192.49.10'
   public1-esams:
     id: "100"
     netmask: '255.255.255.128'

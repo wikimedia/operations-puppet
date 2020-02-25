@@ -1372,6 +1372,10 @@ node /lvs200[1-6]\.codfw\.wmnet/ {
     role(lvs::balancer)
 }
 
+node 'lvs2009.codfw.wmnet' {
+    role(lvs::balancer)
+}
+
 node 'lvs2010.codfw.wmnet' {
     role(lvs::balancer)
 }

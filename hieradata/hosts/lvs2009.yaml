@@ -1,0 +1,12 @@
+profile::pybal::bgp: no
+profile::pybal::primary: false
+profile::pybal::override_bgp_med: 101
+profile::lvs::interface_tweaks:
+  ens2f0np0:
+    txqlen: 10000
+  ens2f1np1:
+    txqlen: 10000
+  ens3f0np0:
+    txqlen: 10000
+  ens3f1np1:
+    txqlen: 10000

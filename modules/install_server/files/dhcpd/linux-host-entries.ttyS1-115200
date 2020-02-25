@@ -3868,7 +3868,6 @@ host lvs2006 {
 host lvs2009 {
     hardware ethernet 00:0A:F7:EF:EE:00;
     fixed-address lvs2009.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host lvs2010 {
