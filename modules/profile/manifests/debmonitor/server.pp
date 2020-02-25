@@ -25,6 +25,10 @@ class profile::debmonitor::server (
 
     class { '::sslcert::dhparam': }
 
+    # rsyslog forwards json messages sent to localhost along to logstash via kafka
+    class { '::profile::rsyslog::udp_json_logback_compat': }
+
+
     $ldap_password = $passwords::ldap::production::proxypass
     $port = 8001
     $deploy_user = 'deploy-debmonitor'
