@@ -12,6 +12,6 @@ class profile::tendril(
             'cn=wmf,ou=groups,dc=wikimedia,dc=org',
         ],
         auth_name    => 'Developer account (use wiki login name not shell) - nda/ops/wmf',
-        cas_enable   => true,
+        cas_enable   => false,
     }
 }
