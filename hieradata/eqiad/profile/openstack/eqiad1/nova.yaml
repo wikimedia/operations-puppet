@@ -35,7 +35,7 @@ profile::openstack::eqiad1::nova::physical_interface_mappings:
 #   cloudvirt1011: does not exist (formerly a leased system)
 #   cloudvirt1012: pooled
 #   cloudvirt1013: pooled
-#   cloudvirt1014: depooled for hardware maintenance, T241494
+#   cloudvirt1014: pooled
 #   cloudvirt1015: depooled due to hardware issues T220853 and Ceph testing T243327
 #   cloudvirt1016: depooled due to memory issue T241882 and Ceph testing T243327
 #   cloudvirt1017: pooled
@@ -72,6 +72,7 @@ profile::openstack::eqiad1::nova::scheduler_pool:
   - cloudvirt1008
   - cloudvirt1012
   - cloudvirt1013
+  - cloudvirt1014
   - cloudvirt1017
   - cloudvirt1018
   - cloudvirt1021
