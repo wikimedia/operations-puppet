@@ -59,7 +59,7 @@ class profile::wmcs::nfsclient(
             project     => $::labsproject,
             options     => ['rw', 'soft', 'timeo=300', 'retrans=3'],
             mount_path  => "/mnt/nfs/secondary-${server}-scratch",
-            share_path  => '/scratch',
+            share_path  => '/srv/scratch',
             server      => $server,
             lookupcache => $lookupcache,
         }
