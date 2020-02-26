@@ -6,5 +6,5 @@ class role::lvs::balancer {
 
     include ::profile::pybal
     include ::profile::lvs
-
+    include ::profile::base::no_firewall
 }
