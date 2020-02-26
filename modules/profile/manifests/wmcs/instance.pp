@@ -52,9 +52,6 @@ class profile::wmcs::instance(
         exec { '/bin/systemctl mask rpcbind.service':
             creates => '/etc/systemd/system/rpcbind.service',
         }
-        exec { '/bin/systemctl mask rpcbind.socket':
-            creates => '/etc/systemd/system/rpcbind.socket',
-        }
     }
 
     # Allows per-host overriding of NFS mounts
