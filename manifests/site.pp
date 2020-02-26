@@ -1913,6 +1913,11 @@ node /^pc20(09)\.codfw\.wmnet$/ {
     role(mariadb::parsercache)
 }
 
+# new parsoid nodes (T243112)
+node /^parse20(0[1-9]|1[1-9]|20)\.codfw\.wmnet$/ {
+    role(spare::system)
+}
+
 # virtual machines for https://wikitech.wikimedia.org/wiki/Ping_offload
 node /^ping[123]001\.(eqiad|codfw|esams)\.wmnet$/ {
     role(ping_offload)
