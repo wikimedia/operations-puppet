@@ -142,7 +142,7 @@ class profile::mediawiki::webserver(
     # Stream to logstash, we are using an if condition to avoid breaking beta T244472
     if  $stream_to_logstash {
         if defined('$::_role'){
-            $server_role = $::_role.split('/')[-1]
+            $server_role = regsubst($::_role.split('/')[-1], '_', '-', 'G')
         } else {
             $server_role = 'generic'
         }

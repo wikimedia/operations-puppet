@@ -34,6 +34,7 @@
     {"index" : "input-file-jobrunner-mw-access", "value" : "kafka" },
     {"index" : "input-file-parsoid-mw-access", "value" : "kafka" },
     {"index" : "input-file-canary-appserver-mw-access", "value" : "kafka" },
+    {"index" : "input-file-canary-api-mw-access", "value" : "kafka" },
     {"index" : "input-file-generic-mw-access", "value" : "kafka" },
     {"index" : "uwsgi-striker", "value" : "kafka" },
     {"index" : "webrequest", "value" : "kafka" },
