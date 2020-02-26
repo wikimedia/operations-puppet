@@ -907,6 +907,10 @@ dataCubes:
         title: Request Count
         formula: $main.sum($request_count)
 
+      - name: normalized_request_count
+        title: Normalized Request Count
+        formula: $main.sum($normalized_request_count)
+
       # This is the place where you might want to add derived measures (a.k.a Post Aggregators).
       #
       # Here are some examples of possible derived measures:
