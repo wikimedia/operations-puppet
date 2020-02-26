@@ -21,6 +21,7 @@ profile::dumps::distribution::nfs_clients:
   - stat1007.eqiad.wmnet
   - notebook1003.eqiad.wmnet
   - notebook1004.eqiad.wmnet
+  - an-launcher1001.eqiad.wmnet
 
 profile::dumps::distribution::mirrors:
 # dead?
