@@ -4,7 +4,9 @@ describe 'aptrepo', :type => :class do
     let(:params) {{ :basedir => '/srv/wikimedia' }}
     let(:pre_condition) {
         # Stub for the ::apt module
-        "exec { 'apt-get update': path => '/bin/true' }"
+        "exec { 'apt-get update': path => '/bin/true' }
+        user{'reprepro':}
+        group{'reprepro':}"
     }
 
     it { should compile }

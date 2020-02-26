@@ -50,22 +50,6 @@ class aptrepo (
         ensure => present,
     }
 
-    group { 'reprepro':
-        ensure => present,
-        name   => $group,
-    }
-
-    user { 'reprepro':
-        ensure     => present,
-        name       => $user,
-        home       => $homedir,
-        shell      => '/bin/sh',
-        comment    => 'Reprepro user',
-        gid        => $group,
-        managehome => true,
-        require    => Group['reprepro'],
-    }
-
     if os_version('debian >= buster') {
         require_package('python-apt')
     }
