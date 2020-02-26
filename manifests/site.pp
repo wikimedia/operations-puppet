@@ -1656,7 +1656,7 @@ node /^mw22(2[4-9]|3[0-9]|4[0-2])\.codfw\.wmnet$/ {
 
 #mw2291-2300 are in rack A3
 node /^mw2(29[1-9]|300)\.codfw\.wmnet$/ {
-    role(spare::system)
+    role(mediawiki::appserver::api)
 }
 
 #mw2301-2309 are in rack A6
