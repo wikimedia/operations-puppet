@@ -2,12 +2,24 @@
   as = 14907  # Not in use (per peer-group AS#)
   router-id = "<%= @ipaddress %>"
 
+[[defined-sets.neighbor-sets]]
+  neighbor-set-name = "ns-all"
+  neighbor-info-list = []
+
+[[policy-definitions]]
+  name = "reject-all-neighbors"
+  [[policy-definitions.statements]]
+    [policy-definitions.statements.conditions.match-neighbor-set]
+      neighbor-set = "ns1"
+    [policy-definitions.statements.actions]
+      route-disposition = "reject-route"
+
 [global.apply-policy.config]
+import-policy-list = ["reject-all-neighbors"]
 default-import-policy = "reject-route"
 default-export-policy = "accept-route"
 
 <%- @network_infra.each_pair do |site,prefixes| -%>
-
 [[peer-groups]]
   [peer-groups.config]
     peer-group-name = "<%= site %>"
