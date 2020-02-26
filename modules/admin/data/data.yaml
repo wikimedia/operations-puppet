@@ -1522,6 +1522,7 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDKGJvLuk3OarwQQOhnWz7zeB4CZmhvSRNOyAwRJHfo5lRxVvyELCy2ZYGlHNNBFNcEd6FIBkHueX1N7SwBiwyg9mMJMoJocPeUP2JSPpf8zIkmfNrbyJqj8DZAmE8Omnq1bA9dc+6iybB7ngMlH97uietbyKMCth4Eru0Lw8q6Lmu/l7Laz8MzVURQ8WRy0zdIEL+nO5FFL9aTeMg7tID48GDN8DVT05flT/neu7gLUbWjny91ZKOdv/bSiKuCUfFcSDmV5/Bge1zcl46y0TAEM6991EB1W4U+mBPMo+BEbjCPqBVv3WQMFmrl34dL0QTGg7DIAskyCnSq1t4Ie001hHfLAx5UlTKfHgrez8x2Eq4XEhUQHgBwkIkNuv89LCbAYbYWX2Bg1Hi7Fbd5VkObt6ehLfyIPKBsy42qwHKHUkk0CU0GD5Eb1le0vaw8FY0OBMG2eENZnnpwWAQIn6Aq2GhCTUipnx7ZBV+NF2eVLUCin2fXQHTHVYOMu8+oL+yEFJWZ+kra5v+FrcJPujf0Shlmhn6+vwa88Lkubea3ASYas1AA6vmbdse7OSYFT02PI4l853OVBk5xj6Tcq9cpmUNWvXlYMUvi9KgJ3QAOfsa01joUrd66z3vDhZCFVWn6fsjFBzHzR53OUa/oFj5sBwM+lJhVu1foyhpx1TrRRQ== jtmorgan@sir-nose
     uid: 2402
     email: jmorgan@wikimedia.org
+    krb: present
   maryana:
     ensure: absent
     gid: 500
