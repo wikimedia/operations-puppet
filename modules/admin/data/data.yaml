@@ -81,7 +81,8 @@ groups:
               aaron, liw, sbassett, jdl, tarrow, lucaswerkmeister-wmde,
               wmde-leszek, jhuneidi, wmde-fisch, mvolz, dsharpe, brennen, cparle,
               jfishback, urbanecm, awight, jakob, accraze, andrew-wmde,
-              kevinbazira, mstyles, zpapierski, clarakosi, dpifke, niedzielski]
+              kevinbazira, mstyles, zpapierski, clarakosi, dpifke, niedzielski,
+              dmaza, tchanders, wikigit]
     privileges: ['ALL = (www-data,mwdeploy,l10nupdate) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /usr/sbin/apache2ctl',
                  'ALL = NOPASSWD: /etc/init.d/apache2',
@@ -3606,7 +3607,31 @@ users:
     uid: 22909
     gid: 500
     ssh_keys:
-    -  'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIE8kx1WqBtWgXOKp6VjWZ/V5L4QbD/3vavM8nI24EPKQ dwisehaupt@darksmog'
+      - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIE8kx1WqBtWgXOKp6VjWZ/V5L4QbD/3vavM8nI24EPKQ dwisehaupt@darksmog'
+  dmaza:
+    ensure: present
+    realname: Dayllan Maza
+    email: dmaza@wikimedia.org
+    uid: 17497
+    gid: 500
+    ssh_keys:
+     - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMzAnzpZdT/jiyru+B+bUxA/r04r6kPBEl/aBQmuBlmU dmaza@wikimedia.org'
+  tchanders:
+    ensure: present
+    realname: Thalia Chan
+    email: tchan@wikimedia.org
+    uid: 12934
+    gid: 500
+    ssh_keys:
+     - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICEeJivjg1q1mDS25ZOvJzaCqBCTidMjXZKoHdJzc3TC tchanders@tchanders-ThinkPad'
+  wikigit:
+    ensure: present
+    realname: Moriel Schottlender
+    email: mschottlender@wikimedia.org
+    uid: 3135
+    gid: 500
+    ssh_keys:
+     - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOiHafWCjGy8aC+Xvq1YoqGHkOnEz4HjMhw+Bpo/4pkK moriel@mowmf'
 ldap_only_users:
   abartov:
     ensure: present
@@ -3849,10 +3874,6 @@ ldap_only_users:
   tbolliger:
     ensure: absent
     realname: Trevor Bolliger
-  tchanders:
-    ensure: present
-    realname: Thalia Chan
-    email: tchan@wikimedia.org
   thecore:
     ensure: present
     realname: Wes Moran
@@ -3872,10 +3893,6 @@ ldap_only_users:
     ensure: present
     realname: Gregory Varnum
     email: gvarnum@wikimedia.org
-  wikigit:
-    ensure: present
-    realname: Moriel Schottlender
-    email: mschottlender@wikimedia.org
   wpao:
     ensure: present
     realname: Willy Pao
@@ -3892,10 +3909,6 @@ ldap_only_users:
     ensure: present
     realname: Moska Noor
     email: mnoor@wikimedia.org
-  dmaza:
-    ensure: present
-    realname: Dayllan Maza
-    email: dmaza@wikimedia.org
   ebjune:
     ensure: present
     realname: Erika Bjune
