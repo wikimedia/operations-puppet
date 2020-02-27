@@ -773,6 +773,12 @@ groups:
     gid: 901
     system: true
     members: []
+  # Placeholder to reserve the uid/gid, to be uncommented
+  # once T123918 is complete
+  # swift:
+  #   gid: 902
+  #   system: true
+  #   members: []
 users:
   reprepro:
     ensure: present
@@ -781,6 +787,15 @@ users:
     gid: 901
     home_dir: '/var/lib/reprepro'
     shell: '/bin/sh'
+  # Placeholder to reserve the uid/gid, to be uncommented
+  # once T123918 is complete
+  # swift:
+  #   ensure: present
+  #   system: true
+  #   uid: 902
+  #   gid: 902
+  #   home_dir: '/var/lib/swift'
+  #   shell: '/bin/false'
   rush:
     ensure: present
     gid: 500

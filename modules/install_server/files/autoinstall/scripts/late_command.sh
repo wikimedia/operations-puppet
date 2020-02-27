@@ -65,12 +65,12 @@ if [ "$(chroot /target /usr/bin/lsb_release --codename --short)" = "jessie" ]; t
 fi
 
 # Temporarily pre-provision swift user at a fixed UID on new installs.
-# Once T123918 is resolved and swift is uid/gid 130 everywhere, this can be
-# moved to puppet.
+# Once T123918 is resolved and swift is the same uid/gid everywhere, the
+# 'admin' puppet module can take over.
 case `hostname` in \
 	ms-be[123]*|ms-fe[123]*)
-		in-target /usr/sbin/groupadd --gid 130 --system swift
-		in-target /usr/sbin/useradd --gid 130 --uid 130 --system --shell /bin/false \
+		in-target /usr/sbin/groupadd --gid 902 --system swift
+		in-target /usr/sbin/useradd --gid 902 --uid 902 --system --shell /bin/false \
 			--create-home --home /var/lib/swift swift
 	;; \
 esac
