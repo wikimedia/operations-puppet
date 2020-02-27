@@ -3884,7 +3884,6 @@ host lvs3007 {
 host lvs4005 {
     hardware ethernet F4:E9:D4:BA:F4:60;
     fixed-address lvs4005.ulsfo.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host lvs4006 {
