@@ -96,12 +96,19 @@ def parse_users(yamldata):
 
             if table == 'users':
                 users[username] = {
-                    'realname': userdata['realname'],
                     'ldap_only': False,
                     'uid': userdata['uid'],
                     'prod_groups': groups,
-                    'has_server_access': (len(userdata['ssh_keys']) > 0),
                 }
+                # This is for fleet-wide system users, different from local ones
+                if userdata.get('system', False):
+                    users[username]['realname'] = 'system user ' + str(userdata['uid'])
+                    users[username]['has_server_access'] = False
+                    users[username]['system'] = True
+                else:
+                    users[username]['realname'] = userdata['realname']
+                    users[username]['has_server_access'] = len(userdata['ssh_keys']) > 0
+                    users[username]['system'] = False
             elif table == 'ldap_only_users':
                 users[username] = {
                     'realname': userdata['realname'],
@@ -128,7 +135,8 @@ def validate_email_addresses(users):
     log = ""
     for i in users.keys():
         attrs = users[i]
-        if attrs['email'] == 'undefined':
+
+        if attrs['email'] == 'undefined' and not attrs['system']:
             log += i + " has no email address specified in data.yaml\n"
     return log
 
