@@ -699,6 +699,23 @@ class profile::prometheus::ops (
         port       => 9556,
     }
 
+    $squid_jobs = [
+      {
+        'job_name'        => 'squid',
+        'scheme'          => 'http',
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/squid_*.yaml" ]}
+        ],
+      },
+    ]
+
+    prometheus::class_config{ "squid_${::site}":
+        dest       => "${targets_path}/squid_${::site}.yaml",
+        site       => $::site,
+        class_name => 'profile::prometheus::squid_exporter',
+        port       => 9301,
+    }
+
     $rpkicounter_jobs = [
       {
         'job_name'        => 'rpkicounter',
@@ -1487,7 +1504,7 @@ class profile::prometheus::ops (
             $gerrit_jobs, $routinator_jobs, $rpkicounter_jobs, $varnishkafka_jobs, $bird_jobs, $ncredir_jobs,
             $cloud_dev_pdns_jobs, $cloud_dev_pdns_rec_jobs, $bacula_jobs, $poolcounter_exporter_jobs,
             $apereo_cas_jobs, $atlas_exporter_jobs, $exported_blackbox_jobs, $cadvisor_jobs,
-            $envoy_jobs, $webperf_jobs
+            $envoy_jobs, $webperf_jobs, $squid_jobs
         ),
         global_config_extra   => $config_extra,
     }
