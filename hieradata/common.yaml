@@ -978,6 +978,7 @@ install_server: install1002.wikimedia.org
 install_servers_failover:
     - 'install2002.wikimedia.org'
     - 'apt1001.wikimedia.org'
+    - 'apt2001.wikimedia.org'
 
 netmon_server: netmon1002.wikimedia.org
 netmon_server_failover: netmon2001.wikimedia.org
