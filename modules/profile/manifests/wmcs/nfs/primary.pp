@@ -2,6 +2,7 @@ class profile::wmcs::nfs::primary(
   $observer_pass = hiera('profile::openstack::eqiad1::observer_password'),
   $monitor_iface = hiera('profile::wmcs::nfs::primary::monitor_iface', 'eth0'),
   $data_iface    = hiera('profile::wmcs::nfs::primary::data_iface', 'eth1'),
+  $backup_servers = hiera('profile::wmcs::nfs::primary::backup_servers')
 ) {
     require ::profile::openstack::eqiad1::clientpackages
     require ::profile::openstack::eqiad1::observerenv
@@ -72,6 +73,7 @@ class profile::wmcs::nfs::primary(
         }
     }
 
+    $backup_ferm_servers = join($backup_servers, ' ')
     $cluster_ips_ferm = join(['192.168.0.1', '192.168.0.2'], ' ')
     ferm::service { 'drbd-test':
         proto  => 'tcp',
@@ -213,5 +215,11 @@ class profile::wmcs::nfs::primary(
         proto  => 'tcp',
         port   => '2049',
         srange => '@resolve((labstore1004.eqiad.wmnet labstore1005.eqiad.wmnet))',
+    }
+
+    ferm::service{ 'cloudbackup_ssh':
+        proto  => 'tcp',
+        port   => '22',
+        srange => "@resolve((${backup_ferm_servers}))",
     }
 }
