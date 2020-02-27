@@ -145,6 +145,7 @@ def main():
                'Update the config of this script').format('\n\t'.join(diff))
         print(msg)
         sys.exit(WARNING)
+    print('No discrepancies')
 
 
 if __name__ == '__main__':
