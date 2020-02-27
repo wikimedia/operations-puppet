@@ -63,7 +63,7 @@ alerting_names = []
 try:
     req = urllib2.Request('{}/api/alerts?dashboardId={}&state=alerting'.format(
         args.grafana_url,
-        args.dashboard_uid))
+        dashboard_id))
     req.add_header(
         'User-Agent',
         'wmf-icinga/{} root@wikimedia.org'.format(os.path.basename(__file__)))
