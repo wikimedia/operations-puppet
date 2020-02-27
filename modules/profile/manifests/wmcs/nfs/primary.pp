@@ -212,6 +212,6 @@ class profile::wmcs::nfs::primary(
     ferm::service { 'labstore_nfs_monitor':
         proto  => 'tcp',
         port   => '2049',
-        srange => '(@resolve((labstore1004.eqiad.wmnet)) @resolve((labstore1005.eqiad.wmnet}), AAAA))',
+        srange => '(@resolve((labstore1004.eqiad.wmnet)) @resolve((labstore1005.eqiad.wmnet)), AAAA))',
     }
 }
