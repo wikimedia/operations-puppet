@@ -1,6 +1,7 @@
 admin::groups:
  - airflow-search-admins
  - analytics-search-users
+ - analytics-admins
 
 profile::hadoop::common::hadoop_cluster_name: 'analytics-hadoop'
 profile::oozie::client::oozie_host: 'an-coord1001.eqiad.wmnet'
