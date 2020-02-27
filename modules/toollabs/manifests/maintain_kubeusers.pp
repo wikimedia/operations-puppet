@@ -28,7 +28,7 @@ class toollabs::maintain_kubeusers(
                         /etc/kubernetes/abac"
 
     systemd::timer::job { 'maintain-kubeusers-timer':
-        ensure                    => 'present',
+        ensure                    => absent,
         description               => 'Automate the process of generating users',
         command                   => $timer_command,
         interval                  => {
