@@ -52,19 +52,9 @@ class profile::toolforge::k8s::client(
         }
     }
 
-    # Due to vast version spread between client and server during the k8s
-    # upgrade, it is necessary to install an old version of kubectl to support
-    # some existing use-cases.  As the upgrade progresses, this will be
-    # included in our repo in a packaged version.  The kubernetes-client
-    # package is still useful for documentation, prehaps -- T215586
+    # Remove once the file is gone
     file { 'kubectl-1.4':
-        ensure         => file,
-        path           => '/usr/local/bin/kubectl',
-        owner          => 'root',
-        group          => 'root',
-        mode           => '0555',
-        source         => 'https://storage.googleapis.com/kubernetes-release/release/v1.4.12/bin/linux/amd64/kubectl',
-        checksum_value => 'e0376698047be47f37f126fcc4724487dcc8edd2ffb993ae5885779786efb597',
-        checksum       => 'sha256',
+        ensure => absent,
+        path   => '/usr/local/bin/kubectl',
     }
 }
