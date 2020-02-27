@@ -67,7 +67,7 @@ class profile::analytics::search::airflow(
         group   => $service_group,
         mode    => '0440',
         content => template('profile/analytics/search/airflow/airflow.cfg.erb'),
-        require => Group['airflow'],
+        require => Group[$service_group],
     }
 
     # Ensure places the daemons will write to are available.
