@@ -1,17 +1,16 @@
 
 [master]
 certname = <%= scope.lookupvar('puppetmaster::server_name') %>
-<% if @is_37_plus >= 0 %>base<% end %>modulepath = /etc/puppet/private/modules:/etc/puppet/modules
+basemodulepath = /etc/puppet/private/modules:/etc/puppet/modules
 
 # puppetmaster($config) settings
 <% @config.sort.each do |setting, value| -%>
 <%= setting %> = <%= value %>
 <% end -%>
 
-<%- if @is_37_plus >= 0 -%>
 always_cache_features = true
 trusted_node_data = true
-<% end -%>
+strict_hostname_checking = true
 # SSL
 ssldir = /var/lib/puppet/server/ssl/
 <% if @server_type == 'standalone' -%>
