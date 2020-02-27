@@ -63,7 +63,7 @@ class profile::configmaster(
         ensure => present,
         owner  => root,
         group  => root,
-        mode   => '0444',
+        mode   => '0555',
         source => 'puppet:///modules/profile/configmaster/disc_desired_state.py',
     }
 
