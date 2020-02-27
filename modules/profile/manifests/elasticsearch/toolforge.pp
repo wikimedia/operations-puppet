@@ -4,7 +4,8 @@
 #
 # filtertags: labs-project-tools
 class profile::elasticsearch::toolforge (
-    Array[Stdlib::Fqdn] $prometheus_nodes = lookup('prometheus_nodes')
+    Array[Stdlib::Fqdn] $prometheus_nodes = lookup('prometheus_nodes'),
+    Elasticsearch::InstanceParams $elastic_settings = lookup('profile::elasticsearch::common_settings'),
 ){
     include ::profile::elasticsearch
 
@@ -17,10 +18,9 @@ class profile::elasticsearch::toolforge (
         before => Class['::elasticsearch'],
     }
 
-    profile::prometheus::elasticsearch_exporter { 'toolforge-elastic-exporter':
-        prometheus_nodes   => $prometheus_nodes,
+    prometheus::elasticsearch_exporter { "localhost:${elastic_settings['http_port']}":
         prometheus_port    => 9108,
-        elasticsearch_port => 9200,
+        elasticsearch_port => $elastic_settings['http_port'],
     }
 
     $prometheus_hosts = join($prometheus_nodes, ' ')
@@ -30,4 +30,11 @@ class profile::elasticsearch::toolforge (
         port   => '22',
         srange => "@resolve((${prometheus_hosts}))",
     }
+
+    ferm::service { 'prometheus_elasticsearch_exporter_9108':
+        proto  => 'tcp',
+        port   => 9108,
+        srange => "@resolve((${prometheus_hosts}))",
+    }
+
 }
