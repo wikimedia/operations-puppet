@@ -68,7 +68,6 @@ lvs::interfaces::vlan_data:
       'lvs2003': 'eno1:208.80.153.8'
       'lvs2004': 'eno2:208.80.153.9'
       'lvs2005': 'eno2:208.80.153.10'
-      'lvs2006': 'eno2:208.80.153.11'
       'lvs2009': 'ens2f1np1:208.80.153.20'
       'lvs2010': 'ens2f1np1:208.80.153.21'
   public1-b-codfw:
@@ -80,7 +79,6 @@ lvs::interfaces::vlan_data:
       'lvs2003': 'eno2:208.80.153.41'
       'lvs2004': 'eno1:208.80.153.36'
       'lvs2005': 'eno1:208.80.153.37'
-      'lvs2006': 'eno1:208.80.153.38'
       'lvs2009': 'ens3f0np0:208.80.153.57'
       'lvs2010': 'ens3f0np0:208.80.153.58'
   public1-c-codfw:
@@ -92,7 +90,6 @@ lvs::interfaces::vlan_data:
       'lvs2003': 'ens1f0:208.80.153.70'
       'lvs2004': 'ens1f0:208.80.153.71'
       'lvs2005': 'ens1f0:208.80.153.72'
-      'lvs2006': 'ens1f0:208.80.153.73'
       'lvs2009': 'ens2f0np0:208.80.153.81'
       'lvs2010': 'ens3f1np1:208.80.153.82'
   public1-d-codfw:
@@ -104,7 +101,6 @@ lvs::interfaces::vlan_data:
       'lvs2003': 'ens1f1:208.80.153.102'
       'lvs2004': 'ens1f1:208.80.153.103'
       'lvs2005': 'ens1f1:208.80.153.104'
-      'lvs2006': 'ens1f1:208.80.153.105'
       'lvs2009': 'ens3f1np1:208.80.153.114'
       'lvs2010': 'ens2f0np0:208.80.153.115'
   private1-a-codfw:
@@ -113,7 +109,6 @@ lvs::interfaces::vlan_data:
     iface:
       'lvs2004': 'eno2:10.192.1.4'
       'lvs2005': 'eno2:10.192.1.5'
-      'lvs2006': 'eno2:10.192.1.6'
       'lvs2009': 'ens2f1np1:10.192.1.9'
       'lvs2010': 'ens2f1np1:10.192.1.13'
   private1-b-codfw:
@@ -134,7 +129,6 @@ lvs::interfaces::vlan_data:
       'lvs2003': 'ens1f0:10.192.33.3'
       'lvs2004': 'ens1f0:10.192.33.4'
       'lvs2005': 'ens1f0:10.192.33.5'
-      'lvs2006': 'ens1f0:10.192.33.6'
       'lvs2010': 'ens3f1np1:10.192.33.10'
   private1-d-codfw:
     id: "2020"
@@ -145,7 +139,6 @@ lvs::interfaces::vlan_data:
       'lvs2003': 'ens1f1:10.192.49.3'
       'lvs2004': 'ens1f1:10.192.49.4'
       'lvs2005': 'ens1f1:10.192.49.5'
-      'lvs2006': 'ens1f1:10.192.49.6'
       'lvs2009': 'ens3f1np1:10.192.49.10'
   public1-esams:
     id: "100"

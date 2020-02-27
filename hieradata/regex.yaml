@@ -225,7 +225,7 @@ swift_servers_per_port:
   swift::storage::servers_per_port: 0
 
 lvs_codfw_backup:
-  __regex: !ruby/regexp /^lvs200[4-6]\.codfw\.wmnet$/
+  __regex: !ruby/regexp /^lvs200[4-5]\.codfw\.wmnet$/
   profile::pybal::primary: false
 
 labtest:
