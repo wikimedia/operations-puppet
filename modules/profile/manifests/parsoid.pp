@@ -8,16 +8,6 @@ class profile::parsoid(
     }
 
     if $use_php {
-
-        require ::profile::mediawiki::scap_proxy
-        require ::profile::mediawiki::common
-        require ::profile::mediawiki::nutcracker
-        require ::profile::mediawiki::mcrouter_wancache
-        require ::profile::prometheus::mcrouter_exporter
-
-        # proxy for connection to other servers
-        require ::profile::services_proxy
-
         require ::profile::mediawiki::php
         require ::profile::mediawiki::php::monitoring
         include ::profile::mediawiki::php::restarts
