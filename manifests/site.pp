@@ -354,7 +354,7 @@ node 'db2112.codfw.wmnet' {
 }
 
 # codfw replicas
-node /^db2(071|072|092|103|111|116|130)\.codfw\.wmnet/ {
+node /^db2(071|072|092|103|116|130)\.codfw\.wmnet/ {
     role(mariadb::core)
 }
 
@@ -499,7 +499,7 @@ node 'db1109.eqiad.wmnet' {
 }
 
 # See also db1099 and db1101 below
-node /^db1(092|087|104|126)\.eqiad\.wmnet/ {
+node /^db1(092|087|104|111|126)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
 
