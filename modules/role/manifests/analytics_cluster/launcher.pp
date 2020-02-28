@@ -23,6 +23,8 @@ class role::analytics_cluster::launcher {
     # Run Hadoop/Hive reportupdater jobs here.
     include ::profile::reportupdater::jobs
 
+    include ::profile::statistics::dataset_mount
+
     include ::profile::analytics::refinery::job::import_mediawiki_dumps
     include ::profile::analytics::refinery::job::import_wikidata_entities_dumps
 
