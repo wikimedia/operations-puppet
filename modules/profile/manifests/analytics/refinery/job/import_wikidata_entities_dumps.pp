@@ -7,12 +7,14 @@
 
 class profile::analytics::refinery::job::import_wikidata_entities_dumps (
     $use_kerberos = lookup('profile::analytics::refinery::job::import_wikidata_entities_dumps::use_kerberos', { 'default_value' => false }),
+    $ensure_timers = lookup('profile::analytics::refinery::job::import_wikidata_entities_dumps::ensure_timers', { 'default_value' => 'present' }),
 ) {
 
     $wikidata_local_source = '/mnt/data/xmldatadumps/public/wikidatawiki/entities/'
 
     # Import all-json dumps
     profile::analytics::refinery::job::import_wikidata_dumps_config { 'refinery-import-wikidata-all-json-dumps':
+        ensure            => $ensure_timers,
         include_pattern   => '/*/*.json.bz2',
         local_source      => $wikidata_local_source,
         hdfs_destination  => '/wmf/data/raw/wikidata/dumps/all_json',
@@ -23,6 +25,7 @@ class profile::analytics::refinery::job::import_wikidata_entities_dumps (
 
     # Import all-ttl dumps
     profile::analytics::refinery::job::import_wikidata_dumps_config { 'refinery-import-wikidata-all-ttl-dumps':
+        ensure            => $ensure_timers,
         include_pattern   => '/*/*-all-BETA.ttl.bz2',
         local_source      => $wikidata_local_source,
         hdfs_destination  => '/wmf/data/raw/wikidata/dumps/all_ttl',

@@ -20,6 +20,7 @@ profile::presto::discovery_uri: https://an-coord1001.eqiad.wmnet:8281
 profile::presto::use_kerberos: true
 
 profile::analytics::refinery::job::import_mediawiki_dumps::ensure_timers: 'absent'
+profile::analytics::refinery::job::import_wikidata_entities_dumps::ensure_timers: 'absent'
 
 # Hive Client settings.
 # Hive configuration is common to multiple clients, but because of role based
