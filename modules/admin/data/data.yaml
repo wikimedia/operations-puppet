@@ -286,7 +286,7 @@ groups:
               niharika29, ryanmax, afandian2, jgleeson, toddleroux, srishakatux, dsharpe, eyener,
               esanders, sukhe, jfishback, iflorez, mayakpwiki, conniecc1, abi, mgerlach, dedcode,
               lexnasser, kevinbazira, keepit-ssh, jiji, cohi, mstyles, accraze, kzeta, snowick,
-              aarora, zpapierski, knissen, jiawang, jmorgan]
+              aarora, zpapierski, knissen, jiawang, jmorgan, mholloway-shell]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata]
   analytics-admins:
