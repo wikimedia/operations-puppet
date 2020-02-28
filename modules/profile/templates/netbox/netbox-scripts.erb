@@ -1,0 +1,33 @@
+#####################################################################
+### THIS FILE IS MANAGED BY PUPPET
+#####################################################################
+# vim: filetype=apache
+<VirtualHost *:<%= @apache_port %>>
+    ServerName <%= @fqdn %>
+    ServerAdmin noc@wikimedia.org
+
+<%- if @deploy_acme -%>
+    SSLEngine on
+    SSLCertificateFile /etc/acmecerts/netbox/live/ec-prime256v1.crt
+    SSLCertificateChainFile /etc/acmecerts/netbox/live/ec-prime256v1.chain.crt
+    SSLCertificateKeyFile /etc/acmecerts/netbox/live/ec-prime256v1.key
+    SSLCertificateFile /etc/acmecerts/netbox/live/rsa-2048.crt
+    SSLCertificateChainFile /etc/acmecerts/netbox/live/rsa-2048.chain.crt
+    SSLCertificateKeyFile /etc/acmecerts/netbox/live/rsa-2048.key
+    <%= @ssl_settings.join("\n    ") %>
+<%- end -%>
+
+    # https://httpoxy.org/
+    RequestHeader unset Proxy early
+
+    ProxyPreserveHost On
+
+    ProxyPass / http://127.0.0.1:<%= @service_port %>/
+    ProxyPassReverse / http://127.0.0.1:<%= @service_port %>/
+
+    # Possible values include: debug, info, notice, warn, error, crit,
+    # alert, emerg.
+    LogLevel warn
+    CustomLog /var/log/apache2/<%= @fqdn %>scripts-access.log wmf
+    ErrorLog /var/log/apache2/<%= @fqdn %>-error.log
+</VirtualHost>

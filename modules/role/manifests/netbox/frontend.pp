@@ -17,6 +17,7 @@ class role::netbox::frontend {
 
     include ::profile::netbox
     include ::profile::netbox::automation
+    include ::profile::netbox::scripts
     include ::profile::base::firewall
     # Fixme consider adding this later
     # include ::profile::backup::host
