@@ -546,12 +546,12 @@ groups:
   parsoid-test-roots:
     gid: 772
     description: T125166 T125435
-    members: [ssastry, sbailey]
+    members: [ssastry, sbailey, arlolra, cscott]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   parsoid-test-admins:
     gid: 773
     description: parsing team members for parsoid regression testing adminstration
-    members: [arlolra, cscott]
+    members: []
     privileges: ['ALL = NOPASSWD: /usr/sbin/service parsoid *',
                'ALL = NOPASSWD: /usr/sbin/service parsoid-rt *',
                'ALL = NOPASSWD: /usr/sbin/service parsoid-rt-client *',
