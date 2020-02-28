@@ -1,28 +1,27 @@
 # Warning: This file is managed by Puppet!
-test
 # Production hosts
 
 [client]
 port   = 3306
-socket = /run/mysqld/mysqld.sock
+socket = <%= @socket %>
 
 [mysqld]
 
 # administrative options
 user       = mysql
-socket     = /run/mysqld/mysqld.sock
+socket     = <%= @socket %>
 port       = 3306
 #extra-port = 3307
-basedir    = /opt/wmf-percona-server80
-datadir    = /srv/sqldata
-tmpdir     = /srv/tmp
-server_id  = 171978925
+basedir    = <%= @basedir %>
+datadir    = <%= @datadir %>
+tmpdir     = <%= @tmpdir %>
+server_id  = <%= @server_id %>
 # gtid_domain_id flag is needed for multisource replication and GTID.
 # Strictly it is only needed on masters or servers that can potentially be
 # masters but for consistency it should be set in all of them.
 # https://mariadb.com/kb/en/mariadb/gtid/
 
-# gtid_domain_id  = 171978925
+# gtid_domain_id  = <%= @gtid_domain_id %>
 
 skip-external-locking
 skip-name-resolve
@@ -36,9 +35,20 @@ read_only = 1
 # secure_file_priv               = /dev/null
 # thread and connection handling
 default_authentication_plugin  = mysql_native_password
+# thread and connection handling
 thread_handling                = pool-of-threads
+<% if @replication_role == 'master' -%>
+thread_pool_stall_limit        = 10
+<% else -%>
 thread_pool_stall_limit        = 100
+<% end -%>
+<% if Float(@memorysize.split[0]) > 200.0 -%>
 thread_pool_size               = 64
+<% elsif @processorcount <= 32 -%>
+thread_pool_size               = 32
+<% else -%>
+thread_pool_size               = <%= @processorcount %>
+<% end -%>
 thread_pool_max_threads        = 2000
 max_connections                = 10000
 back_log                       = 500
@@ -62,7 +72,7 @@ log-slave-updates
 sync-binlog                    = 1
 binlog_cache_size              = 10M
 max-binlog_size                = 1000M
-binlog-format                  = ROW
+binlog-format                  = <%= @binlog_format %>
 expire-logs-days               = 30
 slave-transaction-retries      = 4294967295
 
@@ -74,16 +84,36 @@ table-definition-cache         = 40000
 local_infile                   = 0
 open-files-limit               = 200000
 
+<% if @semi_sync != 'off' -%>
 # Semi-sync replication
 # TODO: use plugin_load_add once T133780 is fixed
 # In case MySQL doesn't start due to this plugin failing, comment the next
 # 'plugin_load' line and all the 'rpl_semi_sync_*' lines.
+<% end -%>
+<% if @semi_sync == 'both' -%>
+plugin_load                        = rpl_semi_sync_master=semisync_master.so;rpl_semi_sync_slave=semisync_slave.so
+<% elsif @semi_sync == 'master' -%>
+plugin_load                        = rpl_semi_sync_master=semisync_master.so
+<% elsif @semi_sync == 'slave' -%>
 plugin_load                        = rpl_semi_sync_slave=semisync_slave.so
+<% end -%>
+<% if @semi_sync == 'master' or @semi_sync == 'both' -%>
+rpl_semi_sync_master_enabled       = 1
+rpl_semi_sync_master_timeout       = 100
+rpl_semi_sync_master_wait_no_slave = 0
+<% end -%>
+<% if @semi_sync == 'slave' or @semi_sync == 'both' -%>
 rpl_semi_sync_slave_enabled        = 1
+<% end -%>
 
 # optimizer options
 #sql-mode                       = IGNORE_BAD_TABLE_OPTIONS
+<% if @basedir == '/opt/wmf-mariadb104' -%>
+# Disable rowid_filter on 10.4 optimizer - T245489
+#optimizer_switch               = 'mrr=on,mrr_cost_based=on,mrr_sort_keys=on,optimize_join_buffer_size=on,rowid_filter=off'
+<% else %>
 #optimizer_switch               = 'mrr=on,mrr_cost_based=on,mrr_sort_keys=on,optimize_join_buffer_size=on'
+<% end -%>
 #use-stat-tables                = preferably
 
 # charsets and collations
@@ -94,7 +124,7 @@ collation_server               = binary
 # InnoDB options
 default-storage-engine         = InnoDB
 innodb_file_per_table          = 1
-innodb_buffer_pool_size        = 378G
+innodb_buffer_pool_size        = <%= (Float(@memorysize.split[0]) * 0.75).round %>G
 innodb_log_file_size           = 2G
 innodb_flush_log_at_trx_commit = 1
 innodb_flush_method            = O_DIRECT
@@ -110,18 +140,16 @@ innodb_strict_mode             = 1
 innodb_buffer_pool_load_at_startup  = 1
 innodb_buffer_pool_dump_at_shutdown = 1
 
-
-
-
+<% if @ssl == 'on' or @ssl == 'puppet-cert' %>
 # ssl
 ssl-ca=/etc/ssl/certs/Puppet_Internal_CA.pem
 ssl-cert=/etc/mysql/ssl/cert.pem
 ssl-key=/etc/mysql/ssl/server.key
 ssl-cipher=TLSv1.2
-
+<% end %>
 
 # profiling and metrics
-
+<% if @p_s == 'on' %>
 # Enabling performance_schema (disabled by default in MariaDB10)
 performance_schema                                     = 1
 # downsizing performance schema memory usage: T99485
@@ -139,7 +167,11 @@ performance_schema_max_mutex_instances                 = 5000
 performance_schema_max_rwlock_instances                = 2000
 performance_schema_max_socket_instances                = 500
 performance_schema_max_table_instances                 = 1000
-
+<% else %>
+# only enable userstat if p_s is disabled
+performance_schema                                     = 0
+userstat                                               = 1
+<% end %>
 
 [mysqldump]
 
