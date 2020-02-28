@@ -546,7 +546,7 @@ groups:
   parsoid-test-roots:
     gid: 772
     description: T125166 T125435
-    members: [ssastry]
+    members: [ssastry, sbailey]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   parsoid-test-admins:
     gid: 773
@@ -3631,6 +3631,14 @@ users:
     gid: 500
     ssh_keys:
      - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOiHafWCjGy8aC+Xvq1YoqGHkOnEz4HjMhw+Bpo/4pkK moriel@mowmf'
+  sbailey:
+    ensure: present
+    realname: Shannon Bailey
+    email: sbailey@wikimedia.org
+    uid: 18035
+    gid: 500
+    ssh_keys:
+     - 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDCYenmO37Azx5fr7WO5F107ZL6g3o5AAgkLsGtheyCC9soguCltps4a2MBrw3nBMVXRPFSfJiTvsWARUC40d0oWxcqpXkRtHrY4mNzMMMz8lFzxRQ8ts+zKdU2KZJ8vaEhCnVmRemvIGE8xlaVPEleaAeyAZOjKxBaPVHB9CX7b0QgnZ+RTZRXi9BD1Aa0gnYurwJ5tA1nwPub0MRtGrkXhVaG78rUpkHECeM5BbmQoZnrvL4J9FdRkMkifEyHop+75RweUNbFhkiQ6pNia3MSMBC2tSYSL8IaLCqha8lFDkwHBNpzG09mpzFw1La6Niuth3CQ/72U9dQRvQFk+/Mp shannonbailey@wmf1287.local'
 ldap_only_users:
   abartov:
     ensure: present
@@ -3843,10 +3851,6 @@ ldap_only_users:
     ensure: present
     realname: Rummana Yasmeen
     email: ryasmeen@wikimedia.org
-  sbailey:
-    ensure: present
-    realname: Shannon Bailey
-    email: sbailey@wikimedia.org
   scfc:
     ensure: present
     realname: Tim Landscheidt
