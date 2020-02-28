@@ -26,7 +26,7 @@
        Require all granted
     </Directory>
     # Only selected paths are allowed here
-    RewriteCond %{REQUEST_URI} !^/(w/health-check|rpc/RunSingleJob|rpc/RunJobs)\.php
+    RewriteCond %{REQUEST_URI} !^/(w/health-check|rpc/RunSingleJob)\.php
     RewriteRule ^ - [R=404,L]
 
     <FilesMatch "\.php$">
@@ -49,7 +49,7 @@
     </Directory>
 
     # Only selected paths are allowed here
-    RewriteCond %{REQUEST_URI} !^/(w/health-check|rpc/RunSingleJob|rpc/RunJobs)\.php
+    RewriteCond %{REQUEST_URI} !^/(w/health-check|rpc/RunSingleJob)\.php
     RewriteRule ^ - [R=404,L]
 
     <FilesMatch "\.php$">
