@@ -1,4 +1,4 @@
 # db1114
-mariadb::shard: 'test-s1'
-mariadb::package: 'wmf-percona-server80'
+mariadb::shard: 's8'
+mariadb::package: 'wmf-mariadb104'
 profile::base::notifications: disabled
