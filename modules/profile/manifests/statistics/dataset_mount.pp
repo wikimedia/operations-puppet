@@ -5,7 +5,7 @@ class profile::statistics::dataset_mount (
     $dumps_active_server = lookup('dumps_dist_active_web'),
 ){
 
-    $hosts_with_dataset_mount = ['stat1006', 'stat1007']
+    $hosts_with_dataset_mount = ['stat1006', 'stat1007', 'an-launcher1001']
 
     if $::hostname in $hosts_with_dataset_mount {
         class { '::statistics::dataset_mount':
