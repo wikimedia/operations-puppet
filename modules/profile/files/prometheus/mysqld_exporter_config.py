@@ -115,7 +115,7 @@ def transform_data_to_prometheus(data):
     for instance in data:
         # skip weird multisource labsdb hosts, will deal with them later
         if instance['name'] in SPECIAL_MULTISOURCE_HOSTS:
-            multisource_hosts.add(get_socket(instance['name']))
+            multisource_hosts.add(instance['name'])
             continue
         name = get_socket(instance['name'])
         group = instance['group']
