@@ -499,7 +499,7 @@ node 'db1109.eqiad.wmnet' {
 }
 
 # See also db1099 and db1101 below
-node /^db1(092|087|104|114|126)\.eqiad\.wmnet/ {
+node /^db1(092|087|104|126)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
 
@@ -685,6 +685,11 @@ node 'db2100.codfw.wmnet' {
 }
 node 'db2101.codfw.wmnet' {
     role(mariadb::dbstore_multiinstance)
+}
+
+# backup testing hosts - replicates from 10.4
+node 'db1114.eqiad.wmnet' {
+    role(mariadb::core_test)
 }
 
 node 'db2102.codfw.wmnet' {
