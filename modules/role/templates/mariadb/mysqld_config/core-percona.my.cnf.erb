@@ -1,0 +1,149 @@
+# Warning: This file is managed by Puppet!
+test
+# Production hosts
+
+[client]
+port   = 3306
+socket = /run/mysqld/mysqld.sock
+
+[mysqld]
+
+# administrative options
+user       = mysql
+socket     = /run/mysqld/mysqld.sock
+port       = 3306
+#extra-port = 3307
+basedir    = /opt/wmf-percona-server80
+datadir    = /srv/sqldata
+tmpdir     = /srv/tmp
+server_id  = 171978925
+# gtid_domain_id flag is needed for multisource replication and GTID.
+# Strictly it is only needed on masters or servers that can potentially be
+# masters but for consistency it should be set in all of them.
+# https://mariadb.com/kb/en/mariadb/gtid/
+
+# gtid_domain_id  = 171978925
+
+skip-external-locking
+skip-name-resolve
+#temp-pool
+
+# Always start in read_only mode.
+# Master selection will be handled by orchestration.
+read_only = 1
+
+# prevent imports/exports to arbitrary dirs
+# secure_file_priv               = /dev/null
+# thread and connection handling
+default_authentication_plugin  = mysql_native_password
+thread_handling                = pool-of-threads
+thread_pool_stall_limit        = 100
+thread_pool_size               = 64
+thread_pool_max_threads        = 2000
+max_connections                = 10000
+back_log                       = 500
+#extra_max_connections          = 10
+max_connect_errors             = 1000000000
+max_allowed_packet             = 32M
+connect_timeout                = 3
+#query_cache_size               = 0
+#query_cache_type               = 0
+event_scheduler                = 1
+#log-warnings                   = 0
+thread_stack                   = 192K
+thread_cache_size              = 300
+interactive_timeout            = 28800
+wait_timeout                   = 3600
+transaction-isolation          = REPEATABLE-READ
+
+# binary log an replication options
+log-bin
+log-slave-updates
+sync-binlog                    = 1
+binlog_cache_size              = 10M
+max-binlog_size                = 1000M
+binlog-format                  = ROW
+expire-logs-days               = 30
+slave-transaction-retries      = 4294967295
+
+# table limits
+tmp-table-size                 = 64M
+max-heap-table-size            = 64M
+table-open-cache               = 50000
+table-definition-cache         = 40000
+local_infile                   = 0
+open-files-limit               = 200000
+
+# Semi-sync replication
+# TODO: use plugin_load_add once T133780 is fixed
+# In case MySQL doesn't start due to this plugin failing, comment the next
+# 'plugin_load' line and all the 'rpl_semi_sync_*' lines.
+plugin_load                        = rpl_semi_sync_slave=semisync_slave.so
+rpl_semi_sync_slave_enabled        = 1
+
+# optimizer options
+#sql-mode                       = IGNORE_BAD_TABLE_OPTIONS
+#optimizer_switch               = 'mrr=on,mrr_cost_based=on,mrr_sort_keys=on,optimize_join_buffer_size=on'
+#use-stat-tables                = preferably
+
+# charsets and collations
+character_set_server           = binary
+character_set_filesystem       = binary
+collation_server               = binary
+
+# InnoDB options
+default-storage-engine         = InnoDB
+innodb_file_per_table          = 1
+innodb_buffer_pool_size        = 378G
+innodb_log_file_size           = 2G
+innodb_flush_log_at_trx_commit = 1
+innodb_flush_method            = O_DIRECT
+innodb_thread_concurrency      = 0
+innodb_io_capacity             = 1000
+#innodb_stats_sample_pages      = 16
+innodb_stats_method            = nulls_unequal
+innodb_strict_mode             = 1
+#aria_pagecache_buffer_size     = 1G
+#join_cache_level               = 8
+
+# dump and load innodb buffer at start and stop
+innodb_buffer_pool_load_at_startup  = 1
+innodb_buffer_pool_dump_at_shutdown = 1
+
+
+
+
+# ssl
+ssl-ca=/etc/ssl/certs/Puppet_Internal_CA.pem
+ssl-cert=/etc/mysql/ssl/cert.pem
+ssl-key=/etc/mysql/ssl/server.key
+ssl-cipher=TLSv1.2
+
+
+# profiling and metrics
+
+# Enabling performance_schema (disabled by default in MariaDB10)
+performance_schema                                     = 1
+# downsizing performance schema memory usage: T99485
+performance_schema_max_thread_instances                = 500
+performance_schema_max_cond_instances                  = 1000
+performance_schema_accounts_size                       = 300
+performance_schema_hosts_size                          = 300
+performance_schema_events_statements_history_size      = 10
+performance_schema_events_statements_history_long_size = 1000
+performance_schema_events_waits_history_size           = 10
+performance_schema_events_waits_history_long_size      = 1000
+performance_schema_events_stages_history_size          = 10
+performance_schema_events_stages_history_long_size     = 1000
+performance_schema_max_mutex_instances                 = 5000
+performance_schema_max_rwlock_instances                = 2000
+performance_schema_max_socket_instances                = 500
+performance_schema_max_table_instances                 = 1000
+
+
+[mysqldump]
+
+quick
+max_allowed_packet = 32M
+
+#!includedir /etc/mysql/conf.d/
