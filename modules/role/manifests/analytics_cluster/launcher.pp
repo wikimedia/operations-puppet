@@ -23,6 +23,8 @@ class role::analytics_cluster::launcher {
     # Run Hadoop/Hive reportupdater jobs here.
     include ::profile::reportupdater::jobs
 
+    include ::profile::analytics::refinery::job::import_mediawiki_dumps
+
     include ::profile::kerberos::client
     include ::profile::kerberos::keytabs
 
