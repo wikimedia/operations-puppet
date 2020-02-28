@@ -1495,16 +1495,43 @@ node /^mw1266\.eqiad\.wmnet$/ {
     role(mediawiki::appserver)
 }
 
+# mw1385 - mw1392 are in rack A5
+node /^mw13(8[5-9]|9[0-2])\.eqiad\.wmnet$/ {
+    role(spare::system)
+}
+
 # mw1267 - mw1275 are in rack A7
 node /^mw12(6[7-9]|7[0-5])\.eqiad\.wmnet$/ {
     role(mediawiki::appserver)
 }
 
+# Row B
+
+# mw1393 - mw1398 are in rack B5
+node /^mw139[3-8]\.eqiad\.wmnet$/ {
+    role(spare::system)
+}
+
+# mw1399 - mw1404 are in rack B8
+node /^mw1(399|40[0-4])\.eqiad\.wmnet$/ {
+    role(spare::system)
+}
+
 # Row C
+
+# mw1405 - mw1407 are in rack C3
+node /^mw140[5-7]\.eqiad\.wmnet$/ {
+    role(spare::system)
+}
 
 # mw1319-33 are in rack C6
 node /^mw13(19|2[0-9]|3[0-3])\.eqiad\.wmnet$/ {
     role(mediawiki::appserver)
+}
+
+# mw1408 - mw1413 are in rack C8
+node /^mw14(0[8-9]|1[0-3])\.eqiad\.wmnet$/ {
+    role(spare::system)
 }
 
 # Row D
