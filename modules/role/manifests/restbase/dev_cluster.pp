@@ -5,5 +5,8 @@
 class role::restbase::dev_cluster {
     # Just includes base, no LVS etc.
     include ::role::restbase::base
-    system::role { 'restbase': description => "Restbase-dev (${::realm})" }
+
+    system::role { 'restbase::dev_cluster':
+        description => "Restbase-dev (${::realm})",
+    }
 }
