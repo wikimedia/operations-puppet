@@ -235,5 +235,9 @@ class aptrepo (
         ensure => present,
     }
 
+    file_line { 'reprepro_basedir':
+      ensure => present,
+      path   => '/root/.bashrc',
+      line   => "export REPREPRO_BASE_DIR=${basedir}  # Managed by puppet",
+    }
 }
-
