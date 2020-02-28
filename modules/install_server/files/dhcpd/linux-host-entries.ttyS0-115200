@@ -84,7 +84,7 @@ host apt1001 {
 }
 
 host apt2001 {
-    hardware ethernet aa:00:00:40:bd:05;
+    hardware ethernet aa:00:00:26:f2:33;
     fixed-address apt2001.wikimedia.org;
 }
 
