@@ -354,7 +354,7 @@ node 'db2112.codfw.wmnet' {
 }
 
 # codfw replicas
-node /^db2(071|072|092|103|116|130)\.codfw\.wmnet/ {
+node /^db2(071|072|092|103|111|116|130)\.codfw\.wmnet/ {
     role(mariadb::core)
 }
 
@@ -413,7 +413,7 @@ node /^db1(081|084|091|121)\.eqiad\.wmnet/ {
 }
 
 # s4-test hosts on eqiad
-node /^db1(077|111)\.eqiad\.wmnet/ {
+node /^db1(077)\.eqiad\.wmnet/ {
     role(mariadb::core_test)
 }
 

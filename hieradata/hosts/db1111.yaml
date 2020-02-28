@@ -1,5 +1,4 @@
 # db1111
-mariadb::shard: 'test-s4'
-mariadb::mysql_role: 'master'
-mariadb::binlog_format: 'STATEMENT'
+mariadb::shard: 's8'
+mariadb::package: 'wmf-mariadb104'
 profile::base::notifications: disabled
