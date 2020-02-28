@@ -168,7 +168,7 @@ class profile::prometheus::ops (
       {
         'job_name'        => 'mysql-labs',
         'file_sd_configs' => [
-          { 'files' => [ "${targets_path}/mysql-labs_*.yaml"] },
+          { 'files' => [ "${targets_path}/mysql-labsdb_*.yaml"] },
         ]
       },
       {
