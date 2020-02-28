@@ -552,18 +552,27 @@ class profile::prometheus::ops (
     # envoy proxy
     $envoy_jobs = [
         {
-        'job_name'        => 'php-fpm',
-        'metrics_path'    => '/stats/prometheus',
-        'scheme'          => 'http',
-        'file_sd_configs' => [
+        'job_name'          => 'envoy',
+        'metrics_path'      => '/stats/prometheus',
+        'scheme'            => 'http',
+        'file_sd_configs'   => [
             { 'files' => [ "${targets_path}/_*.yaml" ]}
         ],
+        # Envoy produces a ton of metrics, but for now we're just interested in
+        # upstream and downstream requests latencies and counts, so just keep those
+        # and nothing else.
+        'metrics_relabel_configs' => [
+          { 'source_labels' => ['__name__'],
+            'regex'         =>'^envoy_(http_down|cluster_up)stream_rq.*$',
+            'action'        => 'keep'
+          },
+        ]
         },
     ]
     prometheus::class_config{ "envoy_${::site}":
         dest       => "${targets_path}/envoy_${::site}.yaml",
         site       => $::site,
-        class_name => 'profile::tlsproxy::envoy',
+        class_name => 'profile::envoy',
         port       => 9631,
     }
 
@@ -1460,7 +1469,8 @@ class profile::prometheus::ops (
             $mjolnir_jobs, $rsyslog_jobs, $php_jobs, $php_fpm_jobs, $icinga_jobs, $docker_registry_jobs,
             $gerrit_jobs, $routinator_jobs, $rpkicounter_jobs, $varnishkafka_jobs, $bird_jobs, $ncredir_jobs,
             $cloud_dev_pdns_jobs, $cloud_dev_pdns_rec_jobs, $bacula_jobs, $poolcounter_exporter_jobs,
-            $apereo_cas_jobs, $atlas_exporter_jobs, $exported_blackbox_jobs, $cadvisor_jobs
+            $apereo_cas_jobs, $atlas_exporter_jobs, $exported_blackbox_jobs, $cadvisor_jobs,
+            $envoy_jobs
         ),
         global_config_extra   => $config_extra,
     }
