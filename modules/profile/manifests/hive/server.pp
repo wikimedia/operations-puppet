@@ -20,9 +20,10 @@ class profile::hive::server(
         srange => $ferm_srange,
     }
 
+    include ::profile::hive::monitoring::server
+
     # Include icinga alerts if production realm.
     if $monitoring_enabled {
-        include ::profile::hive::monitoring::server
 
         nrpe::monitor_service { 'hive-server2':
             description   => 'Hive Server',
