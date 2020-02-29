@@ -52,20 +52,9 @@ profile::puppetdb::microservice::enabled: true
 profile::puppetdb::microservice::port: 8090
 profile::puppetdb::microservice::uwsgi_port: 8091
 profile::puppetdb::microservice::allowed_hosts: []
-profile::puppetmaster::frontend::canary_hosts: []
 puppetmaster::servers:
   "%{hiera('puppetmaster')}":
     - { worker: "%{hiera('puppetmaster')}", loadfactor: 10 }
-puppetmaster::locale_servers: {}
-
-# We don't use these feature on VMs.
-profile::backup::enable: false
-profile::backup::ferm_directors: []
-profile::backup::pool: ''
-profile::backup::director: 'backup.example.com'
-profile::backup::days: []
-profile::puppetmaster::common::puppetdb_hosts: []
-profile::puppetmaster::common::command_broadcast: false
 
 # Default to Dummy authenticator in JupyterHubs in labs
 jupyterhub::authenticator: dummy
@@ -268,9 +257,6 @@ jenkins_agent_username: 'jenkins-deploy'
 # Don't use prod-style firewalls for k8s nodes
 profile::kubernetes::node::prod_firewalls: false
 
-# A dummy, empty prometheus config for default behavior on VMs
-prometheus_nodes: []
-
 mail_smarthost:
 - 'mx-out01.wmflabs.org'
 - 'mx-out02.wmflabs.org'
@@ -292,11 +278,6 @@ scap::version: present
 
 profile::base::debdeploy::exclude_filesystems:
   - nfs4
-
-# Firewall logging
-profile::base::firewall::enable_logging: true
-profile::base::firewall::log::log_rate: 1/second
-profile::base::firewall::log::log_burst: 5
 
 profile::base::systemd::cpu_accounting: 'no'
 profile::base::systemd::blockio_accounting: 'no'
