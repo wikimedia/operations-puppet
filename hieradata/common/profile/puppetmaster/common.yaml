@@ -1,1 +1,2 @@
 profile::puppetmaster::common::command_broadcast: false
+profile::puppetmaster::common::storeconfigs: activerecord

@@ -35,13 +35,14 @@
 #   Default: 'admin'
 #
 class profile::tlsproxy::service(
-    String $cert_domain_name = lookup('profile::tlsproxy::service::cert_domain_name'),
-    Array[Stdlib::Port] $upstream_ports = lookup('profile::tlsproxy::service::upstream_ports'),
-    String $ocsp_proxy = lookup('http_proxy'),
-    String $notes_url = lookup('profile::tlsproxy::service::notes_url'),
-    String $check_uri = lookup('profile::tlsproxy::service::check_uri', '/'),
-    Optional[String] $check_service = lookup('profile::tlsproxy::service::check_service', { 'default_value' => undef }),
-    String $contact_group = lookup('profile::tlsproxy::service::contact_group', { 'default_value' => 'admin' }),
+    String              $ocsp_proxy       = lookup('http_proxy'),
+    String              $cert_domain_name = lookup('profile::tlsproxy::service::cert_domain_name'),
+    Array[Stdlib::Port] $upstream_ports   = lookup('profile::tlsproxy::service::upstream_ports'),
+    String              $notes_url        = lookup('profile::tlsproxy::service::notes_url'),
+    String              $check_uri        = lookup('profile::tlsproxy::service::check_uri',),
+    String              $contact_group    = lookup('profile::tlsproxy::service::contact_group'),
+    Optional[String]    $check_service    = lookup('profile::tlsproxy::service::check_service',
+                                                  {'default_value' => undef}),
 ) {
     tlsproxy::localssl { $cert_domain_name:
         server_name     => $cert_domain_name,
