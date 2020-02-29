@@ -18,9 +18,10 @@ class profile::hive::metastore(
         srange => $ferm_srange,
     }
 
+    require ::profile::hive::monitoring::metastore
+
     # Include icinga alerts if production realm.
     if $monitoring_enabled {
-        require ::profile::hive::monitoring::metastore
 
         nrpe::monitor_service { 'hive-metasore':
             description   => 'Hive Metastore',
