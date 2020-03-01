@@ -61,9 +61,6 @@ cache::alternate_domains:
     director: 'gerrit'
   git.wikimedia.org:
     director: 'phabricator'
-  grafana-labs-admin.wikimedia.org:
-    director: 'cloudmetrics1002'
-    caching: 'pass'
   grafana-labs.wikimedia.org:
     director: 'cloudmetrics1002'
     caching: 'pass'
