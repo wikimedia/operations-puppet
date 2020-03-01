@@ -1,10 +1,4 @@
-profile::grafana::readonly_domain: grafana.wikimedia.org
-profile::grafana::ldap_editor_description: nda/ops/wmf/grafana-admin
-profile::grafana::ldap_edit_groups:
-  - cn=ops,ou=groups,dc=wikimedia,dc=org
-  - cn=nda,ou=groups,dc=wikimedia,dc=org
-  - cn=wmf,ou=groups,dc=wikimedia,dc=org
-  - cn=grafana-admin,ou=groups,dc=wikimedia,dc=org
+profile::grafana::domain: grafana.wikimedia.org
 profile::grafana::wpt_graphite_proxy_port: 33333
 profile::grafana::config:
   auth.proxy:

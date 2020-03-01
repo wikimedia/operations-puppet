@@ -3,15 +3,11 @@
 # Grafana is a dashboarding webapp for Graphite.
 #
 class profile::grafana (
-    $readonly_domain=hiera('profile::grafana::readonly_domain'),
-    $admin_domain=hiera('profile::grafana::admin_domain', undef),
+    $domain=hiera('profile::grafana::domain'),
     $secret_key=hiera('profile::grafana::secret_key'),
     $admin_password=hiera('profile::grafana::admin_password'),
-    $ldap_editor_description=hiera('profile::grafana::ldap_editor_description'),
-    $ldap_editor_groups=hiera('profile::grafana::ldap_edit_groups'),
-    $config=hiera('profile::grafana::config', {}),
-    $ldap=hiera('profile::grafana::ldap', undef), # Grafana-specific LDAP settings, used by >= 5
-    $ldap_config=lookup('ldap', Hash, hash, {}), # Central LDAP settings
+    $config=lookup('profile::grafana::config', {'default_value' => {}}),
+    $ldap=lookup('profile::grafana::ldap', {'default_value' => undef}), # Grafana-specific LDAP settings, used by >= 5
     $wpt_graphite_proxy_port=lookup('profile::grafana::wpt_graphite_proxy_port', {'default_value' => undef}),
 ) {
 
@@ -32,7 +28,7 @@ class profile::grafana (
         # instance acting as a reverse-proxy.
         'server'     => {
             http_addr   => '127.0.0.1',
-            domain      => $readonly_domain,
+            domain      => $domain,
             protocol    => 'http',
             enable_gzip => true,
         },
@@ -110,16 +106,6 @@ class profile::grafana (
         srange => '$CACHES',
     }
 
-    # LDAP configuration. Interpolated into the Apache site template
-    # to provide mod_authnz_ldap-based user authentication.
-    $auth_ldap = {
-        name          => $ldap_editor_description,
-        bind_dn       => 'cn=proxyagent,ou=profile,dc=wikimedia,dc=org',
-        bind_password => $passwords::ldap::production::proxypass,
-        url           => "ldaps://${ldap_config[ro-server]} ${ldap_config[ro-server-fallback]}/ou=people,dc=wikimedia,dc=org?cn",
-        groups        => $ldap_editor_groups,
-    }
-
     # Override the default home dashboard with something custom.
     # This will be doable via a preference in the future. See:
     # <https://groups.io/org/groupsio/grafana/thread/home_dashboard_in_grafana_2_0/43631?threado=120>
@@ -137,71 +123,15 @@ class profile::grafana (
         require => Package['grafana'],
     }
 
-    # Note: As of 2018-06-27 parts of this are no longer true, at least for
-    # production. Production now creates accounts natively in grafana via LDAP
-    # integration.
-    #
-    # We disable account creation, because accounts are created
-    # automagically based on the X-WEBAUTH-USER, which is either set
-    # to the LDAP user (if accessing the site via the admin grafana vhost)
-    # or 'Anonymous'. But we need to have an 'Anonymous' user in the first
-    # place. To accomplish that, we use a small Python script that directly
-    # directly inserts the user into Grafana's sqlite database.
-    #
-    # If you are reading this comment because something broke and you are
-    # trying to figure out why, it is probably because Grafana's database
-    # schema changed. You can nuke this script and achieve the same result
-    # by temporarily commenting out the allow_signups line in
-    # /etc/grafana/grafana.ini and removing the restriction on POST and
-    # PUT in /etc/apache2/sites-enabled/50-grafana.wikimedia.org.conf,
-    # and then creating the user manually via the web interface.
-
-    require_package('python-sqlalchemy')
-
-    file { '/usr/local/sbin/grafana_create_anon_user':
-        source  => 'puppet:///modules/grafana/grafana_create_anon_user.py',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0555',
-        require => Package['python-sqlalchemy'],
-    }
-
-    exec { '/usr/local/sbin/grafana_create_anon_user --create':
-        unless  => '/usr/local/sbin/grafana_create_anon_user --check',
-        require => [
-            Service['grafana-server'],
-            File['/usr/local/sbin/grafana_create_anon_user'],
-        ]
-    }
-
-    # Serve Grafana via two different vhosts:
-    #
-    # - $readonly_domain (read-only, but accessible to all)
-    # - $admin_domain (read/write, but requires LDAP)
-    #
-
-    httpd::site { $readonly_domain:
-        content => template('profile/apache/sites/grafana-readonly.erb'),
+    httpd::site { $domain:
+        content => template('profile/apache/sites/grafana.erb'),
         require => Class['::grafana'],
     }
 
     monitoring::service { 'grafana':
-        description   => $readonly_domain,
-        check_command => "check_http_url!${readonly_domain}!/",
+        description   => $domain,
+        check_command => "check_http_url!${domain}!/",
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Grafana.wikimedia.org',
-    }
-
-    if $admin_domain {
-        httpd::site { $admin_domain:
-            content => template('profile/apache/sites/grafana-admin.erb'),
-            require => Class['::grafana'],
-        }
-
-        monitoring::service { 'grafana-admin':
-            description   => $admin_domain,
-            check_command => "check_http_unauthorized!${admin_domain}!/",
-            notes_url     => 'https://wikitech.wikimedia.org/wiki/Grafana.wikimedia.org',
-        }
     }
 
     # Configure a local Apache which will serve as a reverse proxy for performance-team's

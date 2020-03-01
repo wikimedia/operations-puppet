@@ -7,15 +7,10 @@ profile::base::domain_search:
   - esams.wmnet
   - ulsfo.wmnet
   - eqsin.wmnet
-profile::grafana::readonly_domain: grafana-labs.wikimedia.org
-profile::grafana::admin_domain: grafana-labs-admin.wikimedia.org
-profile::grafana::ldap_editor_description: LDAP Users (Wikitech)
-profile::grafana::ldap_edit_groups:
-  - cn=ops,ou=groups,dc=wikimedia,dc=org
-  - cn=nda,ou=groups,dc=wikimedia,dc=org
-  - cn=wmf,ou=groups,dc=wikimedia,dc=org
-  - cn=grafana-admin,ou=groups,dc=wikimedia,dc=org
-  - cn=project-bastion,ou=groups,dc=wikimedia,dc=org
+
+
+profile::grafana::domain: grafana-labs.wikimedia.org
+
 profile::wmcs::monitoring::statsd_master: cloudmetrics1002.eqiad.wmnet
 profile::wmcs::monitoring::statsd_standby: cloudmetrics1001.eqiad.wmnet
 # In private repo
@@ -26,3 +21,48 @@ mgmt_contactgroups: wmcs-team-email
 # cloudmetrics
 statsite::instance::graphite_host: cloudmetrics1002.eqiad.wmnet
 statsite::instance::extended_counters: 1
+
+profile::grafana::ldap:
+  servers:
+    eqiad:
+      host: ldap-ro.eqiad.wikimedia.org
+      port: 636
+      use_ssl: true
+      ssl_skip_verify: false
+      search_filter: (cn=%s)
+      search_base_dns: ["ou=people,dc=wikimedia,dc=org"]
+      bind_dn: cn=proxyagent,ou=profile,dc=wikimedia,dc=org
+      bind_password: "%{hiera('profile::grafana::ldap::bind_password')}"
+  servers.attributes:
+    name: givenName
+    surname: sn
+    username: cn
+    member_of: memberOf
+    email:  mail
+  servers.group_mappings:
+    ops:
+      group_dn: cn=ops,ou=groups,dc=wikimedia,dc=org
+      org_role: Admin
+    wmf:
+      group_dn: cn=wmf,ou=groups,dc=wikimedia,dc=org
+      org_role: Editor
+    nda:
+      group_dn: cn=nda,ou=groups,dc=wikimedia,dc=org
+      org_role: Editor
+    grafana-admin:
+      group_dn: cn=grafana-admin,ou=groups,dc=wikimedia,dc=org
+      org_role: Editor
+
+profile::grafana::config:
+  auth.proxy:
+    enabled: false
+  auth.ldap:
+    enabled: true
+    allow_sign_up: true
+    config_file: /etc/grafana/ldap.toml
+  auth.anonymous:
+    enabled: true
+    org_name: WMCS
+  session:
+    provider: file
+    file: sessions.db

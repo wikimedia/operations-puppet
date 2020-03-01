@@ -1,7 +1,7 @@
 # Apache configuration for Grafana 2.
 # This file is managed by Puppet.
 <VirtualHost *:80>
-  ServerName <%= @readonly_domain %>
+  ServerName <%= @domain %>
   DocumentRoot /usr/share/grafana/public
 
   # Disable anonymous modification of user prefs (e.g. email address)
