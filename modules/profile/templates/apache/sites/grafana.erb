@@ -4,12 +4,6 @@
   ServerName <%= @domain %>
   DocumentRoot /usr/share/grafana/public
 
-  # Disable anonymous modification of user prefs (e.g. email address)
-  RewriteEngine On
-  RewriteCond %{REQUEST_METHOD} PUT
-  RewriteCond %{THE_REQUEST} /api/user[/?\s] [NC]
-  RewriteRule ^ - [F,L]
-
   ProxyPreserveHost On
   ProxyPass / http://localhost:3000/
   ProxyPassReverse / http://localhost:3000/
