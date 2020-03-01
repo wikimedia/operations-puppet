@@ -1,8 +1,6 @@
 profile::grafana::domain: grafana.wikimedia.org
 profile::grafana::wpt_graphite_proxy_port: 33333
 profile::grafana::config:
-  auth.proxy:
-    enabled: false
   auth.ldap:
     enabled: true
     allow_sign_up: true
@@ -10,9 +8,6 @@ profile::grafana::config:
   auth.anonymous:
     enabled: true
     org_name: Wikimedia
-  session:
-    provider: file
-    file: sessions.db
 profile::grafana::ldap:
   servers:
     eqiad:

@@ -63,9 +63,6 @@ profile::grafana::config:
   auth.anonymous:
     enabled: true
     org_name: WMCS
-  session:
-    provider: file
-    file: sessions.db
 
 # envoy for TLS termination for grafana-labs/graphite-labs behind ATS
 profile::tlsproxy::envoy::ensure: present

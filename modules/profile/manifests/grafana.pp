@@ -52,14 +52,8 @@ class profile::grafana (
             enabled => false,
         },
 
-        # Automatically create an account for users and authenticate
-        # them based on the X-WEBAUTH-USER. We use mod_rewrite to
-        # rewrite the REMOTE_USER env var set by mod_authnz_ldap into
-        # X-WEBAUTH-USER.
         'auth.proxy' => {
-            enabled      => true,
-            header_name  => 'X-WEBAUTH-USER',
-            auto_sign_up => true,
+            enabled      => false,
         },
 
         # Since we require users to be members of a trusted LDAP group
@@ -72,11 +66,9 @@ class profile::grafana (
             allow_sign_up        => false,
         },
 
-        # Because we enable `auth.proxy` (see above), if session data
-        # is lost, Grafana will simply create a new session on the next
-        # request, so it's OK for session storage to be volatile.
         'session'    => {
-            provider      => 'memory',
+            provider      => 'file',
+            file          => 'sessions.db',
             cookie_secure => true,
         },
 
