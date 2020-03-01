@@ -5,10 +5,6 @@ admin::groups:
 
 profile::hadoop::common::hadoop_cluster_name: 'analytics-test-hadoop'
 
-# Testing Apache BigTop in T244499
-profile::cdh::apt::use_bigtop: true
-profile::analytics::cluster::packages::common::use_bigtop_settings: true
-
 profile::hue::database_host: 'analytics1030.eqiad.wmnet'
 profile::hue::hive_server_host: 'analytics1030.eqiad.wmnet'
 profile::hue::monitoring_enabled: true
