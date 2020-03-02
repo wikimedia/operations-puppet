@@ -22,7 +22,7 @@ class query_service::monitor::categories {
         nrpe_command   => '/usr/lib/nagios/plugins/check_categories.py --lag',
         check_interval => 720, # every 6 hours
         retry_interval => 60,  # retry after 1 hour
-        notes_url      => 'https://wikitech.wikimedia.org/wiki/Wikidata_query_service',
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/Wikidata_query_service/Runbook#Categories_update_lag',
     }
 
 }
