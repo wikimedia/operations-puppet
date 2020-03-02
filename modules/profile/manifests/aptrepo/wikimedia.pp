@@ -11,6 +11,8 @@ class profile::aptrepo::wikimedia (
         incominguser  => 'root',
         # Allow wikidev users to upload to /srv/wikimedia/incoming
         incominggroup => 'wikidev',
+        gpg_pubring   => 'apt/pubring.gpg',
+        gpg_secring   => 'apt/secring.gpg',
     }
 
     file { "${basedir}/conf/distributions":
