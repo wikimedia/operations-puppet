@@ -45,3 +45,5 @@ profile::mediawiki::php::restarts::opcache_limit: 200
 profile::mediawiki::php::fpm_workers_multiplier: 4.5
 # Register stack traces for any request taking more than 5 seconds
 profile::mediawiki::php::slowlog_limit: 5
+# Don't install the nginx service proxy.
+profile::services_proxy::ensure: absent
