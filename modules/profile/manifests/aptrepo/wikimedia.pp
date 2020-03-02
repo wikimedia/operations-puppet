@@ -4,6 +4,9 @@ class profile::aptrepo::wikimedia (
     Array[Stdlib::Fqdn] $secondary_servers = lookup('install_servers_failover'),
     Stdlib::Unixpath $basedir = lookup('profile::aptrepo::wikimedia::basedir'),
     Stdlib::Unixpath $homedir = lookup('profile::aptrepo::wikimedia::basedir'),
+    String $gpg_user = lookup('profile::aptrepo::wikimedia::gpg_user'),
+    String $gpg_pubring = lookup('profile::aptrepo::wikimedia::gpg_pubring'),
+    String $gpg_secring = lookup('profile::aptrepo::wikimedia::gpg_secring'),
 ){
 
     class { '::aptrepo':
@@ -13,8 +16,9 @@ class profile::aptrepo::wikimedia (
         incominguser  => 'root',
         # Allow wikidev users to upload to /srv/wikimedia/incoming
         incominggroup => 'wikidev',
-        gpg_pubring   => 'apt/pubring.gpg',
-        gpg_secring   => 'apt/secring.gpg',
+        gpg_pubring   => $gpg_pubring,
+        gpg_secring   => $gpg_secring,
+        gpg_user      => $gpg_user,
     }
 
     file { "${basedir}/conf/distributions":

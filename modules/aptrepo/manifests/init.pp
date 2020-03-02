@@ -43,6 +43,7 @@ class aptrepo (
     $default_distro  = 'jessie',
     $gpg_secring     = undef,
     $gpg_pubring     = undef,
+    $gpg_user        = undef,
     $authorized_keys = [],
 ) {
 
@@ -184,8 +185,8 @@ class aptrepo (
 
     file { "${homedir}/.gnupg":
         ensure  => directory,
-        owner   => $user,
-        group   => $group,
+        owner   => $gpg_user,
+        group   => $gpg_user,
         mode    => '0700',
         require => User['reprepro'],
     }
@@ -206,8 +207,8 @@ class aptrepo (
     if $gpg_secring != undef {
         file { "${homedir}/.gnupg/secring.gpg":
             ensure    => file,
-            owner     => $user,
-            group     => $group,
+            owner     => $gpg_user,
+            group     => $gpg_user,
             mode      => '0400',
             content   => secret($gpg_secring),
             show_diff => false,
@@ -218,8 +219,8 @@ class aptrepo (
     if $gpg_pubring != undef {
         file { "${homedir}/.gnupg/pubring.gpg":
             ensure  => file,
-            owner   => $user,
-            group   => $group,
+            owner   => $gpg_user,
+            group   => $gpg_user,
             mode    => '0400',
             content => secret($gpg_pubring),
             require => User['reprepro'],
