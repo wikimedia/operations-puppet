@@ -8,9 +8,19 @@
 #
 # [*all_users_slice_config*]
 #   Content of config file of the user-.slice unit.
+#   The limits will be enforced to every user slice
+#   separately (so not a global limit).
+#   Default: undef
+#
+# [*all_users_global_slice_config*]
+#   Content of config file of the user.slice unit.
+#   The limits will be enforced to all the processes
+#   under the user.slice, so a global limit.
+#   Default: undef
 #
 class systemd::slice::all_users (
-    String $all_users_slice_config,
+    Optional[String] $all_users_slice_config = undef,
+    Optional[String] $all_users_global_slice_config = undef,
     Enum['present','latest'] $pkg_ensure = 'present',
 ) {
 
@@ -44,16 +54,29 @@ class systemd::slice::all_users (
         fail('systemd::slice::all_users requires Debian >= Stretch')
     }
 
-    systemd::unit { 'user-.slice':
-        ensure   => present,
-        content  => $all_users_slice_config,
-        override => true,
-        require  => Package[$systemd_packages],
+    if $all_users_slice_config {
+        systemd::unit { 'user-.slice':
+            ensure   => present,
+            content  => $all_users_slice_config,
+            override => true,
+            require  => Package[$systemd_packages],
+        }
+    }
+
+    if $all_users_global_slice_config {
+        systemd::unit { 'user.slice':
+            ensure   => present,
+            content  => $all_users_global_slice_config,
+            override => true,
+            require  => Package[$systemd_packages],
+        }
     }
 
     # By default the root user does not have any limitation.
     # Caveat: this does not apply to sudo sessions, that
     # will be limited by the above user-.slice.
+    # Caveat 2: limits for user.slice are also applied to
+    # user-0.slice.
     systemd::unit { 'user-0.slice':
         ensure   => present,
         content  => file('systemd/root-slice-resource-control.conf'),
