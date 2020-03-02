@@ -7,9 +7,10 @@ class profile::openstack::base::wikitech::web(
     $phabricator_api_token = hiera('profile::openstack::base::wikitech::web::phabricator_api_token'),
     $gerrit_api_user = hiera('profile::openstack::base::wikitech::web::gerrit_api_user'),
     $gerrit_api_password = hiera('profile::openstack::base::wikitech::web::gerrit_api_password'),
-    ) {
+) {
 
     require profile::mediawiki::common
+    require ::profile::services_proxy::envoy
     require profile::services_proxy
 
     class {'::mediawiki::packages::fonts': }
