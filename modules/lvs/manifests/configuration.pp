@@ -57,6 +57,7 @@ class lvs::configuration {
         'lvs1014'      => 'high-traffic2',
         'lvs1015'      => 'low-traffic',
         'lvs1016'      => 'secondary',
+        'lvs2008'      => 'high-traffic2',
         'lvs2009'      => 'low-traffic',
         'lvs2010'      => 'secondary',
         'lvs3005'      => 'high-traffic1',
