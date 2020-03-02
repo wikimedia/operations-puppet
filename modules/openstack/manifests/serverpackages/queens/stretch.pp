@@ -1,7 +1,7 @@
 class openstack::serverpackages::queens::stretch(
 ){
     apt::repository { 'openstack-queens-stretch':
-        uri        => 'http://osbpo.debian.net/debian',
+        uri        => 'http://mirrors.wikimedia.org/osbpo',
         dist       => 'stretch-queens-backports',
         components => 'main',
         source     => false,
