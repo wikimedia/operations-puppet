@@ -9,6 +9,10 @@
 class profile::analytics::cluster::packages::common(
     $use_bigtop_settings = lookup('profile::analytics::cluster::packages::common::use_bigtop_settings', { 'default_value' => false }),
 ) {
+    # See: https://gerrit.wikimedia.org/r/c/operations/puppet/+/480041/
+    # and: https://phabricator.wikimedia.org/T229347
+    # python3.7 will assist with a Spark & Buster upgrade.
+    require profile::python37
 
     # Install MaxMind databases for geocoding UDFs
     class { '::geoip': }
@@ -87,14 +91,6 @@ class profile::analytics::cluster::packages::common(
     # to figure out if we need to rebuild them or simply copy them over in reprepro.
     if os_version('debian <= stretch') {
         require_package('python3-mmh3')
-
-        # See: https://gerrit.wikimedia.org/r/c/operations/puppet/+/480041/
-        # and: https://phabricator.wikimedia.org/T229347
-        # python3.7 will assist with a Spark & Buster upgrade.
-        apt::package_from_component { 'component-pyall':
-            component => 'component/pyall',
-            packages  => ['python3.7', 'libpython3.7']
-        }
     }
 
     # ores::base for ORES packages
