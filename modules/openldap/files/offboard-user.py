@@ -100,12 +100,10 @@ def parse_users(yamldata):
 
                 users[username] = {
                     'ensure': userdata['ensure'],
-                    'realname': userdata['realname'],
                     'ldap_only': False,
                     'krb': krb_state,
                     'uid': userdata['uid'],
                     'prod_groups': groups,
-                    'has_server_access': (len(userdata['ssh_keys']) > 0),
                 }
 
     return users
