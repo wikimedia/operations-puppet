@@ -86,13 +86,13 @@ def edit_recordset(endpoint, token, zoneid, recordset, newrecords):
 
 def recordset_is_service(recordset):
     if recordset["type"] == "A":
-        if recordset["name"].lower().endswith(".svc.eqiad.wmflabs."):
+        if ".svc." in recordset["name"].lower():
             return True
         return False
 
     if recordset["type"] == "PTR":
         for record in recordset["records"]:
-            if record.lower().endswith(".svc.eqiad.wmflabs."):
+            if ".svc." in record.lower():
                 return True
     return False
 
@@ -117,18 +117,37 @@ def purge_duplicates(delete=False):
         # we need a fresh copy of all instances so we don't accidentally
         #  delete things that have been created since we last checked.
         instances = clients.allinstances(allregions=True)
-        all_nova_instances_legacy = [
+        all_possible_names = []
+        all_eqiad_nova_instances_legacy = [
             "%s.%s.eqiad.wmflabs." % (instance.name.lower(), instance.tenant_id)
             for instance in instances
         ]
-        all_nova_instances = [
+        all_possible_names.extend(all_eqiad_nova_instances_legacy)
+        all_eqiad_nova_instances = [
             "%s.%s.eqiad1.wikimedia.cloud."
             % (instance.name.lower(), instance.tenant_id)
             for instance in instances
         ]
-        all_nova_shortname_instances = [
+        all_possible_names.extend(all_eqiad_nova_instances)
+        all_eqiad_nova_shortname_instances = [
             "%s.eqiad.wmflabs." % (instance.name.lower()) for instance in instances
         ]
+        all_possible_names.extend(all_eqiad_nova_shortname_instances)
+        all_codfw1dev_nova_instances = [
+            "%s.%s.codfw1dev.wikimedia.cloud."
+            % (instance.name.lower(), instance.tenant_id)
+            for instance in instances
+        ]
+        all_possible_names.extend(all_codfw1dev_nova_instances)
+        all_codfw1dev_nova_instances_legacy = [
+            "%s.%s.codfw1dev.cloud." % (instance.name.lower(), instance.tenant_id)
+            for instance in instances
+        ]
+        all_possible_names.extend(all_codfw1dev_nova_instances_legacy)
+        all_codfw1dev_nova_instances_legacy_shortname = [
+            "%s.codfw1dev.cloud." % (instance.name.lower()) for instance in instances
+        ]
+        all_possible_names.extend(all_codfw1dev_nova_instances_legacy_shortname)
 
         for recordset in recordsets:
             name = recordset["name"].lower()
@@ -140,11 +159,7 @@ def purge_duplicates(delete=False):
             if recordset["type"] == "A":
                 # For an A record, we can just delete the whole recordset
                 #  if it's for a missing instance.
-                if (
-                    name not in all_nova_instances
-                    and name not in all_nova_shortname_instances
-                    and name not in all_nova_instances_legacy
-                ):
+                if name not in all_possible_names:
                     print("%s is linked to missing instance %s" % (recordsetid, name))
                     if delete:
                         delete_recordset(endpoint, token, zone["id"], recordsetid)
@@ -162,11 +177,7 @@ def purge_duplicates(delete=False):
                 originalrecords = recordset["records"]
                 goodrecords = []
                 for record in originalrecords:
-                    if (
-                        record.lower() in all_nova_instances
-                        or record.lower() in all_nova_shortname_instances
-                        or record.lower() in all_nova_instances_legacy
-                    ):
+                    if record.lower() in all_possible_names:
                         goodrecords += [record]
                     else:
                         print(
