@@ -3846,12 +3846,6 @@ host lvs2004 {
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
-host lvs2005 {
-    hardware ethernet fc:15:b4:1f:5b:e8;
-    fixed-address lvs2005.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
-}
-
 host lvs2007 {
     hardware ethernet 00:0A:F7:EF:EA:40;
     fixed-address lvs2007.codfw.wmnet;

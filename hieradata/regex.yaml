@@ -224,10 +224,6 @@ swift_servers_per_port:
   __regex: !ruby/regexp /^ms-be[12]0([1-4][0-9]|50)\.(codfw|eqiad)\.wmnet$/
   swift::storage::servers_per_port: 0
 
-lvs_codfw_backup:
-  __regex: !ruby/regexp /^lvs200[4-5]\.codfw\.wmnet$/
-  profile::pybal::primary: false
-
 labtest:
   __regex: !ruby/regexp /^labtest/
   cluster: labtest
