@@ -37,6 +37,7 @@ class profile::openstack::eqiad1::keystone::service(
     String $wsgi_server = lookup('profile::openstack::eqiad1::keystone::wsgi_server'),
     Stdlib::IP::Address::V4::CIDR $instance_ip_range = lookup('profile::openstack::eqiad1::keystone::instance_ip_range', {default_value => '0.0.0.0/0'}),
     String $wmcloud_domain_owner = lookup('profile::openstack::eqiad1::keystone::wmcloud_domain_owner'),
+    String $bastion_project_id = lookup('profile::openstack::eqiad1::keystone::bastion_project_id'),
     ) {
 
     require ::profile::openstack::eqiad1::clientpackages
@@ -73,6 +74,7 @@ class profile::openstack::eqiad1::keystone::service(
         wsgi_server                          => $wsgi_server,
         instance_ip_range                    => $instance_ip_range,
         wmcloud_domain_owner                 => $wmcloud_domain_owner,
+        bastion_project_id                   => $bastion_project_id,
     }
     contain '::profile::openstack::base::keystone::service'
 

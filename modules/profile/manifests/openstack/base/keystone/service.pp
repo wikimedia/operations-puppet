@@ -44,6 +44,7 @@ class profile::openstack::base::keystone::service(
     String $wsgi_server = lookup('profile::openstack::base::keystone::wsgi_server'),
     Stdlib::IP::Address::V4::CIDR $instance_ip_range = lookup('profile::openstack::base::keystone::instance_ip_range', {default_value => '0.0.0.0/0'}),
     String $wmcloud_domain_owner = lookup('profile::openstack::base::keystone::wmcloud_domain_owner'),
+    String $bastion_project_id = lookup('profile::openstack::base::keystone::bastion_project_id'),
     ) {
 
     include ::network::constants
@@ -86,6 +87,7 @@ class profile::openstack::base::keystone::service(
         wsgi_server                 => $wsgi_server,
         instance_ip_range           => $instance_ip_range,
         wmcloud_domain_owner        => $wmcloud_domain_owner,
+        bastion_project_id          => $bastion_project_id,
     }
     contain '::openstack::keystone::service'
 
