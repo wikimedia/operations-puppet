@@ -14,7 +14,7 @@ class toil::rsyslog_tls_remedy (
     command         => '/bin/sh -c "timeout 10s openssl s_client -connect localhost:6514 -quiet </dev/null || systemctl restart rsyslog"',
     interval        => {
       'start'    => 'OnCalendar',
-      'interval' => '*-*-* *:00/30:00', # every 30 min
+      'interval' => '*-*-* *:00/05:00', # every 5 min
     },
   }
 
