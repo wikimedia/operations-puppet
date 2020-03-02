@@ -30,7 +30,12 @@ class ferm {
         ensure  => present,
         require => File['/etc/modprobe.d/nf_conntrack.conf'],
     }
-
+    file {'/usr/local/sbin/ferm-status':
+        ensure  => file,
+        mode    => '0550',
+        group   => 'adm',
+        content => file('ferm/ferm_status.py')
+    }
     service { 'ferm':
         hasstatus => false,
         status    => '/bin/true',
