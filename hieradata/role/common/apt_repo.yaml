@@ -1,4 +1,2 @@
-admin::groups:
-  - datacenter-ops
 profile::aptrepo::wikimedia::basedir: '/srv/wikimedia'
 profile::aptrepo::wikimedia::homedir: '/root'

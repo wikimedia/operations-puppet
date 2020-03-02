@@ -2,11 +2,13 @@
 class profile::aptrepo::wikimedia (
     Stdlib::Fqdn $primary_server = lookup('install_server'),
     Array[Stdlib::Fqdn] $secondary_servers = lookup('install_servers_failover'),
+    Stdlib::Unixpath $basedir = lookup('profile::aptrepo::wikimedia::basedir'),
+    Stdlib::Unixpath $homedir = lookup('profile::aptrepo::wikimedia::basedir'),
 ){
-    $basedir = '/srv/wikimedia'
 
     class { '::aptrepo':
         basedir       => $basedir,
+        homedir       => $homedir,
         incomingconf  => 'incoming-wikimedia',
         incominguser  => 'root',
         # Allow wikidev users to upload to /srv/wikimedia/incoming
