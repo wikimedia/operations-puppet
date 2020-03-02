@@ -14,7 +14,7 @@ groups:
               cy534, pnorman, mpany, deskana, arnad, nithum, banyek, imarlier, mkroetzsch,
               mtizzoni, panisson, paolotti, ciro, dartar, melodykramer, gtirloni, tbayer, pirroh,
               bawolff, dkg, juliaglen, cwdent, hpham, atgomez, dfoy, alaasarhan, onimisionipe,
-              tieu, flemmerich]
+              tieu, flemmerich, jsamra]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -156,7 +156,7 @@ groups:
               daisy, mholloway-shell, ebernhardson, niedzielski,
               neilpquinn-wmf, dbrant,
               jminor, etonkovidova, sbisson, addshore, matmarex, elukey,
-              nikerabbit, dstrine, jsamra, jkumalah,
+              nikerabbit, dstrine, jkumalah,
               jdittrich, chelsyx, ovasileva, debt, mgerlach, eyener,
               fdans, mlitn, niharika29, goransm, pmiazga, dsaez, shiladsen, cicalese,
               mirrys, sharvaniharan, mmiller, amire80, rush, kharlan, gbirke, dedcode,
@@ -277,7 +277,7 @@ groups:
               andyrussg, niedzielski, hoo, daniel, krinkle, tgr,
               ebernhardson, addshore, jminor, neilpquinn-wmf,
               dcausse, bd808, tjones, mobrovac, jdrewniak, ejegg, jdcc, ori,
-              bmansurov, amire80, kartik, pcoombe, foks, jsamra, kemayo, jkumalah,
+              bmansurov, amire80, kartik, pcoombe, foks, kemayo, jkumalah,
               jdlrobson, chelsyx, ovasileva, filippo, pmiazga, faidon,
               piccardi, fdans, eevans, anomie, demon, ladsgroup, musikanimal,
               kaldari, goransm, ema, dsaez, shiladsen, rho, mirrys, slaporte, jk,
@@ -2388,16 +2388,12 @@ users:
     ssh_keys: []
     uid: 15095
   jsamra:
-    ensure: present
+    ensure: absent
     gid: 500
     name: jsamra
     realname: Jasmeet Samra
-    ssh_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD2q9U+VYKkFz/WjwG0B+dF01CE4l8NZgBDXGU4AYXqxFk7Vuz2lWTEOeij4r8UgmSsdqq65yOfZYUtjYRm8iHdoIUufWar2XORcBCWqNMeRnId/XX9kMNefzhfl2z7j7UtiAVPsIJZQ0nSFwYY6AxrJdmpBOvinwz8X47FL955/ig4gZvvvV1qzBJ4pvx54U3/e7fwcMGpYrxCUoWuAgIYsc2OS9rW5meBln2bVlJjWRRcid5u9ZM9Za6Jqy/2OIrwhG2AzjpO+5RerflbiVAb6pP7cjU4t+4Cg8fzPTfXuwZ6sjEq6sWJkaz9BaQKC8LDC+nTugokNRlhNj/XxAe3 jasmeetsamra@Jasmeets-MacBook.local
+    ssh_keys: []
     uid: 15103
-    email: jksamra2014@gmail.com
-    expiry_date: 2020-02-29
-    expiry_contact: jrobell@wikimedia.org
   hjiang:
     ensure: absent
     gid: 500
