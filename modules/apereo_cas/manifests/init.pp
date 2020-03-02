@@ -12,6 +12,7 @@ class apereo_cas (
     Optional[String[1]]           $totp_encryption_key    = undef,
     Optional[Stdlib::Filesource]  $keystore_source        = undef,
     Optional[String[1]]           $keystore_content       = undef,
+    Optional[Integer]             $max_session_length     = 28800,
     Optional[Stdlib::Filesource]  $groovy_source          = undef,
     Optional[Array[Stdlib::Host]] $prometheus_nodes       = [],
     Stdlib::Unixpath              $overlay_dir            = '/srv/cas/overlay-template',

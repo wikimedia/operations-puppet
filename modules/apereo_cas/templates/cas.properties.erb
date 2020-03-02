@@ -49,6 +49,8 @@ logging.level.org.apereo=<%= @log_level %>
 
 cas.authn.accept.users=
 
+cas.ticket.tgt.maxTimeToLiveInSeconds=<%= @max_session_length %>
+
 cas.authn.ldap[0].principalAttributeList=<%= @ldap_attribute_list.join(',') %>
 cas.authn.ldap[0].type=<%= @ldap_auth %>
 cas.authn.ldap[0].connectionStrategy=<%= @ldap_connection %>

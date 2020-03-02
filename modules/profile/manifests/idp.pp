@@ -10,6 +10,7 @@ class profile::idp(
     String              $u2f_encryption_key     = lookup('profile::idp::u2f_encryption_key'),
     String              $totp_signing_key       = lookup('profile::idp::totp_signing_key'),
     String              $totp_encryption_key    = lookup('profile::idp::totp_encryption_key'),
+    Integer             $max_session_length     = lookup('profile::idp::max_session_length'),
     Hash[String,Hash]   $services               = lookup('profile::idp::services'),
     Array[String[1]]    $ldap_attribute_list    = lookup('profile::idp::ldap_attributes'),
     Stdlib::Fqdn        $idp_primary            = lookup('profile::idp::idp_primary'),
@@ -74,6 +75,7 @@ class profile::idp(
         idp_primary            => $idp_primary,
         idp_failover           => $idp_failover,
         java_opts              => $java_opts,
+        max_session_length     => $max_session_length,
     }
     profile::prometheus::jmx_exporter{ "idp_${facts['networking']['hostname']}":
         hostname         => $facts['networking']['hostname'],
