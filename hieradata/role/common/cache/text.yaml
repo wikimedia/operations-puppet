@@ -96,6 +96,10 @@ cache::alternate_domains:
     director: 'cloudweb2001_dev'
   logstash.wikimedia.org:
     director: 'logstash_director'
+  logstash-next.wikimedia.org:
+    director: 'kibana-next'
+  cas-logstash.wikimedia.org:
+    director: 'kibana-next'
   noc.wikimedia.org:
     director: 'noc'
     caching: 'pass'
