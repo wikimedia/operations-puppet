@@ -38,8 +38,11 @@ class ferm {
     }
     service { 'ferm':
         hasstatus => false,
-        status    => '/bin/true',
-        require   => Package['ferm'],
+        status    => '/usr/local/sbin/ferm-status',
+        require   => [
+            Package['ferm'],
+            File['/usr/local/sbin/ferm-status'],
+        ]
     }
 
     file { '/etc/ferm/ferm.conf':
