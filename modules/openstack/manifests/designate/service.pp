@@ -78,6 +78,38 @@ class openstack::designate::service(
         recurse => true,
     }
 
+    file { '/usr/lib/python3/dist-packages/wmf_sink':
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
+        source  => "puppet:///modules/openstack/${version}/designate/wmf_sink",
+        recurse => true,
+    }
+
+    file { '/usr/lib/python3/dist-packages/wmf_sink.egg-info':
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
+        source  => "puppet:///modules/openstack/${version}/designate/wmf_sink.egg-info",
+        recurse => true,
+    }
+
+    file { '/usr/lib/python3/dist-packages/nova_fixed_multi':
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
+        source  => "puppet:///modules/openstack/${version}/designate/nova_fixed_multi",
+        recurse => true,
+    }
+
+    file { '/usr/lib/python3/dist-packages/nova_fixed_multi.egg-info':
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
+        source  => "puppet:///modules/openstack/${version}/designate/nova_fixed_multi.egg-info",
+        recurse => true,
+    }
+
     # We'll need this key to push to the instance-puppet repo
     $puppet_git_repo_key_path = '/var/lib/designate/.ssh/instance-puppet-user.priv'
 
