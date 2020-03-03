@@ -25,7 +25,7 @@
 define prometheus::mysqld_exporter::instance (
     $client_socket = '/run/mysqld/mysqld.sock',
     $client_user = 'prometheus',
-    $client_password = '',
+    $client_password = 'This is a fake passsword, but cannot be empty due to Debian #953040',
     $listen_address = ':9104',
     $arguments = '',
 ) {
