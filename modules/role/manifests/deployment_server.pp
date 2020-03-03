@@ -24,6 +24,7 @@ class role::deployment_server {
 
     # apache-fast-test and co.
     include ::profile::mediawiki::web_testing
+    include ::profile::httpbb
 
     include ::profile::backup::host
     backup::set {'home': }
