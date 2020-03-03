@@ -709,7 +709,7 @@ service::catalog:
     sites:
     - eqiad
     - codfw
-    state: production
+    state: lvs_setup
     discovery:
     - dnsdisc: eventgate-analytics
       active_active: true
@@ -749,7 +749,7 @@ service::catalog:
     sites:
     - eqiad
     - codfw
-    state: production
+    state: lvs_setup
   eventgate-analytics:
     description: EventGate Analytics endpoint, TLS enabled. https://eventgate-analytics.svc.%{::site}.wmnet
     encryption: true
@@ -939,7 +939,7 @@ service::catalog:
     sites:
     - eqiad
     - codfw
-    state: production
+    state: lvs_setup
     discovery:
     - dnsdisc: eventgate-main
       active_active: true
@@ -978,7 +978,7 @@ service::catalog:
     sites:
     - eqiad
     - codfw
-    state: production
+    state: lvs_setup
   eventgate-main:
     description: EventGate main endpoint, TLS enabled, https://eventgate-main.svc.%{::site}.wmnet
     encryption: true
