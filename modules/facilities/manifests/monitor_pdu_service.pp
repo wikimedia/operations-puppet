@@ -8,7 +8,7 @@ define facilities::monitor_pdu_service(
     $site,
     $tower,
     $infeed,
-    $breaker  = '30',
+    Integer $breaker  = 30,
     $redundant = true,
     $model = 'sentry3',
 ) {

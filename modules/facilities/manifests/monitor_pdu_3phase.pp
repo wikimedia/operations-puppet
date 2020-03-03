@@ -2,7 +2,7 @@ define facilities::monitor_pdu_3phase(
     $ip,
     $row,
     $site,
-    $breaker   = '30',
+    Integer $breaker = 30,
     $redundant = true,
     $model     = 'sentry3',
     Hash[String, String] $mgmt_parents = lookup('monitoring::mgmt_parents'),  # lint:ignore:wmf_styleguide
