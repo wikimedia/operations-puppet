@@ -53,7 +53,8 @@ groups:
     description: RT 5934
     members: [ssastry, cscott, arlolra, eevans, ppchelko, mobrovac]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service parsoid *',
-                 'ALL = NOPASSWD: /usr/sbin/service parsoid-rt-client restart' ]
+                 'ALL = NOPASSWD: /usr/sbin/service parsoid-rt-client restart',
+                 'ALL = (mwdeploy) NOPASSWD: /usr/bin/scap pull']
   gerrit-root:
     gid: 703
     description: manage gerrit server
