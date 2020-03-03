@@ -12,11 +12,6 @@ profile::openstack::eqiad1::puppetmaster::encapi::db_name: labspuppet
 profile::openstack::eqiad1::puppetmaster::encapi::db_user: labspuppet
 profile::openstack::eqiad1::puppetmaster::encapi::statsd_prefix: labs.cloudinfratest.puppetbackend
 profile::openstack::eqiad1::puppetmaster::servers:
-  cloud-puppetmaster-01.cloudinfra.eqiad.wmflabs:
-  - {loadfactor: 10, worker: cloud-puppetmaster-01.cloudinfra.eqiad.wmflabs}
-  - {loadfactor: 20, worker: cloud-puppetmaster-02.cloudinfra.eqiad.wmflabs}
-  - {loadfactor: 10, worker: cloud-puppetmaster-03.cloudinfra.eqiad.wmflabs, canary: true}
-  - {loadfactor: 20, worker: cloud-puppetmaster-04.cloudinfra.eqiad.wmflabs, canary: true}
   cloud-puppetmaster-03.cloudinfra.eqiad.wmflabs:
   - {loadfactor: 10, worker: cloud-puppetmaster-03.cloudinfra.eqiad.wmflabs}
   - {loadfactor: 20, worker: cloud-puppetmaster-04.cloudinfra.eqiad.wmflabs}
@@ -27,12 +22,8 @@ profile::openstack::eqiad1::second_region_designate_host: cloudservices1003.wiki
 profile::openstack::eqiad1::second_region_designate_host_standby: cloudservices1004.wikimedia.org
 profile::puppetmaster::common::storeconfigs: none
 profile::puppetmaster::frontend::allow_from: [.wmflabs]
-puppetmaster: cloudinfra-internal-puppetmaster01.cloudinfra.eqiad.wmflabs
+puppetmaster: cloudinfra-internal-puppetmaster-02.cloudinfra.eqiad.wmflabs
 puppetmaster::hiera_config: labs
 puppetmaster::enable_geoip: false
 profile::openstack::eqiad1::statsd_host: cloudmetrics1002.eqiad.wmnet
-puppetmaster::locale_servers:
-  cloud-puppetmaster-01.cloudinfra.eqiad.wmflabs: cloud-puppetmaster-04.cloudinfra.eqiad.wmflabs
-profile::puppetmaster::frontend::canary_hosts:
-- krenair-t235218-test.testlabs.eqiad.wmflabs
 
