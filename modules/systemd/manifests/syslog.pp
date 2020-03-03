@@ -35,13 +35,13 @@
 #   Default: false
 #
 define systemd::syslog(
-    Wmflib::Ensure $ensure = 'present',
-    $base_dir     = '/var/log',
-    $owner        = $title,
-    $group        = $title,
+    Wmflib::Ensure               $ensure       = 'present',
+    Stdlib::Unixpath             $base_dir     = '/var/log',
+    String[1]                    $owner        = $title,
+    String[1]                    $group        = $title,
     Enum['user', 'group', 'all'] $readable_by  = 'group',
-    $log_filename = 'syslog.log',
-    $force_stop   = false,
+    String[1]                    $log_filename = 'syslog.log',
+    Boolean                      $force_stop   = false,
 ) {
     if $::initsystem != 'systemd' {
         fail('systemd::syslog is useful only with systemd')
@@ -59,15 +59,12 @@ define systemd::syslog(
     $local_syslogfile = "${local_logdir}/${log_filename}"
 
     if ! defined(File[$local_logdir]) {
-        $local_logdir_ensure = $ensure ? {
-            absent  => absent,
-            default => directory,
-        }
         file { $local_logdir:
-            ensure => $local_logdir_ensure,
+            ensure => ensure_directory($ensure),
             owner  => $owner,
             group  => $group,
             mode   => $dirmode,
+            force  => true,
         }
     }
 
