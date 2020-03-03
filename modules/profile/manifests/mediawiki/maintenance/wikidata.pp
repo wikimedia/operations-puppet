@@ -5,7 +5,7 @@ class profile::mediawiki::maintenance::wikidata {
     }
     # We don't need to get more specific here at the moment.
     $ensure_testwiki = $ensure
-    require ::profile::mediawiki::common
+    require profile::mediawiki::common
 
     $dispatch_log_file = '/var/log/wikidata/dispatchChanges-wikidatawiki.log'
     $test_dispatch_log_file = '/var/log/wikidata/dispatchChanges-testwikidatawiki.log'
@@ -20,7 +20,7 @@ class profile::mediawiki::maintenance::wikidata {
     cron { 'wikibase-dispatch-changes4':
         ensure  => $ensure,
         command => "echo \"\$\$: Starting dispatcher\" >> ${dispatch_log_file}; /usr/local/bin/mwscript extensions/Wikibase/repo/maintenance/dispatchChanges.php --wiki wikidatawiki >> ${dispatch_log_file} 2>&1; echo \"\$\$: Dispatcher exited with $?\" >> ${dispatch_log_file}",
-        user    => $::mediawiki::users::web,
+        user    => $mediawiki::users::web,
         minute  => '*/3',
         require => File['/var/log/wikidata'],
     }
@@ -28,7 +28,7 @@ class profile::mediawiki::maintenance::wikidata {
     cron { 'wikibase-dispatch-changes-test':
         ensure  => $ensure_testwiki,
         command => "echo \"\$\$: Starting dispatcher\" >> ${test_dispatch_log_file}; /usr/local/bin/mwscript extensions/Wikibase/repo/maintenance/dispatchChanges.php --wiki testwikidatawiki >> ${test_dispatch_log_file} 2>&1; echo \"\$\$: Dispatcher exited with $?\" >> ${test_dispatch_log_file}",
-        user    => $::mediawiki::users::web,
+        user    => $mediawiki::users::web,
         minute  => '*/15',
         require => File['/var/log/wikidata'],
     }
@@ -37,7 +37,7 @@ class profile::mediawiki::maintenance::wikidata {
     cron { 'wikibase-repo-prune2':
         ensure  => $ensure,
         command => '/usr/local/bin/mwscript extensions/Wikibase/repo/maintenance/pruneChanges.php --wiki wikidatawiki --number-of-days=3 >> /var/log/wikidata/prune2.log 2>&1',
-        user    => $::mediawiki::users::web,
+        user    => $mediawiki::users::web,
         minute  => [0,15,30,45],
         require => File['/var/log/wikidata'],
     }
@@ -45,20 +45,21 @@ class profile::mediawiki::maintenance::wikidata {
     cron { 'wikibase-repo-prune-test':
         ensure  => $ensure_testwiki,
         command => '/usr/local/bin/mwscript extensions/Wikibase/repo/maintenance/pruneChanges.php --wiki testwikidatawiki --number-of-days=3 >> /var/log/wikidata/prune-testwikidata.log 2>&1',
-        user    => $::mediawiki::users::web,
+        user    => $mediawiki::users::web,
         minute  => [0,15,30,45],
         require => File['/var/log/wikidata'],
     }
 
     file { '/var/log/wikidata':
         ensure => ensure_directory($ensure),
-        owner  => $::mediawiki::users::web,
-        group  => $::mediawiki::users::web,
+        owner  => $mediawiki::users::web,
+        group  => $mediawiki::users::web,
         mode   => '0664',
+        force  => true,
     }
 
-    $log_ownership_user = $::mediawiki::users::web
-    $log_ownership_group = $::mediawiki::users::web
+    $log_ownership_user = $mediawiki::users::web
+    $log_ownership_group = $mediawiki::users::web
     logrotate::conf { 'wikidata':
         ensure  => $ensure,
         content => template('mediawiki/maintenance/logrotate.d_wikidata.erb'),

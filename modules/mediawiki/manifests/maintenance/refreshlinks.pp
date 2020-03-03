@@ -1,13 +1,14 @@
 # Include this to add cron jobs calling refreshLinks.php on all clusters. (T80599)
 class mediawiki::maintenance::refreshlinks( $ensure = present ) {
 
-    require ::mediawiki::users
+    require mediawiki::users
 
     file { [ '/var/log/mediawiki/refreshLinks' ]:
         ensure => ensure_directory($ensure),
-        owner  => $::mediawiki::users::web,
+        owner  => $mediawiki::users::web,
         group  => 'mwdeploy',
         mode   => '0664',
+        force  => true
     }
 
     # add cron jobs - usage: <cluster>@<day of month> (these are just needed monthly)

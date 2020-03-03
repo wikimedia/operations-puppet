@@ -1,5 +1,7 @@
 class mediawiki::maintenance::generatecaptcha( $ensure = present ) {
 
+    include mediawiki::users
+
     file { '/etc/fancycaptcha':
         ensure => 'directory',
         mode   => '0555',
@@ -26,8 +28,9 @@ class mediawiki::maintenance::generatecaptcha( $ensure = present ) {
     file { '/var/log/mediawiki/generate-fancycaptcha':
         ensure => ensure_directory($ensure),
         mode   => '0775',
-        owner  => $::mediawiki::users::web,
-        group  => $::mediawiki::users::web,
+        owner  => $mediawiki::users::web,
+        group  => $mediawiki::users::web,
+        force  => true,
     }
 
     file { '/usr/local/bin/captchaloop':
@@ -37,8 +40,8 @@ class mediawiki::maintenance::generatecaptcha( $ensure = present ) {
         source => 'puppet:///modules/mediawiki/captchaloop',
     }
 
-    $log_ownership_user = $::mediawiki::users::web
-    $log_ownership_group = $::mediawiki::users::web
+    $log_ownership_user = $mediawiki::users::web
+    $log_ownership_group = $mediawiki::users::web
     logrotate::conf { 'generate-fancycaptcha':
         ensure  => $ensure,
         content => template('mediawiki/maintenance/logrotate.d_generate-fancycaptcha.erb'),
@@ -46,7 +49,7 @@ class mediawiki::maintenance::generatecaptcha( $ensure = present ) {
 
     cron { 'generatecaptcha':
         ensure  => $ensure,
-        user    => $::mediawiki::users::web,
+        user    => $mediawiki::users::web,
         weekday => 1,
         hour    => 1,
         minute  => 0,
