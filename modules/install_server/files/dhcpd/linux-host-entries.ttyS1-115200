@@ -3806,7 +3806,6 @@ host logstash2003 {
 host lvs1013 {
     hardware ethernet F4:E9:D4:DB:0C:00;
     fixed-address lvs1013.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host lvs1014 {
