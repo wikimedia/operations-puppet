@@ -77,6 +77,7 @@ class profile::librenms (
             '64601' => 'Kubernetes',
             '64602' => 'Kubernetes',
             '64603' => 'Kubernetes',
+            '64605' => 'Anycast',
             '64700' => 'frack-eqiad',
             '64701' => 'frack-codfw',
             '65001' => 'confed-eqiad-eqord',
