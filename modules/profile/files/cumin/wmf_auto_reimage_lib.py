@@ -147,9 +147,10 @@ def get_base_parser(description):
         help=('Comma separated list of names of systemd services to mask before the first Puppet '
               'run, without the .service suffix. Useful when the first Puppet run already '
               'start/enable some production services before the host is ready.'))
+    # The --apache alias, formerly for apache-fast-test, is maintained for backwards compatibility.
     parser.add_argument(
-        '-a', '--apache', action='store_true',
-        help='run apache-fast-test on the hosts after the reimage')
+        '-a', '--apache', '--httpbb', action='store_true',
+        help='run httpbb (apache tests) on the hosts after the reimage')
     parser.add_argument(
         '-p', '--phab-task-id', action='store',
         help='the Phabricator task ID, i.e.: T12345)')
@@ -995,21 +996,21 @@ def check_uptime(host, minimum=0, maximum=None, installer=False):
     print_line('Uptime checked', host=host)
 
 
-def run_apache_fast_test(host):
-    """Run apache-fast-test from the active deployment_server (deploy1001) on the given hosts.
+def run_httpbb(host):
+    """Run httpbb from the active deployment_server (deploy1001) on the given hosts.
 
     Arguments:
-    host -- the host against which the apache fast test must be executed
+    host -- the host against which the httpbb tests must be executed
     """
-    command = 'apache-fast-test /usr/local/share/apache-tests/baseurls {host}'.format(host=host)
+    command = 'httpbb /srv/deployment/httpbb-tests/* --host={host}'.format(host=host)
     deployment_host = resolve_dns(DEPLOYMENT_DOMAIN, 'CNAME')
     try:
-        run_cumin('run_apache_fast_test', deployment_host, [command], timeout=120)
-        print_line('Successfully tested with Apache fast-test', host=host)
+        run_cumin('run_httpbb', deployment_host, [command], timeout=120)
+        print_line('Successfully tested with httpbb', host=host)
     except RuntimeError:
         # We don't want to fail upon this failure, this is just a validation test
         # for the user.
-        print_line('WARNING: failed to run Apache fast-test, check cumin logs', host=host,
+        print_line('WARNING: failed to run httpbb, check cumin logs', host=host,
                    level=logging.WARNING)
 
 

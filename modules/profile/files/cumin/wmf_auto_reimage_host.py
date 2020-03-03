@@ -206,9 +206,9 @@ def run(args, user, log_path):
         lib.wait_reboot(args.host, start=reboot_time)
         lib.wait_puppet_run(args.host, start=boot_time)
 
-    # Run Apache fast test
+    # Run httpbb
     if args.apache:
-        lib.run_apache_fast_test(args.host)
+        lib.run_httpbb(args.host)
 
     # The unmask is *not* done automatically, the commands to unmask are printed and logged
     if args.mask:
