@@ -29,7 +29,7 @@ class profile::pybal(
         # instead after we're done with the conversion?
         'bgp-peer-address' => $::hostname ? {
             /^lvs101[3-6]$/    => "[ '208.80.154.196', '208.80.154.197' ]", # cr1-eqiad,cr2-eqiad
-            /^lvs200[12]$/     => "[ '208.80.153.192', '208.80.153.193' ]", # cr1-codfw,cr2-codfw
+            'lvs2001'          => "[ '208.80.153.192', '208.80.153.193' ]", # cr1-codfw,cr2-codfw
             /^lvs20[01][089]$/ => "[ '208.80.153.192', '208.80.153.193' ]", # cr1-codfw,cr2-codfw
             /^lvs300[567]$/    => "[ '91.198.174.244', '91.198.174.245' ]", # cr2-esams,cr3-esams
             /^lvs400[567]$/    => "[ '198.35.26.192', '198.35.26.193' ]",   # cr3-ulsfo,cr4-ulsfo
