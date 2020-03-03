@@ -145,7 +145,7 @@ profile::changeprop::purge_port: 4827
 profile::changeprop::ores_uris:
   - http://ores.svc.eqiad.wmnet:8081
   - http://ores.svc.codfw.wmnet:8081
-profile::changeprop::event_service_uri: http://eventgate-main.discovery.wmnet:32192/v1/events
+profile::changeprop::event_service_uri: https://eventgate-main.discovery.wmnet:4492/v1/events
 
 ### END CHANGEPROP ###
 profile::nutcracker::memcached_pools: {}
