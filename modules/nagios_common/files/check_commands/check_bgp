@@ -10,7 +10,7 @@
 # Example usage:
 #   check_bgp -H cr1-eqdfw.wikimedia.org -c s3cr3t
 #   check_bgp -H cr1-eqdfw.wikimedia.org -c s3cr3t -t 3600
-#   check_bgp -H cr1-eqdfw.wikimedia.org -c s3cr3t ---critasn 1299,2914,6461 --vendor juniper
+#   check_bgp -H cr1-eqdfw.wikimedia.org -c s3cr3t ---critasn 1299/Telia,2914,64600/PyBal --vendor juniper
 
 # this is an OO-like representation of our SNMP BGP session It features a
 # constructor ("new") and two public methods: "list" and "get", that list all
@@ -253,14 +253,18 @@ sub init {
     );
     $ng->arg(
         spec    => 'critasn=s',
-        help    => 'Comma-separated list of ASNs to raise CRITICAL for',
+        help    => 'Comma-separated list of ASNs to raise CRIT for, with optional /desc',
         default => '',
     );
 
     $ng->getopts;
 
     # split critasn into a hash, so that we can check against it with "exists"
-    %critASN = map { $_ => 1 } split( /,/, $ng->critasn );
+    # The value will be the desc string defaulting to "unknown"
+    %critASN = map {
+        @_ = split(m{/}, $_, 2);
+        $_[0] => ($_[1] || 'unknown');
+    } split( /,/, $ng->critasn );
 
     return;
 }
@@ -302,9 +306,15 @@ sub collect {
             my $afi = $peer =~ /:/ ? 'IPv6' : 'IPv4';
             my $astext = "AS$asn/$afi: $state";
 
-            # raise a CRIT if the peer's ASN is in the "critical ASN" list
-            if ( exists $critASN{$asn} || $asn eq "unknown") {
+            # raise a CRIT if the peer's ASN is "unknown" above
+            if ( $asn eq 'unknown' ) {
                 push @crit, $astext;
+                next;
+            }
+
+            # raise a CRIT if the peer's ASN is in the "critical ASN" list
+            if ( exists $critASN{$asn} ) {
+                push @crit, "$astext - $critASN{$asn}";
                 next;
             }
 
