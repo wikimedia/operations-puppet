@@ -67,7 +67,7 @@ profile::grafana::config:
     provider: file
     file: sessions.db
 
-# envoy for TLS termination for grafana-labs/grafana-labs-admin behind ATS
+# envoy for TLS termination for grafana-labs/graphite-labs behind ATS
 profile::tlsproxy::envoy::ensure: present
 profile::tlsproxy::envoy::services:
   - server_names: ['*']
