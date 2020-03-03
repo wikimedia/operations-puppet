@@ -2,15 +2,16 @@
 # T79062
 # TODO: Monitor infeed status
 define facilities::monitor_pdu_service(
-    $host,
-    $ip,
-    $row,
-    $site,
-    $tower,
-    $infeed,
+    # Interestingly, not FQDN, not even valid hostname
+    String $host,
+    Stdlib::Ip_address $ip,
+    String $row,
+    String $site,
+    String $tower,
+    String $infeed,
     Integer $breaker  = 30,
-    $redundant = true,
-    $model = 'sentry3',
+    Boolean $redundant = true,
+    String $model = 'sentry3',
 ) {
 
     include ::passwords::network
