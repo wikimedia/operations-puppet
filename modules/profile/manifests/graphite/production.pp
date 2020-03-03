@@ -101,19 +101,19 @@ class profile::graphite::production {
     ferm::service { 'carbon_c_relay-frontend_relay_udp':
         proto  => 'udp',
         port   => '2003',
-        srange => '$PRODUCTION_NETWORKS',
+        srange => '$DOMAIN_NETWORKS',
     }
 
     ferm::service { 'carbon_c_relay-frontend_relay_tcp':
         proto  => 'tcp',
         port   => '2003',
-        srange => '$PRODUCTION_NETWORKS',
+        srange => '$DOMAIN_NETWORKS',
     }
 
     ferm::service { 'carbon_pickled':
         proto  => 'tcp',
         port   => '2004',
-        srange => '$PRODUCTION_NETWORKS',
+        srange => '$DOMAIN_NETWORKS',
     }
 
     backup::set { 'var-lib-carbon-whisper-coal': }
