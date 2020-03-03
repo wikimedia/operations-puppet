@@ -57,7 +57,7 @@ class BaseAddressWMFHandler(BaseAddressHandler):
         event_data = data.copy()
 
         fqdn = cfg.CONF[self.name].fqdn_format % event_data
-        fqdn = fqdn.rstrip('.').encode('utf8')
+        fqdn = fqdn.rstrip('.')
 
         keystone = keystone_client.Client(
             session=self._get_keystone_session(), interface='public', connect_retries=5)
@@ -96,7 +96,7 @@ class BaseAddressWMFHandler(BaseAddressHandler):
             legacy_data = data.copy()
             legacy_data['zone'] = legacy_zone['name']
             legacy_fqdn = cfg.CONF[self.name].fqdn_format % legacy_data
-            legacy_fqdn = legacy_fqdn.rstrip('.').encode('utf8')
+            legacy_fqdn = legacy_fqdn.rstrip('.')
             if cfg.CONF[self.name].puppet_master_host:
                 LOG.debug('Cleaning puppet key %s' % legacy_fqdn)
                 self._run_remote_command(cfg.CONF[self.name].puppet_master_host,
