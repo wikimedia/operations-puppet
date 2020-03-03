@@ -27,7 +27,8 @@ class gobgpd(
     file{ '/etc/gobgpd.conf':
         ensure  => $file_ensure,
         content => $config_content,
-        notify  => Service['gobgpd'],
+        # Don't automatically restart the daemon as the prefixes are in memory
+        #notify  => Service['gobgpd'],
         require => Package['gobgpd'],
     }
     service {'gobgpd':
@@ -35,6 +36,7 @@ class gobgpd(
         enable => $enabled,
     }
 
-    # TODO test how this works with BGP graceful-restart
-    base::service_auto_restart { 'gobgpd': }
+    # Routes are kept in memory, so a restart need to be properly planned between the two instances
+    # base::service_auto_restart { 'gobgpd': }
+
 }
