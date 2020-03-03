@@ -1,5 +1,7 @@
 class profile::lists (
-    Array[String] $prometheus_nodes = lookup('prometheus_nodes')
+    Array[String] $prometheus_nodes = lookup('prometheus_nodes'),
+    Optional[Stdlib::IP::Address] $lists_ipv4 = lookup('profile::lists::ipv4', {'default_value' => undef}),
+    Optional[Stdlib::IP::Address] $lists_ipv6 = lookup('profile::lists::ipv6', {'default_value' => undef}),
 ) {
     include ::network::constants
     include ::mailman
@@ -7,9 +9,10 @@ class profile::lists (
 
     mailalias { 'root': recipient => 'root@wikimedia.org' }
 
+    # This will be a noop if $lists_ipv[46] are undef
     interface::alias { 'lists.wikimedia.org':
-        ipv4 => hiera('mailman::lists::ipv4', undef),
-        ipv6 => hiera('mailman::lists::ipv6', undef),
+        ipv4 => $lists_ipv4,
+        ipv6 => $lists_ipv6,
     }
 
     class { '::sslcert::dhparam': }
@@ -30,8 +33,8 @@ class profile::lists (
     }
 
     $list_outbound_ips = [
-        hiera('mailman::lists::ipv4'),
-        hiera('mailman::lists::ipv6'),
+        pick($lists_ipv4, $facts['ipaddress']),
+        pick($lists_ipv6, $facts['ipaddress6']),
     ]
 
     class { '::exim4':
