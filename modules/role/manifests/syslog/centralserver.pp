@@ -19,21 +19,21 @@ class role::syslog::centralserver (
         proto   => 'udp',
         port    => 514,
         notrack => true,
-        srange  => '($PRODUCTION_NETWORKS $MGMT_NETWORKS)',
+        srange  => '($DOMAIN_NETWORKS $MGMT_NETWORKS)',
     }
 
     ferm::service { 'rsyslog-netdev_kafka_relay_udp':
         proto   => 'udp',
         port    => 10514,
         notrack => true,
-        srange  => '($PRODUCTION_NETWORKS $MGMT_NETWORKS $NETWORK_INFRA)',
+        srange  => '($DOMAIN_NETWORKS $MGMT_NETWORKS $NETWORK_INFRA)',
     }
 
     ferm::service { 'rsyslog-receiver_tcp':
         proto   => 'tcp',
         port    => 6514,
         notrack => true,
-        srange  => '($PRODUCTION_NETWORKS $MGMT_NETWORKS)',
+        srange  => '($DOMAIN_NETWORKS $MGMT_NETWORKS)',
     }
 
     class { 'rsyslog::receiver': }
