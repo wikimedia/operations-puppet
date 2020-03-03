@@ -1,5 +1,22 @@
 class openstack::serverpackages::queens::stretch(
 ){
+    $stretch_bpo_packages = [
+      'librados2',
+      'librgw2',
+      'librbd1',
+      'python-rados',
+      'python-rbd',
+      'ceph-common',
+      'python-cephfs',
+      'libradosstriper1',
+    ]
+
+    apt::pin { 'openstack-queens-stretch-bpo':
+        package  => join($stretch_bpo_packages, ' '),
+        pin      => 'release n=stretch-backports',
+        priority => '1002',
+    }
+
     apt::repository { 'openstack-queens-stretch':
         uri        => 'http://mirrors.wikimedia.org/osbpo',
         dist       => 'stretch-queens-backports',
