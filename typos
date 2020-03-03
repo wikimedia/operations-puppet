@@ -27,8 +27,6 @@ puppte
 pupet
 pupppet
 (requires_os|os_version)\([^)]*[[:upper:]]
-include profile::backup
-include nrpe
 cassanrda
 hierdata
 mailmain
