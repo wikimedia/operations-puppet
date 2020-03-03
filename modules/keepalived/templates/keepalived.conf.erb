@@ -1,0 +1,25 @@
+# Note: This file is managed by puppet.
+
+global_defs {
+}
+
+vrrp_instance VRRP1 {
+  state <%= @default_state %>
+  interface <%= @interface %>
+  virtual_router_id <%= @virtual_router_id %>
+  priority <%= @priority %>
+  advert_int 1
+  authentication {
+    auth_type PASS
+    auth_pass <%= @auth_pass %>
+  }
+  virtual_ipaddress {
+    <%= @vip %>
+  }
+  unicast_peer {
+<% @peers.each do |peer| -%>
+    <%= scope.function_ipresolve([peer]) %>
+<% end -%>
+  }
+}
+
