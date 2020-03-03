@@ -6,7 +6,7 @@ class lvs::configuration {
         'high-traffic1' => $::realm ? {
             'production' => $::site ? {
                 'eqiad' => [ 'lvs1013', 'lvs1016' ],
-                'codfw' => [ 'lvs2001', 'lvs2010' ],
+                'codfw' => [ 'lvs2001', 'lvs2007', 'lvs2010' ],
                 'esams' => [ 'lvs3005', 'lvs3007' ],
                 'ulsfo' => [ 'lvs4005', 'lvs4007' ],
                 'eqsin' => [ 'lvs5001', 'lvs5003' ],
@@ -56,6 +56,7 @@ class lvs::configuration {
         'lvs1015'      => 'low-traffic',
         'lvs1016'      => 'secondary',
         'lvs2001'      => 'high-traffic1',
+        'lvs2007'      => 'high-traffic1',
         'lvs2008'      => 'high-traffic2',
         'lvs2009'      => 'low-traffic',
         'lvs2010'      => 'secondary',
