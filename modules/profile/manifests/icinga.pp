@@ -212,7 +212,7 @@ class profile::icinga(
     ferm::service { 'icinga-nsca':
         proto  => 'tcp',
         port   => '5667',
-        srange => '($PRODUCTION_NETWORKS $FRACK_NETWORKS)',
+        srange => '($DOMAIN_NETWORKS $FRACK_NETWORKS)',
     }
 
     # We absent the cron on active hosts, should only exist on passive ones
