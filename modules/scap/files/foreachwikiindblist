@@ -1,5 +1,5 @@
 #!/bin/bash
-# Run a maintenance against multiple wikis.
+# Run a maintenance script against multiple wikis.
 #
 # This script belongs in /usr/local/bin/ and should be in PATH.
 # Managed by Puppet. See modules/scap/files/foreachwikiindblist
