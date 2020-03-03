@@ -1,7 +1,11 @@
 # Installs a DHCP server and configures it for WMF
-class profile::installserver::dhcp {
+class profile::installserver::dhcp(
+    Enum['stopped', 'running'] $ensure_service = 'running',
+){
 
-    include install_server::dhcp_server
+    class { 'install_server::dhcp_server':
+        ensure_service => $ensure_service,
+    }
 
     ferm::service { 'dhcp':
         proto  => 'udp',
@@ -9,4 +13,3 @@ class profile::installserver::dhcp {
         srange => '$PRODUCTION_NETWORKS',
     }
 }
-

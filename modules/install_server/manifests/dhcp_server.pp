@@ -12,7 +12,9 @@
 # Sample Usage:
 #   include install_server::dhcp_server
 
-class install_server::dhcp_server {
+class install_server::dhcp_server (
+    Enum['stopped', 'running'] $ensure_service = 'running',
+){
     file { '/etc/dhcp':
         ensure  => directory,
         require => Package['isc-dhcp-server'],
@@ -28,7 +30,7 @@ class install_server::dhcp_server {
     }
 
     service { 'isc-dhcp-server':
-        ensure    => running,
+        ensure    => $ensure_service,
         require   => [
             Package['isc-dhcp-server'],
             File['/etc/dhcp']
