@@ -13,6 +13,7 @@ class openstack::designate::service::queens
         'designate-doc',
         'designate-central',
         'python-git',
+        'python3-git',
     ]
 
     package { $packages:
