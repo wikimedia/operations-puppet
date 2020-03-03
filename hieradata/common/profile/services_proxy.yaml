@@ -1,3 +1,5 @@
+# Stop installing this profile
+profile::services_proxy::ensure: absent
 # This list is mostly to be used inside mediawiki.
 profile::services_proxy::services:
   search-chi_eqiad:
