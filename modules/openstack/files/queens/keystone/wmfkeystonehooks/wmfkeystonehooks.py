@@ -32,8 +32,8 @@ from keystone.common import validation
 from keystone.resource import schema
 
 import designatemakedomain
-import ldapgroups
-import pageeditor
+from . import ldapgroups
+from . import pageeditor
 
 LOG = logging.getLogger('nova.%s' % __name__)
 
@@ -112,7 +112,7 @@ class KeystoneHooks(notifier.Driver):
         return roledict
 
     def _get_current_assignments(self, project_id):
-        reverseroledict = dict((v, k) for k, v in self._get_role_dict().iteritems())
+        reverseroledict = dict((v, k) for k, v in self._get_role_dict().items())
 
         rawassignments = self.assignment_api.list_role_assignments(project_id=project_id)
         assignments = {}
@@ -200,13 +200,13 @@ class KeystoneHooks(notifier.Driver):
 
         roledict = self._get_role_dict()
 
-        if CONF.wmfhooks.observer_role_name not in roledict.keys():
+        if CONF.wmfhooks.observer_role_name not in list(roledict.keys()):
             LOG.error("Failed to find id for role %s" % CONF.wmfhooks.observer_role_name)
             raise exception.NotImplemented()
-        if CONF.wmfhooks.admin_role_name not in roledict.keys():
+        if CONF.wmfhooks.admin_role_name not in list(roledict.keys()):
             LOG.error("Failed to find id for role %s" % CONF.wmfhooks.admin_role_name)
             raise exception.NotImplemented()
-        if CONF.wmfhooks.user_role_name not in roledict.keys():
+        if CONF.wmfhooks.user_role_name not in list(roledict.keys()):
             LOG.error("Failed to find id for role %s" % CONF.wmfhooks.user_role_name)
             raise exception.NotImplemented()
 
@@ -233,7 +233,7 @@ class KeystoneHooks(notifier.Driver):
         session = keystone_session.Session(auth=auth)
         client = neutron_client.Client(session=session, connect_retries=5)
         allgroups = client.list_security_groups()['security_groups']
-        defaultgroup = filter(lambda group: group['name'] == 'default', allgroups)
+        defaultgroup = [group for group in allgroups if group['name'] == 'default']
         if defaultgroup:
             groupid = defaultgroup[0]["id"]
             try:
@@ -393,7 +393,7 @@ class KeystoneHooks(notifier.Driver):
             role = message['payload']['role']
             user = message['payload']['user']
             roledict = self._get_role_dict()
-            for name in roledict.keys():
+            for name in list(roledict.keys()):
                 if role == roledict[name]:
                     if user in assignments[name]:
                         assignments[name].remove(user)

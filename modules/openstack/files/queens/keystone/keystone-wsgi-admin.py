@@ -39,12 +39,12 @@ if __name__ == "__main__":
     sys.argv[1:] = args.args
     server = wss.make_server('', args.port, initialize_admin_application())
 
-    print("*" * 80)
+    print(("*" * 80))
     print("STARTING test server keystone.server.wsgi.initialize_admin_application")
     url = "http://%s:%d/" % (my_ip, server.server_port)
-    print("Available at %s" % url)
+    print(("Available at %s" % url))
     print("DANGER! For testing only, do not use in production")
-    print("*" * 80)
+    print(("*" * 80))
     sys.stdout.flush()
 
     server.serve_forever()
