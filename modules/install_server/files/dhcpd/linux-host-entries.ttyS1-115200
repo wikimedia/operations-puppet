@@ -3862,7 +3862,6 @@ host lvs2010 {
 host lvs3005 {
     hardware ethernet B0:26:28:41:1E:30;
     fixed-address lvs3005.esams.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host lvs3006 {
