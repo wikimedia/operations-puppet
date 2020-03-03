@@ -23,7 +23,7 @@ class profile::statsd {
         proto   => 'udp',
         port    => '8125',
         notrack => true,
-        srange  => '$PRODUCTION_NETWORKS',
+        srange  => '$DOMAIN_NETWORKS',
     }
 
     class { '::statsite': }
