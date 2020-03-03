@@ -3818,7 +3818,6 @@ host lvs1014 {
 host lvs1015 {
     hardware ethernet F4:E9:D4:DB:30:20;
     fixed-address lvs1015.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host lvs1016 {
