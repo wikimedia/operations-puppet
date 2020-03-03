@@ -1564,6 +1564,25 @@ class profile::prometheus::ops (
     }
 
 
+    # Jobs for Netbox script-based exported metrics
+    $netbox_jobs = [
+        # device statistics
+        {
+            'job_name'     => 'netbox_device_statistics',
+            'metrics_path' => '/getstats.GetDeviceStats',
+            'scheme'          => 'https',
+            'file_sd_configs' => [
+                { 'files' => [ "${targets_path}/netbox_scripts_exporter_${::site}.yaml"] },
+            ],
+        }
+    ]
+    prometheus::class_config { "netbox_scripts_exporter_${::site}":
+        dest       => "${targets_path}/netbox_scripts_exporter_${::site}.yaml",
+        site       => $::site,
+        class_name => 'role::netbox::frontend',
+        port       => 8443
+    }
+
     prometheus::server { 'ops':
         listen_address        => "127.0.0.1:${port}",
         storage_retention     => $storage_retention,
@@ -1581,7 +1600,7 @@ class profile::prometheus::ops (
             $gerrit_jobs, $routinator_jobs, $rpkicounter_jobs, $varnishkafka_jobs, $bird_jobs, $ncredir_jobs,
             $cloud_dev_pdns_jobs, $cloud_dev_pdns_rec_jobs, $bacula_jobs, $poolcounter_exporter_jobs,
             $apereo_cas_jobs, $atlas_exporter_jobs, $exported_blackbox_jobs, $cadvisor_jobs,
-            $envoy_jobs, $webperf_jobs, $squid_jobs, $nic_saturation_exporter_jobs, $thanos_jobs
+            $envoy_jobs, $webperf_jobs, $squid_jobs, $nic_saturation_exporter_jobs, $thanos_jobs, $netbox_jobs,
         ),
         global_config_extra   => $config_extra,
     }
