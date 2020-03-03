@@ -130,7 +130,7 @@ lvs::interfaces::vlan_data:
     id: "100"
     netmask: '255.255.255.128'
     iface:
-      lvs3005: 'enp175s0f0:91.198.174.15'
+      lvs3005: 'ens3f0np0:91.198.174.15'
       lvs3006: 'ens3f0np0:91.198.174.16'
       lvs3007: 'ens3f0np0:91.198.174.17'
   public1-ulsfo:
