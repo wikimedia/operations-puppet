@@ -7,6 +7,8 @@ class profile::envoy(
     Array[String] $prometheus_nodes = lookup('prometheus_nodes'),
     String $cluster = lookup('cluster'),
 ) {
+    # Envoy supports tcp fast open
+    require ::profile::tcp_fast_open
     if os_version('debian jessie') {
         group { 'envoy':
             ensure => present,
