@@ -12,7 +12,7 @@ echo 'Stopping parsoid-rt testreduce clients ...'
 sudo service parsoid-rt-client stop
 
 echo 'Updating deploy repo checkout ...'
-cd /srv/deployment/parsoid/deploy
+cd /srv/parsoid-testing
 # Ensure we are in the master branch -- the repo has been
 # left in a non-master checkout on occasion when a previous
 # git pull might have failed for whatever reason.
@@ -29,7 +29,7 @@ git log -n 1
 # files in this directory.
 # Temporary hack till we integrate Parsoid more fully into core.
 # -f is needed to ensure we don't fail if the symlink already exists.
-ln -s -f ../vendor
+#ln -s -f ../vendor
 
 echo 'Restarting parsoid ...'
 sudo service parsoid restart
