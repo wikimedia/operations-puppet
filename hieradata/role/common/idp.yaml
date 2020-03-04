@@ -62,7 +62,7 @@ profile::idp::services:
   logstash:
     class: 'org.apereo.cas.services.RegexRegisteredService'
     id: 6
-    service_id: 'https://(cas-)?logstash(-next)?.wikimedia.org(/.*)?'
+    service_id: 'http://(cas-)?logstash.wikimedia.org(/.*)?'
     attribute_release_policy:
       '@class': 'org.apereo.cas.services.ReturnAllAttributeReleasePolicy'
     access_strategy:
