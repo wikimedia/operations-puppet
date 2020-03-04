@@ -57,6 +57,18 @@ describe 'profile::mediawiki::webserver' do
       context "without hhvm" do
         it { is_expected.to compile.with_all_deps }
       end
+      context "with envoy tls" do
+        let(:params) {
+          super().merge(
+            {:has_tls => 'envoy'})
+        }
+        # stub out the required class. We test it elsewhere
+        let(:pre_condition) {
+          super().concat(['class profile::tlsproxy::envoy { notice("included!")}'])
+        }
+        it { is_expected.to compile.with_all_deps }
+        it { is_expected.to contain_class('profile::tlsproxy::envoy') }
+      end
       context "with tls" do
         let(:params) {
           super().merge({:has_tls => true})
@@ -64,6 +76,8 @@ describe 'profile::mediawiki::webserver' do
         let(:node) {
           'test1001.testsite'
         }
+        # Overload hiera lookups
+        let(:node_params) { super().merge({test_name: 'mediawiki_webserver_tls' })}
         let(:facts) {
           super().merge(
             {
@@ -80,9 +94,6 @@ describe 'profile::mediawiki::webserver' do
                               .with_certs(['test1001.testsite'])
         }
         context "with lvs" do
-          let(:params) {
-            super().merge({:has_lvs => true})
-          }
           let(:pre_condition) {
             super().push('class passwords::etcd($accounts = {}){}')
           }
