@@ -1,5 +1,7 @@
 class role::logstash {
-    system::role { 'logstash': }
+    system::role { 'logstash':
+      description => 'Logstash, Kibana and Elasticsearch ingest node',
+    }
     include ::role::logstash::collector
     include ::role::kibana
     include ::role::logstash::apifeatureusage

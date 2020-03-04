@@ -1,3 +1,6 @@
+# lint:ignore:wmf_styleguide
+# This should be converted to a profile
+
 # vim:sw=4 ts=4 sts=4 et:
 # == Class: role::logstash::collector
 #
@@ -11,10 +14,6 @@
 class role::logstash::collector (
     $prometheus_nodes = hiera('prometheus_nodes', []), # lint:ignore:wmf_styleguide
 ) {
-    system::role { 'logstash::collector':
-      description => 'Logstash log collector and indexer',
-    }
-
     class { '::profile::logstash::collector':
         prometheus_nodes => $prometheus_nodes,
     }
@@ -23,3 +22,4 @@ class role::logstash::collector (
     include ::profile::base::firewall
 
 }
+# lint:endignore
