@@ -124,7 +124,7 @@ define command {
 
 define command {
     command_name    check_https_redirect
-    command_line    $USER1$/check_http -S -I $HOSTADDRESS$ -H $ARG1$ -u $ARG2$ -e "HTTP/1.1 $ARG3$ " -d "Location: $ARG4$"
+    command_line    $USER1$/check_http -S -I $HOSTADDRESS$ -p $ARG1$ -H $ARG2$ -u $ARG3$ -e "HTTP/1.1 $ARG4$ " -d "Location: $ARG5$"
     }
 
 define command {

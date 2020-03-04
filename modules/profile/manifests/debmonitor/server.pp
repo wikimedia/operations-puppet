@@ -143,7 +143,7 @@ class profile::debmonitor::server (
 
     monitoring::service { 'debmonitor-cdn-https':
         description   => 'debmonitor.wikimedia.org:7443 CDN',
-        check_command => "check_https_redirect!debmonitor.wikimedia.org!/!302!https://${public_server_name}:7443/",
+        check_command => 'check_https_redirect!7443!debmonitor.wikimedia.org!/!302!/login/?next=/',
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Debmonitor',
     }
 
