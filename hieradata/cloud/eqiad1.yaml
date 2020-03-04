@@ -345,3 +345,9 @@ wikimedia_clusters:
       esams: []
       ulsfo: []
       eqsin: []
+  parsoid:
+    description: "Parsoid"
+    id: 37
+    sites:
+      eqiad: []
+      codfw: []
