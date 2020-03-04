@@ -44,6 +44,7 @@ class profile::superset(
     $secret_key         = hiera('profile::superset::secret_key', 'not_really_a_secret_key'),
     $ldap_proxy_enabled = hiera('profile::superset::ldap_proxy_enabled', false),
     $statsd             = hiera('statsd', undef),
+    $presto_cluster     = hiera('profile::superset::presto_cluster', undef),
 ) {
 
     if os_version('debian == stretch') {
@@ -94,7 +95,22 @@ class profile::superset(
             # new cluster, wikishared
             "mysql://${::passwords::mysql::research::user}@dbstore1005.eqiad.wmnet:3320/wikishared" =>
                 $::passwords::mysql::research::pass,
+        }
 
+        if $presto_cluster {
+            file { '/etc/superset/presto_ca':
+                ensure => 'directory',
+                owner  => 'root',
+                group  => 'root',
+                mode   => '0755',
+            }
+            file { '/etc/superset/presto_ca/ca.crt.pem':
+                content => secret("certificates/presto_${presto_cluster}/root_ca/ca.crt.pem"),
+                owner   => 'root',
+                group   => 'root',
+                mode    => '0444',
+                require => Class['::superset'],
+            }
         }
     }
     else {

@@ -11,5 +11,4 @@ class role::analytics_cluster::superset::staging {
     include ::profile::standard
     include ::profile::kerberos::client
     include ::profile::kerberos::keytabs
-    include ::profile::presto::client
 }
