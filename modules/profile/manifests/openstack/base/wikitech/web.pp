@@ -11,7 +11,6 @@ class profile::openstack::base::wikitech::web(
 
     require profile::mediawiki::common
     require ::profile::services_proxy::envoy
-    require profile::services_proxy
 
     class {'::mediawiki::packages::fonts': }
     class {'::profile::backup::host':}

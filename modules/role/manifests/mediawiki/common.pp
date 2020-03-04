@@ -9,7 +9,4 @@ class role::mediawiki::common {
 
     # proxy for connection to other servers
     include ::profile::services_proxy::envoy
-    # Nginx-based service proxy.
-    # We will remove this once the transition is done.
-    include ::profile::services_proxy
 }

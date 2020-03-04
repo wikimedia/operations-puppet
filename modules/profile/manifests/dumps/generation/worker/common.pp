@@ -13,7 +13,6 @@ class profile::dumps::generation::worker::common(
     require ::profile::mediawiki::nutcracker
     require ::profile::mediawiki::mcrouter_wancache
     require ::profile::services_proxy::envoy
-    require ::profile::services_proxy
 
     $xmldumpsmount = '/mnt/dumpsdata'
 
