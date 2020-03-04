@@ -51,10 +51,4 @@ class profile::toolforge::k8s::client(
             metrics_bind_address => undef,
         }
     }
-
-    # Remove once the file is gone
-    file { 'kubectl-1.4':
-        ensure => absent,
-        path   => '/usr/local/bin/kubectl',
-    }
 }

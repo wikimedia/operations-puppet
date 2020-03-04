@@ -94,16 +94,6 @@ class icinga::monitor::toollabs {
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Toolforge/Admin/Toolschecker',
     }
 
-    monitoring::service { 'tools-checker-etcd-flannel':
-        description    => 'toolschecker: All Flannel etcd nodes are healthy',
-        check_command  => "${checker}!/etcd/flannel!OK",
-        host           => $test_entry_host,
-        check_interval => 5,
-        retry_interval => 5,
-        contact_group  => 'wmcs-team-email,wmcs-bots',
-        notes_url      => 'https://wikitech.wikimedia.org/wiki/Portal:Toolforge/Admin/Toolschecker',
-    }
-
     monitoring::service { 'tools-checker-etcd-k8s':
         description    => 'toolschecker: All k8s etcd nodes are healthy',
         check_command  => "${checker}!/etcd/k8s!OK",

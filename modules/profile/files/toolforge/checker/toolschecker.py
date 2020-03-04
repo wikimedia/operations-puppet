@@ -210,12 +210,6 @@ def check_etcd_health(host):
     return False
 
 
-@check("/etcd/flannel")
-def flannel_etcd_check():
-    hosts = app.config["ETCD_FLANNEL"]
-    return all([check_etcd_health(host) for host in hosts])
-
-
 @check("/etcd/k8s")
 def kubernetes_etcd_check():
     hosts = app.config["ETCD_K8S"]
@@ -320,20 +314,11 @@ def kubernetes_nodes_ready_check():
     with open(os.path.join(__dir__, "kube-config.yaml")) as dotfile:
         config = yaml.safe_load(dotfile)
 
-    # Legacy Kubernetes cluster
-    legacy = check_nodes(
-        config["clusters"][0]["cluster"]["server"],
-        config["users"][0]["user"]["token"],
-    )
-
-    # 2020 Kubernetes cluster
-    modern = check_nodes(
+    return check_nodes(
         config["clusters"][1]["cluster"]["server"],
         config["users"][1]["user"]["token"],
         verify=False,
     )
-
-    return legacy and modern
 
 
 @check("/ldap")

@@ -30,7 +30,6 @@ class profile::toolforge::checker {
         'db_toolsdb'                      => '/db/toolsdb',
         'db_wikilabelsrw'                 => '/db/wikilabelsrw',
         'dns_private'                     => '/dns/private',
-        'etcd_flannel'                    => '/etcd/flannel',
         'etcd_kubernetes'                 => '/etcd/k8s',
         'grid_continuous_stretch'         => '/grid/continuous/stretch',
         'grid_start_stretch'              => '/grid/start/stretch',
@@ -104,11 +103,6 @@ class profile::toolforge::checker {
         'CRON_PATH'     => '/data/project/toolschecker/crontest.txt',
         'DEBUG'         => true,
         'DUMPS_PATH'    => '/public/dumps/public/enwiki',
-        'ETCD_FLANNEL' => [
-            "tools-flannel-etcd-01.${::labsproject}.eqiad.wmflabs",
-            "tools-flannel-etcd-02.${::labsproject}.eqiad.wmflabs",
-            "tools-flannel-etcd-03.${::labsproject}.eqiad.wmflabs",
-        ],
         'ETCD_K8S' => [
             "tools-k8s-etcd-01.${::labsproject}.eqiad.wmflabs",
             "tools-k8s-etcd-02.${::labsproject}.eqiad.wmflabs",
