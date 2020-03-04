@@ -19,12 +19,12 @@ from oslo_config import cfg
 
 from keystone.auth.plugins import base
 from keystone.auth import plugins as auth_plugins
-import password_whitelist
+from . import password_whitelist
 from keystone.common import dependency
 from keystone import exception
 from keystone.i18n import _
 
-import wikitechclient
+from . import wikitechclient
 
 METHOD_NAME = 'wmtotp'
 
