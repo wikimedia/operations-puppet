@@ -8078,7 +8078,6 @@ host stat1007 {
 host theemin {
     hardware ethernet D0:94:66:5F:67:68;
     fixed-address theemin.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host tungsten {
