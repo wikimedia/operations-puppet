@@ -5,3 +5,5 @@ profile::aptrepo::wikimedia::homedir: '/root'
 profile::aptrepo::wikimedia::gpg_user: 'root'
 profile::aptrepo::wikimedia::gpg_pubring: 'apt/pubring.gpg'
 profile::aptrepo::wikimedia::gpg_secring: 'apt/secring.gpg'
+
+profile::installserver::dhcp::ensure_service: 'running'

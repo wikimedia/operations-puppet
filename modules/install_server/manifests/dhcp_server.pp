@@ -37,4 +37,15 @@ class install_server::dhcp_server (
         ],
         subscribe => File['/etc/dhcp'],
     }
+
+    # TODO: Fold this into modules/install/dhcpd once
+    # all jessie-based install servers are replaced.
+    if os_version('debian >= buster') {
+        file_line { 'dhcpd_interfaces':
+          ensure => present,
+          path   => '/etc/default/isc-dhcp-server',
+          line   => "INTERFACESv4=\"${facts['interface_primary']}\"  # Managed by puppet",
+          match  => "INTERFACESv4=\"\"",
+        }
+    }
 }
