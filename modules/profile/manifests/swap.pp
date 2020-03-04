@@ -102,6 +102,7 @@ class profile::swap(
             uid         => false,
             gid         => false,
             hosts_allow => $rsync_hosts_allow,
+            auto_ferm   => true,
         }
     }
 }
