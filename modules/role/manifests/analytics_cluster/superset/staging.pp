@@ -9,4 +9,7 @@ class role::analytics_cluster::superset::staging {
     include ::profile::superset
     include ::profile::base::firewall
     include ::profile::standard
+    include ::profile::kerberos::client
+    include ::profile::kerberos::keytabs
+    include ::profile::presto::client
 }

@@ -767,6 +767,8 @@ hadoop_clusters:
       hadoop.proxyuser.oozie.groups: '*'
       hadoop.proxyuser.presto.hosts: '*'
       hadoop.proxyuser.presto.groups: '*'
+      hadoop.proxyuser.superset.hosts: '*'
+      hadoop.proxyuser.superset.groups: '*'
 
   analytics-hadoop:
     zookeeper_cluster_name: analytics-eqiad
@@ -971,6 +973,8 @@ hadoop_clusters:
       hadoop.proxyuser.oozie.groups: '*'
       hadoop.proxyuser.presto.hosts: '*'
       hadoop.proxyuser.presto.groups: '*'
+      hadoop.proxyuser.superset.hosts: '*'
+      hadoop.proxyuser.superset.groups: '*'
 
 deployment_server: deploy1001.eqiad.wmnet
 

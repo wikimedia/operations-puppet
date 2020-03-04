@@ -10,3 +10,9 @@ profile::superset::workers: 8
 profile::superset::ldap_proxy_enabled: true
 
 profile::base::notifications: disabled
+
+profile::kerberos::keytabs::keytabs_metadata:
+  - role: 'superset'
+    owner: 'superset'
+    group: 'superset'
+    filename: 'superset.keytab'
