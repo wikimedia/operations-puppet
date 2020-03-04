@@ -60,6 +60,8 @@
 #     If true, sets up the access log for the TLS terminator.
 # @param websockets
 #     If true, allows websocket upgrades.
+# @param fast_open_queue
+#     The size of the fast open queue. If zero, TFO is disabled.
 # @param connect_timeout
 #     The time is seconds to wait before declaring a connection timeout to the
 #     upstream resource
@@ -68,6 +70,7 @@ define envoyproxy::tls_terminator(
     Optional[Stdlib::Port] $redir_port = undef,
     Boolean $access_log = false,
     Boolean $websockets = false,
+    Integer $fast_open_queue = 0,
     Float $connect_timeout = 1.0,
     Float $route_timeout = 65.0,
     Optional[String] $global_cert_path = undef,

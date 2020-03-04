@@ -5,6 +5,7 @@ address:
 listener_filters:
 - name: "envoy.listener.tls_inspector"
   typed_config: {}
+tcp_fast_open_queue_length: <%= @fast_open_queue %>
 filter_chains:
 <%- @upstreams.each do |upstream| -%>
 <%- if upstream['cert_path'] != :undef -%>

@@ -7,7 +7,7 @@
 #
 # Set up a global TLS proxy to apache listening on TCP port 444.
 #   profile::envoy::ensure: present
-#   profile::tlsproxy::envoy::sni_support: no
+#   profile::tlsproxy::envoy::sni_support: "no" # you need the double quotes, because yaml.
 #   profile::tlsproxy::envoy::tls_port: 444
 #   profile::tlsproxy::envoy::services:
 #      - server_names: ['*']
@@ -111,6 +111,7 @@ class profile::tlsproxy::envoy(
             upstreams        => $upstreams,
             access_log       => false,
             websockets       => $websockets,
+            fast_open_queue  => 150,
             global_cert_path => $global_cert_path,
             global_key_path  => $global_key_path,
         }
