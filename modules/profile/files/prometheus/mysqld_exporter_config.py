@@ -120,7 +120,7 @@ def transform_data_to_prometheus(data):
         name = get_socket(instance['name'])
         group = instance['group']
         section = instance['section']
-        if section in ['es1', 'tendril']:  # es1 and tendril hosts are special masters
+        if section in ['es1', 'es2', 'tendril']:  # es[12] and tendril hosts are special masters
             role = 'standalone'
         elif instance['master']:
             role = 'master'
