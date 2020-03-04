@@ -11,6 +11,10 @@ profile::superset::ldap_proxy_enabled: true
 
 profile::base::notifications: disabled
 
+profile::presto::cluster_name: analytics-presto
+profile::presto::discovery_uri: https://an-coord1001.eqiad.wmnet:8281
+profile::presto::use_kerberos: true
+
 profile::kerberos::keytabs::keytabs_metadata:
   - role: 'superset'
     owner: 'superset'
