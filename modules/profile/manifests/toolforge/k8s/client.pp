@@ -28,27 +28,4 @@ class profile::toolforge::k8s::client(
         group  => 'root',
         mode   => '0555',
     }
-
-    # Kubernetes Configuration - See T209627
-    if os_version('debian jessie') {
-        $etcd_url = join(prefix(suffix($etcd_hosts, ':2379'), 'https://'), ',')
-
-        ferm::service { 'flannel-vxlan':
-            proto => udp,
-            port  => 8472,
-        }
-
-        class { '::k8s::flannel':
-            etcd_endpoints => $etcd_url,
-        }
-
-        class { '::k8s::infrastructure_config':
-            master_host => $master_host,
-        }
-
-        class { '::k8s::proxy':
-            master_host          => $master_host,
-            metrics_bind_address => undef,
-        }
-    }
 }
