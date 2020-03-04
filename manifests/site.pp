@@ -1510,9 +1510,9 @@ node /^mw1(39[3579]|40[13])\.eqiad\.wmnet$/ {
 
 # Row C
 
-# mw1405 - mw1407 are in rack C3
-node /^mw140[5-7]\.eqiad\.wmnet$/ {
-    role(spare::system)
+# Rack C3
+node /^mw140[57]\.eqiad\.wmnet$/ {
+    role(mediawiki::appserver)
 }
 
 # mw1319-33 are in rack C6
@@ -1520,9 +1520,9 @@ node /^mw13(19|2[0-9]|3[0-3])\.eqiad\.wmnet$/ {
     role(mediawiki::appserver)
 }
 
-# mw1408 - mw1413 are in rack C8
-node /^mw14(0[8-9]|1[0-3])\.eqiad\.wmnet$/ {
-    role(spare::system)
+# Rack C8
+node /^mw14(09|1[13])\.eqiad\.wmnet$/ {
+    role(mediawiki::appserver)
 }
 
 # Row D
@@ -1610,6 +1610,16 @@ node /^mw1(39[468]|40[024])\.eqiad\.wmnet$/ {
 
 # mw1339-48 are in rack C6
 node /^mw13(39|4[0-8])\.eqiad\.wmnet$/ {
+    role(mediawiki::appserver::api)
+}
+
+# Rack C3
+node /^mw1406\.eqiad\.wmnet$/ {
+    role(mediawiki::appserver::api)
+}
+
+# Rack C8
+node /^mw14(08|1[02])\.eqiad\.wmnet$/ {
     role(mediawiki::appserver::api)
 }
 

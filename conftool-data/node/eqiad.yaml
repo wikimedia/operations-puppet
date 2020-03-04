@@ -82,6 +82,11 @@ eqiad:
     mw1399.eqiad.wmnet: [apache2,nginx]
     mw1401.eqiad.wmnet: [apache2,nginx]
     mw1403.eqiad.wmnet: [apache2,nginx]
+    mw1405.eqiad.wmnet: [apache2,nginx]
+    mw1407.eqiad.wmnet: [apache2,nginx]
+    mw1409.eqiad.wmnet: [apache2,nginx]
+    mw1411.eqiad.wmnet: [apache2,nginx]
+    mw1413.eqiad.wmnet: [apache2,nginx]
   api_appserver:
     mw1221.eqiad.wmnet: [apache2,nginx]
     mw1222.eqiad.wmnet: [apache2,nginx]
@@ -158,6 +163,10 @@ eqiad:
     mw1400.eqiad.wmnet: [apache2,nginx]
     mw1402.eqiad.wmnet: [apache2,nginx]
     mw1404.eqiad.wmnet: [apache2,nginx]
+    mw1406.eqiad.wmnet: [apache2,nginx]
+    mw1408.eqiad.wmnet: [apache2,nginx]
+    mw1410.eqiad.wmnet: [apache2,nginx]
+    mw1412.eqiad.wmnet: [apache2,nginx]
   jobrunner: &jobrunner
     mw1293.eqiad.wmnet: [apache2,nginx]
     mw1294.eqiad.wmnet: [apache2,nginx]
