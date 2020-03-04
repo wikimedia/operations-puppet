@@ -136,19 +136,19 @@ class profile::debmonitor::server (
     }
 
     monitoring::service { 'debmonitor-http':
-        description   => 'debmonitor.wikimedia.org',
+        description   => 'debmonitor.wikimedia.org:80',
         check_command => "check_http_redirect!debmonitor.wikimedia.org!/!301!https://${public_server_name}/",
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Debmonitor',
     }
 
     monitoring::service { 'debmonitor-cdn-https':
-        description   => 'debmonitor.wikimedia.org:7443 (CDN)',
+        description   => 'debmonitor.wikimedia.org:7443 CDN',
         check_command => "check_https_redirect!debmonitor.wikimedia.org!/!302!https://${public_server_name}:7443/",
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Debmonitor',
     }
 
     monitoring::service { 'debmonitor-https':
-        description   => 'debmonitor.discovery.wmnet:443 (internal)',
+        description   => 'debmonitor.discovery.wmnet:443 internal',
         check_command => 'check_https_unauthorized!debmonitor.discovery.wmnet!/!400',
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Debmonitor',
     }
