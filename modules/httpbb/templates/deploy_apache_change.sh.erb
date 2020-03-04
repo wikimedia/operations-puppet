@@ -2,11 +2,11 @@
 set -e
 function usage {
     cat <<EOF
-usage: $0 [--apply] <urls-file> [<environment>]
+usage: $0 [--apply] [<test-file>] [<environment>]
 
   Small helper script for automating apache configuration changes rollout.
-  urls-file    File containing urls to test. Some standard ones are provided
-               in /usr/local/share/apache-tests
+  test-file    File containing httpbb tests. By default, all tests in
+               <%= @tests_dir %> are run.
   environment  either "prod" (the default) or "beta"
   --apply      Tells the script to apply the puppet change after the test, not
                just to reenable puppet
@@ -27,16 +27,15 @@ if [ "$1" == "--apply" ]; then
         usage
     fi
 fi
-test_file=$1
+test_file=${1:"<%= @tests_dir %>/*"}
 environment=${2:-prod}
 canary=${CANARY:-"mwdebug1001.eqiad.wmnet"}
-control=${CONTROL:-"mw1266.eqiad.wmnet"}
 puppetmaster=$(sudo puppet config print --section agent ca_server)
 targets="R:Class ~ '(?i)mediawiki(_exp)?::web::${environment}_sites'"
 
 
-# Check the canary and control servers are in good health
-apache-fast-test "$test_file" "$canary" "$control"
+# Check that the tests are passing on the canary before starting
+httpbb "$test_file" --host "$canary"
 # Disable puppet everywhere
 echo "Now we will disable puppet on all servers with the shared apache configuration."
 sudo cumin "$targets" "disable-puppet 'apache change ongoing --${USER}'"
@@ -47,8 +46,8 @@ sudo cumin "$puppetmaster" "TERM=$TERM puppet merge -y"
 echo "Ok to run puppet on the canary host to apply the apache change?"
 sudo cumin "$canary" "run-puppet-agent -e 'apache change ongoing --${USER}'"
 # Re-check the sites
-echo "Checking sites again"
-apache-fast-test "$test_file" "$canary" "$control"
+echo "Checking canary again"
+httpbb "$test_file" --host "$canary"
 echo "Things seem OK from our test."
 if [ "$apply" == "yes" ]; then
     # Run puppet everywhere, 5 hosts at a time, which is very conservative.

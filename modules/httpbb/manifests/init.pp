@@ -28,4 +28,13 @@ class httpbb(
     file { $tests_dir:
         ensure => directory,
     }
+
+    # Little automation to use on the cumin masters for deploying an apache config change
+    file { '/usr/local/bin/deploy-apache-change':
+        ensure  => present,
+        content => template('httpbb/deploy_apache_change.sh.erb'),
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0555',
+    }
 }
