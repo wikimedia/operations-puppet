@@ -1,5 +1,8 @@
 class role::prometheus {
-    system::role { 'prometheus::server':  }
+    system::role { 'prometheus::server':
+        description => 'Prometheus server (main data centres)',
+    }
+
     include ::role::prometheus::ops
     include ::role::prometheus::global
     include ::role::prometheus::services
