@@ -94,7 +94,7 @@ mtail::logs:
   - /var/log/logstash/logstash-plain.log
 
 profile::idp::client::httpd::vhost_content: 'profile/idp/client/httpd-kibana.erb'
-profile::idp::client::httpd::virtual_host: 'cas-logstash-next.wikimedia.org'
+profile::idp::client::httpd::virtual_host: 'cas-logstash.wikimedia.org'
 profile::idp::client::httpd::document_root: '/var/www/html'
 profile::idp::client::httpd::required_groups:
   - 'cn=ops,ou=groups,dc=wikimedia,dc=org'
