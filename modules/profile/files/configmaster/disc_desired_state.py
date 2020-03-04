@@ -104,7 +104,9 @@ DESIRED_STATE = [
     {'codfw': {'pooled': True, 'references': [], 'ttl': 300}, 'tags': 'dnsdisc=restbase'},
     {'eqiad': {'pooled': True, 'references': [], 'ttl': 300}, 'tags': 'dnsdisc=restbase'},
     {'codfw': {'pooled': False, 'references': [], 'ttl': 300}, 'tags': 'dnsdisc=swift-rw'},
-    {'eqiad': {'pooled': True, 'references': [], 'ttl': 300}, 'tags': 'dnsdisc=swift-rw'}
+    {'eqiad': {'pooled': True, 'references': [], 'ttl': 300}, 'tags': 'dnsdisc=swift-rw'},
+    {'codfw': {'pooled': True, 'references': [], 'ttl': 300}, 'tags': 'dnsdisc=eventgate-analytics-external'},  # noqa
+    {'eqiad': {'pooled': True, 'references': [], 'ttl': 300}, 'tags': 'dnsdisc=eventgate-analytics-external'},  # noqa
 ]
 
 
