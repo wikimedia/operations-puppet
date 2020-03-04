@@ -22,6 +22,7 @@ class openstack::serverpackages::queens::stretch(
         dist       => 'stretch-queens-backports',
         components => 'main',
         source     => false,
+        keyfile    => 'puppet:///modules/openstack/serverpackages/osbpo-pubkey.gpg',
         notify     => Exec['openstack-queens-stretch-apt-upgrade'],
     }
 
@@ -30,6 +31,7 @@ class openstack::serverpackages::queens::stretch(
         dist       => 'stretch-queens-backports-nochange',
         components => 'main',
         source     => false,
+        keyfile    => 'puppet:///modules/openstack/serverpackages/osbpo-pubkey.gpg',
         notify     => Exec['openstack-queens-stretch-apt-upgrade'],
     }
 

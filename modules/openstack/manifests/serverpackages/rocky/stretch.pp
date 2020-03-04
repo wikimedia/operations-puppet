@@ -22,6 +22,7 @@ class openstack::serverpackages::rocky::stretch(
         dist       => 'stretch-rocky-backports',
         components => 'main',
         source     => false,
+        keyfile    => 'puppet:///modules/openstack/serverpackages/osbpo-pubkey.gpg',
         notify     => Exec['openstack-rocky-stretch-apt-upgrade'],
     }
 
@@ -30,6 +31,7 @@ class openstack::serverpackages::rocky::stretch(
         dist       => 'stretch-rocky-backports-nochange',
         components => 'main',
         source     => false,
+        keyfile    => 'puppet:///modules/openstack/serverpackages/osbpo-pubkey.gpg',
         notify     => Exec['openstack-rocky-stretch-apt-upgrade'],
     }
 
