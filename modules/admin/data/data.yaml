@@ -220,7 +220,7 @@ groups:
   statistics-web-users:
     gid: 724
     description: access for stats.wikimedia.org
-    members: [ezachte, joal, milimetric, fdans]
+    members: []
   statistics-privatedata-users:
     gid: 725
     description: Access to stat boxes that host private data, including
@@ -250,8 +250,8 @@ groups:
   statistics-admins:
     posix_name: stats
     description: access files created by stats user cron jobs
-    members: [ezachte, milimetric, joal, mforns, bearloga, nuria, fdans]
-    privileges: ['ALL = (stats) NOPASSWD: ALL']
+    members: []
+    privileges: []
   oit:
     gid: 727
     description: office it folk
