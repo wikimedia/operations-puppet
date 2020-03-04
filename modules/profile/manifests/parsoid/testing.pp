@@ -13,6 +13,13 @@ class profile::parsoid::testing (
 
     base::service_auto_restart { 'parsoid': }
 
+    git::clone { 'mediawiki/services/parsoid':
+        branch    => 'master',
+        owner     => 'root',
+        group     => 'wikidev',
+        directory => '/srv/parsoid-testing',
+    }
+
     file { '/usr/local/bin/update_parsoid.sh':
         source => 'puppet:///modules/parsoid/parsoid_testing.update_parsoid.sh',
         owner  => 'root',
