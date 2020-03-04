@@ -5,7 +5,6 @@ class role::wmcs::toolforge::proxy {
     include ::profile::toolforge::infrastructure
     include ::profile::toolforge::proxy
     include ::profile::toolforge::toolviews
-    include ::profile::toolforge::k8s::webproxy
     include ::profile::base::firewall
     include ::profile::toolforge::ferm_handlers
     include ::profile::toolforge::prometheus_fixup

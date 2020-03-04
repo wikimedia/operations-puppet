@@ -63,8 +63,4 @@ class role::toollabs::k8s::master(
             'HostPathEnforcer'   => "--host-paths-allowed=${host_automounts_string} --host-path-prefixes-allowed=${host_path_prefixes_allowed_string}",
         },
     }
-
-    class { '::toollabs::maintain_kubeusers':
-        k8s_master => $master_host,
-    }
 }
