@@ -1503,14 +1503,9 @@ node /^mw12(6[7-9]|7[0-5])\.eqiad\.wmnet$/ {
 
 # Row B
 
-# mw1393 - mw1398 are in rack B5
-node /^mw139[3-8]\.eqiad\.wmnet$/ {
-    role(spare::system)
-}
-
-# mw1399 - mw1404 are in rack B8
-node /^mw1(399|40[0-4])\.eqiad\.wmnet$/ {
-    role(spare::system)
+# rack B3 and B5
+node /^mw1(39[3579]|40[13])\.eqiad\.wmnet$/ {
+    role(mediawiki::appserver)
 }
 
 # Row C
@@ -1598,6 +1593,11 @@ node /^mw12(8[4-9]|9[07])\.eqiad\.wmnet$/ {
 
 # mw1313-17 are in rack B7
 node /^mw13(1[3-7])\.eqiad\.wmnet$/ {
+    role(mediawiki::appserver::api)
+}
+
+# rack B3 and B5
+node /^mw1(39[468]|40[024])\.eqiad\.wmnet$/ {
     role(mediawiki::appserver::api)
 }
 
