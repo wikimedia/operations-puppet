@@ -23,7 +23,6 @@ class role::swap {
     include ::profile::analytics::cluster::users
 
     include ::profile::analytics::client::limits
-    include ::profile::analytics::client::homedirs
 
     include ::profile::kerberos::client
     include ::profile::kerberos::keytabs

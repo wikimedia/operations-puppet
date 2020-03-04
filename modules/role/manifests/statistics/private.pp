@@ -46,7 +46,6 @@ class role::statistics::private {
     include ::profile::analytics::asoranking
 
     include ::profile::analytics::client::limits
-    include ::profile::analytics::client::homedirs
 
     include ::profile::kerberos::client
     include ::profile::kerberos::keytabs

@@ -20,8 +20,6 @@ class role::statistics::explorer {
     include ::profile::analytics::cluster::packages::hadoop
 
     include ::profile::analytics::client::limits
-    include ::profile::analytics::client::homedirs
-
     include ::profile::kerberos::client
     include ::profile::kerberos::keytabs
 
