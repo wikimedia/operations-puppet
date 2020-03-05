@@ -1,5 +1,6 @@
 class profile::openstack::base::neutron::service(
     $version = hiera('profile::openstack::base::version'),
+    Stdlib::Port $bind_port = lookup('profile::openstack::base::neutron::bind_port'),
     ) {
 
     include ::network::constants
@@ -7,8 +8,9 @@ class profile::openstack::base::neutron::service(
     $labs_networks = join($::network::constants::labs_networks, ' ')
 
     class {'::openstack::neutron::service':
-        version => $version,
-        active  => true,
+        version   => $version,
+        active    => true,
+        bind_port => $bind_port,
     }
     contain '::openstack::neutron::service'
 
