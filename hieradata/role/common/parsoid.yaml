@@ -14,8 +14,6 @@ profile::lvs::realserver::pools:
       - mcrouter
       - nutcracker
 
-# switch Parsoid/JS-server to Parsoid/PHP-MW-appserver
-profile::parsoid::use_php: true
 profile::mediawiki::php::php_version: "7.2"
 has_lvs: true
 profile::mediawiki::webserver::has_tls: true

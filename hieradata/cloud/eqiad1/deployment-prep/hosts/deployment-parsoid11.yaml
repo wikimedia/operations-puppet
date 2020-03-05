@@ -16,4 +16,3 @@ profile::mediawiki::php::restarts::has_lvs: false
 profile::mediawiki::php::restarts::opcache_limit: 200
 profile::mediawiki::vhost_feature_flags: {}
 profile::mediawiki::webserver::has_tls: false
-profile::parsoid::use_php: true
