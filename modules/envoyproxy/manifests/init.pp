@@ -89,6 +89,7 @@ class envoyproxy(
         user        => 'root',
         refreshonly => true,
         notify      => Systemd::Service['envoyproxy.service'],
+        require     => Package[$pkg_name],
     }
 
 

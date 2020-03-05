@@ -23,7 +23,6 @@ import os
 import shutil
 import subprocess
 import sys
-import tempfile
 
 from typing import Generator, List
 
@@ -34,24 +33,29 @@ import yaml
 logger = logging.getLogger(os.path.splitext(os.path.basename(sys.argv[0]))[0])
 
 
-class CustomFormatter(argparse.RawDescriptionHelpFormatter,
-                      argparse.ArgumentDefaultsHelpFormatter):
+class CustomFormatter(
+    argparse.RawDescriptionHelpFormatter, argparse.ArgumentDefaultsHelpFormatter
+):
     pass
 
 
 def parse_args(args: List[str] = sys.argv[1:]):
     """Parse arguments."""
     parser = argparse.ArgumentParser(
-        description=sys.modules[__name__].__doc__,
-        formatter_class=CustomFormatter)
-    parser.add_argument('--configdir', '-c', metavar="DIR")
+        description=sys.modules[__name__].__doc__, formatter_class=CustomFormatter
+    )
+    parser.add_argument("--configdir", "-c", metavar="DIR")
     log = parser.add_mutually_exclusive_group()
-    log.add_argument("--debug", "-d", action="store_true",
-                     default=False,
-                     help="enable debugging")
-    log.add_argument("--silent", "-s", action="store_true",
-                     default=False,
-                     help="don't log to console")
+    log.add_argument(
+        "--debug", "-d", action="store_true", default=False, help="enable debugging"
+    )
+    log.add_argument(
+        "--silent",
+        "-s",
+        action="store_true",
+        default=False,
+        help="don't log to console",
+    )
     return parser.parse_args(args)
 
 
@@ -62,29 +66,26 @@ def setup_logging(options: argparse.Namespace):
     logger.setLevel(options.debug and logging.DEBUG or logging.INFO)
     if not options.silent:
         ch = logging.StreamHandler()
-        ch.setFormatter(logging.Formatter(
-            "%(levelname)s[%(name)s] %(message)s"))
+        ch.setFormatter(logging.Formatter("%(levelname)s[%(name)s] %(message)s"))
         logger.addHandler(ch)
 
 
 class EnvoyConfig:
     def __init__(self, base_dir: str):
         self._base_dir = base_dir
-        self.admin_file = os.path.join(base_dir, 'admin-config.yaml')
-        self.config_file = os.path.join(base_dir, 'envoy.yaml')
+        self.admin_file = os.path.join(base_dir, "admin-config.yaml")
+        self.config_file = os.path.join(base_dir, "envoy.yaml")
         self.config = {
-            'admin': {},
-            'static_resources': {'listeners': [], 'clusters': []},
+            "admin": {},
+            "static_resources": {"listeners": [], "clusters": []},
         }
 
     def _read_admin(self):
-        with open(self.admin_file, 'r') as admin_fh:
+        with open(self.admin_file, "r") as admin_fh:
             admin = yaml.safe_load(admin_fh)
-        self.config['admin'] = admin
+        self.config["admin"] = admin
 
-    def _walk_dir(self,
-                  what: str,
-                  glob_expr: str) -> Generator[str, None, None]:
+    def _walk_dir(self, what: str, glob_expr: str) -> Generator[str, None, None]:
         """Returns the full path of files in a directory"""
         for filename in sorted(glob.glob(os.path.join(what, glob_expr))):
             if os.path.isfile(filename):
@@ -92,9 +93,9 @@ class EnvoyConfig:
 
     def _read(self, name: str, what: str):
         logger.debug("Reading %s into %s", name, what)
-        with open(name, 'r') as file_handle:
+        with open(name, "r") as file_handle:
             data = yaml.safe_load(file_handle)
-        self.config['static_resources'][what].append(data)
+        self.config["static_resources"][what].append(data)
 
     def populate_config(self):
         """Populate the configuration.
@@ -102,25 +103,34 @@ class EnvoyConfig:
         If anything goes wrong, exceptions will be raised
         """
         self._read_admin()
-        for what in ['listeners', 'clusters']:
-            dirname = os.path.join(self._base_dir, what + '.d')
+        for what in ["listeners", "clusters"]:
+            dirname = os.path.join(self._base_dir, what + ".d")
             logger.debug("Reading %s from %s", what, dirname)
             for filename in self._walk_dir(dirname, "*.yaml"):
                 self._read(filename, what)
 
-    def verify_config(self) -> bool:
+    def verify_config(self, tmpdir: str = "/tmp/.envoyconfig") -> bool:
         """Verifies the configuration stored is valid."""
         try:
-            tmpdir = tempfile.mkdtemp(suffix='.envoyconfig')
+            if not os.path.isdir(tmpdir):
+                os.mkdir(tmpdir, 0o755)
             tmpconfig = os.path.join(tmpdir, "envoy.yaml")
             self.write_config(config_file=tmpconfig)
             subprocess.check_output(
-                ['/usr/bin/envoy', '-c', tmpconfig, '--mode validate'])
+                [
+                    "sudo",
+                    "-u",
+                    "envoy",
+                    "/usr/bin/envoy",
+                    "-c",
+                    tmpconfig,
+                    "--mode validate",
+                ]
+            )
             return True
         except subprocess.CalledProcessError as e:
             logger.error("Error encountered while verifying the configuration")
-            logger.info(
-                "verification exited with return code %d", e.returncode)
+            logger.info("verification exited with return code %d", e.returncode)
             logger.info("== Stdout:")
             logger.info(e.stdout)
             if e.stderr is not None:
@@ -136,12 +146,12 @@ class EnvoyConfig:
     def write_config(self, config_file=None):
         if config_file is None:
             config_file = self.config_file
-        with open(config_file, 'w') as config_fh:
+        with open(config_file, "w") as config_fh:
             yaml.safe_dump(self.config, config_fh)
 
 
 # The main script
-if __name__ == '__main__':
+if __name__ == "__main__":
     exitcode = 0
     options = parse_args()
     setup_logging(options)
