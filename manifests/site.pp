@@ -1491,13 +1491,13 @@ node /^mw1266\.eqiad\.wmnet$/ {
     role(mediawiki::appserver)
 }
 
-# mw1385 - mw1392 are in rack A5
-node /^mw13(8[5-9]|9[0-2])\.eqiad\.wmnet$/ {
-    role(spare::system)
-}
-
 # mw1267 - mw1275 are in rack A7
 node /^mw12(6[7-9]|7[0-5])\.eqiad\.wmnet$/ {
+    role(mediawiki::appserver)
+}
+
+# rack A5
+node /^mw13(8[579]|91)\.eqiad\.wmnet$/ {
     role(mediawiki::appserver)
 }
 
@@ -1581,6 +1581,11 @@ node /^mw128[0-3]\.eqiad\.wmnet$/ {
 
 # mw1312 is in rack A6
 node 'mw1312.eqiad.wmnet' {
+    role(mediawiki::appserver::api)
+}
+
+# rack A5
+node /^mw13(8[68]|9[02])\.eqiad\.wmnet$/ {
     role(mediawiki::appserver::api)
 }
 
