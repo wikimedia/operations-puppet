@@ -822,11 +822,11 @@ node /^elastic202[5-9]\.codfw\.wmnet/ {
     role(elasticsearch::cirrus)
 }
 
-node /^elastic20[3-4][0-9]\.codfw\.wmnet/ {
+node /^elastic20[3-5][0-9]\.codfw\.wmnet/ {
     role(elasticsearch::cirrus)
 }
 
-node /^elastic205[0-4]\.codfw\.wmnet/ {
+node 'elastic2060.codfw.wmnet' {
     role(elasticsearch::cirrus)
 }
 
