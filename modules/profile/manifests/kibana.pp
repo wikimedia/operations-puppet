@@ -47,8 +47,11 @@ class profile::kibana (
     } elsif $auth_type == 'local' {
         $httpd_extra_modules = ['authz_groupfile', 'authz_user']
 
-    } elsif $auth_type != 'none' {
-        fail('profile::kibana::auth_type must be one of ldap, local, none')
+    } elsif $auth_type == 'none' {
+        $httpd_extra_modules = []
+
+    } else {
+        fail('role::kibana::auth_type must be one of ldap, local, none')
     }
 
     $httpd_modules = concat($httpd_base_modules, $httpd_extra_modules)
