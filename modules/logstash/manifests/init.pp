@@ -92,7 +92,8 @@ class logstash (
 
         # lint:ignore:puppet_url_without_modules
         logstash::plugin{'logstash-output-statsd':
-            source => 'puppet:///volatile/logstash/plugins/logstash-output-statsd-3.2.0.zip',
+            source      => 'puppet:///volatile/logstash/plugins/logstash-output-statsd-3.2.0.zip',
+            environment => ['LS_JAVA_OPTS=-Xms128m -Xmx128m'],
         }
         # lint:endignore
 
