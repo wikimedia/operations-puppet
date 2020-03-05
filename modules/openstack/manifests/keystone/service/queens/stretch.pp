@@ -65,6 +65,7 @@ class openstack::keystone::service::queens::stretch(
         'python3-ldap3',
         'ruby-ldap',
         'python-mwclient',
+        'python3-mwclient',
     ]
 
     package { $packages:
