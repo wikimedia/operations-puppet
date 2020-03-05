@@ -246,10 +246,6 @@ funnel	*w.wiki	https://meta.wikimedia.org/wiki/Special:UrlShortener
 # T84277
 override	wikimedia.org/research	https://wikimedia.qualtrics.com/SE/?SID=SV_6R04ammTX8uoJFP
 
-# Redirect old techblog.wikimedia.org urls to blog.wikimedia.org T90638
-rewrite	techblog.wikimedia.org	https://blog.wikimedia.org
-override	    techblog.wikimedia.org/ https://blog.wikimedia.org/c/technology # T181878
-
 # dev.wikimedia.org - T372
 funnel	dev.wikimedia.org	https://www.mediawiki.org/wiki/API:Data_and_developer_hub
 
