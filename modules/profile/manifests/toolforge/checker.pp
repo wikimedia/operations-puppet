@@ -22,8 +22,15 @@ class profile::toolforge::checker {
         'python3-yaml',
     )
 
+    # For etcd checks, we need the puppet certs to act as client
+    $puppet_cert_pub  = "/var/lib/puppet/ssl/certs/${::fqdn}.pem"
+    $puppet_cert_priv = "/var/lib/puppet/ssl/private_keys/${::fqdn}.pem"
+    $puppet_cert_ca   = '/var/lib/puppet/ssl/certs/ca.pem'
     $install_dir = '/var/lib/toolschecker'
     $wsgi_file = "${install_dir}/toolschecker.py"
+    $etcd_cert_pub    = "${install_dir}/etcd/${::fqdn}.pem"
+    $etcd_cert_priv   = "${install_dir}/etcd/${::fqdn}.priv"
+    $etcd_cert_ca     = "${install_dir}/etcd/ca.pem"
 
     $checks = {
         'cron'                            => '/cron',
@@ -89,6 +96,36 @@ class profile::toolforge::checker {
         before => File[$wsgi_file],
     }
 
+    file { "${install_dir}/etcd":
+        ensure => directory,
+        owner  => 'www-data',
+        group  => 'www-data',
+        mode   => '0500',
+    }
+
+    file { $etcd_cert_pub:
+        ensure => present,
+        source => "file://${puppet_cert_pub}",
+        owner  => 'www-data',
+        group  => 'www-data',
+    }
+
+    file { $etcd_cert_priv:
+        ensure    => present,
+        source    => "file://${puppet_cert_priv}",
+        owner     => 'www-data',
+        group     => 'www-data',
+        mode      => '0600',
+        show_diff => false,
+    }
+
+    file { $etcd_cert_ca:
+        ensure => present,
+        source => "file://${puppet_cert_ca}",
+        owner  => 'www-data',
+        group  => 'www-data',
+    }
+
     file { $wsgi_file:
         ensure => file,
         owner  => 'root',
@@ -104,10 +141,15 @@ class profile::toolforge::checker {
         'DEBUG'         => true,
         'DUMPS_PATH'    => '/public/dumps/public/enwiki',
         'ETCD_K8S' => [
-            "tools-k8s-etcd-01.${::labsproject}.eqiad.wmflabs",
-            "tools-k8s-etcd-02.${::labsproject}.eqiad.wmflabs",
-            "tools-k8s-etcd-03.${::labsproject}.eqiad.wmflabs",
+            "tools-k8s-etcd-4.${::labsproject}.eqiad.wmflabs",
+            "tools-k8s-etcd-5.${::labsproject}.eqiad.wmflabs",
+            "tools-k8s-etcd-6.${::labsproject}.eqiad.wmflabs",
         ],
+        'ETCD_AUTH' => {
+            'KEY'  => $etcd_cert_priv,
+            'CERT' => $etcd_cert_pub,
+            'CA'   => $etcd_cert_ca,
+        },
         'NFS_HOME_PATH' => '/data/project/toolschecker/nfs-test/',
         'PROJECT'       => $::labsproject,
         'TOOLS_DOMAIN'  => 'tools.wmflabs.org',

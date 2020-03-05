@@ -195,7 +195,7 @@ def dns_private_check():
     return False
 
 
-def check_etcd_health(host):
+def check_etcd_health(host, auth):
     # Don't do https verification because we are using puppet certificate for
     # validating it and tools-checker infrastructure runs on the labs
     # puppetmaster because we have a check for the labs puppetmaster in
@@ -203,6 +203,7 @@ def check_etcd_health(host):
     request = requests.get(
         "https://{host}:2379/health".format(host=host),
         timeout=3,
+        cert=(auth["CERT"], auth["KEY"]),
         verify=False
     )
     if request.status_code == 200:
@@ -213,7 +214,8 @@ def check_etcd_health(host):
 @check("/etcd/k8s")
 def kubernetes_etcd_check():
     hosts = app.config["ETCD_K8S"]
-    return all([check_etcd_health(host) for host in hosts])
+    auth = app.config["ETCD_AUTH"]
+    return all([check_etcd_health(host, auth) for host in hosts])
 
 
 def job_running(name):
