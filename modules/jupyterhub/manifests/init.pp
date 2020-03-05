@@ -25,6 +25,15 @@
 #   credentials in. Currently restricted to members of the ops group only.
 #   Default: undef
 #
+# [*systemd_slice*]
+#   If given, 'systemd_slice' will force systemd spawner to use a certain
+#   Systemd slice to run the notebook's units under. This is good when
+#   some general resource constraints need to be made. By default the
+#   units will run under the system slice, in which all the daemons are
+#   usually running. This means that a heavy notebook server can affect
+#   daemons running on the same host.
+#   Default: user.slice
+#
 class jupyterhub (
     $port                  = 8000,
     $web_proxy             = undef,
@@ -32,6 +41,7 @@ class jupyterhub (
     $ldap_server           = undef,
     $ldap_bind_dn_template = undef,
     $posix_groups          = ['wikidev'],
+    $systemd_slice         = 'user.slice',
 )
 {
     require_package(

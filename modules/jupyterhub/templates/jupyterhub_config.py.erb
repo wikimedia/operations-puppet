@@ -59,6 +59,10 @@ c.SystemdSpawner.environment = {
 }
 <% end -%>
 
+<% if @systemd_slice -%>
+c.SystemdSpawner.slice = '<%= @systemd_slice %>'
+<% end -%>
+
 COOKIE_SECRET_FILE = '<%= @config_path %>/jupyterhub_cookie_secret'
 
 # Path to cookie secret for user sessions.
