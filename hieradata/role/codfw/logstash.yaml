@@ -19,8 +19,8 @@ profile::elasticsearch::dc_settings:
       - logstash2006.codfw.wmnet
 
 # Kibana
-role::kibana::auth_realm: WMF Labs (use wiki login name not shell) - nda/ops/wmf
+profile::kibana::auth_realm: WMF Labs (use wiki login name not shell) - nda/ops/wmf
 # TODO: Convert to read the servers from ldap::ro-server and ldap::ro-server-fallback once Kibana converted to a profile
-role::kibana::ldap_authurl: ldaps://ldap-ro.codfw.wikimedia.org ldap-ro.eqiad.wikimedia.org/ou=people,dc=wikimedia,dc=org?cn
+profile::kibana::ldap_authurl: ldaps://ldap-ro.codfw.wikimedia.org ldap-ro.eqiad.wikimedia.org/ou=people,dc=wikimedia,dc=org?cn
 
 profile::logstash::collector::input_kafka_consumer_group_id: 'logstash-codfw'

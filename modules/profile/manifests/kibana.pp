@@ -1,6 +1,6 @@
 # vim:sw=4 ts=4 sts=4 et:
 
-# == Class: role::kibana
+# == Class: profile::kibana
 #
 # Provisions Kibana
 #
@@ -16,19 +16,19 @@
 # - $ldap_groups: List of ldap-group names for $auth_type == 'ldap'
 #
 # filtertags: labs-project-deployment-prep
-class role::kibana (
-    $vhost,
-    $serveradmin,
-    $auth_type,
-    $require_ssl   = true,
-    $auth_realm    = undef,
-    $auth_file     = undef,
-    $ldap_authurl  = undef,
-    $ldap_binddn   = undef,
-    $ldap_groups   = [],
+class profile::kibana (
+    $vhost         = lookup('profile::kibana::vhost'),
+    $serveradmin   = lookup('profile::kibana::serveradmin'),
+    $auth_type     = lookup('profile::kibana::auth_type'),
+    $require_ssl   = lookup('profile::kibana::require_ssl', { 'default_value' => true }),
+    $auth_realm    = lookup('profile::kibana::auth_realm', { 'default_value' => undef }),
+    $auth_file     = lookup('profile::kibana::auth_file', { 'default_value' => undef }),
+    $ldap_authurl  = lookup('profile::kibana::ldap_authurl', { 'default_value' => undef }),
+    $ldap_binddn   = lookup('profile::kibana::ldap_binddn', { 'default_value' => undef }),
+    $ldap_groups   = lookup('profile::kibana::ldap_groups', { 'default_value' => [] }),
 ) {
 
-    include ::kibana
+    class { 'kibana': }
     include profile::idp::client::httpd
 
     $httpd_base_modules = ['proxy_http',
@@ -48,7 +48,7 @@ class role::kibana (
         $httpd_extra_modules = ['authz_groupfile', 'authz_user']
 
     } elsif $auth_type != 'none' {
-        fail('role::kibana::auth_type must be one of ldap, local, none')
+        fail('profile::kibana::auth_type must be one of ldap, local, none')
     }
 
     $httpd_modules = concat($httpd_base_modules, $httpd_extra_modules)
@@ -57,7 +57,7 @@ class role::kibana (
         modules => $httpd_modules,
     }
 
-    $apache_auth = template("role/kibana/apache-auth-${auth_type}.erb")
+    $apache_auth = template("profile/kibana/apache-auth-${auth_type}.erb")
 
     ferm::service { 'kibana_frontend':
         proto   => 'tcp',
@@ -67,6 +67,6 @@ class role::kibana (
     }
 
     httpd::site { $vhost:
-        content => template('role/kibana/apache.conf.erb'),
+        content => template('profile/kibana/apache.conf.erb'),
     }
 }
