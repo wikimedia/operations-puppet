@@ -39,5 +39,12 @@ class openstack::glance::service::queens(
             mode    => '0644',
             notify  => Service['glance-api'],
             require => Package['glance'];
+        '/etc/init.d/glance-api':
+            content => template('openstack/queens/glance/glance-api'),
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0755',
+            notify  => Service['glance-api'],
+            require => Package['glance'];
     }
 }
