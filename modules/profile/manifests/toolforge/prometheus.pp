@@ -3,8 +3,6 @@
 # native k8s support.
 
 class profile::toolforge::prometheus (
-    Stdlib::Fqdn  $legacy_k8s_master_host = lookup('k8s::master_host'),
-    $legacy_k8s_users                     = lookup('k8s_infrastructure_users'),
     Stdlib::Fqdn  $new_k8s_apiserver_fqdn = lookup('profile::toolforge::k8s::apiserver_fqdn', {default_value => 'k8s.tools.eqiad1.wikimedia.cloud'}),
     Stdlib::Port  $new_k8s_apiserver_port = lookup('profile::toolforge::k8s::apiserver_port', {default_value => 6443}),
     Array[Stdlib::Fqdn] $proxies          = lookup('profile::toolforge::proxies',             {default_value => ['tools-proxy-05.tools.eqiad.wmflabs']}),
@@ -14,7 +12,6 @@ class profile::toolforge::prometheus (
 
     class { '::prometheus::wmcs_scripts': }
 
-    $bearer_token_file = '/srv/prometheus/tools/k8s.token'
     $targets_path = '/srv/prometheus/tools/targets'
 
     class { '::httpd':
@@ -38,61 +35,6 @@ class profile::toolforge::prometheus (
         listen_address       => '127.0.0.1:9902',
         external_url         => 'https://tools-prometheus.wmflabs.org/tools',
         scrape_configs_extra => [
-            {
-                'job_name'              => 'k8s-api',
-                'bearer_token_file'     => $bearer_token_file,
-                'scheme'                => 'https',
-                'tls_config'            => {
-                    'server_name' => $legacy_k8s_master_host,
-                },
-                'kubernetes_sd_configs' => [
-                    {
-                        'api_server'        => "https://${legacy_k8s_master_host}:6443",
-                        'bearer_token_file' => $bearer_token_file,
-                        'role'              => 'endpoints',
-                    },
-                ],
-                # Scrape config for API servers, keep only endpoints for default/kubernetes to poll only
-                # api servers
-                'relabel_configs'       => [
-                    {
-                        'source_labels' => ['__meta_kubernetes_namespace',
-                                            '__meta_kubernetes_service_name',
-                                            '__meta_kubernetes_endpoint_port_name'],
-                        'action'        => 'keep',
-                        'regex'         => 'default;kubernetes;https',
-                    },
-                ],
-            },
-            {
-                'job_name'              => 'k8s-node',
-                'bearer_token_file'     => $bearer_token_file,
-                # Force (insecure) https only for node servers
-                'scheme'                => 'https',
-                'tls_config'            => {
-                    'insecure_skip_verify' => true,
-                },
-                'kubernetes_sd_configs' => [
-                    {
-                        'api_server'        => "https://${legacy_k8s_master_host}:6443",
-                        'bearer_token_file' => $bearer_token_file,
-                        'role'              => 'node',
-                    },
-                ],
-                'relabel_configs'       => [
-                    # Map kubernetes node labels to prometheus metric labels
-                    {
-                        'action' => 'labelmap',
-                        'regex'  => '__meta_kubernetes_node_label_(.+)',
-                    },
-                    # Drop spammy metrics (i.e. with high cardinality k/v pairs)
-                    {
-                        'action'        => 'drop',
-                        'regex'         => 'rest_client_request.*',
-                        'source_labels' => [ '__name__' ],
-                    },
-                ]
-            },
             {
                 'job_name'        => 'ssh_banner',
                 'metrics_path'    => '/probe',
@@ -375,16 +317,6 @@ class profile::toolforge::prometheus (
         proxy_pass => 'http://localhost:9902/tools',
     }
 
-    $client_token = $legacy_k8s_users['prometheus']['token']
-
-    file { $bearer_token_file:
-        ensure  => present,
-        content => $client_token,
-        mode    => '0400',
-        owner   => 'prometheus',
-        group   => 'prometheus',
-    }
-
     file { "${targets_path}/toolsdb-mariadb.yml":
       content => ordered_yaml([{
         'targets' => ['clouddb1001.clouddb-services.eqiad.wmflabs:9104',
@@ -420,14 +352,6 @@ class profile::toolforge::prometheus (
     cron { 'prometheus_tools_k8s_etcd_targets':
         ensure  => present,
         command => "/usr/local/bin/prometheus-labs-targets --port 9051 --prefix tools-k8s-etcd- > ${targets_path}/etcd_k8s.$$ && mv ${targets_path}/etcd_k8s.$$ ${targets_path}/etcd_k8s.yml",
-        minute  => '*/10',
-        hour    => '*',
-        user    => 'prometheus',
-    }
-
-    cron { 'prometheus_tools_flannel_etcd_targets':
-        ensure  => present,
-        command => "/usr/local/bin/prometheus-labs-targets --port 9051 --prefix tools-flannel-etcd- > ${targets_path}/etcd_flannel.$$ && mv ${targets_path}/etcd_flannel.$$ ${targets_path}/etcd_flannel.yml",
         minute  => '*/10',
         hour    => '*',
         user    => 'prometheus',
