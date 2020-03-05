@@ -20,6 +20,7 @@ profile::query_service::nodes:
   - 'wdqs2001.codfw.wmnet'
   - 'wdqs2002.codfw.wmnet'
   - 'wdqs2003.codfw.wmnet'
+  - 'wdqs2007.codfw.wmnet'
 admin::groups:
   - wdqs-admins
   - wdqs-roots

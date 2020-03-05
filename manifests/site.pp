@@ -2200,7 +2200,7 @@ node /^wdqs101[1-3]\.eqiad\.wmnet$/ {
     role(insetup)
 }
 
-node /^wdqs200[1-3]\.codfw\.wmnet$/ {
+node /^wdqs200[1237]\.codfw\.wmnet$/ {
     role(wdqs)
 }
 
@@ -2209,7 +2209,7 @@ node /^wdqs100[38]\.eqiad\.wmnet$/ {
     role(wdqs::internal)
 }
 
-node /^wdqs200[4-6]\.codfw\.wmnet$/ {
+node /^wdqs200[4568]\.codfw\.wmnet$/ {
     role(wdqs::internal)
 }
 
