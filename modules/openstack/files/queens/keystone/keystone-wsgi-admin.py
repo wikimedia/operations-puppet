@@ -1,5 +1,5 @@
-#!/usr/bin/python
-# PBR Generated from u'wsgi_scripts'
+#! /usr/bin/python3
+# PBR Generated from 'wsgi_scripts'
 
 import threading
 
@@ -18,12 +18,15 @@ if __name__ == "__main__":
     import wsgiref.simple_server as wss
 
     my_ip = socket.gethostbyname(socket.gethostname())
+
     parser = argparse.ArgumentParser(
         description=initialize_admin_application.__doc__,
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        usage='%(prog)s [-h] [--port PORT] -- [passed options]')
+        usage='%(prog)s [-h] [--port PORT] [--host IP] -- [passed options]')
     parser.add_argument('--port', '-p', type=int, default=8000,
                         help='TCP port to listen on')
+    parser.add_argument('--host', '-b', default='',
+                        help='IP to bind the server to')
     parser.add_argument('args',
                         nargs=argparse.REMAINDER,
                         metavar='-- [passed options]',
@@ -37,14 +40,14 @@ if __name__ == "__main__":
         else:
             parser.error("unrecognized arguments: %s" % ' '.join(args.args))
     sys.argv[1:] = args.args
-    server = wss.make_server('', args.port, initialize_admin_application())
+    server = wss.make_server(args.host, args.port, initialize_admin_application())
 
-    print(("*" * 80))
+    print("*" * 80)
     print("STARTING test server keystone.server.wsgi.initialize_admin_application")
-    url = "http://%s:%d/" % (my_ip, server.server_port)
-    print(("Available at %s" % url))
+    url = "http://%s:%d/" % (server.server_name, server.server_port)
+    print("Available at %s" % url)
     print("DANGER! For testing only, do not use in production")
-    print(("*" * 80))
+    print("*" * 80)
     sys.stdout.flush()
 
     server.serve_forever()
