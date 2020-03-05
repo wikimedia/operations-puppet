@@ -561,7 +561,7 @@ class profile::prometheus::ops (
         # Envoy produces a ton of metrics, but for now we're just interested in
         # upstream and downstream requests latencies and counts, so just keep those
         # and nothing else.
-        'metrics_relabel_configs' => [
+        'metric_relabel_configs' => [
           { 'source_labels' => ['__name__'],
             'regex'         =>'^envoy_(http_down|cluster_up)stream_rq.*$',
             'action'        => 'keep'
