@@ -8,7 +8,15 @@ filter_chains:
       "@type": type.googleapis.com/envoy.config.filter.network.http_connection_manager.v2.HttpConnectionManager
       access_log:
       - name: envoy.file_access_log
-        config:
+        filter:
+          status_code_filter:
+            comparison:
+              op: "GE"
+              value:
+                default_value: 500
+                runtime_key: <%= n %>_min_log_code
+        typed_config:
+          "@type": type.googleapis.com/envoy.config.accesslog.v2.FileAccessLog
           path: "/var/log/envoy/<%= n %>.log"
       stat_prefix: <%= n %>_egress
       http_filters:
