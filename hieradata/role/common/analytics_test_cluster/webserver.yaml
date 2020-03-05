@@ -1,4 +1,3 @@
 cluster: analytics
 admin::groups:
-  - statistics-web-users
-  - statistics-admins
+  - analytics-admins

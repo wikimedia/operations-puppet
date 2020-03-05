@@ -1,7 +1,6 @@
 cluster: analytics
 admin::groups:
-  - statistics-web-users
-  - statistics-admins
+  - analytics-admins
 
 # TLS Terminator settings
 # Please note: the service name is used to pick up the
