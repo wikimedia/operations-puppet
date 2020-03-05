@@ -12,12 +12,6 @@ class role::statistics::private {
 
     include ::profile::statistics::dataset_mount
 
-    # This job copies wiktext dumps from the NFS mounts to HDFS
-    include ::profile::analytics::refinery::job::import_mediawiki_dumps
-
-    # This job copies wikidata entities dumps from the NFS mounts to HDFS
-    include ::profile::analytics::refinery::job::import_wikidata_entities_dumps
-
     # Systemd timers owned by the Search team
     # (leveraging Analytics' refinery)
     include ::profile::analytics::search::jobs
