@@ -28,9 +28,9 @@ server {
 
     # By setting the content-type of these files to text/plain,
     # we make them viewable in browsers.
-    # yaml, avsc|idl (Avro), Markdown, and extensionless schema files (yaml)
-    # should be text.
-    location ~ (\.yaml|\.avsc|\.idl|\.md|\d\.\d\.\d)$ {
+    # yaml, avsc|idl (Avro), Markdown, and extensionless versioned
+    # and 'latest'schema files (yaml) should be text.
+    location ~ (\.yaml|\.avsc|\.idl|\.md|\d\.\d\.\d|latest)$ {
         types { } default_type "text/plain; charset=utf-8";
     }
 
