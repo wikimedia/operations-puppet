@@ -3641,6 +3641,10 @@ ldap_only_users:
     ensure: present
     realname: Asaf Bartov
     email: abartov@wikimedia.org
+  abban:
+    ensure: present
+    realname: Abban Dunne
+    email: abban.dunne@wikimedia.de
   adavenport:
     ensure: absent
     realname: Allison Davenport
