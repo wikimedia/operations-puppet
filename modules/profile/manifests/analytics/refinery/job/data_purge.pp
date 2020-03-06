@@ -75,6 +75,8 @@ class profile::analytics::refinery::job::data_purge (
     $event_refined_to_drop = {
         'mediawiki_api_request'          => 'e06eaf4f3c6894fe7b943d9b40f83ace',
         'mediawiki_cirrussearch_request' => 'e93b86033b2025f8a793c8b170e6474f',
+        'wdqs_external_sparql_query'     => 'f32f99c8fa41b56782bf22e1866cd79b',
+        'wdqs_internal_sparql_query'     => '15f545ef0fe0ba8573c568ded41fb6e3',
     }
 
     # Since we are only dropping very specific event data, we don't want to use
