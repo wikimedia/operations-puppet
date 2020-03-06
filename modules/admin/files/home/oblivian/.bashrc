@@ -41,4 +41,7 @@ alias set_proxy="export http_proxy=http://webproxy.eqiad.wmnet:8080; export HTTP
 alias pdisable="sudo puppet agent --disable $@"
 alias penable="sudo puppet agent --enable"
 alias prun="sudo puppet agent -tv"
-alias please="sudo $(fc -ln -1)"
+alias please="sudo !!"
+function envoy-runtime-set {
+	curl -X POST "http://localhost:9631/runtime_modify?${1}=${2}"
+}
