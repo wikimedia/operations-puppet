@@ -20,16 +20,13 @@ git checkout master
 git pull
 
 echo 'Updating parsoid repo checkout ...'
-cd src
 git checkout master
 git pull
 git log -n 1
-# For Parsoid/PHP, symlink to the vendor/ directory in the
-# deploy repo so that autoloading works as expected for the
-# files in this directory.
-# Temporary hack till we integrate Parsoid more fully into core.
-# -f is needed to ensure we don't fail if the symlink already exists.
-#ln -s -f ../vendor
+# Temporary hack to get Parsoid's RT testing client (still written
+# in node.js) linked up to its npm modules (still hanging out in
+# an otherwise-obsolete `deploy` repo).
+ln -s -f /srv/deployment/parsoid/deploy/node_modules
 
 echo 'Restarting parsoid ...'
 sudo service parsoid restart
