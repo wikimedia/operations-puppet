@@ -1,6 +1,6 @@
 <?php
 // Monitoring helper for PHP-FPM 7.x
-define('MW_PATH', '/srv/mediawiki');
+
 // Only consider blocks <5M for the fragmentation
 define('BLOCK_SIZE', 5*1024*1024);
 
@@ -352,58 +352,5 @@ function dump_opcache_meta() {
 }
 
 function clear_opcache() {
-	$result = [];
-	$file_name = isset($_GET['file']) ? realpath(MW_PATH . '/' . $_GET['file']) : null;
-	// It seems possible that partial opcache clears (of just a subset of
-	// files) cause more opcache corruption than resetting the entire opcache
-	// wholesale.  For the time being, let's try ignoring any provided
-	// filenames and always do full resets.
-	// c.f. https://phabricator.wikimedia.org/T221347
-	if (true || empty($file_name)) {
-		$result['*'] = opcache_reset();
-	} else{
-		if (strpos($file_name, MW_PATH) !== 0) {
-			die("Please don't provide paths outside the working tree.");
-		}
-		$files = [];
-		get_php_files_in($file_name, $files);
-		foreach ($files as $file) {
-				$result[$file] = opcache_invalidate($file);
-		}
-	}
-	print json_encode($result);
-}
-
-function is_php_file($file) {
-	if (basename($file) != basename($file, '.php')) {
-		return $file;
-	} else {
-		return false;
-	}
-}
-
-function get_php_files_in($name, &$php_files) {
-	// If just a file is provided, check it's a php file and
-	// add it to $php_files and return immediately
-	$name = realpath($name);
-	if (!is_dir($name)) {
-		$file = is_php_file($name);
-		if ($file) {
-			$php_files[] = $file;
-		}
-		return;
-	}
-
-	// Else, scan the directory for contents
-	$files_in_cwd = scandir($name);
-	foreach ($files_in_cwd as $filename) {
-		$path = realpath($name . '/' . $filename);
-		// scandir returns '.' and '..' - let's avoid listing
-		// all of the filesystem.
-		$len = strlen($name) + 1;
-		if (substr($path, 0, $len) != $name . '/') {
-			continue;
-		}
-		get_php_files_in($path, $php_files);
-	}
+	opcache_reset();
 }
