@@ -32,6 +32,7 @@ class profile::swap(
     $dumps_active_server     = hiera('dumps_dist_active_web'),
     $push_published          = lookup('profile::swap::push_published', { 'default_value' => true }),
     $use_dumps_mounts        = lookup('profile::swap::use_dumps_mounts', { 'default_value' => true }),
+    $use_node10              = lookup('profile::swap::use_nodejs10', { 'default_value' => false }),
 ) {
 
     if $use_dumps_mounts {

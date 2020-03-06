@@ -42,10 +42,10 @@ class jupyterhub (
     $ldap_bind_dn_template = undef,
     $posix_groups          = ['wikidev'],
     $systemd_slice         = 'user.slice',
+    $use_nodejs10          = false,
 )
 {
     require_package(
-        'nodejs-legacy', # For embedded configurable-http-proxy
         'virtualenv',
         'python3-venv',
         'python3-wheel',
@@ -58,6 +58,18 @@ class jupyterhub (
         'libsasl2-dev',
         'libsasl2-modules-gssapi-mit',
     )
+
+    if $use_nodejs10 and os_version('debian == stretch') {
+        apt::package_from_component { 'wikimedia-node10':
+            component => 'component/node10',
+            packages  => ['nodejs'],
+        }
+    } else {
+        # For embedded configurable-http-proxy
+        package { ['nodejs-legacy', 'nodejs']:
+            ensure => present,
+        }
+    }
 
     $deploy_repository = 'analytics/jupyterhub/deploy'
     $config_path       = '/etc/jupyterhub'
