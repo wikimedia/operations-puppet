@@ -1,8 +1,4 @@
 #!/bin/sh
-###
-# This file is a slightly-edited rip from the init script found in the upstream
-#  Newton nova-placement-api debian package.
-#
 ### BEGIN INIT INFO
 # Provides:          nova-placement-api
 # Required-Start:    $network $local_fs $remote_fs $syslog
@@ -15,13 +11,12 @@
 # Description:       Frontend Nova Placement API server
 ### END INIT INFO
 
-DESC="OpenStack Compute Placement API"
+DESC="OpenStack Nova Placement API (nova-placement-api)"
 PROJECT_NAME=nova
 NAME=${PROJECT_NAME}-placement-api
-DAEMON=/usr/bin/uwsgi_python
-DAEMON_ARGS="--master --paste-logger -p 4 --die-on-term --logto /var/log/nova/nova-placement-api.log --http-socket :<%= @placement_api_port %> --wsgi-file /usr/bin/nova-placement-api"
-NO_OPENSTACK_CONFIG_FILE_DAEMON_ARG=yes
-NO_OPENSTACK_LOGFILE_DAEMON_ARG=yes
+UWSGI_PORT=<%= @placement_api_port %>
+UWSGI_INI_PATH=/etc/nova/nova-placement-api-uwsgi.ini
+UWSGI_INI_APP=/usr/bin/nova-placement-api
 #!/bin/sh
 # The content after this line comes from openstack-pkg-tools
 # and has been automatically added to a .init.in script, which
@@ -29,9 +24,47 @@ NO_OPENSTACK_LOGFILE_DAEMON_ARG=yes
 # else is standardized as a single unique script.
 
 # Author: Thomas Goirand <zigo@debian.org>
+# Author: Ondřej Nový <novy@ondrej.org>
 
 # PATH should only include /usr/* if it runs after the mountnfs.sh script
 PATH=/sbin:/usr/sbin:/bin:/usr/bin
+
+if [ -n "${UWSGI_PORT}" ] && [ -n "${UWSGI_INI_PATH}" ] && [ -n "${UWSGI_INI_APP}" ] ; then
+	if ! [ -f "${UWSGI_INI_APP}" ] ; then
+		exit 0
+	fi
+	if [ -d /etc/${PROJECT_NAME}/ssl/private ] ; then
+		KEY_FILE=$(find /etc/${PROJECT_NAME}/ssl/private -type f -iname '*.pem' 2>/dev/null | head -n 1)
+	fi
+
+	if [ -e /usr/local/share/ca-certificates/puppet_openstack.crt ] ; then
+		# This is needed for puppet...
+		CERT_FILE=/usr/local/share/ca-certificates/puppet_openstack.crt
+	else
+		if [ -d /etc/${PROJECT_NAME}/ssl/public ] ; then
+			CERT_FILE=$(find /etc/${PROJECT_NAME}/ssl/public -type f -iname '*.crt' 2>/dev/null | head -n 1)
+		fi
+	fi
+
+	# Sid doesn't have /usr/bin/uwsgi_python3, so we need
+	# to search for a more specific daemon name. For stretch
+	# /usr/bin/uwsgi_python3 is fine.
+	for i in 3 35 36 37 38 39 ; do
+		if [ -x /usr/bin/uwsgi_python${i} ] ; then
+			DAEMON=/usr/bin/uwsgi_python${i}
+		fi
+	done
+
+	if [ -n "${KEY_FILE}" ] && [ -n "${CERT_FILE}" ] ; then
+		DAEMON_ARGS="--https-socket [::]:${UWSGI_PORT},${CERT_FILE},${KEY_FILE}"
+	else
+		DAEMON_ARGS="--http-socket [::]:${UWSGI_PORT}"
+	fi
+
+	DAEMON_ARGS="${DAEMON_ARGS} --ini ${UWSGI_INI_PATH}"
+	NO_OPENSTACK_CONFIG_FILE_DAEMON_ARG=yes
+	NO_OPENSTACK_LOGFILE_DAEMON_ARG=yes
+fi
 
 if [ -z "${DAEMON}" ] ; then
 	DAEMON=/usr/bin/${NAME}
@@ -54,26 +87,24 @@ if [ -z "${CONFIG_FILE}" ] ; then
 fi
 LOGFILE=/var/log/${PROJECT_NAME}/${NAME}.log
 if [ -z "${NO_OPENSTACK_CONFIG_FILE_DAEMON_ARG}" ] ; then
-	DAEMON_ARGS="${DAEMON_ARGS} --config-file=${CONFIG_FILE}"
+	DAEMON_ARGS="--config-file=${CONFIG_FILE} ${DAEMON_ARGS}"
 fi
 
 # Exit if the package is not installed
 [ -x $DAEMON ] || exit 0
 
-# If ran as root, create /var/lock/X, /var/run/X, /var/lib/X and /var/log/X as needed
+# If ran as root, create /var/lock/X, /var/run/X and /var/cache/X as needed
 if [ `whoami` = "root" ] ; then
-	for i in lock run lib ; do
+	for i in lock run cache ; do
 		mkdir -p /var/$i/${PROJECT_NAME}
 		chown ${SYSTEM_USER}:${SYSTEM_GROUP} /var/$i/${PROJECT_NAME}
 	done
-	for i in log ; do
-		mkdir -p /var/$i/${PROJECT_NAME}
-		chown ${SYSTEM_USER}:adm /var/$i/${PROJECT_NAME}
-	done
 fi
 
-# This defines init_is_upstart which we use later on (+ more...)
+# This defines support functions which we use later on
 . /lib/lsb/init-functions
+
+RET=0
 
 # Manage log options: logfile and/or syslog, depending on user's choosing
 [ -r /etc/default/openstack ] && . /etc/default/openstack
@@ -84,68 +115,107 @@ if [ -z "${NO_OPENSTACK_LOGFILE_DAEMON_ARG}" ] ; then
 fi
 
 do_start() {
-	start-stop-daemon --start --quiet --background ${STARTDAEMON_CHUID} --make-pidfile --pidfile ${PIDFILE} --chdir /var/lib/${PROJECT_NAME} --startas $DAEMON \
-			--test > /dev/null || return 1
-	start-stop-daemon --start --quiet --background ${STARTDAEMON_CHUID} --make-pidfile --pidfile ${PIDFILE} --chdir /var/lib/${PROJECT_NAME} --startas $DAEMON \
-			-- $DAEMON_ARGS || return 2
+	start-stop-daemon \
+		--start \
+		--quiet \
+		--background ${STARTDAEMON_CHUID} \
+		--make-pidfile --pidfile ${PIDFILE} \
+		--chdir /var/lib/${PROJECT_NAME} \
+		--startas $DAEMON \
+		--test > /dev/null \
+		|| return 1
+	if [ -n "${PYARGV}" ] ; then
+		start-stop-daemon \
+			--start \
+			--quiet \
+			--background ${STARTDAEMON_CHUID} \
+			--make-pidfile --pidfile ${PIDFILE} \
+			--chdir /var/lib/${PROJECT_NAME} \
+			--startas $DAEMON \
+			-- $DAEMON_ARGS --pyargv "${PYARGV}" \
+			|| return 2
+	else
+		start-stop-daemon \
+			--start \
+			--quiet \
+			--background ${STARTDAEMON_CHUID} \
+			--make-pidfile --pidfile ${PIDFILE} \
+			--chdir /var/lib/${PROJECT_NAME} \
+			--startas $DAEMON \
+			-- $DAEMON_ARGS \
+			|| return 2
+	fi
 }
 
 do_stop() {
-	start-stop-daemon --stop --quiet --retry=TERM/30/KILL/5 --pidfile $PIDFILE
+	start-stop-daemon \
+		--stop \
+		--quiet \
+		--retry=TERM/30/KILL/5 \
+		--pidfile $PIDFILE
 	RETVAL=$?
 	rm -f $PIDFILE
 	return "$RETVAL"
 }
 
 do_systemd_start() {
-	exec $DAEMON $DAEMON_ARGS
+	if [ -n "${PYARGV}" ] ; then
+		exec $DAEMON $DAEMON_ARGS --pyargv "${PYARGV}"
+	else
+		exec $DAEMON $DAEMON_ARGS
+	fi
 }
 
 case "$1" in
 start)
-	init_is_upstart > /dev/null 2>&1 && exit 1
 	log_daemon_msg "Starting $DESC" "$NAME"
 	do_start
 	case $? in
-		0|1) log_end_msg 0 ;;
-		2) log_end_msg 1 ;;
+		0|1) log_end_msg 0 ; RET=$? ;;
+		2)   log_end_msg 1 ; RET=$? ;;
 	esac
 ;;
 stop)
-	init_is_upstart > /dev/null 2>&1 && exit 0
 	log_daemon_msg "Stopping $DESC" "$NAME"
 	do_stop
 	case $? in
-		0|1) log_end_msg 0 ;;
-		2) log_end_msg 1 ;;
+		0|1) log_end_msg 0 ; RET=$? ;;
+		2)   log_end_msg 1 ; RET=$? ;;
 	esac
 ;;
 status)
-	status_of_proc "$DAEMON" "$NAME" && exit 0 || exit $?
+	status_of_proc "$DAEMON" "$NAME"
+	RET=$?
 ;;
 systemd-start)
 	do_systemd_start
 ;;  
+show-args)
+	if [ -n "${PYARGV}" ] ; then
+		echo $DAEMON $DAEMON_ARGS --pyargv \"${PYARGV}\"
+	else
+		echo $DAEMON $DAEMON_ARGS
+	fi
+;;
 restart|force-reload)
-	init_is_upstart > /dev/null 2>&1 && exit 1
 	log_daemon_msg "Restarting $DESC" "$NAME"
 	do_stop
 	case $? in
-	0|1)
-		do_start
-		case $? in
-			0) log_end_msg 0 ;;
-			1) log_end_msg 1 ;; # Old process is still running
-			*) log_end_msg 1 ;; # Failed to start
-		esac
-	;;
-	*) log_end_msg 1 ;; # Failed to stop
+		0|1)
+			do_start
+			case $? in
+				0) log_end_msg 0 ; RET=$? ;;
+				1) log_end_msg 1 ; RET=$? ;; # Old process is still running
+				*) log_end_msg 1 ; RET=$? ;; # Failed to start
+			esac
+		;;
+		*) log_end_msg 1 ; RET=$? ;; # Failed to stop
 	esac
 ;;
 *)
 	echo "Usage: $SCRIPTNAME {start|stop|status|restart|force-reload|systemd-start}" >&2
-	exit 3
+	RET=3
 ;;
 esac
 
-exit 0
+exit $RET
