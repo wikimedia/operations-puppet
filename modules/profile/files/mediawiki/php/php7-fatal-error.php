@@ -130,14 +130,14 @@ $isParsoidCluster = ( $_SERVER['SERVERGROUP'] ?? null ) === 'parsoid';
 // written for it.
 $info = [
 	// Match mediawiki/core: MWExceptionHandler
-	'channel' => 'fatal',
+	'channel' => 'exception',
 	'message' => "PHP Fatal error: {$message} in {$err['file']} on line {$err['line']}",
 	'exception' => [
 		'message' => $message,
 		'file' => "{$err['file']}:{$err['line']}",
 		'trace' => $trace ?: '{unknown}',
 	],
-	'caught_by' => '/etc/php/php7-fatal-error.php (via wmerrors)',
+	'caught_by' => '/etc/php/php7-fatal-error.php via php-wmerrors',
 	// Match wmf-config: logging.php
 	'phpversion' => PHP_VERSION,
 	// Avoid sending Parsoid-PHP fatals to MediaWiki logs (T239867).
