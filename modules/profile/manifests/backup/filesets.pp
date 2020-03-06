@@ -75,6 +75,9 @@ class profile::backup::filesets() {
     bacula::director::fileset { 'mysql-srv-backups-dumps-latest':
         includes => [ '/srv/backups/dumps/latest' ]
     }
+    bacula::director::fileset { 'mysql-srv-backups-snapshots-latest':
+        includes => [ '/srv/backups/snapshots/latest' ]
+    }
     bacula::director::fileset { 'bugzilla-static':
         includes => [ '/srv/org/wikimedia/static-bugzilla' ]
     }

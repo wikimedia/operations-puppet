@@ -28,7 +28,7 @@ class profile::mariadb::backup::check (
                 section    => $section,
                 datacenter => $datacenter,
                 type       => 'snapshot',
-                freshness  => 345600,  # 4 days
+                freshness  => 259200,  # 3 days
             }
         }
     }
