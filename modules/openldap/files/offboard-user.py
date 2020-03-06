@@ -18,9 +18,10 @@ import shutil
 import subprocess
 import sys
 import tempfile
-import yaml
 
 from optparse import OptionParser
+
+import yaml
 
 try:
     from phabricator import Phabricator
@@ -322,6 +323,30 @@ def get_phabricator_client():
     return client
 
 
+def get_phabricator_subproject(phab_client, group_name):
+    """return all the subprojects names for a project"""
+    phid = None
+    project = phab_client.project.query(names=[group_name])
+    if not project['data']:
+        print("unable to find project: " + group_name)
+        sys.exit(1)
+
+    for _phid, data in project['data'].items():
+        if data['name'] == group_name:
+            phid = _phid
+            break
+    else:
+        # we shouldn't ever reach here
+        print("Failed to retrieve phid for: " + group_name)
+        sys.exit(1)
+
+    subprojects = phab_client.project.search(constraints={'parents': [phid]})
+    if not subprojects.get('data'):
+        print("unable to find any subprojects for: " + group_name)
+        sys.exit(1)
+    return set([subproject['fields']['name'] for subproject in subprojects['data']])
+
+
 def offboard_analytics(username):
     pii_sensitive_groups = ['researchers', 'analytics-users', 'analytics-privatedata-users',
                             'analytics-admins', 'analytics-wmde-users', 'ops']
@@ -329,12 +354,12 @@ def offboard_analytics(username):
     yamldata = fetch_yaml_data()
     users = parse_users(yamldata)
     if username not in users:
-        print (username, 'does not exist in modules/admin/data/data.yaml')
+        print(username, 'does not exist in modules/admin/data/data.yaml')
         return
     elif users[username]['ensure'] == 'absent':
-        print (username, 'has already been offboarded in  modules/admin/data/data.yaml')
-        print ('Hadoop/Hive PII check cannot be performed.')
-        print ('please check a previous revision where `{} ensure: present`'.format(username))
+        print(username, 'has already been offboarded in  modules/admin/data/data.yaml')
+        print('Hadoop/Hive PII check cannot be performed.')
+        print('please check a previous revision where `{} ensure: present`'.format(username))
     shell_groups = users[username]['prod_groups']
 
     for group in shell_groups:
@@ -351,7 +376,7 @@ def offboard_kerberos(username):
     if username not in users:
         return
     elif users[username]['krb'] == 'present':
-        print (username, 'has a Kerberos user principal, make sure to remove it')
+        print(username, 'has a Kerberos user principal, make sure to remove it')
 
 
 def remove_user_from_project(user_phid, project_phid, phab_client):
@@ -371,25 +396,29 @@ def confirm_removal(group):
 
 def offboard_phabricator(username, remove_all_groups, dry_run, turn_volunteer):
     phab_client = get_phabricator_client()
-    user_query = phab_client.user.query(usernames=[username])
 
     group_memberships = []
 
     # TODO: add more groups after validating priv. status
-    privileged_projects = ['WMF-NDA', 'Security', 'acl*sre-team', 'acl*WMF-FR',
-                           'acl*communityliaison_policy_admins', 'acl*procurement-review',
-                           'acl*annual_report_policy_admins', 'acl*security_team',
-                           'acl*research_collaborations_policy_admins', 'WMF-SIEM',
-                           'acl*support_and_safety_policy_admins', 'acl*security']
+    privileged_parent_projects = set(['acl*security'])
+    privileged_projects = set(['WMF-NDA', 'Security', 'acl*sre-team', 'acl*WMF-FR',
+                               'acl*communityliaison_policy_admins', 'acl*procurement-review',
+                               'acl*annual_report_policy_admins', 'acl*security_team',
+                               'acl*research_collaborations_policy_admins', 'WMF-SIEM',
+                               'acl*support_and_safety_policy_admins'])
 
-    if len(user_query) == 0:
+    user_query = phab_client.user.query(usernames=[username])
+    if not user_query:
         print("Phabricator user", username, "not found")
         sys.exit(1)
     else:
         phid_user = user_query[0]['phid']
 
+    for project in privileged_parent_projects:
+        privileged_projects.update(get_phabricator_subproject(phab_client, project))
+
     project_query = phab_client.project.query(members=[phid_user])
-    if len(project_query['data']) == 0:
+    if not project_query.get('data'):
         print("Not present in any project, nothing to be done")
         return
     else:
