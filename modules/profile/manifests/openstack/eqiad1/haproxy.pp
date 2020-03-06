@@ -35,10 +35,11 @@ class profile::openstack::eqiad1::haproxy(
     }
 
     profile::openstack::base::haproxy::site { 'glance_api':
-        servers          => [$nova_controller, $nova_controller_standby],
-        healthcheck_path => '/healthcheck',
-        port_frontend    => 9292,
-        port_backend     => $glance_api_bind_port,
+        servers             => [$nova_controller, $nova_controller_standby],
+        healthcheck_options => ['http-check expect status 300'],
+        healthcheck_path    => '/',
+        port_frontend       => 9292,
+        port_backend        => $glance_api_bind_port,
     }
 
     profile::openstack::base::haproxy::site { 'glance_registry':
