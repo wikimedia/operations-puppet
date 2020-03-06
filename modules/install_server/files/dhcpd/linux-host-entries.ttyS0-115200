@@ -230,8 +230,8 @@ host install1002 {
 }
 
 host install1003 {
-    hardware ethernet aa:00:00:77:3b:95;
-    fixed-address install1003.eqiad.wmnet;
+    hardware ethernet aa:00:00:a0:d3:c0;
+    fixed-address install1003.wikimedia.org;
 }
 
 host install2002 {
@@ -242,8 +242,8 @@ host install2002 {
 }
 
 host install2003 {
-    hardware ethernet aa:00:00:f1:29:90;
-    fixed-address install2003.codfw.wmnet;
+    hardware ethernet aa:00:00:cd:6f:fc;
+    fixed-address install2003.wikimedia.org;
 }
 
 host irc2001 {
