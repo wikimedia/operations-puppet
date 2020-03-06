@@ -1416,7 +1416,7 @@ class profile::prometheus::ops (
     $apereo_cas_jobs = [
         {
             'job_name'        => 'idp',
-            'metrics_path'    => '/actuator/prometheus',
+            'metrics_path'    => '/api/prometheus',
             'scheme'          => 'https',
             'file_sd_configs' => [
                 { 'files' => [ "${targets_path}/apereo_cas_exporter_${::site}.yaml" ] }
