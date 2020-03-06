@@ -15,6 +15,7 @@ class apereo_cas (
     Optional[Integer]             $max_session_length     = 28800,
     Optional[Stdlib::Filesource]  $groovy_source          = undef,
     Optional[Array[Stdlib::Host]] $prometheus_nodes       = [],
+    Optional[Array[String]]       $actuators              = [],
     Stdlib::Unixpath              $overlay_dir            = '/srv/cas/overlay-template',
     Stdlib::Unixpath              $devices_dir            = '/srv/cas/devices',
     Stdlib::Unixpath              $base_dir               = '/etc/cas',

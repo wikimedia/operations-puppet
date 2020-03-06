@@ -15,7 +15,8 @@ class profile::idp(
     Array[String[1]]    $ldap_attribute_list    = lookup('profile::idp::ldap_attributes'),
     Stdlib::Fqdn        $idp_primary            = lookup('profile::idp::idp_primary'),
     Stdlib::Fqdn        $idp_failover           = lookup('profile::idp::idp_failover'),
-    Array[Stdlib::Host] $prometheus_nodes     = lookup('prometheus_nodes')
+    Array[String]       $actuators              = lookup('profile::idp::actuators'),
+    Array[Stdlib::Host] $prometheus_nodes       = lookup('prometheus_nodes')
 ){
 
     include passwords::ldap::production
@@ -76,6 +77,7 @@ class profile::idp(
         idp_failover           => $idp_failover,
         java_opts              => $java_opts,
         max_session_length     => $max_session_length,
+        actuators              => $actuators,
     }
     profile::prometheus::jmx_exporter{ "idp_${facts['networking']['hostname']}":
         hostname         => $facts['networking']['hostname'],
