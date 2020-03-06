@@ -1733,9 +1733,9 @@ node /^mw23(2[579]|3[13])\.codfw\.wmnet$/ {
     role(mediawiki::appserver)
 }
 
-#mw2350-65 are in rack C6
-node /^mw23(5[0-9]|6[0-5])\.codfw\.wmnet$/ {
-    role(spare::system)
+# rack C6
+node /^mw23(5[13579]|6[13579]|7[135])\.codfw\.wmnet$/ {
+    role(mediawiki::appserver)
 }
 
 #mw2366-76 are in rack D3
@@ -1806,6 +1806,11 @@ node /^mw23(2[68]|3[024])\.codfw\.wmnet$/ {
 
 # mw2200-2212,mw2214 are in rack C4
 node /^mw22(0[0-9]|1[0124])\.codfw\.wmnet$/ {
+    role(mediawiki::appserver::api)
+}
+
+# rack C6
+node /^mw23(5[02468]|6[02468]|7[0246])\.codfw\.wmnet$/ {
     role(mediawiki::appserver::api)
 }
 
