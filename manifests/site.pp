@@ -1697,9 +1697,9 @@ node /^mw2(29[1-9]|300)\.codfw\.wmnet$/ {
     role(mediawiki::appserver::api)
 }
 
-#mw2301-2309 are in rack A6
-node /^mw230[1-9]\.codfw\.wmnet$/ {
-    role(spare::system)
+# rack A6
+node /^mw230[13579]\.codfw\.wmnet$/ {
+    role(mediawiki::appserver)
 }
 
 # Row B
@@ -1763,6 +1763,11 @@ node /^mw22(1[56])\.codfw\.wmnet$/ {
 }
 
 node /^mw22(1[7-9]|2[0123])\.codfw\.wmnet$/ {
+    role(mediawiki::appserver::api)
+}
+
+# rack A6
+node /^mw230[2468]\.codfw\.wmnet$/ {
     role(mediawiki::appserver::api)
 }
 
