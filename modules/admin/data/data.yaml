@@ -4121,3 +4121,7 @@ ldap_only_users:
     ensure: present
     realname: Lauren Dickinson
     email: emedina-ctr@wikimedia.org
+  whatamidoing:
+    ensure: present
+    realname: Sherry Snyder
+    email: ssnyder@wikimedia.org
