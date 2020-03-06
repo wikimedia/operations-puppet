@@ -38,7 +38,18 @@ class openstack::keystone::service::queens(
     $prod_networks = $network::constants::production_networks
     $labs_networks = $network::constants::labs_networks
 
+    # This first file is a hack to deal with the fact that ldap integration
+    #  is broken in Queens and not fixed until Rocky.  This should NOT
+    #  be forwarded to the Rocky version of this file since this version of
+    #  the file is already present there.
     file {
+        '/usr/lib/python3/dist-packages/keystone/identity/backends/ldap/common.py':
+            ensure  => 'present',
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0644',
+            source  => 'puppet:///modules/openstack/queens/keystone/ldap-common-rocky.py',
+            require => Package['keystone'];
         '/etc/logrotate.d/keystone':
             ensure  => 'present',
             owner   => 'root',
