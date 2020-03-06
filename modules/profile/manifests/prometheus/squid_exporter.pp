@@ -11,7 +11,7 @@ class profile::prometheus::squid_exporter (
 
     service { 'prometheus-squid-exporter':
         ensure  => running,
-        require => Service['squid3'], # Squid3 and not Squid as it's squid3 when >= stretch
+        require => Service['squid'], # Squid and not Squid3 again on buster
     }
 
     base::service_auto_restart { 'prometheus-squid-exporter': }
