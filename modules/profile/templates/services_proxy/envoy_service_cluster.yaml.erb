@@ -1,16 +1,16 @@
-name: <%= @discovery['dnsdisc'] %>
+name: <%= @svc_name %>
 connect_timeout: 0.25s
 type: STRICT_DNS
 dns_lookup_family: V4_ONLY
 lb_policy: ROUND_ROBIN
 load_assignment:
-  cluster_name: cluster_<%= @discovery['dnsdisc'] %>
+  cluster_name: cluster_<%= @svc_name %>
   endpoints:
   - lb_endpoints:
     - endpoint:
         address:
           socket_address:
-            address: <%= @discovery['dnsdisc'] %>.discovery.wmnet
+            address: <%= @svc_name %>.discovery.wmnet
             port_value: <%= @svc['port'] %>
 # Given we go through a load-balancer, we want to keep the number of requests that go through a single connection pool small
 max_requests_per_connection: 1000

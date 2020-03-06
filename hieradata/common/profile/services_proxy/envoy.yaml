@@ -4,85 +4,88 @@ profile::services_proxy::envoy::listeners:
   - name: parsoid
     port: 6001
     timeout: '8s'
-    cluster: parsoid
+    service: parsoid
   - name: parsoid-php
     port: 6002
     timeout: '8s'
-    cluster: parsoid-php
+    service: parsoid-php
   - name: mathoid
     port: 6003
     timeout: '3s'
-    cluster: mathoid
+    service: mathoid
   - name: eventgate-analytics
     port: 6004
     timeout: '1s'
-    cluster: eventgate-analytics
+    service: eventgate-analytics
   - name: eventgate-main
     port: 6005
     timeout: '1s'
-    cluster: eventgate-main
+    service: eventgate-main
   - name: sessionstore
     port: 6006
-    cluster: sessionstore
+    service: sessionstore
     timeout: '0.5s'
   - name: echostore
     port: 6007
-    cluster: echostore
+    service: echostore
     timeout: '0.5s'
   - name: termbox
     port: 6008
-    cluster: termbox
+    service: termbox
     timeout: '2s'
   - name: wdqs-internal
     port: 6009
-    cluster: wdqs-internal
+    service: wdqs-internal
     timeout: '10s'
   - name: ores
     port: 6010
-    cluster: ores
+    service: ores
     timeout: '10s'
   - name: restbase
     port: 6011
-    cluster: restbase
+    service: restbase-https
+    dnsdisc: restbase
     timeout: '10s'
 # Non-discovery records
 # Eqiad ports are at 61xx
 # Codfw ports are at 62xx
   - name: swift-eqiad
     port: 6101
-    cluster: swift-https_eqiad
+    service: swift-https
     timeout: '50s'
+    site: eqiad
   - name: swift-codfw
     port: 6201
-    cluster: swift-https_codfw
+    service: swift-https
     timeout: '50s'
+    site: codfw
   - name: search-chi-eqiad
     port: 6102
-    cluster: search-https_eqiad
+    service: search-https
     timeout: '50s'
+    site: eqiad
   - name: search-chi-codfw
     port: 6202
-    cluster: search-https_codfw
+    service: search-https
     timeout: '50s'
+    site: codfw
   - name: search-omega-eqiad
     port: 6103
-    cluster: search-omega-https_eqiad
+    service: search-omega-https
     timeout: '50s'
+    site: eqiad
   - name: search-omega-codfw
     port: 6203
-    cluster: search-omega-https_codfw
+    service: search-omega-https
     timeout: '50s'
+    site: codfw
   - name: search-psi-eqiad
     port: 6104
-    cluster: search-psi-https_eqiad
+    service: search-psi-https
     timeout: '50s'
+    site: eqiad
   - name: search-psi-codfw
     port: 6204
-    cluster: search-psi-https_codfw
+    service: search-psi-https
     timeout: '50s'
-
-profile::services_proxy::envoy::local_clusters:
-  - swift-https
-  - search-https
-  - search-omega-https
-  - search-psi-https
+    site: codfw

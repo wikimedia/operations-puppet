@@ -11,7 +11,7 @@ load_assignment:
         address:
           socket_address:
             <%- if @svc['monitoring'] -%>
-            address: <%= @svc['monitoring']['sites'][@dc]['hostname'] %>
+            address: <%= @svc['monitoring']['sites'][@listener['site']]['hostname'] %>
             <%- else -%>
             address: <%= @cluster_label %>.svc.<%= @dc %>.wmnet
             <%- end -%>

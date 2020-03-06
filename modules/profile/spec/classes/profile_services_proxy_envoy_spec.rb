@@ -26,23 +26,30 @@ describe 'profile::services_proxy::envoy' do
                 port: 8765,
                 timeout: '2s',
                 http_host: 'commons.wikimedia.org',
-                cluster: 'appservers-rw'
+                service: 'appservers-https',
+                dnsdisc: 'appservers-rw'
               },
               {
                 name: 'meta',
                 port: 9876,
                 timeout: '2s',
                 http_host: 'meta.wikimedia.org',
-                cluster: 'text-https_eqiad'
+                service: 'text-https',
+                site: 'eqiad'
               },
             ],
-            local_clusters: ['text-https']
           }
         }
         it { is_expected.to compile.with_all_deps }
         it {
-          is_expected.to contain_envoyproxy__cluster('text-https_esams_cluster')
-                           .with_content(/address: text-lb.esams.wikimedia.org/)
+          is_expected.to contain_envoyproxy__cluster('text-https_eqiad_cluster')
+                           .with_content(/address: text-lb.eqiad.wikimedia.org/)
+                           .with_content(/name: text-https_eqiad/)
+        }
+        it {
+          is_expected.to contain_envoyproxy__cluster('appservers-rw_cluster')
+                           .with_content(/address: appservers-rw.discovery.wmnet/)
+                           .with_content(/name: appservers-rw/)
         }
         it {
           is_expected.to contain_envoyproxy__listener('commons')

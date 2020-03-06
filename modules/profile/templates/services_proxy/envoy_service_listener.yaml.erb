@@ -34,7 +34,7 @@ filter_chains:
   <%- if @listener['http_host'] -%>
               host_rewrite: <%= @listener['http_host'] %>
   <%- end -%>
-              cluster: <%= @listener['cluster'] %>
+              cluster: <%= @svc_name %>
               timeout: <%= @listener['timeout'] %>
               # No retry logic - for now.
               retry_policy:

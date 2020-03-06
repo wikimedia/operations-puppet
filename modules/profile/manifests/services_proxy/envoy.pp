@@ -8,6 +8,15 @@
 #
 # [*listeners*] A hash of listener definitions.
 #
+# Each listener should have the following structure:
+# name - the name of the listener
+# port - the local port to listen on
+# timeout - the time after which we timeout on a call
+# http_host - optional http Host: header to add to the request
+# service - The label for the service we're connecting to in service::catalog in hiera
+# site - optionally the site to connect to for the service. Only used when we don't want
+#        to use discovery DNS
+# dnsdisc - What discovery record to pick if more than one are available.
 class profile::services_proxy::envoy(
     Wmflib::Ensure $ensure = lookup('profile::envoy::ensure', {'default_value' => 'present'}),
     Array[Struct[{
@@ -15,9 +24,10 @@ class profile::services_proxy::envoy(
         'port'      => Stdlib::Port::Unprivileged,
         'timeout'   => String,
         'http_host' => Optional[Stdlib::Fqdn],
-        'cluster'   => String,
+        'service'   => String,
+        'site'      => Optional[String],
+        'dnsdisc'   => Optional[String]
     }]] $listeners = lookup('profile::services_proxy::envoy::listeners', {'default_value' => []}),
-    Array[String] $local_clusters = lookup('profile::services_proxy::envoy::local_clusters')
 ) {
     if $ensure == 'present' {
         if $listeners == undef {
@@ -25,38 +35,43 @@ class profile::services_proxy::envoy(
         }
         require ::profile::envoy
     }
-
     $all_services = wmflib::service::fetch()
-    # Create one cluster definition for every entry in our service catalog that has
-    # a discovery record.
-    $all_services.each |$n, $svc| {
-        if 'discovery' in $svc {
-            $svc['discovery'].each |$discovery| {
-                # TODO: remove this - the result is somewhat
-                # undeterministic this way.
-                if !defined(Envoyproxy::Cluster["${discovery['dnsdisc']}_cluster"]) {
-                    envoyproxy::cluster { "${discovery['dnsdisc']}_cluster":
-                        content => template('profile/services_proxy/envoy_service_cluster.yaml.erb')
 
-                    }
-                }
-            }
-        }
-    }
-    # Create one cluster definition per datacenter for every entry in our service catalog that we've declared like local
-    # clusters
-    $local_clusters.each |$cluster_label| {
+    $listeners.each |$listener| {
+        $cluster_label = $listener['service']
         $svc = $all_services[$cluster_label]
-        $svc['sites'].each |$dc| {
-            $svc_name = "${cluster_label}_${dc}"
+        if $svc == undef {
+            fail("Could not find service ${cluster_label} in service::catalog")
+        }
+        # Case 1: not using discovery
+        if 'site' in $listener {
+            $svc_name = "${cluster_label}_${listener['site']}"
             envoyproxy::cluster { "${svc_name}_cluster":
                 content => template('profile/services_proxy/envoy_service_local_cluster.yaml.erb')
             }
         }
-    }
+        # Case 2: using discovery
+        elsif 'discovery' in $svc {
+            # The discovery record defaults to the service name
+            $svc_name = $listener['dnsdisc'] ? {
+                undef => $listener['service'],
+                default => $listener['dnsdisc']
+            }
+            $discoveries = $svc['discovery'].filter |$d| { $d['dnsdisc'] == $svc_name }
+            # TODO: check we've chosen exactly one record, else fail
+            if $discoveries != [] and !defined(Envoyproxy::Cluster["${svc_name}_cluster"]) {
+                $discovery = $discoveries[0]
+                envoyproxy::cluster { "${svc_name}_cluster":
+                    content => template('profile/services_proxy/envoy_service_cluster.yaml.erb')
 
-    # Create one listener definition for every service defined in this class.
-    $listeners.each |$listener| {
+                }
+            }
+        }
+        else {
+            fail("Cluster ${cluster_label} doesn't have a discovery record, and not site picked.")
+        }
+
+        # Now define the listener
         envoyproxy::listener { $listener['name']:
             content => template('profile/services_proxy/envoy_service_listener.yaml.erb')
         }
