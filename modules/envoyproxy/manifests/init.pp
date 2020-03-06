@@ -39,6 +39,7 @@ class envoyproxy(
         group   => 'root',
         mode    => '0755',
         recurse => true,
+        purge   => true,
     }
 
     # Configure proper log filtering and rotation
