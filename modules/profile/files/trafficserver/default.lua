@@ -63,6 +63,15 @@ function do_global_read_request()
         disable_coalescing()
         no_cache_lookup()
     end
+
+    -- This is to avoid some corner-cases and bugs as noted in T125938 , e.g.
+    -- applayer gzip turning 500s into junk-response 503s, applayer gzipping
+    -- CL:0 bodies into a 20 bytes gzip header, applayer compressing tiny
+    -- outputs in general, etc.
+    -- We have also observed Swift returning Content-Type: gzip with
+    -- non-gzipped content, which confuses varnish-fe making it occasionally
+    -- return 503.
+    ts.client_request.header['Accept-Encoding'] = nil
 end
 
 function do_global_send_response()
@@ -156,12 +165,7 @@ function do_global_read_response()
 end
 
 function do_global_send_request()
-    -- This is to avoid some corner-cases and bugs as noted in T125938 , e.g.
-    -- applayer gzip turning 500s into junk-response 503s, applayer gzipping
-    -- CL:0 bodies into a 20 bytes gzip header, applayer compressing tiny
-    -- outputs in general, etc.
-    -- We have also observed Swift returning Content-Type: gzip with
-    -- non-gzipped content, which confuses varnish-fe making it occasionally
-    -- return 503.
-    ts.server_request.header['Accept-Encoding'] = nil
+    -- Leave the hook defined but empty to avoid trafficserver.service restarts
+    -- in the likely event that it becomes useful again in the future. See
+    -- https://gerrit.wikimedia.org/r/#/c/operations/puppet/+/577551/
 end

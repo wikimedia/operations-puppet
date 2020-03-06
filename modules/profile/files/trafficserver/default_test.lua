@@ -148,10 +148,11 @@ describe("Busted unit testing framework", function()
       assert.are.equals('pass-test-hostname hit', ts.client_response.header['X-Cache-Int'])
     end)
 
-    it("test - do_global_send_request", function()
-      _G.ts.server_request.header['Accept-Encoding'] = 'gzip'
-      do_global_send_request()
-      assert.are.equals(nil, _G.ts.server_request.header['Accept-Encoding'])
+    it("test - do_global_read_request", function()
+      stub(ts.http, "config_int_set")
+      _G.ts.client_request.header['Accept-Encoding'] = 'gzip'
+      do_global_read_request()
+      assert.are.equals(nil, _G.ts.client_request.header['Accept-Encoding'])
     end)
   end)
 end)
