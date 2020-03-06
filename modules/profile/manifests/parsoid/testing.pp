@@ -18,6 +18,7 @@ class profile::parsoid::testing (
         owner     => 'root',
         group     => 'wikidev',
         directory => '/srv/parsoid-testing',
+        shared    => true,
     }
 
     file { '/usr/local/bin/update_parsoid.sh':
