@@ -5,4 +5,4 @@ set -u
 
 SSH_AUTH_SOCK=/run/keyholder/proxy.sock git push peer master
 
-git log --pretty=format:'From %H %cd%nFrom: %ae%nTo: rcoccioli@wikimedia.org%nDate: %ad%nSubject: [homer-private] (%h) %s%n%b%n' -1 --name-status | sendmail -i rcoccioli@wikimedia.org
+git log --pretty=format:'From %H %cd%nFrom: %ae%nTo: ops-private@lists.wikimedia.org%nDate: %ad%nSubject: [homer-private] (%h) %s%n%b%n' -1 --name-status | sendmail -i ops-private@lists.wikimedia.org
