@@ -70,7 +70,7 @@ class profile::openstack::codfw1dev::haproxy(
     profile::openstack::base::haproxy::site { 'nova_placement':
         servers             => [$nova_controller, $nova_controller_standby],
         healthcheck_options => ['http-check expect status 401'],
-        healthcheck_path    => '/',
+        healthcheck_path    => '/healthcheck',
         port_frontend       => 8778,
         port_backend        => $placement_api_port,
     }
