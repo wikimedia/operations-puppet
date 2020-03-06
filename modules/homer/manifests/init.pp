@@ -80,10 +80,11 @@ class homer(
   }
 
   file { "${private_repo_git_dir}/hooks":
-      ensure => present,
-      owner  => 'root',
-      group  => 'root',
-      mode   => '0755',
-      source => 'puppet:///modules/homer/private-git/hooks',
+      ensure  => directory,
+      recurse => 'remote',
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0755',
+      source  => 'puppet:///modules/homer/private-git/hooks',
   }
 }
