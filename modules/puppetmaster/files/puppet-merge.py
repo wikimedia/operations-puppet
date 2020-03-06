@@ -80,14 +80,14 @@ def git(args, repo_dir, stdout=PIPE):
 
 def confirm_merge(committers):
     """ask the user to confirm the merge"""
-    confirm = 'yes'
+    confirm = ['yes', 'y']
     unique_committers = set(i for i in committers if i and i != 'gerrit@wikimedia.org')
     if len(unique_committers) > 1:
         print('{}: Revision range includes commits from multiple committers!'.format(
             ERROR_MESSAGE.format(msg='WARNING')))
-        confirm = 'multiple'
-    answer = input('Merge these changes? ({}/no)? '.format(confirm))
-    if answer != confirm:
+        confirm = ['multiple']
+    answer = input('Merge these changes? ({}/no)? '.format(confirm[0]))
+    if answer.lower() not in confirm:
         raise SystemExit("Aborting merge.")
 
 
