@@ -1149,7 +1149,7 @@ node /^install[12]002\.wikimedia\.org$/ {
 }
 
 # new buster install servers, without APT repo, private IPs (T224576)
-node /^install[12]003\.(codfw|eqiad)\.wmnet$/ {
+node /^install[12]003\.wikimedia\.org$/ {
     role(installserver::light)
 }
 
