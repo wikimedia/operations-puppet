@@ -1570,7 +1570,7 @@ class BaseLdap(object):
             return conn.search_s(search_base, scope, query, attrlist)
 
     def get(self, object_id, ldap_filter=None):
-        res = self._ldap_get(object_id, ldap_filter)
+        res = self._ldap_get(utf8_decode(object_id), ldap_filter)
         if res is None:
             raise self._not_found(object_id)
         else:
