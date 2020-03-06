@@ -17,7 +17,7 @@ This theme works best with a dark background.
 EOF
 }
 
-HOMETZ='Asia/Singapore'
+HOMETZ='America/New_York'
 
 # Wrapper needed at least for zsh 5.3.1 (Debian stretch)
 cd_strftime() {
