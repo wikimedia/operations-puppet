@@ -1,6 +1,6 @@
 class role::mariadb::core {
     if os_version('debian >= buster') {
-        $default_package = 'wmf-mariadb103'
+        $default_package = 'wmf-mariadb104'
     } else {
         $default_package = 'wmf-mariadb101'
     }
