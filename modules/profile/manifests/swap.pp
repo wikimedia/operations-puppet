@@ -32,7 +32,7 @@ class profile::swap(
     $dumps_active_server     = hiera('dumps_dist_active_web'),
     $push_published          = lookup('profile::swap::push_published', { 'default_value' => true }),
     $use_dumps_mounts        = lookup('profile::swap::use_dumps_mounts', { 'default_value' => true }),
-    $use_node10              = lookup('profile::swap::use_nodejs10', { 'default_value' => false }),
+    $use_nodejs10            = lookup('profile::swap::use_nodejs10', { 'default_value' => false }),
 ) {
 
     if $use_dumps_mounts {
@@ -80,6 +80,7 @@ class profile::swap(
         # But only allow those in these posix groups to log in to jupyterhub.
         posix_groups          => $_posix_groups,
         web_proxy             => $web_proxy,
+        use_nodejs10          => $use_nodejs10,
     }
 
     # Files deleted via the notebook interface are moved to a special
