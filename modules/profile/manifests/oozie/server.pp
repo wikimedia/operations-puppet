@@ -20,6 +20,7 @@ class profile::oozie::server(
     $jdbc_username                            = hiera('profile::oozie::server::jdbc_username', undef),
     $jdbc_password                            = hiera('profile::oozie::server::jdbc_password', undef),
     $spark_defaults_config_dir                = hiera('profile::oozie::server::spark_defaults_config_dir', undef),
+    $oozie_sharelib_archive                   = hiera('profile::oozie::server::oozie_sharelib_archive', '/usr/lib/oozie/oozie-sharelib-yarn'),
 ) {
     require ::profile::oozie::client
 
@@ -57,6 +58,7 @@ class profile::oozie::server(
         jdbc_username                               => $jdbc_username,
         jdbc_password                               => $jdbc_password,
         spark_defaults_config_dir                   => $spark_defaults_config_dir,
+        oozie_sharelib_archive                      => $oozie_sharelib_archive,
     }
 
     # Oozie is creating event logs in /var/log/oozie.

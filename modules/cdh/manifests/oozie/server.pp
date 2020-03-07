@@ -86,6 +86,7 @@ class cdh::oozie::server(
     $oozie_authentication_kerberos_name_rules    = 'DEFAULT',
     $use_kerberos                                = false,
     $spark_defaults_config_dir                   = undef,
+    $oozie_sharelib_archive                      = '/usr/lib/oozie/oozie-sharelib-yarn',
 ) {
     # cdh::oozie::server requires Hadoop client and configs are installed.
     Class['cdh::hadoop'] -> Class['cdh::oozie::server']
@@ -153,9 +154,6 @@ class cdh::oozie::server(
         use_kerberos => $use_kerberos,
         require      => Package['oozie'],
     }
-
-    # Put oozie sharelib into HDFS:
-    $oozie_sharelib_archive = '/usr/lib/oozie/oozie-sharelib-yarn'
 
     $namenode_address = $::cdh::hadoop::ha_enabled ? {
         true    => $cdh::hadoop::nameservice_id,
