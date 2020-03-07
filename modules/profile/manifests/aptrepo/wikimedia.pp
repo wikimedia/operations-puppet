@@ -1,7 +1,7 @@
 # http://apt.wikimedia.org/wikimedia/
 class profile::aptrepo::wikimedia (
-    Stdlib::Fqdn $primary_server = lookup('install_server'),
-    Array[Stdlib::Fqdn] $secondary_servers = lookup('install_servers_failover'),
+    Stdlib::Fqdn $primary_server = lookup('aptrepo_server'),
+    Array[Stdlib::Fqdn] $secondary_servers = lookup('aptrepo_servers_failover'),
     Stdlib::Unixpath $basedir = lookup('profile::aptrepo::wikimedia::basedir'),
     Stdlib::Unixpath $homedir = lookup('profile::aptrepo::wikimedia::basedir'),
     String $gpg_user = lookup('profile::aptrepo::wikimedia::gpg_user'),
