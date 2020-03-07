@@ -42,7 +42,6 @@ class jupyterhub (
     $ldap_bind_dn_template = undef,
     $posix_groups          = ['wikidev'],
     $systemd_slice         = 'user.slice',
-    $use_nodejs10          = false,
 )
 {
     require_package(
@@ -59,15 +58,21 @@ class jupyterhub (
         'libsasl2-modules-gssapi-mit',
     )
 
-    if $use_nodejs10 and os_version('debian == stretch') {
-        apt::package_from_component { 'wikimedia-node10':
-            component => 'component/node10',
-            packages  => ['nodejs'],
-        }
-    } else {
-        # For embedded configurable-http-proxy
-        package { ['nodejs-legacy', 'nodejs']:
-            ensure => present,
+    # jupyterhub can be included on profiles/roles that
+    # already offer a nodejs configuration, like the stat100x hosts.
+    # nodejs is needed for the embedded configurable-http-proxy.
+    if !defined(Package['nodejs']) {
+        # nodejs6 is EOL
+        if os_version('debian == stretch') {
+            if !defined(Apt::Package_from_component['wikimedia-node10']){
+                apt::package_from_component { 'wikimedia-node10':
+                    component => 'component/node10',
+                    packages  => ['nodejs'],
+                }
+            }
+        } else {
+            # For embedded configurable-http-proxy
+            require_package('nodejs')
         }
     }
 

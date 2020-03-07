@@ -37,7 +37,6 @@ class profile::analytics::cluster::packages::statistics {
         'libboost-iostreams-dev',
         'libmaxminddb-dev',
         'build-essential',        # Requested by halfak to install SciPy
-        'nodejs',
         'libssl-dev',             # Requested by bearloga; necessary for an essential R package (openssl)
         'libcurl4-openssl-dev',   # Requested by bearloga for an essential R package (devtools)
         'libicu-dev',             # ^
@@ -53,6 +52,21 @@ class profile::analytics::cluster::packages::statistics {
         'php-curl',
         'php-mysql',
     ])
+
+    if !defined(Package['nodejs']) {
+        # nodejs6 is EOL
+        if os_version('debian == stretch') {
+            if !defined(Apt::Package_from_component['wikimedia-node10']){
+                apt::package_from_component { 'wikimedia-node10':
+                    component => 'component/node10',
+                    packages  => ['nodejs'],
+                }
+            }
+        } else {
+            # For embedded configurable-http-proxy
+            require_package('nodejs')
+        }
+    }
 
     if os_version('debian >= buster') {
         require_package([
