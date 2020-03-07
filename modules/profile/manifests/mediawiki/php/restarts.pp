@@ -37,7 +37,7 @@ class profile::mediawiki::php::restarts(
         # be a wrapper around sysctl
         conftool::scripts::safe_service_restart{ $service:
             lvs_pools       => [],
-            lvs_services    => {},
+            services        => {},
             lvs_class_hosts => {}
         }
         $all_nodes = []
