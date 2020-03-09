@@ -115,7 +115,7 @@ class VenvCreatingAuthenticator(Authenticator):
     def add_user(self, user):
         home_path = os.path.join('/home', user.name)
         venv_path = os.path.join(home_path, 'venv')
-        distro = <%= @lsbdistcodename %>
+        distro = '<%= @lsbdistcodename %>'
         if not os.path.exists(home_path):
             os.mkdir(home_path, 0o755)
             shutil.chown(home_path, user.name)
