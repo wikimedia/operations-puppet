@@ -556,7 +556,7 @@ class profile::prometheus::ops (
         'metrics_path'      => '/stats/prometheus',
         'scheme'            => 'http',
         'file_sd_configs'   => [
-            { 'files' => [ "${targets_path}/_*.yaml" ]}
+            { 'files' => [ "${targets_path}/envoy_*.yaml" ]}
         ],
         # Envoy produces a ton of metrics, but for now we're just interested in
         # upstream and downstream requests latencies and counts, so just keep those
