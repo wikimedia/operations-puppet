@@ -26,4 +26,6 @@ class role::statistics::explorer {
     include ::profile::presto::client
     include ::profile::statistics::gpu
     include ::profile::statistics::dataset_mount
+
+    include ::profile::swap
 }

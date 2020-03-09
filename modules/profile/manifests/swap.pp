@@ -32,6 +32,7 @@ class profile::swap(
     $dumps_active_server     = hiera('dumps_dist_active_web'),
     $push_published          = lookup('profile::swap::push_published', { 'default_value' => true }),
     $use_dumps_mounts        = lookup('profile::swap::use_dumps_mounts', { 'default_value' => true }),
+    $deploy_research_cred    = lookup('profile::swap::deploy_research_cred', { 'default_value' => true }),
 ) {
 
     if $use_dumps_mounts {
@@ -56,8 +57,10 @@ class profile::swap(
     if $::realm == 'production' {
         $web_proxy = "http://webproxy.${::site}.wmnet:8080"
 
-        statistics::mysql_credentials { 'research':
-            group => 'researchers',
+        if $deploy_research_cred {
+            statistics::mysql_credentials { 'research':
+                group => 'researchers',
+            }
         }
 
         if $push_published {
