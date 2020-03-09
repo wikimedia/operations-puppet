@@ -147,9 +147,15 @@ class VenvCreatingAuthenticator(Authenticator):
     @gen.coroutine
     def authenticate(self, handler, data):
         username = data['username']
-        if not any([
-                username in grp.getgrnam(group).gr_mem
-                for group in ALLOWED_POSIX_GROUPS]):
+        for group in ALLOWED_POSIX_GROUPS:
+            try:
+                if username in grp.getgrnam(group).gr_mem:
+                    break
+            except KeyError:
+                # if one of the groups is not present on the system,
+                # don't fail but keep checking the other ones.
+                pass
+        else:
             self.log.warn('User %s not in allowed groups (%s)'
                           % (username, ', '.join(ALLOWED_POSIX_GROUPS)))
             return None
