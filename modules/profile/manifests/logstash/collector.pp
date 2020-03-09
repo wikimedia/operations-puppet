@@ -222,7 +222,7 @@ class profile::logstash::collector (
     }
 
     logstash::input::kafka { 'clienterror-eqiad':
-        topic                   => 'eqiad.client.error',
+        topic                   => 'eqiad.mediawiki.client.error',
         group_id                => $input_kafka_consumer_group_id,
         type                    => 'clienterror',
         tags                    => ['input-kafka-clienterror-eqiad', 'kafka', 'es'],
@@ -230,6 +230,19 @@ class profile::logstash::collector (
         bootstrap_servers       => $kafka_config_eqiad['brokers']['ssl_string'],
         security_protocol       => 'SSL',
         ssl_truststore_location => '/etc/logstash/kafka-logging-truststore-eqiad.jks',
+        ssl_truststore_password => $input_kafka_ssl_truststore_password,
+        consumer_threads        => 3,
+    }
+
+    logstash::input::kafka { 'clienterror-codfw':
+        topic                   => 'codfw.mediawiki.client.error',
+        group_id                => $input_kafka_consumer_group_id,
+        type                    => 'clienterror',
+        tags                    => ['input-kafka-clienterror-codfw', 'kafka', 'es'],
+        codec                   => 'json',
+        bootstrap_servers       => $kafka_config_codfw['brokers']['ssl_string'],
+        security_protocol       => 'SSL',
+        ssl_truststore_location => '/etc/logstash/kafka-logging-truststore-codfw.jks',
         ssl_truststore_password => $input_kafka_ssl_truststore_password,
         consumer_threads        => 3,
     }
