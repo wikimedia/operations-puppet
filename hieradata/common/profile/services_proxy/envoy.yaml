@@ -15,11 +15,11 @@ profile::services_proxy::envoy::listeners:
     service: mathoid
   - name: eventgate-analytics
     port: 6004
-    timeout: '1s'
+    timeout: '10s'
     service: eventgate-analytics
   - name: eventgate-main
     port: 6005
-    timeout: '1s'
+    timeout: '10s'
     service: eventgate-main
   - name: sessionstore
     port: 6006
