@@ -7,6 +7,7 @@ class profile::puppetdb(
     Boolean                              $filter_job_id     = lookup('profile::puppetdb::filter_job_id'),
     Stdlib::Unixpath                     $ca_path           = lookup('profile::puppetdb::ca_path'),
     String                               $puppetboard_hosts = lookup('profile::puppetdb::puppetboard_hosts'),
+    Boolean                              $monitor_agentrun  = lookup('profile::puppetdb::monitor_agentrun'),
     # default value of undef still needs to be in the manifest untill we move to hiera 5
     Optional[Stdlib::Unixpath]           $ssldir            = lookup('profile::puppetdb::ssldir',
                                                                     {'default_value' => undef}),
@@ -68,4 +69,7 @@ class profile::puppetdb(
         }
     }
     include profile::puppetdb::microservice
+    if $monitor_agentrun and $master == $facts['fqdn'] {
+        include profile::puppetdb::monitoring_agentrun
+    }
 }

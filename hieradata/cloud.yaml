@@ -43,6 +43,7 @@ profile::puppetdb::database::shared_buffers: '7680MB'
 profile::puppetdb::database::replication_lag_crit: 16777216
 profile::puppetdb::database::replication_lag_warn: 1048576
 profile::puppetdb::slaves: []
+profile::puppetdb::monitor_agentrun: false
 profile::tlsproxy::envoy::tls_port: 443
 profile::tlsproxy::envoy::global_cert_name: ~
 profile::tlsproxy::envoy::websockets: false
