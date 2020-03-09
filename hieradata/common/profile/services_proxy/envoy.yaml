@@ -24,11 +24,11 @@ profile::services_proxy::envoy::listeners:
   - name: sessionstore
     port: 6006
     service: sessionstore
-    timeout: '0.5s'
+    timeout: '2.5s'
   - name: echostore
     port: 6007
     service: echostore
-    timeout: '0.5s'
+    timeout: '2.5s'
   - name: termbox
     port: 6008
     service: termbox
