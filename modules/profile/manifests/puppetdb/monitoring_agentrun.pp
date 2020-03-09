@@ -18,7 +18,7 @@ class profile::puppetdb::monitoring_agentrun (
         nrpe_command   => "/usr/lib/nagios/plugins/check_puppet_run_changes -w ${warn} -c ${crit}",
         check_interval => 360,
         retry_interval => 5,
-        retry          => 2,
+        retries        => 2,
         notes_url      => 'https://wikitech.wikimedia.org/wiki/Puppet#check_puppet_run_changes',
         require        => File['/usr/lib/nagios/plugins/check_puppet_run_changes'],
     }
