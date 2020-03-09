@@ -86,35 +86,6 @@ class lvs::monitor_services(
                 target      => "http://eventgate-main.svc.${dc}.wmnet:34192",
                 notes_url   => 'https://wikitech.wikimedia.org/wiki/Event_Platform/EventGate',
                 ;
-            # To delete: https://phabricator.wikimedia.org/T245203
-            "check_eventgate_analytics_cluster_to_delete_${dc}":
-                ensure      => 'absent',
-                host        => "eventgate-analytics.svc.${dc}.wmnet",
-                description => "eventgate-analytics LVS ${dc}",
-                target      => "https://eventgate-analytics.svc.${dc}.wmnet:4192",
-                notes_url   => 'https://wikitech.wikimedia.org/wiki/Event_Platform/EventGate',
-                ;
-            "check_eventgate_analytics_http_cluster_to_delete_${dc}":
-                ensure      => 'absent',
-                host        => "eventgate-analytics.svc.${dc}.wmnet",
-                description => "eventgate-analytics-http LVS ${dc}",
-                target      => "http://eventgate-analytics.svc.${dc}.wmnet:31192",
-                notes_url   => 'https://wikitech.wikimedia.org/wiki/Event_Platform/EventGate',
-                ;
-            "check_eventgate_main_cluster_to_delete_${dc}":
-                ensure      => 'absent',
-                host        => "eventgate-main.svc.${dc}.wmnet",
-                description => "eventgate-main LVS ${dc}",
-                target      => "https://eventgate-main.svc.${dc}.wmnet:4292",
-                notes_url   => 'https://wikitech.wikimedia.org/wiki/Event_Platform/EventGate',
-                ;
-            "check_eventgate_main_http_cluster_to_delete_${dc}":
-                ensure      => 'absent',
-                host        => "eventgate-main.svc.${dc}.wmnet",
-                description => "eventgate-main-http LVS ${dc}",
-                target      => "http://eventgate-main.svc.${dc}.wmnet:32192",
-                notes_url   => 'https://wikitech.wikimedia.org/wiki/Event_Platform/EventGate',
-                ;
             "check_eventgate_logging_external_cluster_${dc}":
                 host        => "eventgate-logging-external.svc.${dc}.wmnet",
                 description => "eventgate-logging-external LVS ${dc}",
