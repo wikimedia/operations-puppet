@@ -48,4 +48,20 @@ class openstack::serverpackages::queens::stretch(
         logoutput   => true,
     }
     Exec['openstack-queens-stretch-apt-upgrade'] -> Package <| |>
+
+    # Some of these may be left over from an old python2 (pre-queens)
+    #  install.  In particular, if python2 privsep is present then
+    #  /etc/alternatives links to the python2 version which doesn't
+    #  work very well.
+    $absent_packages = [
+        'python-neutron',
+        'python-nova',
+        'python-oslo.privsep',
+        'python-os-vif',
+        'python-os-brick',
+    ]
+
+    package { $absent_packages:
+        ensure  => 'absent',
+    }
 }
