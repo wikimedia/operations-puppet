@@ -4,7 +4,6 @@ import webob.dec
 from oslo_config import cfg
 from oslo_log import log as logging
 from oslo_middleware import base
-from oslo_serialization import base64
 
 LOG = logging.getLogger(__name__)
 
@@ -42,6 +41,6 @@ class InjectUserData(base.ConfigurableMiddleware):
 
                         LOG.warning("Injecting default user_data into new server request.")
                         jsonbody = req.json
-                        jsonbody['server']['user_data'] = base64.encode_as_bytes(user_data)
-                        req.body = json.dumps(jsonbody)
+                        jsonbody['server']['user_data'] = user_data
+                        req.body = json.dumps(jsonbody).encode('utf8')
         return self.application
