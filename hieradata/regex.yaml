@@ -1,5 +1,5 @@
 es_codfw_rack_a2:
-  __regex: !ruby/regexp /^elastic20(37|38)\.codfw\.wmnet$/
+  __regex: !ruby/regexp /^elastic20(37|38|55)\.codfw\.wmnet$/
   profile::elasticsearch::rack: A2
   profile::elasticsearch::row:  A
 
@@ -9,7 +9,7 @@ es_codfw_rack_a5:
   profile::elasticsearch::row:  A
 
 es_codfw_rack_a7:
-  __regex: !ruby/regexp /^elastic20(39|40)\.codfw\.wmnet$/
+  __regex: !ruby/regexp /^elastic20(39|40|56)\.codfw\.wmnet$/
   profile::elasticsearch::rack: A7
   profile::elasticsearch::row:  A
 
@@ -19,8 +19,13 @@ es_codfw_rack_a8:
   profile::elasticsearch::row:  A
 
 es_codfw_rack_b2:
-  __regex: !ruby/regexp /^elastic20(41|42)\.codfw\.wmnet$/
+  __regex: !ruby/regexp /^elastic20(41|42|57)\.codfw\.wmnet$/
   profile::elasticsearch::rack: B2
+  profile::elasticsearch::row:  B
+
+es_codfw_rack_b4:
+  __regex: !ruby/regexp /^elastic2058\.codfw\.wmnet$/
+  profile::elasticsearch::rack: B4
   profile::elasticsearch::row:  B
 
 es_codfw_rack_b5:
@@ -54,7 +59,7 @@ es_codfw_rack_c5:
   profile::elasticsearch::row:  C
 
 es_codfw_rack_c7:
-  __regex: !ruby/regexp /^elastic20(48|49)\.codfw\.wmnet$/
+  __regex: !ruby/regexp /^elastic20(48|49|59)\.codfw\.wmnet$/
   profile::elasticsearch::rack: C7
   profile::elasticsearch::row:  C
 
@@ -74,7 +79,7 @@ es_codfw_rack_d5:
   profile::elasticsearch::row:  D
 
 es_codfw_rack_d7:
-  __regex: !ruby/regexp /^elastic20(53|54)\.codfw\.wmnet$/
+  __regex: !ruby/regexp /^elastic20(53|54|60)\.codfw\.wmnet$/
   profile::elasticsearch::rack: D7
   profile::elasticsearch::row:  D
 
