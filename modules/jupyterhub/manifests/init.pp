@@ -107,6 +107,12 @@ class jupyterhub (
         require => Git::Clone[$deploy_repository],
     }
 
+    if os_version('debian >= buster') {
+        $http_proxy_pid_file = '/tmp/jupyterhub-proxy.pid'
+    } else {
+        $http_proxy_pid_file = undef
+    }
+
     file { "${config_path}/jupyterhub_config.py":
         ensure  => 'present',
         content => template('jupyterhub/jupyterhub_config.py.erb'),

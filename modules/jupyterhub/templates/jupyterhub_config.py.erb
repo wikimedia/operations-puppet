@@ -73,6 +73,10 @@ c.JupyterHub.log_level = 'WARN'
 # Assume that configurable-http-proxy is installed in sys.prefix/bin
 # (This should be in the virtualenv bin/ directory).
 c.ConfigurableHTTPProxy.command = '{}/bin/configurable-http-proxy'.format(sys.prefix)
+<% if @http_proxy_pid_file -%>
+c.ConfigurableHTTPProxy.pid_file = '<%= @http_proxy_pid_file %>'
+<% end -%>
+
 
 # Isolate the db file into a specific directory, and give JupyterHub write
 # access only to this. This prevents it from overwriting its own code easily.
