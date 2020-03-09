@@ -14,7 +14,13 @@ describe 'apereo_cas' do
   on_supported_os(test_on).each do |os, facts|
     context "on #{os}" do
       let(:facts) { facts }
-      let(:params) { { keystore_source: 'puppet:///modules/apereo_cas/thekeystore' } }
+      let(:params) do
+        {
+          keystore_source: 'puppet:///modules/apereo_cas/thekeystore',
+          idp_primary: 'idp1001.wikimedia.org',  # theses need to resolve for the checks to pass
+          idp_failover: 'idp2001.wikimedia.org',
+        }
+      end
       let(:pre_condition) do
         "class profile::base ( $notifications_enabled = 1 ){}
         include profile::base"

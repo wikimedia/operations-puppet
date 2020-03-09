@@ -1,5 +1,7 @@
 #
 class apereo_cas (
+    Stdlib::Fqdn                  $idp_primary,
+    Optional[Stdlib::Fqdn]        $idp_failover           = undef,
     Optional[String[1]]           $tgc_signing_key        = undef,
     Optional[String[1]]           $tgc_encryption_key     = undef,
     Optional[String[1]]           $webflow_signing_key    = undef,
@@ -46,8 +48,6 @@ class apereo_cas (
     Array[String[1]]              $mfa_attribut_value     = ['mfa'],
     String                        $daemon_user            = 'cas',
     Hash[String, Hash]            $services               = {},
-    Optional[Stdlib::Fqdn]        $idp_primary            = undef,
-    Optional[Stdlib::Fqdn]        $idp_failover           = undef,
     Optional[String[1]]           $java_opts              = undef,
 ) {
     if $keystore_source == undef and $keystore_content == undef {
@@ -67,6 +67,12 @@ class apereo_cas (
     } else {
         $ensure_rsync = 'absent'
         $ensure_sync_timer = 'present'
+    }
+
+    if $idp_failover {
+        $idp_nodes = [ $idp_primary, $idp_failover ]
+    } else {
+        $idp_nodes = [ $idp_primary ]
     }
 
     systemd::timer::job { 'idp-u2f-sync':

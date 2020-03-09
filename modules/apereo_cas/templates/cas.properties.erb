@@ -53,7 +53,14 @@ cas.monitor.endpoints.endpoint.prometheus.requiredIpAddresses=::1,127.0.0.1,<%= 
 # AUTHENTICATED would be better fit, but it seems broken; it
 # redirects to a non-existing /adminlogin URL instead of the
 # IDP login page
+<%- if @actuators.include?('sso') -%>
 cas.monitor.endpoints.endpoint.sso.access=ANONYMOUS
+<%- end -%>
+
+<%- if @actuators.include?('ssoSessions') -%>
+cas.monitor.endpoints.endpoint.ssoSessions.access=IP_ADDRESS
+cas.monitor.endpoints.endpoint.ssoSessions.requiredIpAddresses=::1,127.0.0.1,<%= get_addresses(@idp_nodes).join(',') %>
+<%- end -%>
 
 cas.serviceRegistry.json.location=file:<%= @services_dir %>
 logging.config: file:/etc/cas/config/log4j2.xml
