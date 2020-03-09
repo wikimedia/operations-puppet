@@ -115,6 +115,7 @@ class VenvCreatingAuthenticator(Authenticator):
     def add_user(self, user):
         home_path = os.path.join('/home', user.name)
         venv_path = os.path.join(home_path, 'venv')
+        distro = <%= @lsbdistcodename %>
         if not os.path.exists(home_path):
             os.mkdir(home_path, 0o755)
             shutil.chown(home_path, user.name)
@@ -139,7 +140,8 @@ class VenvCreatingAuthenticator(Authenticator):
                     '--no-index',
                     '--ignore-installed', # Install these packages to the venv directly.
                     '--find-links={wp}'.format(wp=WHEELS_PATH),
-                    '--requirement={dp}/frozen-requirements.txt'.format(dp=DEPLOY_PATH)
+                    '--requirement={dp}/frozen-requirements-{dst}.txt'
+                    .format(dp=DEPLOY_PATH, dst=distro)
                 ],
                 cwd=DEPLOY_PATH
             )
