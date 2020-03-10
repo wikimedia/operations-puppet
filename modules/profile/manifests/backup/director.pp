@@ -36,7 +36,7 @@ class profile::backup::director(
 
     # One pool for all, except databases
     bacula::director::pool { $pool:
-        max_vols         => 60,
+        max_vols         => 70,
         storage          => "${onsite_sd}-${file_storage_production}",
         volume_retention => '90 days',
         label_fmt        => $pool,
@@ -63,7 +63,7 @@ class profile::backup::director(
     # Databases-only pool
     if os_version('debian >= buster') {
         bacula::director::pool { 'Databases':
-            max_vols         => 60,
+            max_vols         => 70,
             storage          => "${onsite_sd}-${file_storage_databases}",
             volume_retention => '90 days',
             label_fmt        => 'databases',
@@ -73,7 +73,7 @@ class profile::backup::director(
 
     # Off site pool for off site backups
     bacula::director::pool { $offsite_pool:
-        max_vols         => 60,
+        max_vols         => 70,
         storage          => "${offsite_sd}-${file_storage_production}",
         volume_retention => '90 days',
         label_fmt        => $offsite_pool,
