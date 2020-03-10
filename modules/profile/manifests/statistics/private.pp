@@ -21,16 +21,6 @@ class profile::statistics::private(
         group  => 'wikidev',
     }
 
-    # This file will render at
-    # /etc/mysql/conf.d/statistics-private-client.cnf.
-    # This is so that users in the statistics-privatedata-users
-    # group who want to access the research slave dbs do not
-    # have to be in the research group, which is not included
-    # in the private role.
-    statistics::mysql_credentials { 'statistics-private':
-        group => 'statistics-privatedata-users',
-    }
-
     # Include the MySQL research password at
     # /etc/mysql/conf.d/analytics-research-client.cnf
     # and only readable by users in the

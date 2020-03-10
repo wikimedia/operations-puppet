@@ -162,7 +162,7 @@ groups:
               fdans, mlitn, niharika29, goransm, pmiazga, dsaez, shiladsen, cicalese,
               mirrys, sharvaniharan, mmiller, amire80, rush, kharlan, gbirke, dedcode,
               isaacj, jdl, joewalsh, phuedx, bd808, iflorez, mayakpwiki, conniecc1, abi,
-              cohi, keepit-ssh, kzeta, snowick, aarora, jiawang]
+              cohi, keepit-ssh, kzeta, snowick, aarora, jiawang, risler, legoktm]
   ldap-admins:
     gid: 715
     description: ldap admins
@@ -225,17 +225,8 @@ groups:
     gid: 725
     description: Access to stat boxes that host private data, including
                  sampled webrequest logs.  This group should not be used just to
-                 grant someone Hadoop access.  If someone wants access to
-                 access webrequest logs in the Hadoop cluster
-                 you should put them in the analytics-privatedata-users
-                 group.  If they want Hadoop access without rights to private data,
-                 add them instead to the analytics-users group.  statistics-* groups
-                 DO NOT EQUAL Hadoop/Hive cluster access.
-    members: [ezachte, milimetric, halfak, awight, dr0ptp4kt, nuria,
-              leila, nettrom, mforns, joal, bmansurov,
-              tjones, legoktm, dcausse, bearloga, dstrine,
-              marktraceur, accraze,
-              fdans, shiladsen, esanders, risler, nathante, chelsyx, jdl, kevinbazira, mstyles, zpapierski]
+                 grant someone Hadoop access.  (Deprecated)
+    members: []
   statistics-users:
     gid: 726
     description: Access statistics number crunching hosts. NO PRIVS. (Deprecated)
