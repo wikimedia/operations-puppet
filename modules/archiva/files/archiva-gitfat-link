@@ -43,7 +43,7 @@ if [ -z "${1}" -o -z "${2}" ]; then
 fi
 
 # Archiva keeps sha1s of every file it has in its repository.
-# If a a .sha1 file exists, use its contents.
+# If a .sha1 file exists, use its contents.
 # Else compute the sha1 of the provided file_path now.
 archiva_sha1sum() {
     file_path="${1}"

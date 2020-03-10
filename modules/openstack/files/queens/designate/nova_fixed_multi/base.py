@@ -76,7 +76,7 @@ class BaseAddressMultiHandler(BaseAddressHandler):
     def _create(self, addresses, extra, managed=True,
                 resource_type=None, resource_id=None):
         """
-        Create a a record from addresses
+        Create a record from addresses
 
         :param addresses: Address objects like
                           {'version': 4, 'ip': '10.0.0.1'}
