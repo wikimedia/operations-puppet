@@ -9,7 +9,7 @@ if [ "${BACKPORTS}" = "yes" ]; then
 	printf "ERROR: archive.debian.org\n"
 	printf "\033[0m\n"
 	exit 1
-<%- elsif @distribution == 'stretch' -%>
+<%- else -%>
 	cat > /etc/apt/sources.list.d/<%= @distribution %>-backports.list <<-'EOF'
 	deb <%= @upstream_mirror %> <%= @distribution %>-backports main contrib non-free
 	deb-src <%= @upstream_mirror %> <%= @distribution %>-backports main contrib non-free
@@ -20,7 +20,5 @@ EOF
 	Pin-Priority: 500
 EOF
 	apt-get update
-<%- else -%>
-	printf "\033[0;31m ERROR: <%= @distribution %> does not have backports \033[0m\n"
 <%- end -%>
 fi
