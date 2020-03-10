@@ -1,11 +1,30 @@
 class profile::dns::auth::update (
     Hash[Stdlib::Fqdn, Stdlib::IP::Address::Nosubnet] $authdns_servers = lookup('authdns_servers'),
     Stdlib::HTTPSUrl $gitrepo = lookup('profile::dns::auth::gitrepo'),
+    Stdlib::Unixpath $netbox_dns_snippets_dir = lookup('profile::dns::auth::update::netbox_dns_snippets_dir'),
+    Stdlib::Fqdn $netbox_exports_domain = lookup('profile::dns::auth::update::netbox_exports_domain'),
 ) {
     require ::profile::dns::auth::update::account
     require ::profile::dns::auth::update::scripts
 
     $workingdir = '/srv/authdns/git'
+    $netbox_dns_snippets_repo = "https://${netbox_exports_domain}/dns.git"
+    $netbox_dns_user = 'netboxdns'
+
+    user { $netbox_dns_user:
+        ensure  => present,
+        comment => 'User for the Netbox generated DNS zonefile snippets',
+        system  => true,
+        shell   => '/bin/bash',
+    }
+
+    file { dirname($netbox_dns_snippets_dir):
+        ensure => directory,
+        mode   => '0755',
+        owner  => 'root',
+        group  => 'root',
+        before => Exec['authdns-local-update'],
+    }
 
     file { '/etc/wikimedia-authdns.conf':
         ensure  => 'present',
@@ -33,7 +52,7 @@ class profile::dns::auth::update (
         srange => "(${authdns_servers.values().join(' ')})",
     }
 
-    # The clone and exec below are only for the initial puppetization of a
+    # The clones and exec below are only for the initial puppetization of a
     # fresh host, ensuring that the data and configuration are fully present
     # *before* the daemon is ever started for the first time (which can only be
     # gauranteed by doing it before the package is even installed).  Most other
@@ -46,6 +65,17 @@ class profile::dns::auth::update (
         branch    => 'master',
         owner     => 'authdns',
         group     => 'authdns',
+        notify    => Exec['authdns-local-update'],
+    }
+
+    # Clone the Netbox exported DNS snippet zonefiles with automatically generated
+    # DNS records from Netbox data.
+    git::clone { $netbox_dns_snippets_dir:
+        directory => $netbox_dns_snippets_dir,
+        origin    => $netbox_dns_snippets_repo,
+        branch    => 'master',
+        owner     => $netbox_dns_user,
+        group     => $netbox_dns_user,
         notify    => Exec['authdns-local-update'],
     }
 
