@@ -2223,6 +2223,10 @@ node /^wdqs100[4-7]\.eqiad\.wmnet$/ {
     role(wdqs)
 }
 
+node /^wdqs101[1-3]\.eqiad\.wmnet$/ {
+    role(spare::system)
+}
+
 node /^wdqs200[1-3]\.codfw\.wmnet$/ {
     role(wdqs)
 }
