@@ -1,7 +1,7 @@
 cluster: analytics
 admin::groups:
   - statistics-privatedata-users
-  - statistics-users
+  - analytics-users
   - researchers
   - analytics-admins
 

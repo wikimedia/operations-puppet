@@ -145,9 +145,9 @@ groups:
     members: [milimetric, demon, andyrussg]
   researchers:
     gid: 714
-    description: Access statistics number crunching hosts (like
-                 statistics-users) and also provides access to research mysql
-                 credentials on stat1006 (currently the only such host)
+    description: Access statistics number crunching hosts and also provides
+                 access to research mysql credentials
+                 on stat1006 (currently the only such host)
     members: [awight, bmansurov, catrope, mneisler,
               dduvall, esanders, ezachte, gilles, halfak,
               jforrester, jkatz, jmorgan, kaldari, nathante,
@@ -238,15 +238,8 @@ groups:
               fdans, shiladsen, esanders, risler, nathante, chelsyx, jdl, kevinbazira, mstyles, zpapierski]
   statistics-users:
     gid: 726
-    description: Access statistics number crunching hosts. NO PRIVS.
-    members: [halfak, jdlrobson, jmorgan, bearloga,
-              mattflaschen, mhurd, awight, jforrester,
-              marktraceur, nuria, leila, gilles,
-              dbrant, tgr, dr0ptp4kt, brion, bsitzmann, amire80,
-              dduvall, nettrom, mforns, jkatz, ebernhardson,
-              mlitn, joal, kartik, nikerabbit, pcoombe,
-              neilpquinn-wmf, jminor, dstrine,
-              ladsgroup, ovasileva, shiladsen, abi]
+    description: Access statistics number crunching hosts. NO PRIVS. (Deprecated)
+    members: []
   statistics-admins:
     posix_name: stats
     description: access files created by stats user cron jobs
@@ -260,9 +253,8 @@ groups:
   analytics-users:
     gid: 7080
     description: Gives generic client access to the Analytics (Hadoop) cluster.
-        This will grant shell access on Hadoop client nodes and on
-        Hadoop NameNodes.
-    members: [debt, goransm, jdittrich, kharlan, cohi]
+        This will grant shell access on Hadoop client nodes.
+    members: [debt, goransm, jdittrich, kharlan, cohi, brion, mhurd]
   analytics-privatedata-users:
     gid: 731
     description: Gives access to the Analytics (Hadoop) cluster as well as private data within.

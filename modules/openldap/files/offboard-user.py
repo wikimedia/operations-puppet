@@ -323,7 +323,7 @@ def get_phabricator_client():
 
 
 def offboard_analytics(username):
-    pii_sensitive_groups = ['researchers', 'statistics-privatedata-users', 'statistics-users',
+    pii_sensitive_groups = ['researchers', 'statistics-privatedata-users',
                             'statistics-admins', 'analytics-users', 'analytics-privatedata-users',
                             'analytics-admins', 'analytics-wmde-users', 'ops']
 
