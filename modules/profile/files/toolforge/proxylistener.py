@@ -19,7 +19,7 @@ Simple TCP server that keeps routes in the Redis db for authenticated requests.
 
 The routes are kept as long as the socket making the request is open, and
 cleaned up right afterwards. identd is used for authentication - while normally
-that is a terrible idea, this is okay in the toollabs environment because we
+that is a terrible idea, this is okay in the Toolforge environment because we
 only have a limited number of trusted admins. This also allows routes to be
 added only for URLs that are under the URL prefix allocated for the tool making
 the request. For example, a tool named 'testtool' can ask only for URLs that
@@ -51,7 +51,7 @@ def get_remote_user(remote_host, remote_port, local_port):
 
     Returns username if found, None if there was an error.
 
-    This is secure enough for toollabs since we do not have arbitrary admins.
+    This is secure enough for Toolforge since we do not have arbitrary admins.
     """
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.connect((remote_host, 113))
@@ -97,7 +97,8 @@ class RouteRequestHandler(SocketServer.StreamRequestHandler):
 
         toolname = user[len(projectprefix):]
 
-        redis_key = "prefix:%s" % toolname
+        prefix_key = "prefix:%s" % toolname
+        redirect_key = "redirect:%s" % toolname
 
         command = self.rfile.readline().strip()
         route = self.rfile.readline().strip()
@@ -105,21 +106,42 @@ class RouteRequestHandler(SocketServer.StreamRequestHandler):
 
         if command == 'register':
             destination = self.rfile.readline().strip()
-            logging.log(logging.INFO, "Received request from %s for %s to %s",
-                        toolname, route, destination)
+            if self.rfile.peek():
+                canonical = self.rfile.readline().strip()
+            else:
+                # Older clients did not send the canonical flag
+                canonical = None
+            logging.log(
+                logging.INFO,
+                "Received request from %s for %s to %s; canonical=%s",
+                toolname, route, destination, canonical
+            )
 
-            red.hset(redis_key, route, destination)
-            logging.log(logging.DEBUG, "Set redis key %s with key/value %s:%s",
-                        redis_key, route, destination)
+            red.hset(prefix_key, route, destination)
+            logging.log(
+                logging.DEBUG,
+                "Set redis key %s with key/value %s:%s",
+                prefix_key, route, destination
+            )
+            if canonical:
+                red.hset(redirect_key, route, canonical)
+                logging.log(
+                    logging.DEBUG,
+                    "Set redis key %s with key/value %s:%s",
+                    redirect_key, route, canonical
+                )
             self.request.send('ok')
 
         elif command == 'unregister':
             logging.log(logging.INFO, "Cleaning up request from %s for %s",
                         toolname, route)
 
-            red.hdel(redis_key, route)
+            red.hdel(prefix_key, route)
             logging.log(logging.DEBUG, "Removed redis key %s with key %s",
-                        redis_key, route)
+                        prefix_key, route)
+            red.hdel(redirect_key, route)
+            logging.log(logging.DEBUG, "Removed redis key %s with key %s",
+                        redirect_key, route)
             self.request.send('ok')
         else:
             logging.log(logging.ERROR, "Unknown command received: %s", command)
