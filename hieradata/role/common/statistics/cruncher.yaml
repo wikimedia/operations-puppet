@@ -1,7 +1,0 @@
-cluster: analytics
-admin::groups:
-  - analytics-users
-  - researchers
-  - analytics-admins
-
-profile::analytics::refinery::deploy_hadoop_config: false

@@ -2,6 +2,7 @@ admin::groups:
   - analytics-users
   - analytics-privatedata-users
   - analytics-admins
+  - researchers
   - gpu-testers
   - gpu-users
 cluster: analytics

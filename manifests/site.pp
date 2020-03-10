@@ -2125,24 +2125,10 @@ node 'thorium.eqiad.wmnet' {
     role(analytics_cluster::webserver)
 }
 
-# stat1004 contains all the tools and libraries to access
+# The hosts contain all the tools and libraries to access
 # the Analytics Cluster services.
-node 'stat1004.eqiad.wmnet' {
+node /^stat100[456]\.eqiad\.wmnet/ {
     role(statistics::explorer)
-}
-
-# stat1005 contains all the tools and libraries to access
-# the Analytics Cluster services. It also offers a GPU.
-node 'stat1005.eqiad.wmnet' {
-    role(statistics::explorer)
-}
-
-# stat1006 is a general purpose number cruncher for
-# researchers and analysts.  It is primarily used
-# to connect to MySQL research databases and save
-# query results for further processing on this node.
-node 'stat1006.eqiad.wmnet' {
-    role(statistics::cruncher)
 }
 
 # stat1007 will replace stat1005 very soon to allow
