@@ -14,7 +14,7 @@ class profile::puppetdb::monitoring_agentrun (
     }
 
     nrpe::monitor_service{'puppet_run_changes':
-        description    => 'Check to ensure host are not preforming a change on every puppet run',
+        description    => 'Ensure hosts are not performing a change on every puppet run',
         nrpe_command   => "/usr/lib/nagios/plugins/check_puppet_run_changes -w ${warn} -c ${crit}",
         check_interval => 360,
         retry_interval => 5,

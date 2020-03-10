@@ -306,7 +306,7 @@ class TaskGen < ::Rake::TaskLib
     task :python_extensions do
       failures = false
       source_files.each do |source_file|
-        # We don't need to preform CI on user files as such we skip them
+        # We don't need to perform CI on user files as such we skip them
         next if source_file.end_with?('.py') || source_file.start_with?('modules/admin/files/home')
         # skip zero byte files
         next if File.zero?(source_file)

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-NRPE script to search puppetdb to find all hosts which preform a puppet change on
+NRPE script to search puppetdb to find all hosts which perform a puppet change on
 every puppet agent run
 """
 import logging
