@@ -245,7 +245,7 @@ groups:
     gid: 7080
     description: Gives generic client access to the Analytics (Hadoop) cluster.
         This will grant shell access on Hadoop client nodes.
-    members: [debt, goransm, jdittrich, kharlan, cohi, brion, mhurd]
+    members: [debt, goransm, jdittrich, kharlan, cohi, brion, mhurd, santhosh]
   analytics-privatedata-users:
     gid: 731
     description: Gives access to the Analytics (Hadoop) cluster as well as private data within.
@@ -711,7 +711,7 @@ groups:
   gpu-testers:
     description: People with access to Analytics hosts with GPUs.
     gid: 810
-    members: &gpu_testers_members [ebernhardson, mirrys, gilles, dr0ptp4kt, isaacj, dsaez]
+    members: &gpu_testers_members [ebernhardson, mirrys, gilles, dr0ptp4kt, isaacj, dsaez, santhosh]
   gpu-users:
     description: Use the standard system provided render group to allow Analytics users to access the GPU on the host.
     members: [*gpu_testers_members, *analytics_admins_members, *ops_members]
