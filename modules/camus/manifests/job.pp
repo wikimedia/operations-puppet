@@ -49,7 +49,7 @@
 #   Puppet path to camus.properties ERb template.  Default: camus/${title}.erb
 #
 # [*template_variables*]
-#   Hash of anything you might need accesible in your custom camus.properties
+#   Hash of anything you might need accessible in your custom camus.properties
 #   ERb template.  You can access these in your template as
 #   @template_variables['my_property']
 #
