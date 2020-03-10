@@ -41,10 +41,6 @@ profile::swap::use_dumps_mounts: false
 profile::swap::deploy_research_cred: false
 
 profile::kerberos::keytabs::keytabs_metadata:
-  - role: 'analytics'
-    owner: 'analytics'
-    group: 'analytics'
-    filename: 'analytics.keytab'
   - role: 'analytics-privatedata'
     owner: 'analytics-privatedata'
     group: 'analytics-privatedata'
