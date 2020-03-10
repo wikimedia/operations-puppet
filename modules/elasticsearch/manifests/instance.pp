@@ -93,6 +93,8 @@
 #        possible it will constantly run full GC's trying to find that
 #        space. Set this to true if that space will never be available
 #        and the GC should not try and find it.
+# - $disktype: The type of physical storage backing this ES instance to be
+#        used for index routing allocation. e.g. 'ssd', 'hdd'
 # == Sample usage:
 #
 #   class { "elasticsearch":
@@ -142,6 +144,7 @@ define elasticsearch::instance(
     Optional[String] $ltr_cache_size                         = undef,
     Boolean $curator_uses_unicast_hosts                      = true,
     Boolean $tune_gc_larger_old_gen                          = false,
+    Optional[Enum['ssd','hdd']] $disktype                    = undef,
 
     #  Dummy parameters consumed upstream of elasticsearch::instance,
     # but convenient to unify per-cluster configuration

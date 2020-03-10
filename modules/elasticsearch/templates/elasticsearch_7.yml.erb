@@ -41,6 +41,10 @@ node.attr.fqdn: <%= @fqdn %>
 node.master: <%= @master_eligible %>
 # Allow this node to store data (enabled by default):
 node.data: <%= @holds_data %>
+<% if @disktype -%>
+# The type of physical storage backing this elasticsearch instance (e.g. "ssd", "hdd", "cassette tape")
+node.attr.disktype: <%= @disktype %>
+<% end -%>
 #
 # ----------------------------------- Paths ------------------------------------
 #

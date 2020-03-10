@@ -397,6 +397,10 @@ gateway:
 ##
 node.attr.hostname: <%= @hostname %>
 node.attr.fqdn: <%= @fqdn %>
+<% if @disktype -%>
+# The type of physical storage backing this elasticsearch instance (e.g. "ssd", "hdd", "cassette tape")
+node.attr.disktype: <%= @disktype %>
+<% end -%>
 
 ##
 # Elasticsearch cluster balance configuration

@@ -38,6 +38,7 @@ type Elasticsearch::InstanceParams = Struct[{
     'curator_uses_unicast_hosts'         => Optional[Boolean],
     'send_logs_to_logstash'              => Optional[Boolean],
     'tune_gc_larger_old_gen'             => Optional[Boolean],
+    'disktype'                           => Optional[Enum['ssd','hdd']],
 
     # Dummy parameters consumed upstream of elasticsearch::instance,
     # but convenient to declare per-cluster
