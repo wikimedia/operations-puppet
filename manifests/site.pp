@@ -2138,6 +2138,11 @@ node 'stat1007.eqiad.wmnet' {
     role(statistics::private)
 }
 
+# new host that needs to be turned over to service owner
+node 'stat1008.eqiad.wmnet' {
+    role(spare::system)
+}
+
 # NOTE: new snapshot hosts must also be manually added to
 # hieradata/common.yaml:dumps_nfs_clients for dump nfs mount,
 # hieradata/common/scap/dsh.yaml for mediawiki installation,
