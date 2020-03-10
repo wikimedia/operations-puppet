@@ -15,6 +15,9 @@ import yaml
 
 TLS_TRUSTED_CA = '/etc/ssl/certs/Puppet_Internal_CA.pem'
 DB_CONFIG_FILE = '/etc/prometheus/zarcillo.cnf'
+# TODO: Detect multisource hosts automatically. The main issues preventing that is the
+#       possibility of multisource hosts with only 1 connection. For now, just hardcoded them,
+#       as they are scheduled to be decommed soon(TM), not needed an exception.
 SPECIAL_MULTISOURCE_HOSTS = ['labsdb1009', 'labsdb1010', 'labsdb1011', 'labsdb1012']
 DATACENTERS = ['eqiad', 'codfw', 'esams', 'ulsfo', 'eqsin']
 
@@ -72,15 +75,20 @@ def get_data(host, port, database, user, password, dc):
         sys.exit(4)
 
     # query instances and its sections, groups and if they are masters or not
-    query = """SELECT instances.name AS name, instances.group AS `group`,
-            section_instances.section AS section, not ISNULL(masters.section) AS master
-            FROM section_instances JOIN instances ON section_instances.instance = instances.name
-            LEFT JOIN masters ON section_instances.instance = masters.instance
-            WHERE instances.server like %s
-            ORDER BY section, name, master"""
-    # expected results: name | group | section | master
-    #                   db1  | core  | s1      | 1
-    #                   db2  | misc  | s3      | 0
+    query = """SELECT instances.name AS name, instances.group AS `group`, sections.name AS section,
+               IF(sections.standalone, 'standalone',
+               IF (isnull(masters.instance), 'slave', 'master')) AS role
+               FROM section_instances
+               LEFT JOIN sections ON sections.name=section_instances.section
+               JOIN instances ON section_instances.instance = instances.name
+               LEFT JOIN masters ON section_instances.instance = masters.instance
+               WHERE instances.server like %s
+               ORDER BY name, section, role"""
+
+    # expected results: name | group | section | role
+    #                   db1  | core  | s1      | slave
+    #                   db2  | misc  | s3      | master
+    #                   db3  | labs  | m4      | standalone
     with db.cursor(pymysql.cursors.DictCursor) as cursor:
         try:
             cursor.execute(query, ('%.' + dc + '.wmnet',))
@@ -110,6 +118,7 @@ def transform_data_to_prometheus(data):
     #   multi:
     #     slave:
     #       labsdb1009
+    logger = logging.getLogger('prometheus')
     instances = dict()
     multisource_hosts = set()
     for instance in data:
@@ -120,12 +129,10 @@ def transform_data_to_prometheus(data):
         name = get_socket(instance['name'])
         group = instance['group']
         section = instance['section']
-        if section in ['es1', 'es2', 'tendril']:  # es[12] and tendril hosts are special masters
-            role = 'standalone'
-        elif instance['master']:
-            role = 'master'
-        else:
-            role = 'slave'
+        role = instance['role']
+        if role not in ['master', 'slave', 'standalone']:  # Some es* hosts are special ones
+            logger.error('A role other than master, replica or standalone was found')
+            sys.exit(7)
         if group not in instances:
             instances[group] = dict()
         if section not in instances[group]:
