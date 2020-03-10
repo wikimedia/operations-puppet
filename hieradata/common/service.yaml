@@ -904,7 +904,48 @@ service::catalog:
     state: production
 
   eventstreams:
-    description: Public EventStreams via HTTP + SSE backed by Kafka. eventstreams.svc.%{::site}.wmnet
+    description: Public streams of events via HTTP + SSE, backed by Kafka. eventstreams.svc.%{::site}.wmnet
+    encryption: true
+    ip:
+      codfw:
+        default: 10.2.1.34
+      eqiad:
+        default: 10.2.2.34
+    lvs:
+      class: low-traffic
+      conftool:
+        cluster: kubernetes
+        service: kubesvc
+      depool_threshold: '.5'
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+        ProxyFetch:
+          url:
+          - https://localhost/_info
+      scheduler: wrr
+    monitoring:
+      check_command: check_https_lvs_on_port!eventstreams.discovery.wmnet!4892!/_info
+      critical: false
+      sites:
+        codfw:
+          hostname: eventstreams.svc.codfw.wmnet
+        eqiad:
+          hostname: eventstreams.svc.eqiad.wmnet
+    port: 4892
+    sites:
+    - eqiad
+    - codfw
+    state: service_setup
+    discovery:
+    - dnsdisc: eventstreams
+      active_active: true
+
+  # To be removed as part of k8s migration: T238658
+  eventstreams-scb:
+    description: Public EventStreams via HTTP + SSE backed by Kafka. eventstreams.svc.%{::site}.wmnet (scb)
     encryption: false
     ip:
       codfw:
@@ -942,6 +983,7 @@ service::catalog:
     discovery:
     - dnsdisc: eventstreams
       active_active: true
+
   git-ssh:
     description: Git - to Phabricator hosting, git-ssh.wikimedia.org
     encryption: true
