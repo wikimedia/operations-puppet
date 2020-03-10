@@ -8090,6 +8090,11 @@ host stat1007 {
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
+host stat1008 {
+    hardware ethernet F0:D4:E2:E6:98:20;
+    fixed-address stat1008.eqiad.wmnet;
+}
+
 host theemin {
     hardware ethernet D0:94:66:5F:67:68;
     fixed-address theemin.codfw.wmnet;
