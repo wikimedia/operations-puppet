@@ -12,7 +12,4 @@ class profile::statistics::cruncher {
     statistics::mysql_credentials { 'research':
         group => 'researchers',
     }
-
-    # rsync logs from logging hosts
-    include ::statistics::rsync::eventlogging
 }

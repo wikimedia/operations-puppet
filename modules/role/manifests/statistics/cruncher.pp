@@ -14,4 +14,5 @@ class role::statistics::cruncher {
 
     include ::profile::analytics::client::limits
 
+    include ::profile::statistics::eventlogging_rsync
 }

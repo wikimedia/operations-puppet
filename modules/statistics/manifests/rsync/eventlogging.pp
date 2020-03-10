@@ -4,9 +4,6 @@
 # logging hosts to a local destination for further processing.
 #
 class statistics::rsync::eventlogging {
-    Class['::statistics'] -> Class['::statistics::rsync::eventlogging']
-    $working_path = $::statistics::working_path
-
     # Any logs older than this will be pruned by
     # the rsync_job define.
     $retention_days = 90
@@ -15,9 +12,9 @@ class statistics::rsync::eventlogging {
 
     file { ['/srv/log/eventlogging', '/srv/log/eventlogging/archive']:
         ensure => 'directory',
-        owner  => 'stats',
-        group  => 'wikidev',
-        mode   => '0775',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0750',
     }
 
     # eventlogging data logs from eventlog1002
@@ -25,5 +22,6 @@ class statistics::rsync::eventlogging {
         source         => 'eventlog1002.eqiad.wmnet::eventlogging/archive/*.gz',
         destination    => $destination,
         retention_days => $retention_days,
+        require        => File['/srv/log/eventlogging', '/srv/log/eventlogging/archive'],
     }
 }
