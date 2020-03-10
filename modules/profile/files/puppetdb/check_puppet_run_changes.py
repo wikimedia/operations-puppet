@@ -19,8 +19,8 @@ logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 def get_args():
     """Parse arguments"""
     parser = ArgumentParser(description=__doc__)
-    parser.add_argument('-w', '--warning', default=1)
-    parser.add_argument('-c', '--critical', default=5)
+    parser.add_argument('-w', '--warning', default=1, type=int)
+    parser.add_argument('-c', '--critical', default=5, type=int)
     parser.add_argument('--max-age', default=12, type=int,
                         help='the maximum report age in hours')
     parser.add_argument('-v', '--verbose', action='count')
