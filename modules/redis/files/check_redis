@@ -1039,7 +1039,7 @@ sub verb {
     }
 }
 
-#  @DESCRIPTION   : Check of string is a a number supporting integers, negative, decimal floats
+#  @DESCRIPTION   : Check if string is a number supporting integers, negative, decimal floats
 #  @LAST CHANGED  : 08-20-12 by WL
 #  @INPUT         : ARG1 - string of text to be checked
 #  @RETURNS       : 1 if its a number, 0 if its not a number
@@ -1050,10 +1050,10 @@ sub isnum {
     return 0;
 }
 
-#  @DESCRIPTION   : Check of string is a a number supporting integers, negative, decimal floats
+#  @DESCRIPTION   : Trim leading and trailing spaces from string
 #  @LAST CHANGED  : 08-20-12 by WL
-#  @INPUT         : ARG1 - string of text to be checked
-#  @RETURNS       : 1 if its a number, 0 if its not a number
+#  @INPUT         : ARG1 - string of text to be trimmed
+#  @RETURNS       : trimmed string
 #  @PRIVACY & USE : PUBLIC, To be used statically and not as an object instance function
 sub trim {
     my $string = shift;
