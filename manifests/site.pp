@@ -1734,13 +1734,8 @@ node /^mw23(2[579]|3[13])\.codfw\.wmnet$/ {
 }
 
 # rack C6
-node /^mw23(5[13579]|6[13579]|7[135])\.codfw\.wmnet$/ {
+node /^mw23(5[13579]|6[135])\.codfw\.wmnet$/ {
     role(mediawiki::appserver)
-}
-
-#mw2366-76 are in rack D3
-node /^mw23(6[6-9]|7[0-6])\.codfw\.wmnet$/ {
-    role(spare::system)
 }
 
 # Row C
@@ -1753,6 +1748,13 @@ node /^mw2(16[34]|27[12])\.codfw\.wmnet$/ {
 }
 
 node /^mw2(16[5-9]|1[7-9][0-9]|27[3-7])\.codfw\.wmnet$/ {
+    role(mediawiki::appserver)
+}
+
+# Row D
+
+# rack D3
+node /^mw23(6[79]|7[135])\.codfw\.wmnet$/ {
     role(mediawiki::appserver)
 }
 
@@ -1810,11 +1812,16 @@ node /^mw22(0[0-9]|1[0124])\.codfw\.wmnet$/ {
 }
 
 # rack C6
-node /^mw23(5[02468]|6[02468]|7[0246])\.codfw\.wmnet$/ {
+node /^mw23(5[02468]|6[024])\.codfw\.wmnet$/ {
     role(mediawiki::appserver::api)
 }
 
 # Row D
+
+# rack D3
+node /^mw23(6[68]|7[0246])\.codfw\.wmnet$/ {
+    role(mediawiki::appserver::api)
+}
 
 #mw2283-90 are in rack D4
 node /^mw22(8[3-9]|90)\.codfw\.wmnet$/ {
