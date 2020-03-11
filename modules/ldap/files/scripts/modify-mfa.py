@@ -33,8 +33,8 @@ class LdapUser:
                 if dname == self.dname:
                     self._attributes = attributes
                     break
-        else:
-            raise LdapUserNotFound
+            else:
+                raise LdapUserNotFound
         return self._attributes
 
     @property
