@@ -10,6 +10,8 @@ profile::analytics::cluster::packages::common::use_bigtop_settings: true
 
 profile::hadoop::common::hadoop_cluster_name: 'analytics-test-hadoop'
 
+profile::analytics::cluster::hdfs_mount::monitoring_user: 'analytics'
+
 profile::oozie::client::oozie_host: 'analytics1030.eqiad.wmnet'
 
 profile::swap::use_dumps_mounts: false
