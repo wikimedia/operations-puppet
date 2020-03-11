@@ -125,4 +125,18 @@ class profile::spicerack(
         mode    => '0440',
         content => ordered_yaml($netbox_config_data),
     }
+
+    file { '/etc/spicerack/cookbooks':
+        ensure => directory,
+        owner  => 'root',
+        group  => 'ops',
+        mode   => '0550',
+    }
+    file { '/etc/spicerack/cookbooks/sre.network.cf.yaml':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'ops',
+        mode    => '0440',
+        content => secret('spicerack/cookbooks/sre.network.cf.yaml'),
+    }
 }
