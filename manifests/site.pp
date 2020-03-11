@@ -1023,17 +1023,17 @@ node /^ganeti[12]00[0-8]\.(codfw|eqiad)\.wmnet$/ {
 
 # new Ganeti hosts - replacing ganeti100[1-4] (T228924)
 node /^ganeti(1009|101[0-2])\.eqiad\.wmnet$/ {
-    role(spare::system)
+    role(insetup)
 }
 
 # new Ganeti hosts - expansion (T228924)
 node /^ganeti101[3-8]\.eqiad\.wmnet$/ {
-    role(spare::system)
+    role(insetup)
 }
 
 # new Ganeti hosts - expansion (T224603)
 node /^ganeti20(09|1[0-8])\.codfw\.wmnet$/ {
-    role(spare::system)
+    role(insetup)
 }
 
 node /^ganeti300[123]\.esams\.wmnet$/ {
@@ -2157,7 +2157,7 @@ node 'stat1007.eqiad.wmnet' {
 
 # new host that needs to be turned over to service owner
 node 'stat1008.eqiad.wmnet' {
-    role(spare::system)
+    role(insetup)
 }
 
 # NOTE: new snapshot hosts must also be manually added to
