@@ -1074,7 +1074,7 @@ node 'heze.codfw.wmnet' {
 
 # new host that needs to be turned over to service owner
 node 'htmldumper1001.eqiad.wmnet' {
-    role(spare::system)
+    role(insetup)
 }
 
 # irc.wikimedia.org
@@ -1989,7 +1989,7 @@ node /^pc20(09)\.codfw\.wmnet$/ {
 
 # new parsoid nodes (T243112)
 node /^parse20(0[1-9]|1[1-9]|20)\.codfw\.wmnet$/ {
-    role(spare::system)
+    role(insetup)
 }
 
 # virtual machines for https://wikitech.wikimedia.org/wiki/Ping_offload
@@ -2232,7 +2232,7 @@ node /^wdqs100[4-7]\.eqiad\.wmnet$/ {
 }
 
 node /^wdqs101[1-3]\.eqiad\.wmnet$/ {
-    role(spare::system)
+    role(insetup)
 }
 
 node /^wdqs200[1-3]\.codfw\.wmnet$/ {
