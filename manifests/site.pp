@@ -1988,7 +1988,7 @@ node /^pc20(09)\.codfw\.wmnet$/ {
 }
 
 # new parsoid nodes (T243112)
-node /^parse20(0[1-9]|1[1-9]|20)\.codfw\.wmnet$/ {
+node /^parse20(0[1-9]|1[0-9]|20)\.codfw\.wmnet$/ {
     role(insetup)
 }
 
