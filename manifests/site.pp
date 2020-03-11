@@ -814,10 +814,6 @@ node 'elastic2060.codfw.wmnet' {
     role(elasticsearch::cirrus)
 }
 
-node 'elnath.codfw.wmnet' {
-    role(spare::system)
-}
-
 # External Storage, Shard 1 (es1) databases
 
 ## eqiad servers

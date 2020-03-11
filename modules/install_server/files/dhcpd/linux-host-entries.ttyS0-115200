@@ -764,12 +764,6 @@ host puppetdb2002 {
     fixed-address puppetdb2002.codfw.wmnet;
 }
 
-host elnath {
-    hardware ethernet aa:00:00:9b:fc:ae;
-    fixed-address elnath.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
-}
-
 # ganeti VMs used for pybal testing/development
 host pybal-test2001 {
     hardware ethernet aa:00:00:16:8d:f9;
