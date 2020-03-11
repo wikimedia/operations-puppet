@@ -97,30 +97,17 @@ redis::shards:
         port: 6379
 scap::dsh::groups:
   librenms:
-    hosts:
-    - deployment-netbox.deployment-prep.eqiad.wmflabs
+    hosts: []
   mediawiki-api-canaries:
     hosts: []
   mediawiki-appserver-canaries:
-    hosts:
-    - deployment-mediawiki-07.deployment-prep.eqiad.wmflabs
+    hosts: []
   mediawiki-installation:
-    hosts:
-    - deployment-jobrunner03.deployment-prep.eqiad.wmflabs
-    - deployment-mediawiki-09.deployment-prep.eqiad.wmflabs
-    - deployment-mediawiki-07.deployment-prep.eqiad.wmflabs
-    - deployment-snapshot01.deployment-prep.eqiad.wmflabs
-    - deployment-deploy01.deployment-prep.eqiad.wmflabs
-    - deployment-deploy02.deployment-prep.eqiad.wmflabs
-    - deployment-mwmaint01.deployment-prep.eqiad.wmflabs
-    - deployment-mediawiki-parsoid10.deployment-prep.eqiad.wmflabs
+    hosts: []
   restbase-betacluster:
-    hosts:
-    - deployment-restbase01.deployment-prep.eqiad.wmflabs
-    - deployment-restbase02.deployment-prep.eqiad.wmflabs
+    hosts: []
   webperf:
-    hosts:
-    - deployment-webperf11.deployment-prep.eqiad.wmflabs
+    hosts: []
 scap::sources:
   gerrit/gerrit:
     repository: operations/software/gerrit
