@@ -138,7 +138,7 @@ define host {
     notification_interval    0
     notification_period      24x7
     check_period             24x7
-    hostgroups               fundraising-database
+    hostgroups               fundraising-database-analytics
 }
 
 define host {
@@ -1235,6 +1235,68 @@ define service {
     use                      passive-service
     service_description      check_zombie
     hostgroup_name           fundraising-database
+}
+
+
+# fundraising-database-analytics hostgroup
+
+define hostgroup {
+    hostgroup_name           fundraising-database-analytics
+    alias                    Fundraising Database - Analytics
+}
+
+define service {
+    use                      passive-service
+    service_description      check_disk
+    hostgroup_name           fundraising-database-analytics
+}
+
+define service {
+    use                      passive-service
+    service_description      check_load
+    hostgroup_name           fundraising-database-analytics
+}
+
+define service {
+    use                      passive-service
+    service_description      check_mysql
+    hostgroup_name           fundraising-database-analytics
+}
+
+define service {
+    use                      passive-service
+    service_description      check_procs
+    hostgroup_name           fundraising-database-analytics
+}
+
+define service {
+    use                      passive-service
+    service_description      check_puppetrun
+    hostgroup_name           fundraising-database-analytics
+}
+
+define service {
+    use                      passive-service
+    service_description      check_raid
+    hostgroup_name           fundraising-database-analytics
+}
+
+define service {
+    use                      passive-service
+    service_description      check_swap
+    hostgroup_name           fundraising-database-analytics
+}
+
+define service {
+    use                      passive-service
+    service_description      check_timesync
+    hostgroup_name           fundraising-database-analytics
+}
+
+define service {
+    use                      passive-service
+    service_description      check_zombie
+    hostgroup_name           fundraising-database-analytics
 }
 
 
