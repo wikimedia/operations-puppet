@@ -1048,11 +1048,6 @@ node /^ganeti500[123]\.eqsin\.wmnet$/ {
     role(ganeti)
 }
 
-# VM that previously ran grafana 5.x on stretch; now to be decommed (T242992)
-node 'grafana1001.eqiad.wmnet' {
-    role(spare::system)
-}
-
 # Virtual machines for Grafana 6.x (T220838, T244357)
 node 'grafana1002.eqiad.wmnet' {
     role(grafana)

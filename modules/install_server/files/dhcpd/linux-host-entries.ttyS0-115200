@@ -196,12 +196,6 @@ host gerrit1002 {
     fixed-address gerrit1002.wikimedia.org;
 }
 
-host grafana1001 {
-    hardware ethernet aa:00:00:01:5b:3a;
-    fixed-address grafana1001.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
-}
-
 host grafana1002 {
     hardware ethernet aa:00:00:52:b7:27;
     fixed-address grafana1002.eqiad.wmnet;
