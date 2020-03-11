@@ -61,9 +61,6 @@ def main():
         nodes[report['certname']][report['status']] = report['count']
     failed_nodes = [hostname for hostname, node in nodes.items() if not node.get('unchanged', 0)]
 
-    if not failed_nodes:
-        print('OK: all nodes running as expected')
-        return 0
     if len(failed_nodes) >= args.critical:
         print('CRITICAL: the following ({}) node(s) change every puppet run: {}'.format(
             len(failed_nodes), ', '.join(failed_nodes)))
@@ -72,8 +69,9 @@ def main():
         print('WARNING: the following ({}) node(s) change every puppet run: {}'.format(
             len(failed_nodes), ', '.join(failed_nodes)))
         return 1
-    print('UNKNOWN: An unknown error occurred')
-    return 3
+
+    print('OK: all nodes running as expected')
+    return 0
 
 
 if __name__ == '__main__':
