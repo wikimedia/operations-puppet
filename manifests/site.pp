@@ -2177,6 +2177,11 @@ node /^snapshot1010\.eqiad\.wmnet/ {
     role(dumps::generation::worker::testbed)
 }
 
+# test nodes for akosiaris and moritzm
+node /^sretest100[1-2]\.eqiad\.wmnet$/ {
+    role(insetup)
+}
+
 # Used for various d-i tests
 node 'theemin.codfw.wmnet' {
     role(test)
