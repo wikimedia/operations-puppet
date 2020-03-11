@@ -1,6 +1,7 @@
 admin::groups:
   - analytics-admins
   - analytics-privatedata-users
+  - researchers
 cluster: analytics
 
 # Testing Apache BigTop in T244499
