@@ -751,12 +751,12 @@ node 'dbproxy1019.eqiad.wmnet' {
 
 # new dbproxy hosts to be pressed into service by DBA team T202367
 node /^dbproxy10(20)\.eqiad\.wmnet$/ {
-    role(spare::system)
+    role(insetup)
 }
 
 # new dbproxy hosts to be productionized T223492
 node /^dbproxy200[4]\.codfw\.wmnet$/ {
-    role(spare::system)
+    role(insetup)
 }
 
 node /^dbmonitor[12]001\.wikimedia\.org$/ {
