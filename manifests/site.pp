@@ -2248,6 +2248,11 @@ node /^wdqs200[4-6]\.codfw\.wmnet$/ {
     role(wdqs::internal)
 }
 
+# production roles to be assigned (T242301)
+node /^wdqs200[7-8]\.codfw\.wmnet$/ {
+    role(insetup)
+}
+
 # Wikidata query service automated deployment
 node 'wdqs1009.eqiad.wmnet' {
     role(wdqs::autodeploy)
