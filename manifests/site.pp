@@ -1032,7 +1032,7 @@ node /^ganeti101[3-8]\.eqiad\.wmnet$/ {
 }
 
 # new Ganeti hosts - expansion (T224603)
-node /^ganeti20(09|1[0-8])\.codfw\.wmnet$/ {
+node /^ganeti20(09|1[0-9]|2[0-4])\.codfw\.wmnet$/ {
     role(insetup)
 }
 

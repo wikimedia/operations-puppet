@@ -3249,6 +3249,36 @@ host ganeti2018 {
     fixed-address ganeti2018.codfw.wmnet;
 }
 
+host ganeti2019 {
+    hardware ethernet 4C:D9:8F:A0:20:B9;
+    fixed-address ganeti2019.codfw.wmnet;
+}
+
+host ganeti2020 {
+    hardware ethernet 4C:D9:8F:A0:24:4A;
+    fixed-address ganeti2020.codfw.wmnet;
+}
+
+host ganeti2021 {
+    hardware ethernet 4C:D9:8F:A0:30:81;
+    fixed-address ganeti2021.codfw.wmnet;
+}
+
+host ganeti2022 {
+    hardware ethernet 4C:D9:8F:A0:19:08;
+    fixed-address ganeti2022.codfw.wmnet;
+}
+
+host ganeti2023 {
+    hardware ethernet 4C:D9:8F:A0:15:35;
+    fixed-address ganeti2023.codfw.wmnet;
+}
+
+host ganeti2024 {
+    hardware ethernet 4C:D9:8F:A0:22:2B;
+    fixed-address ganeti2024.codfw.wmnet;
+}
+
 host ganeti3001 {
     hardware ethernet B0:26:28:6E:9F:70;
     fixed-address ganeti3001.esams.wmnet;
