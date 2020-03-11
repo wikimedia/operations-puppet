@@ -2,4 +2,6 @@ cookbooks_base_dir: <%= @cookbooks_dir %>
 logs_base_dir: /var/log/spicerack
 tcpircbot_host: <%= @tcpircbot_host %>
 tcpircbot_port: <%= @tcpircbot_port %>
-http_proxy: <%= @http_proxy %>
+
+instance_params:
+  http_proxy: <%= @http_proxy %>
