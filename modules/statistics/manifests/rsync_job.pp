@@ -12,7 +12,13 @@
 #    ensure         - Either 'absent' or 'present'.  If absent, the rsync cron job will not exist, but if
 #                     $retention_days is given, the cron to prune old logs will still exist.  Default: 'present'
 #
-define statistics::rsync_job($source, $destination, $retention_days = undef, $ensure = 'present') {
+define statistics::rsync_job(
+    $source,
+    $destination,
+    $retention_days = undef,
+    $ensure = 'present',
+    $cron_user = undef,
+) {
     Class['::statistics'] -> Statistics::Rsync_job[$name]
     require ::statistics::user
 
@@ -26,13 +32,18 @@ define statistics::rsync_job($source, $destination, $retention_days = undef, $en
         }
     }
 
+    $user = $cron_user ? {
+        undef   => $::statistics::user::username,
+        default => $cron_user,
+    }
+
     # Create a daily cron job to rsync $source to $destination.
     # This requires that the $misc::statistics::user::username
     # user is installed on the source host.
     cron { "rsync_${name}_logs":
         ensure  => $ensure,
         command => "/usr/bin/rsync -rt --perms --chmod=g-w ${source} ${destination}/",
-        user    => $::statistics::user::username,
+        user    => $user,
         hour    => 8,
         minute  => 0,
     }
@@ -45,7 +56,7 @@ define statistics::rsync_job($source, $destination, $retention_days = undef, $en
     cron { "prune_old_${name}_logs":
         ensure  => $prune_old_logs_ensure,
         command => "/usr/bin/find ${destination} -type f -mtime +${retention_days} -exec rm {} \\;",
-        user    => $::statistics::user::username,
+        user    => $user,
         minute  => 0,
         hour    => 9,
     }

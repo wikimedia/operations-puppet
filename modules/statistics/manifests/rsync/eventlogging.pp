@@ -22,6 +22,7 @@ class statistics::rsync::eventlogging {
         source         => 'eventlog1002.eqiad.wmnet::eventlogging/archive/*.gz',
         destination    => $destination,
         retention_days => $retention_days,
+        cron_user      => 'root',
         require        => File['/srv/log/eventlogging', '/srv/log/eventlogging/archive'],
     }
 }
