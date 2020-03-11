@@ -3328,6 +3328,11 @@ host heze {
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
 }
 
+host htmldumper1001 {
+    hardware ethernet 4C:D9:8F:BA:D0:8C;
+    fixed-address htmldumper1001.eqiad.wmnet;
+}
+
 host icinga1001 {
     hardware ethernet D0:94:66:5F:47:E2;
     fixed-address icinga1001.wikimedia.org;
