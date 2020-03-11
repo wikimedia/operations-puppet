@@ -1340,7 +1340,7 @@ node /^logstash101[0-2]\.eqiad\.wmnet$/ {
 }
 
 node /^logstash102[6-9]\.eqiad\.wmnet$/ {
-    role(spare::system)
+    role(insetup)
 }
 
 # ELK 7 ES only backends (no kafka-logging brokers)
