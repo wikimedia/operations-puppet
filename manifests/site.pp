@@ -1072,6 +1072,11 @@ node 'heze.codfw.wmnet' {
     role(backup::offsite)
 }
 
+# new host that needs to be turned over to service owner
+node 'htmldumper1001.eqiad.wmnet' {
+    role(spare::system)
+}
+
 # irc.wikimedia.org
 node 'kraz.wikimedia.org' {
     role(mw_rc_irc)
