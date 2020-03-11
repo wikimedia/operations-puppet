@@ -14,6 +14,8 @@ profile::oozie::client::oozie_host: 'an-coord1001.eqiad.wmnet'
 # can read the file.
 profile::hive::client::config_files_group_ownership: 'analytics'
 
+profile::analytics::cluster::hdfs_mount::monitoring_user: 'analytics'
+
 # Hive Client settings.
 # Hive configuration is common to multiple clients, but because of role based
 # hiera lookups, we need to repeat it in multiple places. If you change this,
