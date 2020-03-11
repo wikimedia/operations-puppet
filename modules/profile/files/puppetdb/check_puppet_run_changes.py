@@ -64,11 +64,11 @@ def main():
     if not failed_nodes:
         print('OK: all nodes running as expected')
         return 0
-    if len(failed_nodes) > args.critical:
+    if len(failed_nodes) >= args.critical:
         print('CRITICAL: the following ({}) node(s) change every puppet run: {}'.format(
             len(failed_nodes), ', '.join(failed_nodes)))
         return 2
-    if len(failed_nodes) > args.warning:
+    if len(failed_nodes) >= args.warning:
         print('WARNING: the following ({}) node(s) change every puppet run: {}'.format(
             len(failed_nodes), ', '.join(failed_nodes)))
         return 1
