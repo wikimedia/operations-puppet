@@ -13,6 +13,13 @@ describe 'profile::services_proxy::envoy' do
   on_supported_os(test_on).each do |os, facts|
     context "on #{os}" do
       let(:facts) { facts.merge({ initsystem: 'systemd' }) }
+      let(:pre_condition) {
+        [
+          'class profile::base { $notifications_enabled = false }',
+          'require ::profile::base'
+        ]
+      }
+
       let(:node_params) {
         {test_name: 'proxy_envoy', site: 'unicornia'}
       }

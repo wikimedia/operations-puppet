@@ -9,6 +9,7 @@ class profile::envoy(
 ) {
     # Envoy supports tcp fast open
     require ::profile::tcp_fast_open
+
     if os_version('debian jessie') {
         group { 'envoy':
             ensure => present,
@@ -53,5 +54,12 @@ class profile::envoy(
         proto  => 'tcp',
         port   => $admin_port,
         srange => $ferm_srange,
+    }
+
+    nrpe::monitor_systemd_unit_state{ 'envoyproxy.service':
+        ensure      => $ensure,
+        description => 'Check that envoy is running',
+        retries     => 2,
+        notes_url   => 'https://wikitech.wikimedia.org/wiki/Application_servers/Runbook#Envoy',
     }
 }

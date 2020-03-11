@@ -19,9 +19,12 @@ describe 'profile::tlsproxy::envoy' do
       end
       let(:node_params) { {site: 'eqiad', test_name: 'tlsproxy_envoy'}}
       let(:facts) { facts.merge({ initsystem: 'systemd' }) }
+
       let(:pre_condition) {
         [
           'exec { "apt-get update": command => "/bin/true"}',
+          'class profile::base { $notifications_enabled = false }',
+          'require ::profile::base'
         ]
       }
 
