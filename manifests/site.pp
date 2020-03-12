@@ -252,22 +252,6 @@ node /^boron\.eqiad\.wmnet$/ {
     role(builder)
 }
 
-# cp1008: to be decommed T229586
-# to be replaced with cp1099 in the near future
-node 'cp1008.wikimedia.org' {
-    role(spare::system)
-}
-
-#to be decommed T229586, but check with alex first
-node 'cp1071.eqiad.wmnet' {
-    role(test)
-}
-
-# cp107[2-4]: to be decommed T229586
-node /^cp107[2-4]\.eqiad\.wmnet$/ {
-    role(spare::system)
-}
-
 # cp1099: to be decommed T229586
 node /^cp1099\.eqiad\.wmnet$/ {
     role(spare::system)

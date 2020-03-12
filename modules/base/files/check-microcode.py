@@ -53,7 +53,7 @@ def main():
     # CPUs which were not fixed for SSBD (which was the first) are also not
     # fixed for L1TF/MDS
     blacklist_ssbd_l1tf = ['dbproxy1008', 'es2001', 'es2002', 'es2003', 'es2004']
-    blacklist_mds = ['cp1008', 'helium', 'tungsten', 'dbproxy1003'] + blacklist_ssbd_l1tf
+    blacklist_mds = ['helium', 'tungsten', 'dbproxy1003'] + blacklist_ssbd_l1tf
 
     if apt_pkg.version_compare(current_kernelpackage_version, '4.9.107-1') > 0:
         expected_cpu_flags.add('ssbd')
