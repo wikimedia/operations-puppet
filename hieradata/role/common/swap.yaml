@@ -11,6 +11,7 @@ profile::swap::rsync_hosts_allow:
   - stat1005.eqiad.wmnet
   - stat1006.eqiad.wmnet
   - stat1007.eqiad.wmnet
+  - stat1008.eqiad.wmnet
 
 profile::hadoop::common::hadoop_cluster_name: 'analytics-hadoop'
 profile::oozie::client::oozie_host: 'an-coord1001.eqiad.wmnet'
