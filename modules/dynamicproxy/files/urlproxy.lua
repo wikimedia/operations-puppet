@@ -19,14 +19,9 @@ local red = redis:new()
 red:set_timeout(1000)
 red:connect('127.0.0.1', 6379)
 
---- Look up a backend for a given tool
--- @param toolname Name of the tool
--- @param path Path fragment of URL
--- @param host Host fragment of URL
-function route_backend_and_exit_if_ok(toolname, path, host)
+function route_backend_and_exit_if_ok(toolname, url)
     local routes_arr = nil
     local route = nil
-    local redirect = nil
 
     if not toolname then
         return
@@ -39,7 +34,7 @@ function route_backend_and_exit_if_ok(toolname, path, host)
 
     local routes = red:array_to_hash(routes_arr)
     for pattern, backend in pairs(routes) do
-        if ngx.re.match(path, pattern) ~= nil then
+        if ngx.re.match(url, pattern) ~= nil then
             route = backend
             break
         end
@@ -49,42 +44,22 @@ function route_backend_and_exit_if_ok(toolname, path, host)
         return
     end
 
-    if host then
-        -- check to see if we have a redirect key for this tool + path
-        local redirect_arr = red:hgetall('redirect:' .. toolname)
-        if redirect_arr then
-            local redirects = red:array_to_hash(redirect_arr)
-            for pattern, domain in paris(redirects) do
-                if ngx.re.match(path, pattern) ~= nil then
-                    redirect = domain
-                    break
-                end
-            end
-        end
-    end
-
     -- Use a connection pool of 256 connections with a 32s idle timeout
     -- This also closes the current redis connection.
     red:set_keepalive(1000 * 32, 256)
-
-    if redirect ~= nil and redirect ~= host then
-        ngx.var.redirect_to = 'https://' .. redirect .. path
-    else
-        ngx.var.backend = route
-    end
+    ngx.var.backend = route
     ngx.exit(ngx.OK)
 end
 
 -- try to match first in the subdomain-based routing scheme
 local subdomain = string.match(ngx.var.http_host, "^[^.]+")
--- pass nill for host because subdomain-based routes are canonical
-route_backend_and_exit_if_ok(subdomain, "/", nil)
+route_backend_and_exit_if_ok(subdomain, "/")
 
 -- if no subdomain-based routing was found, then use the legacy routing scheme
 local captures = ngx.re.match(ngx.var.uri, "^/([^/]*)(/.*)?$")
 local prefix = captures[1]
 local rest = captures[2] or "/"
-route_backend_and_exit_if_ok(prefix, rest, ngx.var.http_host)
+route_backend_and_exit_if_ok(prefix, rest)
 
 -- No routes defined for this URI, hope nginx can handle this! (new k8s cluster?)
 ngx.exit(ngx.OK)
