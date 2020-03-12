@@ -437,7 +437,7 @@ groups:
   mw-log-readers:
     gid: 760
     description: users who can login on mwlog hosts and read mediawiki logs
-    members: [tjones, matanya]
+    members: [tjones, matanya, holger]
 
   apertium-admins:
     description: Group of apertium admins
@@ -3620,6 +3620,14 @@ users:
     gid: 500
     ssh_keys:
      - 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDCYenmO37Azx5fr7WO5F107ZL6g3o5AAgkLsGtheyCC9soguCltps4a2MBrw3nBMVXRPFSfJiTvsWARUC40d0oWxcqpXkRtHrY4mNzMMMz8lFzxRQ8ts+zKdU2KZJ8vaEhCnVmRemvIGE8xlaVPEleaAeyAZOjKxBaPVHB9CX7b0QgnZ+RTZRXi9BD1Aa0gnYurwJ5tA1nwPub0MRtGrkXhVaG78rUpkHECeM5BbmQoZnrvL4J9FdRkMkifEyHop+75RweUNbFhkiQ6pNia3MSMBC2tSYSL8IaLCqha8lFDkwHBNpzG09mpzFw1La6Niuth3CQ/72U9dQRvQFk+/Mp shannonbailey@wmf1287.local'
+  holger:
+    ensure: present
+    realname: Holger Knust
+    email: hknust@wikimedia.org
+    uid: 20827
+    gid: 500
+    ssh_keys:
+      - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMWLd4PthDND+UrmG07f8HIYz2L6G6/PsFra/xGzHT9d hknust@wikimedia.org'
 ldap_only_users:
   abartov:
     ensure: present
@@ -4006,10 +4014,6 @@ ldap_only_users:
     ensure: present
     realname: Dan Garry
     email: djgwiki@gmail.com
-  holger:
-    ensure: present
-    realname: Holger Knust
-    email: hknust@wikimedia.org
   tsev:
     ensure: present
     realname: Toni Sevener
