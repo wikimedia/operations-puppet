@@ -11,7 +11,7 @@
     # CRL checking by commenting the next line, but this is not recommended.
     SSLCARevocationPath     /var/lib/puppet/server/ssl/crl
     SSLVerifyClient <%= scope.lookupvar('puppetmaster::passenger::verify_client') %>
-    SSLVerifyDepth  1
+    SSLVerifyDepth  <%= @ssl_verify_depth %>
     SSLOptions +StdEnvVars
 
     RackBaseURI /

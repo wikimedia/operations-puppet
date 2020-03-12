@@ -46,18 +46,18 @@ class profile::puppetmaster::frontend(
     if $ca {
         # Ensure cergen is present for managing TLS keys and
         # x509 certificates signed by the Puppet CA.
-        class { '::cergen': }
+        class { 'cergen': }
         if $mcrouter_ca_secret {
-            class { '::cergen::mcrouter_ca':
+            class { 'cergen::mcrouter_ca':
                 ca_secret => $mcrouter_ca_secret,
             }
         }
 
         # Ship cassandra-ca-manager (precursor of cergen)
-        class { '::cassandra::ca_manager': }
+        class { 'cassandra::ca_manager': }
     }
 
-    class { '::puppetmaster::ca_server':
+    class { 'puppetmaster::ca_server':
         master => $ca_server
     }
 
@@ -72,27 +72,28 @@ class profile::puppetmaster::frontend(
 
     $base_config = merge($config, $common_config)
 
-    class { '::profile::puppetmaster::common':
+    class { 'profile::puppetmaster::common':
         base_config => $base_config,
     }
 
-    class { '::puppetmaster':
+    class { 'puppetmaster':
         bind_address        => '*',
         server_type         => 'frontend',
         is_git_master       => true,
         workers             => $workers,
-        config              => $::profile::puppetmaster::common::config,
+        config              => $profile::puppetmaster::common::config,
         secure_private      => $secure_private,
         prevent_cherrypicks => $prevent_cherrypicks,
         allow_from          => $allow_from,
         extra_auth_rules    => $extra_auth_rules,
         ca_server           => $ca_server,
+        ssl_verify_depth    => $profile::puppetmaster::common::ssl_verify_depth,
     }
     class { 'apache::mod::rewrite': }
 
     $locale_server = $locale_servers[$facts['fqdn']]
     # Main site to respond to
-    ::puppetmaster::web_frontend { $web_hostname:
+    puppetmaster::web_frontend { $web_hostname:
         master                  => $ca_server,
         workers                 => $workers,
         locale_server           => $locale_server,
@@ -100,11 +101,12 @@ class profile::puppetmaster::frontend(
         priority                => 40,
         ssl_ca_revocation_check => $ssl_ca_revocation_check,
         canary_hosts            => $canary_hosts,
+        ssl_verify_depth        => $profile::puppetmaster::common::ssl_verify_depth,
     }
 
     # On all the puppetmasters, we should respond
     # to the FQDN too, in case we point them explicitly
-    ::puppetmaster::web_frontend { $::fqdn:
+    puppetmaster::web_frontend { $::fqdn:
         master                  => $ca_server,
         workers                 => $workers,
         locale_server           => $locale_server,
@@ -112,6 +114,7 @@ class profile::puppetmaster::frontend(
         priority                => 50,
         ssl_ca_revocation_check => $ssl_ca_revocation_check,
         canary_hosts            => $canary_hosts,
+        ssl_verify_depth        => $profile::puppetmaster::common::ssl_verify_depth,
     }
 
     # Run the rsync servers on all puppetmaster frontends, and activate

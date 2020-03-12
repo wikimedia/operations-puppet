@@ -65,6 +65,7 @@ class puppetmaster(
     $git_group='gitpuppet',
     Boolean $enable_geoip = true,
     Stdlib::Host $ca_server = $facts['fqdn'],
+    Integer[1,2] $ssl_verify_depth = 1
 ){
 
     $gitdir = '/var/lib/git'

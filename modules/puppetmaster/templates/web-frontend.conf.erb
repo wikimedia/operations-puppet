@@ -33,7 +33,7 @@ end
     SSLCARevocationCheck    <%= @ssl_ca_revocation_check %>
     <% end -%>
     SSLVerifyClient <%= scope.lookupvar('puppetmaster::verify_client') %>
-    SSLVerifyDepth  1
+    SSLVerifyDepth  <%= @ssl_verify_depth %>
     SSLOptions +StdEnvVars
 
     # The connection to the backends is also SSL encrypted but by frontend and backends do not authenticate connections

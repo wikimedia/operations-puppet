@@ -71,3 +71,4 @@ puppetmaster::locale_servers: {}
 profile::puppetmaster::frontend::canary_hosts: []
 profile::puppetmaster::common::puppetdb_hosts: []
 profile::puppetmaster::common::command_broadcast: false
+profile::puppetmaster::common::ssl_verify_depth: 1

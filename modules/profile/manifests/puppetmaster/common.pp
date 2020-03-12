@@ -10,6 +10,7 @@ class profile::puppetmaster::common (
                         $storeconfigs      = lookup('profile::puppetmaster::common::storeconfigs'),
     Array[Stdlib::Host] $puppetdb_hosts    = lookup('profile::puppetmaster::common::puppetdb_hosts'),
     Boolean             $command_broadcast = lookup('profile::puppetmaster::common::command_broadcast'),
+    Integer[1,2]        $ssl_verify_depth  = lookup('profile::puppetmaster::common::ssl_verify_depth')
 ) {
     include passwords::puppet::database
 

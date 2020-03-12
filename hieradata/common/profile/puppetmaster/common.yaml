@@ -1,2 +1,3 @@
 profile::puppetmaster::common::command_broadcast: false
 profile::puppetmaster::common::storeconfigs: activerecord
+profile::puppetmaster::common::ssl_verify_depth: 1
