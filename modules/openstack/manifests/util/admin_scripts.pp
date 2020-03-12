@@ -167,6 +167,13 @@ class openstack::util::admin_scripts(
         mode   => '0744',
     }
 
+    file { '/usr/local/sbin/wmcs-populate-domains':
+        source => "puppet:///modules/openstack/${version}/admin_scripts/wmcs-populate-domains.py",
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0744',
+    }
+
     # Script to list, add, and delete dynamicproxy entries. Also updates
     # Designate managed DNS entries for the proxied hostname.
     file { '/usr/local/sbin/wmcs-webproxy':
