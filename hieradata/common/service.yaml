@@ -748,9 +748,6 @@ service::catalog:
     - eqiad
     - codfw
     state: production
-    discovery:
-    - dnsdisc: eventgate-analytics
-      active_active: true
   eventgate-logging-external:
     description: EventGate logging endpoint, eventgate-logging-external.svc.%{::site}.wmnet and intake-logging.wikimedia.org
     encryption: true
