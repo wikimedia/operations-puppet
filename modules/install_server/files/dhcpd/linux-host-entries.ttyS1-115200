@@ -3329,7 +3329,7 @@ host heze {
 }
 
 host htmldumper1001 {
-    hardware ethernet 4C:D9:8F:BA:D0:8C;
+    hardware ethernet 4C:D9:8F:BB:10:CD;
     fixed-address htmldumper1001.eqiad.wmnet;
 }
 
