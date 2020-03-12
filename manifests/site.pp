@@ -2119,7 +2119,7 @@ node 'thorium.eqiad.wmnet' {
 
 # The hosts contain all the tools and libraries to access
 # the Analytics Cluster services.
-node /^stat100[456]\.eqiad\.wmnet/ {
+node /^stat100[4568]\.eqiad\.wmnet/ {
     role(statistics::explorer)
 }
 
@@ -2128,11 +2128,6 @@ node /^stat100[456]\.eqiad\.wmnet/ {
 # T148843
 node 'stat1007.eqiad.wmnet' {
     role(statistics::private)
-}
-
-# new host that needs to be turned over to service owner
-node 'stat1008.eqiad.wmnet' {
-    role(insetup)
 }
 
 # NOTE: new snapshot hosts must also be manually added to
