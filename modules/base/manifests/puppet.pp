@@ -1,16 +1,17 @@
 class base::puppet(
     Stdlib::Filesource              $ca_source,
-    Boolean                         $manage_ca_file              = false,
-    Stdlib::Unixpath                $ca_file_path                = '/var/lib/puppet/ssl/certs/ca.pem',
-    String                          $ca_server                   = '',
-    Stdlib::Host                    $server                      = 'puppet',
-    Optional[String]                $certname                    = undef,
-    Optional[String]                $dns_alt_names               = undef,
-    Optional[String]                $environment                 = undef,
-    Integer                         $interval                    = 30,
-    Integer[4,5]                    $puppet_major_version        = 5,
-    Integer[2,3]                    $facter_major_version        = 3,
-    Enum['pson', 'json', 'msgpack'] $serialization_format        = 'json',
+    Boolean                         $manage_ca_file         = false,
+    Stdlib::Unixpath                $ca_file_path           = '/var/lib/puppet/ssl/certs/ca.pem',
+    String                          $ca_server              = '',
+    Stdlib::Host                    $server                 = 'puppet',
+    Optional[String]                $certname               = undef,
+    Optional[String]                $dns_alt_names          = undef,
+    Optional[String]                $environment            = undef,
+    Integer                         $interval               = 30,
+    Integer[4,5]                    $puppet_major_version   = 5,
+    Integer[2,3]                    $facter_major_version   = 3,
+    Enum['pson', 'json', 'msgpack'] $serialization_format   = 'json',
+    Optional[Enum['chain', 'leaf']] $certificate_revocation = undef,
 ) {
     include ::passwords::puppet::database # lint:ignore:wmf_styleguide
 
