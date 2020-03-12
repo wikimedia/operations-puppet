@@ -45,7 +45,7 @@ profile::trafficserver::backend::mapping_rules:
       replacement: https://docker-registry.discovery.wmnet
     - type: map
       target: http://doc.wikimedia.org
-      replacement: http://doc1001.eqiad.wmnet
+      replacement: https://doc.discovery.wmnet
     - type: map
       target: http://etherpad.wikimedia.org
       replacement: https://etherpad1002.eqiad.wmnet:7443
