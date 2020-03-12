@@ -2,7 +2,7 @@
 #
 class profile::statistics::gpu {
 
-    $hosts_with_gpu = ['stat1005']
+    $hosts_with_gpu = ['stat1005', 'stat1008']
 
     if $::hostname in $hosts_with_gpu {
         class { 'amd_rocm':
