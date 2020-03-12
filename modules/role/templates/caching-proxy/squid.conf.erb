@@ -3,7 +3,6 @@
 ####################################################################
 
 http_port 8080
-hierarchy_stoplist cgi-bin ?
 acl QUERY urlpath_regex cgi-bin \?
 cache deny QUERY
 # We explicitly do not cache our autoinstall files to avoid changes taking too long to propagate
