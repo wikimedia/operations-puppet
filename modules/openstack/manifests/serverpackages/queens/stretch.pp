@@ -17,6 +17,13 @@ class openstack::serverpackages::queens::stretch(
         priority => '1002',
     }
 
+    # Don't install systemd from stretch-backports or bpo -- T247013
+    apt::pin { 'systemd':
+        pin      => 'release a=stretch',
+        package  => 'systemd',
+        priority => '500',
+    }
+
     apt::repository { 'openstack-queens-stretch':
         uri        => 'http://mirrors.wikimedia.org/osbpo',
         dist       => 'stretch-queens-backports',
