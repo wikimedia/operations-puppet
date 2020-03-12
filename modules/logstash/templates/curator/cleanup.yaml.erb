@@ -35,6 +35,30 @@ actions:
       unit: days
       unit_count: 31
   3:
+    action: allocation
+    description: >-
+      For any indices prefixed by <%= @prefix %>, and have "index.routing.allocation.require.disktype":"ssd" set,
+      and are older than 7 days, set "index.routing.allocation.require.disktype":"hdd".
+    options:
+      key: disktype
+      value: hdd
+      allocation_type: require
+      ignore_empty_list: True
+    filters:
+    - filtertype: pattern
+      kind: prefix
+      value: <%= @prefix %>
+    - filtertype: allocated
+      key: disktype
+      value: ssd
+      allocation_type: require
+      exclude: False
+    - filtertype: age
+      source: creation_date
+      direction: older
+      unit: days
+      unit_count: 7
+  4:
     action: forcemerge
     description: >-
       forceMerge <%= @prefix %> prefixed indices older than 2 days (based on index
