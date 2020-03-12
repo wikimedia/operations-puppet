@@ -7,6 +7,10 @@ profile::elasticsearch::dc_settings:
       - logstash2020.codfw.wmnet
       - logstash2021.codfw.wmnet
       - logstash2022.codfw.wmnet
+      - logstash2026.codfw.wmnet
+      - logstash2027.codfw.wmnet
+      - logstash2028.codfw.wmnet
+      - logstash2029.codfw.wmnet
     cluster_hosts:
       - logstash2020.codfw.wmnet
       - logstash2021.codfw.wmnet
@@ -14,6 +18,10 @@ profile::elasticsearch::dc_settings:
       - logstash2023.codfw.wmnet
       - logstash2024.codfw.wmnet
       - logstash2025.codfw.wmnet
+      - logstash2026.codfw.wmnet
+      - logstash2027.codfw.wmnet
+      - logstash2028.codfw.wmnet
+      - logstash2029.codfw.wmnet
 
 # Kibana
 profile::kibana::auth_realm: WMF Labs (use wiki login name not shell) - nda/ops/wmf

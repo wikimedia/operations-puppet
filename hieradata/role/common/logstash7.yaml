@@ -27,7 +27,7 @@ profile::elasticsearch::common_settings:
     awareness_attributes: ''
     auto_create_index: true
     short_cluster_name: elk7
-    expected_nodes: 6
+    expected_nodes: 10
     heap_memory: '4G'
     # The ES nodes that are run on the same box as Logstash+Kibana are only used
     # as client nodes to communicate with the backing cluster.

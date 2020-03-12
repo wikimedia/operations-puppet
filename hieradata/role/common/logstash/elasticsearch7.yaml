@@ -18,7 +18,7 @@ profile::elasticsearch::common_settings:
     auto_create_index: true
     short_cluster_name: elk7
     awareness_attributes: ''
-    expected_nodes: 6
+    expected_nodes: 10
     heap_memory: '24G'
     minimum_master_nodes: 2
     recover_after_nodes: 2

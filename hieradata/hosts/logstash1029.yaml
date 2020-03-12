@@ -1,7 +1,7 @@
 profile::base::notifications: disabled
 
 profile::elasticsearch::common_settings:
-    disktype: 'ssd'
+    disktype: ssd
 
 lookup_options:
   profile::elasticsearch::common_settings:
