@@ -16,7 +16,8 @@ profile::services_proxy::envoy::listeners:
   - name: eventgate-analytics
     port: 6004
     timeout: '10s'
-    service: eventgate-analytics
+    service: eventgate-analytics-http
+    dnsdisc: eventgate-analytics
   - name: eventgate-main
     port: 6005
     timeout: '10s'

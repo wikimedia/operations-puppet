@@ -709,7 +709,7 @@ service::catalog:
     - eqiad
     - codfw
     state: production
-    discovery:
+    discovery: &dnsdisc-eventgate-analytics
     - dnsdisc: eventgate-analytics
       active_active: true
   eventgate-analytics-http:
@@ -748,6 +748,7 @@ service::catalog:
     - eqiad
     - codfw
     state: production
+    discovery: *dnsdisc-eventgate-analytics
   eventgate-logging-external:
     description: EventGate logging endpoint, eventgate-logging-external.svc.%{::site}.wmnet and intake-logging.wikimedia.org
     encryption: true
@@ -2888,4 +2889,3 @@ service::catalog:
     discovery:
     - dnsdisc: zotero
       active_active: true
-
