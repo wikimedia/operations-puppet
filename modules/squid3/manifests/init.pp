@@ -15,11 +15,10 @@
 
 
 class squid3(
-    $ensure  = present,
+    Wmflib::Ensure $ensure  = present,
     $config_content = undef,
     $config_source  = undef,
 ) {
-    validate_re($ensure, '^(present|absent)$')
 
     if os_version('debian >= stretch') {
         $squid = 'squid'

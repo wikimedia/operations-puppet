@@ -1,7 +1,10 @@
 # Installs a proxy server for the install server
-class profile::installserver::proxy {
+class profile::installserver::proxy(
+    Wmflib::Ensure $ensure = lookup('profile::installserver::proxy::ensure'),
+){
 
     class { 'squid3':
+        ensure         => $ensure,
         config_content => template('role/caching-proxy/squid.conf.erb'),
     }
 
