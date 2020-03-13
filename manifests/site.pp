@@ -1314,7 +1314,7 @@ node /^logstash101[0-2]\.eqiad\.wmnet$/ {
     include ::role::kafka::logging # lint:ignore:wmf_styleguide
 }
 
-node /^logstash102[6-9]\.eqiad\.wmnet$/ {
+node /^logstash[12]02[6-9]\.(eqiad|codfw)\.wmnet$/ {
     role(insetup)
 }
 
