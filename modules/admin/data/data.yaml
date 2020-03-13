@@ -3786,6 +3786,8 @@ ldap_only_users:
     ensure: present
     realname: Moushira Elamrawy
     email: melamrawy-ctr@wikimedia.org
+    expiry_date: 2020-12-31
+    expiry_contact: mhernandez@wikimedia.org
   pginer:
     ensure: present
     realname: Pau Giner
