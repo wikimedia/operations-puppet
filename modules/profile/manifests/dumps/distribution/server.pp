@@ -10,6 +10,14 @@ class profile::dumps::distribution::server {
         ensure => 'directory',
     }
 
+    file { '/etc/default/smartmontools':
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/profile/dumps/distribution/smartmontools',
+    }
+
     mount { '/srv/dumps':
         ensure  => mounted,
         fstype  => ext4,
