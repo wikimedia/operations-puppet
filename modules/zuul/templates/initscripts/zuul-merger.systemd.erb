@@ -4,7 +4,11 @@ Description=Zuul merger
 [Service]
 User=zuul
 Group=zuul
+<% if scope.function_os_version(['debian >= buster']) -%>
+ExecStart=/srv/deployment/zuul/venv/bin/zuul-merger -d -c /etc/zuul/zuul-merger.conf
+<%- else -%>
 ExecStart=/usr/bin/zuul-merger -d -c /etc/zuul/zuul-merger.conf
+<%- end -%>
 ExecStop=/bin/kill -USR1 $MAINPID
 <% # systemd in Jessie does not support 'infinity'
 if scope.function_os_version(['debian >= stretch']) -%>

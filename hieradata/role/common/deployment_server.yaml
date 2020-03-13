@@ -90,6 +90,10 @@ profile::keyholder::server::agents:
     trusted_groups:
       - ops
 
+  deploy-zuul:
+    trusted_groups:
+      - contint-roots
+
   deploy-design:
     trusted_groups:
       - deploy-design
@@ -178,6 +182,8 @@ scap::sources:
     repository: operations/software/cassandra-metrics-collector
   homer/deploy:
     repository: operations/software/homer/deploy
+  zuul/deploy:
+    repository: integration/zuul/deploy
   # Librenms software
   librenms/librenms:
     repository: operations/software/librenms

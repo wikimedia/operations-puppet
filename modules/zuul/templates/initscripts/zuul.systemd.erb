@@ -9,7 +9,11 @@ Group=zuul
 Environment=STATSD_HOST=<%= @statsd_host %>
 Environment=STATSD_PORT=8125
 <% end %>
+<% if scope.function_os_version(['debian >= buster']) -%>
+ExecStart=/srv/deployment/zuul/venv/bin/zuul-server -d -c /etc/zuul/zuul-server.conf
+<%- else -%>
 ExecStart=/usr/bin/zuul-server -d -c /etc/zuul/zuul-server.conf
+<%- end -%>
 ExecReload=/bin/kill -HUP $MAINPID
 ExecStop=/bin/kill -USR1 $MAINPID
 <% # systemd in Jessie does not support 'infinity'

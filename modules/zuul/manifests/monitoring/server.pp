@@ -19,7 +19,7 @@ class zuul::monitoring::server (
         contact_group => 'contint',
         # Zuul has a main process and a fork which is the gearman
         # server. Thus we need two process running.
-        nrpe_command  => "/usr/lib/nagios/plugins/check_procs -w 2:2 -c 2:2 --ereg-argument-array '^/usr/share/python/zuul/bin/python /usr/bin/zuul-server'",
+        nrpe_command  => "/usr/lib/nagios/plugins/check_procs -w 2:2 -c 2:2 --ereg-argument-array 'bin/zuul-server'",
         notes_url     => 'https://www.mediawiki.org/wiki/Continuous_integration/Zuul',
     }
 

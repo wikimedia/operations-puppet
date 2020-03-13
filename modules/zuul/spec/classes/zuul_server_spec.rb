@@ -4,7 +4,7 @@ test_on = {
   supported_os: [
     {
       'operatingsystem'        => 'Debian',
-      'operatingsystemrelease' => ['8', '9'],
+      'operatingsystemrelease' => ['8', '10'],
     }
   ]
 }
@@ -17,6 +17,9 @@ describe 'zuul::server' do
           :site => 'eqiad',
           :initsystem => 'systemd',
         })
+      }
+      let(:pre_condition) {
+          "define scap::target($deploy_user) {}"
       }
       let(:params) { {
         :gerrit_server => 'review.example.org',
