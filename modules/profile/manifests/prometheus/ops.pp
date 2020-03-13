@@ -1614,9 +1614,10 @@ class profile::prometheus::ops (
     }
 
     if $::site in ['eqiad', 'codfw'] {
-        sysctl::parameters { 'prometheus_inotify_T246860':
+        sysctl::parameters { 'prometheus_inotify_T246860':   # https://phabricator.wikimedia.org/T246860
             values => {
-                'fs.inotify.max_user_watches' => 32768  # https://phabricator.wikimedia.org/T246860
+                'fs.inotify.max_user_watches'   => 32768,
+                'fs.inotify.max_user_instances' => 512
             }
         }
     }
