@@ -35,6 +35,7 @@ profile::mediawiki::apc_shm_size: 4096M
 profile::mediawiki::php::fpm_config:
   opcache.interned_strings_buffer: 96
   opcache.memory_consumption: 1024
+  max_execution_time: 1200
 
 # Configure php-fpm restarts
 profile::mediawiki::php::restarts::ensure: present
