@@ -12,6 +12,14 @@ class profile::ci::gitcache {
         require   => File['/srv/git/operations'],
     }
 
+    cron { 'operations/puppet git cron':
+        user    => 'root',
+        command => '/usr/bin/git -C /srv/git/operations/puppet.git fetch origin --prune +refs/heads/*:refs/heads/*',
+        hour    => '4',
+        minute  => fqdn_rand(60, 'operations/puppet git cron'),
+        require => Git::Clone['operations/puppet'],
+    }
+
     file { '/srv/git/mediawiki':
         ensure => directory,
     }
@@ -28,6 +36,14 @@ class profile::ci::gitcache {
         directory => '/srv/git/mediawiki/core.git',
         bare      => true,
         require   => File['/srv/git/mediawiki'],
+    }
+
+    cron { 'mediawiki/core git cron':
+        user    => 'root',
+        command => '/usr/bin/git -C /srv/git/mediawiki/core.git fetch origin --prune +refs/heads/*:refs/heads/*',
+        hour    => '3',
+        minute  => fqdn_rand(60, 'mediawiki/core git cron'),
+        require => Git::Clone['mediawiki/core'],
     }
 
     git::clone { 'mediawiki/vendor':
