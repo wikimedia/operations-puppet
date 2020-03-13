@@ -21,7 +21,7 @@ class openstack::serverpackages::queens::stretch(
     apt::pin { 'systemd':
         pin      => 'release a=stretch',
         package  => 'systemd',
-        priority => '500',
+        priority => '501',
     }
 
     apt::repository { 'openstack-queens-stretch':
