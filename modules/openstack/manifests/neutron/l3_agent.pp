@@ -12,9 +12,7 @@ class openstack::neutron::l3_agent(
         report_interval   => $report_interval,
     }
 
-    class {"openstack::neutron::l3_agent::${version}::l3_agent_hacks":
-        require => Package['neutron-l3-agent'],
-    }
+    class { "openstack::neutron::l3_agent::${version}::l3_agent_hacks": }
 
     service {'neutron-l3-agent':
         ensure  => $enabled,

@@ -8,16 +8,18 @@
 class openstack::neutron::l3_agent::newton::l3_agent_hacks() {
 
     file { '/usr/lib/python2.7/dist-packages/neutron/conf/agent/l3/config.py':
-            owner  => 'root',
-            group  => 'root',
-            mode   => '0644',
-            source => 'puppet:///modules/openstack/newton/neutron/l3/config.py',
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0644',
+            source  => 'puppet:///modules/openstack/newton/neutron/l3/config.py',
+            require => Package['neutron-l3-agent'],
     }
 
     file { '/usr/lib/python2.7/dist-packages/neutron/agent/l3/router_info.py':
-            owner  => 'root',
-            group  => 'root',
-            mode   => '0644',
-            source => 'puppet:///modules/openstack/newton/neutron/l3/router_info.py',
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0644',
+            source  => 'puppet:///modules/openstack/newton/neutron/l3/router_info.py',
+            require => Package['neutron-l3-agent'],
     }
 }
