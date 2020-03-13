@@ -1144,7 +1144,7 @@ node /^(phab1001\.eqiad|phab2001\.codfw)\.wmnet$/ {
 }
 
 node /kafka-main100[4-5]\.eqiad\.wmnet/ {
-    role(spare::system)
+    role(insetup)
 }
 
 node /kafka-main100[123]\.eqiad\.wmnet/ {
@@ -1156,7 +1156,7 @@ node /kafka-main200[123]\.codfw\.wmnet/ {
 }
 
 node /kafka-main200[4-5]\.codfw\.wmnet/ {
-    role(spare::system)
+    role(insetup)
 }
 
 # kafka-jumbo is a large general purpose Kafka cluster.
