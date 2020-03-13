@@ -33,8 +33,8 @@ class openstack::horizon::source_deploy(
     # In the perfect future, Horizon policies will be the same
     #  files that the respective services use.  In the meantime, though
     #  it's useful to be able to disable not-yet-supported horizon features.
-    file { '/etc/openstack-dashboard/nova_policy.json':
-        source => "puppet:///modules/openstack/${version}/horizon/nova_policy.json",
+    file { '/etc/openstack-dashboard/nova_policy.yaml':
+        source => "puppet:///modules/openstack/${version}/horizon/nova_policy.yaml",
         owner  => 'root',
         mode   => '0444',
         notify => Service['apache2'],

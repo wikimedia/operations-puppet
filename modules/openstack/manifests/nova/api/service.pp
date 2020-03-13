@@ -11,7 +11,7 @@ class openstack::nova::api::service(
         ensure    => $active,
         subscribe => [
                       File['/etc/nova/nova.conf'],
-                      File['/etc/nova/policy.json'],
+                      File['/etc/nova/policy.yaml'],
             ],
         require   => Package['nova-api'];
     }

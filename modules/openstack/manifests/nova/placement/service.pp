@@ -14,7 +14,7 @@ class openstack::nova::placement::service(
         subscribe => [
                       File['/etc/nova/nova.conf'],
                       File['/etc/init.d/nova-placement-api'],
-                      File['/etc/nova/policy.json'],
+                      File['/etc/nova/policy.yaml'],
             ],
         require   => Package['nova-placement-api'];
     }

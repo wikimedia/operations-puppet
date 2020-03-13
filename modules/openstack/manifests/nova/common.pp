@@ -37,7 +37,11 @@ class openstack::nova::common(
     }
 
     file { '/etc/nova/policy.json':
-        source  => "puppet:///modules/openstack/${version}/nova/common/policy.json",
+        ensure => absent,
+    }
+
+    file { '/etc/nova/policy.yaml':
+        source  => "puppet:///modules/openstack/${version}/nova/common/policy.yaml",
         mode    => '0644',
         owner   => 'root',
         group   => 'root',
