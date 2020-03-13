@@ -1613,4 +1613,11 @@ class profile::prometheus::ops (
         auto_ferm_ipv6 => true,
     }
 
+    if $::site in ['eqiad', 'codfw'] {
+        sysctl::parameters { 'prometheus_inotify_T246860':
+            values => {
+                'fs.inotify.max_user_watches' => 32768  # https://phabricator.wikimedia.org/T246860
+            }
+        }
+    }
 }
