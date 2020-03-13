@@ -19,7 +19,7 @@ class openstack::serverpackages::queens::stretch(
 
     # Don't install systemd from stretch-backports or bpo -- T247013
     apt::pin { 'systemd':
-        pin      => 'release a=stretch',
+        pin      => 'release n=stretch',
         package  => 'systemd',
         priority => '501',
     }
