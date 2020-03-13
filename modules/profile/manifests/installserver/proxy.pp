@@ -9,7 +9,7 @@ class profile::installserver::proxy(
     }
 
     cron { 'squid-logrotate':
-        ensure  => 'present',
+        ensure  => $ensure,
         command => '/usr/sbin/squid3 -k rotate',
         user    => 'root',
         hour    => '17',
@@ -24,6 +24,7 @@ class profile::installserver::proxy(
 
     # Monitoring
     monitoring::service { 'squid':
+        ensure        => $ensure,
         description   => 'Squid',
         check_command => 'check_tcp!8080',
         notes_url     => 'https://wikitech.wikimedia.org/wiki/HTTP_proxy',
