@@ -194,10 +194,9 @@ class profile::planet (
         modules => ['rewrite', 'headers'],
     }
 
-    ferm::service { 'planet-http':
+    ferm::service { 'planet-http-envoy':
         proto  => 'tcp',
         port   => '80',
-        srange => '$CACHES',
+        srange => "(${::ipaddress} ${::ipaddress6})",
     }
-
 }
