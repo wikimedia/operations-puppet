@@ -18,12 +18,6 @@ class profile::iegreview (
         smtp_host  => 'localhost',
     }
 
-    ferm::service { 'iegreview_http':
-        proto  => 'tcp',
-        port   => '80',
-        srange => '$CACHES',
-    }
-
     require_package('mysql-client')
 }
 # vim:sw=4 ts=4 sts=4 et:
