@@ -13,12 +13,6 @@ class profile::racktables (
     include ::profile::standard
     include ::passwords::racktables
 
-    ferm::service { 'racktables-http':
-        proto  => 'tcp',
-        port   => '80',
-        srange => '$CACHES',
-    }
-
     class { '::racktables':
         racktables_host    => $racktables_host,
         racktables_db_host => $racktables_db_host,
