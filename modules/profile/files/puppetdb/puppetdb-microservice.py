@@ -2,7 +2,7 @@
 """Proxy access to PuppetDB facts.
 
 Provides an extremely thin filtering proxy API for querying fact lists
-from PuppetDB for external validation.
+from PuppetDB for external integration.
 """
 
 import requests
@@ -10,7 +10,15 @@ import requests
 from flask import Flask, abort, jsonify
 
 # Allowed Facts
-WHITELIST = ["serialnumber", "is_virtual", "productname", "manufacturer"]
+WHITELIST = [
+    "serialnumber",
+    "is_virtual",
+    "productname",
+    "manufacturer",
+    "interfaces",
+    "networking",
+    "net_driver",
+]
 
 # PuppetDB api URL template
 PUPPETDB_URL = "http://localhost:8080/pdb/query/v4/facts/{fact}"
@@ -35,12 +43,39 @@ def fact(fact_name):
         abort(results.status_code)
 
     facts = {}
-    for fact in results.json():
-        value = fact["value"]
+    for res in results.json():
+        value = res["value"]
         if value == "Not Specified":
             value = None
 
-        hostname = fact["certname"].split(".", 1)[0]
+        hostname = res["certname"].split(".", 1)[0]
         facts[hostname] = value
 
     return jsonify(facts)
+
+
+@app.route("/v1/facts/<fact_name>/<host_name>")
+def host_fact(fact_name, host_name):
+    """Retrieve a fact for a specific host
+
+    Accepts a single fact name and host name (in short form)
+    and returns the fact as a JSON value.
+    """
+
+    if fact_name not in WHITELIST:
+        abort(403)
+
+    pdb_query = {"query": ["~", "certname", str(host_name)]}
+    results = requests.post(PUPPETDB_URL.format(fact=fact_name), json=pdb_query)
+    if results.status_code != 200:
+        abort(results.status_code)
+
+    res = results.json()
+    if (len(res) == 1):
+        result_value = res[0]["value"]
+        if result_value == "Not Specified":
+            result_value = None
+    else:
+        abort(404)
+
+    return jsonify(result_value)
