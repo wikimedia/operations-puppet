@@ -61,7 +61,7 @@ class profile::cache::varnish::frontend (
         # Removing a constant factor before scaling helps with
         # low-memory hosts, as they need more relative space to
         # handle all the non-cache basics.
-        $fe_mem_gb = ceiling(0.7 * ($mem_gb - 80.0))
+        $fe_mem_gb = ceiling(0.7 * ($mem_gb - 100.0))
     }
 
     # Transient storage limits T164768
