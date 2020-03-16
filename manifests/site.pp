@@ -1078,7 +1078,7 @@ node /^cloudnet200[23]-dev\.codfw\.wmnet$/ {
 }
 
 node /^labtestvirt2003\.codfw\.wmnet$/ {
-    role(test)
+    role(spare::system)
 }
 
 node 'clouddb2001-dev.codfw.wmnet' {
@@ -1098,7 +1098,7 @@ node 'cloudservices2002-dev.wikimedia.org' {
 }
 
 node 'labtestservices2003.wikimedia.org' {
-    role(test)
+    role(spare::system)
 }
 
 node /labweb100[12]\.wikimedia\.org/ {
