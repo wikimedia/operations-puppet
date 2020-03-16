@@ -326,6 +326,9 @@ topics = notifications
 backend_url = memcached://<%= @coordination_host %>:11000
 <% end %>
 
+[oslo_policy]
+policy_file = policy.yaml
+
 [service:worker]
 #workers = None
 #threads = 1000

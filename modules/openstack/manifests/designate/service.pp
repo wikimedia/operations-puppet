@@ -136,7 +136,9 @@ class openstack::designate::service(
             require => Package['designate-api'],
             mode    => '0440';
         '/etc/designate/policy.json':
-            source  => "puppet:///modules/openstack/${version}/designate/policy.json",
+            ensure  => 'absent';
+        '/etc/designate/policy.yaml':
+            source  => "puppet:///modules/openstack/${version}/designate/policy.yaml",
             owner   => 'designate',
             group   => 'designate',
             notify  => Service['designate-api','designate-sink','designate-central'],
