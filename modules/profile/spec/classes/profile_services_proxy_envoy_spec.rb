@@ -32,6 +32,10 @@ describe 'profile::services_proxy::envoy' do
                 name: 'commons',
                 port: 8765,
                 timeout: '2s',
+                retry: {
+                  retry_on: "5xx",
+                  num_retries: 1
+                },
                 http_host: 'commons.wikimedia.org',
                 service: 'appservers-https',
                 dnsdisc: 'appservers-rw'
@@ -61,11 +65,14 @@ describe 'profile::services_proxy::envoy' do
         it {
           is_expected.to contain_envoyproxy__listener('commons')
                            .with_content(/host_rewrite: commons.wikimedia.org/)
+                           .with_content(/retry_on: "5xx"/)
+                           .with_content(/num_retries: 1/)
                            .with_content(/cluster: appservers-rw/)
         }
         it {
           is_expected.to contain_envoyproxy__listener('meta')
                            .with_content(/timeout: 2s/)
+                           .with_content(/num_retries: 0/)
                            .with_content(/cluster: text-https_eqiad/)
                            .with_content(/port_value: 9876/)
         }

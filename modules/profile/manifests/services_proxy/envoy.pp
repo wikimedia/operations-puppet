@@ -12,19 +12,22 @@
 # name - the name of the listener
 # port - the local port to listen on
 # timeout - the time after which we timeout on a call
-# http_host - optional http Host: header to add to the request
 # service - The label for the service we're connecting to in service::catalog in hiera
+# retry - The retry policy, if any. See the envoy docs for RetryPolicy for details.
+# http_host - optional http Host: header to add to the request
 # site - optionally the site to connect to for the service. Only used when we don't want
 #        to use discovery DNS
-# dnsdisc - What discovery record to pick if more than one are available.
+# dnsdisc - What discovery record to pick if more than one are available, or if it's not 
+#           equal to the service name.
 class profile::services_proxy::envoy(
     Wmflib::Ensure $ensure = lookup('profile::envoy::ensure', {'default_value' => 'present'}),
     Array[Struct[{
         'name'      => String,
         'port'      => Stdlib::Port::Unprivileged,
         'timeout'   => String,
-        'http_host' => Optional[Stdlib::Fqdn],
         'service'   => String,
+        'retry'     => Optional[Hash],
+        'http_host' => Optional[Stdlib::Fqdn],
         'site'      => Optional[String],
         'dnsdisc'   => Optional[String]
     }]] $listeners = lookup('profile::services_proxy::envoy::listeners', {'default_value' => []}),
@@ -72,6 +75,11 @@ class profile::services_proxy::envoy(
         }
 
         # Now define the listener
+        if $listener['retry'] == undef {
+            $retry_policy = {'num_retries' => 0}
+        } else {
+            $retry_policy = $listener['retry']
+        }
         envoyproxy::listener { $listener['name']:
             content => template('profile/services_proxy/envoy_service_listener.yaml.erb')
         }
