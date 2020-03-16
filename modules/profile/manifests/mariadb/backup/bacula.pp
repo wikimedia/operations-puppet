@@ -8,7 +8,7 @@ class profile::mariadb::backup::bacula (
             jobdefaults => 'Monthly-1st-Wed-Databases',
         }
         backup::set { 'mysql-srv-backups-snapshots-latest':
-            jobdefaults => 'Monthly-1st-Sun-Databases',
+            jobdefaults => 'Weekly-1st-Sun-Databases',
         }
     }
 }
