@@ -16,7 +16,9 @@ gem 'rake', '~> 12.0.0'
 gem 'git', '1.3.0'
 gem 'puppet-lint', '2.3.6'
 gem 'rubocop', '~> 0.49.1', require: false
-gem 'puppet-lint-wmf_styleguide-check', '1.0.4'
+gem 'puppet-lint-wmf_styleguide-check', '1.0.5'
+gem 'byebug', '~> 11.0.1'
+gem 'pry-byebug', '~> 3.7.0'
 
 # Theses are required for running beaker acceptance test
 # you can forgo installing them using `bundle install --without system_tests`
