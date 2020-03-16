@@ -314,3 +314,6 @@ default_store = file
 # Directory that the Filesystem backend store
 # writes image data to
 filesystem_store_datadir = <%= @glance_data %>/images/
+
+[oslo_policy]
+policy_file = policy.yaml

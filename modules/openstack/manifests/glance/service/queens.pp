@@ -33,7 +33,9 @@ class openstack::glance::service::queens(
             notify  => Service['glance-registry'],
             require => Package['glance'];
         '/etc/glance/policy.json':
-            source  => 'puppet:///modules/openstack/queens/glance/policy.json',
+            ensure  => 'absent';
+        '/etc/glance/policy.yaml':
+            source  => 'puppet:///modules/openstack/queens/glance/policy.yaml',
             owner   => 'root',
             group   => 'root',
             mode    => '0644',

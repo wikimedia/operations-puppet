@@ -33,7 +33,9 @@ class openstack::glance::service::pike(
             notify  => Service['glance-registry'],
             require => Package['glance'];
         '/etc/glance/policy.json':
-            source  => 'puppet:///modules/openstack/pike/glance/policy.json',
+            ensure  => absent;
+        '/etc/glance/policy.yaml':
+            source  => 'puppet:///modules/openstack/pike/glance/policy.yaml',
             owner   => 'root',
             group   => 'root',
             mode    => '0644',
