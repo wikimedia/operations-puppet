@@ -1,0 +1,17 @@
+# FILE MANAGED BY PUPPET
+
+ARGS="-squid-port <%= @proxy_port %>"
+
+# prometheus-squid-exporter supports the following options:
+#  -listen string
+#        Address and Port to bind exporter, in host:port format (default ":9301")
+#  -metrics-path string
+#        Metrics path to expose prometheus metrics (default "/metrics")
+#  -squid-hostname string
+#        Squid hostname (default "localhost")
+#  -squid-login string
+#        Login to squid service
+#  -squid-password string
+#        Password to squid service
+#  -squid-port int
+#        Squid port to read metrics (default 3128)
