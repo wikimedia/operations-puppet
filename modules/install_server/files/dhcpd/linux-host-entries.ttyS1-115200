@@ -946,12 +946,6 @@ host cp1090 {
     fixed-address cp1090.eqiad.wmnet;
 }
 
-host cp1099 {
-    hardware ethernet 90:B1:1C:3B:C7:2C;
-    fixed-address cp1099.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
-}
-
 host cp2003 {
     hardware ethernet 44:A8:42:2D:05:76;
     fixed-address cp2003.codfw.wmnet;

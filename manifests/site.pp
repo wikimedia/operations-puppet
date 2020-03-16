@@ -257,11 +257,6 @@ node /^boron\.eqiad\.wmnet$/ {
     role(builder)
 }
 
-# cp1099: to be decommed T229586
-node /^cp1099\.eqiad\.wmnet$/ {
-    role(spare::system)
-}
-
 node /^cp10(7[579]|8[13579])\.eqiad\.wmnet$/ {
     role(cache::text)
 }
