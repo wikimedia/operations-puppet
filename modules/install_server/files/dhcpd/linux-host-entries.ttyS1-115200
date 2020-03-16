@@ -3451,6 +3451,21 @@ host kafka-jumbo1006 {
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
+host kafka-jumbo1007 {
+    hardware ethernet B0:26:28:F0:22:A4;
+    fixed-address kafka-jumbo1007.eqiad.wmnet;
+}
+
+host kafka-jumbo1008 {
+    hardware ethernet B0:26:28:F0:8E:80;
+    fixed-address kafka-jumbo1008.eqiad.wmnet;
+}
+
+host kafka-jumbo1009 {
+    hardware ethernet B0:26:28:F0:23:E8;
+    fixed-address kafka-jumbo1009.eqiad.wmnet;
+}
+
 host kafka-main1001 {
     hardware ethernet B0:26:28:3D:3F:50;
     fixed-address kafka-main1001.eqiad.wmnet;
