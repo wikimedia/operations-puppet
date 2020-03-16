@@ -56,3 +56,4 @@ os_compute_api:servers:revert_resize: rule:context_is_admin
 os_compute_api:servers:show: ''
 os_compute_api:servers:start: rule:admin_or_projectadmin
 os_compute_api:servers:stop: rule:admin_or_projectadmin
+os_compute_api:servers:update: rule:admin_or_projectadmin
