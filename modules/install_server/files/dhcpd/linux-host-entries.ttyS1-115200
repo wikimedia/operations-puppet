@@ -4783,42 +4783,6 @@ host mwlog2001 {
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
 }
 
-host mw1221 {
-    hardware ethernet B0:83:FE:CF:12:F3;
-    fixed-address mw1221.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
-}
-
-host mw1222 {
-    hardware ethernet B0:83:FE:CF:0D:C3;
-    fixed-address mw1222.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
-}
-
-host mw1223 {
-    hardware ethernet B0:83:FE:CF:0D:B3;
-    fixed-address mw1223.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
-}
-
-host mw1224 {
-    hardware ethernet B0:83:FE:CF:0B:A5;
-    fixed-address mw1224.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
-}
-
-host mw1225 {
-    hardware ethernet B0:83:FE:CE:F9:B0;
-    fixed-address mw1225.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
-}
-
-host mw1226 {
-    hardware ethernet B0:83:FE:CE:FB:13;
-    fixed-address mw1226.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
-}
-
 host mw1227 {
     hardware ethernet B0:83:FE:CF:0A:84;
     fixed-address mw1227.eqiad.wmnet;
