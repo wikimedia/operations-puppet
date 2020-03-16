@@ -75,11 +75,13 @@ class openstack::keystone::service::queens(
             notify  => Service[$wsgi_server],
             require => Package['keystone'];
         '/etc/keystone/policy.json':
+            ensure  => 'absent';
+        '/etc/keystone/policy.yaml':
             ensure  => 'present',
             mode    => '0644',
             owner   => 'root',
             group   => 'root',
-            source  => 'puppet:///modules/openstack/queens/keystone/policy.json',
+            source  => 'puppet:///modules/openstack/queens/keystone/policy.yaml',
             notify  => Service[$wsgi_server],
             require => Package['keystone'];
         '/etc/keystone/logging.conf':

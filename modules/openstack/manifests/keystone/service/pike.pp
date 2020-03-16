@@ -64,11 +64,13 @@ class openstack::keystone::service::pike(
             notify  => Service[$wsgi_server],
             require => Package['keystone'];
         '/etc/keystone/policy.json':
+            ensure  => 'absent';
+        '/etc/keystone/policy.yaml':
             ensure  => 'present',
             mode    => '0644',
             owner   => 'root',
             group   => 'root',
-            source  => 'puppet:///modules/openstack/pike/keystone/policy.json',
+            source  => 'puppet:///modules/openstack/pike/keystone/policy.yaml',
             notify  => Service[$wsgi_server],
             require => Package['keystone'];
         '/etc/keystone/logging.conf':
