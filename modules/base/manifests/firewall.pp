@@ -86,10 +86,11 @@ class base::firewall (
     }
 
     nrpe::monitor_service { 'ferm_active':
-        description   => 'Check whether ferm is active by checking the default input chain',
-        nrpe_command  => '/usr/bin/sudo /usr/lib/nagios/plugins/check_ferm',
-        require       =>  [File['/usr/lib/nagios/plugins/check_ferm'], Sudo::User['nagios_check_ferm']],
-        contact_group => 'admins',
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Monitoring/check_ferm',
+        description    => 'Check whether ferm is active by checking the default input chain',
+        nrpe_command   => '/usr/bin/sudo /usr/lib/nagios/plugins/check_ferm',
+        require        => [File['/usr/lib/nagios/plugins/check_ferm'], Sudo::User['nagios_check_ferm']],
+        contact_group  => 'admins',
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/Monitoring/check_ferm',
+        check_interval => 30,
     }
 }

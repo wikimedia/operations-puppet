@@ -126,10 +126,12 @@ class base::monitoring::host(
     }
 
     ::nrpe::monitor_service { 'dpkg':
-        description  => 'DPKG',
-        nrpe_command => '/usr/local/lib/nagios/plugins/check_dpkg',
-        notes_url    => 'https://wikitech.wikimedia.org/wiki/Monitoring/dpkg',
+        description    => 'DPKG',
+        nrpe_command   => '/usr/local/lib/nagios/plugins/check_dpkg',
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/Monitoring/dpkg',
+        check_interval => 30,
     }
+
     # Calculate freshness interval in seconds (hence *60)
     $warninginterval = $puppet_interval * 60 * 6
     $criticalinterval = $warninginterval * 2
@@ -142,14 +144,16 @@ class base::monitoring::host(
         notes_url      => 'https://wikitech.wikimedia.org/wiki/Monitoring/puppet_checkpuppetrun',
     }
     ::nrpe::monitor_service {'check_eth':
-        description  => 'configured eth',
-        nrpe_command => '/usr/local/lib/nagios/plugins/check_eth',
-        notes_url    => 'https://wikitech.wikimedia.org/wiki/Monitoring/check_eth',
+        description    => 'configured eth',
+        nrpe_command   => '/usr/local/lib/nagios/plugins/check_eth',
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/Monitoring/check_eth',
+        check_interval => 30,
     }
     ::nrpe::monitor_service { 'check_dhclient':
-        description  => 'dhclient process',
-        nrpe_command => '/usr/lib/nagios/plugins/check_procs -w 0:0 -c 0:0 -C dhclient',
-        notes_url    => 'https://wikitech.wikimedia.org/wiki/Monitoring/check_dhclient',
+        description    => 'dhclient process',
+        nrpe_command   => '/usr/lib/nagios/plugins/check_procs -w 0:0 -c 0:0 -C dhclient',
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/Monitoring/check_dhclient',
+        check_interval => 30,
     }
 
     $ensure_monitor_systemd = $monitor_systemd ? {
