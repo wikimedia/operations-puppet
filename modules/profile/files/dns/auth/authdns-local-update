@@ -86,7 +86,7 @@ if [ -z "$PULL_SKIP_REVIEW" ]; then
 fi
 
 PULL_CMD="sudo -u authdns authdns-git-pull $PULL_SKIP_REVIEW $REMOTE"
-DEPLOY_CMD="utils/deploy-check.py --deploy $DEPLOY_INITIAL $DEPLOY_SKIP_RELOAD"
+DEPLOY_CMD="utils/deploy-check.py -g $NETBOXDNS --deploy $DEPLOY_INITIAL $DEPLOY_SKIP_RELOAD"
 
 if [ $VERBOSE -eq 1 ]; then
     echo "Pulling the current revision from $REMOTE"
