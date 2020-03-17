@@ -100,6 +100,7 @@ c.JupyterHub.spawner_class = 'systemdspawner.SystemdSpawner'
 # things via pip easily and have them be immediately available
 c.SystemdSpawner.extra_paths = ['/home/{USERNAME}/venv/bin']
 
+c.Authenticator.delete_invalid_users = True
 
 class VenvCreatingAuthenticator(Authenticator):
     """
