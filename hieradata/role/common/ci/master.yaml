@@ -118,6 +118,18 @@ profile::kubernetes::deployment_server::services:
     username: changeprop-jobqueue
     group: wikidev
     mode: '0640'
+  proton:
+    username: proton
+    group: wikidev
+    mode: '0640'
+  mobileapps:
+    username: mobileapps
+    group: wikidev
+    mode: '0640'
+  recommendation-api:
+    username: recommendation-api
+    group: wikidev
+    mode: '0640'
 
 
 # Specified in the private repo in this form
@@ -173,6 +185,12 @@ profile::kubernetes::deployment_server::services:
 #  changeprop:
 #    token: dummy
 #  changeprop-jobqueue:
+#    token: dummy
+#  proton:
+#    token: dummy
+#  mobileapps:
+#    token: dummy
+#  recommendation-api:
 #    token: dummy
 
 profile::ci::kubernetes_config::user: jenkins
