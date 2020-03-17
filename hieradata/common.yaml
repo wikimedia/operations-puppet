@@ -711,15 +711,11 @@ hadoop_clusters:
     yarn_resourcemanager_zk_state_store_parent_path: '/yarn-rmstore/analytics-test-hadoop'
     yarn_resourcemanager_max_completed_applications: 1000
 
-    # Increased Heap sizes for Datanode/Nodemanager Hadoop daemons from 2G to 4G
-    # in https://phabricator.wikimedia.org/T178876
-    yarn_heapsize: 4096
-    hadoop_heapsize: 4096
-    # Prometheus JMX Exporter config templates.
-    hadoop_datanode_opts: "-Xms4096m -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=[::]:51010:/etc/prometheus/hdfs_datanode_jmx_exporter.yaml"
-    hadoop_journalnode_opts: "-javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=[::]:10485:/etc/prometheus/hdfs_journalnode_jmx_exporter.yaml"
-    yarn_nodemanager_opts: "-Xms4096m -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=[::]:8141:/etc/prometheus/yarn_nodemanager_jmx_exporter.yaml"
     yarn_nodemanager_os_reserved_memory_mb: 12000
+
+    hadoop_datanode_opts: "-Xms4096m -Xmx4096m -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=[::]:51010:/etc/prometheus/hdfs_datanode_jmx_exporter.yaml"
+    hadoop_journalnode_opts: "-Xms4096m -Xmx4096m -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=[::]:10485:/etc/prometheus/hdfs_journalnode_jmx_exporter.yaml"
+    yarn_nodemanager_opts: "-Xms4096m -Xmx4096m -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=[::]:8141:/etc/prometheus/yarn_nodemanager_jmx_exporter.yaml"
     hadoop_namenode_opts: "-Xms12288m -Xmx12288m -XX:+UseG1GC -XX:+UseStringDeduplication -XX:MaxGCPauseMillis=1000 -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=[::]:10080:/etc/prometheus/hdfs_namenode_jmx_exporter.yaml"
     yarn_resourcemanager_opts: "-Xms4096m -Xmx4096m -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=[::]:10083:/etc/prometheus/yarn_resourcemanager_jmx_exporter.yaml"
     mapreduce_history_java_opts: "-Xms4096m -Xmx4096m -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=[::]:10086:/etc/prometheus/mapreduce_history_jmx_exporter.yaml"
