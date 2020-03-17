@@ -52,6 +52,12 @@
 # [*session_ticket_enable*]
 #   Enables (1) or disables (0) SSL Session tickets (RFC 5077)
 #
+# [*session_ticket_filename*]
+#  Relative path for the Session Ticket Encryption Key (STEK) file
+#
+# [*session_ticket_number*]
+#  Number of TLSv1.3 tickets issued on new connections
+#
 # [*load_elevated*]
 #   Enables (1) or disables (0) elevation of traffic_server privileges during loading of SSL certificates.
 #
@@ -76,6 +82,7 @@ type Trafficserver::Inbound_TLS_settings = Struct[{
     'session_cache_buckets'    => Optional[Integer[0]],
     'session_ticket_enable'    => Integer[0, 1],
     'session_ticket_filename'  => Optional[String],
+    'session_ticket_number'    => Optional[Integer[0]],
     'load_elevated'            => Optional[Integer[0, 1]],
     'do_ocsp'                  => Integer[0, 1],
     'ssl_handshake_timeout_in' => Integer[0],
