@@ -12,6 +12,12 @@ class profile::misc_apps::httpd (
         modules => $apache_modules,
     }
 
+    ferm::service { 'miscweb-http-envoy':
+        proto  => 'tcp',
+        port   => '80',
+        srange => "(${::ipaddress} ${::ipaddress6})"
+    }
+
     ferm::service { 'miscweb-http-deployment':
         proto  => 'tcp',
         port   => '80',
