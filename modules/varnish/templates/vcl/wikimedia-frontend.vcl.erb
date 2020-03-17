@@ -202,6 +202,12 @@ sub log_xcps_info {
 		// CHACHA20-POLY1305-SHA256. Do the renaming now in VCL to avoid stats skew
 		// later on.
 		set req.http.x-tls-ciph = regsub(req.http.x-tls-ciph, "^CHACHA20-POLY1305$", "CHACHA20-POLY1305-SHA256");
+		if (req.http.x-tls-vers == "TLSv1.3") {
+			// Every TLSv1.3 cipher begins with TLS_
+			set req.http.x-tls-ciph = regsub(req.http.x-tls-ciph, "^TLS_", "");
+			// TLSv1.3 uses _ instead of - as a separator
+			set req.http.x-tls-ciph = regsuball(req.http.x-tls-ciph, "_", "-");
+		}
 	}
 
 	// Condensed form logged as "tls" for TLS analytics via varnishkafka webrequest
