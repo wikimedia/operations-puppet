@@ -931,6 +931,20 @@ hadoop_clusters:
 
     yarn_resourcemanager_zk_state_store_parent_path: '/yarn-rmstore/analytics-hadoop'
 
+    yarn_nodemanager_os_reserved_memory_mb: 12000
+
+    hadoop_datanode_opts: "-Xms4096m -Xmx4096m -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=[::]:51010:/etc/prometheus/hdfs_datanode_jmx_exporter.yaml"
+    hadoop_journalnode_opts: "-Xms4096m -Xmx4096m -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=[::]:10485:/etc/prometheus/hdfs_journalnode_jmx_exporter.yaml"
+    yarn_nodemanager_opts: "-Xms4096m -Xmx4096m -XX:+UseG1GC -XX:+UseStringDeduplication -XX:MaxGCPauseMillis=400 -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=[::]:8141:/etc/prometheus/yarn_nodemanager_jmx_exporter.yaml"
+    hadoop_namenode_opts: "-Xms20480m -Xmx20480m -XX:+UseG1GC -XX:+UseStringDeduplication -XX:MaxGCPauseMillis=1000 -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=[::]:10080:/etc/prometheus/hdfs_namenode_jmx_exporter.yaml"
+    yarn_resourcemanager_opts: "-Xms4096m -Xmx4096m -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=[::]:10083:/etc/prometheus/yarn_resourcemanager_jmx_exporter.yaml"
+
+    # The HDFS Trash is configured in this way:
+    # 1) Once every day a checkpoint is made (that contains all the trash for a day).
+    # 2) After a month a checkpoint is deleted.
+    hdfs_trash_checkpoint_interval: 1440
+    hdfs_trash_interval: 43200
+
     hdfs_site_extra_properties:
       dfs.cluster.administrators: 'hdfs analytics-admins,ops'
       dfs.block.access.token.enable: 'true'
