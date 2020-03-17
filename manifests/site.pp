@@ -1502,8 +1502,8 @@ node /^mw14(09|1[13])\.eqiad\.wmnet$/ {
 
 # Row D
 
-#mw1238-mw1258 are in rack D5
-node /^mw12(3[8-9]|4[0-9]|5[0-8])\.eqiad\.wmnet$/ {
+#mw1244-mw1258 are in rack D5
+node /^mw12(4[4-9]|5[0-8])\.eqiad\.wmnet$/ {
     role(mediawiki::appserver)
 }
 
