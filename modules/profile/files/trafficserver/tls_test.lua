@@ -33,8 +33,19 @@ describe("Busted unit testing framework", function()
       assert.are.equals('https', _G.ts.server_request.header['X-Forwarded-Proto'])
       assert.is_nil(_G.ts.server_request.header['Proxy-Connection'])
 
+      -- With TLSv1.3 and HTTP2
+      _G.ts.client_request.get_ssl_protocol = function() return "TLSv1.3" end
+      _G.ts.client_request.get_ssl_cipher = function() return "TLS_CHACHA20_POLY1305_SHA256" end
+      _G.ts.client_request.get_ssl_curve = function() return "X25519" end
+      do_global_send_request()
+      assert.are.equals('vers=TLSv1.3;keyx=X25519;auth=ECDSA;ciph=CHACHA20-POLY1305-SHA256;prot=h2;sess=new', _G.ts.server_request.header['X-Analytics-TLS'])
+      assert.are.equals('H2=1; SSR=0; SSL=TLSv1.3; C=TLS_CHACHA20_POLY1305_SHA256; EC=X25519;', _G.ts.server_request.header['X-Connection-Properties'])
+
       -- With HTTP1.1 in the stack
       _G.ts.http.get_client_protocol_stack = function() return "ipv4", "tcp", "tls/1.2", "http/1.1" end
+      _G.ts.client_request.get_ssl_protocol = function() return "TLSv1.2" end
+      _G.ts.client_request.get_ssl_cipher = function() return "ECDHE-ECDSA-AES256-GCM-SHA384" end
+      _G.ts.client_request.get_ssl_curve = function() return "X25519" end
       do_global_send_request()
       assert.are.equals('vers=TLSv1.2;keyx=X25519;auth=ECDSA;ciph=AES256-GCM-SHA384;prot=h1;sess=new', _G.ts.server_request.header['X-Analytics-TLS'])
       assert.are.equals('H2=0; SSR=0; SSL=TLSv1.2; C=ECDHE-ECDSA-AES256-GCM-SHA384; EC=X25519;', _G.ts.server_request.header['X-Connection-Properties'])

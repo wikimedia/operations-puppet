@@ -53,6 +53,12 @@ function do_global_send_request()
     x_tls_ciph = string.gsub(x_tls_ciph, "^DHE%-RSA%-", "")
     x_tls_ciph = string.gsub(x_tls_ciph, "^ECDHE%-ECDSA%-", "")
     x_tls_ciph = string.gsub(x_tls_ciph, "^ECDHE%-RSA%-", "")
+    if x_tls_vers == "TLSv1.3" then
+        -- Every TLSv1.3 cipher begins with TLS_
+        x_tls_ciph = string.gsub(x_tls_ciph, "^TLS_", "")
+        -- TLSv1.3 uses _ instead of - as a separator
+        x_tls_ciph = string.gsub(x_tls_ciph, "_", "-")
+    end
 
     -- Starting with TLSv1.3, CHACHA20-POLY1305 will be renamed into
     -- CHACHA20-POLY1305-SHA256. Do the renaming now in Lua to avoid stats
