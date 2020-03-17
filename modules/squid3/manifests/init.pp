@@ -49,4 +49,10 @@ class squid3(
         require   => File["/etc/${squid}/squid.conf"],
         subscribe => File["/etc/${squid}/squid.conf"],
     }
+
+    systemd::unit { $squid:
+        content  => init_template('squid', 'systemd_override'),
+        override => true,
+        restart  => true,
+    }
 }

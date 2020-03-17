@@ -4,3 +4,4 @@ fixtures:
         logrotate: "../../../../logrotate"
         stdlib: "../../../../stdlib"
         wmflib: "../../../../wmflib"
+        systemd: "../../../../systemd"
