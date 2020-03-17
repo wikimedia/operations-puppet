@@ -10,4 +10,6 @@ class role::analytics_cluster::superset {
     include ::profile::tlsproxy::service
     include ::profile::base::firewall
     include ::profile::standard
+    include ::profile::kerberos::client
+    include ::profile::kerberos::keytabs
 }
