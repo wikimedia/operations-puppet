@@ -5,3 +5,4 @@ export TILLER_NAMESPACE=<%= @svcname %>
 <% else -%>
 export TILLER_NAMESPACE='kube-system'
 <% end %>
+export K8S_CLUSTER=<%= @environment.upcase %>
