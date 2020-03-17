@@ -24,6 +24,15 @@
 # [*socket*]
 #   Unix domain socket from which ATS request logs are to be read.
 #
+# [*conf_file*]
+#   Configuration file for rdkafka settings.
+#
+# [*tls_settings*]
+#   Optional configuration to connect to brokers using TLS for authentication
+#   and encryption. If left unspecified, the connection to the brokers will be
+#   established without authentication and data will be sent in clear.
+#   (default: undef).
+#
 # === Example
 #
 # atskafka::instance { 'webrequest':
@@ -33,17 +42,25 @@
 # }
 #
 define atskafka::instance(
-    Array[String] $brokers           = ['localhost:9092'],
-    Stdlib::Absolutepath $stats_dir  = '/var/cache/atskafka',
-    Integer $stats_interval_ms       = 60000,
-    String $topic                    = 'atskafka_test',
-    Array[String] $numeric_fields    = ['time_firstbyte', 'response_size'],
-    Stdlib::Absolutepath $socket     = '/var/run/log.socket',
+    Array[String] $brokers                 = ['localhost:9092'],
+    Stdlib::Absolutepath $stats_dir        = '/var/cache/atskafka',
+    Integer $stats_interval_ms             = 60000,
+    String $topic                          = 'atskafka_test',
+    Array[String] $numeric_fields          = ['time_firstbyte', 'response_size'],
+    Stdlib::Absolutepath $socket           = '/var/run/log.socket',
+    Stdlib::Absolutepath $conf_file         = "/etc/atskafka-${name}.conf",
+    Optional[ATSkafka::TLS_settings] $tls  = undef,
 ) {
     require ::atskafka
 
     $kafka_servers = join($brokers, ',')
     $numeric = join($numeric_fields, ',')
+
+    file { $conf_file:
+        mode    => '0400',
+        notify  => Service["atskafka-${name}"],
+        content => template('atskafka/atskafka.conf.erb'),
+    }
 
     file { $stats_dir:
         ensure => directory,

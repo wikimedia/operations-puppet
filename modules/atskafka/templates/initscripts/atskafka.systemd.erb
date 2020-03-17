@@ -2,5 +2,5 @@
 Description=Stream ATS request logs to Kafka -- <%= @name %> instance
 
 [Service]
-ExecStart=/usr/bin/atskafka -kafkaServer <%= @kafka_servers %> -kafkaStatsFile <%= @stats_file %> -kafkaStatsInterval <%= @stats_interval_ms %> -kafkaTopic <%= @topic %> -numericFields <%= @numeric %> -socket <%= @socket %>
+ExecStart=/usr/bin/atskafka -kafkaConfig <%= @conf_file %> -kafkaStatsFile <%= @stats_file %> -kafkaTopic <%= @topic %> -numericFields <%= @numeric %> -socket <%= @socket %>
 Restart=on-failure

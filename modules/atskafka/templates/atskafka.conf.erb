@@ -1,0 +1,15 @@
+{
+<% if @tls -%>
+  "security.protocol":        "SSL",
+  "ssl.ca.location":          "<%= @tls['ca_location'] %>",
+  "ssl.key.location":         "<%= @tls['key_location'] %>",
+  "ssl.key.password":         "<%= @tls['key_password'] %>",
+  "ssl.certificate.location": "<%= @tls['certificate_location'] %>",
+  "ssl.cipher.suites":        "<%= @tls['cipher_suites'] %>",
+  "ssl.curves.list":          "<%= @tls['curves_list'] %>",
+  "ssl.sigalgs.list":         "<%= @tls['sigalgs_list'] %>",
+<% end -%>
+  "client.id":                "atskafka",
+  "bootstrap.servers":        <%= @kafka_servers %>,
+  "statistics.interval.ms":   <%= @stats_interval_ms %>
+}
