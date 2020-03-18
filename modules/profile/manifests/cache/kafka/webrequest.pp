@@ -175,6 +175,15 @@ class profile::cache::kafka::webrequest(
             brokers => $kafka_brokers,
             topic   => "atskafka_test_${topic}",
             socket  => '/srv/trafficserver/tls/var/run/analytics.sock',
+            tls     => {
+                ca_location          => $ssl_ca_location,
+                key_location         => $ssl_key_location,
+                key_password         => $ssl_key_password,
+                certificate_location => $ssl_certificate_location,
+                cipher_suites        => $ssl_cipher_suites,
+                curves_list          => $ssl_curves_list,
+                sigalgs_list         => $ssl_sigalgs_list,
+            },
         }
     }
 

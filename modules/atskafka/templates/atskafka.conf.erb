@@ -10,6 +10,6 @@
   "ssl.sigalgs.list":         "<%= @tls['sigalgs_list'] %>",
 <% end -%>
   "client.id":                "atskafka",
-  "bootstrap.servers":        <%= @kafka_servers %>,
+  "bootstrap.servers":        "<%= @kafka_servers %>",
   "statistics.interval.ms":   <%= @stats_interval_ms %>
 }

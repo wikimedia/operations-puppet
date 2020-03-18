@@ -27,7 +27,7 @@
 # [*conf_file*]
 #   Configuration file for rdkafka settings.
 #
-# [*tls_settings*]
+# [*tls*]
 #   Optional configuration to connect to brokers using TLS for authentication
 #   and encryption. If left unspecified, the connection to the brokers will be
 #   established without authentication and data will be sent in clear.
@@ -48,7 +48,7 @@ define atskafka::instance(
     String $topic                          = 'atskafka_test',
     Array[String] $numeric_fields          = ['time_firstbyte', 'response_size'],
     Stdlib::Absolutepath $socket           = '/var/run/log.socket',
-    Stdlib::Absolutepath $conf_file         = "/etc/atskafka-${name}.conf",
+    Stdlib::Absolutepath $conf_file        = "/etc/atskafka-${name}.conf",
     Optional[ATSkafka::TLS_settings] $tls  = undef,
 ) {
     require ::atskafka
