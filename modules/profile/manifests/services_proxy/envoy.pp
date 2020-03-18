@@ -17,8 +17,10 @@
 # http_host - optional http Host: header to add to the request
 # site - optionally the site to connect to for the service. Only used when we don't want
 #        to use discovery DNS
-# dnsdisc - What discovery record to pick if more than one are available, or if it's not 
+# dnsdisc - What discovery record to pick if more than one are available, or if it's not
 #           equal to the service name.
+# keepalive - keepalive timeout. If not specified, the default envoy value will be used.
+#             For nodejs applications assume the right value is 5 seconds (see T247484)
 class profile::services_proxy::envoy(
     Wmflib::Ensure $ensure = lookup('profile::envoy::ensure', {'default_value' => 'present'}),
     Array[Struct[{
@@ -29,7 +31,8 @@ class profile::services_proxy::envoy(
         'retry'     => Optional[Hash],
         'http_host' => Optional[Stdlib::Fqdn],
         'site'      => Optional[String],
-        'dnsdisc'   => Optional[String]
+        'dnsdisc'   => Optional[String],
+        'keepalive' => Optional[String],
     }]] $listeners = lookup('profile::services_proxy::envoy::listeners', {'default_value' => []}),
 ) {
     if $ensure == 'present' {

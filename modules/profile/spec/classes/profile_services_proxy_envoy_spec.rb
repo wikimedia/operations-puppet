@@ -36,6 +36,7 @@ describe 'profile::services_proxy::envoy' do
                   retry_on: "5xx",
                   num_retries: 1
                 },
+                keepalive: '5s',
                 http_host: 'commons.wikimedia.org',
                 service: 'appservers-https',
                 dnsdisc: 'appservers-rw'
@@ -56,11 +57,13 @@ describe 'profile::services_proxy::envoy' do
           is_expected.to contain_envoyproxy__cluster('text-https_eqiad_cluster')
                            .with_content(/address: text-lb.eqiad.wikimedia.org/)
                            .with_content(/name: text-https_eqiad/)
+                           .without_content(/common_http_protocol_options/)
         }
         it {
           is_expected.to contain_envoyproxy__cluster('appservers-rw_cluster')
                            .with_content(/address: appservers-rw.discovery.wmnet/)
                            .with_content(/name: appservers-rw/)
+                           .with_content(/idle_timeout: 5s/)
         }
         it {
           is_expected.to contain_envoyproxy__listener('commons')
