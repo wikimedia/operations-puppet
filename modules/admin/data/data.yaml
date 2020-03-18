@@ -155,7 +155,7 @@ groups:
     members: [catrope, dduvall, mattflaschen, cooltey, marktraceur,
               jhernandez, daisy, etonkovidova, legoktm, risler,
               sbisson, matmarex, nikerabbit, dstrine, jdittrich, debt,
-              mlitn, sharvaniharan, kharlan, joewalsh]
+              mlitn, sharvaniharan, kharlan]
   ldap-admins:
     gid: 715
     description: ldap admins
@@ -271,7 +271,7 @@ groups:
               niharika29, ryanmax, afandian2, jgleeson, toddleroux, srishakatux, dsharpe, eyener,
               esanders, sukhe, jfishback, iflorez, mayakpwiki, conniecc1, abi, mgerlach, dedcode,
               lexnasser, kevinbazira, keepit-ssh, jiji, cohi, mstyles, accraze, kzeta, snowick,
-              aarora, zpapierski, knissen, jiawang, jmorgan, mholloway-shell]
+              aarora, zpapierski, knissen, jiawang, jmorgan, mholloway-shell, joewalsh]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata]
   analytics-admins:
