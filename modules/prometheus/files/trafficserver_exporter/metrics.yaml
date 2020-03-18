@@ -514,3 +514,9 @@ trafficserver_ssl_cipher_count:
       value: proxy.process.ssl.cipher.user_agent.PSK-AES128-CBC-SHA256
     - labels: {protocol: ssl, cipher: PSK-AES128-CBC-SHA}
       value: proxy.process.ssl.cipher.user_agent.PSK-AES128-CBC-SHA
+    - labels: {protocol: ssl, cipher: TLS_AES_256_GCM_SHA384}
+      value: proxy.process.ssl.cipher.user_agent.TLS_AES_256_GCM_SHA384
+    - labels: {protocol: ssl, cipher: TLS_AES_128_GCM_SHA256}
+      value: proxy.process.ssl.cipher.user_agent.TLS_AES_128_GCM_SHA256
+    - labels: {protocol: ssl, cipher: TLS_CHACHA20_POLY1305_SHA256}
+      value: proxy.process.ssl.cipher.user_agent.TLS_CHACHA20_POLY1305_SHA256
