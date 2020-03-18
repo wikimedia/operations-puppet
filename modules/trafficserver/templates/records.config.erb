@@ -204,7 +204,7 @@ CONFIG proxy.config.ssl.server.session_ticket.enable INT <%= @inbound_tls_settin
 CONFIG proxy.config.ssl.server.ticket_key.filename STRING <%= @inbound_tls_settings['session_ticket_filename'] %>
 <% end -%>
 <% if @inbound_tls_settings['session_ticket_number'] -%>
-CONFIG proxy.config.ssl.server.ticket_key.number INT <%= @inbound_tls_settings['session_ticket_number'] %>
+CONFIG proxy.config.ssl.server.session_ticket.number INT <%= @inbound_tls_settings['session_ticket_number'] %>
 <% end -%>
 CONFIG proxy.config.ssl.handshake_timeout_in INT <%= @inbound_tls_settings['ssl_handshake_timeout_in'] %>
 <% end -%>
