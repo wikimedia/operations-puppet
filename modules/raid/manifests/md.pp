@@ -22,10 +22,11 @@ class raid::md (
   }
 
   nrpe::monitor_service { 'raid_md':
-    description   => 'MD RAID',
-    nrpe_command  => "${raid::check_raid} md",
-    event_handler => "raid_handler!md!${::site}",
-    notes_url     => 'https://wikitech.wikimedia.org/wiki/Dc-operations/Hardware_Troubleshooting_Runbook#Hardware_Raid_Information_Gathering',
+    description    => 'MD RAID',
+    nrpe_command   => "${raid::check_raid} md",
+    event_handler  => "raid_handler!md!${::site}",
+    notes_url      => 'https://wikitech.wikimedia.org/wiki/Dc-operations/Hardware_Troubleshooting_Runbook#Hardware_Raid_Information_Gathering',
+    check_interval => 10,
   }
 
   nrpe::check { 'get_raid_status_md':

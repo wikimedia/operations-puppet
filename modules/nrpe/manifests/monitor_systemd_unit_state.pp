@@ -12,6 +12,7 @@ define nrpe::monitor_systemd_unit_state(
     $expected_state = 'active',
     $lastrun = '',
     Stdlib::Httpsurl $notes_url = 'https://wikitech.wikimedia.org/wiki/Monitoring/systemd_unit_state',
+    $check_interval = 1,
     ){
 
     if $::initsystem != 'systemd' {
@@ -27,12 +28,13 @@ define nrpe::monitor_systemd_unit_state(
     }
 
     nrpe::monitor_service { "${unit}-state":
-        ensure       => $ensure,
-        description  => $description,
-        nrpe_command => "/usr/local/bin/nrpe_check_systemd_unit_state '${unit}' ${expected_state} ${lastrun}",
-        retries      => $retries,
-        timeout      => $timeout,
-        critical     => $nagios_critical,
-        notes_url    => $notes_url,
+        ensure         => $ensure,
+        description    => $description,
+        nrpe_command   => "/usr/local/bin/nrpe_check_systemd_unit_state '${unit}' ${expected_state} ${lastrun}",
+        retries        => $retries,
+        timeout        => $timeout,
+        critical       => $nagios_critical,
+        notes_url      => $notes_url,
+        check_interval => $check_interval,
     }
 }
