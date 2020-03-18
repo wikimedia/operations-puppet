@@ -32,6 +32,7 @@ profile::hive::server::ferm_srange: '$ANALYTICS_NETWORKS'
 profile::hive::metastore::ferm_srange: '$ANALYTICS_NETWORKS'
 
 # Presto Server settings
+profile::presto::monitoring_enabled: true
 profile::presto::cluster_name: analytics-test-presto
 profile::presto::discovery_uri: https://analytics1030.eqiad.wmnet:8281
 profile::presto::server::heap_max: 4G

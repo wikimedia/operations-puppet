@@ -40,15 +40,16 @@
 #    Default: {}
 #
 class profile::presto::server(
-    String $cluster_name      = hiera('profile::presto::cluster_name'),
-    String $discovery_uri     = hiera('profile::presto::discovery_uri'),
-    Hash   $node_properties   = hiera('profile::presto::server::node_properties',   {}),
-    Hash   $config_properties = hiera('profile::presto::server::config_properties', {}),
-    Hash   $catalogs          = hiera('profile::presto::server::catalogs',          {}),
-    Hash   $log_properties    = hiera('profile::presto::server::log_properties',    {}),
-    String $heap_max          = hiera('profile::presto::server::heap_max',          '2G'),
-    String $ferm_srange       = hiera('profile::presto::server::ferm_srange',       '$DOMAIN_NETWORKS'),
-    Boolean $use_kerberos     = hiera('profile::presto::use_kerberos', false),
+    String $cluster_name        = hiera('profile::presto::cluster_name'),
+    String $discovery_uri       = hiera('profile::presto::discovery_uri'),
+    Hash   $node_properties     = hiera('profile::presto::server::node_properties',   {}),
+    Hash   $config_properties   = hiera('profile::presto::server::config_properties', {}),
+    Hash   $catalogs            = hiera('profile::presto::server::catalogs',          {}),
+    Hash   $log_properties      = hiera('profile::presto::server::log_properties',    {}),
+    String $heap_max            = hiera('profile::presto::server::heap_max',          '2G'),
+    String $ferm_srange         = hiera('profile::presto::server::ferm_srange',       '$DOMAIN_NETWORKS'),
+    Boolean $use_kerberos       = hiera('profile::presto::use_kerberos', false),
+    Boolean $monitoring_enabled = lookup('profile::presto::monitoring_enabled', { 'default_value' => false }),
     Optional[Hash[String, Hash[String, String]]] $presto_clusters_secrets = hiera('presto_clusters_secrets', {}),
 ) {
 
@@ -136,12 +137,22 @@ class profile::presto::server(
     $_node_properties = $default_node_properties + $node_properties
     $_config_properties = $default_config_properties + $config_properties + $default_ssl_properties + $default_kerberos_properties
 
+    if $monitoring_enabled {
+        include ::profile::presto::monitoring::server
+        $jmx_agent_port = $::profile::presto::monitoring::server::prometheus_jmx_exporter_server_port
+        $jmx_agent_config_file = $::profile::presto::monitoring::server::jmx_exporter_config_file
+        $extra_jvm_configs = "-javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=[::]:${jmx_agent_port}:${jmx_agent_config_file}"
+    } else {
+        $extra_jvm_configs = undef
+    }
+
     class { '::presto::server':
         node_properties   => $_node_properties,
         config_properties => $_config_properties,
         log_properties    => $log_properties,
         catalogs          => $catalogs,
         heap_max          => $heap_max,
+        extra_jvm_configs => $extra_jvm_configs,
     }
 
     if $presto_clusters_secrets[$cluster_name] {

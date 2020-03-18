@@ -27,12 +27,13 @@
 #   Max JVM heapsize of Presto server; will be rendered into jvm.properties.
 #
 class presto::server(
-    Boolean $enabled           = true,
-    Hash    $config_properties = {},
-    Hash    $node_properties   = {},
-    Hash    $log_properties    = {},
-    Hash    $catalogs          = {},
-    String  $heap_max          = '2G',
+    Boolean $enabled                    = true,
+    Hash    $config_properties          = {},
+    Hash    $node_properties            = {},
+    Hash    $log_properties             = {},
+    Hash    $catalogs                   = {},
+    String  $heap_max                   = '2G',
+    Optional[String] $extra_jvm_configs = undef,
 ) {
     if defined(Class['::presto::client']) {
         fail('Class presto::client and presto::server should not be included on the same node; presto::server will include the presto-cli package itself.')
