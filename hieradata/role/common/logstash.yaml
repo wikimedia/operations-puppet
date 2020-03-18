@@ -39,14 +39,14 @@ logstash::heap_memory: 1g
 logstash::pipeline_batch_size: 1000
 
 # Kibana
-profile::kibana::vhost: logstash.wikimedia.org
-profile::kibana::serveradmin: noc@wikimedia.org
-profile::kibana::auth_type: ldap
-profile::kibana::auth_realm: Developer account (use wiki login name not shell) - nda/ops/wmf
+profile::kibana::httpd_proxy::vhost: logstash.wikimedia.org
+profile::kibana::httpd_proxy::serveradmin: noc@wikimedia.org
+profile::kibana::httpd_proxy::auth_type: ldap
+profile::kibana::httpd_proxy::auth_realm: Developer account (use wiki login name not shell) - nda/ops/wmf
 # TODO: Convert to read the servers from ldap::ro-server and ldap::ro-server-fallback once Kibana converted to a profile
-profile::kibana::ldap_authurl: ldaps://ldap-ro.eqiad.wikimedia.org ldap-ro.codfw.wikimedia.org/ou=people,dc=wikimedia,dc=org?cn
-profile::kibana::ldap_binddn: cn=proxyagent,ou=profile,dc=wikimedia,dc=org
-profile::kibana::ldap_groups:
+profile::kibana::httpd_proxy::ldap_authurl: ldaps://ldap-ro.eqiad.wikimedia.org ldap-ro.codfw.wikimedia.org/ou=people,dc=wikimedia,dc=org?cn
+profile::kibana::httpd_proxy::ldap_binddn: cn=proxyagent,ou=profile,dc=wikimedia,dc=org
+profile::kibana::httpd_proxy::ldap_groups:
   - cn=ops,ou=groups,dc=wikimedia,dc=org
   - cn=nda,ou=groups,dc=wikimedia,dc=org
   - cn=wmf,ou=groups,dc=wikimedia,dc=org

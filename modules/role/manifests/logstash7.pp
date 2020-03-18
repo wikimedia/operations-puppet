@@ -5,6 +5,7 @@ class role::logstash7 {
 
     include ::role::logstash::collector7
     include ::profile::kibana
+    include ::profile::kibana::httpd_proxy
     #include ::role::logstash::apifeatureusage
     include ::profile::prometheus::logstash_exporter
     include ::profile::tlsproxy::envoy # TLS termination
