@@ -217,6 +217,11 @@ node 'centrallog1001.eqiad.wmnet', 'centrallog2001.codfw.wmnet' {
     role(syslog::centralserver)
 }
 
+# system for censorship monitoring scripts (T239250)
+node 'cescout1001.eqiad.wmnet' {
+    role(insetup)
+}
+
 node /^cloudstore100[89]\.wikimedia\.org/ {
     role(wmcs::nfs::secondary)
 }
