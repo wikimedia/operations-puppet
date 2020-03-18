@@ -403,3 +403,8 @@ groups:
     expr: sum by(local_port, local_address, instance) (max_over_time(node_ipvs_backend_connections_active[5m]))
   - record: local_port_local_address_instance:node_ipvs_backend_connections_inactive:max5m
     expr: sum by(local_port, local_address, instance) (max_over_time(node_ipvs_backend_connections_inactive[5m]))
+
+- name: mediawiki
+  rules:
+  - record: cluster_method:mediawiki_http_requests_duration_count:rate2m
+    expr: sum by (cluster, method) (rate(mediawiki_http_requests_duration_count[2m]))
