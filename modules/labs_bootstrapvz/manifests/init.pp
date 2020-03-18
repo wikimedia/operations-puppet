@@ -72,7 +72,7 @@ class labs_bootstrapvz() {
     $fqdnregex = "s/${::fqdn}/_FQDN_/g"
 
     # We can't just use $::servername here because the master
-    #  returns cloud-puppetmaster-01 vs. the service name, labs-puppetmaster
+    #  returns cloud-puppetmaster-03 vs. the service name, puppetmaster.cloudinfra.wmflabs.org
     $puppetmaster = hiera('puppetmaster')
     $masterregex = "s/${puppetmaster}/_MASTER_/g"
 

@@ -354,8 +354,6 @@ wikimedia_clusters:
       codfw: []
 
 profile::mariadb::cloudinfra::puppetmasters:
-- cloud-puppetmaster-01.cloudinfra.eqiad.wmflabs
-- cloud-puppetmaster-02.cloudinfra.eqiad.wmflabs
 - cloud-puppetmaster-03.cloudinfra.eqiad.wmflabs
 - cloud-puppetmaster-04.cloudinfra.eqiad.wmflabs
 profile::mariadb::cloudinfra::cloudinfra_dbs:
