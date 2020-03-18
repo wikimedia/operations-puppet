@@ -1,7 +1,19 @@
-# config file for passive checks from the payments systems
-# payments system hosts report by passive checks to avoid nrpe/ssh
+# config file for passive checks from fundraising systems
 
-# AUTH
+# HOST DEFINITIONS
+
+#define host {
+#    host_name                fran1001
+#    address                  10.64.40.110
+#    check_command            check_ping!500,20%!2000,100%
+#    max_check_attempts       2
+#    notification_options     d,u,r,f
+#    contact_groups           fr-tech-ops
+#    notification_interval    0
+#    notification_period      24x7
+#    check_period             24x7
+#    hostgroups               fundraising-misc
+#}
 
 define host {
     host_name                frauth1001
@@ -29,8 +41,6 @@ define host {
     hostgroups               fundraising-auth
 }
 
-# BACKUP
-
 define host {
     host_name                frbackup2001
     address                  10.195.0.77
@@ -44,8 +54,6 @@ define host {
     hostgroups               fundraising-backup
 }
 
-# FUNDRAISING-QA
-
 define host {
     host_name                frdev1001
     address                  10.64.40.117
@@ -58,8 +66,6 @@ define host {
     check_period             24x7
     hostgroups               fundraising-qa
 }
-
-# FUNDRAISING-QUEUE
 
 define host {
     host_name                frqueue2001
@@ -99,8 +105,6 @@ define host {
     check_period             24x7
     hostgroups               fundraising-queue
 }
-
-# FUNDRAISING-DATABASE
 
 define host {
     host_name                frdb1001
@@ -167,8 +171,6 @@ define host {
     hostgroups               fundraising-database
 }
 
-# FUNDRAISING-REPORTING
-
 define host {
     host_name                frdata1001
     address                  208.80.155.10
@@ -181,8 +183,6 @@ define host {
     check_period             24x7
     hostgroups               fundraising-reporting
 }
-
-# FUNDRAISING-MONITORING
 
 define host {
     host_name                frmon1001
@@ -197,7 +197,6 @@ define host {
     hostgroups               fundraising-monitoring
 }
 
-
 define host {
     host_name                frmon2001
     address                  10.195.0.66
@@ -210,8 +209,6 @@ define host {
     check_period             24x7
     hostgroups               fundraising-monitoring
 }
-
-# PAYMENTS
 
 define host {
     host_name                payments1001
@@ -304,8 +301,6 @@ define host {
     hostgroups               fundraising-payments
 }
 
-# FUNDRAISING-PAY-LVS
-
 define host {
     host_name                pay-lvs1001
     address                  10.64.40.20
@@ -358,8 +353,6 @@ define host {
     hostgroups               fundraising-pay-lvs
 }
 
-# FUNDRAISING-BUILD
-
 define host {
     host_name                frpm1001
     address                  10.64.40.70
@@ -399,8 +392,6 @@ define host {
     hostgroups               fundraising-build
 }
 
-# FUNDRAISING-LOGGER
-
 define host {
     host_name                frlog2001
     address                  10.195.0.76
@@ -426,8 +417,6 @@ define host {
     check_period             24x7
     hostgroups               fundraising-logger
 }
-
-# FUNDRAISING-BASTION
 
 define host {
     host_name                frbast2001
@@ -455,8 +444,6 @@ define host {
     hostgroups               fundraising-bastion
 }
 
-# FUNDRAISING-CIVICRM
-
 define host {
     host_name                civi1001
     address                  10.64.40.109
@@ -482,8 +469,6 @@ define host {
     check_period             24x7
     hostgroups               fundraising-civicrm
 }
-
-# FUNDRAISING-LISTENER
 
 define host {
     host_name                frpig1001
@@ -511,8 +496,6 @@ define host {
     hostgroups               fundraising-listener
 }
 
-# FUNDRAISING-NETWORK
-
 define host {
     host_name                bismuth
     address                  10.64.40.69
@@ -526,8 +509,6 @@ define host {
     hostgroups               fundraising-network
 }
 
-# FUNDRAISING-SIEM
-
 define host {
     host_name                frav1002
     address                  10.64.40.74
@@ -540,8 +521,6 @@ define host {
     check_period             24x7
     hostgroups               fundraising-siem
 }
-
-# BANNER-LOGGER
 
 define host {
     host_name                frban1001
@@ -569,7 +548,105 @@ define host {
     hostgroups               fundraising-banner-logger
 }
 
-# template for passive services
+# HOSTGROUP DEFINITIONS
+
+define hostgroup {
+    hostgroup_name           fundraising-auth
+    alias                    Fundraising Auth
+}
+
+define hostgroup {
+    hostgroup_name           fundraising-backup
+    alias                    Fundraising Backup
+}
+
+hostgroup {
+    hostgroup_name           fundraising-banner-logger
+    alias                    Fundraising Banner Logger
+}
+
+define hostgroup {
+    hostgroup_name           fundraising-bastion
+    alias                    Fundraising Bastion
+}
+
+define hostgroup {
+    hostgroup_name           fundraising-build
+    alias                    Fundraising Build
+}
+
+define hostgroup {
+    hostgroup_name           fundraising-civicrm
+    alias                    Fundraising CiviCRM
+}
+
+define hostgroup {
+    hostgroup_name           fundraising-database
+    alias                    Fundraising Database
+}
+
+define hostgroup {
+    hostgroup_name           fundraising-database-analytics
+    alias                    Fundraising Database - Analytics
+}
+
+define hostgroup {
+    hostgroup_name           fundraising-listener
+    alias                    Fundraising Payments Listener
+}
+
+define hostgroup {
+    hostgroup_name           fundraising-logger
+    alias                    Fundraising Logger
+}
+
+define hostgroup {
+    hostgroup_name           fundraising-misc
+    alias                    Fundraising Misc
+}
+
+define hostgroup {
+    hostgroup_name           fundraising-monitoring
+    alias                    Fundraising Monitoring
+}
+
+define hostgroup {
+    hostgroup_name           fundraising-network
+    alias                    Fundraising Network
+}
+
+define hostgroup {
+    hostgroup_name           fundraising-pay-lvs
+    alias                    Fundraising Payments LVS
+}
+
+define hostgroup {
+    hostgroup_name           fundraising-payments
+    alias                    Payments Servers
+}
+
+define hostgroup {
+    hostgroup_name           fundraising-qa
+    alias                    Fundraising QA
+}
+
+define hostgroup {
+    hostgroup_name           fundraising-queue
+    alias                    Fundraising Queue
+}
+
+define hostgroup {
+    hostgroup_name           fundraising-reporting
+    alias                    Fundraising Reporting
+}
+
+define hostgroup {
+    hostgroup_name           fundraising-siem
+    alias                    Fundraising SIEM
+}
+
+# PASSIVE SERVICES TEMPLATE
+
 define service {
     name                     passive-service
     active_checks_enabled    0
@@ -594,13 +671,71 @@ define service {
     max_check_attempts       2
 }
 
+# SERVICES - HOST
 
-# fundraising-payments hostgroup
+# frav1002
 
-define hostgroup {
-    hostgroup_name           fundraising-payments
-    alias                    Payments Servers
+define service {
+    use                      passive-service
+    service_description      check_log_messages
+    host_name                frav1002
+    contact_groups           fr-tech,fr-tech-ops
 }
+
+# frdb1002 (these can be run on any db in the replication cluster)
+
+define service {
+    use                      passive-service
+    service_description      check_missing_thank_yous
+    host_name                frdb1002
+    contact_groups           fr-tech,fr-tech-ops
+}
+
+define service {
+    use                      passive-service
+    service_description      check_recurring_gc_contribs_missed
+    host_name                frdb1002
+    contact_groups           fr-tech,fr-tech-ops
+}
+
+define service {
+    use                      passive-service
+    service_description      check_recurring_gc_failures_missed
+    host_name                frdb1002
+    contact_groups           fr-tech,fr-tech-ops
+}
+
+define service {
+    use                      passive-service
+    service_description      check_recurring_gc_jobs_required
+    host_name                frdb1002
+    contact_groups           fr-tech,fr-tech-ops
+}
+
+define service {
+    use                      passive-service
+    service_description      check_recurring_gc_schedule_sanity
+    host_name                frdb1002
+    contact_groups           fr-tech,fr-tech-ops
+}
+
+# frdev1001
+
+#define service {
+#    use                      passive-service
+#    service_description      check_mysql
+#    host_name                frdev1001
+#}
+
+#define service {
+#    use                      passive-service
+#    service_description      check_ssl
+#    host_name                frdev1001
+#}
+
+# SERVICES - HOSTGROUP
+
+# fundraising-payments
 
 define service {
     use                      passive-service
@@ -694,12 +829,7 @@ define service {
 }
 
 
-# fundraising-logger hostgroup
-
-define hostgroup {
-    hostgroup_name           fundraising-logger
-    alias                    Fundraising Logger
-}
+# fundraising-logger
 
 define service {
     use                      passive-service
@@ -756,12 +886,7 @@ define service {
 }
 
 
-# fundraising-build hostgroup
-
-define hostgroup {
-    hostgroup_name           fundraising-build
-    alias                    Fundraising Build
-}
+# fundraising-build
 
 define service {
     use                      passive-service
@@ -817,13 +942,63 @@ define service {
     hostgroup_name           fundraising-build
 }
 
+# fundraising-misc
 
-# fundraising-monitoring hostgroup
-
-define hostgroup {
-    hostgroup_name           fundraising-monitoring
-    alias                    Fundraising Monitoring
+define service {
+    use                      passive-service
+    service_description      check_disk
+    hostgroup_name           fundraising-misc
 }
+
+define service {
+    use                      passive-service
+    service_description      check_load
+    hostgroup_name           fundraising-misc
+}
+
+define service {
+    use                      passive-service
+    service_description      check_procs
+    hostgroup_name           fundraising-misc
+}
+
+define service {
+    use                      passive-service
+    service_description      check_puppetrun
+    hostgroup_name           fundraising-misc
+}
+
+define service {
+    use                      passive-service
+    service_description      check_raid
+    hostgroup_name           fundraising-misc
+}
+
+define service {
+    use                      passive-service
+    service_description      check_rsyslog_backlog
+    hostgroup_name           fundraising-misc
+}
+
+define service {
+    use                      passive-service
+    service_description      check_swap
+    hostgroup_name           fundraising-misc
+}
+
+define service {
+    use                      passive-service
+    service_description      check_timesync
+    hostgroup_name           fundraising-misc
+}
+
+define service {
+    use                      passive-service
+    service_description      check_zombie
+    hostgroup_name           fundraising-misc
+}
+
+# fundraising-monitoring
 
 define service {
     use                      passive-service
@@ -880,12 +1055,7 @@ define service {
 }
 
 
-# fundraising-pay-lvs hostgroup
-
-define hostgroup {
-    hostgroup_name           fundraising-pay-lvs
-    alias                    Fundraising Payments LVS
-}
+# fundraising-pay-lvs
 
 define service {
     use                      passive-service
@@ -941,12 +1111,7 @@ define service {
     hostgroup_name           fundraising-pay-lvs
 }
 
-# fundraising-queue hostgroup
-
-define hostgroup {
-    hostgroup_name           fundraising-queue
-    alias                    Fundraising Queue
-}
+# fundraising-queue
 
 define service {
     use                      passive-service
@@ -1010,12 +1175,7 @@ define service {
 }
 
 
-# fundraising-bastion hostgroup
-
-define hostgroup {
-    hostgroup_name           fundraising-bastion
-    alias                    Fundraising Bastion
-}
+# fundraising-bastion
 
 define service {
     use                      passive-service
@@ -1072,12 +1232,7 @@ define service {
 }
 
 
-# fundraising-reporting hostgroup
-
-define hostgroup {
-    hostgroup_name           fundraising-reporting
-    alias                    Fundraising Reporting
-}
+# fundraising-reporting
 
 define service {
     use                      passive-service
@@ -1139,13 +1294,7 @@ define service {
     hostgroup_name           fundraising-reporting
 }
 
-
-# fundraising-database hostgroup
-
-define hostgroup {
-    hostgroup_name           fundraising-database
-    alias                    Fundraising Database
-}
+# fundraising-database
 
 define service {
     use                      passive-service
@@ -1157,12 +1306,6 @@ define service {
     use                      passive-service
     service_description      check_load
     hostgroup_name           fundraising-database
-}
-
-define service {
-    use                      passive-service
-    service_description      check_missing_thank_yous
-    host_name                frdb1002
 }
 
 define service {
@@ -1191,36 +1334,6 @@ define service {
 
 define service {
     use                      passive-service
-    service_description      check_recurring_gc_contribs_missed
-    host_name                frdb1002
-}
-
-define service {
-    use                      passive-service
-    service_description      check_recurring_gc_failures_missed
-    host_name                frdb1002
-}
-
-define service {
-    use                      passive-service
-    service_description      check_recurring_gc_jobs_required
-    host_name                frdb1002
-}
-
-define service {
-    use                      passive-service
-    service_description      check_recurring_gc_schedule_sanity
-    host_name                frdb1002
-}
-
-define service {
-    use                      passive-service
-    service_description      check_rsyslog_backlog
-    host_name                frdb1002
-}
-
-define service {
-    use                      passive-service
     service_description      check_swap
     hostgroup_name           fundraising-database
 }
@@ -1237,13 +1350,7 @@ define service {
     hostgroup_name           fundraising-database
 }
 
-
-# fundraising-database-analytics hostgroup
-
-define hostgroup {
-    hostgroup_name           fundraising-database-analytics
-    alias                    Fundraising Database - Analytics
-}
+# fundraising-database-analytics
 
 define service {
     use                      passive-service
@@ -1300,12 +1407,7 @@ define service {
 }
 
 
-# fundraising-civicrm hostgroup
-
-define hostgroup {
-    hostgroup_name           fundraising-civicrm
-    alias                    Fundraising CiviCRM
-}
+# fundraising-civicrm
 
 define service {
     use                      passive-service
@@ -1387,12 +1489,7 @@ define service {
 }
 
 
-# fundraising-listener hostgroup
-
-define hostgroup {
-    hostgroup_name           fundraising-listener
-    alias                    Payments Listener
-}
+# fundraising-listener
 
 define service {
     use                      passive-service
@@ -1492,12 +1589,7 @@ define service {
 }
 
 
-# fundraising-qa hostgroup
-
-define hostgroup {
-    hostgroup_name           fundraising-qa
-    alias                    Fundraising QA
-}
+# fundraising-qa
 
 define service {
     use                      passive-service
@@ -1566,12 +1658,7 @@ define service {
 }
 
 
-# fundraising-backup hostgroup
-
-define hostgroup {
-    hostgroup_name           fundraising-backup
-    alias                    Fundraising Backup
-}
+# fundraising-backup
 
 define service {
     use                      passive-service
@@ -1628,12 +1715,7 @@ define service {
 }
 
 
-# fundraising-auth hostgroup
-
-define hostgroup {
-    hostgroup_name           fundraising-auth
-    alias                    Fundraising Backup
-}
+# fundraising-auth
 
 define service {
     use                      passive-service
@@ -1701,12 +1783,7 @@ define service {
     hostgroup_name           fundraising-auth
 }
 
-# fundraising-network hostgroup
-
-define hostgroup {
-    hostgroup_name           fundraising-network
-    alias                    Fundraising Network
-}
+# fundraising-network
 
 define service {
     use                      passive-service
@@ -1762,12 +1839,7 @@ define service {
     hostgroup_name           fundraising-network
 }
 
-# fundraising-siem hostgroup
-
-define hostgroup {
-    hostgroup_name           fundraising-siem
-    alias                    Fundraising Network
-}
+# fundraising-siem
 
 define service {
     use                      passive-service
@@ -1823,19 +1895,7 @@ define service {
     hostgroup_name           fundraising-siem
 }
 
-define service {
-    use                      passive-service
-    service_description      check_log_messages
-    hostgroup_name           fundraising-siem
-    #contact_groups           fr-tech,fr-tech-ops
-}
-
-# fundraising-banner-logger hostgroup
-
-define hostgroup {
-    hostgroup_name           fundraising-banner-logger
-    alias                    Fundraising Banner Logger
-}
+# fundraising-banner-logger
 
 define service {
     use                      passive-service
