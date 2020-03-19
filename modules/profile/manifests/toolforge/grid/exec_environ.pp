@@ -711,7 +711,7 @@ class profile::toolforge::grid::exec_environ {
         owner  => 'root',
         group  => 'root',
         mode   => '0444',
-        source => 'puppet:///modules/toollabs/override.my.cnf',
+        source => 'puppet:///modules/profile/toolforge/override.my.cnf',
     }
 
     if $::lsbdistcodename == 'jessie' {
