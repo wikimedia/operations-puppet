@@ -1,3 +1,44 @@
 ---
 lowercaseOutputLabelNames: true
 lowercaseOutputName: false
+rules:
+  - pattern: "com.facebook.presto.failureDetector<name=HeartbeatFailureDetector><>ActiveCount: (.*)"
+    name: "presto heartbeatdetector_activecount"
+    help: "Presto Heartbeat Detector: Active nodes"
+    type: GAUGE
+  - pattern: "com.facebook.presto.execution<name=QueryManager><>(.*RunningQueries).*: (.*)"
+    name: "presto querymanager_$1"
+    help: "Presto: QueryManager $1"
+    type: GAUGE
+  - pattern: "com.facebook.presto.execution<name=QueryManager><>(.*FailedQueries|UserErrorFailures|InternalFailures|ExternalFailures|StartedQueries).*TotalCount(.*): (.*)"
+    name: "presto querymanager_$1_total"
+    help: "Presto: QueryManager $1"
+    type: COUNTER
+  - pattern: "com.facebook.presto.execution<name=TaskManager><>(.*InputDataSize|OutputDataSize).*TotalCount.*: (.*)"
+    name: "presto taskmanager_$1_bytes"
+    help: "Presto: TaskManager $1 (bytes)"
+    type: COUNTER
+  - pattern: "com.facebook.presto.execution<name=TaskManager><>(.*InputPositions|OutputPositions).*TotalCount.*: (.*)"
+    name: "presto taskmanager_$1_total"
+    help: "Presto: TaskManager $1"
+    type: COUNTER
+  - pattern: "com.facebook.presto.memory<type=ClusterMemoryPool, name=(.*)><>(.+): (.*)"
+    name: "presto clustermemorypool_$2"
+    help: "Presto ClusterMemoryPool: $1 $2"
+    type: GAUGE
+    labels:
+      pool: "$1"
+  - pattern: "com.facebook.presto.execution<name=QueryManager><>(.*ExecutionTime).*AllTime.*(Avg|P[0-9]+): (.*)"
+    name: "presto querymanager_$1_$2_seconds"
+    help: "Presto: QueryManager $1 $2 (seconds)"
+    type: GAUGE
+    # Convert milliseconds to seconds
+    valueFactor: 0.001
+  - pattern: "com.facebook.presto.hive<type=NamenodeStats, name=(.*)><>ListLocatedStatus.Time.*AllTime.*(Avg|P[0-9]+): (.*)"
+    name: "presto_hive_ListLocatedStatus_$2_seconds"
+    help: "Presto: Hive ListLocatedStatus $2 (seconds)"
+    type: GAUGE
+    # Convert milliseconds to seconds
+    valueFactor: 0.001
+    labels:
+      catalog: "$1"
