@@ -3478,6 +3478,7 @@ users:
     name: gsingers
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIISv18qbNemqdao4YBxgt881oWOeKJp3tKg0Ke6eRYwm gingersoll@wikimedia.org
+    krb: present
   keepit-ssh:
     ensure: present
     realname: CherRaye Glenn
