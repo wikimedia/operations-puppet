@@ -2,7 +2,11 @@
 #
 # Supports redirects and aliases for old toolserver references.
 #
-# filtertags: labs-project-toolserver-legacy
+# filtertags: wmcs-project-toolserver-legacy
+
+# TODO: delete this after the VM is switched to role::wmcs::toolserver_legacy
 class role::toollabs::legacy {
-    include ::toolserver_legacy
+    system::role { $name: }
+
+    include ::profile::wmcs::toolserver_legacy
 }
