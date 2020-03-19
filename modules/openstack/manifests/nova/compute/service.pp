@@ -92,7 +92,7 @@ class openstack::nova::compute::service(
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        content => template('openstack/newton/nova/compute/libvirtd.conf.erb'),
+        content => template("openstack/${version}/nova/compute/libvirtd.conf.erb"),
         notify  => Service['libvirtd'],
         require => [Package['nova-compute'], File['/var/lib/nova/cacert.pem']]
     }
@@ -101,7 +101,7 @@ class openstack::nova::compute::service(
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        content => template('openstack/newton/nova/compute/libvirt.default.erb'),
+        content => template("openstack/${version}/nova/compute/libvirt.default.erb"),
         notify  => Service['libvirtd'],
         require => Package['nova-compute'],
     }
@@ -110,7 +110,7 @@ class openstack::nova::compute::service(
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        content => template('openstack/newton/nova/compute/nova-compute.conf.erb'),
+        content => template("openstack/${version}/nova/compute/nova-compute.conf.erb"),
         notify  => Service['nova-compute'],
         require => Package['nova-compute'],
     }
