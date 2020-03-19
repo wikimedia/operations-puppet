@@ -18,6 +18,9 @@ profile::services_proxy::envoy::listeners:
     timeout: '10s'
     service: eventgate-analytics
     keepalive: '4.5s'
+    retry:
+      retry_on: "5xx"
+      num_retries: 1
   - name: eventgate-main
     port: 6005
     timeout: '10s'
