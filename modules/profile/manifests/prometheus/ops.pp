@@ -403,6 +403,7 @@ class profile::prometheus::ops (
     $icinga_jobs = [
       {
         'job_name'        => 'icinga',
+        'scrape_timeout'  => '20s',
         'file_sd_configs' => [
           { 'files' => [ "${targets_path}/icinga_*.yaml" ]}
         ],
