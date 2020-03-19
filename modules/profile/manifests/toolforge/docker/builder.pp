@@ -17,7 +17,14 @@ class profile::toolforge::docker::builder(
         require         => Class['::profile::docker::storage'],
     }
 
-    class { '::toollabs::images': }
+    class { '::docker::baseimages':
+        docker_registry => $docker_registry,
+    }
+
+    git::clone { 'operations/docker-images/toollabs-images':
+        ensure    => present,
+        directory => '/srv/images/toollabs',
+    }
 
     # Registry credentials require push privilages
     # uses strict_encode64 since encode64 adds newlines?!
