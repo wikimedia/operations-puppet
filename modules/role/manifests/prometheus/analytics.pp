@@ -194,7 +194,7 @@ class role::prometheus::analytics {
 
     prometheus::jmx_exporter_config{ "presto_analytics_${::site}":
         dest       => "${targets_path}/jmx_presto_analytics_${::site}.yaml",
-        class_name => 'profile::presto::server',
+        class_name => 'role::analytics_cluster::presto::server',
         site       => $::site,
     }
 
