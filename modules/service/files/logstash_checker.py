@@ -115,9 +115,8 @@ class CheckService(object):
     def _mwdeploy_query(self):
         """Return a query that tracks MediaWiki deploy problems."""
         query = ('host:("%(host)s") '
-                 'AND ((type:mediawiki AND '
-                 '(channel:(fatal OR exception OR error))) OR '
-                 '(type:syslog AND program:php7.2-fpm AND level:ERR))'
+                 'AND type:mediawiki '
+                 'AND channel:(exception OR error)'
                  ) % vars(self)
 
         return {
@@ -153,14 +152,6 @@ class CheckService(object):
                                 "level": [
                                     "DEBUG"
                                 ]
-                            }
-                        },
-                        {
-                            "match": {
-                                "message": {
-                                    "query": "SlowTimer",
-                                    "type": "phrase"
-                                }
                             }
                         }
                     ]
