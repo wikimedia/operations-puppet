@@ -14,7 +14,7 @@ load_assignment:
     - endpoint:
         address:
           socket_address:
-            address: <%= @svc_name %>.discovery.wmnet
+            address: <%= @address %>
             port_value: <%= @svc['port'] %>
 # Given we go through a load-balancer, we want to keep the number of requests that go through a single connection pool small
 max_requests_per_connection: 1000

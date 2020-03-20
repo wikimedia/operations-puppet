@@ -39,7 +39,7 @@ describe 'profile::services_proxy::envoy' do
                 keepalive: '5s',
                 http_host: 'commons.wikimedia.org',
                 service: 'appservers-https',
-                dnsdisc: 'appservers-rw'
+                upstream: 'appservers-rw.discovery.wmnet'
               },
               {
                 name: 'meta',
@@ -47,7 +47,7 @@ describe 'profile::services_proxy::envoy' do
                 timeout: '2s',
                 http_host: 'meta.wikimedia.org',
                 service: 'text-https',
-                site: 'eqiad'
+                upstream: 'text-lb.eqiad.wikimedia.org'
               },
             ],
           }

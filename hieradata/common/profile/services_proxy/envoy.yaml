@@ -48,7 +48,7 @@ profile::services_proxy::envoy::listeners:
   - name: restbase
     port: 6011
     service: restbase-https
-    dnsdisc: restbase
+    upstream: restbase.discovery.wmnet
     timeout: '10s'
 # Non-discovery records
 # Eqiad ports are at 61xx
@@ -57,39 +57,39 @@ profile::services_proxy::envoy::listeners:
     port: 6101
     service: swift-https
     timeout: '50s'
-    site: eqiad
+    upstream: ms-fe.svc.eqiad.wmnet
   - name: swift-codfw
     port: 6201
     service: swift-https
     timeout: '50s'
-    site: codfw
+    upstream: ms-fe.svc.codfw.wmnet
   - name: search-chi-eqiad
     port: 6102
     service: search-https
     timeout: '50s'
-    site: eqiad
+    upstream: search.svc.eqiad.wmnet
   - name: search-chi-codfw
     port: 6202
     service: search-https
     timeout: '50s'
-    site: codfw
+    upstream: search.svc.codfw.wmnet
   - name: search-omega-eqiad
     port: 6103
     service: search-omega-https
     timeout: '50s'
-    site: eqiad
+    upstream: search.svc.eqiad.wmnet
   - name: search-omega-codfw
     port: 6203
     service: search-omega-https
     timeout: '50s'
-    site: codfw
+    upstream: search.svc.codfw.wmnet
   - name: search-psi-eqiad
     port: 6104
     service: search-psi-https
     timeout: '50s'
-    site: eqiad
+    upstream: search.svc.eqiad.wmnet
   - name: search-psi-codfw
     port: 6204
     service: search-psi-https
     timeout: '50s'
-    site: codfw
+    upstream: search.svc.codfw.wmnet
