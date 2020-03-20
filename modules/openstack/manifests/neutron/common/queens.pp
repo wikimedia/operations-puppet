@@ -31,10 +31,14 @@ class openstack::neutron::common::queens(
     }
 
     file { '/etc/neutron/policy.json':
+        ensure => absent,
+    }
+
+    file { '/etc/neutron/policy.yaml':
             owner   => 'root',
             group   => 'root',
             mode    => '0644',
-            source  => 'puppet:///modules/openstack/queens/neutron/policy.json',
+            source  => 'puppet:///modules/openstack/queens/neutron/policy.yaml',
             require => Package['neutron-common'];
     }
 
