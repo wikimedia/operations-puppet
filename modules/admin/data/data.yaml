@@ -459,7 +459,7 @@ groups:
   deploy-aqs:
     gid: 786
     description: Deployers for the Analytics Query Service
-    members: [nuria, milimetric, joal, mforns, fdans]
+    members: [*analytics_admins_members]
     privileges: [
          'ALL = NOPASSWD: /usr/sbin/service restbase *',
          'ALL = (restbase) NOPASSWD: ALL']
@@ -616,7 +616,7 @@ groups:
   druid-admins:
     gid: 788
     description: admins for the Analytics Druid cluster
-    members: [nuria, milimetric, joal, mforns, fdans]
+    members: [*analytics_admins_members]
     privileges: ['ALL = NOPASSWD: /bin/systemctl start druid-*.service',
                  'ALL = NOPASSWD: /bin/systemctl stop druid-*.service',
                  'ALL = NOPASSWD: /bin/systemctl restart druid-*.service',
@@ -725,7 +725,7 @@ groups:
   analytics-deployers:
     gid: 812
     description: People able to deploy to analytics misc nodes.
-    members: [joal, nuria, mforns, milimetric, fdans, gilles]
+    members: [*analytics_admins_members, gilles]
   secteam-users:
     gid: 813
     description: members of wikimedia security
