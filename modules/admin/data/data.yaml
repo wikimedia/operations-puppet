@@ -500,9 +500,9 @@ groups:
     members: [krinkle, gilles, phedenskog, aaron]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   aqs-users:
-    description: Group of users for the Analytics Query Service
+    description: Group of users for the Analytics Query Service (Deprecated)
     gid: 767
-    members: [nuria, mforns]
+    members: []
   pentesters:
     description: Group of users running penetration tests
     gid: 768
