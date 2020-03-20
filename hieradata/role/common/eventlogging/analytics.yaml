@@ -1,6 +1,6 @@
 admin::groups:
   - eventlogging-admins
-  - eventlogging-roots
+
 profile::eventlogging::analytics::server::kafka_cluster: 'jumbo-eqiad'
 
 # Used to specify writer handler for eventlogging processor producer.
