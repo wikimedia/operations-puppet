@@ -665,6 +665,11 @@ host oresrdb2001 {
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
 }
 
+host otrs1001 {
+    hardware ethernet aa:00:00:34:58:37;
+    fixed-address otrs1001.eqiad.wmnet;
+}
+
 host people1001 {
     hardware ethernet aa:00:00:1f:b1:51;
     fixed-address people1001.eqiad.wmnet;
