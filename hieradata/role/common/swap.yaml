@@ -1,5 +1,4 @@
 admin::groups:
-  - notebook-roots
   - researchers
   - analytics-users
   - analytics-admins

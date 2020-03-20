@@ -580,10 +580,10 @@ groups:
                'ALL = (recommendation_api) NOPASSWD: ALL',
                'ALL = NOPASSWD: /usr/bin/firejail --join=*']
   notebook-roots:
-    description: root access on experimental notebook servers
+    description: root access on experimental notebook servers (Deprecated)
     gid: 780
     members: []
-    privileges: ['ALL = (ALL) NOPASSWD: ALL']
+    privileges: []
   labnet-users:
     description: unprivileged access on labnet servers
     gid: 781
