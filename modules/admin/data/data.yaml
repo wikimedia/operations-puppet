@@ -150,6 +150,7 @@ groups:
                  If a user is added to this group it should not
                  need to be in analytics-users or analytics-privatedata-users.
                  In case of doubt, please ask to the Analytics team.
+                 More info https://wikitech.wikimedia.org/wiki/Analytics/Data_access#Access_Groups
     members: [catrope, dduvall, mattflaschen, cooltey, marktraceur,
               jhernandez, daisy, etonkovidova, legoktm, risler,
               sbisson, matmarex, nikerabbit, dstrine, jdittrich, debt,
@@ -210,7 +211,7 @@ groups:
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   statistics-web-users:
     gid: 724
-    description: access for stats.wikimedia.org
+    description: access for stats.wikimedia.org (Deprecated)
     members: []
   statistics-privatedata-users:
     gid: 725
@@ -224,7 +225,7 @@ groups:
     members: []
   statistics-admins:
     posix_name: stats
-    description: access files created by stats user cron jobs
+    description: access files created by stats user cron jobs (Deprecated)
     members: []
     privileges: []
   oit:
@@ -239,6 +240,7 @@ groups:
                  If a user is added to this group it should not
                  need to be in researchers or analytics-privatedata-users.
                  In case of doubt, please ask to the Analytics team.
+                 More info https://wikitech.wikimedia.org/wiki/Analytics/Data_access#Access_Groups
     members: [debt, jdittrich, kharlan, brion, mhurd, santhosh]
   analytics-privatedata-users:
     gid: 731
@@ -249,6 +251,7 @@ groups:
                  If a user is added to this group it should not
                  need to be in analytics-users or researchers.
                  In case of doubt, please ask to the Analytics team.
+                 More info https://wikitech.wikimedia.org/wiki/Analytics/Data_access#Access_Groups
     members: [milimetric, aude, jforrester,
               halfak, dr0ptp4kt, bearloga, elukey, ppchelko, mneisler,
               nuria, otto, jgreen, sguebo, thargrove,
@@ -275,6 +278,7 @@ groups:
     description: Admin access to analytics cluster.
                  This will grant shell access on all Analytics Cluster nodes, as well
                  as the ability to sudo to certain Analytics Cluster system users.
+                 This group should contain members of the Analytics team.
     members: &analytics_admins_members [joal, nuria, mforns, milimetric, fdans]
     privileges: ['ALL = (hdfs)  NOPASSWD: ALL',
                  'ALL = (analytics)  NOPASSWD: ALL',
