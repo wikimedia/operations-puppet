@@ -26,11 +26,12 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "iteration": 1568030109624,
+  "iteration": 1584693674925,
   "links": [],
   "panels": [
     {
       "collapsed": false,
+      "datasource": null,
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -53,6 +54,7 @@
       "dashes": false,
       "datasource": "$prometheus",
       "fill": 1,
+      "fillGradient": 0,
       "grid": {
         "max": null,
         "min": null
@@ -80,7 +82,9 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null as zero",
-      "options": false,
+      "options": {
+        "dataLinks": []
+      },
       "percentage": false,
       "pointradius": 5,
       "points": false,
@@ -154,6 +158,7 @@
       "dashes": false,
       "datasource": "$prometheus",
       "fill": 1,
+      "fillGradient": 0,
       "grid": {
         "max": null,
         "min": null
@@ -181,7 +186,9 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null as zero",
-      "options": false,
+      "options": {
+        "dataLinks": []
+      },
       "percentage": false,
       "pointradius": 5,
       "points": false,
@@ -255,6 +262,7 @@
       "dashes": false,
       "datasource": "$prometheus",
       "fill": 1,
+      "fillGradient": 0,
       "grid": {
         "max": null,
         "min": null
@@ -283,7 +291,9 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null as zero",
-      "options": false,
+      "options": {
+        "dataLinks": []
+      },
       "percentage": false,
       "pointradius": 5,
       "points": false,
@@ -357,6 +367,7 @@
       "dashes": false,
       "datasource": "$prometheus",
       "fill": 1,
+      "fillGradient": 0,
       "grid": {
         "max": null,
         "min": null
@@ -384,7 +395,9 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null as zero",
-      "options": false,
+      "options": {
+        "dataLinks": []
+      },
       "percentage": false,
       "pointradius": 5,
       "points": false,
@@ -471,6 +484,7 @@
     },
     {
       "collapsed": false,
+      "datasource": null,
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -493,6 +507,7 @@
       "dashes": false,
       "datasource": "$prometheus",
       "fill": 0,
+      "fillGradient": 0,
       "grid": {
         "max": null,
         "min": null
@@ -520,7 +535,9 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "connected",
-      "options": false,
+      "options": {
+        "dataLinks": []
+      },
       "percentage": true,
       "pointradius": 5,
       "points": false,
@@ -601,6 +618,7 @@
       "dashes": false,
       "datasource": "$prometheus",
       "fill": 0,
+      "fillGradient": 0,
       "grid": {
         "max": null,
         "min": null
@@ -628,7 +646,9 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
-      "options": false,
+      "options": {
+        "dataLinks": []
+      },
       "percentage": false,
       "pointradius": 5,
       "points": false,
@@ -729,6 +749,7 @@
       "dashes": false,
       "datasource": "$prometheus",
       "fill": 1,
+      "fillGradient": 0,
       "grid": {
         "max": null,
         "min": null
@@ -756,7 +777,9 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
-      "options": false,
+      "options": {
+        "dataLinks": []
+      },
       "percentage": false,
       "pointradius": 5,
       "points": false,
@@ -829,7 +852,8 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "$prometheus",
-      "fill": 0,
+      "fill": 1,
+      "fillGradient": 0,
       "grid": {
         "max": null,
         "min": null
@@ -839,6 +863,110 @@
         "w": 12,
         "x": 12,
         "y": 25
+      },
+      "height": "",
+      "id": 31,
+      "interactive": true,
+      "legend": {
+        "avg": true,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "legend_counts": true,
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "options": {
+        "dataLinks": []
+      },
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "resolution": 100,
+      "scale": 1,
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "spyable": true,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "swift_container_stats_bytes_total{class=\"originals\"} - swift_container_stats_bytes_total{class=\"originals\"} offset 1h",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "Originals (now - 1h)",
+          "refId": "A"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "timezone": "browser",
+      "title": "MediaWiki Originals Uploads",
+      "tooltip": {
+        "query_as_alias": true,
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "bytes",
+          "label": "",
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      },
+      "zerofill": true
+    },
+    {
+      "aliasColors": {},
+      "annotate": {
+        "enable": false
+      },
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "$prometheus",
+      "fill": 0,
+      "fillGradient": 0,
+      "grid": {
+        "max": null,
+        "min": null
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 12,
+        "y": 32
       },
       "height": "",
       "id": 30,
@@ -857,7 +985,9 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
-      "options": false,
+      "options": {
+        "dataLinks": []
+      },
       "percentage": false,
       "pointradius": 5,
       "points": false,
@@ -923,11 +1053,12 @@
     },
     {
       "collapsed": false,
+      "datasource": null,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 32
+        "y": 39
       },
       "id": 29,
       "panels": [],
@@ -945,6 +1076,7 @@
       "dashes": false,
       "datasource": "$prometheus",
       "fill": 1,
+      "fillGradient": 0,
       "grid": {
         "max": null,
         "min": null
@@ -953,7 +1085,7 @@
         "h": 7,
         "w": 12,
         "x": 0,
-        "y": 33
+        "y": 40
       },
       "height": "",
       "id": 17,
@@ -972,7 +1104,9 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
-      "options": false,
+      "options": {
+        "dataLinks": []
+      },
       "percentage": true,
       "pointradius": 5,
       "points": false,
@@ -1066,6 +1200,7 @@
       "dashes": false,
       "datasource": "$prometheus",
       "fill": 1,
+      "fillGradient": 0,
       "grid": {
         "max": null,
         "min": null
@@ -1074,7 +1209,7 @@
         "h": 7,
         "w": 12,
         "x": 12,
-        "y": 33
+        "y": 40
       },
       "height": "",
       "id": 23,
@@ -1093,7 +1228,9 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
-      "options": false,
+      "options": {
+        "dataLinks": []
+      },
       "percentage": true,
       "pointradius": 5,
       "points": false,
@@ -1188,6 +1325,7 @@
       "dashes": false,
       "datasource": "$prometheus",
       "fill": 0,
+      "fillGradient": 0,
       "grid": {
         "max": null,
         "min": null
@@ -1196,7 +1334,7 @@
         "h": 7,
         "w": 12,
         "x": 0,
-        "y": 40
+        "y": 47
       },
       "height": "",
       "id": 24,
@@ -1215,7 +1353,9 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
-      "options": false,
+      "options": {
+        "dataLinks": []
+      },
       "percentage": true,
       "pointradius": 5,
       "points": false,
@@ -1309,6 +1449,7 @@
       "dashes": false,
       "datasource": "$prometheus",
       "fill": 0,
+      "fillGradient": 0,
       "grid": {
         "max": null,
         "min": null
@@ -1317,7 +1458,7 @@
         "h": 7,
         "w": 12,
         "x": 12,
-        "y": 40
+        "y": 47
       },
       "height": "",
       "id": 25,
@@ -1336,7 +1477,9 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
-      "options": false,
+      "options": {
+        "dataLinks": []
+      },
       "percentage": false,
       "pointradius": 5,
       "points": false,
@@ -1402,7 +1545,7 @@
     }
   ],
   "refresh": false,
-  "schemaVersion": 16,
+  "schemaVersion": 20,
   "style": "light",
   "tags": [
     "operations",
@@ -1416,7 +1559,7 @@
         "allFormat": "glob",
         "allValue": null,
         "current": {
-          "selected": true,
+          "selected": false,
           "tags": [],
           "text": "eqiad",
           "value": "eqiad"
@@ -1469,7 +1612,9 @@
           "value": "eqiad prometheus/ops"
         },
         "hide": 2,
+        "includeAll": false,
         "label": null,
+        "multi": false,
         "name": "prometheus",
         "options": [],
         "query": "prometheus",
@@ -1481,7 +1626,7 @@
     ]
   },
   "time": {
-    "from": "now-3h",
+    "from": "now-6h",
     "to": "now-1m"
   },
   "timepicker": {
@@ -1511,5 +1656,5 @@
   "timezone": "utc",
   "title": "Swift",
   "uid": "OPgmB1Eiz",
-  "version": 3
+  "version": 5
 }
