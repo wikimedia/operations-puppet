@@ -4117,3 +4117,21 @@ ldap_only_users:
     ensure: present
     realname: Sherry Snyder
     email: ssnyder@wikimedia.org
+  sebastianbergmann:
+    ensure: present
+    realname: Sebastian Bergmann
+    email: sebastian.bergmann@thephp.cc
+    expiry_date: 2020-05-30
+    expiry_contact: monica.pinedo@wikimedia.de
+  spriebsch:
+    ensure: present
+    realname: Stefan Priebsch
+    email: stefan.priebsch@thephp.cc
+    expiry_date: 2020-05-30
+    expiry_contact: monica.pinedo@wikimedia.de
+  theseer:
+    ensure: present
+    realname: Arne Blankerts
+    email: arne.blankerts@thephp.cc
+    expiry_date: 2020-05-30
+    expiry_contact: monica.pinedo@wikimedia.de
