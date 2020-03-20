@@ -19,8 +19,14 @@ $site = $facts['ipaddress'] ? {
     /^172\.16\.(1(2[8-9]|[3-9][0-9])|2([0-4][0-9]|5[0-5]))\./ => 'codfw',
     default                                                   => '(undefined)'
 }
-
-if $trusted['certname'] =~ '\.wmflabs$' or $trusted['certname'] =~ '\.wikimedia.cloud$' {
+# trusted facts are not always available with puppet master --compile (used by pcc)
+# or puppet lookup --compile.  As such we use the fqdn when the trusted facts are
+# not available T248169
+$_trusted_certname = $trusted['certname'] ? {
+    undef   => $facts['fqdn'],
+    default => $trusted['certname'],
+}
+if $_trusted_certname =~ '\.wmflabs$' or $_trusted_certname =~ '\.wikimedia.cloud$' {
     $realm = 'labs'
     # Pull the project name from the certname. CloudVPS VM certs can be:
     #  * <hostname>.<projname>.<site>.wmflabs
@@ -28,7 +34,7 @@ if $trusted['certname'] =~ '\.wmflabs$' or $trusted['certname'] =~ '\.wikimedia.
     #
     # See following page for additional context:
     # https://wikitech.wikimedia.org/wiki/Wikimedia_Cloud_Services_team/EnhancementProposals/DNS_domain_usage#Resolution
-    $pieces = $trusted['certname'].split('[.]')
+    $pieces = $_trusted_certname.split('[.]')
 
     # current / legacy FQDN.
     # This whole branch will go away eventually
