@@ -10,7 +10,7 @@ class openstack::neutron::service::queens(
         require   => Package['neutron-server', 'neutron-api'],
         subscribe => [
                       File['/etc/neutron/neutron.conf'],
-                      File['/etc/neutron/policy.yaml'],
+                      File['/etc/neutron/policy.json'],
                       File['/etc/neutron/plugins/ml2/ml2_conf.ini'],
             ],
     }

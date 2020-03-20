@@ -31,14 +31,10 @@ class openstack::neutron::common::pike(
     }
 
     file { '/etc/neutron/policy.json':
-        ensure => absent,
-    }
-
-    file { '/etc/neutron/policy.yaml':
             owner   => 'root',
             group   => 'root',
             mode    => '0644',
-            source  => 'puppet:///modules/openstack/pike/neutron/policy.yaml',
+            source  => 'puppet:///modules/openstack/pike/neutron/policy.json',
             require => Package['neutron-common'];
     }
 
