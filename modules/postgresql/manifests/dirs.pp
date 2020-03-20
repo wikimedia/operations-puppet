@@ -6,7 +6,7 @@
 #
 # Parameters:
 #   pgversion
-#       Defaults to 9.4 in Debian jessie, 9.6 in Debian Stretch and 11 in Buster
+#       Defaults to 9.6 in Debian Stretch and 11 in Buster
 #       FIXME: Just use the unversioned package name and let apt
 #       do the right thing.
 #   ensure
@@ -27,7 +27,6 @@ class postgresql::dirs(
     $pgversion        = $::lsbdistcodename ? {
         'buster'  => '11',
         'stretch' => '9.6',
-        'jessie'  => '9.4',
     },
     $ensure           = 'present',
     $root_dir         = '/var/lib/postgresql',

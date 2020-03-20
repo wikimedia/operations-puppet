@@ -4,7 +4,7 @@
 #
 # Parameters:
 #   pgversion
-#       Defaults to 9.4 in Debian jessie and 9.6 in Debian Stretch
+#       Defaults to 9.6 in Debian Stretch
 #       FIXME: Just use the unversioned package name and let apt
 #       do the right thing.
 #   ensure
@@ -30,7 +30,6 @@ class postgresql::server(
     $pgversion        = $::lsbdistcodename ? {
         'buster'  => '11',
         'stretch' => '9.6',
-        'jessie'  => '9.4',
     },
     $ensure           = 'present',
     $includes         = [],
@@ -72,10 +71,8 @@ class postgresql::server(
 
     $data_dir = "${root_dir}/${pgversion}/main"
 
-    $service_name = $::lsbdistcodename ? {
-        'jessie' => "postgresql@${pgversion}-main",
-        default  => 'postgresql',
-    }
+    $service_name = 'postgresql'
+
     exec { 'pgreload':
         command     => "/usr/bin/pg_ctlcluster ${pgversion} main reload",
         user        => 'postgres',

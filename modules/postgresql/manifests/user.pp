@@ -34,7 +34,6 @@ define postgresql::user(
     $pgversion = $::lsbdistcodename ? {
         'buster'  => '11',
         'stretch' => '9.6',
-        'jessie'  => '9.4',
     },
     $attrs = '',
     $master = true,
