@@ -14,7 +14,7 @@ class openstack::neutron::service::pike(
         require   => Package['neutron-server'],
         subscribe => [
                       File['/etc/neutron/neutron.conf'],
-                      File['/etc/neutron/policy.json'],
+                      File['/etc/neutron/policy.yaml'],
                       File['/etc/neutron/plugins/ml2/ml2_conf.ini'],
             ],
     }
