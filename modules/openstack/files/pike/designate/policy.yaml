@@ -28,7 +28,7 @@
 "delete_recordset": "rule:admin_or_projectadmin"
 "delete_tld": "rule:admin"
 "delete_tsigkey": "rule:admin"
-"delete_zone": "rule:admin_or_projectadmin"
+"delete_zone": "rule:admin"
 "delete_zone_transfer_accept": "rule:admin"
 "delete_zone_transfer_request": "rule:admin_or_projectadmin"
 "diagnostics_ping": "rule:admin"
