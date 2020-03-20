@@ -95,7 +95,8 @@ class profile::tlsproxy::envoy(
             $global_key_path = "/etc/ssl/private/${global_cert_name}.key"
         } elsif $acme_cert_name {
             acme_chief::cert {$acme_cert_name:
-                puppet_svc => 'envoyproxy.service'
+                puppet_svc => 'envoyproxy.service',
+                key_group  => 'envoy',
             }
             $global_cert_path = "/etc/acmecerts/${acme_cert_name}/live/ec-prime256v1.crt"
             $global_key_path = "/etc/acmecerts/${acme_cert_name}/live/ec-prime256v1.key"
