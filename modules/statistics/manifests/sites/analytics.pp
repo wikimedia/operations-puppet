@@ -20,7 +20,7 @@ class statistics::sites::analytics {
         directory => $document_root,
         origin    => 'https://gerrit.wikimedia.org/r/analytics/analytics.wikimedia.org',
         owner     => 'root',
-        group     => 'statistics-web-users',
+        group     => 'root',
         mode      => '0775',
     }
 
