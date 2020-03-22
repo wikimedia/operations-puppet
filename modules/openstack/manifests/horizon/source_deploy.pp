@@ -87,11 +87,15 @@ class openstack::horizon::source_deploy(
     # This is a trivial policy file that forbids everything.  We'll use it
     #  for services that we don't support to prevent Horizon from
     #  displaying spurious panels.
-    file { '/etc/openstack-dashboard/disabled_policy.json':
-        source => "puppet:///modules/openstack/${version}/horizon/disabled_policy.json",
+    file { '/etc/openstack-dashboard/disabled_policy.yaml':
+        source => "puppet:///modules/openstack/${version}/horizon/disabled_policy.yaml",
         owner  => 'root',
         mode   => '0444',
         notify => Service['apache2'],
+    }
+
+    file { '/etc/openstack-dashboard/disabled_policy.json':
+        ensure => absent,
     }
 
     scap::target { 'horizon/deploy':
