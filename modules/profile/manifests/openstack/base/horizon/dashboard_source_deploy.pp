@@ -1,5 +1,6 @@
 class profile::openstack::base::horizon::dashboard_source_deploy(
-    $version = hiera('profile::openstack::base::version'),
+    $horizon_version = hiera('profile::openstack::base::horizon_version'),
+    $openstack_version = hiera('profile::openstack::base::version'),
     $keystone_host = hiera('profile::openstack::base::keystone_host'),
     $wmflabsdotorg_admin = hiera('profile::openstack::base::designate::wmflabsdotorg_admin'),
     $wmflabsdotorg_pass = hiera('profile::openstack::base::designate::wmflabsdotorg_pass'),
@@ -15,7 +16,8 @@ class profile::openstack::base::horizon::dashboard_source_deploy(
     ) {
 
     class { '::openstack::horizon::source_deploy':
-        version              => $version,
+        horizon_version      => $horizon_version,
+        openstack_version    => $openstack_version,
         keystone_host        => $keystone_host,
         wmflabsdotorg_admin  => $wmflabsdotorg_admin,
         wmflabsdotorg_pass   => $wmflabsdotorg_pass,

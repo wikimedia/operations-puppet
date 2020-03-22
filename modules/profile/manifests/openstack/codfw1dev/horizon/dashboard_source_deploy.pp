@@ -1,5 +1,6 @@
 class profile::openstack::codfw1dev::horizon::dashboard_source_deploy(
-    $version = hiera('profile::openstack::codfw1dev::version'),
+    $horizon_version = hiera('profile::openstack::codfw1dev::horizon_version'),
+    $openstack_version = hiera('profile::openstack::codfw1dev::version'),
     $keystone_host = hiera('profile::openstack::codfw1dev::keystone_host'),
     $wmflabsdotorg_admin = hiera('profile::openstack::codfw1dev::designate::wmflabsdotorg_admin'),
     $wmflabsdotorg_pass = hiera('profile::openstack::codfw1dev::designate::wmflabsdotorg_pass'),
@@ -16,7 +17,8 @@ class profile::openstack::codfw1dev::horizon::dashboard_source_deploy(
 
     require ::profile::openstack::codfw1dev::clientpackages
     class {'::profile::openstack::base::horizon::dashboard_source_deploy':
-        version              => $version,
+        horizon_version      => $horizon_version,
+        openstack_version    => $openstack_version,
         keystone_host        => $keystone_host,
         wmflabsdotorg_admin  => $wmflabsdotorg_admin,
         wmflabsdotorg_pass   => $wmflabsdotorg_pass,

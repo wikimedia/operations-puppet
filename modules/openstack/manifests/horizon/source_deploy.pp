@@ -1,5 +1,21 @@
+# Because we deploy Horizon from source, and because
+# the OpenStack APIs are backwards-compatible, we typically
+# deploy a newer version of Horizon than the other OpenStack services.
+#
+# That means we track two different version settings here:
+#
+#  $horizon_version: the actual version of Horizon that's running
+#
+#  $openstack_version: the version used for the other openstack
+#   services on e.g. cloudcontrol1001.
+#
+# We need to know the value of $openstack_version so that we can
+# pull the policy files that Horizon uses from the appropriate services
+# and avoid having to duplicate them just for Horizon to consume.
+#
 class openstack::horizon::source_deploy(
-    $version,
+    $horizon_version,
+    $openstack_version,
     $keystone_host,
     $wmflabsdotorg_admin,
     $wmflabsdotorg_pass,
@@ -24,7 +40,7 @@ class openstack::horizon::source_deploy(
     $puppet_git_repo_key_path = '/home/horizon/.ssh/instance-puppet-user.priv'
 
     file { '/etc/openstack-dashboard/local_settings.py':
-        content => template("openstack/${version}/horizon/local_settings.py.erb"),
+        content => template("openstack/${horizon_version}/horizon/local_settings.py.erb"),
         mode    => '0444',
         owner   => 'root',
         notify  => Service['apache2'],
@@ -34,13 +50,13 @@ class openstack::horizon::source_deploy(
     #  files that the respective services use.  In the meantime, though
     #  it's useful to be able to disable not-yet-supported horizon features.
     file { '/etc/openstack-dashboard/nova_policy.yaml':
-        source => "puppet:///modules/openstack/${version}/horizon/nova_policy.yaml",
+        source => "puppet:///modules/openstack/${horizon_version}/horizon/nova_policy.yaml",
         owner  => 'root',
         mode   => '0444',
         notify => Service['apache2'],
     }
     file { '/etc/openstack-dashboard/glance_policy.json':
-        source => "puppet:///modules/openstack/${version}/horizon/glance_policy.json",
+        source => "puppet:///modules/openstack/${horizon_version}/horizon/glance_policy.json",
         owner  => 'root',
         mode   => '0444',
         notify => Service['apache2'],
@@ -51,21 +67,21 @@ class openstack::horizon::source_deploy(
     #  some permissive policies here (e.g. "") cause Horizon to panic, not ask Keystone for permission,
     #  and log out the user.
     file { '/etc/openstack-dashboard/keystone_policy.json':
-        source => "puppet:///modules/openstack/${version}/horizon/keystone_policy.json",
+        source => "puppet:///modules/openstack/${horizon_version}/horizon/keystone_policy.json",
         owner  => 'root',
         mode   => '0444',
         notify => Service['apache2'],
     }
 
     file { '/etc/openstack-dashboard/designate_policy.json':
-        source => "puppet:///modules/openstack/${version}/designate/policy.json",
+        source => "puppet:///modules/openstack/${horizon_version}/designate/policy.json",
         owner  => 'root',
         mode   => '0444',
         notify => Service['apache2'],
     }
 
     file { '/etc/openstack-dashboard/neutron_policy.json':
-        source => "puppet:///modules/openstack/${version}/neutron/policy.json",
+        source => "puppet:///modules/openstack/${horizon_version}/neutron/policy.json",
         owner  => 'root',
         mode   => '0444',
         notify => Service['apache2'],
@@ -88,7 +104,7 @@ class openstack::horizon::source_deploy(
     #  for services that we don't support to prevent Horizon from
     #  displaying spurious panels.
     file { '/etc/openstack-dashboard/disabled_policy.yaml':
-        source => "puppet:///modules/openstack/${version}/horizon/disabled_policy.yaml",
+        source => "puppet:///modules/openstack/${horizon_version}/horizon/disabled_policy.yaml",
         owner  => 'root',
         mode   => '0444',
         notify => Service['apache2'],
@@ -117,7 +133,7 @@ class openstack::horizon::source_deploy(
     }
 
     httpd::site { $webserver_hostname:
-        content => template("openstack/${version}/horizon/${webserver_hostname}.erb"),
+        content => template("openstack/${horizon_version}/horizon/${webserver_hostname}.erb"),
         require => File['/etc/openstack-dashboard/local_settings.py'],
     }
 

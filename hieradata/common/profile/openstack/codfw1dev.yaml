@@ -1,4 +1,5 @@
 profile::openstack::codfw1dev::version: 'queens'
+profile::openstack::codfw1dev::horizon_version: 'train'
 profile::openstack::codfw1dev::nova_controller: 'cloudcontrol2001-dev.wikimedia.org'
 profile::openstack::codfw1dev::nova_controller_standby: 'cloudcontrol2003-dev.wikimedia.org'
 profile::openstack::codfw1dev::glance_host: 'cloudcontrol2001-dev.wikimedia.org'
