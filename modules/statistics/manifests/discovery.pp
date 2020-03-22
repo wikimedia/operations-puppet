@@ -74,24 +74,11 @@ class statistics::discovery (
         logfile_group     => $group,
         syslog_force_stop => true,
         use_kerberos      => $use_kerberos,
+        slice             => 'user.slice',
         require           => [
             Class['::statistics::compute'],
             Git::Clone['wikimedia/discovery/golden'],
             Mariadb::Config::Client['discovery-stats']
         ],
     }
-
-    cron { 'wikimedia-discovery-golden':
-        ensure  => absent,
-        command => "cd ${dir}/golden && sh main.sh >> ${log_dir}/golden-daily.log 2>&1",
-        hour    => '5',
-        minute  => '0',
-        require => [
-            Class['::statistics::compute'],
-            Git::Clone['wikimedia/discovery/golden'],
-            Mariadb::Config::Client['discovery-stats']
-        ],
-        user    => $user,
-    }
-
 }
