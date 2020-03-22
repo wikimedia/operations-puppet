@@ -67,6 +67,11 @@
 #   via Kerberos.
 #   Default: false
 #
+#  [*slice*]
+#    Run the systemd timer's service unit under a specific slice.
+#    By default the service unit will run under the system.slice.
+#    Default: undef (do not add any Slice setting to the unit)
+#
 define kerberos::systemd_timer(
     $description,
     $command,
@@ -84,6 +89,7 @@ define kerberos::systemd_timer(
     $use_kerberos = false,
     $syslog_identifier = undef,
     $ensure = present,
+    Optional[Pattern[/\w+\.slice/]] $slice = undef,
 ) {
 
     require ::kerberos::wrapper
@@ -118,5 +124,6 @@ define kerberos::systemd_timer(
         logfile_perms             => $logfile_perms,
         syslog_identifier         => $syslog_identifier,
         syslog_force_stop         => $syslog_force_stop,
+        slice                     => $slice,
     }
 }
