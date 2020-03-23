@@ -34,3 +34,5 @@ profile::query_service::use_revisions: true
 # exclude wdqs hosts from screen monitoring
 # they are often used to monitor logs, for example by smalyshev
 monitor_screens: false
+
+profile::query_service::blazegraph::monitoring_enabled: true

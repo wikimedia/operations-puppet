@@ -13,6 +13,7 @@ class profile::query_service::blazegraph(
     String $contact_groups = hiera('contactgroups', 'admins'),
     Integer[0] $lag_warning  = hiera('profile::query_service::lag_warning', 1200),
     Integer[0] $lag_critical = hiera('profile::query_service::lag_critical', 3600),
+    Boolean $monitoring_enabled = lookup('profile::query_service::blazegraph::monitoring_enabled', { 'default_value' => false}),
     Optional[String] $sparql_query_stream = hiera('profile::query_service::sparql_query_stream', undef),
     Optional[String] $event_service_endpoint = hiera('profile::query_service::event_service_endpoint', undef)
 ) {
@@ -72,17 +73,19 @@ class profile::query_service::blazegraph(
         extra_jvm_opts        => $default_extra_jvm_opts + $event_service_jvm_opts + $extra_jvm_opts + "-javaagent:${prometheus_agent_path}=${prometheus_agent_port_blazegraph}:${prometheus_agent_config_blazegraph}"
     }
 
-    class { 'query_service::monitor::blazegraph':
-        username       => $username,
-        contact_groups => $contact_groups,
-        lag_warning    => $lag_warning,
-        lag_critical   => $lag_critical,
-    }
+    if $monitoring_enabled {
+        class { 'query_service::monitor::blazegraph':
+            username       => $username,
+            contact_groups => $contact_groups,
+            lag_warning    => $lag_warning,
+            lag_critical   => $lag_critical,
+        }
 
-    query_service::monitor::blazegraph_instance { $instance_name:
-        username        => $username,
-        contact_groups  => $contact_groups,
-        port            => 9999,
-        prometheus_port => 9193,
+        query_service::monitor::blazegraph_instance { $instance_name:
+            username        => $username,
+            contact_groups  => $contact_groups,
+            port            => 9999,
+            prometheus_port => 9193,
+        }
     }
 }
