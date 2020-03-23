@@ -55,8 +55,9 @@ class openstack::horizon::source_deploy(
         mode   => '0444',
         notify => Service['apache2'],
     }
-    file { '/etc/openstack-dashboard/glance_policy.json':
-        source => "puppet:///modules/openstack/${horizon_version}/horizon/glance_policy.json",
+
+    file { '/etc/openstack-dashboard/glance_policy.yaml':
+        source => "puppet:///modules/openstack/${openstack_version}/glance/policy.yaml",
         owner  => 'root',
         mode   => '0444',
         notify => Service['apache2'],
@@ -71,6 +72,10 @@ class openstack::horizon::source_deploy(
         owner  => 'root',
         mode   => '0444',
         notify => Service['apache2'],
+    }
+
+    file { '/etc/openstack-dashboard/glance_policy.json':
+        ensure => absent,
     }
 
     file { '/etc/openstack-dashboard/designate_policy.json':
