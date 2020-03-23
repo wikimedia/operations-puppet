@@ -46,9 +46,6 @@ class openstack::horizon::source_deploy(
         notify  => Service['apache2'],
     }
 
-    # In the perfect future, Horizon policies will be the same
-    #  files that the respective services use.  In the meantime, though
-    #  it's useful to be able to disable not-yet-supported horizon features.
     file { '/etc/openstack-dashboard/nova_policy.yaml':
         source => "puppet:///modules/openstack/${openstack_version}/nova/common/policy.yaml",
         owner  => 'root',
@@ -70,6 +67,12 @@ class openstack::horizon::source_deploy(
         notify => Service['apache2'],
     }
 
+    file { '/etc/openstack-dashboard/neutron_policy.yaml':
+        source => "puppet:///modules/openstack/${openstack_version}/neutron/policy.yaml",
+        owner  => 'root',
+        mode   => '0444',
+        notify => Service['apache2'],
+    }
 
     # We need a horizon-specific keystone policy because horizon does weird/special
     #  things for admin_required policies which I don't totally understand.  In particular,
@@ -91,10 +94,7 @@ class openstack::horizon::source_deploy(
     }
 
     file { '/etc/openstack-dashboard/neutron_policy.json':
-        source => "puppet:///modules/openstack/${horizon_version}/neutron/policy.json",
-        owner  => 'root',
-        mode   => '0444',
-        notify => Service['apache2'],
+        ensure => absent,
     }
 
     # A user and group to run this as
