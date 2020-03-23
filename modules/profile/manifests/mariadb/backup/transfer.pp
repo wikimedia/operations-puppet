@@ -63,7 +63,7 @@ class profile::mariadb::backup::transfer {
     cron { 'regular_snapshot':
         minute  => 0,
         hour    => 19,
-        weekday => [0, 2, 3, 4, 5],
+        weekday => [0, 2, 3, 4],
         user    => 'root',
         command => "/usr/bin/systemd-cat -t mariadb-snapshots /usr/bin/python3 \
 /usr/local/bin/remote_backup_mariadb.py 2>&1",
