@@ -14,6 +14,9 @@ def get_addresses(hostnames)
   answers.flatten.sort
 end
 -%>
+# Without the following line we seem to have 5-15 sec lag for most requests
+spring.autoconfigure.exclude=org.springframework.boot.autoconfigure.web.embedded.EmbeddedWebServerFactoryCustomizerAutoConfiguration
+
 server.ssl.keyStore=file:<%= @keystore_path %>
 server.ssl.keyStorePassword=<%= @keystore_password %>
 server.ssl.keyPassword=<%= @key_password %>
