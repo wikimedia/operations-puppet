@@ -281,6 +281,7 @@ class icinga(
         require => File[$patches_dir]
     }
 
+    require_package('patch')
     exec { 'apply disable_autocomplete.patch':
         command => "/usr/bin/patch --forward /usr/share/icinga/htdocs/menu.html ${patches_dir}/disable_autocomplete.patch",
         unless  => "/usr/bin/patch --reverse --dry-run -f /usr/share/icinga/htdocs/menu.html ${patches_dir}/disable_autocomplete.patch",
