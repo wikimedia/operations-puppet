@@ -1,3 +1,6 @@
+profile::tlsproxy::envoy::services:
+  - server_names: ['*']
+    port: 8080
 profile::tlsproxy::envoy::acme_cert_name: idp
 profile::idp::services:
   icinga:
