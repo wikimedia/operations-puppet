@@ -22,10 +22,10 @@ logspam - summarize exceptions from production logs
 
 =head1 DESCRIPTION
 
-This deduplicates exceptions from exception.log, error.log, and fatal.log and
-prints them with a leading count of their occurrence and a snippet of the
-stacktrace.  In the interests of concision, it shortens exception names by
-removing any trailing "Exception" and condenses file paths.
+This deduplicates exceptions from exception.log and error.log, then prints them
+with a leading count of their occurrence and a snippet of the stacktrace.  In
+the interests of concision, it shortens exception names by removing any
+trailing "Exception" and condenses file paths.
 
 In practice, you may want the logspam-watch wrapper.
 
@@ -48,20 +48,18 @@ chomp $terminal_width;
 # Default to /srv/mw-log, use MW_LOG_DIRECTORY if available from
 # environment:
 my $mw_log_dir = '/srv/mw-log';
-if (defined $ENV{MW_LOG_DIRECTORY}) {
-  $mw_log_dir = $ENV{MW_LOG_DIRECTORY};
-}
+$mw_log_dir = $ENV{MW_LOG_DIRECTORY}
+  if defined $ENV{MW_LOG_DIRECTORY};
 
 # Be lazy and shell out to tail:
 my $log_path_str = join ' ', (
   "${mw_log_dir}/exception.log",
   "${mw_log_dir}/error.log",
-  "${mw_log_dir}/fatal.log",
 );
 my $loglines =  `tail -n 3000 -q $log_path_str`;
 
 # Treat the datestamped log line as a separator between records - we're
-# interested in how often the stack trace appears
+# interested in how often the stack trace appears, not when it appears.
 my @errors = split m{
 
   ^           # Start of datestamped log line
@@ -119,6 +117,8 @@ foreach (@errors) {
   $unique_errors{$unique_error_msg}++;
 }
 
+# Set a hard limit of 22 characters for exceptions, for pathological cases:
+$max_exception_len = min($max_exception_len, 22);
 my $display_width = $terminal_width - ($max_exception_len + 16);
 
 foreach (keys %unique_errors) {
