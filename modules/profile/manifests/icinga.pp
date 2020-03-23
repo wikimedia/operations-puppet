@@ -289,8 +289,10 @@ class profile::icinga(
         command                   => '/usr/local/bin/sync-check-icinga-contacts',
         interval                  => {
             'start'    => 'OnCalendar',
-            # Daily splayed by the hostname ID (e.g. 1001) modulo 24h at minute 19
-            'interval' => "*-*-* ${sprintf('%02d', Integer($::hostname[-4, -1]) % 24)}:19:00",
+            # Daily splayed by hostname at minute 19.
+            # Depending on fqdn_rand seed there's the risk of not splaying
+            # evenly throught the day.
+            'interval' => "*-*-* ${sprintf('%02d', fqdn_rand(24, 1))}:19:00",
         },
         logging_enabled           => false,
         monitoring_enabled        => true,
