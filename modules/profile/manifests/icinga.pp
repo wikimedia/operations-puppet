@@ -256,11 +256,12 @@ class profile::icinga(
 
     $metamonitor_home = '/var/lib/metamonitor'
     user { 'metamonitor':
-        ensure => present,
-        system => true,
-        home   => $metamonitor_home,
-        shell  => '/bin/bash',
-        groups => $icinga_group,
+        ensure     => present,
+        system     => true,
+        home       => $metamonitor_home,
+        managehome => true,
+        shell      => '/bin/bash',
+        groups     => $icinga_group,
     }
 
     file { "${metamonitor_home}/.ssh":
