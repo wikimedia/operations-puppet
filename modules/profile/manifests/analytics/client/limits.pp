@@ -15,4 +15,16 @@ class profile::analytics::client::limits {
     class { 'systemd::slice::all_users':
         all_users_global_slice_config => template('profile/analytics/client/limits/user-resource-control.conf.erb'),
     }
+
+    # By default the cron.service unit runs under the system.slice.
+    # This means that all crontab's processes escape the limits imposed
+    # by the user.slice, so an explicit override is needed.
+    $cron_slice = 'user.slice'
+    systemd::unit { 'cron':
+        ensure   => present,
+        content  => template('profile/analytics/client/limits/cron-override.systemd.erb'),
+        restart  => false,
+        override => true,
+    }
+
 }
