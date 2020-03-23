@@ -98,7 +98,7 @@ class profile::tlsproxy::envoy(
                 puppet_svc => 'envoyproxy.service',
                 key_group  => 'envoy',
             }
-            $global_cert_path = "/etc/acmecerts/${acme_cert_name}/live/ec-prime256v1.crt"
+            $global_cert_path = "/etc/acmecerts/${acme_cert_name}/live/ec-prime256v1.chained.crt"
             $global_key_path = "/etc/acmecerts/${acme_cert_name}/live/ec-prime256v1.key"
         } else {
             fail(['If you want non-sni TLS to be supported, you need to define ',
