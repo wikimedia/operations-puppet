@@ -63,6 +63,14 @@ class openstack::horizon::source_deploy(
         notify => Service['apache2'],
     }
 
+    file { '/etc/openstack-dashboard/designate_policy.yaml':
+        source => "puppet:///modules/openstack/${openstack_version}/designate/policy.yaml",
+        owner  => 'root',
+        mode   => '0444',
+        notify => Service['apache2'],
+    }
+
+
     # We need a horizon-specific keystone policy because horizon does weird/special
     #  things for admin_required policies which I don't totally understand.  In particular,
     #  some permissive policies here (e.g. "") cause Horizon to panic, not ask Keystone for permission,
@@ -79,10 +87,7 @@ class openstack::horizon::source_deploy(
     }
 
     file { '/etc/openstack-dashboard/designate_policy.json':
-        source => "puppet:///modules/openstack/${horizon_version}/designate/policy.json",
-        owner  => 'root',
-        mode   => '0444',
-        notify => Service['apache2'],
+        ensure => absent,
     }
 
     file { '/etc/openstack-dashboard/neutron_policy.json':
