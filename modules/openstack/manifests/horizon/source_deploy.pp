@@ -50,7 +50,7 @@ class openstack::horizon::source_deploy(
     #  files that the respective services use.  In the meantime, though
     #  it's useful to be able to disable not-yet-supported horizon features.
     file { '/etc/openstack-dashboard/nova_policy.yaml':
-        source => "puppet:///modules/openstack/${openstack_version}/horizon/nova_policy.yaml",
+        source => "puppet:///modules/openstack/${openstack_version}/nova/common/policy.yaml",
         owner  => 'root',
         mode   => '0444',
         notify => Service['apache2'],
