@@ -88,3 +88,10 @@
 "os_compute_api:servers:start": "rule:admin_or_projectadmin"
 "os_compute_api:servers:stop": "rule:admin_or_projectadmin"
 "os_compute_api:servers:update": "rule:admin_or_projectadmin"
+
+
+# WMF-specific rules to control the Horizon sudo panel
+"sudorule:list": ""
+"sudorule:delete": "rule:admin_or_projectadmin"
+"sudorule:create": "rule:admin_or_projectadmin"
+"sudorule:modify": "rule:admin_or_projectadmin"
