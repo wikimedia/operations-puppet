@@ -125,6 +125,9 @@ if ( $statsd_host && $statsd_port ) {
 // Match wmf-config: logging.php
 $isParsoidCluster = ( $_SERVER['SERVERGROUP'] ?? null ) === 'parsoid';
 
+// Match mediawiki/core: WebRequest::getRequestId
+$reqId = $_SERVER['HTTP_X_REQUEST_ID'] ?? $_SERVER['UNIQUE_ID'] ?? null;
+
 // This should array match the structure of exceptions logged by MediaWiki core.
 // so that it blends in with its log channel and the Logstash dashboards
 // written for it.
@@ -146,11 +149,11 @@ $info = [
 	'type' => $isParsoidCluster ? 'parsoid-php' : 'mediawiki',
 	'normalized_message' => $message . ' in ' . basename( $err['file'] ),
 ];
-if ( isset( $_SERVER['UNIQUE_ID'] ) ) {
+if ( $reqId ) {
 	// Match mediawiki/core: MediaWiki\Logger\Monolog\WikiProcessor
-	$info['reqId'] = $_SERVER['UNIQUE_ID'];
+	$info['reqId'] = $reqId;
 	// Match mediawiki/core: MWExceptionHandler
-	$info['message'] = '[' . $info['reqId'] . '] ' . $info['message'];
+	$info['message'] = '[' . $reqId . '] ' . $info['message'];
 }
 // Match Monolog\Processor\WebProcessor
 // https://github.com/Seldaek/monolog/blob/2.0.0/src/Monolog/Processor/WebProcessor.php#L33
