@@ -903,7 +903,7 @@ service::catalog:
     - codfw
     state: production
 
-  eventstreams-tls:
+  eventstreams:
     description: Public streams of events via HTTP + SSE, backed by Kafka. eventstreams.svc.%{::site}.wmnet
     encryption: true
     ip:
