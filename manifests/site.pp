@@ -1930,6 +1930,11 @@ node /^oresrdb200[12]\.codfw\.wmnet$/ {
     role(ores::redis)
 }
 
+# new OTRS machine to replace mendelevium
+node 'otrs1001.eqiad.wmnet' {
+    role(insetup)
+}
+
 # parser cache databases
 # eqiad
 # pc1
