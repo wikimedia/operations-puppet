@@ -19,6 +19,7 @@ class openstack::nova::compute::service::queens::stretch() {
     $packages = [
         'libvirt-daemon-system',
         'libvirt-clients',
+        'python3-libvirt',
         'qemu-system',
         'spice-html5',
         'websockify',
