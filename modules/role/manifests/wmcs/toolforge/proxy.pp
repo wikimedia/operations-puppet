@@ -6,6 +6,5 @@ class role::wmcs::toolforge::proxy {
     include ::profile::toolforge::proxy
     include ::profile::toolforge::toolviews
     include ::profile::base::firewall
-    include ::profile::toolforge::ferm_handlers
     include ::profile::toolforge::prometheus_fixup
 }
