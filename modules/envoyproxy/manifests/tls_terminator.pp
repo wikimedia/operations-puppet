@@ -65,14 +65,18 @@
 # @param connect_timeout
 #     The time is seconds to wait before declaring a connection timeout to the
 #     upstream resource
+# @param retry_policy
+#     An optional hash specifying the retry policy. It should map 1:1 what 
+#     goes in the envoy configuration.
 define envoyproxy::tls_terminator(
-  Array[Envoyproxy::Tlsconfig] $upstreams = [],
+    Array[Envoyproxy::Tlsconfig] $upstreams = [],
     Optional[Stdlib::Port] $redir_port = undef,
     Boolean $access_log = false,
     Boolean $websockets = false,
     Integer $fast_open_queue = 0,
     Float $connect_timeout = 1.0,
     Float $route_timeout = 65.0,
+    Optional[Hash] $retry_policy = undef,
     Optional[String] $global_cert_path = undef,
     Optional[String] $global_key_path = undef
 ) {

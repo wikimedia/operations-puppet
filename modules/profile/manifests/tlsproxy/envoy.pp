@@ -31,6 +31,9 @@
 #        port: 9999
 #   profile::tlsproxy::envoy::global_cert_name: "appserver"
 #
+# Retries and timeouts can be defined if needed. By default we will have:
+# - 65 seconds timeout on requests
+# - 1 retry on error
 class profile::tlsproxy::envoy(
     Profile::Tlsproxy::Envoy::Sni        $sni_support = lookup('profile::tlsproxy::envoy::sni_support'),
     Stdlib::Port                         $tls_port    = lookup('profile::tlsproxy::envoy::tls_port'),
@@ -40,6 +43,8 @@ class profile::tlsproxy::envoy(
                                                 {'default_value' => undef}),
     Optional[String]  $acme_cert_name   = lookup('profile::tlsproxy::envoy::acme_cert_name',
                                                 {'default_value' => undef}),
+    Float $request_timeout = lookup('profile::tlsproxy::envoy::timeout', {'default_value' => 65.0}),
+    Boolean $retries = lookup('profile::tlsproxy::envoy::retries', {'default_value' => true}),
 ) {
     require profile::envoy
     $ensure = $profile::envoy::ensure
@@ -108,6 +113,13 @@ class profile::tlsproxy::envoy(
     }
 
     if $ensure == 'present' {
+        if $retries {
+            # Use the default envoy retry policy
+            $retry_policy = undef
+        } else {
+            $retry_policy = {'num_retries' => 0}
+        }
+
         envoyproxy::tls_terminator{ "${tls_port}": # lint:ignore:only_variable_string
             upstreams        => $upstreams,
             access_log       => false,
@@ -115,6 +127,8 @@ class profile::tlsproxy::envoy(
             fast_open_queue  => 150,
             global_cert_path => $global_cert_path,
             global_key_path  => $global_key_path,
+            retry_policy     => $retry_policy,
+            route_timeout    => $request_timeout,
         }
         ferm::service { 'envoy_tls_termination':
             proto   => 'tcp',
