@@ -15,6 +15,8 @@
 class dynamicproxy (
     Optional[Stdlib::Fqdn] $k8s_vip_fqdn = undef,
     Optional[Stdlib::Port] $k8s_vip_fqdn_port = undef,
+    Optional[String]       $canonical_scheme = 'https://',
+    Optional[String]       $canonical_domain = 'toolforge.org',
     $luahandler,
     $redis_maxmemory          = '512MB',
     $ssl_settings             = undef,

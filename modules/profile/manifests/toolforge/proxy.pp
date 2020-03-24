@@ -7,6 +7,8 @@ class profile::toolforge::proxy (
     String              $statsd       = lookup('statsd',                                {default_value => 'localhost:8125'}),
     Stdlib::Fqdn        $k8s_vip_fqdn = lookup('profile::toolforge::k8s::apiserver_fqdn',{default_value => 'k8s.tools.eqiad1.wikimedia.cloud'}),
     Stdlib::Port        $k8s_vip_port = lookup('profile::toolforge::k8s::ingress_port', {default_value => 30000}),
+    String              $canon_domain = lookup('profile::toolforge::canonical_domain',  {default_value => 'toolforge.org'}),
+    String              $canon_scheme = lookup('profile::toolforge::canonical_scheme',  {default_value => 'https://'}),
 ) {
     class { '::redis::client::python': }
 
@@ -47,6 +49,8 @@ class profile::toolforge::proxy (
         web_domain           => $web_domain,
         https_upgrade        => $do_https,
         use_acme_chief       => true,
+        canonical_domain     => $canon_domain,
+        canonical_scheme     => $canon_scheme,
     }
 
 
