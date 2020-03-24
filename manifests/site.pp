@@ -2188,14 +2188,10 @@ node /^urldownloader[12]00[12]\.wikimedia\.org/ {
 #  key: profile::openstack::eqiad1::nova::scheduler_pool
 # We try to keep a few empty as emergency fail-overs
 #  or transition hosts for maintenance to come
-node /^cloudvirt10(([023][0-9])|(1([0-4]|[7-9])))\.eqiad\.wmnet$/ {
+node /^cloudvirt10[0-3][0-9]\.eqiad\.wmnet$/ {
     role(wmcs::openstack::eqiad1::virt)
 }
 
-# CloudVPS testing ceph base storage on hypervisors T243327
-node /^cloudvirt101[56]\.eqiad\.wmnet$/ {
-    role(wmcs::openstack::eqiad1::virt_ceph)
-}
 
 # Private virt hosts for wdqs T221631
 # Temporarily running Ceph based VMs
