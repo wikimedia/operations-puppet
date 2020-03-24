@@ -21,7 +21,6 @@ define profile::mariadb::ferm_public (
         proto   => 'tcp',
         port    => $port,
         notrack => true,
-        srange  => '$INTERNAL',
     }
 
     # auxiliary port
