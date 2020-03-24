@@ -9,6 +9,10 @@
 # @param debug Enable cas debug
 # @param apache_owner The user apache runs as
 # @param apache_group The group apache runs as
+# @param priority the priority of the vhost site.  default: 99
+# @param validate_saml if true set CASValidateSAML On
+# @param enable_monitor if true an icinga check to make sure the site correctly redirects
+# @param protected_uri The protected URI endpoint which is validated if "enable_monitor" is set.  default: '/'
 # @param required_groups An array of LDAP groups allowed to access this resource
 # @param acme_cheif_cert the name of the acme chief certificate to use
 # @param proxied_as This URL represents the URL that end users may see in the event that Apache server is proxied
@@ -26,6 +30,8 @@ class profile::idp::client::httpd (
     String[1]                     $apache_group     = lookup('profile::idp::client::httpd::apache_group'),
     Integer[1,99]                 $priority         = lookup('profile::idp::client::httpd::priority'),
     Boolean                       $validate_saml    = lookup('profile::idp::client::httpd::validate_saml'),
+    Boolean                       $enable_monitor   = lookup('profile::idp::client::httpd::enable_monitor'),
+    String[1]                     $protected_uri    = lookup('profile::idp::client::httpd::protected_uri'),
     Optional[Array[String[1]]]    $required_groups  = lookup('profile::idp::client::httpd::required_groups'),
     Optional[String[1]]           $acme_chief_cert  = lookup('profile::idp::client::httpd::acme_chief_cert',
                                                             {'default_value' => undef}),
@@ -75,6 +81,13 @@ class profile::idp::client::httpd (
     httpd::site {$virtual_host:
         content  => template($vhost_content),
         priority => $priority,
+    }
+    if $enable_monitor {
+        monitoring::service {"https-${virtual_host}-unauthorized":
+            description   => "${virtual_host} requires authentication",
+            check_command => "check_sso_redirect!${virtual_host}!${protected_uri}",
+            notes_url     => 'https://wikitech.wikimedia.org/wiki/CAS-SSO/Administration',
+        }
     }
 }
 

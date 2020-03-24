@@ -128,6 +128,11 @@ define command {
     }
 
 define command {
+    command_name    check_sso_redirect
+    command_line    $USER1$/check_http -S -I $HOSTADDRESS$ -H $ARG2$ -u $ARG3$ -e "HTTP/1.1 302" -d "location: https://idp.wikimedia.org/"
+    }
+
+define command {
     command_name    check_http_port_status
     command_line    $USER1$/check_http -I $HOSTADDRESS$ -p $ARG1$ -e "HTTP/1.1 $ARG2$ "
     }
