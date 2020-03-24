@@ -9,26 +9,22 @@ class profile::toolforge::ferm_handlers (
     }
 
     file {'/usr/local/sbin/ferm_pre_handler':
-        source => 'puppet:///modules/profile/toolforge/ferm_pre_handler.sh',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
+        ensure => 'absent',
     }
 
     file {'/usr/local/sbin/ferm_post_handler':
-        source => 'puppet:///modules/profile/toolforge/ferm_post_handler.sh',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
+        ensure => 'absent',
     }
 
     ferm::conf{'ferm_pre_handler':
+        ensure    => 'absent',
         prio      => '00',
         content   => '@hook pre "/usr/local/sbin/ferm_pre_handler";',
         subscribe => File['/usr/local/sbin/ferm_pre_handler'],
     }
 
     ferm::conf{'ferm_post_handler':
+        ensure    => 'absent',
         prio      => '00',
         content   => '@hook post "/usr/local/sbin/ferm_post_handler";',
         subscribe => File['/usr/local/sbin/ferm_post_handler'],
