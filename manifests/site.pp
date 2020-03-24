@@ -756,6 +756,11 @@ node /^debmonitor[12]001\.(codfw|eqiad)\.wmnet$/ {
     role(debmonitor::server)
 }
 
+# New package build host
+node 'deneb.codfw.wmnet' {
+    role(insetup)
+}
+
 node /^dns[12345]00[12]\.wikimedia\.org$/ {
     role(dnsbox)
 }
