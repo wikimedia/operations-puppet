@@ -979,7 +979,7 @@ service::catalog:
     sites:
     - eqiad
     - codfw
-    state: production
+    state: monitoring_setup
     discovery:
     - dnsdisc: eventstreams
       active_active: true
