@@ -23,7 +23,7 @@
         "path_match" : "message",
         "match_mapping_type" : "string",
         "mapping" : {
-          "type" : "text", "norms" : false, "index_options": "docs", "copy_to": "all"
+          "type" : "text", "norms" : false, "copy_to": "all"
         }
       }
     }, {
@@ -31,7 +31,7 @@
         "match" : "*",
         "match_mapping_type" : "string",
         "mapping" : {
-          "type" : "text", "norms" : false, "index_options": "docs", "copy_to": "all",
+          "type" : "text", "norms" : false, "copy_to": "all",
           "fields" : {
             "keyword" : { "type": "keyword" }
           }
@@ -42,7 +42,7 @@
       "boolean_to_string" : {
         "match_mapping_type" : "boolean",
         "mapping" : {
-          "type" : "text", "norms": false, "index_options": "docs", "copy_to": "all",
+          "type" : "text", "norms": false, "copy_to": "all",
           "fields": {
             "keyword" : { "type": "keyword" }
           }
@@ -53,7 +53,7 @@
       "double_to_string" : {
         "match_mapping_type" : "double",
         "mapping" : {
-          "type" : "text", "index" : true, "norms": false, "index_options": "docs", "copy_to": "all",
+          "type" : "text", "index" : true, "norms": false, "copy_to": "all",
           "fields": {
             "keyword" : { "type": "keyword" }
           }
@@ -64,7 +64,7 @@
       "long_to_string" : {
         "match_mapping_type" : "long",
         "mapping" : {
-          "type" : "text", "index" : true, "norms": false, "index_options": "docs", "copy_to": "all",
+          "type" : "text", "index" : true, "norms": false, "copy_to": "all",
           "fields": {
             "keyword" : { "type": "keyword" }
           }
@@ -87,9 +87,9 @@
       },
       "host" : { "type" : "keyword","index" : true, "doc_values" : true, "copy_to": "all" },
       "level" : { "type" : "keyword", "index" : true, "doc_values" : true, "copy_to": "all" },
-      "message" : { "type" : "text", "index" : true, "norms" : false, "index_options": "docs", "copy_to": "all" },
+      "message" : { "type" : "text", "index" : true, "norms" : false, "copy_to": "all" },
       "normalized_message" : {
-        "type": "text", "index" : true, "norms" : false, "index_options": "docs", "copy_to": "all",
+        "type": "text", "index" : true, "norms" : false, "copy_to": "all",
         "fields": {
           "keyword": { "type": "keyword", "index": true, "doc_values": true }
         }
