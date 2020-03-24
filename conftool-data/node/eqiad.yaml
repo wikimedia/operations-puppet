@@ -3,10 +3,6 @@ eqiad:
     mwdebug1001.eqiad.wmnet: [apache2]
     mwdebug1002.eqiad.wmnet: [apache2]
   appserver:
-    mw1250.eqiad.wmnet: [apache2,nginx]
-    mw1251.eqiad.wmnet: [apache2,nginx]
-    mw1252.eqiad.wmnet: [apache2,nginx]
-    mw1253.eqiad.wmnet: [apache2,nginx]
     mw1254.eqiad.wmnet: [apache2,nginx]
     mw1255.eqiad.wmnet: [apache2,nginx]
     mw1256.eqiad.wmnet: [apache2,nginx]
@@ -76,10 +72,6 @@ eqiad:
     mw1411.eqiad.wmnet: [apache2,nginx]
     mw1413.eqiad.wmnet: [apache2,nginx]
   api_appserver:
-    mw1232.eqiad.wmnet: [apache2,nginx]
-    mw1233.eqiad.wmnet: [apache2,nginx]
-    mw1234.eqiad.wmnet: [apache2,nginx]
-    mw1235.eqiad.wmnet: [apache2,nginx]
     mw1276.eqiad.wmnet: [apache2,nginx]
     mw1277.eqiad.wmnet: [apache2,nginx]
     mw1278.eqiad.wmnet: [apache2,nginx]
