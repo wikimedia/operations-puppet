@@ -20,12 +20,8 @@ class openstack::neutron::l3_agent(
     }
 
     service {'neutron-l3-agent':
-        ensure    => $enabled,
-        require   => Package['neutron-l3-agent'],
-        subscribe => [
-                      File['/etc/neutron/neutron.conf'],
-                      File['/etc/neutron/policy.yaml'],
-            ],
+        ensure  => $enabled,
+        require => Package['neutron-l3-agent'],
     }
 
     sysctl::parameters { 'openstack':
