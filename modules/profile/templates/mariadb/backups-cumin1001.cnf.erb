@@ -24,12 +24,13 @@ sections:
     host: 'db1095.eqiad.wmnet'
     port: 3313
     destination: 'dbprov1002.eqiad.wmnet'
+    stop_slave: True
     order: 8
   s4:
     host: 'db1102.eqiad.wmnet'
     port: 3314
-    stop_slave: True
     destination: 'dbprov1001.eqiad.wmnet'
+    stop_slave: True
     order: 3
   s5:
     host: 'db1102.eqiad.wmnet'
