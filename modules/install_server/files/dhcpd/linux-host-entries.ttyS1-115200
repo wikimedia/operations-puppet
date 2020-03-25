@@ -1082,6 +1082,86 @@ host cp2026 {
     fixed-address cp2026.codfw.wmnet;
 }
 
+host cp2027 {
+    hardware ethernet B0:26:28:DC:01:10;
+    fixed-address cp2027.codfw.wmnet;
+}
+
+host cp2028 {
+    hardware ethernet B0:26:28:DB:CE:B0;
+    fixed-address cp2028.codfw.wmnet;
+}
+
+host cp2029 {
+    hardware ethernet B0:26:28:DB:E5:10;
+    fixed-address cp2029.codfw.wmnet;
+}
+
+host cp2030 {
+    hardware ethernet B0:26:28:DB:C6:D0;
+    fixed-address cp2030.codfw.wmnet;
+}
+
+host cp2031 {
+    hardware ethernet B0:26:28:DB:D6:20;
+    fixed-address cp2031.codfw.wmnet;
+}
+
+host cp2032 {
+    hardware ethernet B0:26:28:DB:CB:20;
+    fixed-address cp2032.codfw.wmnet;
+}
+
+host cp2033 {
+    hardware ethernet B0:26:28:DB:E5:60;
+    fixed-address cp2033.codfw.wmnet;
+}
+
+host cp2034 {
+    hardware ethernet B0:26:28:DB:C6:C0;
+    fixed-address cp2034.codfw.wmnet;
+}
+
+host cp2035 {
+    hardware ethernet B0:26:28:DB:E0:50;
+    fixed-address cp2035.codfw.wmnet;
+}
+
+host cp2036 {
+    hardware ethernet B0:26:28:DB:CC:20;
+    fixed-address cp2036.codfw.wmnet;
+}
+
+host cp2037 {
+    hardware ethernet B0:26:28:DB:DB:B0;
+    fixed-address cp2037.codfw.wmnet;
+}
+
+host cp2038 {
+    hardware ethernet B0:26:28:DC:11:B0;
+    fixed-address cp2038.codfw.wmnet;
+}
+
+host cp2039 {
+    hardware ethernet B0:26:28:DB:DD:E0;
+    fixed-address cp2039.codfw.wmnet;
+}
+
+host cp2040 {
+    hardware ethernet B0:26:28:DB:C6:10;
+    fixed-address cp2040.codfw.wmnet;
+}
+
+host cp2041 {
+    hardware ethernet B0:26:28:DB:D6:A0;
+    fixed-address cp2041.codfw.wmnet;
+}
+
+host cp2042 {
+    hardware ethernet B0:26:28:DC:10:70;
+    fixed-address cp2042.codfw.wmnet;
+}
+
 host cp3050 {
     hardware ethernet B0:26:28:6E:FE:C0;
     fixed-address cp3050.esams.wmnet;
