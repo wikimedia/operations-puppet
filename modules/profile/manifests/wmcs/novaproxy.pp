@@ -3,8 +3,8 @@ class profile::wmcs::novaproxy(
     Stdlib::Fqdn        $active_proxy = lookup('profile::wmcs::novaproxy::active_proxy', {default_value => 'localhost'}),
     Boolean             $use_ssl      = lookup('profile::wmcs::novaproxy::use_ssl',      {default_value => true}),
     Array[Stdlib::Ipv4] $banned_ips   = lookup('profile::wmcs::novaproxy::banned_ips',   {default_value => []}),
-    String              $block_ua_re  = lookup('profile::wmcs::novaproxy::block_ua_re',  {default_value => undef}),
-    String              $block_ref_re = lookup('profile::wmcs::novaproxy::block_ref_re', {default_value => undef}),
+    String              $block_ua_re  = lookup('profile::wmcs::novaproxy::block_ua_re',  {default_value => ''}),
+    String              $block_ref_re = lookup('profile::wmcs::novaproxy::block_ref_re', {default_value => ''}),
 ) {
     $proxy_nodes = join($all_proxies, ' ')
     # Open up redis to all proxies!
