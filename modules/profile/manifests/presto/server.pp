@@ -142,6 +142,14 @@ class profile::presto::server(
         $jmx_agent_port = $::profile::presto::monitoring::server::prometheus_jmx_exporter_server_port
         $jmx_agent_config_file = $::profile::presto::monitoring::server::jmx_exporter_config_file
         $extra_jvm_configs = "-javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=[::]:${jmx_agent_port}:${jmx_agent_config_file}"
+
+        nrpe::monitor_service { 'presto-server':
+            description   => 'Presto Server',
+            nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "com.facebook.presto.server.PrestoServer"',
+            contact_group => 'analytics',
+            require       => Class['presto::server'],
+            notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Presto/Administration#Presto_server_down',
+        }
     } else {
         $extra_jvm_configs = undef
     }
