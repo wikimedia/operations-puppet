@@ -9,6 +9,9 @@ class profile::ci::docker(
     # jobs that require similar image building workloads
     require_package('blubber')
 
+    # Let us elevate permissions to the user running a containerized process
+    require_package('acl')
+
     apt::repository { 'thirdparty-ci':
         uri        => 'http://apt.wikimedia.org/wikimedia',
         dist       => "${::lsbdistcodename}-wikimedia",
