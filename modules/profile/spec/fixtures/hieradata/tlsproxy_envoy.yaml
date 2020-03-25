@@ -4,3 +4,6 @@ profile::envoy::ensure: present
 profile::tlsproxy::envoy::websockets: true
 profile::tlsproxy::envoy::tls_port: 443
 profile::tlsproxy::envoy::sni_support: 'no'
+profile::tlsproxy::envoy::timeout: 65.0
+profile::tlsproxy::envoy::retries: true
+profile::tlsproxy::envoy::use_remote_address: false

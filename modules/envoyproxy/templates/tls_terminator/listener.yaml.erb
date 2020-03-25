@@ -66,6 +66,10 @@ filter_chains:
       - upgrade_type: "websocket"
 <%- end -%>
       stat_prefix: ingress_http
+<%- if @use_remote_address -%>
+      use_remote_address: true
+      skip_xff_append: false
+<%- end -%>
 <%- if @access_log -%>
       access_log:
         name: "envoy.file_access.log"

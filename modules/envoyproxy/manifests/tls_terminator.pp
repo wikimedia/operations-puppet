@@ -60,6 +60,8 @@
 #     If true, sets up the access log for the TLS terminator.
 # @param websockets
 #     If true, allows websocket upgrades.
+# @param use_remote_address
+#     If true append the client IP to the x-forwarded-for header
 # @param fast_open_queue
 #     The size of the fast open queue. If zero, TFO is disabled.
 # @param connect_timeout
@@ -69,16 +71,17 @@
 #     An optional hash specifying the retry policy. It should map 1:1 what 
 #     goes in the envoy configuration.
 define envoyproxy::tls_terminator(
-    Array[Envoyproxy::Tlsconfig] $upstreams = [],
-    Optional[Stdlib::Port] $redir_port = undef,
-    Boolean $access_log = false,
-    Boolean $websockets = false,
-    Integer $fast_open_queue = 0,
-    Float $connect_timeout = 1.0,
-    Float $route_timeout = 65.0,
-    Optional[Hash] $retry_policy = undef,
-    Optional[String] $global_cert_path = undef,
-    Optional[String] $global_key_path = undef
+    Array[Envoyproxy::Tlsconfig] $upstreams          = [],
+    Boolean                      $access_log         = false,
+    Boolean                      $websockets         = false,
+    Boolean                      $use_remote_address = true,
+    Integer                      $fast_open_queue    = 0,
+    Float                        $connect_timeout    = 1.0,
+    Float                        $route_timeout      = 65.0,
+    Optional[Hash]               $retry_policy       = undef,
+    Optional[Stdlib::Port]       $redir_port         = undef,
+    Optional[String]             $global_cert_path   = undef,
+    Optional[String]             $global_key_path    = undef
 ) {
 
     # First of all, we can't configure a tls terminator if envoy is not installed.
