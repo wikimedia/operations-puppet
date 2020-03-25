@@ -1,3 +1,5 @@
+profile::tlsproxy::envoy::remote_addr: 127.0.0.1
+profile::tlsproxy::envoy::use_remote_address: true
 profile::tlsproxy::envoy::services:
   - server_names: ['*']
     port: 8080
