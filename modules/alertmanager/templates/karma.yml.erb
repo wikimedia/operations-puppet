@@ -1,0 +1,23 @@
+# https://github.com/prymitive/karma/blob/master/docs/CONFIGURATION.md
+alertmanager:
+  servers:
+    - name: "<%= @facts['domain']  %>"
+      uri: "http://localhost:9093"
+      proxy: true
+
+<% if @auth_header %>
+# Auto-fill silence dialog with the authenticated user
+authentication:
+  header:
+    name: <%= @auth_header %>
+    value_re: ^(.+)$
+<% end %>
+
+# Start with 'description' label collapsed
+annotations:
+  hidden:
+    - description
+
+filters:
+  default:
+    - "@state=active"
