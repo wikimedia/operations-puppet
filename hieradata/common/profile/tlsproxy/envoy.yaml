@@ -8,3 +8,4 @@ profile::tlsproxy::envoy::services:
   - server_names: ['*']
     port: 80
 profile::tlsproxy::envoy::sni_support: 'no'
+profile::tlsproxy::envoy::upstream_addr: "%{facts.fqdn}"

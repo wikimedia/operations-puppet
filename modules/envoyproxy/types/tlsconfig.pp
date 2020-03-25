@@ -3,4 +3,5 @@ type Envoyproxy::Tlsconfig = Struct[{
     'cert_path'     => Optional[Stdlib::Unixpath],
     'key_path'      => Optional[Stdlib::Unixpath],
     'upstream_port' => Stdlib::Port,
+    'upstream_addr' => Optional[Stdlib::Host],
 }]

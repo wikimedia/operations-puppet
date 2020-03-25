@@ -40,6 +40,8 @@
 # @param request_timeout timeout on a request in seconds.  Default: 65
 # @param retries If true enable retries. Default: true
 # @param use_remote_address If true append the client address to the x-forwarded-for header
+# @param upstream_addr the address of the backend service.  must be a localy configuered ipaddrres,
+#                      localhost or $facts['fqdn'].  Default: $facts['fqdn']
 # @param services An array of Profile::Tlsproxy::Envoy::Service's to configure
 #                 Default [{server_name: ['*'], port: 80}]
 # @param global_cert_name The name of the certificate to install via sslcert::certificate
@@ -51,11 +53,12 @@ class profile::tlsproxy::envoy(
     Float                         $request_timeout     = lookup('profile::tlsproxy::envoy::timeout'),
     Boolean                       $retries             = lookup('profile::tlsproxy::envoy::retries'),
     Boolean                       $use_remote_address  = lookup('profile::tlsproxy::envoy::use_remote_address'),
+    Optional[Stdlib::Host]        $upstream_addr       = lookup('profile::tlsproxy::envoy::upstream_addr'),
     Array[Profile::Tlsproxy::Envoy::Service] $services = lookup('profile::tlsproxy::envoy::services'),
-    Optional[String] $global_cert_name = lookup('profile::tlsproxy::envoy::global_cert_name',
-                                                {'default_value' => undef}),
-    Optional[String] $acme_cert_name   = lookup('profile::tlsproxy::envoy::acme_cert_name',
-                                                {'default_value' => undef}),
+    Optional[String]       $global_cert_name = lookup('profile::tlsproxy::envoy::global_cert_name',
+                                                      {'default_value' => undef}),
+    Optional[String]       $acme_cert_name   = lookup('profile::tlsproxy::envoy::acme_cert_name',
+                                                      {'default_value' => undef}),
 ) {
     require profile::envoy
     $ensure = $profile::envoy::ensure
@@ -64,6 +67,12 @@ class profile::tlsproxy::envoy(
     }
     if $global_cert_name and $acme_cert_name {
         fail('\$global_cert_name and \$acme_chief are mutually exclusive please only provide one')
+    }
+    $valid_upstream_addr = $facts['networking']['interfaces'].values().reduce([]) |$memo, $int| {
+        $memo + [$int['ip'], $int['ip6']]
+    }.delete_undef_values() + ['localhost', $facts['fqdn']]
+    unless $upstream_addr in $valid_upstream_addr {
+        fail("upstream_addr must be one of: ${valid_upstream_addr.join(', ')}")
     }
 
     # ensure all the needed certs are present. Given these are internal services,
@@ -93,6 +102,7 @@ class profile::tlsproxy::envoy(
             'cert_path'     => $cert,
             'key_path'      => $key,
             'upstream_port' => $service['port'],
+            'upstream_addr' => $upstream_addr
         }
     }
 
