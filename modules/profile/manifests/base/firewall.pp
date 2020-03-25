@@ -26,7 +26,8 @@ class profile::base::firewall (
                                                                 {default_value => []}),
     Array[Stdlib::IP::Address] $deployment_hosts        = lookup('deployment_hosts',
                                                                 {default_value => []}),
-    Boolean                    $enable_logging  = lookup('profile::base::firewall::enable_logging')
+    Boolean                    $enable_logging   = lookup('profile::base::firewall::enable_logging'),
+    Boolean                    $block_abuse_nets = lookup('profile::base::firewall::block_abuse_nets'),
 ) {
     class { '::base::firewall':
         monitoring_hosts        => $monitoring_hosts,
@@ -42,6 +43,7 @@ class profile::base::firewall (
         labstore_hosts          => $labstore_hosts,
         mysql_root_clients      => $mysql_root_clients,
         deployment_hosts        => $deployment_hosts,
+        block_abuse_nets        => $block_abuse_nets,
     }
     if $enable_logging {
         include profile::base::firewall::log

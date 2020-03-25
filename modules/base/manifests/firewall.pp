@@ -14,9 +14,10 @@ class base::firewall (
     Array[Stdlib::IP::Address] $labstore_hosts = [],
     Array[Stdlib::IP::Address] $mysql_root_clients = [],
     Array[Stdlib::IP::Address] $deployment_hosts = [],
+    Boolean                    $block_abuse_nets = false,
 ) {
-    include ::network::constants
-    include ::ferm
+    include network::constants
+    include ferm
 
     ferm::conf { 'defs':
         prio    => '00',
@@ -43,6 +44,13 @@ class base::firewall (
         source => 'puppet:///modules/base/firewall/main-input-default-drop.conf',
     }
 
+    if $block_abuse_nets {
+        network::parse_abuse_nets('ferm').each |String $net_name, Array[Stdlib::IP::Address] $nets| {
+            ferm::rule {"drop-abuse-net-${net_name}":
+                rule => "saddr (${nets.join(' ')}) DROP;",
+            }
+        }
+    }
     $bastion_hosts_str = join($bastion_hosts, ' ')
     ferm::rule { 'bastion-ssh':
         rule   => "proto tcp dport ssh saddr (${bastion_hosts_str}) ACCEPT;",
