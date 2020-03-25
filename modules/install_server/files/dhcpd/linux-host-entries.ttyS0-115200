@@ -134,6 +134,11 @@ host debmonitor2001 {
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
+host deneb {
+    hardware ethernet aa:00:00:d1:45:fd;
+    fixed-address deneb.codfw.wmnet;
+}
+
 # ganeti VM used for d-i testing
 host d-i-test {
     hardware ethernet aa:00:00:3b:60:cb;
