@@ -5,6 +5,7 @@ class profile::wmcs::novaproxy(
     Array[Stdlib::Ipv4] $banned_ips   = lookup('profile::wmcs::novaproxy::banned_ips',   {default_value => []}),
     String              $block_ua_re  = lookup('profile::wmcs::novaproxy::block_ua_re',  {default_value => ''}),
     String              $block_ref_re = lookup('profile::wmcs::novaproxy::block_ref_re', {default_value => ''}),
+    Array[Stdlib::Fqdn] $xff_fqdns    = lookup('profile::wmcs::novaproxy::xff_fqdns',    {default_value => []}),
 ) {
     $proxy_nodes = join($all_proxies, ' ')
     # Open up redis to all proxies!
@@ -61,7 +62,7 @@ class profile::wmcs::novaproxy(
     class { '::dynamicproxy':
         ssl_certificate_name     => $ssl_cert_name,
         ssl_settings             => $ssl_settings,
-        set_xff                  => true,
+        xff_fqdns                => $xff_fqdns,
         luahandler               => 'domainproxy',
         redis_replication        => $redis_replication,
         banned_ips               => $banned_ips,

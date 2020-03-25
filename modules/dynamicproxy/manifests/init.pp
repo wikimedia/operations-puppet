@@ -22,7 +22,6 @@ class dynamicproxy (
     $ssl_settings             = undef,
     $ssl_certificate_name     = false,
     $notfound_servers         = [],
-    $set_xff                  = false,
     $redis_replication        = undef,
     $error_enabled            = false,
     $error_config             = {
@@ -43,6 +42,7 @@ class dynamicproxy (
     $blocked_referer_regex    = '',
     $https_upgrade            = false,
     Boolean $use_acme_chief   = false,
+    Optional[Array[Stdlib::Fqdn]] $xff_fqdns = undef,
 ) {
     if $ssl_certificate_name != false and $ssl_settings == undef {
         fail('ssl_certificate_name set but ssl_settings not set')
