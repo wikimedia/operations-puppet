@@ -756,9 +756,9 @@ node /^debmonitor[12]001\.(codfw|eqiad)\.wmnet$/ {
     role(debmonitor::server)
 }
 
-# New package build host
+# Debian package/docker images building host in production (buster)
 node 'deneb.codfw.wmnet' {
-    role(insetup)
+    role(builder)
 }
 
 node /^dns[12345]00[12]\.wikimedia\.org$/ {
