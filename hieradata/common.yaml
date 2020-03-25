@@ -747,6 +747,9 @@ hadoop_clusters:
       dfs.http.policy: 'HTTPS_ONLY'
       dfs.encrypt.data.transfer.cipher.suites: 'AES/CTR/NoPadding'
       dfs.encrypt.data.transfer.cipher.key.bitlength: '128'
+      # Avoid long waits if the Namenodes are not reachable
+      # from clients.
+      dfs.client.failover.max.attempts: 3
 
     mapred_site_extra_properties:
       mapreduce.ssl.enabled: true
