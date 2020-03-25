@@ -131,10 +131,6 @@ class base::puppet(
         content => template('base/puppet.conf.d/10-main.conf.erb'),
     }
 
-    package { 'puppet-common':
-        ensure => absent,
-    }
-
     # Compile /etc/puppet/puppet.conf from individual files in /etc/puppet/puppet.conf.d
     exec { 'compile puppet.conf':
         path        => '/usr/bin:/bin',
