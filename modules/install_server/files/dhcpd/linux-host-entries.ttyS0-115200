@@ -496,6 +496,11 @@ host miscweb1001 {
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
+host miscweb1002 {
+    hardware ethernet aa:00:00:3c:59:f6;
+    fixed-address miscweb1002.eqiad.wmnet;
+}
+
 host miscweb2001 {
     hardware ethernet aa:00:00:4b:9d:24;
     fixed-address miscweb2001.codfw.wmnet;
