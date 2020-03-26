@@ -101,4 +101,18 @@ function do_global_send_response()
     -- sent to clients. See https://wikitech.wikimedia.org/wiki/X-Analytics and
     -- https://phabricator.wikimedia.org/T196558
     ts.client_response.header['X-Analytics'] = nil
+
+    -- Only serve debug HTTP headers when X-Wikimedia-Debug is present. T210484
+    if ts.client_request.header['X-Wikimedia-Debug'] == nil then
+        ts.client_response.header['Backend-Timing'] = nil
+        ts.client_response.header['X-ATS-Timestamp'] = nil
+        -- X-Cache-Status is used by WikibaseQualityConstraints
+        --ts.client_response.header['X-Cache-Status'] = nil
+        ts.client_response.header['X-Envoy-Upstream-Service-Time'] = nil
+        ts.client_response.header['X-Powered-By'] = nil
+        ts.client_response.header['X-Timestamp '] = nil
+        ts.client_response.header['X-Trans-Id'] = nil
+        -- X-Varnish is used by the MultimediaViewer extension
+        --ts.client_response.header['X-Varnish'] = nil
+    end
 end
