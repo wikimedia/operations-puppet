@@ -4135,3 +4135,7 @@ ldap_only_users:
     email: arne.blankerts@thephp.cc
     expiry_date: 2020-05-30
     expiry_contact: monica.pinedo@wikimedia.de
+  suecarmol:
+    ensure: present
+    realname: Susana Cardenas Molinar
+    email: scardenasmolinar@wikimedia.org
