@@ -14,7 +14,7 @@ class profile::noc {
     ferm::service { 'noc-http-cumin':
         proto  => 'tcp',
         port   => 'http',
-        srange => '$CUMIN_MASTERS',
+        srange => '($CUMIN_MASTERS)',
     }
     class { '::noc': }
 }
