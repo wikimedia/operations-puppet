@@ -127,9 +127,10 @@ define command {
     command_line    $USER1$/check_http -S -I $HOSTADDRESS$ -p $ARG1$ -H $ARG2$ -u $ARG3$ -e "HTTP/1.1 $ARG4$ " -d "Location: $ARG5$"
     }
 
+# It seems some sits respond with location: and others with Location
 define command {
     command_name    check_sso_redirect
-    command_line    $USER1$/check_http -S -I $HOSTADDRESS$ -H $ARG1$ -u $ARG2$ -e "HTTP/1.1 302" -d "location: https://idp.wikimedia.org/"
+    command_line    $USER1$/check_http -S -I $HOSTADDRESS$ -H $ARG1$ -u $ARG2$ -e "HTTP/1.1 302" -d "ocation: https://idp.wikimedia.org/"
     }
 
 define command {
