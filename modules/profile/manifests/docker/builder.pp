@@ -24,6 +24,7 @@ class profile::docker::builder(
     $username = hiera('docker::registry::username'),
     $password = hiera('docker::registry::password'),
     $docker_pkg = hiera('profile::docker::docker_pkg', false),
+    $prune_prod_images = lookup('profile::docker::builder::prune_images'),
 ) {
 
     if $docker_pkg {
@@ -83,13 +84,16 @@ class profile::docker::builder(
         prio   => 20,
         source => 'puppet:///modules/profile/docker/builder-docker-ferm',
     }
+
     # Cleanup old images at the start of the month.
-    systemd::timer::job { 'prune-production-images':
-        description        => 'Periodic job to prune old docker images',
-        command            => '/usr/local/bin/manage-production-images prune',
-        interval           => {'start' => 'OnCalendar', 'interval' => '*-*-01 04:00:00'},
-        user               => 'root',
-        monitoring_enabled => true,
-        logfile_basedir    => '/var/log'
+    if $prune_prod_images {
+        systemd::timer::job { 'prune-production-images':
+            description        => 'Periodic job to prune old docker images',
+            command            => '/usr/local/bin/manage-production-images prune',
+            interval           => {'start' => 'OnCalendar', 'interval' => '*-*-01 04:00:00'},
+            user               => 'root',
+            monitoring_enabled => true,
+            logfile_basedir    => '/var/log'
+        }
     }
 }

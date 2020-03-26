@@ -1,0 +1,1 @@
+profile::docker::builder::prune_images: false
