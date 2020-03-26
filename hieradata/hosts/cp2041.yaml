@@ -1,0 +1,4 @@
+# After cp2001-26 decom, these can be collapsed to the codfw-level profile default
+profile::trafficserver::backend::storage_elements:
+    - devname: nvme0n1
+      id: disk.0
