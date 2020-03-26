@@ -7,7 +7,7 @@ class profile::noc {
     ferm::service { 'noc-http-envoy':
         proto  => 'tcp',
         port   => 'http',
-        srange => "(${::ipaddress} ${::ipaddress6}",
+        srange => "(${::ipaddress} ${::ipaddress6})",
     }
 
     # http from cumin masters
