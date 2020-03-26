@@ -14,7 +14,7 @@ class profile::kerberos::kadminserver (
         ensure => present,
     }
 
-    $is_krb_master = $trusted['certname'] == $krb_kadmin_primary
+    $is_krb_master = $facts['fqdn'] == $krb_kadmin_primary
 
     if $is_krb_master {
         $ensure_motd = 'absent'

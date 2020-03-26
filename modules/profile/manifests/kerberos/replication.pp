@@ -20,7 +20,7 @@ class profile::kerberos::replication (
     Optional[Boolean] $monitoring_enabled = lookup('profile::kerberos::replication::monitoring_enabled', { 'default_value' => false }),
 ) {
 
-    $is_krb_master = $trusted['certname'] == $krb_kadmin_primary
+    $is_krb_master = $facts['fqdn'] == $krb_kadmin_primary
 
     if $is_krb_master == false {
         package { 'krb5-kpropd':

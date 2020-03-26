@@ -59,7 +59,7 @@ class apereo_cas (
     $config_dir = "${base_dir}/config"
     $services_dir = "${base_dir}/services"
 
-    $is_idp_primary = $trusted['certname'] == $idp_primary
+    $is_idp_primary = $facts['fqdn'] == $idp_primary
 
     if $is_idp_primary {
         $ensure_rsync = 'present'
