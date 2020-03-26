@@ -5,7 +5,7 @@ class openstack::nova::common::queens::stretch(
     $packages = [
         'unzip',
         'bridge-utils',
-        'python-mysqldb',
+        'python3-mysqldb',
         'nova-common',
     ]
 

@@ -12,7 +12,6 @@ class openstack::designate::service::queens
         'designate-api',
         'designate-doc',
         'designate-central',
-        'python-git',
         'python3-git',
     ]
 
