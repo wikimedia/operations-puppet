@@ -32,7 +32,7 @@ class profile::swift::alerts {
             critical        => 3000,
             method          => 'ge',
             prometheus_url  => "http://prometheus.svc.${site}.wmnet/ops",
-            notes_link      => 'https://wikitech.wikimedia.org/wiki/Swift/How_To',
+            notes_link      => 'https://wikitech.wikimedia.org/wiki/Swift/How_To#mediawiki_originals_uploads',
         }
     }
 
