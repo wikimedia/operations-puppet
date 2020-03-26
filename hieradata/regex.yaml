@@ -282,3 +282,13 @@ mediawiki_test_environment:
   profile::mediawiki::php::restarts::opcache_limit: 100
   profile::mediawiki::php::enable_request_profiling: true
   profile::mediawiki::php::phpdbg: true
+  profile::mediawiki::webserver::has_tls: "envoy"
+  profile::envoy::ensure: present
+  profile::tlsproxy::envoy::sni_support: "no" # you need the double quotes, because yaml.
+  profile::tlsproxy::envoy::tls_port: 443
+  profile::tlsproxy::envoy::services:
+    - server_names: ["*"]
+      port: 80
+  profile::tlsproxy::envoy::request_timeout: 201.0
+  profile::tlsproxy::envoy::retries: false
+  profile::tlsproxy::envoy::global_cert_name: "appservers.svc.eqiad.wmnet"
