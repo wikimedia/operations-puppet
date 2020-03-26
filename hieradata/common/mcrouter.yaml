@@ -17,7 +17,7 @@ mcrouter::shards:
         port: 11214
         ssl: true
       D:
-        host: 10.64.48.87 # mw1252, D5
+        host: 10.64.48.209 # mw1367, D6
         port: 11214
         ssl: true
     codfw:
