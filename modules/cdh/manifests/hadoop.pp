@@ -468,14 +468,14 @@ class cdh::hadoop(
     # remove the problem from the source.
     file_line { 'enable-ipv6-hadoop-comment':
         ensure  => absent,
-        match   => '# Disable ipv6 as it can cause issues',
+        line    => '# Disable ipv6 as it can cause issues',
         path    => '/usr/lib/hadoop/libexec/hadoop-config.sh',
         require => Package['hadoop-client'],
     }
 
     file_line { 'enable-ipv6-hadoop':
         ensure  => absent,
-        match   => 'HADOOP_OPTS="$HADOOP_OPTS -Djava.net.preferIPv4Stack=true"',
+        line    => 'HADOOP_OPTS="$HADOOP_OPTS -Djava.net.preferIPv4Stack=true"',
         path    => '/usr/lib/hadoop/libexec/hadoop-config.sh',
         require => Package['hadoop-client'],
     }
