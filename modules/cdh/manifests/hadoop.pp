@@ -457,6 +457,29 @@ class cdh::hadoop(
     # Set a variable here for reference in other classes.
     $primary_resourcemanager_host = $resourcemanager_hosts[0]
 
+    # The hadoop package, brought in by hadoop-client and others, contains
+    # the /usr/lib/hadoop/libexec/hadoop-config.sh file that is broadly used
+    # by daemons to get run-time parameters. One of them is -Djava.net.preferIPv4Stack=true,
+    # since in the past (long time ago) Hadoop did not work well with IPv6.
+    # This is not the case anymore, as we proved in T225296.
+    # In T240255 we discovered that other daemons like Hive are affected by
+    # this setting, so instead of trying to override java.net.preferIPv4Stack with
+    # multiple statements (first =true then =false for example), let's just
+    # remove the problem from the source.
+    file_line { 'enable-ipv6-hadoop-comment':
+        ensure  => absent,
+        match   => '# Disable ipv6 as it can cause issues',
+        path    => '/usr/lib/hadoop/libexec/hadoop-config.sh',
+        require => Package['hadoop-client'],
+    }
+
+    file_line { 'enable-ipv6-hadoop':
+        ensure  => absent,
+        match   => 'HADOOP_OPTS="$HADOOP_OPTS -Djava.net.preferIPv4Stack=true"',
+        path    => '/usr/lib/hadoop/libexec/hadoop-config.sh',
+        require => Package['hadoop-client'],
+    }
+
     package { ['hadoop-client', 'libhdfs0']:
         ensure => 'installed'
     }
