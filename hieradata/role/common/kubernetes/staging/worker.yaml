@@ -13,6 +13,7 @@ cluster: kubernetes
 profile::docker::storage::physical_volumes: "/dev/md1"
 profile::docker::storage::vg_to_remove: 'todelete'
 profile::docker::engine::version: "1.12.6-0~debian-jessie"
+profile::docker::engine::packagename: "docker-engine"
 profile::docker::engine::declare_service: true
 profile::kubernetes::master_fqdn: neon.eqiad.wmnet
 profile::kubernetes::master_hosts:

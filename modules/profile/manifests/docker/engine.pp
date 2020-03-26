@@ -9,6 +9,7 @@ class profile::docker::engine(
     $settings = hiera_hash('profile::docker::engine::settings'),
     # Version to install; the default is not to pick one.
     $version = hiera('profile::docker::engine::version'),
+    $packagename = lookup('profile::docker::engine::packagename'),
     # Set to false if we don't want to declare the docker service here
     # We want this to be on if we want to use a different docker systemd service (with flannel support, for eg.)
     $declare_service = hiera('profile::docker::engine::declare_service')
@@ -37,9 +38,12 @@ class profile::docker::engine(
     class { '::docker::configuration':
         settings => merge($settings, $docker_storage_options),
     }
-    # Install docker
+
+    # Install docker, we should remove the "version" parameter when everything
+    # is using Buster/Docker as packaged by Debian
     class { '::docker':
-        version => $version,
+        version      => $version,
+        package_name => $packagename,
     }
 
     # Enable memory cgroup
