@@ -1202,6 +1202,11 @@ node 'miscweb1001.eqiad.wmnet', 'miscweb2001.codfw.wmnet' {
     role(webserver_misc_apps)
 }
 
+# miscweb on buster to replace 1001
+node 'miscweb1002.eqiad.wmnet' {
+    role(insetup)
+}
+
 # This node will eventually replace kerberos1001
 # It is part of the Kerberos eqiad/codfw infrastructure.
 node 'krb1001.eqiad.wmnet' {
