@@ -38,17 +38,23 @@ if [[ $(echo "$OUT" | jq .cache_full) == "true" ]]; then
 fi
 
 # Now check for the opcache cache-hit ratio. If it's below 99.85%, it's a critical alert.
-# Skip the check if the service has been restarted since a few minutes.
+scripts=$(echo $OUT | jq .opcache_statistics.num_cached_scripts)
 hits=$(echo $OUT | jq .opcache_statistics.hits)
-# We have around 4k files to accelerate. Use 5k for good measure as a base value of expected misses at startup.
-if numGe "$hits" 3300000; then
+
+# Skip the check if the service has been restarted since a few minutes, and we
+# don't have enough traffic to reach the stats.
+# Specifically, we need to have a number of hits that, given the number of scripts,
+# would allow to reach such thresholds.
+WARNING_THRESHOLD=$(expr "$scripts" '*' 10000) # 1 miss out of 10k => 99.99%
+CRITICAL_THRESHOLD=$(expr "$scripts" '*' 10000 '/' 15) # 15 misses out of 10k => 99.85%
+if numGe "$hits" "$CRITICAL_THRESHOLD"; then
     hitrate=$(echo $OUT | jq .opcache_statistics.opcache_hit_rate)
     if numGe 99.85 "$hitrate"; then
         echo "CRITICAL: opcache cache-hit ratio is below 99.85%"
         exit 2
     fi
 
-    if numGe "$hits" 50000000 && numGe 99.99 "$hitrate"; then
+    if numGe "$hits" "$WARNING_THRESHOLD" && numGe 99.99 "$hitrate"; then
         echo "WARNING: opcache cache-hit ratio is below 99.99"
         exit 1
     fi
