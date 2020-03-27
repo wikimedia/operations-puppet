@@ -3,9 +3,6 @@ class profile::toolforge::docker::image_builder(
     String       $docker_password = lookup('docker::password'),
     Stdlib::Fqdn $docker_registry = lookup('docker::registry'),
 ) {
-    # This will require a reboot on first run
-    class { '::toolforge::k8s::calico_workaround': }
-
     # This should be building with the same docker we are running
     class { 'toolforge::k8s::kubeadmrepo': }
 
