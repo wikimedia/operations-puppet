@@ -87,13 +87,6 @@ class puppetmaster(
         ensure  => present,
     }
 
-    if os_version('debian == jessie') {
-        # Until we use activerecord
-        package { 'ruby-activerecord-deprecated-finders':
-            ensure => present,
-        }
-    }
-
     class { '::puppetmaster::passenger':
         bind_address  => $bind_address,
         verify_client => $verify_client,
