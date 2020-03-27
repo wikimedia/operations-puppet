@@ -28,6 +28,10 @@ git log -n 1
 # an otherwise-obsolete `deploy` repo).
 ln -s -f /srv/deployment/parsoid/deploy/node_modules
 
+# Restart phpfm to ensure we load the updated code
+echo 'Restarting phpfm'
+sudo systemctl restart php7.2-fpm.service
+
 echo 'Restarting parsoid ...'
 sudo service parsoid restart
 
