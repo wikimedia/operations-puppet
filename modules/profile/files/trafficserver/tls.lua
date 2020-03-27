@@ -112,7 +112,6 @@ function do_global_send_response()
         ts.client_response.header['X-Powered-By'] = nil
         ts.client_response.header['X-Timestamp '] = nil
         ts.client_response.header['X-Trans-Id'] = nil
-        -- X-Varnish is used by the MultimediaViewer extension
-        --ts.client_response.header['X-Varnish'] = nil
+        ts.client_response.header['X-Varnish'] = nil
     end
 end

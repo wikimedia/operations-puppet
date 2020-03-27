@@ -22,6 +22,6 @@ client c1 {
     expect resp.http.X-MediaWiki-Original == <undef>
     expect resp.http.Content-Disposition == "attachment"
     expect resp.http.Access-Control-Allow-Origin == "*"
-    expect resp.http.Access-Control-Expose-Headers == "Age, Date, Content-Length, Content-Range, X-Content-Duration, X-Cache, X-Varnish"
+    expect resp.http.Access-Control-Expose-Headers == "Age, Date, Content-Length, Content-Range, X-Content-Duration, X-Cache"
     expect resp.http.Timing-Allow-Origin == "*"
 } -run
