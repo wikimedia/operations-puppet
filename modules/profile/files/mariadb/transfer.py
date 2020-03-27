@@ -6,7 +6,7 @@ from cumin import query, transport, transports
 import abc
 import argparse
 import base64
-from multiprocessing import Process, Pipe
+from multiprocessing import Pipe, Process
 import os
 import os.path
 import re
@@ -102,6 +102,8 @@ class CuminExecution(RemoteExecution):
 
     def run(self, host, command):
         hosts = query.Query(self.config).execute(host)
+        if not hosts:
+            return CommandReturn(1, None, 'host is wrong or does not match rules')
         target = transports.Target(hosts)
         worker = transport.Transport.new(self.config, target)
         worker.commands = [self.format_command(command)]
