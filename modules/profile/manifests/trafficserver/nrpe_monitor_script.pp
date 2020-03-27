@@ -43,5 +43,6 @@ define profile::trafficserver::nrpe_monitor_script(
         nrpe_command => "sudo -u ${sudo_user} ${full_path} ${args}",
         require      => File[$full_path],
         notes_url    => 'https://wikitech.wikimedia.org/wiki/Apache_Traffic_Server',
+        timeout      => 30,
     }
 }
