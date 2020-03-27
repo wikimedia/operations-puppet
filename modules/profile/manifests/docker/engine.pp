@@ -15,11 +15,14 @@ class profile::docker::engine(
     $declare_service = hiera('profile::docker::engine::declare_service')
 ) {
 
-    apt::repository { 'thirdparty-k8s':
-        uri        => 'http://apt.wikimedia.org/wikimedia',
-        dist       => "${::lsbdistcodename}-wikimedia",
-        components => 'thirdparty/k8s',
-        before     => Class['docker'],
+    # On Buster and later we use Docker from Debian
+    if os_version('debian < buster') {
+        apt::repository { 'thirdparty-k8s':
+            uri        => 'http://apt.wikimedia.org/wikimedia',
+            dist       => "${::lsbdistcodename}-wikimedia",
+            components => 'thirdparty/k8s',
+            before     => Class['docker'],
+        }
     }
 
     # Docker config
