@@ -28,25 +28,25 @@ class profile::ceph::mon(
         proto  => 'tcp',
         port   => 6800,
         srange => "(${ferm_srange})",
-        before => Class['ceph'],
+        before => Class['ceph::common'],
     }
     ferm::service { 'ceph_mgr_v1':
         proto  => 'tcp',
         port   => 6801,
         srange => "(${ferm_srange})",
-        before => Class['ceph'],
+        before => Class['ceph::common'],
     }
     ferm::service { 'ceph_mon_peers_v1':
         proto  => 'tcp',
         port   => 6789,
         srange => "(${ferm_srange})",
-        before => Class['ceph'],
+        before => Class['ceph::common'],
     }
     ferm::service { 'ceph_mon_peers_v2':
         proto  => 'tcp',
         port   => 3300,
         srange => "(${ferm_srange})",
-        before => Class['ceph'],
+        before => Class['ceph::common'],
     }
 
     # Allow LVS to load balance manager services
@@ -56,7 +56,7 @@ class profile::ceph::mon(
         proto  => 'tcp',
         port   => 9283,
         srange => "(@resolve((${prometheus_nodes_ferm})) @resolve((${prometheus_nodes_ferm}), AAAA) (${lvs_network}))",
-        before => Class['ceph'],
+        before => Class['ceph::common'],
     }
 
     if os_version('debian == buster') {
@@ -65,13 +65,16 @@ class profile::ceph::mon(
             dist       => 'buster-wikimedia',
             components => 'thirdparty/ceph-nautilus-buster',
             source     => false,
-            before     => Class['ceph'],
+            before     => Class['ceph::common'],
         }
     }
 
-    class { 'ceph':
+    class { 'ceph::common':
+        home_dir => $data_dir,
+    }
+
+    class { 'ceph::config':
         cluster_network     => $cluster_network,
-        data_dir            => $data_dir,
         enable_libvirt_rbd  => false,
         enable_v2_messenger => true,
         fsid                => $fsid,

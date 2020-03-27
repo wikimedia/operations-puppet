@@ -31,7 +31,7 @@ class profile::ceph::osd(
         address   => $osd_hosts["$::fqdn"]['cluster']['addr'],
         prefixlen => $osd_hosts["$::fqdn"]['cluster']['prefix'],
         require   => Interface::Manual['osd-cluster'],
-        before    => Class['ceph'],
+        before    => Class['ceph::common'],
     }
 
     # Tune the MTU on both the cluster and public network
@@ -39,14 +39,14 @@ class profile::ceph::osd(
         interface => $osd_hosts["$::fqdn"]['cluster']['iface'],
         setting   => 'mtu',
         value     => '9000',
-        before    => Class['ceph'],
+        before    => Class['ceph::common'],
         notify    => Exec['set-osd-cluster-mtu'],
     }
     interface::setting { 'osd-public-mtu':
         interface => $osd_hosts["$::fqdn"]['public']['iface'],
         setting   => 'mtu',
         value     => '9000',
-        before    => Class['ceph'],
+        before    => Class['ceph::common'],
         notify    => Exec['set-osd-public-mtu'],
     }
     # Make sure the interface is in sync with configuration changes
@@ -65,7 +65,7 @@ class profile::ceph::osd(
         port   => '6800:7100',
         srange => "(${ferm_cluster_srange})",
         drange => $osd_hosts["$::fqdn"]['cluster']['addr'],
-        before => Class['ceph'],
+        before => Class['ceph::common'],
     }
 
     # The public network is used for communication between Ceph serivces and client traffic
@@ -77,7 +77,7 @@ class profile::ceph::osd(
         port   => '6800:7100',
         srange => "(${ferm_public_srange})",
         drange => $osd_hosts["$::fqdn"]['public']['addr'],
-        before => Class['ceph'],
+        before => Class['ceph::common'],
     }
 
     if os_version('debian == buster') {
@@ -86,13 +86,16 @@ class profile::ceph::osd(
             dist       => 'buster-wikimedia',
             components => 'thirdparty/ceph-nautilus-buster',
             source     => false,
-            before     => Class['ceph'],
+            before     => Class['ceph::common'],
         }
     }
 
-    class { 'ceph':
+    class { 'ceph::common':
+        home_dir => $data_dir,
+    }
+
+    class { 'ceph::config':
         cluster_network     => $cluster_network,
-        data_dir            => $data_dir,
         enable_libvirt_rbd  => false,
         enable_v2_messenger => true,
         fsid                => $fsid,

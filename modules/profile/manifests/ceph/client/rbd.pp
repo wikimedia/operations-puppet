@@ -16,9 +16,12 @@ class profile::ceph::client::rbd(
     String              $libvirt_rbd_uuid    = lookup('profile::ceph::client::rbd::libvirt_rbd_uuid'),
 ) {
 
-    class { 'ceph':
+    class { 'ceph::common':
+        home_dir => $data_dir,
+    }
+
+    class { 'ceph::config':
         cluster_network     => $cluster_network,
-        data_dir            => $data_dir,
         enable_libvirt_rbd  => true,
         enable_v2_messenger => $enable_v2_messenger,
         fsid                => $fsid,

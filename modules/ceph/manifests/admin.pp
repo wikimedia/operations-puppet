@@ -14,7 +14,7 @@ class ceph::admin(
     Stdlib::Unixpath     $data_dir,
     String               $admin_keydata,
 ) {
-    Class['ceph'] -> Class['ceph::admin']
+    Class['ceph::config'] -> Class['ceph::admin']
 
     package { 'ceph':
         ensure => present,

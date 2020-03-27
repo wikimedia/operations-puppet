@@ -1,4 +1,4 @@
-# Class: ceph
+# Class: ceph::config
 #
 # This class manages the Ceph common packages and configuration
 #
@@ -15,36 +15,17 @@
 #    - $osd_hosts [Optional]
 #        Hash that defines the ceph object storage hosts, and public and private IPv4 information
 #
-class ceph (
+class ceph::config (
     Boolean                     $enable_libvirt_rbd,
     Boolean                     $enable_v2_messenger,
     Hash[String,Hash]           $mon_hosts,
     Stdlib::IP::Address         $cluster_network,
     Stdlib::IP::Address         $public_network,
-    Stdlib::Unixpath            $data_dir,
     String                      $fsid,
     Optional[Hash[String,Hash]] $osd_hosts = {},
 ) {
-    group { 'ceph':
-        ensure => present,
-        system => true,
-    }
-    user { 'ceph':
-        ensure     => present,
-        gid        => 'ceph',
-        shell      => '/usr/sbin/nologin',
-        comment    => 'Ceph storage service',
-        home       => $data_dir,
-        managehome => false,
-        system     => true,
-        require    => Group['ceph'],
-    }
 
-    # Ceph common package used for all services and clients
-    package { 'ceph-common':
-        ensure  => present,
-        require => User['ceph'],
-    }
+    Class['ceph::common'] -> Class['ceph::config']
 
     # Ceph configuration file used for all services and clients
     file { '/etc/ceph/ceph.conf':
@@ -56,15 +37,7 @@ class ceph (
         require => Package['ceph-common'],
     }
 
-    file { '/var/log/ceph':
-        ensure => directory,
-        mode   => '0755',
-        owner  => 'ceph',
-        group  => 'ceph',
-    }
-
     if $enable_libvirt_rbd {
-        # TODO work on libvirt dependencies
         package { 'python-rbd':
             ensure => present,
         }
@@ -81,26 +54,16 @@ class ceph (
             group  => 'libvirt-qemu',
         }
 
-        file { '/var/run/ceph':
-            ensure => directory,
-            mode   => '0750',
-            owner  => 'ceph',
+        # These directories is used for admin socket connections
+        File<|title == '/var/run/ceph'|> {
             group  => 'libvirt-qemu',
         }
 
-        # This directory is used for admin socket connections
         file { '/var/run/ceph/guests':
             ensure => directory,
             mode   => '0770',
             owner  => 'ceph',
             group  => 'libvirt-qemu',
-        }
-    } else {
-        file { '/var/run/ceph':
-            ensure => directory,
-            mode   => '0770',
-            owner  => 'ceph',
-            group  => 'ceph',
         }
     }
 }
