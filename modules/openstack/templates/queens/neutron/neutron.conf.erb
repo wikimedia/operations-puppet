@@ -76,7 +76,9 @@ region_name = <%= @region %>
 user_domain_id = default
 username = novaadmin
 memcached_servers = <%= @controller_hosts.map{|host| "#{host}:11211"}.join(",") %>
-service_token_roles_required = True
+
+# We want this but need to figure out about service roles first
+#service_token_roles_required = True
 
 [matchmaker_redis]
 
