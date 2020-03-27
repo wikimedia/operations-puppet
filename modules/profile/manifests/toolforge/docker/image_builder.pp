@@ -1,0 +1,64 @@
+class profile::toolforge::docker::image_builder(
+    String       $docker_username = lookup('docker::username'),
+    String       $docker_password = lookup('docker::password'),
+    Stdlib::Fqdn $docker_registry = lookup('docker::registry'),
+) {
+    # This will require a reboot on first run
+    class { '::toolforge::k8s::calico_workaround': }
+
+    # This should be building with the same docker we are running
+    class { 'toolforge::k8s::kubeadmrepo': }
+
+    labs_lvm::volume { 'docker':
+        size      => '70%FREE',
+        mountat   => '/var/lib/docker',
+        mountmode => '711',
+    } -> class {'profile::labs::lvm::srv': }
+
+    if defined(Class['docker']) {
+        Labs_lvm::Volume['docker'] -> Class['docker']
+    }
+    package { [ 'docker-ce',
+                'docker-ce-cli',
+                'containerd.io',]:
+        ensure  => present,
+        require => Labs_lvm::Volume['docker'],
+    }
+
+    class { 'toolforge::k8s::kubeadm_docker_service': }
+    class { '::docker::baseimages':
+        docker_registry => $docker_registry,
+    }
+
+    git::clone { 'operations/docker-images/toollabs-images':
+        ensure    => present,
+        directory => '/srv/images/toolforge',
+    }
+
+    # Registry credentials require push privilages
+    # uses strict_encode64 since encode64 adds newlines?!
+    $docker_auth = inline_template("<%= require 'base64'; Base64.strict_encode64('${docker_username}:${docker_password}') -%>")
+
+    $docker_config = {
+        'auths' => {
+            "${docker_registry}" => {
+                'auth' => $docker_auth,
+            },
+        },
+    }
+
+    file { '/root/.docker':
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0550',
+    }
+
+    file { '/root/.docker/config.json':
+        content => ordered_json($docker_config),
+        owner   => 'root',
+        group   => 'docker',
+        mode    => '0440',
+        require => File['/root/.docker'],
+    }
+}
