@@ -4140,3 +4140,7 @@ ldap_only_users:
     ensure: present
     realname: Susana Cardenas Molinar
     email: scardenasmolinar@wikimedia.org
+  hueitan:
+    ensure: present
+    realname: Huei Tan
+    email: htan@wikimedia.org
