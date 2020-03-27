@@ -150,21 +150,10 @@ class nagios_common::commands(
         require        => File["${config_dir}/commands"],
     }
 
-    if os_version('debian == jessie') {
-        file { "${config_dir}/checkcommands.cfg":
-          content => template("${module_name}/checkcommands.cfg.erb"),
-          owner   => $owner,
-          group   => $group,
-          mode    => '0644',
-        }
-    }
-    else {
-        # Lines up with default configuration.
-        file { "${config_dir}/commands.cfg":
-          content => template("${module_name}/checkcommands.cfg.erb"),
-          owner   => $owner,
-          group   => $group,
-          mode    => '0644',
-        }
+    file { "${config_dir}/commands.cfg":
+        content => template("${module_name}/checkcommands.cfg.erb"),
+        owner   => $owner,
+        group   => $group,
+        mode    => '0644',
     }
 }
