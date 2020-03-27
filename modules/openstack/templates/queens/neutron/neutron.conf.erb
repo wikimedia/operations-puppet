@@ -68,7 +68,7 @@ max_overflow = 25
 [keystone_authtoken]
 auth_type = password
 auth_uri = <%= @keystone_public_uri %>
-auth_url = <%= @keystone_admin_uri %>
+www_authenticate_uri = <%= @keystone_admin_uri %>
 password = <%= @ldap_user_pass %>
 project_domain_id = default
 project_name = admin
@@ -76,6 +76,7 @@ region_name = <%= @region %>
 user_domain_id = default
 username = novaadmin
 memcached_servers = <%= @controller_hosts.map{|host| "#{host}:11211"}.join(",") %>
+service_token_roles_required = True
 
 [matchmaker_redis]
 
