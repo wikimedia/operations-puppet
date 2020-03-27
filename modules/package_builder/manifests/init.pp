@@ -142,7 +142,7 @@ class package_builder(
     # Ship an apt configuration to integrate deb-src entries for jessie and
     # buster, simplifies fetching the source for older distros by using
     # "apt-get source foo=VERSION" on the package build host
-    ['jessie', 'buster'].each |String $dist| {
+    ['jessie', 'stretch'].each |String $dist| {
         apt::repository{"${dist}-wikimedia_source_only":
             uri        => 'http://apt.wikimedia.org/wikimedia',
             dist       => "${dist}-wikimedia",
