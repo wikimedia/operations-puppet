@@ -124,7 +124,7 @@ default_limit_admin = 10000
 #-----------------------
 [keystone_authtoken]
 auth_type = password
-auth_uri = <%= @keystone_public_uri %>
+www_authenticate_uri = <%= @keystone_public_uri %>
 auth_url = <%= @keystone_admin_uri %>
 password = <%= @ldap_user_pass %>
 project_domain_id = default
@@ -132,6 +132,7 @@ project_name = admin
 region_name = <%= @region %>
 user_domain_id = default
 username = novaadmin
+service_token_roles_required = True
 
 #-----------------------
 # Sink Service
@@ -338,8 +339,6 @@ policy_file = policy.yaml
 #poll_max_retries = 10
 #poll_delay = 5
 
-# Pike complains about this being deprecated but also fails if it's missing
-enabled = True
 notify = True
 
 [service:producer]
