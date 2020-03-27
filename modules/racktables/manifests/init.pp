@@ -6,7 +6,12 @@
 class racktables ($racktables_host, $racktables_db_host, $racktables_db) {
 
     require_package('php-mysql', 'php-gd')
-    $php_ini = '/etc/php/7.0/apache2/php.ini'
+
+    if os_version('debian == buster') {
+        $php_ini = '/etc/php/7.3/apache2/php.ini'
+    } else {
+        $php_ini = '/etc/php/7.0/apache2/php.ini'
+    }
 
     file { [
         '/srv/org',
