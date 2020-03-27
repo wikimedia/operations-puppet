@@ -27,7 +27,6 @@ class profile::maps::osm_master (
 
     $pgversion = $::lsbdistcodename ? {
         'stretch' => '9.6',
-        'jessie'  => '9.4',
     }
 
     class { '::postgresql::master':

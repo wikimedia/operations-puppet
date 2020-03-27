@@ -2,7 +2,6 @@ class role::osm::common {
     include ::profile::standard
     $pgversion = $::lsbdistcodename ? {
         'stretch' => '9.6',
-        'jessie'  => '9.4',
     }
 
     $root_dir = '/srv/postgres'
