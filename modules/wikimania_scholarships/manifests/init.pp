@@ -31,7 +31,7 @@ class wikimania_scholarships(
 
     include ::passwords::mysql::wikimania_scholarships
 
-    require_package('php7.0-mysql')
+    require_package('php-mysql')
 
     $mysql_user = $passwords::mysql::wikimania_scholarships::app_user
     $mysql_pass = $passwords::mysql::wikimania_scholarships::app_password
