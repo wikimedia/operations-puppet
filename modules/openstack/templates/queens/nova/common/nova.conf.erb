@@ -86,7 +86,7 @@ auth_host = <%= @keystone_host %>
 auth_protocol = http
 admin_user = novaadmin
 admin_tenant_name = admin
-auth_uri = http://<%= @keystone_host %>:5000
+www_authenticate_uri = http://<%= @keystone_host %>:5000
 auth_url = http://<%= @keystone_host %>:35357
 auth_type = password
 project_domain_name = default
@@ -95,6 +95,7 @@ project_name = admin
 username = novaadmin
 password = <%= @ldap_user_pass %>
 memcached_servers = <%= @controller_hosts.map{|host| "#{host}:11211"}.join(",") %>
+service_token_roles_required = True
 
 
 [oslo_messaging_rabbit]
@@ -130,10 +131,7 @@ weight_setting = cpu.percent=-1.0
 [neutron]
 service_metadata_proxy = true
 metadata_proxy_shared_secret = <%= @metadata_proxy_shared_secret %>
-url = http://<%= @nova_controller %>:9696
 auth_url = http://<%= @keystone_host %>:5000/v3
-# set this?
-#admin_auth_url = http://<%= @keystone_host %>:35357/v2.0
 auth_type = v3password
 password = <%= @ldap_user_pass %>
 project_domain_name = default
@@ -145,7 +143,7 @@ username = novaadmin
 default_floating_pool = ext-nat
 
 [placement]
-os_region_name = <%= @region %>
+region_name = <%= @region %>
 project_domain_name = Default
 project_name = admin
 auth_type = password
