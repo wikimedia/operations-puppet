@@ -12,3 +12,4 @@ profile::idp::client::httpd::document_root: "%{alias('profile::microsites::peopl
 profile::idp::client::httpd::virtual_host: "%{alias('profile::microsites::peopleweb::sitename')}"
 profile::idp::client::httpd::proxied_as: "https://%{hiera('profile::microsites::peopleweb::sitename')}"
 profile::idp::client::httpd::priority: 50
+profile::idp::client::httpd::protected_uri: '/~cdanis/sremap/'
