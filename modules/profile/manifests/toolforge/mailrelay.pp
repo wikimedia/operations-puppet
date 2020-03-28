@@ -37,7 +37,7 @@ class profile::toolforge::mailrelay(
         group   => 'Debian-exim',
         mode    => '0440',
         require => File['/etc/exim4/ratelimits'],
-        source  => 'puppet:///modules/profile/toolforge/mailrelay/ratelimits/sender_hourly_limits',
+        source  => 'puppet:///modules/profile/toolforge/mailrelay/sender_hourly_limits',
     }
 
     file { '/etc/exim4/ratelimits/host_hourly_limits':
@@ -46,7 +46,7 @@ class profile::toolforge::mailrelay(
         group   => 'Debian-exim',
         mode    => '0440',
         require => File['/etc/exim4/ratelimits'],
-        source  => 'puppet:///modules/profile/toolforge/mailrelay/ratelimits/host_hourly_limits',
+        source  => 'puppet:///modules/profile/toolforge/mailrelay/host_hourly_limits',
     }
 
     file { '/usr/local/sbin/localuser':
