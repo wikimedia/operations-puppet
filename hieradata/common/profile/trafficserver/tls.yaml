@@ -7,14 +7,6 @@ profile::trafficserver::tls::mapping_rules:
   - type: map
     target: wss://etherpad.wikimedia.org
     replacement: "ws://%{::ipaddress}:3120"
-  - type: map
-    target: https://stream.wikimedia.org
-    replacement: "http://%{::ipaddress}:3120"
-    params:
-      # Disable transaction_active_timeout_in, which limits the maximum
-      # amount of time ATS can remain connected to a client. T242767
-      - '@plugin=/usr/lib/trafficserver/modules/conf_remap.so'
-      - '@pparam=proxy.config.http.transaction_active_timeout_in=0'
 # ws temporary disabled in phabricator T238593
 # - type: map
 #   target: wss://phabricator.wikimedia.org

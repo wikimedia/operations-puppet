@@ -190,12 +190,8 @@ profile::trafficserver::backend::mapping_rules:
       replacement: https://thorium.eqiad.wmnet
     - type: map
       target: http://stream.wikimedia.org
+      # XXX pipe requests to /v2/stream/.+ ?
       replacement: https://eventstreams.discovery.wmnet:4892
-      params:
-          # Disable transaction_active_timeout_in, which limits the maximum
-          # amount of time ATS can remain connected to a client. T242767
-          - '@plugin=/usr/lib/trafficserver/modules/conf_remap.so'
-          - '@pparam=proxy.config.http.transaction_active_timeout_in=0'
     - type: map
       target: http://intake-logging.wikimedia.org
       replacement: https://eventgate-logging-external.discovery.wmnet:4392 # TLS port
