@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # Copyright 2015 Yuvi Panda <yuvipanda@gmail.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -131,7 +131,7 @@ def main():
         keys = get_user_keys(conn, username)
     for key in keys:
         # Some keys have an accidental newline at the end, see T77902
-        print key.strip()
+        print(key.decode('utf8').strip())
 
 
 if __name__ == '__main__':

@@ -5,11 +5,15 @@
 
 class ldap::client::utils($ldapconfig) {
     require_package('python-pycurl')
+    require_package('python3-pycurl')
 
     # this may be already declared by openstack's keystone, where
     # we need python-pyldap rather than python-ldap (so is ensure => absent there)
     if ! defined(Package['python-ldap']) {
         require_package('python-ldap')
+    }
+    if ! defined(Package['python3-pyldap']) {
+        require_package('python3-pyldap')
     }
 
     file { '/usr/local/sbin/add-ldap-group':
