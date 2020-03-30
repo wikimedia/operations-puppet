@@ -40,6 +40,7 @@
 # @param request_timeout timeout on a request in seconds.  Default: 65
 # @param retries If true enable retries. Default: true
 # @param use_remote_address If true append the client address to the x-forwarded-for header
+# TODO: allows services to override this value in the Profile::Tlsproxy::Envoy::Service Struct
 # @param upstream_addr the address of the backend service.  must be a localy configuered ipaddrres,
 #                      localhost or $facts['fqdn'].  Default: $facts['fqdn']
 # @param services An array of Profile::Tlsproxy::Envoy::Service's to configure

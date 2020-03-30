@@ -36,7 +36,8 @@ describe 'profile::tlsproxy::envoy' do
       }
 
       context "global TLS, non-SNI" do
-        before { params.merge!(tls_port: 443) }
+        let(:params) { super().merge(tls_port: 443) }
+
         if facts[:lsbdistcodename] != 'jessie'
           it { is_expected.to compile.with_all_deps }
           it {
@@ -79,7 +80,8 @@ describe 'profile::tlsproxy::envoy' do
             next
           end
           context "valid: #{valid}" do
-            before { params.merge!(upstream_addr: valid) }
+            let(:params) { super().merge(upstream_addr: valid) }
+
             it { is_expected.to compile.with_all_deps }
             it do
               is_expected.to contain_envoyproxy__tls_terminator('4443').with_upstreams([
@@ -94,7 +96,8 @@ describe 'profile::tlsproxy::envoy' do
         end
         ['foobar', '192.0.2.1', '2001:db8::1'].each do |invalid|
           context "invalid #{invalid}" do
-            before { params.merge!(upstream_addr: 'foobar') }
+            let(:params) { super().merge(upstream_addr: 'foobar') }
+
             it do
               is_expected.to raise_error(
                 Puppet::PreformattedError, /upstream_addr must be one of:/
@@ -104,8 +107,8 @@ describe 'profile::tlsproxy::envoy' do
         end
       end
       context "SNI-only" do
-        before do
-          params.merge!(
+        let(:params) do
+          super().merge(
             sni_support: 'strict',
             services: [
               {server_names: ['citoid.discovery.wmnet', 'citoid'], port: 8080, cert_name: 'citoid'},
@@ -113,6 +116,7 @@ describe 'profile::tlsproxy::envoy' do
             ]
           )
         end
+
         it { is_expected.to compile.with_all_deps }
         it {
           is_expected.to contain_sslcert__certificate('blubberoid')
@@ -124,7 +128,8 @@ describe 'profile::tlsproxy::envoy' do
                           .with_route_timeout(65.0)
         }
         context "No retries" do
-          before { params.merge!(retries: false) }
+          let(:params) { super().merge(retries: false) }
+
           it { is_expected.to compile.with_all_deps }
           it {
             is_expected.to contain_envoyproxy__tls_terminator('4443')
@@ -132,7 +137,8 @@ describe 'profile::tlsproxy::envoy' do
           }
         end
         context "Larger timeout" do
-          before { params.merge!(request_timeout: 201.0) }
+          let(:params) { super().merge(request_timeout: 201.0) }
+
           it { is_expected.to compile.with_all_deps }
           it {
             is_expected.to contain_envoyproxy__tls_terminator('4443')
