@@ -72,6 +72,11 @@ class otrs(
         'libyaml-libyaml-perl',
         'libtemplate-perl',
         'libarchive-zip-perl',
+
+        # T248814. Added in 5.0.42 as prereqs
+        'libmoo-perl',
+        'libnamespace-clean-perl',
+
         'mysql-client',
         'perl-doc',
     ]
