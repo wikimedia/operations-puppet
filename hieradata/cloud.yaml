@@ -44,13 +44,17 @@ profile::puppetdb::database::replication_lag_crit: 16777216
 profile::puppetdb::database::replication_lag_warn: 1048576
 profile::puppetdb::slaves: []
 profile::puppetdb::monitor_agentrun: false
+profile::tlsproxy::envoy::sni_support: 'no'
 profile::tlsproxy::envoy::tls_port: 443
 profile::tlsproxy::envoy::global_cert_name: ~
 profile::tlsproxy::envoy::websockets: false
+profile::tlsproxy::envoy::timeout: 65.0
+profile::tlsproxy::envoy::retries: true
+profile::tlsproxy::envoy::use_remote_address: false
 profile::tlsproxy::envoy::services:
   - server_names: ['*']
     port: 80
-profile::tlsproxy::envoy::sni_support: 'no'
+profile::tlsproxy::envoy::upstream_addr: "%{facts.fqdn}"
 
 # Firewall logging
 profile::base::firewall::enable_logging: true
