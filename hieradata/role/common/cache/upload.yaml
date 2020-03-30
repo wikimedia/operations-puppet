@@ -65,6 +65,6 @@ profile::trafficserver::tls::port: 443
 # Default weights for conftool
 profile::cache::base::default_weights:
   varnish-fe: 1
-  nginx: 1
+  ats-tls: 1
   ats-be: 100
 profile::netconsole::client::ensure: absent

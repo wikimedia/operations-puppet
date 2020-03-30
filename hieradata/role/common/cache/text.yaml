@@ -249,7 +249,7 @@ profile::trafficserver::tls::websocket_support: true
 # Default weights for conftool
 profile::cache::base::default_weights:
   varnish-fe: 1
-  nginx: 1
+  ats-tls: 1
   ats-be: 100
 
 profile::trafficserver::tls::extra_certs:
