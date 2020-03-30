@@ -1,11 +1,20 @@
 class profile::toolforge::legacy_redirector (
+    Boolean $do_https        = lookup('profile::toolforge::proxy::do_https',  {default_value => true}),
     String $canonical_domain = lookup('profile::toolforge::canonical_domain', {default_value => 'toolforge.org'}),
     String $canonical_scheme = lookup('profile::toolforge::canonical_scheme', {default_value => 'https://'}),
 ) {
-    # SSL certificate for tools.wmflabs.org
-    $ssl_cert_name = 'toolforge'
-    acme_chief::cert { $ssl_cert_name:
-        puppet_rsc => Exec['nginx-reload'],
+    $resolver = join($::nameservers, ' ')
+
+    # toolsbeta support: running without SSL as in the main front proxy
+    if $do_https {
+        $ssl_settings = ssl_ciphersuite('nginx', 'compat')
+        # SSL certificate for tools.wmflabs.org
+        $ssl_certificate_name = 'toolforge'
+        acme_chief::cert { $ssl_certificate_name:
+            puppet_rsc => Exec['nginx-reload'],
+        }
+    } else {
+        $ssl_certificate_name = false
     }
 
     class { '::nginx':
@@ -13,17 +22,18 @@ class profile::toolforge::legacy_redirector (
     }
 
     nginx::site { 'legacy-redirector':
-        content => template('profile/toolforge/legacy-redirector.conf'),
+        content => template('profile/toolforge/legacy-redirector.conf.erb'),
     }
 
     file { '/etc/nginx/lua':
-        ensure   => 'directory',
-        requires => Class['Nginx'],
+        ensure  => 'directory',
+        require => Package['nginx-extras'],
     }
 
     file { '/etc/nginx/lua/legacy_redirector.lua':
         ensure  => file,
-        content => 'puppet:///modules/profile/toolforge/legacy_redirector.lua',
+        source  => 'puppet:///modules/profile/toolforge/legacy_redirector.lua',
+        require => File['/etc/nginx/lua'],
         notify  => Service['nginx'],
     }
 
@@ -33,7 +43,7 @@ class profile::toolforge::legacy_redirector (
         desc  => 'HTTP webserver for the entire world',
     }
     ferm::service { 'https':
-        proto => 'htcp',
+        proto => 'tcp',
         port  => '443',
         desc  => 'HTTPS webserver for the entire world',
     }
