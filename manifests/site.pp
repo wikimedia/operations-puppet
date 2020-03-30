@@ -270,7 +270,7 @@ node /^cp10(7[68]|8[02468]|90)\.eqiad\.wmnet$/ {
     role(cache::upload)
 }
 
-node /^cp20(0[1467]|1[02369]|2[37])\.codfw\.wmnet$/ {
+node /^cp20(0[467]|1[02369]|2[37])\.codfw\.wmnet$/ {
     role(cache::text)
 }
 
