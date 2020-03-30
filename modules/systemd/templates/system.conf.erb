@@ -1,4 +1,5 @@
-# systemd global configuration file.See systemd-system.conf(5).
+# systemd global configuration file. See systemd-system.conf(5) and
+# systemd.resource-control(5).
 #
 # This file is managed by Puppet!
 #
@@ -7,3 +8,7 @@
 DefaultCPUAccounting=<%= @cpu_accounting %>
 DefaultBlockIOAccounting=<%= @blockio_accounting %>
 DefaultMemoryAccounting=<%= @memory_accounting %>
+# If true, turns on IPv4 and IPv6 network traffic accounting for packets sent
+# or received by units. When this option is turned on, all IPv4 and IPv6
+# sockets created by any process of the unit are accounted for.
+DefaultIPAccounting=<%= @ip_accounting %>

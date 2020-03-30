@@ -9,6 +9,7 @@ class systemd::config (
     Enum['yes', 'no'] $cpu_accounting = 'no',
     Enum['yes', 'no'] $blockio_accounting = 'no',
     Enum['yes', 'no'] $memory_accounting = 'no',
+    Enum['yes', 'no'] $ip_accounting = 'no',
 ){
     file { '/etc/systemd/system.conf':
         ensure  => $ensure,

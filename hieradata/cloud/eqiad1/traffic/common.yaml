@@ -23,6 +23,7 @@ shared_acme_certificates:
 profile::base::systemd::cpu_accounting: 'yes'
 profile::base::systemd::blockio_accounting: 'yes'
 profile::base::systemd::memory_accounting: 'yes'
+profile::base::systemd::ip_accounting: 'yes'
 profile::prometheus::cadvisor_exporter::port: 4194
 profile::trafficserver::tls::log_formats:
   - name: wmf-tls
