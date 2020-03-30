@@ -1524,6 +1524,7 @@ class profile::prometheus::ops (
 
     prometheus::web { 'ops':
         proxy_pass => 'http://localhost:9900/ops',
+        homepage   => true,
     }
 
     file { '/srv/prometheus/ops/gerrit.token':

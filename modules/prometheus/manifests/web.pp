@@ -12,10 +12,15 @@
 #   The maximum number of connections per Apache worker to the instance.
 #   Keep under ThreadsPerChild setting (25 default) to ensure a single slow
 #   Prometheus instance does not starve other instances on the same host.
+#
+# [*homepage*]
+#   Redirect to this instance from the homepage (i.e. /)
+
 define prometheus::web (
-    $proxy_pass,
-    $ensure = present,
-    $maxconn = 10,
+    String $proxy_pass,
+    Wmflib::Ensure $ensure = present,
+    Integer $maxconn = 10,
+    Boolean $homepage = false,
 ) {
     include ::prometheus
 

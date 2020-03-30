@@ -13,3 +13,7 @@
     # max connections _per apache child process_
     # wait 1s to acquire a free connection before returning "server busy"
     ProxyPass /<%= @title %> <%= @proxy_pass %> max=<%= @maxconn %> acquire=1000
+
+    <% if @homepage %>
+    RewriteRule ^/$ %{REQUEST_SCHEME}://%{HTTP_HOST}/<%= @title %> [R=302]
+    <% end %>

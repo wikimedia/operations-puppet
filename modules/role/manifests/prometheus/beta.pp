@@ -144,6 +144,7 @@ class role::prometheus::beta (
 
     prometheus::web { 'beta':
         proxy_pass => 'http://127.0.0.1:9903/beta',
+        homepage   => true,
     }
 
     prometheus::rule { 'rules_beta.yml':
