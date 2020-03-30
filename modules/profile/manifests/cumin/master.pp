@@ -71,12 +71,10 @@ class profile::cumin::master (
         group  => 'root',
     }
 
-    if os_version('debian == jessie') {
-        $python_version = '3.4'
-    } elsif os_version('debian == stretch') {
+    if os_version('debian == stretch') {
         $python_version = '3.5'
-    } else {
-        $python_version = '3.6'
+    } elsif os_version('debian == buster') {
+        $python_version = '3.7'
     }
 
     file { "/usr/local/lib/python${python_version}/dist-packages/wmf_auto_reimage_lib.py":
