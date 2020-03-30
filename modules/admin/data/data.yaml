@@ -273,7 +273,7 @@ groups:
               esanders, sukhe, jfishback, iflorez, mayakpwiki, conniecc1, abi, mgerlach, dedcode,
               lexnasser, kevinbazira, keepit-ssh, jiji, cohi, mstyles, accraze, kzeta, snowick,
               aarora, zpapierski, knissen, jiawang, jmorgan, mholloway-shell, joewalsh, tarrow,
-              itamar, phedenskog, aaron, dpifke]
+              itamar, phedenskog, aaron, dpifke, aklapper]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata]
   analytics-admins:
