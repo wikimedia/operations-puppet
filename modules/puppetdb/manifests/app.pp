@@ -23,13 +23,6 @@ class puppetdb::app(
 
     require_package('puppetdb')
 
-    if os_version('debian < buster') {
-        file { '/etc/puppetdb':
-            ensure => link,
-            target => '/etc/puppetlabs/puppetdb',
-        }
-    }
-
     file { '/var/lib/puppetdb':
         ensure => directory,
         owner  => 'puppetdb',
