@@ -1,0 +1,5 @@
+fixtures:
+    symlinks:
+        tomcat: "#{source_dir}"
+        stdlib: "../../../../stdlib"
+        wmflib: "../../../../wmflib"
