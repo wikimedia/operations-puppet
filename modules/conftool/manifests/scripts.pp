@@ -41,4 +41,12 @@ class conftool::scripts {
         mode   => '0555',
         source => 'puppet:///modules/conftool/safe-service-restart.py'
     }
+
+    file { '/usr/local/bin/ispooled':
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/conftool/ispooled.sh'
+    }
 }
