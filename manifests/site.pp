@@ -285,7 +285,7 @@ node /^cp20(0[39]|15|21)\.codfw\.wmnet$/ {
 }
 
 # new cp nodes (T247340)
-node /^cp20(29|3[0-9]|4[0-2])\.codfw\.wmnet$/ {
+node /^cp20(3[0-9]|4[0-2])\.codfw\.wmnet$/ {
     role(insetup_noferm)
 }
 
