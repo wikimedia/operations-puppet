@@ -159,6 +159,15 @@ groups:
   - record: cluster:cpu_count:sum
     expr: cluster:cpu:sum
 
+- name: cluster_disk
+  rules:
+  - record: cluster:node_disk_reads_completed_total:rate5m
+    expr: sum by (cluster) (rate(node_disk_reads_completed_total{job="node"}[5m]))
+  - record: cluster:node_disk_writes_completed_total:rate5m
+    expr: sum by (cluster) (rate(node_disk_writes_completed_total{job="node"}[5m]))
+  - record: cluster:node_disk_io_now:none
+    expr: sum by (cluster) (node_disk_io_now{job="node"})
+
 - name: cluster_filesystem
   rules:
   - record: cluster_mountpoint:node_filesystem_size:sum
