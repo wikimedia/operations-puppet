@@ -1202,8 +1202,8 @@ node 'miscweb1001.eqiad.wmnet', 'miscweb2001.codfw.wmnet' {
     role(webserver_misc_apps)
 }
 
-# miscweb on buster to replace 1001
-node 'miscweb1002.eqiad.wmnet' {
+# miscweb on buster to replace 1001/2001 (T247648)
+node 'miscweb1002.eqiad.wmnet', 'miscweb2002.codfw.wmnet' {
     role(webserver_misc_apps)
 }
 
