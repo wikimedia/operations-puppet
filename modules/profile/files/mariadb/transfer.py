@@ -592,14 +592,14 @@ class Transferer(object):
             self.sanity_checks()
         except ValueError as e:
             print("ERROR: {}".format(str(e)))
-            return -1
+            return [-1]
 
         # stop slave if requested
         if self.options.get('stop_slave', False):
             result = self.stop_slave(self.source_host, self.source_path)
             if result != 0:
                 print("ERROR: Stop slave failed")
-                return -2
+                return [-2]
 
         print('About to transfer {} from {} to {}:{} ({} bytes)'
               .format(self.source_path, self.source_host,
@@ -624,7 +624,7 @@ class Transferer(object):
             result = self.start_slave(self.source_host, self.source_path)
             if result != 0:
                 print("ERROR: Start slave failed")
-                return -3
+                return [-3]
 
         return transfer_sucessful
 
