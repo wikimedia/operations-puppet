@@ -3513,17 +3513,17 @@ host kafka-jumbo1006 {
 }
 
 host kafka-jumbo1007 {
-    hardware ethernet B0:26:28:F0:22:A4;
+    hardware ethernet B0:26:28:F0:22:A2;
     fixed-address kafka-jumbo1007.eqiad.wmnet;
 }
 
 host kafka-jumbo1008 {
-    hardware ethernet B0:26:28:F0:8E:80;
+    hardware ethernet B0:26:28:F0:8E:7E;
     fixed-address kafka-jumbo1008.eqiad.wmnet;
 }
 
 host kafka-jumbo1009 {
-    hardware ethernet B0:26:28:F0:23:E8;
+    hardware ethernet B0:26:28:F0:23:E6;
     fixed-address kafka-jumbo1009.eqiad.wmnet;
 }
 
