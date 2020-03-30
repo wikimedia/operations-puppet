@@ -99,4 +99,3 @@ profile::idp::max_session_length: 604800
 profile::idp::actuators:
   - prometheus
   - sso
-  - ssoSessions
