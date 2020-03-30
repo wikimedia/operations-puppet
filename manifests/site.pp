@@ -274,7 +274,7 @@ node /^cp20(0[1467]|1[02369]|2[37])\.codfw\.wmnet$/ {
     role(cache::text)
 }
 
-node /^cp20(0[258]|1[1478]|2[02456])\.codfw\.wmnet$/ {
+node /^cp20(0[258]|1[1478]|2[024568])\.codfw\.wmnet$/ {
     role(cache::upload)
 }
 
@@ -285,7 +285,7 @@ node /^cp20(0[39]|15|21)\.codfw\.wmnet$/ {
 }
 
 # new cp nodes (T247340)
-node /^cp20(2[8-9]|3[0-9]|4[0-2])\.codfw\.wmnet$/ {
+node /^cp20(29|3[0-9]|4[0-2])\.codfw\.wmnet$/ {
     role(insetup_noferm)
 }
 
