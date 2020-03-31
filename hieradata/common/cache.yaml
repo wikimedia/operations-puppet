@@ -1,7 +1,6 @@
 cache::nodes:
   text:
     codfw_ats:
-      - 'cp2007.codfw.wmnet'
       - 'cp2010.codfw.wmnet'
       - 'cp2012.codfw.wmnet'
       - 'cp2013.codfw.wmnet'

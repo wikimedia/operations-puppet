@@ -253,7 +253,6 @@ codfw:
     wtp2019.codfw.wmnet: [parsoid, parsoid-php]
     wtp2020.codfw.wmnet: [parsoid, parsoid-php]
   cache_text:
-    cp2007.codfw.wmnet: [varnish-fe, ats-be, ats-tls]
     cp2010.codfw.wmnet: [varnish-fe, ats-be, ats-tls]
     cp2012.codfw.wmnet: [varnish-fe, ats-be, ats-tls]
     cp2013.codfw.wmnet: [varnish-fe, ats-be, ats-tls]
