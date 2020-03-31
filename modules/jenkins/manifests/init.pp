@@ -149,9 +149,7 @@ class jenkins(
         '-Dhudson.udp=-1',
         '-Dhudson.DNSMultiCast.disabled=true',
         "-Djenkins.model.Jenkins.buildsDir=${builds_dir_for_systemd}",
-        "-Djenkins.model.Jenkins.workspacesDir=${workspaces_dir_for_systemd}",
-        # T245658 Allow inline CSS and playing MP4 videos of test results.
-        "-Dhudson.model.DirectoryBrowserSupport.CSP=\"sandbox; default-src 'none'; img-src 'self'; style-src 'self' 'unsafe-inline'; media-src 'self'\""
+        "-Djenkins.model.Jenkins.workspacesDir=${workspaces_dir_for_systemd}"
     ], ' ')
 
     $real_service_ensure = $service_ensure ? {
