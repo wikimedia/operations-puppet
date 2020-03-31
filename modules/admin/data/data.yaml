@@ -271,7 +271,8 @@ groups:
               niharika29, ryanmax, afandian2, jgleeson, toddleroux, srishakatux, dsharpe, eyener,
               esanders, sukhe, jfishback, iflorez, mayakpwiki, conniecc1, abi, mgerlach, dedcode,
               lexnasser, kevinbazira, keepit-ssh, jiji, cohi, mstyles, accraze, kzeta, snowick,
-              aarora, zpapierski, knissen, jiawang, jmorgan, mholloway-shell, joewalsh, tarrow]
+              aarora, zpapierski, knissen, jiawang, jmorgan, mholloway-shell, joewalsh, tarrow,
+              itamar]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata]
   analytics-admins:
@@ -599,7 +600,7 @@ groups:
   analytics-wmde-users:
     description: Group of WMDE analytics users
     gid: 784
-    members: [addshore, goransm, ladsgroup, lucaswerkmeister-wmde, conniecc1, tarrow]
+    members: [addshore, goransm, ladsgroup, lucaswerkmeister-wmde, conniecc1, tarrow, itamar]
     privileges: ['ALL = (analytics-wmde) NOPASSWD: ALL']
   eventbus-admins:
     gid: 785
