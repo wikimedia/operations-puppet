@@ -971,11 +971,6 @@ host cp2010 {
     fixed-address cp2010.codfw.wmnet;
 }
 
-host cp2011 {
-    hardware ethernet 44:A8:42:2D:11:BD;
-    fixed-address cp2011.codfw.wmnet;
-}
-
 host cp2012 {
     hardware ethernet 44:A8:42:2D:15:01;
     fixed-address cp2012.codfw.wmnet;
