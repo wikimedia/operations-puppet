@@ -58,6 +58,7 @@ cache::nodes:
       - 'cp2028.codfw.wmnet'
       - 'cp2030.codfw.wmnet'
       - 'cp2032.codfw.wmnet'
+      - 'cp2034.codfw.wmnet'
     eqiad_ats:
       - 'cp1076.eqiad.wmnet'
       - 'cp1078.eqiad.wmnet'
