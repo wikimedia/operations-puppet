@@ -1981,7 +1981,7 @@ node /^ping[123]001\.(eqiad|codfw|esams)\.wmnet$/ {
 }
 
 # virtual machines hosting https://wikitech.wikimedia.org/wiki/Planet.wikimedia.org
-node /^planet[12]001\.(eqiad|codfw)\.wmnet$/ {
+node /^planet[12]00[12]\.(eqiad|codfw)\.wmnet$/ {
     role(planet)
 }
 
