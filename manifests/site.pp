@@ -265,7 +265,7 @@ node /^cp10(7[68]|8[02468]|90)\.eqiad\.wmnet$/ {
     role(cache::upload)
 }
 
-node /^cp20(1[02369]|2[379]|3[13])\.codfw\.wmnet$/ {
+node /^cp20(1[02369]|2[379]|3[135])\.codfw\.wmnet$/ {
     role(cache::text)
 }
 
@@ -280,7 +280,7 @@ node /^cp20(0[39]|15|21)\.codfw\.wmnet$/ {
 }
 
 # new cp nodes (T247340)
-node /^cp20(3[5-9]|4[0-2])\.codfw\.wmnet$/ {
+node /^cp20(3[6-9]|4[0-2])\.codfw\.wmnet$/ {
     role(insetup_noferm)
 }
 
