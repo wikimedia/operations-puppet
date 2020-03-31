@@ -69,3 +69,11 @@ profile::cache::base::default_weights:
   ats-tls: 1
   ats-be: 100
 profile::netconsole::client::ensure: absent
+profile::lvs::realserver::pools:
+  upload-https:
+    services:
+      - ats-tls
+      - varnish-fe
+  upload:
+    services:
+      - varnish-fe

@@ -270,3 +270,11 @@ profile::trafficserver::tls::extra_certs:
     ]
     warning_threshold: 30
     critical_threshold: 15
+profile::lvs::realserver::pools:
+  text-https:
+    services:
+      - ats-tls
+      - varnish-fe
+  text:
+    services:
+      - varnish-fe
