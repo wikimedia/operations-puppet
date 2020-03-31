@@ -750,6 +750,7 @@ hadoop_clusters:
       # Avoid long waits if the Namenodes are not reachable
       # from clients.
       dfs.client.failover.max.attempts: 3
+      dfs.namenode.acls.enabled: true
 
     mapred_site_extra_properties:
       mapreduce.ssl.enabled: true
