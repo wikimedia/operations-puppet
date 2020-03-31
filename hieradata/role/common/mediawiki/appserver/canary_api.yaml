@@ -7,8 +7,16 @@ profile::mediawiki::php::enable_fpm: true
 # Bump the connections per backend to 5 in mcrouter, see T203786
 profile::mediawiki::mcrouter_wancache::num_proxies: 5
 has_lvs: true
-profile::mediawiki::webserver::has_tls: true
-profile::mediawiki::webserver::tls_keepalive_requests: 200
+profile::mediawiki::webserver::has_tls: "envoy"
+profile::envoy::ensure: present
+profile::tlsproxy::envoy::sni_support: "no" # you need the double quotes, because yaml.
+profile::tlsproxy::envoy::tls_port: 443
+profile::tlsproxy::envoy::services:
+  - server_names: ["*"]
+    port: 80
+profile::tlsproxy::envoy::request_timeout: 201.0
+profile::tlsproxy::envoy::retries: false
+profile::tlsproxy::envoy::global_cert_name: "appservers.svc.eqiad.wmnet"
 profile::mediawiki::httpd::logrotate_retention: 12
 
 profile::lvs::realserver::pools:
@@ -24,7 +32,7 @@ profile::lvs::realserver::pools:
       - apache2
       - mcrouter
       - nutcracker
-      - nginx
+      - envoy
 profile::mediawiki::php::php_version: "7.2"
 # bail out in case a long-lasting C function is called and
 # excimer can't throw its exception
@@ -45,4 +53,3 @@ profile::mediawiki::php::restarts::opcache_limit: 200
 profile::mediawiki::php::fpm_workers_multiplier: 4.5
 # Register stack traces for any request taking more than 5 seconds
 profile::mediawiki::php::slowlog_limit: 5
-
