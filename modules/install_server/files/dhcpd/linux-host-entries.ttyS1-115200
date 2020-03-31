@@ -976,11 +976,6 @@ host cp2013 {
     fixed-address cp2013.codfw.wmnet;
 }
 
-host cp2014 {
-    hardware ethernet 44:A8:42:2C:F5:8E;
-    fixed-address cp2014.codfw.wmnet;
-}
-
 host cp2015 {
     hardware ethernet 44:A8:42:2C:E3:FA;
     fixed-address cp2015.codfw.wmnet;
