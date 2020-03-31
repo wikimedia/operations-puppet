@@ -3676,7 +3676,7 @@ ldap_only_users:
     realname: Victoria Coleman
     email: vcoleman@wikimedia.org
   bitpogo:
-    ensure: present
+    ensure: absent
     realname: Matthias Geisler
     email: matthias.geisler@wikimedia.de
   cmadeo:
