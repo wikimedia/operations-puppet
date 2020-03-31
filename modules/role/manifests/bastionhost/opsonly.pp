@@ -13,7 +13,7 @@ class role::bastionhost::opsonly {
 
     ferm::service { 'ssh':
         desc  => 'SSH open from everywhere, this is a bastion host',
-        prio  => '01',
+        prio  => '03',
         proto => 'tcp',
         port  => 'ssh',
     }

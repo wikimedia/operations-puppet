@@ -18,7 +18,7 @@ class role::bastionhost::twofa {
 
     ferm::service { 'ssh':
         desc  => 'SSH open from everywhere, this is a bastion host',
-        prio  => '01',
+        prio  => '03',
         proto => 'tcp',
         port  => 'ssh',
     }

@@ -39,18 +39,19 @@ class base::firewall (
         onlyif  => "/bin/grep --invert-match --quiet '^32768$' /sys/module/nf_conntrack/parameters/hashsize",
     }
 
-    ferm::conf { 'main':
-        prio   => '00',
-        source => 'puppet:///modules/base/firewall/main-input-default-drop.conf',
-    }
-
     if $block_abuse_nets {
         network::parse_abuse_nets('ferm').each |String $net_name, Array[Stdlib::IP::Address] $nets| {
             ferm::rule {"drop-abuse-net-${net_name}":
+                prio => '01',
                 rule => "saddr (${nets.join(' ')}) DROP;",
             }
         }
     }
+    ferm::conf { 'main':
+        prio   => '02',
+        source => 'puppet:///modules/base/firewall/main-input-default-drop.conf',
+    }
+
     $bastion_hosts_str = join($bastion_hosts, ' ')
     ferm::rule { 'bastion-ssh':
         rule   => "proto tcp dport ssh saddr (${bastion_hosts_str}) ACCEPT;",
