@@ -9,7 +9,7 @@ conftool_service=${1:?$usage}
 service_name=${2:?$usage}
 selector="name=${hostname},service=${conftool_service}"
 
-# Exit immediately if ats-be is not pooled
+# Exit immediately if the service is not pooled
 if confctl --quiet select "${selector}" get |
         jq ".[\"${hostname}\"].pooled" | grep -q '"no"'; then
     echo "${conftool_service} is depooled. Exiting." | logger -t "$script" --stderr

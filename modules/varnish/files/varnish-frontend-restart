@@ -2,7 +2,7 @@
 
 set -e
 
-# Depool nginx
+# Depool ats-tls
 confctl --quiet select name=`hostname -f`,service='ats-tls' set/pooled=no
 
 # Depool varnish-fe
@@ -19,5 +19,5 @@ sleep 15
 # Repool varnish-fe
 confctl --quiet select name=`hostname -f`,service='varnish-fe' set/pooled=yes
 
-# Repool nginx
+# Repool ats-tls
 confctl --quiet select name=`hostname -f`,service='ats-tls' set/pooled=yes
