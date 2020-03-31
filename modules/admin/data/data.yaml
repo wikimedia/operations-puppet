@@ -3631,6 +3631,15 @@ users:
     gid: 500
     ssh_keys:
       - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMWLd4PthDND+UrmG07f8HIYz2L6G6/PsFra/xGzHT9d hknust@wikimedia.org'
+  itamar:
+    ensure: present
+    realname: Itamar Givon
+    email: itamar.givon@wikimedia.de
+    uid: 23166
+    gid: 500
+    ssh_keys:
+      - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIM+qAVkcIT2B/CjXPVPgbf8Z9MEZFG/+awJOSJd0GkTC itgi@C285'
+
 ldap_only_users:
   abartov:
     ensure: present
@@ -3731,10 +3740,6 @@ ldap_only_users:
     ensure: present
     realname: Ilana Fried
     email: ifried@wikimedia.org
-  itamar:
-    ensure: present
-    realname: Itamar Givon
-    email: itamar.givon@wikimedia.de
   jaufrecht:
     ensure: absent
     realname: Joel Aufrecht
