@@ -31,7 +31,7 @@ class profile::scap::dsh(
             default => $cl
         }
         # We also need mediawiki-config to get the active DC.
-        $keys = $canary_dcs.map |$dc| { "/pool/${dc}/${cl}/canary" } + '/mediawiki-config'
+        $keys = $canary_dcs.map |$dc| { "/pools/${dc}/${cl}/canary" } + '/mediawiki-config'
         confd::file { "/etc/dsh/group/mediawiki-${dsh_name}-canaries":
             ensure     => present,
             content    => template('profile/scap/dsh-mediawiki-canaries.tpl.erb'),
