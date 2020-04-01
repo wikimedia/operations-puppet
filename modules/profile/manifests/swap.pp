@@ -61,6 +61,9 @@ class profile::swap(
             statistics::mysql_credentials { 'research':
                 group => 'researchers',
             }
+            statistics::mysql_credentials { 'analytics-research':
+                group => 'analytics-privatedata-users',
+            }
         }
 
         if $push_published {
