@@ -1,4 +1,5 @@
 admin::groups:
   - datacenter-ops
 profile::installserver::dhcp::ensure_service: 'running'
+profile::installserver::tftp::ensure_service: 'running'
 profile::installserver::proxy::ensure: 'present'

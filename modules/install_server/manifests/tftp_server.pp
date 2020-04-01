@@ -12,7 +12,9 @@
 # Sample Usage:
 #   include install_server::tftp_server
 
-class install_server::tftp_server {
+class install_server::tftp_server (
+    Enum['stopped', 'running'] $ensure_service = 'running',
+){
     file { '/srv/tftpboot':
         # config files in the puppet repository,
         # larger files like binary images in volatile
@@ -44,7 +46,7 @@ class install_server::tftp_server {
     }
 
     service { 'atftpd':
-        ensure    => running,
+        ensure    => $ensure_service,
         hasstatus => false,
         require   => Package['atftpd'],
     }

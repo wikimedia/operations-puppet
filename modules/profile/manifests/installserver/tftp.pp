@@ -17,7 +17,9 @@
 # Sample Usage:
 #       include ::profile::installserver::tftp
 
-class profile::installserver::tftp {
+class profile::installserver::tftp (
+    Enum['stopped', 'running'] $ensure_service = lookup('profile::installserver::tftp::ensure_service'),
+){
 
     class { '::install_server::tftp_server': }
 
