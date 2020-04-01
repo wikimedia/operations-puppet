@@ -14,12 +14,16 @@ class role::prometheus::services {
     $storage_retention = hiera('prometheus::server::storage_retention', '4032h')
     $max_chunks_to_persist = hiera('prometheus::server::max_chunks_to_persist', '524288')
     $memory_chunks = hiera('prometheus::server::memory_chunks', '1048576')
+    $replica_label = lookup('prometheus::replica_label', { 'default_value' => 'unset' }) # lint:ignore:wmf_styleguide
+
 
     $config_extra = {
         # All metrics will get an additional 'site' label when queried by
         # external systems (e.g. via federation)
         'external_labels' => {
-            'site' => $::site,
+            'site'       => $::site,
+            'replica'    => $replica_label,
+            'prometheus' => 'services',
         },
     }
 

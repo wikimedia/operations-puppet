@@ -3,6 +3,7 @@
 #
 class profile::prometheus::k8s (
     $users = hiera('k8s_infrastructure_users'), # lint:ignore:wmf_styleguide
+    String $replica_label = lookup('prometheus::replica_label', { 'default_value' => 'unset' }),
 ){
     $targets_path = '/srv/prometheus/k8s/targets'
     $storage_retention = hiera('prometheus::server::storage_retention', '4032h')
@@ -16,7 +17,9 @@ class profile::prometheus::k8s (
         # All metrics will get an additional 'site' label when queried by
         # external systems (e.g. via federation)
         'external_labels' => {
-            'site' => $::site,
+            'site'       => $::site,
+            'replica'    => $replica_label,
+            'prometheus' => 'k8s',
         },
     }
 
