@@ -390,6 +390,7 @@ profile::webperf::site::server_name: performance-beta.wmflabs.org
 profile::kubernetes::deployment_server::git_owner: trebuchet
 profile::kubernetes::deployment_server::git_group: wikidev
 
+profile::maps::apps::tilerator_enable: true
 profile::maps::apps::wikidata_query_service: https://query.wikidata.org/bigdata/namespace/wdq/sparql
 
 # MediaWiki web setup: beta has:

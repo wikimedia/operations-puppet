@@ -1,17 +1,18 @@
 class profile::maps::apps(
-    Array[String] $cassandra_hosts = hiera('profile::cassandra::single_instance::seeds'),
-    String $cassandra_kartotherian_pass = hiera('profile::maps::cassandra::kartotherian_pass'),
-    String $cassandra_tilerator_pass = hiera('profile::maps::cassandra::tilerator_pass'),
-    String $cassandra_tileratorui_pass = hiera('profile::maps::cassandra::tileratorui_pass'),
-    String $pgsql_kartotherian_pass = hiera('profile::maps::osm_master::kartotherian_pass'),
-    String $pgsql_tilerator_pass = hiera('profile::maps::osm_master::tilerator_pass'),
-    String $pgsql_tileratorui_pass = hiera('profile::maps::osm_master::tileratorui_pass'),
-    String $redis_server = hiera('profile::maps::apps::redis_server'),
-    String $redis_pass = hiera('profile::maps::apps::redis_pass'),
-    String $kartotherian_storage_id = hiera('profile::maps::apps::kartotherian_storage_id'),
-    String $tilerator_storage_id = hiera('profile::maps::apps::tilerator_storage_id'),
-    String $wikidata_query_service = hiera('profile::maps::apps::wikidata_query_service'),
-    Float[0.0, 1.0] $tilerator_ncpu_ratio = hiera('profile::maps::apps::tilerator_ncpu_ratio'),
+    Array[String] $cassandra_hosts = lookup('profile::cassandra::single_instance::seeds'),
+    String $cassandra_kartotherian_pass = lookup('profile::maps::cassandra::kartotherian_pass'),
+    String $cassandra_tilerator_pass = lookup('profile::maps::cassandra::tilerator_pass'),
+    String $cassandra_tileratorui_pass = lookup('profile::maps::cassandra::tileratorui_pass'),
+    String $pgsql_kartotherian_pass = lookup('profile::maps::osm_master::kartotherian_pass'),
+    String $pgsql_tilerator_pass = lookup('profile::maps::osm_master::tilerator_pass'),
+    String $pgsql_tileratorui_pass = lookup('profile::maps::osm_master::tileratorui_pass'),
+    String $redis_server = lookup('profile::maps::apps::redis_server'),
+    String $redis_pass = lookup('profile::maps::apps::redis_pass'),
+    String $kartotherian_storage_id = lookup('profile::maps::apps::kartotherian_storage_id'),
+    String $tilerator_storage_id = lookup('profile::maps::apps::tilerator_storage_id'),
+    String $wikidata_query_service = lookup('profile::maps::apps::wikidata_query_service'),
+    Float[0.0, 1.0] $tilerator_ncpu_ratio = lookup('profile::maps::apps::tilerator_ncpu_ratio'),
+    Boolean $tilerator_enable = lookup('profile::maps::apps::tilerator_enable'),
 ) {
 
     $use_nodejs10 = true
@@ -30,6 +31,7 @@ class profile::maps::apps(
         storage_id        => $tilerator_storage_id,
         num_workers       => $num_workers,
         use_nodejs10      => $use_nodejs10,
+        enable            => $tilerator_enable,
     }
 
     class { '::tilerator::ui':
