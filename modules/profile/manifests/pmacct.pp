@@ -30,8 +30,14 @@ class profile::pmacct (
 
     ensure_resource('class', 'geoip')
 
+    if 'global,security.protocol,SSL' in $librdkafka_config {
+        $kafka_brokers = $kafka_config['brokers']['ssl_string']
+    } else {
+        $kafka_brokers = $kafka_config['brokers']['string']
+    }
+
     class { '::pmacct':
-        kafka_brokers     => $kafka_config['brokers']['string'],
+        kafka_brokers     => $kafka_brokers,
         librdkafka_config => $pmacct_librdkafka_conf,
         networks          => $::network::constants::external_networks,
     }
