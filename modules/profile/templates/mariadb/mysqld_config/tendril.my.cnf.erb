@@ -39,7 +39,11 @@ connect_timeout    = 3
 max_connect_errors = 1000000000
 query_cache_size   = 0
 query_cache_type   = 0
-plugin-load        = ha_tokudb
+<% if @basedir == '/opt/wmf-mariadb104' %>
+# Disable TokuDB for Mariadb 10.4 and Buster #T249085
+# plugin-load        = ha_tokudb
+# tokudb_cache_size              = 30G
+<% end %>
 #plugin-load        = connect
 #plugin-load        = federated
 open-files-limit   = 100000
@@ -54,12 +58,9 @@ innodb_buffer_pool_size        = 20G
 innodb_log_file_size           = 1G
 innodb_flush_log_at_trx_commit = 0
 innodb_flush_method            = O_DIRECT
-<% if @basedir == '/opt/wmf-mariadb10' or @basedir == '/opt/wmf-mariadb101' -%>
 # force default file format for MariaDB < 10.2
 innodb_file_format             = barracuda
-<% end -%>
 aria_pagecache_buffer_size     = 2G
-tokudb_cache_size              = 30G
 <% if @hostname == 'db1115' %>
 event_scheduler = 1
 <% else %>

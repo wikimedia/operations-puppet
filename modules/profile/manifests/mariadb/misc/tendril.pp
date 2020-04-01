@@ -13,11 +13,15 @@ class profile::mariadb::misc::tendril {
         mysql_shard => 'tendril',
         mysql_role  => 'standalone', # FIXME
     }
-
+    if os_version('debian >= buster') {
+        $basedir = '/opt/wmf-mariadb104'
+    } else {
+        $basedir = '/opt/wmf-mariadb101'
+    }
     class { 'mariadb::config':
+        basedir       => $basedir,
         config        => 'profile/mariadb/mysqld_config/tendril.my.cnf.erb',
         datadir       => '/srv/sqldata',
-        basedir       => '/opt/wmf-mariadb101',
         tmpdir        => '/srv/tmp',
         binlog_format => 'ROW',
         p_s           => 'on',
