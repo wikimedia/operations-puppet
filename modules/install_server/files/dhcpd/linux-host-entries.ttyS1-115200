@@ -975,6 +975,11 @@ host cp2021 {
     fixed-address cp2021.codfw.wmnet;
 }
 
+host cp2027 {
+    hardware ethernet B0:26:28:DC:01:10;
+    fixed-address cp2027.codfw.wmnet;
+}
+
 host cp2028 {
     hardware ethernet B0:26:28:DB:CE:B0;
     fixed-address cp2028.codfw.wmnet;

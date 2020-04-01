@@ -1199,6 +1199,8 @@ cache_hosts:
 - 2620:0:860:103:10:192:32:114   # cp2015.codfw.wmnet
 - 10.192.48.25                   # cp2021.codfw.wmnet
 - 2620:0:860:104:10:192:48:25    # cp2021.codfw.wmnet
+- 10.192.0.23                    # cp2027.codfw.wmnet
+- 2620:0:860:101:10:192:0:23     # cp2027.codfw.wmnet
 - 10.192.0.24                    # cp2028.codfw.wmnet
 - 2620:0:860:101:10:192:0:24     # cp2028.codfw.wmnet
 - 10.192.0.30                    # cp2029.codfw.wmnet

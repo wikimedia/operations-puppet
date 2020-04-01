@@ -1,6 +1,7 @@
 cache::nodes:
   text:
     codfw_ats:
+      - 'cp2027.codfw.wmnet'
       - 'cp2029.codfw.wmnet'
       - 'cp2031.codfw.wmnet'
       - 'cp2033.codfw.wmnet'
