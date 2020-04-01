@@ -269,7 +269,7 @@ node /^cp20(1[69]|2[379]|3[13579]|41)\.codfw\.wmnet$/ {
     role(cache::text)
 }
 
-node /^cp20(18|2[024568]|3[02468]|4[02])\.codfw\.wmnet$/ {
+node /^cp20(28|3[02468]|4[02])\.codfw\.wmnet$/ {
     role(cache::upload)
 }
 

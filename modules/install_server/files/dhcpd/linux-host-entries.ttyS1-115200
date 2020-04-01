@@ -975,19 +975,9 @@ host cp2016 {
     fixed-address cp2016.codfw.wmnet;
 }
 
-host cp2018 {
-    hardware ethernet 44:A8:42:2D:0A:0F;
-    fixed-address cp2018.codfw.wmnet;
-}
-
 host cp2019 {
     hardware ethernet 44:A8:42:2D:1E:50;
     fixed-address cp2019.codfw.wmnet;
-}
-
-host cp2020 {
-    hardware ethernet 44:A8:42:2D:00:DB;
-    fixed-address cp2020.codfw.wmnet;
 }
 
 host cp2021 {
@@ -995,29 +985,9 @@ host cp2021 {
     fixed-address cp2021.codfw.wmnet;
 }
 
-host cp2022 {
-    hardware ethernet 44:A8:42:2D:1E:80;
-    fixed-address cp2022.codfw.wmnet;
-}
-
 host cp2023 {
     hardware ethernet 44:A8:42:2D:05:3C;
     fixed-address cp2023.codfw.wmnet;
-}
-
-host cp2024 {
-    hardware ethernet 44:A8:42:2D:1D:3C;
-    fixed-address cp2024.codfw.wmnet;
-}
-
-host cp2025 {
-    hardware ethernet 44:A8:42:2D:14:DF;
-    fixed-address cp2025.codfw.wmnet;
-}
-
-host cp2026 {
-    hardware ethernet 44:A8:42:2D:1C:87;
-    fixed-address cp2026.codfw.wmnet;
 }
 
 host cp2027 {
