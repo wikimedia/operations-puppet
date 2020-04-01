@@ -10,6 +10,7 @@ profile::redis::master::clients:
   - 'maps2004.codfw.wmnet'
 
 profile::maps::apps::redis_server: 'redis://maps2004.codfw.wmnet'
+profile::maps::apps::tilerator_enable: false
 
 profile::cassandra::single_instance::dc: 'codfw'
 profile::cassandra::single_instance::seeds:
