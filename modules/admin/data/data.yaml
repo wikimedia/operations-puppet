@@ -3643,6 +3643,14 @@ users:
     ssh_keys:
       - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIM+qAVkcIT2B/CjXPVPgbf8Z9MEZFG/+awJOSJd0GkTC itgi@C285'
     krb: present
+  jayme:
+    ensure: present
+    realname: Janis Meybohm
+    email: jmeybohm@wikimedia.org
+    uid: 23938
+    gid: 500
+    ssh_keys:
+      - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIF2TjL7xYqQjY286d/CV+PjmE2vTd9FfoLZZRDkf38XH janis@norna'
 
 ldap_only_users:
   abartov:
