@@ -1,7 +1,6 @@
 cache::nodes:
   text:
     codfw_ats:
-      - 'cp2013.codfw.wmnet'
       - 'cp2016.codfw.wmnet'
       - 'cp2019.codfw.wmnet'
       - 'cp2023.codfw.wmnet'
