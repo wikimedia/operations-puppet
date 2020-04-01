@@ -4,6 +4,7 @@ define profile::trafficserver::logs(
     Array[TrafficServer::Log] $logs,
     TrafficServer::Paths $paths,
     String $service_name = 'trafficserver',
+    String $conftool_service = 'ats-be',
     String $atslog_filename = 'notpurge',
 ) {
     $logs.each |TrafficServer::Log $log| {
@@ -18,7 +19,8 @@ define profile::trafficserver::logs(
             profile::trafficserver::nrpe_monitor_script { "check_trafficserver_log_fifo_${log['filename']}_${instance_name}":
                 sudo_user => 'root',
                 checkname => 'check_trafficserver_log_fifo',
-                args      => "${paths['logdir']}/${log['filename']}.pipe",
+                args      => "--socket ${paths['runtimedir']}/${log['filename']}.sock --service ${conftool_service}",
+                extension => 'py',
             }
         }
     }

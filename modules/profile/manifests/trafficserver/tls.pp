@@ -223,11 +223,12 @@ class profile::trafficserver::tls (
     }
 
     profile::trafficserver::logs { "trafficserver_${instance_name}_logs":
-        instance_name   => $instance_name,
-        user            => $user,
-        service_name    => $service_name,
-        logs            => $logs,
-        paths           => $paths,
-        atslog_filename => 'tls',
+        instance_name    => $instance_name,
+        user             => $user,
+        service_name     => $service_name,
+        conftool_service => $conftool_service,
+        logs             => $logs,
+        paths            => $paths,
+        atslog_filename  => 'tls',
     }
 }

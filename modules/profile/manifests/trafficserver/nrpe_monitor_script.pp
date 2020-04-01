@@ -10,6 +10,9 @@
 # [*checkname*]
 #  Script name, defaulting to $title.
 #
+# [*extension*]
+#  Script extension, either 'sh' (the default) or 'py'.
+#
 # [*args*]
 #   Optional arguments to pass to the script.
 #
@@ -17,6 +20,7 @@ define profile::trafficserver::nrpe_monitor_script(
     String $sudo_user,
     Wmflib::Ensure $ensure = present,
     String $checkname = $title,
+    Enum['sh', 'py'] $extension = 'sh',
     String $args = '',
 ){
     $full_path = "/usr/local/lib/nagios/plugins/${checkname}"
@@ -24,7 +28,7 @@ define profile::trafficserver::nrpe_monitor_script(
     unless defined(File[$full_path]) {
         file { $full_path:
             ensure => $ensure,
-            source => "puppet:///modules/profile/trafficserver/${checkname}.sh",
+            source => "puppet:///modules/profile/trafficserver/${checkname}.${extension}",
             mode   => '0555',
             owner  => 'root',
             group  => 'root',

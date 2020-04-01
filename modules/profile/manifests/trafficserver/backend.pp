@@ -76,11 +76,12 @@ class profile::trafficserver::backend (
 
     $default_instance = true
     $instance_name = 'backend'
+    $conftool_service = 'ats-be'
     $paths = trafficserver::get_paths($default_instance, 'backend')
 
     trafficserver::instance { $instance_name:
         paths                 => $paths,
-        conftool_service      => 'ats-be',
+        conftool_service      => $conftool_service,
         default_instance      => $default_instance,
         port                  => $port,
         network_settings      => $network_settings,
@@ -139,10 +140,11 @@ class profile::trafficserver::backend (
     }
 
     profile::trafficserver::logs { "trafficserver_${instance_name}_logs":
-        instance_name => $instance_name,
-        user          => $user,
-        logs          => $logs,
-        paths         => $paths,
+        instance_name    => $instance_name,
+        user             => $user,
+        logs             => $logs,
+        paths            => $paths,
+        conftool_service => $conftool_service,
     }
 
     profile::trafficserver::atsmtail { "trafficserver_${instance_name}_atsmtail":
