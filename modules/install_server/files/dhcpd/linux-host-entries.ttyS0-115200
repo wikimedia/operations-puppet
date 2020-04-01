@@ -723,6 +723,11 @@ host planet2001 {
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
+host planet2002 {
+    hardware ethernet aa:00:00:30:d4:33;
+    fixed-address planet2002.codfw.wmnet;
+}
+
 host poolcounter1004 {
     hardware ethernet aa:00:00:fb:32:eb;
     fixed-address poolcounter1004.eqiad.wmnet;
