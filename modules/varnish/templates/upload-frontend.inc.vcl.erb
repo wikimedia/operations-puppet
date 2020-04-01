@@ -385,8 +385,9 @@ sub cluster_fe_err_synth {
 			set resp.http.Content-Length = "0";
 
 			// allow Range requests, used by ogv.js
+			// also avoid strange errors when testing on a debug host
 			set resp.http.Access-Control-Allow-Origin = "*";
-			set resp.http.Access-Control-Allow-Headers = "Range";
+			set resp.http.Access-Control-Allow-Headers = "Range,X-Wikimedia-Debug";
 			set resp.http.Access-Control-Allow-Methods = "GET, HEAD, OPTIONS";
 			set resp.http.Access-Control-Max-Age = "86400";
 		}

@@ -21,7 +21,7 @@ client c1 {
     expect resp.http.Connection == "keep-alive"
     expect resp.http.Content-Length == 0
     expect resp.http.Access-Control-Allow-Origin == "*"
-    expect resp.http.Access-Control-Allow-Headers == "Range"
+    expect resp.http.Access-Control-Allow-Headers == "Range,X-Wikimedia-Debug"
     expect resp.http.Access-Control-Allow-Methods == "GET, HEAD, OPTIONS"
     expect resp.http.Access-Control-Max-Age == "86400"
 } -run
