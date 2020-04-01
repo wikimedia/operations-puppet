@@ -33,7 +33,13 @@ class profile::installserver::tftp (
 
     backup::set { 'srv-tftpboot': }
 
+    $ensure_monitor = $ensure_service ? {
+        'stopped' => 'absent',
+        default   => 'present',
+    }
+
     nrpe::monitor_service { 'atftpd':
+        ensure       => $ensure_monitor,
         description  => 'TFTP service',
         nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -u nobody --ereg-argument-array=\'.*/usr/sbin/atftpd .*\'',
         notes_url    => 'https://wikitech.wikimedia.org/wiki/Monitoring/atftpd',
