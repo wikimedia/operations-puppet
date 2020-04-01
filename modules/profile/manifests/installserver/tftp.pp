@@ -21,7 +21,9 @@ class profile::installserver::tftp (
     Enum['stopped', 'running'] $ensure_service = lookup('profile::installserver::tftp::ensure_service'),
 ){
 
-    class { '::install_server::tftp_server': }
+    class { '::install_server::tftp_server':
+        ensure_service => $ensure_service,
+    }
 
     ferm::service { 'tftp':
         proto  => 'udp',
