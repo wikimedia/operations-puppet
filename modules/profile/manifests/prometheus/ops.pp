@@ -1532,6 +1532,37 @@ class profile::prometheus::ops (
         port       => 9230,
     }
 
+    $thanos_jobs = [
+      {
+        'job_name'        => 'thanos_query',
+        'scheme'          => 'http',
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/thanos_query_*.yaml" ]}
+        ],
+      },
+      {
+        'job_name'        => 'thanos_sidecar',
+        'scheme'          => 'http',
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/thanos_sidecar_*.yaml" ]}
+        ],
+      },
+    ]
+
+    prometheus::class_config{ "thanos_query_${::site}":
+        dest       => "${targets_path}/thanos_query_${::site}.yaml",
+        site       => $::site,
+        class_name => 'thanos::query',
+        port       => 10902,
+    }
+
+    prometheus::resource_config{ "thanos_sidecar_${::site}":
+        dest           => "${targets_path}/thanos_sidecar_${::site}.yaml",
+        site           => $::site,
+        define_name    => 'thanos::sidecar',
+        port_parameter => 'http_port',
+    }
+
 
     prometheus::server { 'ops':
         listen_address        => "127.0.0.1:${port}",
@@ -1550,7 +1581,7 @@ class profile::prometheus::ops (
             $gerrit_jobs, $routinator_jobs, $rpkicounter_jobs, $varnishkafka_jobs, $bird_jobs, $ncredir_jobs,
             $cloud_dev_pdns_jobs, $cloud_dev_pdns_rec_jobs, $bacula_jobs, $poolcounter_exporter_jobs,
             $apereo_cas_jobs, $atlas_exporter_jobs, $exported_blackbox_jobs, $cadvisor_jobs,
-            $envoy_jobs, $webperf_jobs, $squid_jobs, $nic_saturation_exporter_jobs
+            $envoy_jobs, $webperf_jobs, $squid_jobs, $nic_saturation_exporter_jobs, $thanos_jobs
         ),
         global_config_extra   => $config_extra,
     }
