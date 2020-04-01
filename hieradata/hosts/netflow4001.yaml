@@ -1,6 +1,0 @@
-profile::pmacct::librdkafka_config:
-  - 'global,security.protocol,SSL'
-  - 'global,ssl.ca.location,/etc/ssl/certs/Puppet_Internal_CA.pem'
-  - 'global,ssl.cipher.suites,ECDHE-ECDSA-AES256-GCM-SHA384'
-  - 'global,ssl.curves.list,P-256'
-  - 'global,ssl.sigalgs.list,ECDSA+SHA256'
