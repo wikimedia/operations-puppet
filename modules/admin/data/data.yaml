@@ -3641,6 +3641,7 @@ users:
     gid: 500
     ssh_keys:
       - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIM+qAVkcIT2B/CjXPVPgbf8Z9MEZFG/+awJOSJd0GkTC itgi@C285'
+    krb: present
 
 ldap_only_users:
   abartov:
