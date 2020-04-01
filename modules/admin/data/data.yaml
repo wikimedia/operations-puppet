@@ -2116,6 +2116,7 @@ users:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMz9obHO+vDMTPbP6av+fTEYwGcJZrtor/nifNWPGLfV 20181101_tarrow_wikiprod
     uid: 3393
     email: thomas.arrow_ext@wikimedia.de
+    krb: present
   lucaswerkmeister-wmde:
     ensure: present
     gid: 500
