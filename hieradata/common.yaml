@@ -1012,10 +1012,8 @@ hadoop_clusters:
 
 deployment_server: deploy1001.eqiad.wmnet
 
-aptrepo_server: install1002.wikimedia.org
+aptrepo_server: apt1001.wikimedia.org
 aptrepo_servers_failover:
-    - 'install2002.wikimedia.org'
-    - 'apt1001.wikimedia.org'
     - 'apt2001.wikimedia.org'
 
 netmon_server: netmon1002.wikimedia.org
