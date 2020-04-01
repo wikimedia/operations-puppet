@@ -1,4 +1,4 @@
 admin::groups:
   - datacenter-ops
-profile::installserver::dhcp::ensure_service: 'stopped'
+profile::installserver::dhcp::ensure_service: 'running'
 profile::installserver::proxy::ensure: 'present'
