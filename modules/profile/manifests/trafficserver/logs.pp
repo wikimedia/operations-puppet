@@ -21,6 +21,7 @@ define profile::trafficserver::logs(
                 checkname => 'check_trafficserver_log_fifo',
                 args      => "--socket ${paths['runtimedir']}/${log['filename']}.sock --service ${conftool_service}",
                 extension => 'py',
+                timeout   => 90,
             }
         }
     }

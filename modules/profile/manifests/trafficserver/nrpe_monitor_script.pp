@@ -13,6 +13,9 @@
 # [*extension*]
 #  Script extension, either 'sh' (the default) or 'py'.
 #
+# [*timeout*]
+#  Icinga check timeout in seconds.
+#
 # [*args*]
 #   Optional arguments to pass to the script.
 #
@@ -21,6 +24,7 @@ define profile::trafficserver::nrpe_monitor_script(
     Wmflib::Ensure $ensure = present,
     String $checkname = $title,
     Enum['sh', 'py'] $extension = 'sh',
+    Integer $timeout = 30,
     String $args = '',
 ){
     $full_path = "/usr/local/lib/nagios/plugins/${checkname}"
@@ -47,6 +51,6 @@ define profile::trafficserver::nrpe_monitor_script(
         nrpe_command => "sudo -u ${sudo_user} ${full_path} ${args}",
         require      => File[$full_path],
         notes_url    => 'https://wikitech.wikimedia.org/wiki/Apache_Traffic_Server',
-        timeout      => 30,
+        timeout      => $timeout,
     }
 }
