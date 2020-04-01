@@ -17,6 +17,8 @@ class profile::prometheus::ops (
     include ::passwords::gerrit
     $gerrit_client_token = $passwords::gerrit::prometheus_bearer_token
 
+    $port = 9900
+
     $config_extra = {
         # All metrics will get an additional 'site' label when queried by
         # external systems (e.g. via federation)
@@ -1530,8 +1532,9 @@ class profile::prometheus::ops (
         port       => 9230,
     }
 
+
     prometheus::server { 'ops':
-        listen_address        => '127.0.0.1:9900',
+        listen_address        => "127.0.0.1:${port}",
         storage_retention     => $storage_retention,
         max_chunks_to_persist => $max_chunks_to_persist,
         memory_chunks         => $memory_chunks,
@@ -1565,8 +1568,13 @@ class profile::prometheus::ops (
     }
 
     prometheus::web { 'ops':
-        proxy_pass => 'http://localhost:9900/ops',
+        proxy_pass => "http://localhost:${port}/ops",
         homepage   => true,
+    }
+
+    profile::thanos::sidecar { 'ops':
+        prometheus_port     => $port,
+        prometheus_instance => 'ops',
     }
 
     file { '/srv/prometheus/ops/gerrit.token':
