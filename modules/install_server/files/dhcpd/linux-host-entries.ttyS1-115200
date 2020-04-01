@@ -981,11 +981,6 @@ host cp2016 {
     fixed-address cp2016.codfw.wmnet;
 }
 
-host cp2017 {
-    hardware ethernet 44:A8:42:2D:0E:18;
-    fixed-address cp2017.codfw.wmnet;
-}
-
 host cp2018 {
     hardware ethernet 44:A8:42:2D:0A:0F;
     fixed-address cp2018.codfw.wmnet;

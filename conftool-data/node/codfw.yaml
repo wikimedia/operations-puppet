@@ -265,7 +265,6 @@ codfw:
     cp2037.codfw.wmnet: [varnish-fe, ats-be, ats-tls]
     cp2039.codfw.wmnet: [varnish-fe, ats-be, ats-tls]
   cache_upload:
-    cp2017.codfw.wmnet: [varnish-fe, ats-be, ats-tls]
     cp2018.codfw.wmnet: [varnish-fe, ats-be, ats-tls]
     cp2020.codfw.wmnet: [varnish-fe, ats-be, ats-tls]
     cp2022.codfw.wmnet: [varnish-fe, ats-be, ats-tls]
