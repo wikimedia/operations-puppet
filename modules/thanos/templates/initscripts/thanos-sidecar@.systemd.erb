@@ -1,0 +1,14 @@
+[Unit]
+Description=Thanos sidecar (instance %i)
+Documentation=https://github.com/improbable-eng/thanos/
+
+[Service]
+Restart=always
+User=prometheus
+ExecStart=/usr/bin/thanos sidecar --http-address <%= @http_address %> --grpc-address <%= @grpc_address %> --tsdb.path <%= @tsdb_path %> --prometheus.url <%= @prometheus_url %>
+ExecReload=/bin/kill -HUP $MAINPID
+TimeoutStopSec=20s
+SendSIGKILL=no
+
+[Install]
+WantedBy=multi-user.target
