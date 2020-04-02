@@ -2172,6 +2172,9 @@ dataCubes:
        - name: tcp_flags
          title: TCP flags
          formula: $tcp_flags.customTransform('tcp')
+       - name: peer_ip_src
+         title: Exporter IP
+         formula: $peer_ip_src
     measures:
        - name: bytes
          title: Bytes
