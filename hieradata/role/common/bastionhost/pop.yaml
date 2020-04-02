@@ -8,3 +8,5 @@ profile::base::domain_search:
   - eqsin.wmnet
 admin::groups:
   - all-users
+
+profile::installserver::tftp::ensure_service: 'running'
