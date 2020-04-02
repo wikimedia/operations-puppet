@@ -63,7 +63,7 @@ function download_pbf() {
     curl ${proxy} -O https://planet.openstreetmap.org/pbf/${filename}.md5
   fi
   if [ ! -f "$download_dir/$filename" ]; then
-    curl ${proxy} -O https://planet.openstreetmap.org/pbf/${filename}
+    curl -L ${proxy} -O https://planet.openstreetmap.org/pbf/${filename}
   fi
   echo "starting md5sum check"
   md5sum -c ${filename}.md5
