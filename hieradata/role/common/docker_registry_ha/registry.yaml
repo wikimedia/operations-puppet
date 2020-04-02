@@ -1,5 +1,6 @@
 profile::docker_registry_ha::registry::image_builders:
   - '10.64.0.36' #boron.eqiad.wmnet
+  - '10.192.0.99' #deneb.codfw.wmnet
   - '208.80.154.17' # contint1001
   - '208.80.153.15' # contint2001
 docker_registry_ha::username: uploader
