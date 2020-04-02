@@ -47,6 +47,7 @@
 #                 Default [{server_name: ['*'], port: 80}]
 # @param global_cert_name The name of the certificate to install via sslcert::certificate
 # @param acme_cert_name The name of the certificate to install via sslcert::certificate acme_chief::cert
+# @param access_log Wether to use an access log or not.
 class profile::tlsproxy::envoy(
     Profile::Tlsproxy::Envoy::Sni $sni_support         = lookup('profile::tlsproxy::envoy::sni_support'),
     Stdlib::Port                  $tls_port            = lookup('profile::tlsproxy::envoy::tls_port'),
@@ -56,10 +57,11 @@ class profile::tlsproxy::envoy(
     Boolean                       $use_remote_address  = lookup('profile::tlsproxy::envoy::use_remote_address'),
     Optional[Stdlib::Host]        $upstream_addr       = lookup('profile::tlsproxy::envoy::upstream_addr'),
     Array[Profile::Tlsproxy::Envoy::Service] $services = lookup('profile::tlsproxy::envoy::services'),
-    Optional[String]       $global_cert_name = lookup('profile::tlsproxy::envoy::global_cert_name',
+    Optional[String]              $global_cert_name = lookup('profile::tlsproxy::envoy::global_cert_name',
                                                       {'default_value' => undef}),
-    Optional[String]       $acme_cert_name   = lookup('profile::tlsproxy::envoy::acme_cert_name',
+    Optional[String]              $acme_cert_name   = lookup('profile::tlsproxy::envoy::acme_cert_name',
                                                       {'default_value' => undef}),
+    Boolean                       $access_log = lookup('profile::tlsproxy::envoy::access_log', {'default_value' => false})
 ) {
     require profile::envoy
     $ensure = $profile::envoy::ensure
@@ -144,7 +146,7 @@ class profile::tlsproxy::envoy(
 
         envoyproxy::tls_terminator{ "${tls_port}": # lint:ignore:only_variable_string
             upstreams          => $upstreams,
-            access_log         => false,
+            access_log         => $access_log,
             websockets         => $websockets,
             fast_open_queue    => 150,
             global_cert_path   => $global_cert_path,

@@ -27,9 +27,17 @@ filter_chains:
       stat_prefix: ingress_http
 <%- if @access_log -%>
       access_log:
-        name: "envoy.file_access.log"
-        config:
-          path: "/var/log/envoy/<%= upstream['server_names'][0] %>".log
+      - name: envoy.file_access.log
+        filter:
+          status_code_filter:
+            comparison:
+              op: "GE"
+              value:
+                default_value: 500
+                runtime_key: <%= upstream['cert_name'] %>_min_log_code
+        typed_config:
+          "@type": type.googleapis.com/envoy.config.accesslog.v2.FileAccessLog
+          path: "/var/log/envoy/<%= upstream['cert_name'] %>.log"
 <%- end -%>
       route_config:
         virtual_hosts:
@@ -72,9 +80,17 @@ filter_chains:
 <%- end -%>
 <%- if @access_log -%>
       access_log:
-        name: "envoy.file_access.log"
-        config:
-          path: "/var/log/envoy/tls_termination.log"
+      - name: envoy.file_access.log
+        filter:
+          status_code_filter:
+            comparison:
+              op: "GE"
+              value:
+                default_value: 500
+                runtime_key: global_tls_min_log_code
+        typed_config:
+          "@type": type.googleapis.com/envoy.config.accesslog.v2.FileAccessLog
+          path: "/var/log/envoy/global_tls.log"
 <%- end -%>
       route_config:
         virtual_hosts:
