@@ -92,7 +92,7 @@ def send_email(email_address, principal, password, realm):
         If not, please reach out to the Analytics team for a follow up.
 
         Please ssh to any of the Hadoop client hosts
-        (like stat1005.eqiad.wmnet, sta1007.eqiad.wmnet, etc..) and set you
+        (like stat1005.eqiad.wmnet, stat1008.eqiad.wmnet, etc..) and set you
         own password with the following command:
 
         kinit
