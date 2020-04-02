@@ -806,23 +806,6 @@ class profile::prometheus::ops (
         port       => 9301,
     }
 
-    $rpkicounter_jobs = [
-      {
-        'job_name'        => 'rpkicounter',
-        'scheme'          => 'http',
-        'file_sd_configs' => [
-          { 'files' => [ "${targets_path}/rpkicounter_*.yaml" ]}
-        ],
-      },
-    ]
-
-    prometheus::class_config{ "rpkicounter_${::site}":
-        dest       => "${targets_path}/rpkicounter_${::site}.yaml",
-        site       => $::site,
-        class_name => 'role::netinsights',
-        port       => 9200,
-    }
-
     $bird_jobs = [
       {
         'job_name'        => 'bird',
@@ -1690,7 +1673,7 @@ class profile::prometheus::ops (
             $blazegraph_jobs, $nutcracker_jobs, $postgresql_jobs, $ipsec_jobs,
             $kafka_burrow_jobs, $logstash_jobs, $haproxy_jobs, $statsd_exporter_jobs,
             $mjolnir_jobs, $rsyslog_jobs, $php_jobs, $php_fpm_jobs, $icinga_jobs, $docker_registry_jobs,
-            $gerrit_jobs, $routinator_jobs, $rpkicounter_jobs, $varnishkafka_jobs, $bird_jobs, $ncredir_jobs,
+            $gerrit_jobs, $routinator_jobs, $varnishkafka_jobs, $bird_jobs, $ncredir_jobs,
             $cloud_dev_pdns_jobs, $cloud_dev_pdns_rec_jobs, $bacula_jobs, $poolcounter_exporter_jobs,
             $apereo_cas_jobs, $atlas_exporter_jobs, $exported_blackbox_jobs, $cadvisor_jobs,
             $envoy_jobs, $webperf_jobs, $squid_jobs, $nic_saturation_exporter_jobs, $thanos_jobs, $netbox_jobs,
