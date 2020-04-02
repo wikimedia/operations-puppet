@@ -227,6 +227,11 @@ class aptrepo (
         }
     }
 
+    # mail(1) is needed to send a notification mail after package imports
+    if os_version('debian >= buster') {
+        require_package('s-nail')
+    }
+
     # apt repository managements tools
     package { [
         'dpkg-dev',
