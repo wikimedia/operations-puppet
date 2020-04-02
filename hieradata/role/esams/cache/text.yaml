@@ -1,1 +1,21 @@
 profile::trafficserver::backend::origin_coalescing: false
+profile::trafficserver::tls::inbound_tls_settings:
+    common:
+      cipher_suite: '-ALL:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES128-SHA:DHE-RSA-AES128-SHA'
+      groups_list: 'X25519:prime256v1'
+      enable_tlsv1: 0
+      enable_tlsv1_1: 0
+      enable_tlsv1_2: 1
+      enable_tlsv1_3: 0
+    dhparams_file: '/etc/ssl/dhparam.pem'
+    max_record_size: 16383
+    session_cache: 2
+    session_cache_timeout: 86400
+    session_cache_auto_clear: 1
+    session_cache_size: 512000
+    session_cache_buckets: 32768
+    session_ticket_enable: 1
+    session_ticket_filename: secrets/tickets.key
+    load_elevated: 1
+    do_ocsp: 1
+    ssl_handshake_timeout_in: 60
