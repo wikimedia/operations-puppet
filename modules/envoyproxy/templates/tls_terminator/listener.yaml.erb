@@ -47,7 +47,7 @@ filter_chains:
           - match: { prefix: "/" }
             route:
               cluster: local_port_<%= upstream['upstream_port'] %>
-              timeout: <%= @route_timeout %>s
+              timeout: <%= @upstream_response_timeout %>s
               <%- if @retry_policy != nil -%>
               retry_policy:
                 <%- @retry_policy.each do |k, v| -%>
@@ -101,7 +101,7 @@ filter_chains:
           - match: { prefix: "/" }
             route:
               cluster: local_port_<%= upstream['upstream_port'] %>
-              timeout: <%= @route_timeout %>s
+              timeout: <%= @upstream_response_timeout %>s
               <%- if @retry_policy != nil -%>
               retry_policy:
                 <%- @retry_policy.each do |k, v| -%>

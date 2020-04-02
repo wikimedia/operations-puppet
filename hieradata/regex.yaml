@@ -289,6 +289,6 @@ mediawiki_test_environment:
   profile::tlsproxy::envoy::services:
     - server_names: ["*"]
       port: 80
-  profile::tlsproxy::envoy::request_timeout: 201.0
+  profile::tlsproxy::envoy::upstream_response_timeout: 201.0
   profile::tlsproxy::envoy::retries: false
   profile::tlsproxy::envoy::global_cert_name: "appservers.svc.eqiad.wmnet"

@@ -125,7 +125,7 @@ describe 'profile::tlsproxy::envoy' do
         it {
           is_expected.to contain_envoyproxy__tls_terminator('4443')
                           .with_retry_policy(nil)
-                          .with_route_timeout(65.0)
+                          .with_upstream_response_timeout(65.0)
         }
         context "No retries" do
           let(:params) { super().merge(retries: false) }
@@ -137,12 +137,12 @@ describe 'profile::tlsproxy::envoy' do
           }
         end
         context "Larger timeout" do
-          let(:params) { super().merge(request_timeout: 201.0) }
+          let(:params) { super().merge(upstream_response_timeout: 201.0) }
 
           it { is_expected.to compile.with_all_deps }
           it {
             is_expected.to contain_envoyproxy__tls_terminator('4443')
-                              .with_route_timeout(201.0)
+                              .with_upstream_response_timeout(201.0)
           }
         end
       end

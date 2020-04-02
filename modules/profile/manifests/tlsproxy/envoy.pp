@@ -37,7 +37,7 @@
 # @param sni_support use on of yes, no our strict to indicate sni behaviour.  Default: yes
 # @param tls_port The TLS port to listen on.  Default 443
 # @param websockets If true configure websocket support.  Default: false
-# @param request_timeout timeout on a request in seconds.  Default: 65
+# @param upstream_response_timeout timeout on a request in seconds.  Default: 65
 # @param retries If true enable retries. Default: true
 # @param use_remote_address If true append the client address to the x-forwarded-for header
 # TODO: allows services to override this value in the Profile::Tlsproxy::Envoy::Service Struct
@@ -49,19 +49,19 @@
 # @param acme_cert_name The name of the certificate to install via sslcert::certificate acme_chief::cert
 # @param access_log Wether to use an access log or not.
 class profile::tlsproxy::envoy(
-    Profile::Tlsproxy::Envoy::Sni $sni_support         = lookup('profile::tlsproxy::envoy::sni_support'),
-    Stdlib::Port                  $tls_port            = lookup('profile::tlsproxy::envoy::tls_port'),
-    Boolean                       $websockets          = lookup('profile::tlsproxy::envoy::websockets'),
-    Float                         $request_timeout     = lookup('profile::tlsproxy::envoy::timeout'),
-    Boolean                       $retries             = lookup('profile::tlsproxy::envoy::retries'),
-    Boolean                       $use_remote_address  = lookup('profile::tlsproxy::envoy::use_remote_address'),
-    Optional[Stdlib::Host]        $upstream_addr       = lookup('profile::tlsproxy::envoy::upstream_addr'),
+    Profile::Tlsproxy::Envoy::Sni $sni_support               = lookup('profile::tlsproxy::envoy::sni_support'),
+    Stdlib::Port                  $tls_port                  = lookup('profile::tlsproxy::envoy::tls_port'),
+    Boolean                       $websockets                = lookup('profile::tlsproxy::envoy::websockets'),
+    Float                         $upstream_response_timeout = lookup('profile::tlsproxy::envoy::upstream_response_timeout'),
+    Boolean                       $retries                   = lookup('profile::tlsproxy::envoy::retries'),
+    Boolean                       $use_remote_address        = lookup('profile::tlsproxy::envoy::use_remote_address'),
+    Boolean                       $access_log                = lookup('profile::tlsproxy::envoy::access_log'),
     Array[Profile::Tlsproxy::Envoy::Service] $services = lookup('profile::tlsproxy::envoy::services'),
+    Optional[Stdlib::Host]        $upstream_addr    = lookup('profile::tlsproxy::envoy::upstream_addr'),
     Optional[String]              $global_cert_name = lookup('profile::tlsproxy::envoy::global_cert_name',
                                                       {'default_value' => undef}),
     Optional[String]              $acme_cert_name   = lookup('profile::tlsproxy::envoy::acme_cert_name',
                                                       {'default_value' => undef}),
-    Boolean                       $access_log = lookup('profile::tlsproxy::envoy::access_log', {'default_value' => false})
 ) {
     require profile::envoy
     $ensure = $profile::envoy::ensure
@@ -145,15 +145,15 @@ class profile::tlsproxy::envoy(
         }
 
         envoyproxy::tls_terminator{ "${tls_port}": # lint:ignore:only_variable_string
-            upstreams          => $upstreams,
-            access_log         => $access_log,
-            websockets         => $websockets,
-            fast_open_queue    => 150,
-            global_cert_path   => $global_cert_path,
-            global_key_path    => $global_key_path,
-            retry_policy       => $retry_policy,
-            route_timeout      => $request_timeout,
-            use_remote_address => $use_remote_address,
+            upstreams                 => $upstreams,
+            access_log                => $access_log,
+            websockets                => $websockets,
+            fast_open_queue           => 150,
+            global_cert_path          => $global_cert_path,
+            global_key_path           => $global_key_path,
+            retry_policy              => $retry_policy,
+            upstream_response_timeout => $upstream_response_timeout,
+            use_remote_address        => $use_remote_address,
         }
         ferm::service { 'envoy_tls_termination':
             proto   => 'tcp',
