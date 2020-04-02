@@ -19,7 +19,7 @@ groups:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
               marble, mmarble, raz-shuty, jeroendedauw, nharateh, pdrouin, tschumann, jaufrecht,
-              bitpogo, jpita]
+              bitpogo]
   wikidev:
     gid: 500
     description: container group for primary user groups.
@@ -4072,10 +4072,6 @@ ldap_only_users:
     ensure: present
     realname: Jose Pita
     email: jpita@wikimedia.org
-  jpita:
-    ensure: absent
-    realname: Jose Pita
-    email: dvpita@gmail.com
   cdenes:
     ensure: present
     realname: Camille de Nes
