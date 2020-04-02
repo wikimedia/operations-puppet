@@ -133,7 +133,6 @@ fullviews:
   - globalblocks
   - localuser
   - wikiset
-  - wb_changes
   - wb_changes_dispatch
   - wb_changes_subscription
   - wb_id_counters
@@ -827,4 +826,15 @@ customviews:
   wb_terms_no_longer_updated:  # temporarily adding this view for T248592
     source: wb_terms
     view: select *
+  wb_changes:
+    source: wb_changes
+    view: >
+      select change_id, change_type, change_time, change_object_id, change_revision_id,
+      if(rev_deleted&4 OR ar_deleted&4,null,change_user_id) as change_user_id,
+      if(rev_deleted&6 OR ar_deleted&6,null,change_info) as change_info
+    join:
+      - table: revision
+        condition: on rev_id = change_revision_id
+      - table: archive
+        condition: on ar_rev_id = change_revision_id
 
