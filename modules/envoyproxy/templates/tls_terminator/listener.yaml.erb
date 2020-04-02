@@ -27,7 +27,7 @@ filter_chains:
       stat_prefix: ingress_http
 <%- if @access_log -%>
       access_log:
-      - name: envoy.file_access.log
+      - name: envoy.file_access_log
         filter:
           status_code_filter:
             comparison:
@@ -80,7 +80,7 @@ filter_chains:
 <%- end -%>
 <%- if @access_log -%>
       access_log:
-      - name: envoy.file_access.log
+      - name: envoy.file_access_log
         filter:
           status_code_filter:
             comparison:
