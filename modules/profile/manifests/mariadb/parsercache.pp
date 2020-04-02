@@ -23,11 +23,11 @@ class profile::mariadb::parsercache (
         password => $passwords::misc::scripts::mysql_root_pass,
     }
 
-    if os_version('debian >= stretch') {
-        $mysqlbasedir = '/opt/wmf-mariadb101/'
+    if os_version('debian == buster') {
+        $mysqlbasedir = '/opt/wmf-mariadb104/'
     }
     else {
-        $mysqlbasedir = '/opt/wmf-mariadb10'
+        $mysqlbasedir = '/opt/wmf-mariadb101/'
     }
 
     class { 'mariadb::config':
