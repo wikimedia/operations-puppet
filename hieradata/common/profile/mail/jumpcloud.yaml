@@ -1,0 +1,3 @@
+profile::mail::jumpcloud::api_uri: https://console.jumpcloud.com/api
+profile::mail::jumpcloud::aliases_dir: /etc/exim4/aliases
+profile::mail::jumpcloud::managed_domain: gsuite-test.wikimedia.org
