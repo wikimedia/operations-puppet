@@ -9,7 +9,7 @@ labsdnsconfig:
 
 profile::base::overlayfs: true
 profile::base::check_raid: false
-profile::openstack::eqiad1::version: 'mitaka'
+profile::openstack::eqiad1::version: 'queens'
 profile::openstack::base::region: "eqiad1-r"
 profile::openstack::eqiad1::nova_controller: 'openstack.eqiad1.wikimediacloud.org'
 profile::openstack::eqiad1::keystone_host: 'openstack.eqiad1.wikimediacloud.org'
