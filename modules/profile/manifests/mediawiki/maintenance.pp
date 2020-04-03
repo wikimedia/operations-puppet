@@ -34,7 +34,7 @@ class profile::mediawiki::maintenance {
     include ::profile::mediawiki::maintenance::growthexperiments
     include ::profile::mediawiki::maintenance::pagetriage
     include ::profile::mediawiki::maintenance::translationnotifications
-    class { 'mediawiki::maintenance::updatetranslationstats': ensure => $ensure }
+    include ::profile::mediawiki::maintenance::updatetranslationstats
     class { 'mediawiki::maintenance::echo_mail_batch': ensure => $ensure }
     class { 'mediawiki::maintenance::parsercachepurging': ensure => $ensure }
     class { 'mediawiki::maintenance::cleanup_upload_stash': ensure => $ensure }
