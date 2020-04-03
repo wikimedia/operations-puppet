@@ -34,10 +34,15 @@ class profile::labs::db::wikireplica (
         mysql_shard => 'multi',
         socket      => '/run/mysqld/mysqld.sock',
     }
-
+    if os_version('debian == buster') {
+        $basedir = '/opt/wmf-mariadb104/'
+    }
+    else {
+        $basedir = '/opt/wmf-mariadb101/'
+    }
     class { 'mariadb::config':
         config        => 'role/mariadb/mysqld_config/labsdb-replica.my.cnf.erb',
-        basedir       => '/opt/wmf-mariadb101',
+        basedir       => $basedir,
         datadir       => '/srv/sqldata',
         socket        => '/run/mysqld/mysqld.sock',
         tmpdir        => '/srv/tmp',
