@@ -3680,6 +3680,10 @@ ldap_only_users:
     ensure: present
     realname: Aeryn Palmer
     email: apalmer@wikimedia.org
+  apaskulin:
+    ensure: present
+    realname: Alex Paskulin
+    email: apaskulin@wikimedia.org
   runa:
     ensure: present
     realname: Runa Bhattacharjee
