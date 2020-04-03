@@ -87,7 +87,7 @@ def get_exceptions(dumplog, logpath):
     state = IN_LOG
     while True:
         line = re.sub(r' -p[^\s]*', ' -pXXXXX', dumplog.readline())
-        if (line.startswith('Preparing', 'getting/checking text', 'Spawning database subprocess')
+        if (line.startswith(('Preparing', 'getting/checking text', 'Spawning database subprocess'))
                 or '(Will retry' in line or not line.strip() or line.strip().isdigit()):
             # ugh we have some junk lines in the log with no timestamp
             continue
