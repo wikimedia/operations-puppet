@@ -1059,7 +1059,7 @@ node 'heze.codfw.wmnet' {
 
 # new host that needs to be turned over to service owner
 node 'htmldumper1001.eqiad.wmnet' {
-    role(insetup)
+    role(dumps::web::htmldumps)
 }
 
 # irc.wikimedia.org
