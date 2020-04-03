@@ -102,6 +102,7 @@ class package_builder(
         'maven-debian-helper',
         'haveged',
         'ubuntu-archive-keyring',
+        'dh-python',
         $php_dev,
         $dh_php,
     ])
