@@ -49,5 +49,14 @@ class profile::aptrepo::wikimedia (
             check_command => 'check_ssl_http_letsencrypt_ocsp!apt.wikimedia.org',
             notes_url     => 'https://wikitech.wikimedia.org/wiki/APT_repository',
         }
+        $motd_ensure = 'absent'
+    } else {
+        $motd_ensure = 'present'
+    }
+
+    motd::script { 'inactive_warning':
+        ensure   => $motd_ensure,
+        priority => 1,
+        content  => template('profile/install_server/inactive.motd.erb'),
     }
 }
