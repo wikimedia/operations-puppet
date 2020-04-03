@@ -250,8 +250,9 @@ groups:
                  This will grant shell access on Hadoop client nodes and on
                  Hadoop NameNodes.  Some files in HDFS have sensitive data in them.
                  Those files are group readable by the analytics-privatedata-users group.
-                 If a user is added to this group it should not
-                 need to be in analytics-users or researchers.
+                 A kerberos account is only needed if the user will access Hadoop data
+                 via tools on stat/notebook hosts. The user in fact might only want/need
+                 to access data indirectly via Superset (via Presto) or query Wiki db replicas.
                  In case of doubt, please ask to the Analytics team.
                  More info https://wikitech.wikimedia.org/wiki/Analytics/Data_access#Access_Groups
     members: [milimetric, aude, jforrester,
