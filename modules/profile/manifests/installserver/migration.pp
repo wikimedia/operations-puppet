@@ -30,7 +30,7 @@ class profile::installserver::migration (
         class { '::rsync::server': }
 
         rsync::server::module { "installserver-${data_dir}":
-            path        => "/srv/${data_dir}",
+            path        => "/srv/${data_dir}-${src_host}/",
             read_only   => 'no',
             hosts_allow => $src_host,
         }
