@@ -229,7 +229,7 @@ class aptrepo (
 
     # mail(1) is needed to send a notification mail after package imports
     if os_version('debian >= buster') {
-        require_package('s-nail')
+        require_package('bsd-mailx')
     }
 
     # apt repository managements tools
