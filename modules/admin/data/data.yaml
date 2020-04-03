@@ -255,7 +255,7 @@ groups:
                  to access data indirectly via Superset (via Presto) or query Wiki db replicas.
                  In case of doubt, please ask to the Analytics team.
                  More info https://wikitech.wikimedia.org/wiki/Analytics/Data_access#Access_Groups
-    members: [milimetric, aude, jforrester,
+    members: &analytics_privatedata_users [milimetric, aude, jforrester,
               halfak, dr0ptp4kt, bearloga, elukey, ppchelko, mneisler,
               nuria, otto, jgreen, sguebo, thargrove,
               bsitzmann, dbrant, nettrom, leila, jmm,
@@ -716,10 +716,10 @@ groups:
   gpu-testers:
     description: People with access to Analytics hosts with GPUs.
     gid: 810
-    members: &gpu_testers_members [ebernhardson, mirrys, gilles, dr0ptp4kt, isaacj, dsaez, santhosh]
+    members: &gpu_testers_members [santhosh]
   gpu-users:
     description: Use the standard system provided render group to allow Analytics users to access the GPU on the host.
-    members: [*gpu_testers_members, *analytics_admins_members, *ops_members]
+    members: [*gpu_testers_members, *analytics_admins_members, *ops_members, *analytics_privatedata_users]
     posix_name: render
   sessionstore-roots:
     gid: 811
