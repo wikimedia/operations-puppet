@@ -19,7 +19,7 @@
 zones:
   svc.eqiad.wmflabs.:
     tools-redis:
-      - 172.16.5.84
+      - 172.16.1.107
   db.svc.eqiad.wmflabs.:
     tools:
       - 172.16.7.153
