@@ -1,0 +1,45 @@
+--- ../original/router_info.py	2020-03-27 15:57:26.134007464 -0500
++++ ./router_info.py	2020-03-27 15:57:26.130007550 -0500
+@@ -847,9 +847,19 @@
+                            '--ctstate DNAT -j ACCEPT' %
+                            {'interface_name': interface_name})
+ 
+-    def external_gateway_nat_fip_rules(self, ex_gw_ip, interface_name):
++    def external_gateway_nat_fip_rules(self, ex_gw_ip, interface_name, dmz_cidr):
++        rules = []
++        # Avoid behavior where NAT applies to the actual router IP
++        rules.append(('POSTROUTING', '-s %s -j ACCEPT' % (ex_gw_ip)))
++        for nat_exclusion in dmz_cidr.split(','):
++            src_range, dst_range = nat_exclusion.split(':')
++            rules.append(('POSTROUTING', '-s %s -d %s -j ACCEPT' % (src_range, dst_range)))
++
+         dont_snat_traffic_to_internal_ports_if_not_to_floating_ip = (
+             self._prevent_snat_for_internal_traffic_rule(interface_name))
++
++        rules.append(dont_snat_traffic_to_internal_ports_if_not_to_floating_ip)
++
+         # Makes replies come back through the router to reverse DNAT
+         ext_in_mark = self.agent_conf.external_ingress_mark
+         to_source = ('-m mark ! --mark %s/%s '
+@@ -859,8 +869,10 @@
+         if self.iptables_manager.random_fully:
+             to_source += ' --random-fully'
+         snat_internal_traffic_to_floating_ip = ('snat', to_source)
+-        return [dont_snat_traffic_to_internal_ports_if_not_to_floating_ip,
+-                snat_internal_traffic_to_floating_ip]
++
++        rules.append(dont_snat_traffic_to_internal_ports_if_not_to_floating_ip)
++        rules.append(snat_internal_traffic_to_floating_ip)
++        return rules
+ 
+     def external_gateway_nat_snat_rules(self, ex_gw_ip, interface_name):
+         to_source = '-o %s -j SNAT --to-source %s' % (interface_name, ex_gw_ip)
+@@ -898,7 +910,7 @@
+                             iptables_manager.ipv4['nat'].add_rule(*rule)
+ 
+                     rules = self.external_gateway_nat_fip_rules(
+-                        ex_gw_ip, interface_name)
++                        ex_gw_ip, interface_name, self.agent_conf.dmz_cidr)
+                     for rule in rules:
+                         iptables_manager.ipv4['nat'].add_rule(*rule)
+                     rules = self.external_gateway_mangle_rules(interface_name)

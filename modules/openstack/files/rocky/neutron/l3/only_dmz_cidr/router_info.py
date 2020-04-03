@@ -80,8 +80,6 @@ class RouterInfo(object):
         self.process_monitor = None
         # radvd is a neutron.agent.linux.ra.DaemonMonitor
         self.radvd = None
-        self.centralized_port_forwarding_fip_set = set()
-        self.fip_managed_by_port_forwardings = None
 
     def initialize(self, process_monitor):
         """Initialize the router on the system.
@@ -152,7 +150,7 @@ class RouterInfo(object):
             for del_route in removes:
                 if route['destination'] == del_route['destination']:
                     removes.remove(del_route)
-            # replace success even if there is no existing route
+            #replace success even if there is no existing route
             self.update_routing_table('replace', route)
         for route in removes:
             LOG.debug("Removed route entry is '%s'", route)
@@ -381,9 +379,7 @@ class RouterInfo(object):
                 # that's how the caller determines that it was removed
                 fip_statuses[fip['id']] = FLOATINGIP_STATUS_NOCHANGE
         fips_to_remove = (
-            ip_cidr
-            for ip_cidr in (existing_cidrs - new_cidrs - gw_cidrs -
-                            self.centralized_port_forwarding_fip_set)
+            ip_cidr for ip_cidr in existing_cidrs - new_cidrs - gw_cidrs
             if common_utils.is_cidr_host(ip_cidr))
         for ip_cidr in fips_to_remove:
             LOG.debug("Removing floating ip %s from interface %s in "
@@ -571,16 +567,6 @@ class RouterInfo(object):
                                                 internal_ports)
 
         enable_ra = False
-        for p in old_ports:
-            self.internal_network_removed(p)
-            LOG.debug("removing port %s from internal_ports cache", p)
-            self.internal_ports.remove(p)
-            enable_ra = enable_ra or self._port_has_ipv6_subnet(p)
-            for subnet in p['subnets']:
-                if ipv6_utils.is_ipv6_pd_enabled(subnet):
-                    self.agent.pd.disable_subnet(self.router_id, subnet['id'])
-                    del self.pd_subnets[subnet['id']]
-
         for p in new_ports:
             self.internal_network_added(p)
             LOG.debug("appending port %s to internal_ports cache", p)
@@ -595,6 +581,16 @@ class RouterInfo(object):
                     if (subnet['cidr'] !=
                             lib_constants.PROVISIONAL_IPV6_PD_PREFIX):
                         self.pd_subnets[subnet['id']] = subnet['cidr']
+
+        for p in old_ports:
+            self.internal_network_removed(p)
+            LOG.debug("removing port %s from internal_ports cache", p)
+            self.internal_ports.remove(p)
+            enable_ra = enable_ra or self._port_has_ipv6_subnet(p)
+            for subnet in p['subnets']:
+                if ipv6_utils.is_ipv6_pd_enabled(subnet):
+                    self.agent.pd.disable_subnet(self.router_id, subnet['id'])
+                    del self.pd_subnets[subnet['id']]
 
         updated_cidrs = []
         for p in updated_ports:
@@ -772,15 +768,13 @@ class RouterInfo(object):
                    for gw_ip in gateway_ips)
 
     def external_gateway_added(self, ex_gw_port, interface_name):
-        preserve_ips = self._list_floating_ip_cidrs() + list(
-            self.centralized_port_forwarding_fip_set)
+        preserve_ips = self._list_floating_ip_cidrs()
         preserve_ips.extend(self.agent.pd.get_preserve_ips(self.router_id))
         self._external_gateway_added(
             ex_gw_port, interface_name, self.ns_name, preserve_ips)
 
     def external_gateway_updated(self, ex_gw_port, interface_name):
-        preserve_ips = self._list_floating_ip_cidrs() + list(
-            self.centralized_port_forwarding_fip_set)
+        preserve_ips = self._list_floating_ip_cidrs()
         preserve_ips.extend(self.agent.pd.get_preserve_ips(self.router_id))
         self._external_gateway_added(
             ex_gw_port, interface_name, self.ns_name, preserve_ips)
@@ -807,8 +801,8 @@ class RouterInfo(object):
     def _delete_stale_external_devices(self, interface_name):
         existing_devices = self._get_existing_devices()
         stale_devs = [dev for dev in existing_devices
-                      if dev.startswith(EXTERNAL_DEV_PREFIX) and
-                      dev != interface_name]
+                      if dev.startswith(EXTERNAL_DEV_PREFIX)
+                      and dev != interface_name]
         for stale_dev in stale_devs:
             LOG.debug('Deleting stale external router device: %s', stale_dev)
             self.agent.pd.remove_gw_interface(self.router['id'])
@@ -1102,8 +1096,8 @@ class RouterInfo(object):
             iptables = iptables_manager.get_tables(ip_version)
             iptables['mangle'].empty_chain('scope')
             iptables['filter'].empty_chain('scope')
-            dont_block_external = (ip_version == lib_constants.IP_VERSION_4 and
-                                   self._snat_enabled and external_port)
+            dont_block_external = (ip_version == lib_constants.IP_VERSION_4
+                                   and self._snat_enabled and external_port)
             for device_name, mark in scopemarks.items():
                 # Add address scope iptables rule
                 iptables['mangle'].add_rule(
@@ -1196,8 +1190,6 @@ class RouterInfo(object):
         :param agent: Passes the agent in order to send RPC messages.
         """
         LOG.debug("Process updates, router %s", self.router['id'])
-        self.centralized_port_forwarding_fip_set = set(self.router.get(
-            'port_forwardings_fip_set', set()))
         self._process_internal_ports()
         self.agent.pd.sync_router(self.router['id'])
         self.process_external()
@@ -1211,5 +1203,3 @@ class RouterInfo(object):
         self.fip_map = dict([(fip['floating_ip_address'],
                               fip['fixed_ip_address'])
                              for fip in self.get_floating_ips()])
-        self.fip_managed_by_port_forwardings = self.router.get(
-            'fip_managed_by_port_forwardings')
