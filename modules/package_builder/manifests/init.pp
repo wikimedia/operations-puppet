@@ -103,6 +103,7 @@ class package_builder(
         'haveged',
         'ubuntu-archive-keyring',
         'dh-python',
+        'python3-setuptools',
         $php_dev,
         $dh_php,
     ])
