@@ -28,7 +28,6 @@ Update:
  cassandra
  cloudera-jessie
  confluent
- docker
  elastic
  elastic55
  envoyproxy
