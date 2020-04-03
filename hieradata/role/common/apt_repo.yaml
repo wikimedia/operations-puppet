@@ -3,3 +3,7 @@ profile::aptrepo::wikimedia::homedir: '/root'
 profile::aptrepo::wikimedia::gpg_user: 'root'
 profile::aptrepo::wikimedia::gpg_pubring: 'apt/pubring.gpg'
 profile::aptrepo::wikimedia::gpg_secring: 'apt/secring.gpg'
+profile::installserver::migration::rsync_src_host: 'install1002.wikimedia.org'
+profile::installserver::migration::rsync_dst_hosts:
+  - 'apt1001.wikimedia.org'
+profile::installserver::migration::rsync_data_dir: 'home'

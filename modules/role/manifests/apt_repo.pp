@@ -8,4 +8,5 @@ class role::apt_repo {
 
     include ::profile::installserver::http
     include ::profile::aptrepo::wikimedia
+    include ::profile::installserver::migration
 }
