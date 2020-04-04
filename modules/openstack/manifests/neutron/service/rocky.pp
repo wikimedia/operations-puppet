@@ -55,8 +55,5 @@ class openstack::neutron::service::rocky(
             source  => 'puppet:///modules/openstack/rocky/neutron/api-paste.ini',
             notify  => Service['neutron-api'],
             require => Package['neutron-api'];
-        '/var/run/uwsgi/':
-            ensure => directory,
-            mode   => '0755';
     }
 }
