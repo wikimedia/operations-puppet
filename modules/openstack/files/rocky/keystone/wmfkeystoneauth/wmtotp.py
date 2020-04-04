@@ -20,13 +20,14 @@ from oslo_config import cfg
 from keystone.auth.plugins import base
 from keystone.auth import plugins as auth_plugins
 from . import password_whitelist
-from keystone.common import dependency
+from keystone.common import provider_api
 from keystone import exception
 from keystone.i18n import _
 
 from . import wikitechclient
 
 METHOD_NAME = 'wmtotp'
+PROVIDERS = provider_api.ProviderAPIs
 
 LOG = log.getLogger(__name__)
 CONF = cfg.CONF
@@ -57,7 +58,6 @@ for option in oathoptions:
     CONF.register_opt(option, group='oath')
 
 
-@dependency.requires('identity_api')
 class Wmtotp(base.AuthMethodHandler):
 
     method = METHOD_NAME
@@ -73,7 +73,7 @@ class Wmtotp(base.AuthMethodHandler):
                                            request.environ['REMOTE_ADDR'])
 
         try:
-            self.identity_api.authenticate(
+            PROVIDERS.identity_api.authenticate(
                 request,
                 user_id=user_info.user_id,
                 password=user_info.password)

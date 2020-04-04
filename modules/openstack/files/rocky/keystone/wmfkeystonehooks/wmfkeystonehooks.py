@@ -15,8 +15,8 @@
 
 from keystoneauth1.identity import v3
 from keystoneauth1 import session as keystone_session
-from keystone.common import dependency
 from keystone import exception
+from keystone.common import provider_api
 from neutronclient.v2_0 import client as neutron_client
 from neutronclient.common import exceptions
 
@@ -34,6 +34,8 @@ from keystone.resource import schema
 import designatemakedomain
 from . import ldapgroups
 from . import pageeditor
+
+PROVIDERS = provider_api.ProviderAPIs
 
 LOG = logging.getLogger('nova.%s' % __name__)
 
@@ -95,7 +97,6 @@ CONF = cfg.CONF
 CONF.register_opts(wmfkeystone_opts, group='wmfhooks')
 
 
-@dependency.requires('assignment_api', 'resource_api', 'role_api')
 class KeystoneHooks(notifier.Driver):
     """Notifier class which handles extra project creation/deletion bits
     """
@@ -103,7 +104,7 @@ class KeystoneHooks(notifier.Driver):
         self.page_editor = pageeditor.PageEditor()
 
     def _get_role_dict(self):
-        rolelist = self.role_api.list_roles()
+        rolelist = PROVIDERS.role_api.list_roles()
         roledict = {}
         # Make a dict to relate role names to ids
         for role in rolelist:
@@ -114,7 +115,7 @@ class KeystoneHooks(notifier.Driver):
     def _get_current_assignments(self, project_id):
         reverseroledict = dict((v, k) for k, v in self._get_role_dict().items())
 
-        rawassignments = self.assignment_api.list_role_assignments(project_id=project_id)
+        rawassignments = PROVIDERS.assignment_api.list_role_assignments(project_id=project_id)
         assignments = {}
         for assignment in rawassignments:
             rolename = reverseroledict[assignment["role_id"]]
@@ -141,9 +142,10 @@ class KeystoneHooks(notifier.Driver):
             return
 
         LOG.debug("Adding %s to %s" % (user_id, CONF.wmfhooks.bastion_project_id))
-        self.assignment_api.add_role_to_user_and_project(user_id,
-                                                         CONF.wmfhooks.bastion_project_id,
-                                                         roledict[CONF.wmfhooks.user_role_name])
+        PROVIDERS.assignment_api.add_role_to_user_and_project(
+            user_id,
+            CONF.wmfhooks.bastion_project_id,
+            roledict[CONF.wmfhooks.user_role_name])
 
     def _on_project_delete(self, project_id):
         ldapgroups.delete_ldap_project_group(project_id)
@@ -211,15 +213,18 @@ class KeystoneHooks(notifier.Driver):
             raise exception.NotImplemented()
 
         LOG.warning("Adding default users to project %s" % project_id)
-        self.assignment_api.add_role_to_user_and_project(CONF.wmfhooks.admin_user,
-                                                         project_id,
-                                                         roledict[CONF.wmfhooks.admin_role_name])
-        self.assignment_api.add_role_to_user_and_project(CONF.wmfhooks.admin_user,
-                                                         project_id,
-                                                         roledict[CONF.wmfhooks.user_role_name])
-        self.assignment_api.add_role_to_user_and_project(CONF.wmfhooks.observer_user,
-                                                         project_id,
-                                                         roledict[CONF.wmfhooks.observer_role_name])
+        PROVIDERS.assignment_api.add_role_to_user_and_project(
+            CONF.wmfhooks.admin_user,
+            project_id,
+            roledict[CONF.wmfhooks.admin_role_name])
+        PROVIDERS.assignment_api.add_role_to_user_and_project(
+            CONF.wmfhooks.admin_user,
+            project_id,
+            roledict[CONF.wmfhooks.user_role_name])
+        PROVIDERS.assignment_api.add_role_to_user_and_project(
+            CONF.wmfhooks.observer_user,
+            project_id,
+            roledict[CONF.wmfhooks.observer_role_name])
 
         LOG.warning("Adding security groups to project %s" % project_id)
         # Use the neutron api to set up security groups for the new project
@@ -435,7 +440,7 @@ def create_project(self, request, project):
         ref['parent_id'] = ref.get('domain_id')
 
     try:
-        ref = self.resource_api.create_project(
+        ref = PROVIDERS.resource_api.create_project(
             ref['id'],
             ref,
             initiator=request.audit_initiator)
