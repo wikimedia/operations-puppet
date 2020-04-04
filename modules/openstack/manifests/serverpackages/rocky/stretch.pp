@@ -23,6 +23,7 @@ class openstack::serverpackages::rocky::stretch(
     $stretch_bpo_nochange_packages = [
       'uwsgi-plugin-python3',
       'uwsgi-core',
+      'uwsgi-plugin-python',
     ]
 
     apt::pin { 'openstack-rocky-stretch-bpo-nochange':

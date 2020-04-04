@@ -38,6 +38,25 @@ class openstack::neutron::service::rocky(
             notify  => Service['neutron-api'],
             require => Package['neutron-server', 'neutron-api'];
         '/etc/init.d/neutron-server':
-            ensure => absent,
+            ensure => absent;
+        '/etc/neutron/neutron-api-uwsgi.ini':
+            ensure  => 'present',
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0644',
+            source  => 'puppet:///modules/openstack/rocky/neutron/neutron-api-uwsgi.ini',
+            notify  => Service['neutron-api'],
+            require => Package['neutron-api'];
+        '/etc/neutron/api-paste.ini':
+            ensure  => 'present',
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0644',
+            source  => 'puppet:///modules/openstack/rocky/neutron/api-paste.ini',
+            notify  => Service['neutron-api'],
+            require => Package['neutron-api'];
+        '/var/run/uwsgi/':
+            ensure => directory,
+            mode   => '0755';
     }
 }
