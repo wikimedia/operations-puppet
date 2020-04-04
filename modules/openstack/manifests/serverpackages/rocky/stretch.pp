@@ -17,6 +17,20 @@ class openstack::serverpackages::rocky::stretch(
         priority => '1002',
     }
 
+    # Force these packages to come from the nochange bpo
+    #  even if they're available in the wikimedia repo.
+    # This gets us the versions we require.
+    $stretch_bpo_nochange_packages = [
+      'uwsgi-plugin-python3',
+      'uwsgi-core',
+    ]
+
+    apt::pin { 'openstack-rocky-stretch-bpo-nochange':
+        package  => join($stretch_bpo_nochange_packages, ' '),
+        pin      => 'release n=stretch-rocky-backports-nochange',
+        priority => '1002',
+    }
+
     # Don't install systemd from stretch-backports or bpo -- T247013
     apt::pin { 'systemd':
         pin      => 'release n=stretch',
