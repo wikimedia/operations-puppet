@@ -13,7 +13,7 @@
 
 DESC="OpenStack Neutron API (neutron-api)"
 PROJECT_NAME=neutron
-NAME=${PROJECT_NAME}-server
+NAME=${PROJECT_NAME}-api
 UWSGI_PORT=<%= @bind_port %>
 UWSGI_INI_PATH=/etc/neutron/neutron-api-uwsgi.ini
 UWSGI_INI_APP=/usr/bin/neutron-api
@@ -140,13 +140,11 @@ fi
 
 RET=0
 
-# Manage log options: logfile and/or syslog, depending on user's choosing
-[ -r /etc/default/openstack ] && . /etc/default/openstack
-[ -r /etc/default/$NAME ] && . /etc/default/$NAME
-[ "x$USE_SYSLOG" = "xyes" ] && DAEMON_ARGS="$DAEMON_ARGS --use-syslog"
-if [ -z "${NO_OPENSTACK_LOGFILE_DAEMON_ARG}" ] ; then
-	[ "x$USE_LOGFILE" != "xno" ] && DAEMON_ARGS="$DAEMON_ARGS --log-file=$LOGFILE"
-fi
+# Force logging to /var/log/neutron/neutron-api.log
+#
+#  The upstream script checks defaults but we
+#  always want this.
+DAEMON_ARGS="$DAEMON_ARGS --logto2=$LOGFILE"
 
 do_start() {
 	start-stop-daemon \

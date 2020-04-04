@@ -55,5 +55,11 @@ class openstack::neutron::service::rocky(
             source  => 'puppet:///modules/openstack/rocky/neutron/api-paste.ini',
             notify  => Service['neutron-api'],
             require => Package['neutron-api'];
+        '/var/run/neutron/':
+            ensure => directory,
+            owner  => 'neutron',
+            group  => 'neutron',
+            mode   => '0755';
+
     }
 }
