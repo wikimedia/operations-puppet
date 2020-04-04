@@ -17,6 +17,13 @@ class openstack::serverpackages::rocky::stretch(
         priority => '1002',
     }
 
+    # Don't install systemd from stretch-backports or bpo -- T247013
+    apt::pin { 'systemd':
+        pin      => 'release n=stretch',
+        package  => 'systemd libpam-systemd',
+        priority => '1001',
+    }
+
     apt::repository { 'openstack-rocky-stretch':
         uri        => 'http://mirrors.wikimedia.org/osbpo',
         dist       => 'stretch-rocky-backports',
