@@ -274,6 +274,9 @@ funnel	svn.mediawiki.org	https://phabricator.wikimedia.org/diffusion/
 rewrite	download.wikimedia.org	https://dumps.wikimedia.org
 rewrite	download.wikipedia.org	https://dumps.wikimedia.org
 
+# keep redirect as the domain moved (in 2012?) – T126281, T80444
+funnel	stats.wikipedia.org	https://stats.wikimedia.org
+
 # redirect 2030.wikimedia.org to meta (T158981, T202498)
 funnel	2030.wikimedia.org	https://meta.wikimedia.org/wiki/Strategy/Wikimedia_movement/2018-20
 

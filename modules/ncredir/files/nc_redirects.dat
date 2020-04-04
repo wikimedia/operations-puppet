@@ -277,7 +277,6 @@ funnel	*wwwwikimedia.com	https://www.wikimedia.org
 # wikipedia.in
 funnel	*wikipedia.in	http://wikimedia.in/wikipedia.html
 
-
 # wikipediazero.org - T82495
 funnel	*wikipediazero.org	https://foundation.wikimedia.org/wiki/Wikipedia_Zero
 
