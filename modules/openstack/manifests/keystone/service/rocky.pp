@@ -38,6 +38,19 @@ class openstack::keystone::service::rocky(
     $prod_networks = $network::constants::production_networks
     $labs_networks = $network::constants::labs_networks
 
+    # This is a backport of https://review.opendev.org/#/c/665617/
+    # Without this change we encounter a lot of encoding errors when validating fernet tokens.
+    #
+    # This patch was backported to upstream Stein so probably not needed in the next upgrade cycle.
+    file { '/usr/lib/python3/dist-packages/keystone/token/token_formatters.py':
+            ensure  => 'present',
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0644',
+            source  => 'puppet:///modules/openstack/rocky/keystone/token_formatters-fixed.py',
+            require => Package['keystone'];
+    }
+
     # This first file is a hack to deal with the fact that ldap integration
     #  is a bit broken in Rocky. With luck we can remove this in S.
     file {
