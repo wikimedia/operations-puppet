@@ -1,1 +1,1 @@
-profile::cache::kafka::webrequest::atskafka_enabled: true
+profile::cache::kafka::webrequest::atskafka_enabled: false
