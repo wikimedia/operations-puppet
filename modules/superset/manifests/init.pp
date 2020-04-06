@@ -56,6 +56,11 @@
 # [*deployment_user*]
 #   scap deployment user
 #
+# [*gunicorn_app*]
+#   In Superset 0.36.0+ gunicorn needs a different appname for
+#   Superset. Default is still for older releases, up to 0.35.x
+#   Default: 'superset.app'
+#
 class superset(
     $port              = 9080,
     $database_uri      = 'sqlite:////var/lib/superset/superset.db',
@@ -69,6 +74,7 @@ class superset(
     $auth_settings     = undef,
     $statsd            = undef,
     $deployment_user   = 'analytics_deploy',
+    $gunicorn_app      = 'superset:app'
 ) {
     require_package(
         'virtualenv',

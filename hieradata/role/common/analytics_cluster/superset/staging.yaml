@@ -8,6 +8,7 @@ admin::groups:
 profile::superset::database_uri: mysql://superset_staging@an-coord1001.eqiad.wmnet/superset_staging
 profile::superset::workers: 8
 profile::superset::ldap_proxy_enabled: true
+profile::superset::gunicorn_app: 'superset.app:create_app()'
 
 profile::base::notifications: disabled
 

@@ -17,6 +17,8 @@ SQLALCHEMY_DATABASE_URI = '<%= @database_uri %>'
 # This is used to support superset CSV uploads.
 UPLOAD_FOLDER = '/tmp/superset_uploads/'
 
+DRUID_IS_ACTIVE = True
+
 <% if @auth_type -%>
 from flask_appbuilder.security.manager import <%= @auth_type %>
 AUTH_TYPE = <%= @auth_type %>

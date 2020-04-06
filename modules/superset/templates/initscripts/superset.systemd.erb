@@ -24,7 +24,7 @@ TimeoutStopSec=60
 WorkingDirectory=<%= @deployment_dir %>
 ExecStart=/usr/bin/firejail --profile=/etc/firejail/superset.profile -- <%= @virtualenv_dir %>/bin/gunicorn \
     --config /etc/superset/gunicorn_config.py \
-    superset:app
+    <%= @gunicorn_app %>
 
 SyslogIdentifier=superset
 
