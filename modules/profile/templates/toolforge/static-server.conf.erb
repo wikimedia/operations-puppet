@@ -66,6 +66,9 @@ server {
         # And hide the referrer for privacy reasons
         proxy_set_header        Referer "https://<%= @web_domain %>/cdnjs/";
 
+        # This will get a 403 without this T249558
+        proxy_ssl_server_name   on;
+
         # Proxy to cdnjs.cloudflare.com
         rewrite ^/cdnjs(.*)$ $1 break;
         proxy_pass https://cdnjs.cloudflare.com;
@@ -87,6 +90,9 @@ server {
 
       # And hide the referrer for privacy reasons
       proxy_set_header        Referer "https://<%= @web_domain %>/cdnjs/";
+
+      # Just in case T249558
+      proxy_ssl_server_name   on;
 
       rewrite ^/$redirect_uri break;
       proxy_pass https://ajax.cdnjs.com;
