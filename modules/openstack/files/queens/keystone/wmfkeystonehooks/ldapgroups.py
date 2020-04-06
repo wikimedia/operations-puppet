@@ -132,7 +132,7 @@ def delete_ldap_project_group(project_id):
 
 
 def sync_ldap_project_group(project_id, keystone_assignments):
-    groupname = "project-%s" % project_id.encode('utf-8')
+    groupname = ("project-%s" % project_id).encode('utf-8')
     LOG.info("Syncing keystone project membership with ldap group %s"
              % groupname)
     ds = _open_ldap()
@@ -148,7 +148,7 @@ def sync_ldap_project_group(project_id, keystone_assignments):
         allusers.remove('novaobserver')
 
     basedn = cfg.CONF.wmfhooks.ldap_user_base_dn
-    members = ["uid=%s,%s" % (user.encode('utf-8'), basedn)
+    members = [("uid=%s,%s" % (user, basedn)).encode('utf-8')
                for user in allusers]
 
     basedn = cfg.CONF.wmfhooks.ldap_group_base_dn
@@ -171,10 +171,11 @@ def sync_ldap_project_group(project_id, keystone_assignments):
         #  around this function.
         groupEntry = {}
         groupEntry['member'] = members
-        groupEntry['objectClass'] = ['groupOfNames', 'posixGroup', 'top']
+        groupEntry['objectClass'] = [('{}'.format(object)).encode('utf-8')
+                                     for object in ['groupOfNames', 'posixGroup', 'top']]
         groupEntry['cn'] = [groupname]
         for i in range(0, 4):
-            groupEntry['gidNumber'] = [str(_get_next_gid_number(ds))]
+            groupEntry['gidNumber'] = [str(_get_next_gid_number(ds)).encode('utf-8')]
             modlist = ldap.modlist.addModlist(groupEntry)
             try:
                 ds.add_s(dn, modlist)
