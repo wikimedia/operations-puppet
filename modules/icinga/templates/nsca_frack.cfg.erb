@@ -573,12 +573,6 @@ define hostgroup {
     alias                    Fundraising Database
 }
 
-# FIXME remove
-define hostgroup {
-    hostgroup_name           fundraising-database-analytics
-    alias                    Fundraising Database - Analytics
-}
-
 define hostgroup {
     hostgroup_name           fundraising-listener
     alias                    Fundraising Payments Listener
@@ -592,12 +586,6 @@ define hostgroup {
 define hostgroup {
     hostgroup_name           fundraising-misc
     alias                    Fundraising Misc
-}
-
-# FIXME remove
-define hostgroup {
-    hostgroup_name           fundraising-network
-    alias                    Fundraising Network
 }
 
 define hostgroup {
@@ -1197,62 +1185,6 @@ define service {
     hostgroup_name           fundraising-database
 }
 
-# fundraising-database-analytics / FIXME: remove
-
-define service {
-    use                      passive-service
-    service_description      check_disk
-    hostgroup_name           fundraising-database-analytics
-}
-
-define service {
-    use                      passive-service
-    service_description      check_load
-    hostgroup_name           fundraising-database-analytics
-}
-
-define service {
-    use                      passive-service
-    service_description      check_mysql
-    hostgroup_name           fundraising-database-analytics
-}
-
-define service {
-    use                      passive-service
-    service_description      check_procs
-    hostgroup_name           fundraising-database-analytics
-}
-
-define service {
-    use                      passive-service
-    service_description      check_puppetrun
-    hostgroup_name           fundraising-database-analytics
-}
-
-define service {
-    use                      passive-service
-    service_description      check_raid
-    hostgroup_name           fundraising-database-analytics
-}
-
-define service {
-    use                      passive-service
-    service_description      check_swap
-    hostgroup_name           fundraising-database-analytics
-}
-
-define service {
-    use                      passive-service
-    service_description      check_timesync
-    hostgroup_name           fundraising-database-analytics
-}
-
-define service {
-    use                      passive-service
-    service_description      check_zombie
-    hostgroup_name           fundraising-database-analytics
-}
-
 # fundraising-civicrm
 
 define service {
@@ -1555,62 +1487,6 @@ define service {
     use                      passive-service
     service_description      check_zombie
     hostgroup_name           fundraising-auth
-}
-
-# fundraising-network / FIXME: remove
-
-define service {
-    use                      passive-service
-    service_description      check_disk
-    hostgroup_name           fundraising-network
-}
-
-define service {
-    use                      passive-service
-    service_description      check_load
-    hostgroup_name           fundraising-network
-}
-
-define service {
-    use                      passive-service
-    service_description      check_procs
-    hostgroup_name           fundraising-network
-}
-
-define service {
-    use                      passive-service
-    service_description      check_puppetrun
-    hostgroup_name           fundraising-network
-}
-
-define service {
-    use                      passive-service
-    service_description      check_raid
-    hostgroup_name           fundraising-network
-}
-
-define service {
-    use                      passive-service
-    service_description      check_rsyslog_backlog
-    hostgroup_name           fundraising-network
-}
-
-define service {
-    use                      passive-service
-    service_description      check_swap
-    hostgroup_name           fundraising-network
-}
-
-define service {
-    use                      passive-service
-    service_description      check_timesync
-    hostgroup_name           fundraising-network
-}
-
-define service {
-    use                      passive-service
-    service_description      check_zombie
-    hostgroup_name           fundraising-network
 }
 
 # fundraising-banner-logger
