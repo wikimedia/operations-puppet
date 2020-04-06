@@ -132,6 +132,7 @@ Components: main
  thirdparty/amd-rocm25
  thirdparty/amd-rocm26
  thirdparty/amd-rocm271
+ thirdparty/amd-rocm33
  thirdparty/ceph-nautilus-buster
  thirdparty/cloudera
  thirdparty/elastic74
@@ -144,6 +145,7 @@ Update:
  amd-rocm25
  amd-rocm26
  amd-rocm271
+ amd-rocm33
  elastic74
  grafana-stretch
  hp-mcp-stretch
