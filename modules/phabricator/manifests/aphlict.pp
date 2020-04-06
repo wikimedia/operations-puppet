@@ -1,11 +1,42 @@
 # == Class: phabricator::aphlict
 # Aphlict is the phabricator real-time notification relay service.
 # Docs: https://secure.phabricator.com/book/phabricator/article/notifications/
+#
+# === Parameters
+#
+# [*ensure*]
+#   either present / absent
+#
+# [*user*]
+#   The user account that aphlict runs with
+#
+# [*group*]
+#   Group for the aphlict service
+#
+# [*basedir*]
+#   Phabricator base directory
+#
+# [*enable_ssl*]
+#   should ssl be enabled on the client port. Set to true to terminate
+#   tls in aphlict, set to false if tls is terminated in envoy.
+#
+# [*sslcert*]
+#   path to the ssl cert for aphlict
+#
+# [*sslkey*]
+#   path to the ssl certificate private key
+#
+# [*sslchain*]
+#   path to the ssl certificate chain file
 class phabricator::aphlict(
     Wmflib::Ensure $ensure,
-    String $user              = 'aphlict',
-    String $group             = 'aphlict',
-    Stdlib::Unixpath $basedir = '/srv/phab'
+    String $user = 'aphlict',
+    String $group = 'aphlict',
+    Stdlib::Unixpath $basedir = '/srv/phab',
+    Boolean $enable_ssl = false,
+    Optional[Stdlib::Unixpath] $sslcert = undef,
+    Optional[Stdlib::Unixpath] $sslkey = undef,
+    Optional[Stdlib::Unixpath] $sslchain = undef,
 ) {
 
     # packages

@@ -2,35 +2,81 @@
 #
 # filtertags: labs-project-deployment-prep labs-project-devtools
 class profile::phabricator::main (
-    Hash $cache_nodes = hiera('cache::nodes', {}),
-    String $domain = hiera('phabricator_domain', 'phabricator.wikimedia.org'),
-    String $altdom = hiera('phabricator_altdomain', 'phab.wmfusercontent.org'),
-    Stdlib::Fqdn $mysql_host = hiera('phabricator::mysql::master', 'localhost'),
-    Integer $mysql_port = hiera('phabricator::mysql::master::port', 3306),
-    String $mysql_slave = hiera('phabricator::mysql::slave', 'localhost'),
-    Integer $mysql_slave_port = hiera('phabricator::mysql::slave::port', 3323),
-    Stdlib::Unixpath $phab_root_dir = '/srv/phab',
-    String $deploy_target = 'phabricator/deployment',
-    Optional[String] $deploy_user = hiera('phabricator_deploy_user', 'phab-deploy'),
-    Optional[String] $phab_app_user = hiera('phabricator_app_user', undef),
-    Optional[String] $phab_app_pass = hiera('phabricator_app_pass', undef),
-    Optional[String] $phab_daemons_user = hiera('phabricator_daemons_user', undef),
-    Optional[String] $phab_manifest_user = hiera('phabricator_manifest_user', undef),
-    Optional[String] $phab_manifest_pass = hiera('phabricator_manifest_pass', undef),
-    Optional[String] $phab_daemons_pass = hiera('phabricator_daemons_pass', undef),
-    Optional[String] $phab_mysql_admin_user = hiera('phabricator_admin_user', undef),
-    Optional[String] $phab_mysql_admin_pass = hiera('phabricator_admin_pass', undef),
-    Stdlib::Fqdn $phab_diffusion_ssh_host = hiera('phabricator_diffusion_ssh_host', 'git-ssh.wikimedia.org'),
-    Array $cluster_search = hiera('phabricator_cluster_search'),
-    Optional[String] $active_server = hiera('phabricator_server', undef),
-    Array $phabricator_servers = hiera('phabricator_servers', undef),
-    Boolean $logmail = hiera('phabricator_logmail', false),
-    Boolean $aphlict_enabled = hiera('phabricator_aphlict_enabled', false),
-    Hash $rate_limits = hiera('profile::phabricator::main::rate_limits'),
-    Integer $phd_taskmasters = hiera('phabricator_phd_taskmasters', 10),
-    Integer $opcache_validate = hiera('phabricator_opcache_validate', 0),
-    String $timezone = hiera('phabricator_timezone', 'UTC'),
-    Stdlib::Ensure::Service $phd_service_ensure = hiera('profile::phabricator::main::phd_service_ensure', 'running'),
+    Hash                        $cache_nodes        = lookup('cache::nodes',
+                                                      { 'default_value' => {} }),
+    String                      $domain             = lookup('phabricator_domain',
+                                                      { 'default_value' => 'phabricator.wikimedia.org' }),
+    String                      $altdom             = lookup('phabricator_altdomain',
+                                                      { 'default_value' => 'phab.wmfusercontent.org' }),
+    Stdlib::Fqdn                $mysql_host         = lookup('phabricator::mysql::master',
+                                                      { 'default_value' => 'localhost' }),
+    Integer                     $mysql_port         = lookup('phabricator::mysql::master::port',
+                                                      { 'default_value' => 3306 }),
+    String                      $mysql_slave        = lookup('phabricator::mysql::slave',
+                                                      { 'default_value' => 'localhost' }),
+    Integer                     $mysql_slave_port   = lookup('phabricator::mysql::slave::port',
+                                                      { 'default_value' => 3323 }),
+    Stdlib::Unixpath            $phab_root_dir      = lookup('phabricator_root_dir',
+                                                      { 'default_value' => '/srv/phab'}),
+    String                      $deploy_target      = lookup('phabricator_deploy_target',
+                                                      { 'default_value' => 'phabricator/deployment'}),
+    Optional[String]            $deploy_user        = lookup('phabricator_deploy_user',
+                                                      { 'default_value' => 'phab-deploy' }),
+    Optional[String]            $phab_app_user      = lookup('phabricator_app_user',
+                                                      { 'default_value' => undef }),
+    Optional[String]            $phab_app_pass      = lookup('phabricator_app_pass',
+                                                      { 'default_value' => undef }),
+    Optional[String]            $phab_daemons_user  = lookup('phabricator_daemons_user',
+                                                      { 'default_value' => undef }),
+    Optional[String]            $phab_manifest_user = lookup('phabricator_manifest_user',
+                                                      { 'default_value' => undef }),
+    Optional[String]            $phab_manifest_pass = lookup('phabricator_manifest_pass',
+                                                      { 'default_value' => undef }),
+    Optional[String]            $phab_daemons_pass  = lookup('phabricator_daemons_pass',
+                                                      { 'default_value' => undef }),
+    Optional[String]            $phab_mysql_admin_user=
+                                                      lookup('phabricator_admin_user',
+                                                      { 'default_value' => undef }),
+    Optional[String]            $phab_mysql_admin_pass =
+                                                      lookup('phabricator_admin_pass',
+                                                      { 'default_value' => undef }),
+    Stdlib::Fqdn                $phab_diffusion_ssh_host=
+                                                      lookup('phabricator_diffusion_ssh_host',
+                                                      { 'default_value' => 'git-ssh.wikimedia.org' }),
+    Stdlib::Ipv4                $vcs_ip_v4          = lookup('phabricator::vcs::address::v4',
+                                                      { 'default_value' => undef }),
+    Stdlib::Ipv6                $vcs_ip_v6          = lookup('phabricator::vcs::address::v6',
+                                                      { 'default_value' => undef }),
+    Array                       $cluster_search     = lookup('phabricator_cluster_search'),
+    Optional[String]            $active_server      = lookup('phabricator_server',
+                                                      { 'default_value' => undef }),
+    Array                       $phabricator_servers= lookup('phabricator_servers',
+                                                      { 'default_value' => undef }),
+    Boolean                     $logmail            = lookup('phabricator_logmail',
+                                                      { 'default_value' => false }),
+    Boolean                     $aphlict_enabled    = lookup('phabricator_aphlict_enabled',
+                                                      { 'default_value' => false }),
+    Boolean                     $aphlict_ssl        = lookup('phabricator_aphlict_enable_ssl',
+                                                      { 'default_value' => false }),
+    Optional[Stdlib::Unixpath]  $aphlict_cert       = lookup('phabricator_aphlict_cert',
+                                                      { 'default_value' => undef }),
+    Optional[Stdlib::Unixpath]  $aphlict_key        = lookup('phabricator_aphlict_key',
+                                                      { 'default_value' => undef }),
+    Optional[Stdlib::Unixpath]  $aphlict_chain      = lookup('phabricator_aphlict_chain',
+                                                      { 'default_value' => undef }),
+    Hash                        $rate_limits        = lookup('profile::phabricator::main::rate_limits',
+                                                      { 'default_value' => {
+                                                            'request' => 0,
+                                                            'connection' => 0}
+                                                      }),
+    Integer                     $phd_taskmasters    = lookup('phabricator_phd_taskmasters',
+                                                      { 'default_value' => 10 }),
+    Integer                     $opcache_validate   = lookup('phabricator_opcache_validate',
+                                                      { 'default_value' => 0 }),
+    String                      $timezone           = lookup('phabricator_timezone',
+                                                      { 'default_value' => 'UTC' }),
+    Stdlib::Ensure::Service     $phd_service_ensure = lookup('profile::phabricator::main::phd_service_ensure',
+                                                      { 'default_value' => 'running' })
 ) {
 
     mailalias { 'root':
@@ -70,11 +116,11 @@ class profile::phabricator::main (
                 'type'      => 'client',
                 'host'      => $domain,
                 'port'      => 22280,
-                'protocol'  => 'http',
+                'protocol'  => 'https',
             },
             {
                 'type'      => 'admin',
-                'host'      => $active_server,
+                'host'      => 'localhost',
                 'port'      => 22281,
                 'protocol'  => 'http',
             }
@@ -320,14 +366,17 @@ class profile::phabricator::main (
     }
 
     class { '::phabricator::aphlict':
-        ensure  => $aphlict_ensure,
-        basedir => $phab_root_dir,
-        require => Class[phabricator]
+        ensure     => $aphlict_ensure,
+        basedir    => $phab_root_dir,
+        enable_ssl => $aphlict_ssl,
+        sslcert    => $aphlict_cert,
+        sslkey     => $aphlict_key,
+        sslchain   => $aphlict_chain,
+        require    => Class[phabricator],
     }
 
     # This exists to offer git services at git-ssh.wikimedia.org
-    $vcs_ip_v4 = hiera('phabricator::vcs::address::v4', undef)
-    $vcs_ip_v6 = hiera('phabricator::vcs::address::v6', undef)
+
     if $vcs_ip_v4 or $vcs_ip_v6 {
         interface::alias { 'phabricator vcs':
             ipv4 => $vcs_ip_v4,

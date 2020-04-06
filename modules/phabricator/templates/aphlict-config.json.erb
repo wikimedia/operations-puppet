@@ -4,6 +4,12 @@
       "type": "client",
       "port": 22280,
       "listen": "0.0.0.0"
+<% if @enable_ssl -%>
+      ,
+      "ssl.key": "<%= @sslkey %>",
+      "ssl.cert": "<%= @sslcert %>",
+      "ssl.chain": "<%= @sslchain %>"
+<%- end %>
     },
     {
       "type": "admin",
