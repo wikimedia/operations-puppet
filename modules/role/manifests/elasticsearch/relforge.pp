@@ -6,6 +6,7 @@ class role::elasticsearch::relforge {
     include ::profile::standard
     include ::profile::base::firewall
     include ::profile::elasticsearch::relforge
+    include ::profile::kibana
 
     system::role { 'elasticsearch::relforge':
         ensure      => 'present',

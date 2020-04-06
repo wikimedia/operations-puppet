@@ -6,6 +6,7 @@
 # == Parameters:
 # - $default_app_id: Default landing page. You can specify files, scripts or
 #     saved dashboards here. Default: '/dashboard/file/default.json'.
+# - $enable_phatality: Defaults to true. Adds the phatality package to kibana
 #
 # == Sample usage:
 #
@@ -14,8 +15,9 @@
 #   }
 #
 class kibana (
-    $default_app_id = 'dashboard/default',
-    $kibana_package = 'kibana'
+    String $default_app_id = 'dashboard/default',
+    String $kibana_package = 'kibana',
+    Boolean $enable_phatality = true
 ) {
     package { 'kibana':
         ensure => 'present',
@@ -52,5 +54,7 @@ class kibana (
         ],
     }
 
-    class { '::kibana::phatality': }
+    if $enable_phatality {
+      class { '::kibana::phatality': }
+    }
 }
