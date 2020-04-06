@@ -148,8 +148,10 @@ def sync_ldap_project_group(project_id, keystone_assignments):
         allusers.remove('novaobserver')
 
     basedn = cfg.CONF.wmfhooks.ldap_user_base_dn
-    members = ["uid=%s,%s" % (user, basedn)
-               for user in allusers]
+    members_as_bytes = [
+        ("uid=%s,%s" % (user, basedn)).encode('utf-8')
+        for user in allusers
+    ]
 
     basedn = cfg.CONF.wmfhooks.ldap_group_base_dn
     dn = "cn=%s,%s" % (groupname, basedn)
@@ -159,7 +161,7 @@ def sync_ldap_project_group(project_id, keystone_assignments):
         # We're modifying an existing group
         oldEntry = existingEntry[0][1]
         newEntry = oldEntry.copy()
-        newEntry['member'] = members
+        newEntry['member'] = members_as_bytes
 
         modlist = ldap.modlist.modifyModlist(oldEntry, newEntry)
         if modlist:
@@ -170,12 +172,11 @@ def sync_ldap_project_group(project_id, keystone_assignments):
         #  and ds.add_s, so we make a few attempts.
         #  around this function.
         groupEntry = {}
-        groupEntry['member'] = members
-        groupEntry['objectClass'] = ['{}'.format(object)
-                                     for object in ['groupOfNames', 'posixGroup', 'top']]
-        groupEntry['cn'] = [groupname]
+        groupEntry['member'] = members_as_bytes
+        groupEntry['objectClass'] = [b'groupOfNames', b'posixGroup', b'top']
+        groupEntry['cn'] = [groupname.encode('utf-8')]
         for i in range(0, 4):
-            groupEntry['gidNumber'] = [str(_get_next_gid_number(ds))]
+            groupEntry['gidNumber'] = [str(_get_next_gid_number(ds)).encode('utf-8')]
             modlist = ldap.modlist.addModlist(groupEntry)
             try:
                 ds.add_s(dn, modlist)
