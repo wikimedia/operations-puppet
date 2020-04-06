@@ -38,7 +38,6 @@ class amd_rocm (
     # trying to overwrite '/opt/rocm/miopen/bin/MIOpenDriver',
     # which is also in package miopen-hip 2.0.0-7a8f787
     $packages = [
-        'cxlactivitylogger',
         'hcc',
         'hsa-rocr-dev',
         'hsakmt-roct',
