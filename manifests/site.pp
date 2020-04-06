@@ -180,6 +180,11 @@ node 'backup2001.codfw.wmnet' {
     role(backup::offsite)
 }
 
+# codfw redundant backup host
+node 'backup2002.codfw.wmnet' {
+    role(spare::system)
+}
+
 # Bastion in Virginia
 node 'bast1002.wikimedia.org' {
     role(bastionhost::general)
