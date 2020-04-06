@@ -10,28 +10,16 @@ profile::lvs::realserver::pools:
   "parsoid-php":
     services:
       - php7.2-fpm
-      - envoy
+      - nginx
       - mcrouter
       - nutcracker
 
 # switch Parsoid/JS-server to Parsoid/PHP-MW-appserver
 profile::parsoid::use_php: true
 has_lvs: true
-profile::mediawiki::webserver::has_tls: "envoy"
-profile::envoy::ensure: present
-profile::tlsproxy::envoy::sni_support: "no" # you need the double quotes, because yaml.
-profile::tlsproxy::envoy::tls_port: 443
-profile::tlsproxy::envoy::services:
-  - server_names: ["*"]
-    port: 80
-profile::tlsproxy::envoy::request_timeout: 201.0
-profile::tlsproxy::envoy::retries: false
-profile::tlsproxy::envoy::global_cert_name: "parsoid.svc.eqiad.wmnet"
-profile::tlsproxy::envoy::access_log: true
-profile::mediawiki::httpd::logrotate_retention: 12
 
 profile::mediawiki::php::php_version: "7.2"
-
+profile::mediawiki::webserver::has_tls: true
 
 nutcracker::verbosity: "4"
 # Bump the connections per backend to 5 in mcrouter, see T203786
