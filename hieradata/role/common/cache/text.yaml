@@ -65,7 +65,7 @@ cache::alternate_domains:
     director: 'cloudmetrics1002'
     caching: 'pass'
   grafana-next.wikimedia.org:
-    director: 'grafana1002'
+    director: 'grafana2001'
     caching: 'pass'
   grafana.wikimedia.org:
     director: 'grafana1002'

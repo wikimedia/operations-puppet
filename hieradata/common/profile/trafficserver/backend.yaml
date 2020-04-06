@@ -60,7 +60,7 @@ profile::trafficserver::backend::mapping_rules:
       replacement: https://phabricator.discovery.wmnet
     - type: map
       target: http://grafana-next.wikimedia.org
-      replacement: https://grafana1002.eqiad.wmnet
+      replacement: https://grafana2001.codfw.wmnet
     - type: map
       target: http://grafana-labs.wikimedia.org
       replacement: https://grafana-labs.discovery.wmnet
