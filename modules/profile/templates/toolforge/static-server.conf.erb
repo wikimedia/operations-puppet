@@ -122,6 +122,7 @@ server {
         # Proxy /fontcdn/css to fonts.googleapis.com
         location ^~ /fontcdn/css {
             rewrite ^/fontcdn(/.*)$ $1 break;
+            proxy_ssl_server_name   on;
             proxy_pass https://fonts.googleapis.com;
 
             # subs_filter works only on uncompressed data
@@ -141,6 +142,7 @@ server {
         # Proxy anything else to fonts.gstatic.com
         location ^~ /fontcdn/ {
             rewrite ^/fontcdn(/.*)$ $1 break;
+            proxy_ssl_server_name   on;
             proxy_pass https://fonts.gstatic.com;
             proxy_hide_header Strict-Transport-Security;
         }
