@@ -197,7 +197,7 @@ def create_sudo_defaults(project_id):
     projectbase = "cn=%s,%s" % (project_id, basedn)
     # We may or may not already have one of these... if it fails just move on.
     projectEntry = {}
-    projectEntry['objectClass'] = ['extensibleobject', 'groupofnames', 'top']
+    projectEntry['objectClass'] = [b'extensibleobject', b'groupofnames', b'top']
     projectEntry['member'] = [("uid=%s,%s" %
                               (cfg.CONF.wmfhooks.admin_user, userbasedn)).encode('utf-8')]
     modlist = ldap.modlist.addModlist(projectEntry)
@@ -210,7 +210,7 @@ def create_sudo_defaults(project_id):
     #  freaking out and ignoring all groups.
     groupsdn = "ou=groups,%s" % projectbase
     groupsentry = {}
-    groupsentry['objectClass'] = ['organizationalUnit']
+    groupsentry['objectClass'] = [b'organizationalUnit']
     modlist = ldap.modlist.addModlist(groupsentry)
     try:
         ds.add_s(groupsdn, modlist)
@@ -220,7 +220,7 @@ def create_sudo_defaults(project_id):
     #  This one too!
     peopledn = "ou=people,%s" % projectbase
     peopleentry = {}
-    peopleentry['objectClass'] = ['organizationalUnit']
+    peopleentry['objectClass'] = [b'organizationalUnit']
     modlist = ldap.modlist.addModlist(peopleentry)
     try:
         ds.add_s(peopledn, modlist)
@@ -229,7 +229,7 @@ def create_sudo_defaults(project_id):
 
     sudoerbase = "ou=sudoers,%s" % projectbase
     sudoEntry = {}
-    sudoEntry['objectClass'] = ['organizationalUnit', 'top']
+    sudoEntry['objectClass'] = [b'organizationalUnit', b'top']
     modlist = ldap.modlist.addModlist(sudoEntry)
     try:
         ds.add_s(sudoerbase, modlist)
@@ -238,12 +238,12 @@ def create_sudo_defaults(project_id):
 
     sudoEntry = {}
     defaultdn = "cn=default-sudo,%s" % sudoerbase
-    sudoEntry['objectClass'] = ['sudoRole']
+    sudoEntry['objectClass'] = [b'sudoRole']
     sudoEntry['sudoUser'] = [('%%project-%s' % project_id).encode('utf-8')]
     sudoEntry['sudoCommand'] = [b'ALL']
     sudoEntry['sudoOption'] = [b'!authenticate']
     sudoEntry['sudoHost'] = [b'ALL']
-    sudoEntry['cn'] = ['default-sudo']
+    sudoEntry['cn'] = [b'default-sudo']
     modlist = ldap.modlist.addModlist(sudoEntry)
     try:
         ds.add_s(defaultdn, modlist)
@@ -253,7 +253,7 @@ def create_sudo_defaults(project_id):
     defaultasdn = "cn=default-sudo-as,%s" % sudoerbase
     # The runas entry is the same as the default entry, plus one field
     sudoEntry['sudoRunAsUser'] = [("%%project-%s" % project_id).encode('utf-8')]
-    sudoEntry['cn'] = ['default-sudo-as']
+    sudoEntry['cn'] = [b'default-sudo-as']
     modlist = ldap.modlist.addModlist(sudoEntry)
     try:
         ds.add_s(defaultasdn, modlist)
