@@ -53,7 +53,8 @@ def collect_stats_from_romc_smi(registry):
                 # format example: 42
                 gpu_stats['usage'].labels(card=card).set(
                     rocm_metrics[card][metric].strip())
-            elif metric == 'Temperature (Sensor #1) (c)':
+            elif metric == 'Temperature (Sensor #1) (c)' \
+                    or metric == 'Temperature (Sensor #1) (C)':
                 # format example: 27.0
                 gpu_stats['temperature'].labels(card=card).set(
                     rocm_metrics[card][metric].strip())
