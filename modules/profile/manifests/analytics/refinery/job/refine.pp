@@ -11,7 +11,7 @@ class profile::analytics::refinery::job::refine(
 
     # Update this when you want to change the version of the refinery job jar
     # being used for the refine job.
-    $refinery_version = '0.0.107'
+    $refinery_version = '0.0.121'
 
     # Use this value by default
     Profile::Analytics::Refinery::Job::Refine_job {
@@ -42,7 +42,7 @@ class profile::analytics::refinery::job::refine(
             # Deduplicate basd on uuid field and geocode ip in EventLogging analytics data.
             transform_functions             => 'org.wikimedia.analytics.refinery.job.refine.deduplicate_eventlogging,org.wikimedia.analytics.refinery.job.refine.geocode_ip,org.wikimedia.analytics.refinery.job.refine.eventlogging_filter_is_allowed_hostname',
             # Get EventLogging JSONSchemas from meta.wikimedia.org.
-            schema_base_uri                 => 'eventlogging',
+            schema_base_uris                => 'eventlogging',
         }),
         # Use webproxy so that this job can access meta.wikimedia.org to retrive JSONSchemas.
         spark_extra_opts => '--driver-java-options=\'-Dhttp.proxyHost=webproxy.eqiad.wmnet -Dhttp.proxyPort=8080 -Dhttps.proxyHost=webproxy.eqiad.wmnet -Dhttps.proxyPort=8080\'',
@@ -89,8 +89,7 @@ class profile::analytics::refinery::job::refine(
             transform_functions             => 'org.wikimedia.analytics.refinery.job.refine.deduplicate_eventbus',
             # Get JSONSchemas from the HTTP schema service.
             # Schema URIs are extracted from the $schema field in each event.
-            # TODO: make this support multiple base URIs for resolving schema from both primary and secondary instead of mediawiki.
-            schema_base_uri                 => 'https://schema.discovery.wmnet/repositories/mediawiki/jsonschema',
+            schema_base_uris                => 'https://schema.discovery.wmnet/repositories/primary/jsonschema,https://schema.discovery.wmnet/repositories/secondary/jsonschema',
         }),
         interval     => '*-*-* *:20:00',
         use_kerberos => $use_kerberos,
