@@ -15,7 +15,7 @@
 
 from keystoneauth1.identity import v3
 from keystoneauth1 import session as keystone_session
-from keystone.common import dependency
+from keystone.common import provider_api
 from keystone import exception
 from neutronclient.v2_0 import client as neutron_client
 from neutronclient.common import exceptions
@@ -95,8 +95,7 @@ CONF = cfg.CONF
 CONF.register_opts(wmfkeystone_opts, group='wmfhooks')
 
 
-@dependency.requires('assignment_api', 'resource_api', 'role_api')
-class KeystoneHooks(notifier.Driver):
+class KeystoneHooks(provider_api.ProviderAPIMixin, notifier.Driver):
     """Notifier class which handles extra project creation/deletion bits
     """
     def __init__(self, conf, topics, transport, version=1.0):
