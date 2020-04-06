@@ -823,8 +823,8 @@ customviews:
     source: ["user_properties", "user", "meta_p.properties_anon_whitelist" ]
     view: select cast(extract(year_month from user_touched)*100+1 as date) upa_touched, up_property, up_value
     where: user_id=up_user and up_property like pw_property
-  wb_terms_no_longer_updated:  # temporarily adding this view for T248592
-    source: wb_terms
+  wb_terms_no_longer_updated:  # T248592
+    source: T248086_wb_terms
     view: select *
   wb_changes:
     source: wb_changes
