@@ -310,6 +310,22 @@ class profile::prometheus::alerts (
         monitoring::alerts::aggregate_ipsec{"aggregate_ipsec_${datacenter}": site => $datacenter }
     }
 
+    # Check for stale textfiles exported by node-exporter
+    # Files that rarely change (e.g. atlas_metadata.prom) are not included.
+    $datacenters.each |String $site| {
+        monitoring::check_prometheus { "node_textfile_stale_${site}":
+            description     => "Stale file for node-exporter textfile in ${site}",
+            query           => 'time() - node_textfile_mtime_seconds{file\!="atlas_metadata.prom"}',
+            prometheus_url  => "http://prometheus.svc.${site}.wmnet/ops",
+            warning         => 60*60*24*2,
+            critical        => 60*60*24*4,
+            method          => 'ge',
+            dashboard_links => ['https://grafana.wikimedia.org/d/knkl4dCWz/node-exporter-textfile'],
+            check_interval  => 20,
+            retries         => 3,
+        }
+    }
+
     # Check for signs of icinga overload
     ['eqiad', 'codfw'].each |String $site| {
         monitoring::check_prometheus { "icinga_check_latency_${site}":
