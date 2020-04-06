@@ -1189,11 +1189,7 @@ node /kafkamon[12]001\.(codfw|eqiad)\.wmnet/ {
 # profile::wikimania_scholarships - https://scholarships.wikimedia.org/
 # profile::iegreview              - https://iegreview.wikimedia.org
 # profile::racktables             - https://racktables.wikimedia.org
-node 'miscweb1001.eqiad.wmnet', 'miscweb2001.codfw.wmnet' {
-    role(webserver_misc_apps)
-}
-
-# miscweb on buster to replace 1001/2001 (T247648)
+# miscweb on buster replaced 1001/2001 in T247648
 node 'miscweb1002.eqiad.wmnet', 'miscweb2002.codfw.wmnet' {
     role(webserver_misc_apps)
 }
