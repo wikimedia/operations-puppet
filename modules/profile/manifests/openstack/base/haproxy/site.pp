@@ -22,9 +22,14 @@
 #   Array of Stdlib::Fqdn
 #   A list of backend servers providing the service.
 #
+# [*healthcheck_method*]
+#   HTTP Method (String)
+#   The HTTP request method to use for the healthcheck
+
 # [*healthcheck_options*]
 #   Array of Strings
 #   A list of healthcheck (http-check) options
+#
 #
 # === Examples
 #
@@ -39,6 +44,7 @@ define profile::openstack::base::haproxy::site(
     Stdlib::Port $port_backend,
     Stdlib::Port $port_frontend,
     Stdlib::Compat::String $healthcheck_path,
+    String $healthcheck_method,
     Array[String] $healthcheck_options = [],
     Wmflib::Ensure $ensure = present,
 ) {
