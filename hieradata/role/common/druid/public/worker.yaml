@@ -102,6 +102,7 @@ profile::druid::broker::properties:
   # Increase druid broker query cache size to 2G.
   # TBD: Perhaps we should also try using memcached?
   druid.cache.sizeInBytes: 2147483648
+  druid.sql.enable: true
 profile::druid::broker::env:
   DRUID_HEAP_OPTS: "-Xmx10g -Xms5g"
   DRUID_EXTRA_JVM_OPTS: "-XX:NewSize=4g -XX:MaxNewSize=4g -XX:MaxDirectMemorySize=12g -XX:+UseConcMarkSweepGC -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -Djava.util.logging.manager=org.apache.logging.log4j.jul.LogManager"
