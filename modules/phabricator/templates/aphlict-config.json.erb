@@ -2,7 +2,7 @@
   "servers": [
     {
       "type": "client",
-      "port": 22280,
+      "port": <%= @node_port %>,
       "listen": "0.0.0.0"
 <% if @enable_ssl -%>
       ,
@@ -13,7 +13,7 @@
     },
     {
       "type": "admin",
-      "port": 22281,
+      "port": <%= @admin_port %>,
       "listen": "127.0.0.1"
     }
   ],

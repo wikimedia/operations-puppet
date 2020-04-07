@@ -64,6 +64,12 @@ class profile::phabricator::main (
                                                       { 'default_value' => undef }),
     Optional[Stdlib::Unixpath]  $aphlict_chain      = lookup('phabricator_aphlict_chain',
                                                       { 'default_value' => undef }),
+    Optional[Stdlib::Port]      $aphlict_node_port  = lookup('phabricator_aphlict_node_port',
+                                                      { 'default_value' => 22280 }),
+    Optional[Stdlib::Port]      $aphlict_envoy_port = lookup('phabricator_aphlict_envoy_port',
+                                                      { 'default_value' => 444 }),
+    Optional[Stdlib::Port]      $aphlict_admin_port = lookup('phabricator_aphlict_admin_port',
+                                                      { 'default_value' => 22281 }),
     Hash                        $rate_limits        = lookup('profile::phabricator::main::rate_limits',
                                                       { 'default_value' => {
                                                             'request' => 0,
@@ -118,13 +124,13 @@ class profile::phabricator::main (
             {
                 'type'      => 'client',
                 'host'      => $domain,
-                'port'      => 22280,
+                'port'      => $aphlict_node_port,
                 'protocol'  => 'https',
             },
             {
                 'type'      => 'admin',
                 'host'      => 'localhost',
-                'port'      => 22281,
+                'port'      => $aphlict_admin_port,
                 'protocol'  => 'http',
             }
         ]
@@ -375,6 +381,8 @@ class profile::phabricator::main (
         sslcert    => $aphlict_cert,
         sslkey     => $aphlict_key,
         sslchain   => $aphlict_chain,
+        node_port  => $aphlict_node_port,
+        admin_port => $aphlict_admin_port,
         require    => Class[phabricator],
     }
 
@@ -466,10 +474,38 @@ class profile::phabricator::main (
     }
 
     if $aphlict_enabled {
-        ferm::service { 'notification_server':
+        # caching servers to envoy TLS terminator
+        ferm::service { 'caching_to_envoy_aphlict':
             ensure => $ferm_ensure,
             proto  => 'tcp',
-            port   => '22280',
+            port   => $aphlict_envoy_port,
+            srange => '$CACHES',
+        }
+        # envoy to nodejs/aphlict, the notification server
+        ferm::service { 'envoy_to_node_aphlict':
+            ensure => $ferm_ensure,
+            proto  => 'tcp',
+            port   => $aphlict_node_port,
+            srange => "(${::ipaddress} ${::ipaddress6})",
+        }
+        # local machine to aphlict admin port
+        ferm::service { 'local_aphlict_admin':
+            ensure => $ferm_ensure,
+            proto  => 'tcp',
+            port   => $aphlict_admin_port,
+            srange => "(${::ipaddress} ${::ipaddress6})",
+        }
+
+        envoyproxy::tls_terminator { String($aphlict_node_port):
+          upstreams        => [
+            {
+            server_names  => [ $domain ],
+            upstream_port => $aphlict_node_port,
+            },
+          ],
+          global_cert_path => '/etc/ssl/localcerts/phabricator.discovery.wmnet.crt',
+          global_key_path  => '/etc/ssl/private/phabricator.discovery.wmnet.key',
+          websockets       => true,
         }
     }
 

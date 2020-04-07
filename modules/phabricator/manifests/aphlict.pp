@@ -37,6 +37,8 @@ class phabricator::aphlict(
     Optional[Stdlib::Unixpath] $sslcert = undef,
     Optional[Stdlib::Unixpath] $sslkey = undef,
     Optional[Stdlib::Unixpath] $sslchain = undef,
+    Optional[Stdlib::Port] $node_port = undef,
+    Optional[Stdlib::Port] $admin_port = undef,
 ) {
 
     # packages
