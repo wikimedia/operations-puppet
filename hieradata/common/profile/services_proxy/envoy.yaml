@@ -3,97 +3,99 @@
 profile::services_proxy::envoy::listeners:
   - name: parsoid
     port: 6001
-    timeout: '8s'
+    timeout: "8s"
     service: parsoid
   - name: parsoid-php
     port: 6002
-    timeout: '8s'
+    timeout: "8s"
     service: parsoid-php
+    xfp: https # this is needed for private wikis. See T249535 for the gory details.
   - name: mathoid
     port: 6003
-    timeout: '3s'
+    timeout: "3s"
     service: mathoid
   - name: eventgate-analytics
     port: 6004
-    timeout: '10s'
+    timeout: "10s"
     service: eventgate-analytics
-    keepalive: '4.5s'
+    keepalive: "4.5s"
     retry:
       retry_on: "5xx"
       num_retries: 1
   - name: eventgate-main
     port: 6005
-    timeout: '25s'
+    timeout: "25s"
     service: eventgate-main
-    keepalive: '4.5s'
+    keepalive: "4.5s"
     retry:
       retry_on: "5xx"
       num_retries: 2
   - name: sessionstore
     port: 6006
     service: sessionstore
-    timeout: '2.5s'
+    timeout: "2.5s"
   - name: echostore
     port: 6007
     service: echostore
-    timeout: '2.5s'
+    timeout: "2.5s"
   - name: termbox
     port: 6008
     service: termbox
-    timeout: '2s'
+    timeout: "2s"
   - name: wdqs-internal
     port: 6009
     service: wdqs-internal
-    timeout: '10s'
+    timeout: "10s"
   - name: ores
     port: 6010
     service: ores
-    timeout: '10s'
+    timeout: "10s"
   - name: restbase
     port: 6011
     service: restbase-https
     upstream: restbase.discovery.wmnet
-    timeout: '10s'
-# Non-discovery records
-# Eqiad ports are at 61xx
-# Codfw ports are at 62xx
+    timeout: "10s"
+    xfp: https # this is needed for private wikis - see T249535
+  # Non-discovery records
+  # Eqiad ports are at 61xx
+  # Codfw ports are at 62xx
   - name: swift-eqiad
     port: 6101
     service: swift-https
-    timeout: '50s'
+    timeout: "50s"
     upstream: ms-fe.svc.eqiad.wmnet
   - name: swift-codfw
     port: 6201
     service: swift-https
-    timeout: '50s'
+    timeout: "50s"
     upstream: ms-fe.svc.codfw.wmnet
   - name: search-chi-eqiad
     port: 6102
     service: search-https
-    timeout: '50s'
+    timeout: "50s"
     upstream: search.svc.eqiad.wmnet
   - name: search-chi-codfw
     port: 6202
     service: search-https
-    timeout: '50s'
+    timeout: "50s"
     upstream: search.svc.codfw.wmnet
   - name: search-omega-eqiad
     port: 6103
     service: search-omega-https
-    timeout: '50s'
+    timeout: "50s"
     upstream: search.svc.eqiad.wmnet
   - name: search-omega-codfw
     port: 6203
     service: search-omega-https
-    timeout: '50s'
+    timeout: "50s"
     upstream: search.svc.codfw.wmnet
   - name: search-psi-eqiad
     port: 6104
     service: search-psi-https
-    timeout: '50s'
+    timeout: "50s"
     upstream: search.svc.eqiad.wmnet
   - name: search-psi-codfw
     port: 6204
     service: search-psi-https
-    timeout: '50s'
+    timeout: "50s"
     upstream: search.svc.codfw.wmnet

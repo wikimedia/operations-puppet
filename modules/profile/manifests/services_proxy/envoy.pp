@@ -18,6 +18,7 @@
 # retry - The retry policy, if any. See the envoy docs for RetryPolicy for details.
 # keepalive - keepalive timeout. If not specified, the default envoy value will be used.
 #             For nodejs applications assume the right value is 5 seconds (see T247484)
+# xfp - Set an explicit value for X-Forwarded-Proto, instead of letting envoy inject it (see T249535)
 class profile::services_proxy::envoy(
     Wmflib::Ensure $ensure = lookup('profile::envoy::ensure', {'default_value' => 'present'}),
     Array[Struct[{
@@ -26,6 +27,7 @@ class profile::services_proxy::envoy(
         'timeout'   => String,
         'service'   => String,
         'http_host' => Optional[Stdlib::Fqdn],
+        'xfp'       => Optional[Enum['http', 'https']],
         'upstream'  => Optional[Stdlib::Fqdn],
         'retry'     => Optional[Hash],
         'keepalive' => Optional[String],

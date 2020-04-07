@@ -23,6 +23,12 @@ filter_chains:
       - name: envoy.router
         typed_config: {}
       route_config:
+        <%- if @listener['xfp'] -%>
+        request_headers_to_add:
+        - header:
+            key: "x-forwarded-proto"
+            value: "<%= @listener['xfp'] %>"
+        <%- end -%>
         name: <%= n %>_route
         virtual_hosts:
         - name: <%= n %>
