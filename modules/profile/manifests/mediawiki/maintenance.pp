@@ -40,7 +40,7 @@ class profile::mediawiki::maintenance {
     include ::profile::mediawiki::maintenance::cleanup_upload_stash
     include ::profile::mediawiki::maintenance::update_flaggedrev_stats
     include ::profile::mediawiki::maintenance::refreshlinks
-    class { 'mediawiki::maintenance::update_special_pages': ensure => $ensure }
+    include ::profile::mediawiki::maintenance::update_special_pages
     class { 'mediawiki::maintenance::purge_abusefilter': ensure => $ensure }
     class { 'mediawiki::maintenance::purge_checkuser': ensure => $ensure }
     class { 'mediawiki::maintenance::purge_expired_userrights': ensure => $ensure }
