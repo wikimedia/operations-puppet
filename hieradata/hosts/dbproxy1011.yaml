@@ -1,4 +1,5 @@
 # This host supports the wikireplica-web service
+# Passive dbproxy - will be decommissioned. Active proxy: dbproxy1019
 profile::mariadb::proxy::replicas::servers:
   labsdb1009:
     address: '10.64.4.14:3306'
