@@ -1,5 +1,5 @@
 # == Define eventschemas::repository
-# Clones a git repository into /srv/schemas/repositories/$title
+# Clones a git repository into /srv/eventschemas/repositories/$title
 #
 # == Parameters
 # [*title*]

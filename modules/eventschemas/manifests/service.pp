@@ -1,7 +1,7 @@
 # Class: eventschemas::service
 #
 # Sets up an nginx site serving a JSON autoindex of files in
-# /srv/schemas/repositories. This also uses a static dist of
+# /srv/eventschemas/repositories. This also uses a static dist of
 # https://github.com/spring-raining/pretty-autoindex
 # to allow for nice browsing of the served schemas.
 # In this way, schemas can be explored and requested from the service
@@ -10,12 +10,18 @@
 #
 # E.g:
 #
-# curl http://schema.wikimedia.org:8061/repositories/mediawiki/
+# curl https://schema.wikimedia.org/repositories/primary/jsonschema/mediawiki/
 # [
-#   { "name":"avro", "type":"directory", "mtime":"Wed, 17 Apr 2019 20:04:48 GMT" },
-#   { "name":"config", "type":"directory", "mtime":"Wed, 17 Apr 2019 20:04:48 GMT" },
-#   { "name":"jsonschema", "type":"directory", "mtime":"Wed, 17 Apr 2019 20:04:48 GMT" },
-#   ...
+#    { "name":"api", "type":"directory", "mtime":"Mon, 06 Jan 2020 21:49:58 GMT" },
+#    { "name":"centralnotice", "type":"directory", "mtime":"Mon, 06 Jan 2020 21:49:58 GMT" },
+#    { "name":"cirrussearch", "type":"directory", "mtime":"Mon, 06 Jan 2020 21:49:58 GMT" },
+#    { "name":"client", "type":"directory", "mtime":"Thu, 02 Jan 2020 20:37:54 GMT" },
+#    { "name":"job", "type":"directory", "mtime":"Thu, 05 Mar 2020 17:55:55 GMT" },
+#    { "name":"page", "type":"directory", "mtime":"Fri, 10 Jan 2020 18:50:02 GMT" },
+#    { "name":"recentchange", "type":"directory", "mtime":"Fri, 10 Jan 2020 17:49:34 GMT" },
+#    { "name":"revision", "type":"directory", "mtime":"Fri, 10 Jan 2020 18:50:02 GMT" },
+#    { "name":"user", "type":"directory", "mtime":"Mon, 06 Jan 2020 21:49:58 GMT" },
+#    ...
 # ]
 #
 # Or point a browser at http://schema.wikimedia.org to get a pretty-autoindex of repositories/.
