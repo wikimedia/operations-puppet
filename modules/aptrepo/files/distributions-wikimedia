@@ -139,6 +139,7 @@ Components: main
  thirdparty/grafana
  thirdparty/hwraid
  thirdparty/kubeadm-k8s
+ thirdparty/postgres96
 UDebComponents: main
 Update:
 # sorted list, leading whitespace matters!
@@ -150,6 +151,7 @@ Update:
  grafana-stretch
  hp-mcp-stretch
  hwraid-stretch
+ postgres
  thirdparty/ceph-nautilus-buster
  thirdparty/kubeadm-k8s-kubernetes.io
  thirdparty/kubeadm-k8s-docker.com

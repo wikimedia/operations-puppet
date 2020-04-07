@@ -320,3 +320,12 @@ Suite: bigtop
 Architectures: amd64 source
 VerifyRelease: DBBF9D42B7B4BD70
 ListShellHook: grep-dctrl -e -S '^(avro-libs|bigtop-groovy|bigtop-jsvc|bigtop-tomcat|bigtop-utils|crunch|hadoop|hbase|hive|hue|impala|kite|llama|mahout|oozie|parquet|parquet-format|sentry|solr|flume-ng|spark-core|sqoop|sqoop2|whirr|zookeeper)$' || [ $? -eq 1 ]
+
+Name: postgres
+Method: http://apt.postgresql.org/pub/repos/apt
+Components: main>thirdparty/postgres96
+UDebComponents:
+Suite: buster-pgdg
+Architectures: amd64 source
+VerifyRelease: ACCC4CF8
+ListShellHook: grep-dctrl -X -S psql || [ $? -eq 1 ]
