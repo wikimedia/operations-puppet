@@ -28,7 +28,18 @@ profile::trafficserver::tls::logs:
 #  - filename: analytics
 #    format: wmf-analytics
 #    mode: ascii_pipe
-profile::trafficserver::tls::parent_rules: []
+profile::trafficserver::tls::parent_rules:
+  - dest_domain: '.'
+    parent:
+    - "%{::ipaddress}:3120"
+    - "%{::ipaddress}:3121"
+    - "%{::ipaddress}:3122"
+    - "%{::ipaddress}:3123"
+    - "%{::ipaddress}:3124"
+    - "%{::ipaddress}:3125"
+    - "%{::ipaddress}:3126"
+    parent_is_proxy: 'false'
+    round_robin: 'strict'
 profile::trafficserver::tls::unified_certs:
   - 'globalsign-2019-ecdsa-unified'
   - 'globalsign-2019-rsa-unified'
