@@ -4,7 +4,8 @@
 # These checks walk HDFS through the plain file system.
 #
 class profile::analytics::refinery::job::data_check (
-    $use_kerberos = lookup('profile::analytics::refinery::job::data_check::use_kerberos', { 'default_value' => false }),
+    $use_kerberos  = lookup('profile::analytics::refinery::job::data_check::use_kerberos', { 'default_value' => false }),
+    $ensure_timers = lookup('profile::analytics::refinery::job::data_check::ensure_timers', { 'default_value' => 'present' }),
 ) {
     require ::profile::analytics::refinery
 
@@ -20,6 +21,7 @@ class profile::analytics::refinery::job::data_check (
     # the cron was used to run as hdfs instead, and now the systemd units
     # that are run by the timers below do the same.
     kerberos::systemd_timer { 'check_webrequest_partitions':
+        ensure       => $ensure_timers,
         description  => 'Check HDFS Webrequest partitions',
         command      => "${::profile::analytics::refinery::path}/bin/refinery-dump-status-webrequest-partitions --hdfs-mount ${hdfs_mount_point} --datasets webrequest,raw_webrequest --quiet --percent-lost",
         interval     => '*-*-* 10:00:00',
@@ -28,6 +30,7 @@ class profile::analytics::refinery::job::data_check (
     }
 
     kerberos::systemd_timer { 'check_pageviews_partitions':
+        ensure       => $ensure_timers,
         description  => 'Check HDFS Pageviews partitions',
         command      => "${::profile::analytics::refinery::path}/bin/refinery-dump-status-webrequest-partitions --hdfs-mount ${hdfs_mount_point} --datasets pageview,projectview --quiet",
         interval     => '*-*-* 10:10:00',
