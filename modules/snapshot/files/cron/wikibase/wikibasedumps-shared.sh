@@ -58,8 +58,9 @@ function putDumpChecksums {
 
 # Get the number of batches needed to dump all of the particular project, stored in $numberOfBatchesNeeded.
 function getNumberOfBatchesNeeded {
-	maxPageId=`$php $multiversionscript maintenance/sql.php --wiki ${projectName}wiki --json --query 'SELECT MAX(page_id) AS max_page_id FROM page' | grep max_page_id | grep -oP '\d+'`
-	if [[ $maxPageId -lt 1 ]]; then
+	maxPageId="$($php $multiversionscript maintenance/mysql.php --group dump --wiki ${projectName}wiki -- --silent --skip-column-names -e 'SELECT MAX(page_id) AS max_page_id FROM page')"
+	# Fail if mysql exited with a non-zero exit code, we got a non-numerical value or our value is less than 1.
+	if [ "$?" -ne 0 ] || ! echo "$maxPageId" | grep -qPv '[^\d]' || [ "$maxPageId" -lt 1 ]; then
 		echo "Couldn't get MAX(page_id) from db."
 		exit 1
 	fi
