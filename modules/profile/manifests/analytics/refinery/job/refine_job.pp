@@ -35,6 +35,7 @@ define profile::analytics::refinery::job::refine_job (
     $spark_driver_memory    = '8G',
     $spark_max_executors    = 64,
     $spark_extra_opts       = '',
+    $deploy_mode            = 'cluster',
     $user                   = 'analytics',
     $interval               = '*-*-* *:00:00',
     $use_kerberos           = false,
@@ -77,14 +78,18 @@ define profile::analytics::refinery::job::refine_job (
     # Spark Driver's working dir, and should be referenced by relative path.
     $driver_extra_classpath = '/usr/lib/hadoop-mapreduce/hadoop-mapreduce-client-common.jar:hive-jdbc-1.1.0-cdh5.10.0.jar:hive-service-1.1.0-cdh5.10.0.jar'
 
+    $config_file_path = $deploy_mode ? {
+        'client' => $job_config_file,
+        default  => "${job_name}.properties",
+    }
     profile::analytics::refinery::job::spark_job { $job_name:
         ensure             => $ensure,
         jar                => $_refinery_job_jar,
         class              => $job_class,
         # We use spark's --files option to load the $job_config_file to the Spark job's working HDFS dir.
         # It is then referenced via its relative file name with --config_file $job_name.properties.
-        spark_opts         => "--files /etc/hive/conf/hive-site.xml,${job_config_file},${driver_extra_hive_jars} --master yarn --deploy-mode cluster --queue ${queue} --driver-memory ${spark_driver_memory} --conf spark.driver.extraClassPath=${driver_extra_classpath} --conf spark.dynamicAllocation.maxExecutors=${spark_max_executors} ${spark_extra_opts}",
-        job_opts           => "--config_file ${job_name}.properties",
+        spark_opts         => "--files /etc/hive/conf/hive-site.xml,${job_config_file},${driver_extra_hive_jars} --master yarn --deploy-mode ${deploy_mode} --queue ${queue} --driver-memory ${spark_driver_memory} --conf spark.driver.extraClassPath=${driver_extra_classpath} --conf spark.dynamicAllocation.maxExecutors=${spark_max_executors} ${spark_extra_opts}",
+        job_opts           => "--config_file ${config_file_path}",
         require            => Profile::Analytics::Refinery::Job::Config[$job_config_file],
         user               => $user,
         interval           => $interval,

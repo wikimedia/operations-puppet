@@ -50,7 +50,7 @@ class profile::analytics::refinery::job::data_check (
             'database'                        => 'event',
         },
         spark_driver_memory    => '4G',
-        spark_extra_opts       => '--deploy-mode client',
+        deploy_mode            => 'client',
         interval               => '*-*-* 00:00:00',
         use_kerberos           => $use_kerberos,
     }
