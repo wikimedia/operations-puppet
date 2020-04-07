@@ -38,7 +38,7 @@ class profile::mediawiki::maintenance {
     include ::profile::mediawiki::maintenance::echo_mail_batch
     include ::profile::mediawiki::maintenance::parsercachepurging
     include ::profile::mediawiki::maintenance::cleanup_upload_stash
-    class { 'mediawiki::maintenance::update_flaggedrev_stats': ensure => $ensure }
+    include ::profile::mediawiki::maintenance::update_flaggedrev_stats
     include ::profile::mediawiki::maintenance::refreshlinks
     class { 'mediawiki::maintenance::update_special_pages': ensure => $ensure }
     class { 'mediawiki::maintenance::purge_abusefilter': ensure => $ensure }
