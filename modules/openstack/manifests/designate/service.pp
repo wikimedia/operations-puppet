@@ -116,7 +116,7 @@ class openstack::designate::service(
     #
     #  $ sudo designate-manage pool update
     #
-    file { '/ect/designate/pools.yaml':
+    file { '/etc/designate/pools.yaml':
         owner     => 'designate',
         group     => 'designate',
         mode      => '0440',
