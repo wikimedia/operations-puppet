@@ -32,7 +32,7 @@ profile::cache::varnish::cache_be_opts:
 profile::cache::varnish::frontend::runtime_params:
     - default_ttl=86400
     - idle_send_timeout=125
-profile::cache::varnish::frontend::transient_gb: 5
+profile::cache::varnish::frontend::transient_gb: 10
 profile::cache::varnish::frontend::fe_vcl_config:
     allowed_methods: '^(GET|HEAD|OPTIONS|PURGE)$'
     # accept only upload purge traffic
