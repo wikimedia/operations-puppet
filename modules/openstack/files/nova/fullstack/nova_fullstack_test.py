@@ -407,7 +407,7 @@ def main():
 
     argparser.add_argument(
         '--keystone-url',
-        default="http://cloudcontrol1003.wikimedia.org:35357/v3",
+        default="http://openstack.eqiad1.wikimediacloud.org:35357/v3",
         help='Auth url for token and service discovery',
     )
 

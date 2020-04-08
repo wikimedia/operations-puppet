@@ -454,8 +454,8 @@ def get_args():
     argparser.add_argument(
         "--keystone-url",
         help="URL to use for Keystone when calling OpenStack -- only for hosts",
-        default="http://cloudcontrol1003.wikimedia.org:5000/v3",
-        metavar='eg. "http://cloudcontrol1003.wikimedia.org:5000/v3"',
+        default="http://openstack.eqiad1.wikimediacloud.org:5000/v3",
+        metavar='eg. "http://openstack.eqiad1.wikimediacloud.org:5000/v3"',
     )
 
     argparser.add_argument(

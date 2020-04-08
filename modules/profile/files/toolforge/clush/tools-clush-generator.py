@@ -58,7 +58,7 @@ def get_regions(observer_pass):
     client = keystone_client.Client(
         session=KeystoneSession(
             auth=KeystonePassword(
-                auth_url="http://cloudcontrol1003.wikimedia.org:5000/v3",
+                auth_url="http://openstack.eqiad1.wikimediacloud.org:5000/v3",
                 username="novaobserver",
                 password=observer_pass,
                 project_name="observer",
@@ -80,7 +80,7 @@ def get_hostgroups(classifier, observer_pass, regions):
             "2.0",
             session=KeystoneSession(
                 auth=KeystonePassword(
-                    auth_url="http://cloudcontrol1003.wikimedia.org:5000/v3",
+                    auth_url="http://openstack.eqiad1.wikimediacloud.org:5000/v3",
                     username="novaobserver",
                     password=observer_pass,
                     project_name="tools",

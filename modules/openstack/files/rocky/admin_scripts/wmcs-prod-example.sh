@@ -3,7 +3,7 @@
 set -x
 
 # Using token auth env variables
-SERVICE_ENDPOINT=http://cloudcontrol1003.wikimedia.org:35357/v2.0/
+SERVICE_ENDPOINT=http://openstack.eqiad1.wikimediacloud.org:35357/v2.0/
 SERVICE_TOKEN=<redacted>
 
 # ENDPOINT URLS
@@ -11,12 +11,12 @@ NOVA_PUBLIC_URL="http://cloudcontrol1003.eqiad.wmnet:8774/v2/\$(tenant_id)s"
 NOVA_ADMIN_URL=$NOVA_PUBLIC_URL
 NOVA_INTERNAL_URL=$NOVA_PUBLIC_URL
 
-GLANCE_PUBLIC_URL="http://cloudcontrol1003.wikimedia.org:9292"
+GLANCE_PUBLIC_URL="http://openstack.eqiad1.wikimediacloud.org:9292"
 GLANCE_ADMIN_URL=$GLANCE_PUBLIC_URL
 GLANCE_INTERNAL_URL=$GLANCE_PUBLIC_URL
 
-KEYSTONE_PUBLIC_URL="http://cloudcontrol1003.wikimedia.org:5000/v2.0"
-KEYSTONE_ADMIN_URL="http://cloudcontrol1003.wikimedia.org:35357/v2.0"
+KEYSTONE_PUBLIC_URL="http://openstack.eqiad1.wikimediacloud.org:5000/v2.0"
+KEYSTONE_ADMIN_URL="http://openstack.eqiad1.wikimediacloud.org:35357/v2.0"
 KEYSTONE_INTERNAL_URL=$KEYSTONE_PUBLIC_URL
 
 # Create required services

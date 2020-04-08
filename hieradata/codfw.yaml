@@ -9,6 +9,8 @@ puppetdb_host: puppetdb2002.codfw.wmnet
 # Cloud Services <
 #
 labs_puppet_master: "labtest-puppetmaster.wikimedia.org"
+# we can't use wikimediacloud.org here because these are a list of servers for
+# building an ACL:
 labs_keystone_hosts:
     - "cloudcontrol1003.wikimedia.org"
     - "cloudcontrol1004.wikimedia.org"

@@ -100,11 +100,11 @@ class profile::wmcs::prometheus(
 
     file { "${targets_path}/blackbox_http_keystone.yaml":
       content => ordered_yaml([{
-        'targets' => ['cloudcontrol1003.wikimedia.org:5000/v3', # keystone
-                      'cloudcontrol1003.wikimedia.org:9292', # glance
-                      'cloudcontrol1003.wikimedia.org:8774', # nova
-                      'cloudservices1003.wikimedia.org:9001', # designate
-                      'cloudnet1003.eqiad.wmnet:9696', # neutron
+        'targets' => ['openstack.eqiad1.wikimediacloud.org:5000/v3', # keystone
+                      'openstack.eqiad1.wikimediacloud.org:9292', # glance
+                      'openstack.eqiad1.wikimediacloud.org:8774', # nova
+                      'openstack.eqiad1.wikimediacloud.org:9001', # designate
+                      'openstack.eqiad1.wikimediacloud.org:9696', # neutron
                       'proxy-eqiad1.wmflabs.org:5668', # proxy
             ]
         }]),
