@@ -19,6 +19,7 @@ class profile::cache::base(
     $performance_tweaks = hiera('profile::cache::base::performance_tweaks', true),
     $extra_trust = hiera('profile::cache::base::extra_trust', []),
     Optional[Hash[String, Integer]] $default_weights = lookup('profile::cache::base::default_weights', {'default_value' => undef}),
+    Boolean $use_purged = lookup('profile::cache::base::use_purged', {'default_value' => false}),
 ) {
     require network::constants
     # NOTE: Add the public WMCS IP space when T209011 is done
@@ -53,7 +54,6 @@ class profile::cache::base(
     }
 
     class { 'conftool::scripts': }
-    class { 'prometheus::node_vhtcpd': }
 
     if $performance_tweaks {
         # Only production needs system perf tweaks
@@ -95,12 +95,23 @@ class profile::cache::base(
     ###########################################################################
     # Purging
     ###########################################################################
-    class { 'varnish::htcppurger':
-        host_regex => $purge_host_regex,
-        mc_addrs   => $purge_multicasts,
-        caches     => ['127.0.0.1:3128', '127.0.0.1:3127,1.0'],
+    if $use_purged {
+        class { 'purged':
+            backend_addr    => '127.0.0.1:3128',
+            frontend_addr   => '127.0.0.1:3127',
+            mc_addrs        => $purge_multicasts.map |$mc| { "${mc}:4827" },
+            prometheus_addr => '127.0.0.1:2112',
+            concurrency     => 4,
+        }
+    } else {
+        class { 'prometheus::node_vhtcpd': }
+        class { 'varnish::htcppurger':
+            host_regex => $purge_host_regex,
+            mc_addrs   => $purge_multicasts,
+            caches     => ['127.0.0.1:3128', '127.0.0.1:3127,1.0'],
+        }
+        Class[varnish::packages] -> Class[varnish::htcppurger]
     }
-    Class[varnish::packages] -> Class[varnish::htcppurger]
 
     # Node initialization script for conftool
     if $default_weights != undef {
