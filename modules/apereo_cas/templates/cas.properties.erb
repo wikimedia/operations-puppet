@@ -73,7 +73,11 @@ logging.level.org.apereo=<%= @log_level %>
 
 cas.authn.accept.users=
 
+cas.ticket.tgt.rememberMe.enabled=true
+cas.ticket.tgt.rememberMe.timeToKillInSeconds=<%= @max_rememberme_session_length %>
+cas.ticket.tgt.timeToKillInSeconds=<%= @session_inactivity_timeout %>
 cas.ticket.tgt.maxTimeToLiveInSeconds=<%= @max_session_length %>
+cas.ticket.tgt.timeout.maxTimeToLiveInSeconds=<% @max_session_length %>
 
 cas.authn.ldap[0].principalAttributeList=<%= @ldap_attribute_list.join(',') %>
 cas.authn.ldap[0].type=<%= @ldap_auth %>
