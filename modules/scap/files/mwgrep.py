@@ -31,14 +31,20 @@ sys.setdefaultencoding('utf-8')
 
 import argparse
 import bisect
+from itertools import chain
 import json
 import requests
 
 
 TIMEOUT = 30
+
+# These are the search "index types" cirrus uses for storing wikipages (file is only for commons)
+TYPES = ["content", "file", "general"]
 # Port 9243 queries the chi cluster. Access the omega and psi clusters through chi
 # by using elasticsearch cross-cluster-search uri syntax.
-BASE_URI = 'https://search.svc.eqiad.wmnet:9243/*,omega:*,psi:*/page/_search'
+REMOTE_CLUSTERS = ["psi", "omega"]
+SEARCH_ENDPOINT = 'https://search.svc.eqiad.wmnet:9243/'
+
 NS_MEDIAWIKI = 8
 NS_USER = 2
 NS_MODULE = 828
@@ -143,7 +149,31 @@ query = {
 
 matches = {'public': [], 'private': []}
 try:
-    resp = requests.post(BASE_URI, params=query, json=search)
+    # cirrus uses multiple indices per wiki, in general 2: wiki_content and
+    # wiki_general, commons has an extra one for files. Here we rely on this
+    # naming convention: *_content will match all wikis content indices.
+    # Overall we want to search for *_content,*_general,*_file as it should
+    # cover all the live indices used by cirrus.
+    # TODO: Using the CirrusSearch metastore might be a good improvement as
+    # this technique only relies on a naming convention.
+    local_indices = map(lambda t: "*_" + t, TYPES)
+
+    # We need to build this same list for all remote clusters:
+    # cluster_name:*_content,cluster_name:*_general,cluster_name:*_file
+    def prefix_local_indices_with_cluster_name(cluster_name):
+        return map(lambda local_index: cluster_name + ":" + local_index, local_indices)
+
+    remote_indices = list(chain(*map(prefix_local_indices_with_cluster_name, REMOTE_CLUSTERS)))
+
+    # we should have a flat list with all local and remote indices:
+    # e.g.:
+    # ['*_content', '*_file', '*_general',
+    #  'psi:*_content', 'psi:*_file', 'psi:*_general',
+    #  'omega:*_content', 'omega:*_file', 'omega:*_general']
+    all_indices = local_indices + remote_indices
+
+    endpoint = SEARCH_ENDPOINT + ','.join(all_indices) + '/_search'
+    resp = requests.post(endpoint, params=query, json=search)
     try:
         full_result = resp.json()
         if resp.status_code >= 400:
