@@ -6,4 +6,4 @@ prometheus_nodes:
     - prometheus1003.eqiad.wmnet
     - prometheus1004.eqiad.wmnet
 
-profile::openstack::eqiad1::version: 'queens'
+profile::openstack::eqiad1::version: 'rocky'
