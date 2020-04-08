@@ -2,6 +2,7 @@ class profile::zuul::merger(
     $conf_common = hiera('zuul::common'),
     $conf_merger = hiera('profile::zuul::merger::conf'),
     $ferm_srange = hiera('profile::zuul::merger::ferm_srange'),
+    Enum['stopped', 'running', 'masked'] $ensure_service = lookup('profile::zuul::merger::ensure_service'),
 ) {
 
     include ::zuul::monitoring::merger
@@ -27,6 +28,7 @@ class profile::zuul::merger(
         git_email           => $conf_merger['git_email'],
         git_name            => $conf_merger['git_name'],
         zuul_url            => $conf_merger['zuul_url'],
+        ensure_service      => $ensure_service,
     }
 
     # Serves Zuul git repositories

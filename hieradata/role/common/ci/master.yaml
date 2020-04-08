@@ -182,3 +182,5 @@ profile::ci::migration::rsync_data_dirs:
   - '/var/lib/jenkins/'
   - '/var/lib/zuul/'
   - '/srv/'
+
+profile::zuul::merger::ensure_service: 'running'
