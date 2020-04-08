@@ -14,12 +14,12 @@
 #  The port of said proxy, if present. Undefined by default.
 #
 # [*distributions*]
-#  List of distributions to build. Defaults to both jessie
+#  List of distributions to build. Defaults to stretch
 class docker::baseimages(
     $docker_registry,
     $proxy_address=undef,
     $proxy_port=undef,
-    $distributions=['jessie'],
+    $distributions=['stretch'],
 ) {
     # We need docker running
     Service[docker] -> Class[docker::baseimages]
@@ -38,13 +38,6 @@ class docker::baseimages(
         owner  => 'root',
         group  => 'root',
         mode   => '0755',
-    }
-
-    file { '/srv/images/base/jessie.yaml':
-        content => template('docker/images/jessie.yaml.erb'),
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0544',
     }
 
     ## Stretch
