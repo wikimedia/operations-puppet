@@ -20,6 +20,7 @@ class openstack::designate::service(
     $pdns_db_user,
     $pdns_db_pass,
     $pdns_db_name,
+    $pdns_api_key,
     $db_admin_user,
     $db_admin_pass,
     $primary_pdns_ip,
@@ -108,6 +109,20 @@ class openstack::designate::service(
         mode    => '0644',
         source  => "puppet:///modules/openstack/${version}/designate/nova_fixed_multi.egg-info",
         recurse => true,
+    }
+
+    # Stage pools.yaml.  Updating this file won't change active config;
+    #  for that a user will need to manually run
+    #
+    #  $ sudo designate-manage pool update
+    #
+    file { '/ect/designate/pools.yaml':
+        owner     => 'designate',
+        group     => 'designate',
+        mode      => '0440',
+        show_diff => false,
+        content   => template("openstack/${version}/designate/pools.yaml.erb"),
+        require   => Package['designate-common'];
     }
 
     # We'll need this key to push to the instance-puppet repo
