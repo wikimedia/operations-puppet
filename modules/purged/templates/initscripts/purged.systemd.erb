@@ -1,0 +1,6 @@
+[Unit]
+Description=Purger for ATS and Varnish
+
+[Service]
+ExecStart=/usr/bin/purged -backend_addr <%= @backend_addr %> -frontend_addr <%= @frontend_addr %> -mcast_addrs <%= @mcast_str %> -prometheus_addr <%= @prometheus_addr %> -concurrency <%= @concurrency %>
+Restart=on-failure
