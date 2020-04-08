@@ -22,7 +22,7 @@
     options:
       api_endpoint: http://<%= @designate_host_standby_ip %>:8081
       api_token: <%= @pdns_api_key %>
-      connection: mysql://<%= @pdns_db_user %>:<%= @pdns_db_password %>@<%= @designate_host_standby_ip %>/<%= @pdns_db_name %>
+      connection: mysql://<%= @pdns_db_user %>:<%= @pdns_db_pass %>@<%= @designate_host_standby_ip %>/<%= @pdns_db_name %>
       host: <%= @designate_host_standby_ip %>
       port: '53'
     type: pdns4
@@ -34,7 +34,7 @@
     options:
       api_endpoint: http://<%= @designate_host_ip %>:8081
       api_token: <%= @pdns_api_key %>
-      connection: mysql://<%= @pdns_db_user %>:<%= @pdns_db_password %>@<%= @designate_host_standby_ip %>/<%= @pdns_db_name %>
+      connection: mysql://<%= @pdns_db_user %>:<%= @pdns_db_pass %>@<%= @designate_host_ip %>/<%= @pdns_db_name %>
       host: <%= @designate_host_ip %>
       port: '53'
     type: pdns4
