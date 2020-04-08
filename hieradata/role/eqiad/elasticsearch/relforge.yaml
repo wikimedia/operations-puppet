@@ -13,4 +13,4 @@ profile::elasticsearch::dc_settings:
 has_lvs: false
 
 profile::elasticsearch::cirrus::storage_device: md1
-kibana::kibana_package: kibana-oss
+profile::kibana::package_name: kibana-oss
