@@ -100,7 +100,7 @@ class profile::cache::base(
             backend_addr    => '127.0.0.1:3128',
             frontend_addr   => '127.0.0.1:3127',
             mc_addrs        => $purge_multicasts.map |$mc| { "${mc}:4827" },
-            prometheus_addr => '127.0.0.1:2112',
+            prometheus_addr => ':2112',
             concurrency     => $::processorcount,
         }
     } else {

@@ -319,6 +319,25 @@ class profile::prometheus::ops (
         }
     }
 
+    # Job definition for purged
+    $purged_jobs = [
+      {
+        'job_name'        => 'purged',
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/purged_*.yaml"] },
+        ]
+      },
+    ]
+
+    # List of hosts running purged
+    prometheus::class_config{ "purged_${::site}":
+        dest       => "${targets_path}/purged_${::site}.yaml",
+        site       => $::site,
+        class_name => 'purged',
+        port       => 2112,
+        labels     => {}
+    }
+
     # Job definition for memcache_exporter
     $memcached_jobs = [
       {
@@ -1497,7 +1516,7 @@ class profile::prometheus::ops (
         max_chunks_to_persist => $max_chunks_to_persist,
         memory_chunks         => $memory_chunks,
         scrape_configs_extra  => array_concat(
-            $mysql_jobs, $varnish_jobs, $trafficserver_jobs, $memcached_jobs,
+            $mysql_jobs, $varnish_jobs, $trafficserver_jobs, $purged_jobs, $memcached_jobs,
             $apache_jobs, $etcd_jobs, $etcdmirror_jobs, $mcrouter_jobs, $pdu_jobs,
             $pybal_jobs, $blackbox_jobs, $jmx_exporter_jobs,
             $redis_jobs, $mtail_jobs, $ldap_jobs, $ircd_jobs, $pdns_rec_jobs,
