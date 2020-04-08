@@ -16,7 +16,7 @@ class profile::cescout {
     # directory for saving metadb data. the OONI scripts use (and expect)
     # /mnt/metadb as they mount an EBS volume on EC2; since we don't do that,
     # we can use any directory and later point the metadb_s3_tarx to it.
-    file { '/var/lib/metadb/':
+    file { '/srv/metadb-data/':
         ensure => 'directory',
         owner  => 'root',
         group  => 'root',
