@@ -50,7 +50,7 @@ class apereo_cas (
     Hash[String, Hash]            $services               = {},
     Optional[String[1]]           $java_opts              = undef,
 ) {
-    if $keystore_source == undef and $keystore_content == undef {
+    if $keystore_source == undef and $keystore_content == undef and $server_enable_ssl {
         error('you must provide either $keystore_source or $keystore_content')
     }
     if $keystore_source and $keystore_content {
@@ -145,8 +145,12 @@ class apereo_cas (
         before  => Systemd::Service['cas'],
         notify  => Service['cas'],
     }
+    $keystore_ensure = $server_enable_ssl ? {
+        true    => file,
+        default => absent,
+    }
     file {$keystore_path:
-        ensure  => file,
+        ensure  => $keystore_ensure,
         owner   => $daemon_user,
         group   => 'root',
         mode    => '0400',

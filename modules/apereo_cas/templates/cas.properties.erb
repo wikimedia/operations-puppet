@@ -17,14 +17,16 @@ end
 # Without the following line we seem to have 5-15 sec lag for most requests
 spring.autoconfigure.exclude=org.springframework.boot.autoconfigure.web.embedded.EmbeddedWebServerFactoryCustomizerAutoConfiguration
 
+server.ssl.enabled=<%= @server_enable_ssl %>
+<%- if @server_enable_ssl -%>
 server.ssl.keyStore=file:<%= @keystore_path %>
 server.ssl.keyStorePassword=<%= @keystore_password %>
 server.ssl.keyPassword=<%= @key_password %>
+<%- end -%>
 server.port=<%= @server_port %>
 server.servlet.context-path=<%= @server_prefix %>
 cas.server.name=<%= @server_name %>
 cas.server.prefix=<%= @server_name %><%= @server_prefix %>
-server.ssl.enabled=<%= @server_enable_ssl %>
 server.tomcat.basedir=<%= @tomcat_basedir %>
 <%- if @tomcat_proxy -%>
 # we proxy from nginx over localhost
