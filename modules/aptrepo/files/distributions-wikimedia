@@ -129,6 +129,7 @@ Components: main
  component/cergen
  component/ci
  component/jdk8
+ component/wmf-sre-laptop
  thirdparty/amd-rocm25
  thirdparty/amd-rocm26
  thirdparty/amd-rocm271
