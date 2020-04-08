@@ -24,10 +24,9 @@ profile::trafficserver::tls::logs:
   - filename: tls
     format: wmf-tls
     mode: ascii_pipe
-# T249335 - On some hosts mem leaks appear after wmf-analytics is enabled
-#  - filename: analytics
-#    format: wmf-analytics
-#    mode: ascii_pipe
+  - filename: analytics
+    format: wmf-analytics
+    mode: ascii_pipe
 profile::trafficserver::tls::parent_rules:
   - dest_domain: '.'
     parent:
