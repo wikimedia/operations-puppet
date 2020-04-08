@@ -1,0 +1,102 @@
+profile::base::firewall::block_abuse_nets: true
+profile::tlsproxy::envoy::upstream_addr: 127.0.0.1
+profile::tlsproxy::envoy::use_remote_address: true
+profile::tlsproxy::envoy::services:
+  - server_names: ['*']
+    port: 8080
+profile::tlsproxy::envoy::acme_cert_name: idp-test
+profile::idp::services:
+  icinga:
+    class: 'org.apereo.cas.services.RegexRegisteredService'
+    id: 1
+    service_id: 'https://(cas-)?icinga.wikimedia.org(/.*)?'
+    attribute_release_policy:
+      '@class': 'org.apereo.cas.services.ReturnAllAttributeReleasePolicy'
+    access_strategy:
+      '@class': 'org.apereo.cas.services.DefaultRegisteredServiceAccessStrategy'
+  debmonitor:
+    class: 'org.apereo.cas.services.RegexRegisteredService'
+    id: 2
+    service_id: '^https://debmonitor.wikimedia.org(/.*)?'
+    attribute_release_policy:
+      '@class': 'org.apereo.cas.services.ReturnAllAttributeReleasePolicy'
+    access_strategy:
+      '@class': 'org.apereo.cas.services.DefaultRegisteredServiceAccessStrategy'
+      'requiredAttributes':
+        '@class': 'java.util.HashMap'
+        'memberOf': ['java.util.HashSet', ['cn=wmf,ou=groups,dc=wikimedia,dc=org', 'cn=nda,ou=groups,dc=wikimedia,dc=org']]
+  puppetboard:
+    class: 'org.apereo.cas.services.RegexRegisteredService'
+    id: 3
+    service_id: 'https://(cas-)?puppetboard.wikimedia.org(/.*)?'
+    attribute_release_policy:
+      '@class': 'org.apereo.cas.services.ReturnAllAttributeReleasePolicy'
+    access_strategy:
+      '@class': 'org.apereo.cas.services.DefaultRegisteredServiceAccessStrategy'
+      'requiredAttributes':
+        '@class': 'java.util.HashMap'
+        'memberOf': ['java.util.HashSet', ['cn=ops,ou=groups,dc=wikimedia,dc=org']]
+  graphite:
+    class: 'org.apereo.cas.services.RegexRegisteredService'
+    id: 4
+    service_id: 'https://(cas-)?graphite.wikimedia.org(/.*)?'
+    attribute_release_policy:
+      '@class': 'org.apereo.cas.services.ReturnAllAttributeReleasePolicy'
+    access_strategy:
+      '@class': 'org.apereo.cas.services.DefaultRegisteredServiceAccessStrategy'
+      'requiredAttributes':
+        '@class': 'java.util.HashMap'
+        'memberOf': ['java.util.HashSet', [
+          'cn=ops,ou=groups,dc=wikimedia,dc=org',
+          'cn=nda,ou=groups,dc=wikimedia,dc=org',
+          'cn=wmf,ou=groups,dc=wikimedia,dc=org',
+        ]]
+  tendril:
+    class: 'org.apereo.cas.services.RegexRegisteredService'
+    id: 5
+    service_id: '^https://tendril.wikimedia.org(/.*)?'
+    attribute_release_policy:
+      '@class': 'org.apereo.cas.services.ReturnAllAttributeReleasePolicy'
+    access_strategy:
+      '@class': 'org.apereo.cas.services.DefaultRegisteredServiceAccessStrategy'
+      'requiredAttributes':
+        '@class': 'java.util.HashMap'
+        'memberOf': ['java.util.HashSet', [
+          'cn=ops,ou=groups,dc=wikimedia,dc=org',
+          'cn=nda,ou=groups,dc=wikimedia,dc=org',
+          'cn=wmf,ou=groups,dc=wikimedia,dc=org',
+        ]]
+  logstash:
+    class: 'org.apereo.cas.services.RegexRegisteredService'
+    id: 6
+    service_id: 'https://(cas-)?logstash.wikimedia.org(/.*)?'
+    attribute_release_policy:
+      '@class': 'org.apereo.cas.services.ReturnAllAttributeReleasePolicy'
+    access_strategy:
+      '@class': 'org.apereo.cas.services.DefaultRegisteredServiceAccessStrategy'
+      'requiredAttributes':
+        '@class': 'java.util.HashMap'
+        'memberOf': ['java.util.HashSet', [
+          'cn=ops,ou=groups,dc=wikimedia,dc=org',
+          'cn=nda,ou=groups,dc=wikimedia,dc=org',
+          'cn=wmf,ou=groups,dc=wikimedia,dc=org',
+        ]]
+  people:
+    class: 'org.apereo.cas.services.RegexRegisteredService'
+    id: 7
+    service_id: 'https://people.wikimedia.org(/.*)?'
+    attribute_release_policy:
+      '@class': 'org.apereo.cas.services.ReturnAllAttributeReleasePolicy'
+    access_strategy:
+      '@class': 'org.apereo.cas.services.DefaultRegisteredServiceAccessStrategy'
+profile::idp::ldap_attributes:
+  - cn
+  - memberOf
+  - mail
+  - mfa-method
+profile::tlsproxy::instance::ssl_compatibility_mode: strong
+profile::base::enable_adduser: true
+profile::idp::max_session_length: 604800
+profile::idp::actuators:
+  - prometheus
+  - sso
