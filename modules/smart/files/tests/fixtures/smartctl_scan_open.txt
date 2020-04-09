@@ -1,0 +1,29 @@
+# sudo smartctl --scan-open
+# /dev/sda -d scsi # /dev/sda, SCSI device open failed: VEND or MegaRaid controller, please try adding '-d megaraid,N'
+# /dev/sdb -d scsi # /dev/sdb, SCSI device open failed: VEND or MegaRaid controller, please try adding '-d megaraid,N'
+# /dev/sdc -d scsi # /dev/sdc, SCSI device open failed: VEND or MegaRaid controller, please try adding '-d megaraid,N'
+# /dev/sdd -d scsi # /dev/sdd, SCSI device open failed: VEND or MegaRaid controller, please try adding '-d megaraid,N'
+# /dev/sde -d scsi # /dev/sde, SCSI device open failed: VEND or MegaRaid controller, please try adding '-d megaraid,N'
+# /dev/sdf -d scsi # /dev/sdf, SCSI device open failed: VEND or MegaRaid controller, please try adding '-d megaraid,N'
+# /dev/sdg -d scsi # /dev/sdg, SCSI device open failed: VEND or MegaRaid controller, please try adding '-d megaraid,N'
+# /dev/sdh -d scsi # /dev/sdh, SCSI device open failed: VEND or MegaRaid controller, please try adding '-d megaraid,N'
+# /dev/sdi -d scsi # /dev/sdi, SCSI device open failed: VEND or MegaRaid controller, please try adding '-d megaraid,N'
+# /dev/sdj -d scsi # /dev/sdj, SCSI device open failed: VEND or MegaRaid controller, please try adding '-d megaraid,N'
+# /dev/sdk -d scsi # /dev/sdk, SCSI device open failed: VEND or MegaRaid controller, please try adding '-d megaraid,N'
+# /dev/sdl -d scsi # /dev/sdl, SCSI device open failed: VEND or MegaRaid controller, please try adding '-d megaraid,N'
+# /dev/sdm -d scsi # /dev/sdm, SCSI device open failed: VEND or MegaRaid controller, please try adding '-d megaraid,N'
+# /dev/sdn -d scsi # /dev/sdn, SCSI device open failed: VEND or MegaRaid controller, please try adding '-d megaraid,N'
+/dev/bus/0 -d sat+megaraid,0 # /dev/bus/0 [megaraid_disk_00] [SAT], ATA device
+/dev/bus/0 -d sat+megaraid,1 # /dev/bus/0 [megaraid_disk_01] [SAT], ATA device
+/dev/bus/0 -d sat+megaraid,2 # /dev/bus/0 [megaraid_disk_02] [SAT], ATA device
+/dev/bus/0 -d sat+megaraid,3 # /dev/bus/0 [megaraid_disk_03] [SAT], ATA device
+/dev/bus/0 -d sat+megaraid,4 # /dev/bus/0 [megaraid_disk_04] [SAT], ATA device
+/dev/bus/0 -d sat+megaraid,5 # /dev/bus/0 [megaraid_disk_05] [SAT], ATA device
+/dev/bus/0 -d sat+megaraid,6 # /dev/bus/0 [megaraid_disk_06] [SAT], ATA device
+/dev/bus/0 -d sat+megaraid,7 # /dev/bus/0 [megaraid_disk_07] [SAT], ATA device
+/dev/bus/0 -d sat+megaraid,8 # /dev/bus/0 [megaraid_disk_08] [SAT], ATA device
+/dev/bus/0 -d sat+megaraid,9 # /dev/bus/0 [megaraid_disk_09] [SAT], ATA device
+/dev/bus/0 -d sat+megaraid,10 # /dev/bus/0 [megaraid_disk_10] [SAT], ATA device
+/dev/bus/0 -d sat+megaraid,11 # /dev/bus/0 [megaraid_disk_11] [SAT], ATA device
+/dev/bus/0 -d sat+megaraid,12 # /dev/bus/0 [megaraid_disk_12] [SAT], ATA device
+/dev/bus/0 -d sat+megaraid,13 # /dev/bus/0 [megaraid_disk_13] [SAT], ATA device

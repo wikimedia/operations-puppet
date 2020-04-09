@@ -115,34 +115,39 @@ def get_fact(fact_name):
 
 def megaraid_list_pd():
     """List physical disks attached to megaraid controller. Generator to yield PD objects."""
-
     try:
         raw_output = _check_output('/usr/sbin/smartctl --scan-open')
     except subprocess.CalledProcessError:
         log.exception('Failed to scan for megaraid physical disks')
         return
 
-    for line in raw_output.splitlines():
+    return megaraid_parse(raw_output)
+
+
+def megaraid_parse(response):
+    for line in response.splitlines():
         if 'megaraid,' not in line:
             continue
         if line.startswith('#'):
             continue
         bus, _, device, _ = line.split(' ', 3)
-        yield PD(driver='megaraid', smart_args=['-d', device, bus],
-                 disk_id=device)
+        yield PD(driver='megaraid', smart_args=['-d', device, bus], disk_id=device)
 
 
 def hpsa_list_pd():
     """List physical disks attached to hpsa controller. Generator to yield PD objects."""
-
     try:
         raw_output = _check_output('/usr/sbin/hpssacli controller all show config')
     except subprocess.CalledProcessError:
         log.exception('Failed to scan for hpsa physical disks')
         return
 
+    return hpsa_parse(raw_output)
+
+
+def hpsa_parse(response):
     in_controller = False
-    for line in raw_output.splitlines():
+    for line in response.splitlines():
         m = re.match(r'^Smart Array .* in Slot (\d+)', line)
         if m:
             in_controller = True
@@ -152,22 +157,23 @@ def hpsa_list_pd():
         if m and in_controller:
             device = 'cciss,%s' % disk_id
             # TODO(filippo) assumes /dev/sda
-            yield PD(driver='cciss', disk_id=device,
-                     smart_args=['-d', device, '/dev/sda'])
+            yield PD(driver='cciss', disk_id=device, smart_args=['-d', device, '/dev/sda'])
             disk_id += 1
 
 
 def noraid_list_pd():
     """List all physical disks. Generator to yield PD objects."""
-
     try:
         # starting with stretch, lsblk has --json but not on jessie
         raw_output = _check_output('/bin/lsblk --noheadings --output NAME,TYPE --raw')
     except subprocess.CalledProcessError:
         log.exception('Failed to scan for directly attached physical disks')
         return
+    return noraid_parse(raw_output)
 
-    for line in raw_output.splitlines():
+
+def noraid_parse(response):
+    for line in response.splitlines():
         name, disk_type = line.split(' ', 1)
         if disk_type != 'disk':
             continue
@@ -175,8 +181,7 @@ def noraid_list_pd():
             continue
         # lsblk will report "nvme0n1", but smartctl wants the base "nvme0" device
         name = re.sub(r'^(nvme[0-9])n[0-9]$', r'\1', name)
-        yield PD(driver='noraid', smart_args=['-d', 'auto', '/dev/%s' % name],
-                 disk_id=name)
+        yield PD(driver='noraid', smart_args=['-d', 'auto', '/dev/%s' % name], disk_id=name)
 
 
 def _run_smartctl(args, timeout=60):

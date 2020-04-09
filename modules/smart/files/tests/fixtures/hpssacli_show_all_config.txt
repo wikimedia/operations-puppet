@@ -1,0 +1,97 @@
+# sudo hpssacli ctrl all show config
+
+Smart Array P441 in Slot 3                (sn: REDACTEDSN)
+
+
+   Port Name: 1E
+
+   Port Name: 2E
+
+   HP D3600 Enclosure at Port 1E, Box 1, OK
+
+   HP D3600 Enclosure at Port 1E, Box 2, OK
+   array A (SATA, Unused Space: 0  MB)
+
+
+      logicaldrive 1 (32.7 TB, RAID 1+0, OK)
+
+      physicaldrive 1E:1:1 (port 1E:box 1:bay 1, SATA, 6001.1 GB, OK)
+      physicaldrive 1E:1:2 (port 1E:box 1:bay 2, SATA, 6001.1 GB, OK)
+      physicaldrive 1E:1:3 (port 1E:box 1:bay 3, SATA, 6001.1 GB, OK)
+      physicaldrive 1E:1:4 (port 1E:box 1:bay 4, SATA, 6001.1 GB, OK)
+      physicaldrive 1E:1:5 (port 1E:box 1:bay 5, SATA, 6001.1 GB, OK)
+      physicaldrive 1E:1:6 (port 1E:box 1:bay 6, SATA, 6001.1 GB, OK)
+      physicaldrive 1E:1:7 (port 1E:box 1:bay 7, SATA, 6001.1 GB, OK)
+      physicaldrive 1E:1:8 (port 1E:box 1:bay 8, SATA, 6001.1 GB, OK)
+      physicaldrive 1E:1:9 (port 1E:box 1:bay 9, SATA, 6001.1 GB, OK)
+      physicaldrive 1E:1:10 (port 1E:box 1:bay 10, SATA, 6001.1 GB, OK)
+      physicaldrive 1E:1:11 (port 1E:box 1:bay 11, SATA, 6001.1 GB, OK)
+      physicaldrive 1E:1:12 (port 1E:box 1:bay 12, SATA, 6001.1 GB, OK)
+
+   array B (SAS, Unused Space: 0  MB)
+
+
+      logicaldrive 2 (32.7 TB, RAID 1+0, OK)
+
+      physicaldrive 1E:2:1 (port 1E:box 2:bay 1, SAS, 6001.1 GB, OK)
+      physicaldrive 1E:2:2 (port 1E:box 2:bay 2, SAS, 6001.1 GB, OK)
+      physicaldrive 1E:2:3 (port 1E:box 2:bay 3, SAS, 6001.1 GB, OK)
+      physicaldrive 1E:2:4 (port 1E:box 2:bay 4, SAS, 6001.1 GB, OK)
+      physicaldrive 1E:2:5 (port 1E:box 2:bay 5, SAS, 6001.1 GB, OK)
+      physicaldrive 1E:2:6 (port 1E:box 2:bay 6, SAS, 6001.1 GB, OK)
+      physicaldrive 1E:2:7 (port 1E:box 2:bay 7, SAS, 6001.1 GB, OK)
+      physicaldrive 1E:2:8 (port 1E:box 2:bay 8, SAS, 6001.1 GB, OK)
+      physicaldrive 1E:2:9 (port 1E:box 2:bay 9, SAS, 6001.1 GB, OK)
+      physicaldrive 1E:2:10 (port 1E:box 2:bay 10, SAS, 6001.1 GB, OK)
+      physicaldrive 1E:2:11 (port 1E:box 2:bay 11, SAS, 6001.1 GB, OK)
+      physicaldrive 1E:2:12 (port 1E:box 2:bay 12, SAS, 6001.1 GB, OK)
+
+   Enclosure SEP (Vendor ID VEN, Model MOD1) 000  (WWID: 0000000000000000, Port: 1E, Box: 2)
+
+   Enclosure SEP (Vendor ID VEN, Model MOD1) 000  (WWID: 0000000000000000, Port: 1E, Box: 1)
+
+   Expander 376  (WWID: 0000000000000000, Port: 1E, Box: 2)
+
+   Expander 378  (WWID: 0000000000000000, Port: 1E, Box: 1)
+
+
+Smart Array P840 in Slot 1                (sn: REDACTEDSN)
+
+
+   Port Name: 1I
+
+   Port Name: 2I
+
+   Internal Drive Cage at Port 1I, Box 1, OK
+
+   Internal Drive Cage at Port 1I, Box 1, OK
+
+   Internal Drive Cage at Port 2I, Box 2, OK
+
+   Internal Drive Cage at Port 2I, Box 4, OK
+   array A (SATA, Unused Space: 0  MB)
+
+
+      logicaldrive 1 (931.5 GB, RAID 1, OK)
+
+      physicaldrive 2I:4:1 (port 2I:box 4:bay 1, SATA, 1 TB, OK)
+      physicaldrive 2I:4:2 (port 2I:box 4:bay 2, SATA, 1 TB, OK)
+
+   array B (SATA, Unused Space: 0  MB)
+
+
+      logicaldrive 2 (32.7 TB, RAID 1+0, OK)
+
+      physicaldrive 1I:1:1 (port 1I:box 1:bay 1, SATA, 6001.1 GB, OK)
+      physicaldrive 1I:1:2 (port 1I:box 1:bay 2, SATA, 6001.1 GB, OK)
+      physicaldrive 1I:1:3 (port 1I:box 1:bay 3, SATA, 6001.1 GB, OK)
+      physicaldrive 1I:1:4 (port 1I:box 1:bay 4, SATA, 6001.1 GB, OK)
+      physicaldrive 1I:1:5 (port 1I:box 1:bay 5, SATA, 6001.1 GB, OK)
+      physicaldrive 1I:1:6 (port 1I:box 1:bay 6, SATA, 6001.1 GB, OK)
+      physicaldrive 1I:1:7 (port 1I:box 1:bay 7, SATA, 6001.1 GB, OK)
+      physicaldrive 1I:1:8 (port 1I:box 1:bay 8, SATA, 6001.1 GB, OK)
+      physicaldrive 2I:2:1 (port 2I:box 2:bay 1, SATA, 6001.1 GB, OK)
+      physicaldrive 2I:2:2 (port 2I:box 2:bay 2, SATA, 6001.1 GB, OK)
+      physicaldrive 2I:2:3 (port 2I:box 2:bay 3, SATA, 6001.1 GB, OK)
+      physicaldrive 2I:2:4 (port 2I:box 2:bay 4, SATA, 6001.1 GB, OK)
+
