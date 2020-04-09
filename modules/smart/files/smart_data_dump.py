@@ -185,19 +185,6 @@ def noraid_parse(response):
         yield PD(driver='noraid', smart_args=['-d', 'auto', '/dev/%s' % name], disk_id=name)
 
 
-def _run_smartctl(args, timeout=60):
-    try:
-        cmd_args = ['/usr/bin/timeout', str(timeout), '/usr/sbin/smartctl']
-        cmd_args.extend(args)
-        log.debug('Running: %s', ' '.join(cmd_args))
-        raw_output = subprocess.check_output(cmd_args)
-    except subprocess.CalledProcessError as e:
-        # TODO(filippo) handle non-fatal exit codes
-        raw_output = e.output
-        pass
-    return raw_output
-
-
 def collect_smart_metrics(disks, registry):
     """Collect SMART metrics from 'disks' (list of PD objects) into Prometheus registry."""
 
@@ -214,20 +201,24 @@ def collect_smart_metrics(disks, registry):
                                             labelnames=['device'])
 
     for disk in disks:
-        args = ['--info', '--health']
-        args.extend(disk.smart_args)
-        _parse_smart_info(str(_run_smartctl(args), 'utf8', 'ignore'), disk, smart_healthy,
-                          device_info)
+        cmd = '/usr/sbin/smartctl --info --health {}'.format(' '.join(disk.smart_args))
+        smart_info = _check_output(cmd, suppress_errors=True)
+        smart_healthy_value, model, firmware, device_info_value = _parse_smart_info(
+            smart_info.splitlines())
+        smart_healthy.labels(disk.disk_id).set(smart_healthy_value)
+        device_info.labels(disk.disk_id, model, firmware).set(device_info_value)
 
-        args = ['--attributes']
-        args.extend(disk.smart_args)
-        _parse_smart_attributes(str(_run_smartctl(args), 'utf8', 'ignore'), disk, smart_attributes)
+        cmd = '/usr/sbin/smartctl --attributes {}'.format(' '.join(disk.smart_args))
+        attribute_info = _check_output(cmd, suppress_errors=True)
+        for metric_name, metric_value in _parse_smart_attributes(
+                attribute_info.splitlines()).items():
+            smart_attributes[metric_name].labels(disk.disk_id).set(metric_value)
 
 
-def _parse_smart_attributes(output, disk, attributes):
+def _parse_smart_attributes(lines):
     in_attributes = False
-
-    for line in output.splitlines():
+    output = {}
+    for line in lines:
         if line.startswith('ID#'):
             in_attributes = True
             continue
@@ -245,23 +236,25 @@ def _parse_smart_attributes(output, disk, attributes):
         metric_name = name.lower()
         # Normalize metric name from smartctl output to Prometheus-accepted names
         metric_name = metric_name.replace('-', '_')
-        if metric_name not in attributes:
+        if metric_name not in REPORT_ATTRIBUTES:
             if metric_name not in IGNORE_ATTRIBUTES:
                 log.info('Unreported attribute %r: %r', metric_name, line)
             continue
 
         try:
             metric_value = raw_value.split(' ')[0]
-            attributes[metric_name].labels(disk.disk_id).set(metric_value)
+            output[metric_name] = metric_value
         except ValueError:
             log.error('Unparseable %r', line)
+    return output
 
 
-def _parse_smart_info(output, disk, smart_healthy, device_info):
-    smart_healthy.labels(disk.disk_id).set(0)
-    model, firmware = None, None
-
-    for line in output.splitlines():
+def _parse_smart_info(lines):
+    smart_healthy_value = 0
+    device_info_value = 1
+    model = 'NA'
+    firmware = 'NA'
+    for line in lines:
         if ':' not in line:
             continue
         key, value = line.split(':', 1)
@@ -274,9 +267,8 @@ def _parse_smart_info(output, disk, smart_healthy, device_info):
             firmware = value
         m = re.match('^smart (overall-)?health', key)
         if m and value.lower() in ('ok', 'passed'):
-            smart_healthy.labels(disk.disk_id).set(1)
-
-    device_info.labels(disk.disk_id, model or 'NA', firmware or 'NA').set(1)
+            smart_healthy_value = 1
+    return smart_healthy_value, model, firmware, device_info_value
 
 
 # TODO(filippo): handle machines with more than one controller

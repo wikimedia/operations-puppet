@@ -18,6 +18,10 @@ class TestSmartDataDump(unittest.TestCase):
             self.hpssacli_all_config_raw = f.read()
         with open('modules/smart/files/tests/fixtures/lsblk.txt', 'r') as f:
             self.lsblk_raw = f.read()
+        with open('modules/smart/files/tests/fixtures/smartctl_info.txt', 'r') as f:
+            self.smartctl_info = f.read()
+        with open('modules/smart/files/tests/fixtures/smartctl_attributes.txt', 'r') as f:
+            self.smartctl_attributes = f.read()
 
     def test_good_cmd(self):
         output = smart_data_dump._check_output('/bin/echo "this is a test"')
@@ -62,3 +66,35 @@ class TestSmartDataDump(unittest.TestCase):
             self.assertEqual(pd.smart_args[0], '-d')
             self.assertEqual(pd.smart_args[1], 'auto')
             self.assertIn(pd.smart_args[2], ['/dev/sda', '/dev/sdb'])
+
+    def test_parse_smart_health_new(self):
+        smart_healthy, model, firmware, device_info_value = smart_data_dump\
+            ._parse_smart_info(self.smartctl_info.splitlines())
+        self.assertEqual(smart_healthy, 1)
+        self.assertEqual(device_info_value, 1)
+        self.assertEqual(model, 'REDACTEDMODEL')
+        self.assertEqual(firmware, 'F1RMW4R3')
+
+    def test_parse_smart_attributes_new(self):
+        output = smart_data_dump._parse_smart_attributes(self.smartctl_attributes.splitlines())
+        self.assertDictEqual(output, {
+            'raw_read_error_rate': '4294967295',
+            'reallocated_sector_ct': '4',
+            'power_on_hours': '14116',
+            'power_cycle_count': '48',
+            'read_soft_error_rate': '153953102725119',
+            'used_rsvd_blk_cnt_tot': '2',
+            'unused_rsvd_blk_cnt_tot': '9839',
+            'program_fail_cnt_total': '0',
+            'erase_fail_count_total': '1',
+            'end_to_end_error': '0',
+            'temperature_celsius': '24',
+            'hardware_ecc_recovered': '0',
+            'current_pending_sector': '0',
+            'offline_uncorrectable': '0',
+            'udma_crc_error_count': '0',
+            'available_reservd_space': '0',
+            'media_wearout_indicator': '791062',
+            'total_lbas_written': '791062',
+            'total_lbas_read': '164795'
+        })

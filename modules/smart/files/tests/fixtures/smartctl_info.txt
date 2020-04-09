@@ -1,0 +1,23 @@
+# sudo smartctl --info --health -d auto /dev/sdb
+smartctl 6.6 2016-05-31 r4324 [x86_64-linux-4.9.0-9-amd64] (local build)
+Copyright (C) 2002-16, Bruce Allen, Christian Franke, www.smartmontools.org
+
+=== START OF INFORMATION SECTION ===
+Device Model:     REDACTEDMODEL
+Serial Number:    REDACTEDSERIAL
+LU WWN Device Id: 0 0123ab 0123abcde
+Add. Product Id:  MAKE(tm)
+Firmware Version: F1RMW4R3
+User Capacity:    240,057,409,536 bytes [240 GB]
+Sector Sizes:     512 bytes logical, 4096 bytes physical
+Rotation Rate:    Solid State Device
+Form Factor:      2.5 inches
+Device is:        Not in smartctl database [for details use: -P showall]
+ATA Version is:   ACS-3 T13/2161-D revision 5
+SATA Version is:  SATA 3.2, 6.0 Gb/s (current: 6.0 Gb/s)
+Local Time is:    Wed Apr  8 23:17:14 2020 UTC
+SMART support is: Available - device has SMART capability.
+SMART support is: Enabled
+
+=== START OF READ SMART DATA SECTION ===
+SMART overall-health self-assessment test result: PASSED
