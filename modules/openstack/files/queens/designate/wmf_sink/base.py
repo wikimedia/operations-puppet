@@ -289,7 +289,7 @@ class BaseAddressWMFHandler(BaseAddressHandler):
 
     def _get_keystone_session(self, project_name='admin'):
         auth = generic.Password(
-            auth_url=cfg.CONF['keystone_authtoken'].auth_uri,
+            auth_url=cfg.CONF['keystone_authtoken'].www_authenticate_uri,
             username=cfg.CONF['keystone_authtoken'].username,
             password=cfg.CONF['keystone_authtoken'].password,
             user_domain_name='Default',

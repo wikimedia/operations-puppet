@@ -54,9 +54,13 @@ cfg.CONF.register_group(cfg.OptGroup(
     title="Settings for designate to talk to keystone"
 ))
 
+# We define these here rather than importing
+#  from keystoneauth because we need to add
+#  in username and password which are no longer
+#  defined by the upstream code.  In theory we should
+#  be getting these from the context.
 cfg.CONF.register_opts([
-    cfg.StrOpt('auth_uri', default=''),
-    cfg.StrOpt('identity_uri', default=''),
+    cfg.StrOpt('www_authenticate_uri', default=''),
     cfg.StrOpt('username', default=''),
     cfg.StrOpt('password', default=''),
 ], group='keystone_authtoken')
