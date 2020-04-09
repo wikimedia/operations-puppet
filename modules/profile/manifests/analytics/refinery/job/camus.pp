@@ -19,6 +19,7 @@ class profile::analytics::refinery::job::camus(
     $kafka_cluster_name = lookup('profile::analytics::refinery::job::camus::kafka_cluster_name', { 'default_value' => 'jumbo' }),
     $monitoring_enabled = lookup('profile::analytics::refinery::job::camus::monitoring_enabled', { 'default_value' => false }),
     $use_kerberos       = lookup('profile::analytics::refinery::job::camus::use_kerberos', { 'default_value' => false }),
+    $ensure_timers      = lookup('profile::analytics::refinery::job::camus::ensure_timers', { 'default_value' => 'present' }),
 ) {
     require ::profile::hadoop::common
     require ::profile::analytics::refinery
@@ -44,6 +45,7 @@ class profile::analytics::refinery::job::camus(
     # for a particular camus::job instance by setting the parameter on
     # the camus::job declaration.
     Camus::Job {
+        ensure              => $ensure_timers,
         script              => "${profile::analytics::refinery::path}/bin/camus",
         kafka_brokers       => $kafka_brokers,
         camus_jar           => "${profile::analytics::refinery::path}/artifacts/org/wikimedia/analytics/camus-wmf/camus-wmf-0.1.0-wmf9.jar",

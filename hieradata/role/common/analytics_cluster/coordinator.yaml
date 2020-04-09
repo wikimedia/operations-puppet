@@ -86,6 +86,7 @@ profile::analytics::database::meta::ferm_srange: '(($DRUID_PUBLIC_HOSTS $ANALYTI
 profile::analytics::refinery::job::data_purge::public_druid_host: 'druid1004.eqiad.wmnet'
 profile::analytics::refinery::job::data_check::ensure_timers: 'absent'
 profile::analytics::refinery::job::refine::ensure_timers: 'absent'
+profile::analytics::refinery::job::camus::ensure_timers: 'absent'
 
 profile::oozie::server::monitoring_enabled: true
 profile::oozie::server::ferm_srange: '$ANALYTICS_NETWORKS'
