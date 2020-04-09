@@ -135,6 +135,7 @@ Components: main
  thirdparty/amd-rocm271
  thirdparty/amd-rocm33
  thirdparty/ceph-nautilus-buster
+ thirdparty/ci
  thirdparty/cloudera
  thirdparty/elastic74
  thirdparty/grafana
@@ -150,6 +151,7 @@ Update:
  amd-rocm33
  elastic74
  grafana-stretch
+ jenkins-stretch
  hp-mcp-stretch
  hwraid-stretch
  postgres
