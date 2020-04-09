@@ -9,6 +9,9 @@ profile::services_proxy::envoy::listeners:
     port: 6002
     timeout: "8s"
     service: parsoid-php
+    retry:
+      retry_on: connect-failure
+      num_retries: 1
     xfp: https # this is needed for private wikis. See T249535 for the gory details.
   - name: mathoid
     port: 6003
