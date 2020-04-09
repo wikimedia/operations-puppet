@@ -4,7 +4,8 @@
 # Hive tables.
 #
 class profile::analytics::refinery::job::refine(
-    $use_kerberos = lookup('profile::analytics::refinery::job::refine::use_kerberos', { 'default_value' => false }),
+    $use_kerberos  = lookup('profile::analytics::refinery::job::refine::use_kerberos', { 'default_value' => false }),
+    $ensure_timers = lookup('profile::analytics::refinery::job::refine::ensure_timers', { 'default_value' => 'present' }),
 ) {
     require ::profile::analytics::refinery
     require ::profile::hive::client
@@ -34,6 +35,7 @@ class profile::analytics::refinery::job::refine(
 
     # Refine EventLogging Analytics (capsule based) data.
     profile::analytics::refinery::job::refine_job { 'eventlogging_analytics':
+        ensure           => $ensure_timers,
         job_config       => merge($default_config, {
             input_path                      => '/wmf/data/raw/eventlogging',
             input_path_regex                => 'eventlogging_(.+)/hourly/(\\d+)/(\\d+)/(\\d+)/(\\d+)',
@@ -79,6 +81,7 @@ class profile::analytics::refinery::job::refine(
 
     # Refine MediaWiki event data.
     profile::analytics::refinery::job::refine_job { 'mediawiki_events':
+        ensure       => $ensure_timers,
         job_config   => merge($default_config, {
             input_path                      => '/wmf/data/raw/event',
             input_path_regex                => '.*(eqiad|codfw)_(.+)/hourly/(\\d+)/(\\d+)/(\\d+)/(\\d+)',
@@ -127,6 +130,7 @@ class profile::analytics::refinery::job::refine(
     $job_table_blacklist = sprintf('.*(%s)$', join($problematic_jobs, '|'))
 
     profile::analytics::refinery::job::refine_job { 'mediawiki_job_events':
+        ensure       => $ensure_timers,
         job_config   => merge($default_config, {
             input_path                      => '/wmf/data/raw/mediawiki_job',
             input_path_regex                => '.*(eqiad|codfw)_(.+)/hourly/(\\d+)/(\\d+)/(\\d+)/(\\d+)',
@@ -142,6 +146,7 @@ class profile::analytics::refinery::job::refine(
 
     # Netflow data
     profile::analytics::refinery::job::refine_job { 'netflow':
+        ensure                 => $ensure_timers,
         job_config             => merge($default_config, {
             # This is imported by camus_job { 'netflow': }
             input_path                      => '/wmf/data/raw/netflow',
