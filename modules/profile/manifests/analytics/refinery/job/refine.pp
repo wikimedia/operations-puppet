@@ -33,13 +33,17 @@ class profile::analytics::refinery::job::refine(
         'until'               => '2',
     }
 
+    $eventlogging_analytics_input_path = '/wmf/data/raw/eventlogging'
+    $eventlogging_analytics_input_path_regex = 'eventlogging_(.+)/hourly/(\\d+)/(\\d+)/(\\d+)/(\\d+)'
+    $eventlogging_analytics_input_path_regex_capture_groups = 'table,year,month,day,hour'
+
     # Refine EventLogging Analytics (capsule based) data.
     profile::analytics::refinery::job::refine_job { 'eventlogging_analytics':
         ensure           => $ensure_timers,
         job_config       => merge($default_config, {
-            input_path                      => '/wmf/data/raw/eventlogging',
-            input_path_regex                => 'eventlogging_(.+)/hourly/(\\d+)/(\\d+)/(\\d+)/(\\d+)',
-            input_path_regex_capture_groups => 'table,year,month,day,hour',
+            input_path                      => $eventlogging_analytics_input_path,
+            input_path_regex                => $eventlogging_analytics_input_path_regex,
+            input_path_regex_capture_groups => $eventlogging_analytics_input_path_regex_capture_groups,
             table_blacklist_regex           => '^Edit|InputDeviceDynamics|PageIssues|MobileWebMainMenuClickTracking$',
             # Deduplicate basd on uuid field and geocode ip in EventLogging analytics data.
             transform_functions             => 'org.wikimedia.analytics.refinery.job.refine.deduplicate_eventlogging,org.wikimedia.analytics.refinery.job.refine.geocode_ip,org.wikimedia.analytics.refinery.job.refine.eventlogging_filter_is_allowed_hostname',
@@ -52,6 +56,21 @@ class profile::analytics::refinery::job::refine(
         use_kerberos     => $use_kerberos,
     }
 
+    profile::analytics::refinery::job::refine_job { 'failed_flags_eventlogging_analytics':
+        job_class              => 'org.wikimedia.analytics.refinery.job.refine.RefineFailuresChecker',
+        refine_monitor_enabled => false,
+        job_config             => {
+            'input_path'                      => $eventlogging_analytics_input_path,
+            'input_path_regex'                => $eventlogging_analytics_input_path_regex,
+            'input_path_regex_capture_groups' => $eventlogging_analytics_input_path_regex_capture_groups,
+            'output_path'                     => $default_config['output_path'],
+            'database'                        => $default_config['database'],
+        },
+        spark_driver_memory    => '4G',
+        deploy_mode            => 'client',
+        interval               => '*-*-* 00:00:00',
+        use_kerberos           => $use_kerberos,
+    }
 
     # List of mediawiki event tables to refine.
     # Not all event tables are in this list, as some are not refineable.
@@ -79,13 +98,17 @@ class profile::analytics::refinery::job::refine(
     ]
     $mediawiki_event_table_whitelist_regex = "^(${join($mediawiki_event_tables, '|')})$"
 
+    $mediawiki_events_input_path = '/wmf/data/raw/event'
+    $mediawiki_events_input_path_regex = '.*(eqiad|codfw)_(.+)/hourly/(\\d+)/(\\d+)/(\\d+)/(\\d+)'
+    $mediawiki_events_input_path_regex_capture_groups = 'datacenter,table,year,month,day,hour'
+
     # Refine MediaWiki event data.
     profile::analytics::refinery::job::refine_job { 'mediawiki_events':
         ensure       => $ensure_timers,
         job_config   => merge($default_config, {
-            input_path                      => '/wmf/data/raw/event',
-            input_path_regex                => '.*(eqiad|codfw)_(.+)/hourly/(\\d+)/(\\d+)/(\\d+)/(\\d+)',
-            input_path_regex_capture_groups => 'datacenter,table,year,month,day,hour',
+            input_path                      => $mediawiki_events_input_path,
+            input_path_regex                => $mediawiki_events_input_path_regex,
+            input_path_regex_capture_groups => $mediawiki_events_input_path_regex_capture_groups,
             table_whitelist_regex           => $mediawiki_event_table_whitelist_regex,
             # Deduplicate event data using meta.id field.
             # TODO: rename this function in refinery-source
@@ -96,6 +119,22 @@ class profile::analytics::refinery::job::refine(
         }),
         interval     => '*-*-* *:20:00',
         use_kerberos => $use_kerberos,
+    }
+
+    profile::analytics::refinery::job::refine_job { 'failed_flags_mediawiki_events':
+        job_class              => 'org.wikimedia.analytics.refinery.job.refine.RefineFailuresChecker',
+        refine_monitor_enabled => false,
+        job_config             => {
+            'input_path'                      => $mediawiki_events_input_path,
+            'input_path_regex'                => $mediawiki_events_input_path_regex,
+            'input_path_regex_capture_groups' => $mediawiki_events_input_path_regex_capture_groups,
+            'output_path'                     => $default_config['output_path'],
+            'database'                        => $default_config['database'],
+        },
+        spark_driver_memory    => '4G',
+        deploy_mode            => 'client',
+        interval               => '*-*-* 00:10:00',
+        use_kerberos           => $use_kerberos,
     }
 
 
@@ -129,12 +168,16 @@ class profile::analytics::refinery::job::refine(
     ]
     $job_table_blacklist = sprintf('.*(%s)$', join($problematic_jobs, '|'))
 
+    $mediawiki_job_events_input_path = '/wmf/data/raw/mediawiki_job'
+    $mediawiki_job_events_input_path_regex = '.*(eqiad|codfw)_(.+)/hourly/(\\d+)/(\\d+)/(\\d+)/(\\d+)'
+    $mediawiki_job_events_input_path_regex_capture_groups = 'datacenter,table,year,month,day,hour'
+
     profile::analytics::refinery::job::refine_job { 'mediawiki_job_events':
         ensure       => $ensure_timers,
         job_config   => merge($default_config, {
-            input_path                      => '/wmf/data/raw/mediawiki_job',
-            input_path_regex                => '.*(eqiad|codfw)_(.+)/hourly/(\\d+)/(\\d+)/(\\d+)/(\\d+)',
-            input_path_regex_capture_groups => 'datacenter,table,year,month,day,hour',
+            input_path                      => $mediawiki_job_events_input_path,
+            input_path_regex                => $mediawiki_job_events_input_path_regex,
+            input_path_regex_capture_groups => $mediawiki_job_events_input_path_regex_capture_groups,
             table_blacklist_regex           => $job_table_blacklist,
             # Deduplicate event data using meta.id field.
             # TODO: rename this function in refinery-source
@@ -144,20 +187,56 @@ class profile::analytics::refinery::job::refine(
         use_kerberos => $use_kerberos,
     }
 
+    profile::analytics::refinery::job::refine_job { 'failed_flags_mediawiki_job_events':
+        job_class              => 'org.wikimedia.analytics.refinery.job.refine.RefineFailuresChecker',
+        refine_monitor_enabled => false,
+        job_config             => {
+            'input_path'                      => $mediawiki_job_events_input_path,
+            'input_path_regex'                => $mediawiki_job_events_input_path_regex,
+            'input_path_regex_capture_groups' => $mediawiki_job_events_input_path_regex_capture_groups,
+            'output_path'                     => $default_config['output_path'],
+            'database'                        => $default_config['database'],
+        },
+        spark_driver_memory    => '4G',
+        deploy_mode            => 'client',
+        interval               => '*-*-* 00:20:00',
+        use_kerberos           => $use_kerberos,
+    }
+
     # Netflow data
+    $netflow_input_path = '/wmf/data/raw/netflow'
+    $netflow_input_path_regex = '(netflow)/hourly/(\\d+)/(\\d+)/(\\d+)/(\\d+)'
+    $netflow_input_path_regex_capture_groups = 'table,year,month,day,hour'
+
     profile::analytics::refinery::job::refine_job { 'netflow':
         ensure                 => $ensure_timers,
         job_config             => merge($default_config, {
             # This is imported by camus_job { 'netflow': }
-            input_path                      => '/wmf/data/raw/netflow',
-            input_path_regex                => '(netflow)/hourly/(\\d+)/(\\d+)/(\\d+)/(\\d+)',
-            input_path_regex_capture_groups => 'table,year,month,day,hour',
+            input_path                      => $netflow_input_path,
+            input_path_regex                => $netflow_input_path_regex,
+            input_path_regex_capture_groups => $netflow_input_path_regex_capture_groups,
             output_path                     => '/wmf/data/wmf',
             database                        => 'wmf',
         }),
         interval               => '*-*-* *:45:00',
         monitoring_enabled     => false,
         refine_monitor_enabled => false,
+        use_kerberos           => $use_kerberos,
+    }
+
+    profile::analytics::refinery::job::refine_job { 'failed_flags_netflow':
+        job_class              => 'org.wikimedia.analytics.refinery.job.refine.RefineFailuresChecker',
+        refine_monitor_enabled => false,
+        job_config             => {
+            'input_path'                      => $netflow_input_path,
+            'input_path_regex'                => $netflow_input_path_regex,
+            'input_path_regex_capture_groups' => $netflow_input_path_regex_capture_groups,
+            'output_path'                     => $default_config['output_path'],
+            'database'                        => $default_config['database'],
+        },
+        spark_driver_memory    => '4G',
+        deploy_mode            => 'client',
+        interval               => '*-*-* 00:30:00',
         use_kerberos           => $use_kerberos,
     }
 }

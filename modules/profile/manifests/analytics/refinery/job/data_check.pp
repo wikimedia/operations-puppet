@@ -38,20 +38,4 @@ class profile::analytics::refinery::job::data_check (
         user         => 'analytics',
         use_kerberos => $use_kerberos,
     }
-
-    profile::analytics::refinery::job::refine_job { 'failed_flags_eventlogging_analytics':
-        job_class              => 'org.wikimedia.analytics.refinery.job.refine.RefineFailuresChecker',
-        refine_monitor_enabled => false,
-        job_config             => {
-            'input_path'                      => '/wmf/data/raw/eventlogging',
-            'input_path_regex'                => 'eventlogging_(.+)/hourly/(.+)/(.+)/(.+)/(.+)',
-            'output_path'                     => '/wmf/data/event',
-            'input_path_regex_capture_groups' => 'table,year,month,day,hour',
-            'database'                        => 'event',
-        },
-        spark_driver_memory    => '4G',
-        deploy_mode            => 'client',
-        interval               => '*-*-* 00:00:00',
-        use_kerberos           => $use_kerberos,
-    }
 }
