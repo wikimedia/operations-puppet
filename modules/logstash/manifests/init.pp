@@ -58,12 +58,17 @@ class logstash (
             'openjdk-11-jdk' => [
                 '-Xlog:gc*:file=/var/log/logstash/logstash_jvm_gc.%p.log::filecount=10,filesize=20000',
                 '-Xlog:gc+age=trace',
-                '-Xlog:safepoint',
             ],
             default          => fail("java_package: ${java_package} not yet supported"),
         }
     } else {
         $gc_log_flags = []
+    }
+
+    # JVM command line flags to be applied to logstash.service only
+    $service_java_opts = $java_package ? {
+        'openjdk-11-jdk' => '-Xlog:safepoint',
+        default          => '',
     }
 
     if $logstash_version == 5 {
