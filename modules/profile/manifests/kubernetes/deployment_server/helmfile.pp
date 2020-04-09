@@ -79,14 +79,33 @@ class profile::kubernetes::deployment_server::helmfile(
                 else {
                     $dc = $environment
                 }
-                $filtered_prometheus_nodes = $prometheus_nodes.filter |$node| { "${dc}.wmnet" in $node }
+
+                $puppet_ca_data = file($facts['puppet_config']['localcacert'])
+
+                $filtered_prometheus_nodes = $prometheus_nodes.filter |$node| { "${dc}.wmnet" in $node }.map |$node| { ipresolve($node) }
+
+                unless empty($filtered_prometheus_nodes) {
+                  $deployment_config_opts = {
+                    'tls' => {
+                      'telemetry' => {
+                        'prometheus_nodes' => $filtered_prometheus_nodes
+                      }
+                    },
+                    'puppet_ca_crt' => $puppet_ca_data,
+                  }
+                } else {
+                  $deployment_config_opts = {
+                    'puppet_ca_crt' => $puppet_ca_data
+                  }
+                }
+
                 # Add here values provided by puppet, like the IPs of the prometheus nodes.
                 file { "${secrets_dir}/general.yaml":
                     ensure  => present,
                     owner   => $data['owner'],
                     group   => $data['group'],
                     mode    => $data['mode'],
-                    content => template('profile/kubernetes/deployment_server_general.yaml.erb')
+                    content => to_yaml($deployment_config_opts)
                 }
                 # write private section only if there is any secret defined.
                 $raw_data = $data[$environment]
