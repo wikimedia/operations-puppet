@@ -5,10 +5,6 @@
 class profile::ci::docker(
     $settings = lookup('profile::ci::docker::settings'),
 ) {
-    # Having blubber on all docker nodes will give us a broad pool for all
-    # jobs that require similar image building workloads
-    require_package('blubber')
-
     # Let us elevate permissions to the user running a containerized process
     require_package('acl')
 
