@@ -42,7 +42,7 @@ class smart (
         owner  => 'root',
         group  => 'root',
         mode   => '0544',
-        source => "puppet:///modules/${module_name}/smart-data-dump.py",
+        source => "puppet:///modules/${module_name}/smart_data_dump.py",
     }
 
     cron { 'export_smart_data_dump':
