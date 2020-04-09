@@ -58,9 +58,6 @@ class role::analytics_cluster::coordinator {
     include ::profile::analytics::refinery
     include ::profile::analytics::cluster::repositories::statistics
 
-    # Camus crons import data into
-    # from Kafka into HDFS.
-    include ::profile::analytics::refinery::job::camus
     include ::profile::analytics::refinery::job::data_purge
     include ::profile::analytics::refinery::job::druid_load
     include ::profile::analytics::refinery::job::project_namespace_map
