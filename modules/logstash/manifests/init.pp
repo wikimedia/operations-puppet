@@ -99,6 +99,14 @@ class logstash (
 
     }
 
+    file { '/usr/local/bin/logstash-config-test':
+        source  => 'puppet:///modules/logstash/logstash-config-test',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0555',
+        require => Package['logstash'],
+    }
+
     file { '/etc/default/logstash':
         content => template('logstash/default.erb'),
         owner   => 'root',

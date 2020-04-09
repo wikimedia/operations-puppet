@@ -31,12 +31,13 @@ define logstash::conf(
     $config_name = inline_template('<%= @title.gsub(/\W/, "-") %>')
 
     file { "/etc/logstash/conf.d/${priority}-${config_name}.conf":
-        ensure  => $ensure,
-        content => $content,
-        source  => $source,
-        owner   => 'logstash',
-        group   => 'logstash',
-        mode    => '0440',
-        notify  => Service['logstash'],
+        ensure       => $ensure,
+        content      => $content,
+        source       => $source,
+        owner        => 'logstash',
+        group        => 'logstash',
+        mode         => '0440',
+        notify       => Service['logstash'],
+        validate_cmd => '/usr/local/bin/logstash-config-test %',
     }
 }

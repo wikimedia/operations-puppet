@@ -1,0 +1,8 @@
+#!/bin/bash
+
+set -e
+set -u
+
+export LS_JAVA_OPTS="-Xms128m -Xmx128m"
+
+/usr/share/logstash/bin/logstash --config.test_and_exit --path.config "$1"
