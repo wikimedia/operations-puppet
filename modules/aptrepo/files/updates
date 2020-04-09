@@ -328,4 +328,4 @@ UDebComponents:
 Suite: buster-pgdg
 Architectures: amd64 source
 VerifyRelease: ACCC4CF8
-ListShellHook: grep-dctrl -X -S psql || [ $? -eq 1 ]
+ListShellHook: grep-dctrl -X -S postgresql-9.6 || [ $? -eq 1 ]
