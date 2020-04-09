@@ -7421,7 +7421,6 @@ host pc2007 {
 host pc2008 {
     hardware ethernet D0:94:66:87:25:32;
     fixed-address pc2008.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host pc2009 {
