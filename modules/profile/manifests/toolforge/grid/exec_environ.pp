@@ -807,6 +807,22 @@ class profile::toolforge::grid::exec_environ {
             install_options => ['-t', 'stretch-backports'],
         }
 
+        # T248376 - {python,python3}-requests from stretch-backports
+        $requests_packages = [
+            'python-requests',
+            'python3-requests',
+        ]
+        apt::pin { $requests_packages:
+            pin      => 'release a=stretch-backports',
+            priority => '2000',
+            before   => Package[$requests_packages],
+        }
+        package { $requests_packages:
+            ensure          => latest,
+            install_options => ['-t', 'stretch-backports'],
+        }
+
+
         package { [
             'libboost-python-dev',          # T213965
             'libmpc3',

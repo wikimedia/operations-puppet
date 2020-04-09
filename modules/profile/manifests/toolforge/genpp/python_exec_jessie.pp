@@ -85,6 +85,8 @@ class profile::toolforge::genpp::python_exec_jessie {
         # python3-opencv is not available
         'python-pandas',        # 0.14.1
         'python3-pandas',       # 0.14.1
+        # python-pathlib2 is not available
+        # python3-pathlib2 is not available
         'python-pil',           # 2.6.1
         'python3-pil',          # 2.6.1
         # python-problem-report is not available
@@ -103,8 +105,6 @@ class profile::toolforge::genpp::python_exec_jessie {
         # python3-pyicu is not available
         'python-pyinotify',     # 0.9.4
         'python3-pyinotify',    # 0.9.4
-        'python-requests',      # 2.4.3
-        'python3-requests',     # 2.4.3
         'python-requests-oauthlib', # 0.4.0
         'python3-requests-oauthlib', # 0.4.0
         'python-rsvg',          # 2.32.0

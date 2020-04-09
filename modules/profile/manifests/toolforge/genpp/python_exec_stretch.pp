@@ -85,6 +85,8 @@ class profile::toolforge::genpp::python_exec_stretch {
         # python3-opencv is not available
         'python-pandas',        # 0.19.2
         'python3-pandas',       # 0.19.2
+        'python-pathlib2',      # 2.2.0
+        # python3-pathlib2 is not available
         'python-pil',           # 4.0.0
         'python3-pil',          # 4.0.0
         # python-problem-report is not available
@@ -103,8 +105,6 @@ class profile::toolforge::genpp::python_exec_stretch {
         # python3-pyicu is not available
         'python-pyinotify',     # 0.9.6
         'python3-pyinotify',    # 0.9.6
-        'python-requests',      # 2.12.4
-        'python3-requests',     # 2.12.4
         'python-requests-oauthlib', # 0.7.0
         'python3-requests-oauthlib', # 0.7.0
         'python-rsvg',          # 2.32.0
