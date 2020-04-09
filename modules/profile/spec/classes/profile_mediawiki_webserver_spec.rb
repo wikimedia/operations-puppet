@@ -64,7 +64,10 @@ describe 'profile::mediawiki::webserver' do
         }
         # stub out the required class. We test it elsewhere
         let(:pre_condition) {
-          super().concat(['class profile::tlsproxy::envoy { notice("included!")}'])
+          super().concat([
+                           'class profile::tlsproxy::envoy { notice("included!")}',
+                           'exec { "systemd daemon-reload for envoyproxy.service": command => "/bin/true" }'
+                         ])
         }
         it { is_expected.to compile.with_all_deps }
         it { is_expected.to contain_class('profile::tlsproxy::envoy') }

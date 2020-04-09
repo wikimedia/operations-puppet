@@ -83,8 +83,15 @@ class profile::mediawiki::webserver(
 
     if $has_tls == true {
         include profile::mediawiki::webserver::tls_nginx
-    }
-    elsif $has_tls == 'envoy' {  # Temporary during the switchover.
+    } elsif $has_tls == 'envoy' {  # Temporary during the switchover.
+        # Override niceness to run at -19 like php-fpm
+        file { '/etc/systemd/system/envoyproxy.service.d/niceness-override.conf':
+            content => "[Service]\nNice=-19\n",
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0444',
+            notify  => Exec['systemd daemon-reload for envoyproxy.service']
+        }
         include ::profile::tlsproxy::envoy
     }
 
