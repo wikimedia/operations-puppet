@@ -47,7 +47,8 @@
 #                 Default [{server_name: ['*'], port: 80}]
 # @param global_cert_name The name of the certificate to install via sslcert::certificate
 # @param acme_cert_name The name of the certificate to install via sslcert::certificate acme_chief::cert
-# @param access_log Wether to use an access log or not.
+# @param access_log Whether to use an access log or not.
+# @param capitalize_headers Whether to capitalize headers when responding to HTTP/1.1 requests
 class profile::tlsproxy::envoy(
     Profile::Tlsproxy::Envoy::Sni $sni_support               = lookup('profile::tlsproxy::envoy::sni_support'),
     Stdlib::Port                  $tls_port                  = lookup('profile::tlsproxy::envoy::tls_port'),
@@ -56,6 +57,7 @@ class profile::tlsproxy::envoy(
     Boolean                       $retries                   = lookup('profile::tlsproxy::envoy::retries'),
     Boolean                       $use_remote_address        = lookup('profile::tlsproxy::envoy::use_remote_address'),
     Boolean                       $access_log                = lookup('profile::tlsproxy::envoy::access_log'),
+    Boolean                       $capitalize_headers        = lookup('profile::tlsproxy::envoy::capitalize_headers'),
     Array[Profile::Tlsproxy::Envoy::Service] $services = lookup('profile::tlsproxy::envoy::services'),
     Optional[Stdlib::Host]        $upstream_addr    = lookup('profile::tlsproxy::envoy::upstream_addr'),
     Optional[String]              $global_cert_name = lookup('profile::tlsproxy::envoy::global_cert_name',
@@ -154,6 +156,7 @@ class profile::tlsproxy::envoy(
             retry_policy              => $retry_policy,
             upstream_response_timeout => $upstream_response_timeout,
             use_remote_address        => $use_remote_address,
+            capitalize_headers        => $capitalize_headers,
         }
         ferm::service { 'envoy_tls_termination':
             proto   => 'tcp',

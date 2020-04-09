@@ -18,6 +18,7 @@ profile::tlsproxy::envoy::upstream_response_timeout: 201.0
 profile::tlsproxy::envoy::retries: false
 profile::tlsproxy::envoy::global_cert_name: "api.svc.eqiad.wmnet"
 profile::tlsproxy::envoy::access_log: true
+profile::tlsproxy::envoy::capitalize_headers: true
 
 profile::mediawiki::httpd::logrotate_retention: 12
 

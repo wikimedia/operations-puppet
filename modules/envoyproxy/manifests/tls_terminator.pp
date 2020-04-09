@@ -68,8 +68,10 @@
 #     The time is seconds to wait before declaring a connection timeout to the
 #     upstream resource
 # @param retry_policy
-#     An optional hash specifying the retry policy. It should map 1:1 what 
+#     An optional hash specifying the retry policy. It should map 1:1 what
 #     goes in the envoy configuration.
+# @param capitalize_headers
+#     If true, will capitalize headers for HTTP/1.1 requests
 define envoyproxy::tls_terminator(
     Array[Envoyproxy::Tlsconfig] $upstreams                 = [],
     Boolean                      $access_log                = false,
@@ -78,10 +80,11 @@ define envoyproxy::tls_terminator(
     Integer                      $fast_open_queue           = 0,
     Float                        $connect_timeout           = 1.0,
     Float                        $upstream_response_timeout = 65.0,
+    Boolean                      $capitalize_headers        = false,
     Optional[Hash]               $retry_policy              = undef,
     Optional[Stdlib::Port]       $redir_port                = undef,
     Optional[String]             $global_cert_path          = undef,
-    Optional[String]             $global_key_path           = undef
+    Optional[String]             $global_key_path           = undef,
 ) {
 
     # First of all, we can't configure a tls terminator if envoy is not installed.

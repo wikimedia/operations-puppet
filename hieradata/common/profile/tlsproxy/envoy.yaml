@@ -6,7 +6,8 @@ profile::tlsproxy::envoy::retries: true
 profile::tlsproxy::envoy::use_remote_address: false
 profile::tlsproxy::envoy::access_log: false
 profile::tlsproxy::envoy::services:
-  - server_names: ['*']
+  - server_names: ["*"]
     port: 80
-profile::tlsproxy::envoy::sni_support: 'no'
+profile::tlsproxy::envoy::sni_support: "no"
 profile::tlsproxy::envoy::upstream_addr: "%{facts.fqdn}"
+profile::tlsproxy::envoy::capitalize_headers: false
