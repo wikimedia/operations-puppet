@@ -164,6 +164,43 @@ SELECT DISTINCT CONCAT("https://phabricator.wikimedia.org/p/", u.userName) AS us
 END
 )
 
+#echo "result_parent_projects_without_desc"
+# see https://phabricator.wikimedia.org/T249805
+result_parent_projects_without_desc=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -P $sql_port -u $sql_user $sql_name << END
+SELECT CONCAT("https://phabricator.wikimedia.org/tag/", p.name)
+    FROM phabricator_project.project p
+    WHERE p.parentProjectPHID IS NULL
+    AND p.status != 100
+    AND p.phid NOT IN
+        (SELECT p.phid
+        FROM phabricator_project.project p
+        JOIN phabricator_project.project_customfieldstorage cfs
+        WHERE cfs.objectPHID = p.phid
+        AND fieldIndex = "0.9QWd3nmyTs")
+    ORDER BY p.name;
+END
+)
+
+#echo "result_sub_projects_without_desc"
+# see https://phabricator.wikimedia.org/T249805
+result_sub_projects_without_desc=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -P $sql_port -u $sql_user $sql_name << END
+SELECT CONCAT("https://phabricator.wikimedia.org/tag/", pp.name) AS parentproject, p.name AS project
+    FROM phabricator_project.project p
+    JOIN phabricator_project.project pp
+    WHERE pp.phid = p.parentProjectPHID
+    AND pp.status != 100
+    AND p.status != 100
+    AND p.phid NOT IN
+        (SELECT p.phid
+        FROM phabricator_project.project p
+        JOIN phabricator_project.project_customfieldstorage cfs
+        WHERE p.status != 100
+        AND cfs.objectPHID = p.phid
+        AND fieldIndex = "0.9QWd3nmyTs")
+    ORDER BY pp.name,p.name;
+END
+)
+
 #echo "result_herald_rules"
 result_herald_rules=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -P $sql_port -u $sql_user $sql_name << END
  SELECT CONCAT("https://phabricator.wikimedia.org/H", h.id) AS heraldRule,
@@ -235,6 +272,12 @@ ${result_inactive_users_assigned_tasks}
 
 USER ACCOUNTS WHO BECAME AN ASSIGNEE LAST WEEK AND HAD LESS THAN 5 TASKS EVER ASSIGNED:
 ${result_new_user_assignees}
+
+
+PROJECTS WHICH HAVE AN EMPTY PROJECT DESCRIPTION:
+${result_parent_projects_without_desc}
+
+${result_sub_projects_without_desc}
 
 
 ACTIVE HERALD RULES AUTHORED BY ACCOUNTS INACTIVE FOR 6 MONTHS:
