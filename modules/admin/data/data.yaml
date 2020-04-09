@@ -721,6 +721,7 @@ groups:
     description: Use the standard system provided render group to allow Analytics users to access the GPU on the host.
     members: [*gpu_testers_members, *analytics_admins_members, *ops_members, *analytics_privatedata_users]
     posix_name: render
+    privileges: ['ALL = NOPASSWD: /usr/sbin/radeontop']
   sessionstore-roots:
     gid: 811
     description: people who have full root on session storage cluster nodes
