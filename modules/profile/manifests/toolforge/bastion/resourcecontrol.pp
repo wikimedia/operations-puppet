@@ -3,7 +3,7 @@
 #  limits.conf nproc
 #
 class profile::toolforge::bastion::resourcecontrol(
-    Integer $nproc = lookup('profile::toolforge::bastion::nproc', {default_value => 100}),
+    Integer $nproc = lookup('profile::toolforge::bastion::nproc', {default_value => 250}),
 ){
     class { 'systemd::slice::all_users':
         all_users_slice_config => file('profile/toolforge/bastion-user-resource-control.conf'),
