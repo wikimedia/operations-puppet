@@ -493,6 +493,15 @@ class TaskGen < ::Rake::TaskLib
           end
           tasks << 'tox:sonofgridengine'
         end
+        smart_data_dump_files = filter_files_by("modules/smart/files/**")
+        unless smart_data_dump_files.empty?
+          desc 'Run tox for smart_data_dump'
+          task :smart_data_dump do
+            res = system("tox -e smart_data_dump")
+            raise 'Tests for smart_data_dump failed!'.red unless res
+          end
+          tasks << 'tox:smart_data_dump'
+        end
         # Get all python files that don't have a tox.ini in their module
         py_files = sort_python_files(filter_files_by("*.py"))
 

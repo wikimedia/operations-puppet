@@ -6,6 +6,7 @@ import json
 import logging
 import re
 import subprocess
+import shlex
 import sys
 
 from logging.handlers import SysLogHandler
@@ -78,22 +79,31 @@ IGNORE_ATTRIBUTES = [
 ]
 
 
-def get_facter_version():
-    '''return the major version of facter'''
-    raw_output = subprocess.check_output(['/usr/bin/facter', '--version'])
-    return int(raw_output.split(b'.')[0])
-
-
-def get_fact(fact_name, facter_version=2):
-    """Ask 'facter' for the given fact name. Return the fact's value or None."""
-
-    command = ['/usr/bin/facter', '--puppet', '--json', fact_name]
-    if facter_version == 3:
-        command.extend(['-l', 'error'])
-
-    raw_output = subprocess.check_output(command)
+def _check_output(cmd, timeout=60, suppress_errors=False):
+    """Executes the command with a timeout and cleans up the response."""
+    cmd = shlex.split('/usr/bin/timeout {} {}'.format(timeout, cmd))
     try:
-        fact_value = json.loads(str(raw_output, 'utf8', 'ignore')).get(fact_name, None)
+        return subprocess.check_output(cmd, stderr=subprocess.STDOUT) \
+            .decode(encoding='utf-8', errors='ignore').strip()
+    except subprocess.CalledProcessError as e:
+        if suppress_errors:
+            return e.output.decode(encoding='utf-8', errors='ignore').strip()
+        log.exception(e)
+        raise
+
+
+def get_fact(fact_name):
+    """Ask 'facter' for the given fact name. Return the fact's value or None."""
+    facter_version = int(_check_output('/usr/bin/facter --version').split('.')[0])
+
+    if facter_version == 3:
+        command = '/usr/bin/facter --puppet --json -l error {}'.format(fact_name)
+    else:
+        command = '/usr/bin/facter --puppet --json {}'.format(fact_name)
+
+    raw_output = _check_output(command)
+    try:
+        fact_value = json.loads(raw_output).get(fact_name, None)
     except ValueError:
         return None
 
@@ -105,14 +115,12 @@ def megaraid_list_pd():
     """List physical disks attached to megaraid controller. Generator to yield PD objects."""
 
     try:
-        raw_output = subprocess.check_output(['/usr/bin/timeout', '60', '/usr/sbin/smartctl',
-                                              '--scan-open'])
+        raw_output = _check_output('/usr/sbin/smartctl --scan-open')
     except subprocess.CalledProcessError:
         log.exception('Failed to scan for megaraid physical disks')
         return
 
     for line in raw_output.splitlines():
-        line = str(line, 'utf8', 'ignore')
         if 'megaraid,' not in line:
             continue
         if line.startswith('#'):
@@ -126,15 +134,13 @@ def hpsa_list_pd():
     """List physical disks attached to hpsa controller. Generator to yield PD objects."""
 
     try:
-        raw_output = subprocess.check_output(['/usr/bin/timeout', '60', '/usr/sbin/hpssacli',
-                                              'controller', 'all', 'show', 'config'])
+        raw_output = _check_output('/usr/sbin/hpssacli controller all show config')
     except subprocess.CalledProcessError:
         log.exception('Failed to scan for hpsa physical disks')
         return
 
     in_controller = False
     for line in raw_output.splitlines():
-        line = str(line, 'utf8', 'ignore')
         m = re.match(r'^Smart Array .* in Slot (\d+)', line)
         if m:
             in_controller = True
@@ -154,14 +160,12 @@ def noraid_list_pd():
 
     try:
         # starting with stretch, lsblk has --json but not on jessie
-        raw_output = subprocess.check_output(['/usr/bin/timeout', '60', '/bin/lsblk',
-                                              '--noheadings', '--output', 'NAME,TYPE', '--raw'])
+        raw_output = _check_output('/bin/lsblk --noheadings --output NAME,TYPE --raw')
     except subprocess.CalledProcessError:
         log.exception('Failed to scan for directly attached physical disks')
         return
 
     for line in raw_output.splitlines():
-        line = str(line, 'utf8', 'ignore')
         name, disk_type = line.split(' ', 1)
         if disk_type != 'disk':
             continue
@@ -302,10 +306,9 @@ def main():
     if args.outfile and not args.outfile.endswith('.prom'):
         parser.error('Output file does not end with .prom')
 
-    facter_version = get_facter_version()
     physical_disks = []
 
-    raid_drivers = get_fact('raid', facter_version)
+    raid_drivers = get_fact('raid')
     if raid_drivers is None:
         log.error('Invalid value for "raid" fact: %r', raid_drivers)
         return 1
