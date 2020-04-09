@@ -65,7 +65,6 @@ class role::analytics_cluster::coordinator {
     include ::profile::analytics::refinery::job::druid_load
     include ::profile::analytics::refinery::job::project_namespace_map
     include ::profile::analytics::refinery::job::sqoop_mediawiki
-    include ::profile::analytics::refinery::job::refine
 
     # Include a cron to clean HDFS /tmp dir.
     include ::profile::analytics::refinery::job::hdfs_cleaner

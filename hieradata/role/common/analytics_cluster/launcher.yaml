@@ -13,6 +13,8 @@ profile::hive::client::config_files_group_ownership: 'analytics'
 
 profile::analytics::cluster::hdfs_mount::monitoring_user: 'analytics'
 
+profile::analytics::refinery::job::refine::use_kerberos: true
+
 # Hive Client settings.
 # Hive configuration is common to multiple clients, but because of role based
 # hiera lookups, we need to repeat it in multiple places. If you change this,
