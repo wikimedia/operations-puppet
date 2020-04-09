@@ -49,6 +49,8 @@
 # @param acme_cert_name The name of the certificate to install via sslcert::certificate acme_chief::cert
 # @param access_log Whether to use an access log or not.
 # @param capitalize_headers Whether to capitalize headers when responding to HTTP/1.1 requests
+# @param idle_timeout If indicated, that's how long an idle connection to the service is left open before closing it.
+#                     It should match the idle timeout of the upstream service.
 class profile::tlsproxy::envoy(
     Profile::Tlsproxy::Envoy::Sni $sni_support               = lookup('profile::tlsproxy::envoy::sni_support'),
     Stdlib::Port                  $tls_port                  = lookup('profile::tlsproxy::envoy::tls_port'),
@@ -64,6 +66,7 @@ class profile::tlsproxy::envoy(
                                                       {'default_value' => undef}),
     Optional[String]              $acme_cert_name   = lookup('profile::tlsproxy::envoy::acme_cert_name',
                                                       {'default_value' => undef}),
+    Optional[Float]               $idle_timeout = lookup('profile::tlsproxy::envoy::idle_timeout', {'default_value' => undef})
 ) {
     require profile::envoy
     $ensure = $profile::envoy::ensure
@@ -157,6 +160,7 @@ class profile::tlsproxy::envoy(
             upstream_response_timeout => $upstream_response_timeout,
             use_remote_address        => $use_remote_address,
             capitalize_headers        => $capitalize_headers,
+            idle_timeout              => $idle_timeout,
         }
         ferm::service { 'envoy_tls_termination':
             proto   => 'tcp',
