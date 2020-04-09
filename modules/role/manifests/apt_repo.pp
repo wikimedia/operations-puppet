@@ -7,6 +7,7 @@ class role::apt_repo {
     include ::profile::backup::host
 
     include ::profile::installserver::http
+    include ::profile::installserver::preseed
     include ::profile::aptrepo::wikimedia
     include ::profile::installserver::migration
 }

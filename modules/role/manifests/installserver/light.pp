@@ -10,6 +10,4 @@ class role::installserver::light {
     include ::profile::installserver::dhcp
     include ::profile::installserver::proxy
     include ::profile::prometheus::squid_exporter
-
-    include ::profile::installserver::preseed
 }
