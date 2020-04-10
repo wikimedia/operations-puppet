@@ -65,6 +65,11 @@ define kafkatee::instance (
     $output_format             = undef,
     $output_queue_size         = undef,
     $output_config             = true,
+    $ssl_enabled               = false,
+    $ssl_ca_location           = '/etc/ssl/certs/Puppet_Internal_CA.pem',
+    $ssl_cipher_suites         = 'ECDHE-ECDSA-AES256-GCM-SHA384',
+    $ssl_curves_list           = 'P-256',
+    $ssl_sigalgs_list          = 'ECDSA+SHA256',
 )
 {
     require ::kafkatee
