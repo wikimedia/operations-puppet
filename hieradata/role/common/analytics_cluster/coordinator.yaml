@@ -91,6 +91,7 @@ profile::analytics::refinery::job::hdfs_cleaner::ensure_timer: 'absent'
 profile::analytics::refinery::job::project_namespace_map::ensure_timer: 'absent'
 profile::analytics::refinery::job::sqoop_mediawiki::ensure_timers: 'absent'
 profile::analytics::refinery::job::druid_load::ensure_timers: 'absent'
+profile::analytics::refinery::job::data_purge::ensure_timers: 'absent'
 
 profile::oozie::server::monitoring_enabled: true
 profile::oozie::server::ferm_srange: '$ANALYTICS_NETWORKS'
