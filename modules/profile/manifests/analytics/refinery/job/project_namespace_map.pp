@@ -7,6 +7,7 @@
 class profile::analytics::refinery::job::project_namespace_map(
     $http_proxy = hiera('profile::analytics::refinery::job::project_namespace_map::http_proxy', undef),
     $monitoring_enabled = hiera('profile::analytics::refinery::job::project_namespace_map::monitoring_enabled', true),
+    $ensure_timer = lookup('profile::analytics::refinery::job::project_namespace_map::ensure_timer', { 'default_value' => 'present' }),
   ) {
     require ::profile::analytics::refinery
 
@@ -23,6 +24,7 @@ class profile::analytics::refinery::job::project_namespace_map(
     }
 
     file { '/usr/local/bin/refinery-download-project-namespace-map':
+        ensure  => $ensure_timer,
         content => template('profile/analytics/refinery/job/refinery-download-project-namespace-map.sh.erb'),
         mode    => '0550',
         owner   => 'analytics',
@@ -30,6 +32,7 @@ class profile::analytics::refinery::job::project_namespace_map(
     }
 
     systemd::timer::job { 'refinery-download-project-namespace-map':
+        ensure                    => $ensure_timer,
         description               => "Periodic download of the Wikimedia sitematrix project's namespace map file",
         command                   => '/usr/local/bin/refinery-download-project-namespace-map',
         interval                  => {
