@@ -4,6 +4,7 @@
 #
 class profile::analytics::refinery::job::druid_load(
     $use_kerberos = lookup('profile::analytics::refinery::job::druid_load::use_kerberos', { 'default_value' => false }),
+    $ensure_timers = lookup('profile::analytics::refinery::job::druid_load::ensure_timers', { 'default_value' => 'present' }),
 ) {
     require ::profile::analytics::refinery
 
@@ -13,6 +14,7 @@ class profile::analytics::refinery::job::druid_load(
 
     # Use this value as default refinery_job_jar.
     Profile::Analytics::Refinery::Job::Eventlogging_to_druid_job {
+        ensure           => $ensure_timers,
         refinery_job_jar => "${::profile::analytics::refinery::path}/artifacts/org/wikimedia/analytics/refinery/refinery-job-${refinery_version}.jar"
     }
 
