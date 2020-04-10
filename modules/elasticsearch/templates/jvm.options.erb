@@ -37,11 +37,18 @@
 ##
 ################################################################
 
+<% if @use_cms_gc -%>
+## GC configuration
+-XX:+UseConcMarkSweepGC
+-XX:CMSInitiatingOccupancyFraction=75
+-XX:+UseCMSInitiatingOccupancyOnly
+<% else -%>
 ## GC configuration
 # disabling ConcMarkSweepGC, see https://phabricator.wikimedia.org/T167685
 # -XX:+UseConcMarkSweepGC
 #-XX:CMSInitiatingOccupancyFraction=75
 #-XX:+UseCMSInitiatingOccupancyOnly
+<% end -%>
 
 ## optimizations
 

@@ -152,6 +152,8 @@ define elasticsearch::instance(
     Array[String] $cluster_hosts       = [],
     Optional[Stdlib::Port] $tls_port = undef,
     Optional[Stdlib::Port] $tls_ro_port = undef,
+
+    Boolean $use_cms_gc = false,
 ) {
 
     # Check arguments

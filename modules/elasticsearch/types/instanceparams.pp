@@ -47,4 +47,5 @@ type Elasticsearch::InstanceParams = Struct[{
     'tls_port'           => Optional[Stdlib::Port],
     'tls_ro_port'        => Optional[Stdlib::Port],
     'short_cluster_name' => Optional[String],
+    'use_cms_gc'         => Optional[Boolean],
 }]

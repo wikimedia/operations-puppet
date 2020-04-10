@@ -24,6 +24,7 @@ profile::elasticsearch::instances:
     tls_ro_port: 8243
     transport_tcp_port: 9300
     heap_memory: '45G'
+    use_cms_gc: true
   cloudelastic-omega-eqiad:
     cluster_name: cloudelastic-omega-eqiad
     short_cluster_name: omega
