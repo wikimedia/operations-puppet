@@ -7,6 +7,7 @@
 #
 class profile::analytics::refinery::job::sqoop_mediawiki (
     $use_kerberos = lookup('profile::analytics::refinery::job::sqoop_mediawiki::use_kerberos', { 'default_value' => false }),
+    $ensure_timers = lookup('profile::analytics::refinery::job::sqoop_mediawiki::ensure_timers', { 'default_value' => 'present' }),
 ){
     require ::profile::analytics::refinery
 
@@ -46,6 +47,7 @@ class profile::analytics::refinery::job::sqoop_mediawiki (
     # Template uses num_mappers_all_times
 
     file { '/usr/local/bin/refinery-sqoop-mediawiki':
+        ensure  => $ensure_timers,
         content => template('profile/analytics/refinery/job/refinery-sqoop-mediawiki.sh.erb'),
         mode    => '0550',
         owner   => 'analytics',
@@ -53,6 +55,7 @@ class profile::analytics::refinery::job::sqoop_mediawiki (
     }
 
     file { '/usr/local/bin/refinery-sqoop-mediawiki-production':
+        ensure  => $ensure_timers,
         content => template('profile/analytics/refinery/job/refinery-sqoop-mediawiki-production.sh.erb'),
         mode    => '0550',
         owner   => 'analytics',
@@ -60,6 +63,7 @@ class profile::analytics::refinery::job::sqoop_mediawiki (
     }
 
     file { '/usr/local/bin/refinery-sqoop-whole-mediawiki':
+        ensure  => $ensure_timers,
         content => template('profile/analytics/refinery/job/refinery-sqoop-whole-mediawiki.sh.erb'),
         mode    => '0550',
         owner   => 'analytics',
@@ -68,6 +72,7 @@ class profile::analytics::refinery::job::sqoop_mediawiki (
     }
 
     kerberos::systemd_timer { 'refinery-sqoop-whole-mediawiki':
+        ensure       => $ensure_timers,
         description  => 'Schedules sqoop to import whole MediaWiki databases into Hadoop monthly.',
         command      => '/usr/local/bin/refinery-sqoop-whole-mediawiki',
         interval     => '*-*-01 00:00:00',
@@ -82,6 +87,7 @@ class profile::analytics::refinery::job::sqoop_mediawiki (
     # Tables: cu_changes
 
     file { '/usr/local/bin/refinery-sqoop-mediawiki-private':
+        ensure  => $ensure_timers,
         content => template('profile/analytics/refinery/job/refinery-sqoop-mediawiki-private.sh.erb'),
         mode    => '0550',
         owner   => 'analytics',
@@ -89,6 +95,7 @@ class profile::analytics::refinery::job::sqoop_mediawiki (
     }
 
     kerberos::systemd_timer { 'refinery-sqoop-mediawiki-private':
+        ensure       => $ensure_timers,
         description  => 'Schedules sqoop to import MediaWiki databases (containing PII data) into Hadoop monthly.',
         command      => '/usr/local/bin/refinery-sqoop-mediawiki-private',
         interval     => '*-*-02 00:00:00',
