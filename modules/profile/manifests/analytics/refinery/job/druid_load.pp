@@ -18,6 +18,13 @@ class profile::analytics::refinery::job::druid_load(
         refinery_job_jar => "${::profile::analytics::refinery::path}/artifacts/org/wikimedia/analytics/refinery/refinery-job-${refinery_version}.jar"
     }
 
+    # Load event.EditAttemptStep
+    profile::analytics::refinery::job::eventlogging_to_druid_job { 'editattemptstep':
+        job_config => {
+            dimensions    => 'event.is_oversample,event.action,event.editor_interface,event.mw_version,event.platform,event.integration,event.page_ns,event.user_class,event.bucket,useragent.browser_family,useragent.browser_major,useragent.device_family,useragent.is_bot,useragent.os_family,useragent.os_major,wiki,webhost',
+        },
+    }
+
     # Load event.NavigationTiming
     profile::analytics::refinery::job::eventlogging_to_druid_job { 'navigationtiming':
         job_config => {
