@@ -71,7 +71,7 @@ class profile::toolforge::grid::exec_environ {
         'texlive-fonts-recommended',
         'texlive-full',              # T197176
         'ttf-alee',
-        'ttf-ubuntu-font-family',    # Not in Debian. T32288, T103325
+        'ttf-ubuntu-font-family',    # T32288, T103325 from stretch-wikimedia
         'ttf-wqy-zenhei',
         'xfonts-100dpi',
         'xfonts-75dpi',
@@ -97,21 +97,12 @@ class profile::toolforge::grid::exec_environ {
         'zstd',                      # T225380
     )
 
-    if os_version('debian == jessie') {
-        require_package(
-            'fonts-noto', # T184664
-            'sbt',
-        )
-    }
-
-    if os_version('debian > jessie') {
+    if os_version('debian >= stretch') {
         require_package(
             'fonts-noto-hinted',  # T184664
             'fonts-noto-unhinted' # T184664
         )
-    }
 
-    if os_version('debian >= jessie') {
         require_package(
             'fonts-beng',
             'fonts-deva',
@@ -130,580 +121,236 @@ class profile::toolforge::grid::exec_environ {
         )
     }
 
-    if $::operatingsystem == 'Ubuntu' {
-      package { [
-          # Please keep all packages in each group sorted in alphabetical order
+    package { [
+        # Please keep all packages in each group sorted in alphabetical order
+        # Locales (T60500)
+        # language-packs not available in Debian
+        # To add all locales, this needs to all be in a role so that the include
+        # works
 
-          # Locales (T60500)
-          'language-pack-ar',
-          'language-pack-bn',
-          'language-pack-ca',            # T64269, T68721
-          'language-pack-de',
-          'language-pack-en',
-          'language-pack-es',
-          'language-pack-eu',            # T183591
-          'language-pack-fr',
-          'language-pack-he',
-          'language-pack-hi',
-          'language-pack-ja',
-          'language-pack-ko',            # T130532
-          'language-pack-mr',            # T191727
-          'language-pack-nl',
-          'language-pack-pa',
-          'language-pack-pt',
-          'language-pack-ru',
-          'language-pack-uk',            # T62730.
-          'language-pack-zh-hans',
-          'language-pack-zh-hant',
+        # Language Runtimes and dev tools
+        'ant',
+        'autoconf',
+        'automake',                    # T119870
+        'build-essential',
+        'bundler',                    # T120287
+        'cmake',
+        'cython',
+        'gcj-jdk',                   # T58995
+        'libdjvulibre-dev',          # T58972
+        'libdmtx-dev',               # T55867.
+        'libfcgi-dev',               # T54902.
+        'libfreetype6-dev',
+        'libgeoip-dev',              # T64649
+        'libldap2-dev',              # T114388
+        'libproj-dev',               # T58995
+        'libprotobuf-dev',           # T58995
+        'librsvg2-dev',              # T60516
+        'libsasl2-dev',              # T114388
+        'libsparsehash-dev',         # T58995
+        'libssl-dev',                # T114388
+        'libtool',
+        'libvips-dev',
+        'libxml2-dev',
+        'libxslt1-dev',
+        'libzbar-dev',               # T58996
+        'maven',
+        'mercurial',                 # T198008
+        'subversion',
+        'qt4-qmake',   # Isn't this very deprecated?
+        'rake',                      # T120287
+        'ruby-dev',                  # T120287
+        'gcj-jre',                     # T58995
+        'golang',
+        'luarocks',
+        'mono-complete',
+        'mono-fastcgi-server',         # T85142
+        'mono-vbnc',                   # T186846
+        'r-base',
+        'ruby',
+        'tcl',
 
-          # Language Runtimes and dev tools
-          'ant',
-          'autoconf',
-          'automake',                    # T119870
-          'build-essential',
-          'bundler',                    # T120287
-          'cmake',
-          'cython',
-          'gcj-jdk',                   # T58995
-          'libdjvulibre-dev',          # T58972
-          'libdmtx-dev',               # T55867.
-          'libfcgi-dev',               # T54902.
-          'libfreetype6-dev',
-          'libgeoip-dev',              # T64649
-          'libldap2-dev',              # T114388
-          'libproj-dev',               # T58995
-          'libprotobuf-dev',           # T58995
-          'librsvg2-dev',              # T60516
-          'libsasl2-dev',              # T114388
-          'libsparsehash-dev',         # T58995
-          'libssl-dev',                # T114388
-          'libtool',
-          'libvips-dev',
-          'libxml2-dev',
-          'libxslt1-dev',
-          'libzbar-dev',               # T58996
-          'maven',
-          'mercurial',                 # T198008
-          'subversion',
-          'qt4-qmake',   # Isn't this very deprecated?
-          'rake',                      # T120287
-          'ruby-dev',                  # T120287
-          'gcj-jre',                     # T58995
-          'golang',
-          'luarocks',
-          'mono-complete',
-          'mono-fastcgi-server',         # T85142
-          'mono-vbnc',                   # T186846
-          'npm',                         # T1102
-          'nodejs',
-          'openjdk-7-jre-headless',
-          'icedtea-7-jre-jamvm',         # T98195
-          # 'python3',                   # gerrit:411211
-          'r-base',
-          'ruby1.9.3',
-          'tcl8.6',
+        # Perl libraries
+        'libberkeleydb-perl',          # T60785
+        'libbot-basicbot-perl',
+        'libbsd-resource-perl',        # T56690.
+        'libcache-memcached-fast-perl',
+        'libcgi-fast-perl',            # T70269.
+        'libclass-data-inheritable-perl',
+        'libcommon-sense-perl',
+        'libcrypt-gcrypt-perl',
+        'libcrypt-openssl-bignum-perl',
+        'libcrypt-openssl-rsa-perl',
+        'libdata-compare-perl',        # For Checkwiki.
+        'libdata-dumper-simple-perl',
+        'libdatetime-format-duration-perl',
+        'libdatetime-format-strptime-perl',
+        'libdbd-mysql-perl',
+        'libdbd-sqlite2-perl',         # T58995
+        'libdbd-sqlite3-perl',
+        'libdbi-perl',
+        'libdigest-crc-perl',
+        'libdigest-hmac-perl',
+        'libfile-nfslock-perl',
+        'libgd-perl',              # T69199.
+        'libhtml-format-perl',
+        'libhtml-html5-entities-perl',
+        'libhtml-parser-perl',
+        'libhtml-template-perl',       # T59123
+        'libhttp-message-perl',
+        'libimage-exiftool-perl',      # T55868.
+        'libio-socket-ssl-perl',
+        'libipc-run-perl',
+        'libirc-utils-perl',
+        'libjson-perl',
+        'libjson-xs-perl',
+        'liblog-log4perl-perl',        # T76974
+        'liblwp-protocol-https-perl',
+        'libmediawiki-api-perl',
+        'libmediawiki-bot-perl',
+        'libnet-netmask-perl',
+        'libnet-oauth-perl',
+        'libnet-ssleay-perl',
+        'libnetaddr-ip-perl',
+        'libobject-pluggable-perl',
+        'libparse-mediawikidump-perl', # T76976
+        'libpod-simple-wiki-perl',
+        'libpoe-component-irc-perl',
+        'libpoe-component-syndicator-perl',
+        'libpoe-filter-ircd-perl',
+        'libpoe-perl',
+        'libppix-regexp-perl',         # T76974
+        'libreadonly-perl',            # T76974
+        'libredis-perl',
+        'libregexp-common-perl',       # T76974
+        'libsocket-getaddrinfo-perl',
+        'libsort-fields-perl',         # T116579
+        'libstring-diff-perl',
+        'libtask-weaken-perl',
+        'libtest-exception-perl',      # For Checkwiki.
+        'libtext-diff-perl',           # T60744
+        'libtimedate-perl',
+        'liburi-encode-perl',
+        'liburi-perl',
+        'libwww-mechanize-perl',       # T59118
+        'libwww-perl',
+        'libxml-libxml-perl',
+        'libxml-parser-perl',
+        'libxml-simple-perl',
+        'libxml-xpathengine-perl',     # For Checkwiki.
 
-          # Perl libraries
-          'libberkeleydb-perl',          # T60785
-          'libbot-basicbot-perl',
-          'libbsd-resource-perl',        # T56690.
-          'libcache-memcached-fast-perl',
-          'libcgi-fast-perl',            # T70269.
-          'libclass-data-inheritable-perl',
-          'libcommon-sense-perl',
-          'libcrypt-gcrypt-perl',
-          'libcrypt-openssl-bignum-perl',
-          'libcrypt-openssl-rsa-perl',
-          'libdata-compare-perl',        # For Checkwiki.
-          'libdata-dumper-simple-perl',
-          'libdatetime-format-duration-perl',
-          'libdatetime-format-strptime-perl',
-          'libdbd-mysql-perl',
-          'libdbd-sqlite2-perl',         # T58995
-          'libdbd-sqlite3-perl',
-          'libdbi-perl',
-          'libdigest-crc-perl',
-          'libdigest-hmac-perl',
-          'libfile-nfslock-perl',
-          'libgd-gd2-perl',              # T69199.
-          'libhtml-format-perl',
-          'libhtml-html5-entities-perl',
-          'libhtml-parser-perl',
-          'libhtml-template-perl',       # T59123
-          'libhttp-message-perl',
-          'libimage-exiftool-perl',      # T55868.
-          'libio-socket-ssl-perl',
-          'libipc-run-perl',
-          'libirc-utils-perl',
-          'libjson-perl',
-          'libjson-xs-perl',
-          'liblog-log4perl-perl',        # T76974
-          'liblwp-protocol-https-perl',
-          'libmediawiki-api-perl',
-          'libmediawiki-bot-perl',
-          'libnet-netmask-perl',
-          'libnet-oauth-perl',
-          'libnet-ssleay-perl',
-          'libnetaddr-ip-perl',
-          'libobject-pluggable-perl',
-          'libparse-mediawikidump-perl', # T76976
-          'libpod-simple-wiki-perl',
-          'libpoe-component-irc-perl',
-          'libpoe-component-syndicator-perl',
-          'libpoe-filter-ircd-perl',
-          'libpoe-perl',
-          'libppix-regexp-perl',         # T76974
-          'libreadonly-perl',            # T76974
-          'libredis-perl',
-          'libregexp-common-perl',       # T76974
-          'libsocket-getaddrinfo-perl',
-          'libsort-fields-perl',         # T116579
-          'libstring-diff-perl',
-          'libtask-weaken-perl',
-          'libtest-exception-perl',      # For Checkwiki.
-          'libtext-diff-perl',           # T60744
-          'libtimedate-perl',
-          'liburi-encode-perl',
-          'liburi-perl',
-          'libwww-mechanize-perl',       # T59118
-          'libwww-perl',
-          'libxml-libxml-perl',
-          'libxml-parser-perl',
-          'libxml-simple-perl',
-          'libxml-xpathengine-perl',     # For Checkwiki.
-          'perl-modules',
+        # Python libraries on apt.wm.o or tools apt repo
+        # Other python package requirements are added
+        # using the genpp tool
+        # python-flask-oauth is not in Debian
+        'python-mwparserfromhell',     # T65539
+        # python-oursql is not in Debian
+        'python-socketio-client',      # T86015
+        #python-wikitools is apparently not in Debian (at least stretch)
+        'python-mwclient',             # T218242
+        'python-pymysql',              # T189052
+        'python3-pymysql',             # T189052
 
-          # Python libraries on apt.wm.o or tools apt repo
-          # Other python package requirements are added
-          # using the genpp tool
-          'python-flask-oauth',
-          'python-mwparserfromhell',     # T65539
-          'python-oursql',               # For danilo et al.
-          'python-socketio-client',      # T86015
-          'python-wikitools',
-          'python-mwclient',             # for morebots et al
-          'python-pymysql',              # T189052
-          'python3-pymysql',             # T189052
+        # Fonts for vCat tool.
+        'fonts-indic',        # Many Indic languages.
 
-          # PHP libraries
-          'php5-cli',
-          'php5-common',
-          'php5-curl',
-          'php5-gd',
-          'php5-imagick',                # T71078.
-          'php5-intl',                   # T57652
-          'php5-mcrypt',
-          'php5-mysqlnd',
-          'php5-pgsql',                  # For access to OSM db
-          'php5-redis',
-          'php5-sqlite',
-          'php5-xdebug',                 # T72313
-          'php5-xhprof',                 # T179343
-          'php5-xsl',
+        # Fonts for latex
+        'texlive-fonts-extra',        # T137121
 
-          # Fonts for vCat tool.
-          'ttf-indic-fonts-core',        # Many Indic languages.
+        # tcl packages
+        'mysqltcl',
+        'tcl-tls',                     # T58995
+        'tcl-trf',                     # T58995
+        'tclcurl',
+        'tcllib',
+        'tdom',                        # T58995
 
-          # Fonts for latex
-          'texlive-fonts-extra',        # T137121
-
-          # tcl packages
-          'mysqltcl',
-          'tcl-tls',                     # T58995
-          'tcl-trf',                     # T58995
-          'tclcurl',
-          'tcllib',
-          'tdom',                        # T58995
-
-          # Tesseract OCR (T67354).
-          'tesseract-ocr',
-          'tesseract-ocr-afr',
-          'tesseract-ocr-ara',
-          'tesseract-ocr-aze',
-          'tesseract-ocr-bel',
-          'tesseract-ocr-ben',
-          'tesseract-ocr-bul',
-          'tesseract-ocr-cat',
-          'tesseract-ocr-ces',
-          'tesseract-ocr-chi-sim',
-          'tesseract-ocr-chi-tra',
-          'tesseract-ocr-chr',
-          'tesseract-ocr-dan',
-          'tesseract-ocr-deu',
-          'tesseract-ocr-deu-frak',
-          'tesseract-ocr-ell',
-          'tesseract-ocr-eng',
-          'tesseract-ocr-enm',
-          'tesseract-ocr-epo',
-          'tesseract-ocr-equ',
-          'tesseract-ocr-est',
-          'tesseract-ocr-eus',
-          'tesseract-ocr-fin',
-          'tesseract-ocr-fra',
-          'tesseract-ocr-frk',
-          'tesseract-ocr-frm',
-          'tesseract-ocr-glg',
-          'tesseract-ocr-heb',
-          'tesseract-ocr-hin',
-          'tesseract-ocr-hrv',
-          'tesseract-ocr-hun',
-          'tesseract-ocr-ind',
-          'tesseract-ocr-isl',
-          'tesseract-ocr-ita',
-          'tesseract-ocr-ita-old',
-          'tesseract-ocr-jpn',
-          'tesseract-ocr-kan',
-          'tesseract-ocr-kor',
-          'tesseract-ocr-lav',
-          'tesseract-ocr-lit',
-          'tesseract-ocr-mal',
-          'tesseract-ocr-mkd',
-          'tesseract-ocr-mlt',
-          'tesseract-ocr-msa',
-          'tesseract-ocr-nld',
-          'tesseract-ocr-nor',
-          'tesseract-ocr-osd',
-          'tesseract-ocr-pol',
-          'tesseract-ocr-por',
-          'tesseract-ocr-ron',
-          'tesseract-ocr-rus',
-          'tesseract-ocr-slk',
-          'tesseract-ocr-slk-frak',
-          'tesseract-ocr-slv',
-          'tesseract-ocr-spa',
-          'tesseract-ocr-spa-old',
-          'tesseract-ocr-sqi',
-          'tesseract-ocr-srp',
-          'tesseract-ocr-swa',
-          'tesseract-ocr-swe',
-          'tesseract-ocr-tam',
-          'tesseract-ocr-tel',
-          'tesseract-ocr-tgl',
-          'tesseract-ocr-tha',
-          'tesseract-ocr-tur',
-          'tesseract-ocr-ukr',
-          'tesseract-ocr-vie',
-
-          # Other packages
-          'bison',                       # T67974.
-          'calibre',                     # T100165
-          'csh',                         # common user request
-          'csvtool',                     # T60649
-          'dc',
-          'djvulibre-bin',               # T58972
-          'djvulibre-plugin',            # T58972
-          'doxygen',                     # T58326
-          'doxygen-latex',               # T58326
-          'expect',
-          'fabric',                      # T56135.
-          'gawk',                        # T67974.
-          'gdal-bin',
-          'git-review',                  # T64871.
-          'git-svn',
-          'gnuplot-nox',
-          'graphicsmagick',              # T58995
-          'graphviz',
-          'grep',
-          'hugin-tools',                 # T108210
-          'hunspell',                    # T125193
-          'inkscape',                    # T126933
-          'ksh',
-          'lame',                        # T168128
-          'libaio1',                     # T70615
-          'libav-tools',                 # T55870.
-          'libdmtx0a',                   # T55867.
-          'libfcgi0ldbl',                # T58995
-          'libffi-dev',                  # T67974.
-          'libfreetype6',
-          'libgdbm-dev',                 # T67974.
-          'libgeoip1',                   # T64649
-          'libhunspell-dev',             # T125193
-          'libjpeg-turbo-progs',         # T61654.
-          'libmpfr4',
-          'libncurses5-dev',             # T67974.
-          'libneon27-gnutls',
-          'libnfnetlink0',
-          'libnspr4',
-          'libnss3',
-          'libnss3-1d',
-          'libotf0',
-          'libpcsclite1',
-          'libpng3',
-          'libproj0',                    # T58995
-          'libquadmath0',
-          'librsvg2-bin',                # T60516
-          'libsvn1',
-          'libvips-tools',
-          'libxml2-utils',               # T64944.
-          'libyaml-dev',                 # T67974.
-          'libzbar0',                    # T58996
-          'mailutils',                   # T114073
-          'mdbtools',                    # T50805.
-          'melt',                        # T71365
-          'mktorrent',                   # T155470
-          'openbabel',                   # T68995
-          'p7zip-full',                  # requested by Betacommand and danilo to decompress 7z files
-          'pdf2svg',                     # T70092.
-          'pdf2djvu',                    # T130138
-          'pdftk',                       # T67048.
-          'phantomjs',                   # T68928
-          'phpunit',
-          'poppler-utils',               # T55869.
-          'postgis',                     # T76226
-          'postgresql-client',
-          'pstoedit',                    # T59000
-          'rrdtool',                     # T59004
-          'socat',                       # T59005
-          'sqlite3',                     # T196006
-          'supybot',                     # T63088.
-          'tabix',                       # T63501
-          'texinfo',                     # T58994
-          'texlive',
-          'ufraw-batch',                 # T59008
-          'virtualenvwrapper',           # T131840
-          'whois',                       # T98555
-          'xml2',                        # T134146.
-          'xsltproc',                    # T68962.
-          'xvfb',                        # T100268
-          'zbar-tools',                  # T58996
-          'debootstrap',                 # T138138
-          'fakechroot',                  # T138138
-          ]:
-          ensure => latest,
-          before => Class['::profile::locales::extended'],
-      }
-    } elsif $::operatingsystem == 'Debian' {
-      package { [
-          # Please keep all packages in each group sorted in alphabetical order
-          # Locales (T60500)
-          # language-packs not available in Debian
-          # To add all locales, this needs to all be in a role so that the include
-          # works
-
-          # Language Runtimes and dev tools
-          'ant',
-          'autoconf',
-          'automake',                    # T119870
-          'build-essential',
-          'bundler',                    # T120287
-          'cmake',
-          'cython',
-          'gcj-jdk',                   # T58995
-          'libdjvulibre-dev',          # T58972
-          'libdmtx-dev',               # T55867.
-          'libfcgi-dev',               # T54902.
-          'libfreetype6-dev',
-          'libgeoip-dev',              # T64649
-          'libldap2-dev',              # T114388
-          'libproj-dev',               # T58995
-          'libprotobuf-dev',           # T58995
-          'librsvg2-dev',              # T60516
-          'libsasl2-dev',              # T114388
-          'libsparsehash-dev',         # T58995
-          'libssl-dev',                # T114388
-          'libtool',
-          'libvips-dev',
-          'libxml2-dev',
-          'libxslt1-dev',
-          'libzbar-dev',               # T58996
-          'maven',
-          'mercurial',                 # T198008
-          'subversion',
-          'qt4-qmake',   # Isn't this very deprecated?
-          'rake',                      # T120287
-          'ruby-dev',                  # T120287
-          'gcj-jre',                     # T58995
-          'golang',
-          'luarocks',
-          'mono-complete',
-          'mono-fastcgi-server',         # T85142
-          'mono-vbnc',                   # T186846
-          'r-base',
-          'ruby',
-          'tcl',
-
-          # Perl libraries
-          'libberkeleydb-perl',          # T60785
-          'libbot-basicbot-perl',
-          'libbsd-resource-perl',        # T56690.
-          'libcache-memcached-fast-perl',
-          'libcgi-fast-perl',            # T70269.
-          'libclass-data-inheritable-perl',
-          'libcommon-sense-perl',
-          'libcrypt-gcrypt-perl',
-          'libcrypt-openssl-bignum-perl',
-          'libcrypt-openssl-rsa-perl',
-          'libdata-compare-perl',        # For Checkwiki.
-          'libdata-dumper-simple-perl',
-          'libdatetime-format-duration-perl',
-          'libdatetime-format-strptime-perl',
-          'libdbd-mysql-perl',
-          'libdbd-sqlite2-perl',         # T58995
-          'libdbd-sqlite3-perl',
-          'libdbi-perl',
-          'libdigest-crc-perl',
-          'libdigest-hmac-perl',
-          'libfile-nfslock-perl',
-          'libgd-perl',              # T69199.
-          'libhtml-format-perl',
-          'libhtml-html5-entities-perl',
-          'libhtml-parser-perl',
-          'libhtml-template-perl',       # T59123
-          'libhttp-message-perl',
-          'libimage-exiftool-perl',      # T55868.
-          'libio-socket-ssl-perl',
-          'libipc-run-perl',
-          'libirc-utils-perl',
-          'libjson-perl',
-          'libjson-xs-perl',
-          'liblog-log4perl-perl',        # T76974
-          'liblwp-protocol-https-perl',
-          'libmediawiki-api-perl',
-          'libmediawiki-bot-perl',
-          'libnet-netmask-perl',
-          'libnet-oauth-perl',
-          'libnet-ssleay-perl',
-          'libnetaddr-ip-perl',
-          'libobject-pluggable-perl',
-          'libparse-mediawikidump-perl', # T76976
-          'libpod-simple-wiki-perl',
-          'libpoe-component-irc-perl',
-          'libpoe-component-syndicator-perl',
-          'libpoe-filter-ircd-perl',
-          'libpoe-perl',
-          'libppix-regexp-perl',         # T76974
-          'libreadonly-perl',            # T76974
-          'libredis-perl',
-          'libregexp-common-perl',       # T76974
-          'libsocket-getaddrinfo-perl',
-          'libsort-fields-perl',         # T116579
-          'libstring-diff-perl',
-          'libtask-weaken-perl',
-          'libtest-exception-perl',      # For Checkwiki.
-          'libtext-diff-perl',           # T60744
-          'libtimedate-perl',
-          'liburi-encode-perl',
-          'liburi-perl',
-          'libwww-mechanize-perl',       # T59118
-          'libwww-perl',
-          'libxml-libxml-perl',
-          'libxml-parser-perl',
-          'libxml-simple-perl',
-          'libxml-xpathengine-perl',     # For Checkwiki.
-
-          # Python libraries on apt.wm.o or tools apt repo
-          # Other python package requirements are added
-          # using the genpp tool
-          # python-flask-oauth is not in Debian
-          'python-mwparserfromhell',     # T65539
-          # python-oursql is not in Debian
-          'python-socketio-client',      # T86015
-          #python-wikitools is apparently not in Debian (at least stretch)
-          'python-mwclient',             # T218242
-          'python-pymysql',              # T189052
-          'python3-pymysql',             # T189052
-
-          # Fonts for vCat tool.
-          'fonts-indic',        # Many Indic languages.
-
-          # Fonts for latex
-          'texlive-fonts-extra',        # T137121
-
-          # tcl packages
-          'mysqltcl',
-          'tcl-tls',                     # T58995
-          'tcl-trf',                     # T58995
-          'tclcurl',
-          'tcllib',
-          'tdom',                        # T58995
-
-          # Other packages
-          'bison',                       # T67974.
-          'calibre',                     # T100165
-          'csh',                         # common user request
-          'csvtool',                     # T60649
-          'dc',
-          'djvulibre-bin',               # T58972
-          'djvulibre-plugin',            # T58972
-          'doxygen',                     # T58326
-          'doxygen-latex',               # T58326
-          'expect',
-          'fabric',                      # T56135.
-          'gawk',                        # T67974.
-          'gdal-bin',
-          'git-review',                  # T64871.
-          'git-svn',
-          'gnuplot-nox',
-          'graphicsmagick',              # T58995
-          'graphviz',
-          'grep',
-          'hugin-tools',                 # T108210
-          'hunspell',                    # T125193
-          'inkscape',                    # T126933
-          'ksh',
-          'lame',                        # T168128
-          'libaio1',                     # T70615
-          'libav-tools',                 # T55870.
-          'libdmtx0a',                   # T55867.
-          'libexiv2-dev',                # T213965
-          'libfcgi0ldbl',                # T58995
-          'libffi-dev',                  # T67974.
-          'libfreetype6',
-          'libgdbm-dev',                 # T67974.
-          'libgeoip1',                   # T64649
-          'libhunspell-dev',             # T125193
-          'libjpeg-turbo-progs',         # T61654.
-          'libmpfr4',
-          'libncurses5-dev',             # T67974.
-          'libneon27-gnutls',
-          'libnfnetlink0',
-          'libnspr4',
-          'libnss3',
-          #libnss3-1d is not in stretch
-          'libotf0',
-          'libpcsclite1',
-          'libquadmath0',
-          'librsvg2-bin',                # T60516
-          'libsvn1',
-          'libvips-tools',
-          'libxml2-utils',               # T64944.
-          'libyaml-dev',                 # T67974.
-          'libzbar0',                    # T58996
-          'mailutils',                   # T114073
-          'mdbtools',                    # T50805.
-          'melt',                        # T71365
-          'mktorrent',                   # T155470
-          'openbabel',                   # T68995
-          'p7zip-full',                  # requested by Betacommand and danilo to decompress 7z files
-          'pdf2svg',                     # T70092.
-          'pdf2djvu',                    # T130138
-          'pdftk',                       # T67048.
-          'phantomjs',                   # T68928
-          'poppler-utils',               # T55869.
-          'postgis',                     # T76226
-          'postgresql-client',
-          'pstoedit',                    # T59000
-          'rrdtool',                     # T59004
-          'socat',                       # T59005
-          'sqlite3',                     # T196006
-          'supybot',                     # T63088.
-          'tabix',                       # T63501
-          'texinfo',                     # T58994
-          'texlive',
-          'ufraw-batch',                 # T59008
-          'virtualenvwrapper',           # T131840
-          'whois',                       # T98555
-          'xauth',                       # T215699
-          'xml2',                        # T134146.
-          'xsltproc',                    # T68962.
-          'xvfb',                        # T100268
-          'zbar-tools',                  # T58996
-          'debootstrap',                 # T138138
-          'fakechroot',                  # T138138
-          ]:
-          ensure => latest,
-          before => Class['::profile::locales::extended'],
-      }
+        # Other packages
+        'bison',                       # T67974.
+        'calibre',                     # T100165
+        'csh',                         # common user request
+        'csvtool',                     # T60649
+        'dc',
+        'djvulibre-bin',               # T58972
+        'djvulibre-plugin',            # T58972
+        'doxygen',                     # T58326
+        'doxygen-latex',               # T58326
+        'expect',
+        'fabric',                      # T56135.
+        'gawk',                        # T67974.
+        'gdal-bin',
+        'git-review',                  # T64871.
+        'git-svn',
+        'gnuplot-nox',
+        'graphicsmagick',              # T58995
+        'graphviz',
+        'grep',
+        'hugin-tools',                 # T108210
+        'hunspell',                    # T125193
+        'inkscape',                    # T126933
+        'ksh',
+        'lame',                        # T168128
+        'libaio1',                     # T70615
+        'libav-tools',                 # T55870.
+        'libdmtx0a',                   # T55867.
+        'libexiv2-dev',                # T213965
+        'libfcgi0ldbl',                # T58995
+        'libffi-dev',                  # T67974.
+        'libfreetype6',
+        'libgdbm-dev',                 # T67974.
+        'libgeoip1',                   # T64649
+        'libhunspell-dev',             # T125193
+        'libjpeg-turbo-progs',         # T61654.
+        'libmpfr4',
+        'libncurses5-dev',             # T67974.
+        'libneon27-gnutls',
+        'libnfnetlink0',
+        'libnspr4',
+        'libnss3',
+        #libnss3-1d is not in stretch
+        'libotf0',
+        'libpcsclite1',
+        'libquadmath0',
+        'librsvg2-bin',                # T60516
+        'libsvn1',
+        'libvips-tools',
+        'libxml2-utils',               # T64944.
+        'libyaml-dev',                 # T67974.
+        'libzbar0',                    # T58996
+        'mailutils',                   # T114073
+        'mdbtools',                    # T50805.
+        'melt',                        # T71365
+        'mktorrent',                   # T155470
+        'openbabel',                   # T68995
+        'p7zip-full',                  # requested by Betacommand and danilo to decompress 7z files
+        'pdf2svg',                     # T70092.
+        'pdf2djvu',                    # T130138
+        'pdftk',                       # T67048.
+        'phantomjs',                   # T68928
+        'poppler-utils',               # T55869.
+        'postgis',                     # T76226
+        'postgresql-client',
+        'pstoedit',                    # T59000
+        'rrdtool',                     # T59004
+        'socat',                       # T59005
+        'sqlite3',                     # T196006
+        'supybot',                     # T63088.
+        'tabix',                       # T63501
+        'texinfo',                     # T58994
+        'texlive',
+        'ufraw-batch',                 # T59008
+        'virtualenvwrapper',           # T131840
+        'whois',                       # T98555
+        'xauth',                       # T215699
+        'xml2',                        # T134146.
+        'xsltproc',                    # T68962.
+        'xvfb',                        # T100268
+        'zbar-tools',                  # T58996
+        'debootstrap',                 # T138138
+        'fakechroot',                  # T138138
+        ]:
+        ensure => latest,
+        before => Class['::profile::locales::extended'],
     }
 
     file { '/etc/mysql/conf.d/override.my.cnf':
@@ -714,54 +361,7 @@ class profile::toolforge::grid::exec_environ {
         source => 'puppet:///modules/profile/toolforge/override.my.cnf',
     }
 
-    if $::lsbdistcodename == 'jessie' {
-        include ::profile::toolforge::genpp::python_exec_jessie
-        # No obvious package available for libgdal
-        package { [
-            'libboost-python1.55.0',
-            'libmpc3',
-            'libproj0',
-            'libprotobuf9',
-            'libbytes-random-secure-perl', # T123824
-            'libvips38',
-            'nodejs',
-            'nodejs-legacy',               # T1102
-            'npm',
-            'mariadb-client',              # For /usr/bin/mysql
-            'openjdk-7-jre-headless',
-            'libpng12-0',
-            'perl-modules',
-            'php5-cli',
-            'php5-common',
-            'php5-curl',
-            'php5-gd',
-            'php5-imagick',                # T71078.
-            'php5-intl',                   # T57652
-            'php5-mcrypt',
-            'php5-mysqlnd',
-            'php5-pgsql',                  # For access to OSM db
-            'php5-redis',
-            'php5-sqlite',
-            'php5-xdebug',                 # T72313
-            'php5-xhprof',                 # T179343
-            'php5-xsl',
-            'php5-readline',               # T136519.
-            'opencv-data',                 # T142321
-            'python-flake8',
-            'python3-flake8',
-            'tcl-thread',
-            'libmariadb-client-lgpl-dev',
-            'libmariadb-client-lgpl-dev-compat',
-            'libboost-python1.55-dev',
-            'openjdk-7-jdk',
-            'libpng12-dev',
-            'libtiff4-dev', # T54717
-            'tcl8.5-dev',
-            'libgdal1-dev',                # T58995
-            ]:
-            ensure => latest,
-        }
-    } elsif $::lsbdistcodename == 'stretch' {
+    if $::lsbdistcodename == 'stretch' {
         include ::profile::toolforge::genpp::python_exec_stretch
         apt::repository { "php72-external-${::lsbdistcodename}": #T213666
             uri        => 'http://apt.wikimedia.org/wikimedia',
@@ -885,14 +485,7 @@ class profile::toolforge::grid::exec_environ {
     require_package('imagemagick')
     require_package('webp')
 
-    if os_version('debian >= jessie') {
-        # configuration directory changed since ImageMagick 8:6.8.5.6-1
-        $confdir = '/etc/ImageMagick-6'
-    } else {
-        $confdir = '/etc/ImageMagick'
-    }
-
-    file { "${confdir}/policy.xml":
+    file { '/etc/ImageMagick-6/policy.xml':
         ensure  => present,
         owner   => 'root',
         group   => 'root',

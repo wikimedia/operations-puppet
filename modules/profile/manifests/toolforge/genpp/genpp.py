@@ -33,7 +33,6 @@ except OSError:
 
 releases = collections.OrderedDict(
     [
-        ("jessie", "https://packages.debian.org/jessie"),
         ("stretch", "https://packages.debian.org/stretch"),
     ]
 )
