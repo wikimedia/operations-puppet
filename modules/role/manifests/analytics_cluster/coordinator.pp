@@ -63,9 +63,6 @@ class role::analytics_cluster::coordinator {
     include ::profile::analytics::refinery::job::project_namespace_map
     include ::profile::analytics::refinery::job::sqoop_mediawiki
 
-    # Include a cron to clean HDFS /tmp dir.
-    include ::profile::analytics::refinery::job::hdfs_cleaner
-
     include ::profile::kerberos::client
     include ::profile::kerberos::keytabs
 

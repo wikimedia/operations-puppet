@@ -30,6 +30,7 @@ class role::analytics_cluster::launcher {
     include ::profile::analytics::refinery::job::data_check
     include ::profile::analytics::refinery::job::refine
     include ::profile::analytics::refinery::job::camus
+    include ::profile::analytics::refinery::job::hdfs_cleaner
 
     include ::profile::kerberos::client
     include ::profile::kerberos::keytabs
