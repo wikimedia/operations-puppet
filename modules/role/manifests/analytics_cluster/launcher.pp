@@ -34,6 +34,7 @@ class role::analytics_cluster::launcher {
     include ::profile::analytics::refinery::job::project_namespace_map
     include ::profile::analytics::refinery::job::sqoop_mediawiki
     include ::profile::analytics::refinery::job::druid_load
+    include ::profile::analytics::refinery::job::data_purge
 
     include ::profile::kerberos::client
     include ::profile::kerberos::keytabs

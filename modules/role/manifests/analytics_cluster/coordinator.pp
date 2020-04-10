@@ -58,8 +58,6 @@ class role::analytics_cluster::coordinator {
     include ::profile::analytics::refinery
     include ::profile::analytics::cluster::repositories::statistics
 
-    include ::profile::analytics::refinery::job::data_purge
-
     include ::profile::kerberos::client
     include ::profile::kerberos::keytabs
 

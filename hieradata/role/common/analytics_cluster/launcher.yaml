@@ -23,6 +23,9 @@ profile::analytics::refinery::job::druid_load::use_kerberos: true
 
 profile::analytics::refinery::job::project_namespace_map::http_proxy: 'http://webproxy.eqiad.wmnet:8080'
 
+profile::analytics::refinery::job::data_purge::public_druid_host: 'druid1004.eqiad.wmnet'
+profile::analytics::refinery::job::data_purge::use_kerberos: true
+
 # Hive Client settings.
 # Hive configuration is common to multiple clients, but because of role based
 # hiera lookups, we need to repeat it in multiple places. If you change this,
