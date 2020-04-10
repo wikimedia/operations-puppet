@@ -164,6 +164,20 @@ SELECT DISTINCT CONCAT("https://phabricator.wikimedia.org/p/", u.userName) AS us
 END
 )
 
+#echo "result_past_due_dates"
+# see https://phabricator.wikimedia.org/T249807
+result_past_due_dates=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -P $sql_port -u $sql_user $sql_name << END
+SELECT CONCAT("https://phabricator.wikimedia.org/T", t.id) AS Task, FROM_UNIXTIME(cfs.fieldValue) AS DueDate
+    FROM maniphest_task t
+    JOIN maniphest_customfieldstorage cfs
+    WHERE cfs.fieldIndex = "GGorRQHBaRdo"
+    AND FROM_UNIXTIME(cfs.fieldValue) < (NOW() - INTERVAL 1 MONTH)
+    AND t.phid = cfs.objectPHID
+    AND (t.status = "open" OR t.status = "stalled")
+    ORDER BY cfs.fieldValue;
+END
+)
+
 #echo "result_parent_projects_without_desc"
 # see https://phabricator.wikimedia.org/T249805
 result_parent_projects_without_desc=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -P $sql_port -u $sql_user $sql_name << END
@@ -273,6 +287,8 @@ ${result_inactive_users_assigned_tasks}
 USER ACCOUNTS WHO BECAME AN ASSIGNEE LAST WEEK AND HAD LESS THAN 5 TASKS EVER ASSIGNED:
 ${result_new_user_assignees}
 
+OPEN TASKS WITH A DUE DATE MORE THAN 1 MONTH AGO:
+${result_past_due_dates}
 
 PROJECTS WHICH HAVE AN EMPTY PROJECT DESCRIPTION:
 ${result_parent_projects_without_desc}
