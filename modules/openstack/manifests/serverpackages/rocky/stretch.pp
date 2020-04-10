@@ -63,6 +63,7 @@ class openstack::serverpackages::rocky::stretch(
     #  forwarded to S.
     #
     # Upstream bug: https://bugs.launchpad.net/python-tooz/+bug/1530888
+    require_package('python3-tooz')
     file { '/usr/lib/python3/dist-packages/tooz/drivers/memcached.py':
         ensure => 'present',
         owner  => 'root',
