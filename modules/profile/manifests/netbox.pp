@@ -154,7 +154,7 @@ class profile::netbox (
     #
 
     git::clone { 'operations/software/netbox-extras':
-        ensure    => 'latest',
+        ensure    => 'present',
         directory => $extras_path,
     }
 
