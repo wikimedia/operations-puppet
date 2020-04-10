@@ -51,7 +51,8 @@ class DataTest(unittest.TestCase):
 
     def test_group_system_gid_range(self):
         """Ensure system group GID's are in the correct range"""
-        groups = [group for group, config in self.admins['groups'].items()
+        groups = ['%s (gid: %s)' % (group, config.get('gid'))
+                  for group, config in self.admins['groups'].items()
                   if config.get('system') and not
                   self.system_gid_min <= config.get('gid') <= self.system_gid_max]
         self.assertEqual(
@@ -62,7 +63,8 @@ class DataTest(unittest.TestCase):
     def test_group_standard_gid_range(self):
         """Ensure groups GID's are in the correct range"""
         # some standard groups don't have a gid so we mock it as 1000 below
-        groups = [group for group, config in self.admins['groups'].items()
+        groups = ['%s (gid: %s)' % (group, config.get('gid', '<unset assuming 1000>'))
+                  for group, config in self.admins['groups'].items()
                   if not config.get('system')
                   and self.system_gid_min <= config.get('gid', 1000) <= self.system_gid_max]
         self.assertEqual(
