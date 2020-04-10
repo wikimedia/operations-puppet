@@ -18,6 +18,7 @@ profile::analytics::refinery::job::data_check::use_kerberos: true
 profile::analytics::refinery::job::camus::use_kerberos: true
 profile::analytics::refinery::job::camus::monitoring_enabled: true
 profile::analytics::refinery::job::hdfs_cleaner::use_kerberos: true
+profile::analytics::refinery::job::sqoop_mediawiki::use_kerberos: true
 
 profile::analytics::refinery::job::project_namespace_map::http_proxy: 'http://webproxy.eqiad.wmnet:8080'
 
