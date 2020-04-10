@@ -204,7 +204,7 @@ groups:
   contint-roots:
     gid: 720
     description: users who have full root on jenkins servers
-    members: [hashar, thcipriani, brennen, jforrester]
+    members: &contint_roots_members [hashar, thcipriani, brennen, jforrester]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   logstash-roots:
     gid: 722
@@ -759,6 +759,10 @@ groups:
     members: [*fr_tech_admins]
     privileges:
       - 'ALL = NOPASSWD: /usr/local/sbin/authdns-update'
+  zuul-deployers:
+    gid: 818
+    description: 'deploy Zuul'
+    members: *contint_roots_members
   reprepro:
     gid: 901
     system: true
@@ -769,6 +773,7 @@ groups:
   #   gid: 902
   #   system: true
   #   members: []
+
 users:
   reprepro:
     ensure: present

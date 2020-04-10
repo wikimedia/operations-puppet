@@ -15,6 +15,7 @@ admin::groups:
   - deploy-phabricator
   - analytics-deployers
   - gerrit-deployers
+  - zuul-deployers
 
 # screen sessions are common on deployment servers (T165348)
 monitor_screens: false
@@ -92,7 +93,7 @@ profile::keyholder::server::agents:
 
   deploy-zuul:
     trusted_groups:
-      - contint-roots
+      - zuul-deployers
 
   deploy-design:
     trusted_groups:
