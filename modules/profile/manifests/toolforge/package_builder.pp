@@ -9,6 +9,9 @@ class profile::toolforge::package_builder(
     # Packages needed by the packages used in toolforge
     require_package(
         'python-all',
-        'sbuild',
     )
+
+    sbuild::chroot { 'buster': }
+    sbuild::chroot { 'stretch': }
+    sbuild::chroot { 'jessie': }
 }
