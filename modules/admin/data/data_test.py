@@ -54,7 +54,10 @@ class DataTest(unittest.TestCase):
         groups = [group for group, config in self.admins['groups'].items()
                   if config.get('system') and not
                   self.system_gid_min <= config.get('gid') <= self.system_gid_max]
-        self.assertEqual([], groups, 'System Groups with invalid GID: %r' % groups)
+        self.assertEqual(
+            [], groups,
+            'System groups GID must be in range [%s-%s]: %r' % (
+                self.system_gid_min, self.system_gid_max, groups))
 
     def test_group_standard_gid_range(self):
         """Ensure groups GID's are in the correct range"""
@@ -62,7 +65,10 @@ class DataTest(unittest.TestCase):
         groups = [group for group, config in self.admins['groups'].items()
                   if not config.get('system')
                   and self.system_gid_min <= config.get('gid', 1000) <= self.system_gid_max]
-        self.assertEqual([], groups, 'System Groups with invalid GID: %r' % groups)
+        self.assertEqual(
+            [], groups,
+            'Standard groups GIDs must not be in system groups range [%s-%s]: %r' % (
+                self.system_gid_min, self.system_gid_max, groups))
 
     def test_group_gids_are_uniques(self):
         """Ensure no two groups uses the same gid"""
