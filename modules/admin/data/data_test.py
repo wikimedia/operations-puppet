@@ -6,7 +6,8 @@
 import os
 import re
 import unittest
-from collections import Counter, Iterable, defaultdict
+from collections import Counter, defaultdict
+from collections.abc import Iterable
 
 import yaml
 
