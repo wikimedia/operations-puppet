@@ -87,6 +87,7 @@ profile::analytics::refinery::job::data_purge::public_druid_host: 'druid1004.eqi
 profile::analytics::refinery::job::data_check::ensure_timers: 'absent'
 profile::analytics::refinery::job::refine::ensure_timers: 'absent'
 profile::analytics::refinery::job::camus::ensure_timers: 'absent'
+profile::analytics::refinery::job::hdfs_cleaner::ensure_timer: 'absent'
 
 profile::oozie::server::monitoring_enabled: true
 profile::oozie::server::ferm_srange: '$ANALYTICS_NETWORKS'
