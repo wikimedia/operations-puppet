@@ -19,6 +19,8 @@ profile::analytics::refinery::job::camus::use_kerberos: true
 profile::analytics::refinery::job::camus::monitoring_enabled: true
 profile::analytics::refinery::job::hdfs_cleaner::use_kerberos: true
 
+profile::analytics::refinery::job::project_namespace_map::http_proxy: 'http://webproxy.eqiad.wmnet:8080'
+
 # Hive Client settings.
 # Hive configuration is common to multiple clients, but because of role based
 # hiera lookups, we need to repeat it in multiple places. If you change this,
