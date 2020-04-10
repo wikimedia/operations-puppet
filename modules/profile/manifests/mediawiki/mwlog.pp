@@ -33,9 +33,10 @@ class profile::mediawiki::mwlog (
     }
 
     kafkatee::instance { 'mwlog':
-        kafka_brokers   => $kafka_config['brokers']['array'],
+        kafka_brokers   => $kafka_config['brokers']['ssl_array'],
         output_encoding => 'json',
         inputs          => $mwlog_inputs,
+        ssl_enabled     => true,
     }
 
     kafkatee::output { 'udp2log-compat':

@@ -35,12 +35,13 @@ class profile::kafkatee::webrequest::base(
     # the Kafka cluster with webrequest logs.  The webrequest logs are
     # in json, so we output them in the format they are received.
     kafkatee::instance { 'webrequest':
-        kafka_brokers   => $kafka_config['brokers']['array'],
+        kafka_brokers   => $kafka_config['brokers']['ssl_array'],
         output_encoding => 'json',
         inputs          => [
             $input_webrequest_text,
             $input_webrequest_upload,
         ],
         output_config   => $output_config,
+        ssl_enabled     => true,
     }
 }
