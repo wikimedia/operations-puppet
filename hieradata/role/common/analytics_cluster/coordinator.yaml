@@ -55,6 +55,7 @@ profile::presto::server::catalogs:
   analytics_hive:
     properties:
       connector.name: hive-hadoop2
+      hive.security: read-only
       # Add Hadoop config files so Hive connector can work with HA Hadoop NameNodes.
       hive.config.resources: /etc/hadoop/conf/core-site.xml,/etc/hadoop/conf/hdfs-site.xml
       hive.metastore.uri: thrift://an-coord1001.eqiad.wmnet:9083
