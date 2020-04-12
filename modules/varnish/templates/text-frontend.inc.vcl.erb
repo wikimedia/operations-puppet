@@ -333,8 +333,8 @@ sub cluster_fe_recv {
 		return (synth(421, "Misdirected Request"));
 	}
 
-	if (req.url ~ "?ok=.*$") {
-		set req.url = regsub(req.url, "^([^?]+)?ok=.*$", "\1");
+	if (req.url ~ "\?ok=.*$") {
+		set req.url = regsub(req.url, "^([^?]+)\?ok=.*$", "\1");
 	}
 
 	// Experiment on dealing with a buggy UA that's spamming requests in T141786
