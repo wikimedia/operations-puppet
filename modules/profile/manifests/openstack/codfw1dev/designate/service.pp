@@ -6,7 +6,7 @@ class profile::openstack::codfw1dev::designate::service(
     $second_region_designate_host_standby = hiera('profile::openstack::codfw1dev::second_region_designate_host_standby'),
     $nova_controller = hiera('profile::openstack::codfw1dev::nova_controller'),
     $nova_controller_standby = hiera('profile::openstack::codfw1dev::nova_controller_standby'),
-    $keystone_host = hiera('profile::openstack::codfw1dev::nova_controller'),
+    $keystone_host = hiera('profile::openstack::codfw1dev::keystone_host'),
     $puppetmaster_hostname = hiera('profile::openstack::codfw1dev::puppetmaster_hostname'),
     $db_pass = hiera('profile::openstack::codfw1dev::designate::db_pass'),
     $db_host = hiera('profile::openstack::codfw1dev::designate::db_host'),
