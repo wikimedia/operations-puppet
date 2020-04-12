@@ -1,6 +1,5 @@
 class profile::openstack::base::puppetmaster::common(
-    $designate_host = hiera('profile::openstack::base::puppetmaster::common::designate_host'),
-    $designate_host_standby = hiera('profile::openstack::base::puppetmaster::common::designate_host_standby'),
+    Array[Stdlib::Fqdn] $designate_hosts = lookup('profile::openstack::base::puppetmaster::common::designate_hosts'),
     $puppetmaster_webhostname = hiera('profile::openstack::base::puppetmaster::web_hostname'),
     $puppetmaster_hostname = hiera('profile::openstack::base::puppetmaster::common::puppetmaster_hostname'),
     $puppetmasters = hiera('profile::openstack::base::puppetmaster::common::puppetmasters'),
@@ -25,17 +24,16 @@ class profile::openstack::base::puppetmaster::common(
 
     $labs_networks = join($network::constants::labs_networks, ' ')
     class { '::openstack::puppet::master::encapi':
-        mysql_host             => $encapi_db_host,
-        mysql_db               => $encapi_db_name,
-        mysql_username         => $encapi_db_user,
-        mysql_password         => $encapi_db_pass,
-        statsd_host            => $statsd_host,
-        statsd_prefix          => $encapi_statsd_prefix,
-        puppetmasters          => $puppetmasters,
-        labweb_hosts           => $labweb_hosts,
-        nova_controller        => $nova_controller,
-        designate_host         => $designate_host,
-        designate_host_standby => $designate_host_standby,
+        mysql_host      => $encapi_db_host,
+        mysql_db        => $encapi_db_name,
+        mysql_username  => $encapi_db_user,
+        mysql_password  => $encapi_db_pass,
+        statsd_host     => $statsd_host,
+        statsd_prefix   => $encapi_statsd_prefix,
+        puppetmasters   => $puppetmasters,
+        labweb_hosts    => $labweb_hosts,
+        nova_controller => $nova_controller,
+        designate_hosts => $designate_hosts,
     }
 
     # Update labs/private repo.
@@ -55,10 +53,8 @@ class profile::openstack::base::puppetmaster::common(
 
     ferm::rule{'puppetbackend':
         ensure => 'present',
-        rule   => "saddr (@resolve((${designate_host}))
-                          @resolve((${designate_host}), AAAA)
-                          @resolve((${designate_host_standby}))
-                          @resolve((${designate_host_standby}), AAAA)
+        rule   => "saddr (@resolve((${designate_hosts}))
+                          @resolve((${designate_hosts}), AAAA)
                           ${labweb_ips} ${labweb_aaaa} @resolve(${nova_controller}) @resolve(${nova_controller}, AAAA))
                           proto tcp dport 8101 ACCEPT;",
     }

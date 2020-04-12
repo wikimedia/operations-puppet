@@ -1,6 +1,5 @@
 class profile::openstack::codfw1dev::puppetmaster::frontend(
-    $designate_host = hiera('profile::openstack::codfw1dev::designate_host'),
-    $designate_host_standby = hiera('profile::openstack::codfw1dev::designate_host_standby'),
+    Array[Stdlib::Fqdn] $designate_hosts = lookup('profile::openstack::codfw1dev::designate_hosts'),
     $puppetmasters = hiera('profile::openstack::codfw1dev::puppetmaster::servers'),
     $puppetmaster_ca = hiera('profile::openstack::codfw1dev::puppetmaster::ca'),
     $puppetmaster_hostname = hiera('profile::openstack::codfw1dev::puppetmaster_hostname'),
@@ -19,8 +18,7 @@ class profile::openstack::codfw1dev::puppetmaster::frontend(
 
     require ::profile::openstack::codfw1dev::clientpackages
     class {'::profile::openstack::base::puppetmaster::frontend':
-        designate_host           => $designate_host,
-        designate_host_standby   => $designate_host_standby,
+        designate_hosts          => $designate_hosts,
         puppetmasters            => $puppetmasters,
         puppetmaster_ca          => $puppetmaster_ca,
         puppetmaster_hostname    => $puppetmaster_hostname,

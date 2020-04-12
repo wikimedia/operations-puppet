@@ -1,7 +1,6 @@
 class profile::openstack::eqiad1::designate::service(
     $version = hiera('profile::openstack::eqiad1::version'),
-    $designate_host = hiera('profile::openstack::eqiad1::designate_host'),
-    $designate_host_standby = hiera('profile::openstack::eqiad1::designate_host_standby'),
+    Array[Stdlib::Fqdn] $designate_hosts = lookup('profile::openstack::eqiad1::designate_hosts'),
     $nova_controller = hiera('profile::openstack::eqiad1::nova_controller'),
     $nova_controller_standby = hiera('profile::openstack::eqiad1::nova_controller_standby'),
     $keystone_host = lookup('profile::openstack::eqiad1::keystone_host'),
@@ -28,8 +27,7 @@ class profile::openstack::eqiad1::designate::service(
     require ::profile::openstack::eqiad1::clientpackages
     class{'::profile::openstack::base::designate::service':
         version                           => $version,
-        designate_host                    => $designate_host,
-        designate_host_standby            => $designate_host_standby,
+        designate_hosts                   => $designate_hosts,
         keystone_host                     => $keystone_host,
         db_pass                           => $db_pass,
         db_host                           => $db_host,
@@ -67,6 +65,6 @@ class profile::openstack::eqiad1::designate::service(
     ferm::service { 'designate_memcached':
         proto  => 'tcp',
         port   => '11000',
-        srange => "(@resolve(${designate_host}) @resolve(${designate_host}, AAAA) @resolve(${designate_host_standby}) @resolve(${designate_host_standby}, AAAA))"
+        srange => "(@resolve((${designate_hosts})) @resolve((${designate_hosts}), AAAA))"
     }
 }

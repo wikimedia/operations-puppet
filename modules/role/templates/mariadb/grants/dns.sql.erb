@@ -15,15 +15,17 @@ ON `pdns`.* TO 'pdns'@'localhost';
 
 -- designate, designate_host_ip
 
-CREATE USER 'pdns_admin'@'<%=@designate_host_ip %>'
-IDENTIFIED BY '<%=@pdns_admin_db_pass %>';
+<% @designate_host_ips.sort.each do |host_ip| -%>
+CREATE USER 'pdns_admin'@'<%= host_ip %>'
+IDENTIFIED BY '<%= @pdns_admin_db_pass %>';
 
 GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, INDEX, ALTER,
       CREATE TEMPORARY TABLES
-ON `pdns`.* TO 'pdns_admin'@'<%=@designate_host_ip %>';
+ON `pdns`.* TO 'pdns_admin'@'<%=host_ip %>';
 
-CREATE USER 'pdns'@'<%=@designate_host_ip %>'
+CREATE USER 'pdns'@'<%=host_ip %>'
 IDENTIFIED BY '<%=@pdns_db_pass %>';
 
 GRANT SELECT, INSERT, UPDATE, DELETE, CREATE TEMPORARY TABLES
-ON `pdns`.* TO 'pdns'@'<%=@designate_host_ip %>';
+ON `pdns`.* TO 'pdns'@'<%=host_ip %>';
+<% end -%>

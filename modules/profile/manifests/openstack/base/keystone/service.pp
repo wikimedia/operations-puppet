@@ -36,8 +36,7 @@ class profile::openstack::base::keystone::service(
     $labs_hosts_range_v6 = hiera('profile::openstack::base::labs_hosts_range_v6'),
     $nova_controller_standby = hiera('profile::openstack::base::nova_controller_standby'),
     $nova_api_host = hiera('profile::openstack::base::nova_api_host'),
-    $designate_host = hiera('profile::openstack::base::designate_host'),
-    $designate_host_standby = hiera('profile::openstack::base::designate_host_standby'),
+    Array[Stdlib::Fqdn] $designate_hosts = lookup('profile::openstack::base::designate_hosts'),
     $labweb_hosts = hiera('profile::openstack::base::labweb_hosts'),
     String $wsgi_server = lookup('profile::openstack::base::keystone::wsgi_server'),
     Stdlib::IP::Address::V4::CIDR $instance_ip_range = lookup('profile::openstack::base::keystone::instance_ip_range', {default_value => '0.0.0.0/0'}),
@@ -104,8 +103,8 @@ class profile::openstack::base::keystone::service(
                              @resolve(${nova_controller_standby}) @resolve(${nova_controller_standby}, AAAA)
                              @resolve(${nova_controller}) @resolve(${nova_controller}, AAAA)
                              @resolve(${nova_api_host}) @resolve(${nova_api_host}, AAAA)
-                             @resolve(${designate_host}) @resolve(${designate_host_standby})
-                             @resolve(${designate_host}, AAAA) @resolve(${designate_host_standby}, AAAA)
+                             @resolve((${designate_hosts}))
+                             @resolve((${designate_hosts}), AAAA)
                              ${labweb_ips} ${labweb_ip6s}
                              @resolve(${osm_host})
                              ) proto tcp dport (35357) ACCEPT;",

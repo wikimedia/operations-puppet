@@ -1,6 +1,5 @@
 class profile::openstack::eqiad1::puppetmaster::frontend(
-    $designate_host = hiera('profile::openstack::eqiad1::designate_host'),
-    $designate_host_standby = hiera('profile::openstack::eqiad1::designate_host_standby'),
+    Array[Stdlib::Fqdn] $designate_hosts = lookup('profile::openstack::eqiad1::designate_hosts'),
     $puppetmasters = hiera('profile::openstack::eqiad1::puppetmaster::servers'),
     $puppetmaster_ca = hiera('profile::openstack::eqiad1::puppetmaster::ca'),
     $puppetmaster_hostname = hiera('profile::openstack::eqiad1::puppetmaster_hostname'),
@@ -17,8 +16,7 @@ class profile::openstack::eqiad1::puppetmaster::frontend(
     $nova_controller_standby = hiera('profile::openstack::eqiad1::nova_controller_standby'),
     ) {
     class {'::profile::openstack::base::puppetmaster::frontend':
-        designate_host           => $designate_host,
-        designate_host_standby   => $designate_host_standby,
+        designate_hosts          => $designate_hosts,
         puppetmasters            => $puppetmasters,
         puppetmaster_ca          => $puppetmaster_ca,
         puppetmaster_hostname    => $puppetmaster_hostname,

@@ -24,8 +24,7 @@ class profile::openstack::eqiad1::keystone::service(
     $labs_hosts_range_v6 = hiera('profile::openstack::eqiad1::labs_hosts_range_v6'),
     $nova_controller_standby = hiera('profile::openstack::eqiad1::nova_controller_standby'),
     $nova_api_host = hiera('profile::openstack::eqiad1::nova_api_host'),
-    $designate_host = hiera('profile::openstack::eqiad1::designate_host'),
-    $designate_host_standby = hiera('profile::openstack::eqiad1::designate_host_standby'),
+    Array[Stdlib::Fqdn] $designate_hosts = lookup('profile::openstack::eqiad1::designate_hosts'),
     $labweb_hosts = hiera('profile::openstack::eqiad1::labweb_hosts'),
     $puppetmaster_hostname = hiera('profile::openstack::eqiad1::puppetmaster_hostname'),
     $auth_port = hiera('profile::openstack::base::keystone::auth_port'),
@@ -64,8 +63,7 @@ class profile::openstack::eqiad1::keystone::service(
         labs_hosts_range_v6         => $labs_hosts_range_v6,
         nova_controller_standby     => $nova_controller_standby,
         nova_api_host               => $nova_api_host,
-        designate_host              => $designate_host,
-        designate_host_standby      => $designate_host_standby,
+        designate_hosts             => $designate_hosts,
         labweb_hosts                => $labweb_hosts,
         wsgi_server                 => $wsgi_server,
         instance_ip_range           => $instance_ip_range,
@@ -120,7 +118,7 @@ class profile::openstack::eqiad1::keystone::service(
     # to validate issued tokens
     ferm::rule{'main_designate_35357':
         ensure => 'present',
-        rule   => "saddr @resolve(${designate_host}) proto tcp dport (35357) ACCEPT;",
+        rule   => "saddr @resolve((${designate_hosts})) proto tcp dport (35357) ACCEPT;",
     }
 
     file { '/etc/cron.hourly/keystone':

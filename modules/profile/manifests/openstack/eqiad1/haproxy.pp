@@ -1,6 +1,5 @@
 class profile::openstack::eqiad1::haproxy(
-    Stdlib::Fqdn $designate_host = lookup('profile::openstack::eqiad1::designate_host'),
-    Stdlib::Fqdn $designate_host_standby = lookup('profile::openstack::eqiad1::designate_host_standby'),
+    Array[Stdlib::Fqdn] $designate_hosts = lookup('profile::openstack::eqiad1::designate_hosts'),
     Stdlib::Fqdn $nova_controller = lookup('profile::openstack::eqiad1::nova_controller'),
     Stdlib::Fqdn $nova_controller_standby = lookup('profile::openstack::eqiad1::nova_controller_standby'),
     Stdlib::Port $glance_api_bind_port = lookup('profile::openstack::eqiad1::glance::api_bind_port'),
@@ -14,7 +13,7 @@ class profile::openstack::eqiad1::haproxy(
 ) {
 
     profile::openstack::base::haproxy::site { 'designate':
-        servers            => [$designate_host, $designate_host_standby],
+        servers            => $designate_hosts,
         healthcheck_method => 'HEAD',
         healthcheck_path   => '/',
         port_frontend      => 9001,

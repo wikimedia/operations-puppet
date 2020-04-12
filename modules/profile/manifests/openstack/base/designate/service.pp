@@ -1,7 +1,6 @@
 class profile::openstack::base::designate::service(
     $version = hiera('profile::openstack::base::version'),
-    $designate_host = hiera('profile::openstack::base::designate_host'),
-    $designate_host_standby = hiera('profile::openstack::base::designate_host_standby'),
+    Array[Stdlib::Fqdn] $designate_hosts = lookup('profile::openstack::base::designate_hosts'),
     $nova_controller = hiera('profile::openstack::base::nova_controller'),
     $nova_controller_standby = hiera('profile::openstack::base::nova_controller_standby'),
     $keystone_host = hiera('profile::openstack::base::keystone_host'),
@@ -40,8 +39,7 @@ class profile::openstack::base::designate::service(
     class{'::openstack::designate::service':
         active                            => true,
         version                           => $version,
-        designate_host                    => $designate_host,
-        designate_host_standby            => $designate_host_standby,
+        designate_hosts                   => $designate_hosts,
         keystone_host                     => $keystone_host,
         db_user                           => $db_user,
         db_pass                           => $db_pass,
@@ -100,14 +98,14 @@ class profile::openstack::base::designate::service(
 
     # allow axfr traffic between mdns and pdns on the pdns hosts
     ferm::rule { 'mdns-axfr':
-        rule => "saddr (@resolve(${designate_host}) @resolve(${designate_host_standby})
-                        @resolve(${designate_host}, AAAA) @resolve(${designate_host_standby}, AAAA))
+        rule => "saddr (@resolve((${designate_hosts}))
+                        @resolve((${designate_hosts}, AAAA)))
                  proto tcp dport (5354) ACCEPT;",
     }
 
     ferm::rule { 'mdns-axfr-udp':
-        rule => "saddr (@resolve(${designate_host}) @resolve(${designate_host_standby})
-                        @resolve(${designate_host}, AAAA) @resolve(${designate_host_standby}, AAAA))
+        rule => "saddr (@resolve((${designate_hosts}))
+                        @resolve((${designate_hosts}), AAAA))
                  proto udp dport (5354) ACCEPT;",
     }
 }

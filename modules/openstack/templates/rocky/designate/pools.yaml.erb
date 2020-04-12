@@ -4,37 +4,27 @@
   description: Pool for eqiad1/cloudservices1003/cloudservices1004
   id: 794ccc2c-d751-44fe-b57f-8894c9f5c842
   nameservers:
-  - host: <%= @designate_host_ip %>
+<% @designate_host_ips.sort.each do |host_ip| -%>
+  - host: <%= host_ip %>
     port: 53
-  - host: <%= @designate_host_standby_ip %>
-    port: 53
+<% end -%>
   ns_records:
   - hostname: ns0.openstack.eqiad1.wikimediacloud.org.
     priority: 10
   - hostname: ns1.openstack.eqiad1.wikimediacloud.org.
     priority: 11
   targets:
+<% @designate_host_ips.sort.each do |designate_ip| -%>
   - masters:
-    - host: <%= @designate_host_ip %>
+<% @designate_host_ips.sort.each do |host_ip| -%>
+    - host: <%= host_ip %>
       port: 5354
-    - host: <%= @designate_host_standby_ip %>
-      port: 5354
+<% end -%>
     options:
-      api_endpoint: http://<%= @designate_host_standby_ip %>:8081
+      api_endpoint: http://<%= designate_ip %>:8081
       api_token: <%= @pdns_api_key %>
-      connection: mysql://<%= @pdns_db_user %>:<%= @pdns_db_pass %>@<%= @designate_host_standby_ip %>/<%= @pdns_db_name %>
-      host: <%= @designate_host_standby_ip %>
+      connection: mysql://<%= @pdns_db_user %>:<%= @pdns_db_pass %>@<%= designate_ip %>/<%= @pdns_db_name %>
+      host: <%= designate_ip %>
       port: '53'
     type: pdns4
-  - masters:
-    - host: <%= @designate_host_standby_ip %>
-      port: 5354
-    - host: <%= @designate_host_ip %>
-      port: 5354
-    options:
-      api_endpoint: http://<%= @designate_host_ip %>:8081
-      api_token: <%= @pdns_api_key %>
-      connection: mysql://<%= @pdns_db_user %>:<%= @pdns_db_pass %>@<%= @designate_host_ip %>/<%= @pdns_db_name %>
-      host: <%= @designate_host_ip %>
-      port: '53'
-    type: pdns4
+<% end -%>

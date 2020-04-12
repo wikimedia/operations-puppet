@@ -1,6 +1,5 @@
 class profile::openstack::base::puppetmaster::frontend(
-    $designate_host = hiera('profile::openstack::base::designate_host'),
-    $designate_host_standby = hiera('profile::openstack::base::designate_host_standby'),
+    Array[Stdlib::Fqdn] $designate_hosts = lookup('profile::openstack::base::designate_hosts'),
     $puppetmasters = hiera('profile::openstack::base::puppetmaster::servers'),
     $puppetmaster_ca = hiera('profile::openstack::base::puppetmaster::ca'),
     $puppetmaster_hostname = hiera('profile::openstack::base::puppetmaster_hostname'),
@@ -33,8 +32,7 @@ class profile::openstack::base::puppetmaster::frontend(
     }
 
     class {'profile::openstack::base::puppetmaster::common':
-        designate_host           => $designate_host,
-        designate_host_standby   => $designate_host_standby,
+        designate_hosts          => $designate_hosts,
         puppetmaster_webhostname => $puppetmaster_webhostname,
         puppetmaster_hostname    => $puppetmaster_hostname,
         puppetmasters            => $puppetmasters,
@@ -48,21 +46,18 @@ class profile::openstack::base::puppetmaster::frontend(
         nova_controller          => $nova_controller,
     }
 
+    $designate_ips = $designate_hosts.map |$host| { ipresolve($host, 4) }
+    $designate_ips_v6 = $designate_hosts.map |$host| { ipresolve($host, 6) }
+
     if ! defined(Class['puppetmaster::certmanager']) {
-        $cleaner1_ip = ipresolve($designate_host, 4)
-        $cleaner1_ip6 = ipresolve($designate_host, 6)
-        $cleaner2_ip = ipresolve($designate_host_standby, 4)
-        $cleaner2_ip6 = ipresolve($designate_host_standby, 6)
         $cleaner5_ip = ipresolve($nova_controller, 4)
         $cleaner5_ip6 = ipresolve($nova_controller, 6)
         $cleaner6_ip = ipresolve($nova_controller_standby, 4)
         $cleaner6_ip6 = ipresolve($nova_controller_standby, 6)
         class { 'puppetmaster::certmanager':
-            remote_cert_cleaners => [
-                $cleaner1_ip,
-                $cleaner1_ip6,
-                $cleaner2_ip,
-                $cleaner2_ip6,
+            remote_cert_cleaners => flatten[
+                $designate_ips,
+                $designate_ips_v6,
                 $cleaner5_ip,
                 $cleaner5_ip6,
                 $cleaner6_ip,
@@ -113,10 +108,8 @@ class profile::openstack::base::puppetmaster::frontend(
 
     ferm::rule{'puppetcertcleaning':
         ensure => 'present',
-        rule   => "saddr (@resolve((${designate_host}))
-                          @resolve((${designate_host}), AAAA)
-                          @resolve((${designate_host_standby}))
-                          @resolve((${designate_host_standby}), AAAA))
+        rule   => "saddr (@resolve((${designate_hosts}))
+                          @resolve((${designate_hosts}), AAAA))
                         proto tcp dport 22 ACCEPT;",
     }
 }

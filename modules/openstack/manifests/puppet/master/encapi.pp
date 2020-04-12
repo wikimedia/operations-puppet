@@ -8,8 +8,7 @@ class openstack::puppet::master::encapi(
     $puppetmasters,
     $labweb_hosts,
     $nova_controller,
-    $designate_host,
-    $designate_host_standby,
+    Array[Stdlib::Fqdn] $designate_hosts,
 ) {
     require_package('python3-pymysql',
                     'python3-statsd',
@@ -36,12 +35,14 @@ class openstack::puppet::master::encapi(
     #  before writing or deleting.
     $labweb_ips = $labweb_hosts.map |$host| { ipresolve($host, 4) }
     $labweb_ips_v6 = $labweb_hosts.map |$host| { ipresolve($host, 6) }
-    $allowed_writers = join(flatten([$labweb_ips, $labweb_ips_v6,
-        ipresolve($nova_controller, 4),
-        ipresolve($designate_host, 4),
-        ipresolve($designate_host, 6),
-        ipresolve($designate_host_standby, 4),
-        ipresolve($designate_host_standby, 6)]),',')
+    $designate_ips = $designate_hosts.map |$host| { ipresolve($host, 4) }
+    $designate_ips_v6 = $designate_hosts.map |$host| { ipresolve($host, 6) }
+    $allowed_writers = join(flatten([
+      $labweb_ips,
+      $labweb_ips_v6,
+      $designate_ips,
+      $designate_ips_v6,
+      ipresolve($nova_controller, 4)]),',')
 
     # We override service_settings because the default includes autoload
     #  which insists on using python2

@@ -1,6 +1,5 @@
 class profile::openstack::codfw1dev::haproxy(
-    Stdlib::Fqdn $designate_host = lookup('profile::openstack::codfw1dev::designate_host'),
-    Stdlib::Fqdn $designate_host_standby = lookup('profile::openstack::codfw1dev::designate_host_standby'),
+    Array[Stdlib::Fqdn] $designate_hosts = lookup('profile::openstack::codfw1dev::designate_hosts'),
     Stdlib::Fqdn $nova_controller = lookup('profile::openstack::codfw1dev::nova_controller'),
     Stdlib::Fqdn $nova_controller_standby = lookup('profile::openstack::codfw1dev::nova_controller_standby'),
     Stdlib::Port $glance_api_bind_port = lookup('profile::openstack::codfw1dev::glance::api_bind_port'),
@@ -13,7 +12,7 @@ class profile::openstack::codfw1dev::haproxy(
     Stdlib::Port $placement_api_port = lookup('profile::openstack::codfw1dev::nova::placement_api_port'),
 ) {
     profile::openstack::base::haproxy::site { 'designate':
-        servers            => [$designate_host, $designate_host_standby],
+        servers            => $designate_hosts,
         healthcheck_method => 'HEAD',
         healthcheck_path   => '/',
         port_frontend      => 9001,

@@ -5,8 +5,7 @@
 class profile::mariadb::ferm_wmcs(
     $eqiad1_nova_controller = hiera('profile::openstack::eqiad1::nova_controller'),
     $eqiad1_nova_controller_standby = hiera('profile::openstack::eqiad1::nova_controller_standby'),
-    $designate_host = hiera('profile::openstack::eqiad1::designate_host'),
-    $designate_host_standby = hiera('profile::openstack::eqiad1::designate_host_standby'),
+    Array[Stdlib::Fqdn] $designate_hosts = lookup('profile::openstack::eqiad1::designate_host'),
     $labweb_hosts = hiera('profile::openstack::eqiad1::labweb_hosts'),
     $cloudweb_dev_hosts = hiera('profile::openstack::codfw1dev::labweb_hosts'),
     $osm_host = hiera('profile::openstack::eqiad1::osm_host'),
@@ -24,7 +23,7 @@ class profile::mariadb::ferm_wmcs(
         proto   => 'tcp',
         port    => $port,
         notrack => true,
-        srange  => "(@resolve(${designate_host}) @resolve(${designate_host_standby}))",
+        srange  => "(@resolve((${designate_hosts})))",
     }
 
     ferm::service{ 'wikitech':

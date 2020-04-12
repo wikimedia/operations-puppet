@@ -1,7 +1,6 @@
 class profile::openstack::codfw1dev::designate::service(
     $version = hiera('profile::openstack::codfw1dev::version'),
-    $designate_host = hiera('profile::openstack::codfw1dev::designate_host'),
-    $designate_host_standby = hiera('profile::openstack::codfw1dev::designate_host_standby'),
+    Array[Stdlib::Fqdn] $designate_hosts = lookup('profile::openstack::codfw1dev::designate_hosts'),
     $nova_controller = hiera('profile::openstack::codfw1dev::nova_controller'),
     $nova_controller_standby = hiera('profile::openstack::codfw1dev::nova_controller_standby'),
     $keystone_host = hiera('profile::openstack::codfw1dev::keystone_host'),
@@ -27,8 +26,7 @@ class profile::openstack::codfw1dev::designate::service(
 
     class{'::profile::openstack::base::designate::service':
         version                           => $version,
-        designate_host                    => $designate_host,
-        designate_host_standby            => $designate_host_standby,
+        designate_hosts                   => $designate_hosts,
         keystone_host                     => $keystone_host,
         db_pass                           => $db_pass,
         db_host                           => $db_host,

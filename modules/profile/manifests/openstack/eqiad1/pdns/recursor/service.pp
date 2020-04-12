@@ -1,6 +1,5 @@
 class profile::openstack::eqiad1::pdns::recursor::service(
-    Stdlib::Fqdn $designate_primary       = lookup('profile::openstack::eqiad1::designate_host'),
-    Stdlib::Fqdn $designate_secondary     = lookup('profile::openstack::eqiad1::designate_host_standby'),
+    Array[Stdlib::Fqdn] $designate_hosts         = lookup('profile::openstack::eqiad1::designate_hosts'),
     Stdlib::Fqdn $pdns_host               = lookup('profile::openstack::eqiad1::pdns::host'),
     Stdlib::Fqdn $pdns_host_secondary     = lookup('profile::openstack::eqiad1::pdns::host_secondary'),
     Stdlib::Fqdn $pdns_recursor           = lookup('profile::openstack::eqiad1::pdns::recursor'),
@@ -14,10 +13,10 @@ class profile::openstack::eqiad1::pdns::recursor::service(
     ) {
 
     # support for a 2 nodes designate deployment
-    if ($::fqdn == $designate_primary) {
+    if ($::fqdn == $designate_hosts[0]) {
         $service_pdns_host     = $pdns_host
         $service_pdns_recursor = $pdns_recursor
-    } elsif ($::fqdn == $designate_secondary) {
+    } elsif ($::fqdn == $designate_hosts[1]) {
         $service_pdns_host     = $pdns_host_secondary
         $service_pdns_recursor = $pdns_recursor_secondary
     } else {

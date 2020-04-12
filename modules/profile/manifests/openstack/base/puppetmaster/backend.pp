@@ -1,6 +1,5 @@
 class profile::openstack::base::puppetmaster::backend(
-    $designate_host = hiera('profile::openstack::base::designate_host'),
-    $designate_host_standby = hiera('profile::openstack::base::designate_host_standby'),
+    Array[Stdlib::Fqdn] $designate_hosts = lookup('profile::openstack::base::designate_hosts'),
     $puppetmaster_webhostname = hiera('profile::openstack::base::puppetmaster::web_hostname'),
     $puppetmaster_hostname = hiera('profile::openstack::base::puppetmaster_hostname'),
     $puppetmaster_ca = hiera('profile::openstack::base::puppetmaster::ca'),
@@ -18,8 +17,7 @@ class profile::openstack::base::puppetmaster::backend(
     require ::profile::conftool::client
     include ::network::constants
     class {'profile::openstack::base::puppetmaster::common':
-        designate_host           => $designate_host,
-        designate_host_standby   => $designate_host_standby,
+        designate_hosts          => $designate_hosts,
         puppetmaster_webhostname => $puppetmaster_webhostname,
         puppetmaster_hostname    => $puppetmaster_hostname,
         puppetmasters            => $puppetmasters,

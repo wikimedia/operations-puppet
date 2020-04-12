@@ -1,7 +1,8 @@
 profile::conftool::master::sync_dir: /etc/conftool/data
 profile::openstack::base::optional_firewall: false
-profile::openstack::eqiad1::designate_host: cloudservices1003.wikimedia.org
-profile::openstack::eqiad1::designate_host_standby: cloudservices1004.wikimedia.org
+profile::openstack::eqiad1::designate_hosts:
+  - cloudservices1003.wikimedia.org
+  - cloudservices1004.wikimedia.org
 profile::openstack::eqiad1::labweb_hosts: [labweb1001.wikimedia.org, labweb1002.wikimedia.org]
 profile::openstack::eqiad1::nova_controller: cloudcontrol1003.wikimedia.org
 profile::openstack::eqiad1::nova_controller_standby: cloudcontrol1004.wikimedia.org

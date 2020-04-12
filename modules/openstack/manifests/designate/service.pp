@@ -4,8 +4,7 @@
 class openstack::designate::service(
     $active,
     $version,
-    $designate_host,
-    $designate_host_standby,
+    Array[Stdlib::Fqdn] $designate_hosts,
     $keystone_host,
     $db_user,
     $db_pass,
@@ -40,11 +39,12 @@ class openstack::designate::service(
     $nova_controller_ip = ipresolve($nova_controller)
     $keystone_public_uri = "http://${keystone_host}:${keystone_public_port}"
     $keystone_admin_uri = "http://${keystone_host}:${keystone_auth_port}"
-    $designate_host_ip = ipresolve($designate_host,4)
-    $designate_host_standby_ip = ipresolve($designate_host_standby,4)
+    $designate_host_ips = $designate_hosts.map |$host| { ipresolve($host, 4) }
     $puppetmaster_hostname_ip = ipresolve($puppetmaster_hostname,4)
 
-    $coordination_host = $designate_host
+    # This ought to be a proper memcached cluster.  In the meantime,
+    # we're just using the first one.  T250087
+    $coordination_host = $designate_hosts[0]
 
     class { "openstack::designate::service::${version}": }
 
