@@ -18,8 +18,6 @@ profile::openstack::eqiad1::puppetmaster::servers:
 profile::openstack::eqiad1::puppetmaster::web_hostname: puppetmaster.cloudinfra.wmflabs.org
 profile::openstack::eqiad1::puppetmaster_hostname: puppetmaster.cloudinfra.wmflabs.org
 profile::openstack::eqiad1::region: eqiad1-r
-profile::openstack::eqiad1::second_region_designate_host: cloudservices1003.wikimedia.org
-profile::openstack::eqiad1::second_region_designate_host_standby: cloudservices1004.wikimedia.org
 profile::puppetmaster::common::storeconfigs: none
 profile::puppetmaster::frontend::allow_from: [.wmflabs]
 puppetmaster: cloudinfra-internal-puppetmaster-02.cloudinfra.eqiad.wmflabs

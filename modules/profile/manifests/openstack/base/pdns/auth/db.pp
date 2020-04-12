@@ -1,7 +1,6 @@
 class profile::openstack::base::pdns::auth::db(
     $designate_host = hiera('profile::openstack::base::designate_host'),
     $designate_host_standby = hiera('profile::openstack::base::designate_host_standby'),
-    $second_region_designate_host = hiera('profile::openstack::base::second_region_designate_host'),
     $pdns_db_pass = hiera('profile::openstack::base::pdns:db_pass'),
     $pdns_admin_db_pass = hiera('profile::openstack::base::pdns::db_admin_pass'),
     Array[String] $mysql_root_clients = hiera('mysql_root_clients', []),
@@ -69,7 +68,7 @@ class profile::openstack::base::pdns::auth::db(
     ferm::service { 'mysql_designate':
         proto  => 'tcp',
         port   => '3306',
-        srange => "(@resolve((${designate_host} ${designate_host_standby} ${second_region_designate_host}))
-                   @resolve((${designate_host} ${designate_host_standby} ${second_region_designate_host}), AAAA))"
+        srange => "(@resolve((${designate_host} ${designate_host_standby})
+                   @resolve((${designate_host} ${designate_host_standby}), AAAA))"
     }
 }

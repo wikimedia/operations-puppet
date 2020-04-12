@@ -5,7 +5,6 @@ class profile::openstack::base::keystone::db(
     $labs_hosts_range_v6 = hiera('profile::openstack::base::labs_hosts_range_v6'),
     $puppetmaster_hostname = hiera('profile::openstack::base::puppetmaster_hostname'),
     $designate_host = hiera('profile::openstack::base::designate_host'),
-    $second_region_designate_host = hiera('profile::openstack::base::second_region_designate_host'),
     $osm_host = hiera('profile::openstack::base::osm_host'),
     Array[String] $mysql_root_clients = hiera('mysql_root_clients', []),
     ) {
@@ -35,7 +34,7 @@ class profile::openstack::base::keystone::db(
 
     ferm::rule{'mysql_designate':
         ensure => 'present',
-        rule   => "saddr (@resolve((${designate_host} ${second_region_designate_host})) @resolve((${designate_host} ${second_region_designate_host}), AAAA)) proto tcp dport (3306) ACCEPT;",
+        rule   => "saddr (@resolve((${designate_host})) @resolve((${designate_host}), AAAA)) proto tcp dport (3306) ACCEPT;",
     }
 
     ferm::rule{'mysql_puppetmaster':

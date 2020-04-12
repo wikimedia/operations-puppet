@@ -1,8 +1,6 @@
 class profile::openstack::base::puppetmaster::frontend(
     $designate_host = hiera('profile::openstack::base::designate_host'),
     $designate_host_standby = hiera('profile::openstack::base::designate_host_standby'),
-    $second_region_designate_host = hiera('profile::openstack::base::second_region_designate_host'),
-    $second_region_designate_host_standby = hiera('profile::openstack::base::second_region_designate_host_standby'),
     $puppetmasters = hiera('profile::openstack::base::puppetmaster::servers'),
     $puppetmaster_ca = hiera('profile::openstack::base::puppetmaster::ca'),
     $puppetmaster_hostname = hiera('profile::openstack::base::puppetmaster_hostname'),
@@ -35,21 +33,19 @@ class profile::openstack::base::puppetmaster::frontend(
     }
 
     class {'profile::openstack::base::puppetmaster::common':
-        designate_host                       => $designate_host,
-        designate_host_standby               => $designate_host_standby,
-        second_region_designate_host         => $second_region_designate_host,
-        second_region_designate_host_standby => $second_region_designate_host_standby,
-        puppetmaster_webhostname             => $puppetmaster_webhostname,
-        puppetmaster_hostname                => $puppetmaster_hostname,
-        puppetmasters                        => $puppetmasters,
-        encapi_db_host                       => $encapi_db_host,
-        encapi_db_name                       => $encapi_db_name,
-        encapi_db_user                       => $encapi_db_user,
-        encapi_db_pass                       => $encapi_db_pass,
-        encapi_statsd_prefix                 => $encapi_statsd_prefix,
-        statsd_host                          => $statsd_host,
-        labweb_hosts                         => $labweb_hosts,
-        nova_controller                      => $nova_controller,
+        designate_host           => $designate_host,
+        designate_host_standby   => $designate_host_standby,
+        puppetmaster_webhostname => $puppetmaster_webhostname,
+        puppetmaster_hostname    => $puppetmaster_hostname,
+        puppetmasters            => $puppetmasters,
+        encapi_db_host           => $encapi_db_host,
+        encapi_db_name           => $encapi_db_name,
+        encapi_db_user           => $encapi_db_user,
+        encapi_db_pass           => $encapi_db_pass,
+        encapi_statsd_prefix     => $encapi_statsd_prefix,
+        statsd_host              => $statsd_host,
+        labweb_hosts             => $labweb_hosts,
+        nova_controller          => $nova_controller,
     }
 
     if ! defined(Class['puppetmaster::certmanager']) {
@@ -57,10 +53,6 @@ class profile::openstack::base::puppetmaster::frontend(
         $cleaner1_ip6 = ipresolve($designate_host, 6)
         $cleaner2_ip = ipresolve($designate_host_standby, 4)
         $cleaner2_ip6 = ipresolve($designate_host_standby, 6)
-        $cleaner3_ip = ipresolve($second_region_designate_host, 4)
-        $cleaner3_ip6 = ipresolve($second_region_designate_host, 6)
-        $cleaner4_ip = ipresolve($second_region_designate_host_standby, 4)
-        $cleaner4_ip6 = ipresolve($second_region_designate_host_standby, 6)
         $cleaner5_ip = ipresolve($nova_controller, 4)
         $cleaner5_ip6 = ipresolve($nova_controller, 6)
         $cleaner6_ip = ipresolve($nova_controller_standby, 4)
@@ -71,10 +63,6 @@ class profile::openstack::base::puppetmaster::frontend(
                 $cleaner1_ip6,
                 $cleaner2_ip,
                 $cleaner2_ip6,
-                $cleaner3_ip,
-                $cleaner3_ip6,
-                $cleaner4_ip,
-                $cleaner4_ip6,
                 $cleaner5_ip,
                 $cleaner5_ip6,
                 $cleaner6_ip,
@@ -125,10 +113,10 @@ class profile::openstack::base::puppetmaster::frontend(
 
     ferm::rule{'puppetcertcleaning':
         ensure => 'present',
-        rule   => "saddr (@resolve((${designate_host} ${second_region_designate_host}))
-                          @resolve((${designate_host} ${second_region_designate_host}), AAAA)
-                          @resolve((${designate_host_standby} ${second_region_designate_host_standby}))
-                          @resolve((${designate_host_standby} ${second_region_designate_host_standby}), AAAA))
+        rule   => "saddr (@resolve((${designate_host}))
+                          @resolve((${designate_host}), AAAA)
+                          @resolve((${designate_host_standby}))
+                          @resolve((${designate_host_standby}), AAAA))
                         proto tcp dport 22 ACCEPT;",
     }
 }
