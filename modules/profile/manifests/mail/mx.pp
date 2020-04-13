@@ -1,11 +1,15 @@
+# @summary profile to configure exim on mx hosts
+# @param prometheus_nodes The set of Prometheus servers which will query for metrics
+# @param dkim_domain Configure dkim for this domain
+# @param verp_domains configure verp for theses domains
+# @param verp_post_connect_server the server to post verp bounces too
+# @param verp_bounce_post_url the url top post verp bounces to
 class profile::mail::mx (
-    $verp_domains             = hiera('profile::mail::mx::verp_domains'),
-    $verp_post_connect_server = hiera('profile::mail::mx::verp_post_connect_server'),
-    $verp_bounce_post_url     = hiera('profile::mail::mx::verp_bounce_post_url'),
-    $prometheus_nodes         = hiera('prometheus_nodes', []),
-    $cert_name                = hiera('profile::mail::mx::cert_name', $facts['hostname']),
-    $cert_subjects            = hiera('profile::mail::mx::cert_subjects', $facts['fqdn']),
-    $dkim_domain              = hiera('profile::mail::mx::dkim_domain', 'wikimedia.org'),
+    Array[Stdlib::Host]   $prometheus_nodes         = lookup('prometheus_nodes'),
+    Stdlib::Host          $dkim_domain              = lookup('profile::mail::mx::dkim_domain'),
+    Array[Stdlib::Host]   $verp_domains             = lookup('profile::mail::mx::verp_domains'),
+    Stdlib::Host          $verp_post_connect_server = lookup('profile::mail::mx::verp_post_connect_server'),
+    String[1]             $verp_bounce_post_url     = lookup('profile::mail::mx::verp_bounce_post_url'),
 ) {
     mailalias { 'root':
         recipient => 'root@wikimedia.org',

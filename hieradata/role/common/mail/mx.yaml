@@ -5,3 +5,7 @@ mtail::logs:
   - /var/log/exim4/mainlog
 # NOTE: this is what enables mtail to read the files in the exim4 log directory
 mtail::group: 'adm'
+profile::mail::mx::verp_domains:
+  - wikimedia.org
+profile::mail::mx::verp_post_connect_server: meta.wikimedia.org
+profile::mail::mx::verp_bounce_post_url: api-rw.discovery.wmnet/w/api.php
