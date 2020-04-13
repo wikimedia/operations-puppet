@@ -164,6 +164,14 @@
 #
 # [*systemd_hardening*]
 #   Whether or not to enable systemd unit security features. (default: true).
+#
+# [*res_track_memory*]
+#   When enabled makes Traffic Server track memory usage (allocations and releases). (default: undef, behaves as 0)
+#   Accepted values:
+#   * 0 Memory tracking Disabled
+#   * 1 Tracks IO Buffer Memory allocations and releases
+#  `* 2 Tracks IO Buffer Memory and OpenSSL Memory allocations and releases
+#
 # === Examples
 #
 #  trafficserver::instance { 'backend':
@@ -216,6 +224,7 @@ define trafficserver::instance(
     String $error_page = '<html><head><title>Error</title></head><body><p>Something went wrong</p></body></html>',
     Integer[0,1] $x_forwarded_for = 0,
     Boolean $systemd_hardening = true,
+    Optional[Integer[0,2]] $res_track_memory = undef,
 ) {
 
     require ::trafficserver

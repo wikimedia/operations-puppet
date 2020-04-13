@@ -18,6 +18,9 @@ CONFIG proxy.config.http.response_server_enabled INT 2
 CONFIG proxy.config.url_remap.pristine_host_hdr INT 1
 CONFIG proxy.config.disable_configuration_modification INT 1
 
+<% if @res_track_memory -%>
+CONFIG proxy.config.res_track_memory INT <%= @res_track_memory %>
+<% end -%>
 <% if @network_settings -%>
 # Network settings
 CONFIG proxy.config.net.connections_throttle INT <%= @network_settings['connections_throttle'] %>

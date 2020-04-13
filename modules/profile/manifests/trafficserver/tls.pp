@@ -25,6 +25,7 @@ class profile::trafficserver::tls (
     String $public_tls_unified_cert_vendor=hiera('public_tls_unified_cert_vendor'),
     Optional[Hash[String, Trafficserver::TLS_certificate]] $extra_certs=hiera('profile::trafficserver::tls::extra_certs', undef),
     String $conftool_service=hiera('profile::trafficserver::tls::conftool_service', 'ats-tls'),
+    Optional[Integer[0,2]] $res_track_memory=lookup('profile::trafficserver::tls::res_track_memory', {'default_value' => undef}),
 ){
     $errorpage = {
         title       => 'Wikimedia Error',
@@ -201,6 +202,7 @@ class profile::trafficserver::tls (
         error_page             => template('mediawiki/errorpage.html.erb'),
         x_forwarded_for        => 1,
         systemd_hardening      => $systemd_hardening,
+        res_track_memory       => $res_track_memory,
     }
 
     trafficserver::lua_script { 'tls':
