@@ -108,8 +108,8 @@ class profile::openstack::base::puppetmaster::frontend(
 
     ferm::rule{'puppetcertcleaning':
         ensure => 'present',
-        rule   => "saddr (@resolve((${designate_hosts}))
-                          @resolve((${designate_hosts}), AAAA))
+        rule   => "saddr (@resolve((${join($designate_hosts,' ')}))
+                          @resolve((${join($designate_hosts,' ')}), AAAA))
                         proto tcp dport 22 ACCEPT;",
     }
 }

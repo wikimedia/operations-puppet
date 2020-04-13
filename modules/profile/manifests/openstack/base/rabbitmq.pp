@@ -52,7 +52,7 @@ class profile::openstack::base::rabbitmq(
 
     ferm::rule{'rabbit_for_designate':
         ensure => 'present',
-        rule   =>  "saddr (@resolve((${designate_hosts})) @resolve((${designate_hosts}), AAAA))
+        rule   =>  "saddr (@resolve((${join($designate_hosts,' ')})) @resolve((${join($designate_hosts,' ')}), AAAA))
                     proto tcp dport 5672 ACCEPT;",
     }
 

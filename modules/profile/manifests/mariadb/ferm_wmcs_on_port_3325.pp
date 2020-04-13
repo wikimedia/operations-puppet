@@ -23,7 +23,7 @@ class profile::mariadb::ferm_wmcs_on_port_3325(
         proto   => 'tcp',
         port    => $port,
         notrack => true,
-        srange  => "(@resolve((${designate_hosts})))",
+        srange  => "(@resolve((${join($designate_hosts,' ')})))",
     }
 
     ferm::service{ 'wikitech':

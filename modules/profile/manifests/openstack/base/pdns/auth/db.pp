@@ -67,7 +67,7 @@ class profile::openstack::base::pdns::auth::db(
     ferm::service { 'mysql_designate':
         proto  => 'tcp',
         port   => '3306',
-        srange => "(@resolve((${designate_hosts}))
-                   @resolve((${designate_hosts}), AAAA))"
+        srange => "(@resolve((${join($designate_hosts,' ')}))
+                   @resolve((${join($designate_hosts,' ')}), AAAA))"
     }
 }

@@ -118,7 +118,7 @@ class profile::openstack::eqiad1::keystone::service(
     # to validate issued tokens
     ferm::rule{'main_designate_35357':
         ensure => 'present',
-        rule   => "saddr @resolve((${designate_hosts})) proto tcp dport (35357) ACCEPT;",
+        rule   => "saddr @resolve((${join($designate_hosts,' ')})) proto tcp dport (35357) ACCEPT;",
     }
 
     file { '/etc/cron.hourly/keystone':

@@ -103,8 +103,8 @@ class profile::openstack::base::keystone::service(
                              @resolve(${nova_controller_standby}) @resolve(${nova_controller_standby}, AAAA)
                              @resolve(${nova_controller}) @resolve(${nova_controller}, AAAA)
                              @resolve(${nova_api_host}) @resolve(${nova_api_host}, AAAA)
-                             @resolve((${designate_hosts}))
-                             @resolve((${designate_hosts}), AAAA)
+                             @resolve((${join($designate_hosts,' ')}))
+                             @resolve((${join($designate_hosts,' ')}), AAAA)
                              ${labweb_ips} ${labweb_ip6s}
                              @resolve(${osm_host})
                              ) proto tcp dport (35357) ACCEPT;",

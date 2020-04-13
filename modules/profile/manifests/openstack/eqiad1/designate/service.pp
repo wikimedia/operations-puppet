@@ -65,6 +65,6 @@ class profile::openstack::eqiad1::designate::service(
     ferm::service { 'designate_memcached':
         proto  => 'tcp',
         port   => '11000',
-        srange => "(@resolve((${designate_hosts})) @resolve((${designate_hosts}), AAAA))"
+        srange => "(@resolve((${join($designate_hosts,' ')})) @resolve((${join($designate_hosts,' ')}), AAAA))"
     }
 }

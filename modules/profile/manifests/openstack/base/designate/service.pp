@@ -98,14 +98,14 @@ class profile::openstack::base::designate::service(
 
     # allow axfr traffic between mdns and pdns on the pdns hosts
     ferm::rule { 'mdns-axfr':
-        rule => "saddr (@resolve((${designate_hosts}))
-                        @resolve((${designate_hosts}, AAAA)))
+        rule => "saddr (@resolve((${join($designate_hosts,' ')}))
+                        @resolve((${join($designate_hosts,' ')}, AAAA)))
                  proto tcp dport (5354) ACCEPT;",
     }
 
     ferm::rule { 'mdns-axfr-udp':
-        rule => "saddr (@resolve((${designate_hosts}))
-                        @resolve((${designate_hosts}), AAAA))
+        rule => "saddr (@resolve((${join($designate_hosts,' ')}))
+                        @resolve((${join($designate_hosts,' ')}), AAAA))
                  proto udp dport (5354) ACCEPT;",
     }
 }

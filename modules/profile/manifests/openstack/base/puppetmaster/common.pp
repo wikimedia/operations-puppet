@@ -53,8 +53,8 @@ class profile::openstack::base::puppetmaster::common(
 
     ferm::rule{'puppetbackend':
         ensure => 'present',
-        rule   => "saddr (@resolve((${designate_hosts}))
-                          @resolve((${designate_hosts}), AAAA)
+        rule   => "saddr (@resolve((${join($designate_hosts,' ')}))
+                          @resolve((${join($designate_hosts,' ')}), AAAA)
                           ${labweb_ips} ${labweb_aaaa} @resolve(${nova_controller}) @resolve(${nova_controller}, AAAA))
                           proto tcp dport 8101 ACCEPT;",
     }
