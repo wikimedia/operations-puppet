@@ -99,7 +99,7 @@ class profile::openstack::base::designate::service(
     # allow axfr traffic between mdns and pdns on the pdns hosts
     ferm::rule { 'mdns-axfr':
         rule => "saddr (@resolve((${join($designate_hosts,' ')}))
-                        @resolve((${join($designate_hosts,' ')}, AAAA)))
+                        @resolve((${join($designate_hosts,' ')}), AAAA))
                  proto tcp dport (5354) ACCEPT;",
     }
 
