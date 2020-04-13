@@ -286,7 +286,7 @@ function try_redirect_and_exit_if_ok(toolname, path)
     --- from  tools.wmflabs.org/$tool/index.php?param=foo
     --- to    $tool.toolforge.org/index.php?param=foo
     -- redirect happens right here; nothing else is evaluated in the nginx conf
-    return ngx.redirect(compute_redirect_url(toolname,path))
+    return ngx.redirect(compute_redirect_url(toolname,path), 308)
 end
 
 local captures = ngx.re.match(ngx.var.uri, "^/([^/]*)(/.*)?$")
