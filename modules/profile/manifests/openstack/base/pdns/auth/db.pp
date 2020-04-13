@@ -68,7 +68,7 @@ class profile::openstack::base::pdns::auth::db(
     ferm::service { 'mysql_designate':
         proto  => 'tcp',
         port   => '3306',
-        srange => "(@resolve((${designate_host} ${designate_host_standby})
+        srange => "(@resolve((${designate_host} ${designate_host_standby}))
                    @resolve((${designate_host} ${designate_host_standby}), AAAA))"
     }
 }
