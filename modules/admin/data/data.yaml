@@ -4171,3 +4171,7 @@ ldap_only_users:
     ensure: present
     realname: Huei Tan
     email: htan@wikimedia.org
+  wkandek:
+    ensure: present
+    realname: Wolfgang Kandek
+    email: wkandek@wikimedia.org
