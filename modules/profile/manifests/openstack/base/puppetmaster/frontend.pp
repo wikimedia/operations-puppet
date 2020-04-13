@@ -55,14 +55,14 @@ class profile::openstack::base::puppetmaster::frontend(
         $cleaner6_ip = ipresolve($nova_controller_standby, 4)
         $cleaner6_ip6 = ipresolve($nova_controller_standby, 6)
         class { 'puppetmaster::certmanager':
-            remote_cert_cleaners => flatten[
+            remote_cert_cleaners => flatten([
                 $designate_ips,
                 $designate_ips_v6,
                 $cleaner5_ip,
                 $cleaner5_ip6,
                 $cleaner6_ip,
                 $cleaner6_ip6,
-            ]
+            ])
         }
     }
 
