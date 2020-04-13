@@ -29,7 +29,6 @@ class profile::openstack::base::designate::service(
     $osm_host = hiera('profile::openstack::base::osm_host'),
     $labweb_hosts = hiera('profile::openstack::base::labweb_hosts'),
     $region = hiera('profile::openstack::base::region'),
-    $coordination_host = hiera('profile::openstack::base::designate_host'),
     Array[Stdlib::Fqdn] $prometheus_nodes = lookup('prometheus_nodes'),
     $puppet_git_repo_name = lookup('profile::openstack::base::horizon::puppet_git_repo_name'),
     $puppet_git_repo_user = lookup('profile::openstack::base::horizon::puppet_git_repo_user'),
@@ -69,7 +68,6 @@ class profile::openstack::base::designate::service(
         keystone_public_port              => $keystone_public_port,
         keystone_auth_port                => $keystone_auth_port,
         region                            => $region,
-        coordination_host                 => $coordination_host,
         puppet_git_repo_name              => $puppet_git_repo_name,
         puppet_git_repo_user              => $puppet_git_repo_user,
     }

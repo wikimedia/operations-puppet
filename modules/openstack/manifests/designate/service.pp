@@ -32,7 +32,6 @@ class openstack::designate::service(
     $keystone_public_port,
     $keystone_auth_port,
     $region,
-    $coordination_host,
     $puppet_git_repo_name,
     $puppet_git_repo_user,
     ) {
@@ -44,6 +43,8 @@ class openstack::designate::service(
     $designate_host_ip = ipresolve($designate_host,4)
     $designate_host_standby_ip = ipresolve($designate_host_standby,4)
     $puppetmaster_hostname_ip = ipresolve($puppetmaster_hostname,4)
+
+    $coordination_host = $designate_host
 
     class { "openstack::designate::service::${version}": }
 
