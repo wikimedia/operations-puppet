@@ -25,12 +25,14 @@ def flatten(not_flat):
 
 class DataTest(unittest.TestCase):
 
-    admins = None
+    admins = {}
     bad_privileges_re = [
         re.compile(r'systemctl (?:\*|edit)')
     ]
     system_gid_min = 900
     system_gid_max = 950
+    system_uid_min = 900
+    system_uid_max = 950
 
     @classmethod
     def setUpClass(cls):
@@ -80,18 +82,26 @@ class DataTest(unittest.TestCase):
         self.assertEqual([], dupes, 'Duplicate group GIDs: %r' % dupes)
 
     def test_user_system_gid_range(self):
-        """Ensure users UID's are in the correct range"""
-        users = [user for user, config in self.admins['users'].items()
+        """Ensure system users UID's are in the correct range"""
+        users = ['%s (uid: %s)' % (user, config.get('uid'))
+                 for user, config in self.admins['users'].items()
                  if config.get('system') and not
                  self.system_gid_min <= config.get('uid') <= self.system_gid_max]
-        self.assertEqual([], users, 'System Groups with invalid UID: %r' % users)
+        self.assertEqual(
+            [], users,
+            'System users UID must be in range [%s-%s]: %r' % (
+                self.system_uid_min, self.system_uid_max, users))
 
     def test_user_standard_gid_range(self):
         """Ensure users UID's are in the correct range"""
-        users = [user for user, config in self.admins['users'].items()
+        users = ['%s (uid: %s)' % (user, config.get('uid'))
+                 for user, config in self.admins['users'].items()
                  if not config.get('system')
                  and self.system_gid_min <= config.get('uid') <= self.system_gid_max]
-        self.assertEqual([], users, 'System Groups with invalid UID: %r' % users)
+        self.assertEqual(
+            [], users,
+            'Standard user UIDs must not be in system groups range [%s-%s]: %r' % (
+                self.system_uid_min, self.system_uid_max, users))
 
     def test_absent_members(self):
         """Ensure absent users in the absent group and have ensure => absent"""
