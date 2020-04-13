@@ -3,8 +3,9 @@
 # Configures a nutcracker instance with all labwebs in the memcached pool
 #
 class profile::openstack::base::nutcracker(
-    $labweb_hosts = hiera('profile::openstack::base::labweb_hosts'),
-    $redis_shards = hiera('profile::openstack::base::nutcracker::redis::shards'),
+    Array[Stdlib::Fqdn] $labweb_hosts   = lookup('profile::openstack::base::labweb_hosts'),
+    Hash[String,Hash]   $redis_shards   = lookup('profile::openstack::base::nutcracker::redis::shards'),
+    Integer             $memcached_size = lookup('profile::openstack::base::nutcracker::memcached::size'),
 ) {
     $labweb_ips = $labweb_hosts.map |$host| { ipresolve($host, 4) }
     $memcached_servers = $labweb_ips.map |$ip| { "${ip}:11000:1" }
@@ -16,6 +17,7 @@ class profile::openstack::base::nutcracker(
     }
 
     class { '::memcached':
+        size => $memcached_size,
     }
 
     class { '::profile::prometheus::memcached_exporter': }

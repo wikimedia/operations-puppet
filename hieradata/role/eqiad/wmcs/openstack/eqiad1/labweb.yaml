@@ -62,6 +62,7 @@ profile::lvs::realserver::pools:
       - nutcracker
       - nginx
 
+profile::openstack::base::nutcracker::memcached::size: 6000
 profile::openstack::base::nutcracker::redis::shards:
   jobqueue:
     eqiad:
