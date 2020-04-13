@@ -1,16 +1,14 @@
 # @summary a class to install the jumpcloud scraping script and create the correct exim files
 # @param api_uri the jumpcloud api uri endpoint
 # @param api_key The jumpcloud API key
-# @managed_domain The domain name of the jumpcloud managed domain
+# @param managed_domain The domain name of the jumpcloud managed domain
+# @param aliases_dir location of aliases directory
 class profile::mail::jumpcloud (
     Stdlib::Host     $api_uri        = lookup('profile::mail::jumpcloud::api_uri'),
     String[40,40]    $api_key        = lookup('profile::mail::jumpcloud::api_key'),
     Stdlib::Host     $managed_domain = lookup('profile::mail::jumpcloud::managed_domain'),
+    Stdlib::Unixpath $aliases_dir    = lookup('profile::mail::jumpcloud::aliases_dir')
 ) {
-    # TODO aliases dir is currently hardcoded in exim, profile::mail::mx and here
-    # we should update the code so it is configured in profile::mx and passed to
-    # this class and exim
-    $aliases_dir = '/etc/exim4/aliases'
     $config = @(CONFIG)
     [DEFAULT]
     api_uri: ${api_uri}

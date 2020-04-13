@@ -10,6 +10,7 @@ class profile::mail::mx (
     Array[Stdlib::Host]   $verp_domains             = lookup('profile::mail::mx::verp_domains'),
     Stdlib::Host          $verp_post_connect_server = lookup('profile::mail::mx::verp_post_connect_server'),
     String[1]             $verp_bounce_post_url     = lookup('profile::mail::mx::verp_bounce_post_url'),
+    Boolean               $enable_jumpcloud         = lookup('profile::mail::mx::enable_jumpcloud')
 ) {
     mailalias { 'root':
         recipient => 'root@wikimedia.org',
@@ -42,8 +43,13 @@ class profile::mail::mx (
         filter  => template('role/exim/system_filter.conf.erb'),
         require => Class['spamassassin'],
     }
+    if $enable_jumpcloud {
+        class {'profile::mail::jumpcloud':
+            aliases_dir => $exim4::aliases_dir,
+        }
+    }
 
-    file { '/etc/exim4/defer_domains':
+    file { "${exim4::config_dir}/defer_domains":
         ensure  => present,
         owner   => 'root',
         group   => 'Debian-exim',
@@ -51,7 +57,7 @@ class profile::mail::mx (
         require => Class['exim4'],
     }
 
-    file { '/etc/exim4/wikimedia_domains':
+    file { "${exim4::config_dir}/wikimedia_domains":
         ensure  => present,
         owner   => 'root',
         group   => 'root',
@@ -60,7 +66,7 @@ class profile::mail::mx (
         require => Class['exim4'],
     }
 
-    file { '/etc/exim4/legacy_mailing_lists':
+    file { "${exim4::config_dir}/legacy_mailing_lists":
         ensure  => present,
         owner   => 'root',
         group   => 'root',
@@ -69,14 +75,14 @@ class profile::mail::mx (
         require => Class['exim4'],
     }
 
-    file { '/etc/exim4/bounce_message_file':
+    file { "${exim4::config_dir}/bounce_message_file":
         ensure => present,
         owner  => 'root',
         group  => 'Debian-exim',
         mode   => '0444',
         source => 'puppet:///modules/role/exim/bounce_message_file',
     }
-    file { '/etc/exim4/warn_message_file':
+    file { "${exim4::config_dir}/warn_message_file":
         ensure => present,
         owner  => 'root',
         group  => 'Debian-exim',
@@ -107,7 +113,7 @@ class profile::mail::mx (
     }
 
     # mails the wikimedia.org mail alias file to OIT once per week
-    $alias_file = '/etc/exim4/aliases/wikimedia.org'
+    $alias_file = "${exim4::aliases_dir}/wikimedia.org"
     $recipient  = 'officeit@wikimedia.org'
     $subject    = "wikimedia.org mail aliases from ${::hostname}"
     cron { 'mail_exim_aliases':
@@ -133,7 +139,7 @@ class profile::mail::mx (
         source => 'puppet:///modules/icinga/check_exim_queue.sh',
     }
 
-    ::sudo::user { 'nagios_exim_queue':
+    sudo::user { 'nagios_exim_queue':
         user       => 'nagios',
         privileges => ['ALL = NOPASSWD: /usr/sbin/exipick -bpc -o [[\:digit\:]][[\:digit\:]][mh]'],
     }

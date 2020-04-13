@@ -17,12 +17,14 @@
 #   The queue runner config option.
 
 class exim4(
-  String $config,
-  Enum['light', 'heavy'] $variant = 'light',
-  Enum['combined', 'no', 'separate', 'ppp', 'nodaemon', 'queueonly'] $queuerunner = 'combined',
-  Optional[String] $filter = undef,
+  String             $config,
+  Exim4::Variant     $variant     = 'light',
+  Exim4::Queuerunner $queuerunner = 'combined',
+  Stdlib::Unixpath   $config_dir  = '/etc/exim4',
+  Optional[String]   $filter      = undef,
 ) {
-
+    $aliases_dir = "${config_dir}/aliases"
+    $dkim_dir    = "${config_dir}/dkim"
     package { [
         'exim4-config',
         "exim4-daemon-${variant}",
@@ -82,7 +84,7 @@ class exim4(
 
     # shortcuts update-exim4.conf from messing with us
     # and stops debconf prompts about it from showing up
-    file { '/etc/exim4/update-exim4.conf.conf':
+    file { "${config_dir}/update-exim4.conf.conf":
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
@@ -99,7 +101,7 @@ class exim4(
         require => Package['exim4-config'],
     }
 
-    file { '/etc/exim4/aliases':
+    file { $aliases_dir:
         ensure  => directory,
         owner   => 'root',
         group   => 'Debian-exim',
@@ -107,7 +109,7 @@ class exim4(
         require => Package['exim4-config'],
     }
 
-    file { '/etc/exim4/dkim':
+    file { $dkim_dir:
         ensure  => directory,
         purge   => true,
         owner   => 'root',
@@ -121,7 +123,7 @@ class exim4(
         default => present,
     }
 
-    file { '/etc/exim4/system_filter':
+    file { "${config_dir}/system_filter":
         ensure  => $filter_ensure,
         owner   => 'root',
         group   => 'Debian-exim',
@@ -130,7 +132,7 @@ class exim4(
         require => Package['exim4-config'],
     }
 
-    file { '/etc/exim4/exim4.conf':
+    file { "${config_dir}/exim4.conf":
         ensure  => present,
         owner   => 'root',
         group   => 'Debian-exim',
