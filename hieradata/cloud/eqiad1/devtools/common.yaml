@@ -136,3 +136,5 @@ gerrit::server::db_user: 'gerrit'
 gerrit::server::use_acmechief: false
 
 gerrit::service::ipv6: undef
+
+profile::tlsproxy::envoy::capitalize_headers: true
