@@ -37,7 +37,7 @@ groups:
               ori, jmm, jynus, ema, elukey, gehel, volans, marostegui,
               ayounsi, herron, aborrero, bstorm, vgutierrez, jiji, cwhite,
               crusnov, cdanis, fsero, jbond, jeh, dzahn, phamhi, sukhe, pt1979,
-              rzl, hnowlan, jayme]
+              rzl, hnowlan, jayme, kormat]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   ops-adm-group:
     # No gid for this group on purpose, it's a system provided one
