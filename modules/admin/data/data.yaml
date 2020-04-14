@@ -3658,6 +3658,14 @@ users:
     gid: 500
     ssh_keys:
       - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIF2TjL7xYqQjY286d/CV+PjmE2vTd9FfoLZZRDkf38XH janis@norna'
+  kormat:
+    ensure: present
+    realname: Stephen Shirley
+    kormat: sshirley@wikimedia.org
+    uid: 24118
+    gid: 500
+    ssh_keys:
+      - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJ1YZhevj9nTDh7Gs2Sm9mY8Aq2PaZNUmXDAIOrYkZ38 kormat@prod.wmf'
 
 ldap_only_users:
   abartov:
