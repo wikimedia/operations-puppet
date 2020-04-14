@@ -119,6 +119,8 @@ scap::sources:
 
 # Gerrit
 
+gerrit::service::ipv6: undef
+
 # Database (MySQL, will not be used in future)
 gerrit::server::db_user: 'gerrit'
 
@@ -134,7 +136,7 @@ gerrit::server::db_user: 'gerrit'
 
 ## TLS
 gerrit::server::use_acmechief: false
-
-gerrit::service::ipv6: undef
-
 profile::tlsproxy::envoy::capitalize_headers: true
+
+## Backups
+gerrit::server::backups_enabled: false
