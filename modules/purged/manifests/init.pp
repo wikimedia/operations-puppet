@@ -5,7 +5,8 @@ class purged (
     String $frontend_addr,
     Array[String] $mc_addrs,
     String $prometheus_addr,
-    Integer $concurrency,
+    Integer $frontend_workers,
+    Integer $backend_workers,
     Boolean $is_active,
 ) {
     package { 'purged':
