@@ -7,3 +7,5 @@ profile::openstack::eqiad1::designate::floating_ip_ptr_zone: '56.15.185.in-addr.
 # In the main deployment the below is used for changing the in-addr.arpa zone names for classless delegation, but here with our /24 we don't need to mess around.
 profile::openstack::eqiad1::designate::floating_ip_ptr_fqdn_matching_regex: '^(\d{1,3})\.56\.15\.185\.in-addr\.arpa\.'
 profile::openstack::eqiad1::designate::floating_ip_ptr_fqdn_replacement_pattern: '\1.56.15.185.in-addr.arpa.'
+profile::openstack::eqiad1::designate::mcrouter_port: 11213
+

@@ -31,6 +31,7 @@ class profile::openstack::base::designate::service(
     Array[Stdlib::Fqdn] $prometheus_nodes = lookup('prometheus_nodes'),
     $puppet_git_repo_name = lookup('profile::openstack::base::horizon::puppet_git_repo_name'),
     $puppet_git_repo_user = lookup('profile::openstack::base::horizon::puppet_git_repo_user'),
+    Integer $mcrouter_port = lookup('profile::openstack::base::designate::mcrouter_port'),
     ) {
 
     $primary_pdns_ip = ipresolve($primary_pdns,4)
@@ -107,5 +108,60 @@ class profile::openstack::base::designate::service(
         rule => "saddr (@resolve((${join($designate_hosts,' ')}))
                         @resolve((${join($designate_hosts,' ')}), AAAA))
                  proto udp dport (5354) ACCEPT;",
+    }
+
+    # Replicated cache set including all designate hosts.
+    # This will be used for tooz coordination by designate.
+    #
+    # The route config here is copy/pasted from
+    #  https://github.com/facebook/mcrouter/wiki/Replicated-pools-setup
+    #
+    # The cross-region bits don't actually matter but the parent class expects them.
+    class { '::mcrouter':
+        region                   => $::site,
+        cluster                  => "designate-${::site}",
+        cross_region_timeout_ms  => 250,
+        cross_cluster_timeout_ms => 1000,
+        pools                    => {
+            'designate' => {
+                servers => $designate_hosts.map |$host| { "${host}: 11211" }
+            },
+        },
+        routes                   => [ {
+            type               => 'OperationSelectorRoute',
+            operation_policies => {
+                add    => 'AllSyncRoute|Pool|designate',
+                delete => 'AllSyncRoute|Pool|designate',
+                get    => 'LatestRoute|Pool|designate',
+                set    => 'AllSyncRoute|Pool|designate'
+            }
+        } ]
+    }
+
+    class { '::memcached':
+    }
+    class { '::profile::prometheus::memcached_exporter': }
+
+    ferm::rule { 'skip_mcrouter_designate_conntrack_out':
+        desc  => 'Skip outgoing connection tracking for mcrouter',
+        table => 'raw',
+        chain => 'OUTPUT',
+        rule  => "proto tcp sport (${mcrouter_port}) NOTRACK;",
+    }
+
+    ferm::rule { 'skip_mcrouter_designate_conntrack_in':
+        desc  => 'Skip incoming connection tracking for mcrouter',
+        table => 'raw',
+        chain => 'PREROUTING',
+        rule  => "proto tcp dport (${mcrouter_port}) NOTRACK;",
+    }
+
+    ferm::service { 'mcrouter':
+        desc    => 'Allow connections to mcrouter',
+        proto   => 'tcp',
+        notrack => true,
+        port    => $mcrouter_port,
+        srange  => "(@resolve((${join($designate_hosts,' ')}))
+                    @resolve((${join($designate_hosts,' ')}), AAAA))",
     }
 }

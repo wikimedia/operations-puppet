@@ -22,6 +22,7 @@ class profile::openstack::codfw1dev::designate::service(
     $region = hiera('profile::openstack::codfw1dev::region'),
     $puppet_git_repo_name = lookup('profile::openstack::codfw1dev::horizon::puppet_git_repo_name'),
     $puppet_git_repo_user = lookup('profile::openstack::codfw1dev::horizon::puppet_git_repo_user'),
+    Integer $mcrouter_port = lookup('profile::openstack::codfw1dev::designate::mcrouter_port'),
 ) {
 
     class{'::profile::openstack::base::designate::service':
@@ -48,12 +49,7 @@ class profile::openstack::codfw1dev::designate::service(
         region                            => $region,
         puppet_git_repo_name              => $puppet_git_repo_name,
         puppet_git_repo_user              => $puppet_git_repo_user,
+        mcrouter_port                     => $mcrouter_port,
     }
     contain '::profile::openstack::base::designate::service'
-
-    # Memcached for coordination between pool managers
-    class { '::memcached':
-    }
-
-    class { '::profile::prometheus::memcached_exporter': }
 }

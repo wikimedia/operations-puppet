@@ -42,10 +42,6 @@ class openstack::designate::service(
     $designate_host_ips = $designate_hosts.map |$host| { ipresolve($host, 4) }
     $puppetmaster_hostname_ip = ipresolve($puppetmaster_hostname,4)
 
-    # This ought to be a proper memcached cluster.  In the meantime,
-    # we're just using the first one.  T250087
-    $coordination_host = $designate_hosts[0]
-
     class { "openstack::designate::service::${version}": }
 
     file { '/usr/lib/python2.7/dist-packages/wmf_sink':

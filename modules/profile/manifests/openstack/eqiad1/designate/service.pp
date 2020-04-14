@@ -22,6 +22,7 @@ class profile::openstack::eqiad1::designate::service(
     $region = hiera('profile::openstack::eqiad1::region'),
     $puppet_git_repo_name = lookup('profile::openstack::eqiad1::horizon::puppet_git_repo_name'),
     $puppet_git_repo_user = lookup('profile::openstack::eqiad1::horizon::puppet_git_repo_user'),
+    Integer $mcrouter_port = lookup('profile::openstack::eqiad1::designate::mcrouter_port'),
 ) {
 
     require ::profile::openstack::eqiad1::clientpackages
@@ -49,22 +50,11 @@ class profile::openstack::eqiad1::designate::service(
         region                            => $region,
         puppet_git_repo_name              => $puppet_git_repo_name,
         puppet_git_repo_user              => $puppet_git_repo_user,
+        mcrouter_port                     => $mcrouter_port,
     }
 
     class {'::openstack::designate::monitor':
         active         => true,
         contact_groups => 'wmcs-team',
-    }
-
-    # Memcached for coordination between pool managers
-    class { '::memcached':
-    }
-
-    class { '::profile::prometheus::memcached_exporter': }
-
-    ferm::service { 'designate_memcached':
-        proto  => 'tcp',
-        port   => '11000',
-        srange => "(@resolve((${join($designate_hosts,' ')})) @resolve((${join($designate_hosts,' ')}), AAAA))"
     }
 }

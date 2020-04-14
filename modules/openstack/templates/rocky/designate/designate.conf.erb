@@ -323,18 +323,16 @@ ssl = False
 driver = messagingv2
 topics = notifications
 
-<% if @coordination_host %>
 [coordination]
 # The backend URL to use for distributed coordination. If unset services that
 # need coordination will function as a standalone service. This is a `tooz` url
 # - see https://docs.openstack.org/tooz/latest/user/compatibility.html (string
 # value)
 #
-# This is currently a spof; we need probably need some kind of memcached cluster
-# here, as per T250087
-# 
-backend_url = memcached://<%= @coordination_host %>:11000
-<% end %>
+# Each designate host just talks to the local mcrouter instance; this instance
+# is part of a pool that includes the other designate hosts.
+#
+backend_url = memcached://localhost:11213
 
 [oslo_policy]
 policy_file = policy.yaml
