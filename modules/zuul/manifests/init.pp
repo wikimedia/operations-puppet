@@ -24,6 +24,13 @@ class zuul ( ){
                 deploy_user => 'deploy-zuul',
             }
         }
+
+        file { '/var/log/zuul':
+            ensure => directory,
+            owner  => 'zuul',
+            group  => 'adm',
+            mode   => '0755',
+        }
     }
 
 }
