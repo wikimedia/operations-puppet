@@ -118,6 +118,7 @@ scap::sources:
 
 
 # Gerrit
+gerrit::service::ipv6: undef
 
 gerrit::service::ipv6: undef
 
@@ -140,3 +141,4 @@ profile::tlsproxy::envoy::capitalize_headers: true
 
 ## Backups
 gerrit::server::backups_enabled: false
+gerrit::server::backup_set: 'srv-gerrit-git'
