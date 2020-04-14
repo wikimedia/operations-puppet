@@ -95,23 +95,24 @@ class profile::cache::base(
     ###########################################################################
     # Purging
     ###########################################################################
-    if $use_purged {
-        class { 'purged':
-            backend_addr    => '127.0.0.1:3128',
-            frontend_addr   => '127.0.0.1:3127',
-            mc_addrs        => $purge_multicasts.map |$mc| { "${mc}:4827" },
-            prometheus_addr => ':2112',
-            concurrency     => $::processorcount,
-        }
-    } else {
-        class { 'prometheus::node_vhtcpd': }
-        class { 'varnish::htcppurger':
-            host_regex => $purge_host_regex,
-            mc_addrs   => $purge_multicasts,
-            caches     => ['127.0.0.1:3128', '127.0.0.1:3127,1.0'],
-        }
-        Class[varnish::packages] -> Class[varnish::htcppurger]
+    class { 'purged':
+        backend_addr    => '127.0.0.1:3128',
+        frontend_addr   => '127.0.0.1:3127',
+        mc_addrs        => $purge_multicasts.map |$mc| { "${mc}:4827" },
+        prometheus_addr => ':2112',
+        concurrency     => $::processorcount,
+        require         => Service['vhtcpd'],
+        is_active       => $use_purged,
     }
+
+    class { 'prometheus::node_vhtcpd': }
+    class { 'varnish::htcppurger':
+        host_regex => $purge_host_regex,
+        mc_addrs   => $purge_multicasts,
+        caches     => ['127.0.0.1:3128', '127.0.0.1:3127,1.0'],
+        is_active  => !$use_purged,
+    }
+    Class[varnish::packages] -> Class[varnish::htcppurger]
 
     # Node initialization script for conftool
     if $default_weights != undef {

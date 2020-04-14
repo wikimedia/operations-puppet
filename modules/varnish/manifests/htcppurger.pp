@@ -34,6 +34,7 @@ class varnish::htcppurger(
     $mc_addrs,
     $host_regex,
     $caches,
+    $is_active,
 ) {
     package { 'vhtcpd':
         ensure => present,
@@ -46,16 +47,26 @@ class varnish::htcppurger(
         $regex_arg = ''
     }
 
+    $ensure = $is_active? {
+        true    => 'present',
+        default => 'absent',
+    }
+
     systemd::service { 'vhtcpd':
-        ensure  => present,
+        ensure  => $ensure,
         require => Package['vhtcpd'],
         restart => true,
         content => systemd_template('vhtcpd'),
     }
 
+    $process_count = $is_active? {
+        true    => '1:1',
+        default => '0:0',
+    }
+
     nrpe::monitor_service { 'vhtcpd':
         description  => 'Varnish HTCP daemon',
-        nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -u vhtcpd -a vhtcpd',
+        nrpe_command => "/usr/lib/nagios/plugins/check_procs -c ${process_count} -u vhtcpd -a vhtcpd",
         notes_url    => 'https://wikitech.wikimedia.org/wiki/Varnish',
     }
 }

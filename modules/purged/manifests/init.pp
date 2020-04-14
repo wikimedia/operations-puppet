@@ -6,6 +6,7 @@ class purged (
     Array[String] $mc_addrs,
     String $prometheus_addr,
     Integer $concurrency,
+    Boolean $is_active,
 ) {
     package { 'purged':
         ensure => present,
@@ -13,7 +14,13 @@ class purged (
 
     $mcast_str = join($mc_addrs, ',')
 
+    $ensure = $is_active? {
+        true    => 'present',
+        default => 'absent',
+    }
+
     systemd::service { 'purged':
+        ensure    => $ensure,
         content   => systemd_template('purged'),
         subscribe => Package['purged'],
     }
