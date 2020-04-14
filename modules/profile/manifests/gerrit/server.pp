@@ -9,7 +9,6 @@ class profile::gerrit::server(
     String $backup_set = lookup('gerrit::server::backup_set'),
     Array[Stdlib::Fqdn] $gerrit_servers = lookup('gerrit::servers'),
     String $config = lookup('gerrit::server::config'),
-    Hash $cache_nodes = lookup('cache::nodes'),
     Boolean $use_acmechief = lookup('gerrit::server::use_acmechief'),
     Hash $ldap_config = lookup('ldap', Hash, hash, {}),
     Optional[Stdlib::Ipv6] $ipv6 = lookup('gerrit::service::ipv6'),
@@ -84,20 +83,19 @@ class profile::gerrit::server(
     }
 
     class { '::gerrit':
-        host             => $host,
-        ipv4             => $ipv4,
-        ipv6             => $ipv6,
-        replica          => $is_replica,
-        replica_hosts    => $replica_hosts,
-        config           => $config,
-        cache_text_nodes => pick($cache_nodes['text'], {}),
-        use_acmechief    => $use_acmechief,
-        ldap_config      => $ldap_config,
-        java_version     => $java_version,
-        scap_user        => $scap_user,
-        scap_key_name    => $scap_key_name,
-        db_user          => $db_user,
-        db_pass          => $db_pass,
+        host          => $host,
+        ipv4          => $ipv4,
+        ipv6          => $ipv6,
+        replica       => $is_replica,
+        replica_hosts => $replica_hosts,
+        config        => $config,
+        use_acmechief => $use_acmechief,
+        ldap_config   => $ldap_config,
+        java_version  => $java_version,
+        scap_user     => $scap_user,
+        scap_key_name => $scap_key_name,
+        db_user       => $db_user,
+        db_pass       => $db_pass,
     }
 
     class { '::gerrit::replication_key':

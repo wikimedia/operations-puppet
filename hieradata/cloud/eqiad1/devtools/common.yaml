@@ -120,14 +120,6 @@ scap::sources:
 # Gerrit
 gerrit::service::ipv6: undef
 
-cache::nodes:
-    text:
-        eqiad:
-          - 'cache-text.devtools.eqiad.wmflabs'
-    upload:
-        eqiad:
-          - 'cache-upload.devtools.eqiad.wmflabs'
-
 # Database (MySQL, will not be used in future)
 gerrit::server::db_user: 'gerrit'
 

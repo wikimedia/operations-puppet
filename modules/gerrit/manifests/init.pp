@@ -5,7 +5,6 @@ class gerrit(
     Stdlib::Ipv4 $ipv4,
     Array[Stdlib::Fqdn] $replica_hosts = [],
     Boolean $replica = false,
-    Hash $cache_text_nodes = {},
     Boolean $use_acmechief = false,
     Optional[Hash] $ldap_config = undef,
     Optional[Stdlib::Ipv6] $ipv6,
@@ -32,14 +31,13 @@ class gerrit(
     }
 
     class { '::gerrit::proxy':
-        require          => Class['gerrit::jetty'],
-        host             => $host,
-        ipv4             => $ipv4,
-        ipv6             => $ipv6,
-        replica_hosts    => $replica_hosts,
-        replica          => $replica,
-        cache_text_nodes => $cache_text_nodes,
-        use_acmechief    => $use_acmechief,
+        require       => Class['gerrit::jetty'],
+        host          => $host,
+        ipv4          => $ipv4,
+        ipv6          => $ipv6,
+        replica_hosts => $replica_hosts,
+        replica       => $replica,
+        use_acmechief => $use_acmechief,
     }
 
     if !$replica {
