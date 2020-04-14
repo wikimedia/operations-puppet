@@ -42,6 +42,9 @@
 -XX:+UseConcMarkSweepGC
 -XX:CMSInitiatingOccupancyFraction=75
 -XX:+UseCMSInitiatingOccupancyOnly
+<% if @cms_gc_young_size -%>
+-XX:NewSize=<%= @cms_gc_young_size %>
+<% end -%>
 <% else -%>
 ## GC configuration
 # disabling ConcMarkSweepGC, see https://phabricator.wikimedia.org/T167685
