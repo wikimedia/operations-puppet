@@ -60,6 +60,18 @@ class zuul::merger (
             File['/var/lib/zuul/.ssh'],
         ],
     }
+    file { '/var/lib/zuul/.ssh/id_rsa.pub':
+        ensure    => present,
+        owner     => 'zuul',
+        group     => 'zuul',
+        mode      => '0400',
+        content   => secret("${gerrit_ssh_key_file}.pub"),
+        show_diff => false,
+        require   => [
+            User['zuul'],
+            File['/var/lib/zuul/.ssh'],
+        ],
+    }
 
     # Configuration file for the zuul merger
     $zuul_role = 'merger'
