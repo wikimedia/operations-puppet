@@ -63,7 +63,7 @@ class profile::backup::director(
     # Databases-only pool
     if os_version('debian >= buster') {
         bacula::director::pool { 'Databases':
-            max_vols         => 70,
+            max_vols         => 80,
             storage          => "${onsite_sd}-${file_storage_databases}",
             volume_retention => '90 days',
             label_fmt        => 'databases',
