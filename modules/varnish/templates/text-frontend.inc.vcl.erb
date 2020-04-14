@@ -505,28 +505,7 @@ sub cluster_fe_backend_response {
 		return(pass(607s));
 	}
 
-<% if @vcl_config.fetch("admission_policy", "nhw") == "nhw" -%>
-	// NOTE: it's very important this happens *after* the generic code that
-	// translates TTL<=0 responses into hit-for-pass!  That code is
-	// currently in wikimedia-frontend's backend_response, which is implicitly
-	// ahead of this subroutine.
-	// Four-hit-wonder experiment: if the immediate backend does not indicate
-	// hit/4 or higher, deliver the object as normal but do not create a new
-	// cache entry of any kind.  We start caching in the frontend when an
-	// object is accessed for the 5th time across all frontends in this DC.
-	if (beresp.status == 200
-            && bereq.http.X-CDIS == "miss"
-            && beresp.http.X-Cache-Int !~ " hit/([4-9]|[0-9]{2,})$") {
-		// HFM
-		set beresp.ttl = 10m;
-		set beresp.grace = 60s;
-		set beresp.keep = 0s;
-		set beresp.uncacheable = true;
-		return (deliver);
-	}
-<% end -%>
-
-<% if @vcl_config.fetch("admission_policy", "nhw") != "exp" -%>
+<% if @vcl_config.fetch("admission_policy", "none") != "exp" -%>
 	// hit-for-pass objects >= 256K size. The "exp" admission policy does not
 	// need this as it implicitly takes object size into account. Do cache if
 	// Content-Length is missing.
