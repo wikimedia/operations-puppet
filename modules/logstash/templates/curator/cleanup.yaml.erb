@@ -35,6 +35,23 @@ actions:
       unit: days
       unit_count: 31
   3:
+    action: replicas
+    description: >-
+      after 80 days set number of replicas to 0 - temporary measure per T250133
+    options:
+      count: 0
+      ignore_empty_list: True
+    filters:
+    - filtertype: pattern
+      kind: prefix
+      value: <%= @prefix %>
+      exclude:
+    - filtertype: age
+      source: creation_date
+      direction: older
+      unit: days
+      unit_count: 80
+  4:
     action: allocation
     description: >-
       For any indices prefixed by <%= @prefix %>, and have "index.routing.allocation.require.disktype":"ssd" set,
@@ -58,7 +75,7 @@ actions:
       direction: older
       unit: days
       unit_count: 7
-  4:
+  5:
     action: forcemerge
     description: >-
       forceMerge <%= @prefix %> prefixed indices older than 2 days (based on index
