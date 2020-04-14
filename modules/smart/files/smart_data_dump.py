@@ -26,6 +26,19 @@ DISK = collections.namedtuple('DISK', ['name', 'target', 'type'])
     type: str|None - parameter passed to smartctl -d.  Default: 'auto'
 """
 
+SMART_DATA = collections.namedtuple(
+    'SMART_DATA', ['name', 'healthy', 'model', 'firmware', 'attributes']
+)
+"""
+    A container for passing parsed smart data.
+
+    name: str - the physical device identifier
+    healthy: int - is the device healthy?
+    model: str - the device model number
+    firmware: str - the device firmware version
+    attributes: dict - key:value collection of parsed attributes (c.f. REPORT_ATTRIBUTES)
+"""
+
 # Parse and report these attributes (lowercased) as gauges
 REPORT_ATTRIBUTES = [
     'airflow_temperature_cel',
@@ -193,32 +206,30 @@ def noraid_parse(response):
         yield DISK(name=name, target='/dev/{}'.format(name), type=None)
 
 
-def collect_smart_metrics(disks, registry):
-    """Collect SMART metrics from 'disks' (list of PD objects) into Prometheus registry."""
+def collect_smart_metrics(devices, metrics):
+    """Collect SMART metrics from list of devices into Prometheus registry."""
+    for dev in devices:
+        smart_data = _handle_disk(dev)
+        log.debug(smart_data)
+        collect_smart_data(smart_data, metrics)
 
-    smart_healthy = Gauge('healthy', 'SMART health', namespace='device_smart', registry=registry,
-                          labelnames=['device'])
 
-    device_info = Gauge('info', 'Disk info', namespace='device_smart', registry=registry,
-                        labelnames=['device', 'model', 'firmware'])
+def collect_smart_data(smart_data, metrics):
+    metrics.get('smart_health').labels(smart_data.name).set(smart_data.healthy)
+    metrics.get('device_info').labels(smart_data.name, smart_data.model, smart_data.firmware) \
+        .set(1)
+    for metric_name, metric_value in smart_data.attributes.items():
+        metrics.get(metric_name).labels(smart_data.name).set(metric_value)
 
-    smart_attributes = {}
-    for attribute in REPORT_ATTRIBUTES:
-        smart_attributes[attribute] = Gauge(attribute, 'SMART attribute %s' % attribute,
-                                            namespace='device_smart', registry=registry,
-                                            labelnames=['device'])
 
-    for disk in disks:
-        cmd = '/usr/sbin/smartctl --info --health -d {} {}'.format(disk.type or 'auto', disk.target)
-        smart_info = _check_output(cmd, suppress_errors=True)
-        healthy, model, firmware, serial = _parse_smart_info(smart_info)
-        smart_healthy.labels(disk.name).set(healthy)
-        device_info.labels(disk.name, model, firmware).set(1)
-
-        cmd = '/usr/sbin/smartctl --attributes -d {} {}'.format(disk.type or 'auto', disk.target)
-        attribute_info = _check_output(cmd, suppress_errors=True)
-        for metric_name, metric_value in _parse_smart_attributes(attribute_info).items():
-            smart_attributes[metric_name].labels(disk.name).set(metric_value)
+def _handle_disk(disk):
+    cmd = '/usr/sbin/smartctl --info --health -d {} {}'.format(disk.type or 'auto', disk.target)
+    smart_info = _check_output(cmd, suppress_errors=True)
+    healthy, model, firmware, serial = _parse_smart_info(smart_info)
+    cmd = '/usr/sbin/smartctl --attributes -d {} {}'.format(disk.type or 'auto', disk.target)
+    attribute_info = _check_output(cmd, suppress_errors=True)
+    return SMART_DATA(healthy=healthy, model=model, firmware=firmware, name=disk.name,
+                      attributes=_parse_smart_attributes(attribute_info))
 
 
 def _parse_smart_attributes(response):
@@ -279,6 +290,20 @@ def _parse_smart_info(response):
     return smart_healthy_value, model, firmware, serial
 
 
+def get_metrics_cache(registry, namespace=''):
+    """Returns a dict mapping attributes to their corresponding Metric instances."""
+    output = {
+        attribute: Gauge(attribute, 'SMART attribute %s' % attribute, namespace=namespace,
+                         registry=registry, labelnames=['device']) for attribute in
+        REPORT_ATTRIBUTES
+    }
+    output['smart_health'] = Gauge('healthy', 'SMART health', namespace=namespace,
+                                   registry=registry, labelnames=['device'])
+    output['device_info'] = Gauge('info', 'Disk info', namespace=namespace,
+                                  registry=registry, labelnames=['device', 'model', 'firmware'])
+    return output
+
+
 # TODO(filippo): handle machines with more than one controller
 # TODO(filippo): handle mpt controllers
 DRIVER_HANDLERS = {
@@ -336,7 +361,8 @@ def main():
     log.debug('Gathering SMART data from physical disks: %r', [x.name for x in physical_disks])
 
     registry = CollectorRegistry()
-    collect_smart_metrics(physical_disks, registry)
+    metrics = get_metrics_cache(registry, 'device_smart')
+    collect_smart_metrics(physical_disks, metrics)
 
     if args.outfile:
         write_to_textfile(args.outfile, registry)
