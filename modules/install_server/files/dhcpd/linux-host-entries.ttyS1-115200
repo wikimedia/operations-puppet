@@ -627,6 +627,11 @@ host cloudcontrol1004 {
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
+host cloudcontrol1005 {
+    hardware ethernet 4C:D9:8F:C4:A6:49;
+    fixed-address cloudcontrol1005.wikimedia.org;
+}
+
 host cloudcontrol2001-dev {
     hardware ethernet D0:94:66:93:B4:CE;
     fixed-address cloudcontrol2001-dev.wikimedia.org;
