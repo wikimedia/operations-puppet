@@ -15,8 +15,16 @@ from prometheus_client.exposition import generate_latest
 
 
 log = logging.getLogger(__name__)
-# Represent a single Physical Disk and its attributes
-PD = collections.namedtuple('PD', ['driver', 'smart_args', 'disk_id'])
+DISK = collections.namedtuple('DISK', ['name', 'target', 'type'])
+"""
+    Represents a standard disk.
+
+    For cases where the physical disk and target handle are the same.
+
+    name: str - the physical device identifier.
+    target: str - the device to query. (e.g. /dev/sg0, /dev/sda)
+    type: str|None - parameter passed to smartctl -d.  Default: 'auto'
+"""
 
 # Parse and report these attributes (lowercased) as gauges
 REPORT_ATTRIBUTES = [
@@ -131,8 +139,8 @@ def megaraid_parse(response):
             continue
         if line.startswith('#'):
             continue
-        bus, _, device, _ = line.split(' ', 3)
-        yield PD(driver='megaraid', smart_args=['-d', device, bus], disk_id=device)
+        bus, _, name, _ = line.split(' ', 3)
+        yield DISK(name=name, target=bus, type=name)  # smartctl expects type to match name
 
 
 def hpsa_list_pd():
@@ -156,9 +164,9 @@ def hpsa_parse(response):
 
         m = re.match(r'^\s+physicaldrive', line)
         if m and in_controller:
-            device = 'cciss,%s' % disk_id
+            name = 'cciss,{}'.format(disk_id)
             # TODO(filippo) assumes /dev/sda
-            yield PD(driver='cciss', disk_id=device, smart_args=['-d', device, '/dev/sda'])
+            yield DISK(name=name, target='/dev/sda', type=name)
             disk_id += 1
 
 
@@ -182,7 +190,7 @@ def noraid_parse(response):
             continue
         # lsblk will report "nvme0n1", but smartctl wants the base "nvme0" device
         name = re.sub(r'^(nvme[0-9])n[0-9]$', r'\1', name)
-        yield PD(driver='noraid', smart_args=['-d', 'auto', '/dev/%s' % name], disk_id=name)
+        yield DISK(name=name, target='/dev/{}'.format(name), type=None)
 
 
 def collect_smart_metrics(disks, registry):
@@ -201,24 +209,22 @@ def collect_smart_metrics(disks, registry):
                                             labelnames=['device'])
 
     for disk in disks:
-        cmd = '/usr/sbin/smartctl --info --health {}'.format(' '.join(disk.smart_args))
+        cmd = '/usr/sbin/smartctl --info --health -d {} {}'.format(disk.type or 'auto', disk.target)
         smart_info = _check_output(cmd, suppress_errors=True)
-        smart_healthy_value, model, firmware, device_info_value = _parse_smart_info(
-            smart_info.splitlines())
-        smart_healthy.labels(disk.disk_id).set(smart_healthy_value)
-        device_info.labels(disk.disk_id, model, firmware).set(device_info_value)
+        healthy, model, firmware, serial = _parse_smart_info(smart_info)
+        smart_healthy.labels(disk.name).set(healthy)
+        device_info.labels(disk.name, model, firmware).set(1)
 
-        cmd = '/usr/sbin/smartctl --attributes {}'.format(' '.join(disk.smart_args))
+        cmd = '/usr/sbin/smartctl --attributes -d {} {}'.format(disk.type or 'auto', disk.target)
         attribute_info = _check_output(cmd, suppress_errors=True)
-        for metric_name, metric_value in _parse_smart_attributes(
-                attribute_info.splitlines()).items():
-            smart_attributes[metric_name].labels(disk.disk_id).set(metric_value)
+        for metric_name, metric_value in _parse_smart_attributes(attribute_info).items():
+            smart_attributes[metric_name].labels(disk.name).set(metric_value)
 
 
-def _parse_smart_attributes(lines):
+def _parse_smart_attributes(response):
     in_attributes = False
     output = {}
-    for line in lines:
+    for line in response.splitlines():
         if line.startswith('ID#'):
             in_attributes = True
             continue
@@ -249,12 +255,12 @@ def _parse_smart_attributes(lines):
     return output
 
 
-def _parse_smart_info(lines):
+def _parse_smart_info(response):
     smart_healthy_value = 0
-    device_info_value = 1
     model = 'NA'
     firmware = 'NA'
-    for line in lines:
+    serial = 'UNKNOWN'
+    for line in response.splitlines():
         if ':' not in line:
             continue
         key, value = line.split(':', 1)
@@ -265,10 +271,12 @@ def _parse_smart_info(lines):
             model = value
         if key in ('firmware version', 'revision'):
             firmware = value
+        if key == 'serial number':
+            serial = value
         m = re.match('^smart (overall-)?health', key)
         if m and value.lower() in ('ok', 'passed'):
             smart_healthy_value = 1
-    return smart_healthy_value, model, firmware, device_info_value
+    return smart_healthy_value, model, firmware, serial
 
 
 # TODO(filippo): handle machines with more than one controller
@@ -325,8 +333,7 @@ def main():
         for pd in noraid_list_pd():
             physical_disks.append(pd)
 
-    log.debug('Gathering SMART data from physical disks: %r',
-              [x.disk_id for x in physical_disks])
+    log.debug('Gathering SMART data from physical disks: %r', [x.name for x in physical_disks])
 
     registry = CollectorRegistry()
     collect_smart_metrics(physical_disks, registry)

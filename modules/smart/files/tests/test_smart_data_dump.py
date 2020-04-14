@@ -42,41 +42,35 @@ class TestSmartDataDump(unittest.TestCase):
 
     def test_megaraid_get_pd(self):
         output = smart_data_dump.megaraid_parse(self.smartctl_scan_open)
-        for pd in output:
-            self.assertEqual(pd.driver, 'megaraid')
-            self.assertEqual(pd.disk_id.split(',')[0], 'sat+megaraid')
-            self.assertEqual(pd.smart_args[0], '-d')
-            self.assertEqual(pd.smart_args[1].split(',')[0], 'sat+megaraid')
-            self.assertEqual(pd.smart_args[2], '/dev/bus/0')
+        for gd in output:
+            self.assertEqual(gd.target, '/dev/bus/0')
+            self.assertEqual(gd.name.split(',')[0], 'sat+megaraid')
+            self.assertEqual(gd.type, gd.name)
 
     def test_hpsa_get_pd(self):
         output = smart_data_dump.hpsa_parse(self.hpssacli_all_config_raw)
-        for pd in output:
-            self.assertEqual(pd.driver, 'cciss')
-            self.assertEqual(pd.disk_id.split(',')[0], 'cciss')
-            self.assertEqual(pd.smart_args[0], '-d')
-            self.assertEqual(pd.smart_args[1].split(',')[0], 'cciss')
-            self.assertEqual(pd.smart_args[2], '/dev/sda')
+        for gd in output:
+            self.assertEqual(gd.target, '/dev/sda')
+            self.assertEqual(gd.name.split(',')[0], 'cciss')
+            self.assertEqual(gd.type, gd.name)
 
-    def test_noraid_get_pd(self):
+    def test_noraid_parse(self):
         output = smart_data_dump.noraid_parse(self.lsblk_raw)
-        for pd in output:
-            self.assertEqual(pd.driver, 'noraid')
-            self.assertIn(pd.disk_id, ['sda', 'sdb'])
-            self.assertEqual(pd.smart_args[0], '-d')
-            self.assertEqual(pd.smart_args[1], 'auto')
-            self.assertIn(pd.smart_args[2], ['/dev/sda', '/dev/sdb'])
+        for gd in output:
+            self.assertIn(gd.target, ['/dev/sda', '/dev/sdb'])
+            self.assertIn(gd.name, ['sda', 'sdb'])
+            self.assertEqual(gd.type, None)
 
-    def test_parse_smart_health_new(self):
-        smart_healthy, model, firmware, device_info_value = smart_data_dump\
-            ._parse_smart_info(self.smartctl_info.splitlines())
+    def test_parse_smart_info(self):
+        smart_healthy, model, firmware, serial = smart_data_dump \
+            ._parse_smart_info(self.smartctl_info)
         self.assertEqual(smart_healthy, 1)
-        self.assertEqual(device_info_value, 1)
+        self.assertEqual(serial, 'REDACTEDSERIAL')
         self.assertEqual(model, 'REDACTEDMODEL')
         self.assertEqual(firmware, 'F1RMW4R3')
 
-    def test_parse_smart_attributes_new(self):
-        output = smart_data_dump._parse_smart_attributes(self.smartctl_attributes.splitlines())
+    def test_parse_smart_attributes(self):
+        output = smart_data_dump._parse_smart_attributes(self.smartctl_attributes)
         self.assertDictEqual(output, {
             'raw_read_error_rate': '4294967295',
             'reallocated_sector_ct': '4',
