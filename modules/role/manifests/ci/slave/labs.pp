@@ -24,6 +24,8 @@ class role::ci::slave::labs {
 
     include profile::ci::browsers
 
+    include profile::gerrit::sshclient
+
     # The sshkey resource seems to modify file permissions and make it
     # unreadable - this is a known bug (https://tickets.puppetlabs.com/browse/PUP-2900)
     # Trying to define this file resource, and notify the resource to be ensured
@@ -34,14 +36,6 @@ class role::ci::slave::labs {
             mode      => '0644',
             subscribe => Sshkey['gerrit'],
         }
-    }
-
-    # Add gerrit as a known host
-    sshkey { 'gerrit':
-        ensure => 'present',
-        name   => 'gerrit.wikimedia.org',
-        key    => 'AAAAB3NzaC1yc2EAAAADAQABAAAAgQCF8pwFLehzCXhbF1jfHWtd9d1LFq2NirplEBQYs7AOrGwQ/6ZZI0gvZFYiEiaw1o+F1CMfoHdny1VfWOJF3mJ1y9QMKAacc8/Z3tG39jBKRQCuxmYLO1SWymv7/Uvx9WQlkNRoTdTTa9OJFy6UqvLQEXKYaokfMIUHZ+oVFf1CgQ==',
-        type   => 'ssh-rsa',
     }
 
 }

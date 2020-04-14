@@ -30,6 +30,8 @@ class role::ci::master {
     include ::profile::local_dev::docker_publish
 
     include ::profile::zuul::merger
+    # The merger requires Gerrit ssh public host key (port 29418)
+    include ::profile::gerrit::sshclient
 
     include ::profile::zuul::server
     include ::profile::ci::proxy_zuul
