@@ -101,9 +101,15 @@ def get_change(change):
         return get_change_number(change_id)
 
 
-def qualify_node_list(string_list, default_suffix='.eqiad.wmnet'):
-    """Qualify any unqualified nodes in a comma-separated list by appending a
-    default domain suffix."""
+def parse_nodes(string_list, default_suffix='.eqiad.wmnet'):
+    """If nodes contains ':' as the second character then the string_list
+    is returned unmodified assuming it is a host variable override.
+    https://wikitech.wikimedia.org/wiki/Help:Puppet-compiler#Host_variable_override
+
+    Otherwise qualify any unqualified nodes in a comma-separated list by
+    appending a default domain suffix."""
+    if string_list.startswith(('P:', 'C:', 'O:', 're:')):
+        return string_list
     return ','.join(node if '.' in node else node + default_suffix
                     for node in string_list.split(','))
 
@@ -115,7 +121,7 @@ class Parser(argparse.ArgumentParser):
 
 ap = Parser(description='Puppet catalog compiler')
 ap.add_argument('change', help='Gerrit change number.', type=get_change)
-ap.add_argument('nodes', type=qualify_node_list,
+ap.add_argument('nodes', type=parse_nodes,
                 help='Comma-separated list of nodes.')
 ap.add_argument('--api-token', default=os.environ.get('JENKINS_API_TOKEN'),
                 help='Jenkins API token. Defaults to JENKINS_API_TOKEN.')
