@@ -1,0 +1,7 @@
+# lsscsi -t -g
+[0:0:0:0]    storage sas:0x51402ec000146540          -          /dev/sg0 
+[0:1:0:0]    disk    sas:0x0000000000000000          /dev/sda   /dev/sg1 
+[0:1:0:1]    disk    sas:0x0000000000000000          /dev/sdb   /dev/sg2 
+[1:0:0:0]    storage sas:0x5001438040efb200          -          /dev/sg3 
+[1:1:0:0]    disk    sas:0x0000000000000000          /dev/sdc   /dev/sg4 
+[1:1:0:1]    disk    sas:0x0000000000000000          /dev/sdd   /dev/sg5 

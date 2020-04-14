@@ -1,0 +1,1449 @@
+# sudo hpssacli ctrl all show config detail
+
+Smart Array P441 in Slot 3
+   Bus Interface: PCI
+   Slot: 3
+   Serial Number: REDACTEDSERIAL
+   Cache Serial Number: REDACTEDSERIAL
+   RAID 6 (ADG) Status: Enabled
+   Controller Status: OK
+   Hardware Revision: B
+   Firmware Version: 0.00
+   Rebuild Priority: High
+   Expand Priority: Medium
+   Surface Scan Delay: 3 secs
+   Surface Scan Mode: Idle
+   Parallel Surface Scan Supported: Yes
+   Current Parallel Surface Scan Count: 1
+   Max Parallel Surface Scan Count: 16
+   Queue Depth: Automatic
+   Monitor and Performance Delay: 60  min
+   Elevator Sort: Enabled
+   Degraded Performance Optimization: Disabled
+   Inconsistency Repair Policy: Disabled
+   Wait for Cache Room: Disabled
+   Surface Analysis Inconsistency Notification: Disabled
+   Post Prompt Timeout: 15 secs
+   Cache Board Present: True
+   Cache Status: OK
+   Cache Ratio: 10% Read / 90% Write
+   Drive Write Cache: Disabled
+   Total Cache Size: 4.0 GB
+   Total Cache Memory Available: 3.2 GB
+   No-Battery Write Cache: Disabled
+   SSD Caching RAID5 WriteBack Enabled: True
+   SSD Caching Version: 0
+   Cache Backup Power Source: Batteries
+   Battery/Capacitor Count: 1
+   Battery/Capacitor Status: OK
+   SATA NCQ Supported: True
+   Spare Activation Mode: Activate on physical drive failure (default)
+   Controller Temperature (C): 88
+   Cache Module Temperature (C): 49
+   Number of Ports: 2 External only
+   Encryption: Disabled
+   Express Local Encryption: False
+   Driver Name: hpsa
+   Driver Version: 0.0.0
+   Driver Supports HPE SSD Smart Path: True
+   PCI Address (Domain:Bus:Device.Function): 0000:08:00.0
+   Negotiated PCIe Data Rate: PCIe 3.0 x8 (7880 MB/s)
+   Controller Mode: RAID
+   Controller Mode Reboot: Not Required
+   Latency Scheduler Setting: Disabled
+   Current Power Mode: MaxPerformance
+   Host Serial Number: REDACTEDSERIAL
+   Sanitize Erase Supported: True
+   Primary Boot Volume: None
+   Secondary Boot Volume: None
+
+
+   Port Name: 1E
+         Port ID: 0
+         Port Connection Number: 0
+         SAS Address: 5001438040EFB200
+         Port Location: External
+         Managed Cable Connected: True
+         Managed Cable Length: 1
+         Managed Cable Serial Number: REDACTEDSERIAL
+         Managed Cable Part Number: 123456-001
+
+   Port Name: 2E
+         Port ID: 1
+         Port Connection Number: 1
+         SAS Address: 5001438040EFB204
+         Port Location: External
+         Managed Cable Connected: False
+
+   HP D3600 Enclosure at Port 1E, Box 1, OK
+      Fan Status: OK
+      Temperature Status: OK
+      Power Supply Status: Redundant
+      Vendor ID: HP
+      Serial Number: REDACTEDSERIAL
+      Firmware Version: 0.00
+      Drive Bays: 12
+      Port: 1E
+      Box: 1
+      Location: External
+
+   Expander 378
+      Device Number: 378
+      Firmware Version: 0.00
+      WWID: REDACTED
+      Port: 1E
+      Box: 1
+      Vendor ID: HP
+
+   Enclosure SEP (Vendor ID HP, Model D3600) 377
+      Device Number: 377
+      Firmware Version: 0.00
+      WWID: REDACTED
+      Port: 1E
+      Box: 1
+      Vendor ID: HP
+      Model: D3600
+      IO Module Board Serial Number: REDACTEDSERIAL
+      IO Module Serial Number: REDACTEDSERIAL
+      IO Module Part Number: 12345-12345
+      IO Module Spare Part Number: 123456-001
+      Backplane 1 Board Serial Number: REDACTEDSERIAL
+      Backplane 1 Serial Number: REDACTEDSERIAL
+      Backplane 1 Part Number: 12345-12345
+      Backplane 1 Spare Part Number: 123456-001
+      Backplane 1 System SKU: REDAC
+
+   Physical Drives
+      physicaldrive 1E:1:1 (port 1E:box 1:bay 1, SATA, 6001.1 GB, OK)
+      physicaldrive 1E:1:2 (port 1E:box 1:bay 2, SATA, 6001.1 GB, OK)
+      physicaldrive 1E:1:3 (port 1E:box 1:bay 3, SATA, 6001.1 GB, OK)
+      physicaldrive 1E:1:4 (port 1E:box 1:bay 4, SATA, 6001.1 GB, OK)
+      physicaldrive 1E:1:5 (port 1E:box 1:bay 5, SATA, 6001.1 GB, OK)
+      physicaldrive 1E:1:6 (port 1E:box 1:bay 6, SATA, 6001.1 GB, OK)
+      physicaldrive 1E:1:7 (port 1E:box 1:bay 7, SATA, 6001.1 GB, OK)
+      physicaldrive 1E:1:8 (port 1E:box 1:bay 8, SATA, 6001.1 GB, OK)
+      physicaldrive 1E:1:9 (port 1E:box 1:bay 9, SATA, 6001.1 GB, OK)
+      physicaldrive 1E:1:10 (port 1E:box 1:bay 10, SATA, 6001.1 GB, OK)
+      physicaldrive 1E:1:11 (port 1E:box 1:bay 11, SATA, 6001.1 GB, OK)
+      physicaldrive 1E:1:12 (port 1E:box 1:bay 12, SATA, 6001.1 GB, OK)
+
+
+   HP D3600 Enclosure at Port 1E, Box 2, OK
+      Fan Status: OK
+      Temperature Status: OK
+      Power Supply Status: Redundant
+      Vendor ID: HP
+      Serial Number: REDACTEDSERIAL
+      Firmware Version: 0.00
+      Drive Bays: 12
+      Port: 1E
+      Box: 2
+      Location: External
+
+   Expander 376
+      Device Number: 376
+      Firmware Version: 0.00
+      WWID: REDACTED
+      Port: 1E
+      Box: 2
+      Vendor ID: HP
+
+   Enclosure SEP (Vendor ID HP, Model D3600) 375
+      Device Number: 375
+      Firmware Version: 0.00
+      WWID: REDACTED
+      Port: 1E
+      Box: 2
+      Vendor ID: HP
+      Model: D3600
+      IO Module Board Serial Number: REDACTEDSERIAL
+      IO Module Serial Number: REDACTEDSERIAL
+      IO Module Part Number: 12345-12345
+      IO Module Spare Part Number: 123456-001
+      Backplane 1 Board Serial Number: REDACTEDSERIAL
+      Backplane 1 Serial Number: REDACTEDSERIAL
+      Backplane 1 Part Number: 12345-12345
+      Backplane 1 Spare Part Number: 123456-001
+      Backplane 1 System SKU: REDAC
+
+   Physical Drives
+      physicaldrive 1E:2:1 (port 1E:box 2:bay 1, SAS, 6001.1 GB, OK)
+      physicaldrive 1E:2:2 (port 1E:box 2:bay 2, SAS, 6001.1 GB, OK)
+      physicaldrive 1E:2:3 (port 1E:box 2:bay 3, SAS, 6001.1 GB, OK)
+      physicaldrive 1E:2:4 (port 1E:box 2:bay 4, SAS, 6001.1 GB, OK)
+      physicaldrive 1E:2:5 (port 1E:box 2:bay 5, SAS, 6001.1 GB, OK)
+      physicaldrive 1E:2:6 (port 1E:box 2:bay 6, SAS, 6001.1 GB, OK)
+      physicaldrive 1E:2:7 (port 1E:box 2:bay 7, SAS, 6001.1 GB, OK)
+      physicaldrive 1E:2:8 (port 1E:box 2:bay 8, SAS, 6001.1 GB, OK)
+      physicaldrive 1E:2:9 (port 1E:box 2:bay 9, SAS, 6001.1 GB, OK)
+      physicaldrive 1E:2:10 (port 1E:box 2:bay 10, SAS, 6001.1 GB, OK)
+      physicaldrive 1E:2:11 (port 1E:box 2:bay 11, SAS, 6001.1 GB, OK)
+      physicaldrive 1E:2:12 (port 1E:box 2:bay 12, SAS, 6001.1 GB, OK)
+
+   Array: A
+      Interface Type: SATA
+      Unused Space: 0  MB (0.0%)
+      Used Space: 65.5 TB (100.0%)
+      Status: OK
+      MultiDomain Status: OK
+      Array Type: Data       HPE SSD Smart Path: disable
+
+
+
+      Logical Drive: 1
+         Size: 32.7 TB
+         Fault Tolerance: 1+0
+         Heads: 255
+         Sectors Per Track: 32
+         Cylinders: 65535
+         Strip Size: 256 KB
+         Full Stripe Size: 1536 KB
+         Status: OK
+         MultiDomain Status: OK
+         Caching:  Enabled
+         Unique Identifier: 600508B1001C7502BC45CA2941802DBB
+         Disk Name: /dev/sdc
+         Mount Points: None
+         Logical Drive Label: 01FF6167PDNMH0ARH690APABEA
+         Mirror Group 1:
+            physicaldrive 1E:1:1 (port 1E:box 1:bay 1, SATA, 6001.1 GB, OK)
+            physicaldrive 1E:1:2 (port 1E:box 1:bay 2, SATA, 6001.1 GB, OK)
+            physicaldrive 1E:1:3 (port 1E:box 1:bay 3, SATA, 6001.1 GB, OK)
+            physicaldrive 1E:1:4 (port 1E:box 1:bay 4, SATA, 6001.1 GB, OK)
+            physicaldrive 1E:1:5 (port 1E:box 1:bay 5, SATA, 6001.1 GB, OK)
+            physicaldrive 1E:1:6 (port 1E:box 1:bay 6, SATA, 6001.1 GB, OK)
+         Mirror Group 2:
+            physicaldrive 1E:1:7 (port 1E:box 1:bay 7, SATA, 6001.1 GB, OK)
+            physicaldrive 1E:1:8 (port 1E:box 1:bay 8, SATA, 6001.1 GB, OK)
+            physicaldrive 1E:1:9 (port 1E:box 1:bay 9, SATA, 6001.1 GB, OK)
+            physicaldrive 1E:1:10 (port 1E:box 1:bay 10, SATA, 6001.1 GB, OK)
+            physicaldrive 1E:1:11 (port 1E:box 1:bay 11, SATA, 6001.1 GB, OK)
+            physicaldrive 1E:1:12 (port 1E:box 1:bay 12, SATA, 6001.1 GB, OK)
+         Drive Type: Data
+         LD Acceleration Method: Controller Cache
+
+      physicaldrive 1E:1:1
+         Port: 1E
+         Box: 1
+         Bay: 1
+         Status: OK
+         Drive Type: Data Drive
+         Interface Type: SATA
+         Size: 6001.1 GB
+         Drive exposed to OS: False
+         Native Block Size: 512
+         Rotational Speed: 7200
+         Firmware Revision: REDA
+         Serial Number: REDACTED1
+         Model: ATA     REDACTED1
+         SATA NCQ Capable: True
+         SATA NCQ Enabled: True
+         Current Temperature (C): 33
+         Maximum Temperature (C): 35
+         PHY Count: 1
+         PHY Transfer Rate: 6.0Gbps
+         Drive Authentication Status: OK
+         Carrier Application Version: 0
+         Carrier Bootloader Version: 0
+         Sanitize Erase Supported: False
+
+      physicaldrive 1E:1:2
+         Port: 1E
+         Box: 1
+         Bay: 2
+         Status: OK
+         Drive Type: Data Drive
+         Interface Type: SATA
+         Size: 6001.1 GB
+         Drive exposed to OS: False
+         Native Block Size: 512
+         Rotational Speed: 7200
+         Firmware Revision: REDA
+         Serial Number: REDACTED2
+         Model: ATA     REDACTED2
+         SATA NCQ Capable: True
+         SATA NCQ Enabled: True
+         Current Temperature (C): 32
+         Maximum Temperature (C): 35
+         PHY Count: 1
+         PHY Transfer Rate: 6.0Gbps
+         Drive Authentication Status: OK
+         Carrier Application Version: 0
+         Carrier Bootloader Version: 0
+         Sanitize Erase Supported: False
+
+      physicaldrive 1E:1:3
+         Port: 1E
+         Box: 1
+         Bay: 3
+         Status: OK
+         Drive Type: Data Drive
+         Interface Type: SATA
+         Size: 6001.1 GB
+         Drive exposed to OS: False
+         Native Block Size: 512
+         Rotational Speed: 7200
+         Firmware Revision: REDA
+         Serial Number: REDACTED3
+         Model: ATA     REDACTED3
+         SATA NCQ Capable: True
+         SATA NCQ Enabled: True
+         Current Temperature (C): 31
+         Maximum Temperature (C): 33
+         PHY Count: 1
+         PHY Transfer Rate: 6.0Gbps
+         Drive Authentication Status: OK
+         Carrier Application Version: 0
+         Carrier Bootloader Version: 0
+         Sanitize Erase Supported: False
+
+      physicaldrive 1E:1:4
+         Port: 1E
+         Box: 1
+         Bay: 4
+         Status: OK
+         Drive Type: Data Drive
+         Interface Type: SATA
+         Size: 6001.1 GB
+         Drive exposed to OS: False
+         Native Block Size: 512
+         Rotational Speed: 7200
+         Firmware Revision: REDA
+         Serial Number: REDACTED4
+         Model: ATA     REDACTED4
+         SATA NCQ Capable: True
+         SATA NCQ Enabled: True
+         Current Temperature (C): 34
+         Maximum Temperature (C): 36
+         PHY Count: 1
+         PHY Transfer Rate: 6.0Gbps
+         Drive Authentication Status: OK
+         Carrier Application Version: 0
+         Carrier Bootloader Version: 0
+         Sanitize Erase Supported: False
+
+      physicaldrive 1E:1:5
+         Port: 1E
+         Box: 1
+         Bay: 5
+         Status: OK
+         Drive Type: Data Drive
+         Interface Type: SATA
+         Size: 6001.1 GB
+         Drive exposed to OS: False
+         Native Block Size: 512
+         Rotational Speed: 7200
+         Firmware Revision: REDA
+         Serial Number: REDACTED5
+         Model: ATA     REDACTED5
+         SATA NCQ Capable: True
+         SATA NCQ Enabled: True
+         Current Temperature (C): 32
+         Maximum Temperature (C): 34
+         PHY Count: 1
+         PHY Transfer Rate: 6.0Gbps
+         Drive Authentication Status: OK
+         Carrier Application Version: 0
+         Carrier Bootloader Version: 0
+         Sanitize Erase Supported: False
+
+      physicaldrive 1E:1:6
+         Port: 1E
+         Box: 1
+         Bay: 6
+         Status: OK
+         Drive Type: Data Drive
+         Interface Type: SATA
+         Size: 6001.1 GB
+         Drive exposed to OS: False
+         Native Block Size: 512
+         Rotational Speed: 7200
+         Firmware Revision: REDA
+         Serial Number: REDACTED6
+         Model: ATA     REDACTED6
+         SATA NCQ Capable: True
+         SATA NCQ Enabled: True
+         Current Temperature (C): 31
+         Maximum Temperature (C): 33
+         PHY Count: 1
+         PHY Transfer Rate: 6.0Gbps
+         Drive Authentication Status: OK
+         Carrier Application Version: 0
+         Carrier Bootloader Version: 0
+         Sanitize Erase Supported: False
+
+      physicaldrive 1E:1:7
+         Port: 1E
+         Box: 1
+         Bay: 7
+         Status: OK
+         Drive Type: Data Drive
+         Interface Type: SATA
+         Size: 6001.1 GB
+         Drive exposed to OS: False
+         Native Block Size: 512
+         Rotational Speed: 7200
+         Firmware Revision: REDA
+         Serial Number: REDACTED7
+         Model: ATA     REDACTED7
+         SATA NCQ Capable: True
+         SATA NCQ Enabled: True
+         Current Temperature (C): 33
+         Maximum Temperature (C): 34
+         PHY Count: 1
+         PHY Transfer Rate: 6.0Gbps
+         Drive Authentication Status: OK
+         Carrier Application Version: 0
+         Carrier Bootloader Version: 0
+         Sanitize Erase Supported: False
+
+      physicaldrive 1E:1:8
+         Port: 1E
+         Box: 1
+         Bay: 8
+         Status: OK
+         Drive Type: Data Drive
+         Interface Type: SATA
+         Size: 6001.1 GB
+         Drive exposed to OS: False
+         Native Block Size: 512
+         Rotational Speed: 7200
+         Firmware Revision: REDA
+         Serial Number: REDACTED8
+         Model: ATA     REDACTED8
+         SATA NCQ Capable: True
+         SATA NCQ Enabled: True
+         Current Temperature (C): 32
+         Maximum Temperature (C): 34
+         PHY Count: 1
+         PHY Transfer Rate: 6.0Gbps
+         Drive Authentication Status: OK
+         Carrier Application Version: 0
+         Carrier Bootloader Version: 0
+         Sanitize Erase Supported: False
+
+      physicaldrive 1E:1:9
+         Port: 1E
+         Box: 1
+         Bay: 9
+         Status: OK
+         Drive Type: Data Drive
+         Interface Type: SATA
+         Size: 6001.1 GB
+         Drive exposed to OS: False
+         Native Block Size: 512
+         Rotational Speed: 7200
+         Firmware Revision: REDA
+         Serial Number: REDACTED9
+         Model: ATA     REDACTED9
+         SATA NCQ Capable: True
+         SATA NCQ Enabled: True
+         Current Temperature (C): 31
+         Maximum Temperature (C): 33
+         PHY Count: 1
+         PHY Transfer Rate: 6.0Gbps
+         Drive Authentication Status: OK
+         Carrier Application Version: 0
+         Carrier Bootloader Version: 0
+         Sanitize Erase Supported: False
+
+      physicaldrive 1E:1:10
+         Port: 1E
+         Box: 1
+         Bay: 10
+         Status: OK
+         Drive Type: Data Drive
+         Interface Type: SATA
+         Size: 6001.1 GB
+         Drive exposed to OS: False
+         Native Block Size: 512
+         Rotational Speed: 7200
+         Firmware Revision: REDA
+         Serial Number: REDACTED10
+         Model: ATA     REDACTED10
+         SATA NCQ Capable: True
+         SATA NCQ Enabled: True
+         Current Temperature (C): 31
+         Maximum Temperature (C): 33
+         PHY Count: 1
+         PHY Transfer Rate: 6.0Gbps
+         Drive Authentication Status: OK
+         Carrier Application Version: 0
+         Carrier Bootloader Version: 0
+         Sanitize Erase Supported: False
+
+      physicaldrive 1E:1:11
+         Port: 1E
+         Box: 1
+         Bay: 11
+         Status: OK
+         Drive Type: Data Drive
+         Interface Type: SATA
+         Size: 6001.1 GB
+         Drive exposed to OS: False
+         Native Block Size: 512
+         Rotational Speed: 7200
+         Firmware Revision: REDA
+         Serial Number: REDACTED11
+         Model: ATA     REDACTED11
+         SATA NCQ Capable: True
+         SATA NCQ Enabled: True
+         Current Temperature (C): 31
+         Maximum Temperature (C): 33
+         PHY Count: 1
+         PHY Transfer Rate: 6.0Gbps
+         Drive Authentication Status: OK
+         Carrier Application Version: 0
+         Carrier Bootloader Version: 0
+         Sanitize Erase Supported: False
+
+      physicaldrive 1E:1:12
+         Port: 1E
+         Box: 1
+         Bay: 12
+         Status: OK
+         Drive Type: Data Drive
+         Interface Type: SATA
+         Size: 6001.1 GB
+         Drive exposed to OS: False
+         Native Block Size: 512
+         Rotational Speed: 7200
+         Firmware Revision: REDA
+         Serial Number: REDACTED12
+         Model: ATA     REDACTED12
+         SATA NCQ Capable: True
+         SATA NCQ Enabled: True
+         Current Temperature (C): 30
+         Maximum Temperature (C): 32
+         PHY Count: 1
+         PHY Transfer Rate: 6.0Gbps
+         Drive Authentication Status: OK
+         Carrier Application Version: 0
+         Carrier Bootloader Version: 0
+         Sanitize Erase Supported: False
+
+
+   Array: B
+      Interface Type: SAS
+      Unused Space: 0  MB (0.0%)
+      Used Space: 65.5 TB (100.0%)
+      Status: OK
+      MultiDomain Status: OK
+      Array Type: Data       HPE SSD Smart Path: disable
+
+
+
+      Logical Drive: 2
+         Size: 32.7 TB
+         Fault Tolerance: 1+0
+         Heads: 255
+         Sectors Per Track: 63
+         Cylinders: 65535
+         Strip Size: 256 KB
+         Full Stripe Size: 1536 KB
+         Status: OK
+         MultiDomain Status: OK
+         Caching:  Enabled
+         Unique Identifier: 600508B1001CF0E828E423CB8835F8D3
+         Disk Name: /dev/sdd
+         Mount Points: None
+         Logical Drive Label: 059323F3PDNMH0ARH690AP155A
+         Mirror Group 1:
+            physicaldrive 1E:2:1 (port 1E:box 2:bay 1, SAS, 6001.1 GB, OK)
+            physicaldrive 1E:2:2 (port 1E:box 2:bay 2, SAS, 6001.1 GB, OK)
+            physicaldrive 1E:2:3 (port 1E:box 2:bay 3, SAS, 6001.1 GB, OK)
+            physicaldrive 1E:2:4 (port 1E:box 2:bay 4, SAS, 6001.1 GB, OK)
+            physicaldrive 1E:2:5 (port 1E:box 2:bay 5, SAS, 6001.1 GB, OK)
+            physicaldrive 1E:2:6 (port 1E:box 2:bay 6, SAS, 6001.1 GB, OK)
+         Mirror Group 2:
+            physicaldrive 1E:2:7 (port 1E:box 2:bay 7, SAS, 6001.1 GB, OK)
+            physicaldrive 1E:2:8 (port 1E:box 2:bay 8, SAS, 6001.1 GB, OK)
+            physicaldrive 1E:2:9 (port 1E:box 2:bay 9, SAS, 6001.1 GB, OK)
+            physicaldrive 1E:2:10 (port 1E:box 2:bay 10, SAS, 6001.1 GB, OK)
+            physicaldrive 1E:2:11 (port 1E:box 2:bay 11, SAS, 6001.1 GB, OK)
+            physicaldrive 1E:2:12 (port 1E:box 2:bay 12, SAS, 6001.1 GB, OK)
+         Drive Type: Data
+         LD Acceleration Method: Controller Cache
+
+      physicaldrive 1E:2:1
+         Port: 1E
+         Box: 2
+         Bay: 1
+         Status: OK
+         Drive Type: Data Drive
+         Interface Type: SAS
+         Size: 6001.1 GB
+         Drive exposed to OS: False
+         Native Block Size: 512
+         Rotational Speed: 7200
+         Firmware Revision: REDA
+         Serial Number: REDACTED13
+         Model: HP      REDACTED13
+         Current Temperature (C): 30
+         Maximum Temperature (C): 35
+         PHY Count: 2
+         PHY Transfer Rate: 12.0Gbps, Unknown
+         Drive Authentication Status: OK
+         Carrier Application Version: 0
+         Carrier Bootloader Version: 0
+         Sanitize Erase Supported: False
+
+      physicaldrive 1E:2:2
+         Port: 1E
+         Box: 2
+         Bay: 2
+         Status: OK
+         Drive Type: Data Drive
+         Interface Type: SAS
+         Size: 6001.1 GB
+         Drive exposed to OS: False
+         Native Block Size: 512
+         Rotational Speed: 7200
+         Firmware Revision: REDA
+         Serial Number: REDACTED14
+         Model: HP      REDACTED14
+         Current Temperature (C): 30
+         Maximum Temperature (C): 36
+         PHY Count: 2
+         PHY Transfer Rate: 12.0Gbps, Unknown
+         Drive Authentication Status: OK
+         Carrier Application Version: 0
+         Carrier Bootloader Version: 0
+         Sanitize Erase Supported: False
+
+      physicaldrive 1E:2:3
+         Port: 1E
+         Box: 2
+         Bay: 3
+         Status: OK
+         Drive Type: Data Drive
+         Interface Type: SAS
+         Size: 6001.1 GB
+         Drive exposed to OS: False
+         Native Block Size: 512
+         Rotational Speed: 7200
+         Firmware Revision: REDA
+         Serial Number: REDACTED15
+         Model: HP      REDACTED15
+         Current Temperature (C): 30
+         Maximum Temperature (C): 36
+         PHY Count: 2
+         PHY Transfer Rate: 12.0Gbps, Unknown
+         Drive Authentication Status: OK
+         Carrier Application Version: 0
+         Carrier Bootloader Version: 0
+         Sanitize Erase Supported: False
+
+      physicaldrive 1E:2:4
+         Port: 1E
+         Box: 2
+         Bay: 4
+         Status: OK
+         Drive Type: Data Drive
+         Interface Type: SAS
+         Size: 6001.1 GB
+         Drive exposed to OS: False
+         Native Block Size: 512
+         Rotational Speed: 7200
+         Firmware Revision: REDA
+         Serial Number: REDACTED16
+         Model: HP      REDACTED16
+         Current Temperature (C): 31
+         Maximum Temperature (C): 36
+         PHY Count: 2
+         PHY Transfer Rate: 12.0Gbps, Unknown
+         Drive Authentication Status: OK
+         Carrier Application Version: 0
+         Carrier Bootloader Version: 0
+         Sanitize Erase Supported: False
+
+      physicaldrive 1E:2:5
+         Port: 1E
+         Box: 2
+         Bay: 5
+         Status: OK
+         Drive Type: Data Drive
+         Interface Type: SAS
+         Size: 6001.1 GB
+         Drive exposed to OS: False
+         Native Block Size: 512
+         Rotational Speed: 7200
+         Firmware Revision: REDA
+         Serial Number: REDACTED17
+         Model: HP      REDACTED17
+         Current Temperature (C): 31
+         Maximum Temperature (C): 37
+         PHY Count: 2
+         PHY Transfer Rate: 12.0Gbps, Unknown
+         Drive Authentication Status: OK
+         Carrier Application Version: 0
+         Carrier Bootloader Version: 0
+         Sanitize Erase Supported: False
+
+      physicaldrive 1E:2:6
+         Port: 1E
+         Box: 2
+         Bay: 6
+         Status: OK
+         Drive Type: Data Drive
+         Interface Type: SAS
+         Size: 6001.1 GB
+         Drive exposed to OS: False
+         Native Block Size: 512
+         Rotational Speed: 7200
+         Firmware Revision: REDA
+         Serial Number: REDACTED18
+         Model: HP      REDACTED18
+         Current Temperature (C): 30
+         Maximum Temperature (C): 36
+         PHY Count: 2
+         PHY Transfer Rate: 12.0Gbps, Unknown
+         Drive Authentication Status: OK
+         Carrier Application Version: 0
+         Carrier Bootloader Version: 0
+         Sanitize Erase Supported: False
+
+      physicaldrive 1E:2:7
+         Port: 1E
+         Box: 2
+         Bay: 7
+         Status: OK
+         Drive Type: Data Drive
+         Interface Type: SAS
+         Size: 6001.1 GB
+         Drive exposed to OS: False
+         Native Block Size: 512
+         Rotational Speed: 7200
+         Firmware Revision: REDA
+         Serial Number: REDACTED19
+         Model: HP      REDACTED19
+         Current Temperature (C): 30
+         Maximum Temperature (C): 36
+         PHY Count: 2
+         PHY Transfer Rate: 12.0Gbps, Unknown
+         Drive Authentication Status: OK
+         Carrier Application Version: 0
+         Carrier Bootloader Version: 0
+         Sanitize Erase Supported: False
+
+      physicaldrive 1E:2:8
+         Port: 1E
+         Box: 2
+         Bay: 8
+         Status: OK
+         Drive Type: Data Drive
+         Interface Type: SAS
+         Size: 6001.1 GB
+         Drive exposed to OS: False
+         Native Block Size: 512
+         Rotational Speed: 7200
+         Firmware Revision: REDA
+         Serial Number: REDACTED20
+         Model: HP      REDACTED20
+         Current Temperature (C): 30
+         Maximum Temperature (C): 37
+         PHY Count: 2
+         PHY Transfer Rate: 12.0Gbps, Unknown
+         Drive Authentication Status: OK
+         Carrier Application Version: 0
+         Carrier Bootloader Version: 0
+         Sanitize Erase Supported: False
+
+      physicaldrive 1E:2:9
+         Port: 1E
+         Box: 2
+         Bay: 9
+         Status: OK
+         Drive Type: Data Drive
+         Interface Type: SAS
+         Size: 6001.1 GB
+         Drive exposed to OS: False
+         Native Block Size: 512
+         Rotational Speed: 7200
+         Firmware Revision: REDA
+         Serial Number: REDACTED21
+         Model: HP      REDACTED21
+         Current Temperature (C): 30
+         Maximum Temperature (C): 36
+         PHY Count: 2
+         PHY Transfer Rate: 12.0Gbps, Unknown
+         Drive Authentication Status: OK
+         Carrier Application Version: 0
+         Carrier Bootloader Version: 0
+         Sanitize Erase Supported: False
+
+      physicaldrive 1E:2:10
+         Port: 1E
+         Box: 2
+         Bay: 10
+         Status: OK
+         Drive Type: Data Drive
+         Interface Type: SAS
+         Size: 6001.1 GB
+         Drive exposed to OS: False
+         Native Block Size: 512
+         Rotational Speed: 7200
+         Firmware Revision: REDA
+         Serial Number: REDACTED22
+         Model: HP      REDACTED22
+         Current Temperature (C): 29
+         Maximum Temperature (C): 35
+         PHY Count: 2
+         PHY Transfer Rate: 12.0Gbps, Unknown
+         Drive Authentication Status: OK
+         Carrier Application Version: 0
+         Carrier Bootloader Version: 0
+         Sanitize Erase Supported: False
+
+      physicaldrive 1E:2:11
+         Port: 1E
+         Box: 2
+         Bay: 11
+         Status: OK
+         Drive Type: Data Drive
+         Interface Type: SAS
+         Size: 6001.1 GB
+         Drive exposed to OS: False
+         Native Block Size: 512
+         Rotational Speed: 7200
+         Firmware Revision: REDA
+         Serial Number: REDACTED23
+         Model: HP      REDACTED23
+         Current Temperature (C): 30
+         Maximum Temperature (C): 36
+         PHY Count: 2
+         PHY Transfer Rate: 12.0Gbps, Unknown
+         Drive Authentication Status: OK
+         Carrier Application Version: 0
+         Carrier Bootloader Version: 0
+         Sanitize Erase Supported: False
+
+      physicaldrive 1E:2:12
+         Port: 1E
+         Box: 2
+         Bay: 12
+         Status: OK
+         Drive Type: Data Drive
+         Interface Type: SAS
+         Size: 6001.1 GB
+         Drive exposed to OS: False
+         Native Block Size: 512
+         Rotational Speed: 7200
+         Firmware Revision: REDA
+         Serial Number: REDACTED24
+         Model: HP      REDACTED24
+         Current Temperature (C): 29
+         Maximum Temperature (C): 36
+         PHY Count: 2
+         PHY Transfer Rate: 12.0Gbps, Unknown
+         Drive Authentication Status: OK
+         Carrier Application Version: 0
+         Carrier Bootloader Version: 0
+         Sanitize Erase Supported: False
+
+
+   Enclosure SEP (Vendor ID HP, Model D3600) 375
+      Device Number: 375
+      Firmware Version: 0.00
+      WWID: REDACTED
+      Port: 1E
+      Box: 2
+      Vendor ID: HP
+      Model: D3600
+      IO Module Board Serial Number: REDACTEDSERIAL
+      IO Module Serial Number: REDACTEDSERIAL
+      IO Module Part Number: 12345-12345
+      IO Module Spare Part Number: 123456-001
+      Backplane 1 Board Serial Number: REDACTEDSERIAL
+      Backplane 1 Serial Number: REDACTEDSERIAL
+      Backplane 1 Part Number: 12345-12345
+      Backplane 1 Spare Part Number: 123456-001
+      Backplane 1 System SKU: REDAC
+
+   Enclosure SEP (Vendor ID HP, Model D3600) 377
+      Device Number: 377
+      Firmware Version: 0.00
+      WWID: REDACTED
+      Port: 1E
+      Box: 1
+      Vendor ID: HP
+      Model: D3600
+      IO Module Board Serial Number: REDACTEDSERIAL
+      IO Module Serial Number: REDACTEDSERIAL
+      IO Module Part Number: 12345-12345
+      IO Module Spare Part Number: 123456-001
+      Backplane 1 Board Serial Number: REDACTEDSERIAL
+      Backplane 1 Serial Number: REDACTEDSERIAL
+      Backplane 1 Part Number: 12345-12345
+      Backplane 1 Spare Part Number: 123456-001
+      Backplane 1 System SKU: REDAC
+
+   Expander 376
+      Device Number: 376
+      Firmware Version: 0.00
+      WWID: REDACTED
+      Port: 1E
+      Box: 2
+      Vendor ID: HP
+
+   Expander 378
+      Device Number: 378
+      Firmware Version: 0.00
+      WWID: REDACTED
+      Port: 1E
+      Box: 1
+      Vendor ID: HP
+
+
+Smart Array P840 in Slot 1
+   Bus Interface: PCI
+   Slot: 1
+   Serial Number: REDACTEDSERIAL
+   Cache Serial Number: REDACTEDSERIAL
+   RAID 6 (ADG) Status: Enabled
+   Controller Status: OK
+   Hardware Revision: B
+   Firmware Version: 0.00
+   Rebuild Priority: High
+   Expand Priority: Medium
+   Surface Scan Delay: 3 secs
+   Surface Scan Mode: Idle
+   Parallel Surface Scan Supported: Yes
+   Current Parallel Surface Scan Count: 1
+   Max Parallel Surface Scan Count: 16
+   Queue Depth: Automatic
+   Monitor and Performance Delay: 60  min
+   Elevator Sort: Enabled
+   Degraded Performance Optimization: Disabled
+   Inconsistency Repair Policy: Disabled
+   Wait for Cache Room: Disabled
+   Surface Analysis Inconsistency Notification: Disabled
+   Post Prompt Timeout: 15 secs
+   Cache Board Present: True
+   Cache Status: OK
+   Cache Ratio: 10% Read / 90% Write
+   Drive Write Cache: Disabled
+   Total Cache Size: 4.0 GB
+   Total Cache Memory Available: 3.2 GB
+   No-Battery Write Cache: Disabled
+   SSD Caching RAID5 WriteBack Enabled: True
+   SSD Caching Version: 0
+   Cache Backup Power Source: Batteries
+   Battery/Capacitor Count: 1
+   Battery/Capacitor Status: OK
+   SATA NCQ Supported: True
+   Spare Activation Mode: Activate on physical drive failure (default)
+   Controller Temperature (C): 63
+   Cache Module Temperature (C): 55
+   Number of Ports: 2 Internal only
+   Encryption: Disabled
+   Express Local Encryption: False
+   Driver Name: hpsa
+   Driver Version: 0.0.0
+   Driver Supports HPE SSD Smart Path: True
+   PCI Address (Domain:Bus:Device.Function): 0000:05:00.0
+   Negotiated PCIe Data Rate: PCIe 3.0 x8 (7880 MB/s)
+   Controller Mode: RAID
+   Controller Mode Reboot: Not Required
+   Latency Scheduler Setting: Disabled
+   Current Power Mode: MaxPerformance
+   Host Serial Number: REDACTEDSERIAL
+   Sanitize Erase Supported: True
+   Primary Boot Volume: logicaldrive 1 (600508B1001CFD65DE2E1068A747A0FC)
+   Secondary Boot Volume: None
+
+
+   Port Name: 1I
+         Port ID: 0
+         Port Connection Number: 0
+         SAS Address: 51402EC000146540
+         Port Location: Internal
+         Managed Cable Connected: False
+
+   Port Name: 2I
+         Port ID: 1
+         Port Connection Number: 1
+         SAS Address: 51402EC000146548
+         Port Location: Internal
+         Managed Cable Connected: False
+
+   Internal Drive Cage at Port 1I, Box 1, OK
+      Power Supply Status: Not Redundant
+      Drive Bays: 4
+      Port: 1I
+      Box: 1
+      Location: Internal
+
+   Physical Drives
+      physicaldrive 1I:1:5 (port 1I:box 1:bay 5, SATA, 6001.1 GB, OK)
+      physicaldrive 1I:1:6 (port 1I:box 1:bay 6, SATA, 6001.1 GB, OK)
+      physicaldrive 1I:1:7 (port 1I:box 1:bay 7, SATA, 6001.1 GB, OK)
+      physicaldrive 1I:1:8 (port 1I:box 1:bay 8, SATA, 6001.1 GB, OK)
+
+
+   Internal Drive Cage at Port 1I, Box 1, OK
+      Power Supply Status: Not Redundant
+      Drive Bays: 4
+      Port: 1I
+      Box: 1
+      Location: Internal
+
+   Physical Drives
+      physicaldrive 1I:1:5 (port 1I:box 1:bay 5, SATA, 6001.1 GB, OK)
+      physicaldrive 1I:1:6 (port 1I:box 1:bay 6, SATA, 6001.1 GB, OK)
+      physicaldrive 1I:1:7 (port 1I:box 1:bay 7, SATA, 6001.1 GB, OK)
+      physicaldrive 1I:1:8 (port 1I:box 1:bay 8, SATA, 6001.1 GB, OK)
+
+
+   Internal Drive Cage at Port 2I, Box 2, OK
+      Power Supply Status: Not Redundant
+      Drive Bays: 4
+      Port: 2I
+      Box: 2
+      Location: Internal
+
+   Physical Drives
+      physicaldrive 2I:2:1 (port 2I:box 2:bay 1, SATA, 6001.1 GB, OK)
+      physicaldrive 2I:2:2 (port 2I:box 2:bay 2, SATA, 6001.1 GB, OK)
+      physicaldrive 2I:2:3 (port 2I:box 2:bay 3, SATA, 6001.1 GB, OK)
+      physicaldrive 2I:2:4 (port 2I:box 2:bay 4, SATA, 6001.1 GB, OK)
+
+
+   Internal Drive Cage at Port 2I, Box 4, OK
+      Power Supply Status: Not Redundant
+      Drive Bays: 2
+      Port: 2I
+      Box: 4
+      Location: Internal
+
+   Physical Drives
+      physicaldrive 2I:4:1 (port 2I:box 4:bay 1, SATA, 1 TB, OK)
+      physicaldrive 2I:4:2 (port 2I:box 4:bay 2, SATA, 1 TB, OK)
+
+   Array: A
+      Interface Type: SATA
+      Unused Space: 0  MB (0.0%)
+      Used Space: 1.8 TB (100.0%)
+      Status: OK
+      MultiDomain Status: OK
+      Array Type: Data       HPE SSD Smart Path: disable
+
+
+
+      Logical Drive: 1
+         Size: 931.5 GB
+         Fault Tolerance: 1
+         Heads: 255
+         Sectors Per Track: 32
+         Cylinders: 65535
+         Strip Size: 256 KB
+         Full Stripe Size: 256 KB
+         Status: OK
+         MultiDomain Status: OK
+         Caching:  Enabled
+         Unique Identifier: 600508B1001CFD65DE2E1068A747A0FC
+         Disk Name: /dev/sda
+         Mount Points: /boot 953 MB Partition Number 2
+         OS Status: LOCKED
+         Logical Drive Label: 01FF61B3PDNNF0ARH730OY8B6E
+         Mirror Group 1:
+            physicaldrive 2I:4:1 (port 2I:box 4:bay 1, SATA, 1 TB, OK)
+         Mirror Group 2:
+            physicaldrive 2I:4:2 (port 2I:box 4:bay 2, SATA, 1 TB, OK)
+         Drive Type: Data
+         LD Acceleration Method: Controller Cache
+
+      physicaldrive 2I:4:1
+         Port: 2I
+         Box: 4
+         Bay: 1
+         Status: OK
+         Drive Type: Data Drive
+         Interface Type: SATA
+         Size: 1 TB
+         Drive exposed to OS: False
+         Native Block Size: 512
+         Rotational Speed: 7200
+         Firmware Revision: REDA
+         Serial Number: REDACTED25
+         Model: ATA     REDACTED25
+         SATA NCQ Capable: True
+         SATA NCQ Enabled: True
+         Current Temperature (C): 53
+         Maximum Temperature (C): 57
+         PHY Count: 1
+         PHY Transfer Rate: 6.0Gbps
+         Drive Authentication Status: OK
+         Carrier Application Version: 0
+         Carrier Bootloader Version: 0
+         Sanitize Erase Supported: False
+
+      physicaldrive 2I:4:2
+         Port: 2I
+         Box: 4
+         Bay: 2
+         Status: OK
+         Drive Type: Data Drive
+         Interface Type: SATA
+         Size: 1 TB
+         Drive exposed to OS: False
+         Native Block Size: 512
+         Rotational Speed: 7200
+         Firmware Revision: REDA
+         Serial Number: REDACTED26
+         Model: ATA     REDACTED26
+         SATA NCQ Capable: True
+         SATA NCQ Enabled: True
+         Current Temperature (C): 53
+         Maximum Temperature (C): 58
+         PHY Count: 1
+         PHY Transfer Rate: 6.0Gbps
+         Drive Authentication Status: OK
+         Carrier Application Version: 0
+         Carrier Bootloader Version: 0
+         Sanitize Erase Supported: False
+
+
+   Array: B
+      Interface Type: SATA
+      Unused Space: 0  MB (0.0%)
+      Used Space: 65.5 TB (100.0%)
+      Status: OK
+      MultiDomain Status: OK
+      Array Type: Data       HPE SSD Smart Path: disable
+
+
+
+      Logical Drive: 2
+         Size: 32.7 TB
+         Fault Tolerance: 1+0
+         Heads: 255
+         Sectors Per Track: 32
+         Cylinders: 65535
+         Strip Size: 256 KB
+         Full Stripe Size: 1536 KB
+         Status: OK
+         MultiDomain Status: OK
+         Caching:  Enabled
+         Unique Identifier: 600508B1001CC1DFD1371741ADA2CE4D
+         Disk Name: /dev/sdb
+         Mount Points: None
+         Logical Drive Label: 05FF61DFPDNNF0ARH730OYEBB1
+         Mirror Group 1:
+            physicaldrive 1I:1:5 (port 1I:box 1:bay 5, SATA, 6001.1 GB, OK)
+            physicaldrive 1I:1:6 (port 1I:box 1:bay 6, SATA, 6001.1 GB, OK)
+            physicaldrive 1I:1:7 (port 1I:box 1:bay 7, SATA, 6001.1 GB, OK)
+            physicaldrive 1I:1:8 (port 1I:box 1:bay 8, SATA, 6001.1 GB, OK)
+            physicaldrive 1I:1:1 (port 1I:box 1:bay 1, SATA, 6001.1 GB, OK)
+            physicaldrive 1I:1:2 (port 1I:box 1:bay 2, SATA, 6001.1 GB, OK)
+         Mirror Group 2:
+            physicaldrive 1I:1:3 (port 1I:box 1:bay 3, SATA, 6001.1 GB, OK)
+            physicaldrive 1I:1:4 (port 1I:box 1:bay 4, SATA, 6001.1 GB, OK)
+            physicaldrive 2I:2:1 (port 2I:box 2:bay 1, SATA, 6001.1 GB, OK)
+            physicaldrive 2I:2:2 (port 2I:box 2:bay 2, SATA, 6001.1 GB, OK)
+            physicaldrive 2I:2:3 (port 2I:box 2:bay 3, SATA, 6001.1 GB, OK)
+            physicaldrive 2I:2:4 (port 2I:box 2:bay 4, SATA, 6001.1 GB, OK)
+         Drive Type: Data
+         LD Acceleration Method: Controller Cache
+
+      physicaldrive 1I:1:1
+         Port: 1I
+         Box: 1
+         Bay: 1
+         Status: OK
+         Drive Type: Data Drive
+         Interface Type: SATA
+         Size: 6001.1 GB
+         Drive exposed to OS: False
+         Native Block Size: 512
+         Rotational Speed: 7200
+         Firmware Revision: REDA
+         Serial Number: REDACTED27
+         Model: ATA     REDACTED27
+         SATA NCQ Capable: True
+         SATA NCQ Enabled: True
+         Current Temperature (C): 38
+         Maximum Temperature (C): 41
+         PHY Count: 1
+         PHY Transfer Rate: 6.0Gbps
+         Drive Authentication Status: OK
+         Carrier Application Version: 0
+         Carrier Bootloader Version: 0
+         Sanitize Erase Supported: False
+
+      physicaldrive 1I:1:2
+         Port: 1I
+         Box: 1
+         Bay: 2
+         Status: OK
+         Drive Type: Data Drive
+         Interface Type: SATA
+         Size: 6001.1 GB
+         Drive exposed to OS: False
+         Native Block Size: 512
+         Rotational Speed: 7200
+         Firmware Revision: REDA
+         Serial Number: REDACTED28
+         Model: ATA     REDACTED28
+         SATA NCQ Capable: True
+         SATA NCQ Enabled: True
+         Current Temperature (C): 39
+         Maximum Temperature (C): 42
+         PHY Count: 1
+         PHY Transfer Rate: 6.0Gbps
+         Drive Authentication Status: OK
+         Carrier Application Version: 0
+         Carrier Bootloader Version: 0
+         Sanitize Erase Supported: False
+
+      physicaldrive 1I:1:3
+         Port: 1I
+         Box: 1
+         Bay: 3
+         Status: OK
+         Drive Type: Data Drive
+         Interface Type: SATA
+         Size: 6001.1 GB
+         Drive exposed to OS: False
+         Native Block Size: 512
+         Rotational Speed: 7200
+         Firmware Revision: REDA
+         Serial Number: REDACTED29
+         Model: ATA     REDACTED29
+         SATA NCQ Capable: True
+         SATA NCQ Enabled: True
+         Current Temperature (C): 40
+         Maximum Temperature (C): 42
+         PHY Count: 1
+         PHY Transfer Rate: 6.0Gbps
+         Drive Authentication Status: OK
+         Carrier Application Version: 0
+         Carrier Bootloader Version: 0
+         Sanitize Erase Supported: False
+
+      physicaldrive 1I:1:4
+         Port: 1I
+         Box: 1
+         Bay: 4
+         Status: OK
+         Drive Type: Data Drive
+         Interface Type: SATA
+         Size: 6001.1 GB
+         Drive exposed to OS: False
+         Native Block Size: 512
+         Rotational Speed: 7200
+         Firmware Revision: REDA
+         Serial Number: REDACTED30
+         Model: ATA     REDACTED30
+         SATA NCQ Capable: True
+         SATA NCQ Enabled: True
+         Current Temperature (C): 39
+         Maximum Temperature (C): 41
+         PHY Count: 1
+         PHY Transfer Rate: 6.0Gbps
+         Drive Authentication Status: OK
+         Carrier Application Version: 0
+         Carrier Bootloader Version: 0
+         Sanitize Erase Supported: False
+
+      physicaldrive 1I:1:5
+         Port: 1I
+         Box: 1
+         Bay: 5
+         Status: OK
+         Drive Type: Data Drive
+         Interface Type: SATA
+         Size: 6001.1 GB
+         Drive exposed to OS: False
+         Native Block Size: 512
+         Rotational Speed: 7200
+         Firmware Revision: REDA
+         Serial Number: REDACTED31
+         Model: ATA     REDACTED31
+         SATA NCQ Capable: True
+         SATA NCQ Enabled: True
+         Current Temperature (C): 40
+         Maximum Temperature (C): 42
+         PHY Count: 1
+         PHY Transfer Rate: 6.0Gbps
+         Drive Authentication Status: OK
+         Carrier Application Version: 0
+         Carrier Bootloader Version: 0
+         Sanitize Erase Supported: False
+
+      physicaldrive 1I:1:6
+         Port: 1I
+         Box: 1
+         Bay: 6
+         Status: OK
+         Drive Type: Data Drive
+         Interface Type: SATA
+         Size: 6001.1 GB
+         Drive exposed to OS: False
+         Native Block Size: 512
+         Rotational Speed: 7200
+         Firmware Revision: REDA
+         Serial Number: REDACTED32
+         Model: ATA     REDACTED32
+         SATA NCQ Capable: True
+         SATA NCQ Enabled: True
+         Current Temperature (C): 40
+         Maximum Temperature (C): 42
+         PHY Count: 1
+         PHY Transfer Rate: 6.0Gbps
+         Drive Authentication Status: OK
+         Carrier Application Version: 0
+         Carrier Bootloader Version: 0
+         Sanitize Erase Supported: False
+
+      physicaldrive 1I:1:7
+         Port: 1I
+         Box: 1
+         Bay: 7
+         Status: OK
+         Drive Type: Data Drive
+         Interface Type: SATA
+         Size: 6001.1 GB
+         Drive exposed to OS: False
+         Native Block Size: 512
+         Rotational Speed: 7200
+         Firmware Revision: REDA
+         Serial Number: REDACTED33
+         Model: ATA     REDACTED33
+         SATA NCQ Capable: True
+         SATA NCQ Enabled: True
+         Current Temperature (C): 36
+         Maximum Temperature (C): 38
+         PHY Count: 1
+         PHY Transfer Rate: 6.0Gbps
+         Drive Authentication Status: OK
+         Carrier Application Version: 0
+         Carrier Bootloader Version: 0
+         Sanitize Erase Supported: False
+
+      physicaldrive 1I:1:8
+         Port: 1I
+         Box: 1
+         Bay: 8
+         Status: OK
+         Drive Type: Data Drive
+         Interface Type: SATA
+         Size: 6001.1 GB
+         Drive exposed to OS: False
+         Native Block Size: 512
+         Rotational Speed: 7200
+         Firmware Revision: REDA
+         Serial Number: REDACTED34
+         Model: ATA     REDACTED34
+         SATA NCQ Capable: True
+         SATA NCQ Enabled: True
+         Current Temperature (C): 38
+         Maximum Temperature (C): 40
+         PHY Count: 1
+         PHY Transfer Rate: 6.0Gbps
+         Drive Authentication Status: OK
+         Carrier Application Version: 0
+         Carrier Bootloader Version: 0
+         Sanitize Erase Supported: False
+
+      physicaldrive 2I:2:1
+         Port: 2I
+         Box: 2
+         Bay: 1
+         Status: OK
+         Drive Type: Data Drive
+         Interface Type: SATA
+         Size: 6001.1 GB
+         Drive exposed to OS: False
+         Native Block Size: 512
+         Rotational Speed: 7200
+         Firmware Revision: REDA
+         Serial Number: REDACTED35
+         Model: ATA     REDACTED35
+         SATA NCQ Capable: True
+         SATA NCQ Enabled: True
+         Current Temperature (C): 38
+         Maximum Temperature (C): 40
+         PHY Count: 1
+         PHY Transfer Rate: 6.0Gbps
+         Drive Authentication Status: OK
+         Carrier Application Version: 0
+         Carrier Bootloader Version: 0
+         Sanitize Erase Supported: False
+
+      physicaldrive 2I:2:2
+         Port: 2I
+         Box: 2
+         Bay: 2
+         Status: OK
+         Drive Type: Data Drive
+         Interface Type: SATA
+         Size: 6001.1 GB
+         Drive exposed to OS: False
+         Native Block Size: 512
+         Rotational Speed: 7200
+         Firmware Revision: REDA
+         Serial Number: REDACTED36
+         Model: ATA     REDACTED36
+         SATA NCQ Capable: True
+         SATA NCQ Enabled: True
+         Current Temperature (C): 35
+         Maximum Temperature (C): 37
+         PHY Count: 1
+         PHY Transfer Rate: 6.0Gbps
+         Drive Authentication Status: OK
+         Carrier Application Version: 0
+         Carrier Bootloader Version: 0
+         Sanitize Erase Supported: False
+
+      physicaldrive 2I:2:3
+         Port: 2I
+         Box: 2
+         Bay: 3
+         Status: OK
+         Drive Type: Data Drive
+         Interface Type: SATA
+         Size: 6001.1 GB
+         Drive exposed to OS: False
+         Native Block Size: 512
+         Rotational Speed: 7200
+         Firmware Revision: REDA
+         Serial Number: REDACTED37
+         Model: ATA     REDACTED37
+         SATA NCQ Capable: True
+         SATA NCQ Enabled: True
+         Current Temperature (C): 37
+         Maximum Temperature (C): 38
+         PHY Count: 1
+         PHY Transfer Rate: 6.0Gbps
+         Drive Authentication Status: OK
+         Carrier Application Version: 0
+         Carrier Bootloader Version: 0
+         Sanitize Erase Supported: False
+
+      physicaldrive 2I:2:4
+         Port: 2I
+         Box: 2
+         Bay: 4
+         Status: OK
+         Drive Type: Data Drive
+         Interface Type: SATA
+         Size: 6001.1 GB
+         Drive exposed to OS: False
+         Native Block Size: 512
+         Rotational Speed: 7200
+         Firmware Revision: REDA
+         Serial Number: REDACTED38
+         Model: ATA     REDACTED38
+         SATA NCQ Capable: True
+         SATA NCQ Enabled: True
+         Current Temperature (C): 37
+         Maximum Temperature (C): 39
+         PHY Count: 1
+         PHY Transfer Rate: 6.0Gbps
+         Drive Authentication Status: OK
+         Carrier Application Version: 0
+         Carrier Bootloader Version: 0
+         Sanitize Erase Supported: False
+
+
