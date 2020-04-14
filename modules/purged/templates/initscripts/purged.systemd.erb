@@ -4,3 +4,6 @@ Description=Purger for ATS and Varnish
 [Service]
 ExecStart=/usr/bin/purged -backend_addr <%= @backend_addr %> -frontend_addr <%= @frontend_addr %> -mcast_addrs <%= @mcast_str %> -prometheus_addr <%= @prometheus_addr %> -concurrency <%= @concurrency %>
 Restart=on-failure
+# Allocate a user for purged on-the-fly. This turns off write access to most
+# directories. See http://0pointer.net/blog/dynamic-users-with-systemd.html
+DynamicUser=yes
