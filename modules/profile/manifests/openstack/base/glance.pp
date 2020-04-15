@@ -1,7 +1,7 @@
 class profile::openstack::base::glance(
     $version = hiera('profile::openstack::base::version'),
     Array[Stdlib::Fqdn] $openstack_controllers = lookup('profile::openstack::base::openstack_controllers'),
-    $keystone_host = hiera('profile::openstack::base::keystone_host'),
+    Stdlib::Fqdn $keystone_fqdn = lookup('profile::openstack::base::keystone_api_fqdn'),
     $auth_port = hiera('profile::openstack::base::keystone::auth_port'),
     $public_port = hiera('profile::openstack::base::keystone::public_port'),
     $db_user = hiera('profile::openstack::base::glance::db_user'),
@@ -16,8 +16,8 @@ class profile::openstack::base::glance(
     Stdlib::Fqdn $primary_glance_image_store = lookup('profile::openstack::base::primary_glance_image_store'),
     ) {
 
-    $keystone_admin_uri = "http://${keystone_host}:${auth_port}"
-    $keystone_public_uri = "http://${keystone_host}:${public_port}"
+    $keystone_admin_uri = "http://${keystone_fqdn}:${auth_port}"
+    $keystone_public_uri = "http://${keystone_fqdn}:${public_port}"
 
     class { '::openstack::glance::service':
         version             => $version,

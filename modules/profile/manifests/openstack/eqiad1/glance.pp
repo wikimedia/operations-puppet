@@ -1,7 +1,7 @@
 class profile::openstack::eqiad1::glance (
     $version = hiera('profile::openstack::eqiad1::version'),
     Array[Stdlib::Fqdn] $openstack_controllers = lookup('profile::openstack::eqiad1::openstack_controllers'),
-    $keystone_host = hiera('profile::openstack::eqiad1::keystone_host'),
+    Stdlib::Fqdn $keystone_fqdn = lookup('profile::openstack::eqiad1::keystone_api_fqdn'),
     $db_pass = hiera('profile::openstack::eqiad1::glance::db_pass'),
     $db_host = hiera('profile::openstack::eqiad1::glance::db_host'),
     $ldap_user_pass = hiera('profile::openstack::eqiad1::ldap_user_pass'),
@@ -15,7 +15,7 @@ class profile::openstack::eqiad1::glance (
     class {'::profile::openstack::base::glance':
         version                    => $version,
         openstack_controllers      => $openstack_controllers,
-        keystone_host              => $keystone_host,
+        keystone_fqdn              => $keystone_fqdn,
         db_pass                    => $db_pass,
         db_host                    => $db_host,
         ldap_user_pass             => $ldap_user_pass,
