@@ -3661,7 +3661,7 @@ users:
   kormat:
     ensure: present
     realname: Stephen Shirley
-    kormat: sshirley@wikimedia.org
+    email: sshirley@wikimedia.org
     uid: 24118
     gid: 500
     ssh_keys:
