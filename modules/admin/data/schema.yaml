@@ -1,0 +1,85 @@
+definitions:
+  group:
+    type: object
+    additionalProperties:
+      type: object
+      properties:
+        description:
+          type: string
+        posix_name:
+          type: string
+        system:
+          type: boolean
+        members:
+          type: array
+        system_members:
+          type: array
+        gid:
+          type: integer
+          minimum: 500
+          maximum: 65535
+        privileges:
+          type: array
+          items:
+            type: string
+      required:
+        - members
+      additionalProperties: false
+  user:
+    type: object
+    additionalProperties:
+      type: object
+      properties:
+        ensure:
+          type: string
+          enum:
+            - present
+            - absent
+        krb:
+          type: string
+          enum:
+            - present
+            - absent
+        name:
+          type: string
+        realname:
+          type: string
+        email:
+          type: string
+        shell:
+          type: string
+        email:
+          type: string
+        expiry_date:
+          type: string
+          format: date
+        expiry_contact:
+          type: string
+        comment:
+          type: string
+        home_dir:
+          type: string
+        ssh_keys:
+          type: array
+          items:
+            type: string
+        uid:
+          type: integer
+          minimum: 500
+          maximum: 65535
+        gid:
+          type: integer
+          minimum: 500
+          maximum: 65535
+        system:
+          type: boolean
+      required:
+        - ensure
+        - uid
+      additionalProperties: false
+type: object
+properties:
+  groups:
+    "$ref": "#/definitions/group"
+  users:
+    "$ref": "#/definitions/user"
