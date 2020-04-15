@@ -3,7 +3,7 @@ class openstack::glance::service::queens(
     $db_pass,
     $db_name,
     $db_host,
-    $glance_data,
+    $glance_data_dir,
     $ldap_user_pass,
     $keystone_admin_uri,
     $keystone_public_uri,

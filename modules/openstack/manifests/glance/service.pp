@@ -5,7 +5,7 @@ class openstack::glance::service(
     $db_pass,
     $db_name,
     $db_host,
-    $glance_data,
+    $glance_data_dir,
     $glance_image_dir,
     $ldap_user_pass,
     $keystone_admin_uri,
@@ -19,7 +19,7 @@ class openstack::glance::service(
         db_pass             => $db_pass,
         db_name             => $db_name,
         db_host             => $db_host,
-        glance_data         => $glance_data,
+        glance_data_dir     => $glance_data_dir,
         ldap_user_pass      => $ldap_user_pass,
         keystone_admin_uri  => $keystone_admin_uri,
         keystone_public_uri => $keystone_public_uri,
@@ -27,7 +27,7 @@ class openstack::glance::service(
         registry_bind_port  => $registry_bind_port,
     }
 
-    file { $glance_data:
+    file { $glance_data_dir:
         ensure  => directory,
         owner   => 'glance',
         group   => 'glance',
