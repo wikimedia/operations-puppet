@@ -4194,3 +4194,7 @@ ldap_only_users:
     ensure: present
     realname: Wolfgang Kandek
     email: wkandek@wikimedia.org
+  mwilliams:
+    ensure: present
+    realname: Matthew Williams
+    email: mwilliams@wikimedia.org
