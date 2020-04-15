@@ -16,7 +16,7 @@ import requests
 from conftool.cli.tool import ToolCliBase
 from conftool.drivers import BackendError
 
-logger = logging.getLogger('service_restarter')
+logger = logging.getLogger("service_restarter")
 
 
 class ServiceRestarter(ToolCliBase):
@@ -46,7 +46,9 @@ class ServiceRestarter(ToolCliBase):
         """
         pooled = self._get_objects()
         if not pooled:
-            logger.info("The server is depooled from all services. Restarting the service directly")
+            logger.info(
+                "The server is depooled from all services. Restarting the service directly"
+            )
             # Everything is depooled, we can just restart the services
             return self._restart_services()
 
@@ -57,7 +59,7 @@ class ServiceRestarter(ToolCliBase):
         rc = self._restart_services()
         # If the restart fails, we don't really want to repool.
         if rc != 0:
-            logger.warning('Service restart failed. NOT repooling')
+            logger.warning("Service restart failed. NOT repooling")
             return rc
         logger.info("Repooling previously pooled services")
         if not self.pool(pooled):
@@ -73,7 +75,7 @@ class ServiceRestarter(ToolCliBase):
         if not pooled:
             logger.info("Services already depooled")
         elif not self.depool(pooled):
-            logger.warning('Service depool failed.')
+            logger.warning("Service depool failed.")
             return self.DEFAULT_RC
 
         return 0
@@ -87,26 +89,29 @@ class ServiceRestarter(ToolCliBase):
         if not depooled:
             logger.info("No service to pool.")
         elif not self.pool(depooled):
-            logger.warning('Service pool failed.')
+            logger.warning("Service pool failed.")
             return self.DEFAULT_RC
 
         return 0
 
     def _restart_services(self):
         for svc in self.services:
-            cmd = ['systemctl', 'restart', svc + '.service']
-            cmd_str = ' '.join(map(shlex.quote, cmd))
+            cmd = ["systemctl", "restart", svc + ".service"]
+            cmd_str = " ".join(map(shlex.quote, cmd))
             try:
                 subprocess.check_call(cmd)
-                logger.debug('Execution of command %s successful', cmd_str)
+                logger.debug("Execution of command %s successful", cmd_str)
                 return 0
             except subprocess.CalledProcessError as e:
-                logger.error('Executing command %s failed: %s', cmd_str, e)
+                logger.error("Executing command %s failed: %s", cmd_str, e)
                 return e.returncode
 
     def _get_objects(self, pooled_state="yes"):
         """Gets the objects corresponding to the services we're operating on"""
-        selector = {'service': re.compile('|'.join(self.pools)), 'name': re.compile(self.fqdn)}
+        selector = {
+            "service": re.compile("|".join(self.pools)),
+            "name": re.compile(self.fqdn),
+        }
         objects = list(self.entity.query(selector))
         pooled = [o for o in objects if o.pooled == pooled_state]
         return pooled
@@ -116,19 +121,19 @@ class ServiceRestarter(ToolCliBase):
         try:
             # First let's depool in etcd
             for obj in pooled:
-                obj.update({'pooled': 'no'})
+                obj.update({"pooled": "no"})
             # now let's wait for the services to be depooled in pybal
             self._verify_status(False)
             return True
         except (BackendError, PoolStatusError) as e:
-            logger.error('Error depooling the servers: %s', e)
+            logger.error("Error depooling the servers: %s", e)
             return False
 
     def pool(self, pooled):
         """Pool a list of services"""
         try:
             for obj in pooled:
-                obj.update({'pooled': 'yes'})
+                obj.update({"pooled": "yes"})
             self._verify_status(True)
             return True
         except (BackendError, PoolStatusError) as e:
@@ -137,24 +142,24 @@ class ServiceRestarter(ToolCliBase):
 
     def _verify_status(self, want_pooled):
         if want_pooled:
-            desired_status = 'enabled/up/pooled'
+            desired_status = "enabled/up/pooled"
         else:
-            desired_status = 'disabled/*/not pooled'
+            desired_status = "disabled/*/not pooled"
         for baseurl in self.lvs_uris:
             parsed = parse.urlparse(baseurl)
-            url = '{baseurl}/{fqdn}'.format(baseurl=baseurl, fqdn=self.fqdn)
+            url = "{baseurl}/{fqdn}".format(baseurl=baseurl, fqdn=self.fqdn)
             # This will raise a PoolStatusError
             logger.debug("Now verifying %s", url)
             self._fetch_retry(url, want_pooled, parsed, desired_status)
 
     def _fetch_retry(self, url, want_pooled, parsed, desired_status):
         headers = {
-            'user-agent': 'service-restarter/0.0.1',
-            'accept': 'application/json'
+            "user-agent": "service-restarter/0.0.1",
+            "accept": "application/json",
         }
         for _ in range(0, self.retries):
             try:
-                logger.debug('Fetching url %s', url)
+                logger.debug("Fetching url %s", url)
                 r = requests.get(url, headers=headers, timeout=self.timeout)
                 r.raise_for_status()
             except requests.exceptions.HTTPError:
@@ -162,19 +167,18 @@ class ServiceRestarter(ToolCliBase):
                 # This will account for servers that are inactive (which will
                 # return 404) and for backing off if pybal is unable to respond
                 # (5xx errors)
-                logger.debug('Invalid response (status code %s) for %s - aborting',
-                             r.status_code, url)
+                logger.debug(
+                    "Invalid response (status code %s) for %s - aborting",
+                    r.status_code,
+                    url,
+                )
                 return
             except requests.exceptions.Timeout:
                 # In this case, we don't want to stampede pybal, we bail out
                 logger.warning("Timed out checking %s", url)
                 return
             except requests.exceptions.RequestException as e:
-                logger.warning(
-                    'Issues connecting to %s: %s',
-                    parsed.netloc,
-                    e
-                )
+                logger.warning("Issues connecting to %s: %s", parsed.netloc, e)
                 # For such errors, we just retry again
                 continue
 
@@ -188,18 +192,18 @@ class ServiceRestarter(ToolCliBase):
 
             if status.has_state(want_pooled):
                 logger.debug(
-                    'OK - LB %s reports pool %s as %s',
+                    "OK - LB %s reports pool %s as %s",
                     parsed.netloc,
-                    parsed.path.replace('/pools/', ''),
-                    status
+                    parsed.path.replace("/pools/", ""),
+                    status,
                 )
                 return
             logger.warning(
-                'LB %s reports pool %s as %s, should be %s',
+                "LB %s reports pool %s as %s, should be %s",
                 parsed.netloc,
-                parsed.path.replace('/pools/', ''),
+                parsed.path.replace("/pools/", ""),
                 status,
-                desired_status
+                desired_status,
             )
             # now wait before retrying
             time.sleep(self.wait)
@@ -217,15 +221,17 @@ class PoolStatus:
     def has_state(self, want_pooled):
         # A server we want in the pool must be enabled/up/pooled
         # A server we don't want must be disabled/*/depooled
-        return (self.enabled == want_pooled
-                and self.pooled == want_pooled
-                and not (want_pooled and not self.up))
+        return (
+            self.enabled == want_pooled
+            and self.pooled == want_pooled
+            and not (want_pooled and not self.up)
+        )
 
     def __str__(self):
-        enabled = 'enabled' if self.enabled else 'disabled'
-        up = 'up' if self.up else 'down'
-        pooled = 'pooled' if self.pooled else 'not pooled'
-        return '/'.join([enabled, up, pooled])
+        enabled = "enabled" if self.enabled else "disabled"
+        up = "up" if self.up else "down"
+        pooled = "pooled" if self.pooled else "not pooled"
+        return "/".join([enabled, up, pooled])
 
 
 class PoolStatusError(Exception):
@@ -234,54 +240,72 @@ class PoolStatusError(Exception):
 
 def parse_args():
     parser = argparse.ArgumentParser(
-        description='Safe script to restart services while depooled. '
-        'Optionally, it can just depool/pool services.'
-    )
-    parser.add_argument('--config', help='Conftool config file',
-                        default='/etc/conftool/config.yaml')
-    parser.add_argument('--object-type', dest='object_type', default='node')
-    parser.add_argument('--debug', action='store_true',
-                        default=False, help='print debug info')
-    parser.add_argument(
-        '--schema', default='/etc/conftool/schema.yaml',
-        help='Schema file that defines additional object types'
+        description="Safe script to restart services while depooled. "
+        "Optionally, it can just depool/pool services."
     )
     parser.add_argument(
-        '--retries',
+        "--config", help="Conftool config file", default="/etc/conftool/config.yaml"
+    )
+    parser.add_argument("--object-type", dest="object_type", default="node")
+    parser.add_argument(
+        "--debug", action="store_true", default=False, help="print debug info"
+    )
+    parser.add_argument(
+        "--schema",
+        default="/etc/conftool/schema.yaml",
+        help="Schema file that defines additional object types",
+    )
+    parser.add_argument(
+        "--retries",
         default=5,
         type=int,
-        help='Number of times to retry verification on the LVS servers')
+        help="Number of times to retry verification on the LVS servers",
+    )
     parser.add_argument(
-        '--wait',
+        "--wait",
         default=3,
         type=int,
-        help='How many seconds to wait before the next check upon an error'
+        help="How many seconds to wait before the next check upon an error",
     )
     parser.add_argument(
-        '--timeout',
+        "--timeout",
         default=5,
         type=int,
-        help='Number of seconds to wait a response from the lbs'
+        help="Number of seconds to wait a response from the lbs",
+    )
+
+    parser.add_argument(
+        "--lvs-urls",
+        dest="lvs_urls",
+        nargs="+",
+        metavar="URL",
+        help="Full urls to check for results in pybal.",
     )
     parser.add_argument(
-        '--lvs-urls', dest='lvs_urls', nargs='+', metavar='URL',
-        help='Full urls to check for results in pybal.'
+        "--pools", nargs="+", metavar="POOL", help="LVS services to depool"
     )
-    parser.add_argument('--pools', nargs='+', metavar='POOL',
-                        help='LVS services to depool')
     simple_actions = parser.add_mutually_exclusive_group(required=True)
-    simple_actions.add_argument('--services', nargs='+', metavar='SVC',
-                                help='Systemd service to restart')
-    simple_actions.add_argument('--pool', action='store_true', default=False,
-                                help='Just repool (with verification) the indicated services')
-    simple_actions.add_argument('--depool', action='store_true', default=False,
-                                help='Just depool (with verification) the indicated services')
+    simple_actions.add_argument(
+        "--services", nargs="+", metavar="SVC", help="Systemd service to restart"
+    )
+    simple_actions.add_argument(
+        "--pool",
+        action="store_true",
+        default=False,
+        help="Just repool (with verification) the indicated services",
+    )
+    simple_actions.add_argument(
+        "--depool",
+        action="store_true",
+        default=False,
+        help="Just depool (with verification) the indicated services",
+    )
     return parser.parse_args()
 
 
 def main():
     args = parse_args()
-    log_format = '%(asctime)s [%(levelname)s] %(message)s'
+    log_format = "%(asctime)s [%(levelname)s] %(message)s"
     if args.debug:
         logging.basicConfig(level=logging.DEBUG, format=log_format)
     else:
@@ -298,5 +322,5 @@ def main():
     return sr.run()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     sys.exit(main())
