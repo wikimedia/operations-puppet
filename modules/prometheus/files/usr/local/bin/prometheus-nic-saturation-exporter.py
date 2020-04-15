@@ -26,9 +26,8 @@ import glob
 import logging
 import os
 import time
-from typing import Dict, Iterable
+from collections import namedtuple
 
-import attr
 from prometheus_client import Counter, start_http_server
 
 log = logging.getLogger(os.path.basename(__file__))
@@ -36,24 +35,15 @@ log = logging.getLogger(os.path.basename(__file__))
 # All of our exported metrics have this prefix.
 METRIC_NAMESPACE = 'nic_saturation'
 
+# TODO: when we finally kill all Jessie hosts, revert State and NICState back to using attr.
+#
+# A State is an epoch timestamp, and a dictionary of {interface name: NICState}.
+State = namedtuple('State', ['time', 'nicstates'])
 
-@attr.s
-class NICState:
-    """A NICState is int counters for received bytes and transmitted bytes."""
-    rx_bytes = attr.ib(type=int)
-    tx_bytes = attr.ib(type=int)
-
-    # NICStates can be subtracted from one another.
-    def __sub__(self, other):
-        return NICState(self.rx_bytes - other.rx_bytes,
-                        self.tx_bytes - other.tx_bytes)
-
-
-@attr.s
-class State:
-    """A State is an epoch timestamp, and a dictionary of {interface name: NICState}."""
-    time = attr.ib(type=float)
-    nicstates = attr.ib(type=Dict[str, NICState])
+# A NICState is int counters for received bytes and transmitted bytes.
+NICState = namedtuple('NICState', ['rx_bytes', 'tx_bytes'])
+# NICStates can be subtracted from one another.
+NICState.__sub__ = lambda self, other: NICState(*[x - y for x, y in zip(self, other)])
 
 
 def read_sysfs(nic: str, file: str) -> str:
@@ -66,7 +56,8 @@ def read_sysfs(nic: str, file: str) -> str:
         return f.read().rstrip()
 
 
-def read_state(nics: Iterable[str]) -> State:
+# TODO: when we finally kill all Jessie hosts, type-annotate 'nics' as Iterable[str].
+def read_state(nics) -> State:
     """
     Return a State for all interfaces named in nics.
     """
@@ -78,7 +69,8 @@ def read_state(nics: Iterable[str]) -> State:
     return State(time=time.time(), nicstates=nicstates)
 
 
-def get_nics() -> Iterable[str]:
+# TODO: when we finally kill all Jessie hosts, type-annotate the return value as Iterable[str].
+def get_nics():
     """
     Returns names of all NICs that are online and that have valid link speeds.
     """
