@@ -106,6 +106,19 @@ class profile::cache::base(
         is_active        => $use_purged,
     }
 
+    # TODO: Use check_procs during the vhtcpd/purged transition period, move to
+    # nrpe::monitor_systemd_unit_state afterwards
+    $purged_process_count = $use_purged? {
+        true    => '1:1',
+        default => '0:0',
+    }
+
+    nrpe::monitor_service { 'purged':
+        description  => 'Purged HTTP PURGE daemon',
+        nrpe_command => "/usr/lib/nagios/plugins/check_procs -c ${purged_process_count} -C purged",
+        notes_url    => 'https://wikitech.wikimedia.org/wiki/Multicast_HTCP_purging',
+    }
+
     class { 'prometheus::node_vhtcpd': }
     class { 'varnish::htcppurger':
         host_regex => $purge_host_regex,
