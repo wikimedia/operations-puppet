@@ -21,6 +21,7 @@ class role::ci::master {
     include ::profile::ci::slave
 
     include ::profile::ci::httpd
+    include ::profile::tlsproxy::envoy
     include ::profile::ci::website
 
     include ::profile::ci::docker

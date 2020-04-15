@@ -184,3 +184,12 @@ profile::ci::migration::rsync_data_dirs:
   - '/srv/'
 
 profile::zuul::merger::ensure_service: 'running'
+
+# envoy for TLS termination for integration.wikimedia.org behind ATS
+profile::tlsproxy::envoy::ensure: present
+profile::tlsproxy::envoy::services:
+  - server_names: ['*']
+    port: 80
+profile::tlsproxy::envoy::global_cert_name: "contint.wikimedia.org"
+profile::tlsproxy::envoy::sni_support: "no"
+profile::tlsproxy::envoy::tls_port: 1443
