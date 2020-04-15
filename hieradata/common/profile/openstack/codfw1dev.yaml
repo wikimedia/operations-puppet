@@ -1,10 +1,58 @@
+profile::openstack::codfw1dev::region: 'codfw1dev-r'
 profile::openstack::codfw1dev::version: 'rocky'
 profile::openstack::codfw1dev::horizon_version: 'train'
+
+# The openstack_controllers host the following services:
+#
+#   keystone-api
+#   nova-conductor
+#   nova-scheduler
+#   nova-placement
+#   nova-api
+#   glance-api
+#   glance-registry
+#
+# All of the above api endpoints are behind HA-proxy, which also runs
+#  on each cloud_vps_controller.
+#
+# These hostnames should not be accessed using hostnames in this list;
+#  rather, that should happen via the (singular but HA) keystone_api_fqdn below.
+#
+profile::openstack::codfw1dev::openstack_controllers:
+  - cloudcontrol2001-dev.wikimedia.org
+  - cloudcontrol2003-dev.wikimedia.org
+
+
+# The public service name for the keystone API
+#
+# This is effectively the endpoint for most other cloud-vps OpenStack
+#  services, but as the holder of the catalog Keystone is generally what
+#  external code will want to talk to first.
+#
+profile::openstack::codfw1dev::keystone_api_fqdn: 'openstack.codfw1dev.wikimediacloud.org'
+
+# Because we don't (yet) have a shared storage system to back this,
+#  we need to be aware of which glance server is the primary image store. Once
+#  images are moved to ceph we can remove this setting and the openstack_controllers
+#  will be true, identical peers.
+profile::openstack::codfw1dev::primary_glance_image_store: cloudcontrol2001-dev.wikimedia.org
+
+
+# These are in the process of being phased out in favor of the above
+#  openstack_controllers and keystone_api_fqdn values.  If they're
+#  still here in 2021 feel free to send Andrew a scolding email
+#
 profile::openstack::codfw1dev::nova_controller: 'cloudcontrol2001-dev.wikimedia.org'
 profile::openstack::codfw1dev::nova_controller_standby: 'cloudcontrol2003-dev.wikimedia.org'
+profile::openstack::codfw1dev::nova_api_host: 'cloudcontrol2001-dev.wikimedia.org'
 profile::openstack::codfw1dev::glance_host: 'cloudcontrol2001-dev.wikimedia.org'
 profile::openstack::codfw1dev::keystone_host: 'openstack.codfw1dev.wikimediacloud.org'
-profile::openstack::codfw1dev::nova_api_host: 'cloudcontrol2001-dev.wikimedia.org'
+
+
+# List of designate hosts (generally labservicesxxxx).
+#  Be warned that there's one unique case here; memcached
+#  running on the first host in this list will be used
+#  as the tooz coordinator.  T250087
 profile::openstack::codfw1dev::designate_hosts:
   - cloudservices2002-dev.wikimedia.org
 profile::openstack::codfw1dev::puppetmaster_hostname: 'labtest-puppetmaster.wikimedia.org'
@@ -16,7 +64,6 @@ profile::openstack::codfw1dev::rabbit_file_handles: 8192
 profile::openstack::codfw1dev::osm_host: 'labtestwikitech.wikimedia.org'
 profile::openstack::codfw1dev::ldap_hosts: ['cloudservices2002-dev.wikimedia.org']
 profile::openstack::codfw1dev::ldap_proxyuser_pass: 'Eche0ieng8UaNoo'
-profile::openstack::codfw1dev::region: 'codfw1dev-r'
 profile::openstack::codfw1dev::labweb_hosts:
   - cloudweb2001-dev.wikimedia.org
 profile::openstack::codfw1dev::all_regions: ['codfw', 'codfw1dev-r']

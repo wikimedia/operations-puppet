@@ -1,9 +1,51 @@
 profile::openstack::eqiad1::region: 'eqiad1-r'
 profile::openstack::eqiad1::version: 'rocky'
 profile::openstack::eqiad1::horizon_version: 'train'
+
+# The openstack_controllers host the following services:
+#
+#   keystone-api
+#   nova-conductor
+#   nova-scheduler
+#   nova-placement
+#   nova-api
+#   glance-api
+#   glance-registry
+#
+# All of the above api endpoints are behind HA-proxy, which also runs
+#  on each cloud_vps_controller.
+#
+# These hostnames should not be accessed using hostnames in this list;
+#  rather, that should happen via the (singular but HA) keystone_api_fqdn below.
+#
+profile::openstack::eqiad1::openstack_controllers:
+  - cloudcontrol1003.wikimedia.org
+  - cloudcontrol1004.wikimedia.org
+
+# The public service name for the keystone API
+#
+# This is effectively the endpoint for most other cloud-vps OpenStack
+#  services, but as the holder of the catalog Keystone is generally what
+#  external code will want to talk to first.
+#
+profile::openstack::eqiad1::keystone_api_fqdn: 'openstack.eqiad1.wikimediacloud.org'
+
+# Because we don't (yet) have a shared storage system to back this,
+#  we need to be aware of which glance server is the primary image store. Once
+#  images are moved to ceph we can remove this setting and the openstack_controllers
+#  will be true, identical peers.
+profile::openstack::eqiad1::primary_glance_image_store: cloudcontrol1003.wikimedia.org
+
+# These are in the process of being phased out in favor of the above
+#  openstack_controllers and keystone_api_fqdn values.  If they're
+#  still here in 2021 feel free to send Andrew a scolding email
+#
 profile::openstack::eqiad1::nova_controller: 'cloudcontrol1003.wikimedia.org'
 profile::openstack::eqiad1::nova_controller_standby: 'cloudcontrol1004.wikimedia.org'
 profile::openstack::eqiad1::nova_api_host: 'cloudcontrol1003.wikimedia.org'
+profile::openstack::eqiad1::glance_host: 'cloudcontrol1003.wikimedia.org'
+profile::openstack::eqiad1::keystone_host: 'openstack.eqiad1.wikimediacloud.org'
+
 
 # List of designate hosts (generally labservicesxxxx).
 #  Be warned that there's one unique case here; memcached
@@ -25,6 +67,4 @@ profile::openstack::eqiad1::statsd_host_standby: 'cloudmetrics1001.eqiad.wmnet'
 profile::openstack::eqiad1::observer_password: 'Fs6Dq2RtG8KwmM2Z'
 profile::openstack::eqiad1::labs_hosts_range: '10.64.20.0/24'
 profile::openstack::eqiad1::labs_hosts_range_v6: '2620:0:861:118::/64'
-profile::openstack::eqiad1::glance_host: 'cloudcontrol1003.wikimedia.org'
-profile::openstack::eqiad1::keystone_host: 'openstack.eqiad1.wikimediacloud.org'
 profile::openstack::eqiad1::all_regions: ['eqiad1-r']
