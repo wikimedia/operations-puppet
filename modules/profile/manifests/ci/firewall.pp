@@ -44,12 +44,6 @@ class profile::ci::firewall (
         srange => "(${zuul_merger_hosts_ferm})",
     }
 
-    ferm::service { 'gerrit_ssh':
-        proto  => 'tcp',
-        port   => '29418',
-        srange => '@resolve((gerrit1001.wikimedia.org gerrit2001.wikimedia.org gerrit.wikimedia.org))',
-    }
-
     # ALLOWS:
 
     # web access
