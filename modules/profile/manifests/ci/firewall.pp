@@ -17,12 +17,17 @@ class profile::ci::firewall (
     # IPv4 and IPv6 (to be safe)
 
     # Jenkins on port 8080, reacheable via Apache proxying the requests
-    ferm::rule { 'jenkins_localhost_only':
-        rule => 'proto tcp dport 8080 { saddr (127.0.0.1 ::1) ACCEPT; }',
+    ferm::service { 'jenkins_localhost_only':
+        proto  => 'tcp',
+        port   => '8080',
+        srange => '(127.0.0.1 ::1)',
     }
+
     # Zuul status page on port 8001, reacheable via Apache proxying the requests
-    ferm::rule { 'zuul_localhost_only':
-        rule => 'proto tcp dport 8001 { saddr (127.0.0.1 ::1) ACCEPT; }',
+    ferm::service { 'zuul_localhost_only':
+        proto  => 'tcp',
+        port   => '8001',
+        srange => '(127.0.0.1 ::1)',
     }
 
     # Each master is an agent of the other
@@ -43,8 +48,6 @@ class profile::ci::firewall (
         port   => '4730',
         srange => "(${zuul_merger_hosts_ferm})",
     }
-
-    # ALLOWS:
 
     # web access
     ferm::service { 'ci_http':
