@@ -1,7 +1,6 @@
 class openstack::glance::service(
     $active,
     $version,
-    $nova_controller_standby,
     $db_user,
     $db_pass,
     $db_name,
@@ -34,17 +33,6 @@ class openstack::glance::service(
         group   => 'glance',
         require => Package['glance'],
         mode    => '0755',
-    }
-
-    #  This is 775 so that the glancesync user can rsync to it.
-    if ($active) and ($::fqdn != $nova_controller_standby) {
-        file { $glance_image_dir:
-            ensure  => directory,
-            owner   => 'glance',
-            group   => 'glance',
-            require => Package['glance'],
-            mode    => '0775',
-        }
     }
 
     # Glance expects some images that are actually in /srv/glance/images to

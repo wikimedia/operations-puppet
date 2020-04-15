@@ -1,29 +1,21 @@
 # == openstack::glance::image_sync ==
 #
-# Transfers Glance images from master to standby server
+# Transfers Glance images from primary file store to other server(s)
 #
 # === Parameters ===
 # [*active*]
 #    If these definitions should be present or absent
 # [*glance_image_dir]
 #    Directory where Glance stores its uploaded images
-# [*nova_controller_standby*]
-#    Hostname of the standby server
+# [*openstack_controllers*]
+#    List of all control nodes
 #
 class openstack::glance::image_sync(
     Boolean $active,
     String $glance_image_dir,
-    String $nova_controller_standby = undef,
+    Array[Stdlib::Fqdn] $openstack_controllers,
 ) {
     require openstack::glance::service
-
-    # systemd::timer::job does not take a boolean
-    if $active {
-        $ensure = 'present'
-    }
-    else {
-        $ensure = 'absent'
-    }
 
     # Set up a keypair and rsync image files between active and standby
     user { 'glancesync':
@@ -60,12 +52,24 @@ class openstack::glance::image_sync(
         show_diff => false,
     }
 
-    # If we are the master Glance server, then sync images to the standby
-    if $active and $nova_controller_standby {
-        systemd::timer::job { 'glance_rsync_images':
+    # systemd::timer::job does not take a boolean
+    if $active {
+        $ensure = 'present'
+    }
+    else {
+        $ensure = 'absent'
+    }
+
+    # If we are the primary Glance image store, then sync images to the standby
+    #
+    # Note that our rsync never deletes anything; this is to prevent disaster if
+    #  a secondary server gets confused and thinks it's the primary.
+    $other_glance_hosts = $openstack_controllers - $::fqdn
+    $other_glance_hosts.each |String $glance_host| {
+        systemd::timer::job { "glance_rsync_images_${glance_host}":
             ensure                    => $ensure,
             description               => 'Copy Glance images to standby server',
-            command                   => "/usr/bin/rsync -aSO ${glance_image_dir}/ ${nova_controller_standby}:${glance_image_dir}/",
+            command                   => "/usr/bin/rsync -aSO ${glance_image_dir}/ ${glance_host}:${glance_image_dir}/",
             interval                  => {
             'start'    => 'OnCalendar',
             'interval' => '*-*-* *:15:00', # Every hour at minute 15
@@ -78,13 +82,15 @@ class openstack::glance::image_sync(
         }
     }
 
-    # If we are the standby server, fix file ownership (glancesync->glance)
-    if !($active) and ($::fqdn == $nova_controller_standby) {
+    if ( !$active ) {
+        # If we aren't the primary glance image store, fix file ownership (glancesync->glance)
         file { $glance_image_dir:
             ensure  => directory,
             owner   => 'glance',
             group   => 'glance',
             recurse => true,
+            mode    => '0775',
+            require => File[$glance_image_dir],
         }
     }
 }

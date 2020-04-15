@@ -1,7 +1,7 @@
 class profile::openstack::base::glance(
     $version = hiera('profile::openstack::base::version'),
+    Array[Stdlib::Fqdn] $openstack_controllers = lookup('profile::openstack::base::openstack_controllers'),
     $nova_controller = hiera('profile::openstack::base::nova_controller'),
-    $nova_controller_standby = hiera('profile::openstack::base::nova_controller_standby'),
     $keystone_host = hiera('profile::openstack::base::keystone_host'),
     $auth_port = hiera('profile::openstack::base::keystone::auth_port'),
     $public_port = hiera('profile::openstack::base::keystone::public_port'),
@@ -15,26 +15,26 @@ class profile::openstack::base::glance(
     $labs_hosts_range = hiera('profile::openstack::base::labs_hosts_range'),
     Stdlib::Port $api_bind_port = lookup('profile::openstack::base::glance::api_bind_port'),
     Stdlib::Port $registry_bind_port = lookup('profile::openstack::base::glance::registry_bind_port'),
+    Stdlib::Fqdn $primary_glance_image_store = lookup('profile::openstack::base::primary_glance_image_store'),
     ) {
 
     $keystone_admin_uri = "http://${keystone_host}:${auth_port}"
     $keystone_public_uri = "http://${keystone_host}:${public_port}"
 
     class { '::openstack::glance::service':
-        version                 => $version,
-        active                  => $::fqdn == $nova_controller,
-        keystone_admin_uri      => $keystone_admin_uri,
-        keystone_public_uri     => $keystone_public_uri,
-        db_user                 => $db_user,
-        db_pass                 => $db_pass,
-        db_name                 => $db_name,
-        db_host                 => $db_host,
-        ldap_user_pass          => $ldap_user_pass,
-        nova_controller_standby => $nova_controller_standby,
-        glance_data             => $glance_data,
-        glance_image_dir        => $glance_image_dir,
-        api_bind_port           => $api_bind_port,
-        registry_bind_port      => $registry_bind_port,
+        version             => $version,
+        active              => $::fqdn == $nova_controller,
+        keystone_admin_uri  => $keystone_admin_uri,
+        keystone_public_uri => $keystone_public_uri,
+        db_user             => $db_user,
+        db_pass             => $db_pass,
+        db_name             => $db_name,
+        db_host             => $db_host,
+        ldap_user_pass      => $ldap_user_pass,
+        glance_data         => $glance_data,
+        glance_image_dir    => $glance_image_dir,
+        api_bind_port       => $api_bind_port,
+        registry_bind_port  => $registry_bind_port,
     }
     contain '::openstack::glance::service'
 
@@ -52,6 +52,12 @@ class profile::openstack::base::glance(
     ferm::rule{'glance-registry-labs-hosts':
         ensure => 'present',
         rule   => "saddr ${labs_hosts_range} proto tcp dport 9292 ACCEPT;",
+    }
+
+    class {'openstack::glance::image_sync':
+        active                => ($::fqdn == $primary_glance_image_store),
+        glance_image_dir      => $glance_image_dir,
+        openstack_controllers => $openstack_controllers,
     }
 
     # This is a no-op on the primary controller; on the spare master
