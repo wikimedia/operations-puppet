@@ -33,6 +33,7 @@ class ServiceRestarter(ToolCliBase):
         self.lvs_uris = args.lvs_urls
         self.services = args.services
         self.timeout = args.timeout
+        self.grace_period = args.grace_period
 
     def announce(self):
         pass
@@ -55,6 +56,11 @@ class ServiceRestarter(ToolCliBase):
         logger.info("Depooling currently pooled services")
         if not self.depool(pooled):
             return self.DEFAULT_RC
+        if self.grace_period > 0:
+            logger.info(
+                "Waiting %d seconds before restarting the service...", self.grace_period
+            )
+            time.sleep(self.grace_period)
         logger.info("Restarting the service")
         rc = self._restart_services()
         # If the restart fails, we don't really want to repool.
@@ -273,7 +279,12 @@ def parse_args():
         type=int,
         help="Number of seconds to wait a response from the lbs",
     )
-
+    parser.add_argument(
+        "--grace-period",
+        default=0,
+        type=int,
+        help="Number of seconds, if any, to wait after depooling a server before restarting it.",
+    )
     parser.add_argument(
         "--lvs-urls",
         dest="lvs_urls",
