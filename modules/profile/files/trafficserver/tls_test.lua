@@ -19,6 +19,7 @@ describe("Busted unit testing framework", function()
   describe("script for ATS Lua Plugin", function()
     stub(ts, "debug")
     stub(ts, "hook")
+    stub(ts.http, "config_int_set")
 
     it("test - do_global_send_request", function()
 
@@ -62,6 +63,7 @@ describe("Busted unit testing framework", function()
       do_global_send_request()
       assert.is_nil(_G.ts.server_request.header['Upgrade'])
       assert.are.equals('close', _G.ts.server_request.header['Connection'])
+      assert.stub(ts.http.config_int_set).was_not_called()
 
       -- With websocket support enabled but client doesn't request an upgrade
       _G.get_websocket_support = function() return true end
@@ -70,6 +72,7 @@ describe("Busted unit testing framework", function()
       do_global_send_request()
       assert.is_nil(_G.ts.server_request.header['Upgrade'])
       assert.are.equals('close', _G.ts.server_request.header['Connection'])
+      assert.stub(ts.http.config_int_set).was_not_called()
 
       -- With websocket support enabled and client requests an upgrade
       _G.get_websocket_support = function() return true end
@@ -78,6 +81,7 @@ describe("Busted unit testing framework", function()
       do_global_send_request()
       assert.are.equals('websocket', _G.ts.server_request.header['Upgrade'])
       assert.are.equals('Upgrade', _G.ts.server_request.header['Connection'])
+      assert.stub(ts.http.config_int_set).was_called_with(TS_LUA_CONFIG_HTTP_KEEP_ALIVE_ENABLED_OUT, 0)
     end)
 
     it("test - do_global_send_response", function()

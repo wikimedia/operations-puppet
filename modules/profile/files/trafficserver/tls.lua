@@ -87,6 +87,7 @@ function do_global_send_request()
     if get_websocket_support() and ts.client_request.header['Upgrade'] and ts.client_request.header['Connection'] then
         ts.server_request.header['Upgrade'] = ts.client_request.header['Upgrade']
         ts.server_request.header['Connection'] = ts.client_request.header['Connection']
+        ts.http.config_int_set(TS_LUA_CONFIG_HTTP_KEEP_ALIVE_ENABLED_OUT, 0)
     else
         if get_keepalive_support() then
             ts.server_request.header['Connection'] = 'keep-alive'
