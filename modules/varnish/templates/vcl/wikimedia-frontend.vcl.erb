@@ -834,6 +834,21 @@ sub wm_backend_response {
 	}
 }
 
+sub wm_admission_policies {
+<% if @vcl_config.fetch("admission_policy", "none") != "exp" -%>
+	// hit-for-pass objects >= 256K size. The "exp" admission policy does not
+	// need this as it implicitly takes object size into account. Do cache if
+	// Content-Length is missing.
+	if (std.integer(beresp.http.Content-Length, 0) >= 262144 || beresp.http.Content-Length ~ "^[0-9]{9}") {
+		// HFP
+		set beresp.http.X-CDIS = "pass";
+		return(pass(beresp.ttl));
+	}
+<% end -%>
+
+	return (deliver);
+}
+
 sub vcl_backend_response {
 	// retry 503 once in frontend instances, to paper over transient issues
 	// This catches the backending handing us an explicit 503
@@ -884,7 +899,10 @@ C{
 	call cluster_fe_backend_response_early; // e.g. to fix up Vary-slotting in bereq
 	call wm_backend_response;
 	call cluster_fe_backend_response;
-	// default vcl_(fetch|backend_response) invokes here, unless cluster VCL unconditionally returns!
+	// It is important that this happens after the code responsible for translating TTL<=0
+	// (uncacheable) responses into hit-for-pass. That code lives in wm_backend_response.
+	call wm_admission_policies;
+	// default vcl_(fetch|backend_response) does not invoke here because wm_admission_policies unconditionally returns!
 }
 
 sub wm_xcache_deliver {

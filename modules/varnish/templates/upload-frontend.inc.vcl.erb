@@ -237,17 +237,6 @@ sub cluster_fe_backend_response {
 		set beresp.http.X-Content-Range = beresp.http.Content-Range;
 	}
 
-<% if @vcl_config.fetch("admission_policy", "none") != "exp" -%>
-	// hit-for-pass objects >= 256K size. The "exp" admission policy does not
-	// need this as it implicitly takes object size into account. Do not cache if
-	// Content-Length is missing.
-	if (std.integer(beresp.http.Content-Length, 262144) >= 262144 || beresp.http.Content-Length ~ "^[0-9]{9}") {
-		// HFP
-		set beresp.http.X-CDIS = "pass";
-		return(pass(beresp.ttl));
-	}
-<% end -%>
-
 	// Debugging T144257. Don't cache 200 responses with CL:0.
 	if (beresp.http.Content-Length == "0" && beresp.status == 200) {
 		// HFM
@@ -256,7 +245,6 @@ sub cluster_fe_backend_response {
 		set beresp.keep = 0s;
 		set beresp.uncacheable = true;
 	}
-	return (deliver);
 }
 
 sub cluster_fe_deliver {
