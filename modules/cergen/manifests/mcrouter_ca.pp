@@ -24,4 +24,13 @@ class cergen::mcrouter_ca(String $ca_secret) {
         group   => 'root',
         mode    => '0400',
     }
+
+    require_package('python3-cryptography', 'python3-git', 'python3-openssl')
+
+    file { '/usr/local/bin/renew_mcrouter_certs':
+        source => 'puppet:///modules/cergen/renew_mcrouter_certs.py',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+    }
 }
