@@ -37,7 +37,7 @@ actions:
   3:
     action: replicas
     description: >-
-      after 80 days set number of replicas to 0 - temporary measure per T250133
+      after 50 days set number of replicas to 0 - temporary measure per T250133
     options:
       count: 0
       ignore_empty_list: True
@@ -50,7 +50,7 @@ actions:
       source: creation_date
       direction: older
       unit: days
-      unit_count: 80
+      unit_count: 50
   4:
     action: allocation
     description: >-
