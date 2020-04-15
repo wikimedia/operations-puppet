@@ -49,7 +49,7 @@ profile::mediawiki::apc_shm_size: 6096M
 profile::mediawiki::php::fpm_config:
   opcache.interned_strings_buffer: 96
   opcache.memory_consumption: 1024
-
+  max_execution_time: 210 # we don't really want max_execution_time to kick in ever, see T248564
 # Configure php-fpm restarts
 profile::mediawiki::php::restarts::ensure: present
 # We set the restart watermark at 200 MB, which is approximately how much
