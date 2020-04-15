@@ -22,7 +22,7 @@ define sbuild::chroot(
         ensure      => present,
         description => "update ${chroot_name} chroot for sbuild",
         command     => $update_cmd,
-        user        => 'sbuild',
+        user        => 'root',
         interval    => {
             'start'    => 'OnCalendar',
             'interval' => '*-*-* 08:00:00', #daily at 08:00 UTC, arbitrary
