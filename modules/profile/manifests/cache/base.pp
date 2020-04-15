@@ -98,7 +98,7 @@ class profile::cache::base(
     class { 'purged':
         backend_addr     => '127.0.0.1:3128',
         frontend_addr    => '127.0.0.1:3127',
-        mc_addrs         => $purge_multicasts.map |$mc| { "${mc}:4827" },
+        mc_addrs         => $purge_multicasts,
         prometheus_addr  => ':2112',
         frontend_workers => 1,
         backend_workers  => $::processorcount,
