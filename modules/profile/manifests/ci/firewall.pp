@@ -7,7 +7,8 @@
 # [$zuul_merger_hosts] List of zuul-mergers
 #
 class profile::ci::firewall (
-    $zuul_merger_hosts = hiera('profile::ci::firewall::zuul_merger_hosts'),
+    $jenkins_master_hosts = lookup('profile::ci::firewall::jenkins_master_hosts'),
+    $zuul_merger_hosts = lookup('profile::ci::firewall::zuul_merger_hosts'),
 ) {
     class { '::profile::base::firewall': }
     include ::network::constants
@@ -22,6 +23,14 @@ class profile::ci::firewall (
     # Zuul status page on port 8001, reacheable via Apache proxying the requests
     ferm::rule { 'zuul_localhost_only':
         rule => 'proto tcp dport 8001 { saddr (127.0.0.1 ::1) ACCEPT; }',
+    }
+
+    # Each master is an agent of the other
+    $jenkins_master_hosts_ferm = join($jenkins_master_hosts, ' ')
+    ferm::service { 'jenkins_masters_ssh':
+        proto  => 'tcp',
+        port   => '22',
+        srange => "@resolve((${jenkins_master_hosts_ferm}))",
     }
 
     # Gearman is used between Zuul and the Jenkin master, both on the same

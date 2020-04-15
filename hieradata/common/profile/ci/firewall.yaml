@@ -5,3 +5,9 @@
 profile::ci::firewall::zuul_merger_hosts:
     - 208.80.154.17 # contint1001.wikimedia.org T150936, T140297
     - 208.80.153.15 # contint2001.wikimedia.org
+
+# Jenkins masters are agents to themselves and to eachothers. They thus need to
+# allow ssh access from the other masters.
+profile::ci::firewall::jenkins_master_hosts:
+    - contint1001.wikimedia.org
+    - contint2001.wikimedia.org
