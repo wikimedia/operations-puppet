@@ -163,6 +163,10 @@ class profile::base(
         class { '::smart': }
     }
 
+    if $facts['is_virtual'] == false {
+        include ::profile::prometheus::nic_saturation_exporter
+    }
+
     # This is responsible for ~75%+ of all recdns queries...
     # https://phabricator.wikimedia.org/T239862
     host { 'statsd.eqiad.wmnet':

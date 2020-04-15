@@ -44,9 +44,6 @@ class profile::memcached::instance (
 ) {
     include ::profile::prometheus::memcached_exporter
 
-    # T224454.  TODO: eventually to be moved to all physical hosts.
-    include ::profile::prometheus::nic_saturation_exporter
-
     $base_extra_options = {
         '-o' => join($extended_options, ','),
         '-D' => ':',
