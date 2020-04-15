@@ -1,7 +1,6 @@
 class profile::openstack::codfw1dev::glance(
     $version = hiera('profile::openstack::codfw1dev::version'),
     Array[Stdlib::Fqdn] $openstack_controllers = lookup('profile::openstack::codfw1dev::openstack_controllers'),
-    $nova_controller = hiera('profile::openstack::codfw1dev::nova_controller'),
     $keystone_host = hiera('profile::openstack::codfw1dev::keystone_host'),
     $db_pass = hiera('profile::openstack::codfw1dev::glance::db_pass'),
     $db_host = hiera('profile::openstack::codfw1dev::glance::db_host'),
@@ -16,7 +15,6 @@ class profile::openstack::codfw1dev::glance(
     class {'::profile::openstack::base::glance':
         version                    => $version,
         openstack_controllers      => $openstack_controllers,
-        nova_controller            => $nova_controller,
         keystone_host              => $keystone_host,
         db_pass                    => $db_pass,
         db_host                    => $db_host,

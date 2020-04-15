@@ -1,7 +1,6 @@
 class profile::openstack::eqiad1::glance (
     $version = hiera('profile::openstack::eqiad1::version'),
     Array[Stdlib::Fqdn] $openstack_controllers = lookup('profile::openstack::eqiad1::openstack_controllers'),
-    $nova_controller = hiera('profile::openstack::eqiad1::nova_controller'),
     $keystone_host = hiera('profile::openstack::eqiad1::keystone_host'),
     $db_pass = hiera('profile::openstack::eqiad1::glance::db_pass'),
     $db_host = hiera('profile::openstack::eqiad1::glance::db_host'),
@@ -17,7 +16,6 @@ class profile::openstack::eqiad1::glance (
     class {'::profile::openstack::base::glance':
         version                    => $version,
         openstack_controllers      => $openstack_controllers,
-        nova_controller            => $nova_controller,
         keystone_host              => $keystone_host,
         db_pass                    => $db_pass,
         db_host                    => $db_host,

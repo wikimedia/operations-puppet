@@ -1,7 +1,6 @@
 class profile::openstack::base::glance(
     $version = hiera('profile::openstack::base::version'),
     Array[Stdlib::Fqdn] $openstack_controllers = lookup('profile::openstack::base::openstack_controllers'),
-    $nova_controller = hiera('profile::openstack::base::nova_controller'),
     $keystone_host = hiera('profile::openstack::base::keystone_host'),
     $auth_port = hiera('profile::openstack::base::keystone::auth_port'),
     $public_port = hiera('profile::openstack::base::keystone::public_port'),
@@ -23,7 +22,7 @@ class profile::openstack::base::glance(
 
     class { '::openstack::glance::service':
         version             => $version,
-        active              => $::fqdn == $nova_controller,
+        active              => $::fqdn == $primary_glance_image_store,
         keystone_admin_uri  => $keystone_admin_uri,
         keystone_public_uri => $keystone_public_uri,
         db_user             => $db_user,
@@ -64,6 +63,6 @@ class profile::openstack::base::glance(
     #  it allows us to sync up glance images with rsync.
     ferm::rule{'glancesync':
         ensure => 'present',
-        rule   => "saddr (@resolve(${nova_controller}) @resolve(${nova_controller}, AAAA)) proto tcp dport (ssh) ACCEPT;",
+        rule   => "saddr (@resolve(${primary_glance_image_store}) @resolve(${primary_glance_image_store}, AAAA)) proto tcp dport (ssh) ACCEPT;",
     }
 }
