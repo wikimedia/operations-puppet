@@ -1453,6 +1453,23 @@ class profile::prometheus::ops (
         port       => 9107,
     }
 
+    $nic_saturation_exporter_jobs = [
+      {
+        'job_name'        => 'nic_saturation',
+        'scheme'          => 'http',
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/nic_saturation_*.yaml" ]}
+        ],
+      },
+    ]
+
+    prometheus::class_config{ "nic_saturation_${::site}":
+        dest       => "${targets_path}/nic_saturation_${::site}.yaml",
+        site       => $::site,
+        class_name => 'profile::prometheus::nic_saturation_exporter',
+        port       => 9710,
+    }
+
     $apereo_cas_jobs = [
         {
             'job_name'        => 'idp',
@@ -1527,7 +1544,7 @@ class profile::prometheus::ops (
             $gerrit_jobs, $routinator_jobs, $rpkicounter_jobs, $varnishkafka_jobs, $bird_jobs, $ncredir_jobs,
             $cloud_dev_pdns_jobs, $cloud_dev_pdns_rec_jobs, $bacula_jobs, $poolcounter_exporter_jobs,
             $apereo_cas_jobs, $atlas_exporter_jobs, $exported_blackbox_jobs, $cadvisor_jobs,
-            $envoy_jobs, $webperf_jobs, $squid_jobs
+            $envoy_jobs, $webperf_jobs, $squid_jobs, $nic_saturation_exporter_jobs
         ),
         global_config_extra   => $config_extra,
     }
