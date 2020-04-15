@@ -274,7 +274,7 @@ groups:
               esanders, sukhe, jfishback, iflorez, mayakpwiki, conniecc1, abi, mgerlach, dedcode,
               lexnasser, kevinbazira, keepit-ssh, jiji, cohi, mstyles, accraze, kzeta, snowick,
               aarora, zpapierski, knissen, jiawang, jmorgan, mholloway-shell, joewalsh, tarrow,
-              itamar, phedenskog, aaron, dpifke, aklapper]
+              itamar, phedenskog, aaron, dpifke, aklapper, jmads]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata]
   analytics-admins:
@@ -3666,6 +3666,16 @@ users:
     gid: 500
     ssh_keys:
       - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJ1YZhevj9nTDh7Gs2Sm9mY8Aq2PaZNUmXDAIOrYkZ38 kormat@prod.wmf'
+  jmads:
+    ensure: present
+    realname: Jim Maddock
+    email: jmaddock-ctr@wikimedia.org
+    ssh_keys:
+      - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAII7ZsgXpcVy8P3a5jyg3+hlVbxpAHFw8wuXuB0IKSWD9 klogg@Jims-MacBook-Pro-2.local'
+    uid: 24076
+    gid: 500
+    expiry_date: 2020-12-31
+    expiry_contact: mnovotny@wikimedia.org
 
 ldap_only_users:
   abartov:
