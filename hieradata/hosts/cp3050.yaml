@@ -1,1 +1,2 @@
 profile::cache::kafka::webrequest::atskafka_enabled: true
+profile::cache::base::use_purged: true
