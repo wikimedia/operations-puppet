@@ -44,7 +44,7 @@ class profile::mediawiki::maintenance {
     include ::profile::mediawiki::maintenance::purge_abusefilter
     include ::profile::mediawiki::maintenance::purge_checkuser
     include ::profile::mediawiki::maintenance::purge_expired_userrights
-    class { 'mediawiki::maintenance::purge_old_cx_drafts': ensure => $ensure }
+    include ::profile::mediawiki::maintenance::purge_old_cx_drafts
     class { 'mediawiki::maintenance::purge_securepoll': ensure => $ensure }
     class { 'mediawiki::maintenance::db_lag_stats': ensure => $ensure }
     class { 'mediawiki::maintenance::cirrussearch': ensure => $ensure }
