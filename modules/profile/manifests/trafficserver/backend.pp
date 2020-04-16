@@ -80,28 +80,29 @@ class profile::trafficserver::backend (
     $paths = trafficserver::get_paths($default_instance, 'backend')
 
     trafficserver::instance { $instance_name:
-        paths                 => $paths,
-        conftool_service      => $conftool_service,
-        default_instance      => $default_instance,
-        port                  => $port,
-        network_settings      => $network_settings,
-        http_settings         => $http_settings,
-        h2_settings           => $h2_settings,
-        outbound_tls_settings => $outbound_tls_settings,
-        enable_xdebug         => $enable_xdebug,
-        enable_compress       => $enable_compress,
-        origin_coalescing     => $origin_coalescing,
-        global_lua_script     => $global_lua_script,
-        storage               => $storage,
-        ram_cache_size        => 2147483648, # 2G
-        mapping_rules         => $mapping_rules,
-        caching_rules         => $caching_rules,
-        negative_caching      => $negative_caching,
-        log_formats           => $log_formats,
-        log_filters           => $log_filters,
-        logs                  => $logs,
-        error_page            => template('mediawiki/errorpage.html.erb'),
-        systemd_hardening     => $systemd_hardening,
+        paths                   => $paths,
+        conftool_service        => $conftool_service,
+        default_instance        => $default_instance,
+        port                    => $port,
+        network_settings        => $network_settings,
+        http_settings           => $http_settings,
+        h2_settings             => $h2_settings,
+        outbound_tls_settings   => $outbound_tls_settings,
+        enable_xdebug           => $enable_xdebug,
+        enable_compress         => $enable_compress,
+        origin_coalescing       => $origin_coalescing,
+        global_lua_script       => $global_lua_script,
+        storage                 => $storage,
+        ram_cache_size          => 2147483648, # 2G
+        mapping_rules           => $mapping_rules,
+        guaranteed_max_lifetime => 86400, # 24 hours
+        caching_rules           => $caching_rules,
+        negative_caching        => $negative_caching,
+        log_formats             => $log_formats,
+        log_filters             => $log_filters,
+        logs                    => $logs,
+        error_page              => template('mediawiki/errorpage.html.erb'),
+        systemd_hardening       => $systemd_hardening,
     }
 
     # Install default Lua script

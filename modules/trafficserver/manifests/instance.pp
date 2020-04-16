@@ -109,6 +109,11 @@
 #   (default: 2)
 #   See https://docs.trafficserver.apache.org/en/latest/admin-guide/files/records.config.en.html
 #
+# [*guaranteed_max_lifetime*]
+#   Maximum TTL of objects considered 'fresh' in seconds.
+#   (default: 31536000)
+#   See https://docs.trafficserver.apache.org/en/latest/admin-guide/files/records.config.en.html
+#
 # [*caching_rules*]
 #   An array of Trafficserver::Caching_rules, each representing a caching rule. (default: undef).
 #   See https://docs.trafficserver.apache.org/en/latest/admin-guide/files/cache.config.en.html
@@ -170,7 +175,7 @@
 #   Accepted values:
 #   * 0 Memory tracking Disabled
 #   * 1 Tracks IO Buffer Memory allocations and releases
-#  `* 2 Tracks IO Buffer Memory and OpenSSL Memory allocations and releases
+#   * 2 Tracks IO Buffer Memory and OpenSSL Memory allocations and releases
 #
 # === Examples
 #
@@ -213,6 +218,7 @@ define trafficserver::instance(
     Array[Trafficserver::Mapping_rule] $mapping_rules = [],
     Boolean $enable_caching = true,
     Optional[Integer[0,2]] $required_headers = undef,
+    Integer $guaranteed_max_lifetime = 31536000,
     Optional[Array[Trafficserver::Caching_rule]] $caching_rules = undef,
     Optional[Trafficserver::Negative_Caching] $negative_caching = undef,
     Optional[Array[Trafficserver::Storage_element]] $storage = undef,
