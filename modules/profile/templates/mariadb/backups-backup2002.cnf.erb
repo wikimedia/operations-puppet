@@ -1,0 +1,23 @@
+type: 'dump'
+user: '<%= @user %>'
+password: '<%= @password %>'
+rotate: True
+compress: False
+archive: False
+retention: 18
+statistics:
+  host: 'db1115.eqiad.wmnet'
+  user: '<%= @stats_user %>'
+  password: '<%= @stats_password %>'
+  database: 'zarcillo'
+sections:
+  es1:
+    host: 'es2013.codfw.wmnet'
+  es2:
+    host: 'es2015.codfw.wmnet'
+  es3:
+    host: 'es2019.codfw.wmnet'
+  es4:
+    host: 'es2022.codfw.wmnet'
+  es5:
+    host: 'es2025.codfw.wmnet'

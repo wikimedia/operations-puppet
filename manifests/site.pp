@@ -180,11 +180,6 @@ node 'backup2001.codfw.wmnet' {
     role(backup::offsite)
 }
 
-# codfw redundant backup host
-node 'backup2002.codfw.wmnet' {
-    role(spare::system)
-}
-
 # Bastion in Virginia
 node 'bast1002.wikimedia.org' {
     role(bastionhost::general)
@@ -699,6 +694,10 @@ node 'dbprov2001.codfw.wmnet' {
     role(mariadb::backups)
 }
 node 'dbprov2002.codfw.wmnet' {
+    role(mariadb::backups)
+}
+# Will have a more specialized role, superset of this, later
+node 'backup2002.codfw.wmnet' {
     role(mariadb::backups)
 }
 
