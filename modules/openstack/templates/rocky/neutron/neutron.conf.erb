@@ -42,7 +42,10 @@ l3_ha = True
 # maximum number of network nodes to use for the HA router
 max_l3_agents_per_router = 2
 
-rpc_response_timeout = 3
+# The default for this is 60.  Leaving it at 60 causes us to lose track
+#  of services at times (T205524) but cutting it all the way down to
+#  3 (which worked in m,n,o,p,q) causes things to timeout in Rocky.
+rpc_response_timeout = 30
 
 #notify_nova_on_port_status_changes = True
 notify_nova_on_port_status_changes = True
