@@ -126,7 +126,9 @@ class role::logging::mediawiki::udp2log(
         },
     }
 
-    ferm::rule { 'xenon_redis':
-        rule => 'saddr ($DOMAIN_NETWORKS) proto tcp dport 6379 ACCEPT;',
+    ferm::service { 'xenon_redis':
+      proto  => 'tcp',
+      port   => 6379,
+      srange => '$DOMAIN_NETWORKS',
     }
 }
