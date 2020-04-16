@@ -174,10 +174,15 @@ node /^authdns[12]001\.wikimedia\.org$/ {
 node 'backup1001.eqiad.wmnet' {
     role(backup)
 }
+# Here should go backup1002 (WIP)
 
 # codfw storage daemon
 node 'backup2001.codfw.wmnet' {
     role(backup::offsite)
+}
+# codfw storage daemon and backup geneneration for ES databases
+node 'backup2002.codfw.wmnet' {
+    role(mariadb::content_backups)
 }
 
 # Bastion in Virginia
@@ -694,10 +699,6 @@ node 'dbprov2001.codfw.wmnet' {
     role(mariadb::backups)
 }
 node 'dbprov2002.codfw.wmnet' {
-    role(mariadb::backups)
-}
-# Will have a more specialized role, superset of this, later
-node 'backup2002.codfw.wmnet' {
     role(mariadb::backups)
 }
 
