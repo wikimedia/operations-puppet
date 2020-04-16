@@ -141,142 +141,110 @@ class profile::logstash::collector (
         notes_url    => 'https://wikitech.wikimedia.org/wiki/Logstash',
     }
 
-    # logstash collectors in both sites pull messages from both kafka clusters
-    $kafka_config_eqiad = kafka_config('logging-eqiad')
-    $kafka_config_codfw = kafka_config('logging-codfw')
-
+    # Logstash collectors in both sites pull messages
+    # from logging kafka clusters in both DCs.
     logstash::input::kafka { 'rsyslog-shipper-eqiad':
+        kafka_cluster_name      => 'logging-eqiad',
         topics_pattern          => 'rsyslog-.*',
         group_id                => $input_kafka_consumer_group_id,
         type                    => 'syslog',
         tags                    => ['input-kafka-rsyslog-shipper', 'rsyslog-shipper', 'kafka', 'es'],
         codec                   => 'json',
-        bootstrap_servers       => $kafka_config_eqiad['brokers']['ssl_string'],
         security_protocol       => 'SSL',
-        ssl_truststore_location => '/etc/logstash/kafka-logging-truststore-eqiad.jks',
         ssl_truststore_password => $input_kafka_ssl_truststore_password,
         consumer_threads        => 3,
     }
 
     logstash::input::kafka { 'rsyslog-shipper-codfw':
+        kafka_cluster_name      => 'logging-codfw',
         topics_pattern          => 'rsyslog-.*',
         group_id                => $input_kafka_consumer_group_id,
         type                    => 'syslog',
         tags                    => ['rsyslog-shipper','kafka', 'es'],
         codec                   => 'json',
-        bootstrap_servers       => $kafka_config_codfw['brokers']['ssl_string'],
         security_protocol       => 'SSL',
-        ssl_truststore_location => '/etc/logstash/kafka-logging-truststore-codfw.jks',
         ssl_truststore_password => $input_kafka_ssl_truststore_password,
     }
 
     logstash::input::kafka { 'rsyslog-udp-localhost-eqiad':
+        kafka_cluster_name      => 'logging-eqiad',
         topics_pattern          => 'udp_localhost-.*',
         group_id                => $input_kafka_consumer_group_id,
         type                    => 'syslog',
         tags                    => ['input-kafka-rsyslog-udp-localhost', 'rsyslog-udp-localhost', 'kafka', 'es'],
         codec                   => 'json',
-        bootstrap_servers       => $kafka_config_eqiad['brokers']['ssl_string'],
         security_protocol       => 'SSL',
-        ssl_truststore_location => '/etc/logstash/kafka-logging-truststore-eqiad.jks',
         ssl_truststore_password => $input_kafka_ssl_truststore_password,
     }
 
     logstash::input::kafka { 'rsyslog-udp-localhost-codfw':
+        kafka_cluster_name      => 'logging-codfw',
         topics_pattern          => 'udp_localhost-.*',
         group_id                => $input_kafka_consumer_group_id,
         type                    => 'syslog',
         tags                    => ['rsyslog-udp-localhost','kafka', 'es'],
         codec                   => 'json',
-        bootstrap_servers       => $kafka_config_codfw['brokers']['ssl_string'],
         security_protocol       => 'SSL',
-        ssl_truststore_location => '/etc/logstash/kafka-logging-truststore-codfw.jks',
         ssl_truststore_password => $input_kafka_ssl_truststore_password,
         consumer_threads        => 3,
     }
 
     logstash::input::kafka { 'rsyslog-logback-eqiad':
+        kafka_cluster_name      => 'logging-eqiad',
         topics_pattern          => 'logback.*',
         group_id                => $input_kafka_consumer_group_id,
         type                    => 'logback',
         tags                    => ['input-kafka-rsyslog-logback', 'kafka-logging-eqiad', 'kafka', 'es'],
         codec                   => 'json',
-        bootstrap_servers       => $kafka_config_eqiad['brokers']['ssl_string'],
         security_protocol       => 'SSL',
-        ssl_truststore_location => '/etc/logstash/kafka-logging-truststore-eqiad.jks',
         ssl_truststore_password => $input_kafka_ssl_truststore_password,
         consumer_threads        => 3,
     }
 
     logstash::input::kafka { 'rsyslog-logback-codfw':
+        kafka_cluster_name      => 'logging-codfw',
         topics_pattern          => 'logback.*',
         group_id                => $input_kafka_consumer_group_id,
         type                    => 'logback',
         tags                    => ['input-kafka-rsyslog-logback', 'kafka-logging-codfw', 'kafka', 'es'],
         codec                   => 'json',
-        bootstrap_servers       => $kafka_config_codfw['brokers']['ssl_string'],
         security_protocol       => 'SSL',
-        ssl_truststore_location => '/etc/logstash/kafka-logging-truststore-codfw.jks',
         ssl_truststore_password => $input_kafka_ssl_truststore_password,
         consumer_threads        => 3,
     }
 
     logstash::input::kafka { 'clienterror-eqiad':
+        kafka_cluster_name      => 'logging-eqiad',
         topic                   => 'eqiad.mediawiki.client.error',
         group_id                => $input_kafka_consumer_group_id,
         type                    => 'clienterror',
         tags                    => ['input-kafka-clienterror-eqiad', 'kafka', 'es'],
         codec                   => 'json',
-        bootstrap_servers       => $kafka_config_eqiad['brokers']['ssl_string'],
         security_protocol       => 'SSL',
-        ssl_truststore_location => '/etc/logstash/kafka-logging-truststore-eqiad.jks',
         ssl_truststore_password => $input_kafka_ssl_truststore_password,
         consumer_threads        => 3,
     }
 
     logstash::input::kafka { 'clienterror-codfw':
+        kafka_cluster_name      => 'logging-codfw',
         topic                   => 'codfw.mediawiki.client.error',
         group_id                => $input_kafka_consumer_group_id,
         type                    => 'clienterror',
         tags                    => ['input-kafka-clienterror-codfw', 'kafka', 'es'],
         codec                   => 'json',
-        bootstrap_servers       => $kafka_config_codfw['brokers']['ssl_string'],
         security_protocol       => 'SSL',
-        ssl_truststore_location => '/etc/logstash/kafka-logging-truststore-codfw.jks',
         ssl_truststore_password => $input_kafka_ssl_truststore_password,
         consumer_threads        => 3,
     }
 
-    $kafka_config_eventlogging_eqiad = kafka_config('jumbo', 'eqiad')
+    # TODO: Rename this, this is the EventLogging event error topic input.
     $kafka_topic_eventlogging        = 'eventlogging_EventError'
-
     logstash::input::kafka { $kafka_topic_eventlogging:
-        topic             => $kafka_topic_eventlogging,
-        group_id          => $input_kafka_consumer_group_id,
-        tags              => [$kafka_topic_eventlogging, 'kafka', 'input-kafka-eventlogging', 'es'],
-        type              => 'eventlogging',
-        bootstrap_servers => $kafka_config_eventlogging_eqiad['brokers']['string'],
-        codec             => 'json'
-    }
-
-    file { '/etc/logstash/kafka-logging-truststore.jks':
-        ensure  => absent,
-    }
-
-    file { '/etc/logstash/kafka-logging-truststore-eqiad.jks':
-        content => secret('certificates/kafka_logging-eqiad_broker/truststore.jks'),
-        before  => Logstash::Input::Kafka['rsyslog-shipper-eqiad'],
-        owner   => 'logstash',
-        group   => 'logstash',
-        mode    => '0640',
-    }
-
-    file { '/etc/logstash/kafka-logging-truststore-codfw.jks':
-        content => secret('certificates/kafka_logging-codfw_broker/truststore.jks'),
-        before  => Logstash::Input::Kafka['rsyslog-shipper-codfw'],
-        owner   => 'logstash',
-        group   => 'logstash',
-        mode    => '0640',
+        kafka_cluster_name => 'jumbo-eqiad',
+        group_id           => $input_kafka_consumer_group_id,
+        tags               => [$kafka_topic_eventlogging, 'kafka', 'input-kafka-eventlogging', 'es'],
+        type               => 'eventlogging',
+        codec              => 'json'
     }
 
     ## Global pre-processing (15)
@@ -451,9 +419,11 @@ class profile::logstash::collector (
         require         => File['/etc/logstash/elasticsearch-template.json'],
     }
 
+
     # Output logs tagged "deprecated-input" to eqiad Kafka for ingest by elk7.
     # These are logs that have arrived via a "legacy" (non-kafka) logstash input.
     # The elk7 cluster ingests via Kafka only.
+    $kafka_config_eqiad = kafka_config('logging-eqiad')
     logstash::output::kafka{ 'deprecated':
         guard_condition         => '"deprecated-input" in [tags] and "es" in [tags]',
         codec                   => 'json',

@@ -24,6 +24,8 @@
 #       boostrap_servers => 'kafka1001:9092,kafka1002:9092',
 #   }
 #
+# TODO: Make this work with $kafka_cluster_name and kafka_config like
+# logstash::input::kafka does.
 define logstash::output::kafka(
     $bootstrap_servers,
     $ensure                                                 = present,
