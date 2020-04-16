@@ -104,11 +104,13 @@ def main(args):
     # TODO: Export a histogram of hotness percentiles? Would want to fine-grain the upper buckets.
     metrics = {
         'hot_seconds': Counter(
-            'hot_seconds', 'Number of seconds a NIC was too hot', ['device', 'direction'],
+            'hot_seconds_total', 'Number of seconds a NIC was too hot',
+            ['device', 'direction'],
             namespace=METRIC_NAMESPACE,
         ),
         'warm_seconds': Counter(
-            'warm_seconds', 'Number of seconds a NIC was warm or hot', ['device', 'direction'],
+            'warm_seconds_total', 'Number of seconds a NIC was warm or hot',
+            ['device', 'direction'],
             namespace=METRIC_NAMESPACE,
         )
     }
