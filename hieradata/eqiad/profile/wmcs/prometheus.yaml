@@ -2,3 +2,8 @@
 profile::wmcs::prometheus::toolforge_redis_hosts:
   - tools-redis-1001.tools.eqiad.wmflabs
   - tools-redis-1002.tools.eqiad.wmflabs
+
+# List of projects to enable monitoring through metricsinfra
+profile::wmcs::prometheus::eqiad1::metricsinfra::projects:
+  - tools
+  - cloudinfra
