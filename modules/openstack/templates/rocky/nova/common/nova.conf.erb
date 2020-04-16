@@ -71,6 +71,7 @@ idle_timeout = 1800
 
 [scheduler]
 driver=filter_scheduler
+workers = 3
 
 [filter_scheduler]
 enabled_filters = <%= @scheduler_filters.join(",") %>
