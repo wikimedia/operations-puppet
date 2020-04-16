@@ -835,6 +835,13 @@ sub wm_backend_response {
 }
 
 sub wm_admission_policies {
+	// hit-for-pass objects >= <%= @vcl_config.fetch("large_objects_cutoff") %> size. Do cache if Content-Length is missing.
+	if (std.integer(beresp.http.Content-Length, 0) >= <%= @vcl_config.fetch("large_objects_cutoff") %>) {
+		// HFP
+		set beresp.http.X-CDIS = "pass";
+		return(pass(beresp.ttl));
+	}
+
 <% if @vcl_config.fetch("admission_policy", "none") == "exp" -%>
 if (beresp.status == 200 && bereq.http.X-CDIS == "miss") {
 C{
@@ -875,15 +882,6 @@ C{
     }
 }C
 }
-<% else -%>
-	// hit-for-pass objects >= 256K size. The "exp" admission policy does not
-	// need this as it implicitly takes object size into account. Do cache if
-	// Content-Length is missing.
-	if (std.integer(beresp.http.Content-Length, 0) >= 262144 || beresp.http.Content-Length ~ "^[0-9]{9}") {
-		// HFP
-		set beresp.http.X-CDIS = "pass";
-		return(pass(beresp.ttl));
-	}
 <% end -%>
 
 	return (deliver);

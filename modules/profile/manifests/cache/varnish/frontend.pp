@@ -22,9 +22,18 @@ class profile::cache::varnish::frontend (
         require ::profile::lvs::realserver
     }
 
+    # Size cutoff for large objects. The definition of "large" depends on the
+    # admission policy used. Objects with Content-Length bigger than this value
+    # are not cached.
+    $large_objects_cutoff = $fe_vcl_config["admission_policy"] ? {
+        'exp'   => 10485760, # 10M
+        default => 262144,   # 256K
+    }
+
     $vcl_config = $fe_vcl_config + {
-        req_handling      => $req_handling,
-        alternate_domains => $alternate_domains
+        req_handling         => $req_handling,
+        alternate_domains    => $alternate_domains,
+        large_objects_cutoff => $large_objects_cutoff,
     }
 
     # VCL files common to all instances
