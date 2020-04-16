@@ -27,6 +27,10 @@
 # [*conf_file*]
 #   Configuration file for rdkafka settings.
 #
+# [*compression_codec*]
+#   Compress messages before sending them to kafka with a specific codec.
+#   Default: 'snappy'
+#
 # [*tls*]
 #   Optional configuration to connect to brokers using TLS for authentication
 #   and encryption. If left unspecified, the connection to the brokers will be
@@ -42,14 +46,15 @@
 # }
 #
 define atskafka::instance(
-    Array[String] $brokers                 = ['localhost:9092'],
-    Stdlib::Absolutepath $stats_dir        = '/var/cache/atskafka',
-    Integer $stats_interval_ms             = 60000,
-    String $topic                          = 'atskafka_test',
-    Array[String] $numeric_fields          = ['time_firstbyte', 'response_size'],
-    Stdlib::Absolutepath $socket           = '/var/run/log.socket',
-    Stdlib::Absolutepath $conf_file        = "/etc/atskafka-${name}.conf",
-    Optional[ATSkafka::TLS_settings] $tls  = undef,
+    Array[String] $brokers                            = ['localhost:9092'],
+    Stdlib::Absolutepath $stats_dir                   = '/var/cache/atskafka',
+    Integer $stats_interval_ms                        = 60000,
+    String $topic                                     = 'atskafka_test',
+    Array[String] $numeric_fields                     = ['time_firstbyte', 'response_size'],
+    Stdlib::Absolutepath $socket                      = '/var/run/log.socket',
+    Stdlib::Absolutepath $conf_file                   = "/etc/atskafka-${name}.conf",
+    Enum['snappy', 'gzip', 'none'] $compression_codec = 'snappy',
+    Optional[ATSkafka::TLS_settings] $tls             = undef,
 ) {
     require ::atskafka
 
