@@ -80,7 +80,7 @@ profile::openstack::eqiad1::wikitech::web::webserver_hostname_aliases: 'wikitech
 profile::openstack::eqiad1::wikitech::web::db_name: 'labswiki'
 
 # Horizon things:
-profile::openstack::eqiad1::horizon::maintenance_mode: false
+profile::openstack::eqiad1::horizon::maintenance_mode: true
 profile::openstack::eqiad1::horizon::puppet_git_repo_name: instance-puppet
 profile::openstack::eqiad1::horizon::puppet_git_repo_user: instance-puppet-user
 
