@@ -1,1 +1,2 @@
 profile::trafficserver::backend::origin_coalescing: false
+profile::cache::base::use_purged: true
