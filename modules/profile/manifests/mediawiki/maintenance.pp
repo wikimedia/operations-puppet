@@ -41,7 +41,7 @@ class profile::mediawiki::maintenance {
     include ::profile::mediawiki::maintenance::update_flaggedrev_stats
     include ::profile::mediawiki::maintenance::refreshlinks
     include ::profile::mediawiki::maintenance::update_special_pages
-    class { 'mediawiki::maintenance::purge_abusefilter': ensure => $ensure }
+    include ::profile::mediawiki::maintenance::purge_abusefilter
     include ::profile::mediawiki::maintenance::purge_checkuser
     class { 'mediawiki::maintenance::purge_expired_userrights': ensure => $ensure }
     class { 'mediawiki::maintenance::purge_old_cx_drafts': ensure => $ensure }
