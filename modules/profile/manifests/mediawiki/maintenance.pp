@@ -43,7 +43,7 @@ class profile::mediawiki::maintenance {
     include ::profile::mediawiki::maintenance::update_special_pages
     include ::profile::mediawiki::maintenance::purge_abusefilter
     include ::profile::mediawiki::maintenance::purge_checkuser
-    class { 'mediawiki::maintenance::purge_expired_userrights': ensure => $ensure }
+    include ::profile::mediawiki::maintenance::purge_expired_userrights
     class { 'mediawiki::maintenance::purge_old_cx_drafts': ensure => $ensure }
     class { 'mediawiki::maintenance::purge_securepoll': ensure => $ensure }
     class { 'mediawiki::maintenance::db_lag_stats': ensure => $ensure }
