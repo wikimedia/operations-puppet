@@ -720,11 +720,6 @@ node 'dbproxy1018.eqiad.wmnet' {
 }
 
 # web proxy
-# dbproxy1011 will be decommissioned at some point
-node 'dbproxy1011.eqiad.wmnet' {
-    role(mariadb::proxy::replicas)
-}
-
 node 'dbproxy1019.eqiad.wmnet' {
     role(mariadb::proxy::replicas)
 }
