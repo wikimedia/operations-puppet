@@ -26,7 +26,7 @@ class profile::mariadb::backup::transfer {
         group     => 'root',
         mode      => '0400',
         show_diff => false,
-        content   => template("profile/mariadb/backups-${::hostname}.cnf.erb"),
+        content   => template("profile/mariadb/backup_config/${::hostname}.cnf.erb"),
         require   => [File['/etc/mysql'],
         ],
     }
