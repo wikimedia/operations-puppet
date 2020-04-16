@@ -21,10 +21,13 @@ class prometheus::nic_saturation_exporter(
 
     $service_name = 'nic-saturation-exporter'
     systemd::service { $service_name:
+        ensure    => $ensure,
         content   => systemd_template('prometheus-nic-saturation-exporter'),
         restart   => true,
         subscribe => File[$script_path],
     }
 
-    base::service_auto_restart { $service_name: }
+    base::service_auto_restart { $service_name:
+        ensure => $ensure,
+    }
 }

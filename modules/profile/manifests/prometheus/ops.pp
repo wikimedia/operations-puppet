@@ -1464,10 +1464,13 @@ class profile::prometheus::ops (
     ]
 
     prometheus::class_config{ "nic_saturation_${::site}":
-        dest       => "${targets_path}/nic_saturation_${::site}.yaml",
-        site       => $::site,
-        class_name => 'profile::prometheus::nic_saturation_exporter',
-        port       => 9710,
+        dest             => "${targets_path}/nic_saturation_${::site}.yaml",
+        site             => $::site,
+        port             => 9710,
+        class_name       => 'profile::prometheus::nic_saturation_exporter',
+        class_parameters => {
+            'ensure' => 'present'
+        },
     }
 
     $apereo_cas_jobs = [
