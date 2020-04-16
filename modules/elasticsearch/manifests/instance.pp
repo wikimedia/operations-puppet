@@ -88,11 +88,13 @@
 #        want the API exposed outside of localhost, so using just localhost
 #        is useful in those cases.
 #        Default: true (use all hosts defined in unicast_hosts)
-# - $tune_gc_larger_old_gen: Tune the GC to keep a larger than standard
-#        old generation. If the GC wants a smaller old generation than
-#        possible it will constantly run full GC's trying to find that
-#        space. Set this to true if that space will never be available
-#        and the GC should not try and find it.
+# - $tune_gc_new_size_ratio: Tune the GC to set a ratio between young and
+#        old gen sizes. For example, a value of '3' means that the size of
+#        the old generation will be 3 times the young generation. Depending
+#        on the workload of your application it might be better to have a
+#        bigger old gen (to avoid for example expensive and frequent full
+#        GC runs) or a bigger young gen (for example if the majority of objects
+#        created are short term or temporary).
 # - $disktype: The type of physical storage backing this ES instance to be
 #        used for index routing allocation. e.g. 'ssd', 'hdd'
 # == Sample usage:
@@ -143,7 +145,7 @@ define elasticsearch::instance(
     Optional[Integer[0]] $script_max_compilations_per_minute = undef,
     Optional[String] $ltr_cache_size                         = undef,
     Boolean $curator_uses_unicast_hosts                      = true,
-    Boolean $tune_gc_larger_old_gen                          = false,
+    Optional[Integer] $tune_gc_new_size_ratio                = undef,
     Optional[Enum['ssd','hdd']] $disktype                    = undef,
 
     #  Dummy parameters consumed upstream of elasticsearch::instance,
@@ -154,7 +156,6 @@ define elasticsearch::instance(
     Optional[Stdlib::Port] $tls_ro_port = undef,
 
     Boolean $use_cms_gc = false,
-    Optional[String] $cms_gc_young_size = undef,
 ) {
 
     # Check arguments
@@ -192,9 +193,9 @@ define elasticsearch::instance(
         $gc_log_flags = []
     }
 
-    $gc_tune_flags = $tune_gc_larger_old_gen ? {
-        true    => ['-XX:NewRatio=3'],
-        default => []
+    $gc_tune_flags = $tune_gc_new_size_ratio ? {
+        default => ["-XX:NewRatio=${tune_gc_new_size_ratio}"],
+        undef   => []
     }
 
     $gc_flags = $gc_log_flags + $gc_tune_flags

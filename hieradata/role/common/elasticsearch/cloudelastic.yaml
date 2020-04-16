@@ -25,7 +25,7 @@ profile::elasticsearch::instances:
     transport_tcp_port: 9300
     heap_memory: '45G'
     use_cms_gc: true
-    cms_gc_young_size: '10G'
+    tune_gc_new_size_ratio: 3
   cloudelastic-omega-eqiad:
     cluster_name: cloudelastic-omega-eqiad
     short_cluster_name: omega
