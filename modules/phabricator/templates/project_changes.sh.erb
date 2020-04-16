@@ -168,8 +168,8 @@ END
 # see https://phabricator.wikimedia.org/T249807
 result_past_due_dates=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -P $sql_port -u $sql_user $sql_name << END
 SELECT CONCAT("https://phabricator.wikimedia.org/T", t.id) AS Task, FROM_UNIXTIME(cfs.fieldValue) AS DueDate
-    FROM maniphest_task t
-    JOIN maniphest_customfieldstorage cfs
+    FROM phabricator_maniphest.maniphest_task t
+    JOIN phabricator_maniphest.maniphest_customfieldstorage cfs
     WHERE cfs.fieldIndex = "GGorRQHBaRdo"
     AND FROM_UNIXTIME(cfs.fieldValue) < (NOW() - INTERVAL 1 MONTH)
     AND t.phid = cfs.objectPHID
