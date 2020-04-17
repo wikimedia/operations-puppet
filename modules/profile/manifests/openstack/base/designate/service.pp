@@ -124,19 +124,22 @@ class profile::openstack::base::designate::service(
         cross_cluster_timeout_ms => 1000,
         pools                    => {
             'designate' => {
-                servers => $designate_hosts.map |$host| { "${host}: 11211" }
+                servers => $designate_hosts.map |$host| { "${host}: 11211:ascii:plain" }
             },
         },
-        routes                   => [ {
-            type               => 'OperationSelectorRoute',
-            default_policy     => 'PoolRoute|designate',
-            operation_policies => {
-                add    => 'AllSyncRoute|Pool|designate',
-                delete => 'AllSyncRoute|Pool|designate',
-                get    => 'LatestRoute|Pool|designate',
-                set    => 'AllSyncRoute|Pool|designate'
+        routes                   => [
+            aliases              => [ "/${::site}/designate/" ],
+            route                => {
+                type               => 'OperationSelectorRoute',
+                default_policy     => 'PoolRoute|designate',
+                operation_policies => {
+                    add    => 'AllSyncRoute|Pool|designate',
+                    delete => 'AllSyncRoute|Pool|designate',
+                    get    => 'LatestRoute|Pool|designate',
+                    set    => 'AllSyncRoute|Pool|designate'
+                }
             }
-        } ]
+        ]
     }
 
     class { '::memcached':
