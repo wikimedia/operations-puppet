@@ -17,7 +17,7 @@ Supported urls:
   /opcache-info    Show basic opcache stats
   /opcache-meta    Dump meta information for all objects in opcache to /tmp/opcache_dump_meta
   /opcache-free    Clear all data from opcache
-
+  /ini-get         Get the ini values for the running daemon. Add a key parameter if you want just one.
 EOD;
 
 ob_start();
@@ -47,6 +47,9 @@ switch ($_SERVER['SCRIPT_NAME']) {
 		break;
 	case '/opcache-free':
 		clear_opcache();
+		break;
+	case '/ini-get':
+		ini_value();
 		break;
 	default:
 		echo $usage;

@@ -354,3 +354,19 @@ function dump_opcache_meta() {
 function clear_opcache() {
 	opcache_reset();
 }
+
+function ini_value() {
+	$all_ini_values = get_ini_all();
+	if (isset($_GET['key'])) {
+		$key = $_GET['key'];
+		if (array_key_exists($key, $all_ini_values)) {
+			$val = $all_ini_values[$key];
+			print json_encode([$key => $val]);
+		} else {
+			http_response_code(400);
+			print json_encode(['error' => "parameter '$key' not found"]);
+		}
+	} else {
+		print json_encode($all_ini_values);
+	}
+}
