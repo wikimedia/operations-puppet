@@ -49,7 +49,7 @@ class profile::mediawiki::maintenance {
     include ::profile::mediawiki::maintenance::db_lag_stats
     include ::profile::mediawiki::maintenance::cirrussearch
     include ::profile::mediawiki::maintenance::generatecaptcha
-    class { 'mediawiki::maintenance::pageassessments': ensure => $ensure }
+    include ::profile::mediawiki::maintenance::pageassessments
     class { 'mediawiki::maintenance::uploads': ensure => $ensure }
     class { 'mediawiki::maintenance::readinglists': ensure => $ensure }
     class { 'mediawiki::maintenance::initsitestats': ensure => $ensure }
