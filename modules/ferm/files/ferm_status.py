@@ -2,6 +2,7 @@
 """script to compare the output of iptables-save/ip6tables-save with
 the output of `ferm -nl /etc/ferm/ferm.conf` This enables us to ensure
 the desired ruleset has been loaded by iptables"""
+from re import match
 from socket import getservbyname
 from subprocess import check_output
 
@@ -71,6 +72,9 @@ class Rule:
     @staticmethod
     def _resolve_port(port):
         """convert a port name to a number e.g. ssh -> 22"""
+        # return ranges like 6800:7100
+        if match(r'\d{1,5}:\d{1,5}', str(port)):
+            return port
         try:
             return int(port)
         except ValueError:
