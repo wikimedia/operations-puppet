@@ -124,7 +124,7 @@ class profile::openstack::base::designate::service(
         cross_cluster_timeout_ms => 1000,
         pools                    => {
             'designate' => {
-                servers => $designate_hosts.map |$designatehost| { "${designatehost}:11211:ascii:plain" }
+                servers => $designate_hosts.map |$designatehost| { "${designatehost}:11000:ascii:plain" }
             },
         },
         routes                   => [
