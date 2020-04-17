@@ -11,7 +11,6 @@ class role::statistics::private {
     include ::profile::statistics::private
 
     include ::profile::statistics::eventlogging_rsync
-    include ::profile::statistics::mediawiki_logs_rsync
 
     include ::profile::statistics::dataset_mount
 
