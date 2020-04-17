@@ -48,20 +48,28 @@
 # === Examples
 #
 #  class { '::mcrouter':
-#    pools => {
-#      cluster-main' => {
+#    region                   => $::site,
+#    cluster                  => 'clustername',
+#    cross_region_timeout_ms  => 250,
+#    cross_cluster_timeout_ms => 1000,
+#    pools                    => {
+#      'clustername-main' => {
 #        servers => [ '10.68.23.25:11211', '10.68.23.49:11211' ]
+# #                       ^ note that these must be IPs, not fqdns
 #      }
 #    },
-#    routes => [ {
-#      type => 'OperationSelectorRoute',
-#      default_policy => 'PoolRoute|cluster-main',
-#      operation_policies => {
-#        set => 'AllFastestRoute|Pool|cluster-main',
-#        delete => 'AllFastestRoute|Pool|cluster-main'
+#    routes                   => [ {
+#      aliases => [ "/${::site}/clustername" ],
+#      route   => {
+#        type => 'OperationSelectorRoute',
+#        default_policy => 'PoolRoute|clustername-main',
+#        operation_policies => {
+#          set => 'AllFastestRoute|Pool|clustername-main',
+#          delete => 'AllFastestRoute|Pool|clustername-main'
+#        }
 #      }
-#    }
-#  } ]
+#    } ]
+#  }
 #
 class mcrouter(
     Hash $pools,
