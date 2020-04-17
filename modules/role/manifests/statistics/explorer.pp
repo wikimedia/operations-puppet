@@ -27,6 +27,7 @@ class role::statistics::explorer {
     include ::profile::statistics::gpu
     include ::profile::statistics::dataset_mount
     include ::profile::statistics::eventlogging_rsync
+    include ::profile::statistics::mediawiki_logs_rsync
 
     include ::profile::swap
 }
