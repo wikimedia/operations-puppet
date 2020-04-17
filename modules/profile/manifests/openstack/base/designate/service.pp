@@ -168,4 +168,13 @@ class profile::openstack::base::designate::service(
         srange  => "(@resolve((${join($designate_hosts,' ')}))
                     @resolve((${join($designate_hosts,' ')}), AAAA))",
     }
+
+    ferm::service { 'memcached_for_mcrouter':
+        desc    => 'Allow connections to memcached',
+        proto   => 'tcp',
+        notrack => true,
+        port    => $11000,
+        srange  => "(@resolve((${join($designate_hosts,' ')}))
+                    @resolve((${join($designate_hosts,' ')}), AAAA))",
+    }
 }
