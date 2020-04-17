@@ -1,5 +1,6 @@
 class profile::idp(
     Hash                $ldap_config            = lookup('ldap', Hash, hash, {}),
+    Array[Stdlib::Host] $prometheus_nodes       = lookup('prometheus_nodes'),
     String              $keystore_password      = lookup('profile::idp::keystore_password'),
     String              $key_password           = lookup('profile::idp::key_password'),
     String              $tgc_signing_key        = lookup('profile::idp::tgc_signing_key'),
@@ -8,15 +9,16 @@ class profile::idp(
     String              $webflow_encryption_key = lookup('profile::idp::webflow_encryption_key'),
     String              $u2f_signing_key        = lookup('profile::idp::u2f_signing_key'),
     String              $u2f_encryption_key     = lookup('profile::idp::u2f_encryption_key'),
-    Optional[String]    $totp_signing_key       = lookup('profile::idp::totp_signing_key'),
-    Optional[String]    $totp_encryption_key    = lookup('profile::idp::totp_encryption_key'),
     Integer             $max_session_length     = lookup('profile::idp::max_session_length'),
     Hash[String,Hash]   $services               = lookup('profile::idp::services'),
     Array[String[1]]    $ldap_attribute_list    = lookup('profile::idp::ldap_attributes'),
     Stdlib::Fqdn        $idp_primary            = lookup('profile::idp::idp_primary'),
     Stdlib::Fqdn        $idp_failover           = lookup('profile::idp::idp_failover'),
     Array[String]       $actuators              = lookup('profile::idp::actuators'),
-    Array[Stdlib::Host] $prometheus_nodes       = lookup('prometheus_nodes')
+    Optional[String]    $totp_signing_key       = lookup('profile::idp::totp_signing_key',
+                                                        {'default_value' => undef}),
+    Optional[String]    $totp_encryption_key    = lookup('profile::idp::totp_encryption_key',
+                                                        {'default_value' => undef}),
 ){
 
     include passwords::ldap::production
