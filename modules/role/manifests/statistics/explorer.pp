@@ -29,5 +29,10 @@ class role::statistics::explorer {
     include ::profile::statistics::eventlogging_rsync
     include ::profile::analytics::geoip::archive
 
+    # Deploy wikimedia/discovery/analytics repository
+    include ::profile::analytics::cluster::elasticsearch
+    # Deploy performance/asoranking repository
+    include ::profile::analytics::asoranking
+
     include ::profile::swap
 }
