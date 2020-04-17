@@ -129,6 +129,7 @@ class profile::openstack::base::designate::service(
         },
         routes                   => [ {
             type               => 'OperationSelectorRoute',
+            default_policy     => 'PoolRoute|designate',
             operation_policies => {
                 add    => 'AllSyncRoute|Pool|designate',
                 delete => 'AllSyncRoute|Pool|designate',
