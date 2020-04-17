@@ -173,7 +173,7 @@ class profile::openstack::base::designate::service(
         desc    => 'Allow connections to memcached',
         proto   => 'tcp',
         notrack => true,
-        port    => $11000,
+        port    => 11000,
         srange  => "(@resolve((${join($designate_hosts,' ')}))
                     @resolve((${join($designate_hosts,' ')}), AAAA))",
     }
