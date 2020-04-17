@@ -6,12 +6,14 @@
 #
 # == Parameters:
 # - $prometheus_nodes: List of prometheus nodes to allow connections from
-# - $input_kafka_ssl_truststore_password: password for jks truststore used by logstash kafka input plugin
+# - $input_kafka_ssl_truststore_passwords:
+#   Hash of kafka cluster name to password for jks truststore used by logstash kafka input plugin,
+#   e.g. $input_kafka_ssl_truststore_passwords['logging-eqiad'] == 'XXXXXX', etc.
 #
 # filtertags: labs-project-deployment-prep
 class profile::logstash::collector7 (
     $prometheus_nodes = hiera('prometheus_nodes', []),
-    $input_kafka_ssl_truststore_password = hiera('profile::logstash::collector::input_kafka_ssl_truststore_password'),
+    $input_kafka_ssl_truststore_passwords = hiera('profile::logstash::collector::input_kafka_ssl_truststore_passwords'),
     $input_kafka_consumer_group_id = hiera('profile::logstash::collector::input_kafka_consumer_group_id', undef),
     $jmx_exporter_port = hiera('profile::logstash::collector::jmx_exporter_port', 7800),
     $maintenance_hosts = hiera('maintenance_hosts', []),
@@ -75,7 +77,7 @@ class profile::logstash::collector7 (
         tags                                  => ['input-kafka-rsyslog-shipper', 'rsyslog-shipper', 'kafka', 'es'],
         codec                                 => 'json',
         security_protocol                     => 'SSL',
-        ssl_truststore_password               => $input_kafka_ssl_truststore_password,
+        ssl_truststore_password               => $input_kafka_ssl_truststore_passwords['logging-eqiad'],
         ssl_endpoint_identification_algorithm => '',
         consumer_threads                      => 3,
     }
@@ -88,7 +90,7 @@ class profile::logstash::collector7 (
         tags                                  => ['rsyslog-shipper','kafka', 'es'],
         codec                                 => 'json',
         security_protocol                     => 'SSL',
-        ssl_truststore_password               => $input_kafka_ssl_truststore_password,
+        ssl_truststore_password               => $input_kafka_ssl_truststore_passwords['logging-codfw'],
         ssl_endpoint_identification_algorithm => '',
     }
 
@@ -100,7 +102,7 @@ class profile::logstash::collector7 (
         tags                                  => ['input-kafka-rsyslog-udp-localhost', 'rsyslog-udp-localhost', 'kafka', 'es'],
         codec                                 => 'json',
         security_protocol                     => 'SSL',
-        ssl_truststore_password               => $input_kafka_ssl_truststore_password,
+        ssl_truststore_password               => $input_kafka_ssl_truststore_passwords['logging-eqiad'],
         ssl_endpoint_identification_algorithm => '',
     }
 
@@ -112,7 +114,7 @@ class profile::logstash::collector7 (
         tags                                  => ['rsyslog-udp-localhost','kafka', 'es'],
         codec                                 => 'json',
         security_protocol                     => 'SSL',
-        ssl_truststore_password               => $input_kafka_ssl_truststore_password,
+        ssl_truststore_password               => $input_kafka_ssl_truststore_passwords['logging-codfw'],
         ssl_endpoint_identification_algorithm => '',
         consumer_threads                      => 3,
     }
@@ -125,7 +127,7 @@ class profile::logstash::collector7 (
         tags                                  => ['input-kafka-rsyslog-logback', 'kafka-logging-eqiad', 'kafka', 'es'],
         codec                                 => 'json',
         security_protocol                     => 'SSL',
-        ssl_truststore_password               => $input_kafka_ssl_truststore_password,
+        ssl_truststore_password               => $input_kafka_ssl_truststore_passwords['logging-eqiad'],
         ssl_endpoint_identification_algorithm => '',
         consumer_threads                      => 3,
     }
@@ -137,7 +139,7 @@ class profile::logstash::collector7 (
         tags                                  => ['input-kafka-deprecated', 'kafka-logging-eqiad', 'kafka', 'es'],
         codec                                 => 'json',
         security_protocol                     => 'SSL',
-        ssl_truststore_password               => $input_kafka_ssl_truststore_password,
+        ssl_truststore_password               => $input_kafka_ssl_truststore_passwords['logging-eqiad'],
         ssl_endpoint_identification_algorithm => '',
         consumer_threads                      => 3,
     }
@@ -150,7 +152,7 @@ class profile::logstash::collector7 (
         tags                                  => ['input-kafka-rsyslog-logback', 'kafka-logging-codfw', 'kafka', 'es'],
         codec                                 => 'json',
         security_protocol                     => 'SSL',
-        ssl_truststore_password               => $input_kafka_ssl_truststore_password,
+        ssl_truststore_password               => $input_kafka_ssl_truststore_passwords['logging-codfw'],
         ssl_endpoint_identification_algorithm => '',
         consumer_threads                      => 3,
     }
@@ -163,7 +165,7 @@ class profile::logstash::collector7 (
         tags                                  => ['input-kafka-clienterror-eqiad', 'kafka', 'es'],
         codec                                 => 'json',
         security_protocol                     => 'SSL',
-        ssl_truststore_password               => $input_kafka_ssl_truststore_password,
+        ssl_truststore_password               => $input_kafka_ssl_truststore_passwords['logging-eqiad'],
         ssl_endpoint_identification_algorithm => '',
         consumer_threads                      => 3,
     }
@@ -176,9 +178,67 @@ class profile::logstash::collector7 (
         tags                                  => ['input-kafka-clienterror-codfw', 'kafka', 'es'],
         codec                                 => 'json',
         security_protocol                     => 'SSL',
-        ssl_truststore_password               => $input_kafka_ssl_truststore_password,
+        ssl_truststore_password               => $input_kafka_ssl_truststore_passwords['logging-codfw'],
         ssl_endpoint_identification_algorithm => '',
         consumer_threads                      => 3,
+    }
+
+    # Collect all EventGate instance error.validation topics into logstash.
+    # Maps logstash::input::kafka title to a kafka cluster and topic to consume.
+    $eventgate_validation_error_logstash_inputs = {
+
+        # eventgate-main uses both Kafka main-eqiad and main-codfw
+        'eventgate-main-validation-error-eqiad' => {
+            'kafka_cluster_name' => 'main-eqiad',
+            'topic' => 'eqiad.eventgate-main.error.validation'
+        },
+        'eventgate-main-validation-error-codfw' => {
+            'kafka_cluster_name' => 'main-codfw',
+            'topic' => 'codfw.eventgate-main.error.validation'
+        },
+
+        # eventgate-analytics uses only Kafka jumbo-eqiad
+        'eventgate-analytics-validation-error-eqiad' => {
+            'kafka_cluster_name' => 'jumbo-eqiad',
+            'topic' => 'eqiad.eventgate-analytics.error.validation'
+        },
+        'eventgate-analytics-validation-error-codfw' => {
+            'kafka_cluster_name' => 'jumbo-eqiad',
+            'topic' => 'codfw.eventgate-analytics.error.validation'
+        },
+
+        # eventgate-analytics-external uses only Kafka jumbo-eqiad
+        'eventgate-analytics-external-validation-error-eqiad' => {
+            'kafka_cluster_name' => 'jumbo-eqiad',
+            'topic' => 'eqiad.eventgate-analytics-external.error.validation'
+        },
+        'eventgate-analytics-external-validation-error-codfw' => {
+            'kafka_cluster_name' => 'jumbo-eqiad',
+            'topic' => 'codfw.eventgate-analytics-external.error.validation'
+        },
+
+        # eventgate-logging-external uses both Kafka logging-eqiad and logging-codfw
+        'eventgate-logging-external-validation-error-eqiad' => {
+            'kafka_cluster_name' => 'logging-eqiad',
+            'topic' => 'eqiad.eventgate-logging-external.error.validation'
+        },
+        'eventgate-logging-external-validation-error-codfw' => {
+            'kafka_cluster_name' => 'logging-codfw',
+            'topic' => 'codfw.eventgate-loging-external.error.validation'
+        },
+    }
+    $eventgate_validation_error_logstash_inputs.each |String $input_title, $input_params| {
+        logstash::input::kafka { $input_title:
+            kafka_cluster_name      => $input_params['kafka_cluster_name'],
+            topic                   => $input_params['topic'],
+            group_id                => $input_kafka_consumer_group_id,
+            type                    => 'eventgate_validation_error',
+            tags                    => ["input-kafka-${input_title}", 'kafka', 'es', 'eventgate'],
+            codec                   => 'json',
+            security_protocol       => 'SSL',
+            ssl_truststore_password => $input_kafka_ssl_truststore_passwords[$input_params['kafka_cluster_name']],
+            consumer_threads        => 3,
+        }
     }
 
     # TODO: Rename this, this is the EventLogging event error topic input.
