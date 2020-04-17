@@ -48,7 +48,7 @@ class profile::mediawiki::maintenance {
     include ::profile::mediawiki::maintenance::purge_securepoll
     include ::profile::mediawiki::maintenance::db_lag_stats
     include ::profile::mediawiki::maintenance::cirrussearch
-    class { 'mediawiki::maintenance::generatecaptcha': ensure => $ensure }
+    include ::profile::mediawiki::maintenance::generatecaptcha
     class { 'mediawiki::maintenance::pageassessments': ensure => $ensure }
     class { 'mediawiki::maintenance::uploads': ensure => $ensure }
     class { 'mediawiki::maintenance::readinglists': ensure => $ensure }
