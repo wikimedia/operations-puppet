@@ -164,6 +164,10 @@ class profile::ganeti (
             notes_url    => 'https://wikitech.wikimedia.org/wiki/Ganeti',
         }
 
+        nrpe::monitor_service { "https-gnt-rapi-${::site}":
+            description  => "HTTPS Ganeti RAPI ${::site}",
+            nrpe_command => "/usr/lib/nagios/plugins/check_http -H ganeti01.svc.${::site}.wmnet -p 5080 -S -e 401",
+            notes_url    => 'https://www.mediawiki.org/wiki/Ganeti#RAPI_daemon',
+        }
     }
-
 }
