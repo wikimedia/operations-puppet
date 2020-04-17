@@ -1,0 +1,5 @@
+---
+# List of projects to enable instance monitoring
+profile::wmcs::prometheus::metricsinfra::projects:
+  - tools
+  - cloudinfra

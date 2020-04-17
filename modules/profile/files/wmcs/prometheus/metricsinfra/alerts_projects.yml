@@ -1,0 +1,26 @@
+groups:
+- name: wmcs_project_alerts
+  rules:
+  # Puppet agent failures
+  - alert: WidespreadPuppetAgentFailures
+    expr: sum by (job) (puppet_agent_failed) / count by (job) (puppet_agent_failed) * 100 > 15
+    for: 15m
+    labels:
+      severity: critical
+    annotations:
+      SUMMARY: Widespread puppet agent failures on project {{$labels.job}}
+  - alert: PuppetAgentFailures
+    expr: puppet_agent_failed != 0
+    for: 15m
+    labels:
+      severity: warning
+    annotations:
+      SUMMARY: Puppet agent failures for instance {{$labels.job}}
+  # Instance down failures
+  - alert: WidespreadHostsDown
+    expr: count by (job) (up == 0) / count by (job) (up) * 100 > 15
+    for: 5m
+    labels:
+      severity: critical
+    annotations:
+      SUMMARY: Widespread instances down for project {{$labels.job}}
