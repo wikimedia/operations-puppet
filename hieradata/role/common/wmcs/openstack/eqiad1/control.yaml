@@ -1,4 +1,3 @@
 cluster: wmcs
 contactgroups: wmcs-team
 mgmt_contactgroups: wmcs-team-email
-profile::prometheus::nic_saturation_exporter::ensure: present

@@ -1,5 +1,2 @@
 # db2083
 mariadb::shard: 's8'
-
-# Staged rollout, eventually enabled everywhere. T250401
-profile::prometheus::nic_saturation_exporter::ensure: present

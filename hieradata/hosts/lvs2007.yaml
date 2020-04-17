@@ -7,6 +7,3 @@ profile::lvs::interface_tweaks:
       txqlen: 10000
     ens3f1np1:
       txqlen: 10000
-
-# Staged rollout, eventually enabled everywhere. T250401
-profile::prometheus::nic_saturation_exporter::ensure: present

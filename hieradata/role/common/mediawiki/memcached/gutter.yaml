@@ -8,4 +8,3 @@ profile::memcached::size: '241591'
 profile::memcached::extended_options:
   - 'modern'
 profile::memcached::port: '11211'
-profile::prometheus::nic_saturation_exporter::ensure: present
