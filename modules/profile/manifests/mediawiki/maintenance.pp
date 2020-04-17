@@ -51,7 +51,7 @@ class profile::mediawiki::maintenance {
     include ::profile::mediawiki::maintenance::generatecaptcha
     include ::profile::mediawiki::maintenance::pageassessments
     class { 'mediawiki::maintenance::uploads': ensure => $ensure }
-    class { 'mediawiki::maintenance::readinglists': ensure => $ensure }
+    include ::profile::mediawiki::maintenance::readinglists
     class { 'mediawiki::maintenance::initsitestats': ensure => $ensure }
     class { 'mediawiki::maintenance::startupregistrystats': ensure => $ensure }
 
