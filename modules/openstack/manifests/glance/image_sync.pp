@@ -83,13 +83,12 @@ class openstack::glance::image_sync(
     }
 
     if ( !$active ) {
-        # If we aren't the primary glance image store, fix file ownership (glancesync->glance)
+        # Make sure there's a directory for those files to land in
         file { $glance_image_dir:
-            ensure  => directory,
-            owner   => 'glance',
-            group   => 'glance',
-            recurse => true,
-            mode    => '0775',
+            ensure => directory,
+            owner  => 'glance',
+            group  => 'glance',
+            mode   => '0775',
         }
     }
 }
