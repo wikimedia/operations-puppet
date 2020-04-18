@@ -15,7 +15,7 @@ notification_driver = messagingv2
 default_log_levels = nova=WARN
 #debug = true
 
-transport_url = rabbit://<%= @rabbit_user %>:<%= @rabbit_pass %>@<%= @rabbit_primary_host %>:5672,<%= @rabbit_user %>:<%= @rabbit_pass %>@<%= @rabbit_secondary_host %>:5672
+transport_url = rabbit://<%= @openstack_controllers.map{ |rabbit_host| "#{@rabbit_user}:#{@rabbit_pass}\@#{rabbit_host}:5672" }.join(',') %>
 
 # Schedule things that are for some reason not in the [scheduler] section
 ram_allocation_ratio=1.0
@@ -94,7 +94,7 @@ user_domain_name = default
 project_name = admin
 username = novaadmin
 password = <%= @ldap_user_pass %>
-memcached_servers = <%= @controller_hosts.map{|host| "#{host}:11211"}.join(",") %>
+memcached_servers = <%= @openstack_controllers.map{|host| "#{host}:11211"}.join(",") %>
 # We want this but need to figure out about service roles first
 #service_token_roles_required = True
 

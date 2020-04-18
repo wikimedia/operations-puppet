@@ -8,8 +8,7 @@ class profile::openstack::base::nova::common(
     $db_name_api = hiera('profile::openstack::base::nova::db_name_api'),
     $compute_workers = hiera('profile::openstack::base::nova::compute_workers'),
     $metadata_workers = hiera('profile::openstack::base::nova::metadata_workers'),
-    $nova_controller = hiera('profile::openstack::base::nova_controller'),
-    $nova_controller_standby = hiera('profile::openstack::base::nova_controller_standby'),
+    $openstack_controllers = hiera('profile::openstack::base::openstack_controllers'),
     $keystone_host = hiera('profile::openstack::base::keystone_host'),
     $glance_host = hiera('profile::openstack::base::glance_host'),
     $scheduler_filters = hiera('profile::openstack::base::nova::scheduler_filters'),
@@ -23,8 +22,6 @@ class profile::openstack::base::nova::common(
                                                     {default_value => 'example.com'}),
     ) {
 
-    $controller_hosts = [$nova_controller, $nova_controller_standby]
-
     class {'::openstack::nova::common':
         version                      => $version,
         region                       => $region,
@@ -33,14 +30,11 @@ class profile::openstack::base::nova::common(
         db_host                      => $db_host,
         db_name                      => $db_name,
         db_name_api                  => $db_name_api,
-        nova_controller              => $nova_controller,
-        controller_hosts             => $controller_hosts,
+        openstack_controllers        => $openstack_controllers,
         keystone_host                => $keystone_host,
         scheduler_filters            => $scheduler_filters,
         ldap_user_pass               => $ldap_user_pass,
         rabbit_user                  => $rabbit_user,
-        rabbit_primary_host          => $nova_controller,
-        rabbit_secondary_host        => $nova_controller_standby,
         rabbit_pass                  => $rabbit_pass,
         glance_host                  => $glance_host,
         metadata_proxy_shared_secret => $metadata_proxy_shared_secret,
