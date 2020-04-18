@@ -83,16 +83,6 @@ class profile::openstack::eqiad1::keystone::service(
     }
     contain '::openstack::keystone::monitor::services'
 
-    # to avoid race conditions only do cleanup maintenance operations on the
-    # controller servicing the primary endpoints
-    class {'::openstack::keystone::cleanup':
-        active  => $::ipaddress == ipresolve($keystone_host,4),
-        db_user => $db_user,
-        db_pass => $db_pass,
-        db_host => $db_host,
-        db_name => $db_name,
-    }
-
     class {'::openstack::monitor::spreadcheck':
     }
 
