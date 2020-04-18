@@ -3,7 +3,7 @@ groups:
   rules:
   # Puppet agent failures
   - alert: WidespreadPuppetAgentFailures
-    expr: sum by (job) (puppet_agent_failed) / count by (job) (puppet_agent_failed) * 100 > 15
+    expr: sum by (job) (puppet_agent_failed) / count by (job) (puppet_agent_failed) * 100 >= 15
     for: 15m
     labels:
       severity: critical
@@ -15,10 +15,10 @@ groups:
     labels:
       severity: warning
     annotations:
-      SUMMARY: Puppet agent failures for instance {{$labels.job}}
+      SUMMARY: Puppet agent failures for instance {{$labels.instance}} {{$labels.job}}
   # Instance down failures
   - alert: WidespreadHostsDown
-    expr: count by (job) (up == 0) / count by (job) (up) * 100 > 15
+    expr: count by (job) (up == 0) / count by (job) (up) * 100 >= 15
     for: 5m
     labels:
       severity: critical
