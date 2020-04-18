@@ -2,7 +2,7 @@ class profile::openstack::base::keystone::service(
     $daemon_active = hiera('profile::openstack::base::keystone::daemon_active'),
     $version = hiera('profile::openstack::base::version'),
     $region = hiera('profile::openstack::base::region'),
-    $nova_controller = hiera('profile::openstack::base::nova_controller'),
+    Array[Stdlib::Fqdn] $openstack_controllers = hiera('profile::openstack::base::openstack_controllers'),
     $keystone_host = hiera('profile::openstack::base::keystone_host'),
     $osm_host = hiera('profile::openstack::base::osm_host'),
     $db_name = hiera('profile::openstack::base::keystone::db_name'),
@@ -34,7 +34,6 @@ class profile::openstack::base::keystone::service(
     $wiki_access_secret = hiera('profile::openstack::base::keystone::wiki_access_secret'),
     $labs_hosts_range = hiera('profile::openstack::base::labs_hosts_range'),
     $labs_hosts_range_v6 = hiera('profile::openstack::base::labs_hosts_range_v6'),
-    $nova_controller_standby = hiera('profile::openstack::base::nova_controller_standby'),
     $nova_api_host = hiera('profile::openstack::base::nova_api_host'),
     Array[Stdlib::Fqdn] $designate_hosts = lookup('profile::openstack::base::designate_hosts'),
     $labweb_hosts = hiera('profile::openstack::base::labweb_hosts'),
@@ -47,13 +46,12 @@ class profile::openstack::base::keystone::service(
     include ::network::constants
     $prod_networks = join($::network::constants::production_networks, ' ')
     $labs_networks = join($::network::constants::labs_networks, ' ')
-    $controller_hosts = [$nova_controller, $nova_controller_standby]
 
     class {'::openstack::keystone::service':
         active                      => $daemon_active,
         version                     => $version,
         keystone_host               => $keystone_host,
-        controller_hosts            => $controller_hosts,
+        controller_hosts            => $openstack_controllers,
         osm_host                    => $osm_host,
         db_name                     => $db_name,
         db_user                     => $db_user,
@@ -100,8 +98,8 @@ class profile::openstack::base::keystone::service(
     ferm::rule{'keystone_admin':
         ensure => 'present',
         rule   => "saddr (${labs_hosts_range} ${labs_hosts_range_v6}
-                             @resolve(${nova_controller_standby}) @resolve(${nova_controller_standby}, AAAA)
-                             @resolve(${nova_controller}) @resolve(${nova_controller}, AAAA)
+                             @resolve((${join($openstack_controllers,' ')}))
+                             @resolve((${join($openstack_controllers,' ')}), AAAA)
                              @resolve(${nova_api_host}) @resolve(${nova_api_host}, AAAA)
                              @resolve((${join($designate_hosts,' ')}))
                              @resolve((${join($designate_hosts,' ')}), AAAA)
