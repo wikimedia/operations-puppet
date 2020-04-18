@@ -41,7 +41,7 @@ class snapshot::dumps::cron(
     }
 
     cron { 'partialdumps_rest':
-        ensure      => 'absent',
+        ensure      => 'present',
         environment => 'MAILTO=ops-dumps@wikimedia.org',
         user        => $user,
         command     => "/usr/local/bin/fulldumps.sh 20 25 ${runtype} partial ${maxjobs} > /dev/null",
