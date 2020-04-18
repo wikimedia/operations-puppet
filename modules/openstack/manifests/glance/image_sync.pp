@@ -90,7 +90,6 @@ class openstack::glance::image_sync(
             group   => 'glance',
             recurse => true,
             mode    => '0775',
-            require => File[$glance_image_dir],
         }
     }
 }
