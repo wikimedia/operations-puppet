@@ -1,5 +1,5 @@
 class profile::openstack::base::keystone::fernet_keys(
-    Array[Stdlib::Fqdn] $keystone_hosts = lookup('profile::openstack::base::keystone_hosts'),
+    Array[Stdlib::Fqdn] $keystone_hosts = lookup('profile::openstack::base::openstack_controllers'),
     String $rotate_time = lookup('profile::openstack::base::rotate_time'),
     String $sync_time = lookup('profile::openstack::base::sync_time'),
     ) {
