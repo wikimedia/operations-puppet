@@ -26,13 +26,10 @@ class openstack::keystone::cleanup (
         ensure => 'present',
     }
 
-    # systemd::timer::job does not take a boolean
-    if $active {
-        $ensure = 'present'
-    }
-    else {
-        $ensure = 'absent'
-    }
+    # Transitional change to clean up all these timers.  After
+    #  this has been merged for an hour this file can be removed
+    #  entirely.
+    $ensure = 'absent'
 
     # TODO: Remove after change is applied
     cron { 'cleanup_expired_keystone_tokens':
