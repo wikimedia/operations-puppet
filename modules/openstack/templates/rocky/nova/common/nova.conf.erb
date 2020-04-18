@@ -41,7 +41,6 @@ remove_unused_base_images=True
 glance_api_servers=<%= @glance_host %>:9292
 
 # APIs
-cc_host=<%= @nova_controller %>
 ec2_url=http://<%= @nova_api_host %>:8773/services/Cloud
 ec2_dmz_host=<%= @nova_api_host_ip %>
 enabled_apis = osapi_compute,metadata
