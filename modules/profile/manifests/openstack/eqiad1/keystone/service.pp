@@ -96,7 +96,6 @@ class profile::openstack::eqiad1::keystone::service(
     }
 
     class {'::openstack::monitor::spreadcheck':
-        active        => $::fqdn == $nova_controller,
     }
 
     # monitor projects and users only on the controller servicing the
