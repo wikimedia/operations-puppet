@@ -3,34 +3,9 @@
 # puppet:///modules/snapshot/dumps/tables_jobs.yaml
 ################################################
 
-# list of public and private tables to dump
+# list of public tables to dump
 
 tables:
-    user:
-      job: user
-      description: User account data.
-      type: private
-    watchlist:
-      job: watchlist
-      description: Users' watchlist settings.
-      type: private
-    ipblocks:
-      job: ipblocks
-      description: Data for blocks of IP addresses, ranges, and users.
-      type: private
-    archive:
-      job: archive
-      description: Deleted page and revision data.
-      type: private
-    logging:
-      job: logging
-      description: Data for various events (deletions, uploads, etc).
-      type: private
-    oldimage:
-      job: oldimage
-      description: Metadata on prior versions of uploaded images.
-      type: private
-
     site_stats:
       job: sitestats
       description: A few statistics such as the page count.
