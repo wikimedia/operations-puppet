@@ -3,4 +3,5 @@
 profile::mariadb::dbstore_multiinstance::num_instances: 2
 profile::mariadb::dbstore_multiinstance::x1: '150G'
 profile::mariadb::dbstore_multiinstance::s2: '250G'
+profile::base::notifications: disabled
 
