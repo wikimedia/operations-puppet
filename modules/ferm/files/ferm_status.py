@@ -3,6 +3,7 @@
 the output of `ferm -nl /etc/ferm/ferm.conf` This enables us to ensure
 the desired ruleset has been loaded by iptables"""
 from collections import defaultdict
+from ipaddress import ip_network
 from re import match
 from socket import getservbyname
 from subprocess import check_output
@@ -81,13 +82,6 @@ class Rule:
         except ValueError:
             return getservbyname(port)
 
-    @staticmethod
-    def _normalise_ip(addr):
-        """strip unicast prefixes to match iptables-save"""
-        if addr.split('/')[-1] in ['32', '128']:
-            return addr.split('/')[0]
-        return addr
-
     def _parse(self):
         for idx, word in enumerate(self._raw_words):
             if word in self.argument_switch.keys():
@@ -104,9 +98,9 @@ class Rule:
         if self.protocol is not None:
             self.protocol = self.protocol.replace('icmpv6', 'ipv6-icmp')
         if self.source is not None:
-            self.source = self._normalise_ip(self.source)
+            self.source = ip_network(self.source)
         if self.destination is not None:
-            self.destination = self._normalise_ip(self.destination)
+            self.destination = ip_network(self.destination)
         if self.dport is not None:
             self.dport = self._resolve_port(self.dport)
         if self.sport is not None:
