@@ -1,5 +1,4 @@
 class profile::openstack::codfw1dev::pdns::recursor::service(
-    $nova_controller = hiera('profile::openstack::codfw1dev::nova_controller'),
     $keystone_host = hiera('profile::openstack::codfw1dev::keystone_host'),
     $observer_password = hiera('profile::openstack::codfw1dev::observer_password'),
     $pdns_host = hiera('profile::openstack::codfw1dev::pdns::host'),
@@ -10,7 +9,6 @@ class profile::openstack::codfw1dev::pdns::recursor::service(
     ) {
 
     class {'::profile::openstack::base::pdns::recursor::service':
-        nova_controller       => $nova_controller,
         keystone_host         => $keystone_host,
         observer_password     => $observer_password,
         pdns_host             => $pdns_host,

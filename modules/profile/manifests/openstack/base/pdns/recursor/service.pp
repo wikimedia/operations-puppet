@@ -19,7 +19,6 @@
 #
 
 class profile::openstack::base::pdns::recursor::service(
-    $nova_controller = hiera('profile::openstack::base::nova_controller'),
     $keystone_host = hiera('profile::openstack::base::keystone_host'),
     $observer_user = hiera('profile::openstack::base::observer_user'),
     $observer_password = hiera('profile::openstack::base::observer_password'),

@@ -4,7 +4,6 @@ class profile::openstack::eqiad1::pdns::recursor::service(
     Stdlib::Fqdn $pdns_host_secondary     = lookup('profile::openstack::eqiad1::pdns::host_secondary'),
     Stdlib::Fqdn $pdns_recursor           = lookup('profile::openstack::eqiad1::pdns::recursor'),
     Stdlib::Fqdn $pdns_recursor_secondary = lookup('profile::openstack::eqiad1::pdns::recursor_secondary'),
-    $nova_controller = hiera('profile::openstack::eqiad1::nova_controller'),
     $keystone_host = hiera('profile::openstack::eqiad1::keystone_host'),
     $observer_password = hiera('profile::openstack::eqiad1::observer_password'),
     $tld = hiera('profile::openstack::eqiad1::pdns::tld'),
@@ -24,7 +23,6 @@ class profile::openstack::eqiad1::pdns::recursor::service(
     }
 
     class {'::profile::openstack::base::pdns::recursor::service':
-        nova_controller       => $nova_controller,
         keystone_host         => $keystone_host,
         observer_password     => $observer_password,
         pdns_host             => $service_pdns_host,
