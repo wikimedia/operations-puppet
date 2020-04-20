@@ -1,7 +1,6 @@
 class profile::openstack::base::envscripts(
     $ldap_user_pass = hiera('profile::openstack::base::ldap_user_pass'),
-    $nova_controller = hiera('profile::openstack::base::nova_controller'),
-    $keystone_host = hiera('profile::openstack::base::keystone_host'),
+    Stdlib::Fqdn $keystone_api_fqdn = lookup('profile::openstack::base::keystone_api_fqdn'),
     $region = hiera('profile::openstack::base::region'),
     $nova_db_pass = hiera('profile::openstack::base::nova::db_pass'),
     $wmflabsdotorg_admin = hiera('profile::openstack::base::designate::wmflabsdotorg_admin'),
@@ -11,8 +10,7 @@ class profile::openstack::base::envscripts(
 
     class {'::openstack::util::envscripts':
         ldap_user_pass        => $ldap_user_pass,
-        nova_controller       => $nova_controller,
-        keystone_host         => $keystone_host,
+        keystone_api_fqdn     => $keystone_api_fqdn,
         region                => $region,
         nova_db_pass          => $nova_db_pass,
         wmflabsdotorg_admin   => $wmflabsdotorg_admin,

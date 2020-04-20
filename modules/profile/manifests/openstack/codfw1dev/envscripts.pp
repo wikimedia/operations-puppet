@@ -1,7 +1,6 @@
 class profile::openstack::codfw1dev::envscripts(
     $ldap_user_pass = hiera('profile::openstack::codfw1dev::ldap_user_pass'),
-    $nova_controller = hiera('profile::openstack::codfw1dev::nova_controller'),
-    $keystone_host = hiera('profile::openstack::codfw1dev::keystone_host'),
+    Stdlib::Fqdn $keystone_api_fqdn = lookup('profile::openstack::codfw1dev::keystone_api_fqdn'),
     $region = hiera('profile::openstack::codfw1dev::region'),
     $nova_db_pass = hiera('profile::openstack::codfw1dev::nova::db_pass'),
     $wmflabsdotorg_admin = hiera('profile::openstack::codfw1dev::designate::wmflabsdotorg_admin'),
@@ -10,8 +9,7 @@ class profile::openstack::codfw1dev::envscripts(
     ) {
     class {'::profile::openstack::base::envscripts':
         ldap_user_pass        => $ldap_user_pass,
-        nova_controller       => $nova_controller,
-        keystone_host         => $keystone_host,
+        keystone_api_fqdn     => $keystone_api_fqdn,
         region                => $region,
         nova_db_pass          => $nova_db_pass,
         wmflabsdotorg_admin   => $wmflabsdotorg_admin,

@@ -1,8 +1,7 @@
 # Scripts to set up shell environment for openstack commandline
 class openstack::util::envscripts(
     $ldap_user_pass,
-    $nova_controller,
-    $keystone_host,
+    $keystone_api_fqdn,
     $region,
     $nova_db_pass,
     $wmflabsdotorg_admin,
