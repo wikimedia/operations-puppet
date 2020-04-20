@@ -37,7 +37,7 @@ class profile::openstack::codfw1dev::db(
 
     ferm::rule { 'cloudcontrol_mysql':
         ensure => 'present',
-        rule   => "saddr @resolve((${join($openstack_controllers,' ')})) @resolve((${join($openstack_controllers,' ')}), AAAA) @resolve((${join($designate_hosts,' ')})) @resolve((${join($designate_hosts,' ')}), AAAA) @resolve(${puppetmaster}) @resolve(${puppetmaster}, AAAA) proto tcp dport (3306) ACCEPT;",
+        rule   => "saddr (@resolve((${join($openstack_controllers,' ')})) @resolve((${join($openstack_controllers,' ')}), AAAA) @resolve((${join($designate_hosts,' ')})) @resolve((${join($designate_hosts,' ')}), AAAA) @resolve(${puppetmaster}) @resolve(${puppetmaster}, AAAA)) proto tcp dport (3306) ACCEPT;",
     }
 
     $labweb_ips = inline_template("@resolve((<%= @labweb_hosts.join(' ') %>))")
