@@ -3,8 +3,7 @@
 #  run on hosts with public IPs)
 
 class profile::mariadb::ferm_wmcs_on_port_3325(
-    $nova_controller = hiera('profile::openstack::eqiad1::nova_controller'),
-    $nova_controller_standby = hiera('profile::openstack::eqiad1::nova_controller_standby'),
+    Array[Stdlib::Fqdn] $eqiad1_openstack_controllers = lookup('profile::openstack::eqiad1::openstack_controllers'),
     Array[Stdlib::Fqdn] $designate_hosts = lookup('profile::openstack::eqiad1::designate_hosts'),
     $labweb_hosts = hiera('profile::openstack::eqiad1::labweb_hosts'),
     $cloudweb_dev_hosts = hiera('profile::openstack::codfw1dev::labweb_hosts'),
@@ -12,11 +11,11 @@ class profile::mariadb::ferm_wmcs_on_port_3325(
     ) {
     $port = '3325'
 
-    ferm::service{ 'nova_controller':
+    ferm::service{ 'openstack_controllers':
         proto   => 'tcp',
         port    => $port,
         notrack => true,
-        srange  => "(@resolve(${nova_controller}) @resolve(${nova_controller_standby}))",
+        srange  => "(@resolve((${join($eqiad1_openstack_controllers,' ')})))",
     }
 
     ferm::service{ 'designate':
