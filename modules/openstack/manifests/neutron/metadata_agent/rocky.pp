@@ -1,5 +1,5 @@
 class openstack::neutron::metadata_agent::rocky(
-    $nova_controller,
+    Stdlib::Fqdn $keystone_api_fqdn,
     $metadata_proxy_shared_secret,
     $report_interval,
 ){
