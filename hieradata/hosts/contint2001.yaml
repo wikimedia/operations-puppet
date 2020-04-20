@@ -9,4 +9,5 @@ profile::zuul::server::service_enable: false
 profile::base::overlayfs: true
 
 profile::ci::docker::settings:
+  data-root: '/srv/docker'
   iptables: false
