@@ -1,4 +1,5 @@
 class profile::openstack::eqiad1::puppetmaster::backend(
+    Array[Stdlib::Fqdn] $openstack_controllers = lookup('profile::openstack::eqiad1::openstack_controllers'),
     Array[Stdlib::Fqdn] $designate_hosts = lookup('profile::openstack::eqiad1::designate_hosts'),
     $puppetmaster_hostname = hiera('profile::openstack::eqiad1::puppetmaster_hostname'),
     $puppetmaster_ca = hiera('profile::openstack::eqiad1::puppetmaster::ca'),
@@ -11,9 +12,9 @@ class profile::openstack::eqiad1::puppetmaster::backend(
     $encapi_statsd_prefix = hiera('profile::openstack::eqiad1::puppetmaster::encapi::statsd_prefix'),
     $statsd_host = hiera('profile::openstack::eqiad1::statsd_host'),
     $labweb_hosts = hiera('profile::openstack::eqiad1::labweb_hosts'),
-    $nova_controller = hiera('profile::openstack::eqiad1::nova_controller'),
     ) {
     class {'::profile::openstack::base::puppetmaster::backend':
+        openstack_controllers    => $openstack_controllers,
         designate_hosts          => $designate_hosts,
         puppetmaster_webhostname => $puppetmaster_webhostname,
         puppetmaster_ca          => $puppetmaster_ca,
@@ -26,6 +27,5 @@ class profile::openstack::eqiad1::puppetmaster::backend(
         encapi_statsd_prefix     => $encapi_statsd_prefix,
         statsd_host              => $statsd_host,
         labweb_hosts             => $labweb_hosts,
-        nova_controller          => $nova_controller,
     }
 }

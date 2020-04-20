@@ -1,4 +1,5 @@
 class profile::openstack::base::puppetmaster::frontend(
+    Array[Stdlib::Fqdn] $openstack_controllers = lookup('profile::openstack::base::openstack_controllers'),
     Array[Stdlib::Fqdn] $designate_hosts = lookup('profile::openstack::base::designate_hosts'),
     $puppetmasters = hiera('profile::openstack::base::puppetmaster::servers'),
     $puppetmaster_ca = hiera('profile::openstack::base::puppetmaster::ca'),
@@ -12,8 +13,6 @@ class profile::openstack::base::puppetmaster::frontend(
     $statsd_host = hiera('profile::openstack::base::statsd_host'),
     $labweb_hosts = hiera('profile::openstack::base::labweb_hosts'),
     $cert_secret_path = hiera('profile::openstack::base::puppetmaster::cert_secret_path'),
-    $nova_controller = hiera('profile::openstack::base::nova_controller'),
-    $nova_controller_standby = hiera('profile::openstack::base::nova_controller_standby'),
     ) {
 
     include ::network::constants
@@ -32,6 +31,7 @@ class profile::openstack::base::puppetmaster::frontend(
     }
 
     class {'profile::openstack::base::puppetmaster::common':
+        openstack_controllers    => $openstack_controllers,
         designate_hosts          => $designate_hosts,
         puppetmaster_webhostname => $puppetmaster_webhostname,
         puppetmaster_hostname    => $puppetmaster_hostname,
@@ -43,25 +43,20 @@ class profile::openstack::base::puppetmaster::frontend(
         encapi_statsd_prefix     => $encapi_statsd_prefix,
         statsd_host              => $statsd_host,
         labweb_hosts             => $labweb_hosts,
-        nova_controller          => $nova_controller,
     }
 
     $designate_ips = $designate_hosts.map |$host| { ipresolve($host, 4) }
     $designate_ips_v6 = $designate_hosts.map |$host| { ipresolve($host, 6) }
+    $openstack_controller_ips = $openstack_controllers.map |$host| { ipresolve($host, 4) }
+    $openstack_controller_ips_v6 = $openstack_controllers.map |$host| { ipresolve($host, 6) }
 
     if ! defined(Class['puppetmaster::certmanager']) {
-        $cleaner5_ip = ipresolve($nova_controller, 4)
-        $cleaner5_ip6 = ipresolve($nova_controller, 6)
-        $cleaner6_ip = ipresolve($nova_controller_standby, 4)
-        $cleaner6_ip6 = ipresolve($nova_controller_standby, 6)
         class { 'puppetmaster::certmanager':
             remote_cert_cleaners => flatten([
                 $designate_ips,
                 $designate_ips_v6,
-                $cleaner5_ip,
-                $cleaner5_ip6,
-                $cleaner6_ip,
-                $cleaner6_ip6,
+                $openstack_controller_ips,
+                $openstack_controller_ips_v6,
             ])
         }
     }

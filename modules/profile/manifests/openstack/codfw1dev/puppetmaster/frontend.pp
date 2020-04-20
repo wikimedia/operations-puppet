@@ -1,4 +1,5 @@
 class profile::openstack::codfw1dev::puppetmaster::frontend(
+    Array[Stdlib::Fqdn] $openstack_controllers = lookup('profile::openstack::codfw1dev::openstack_controllers'),
     Array[Stdlib::Fqdn] $designate_hosts = lookup('profile::openstack::codfw1dev::designate_hosts'),
     $puppetmasters = hiera('profile::openstack::codfw1dev::puppetmaster::servers'),
     $puppetmaster_ca = hiera('profile::openstack::codfw1dev::puppetmaster::ca'),
@@ -12,12 +13,11 @@ class profile::openstack::codfw1dev::puppetmaster::frontend(
     $statsd_host = hiera('profile::openstack::codfw1dev::statsd_host'),
     $labweb_hosts = hiera('profile::openstack::codfw1dev::labweb_hosts'),
     $cert_secret_path = hiera('profile::openstack::codfw1dev::puppetmaster::cert_secret_path'),
-    $nova_controller = hiera('profile::openstack::codfw1dev::nova_controller'),
-    $nova_controller_standby = hiera('profile::openstack::codfw1dev::nova_controller'),
     ) {
 
     require ::profile::openstack::codfw1dev::clientpackages
     class {'::profile::openstack::base::puppetmaster::frontend':
+        openstack_controllers    => $openstack_controllers,
         designate_hosts          => $designate_hosts,
         puppetmasters            => $puppetmasters,
         puppetmaster_ca          => $puppetmaster_ca,
@@ -31,7 +31,5 @@ class profile::openstack::codfw1dev::puppetmaster::frontend(
         statsd_host              => $statsd_host,
         labweb_hosts             => $labweb_hosts,
         cert_secret_path         => $cert_secret_path,
-        nova_controller          => $nova_controller,
-        nova_controller_standby  => $nova_controller,
     }
 }

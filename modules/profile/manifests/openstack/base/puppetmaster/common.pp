@@ -1,4 +1,5 @@
 class profile::openstack::base::puppetmaster::common(
+    Array[Stdlib::Fqdn] $openstack_controllers = lookup('profile::openstack::base::puppetmaster::common::openstack_controllers'),
     Array[Stdlib::Fqdn] $designate_hosts = lookup('profile::openstack::base::puppetmaster::common::designate_hosts'),
     $puppetmaster_webhostname = hiera('profile::openstack::base::puppetmaster::web_hostname'),
     $puppetmaster_hostname = hiera('profile::openstack::base::puppetmaster::common::puppetmaster_hostname'),
@@ -10,7 +11,6 @@ class profile::openstack::base::puppetmaster::common(
     $encapi_statsd_prefix = hiera('profile::openstack::base::puppetmaster::common::encapi_statsd_prefix'),
     $statsd_host = hiera('profile::openstack::base::puppetmaster::common::statsd_host'),
     $labweb_hosts = hiera('profile::openstack::base::labweb_hosts'),
-    $nova_controller = hiera('profile::openstack::base::nova_controller'),
     ) {
 
     # array of puppetmasters
@@ -24,16 +24,16 @@ class profile::openstack::base::puppetmaster::common(
 
     $labs_networks = join($network::constants::labs_networks, ' ')
     class { '::openstack::puppet::master::encapi':
-        mysql_host      => $encapi_db_host,
-        mysql_db        => $encapi_db_name,
-        mysql_username  => $encapi_db_user,
-        mysql_password  => $encapi_db_pass,
-        statsd_host     => $statsd_host,
-        statsd_prefix   => $encapi_statsd_prefix,
-        puppetmasters   => $puppetmasters,
-        labweb_hosts    => $labweb_hosts,
-        nova_controller => $nova_controller,
-        designate_hosts => $designate_hosts,
+        mysql_host            => $encapi_db_host,
+        mysql_db              => $encapi_db_name,
+        mysql_username        => $encapi_db_user,
+        mysql_password        => $encapi_db_pass,
+        statsd_host           => $statsd_host,
+        statsd_prefix         => $encapi_statsd_prefix,
+        puppetmasters         => $puppetmasters,
+        labweb_hosts          => $labweb_hosts,
+        openstack_controllers => $openstack_controllers,
+        designate_hosts       => $designate_hosts,
     }
 
     # Update labs/private repo.
@@ -47,7 +47,9 @@ class profile::openstack::base::puppetmaster::common(
     ferm::rule{'puppetmaster':
         ensure => 'present',
         rule   => "saddr (${labs_networks}
-                          @resolve((${all_puppetmasters})) ${labweb_ips} ${labweb_aaaa})
+                          @resolve((${all_puppetmasters}))
+                          @resolve((${join($labweb_hosts,' ')}))
+                          @resolve((${join($labweb_hosts,' ')}), AAAA)
                           proto tcp dport 8141 ACCEPT;",
     }
 
@@ -55,14 +57,18 @@ class profile::openstack::base::puppetmaster::common(
         ensure => 'present',
         rule   => "saddr (@resolve((${join($designate_hosts,' ')}))
                           @resolve((${join($designate_hosts,' ')}), AAAA)
-                          ${labweb_ips} ${labweb_aaaa} @resolve(${nova_controller}) @resolve(${nova_controller}, AAAA))
+                          @resolve((${join($labweb_hosts,' ')}))
+                          @resolve((${join($labweb_hosts,' ')}), AAAA)
+                          @resolve((${join($openstack_controllers,' ')}))
+                          @resolve((${join($openstack_controllers,' ')}), AAAA))
                           proto tcp dport 8101 ACCEPT;",
     }
 
     ferm::rule{'puppetbackendgetter':
         ensure => 'present',
         rule   => "saddr (${labs_networks}
-                          ${labweb_ips} ${labweb_aaaa}
+                          @resolve((${join($labweb_hosts,' ')}))
+                          @resolve((${join($labweb_hosts,' ')}), AAAA)
                           @resolve((${all_puppetmasters})) @resolve((${all_puppetmasters}), AAAA))
                           proto tcp dport 8100 ACCEPT;",
     }
