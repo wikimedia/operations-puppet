@@ -74,8 +74,7 @@ weight_classes=nova.scheduler.weights.metrics.MetricsWeigher
 host_subset_size = 2
 
 [glance]
-host=<%= @glance_host %>
-api_servers = http://<%= @glance_host %>:9292
+# all defaults here
 
 [keystone_authtoken]
 auth_host = <%= @keystone_api_fqdn %>

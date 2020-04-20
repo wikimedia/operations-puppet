@@ -12,7 +12,6 @@ class openstack::nova::common(
     $ldap_user_pass,
     $rabbit_user,
     $rabbit_pass,
-    $glance_host,
     $metadata_proxy_shared_secret,
     $compute_workers,
     $metadata_workers,
