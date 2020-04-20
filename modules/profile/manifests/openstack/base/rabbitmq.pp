@@ -1,7 +1,6 @@
 class profile::openstack::base::rabbitmq(
     Array[Stdlib::Fqdn] $prometheus_nodes        = lookup('prometheus_nodes'),
-    Stdlib::Fqdn        $nova_controller_standby = lookup('profile::openstack::base::nova_controller_standby'),
-    $nova_controller = hiera('profile::openstack::base::nova_controller'),
+    Array[Stdlib::Fqdn] $openstack_controllers = lookup('profile::openstack::base::openstack_controllers'),
     $monitor_user = hiera('profile::openstack::base::rabbit_monitor_user'),
     $monitor_password = hiera('profile::openstack::base::rabbit_monitor_pass'),
     $cleanup_password = hiera('profile::openstack::base::rabbit_cleanup_pass'),
@@ -23,9 +22,10 @@ class profile::openstack::base::rabbitmq(
     class{'::rabbitmq::plugins':}
     contain '::rabbitmq::plugins'
 
+    # We want this job to run on only one host; it doesn't matter which.
     class {'::rabbitmq::cleanup':
         password => $cleanup_password,
-        enabled  => $::fqdn == $nova_controller,
+        enabled  => $::fqdn == $openstack_controllers[0],
     }
     contain '::rabbitmq::cleanup'
 
@@ -68,23 +68,23 @@ class profile::openstack::base::rabbitmq(
 
     ferm::rule { 'rabbit_for_standby_node':
         ensure => 'present',
-        rule   => "saddr (@resolve(${nova_controller_standby}) @resolve(${nova_controller_standby}, AAAA)
-                          @resolve(${nova_controller}) @resolve(${nova_controller}, AAAA))
+        rule   => "saddr (@resolve((${join($openstack_controllers,' ')}))
+                          @resolve((${join($openstack_controllers,' ')}), AAAA))
                    proto tcp dport 5672 ACCEPT;",
     }
 
     # Rabbit uses epmd for clustering
     ferm::rule { 'epmd_for_rabbit':
         ensure => 'present',
-        rule   => "saddr (@resolve(${nova_controller_standby}) @resolve(${nova_controller_standby}, AAAA)
-                          @resolve(${nova_controller}) @resolve(${nova_controller}, AAAA))
+        rule   => "saddr (@resolve((${join($openstack_controllers,' ')}))
+                          @resolve((${join($openstack_controllers,' ')}), AAAA))
                    proto tcp dport 4369 ACCEPT;",
     }
 
     ferm::rule { 'rabbit_internode':
         ensure => 'present',
-        rule   => "saddr (@resolve(${nova_controller_standby}) @resolve(${nova_controller_standby}, AAAA)
-                          @resolve(${nova_controller}) @resolve(${nova_controller}, AAAA))
+        rule   => "saddr (@resolve((${join($openstack_controllers,' ')}))
+                          @resolve((${join($openstack_controllers,' ')}), AAAA))
                    proto tcp dport 25672 ACCEPT;",
     }
 }
