@@ -32,15 +32,4 @@ class profile::microsites::static_rt(
     #    check_command => 'check_https_url!static-rt.wikimedia.org!/',
     #    notes_url     => 'https://wikitech.wikimedia.org/wiki/RT',
     #}
-
-    class {'rsync::server':
-        ensure_service => 'stopped'
-    }
-    rsync::quickdatacopy { 'srv-org-wikimedia-static-rt':
-      ensure      => absent,
-      auto_sync   => false,
-      source_host => 'vega.codfw.wmnet',
-      dest_host   => 'bromine.eqiad.wmnet',
-      module_path => '/srv/org/wikimedia/static-rt',
-    }
 }
