@@ -5,9 +5,9 @@
 class profile::mariadb::ferm_wmcs(
     Array[Stdlib::Fqdn] $eqiad1_openstack_controllers = lookup('profile::openstack::eqiad1::openstack_controllers'),
     Array[Stdlib::Fqdn] $designate_hosts = lookup('profile::openstack::eqiad1::designate_hosts'),
-    $labweb_hosts = hiera('profile::openstack::eqiad1::labweb_hosts'),
-    $cloudweb_dev_hosts = hiera('profile::openstack::codfw1dev::labweb_hosts'),
-    $osm_host = hiera('profile::openstack::eqiad1::osm_host'),
+    Array[Stdlib::Fqdn] $labweb_hosts = lookup('profile::openstack::eqiad1::labweb_hosts'),
+    Array[Stdlib::Fqdn] $cloudweb_dev_hosts = lookup('profile::openstack::codfw1dev::labweb_hosts'),
+    Stdlib::Fqdn $osm_host = lookup('profile::openstack::eqiad1::osm_host'),
     ) {
     $port = '3306'
 
