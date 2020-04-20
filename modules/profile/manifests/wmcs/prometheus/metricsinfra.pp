@@ -1,14 +1,18 @@
 class profile::wmcs::prometheus::metricsinfra(
-    Array[String] $projects          = lookup('profile::wmcs::prometheus::metricsinfra::projects'),
-    Stdlib::Fqdn  $keystone_api_fqdn = lookup('profile::openstack::eqiad1::keystone_api_fqdn'),
-    String        $observer_password = lookup('profile::openstack::eqiad1::observer_password'),
-    String        $observer_user     = lookup('profile::openstack::base::observer_user'),
-    String        $region            = lookup('profile::openstack::eqiad1::region'),
+    Array[Hash]  $projects          = lookup('profile::wmcs::prometheus::metricsinfra::projects'),
+    Stdlib::Fqdn $ext_fqdn          = lookup('profile::wmcs::prometheus::metricsinfra::ext_fqdn'),
+    Stdlib::Fqdn $keystone_api_fqdn = lookup('profile::openstack::eqiad1::keystone_api_fqdn'),
+    String       $observer_password = lookup('profile::openstack::eqiad1::observer_password'),
+    String       $observer_user     = lookup('profile::openstack::base::observer_user'),
+    String       $region            = lookup('profile::openstack::eqiad1::region'),
 ) {
+    # Base Prometheus data and configuration path
+    $base_path = '/srv/prometheus/cloud'
+
     # Project node-exporter scrape configuration
-    $project_configs = $projects.map |String $project| {
+    $project_configs = $projects.map |Hash $project| {
         {
-            'job_name'             => "${project}_node",
+            'job_name'             => "${project['name']}_node",
             'openstack_sd_configs' => [
                 {
                     'role'              => 'instance',
@@ -17,7 +21,7 @@ class profile::wmcs::prometheus::metricsinfra(
                     'username'          => $observer_user,
                     'password'          => $observer_password,
                     'domain_name'       => 'default',
-                    'project_name'      => $project,
+                    'project_name'      => $project['name'],
                     'all_tenants'       => false,
                     'refresh_interval'  => '5m',
                     'port'              => 9100,
@@ -38,16 +42,15 @@ class profile::wmcs::prometheus::metricsinfra(
     }
 
     prometheus::server { 'cloud':
+        # Localhost is being used here to pass prometheus module input validation
+        alertmanager_url     => 'localhost:9093',
+        external_url         => "https://${$ext_fqdn}/cloud",
         listen_address       => '127.0.0.1:9900',
         scrape_configs_extra => $project_configs,
     }
 
-    # Prometheus alert manager setup and config
-    package { 'prometheus-alertmanager':
-        ensure => present,
-    }
-
-    file { '/srv/prometheus/cloud/rules/alerts_projects.yml':
+    # Prometheus alert rules
+    file { "${base_path}/rules/alerts_projects.yml":
         ensure  => file,
         mode    => '0444',
         owner   => 'root',
@@ -55,6 +58,41 @@ class profile::wmcs::prometheus::metricsinfra(
         source  => 'puppet:///modules/profile/wmcs/prometheus/metricsinfra/alerts_projects.yml',
         notify  => Exec['prometheus@cloud-reload'],
         require => Class['prometheus'],
+    }
+
+    # Prometheus alert manager service setup and config
+    package { 'prometheus-alertmanager':
+        ensure => present,
+    }
+
+    service { 'prometheus-alertmanager':
+        ensure => running,
+    }
+
+    exec { 'alertmanager-reload':
+        command     => '/bin/systemctl reload prometheus-alertmanager',
+        refreshonly => true,
+    }
+
+    exec { 'alertmanager-restart':
+        command     => '/bin/systemctl restart prometheus-alertmanager',
+        refreshonly => true,
+    }
+
+    file { '/etc/default/prometheus-alertmanager':
+        content => template('profile/wmcs/prometheus/metricsinfra/prometheus-alertmanager-defaults.erb'),
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        notify  => Exec['alertmanager-restart'],
+    }
+
+    file { "${base_path}/alertmanager.yml":
+        content => template('profile/wmcs/prometheus/metricsinfra/alertmanager.yml.erb'),
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        notify  => Exec['alertmanager-reload'],
     }
 
     # Apache config
