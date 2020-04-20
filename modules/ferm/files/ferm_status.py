@@ -2,6 +2,7 @@
 """script to compare the output of iptables-save/ip6tables-save with
 the output of `ferm -nl /etc/ferm/ferm.conf` This enables us to ensure
 the desired ruleset has been loaded by iptables"""
+from collections import defaultdict
 from re import match
 from socket import getservbyname
 from subprocess import check_output
@@ -117,7 +118,7 @@ class Ruleset:
 
     def __init__(self, raw, table='filter'):
         self._raw = raw
-        self.rules = []
+        self.rules = defaultdict(list)
         self.input_policy = None
         self.output_policy = None
         self.forward_policy = None
@@ -153,7 +154,7 @@ class Ruleset:
                 if line.startswith(':FORWARD'):
                     self.forward_policy = line.split()[1]
                 if line.startswith('-A'):
-                    self.rules.append(Rule(line))
+                    self.rules[line.split()[1]].append(Rule(line))
 
 
 def main():
