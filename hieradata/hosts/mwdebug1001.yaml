@@ -1,1 +1,3 @@
 profile::mediawiki::webserver::stream_to_logstash: true
+profile::mediawiki::mcrouter_wancache::use_gutter: true
+profile::mediawiki::mcrouter_wancache::gutter_ttl: 600

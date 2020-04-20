@@ -2,6 +2,27 @@ mcrouter::port: 11213
 mcrouter::has_ssl: true
 mcrouter::ssl_port: 11214
 mcrouter::shards:
+  gutter:
+    eqiad:
+      shard01:
+        host: 10.64.0.53
+        port: 11211
+      shard02:
+        host: 10.64.32.101
+        port: 11211
+      shard03:
+        host: 10.64.48.32
+        port: 11211
+    codfw:
+      shard01:
+        host: 10.192.0.156
+        port: 11211
+      shard02:
+        host: 10.192.16.147
+        port: 11211
+      shard03:
+        host: 10.192.48.138
+        port: 11211
   proxies:
     eqiad:
       A:

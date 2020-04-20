@@ -8,11 +8,23 @@ class profile::mediawiki::mcrouter_wancache(
     Integer $ssl_port = hiera('mcrouter::ssl_port', $port + 1),
     Integer $num_proxies = hiera('profile::mediawiki::mcrouter_wancache::num_proxies', 1),
     Optional[Integer] $timeouts_until_tko = lookup('profile::mediawiki::mcrouter_wancache::timeouts_until_tko', {'default_value' => 10}),
+    Boolean $use_gutter = lookup('profile:;mediawiki::mcrouter_wancache::use_gutter', {'default_value' => false}),
+    Integer $gutter_ttl = lookup('profile:;mediawiki::mcrouter_wancache::gutter_ttl', {'default_value' => 60}),
 ) {
+
     $servers_by_datacenter = $servers_by_datacenter_category['wancache']
     $proxies_by_datacenter = pick($servers_by_datacenter_category['proxies'], {})
+    # We only need to configure the gutter pool, if present, for DC-local routes.
+    # Remote-DC routes are reached via an mcrouter proxy in that dc, that will be
+    # configured to use its gutter pool itself.
+    if $use_gutter {
+        $local_gutter_pool = profile::mcrouter_pools('gutter', $servers_by_datacenter_category['gutter'][$::site])
+    }
+    else {
+        $local_gutter_pool = {}
+    }
 
-    $pool_configs = $servers_by_datacenter.map |$region, $servers| {
+    $pools = $servers_by_datacenter.map |$region, $servers| {
         # We need to get the servers from the current datacenter, and the proxies from the others
         if $region == $::site {
             profile::mcrouter_pools($region, $servers)
@@ -20,16 +32,14 @@ class profile::mediawiki::mcrouter_wancache(
             profile::mcrouter_pools($region, $proxies_by_datacenter[$region])
         }
     }
-    $pools = $pool_configs.reduce |$memo, $value| {
-        $memo + $value
-    }
+    .reduce($local_gutter_pool) |$memo, $value| { $memo + $value }
 
     $routes = union(
         # local cache for each region
         $servers_by_datacenter.map |$region, $servers| {
             {
                 'aliases' => [ "/${region}/mw/" ],
-                'route'   => "PoolRoute|${region}" # @TODO: force $::site like mw-wan default?
+                'route' => profile::mcrouter_route($region, $use_gutter, $gutter_ttl)  # @TODO: force $::site like mw-wan default?
             }
         },
         # WAN cache: issues reads and add/cas/touch locally and issues set/delete everywhere.
@@ -41,7 +51,7 @@ class profile::mediawiki::mcrouter_wancache(
                 'aliases' => [ "/${region}/mw-wan/" ],
                 'route'   => {
                     'type'               => 'OperationSelectorRoute',
-                    'default_policy'     => "PoolRoute|${::site}", # We want reads to always be local!
+                    'default_policy'     => profile::mcrouter_route($::site, $use_gutter, $gutter_ttl), # We want reads to always be local!
                     # AllAsyncRoute is used by mcrouter when replicating data to the non-active DC:
                     # https://github.com/facebook/mcrouter/wiki/List-of-Route-Handles#allasyncroute
                     # More info in T225642
@@ -51,14 +61,14 @@ class profile::mediawiki::mcrouter_wancache(
                                 $::site => 'AllSyncRoute',
                                 default => 'AllAsyncRoute'
                             },
-                            'children' => [ "PoolRoute|${region}" ]
+                            'children' => [ profile::mcrouter_route($region, $use_gutter, $gutter_ttl) ]
                         },
                         'delete' => {
                             'type'     => $region ? {
                                 $::site => 'AllSyncRoute',
                                 default => 'AllAsyncRoute'
                             },
-                            'children' => [ "PoolRoute|${region}" ]
+                            'children' => [ profile::mcrouter_route($region, $use_gutter, $gutter_ttl) ]
                         },
                     }
                 }
