@@ -1,7 +1,6 @@
 class profile::openstack::eqiad1::haproxy(
+    Array[Stdlib::Fqdn] $openstack_controllers = lookup('profile::openstack::eqiad1::openstack_controllers'),
     Array[Stdlib::Fqdn] $designate_hosts = lookup('profile::openstack::eqiad1::designate_hosts'),
-    Stdlib::Fqdn $nova_controller = lookup('profile::openstack::eqiad1::nova_controller'),
-    Stdlib::Fqdn $nova_controller_standby = lookup('profile::openstack::eqiad1::nova_controller_standby'),
     Stdlib::Port $glance_api_bind_port = lookup('profile::openstack::eqiad1::glance::api_bind_port'),
     Stdlib::Port $glance_registry_bind_port = lookup('profile::openstack::eqiad1::glance::registry_bind_port'),
     Stdlib::Port $keystone_admin_bind_port = lookup('profile::openstack::eqiad1::keystone::admin_bind_port'),
@@ -21,7 +20,7 @@ class profile::openstack::eqiad1::haproxy(
     }
 
     profile::openstack::base::haproxy::site { 'keystone_admin':
-        servers            => [$nova_controller, $nova_controller_standby],
+        servers            => $openstack_controllers,
         healthcheck_method => 'GET',
         healthcheck_path   => '/',
         port_frontend      => 35357,
@@ -29,7 +28,7 @@ class profile::openstack::eqiad1::haproxy(
     }
 
     profile::openstack::base::haproxy::site { 'keystone_public':
-        servers            => [$nova_controller, $nova_controller_standby],
+        servers            => $openstack_controllers,
         healthcheck_method => 'GET',
         healthcheck_path   => '/',
         port_frontend      => 5000,
@@ -37,7 +36,7 @@ class profile::openstack::eqiad1::haproxy(
     }
 
     profile::openstack::base::haproxy::site { 'glance_api':
-        servers            => [$nova_controller, $nova_controller_standby],
+        servers            => $openstack_controllers,
         healthcheck_method => 'GET',
         healthcheck_path   => '/',
         port_frontend      => 9292,
@@ -45,7 +44,7 @@ class profile::openstack::eqiad1::haproxy(
     }
 
     profile::openstack::base::haproxy::site { 'glance_registry':
-        servers            => [$nova_controller, $nova_controller_standby],
+        servers            => $openstack_controllers,
         healthcheck_method => 'GET',
         healthcheck_path   => '/healthcheck',
         port_frontend      => 9191,
@@ -53,7 +52,7 @@ class profile::openstack::eqiad1::haproxy(
     }
 
     profile::openstack::base::haproxy::site { 'neutron':
-        servers            => [$nova_controller, $nova_controller_standby],
+        servers            => $openstack_controllers,
         healthcheck_method => 'GET',
         healthcheck_path   => '/',
         port_frontend      => 9696,
@@ -61,7 +60,7 @@ class profile::openstack::eqiad1::haproxy(
     }
 
     profile::openstack::base::haproxy::site { 'nova_api':
-        servers            => [$nova_controller, $nova_controller_standby],
+        servers            => $openstack_controllers,
         healthcheck_method => 'HEAD',
         healthcheck_path   => '/',
         port_frontend      => 8774,
@@ -73,7 +72,7 @@ class profile::openstack::eqiad1::haproxy(
     #  Rather than try to re-puppetize that file I'm
     #  just hard-coding the backend port (8778) here
     profile::openstack::base::haproxy::site { 'nova_placement':
-        servers            => [$nova_controller, $nova_controller_standby],
+        servers            => $openstack_controllers,
         healthcheck_method => 'GET',
         healthcheck_path   => '/',
         port_frontend      => 8778,
@@ -81,7 +80,7 @@ class profile::openstack::eqiad1::haproxy(
     }
 
     profile::openstack::base::haproxy::site { 'nova_metadata':
-        servers            => [$nova_controller, $nova_controller_standby],
+        servers            => $openstack_controllers,
         healthcheck_method => 'HEAD',
         healthcheck_path   => '/',
         port_frontend      => 8775,
