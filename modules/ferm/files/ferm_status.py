@@ -123,7 +123,9 @@ class Ruleset:
         policy = [':INPUT {}'.format(self.input_policy),
                   ':FORWARD {}'.format(self.forward_policy),
                   ':OUTPUT {}'.format(self.output_policy)]
-        return '\n'.join(policy + [str(rule) for rule in self.rules])
+        for _, rules in self.rules.items():
+            policy += [str(rule) for rule in rules]
+        return '\n'.join(policy)
 
     def __eq__(self, obj):
         for token, value in vars(self).items():
