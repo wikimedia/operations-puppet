@@ -66,7 +66,10 @@ class profile::tlsproxy::envoy(
                                                       {'default_value' => undef}),
     Optional[String]              $acme_cert_name   = lookup('profile::tlsproxy::envoy::acme_cert_name',
                                                       {'default_value' => undef}),
-    Optional[Float]               $idle_timeout = lookup('profile::tlsproxy::envoy::idle_timeout', {'default_value' => undef})
+    Optional[Float]               $idle_timeout = lookup('profile::tlsproxy::envoy::idle_timeout',
+                                                      {'default_value' => undef}),
+    Optional[String]              $ferm_srange  = lookup('profile::tlsproxy::envoy::ferm_srange',
+                                                      {'default_value' => undef}),
 ) {
     require profile::envoy
     $ensure = $profile::envoy::ensure
@@ -166,6 +169,7 @@ class profile::tlsproxy::envoy(
             proto   => 'tcp',
             notrack => true,
             port    => $tls_port,
+            srange  => $ferm_srange,
         }
     }
 }
