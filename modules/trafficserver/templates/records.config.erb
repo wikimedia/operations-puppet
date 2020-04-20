@@ -94,6 +94,7 @@ CONFIG proxy.config.cache.ram_cache.compress INT 2
 CONFIG proxy.config.cache.max_doc_size INT 0
 <% else -%>
 CONFIG proxy.config.http.cache.http INT 0
+CONFIG proxy.config.http.insert_age_in_response INT 0
 <% end -%>
 
 <% if @parent_rules and @parent_rules != [] -%>
