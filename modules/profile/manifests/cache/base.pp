@@ -119,7 +119,14 @@ class profile::cache::base(
         notes_url    => 'https://wikitech.wikimedia.org/wiki/Multicast_HTCP_purging',
     }
 
-    class { 'prometheus::node_vhtcpd': }
+    $vhtcpd_ensure = $use_purged ? {
+        true    => 'absent',
+        default => 'present',
+    }
+
+    class { 'prometheus::node_vhtcpd':
+        ensure => $vhtcpd_ensure,
+    }
     class { 'varnish::htcppurger':
         host_regex => $purge_host_regex,
         mc_addrs   => $purge_multicasts,

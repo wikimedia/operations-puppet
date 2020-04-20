@@ -11,23 +11,35 @@
 #
 
 class prometheus::node_vhtcpd (
-    $outfile = '/var/lib/prometheus/node.d/vhtcpd.prom',
+    String $outfile = '/var/lib/prometheus/node.d/vhtcpd.prom',
+    Wmflib::Ensure $ensure = 'present',
 ) {
     validate_re($outfile, '\.prom$')
 
-    require_package('python-prometheus-client')
+    if ($ensure == 'present') {
+        require_package('python-prometheus-client')
 
-    file { '/usr/local/bin/prometheus-vhtcpd-stats':
-        ensure => file,
-        mode   => '0555',
-        owner  => 'root',
-        group  => 'root',
-        source => 'puppet:///modules/prometheus/usr/local/bin/prometheus-vhtcpd-stats.py',
+        file { '/usr/local/bin/prometheus-vhtcpd-stats':
+            ensure => file,
+            mode   => '0555',
+            owner  => 'root',
+            group  => 'root',
+            source => 'puppet:///modules/prometheus/usr/local/bin/prometheus-vhtcpd-stats.py',
+        }
+    } else {
+        file { '/usr/local/bin/prometheus-vhtcpd-stats':
+            ensure => 'absent',
+        }
     }
 
     # Collect every minute
     cron { 'prometheus_vhtcpd_stats':
+        ensure  => $ensure,
         user    => 'root',
         command => "systemctl is-active -q vhtcpd && test -s /tmp/vhtcpd.stats && /usr/local/bin/prometheus-vhtcpd-stats --outfile ${outfile}",
+    }
+
+    file { $outfile:
+        ensure => $ensure,
     }
 }
