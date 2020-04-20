@@ -36,9 +36,7 @@ instance_usage_audit = False
 compute_monitors=virt_driver
 
 # glance
-image_service=nova.image.glance.GlanceImageService
 remove_unused_base_images=True
-glance_api_servers=<%= @glance_host %>:9292
 
 # APIs
 enabled_apis = osapi_compute,metadata
