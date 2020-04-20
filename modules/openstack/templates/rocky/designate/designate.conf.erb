@@ -12,7 +12,7 @@ default_log_levels = eventlet.wsgi=WARN
 # Show debugging output in logs (sets DEBUG log level output)
 #debug = false
 
-transport_url = rabbit://<%= @rabbit_user %>:<%= @rabbit_pass %>@<%= @rabbit_host_primary %>:5672,<%= @rabbit_user %>:<%= @rabbit_pass %>@<%= @rabbit_host_secondary %>:5672
+transport_url = rabbit://<%= @openstack_controllers.map{ |rabbit_host| "#{@rabbit_user}:#{@rabbit_pass}\@#{rabbit_host}:5672" }.join(',') %>
 
 # Top-level directory for maintaining designate's state
 state_path = /var/lib/designate

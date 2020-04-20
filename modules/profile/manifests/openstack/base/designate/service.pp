@@ -1,8 +1,7 @@
 class profile::openstack::base::designate::service(
     $version = hiera('profile::openstack::base::version'),
     Array[Stdlib::Fqdn] $designate_hosts = lookup('profile::openstack::base::designate_hosts'),
-    $nova_controller = hiera('profile::openstack::base::nova_controller'),
-    $nova_controller_standby = hiera('profile::openstack::base::nova_controller_standby'),
+    Array[Stdlib::Fqdn] $openstack_controllers = lookup('profile::openstack::base::openstack_controllers'),
     $keystone_host = hiera('profile::openstack::base::keystone_host'),
     $puppetmaster_hostname = hiera('profile::openstack::base::puppetmaster_hostname'),
     $db_user = hiera('profile::openstack::base::designate::db_user'),
@@ -50,7 +49,7 @@ class profile::openstack::base::designate::service(
         domain_id_internal_forward_legacy => $domain_id_internal_forward_legacy,
         domain_id_internal_reverse        => $domain_id_internal_reverse,
         puppetmaster_hostname             => $puppetmaster_hostname,
-        nova_controller                   => $nova_controller,
+        openstack_controllers             => $openstack_controllers,
         ldap_user_pass                    => $ldap_user_pass,
         pdns_db_user                      => $pdns_db_user,
         pdns_db_pass                      => $pdns_db_pass,
@@ -62,8 +61,6 @@ class profile::openstack::base::designate::service(
         secondary_pdns_ip                 => $secondary_pdns_ip,
         rabbit_user                       => $rabbit_user,
         rabbit_pass                       => $rabbit_pass,
-        rabbit_host_primary               => $nova_controller,
-        rabbit_host_secondary             => $nova_controller_standby,
         keystone_public_port              => $keystone_public_port,
         keystone_auth_port                => $keystone_auth_port,
         region                            => $region,
@@ -79,8 +76,8 @@ class profile::openstack::base::designate::service(
     # Open designate API to WMCS web UIs and the commandline on control servers, also prometheus
     ferm::rule { 'designate-api':
         rule => "saddr (@resolve(${osm_host}) ${labweb_ip6s} @resolve(${keystone_host}) @resolve(${keystone_host}, AAAA)
-                       ${labweb_ips} @resolve(${nova_controller}) @resolve(${nova_controller}, AAAA) @resolve(${nova_controller_standby})
-                       @resolve(${nova_controller_standby}, AAAA)
+                       ${labweb_ips} @resolve((${join($openstack_controllers,' ')}))
+                       @resolve((${join($openstack_controllers,' ')}), AAAA)
                        ${prometheus_ferm_srange}
                  ) proto tcp dport (9001) ACCEPT;",
     }
