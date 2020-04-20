@@ -27,7 +27,6 @@ class profile::openstack::eqiad1::keystone::service(
     $puppetmaster_hostname = hiera('profile::openstack::eqiad1::puppetmaster_hostname'),
     $auth_port = hiera('profile::openstack::base::keystone::auth_port'),
     $public_port = hiera('profile::openstack::base::keystone::public_port'),
-    $glance_host = hiera('profile::openstack::eqiad1::glance_host'),
     Boolean $daemon_active = lookup('profile::openstack::eqiad1::keystone::daemon_active'),
     String $wsgi_server = lookup('profile::openstack::eqiad1::keystone::wsgi_server'),
     Stdlib::IP::Address::V4::CIDR $instance_ip_range = lookup('profile::openstack::eqiad1::keystone::instance_ip_range', {default_value => '0.0.0.0/0'}),
@@ -91,13 +90,6 @@ class profile::openstack::eqiad1::keystone::service(
         contact_groups => 'wmcs-team-email,admins',
     }
     contain '::openstack::keystone::monitor::projects_and_users'
-
-    # allow foreign glance to call back to admin auth port
-    # to validate issued tokens
-    ferm::rule{'main_glance_35357':
-        ensure => 'present',
-        rule   => "saddr @resolve(${glance_host}) proto tcp dport (35357) ACCEPT;",
-    }
 
     # allow foreign designate(and co) to call back to admin auth port
     # to validate issued tokens
