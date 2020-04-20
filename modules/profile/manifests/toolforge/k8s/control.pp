@@ -42,6 +42,14 @@ class profile::toolforge::k8s::control(
         source => "file://${puppet_cert_ca}",
     }
 
+    file { '/srv/git':
+        ensure => directory,
+        mode   => '0755',
+        owner  => 'root',
+        group  => 'root',
+
+    }
+
     git::clone { 'labs/tools/maintain-kubeusers':
         ensure    => present,
         directory => '/srv/git/maintain-kubeusers',
