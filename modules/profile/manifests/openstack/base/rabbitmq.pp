@@ -5,7 +5,6 @@ class profile::openstack::base::rabbitmq(
     $monitor_password = hiera('profile::openstack::base::rabbit_monitor_pass'),
     $cleanup_password = hiera('profile::openstack::base::rabbit_cleanup_pass'),
     $file_handles = hiera('profile::openstack::base::rabbit_file_handles'),
-    $nova_api_host = hiera('profile::openstack::base::nova_api_host'),
     Array[Stdlib::Fqdn] $designate_hosts = lookup('profile::openstack::base::designate_hosts'),
     $labs_hosts_range = hiera('profile::openstack::base::labs_hosts_range'),
     $labs_hosts_range_v6 = hiera('profile::openstack::base::labs_hosts_range_v6'),
@@ -54,11 +53,6 @@ class profile::openstack::base::rabbitmq(
         ensure => 'present',
         rule   =>  "saddr (@resolve((${join($designate_hosts,' ')})) @resolve((${join($designate_hosts,' ')}), AAAA))
                     proto tcp dport 5672 ACCEPT;",
-    }
-
-    ferm::rule{'rabbit_for_nova_api':
-        ensure => 'present',
-        rule   =>  "saddr @resolve(${nova_api_host}) proto tcp dport 5672 ACCEPT;",
     }
 
     ferm::rule{'beam_nova':

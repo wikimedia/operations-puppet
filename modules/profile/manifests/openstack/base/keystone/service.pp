@@ -34,7 +34,6 @@ class profile::openstack::base::keystone::service(
     $wiki_access_secret = hiera('profile::openstack::base::keystone::wiki_access_secret'),
     $labs_hosts_range = hiera('profile::openstack::base::labs_hosts_range'),
     $labs_hosts_range_v6 = hiera('profile::openstack::base::labs_hosts_range_v6'),
-    $nova_api_host = hiera('profile::openstack::base::nova_api_host'),
     Array[Stdlib::Fqdn] $designate_hosts = lookup('profile::openstack::base::designate_hosts'),
     $labweb_hosts = hiera('profile::openstack::base::labweb_hosts'),
     String $wsgi_server = lookup('profile::openstack::base::keystone::wsgi_server'),
@@ -100,7 +99,6 @@ class profile::openstack::base::keystone::service(
         rule   => "saddr (${labs_hosts_range} ${labs_hosts_range_v6}
                              @resolve((${join($openstack_controllers,' ')}))
                              @resolve((${join($openstack_controllers,' ')}), AAAA)
-                             @resolve(${nova_api_host}) @resolve(${nova_api_host}, AAAA)
                              @resolve((${join($designate_hosts,' ')}))
                              @resolve((${join($designate_hosts,' ')}), AAAA)
                              ${labweb_ips} ${labweb_ip6s}
