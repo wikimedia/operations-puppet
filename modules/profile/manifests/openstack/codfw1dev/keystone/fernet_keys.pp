@@ -1,6 +1,5 @@
 class profile::openstack::codfw1dev::keystone::fernet_keys(
     Array[Stdlib::Fqdn] $openstack_controllers = lookup('profile::openstack::codfw1dev::openstack_controllers'),
-    Stdlib::Fqdn $nova_controller_standby = lookup('profile::openstack::codfw1dev::nova_controller_standby'),
     String $rotate_time = lookup('profile::openstack::codfw1dev::fernet_key_rotate_time'),
     String $sync_time = lookup('profile::openstack::codfw1dev::fernet_key_sync_time'),
     ) {
