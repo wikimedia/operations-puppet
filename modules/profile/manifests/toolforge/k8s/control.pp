@@ -42,6 +42,11 @@ class profile::toolforge::k8s::control(
         source => "file://${puppet_cert_ca}",
     }
 
+    git::clone { 'labs/tools/maintain-kubeusers':
+        ensure    => present,
+        directory => '/srv/git/maintain-kubeusers',
+    }
+
     class { 'toolforge::k8s::kubeadm': }
 
     $pod_subnet = '192.168.0.0/16'
