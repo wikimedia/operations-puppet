@@ -78,14 +78,22 @@ class profile::analytics::search::airflow(
         mode   => '0755',
     }
 
+    file { '/usr/local/bin/airflow-clean-log-dirs':
+        content => template('profile/analytics/search/airflow/airflow-clean-log-dirs.erb'),
+        mode    => '0550',
+        owner   => 'root',
+        group   => 'root',
+    }
+
     systemd::timer::job { 'airflow_clean_log_dirs':
         user        => 'root',
         description => 'Delete Airflow log dirs/files after 30 days',
-        command     => "/bin/bash -c \"for DIR in \$\$(ls ${log_dir}); do /usr/bin/find ${log_dir}/\$\$DIR/* -mtime +30 -delete; done\"",
+        command     => '/usr/local/bin/airflow-clean-log-dirs',
         interval    => {
             'start'    => 'OnCalendar',
             'interval' => '*-*-* 03:00:00',  # Every day at 3:00
-        }
+        },
+        require     => File['/usr/local/bin/airflow-clean-log-dirs'],
     }
 
     systemd::service { 'airflow-webserver':

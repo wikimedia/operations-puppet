@@ -1,0 +1,19 @@
+#!/bin/bash
+
+set -e
+
+LOG_DIR=<%= @log_dir -%>
+
+if [[ $LOG_DIR != /var/log/* ]]
+then
+    echo 'The directory to check seems not under /var/log, aborting..'
+    exit 1
+fi
+
+# Note: dirs under LOG_DIR at depth 1 shouldn't be deleted.
+
+# Removes files under LOG_DIR
+for DIR in $(ls $LOG_DIR); do /usr/bin/find $LOG_DIR/$DIR/ -type f -mtime +30 -delete; done
+
+# Removes empty dirs under LOG_DIR
+for DIR in $(ls $LOG_DIR); do /usr/bin/find $LOG_DIR/$DIR/ -type d -mtime +30 -delete; done
