@@ -100,7 +100,7 @@ class profile::cache::base(
         frontend_addr    => '127.0.0.1:3127',
         mc_addrs         => $purge_multicasts,
         prometheus_addr  => ':2112',
-        frontend_workers => 1,
+        frontend_workers => 4,
         backend_workers  => $::processorcount,
         require          => Service['vhtcpd'],
         is_active        => $use_purged,
