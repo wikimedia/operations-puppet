@@ -356,7 +356,7 @@ function clear_opcache() {
 }
 
 function ini_value() {
-	$all_ini_values = get_ini_all();
+	$all_ini_values = ini_get_all();
 	if (isset($_GET['key'])) {
 		$key = $_GET['key'];
 		if (array_key_exists($key, $all_ini_values)) {
@@ -369,4 +369,6 @@ function ini_value() {
 	} else {
 		print json_encode($all_ini_values);
 	}
+	# Add a new line to beautify output on the console
+	print "\n";
 }

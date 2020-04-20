@@ -18,6 +18,7 @@ Supported urls:
   /opcache-meta    Dump meta information for all objects in opcache to /tmp/opcache_dump_meta
   /opcache-free    Clear all data from opcache
   /ini-get         Get the ini values for the running daemon. Add a key parameter if you want just one.
+
 EOD;
 
 ob_start();
