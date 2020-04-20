@@ -5,7 +5,7 @@ default_log_levels = neutron.wsgi=WARN
 
 # debug = true
 
-transport_url = rabbit://<%= @rabbit_user %>:<%= @rabbit_pass %>@<%= @nova_controller %>:5672,<%= @rabbit_user %>:<%= @rabbit_pass %>@<%= @nova_controller_standby %>:5672
+transport_url = rabbit://<%= @openstack_controllers.map{ |rabbit_host| "#{@rabbit_user}:#{@rabbit_pass}\@#{rabbit_host}:5672" }.join(',') %>
 
 auth_strategy = keystone
 bind_port = <%= @bind_port %>
@@ -78,7 +78,7 @@ project_name = admin
 region_name = <%= @region %>
 user_domain_id = default
 username = novaadmin
-memcached_servers = <%= @controller_hosts.map{|host| "#{host}:11211"}.join(",") %>
+memcached_servers = <%= @openstack_controllers.map{|host| "#{host}:11211"}.join(",") %>
 
 # We want this but need to figure out about service roles first
 #service_token_roles_required = True

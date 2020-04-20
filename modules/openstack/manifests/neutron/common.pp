@@ -1,7 +1,6 @@
 class openstack::neutron::common(
     $version,
-    $nova_controller,
-    $nova_controller_standby,
+    Array[Stdlib::Fqdn] $openstack_controllers,
     $keystone_host,
     $db_pass,
     $db_user,
@@ -20,23 +19,22 @@ class openstack::neutron::common(
     ) {
 
     class { "openstack::neutron::common::${version}":
-        nova_controller         => $nova_controller,
-        nova_controller_standby => $nova_controller_standby,
-        keystone_admin_uri      => $keystone_admin_uri,
-        keystone_host           => $keystone_host,
-        keystone_public_uri     => $keystone_public_uri,
-        db_pass                 => $db_pass,
-        db_user                 => $db_user,
-        db_host                 => $db_host,
-        region                  => $region,
-        dhcp_domain             => $dhcp_domain,
-        ldap_user_pass          => $ldap_user_pass,
-        rabbit_user             => $rabbit_user,
-        rabbit_pass             => $rabbit_pass,
-        tld                     => $tld,
-        log_agent_heartbeats    => $log_agent_heartbeats,
-        agent_down_time         => $agent_down_time,
-        bind_port               => $bind_port,
+        openstack_controllers => $openstack_controllers,
+        keystone_admin_uri    => $keystone_admin_uri,
+        keystone_host         => $keystone_host,
+        keystone_public_uri   => $keystone_public_uri,
+        db_pass               => $db_pass,
+        db_user               => $db_user,
+        db_host               => $db_host,
+        region                => $region,
+        dhcp_domain           => $dhcp_domain,
+        ldap_user_pass        => $ldap_user_pass,
+        rabbit_user           => $rabbit_user,
+        rabbit_pass           => $rabbit_pass,
+        tld                   => $tld,
+        log_agent_heartbeats  => $log_agent_heartbeats,
+        agent_down_time       => $agent_down_time,
+        bind_port             => $bind_port,
     }
 
     $invalid_files = [

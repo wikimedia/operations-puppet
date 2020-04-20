@@ -1,6 +1,5 @@
 class openstack::neutron::common::rocky(
-    $nova_controller,
-    $nova_controller_standby,
+    Array[Stdlib::Fqdn] $openstack_controllers,
     $keystone_host,
     $db_pass,
     $db_user,
@@ -20,7 +19,6 @@ class openstack::neutron::common::rocky(
 
     class { "openstack::neutron::common::rocky::${::lsbdistcodename}": }
 
-    $controller_hosts = [$nova_controller, $nova_controller_standby]
     file { '/etc/neutron/neutron.conf':
             owner     => 'neutron',
             group     => 'neutron',

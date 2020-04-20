@@ -4,8 +4,7 @@ class profile::openstack::eqiad1::neutron::common(
     $dhcp_domain = hiera('profile::openstack::eqiad1::nova::dhcp_domain'),
     $db_pass = hiera('profile::openstack::eqiad1::neutron::db_pass'),
     $db_host = hiera('profile::openstack::eqiad1::neutron::db_host'),
-    $nova_controller = hiera('profile::openstack::eqiad1::nova_controller'),
-    $nova_controller_standby = hiera('profile::openstack::eqiad1::nova_controller_standby'),
+    Array[Stdlib::Fqdn] $openstack_controllers = lookup('profile::openstack::eqiad1::openstack_controllers'),
     $keystone_host = hiera('profile::openstack::eqiad1::keystone_host'),
     $ldap_user_pass = hiera('profile::openstack::eqiad1::ldap_user_pass'),
     $rabbit_pass = hiera('profile::openstack::eqiad1::neutron::rabbit_pass'),
@@ -17,20 +16,19 @@ class profile::openstack::eqiad1::neutron::common(
 
     require ::profile::openstack::eqiad1::clientpackages
     class {'::profile::openstack::base::neutron::common':
-        version                 => $version,
-        nova_controller         => $nova_controller,
-        nova_controller_standby => $nova_controller_standby,
-        keystone_host           => $keystone_host,
-        db_pass                 => $db_pass,
-        db_host                 => $db_host,
-        region                  => $region,
-        dhcp_domain             => $dhcp_domain,
-        ldap_user_pass          => $ldap_user_pass,
-        rabbit_pass             => $rabbit_pass,
-        tld                     => $tld,
-        agent_down_time         => $agent_down_time,
-        log_agent_heartbeats    => $log_agent_heartbeats,
-        bind_port               => $bind_port,
+        version               => $version,
+        openstack_controllers => $openstack_controllers,
+        keystone_host         => $keystone_host,
+        db_pass               => $db_pass,
+        db_host               => $db_host,
+        region                => $region,
+        dhcp_domain           => $dhcp_domain,
+        ldap_user_pass        => $ldap_user_pass,
+        rabbit_pass           => $rabbit_pass,
+        tld                   => $tld,
+        agent_down_time       => $agent_down_time,
+        log_agent_heartbeats  => $log_agent_heartbeats,
+        bind_port             => $bind_port,
     }
     contain '::profile::openstack::base::neutron::common'
 }
