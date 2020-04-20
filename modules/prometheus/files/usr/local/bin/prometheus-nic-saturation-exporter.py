@@ -72,12 +72,16 @@ def read_state(nics) -> State:
 # TODO: when we finally kill all Jessie hosts, type-annotate the return value as Iterable[str].
 def get_nics():
     """
-    Returns names of all NICs that are online and that have valid link speeds.
+    Returns names of all non-virtual NICs that are online and that have valid link speeds.
     """
     rv = []
     for p in glob.iglob('/sys/class/net/*/operstate'):
         nic = p.split('/')[4]
         try:
+            # Skip virtuals (loopbacks, bridge/TAP interfaces, VLAN-specific interfaces).
+            if os.path.isdir(os.path.join('/sys/devices/virtual/net', nic)):
+                log.debug('Skipping %s, virtual interface', nic)
+                continue
             if read_sysfs(nic, 'operstate') != 'up':
                 log.debug('Skipping %s, interface is not up', nic)
                 continue
