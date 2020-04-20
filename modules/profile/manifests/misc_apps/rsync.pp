@@ -1,10 +1,10 @@
 # setup rsync for misc. apps data 
 class profile::misc_apps::rsync (
     Stdlib::Fqdn $src_host = lookup('profile::misc_apps::rsync::src_host'),
-    Stdlib::Fqdn $dst_host = lookup('profile::misc_apps::rsync::dst_host'),
+    Array[Stdlib::Fqdn] $dst_hosts = lookup('profile::misc_apps::rsync::dst_hosts'),
 ){
 
-    if $::fqdn == $dst_host {
+    if $::fqdn in $dst_hosts {
 
         ferm::service { 'miscapps-rsync':
             proto  => 'tcp',
