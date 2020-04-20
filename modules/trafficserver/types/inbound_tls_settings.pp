@@ -86,4 +86,5 @@ type Trafficserver::Inbound_TLS_settings = Struct[{
     'load_elevated'            => Optional[Integer[0, 1]],
     'do_ocsp'                  => Integer[0, 1],
     'ssl_handshake_timeout_in' => Integer[0],
+    'prioritize_chacha'        => Integer[0, 1],
 }]
