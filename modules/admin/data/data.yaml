@@ -4200,3 +4200,7 @@ ldap_only_users:
     ensure: present
     realname: Matthew Williams
     email: mwilliams@wikimedia.org
+  samwalton:
+    ensure: present
+    realname: Sam Walton
+    email: swalton@wikimedia.org
