@@ -4,7 +4,7 @@
 # config for Shinken by hittig the wikitech API
 class shinken::shinkengen(
     $site,
-    $keystone_host,
+    $keystone_api_fqdn,
     $keystone_port,
     $puppet_enc_host,
 ) {
