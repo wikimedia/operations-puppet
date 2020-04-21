@@ -331,7 +331,7 @@ node /^cumin[12]001\.(eqiad|codfw)\.wmnet$/ {
 node 'db1083.eqiad.wmnet' {
     role(mariadb::core)
 }
-# eqiad replicas. db1107 uses 10.4
+# eqiad replicas
 node /^db1(080|089|106|107|118|119|134)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
