@@ -4,15 +4,15 @@
 class shinken(
     $auth_secret,
     $site,
-    $keystone_host,
+    $keystone_api_fqdn,
     $keystone_port,
     $puppet_enc_host,
 ) {
     class { 'shinken::shinkengen':
-        site            => $site,
-        keystone_host   => $keystone_host,
-        keystone_port   => $keystone_port,
-        puppet_enc_host => $puppet_enc_host,
+        site              => $site,
+        keystone_api_fqdn => $keystone_api_fqdn,
+        keystone_port     => $keystone_port,
+        puppet_enc_host   => $puppet_enc_host,
     }
 
     package { 'shinken':

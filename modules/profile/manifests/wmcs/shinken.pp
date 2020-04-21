@@ -1,5 +1,5 @@
 class profile::wmcs::shinken(
-    $keystone_host   = lookup('profile::openstack::eqiad1::keystone_host'),
+    Stdlib::Fqdn $keystone_api_fqdn = lookup('profile::openstack::eqiad1::keystone_api_fqdn'),
     $keystone_port   = lookup('profile::openstack::base::keystone::public_port'),
     $puppet_enc_host = lookup('profile::wmcs::shinken::puppet_enc_host'),
     $ircbot          = lookup('profile::wmcs::shinken::ircbot'),
@@ -7,11 +7,11 @@ class profile::wmcs::shinken(
     $ircbot_server   = lookup('profile::wmcs::shinken::ircbot_server'),
 ) {
     class { '::shinken':
-        auth_secret     => 'This is insecure, should switch to using private repo',
-        site            => $::site,
-        keystone_host   => $keystone_host,
-        keystone_port   => $keystone_port,
-        puppet_enc_host => $puppet_enc_host,
+        auth_secret       => 'This is insecure, should switch to using private repo',
+        site              => $::site,
+        keystone_api_fqdn => $keystone_api_fqdn,
+        keystone_port     => $keystone_port,
+        puppet_enc_host   => $puppet_enc_host,
     }
 
     #  Allow shinken to run the check_dhcp test as root.  It doesn't
