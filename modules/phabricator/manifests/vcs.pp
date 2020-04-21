@@ -85,11 +85,12 @@ class phabricator::vcs (
         # for easier migrations from one server to another
         notify { 'Warning: phabricator::vcs::listen_address is empty': }
     } else {
-        # allow ssh connection to IPs in hiera phabricator::vcs::listen_addresses:
-        ferm::rule { 'ssh_public':
-            rule => template('phabricator/vcs/ferm_rule-ssh_public.erb'),
+        $drange = $listen_addresses.map |$addr| { $addr.regsubst(/[\[\]]/, '', 'G') }
+        ferm::service {'ssh_public':
+            proto  => 'tcp',
+            port   => 22,
+            drange => $drange.join(' ')
         }
-
         file { $sshd_config:
             content => template('phabricator/vcs/sshd_config.phabricator.erb'),
             mode    => '0644',
