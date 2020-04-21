@@ -13,6 +13,7 @@ class role::statistics::private {
     include ::profile::statistics::eventlogging_rsync
 
     include ::profile::statistics::dataset_mount
+    include profile::analytics::geoip::archive
 
     # Systemd timers owned by the Search team
     # (leveraging Analytics' refinery)

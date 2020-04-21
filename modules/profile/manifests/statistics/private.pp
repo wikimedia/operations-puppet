@@ -44,21 +44,6 @@ class profile::statistics::private(
         auto_ferm   => true,
     }
 
-    # Class to save old versions of the geoip MaxMind database, which are useful
-    # for historical geocoding.
-    if !defined(File['/srv/geoip']) {
-        file { '/srv/geoip':
-            ensure => directory,
-            owner  => 'root',
-            group  => 'wikidev',
-        }
-    }
-    class { '::geoip::data::archive':
-        archive_dir  => '/srv/geoip/archive',
-        use_kerberos => $use_kerberos,
-        require      => File['/srv/geoip'],
-    }
-
     # Discovery team statistics scripts and cron jobs
     class { '::statistics::discovery':
         use_kerberos => $use_kerberos

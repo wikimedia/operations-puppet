@@ -2,7 +2,7 @@
 #
 #
 # Sets up a cron job that grabs the latest version of the MaxMind database, puts it
-# in a timestamped directory in /srv/geoip/archive, and pushes its contents to hdfs.
+# in a timestamped directory in $archive_dir, and pushes its contents to hdfs.
 #
 class geoip::data::archive(
     $maxmind_db_source_dir = '/usr/share/GeoIP',

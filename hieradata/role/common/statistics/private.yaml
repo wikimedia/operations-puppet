@@ -13,6 +13,9 @@ profile::hadoop::common::hadoop_cluster_name: 'analytics-hadoop'
 
 profile::oozie::client::oozie_host: 'an-coord1001.eqiad.wmnet'
 
+profile::analytics::geoip::archive::archive_host: 'stat1007'
+profile::analytics::geoip::archive::use_kerberos: true
+
 profile::presto::cluster_name: analytics-presto
 profile::presto::discovery_uri: https://an-coord1001.eqiad.wmnet:8281
 profile::presto::use_kerberos: true
