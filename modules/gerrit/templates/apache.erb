@@ -129,8 +129,8 @@ MaxClients 50
     <%- if @maint_mode -%>
     RedirectMatch temp "/r" "/error.html#"
     <%- else -%>
-    ProxyPass /r/ http://127.0.0.1:8080/r/ retry=0 nocanon
-    ProxyPass /g/ http://127.0.0.1:8080/r/plugins/gitiles/ retry=0 nocanon
+    ProxyPass /r/ http://127.0.0.1:8080/r/ retry=0 nocanon Keepalive=On
+    ProxyPass /g/ http://127.0.0.1:8080/r/plugins/gitiles/ retry=0 nocanon Keepalive=On
     ErrorDocument 503 "/error.html#"
     <%- end -%>
 
