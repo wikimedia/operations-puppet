@@ -207,8 +207,10 @@ def stage_backup():
     if ctx.args.no_backup:
         return
 
-    opts = '--chmod 440 --chown root:\"${INSTANCEPROJECT}\".admin -ilrt'
-    dirs = '/srv/packages/ /data/project/.system/aptly/"$(hostname -f)"'
+    # the $INSTANCEPROJECT var is not available for this remote SSH session :-/
+    # so harcode tools.admin instead.
+    opts = '--chmod 440 --chown root:tools.admin -ilrt'
+    dirs = '/srv/packages/ /data/project/.system/aptly/\$(hostname -f)/'  # noqa: W605
 
     cmd = "sudo rsync {} {}".format(opts, dirs)
     ssh(ctx.args.aptly_host, cmd)
