@@ -19,7 +19,7 @@
 #
 
 class profile::openstack::base::pdns::recursor::service(
-    $keystone_host = hiera('profile::openstack::base::keystone_host'),
+    Stdlib::Fqdn $keystone_api_fqdn = lookup('profile::openstack::base::keystone_api_fqdn'),
     $observer_user = hiera('profile::openstack::base::observer_user'),
     $observer_password = hiera('profile::openstack::base::observer_password'),
     $observer_project = hiera('profile::openstack::base::observer_project'),
@@ -88,7 +88,7 @@ class profile::openstack::base::pdns::recursor::service(
     class { '::dnsrecursor::labsaliaser':
         username              => $observer_user,
         password              => $observer_password,
-        nova_api_url          => "http://${keystone_host}:5000/v3",
+        nova_api_url          => "http://${keystone_api_fqdn}:5000/v3",
         extra_records         => $aliaser_extra_records,
         observer_project_name => $observer_project,
     }

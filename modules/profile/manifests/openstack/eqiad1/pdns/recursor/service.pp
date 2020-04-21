@@ -1,10 +1,10 @@
 class profile::openstack::eqiad1::pdns::recursor::service(
-    Array[Stdlib::Fqdn] $designate_hosts         = lookup('profile::openstack::eqiad1::designate_hosts'),
+    Array[Stdlib::Fqdn] $designate_hosts  = lookup('profile::openstack::eqiad1::designate_hosts'),
     Stdlib::Fqdn $pdns_host               = lookup('profile::openstack::eqiad1::pdns::host'),
     Stdlib::Fqdn $pdns_host_secondary     = lookup('profile::openstack::eqiad1::pdns::host_secondary'),
     Stdlib::Fqdn $pdns_recursor           = lookup('profile::openstack::eqiad1::pdns::recursor'),
     Stdlib::Fqdn $pdns_recursor_secondary = lookup('profile::openstack::eqiad1::pdns::recursor_secondary'),
-    $keystone_host = hiera('profile::openstack::eqiad1::keystone_host'),
+    Stdlib::Fqdn $keystone_api_fqdn       = lookup('profile::openstack::eqiad1::keystone_api_fqdn'),
     $observer_password = hiera('profile::openstack::eqiad1::observer_password'),
     $tld = hiera('profile::openstack::eqiad1::pdns::tld'),
     $private_reverse_zones = hiera('profile::openstack::eqiad1::pdns::private_reverse_zones'),
@@ -23,7 +23,7 @@ class profile::openstack::eqiad1::pdns::recursor::service(
     }
 
     class {'::profile::openstack::base::pdns::recursor::service':
-        keystone_host         => $keystone_host,
+        keystone_api_fqdn     => $keystone_api_fqdn,
         observer_password     => $observer_password,
         pdns_host             => $service_pdns_host,
         pdns_recursor         => $service_pdns_recursor,

@@ -1,5 +1,5 @@
 class profile::openstack::codfw1dev::pdns::recursor::service(
-    $keystone_host = hiera('profile::openstack::codfw1dev::keystone_host'),
+    Stdlib::Fqdn $keystone_api_fqdn = lookup('profile::openstack::codfw1dev::keystone_api_fqdn'),
     $observer_password = hiera('profile::openstack::codfw1dev::observer_password'),
     $pdns_host = hiera('profile::openstack::codfw1dev::pdns::host'),
     $pdns_recursor = hiera('profile::openstack::codfw1dev::pdns::recursor'),
@@ -9,7 +9,7 @@ class profile::openstack::codfw1dev::pdns::recursor::service(
     ) {
 
     class {'::profile::openstack::base::pdns::recursor::service':
-        keystone_host         => $keystone_host,
+        keystone_api_fqdn     => $keystone_api_fqdn,
         observer_password     => $observer_password,
         pdns_host             => $pdns_host,
         pdns_recursor         => $pdns_recursor,
