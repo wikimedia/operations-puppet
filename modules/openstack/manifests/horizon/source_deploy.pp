@@ -16,7 +16,7 @@
 class openstack::horizon::source_deploy(
     String        $horizon_version,
     String        $openstack_version,
-    Stdlib::Fqdn  $keystone_host,
+    Stdlib::Fqdn  $keystone_api_fqdn,
     String        $wmflabsdotorg_admin,
     String        $wmflabsdotorg_pass,
     Stdlib::Fqdn  $dhcp_domain,

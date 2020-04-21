@@ -1,7 +1,7 @@
 class profile::openstack::base::horizon::dashboard_source_deploy(
     String        $horizon_version = lookup('profile::openstack::base::horizon_version'),
     String        $openstack_version = lookup('profile::openstack::base::version'),
-    Stdlib::Fqdn  $keystone_host = lookup('profile::openstack::base::keystone_host'),
+    Stdlib::Fqdn  $keystone_api_fqdn = lookup('profile::openstack::base::keystone_api_fqdn'),
     String        $wmflabsdotorg_admin = lookup('profile::openstack::base::designate::wmflabsdotorg_admin'),
     String        $wmflabsdotorg_pass = lookup('profile::openstack::base::designate::wmflabsdotorg_pass'),
     String        $dhcp_domain = lookup('profile::openstack::base::nova::dhcp_domain'),
@@ -18,7 +18,7 @@ class profile::openstack::base::horizon::dashboard_source_deploy(
     class { '::openstack::horizon::source_deploy':
         horizon_version      => $horizon_version,
         openstack_version    => $openstack_version,
-        keystone_host        => $keystone_host,
+        keystone_api_fqdn    => $keystone_api_fqdn,
         wmflabsdotorg_admin  => $wmflabsdotorg_admin,
         wmflabsdotorg_pass   => $wmflabsdotorg_pass,
         dhcp_domain          => $dhcp_domain,
