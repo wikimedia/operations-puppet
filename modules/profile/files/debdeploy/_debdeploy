@@ -6,7 +6,7 @@ _arguments -C \
   "-h[show this help message and exit]" \
   "-help[show this help message and exit]" \
   "--verbose[status-deploy and status-rollback]" \
-  "1: :(query_deps deploy query_restart query_version)" \
+  "1: :(query_deps deploy deploy_restartcheck query_restart query_version)" \
   "*::arg:->args"
 
 case $line[1] in
