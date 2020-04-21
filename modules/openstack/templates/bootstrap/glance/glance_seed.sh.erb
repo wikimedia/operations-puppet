@@ -11,8 +11,9 @@
 # sudo mysql -u root
 # mysql> CREATE DATABASE glance;
 # mysql> GRANT ALL PRIVILEGES ON glance.* TO 'glance'@'%' IDENTIFIED BY 'passwd';
-# mysql> GRANT ALL PRIVILEGES ON glance.* TO 'glance'@'<%= @nova_controller %>' IDENTIFIED BY 'passwd';
-# mysql> GRANT ALL PRIVILEGES ON glance.* TO 'glance'@'<%= @nova_controller_standby %>' IDENTIFIED BY 'passwd';
+# mysql> GRANT ALL PRIVILEGES ON glance.* TO 'glance'@'<%= @openstack_controller %>' IDENTIFIED BY 'passwd';
+# mysql> GRANT ALL PRIVILEGES ON glance.* TO 'glance'@'<%= @other_openstack_controller %>' IDENTIFIED BY 'passwd';
+# mysql> GRANT ALL PRIVILEGES ON glance.* TO 'glance'@'<%= @etc_openstack_controller %>' IDENTIFIED BY 'passwd';
 
 # sync db, create tables, etc
 sudo glance-manage db_sync
@@ -28,9 +29,9 @@ sudo service glance-api restart
 # You cna do this as root.
 source novaenv.sh
 openstack service create --name glance --description "OpenStack Image service" image
-openstack endpoint create --region <%= @region %> image public http://<%= @nova_controller %>:9292
-openstack endpoint create --region <%= @region %> image internal http://<%= @nova_controller %>:9292
-openstack endpoint create --region <%= @region %> image admin http://<%= @nova_controller %>:9292
+openstack endpoint create --region <%= @region %> image public http://<%= @keystone_api_fqdn %>:9292
+openstack endpoint create --region <%= @region %> image internal http://<%= @keystone_api_fqdn %>:9292
+openstack endpoint create --region <%= @region %> image admin http://<%= @keystone_api_fqdn %>:9292
 openstack role add --user novaadmin --project admin glanceadmin
 
 #
