@@ -13,6 +13,7 @@ profile::openstack::eqiad1::version: 'queens'
 profile::openstack::base::region: "eqiad1-r"
 profile::openstack::eqiad1::nova_controller: 'openstack.eqiad1.wikimediacloud.org'
 profile::openstack::eqiad1::keystone_host: 'openstack.eqiad1.wikimediacloud.org'
+profile::openstack::eqiad1::keystone_api_fqdn: 'openstack.eqiad1.wikimediacloud.org'
 profile::openstack::base::observer_user: 'novaobserver'
 profile::openstack::eqiad1::region: 'eqiad1-r'
 # publicly available read-only credentials
