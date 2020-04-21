@@ -15,7 +15,7 @@
 #
 class profile::openstack::eqiad1::cumin::master(
     $keystone_protocol = hiera('profile::openstack::base::keystone::auth_protocol'),
-    $keystone_host = hiera('profile::openstack::eqiad1::keystone_host'),
+    Stdlib::Fqdn $keystone_api_fqdn = lookup('profile::openstack::eqiad1::keystone_api_fqdn'),
     $keystone_port = hiera('profile::openstack::base::keystone::public_port'),
     $observer_username = hiera('profile::openstack::base::observer_user'),
     $observer_password = hiera('profile::openstack::eqiad1::observer_password'),

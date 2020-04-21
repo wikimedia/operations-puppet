@@ -10,7 +10,7 @@ clustershell:
         - '-F <%= @ssh_config_path %>'
 
 openstack:
-    auth_url: <%= @keystone_protocol %>://<%= @keystone_host %>:<%= @keystone_port %>
+    auth_url: <%= @keystone_protocol %>://<%= @keystone_api_fqdn %>:<%= @keystone_port %>
     username: <%= @observer_username %>
     password: <%= @observer_password %>
     domain_suffix: <%= @nova_dhcp_domain %>
