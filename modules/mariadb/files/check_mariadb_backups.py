@@ -140,15 +140,13 @@ def check_backup_database(options):
                                                 humanized_warn_size,
                                                 size))
         # TODO: check files expected
-        return (OK, '{} for {} at {} taken less than {} and larger than {}: '
-                    'Last one {} from {} ({})'.format(type,
-                                                      section,
-                                                      datacenter,
-                                                      humanized_freshness,
-                                                      humanized_warn_size,
-                                                      last_backup_date,
-                                                      source,
-                                                      humanized_size))
+        return (OK, 'Last {} for {} at {} ({}) '
+                    'taken on {} ({})'.format(type,
+                                              section,
+                                              datacenter,
+                                              source,
+                                              last_backup_date,
+                                              humanized_size))
 
 
 def main():
