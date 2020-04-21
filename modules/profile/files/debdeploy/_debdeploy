@@ -16,6 +16,9 @@ case $line[1] in
   deploy)
     _debdeploy_deploy
   ;;
+  deploy_restartcheck)
+    _debdeploy_deploy
+  ;;
   query_restart)
     _debdeploy_query_restart
   ;;
@@ -43,6 +46,8 @@ function _debdeploy_deploy {
     "--help[show this help message and exit]" \
     "--servers[The group of servers for which reverse dependencies should be queried]:aliases:_cumin_aliases" \
     "-s[The group of servers for which reverse dependencies should be queried]:aliases:_cumin_aliases" \
+    "-Q[An arbitrary Cumin NodeSet query which selects the]" \
+    "--query[An arbitrary Cumin NodeSet query which selects the]" \
     "-u[A YAML file containing the update specification]:filename:_files" \
     "--update[A YAML file containing the update specification]:filename:_files"
 }
