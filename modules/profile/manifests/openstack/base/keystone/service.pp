@@ -3,7 +3,6 @@ class profile::openstack::base::keystone::service(
     $version = hiera('profile::openstack::base::version'),
     $region = hiera('profile::openstack::base::region'),
     Array[Stdlib::Fqdn] $openstack_controllers = hiera('profile::openstack::base::openstack_controllers'),
-    $keystone_host = hiera('profile::openstack::base::keystone_host'),
     $osm_host = hiera('profile::openstack::base::osm_host'),
     $db_name = hiera('profile::openstack::base::keystone::db_name'),
     $db_user = hiera('profile::openstack::base::keystone::db_user'),
@@ -49,7 +48,6 @@ class profile::openstack::base::keystone::service(
     class {'::openstack::keystone::service':
         active                      => $daemon_active,
         version                     => $version,
-        keystone_host               => $keystone_host,
         controller_hosts            => $openstack_controllers,
         osm_host                    => $osm_host,
         db_name                     => $db_name,

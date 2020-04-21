@@ -2,7 +2,6 @@ class profile::openstack::eqiad1::keystone::service(
     $version = hiera('profile::openstack::eqiad1::version'),
     $region = hiera('profile::openstack::eqiad1::region'),
     Array[Stdlib::Fqdn] $openstack_controllers = lookup('profile::openstack::eqiad1::openstack_controllers'),
-    $keystone_host = hiera('profile::openstack::eqiad1::keystone_host'),
     $osm_host = hiera('profile::openstack::eqiad1::osm_host'),
     $db_host = hiera('profile::openstack::eqiad1::keystone::db_host'),
     $token_driver = hiera('profile::openstack::eqiad1::keystone::token_driver'),
@@ -40,7 +39,6 @@ class profile::openstack::eqiad1::keystone::service(
         version                     => $version,
         region                      => $region,
         openstack_controllers       => $openstack_controllers,
-        keystone_host               => $keystone_host,
         osm_host                    => $osm_host,
         db_host                     => $db_host,
         token_driver                => $token_driver,
@@ -83,10 +81,9 @@ class profile::openstack::eqiad1::keystone::service(
     class {'::openstack::monitor::spreadcheck':
     }
 
-    # monitor projects and users only on the controller servicing the
-    # primary endpoints
+    # monitor projects and users only on one controller.  It doesn't matter which.
     class {'::openstack::keystone::monitor::projects_and_users':
-        active         => $::ipaddress == ipresolve($keystone_host,4),
+        active         => $::ipaddress == ipresolve($openstack_controllers[0],4),
         contact_groups => 'wmcs-team-email,admins',
     }
     contain '::openstack::keystone::monitor::projects_and_users'

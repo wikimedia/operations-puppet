@@ -5,7 +5,6 @@ class openstack::keystone::service(
     $active,
     $version,
     $token_driver,
-    $keystone_host,
     $controller_hosts,
     $osm_host,
     $db_name,
@@ -39,7 +38,6 @@ class openstack::keystone::service(
     String $bastion_project_id,
 ) {
     class { "openstack::keystone::service::${version}":
-        keystone_host               => $keystone_host,
         controller_hosts            => $controller_hosts,
         osm_host                    => $osm_host,
         db_name                     => $db_name,

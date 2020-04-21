@@ -1,5 +1,4 @@
 class openstack::keystone::service::rocky(
-    $keystone_host,
     $controller_hosts,
     $osm_host,
     $db_name,
