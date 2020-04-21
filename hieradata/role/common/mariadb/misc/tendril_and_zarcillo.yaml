@@ -1,31 +1,94 @@
-profile::mariadb::backup::check::dump::datacenters:
- - eqiad
- - codfw
-profile::mariadb::backup::check::dump::sections:
- - s1
- - s2
- - s3
- - s4
- - s5
- - s6
- - s7
- - s8
- - x1
- - m1
- - m2
- - m3
- - m5
-profile::mariadb::backup::check::snapshot::datacenters:
- - eqiad
- - codfw
-profile::mariadb::backup::check::snapshot::sections:
- - s1
- - s2
- - s3
- - s4
- - s5
- - s6
- - s7
- - s8
- - x1
+profile::mariadb::backup::check::backups:
+  s1:
+    dump:
+    - eqiad
+    - codfw
+    snapshot:
+    - eqiad
+    - codfw
+  s2:
+    dump:
+    - eqiad
+    - codfw
+    snapshot:
+    - eqiad
+    - codfw
+  s3:
+    dump:
+    - eqiad
+    - codfw
+    snapshot:
+    - eqiad
+    - codfw
+  s4:
+    dump:
+    - eqiad
+    - codfw
+    snapshot:
+    - eqiad
+    - codfw
+  s5:
+    dump:
+    - eqiad
+    - codfw
+    snapshot:
+    - eqiad
+    - codfw
+  s6:
+    dump:
+    - eqiad
+    - codfw
+    snapshot:
+    - eqiad
+    - codfw
+  s7:
+    dump:
+    - eqiad
+    - codfw
+    snapshot:
+    - eqiad
+    - codfw
+  s8:
+    dump:
+    - eqiad
+    - codfw
+    snapshot:
+    - eqiad
+    - codfw
+  x1:
+    dump:
+    - eqiad
+    - codfw
+    snapshot:
+    - eqiad
+    - codfw
+  es4:
+    dump:
+    - codfw
+  es5:
+    dump:
+    - codfw
+  m1:
+    dump:
+    - eqiad
+    - codfw
+  m2:
+    dump:
+    - eqiad
+    - codfw
+  m3:
+    dump:
+    - eqiad
+    - codfw
+  m5:
+    dump:
+    - eqiad
+    - codfw
+  tendril:
+    dump:
+    - eqiad
+profile::mariadb::backup::check::freshness:
+  dump: 691200
+  snapshot: 259200
+
 monitor_screens: false

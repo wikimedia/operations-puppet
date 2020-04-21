@@ -5,30 +5,20 @@
 # Only metadata checks are done- full backup tests are to be
 # done on a separate class.
 class profile::mariadb::backup::check (
-    $dump_dcs          = hiera('profile::mariadb::backup::check::dump::datacenters', ),
-    $dump_sections     = hiera('profile::mariadb::backup::check::dump::sections', ),
-    $snapshot_dcs      = hiera('profile::mariadb::backup::check::snapshot::datacenters', ),
-    $snapshot_sections = hiera('profile::mariadb::backup::check::snapshot::sections', ),
+    $backups   = hiera('profile::mariadb::backup::check::backups', ),
+    $freshness = hiera('profile::mariadb::backup::check::freshness', ),
 ) {
     class { 'mariadb::monitor_backup_script': }
 
-    $dump_dcs.each |String $datacenter| {
-        $dump_sections.each |String $section| {
-            mariadb::monitor_backup { "${datacenter}-${section}-dump":
-                section    => $section,
-                datacenter => $datacenter,
-                type       => 'dump',
-                freshness  => 691200,  # 8 days
-            }
-        }
-    }
-    $snapshot_dcs.each |String $datacenter| {
-        $snapshot_sections.each |String $section| {
-            mariadb::monitor_backup { "${datacenter}-${section}-snapshot":
-                section    => $section,
-                datacenter => $datacenter,
-                type       => 'snapshot',
-                freshness  => 259200,  # 3 days
+    $backups.each |String $section, Hash $section_hash| {
+        $section_hash.each |String $type, Array[String] $type_array| {
+            $type_array.each |String $dc| {
+                mariadb::monitor_backup { "${dc}-${section}-${type}":
+                    section    => $section,
+                    datacenter => $dc,
+                    type       => $type,
+                    freshness  => $freshness[$type],
+                }
             }
         }
     }
