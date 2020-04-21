@@ -10,7 +10,6 @@ class profile::openstack::base::metrics(
     Integer              $sched_vcpu             = lookup('profile::openstack::base::metrics::sched_vcpu'),
     Integer              $sched_disk_gbs         = lookup('profile::openstack::base::metrics::sched_disk_gbs'),
     String               $region                 = lookup('profile::openstack::base::region'),
-    Stdlib::Fqdn         $keystone_host          = lookup('profile::openstack::base::keystone_host'),
     String               $observer_password      = lookup('profile::openstack::base::observer_password'),
   ) {
 
@@ -26,7 +25,6 @@ class profile::openstack::base::metrics(
         sched_vcpu             => $sched_vcpu,
         sched_disk_gbs         => $sched_disk_gbs,
         region                 => $region,
-        keystone_host          => $keystone_host,
         observer_password      => $observer_password,
     }
     contain '::profile::prometheus::openstack_exporter'

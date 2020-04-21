@@ -10,7 +10,6 @@ class profile::prometheus::openstack_exporter (
     $sched_vcpu = hiera('profile::prometheus::sched_vcpu'),
     $sched_disk_gbs = hiera('profile::prometheus::sched_disk_gbs'),
     $region = hiera('profile::prometheus::region'),
-    $keystone_host = hiera('profile::prometheus::keystone_host'),
     $observer_password = hiera('profile::prometheus::observer_password'),
 ) {
     require_package('prometheus-openstack-exporter')
