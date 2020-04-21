@@ -2,6 +2,7 @@
 """script to compare the output of iptables-save/ip6tables-save with
 the output of `ferm -nl /etc/ferm/ferm.conf` This enables us to ensure
 the desired ruleset has been loaded by iptables"""
+from argparse import ArgumentParser
 from collections import defaultdict
 from ipaddress import ip_network
 from re import match
@@ -50,6 +51,9 @@ class Rule:
         self.pkt_type = None
         self.jump = None
         self._parse()
+
+    def __hash__(self):
+        return hash(str(self))
 
     def __str__(self):
         output = '-A {}'.format(self.chain)
@@ -152,9 +156,51 @@ class Ruleset:
                 if line.startswith('-A'):
                     self.rules[line.split()[1]].append(Rule(line))
 
+    def diff(self, ruleset):
+        """return  a diff or between self and ruleset
+
+        Parameters:
+            ruleset (Ruleset): a Ruleset object to compare
+        return:
+            str: a String representing the difference between self and ruleset
+        """
+        lines = []
+        if self.table != ruleset.table:
+            return 'ruleset and self have different tables\n-{}\n+{}'.format(
+                self.table, ruleset.table)
+        if self.input_policy != ruleset.input_policy:
+            lines.append([
+                '-:INPUT {}'.format(self.input_policy),
+                '+:INPUT {}'.format(ruleset.input_policy),
+            ])
+        if self.forward_policy != ruleset.forward_policy:
+            lines.append([
+                '-:FORWARD {}'.format(self.forward_policy),
+                '+:FORWARD {}'.format(ruleset.forward_policy),
+            ])
+        if self.output_policy != ruleset.output_policy:
+            lines.append([
+                '-:OUTPUT {}'.format(self.output_policy),
+                '+:OUTPUT {}'.format(ruleset.output_policy),
+            ])
+        for chain in self.rules.keys():
+            for rule in set(self.rules[chain]) - set(ruleset.rules[chain]):
+                lines.append('-{}'.format(str(rule)))
+            for rule in set(ruleset.rules[chain]) - set(self.rules[chain]):
+                lines.append('+{}'.format(str(rule)))
+        return '\n'.join(lines)
+
+
+def get_args():
+    """Parse arguments"""
+    parser = ArgumentParser(description=__doc__)
+    parser.add_argument('-v', '--verbose', action='store_true')
+    return parser.parse_args()
+
 
 def main():
     """Main entry point"""
+    args = get_args()
     iptables = check_output(['/sbin/iptables-save'])
     ferm = check_output('/usr/sbin/ferm -nl --domain ip /etc/ferm/ferm.conf'.split())
     ip6tables = check_output(['/sbin/ip6tables-save'])
@@ -165,9 +211,16 @@ def main():
     ferm6_parsed = Ruleset(ferm6.decode())
     ip6tables_parsed = Ruleset(ip6tables.decode())
 
-    if ferm6_parsed != ip6tables_parsed or ferm_parsed != iptables_parsed:
-        return 1
-    return 0
+    ret_code = 0
+    if ferm6_parsed != ip6tables_parsed:
+        ret_code = 1
+        if args.verbose:
+            print('ipv6:\n{}'.format(ip6tables_parsed.diff(ferm6_parsed)))
+    if ferm_parsed != iptables_parsed:
+        ret_code = 1
+        if args.verbose:
+            print('ipv4:\n{}'.format(iptables_parsed.diff(ferm_parsed)))
+    return ret_code
 
 
 if __name__ == '__main__':
