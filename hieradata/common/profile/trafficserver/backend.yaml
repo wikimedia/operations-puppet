@@ -10,7 +10,7 @@ profile::trafficserver::backend::mapping_rules:
       replacement: https://webserver-misc-apps.discovery.wmnet
     - type: map
       target: http://bienvenida.wikimedia.org
-      replacement: https://webserver-misc-static.discovery.wmnet
+      replacement: https://webserver-misc-apps.discovery.wmnet
     - type: map
       target: http://blubberoid.wikimedia.org
       replacement: https://blubberoid.discovery.wmnet:4666
@@ -166,7 +166,7 @@ profile::trafficserver::backend::mapping_rules:
       replacement: https://releases.discovery.wmnet
     - type: map
       target: http://research.wikimedia.org
-      replacement: https://webserver-misc-static.discovery.wmnet
+      replacement: https://webserver-misc-apps.discovery.wmnet
     - type: map
       target: http://rt.wikimedia.org
       replacement: https://rt.discovery.wmnet
