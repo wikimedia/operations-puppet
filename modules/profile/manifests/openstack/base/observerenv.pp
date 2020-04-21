@@ -1,7 +1,7 @@
 # Access credentials for the keystone 'novaobserver' account
 class profile::openstack::base::observerenv(
     String       $region            = lookup('profile::openstack::base::region'),
-    Stdlib::Fqdn $keystone_host     = lookup('profile::openstack::base::keystone_host'),
+    Stdlib::Fqdn $keystone_api_fqdn = lookup('profile::openstack::base::keystone_api_fqdn'),
     String       $observer_user     = lookup('profile::openstack::base::observer_user'),
     String       $observer_password = lookup('profile::openstack::base::observer_password'),
   ) {
