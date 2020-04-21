@@ -2,7 +2,7 @@ class profile::openstack::codfw1dev::designate::service(
     $version = hiera('profile::openstack::codfw1dev::version'),
     Array[Stdlib::Fqdn] $designate_hosts = lookup('profile::openstack::codfw1dev::designate_hosts'),
     Array[Stdlib::Fqdn] $openstack_controllers = lookup('profile::openstack::codfw1dev::openstack_controllers'),
-    $keystone_host = hiera('profile::openstack::codfw1dev::keystone_host'),
+    Stdlib::Fqdn $keystone_api_fqdn = hiera('profile::openstack::codfw1dev::keystone_api_fqdn'),
     $puppetmaster_hostname = hiera('profile::openstack::codfw1dev::puppetmaster_hostname'),
     $db_pass = hiera('profile::openstack::codfw1dev::designate::db_pass'),
     $db_host = hiera('profile::openstack::codfw1dev::designate::db_host'),
@@ -27,7 +27,7 @@ class profile::openstack::codfw1dev::designate::service(
     class{'::profile::openstack::base::designate::service':
         version                           => $version,
         designate_hosts                   => $designate_hosts,
-        keystone_host                     => $keystone_host,
+        keystone_api_fqdn                 => $keystone_api_fqdn,
         db_pass                           => $db_pass,
         db_host                           => $db_host,
         domain_id_internal_forward        => $domain_id_internal_forward,

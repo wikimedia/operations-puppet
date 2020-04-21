@@ -2,7 +2,7 @@ class profile::openstack::base::designate::service(
     $version = hiera('profile::openstack::base::version'),
     Array[Stdlib::Fqdn] $designate_hosts = lookup('profile::openstack::base::designate_hosts'),
     Array[Stdlib::Fqdn] $openstack_controllers = lookup('profile::openstack::base::openstack_controllers'),
-    $keystone_host = hiera('profile::openstack::base::keystone_host'),
+    Stdlib::Fqdn $keystone_api_fqdn = hiera('profile::openstack::base::keystone_api_fqdn'),
     $puppetmaster_hostname = hiera('profile::openstack::base::puppetmaster_hostname'),
     $db_user = hiera('profile::openstack::base::designate::db_user'),
     $db_pass = hiera('profile::openstack::base::designate::db_pass'),
@@ -40,7 +40,7 @@ class profile::openstack::base::designate::service(
         active                            => true,
         version                           => $version,
         designate_hosts                   => $designate_hosts,
-        keystone_host                     => $keystone_host,
+        keystone_api_fqdn                 => $keystone_api_fqdn,
         db_user                           => $db_user,
         db_pass                           => $db_pass,
         db_host                           => $db_host,
@@ -75,7 +75,7 @@ class profile::openstack::base::designate::service(
     $prometheus_ferm_srange = "@resolve((${prometheus_ferm_nodes})) @resolve((${prometheus_ferm_nodes}), AAAA)"
     # Open designate API to WMCS web UIs and the commandline on control servers, also prometheus
     ferm::rule { 'designate-api':
-        rule => "saddr (@resolve(${osm_host}) ${labweb_ip6s} @resolve(${keystone_host}) @resolve(${keystone_host}, AAAA)
+        rule => "saddr (@resolve(${osm_host}) ${labweb_ip6s} @resolve(${keystone_api_fqdn}) @resolve(${keystone_api_fqdn}, AAAA)
                        ${labweb_ips} @resolve((${join($openstack_controllers,' ')}))
                        @resolve((${join($openstack_controllers,' ')}), AAAA)
                        ${prometheus_ferm_srange}
