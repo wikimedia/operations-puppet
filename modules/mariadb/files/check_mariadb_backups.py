@@ -19,11 +19,9 @@ SECTIONS = ['s1', 's2', 's3', 's4', 's5', 's6', 's7', 's8',
 DATACENTERS = ['eqiad', 'codfw']
 TYPES = ['dump', 'snapshot']
 DEFAULT_FRESHNESS = 691200  # 8 days, in seconds
-# TODO: get these from previous backups
-DUMP_CRIT_SIZE = 10 * 1024  # dumps smaller than 10K are considered failed
-DUMP_WARN_SIZE = 10 * 1024 * 1024 * 1024  # dumps smaller than 10 GB are strange
-SNAPSHOT_CRIT_SIZE = 1024 * 1024  # snapshots smaller than 1M are considered failed
-SNAPSHOT_WARN_SIZE = 90 * 1024 * 1024 * 1024  # snapshots smaller than 90 GB are strange
+DEFAULT_MIN_SIZE = 1024 * 1024  # size smaller than 1M is considered failed
+DEFAULT_WARN_SIZE_PERCENTAGE = 1  # size of previous ones minus or plus this percentage is weird
+DEFAULT_CRIT_SIZE_PERCENTAGE = 10  # size of previous ones minus or plus this percentage is a fail
 
 DB_HOST = 'localhost'
 DB_USER = 'nagios'
@@ -48,6 +46,18 @@ def get_options():
                         type=int,
                         help='Time, in seconds, of how old a backup can be '
                              'before being considered outdated (default: 8 days)')
+    parser.add_argument('--min-size', '-c', default=DEFAULT_MIN_SIZE,
+                        type=int,
+                        help='Size, in bytes, below which the backup is considered '
+                             'failed in any case (default: 1 MB)')
+    parser.add_argument('--warn-size-percentage', '-p', default=DEFAULT_WARN_SIZE_PERCENTAGE,
+                        type=float,
+                        help='Percentage of size change compared to previous backups, '
+                             'above which a WARNING is produced (default: 1%)')
+    parser.add_argument('--crit-size-percentage', '-P', default=DEFAULT_CRIT_SIZE_PERCENTAGE,
+                        type=float,
+                        help='Percentage of size change compared to previous backups, '
+                             'above which a CRITICAL is produced (default: 10%)')
 
     return parser.parse_args()
 
@@ -87,13 +97,13 @@ def check_backup_database(options):
                 "status = 'finished' and " \
                 "end_date IS NOT NULL " \
                 "ORDER BY start_date DESC " \
-                "LIMIT 1".format(type, section, datacenter)
+                "LIMIT 2".format(type, section, datacenter)
         try:
             cursor.execute(query)
         except (pymysql.err.ProgrammingError, pymysql.err.InternalError):
             return (CRITICAL, 'Error while querying the backup metadata database')
         data = cursor.fetchall()
-        if len(data) != 1:
+        if len(data) < 1:
             return (CRITICAL, 'We could not find any completed {} for '
                               '{} at {}'.format(type, section, datacenter))
 
@@ -108,11 +118,11 @@ def check_backup_database(options):
         else:
             size = int(size)
         humanized_size = str(round(size / 1024 / 1024 / 1024)) + ' GB'
-        warn_size = DUMP_WARN_SIZE if type == 'dump' else SNAPSHOT_WARN_SIZE
-        crit_size = DUMP_CRIT_SIZE if type == 'dump' else SNAPSHOT_CRIT_SIZE
-        humanized_warn_size = str(round(warn_size / 1024 / 1024 / 1024)) + ' GB'
-        humanized_crit_size = str(round(crit_size / 1024)) + ' KB'
         source = data[0]['source']
+        min_size = options.min_size
+        humanized_min_size = str(round(min_size / 1024)) + ' KB'
+        crit_size_percentage = options.crit_size_percentage
+        warn_size_percentage = options.warn_size_percentage
 
         # check backup is fresh enough
         if last_backup_date < required_backup_date:
@@ -122,23 +132,54 @@ def check_backup_database(options):
                                                              datacenter,
                                                              humanized_freshness,
                                                              last_backup_date))
-        # check size
-        if size < crit_size:
+        # Check minimum size
+        if size < min_size:
             return(CRITICAL, '{} for {} at {} ({}) is less than {}: '
                              '{} bytes'.format(type,
                                                section,
                                                datacenter,
                                                last_backup_date,
-                                               humanized_crit_size,
+                                               humanized_min_size,
                                                size))
-        if size < warn_size:
-            return (WARNING, '{} for {} at {} ({}) is less than {}: '
-                             '{} bytes.'.format(type,
-                                                section,
-                                                datacenter,
-                                                last_backup_date,
-                                                humanized_warn_size,
-                                                size))
+
+        # warn in any case if there is only 1 backup (cannot compare sizes)
+        if len(data) == 1:
+            return(WARNING, 'There is only 1 {} for {} at {} ({}) '
+                            'taken on {} ({})'.format(type,
+                                                      section,
+                                                      datacenter,
+                                                      source,
+                                                      last_backup_date,
+                                                      humanized_size))
+
+        previous_size = data[1]['total_size']
+        humanized_previous_size = str(round(previous_size / 1024 / 1024 / 1024)) + ' GB'
+        percentage_change = abs((size - previous_size) / previous_size * 100.0)
+        # check size change
+        if percentage_change > crit_size_percentage:
+            return(CRITICAL, 'Last {} for {} at {} ({}) '
+                             'taken on {} is {}, but '
+                             'previous one was {}, '
+                             'a change of {:.1f}%'.format(type,
+                                                          section,
+                                                          datacenter,
+                                                          source,
+                                                          last_backup_date,
+                                                          humanized_size,
+                                                          humanized_previous_size,
+                                                          percentage_change))
+        if percentage_change > warn_size_percentage:
+            return(WARNING, 'Last {} for {} at {} ({}) '
+                            'taken on {} is {}, but '
+                            'previous one was {}, '
+                            'a change of {:.1f}%'.format(type,
+                                                         section,
+                                                         datacenter,
+                                                         source,
+                                                         last_backup_date,
+                                                         humanized_size,
+                                                         humanized_previous_size,
+                                                         percentage_change))
         # TODO: check files expected
         return (OK, 'Last {} for {} at {} ({}) '
                     'taken on {} ({})'.format(type,
