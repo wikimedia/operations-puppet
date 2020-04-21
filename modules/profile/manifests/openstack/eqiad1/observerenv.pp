@@ -1,7 +1,7 @@
 class profile::openstack::eqiad1::observerenv(
-    $region = hiera('profile::openstack::eqiad1::region'),
-    $keystone_host = hiera('profile::openstack::eqiad1::keystone_host'),
-    $observer_password = hiera('profile::openstack::eqiad1::observer_password'),
+    String       $region            = lookup('profile::openstack::eqiad1::region'),
+    Stdlib::Fqdn $keystone_host     = lookup('profile::openstack::eqiad1::keystone_host'),
+    String       $observer_password = lookup('profile::openstack::eqiad1::observer_password'),
   ) {
 
     class {'::profile::openstack::base::observerenv':

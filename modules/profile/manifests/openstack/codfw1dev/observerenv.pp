@@ -1,7 +1,7 @@
 class profile::openstack::codfw1dev::observerenv(
-    $region = hiera('profile::openstack::codfw1dev::region'),
-    $keystone_host = hiera('profile::openstack::codfw1dev::keystone_host'),
-    $observer_password = hiera('profile::openstack::codfw1dev::observer_password'),
+    String       $region            = lookup('profile::openstack::codfw1dev::region'),
+    Stdlib::Fqdn $keystone_host     = lookup('profile::openstack::codfw1dev::keystone_host'),
+    String       $observer_password = lookup('profile::openstack::codfw1dev::observer_password'),
   ) {
 
     class {'::profile::openstack::base::observerenv':

@@ -1,9 +1,9 @@
 # Access credentials for the keystone 'novaobserver' account
 class profile::openstack::base::observerenv(
-    $region = hiera('profile::openstack::base::region'),
-    $keystone_host = hiera('profile::openstack::base::keystone_host'),
-    $observer_user = hiera('profile::openstack::base::observer_user'),
-    $observer_password = hiera('profile::openstack::base::observer_password'),
+    String       $region            = lookup('profile::openstack::base::region'),
+    Stdlib::Fqdn $keystone_host     = lookup('profile::openstack::base::keystone_host'),
+    String       $observer_user     = lookup('profile::openstack::base::observer_user'),
+    String       $observer_password = lookup('profile::openstack::base::observer_password'),
   ) {
 
     # Keystone credentials for novaobserver
