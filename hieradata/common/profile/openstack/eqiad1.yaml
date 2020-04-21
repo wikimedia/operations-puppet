@@ -36,13 +36,6 @@ profile::openstack::eqiad1::keystone_api_fqdn: 'openstack.eqiad1.wikimediacloud.
 #  will be true, identical peers.
 profile::openstack::eqiad1::primary_glance_image_store: cloudcontrol1003.wikimedia.org
 
-# These are in the process of being phased out in favor of the above
-#  openstack_controllers and keystone_api_fqdn values.  If they're
-#  still here in 2021 feel free to send Andrew a scolding email
-#
-profile::openstack::eqiad1::keystone_host: 'openstack.eqiad1.wikimediacloud.org'
-
-
 # List of designate hosts (generally labservicesxxxx).
 #  Be warned that there's one unique case here; memcached
 #  running on the first host in this list will be used

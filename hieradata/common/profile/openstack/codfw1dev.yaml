@@ -37,14 +37,6 @@ profile::openstack::codfw1dev::keystone_api_fqdn: 'openstack.codfw1dev.wikimedia
 #  will be true, identical peers.
 profile::openstack::codfw1dev::primary_glance_image_store: cloudcontrol2001-dev.wikimedia.org
 
-
-# These are in the process of being phased out in favor of the above
-#  openstack_controllers and keystone_api_fqdn values.  If they're
-#  still here in 2021 feel free to send Andrew a scolding email
-#
-profile::openstack::codfw1dev::keystone_host: 'openstack.codfw1dev.wikimediacloud.org'
-
-
 # List of designate hosts (generally labservicesxxxx).
 #  Be warned that there's one unique case here; memcached
 #  running on the first host in this list will be used
