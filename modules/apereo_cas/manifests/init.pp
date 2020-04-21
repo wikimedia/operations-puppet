@@ -29,6 +29,7 @@ class apereo_cas (
     String[1]                     $keystore_password      = 'changeit',
     String[1]                     $key_password           = 'changeit',
     String                        $overlay_repo           = 'operations/software/cas-overlay-template',
+    String[1]                     $overlay_branch         = 'master',
     Stdlib::HTTPSUrl              $server_name            = "https://${facts['fqdn']}:8443",
     Stdlib::Port                  $server_port            = 8443,
     Stdlib::Unixpath              $server_prefix          = '/cas',
@@ -126,6 +127,7 @@ class apereo_cas (
     git::clone {$overlay_repo:
         ensure    => 'latest',
         directory => $overlay_dir,
+        branch    => $overlay_branch,
     }
     file {"${config_dir}/cas.properties":
         ensure  => file,

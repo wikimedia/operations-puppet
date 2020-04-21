@@ -15,6 +15,7 @@ class profile::idp(
     Stdlib::Fqdn        $idp_primary            = lookup('profile::idp::idp_primary'),
     Stdlib::Fqdn        $idp_failover           = lookup('profile::idp::idp_failover'),
     Array[String]       $actuators              = lookup('profile::idp::actuators'),
+    String[1]           $overlay_branch         = lookup('profile::idp::overlay_branch'),
     Optional[String]    $totp_signing_key       = lookup('profile::idp::totp_signing_key',
                                                         {'default_value' => undef}),
     Optional[String]    $totp_encryption_key    = lookup('profile::idp::totp_encryption_key',
@@ -74,6 +75,7 @@ class profile::idp(
         java_opts              => $java_opts,
         max_session_length     => $max_session_length,
         actuators              => $actuators,
+        overlay_branch         => $overlay_branch,
     }
     profile::prometheus::jmx_exporter{ "idp_${facts['networking']['hostname']}":
         hostname         => $facts['networking']['hostname'],
