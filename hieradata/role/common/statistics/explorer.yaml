@@ -17,6 +17,12 @@ profile::presto::use_kerberos: true
 
 profile::analytics::geoip::archive::archive_host: 'stat1007'
 profile::analytics::geoip::archive::use_kerberos: true
+profile::statistics::gpu::hosts_with_gpu:
+  - 'stat1005'
+  - 'stat1008'
+profile::statistics::eventlogging_rsync::hosts_with_rsync:
+  - 'stat1006'
+  - 'stat1007'
 
 # Hive Client settings.
 # Hive configuration is common to multiple clients, but because of role based

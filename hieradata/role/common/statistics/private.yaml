@@ -15,6 +15,9 @@ profile::oozie::client::oozie_host: 'an-coord1001.eqiad.wmnet'
 
 profile::analytics::geoip::archive::archive_host: 'stat1007'
 profile::analytics::geoip::archive::use_kerberos: true
+profile::statistics::eventlogging_rsync::hosts_with_rsync:
+  - 'stat1006'
+  - 'stat1007'
 
 profile::presto::cluster_name: analytics-presto
 profile::presto::discovery_uri: https://an-coord1001.eqiad.wmnet:8281

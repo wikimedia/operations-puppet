@@ -1,8 +1,8 @@
 # == Class profile::statistics::gpu
 #
-class profile::statistics::gpu {
-
-    $hosts_with_gpu = ['stat1005', 'stat1008']
+class profile::statistics::gpu (
+    $hosts_with_gpu = lookup('profile::statistics::gpu::hosts_with_gpu')
+) {
 
     if $::hostname in $hosts_with_gpu {
 
