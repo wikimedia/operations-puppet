@@ -3953,10 +3953,14 @@ ldap_only_users:
     ensure: present
     realname: Zachary McCune
     email: zmccune@wikimedia.org
-  mnoor:
+  mnoor:    # TODO: remove this account and replace with mshaver T250430
     ensure: present
     realname: Moska Noor
     email: mnoor@wikimedia.org
+  mshaver:  # TODO: remove the mnoor account; replaced by this one T250430
+    ensure: present
+    realname: Moska Shaver
+    email: mshaver@wikimedia.org
   ebjune:
     ensure: present
     realname: Erika Bjune
