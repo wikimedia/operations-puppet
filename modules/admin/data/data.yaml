@@ -4204,3 +4204,7 @@ ldap_only_users:
     ensure: present
     realname: Sam Walton
     email: swalton@wikimedia.org
+  naike2020:
+    ensure: present
+    realname: Naïké Nembetwa
+    email: nnzali@wikimedia.org
