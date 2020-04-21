@@ -40,8 +40,6 @@ profile::openstack::eqiad1::primary_glance_image_store: cloudcontrol1003.wikimed
 #  openstack_controllers and keystone_api_fqdn values.  If they're
 #  still here in 2021 feel free to send Andrew a scolding email
 #
-profile::openstack::eqiad1::nova_controller: 'cloudcontrol1003.wikimedia.org'
-profile::openstack::eqiad1::nova_controller_standby: 'cloudcontrol1004.wikimedia.org'
 profile::openstack::eqiad1::keystone_host: 'openstack.eqiad1.wikimediacloud.org'
 
 
