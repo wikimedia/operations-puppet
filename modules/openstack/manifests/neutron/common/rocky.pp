@@ -1,6 +1,6 @@
 class openstack::neutron::common::rocky(
     Array[Stdlib::Fqdn] $openstack_controllers,
-    $keystone_host,
+    Stdlib::Fqdn $keystone_api_fqdn,
     $db_pass,
     $db_user,
     $db_host,

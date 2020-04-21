@@ -5,7 +5,7 @@ class profile::openstack::eqiad1::neutron::common(
     $db_pass = hiera('profile::openstack::eqiad1::neutron::db_pass'),
     $db_host = hiera('profile::openstack::eqiad1::neutron::db_host'),
     Array[Stdlib::Fqdn] $openstack_controllers = lookup('profile::openstack::eqiad1::openstack_controllers'),
-    $keystone_host = hiera('profile::openstack::eqiad1::keystone_host'),
+    Stdlib::Fqdn $keystone_api_fqdn = lookup('profile::openstack::eqiad1::keystone_api_fqdn'),
     $ldap_user_pass = hiera('profile::openstack::eqiad1::ldap_user_pass'),
     $rabbit_pass = hiera('profile::openstack::eqiad1::neutron::rabbit_pass'),
     $tld = hiera('profile::openstack::eqiad1::neutron::tld'),
@@ -18,7 +18,7 @@ class profile::openstack::eqiad1::neutron::common(
     class {'::profile::openstack::base::neutron::common':
         version               => $version,
         openstack_controllers => $openstack_controllers,
-        keystone_host         => $keystone_host,
+        keystone_api_fqdn     => $keystone_api_fqdn,
         db_pass               => $db_pass,
         db_host               => $db_host,
         region                => $region,

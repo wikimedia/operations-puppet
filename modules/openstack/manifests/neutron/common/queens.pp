@@ -1,7 +1,7 @@
 class openstack::neutron::common::queens(
     $nova_controller,
     $nova_controller_standby,
-    $keystone_host,
+    Stdlib::Fqdn $keystone_api_fqdn,
     $db_pass,
     $db_user,
     $db_host,

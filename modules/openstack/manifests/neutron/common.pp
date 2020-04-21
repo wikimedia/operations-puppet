@@ -1,7 +1,7 @@
 class openstack::neutron::common(
     $version,
     Array[Stdlib::Fqdn] $openstack_controllers,
-    $keystone_host,
+    Stdlib::Fqdn $keystone_api_fqdn,
     $db_pass,
     $db_user,
     $db_host,
@@ -21,7 +21,7 @@ class openstack::neutron::common(
     class { "openstack::neutron::common::${version}":
         openstack_controllers => $openstack_controllers,
         keystone_admin_uri    => $keystone_admin_uri,
-        keystone_host         => $keystone_host,
+        keystone_api_fqdn     => $keystone_api_fqdn,
         keystone_public_uri   => $keystone_public_uri,
         db_pass               => $db_pass,
         db_user               => $db_user,

@@ -5,7 +5,7 @@ class profile::openstack::codfw1dev::neutron::common(
     $dhcp_domain = hiera('profile::openstack::codfw1dev::nova::dhcp_domain'),
     $db_pass = hiera('profile::openstack::codfw1dev::neutron::db_pass'),
     Array[Stdlib::Fqdn] $openstack_controllers = lookup('profile::openstack::codfw1dev::openstack_controllers'),
-    $keystone_host = hiera('profile::openstack::codfw1dev::keystone_host'),
+    Stdlib::Fqdn $keystone_api_fqdn = lookup('profile::openstack::codfw1dev::keystone_api_fqdn'),
     $ldap_user_pass = hiera('profile::openstack::codfw1dev::ldap_user_pass'),
     $rabbit_pass = hiera('profile::openstack::codfw1dev::neutron::rabbit_pass'),
     $tld = hiera('profile::openstack::codfw1dev::neutron::tld'),
@@ -17,7 +17,7 @@ class profile::openstack::codfw1dev::neutron::common(
     class {'::profile::openstack::base::neutron::common':
         version               => $version,
         openstack_controllers => $openstack_controllers,
-        keystone_host         => $keystone_host,
+        keystone_api_fqdn     => $keystone_api_fqdn,
         db_pass               => $db_pass,
         db_host               => $db_host,
         region                => $region,

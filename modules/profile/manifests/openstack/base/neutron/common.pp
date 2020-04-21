@@ -6,7 +6,7 @@ class profile::openstack::base::neutron::common(
     $db_pass = hiera('profile::openstack::base::neutron::db_pass'),
     $db_host = hiera('profile::openstack::base::neutron::db_host'),
     Array[Stdlib::Fqdn] $openstack_controllers = lookup('profile::openstack::base::openstack_controllers'),
-    $keystone_host = hiera('profile::openstack::base::keystone_host'),
+    Stdlib::Fqdn $keystone_api_fqdn = lookup('profile::openstack::base::keystone_api_fqdn'),
     $ldap_user_pass = hiera('profile::openstack::base::ldap_user_pass'),
     $rabbit_user = hiera('profile::openstack::base::neutron::rabbit_user'),
     $rabbit_pass = hiera('profile::openstack::base::neutron::rabbit_pass'),
@@ -18,14 +18,14 @@ class profile::openstack::base::neutron::common(
     Stdlib::Port $public_port = lookup('profile::openstack::base::keystone::public_port'),
     ) {
 
-    $keystone_admin_uri = "http://${keystone_host}:${auth_port}"
-    $keystone_public_uri = "http://${keystone_host}:${public_port}"
+    $keystone_admin_uri = "http://${keystone_api_fqdn}:${auth_port}"
+    $keystone_public_uri = "http://${keystone_api_fqdn}:${public_port}"
 
     class {'::openstack::neutron::common':
         version               => $version,
         openstack_controllers => $openstack_controllers,
         keystone_admin_uri    => $keystone_admin_uri,
-        keystone_host         => $keystone_host,
+        keystone_api_fqdn     => $keystone_api_fqdn,
         keystone_public_uri   => $keystone_public_uri,
         db_pass               => $db_pass,
         db_user               => $db_user,
