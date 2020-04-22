@@ -46,10 +46,7 @@ class profile::analytics::refinery::job::data_purge (
     # Keep this many days of refined webrequest data.
     $refined_retention_days = 90
     kerberos::systemd_timer { 'refinery-drop-webrequest-refined-partitions':
-        # Temporarily disable webrequest deletion for 1 week to give researchers time to
-        # implement a covid-19 related research job.
-        # https://phabricator.wikimedia.org/T248600
-        ensure       => 'absent',
+        ensure       => $ensure_timers,
         description  => 'Drop Webrequest refined data imported on HDFS following data retention policies.',
         command      => "${refinery_path}/bin/refinery-drop-older-than --database='wmf' --tables='webrequest' --base-path='/wmf/data/wmf/webrequest' --path-format='.+/year=(?P<year>[0-9]+)(/month=(?P<month>[0-9]+)(/day=(?P<day>[0-9]+)(/hour=(?P<hour>[0-9]+))?)?)?' --older-than='${refined_retention_days}' --skip-trash --execute='cf16215b8158e765b623db7b3f345d36'",
         interval     => '*-*-* 00/4:45:00',
