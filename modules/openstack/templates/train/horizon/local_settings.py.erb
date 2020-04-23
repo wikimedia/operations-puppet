@@ -95,11 +95,13 @@ SECRET_KEY = "<%= @secret_key %>"
 
 # We recommend you use memcached for development; otherwise after every reload
 # of the django development server, you will have to login again.
+#
+# Port 11213 is mcrouter, a transparent front-end for memcached
 SESSION_ENGINE='django.contrib.sessions.backends.cache'
 CACHES = {
    'default': {
        'BACKEND' : 'django.core.cache.backends.memcached.MemcachedCache',
-       'LOCATION' : '127.0.0.1:11212',
+       'LOCATION' : '127.0.0.1:11213',
    }
 }
 

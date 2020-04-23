@@ -6,7 +6,14 @@ class role::wmcs::openstack::codfw1dev::cloudweb {
     include ::profile::standard
     include ::profile::ldap::client::labs
     include ::profile::base::firewall
+
+    # Currently we run both nutcracker and mcrouter.  Nutcracker is for
+    #  the soon-to-be-moved wikitech/mediawiki install;
+    #  Mcrouter is used by Horizon.  They share the same
+    #  memcached backends.
     include ::profile::openstack::codfw1dev::nutcracker
+    include ::profile::openstack::codfw1dev::cloudweb_mcrouter
+
     include ::profile::lvs::realserver
 
     # Wikitech:

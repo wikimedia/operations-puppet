@@ -51,7 +51,12 @@ striker::uwsgi::config:
 apache::logrotate::period: 'daily'
 apache::logrotate::rotate: 30
 
+# Currently unused:
 profile::openstack::base::nutcracker::memcached::size: 6000
+
+profile::openstack::codfw1dev::cloudweb_memcached_size: 6000
+profile::openstack::codfw1dev::cloudweb::mcrouter_port: 11213
+
 profile::openstack::base::nutcracker::redis::shards:
   jobqueue:
     eqiad:

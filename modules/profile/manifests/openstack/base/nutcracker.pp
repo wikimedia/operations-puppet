@@ -16,11 +16,11 @@ class profile::openstack::base::nutcracker(
         datacenters       => [],
     }
 
-    class { '::memcached':
-        size => $memcached_size,
-    }
-
-    class { '::profile::prometheus::memcached_exporter': }
+    # Memcached is now getting installed by the cloudweb_mcrouter class
+    # class { '::memcached':
+    #     size => $memcached_size,
+    # }
+    # class { '::profile::prometheus::memcached_exporter': }
 
     $labweb_ips_ferm = inline_template("(@resolve((<%= @labweb_hosts.join(' ') %>)) @resolve((<%= @labweb_hosts.join(' ') %>), AAAA))")
     ferm::service { 'horizon_memcached':
