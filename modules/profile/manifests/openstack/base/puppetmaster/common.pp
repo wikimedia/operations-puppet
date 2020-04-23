@@ -49,7 +49,7 @@ class profile::openstack::base::puppetmaster::common(
         rule   => "saddr (${labs_networks}
                           @resolve((${all_puppetmasters}))
                           @resolve((${join($labweb_hosts,' ')}))
-                          @resolve((${join($labweb_hosts,' ')}), AAAA)
+                          @resolve((${join($labweb_hosts,' ')}), AAAA))
                           proto tcp dport 8141 ACCEPT;",
     }
 
