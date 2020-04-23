@@ -37,12 +37,11 @@ profile::openstack::eqiad1::keystone_api_fqdn: 'openstack.eqiad1.wikimediacloud.
 profile::openstack::eqiad1::primary_glance_image_store: cloudcontrol1003.wikimedia.org
 
 # List of designate hosts (generally labservicesxxxx).
-#  Be warned that there's one unique case here; memcached
-#  running on the first host in this list will be used
-#  as the tooz coordinator.  T250087
 profile::openstack::eqiad1::designate_hosts:
   - cloudservices1003.wikimedia.org
   - cloudservices1004.wikimedia.org
+
+
 profile::openstack::eqiad1::puppetmaster_hostname: 'puppetmaster.cloudinfra.wmflabs.org'
 profile::openstack::eqiad1::osm_host: 'wikitech.wikimedia.org'
 profile::openstack::eqiad1::rabbit_monitor_user: 'monitoring'
