@@ -1,14 +1,14 @@
 # vim: filetype=apache
 
 <VirtualHost *:80>
-    ServerAdmin webmaster@wikimedia.org
+    ServerAdmin noc@wikimedia.org
     ServerName <%= @lists_servername %>
     RewriteEngine on
     RewriteRule ^/(.*)$ https://<%= @lists_servername %>/$1 [R=301]
 </VirtualHost>
 
 <VirtualHost *:443>
-    ServerAdmin webmaster@wikimedia.org
+    ServerAdmin noc@wikimedia.org
     ServerName <%= @lists_servername %>
     # https://httpoxy.org/
     RequestHeader unset Proxy early
