@@ -8,6 +8,8 @@ class profile::installserver::proxy(
         config_content => template('role/caching-proxy/squid.conf.erb'),
     }
 
+    base::service_auto_restart { 'squid': }
+
     cron { 'squid-logrotate':
         ensure  => $ensure,
         command => '/usr/sbin/squid3 -k rotate',
