@@ -8,6 +8,7 @@ class purged (
     Integer $frontend_workers,
     Integer $backend_workers,
     Boolean $is_active,
+    Optional[String] $host_regex = undef,
 ) {
     package { 'purged':
         ensure => present,
