@@ -145,10 +145,10 @@ fi
 if [ ${PROD_EXIT} -eq 99 -a ${LABS_EXIT} -eq 99 ]; then
   exit 0
 elif [ ${PROD_EXIT} -ne 0 -a ${PROD_EXIT} -ne 99 ]; then
-  printf 'problems merging production'
+  printf 'problems merging production\n'
   exit ${PROD_EXIT}
 elif [ ${LABS_EXIT} -ne 0 -a ${LABS_EXIT} -ne 99 ]; then
-  printf 'problems merging LABS'
+  printf 'problems merging LABS\n'
   exit ${LABS_EXIT}
 fi
 
