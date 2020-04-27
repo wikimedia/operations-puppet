@@ -11,3 +11,6 @@ profile::idp::gauth_signing_key: changeit
 profile::idp::idp_primary: "%{facts.fqdn}"
 profile::idp::totp_encryption_key: ~
 profile::idp::totp_signing_key: ~
+profile::idp::mcrouter_ensure: absent
+profile::idp::mcrouter_cluster: idp
+
