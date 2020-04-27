@@ -104,3 +104,5 @@ profile::idp::actuators:
 profile::idp::idp_primary: idp-test1001.wikimedia.org
 profile::idp::idp_failover: idp-test2001.wikimedia.org
 profile::idp::is_staging_host: true
+profile::idp::mcrouter_ensure: present
+profile::idp::mcrouter_cluster: 'idp-test'
