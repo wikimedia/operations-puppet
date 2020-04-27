@@ -7579,6 +7579,21 @@ host restbase1027 {
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
+ host restbase1028 {
+     hardware ethernet 4C:D9:8F:A8:3A:9D;
+     fixed-address restbase1028.eqiad.wmnet;
+}
+
+host restbase1029 {
+     hardware ethernet 4C:D9:8F:B3:21:62;
+     fixed-address restbase1029.eqiad.wmnet;
+}
+
+host restbase1030 {
+     hardware ethernet 4C:D9:8F:A7:F9:C9;
+     fixed-address restbase1030.eqiad.wmnet;
+}
+
 host restbase2009 {
     hardware ethernet 14:02:ec:06:9a:fc;
     fixed-address restbase2009.codfw.wmnet;
