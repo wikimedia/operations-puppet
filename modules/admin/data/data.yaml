@@ -37,7 +37,7 @@ groups:
               ori, jmm, jynus, ema, elukey, gehel, volans, marostegui,
               ayounsi, herron, aborrero, bstorm, vgutierrez, jiji, cwhite,
               crusnov, cdanis, fsero, jbond, jeh, dzahn, phamhi, sukhe, pt1979,
-              rzl, hnowlan, jayme, kormat]
+              rzl, hnowlan, jayme, kormat, wkandek]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   ops-adm-group:
     # No gid for this group on purpose, it's a system provided one
@@ -3678,7 +3678,14 @@ users:
     gid: 500
     expiry_date: 2020-12-31
     expiry_contact: mnovotny@wikimedia.org
-
+  wkandek:
+    ensure: present
+    realname: Wolfgang Kandek
+    email: wkandek@wikimedia.org
+    uid: 23948
+    gid: 500
+    ssh_keys:
+      - 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDZ4qNjoBpqHTj25VV1MgfQiNqv5jupK1FtJ6M84dLxHQZgaoSvoDsoBJrfgVxZXC46b8S31rv46VkG6WPTfN4Y+h8w39RlK3ekUl+UjUdC9h45e0q1jlbufW97ISa3n8iCaY87bs8GKx5MiGjGtLpmEz3evKLkqhXTvRhe9vU/XMVLQBVKESSMCfJF5Hiz4W6bndF3tFiFJZzF/VzMW9J8Wlfd6lfsYxXhBC4KNy/vivCCajPXJwUtlcvTEFMbbZHMf+m37hzzG8E+HNScRTO5jsqiHw4Ga+v+Roos/rh43wUmv/yE+rcwISPS6ghePy59hUbirjuCkysan5tOdcjb1NTu6aUekQYEO+mkitRFCZVb7aJctlrLoC/F2zaK+MjvmHuV1M/NSrYfk9fir0fX+XErgjsF73mr7H0cHDh9FiMfMGqmSdQdthqR0V7aFfZ/46Gt4lLlegYQFQYdF8H5ZptvQgIh1otBmH9omOFTWKqzrOQfAua569ZjXA/+aBWqbKxS1kThp6LGlZkNR7rCdjbRZ08AXF54iLU2XpLjBZRWm6Y4RroG1tgc7x2pAU/8p61Ll2eLO9aZEMeWGFYDS70wSkmy8DZi8UAS0d4pdIy6GVqMbcIJC/AkfVsk+JBDhcMp2kWGkKIAL0p5IO6Gc/WjioRChfBX06yTkhHWnw== cardno:000611108181'
 ldap_only_users:
   abartov:
     ensure: present
@@ -4196,10 +4203,6 @@ ldap_only_users:
     ensure: present
     realname: Huei Tan
     email: htan@wikimedia.org
-  wkandek:
-    ensure: present
-    realname: Wolfgang Kandek
-    email: wkandek@wikimedia.org
   mwilliams:
     ensure: present
     realname: Matthew Williams
