@@ -608,11 +608,11 @@ sub vcl_recv {
 		// For now, we define our list of common bot UAs as just one that has often been
 		// associated with trouble in the past, plus the blank or empty UA.
 		if (std.ip(req.http.X-Client-IP, "192.0.2.1") ~ bot_blocked_nets && (!req.http.User-Agent || req.http.User-Agent ~ "^(python-requests|Go-http-client/2.0|CInetHttp/1.0)")) {
-			return (synth(403, "Scripted requests from your IP have been blocked, please contact noc@wikimedia.org, and see also https://meta.wikimedia.org/wiki/User-Agent_policy"));
+			return (synth(403, "Scripted requests from your IP have been blocked, please see https://meta.wikimedia.org/wiki/User-Agent_policy. In case of further questions, please contact noc@wikimedia.org."));
 		}
 
 		if (req.http.User-Agent == "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)" && vsthrottle.is_denied("node-fetch:" + req.http.X-Client-IP, 10, 10s)) {
-			return (synth(429, "Scripted requests from your IP have been blocked, please contact noc@wikimedia.org, and see also https://meta.wikimedia.org/wiki/User-Agent_policy"));
+			return (synth(429, "Scripted requests from your IP have been blocked, please see https://meta.wikimedia.org/wiki/User-Agent_policy. In case of further questions, please contact noc@wikimedia.org."));
 		}
 
 		// This unwraps proxy-style URLs and sanitizes the Host header
