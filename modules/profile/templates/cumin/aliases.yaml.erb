@@ -112,7 +112,8 @@ hadoop-worker-test: P{O:analytics_test_cluster::hadoop::worker}
 hadoop-hdfs-journal-test: P{C:cdh::hadoop::journalnode} and A:hadoop-worker-test
 hadoop-testcluster: P{O:analytics_test_cluster::hadoop::master or O:analytics_test_cluster::hadoop::standby or O:analytics_test_cluster::hadoop::worker or O:analytics_test_cluster::hadoop::ui or O:analytics_test_cluster::coordinator or O:analytics_test_cluster::client or O:druid::test_analytics::worker}
 icinga: P{O:alerting_host}
-idp: P{O:idp}
+idp: P{O:idp} or A:idp-test
+idp-test: P{O:idp_test}
 installserver: P{O:installserver::apt or O:installserver::light}
 kafka-all: A:kafka-main or A:kafka-jumbo
 kafka-main: P{O:kafka::main}
