@@ -56,3 +56,8 @@ profile::openstack::eqiad1::observer_password: 'Fs6Dq2RtG8KwmM2Z'
 profile::openstack::eqiad1::labs_hosts_range: '10.64.20.0/24'
 profile::openstack::eqiad1::labs_hosts_range_v6: '2620:0:861:118::/64'
 profile::openstack::eqiad1::all_regions: ['eqiad1-r']
+
+profile::openstack::eqiad1::purge_projects:
+    - project: sre-sandbox
+      days-to-nag: 10
+      days-to-delete: 15

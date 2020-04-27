@@ -208,4 +208,13 @@ class openstack::util::admin_scripts(
         mode   => '0755',
         source => "puppet:///modules/openstack/${version}/admin_scripts/wmcs-vm-extra-specs.py",
     }
+
+    # Script to wipe out old VMs in a project
+    file { '/usr/local/sbin/wmcs-instancepurge':
+        ensure => 'present',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+        source => "puppet:///modules/openstack/${version}/admin_scripts/wmcs-instancepurge.py",
+    }
 }

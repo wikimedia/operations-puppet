@@ -27,4 +27,5 @@ class role::wmcs::openstack::eqiad1::control {
     include ::profile::openstack::eqiad1::pdns::dns_floating_ip_updater
     include ::profile::openstack::eqiad1::nova::fullstack::service
     include ::profile::memcached::instance
+    include ::profile::openstack::eqiad1::nova::instance_purge
 }
