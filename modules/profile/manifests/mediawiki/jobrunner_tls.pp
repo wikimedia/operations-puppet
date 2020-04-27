@@ -22,13 +22,6 @@ class profile::mediawiki::jobrunner_tls (
             read_timeout   => $timeout,
             ocsp_proxy     => $ocsp_proxy,
         }
-        monitoring::service { "${sitename} https":
-            description    => "Nginx local proxy to ${sitename}",
-            check_command  => "check_https_url!${certname}!/rpc/RunJobs.php",
-            retries        => 2,
-            retry_interval => 2,
-            notes_url      => 'https://wikitech.wikimedia.org/wiki/Jobrunner',
-        }
     }
 
     ::ferm::service { 'mediawiki-jobrunner-https':
