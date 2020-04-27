@@ -68,6 +68,7 @@ class apereo_cas (
     } else {
         $ensure_rsync = 'absent'
         $ensure_sync_timer = 'present'
+        base::service_auto_restart { 'cas': }
     }
 
     if $idp_failover {
