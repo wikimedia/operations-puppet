@@ -914,13 +914,6 @@ node /^es202[45]\.codfw\.wmnet/ {
     role(mariadb::core)
 }
 
-# Disaster recovery hosts for external storage
-# These nodes are in process of being decommissioned
-
-node /^es200[1-4]\.codfw\.wmnet/ {
-    role(mariadb::temporary_storage)
-}
-
 node /^failoid[12]001\.(eqiad|codfw)\.wmnet$/ {
     role(failoid)
 }

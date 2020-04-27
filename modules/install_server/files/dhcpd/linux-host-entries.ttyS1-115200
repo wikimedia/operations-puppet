@@ -2846,30 +2846,6 @@ host es1025 {
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer-bootif/";
 }
 
-host es2001 {
-    hardware ethernet 78:2b:cb:61:1b:b5;
-    fixed-address es2001.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
-}
-
-host es2002 {
-    hardware ethernet 78:2b:cb:61:1b:5a;
-    fixed-address es2002.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
-}
-
-host es2003 {
-    hardware ethernet 78:2b:cb:61:17:fc;
-    fixed-address es2003.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
-}
-
-host es2004 {
-    hardware ethernet 78:2b:cb:60:34:26;
-    fixed-address es2004.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
-}
-
 host es2011 {
     hardware ethernet 14:18:77:54:48:37;
     fixed-address es2011.codfw.wmnet;
