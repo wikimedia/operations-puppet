@@ -90,5 +90,7 @@ profile::mariadb::backup::check::backups:
 profile::mariadb::backup::check::freshness:
   dump: 691200
   snapshot: 259200
+profile::mariadb::backup::check::warn_size_percentage: 3
+profile::mariadb::backup::check::crit_size_percentage: 15
 
 monitor_screens: false

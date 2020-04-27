@@ -5,8 +5,10 @@
 # Only metadata checks are done- full backup tests are to be
 # done on a separate class.
 class profile::mariadb::backup::check (
-    $backups   = hiera('profile::mariadb::backup::check::backups', ),
-    $freshness = hiera('profile::mariadb::backup::check::freshness', ),
+    $backups              = lookup('profile::mariadb::backup::check::backups', Hash, ),
+    $freshness            = lookup('profile::mariadb::backup::check::freshness', Hash[String, Integer], ),
+    $warn_size_percentage = lookup('profile::mariadb::backup::check::warn_size_percentage', Float[0, 100]),
+    $crit_size_percentage = lookup('profile::mariadb::backup::check::crit_size_percentage', Float[0, 100]),
 ) {
     class { 'mariadb::monitor_backup_script': }
 
@@ -14,10 +16,12 @@ class profile::mariadb::backup::check (
         $section_hash.each |String $type, Array[String] $type_array| {
             $type_array.each |String $dc| {
                 mariadb::monitor_backup { "${dc}-${section}-${type}":
-                    section    => $section,
-                    datacenter => $dc,
-                    type       => $type,
-                    freshness  => $freshness[$type],
+                    section              => $section,
+                    datacenter           => $dc,
+                    type                 => $type,
+                    freshness            => $freshness[$type],
+                    warn_size_percentage => $warn_size_percentage,
+                    crit_size_percentage => $crit_size_percentage,
                 }
             }
         }
