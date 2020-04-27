@@ -128,16 +128,14 @@ class profile::mediawiki::mcrouter_wancache(
     }
 
     class { '::mcrouter':
-        pools                    => $pools,
-        routes                   => $routes,
-        region                   => $::site,
-        cluster                  => 'mw',
-        cross_region_timeout_ms  => 250,
-        cross_cluster_timeout_ms => 1000,
-        num_proxies              => $num_proxies,
-        timeouts_until_tko       => $timeouts_until_tko,
-        port                     => $port,
-        ssl_options              => $ssl_options,
+        pools              => $pools,
+        routes             => $routes,
+        region             => $::site,
+        cluster            => 'mw',
+        num_proxies        => $num_proxies,
+        timeouts_until_tko => $timeouts_until_tko,
+        port               => $port,
+        ssl_options        => $ssl_options,
     }
 
     class { '::mcrouter::monitoring': }

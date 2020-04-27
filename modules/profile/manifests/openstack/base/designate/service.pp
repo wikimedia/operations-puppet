@@ -115,18 +115,16 @@ class profile::openstack::base::designate::service(
     #
     # The cross-region bits don't actually matter but the parent class expects them.
     class { '::mcrouter':
-        region                   => $::site,
-        cluster                  => 'designate',
-        cross_region_timeout_ms  => 250,
-        cross_cluster_timeout_ms => 1000,
-        pools                    => {
+        region      => $::site,
+        cluster     => 'designate',
+        pools       => {
             'designate' => {
                 servers => $designate_hosts.map |$designatehost| { sprintf('%s:11000:ascii:plain',ipresolve($designatehost,4)) }
             },
         },
-        routes                   => [
-            aliases              => [ "/${::site}/designate/" ],
-            route                => {
+        routes      => [
+            aliases => [ "/${::site}/designate/" ],
+            route   => {
                 type               => 'OperationSelectorRoute',
                 default_policy     => 'PoolRoute|designate',
                 operation_policies => {
