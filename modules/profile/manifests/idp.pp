@@ -37,6 +37,10 @@ class profile::idp(
 
     backup::set { 'idp': }
 
+    $memached_enable = $mcrouter_ensure ? {
+        'present' => true,
+        default   => false,
+    }
     $jmx_port = 9200
     $jmx_config = '/etc/prometheus/cas_jmx_exporter.yaml'
     $jmx_jar = '/usr/share/java/prometheus/jmx_prometheus_javaagent.jar'
@@ -93,6 +97,7 @@ class profile::idp(
         daemon_user            => $cas_daemon_user,
         manage_user            => $cas_manage_user,
         log_dir                => $log_dir,
+        memached_enable        => $memached_enable,
     }
 
     ferm::service {'cas-https':

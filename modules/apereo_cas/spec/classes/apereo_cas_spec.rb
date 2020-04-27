@@ -60,7 +60,10 @@ describe 'apereo_cas' do
             /^logging\.level\.org\.apereo=WARN$/
           ).without_content(
             /cas\.(tgc|webflow|authn\.mfa\.u2f)\.crypto\.(signing|encryption)\.key/
+          ).without_content(
+            /cas\.ticket\.registry\.memcached/
           )
+
           is_expected.to contain_file('/etc/cas/config/log4j2.xml').with(
             owner: 'cas',
             group: 'root',
@@ -75,7 +78,8 @@ describe 'apereo_cas' do
       end
       describe 'Change Defaults' do
         context 'tgc_signing_key' do
-          before(:each) { params.merge!(tgc_signing_key: 'foobar') }
+          let(:params) { super().merge(tgc_signing_key: 'foobar') }
+
           it { is_expected.to compile }
           it do
             is_expected.to contain_file('/etc/cas/config/cas.properties').with_content(
@@ -84,7 +88,8 @@ describe 'apereo_cas' do
           end
         end
         context 'tgc_encryption_key' do
-          before(:each) { params.merge!(tgc_encryption_key: 'foobar') }
+          let(:params) { super().merge(tgc_encryption_key: 'foobar') }
+
           it { is_expected.to compile }
           it do
             is_expected.to contain_file('/etc/cas/config/cas.properties').with_content(
@@ -93,7 +98,8 @@ describe 'apereo_cas' do
           end
         end
         context 'webflow_signing_key' do
-          before(:each) { params.merge!(webflow_signing_key: 'foobar') }
+          let(:params) { super().merge(webflow_signing_key: 'foobar') }
+
           it { is_expected.to compile }
           it do
             is_expected.to contain_file('/etc/cas/config/cas.properties').with_content(
@@ -102,7 +108,8 @@ describe 'apereo_cas' do
           end
         end
         context 'webflow_encryption_key' do
-          before(:each) { params.merge!(webflow_encryption_key: 'foobar') }
+          let(:params) { super().merge(webflow_encryption_key: 'foobar') }
+
           it { is_expected.to compile }
           it do
             is_expected.to contain_file('/etc/cas/config/cas.properties').with_content(
@@ -111,7 +118,8 @@ describe 'apereo_cas' do
           end
         end
         context 'u2f_signing_key' do
-          before(:each) { params.merge!(u2f_signing_key: 'foobar') }
+          let(:params) { super().merge(u2f_signing_key: 'foobar') }
+
           it { is_expected.to compile }
           it do
             is_expected.to contain_file('/etc/cas/config/cas.properties').with_content(
@@ -120,7 +128,8 @@ describe 'apereo_cas' do
           end
         end
         context 'u2f_encryption_key' do
-          before(:each) { params.merge!(u2f_encryption_key: 'foobar') }
+          let(:params) { super().merge(u2f_encryption_key: 'foobar') }
+
           it { is_expected.to compile }
           it do
             is_expected.to contain_file('/etc/cas/config/cas.properties').with_content(
@@ -131,7 +140,8 @@ describe 'apereo_cas' do
         context 'prometheus_nodes' do
           # If we use a host with ipv6 then CI fails if a user without IPv6 tests localy
           # So we use ns0 and ns1 as they are IPv4 only and somewhat stable
-          before(:each) { params.merge!(prometheus_nodes: ['ns0.wikimedia.org', 'ns1.wikimedia.org']) }
+          let(:params) { super().merge(prometheus_nodes: ['ns0.wikimedia.org', 'ns1.wikimedia.org']) }
+
           it { is_expected.to compile }
           it do
             is_expected.to contain_file('/etc/cas/config/cas.properties').with_content(
@@ -139,6 +149,48 @@ describe 'apereo_cas' do
                cas.monitor.endpoints.endpoint.prometheus.access=IP_ADDRESS\n
               cas.monitor.endpoints.endpoint.prometheus.requiredIpAddresses=::1,127.0.0.1,208.80.153.231,208.80.154.238\n
               /x
+            )
+          end
+        end
+        context 'memcached_enable' do
+          let(:params) { super().merge(memcached_enable: true) }
+
+          it { is_expected.to compile }
+          it do
+            is_expected.to contain_file('/etc/cas/config/cas.properties').with_content(
+              /cas.ticket.registry.memcached.servers=localhost:11211/
+            ).with_content(
+              /cas.ticket.registry.memcached.transcoder=KRYO/
+            )
+          end
+        end
+        context 'memcached_port' do
+          let(:params) { super().merge(memcached_enable: true, memcached_port: 42) }
+
+          it { is_expected.to compile }
+          it do
+            is_expected.to contain_file('/etc/cas/config/cas.properties').with_content(
+              /cas.ticket.registry.memcached.servers=localhost:42/
+            )
+          end
+        end
+        context 'memcached_enable' do
+          let(:params) { super().merge(memcached_enable: true, memcached_server: 'foobar.org') }
+
+          it { is_expected.to compile }
+          it do
+            is_expected.to contain_file('/etc/cas/config/cas.properties').with_content(
+              /cas.ticket.registry.memcached.servers=foobar.org:11211/
+            )
+          end
+        end
+        context 'memcached_enable' do
+          let(:params) { super().merge(memcached_enable: true, memcached_transcoder: 'WHALINV1') }
+
+          it { is_expected.to compile }
+          it do
+            is_expected.to contain_file('/etc/cas/config/cas.properties').with_content(
+              /cas.ticket.registry.memcached.transcoder=WHALINV1/
             )
           end
         end
