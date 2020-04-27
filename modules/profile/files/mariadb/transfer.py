@@ -315,7 +315,7 @@ class Transferer(object):
         return decompress_command
 
     def netcat_send_command(self, target_host):
-        netcat_send_command = '| /bin/nc -q 0 {} {}'.format(target_host, self.options['port'])
+        netcat_send_command = '| /bin/nc -q 0 -w 5 {} {}'.format(target_host, self.options['port'])
 
         return netcat_send_command
 
@@ -436,7 +436,7 @@ class Transferer(object):
                                    self.decompress_command, final_file)]
 
         job = self.remote_executor.start_job(target_host, dst_command)
-        time.sleep(1)  # FIXME: Work on a better way to wait for nc to be listening
+        time.sleep(3)  # FIXME: Work on a better way to wait for nc to be listening
         result = self.run_command(self.source_host, src_command)
         if result.returncode != 0:
             self.remote_executor.kill_job(target_host, job)
