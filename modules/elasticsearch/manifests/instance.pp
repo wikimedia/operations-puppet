@@ -156,6 +156,7 @@ define elasticsearch::instance(
     Optional[Stdlib::Port] $tls_ro_port = undef,
 
     Boolean $use_cms_gc = false,
+    Integer $cms_gc_init_occupancy_fraction = 75,
 ) {
 
     # Check arguments
