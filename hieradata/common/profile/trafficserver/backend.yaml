@@ -39,7 +39,7 @@ profile::trafficserver::backend::mapping_rules:
       replacement: https://debmonitor.discovery.wmnet:7443
     - type: map
       target: http://design.wikimedia.org
-      replacement: https://webserver-misc-static.discovery.wmnet
+      replacement: https://webserver-misc-apps.discovery.wmnet
     - type: map
       target: http://docker-registry.wikimedia.org
       replacement: https://docker-registry.discovery.wmnet
@@ -178,7 +178,7 @@ profile::trafficserver::backend::mapping_rules:
       replacement: https://webserver-misc-apps.discovery.wmnet
     - type: map
       target: http://sitemaps.wikimedia.org
-      replacement: https://webserver-misc-static.discovery.wmnet
+      replacement: https://webserver-misc-apps.discovery.wmnet
     - type: map
       target: http://smokeping.wikimedia.org
       replacement: https://netmon1002.wikimedia.org
