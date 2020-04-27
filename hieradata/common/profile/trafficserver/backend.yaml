@@ -209,13 +209,13 @@ profile::trafficserver::backend::mapping_rules:
       replacement: https://labweb.svc.eqiad.wmnet:7443
     - type: map
       target: http://transparency.wikimedia.org
-      replacement: https://webserver-misc-static.discovery.wmnet
+      replacement: https://webserver-misc-apps.discovery.wmnet
     - type: map
       target: http://transparency-archive.wikimedia.org
-      replacement: https://webserver-misc-static.discovery.wmnet
+      replacement: https://webserver-misc-apps.discovery.wmnet
     - type: map
       target: http://transparency-private.wikimedia.org
-      replacement: https://webserver-misc-static.discovery.wmnet
+      replacement: https://webserver-misc-apps.discovery.wmnet
     - type: map
       target: http://turnilo.wikimedia.org
       replacement: https://an-tool1007.eqiad.wmnet
