@@ -1,0 +1,93 @@
+https://transparency.wikimedia.org:
+- path: /
+  assert_status: 302
+  assert_headers:
+    Location: https://wikimediafoundation.org/about/transparency/
+
+https://transparency-archive.wikimedia.org:
+- path: /
+  assert_status: 200
+  assert_body_contains: Transparency Report
+- path: /privacy.html
+  assert_status: 200
+  assert_body_contains: flourish in an ecosystem
+
+https://static-bugzilla.wikimedia.org:
+- path: /
+  assert_status: 200
+  assert_body_contains: Deprecated Bugzilla - Wikimedia
+- path: /bug1.html
+  assert_status: 200
+  assert_body_contains: Documentation is out of date
+
+https://15.wikipedia.org:
+- path: /
+  assert_status: 200
+  assert_body_contains: Wikipedia is why
+- path: /people.html
+  assert_status: 200
+  assert_body_contains: People make Wikipedia great
+
+https://annual.wikimedia.org:
+- path: /
+  assert_status: 302
+  assert_headers:
+    Location: https://wikimediafoundation.org/about/2018-annual-report
+- path: /2016/
+  assert_status: 200
+  assert_body_contains: Wikimedia Foundation 2016 Annual Report
+
+https://bienvenida.wikimedia.org:
+- path: /
+  assert_status: 200
+  assert_body_contains: bienvenidos a Wikipedia
+
+https://design.wikimedia.org:
+- path: /
+  assert_status: 200
+  assert_body_contains: Design at Wikimedia Foundation
+- path: /style-guide/
+  assert_status: 200
+  assert_body_contains: Wikimedia Design Style Guide
+- path: /strategy/
+  assert_status: 200
+  assert_body_contains: Wikimedia Design Strategy
+
+https://iegreview.wikimedia.org:
+- path: /
+  assert_status: 302
+  assert_headers:
+    Location: /campaigns
+- path: /campaigns
+  assert_status: 200
+
+https://scholarships.wikimedia.org:
+- path: /
+  assert_status: 302
+  assert_headers:
+    Location: /apply
+- path: /apply
+  assert_status: 200
+
+https://sitemaps.wikimedia.org:
+- path: /
+  assert_status: 200
+  assert_body_contains: Apache Server at sitemaps 
+
+https://wikiworkshop.org:
+- path: /
+  assert_status: 200
+  assert_body_contains: wikiworkshop.org/2020
+- path: /2020
+  assert_status: 301
+  assert_headers:
+    Location: http://wikiworkshop.org/2020/
+- path: /2020/
+  assert_status: 200
+  assert_body_contains: Wiki Workshop 2020
+
+https://www.wikiworkshop.org:
+- path: /
+  assert_status: 301
+  assert_headers:
+    Location: https://wikiworkshop.org/
