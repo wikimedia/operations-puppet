@@ -8,6 +8,7 @@ class openstack::util::admin_scripts(
     #  when we rsync files via this host.
     $libvirt = $facts['lsbdistcodename'] ? {
         'stretch' => 'libvirt-clients',
+        'buster' => 'libvirt-clients',
     }
 
     package{ $libvirt :
