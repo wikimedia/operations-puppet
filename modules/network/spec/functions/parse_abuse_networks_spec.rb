@@ -15,12 +15,24 @@ abuse_networks = {
   }
 }
 ferm_parsed = {
-  'blocked_nets' => ['192.0.2.1/25']
+  'blocked_nets' => {
+    'context' => ['ferm', 'varnish'],
+    'networks' => ['192.0.2.1/25'],
+  },
 }
 varnish_parsed = {
-  'blocked_nets' => ['192.0.2.1/25'],
-  'bot_blocked_nets' => ['192.0.2.128/25'],
-  'public_cloud_nets' => ['198.51.100.0/24', '203.0.113.0/24', '2001:db8::1/128']
+  'blocked_nets' => {
+    'context' => ['ferm', 'varnish'],
+    'networks' => ['192.0.2.1/25'],
+  },
+  'bot_blocked_nets' => {
+    'context' => ['varnish'],
+    'networks' => ['192.0.2.128/25'],
+  },
+  'public_cloud_nets' => {
+    'context' => ['varnish'],
+    'networks' => ['198.51.100.0/24', '203.0.113.0/24', '2001:db8::1/128'],
+  }
 }
 describe 'network::parse_abuse_nets' do
   it do

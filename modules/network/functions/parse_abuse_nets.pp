@@ -7,12 +7,6 @@
 function network::parse_abuse_nets(
     Network::Context                    $context,
     Hash[String[1], Network::Abuse_net] $abuse_nets = lookup('abuse_networks'),
-) >> Hash[String[1], Array[Stdlib::IP::Address]] {
-    $abuse_nets.reduce({}) |$memo, $abuse_net| {
-        if $context in $abuse_net[1]['context'] {
-            $memo + { $abuse_net[0] => $abuse_net[1]['networks'] }
-        } else {
-            $memo
-        }
-    }
+) >> Hash[String[1], Network::Abuse_net] {
+    $abuse_nets.filter |$key, $values| { $context in $values['context'] }
 }

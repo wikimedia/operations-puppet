@@ -40,10 +40,11 @@ class base::firewall (
     }
 
     if $block_abuse_nets {
-        network::parse_abuse_nets('ferm').each |String $net_name, Array[Stdlib::IP::Address] $nets| {
+        network::parse_abuse_nets('ferm').each |String $net_name, Network::Abuse_net $config| {
             ferm::rule {"drop-abuse-net-${net_name}":
                 prio => '01',
-                rule => "saddr (${nets.join(' ')}) DROP;",
+                rule => "saddr (${config['networks'].join(' ')}) DROP;",
+                desc => $config['comment'],
             }
         }
     }
