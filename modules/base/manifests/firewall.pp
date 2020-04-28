@@ -44,7 +44,6 @@ class base::firewall (
             ferm::rule {"drop-abuse-net-${net_name}":
                 prio => '01',
                 rule => "saddr (${config['networks'].join(' ')}) DROP;",
-                desc => $config['comment'],
             }
         }
     }
