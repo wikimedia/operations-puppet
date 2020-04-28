@@ -101,7 +101,9 @@ def get_fact(fact_name):
     else:
         command = '/usr/bin/facter --puppet --json {}'.format(fact_name)
 
-    raw_output = _check_output(command, timeout=0)
+    # FIXME: long timeout here due to facter taking a very long time on
+    # a very small set of hosts.  T251293
+    raw_output = _check_output(command, timeout=3*60)
     try:
         fact_value = json.loads(raw_output).get(fact_name, None)
     except ValueError:
