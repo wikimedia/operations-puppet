@@ -13,7 +13,7 @@ route:
   # The labels by which incoming alerts are grouped together. For example,
   # multiple alerts coming in for cluster=A and alertname=LatencyHigh would
   # be batched into a single group.
-  group_by: ['alertname', 'job']
+  group_by: ['alertname', 'project']
 
   # When a new group of alerts is created by an incoming alert, wait at
   # least 'group_wait' to send the initial notification.
@@ -37,8 +37,8 @@ route:
   # Project based routes
 <% @projects.each do |project| -%>
   - receiver: '<%= project['name'] %>_email'
-    match_re:
-      job: ^<%= project['name'] %>_.*
+    match:
+      project: <%= project['name'] %>
 <% end -%>
 
 receivers:

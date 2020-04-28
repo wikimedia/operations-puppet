@@ -29,6 +29,16 @@ class profile::wmcs::prometheus::metricsinfra(
             ],
             'relabel_configs'      => [
                 {
+                    'source_labels' => ['__meta_openstack_project_id'],
+                    'replacement'   => $project['name'],
+                    'target_label'  => 'project',
+                },
+                {
+                    'source_labels' => ['job'],
+                    'replacement'   => 'node',
+                    'target_label'  => 'job',
+                },
+                {
                     'source_labels' => ['__meta_openstack_instance_name'],
                     'target_label'  => 'instance',
                 },
@@ -36,7 +46,7 @@ class profile::wmcs::prometheus::metricsinfra(
                     'source_labels' => ['__meta_openstack_instance_status'],
                     'action'        => 'keep',
                     'regex'         => 'ACTIVE',
-                }
+                },
             ]
         }
     }
@@ -50,6 +60,10 @@ class profile::wmcs::prometheus::metricsinfra(
     }
 
     # Prometheus alert rules
+    File<|title == "${base_path}/rules/alerts_default.yml"|> {
+        source => 'puppet:///modules/profile/wmcs/prometheus/metricsinfra/alerts_default.yml',
+    }
+
     file { "${base_path}/rules/alerts_projects.yml":
         ensure  => file,
         mode    => '0444',

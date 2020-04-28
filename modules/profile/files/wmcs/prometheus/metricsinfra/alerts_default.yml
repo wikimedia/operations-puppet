@@ -1,0 +1,10 @@
+groups:
+- name: alerts_default.conf
+  rules:
+  - alert: PrometheusReloadFailed
+    expr: prometheus_config_last_reload_successful == 0
+    for: 1h
+    labels:
+      severity: warn
+    annotations:
+      SUMMARY: Prometheus {{$labels.instance}} config reload fail
