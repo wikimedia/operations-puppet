@@ -29,8 +29,8 @@ centrallog: P{O:syslog::centralserver}
 cloudelastic: P{O:elasticsearch::cloudelastic}
 cloudbackup: P{O:wmcs::nfs::primary_backup::tools or O:wmcs::nfs::primary_backup::misc}
 cloudcontrol: P{O:wmcs::openstack::eqiad1::control}
-cloudcephmon: P{wmcs::ceph::mon}
-cloudcephosd: P{wmcs::ceph::osd}
+cloudcephmon: P{O:wmcs::ceph::mon}
+cloudcephosd: P{O:wmcs::ceph::osd}
 cloudceph: A:cloudcephmon or A:cloudcephosd
 cloudmetrics: P{O:wmcs::monitoring}
 cloudnet: P{O:wmcs::openstack::eqiad1::net}
@@ -284,7 +284,7 @@ misc-analytics: P{O:statistics::web or O:statistics::cruncher or O:statistics::p
 misc-apache: P{O:microsites::peopleweb or C:grafana::production or O:doc or O:requesttracker or O:otrs or O:webserver_misc_static or O:webserver_misc_apps} or A:planet or A:releases
 misc-devel: P{O:webperf::processors_and_site or O:webperf::profiling_tools or O:ve or O:archiva or O:docker::registry} or A:mwlog
 misc-nonprod: P{O:spare::system or O:test or O:pybaltest or O:insetup or O:insetup_noferm}
-misc-ops: A:installserver or A:cumin or A:url-downloader or A:icinga or A:netmon or A:puppetboard or A:debmonitor or A:debmonitor or A:backup or A:ping or A:rpki or A:flowspec or P{O:logging::webrequest::ops or O:builder or O:syslog::centralserver or O:pmacct or O:mirrors or A:apt}
+misc-ops: A:installserver or A:cumin or A:url-downloader or A:icinga or A:netmon or A:puppetboard or A:apt or A:debmonitor or A:debmonitor or A:backup or A:ping or A:rpki or A:flowspec or P{O:logging::webrequest::ops or O:builder or O:syslog::centralserver or O:pmacct or O:mirrors}
 misc-others: P{O:mw_rc_irc or O:etherpad or O:tor_relay or O:lists or O:netinsights}
 misc-releng: P{O:phabricator} or A:contint or A:gerrit or A:mw-maintenance
 misc-wmcs: A:labweb or P{O:wmcs::monitoring} or A:cloudcontrol or A:cloudnet or A:cloudservices
