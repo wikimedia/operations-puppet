@@ -12,3 +12,4 @@ profile::wmcs::prometheus::metricsinfra::ext_fqdn: prometheus.wmflabs.org
 profile::wmcs::prometheus::metricsinfra::projects:
   - name: tools
   - name: cloudinfra
+  - name: metricsinfra
