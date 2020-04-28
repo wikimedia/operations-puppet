@@ -75,7 +75,7 @@ if __name__ == "__main__":
         "--days-to-delete",
         default=0,
         type=int,
-        help="Delete VMs older than this number of days",
+        help="Delete VMs older than this number of days.  If unspecified then nothing is deleted.",
         action="store",
     )
     parser.add_argument(
