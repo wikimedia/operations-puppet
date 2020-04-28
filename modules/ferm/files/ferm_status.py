@@ -114,6 +114,10 @@ class Rule:
 class Ruleset:
     """parse the output of iptables-save and create a python object"""
 
+    # k8s creates dynamic rules prefixed with cali-
+    # docker creates DOCKER and DOCKER_USER
+    ignored_chain_prefix = ('DOCKER', 'cali-')
+
     def __init__(self, raw, table='filter'):
         self._raw = raw
         self.rules = defaultdict(list)
@@ -154,7 +158,11 @@ class Ruleset:
                 if line.startswith(':FORWARD'):
                     self.forward_policy = line.split()[1]
                 if line.startswith('-A'):
-                    self.rules[line.split()[1]].append(Rule(line))
+                    chain = line.split()[1]
+                    if not chain.startswith(self.ignored_chain_prefix):
+                        rule = Rule(line)
+                        if rule.jump and not rule.jump.startswith(self.ignored_chain_prefix):
+                            self.rules[chain].append(rule)
 
     def diff(self, ruleset):
         """return  a diff or between self and ruleset
