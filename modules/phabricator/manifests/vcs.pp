@@ -89,7 +89,7 @@ class phabricator::vcs (
         ferm::service {'ssh_public':
             proto  => 'tcp',
             port   => 22,
-            drange => $drange.join(' ')
+            drange => "(${drange.join(' ')})",
         }
         file { $sshd_config:
             content => template('phabricator/vcs/sshd_config.phabricator.erb'),
