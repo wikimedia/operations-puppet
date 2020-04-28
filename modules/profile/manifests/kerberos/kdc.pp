@@ -108,6 +108,8 @@ class profile::kerberos::kdc (
         require => Package['krb5-kdc'],
     }
 
+    base::service_auto_restart { 'krb5-kdc': }
+
     ferm::service { 'kerberos_kdc_tcp':
         proto  => 'tcp',
         port   => '88',
