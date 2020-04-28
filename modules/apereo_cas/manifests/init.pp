@@ -71,11 +71,7 @@ class apereo_cas (
         base::service_auto_restart { 'cas': }
     }
 
-    if $idp_failover {
-        $idp_nodes = [ $idp_primary, $idp_failover ]
-    } else {
-        $idp_nodes = [ $idp_primary ]
-    }
+    $idp_nodes = [$idp_primary, $idp_failover].delete_undef_values
 
     systemd::timer::job { 'idp-u2f-sync':
         ensure             => $ensure_sync_timer,
