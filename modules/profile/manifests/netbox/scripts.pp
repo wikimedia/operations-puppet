@@ -31,7 +31,7 @@ class profile::netbox::scripts (
         config          => {
             need-plugins => 'python3',
             venv         => $venv_path,
-            wsgi         => $script_path,
+            wsgi-file    => $script_path,
             vacuum       => true,
             http-socket  => "127.0.0.1:${service_port}",
             # T170189: make sure Python has a sane default encoding
