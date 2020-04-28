@@ -221,6 +221,11 @@ host idp2001 {
     fixed-address idp2001.wikimedia.org;
 }
 
+host idp-test1001 {
+    hardware ethernet aa:00:00:fd:51:57;
+    fixed-address idp-test1001.wikimedia.org;
+}
+
 host idp-test2001 {
     hardware ethernet aa:00:00:b8:4a:97;
     fixed-address idp-test2001.wikimedia.org;

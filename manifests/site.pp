@@ -1126,6 +1126,10 @@ node /^idp[12]001\.wikimedia\.org$/ {
     role(idp)
 }
 
+node 'idp-test1001.wikimedia.org' {
+    role(insetup)
+}
+
 # IDP staging server
 node 'idp-test2001.wikimedia.org' {
     role(idp_test)
