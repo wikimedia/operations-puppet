@@ -20,11 +20,7 @@ class phragile(
 ) {
 
     requires_realm('labs')
-    if os_version('debian == jessie') {
-        $php_module = 'php5'
-    } else {
-        $php_module = 'php'
-    }
+    $php_module = 'php'
 
     class { '::httpd':
         modules => ['rewrite', $php_module],
