@@ -3,10 +3,6 @@
 # Sets up the storage for the devicemanager docker storage driver
 # when thinpools can be used.
 #
-# Do NOT use on debian jessie, see
-#
-# https://github.com/docker/docker/issues/15629
-#
 class profile::docker::storage::thinpool {
     # Parameters that need to be defined in hiera
     # list of physical volumes to use. Common to all the storage profiles
@@ -18,10 +14,6 @@ class profile::docker::storage::thinpool {
     # Size of the thin pool and the metadata pool.
     $extents = hiera('profile::docker::storage::extents', '95%VG')
     $metadata_size = hiera('profile::docker::storage::metadata_size', undef)
-
-    if os_version('debian == jessie') {
-        fail('Thin pools cannot be used on Debian jessie.')
-    }
 
     Class['::profile::docker::storage::thinpool'] -> Service['docker']
 
