@@ -148,21 +148,26 @@ class Ruleset:
         for line in self._raw.split('\n'):
             if line.startswith('*{}'.format(self.table)):
                 in_table = True
-            if in_table:
-                if line.startswith('COMMIT'):
-                    break
-                if line.startswith(':INPUT'):
-                    self.input_policy = line.split()[1]
-                if line.startswith(':OUTPUT'):
-                    self.output_policy = line.split()[1]
-                if line.startswith(':FORWARD'):
-                    self.forward_policy = line.split()[1]
-                if line.startswith('-A'):
-                    chain = line.split()[1]
-                    if not chain.startswith(self.ignored_chain_prefix):
-                        rule = Rule(line)
-                        if rule.jump and not rule.jump.startswith(self.ignored_chain_prefix):
-                            self.rules[chain].append(rule)
+            if not in_table:
+                continue
+            if line.startswith('COMMIT'):
+                break
+            if line.startswith(':INPUT'):
+                self.input_policy = line.split()[1]
+                continue
+            if line.startswith(':OUTPUT'):
+                self.output_policy = line.split()[1]
+                continue
+            if line.startswith(':FORWARD'):
+                self.forward_policy = line.split()[1]
+                continue
+            if line.startswith('-A'):
+                chain = line.split()[1]
+                if chain.startswith(self.ignored_chain_prefix):
+                    continue
+                rule = Rule(line)
+                if rule.jump and not rule.jump.startswith(self.ignored_chain_prefix):
+                    self.rules[chain].append(rule)
 
     def diff(self, ruleset):
         """return  a diff or between self and ruleset
