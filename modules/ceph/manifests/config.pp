@@ -4,7 +4,7 @@
 #
 # Parameters
 #    - $mon_hosts
-#        Hash that defines the ceph monitor hosts, and public and private IPv4 information
+#        Hash that defines the ceph monitor host's public and private IPv4 information
 #    - $fsid
 #        Ceph filesystem ID
 #    - $enable_v2_messenger
@@ -54,7 +54,7 @@ class ceph::config (
             group  => 'libvirt-qemu',
         }
 
-        # These directories is used for admin socket connections
+        # Allow libvirt-qemu to access the Ceph admin socket
         File<|title == '/var/run/ceph'|> {
             group  => 'libvirt-qemu',
         }
