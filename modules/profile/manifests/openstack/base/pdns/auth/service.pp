@@ -1,6 +1,6 @@
 class profile::openstack::base::pdns::auth::service(
-    $host = hiera('profile::openstack::base::pdns::host'),
-    $host_secondary = hiera('profile::openstack::base::pdns::host_secondary'),
+    Array[Stdlib::Fqdn] $hosts = lookup('profile::openstack::base::pdns::hosts'),
+    Stdlib::Fqdn $service_fqdn = lookup('profile::openstack::base::pdns::service_fqdn'),
     $db_host = hiera('profile::openstack::base::pdns::db_host'),
     $db_pass = hiera('profile::openstack::base::pdns::db_pass'),
     $pdns_webserver = hiera('profile::openstack::base::pdns::pdns_webserver', false),
@@ -12,7 +12,7 @@ class profile::openstack::base::pdns::auth::service(
         dns_auth_ipaddress     => $facts['ipaddress'],
         dns_auth_ipaddress6    => $facts['ipaddress6'],
         dns_auth_query_address => $facts['ipaddress'],
-        dns_auth_soa_name      => $host,
+        dns_auth_soa_name      => $service_fqdn,
         pdns_db_host           => $db_host,
         pdns_db_password       => $db_pass,
         dns_webserver          => $pdns_webserver,
@@ -47,6 +47,6 @@ class profile::openstack::base::pdns::auth::service(
     ::ferm::service { 'pdns-rest-api':
         proto  => 'tcp',
         port   => '8081',
-        srange => "(@resolve((${host} ${host_secondary})) @resolve((${host} ${host_secondary}), AAAA))",
+        srange => "(@resolve((${join($hosts,' ')})) @resolve((${join($hosts,' ')}), AAAA))",
     }
 }

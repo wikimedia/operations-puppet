@@ -1,10 +1,8 @@
 profile::openstack::codfw1dev::pdns::tld: 'cloud'
 profile::openstack::codfw1dev::pdns::private_reverse_zones:
   - '16.172.in-addr.arpa'
-profile::openstack::codfw1dev::pdns::host: 'ns0.openstack.codfw1dev.wikimediacloud.org'
-profile::openstack::codfw1dev::pdns::host_secondary: 'ns1.openstack.codfw1dev.wikimediacloud.org'
-profile::openstack::codfw1dev::pdns::recursor: 'ns-recursor0.openstack.codfw1dev.wikimediacloud.org'
-profile::openstack::codfw1dev::pdns::recursor_secondary: 'ns-recursor1.openstack.codfw1dev.wikimediacloud.org'
+profile::openstack::codfw1dev::pdns::hosts:
+  - 'ns0.openstack.codfw1dev.wikimediacloud.org'
 
 # Extra records that the Labs DNS recursor should respond to.
 # Used for things that would ideally be in a .svc. DNS zone but

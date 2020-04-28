@@ -18,8 +18,7 @@ class profile::openstack::base::designate::service(
     $pdns_api_key = lookup('profile::openstack::base::pdns::api_key'),
     $db_admin_user = hiera('profile::openstack::base::designate::db_admin_user'),
     $db_admin_pass = hiera('profile::openstack::base::designate::db_admin_pass'),
-    $primary_pdns = hiera('profile::openstack::base::designate::host'),
-    $secondary_pdns = hiera('profile::openstack::base::designate::host_secondary'),
+    Array[Stdlib::Fqdn] $pdns_hosts = lookup('profile::openstack::base::designate::hosts'),
     $rabbit_user = hiera('profile::openstack::base::nova::rabbit_user'),
     $rabbit_pass = hiera('profile::openstack::base::nova::rabbit_pass'),
     $keystone_public_port = hiera('profile::openstack::base::keystone::public_port'),
@@ -32,9 +31,6 @@ class profile::openstack::base::designate::service(
     $puppet_git_repo_user = lookup('profile::openstack::base::horizon::puppet_git_repo_user'),
     Integer $mcrouter_port = lookup('profile::openstack::base::designate::mcrouter_port'),
     ) {
-
-    $primary_pdns_ip = ipresolve($primary_pdns,4)
-    $secondary_pdns_ip = ipresolve($secondary_pdns,4)
 
     class{'::openstack::designate::service':
         active                            => true,
@@ -57,8 +53,7 @@ class profile::openstack::base::designate::service(
         pdns_api_key                      => $pdns_api_key,
         db_admin_user                     => $db_admin_user,
         db_admin_pass                     => $db_admin_pass,
-        primary_pdns_ip                   => $primary_pdns_ip,
-        secondary_pdns_ip                 => $secondary_pdns_ip,
+        pdns_hosts                        => $pdns_hosts,
         rabbit_user                       => $rabbit_user,
         rabbit_pass                       => $rabbit_pass,
         keystone_public_port              => $keystone_public_port,
