@@ -78,6 +78,7 @@ profile::presto::server::catalogs:
       hive.hdfs.presto.principal: 'presto/an-coord1001.eqiad.wmnet@WIKIMEDIA'
       hive.hdfs.presto.keytab: '/etc/security/keytabs/presto/presto.keytab'
       hive.hdfs.wire-encryption.enabled: true
+      hive.parquet.fail-on-corrupted-statistics: false
 profile::presto::server::ferm_srange: $ANALYTICS_NETWORKS
 
 
