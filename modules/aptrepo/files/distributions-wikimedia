@@ -152,7 +152,7 @@ Update:
  elastic74
  grafana-stretch
  jenkins-stretch
- hp-mcp-stretch
+ hp-mcp-buster
  hwraid-stretch
  postgres
  thirdparty/ceph-nautilus-buster
