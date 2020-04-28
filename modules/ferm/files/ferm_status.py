@@ -115,8 +115,9 @@ class Ruleset:
     """parse the output of iptables-save and create a python object"""
 
     # k8s creates dynamic rules prefixed with cali-
+    # k8s also creates KUBE-SERVICES, KUBE-FIREWALL and KUBE-FORWARD
     # docker creates DOCKER and DOCKER_USER
-    ignored_chain_prefix = ('DOCKER', 'cali-')
+    ignored_chain_prefix = ('DOCKER', 'cali-', 'KUBE-')
 
     def __init__(self, raw, table='filter'):
         self._raw = raw
