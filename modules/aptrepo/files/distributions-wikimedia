@@ -5,7 +5,7 @@ Codename: jessie-wikimedia
 AlsoAcceptFor: jessie jessie-backports
 Version: 8
 Architectures: source amd64 i386
-Components: main backports thirdparty experimental openstack-mitaka-jessie
+Components: main backports thirdparty experimental
 # sorted list, leading whitespace matters!
  component/cassandra22
  component/ci
@@ -35,7 +35,6 @@ Update:
  hwraid
  jenkins
  mono-project-jessie
- openstack-mitaka-jessie
 Description: Wikimedia packages for Debian Jessie
 SignWith: 09DBD9F93F6CD44A
 DebOverride: deb-override
@@ -82,8 +81,6 @@ Components: main
  thirdparty/k8s
  thirdparty/mono-project-stretch
  thirdparty/oath
- thirdparty/openstack-ocata-stretch
- thirdparty/openstack-pike-stretch
  thirdparty/php72
  thirdparty/tor
 UDebComponents: main component/node10
@@ -102,9 +99,6 @@ Update:
  mono-project-stretch
  tor-stretch
  thirdparty/docker-ci
- thirdparty/openstack-ocata-stretch
- thirdparty/openstack-pike-stretch
- thirdparty/openstack-pike-stretch-nochange
 # NOTE:  Cloudera does not (yet) provide Stretch packages.  We use the Jessie ones,
 # along with a fake equivs to satisfy hadoop-mapreduce's (unnecessary) dependency on libssl1.0.0
 # which is not available in Stretch.  Once Cloudera releases Stretch packages, we can

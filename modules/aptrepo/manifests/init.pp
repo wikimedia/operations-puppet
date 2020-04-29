@@ -71,32 +71,15 @@ class aptrepo (
         mode   => '0755',
     }
 
-    # extra filter for jessie-backports required for openstack
+    # the following files entries can be dropped
     file { '/usr/local/bin/reprepro-update-filter-wmcs-openstack-jessie-bpo.sh':
-        ensure => present,
-        mode   => '0755',
-        owner  => 'root',
-        group  => 'root',
-        source => 'puppet:///modules/aptrepo/reprepro-update-filter-wmcs-openstack-jessie-bpo.sh',
-        before => File["${basedir}/conf/updates"],
+        ensure => absent,
     }
-    # extra filter for openstack ocata
     file { '/usr/local/bin/reprepro-update-filter-wmcs-openstack-ocata.sh':
-        ensure => present,
-        mode   => '0755',
-        owner  => 'root',
-        group  => 'root',
-        source => 'puppet:///modules/aptrepo/reprepro-update-filter-wmcs-openstack-ocata.sh',
-        before => File["${basedir}/conf/updates"],
+        ensure => absent,
     }
-    # extra filter for openstack pike
     file { '/usr/local/bin/reprepro-update-filter-wmcs-openstack-pike.sh':
-        ensure => present,
-        mode   => '0755',
-        owner  => 'root',
-        group  => 'root',
-        source => 'puppet:///modules/aptrepo/reprepro-update-filter-wmcs-openstack-pike.sh',
-        before => File["${basedir}/conf/updates"],
+        ensure => absent,
     }
 
     file { "${basedir}/conf/updates":
