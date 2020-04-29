@@ -40,7 +40,7 @@ Subject: %s
 
 
 def check_instance_ages(project, days_to_nag, days_to_delete):
-    clients = mwopenstackclients.clients()
+    clients = mwopenstackclients.clients(envfile='/etc/novaadmin.yaml')
 
     keystone = clients.keystoneclient(project=project)
     for instance in clients.allinstances(projectid=project, allregions=True):
