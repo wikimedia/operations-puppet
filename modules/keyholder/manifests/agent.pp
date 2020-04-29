@@ -95,5 +95,6 @@ define keyholder::agent(
         owner   => 'root',
         group   => 'keyholder',
         mode    => '0440',
+        notify  => Service['keyholder-proxy'],
     }
 }
