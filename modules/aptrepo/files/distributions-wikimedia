@@ -14,6 +14,7 @@ Components: main backports thirdparty experimental
  component/git
  component/icu57
  component/kube2proxy
+ component/mtail
  component/prometheus-node-exporter
  component/puppet5
  component/zookeeper349
@@ -58,6 +59,7 @@ Components: main
  component/elastic56
  component/elastic65
  component/facter3
+ component/mtail
  component/node10
  component/php72
  component/prometheus-node-exporter
@@ -123,6 +125,7 @@ Components: main
  component/cergen
  component/ci
  component/jdk8
+ component/mtail
  component/wmf-sre-laptop
  thirdparty/amd-rocm25
  thirdparty/amd-rocm26
