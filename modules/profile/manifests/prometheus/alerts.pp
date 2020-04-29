@@ -158,7 +158,7 @@ class profile::prometheus::alerts (
 
     ['eqiad', 'codfw'].each |String $site| {
         monitoring::check_prometheus { "eventgate_logging_external_latency_${site}":
-            description     => 'Elevated latency for eventgate-logging-external',
+            description     => "Elevated latency for eventgate-logging-external ${site}",
             query           => 'service_method:service_runner_request_duration_seconds:90pct5m{service="eventgate-logging-external"}',
             prometheus_url  => "http://prometheus.svc.${site}.wmnet/k8s",
             warning         => 0.5,
