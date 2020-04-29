@@ -13,6 +13,9 @@
 # private key should be located at "modules/secret/secrets/ssl/foo.key" in the
 # private repository.
 #
+# Unless the "use_cergen" parameter is set to true, in which case the private key
+# is expected at "modules/secret/secrets/certificates/foo/foo.key.private.pem.
+#
 # === Parameters
 #
 # [*ensure*]
@@ -31,6 +34,11 @@
 #   If true, no private key is installed by standard means/paths.  The default
 #   is false.
 #
+# [*use_cergen*]
+#   If true, private keys are expected in the location used by cergen:
+#   modules/secret/secrets/certificates/foo/foo.key.private.pem.
+#   The default is false.
+#
 # === Examples
 #
 #  sslcert::certificate { 'www.example.org':
@@ -44,9 +52,16 @@ define sslcert::certificate(
   $group='ssl-cert',
   $chain=true,
   $skip_private=false,
+  $use_cergen=false,
 ) {
     require sslcert
     require sslcert::dhparam
+
+    if $use_cergen {
+        $private_key_source="certificates/${title}/${title}.key.private.pem"
+    } else {
+        $private_key_source="ssl/${title}.key"
+    }
 
     # lint:ignore:puppet_url_without_modules
     # FIXME
@@ -73,7 +88,7 @@ define sslcert::certificate(
             mode      => '0440',
             show_diff => false,
             backup    => false,
-            content   => secret("ssl/${title}.key"),
+            content   => secret($private_key_source),
         }
     }
 

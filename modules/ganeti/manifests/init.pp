@@ -76,7 +76,8 @@ class ganeti(
         content => template('ganeti/etc_default_ganeti.erb')
     }
     sslcert::certificate { $certname:
-        ensure => present,
-        group  => 'gnt-admin',
+        ensure     => present,
+        group      => 'gnt-admin',
+        use_cergen => true,
     }
 }
