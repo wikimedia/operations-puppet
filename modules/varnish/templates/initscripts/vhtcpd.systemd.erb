@@ -1,8 +1,0 @@
-[Service]
-User=vhtcpd
-ExecStart=/usr/sbin/vhtcpd -m <%= @mc_addrs.join(' -m ') -%> -c <%= @caches.join(' -c ') -%> <%= @regex_arg -%> startfg
-Restart=on-failure
-
-#ProtectKernelModules=yes
-#ProtectKernelTunables=yes
-#ProtectSystem=strict
