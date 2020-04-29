@@ -16,6 +16,6 @@ if [[ "${EXIT}" -eq "0" ]]; then
 fi
 
 echo "Found diff for some devices, sending email to ${ADDRESS}"
-echo "${DIFF}\n\n${INFO}" | mail -s "[Homer] Device live config differs from committed one" "${ADDRESS}"
+echo -e "${DIFF}\n\n${INFO}" | mail -s "[Homer] Device live config differs from committed one" "${ADDRESS}"
 
 # Do not make the systemd timer fail even if the email was sent
