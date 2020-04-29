@@ -30,4 +30,11 @@ groups:
     labels:
       severity: warn
     annotations:
-      SUMMARY: Puppet agent failure for project {{$labels.project}} instance {{$labels.instance}}
+      SUMMARY: Puppet agent failure detected on instance {{$labels.instance}} in project {{$labels.project}}
+  - alert: PuppetAgentDisabled
+    expr: puppet_agent_enabled != 1
+    for: 15m
+    labels:
+      severity: warn
+    annotations:
+      SUMMARY: Puppet agent disabled on instance {{$labels.instance}} in project {{$labels.project}}
