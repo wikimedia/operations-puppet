@@ -79,11 +79,11 @@ IGNORE_ATTRIBUTES = [
 ]
 
 
-def _check_output(cmd, timeout=60, suppress_errors=False):
+def _check_output(cmd, timeout=60, suppress_errors=False, stderr=subprocess.STDOUT):
     """Executes the command with a timeout and cleans up the response."""
     cmd = shlex.split('/usr/bin/timeout {} {}'.format(timeout, cmd))
     try:
-        return subprocess.check_output(cmd, stderr=subprocess.STDOUT) \
+        return subprocess.check_output(cmd, stderr=stderr) \
             .decode(encoding='utf-8', errors='ignore').strip()
     except subprocess.CalledProcessError as e:
         if suppress_errors:
@@ -94,7 +94,8 @@ def _check_output(cmd, timeout=60, suppress_errors=False):
 
 def get_fact(fact_name):
     """Ask 'facter' for the given fact name. Return the fact's value or None."""
-    facter_version = int(_check_output('/usr/bin/facter --version').split('.')[0])
+    facter_version = int(_check_output('/usr/bin/facter --version', stderr=subprocess.DEVNULL)
+                         .split('.')[0])
 
     if facter_version == 3:
         command = '/usr/bin/facter --puppet --json -l error {}'.format(fact_name)
