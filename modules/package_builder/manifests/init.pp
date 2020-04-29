@@ -105,6 +105,7 @@ class package_builder(
         'dh-python',
         'python3-setuptools',
         'dh-exec',
+        'python3-setuptools-scm',
         $php_dev,
         $dh_php,
     ])
