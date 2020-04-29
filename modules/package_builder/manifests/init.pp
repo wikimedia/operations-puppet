@@ -104,6 +104,7 @@ class package_builder(
         'ubuntu-archive-keyring',
         'dh-python',
         'python3-setuptools',
+        'dh-exec',
         $php_dev,
         $dh_php,
     ])
