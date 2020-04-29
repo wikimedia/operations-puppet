@@ -10,7 +10,7 @@ DIFF="$(/usr/local/bin/homer --quiet '*' diff --omit-diff 2>&1)"
 EXIT="${?}"
 set -e
 
-if [[ "${EXIT}" -eq "0" ]]; then
+if [[ "${EXIT}" -ne "99" ]]; then
     echo "No diff found"
     exit 0
 fi
