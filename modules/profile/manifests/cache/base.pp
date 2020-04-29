@@ -19,7 +19,6 @@ class profile::cache::base(
     $performance_tweaks = hiera('profile::cache::base::performance_tweaks', true),
     $extra_trust = hiera('profile::cache::base::extra_trust', []),
     Optional[Hash[String, Integer]] $default_weights = lookup('profile::cache::base::default_weights', {'default_value' => undef}),
-    Boolean $use_purged = lookup('profile::cache::base::use_purged', {'default_value' => false}),
 ) {
     require network::constants
     # NOTE: Add the public WMCS IP space when T209011 is done
@@ -97,39 +96,17 @@ class profile::cache::base(
         prometheus_addr  => ':2112',
         frontend_workers => 4,
         backend_workers  => $::processorcount,
-        require          => Service['vhtcpd'],
-        is_active        => $use_purged,
+        is_active        => true,
         host_regex       => $purge_host_regex,
     }
 
     # TODO: Use check_procs during the vhtcpd/purged transition period, move to
     # nrpe::monitor_systemd_unit_state afterwards
-    $purged_process_count = $use_purged? {
-        true    => '1:1',
-        default => '0:0',
-    }
-
     nrpe::monitor_service { 'purged':
         description  => 'Purged HTTP PURGE daemon',
-        nrpe_command => "/usr/lib/nagios/plugins/check_procs -c ${purged_process_count} -C purged",
+        nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C purged',
         notes_url    => 'https://wikitech.wikimedia.org/wiki/Multicast_HTCP_purging',
     }
-
-    $vhtcpd_ensure = $use_purged ? {
-        true    => 'absent',
-        default => 'present',
-    }
-
-    class { 'prometheus::node_vhtcpd':
-        ensure => $vhtcpd_ensure,
-    }
-    class { 'varnish::htcppurger':
-        host_regex => $purge_host_regex,
-        mc_addrs   => $purge_multicasts,
-        caches     => ['127.0.0.1:3128', '127.0.0.1:3127,1.0'],
-        is_active  => !$use_purged,
-    }
-    Class[varnish::packages] -> Class[varnish::htcppurger]
 
     # Node initialization script for conftool
     if $default_weights != undef {
