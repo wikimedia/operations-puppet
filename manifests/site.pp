@@ -213,11 +213,6 @@ node 'bast5001.wikimedia.org' {
 
 }
 
-# VM with webserver for misc. static sites
-node 'bromine.eqiad.wmnet', 'vega.codfw.wmnet' {
-    role(webserver_misc_static)
-}
-
 node 'centrallog1001.eqiad.wmnet', 'centrallog2001.codfw.wmnet' {
     role(syslog::centralserver)
 }
@@ -1180,13 +1175,22 @@ node /kafkamon[12]001\.(codfw|eqiad)\.wmnet/ {
     role(kafka::monitoring)
 }
 
-# virtual machine for misc. applications
-# (as opposed to static sites using 'webserver_misc_static')
+# virtual machines for misc. applications and static sites
+# replaced miscweb1001/2001 in T247648 and bromine/vega in T247650
 #
-# profile::wikimania_scholarships - https://scholarships.wikimedia.org/
-# profile::iegreview              - https://iegreview.wikimedia.org
-# profile::racktables             - https://racktables.wikimedia.org
-# miscweb on buster replaced 1001/2001 in T247648
+# profile::wikimania_scholarships      # https://scholarships.wikimedia.org/
+# profile::iegreview                   # https://iegreview.wikimedia.org
+# profile::racktables                  # https://racktables.wikimedia.org
+# profile::microsites::annualreport    # https://annual.wikimedia.org
+# profile::microsites::static_bugzilla # https://static-bugzilla.wikimedia.org
+# profile::microsites::static_rt       # https://static-rt.wikimedia.org
+# profile::microsites::transparency    # https://transparency.wikimedia.org
+# profile::microsites::research        # https://research.wikimedia.org (T183916)
+# profile::microsites::design          # https://design.wikimedia.org (T185282)
+# profile::microsites::sitemaps        # https://sitemaps.wikimedia.org
+# profile::microsites::bienvenida      # https://bienvenida.wikimedia.org (T207816)
+# profile::microsites::wikiworkshop    # https://wikiworkshop.org (T242374)
+
 node 'miscweb1002.eqiad.wmnet', 'miscweb2002.codfw.wmnet' {
     role(webserver_misc_apps)
 }

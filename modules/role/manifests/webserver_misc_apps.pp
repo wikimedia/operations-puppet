@@ -1,16 +1,17 @@
-# a webserver for misc. apps
-# (as opposed to static websites using webserver_misc_static)
+# a webserver for misc. apps and static sites
 class role::webserver_misc_apps {
 
     system::role { 'webserver_misc_apps':
-        description => 'WMF misc apps web server'
+        description => 'WMF misc apps and sites web server'
     }
 
-    include ::profile::standard
-    include ::profile::base::firewall
+    include ::profile::standard                    # base tools
+    include ::profile::base::firewall              # firewalling
+    include ::profile::backup::host                # Bacula backups 
     include ::profile::misc_apps::httpd            # common webserver setup
     include ::profile::misc_apps::rsync            # copy data for migrations
     include ::profile::tlsproxy::envoy             # TLS termination
+
     include ::profile::wikimania_scholarships      # https://scholarships.wikimedia.org
     include ::profile::iegreview                   # https://iegreview.wikimedia.org
     include ::profile::racktables                  # https://racktables.wikimedia.org

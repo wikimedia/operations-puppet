@@ -4,16 +4,10 @@ class profile::misc_apps::httpd (
 ){
 
     $apache_modules_common = ['rewrite', 'headers', 'proxy', 'proxy_http']
+    $apache_php_module = 'php7.3'
+    $apache_modules = concat($apache_modules_common, $apache_php_module)
 
     require_package('libapache2-mod-php')
-
-    if os_version('debian == buster') {
-        $apache_php_module = 'php7.3'
-    } else {
-        $apache_php_module = 'php7.0'
-    }
-
-    $apache_modules = concat($apache_modules_common, $apache_php_module)
 
     class { '::httpd':
         modules => $apache_modules,

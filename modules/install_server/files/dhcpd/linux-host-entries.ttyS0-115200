@@ -100,12 +100,6 @@ host boron {
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
-host bromine {
-    hardware ethernet aa:00:00:f1:36:3a;
-    fixed-address bromine.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
-}
-
 host chlorine {
     hardware ethernet aa:00:00:37:a8:4d;
     fixed-address chlorine.eqiad.wmnet;
@@ -887,12 +881,6 @@ host urldownloader2001.wikimedia.org {
 host urldownloader2002.wikimedia.org {
     hardware ethernet aa:00:00:fe:d1:2e;
     fixed-address urldownloader2002.wikimedia.org;
-}
-
-host vega {
-    hardware ethernet aa:00:00:26:27:bf;
-    fixed-address vega.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host webperf1001 {

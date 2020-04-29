@@ -22,7 +22,7 @@ EXCLUDE=("nobody" \
          "l10nupdate" \
          "mwdeploy" \   # eventlog*
          "releases" \   # deployment.eqiad.wmnet
-         "reprepro");   # bromine.eqiad.wmnet
+         "reprepro");   # apt1001/2001, releases1001/2001
 
 log() {
     logger $1
