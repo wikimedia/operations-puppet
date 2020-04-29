@@ -82,6 +82,7 @@ profile::cache::varnish::frontend::fe_vcl_config:
     maps_domain: 'maps.beta.wmflabs.org'
     varnish_probe_ms: 100
     keep: '1d'
+    public_clouds_shutdown: false
 profile::cache::varnish::frontend::fe_jemalloc_conf: 'lg_dirty_mult:8,lg_chunk:17'
 
 profile::netconsole::client::ensure: absent
