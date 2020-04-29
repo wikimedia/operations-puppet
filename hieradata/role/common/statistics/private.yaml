@@ -7,7 +7,10 @@ admin::groups:
   # for deploying files to HDFS.
   - analytics-search-users
   - analytics-wmde-users
-profile::statistics::private::graphite_host: 'graphite-in.eqiad.wmnet'
+profile::statistics::explorer::misc_jobs::graphite_host: 'graphite-in.eqiad.wmnet'
+profile::statistics::explorer::misc_jobs::use_kerberos: true
+profile::statistics::explorer::misc_jobs::hosts_with_jobs:
+  - 'stat1007'
 
 profile::hadoop::common::hadoop_cluster_name: 'analytics-hadoop'
 

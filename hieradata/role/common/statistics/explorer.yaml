@@ -24,6 +24,11 @@ profile::statistics::eventlogging_rsync::hosts_with_rsync:
   - 'stat1006'
   - 'stat1007'
 
+profile::statistics::explorer::misc_jobs::graphite_host: 'graphite-in.eqiad.wmnet'
+profile::statistics::explorer::misc_jobs::use_kerberos: true
+profile::statistics::explorer::misc_jobs::hosts_with_jobs:
+  - 'stat1007'
+
 # Hive Client settings.
 # Hive configuration is common to multiple clients, but because of role based
 # hiera lookups, we need to repeat it in multiple places. If you change this,

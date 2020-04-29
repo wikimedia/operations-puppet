@@ -28,6 +28,7 @@ class role::statistics::explorer {
     include ::profile::statistics::dataset_mount
     include ::profile::statistics::eventlogging_rsync
     include ::profile::analytics::geoip::archive
+    include ::profile::statistics::explorer::misc_jobs
 
     # Deploy wikimedia/discovery/analytics repository
     include ::profile::analytics::cluster::elasticsearch

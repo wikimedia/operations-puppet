@@ -2,10 +2,6 @@
 #
 class profile::statistics::private(
     $labstore_hosts      = hiera('labstore_hosts'),
-    $statsd_host         = hiera('statsd'),
-    $graphite_host       = hiera('profile::statistics::private::graphite_host'),
-    $wmde_secrets        = hiera('wmde_secrets'),
-    $use_kerberos        = hiera('profile::statistics::private::use_kerberos', false),
 ) {
 
     include ::profile::statistics::base
@@ -42,17 +38,5 @@ class profile::statistics::private(
         read_only   => 'no',
         hosts_allow => $labstore_hosts,
         auto_ferm   => true,
-    }
-
-    # Discovery team statistics scripts and cron jobs
-    class { '::statistics::discovery':
-        use_kerberos => $use_kerberos
-    }
-
-    # WMDE releated statistics & analytics scripts.
-    class { '::statistics::wmde':
-        statsd_host   => $statsd_host,
-        graphite_host => $graphite_host,
-        wmde_secrets  => $wmde_secrets,
     }
 }
