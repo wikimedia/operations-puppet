@@ -1100,8 +1100,8 @@ node 'cloudservices2002-dev.wikimedia.org' {
     role(wmcs::openstack::codfw1dev::services)
 }
 
-node 'labtestservices2003.wikimedia.org' {
-    role(spare::system)
+node 'cloudservices2003-dev.wikimedia.org' {
+    role(wmcs::openstack::codfw1dev::services)
 }
 
 node /labweb100[12]\.wikimedia\.org/ {
