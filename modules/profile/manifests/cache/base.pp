@@ -9,7 +9,7 @@ class profile::cache::base(
     $cache_cluster = hiera('cache::cluster'),
     $statsd_host = hiera('statsd'),
     $packages_version = hiera('profile::cache::base::packages_version', 'installed'),
-    $purge_host_regex = hiera('profile::cache::base::purge_host_regex', ''), # TODO: default to undef after purged migration
+    $purge_host_regex = hiera('profile::cache::base::purge_host_regex', undef),
     $purge_multicasts = hiera('profile::cache::base::purge_multicasts', ['239.128.0.112']),
     $logstash_host = hiera('logstash_host', undef),
     $logstash_syslog_port = hiera('logstash_syslog_port', undef),
