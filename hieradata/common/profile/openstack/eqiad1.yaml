@@ -60,5 +60,5 @@ profile::openstack::eqiad1::all_regions: ['eqiad1-r']
 # T247517
 profile::openstack::eqiad1::purge_projects:
     - project: sre-sandbox
-      days-to-nag: 10
-      days-to-delete: 15
+      days_to_nag: 10
+      days_to_delete: 15

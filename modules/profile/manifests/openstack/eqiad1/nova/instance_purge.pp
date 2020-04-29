@@ -20,7 +20,7 @@ class profile::openstack::eqiad1::nova::instance_purge(
             description               => "Delete VMs older than ${purge_rules['days_to_delete']} days",
             interval                  => {
                 'start'    => 'OnCalendar',
-                'interval' => '*-*-* 12:00:00', # Daily at noon UTC
+                'interval' => '*-*-* 14:00:00', # Daily at 14:00 UTC
             },
             command                   => "/usr/local/sbin/wmcs-instancepurge --project ${purge_rules['project']} --days-to-delete ${purge_rules['days_to_delete']} --days-to-nag ${purge_rules['days_to_nag']}",
             logging_enabled           => false,
