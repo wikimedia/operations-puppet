@@ -45,4 +45,8 @@ profile::kafka::mirror::properties:
   producer_properties:
     "batch.size": 65536
 
+# Enable TLS consumer/producer
+profile::kafka::mirror::consumer_ssl_enabled: true
+profile::kafka::mirror::producer_ssl_enabled: true
+
 profile::kafka::broker::max_heap_size: '2g'
