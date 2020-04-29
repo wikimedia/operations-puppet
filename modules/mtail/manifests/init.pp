@@ -12,30 +12,35 @@
 #
 # [*service_ensure*]
 #   Whether mtail.service should be present or absent.
+#
+# [*from_component*]
+#   Installs mtail from component
 
 class mtail (
-  $logs = ['/var/log/syslog'],
-  $port = '3903',
-  $service_ensure = 'present',
-  $group = 'root',
+    Array[Stdlib::Unixpath] $logs   = ['/var/log/syslog'],
+    Stdlib::Port $port              = 3903,
+    Wmflib::Ensure $service_ensure  = 'present',
+    String $group                   = 'root',
+    Boolean $from_component         = false
 ) {
-    validate_array($logs)
-    validate_re($port, '^[0-9]+$')
-    validate_ensure($service_ensure)
-
-    if os_version('debian == stretch') {
-        apt::pin { 'mtail':
-            pin      => 'release a=stretch-backports',
-            package  => 'mtail',
-            priority => '1001',
-            before   => Package['mtail'],
+    if ( $from_component ) {
+        apt::package_from_component { 'mtail':
+            component => 'component/mtail'
         }
-    }
-
-    # Not using require_package so apt::pin may be
-    # applied before attempting to install mtail.
-    package { 'mtail':
-        ensure => present,
+    } else {
+        if os_version('debian == stretch') {
+            apt::pin { 'mtail':
+                pin      => 'release a=stretch-backports',
+                package  => 'mtail',
+                priority => '1001',
+                before   => Package['mtail'],
+            }
+        }
+        # Not using require_package so apt::pin may be
+        # applied before attempting to install mtail.
+        package { 'mtail':
+            ensure => present,
+        }
     }
 
     file { '/etc/default/mtail':
