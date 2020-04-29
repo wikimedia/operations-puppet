@@ -31,6 +31,10 @@
     # Back-compat for T73060: Redirect mediawiki-core/master/php/html/ to mediawiki-core/master/php/
     RewriteRule ^mediawiki-core/master/php/html/(.*)$ https://doc.wikimedia.org/mediawiki-core/master/php/$1 [L,QSA]
 
+    # Back-compat for T246042
+    Redirect 302 /mediawiki-extensions-CollaborationKit/ /CollaborationKit/
+    Redirect 302 /mediawiki-extensions-Wikibase/ /Wikibase/
+
     DirectoryIndex index.html index.php
 
     # DirectoryIndex would be neater but did not work properly under Apache 2.2
