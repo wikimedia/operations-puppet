@@ -3,11 +3,121 @@
 the output of `ferm -nl /etc/ferm/ferm.conf` This enables us to ensure
 the desired ruleset has been loaded by iptables"""
 from argparse import ArgumentParser
-from collections import defaultdict
 from ipaddress import ip_network
 from re import match
 from socket import getservbyname
 from subprocess import check_output
+
+
+class Tables(dict):
+    """class to hold all tables"""
+
+    def __str__(self):
+        return '\n'.join([str(table) for table in self.values()])
+
+
+class Table:
+    """Class to hold an individual Table"""
+
+    def __init__(self, name):
+        self.name = name
+        self._chains = {}
+
+    def __eq__(self, obj):
+        return self.name == obj.name and self.chains == obj.chains
+
+    def __str__(self):
+        lines = ['*{}'.format(self.name)]
+        return '\n'.join(lines + [str(chain) for chain in self.chains.values()])
+
+    def add(self, chain):
+        """Add a chain to the table
+
+        Parameters:
+            chain (Chain): a chain to add to _chains
+        """
+        self._chains[chain.name] = chain
+
+    def diff(self, table):
+        """return  a diff or between self and table
+
+        Parameters:
+            table (Table): a Table object to compare
+        return:
+            list: a list of strings representing the difference between self and table
+        """
+        lines = []
+        for missing in set(table.chains.keys()) - set(self.chains.keys()):
+            lines.append('-:{}'.format(missing))
+        for additional in set(self.chains.keys()) - set(table.chains.keys()):
+            lines.append('+:{}'.format(additional))
+        for name, chain in self.chains.items():
+            if name in table.chains.keys():
+                lines += chain.diff(table.chains[name])
+        return lines
+
+    @property
+    def chains(self):
+        """return all chains"""
+        return self._chains
+
+
+class Chain:
+    """A class to maintain an iptables chain"""
+    _header = ':{name} {policy}'
+
+    def __init__(self, name, policy=None):
+        self.name = name
+        self.policy = policy  # one of ACCEPT, DROP, None
+        self._rules = []
+
+    def __eq__(self, obj):
+        for token, value in vars(self).items():
+            if value != vars(obj)[token]:
+                return False
+        return True
+
+    def __str__(self):
+        return '\n'.join([self.header()] + [str(rule) for rule in self.rules])
+
+    def add(self, rule):
+        """Add a rule to the chain
+
+        Parameters:
+            rule (Rule): a rule to add to _rules
+        """
+        self._rules.append(rule)
+
+    def diff(self, chain):
+        """return  a diff or between self and chain
+
+        Parameters:
+            table (Chain): a Chain object to compare
+        return:
+            list: a list of strings representing the difference between self and chain
+        """
+        lines = []
+        if self.policy != chain.policy:
+            lines.append([
+                '-{}'.format(self.header()),
+                '+{}'.format(self.header(chain)),
+            ])
+        for rule in set(self.rules) - set(chain.rules):
+            lines.append('-{}'.format(str(rule)))
+        for rule in set(chain.rules) - set(self.rules):
+            lines.append('+{}'.format(str(rule)))
+        return lines
+
+    def header(self, obj=None):
+        """Return a formated header"""
+        if obj is not None:
+            return self._header.format(name=obj.name, policy=obj.policy)
+        return self._header.format(name=self.name, policy=self.policy)
+
+    @property
+    def rules(self):
+        """Return all rules"""
+        return self._rules
 
 
 class Rule:
@@ -111,98 +221,84 @@ class Rule:
             self.sport = self._resolve_port(self.sport)
 
 
-class Ruleset:
-    """parse the output of iptables-save and create a python object"""
+class Parser:
+    """A class to parse the output of iptabls-save and ferm -nl"""
 
-    # k8s creates dynamic rules prefixed with cali-
-    # k8s also creates KUBE-SERVICES, KUBE-FIREWALL and KUBE-FORWARD
-    # docker creates DOCKER and DOCKER_USER
-    ignored_chain_prefix = ('DOCKER', 'cali-', 'KUBE-')
+    parser_methods = {
+        '*': 'table',
+        ':': 'chain',
+        '-': 'rule',
+    }
 
-    def __init__(self, raw, table='filter'):
-        self._raw = raw
-        self.rules = defaultdict(list)
-        self.input_policy = None
-        self.output_policy = None
-        self.forward_policy = None
-        self.table = table
-        self._parse()
-
-    def __str__(self):
-        policy = [':INPUT {}'.format(self.input_policy),
-                  ':FORWARD {}'.format(self.forward_policy),
-                  ':OUTPUT {}'.format(self.output_policy)]
-        for _, rules in self.rules.items():
-            policy += [str(rule) for rule in rules]
-        return '\n'.join(policy)
+    def __init__(self, lines, ignored_chain_prefixes=None, autoparse=True):
+        self._lines = lines
+        self._table = None
+        self._chain = None
+        self.ignored_chain_prefixes = ignored_chain_prefixes if ignored_chain_prefixes else ()
+        self._tables = Tables()
+        if autoparse:
+            self.parse()
 
     def __eq__(self, obj):
-        for token, value in vars(self).items():
-            if token.startswith('_raw'):
-                continue
-            if value != vars(obj)[token]:
-                return False
-        return True
+        return self.tables == obj.tables
 
-    def _parse(self):
-        in_table = False
-        for line in self._raw.split('\n'):
-            if line.startswith('*{}'.format(self.table)):
-                in_table = True
-            if not in_table:
-                continue
-            if line.startswith('COMMIT'):
-                break
-            if line.startswith(':INPUT'):
-                self.input_policy = line.split()[1]
-                continue
-            if line.startswith(':OUTPUT'):
-                self.output_policy = line.split()[1]
-                continue
-            if line.startswith(':FORWARD'):
-                self.forward_policy = line.split()[1]
-                continue
-            if line.startswith('-A'):
-                chain = line.split()[1]
-                if chain.startswith(self.ignored_chain_prefix):
-                    continue
-                rule = Rule(line)
-                if rule.jump and not rule.jump.startswith(self.ignored_chain_prefix):
-                    self.rules[chain].append(rule)
+    def __str__(self):
+        return str(self.tables)
 
-    def diff(self, ruleset):
-        """return  a diff or between self and ruleset
+    @property
+    def tables(self):
+        """Return all tables"""
+        return self._tables
+
+    def parse(self):
+        """Parse the all lines"""
+        for line in self._lines.splitlines():
+            if not line:
+                continue
+            first_char = line[0]
+            if first_char in self.parser_methods:
+                getattr(self, '_parse_{}'.format(self.parser_methods[first_char]))(line)
+
+    def diff(self, parser):
+        """return a diff between self and parser
 
         Parameters:
-            ruleset (Ruleset): a Ruleset object to compare
+            table (Parser): a Parser object to compare
         return:
-            str: a String representing the difference between self and ruleset
+            list: a list of strings representing the difference between self and parser
         """
         lines = []
-        if self.table != ruleset.table:
-            return 'ruleset and self have different tables\n-{}\n+{}'.format(
-                self.table, ruleset.table)
-        if self.input_policy != ruleset.input_policy:
-            lines.append([
-                '-:INPUT {}'.format(self.input_policy),
-                '+:INPUT {}'.format(ruleset.input_policy),
-            ])
-        if self.forward_policy != ruleset.forward_policy:
-            lines.append([
-                '-:FORWARD {}'.format(self.forward_policy),
-                '+:FORWARD {}'.format(ruleset.forward_policy),
-            ])
-        if self.output_policy != ruleset.output_policy:
-            lines.append([
-                '-:OUTPUT {}'.format(self.output_policy),
-                '+:OUTPUT {}'.format(ruleset.output_policy),
-            ])
-        for chain in self.rules.keys():
-            for rule in set(self.rules[chain]) - set(ruleset.rules[chain]):
-                lines.append('-{}'.format(str(rule)))
-            for rule in set(ruleset.rules[chain]) - set(self.rules[chain]):
-                lines.append('+{}'.format(str(rule)))
+        for missing in set(parser.tables.keys()) - set(self.tables.keys()):
+            lines.append('-*{}'.format(missing))
+        for additional in set(self.tables.keys()) - set(parser.tables.keys()):
+            lines.append('+*{}'.format(additional))
+        for name, table in self.tables.items():
+            if name in parser.tables:
+                lines += table.diff(parser.tables[name])
         return '\n'.join(lines)
+
+    def _parse_table(self, line):
+        self._table = Table(line[1:])
+        self._tables[self._table.name] = self._table
+        self._chain = None
+
+    def _parse_chain(self, line):
+        parts = line.split()
+        if parts[0][1:].startswith(self.ignored_chain_prefixes):
+            return
+        if parts[1] == '-':
+            parts[1] = None
+        self._chain = Chain(parts[0][1:], parts[1])
+        self._table.add(self._chain)
+
+    def _parse_rule(self, line):
+        chain = line.split()[1]
+        rule = Rule(line)
+        if (chain.startswith(self.ignored_chain_prefixes)
+                or (rule.jump and rule.jump.startswith(self.ignored_chain_prefixes))):
+            return
+        self._chain = self._table.chains[chain]
+        self._chain.add(Rule(line))
 
 
 def get_args():
@@ -215,15 +311,21 @@ def get_args():
 def main():
     """Main entry point"""
     args = get_args()
+
+    # calico creates dynamic rules in chains prefixed with cali-
+    # as well as the following chains  KUBE-SERVICES, KUBE-FIREWALL and KUBE-FORWARD
+    # docker creates DOCKER and DOCKER_USER
+    ignored_chain_prefix = ('DOCKER', 'cali-', 'KUBE-')
+
     iptables = check_output(['/sbin/iptables-save'])
     ferm = check_output('/usr/sbin/ferm -nl --domain ip /etc/ferm/ferm.conf'.split())
     ip6tables = check_output(['/sbin/ip6tables-save'])
     ferm6 = check_output('/usr/sbin/ferm -nl --domain ip6 /etc/ferm/ferm.conf'.split())
 
-    ferm_parsed = Ruleset(ferm.decode())
-    iptables_parsed = Ruleset(iptables.decode())
-    ferm6_parsed = Ruleset(ferm6.decode())
-    ip6tables_parsed = Ruleset(ip6tables.decode())
+    ferm_parsed = Parser(ferm.decode(), ignored_chain_prefix)
+    iptables_parsed = Parser(iptables.decode(), ignored_chain_prefix)
+    ferm6_parsed = Parser(ferm6.decode(), ignored_chain_prefix)
+    ip6tables_parsed = Parser(ip6tables.decode(), ignored_chain_prefix)
 
     ret_code = 0
     if ferm6_parsed != ip6tables_parsed:
