@@ -3,7 +3,7 @@ class profile::misc_apps::httpd (
     $deployment_server = hiera('deployment_server'),
 ){
 
-    $apache_modules_common = ['rewrite', 'headers', 'authnz_ldap', 'proxy', 'proxy_http']
+    $apache_modules_common = ['rewrite', 'headers', 'proxy', 'proxy_http']
 
     require_package('libapache2-mod-php')
 

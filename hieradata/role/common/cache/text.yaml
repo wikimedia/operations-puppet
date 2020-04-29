@@ -171,8 +171,6 @@ cache::alternate_domains:
     director: 'labweb'
   transparency.wikimedia.org:
     director: 'webserver_misc_static'
-  transparency-private.wikimedia.org:
-    director: 'webserver_misc_static'
   turnilo.wikimedia.org:
     director: 'turnilo'
   '^(www\.)?wikiba\.se$':
