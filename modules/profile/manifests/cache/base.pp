@@ -48,11 +48,6 @@ class profile::cache::base(
         }
     }
 
-    # FIXME: Remove as soon as puppet runs on every cp node
-    class { '::nginx':
-        ensure => absent,
-    }
-
     class { 'conftool::scripts': }
 
     if $performance_tweaks {
