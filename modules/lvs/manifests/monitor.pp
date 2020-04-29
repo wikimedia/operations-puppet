@@ -50,10 +50,10 @@ class lvs::monitor() {
             $service_title = "${hostname}_${n}"
             $service_title_v6 = "${service_title}_v6"
             if $data['encryption'] {
-                $description = 'LVS HTTPS'
+                $description = "LVS HTTPS ${sitename}"
             }
             else {
-                $description = 'LVS HTTP'
+                $description = "LVS HTTP ${sitename}"
             }
             # Add ipv4 monitoring if present
             if $hostname in $hosts {
