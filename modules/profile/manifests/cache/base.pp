@@ -100,12 +100,8 @@ class profile::cache::base(
         host_regex       => $purge_host_regex,
     }
 
-    # TODO: Use check_procs during the vhtcpd/purged transition period, move to
-    # nrpe::monitor_systemd_unit_state afterwards
-    nrpe::monitor_service { 'purged':
-        description  => 'Purged HTTP PURGE daemon',
-        nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C purged',
-        notes_url    => 'https://wikitech.wikimedia.org/wiki/Multicast_HTCP_purging',
+    nrpe::monitor_systemd_unit_state { 'purged':
+        require => Service['purged'],
     }
 
     # Node initialization script for conftool
