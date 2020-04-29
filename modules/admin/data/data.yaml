@@ -338,6 +338,13 @@ groups:
                  'ALL = NOPASSWD: /srv/phab/phabricator/bin/worker',
                  'ALL = NOPASSWD: /srv/phab/phabricator/bin/bulk make-silent --id *',
                  'ALL = NOPASSWD: /srv/phab/phabricator/bin/auth strip --all-types --user *']
+  phabricator-bulk-manager:
+    gid: 819
+    description: Users who can manage bulk jobs on phabricator
+                 * Move tasks in batches (T251349)
+                 * Configure a bulk job to execute silently.
+    members: []
+    privileges: ['ALL = NOPASSWD: /srv/phab/phabricator/bin/bulk make-silent --id *']
   phabricator-roots:
     gid: 748
     description: people who have full root on phabricator
