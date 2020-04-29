@@ -16,7 +16,7 @@
 #   Default: false
 #
 class profile::analytics::refinery::job::camus(
-    $kafka_cluster_name = lookup('profile::analytics::refinery::job::camus::kafka_cluster_name', { 'default_value' => 'jumbo' }),
+    $kafka_cluster_name = lookup('profile::analytics::refinery::job::camus::kafka_cluster_name', { 'default_value' => 'jumbo-eqiad' }),
     $monitoring_enabled = lookup('profile::analytics::refinery::job::camus::monitoring_enabled', { 'default_value' => false }),
     $use_kerberos       = lookup('profile::analytics::refinery::job::camus::use_kerberos', { 'default_value' => false }),
     $ensure_timers      = lookup('profile::analytics::refinery::job::camus::ensure_timers', { 'default_value' => 'present' }),
@@ -25,9 +25,9 @@ class profile::analytics::refinery::job::camus(
     require ::profile::analytics::refinery
 
     $kafka_config  = kafka_config($kafka_cluster_name)
-    $kafka_brokers = suffix($kafka_config['brokers']['array'], ':9092')
+    $kafka_brokers = $kafka_config['brokers']['string']
 
-    $kafka_brokers_jumbo     = suffix($kafka_config['brokers']['array'], ':9092')
+    $hadoop_cluster_name = $::profile::hadoop::common::cluster_name
 
     $env = "export PYTHONPATH=\${PYTHONPATH}:${profile::analytics::refinery::path}/python"
     $systemd_env = {
@@ -48,23 +48,32 @@ class profile::analytics::refinery::job::camus(
         ensure              => $ensure_timers,
         script              => "${profile::analytics::refinery::path}/bin/camus",
         kafka_brokers       => $kafka_brokers,
+        hadoop_cluster_name => $hadoop_cluster_name,
         camus_jar           => "${profile::analytics::refinery::path}/artifacts/org/wikimedia/analytics/camus-wmf/camus-wmf-0.1.0-wmf9.jar",
         check_jar           => "${profile::analytics::refinery::path}/artifacts/org/wikimedia/analytics/refinery/refinery-camus-0.0.90.jar",
         # Email reports if CamusPartitionChecker finds errors.
         check_email_target  => $check_email_target,
         environment         => $systemd_env,
-        template_variables  => {
-            'hadoop_cluster_name' => $::profile::hadoop::common::cluster_name
-        },
         use_kerberos        => $use_kerberos,
+        monitoring_enabled  => $monitoring_enabled,
     }
 
 
     # Import webrequest_* topics into /wmf/data/raw/webrequest
     # every 10 minutes, check runs and flag fully imported hours.
     camus::job { 'webrequest':
-        check                 => $monitoring_enabled,
-        kafka_brokers         => $kafka_brokers_jumbo,
+        camus_properties      => {
+            'kafka.whitelist.topics'          => 'webrequest_text,webrequest_upload',
+            'mapreduce.job.queuename'         => 'essential',
+            'camus.message.timestamp.field'   => 'dt',
+            # Set this to at least the number of topic/partitions you will be importing.
+            # 2 webrequest topics with 24 partitions each. 2 * 24 = 48.
+            'mapred.map.tasks'                => '48',
+            # This camus runs every 10 minutes, so limiting it to 9 should keep runs fresh.
+            'kafka.max.pull.minutes.per.task' => '9',
+            # Set HDFS umask so that webrequest files and directories created by Camus are not world readable.
+            'fs.permissions.umask-mode'       => '027'
+        },
         check_topic_whitelist => 'webrequest_(upload|text)',
         interval              => '*-*-* *:00/10:00',
     }
@@ -72,14 +81,21 @@ class profile::analytics::refinery::job::camus(
     # Import eventlogging_* topics into /wmf/data/raw/eventlogging
     # once every hour.
     camus::job { 'eventlogging':
-        kafka_brokers         => $kafka_brokers_jumbo,
-        check                 => true,
+        camus_properties      => {
+            'kafka.whitelist.topics'        => 'eventlogging_.+',
+            'camus.message.timestamp.field' => 'dt',
+            # Set this to at least the number of topic/partitions you will be importing.
+            'mapred.map.tasks'              => '100',
+        },
         # Don't need to write _IMPORTED flags for EventLogging data
         check_dry_run         => true,
         # Only check these topic, since they should have data every hour.
         check_topic_whitelist => 'eventlogging_(NavigationTiming|VirtualPageView)',
         interval              => '*-*-* *:05:00',
     }
+
+    # TODO: Create an eventlogging_legacy job that uses dynamic stream config to import
+    # eventlogging (and other) topics.
 
     # Import MediaWiki events into
     # /wmf/data/raw/event once every hour.
@@ -94,8 +110,17 @@ class profile::analytics::refinery::job::camus(
 
     # Imports MediaWiki (EventBus) events that are produced via eventgate-main
     camus::job { 'mediawiki_events':
-        kafka_brokers         => $kafka_brokers_jumbo,
-        check                 => $monitoring_enabled,
+        camus_properties      => {
+            # Write these into the /wmf/data/raw/event directory
+            'etl.destination.path'          => "hdfs://${hadoop_cluster_name}/wmf/data/raw/event",
+            'kafka.whitelist.topics'        => '(eqiad|codfw)\.(resource_change|mediawiki\.(page|revision|user|recentchange).*)',
+            'camus.message.timestamp.field' => 'meta.dt',
+            # Set this to at least the number of topic/partitions you will be importing.
+            'mapred.map.tasks'              => '40',
+        },
+        # This job was called 'eventbus' in the past and still uses the
+        # old camus history paths with this name.
+        camus_name            => 'eventbus-00',
         # Don't need to write _IMPORTED flags for event data
         check_dry_run         => true,
         # Only check high volume topics that will almost certainly have data every hour.
@@ -106,9 +131,23 @@ class profile::analytics::refinery::job::camus(
 
     # Imports MediaWiki (EventBus) events that are produced via eventgate-analytics
     # TODO: These are no longer all 'mediawiki' events.  Rename this job.
+    # These are events that are produced by MediaWiki
+    # to eventgate-analytics and into the Kafka Jumbo cluster.
+    # They are relatively high volume compared to the other 'mediawiki_events'.
     camus::job { 'mediawiki_analytics_events':
-        kafka_brokers         => $kafka_brokers_jumbo,
-        check                 => $monitoring_enabled,
+        camus_properties      => {
+            # Write these into the /wmf/data/raw/event directory
+            'etl.destination.path'            => "hdfs://${hadoop_cluster_name}/wmf/data/raw/event",
+            'kafka.whitelist.topics'          => '(eqiad|codfw)\.(mediawiki\.(api-request|cirrussearch-request)|.+\.sparql-query)',
+            'camus.message.timestamp.field'   => 'meta.dt',
+            # Set this to at least the number of topic/partitions you will be importing.
+            'mapred.map.tasks'                => '32',
+            # This camus runs every 15 minutes, so limiting it to 14 should keep runs fresh.
+            'kafka.max.pull.minutes.per.task' => '14',
+        },
+        # mediawiki_analytics_events has been reset so its 'camus_name' has changed from the default.
+        # This is just used for the default path to the camus history files in HDFS.
+        camus_name            => 'mediawiki_analytics_events-01',
         # Don't need to write _IMPORTED flags for event data
         check_dry_run         => true,
         # Only check high volume topics that will almost certainly have data every hour.
@@ -116,24 +155,50 @@ class profile::analytics::refinery::job::camus(
         interval              => '*-*-* *:00/15:00',
     }
 
-
     # Import mediawiki.job queue topics into /wmf/data/raw/mediawiki_job
     # once every hour.
     camus::job { 'mediawiki_job':
-        kafka_brokers => $kafka_brokers_jumbo,
-        interval      => '*-*-* *:10:00',
+        camus_properties => {
+            'kafka.whitelist.topics'        => '(eqiad|codfw)\.mediawiki\.job.*',
+            'camus.message.timestamp.field' => 'meta.dt',
+            # Set this to at least the number of topic/partitions you will be importing.
+            'mapred.map.tasks'              => '60',
+        },
+        check            => false,
+        interval         => '*-*-* *:10:00',
     }
 
     # Import eventlogging-client-side events for backup purposes
     camus::job { 'eventlogging-client-side':
-        kafka_brokers => $kafka_brokers_jumbo,
-        interval      => '*-*-* *:20:00',
+        camus_properties => {
+            'etl.destination.path'        => "hdfs://${hadoop_cluster_name}/wmf/data/raw/eventlogging_client_side",
+            'kafka.whitelist.topics'      => 'eventlogging-client-side',
+            # eventlogging-client-side events are not in JSON format.  They are
+            # simple strings separated by tabs. We rely on the fallback mechanism of
+            # StringMessageDecoder to use the system time for bucketing.
+            'camus.message.decoder.class' => 'com.linkedin.camus.etl.kafka.coders.StringMessageDecoder',
+            # Set this to at least the number of topic/partitions you will be importing.
+            'mapred.map.tasks'            => '12',
+        },
+        check            => false,
+        interval         => '*-*-* *:20:00',
     }
 
     # Import netflow queue topics into /wmf/data/raw/netflow
     # once every hour.
     camus::job { 'netflow':
-        kafka_brokers => $kafka_brokers_jumbo,
-        interval      => '*-*-* *:30:00',
+        camus_properties => {
+            'kafka.whitelist.topics'         => 'netflow',
+            # netflow stamp_inserted timestamps look like 2018-01-30 22:30:00
+            'camus.message.timestamp.format' => 'yyyy-MM-dd\' \'HH:mm:ss',
+            'camus.message.timestamp.field'  => 'stamp_inserted',
+            # Set this to at least the number of topic/partitions you will be importing.
+            'mapred.map.tasks'               => '3',
+        },
+        # No '-00' suffix is used in the netflow camus history dir path.
+        # Set camus_name to just 'netflow' to avoid the default -00 prefixing.
+        camus_name       => 'netflow',
+        check            => false,
+        interval         => '*-*-* *:30:00',
     }
 }

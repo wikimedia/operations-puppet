@@ -1,14 +1,19 @@
 # == Define camus::job
 #
 # Renders a camus.properties template and installs a
-# cron job to launch a Camus MapReduce job in Hadoop.
+# systemd timer to launch a Camus MapReduce job in Hadoop.
 #
 # == Parameters
 # [*kafka_brokers*]
-#   Array or comma separated list of Kafka Broker addresses, e.g.
-#   ['kafka1012.eqiad.wmnet:9092', 'kafka1013.eqiad.wmnet:9092']
-#     OR
+#   Comma separated list of Kafka Broker addresses, e.g.
 #   kafka1012.eqiad.wmnet:9092,kafka1013.eqiad.wmnet:9092,...
+#
+# [*camus_properties*]
+#   Extra properties to render into the camus.properties file.
+#
+# [*hadoop_cluster_name*]
+#   Used to set default values for some camus HDFS path properties.
+#   Default: analytics-hadoop
 #
 # [*script*]
 #   Path to camus wrapper script.  This is currently deployed with the refinery
@@ -18,6 +23,11 @@
 #
 # [*user*]
 #   The camus cron will be run by this user.
+#
+# [*camus_name*]
+#   Name of the camus job.  This will be used for default values for
+#   camus history path and kafka client name.
+#   Default: $title-00
 #
 # [*camus_jar*]
 #   Path to camus.jar.  Default undef,
@@ -46,12 +56,7 @@
 #    Any additional jar files to pass to Hadoop when starting the MapReduce job.
 #
 # [*template*]
-#   Puppet path to camus.properties ERb template.  Default: camus/${title}.erb
-#
-# [*template_variables*]
-#   Hash of anything you might need accessible in your custom camus.properties
-#   ERb template.  You can access these in your template as
-#   @template_variables['my_property']
+#   Puppet path to camus.properties.erb template.  Default: camus/camus.properties.erb
 #
 # [*interval*]
 #   Systemd interval to use. Format: DayOfWeek Year-Month-Day Hour:Minute:Second
@@ -69,28 +74,120 @@
 #
 define camus::job (
     $kafka_brokers,
-    $script                 = '/srv/deployment/analytics/refinery/bin/camus',
-    $user                   = 'analytics',
-    $camus_jar              = undef,
-    $check                  = undef,
-    $check_jar              = undef,
-    $check_dry_run          = undef,
-    $check_email_target     = undef,
-    $check_topic_whitelist  = undef,
-    $libjars                = undef,
-    $template               = "camus/${title}.erb",
-    $template_variables     = {},
-    $interval               = undef,
-    $environment            = undef,
-    $monitoring_enabled     = true,
-    $use_kerberos           = false,
-    $ensure                 = 'present',
+    $camus_properties        = {},
+    $hadoop_cluster_name     = 'analytics-hadoop',
+    $script                  = '/srv/deployment/analytics/refinery/bin/camus',
+    $user                    = 'analytics',
+    $camus_name              = "${title}-00",
+    $camus_jar               = undef,
+    $check                   = undef,
+    $check_jar               = undef,
+    $check_dry_run           = undef,
+    $check_email_target      = undef,
+    $check_topic_whitelist   = undef,
+    $libjars                 = undef,
+    $template                = 'camus/camus.properties.erb',
+    $interval                = undef,
+    $environment             = undef,
+    $monitoring_enabled      = true,
+    $use_kerberos            = false,
+    $ensure                  = 'present',
 )
 {
     require ::camus
 
-    $properties_file = "${camus::config_directory}/${title}.properties"
+    $default_properties = {
+        'mapreduce.job.queuename'             => 'default',
+        # final top-level data output directory, sub-directory will be dynamically created for each topic pulled
+        'etl.destination.path'                => "hdfs://${hadoop_cluster_name}/wmf/data/raw/${title}",
+        # Allow overwrites of previously imported files in etl.destination.path
+        'etl.destination.overwrite'           => true,
+        # HDFS location where you want to keep execution files, i.e. offsets, error logs, and count files
+        'etl.execution.base.path'             => "hdfs://${hadoop_cluster_name}/wmf/camus/${camus_name}",
+        # where completed Camus job output directories are kept, usually a sub-dir in the base.path
+        'etl.execution.history.path'          => "hdfs://${hadoop_cluster_name}/wmf/camus/${camus_name}/history",
+        # ISO-8601 timestamp like 2013-09-20T15:40:17Z
+        'camus.message.timestamp.format'      => 'yyyy-MM-dd\'T\'HH:mm:ss\'Z\'',
+        # use the dt field
+        'camus.message.timestamp.field'       => 'dt',
+        # Store output into hourly buckets
+        'etl.output.file.time.partition.mins' => '60',
+        # records are delimited by newline
+        'etl.output.record.delimiter'         => '\\n',
+        # Concrete implementation of the Decoder class to use
+        'camus.message.decoder.class'         => 'com.linkedin.camus.etl.kafka.coders.JsonStringMessageDecoder',
+        # SequenceFileRecordWriterProvider writes the records as Hadoop Sequence files
+        # so that they can be split even if they are compressed.  We Snappy compress these
+        # by setting mapreduce.output.fileoutputformat.compress.codec to SnappyCodec
+        # in /etc/hadoop/conf/mapred-site.xml.
+        'etl.record.writer.provider.class'    => 'com.linkedin.camus.etl.kafka.common.SequenceFileRecordWriterProvider',
+        # Disable speculative map tasks.
+        # There is no need to consume the same data from Kafka multiple times.
+        'mapreduce.map.speculative'           => false,
+        # Set this to at least the number of topic/partitions you will be importing.
+        # Max hadoop tasks to use, each task can pull multiple topic partitions.
+        'mapred.map.tasks'                    => '10',
+        # Connection parameters.
+        'kafka.brokers'                       => $kafka_brokers,
+        # max historical time that will be pulled from each partition based on event timestamp
+        #  Note:  max.pull.hrs doesn't quite seem to be respected here.
+        #  This will take some more sleuthing to figure out why, but in our case
+        #  here its ok, as we hope to never be this far behind in Kafka messages to
+        #  consume.
+        'kafka.max.pull.hrs'                  => '168',
+        # events with a timestamp older than this will be discarded.
+        'kafka.max.historical.days'           => '7',
+        # Max minutes for each mapper to pull messages (-1 means no limit)
+        # Let each mapper run for no more than 9 minutes.
+        # Camus creates hourly directories, and we don't want a single
+        # long running mapper keep other Camus jobs from being launched.
+        'kafka.max.pull.minutes.per.task'     => '55',
+        # if whitelist has values, only whitelisted topic are pulled.  nothing on the blacklist is pulled
+        'kafka.blacklist.topics'              => '',
+        # These are the kafka topics camus brings to HDFS
+        'kafka.whitelist.topics'              => '',
+        # Name of the client as seen by kafka
+        'kafka.client.name'                   => "camus-${camus_name}",
+        # Fetch Request Parameters
+        #kafka.fetch.buffer.size=
+        #kafka.fetch.request.correlationid=
+        #kafka.fetch.request.max.wait=
+        #kafka.fetch.request.min.bytes=
+        'kafka.client.buffer.size'            => '20971520',
+        'kafka.client.so.timeout'             => '60000',
+        # If camus offsets and kafka offsets mismatch
+        # then camus should start from the earliest offset.
+        'kafka.move.to.earliest.offset'       => true,
+        # Controls the submitting of counts to Kafka
+        # Default value set to true
+        'post.tracking.counts.to.kafka'       => false,
+        # Stops the mapper from getting inundated with Decoder exceptions for the same topic
+        # Default value is set to 10
+        'max.decoder.exceptions.to.print'     => '5',
+        'log4j.configuration'                 => false,
+        'etl.run.tracking.post'               => false,
+        #kafka.monitor.tier=
+        'kafka.monitor.time.granularity'      => '10',
+        'etl.hourly'                          => 'hourly',
+        'etl.daily'                           => 'daily',
+        'etl.ignore.schema.errors'            => false,
+        # WMF relies on the relevant Hadoop properties for this,
+        # not Camus' custom properties.
+        #   i.e.  mapreduce.output.compression* properties
+        # # configure output compression for deflate or snappy. Defaults to deflate.
+        # etl.output.codec=deflate
+        # etl.deflate.level=6
+        # #etl.output.codec=snappy
+        'etl.default.timezone'                => 'UTC',
+        'etl.keep.count.files'                => false,
+        # 'etl.counts.path'                   => '',
+        'etl.execution.history.max.of.quota'  => '.8',
+    }
 
+    # Each key=value here will be the content of the camus properties file.
+    $template_properties = merge($default_properties, $camus_properties)
+
+    $properties_file = "${camus::config_directory}/${title}.properties"
     $properties_content = $ensure ? {
         'present' => template($template),
         default   => '',

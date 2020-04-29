@@ -20,9 +20,9 @@ class profile::analytics::refinery::job::test::camus(
     require ::profile::analytics::refinery
 
     $kafka_config  = kafka_config($kafka_cluster_name)
-    $kafka_brokers = suffix($kafka_config['brokers']['array'], ':9092')
+    $kafka_brokers = $kafka_config['brokers']['string']
 
-    $kafka_brokers_jumbo     = suffix($kafka_config['brokers']['array'], ':9092')
+    $hadoop_cluster_name = $::profile::hadoop::common::cluster_name
 
     $env = "export PYTHONPATH=\${PYTHONPATH}:${profile::analytics::refinery::path}/python"
     $systemd_env = {
@@ -42,31 +42,41 @@ class profile::analytics::refinery::job::test::camus(
     Camus::Job {
         script              => "${profile::analytics::refinery::path}/bin/camus",
         kafka_brokers       => $kafka_brokers,
+        hadoop_cluster_name => $hadoop_cluster_name,
         camus_jar           => "${profile::analytics::refinery::path}/artifacts/org/wikimedia/analytics/camus-wmf/camus-wmf-0.1.0-wmf9.jar",
         check_jar           => "${profile::analytics::refinery::path}/artifacts/org/wikimedia/analytics/refinery/refinery-camus-0.0.90.jar",
         # Email reports if CamusPartitionChecker finds errors.
         check_email_target  => $check_email_target,
         environment         => $systemd_env,
-        template_variables  => {
-            'hadoop_cluster_name' => $::profile::hadoop::common::cluster_name
-        },
         use_kerberos        => $use_kerberos,
     }
 
-
     # Import webrequest_* topics into /wmf/data/raw/webrequest
     # every 10 minutes, check runs and flag fully imported hours.
-    camus::job { 'webrequest_test':
-        check                 => $monitoring_enabled,
-        kafka_brokers         => $kafka_brokers_jumbo,
+    camus::job { 'webrequest':
+        camus_properties      => {
+            'kafka.whitelist.topics'          => 'webrequest_test_text',
+            'mapreduce.job.queuename'         => 'essential',
+            'camus.message.timestamp.field'   => 'dt',
+            # Set this to at least the number of topic/partitions you will be importing.
+            'mapred.map.tasks'                => '1',
+            # This camus runs every 10 minutes, so limiting it to 9 should keep runs fresh.
+            'kafka.max.pull.minutes.per.task' => '9',
+            # Set HDFS umask so that webrequest files and directories created by Camus are not world readable.
+            'fs.permissions.umask-mode'       => '027'
+        },
         check_topic_whitelist => 'webrequest_test_text',
         interval              => '*-*-* *:00/10:00',
     }
 
     # Import eventlogging_NavigationTiming topic into /wmf/data/raw/eventlogging
     # once every hour.
-    camus::job { 'eventlogging_test':
-        kafka_brokers         => $kafka_brokers_jumbo,
+    camus::job { 'eventlogging':
+        camus_properties      => {
+            'kafka.whitelist.topics'        => 'eventlogging_NavigationTiming',
+            'camus.message.timestamp.field' => 'dt',
+            'mapred.map.tasks'              => '1',
+        },
         check                 => true,
         # Don't need to write _IMPORTED flags for EventLogging data
         check_dry_run         => true,
