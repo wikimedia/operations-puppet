@@ -49,6 +49,12 @@ class profile::mariadb::parsercache (
         true  => 'dba',
         false => 'admins',
     }
+
+    mariadb::monitor_readonly { [ $shard ]:
+        read_only   => false,
+        is_critical => false,
+    }
+
     mariadb::monitor_replication { [ $shard ]:
       multisource   => false,
       is_critical   => $is_critical,
