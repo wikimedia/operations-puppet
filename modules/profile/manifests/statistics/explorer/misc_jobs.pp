@@ -7,6 +7,7 @@
 #
 class profile::statistics::explorer::misc_jobs(
     $statsd_host         = lookup('statsd'),
+    $labstore_hosts      = lookup('labstore_hosts'),
     $graphite_host       = lookup('profile::statistics::explorer::misc_jobs::graphite_host'),
     $wmde_secrets        = lookup('wmde_secrets'),
     $use_kerberos        = lookup('profile::statistics::explorer::misc_jobs::use_kerberos', { 'default_value' => false }),
@@ -24,6 +25,22 @@ class profile::statistics::explorer::misc_jobs(
             statsd_host   => $statsd_host,
             graphite_host => $graphite_host,
             wmde_secrets  => $wmde_secrets,
+        }
+
+        # Systemd timers owned by the Search team
+        # (leveraging Analytics' refinery)
+        include profile::analytics::search::jobs
+
+        # Allowing statistics nodes (mostly clouddb hosts in this case)
+        # to push nginx access logs to a specific /srv path. We usually
+        # allow only pull based rsyncs, but after T211330 we needed a way
+        # to unbreak that use case. This rsync might be removed in the future.
+        # TODO: this should be moved to hdfs-rsync.
+        rsync::server::module { 'dumps-webrequest':
+            path        => '/srv/log/webrequest/archive/dumps.wikimedia.org',
+            read_only   => 'no',
+            hosts_allow => $labstore_hosts,
+            auto_ferm   => true,
         }
     }
 }

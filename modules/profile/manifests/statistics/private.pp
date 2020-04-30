@@ -28,15 +28,4 @@ class profile::statistics::private(
     # The eventlogging codebase is useful for scripting
     # EventLogging consumers.  Install this but don't run any daemons.
     class { '::eventlogging': }
-
-    # Allowing statistics nodes (mostly clouddb hosts in this case)
-    # to push nginx access logs to a specific /srv path. We usually
-    # allow only pull based rsyncs, but after T211330 we needed a way
-    # to unbreak that use case. This rsync might be removed in the future.
-    rsync::server::module { 'dumps-webrequest':
-        path        => '/srv/log/webrequest/archive/dumps.wikimedia.org',
-        read_only   => 'no',
-        hosts_allow => $labstore_hosts,
-        auto_ferm   => true,
-    }
 }

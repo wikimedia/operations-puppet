@@ -15,10 +15,6 @@ class role::statistics::private {
     include ::profile::statistics::dataset_mount
     include profile::analytics::geoip::archive
 
-    # Systemd timers owned by the Search team
-    # (leveraging Analytics' refinery)
-    include ::profile::analytics::search::jobs
-
     # Include Hadoop and other analytics cluster
     # clients so that analysts can access Hadoop
     # from here.
