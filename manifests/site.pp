@@ -1089,7 +1089,7 @@ node 'cloudcontrol2003-dev.wikimedia.org' {
 }
 
 node 'cloudcontrol2004-dev.wikimedia.org' {
-    role(insetup)
+    role(wmcs::openstack::codfw1dev::control)
 }
 
 node 'labtestpuppetmaster2001.wikimedia.org' {
