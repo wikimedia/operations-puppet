@@ -132,10 +132,14 @@ function do_global_read_response()
     -------------------------------------------------------------
     -- Force caching responses that would not be cached otherwise
     -------------------------------------------------------------
-    if response_status == 404 then
+    -- TODO: this needs to be applied only to cacheable responses with
+    -- calculated age > 600. ATS core needs to make the calculated value
+    -- available to tslua for this to be implemented without cumbersome and
+    -- errorprone parsing of Cache-Control in lua.
+    --if response_status == 404 then
         -- Cache 404s for 10 minutes
-        ts.server_response.header['Cache-Control'] = 's-maxage=600'
-    end
+    --    ts.server_response.header['Cache-Control'] = 's-maxage=600'
+    --end
 
     ----------------------------------------------------------
     -- Avoid caching responses that might get cached otherwise
