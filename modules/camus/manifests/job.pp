@@ -210,14 +210,17 @@ define camus::job (
 
     $check_jar_opt = $check_jar ? {
         undef   => '',
+        false   => '',
         default => "--check-jar ${check_jar} ",
     }
     $check_dry_run_opt = $check_dry_run ? {
         true    => '--check-dry-run ',
+        false   => '',
         default => '',
     }
     $check_email_enabled_opt = $check_email_target ? {
         undef   => '',
+        false   => '',
         default => "--check-emails-to ${check_email_target} ",
     }
     $check_topic_whitelist_opt = $check_topic_whitelist ? {
@@ -227,6 +230,7 @@ define camus::job (
 
     $check_opts = $check ? {
         undef   => '',
+        false   => '',
         default => "--check ${check_jar_opt}${check_dry_run_opt}${check_email_enabled_opt}${check_topic_whitelist_opt}",
     }
 
