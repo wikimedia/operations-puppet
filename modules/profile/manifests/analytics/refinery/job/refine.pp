@@ -67,8 +67,8 @@ class profile::analytics::refinery::job::refine(
     $eventlogging_analytics_table_blacklist_regex = "^(${join($eventlogging_analytics_table_blacklist, '|')})$"
 
     profile::analytics::refinery::job::refine_job { 'eventlogging_analytics':
-        ensure           => $ensure_timers,
-        job_config       => merge($default_config, {
+        ensure                   => $ensure_timers,
+        job_config               => merge($default_config, {
             input_path                      => $eventlogging_analytics_input_path,
             input_path_regex                => $eventlogging_analytics_input_path_regex,
             input_path_regex_capture_groups => $eventlogging_analytics_input_path_regex_capture_groups,
@@ -79,14 +79,16 @@ class profile::analytics::refinery::job::refine(
             schema_base_uris                => 'eventlogging',
         }),
         # Use webproxy so that this job can access meta.wikimedia.org to retrive JSONSchemas.
-        spark_extra_opts => '--driver-java-options=\'-Dhttp.proxyHost=webproxy.eqiad.wmnet -Dhttp.proxyPort=8080 -Dhttps.proxyHost=webproxy.eqiad.wmnet -Dhttps.proxyPort=8080\'',
-        interval         => '*-*-* *:30:00',
-        use_kerberos     => $use_kerberos,
+        spark_extra_opts         => '--driver-java-options=\'-Dhttp.proxyHost=webproxy.eqiad.wmnet -Dhttp.proxyPort=8080 -Dhttps.proxyHost=webproxy.eqiad.wmnet -Dhttps.proxyPort=8080\'',
+        interval                 => '*-*-* *:30:00',
+        monitor_interval         => '*-*-* 00:15:00',
+        monitor_failure_interval => '*-*-* 00:45:00',
+        use_kerberos             => $use_kerberos,
     }
     profile::analytics::refinery::job::refine_job { 'failed_flags_eventlogging_analytics':
-        job_class              => 'org.wikimedia.analytics.refinery.job.refine.RefineFailuresChecker',
-        refine_monitor_enabled => false,
-        job_config             => {
+        ensure                         => 'absent',
+        job_class                      => 'org.wikimedia.analytics.refinery.job.refine.RefineFailuresChecker',
+        job_config                     => {
             'input_path'                      => $eventlogging_analytics_input_path,
             'input_path_regex'                => $eventlogging_analytics_input_path_regex,
             'input_path_regex_capture_groups' => $eventlogging_analytics_input_path_regex_capture_groups,
@@ -94,10 +96,13 @@ class profile::analytics::refinery::job::refine(
             'database'                        => $default_config['database'],
             'since'                           => '48',
         },
-        spark_driver_memory    => '4G',
-        deploy_mode            => 'client',
-        interval               => '*-*-* 00:00:00',
-        use_kerberos           => $use_kerberos,
+        spark_driver_memory            => '4G',
+        deploy_mode                    => 'client',
+        interval                       => '*-*-* 00:00:00',
+        use_kerberos                   => $use_kerberos,
+        monitoring_enabled             => false,
+        refine_monitor_enabled         => false,
+        refine_monitor_failure_enabled => false,
     }
 
 
@@ -114,8 +119,8 @@ class profile::analytics::refinery::job::refine(
     $event_table_blacklist_regex = "^(${join($event_table_blacklist, '|')})$"
 
     profile::analytics::refinery::job::refine_job { 'event':
-        ensure       => $ensure_timers,
-        job_config   => merge($default_config, {
+        ensure                   => $ensure_timers,
+        job_config               => merge($default_config, {
             input_path                      => $event_input_path,
             input_path_regex                => $event_input_path_regex,
             input_path_regex_capture_groups => $event_input_path_regex_capture_groups,
@@ -130,14 +135,16 @@ class profile::analytics::refinery::job::refine(
             # Schema URIs are extracted from the $schema field in each event.
             schema_base_uris                => 'https://schema.discovery.wmnet/repositories/primary/jsonschema,https://schema.discovery.wmnet/repositories/secondary/jsonschema',
         }),
-        interval     => '*-*-* *:20:00',
-        use_kerberos => $use_kerberos,
+        interval                 => '*-*-* *:20:00',
+        monitor_interval         => '*-*-* 01:15:00',
+        monitor_failure_interval => '*-*-* 01:45:00',
+        use_kerberos             => $use_kerberos,
     }
 
     profile::analytics::refinery::job::refine_job { 'failed_flags_event':
-        job_class              => 'org.wikimedia.analytics.refinery.job.refine.RefineFailuresChecker',
-        refine_monitor_enabled => false,
-        job_config             => {
+        ensure                         => 'absent',
+        job_class                      => 'org.wikimedia.analytics.refinery.job.refine.RefineFailuresChecker',
+        job_config                     => {
             'input_path'                      => $event_input_path,
             'input_path_regex'                => $event_input_path_regex,
             'input_path_regex_capture_groups' => $event_input_path_regex_capture_groups,
@@ -145,10 +152,13 @@ class profile::analytics::refinery::job::refine(
             'database'                        => $default_config['database'],
             'since'                           => '48',
         },
-        spark_driver_memory    => '4G',
-        deploy_mode            => 'client',
-        interval               => '*-*-* 00:10:00',
-        use_kerberos           => $use_kerberos,
+        spark_driver_memory            => '4G',
+        deploy_mode                    => 'client',
+        interval                       => '*-*-* 00:10:00',
+        use_kerberos                   => $use_kerberos,
+        monitoring_enabled             => false,
+        refine_monitor_enabled         => false,
+        refine_monitor_failure_enabled => false,
     }
 
 
@@ -190,21 +200,23 @@ class profile::analytics::refinery::job::refine(
     $mediawiki_job_events_input_path_regex_capture_groups = 'datacenter,table,year,month,day,hour'
 
     profile::analytics::refinery::job::refine_job { 'mediawiki_job_events':
-        ensure       => $ensure_timers,
-        job_config   => merge($default_config, {
+        ensure                   => $ensure_timers,
+        job_config               => merge($default_config, {
             input_path                      => $mediawiki_job_events_input_path,
             input_path_regex                => $mediawiki_job_events_input_path_regex,
             input_path_regex_capture_groups => $mediawiki_job_events_input_path_regex_capture_groups,
             table_blacklist_regex           => $mediawiki_job_table_blacklist_regex,
             transform_functions             => 'org.wikimedia.analytics.refinery.job.refine.deduplicate',
         }),
-        interval     => '*-*-* *:25:00',
-        use_kerberos => $use_kerberos,
+        interval                 => '*-*-* *:25:00',
+        monitor_interval         => '*-*-* 02:15:00',
+        monitor_failure_interval => '*-*-* 02:45:00',
+        use_kerberos             => $use_kerberos,
     }
     profile::analytics::refinery::job::refine_job { 'failed_flags_mediawiki_job_events':
-        job_class              => 'org.wikimedia.analytics.refinery.job.refine.RefineFailuresChecker',
-        refine_monitor_enabled => false,
-        job_config             => {
+        ensure                         => 'absent',
+        job_class                      => 'org.wikimedia.analytics.refinery.job.refine.RefineFailuresChecker',
+        job_config                     => {
             'input_path'                      => $mediawiki_job_events_input_path,
             'input_path_regex'                => $mediawiki_job_events_input_path_regex,
             'input_path_regex_capture_groups' => $mediawiki_job_events_input_path_regex_capture_groups,
@@ -212,10 +224,13 @@ class profile::analytics::refinery::job::refine(
             'database'                        => $default_config['database'],
             'since'                           => '48',
         },
-        spark_driver_memory    => '4G',
-        deploy_mode            => 'client',
-        interval               => '*-*-* 00:20:00',
-        use_kerberos           => $use_kerberos,
+        spark_driver_memory            => '4G',
+        deploy_mode                    => 'client',
+        interval                       => '*-*-* 00:20:00',
+        use_kerberos                   => $use_kerberos,
+        monitoring_enabled             => false,
+        refine_monitor_enabled         => false,
+        refine_monitor_failure_enabled => false,
     }
 
 
@@ -226,8 +241,8 @@ class profile::analytics::refinery::job::refine(
     $netflow_input_path_regex_capture_groups = 'table,year,month,day,hour'
 
     profile::analytics::refinery::job::refine_job { 'netflow':
-        ensure                 => $ensure_timers,
-        job_config             => merge($default_config, {
+        ensure                         => $ensure_timers,
+        job_config                     => merge($default_config, {
             # This is imported by camus_job { 'netflow': }
             input_path                      => $netflow_input_path,
             input_path_regex                => $netflow_input_path_regex,
@@ -235,15 +250,17 @@ class profile::analytics::refinery::job::refine(
             output_path                     => '/wmf/data/wmf',
             database                        => 'wmf',
         }),
-        interval               => '*-*-* *:45:00',
-        monitoring_enabled     => false,
-        refine_monitor_enabled => false,
-        use_kerberos           => $use_kerberos,
+        monitoring_enabled             => false,
+        refine_monitor_enabled         => false,
+        refine_monitor_failure_enabled => true,
+        interval                       => '*-*-* *:45:00',
+        monitor_failure_interval       => '*-*-* 03:45:00',
+        use_kerberos                   => $use_kerberos,
     }
     profile::analytics::refinery::job::refine_job { 'failed_flags_netflow':
-        job_class              => 'org.wikimedia.analytics.refinery.job.refine.RefineFailuresChecker',
-        refine_monitor_enabled => false,
-        job_config             => {
+        ensure                         => 'absent',
+        job_class                      => 'org.wikimedia.analytics.refinery.job.refine.RefineFailuresChecker',
+        job_config                     => {
             'input_path'                      => $netflow_input_path,
             'input_path_regex'                => $netflow_input_path_regex,
             'input_path_regex_capture_groups' => $netflow_input_path_regex_capture_groups,
@@ -251,9 +268,12 @@ class profile::analytics::refinery::job::refine(
             'database'                        => $default_config['database'],
             'since'                           => '48',
         },
-        spark_driver_memory    => '4G',
-        deploy_mode            => 'client',
-        interval               => '*-*-* 00:30:00',
-        use_kerberos           => $use_kerberos,
+        spark_driver_memory            => '4G',
+        deploy_mode                    => 'client',
+        interval                       => '*-*-* 00:30:00',
+        use_kerberos                   => $use_kerberos,
+        monitoring_enabled             => false,
+        refine_monitor_enabled         => false,
+        refine_monitor_failure_enabled => false,
     }
 }

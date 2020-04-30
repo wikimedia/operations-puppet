@@ -1,13 +1,15 @@
 # == Define profile::analytics::refinery::job::refine_job
 #
-# Installs a cron job to run the Refine Spark job.  This is
+# Installs a systemd timer to run the Refine Spark job.  This is
 # used to import arbitrary (schemaed) JSON data into Hive.
 #
 # If $refine_monitor_enabled is true, a daily RefineMonitor job will be
 # scheduled to look back over a 24 hour period to ensure that all
-# datasets expected to be refined were successfully done so.
+# datasets expected to be refined were successfully done so.  Also
+# a daily RefineFailuresChecker will look over the last 48 hours for any
+# _FAILED flags
 #
-# For description of the parameters, see:
+# For description of the Refine $job_config parameters, see:
 # https://github.com/wikimedia/analytics-refinery-source/blob/master/refinery-job/src/main/scala/org/wikimedia/analytics/refinery/job/refine/Refine.scala
 #
 # == Properties
@@ -25,21 +27,25 @@
 #
 define profile::analytics::refinery::job::refine_job (
     $job_config,
-    $job_name               = "refine_${title}",
-    $refine_monitor_enabled = true,
-    $monitoring_enabled     = true,
-    $refinery_job_jar       = undef,
-    $job_class              = 'org.wikimedia.analytics.refinery.job.refine.Refine',
-    $monitor_class          = 'org.wikimedia.analytics.refinery.job.refine.RefineMonitor',
-    $queue                  = 'production',
-    $spark_driver_memory    = '8G',
-    $spark_max_executors    = 64,
-    $spark_extra_opts       = '',
-    $deploy_mode            = 'cluster',
-    $user                   = 'analytics',
-    $interval               = '*-*-* *:00:00',
-    $use_kerberos           = false,
-    $ensure                 = 'present',
+    $job_name                         = "refine_${title}",
+    $refinery_job_jar                 = undef,
+    $job_class                        = 'org.wikimedia.analytics.refinery.job.refine.Refine',
+    $monitor_class                    = 'org.wikimedia.analytics.refinery.job.refine.RefineMonitor',
+    $monitor_failure_class            = 'org.wikimedia.analytics.refinery.job.refine.RefineFailuresChecker',
+    $queue                            = 'production',
+    $spark_driver_memory              = '8G',
+    $spark_max_executors              = 64,
+    $spark_extra_opts                 = '',
+    $deploy_mode                      = 'cluster',
+    $user                             = 'analytics',
+    $interval                         = '*-*-* *:00:00',
+    $monitoring_enabled               = true,
+    $refine_monitor_enabled           = $monitoring_enabled,
+    $refine_monitor_failure_enabled   = $monitoring_enabled,
+    $monitor_interval                 = '*-*-* 04:15:00',
+    $monitor_failure_interval         = '*-*-* 06:15:00',
+    $use_kerberos                     = false,
+    $ensure                           = 'present',
 ) {
     require ::profile::analytics::refinery
     $refinery_path = $profile::analytics::refinery::path
@@ -64,6 +70,16 @@ define profile::analytics::refinery::job::refine_job (
         properties => $job_config,
     }
 
+    # All spark jobs declared here share these parameters.
+    Profile::Analytics::Refinery::Job::Spark_job {
+        jar                => $_refinery_job_jar,
+        require            => Profile::Analytics::Refinery::Job::Config[$job_config_file],
+        user               => $user,
+        monitoring_enabled => $monitoring_enabled,
+        use_kerberos       => $use_kerberos,
+    }
+
+
     # We need to load an older CDH's version of these Hive jars in order to use
     # Hive JDBC directly inside of a spark job.  This is a workaround for
     # https://issues.apache.org/jira/browse/SPARK-23890.
@@ -83,26 +99,25 @@ define profile::analytics::refinery::job::refine_job (
         default  => "${job_name}.properties",
     }
     profile::analytics::refinery::job::spark_job { $job_name:
-        ensure             => $ensure,
-        jar                => $_refinery_job_jar,
-        class              => $job_class,
+        ensure     => $ensure,
+        class      => $job_class,
         # We use spark's --files option to load the $job_config_file to the Spark job's working HDFS dir.
         # It is then referenced via its relative file name with --config_file $job_name.properties.
-        spark_opts         => "--files /etc/hive/conf/hive-site.xml,${job_config_file},${driver_extra_hive_jars} --master yarn --deploy-mode ${deploy_mode} --queue ${queue} --driver-memory ${spark_driver_memory} --conf spark.driver.extraClassPath=${driver_extra_classpath} --conf spark.dynamicAllocation.maxExecutors=${spark_max_executors} ${spark_extra_opts}",
-        job_opts           => "--config_file ${config_file_path}",
-        require            => Profile::Analytics::Refinery::Job::Config[$job_config_file],
-        user               => $user,
-        interval           => $interval,
-        monitoring_enabled => $monitoring_enabled,
-        use_kerberos       => $use_kerberos,
+        spark_opts => "--files /etc/hive/conf/hive-site.xml,${job_config_file},${driver_extra_hive_jars} --master yarn --deploy-mode ${deploy_mode} --queue ${queue} --driver-memory ${spark_driver_memory} --conf spark.driver.extraClassPath=${driver_extra_classpath} --conf spark.dynamicAllocation.maxExecutors=${spark_max_executors} ${spark_extra_opts}",
+        job_opts   => "--config_file ${config_file_path}",
+        interval   => $interval,
         # In DataFrameToHive we issue CREATE/ALTER sql statement to Hive if needed.
         # Spark is not aware of this code and by default it retrieves Delegation Tokens
         # only for HDFS/Hive-Metastore/HBase. When the JDBC connection to the Hive Server 2
         # is established (with Kerberos enabled), some credentials will be needed to be able
         # to login as $user. These credentials are explicitly provided as keytab, that is copied
         # (securely) by Yarn to its distributed cache.
-        use_keytab         => $use_kerberos,
+        use_keytab => $use_kerberos,
     }
+
+
+    # NOTE: RefineMonitor and RefineFailuresChecker should not be run in YARN,
+    # as they only look in HDFS paths and don't crunch any data.
 
     # Look back over a 24 period before 4 hours ago and ensure that all expected
     # refined datasets for this job are present.
@@ -112,29 +127,31 @@ define profile::analytics::refinery::job::refine_job (
     else {
         $ensure_monitor = 'absent'
     }
-    $monitor_since = 28
-    $monitor_until = 4
-
-    if $interval {
-        $monitor_interval = '*-*-* 04:15:00'
-    } else {
-        $monitor_interval = undef
-    }
-
-    # NOTE: RefineMonitor should not be run in YARN.
-    # Local mode is fine.
     profile::analytics::refinery::job::spark_job { "monitor_${job_name}":
         ensure             => $ensure_monitor,
-        jar                => $_refinery_job_jar,
         class              => $monitor_class,
         # Use the same config file as the Refine job, but override the since and until
         # to avoid looking back so far when checking for missing data.
-        job_opts           => "--config_file ${job_config_file} --since ${monitor_since} --until ${monitor_until}",
-        require            => Profile::Analytics::Refinery::Job::Config[$job_config_file],
-        user               => $user,
+        job_opts           => "--config_file ${job_config_file} --since 28 --until 4",
         interval           => $monitor_interval,
         monitoring_enabled => $monitoring_enabled,
-        use_kerberos       => $use_kerberos,
+    }
+
+
+    # Looks back over the last 48 hours and alert if any failure flags exist.
+    if $ensure and $refine_monitor_failure_enabled {
+        $ensure_monitor_failure = 'present'
+    }
+    else {
+        $ensure_monitor_failure = 'absent'
+    }
+    profile::analytics::refinery::job::spark_job { "monitor_${job_name}_failure_flags":
+        ensure     => $ensure_monitor_failure,
+        class      => $monitor_failure_class,
+        spark_opts => '--driver-memory 4G',
+        # Use the same config file as the Refine job, but override the since parameter to 48 hours
+        job_opts   => "--config_file ${job_config_file} --since 48",
+        interval   => $monitor_failure_interval,
     }
 
 }
