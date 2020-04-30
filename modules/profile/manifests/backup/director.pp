@@ -132,7 +132,7 @@ class profile::backup::director(
     nrpe::monitor_service { 'bacula_director':
         description  => 'bacula director process',
         nrpe_command => '/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:1 -u bacula -C bacula-dir',
-        notes_url    => 'https://wikitech.wikimedia.org/wiki/Bacula',
+        notes_url    => 'https://wikitech.wikimedia.org/wiki/Bacula#Monitoring',
     }
 
     # install the general backup check and set it up to run every hour
@@ -148,7 +148,7 @@ class profile::backup::director(
         contact_group  => 'admins',
         check_interval => 60,  # check every hour
         timeout        => 60,  # 1 minute of timeout, the check is not fast
-        notes_url      => 'https://wikitech.wikimedia.org/wiki/Backups#Monitoring',
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/Bacula#Monitoring',
     }
 
     # install the prometheus exporter for bacula
