@@ -14,7 +14,7 @@
 #   /wmf/data/raw/event -> /wmf/data/event into the Hive event database.
 #
 # - mediawiki_job_events
-#   Uses schemas from schema.discovery.wmnet and refines from
+#   Infers schemas from data and refines from
 #   /wmf/data/raw/mediawiki_job -> /wmf/data/event into the Hive event database.
 #
 # - netflow
@@ -119,7 +119,7 @@ class profile::analytics::refinery::job::refine(
             input_path                      => $event_input_path,
             input_path_regex                => $event_input_path_regex,
             input_path_regex_capture_groups => $event_input_path_regex_capture_groups,
-            table_blacklist_regex           => $event_table_blacklist,
+            table_blacklist_regex           => $event_table_blacklist_regex,
             # event_transforms:
             # - deduplicate
             # - filter_allowed_domains
@@ -141,77 +141,6 @@ class profile::analytics::refinery::job::refine(
             'input_path'                      => $event_input_path,
             'input_path_regex'                => $event_input_path_regex,
             'input_path_regex_capture_groups' => $event_input_path_regex_capture_groups,
-            'output_path'                     => $default_config['output_path'],
-            'database'                        => $default_config['database'],
-            'since'                           => '48',
-        },
-        spark_driver_memory    => '4G',
-        deploy_mode            => 'client',
-        interval               => '*-*-* 00:10:00',
-        use_kerberos           => $use_kerberos,
-    }
-
-
-    # TODO: mediawiki_events is ensure => absent.
-    # Remove this after puppet ensures the job is absent.
-
-    # List of mediawiki event tables to refine.
-    # Not all event tables are in this list, as some are not refineable.
-    # E.g. mediawiki_page_properties_change has freeform type: object fields.
-    $mediawiki_event_tables = [
-        'mediawiki_api_request',
-        'mediawiki_cirrussearch_request',
-        'mediawiki_page_create',
-        'mediawiki_page_delete',
-        'mediawiki_page_links_change',
-        'mediawiki_page_move',
-        'mediawiki_page_restrictions_change',
-        'mediawiki_page_undelete',
-        'mediawiki_revision_create',
-        'mediawiki_revision_score',
-        'mediawiki_revision_tags_change',
-        'mediawiki_revision_visibility_change',
-        'mediawiki_user_blocks_change',
-        # These aren't strictly 'mediawiki', but they work the same way as the
-        # MediaWiki EventBus tables.  We should rename this job.
-        'resource_change',
-        'cqs_external_sparql_query',
-        'wdqs_external_sparql_query',
-        'wdqs_internal_sparql_query',
-    ]
-    $mediawiki_event_table_whitelist_regex = "^(${join($mediawiki_event_tables, '|')})$"
-
-    $mediawiki_events_input_path = '/wmf/data/raw/event'
-    $mediawiki_events_input_path_regex = '.*(eqiad|codfw)_(.+)/hourly/(\\d+)/(\\d+)/(\\d+)/(\\d+)'
-    $mediawiki_events_input_path_regex_capture_groups = 'datacenter,table,year,month,day,hour'
-
-    # Refine MediaWiki event data.
-    profile::analytics::refinery::job::refine_job { 'mediawiki_events':
-        ensure       => 'absent',
-        job_config   => merge($default_config, {
-            input_path                      => $mediawiki_events_input_path,
-            input_path_regex                => $mediawiki_events_input_path_regex,
-            input_path_regex_capture_groups => $mediawiki_events_input_path_regex_capture_groups,
-            table_whitelist_regex           => $mediawiki_event_table_whitelist_regex,
-            # Deduplicate event data using meta.id field.
-            # TODO: rename this function in refinery-source
-            transform_functions             => 'org.wikimedia.analytics.refinery.job.refine.deduplicate_eventbus',
-            # Get JSONSchemas from the HTTP schema service.
-            # Schema URIs are extracted from the $schema field in each event.
-            schema_base_uris                => 'https://schema.discovery.wmnet/repositories/primary/jsonschema,https://schema.discovery.wmnet/repositories/secondary/jsonschema',
-        }),
-        interval     => '*-*-* *:20:00',
-        use_kerberos => $use_kerberos,
-    }
-
-    profile::analytics::refinery::job::refine_job { 'failed_flags_mediawiki_events':
-        ensure                 => 'absent',
-        job_class              => 'org.wikimedia.analytics.refinery.job.refine.RefineFailuresChecker',
-        refine_monitor_enabled => false,
-        job_config             => {
-            'input_path'                      => $mediawiki_events_input_path,
-            'input_path_regex'                => $mediawiki_events_input_path_regex,
-            'input_path_regex_capture_groups' => $mediawiki_events_input_path_regex_capture_groups,
             'output_path'                     => $default_config['output_path'],
             'database'                        => $default_config['database'],
             'since'                           => '48',
