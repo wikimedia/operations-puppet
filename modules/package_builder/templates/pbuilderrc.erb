@@ -1,8 +1,10 @@
 # Don't sign packages by default
 AUTO_DEBSIGN=${AUTO_DEBSIGN:-no}
 # Defaulting the architecture if not specified
+ARCH=${GBP_PBUILDER_ARCH:-$ARCH}
 ARCH=${ARCH:-"$(dpkg --print-architecture)"}
 # Defaulting the distribution if not specified
+DIST=${GBP_PBUILDER_DIST:-$DIST}
 DIST=${DIST:-"$(lsb_release --short --codename)"}
 # Default to not use wikimedia repos
 WIKIMEDIA=${WIKIMEDIA:-"no"}
