@@ -511,6 +511,11 @@ host backup1001 {
     fixed-address backup1001.eqiad.wmnet;
 }
 
+host backup1002 {
+    hardware ethernet B0:26:28:DE:F5:90;
+    fixed-address backup1002.eqiad.wmnet;
+}
+
 host backup2001 {
     hardware ethernet B0:26:28:29:56:90;
     fixed-address backup2001.codfw.wmnet;
