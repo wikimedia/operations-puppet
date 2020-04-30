@@ -6,9 +6,6 @@ class profile::openstack::base::pdns::auth::db(
     ) {
 
     $designate_host_ips = $designate_hosts.map |$host| { ipresolve($host, 4) }
-    package { 'mysql-client':
-        ensure => present,
-    }
 
     # install mysql locally on all dns servers
     include ::profile::mariadb::monitor::dba
@@ -32,10 +29,17 @@ class profile::openstack::base::pdns::auth::db(
     # this override/split should probably go elsewhere, but hey
     if $::lsbdistcodename == 'buster' {
         $mariadb_pkg = 'wmf-mariadb104'
+        $mysql_client_pkg = 'default-mysql-client'
     } elsif $::lsbdistcodename == 'stretch' {
         $mariadb_pkg = 'wmf-mariadb101'
+        $mysql_client_pkg = 'mysql-client'
     } else {
         $mariadb_pkg = 'wmf-mariadb10'
+        $mysql_client_pkg = 'mysql-client'
+    }
+
+    package { $mysql_client_pkg:
+        ensure => present,
     }
 
     class { 'mariadb::packages_wmf':
