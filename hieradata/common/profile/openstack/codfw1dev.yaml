@@ -21,6 +21,7 @@ profile::openstack::codfw1dev::horizon_version: 'train'
 profile::openstack::codfw1dev::openstack_controllers:
   - cloudcontrol2001-dev.wikimedia.org
   - cloudcontrol2003-dev.wikimedia.org
+  - cloudcontrol2004-dev.wikimedia.org
 
 
 # The public service name for the keystone API
