@@ -690,6 +690,18 @@ host cloudelastic1004 {
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
+host cloudelastic1005 {
+    hardware ethernet B0:26:28:CD:07:C0;
+    fixed-address cloudelastic1005.wikimedia.org;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
+}
+
+host cloudelastic1006 {
+    hardware ethernet B0:26:28:CC:EA:00;
+    fixed-address cloudelastic1006.wikimedia.org;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
+}
+
 host cloudnet1003 {
     hardware ethernet e0:07:1b:ef:f5:98;
     fixed-address cloudnet1003.eqiad.wmnet;
