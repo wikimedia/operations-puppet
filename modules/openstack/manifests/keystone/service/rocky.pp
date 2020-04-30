@@ -50,6 +50,12 @@ class openstack::keystone::service::rocky(
             require => Package['keystone'];
     }
 
+    # Fernet key count.  We rotate once per day on each host.  That means that
+    #  for our keys to live a week, we need at least 7*(number of hosts) keys
+    #  at any one time.  Using 9 here instead because it costs us nothing
+    #  and provides ample slack.
+    $max_active_keys = $controller_hosts.length * 9
+
     # This first file is a hack to deal with the fact that ldap integration
     #  is a bit broken in Rocky. With luck we can remove this in S.
     file {
