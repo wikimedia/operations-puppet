@@ -48,6 +48,8 @@ define apt::repository(
         }
     }
 
+    require_package('gnupg')
+
     if $keyfile {
         file { "/var/lib/apt/keys/${name}.gpg":
             ensure  => present,
@@ -62,6 +64,7 @@ define apt::repository(
         exec { "/usr/bin/apt-key add /var/lib/apt/keys/${name}.gpg":
             subscribe   => File["/var/lib/apt/keys/${name}.gpg"],
             refreshonly => true,
+            requires    => Package['gnupg']
         }
     }
 }
