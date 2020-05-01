@@ -96,6 +96,9 @@ class profile::base(
     class { '::base::sysctl': }
     class { '::motd': }
     class { '::base::standard_packages': }
+    if os_version('debian <= buster') {
+        class { '::toil::acct_handle_wtmp_not_rotated': }
+    }
     class { '::base::environment':
         core_dump_pattern => $core_dump_pattern,
     }
