@@ -45,6 +45,7 @@ class profile::analytics::refinery::job::test::camus(
         hadoop_cluster_name => $hadoop_cluster_name,
         camus_jar           => "${profile::analytics::refinery::path}/artifacts/org/wikimedia/analytics/camus-wmf/camus-wmf-0.1.0-wmf9.jar",
         check_jar           => "${profile::analytics::refinery::path}/artifacts/org/wikimedia/analytics/refinery/refinery-camus-0.0.90.jar",
+        check               => $monitoring_enabled,
         # Email reports if CamusPartitionChecker finds errors.
         check_email_target  => $check_email_target,
         environment         => $systemd_env,
@@ -77,7 +78,6 @@ class profile::analytics::refinery::job::test::camus(
             'camus.message.timestamp.field' => 'dt',
             'mapred.map.tasks'              => '1',
         },
-        check                 => true,
         # Don't need to write _IMPORTED flags for EventLogging data
         check_dry_run         => true,
         # Only check these topic, since they should have data every hour.
