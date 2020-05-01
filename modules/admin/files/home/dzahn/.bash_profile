@@ -13,8 +13,6 @@ export PS1='\[$BRIGHT\]\[$BLACK\][\[$HOSTCOLOR\]${HOSTNAME}\[$GREY\]:\[$RESET\]\
 
 alias pa="sudo puppet agent -tv"
 
-alias cachemiscpuppet="sudo cumin -b 3 -s 10 'R:class = role::cache::misc' 'run-puppet-agent -q'"
-
 # set the right base dir for reprepro, depending whether it's apt.wm.org or releases.wm.org
 if [ "$(hostname -s | cut -c 1-8)" == "releases" ]; then
     export REPREPRO_BASE_DIR=/srv/org/wikimedia/reprepro
