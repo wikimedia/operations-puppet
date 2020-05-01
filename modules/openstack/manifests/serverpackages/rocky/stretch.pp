@@ -69,5 +69,5 @@ class openstack::serverpackages::rocky::stretch(
         refreshonly => true,
         logoutput   => true,
     }
-    Exec['openstack-rocky-stretch-apt-upgrade'] -> Package <| name != 'gnupg' |>
+    Exec['openstack-rocky-stretch-apt-upgrade'] -> Package <| title != 'gnupg' |>
 }

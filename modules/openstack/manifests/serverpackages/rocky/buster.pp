@@ -69,5 +69,5 @@ class openstack::serverpackages::rocky::buster(
         refreshonly => true,
         logoutput   => true,
     }
-    Exec['openstack-rocky-buster-apt-upgrade'] -> Package <| name != 'gnupg' |>
+    Exec['openstack-rocky-buster-apt-upgrade'] -> Package <| title != 'gnupg' |>
 }
