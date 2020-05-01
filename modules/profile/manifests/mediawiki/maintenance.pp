@@ -66,7 +66,7 @@ class profile::mediawiki::maintenance {
     backup::set {'home': }
 
     # (T17434) Periodical run of currently disabled special pages
-    class { 'mediawiki::maintenance::updatequerypages': ensure => $ensure }
+    include ::profile::mediawiki::maintenance::updatequerypages
 
     # Readline support for PHP maintenance scripts (T126262)
     require_package('php-readline')
