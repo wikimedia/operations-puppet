@@ -1,0 +1,27 @@
+#!/usr/bin/env stap
+#
+# ats_cacheable.stp - print cacheable origin server responses and CC details
+#
+# Print the URL of origin server responses considered cacheable by Apache
+# Traffic Server and Cache-Control details such as max-age and s-maxage
+#
+# Sample output:
+# max-age=86400 s-maxage=86400 w/api.php
+# max-age=0 s-maxage=1209600 wiki/Meglumine
+#
+# Note that this probe is working with Traffic Server 8.0.0 and might not
+# function properly on other versions.
+#
+probe process("/usr/bin/traffic_server").function("is_response_cacheable") {
+    if ($s->cache_info->directives->does_server_permit_storing) {
+       # Get the request URL
+       ui = $s->unmapped_url->m_url_impl;
+       pp = @cast(ui, "URLImpl")->m_ptr_path;
+       lp = @cast(ui, "URLImpl")->m_len_path;
+       url = user_string_n(pp ,lp);
+
+       cc = &$s->hdr_info->server_response->m_mime->m_cooked_stuff->m_cache_control
+
+       printf("max-age=%d s-maxage=%d %s\n", cc->m_secs_max_age, cc->m_secs_s_maxage, url)
+    }
+}
