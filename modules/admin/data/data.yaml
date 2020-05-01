@@ -3916,6 +3916,10 @@ ldap_only_users:
     ensure: present
     realname: Silvan Heintze
     email: silvan.heintze@wikimedia.de
+  srodlund:
+    ensure: present
+    realname: Sarah Rodlund
+    email: srodlund@wikimedia.org
   spatton:
     ensure: present
     realname: Sam Patton
