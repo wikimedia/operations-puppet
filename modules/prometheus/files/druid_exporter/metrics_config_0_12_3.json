@@ -1,0 +1,381 @@
+{
+   "broker": {
+        "query/time": {
+            "prometheus_metric_name": "druid_broker_query_time_ms",
+            "type": "histogram",
+            "buckets": ["10", "100", "500", "1000", "2000", "3000", "5000", "7000", "10000", "inf", "sum"],
+            "labels": ["dataSource"],
+            "description": "Milliseconds taken to complete a query."
+        },
+        "query/bytes": {
+            "druid_metric_name": "query/bytes",
+            "prometheus_metric_name": "druid_broker_query_bytes",
+            "type": "histogram",
+            "buckets": ["10", "100", "500", "1000", "2000", "3000", "5000", "7000", "10000", "inf", "sum"],
+            "labels": ["dataSource"],
+            "description": "Number of bytes returned in query response."
+        },
+        "query/cache/total/numEntries": {
+            "prometheus_metric_name": "druid_broker_query_cache_numentries_count",
+            "type": "gauge",
+            "labels": [],
+            "description": "Number of cache entries."
+        },
+        "query/cache/total/sizeBytes": {
+            "prometheus_metric_name": "druid_broker_query_cache_size_bytes",
+            "daemon": "broker",
+            "type": "gauge",
+            "labels": [],
+            "description": "Size in bytes of cache entries."
+        },
+        "query/cache/total/hits": {
+            "prometheus_metric_name": "druid_broker_query_cache_hits_count",
+            "type": "gauge",
+            "labels": [],
+            "description": "Number of cache hits."
+        },
+        "query/cache/total/misses": {
+            "prometheus_metric_name": "druid_broker_query_cache_misses_count",
+            "type": "gauge",
+            "labels": [],
+            "description": "Number of cache misses."
+        },
+        "query/cache/total/evictions": {
+            "prometheus_metric_name": "druid_broker_query_cache_evictions_count",
+            "type": "gauge",
+            "labels": [],
+            "description": "Number of cache evictions."
+        },
+        "query/cache/total/timeouts": {
+            "prometheus_metric_name": "druid_broker_query_cache_timeouts_count",
+            "type": "gauge",
+            "labels": [],
+            "description": "Number of cache timeouts."
+        },
+        "query/cache/total/errors": {
+            "prometheus_metric_name": "druid_broker_query_cache_errors_count",
+            "type": "gauge",
+            "labels": [],
+            "description": "Number of cache errors."
+        },
+
+        "query/count": {
+            "prometheus_metric_name": "druid_broker_query_count",
+            "type": "gauge",
+            "labels": [],
+            "description": "Number of queries."
+        },
+        "query/success/count": {
+            "prometheus_metric_name": "druid_broker_success_query_count",
+            "type": "gauge",
+            "labels": [],
+            "description": "Number of Successfull queries."
+        },
+        "query/failed/count": {
+            "prometheus_metric_name": "druid_broker_failed_query_count",
+            "type": "gauge",
+            "labels": [],
+            "description": "Number of failed queries."
+        },
+        "query/interrupted/count": {
+            "prometheus_metric_name": "druid_broker_interrupted_query_count",
+            "type": "gauge",
+            "labels": [],
+            "description": "Number of interrupted queries."
+        },
+        "query/cache/total/numEntries": {
+            "prometheus_metric_name": "druid_broker_query_cache_numentries_count",
+            "type": "gauge",
+            "labels": [],
+            "description": "Number of cache entries."
+        },
+        "query/cache/total/sizeBytes": {
+            "prometheus_metric_name": "druid_broker_query_cache_size_bytes",
+            "type": "gauge",
+            "labels": [],
+            "description": "Size in bytes of cache entries."
+        },
+        "query/cache/total/hits": {
+            "prometheus_metric_name": "druid_broker_query_cache_hits_count",
+            "type": "gauge",
+            "labels": [],
+            "description": "Number of cache hits."
+        },
+        "query/cache/total/misses": {
+            "prometheus_metric_name": "druid_broker_query_cache_misses_count",
+            "type": "gauge",
+            "labels": [],
+            "description": "Number of cache misses."
+        },
+        "query/cache/total/evictions": {
+            "prometheus_metric_name": "druid_broker_query_cache_evictions_count",
+            "type": "gauge",
+            "labels": [],
+            "description": "Number of cache evictions."
+        },
+        "query/cache/total/timeouts": {
+            "prometheus_metric_name": "druid_broker_query_cache_timeouts_count",
+            "type": "gauge",
+            "labels": [],
+            "description": "Number of cache timeouts."
+        },
+        "query/cache/total/errors": {
+            "prometheus_metric_name": "druid_broker_query_cache_errors_count",
+            "type": "gauge",
+            "labels": [],
+            "description": "Number of cache errors."
+        }
+    },
+    "historical": {
+        "query/time": {
+            "prometheus_metric_name": "druid_historical_query_time_ms",
+            "type": "histogram",
+            "buckets": ["10", "100", "500", "1000", "2000", "3000", "5000", "7000", "10000", "inf", "sum"],
+            "labels": ["dataSource"],
+            "description": "Milliseconds taken to complete a query."
+        },
+        "query/bytes": {
+            "prometheus_metric_name": "druid_historical_query_bytes",
+            "type": "histogram",
+            "buckets": ["10", "100", "500", "1000", "2000", "3000", "5000", "7000", "10000", "inf", "sum"],
+            "labels": ["dataSource"],
+            "description": "Number of bytes returned in query response."
+        },
+        "segment/max": {
+            "prometheus_metric_name": "druid_historical_max_segment_bytes",
+            "type": "gauge",
+            "labels": [],
+            "description": "Maximum byte limit available for segments."
+        },
+        "segment/count": {
+            "prometheus_metric_name": "druid_historical_segment_count",
+            "type": "gauge",
+            "labels": ["tier", "dataSource"],
+            "description": "Number of served segments."
+        },
+        "segment/used": {
+            "prometheus_metric_name": "druid_historical_segment_used_bytes",
+            "type": "gauge",
+            "labels": ["tier", "dataSource"],
+            "description": "Bytes used for served segments."
+        },
+        "segment/max": {
+            "prometheus_metric_name": "druid_historical_segment_scan_pending",
+            "type": "gauge",
+            "labels": [],
+            "description": "Number of segments in queue waiting to be scanned."
+        },
+        "query/cache/total/numEntries": {
+            "prometheus_metric_name": "druid_historical_query_cache_numentries_count",
+            "type": "gauge",
+            "labels": [],
+            "description": "Number of cache entries."
+        },
+        "query/cache/total/sizeBytes": {
+            "prometheus_metric_name": "druid_historical_query_cache_size_bytes",
+            "type": "gauge",
+            "labels": [],
+            "description": "Size in bytes of cache entries."
+        },
+        "query/cache/total/hits": {
+            "prometheus_metric_name": "druid_historical_query_cache_hits_count",
+            "type": "gauge",
+            "labels": [],
+            "description": "Number of cache hits."
+        },
+        "query/cache/total/misses": {
+            "prometheus_metric_name": "druid_historical_query_cache_misses_count",
+            "type": "gauge",
+            "labels": [],
+            "description": "Number of cache misses."
+        },
+        "query/cache/total/evictions": {
+            "prometheus_metric_name": "druid_historical_query_cache_evictions_count",
+            "type": "gauge",
+            "labels": [],
+            "description": "Number of cache evictions."
+        },
+        "query/cache/total/timeouts": {
+            "prometheus_metric_name": "druid_historical_query_cache_timeouts_count",
+            "type": "gauge",
+            "labels": [],
+            "description": "Number of cache timeouts."
+        },
+        "query/cache/total/errors": {
+            "prometheus_metric_name": "druid_historical_query_cache_errors_count",
+            "type": "gauge",
+            "labels": [],
+            "description": "Number of cache errors."
+        },
+        "query/count": {
+            "prometheus_metric_name": "druid_historical_query_count",
+            "type": "gauge",
+            "labels": [],
+            "description": "Number of queries."
+        },
+        "query/success/count": {
+            "prometheus_metric_name": "druid_historical_success_query_count",
+            "type": "gauge",
+            "labels": [],
+            "description": "Number of Successfull queries."
+        },
+        "query/failed/count": {
+            "prometheus_metric_name": "druid_historical_failed_query_count",
+            "type": "gauge",
+            "labels": [],
+            "description": "Number of failed queries."
+        },
+        "query/interrupted/count": {
+            "prometheus_metric_name": "druid_historical_interrupted_query_count",
+            "type": "gauge",
+            "labels": [],
+            "description": "Number of interrupted queries."
+        }
+    },
+    "peon": {
+        "query/time": {
+            "prometheus_metric_name": "druid_peon_query_time_ms",
+            "type": "histogram",
+            "buckets": ["10", "100", "500", "1000", "2000", "3000", "5000", "7000", "10000", "inf", "sum"],
+            "labels": ["dataSource"],
+            "description": "Milliseconds taken to complete a query."
+        },
+        "query/bytes": {
+            "druid_metric_name": "query/bytes",
+            "prometheus_metric_name": "druid_peon_query_bytes",
+            "type": "histogram",
+            "buckets": ["10", "100", "500", "1000", "2000", "3000", "5000", "7000", "10000", "inf", "sum"],
+            "labels": ["dataSource"],
+            "description": "Number of bytes returned in query response."
+        },
+        "ingest/events/thrownAway": {
+            "prometheus_metric_name": "druid_realtime_ingest_events_thrown_away_count",
+            "type": "gauge",
+            "labels": ["dataSource"],
+            "description": "Number of events rejected because they are outside the windowPeriod."
+        },
+        "ingest/events/unparseable": {
+            "prometheus_metric_name": "druid_realtime_ingest_events_unparseable_count",
+            "type": "gauge",
+            "labels": ["dataSource"],
+            "description": "Number of events rejected because the events are unparseable."
+        },
+        "ingest/events/processed": {
+            "prometheus_metric_name": "druid_realtime_ingest_events_processed_count",
+            "type": "gauge",
+            "labels": ["dataSource"],
+            "description": "Number of events successfully processed per emission period."
+        },
+        "ingest/rows/output": {
+            "prometheus_metric_name": "druid_realtime_ingest_rows_output_count",
+            "type": "gauge",
+            "labels": ["dataSource"],
+            "description": "Number of Druid rows persisted."
+        },
+        "ingest/persists/count": {
+            "prometheus_metric_name": "druid_realtime_ingest_persists_count",
+            "type": "gauge",
+            "labels": ["dataSource"],
+            "description": "Number of events successfully persisted."
+        },
+        "ingest/persists/failed": {
+            "prometheus_metric_name": "druid_realtime_ingest_persists_failed_count",
+            "type": "gauge",
+            "labels": ["dataSource"],
+            "description": "Number of times persist failed."
+        },
+        "ingest/handoff/failed": {
+            "prometheus_metric_name": "druid_realtime_ingest_handoff_failed_count",
+            "type": "gauge",
+            "labels": ["dataSource"],
+            "description": "Number of times handoff failed."
+        },
+        "ingest/handoff/count": {
+            "prometheus_metric_name": "druid_realtime_ingest_handoff_count",
+            "type": "gauge",
+            "labels": ["dataSource"],
+            "description": "Number of times handoff has happened."
+        }
+    },
+    "coordinator": {
+        "segment/assigned/count": {
+            "prometheus_metric_name": "druid_coordinator_segment_assigned_count",
+            "type": "gauge",
+            "labels": ["tier"],
+            "description": "Number of segments assigned to be loaded in the cluster."
+        },
+        "segment/moved/count": {
+            "prometheus_metric_name": "druid_coordinator_segment_moved_count",
+            "type": "gauge",
+            "labels": ["tier"],
+            "description": "Number of segments assigned to be loaded in the cluster."
+        },
+        "segment/dropped/count": {
+            "prometheus_metric_name": "druid_coordinator_segment_dropped_count",
+            "type": "gauge",
+            "labels": ["tier"],
+            "description": "Number of segments dropped due to being overshadowed."
+        },
+        "segment/deleted/count": {
+            "prometheus_metric_name": "druid_coordinator_segment_deleted_count",
+            "type": "gauge",
+            "labels": ["tier"],
+            "description": "Number of segments dropped due to rules."
+        },
+
+        "segment/unneeded/count": {
+            "prometheus_metric_name": "druid_coordinator_segment_unneeded_count",
+            "type": "gauge",
+            "labels": ["tier"],
+            "description": "Number of segments dropped due to being marked as unused."
+        },
+        "segment/overShadowed/count": {
+            "prometheus_metric_name": "druid_coordinator_segment_overshadowed_count",
+            "type": "gauge",
+            "labels": [],
+            "description": "Number of overShadowed segments."
+        },
+        "segment/loadQueue/failed": {
+            "prometheus_metric_name": "druid_coordinator_segment_loadqueue_failed_count",
+            "type": "gauge",
+            "labels": ["server"],
+            "description": "Number of segments that failed to load."
+        },
+        "segment/loadQueue/count": {
+            "prometheus_metric_name": "druid_coordinator_segment_loadqueue_count",
+            "type": "gauge",
+            "labels": ["server"],
+            "description": "Number of segments to load."
+        },
+        "segment/dropQueue/count": {
+            "prometheus_metric_name": "druid_coordinator_segment_dropqueue_count",
+            "type": "gauge",
+            "labels": ["server"],
+            "description": "Number of segments to drop."
+        },
+        "segment/size": {
+            "prometheus_metric_name": "druid_coordinator_segment_size_bytes",
+            "type": "gauge",
+            "labels": ["dataSource"],
+            "description": "Size in bytes of available segments."
+        },
+        "segment/count": {
+            "prometheus_metric_name": "druid_coordinator_segment_count",
+            "type": "gauge",
+            "labels": ["dataSource"],
+            "description": "Number of served segments."
+        },
+        "segment/unavailable/count": {
+            "prometheus_metric_name": "druid_coordinator_segment_unavailable_count",
+            "type": "gauge",
+            "labels": ["dataSource"],
+            "description": "Number of segments (not including replicas) left to load until segments that should be loaded in the cluster are available for queries."
+        },
+        "segment/underReplicated/count": {
+            "prometheus_metric_name": "druid_coordinator_segment_under_replicated_count",
+            "type": "gauge",
+            "labels": ["tier", "dataSource"],
+            "description": "Number of segments (including replicas) left to load until segments that should be loaded in the cluster are available for queries."
+        }
+    }
+}
