@@ -11,21 +11,18 @@ logspam - summarize exceptions from production logs
     # Just get a list of recent exceptions:
     logspam
 
+    # A shell wrapper with some column sorting and filtering features:
+    logspam-watch
+
     # Monitor logspam output every 10 seconds, sorted:
     watch -n 10 sh -c "./bin/logspam | sort -nr"
 
-    # Like the above, but filter out Parsoid spam:
-    watch -n 10 sh -c "./bin/logspam | grep -v parsoid | sort -nr"
-
-    # A quick shorthand for invoking watch(1):
-    logspam-watch
-
 =head1 DESCRIPTION
 
-This deduplicates exceptions from exception.log and error.log, then prints them
-with a leading count of their occurrence and a snippet of the stacktrace.  In
-the interests of concision, it shortens exception names by removing any
-trailing "Exception" and condenses file paths.
+This deduplicates recent exceptions from exception.log and error.log, then
+prints them with a leading count of their occurrence and a snippet of the error
+message / stack trace.  In the interests of concision, it shortens exception
+names by removing any trailing "Exception" and condenses file paths.
 
 In practice, you may want the logspam-watch wrapper.
 
@@ -41,6 +38,25 @@ use utf8;
 use open qw(:std :utf8);
 
 use List::Util qw(min max);
+use Time::Piece;
+use Time::Seconds;
+
+# By default, match all errors:
+my $filter_pattern = qr/.*/;
+
+# Handle user-defined filter patterns:
+if (defined $ARGV[0]) {
+  my $user_pattern = $ARGV[0];
+  eval {
+    $filter_pattern = qr/$user_pattern/;
+  };
+  if ($@) {
+    # We got a fatal error, probably meaning that the user-supplied pattern
+    # couldn't be compiled for one reason or another.  Fall back to using it as
+    # a literal string.
+    $filter_pattern = qr/\Q$user_pattern\E/
+  }
+}
 
 my $terminal_width = `tput cols`;
 chomp $terminal_width;
@@ -56,52 +72,46 @@ my $log_path_str = join ' ', (
   "${mw_log_dir}/exception.log",
   "${mw_log_dir}/error.log",
 );
-my $loglines =  `tail -n 3000 -q $log_path_str`;
-
-# Treat the datestamped log line as a separator between records - we're
-# interested in how often the stack trace appears, not when it appears.
-my @errors = split m{
-
-  ^           # Start of datestamped log line
-    [\d-]{10} # Datestamp
-    .*        # Remainder of line
-  $           # EOL
-
-}mx, $loglines;
+my $loglines =  `tail -n 2500 -q $log_path_str`;
 
 my %consolidate_patterns = (
-  '[mem size]' => qr/Allowed memory size of/,
-  '[max time]' => qr/Maximum execution time of 180 seconds exceeded/,
+  qr/Allowed memory size of/                         => '[mem]',
+  qr/Maximum execution time of 180 seconds exceeded/ => '[time]',
+  qr/Memcached::setMulti\(\): failed to set key/     => '[memcache]',
 );
 
-# A pattern for extracting exception names and the invariant stack traces from
-# errors looking like so:
-# [Exception WMFTimeoutException] (/srv/mediawiki/wmf-config/set-time-limit.php:39) the execution time limit of 60 seconds was exceeded
-#   #0 /srv/mediawiki/php-1.35.0-wmf.4/includes/parser/Preprocessor_Hash.php(689): {closure}(integer)
-#   #1 /srv/mediawiki/php-1.35.0-wmf.4/includes/parser/Parser.php(3125): Preprocessor_Hash->preprocessToObj(string, integer)
-#   ...
+# A pattern for extracting exception names and the invariant error messages /
+# stack traces from errors looking like so:
+
 my $exception_pat = qr{
 
-  ^                         # Start of error
-    \[Exception [ ] (.*?)\] # Yank out the class of our exception
-    (.*?)                   # Stack trace
-  $                         # End of error
+  ^                            # Start of datestamped log line
+    ( [\d-]{10} [ ] [\d:]{8} ) # Datestamp
+    .*?                        # Remainder of line
 
-}mx;
+  ^                            # Start of exception line
+    \[Exception [ ] (.*?)\]    # Yank out the class of our exception
+    (.*?)                      # Error message
+  $                            # EOL
 
-# Count times each stacktrace appears:
-my %unique_errors;
-my $max_exception_len = 0;
-foreach (@errors) {
-  next unless $_ =~ $exception_pat;
-  my $exception_class = $1;
-  my $stack_trace = shorten($2);
+}msx;
+
+# Count times each error message appears:
+my (%error_count, %first_dates, %last_dates);
+while ($loglines =~ /$exception_pat/g) {
+  my $date = $1;
+  my $exception_class = $2;
+  my $stack_trace = shorten($3);
+  my $matched_line = $&; # (the whole match)
+
+  # Make sure any user-supplied filter matches:
+  next unless $matched_line =~ $filter_pattern;
 
   # Condense some common errors:
-  for my $key (keys %consolidate_patterns) {
-    if ($stack_trace =~ $consolidate_patterns{$key}) {
-      $exception_class = $key;
-      $stack_trace = $consolidate_patterns{$key};
+  for my $pattern (keys %consolidate_patterns) {
+    if ($stack_trace =~ $pattern) {
+      $exception_class = $consolidate_patterns{$pattern};
+      $stack_trace = $pattern;
     }
   }
 
@@ -110,25 +120,34 @@ foreach (@errors) {
   $exception_class =~ s{[a-z] [a-z]+ \\}{}xgi;
   $exception_class =~ s{Exception$}{};
 
-  # Retain this for display use:
-  $max_exception_len = max(length $exception_class, $max_exception_len);
-
-  my $unique_error_msg = "$exception_class\t$stack_trace";
-  $unique_errors{$unique_error_msg}++;
+  my $error_key = "$exception_class\t$stack_trace";
+  $error_count{$error_key}++;
+  # If a first-seen date isn't defined, set it:
+  $first_dates{$error_key} //= $date;
+  $last_dates{$error_key} = $date;
 }
 
-# Set a hard limit of 22 characters for exceptions, for pathological cases:
-$max_exception_len = min($max_exception_len, 22);
-my $display_width = $terminal_width - ($max_exception_len + 16);
+# Set a hard limit of 20 characters for exceptions, for pathological cases:
+my $max_exception_len = 20;
+my $trace_width = $terminal_width - (30 + $max_exception_len);
 
-foreach (keys %unique_errors) {
+foreach (keys %error_count) {
   my ($exception, $trace) = split "\t";
 
-  my $count = $unique_errors{$_};
-  my $display_exception = sprintf("% ${max_exception_len}s", $exception, $_);
-  my $display_trace = substr($trace, 0, $display_width);
+  # https://perldoc.perl.org/functions/sprintf.html
+  # Pad/trim display name, then fill in some underscores for easier reading:
+  my $display_exception = sprintf("%-${max_exception_len}s", $exception);
+  $display_exception = substr($display_exception, 0, 20);
+  $display_exception =~ tr/ /./;
 
-  say join "\t", ($count, $display_exception, $display_trace);
+  # Our line template, essentially.  Separate fields with tabs for easy use
+  # of sort(1) / cut(1) / awk(1) and friends:
+  say join "\t", (
+    $error_count{$_},
+    display_time($first_dates{$_}, $last_dates{$_}),
+    $display_exception,
+    substr($trace, 0, $trace_width),
+  );
 }
 
 =head1 SUBROUTINES
@@ -150,7 +169,7 @@ sub shorten {
   # Strip trailing / leading whitespace:
   $stack_trace =~ s/^ \s+ | \s+ $//gx;
 
-  if ( $stack_trace =~ m{^ \( $mw_root php-.*(wmf[.].*?)/ (.*?) \) (.*) $}x ) {
+  if ( $stack_trace =~ m{^ \( $mw_root php-.*wmf([.].*?)/ (.*?) \) (.*) $}x ) {
     my ($version, $path, $trace) = ($1, $2, $3);
     $path = condense_path($path);
     $stack_trace = "$version $path $trace";
@@ -165,23 +184,52 @@ sub shorten {
   return $stack_trace;
 }
 
+
 =item condense_path($path)
 
 Condense a typical file path by reducing to the first letter of each leading
-particle, like:
+particle and removing '.php' extensions, so that:
 
     includes/foo/bar/baz.php
 
 Becomes:
 
-    i/f/b/baz.php
+    i/f/b/baz
 
 =cut
 
 sub condense_path {
   my ($path) = @_;
+
+  # Condense directories to their first letter:
   $path =~ s!([a-z]) [a-z.]+ /!$1/!xgi;
+
+  # Zap the first instance of .php - it's a given and it saves 4 chars:
+  $path =~ s/[.]php//;
+
   return $path;
+}
+
+
+=item display_time($datestamp, ...)
+
+Condense datestamps in the format C<2020-01-01 00:00:00> for display.  Adds some
+glyphs to flag especially recent events.
+
+=cut
+
+sub display_time {
+  state $now = localtime;
+  return join "\t", map {
+    # Indicate recency with a one or two character glyph:
+    my $t = Time::Piece->strptime($_, "%Y-%m-%d %T");
+    my $age = $now - $t;
+    my $glyph = ' ';
+    $glyph = '.' if $age < 420;
+    $glyph = '?' if $age < 240;
+    $glyph = '!' if $age < 60;
+    $t->strftime("%H%M $glyph");
+  } @_;
 }
 
 =back
