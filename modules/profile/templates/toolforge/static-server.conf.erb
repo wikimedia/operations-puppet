@@ -77,6 +77,7 @@ server {
         proxy_hide_header        CF-RAY;
         proxy_hide_header        Expect-CT;
         proxy_hide_header        Strict-Transport-Security;
+        proxy_hide_header        cf-request-id;
         proxy_intercept_errors on;
         error_page 301 302 307 308 = @handle_redirects;
     }
