@@ -7,7 +7,12 @@ class openstack::serverpackages::rocky::buster(
       'python-rados',
       'python-rbd',
       'ceph-common',
-      'python-cephfs',
+      'python3-ceph',
+      'python3-cephfs',
+      'python3-rados',
+      'python3-rgw',
+      'python3-rbd',
+      'libcephfs2',
       'libradosstriper1',
     ]
 
