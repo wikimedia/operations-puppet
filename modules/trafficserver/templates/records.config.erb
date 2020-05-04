@@ -3,7 +3,7 @@
 
 # traffic_manager TCP ports
 <% if @inbound_tls_settings -%>
-CONFIG proxy.config.http.server_ports STRING <%= @port %>:ssl <%= @port %>:ipv6:ssl
+CONFIG proxy.config.http.server_ports STRING <%= @port %>:ssl <%= @port %>:ipv6:ssl <%= @port %>:quic
 <% else -%>
 CONFIG proxy.config.http.server_ports STRING <%= @port %> <%= @port %>:ipv6
 <% end -%>
