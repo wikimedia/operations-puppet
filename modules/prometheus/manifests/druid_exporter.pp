@@ -55,7 +55,7 @@ define prometheus::druid_exporter (
         mode    => '0444',
         owner   => 'root',
         group   => 'root',
-        content => "ARGS=\"${arguments}\"",
+        content => "ARGS=\"${metrics_config_file} ${arguments}\"",
         notify  => Service['prometheus-druid-exporter'],
     }
 
