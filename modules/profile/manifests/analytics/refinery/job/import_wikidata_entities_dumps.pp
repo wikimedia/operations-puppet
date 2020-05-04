@@ -19,7 +19,7 @@ class profile::analytics::refinery::job::import_wikidata_entities_dumps (
         local_source      => $wikidata_local_source,
         hdfs_destination  => '/wmf/data/raw/wikidata/dumps/all_json',
         timer_description => 'Schedules daily an hdfs-rsync of the wikidata all-json dumps into HDFS',
-        timer_interval    => '*-*-* 00:00:00',
+        timer_interval    => '*-*-* 01:00:00',
         use_kerberos      => $use_kerberos,
     }
 
@@ -30,7 +30,7 @@ class profile::analytics::refinery::job::import_wikidata_entities_dumps (
         local_source      => $wikidata_local_source,
         hdfs_destination  => '/wmf/data/raw/wikidata/dumps/all_ttl',
         timer_description => 'Schedules daily an hdfs-rsync of the wikidata all-ttl dumps into HDFS',
-        timer_interval    => '*-*-* 00:30:00',
+        timer_interval    => '*-*-* 01:30:00',
         use_kerberos      => $use_kerberos,
     }
 
