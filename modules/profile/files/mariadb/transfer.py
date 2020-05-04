@@ -315,13 +315,14 @@ class Transferer(object):
         return decompress_command
 
     def netcat_send_command(self, target_host):
-        netcat_send_command = '| /bin/nc -q 0 -w 5 {} {}'.format(target_host, self.options['port'])
+        netcat_send_command = '| /bin/nc -q 0 -w 300 {} {}'.format(target_host,
+                                                                   self.options['port'])
 
         return netcat_send_command
 
     @property
     def netcat_listen_command(self):
-        netcat_listen_command = '/bin/nc -l -p {}'.format(self.options['port'])
+        netcat_listen_command = '/bin/nc -l -w 300 -p {}'.format(self.options['port'])
 
         return netcat_listen_command
 
