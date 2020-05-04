@@ -44,4 +44,10 @@ class adduser (
         mode    => '0644',
         content => template('adduser/etc/adduser.conf.erb'),
     }
+
+    file {'/etc/sysusers.d/sysusers-base.conf':
+        ensure  => file,
+        mode    => '0444',
+        content => template('adduser/sysusers-base.conf.erb'),
+    }
 }
