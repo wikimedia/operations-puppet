@@ -22,6 +22,18 @@ class profile::cache::varnish::frontend (
         require ::profile::lvs::realserver
     }
 
+    # Frontend memory cache sizing
+    $mem_gb = $::memorysize_mb / 1024.0
+    if ($mem_gb < 90.0) {
+        # virtuals, test hosts, etc...
+        $fe_mem_gb = 1
+    } else {
+        # Removing a constant factor before scaling helps with
+        # low-memory hosts, as they need more relative space to
+        # handle all the non-cache basics.
+        $fe_mem_gb = ceiling(0.7 * ($mem_gb - 100.0))
+    }
+
     # Size cutoff for large objects. The definition of "large" depends on the
     # admission policy used. Objects with Content-Length bigger than this value
     # are not cached.
@@ -34,6 +46,7 @@ class profile::cache::varnish::frontend (
         req_handling         => $req_handling,
         alternate_domains    => $alternate_domains,
         large_objects_cutoff => $large_objects_cutoff,
+        fe_mem_gb            => $fe_mem_gb,
     }
 
     # VCL files common to all instances
@@ -56,18 +69,6 @@ class profile::cache::varnish::frontend (
         content    => template('profile/cache/varnish-frontend.directors.vcl.tpl.erb'),
         reload     => "/usr/local/bin/confd-reload-vcl varnish-frontend ${reload_vcl_opts}",
         before     => Service['varnish-frontend'],
-    }
-
-    # Frontend memory cache sizing
-    $mem_gb = $::memorysize_mb / 1024.0
-    if ($mem_gb < 90.0) {
-        # virtuals, test hosts, etc...
-        $fe_mem_gb = 1
-    } else {
-        # Removing a constant factor before scaling helps with
-        # low-memory hosts, as they need more relative space to
-        # handle all the non-cache basics.
-        $fe_mem_gb = ceiling(0.7 * ($mem_gb - 100.0))
     }
 
     # Transient storage limits T164768
