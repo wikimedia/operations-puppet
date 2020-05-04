@@ -396,7 +396,7 @@ sub cluster_fe_recv {
 			return (pass);
 		}
 	}
-
+        set resp.http.Alt-Svc = 'h3-25=":443"; ma=3600, h2=":443"; ma=3600, quic=":443"; ma=3600; v="12,22,32"';
 	call evaluate_cookie;
 	call pass_authorization;
 }
