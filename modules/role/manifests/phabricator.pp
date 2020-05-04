@@ -14,11 +14,11 @@ class role::phabricator {
     include ::profile::phabricator::httpd
     include ::profile::phabricator::monitoring
     include ::profile::prometheus::apache_exporter
-    include ::profile::waf::apache2::administrative
     include ::profile::tlsproxy::envoy # TLS termination
     include ::rsync::server # copy repo data between servers
 
     if $::realm == 'production' {
+        include ::profile::waf::apache2::administrative
         include ::lvs::realserver
     }
 }
