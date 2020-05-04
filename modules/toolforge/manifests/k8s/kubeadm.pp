@@ -1,7 +1,5 @@
 class toolforge::k8s::kubeadm(
 ) {
-    require ::toolforge::k8s::kubeadmrepo
-
     $packages = [
         'kubeadm',
         'kubectl',
@@ -10,10 +8,14 @@ class toolforge::k8s::kubeadm(
         'docker-ce-cli',
         'containerd.io',
         'cri-tools',
-        'ipset',
     ]
 
-    package { $packages:
+    apt::package_from_component { 'thirdparty-kubeadm-k8s-1-15':
+        component => 'thirdparty/kubeadm-k8s-1-15',
+        packages  => $packages,
+    }
+
+    package { 'ipset':
         ensure => 'present',
     }
 
