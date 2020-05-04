@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 
-import getpass
 import os
 import sys
 import xml.etree.ElementTree as ET
@@ -20,9 +19,6 @@ on a node with the hdfs CLI installed.
 
 def get_namenode_state(namenode_service_id):
     command = 'hdfs haadmin -getServiceState %s' % namenode_service_id
-    if getpass.getuser() != 'hdfs':
-        command = 'sudo -u hdfs ' + command
-
     return os.popen(command).read().strip()
 
 
