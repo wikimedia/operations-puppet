@@ -75,7 +75,7 @@ def main():
         .format(running_user, run_as_user, cmd))
 
     subprocess.call(["/usr/bin/kinit", principal, "-k", "-t", keytab_path])
-    subprocess.call(cmd)
+    sys.exit(subprocess.call(cmd))
 
 
 if __name__ == '__main__':
