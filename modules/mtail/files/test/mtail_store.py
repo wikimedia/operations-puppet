@@ -14,11 +14,11 @@ class MtailMetricStore(object):
         self.parse_metric_store(*self.run_mtail())
 
     def run_mtail(self):
-        mtail_cmd = ['mtail', '-one_shot', '-one_shot_metrics', '-logtostderr',
+        mtail_cmd = ['mtail', '-one_shot', '-logtostderr',
                      '-progs', self._progs, '-logs', self._logs]
         process = subprocess.Popen(mtail_cmd, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
         stdout, stderr = process.communicate()
-        return stdout, stderr
+        return stdout.decode(), stderr.decode()
 
     def parse_metric_store(self, stdout, stderr):
         metrics_store = []
