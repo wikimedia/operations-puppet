@@ -248,7 +248,6 @@ phabricator.uninstalled-applications:
   PhabricatorPhrictionApplication: true
   PhabricatorDivinerApplication: true
 
-phd.pid-directory: "/var/run/phd/pid"
 phd.log-directory: "/var/log/phd"
 phd.user: 'phd'
 

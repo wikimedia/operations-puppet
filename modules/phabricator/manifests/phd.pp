@@ -30,12 +30,6 @@ class phabricator::phd (
         group  => 'phd',
     }
 
-    file { $settings['phd.pid-directory']:
-        ensure => 'directory',
-        owner  => 'phd',
-        group  => 'phd',
-    }
-
     file { $settings['phd.log-directory']:
         ensure => 'directory',
         owner  => 'phd',
