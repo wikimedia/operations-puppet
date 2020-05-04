@@ -94,6 +94,7 @@ class profile::reportupdater::jobs {
         config_file => "${base_path}/jobs/reportupdater-queries/published_cx2_translations/config-mysql.yaml",
         output_dir  => 'metrics/published_cx2_translations',
         query_dir   => 'published_cx2_translations',
+        interval    => '*-*-* *:30:00',
     }
 
     reportupdater::job { 'mt_engines':
