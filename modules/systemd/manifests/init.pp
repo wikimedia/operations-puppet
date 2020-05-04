@@ -14,6 +14,10 @@ class systemd {
     $base_dir = '/lib/systemd/system'
     $override_dir = '/etc/systemd/system'
 
+    file { '/etc/sysusers.d':
+        ensure => directory,
+    }
+
     file { '/usr/local/lib/nagios/plugins/check_journal_pattern':
         ensure => present,
         source => 'puppet:///modules/systemd/check_journal_pattern',
