@@ -124,23 +124,30 @@ environment variable. The following examples are equivalent:
 git-buildpackage
 ================
 
-git-pbuilder can be used by git-buildpackage to leverage all of the above. The
-trick is to use GIT\_PBUILDER\_AUTOCONF=no i.e.:
+git-pbuilder can be used by git-buildpackage to leverage all of the above but
+instead of DIST and ARCH you need to use --git-dist=$DIST and --git-arch=$ARCH.
 
-    GIT_PBUILDER_AUTOCONF=no DIST=stretch WIKIMEDIA=yes gbp buildpackage -sa -us -uc --git-builder=git-pbuilder
+    WIKIMEDIA=yes gbp buildpackage -sa -us -uc --git-pbuilder --git-no-pbuilder-autoconf --git-dist=stretch
 
-The GIT\_PBUILDER\_AUTOCONF tells git-pbuilder to forego all attempts to discover the base path, tarball, or
-configuration file to set up the pbuilder options but rather instead rely on the settings in .pbuilderrc
+-sa is being used to enforce the original tarball to be included in the
+.changes file which is a requirement for Wikimedia reprepro.
+
+The --git-no-pbuilder-autoconf/GIT\_PBUILDER\_AUTOCONF=no tells git-pbuilder to
+forego all attempts to discover the base path, tarball, or configuration file
+to set up the pbuilder options but rather instead rely on the settings in
+.pbuilderrc
 
 You can make it a default by editing your ~/.gbp.conf:
 
     [buildpackage]
-    builder = GIT_PBUILDER_AUTOCONF=no git-pbuilder -sa
+    pbuilder = True
+    pbuilder-autoconf = False
+    dist = buster
 
--sa is being used to enforce the original tarball to be included in the .changes file
-which is a requirement for Wikimedia reprepro.
+Without "dist = buster" gbp will build for sid by default.
 
-Note that before stretch git-buildpackage was provided as an equivalent command to gbp buildpackage.
+Note that before stretch git-buildpackage was provided as an equivalent command
+to gbp buildpackage.
 Both work on jessie but git-buildpackage does not work on stretch
 
 Results

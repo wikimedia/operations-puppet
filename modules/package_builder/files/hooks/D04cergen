@@ -1,5 +1,8 @@
 #!/bin/sh
 
+# If pbuilder is called by gbp DIST is stored in GBP_PBUILDER_DIST
+DIST=${GBP_PBUILDER_DIST:-$DIST}
+
 if [ "$CERGEN" = "yes" ] && [ "$DIST" = "buster" ]; then
     cat > /etc/apt/sources.list.d/wikimedia-cergen.list <<-'EOF'
     deb http://apt.wikimedia.org/wikimedia buster-wikimedia component/cergen

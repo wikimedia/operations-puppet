@@ -1,5 +1,9 @@
 #!/bin/sh
+
 PROXY=http://webproxy.<%= @site %>.wmnet:8080
+# If pbuilder is called by gbp DIST is stored in GBP_PBUILDER_DIST
+DIST=${GBP_PBUILDER_DIST:-$DIST}
+
 # buster does not have security updates yet
 if [ "${SECURITY_UPDATES}" = "yes" -a "${DIST}" != "buster" ]; then
 	cat > /etc/apt/sources.list.d/security.list <<-'EOF'

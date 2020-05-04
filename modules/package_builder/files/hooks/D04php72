@@ -1,5 +1,8 @@
 #!/bin/sh
 
+# If pbuilder is called by gbp DIST is stored in GBP_PBUILDER_DIST
+DIST=${GBP_PBUILDER_DIST:-$DIST}
+
 # Avoid running hooks if PHP72 is not specified
 if [ "$PHP72" = "yes" ] && [ "$DIST" = "stretch" ]; then
     cat > /etc/apt/sources.list.d/wikimedia-php72.list <<-'EOF'
