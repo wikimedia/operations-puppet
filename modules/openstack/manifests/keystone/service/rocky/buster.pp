@@ -37,7 +37,6 @@ class openstack::keystone::service::rocky::buster(
         'python3-ldappool',
         'python3-ldap3',
         'ruby-ldap',
-        'python-mwclient',
         'python3-mwclient',
         'libapache2-mod-wsgi-py3',
     ]
