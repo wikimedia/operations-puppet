@@ -124,6 +124,12 @@
             "type": "gauge",
             "labels": [],
             "description": "Number of cache errors."
+        },
+        "jetty/numOpenConnections": {
+            "prometheus_metric_name": "druid_broker_jetty_open_connections_count",
+            "type": "gauge",
+            "labels": [],
+            "description": "Number of open jetty connections."
         }
     },
     "historical": {
@@ -230,6 +236,12 @@
             "type": "gauge",
             "labels": [],
             "description": "Number of interrupted queries."
+        },
+        "jetty/numOpenConnections": {
+            "prometheus_metric_name": "druid_historical_jetty_open_connections_count",
+            "type": "gauge",
+            "labels": [],
+            "description": "Number of open jetty connections."
         }
     },
     "peon": {
