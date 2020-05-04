@@ -140,3 +140,10 @@ profile::tlsproxy::envoy::capitalize_headers: true
 ## Backups
 gerrit::server::backups_enabled: false
 gerrit::server::backup_set: 'srv-gerrit-git'
+
+# Cache Proxy
+cache::nodes:
+    text:
+        eqiad:
+          - 'gerrit-prod-1001.devtools.eqiad.wmflabs'
+          - 'phabricator-prod-1001.devtools.eqiad.wmflabs'
