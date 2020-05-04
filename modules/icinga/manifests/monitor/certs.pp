@@ -49,7 +49,7 @@ class icinga::monitor::certs {
     }
     monitoring::service { 'https_wmfusercontent':
         description   => 'HTTPS-wmfusercontent',
-        check_command => 'check_ssl_http!phab.wmfusercontent.org',
+        check_command => 'check_ssl_http_letsencrypt!phab.wmfusercontent.org',
         host          => 'phab.wmfusercontent.org',
         notes_url     => 'https://phabricator.wikimedia.org/tag/phabricator/',
     }
