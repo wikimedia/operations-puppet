@@ -3467,7 +3467,7 @@ users:
     gid: 500
     name: lexnasser
     ssh_keys: []
-    krb: present
+    krb: absent
   cohi:
     ensure: present
     realname: Corinna Hillebrand
