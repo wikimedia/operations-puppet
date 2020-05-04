@@ -61,7 +61,7 @@ class openstack::keystone::service::rocky::buster(
         'python-warlock',
         'ldapvi',
         'python-ldap',
-        'python-ldappool',
+        'python3-ldappool',
         'python3-ldap3',
         'ruby-ldap',
         'python-mwclient',

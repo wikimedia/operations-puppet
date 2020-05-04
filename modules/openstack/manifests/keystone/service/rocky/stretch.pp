@@ -64,7 +64,6 @@ class openstack::keystone::service::rocky::stretch(
         'python-ldappool',
         'python3-ldap3',
         'ruby-ldap',
-        'python-mwclient',
         'python3-mwclient',
         'libapache2-mod-wsgi-py3',
     ]
