@@ -1,6 +1,7 @@
 class profile::toolforge::k8s::client(
 ){
     apt::package_from_component { 'thirdparty-kubeadm-k8s-1-15':
+        distro    => 'buster-wikimedia', # this should work even for stretch
         component => 'thirdparty/kubeadm-k8s-1-15',
         packages  => ['kubectl'],
     }
