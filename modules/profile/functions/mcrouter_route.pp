@@ -1,7 +1,6 @@
-function profile::mcrouter_route(String $region, Boolean $use_gutter, Integer $ttl) >> Variant[Hash, String] {
-    # For remote sites, or if we're not using the gutter pool,
-    # the route is always the simple "PoolRoute|${region}"
-    if ($region != $::site or !$use_gutter) {
+function profile::mcrouter_route(String $region, Integer $ttl) >> Variant[Hash, String] {
+    # For remote sites, the route is always the simple "PoolRoute|${region}"
+    if ($region != $::site) {
         "PoolRoute|${region}"
     }
     else {
