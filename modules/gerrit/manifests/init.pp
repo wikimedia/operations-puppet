@@ -13,31 +13,34 @@ class gerrit(
     Optional[String] $scap_key_name = undef,
     Optional[String] $db_user = undef,
     Optional[String] $db_pass = undef,
+    Boolean $enable_monitoring = true,
 ) {
 
     class { '::gerrit::jetty':
-        host          => $host,
-        ipv4          => $ipv4,
-        ipv6          => $ipv6,
-        replica       => $replica,
-        replica_hosts => $replica_hosts,
-        config        => $config,
-        ldap_config   => $ldap_config,
-        java_version  => $java_version,
-        scap_user     => $scap_user,
-        scap_key_name => $scap_key_name,
-        db_user       => $db_user,
-        db_pass       => $db_pass,
+        host              => $host,
+        ipv4              => $ipv4,
+        ipv6              => $ipv6,
+        replica           => $replica,
+        replica_hosts     => $replica_hosts,
+        config            => $config,
+        ldap_config       => $ldap_config,
+        java_version      => $java_version,
+        scap_user         => $scap_user,
+        scap_key_name     => $scap_key_name,
+        db_user           => $db_user,
+        db_pass           => $db_pass,
+        enable_monitoring => $enable_monitoring
     }
 
     class { '::gerrit::proxy':
-        require       => Class['gerrit::jetty'],
-        host          => $host,
-        ipv4          => $ipv4,
-        ipv6          => $ipv6,
-        replica_hosts => $replica_hosts,
-        replica       => $replica,
-        use_acmechief => $use_acmechief,
+        require           => Class['gerrit::jetty'],
+        host              => $host,
+        ipv4              => $ipv4,
+        ipv6              => $ipv6,
+        replica_hosts     => $replica_hosts,
+        replica           => $replica,
+        use_acmechief     => $use_acmechief,
+        enable_monitoring => $enable_monitoring
     }
 
     if !$replica {

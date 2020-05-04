@@ -25,6 +25,7 @@ class gerrit::jetty(
     Integer[8, 11] $java_version = 8,
     Optional[String] $scap_user = undef,
     Optional[String] $scap_key_name = undef,
+    Boolean $enable_monitoring = true,
     ) {
 
     group { 'gerrit2':
@@ -321,10 +322,12 @@ class gerrit::jetty(
         require => File['/etc/default/gerrit'],
     }
 
-    nrpe::monitor_service { 'gerrit':
-        ensure       => 'present',
-        description  => 'gerrit process',
-        nrpe_command => "/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:1 --ereg-argument-array '^${java_home}/bin/java .*-jar /var/lib/gerrit2/review_site/bin/gerrit.war daemon -d /var/lib/gerrit2/review_site'",
-        notes_url    => 'https://wikitech.wikimedia.org/wiki/Gerrit',
+    if $enable_monitoring {
+        nrpe::monitor_service { 'gerrit':
+            ensure       => 'present',
+            description  => 'gerrit process',
+            nrpe_command => "/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:1 --ereg-argument-array '^${java_home}/bin/java .*-jar /var/lib/gerrit2/review_site/bin/gerrit.war daemon -d /var/lib/gerrit2/review_site'",
+            notes_url    => 'https://wikitech.wikimedia.org/wiki/Gerrit',
+        }
     }
 }

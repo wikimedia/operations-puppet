@@ -18,6 +18,7 @@ class profile::gerrit::server(
     Optional[String] $scap_key_name = lookup('gerrit::server::scap_key_name'),
     Optional[String] $db_user = lookup('gerrit::server::db_user'),
     Optional[String] $db_pass = lookup('gerrit::server::db_pass'),
+    Boolean $enable_monitoring = lookup('gerrit::server::enable_monitoring', { default_value => true }),
 ) {
 
     interface::alias { 'gerrit server':
@@ -25,7 +26,7 @@ class profile::gerrit::server(
         ipv6 => $ipv6,
     }
 
-    if !$is_replica {
+    if !$is_replica and $enable_monitoring {
         monitoring::service { 'gerrit_ssh':
             description   => 'SSH access',
             check_command => "check_ssh_port_ip!29418!${ipv4}",
@@ -83,19 +84,20 @@ class profile::gerrit::server(
     }
 
     class { '::gerrit':
-        host          => $host,
-        ipv4          => $ipv4,
-        ipv6          => $ipv6,
-        replica       => $is_replica,
-        replica_hosts => $replica_hosts,
-        config        => $config,
-        use_acmechief => $use_acmechief,
-        ldap_config   => $ldap_config,
-        java_version  => $java_version,
-        scap_user     => $scap_user,
-        scap_key_name => $scap_key_name,
-        db_user       => $db_user,
-        db_pass       => $db_pass,
+        host              => $host,
+        ipv4              => $ipv4,
+        ipv6              => $ipv6,
+        replica           => $is_replica,
+        replica_hosts     => $replica_hosts,
+        config            => $config,
+        use_acmechief     => $use_acmechief,
+        ldap_config       => $ldap_config,
+        java_version      => $java_version,
+        scap_user         => $scap_user,
+        scap_key_name     => $scap_key_name,
+        db_user           => $db_user,
+        db_pass           => $db_pass,
+        enable_monitoring => $enable_monitoring
     }
 
     class { '::gerrit::replication_key':

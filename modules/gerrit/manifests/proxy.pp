@@ -6,7 +6,8 @@ class gerrit::proxy(
     Boolean $maint_mode                          = false,
     Boolean $use_acmechief                       = false,
     Optional[Stdlib::Ipv6] $ipv6,
-    Optional[Array[Stdlib::Fqdn]] $replica_hosts   = $::gerrit::replica_hosts,
+    Optional[Array[Stdlib::Fqdn]] $replica_hosts = $::gerrit::replica_hosts,
+    Boolean $enable_monitoring                   = true,
     ) {
 
     if $replica {
@@ -15,11 +16,13 @@ class gerrit::proxy(
         $tls_host = $host
     }
 
-    monitoring::service { 'https':
-        description   => 'HTTPS',
-        check_command => "check_ssl_on_host_port_letsencrypt!${tls_host}!${tls_host}!443",
-        contact_group => 'admins,gerrit',
-        notes_url     => 'https://phabricator.wikimedia.org/project/view/330/',
+    if $enable_monitoring {
+        monitoring::service { 'https':
+            description   => 'HTTPS',
+            check_command => "check_ssl_on_host_port_letsencrypt!${tls_host}!${tls_host}!443",
+            contact_group => 'admins,gerrit',
+            notes_url     => 'https://phabricator.wikimedia.org/project/view/330/',
+        }
     }
 
     $ssl_settings = ssl_ciphersuite('apache', 'strong', true)
