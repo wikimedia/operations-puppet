@@ -49,4 +49,27 @@ class openstack::glance::service::rocky(
             notify  => Service['glance-api'],
             require => Package['glance'];
     }
+
+    if os_version('debian >= buster') {
+        # The Buster version of the Rocky packages seems to not create the 'glance' service user.
+        #  The uid and gid here are copied from Stretch where the user and group were created
+        #  by upstream packages.
+        group { 'glance':
+            ensure => 'present',
+            name   => 'glance',
+            gid    => 122,
+            system => true,
+        }
+
+        user { 'glance':
+            ensure     => 'present',
+            name       => 'glance',
+            uid        => 117,
+            comment    => 'glance system user',
+            gid        => 'glance',
+            managehome => true,
+            require    => Package['glance'],
+            system     => true,
+        }
+    }
 }
