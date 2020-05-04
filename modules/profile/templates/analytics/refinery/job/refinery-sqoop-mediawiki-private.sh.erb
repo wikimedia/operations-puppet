@@ -17,5 +17,6 @@ export PYTHONPATH=\${PYTHONPATH}:<%= @refinery_path %>/python
     --partition-value $(/bin/date --date="$(/bin/date +%Y-%m-15) -1 month" +'%Y-%m')\
     --mappers <%= @num_mappers_one_month %> \
     --processors <%= @num_processors %> \
+    --yarn-queue <%= @yarn_queue %> \
     --output-format avrodata \
     --log-file <%= @private_log_file %>

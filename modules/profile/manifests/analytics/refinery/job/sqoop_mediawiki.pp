@@ -40,6 +40,8 @@ class profile::analytics::refinery::job::sqoop_mediawiki (
     # since the beginning of wiki times or since 1 month
     $num_mappers_all_times      = 64
     $num_mappers_one_month      = 4
+    # Yarn queue to run sqoop jobs in: production
+    $yarn_queue                 = 'production'
 
     ############################################################################
     # Wrapper running entire-tables sqoop from labsdb, followed by entire-tables
