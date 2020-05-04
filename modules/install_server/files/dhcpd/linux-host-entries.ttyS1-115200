@@ -2945,7 +2945,6 @@ host es2024 {
 host es2025 {
     hardware ethernet B0:26:28:F5:3C:1E;
     fixed-address es2025.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer-bootif/";
 }
 
 host eventlog1002 {
