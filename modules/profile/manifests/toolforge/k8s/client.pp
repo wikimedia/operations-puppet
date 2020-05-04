@@ -2,7 +2,7 @@ class profile::toolforge::k8s::client(
 ){
     apt::package_from_component { 'thirdparty-kubeadm-k8s-1-15':
         component => 'thirdparty/kubeadm-k8s-1-15',
-        packages  => 'kubectl',
+        packages  => ['kubectl'],
     }
 
     package { 'toollabs-webservice':
