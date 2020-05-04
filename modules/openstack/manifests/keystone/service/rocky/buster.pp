@@ -2,18 +2,6 @@ class openstack::keystone::service::rocky::buster(
 ) {
     require ::openstack::serverpackages::rocky::buster
 
-    apt::repository { 'buster-wikimedia-thirdparty-oath':
-        uri        => 'http://apt.wikimedia.org/wikimedia',
-        dist       => buster-wikimedia,
-        components => 'thirdparty/oath',
-        source     => false,
-        before     => Package[python-oath],
-    }
-
-    package { 'python-oath':
-        ensure  => present,
-    }
-
     # pull in python-ldap version 3+ from the buster repo.
     #  older versions don't handle unicode properly.
     #  T229227
