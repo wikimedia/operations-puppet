@@ -44,7 +44,6 @@ class toolforge::k8s::kubeadmrepo(
     # agent run
     exec { 'toolforge-k8s-kubeadmrepo-apt-update':
         command     => '/usr/bin/apt-get update',
-        require     => Apt::Repository['toolforge-k8s-kubeadmrepo'],
         subscribe   => Apt::Repository['toolforge-k8s-kubeadmrepo'],
         refreshonly => true,
         logoutput   => true,
