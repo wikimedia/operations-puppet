@@ -12,7 +12,7 @@ class codesearch(
     $puppet_dir = "${base_dir}/puppet"
 
     apt::package_from_component { 'thirdparty-kubeadm-k8s':
-        component => 'thirdparty/kubeadm-k8s',
+        component => 'thirdparty/kubeadm-k8s-1-15',
         packages  => ['docker-ce'],
     }
 

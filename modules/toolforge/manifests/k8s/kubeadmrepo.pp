@@ -1,11 +1,10 @@
 class toolforge::k8s::kubeadmrepo(
 ) {
+    # TODO:
+    # a future patch will wipe this class and use apt::package_from_component
+    # from the calling manifests instead
+    #
 
-    # concrete package versions present in the repo are defined in
-    # modules/aptrepo/files/updates (search for thirdparty/kubeadm-k8s)
-    # we may keep different versions in the repo for upgrading/testing
-    # purposes, so instruct apt to stick to the versions we want (cannot use
-    # the trick of blindly installing what is in the repo)
     apt::pin { 'toolforge-k8s-kubeadmrepo-core':
         package  => 'kubeadm kubelet kubectl',
         pin      => 'version 1.15.6-00',
@@ -35,7 +34,7 @@ class toolforge::k8s::kubeadmrepo(
     apt::repository { 'toolforge-k8s-kubeadmrepo':
         uri        => 'http://apt.wikimedia.org/wikimedia/',
         dist       => 'buster-wikimedia',
-        components => 'thirdparty/kubeadm-k8s',
+        components => 'thirdparty/kubeadm-k8s-1-15',
         source     => false,
         notify     => Exec['toolforge-k8s-kubeadmrepo-apt-update'],
     }
