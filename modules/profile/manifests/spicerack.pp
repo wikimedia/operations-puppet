@@ -30,7 +30,8 @@ class profile::spicerack(
     String $ganeti_password = hiera('profile::ganeti::rapi::ro_password'),
     Integer $ganeti_timeout = hiera('profile::spicerack::ganeti_rapi_timeout', 30),
     Stdlib::HTTPUrl $netbox_api = lookup('netbox::api_url'),
-    String $netbox_token = lookup('netbox::rw_token'),
+    String $netbox_token_ro = lookup('netbox::ro_token'),
+    String $netbox_token_rw = lookup('netbox::rw_token'),
     String $http_proxy = lookup('http_proxy'),
 ) {
     # Ensure pre-requisite profiles are included
@@ -116,7 +117,8 @@ class profile::spicerack(
     }
     $netbox_config_data = {
         'api_url'   => $netbox_api,
-        'api_token' => $netbox_token,
+        'api_token_ro' => $netbox_token_ro,
+        'api_token_rw' => $netbox_token_rw,
     }
     file { '/etc/spicerack/netbox/config.yaml':
         ensure  => present,
