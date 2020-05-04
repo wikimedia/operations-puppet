@@ -67,7 +67,7 @@ sub cluster_fe_recv {
 	// cause functional issues.
 	unset req.http.Authorization;
 	unset req.http.Cookie;
-
+        set resp.http.Alt-Svc = 'h3-25=":443"; ma=3600, h2=":443"; ma=3600, quic=":443"; ma=3600; v="12,22,32"';
 	// 421 for bad H/2 coalesce (wikimedia-frontend handles synth)
 	if (req.http.Host != "<%= @vcl_config.fetch('upload_domain') %>"
 	    && req.http.Host != "<%= @vcl_config.fetch('maps_domain') %>") {
