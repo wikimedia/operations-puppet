@@ -13,10 +13,12 @@
 
   SetEnv PHABRICATOR_ENV www
 
+  <% if @trusted_proxies -%>
   <IfModule mod_remoteip.c>
     RemoteIPHeader X-Client-IP
     RemoteIPInternalProxy <%= @trusted_proxies.join(' ') %>
   </IfModule>
+  <% end -%>
 
   RewriteEngine on
 
