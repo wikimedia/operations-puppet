@@ -1248,6 +1248,11 @@ node /^cloudelastic100[1-4]\.wikimedia\.org$/ {
     role(elasticsearch::cloudelastic)
 }
 
+# New systems to be placed into service in T249062
+node /^cloudelastic100[5-6]\.wikimedia\.org$/ {
+    role(insetup)
+}
+
 node /^cloudnet100[3-4]\.eqiad\.wmnet$/ {
     role(wmcs::openstack::eqiad1::net)
 }
