@@ -46,7 +46,6 @@ class openstack::keystone::service::rocky::stretch(
         'python-jinja2',
         'python-jsonschema',
         'python-kombu',
-        'python-mysql.connector',
         'python-memcache',
         'python-migrate',
         'python-openssl',
