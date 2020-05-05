@@ -17,6 +17,12 @@ class profile::openstack::base::keystone::fernet_keys(
         user                      => 'root',
     }
 
+    file { '/etc/keystone/fernet-keys':
+        ensure => directory,
+        owner  => 'keystone',
+        group  => 'keystone',
+    }
+
     rsync::server::module { 'keystonefernetkeys':
         path        => '/etc/keystone/fernet-keys',
         uid         => 'keystone',
