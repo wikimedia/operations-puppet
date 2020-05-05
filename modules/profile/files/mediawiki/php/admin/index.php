@@ -13,7 +13,7 @@ Supported urls:
   /apcu-info       Show basic APCu stats
   /apcu-meta       Dump meta information for all objects in APCu to /tmp/apcu_dump_meta
   /apcu-free       Clear all data from APCu
-  /apcu-frag       APCu fragmenation percentage
+  /apcu-frag       APCu fragmentation percentage
   /opcache-info    Show basic opcache stats
   /opcache-meta    Dump meta information for all objects in opcache to /tmp/opcache_dump_meta
   /opcache-free    Clear all data from opcache

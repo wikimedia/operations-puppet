@@ -6,7 +6,7 @@ set -euo pipefail
 
 # Due to observations where 100% APCu fragmentation can cause perf degradation
 # (T240205), we can make an additional check about its status. If APCu
-# fragmenation is over 95%, we will issue a /apcu-free command
+# fragmentation is over 95%, we will issue a /apcu-free command
 
 # Service name
 SERVICE="$1"
