@@ -4229,3 +4229,7 @@ ldap_only_users:
     ensure: present
     realname: Praveen Das
     email: pdas@wikimedia.org
+  ah212:
+    ensure: present
+    realname: Antonino Hemmer
+    email: ahemmer@wikimedia.org
