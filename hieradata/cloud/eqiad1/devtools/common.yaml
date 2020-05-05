@@ -120,10 +120,18 @@ scap::sources:
 
 
 # Gerrit
+
+gerrit::server:;config: 'gerrit.config.erb'
+
+# No IPv6 in cloud
 gerrit::service::ipv6: undef
+
+# No replication to github from cloud
+gerrit::jetty::replication: {}
 
 # Database (MySQL, will not be used in future)
 gerrit::server::db_user: 'gerrit'
+gerrit::server::db_pass: 'foobar'
 
 ## Java
 gerrit::server::java_version: 8
@@ -142,6 +150,10 @@ profile::tlsproxy::envoy::capitalize_headers: true
 ## Backups
 gerrit::server::backups_enabled: false
 gerrit::server::backup_set: 'srv-gerrit-git'
+
+## Rsync data for server migrations
+gerrit::server::rsync_src_host: 'gerrit-prod-1001.devtools.eqiad.wmflabs'
+gerrit::server::rsync_dst_hosts: []
 
 # Cache Proxy
 cache::nodes:
