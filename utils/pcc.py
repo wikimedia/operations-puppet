@@ -147,6 +147,7 @@ job = jenkins.get_job('operations-puppet-catalog-compiler')
 build_params = {
     'GERRIT_CHANGE_NUMBER': str(args.change),
     'LIST_OF_NODES': args.nodes,
+    'COMPILER_MODE': 'change',
 }
 
 if args.future:
