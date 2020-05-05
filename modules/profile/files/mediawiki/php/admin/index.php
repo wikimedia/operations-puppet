@@ -53,6 +53,7 @@ switch ($_SERVER['SCRIPT_NAME']) {
 		ini_value();
 		break;
 	default:
+		header("Content-Type: text/plain");
 		echo $usage;
 }
 

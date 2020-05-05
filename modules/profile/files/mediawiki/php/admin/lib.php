@@ -319,43 +319,52 @@ function dump_file($name, $contents) {
 
 // Views
 function show_prometheus_metrics() {
+	header("Content-Type: text/plain");
 	foreach (prometheus_metrics() as $k) {
 		printf("%s", $k);
 	}
 }
 
 function show_apcu_info() {
+	header("Content-Type: application/json");
 	print json_encode(apcu_stats());
 }
 
 function show_apcu_frag() {
+	header("Content-Type: application/json");
 	print json_encode(array('fragmentation'=>apcu_frag()));
 }
 
 function dump_apcu_full() {
+	header("Content-Type: text/plain");
 	$stats = apcu_stats(true);
 	dump_file('/tmp/apcu_dump_meta', $stats['cache_list']);
 }
 
 function clear_apcu() {
+	header("Content-Type: text/plain");
 	apcu_clear_cache();
 	echo "APCu cache cleared\n";
 }
 
 function show_opcache_info() {
+	header("Content-Type: application/json");
 	print json_encode(opcache_stats());
 }
 
 function dump_opcache_meta() {
+	header("Content-Type: text/plain");
 	$oc = opcache_stats(true);
 	dump_file('/tmp/opcache_dump_meta', $oc['scripts']);
 }
 
 function clear_opcache() {
+	header("Content-Type: text/plain");
 	opcache_reset();
 }
 
 function ini_value() {
+	header("Content-Type: application/json");
 	$all_ini_values = ini_get_all();
 	if (isset($_GET['key'])) {
 		$key = $_GET['key'];
