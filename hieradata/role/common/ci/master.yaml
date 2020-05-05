@@ -11,6 +11,12 @@ profile::ci::proxy_jenkins::http_port: 8080
 profile::ci::proxy_jenkins::prefix: '/ci'
 profile::ci::jenkins::builds_dir: '/srv/jenkins/builds/${ITEM_FULL_NAME}'
 profile::ci::jenkins::workspaces_dir: '/srv/jenkins/workspace/${ITEM_FULL_NAME}'
+profile::ci::jenkins::service_ensure: unmanaged
+profile::ci::jenkins::service_enable: true
+profile::ci::jenkins::service_monitor: true
+
+profile::zuul::server::service_ensure: running
+profile::zuul::server::service_enable: true
 
 profile::zuul::merger::conf:
     gearman_server: '208.80.154.17'  # contint1001.wikimedia.org
@@ -184,6 +190,9 @@ profile::ci::migration::rsync_data_dirs:
   - '/srv/'
 
 profile::zuul::merger::ensure_service: 'running'
+
+# Docker requires the overlay / overlayFS kernel module
+profile::base::overlayfs: true
 
 # envoy for TLS termination for integration.wikimedia.org behind ATS
 profile::tlsproxy::envoy::ensure: present

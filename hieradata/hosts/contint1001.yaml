@@ -1,13 +1,3 @@
-# hotspare is contint2001
-profile::ci::jenkins::service_ensure: unmanaged
-profile::ci::jenkins::service_enable: true
-profile::ci::jenkins::service_monitor: true
-profile::zuul::server::service_ensure: running
-profile::zuul::server::service_enable: true
-
-# Docker requires the overlay / overlayFS kernel module
-profile::base::overlayfs: true
-
 profile::ci::docker::settings:
   data-root: '/mnt/docker'
   iptables: false

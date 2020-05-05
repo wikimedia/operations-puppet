@@ -1,12 +1,8 @@
-# master is contint1001
-profile::ci::jenkins::service_ensure: unmanaged
 profile::ci::jenkins::service_enable: false
 profile::ci::jenkins::service_monitor: false
+
 profile::zuul::server::service_ensure: stopped
 profile::zuul::server::service_enable: false
-
-# Docker requires the overlay / overlayFS kernel module
-profile::base::overlayfs: true
 
 profile::ci::docker::settings:
   data-root: '/srv/docker'
