@@ -73,11 +73,12 @@ class openstack::nova::common(
     #
     # Upstream bug: https://bugs.launchpad.net/python-tooz/+bug/1530888
     file { '/usr/lib/python3/dist-packages/tooz/drivers/memcached.py':
-        ensure => 'present',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0644',
-        source => 'puppet:///modules/openstack/rocky/toozpatch/tooz-memcached.py';
+        ensure  => 'present',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
+        require => Package['nova-common'],
+        source  => 'puppet:///modules/openstack/rocky/toozpatch/tooz-memcached.py';
     }
 
     if os_version('debian >= buster') {
@@ -96,7 +97,7 @@ class openstack::nova::common(
             comment    => 'nova system user',
             gid        => 'nova',
             managehome => true,
-            require    => Package['nova-common'],
+            before     => Package['nova-common'],
             system     => true,
         }
     }
