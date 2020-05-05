@@ -2,6 +2,7 @@ class profile::kerberos::client (
     Stdlib::Fqdn $krb_realm_name = lookup('kerberos_realm_name'),
     Array[Stdlib::Fqdn] $krb_kdc_servers = lookup('kerberos_kdc_servers'),
     Stdlib::Fqdn $krb_kadmin_primary = lookup('kerberos_kadmin_server_primary'),
+    Optional[String] $default_ccache_name = lookup('profile::kerberos::client::default_ccache_name', { 'default_value' => undef}),
 ) {
 
     class { 'kerberos::wrapper': }
