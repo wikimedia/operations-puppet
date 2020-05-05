@@ -4225,3 +4225,7 @@ ldap_only_users:
     ensure: present
     realname: Naïké Nembetwa
     email: nnzali@wikimedia.org
+  pdas:
+    ensure: present
+    realname: Praveen Das
+    email: pdas@wikimedia.org
