@@ -3756,6 +3756,10 @@ ldap_only_users:
     ensure: present
     realname: Eric Gardner
     email: egardner@wikimedia.org
+  eamedina:
+    ensure: present
+    realname: Eduardo Medina
+    email: eamedina@wikimedia.org
   ferdbold:
     ensure: present
     realname: Frederic Bolduc
