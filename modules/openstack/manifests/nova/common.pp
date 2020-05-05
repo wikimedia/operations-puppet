@@ -79,4 +79,27 @@ class openstack::nova::common(
         mode   => '0644',
         source => 'puppet:///modules/openstack/rocky/toozpatch/tooz-memcached.py';
     }
+
+    if os_version('debian >= buster') {
+        # The Buster version of the Rocky packages creates the nova user
+        #  with a weird high-number uid.  Try to head it off by creating here
+        #  ahead of time.
+        group { 'nova':
+            ensure => 'present',
+            name   => 'nova',
+            system => true,
+        }
+
+        user { 'nova':
+            ensure     => 'present',
+            name       => 'nova',
+            comment    => 'nova system user',
+            gid        => 'nova',
+            managehome => true,
+            require    => Package['nova-common'],
+            system     => true,
+        }
+    }
+
+
 }
