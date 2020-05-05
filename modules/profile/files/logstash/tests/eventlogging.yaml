@@ -1,0 +1,33 @@
+fields:
+  type: "eventlogging"
+  tags:
+    - "eventlogging_EventError"
+codec: "json_lines"
+ignore:
+  - "@timestamp"
+testcases:
+  - input:
+      - >
+        {
+          "event": {
+            "message": "foo",
+            "code": "bar",
+            "schema": "baz",
+            "revision": "meh",
+            "rawEvent": "foo"
+          },
+          "recvFrom": "host"
+        }
+    expected:
+      - error_code: "bar"
+        event: {}
+        event_revision: "meh"
+        event_schema: "baz"
+        host: "host"
+        level: "ERROR"
+        message: "foo"
+        raw_event: "foo"
+        tags:
+          - "eventlogging_EventError"
+          - "es"
+        type: "eventlogging"

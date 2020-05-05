@@ -1,0 +1,21 @@
+fields:
+  program: "icinga"
+codec: "json_lines"
+ignore:
+  - "@timestamp"
+  - "host"
+testcases:
+  - input:
+      - >
+        {
+          "message":"SERVICE NOTIFICATION: irc;labtestpuppetmaster2001;Unmerged changes on repository puppet;CRITICAL;notify-service-by-irc;There is one unmerged change in puppet (dir /var/lib/git/operations/puppet, ref HEAD..origin/production)."
+        }
+    expected:
+      - icinga_check_descr: "Unmerged changes on repository puppet"
+        icinga_contact: "irc"
+        icinga_host: "labtestpuppetmaster2001"
+        icinga_message: "There is one unmerged change in puppet (dir /var/lib/git/operations/puppet, ref HEAD..origin/production)."
+        icinga_notif_cmd: "notify-service-by-irc"
+        icinga_state: "CRITICAL"
+        message: "SERVICE NOTIFICATION: irc;labtestpuppetmaster2001;Unmerged changes on repository puppet;CRITICAL;notify-service-by-irc;There is one unmerged change in puppet (dir /var/lib/git/operations/puppet, ref HEAD..origin/production)."
+        program: "icinga"

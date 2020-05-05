@@ -1,0 +1,17 @@
+fields:
+  type: "clienterror"
+codec: "json_lines"
+ignore:
+  - "@timestamp"
+  - "host"
+testcases:
+  - input:
+      - >
+        {
+          "dummy":"key"
+        }
+    expected:
+      - dummy: "key"
+        level: "ERROR"
+        tags: ["es"]
+        type: "clienterror"

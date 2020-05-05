@@ -1,0 +1,34 @@
+fields:
+  type: "syslog"
+codec: "json_lines"
+ignore:
+  - "@timestamp"
+testcases:
+  - input:
+      - >
+        {
+          "timestamp":"2020-05-05T10:15:58.655772+00:00",
+          "message":"[proxy_fcgi:error] [pid 231373:tid 140710242121472] [client 10.64.48.211:41868] AH01071: Got error 'Primary script unknown\\n'",
+          "host":"mw1369",
+          "logsource":"mw1369",
+          "severity":"err",
+          "facility":"local7",
+          "program":"apache2"
+        }
+    expected:
+      - timestamp: "2020-05-05T10:15:58.655772+00:00"
+        channel: "proxy_fcgi"
+        clientip: "10.64.48.211"
+        clientport: "41868"
+        facility: "local7"
+        host: "mw1369"
+        level: "error"
+        logsource: "mw1369"
+        message: "AH01071: Got error 'Primary script unknown\\n'"
+        program: "apache2"
+        severity: "err"
+        tags:
+          - syslog
+          - es
+        thread: "140710242121472"
+        type: "apache2"
