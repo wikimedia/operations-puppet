@@ -33,6 +33,12 @@
 #   Path to camus.jar.  Default undef,
 #   (/srv/deployment/analytics/refinery/artifacts/camus-wmf.jar)
 #
+# [*dynamic_stream_configs*]
+#   If true, the value of kafka.whitelist.topics will be computed
+#   by the refinery camus wrapper at runtime by getting a list
+#   of active streams from the MediaWiki EventStreamConfig API.
+#   If this is set, http proxy will be configured via the environment variables.
+#
 # [*check*]
 #   If true, CamusPartitionChecker will be run after the Camus run finishes.
 #   Default: undef, (false)
@@ -80,6 +86,7 @@ define camus::job (
     $user                    = 'analytics',
     $camus_name              = "${title}-00",
     $camus_jar               = undef,
+    $dynamic_stream_configs  = false,
     $check                   = undef,
     $check_jar               = undef,
     $check_dry_run           = undef,
@@ -208,6 +215,20 @@ define camus::job (
         default => "--libjars ${libjars}",
     }
 
+    # Set $dynamic_stream_configs_opt and use http webproxy
+    # so https://meta.wikimedia.org/w/api.php can be requested at runtime.
+    if $dynamic_stream_configs {
+        $dynamic_stream_configs_opt = '--dynamic-stream-configs'
+        $http_proxy_environment = {
+            'http_proxy'  => 'http://webproxy.eqiad.wmnet:8080',
+            'https_proxy' => 'http://webproxy.eqiad.wmnet:8080',
+        }
+    } else {
+        $dynamic_stream_configs_opt = ''
+        $http_proxy_environment = {}
+    }
+
+
     $check_jar_opt = $check_jar ? {
         undef   => '',
         false   => '',
@@ -234,7 +255,7 @@ define camus::job (
         default => "--check ${check_jar_opt}${check_dry_run_opt}${check_email_enabled_opt}${check_topic_whitelist_opt}",
     }
 
-    $unit_command = "${script} --run --job-name camus-${title} ${camus_jar_opt} ${libjars_opt} ${check_opts} ${properties_file}"
+    $unit_command = "${script} --run --job-name camus-${title} ${camus_jar_opt} ${libjars_opt} ${dynamic_stream_configs_opt} ${check_opts} ${properties_file}"
 
     kerberos::systemd_timer { "camus-${title}":
         ensure                    => $ensure,
@@ -242,7 +263,7 @@ define camus::job (
         command                   => $unit_command,
         interval                  => $interval,
         user                      => $user,
-        environment               => $environment,
+        environment               => merge($http_proxy_environment, $environment),
         monitoring_enabled        => $monitoring_enabled,
         monitoring_contact_groups => 'analytics',
         logfile_basedir           => $camus::log_directory,

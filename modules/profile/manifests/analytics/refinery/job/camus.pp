@@ -15,6 +15,42 @@
 #   Run kinit before executing any command.
 #   Default: false
 #
+# Description of Camus jobs declared here:
+#
+# - webrequest
+#   Ingests webrequest_text and webrequest_upload topics into
+#   /wmf/data/raw/webrequest/.
+#
+# - eventlogging
+#   Ingests eventlogging_.+ topics into /wmf/data/raw/eventlogging/.
+#
+# - event_dynamic_stream_config
+#   Ingests topics belonging to all streams defined in MediaWiki Config
+#   via the EventStreamConfig MediaWiki Extension API.  A list of active streams
+#   is requested from the MW API at job launch time, and a list of topics
+#   to ingest is built from that.  These topics are ingested into
+#   /wmf/data/raw/event/.  Because eventlogging_.+ topics are not prefixed
+#   with the datacenter name (eqiad|codfw), they are explicitly blacklisted,
+#   even if they are in stream config.
+#
+# - mediawiki_events
+#   Ingests whitelisted mediawiki.*  (non job) events into /wmf/data/raw/event/.
+#
+# - mediawiki_analytics_events
+#   Ingests high volume whitelistsed mediawiki._ (non job) events into
+#   /wmf/data/raw/event.  This exists separately from mediawiki_events to keep long
+#   running high volume topic imports from starving out smaller volume ones.
+#
+# - mediawiki_job
+#   Ingests mediawiki.job.* topics into /wmf/data/raw/mediawiki_job.
+#
+# - eventlogging-client-side
+#   Ingests the eventlogging-client-side topic into /wmf/data/raw/eventlogging_client_side
+#   for backup purposes.
+#
+# - netflow
+#   Ingests the netflow topic into /wmf/data/raw/netflow.
+#
 class profile::analytics::refinery::job::camus(
     $kafka_cluster_name = lookup('profile::analytics::refinery::job::camus::kafka_cluster_name', { 'default_value' => 'jumbo-eqiad' }),
     $monitoring_enabled = lookup('profile::analytics::refinery::job::camus::monitoring_enabled', { 'default_value' => false }),
@@ -83,7 +119,7 @@ class profile::analytics::refinery::job::camus(
     # once every hour.
     camus::job { 'eventlogging':
         camus_properties      => {
-            'kafka.whitelist.topics'        => 'eventlogging_.+',
+            'kafka.whitelist.topics'        => '^eventlogging_.+',
             'camus.message.timestamp.field' => 'dt',
             # Set this to at least the number of topic/partitions you will be importing.
             'mapred.map.tasks'              => '100',
@@ -91,12 +127,33 @@ class profile::analytics::refinery::job::camus(
         # Don't need to write _IMPORTED flags for EventLogging data
         check_dry_run         => true,
         # Only check these topic, since they should have data every hour.
-        check_topic_whitelist => 'eventlogging_(NavigationTiming|VirtualPageView)',
+        check_topic_whitelist => '^eventlogging_(NavigationTiming|VirtualPageView)',
         interval              => '*-*-* *:05:00',
     }
 
-    # TODO: Create an eventlogging_legacy job that uses dynamic stream config to import
-    # eventlogging (and other) topics.
+    # Imports active stream topics defined in MediaWiki config wgEventStreams
+    # into /wmf/data/raw/event.
+    camus::job { 'event_dynamic_stream_configs':
+        camus_properties       => {
+            # Write these into the /wmf/data/raw/event directory
+            'etl.destination.path'          => "hdfs://${hadoop_cluster_name}/wmf/data/raw/event",
+            'camus.message.timestamp.field' => 'meta.dt',
+            # Set this to at least the number of topic/partitions you will be importing.
+            'mapred.map.tasks'              => '10',
+            # make sure we don't import any dynamically configured
+            # eventlogging_* topics. These are handled by the
+            # eventlogging Camus job declared above.
+            'kafka.blacklist.topics'        => '^eventlogging_.*'
+        },
+        # Build kafka.whitelist.topics using EventStreamConfig API.
+        dynamic_stream_configs => true,
+        # Don't need to write _IMPORTED flags for event data
+        check_dry_run          => true,
+        # Only check topics th at will have data every hour.
+        check_topic_whitelist  => '(eqiad|codfw).test.event',
+        interval               => '*-*-* *:30:00',
+    }
+
 
     # Import MediaWiki events into
     # /wmf/data/raw/event once every hour.
@@ -108,7 +165,6 @@ class profile::analytics::refinery::job::camus(
         'labs'  => 'eqiad',
         default => mediawiki::state('primary_dc'),
     }
-
     # Imports MediaWiki (EventBus) events that are produced via eventgate-main
     camus::job { 'mediawiki_events':
         camus_properties      => {
