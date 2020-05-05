@@ -58,7 +58,7 @@ define profile::openstack::base::haproxy::site(
         ferm::service { "${title}_haproxy_backend":
             proto  => 'tcp',
             port   => $port_backend,
-            srange => "@resolve(${peers})",
+            srange => "(@resolve((${peers})) @resolve((${peers}), AAAA))",
         }
     }
 
