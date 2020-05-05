@@ -1,0 +1,1 @@
+profile::kerberos::client::default_ccache_name: "FILE:/run/user/%{literal('%')}{uid}/krb_cred"
