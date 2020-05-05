@@ -38,7 +38,7 @@
         RequestHeader set X-Remote-User expr=%{REMOTE_USER}
         # Needed for Superset 0.34+, since for some reason without it
         # the authentication workflow ends up into a endless loop of HTTP redirects.
-        RequestHeader set X-Forwarded-Proto "https"
+        RequestHeader set X-Forwarded-Proto "<%= @x_forwareded_proto %>"
     </Location>
 
     <Location /health_check>

@@ -10,6 +10,8 @@ profile::superset::workers: 8
 profile::superset::ldap_proxy_enabled: true
 profile::superset::gunicorn_app: 'superset.app:create_app()'
 
+profile::superset::proxy::x_forwareded_proto: 'http'
+
 profile::base::notifications: disabled
 
 profile::superset::presto_cluster: analytics-presto

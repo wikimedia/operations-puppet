@@ -3,7 +3,8 @@
 # Sets up a WMF HTTP LDAP auth proxy.
 #
 class profile::superset::proxy (
-    Hash $ldap_config        = lookup('ldap', Hash, hash, {}),
+    Hash $ldap_config          = lookup('ldap', Hash, hash, {}),
+    String $x_forwareded_proto = lookup('profile::superset::proxy::x_forwareded_proto', {'default_value' => 'https'}),
 ) {
 
     require ::profile::analytics::httpd::utils
