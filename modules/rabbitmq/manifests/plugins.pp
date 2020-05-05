@@ -7,7 +7,7 @@ class rabbitmq::plugins {
     exec { 'enable_management_plugin':
         environment => 'HOME=/var/lib/rabbitmq/',
         command     => '/usr/sbin/rabbitmq-plugins enable rabbitmq_management',
-        unless      => '/usr/sbin/rabbitmq-plugins -E list | grep rabbitmq_management',
+        unless      => '/usr/sbin/rabbitmq-plugins list -E | grep rabbitmq_management',
         logoutput   => true,
         notify      => Service['rabbitmq-server'],
     }
