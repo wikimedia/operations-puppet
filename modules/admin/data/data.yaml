@@ -4217,3 +4217,7 @@ ldap_only_users:
     ensure: present
     realname: Naïké Nembetwa
     email: nnzali@wikimedia.org
+  ryankemper:
+    ensure: present
+    realname: Ryan Kemper
+    email: rkemper@wikimedia.org
