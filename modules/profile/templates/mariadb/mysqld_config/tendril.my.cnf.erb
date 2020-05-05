@@ -43,6 +43,9 @@ query_cache_type   = 0
 # Disable TokuDB for Mariadb 10.4 and Buster #T249085
 # plugin-load        = ha_tokudb
 # tokudb_cache_size              = 30G
+<% else -%>
+plugin-load        = ha_tokudb
+tokudb_cache_size              = 30G
 <% end %>
 #plugin-load        = connect
 #plugin-load        = federated
