@@ -231,6 +231,6 @@ class profile::trafficserver::tls (
         conftool_service => $conftool_service,
         logs             => $logs,
         paths            => $paths,
-        atslog_filename  => 'tls',
+        atslog_filename  => 'analytics',
     }
 }
