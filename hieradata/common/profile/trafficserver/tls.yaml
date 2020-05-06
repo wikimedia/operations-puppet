@@ -47,9 +47,11 @@ profile::trafficserver::tls::logs:
   - filename: tls
     format: wmf-tls
     mode: ascii_pipe
+    ensure: present
   - filename: analytics
     format: wmf-analytics
     mode: ascii_pipe
+    ensure: present
 profile::trafficserver::tls::parent_rules:
   - dest_domain: '.'
     parent:

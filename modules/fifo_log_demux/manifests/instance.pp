@@ -1,4 +1,5 @@
 define fifo_log_demux::instance(
+    Wmflib::Ensure $ensure = present,
     String $user = 'root',
     Stdlib::Absolutepath $fifo = '/var/run/fifo.pipe',
     Stdlib::Absolutepath $socket = '/var/run/log.socket',
@@ -18,7 +19,7 @@ define fifo_log_demux::instance(
         }
 
         file { $fifo:
-            ensure  => present,
+            ensure  => $ensure,
             owner   => $fifo_owner,
             group   => $fifo_group,
             mode    => $fifo_mode,
@@ -27,7 +28,7 @@ define fifo_log_demux::instance(
     }
 
     systemd::service { "fifo-log-demux@${title}":
-        ensure  => present,
+        ensure  => $ensure,
         restart => true,
         content => systemd_template('fifo-log-demux@'),
     }

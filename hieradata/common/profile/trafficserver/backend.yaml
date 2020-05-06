@@ -379,6 +379,7 @@ profile::trafficserver::backend::logs:
     - notpurge
     - notvarnishcheck
     mode: ascii_pipe
+    ensure: present
 profile::trafficserver::backend::network_settings:
   connections_throttle: 0
   sock_option_flag_in: 0x5

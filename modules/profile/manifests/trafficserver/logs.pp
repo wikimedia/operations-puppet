@@ -10,6 +10,7 @@ define profile::trafficserver::logs(
     $logs.each |TrafficServer::Log $log| {
         if $log['mode'] == 'ascii_pipe' {
             fifo_log_demux::instance { $log['filename']:
+                ensure    => $log['ensure'],
                 user      => $user,
                 fifo      => "${paths['logdir']}/${log['filename']}.pipe",
                 socket    => "${paths['runtimedir']}/${log['filename']}.sock",
@@ -17,6 +18,7 @@ define profile::trafficserver::logs(
             }
 
             profile::trafficserver::nrpe_monitor_script { "check_trafficserver_log_fifo_${log['filename']}_${instance_name}":
+                ensure    => $log['ensure'],
                 sudo_user => 'root',
                 checkname => 'check_trafficserver_log_fifo',
                 args      => "--socket ${paths['runtimedir']}/${log['filename']}.sock --service ${conftool_service}",

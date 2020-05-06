@@ -164,6 +164,7 @@ profile::trafficserver::backend::logs:
     - notpurge
     - notvarnishcheck
     mode: ascii_pipe
+    ensure: present
 profile::trafficserver::backend::default_lua_script: 'default'
 varnish::dynamic_backend_caches: false
 # Worst path rtt through our network, used in prod to determine timeouts. Not
