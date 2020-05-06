@@ -7,16 +7,18 @@ class profile::openldap_corp (
 
     $sync_pass = $passwords::openldap::corp::sync_pass
 
+
+    $suffix = 'dc=corp,dc=wikimedia,dc=org'
     class { '::openldap':
         server_id     => $server_id,   # 1 and 2 used in OIT
-        suffix        => 'dc=corp,dc=wikimedia,dc=org',
+        suffix        => $suffix,
         datadir       => '/var/lib/ldap/corp',
         master        => $master,
         sync_pass     => $sync_pass,
         ca            => '/etc/ssl/certs/ca-certificates.crt',
         certificate   => "/etc/ssl/localcerts/ldap-corp.${::site}.wikimedia.org.crt",
         key           => "/etc/ssl/private/ldap-corp.${::site}.wikimedia.org.key",
-        extra_acls    => 'openldap/corp-acls.erb',
+        extra_acls    => template('openldap/corp-acls.erb'),
         extra_schemas => ['wmf-user.schema'],
     }
 

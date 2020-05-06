@@ -29,7 +29,7 @@
 #    $extra_schemas
 #       Optional. A list of schema files relative to the /etc/ldap/schema directory
 #    $extra_acls
-#       Optional. Specify an ERB template file with additional ACL access rules
+#       Optional. Specify content with additional ACL access rules
 #       (in addition to the base rules)
 #    $extra_indices
 #       Optional. Specify an ERB template file with additional LDAP indices
@@ -71,7 +71,7 @@ class openldap(
     $key=undef,
     $ca=undef,
     $extra_schemas=undef,
-    $extra_acls=undef,
+    $extra_acls='',
     $extra_indices=undef,
     $size_limit=undef,
     $logging='sync',
@@ -120,22 +120,13 @@ class openldap(
         openldap::ldap_schema { $extra_schemas: }
     }
 
-    if $extra_acls {
-        file { '/etc/ldap/acls.conf' :
-            ensure  => present,
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0444',
-            content => template($extra_acls, 'openldap/base-acls.erb'),
-        }
-    } else {
-        file { '/etc/ldap/acls.conf' :
-            ensure  => present,
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0444',
-            content => template('openldap/base-acls.erb'),
-        }
+    $acl_content = join([$extra_acls, template('openldap/base-acls.erb')],'')
+    file { '/etc/ldap/acls.conf' :
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => $acl_content;
     }
 
     if $extra_indices {

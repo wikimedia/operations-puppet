@@ -16,10 +16,12 @@ class profile::openldap (
         key_group  => 'openldap',
     }
 
+    $suffix = 'dc=wikimedia,dc=org'
+
     class { '::openldap':
         server_id      => $server_id,
         sync_pass      => $sync_pass,
-        suffix         => 'dc=wikimedia,dc=org',
+        suffix         => $suffix,
         datadir        => '/var/lib/ldap/labs',
         ca             => '/etc/ssl/certs/ca-certificates.crt',
         certificate    => "/etc/acmecerts/${certname}/live/rsa-2048.crt",
@@ -27,7 +29,7 @@ class profile::openldap (
         extra_schemas  => ['dnsdomain2.schema', 'nova_sun.schema', 'openssh-ldap.schema',
                           'puppet.schema', 'sudo.schema', 'wmf-user.schema'],
         extra_indices  => 'openldap/labs-indices.erb',
-        extra_acls     => 'openldap/labs-acls.erb',
+        extra_acls     => template('openldap/labs-acls.erb'),
         mirrormode     => $mirror_mode,
         master         => $master,
         hash_passwords => $hash_passwords,
