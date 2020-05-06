@@ -269,6 +269,30 @@
         </description>
     </property>
 
+    <!--
+        Oozie checks periodically if it can drop old shared lib directories on HDFS.
+        The main problem is there is no check to verify if a sharedlib is used or not,
+        and there is no way to turn off this behavior.
+        The following workaround was found in:
+        https://docs.cloudera.com/HDPDocuments/HDP2/HDP-2.6.5/bk_command-line-installation/content/set_up_oozie_configuration_files.html
+    -->
+
+    <property>
+        <name>oozie.service.ShareLibService.purge.interval</name>
+        <value>1000</value>
+        <description>
+        How often, in days, Oozie should check for old ShareLibs and LauncherLibs to purge from HDFS.
+        </description>
+    </property>
+
+    <property>
+        <name>oozie.service.ShareLibService.temp.sharelib.retention.days</name>
+        <value>1000</value>
+        <description>
+        ShareLib retention time in days.
+        </description>
+    </property>
+
 <% if @hcatalog_enabled -%>
     <property>
         <name>oozie.service.URIHandlerService.uri.handlers</name>
