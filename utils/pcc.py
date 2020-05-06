@@ -1,50 +1,40 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-  pcc -- shell helper for the Puppet catalog compiler
+pcc -- shell helper for the Puppet catalog compiler
 
-  Usage: pcc [--api-token TOKEN] [--username USERNAME] CHANGE NODES
+Usage: pcc [--api-token TOKEN] [--username USERNAME] CHANGE NODES
 
-  Required arguments:
-    CHANGE                 Gerrit change number, change ID, or Git commit.
-                           (May be 'latest' or 'HEAD' for the last commit.)
-    NODES                  Comma-separated list of nodes. '.eqiad.wmnet'
-                           will be appended for any unqualified host names.
+Required arguments:
+CHANGE                 Gerrit change number, change ID, or Git commit.
+                        (May be 'latest' or 'HEAD' for the last commit.)
+NODES                  Comma-separated list of nodes. '.eqiad.wmnet'
+                        will be appended for any unqualified host names.
 
-  Optional arguments:
-    --api-token TOKEN      Jenkins API token. Defaults to JENKINS_API_TOKEN.
-    --username USERNAME    Jenkins user name. Defaults to JENKINS_USERNAME.
-    --future               If present, will run the change through the future
-                           parser
+Optional arguments:
+--api-token TOKEN      Jenkins API token. Defaults to JENKINS_API_TOKEN.
+--username USERNAME    Jenkins user name. Defaults to JENKINS_USERNAME.
+--future               If present, will run the change through the future
+                        parser
 
-  Examples:
-    $ pcc latest mw1031,mw1032
+Examples:
+$ pcc latest mw1031,mw1032
 
-  You can get your API token by clicking on your name in Jenkins and then
-  clicking on 'configure'.
+You can get your API token by clicking on your name in Jenkins and then
+clicking on 'configure'.
 
-  pcc requires the jenkinsapi python module:
-    https://pypi.python.org/pypi/jenkinsapi (try `pip install jenkinsapi`)
+pcc requires the jenkinsapi python module:
+https://pypi.python.org/pypi/jenkinsapi (try `pip install jenkinsapi`)
 
-  Copyright 2014 Ori Livneh <ori@wikimedia.org>
-  Licensed under the Apache license.
-
+Copyright 2014 Ori Livneh <ori@wikimedia.org>
+Licensed under the Apache license.
 """
-from __future__ import print_function
-
-import sys
-try:
-    reload(sys)
-    sys.setdefaultencoding('utf-8')
-except NameError:
-    pass  # python3 FTW
 
 import argparse
 import json
 import os
 import re
 import subprocess
-import textwrap
 import time
 
 try:
@@ -55,22 +45,20 @@ except ImportError:
 try:
     import jenkinsapi
 except ImportError:
-    sys.exit('You need the `jenkinsapi` module. Try `pip install jenkinsapi`.')
+    raise SystemExit('You need the `jenkinsapi` module. Try `pip install jenkinsapi`.')
 
 
 JENKINS_URL = 'https://integration.wikimedia.org/ci/'
 GERRIT_URL_FORMAT = ('https://gerrit.wikimedia.org/r/changes/'
                      'operations%%2Fpuppet~production~%s/detail')
-red, green, yellow, blue, white = [
-    ('\x1b[9%sm{}\x1b[0m' % n).format for n in (1, 2, 3, 4, 7)]
 
 
 def format_console_output(text):
     """Colorize log output."""
     return (re.sub(r'((?<=\n) +|(?<=Finished: )\w+)', '', text, re.M)
-              .replace('\n', '\x1b[0m\n')
-              .replace('INFO:', '\x1b[94mINFO:')
-              .replace('ERROR:', '\x1b[91mINFO:'))
+            .replace('\n', '\x1b[0m\n')
+            .replace('INFO:', '\x1b[94mINFO:')
+            .replace('ERROR:', '\x1b[91mINFO:'))
 
 
 def get_change_id(change='HEAD'):
@@ -88,17 +76,23 @@ def get_change_number(change_id):
 
 
 def get_change(change):
-    """Resolve a Gerrit change, specified as either a change ID or a Git
-    commit, to a Gerrit change number."""
+    """Resolve a Gerrit change
+
+    Arguments
+        change (str): the change ID or change number to test.  To test HEAD pass last or latest
+
+    Returns
+        int: the change number or -1 to indicate a faliure
+
+    """
     if change.isdigit():
         return int(change)
-    elif change.startswith('I'):
+    if change.startswith('I'):
         return get_change_number(change)
-    else:
-        if change in ('latest', 'last'):
-            change = 'HEAD'
-        change_id = get_change_id(change)
+    if change in ('latest', 'last'):
+        change_id = get_change_id('HEAD')
         return get_change_number(change_id)
+    return -1
 
 
 def parse_nodes(string_list, default_suffix='.eqiad.wmnet'):
@@ -114,72 +108,79 @@ def parse_nodes(string_list, default_suffix='.eqiad.wmnet'):
                     for node in string_list.split(','))
 
 
-class Parser(argparse.ArgumentParser):
-    def format_help(self):
-        return textwrap.dedent(__doc__).lstrip()
+def get_args():
+    """Parse Arguments"""
+
+    parser = argparse.ArgumentParser(description=__doc__,
+                                     formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser.add_argument('change', type=get_change,
+                        help='The change number or change ID to test. '
+                             'Alternatively last or latest to test head')
+    parser.add_argument('nodes', type=parse_nodes,
+                        help='Either a Comma-separated list of nodes or a Host Variable Override')
+    parser.add_argument('--api-token', default=os.environ.get('JENKINS_API_TOKEN'),
+                        help='Jenkins API token. Defaults to JENKINS_API_TOKEN.')
+    parser.add_argument('--username', default=os.environ.get('JENKINS_USERNAME'),
+                        help='Jenkins user name. Defaults to JENKINS_USERNAME.')
+    return parser.parse_args()
 
 
-ap = Parser(description='Puppet catalog compiler')
-ap.add_argument('change', help='Gerrit change number.', type=get_change)
-ap.add_argument('nodes', type=parse_nodes,
-                help='Comma-separated list of nodes.')
-ap.add_argument('--api-token', default=os.environ.get('JENKINS_API_TOKEN'),
-                help='Jenkins API token. Defaults to JENKINS_API_TOKEN.')
-ap.add_argument('--username', default=os.environ.get('JENKINS_USERNAME'),
-                help='Jenkins user name. Defaults to JENKINS_USERNAME.')
-ap.add_argument('--future', action='store_true',
-                help='Check compilation against the future parser as well.')
-args = ap.parse_args()
+def main():
+    """Main Entry Point"""
+    args = get_args()
+    if args.change == -1:
+        print("Unable to find change ID")
+        return 1
+    if not args.api_token or not args.username:
+        print('You must either provide the --api-token and --username options'
+              ' or define JENKINS_API_TOKEN and JENKINS_USERNAME in your env.')
+        return 1
 
-if not args.api_token or not args.username:
-    sys.exit('You must either provide the --api-token and --username options'
-             ' or define JENKINS_API_TOKEN and JENKINS_USERNAME in your env.')
+    red, green, yellow, white = [('\x1b[9%sm{}\x1b[0m' % n).format for n in (1, 2, 3, 7)]
 
-jenkins = jenkinsapi.jenkins.Jenkins(
-    baseurl=JENKINS_URL,
-    username=args.username,
-    password=args.api_token
-)
+    jenkins = jenkinsapi.jenkins.Jenkins(
+        baseurl=JENKINS_URL,
+        username=args.username,
+        password=args.api_token
+    )
 
-print(yellow('Compiling %(change)s on node(s) %(nodes)s...' % vars(args)))
+    print(yellow('Compiling %(change)s on node(s) %(nodes)s...' % vars(args)))
 
-job = jenkins.get_job('operations-puppet-catalog-compiler')
-build_params = {
-    'GERRIT_CHANGE_NUMBER': str(args.change),
-    'LIST_OF_NODES': args.nodes,
-    'COMPILER_MODE': 'change',
-}
+    job = jenkins.get_job('operations-puppet-catalog-compiler')
+    build_params = {
+        'GERRIT_CHANGE_NUMBER': str(args.change),
+        'LIST_OF_NODES': args.nodes,
+        'COMPILER_MODE': 'change',
+    }
 
-if args.future:
-    build_params['COMPILER_MODE'] = 'change,future'
+    invocation = job.invoke(build_params=build_params)
 
-invocation = job.invoke(build_params=build_params)
+    try:
+        invocation.block_until_building()
+    except AttributeError:
+        invocation.block(until='not_queued')
 
-try:
-    invocation.block_until_building()
-except AttributeError:
-    invocation.block(until='not_queued')
+    build = invocation.get_build()
 
-build = invocation.get_build()
+    print('Your build URL is %s' % white(build.baseurl))
 
-print('Your build URL is %s' % white(build.baseurl))
+    running = True
+    output = ''
+    while running:
+        time.sleep(1)
+        running = invocation.is_running()
+        new_output = build.get_console().rstrip('\n')
+        print(format_console_output(new_output[len(output):]),)
+        output = new_output
 
-running = True
-output = ''
-while running:
-    time.sleep(1)
-    running = invocation.is_running()
-    new_output = build.get_console().rstrip('\n')
-    print(format_console_output(new_output[len(output):]),)
-    output = new_output
-
-# Puppet's exit code is not always meaningful, so we grep the output
-# for failures before declaring victory.
-ok = ('Run finished' in output and not
-      re.search(r'[1-9]\d* (ERROR|FAIL)', output))
-if ok:
-    print(green('SUCCESS'))
-    sys.exit(0)
-else:
+    # Puppet's exit code is not always meaningful, so we grep the output
+    # for failures before declaring victory.
+    if ('Run finished' in output and not re.search(r'[1-9]\d* (ERROR|FAIL)', output)):
+        print(green('SUCCESS'))
+        return 0
     print(red('FAIL'))
-    sys.exit(1)
+    return 1
+
+
+if __name__ == '__main__':
+    raise SystemExit(main())
