@@ -68,10 +68,24 @@ def get_change_id(change='HEAD'):
     return match.group('id')
 
 
+def get_gerrit_blob(url):
+    """Return a json blob from a gerrit API endpoint
+
+    Arguments:
+        url (str): The gerrit API url
+
+    Returns
+        dict: A dictionary representing the json blob returned by gerrit
+
+    """
+    req = urllib2.urlopen(url)
+    # unsure why but the response from gerrit always starts with the following 4 chars: )]}\
+    return json.loads(req.read()[4:])
+
+
 def get_change_number(change_id):
     """Resolve a change ID to a change number via a Gerrit API lookup."""
-    req = urllib2.urlopen(GERRIT_URL_FORMAT % change_id)
-    res = json.loads(req.read()[4:])
+    res = get_gerrit_blob(GERRIT_URL_FORMAT % change_id)
     return res['_number']
 
 
@@ -102,10 +116,44 @@ def parse_nodes(string_list, default_suffix='.eqiad.wmnet'):
 
     Otherwise qualify any unqualified nodes in a comma-separated list by
     appending a default domain suffix."""
-    if string_list.startswith(('P:', 'C:', 'O:', 're:')):
+    if string_list.startswith(('P:', 'C:', 'O:', 're:', 'parse_commit')):
         return string_list
     return ','.join(node if '.' in node else node + default_suffix
                     for node in string_list.split(','))
+
+
+class ParseCommitException(Exception):
+    """Raised when no hosts found"""
+
+
+def parse_commit(change):
+    """Parse a commit message looking for a Hosts: lines
+
+    Arguments:
+        change (str): the change number to use
+
+    Returns:
+        str: The lists of hosts or an empty string
+
+    """
+    hosts = []
+    commit_url = ('https://gerrit.wikimedia.org/r/changes/?q={}'
+                  '&o=CURRENT_REVISION&o=CURRENT_COMMIT&o=COMMIT_FOOTERS')
+    res = get_gerrit_blob(commit_url.format(change))
+
+    for result in res:
+        if result['_number'] != change:
+            continue
+        commit = result['revisions'][result['current_revision']]['commit_with_footers']
+        break
+    else:
+        raise ParseCommitException('No Hosts found')
+
+    for line in commit.splitlines():
+        if line.startswith('Hosts:'):
+            hosts.append(line.split(':', 1)[1].strip())
+
+    return ','.join(hosts)
 
 
 def get_args():
@@ -117,7 +165,8 @@ def get_args():
                         help='The change number or change ID to test. '
                              'Alternatively last or latest to test head')
     parser.add_argument('nodes', type=parse_nodes,
-                        help='Either a Comma-separated list of nodes or a Host Variable Override')
+                        help='Either a Comma-separated list of nodes or a Host Variable Override. '
+                             'Alternatively use `parse_commit` to parse')
     parser.add_argument('--api-token', default=os.environ.get('JENKINS_API_TOKEN'),
                         help='Jenkins API token. Defaults to JENKINS_API_TOKEN.')
     parser.add_argument('--username', default=os.environ.get('JENKINS_USERNAME'),
@@ -145,11 +194,19 @@ def main():
     )
 
     print(yellow('Compiling %(change)s on node(s) %(nodes)s...' % vars(args)))
+    try:
+        nodes = parse_commit(args.change) if args.nodes == 'parse_commit' else args.nodes
+    except KeyError as error:
+        print('Unable to find commit message: {}'.format(error))
+        return 1
+    except ParseCommitException as error:
+        print(error)
+        return 1
 
     job = jenkins.get_job('operations-puppet-catalog-compiler')
     build_params = {
         'GERRIT_CHANGE_NUMBER': str(args.change),
-        'LIST_OF_NODES': args.nodes,
+        'LIST_OF_NODES': nodes,
         'COMPILER_MODE': 'change',
     }
 
@@ -170,7 +227,9 @@ def main():
         time.sleep(1)
         running = invocation.is_running()
         new_output = build.get_console().rstrip('\n')
-        print(format_console_output(new_output[len(output):]),)
+        console_output = format_console_output(new_output[len(output):]).strip()
+        if console_output:
+            print(console_output)
         output = new_output
 
     # Puppet's exit code is not always meaningful, so we grep the output
