@@ -4,7 +4,7 @@ class role::openldap::labtest {
     include ::profile::standard
     include ::profile::base::firewall
 
-    include ::profile::openldap
+    include ::profile::openldap_clouddev
 
     system::role { 'openldap::labtest':
         description => 'LDAP servers for labs test cluster (based on OpenLDAP)'

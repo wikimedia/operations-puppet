@@ -182,11 +182,6 @@ profile::base::ssh_server_settings:
   challenge_response_auth: false
 
 labs_puppet_master: "puppetmaster.cloudinfra.wmflabs.org"
-# we can't use wikimediacloud.org here because this is a list of concrete
-# servers to build an ACL:
-labs_keystone_hosts:
-    - "cloudcontrol1003.wikimedia.org"
-    - "cloudcontrol1004.wikimedia.org"
 puppetmaster: "puppetmaster.cloudinfra.wmflabs.org"
 puppet_ca_source: puppet:///files/puppet/ca.labs.pem
 

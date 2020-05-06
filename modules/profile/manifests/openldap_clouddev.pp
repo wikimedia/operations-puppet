@@ -1,5 +1,5 @@
 # openldap server
-class profile::openldap (
+class profile::openldap_clouddev (
     $hostname = lookup('profile::openldap::hostname'),
     $mirror_mode = lookup('profile::openldap::mirror_mode'),
     $backup = lookup('profile::openldap::backup'),
@@ -9,7 +9,7 @@ class profile::openldap (
     $hash_passwords = lookup('profile::openldap::hash_passwords'),
     $read_only = lookup('profile::openldap::read_only'),
     $certname = lookup('profile::openldap::certname'),
-    Array[Stdlib::Fqdn] $openstack_controllers = lookup('profile::openstack::eqiad1::openstack_controllers'),
+    Array[Stdlib::Fqdn] $openstack_controllers = lookup('profile::openstack::codfw1dev::openstack_controllers'),
 ){
     # Certificate needs to be readable by slapd
     acme_chief::cert { $certname:

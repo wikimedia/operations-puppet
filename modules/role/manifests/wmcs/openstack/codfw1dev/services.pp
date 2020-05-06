@@ -8,5 +8,5 @@ class role::wmcs::openstack::codfw1dev::services {
     include ::profile::openstack::codfw1dev::designate::service
     include ::profile::prometheus::pdns_exporter
     include ::profile::prometheus::pdns_rec_exporter
-    include ::profile::openldap
+    include ::profile::openldap_clouddev
 }
