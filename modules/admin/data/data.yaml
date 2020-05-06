@@ -4233,3 +4233,7 @@ ldap_only_users:
     ensure: present
     realname: Antonino Hemmer
     email: ahemmer@wikimedia.org
+  jgiannelos:
+    ensure : present
+    realname: John (Yiannis) Giannelos
+    email: jgiannelos@wikimedia.org
