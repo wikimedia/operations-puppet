@@ -1195,6 +1195,7 @@ node /kafkamon[12]001\.(codfw|eqiad)\.wmnet/ {
 # profile::microsites::sitemaps        # https://sitemaps.wikimedia.org
 # profile::microsites::bienvenida      # https://bienvenida.wikimedia.org (T207816)
 # profile::microsites::wikiworkshop    # https://wikiworkshop.org (T242374)
+# profile::microsites::static_codereview # https://static-codereview.wikimedia.org (T243056)
 
 node 'miscweb1002.eqiad.wmnet', 'miscweb2002.codfw.wmnet' {
     role(webserver_misc_apps)
