@@ -26,6 +26,8 @@ class profile::trafficserver::tls (
     Optional[Hash[String, Trafficserver::TLS_certificate]] $extra_certs=hiera('profile::trafficserver::tls::extra_certs', undef),
     String $conftool_service=hiera('profile::trafficserver::tls::conftool_service', 'ats-tls'),
     Optional[Integer[0,2]] $res_track_memory=lookup('profile::trafficserver::tls::res_track_memory', {'default_value' => undef}),
+    Stdlib::Absolutepath $atsmtail_progs=lookup('profile::trafficserver::tls::atsmtail_tls_progs', {'default_value' => '/etc/atsmtail-tls'}),
+    Wmflib::UserIpPort $atsmtail_port=lookup('profile::trafficserver::tls::atsmtail_tls_port', {'default_value' => 3905}),
 ){
     $errorpage = {
         title       => 'Wikimedia Error',
@@ -234,5 +236,18 @@ class profile::trafficserver::tls (
         logs             => $logs,
         paths            => $paths,
         atslog_filename  => 'analytics',
+    }
+
+    profile::trafficserver::atsmtail { "trafficserver_${instance_name}_atsmtail":
+        instance_name  => $instance_name,
+        atsmtail_progs => $atsmtail_progs,
+        atsmtail_port  => $atsmtail_port,
+        wanted_by      => "${service_name}.service",
+    }
+
+    mtail::program { 'atstls':
+        source      => 'puppet:///modules/mtail/programs/atstls.mtail',
+        destination => $atsmtail_progs,
+        notify      => Service["atsmtail@${instance_name}"],
     }
 }

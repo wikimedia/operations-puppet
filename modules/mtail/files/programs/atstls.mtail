@@ -1,0 +1,40 @@
+# client<->ats-tls metrics
+# histogram trafficserver_tls_client_ttfb
+counter trafficserver_tls_client_ttfb_bucket by le, cache_status, http_status_family
+counter trafficserver_tls_client_ttfb_sum by cache_status, http_status_family
+counter trafficserver_tls_client_ttfb_count by cache_status, http_status_family
+
+# Skip log entries with status 000 (aborted transactions)
+/time_firstbyte:(?P<client_ttfb>[0-9]+)\t.*cache_status:(?P<cache_status>[a-z-]+)\t.*http_status:(?P<http_status_family>[1-9])[0-9][0-9]/ {
+  trafficserver_tls_client_ttfb_sum[$cache_status][$http_status_family] += $client_ttfb
+  trafficserver_tls_client_ttfb_count[$cache_status][$http_status_family]++
+
+  $client_ttfb < 45 {
+    trafficserver_tls_client_ttfb_bucket["0.045"][$cache_status][$http_status_family]++
+  }
+  $client_ttfb < 70 {
+    trafficserver_tls_client_ttfb_bucket["0.07"][$cache_status][$http_status_family]++
+  }
+  $client_ttfb < 100 {
+    trafficserver_tls_client_ttfb_bucket["0.1"][$cache_status][$http_status_family]++
+  }
+  $client_ttfb < 150 {
+    trafficserver_tls_client_ttfb_bucket["0.15"][$cache_status][$http_status_family]++
+  }
+  $client_ttfb < 250 {
+    trafficserver_tls_client_ttfb_bucket["0.25"][$cache_status][$http_status_family]++
+  }
+  $client_ttfb < 350 {
+    trafficserver_tls_client_ttfb_bucket["0.35"][$cache_status][$http_status_family]++
+  }
+  $client_ttfb < 500 {
+    trafficserver_tls_client_ttfb_bucket["0.5"][$cache_status][$http_status_family]++
+  }
+  $client_ttfb < 750 {
+    trafficserver_tls_client_ttfb_bucket["0.75"][$cache_status][$http_status_family]++
+  }
+  $client_ttfb < 1200 {
+    trafficserver_tls_client_ttfb_bucket["1.2"][$cache_status][$http_status_family]++
+  }
+  trafficserver_tls_client_ttfb_bucket["+Inf"][$cache_status][$http_status_family]++
+}
