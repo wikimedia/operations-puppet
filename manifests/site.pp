@@ -506,6 +506,11 @@ node /^db21(36|37|38|39|40)\.codfw\.wmnet/ {
     role(spare::system)
 }
 
+# eqiad replicas to be installed T251614
+node /^db11(41|42|43|44|45|46|47|48|49)\.eqiad\.wmnet/ {
+    role(spare::system)
+}
+
 ## x1 shard
 # eqiad
 # x1 eqiad master
