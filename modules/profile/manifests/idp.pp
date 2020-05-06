@@ -14,6 +14,7 @@ class profile::idp(
     Array[String[1]]       $ldap_attribute_list    = lookup('profile::idp::ldap_attributes'),
     Array[String]          $actuators              = lookup('profile::idp::actuators'),
     String[1]              $overlay_branch         = lookup('profile::idp::overlay_branch'),
+    Boolean                $external_tomcat        = lookup('profile::idp::external_tomcat'),
     Stdlib::Fqdn           $idp_primary            = lookup('profile::idp::idp_primary'),
     Optional[Stdlib::Fqdn] $idp_failover           = lookup('profile::idp::idp_failover',
                                                             {'default_value' => undef}),
@@ -43,6 +44,9 @@ class profile::idp(
     $jmx_jar = '/usr/share/java/prometheus/jmx_prometheus_javaagent.jar'
     $java_opts = "-javaagent:${jmx_jar}=${facts['networking']['ip']}:${jmx_port}:${jmx_config}"
     $groovy_source = 'puppet:///modules/profile/idp/global_principal_attribute_predicate.groovy'
+    if external_tomcat {
+        class {'tomcat':}
+    }
     class { 'apereo_cas':
         server_name            => 'https://idp.wikimedia.org',
         server_prefix          => '/',
@@ -77,6 +81,7 @@ class profile::idp(
         max_session_length     => $max_session_length,
         actuators              => $actuators,
         overlay_branch         => $overlay_branch,
+        external_tomcat        => $external_tomcat,
     }
     profile::prometheus::jmx_exporter{ "idp_${facts['networking']['hostname']}":
         hostname         => $facts['networking']['hostname'],

@@ -51,6 +51,8 @@ class apereo_cas (
     Array[String[1]]              $mfa_attribut_value            = ['mfa'],
     String                        $daemon_user                   = 'cas',
     Hash[String, Hash]            $services                      = {},
+    Boolean                       $external_tomcat               = false,
+    Stdlib::Unixpath              $tomcat_webapps_dir            = '/var/lib/tomcat9/webapps',
     Optional[String[1]]           $java_opts                     = undef,
 ) {
     if $keystore_source == undef and $keystore_content == undef and $server_enable_ssl {
@@ -100,14 +102,6 @@ class apereo_cas (
     }
 
     ensure_packages(['openjdk-11-jdk'])
-    user{$daemon_user:
-        ensure   => present,
-        comment  => 'apereo cas user',
-        home     => $tomcat_basedir,
-        shell    => '/usr/sbin/nologin',
-        password => '!',
-        system   => true,
-    }
     $groovy_file = '/etc/cas/global_principal_attribute_predicate.groovy'
     if $groovy_source {
         file{$groovy_file:
@@ -165,10 +159,36 @@ class apereo_cas (
         cwd         => $overlay_dir,
         require     => Git::Clone[$overlay_repo],
         subscribe   => Git::Clone[$overlay_repo],
-        notify      => Service['cas'],
         refreshonly => true,
     }
+    if $external_tomcat {
+        $cas_service_ensure = 'absent'
+        file {"${tomcat_webapps_dir}/ROOT.war":
+            ensure  => file,
+            source  => "${overlay_dir}/build/libs/cas.war",
+            require => Exec['update cas war'],
+            notify  => Service['tomcat9'],
+        }
+    } else {
+        $cas_service_ensure = 'present'
+        file {"${tomcat_webapps_dir}/ROOT.war":
+            ensure => absent,
+        }
+        Exec['update cas war'] {
+            notify => Service['cas'],
+        }
+    }
+
+    user{$daemon_user:
+        ensure   => $cas_service_ensure,
+        comment  => 'apereo cas user',
+        home     => $tomcat_basedir,
+        shell    => '/usr/sbin/nologin',
+        password => '!',
+        system   => true,
+    }
     systemd::service {'cas':
+        ensure  => $cas_service_ensure,
         content => template('apereo_cas/cas.service.erb'),
         require => Git::Clone[$overlay_repo],
     }
