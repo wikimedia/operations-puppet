@@ -116,6 +116,8 @@ class profile::graphite::production {
         srange => '$DOMAIN_NETWORKS',
     }
 
+    base::service_auto_restart { 'apache2': }
+
     backup::set { 'var-lib-carbon-whisper-coal': }
     backup::set { 'var-lib-graphite-web-graphite-db': }
 }
