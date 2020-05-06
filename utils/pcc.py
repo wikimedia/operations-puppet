@@ -63,7 +63,8 @@ def format_console_output(text):
 
 def get_change_id(change='HEAD'):
     """Get the change ID of a commit (defaults to HEAD)."""
-    commit_message = subprocess.check_output(['git', 'log', '-1', change])
+    commit_message = subprocess.check_output(['git', 'log', '-1', change],
+                                             universal_newlines=True)
     match = re.search('(?<=Change-Id: )(?P<id>.*)', commit_message)
     return match.group('id')
 
