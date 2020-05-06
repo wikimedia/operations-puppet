@@ -20,6 +20,11 @@ https://static-bugzilla.wikimedia.org:
   assert_status: 200
   assert_body_contains: Documentation is out of date
 
+https://static-codereview.wikimedia.org:
+- path: /index.html
+  assert_status: 200
+  assert_body_contains: MediaWiki SVN CodeReview archive
+
 https://15.wikipedia.org:
 - path: /
   assert_status: 200
