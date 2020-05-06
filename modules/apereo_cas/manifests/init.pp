@@ -14,7 +14,7 @@ class apereo_cas (
     Optional[String[1]]           $totp_encryption_key           = undef,
     Optional[Stdlib::Filesource]  $keystore_source               = undef,
     Optional[String[1]]           $keystore_content              = undef,
-    Integer[60,604800]            $max_session_length            = 28800,
+    Integer[60,604800]            $max_session_length            = 604800,
     Integer[60,604800]            $max_rememberme_session_length = $max_session_length,
     Integer[60,86400]             $session_inactivity_timeout    = 3600,
     Optional[Stdlib::Filesource]  $groovy_source                 = undef,
