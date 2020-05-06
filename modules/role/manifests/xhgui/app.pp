@@ -31,11 +31,13 @@ class role::xhgui::app {
         $httpd_php='php7.3'
         $httpd_php_module='libapache2-mod-php'
         $php_ini='/etc/php/7.3/apache2/php.ini'
+        base::service_auto_restart { 'apache2': }
     } elsif os_version('debian == stretch') {
         $mongo_driver='php-mongodb'
         $httpd_php='php7.0'
         $httpd_php_module='libapache2-mod-php'
         $php_ini='/etc/php/7.0/apache2/php.ini'
+        base::service_auto_restart { 'apache2': }
     } else {
         $mongo_driver='php5-mongo'
         $httpd_php='php5'
