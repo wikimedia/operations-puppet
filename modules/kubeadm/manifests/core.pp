@@ -1,17 +1,16 @@
-class toolforge::k8s::kubeadm(
+# main kubeadm packages and setup
+class kubeadm::core (
 ) {
+    include ::kubeadm::kubectl
+
     $packages = [
         'kubeadm',
-        'kubectl',
         'kubernetes-cni',
-        'docker-ce',
-        'docker-ce-cli',
         'containerd.io',
         'cri-tools',
     ]
 
-    apt::package_from_component { 'thirdparty-kubeadm-k8s-1-15':
-        component => 'thirdparty/kubeadm-k8s-1-15',
+    kubeadm::package_from_component { 'core':
         packages  => $packages,
     }
 
@@ -22,8 +21,6 @@ class toolforge::k8s::kubeadm(
     file { '/etc/kubernetes/':
         ensure => 'directory',
     }
-
-    include ::toolforge::k8s::kubeadm_docker_service
 
     sysctl::parameters { 'kubelet':
         values   => {

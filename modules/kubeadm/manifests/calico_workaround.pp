@@ -1,6 +1,7 @@
-class toolforge::k8s::calico_workaround(
+class kubeadm::calico_workaround (
 ) {
-    require ::toolforge::k8s::kubeadm
+    require ::kubeadm::core   # because kubeadm package
+    require ::kubeadm::docker # because docker-ce package
 
     # we require this in Buster because calico hardcodes iptables-legacy
     # calls, but otherwise it could work with the nf_tables backend.

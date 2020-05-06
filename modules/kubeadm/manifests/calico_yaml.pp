@@ -1,12 +1,13 @@
-class toolforge::k8s::calico_yaml(
+class kubeadm::calico_yaml (
     String              $pod_subnet,
     String              $calico_version = 'v3.8.0',
 ) {
-    require ::toolforge::k8s::kubeadm
+    # because /etc/kubernetes
+    require ::kubeadm::core
 
     file { '/etc/kubernetes/calico.yaml':
         ensure  => present,
-        content => template('toolforge/k8s/calico.yaml.erb'),
+        content => template('kubeadm/calico.yaml.erb'),
         owner   => 'root',
         group   => 'root',
         mode    => '0400',
@@ -15,7 +16,7 @@ class toolforge::k8s::calico_yaml(
 
     file { '/etc/kubernetes/calicoctl.yaml':
         ensure  => present,
-        content => template('toolforge/k8s/calicoctl.yaml.erb'),
+        content => template('kubeadm/calicoctl.yaml.erb'),
         owner   => 'root',
         group   => 'root',
         mode    => '0400',
@@ -24,7 +25,7 @@ class toolforge::k8s::calico_yaml(
 
     file { '/root/.bash_aliases':
         ensure => present,
-        source => 'puppet:///modules/toolforge/k8s/root-bash-aliases',
+        source => 'puppet:///modules/kubeadm/root-bash-aliases',
         owner  => 'root',
         group  => 'root',
         mode   => '0644',

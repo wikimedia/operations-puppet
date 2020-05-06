@@ -1,6 +1,6 @@
-class toolforge::k8s::metrics_yaml(
+class kubeadm::metrics_yaml (
 ) {
-    require ::toolforge::k8s::kubeadm # because /etc/kubernetes
+    require ::kubeadm::core # because /etc/kubernetes
 
     file { '/etc/kubernetes/metrics/':
         ensure  => directory,
@@ -16,7 +16,7 @@ class toolforge::k8s::metrics_yaml(
     # See also: https://wikitech.wikimedia.org/wiki/Portal:Toolforge/Admin/Deploying_k8s
     file { '/etc/kubernetes/metrics/prometheus_metrics.yaml':
         ensure  => present,
-        source  => 'puppet:///modules/toolforge/k8s/metrics/prometheus_metrics.yaml',
+        source  => 'puppet:///modules/kubeadm/metrics/prometheus_metrics.yaml',
         require => File['/etc/kubernetes/metrics'],
     }
 
@@ -27,19 +27,19 @@ class toolforge::k8s::metrics_yaml(
     # See also: https://wikitech.wikimedia.org/wiki/Portal:Toolforge/Admin/Deploying_k8s
     file { '/etc/kubernetes/metrics/metrics-server.yaml':
         ensure  => present,
-        source  => 'puppet:///modules/toolforge/k8s/metrics/metrics-server.yaml',
+        source  => 'puppet:///modules/kubeadm/metrics/metrics-server.yaml',
         require => File['/etc/kubernetes/metrics'],
     }
 
     file { '/etc/kubernetes/metrics/kube-state-metrics.yaml':
         ensure  => present,
-        source  => 'puppet:///modules/toolforge/k8s/metrics/kube-state-metrics.yaml',
+        source  => 'puppet:///modules/kubeadm/metrics/kube-state-metrics.yaml',
         require => File['/etc/kubernetes/metrics'],
     }
 
     file { '/etc/kubernetes/metrics/cadvisor.yaml':
         ensure  => present,
-        source  => 'puppet:///modules/toolforge/k8s/metrics/cadvisor.yaml',
+        source  => 'puppet:///modules/kubeadm/metrics/cadvisor.yaml',
         require => File['/etc/kubernetes/metrics'],
     }
 }
