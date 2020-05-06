@@ -23,6 +23,7 @@ filters:
 
 logs:
 <% @logs.each do |log| -%>
+<% if log['ensure'] == 'present' -%>
     - filename: <%= log['filename'] %>
       format: <%= log['format'] %>
       mode: <%= log['mode'] %>
@@ -33,4 +34,5 @@ logs:
 <% end %>
 <% end -%>
 
+<% end -%>
 <% end -%>
