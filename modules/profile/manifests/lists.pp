@@ -1,11 +1,22 @@
 class profile::lists (
     Array[String] $prometheus_nodes = lookup('prometheus_nodes'),
+    String $primary_host = lookup('profile::lists::primary_host', {'default_value' => undef}),
+    String $standby_host = lookup('profile::lists::standby_host', {'default_value' => undef}),
     Optional[Stdlib::IP::Address] $lists_ipv4 = lookup('profile::lists::ipv4', {'default_value' => undef}),
     Optional[Stdlib::IP::Address] $lists_ipv6 = lookup('profile::lists::ipv6', {'default_value' => undef}),
 ) {
     include ::network::constants
-    include ::mailman
     include ::privateexim::listserve
+
+    # Disable mailman service on the sandby host
+    $mailman_service_ensure = $facts['fqdn'] ? {
+        $standby_host => 'stopped',
+        default       => 'running',
+    }
+
+    class { '::mailman':
+        mailman_service_ensure => $mailman_service_ensure,
+    }
 
     mailalias { 'root': recipient => 'root@wikimedia.org' }
 
@@ -62,6 +73,16 @@ class profile::lists (
     }
 
     backup::set { 'var-lib-mailman': }
+
+    if $primary_host and $standby_host {
+        rsync::quickdatacopy { 'var-lib-mailman':
+            source_host         => $primary_host,
+            dest_host           => $standby_host,
+            auto_sync           => true,
+            module_path         => '/var/lib/mailman',
+            server_uses_stunnel => true,
+        }
+    }
 
     monitoring::service { 'smtp':
         description   => 'Exim SMTP',

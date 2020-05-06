@@ -1,4 +1,7 @@
-class mailman::listserve {
+class mailman::listserve (
+    String $mailman_service_ensure = 'running'
+) {
+
     package { 'mailman':
         ensure => present,
     }
@@ -28,7 +31,7 @@ class mailman::listserve {
     }
 
     service { 'mailman':
-        ensure    => running,
+        ensure    => $mailman_service_ensure,
         hasstatus => false,
         pattern   => 'mailmanctl',
         subscribe => File['/etc/mailman/mm_cfg.py'],
