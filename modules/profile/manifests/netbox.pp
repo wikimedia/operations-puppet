@@ -272,7 +272,7 @@ class profile::netbox (
         systemd::timer::job { "netbox_ganeti_${profile['profile']}_sync":
             ensure                    => $ganeti_sync_timer_ensure,
             description               => "Automatically access Ganeti API at ${profile['profile']} to synchronize to Netbox",
-            command                   => "/srv/deployment/netbox/venv/bin/python3 /srv/deployment/netbox/deploy/scripts/ganeti-netbox-sync.py ${profile['profile']}",
+            command                   => "/srv/deployment/netbox/venv/bin/python3 /srv/deployment/netbox-extras/tools/ganeti-netbox-sync.py ${profile['profile']}",
             interval                  => {
                 'start'    => 'OnCalendar',
                 # Splay by 1 minute per profile, offset by 5 minutes from 00 (sync process takes far less than 1 minute)
@@ -296,7 +296,7 @@ class profile::netbox (
     systemd::timer::job { 'netbox_dump_run':
         ensure                    => present,
         description               => 'Dump CSVs from Netbox.',
-        command                   => '/srv/deployment/netbox/deploy/scripts/rotatedump',
+        command                   => '/srv/deployment/netbox-extras/tools/rotatedump',
         interval                  => {
             'start'    => 'OnCalendar',
             'interval' => $nb_dump_interval,
