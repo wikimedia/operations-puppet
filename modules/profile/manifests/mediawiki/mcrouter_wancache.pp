@@ -9,10 +9,17 @@ class profile::mediawiki::mcrouter_wancache(
     Integer $num_proxies = hiera('profile::mediawiki::mcrouter_wancache::num_proxies', 1),
     Optional[Integer] $timeouts_until_tko = lookup('profile::mediawiki::mcrouter_wancache::timeouts_until_tko', {'default_value' => 10}),
     Integer $gutter_ttl = lookup('profile::mediawiki::mcrouter_wancache::gutter_ttl', {'default_value' => 60}),
+    Boolean $use_onhost_memcache = lookup('profile::mediawiki::mcrouter_wancache::use_onhost_memcache', {'default_value' => false}),
 ) {
 
     $servers_by_datacenter = $servers_by_datacenter_category['wancache']
     $proxies_by_datacenter = pick($servers_by_datacenter_category['proxies'], {})
+    if $use_onhost_memcache {
+        # TODO: Consider using a unix socket instead of a loopback address.
+        $onhost_pool = profile::mcrouter_pools('onhost', {'' => {'host' => '127.0.0.1', 'port' => 11211}})
+    } else {
+        $onhost_pool = {}
+    }
     # We only need to configure the gutter pool for DC-local routes. Remote-DC
     # routes are reached via an mcrouter proxy in that dc, that will be
     # configured to use its gutter pool itself.
@@ -26,7 +33,7 @@ class profile::mediawiki::mcrouter_wancache(
             profile::mcrouter_pools($region, $proxies_by_datacenter[$region])
         }
     }
-    .reduce($local_gutter_pool) |$memo, $value| { $memo + $value }
+    .reduce($onhost_pool + $local_gutter_pool) |$memo, $value| { $memo + $value }
 
     $routes = union(
         # local cache for each region
@@ -65,6 +72,41 @@ class profile::mediawiki::mcrouter_wancache(
                             'children' => [ profile::mcrouter_route($region, $gutter_ttl) ]
                         },
                     }
+                }
+            }
+        },
+        # On-host memcache tier: Keep a short-lived local cache to reduce network load for very hot
+        # keys, at the cost of a few seconds' staleness.
+        $servers_by_datacenter.map |$region, $servers| {
+            {
+                'aliases' => [ "/${region}/mw-with-onhost-tier/" ],
+                'route'   => $use_onhost_memcache ? {
+                    true  => {
+                        'type'               => 'OperationSelectorRoute',
+                        'operation_policies' => {
+                            # For reads, use WarmupRoute to try on-host memcache first. If it's not
+                            # there, WarmupRoute tries the ordinary regional pool next, and writes the
+                            # result back to the on-host cache, with a short expiration time. The
+                            # exptime is ten seconds in order to match our tolerance for DB replication
+                            # delay; that level of staleness is acceptable. Based on
+                            # https://github.com/facebook/mcrouter/wiki/Two-level-caching#local-instance-with-small-ttl
+                            'get' => {
+                                'type'    => 'WarmupRoute',
+                                'cold'    => 'PoolRoute|onhost',
+                                'warm'    => profile::mcrouter_route($region, $gutter_ttl),
+                                'exptime' => 10,
+                            }
+                        },
+                        # For everything except reads, bypass the on-host tier completely. That means
+                        # if a get, set, and get are sent within a ten-second period, they're
+                        # guaranteed *not* to have read-your-writes consistency. (If sets updated the
+                        # on-host cache, read-your-writes consistency would depend on whether the
+                        # requests happened to hit the same host or not, so e.g. mwdebug hosts would
+                        # behave differently from the rest of prod, which would be confusing.)
+                        'default_policy'     => profile::mcrouter_route($region, $gutter_ttl)
+                    },
+                    # If use_onhost_memcache is turned off, always bypass the onhost tier.
+                    false => profile::mcrouter_route($region, $gutter_ttl)
                 }
             }
         }
