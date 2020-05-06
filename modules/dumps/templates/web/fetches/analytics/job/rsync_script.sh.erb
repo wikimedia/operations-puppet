@@ -1,0 +1,11 @@
+#!/bin/bash
+
+<%- if @ignore_missing_source -%>
+if $(hdfs dfs -test -d hdfs://<%= @hdfs_source %>)
+    then <%= @rsync_command %>
+else
+    echo 'Ignoring missing hdfs source hdfs://<%= @hdfs_source %>'
+fi
+<%- else -%>
+    <%= @rsync_command %>
+<%- end -%>

@@ -56,11 +56,12 @@ class dumps::web::fetches::stats(
     $date1_cmd = "\$\$(/bin/date --date=\"\$\$(/bin/date +%%Y-%%m-15) -1 month\" +\"%%Y-%%m\")"
     $date2_cmd = "\$\$(/bin/date --date=\"\$\$(/bin/date +%%Y-%%m-15) -2 month\" +\"%%Y-%%m\")"
     dumps::web::fetches::analytics::job { 'mediawiki_history_dumps':
-        hdfs_source       => "${src_hdfs}/mediawiki/history/{${date1_cmd},${date2_cmd}}",
-        local_destination => "${miscdatasetsdir}/mediawiki_history/",
-        interval          => '*-*-* 05:00:00',
-        user              => $user,
-        use_kerberos      => $use_kerberos,
+        hdfs_source           => "${src_hdfs}/mediawiki/history/{${date1_cmd},${date2_cmd}}",
+        local_destination     => "${miscdatasetsdir}/mediawiki_history/",
+        interval              => '*-*-* 05:00:00',
+        user                  => $user,
+        use_kerberos          => $use_kerberos,
+        ignore_missing_source => true,
     }
 
     # Copies over geoeditors dumps from HDFS archive

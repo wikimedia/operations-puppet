@@ -37,6 +37,7 @@ define dumps::web::fetches::analytics::job(
     String $user,
     Boolean $delete = true,
     Boolean $use_kerberos = false,
+    Boolean $ignore_missing_source = false,
     Wmflib::Ensure $ensure = present,
     Optional[String] $exclude = undef,
 ) {
@@ -60,13 +61,23 @@ define dumps::web::fetches::analytics::job(
         default => " --exclude \"${exclude}\""
     }
 
+    # If $ignore_missing_source is enabled, add a check that prevents
+    # hdfs-rsync to fail when the source directory is missing.
+    $rsync_command = "/usr/local/bin/hdfs-rsync -r -t ${delete_option}${exclude_option} --chmod=go-w hdfs://${hdfs_source} file://${local_destination}"
+    file { "/usr/local/bin/rsync-analytics-${title}":
+        ensure  => $ensure,
+        content => template('dumps/web/fetches/analytics/job/rsync_script.sh.erb'),
+        mode    => '0550',
+        owner   => $user,
+        group   => 'root',
+    }
+
     kerberos::systemd_timer { "analytics-dumps-fetch-${title}":
         description  => "Copy ${title} files from Hadoop HDFS.",
-        command      => "/bin/bash -c '/usr/local/bin/hdfs-rsync -r -t ${delete_option}${exclude_option} --chmod=go-w hdfs://${hdfs_source} file://${local_destination}'",
+        command      => "/usr/local/bin/rsync-analytics-${title}",
         interval     => $interval,
         user         => $user,
         use_kerberos => $use_kerberos,
+        require      => File["/usr/local/bin/rsync-analytics-${title}"],
     }
 }
-
-
