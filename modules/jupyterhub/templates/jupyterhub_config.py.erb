@@ -201,4 +201,4 @@ c.SystemdSpawner.disable_user_sudo = True
 
 # We allow users to only write to their homedirs and /dev/shm, and nowhere else
 c.SystemdSpawner.readonly_paths = ['/']
-c.SystemdSpawner.readwrite_paths = ['/home/{USERNAME}', '/dev/shm']
+c.SystemdSpawner.readwrite_paths = ['/home/{USERNAME}', '/dev/shm', '/user/run']
