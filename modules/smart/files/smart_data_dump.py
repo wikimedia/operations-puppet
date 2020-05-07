@@ -15,22 +15,6 @@ from prometheus_client.exposition import generate_latest
 
 
 log = logging.getLogger(__name__)
-
-HPSA_CONTROLLER = collections.namedtuple('HPSA_CONTROLLER', ['name', 'target', 'disks', 'type'])
-"""
-    Represents an hpsa controller.
-
-    HPSA controllers group all of their physical disks behind scsi generic devices.  When there are
-    multiple controllers, the the device ids (passed to `smartctl -d`) conflict and overwrite one
-    another.  To get around this, we will replace the smartctl type option with the device
-    target according to the controller at render time.
-
-    name: str - the host adapter identifier.
-    target: str - the device to query. (e.g. /dev/sg0, /dev/sda)
-    disks: dict - map of serial to 'port:box:bay'
-    type: str - parameter passed to smartctl -d. For hpsa, this is almost always 'cciss'.
-"""
-
 DISK = collections.namedtuple('DISK', ['name', 'target', 'type'])
 """
     Represents a standard disk.
@@ -173,76 +157,30 @@ def megaraid_parse(response):
 
 
 def hpsa_list_pd():
-    """List physical disks attached to hpsa controller."""
+    """List physical disks attached to hpsa controller. Generator to yield PD objects."""
     try:
-        raw_output = _check_output('/usr/sbin/hpssacli controller all show config detail')
+        raw_output = _check_output('/usr/sbin/hpssacli controller all show config')
     except subprocess.CalledProcessError:
         log.exception('Failed to scan for hpsa physical disks')
         return
-    return hpsa_parse(raw_output, lsscsi_list_dev())
+
+    return hpsa_parse(raw_output)
 
 
-def hpsa_parse(response, lsscsi=None):
-    """
-    Parse the hpssacli response.
-
-    When lsscsi data is available, extract the target by looking for a matching sas address.
-    """
-    if lsscsi is None:
-        lsscsi = {}
-    data = {}
-    controller = address = serial = None
+def hpsa_parse(response):
+    in_controller = False
     for line in response.splitlines():
-        # get controller
-        m = re.match(r'^Smart Array ([A-Z0-9]{4}) in Slot (\d+)', line)
+        m = re.match(r'^Smart Array .* in Slot (\d+)', line)
         if m:
-            address = serial = None
-            controller = m[0]
-            data[controller] = {'disks': {}, 'target': None}
-        # get target from lsscsi if sas address is present
-        m = re.match(r'^ {9}SAS Address: ([A-F0-9]+)', line)
-        if m:
-            target = lsscsi.get(m[1].lower())
-            if target is not None:
-                data[controller]['target'] = target
-        # get address from physical drive
-        m = re.match(r'^ {6}physicaldrive ([A-Z0-9:]+)$', line)
-        if m:
-            address = m[1]
-        # get serial number from physical drive
-        m = re.match(r'^ {9}Serial Number: ([A-Z0-9]+)$', line)
-        if m:
-            serial = m[1]
-        # add disks to model
-        if controller and address and serial:
-            data[controller]['disks'][serial] = address
-            address = serial = None
-    return [HPSA_CONTROLLER(name=name, target=controller.get('target'),
-                            disks=controller.get('disks'), type='cciss')
-            for name, controller in data.items()]
+            in_controller = True
+            disk_id = 0
 
-
-def lsscsi_list_dev():
-    """List scsi devices."""
-    return lsscsi_parse(_check_output('/usr/bin/lsscsi -t -g'))
-
-
-def lsscsi_parse(response):
-    """Parse output of lsscsi and return a mapping of sas address to device target."""
-    output = {}
-    for line in response.splitlines():
-        line = line.strip()
-        if line == '':
-            continue
-        if line[0] == '#':
-            continue
-        while '  ' in line:
-            line = line.replace('  ', ' ')
-        if 'storage' in line:
-            m = re.match(r'.*sas:0x([0-9a-f]+).*(/dev/sg[0-9])', line)
-            output[m[1]] = m[2]
-    log.debug('lsscsi response: {}'.format(output))
-    return output
+        m = re.match(r'^\s+physicaldrive', line)
+        if m and in_controller:
+            name = 'cciss,{}'.format(disk_id)
+            # TODO(filippo) assumes /dev/sda
+            yield DISK(name=name, target='/dev/sda', type=name)
+            disk_id += 1
 
 
 def noraid_list_pd():
@@ -271,14 +209,9 @@ def noraid_parse(response):
 def collect_smart_metrics(devices, metrics):
     """Collect SMART metrics from list of devices into Prometheus registry."""
     for dev in devices:
-        if isinstance(dev, HPSA_CONTROLLER):
-            for smart_data in _handle_controller(dev):
-                log.debug(smart_data)
-                collect_smart_data(smart_data, metrics)
-        else:
-            smart_data = _handle_disk(dev)
-            log.debug(smart_data)
-            collect_smart_data(smart_data, metrics)
+        smart_data = _handle_disk(dev)
+        log.debug(smart_data)
+        collect_smart_data(smart_data, metrics)
 
 
 def collect_smart_data(smart_data, metrics):
@@ -297,25 +230,6 @@ def _handle_disk(disk):
     attribute_info = _check_output(cmd, suppress_errors=True)
     return SMART_DATA(healthy=healthy, model=model, firmware=firmware, name=disk.name,
                       attributes=_parse_smart_attributes(attribute_info))
-
-
-def _handle_controller(controller):
-    output = []
-    for disk_id in range(len(controller.disks)):
-        disk_id = ','.join([controller.type, str(disk_id)])
-        cmd = '/usr/sbin/smartctl --info --health -d {} {}'.format(disk_id, controller.target)
-        smart_info = _check_output(cmd, suppress_errors=True)
-        healthy, model, firmware, serial = _parse_smart_info(smart_info)
-        cmd = '/usr/sbin/smartctl --attributes -d {} {}'.format(disk_id, controller.target)
-        attribute_info = _check_output(cmd, suppress_errors=True)
-        output.append(
-            SMART_DATA(
-                healthy=healthy, model=model, firmware=firmware,
-                name=controller.disks.get(serial),  # get PORT:BOX:BAY representation
-                attributes=_parse_smart_attributes(attribute_info)
-            )
-        )
-    return output
 
 
 def _parse_smart_attributes(response):
@@ -390,6 +304,7 @@ def get_metrics_cache(registry, namespace=''):
     return output
 
 
+# TODO(filippo): handle machines with more than one controller
 # TODO(filippo): handle mpt controllers
 DRIVER_HANDLERS = {
     'megaraid': megaraid_list_pd,
