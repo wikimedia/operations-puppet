@@ -1213,6 +1213,10 @@ node 'krb2001.codfw.wmnet' {
     role(kerberos::kdc)
 }
 
+# new kubernetes nodes T241850
+node /^kubernetes10(0[7-9]|1[0-4])\.eqiad\.wmnet/ {
+    role(insetup)
+}
 
 node /kubernetes[12]00[1-6]\.(codfw|eqiad)\.wmnet/ {
     role(kubernetes::worker)
