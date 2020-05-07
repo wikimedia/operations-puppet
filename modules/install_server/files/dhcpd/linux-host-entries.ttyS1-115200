@@ -7412,7 +7412,6 @@ host pc1009 {
 host pc1010 {
     hardware ethernet D0:94:66:86:4C:4B;
     fixed-address pc1010.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host pc2007 {
@@ -7435,7 +7434,6 @@ host pc2009 {
 host pc2010 {
     hardware ethernet D0:94:66:86:4D:6C;
     fixed-address pc2010.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host phab1001 {
