@@ -9,21 +9,21 @@ define profile::redis::instance(
         default => undef
     }
 
+    $base_settings = {
+        dbfilename => "${::hostname}-${title}.rdb",
+        slaveof    => $slaveof_actual,
+    }
+
     if $aof {
-        $base_settings = {
+        $aof_settings = {
             appendfilename => "${::hostname}-${title}.aof",
-            dbfilename     => "${::hostname}-${title}.rdb",
-            slaveof        => $slaveof_actual,
         }
     } else {
-        $base_settings = {
-            dbfilename => "${::hostname}-${title}.rdb",
-            slaveof    => $slaveof_actual,
-        }
+        $aof_settings = {}
     }
 
     ::redis::instance { $title:
-        settings => merge($base_settings, $settings)
+        settings => merge($base_settings, $aof_settings, $settings)
     }
 
 }
