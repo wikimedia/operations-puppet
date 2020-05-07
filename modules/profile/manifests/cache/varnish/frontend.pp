@@ -34,18 +34,9 @@ class profile::cache::varnish::frontend (
         $fe_mem_gb = ceiling(0.7 * ($mem_gb - 100.0))
     }
 
-    # Size cutoff for large objects. The definition of "large" depends on the
-    # admission policy used. Objects with Content-Length bigger than this value
-    # are not cached.
-    $large_objects_cutoff = $fe_vcl_config["admission_policy"] ? {
-        'exp'   => 10485760, # 10M
-        default => 262144,   # 256K
-    }
-
     $vcl_config = $fe_vcl_config + {
         req_handling         => $req_handling,
         alternate_domains    => $alternate_domains,
-        large_objects_cutoff => $large_objects_cutoff,
         fe_mem_gb            => $fe_mem_gb,
     }
 

@@ -83,6 +83,7 @@ profile::cache::varnish::frontend::fe_vcl_config:
     varnish_probe_ms: 100
     keep: '1d'
     public_clouds_shutdown: false
+    large_objects_cutoff: 262144
 profile::cache::varnish::frontend::fe_jemalloc_conf: 'lg_dirty_mult:8,lg_chunk:17'
 
 profile::netconsole::client::ensure: absent

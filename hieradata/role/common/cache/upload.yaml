@@ -44,6 +44,7 @@ profile::cache::varnish::frontend::fe_vcl_config:
     admission_policy: 'none'
     varnish_probe_ms: 100
     keep: '1d'
+    large_objects_cutoff: 262144
 profile::cache::varnish::frontend::fe_jemalloc_conf: 'lg_dirty_mult:8,lg_chunk:17'
 profile::cache::varnish::frontend::fe_extra_vcl: ['normalize_path']
 
