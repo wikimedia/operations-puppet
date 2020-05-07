@@ -107,7 +107,7 @@ scap::sources:
 # Gerrit
 
 gerrit::server::config: 'gerrit.config.erb'
-gerrit::server::host: gerrit.wmflabs.org
+gerrit::server::host: 'gerrit.devtools.wmflabs.org'
 
 gerrit::servers:
 - gerrit-prod-1001.devtools.eqiad.wmflabs
