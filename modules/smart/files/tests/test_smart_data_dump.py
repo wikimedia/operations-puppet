@@ -14,7 +14,8 @@ class TestSmartDataDump(unittest.TestCase):
     def setUp(self):
         with open('modules/smart/files/tests/fixtures/smartctl_scan_open.txt', 'r') as f:
             self.smartctl_scan_open = f.read()
-        with open('modules/smart/files/tests/fixtures/hpssacli_show_all_config.txt', 'r') as f:
+        with open('modules/smart/files/tests/fixtures/hpssacli_show_all_config_detail.txt',
+                  'r') as f:
             self.hpssacli_all_config_raw = f.read()
         with open('modules/smart/files/tests/fixtures/lsblk.txt', 'r') as f:
             self.lsblk_raw = f.read()
@@ -22,6 +23,8 @@ class TestSmartDataDump(unittest.TestCase):
             self.smartctl_info = f.read()
         with open('modules/smart/files/tests/fixtures/smartctl_attributes.txt', 'r') as f:
             self.smartctl_attributes = f.read()
+        with open('modules/smart/files/tests/fixtures/lsscsi.txt', 'r') as f:
+            self.lsscsi = f.read()
 
     def test_good_cmd(self):
         output = smart_data_dump._check_output('/bin/echo "this is a test"')
@@ -40,19 +43,25 @@ class TestSmartDataDump(unittest.TestCase):
         with self.assertRaises(subprocess.CalledProcessError):
             smart_data_dump._check_output('/usr/bin/sleep 2', 1)
 
-    def test_megaraid_get_pd(self):
+    def test_megaraid_parse(self):
         output = smart_data_dump.megaraid_parse(self.smartctl_scan_open)
         for gd in output:
             self.assertEqual(gd.target, '/dev/bus/0')
             self.assertEqual(gd.name.split(',')[0], 'sat+megaraid')
             self.assertEqual(gd.type, gd.name)
 
-    def test_hpsa_get_pd(self):
-        output = smart_data_dump.hpsa_parse(self.hpssacli_all_config_raw)
-        for gd in output:
-            self.assertEqual(gd.target, '/dev/sda')
-            self.assertEqual(gd.name.split(',')[0], 'cciss')
-            self.assertEqual(gd.type, gd.name)
+    def test_hpsa_parse(self):
+        output = smart_data_dump.hpsa_parse(
+            self.hpssacli_all_config_raw,
+            smart_data_dump.lsscsi_parse(self.lsscsi)
+        )
+        for controller in output:
+            self.assertIn(controller.target, ['/dev/sg0', '/dev/sg3'])
+            if controller.target == '/dev/sg0':
+                self.assertEqual(len(controller.disks.keys()), 14)
+            if controller.target == '/dev/sg3':
+                self.assertEqual(len(controller.disks.keys()), 24)
+            self.assertEqual(controller.type, 'cciss')
 
     def test_noraid_parse(self):
         output = smart_data_dump.noraid_parse(self.lsblk_raw)
@@ -92,3 +101,8 @@ class TestSmartDataDump(unittest.TestCase):
             'total_lbas_written': '791062',
             'total_lbas_read': '164795'
         })
+
+    def test_lsscsi_parse(self):
+        output = smart_data_dump.lsscsi_parse(self.lsscsi)
+        self.assertListEqual(list(output.keys()), ['51402ec000146540', '5001438040efb200'])
+        self.assertListEqual(list(output.values()), ['/dev/sg0', '/dev/sg3'])
