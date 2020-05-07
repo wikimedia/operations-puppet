@@ -1,4 +1,6 @@
 cluster: redis
+# A mapping of usages of is at https://wikitech.wikimedia.org/wiki/Redis
+# Make sure to update it if you add anything
 profile::redis::master::instances: ['6378','6379','6380','6381','6382']
 profile::redis::master::settings:
   bind: '0.0.0.0'
@@ -12,3 +14,8 @@ profile::redis::master::settings:
   save: '""'
   stop_writes_on_bgsave_error: false
   slave_read_only: false
+# This is for the ORES redis queue database
+profile::redis::master::instance_overrides:
+  '6380':
+    maxmemory: "1GB"
+    appendonly: false
