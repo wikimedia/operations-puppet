@@ -8,6 +8,8 @@ class role::thanos::frontend {
 
     include ::profile::lvs::realserver
 
+    include ::profile::tlsproxy::envoy
+
     include ::profile::thanos::query
     include ::profile::thanos::httpd
 
