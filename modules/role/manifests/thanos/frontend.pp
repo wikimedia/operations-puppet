@@ -13,5 +13,7 @@ class role::thanos::frontend {
     include ::profile::thanos::query
     include ::profile::thanos::httpd
 
+    include ::profile::thanos::store
+
     include ::profile::thanos::swift::frontend
 }

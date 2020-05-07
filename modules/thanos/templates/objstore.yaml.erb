@@ -1,0 +1,7 @@
+type: S3
+config:
+  endpoint: "<%= @objstore_account['url'] %>"
+  access_key: "<%= @objstore_account['username'] %>"
+  secret_key: "<%= @objstore_password %>"
+  bucket: "<%= @objstore_account['container'] %>"
+  signature_version2: true

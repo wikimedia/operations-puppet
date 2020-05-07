@@ -3,8 +3,8 @@
 # Thanos query exposes a Prometheus-compatible query API over HTTP. Results are
 # gathered from all configured Thanos StoreAPI endpoints.
 #
-# The endpoints are discovered via PuppetDB, using the same mechanism as
-# Prometheus itself.
+# The sidecars are discovered via PuppetDB, using the same mechanism as
+# Prometheus itself. For historical data the local Thanos Store will be used.
 #
 # = Parameters
 # [*sites*] The list of sites to reach out to.
@@ -21,6 +21,7 @@ class profile::thanos::query (
         sd_files  => $sd_files,
     }
 
+    # Reach out to all sites' sidecars for recent data
     $sites.each |String $s| {
         prometheus::resource_config{ "thanos_store_sidecar_${s}":
             dest           => "${sd_files_path}/sidecar_${s}.yml",
@@ -28,6 +29,16 @@ class profile::thanos::query (
             define_name    => 'thanos::sidecar',
             port_parameter => 'grpc_port',
         }
+    }
+
+    # Talk to local store for historical data
+    $local_store = [ { 'targets' =>  ['localhost:11901'] } ]
+    file { "${sd_files_path}/local.yml":
+        ensure  => present,
+        mode    => '0444',
+        owner   => 'root',
+        group   => 'root',
+        content => ordered_yaml($local_store),
     }
 
     ferm::service { 'thanos_query':

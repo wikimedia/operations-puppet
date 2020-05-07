@@ -7,3 +7,11 @@ profile::thanos::frontends:
   - thanos-fe2001.codfw.wmnet
   - thanos-fe2002.codfw.wmnet
   - thanos-fe2003.codfw.wmnet
+
+# Shared across Prometheus and Thanos roles
+profile::thanos::objstore_account:
+  username: 'thanos:prod'
+  container: 'thanos'
+  url: 'thanos-swift.discovery.wmnet' # defaults to https
+# To be kept private
+# profile::thanos::objstore_password: 'foo'
