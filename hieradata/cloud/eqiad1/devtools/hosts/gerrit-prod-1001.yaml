@@ -1,0 +1,2 @@
+gerrit::service::ipv4: 172.16.0.148
+gerrit::service::ipv6: fe80::f816:3eff:fe04:e7ef
