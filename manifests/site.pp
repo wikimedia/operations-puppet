@@ -2176,6 +2176,10 @@ node 'theemin.codfw.wmnet' {
     role(test)
 }
 
+node /^thanos-fe200[123]\.codfw\.wmnet/ {
+    role(role::insetup)
+}
+
 # Thumbor servers for MediaWiki image scaling
 node /^thumbor100[1234]\.eqiad\.wmnet/ {
     role(thumbor::mediawiki)
