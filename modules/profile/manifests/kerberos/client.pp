@@ -14,9 +14,9 @@ class profile::kerberos::client (
     # (see Openjdk's FileCredentialsCache.java#L448-L456).
     # It does support the KRB5CCNAME env variable override.
     if $use_new_ccache {
-        $default_ccache_name = '/user/run/%{uid}/krb_cred'
+        $default_ccache_name = '/run/user/%{uid}/krb_cred'
         file { '/etc/profile.d/java_KRB5CCNAME.sh':
-            content => 'export KRB5CCNAME=/user/run/$(uid)/krb_cred',
+            content => 'export KRB5CCNAME=/run/user/$(id -u)/krb_cred',
         }
     }
 
