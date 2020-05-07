@@ -4237,3 +4237,7 @@ ldap_only_users:
     ensure : present
     realname: John (Yiannis) Giannelos
     email: jgiannelos@wikimedia.org
+  toan:
+    ensure: present
+    realname: Tobias Andersson
+    email: tobias.andersson@wikimedia.de
