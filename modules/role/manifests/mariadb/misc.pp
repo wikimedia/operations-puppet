@@ -57,5 +57,11 @@ class role::mariadb::misc(
         datacenter => $::site,
         enabled    => $master,
     }
+
+    mariadb::monitor_readonly { [ $shard ]:
+        read_only     => $read_only,
+        is_critical   => false,
+        contact_group => 'dba',
+    }
 }
 
