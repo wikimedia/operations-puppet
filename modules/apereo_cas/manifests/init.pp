@@ -136,8 +136,6 @@ class apereo_cas (
         group   => 'root',
         mode    => '0400',
         content => template('apereo_cas/cas.properties.erb'),
-        before  => Systemd::Service['cas'],
-        notify  => Service['cas'],
     }
     file {"${config_dir}/log4j2.xml":
         ensure  => file,
@@ -145,8 +143,6 @@ class apereo_cas (
         group   => 'root',
         mode    => '0400',
         content => template('apereo_cas/log4j2.xml.erb'),
-        before  => Systemd::Service['cas'],
-        notify  => Service['cas'],
     }
     $keystore_ensure = $server_enable_ssl ? {
         true    => file,
@@ -159,8 +155,6 @@ class apereo_cas (
         mode    => '0400',
         content => $keystore_content,
         source  => $keystore_source,
-        before  => Systemd::Service['cas'],
-        notify  => Service['cas'],
     }
     exec{'update cas war':
         command     => "${overlay_dir}/gradlew build",
@@ -177,14 +171,19 @@ class apereo_cas (
             require => Exec['update cas war'],
             notify  => Service['tomcat9'],
         }
+        $notify = Service['tomcat9']
     } else {
         $cas_service_ensure = 'present'
         file {"${tomcat_webapps_dir}/ROOT.war":
             ensure => absent,
         }
+        $notify = Service['cas']
         Exec['update cas war'] {
             notify => Service['cas'],
         }
+    }
+    File["${config_dir}/log4j2.xml", $keystore_path, "${config_dir}/cas.properties"] {
+        notify => $notify,
     }
 
     systemd::service {'cas':
@@ -194,7 +193,7 @@ class apereo_cas (
     }
     $services.each |String $service, Hash $config| {
         apereo_cas::service {$service:
-            notify => Service['cas'],
+            notify => $notify,
             *      => $config
         }
     }
