@@ -2072,6 +2072,11 @@ node /^restbase10(1[6-9]|2[0-7])\.eqiad\.wmnet$/ {
     role(restbase::production)
 }
 
+# new restbase nodes (T241784)
+node /^restbase10(2[8-9]|3[0])\.eqiad\.wmnet$/ {
+    role(instep)
+}
+
 # restbase codfw cluster
 node /^restbase20(09|1[0-9]|2[0-3])\.codfw\.wmnet$/ {
     role(restbase::production)
