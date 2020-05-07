@@ -77,6 +77,14 @@ class apereo_cas (
 
     $idp_nodes = [$idp_primary, $idp_failover].delete_undef_values
 
+    user{$daemon_user:
+        ensure   => 'present',
+        comment  => 'apereo cas user',
+        home     => $tomcat_basedir,
+        shell    => '/usr/sbin/nologin',
+        password => '!',
+        system   => true,
+    }
     systemd::timer::job { 'idp-u2f-sync':
         ensure             => $ensure_sync_timer,
         description        => 'Mirror U2F device data from failover host to active IDP server',
@@ -179,14 +187,6 @@ class apereo_cas (
         }
     }
 
-    user{$daemon_user:
-        ensure   => $cas_service_ensure,
-        comment  => 'apereo cas user',
-        home     => $tomcat_basedir,
-        shell    => '/usr/sbin/nologin',
-        password => '!',
-        system   => true,
-    }
     systemd::service {'cas':
         ensure  => $cas_service_ensure,
         content => template('apereo_cas/cas.service.erb'),
