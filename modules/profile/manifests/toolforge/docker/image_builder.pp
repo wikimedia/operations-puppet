@@ -2,9 +2,14 @@ class profile::toolforge::docker::image_builder(
     String       $docker_username = lookup('docker::username'),
     String       $docker_password = lookup('docker::password'),
     Stdlib::Fqdn $docker_registry = lookup('docker::registry'),
+    String $component = lookup('profile::wmcs::kubeadm::component', {default_value => 'thirdparty/kubeadm-k8s-1-15'}),
 ) {
     # This should be building with the same docker we are running
-    class { 'toolforge::k8s::kubeadmrepo': }
+    class { '::kubeadm::repo':
+        component => $component,
+    }
+
+    class { '::kubeadm::docker': }
 
     labs_lvm::volume { 'docker':
         size      => '70%FREE',
@@ -22,7 +27,6 @@ class profile::toolforge::docker::image_builder(
         require => Labs_lvm::Volume['docker'],
     }
 
-    class { 'toolforge::k8s::kubeadm_docker_service': }
     class { '::docker::baseimages':
         docker_registry => $docker_registry,
     }
