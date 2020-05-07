@@ -9,23 +9,13 @@ class profile::toolforge::docker::image_builder(
         component => $component,
     }
 
-    class { '::kubeadm::docker': }
-
     labs_lvm::volume { 'docker':
         size      => '70%FREE',
         mountat   => '/var/lib/docker',
         mountmode => '711',
     } -> class {'profile::labs::lvm::srv': }
 
-    if defined(Class['docker']) {
-        Labs_lvm::Volume['docker'] -> Class['docker']
-    }
-    package { [ 'docker-ce',
-                'docker-ce-cli',
-                'containerd.io',]:
-        ensure  => present,
-        require => Labs_lvm::Volume['docker'],
-    }
+    class { '::kubeadm::docker': }
 
     class { '::docker::baseimages':
         docker_registry => $docker_registry,
