@@ -8,6 +8,7 @@ profile::base::domain_search:
 profile::standard::has_default_mail_relay: false
 phabricator_logmail: false
 phabricator_deploy_user: 'deploy-devtools'
+phabricator::tools::dump: false
 
 apache::logrotate::period: "daily"
 apache::logrotate::rotate: 3
