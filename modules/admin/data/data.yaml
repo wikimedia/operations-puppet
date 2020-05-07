@@ -4241,3 +4241,8 @@ ldap_only_users:
     ensure: present
     realname: Tobias Andersson
     email: tobias.andersson@wikimedia.de
+  ngkountas:
+    ensure: present
+    realname: Nik Gkountas
+    email: ngkountas@wikimedia.org
+
