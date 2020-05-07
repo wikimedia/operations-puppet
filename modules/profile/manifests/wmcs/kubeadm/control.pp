@@ -2,6 +2,7 @@ class profile::wmcs::kubeadm::control (
     Array[Stdlib::Fqdn] $etcd_hosts = lookup('profile::wmcs::kubeadm::etcd_nodes',     {default_value => ['localhost']}),
     Stdlib::Fqdn        $apiserver  = lookup('profile::wmcs::kubeadm::apiserver_fqdn', {default_value => 'k8s.example.com'}),
     String              $node_token = lookup('profile::wmcs::kubeadm::node_token',     {default_value => 'example.token'}),
+    String              $component  = lookup('profile::wmcs::kubeadm::component',      {default_value => 'thirdparty/kubeadm-k8s-1-15'}),
     String              $calico_version = lookup('profile::wmcs::kubeadm::calico_version', {default_value => 'v3.8.0'}),
     Optional[String]    $encryption_key = lookup('profile::wmcs::kubeadm::encryption_key', {default_value => undef}),
 ) {
@@ -55,6 +56,9 @@ class profile::wmcs::kubeadm::control (
         directory => '/srv/git/maintain-kubeusers',
     }
 
+    class { '::kubeadm::repo':
+        component => $component,
+    }
     class { '::kubeadm::core': }
     class { '::kubeadm::docker': }
 

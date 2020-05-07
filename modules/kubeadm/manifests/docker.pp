@@ -1,12 +1,15 @@
 class kubeadm::docker (
 ) {
+    require ::kubeadm::repo
+
     $packages = [
         'docker-ce',
         'docker-ce-cli',
     ]
 
-    kubeadm::package_from_component { 'docker':
-        packages => $packages,
+    package { $packages:
+        ensure => 'present',
+        tag    => 'kubeadm-k8s',
     }
 
     # I think this is unused? It is called for specifically in Kubernetes docs.  Don't know why.

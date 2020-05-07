@@ -1,6 +1,7 @@
 # main kubeadm packages and setup
 class kubeadm::core (
 ) {
+    require ::kubeadm::repo
     include ::kubeadm::kubectl
 
     $packages = [
@@ -8,14 +9,12 @@ class kubeadm::core (
         'kubernetes-cni',
         'containerd.io',
         'cri-tools',
+        'ipset',
     ]
 
-    kubeadm::package_from_component { 'core':
-        packages  => $packages,
-    }
-
-    package { 'ipset':
+    package { $packages:
         ensure => 'present',
+        tag    => 'kubeadm-k8s',
     }
 
     file { '/etc/kubernetes/':

@@ -1,4 +1,5 @@
 class profile::wmcs::kubeadm::worker (
+    String $component = lookup('profile::wmcs::kubeadm::component', {default_value => 'thirdparty/kubeadm-k8s-1-15'}),
 ) {
     require profile::wmcs::kubeadm::preflight_checks
 
@@ -8,6 +9,9 @@ class profile::wmcs::kubeadm::worker (
         before    => Service['docker'],
     }
 
+    class { '::kubeadm::repo':
+        component => $component,
+    }
     class { '::kubeadm::core': }
     class { '::kubeadm::calico_workaround': }
 }

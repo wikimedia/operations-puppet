@@ -1,4 +1,9 @@
 class kubeadm::kubectl (
 ) {
-    kubeadm::package_from_component { 'kubectl': }
+    require ::kubeadm::repo
+
+    package  { 'kubectl':
+        ensure => 'present',
+        tag    => 'kubeadm-k8s',
+    }
 }
