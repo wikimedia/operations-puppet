@@ -1,0 +1,112 @@
+# This file is managed by Puppet.
+
+history: [7, 30]
+
+summary_fields:
+  - status
+
+job: '<base config>'
+
+email:
+  from: peek@<%= @fqdn %>
+  to: '<%= @to_email %>'
+  server: '127.0.0.1'
+
+templates: '<%= @template_dir %>'
+
+sections:
+   summary: True
+   kanban: True
+   anti: True
+   users: True
+   tasks: True
+   tasks_breakdown: True
+
+users:
+  moldy: 30
+  show_moldy: 3
+  attributes:
+    name:
+      phab: 'userName'
+      asana: 'name'
+    show:
+      image:
+        backend: phab
+        key: image
+      uri:
+        backend: phab
+        key: uri
+  # Currently there is no indicator  (email, username, real name, etc)
+  # which is the same across all backends for every user.
+  # It there was such a thing this mapping would be more appropriately
+  # done dynamically.
+  map:
+    'Chase Pettet':
+      asana: 'chasemp'
+      phab: 'chasemp'
+    'Jenn Cross':
+      asana: 'Jennifer Cross'
+      phab: 'Jcross'
+    'David Sharpe':
+      asana: 'dsharpe'
+      phab: 'Dsharpe'
+    'Sam Reed':
+      asana: 'reedy'
+      phab: 'Reedy'
+    'John Bennett':
+      asana: 'John Bennett'
+      phab: 'JBennett'
+    'James Fishback':
+      asana: 'James Fishback'
+      phab: 'JFishback_WMF'
+    'Scott Bassett':
+      asana: 'sbassett'
+      phab: 'sbassett'
+
+backends:
+  asana:
+    enabled: True
+    token: '<%= @asana_token %>'
+    workspace: 'Wikimedia Foundation'
+    # List of substrings to pattern match in order to 'ignore' a task
+    ignore: ['[Maniphest]']
+    projects:
+      'Privacy Reviews':
+        columns:
+          backlog: backlog
+          progress: progress
+      'Security Milestones':
+        columns:
+          backlog: backlog
+          progress: progress
+      'ERM Iteration 2':
+        columns:
+          backlog: backlog
+          progress: progress
+
+  phab:
+    enabled: True
+    host: 'https://phabricator.wikimedia.org/api/'
+    token: '<%= @phab_token %>'
+    timeout: 10
+    query_delay: 1
+    agents: False
+    projects:
+      security-team:
+        columns:
+          backlog: PHID-PCOL-5pcxhpt4mrqazne5kj2j
+          waiting: PHID-PCOL-i3bav6ggusmsvjnttx5n
+          watching: PHID-PCOL-4ze4hlrtc2ev52plnqaf
+          progress: PHID-PCOL-ingjjybgiqxd7cvrdios
+      secteam-scrum:
+        columns:
+          backlog: PHID-PCOL-xwo566hqoksbmcqrd3hg
+          waiting: PHID-PCOL-blaj4apanrcpilr7cprs
+          watching: PHID-PCOL-am4j7oro7csphddwwwad
+          progress: PHID-PCOL-pab35raoukbtdvdnw2e5
+      privacy_engineering:
+        columns:
+          backlog: PHID-PCOL-h2f6lt6zkbzwfsmj3ggt
+          waiting: PHID-PCOL-skkdz42v4cw5rtdnzsri
+          watching: PHID-PCOL-b5phfvgfz2n54bv2vbf5
+          progress: PHID-PCOL-kg77gflrh5w6qp3mf5fh
