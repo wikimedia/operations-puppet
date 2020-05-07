@@ -11,7 +11,7 @@
 class thanos::query (
     Stdlib::Port::Unprivileged $http_port,
     String $replica_label = 'replica',
-    String $sd_files = '/etc/thanos-stores/*.yml',
+    String $sd_files = '/etc/thanos-query/stores/*.yml',
 ) {
     require_package('thanos')
 
@@ -19,7 +19,7 @@ class thanos::query (
     $service_name = 'thanos-query'
     $sd_files_path = dirname($sd_files)
 
-    file { $sd_files_path :
+    file { ['/etc/thanos-query', $sd_files_path]:
         ensure => directory,
         mode   => '0555',
         owner  => 'root',

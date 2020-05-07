@@ -12,13 +12,13 @@
 class profile::thanos::query (
     $sites = lookup('datacenters'),
 ) {
-    $sd_files = '/etc/thanos-stores/*.yml'
+    $sd_files = '/etc/thanos-query/stores/*.yml'
     $sd_files_path = dirname($sd_files)
     $http_port = 10902
 
     class { 'thanos::query':
         http_port => $http_port,
-        sites     => $sites,
+        sd_files  => $sd_files,
     }
 
     $sites.each |String $s| {
