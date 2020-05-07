@@ -33,7 +33,8 @@ class ferm {
     file {'/usr/local/sbin/ferm-status':
         ensure  => file,
         mode    => '0550',
-        group   => 'adm',
+        owner   => 'root',
+        group   => 'root',
         content => file('ferm/ferm_status.py')
     }
     service { 'ferm':
