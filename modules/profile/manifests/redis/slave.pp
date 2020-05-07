@@ -1,5 +1,6 @@
 class profile::redis::slave(
     $settings = hiera('profile::redis::slave::settings'),
+    $instance_overrides = lookup('profile::redis::slave::instance_overrides', {'default_value' => {}}),
     $master = hiera('profile::redis::slave::master'),
     $aof = hiera('profile::redis::slave::aof', false),
     $prometheus_nodes = hiera('prometheus_nodes'),
@@ -20,10 +21,16 @@ class profile::redis::slave(
 
     $slaveof = ipresolve($master, 4)
 
-    profile::redis::instance{ $instances:
-        settings => merge($auth_settings, $settings),
-        slaveof  => $slaveof,
-        aof      => true,
+    $instances.each |String $instance| {
+        if $instance in keys($instance_overrides) {
+            $override = $instance_overrides[$instance]
+        } else {
+            $override = {}
+        }
+        ::profile::redis::instance { $instance:
+            settings => merge($settings, $auth_settings, $override),
+            aof      => $aof,
+        }
     }
 
     # Add monitoring, using nrpe and not remote checks anymore
