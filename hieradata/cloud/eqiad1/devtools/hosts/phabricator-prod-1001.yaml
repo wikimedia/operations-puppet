@@ -7,4 +7,7 @@ phabricator_servers:
 profile::base::ssh_server_settings:
   listen_address: "172.16.0.173"
 
+phabricator::vcs::address::v4: 172.16.0.198
+phabricator::vcs::address::v6: fe80::f816:3eff:feeb:ffdd
+
 profile::tlsproxy::envoy::global_cert_name: "phabricator-prod-1001.devtools.eqiad.wmflabs"
