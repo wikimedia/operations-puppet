@@ -264,6 +264,11 @@ class profile::prometheus::k8s::staging (
         proxy_pass => 'http://localhost:9907/k8s-staging',
     }
 
+    profile::thanos::sidecar { 'k8s-staging':
+        prometheus_port     => 9907,
+        prometheus_instance => 'k8s-staging',
+    }
+
     prometheus::rule { 'rules_k8s-staging.yml':
         instance => 'k8s-staging',
         source   => 'puppet:///modules/profile/prometheus/rules_k8s.yml',

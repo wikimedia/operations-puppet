@@ -264,6 +264,11 @@ class profile::prometheus::k8s (
         proxy_pass => 'http://localhost:9906/k8s',
     }
 
+    profile::thanos::sidecar { 'k8s':
+        prometheus_port     => 9906,
+        prometheus_instance => 'k8s',
+    }
+
     prometheus::rule { 'rules_k8s.yml':
         instance => 'k8s',
         source   => 'puppet:///modules/profile/prometheus/rules_k8s.yml',
