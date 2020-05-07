@@ -16,7 +16,7 @@ class tomcat (
     Boolean                $userdatabase_realm       = false,
     String[1]              $userdatabase_file        = 'tomcat-users.xml',
     String[1]              $logs_dir                 = 'logs',
-    String[1]              $log_pattern              = '%h %l %u %t &quot;%r&quot; %s %b',
+    String[1]              $log_pattern              = 'combined',
     Integer[1]             $default_session_timeout  = 30,
     Boolean                $default_servlet_debug    = false,
     Boolean                $default_servlet_listings = false,
