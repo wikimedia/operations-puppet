@@ -117,6 +117,8 @@ logstash_json_lines_port: 11514
 logstash_logback_port: 11514
 
 "mcrouter::shards":
+  gutter:
+    eqiad: {}
   wancache:
     eqiad:
       shard01:
