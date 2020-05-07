@@ -2313,11 +2313,6 @@ node /^wdqs200[4568]\.codfw\.wmnet$/ {
     role(wdqs::internal)
 }
 
-# production roles to be assigned (T242301)
-node /^wdqs200[7-8]\.codfw\.wmnet$/ {
-    role(insetup)
-}
-
 # Wikidata query service test
 node /^wdqs10(09|10)\.eqiad\.wmnet$/ {
     role(wdqs::test)
