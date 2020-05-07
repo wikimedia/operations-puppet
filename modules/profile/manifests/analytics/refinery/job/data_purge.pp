@@ -381,4 +381,33 @@ class profile::analytics::refinery::job::data_purge (
         user         => 'analytics',
         use_kerberos => $use_kerberos,
     }
+
+    # drop hourly pageview-actors data (3 datasets) used to compute automated agent-type after 90 days
+    kerberos::systemd_timer { 'drop-features-actor-hourly':
+        ensure       => $ensure_timers,
+        description  => 'Drop features.actor_hourly data from Hive and HDFS after 90 days.',
+        command      => "${refinery_path}/bin/refinery-drop-older-than --database='features' --tables='actor_hourly' --base-path='/wmf/data/learning/features/actor/hourly' --path-format='year=(?P<year>[0-9]+)(/month=(?P<month>[0-9]+)(/day=(?P<day>[0-9]+)(/hour=(?P<hour>[0-9]+))?)?)?' --older-than='90' --skip-trash --execute='ef89b092947eb2f203ed01954e2b2d0b'",
+        environment  => $systemd_env,
+        interval     => '*-*-* 00/4:40:00',
+        user         => 'analytics',
+        use_kerberos => $use_kerberos,
+    }
+    kerberos::systemd_timer { 'drop-features-actor-rollup-hourly':
+        ensure       => $ensure_timers,
+        description  => 'Drop features.actor_rollup_hourly data from Hive and HDFS after 90 days.',
+        command      => "${refinery_path}/bin/refinery-drop-older-than --database='features' --tables='actor_rollup_hourly' --base-path='/wmf/data/learning/features/actor/rollup/hourly' --path-format='year=(?P<year>[0-9]+)(/month=(?P<month>[0-9]+)(/day=(?P<day>[0-9]+)(/hour=(?P<hour>[0-9]+))?)?)?' --older-than='90' --skip-trash --execute='bf6a6e00d03fbd7a4b57f778ff0fa35b'",
+        environment  => $systemd_env,
+        interval     => '*-*-* 00/4:45:00',
+        user         => 'analytics',
+        use_kerberos => $use_kerberos,
+    }
+    kerberos::systemd_timer { 'drop-predictions-actor_label-hourly':
+        ensure       => $ensure_timers,
+        description  => 'Drop predictions.actor_label_hourly data from Hive and HDFS after 90 days.',
+        command      => "${refinery_path}/bin/refinery-drop-older-than --database='predictions' --tables='actor_label_hourly' --base-path='/wmf/data/learning/predictions/actor/hourly' --path-format='year=(?P<year>[0-9]+)(/month=(?P<month>[0-9]+)(/day=(?P<day>[0-9]+)(/hour=(?P<hour>[0-9]+))?)?)?' --older-than='90' --skip-trash --execute='ad7bb119301815c3a17a2948ebbbf75a'",
+        environment  => $systemd_env,
+        interval     => '*-*-* 00/4:50:00',
+        user         => 'analytics',
+        use_kerberos => $use_kerberos,
+    }
 }
