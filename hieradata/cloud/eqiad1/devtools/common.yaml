@@ -156,3 +156,18 @@ cache::nodes:
         eqiad:
           - 'gerrit-prod-1001.devtools.eqiad.wmflabs'
           - 'phabricator-prod-1001.devtools.eqiad.wmflabs'
+
+# Puppet master
+
+profile::puppetdb::database::shared_buffers: 768MB
+profile::puppetdb::master: puppetmaster-1001.devtools.eqiad.wmflabs
+profile::puppetmaster::common::puppetdb_host: puppetmaster-1001.devtools.eqiad.wmflabs
+profile::puppetmaster::common::storeconfigs: puppetdb
+puppetdb::password::replication: ''
+puppetdb::password::rw: puppetdb
+puppetmaster: puppetmaster.cloudinfra.wmflabs.org
+puppetmaster::enable_geoip: false
+puppetmaster::servers:
+  puppetmaster-1001.devtools.eqiad.wmflabs:
+  - puppetmaster-1001.devtools.eqiad.wmflabs
+role::puppetmaster::standalone::autosign: 'true'
