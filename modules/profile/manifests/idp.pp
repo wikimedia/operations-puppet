@@ -46,6 +46,11 @@ class profile::idp(
     $groovy_source = 'puppet:///modules/profile/idp/global_principal_attribute_predicate.groovy'
     if external_tomcat {
         class {'tomcat':}
+        $cas_daemon_user = 'tomcat'
+        $cas_manage_user = false
+    } else {
+        $cas_daemon_user = 'cas'
+        $cas_manage_user = true
     }
     class { 'apereo_cas':
         server_name            => 'https://idp.wikimedia.org',
@@ -82,6 +87,8 @@ class profile::idp(
         actuators              => $actuators,
         overlay_branch         => $overlay_branch,
         external_tomcat        => $external_tomcat,
+        daemon_user            => $cas_daemon_user,
+        manage_user            => $cas_manage_user,
     }
     profile::prometheus::jmx_exporter{ "idp_${facts['networking']['hostname']}":
         hostname         => $facts['networking']['hostname'],

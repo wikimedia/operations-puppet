@@ -52,6 +52,7 @@ class apereo_cas (
     String                        $daemon_user                   = 'cas',
     Hash[String, Hash]            $services                      = {},
     Boolean                       $external_tomcat               = false,
+    Boolean                       $manage_user                   = true,
     Stdlib::Unixpath              $tomcat_webapps_dir            = '/var/lib/tomcat9/webapps',
     Optional[String[1]]           $java_opts                     = undef,
 ) {
@@ -76,14 +77,15 @@ class apereo_cas (
     }
 
     $idp_nodes = [$idp_primary, $idp_failover].delete_undef_values
-
-    user{$daemon_user:
-        ensure   => 'present',
-        comment  => 'apereo cas user',
-        home     => $tomcat_basedir,
-        shell    => '/usr/sbin/nologin',
-        password => '!',
-        system   => true,
+    if $manage_user {
+        user{$daemon_user:
+            ensure   => 'present',
+            comment  => 'apereo cas user',
+            home     => $tomcat_basedir,
+            shell    => '/usr/sbin/nologin',
+            password => '!',
+            system   => true,
+        }
     }
     systemd::timer::job { 'idp-u2f-sync':
         ensure             => $ensure_sync_timer,
