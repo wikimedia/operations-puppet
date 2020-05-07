@@ -21,4 +21,9 @@ class role::phabricator {
         include ::profile::waf::apache2::administrative
         include ::lvs::realserver
     }
+
+    # in cloud, use a local db server
+    if $::realm == 'labs' {
+        include ::profile::mariadb::generic_server
+    }
 }
