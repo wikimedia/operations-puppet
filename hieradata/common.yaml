@@ -711,6 +711,8 @@ hadoop_clusters:
     yarn_resourcemanager_zk_state_store_parent_path: '/yarn-rmstore/analytics-test-hadoop'
     yarn_resourcemanager_max_completed_applications: 1000
 
+    # yarn_nodemanager_resource_memory_mb is set using the formula:
+    # total-memory - yarn_nodemanager_os_reserved_memory_mb
     yarn_nodemanager_os_reserved_memory_mb: 12000
 
     hadoop_datanode_opts: "-Xms4096m -Xmx4096m -Djava.net.preferIPv4Stack=false -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=[::]:51010:/etc/prometheus/hdfs_datanode_jmx_exporter.yaml"
@@ -920,14 +922,13 @@ hadoop_clusters:
     # Save 12G for OS and other processes.
     # R720s will have 52G for YARN with room for 26 2G containers.
     # R730dxs will have 116G for YARN with room for 52 2G containers.
-    # The value of profile::hadoop::common::yarn_nodemanager_resource_memory_mb is set in regex.yaml.
 
     # Setting minimum_allocations to 0 to allow Impala to submit small reservation requests.
     # TODO: do we need to set this anymore?  We don't use Impala.
     yarn_scheduler_minimum_allocation_mb: 0
     # Allow a job to request up to the smallest value of yarn_nodemanager_resource_memory_mb
     # in the cluster. The smallest value is 52G on the R720s (analytics1069 and below).
-    yarn_scheduler_maximum_allocation_mb: 53248
+    yarn_scheduler_maximum_allocation_mb: 49152
     yarn_scheduler_minimum_allocation_vcores:   0
     yarn_scheduler_maximum_allocation_vcores:   32
     # Raised for T206943
@@ -935,11 +936,13 @@ hadoop_clusters:
 
     yarn_resourcemanager_zk_state_store_parent_path: '/yarn-rmstore/analytics-hadoop'
 
-    yarn_nodemanager_os_reserved_memory_mb: 12000
+    # yarn_nodemanager_resource_memory_mb is set using the formula:
+    # total-memory - yarn_nodemanager_os_reserved_memory_mb
+    yarn_nodemanager_os_reserved_memory_mb: 16000
 
     hadoop_datanode_opts: "-Xms4096m -Xmx4096m -Djava.net.preferIPv4Stack=false -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=[::]:51010:/etc/prometheus/hdfs_datanode_jmx_exporter.yaml"
     hadoop_journalnode_opts: "-Xms4096m -Xmx4096m -Djava.net.preferIPv4Stack=false -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=[::]:10485:/etc/prometheus/hdfs_journalnode_jmx_exporter.yaml"
-    yarn_nodemanager_opts: "-Xms4096m -Xmx4096m -Djava.net.preferIPv4Stack=false -XX:+UseG1GC -XX:+UseStringDeduplication -XX:MaxGCPauseMillis=400 -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=[::]:8141:/etc/prometheus/yarn_nodemanager_jmx_exporter.yaml"
+    yarn_nodemanager_opts: "-Xms8192m -Xmx8192m -Djava.net.preferIPv4Stack=false -XX:+UseG1GC -XX:+UseStringDeduplication -XX:MaxGCPauseMillis=1000 -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=[::]:8141:/etc/prometheus/yarn_nodemanager_jmx_exporter.yaml"
     hadoop_namenode_opts: "-Xms20480m -Xmx20480m -Djava.net.preferIPv4Stack=false -XX:+UseG1GC -XX:+UseStringDeduplication -XX:MaxGCPauseMillis=1000 -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=[::]:10080:/etc/prometheus/hdfs_namenode_jmx_exporter.yaml"
     yarn_resourcemanager_opts: "-Xms4096m -Xmx4096m -Djava.net.preferIPv4Stack=false -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=[::]:10083:/etc/prometheus/yarn_resourcemanager_jmx_exporter.yaml"
 
