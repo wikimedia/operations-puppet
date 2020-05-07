@@ -2145,15 +2145,8 @@ node 'thorium.eqiad.wmnet' {
 
 # The hosts contain all the tools and libraries to access
 # the Analytics Cluster services.
-node /^stat100[4568]\.eqiad\.wmnet/ {
+node /^stat100[4-8]\.eqiad\.wmnet/ {
     role(statistics::explorer)
-}
-
-# stat1007 will replace stat1005 very soon to allow
-# SRE/Analytics to make the stat1005's GPU to work.
-# T148843
-node 'stat1007.eqiad.wmnet' {
-    role(statistics::private)
 }
 
 # NOTE: new snapshot hosts must also be manually added to

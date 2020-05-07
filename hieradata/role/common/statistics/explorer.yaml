@@ -5,6 +5,11 @@ admin::groups:
   - researchers
   - gpu-testers
   - gpu-users
+  # elasticsearch::analytics creates the analytics-search user and group
+  # that analytics-search-users are allowed to sudo to.  This is used
+  # for deploying files to HDFS.
+  - analytics-search-users
+  - analytics-wmde-users
 cluster: analytics
 
 profile::hadoop::common::hadoop_cluster_name: 'analytics-hadoop'
@@ -59,3 +64,7 @@ profile::kerberos::keytabs::keytabs_metadata:
     owner: 'analytics-privatedata'
     group: 'analytics-privatedata'
     filename: 'analytics-privatedata.keytab'
+  - role: 'analytics-search'
+    owner: 'analytics-search'
+    group: 'analytics-search'
+    filename: 'analytics-search.keytab'
