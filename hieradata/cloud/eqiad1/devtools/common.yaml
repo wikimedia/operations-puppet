@@ -22,7 +22,7 @@ profile::phabricator::main::rate_limits:
 
 profile::phabricator::main::phd_service_ensure: running
 phabricator_phd_taskmasters: 4
-phabricator_domain: phabricator.wmflabs.org
+phabricator_domain: phab.wmflabs.org
 phabricator_altdomain: phab-prod-usercontent.wmflabs.org
 
 profile::envoy::ensure: present
@@ -34,23 +34,13 @@ profile::tlsproxy::envoy::websockets: true
 
 phabricator_cluster_search:
 - hosts:
-  - host: search.devtools.eqiad.wmflabs
-    protocol: https
+  - host: localhost
+    protocol: http
     roles:
       read: true
       write: true
   path: /phabricator
-  port: 9243
-  type: elasticsearch
-  version: 5
-- hosts:
-  - host: search.devtools.codfw.wmflabs
-    protocol: https
-    roles:
-      read: true
-      write: true
-  path: /phabricator
-  port: 9243
+  port: 9200
   type: elasticsearch
   version: 5
 
