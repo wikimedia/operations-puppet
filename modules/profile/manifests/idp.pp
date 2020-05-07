@@ -44,7 +44,7 @@ class profile::idp(
     $jmx_jar = '/usr/share/java/prometheus/jmx_prometheus_javaagent.jar'
     $java_opts = "-javaagent:${jmx_jar}=${facts['networking']['ip']}:${jmx_port}:${jmx_config}"
     $groovy_source = 'puppet:///modules/profile/idp/global_principal_attribute_predicate.groovy'
-    $devices_dir = '/srv/cas/devices/'
+    $devices_dir = '/srv/cas/devices'
     if external_tomcat {
         class {'tomcat':}
         $cas_daemon_user = 'tomcat'
