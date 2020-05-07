@@ -216,9 +216,9 @@ class Rule:
         if self.destination is not None:
             self.destination = ip_network(self.destination)
         if self.dport is not None:
-            self.dport = self._resolve_port(self.dport)
+            self.dport = Rule._resolve_port(self.dport)
         if self.sport is not None:
-            self.sport = self._resolve_port(self.sport)
+            self.sport = Rule._resolve_port(self.sport)
 
 
 class Parser:
