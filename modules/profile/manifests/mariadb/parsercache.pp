@@ -51,8 +51,9 @@ class profile::mariadb::parsercache (
     }
 
     mariadb::monitor_readonly { [ $shard ]:
-        read_only   => false,
-        is_critical => false,
+        read_only     => false,
+        is_critical   => $is_critical,
+        contact_group => $contact_group,
     }
 
     mariadb::monitor_replication { [ $shard ]:
