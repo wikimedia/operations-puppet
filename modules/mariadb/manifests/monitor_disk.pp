@@ -3,7 +3,7 @@
 # TODO: Drop this check and use the common check_disk, with the newly added
 # parameters
 class mariadb::monitor_disk(
-    $is_critical   = true,
+    $is_critical   = false,
     $contact_group = 'admins',
     $pct_warning   = 10,
     $pct_critical  = 5,

@@ -1,7 +1,7 @@
 # TODO: Revisit the is_critical part. We probably want pages for DB problems for
 # at least a group of people
 class mariadb::monitor_process(
-    $is_critical    = true,
+    $is_critical    = false,
     $contact_group  = 'admins',
     $process_name   = 'mysqld',
     $process_count  = 1,

@@ -19,7 +19,6 @@ class role::mariadb::misc(
     }
 
     include ::profile::standard
-    include ::profile::mariadb::monitor
     include ::passwords::misc::scripts
     include ::profile::base::firewall
     ::profile::mariadb::ferm { 'misc': }
@@ -57,7 +56,15 @@ class role::mariadb::misc(
         datacenter => $::site,
         enabled    => $master,
     }
+    class { 'mariadb::monitor_disk':
+        is_critical   => $master,
+        contact_group => 'admins',
+    }
 
+    class { 'mariadb::monitor_process':
+        is_critical   => $master,
+        contact_group => 'admins',
+    }
     mariadb::monitor_readonly { [ $shard ]:
         read_only     => $read_only,
         is_critical   => false,

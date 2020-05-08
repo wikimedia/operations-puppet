@@ -21,7 +21,6 @@ class role::mariadb::misc::phabricator(
         false => 'slave',
     }
 
-    include ::profile::mariadb::monitor
     include ::passwords::misc::scripts
     include ::profile::base::firewall
     ::profile::mariadb::ferm { 'phabricator': }
@@ -86,12 +85,20 @@ class role::mariadb::misc::phabricator(
         enabled    => $master,
     }
 
-    unless $master {
-        mariadb::monitor_replication { [ $shard ]:
-            is_critical   => false,
-            contact_group => 'admins',
-            multisource   => false,
-        }
+    class { 'mariadb::monitor_disk':
+        is_critical   => $master,
+        contact_group => 'admins',
+    }
+
+    class { 'mariadb::monitor_process':
+        is_critical   => $master,
+        contact_group => 'admins',
+    }
+
+    mariadb::monitor_replication { [ $shard ]:
+        is_critical   => false,
+        contact_group => 'admins',
+        multisource   => false,
     }
 
     mariadb::monitor_readonly { [ $shard ]:

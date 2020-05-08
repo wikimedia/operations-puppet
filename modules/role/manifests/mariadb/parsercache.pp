@@ -10,5 +10,4 @@ class role::mariadb::parsercache {
     ::profile::mariadb::ferm { 'parsercache': }
 
     include profile::mariadb::parsercache
-    include ::profile::mariadb::monitor
 }

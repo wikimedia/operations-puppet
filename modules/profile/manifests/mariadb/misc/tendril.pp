@@ -5,13 +5,21 @@ class profile::mariadb::misc::tendril {
 
     require_package('libodbc1') # hack to fix CONNECT dependency
 
-    include ::profile::mariadb::monitor::dba
     include passwords::misc::scripts
 
     class { 'profile::mariadb::monitor::prometheus':
         mysql_group => 'misc',
         mysql_shard => 'tendril',
         mysql_role  => 'standalone', # FIXME
+    }
+    class { 'mariadb::monitor_disk':
+        is_critical   => false,
+        contact_group => 'admins',
+    }
+
+    class { 'mariadb::monitor_process':
+        is_critical   => false,
+        contact_group => 'admins',
     }
 
     mariadb::monitor_readonly { [ 'tendril' ]:

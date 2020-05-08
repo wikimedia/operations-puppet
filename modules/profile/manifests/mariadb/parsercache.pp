@@ -44,18 +44,28 @@ class profile::mariadb::parsercache (
         datacenter => $::site,
         enabled    => true,
     }
-    $is_critical = ($mw_primary == $::site)
+    $is_on_primary_dc = ($mw_primary == $::site)
     $contact_group = 'admins'
+
+    class { 'mariadb::monitor_disk':
+        is_critical   => $is_on_primary_dc,
+        contact_group => $contact_group,
+    }
+
+    class { 'mariadb::monitor_process':
+        is_critical   => $is_on_primary_dc,
+        contact_group => $contact_group,
+    }
 
     mariadb::monitor_readonly { [ $shard ]:
         read_only     => false,
-        is_critical   => $is_critical,
+        is_critical   => $is_on_primary_dc,
         contact_group => $contact_group,
     }
 
     mariadb::monitor_replication { [ $shard ]:
       multisource   => false,
-      is_critical   => $is_critical,
+      is_critical   => $is_on_primary_dc,
       contact_group => $contact_group,
       socket        => '/run/mysqld/mysqld.sock',
     }

@@ -21,6 +21,16 @@ class profile::mariadb::misc::eventlogging::database (
 
     class { 'passwords::misc::scripts': }
 
+    class { 'mariadb::monitor_disk':
+        is_critical   => $master,
+        contact_group => 'admins',
+    }
+
+    class { 'mariadb::monitor_process':
+        is_critical   => $master,
+        contact_group => 'admins',
+    }
+
     class { 'profile::mariadb::monitor::prometheus':
         mysql_group => 'misc',
         mysql_shard => $shard,
