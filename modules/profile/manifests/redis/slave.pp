@@ -29,6 +29,7 @@ class profile::redis::slave(
         }
         ::profile::redis::instance { $instance:
             settings => merge($settings, $auth_settings, $override),
+            slaveof  => $slaveof,
             aof      => $aof,
         }
     }
