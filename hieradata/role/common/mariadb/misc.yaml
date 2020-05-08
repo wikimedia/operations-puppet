@@ -1,1 +1,6 @@
 monitor_screens: false
+
+profile::openstack::eqiad1::openstack_controllers:
+  - cloudcontrol1003.wikimedia.org
+  - cloudcontrol1004.wikimedia.org
+  - cloudcontrol1005.wikimedia.org
