@@ -19,8 +19,7 @@ profile::openstack::eqiad1::horizon_version: 'train'
 #  rather, that should happen via the (singular but HA) keystone_api_fqdn below.
 #
 profile::openstack::eqiad1::openstack_controllers:
-  - cloudcontrol1003.wikimedia.org
-  - cloudcontrol1004.wikimedia.org
+  - cloudcontrol1005.wikimedia.org
 
 # The public service name for the keystone API
 #
@@ -34,7 +33,7 @@ profile::openstack::eqiad1::keystone_api_fqdn: 'openstack.eqiad1.wikimediacloud.
 #  we need to be aware of which glance server is the primary image store. Once
 #  images are moved to ceph we can remove this setting and the openstack_controllers
 #  will be true, identical peers.
-profile::openstack::eqiad1::primary_glance_image_store: cloudcontrol1003.wikimedia.org
+profile::openstack::eqiad1::primary_glance_image_store: cloudcontrol1005.wikimedia.org
 
 # List of designate hosts (generally labservicesxxxx).
 profile::openstack::eqiad1::designate_hosts:
