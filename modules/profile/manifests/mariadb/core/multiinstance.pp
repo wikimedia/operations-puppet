@@ -18,10 +18,7 @@ disabled, use mariadb@<instance_name> instead'; exit 1\"",
     }
 
     $is_critical = ($::site == mediawiki::state('primary_dc'))
-    $contact_group = $is_critical ? {
-        true  => 'dba',
-        false => 'admins',
-    }
+    $contact_group = 'admins'
     $basedir = '/opt/wmf-mariadb101'
     # Read only forced on also for the masters of the primary datacenter
     class { 'mariadb::config':

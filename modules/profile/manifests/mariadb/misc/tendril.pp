@@ -17,7 +17,7 @@ class profile::mariadb::misc::tendril {
     mariadb::monitor_readonly { [ 'tendril' ]:
         read_only     => false,
         is_critical   => false,
-        contact_group => 'dba',
+        contact_group => 'admins',
     }
 
     if os_version('debian >= buster') {

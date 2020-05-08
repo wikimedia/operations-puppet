@@ -30,7 +30,7 @@ class profile::mariadb::misc::eventlogging::database (
     mariadb::monitor_readonly { [ $shard ]:
         read_only     => true,
         is_critical   => false,
-        contact_group => 'dba',
+        contact_group => 'admins',
     }
 
     class { 'mariadb::packages_wmf': }

@@ -74,10 +74,7 @@ class role::mariadb::core {
 
     $is_on_primary_dc = ($mw_primary == $::site)
     $is_master = ($mysql_role == 'master')
-    $contact_group = $is_on_primary_dc ? {
-        true  => 'dba',
-        false => 'admins',
-    }
+    $contact_group = 'admins'
 
     mariadb::monitor_replication { [ $shard ]:
         multisource   => false,

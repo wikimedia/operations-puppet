@@ -4,7 +4,7 @@
 # parameters
 class mariadb::monitor_disk(
     $is_critical   = true,
-    $contact_group = 'dba',
+    $contact_group = 'admins',
     $pct_warning   = 10,
     $pct_critical  = 5,
     ) {

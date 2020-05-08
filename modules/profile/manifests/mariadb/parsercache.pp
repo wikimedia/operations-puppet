@@ -45,10 +45,7 @@ class profile::mariadb::parsercache (
         enabled    => true,
     }
     $is_critical = ($mw_primary == $::site)
-    $contact_group = $is_critical ? {
-        true  => 'dba',
-        false => 'admins',
-    }
+    $contact_group = 'admins'
 
     mariadb::monitor_readonly { [ $shard ]:
         read_only     => false,

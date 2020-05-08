@@ -61,11 +61,11 @@ class role::mariadb::misc(
     mariadb::monitor_readonly { [ $shard ]:
         read_only     => $read_only,
         is_critical   => false,
-        contact_group => 'dba',
+        contact_group => 'admins',
     }
     mariadb::monitor_replication { [ $shard ]:
         is_critical   => false,
-        contact_group => 'dba',
+        contact_group => 'admins',
     }
 }
 

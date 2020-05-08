@@ -2,7 +2,7 @@
 # at least a group of people
 class mariadb::monitor_process(
     $is_critical    = true,
-    $contact_group  = 'dba',
+    $contact_group  = 'admins',
     $process_name   = 'mysqld',
     $process_count  = 1,
     ) {
