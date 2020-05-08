@@ -1,7 +1,1 @@
 profile::cache::kafka::webrequest::atskafka_enabled: true
-profile::trafficserver::tls::network_settings:
-    connections_throttle: 0
-    sock_option_flag_in: 0xd
-    default_inactivity_timeout: 300
-    max_connections_in: 90000
-    max_connections_active_in: 30000
