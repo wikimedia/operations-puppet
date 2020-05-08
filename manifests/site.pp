@@ -1089,11 +1089,6 @@ node 'clouddb2001-dev.codfw.wmnet' {
     role(wmcs::openstack::codfw1dev::db)
 }
 
-# new cloudcontrol host T247471
-node 'cloudcontrol1005.wikimedia.org' {
-    role(insetup)
-}
-
 node 'cloudcontrol2003-dev.wikimedia.org' {
     role(wmcs::openstack::codfw1dev::control)
 }
@@ -1249,7 +1244,7 @@ node /cloudmetrics100[1-2]\.eqiad\.wmnet/ {
     role(wmcs::monitoring)
 }
 
-node /^cloudcontrol100[3-4]\.wikimedia\.org$/ {
+node /^cloudcontrol100[3-5]\.wikimedia\.org$/ {
     role(wmcs::openstack::eqiad1::control)
 }
 
