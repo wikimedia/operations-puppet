@@ -2177,7 +2177,7 @@ node 'theemin.codfw.wmnet' {
 }
 
 node /^thanos-fe200[123]\.codfw\.wmnet/ {
-    role(role::insetup)
+    role(insetup)
 }
 
 # Thumbor servers for MediaWiki image scaling
