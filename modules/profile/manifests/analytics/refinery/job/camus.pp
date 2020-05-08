@@ -198,7 +198,7 @@ class profile::analytics::refinery::job::camus(
             'kafka.whitelist.topics'          => '(eqiad|codfw)\.(mediawiki\.(api-request|cirrussearch-request)|.+\.sparql-query)',
             'camus.message.timestamp.field'   => 'meta.dt',
             # Set this to at least the number of topic/partitions you will be importing.
-            'mapred.map.tasks'                => '32',
+            'mapred.map.tasks'                => '60',
             # This camus runs every 15 minutes, so limiting it to 14 should keep runs fresh.
             'kafka.max.pull.minutes.per.task' => '14',
         },
