@@ -303,10 +303,8 @@ customviews:
     view: >
       select ar_id, ar_namespace, ar_title, NULL as ar_text, NULL as ar_comment_id,
       if(ar_deleted&4,0,ar_actor) as ar_actor, ar_timestamp, ar_minor_edit, NULL as ar_flags, ar_rev_id,
-      if(ar_deleted&1,null,ar_text_id) as ar_text_id, ar_deleted, if(ar_deleted&1,null,ar_len) as ar_len,
-      ar_page_id, ar_parent_id, if(ar_deleted&1,null,ar_sha1) as ar_sha1,
-      if(ar_deleted&1,null,ar_content_model) as ar_content_model,
-      if(ar_deleted&1,null,ar_content_format) as ar_content_format
+      ar_deleted, if(ar_deleted&1,null,ar_len) as ar_len,
+      ar_page_id, ar_parent_id, if(ar_deleted&1,null,ar_sha1) as ar_sha1
   archive_compat:
     source: archive
     view: >
@@ -314,14 +312,11 @@ customviews:
       case when ar_deleted&4 != 0 then null else COALESCE( actor_user, 0 ) END AS ar_user,
       case when ar_deleted&4 != 0 then null else actor_name END AS ar_user_text,
       if(ar_deleted&4,0,ar_actor) as ar_actor, ar_timestamp, ar_minor_edit, NULL as ar_flags, ar_rev_id,
-      case when ar_deleted&1 != 0 then null when content_id is NULL then ar_text_id
-      else content_id end as ar_text_id,
+      if(ar_deleted&1,null,content_id) as ar_text_id,
       ar_deleted, if(ar_deleted&1,null,ar_len) as ar_len,
       ar_page_id, ar_parent_id, if(ar_deleted&1,null,ar_sha1) as ar_sha1,
-      case when ar_deleted&1 != 0 then null when model_name is NULL then ar_content_model
-      else model_name end as ar_content_model,
-      case when ar_deleted&1 != 0 then null when model_name IS NULL then ar_content_format
-      else NULL end as ar_content_format
+      if(ar_deleted&1,null,model_name) as ar_content_model,
+      NULL as ar_content_format
     join:
       - table:
         - table: slots
@@ -341,10 +336,9 @@ customviews:
     source: archive
     view: >
       select ar_id, ar_namespace, ar_title, NULL as ar_text, NULL as ar_comment_id,
-      ar_actor, ar_timestamp, ar_minor_edit, NULL as ar_flags, ar_rev_id, if(ar_deleted&1,null,ar_text_id)
-      as ar_text_id, ar_deleted, if(ar_deleted&1,null,ar_len) as ar_len, ar_page_id, ar_parent_id,
-      if(ar_deleted&1,null,ar_sha1) as ar_sha1, if(ar_deleted&1,null,ar_content_model) as ar_content_model,
-      if(ar_deleted&1,null,ar_content_format) as ar_content_format
+      ar_actor, ar_timestamp, ar_minor_edit, NULL as ar_flags, ar_rev_id,
+      ar_deleted, if(ar_deleted&1,null,ar_len) as ar_len, ar_page_id, ar_parent_id,
+      if(ar_deleted&1,null,ar_sha1) as ar_sha1
     where: (ar_deleted&4)=0
   comment:
     source: comment
@@ -720,11 +714,11 @@ customviews:
   revision:
     source: revision
     view: >
-      select rev_id, rev_page, if(rev_deleted&1,null,rev_text_id) as rev_text_id,
+      select rev_id, rev_page,
       if(rev_deleted&2,0,coalesce(revcomment_comment_id,0)) as rev_comment_id,
       if(rev_deleted&4,0,coalesce(revactor_actor,0)) as rev_actor,
       rev_timestamp, rev_minor_edit, rev_deleted, rev_len, rev_parent_id,
-      if(rev_deleted&1,null,rev_sha1) as rev_sha1, rev_content_model, rev_content_format
+      if(rev_deleted&1,null,rev_sha1) as rev_sha1
     join:
       - table: revision_comment_temp
         condition: on revcomment_rev = rev_id
@@ -734,17 +728,15 @@ customviews:
     source: revision
     view: >
       select rev_id, rev_page,
-      case when rev_deleted&1 != 0 then null when content_id is NULL
-      then rev_text_id else content_id end as rev_text_id,
+      if(rev_deleted&1,null,content_id) as rev_text_id,
       if(rev_deleted&2,0,coalesce(revcomment_comment_id,0)) as rev_comment_id,
       if(rev_deleted&2,null,comment_text) as rev_comment,
       case when rev_deleted&4 != 0 then null else COALESCE( actor_user, 0 ) END AS rev_user,
       case when rev_deleted&4 != 0 then null else actor_name END AS rev_user_text,
       if(rev_deleted&4,0,coalesce(revactor_actor,0)) as rev_actor,
       rev_timestamp, rev_minor_edit, rev_deleted, rev_len, rev_parent_id,
-      if(rev_deleted&1,null,rev_sha1) as rev_sha1, if(model_name, model_name,
-      rev_content_model) as rev_content_model, if(model_name,NULL,rev_content_format)
-      as rev_content_format
+      if(rev_deleted&1,null,rev_sha1) as rev_sha1, model_name as rev_content_model,
+      NULL as rev_content_format
     join:
       - table: revision_comment_temp
         condition: on revcomment_rev = rev_id
@@ -771,12 +763,11 @@ customviews:
     # Use aliases revactor_page as rev_page, revactor_timestamp as rev_timestamp so queries against
     # this view can take advantage of indexes on revision_actor_temp
     view: >
-      select rev_id, revactor_page as rev_page, if(rev_deleted&1,null,rev_text_id) as rev_text_id,
+      select rev_id, revactor_page as rev_page,
       if(rev_deleted&2,0,coalesce(revcomment_comment_id,0)) as rev_comment_id,
       revactor_actor as rev_actor,
       revactor_timestamp as rev_timestamp, rev_minor_edit, rev_deleted,
-      rev_len, rev_parent_id, if(rev_deleted&1,null,rev_sha1) as rev_sha1,
-      rev_content_model, rev_content_format
+      rev_len, rev_parent_id, if(rev_deleted&1,null,rev_sha1) as rev_sha1
     where: (rev_deleted&4)=0
     join:
       - table: revision_comment_temp
