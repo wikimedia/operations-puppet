@@ -9,12 +9,19 @@
 # [*prometheus_instance*] The name of the Prometheus instance to sidecar
 # [*http_port*] The port to listen on for HTTP
 # [*grpc_port*] The port to listen on for gRPC
+# [*objstore_account*] The account to use to access object storage
+# [*objstore_password*] The password to access object storage
+# [*min_time*] Start of time range limit to serve. Can be RFC3339-style
+#              absolute time or relative to now (e.g. -1d)
 
 define thanos::sidecar (
     Stdlib::Port::Unprivileged $prometheus_port,
     String $prometheus_instance,
     Stdlib::Port::Unprivileged $http_port,
     Stdlib::Port::Unprivileged $grpc_port,
+    Optional[Hash[String, String]] $objstore_account = undef,
+    Optional[String] $objstore_password = undef,
+    Optional[String] $min_time = undef,
 ) {
     require_package('thanos')
 
@@ -24,6 +31,33 @@ define thanos::sidecar (
     $prometheus_url = "http://localhost:${prometheus_port}/${prometheus_instance}"
     $service_name = "thanos-sidecar@${title}"
     $tsdb_path = "${prometheus_base}/metrics"
+    $objstore_config_file = "/etc/${service_name}/objstore.yaml"
+
+    file { "/etc/${service_name}":
+        ensure => directory,
+        mode   => '0555',
+        owner  => 'root',
+        group  => 'root',
+    }
+
+    # Clean up credentials as needed
+    $objstore_config_state = $objstore_account ? {
+        undef   => absent,
+        default => present,
+    }
+    $objstore_content = $objstore_account ? {
+        undef   => '',
+        default => template('thanos/objstore.yaml.erb'),
+    }
+
+    file { $objstore_config_file:
+        ensure    => $objstore_config_state,
+        mode      => '0440',
+        owner     => 'thanos',
+        group     => 'root',
+        show_diff => false,
+        content   => $objstore_content,
+    }
 
     systemd::service { $service_name:
         ensure         => present,

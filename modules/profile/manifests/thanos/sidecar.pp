@@ -11,15 +11,27 @@
 define profile::thanos::sidecar (
     Stdlib::Port::Unprivileged $prometheus_port,
     String $prometheus_instance,
+    Boolean $enable_upload = false,
 ) {
     $http_port = $prometheus_port + 10000
     $grpc_port = $prometheus_port + 20000
+
+    # XXX refactor to move the lookup() inside a class instead
+    $objstore_account = lookup('profile::thanos::objstore_account') # lint:ignore:wmf_styleguide
+    $objstore_password = lookup('profile::thanos::objstore_password') # lint:ignore:wmf_styleguide
 
     thanos::sidecar { $title :
         prometheus_port     => $prometheus_port,
         prometheus_instance => $prometheus_instance,
         http_port           => $http_port,
         grpc_port           => $grpc_port,
+    }
+
+    if $enable_upload {
+        Thanos::Sidecar[$title] {
+            objstore_account  => $objstore_account,
+            objstore_password => $objstore_password,
+        }
     }
 
     ferm::service { "thanos_sidecar_${title}":
