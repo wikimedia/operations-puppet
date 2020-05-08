@@ -1,5 +1,7 @@
 class profile::ores::web(
     $redis_host = hiera('profile::ores::web::redis_host'),
+    $redis_queue_port = lookup('profile::ores::web::redis_queue_port', {'default_value' => 6379}),
+    $redis_cache_port = lookup('profile::ores::web::redis_cache_port', {'default_value' => 6380}),
     $redis_password = hiera('profile::ores::web::redis_password', undef),
     $web_workers = hiera('profile::ores::web::workers'),
     $celery_workers = hiera('profile::ores::celery::workers'),
@@ -25,6 +27,8 @@ class profile::ores::web(
     class { '::ores::web':
         redis_password       => $redis_password,
         redis_host           => $redis_host,
+        redis_queue_port     => $redis_queue_port,
+        redis_cache_port     => $redis_cache_port,
         web_workers          => $web_workers,
         celery_workers       => $celery_workers,
         celery_queue_maxsize => $celery_queue_maxsize,
