@@ -19,8 +19,16 @@
 #   The connection inactivity timeout (in seconds) to apply when Traffic Server detects
 #   that no inactivity timeout has been applied by the HTTP state machine.
 #
+# [*max_connections_in*]
+#   Maximum number of incoming connections (ATS defaults to 30000)
+#
+# [*max_connections_active_in*]
+#   Maximum number of active connections (ATS defaults to 10000)
+#
 type Trafficserver::Network_settings = Struct[{
     'connections_throttle'       => Integer[0],
     'sock_option_flag_in'        => Integer[0, 0xF],
     'default_inactivity_timeout' => Integer[0],
+    'max_connections_in'         => Integer[0],
+    'max_connections_active_in'  => Integer[0],
 }]

@@ -26,6 +26,8 @@ CONFIG proxy.config.res_track_memory INT <%= @res_track_memory %>
 CONFIG proxy.config.net.connections_throttle INT <%= @network_settings['connections_throttle'] %>
 CONFIG proxy.config.net.sock_option_flag_in INT <%= @network_settings['sock_option_flag_in'] %>
 CONFIG proxy.config.net.default_inactivity_timeout INT <%= @network_settings['default_inactivity_timeout'] %>
+CONFIG proxy.config.net.max_connections_in INT <%= @network_settings['max_connections_in'] %>
+CONFIG proxy.config.net.max_connections_active_in INT <%= @network_settings['max_connections_active_in'] %>
 <% end -%>
 <% if @h2_settings -%>
 # HTTP/2 settings
