@@ -1179,6 +1179,10 @@ node /^kafka-jumbo100[1-6]\.eqiad\.wmnet$/ {
     role(kafka::jumbo::broker)
 }
 
+# new kafka-jumbo nodes insetup (T244506)
+node /^kafka-jumbo100[7-9]\.eqiad\.wmnet$/ {
+    role(insetup)
+}
 
 # Kafka Burrow Consumer lag monitoring (T187901, T187805)
 node /kafkamon[12]001\.(codfw|eqiad)\.wmnet/ {
