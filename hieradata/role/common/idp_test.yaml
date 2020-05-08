@@ -101,6 +101,7 @@ profile::idp::max_session_length: 604800
 profile::idp::actuators:
   - prometheus
   - sso
+  - ssoSessions
 profile::idp::overlay_branch: staging
 profile::idp::idp_primary: idp-test1001.wikimedia.org
 profile::idp::idp_failover: idp-test2001.wikimedia.org
