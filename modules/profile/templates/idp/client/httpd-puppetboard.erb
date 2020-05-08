@@ -8,7 +8,7 @@
     ServerAdmin noc@wikimedia.org
 
     <%- @cas_settings.each_pair do |key, setting| -%>
-      <%- unless setting.nil? -%>
+      <%- unless setting.nil? or setting == :undef -%>
     <%= key %> <%= setting %>
       <%-end -%>
     <%-end -%>

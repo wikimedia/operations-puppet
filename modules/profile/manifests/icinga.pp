@@ -8,7 +8,6 @@
 class profile::icinga(
     Hash[String, Hash]            $monitoring_groups     = lookup('monitoring::groups'),
     Hash[String, String]          $ldap_config           = lookup('ldap', {'merge' => 'hash'}),
-    Hash[String, Stdlib::HTTPUrl] $cas                   = lookup('apereo_cas'),
     String                        $active_host           = lookup('profile::icinga::active_host'),
     Array[String]                 $partners              = lookup('profile::icinga::partners'),
     Enum['stopped', 'running']    $ensure_service        = lookup('profile::icinga::ensure_service'),

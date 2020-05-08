@@ -15,9 +15,10 @@
 # @param protected_uri The protected URI endpoint which is validated if "enable_monitor" is set.  default: '/'
 # @param required_groups An array of LDAP groups allowed to access this resource
 # @param acme_cheif_cert the name of the acme chief certificate to use
-# @param proxied_as This URL represents the URL that end users may see in the event that Apache server is proxied
+# @param proxied_as_https if true set the proxied_as address to https://${vhost}/
+# @param staging if true also configure the staging  vhost as staging-${vhost}
 class profile::idp::client::httpd (
-    Hash[String, Stdlib::HTTPUrl] $apereo_cas       = lookup('apereo_cas', Hash, 'hash'),
+    Apereo_cas::Urls              $apereo_cas       = lookup('apereo_cas', Apereo_cas::Urls, 'deep'),
     String[1]                     $vhost_content    = lookup('profile::idp::client::httpd::vhost_content'),
     Stdlib::Host                  $virtual_host     = lookup('profile::idp::client::httpd::virtual_host'),
     Stdlib::Unixpath              $document_root    = lookup('profile::idp::client::httpd::document_root'),
@@ -32,10 +33,10 @@ class profile::idp::client::httpd (
     Boolean                       $validate_saml    = lookup('profile::idp::client::httpd::validate_saml'),
     Boolean                       $enable_monitor   = lookup('profile::idp::client::httpd::enable_monitor'),
     String[1]                     $protected_uri    = lookup('profile::idp::client::httpd::protected_uri'),
+    Boolean                       $proxied_as_https = lookup('profile::idp::client::httpd::proxied_as_https'),
+    Boolean                       $staging          = lookup('profile::idp::client::httpd::staging'),
     Optional[Array[String[1]]]    $required_groups  = lookup('profile::idp::client::httpd::required_groups'),
     Optional[String[1]]           $acme_chief_cert  = lookup('profile::idp::client::httpd::acme_chief_cert',
-                                                            {'default_value' => undef}),
-    Optional[String[1]]           $proxied_as       = lookup('profile::idp::client::httpd::proxied_as',
                                                             {'default_value' => undef}),
 ) {
     ensure_packages(['libapache2-mod-auth-cas'])
@@ -44,18 +45,19 @@ class profile::idp::client::httpd (
         '/'     => $cookie_path,
         default => "${cookie_path}/",
     }
+    $vhosts = $staging ? {
+        true => [$virtual_host, "staging-${virtual_host}"],
+        default => [$virtual_host],
+    }
     $ssl_settings = ssl_ciphersuite('apache', 'strong', true)
-    $cas_settings = {
+    $cas_base_settings = {
         'CASVersion'         => 2,
         'CASCertificatePath' => $certificate_path,
         'CASCookiePath'      => $_cookie_path,
-        'CASLoginURL'        => $apereo_cas['login_url'],
-        'CASValidateURL'     => $apereo_cas['validate_url'],
         'CASAttributePrefix' => $attribute_prefix,
-        'CASDebug'           => $debug ? { true => 'On', default => 'Off' },
         'CASValidateSAML'    => $validate_saml ? { true => 'On', default => 'Off' },
-        'CASRootProxiedAs'   => $proxied_as,
     }
+
     $cas_base_auth = {
         'AuthType'       => 'CAS',
         'CASAuthNHeader' => $authn_header,
@@ -78,15 +80,38 @@ class profile::idp::client::httpd (
         owner  => $apache_owner,
         group  => $apache_group,
     }
-    httpd::site {$virtual_host:
-        content  => template($vhost_content),
-        priority => $priority,
-    }
-    if $enable_monitor {
-        monitoring::service {"https-${virtual_host}-unauthorized":
-            description   => "${virtual_host} requires authentication",
-            check_command => "check_sso_redirect!${virtual_host}!${protected_uri}",
-            notes_url     => 'https://wikitech.wikimedia.org/wiki/CAS-SSO/Administration',
+    $vhosts.each |String $vhost| {
+        if $vhost =~ '^/staging' {
+            # always enable debug on staging
+            $_debug = 'On'
+            $login_url = $apereo_cas['staging']['login_url']
+            $validate_url = $apereo_cas['staging']['validate_url']
+        } else {
+            $_debug = $debug ? { true => 'On', default => 'Off' }
+            $login_url = $apereo_cas['production']['login_url']
+            $validate_url = $apereo_cas['production']['validate_url']
+
+        }
+        $proxied_as = $proxied_as_https ? {
+            true    => "https://${vhost}/",
+            default => undef,
+        }
+        $cas_settings = merge({
+            'CASLoginURL'        => $login_url,
+            'CASValidateURL'     => $validate_url,
+            'CASDebug'           => $_debug,
+            'CASRootProxiedAs'   => $proxied_as,
+        }, $cas_base_settings)
+        httpd::site {$virtual_host:
+            content  => template($vhost_content),
+            priority => $priority,
+        }
+        if $enable_monitor {
+            monitoring::service {"https-${virtual_host}-unauthorized":
+                description   => "${virtual_host} requires authentication",
+                check_command => "check_sso_redirect!${virtual_host}!${protected_uri}",
+                notes_url     => 'https://wikitech.wikimedia.org/wiki/CAS-SSO/Administration',
+            }
         }
     }
 }
