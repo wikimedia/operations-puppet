@@ -23,7 +23,7 @@
 #
 define logstash::input::tcp(
     Wmflib::Ensure   $ensure     = present,
-    String           $type       = 'tcp',
+    String           $type       = $title,
     String           $codec      = 'plain',
     Integer          $port       = 5229,
     Integer          $priority   = 10,
