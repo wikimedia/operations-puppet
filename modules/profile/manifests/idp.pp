@@ -45,6 +45,7 @@ class profile::idp(
     $java_opts = "-javaagent:${jmx_jar}=${facts['networking']['ip']}:${jmx_port}:${jmx_config}"
     $groovy_source = 'puppet:///modules/profile/idp/global_principal_attribute_predicate.groovy'
     $devices_dir = '/srv/cas/devices'
+    $log_dir = '/var/log/cas'
     if external_tomcat {
         class {'tomcat':}
         $cas_daemon_user = 'tomcat'
@@ -52,7 +53,7 @@ class profile::idp(
         systemd::unit{'tomcat9':
             override => true,
             restart  => true,
-            content  => "[Service]\nReadWritePaths=${devices_dir}\n",
+            content  => "[Service]\nReadWritePaths=${devices_dir}\nReadWritePaths=${log_dir}\n",
         }
     } else {
         $cas_daemon_user = 'cas'
@@ -96,6 +97,7 @@ class profile::idp(
         external_tomcat        => $external_tomcat,
         daemon_user            => $cas_daemon_user,
         manage_user            => $cas_manage_user,
+        log_dir                => $log_dir,
     }
     profile::prometheus::jmx_exporter{ "idp_${facts['networking']['hostname']}":
         hostname         => $facts['networking']['hostname'],
