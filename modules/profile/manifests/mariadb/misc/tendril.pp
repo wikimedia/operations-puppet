@@ -13,6 +13,13 @@ class profile::mariadb::misc::tendril {
         mysql_shard => 'tendril',
         mysql_role  => 'standalone', # FIXME
     }
+
+    mariadb::monitor_readonly { [ 'tendril' ]:
+        read_only     => false,
+        is_critical   => false,
+        contact_group => 'dba',
+    }
+
     if os_version('debian >= buster') {
         $basedir = '/opt/wmf-mariadb104'
     } else {

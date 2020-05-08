@@ -27,6 +27,12 @@ class profile::mariadb::misc::eventlogging::database (
         mysql_role  => $mysql_role,
     }
 
+    mariadb::monitor_readonly { [ $shard ]:
+        read_only     => true,
+        is_critical   => false,
+        contact_group => 'dba',
+    }
+
     class { 'mariadb::packages_wmf': }
     require_package ('mydumper')
 

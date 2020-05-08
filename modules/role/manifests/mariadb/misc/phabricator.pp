@@ -93,5 +93,11 @@ class role::mariadb::misc::phabricator(
             multisource   => false,
         }
     }
+
+    mariadb::monitor_readonly { [ $shard ]:
+        read_only     => $read_only,
+        is_critical   => false,
+        contact_group => 'dba',
+    }
 }
 
