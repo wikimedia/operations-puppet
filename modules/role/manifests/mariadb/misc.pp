@@ -63,5 +63,9 @@ class role::mariadb::misc(
         is_critical   => false,
         contact_group => 'dba',
     }
+    mariadb::monitor_replication { [ $shard ]:
+        is_critical   => false,
+        contact_group => 'dba',
+    }
 }
 
