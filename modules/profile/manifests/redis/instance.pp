@@ -23,7 +23,7 @@ define profile::redis::instance(
     }
 
     ::redis::instance { $title:
-        settings => merge($base_settings, $settings, $aof_settings)
+        settings => merge($base_settings, $aof_settings, $settings)
     }
 
 }
