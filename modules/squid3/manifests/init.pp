@@ -1,11 +1,11 @@
 # Class: squid3
 #
-# This class installs squid3 and configures it
+# This class installs Squid and configures it
 #
 # Parameters:
 #
 # Actions:
-#       Install squid3 and configure it as a caching forward proxy
+#       Install Squid and configure it as a caching forward proxy
 #
 # Requires:
 #
@@ -20,37 +20,32 @@ class squid3(
     $config_source  = undef,
 ) {
 
-    if os_version('debian >= stretch') {
-        $squid = 'squid'
-    } else {
-        $squid = 'squid3'
-    }
-    file { "/etc/${squid}/squid.conf":
+    file { '/etc/squid/squid.conf':
         ensure  => $ensure,
         mode    => '0444',
         owner   => 'root',
         group   => 'root',
         source  => $config_source,
         content => $config_content,
-        require => Package[$squid],
+        require => Package['squid'],
     }
 
-    logrotate::conf { $squid:
+    logrotate::conf { 'squid':
         ensure => $ensure,
-        source => "puppet:///modules/squid3/${squid}-logrotate",
+        source => 'puppet:///modules/squid3/squid-logrotate',
     }
 
-    package { $squid:
+    package { 'squid':
         ensure => $ensure,
     }
 
-    service { $squid:
+    service { 'squid':
         ensure    => ensure_service($ensure),
-        require   => File["/etc/${squid}/squid.conf"],
-        subscribe => File["/etc/${squid}/squid.conf"],
+        require   => File['/etc/squid/squid.conf'],
+        subscribe => File['/etc/squid/squid.conf'],
     }
 
-    systemd::unit { $squid:
+    systemd::unit { 'squid':
         content  => init_template('squid', 'systemd_override'),
         override => true,
         restart  => true,

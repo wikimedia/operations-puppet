@@ -5,17 +5,11 @@ describe 'squid3', :type => :class do
     context "on #{os}" do
       let(:facts) { facts }
 
-      if facts[:os]['release']['major'] == '8'
-        let(:squid_name) { 'squid3' }
-      else
-        let(:squid_name) { 'squid' }
-      end
-
-      it { is_expected.to contain_package(squid_name).with_ensure('present') }
-      it { is_expected.to contain_service(squid_name).with_ensure('running') }
+      it { is_expected.to contain_package('squid').with_ensure('present') }
+      it { is_expected.to contain_service('squid').with_ensure('running') }
 
       it do
-        is_expected.to contain_file("/etc/#{squid_name}/squid.conf").with(
+        is_expected.to contain_file("/etc/squid/squid.conf").with(
           ensure: 'present',
             mode: '0444',
             owner: 'root',
@@ -24,7 +18,7 @@ describe 'squid3', :type => :class do
       end
 
       it do
-        is_expected.to contain_file("/etc/logrotate.d/#{squid_name}").with(
+        is_expected.to contain_file("/etc/logrotate.d/squid").with(
           ensure: 'present',
             mode: '0444',
             owner: 'root',
