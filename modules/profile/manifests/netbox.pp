@@ -197,7 +197,7 @@ class profile::netbox (
     # there are special needs or permissions are complicated).
     file { '/etc/netbox/scripts.cfg':
         owner   => 'netbox',
-        group   => 'netbox',
+        group   => 'www-data',
         mode    => '0440',
         content => template('profile/netbox/netbox-scripts.cfg.erb'),
     }
