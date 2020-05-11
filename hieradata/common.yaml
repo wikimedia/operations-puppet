@@ -459,6 +459,12 @@ wikimedia_clusters:
     sites:
       eqiad: []
       codfw: []
+  thanos:
+    description: "Prometheus long-term storage"
+    id: 90
+    sites:
+      eqiad: []
+      codfw: []
 
 puppetmaster: "puppet"
 puppet_ca_server: puppetmaster1001.eqiad.wmnet

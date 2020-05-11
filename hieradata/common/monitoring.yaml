@@ -252,6 +252,12 @@ monitoring::groups:
   swift:
     description: swift servers
 
+# Thanos
+  thanos_eqiad:
+    description: Prometheus long-term storage eqiad
+  thanos_codfw:
+    description: Prometheus long-term storage codfw
+
 # Wikidata Query Service
   wdqs_eqiad:
     description: Wikidata Query Service - Public cluster (eqiad)
