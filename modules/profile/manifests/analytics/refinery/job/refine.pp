@@ -120,6 +120,7 @@ class profile::analytics::refinery::job::refine(
         monitor_interval         => '*-*-* 01:15:00',
         monitor_failure_interval => '*-*-* 01:45:00',
         use_kerberos             => $use_kerberos,
+        spark_executor_memory    => '4G',
     }
 
 
