@@ -1701,6 +1701,60 @@ host db1140 {
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
+host db1141 {
+    hardware ethernet 4C:D9:8F:CA:A8:79;
+    fixed-address db1141.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
+}
+
+host db1142 {
+    hardware ethernet 4C:D9:8F:CA:B7:37;
+    fixed-address db1142.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
+}
+
+host db1143 {
+    hardware ethernet 4C:D9:8F:CA:A8:99;
+    fixed-address db1143.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
+}
+
+host db1144 {
+    hardware ethernet 4C:D9:8F:CA:B4:46;
+    fixed-address db1144.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
+}
+
+host db1145 {
+    hardware ethernet 4C:D9:8F:C9:F0:3B;
+    fixed-address db1145.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
+}
+
+host db1146 {
+    hardware ethernet 4C:D9:8F:CA:AA:2B;
+    fixed-address db1146.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
+}
+
+host db1147 {
+    hardware ethernet 4C:D9:8F:C9:EE:4A;
+    fixed-address db1147.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
+}
+
+host db1148 {
+    hardware ethernet 4C:D9:8F:CA:BD:25;
+    fixed-address db1148.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
+}
+
+host db1149 {
+    hardware ethernet 4C:D9:8F:CA:B4:8E;
+    fixed-address db1149.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
+}
+
 host db2071 {
     hardware ethernet 18:66:DA:F8:F2:20;
     fixed-address db2071.codfw.wmnet;
