@@ -75,7 +75,9 @@ class jenkins(
         allowdupe => false,
     }
 
-    require_package("openjdk-${java_version}-jdk")
+    # jenkins::common uses Debian alternatives to java 11 which is used by
+    # agents.
+    $java_path = '/usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java'
 
     if os_version('debian >= stretch') {
         apt::package_from_component { 'jenkins-thirdparty-ci':
@@ -87,6 +89,16 @@ class jenkins(
         package { 'jenkins':
             ensure  => present,
         }
+    }
+
+    # Initially use Java 8 on Buster, switch to Java 11 separately, T224591
+    if os_version('debian == buster') {
+        apt::package_from_component { 'wikimedia-openjdk8':
+            component => 'component/jdk8',
+            packages  => ['openjdk-8-jdk', 'openjdk-8-dbg']
+        }
+    } else {
+        require_package("openjdk-${java_version}-jdk")
     }
 
     file { '/var/lib/jenkins/.daemonrc':
