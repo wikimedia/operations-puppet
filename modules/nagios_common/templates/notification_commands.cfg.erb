@@ -56,6 +56,21 @@ define command{
     command_line    echo "$NOTIFICATIONTYPE$: $SERVICEDESC$ on $HOSTNAME$ is $SERVICESTATE$\n$SERVICEOUTPUT$\n$SERVICEACKAUTHOR$: $SERVICEACKCOMMENT$" | sed 's/ACKNOWLEDGEMENT/ACK/' | /usr/bin/mail $CONTACTADDRESS1$
     }
 
+### VO notifications, use the body of the email notification sent to CONTACTADDRESS1 instead of CONTACTEMAIL, subject adapted for VO
+### See also: T252401
+# 'vo-host-notify-by-email' command definition
+define command{
+    command_name    vo-host-notify-by-email
+    command_line    /usr/bin/printf "%b" "Notification Type: $NOTIFICATIONTYPE$\nHost: $HOSTNAME$\nState: $HOSTSTATE$\nAddress: $HOSTADDRESS$\nInfo: $HOSTOUTPUT$\n\nDate/Time: $LONGDATETIME$\n\nAcknowledged by $HOSTACKAUTHOR$: $HOSTACKCOMMENT$" | /usr/bin/mail -s "Host $HOSTSTATE$ alert for $HOSTNAME$!" $CONTACTADDRESS1$
+    }
+
+# 'vo-notify-by-email' command definition
+define command{
+    command_name    vo-notify-by-email
+    command_line    /usr/bin/printf "%b" "Notification Type: $NOTIFICATIONTYPE$\n\nService: $SERVICEDESC$\nHost: $HOSTALIAS$\nAddress: $HOSTADDRESS$\nState: $SERVICESTATE$\n\nDate/Time: $LONGDATETIME$\n\nNotes URLs: $SERVICENOTESURL$\n\nAcknowledged by $SERVICEACKAUTHOR$: $SERVICEACKCOMMENT$\n\nAdditional Info:\n\n$SERVICEOUTPUT$" | sed -r -e 's/%27(https)/\1/g' -e 's/%27(\+|$$)/ /g' | /usr/bin/mail -s "$HOSTALIAS$/$SERVICEDESC$ $NOTIFICATIONTYPE$ $SERVICESTATE$" $CONTACTADDRESS1$
+    }
+### VO notifications end
+
 # global IRC output for operations
 define command{
     command_name    notify-host-by-irc
