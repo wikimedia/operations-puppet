@@ -181,7 +181,7 @@ END
 #echo "result_parent_projects_without_desc"
 # see https://phabricator.wikimedia.org/T249805
 result_parent_projects_without_desc=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -P $sql_port -u $sql_user $sql_name << END
-SELECT CONCAT("https://phabricator.wikimedia.org/tag/", p.name)
+SELECT CONCAT("https://phabricator.wikimedia.org/tag/", p.primarySlug)
     FROM phabricator_project.project p
     WHERE p.parentProjectPHID IS NULL
     AND p.status != 100
@@ -191,14 +191,14 @@ SELECT CONCAT("https://phabricator.wikimedia.org/tag/", p.name)
         JOIN phabricator_project.project_customfieldstorage cfs
         WHERE cfs.objectPHID = p.phid
         AND fieldIndex = "0.9QWd3nmyTs")
-    ORDER BY p.name;
+    ORDER BY p.primarySlug;
 END
 )
 
 #echo "result_sub_projects_without_desc"
 # see https://phabricator.wikimedia.org/T249805
 result_sub_projects_without_desc=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -P $sql_port -u $sql_user $sql_name << END
-SELECT CONCAT("https://phabricator.wikimedia.org/tag/", pp.name) AS parentproject, p.name AS project
+SELECT CONCAT("https://phabricator.wikimedia.org/tag/", pp.primarySlug) AS parentproject, p.name AS project
     FROM phabricator_project.project p
     JOIN phabricator_project.project pp
     WHERE pp.phid = p.parentProjectPHID
@@ -211,7 +211,7 @@ SELECT CONCAT("https://phabricator.wikimedia.org/tag/", pp.name) AS parentprojec
         WHERE p.status != 100
         AND cfs.objectPHID = p.phid
         AND fieldIndex = "0.9QWd3nmyTs")
-    ORDER BY pp.name,p.name;
+    ORDER BY pp.primarySlug,p.name;
 END
 )
 
