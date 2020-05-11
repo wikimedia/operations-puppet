@@ -174,7 +174,10 @@ node /^authdns[12]001\.wikimedia\.org$/ {
 node 'backup1001.eqiad.wmnet' {
     role(backup)
 }
-# Here should go backup1002 (WIP)
+# backup1002 (WIP)
+node 'backup1002.eqiad.wmnet' {
+    role(spare::system)
+}
 
 # codfw storage daemon
 node 'backup2001.codfw.wmnet' {
