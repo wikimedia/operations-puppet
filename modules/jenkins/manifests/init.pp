@@ -197,6 +197,13 @@ class jenkins(
         }
     }
 
+    file { '/srv/jenkins':
+        ensure => directory,
+        mode   => '0755',
+        owner  => 'root',
+        group  => 'root',
+    }
+
     file { '/var/lib/jenkins':
         ensure => directory,
         mode   => '2775',  # group sticky bit
