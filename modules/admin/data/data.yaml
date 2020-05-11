@@ -1435,6 +1435,7 @@ users:
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC4XnyuvSKNUAtpmAKyKzImXzLygkBzavKdEEaFCa28GqjR6FGKRTV+maufvExCDuIpn3JOeksfsn8LCBs+Xp5IBtm8BhnBZc48FTWw4VieD0pjxnxsa9nPx5f9naYpzRsM4enBIs//+vRFvwXrwmRalqtfdE/BXWQpTDOWAH1/yQdxn5Rn8UmHF1Ahn8vRzx7MZpATWIr5355mbIPhTTKV6BiRVhWNO8OPFdxCySiVTlcOGAYSNkdDwleKMPBSX0QcZIn2/uoWVmpzWieqdjZShx0of5OFrfvQwJ7VY2MeJquCuh60ND8ZvLiTuQNfktK5BsJ/zcb/njZCTR4H5x2pOI+iHsrVu6so/c29r688ajqGFygxMB6ZqtD6Hm2D8G1TXh1nI+BMqx4NLQRbq/z6UPnkhLTc7H8KIS0lrwBz1dblOKPjuJqKoxKj5PJvdeVtt62d8xUGKojnF0GjdJ1hS3+3hV+Rkhf+c7AmK/Z7mreaKFecSjwnTGyU84FMd3l7sbcYSieLcY/DBWuCCu8aINpFyzZztS7cmiHL36AN1oaVgh04oLmX9VM09P4VTG8yyJcs6hDnsfvyU4Etq3CiBJ3GcC2rxSmZVLFunKK5XygffMteTmw66XsaIqsqg+0Mat5UaD2Rb8lx5tZWoKA+VoCDZwg5kfqJPaIBp1vLfQ== jrobson@wikimedia.org]
     uid: 2155
     email: jrobson@wikimedia.org
+    krb: present
   rainman:
     ensure: absent
     gid: 500
