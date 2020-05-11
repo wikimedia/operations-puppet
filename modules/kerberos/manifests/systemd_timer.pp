@@ -62,6 +62,21 @@
 #   of space consumed on disk.
 #   Default: true
 #
+#  [*syslog_match_startswith*]
+#   If true, all syslog programnames that start with the service_name
+#   will be logged to the output log file.  Else, only service_names
+#   that match exactly will be logged.
+#   Default: true
+#
+#  [*syslog_identifier*]
+#   Adds the SyslogIdentifier parameter to the systemd unit to
+#   override the default behavior, namely using the program name.
+#   This is particularly useful when multiple timers are scheduled
+#   using the same program but with different parameters. Without
+#   an explicit SyslogIdentifier in fact they would end up sharing
+#   the same identifier and rsyslog rules wouldn't work anymore.
+#   Default: undef
+#
 #  [*use_kerberos*]
 #   Force a kinit before executing the command to properly authenticate
 #   via Kerberos.
@@ -86,6 +101,7 @@ define kerberos::systemd_timer(
     $logfile_group = 'analytics',
     $logfile_perms = 'all',
     $syslog_force_stop = true,
+    $syslog_match_startswith = true,
     $use_kerberos = false,
     $syslog_identifier = undef,
     $ensure = present,
@@ -123,6 +139,7 @@ define kerberos::systemd_timer(
         logfile_group             => $logfile_group,
         logfile_perms             => $logfile_perms,
         syslog_identifier         => $syslog_identifier,
+        syslog_match_startswith   => $syslog_match_startswith,
         syslog_force_stop         => $syslog_force_stop,
         slice                     => $slice,
     }

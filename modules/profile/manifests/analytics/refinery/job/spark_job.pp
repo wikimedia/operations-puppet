@@ -79,6 +79,8 @@ define profile::analytics::refinery::job::spark_job(
         logfile_group             => $user,
         logfile_perms             => 'all',
         syslog_force_stop         => true,
+        # Only need to match equality here, not startswith.
+        syslog_match_startswith   => false,
         syslog_identifier         => $title,
         require                   => File[$script],
     }

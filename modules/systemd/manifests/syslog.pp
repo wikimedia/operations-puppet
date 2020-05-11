@@ -34,14 +34,20 @@
 #   avoid sending the logs to syslog/daemon.log files.
 #   Default: false
 #
+# [*programname_comparison*]
+#   Operator to use when matching programname.
+#   Possible values: startswith, isequal
+#   Default: startswith
+#
 define systemd::syslog(
-    Wmflib::Ensure               $ensure       = 'present',
-    Stdlib::Unixpath             $base_dir     = '/var/log',
-    String[1]                    $owner        = $title,
-    String[1]                    $group        = $title,
-    Enum['user', 'group', 'all'] $readable_by  = 'group',
-    String[1]                    $log_filename = 'syslog.log',
-    Boolean                      $force_stop   = false,
+    Wmflib::Ensure                $ensure                 = 'present',
+    Stdlib::Unixpath              $base_dir               = '/var/log',
+    String[1]                     $owner                  = $title,
+    String[1]                     $group                  = $title,
+    Enum['user', 'group', 'all']  $readable_by            = 'group',
+    String[1]                     $log_filename           = 'syslog.log',
+    Boolean                       $force_stop             = false,
+    Enum['startswith', 'isequal'] $programname_comparison = 'startswith',
 ) {
     if $::initsystem != 'systemd' {
         fail('systemd::syslog is useful only with systemd')

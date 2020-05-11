@@ -64,6 +64,12 @@
 #   of space consumed on disk.
 #   Default: true
 #
+#  [*syslog_match_startswith*]
+#   If true, all syslog programnames that start with the service_name
+#   will be logged to the output log file.  Else, only service_names
+#   that match exactly will be logged.
+#   Default: true
+#
 #  [*syslog_identifier*]
 #   Adds the SyslogIdentifier parameter to the systemd unit to
 #   override the default behavior, namely using the program name.
@@ -104,6 +110,7 @@ define systemd::timer::job(
     String $logfile_group = 'root',
     Enum['user', 'group', 'all'] $logfile_perms = 'all',
     Boolean $syslog_force_stop = true,
+    Boolean $syslog_match_startswith = true,
     Optional[String] $syslog_identifier = undef,
     Wmflib::Ensure $ensure = 'present',
     Optional[Integer] $max_runtime_seconds = undef,
@@ -155,14 +162,22 @@ define systemd::timer::job(
             default => $logfile_owner
         }
 
+        # If syslog_match_startswith is false, use equality when matching
+        # the programname to output to the log file, else use startswith.
+        $syslog_programname_comparison = $syslog_match_startswith ? {
+            false => 'isequal',
+            true  => 'startswith',
+        }
+
         systemd::syslog { $safe_title:
-            ensure       => $ensure,
-            base_dir     => $logfile_basedir,
-            log_filename => $logfile_name,
-            owner        => $log_owner,
-            group        => $logfile_group,
-            readable_by  => $logfile_perms,
-            force_stop   => $syslog_force_stop,
+            ensure                 => $ensure,
+            base_dir               => $logfile_basedir,
+            log_filename           => $logfile_name,
+            owner                  => $log_owner,
+            group                  => $logfile_group,
+            readable_by            => $logfile_perms,
+            force_stop             => $syslog_force_stop,
+            programname_comparison => $syslog_programname_comparison
         }
     }
 

@@ -1,6 +1,6 @@
 # rsyslogd(8) configuration file for services.
 # This file is managed by Puppet.
-:programname, startswith, "<%= @title %>" <%= @local_syslogfile %>
+:programname, <%= @programname_comparison %>, "<%= @title %>" <%= @local_syslogfile %>
 <%- if @force_stop -%>
 & stop
 <%- end -%>
