@@ -87,6 +87,22 @@ SELECT COUNT(*) AS '' FROM maniphest_task WHERE (status = "open" OR status = "st
 END
 )
 
+#echo "result_tasksopen_open"
+result_tasksopen_open=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -P $sql_port -u$sql_user $sql_name << END
+
+SELECT COUNT(*) AS '' FROM maniphest_task WHERE status = "open";
+
+END
+)
+
+#echo "result_tasksopen_stalled"
+result_tasksopen_stalled=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -P $sql_port -u$sql_user $sql_name << END
+
+SELECT COUNT(*) AS '' FROM maniphest_task WHERE status = "stalled";
+
+END
+)
+
 #echo "results_mediantasksopen_unbreaknow"
 result_mediantasksopen_unbreaknow=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -P $sql_port -u$sql_user $sql_name << END
 
@@ -155,6 +171,8 @@ taskscreated=$(echo $result_taskscreated | cut -d " " -f3)
 tasksclosed=$(echo $result_tasksclosed | cut -d " " -f3)
 
 tasksopen=$(echo $result_tasksopen | cut -d " " -f3)
+tasksopen_open=$(echo $result_tasksopen_open | cut -d " " -f3)
+tasksopen_stalled=$(echo $result_tasksopen_stalled | cut -d " " -f3)
 
 epochnow=$(date +%s)
 # regex if we have zero open tasks (can happen for unbreaknow; see T159314):
@@ -210,6 +228,8 @@ their workboard in (${lastmonth}): ${projectsboardmove}
 Tasks created in (${lastmonth}): ${taskscreated}
 Tasks closed in (${lastmonth}): ${tasksclosed}
 Open and stalled tasks in total: ${tasksopen}
+* Only open tasks in total: ${tasksopen_open}
+* Only stalled tasks in total: ${tasksopen_stalled}
 
 Median age in days of open tasks by priority:
 
