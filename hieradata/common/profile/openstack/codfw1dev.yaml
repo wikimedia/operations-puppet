@@ -19,6 +19,8 @@ profile::openstack::codfw1dev::horizon_version: 'train'
 #  rather, that should happen via the (singular but HA) keystone_api_fqdn below.
 #
 profile::openstack::codfw1dev::openstack_controllers:
+  - cloudcontrol2001-dev.wikimedia.org
+  - cloudcontrol2003-dev.wikimedia.org
   - cloudcontrol2004-dev.wikimedia.org
 
 
@@ -34,7 +36,7 @@ profile::openstack::codfw1dev::keystone_api_fqdn: 'openstack.codfw1dev.wikimedia
 #  we need to be aware of which glance server is the primary image store. Once
 #  images are moved to ceph we can remove this setting and the openstack_controllers
 #  will be true, identical peers.
-profile::openstack::codfw1dev::primary_glance_image_store: cloudcontrol2004-dev.wikimedia.org
+profile::openstack::codfw1dev::primary_glance_image_store: cloudcontrol2001-dev.wikimedia.org
 
 # List of designate hosts (generally labservicesxxxx).
 #  Be warned that there's one unique case here; memcached
