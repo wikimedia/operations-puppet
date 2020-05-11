@@ -22,23 +22,6 @@ profile::eventlogging::analytics::processor::client_side_processors:
     - client-side-10
     - client-side-11
 
-# Kafka Topic eventlogging-valid-mixed with
-# most eventlogging events has 12 partitions
-# in production.  Run 4 mysql consumers
-# to insert this data into the log database.
-profile::eventlogging::analytics::mysql::consumers:
-    - mysql-m4-master-00
-    # Dropping these consumers because custom replication of
-    # eventlogging tables does not work with parallel consumers due to
-    # race conditions. We'll bring these back after adding autoincrement ids
-    # to eventlogging tables, and having replication script check the ids
-    # instead of the time based faulty checking for new events that's happening now.
-    # - mysql-m4-master-01
-    # - mysql-m4-master-02
-    # - mysql-m4-master-03
-profile::eventlogging::analytics::mysql::db: 'm4-master.eqiad.wmnet/log'
-profile::eventlogging::analytics::mysql::ensure: absent
-
 # In prod, we apply a whitelist (in plugins.py) to only allow certain
 # EventLogging schemas to make it into the eventlogging-valid-mixed topic,
 # which is used by the downstream mysql eventlogging-consumer to write

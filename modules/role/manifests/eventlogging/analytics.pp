@@ -6,6 +6,5 @@ class role::eventlogging::analytics {
     include ::profile::base::firewall
 
     include ::profile::eventlogging::analytics::processor
-    include ::profile::eventlogging::analytics::mysql
     include ::profile::eventlogging::analytics::files
 }
