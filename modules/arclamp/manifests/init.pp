@@ -7,10 +7,7 @@
 #
 # MediaWiki servers capture these traces from PHP.
 #
-# For HHVM we use Xenon, the built-in sampling profiler for HHVM.
-# <https://github.com/facebook/hhvm/wiki/Profiling#xenon>.
-#
-# For PHP 7 we use Excimer. <https://www.mediawiki.org/wiki/Excimer>
+# For PHP 7 we use Excimer: <https://www.mediawiki.org/wiki/Excimer>
 #
 # === Parameters
 #
@@ -70,9 +67,9 @@ class arclamp(
         group  => 'root',
         mode   => '0555',
     }
+
     # This is the Perl script that generates flame graphs.
     # It comes from <https://github.com/brendangregg/FlameGraph>.
-
     file { '/usr/local/bin/flamegraph.pl':
         ensure => $ensure,
         source => 'puppet:///modules/arclamp/flamegraph.pl',
@@ -80,9 +77,9 @@ class arclamp(
         group  => 'root',
         mode   => '0555',
     }
+
     # Walks /srv/xenon/logs looking for log files which do not have a
     # corresponding SVG file and calls flamegraph.pl on each of them.
-
     file { '/usr/local/bin/arclamp-generate-svgs':
         ensure => $ensure,
         source => 'puppet:///modules/arclamp/arclamp-generate-svgs',
@@ -107,15 +104,13 @@ class arclamp(
         mode   => '0555',
     }
 
-
+    # This supports running multiple pipelines; in the past we had one
+    # for HHVM and one for PHP7.  Currently only the latter is needed.
     arclamp::instance {
         default:
             ensure     => present,
             redis_host => $redis_host,
             redis_port => $redis_port;
-        'xenon':
-            description => 'HHVM Xenon',
-            label       => '';
         'excimer':
             description => 'PHP Excimer';
     }

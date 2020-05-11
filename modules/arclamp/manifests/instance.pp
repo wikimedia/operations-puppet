@@ -14,12 +14,12 @@ define arclamp::instance(
             host => $redis_host,
             port => $redis_port,
         },
-    redis_channel => $title,
-    logs      => [
-        # 336 hours is 14 days * 24 hours (T166624)
-        { period => 'hourly',  format => "%Y-%m-%d_%H${label}", retain => 336 },
-        { period => 'daily',   format => "%Y-%m-%d${label}",    retain => 45 },
-    ],
+        redis_channel => $title,
+        logs          => [
+            # 336 hours is 14 days * 24 hours (T166624)
+            { period => 'hourly',  format => "%Y-%m-%d_%H${label}", retain => 336 },
+            { period => 'daily',   format => "%Y-%m-%d${label}",    retain => 45 },
+        ],
     }
 
     file { "/etc/arclamp-log-${title}.yaml":
