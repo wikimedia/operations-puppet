@@ -225,6 +225,10 @@ node 'cescout1001.eqiad.wmnet' {
     role(cescout)
 }
 
+node /^cloudceph200[123]-dev\.codfw\.wmnet$/ {
+    role(insetup)
+}
+
 node /^cloudstore100[89]\.wikimedia\.org/ {
     role(wmcs::nfs::secondary)
 }
