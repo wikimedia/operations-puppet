@@ -81,8 +81,12 @@ class profile::phabricator::main (
                                                       { 'default_value' => false }),
 ) {
 
+    $mail_alias = $::realm ? {
+        'production' => 'wikimedia.org',
+        default      => 'wmflabs.org',
+    }
     mailalias { 'root':
-        recipient => 'root@wikimedia.org',
+        recipient => "root@${mail_alias}",
     }
 
     include passwords::phabricator
