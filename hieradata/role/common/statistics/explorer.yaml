@@ -10,6 +10,7 @@ admin::groups:
   # for deploying files to HDFS.
   - analytics-search-users
   - analytics-wmde-users
+  - analytics-product-users
 cluster: analytics
 
 profile::hadoop::common::hadoop_cluster_name: 'analytics-hadoop'

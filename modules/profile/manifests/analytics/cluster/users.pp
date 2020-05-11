@@ -41,6 +41,14 @@ class profile::analytics::cluster::users {
         system => true,
     }
 
+    # The analytics-product user will be used to run
+    # cronjobs and similar by Product Analytics.
+    # T255039
+    user { 'analytics-product':
+        ensure => present,
+        system => true,
+    }
+
     # When Kerberos is enabled, indexation jobs will run on workers
     # as user 'druid'.
     class { '::druid::cdh::hadoop::user': }

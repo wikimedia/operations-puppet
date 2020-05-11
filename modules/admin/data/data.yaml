@@ -286,7 +286,7 @@ groups:
               rodolfovalentim, lulu, dcipoletti, chrisalbon, wikigit, nahidunlimited,
               agaduran]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
-    system_members: [analytics-search, analytics, analytics-privatedata]
+    system_members: [analytics-search, analytics, analytics-privatedata, analytics-product]
   analytics-admins:
     gid: 732
     description: Admin access to analytics cluster.
@@ -785,6 +785,12 @@ groups:
     gid: 818
     description: 'deploy Zuul'
     members: *contint_roots_members
+  analytics-product-users:
+    gid: 820
+    description: Group of users for managing WMF Product Analytics-related jobs
+    members: [bearloga, neilpquinn-wmf, nettrom, mneisler, conniecc1, mayakpwiki, snowick, jiawang, jdl]
+    privileges: ['ALL = (analytics-product) NOPASSWD: ALL']
+    system_members: [analytics-product]
   reprepro:
     gid: 901
     system: true
