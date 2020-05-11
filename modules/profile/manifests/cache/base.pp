@@ -4,13 +4,12 @@
 # - conftool
 # - monitoring
 # - logging/analytics
+# - purging
 #
 class profile::cache::base(
     $cache_cluster = hiera('cache::cluster'),
     $statsd_host = hiera('statsd'),
     $packages_version = hiera('profile::cache::base::packages_version', 'installed'),
-    $purge_host_regex = hiera('profile::cache::base::purge_host_regex', undef),
-    $purge_multicasts = hiera('profile::cache::base::purge_multicasts', ['239.128.0.112']),
     $logstash_host = hiera('logstash_host', undef),
     $logstash_syslog_port = hiera('logstash_syslog_port', undef),
     $logstash_json_lines_port = hiera('logstash_json_lines_port', undef),
@@ -36,6 +35,9 @@ class profile::cache::base(
     include ::profile::cache::kafka::webrequest
 
     include ::profile::prometheus::varnishkafka_exporter
+
+    # Purging
+    require ::profile::cache::purge
 
     # Globals we need to include
     include ::network::constants
@@ -89,20 +91,6 @@ class profile::cache::base(
     ###########################################################################
     # Purging
     ###########################################################################
-    class { 'purged':
-        backend_addr     => '127.0.0.1:3128',
-        frontend_addr    => '127.0.0.1:3127',
-        mc_addrs         => $purge_multicasts,
-        prometheus_addr  => ':2112',
-        frontend_workers => 4,
-        backend_workers  => $::processorcount,
-        is_active        => true,
-        host_regex       => $purge_host_regex,
-    }
-
-    nrpe::monitor_systemd_unit_state { 'purged':
-        require => Service['purged'],
-    }
 
     # Node initialization script for conftool
     if $default_weights != undef {
