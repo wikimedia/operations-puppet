@@ -176,7 +176,7 @@ node 'backup1001.eqiad.wmnet' {
 }
 # backup1002 (WIP)
 node 'backup1002.eqiad.wmnet' {
-    role(spare::system)
+    role(insetup)
 }
 
 # codfw storage daemon
