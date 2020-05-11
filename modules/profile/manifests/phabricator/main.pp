@@ -76,7 +76,9 @@ class profile::phabricator::main (
     String                      $timezone           = lookup('phabricator_timezone',
                                                       { 'default_value' => 'UTC' }),
     Stdlib::Ensure::Service     $phd_service_ensure = lookup('profile::phabricator::main::phd_service_ensure',
-                                                      { 'default_value' => 'running' })
+                                                      { 'default_value' => 'running' }),
+    Boolean                     $dump_enabled       = lookup('profile::phabricator::main::dump_enabled',
+                                                      { 'default_value' => false }),
 ) {
 
     mailalias { 'root':
@@ -88,7 +90,6 @@ class profile::phabricator::main (
 
     # dumps are only enabled on the active server set in Hiera
     if $::fqdn == $active_server {
-        $dump_enabled = true
         $ferm_ensure = 'present'
         if $aphlict_enabled {
             $aphlict_ensure = 'present'
@@ -96,7 +97,6 @@ class profile::phabricator::main (
             $aphlict_ensure = 'absent'
         }
     } else {
-        $dump_enabled = false
         $ferm_ensure = 'absent'
         $aphlict_ensure = 'absent'
     }
