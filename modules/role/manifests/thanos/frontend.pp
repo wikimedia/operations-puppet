@@ -6,5 +6,7 @@ class role::thanos::frontend {
     include ::profile::standard
     include ::profile::base::firewall
 
+    include ::profile::lvs::realserver
+
     include ::profile::thanos::query
 }
