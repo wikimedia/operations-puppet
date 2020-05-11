@@ -414,3 +414,7 @@ codfw:
   ncredir:
     ncredir2001.codfw.wmnet: [nginx]
     ncredir2002.codfw.wmnet: [nginx]
+  thanos:
+    thanos-fe2001.codfw.wmnet: [thanos-query]
+    thanos-fe2002.codfw.wmnet: [thanos-query]
+    thanos-fe2003.codfw.wmnet: [thanos-query]
