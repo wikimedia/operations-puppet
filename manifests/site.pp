@@ -1590,7 +1590,7 @@ node /^mw1384\.eqiad\.wmnet$/ {
 node /^mw127[6-9]\.eqiad\.wmnet$/ {
     role(mediawiki::appserver::canary_api)
 }
-node /^mw128[0-3]\.eqiad\.wmnet$/ {
+node /^mw128[1-3]\.eqiad\.wmnet$/ {
     role(mediawiki::appserver::api)
 }
 
