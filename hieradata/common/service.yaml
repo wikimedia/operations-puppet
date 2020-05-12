@@ -2336,7 +2336,7 @@ service::catalog:
     port: 10902
     sites:
     - codfw
-    state: service_setup
+    state: lvs_setup
     discovery:
     - dnsdisc: thanos-query
       active_active: true
