@@ -129,17 +129,10 @@ function do_global_read_response()
         ts.server_response.header['Vary'] = add_vary(ts.server_response.header['Vary'], 'X-Forwarded-Proto')
     end
 
-    -------------------------------------------------------------
-    -- Force caching responses that would not be cached otherwise
-    -------------------------------------------------------------
-    -- TODO: this needs to be applied only to cacheable responses with
-    -- calculated age > 600. ATS core needs to make the calculated value
-    -- available to tslua for this to be implemented without cumbersome and
-    -- errorprone parsing of Cache-Control in lua.
-    --if response_status == 404 then
-        -- Cache 404s for 10 minutes
-    --    ts.server_response.header['Cache-Control'] = 's-maxage=600'
-    --end
+    -- Cap TTL of cacheable 404 responses to 10 minutes
+    if response_status == 404 and ts.server_response.is_cacheable() and ts.server_response.get_maxage() > 600 then
+        ts.server_response.header['Cache-Control'] = 's-maxage=600'
+    end
 
     ----------------------------------------------------------
     -- Avoid caching responses that might get cached otherwise

@@ -14,6 +14,8 @@ _G.TS_LUA_CACHE_LOOKUP_HIT_FRESH = 1
 _G.ts.client_request.get_uri = function() return "/" end
 _G.read_config = function() return 'pass-test-hostname' end
 _G.ts.server_response.get_status = function() return 200 end
+_G.ts.server_response.is_cacheable = function() return true end
+_G.ts.server_response.get_maxage = function() return 42 end
 
 describe("Busted unit testing framework", function()
   before_each(function()
@@ -25,6 +27,17 @@ describe("Busted unit testing framework", function()
   describe("script for ATS Lua Plugin", function()
     stub(ts, "debug")
     stub(ts, "hook")
+
+    it("test - do_global_read_response 404 TTL cap", function()
+      _G.ts.server_response.get_status = function() return 404 end
+      _G.ts.server_response.header['Cache-Control'] = nil
+      do_global_read_response()
+      assert.are.equals(nil, _G.ts.server_response.header['Cache-Control'])
+
+      _G.ts.server_response.get_maxage = function() return 3600 end
+      do_global_read_response()
+      assert.are.equals('s-maxage=600', _G.ts.server_response.header['Cache-Control'])
+    end)
 
     it("test - do_global_read_response Set-Cookie", function()
       -- Without Set-Cookie
