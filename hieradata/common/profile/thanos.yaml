@@ -1,0 +1,10 @@
+profile::thanos::backends:
+  - thanos-be2001.codfw.wmnet
+  - thanos-be2002.codfw.wmnet
+  - thanos-be2003.codfw.wmnet
+  - thanos-be2004.codfw.wmnet
+profile::thanos::frontends:
+  - thanos-fe2001.codfw.wmnet
+  - thanos-fe2002.codfw.wmnet
+  - thanos-fe2003.codfw.wmnet
+  - thanos-fe2004.codfw.wmnet

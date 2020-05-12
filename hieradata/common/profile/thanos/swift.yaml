@@ -1,0 +1,18 @@
+profile::thanos::swift::cluster: thanos-prod
+profile::thanos::swift::proxy_service_host: 'thanos-swift.discovery.wmnet'
+profile::thanos::swift::hash_path_suffix: '2a95a2ab3b5e0195'
+profile::thanos::swift::accounts:
+  thanos_prod:
+    access:       '.admin'
+    account_name: 'AUTH_thanos'
+    auth:         'https://thanos-swift.discovery.wmnet'
+    user:         'thanos:prod'
+  dispersion:
+    access:       '.admin'
+    account_name: 'AUTH_dispersion'
+    auth:         'https://thanos-swift.discovery.wmnet'
+    user:         'swift:dispersion'
+# To be kept private
+#profile::thanos::swift::accounts_keys:
+#  thanos_prod: 'foo'
+#  dispersion: 'bar'

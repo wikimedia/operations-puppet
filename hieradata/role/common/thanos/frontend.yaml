@@ -10,3 +10,170 @@ profile::lvs::realserver::pools:
   thanos-query:
     services:
       - thanos-query
+
+profile::prometheus::statsd_exporter::mappings:
+  # Authentication subsystem (tempauth)
+  - match: swift.*.*.tempauth.AUTH_.errors
+    name: swift_proxy_server_tempauth_errors_total
+  - match: swift.*.*.tempauth.AUTH_.forbidden
+    name: swift_proxy_server_tempauth_forbidden_total
+  - match: swift.*.*.tempauth.AUTH_.token_denied
+    name: swift_proxy_server_tempauth_token_denied_total
+  - match: swift.*.*.tempauth.AUTH_.unauthorized
+    name: swift_proxy_server_tempauth_unauthorized_total
+
+  # General swift-proxy metrics
+  - match: swift.*.*.proxy-server.client_disconnects
+    name: swift_proxy_server_client_disconnects_total
+  - match: swift.*.*.proxy-server.client_timeouts
+    name: swift_proxy_server_client_timeouts_total
+  - match: swift.*.*.proxy-server.handoff_count
+    name: swift_proxy_server_handoff_total
+  - match: swift.*.*.proxy-server.errors
+    name: swift_proxy_server_errors_total
+
+  # Rate Limiting
+  - match: swift.*.*.proxy-server.RL.*.*.timing
+    name: swift_proxy_server_ratelimit_seconds
+    labels:
+      method: "$3"
+      status: "$4"
+  - match: swift.*.*.proxy-server.RL.*.*.xfer
+    name: swift_proxy_server_ratelimit_bytes
+    labels:
+      method: "$3"
+      status: "$4"
+
+  # Object metrics
+  - match: swift.*.*.proxy-server.object.client_disconnects
+    name: swift_proxy_server_object_client_disconnects_total
+  - match: swift.*.*.proxy-server.object.client_timeouts
+    name: swift_proxy_server_object_client_timeouts_total
+  - match: swift.*.*.proxy-server.object.handoff_count
+    name: swift_proxy_server_object_handoff_total
+  # Drop generic object metrics, use per-policy object metrics below
+  - match: swift.*.*.proxy-server.object.*.*.timing
+    name: drop
+    action: drop
+  - match: swift.*.*.proxy-server.object.*.*.first-byte.timing
+    name: drop
+    action: drop
+  - match: swift.*.*.proxy-server.object.*.*.xfer
+    name: drop
+    action: drop
+  # Per-policy metrics
+  - match: swift.*.*.proxy-server.object.policy.*.*.*.timing
+    name: swift_proxy_server_object_seconds
+    labels:
+      policy: "$3"
+      method: "$4"
+      status: "$5"
+  - match: swift.*.*.proxy-server.object.policy.*.*.*.first-byte.timing
+    name: swift_proxy_server_object_first_byte_seconds
+    labels:
+      policy: "$3"
+      method: "$4"
+      status: "$5"
+  - match: swift.*.*.proxy-server.object.policy.*.*.*.xfer
+    name: swift_proxy_server_object_bytes
+    labels:
+      policy: "$3"
+      method: "$4"
+      status: "$5"
+
+  # Account metrics
+  - match: swift.*.*.proxy-server.account.client_disconnects
+    name: swift_proxy_server_account_client_disconnects_total
+  - match: swift.*.*.proxy-server.account.client_timeouts
+    name: swift_proxy_server_account_client_timeouts_total
+  - match: swift.*.*.proxy-server.account.handoff_count
+    name: swift_proxy_server_account_handoff_total
+  - match: swift.*.*.proxy-server.account.*.*.timing
+    name: swift_proxy_server_account_seconds
+    labels:
+      method: "$3"
+      status: "$4"
+  - match: swift.*.*.proxy-server.account.*.*.first-byte.timing
+    name: swift_proxy_server_account_first_byte_seconds
+    labels:
+      method: "$3"
+      status: "$4"
+  - match: swift.*.*.proxy-server.account.*.*.xfer
+    name: swift_proxy_server_account_bytes
+    labels:
+      method: "$3"
+      status: "$4"
+
+  # Container metrics
+  - match: swift.*.*.proxy-server.container.client_disconnects
+    name: swift_proxy_server_container_client_disconnects_total
+  - match: swift.*.*.proxy-server.container.client_timeouts
+    name: swift_proxy_server_container_client_timeouts_total
+  - match: swift.*.*.proxy-server.container.handoff_count
+    name: swift_proxy_server_container_handoff_total
+  - match: swift.*.*.proxy-server.container.*.*.timing
+    name: swift_proxy_server_container_seconds
+    labels:
+      method: "$3"
+      status: "$4"
+  - match: swift.*.*.proxy-server.container.*.*.first-byte.timing
+    name: swift_proxy_server_container_first_byte_seconds
+    labels:
+      method: "$3"
+      status: "$4"
+  - match: swift.*.*.proxy-server.container.*.*.xfer
+    name: swift_proxy_server_container_bytes
+    labels:
+      method: "$3"
+      status: "$4"
+
+  # Swift per-account stats reporter (WMF specific)
+  - match: swift\.([^.]+)\.stats\.([^.]+)\.bytes
+    match_type: regex
+    name: swift_account_stats_bytes_total
+    labels:
+      account: "$2"
+  - match: swift\.([^.]+)\.stats\.([^.]+)\.containers
+    match_type: regex
+    name: swift_account_stats_containers_total
+    labels:
+      account: "$2"
+  - match: swift\.([^.]+)\.stats\.([^.]+)\.objects
+    match_type: regex
+    name: swift_account_stats_objects_total
+    labels:
+      account: "$2"
+
+  # Swift containers stats reporter (WMF specific)
+  - match: swift\.([^.]+)\.containers\.([^.]+)\.([^.]+)\.bytes
+    match_type: regex
+    name: swift_container_stats_bytes_total
+    labels:
+      account: "$2"
+      class: "$3"
+  - match: swift\.([^.]+)\.containers\.([^.]+)\.([^.]+)\.objects
+    match_type: regex
+    name: swift_container_stats_objects_total
+    labels:
+      account: "$2"
+      class: "$3"
+
+  # Swift dispersion reporter (not WMF specific but not present in swift OOB)
+  ## $2 can be copies_expected/copies_found/missing_<integer>/overlapping/pct_found/retries
+  - match: swift\.([^.]+)\.dispersion\.object\.([^.]+)
+    match_type: regex
+    name: "swift_dispersion_object_$2"
+  - match: swift\.([^.]+)\.dispersion\.container\.([^.]+)
+    match_type: regex
+    name: "swift_dispersion_container_$2"
+  ## storage policy-specific metrics
+  - match: swift\.([^.]+)\.dispersion\.([^.]+)\.object\.([^.]+)
+    match_type: regex
+    name: "swift_dispersion_policy_object_$3"
+    labels:
+      storage_policy: "$2"
+  - match: swift\.([^.]+)\.dispersion\.([^.]+)\.container\.([^.]+)
+    match_type: regex
+    name: "swift_dispersion_policy_container_$3"
+    labels:
+      storage_policy: "$2"
