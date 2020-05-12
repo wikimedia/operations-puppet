@@ -35,7 +35,7 @@ profile::openstack::eqiad1::keystone_api_fqdn: 'openstack.eqiad1.wikimediacloud.
 #  we need to be aware of which glance server is the primary image store. Once
 #  images are moved to ceph we can remove this setting and the openstack_controllers
 #  will be true, identical peers.
-profile::openstack::eqiad1::primary_glance_image_store: cloudcontrol1005.wikimedia.org
+profile::openstack::eqiad1::primary_glance_image_store: cloudcontrol1003.wikimedia.org
 
 # List of designate hosts (generally labservicesxxxx).
 profile::openstack::eqiad1::designate_hosts:
