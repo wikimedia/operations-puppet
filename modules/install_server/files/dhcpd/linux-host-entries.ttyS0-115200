@@ -664,6 +664,11 @@ host people1001 {
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
+host people1002 {
+    hardware ethernet aa:00:00:64:70:00;
+    fixed-address people1002.eqiad.wmnet;
+}
+
 host ping1001 {
     hardware ethernet aa:00:00:33:10:e2;
     fixed-address ping1001.eqiad.wmnet;
