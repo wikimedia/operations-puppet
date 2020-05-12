@@ -1,6 +1,8 @@
 class kubeadm::calico_yaml (
     String              $pod_subnet,
-    String              $calico_version = 'v3.8.0',
+    String              $calico_version = 'v3.14.0',
+    Boolean             $typha_enabled = false,
+    Integer             $typha_replicas = 3,
 ) {
     # because /etc/kubernetes
     require ::kubeadm::core

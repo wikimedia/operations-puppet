@@ -3,7 +3,9 @@ class profile::wmcs::kubeadm::control (
     Stdlib::Fqdn        $apiserver  = lookup('profile::wmcs::kubeadm::apiserver_fqdn', {default_value => 'k8s.example.com'}),
     String              $node_token = lookup('profile::wmcs::kubeadm::node_token',     {default_value => 'example.token'}),
     String              $component  = lookup('profile::wmcs::kubeadm::component',      {default_value => 'thirdparty/kubeadm-k8s-1-15'}),
-    String              $calico_version = lookup('profile::wmcs::kubeadm::calico_version', {default_value => 'v3.8.0'}),
+    String              $calico_version = lookup('profile::wmcs::kubeadm::calico_version', {default_value => 'v3.14.0'}),
+    Boolean             $typha_enabled = lookup('profile::wmcs::kubeadm::typha_enabled', {default_value => false}),
+    Integer             $typha_replicas = lookup('profile::wmcs::kubeadm::typha_replicas', {default_value => 3}),
     Optional[String]    $encryption_key = lookup('profile::wmcs::kubeadm::encryption_key', {default_value => undef}),
 ) {
     require profile::wmcs::kubeadm::preflight_checks
@@ -78,6 +80,8 @@ class profile::wmcs::kubeadm::control (
     class { '::kubeadm::calico_yaml':
         pod_subnet     => $pod_subnet,
         calico_version => $calico_version,
+        typha_enabled  => $typha_enabled,
+        typha_replicas => $typha_replicas,
     }
 
     class { '::kubeadm::calico_workaround': }
