@@ -7447,7 +7447,6 @@ host parse2020 {
 host pc1007 {
     hardware ethernet D0:94:66:75:D1:63;
     fixed-address pc1007.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host pc1008 {
@@ -7458,7 +7457,6 @@ host pc1008 {
 host pc1009 {
     hardware ethernet D0:94:66:87:95:BB;
     fixed-address pc1009.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host pc1010 {
@@ -7469,7 +7467,6 @@ host pc1010 {
 host pc2007 {
     hardware ethernet D0:94:66:86:2E:4D;
     fixed-address pc2007.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host pc2008 {
@@ -7480,7 +7477,6 @@ host pc2008 {
 host pc2009 {
     hardware ethernet D0:94:66:87:9A:8B;
     fixed-address pc2009.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host pc2010 {
