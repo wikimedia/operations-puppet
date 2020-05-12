@@ -12,7 +12,7 @@ class profile::installserver::proxy(
 
     cron { 'squid-logrotate':
         ensure  => $ensure,
-        command => '/usr/sbin/squid3 -k rotate',
+        command => '/usr/sbin/squid -k rotate',
         user    => 'root',
         hour    => '17',
         minute  => '15',
