@@ -2104,6 +2104,11 @@ node 'people1001.eqiad.wmnet' {
     role(microsites::peopleweb)
 }
 
+# buster VM replacing people1001 (T247649)
+node 'people1002.eqiad.wmnet' {
+    role(insetup)
+}
+
 # scandium is a parsoid regression test server. it replaced ruthenium.
 # https://www.mediawiki.org/wiki/Parsoid/Round-trip_testing
 # Right now, both rt-server and rt-clients run on the same node
