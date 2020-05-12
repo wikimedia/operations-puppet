@@ -6,7 +6,7 @@ class profile::microsites::static_codereview {
     #monitoring::service { 'static-codereview-http':
     #    description   => 'Static CodeReview archive HTTP',
     #    check_command => 'check_http_url!static-codereview.wikimedia.org!/MediaWiki/r1.html',
-    #    notes_url     => 'https://www.mediawiki.org/wiki/Subversion/Code_review/Archive',
+    #    notes_url     => 'https://wikitech.wikimedia.org/wiki/Static-codereview.wikimedia.org',
     #}
 
     ensure_resource('file', '/srv/org', {'ensure' => 'directory' })
