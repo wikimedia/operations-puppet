@@ -1,0 +1,37 @@
+Given embeddedpuppet (template with litteral content puppet tags):
+  # Short litteral comment
+  <% if $variable == '<%%somevalue%%>' { -%>
+  MYVAR=<%= $variable %>
+    <%- if $more_variable {
+  # This is a puppet comment -%>
+  MOREVAR=true
+    <%- } %>
+  <%# epp comment with TODO mark %>
+
+Execute (litteral content syntax must be correct):
+  AssertEqual 'shComment', SyntaxOf('litteral comment')
+  AssertEqual 'shVariable', SyntaxOf('MYVAR')
+
+Execute (epp delimiter syntax must be correct):
+-- The error messages here are super confusing since all of the assertions use
+-- the same type. This is a shortcoming of the current vader output. To bypass
+-- this, let's define our own message.
+  AssertEqual 'ePuppetDelimiter', SyntaxOf('<%'), "syntax of <% should be 'ePuppetDelimiter', got '".SyntaxOf('<%')."'"
+  AssertEqual 'ePuppetDelimiter', SyntaxOf('-%>'), "syntax of -%> should be 'ePuppetDelimiter', got '".SyntaxOf('-%>')."'"
+  AssertEqual 'ePuppetDelimiter', SyntaxOf('<%-'), "syntax of <%- should be 'ePuppetDelimiter', got '".SyntaxOf('<%-')."'"
+  AssertEqual 'ePuppetComment', SyntaxOf('epp comment')
+-- We're testing for a *puppet* syntax here but that's because it's contained
+-- in the ePuppetComment syntax region
+  AssertEqual 'puppetTodo', SyntaxOf('TODO')
+
+Execute (puppet syntax must be correct):
+  AssertEqual 'puppetConditional', SyntaxOf('if')
+  AssertEqual 'puppetVariable', SyntaxOf('$variable')
+-- Again, we're testing multiple times for the same syntaxID. Let's define our
+-- message.
+  AssertEqual 'puppetDelimiter', SyntaxOf('{'), "for { in first puppet block, expected 'puppetDelimiter', got '".SyntaxOf('{')."'"
+  AssertEqual 'puppetDelimiter', SyntaxOf('{', 2), "for { in second puppet block, expected 'puppetDelimiter', got '".SyntaxOf('{', 2)."'"
+  " XXX syntax/puppet.vim's region for puppetDelimiter can't match the opening
+  " bracket, so we're not seeing the right syntax for the closing bracket
+  "AssertEqual 'puppetDelimiter', SyntaxOf('}'), "for } in third puppet block, expected 'puppetDelimiter', got '".SyntaxOf('}')."'"
+  AssertEqual 'puppetComment', SyntaxOf('puppet comment')

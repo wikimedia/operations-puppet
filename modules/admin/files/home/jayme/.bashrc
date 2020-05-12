@@ -104,7 +104,7 @@ if ! shopt -oq posix; then
 fi
 
 # Additional resource files
-for file in $HOME/.bash/*.{rc,sh}; do
+for file in $HOME/.bash/*.rc; do
 	. "$file"
 done
 

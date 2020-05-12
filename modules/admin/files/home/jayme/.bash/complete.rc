@@ -1,0 +1,2 @@
+which helm >/dev/null && source <(helm completion bash)
+which kubectl >/dev/null && source <(kubectl completion bash)
