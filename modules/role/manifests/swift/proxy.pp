@@ -6,19 +6,25 @@ class role::swift::proxy (
         description => 'swift frontend proxy',
     }
 
+    $swift_cluster = lookup('profile::swift::cluster') # lint:ignore:wmf_styleguide
+
+    include ::swift::params
+
     include ::profile::standard
     include ::profile::base::firewall
-    include ::swift::params
     include ::swift
-    include ::swift::ring
     include ::swift::container_sync
+
+    class { '::swift::ring':
+        swift_cluster => $swift_cluster,
+    }
 
     include ::profile::conftool::client
     class { 'conftool::scripts': }
 
 
     class { '::swift::proxy':
-        statsd_metric_prefix => "swift.${::swift::params::swift_cluster}.${::hostname}",
+        statsd_metric_prefix => "swift.${swift_cluster}.${::hostname}",
     }
 
     if $use_tls {

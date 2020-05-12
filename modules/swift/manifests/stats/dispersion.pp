@@ -1,9 +1,9 @@
 class swift::stats::dispersion(
-    $swift_cluster = $::swift::params::swift_cluster,
+    String $swift_cluster,
     $storage_policies = $::swift::params::storage_policies,
     $statsd_host   = 'statsd.eqiad.wmnet',
     $statsd_port   = 8125,
-    $statsd_prefix = "swift.${::swift::params::swift_cluster}.dispersion",
+    $statsd_prefix = "swift.${swift_cluster}.dispersion",
 ) {
     $required_packages = [
         Package['python-swiftclient'],

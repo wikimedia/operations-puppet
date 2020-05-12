@@ -6,3 +6,4 @@ admin::groups:
   - swift-roots
 role::swift::proxy::use_tls: true
 role::swift::swiftrepl::ensure: 'absent'
+profile::swift::cluster: codfw-prod

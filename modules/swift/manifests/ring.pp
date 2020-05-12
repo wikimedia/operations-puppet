@@ -1,5 +1,5 @@
 class swift::ring (
-    $swift_cluster = $swift::params::swift_cluster,
+    String $swift_cluster,
     $storage_policies = $swift::params::storage_policies,
 ) {
     # lint:ignore:puppet_url_without_modules

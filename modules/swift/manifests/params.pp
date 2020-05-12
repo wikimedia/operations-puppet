@@ -1,5 +1,4 @@
 class swift::params (
-    $swift_cluster        = undef,
     $accounts             = {},
     $account_keys         = {},
     $replication_accounts = {},

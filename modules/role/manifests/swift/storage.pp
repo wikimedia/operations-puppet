@@ -4,13 +4,20 @@ class role::swift::storage {
         description => 'swift storage brick',
     }
 
+    $swift_cluster = lookup('profile::swift::cluster') # lint:ignore:wmf_styleguide
+
+    include ::swift::params
+
     include ::profile::standard
     include ::profile::base::firewall
-    include ::swift::params
     include ::swift
-    include ::swift::ring
+
+    class { '::swift::ring':
+        swift_cluster => $swift_cluster,
+    }
+
     class { '::swift::storage':
-        statsd_metric_prefix          => "swift.${::swift::params::swift_cluster}.${::hostname}",
+        statsd_metric_prefix          => "swift.${swift_cluster}.${::hostname}",
         memcached_servers             => hiera('swift::proxy::memcached_servers'),
         object_replicator_concurrency => hiera('swift::storage::object_replicator_concurrency'),  # lint:ignore:wmf_styleguide
         object_replicator_interval    => hiera('swift::storage::object_replicator_interval', undef),  # lint:ignore:wmf_styleguide

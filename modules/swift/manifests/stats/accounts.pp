@@ -1,10 +1,10 @@
 class swift::stats::accounts(
-    $swift_cluster = $::swift::params::swift_cluster,
+    String $swift_cluster,
     $accounts      = $::swift::params::accounts,
     $credentials   = $::swift::params::account_keys,
     $statsd_host   = 'statsd.eqiad.wmnet',
     $statsd_port   = 8125,
-    $statsd_prefix = "swift.${::swift::params::swift_cluster}.stats",
+    $statsd_prefix = "swift.${swift_cluster}.stats",
 ) {
     $required_packages = [
         Package['python-swiftclient'],
