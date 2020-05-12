@@ -26,9 +26,9 @@ class profile::cescout (
     # we can use any directory and later point the metadb_s3_tarx to it.
     file { $metadb_dir:
         ensure => 'directory',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
+        owner  => 'postgres',
+        group  => 'postgres',
+        mode   => '0700',
     }
 
     # copy the metadb_s3_tarx file, the script that sets up the metadb sync.
