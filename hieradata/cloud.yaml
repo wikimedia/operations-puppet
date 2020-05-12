@@ -64,6 +64,9 @@ profile::base::firewall::log::log_burst: 5
 # A dummy, empty prometheus config for default behavior on VMs
 prometheus_nodes: []
 
+# We don't want prometheus scraping NFS on the clients, it locks up
+prometheus::node_exporter::ignored_fs_types: '^(overlay|autofs|binfmt_misc|cgroup|configfs|debugfs|devpts|devtmpfs|fusectl|hugetlbfs|mqueue|nfs.*|nsfs|proc|procfs|pstore|rpc_pipefs|securityfs|sysfs|tracefs)$'
+
 # We don't use these feature on VMs.
 profile::backup::enable: false
 profile::backup::ferm_directors: []
