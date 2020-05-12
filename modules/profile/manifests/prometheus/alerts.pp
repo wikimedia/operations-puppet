@@ -144,7 +144,8 @@ class profile::prometheus::alerts (
         # 1 per second rate over the last 15 minutes.
         critical           => 1.0,
         contact_group      => 'analytics',
-        dashboard_links    => ['https://grafana.wikimedia.org/d/ePFPOkqiz/eventgate?refresh=1m&orgId=1&var-dc=eqiad prometheus/k8s&var-service=eventgate-analytics&var-kafka_topic=All&var-kafka_broker=All&var-kafka_producer_type=All'],
+        dashboard_links    => ['https://grafana.wikimedia.org/d/ePFPOkqiz/eventgate?refresh=1m&orgId=1&var-dc=eqiad+prometheus/k8s&var-service=eventgate-analytics&var-kafka_topic=All&var-kafka_broker=All&var-kafka_producer_type=All'],
+        notes_link         => 'https://wikitech.wikimedia.org/wiki/Event_Platform/EventGate',
     }
     monitoring::alerts::kafka_topic_throughput { 'eventgate-main_validation_errors':
         kafka_cluster_name => 'jumbo-eqiad',
@@ -153,7 +154,8 @@ class profile::prometheus::alerts (
         warning            => 0.0,
         # 0.5 per second rate over the last 15 minutes.
         critical           => 0.5,
-        dashboard_links    => ['https://grafana.wikimedia.org/d/ePFPOkqiz/eventgate?refresh=1m&orgId=1&var-dc=eqiad prometheus/k8s&var-service=eventgate-main&var-kafka_topic=All&var-kafka_broker=All&var-kafka_producer_type=All'],
+        dashboard_links    => ['https://grafana.wikimedia.org/d/ePFPOkqiz/eventgate?refresh=1m&orgId=1&var-dc=eqiad+prometheus/k8s&var-service=eventgate-main&var-kafka_topic=All&var-kafka_broker=All&var-kafka_producer_type=All'],
+        notes_link         => 'https://wikitech.wikimedia.org/wiki/Event_Platform/EventGate',
     }
 
     ['eqiad', 'codfw'].each |String $site| {
@@ -164,7 +166,8 @@ class profile::prometheus::alerts (
             warning         => 0.5,
             critical        => 1,
             method          => 'ge',
-            dashboard_links => ["https://grafana.wikimedia.org/d/ePFPOkqiz/eventgate?orgId=1&refresh=1m&var-dc=${site} prometheus/k8s&var-service=eventgate-logging-external"],
+            dashboard_links => ["https://grafana.wikimedia.org/d/ePFPOkqiz/eventgate?orgId=1&refresh=1m&var-dc=${site}+prometheus/k8s&var-service=eventgate-logging-external"],
+            notes_link      => 'https://wikitech.wikimedia.org/wiki/Event_Platform/EventGate',
         }
 
         monitoring::check_prometheus { "eventgate_logging_external_errors_${site}":
@@ -174,7 +177,8 @@ class profile::prometheus::alerts (
             warning         => 0.5,
             critical        => 1,
             method          => 'ge',
-            dashboard_links => ["https://grafana.wikimedia.org/d/ePFPOkqiz/eventgate?orgId=1&refresh=1m&var-dc=${site} prometheus/k8s&var-service=eventgate-logging-external"],
+            dashboard_links => ["https://grafana.wikimedia.org/d/ePFPOkqiz/eventgate?orgId=1&refresh=1m&var-dc=${site}+prometheus/k8s&var-service=eventgate-logging-external"],
+            notes_link      => 'https://wikitech.wikimedia.org/wiki/Event_Platform/EventGate',
         }
     }
 
