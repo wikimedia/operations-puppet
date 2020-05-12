@@ -25,7 +25,8 @@ class PuppetDBApi(object):
     def cacert(self):
         if self._cacert is None:
             self._cacert = subprocess.check_output(
-                ['puppet', 'config', 'print', 'localcacert']).decode().strip()
+                ['puppet', 'config', 'print', '--section', 'master', 'localcacert']
+            ).decode().strip()
         return self._cacert
 
     def url_for(self, endpoint):
