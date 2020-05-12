@@ -1577,10 +1577,11 @@ class profile::prometheus::ops (
         }
     ]
     prometheus::class_config { "netbox_scripts_exporter_${::site}":
-        dest       => "${targets_path}/netbox_scripts_exporter_${::site}.yaml",
-        site       => $::site,
-        class_name => 'role::netbox::frontend',
-        port       => 8443
+        dest           => "${targets_path}/netbox_scripts_exporter_${::site}.yaml",
+        site           => $::site,
+        hostnames_only => false,
+        class_name     => 'role::netbox::frontend',
+        port           => 8443
     }
 
     prometheus::server { 'ops':
