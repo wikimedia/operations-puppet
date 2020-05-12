@@ -275,7 +275,7 @@ groups:
               esanders, sukhe, jfishback, iflorez, mayakpwiki, conniecc1, abi, mgerlach, dedcode,
               kevinbazira, keepit-ssh, jiji, cohi, mstyles, accraze, kzeta, snowick,
               aarora, zpapierski, knissen, jiawang, mholloway-shell, joewalsh, tarrow,
-              itamar, phedenskog, aaron, dpifke, aklapper, jmads, andrew-wmde]
+              itamar, phedenskog, aaron, dpifke, aklapper, jmads, andrew-wmde, daniram]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata]
   analytics-admins:
@@ -3697,6 +3697,17 @@ users:
     gid: 500
     ssh_keys:
       - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICHjbEiVf5Z7L4yrqByE9kVcRtR3MTmwyPg65l3LPZc7 rkemper@wikimedia.org'
+  daniram:
+    ensure: present
+    realname: Daniele Rama
+    email: daniele.rama@unito.it
+    uid: 24065
+    gid: 500
+    ssh_keys:
+      - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMzKRxyFfYw/A8UIQAm6o6hTdVOKCjgdh+qsXlzOGBT4 daniele@MacBook-Pro-di-Daniele.local'
+    expiry_date: 2020-07-26
+    expiry_contact: mredi@wikimedia.org
+    krb: present
 ldap_only_users:
   abartov:
     ensure: present
