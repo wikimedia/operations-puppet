@@ -10,7 +10,7 @@ class profile::discovery_dashboards::production {
     # Set up clones of individual dashboard repos, triggering a restart
     # of the Shiny Server service if any of the clones are updated:
     git::clone { 'wikimedia/discovery/rainbow':
-        ensure    => 'latest',
+        ensure    => 'absent',
         directory => '/srv/shiny-server/metrics',
         notify    => Service['shiny-server'],
         branch    => 'master',
@@ -27,7 +27,7 @@ class profile::discovery_dashboards::production {
         branch    => 'master',
     }
     git::clone { 'wikimedia/discovery/wetzel':
-        ensure    => 'latest',
+        ensure    => 'absent',
         directory => '/srv/shiny-server/maps',
         notify    => Service['shiny-server'],
         branch    => 'master',
