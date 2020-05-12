@@ -53,6 +53,7 @@ def parse_args():
     if args.rename is not None and args.rename_mgmt is None:
         mgmts.update(lib.get_mgmts([args.rename]))
         fqdns.append(mgmts[args.rename])
+        args.rename_mgmt = mgmts[args.rename]
 
     # Perform a quick sanity check on the host and mgmt
     for name in fqdns:
