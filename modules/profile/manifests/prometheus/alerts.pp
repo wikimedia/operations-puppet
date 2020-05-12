@@ -169,7 +169,7 @@ class profile::prometheus::alerts (
         }
 
         monitoring::check_prometheus { "eventgate_logging_external_errors_${site}":
-            description     => 'Elevated errors for eventgate-logging-external',
+            description     => "Elevated errors for eventgate-logging-external ${site}",
             query           => 'service_status:service_runner_request_duration_seconds:50pct5m{service="eventgate-logging-external",status="5xx"}',
             prometheus_url  => "http://prometheus.svc.${site}.wmnet/k8s",
             warning         => 0.5,
