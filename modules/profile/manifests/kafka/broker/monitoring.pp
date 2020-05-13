@@ -31,13 +31,18 @@ class profile::kafka::broker::monitoring (
     # This will render the config file, declare the jmx_exporter_instance,
     # and configure ferm.
     profile::prometheus::jmx_exporter { "kafka_broker_${::hostname}":
-        hostname         => $::hostname,
-        port             => $prometheus_jmx_exporter_port,
-        prometheus_nodes => $prometheus_nodes,
-        labels           => {'kafka_cluster' => $kafka_cluster},
-        config_file      => $jmx_exporter_config_file,
-        config_dir       => $config_dir,
-        source           => 'puppet:///modules/profile/kafka/broker_prometheus_jmx_exporter.yaml',
+        hostname                 => $::hostname,
+        port                     => $prometheus_jmx_exporter_port,
+        prometheus_nodes         => $prometheus_nodes,
+        # Allow each kafka broker node access to other broker's prometheus JMX exporter port.
+        # This will help us use kafka-tools to calculate partition reassignements
+        # based on broker metrics like partition sizes, etc.
+        # https://github.com/linkedin/kafka-tools/tree/master/kafka/tools/assigner
+        extra_ferm_allowed_nodes => $config['brokers']['array'],
+        labels                   => {'kafka_cluster' => $kafka_cluster},
+        config_file              => $jmx_exporter_config_file,
+        config_dir               => $config_dir,
+        source                   => 'puppet:///modules/profile/kafka/broker_prometheus_jmx_exporter.yaml',
     }
 
     ### Icinga alerts

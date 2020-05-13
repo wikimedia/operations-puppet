@@ -50,6 +50,10 @@
 #    so be careful not to override that one (unless you really mean to!)
 #    Default: {}
 #
+#  [*extra_ferm_allowed_nodes*]
+#    In addition to $prometheus_nodes, nodes in this list will also be allowed to talk to the
+#    prometheus jmx exporter in ferm rules.
+#
 define profile::prometheus::jmx_exporter (
     $hostname,
     $port,
@@ -59,6 +63,7 @@ define profile::prometheus::jmx_exporter (
     $content = undef,
     $source  = undef,
     $labels = {},
+    Array[String] $extra_ferm_allowed_nodes = [],
 ) {
     if $source == undef and $content == undef {
         fail('you must provide either "source" or "content"')
@@ -99,10 +104,10 @@ define profile::prometheus::jmx_exporter (
         labels   => $labels,
     }
 
-    $prometheus_nodes_ferm = join($prometheus_nodes, ' ')
+    $allowed_nodes_to_prometheus_exporter_ferm = join($prometheus_nodes + $extra_ferm_allowed_nodes, ' ')
     ferm::service { "${title}_jmx_exporter":
         proto  => 'tcp',
         port   => $port,
-        srange => "(@resolve((${prometheus_nodes_ferm})) @resolve((${prometheus_nodes_ferm}), AAAA))",
+        srange => "(@resolve((${allowed_nodes_to_prometheus_exporter_ferm})) @resolve((${allowed_nodes_to_prometheus_exporter_ferm}), AAAA))",
     }
 }
