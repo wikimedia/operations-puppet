@@ -6,7 +6,7 @@ compress: False
 archive: False
 retention: 18
 statistics:
-  host: 'db1115.eqiad.wmnet'
+  host: 'db2093.codfw.wmnet'
   user: '<%= @stats_user %>'
   password: '<%= @stats_password %>'
   database: 'zarcillo'
@@ -34,4 +34,6 @@ sections:
   m3:
     host: 'db2078.codfw.wmnet'
     port: 3323
-# Missing tendril on codfw
+  zarcillo:
+    host: 'db2093.codfw.wmnet'
+

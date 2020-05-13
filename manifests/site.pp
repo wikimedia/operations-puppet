@@ -637,12 +637,12 @@ node /^db2(094|095)\.codfw\.wmnet/ {
 
 # tendril db
 node 'db1115.eqiad.wmnet' {
-    role(mariadb::misc::tendril_and_zarcillo)
+    role(mariadb::misc::tendril)
 }
 
-# Standby tendril host
+# Zarcillo db / standby tendril host
 node 'db2093.codfw.wmnet' {
-    role(mariadb::misc::tendril)
+    role(mariadb::misc::zarcillo)
 }
 
 # eqiad backup sources
