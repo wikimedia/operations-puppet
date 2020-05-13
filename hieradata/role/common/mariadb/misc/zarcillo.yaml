@@ -84,9 +84,9 @@ profile::mariadb::backup::check::backups:
     dump:
     - eqiad
     - codfw
-  tendril:
+  zarcillo:
     dump:
-    - eqiad
+    - codfw
 profile::mariadb::backup::check::freshness:
   dump: 691200
   snapshot: 259200
