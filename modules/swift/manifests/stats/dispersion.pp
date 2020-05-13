@@ -1,6 +1,6 @@
 class swift::stats::dispersion(
     String $swift_cluster,
-    $storage_policies = $::swift::params::storage_policies,
+    Boolean $storage_policies = true,
     $statsd_host   = 'statsd.eqiad.wmnet',
     $statsd_port   = 8125,
     $statsd_prefix = "swift.${swift_cluster}.dispersion",

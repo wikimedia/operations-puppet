@@ -1,7 +1,6 @@
-# XXX support additional storage policies
 class swift (
-    $hash_path_suffix,
-    $storage_policies = $swift::params::storage_policies,
+    String $hash_path_suffix,
+    Boolean $storage_policies = true,
 ) {
     # Recommendations from Swift -- see <http://tinyurl.com/swift-sysctl>.
     sysctl::parameters { 'swift_performance':

@@ -1,6 +1,6 @@
 class swift::ring (
     String $swift_cluster,
-    $storage_policies = $swift::params::storage_policies,
+    Boolean $storage_policies = true,
 ) {
     # lint:ignore:puppet_url_without_modules
     file { '/etc/swift/account.builder':
