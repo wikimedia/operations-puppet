@@ -64,9 +64,11 @@ profile::mariadb::backup::check::backups:
     - codfw
   es4:
     dump:
+    - eqiad
     - codfw
   es5:
     dump:
+    - eqiad
     - codfw
   m1:
     dump:
