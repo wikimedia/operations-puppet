@@ -358,6 +358,12 @@ trafficserver_throttled_connections_total:
       value: proxy.process.net.connections_throttled_in
     - labels: {direction: outbound}
       value: proxy.process.net.connections_throttled_out
+trafficserver_active_connections_throttled_total:
+  documentation: Total throttled active connections
+  type: counter
+  values:
+    - labels: {direction: inbound}
+      value: proxy.process.net.max.active.connections_throttled_in
 trafficserver_ssl_errors_total:
   documentation: Total SSL/TLS errors
   type: counter
