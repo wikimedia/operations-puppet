@@ -118,6 +118,10 @@ profile::kubernetes::deployment_server::services:
     username: changeprop
     group: wikidev
     mode: '0640'
+  changeprop-jobqueue:
+    username: changeprop-jobqueue
+    group: wikidev
+    mode: '0640'
 
 
 # Specified in the private repo in this form
@@ -173,6 +177,8 @@ profile::kubernetes::deployment_server::services:
 #  eventgate-analytics-external:
 #    token: dummy
 #  changeprop:
+#    token: dummy
+#  changeprop-jobqueue:
 #    token: dummy
 
 profile::ci::kubernetes_config::user: jenkins
