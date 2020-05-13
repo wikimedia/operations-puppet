@@ -14,6 +14,7 @@ class swift::proxy (
     $dispersion_account        = undef,
     $thumborhost               = '',
     $inactivedc_thumborhost    = '',
+    $enable_wmf_filters        = true,
 ) {
     package {[
         'swift-proxy',

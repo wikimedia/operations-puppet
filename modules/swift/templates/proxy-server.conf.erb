@@ -12,7 +12,12 @@ log_statsd_sample_rate_factor = <%= @statsd_sample_rate_factor %>
 <% end -%>
 
 [pipeline:main]
+<% if @enable_wmf_filters -%>
 pipeline = ensure_max_age rewrite healthcheck cache container_sync tempurl ratelimit tempauth cors proxy-logging proxy-server
+<% else %>
+pipeline = healthcheck cache container_sync tempurl ratelimit tempauth proxy-logging proxy-server
+<% end -%>
+
 
 [app:proxy-server]
 use = egg:swift#proxy
@@ -55,6 +60,11 @@ memcache_serialization_support = 2
 # per worker!
 memcache_max_connections = 12
 
+[filter:proxy-logging]
+use = egg:swift#proxy_logging
+set access_log_facility = LOG_LOCAL1
+
+<% if @enable_wmf_filters -%>
 [filter:cors]
 paste.filter_factory = wmf.cors:filter_factory
 
@@ -64,10 +74,6 @@ methods_list = HEAD GET
 status_list = 200
 max_age = 86400
 host_list = upload.wikimedia.org
-
-[filter:proxy-logging]
-use = egg:swift#proxy_logging
-set access_log_facility = LOG_LOCAL1
 
 [filter:rewrite]
 # the auth system turns our login and key into an account / token pair.
@@ -89,3 +95,4 @@ thumbnail_update_expiry_headers = true
 thumbnail_expiry = 2592000 # 30 days
 thumbnail_user = 'user_thumbor'
 thumbnail_key = <%= @credentials['thumbor'] %>
+<% end -%>
