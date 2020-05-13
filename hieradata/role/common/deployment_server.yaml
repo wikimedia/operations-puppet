@@ -324,6 +324,12 @@ profile::kubernetes::deployment_server::services:
     namespace: changeprop
     mode: '0640'
     owner: mwdeploy
+  changeprop-jobqueue:
+    username: changeprop-jobqueue
+    group: wikidev
+    namespace: changeprop-jobqueue
+    mode: '0640'
+    owner: mwdeploy
 
 # Specified in the private repo in this form
 #profile::kubernetes::deployment_server::tokens:
@@ -362,6 +368,8 @@ profile::kubernetes::deployment_server::services:
 #  eventgate-analytics-external:
 #    token: dummy
 #  changeprop:
+#    token: dummy
+#  changeprop-jobqueue:
 #    token: dummy
 #
 
