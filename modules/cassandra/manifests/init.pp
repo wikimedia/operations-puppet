@@ -145,8 +145,25 @@ class cassandra (
         fail("${target_version} is not a valid Cassandra target version!")
     }
 
-    package { 'openjdk-8-jdk':
-        ensure  => 'installed',
+    # Cassandra fully supports opendjdk-11 only from 4.0,
+    # and on Buster openjdk-8 is not available.
+    # https://issues.apache.org/jira/browse/CASSANDRA-9608
+    if os_version('debian == buster') {
+        apt::package_from_component { 'openjdk-8':
+            component => 'component/jdk8',
+            packages  => ['openjdk-8-jdk'],
+        }
+
+        alternatives::select { 'java':
+            path    => '/usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java',
+            require => Package['openjdk-8-jdk']
+        }
+    }
+
+    if os_version('debian <= stretch') {
+        package { 'openjdk-8-jdk':
+            ensure  => 'installed',
+        }
     }
 
     # Tools packages
