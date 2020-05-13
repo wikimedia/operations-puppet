@@ -18,9 +18,16 @@
     </Directory>
 
     <Directory /srv/org/wikimedia/static-codereview>
-        Options Indexes FollowSymLinks MultiViews
         AllowOverride None
         Require all granted
+    </Directory>
+
+    <Directory /srv/org/wikimedia/static-codereview/MediaWiki>
+        Options -Indexes
+    </Directory>
+
+    <Directory /srv/org/wikimedia/static-codereview/pywikipedia>
+        Options -Indexes
     </Directory>
 
 ErrorLog /var/log/apache2/error.log
