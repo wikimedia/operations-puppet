@@ -38,9 +38,9 @@ class ferm {
         content => file('ferm/ferm_status.py')
     }
     service { 'ferm':
-        hasstatus => false,
-        status    => '/usr/local/sbin/ferm-status',
-        require   => [
+        ensure  => 'running',
+        status  => '/usr/local/sbin/ferm-status',
+        require => [
             Package['ferm'],
             File['/usr/local/sbin/ferm-status'],
         ]
