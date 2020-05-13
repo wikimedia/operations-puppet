@@ -86,6 +86,11 @@ class role::prometheus::services {
         proxy_pass => 'http://localhost:9903/services',
     }
 
+    profile::thanos::sidecar { 'services':
+        prometheus_port     => 9903,
+        prometheus_instance => 'services',
+    }
+
     prometheus::rule { 'rules_services.yml':
         instance => 'services',
         source   => 'puppet:///modules/role/prometheus/rules_services.yml',

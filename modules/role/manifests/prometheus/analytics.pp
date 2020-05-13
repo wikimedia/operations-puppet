@@ -244,6 +244,11 @@ class role::prometheus::analytics {
         proxy_pass => 'http://localhost:9905/analytics',
     }
 
+    profile::thanos::sidecar { 'analytics':
+        prometheus_port     => 9905,
+        prometheus_instance => 'analytics',
+    }
+
     prometheus::rule { 'rules_analytics.yml':
         instance => 'analytics',
         source   => 'puppet:///modules/role/prometheus/rules_analytics.yml',
