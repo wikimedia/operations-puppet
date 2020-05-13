@@ -96,16 +96,32 @@ class profile::lists (
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Mailman',
     }
 
-    nrpe::monitor_service { 'procs_mailmanctl':
-        description  => 'mailman_ctl',
-        nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -u list --ereg-argument-array=\'/mailman/bin/mailmanctl\'',
-        notes_url    => 'https://wikitech.wikimedia.org/wiki/Mailman',
-    }
+    # Don't monitor mailman processes on standby hosts. The mailman service is stopped there.
+    if $facts['fqdn'] != $standby_host {
 
-    nrpe::monitor_service { 'procs_mailman_qrunner':
-        description  => 'mailman_qrunner',
-        nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 8:8 -u list --ereg-argument-array=\'/mailman/bin/qrunner\'',
-        notes_url    => 'https://wikitech.wikimedia.org/wiki/Mailman',
+        nrpe::monitor_service { 'procs_mailmanctl':
+            description  => 'mailman_ctl',
+            nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -u list --ereg-argument-array=\'/mailman/bin/mailmanctl\'',
+            notes_url    => 'https://wikitech.wikimedia.org/wiki/Mailman',
+        }
+
+        nrpe::monitor_service { 'procs_mailman_qrunner':
+            description  => 'mailman_qrunner',
+            nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 8:8 -u list --ereg-argument-array=\'/mailman/bin/qrunner\'',
+            notes_url    => 'https://wikitech.wikimedia.org/wiki/Mailman',
+        }
+
+        nrpe::monitor_service { 'mailman_queue':
+            description  => 'mailman_queue_size',
+            nrpe_command => '/usr/bin/sudo -u list /usr/local/lib/nagios/plugins/check_mailman_queue 25 25 25',
+            notes_url    => 'https://wikitech.wikimedia.org/wiki/Mailman',
+        }
+
+        sudo::user { 'nagios_mailman_queue':
+            user       => 'nagios',
+            privileges => ['ALL = (list) NOPASSWD: /usr/local/lib/nagios/plugins/check_mailman_queue'],
+        }
+
     }
 
     monitoring::service { 'mailman_listinfo':
@@ -136,17 +152,6 @@ class profile::lists (
         group  => 'root',
         mode   => '0755',
         source => 'puppet:///modules/icinga/check_mailman_queue.sh',
-    }
-
-    sudo::user { 'nagios_mailman_queue':
-        user       => 'nagios',
-        privileges => ['ALL = (list) NOPASSWD: /usr/local/lib/nagios/plugins/check_mailman_queue'],
-    }
-
-    nrpe::monitor_service { 'mailman_queue':
-        description  => 'mailman_queue_size',
-        nrpe_command => '/usr/bin/sudo -u list /usr/local/lib/nagios/plugins/check_mailman_queue 25 25 25',
-        notes_url    => 'https://wikitech.wikimedia.org/wiki/Mailman',
     }
 
     # Mtail program to gather smtp send duration and count
