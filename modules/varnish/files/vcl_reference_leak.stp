@@ -1,0 +1,38 @@
+#!/usr/bin/env stap
+# vcl_reference_leak.stp - debug Varnsih VCL reference leak
+#
+# https://github.com/varnishcache/varnish-cache/issues/2228
+# https://phabricator.wikimedia.org/T236754
+#
+
+global v
+
+probe process("/usr/sbin/varnishd").function("vcl_get") {
+    if ($vcl->label) {
+        vname = user_string_warn($vcl->label->loaded_name)
+    } else {
+        vname = user_string_warn($vcl->loaded_name)
+    }
+
+    if (vname != "")
+        v[vname]++
+}
+
+probe process("/usr/sbin/varnishd").function("VCL_Ref") {
+    vname = user_string_warn($vcl->loaded_name)
+    if (vname != "")
+        v[vname]++
+}
+
+probe process("/usr/sbin/varnishd").function("VCL_Rel") {
+    vname = user_string_warn($vcc->loaded_name)
+    if (vname != "")
+        v[vname]--
+}
+
+probe timer.ms(1000) {
+    println("<CUT HERE>")
+    foreach (vcl in v) {
+        printf("%s: %d\n", vcl, v[vcl])
+    }
+}
