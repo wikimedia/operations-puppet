@@ -2136,6 +2136,31 @@ host db2135 {
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
+host db2136 {
+    hardware ethernet 2C:EA:7F:3F:F7:E8;
+    fixed-address db2136.codfw.wmnet;
+}
+
+host db2137 {
+    hardware ethernet 2C:EA:7F:3F:E9:4B;
+    fixed-address db2137.codfw.wmnet;
+}
+
+host db2138 {
+    hardware ethernet 2C:EA:7F:3F:CE:CD;
+    fixed-address db2138.codfw.wmnet;
+}
+
+host db2139 {
+    hardware ethernet 2C:EA:7F:3F:ED:0D;
+    fixed-address db2139.codfw.wmnet;
+}
+
+host db2140 {
+    hardware ethernet 2C:EA:7F:3F:EA:94;
+    fixed-address db2140.codfw.wmnet;
+}
+
 host dbprov1001 {
     hardware ethernet B0:26:28:23:50:90;
     fixed-address dbprov1001.eqiad.wmnet;
