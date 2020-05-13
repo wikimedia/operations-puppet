@@ -423,6 +423,15 @@ class profile::prometheus::ops (
         port       => 9117,
     }
 
+    # Special config for Apache on Phabricator deployment
+    prometheus::class_config{ "apache_gerrit_${::site}":
+        dest       => "${targets_path}/apache_gerrit_${::site}.yaml",
+        site       => $::site,
+        class_name => 'role::gerrit',
+        port       => 9117,
+    }
+
+
     # Job definition for icinga_exporter
     $icinga_jobs = [
       {

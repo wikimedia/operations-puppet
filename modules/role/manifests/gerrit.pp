@@ -11,6 +11,8 @@ class role::gerrit {
     include ::passwords::gerrit
     include ::profile::gerrit::server
     include ::profile::gerrit::migration
+    include ::profile::prometheus::apache_exporter
+
     if $::realm == 'production' {
         include ::profile::waf::apache2::administrative
     }
