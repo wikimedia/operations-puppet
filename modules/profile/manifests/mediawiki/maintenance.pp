@@ -108,7 +108,7 @@ class profile::mediawiki::maintenance {
         ensure      => present,
         auto_sync   => false,
         source_host => 'mwmaint1002.eqiad.wmnet',
-        dest_host   => 'miscweb1002.eqiad.wmnet',
+        dest_host   => 'miscweb2001.codfw.wmnet',
         module_path => '/home',
     }
 }
