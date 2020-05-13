@@ -126,6 +126,7 @@ Components: main
  component/ci
  component/jdk8
  component/mtail
+ component/spicerack
  component/wmf-sre-laptop
  thirdparty/amd-rocm25
  thirdparty/amd-rocm26

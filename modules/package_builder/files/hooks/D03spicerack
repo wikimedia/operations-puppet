@@ -4,10 +4,10 @@
 DIST=${GBP_PBUILDER_DIST:-$DIST}
 
 # Avoid running hooks if SPICERACK is not specified
-if [ "$SPICERACK" = "yes" ] && [ "$DIST" = "stretch" ]; then
-    cat > /etc/apt/sources.list.d/wikimedia-spicerack.list <<-'EOF'
-    deb http://apt.wikimedia.org/wikimedia stretch-wikimedia component/spicerack
-    deb-src http://apt.wikimedia.org/wikimedia stretch-wikimedia component/spicerack
+if [ "$SPICERACK" = "yes" ]; then
+    cat > /etc/apt/sources.list.d/wikimedia-spicerack.list <<-EOF
+    deb http://apt.wikimedia.org/wikimedia ${DIST}-wikimedia component/spicerack
+    deb-src http://apt.wikimedia.org/wikimedia ${DIST}-wikimedia component/spicerack
 EOF
     apt-get update
 fi

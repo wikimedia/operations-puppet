@@ -71,7 +71,7 @@ define package_builder::pbuilder_hook(
         source => 'puppet:///modules/package_builder/hooks/D04php72'
     }
 
-    # on stretch, add a hook for building Spicerack dependencies from a dedicated component
+    # on stretch and buster, add a hook for building Spicerack dependencies from a dedicated component
     file { "${basepath}/hooks/${distribution}/D03spicerack":
         ensure => present,
         owner  => 'root',
