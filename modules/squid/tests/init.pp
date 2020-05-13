@@ -1,5 +1,5 @@
 #
 
-class { 'squid3':
+class { 'squid':
     config_content => 'NO CONTENT',
 }

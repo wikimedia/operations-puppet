@@ -1,4 +1,4 @@
-# Class: squid3
+# Class: squid
 #
 # This class installs Squid and configures it
 #
@@ -10,11 +10,11 @@
 # Requires:
 #
 # Sample Usage:
-#   class { 'squid3': config_source => 'puppet:///modules/foo/squid3-foo.conf' }
-#   class { 'squid3': config_content => template('foo/squid3-foo.conf.erb') }
+#   class { 'squid': config_source => 'puppet:///modules/foo/squid-foo.conf' }
+#   class { 'squid': config_content => template('foo/squid-foo.conf.erb') }
 
 
-class squid3(
+class squid(
     Wmflib::Ensure $ensure  = present,
     $config_content = undef,
     $config_source  = undef,
@@ -32,7 +32,7 @@ class squid3(
 
     logrotate::conf { 'squid':
         ensure => $ensure,
-        source => 'puppet:///modules/squid3/squid-logrotate',
+        source => 'puppet:///modules/squid/squid-logrotate',
     }
 
     package { 'squid':

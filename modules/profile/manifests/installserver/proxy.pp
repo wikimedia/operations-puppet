@@ -3,7 +3,7 @@ class profile::installserver::proxy(
     Wmflib::Ensure $ensure = lookup('profile::installserver::proxy::ensure'),
 ){
 
-    class { 'squid3':
+    class { 'squid':
         ensure         => $ensure,
         config_content => template('role/caching-proxy/squid.conf.erb'),
     }
