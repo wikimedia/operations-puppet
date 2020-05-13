@@ -1,0 +1,423 @@
+#!/usr/bin/env python3
+
+# (C) 2020 by Arturo Borrero Gonzalez <aborrero@wikimedia.org>
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 3 of the License, or
+# (at your option) any later version.
+#
+
+# Read the docs here:
+# TODO: https://wikitech.wikimedia.org/wiki/Portal:Toolforge/Admin/Kubernetes/Upgrading_Kubernetes
+
+import sys
+import argparse
+import subprocess
+import logging
+import yaml
+
+
+class Context:
+    # don't panic, these yaml are here just to have some example data in case
+    # of a dry run, nothing else!
+    example1_yaml = """
+    apiVersion: v1
+    kind: Node
+    metadata:
+      name: example
+    status:
+      conditions:
+      - status: "True"
+        type: Ready
+      nodeInfo:
+        kubeProxyVersion: v1.15.6
+        kubeletVersion: v1.15.6
+    """
+    example2_yaml = """
+    apiVersion: v1
+    kind: Node
+    metadata:
+      name: example
+    status:
+      conditions:
+      - status: "True"
+        type: Ready
+      nodeInfo:
+        kubeProxyVersion: v1.16.6
+        kubeletVersion: v1.16.6
+    """
+
+    def __init__(self):
+        self.args = None
+        self.node_list = []
+        self.skip = False
+        self.control_fqdn = ""
+        self.current_node = ""
+        self.current_node_fqdn = ""
+
+
+# our global data, to easily share stuff between different stages
+ctx = Context()
+
+
+def parse_args():
+    description = (
+        "Utility to automate upgrading a k8s node in our kubeadm-based deployments"
+    )
+    parser = argparse.ArgumentParser(description=description)
+    parser.add_argument(
+        "--control",
+        required=True,
+        help="The hostname of the control plane node to use. Typical value are something like "
+        "'tools-k8s-control-1' or 'toolsbeta-test-k8s-control-1'. The FQDN will be built using "
+        "the project and domain argument",
+    )
+    parser.add_argument(
+        "--project",
+        default="toolsbeta",
+        help="The CloudVPS project name. Typical values are: 'tools', 'toolsbeta' or 'paws'. "
+        "This will be used to build FQDNs. Defaults to '%(default)s'",
+    )
+    parser.add_argument(
+        "--domain",
+        default="eqiad1.wikimedia.cloud",
+        help="The CloudVPS domain for building FQDNs. Typical values are: 'eqiad1.wikimedia.cloud'"
+        " or 'eqiad.wmflabs'. Defaults to '%(default)s'",
+    )
+    parser.add_argument(
+        "--src-version",
+        default="1.15.6",
+        help="Source/original kubernetes version. Defaults to '%(default)s'",
+    )
+    parser.add_argument(
+        "--dst-version",
+        default="1.16.9",
+        help="Destination/target kubernetes version. Defaults to '%(default)s'",
+    )
+    parser.add_argument(
+        "-n",
+        "--node",
+        action="append",
+        help="Hostname of target node to upgrade. Can be specified multiple times for multiple "
+        "nodes in the same script run. Can be combined with the '--file' option. The FQDN will "
+        "be built using the project and domain argument. Example: -n tools-k8s-worker-1 -n"
+        "tools-k8s-worker-2",
+    )
+    parser.add_argument(
+        "--file",
+        help="File with a list of target nodes to upgrade. The file should contain a target "
+        "hostname per line. The behavior is the same as in the '--node' option, and can be "
+        "combined",
+    )
+    parser.add_argument(
+        "-p",
+        "--no-pause",
+        action="store_true",
+        help="If this option is present, this script won't prompt for a confirmation between each "
+        "node upgrade",
+    )
+    parser.add_argument(
+        "-d",
+        "--dry-run",
+        action="store_true",
+        help="Dry run: only show what this script would do, but don't do it for real",
+    )
+    parser.add_argument(
+        "--debug", action="store_true", help="To active debug mode",
+    )
+
+    return parser.parse_args()
+
+
+def ssh(host, cmd, capture_output=False):
+    ssh_cmd = 'ssh {} "{}"'.format(host, cmd)
+    if ctx.args.dry_run:
+        logging.info("DRY: {}".format(ssh_cmd))
+        return
+
+    logging.debug(ssh_cmd)
+    r = subprocess.run(ssh_cmd, shell=True, capture_output=capture_output)
+    if r.returncode != 0:
+        logging.critical("failed SSH command, skipping: {}".format(ssh_cmd))
+        ctx.skip = True
+
+    if r.stdout:
+        return r.stdout.decode("utf-8")
+
+
+def stage_generate_node_list():
+    logging.info("stage: generating node list")
+    if ctx.args.file:
+        try:
+            f = open(ctx.args.file)
+            for line in f.readlines():
+                ctx.node_list.append(line[:-1])  # clean '\n'
+        except OSError as e:
+            logging.warning("can't open file: {}".format(e))
+
+    if ctx.args.node:
+        for node in ctx.args.node:
+            ctx.node_list.append(node)
+
+    nodes = len(ctx.node_list)
+    if nodes == 0:
+        logging.info("node list is empty. Doing nothing...")
+        sys.exit(0)
+
+    logging.debug("node list contains {} elements".format(nodes))
+
+
+def stage_refresh():
+    # this is the first stage. No need to check if this should be skipped.
+    logging.info("stage: refreshing node {}".format(ctx.current_node))
+    cmd = "sudo puppet agent --enable && sudo run-puppet-agent && sudo apt-get update"
+    ssh(ctx.current_node_fqdn, cmd)
+
+
+def check_package_versions(node_fqdn, package):
+    # validate that the installed package version is the right one
+    cmd = "apt-cache policy {} | grep Installed".format(package)
+    output = ssh(node_fqdn, cmd, capture_output=True)
+    if ctx.args.dry_run:
+        output = "Installed: {}".format(ctx.args.src_version)
+    if output is None:
+        logging.warning("couldn't check {} version in {}".format(package, node_fqdn))
+        ctx.skip = True
+        return
+
+    version = output.strip().split()[1]
+    logging.debug(
+        "{}: {} installed: {} src_version: {}".format(
+            ctx.current_node, package, version, ctx.args.src_version
+        )
+    )
+    if ctx.args.src_version not in version:
+        logging.warning(
+            "{}: unexpected installed {} deb version ({}), skipping".format(
+                ctx.current_node, package, version
+            )
+        )
+        ctx.skip = True
+        return
+
+    # validate that the candidate package version is the right one
+    cmd = "apt-cache policy {} | grep Candidate".format(package)
+    output = ssh(node_fqdn, cmd, capture_output=True)
+    if ctx.args.dry_run:
+        output = "Candidate: {}".format(ctx.args.dst_version)
+    if output is None:
+        logging.warning("couldn't check {} version in {}".format(package, node_fqdn))
+        ctx.skip = True
+        return
+    version = output.strip().split()[1]
+    logging.debug(
+        "{}: {} candidate: {} dst_version: {}".format(
+            ctx.current_node, package, version, ctx.args.dst_version
+        )
+    )
+    if ctx.args.dst_version not in version:
+        logging.warning(
+            "{}: unexpected candidate {} deb version ({}), skipping".format(
+                ctx.current_node, package, version
+            )
+        )
+        ctx.skip = True
+        return
+
+
+def check_current_node_ready():
+    # validate that kubernetes sees the node as Ready
+    cmd = "sudo -i kubectl get node {} -o yaml".format(ctx.current_node)
+    output = ssh(ctx.control_fqdn, cmd, capture_output=True)
+    if ctx.args.dry_run:
+        output = ctx.example1_yaml
+    if output is None:
+        logging.error(
+            "unable to get node yaml for {}, skipping".format(ctx.current_node)
+        )
+        ctx.skip = True
+        return
+    status_yaml = yaml.safe_load(output)
+    conditions = status_yaml["status"]["conditions"]
+    for condition in conditions:
+        if condition.get("type") == "Ready" and condition.get("status") == "True":
+            logging.debug("node {} is ready".format(ctx.current_node))
+            return  # ready!
+
+    logging.warning("current node {} is not ready in k8s".format(ctx.current_node))
+    ctx.skip = True
+
+
+def check_current_node_versions(version):
+    # validate that kubernetes sees the right version of kubelet and kube-proxy
+    cmd = "sudo -i kubectl get node {} -o yaml".format(ctx.current_node)
+    output = ssh(ctx.control_fqdn, cmd, capture_output=True)
+    if ctx.args.dry_run:
+        output = (
+            ctx.example1_yaml if version in ctx.args.src_version else ctx.example2_yaml
+        )
+    if output is None:
+        logging.error(
+            "unable to get node yaml for {}, skipping".format(ctx.current_node)
+        )
+        ctx.skip = True
+        return
+    status_yaml = yaml.safe_load(output)
+    info = status_yaml["status"]["nodeInfo"]
+    if version in info.get("kubeletVersion") and version in info.get(
+        "kubeProxyVersion"
+    ):
+        logging.debug("node {} matches version {}".format(ctx.current_node, version))
+        return  # OK
+
+    logging.warning(
+        "current node {} does not match a component version in k8s, skipping".format(
+            ctx.current_node
+        )
+    )
+    ctx.skip = True
+
+
+def stage_prechecks():
+    # validate the node is ready to be upgraded
+    if ctx.skip is True:
+        return
+
+    logging.info("stage: precheks for node {}".format(ctx.current_node))
+
+    check_current_node_ready()
+    if ctx.skip is True:
+        return
+
+    check_current_node_versions(ctx.args.src_version)
+
+    node_fqdn = ctx.current_node_fqdn
+    check_package_versions(node_fqdn, "kubeadm")
+    if ctx.skip is True:
+        return
+    check_package_versions(node_fqdn, "kubectl")
+    if ctx.skip is True:
+        return
+    check_package_versions(node_fqdn, "kubelet")
+
+
+def stage_drain():
+    # drain the node in kubernetes
+    if ctx.skip is True:
+        return
+
+    logging.info("stage: drain for node {}".format(ctx.current_node))
+
+    args = "--force --ignore--daemonsets --delete-local-data"
+    cmd = "sudo -i kubectl drain {} {}".format(args, ctx.current_node)
+    ssh(ctx.control_fqdn, cmd)
+
+
+def stage_upgrade():
+    # actually do the upgrade!
+    if ctx.skip is True:
+        return
+
+    logging.info("stage: upgrade for node {}".format(ctx.current_node))
+
+    pkgs = "kubeadm"
+    noprompt = (
+        '-o "Dpkg::Options::=--force-confdef" -o "Dpkg::Options::=--force-confold'
+    )
+    cmd = "sudo DEBIAN_FRONTEND=noninteractive apt-get install {} {} -y".format(
+        pkgs, noprompt
+    )
+    ssh(ctx.current_node_fqdn, cmd)
+    if ctx.skip is True:
+        return
+
+    cmd = "sudo kubeadm upgrade node"
+    ssh(ctx.current_node_fqdn, cmd)
+    if ctx.skip is True:
+        return
+
+    # TODO: verify candidate versions for docker and containerd.io
+    pkgs = "kubectl kubelet docker containerd.io"
+    noprompt = (
+        '-o "Dpkg::Options::=--force-confdef" -o "Dpkg::Options::=--force-confold'
+    )
+    cmd = "sudo DEBIAN_FRONTEND=noninteractive apt-get install {} {} -y".format(
+        pkgs, noprompt
+    )
+    ssh(ctx.current_node_fqdn, cmd)
+    if ctx.skip is True:
+        return
+
+    cmd = "sudo systemctl restart docker.service kubelet.service"
+    ssh(ctx.current_node_fqdn, cmd)
+
+
+def stage_postchecks():
+    # did the upgrade go fine?
+    if ctx.skip is True:
+        return
+
+    logging.info("stage: postchecks for node {}".format(ctx.current_node))
+
+    check_current_node_versions(ctx.args.dst_version)
+
+
+def stage_uncordon():
+    # repool the node after the upgrade!
+    if ctx.skip is True:
+        return
+
+    logging.info("stage: uncordon for node {}".format(ctx.current_node))
+
+    cmd = "sudo -i kubectl uncordon {}".format(ctx.current_node)
+    ssh(ctx.control_fqdn, cmd)
+
+
+def stage_pause():
+    # make sure we have time to check everything is OK
+    if ctx.skip is True:
+        return
+
+    if not ctx.args.no_pause:
+        confirm = input("continue? [y/N]: ")
+        if confirm[:1] != "y" and confirm[:1] != "Y":
+            sys.exit(0)
+
+
+def main():
+    global ctx
+    args = parse_args()
+    ctx.args = args
+
+    logging_format = "[%(filename)s] %(levelname)s: %(message)s"
+    if args.debug:
+        logging_level = logging.DEBUG
+    else:
+        logging_level = logging.INFO
+    logging.basicConfig(format=logging_format, level=logging_level, stream=sys.stdout)
+
+    ctx.control_fqdn = "{}.{}.{}".format(args.control, args.project, args.domain)
+
+    stage_generate_node_list()
+    for node_hostname in ctx.node_list:
+        ctx.current_node_fqdn = "{}.{}.{}".format(
+            node_hostname, args.project, args.domain
+        )
+        ctx.current_node = node_hostname
+        ctx.skip = False
+
+        stage_refresh()
+        stage_prechecks()
+        stage_drain()
+        stage_upgrade()
+        stage_postchecks()
+        stage_uncordon()
+        stage_pause()
+
+    logging.info("nothing else to do")
+    sys.exit(0)
+
+
+if __name__ == "__main__":
+    main()
