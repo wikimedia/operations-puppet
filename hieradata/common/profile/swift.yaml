@@ -1,0 +1,66 @@
+profile::swift::accounts:
+    super_admin:
+        access:       '.admin .reseller_admin'
+        account_name: 'AUTH_admin'
+        auth:         'http://ms-fe.svc.%{::site}.wmnet'
+        user:         'admin:admin'
+    mw_media:
+        access:       '.admin'
+        account_name: 'AUTH_mw'
+        auth:         'http://ms-fe.svc.%{::site}.wmnet'
+        user:         'mw:media'
+    mw_thumbor:
+        access:       ''
+        account_name: 'AUTH_mw'
+        auth:         'http://ms-fe.svc.%{::site}.wmnet'
+        user:         'mw:thumbor'
+        stats_enabled: 'no'
+    mw_thumbor-private:
+        access:       ''
+        account_name: 'AUTH_mw'
+        auth:         'http://ms-fe.svc.%{::site}.wmnet'
+        user:         'mw:thumbor-private'
+        stats_enabled: 'no'
+    dispersion:
+        access:       '.admin'
+        account_name: 'AUTH_dispersion'
+        auth:         'http://ms-fe.svc.%{::site}.wmnet'
+        user:         'swift:dispersion'
+    search_backup:
+        access:       '.admin'
+        account_name: 'AUTH_search'
+        auth:         'http://ms-fe.svc.%{::site}.wmnet'
+        user:         'search:backup'
+    docker_registry:
+        access:       '.admin'
+        account_name: 'AUTH_docker'
+        auth:         'http://swift.svc.%{::site}.wmnet'
+        user:         'docker:registry'
+    pagecompilation_zim:
+        access:       '.admin'
+        account_name: 'AUTH_pagecompilation'
+        auth:         'https://ms-fe.svc.%{::site}.wmnet'
+        user:         'pagecompilation:zim'
+    analytics_admin:
+        access:       '.admin'
+        account_name: 'AUTH_analytics'
+        auth:         'https://ms-fe.svc.%{::site}.wmnet'
+        user:         'analytics:admin'
+    netbox_attachments:
+        access:       '.admin'
+        account_name: 'AUTH_netbox'
+        auth:         'https://ms-fe.svc.%{::site}.wmnet'
+        user:         'netbox:attachments'
+    performance_arclamp: # https://phabricator.wikimedia.org/T244776
+        access:       '.admin'
+        account_name: 'AUTH_performance'
+        auth:         'https://ms-fe.svc.%{::site}.wmnet'
+        user:         'performance:arclamp'
+
+# keys are to be defined in private repo, e.g.:
+#profile::swift::accounts_keys:
+#    super_admin: <key>
+#    mw_media: <key>
+#    dispersion: <key>
+#    search_backup: <key>
+#    ...

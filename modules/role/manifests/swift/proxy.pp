@@ -1,6 +1,8 @@
 # filtertags: labs-project-deployment-prep labs-project-swift
 class role::swift::proxy (
     $use_tls = hiera('role::swift::proxy::use_tls', false),
+    $accounts = lookup('profile::swift::accounts'), # lint:ignore:wmf_styleguide
+    $accounts_keys = lookup('profile::swift::accounts_keys'), # lint:ignore:wmf_styleguide
 ) {
     system::role { 'swift::proxy':
         description => 'swift frontend proxy',
@@ -25,6 +27,8 @@ class role::swift::proxy (
 
     class { '::swift::proxy':
         statsd_metric_prefix => "swift.${swift_cluster}.${::hostname}",
+        accounts             => $accounts,
+        credentials          => $accounts_keys,
     }
 
     if $use_tls {

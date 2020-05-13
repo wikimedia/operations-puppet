@@ -4,6 +4,8 @@
 # filtertags: labs-project-deployment-prep
 class role::swift::stats_reporter {
     $swift_cluster = lookup('profile::swift::cluster')
+    $accounts = lookup('profile::swift::accounts')
+    $credentials = lookup('profile::swift::accounts_keys')
 
     include ::profile::standard
 
@@ -13,6 +15,8 @@ class role::swift::stats_reporter {
 
     class { '::swift::stats::accounts':
         swift_cluster => $swift_cluster,
+        accounts      => $accounts,
+        credentials   => $credentials,
     }
 
     swift::stats::stats_container { 'mw-media':

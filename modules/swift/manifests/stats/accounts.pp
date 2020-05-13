@@ -1,7 +1,7 @@
 class swift::stats::accounts(
     String $swift_cluster,
-    $accounts      = $::swift::params::accounts,
-    $credentials   = $::swift::params::account_keys,
+    Hash[String, Hash] $accounts,
+    Hash[String, String] $credentials,
     $statsd_host   = 'statsd.eqiad.wmnet',
     $statsd_port   = 8125,
     $statsd_prefix = "swift.${swift_cluster}.stats",
