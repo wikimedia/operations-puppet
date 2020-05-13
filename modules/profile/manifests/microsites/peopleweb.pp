@@ -3,6 +3,8 @@ class profile::microsites::peopleweb (
     Stdlib::Host     $deployment_server = lookup('deployment_server'),
     Stdlib::Host     $sitename          = lookup('profile::microsites::peopleweb::sitename'),
     Stdlib::Unixpath $docroot           = lookup('profile::microsites::peopleweb::docroot'),
+    Stdlib::Host     $rsync_src_host    = lookup('profile::microsites::peopleweb::rsync_src_host'),
+    Stdlib::Host     $rsync_dst_host    = lookup('profile::microsites::peopleweb::rsync_dst_host'),
 ){
 
     include ::profile::waf::apache2::administrative
@@ -55,4 +57,12 @@ class profile::microsites::peopleweb (
         path => '/var/log/apache2/*error*.log',
     }
 
+    # allow copying /home from one server to another for migrations
+    rsync::quickdatacopy { 'people-home':
+        ensure      => present,
+        auto_sync   => false,
+        source_host => $rsync_src_host,
+        dest_host   => $rsync_dst_host,
+        module_path => '/home',
+    }
 }
