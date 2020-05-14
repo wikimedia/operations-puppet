@@ -6,6 +6,7 @@ class profile::thumbor(
     $thumbor_mediawiki_shared_secret = hiera('thumbor::mediawiki::shared_secret'),
     $prometheus_nodes         = hiera('prometheus_nodes', []),
     $statsd_port = hiera('statsd_exporter_port'),
+    $swift_account_keys = lookup('profile::swift::accounts_keys'),
 ) {
     include ::profile::conftool::client
     class { 'conftool::scripts': }
@@ -24,9 +25,6 @@ class profile::thumbor(
         logstash_port => $logstash_port,
         statsd_port   => $statsd_port,
     }
-
-    include ::swift::params
-    $swift_account_keys = $::swift::params::account_keys
 
     class { '::thumbor::swift':
         swift_key                       => $swift_account_keys['mw_thumbor'],
