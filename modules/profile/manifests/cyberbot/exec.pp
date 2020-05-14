@@ -2,7 +2,7 @@
 class profile::cyberbot::exec{
 
     if os_version('debian >= stretch') {
-        $php_version = '7.0'
+        $php_version = '7.2'
     } else {
         $php_version = '5'
     }
