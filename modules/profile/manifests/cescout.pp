@@ -1,5 +1,6 @@
 class profile::cescout (
-    Stdlib::Unixpath $metadb_dir = lookup(profile::cescout::metadb_dir),
+    Stdlib::Unixpath $metadb_dir = lookup(profile::cescout::postgres::metadb_dir),
+    String $postgres_version = lookup(profile::cescout::postgres::version),
 ) {
     require_package('cescout')
 
@@ -48,5 +49,12 @@ class profile::cescout (
         group   => 'root',
         mode    => '0544',
         content => template('cescout/metadb-configure.sh.erb'),
+    }
+
+    systemd::unit { "postgresql@${postgres_version}-main.service":
+        ensure   => present,
+        override => true,
+        restart  => false,
+        content  => template('cescout/postgres-systemd-override.conf.erb'),
     }
 }
