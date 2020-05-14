@@ -1729,3 +1729,23 @@ asns:
   esams: 65003
   ulsfo: 65004
   eqsin: 65005
+
+swift_storage_drives:
+  - '/dev/sdc'
+  - '/dev/sdd'
+  - '/dev/sde'
+  - '/dev/sdf'
+  - '/dev/sdg'
+  - '/dev/sdh'
+  - '/dev/sdi'
+  - '/dev/sdj'
+  - '/dev/sdk'
+  - '/dev/sdl'
+  - '/dev/sdm'
+  - '/dev/sdn'
+
+swift_aux_partitions:
+  - '/dev/sda3'
+  - '/dev/sda4'
+  - '/dev/sdb3'
+  - '/dev/sdb4'
