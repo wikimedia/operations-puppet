@@ -316,3 +316,13 @@ Suite: buster-pgdg
 Architectures: amd64 source
 VerifyRelease: ACCC4CF8
 ListShellHook: grep-dctrl -X -S postgresql-9.6 || [ $? -eq 1 ]
+
+Name: matomo
+Method: http://debian.matomo.org/
+Suite: piwik
+Components: main>thirdparty/matomo
+UDebComponents:
+Architectures: amd64
+GetInRelease: no
+VerifyRelease: 81E2E78B66FED89E
+ListShellHook: grep-dctrl -X -S matomo || [ $? -eq 1 ]

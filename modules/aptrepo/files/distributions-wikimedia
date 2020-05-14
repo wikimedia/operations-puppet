@@ -81,6 +81,7 @@ Components: main
  thirdparty/grafana
  thirdparty/hwraid
  thirdparty/k8s
+ thirdparty/matomo
  thirdparty/mono-project-stretch
  thirdparty/oath
  thirdparty/php72
@@ -140,6 +141,7 @@ Components: main
  thirdparty/hwraid
  thirdparty/kubeadm-k8s-1-15
  thirdparty/kubeadm-k8s-1-16
+ thirdparty/matomo
  thirdparty/postgres96
 UDebComponents: main
 Update:
