@@ -1,0 +1,17 @@
+## Networking Equipment
+Host cr?-* asw-* asw?-* fasw- mr?-* msw?-* pfw?-* cloudsw?-*
+    User homer
+    IdentitiesOnly yes
+    # So ssh doesn't try all the keys
+    IdentityFile /etc/keyholder.d/homer
+    # Until we can easily update them
+    StrictHostKeyChecking no
+    UserKnownHostsFile /dev/null
+    GlobalKnownHostsFile /dev/null
+    LogLevel ERROR
+
+Host *
+    BatchMode yes
+    ConnectTimeout 2
+    StrictHostKeyChecking yes
+    UserKnownHostsFile /dev/null

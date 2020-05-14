@@ -4,6 +4,7 @@ class profile::cumin::master (
 ) {
     include passwords::phabricator
     $cumin_log_path = '/var/log/cumin'
+    $ssh_config_path = '/etc/cumin/ssh_config'
     # Ensure to add FQDN of the current host also the first time the role is applied
     $cumin_masters = unique(concat(query_nodes('Class[Role::Cumin::Master]'), [$::fqdn]))
 
@@ -107,6 +108,14 @@ class profile::cumin::master (
         mode   => '0544',
         owner  => 'root',
         group  => 'root',
+    }
+
+    file { $ssh_config_path:
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0640',
+        source => 'puppet:///modules/profile/cumin/ssh_config',
     }
 
     # Check aliases cron, splayed between the week across the Cumin masters
