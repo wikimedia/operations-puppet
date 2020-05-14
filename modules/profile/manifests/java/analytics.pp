@@ -6,23 +6,7 @@
 # interoperability among various clusters.
 #
 class profile::java::analytics {
-
-    if os_version('debian == buster') {
-
-        apt::package_from_component { 'openjdk-8':
-            component => 'component/jdk8',
-            packages  => ['openjdk-8-jdk'],
-        }
-
-        alternatives::select { 'java':
-            path    => '/usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java',
-            require => Package['openjdk-8-jdk']
-        }
-    } else {
-        package { 'openjdk-8-jdk':
-            ensure  => present,
-        }
-    }
+    require ::profile::java::java_8
 
     # Make sure file.encoding is UTF-8 for all java processes.
     # This should help avoid bugs like T128295.
