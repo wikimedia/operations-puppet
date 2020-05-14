@@ -9,4 +9,4 @@ profile::cache::varnish::frontend::fe_vcl_config:
     admission_policy: 'none'
     varnish_probe_ms: 100
     keep: '1d'
-    large_objects_cutoff: 393216
+    large_objects_cutoff: 294912
