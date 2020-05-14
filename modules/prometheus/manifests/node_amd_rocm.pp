@@ -10,6 +10,7 @@
 class prometheus::node_amd_rocm (
     $ensure = 'present',
     $outfile = '/var/lib/prometheus/node.d/rocm.prom',
+    $rocm_smi_path = '/opt/rocm/bin/rocm-smi',
 ) {
     validate_re($outfile, '\.prom$')
     validate_ensure($ensure)
@@ -31,6 +32,6 @@ class prometheus::node_amd_rocm (
     cron { 'prometheus_amd_rocm_stats':
         ensure  => $ensure,
         user    => 'root',
-        command => "/usr/local/bin/prometheus-amd-rocm-stats --outfile ${outfile}",
+        command => "/usr/local/bin/prometheus-amd-rocm-stats --outfile ${outfile} --rocm-smi-path ${rocm_smi_path}",
     }
 }

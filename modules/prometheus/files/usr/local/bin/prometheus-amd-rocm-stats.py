@@ -12,9 +12,9 @@ from prometheus_client.exposition import generate_latest
 log = logging.getLogger(__name__)
 
 
-def collect_stats_from_romc_smi(registry):
+def collect_stats_from_romc_smi(registry, rocm_smi_path):
     out = subprocess.run([
-        '/opt/rocm/bin/rocm-smi', "--showuse", "--showpower",
+        rocm_smi_path, "--showuse", "--showpower",
         "--showtemp", "--showfan", "--json"
     ], capture_output=True, text=True)
     rocm_metrics = {}
@@ -79,6 +79,8 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--outfile', metavar='FILE.prom',
                         help='Output file (stdout)')
+    parser.add_argument('--rocm-smi-path', metavar='/opt/rocm/bin/rocm-smi',
+                        help='Full path of the rocm-smi tool')
     parser.add_argument('-d', '--debug', action='store_true',
                         help='Enable debug logging (false)')
     args = parser.parse_args()
@@ -92,7 +94,7 @@ def main():
         parser.error('Output file does not end with .prom')
 
     registry = CollectorRegistry()
-    collect_stats_from_romc_smi(registry)
+    collect_stats_from_romc_smi(registry, args.rocm_smi_path)
 
     if args.outfile:
         write_to_textfile(args.outfile, registry)
