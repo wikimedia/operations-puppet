@@ -1,5 +1,5 @@
 <%-
-if @kafka_enable
+if @enable_kafka
    kafka_cli=" -topics #{@kafka_topics.join ','} -kafkaConfig #{@kafka_conf_file}"
 else
    kafka_cli=""

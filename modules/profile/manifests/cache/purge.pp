@@ -17,9 +17,10 @@ class profile::cache::purge(
             /^(ulsfo|codfw)$/ => kafka_config('main-codfw'),
             default           => kafka_config('main-eqiad')
         }
+
         $brokers = $kafka_tls ? {
-            undef => $kafka_conf['string'].split(','),
-            default => $kafka_conf['ssl_array']
+            undef => $kafka_conf['brokers']['string'].split(','),
+            default => $kafka_conf['brokers']['ssl_array']
         }
     } else {
         $brokers = []
