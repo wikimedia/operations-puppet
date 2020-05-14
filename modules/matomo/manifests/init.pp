@@ -25,7 +25,11 @@ class matomo (
     $archive_cron_url   = undef,
     $archive_cron_email = undef,
 ) {
-    require_package('matomo')
+
+    apt::package_from_component { 'matomo':
+        component => 'thirdparty/matomo',
+        packages  => ['matomo'],
+    }
 
     $database_name = 'piwik'
     $database_table_prefix = 'piwik_'
