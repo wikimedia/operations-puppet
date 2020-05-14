@@ -10,7 +10,7 @@
   "ssl.sigalgs.list":         "<%= @tls['sigalgs_list'] %>",
 <% end -%>
   "client.id":                "purged",
-  "bootstrap.servers":        "<%= @kafka_servers %>",
+  "bootstrap.servers":        "<%= @brokers.join ',' %>",
   "statistics.interval.ms":   <%= @stats_interval_ms %>,
   "compression.codec":        "<%= @compression_codec %>",
   "group.id":                 "<%= @group_id %>",
