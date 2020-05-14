@@ -1,0 +1,58 @@
+geo $bad_user {
+  default 0;
+  # 0: OK, 1: banned
+  # 1.2.3.4 1;     # ban single IP
+  # 1.2.3.4/24 1;  # ban IP block
+  <% @banned_ips.each do |val| -%>
+  <%= val %> 1;
+  <% end -%>
+}
+
+
+<% @proxy_mappings.each do |from,to| %>
+server {
+
+    listen 443 ssl http2;
+
+    ssl_certificate /etc/ssl/localcerts/star.wmflabs.org.chained.crt;
+    ssl_certificate_key /etc/ssl/private/star.wmflabs.org.key;
+
+    ssl_session_cache shared:SSL:50m;
+    ssl_session_timeout 5m;
+    <%= @ssl_settings.join("\n    ") %>
+
+    listen 80;
+    server_name <%= from %>;
+
+    <% if @blocked_user_agent_regex != "" %>
+    if ($http_user_agent ~* "<%= @blocked_user_agent_regex -%>") {
+        return 403 "Blocked user agent";
+    }
+    <% end -%>
+
+    <% if @blocked_referer_regex != "" %>
+    if ($http_referer ~* "<%= @blocked_referer_regex -%>") {
+        return 403 "Blocked referer";
+    }
+    <% end -%>
+
+    location / {
+        if ($bad_user) {
+            return 403 'You have been banned from accessing this service.';
+        }
+
+        proxy_pass http://<%= to -%>:80;
+
+        proxy_set_header Host '';
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    location /.well-known/healthz {
+        return 200 'proxy ok!';
+    }
+
+    gzip on;
+    gzip_proxied any;
+    gzip_types text/plain text/css text/xml application/json application/javascript application/x-javascript text/javascript;
+}
+<% end %>
