@@ -2220,8 +2220,17 @@ node /^urldownloader[12]00[12]\.wikimedia\.org/ {
 #  key: profile::openstack::eqiad1::nova::scheduler_pool
 # We try to keep a few empty as emergency fail-overs
 #  or transition hosts for maintenance to come
-node /^cloudvirt10[0-3][0-9]\.eqiad\.wmnet$/ {
+node /^cloudvirt100[1-3,5,7-9]\.eqiad\.wmnet$/ {
     role(wmcs::openstack::eqiad1::virt)
+}
+node /^cloudvirt10[1-3][0-9]\.eqiad\.wmnet$/ {
+    role(wmcs::openstack::eqiad1::virt)
+}
+
+# cloudvirts using Ceph backend storage
+# https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Ceph
+node /^cloudvirt100[4,6]\.eqiad\.wmnet$/ {
+    role(role::wmcs::openstack::eqiad1::virt_ceph)
 }
 
 
