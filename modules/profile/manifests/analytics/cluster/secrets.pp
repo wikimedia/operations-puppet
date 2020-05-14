@@ -13,9 +13,17 @@
 #   Group that the swift auth env file should be group owned by.
 #   This group must already exist on the node.
 #   Default: analytics-privatedata-users
+#
+# [*swift_accounts*]
+#   The accounts map to use for swift.
+#
+# [*swift_accounts_keys*]
+#   The accounts keys map to use for swift.
 class profile::analytics::cluster::secrets(
     $use_kerberos       = hiera('profile::analytics::cluster::secrets::use_kerberos', false),
     $swift_group        = hiera('profile::analytics::cluster::secrets::swift_group', 'analytics-privatedata-users'),
+    $swift_accounts     = lookup('profile::swift::accounts'),
+    $swift_account_keys = lookup('profile::swift::accounts_keys'),
 ) {
     require ::profile::hadoop::common
 
@@ -49,14 +57,6 @@ class profile::analytics::cluster::secrets(
         user         => $secrets_user,
         use_kerberos => $use_kerberos,
     }
-
-    # Swift objectstore analytics_admin credentials.
-    # Unfortunetly this still comes from class scope hiera rather than profile/role hiera.
-    # lint:ignore:wmf_styleguide
-    include ::swift::params
-    # lint:endignore
-    $swift_accounts     = $::swift::params::accounts
-    $swift_account_keys = $::swift::params::account_keys
 
     $swift_analytics_admin_auth_url = "${swift_accounts['analytics_admin']['auth']}/auth/v1.0"
     $swift_analytics_admin_user     = $swift_accounts['analytics_admin']['user']
