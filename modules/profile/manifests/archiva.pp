@@ -6,8 +6,6 @@
 class profile::archiva(
     $enable_backup = hiera('profile::archiva::enable_backup', false),
 ) {
-    require_package('default-jdk')
-
     # needed by ssl_ciphersuite() used in ::archiva::proxy
     class { '::sslcert::dhparam': }
 
