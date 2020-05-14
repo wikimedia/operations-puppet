@@ -1,9 +1,9 @@
 class profile::docker::registry::swift (
     $config = hiera('profile::docker::registry::config', {}),
-    $swift_accounts = hiera('swift::params::accounts'),
+    $swift_accounts = hiera('profile::swift::accounts'),
     $swift_auth_url = hiera('profile::docker::registry::swift_auth_url'),
     # By default, the password will be extracted from swift, but can be overridden
-    $swift_account_keys = hiera('swift::params::account_keys'),
+    $swift_account_keys = hiera('profile::swift::accounts_keys'),
     $swift_container = hiera('profile::docker::registry::swift_container', 'docker_registry'),
     $swift_password = hiera('profile::docker::registry::swift_password', undef),
 ) {

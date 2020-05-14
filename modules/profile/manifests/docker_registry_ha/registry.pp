@@ -8,10 +8,10 @@ class profile::docker_registry_ha::registry(
     $cache_nodes = hiera('cache::nodes', {}),
     # Storage configuration
     $certname = hiera('profile::docker_registry_ha::registry::certname', undef),
-    $swift_accounts = hiera('swift::params::accounts'),
+    $swift_accounts = hiera('profile::swift::accounts'),
     $swift_auth_url = hiera('profile::docker_registry_ha::registry::swift_auth_url'),
     # By default, the password will be extracted from swift, but can be overridden
-    $swift_account_keys = hiera('swift::params::account_keys'),
+    $swift_account_keys = hiera('profile::swift::accounts_keys'),
     $swift_container = hiera('profile::docker_registry_ha::registry::swift_container', undef),
     $swift_replication_configuration = hiera('profile::docker_registry_ha::registry::swift_replication_configuration'),
     $swift_replication_key = hiera('profile::docker_registry_ha::registry::swift_replication_key'),
