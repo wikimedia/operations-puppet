@@ -22,4 +22,6 @@ class profile::java::java_8 {
         }
     }
 
+    # Defined here for easy reference by other classes.
+    $java_home = '/usr/lib/jvm/java-8-openjdk-amd64'
 }

@@ -184,8 +184,12 @@ class profile::kafka::broker(
     $zookeeper_url  = $config['zookeeper']['url']
     $brokers_string = $config['brokers']['string']
 
-    require_package('openjdk-8-jdk')
-    $java_home = '/usr/lib/jvm/java-8-openjdk-amd64'
+    # NOTE: Kafka brokers support openjdk-11 only from 2.1:
+    # https://issues.apache.org/jira/browse/KAFKA-7264
+    # For now we use java 8.
+    require ::profile::java::java_8
+    $java_home = $::profile::java::java_8::java_home
+
     # Use Java 8 GC features
     # Use Kafka/LinkedIn recommended settings with G1 garbage collector.
     # https://kafka.apache.org/documentation/#java
