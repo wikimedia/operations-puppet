@@ -94,8 +94,9 @@ class profile::trafficserver::tls (
     }
 
     # Write configuration file for global TLS Lua script
+    # TODO: Remove entirely on a following commit
     file { "${tls_lua_script_path}.conf":
-        ensure  => present,
+        ensure  => absent,
         owner   => root,
         group   => root,
         mode    => '0444',
@@ -104,7 +105,7 @@ class profile::trafficserver::tls (
     }
 
     file { '/usr/local/lib/nagios/plugins/check_tls_lua_conf':
-        ensure  => present,
+        ensure  => absent,
         owner   => root,
         group   => root,
         mode    => '0555',
@@ -113,6 +114,7 @@ class profile::trafficserver::tls (
     }
 
     nrpe::monitor_service { 'tls_lua_conf':
+        ensure       => absent,
         description  => 'TLS Lua configuration file',
         nrpe_command => '/usr/local/lib/nagios/plugins/check_tls_lua_conf',
         require      => File['/usr/local/lib/nagios/plugins/check_tls_lua_conf'],

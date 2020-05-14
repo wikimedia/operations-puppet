@@ -1,27 +1,3 @@
-function read_config()
-    local configfile = ts.get_config_dir() .. "/lua/tls.lua.conf"
-
-    ts.debug("Reading " .. configfile)
-
-    dofile(configfile)
-    assert(lua_websocket_support ~= nil, "lua_websocket_support not set by " .. configfile)
-    assert(lua_keepalive_support ~= nil, "lua_keepalive_support not set by " .. configfile)
-
-    ts.debug("read_config() returning " .. tostring(lua_websocket_support))
-
-    return lua_websocket_support, lua_keepalive_support
-end
-
-local WEBSOCKET_SUPPORT, KEEPALIVE_SUPPORT = read_config()
-
-function get_websocket_support()
-    return WEBSOCKET_SUPPORT
-end
-
-function get_keepalive_support()
-    return KEEPALIVE_SUPPORT
-end
-
 function do_global_send_request()
     local ssl_reused = ts.client_request.get_ssl_reused()
     local ssl_protocol = ts.client_request.get_ssl_protocol()
@@ -81,20 +57,6 @@ function do_global_send_request()
     ts.server_request.header['X-Client-IP'] = client_ip
     ts.server_request.header['X-Connection-Properties'] = header_content
     ts.server_request.header['X-Forwarded-Proto'] = 'https'
-    -- Avoid propagating Proxy-Connection to varnish-fe and ats-be
-    ts.server_request.header['Proxy-Connection'] = nil
-
-    if get_websocket_support() and ts.client_request.header['Upgrade'] and ts.client_request.header['Connection'] then
-        ts.server_request.header['Upgrade'] = ts.client_request.header['Upgrade']
-        ts.server_request.header['Connection'] = ts.client_request.header['Connection']
-        ts.http.config_int_set(TS_LUA_CONFIG_HTTP_KEEP_ALIVE_ENABLED_OUT, 0)
-    else
-        if get_keepalive_support() then
-            ts.server_request.header['Connection'] = 'keep-alive'
-        else
-            ts.server_request.header['Connection'] = 'close'
-        end
-    end
 end
 
 function do_global_send_response()
