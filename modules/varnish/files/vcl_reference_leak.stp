@@ -36,3 +36,7 @@ probe timer.ms(1000) {
         printf("%s: %d\n", vcl, v[vcl])
     }
 }
+
+probe process("/usr/sbin/varnishd").statement("VCL_Poll@cache/cache_vcl.c:794") {
+    printf("VCL_Poll: %s %s %d\n", user_string($vcl->loaded_name), user_string($vcl->temp), $vcl->busy)
+}
