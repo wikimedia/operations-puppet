@@ -1,12 +1,13 @@
 # filtertags: labs-project-deployment-prep labs-project-swift
-class role::swift::storage {
+class role::swift::storage (
+    Hash[String, Hash] $replication_accounts = lookup('profile::swift::replication_accounts'), # lint:ignore:wmf_styleguide
+    Hash[String, Hash] $replication_keys = lookup('profile::swift::replication_keys'), # lint:ignore:wmf_styleguide
+) {
     system::role { 'swift::storage':
         description => 'swift storage brick',
     }
 
     $swift_cluster = lookup('profile::swift::cluster') # lint:ignore:wmf_styleguide
-
-    include ::swift::params
 
     include ::profile::standard
     include ::profile::base::firewall
@@ -23,7 +24,11 @@ class role::swift::storage {
         object_replicator_interval    => hiera('swift::storage::object_replicator_interval', undef),  # lint:ignore:wmf_styleguide
         servers_per_port              => hiera('swift::storage::servers_per_port', undef),  # lint:ignore:wmf_styleguide
     }
-    include ::swift::container_sync
+
+    class { '::swift::container_sync':
+        accounts => $replication_accounts,
+        keys     => $replication_keys,
+    }
 
     include ::toil::systemd_scope_cleanup
 

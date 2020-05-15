@@ -3,6 +3,8 @@ class role::swift::proxy (
     $use_tls = hiera('role::swift::proxy::use_tls', false),
     $accounts = lookup('profile::swift::accounts'), # lint:ignore:wmf_styleguide
     $accounts_keys = lookup('profile::swift::accounts_keys'), # lint:ignore:wmf_styleguide
+    Hash[String, Hash] $replication_accounts = lookup('profile::swift::replication_accounts'), # lint:ignore:wmf_styleguide
+    Hash[String, Hash] $replication_keys = lookup('profile::swift::replication_keys'), # lint:ignore:wmf_styleguide
 ) {
     system::role { 'swift::proxy':
         description => 'swift frontend proxy',
@@ -10,12 +12,14 @@ class role::swift::proxy (
 
     $swift_cluster = lookup('profile::swift::cluster') # lint:ignore:wmf_styleguide
 
-    include ::swift::params
-
     include ::profile::standard
     include ::profile::base::firewall
     include ::swift
-    include ::swift::container_sync
+
+    class { '::swift::container_sync':
+        accounts => $replication_accounts,
+        keys     => $replication_keys,
+    }
 
     class { '::swift::ring':
         swift_cluster => $swift_cluster,

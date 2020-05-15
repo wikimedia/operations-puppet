@@ -1,9 +1,9 @@
-<% @replication_accounts.sort.map do |name, data| -%>
+<% @accounts.sort.map do |name, data| -%>
 <%= "[#{name}]" %>
 <% data.sort.map do |k, v| -%>
 <%= "#{k} = #{v}" %>
 <% end -%>
-<% @replication_keys[name].sort.map do |k, v| -%>
+<% @keys[name].sort.map do |k, v| -%>
 <%= "#{k} = #{v}" %>
 <% end -%>
 

@@ -1,6 +1,6 @@
 class swift::container_sync (
-    $replication_accounts = $::swift::params::replication_accounts,
-    $replication_keys     = $::swift::params::replication_keys,
+    Hash[String, Hash] $accounts,
+    Hash[String, Hash] $keys,
 ) {
     file { '/etc/swift/container-sync-realms.conf':
         ensure    => present,
