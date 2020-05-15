@@ -58,7 +58,7 @@ class profile::mediawiki::deployment::server(
         deployment_group => $deployment_group,
     }
 
-    class {'::apache': }
+    class {'::httpd': }
 
     require_package('mysql-client')
 
@@ -105,7 +105,7 @@ class profile::mediawiki::deployment::server(
         group  => $deployment_group,
     }
 
-    apache::site { 'deployment':
+    httpd::site { 'deployment':
         content => template('role/deployment/apache-vhost.erb'),
         require => File['/srv/deployment'],
     }
