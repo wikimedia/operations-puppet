@@ -8003,12 +8003,12 @@ host stat1008 {
 }
 
 host thanos-be2001 {
-    hardware ethernet BC:97:E1:4D:43:FC;
+    hardware ethernet BC:97:E1:4C:C6:E6;
     fixed-address thanos-be2001.codfw.wmnet;
 }
 
 host thanos-be2002 {
-    hardware ethernet BC:97:E1:4C:C6:E6;
+    hardware ethernet BC:97:E1:4D:43:FC;
     fixed-address thanos-be2002.codfw.wmnet;
 }
 
