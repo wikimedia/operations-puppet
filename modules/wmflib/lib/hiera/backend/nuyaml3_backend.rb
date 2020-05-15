@@ -87,7 +87,7 @@ class Hiera
         # We use a different datadir in this case.
         # Example: netbox/common will search in the common source
         # within the netbox datadir
-        if %r{netbox/(.*)} =~ source
+        if %r{^netbox/(.*)} =~ source
           config_section = :netbox
           source = Regexp.last_match(1)
         end
