@@ -21,6 +21,8 @@ bgp_peer_as_skip_subas: true
 bgp_aspath_radius: 2
 nfacctd_as_new: bgp
 
+nfacctd_pipe_size: <%= @rcvbuf_size %>
+
 <% if @kafka_brokers -%>
 plugins: kafka
 kafka_output: json

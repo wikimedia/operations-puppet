@@ -22,10 +22,15 @@
 #    Default: []
 #    Optional
 #
+#  [*rcvbuf_size*]
+#    Size in bytes of the socket receive buffer for UDP traffic. You will see drops if too small.
+#    Default: 20 MiByte
+#    Optional
 class pmacct(
   $kafka_brokers     = undef,
   $librdkafka_config = undef,
   Optional[Array[Stdlib::IP::Address]] $networks = [],
+  Integer $rcvbuf_size = 20*1024*1024,
 ) {
     package { 'pmacct':
         ensure => present,
