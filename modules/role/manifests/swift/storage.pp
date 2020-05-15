@@ -2,6 +2,7 @@
 class role::swift::storage (
     Hash[String, Hash] $replication_accounts = lookup('profile::swift::replication_accounts'), # lint:ignore:wmf_styleguide
     Hash[String, Hash] $replication_keys = lookup('profile::swift::replication_keys'), # lint:ignore:wmf_styleguide
+    String $hash_path_suffix = lookup('profile::swift::hash_path_suffix'), # lint:ignore:wmf_styleguide
 ) {
     system::role { 'swift::storage':
         description => 'swift storage brick',
@@ -11,7 +12,10 @@ class role::swift::storage (
 
     include ::profile::standard
     include ::profile::base::firewall
-    include ::swift
+
+    class { '::swift':
+        hash_path_suffix => $hash_path_suffix,
+    }
 
     class { '::swift::ring':
         swift_cluster => $swift_cluster,

@@ -5,6 +5,7 @@ class role::swift::proxy (
     $accounts_keys = lookup('profile::swift::accounts_keys'), # lint:ignore:wmf_styleguide
     Hash[String, Hash] $replication_accounts = lookup('profile::swift::replication_accounts'), # lint:ignore:wmf_styleguide
     Hash[String, Hash] $replication_keys = lookup('profile::swift::replication_keys'), # lint:ignore:wmf_styleguide
+    String $hash_path_suffix = lookup('profile::swift::hash_path_suffix'), # lint:ignore:wmf_styleguide
 ) {
     system::role { 'swift::proxy':
         description => 'swift frontend proxy',
@@ -14,7 +15,10 @@ class role::swift::proxy (
 
     include ::profile::standard
     include ::profile::base::firewall
-    include ::swift
+
+    class { '::swift':
+        hash_path_suffix => $hash_path_suffix,
+    }
 
     class { '::swift::container_sync':
         accounts => $replication_accounts,
