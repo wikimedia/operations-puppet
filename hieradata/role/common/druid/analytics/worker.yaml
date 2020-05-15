@@ -64,6 +64,7 @@ profile::druid::common::properties:
   druid.storage.type: hdfs
   druid.request.logging.type: slf4j
   druid.request.logging.dir: /var/log/druid
+  druid.indexer.logs.directory: /srv/druid/indexing-logs
   # Historically, the analytics-eqiad Druid cluster was the only one,
   # and as such had a deep storage directory in HDFS without
   # the cluster name in the path.
@@ -139,7 +140,7 @@ profile::druid::historical::properties:
   # 20 Druid http client threads * 3 brokers
   druid.server.http.numThreads: 60
   druid.server.maxSize: 2748779069440 # 2.5 TB
-  druid.segmentCache.locations: '[{"path":"/var/lib/druid/segment-cache","maxSize"\:2748779069440}]'
+  druid.segmentCache.locations: '[{"path":"/srv/druid/segment-cache","maxSize"\:2748779069440}]'
   # For small clusters it is reccomended to only enable caching on brokers
   # See: http://druid.io/docs/latest/querying/caching.html
   druid.historical.cache.useCache: false
@@ -164,6 +165,7 @@ profile::druid::middlemanager::properties:
   druid.processing.buffer.sizeBytes: 356515840
   druid.server.http.numThreads: 20
   druid.indexer.runner.javaOpts: "-server -Xmx2g -XX:+UseG1GC -XX:MaxGCPauseMillis=100 -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -Dhadoop.mapreduce.job.user.classpath.first=true"
+  druid.indexer.task.baseTaskDir: '/srv/druid/task'
 profile::druid::middlemanager::env:
   DRUID_HEAP_OPTS: "-Xmx64m -Xms64m"
   DRUID_EXTRA_JVM_OPTS: "-XX:+UseConcMarkSweepGC -XX:+PrintGCDetails -XX:+PrintGCTimeStamps"
