@@ -8002,6 +8002,26 @@ host stat1008 {
     fixed-address stat1008.eqiad.wmnet;
 }
 
+host thanos-be2001 {
+    hardware ethernet BC:97:E1:4D:43:FC;
+    fixed-address thanos-be2001.codfw.wmnet;
+}
+
+host thanos-be2002 {
+    hardware ethernet BC:97:E1:4C:C6:E6;
+    fixed-address thanos-be2002.codfw.wmnet;
+}
+
+host thanos-be2003 {
+    hardware ethernet BC:97:E1:4D:3D:A8;
+    fixed-address thanos-be2003.codfw.wmnet;
+}
+
+host thanos-be2004 {
+    hardware ethernet BC:97:E1:4C:C7:9A;
+    fixed-address thanos-be2004.codfw.wmnet;
+}
+
 host thanos-fe2001 {
     hardware ethernet BC:97:E1:28:4F:00;
     fixed-address thanos-fe2001.codfw.wmnet;
