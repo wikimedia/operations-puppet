@@ -107,6 +107,8 @@ DESIRED_STATE = [
     {'eqiad': {'pooled': True, 'references': [], 'ttl': 300}, 'tags': 'dnsdisc=swift-rw'},
     {'codfw': {'pooled': True, 'references': [], 'ttl': 300}, 'tags': 'dnsdisc=eventgate-analytics-external'},  # noqa
     {'eqiad': {'pooled': True, 'references': [], 'ttl': 300}, 'tags': 'dnsdisc=eventgate-analytics-external'},  # noqa
+    {'codfw': {'pooled': True, 'references': [], 'ttl': 300}, 'tags': 'dnsdisc=thanos-query'},
+    {'eqiad': {'pooled': True, 'references': [], 'ttl': 300}, 'tags': 'dnsdisc=thanos-query'},
 ]
 
 
