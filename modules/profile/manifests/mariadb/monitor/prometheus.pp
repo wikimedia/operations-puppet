@@ -25,7 +25,6 @@ class profile::mariadb::monitor::prometheus(
     $socket = '/run/mysqld/mysqld.sock',
     ) {
 
-    include role::prometheus::node_exporter
     class { 'role::prometheus::mysqld_exporter':
         socket => $socket,
     }
