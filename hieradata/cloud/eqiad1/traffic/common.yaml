@@ -63,3 +63,29 @@ profile::trafficserver::backend::logs:
     - notvarnishcheck
     mode: ascii_pipe
     ensure: present
+abuse_networks:
+  blocked_nets:
+    comment: 'All traffic will be dropped, with a 403 asking them to email noc@wm.o'
+    context:
+      - ferm
+      - varnish
+    networks:
+      - '93.184.216.34/32'
+  bot_blocked_nets:
+    comment: |-
+      "Traffic from common bot-like User-Agents (e.g. 'python-requests/')
+      will be dropped, with a 403 asking them to email noc@wm.o and to read
+      the User-Agent Policy on metawiki.  Browser-like UAs will be allowed.
+      (Note that, as of 2019-10-10, the only disallowed UA is 'python-requests/')"
+    context:
+      - varnish
+    networks:
+      - '93.184.216.34/32'
+  public_cloud_nets:
+    comment: |-
+      "A couple of ec2 networks"
+    context:
+      - varnish
+    networks:
+      - 3.5.208.0/22
+      - 3.136.0.0/13
