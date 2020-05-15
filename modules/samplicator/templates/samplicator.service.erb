@@ -5,7 +5,7 @@ After=network.target
 
 [Service]
 Type=forking
-ExecStart=/usr/bin/samplicate -S -p <%= @port %> -d 0 -4 -f <%= @targets.join(' ') %>
+ExecStart=/usr/bin/samplicate -b <%= @recvbuf %> -S -p <%= @port %> -d 0 -4 -f <%= @targets.join(' ') %>
 Restart=on-failure
 RestartSec=0
 SyslogIdentifier=samplicator
