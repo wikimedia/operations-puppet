@@ -1,4 +1,4 @@
-# == Class: pmacct
+# == Class: fastnetmon
 #
 # Install and manage Fastnetmon
 #
