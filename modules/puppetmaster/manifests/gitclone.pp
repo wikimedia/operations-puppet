@@ -19,66 +19,52 @@
 # [*group*]
 # The group which should own the git repositories
 class puppetmaster::gitclone(
-    $secure_private = true,
-    $is_git_master = false,
-    $prevent_cherrypicks = true,
-    $user = 'gitpuppet',
-    $group = 'gitpuppet',
+    Boolean   $secure_private      = true,
+    Boolean   $is_git_master       = false,
+    Boolean   $prevent_cherrypicks = true,
+    String[1] $user                = 'gitpuppet',
+    String[1] $group               = 'gitpuppet',
 ){
-    $servers = hiera('puppetmaster::servers', {})
+    # lint:ignore:wmf_styleguide
+    $servers = lookup('puppetmaster::servers', {'default_value' => {}})
+    # lint:endignore
+    include puppetmaster
 
-    class  { '::puppetmaster::base_repo':
-        gitdir   => $::puppetmaster::gitdir,
+    class  { 'puppetmaster::base_repo':
+        gitdir   => $puppetmaster::gitdir,
         gitowner => $user,
     }
 
-    if $prevent_cherrypicks {
-        $cherrypick_hook_ensure = present
-    } else {
-        $cherrypick_hook_ensure = absent
+    $cherrypick_hook_ensure = $prevent_cherrypicks ? {
+        true    => file,
+        default => absent,
     }
 
+    file {"${puppetmaster::gitdir}/operations/puppet/.git/hooks/post-merge":
+        ensure  => absent,
+    }
     file {
-        "${puppetmaster::gitdir}/operations/puppet/.git/hooks/post-merge":
-            ensure  => absent;
+        default:
+            ensure  => $cherrypick_hook_ensure,
+            owner   => $user,
+            group   => $group,
+            mode    => '0550',
+            require => Git::Clone['operations/puppet'];
         "${puppetmaster::gitdir}/operations/puppet/.git/hooks/pre-commit":
-            ensure  => $cherrypick_hook_ensure,
-            require => Git::Clone['operations/puppet'],
-            owner   => $user,
-            group   => $group,
-            source  => 'puppet:///modules/puppetmaster/git/pre-commit',
-            mode    => '0550';
+            source  => 'puppet:///modules/puppetmaster/git/pre-commit';
         "${puppetmaster::gitdir}/operations/puppet/.git/hooks/pre-merge":
-            ensure  => $cherrypick_hook_ensure,
-            require => Git::Clone['operations/puppet'],
-            owner   => $user,
-            group   => $group,
-            source  => 'puppet:///modules/puppetmaster/git/pre-merge',
-            mode    => '0550';
+            source  => 'puppet:///modules/puppetmaster/git/pre-merge';
         "${puppetmaster::gitdir}/operations/puppet/.git/hooks/pre-rebase":
-            ensure  => $cherrypick_hook_ensure,
-            require => Git::Clone['operations/puppet'],
-            owner   => $user,
-            group   => $group,
-            source  => 'puppet:///modules/puppetmaster/git/pre-rebase',
-            mode    => '0550';
+            source  => 'puppet:///modules/puppetmaster/git/pre-rebase';
         "${puppetmaster::gitdir}/operations/software/.git/hooks/pre-commit":
-            ensure  => $cherrypick_hook_ensure,
-            require => Git::Clone['operations/software'],
-            owner   => $user,
-            group   => $group,
             source  => 'puppet:///modules/puppetmaster/git/pre-commit',
-            mode    => '0550';
-        $puppetmaster::volatiledir:
-            ensure => directory,
-            owner  => 'root',
-            group  => 'puppet',
-            mode   => '0750';
-        "${puppetmaster::volatiledir}/misc":
-            ensure => directory,
-            owner  => 'root',
-            group  => 'puppet',
-            mode   => '0750';
+            require => Git::Clone['operations/software'];
+    }
+    file {[$puppetmaster::volatiledir, "${puppetmaster::volatiledir}/misc"]:
+        ensure => directory,
+        owner  => 'root',
+        group  => 'puppet',
+        mode   => '0750';
     }
 
     if $secure_private {

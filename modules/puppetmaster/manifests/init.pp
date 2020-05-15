@@ -41,31 +41,31 @@
 #        Bool - Provision ::puppetmaster::geoip for serving clients who use
 #        the ::geoip::data::puppet class in their manifests
 class puppetmaster(
-    $server_name='puppet',
-    $bind_address='*',
-    $verify_client='optional',
-    $deny_from=[],
-    $server_type='standalone',
-    $workers=undef,
-    $config={},
-    $allow_from = [
-        '*.wikimedia.org',
-        '*.eqiad.wmnet',
-        '*.ulsfo.wmnet',
-        '*.esams.wmnet',
-        '*.codfw.wmnet',
-        '*.eqsin.wmnet',
-    ],
-    $is_git_master=false,
-    $hiera_config=$::realm,
-    $secure_private=true,
-    $extra_auth_rules='',
-    $prevent_cherrypicks=true,
-    $git_user='gitpuppet',
-    $git_group='gitpuppet',
-    Boolean $enable_geoip = true,
-    Stdlib::Host $ca_server = $facts['fqdn'],
-    Integer[1,2] $ssl_verify_depth = 1
+    String[1]                        $server_name        = 'puppet',
+    String[1]                        $bind_address       = '*',
+    String[1]                        $verify_client      = 'optional',
+    Array                            $deny_from          = [],
+    String[1]                        $server_type        = 'standalone',
+    Optional[Puppetmaster::Backends] $workers            = undef,
+    Hash                             $config             = {},
+    Array[String]                    $allow_from         = [
+                                                            '*.wikimedia.org',
+                                                            '*.eqiad.wmnet',
+                                                            '*.ulsfo.wmnet',
+                                                            '*.esams.wmnet',
+                                                            '*.codfw.wmnet',
+                                                            '*.eqsin.wmnet',
+                                                          ],
+    Boolean                          $is_git_master       = false,
+    String[1]                        $hiera_config        = $::realm,
+    Boolean                          $secure_private      = true,
+    String                           $extra_auth_rules    = '',
+    Boolean                          $prevent_cherrypicks = true,
+    String[1]                        $git_user            = 'gitpuppet',
+    String[1]                        $git_group           = 'gitpuppet',
+    Boolean                          $enable_geoip        = true,
+    Stdlib::Host                     $ca_server           = $facts['fqdn'],
+    Integer[1,2]                     $ssl_verify_depth    = 1
 ){
 
     $gitdir = '/var/lib/git'
@@ -73,7 +73,7 @@ class puppetmaster(
 
     # Require /etc/puppet.conf to be in place,
     # so the postinst scripts do the right things.
-    class { '::puppetmaster::config':
+    class { 'puppetmaster::config':
         config      => $config,
         server_type => $server_type,
     }
@@ -87,7 +87,7 @@ class puppetmaster(
         ensure  => present,
     }
 
-    class { '::puppetmaster::passenger':
+    class { 'puppetmaster::passenger':
         bind_address  => $bind_address,
         verify_client => $verify_client,
         allow_from    => $allow_from,
@@ -123,11 +123,11 @@ class puppetmaster(
         }
     }
 
-    class { '::puppetmaster::ssl':
+    class { 'puppetmaster::ssl':
         server_name => $server_name,
     }
 
-    class { '::puppetmaster::gitclone':
+    class { 'puppetmaster::gitclone':
         secure_private      => $secure_private,
         is_git_master       => $is_git_master,
         prevent_cherrypicks => $prevent_cherrypicks,
@@ -135,7 +135,7 @@ class puppetmaster(
         group               => $git_group,
     }
 
-    include ::puppetmaster::monitoring
+    include puppetmaster::monitoring
 
     if has_key($config, 'storeconfigs_backend') and $config['storeconfigs_backend'] == 'puppetdb' {
         $has_puppetdb = true
@@ -143,16 +143,16 @@ class puppetmaster(
         $has_puppetdb = false
     }
 
-    class { '::puppetmaster::scripts' :
+    class { 'puppetmaster::scripts' :
         has_puppetdb => $has_puppetdb,
         ca_server    => $ca_server,
     }
 
     if $enable_geoip {
-        class { '::puppetmaster::geoip': }
+        class { 'puppetmaster::geoip': }
     }
-    include ::puppetmaster::gitpuppet
-    include ::puppetmaster::generators
+    include puppetmaster::gitpuppet
+    include puppetmaster::generators
 
     file { '/etc/puppet/auth.conf':
         owner   => 'root',
@@ -165,7 +165,7 @@ class puppetmaster(
 
     # This is required to talk to our custom enc
     require_package('ruby-httpclient')
-    class { '::puppetmaster::hiera':
+    class { 'puppetmaster::hiera':
         source => $hiera_source,
     }
 
