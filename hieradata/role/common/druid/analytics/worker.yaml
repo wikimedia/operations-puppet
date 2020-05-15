@@ -112,7 +112,7 @@ profile::druid::broker::properties:
   druid.sql.enable: true
 profile::druid::broker::env:
   DRUID_HEAP_OPTS: "-Xmx10g -Xms5g"
-  DRUID_EXTRA_JVM_OPTS: "-XX:NewSize=4g -XX:MaxNewSize=4g -XX:MaxDirectMemorySize=12g -XX:+UseConcMarkSweepGC -XX:+PrintGCDetails -XX:+PrintGCTimeStamps"
+  DRUID_EXTRA_JVM_OPTS: "-XX:NewSize=4g -XX:MaxNewSize=4g -XX:MaxDirectMemorySize=12g -XX:+UseConcMarkSweepGC -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -Djava.io.tmpdir=/srv/druid/tmp"
 
 # --- Druid Coordinator
 profile::druid::coordinator::monitoring_enabled: true
@@ -123,7 +123,7 @@ profile::druid::coordinator::properties:
   druid.emitter.http.recipientBaseUrl: "http://localhost:8000/"
 profile::druid::coordinator::env:
   DRUID_HEAP_OPTS: "-Xmx2g -Xms2g"
-  DRUID_EXTRA_JVM_OPTS: "-XX:NewSize=512m -XX:MaxNewSize=512m -XX:+UseG1GC -XX:+PrintGCDetails -XX:+PrintGCTimeStamps"
+  DRUID_EXTRA_JVM_OPTS: "-XX:NewSize=512m -XX:MaxNewSize=512m -XX:+UseG1GC -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -Djava.io.tmpdir=/srv/druid/tmp"
 
 
 # --- Druid Historical
@@ -150,7 +150,7 @@ profile::druid::historical::properties:
   druid.monitoring.monitors: ["io.druid.server.metrics.HistoricalMetricsMonitor", "io.druid.server.metrics.QueryCountStatsMonitor"]
 profile::druid::historical::env:
   DRUID_HEAP_OPTS: "-Xmx8g -Xms4g"
-  DRUID_EXTRA_JVM_OPTS: "-XX:NewSize=2g -XX:MaxNewSize=2g -XX:MaxDirectMemorySize=12g -XX:+UseConcMarkSweepGC -XX:+PrintGCDetails -XX:+PrintGCTimeStamps"
+  DRUID_EXTRA_JVM_OPTS: "-XX:NewSize=2g -XX:MaxNewSize=2g -XX:MaxDirectMemorySize=12g -XX:+UseConcMarkSweepGC -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -Djava.io.tmpdir=/srv/druid/tmp"
 
 
 # --- Druid MiddleManager
@@ -168,7 +168,7 @@ profile::druid::middlemanager::properties:
   druid.indexer.task.baseTaskDir: '/srv/druid/task'
 profile::druid::middlemanager::env:
   DRUID_HEAP_OPTS: "-Xmx64m -Xms64m"
-  DRUID_EXTRA_JVM_OPTS: "-XX:+UseConcMarkSweepGC -XX:+PrintGCDetails -XX:+PrintGCTimeStamps"
+  DRUID_EXTRA_JVM_OPTS: "-XX:+UseConcMarkSweepGC -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -Djava.io.tmpdir=/srv/druid/tmp"
 
 
 # --- Druid Overlord
@@ -180,4 +180,4 @@ profile::druid::overlord::properties:
   druid.indexer.storage.type: metadata
 profile::druid::overlord::env:
   DRUID_HEAP_OPTS: "-Xmx1g -Xms1g"
-  DRUID_EXTRA_JVM_OPTS: "-XX:NewSize=256m -XX:MaxNewSize=256m -XX:+UseConcMarkSweepGC -XX:+PrintGCDetails -XX:+PrintGCTimeStamps"
+  DRUID_EXTRA_JVM_OPTS: "-XX:NewSize=256m -XX:MaxNewSize=256m -XX:+UseConcMarkSweepGC -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -Djava.io.tmpdir=/srv/druid/tmp"
