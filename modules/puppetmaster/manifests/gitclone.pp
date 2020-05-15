@@ -68,6 +68,7 @@ class puppetmaster::gitclone(
     }
 
     if $secure_private {
+        $private_repo_dir = '/srv/private'
         # Set up private repo.
         # Note that puppet does not actually clone the repo -- puppetizing that
         # turns out to be a big, insecure mess.
@@ -81,7 +82,7 @@ class puppetmaster::gitclone(
         # the push from upstream
 
         if $is_git_master {
-            file { '/srv/private':
+            file { $private_repo_dir:
                 ensure  => directory,
                 owner   => $user,
                 group   => $group,
@@ -90,16 +91,16 @@ class puppetmaster::gitclone(
             }
 
             # On a private master, /srv/private is a real repository
-            exec { '/srv/private init':
+            exec { "${private_repo_dir} init":
                 command => '/usr/bin/git init',
                 user    => 'root',
                 group   => 'root',
-                cwd     => '/srv/private',
-                creates => '/srv/private/.git',
-                require => File['/srv/private'],
+                cwd     => $private_repo_dir,
+                creates => "${private_repo_dir}/.git",
+                require => File[$private_repo_dir],
             }
             # Ssh wrapper to use the gitpuppet private key
-            file { '/srv/private/.git/ssh_wrapper.sh':
+            file { "${private_repo_dir}/.git/ssh_wrapper.sh":
                 ensure  => present,
                 source  => 'puppet:///modules/puppetmaster/git/private/ssh_wrapper.sh',
                 owner   => 'root',
@@ -108,8 +109,23 @@ class puppetmaster::gitclone(
                 require => Exec['/srv/private init'],
             }
 
-            # Audit hook, add username of commiter in message
-            file { '/srv/private/.git/hooks/commit-msg':
+            # add config and pre-commit hook to perform yamllint on the hieradata dir
+            ensure_packages(['yamllint'])
+            $yamllint_conf_file = '/etc/puppet/yamllint.yaml'
+            file {$yamllint_conf_file:
+                ensure => file,
+                source => 'puppet:///modules/puppetmaster/git/yamllint.yaml',
+            }
+            file { "${private_repo_dir}/.git/hooks/pre-commit":
+                ensure  => present,
+                content => template('puppetmaster/git/private/pre-commit.erb'),
+                owner   => $user,
+                group   => $group,
+                mode    => '0550',
+                require => Exec['/srv/private init'],
+            }
+
+            file { "${private_repo_dir}/.git/hooks/commit-msg":
                 ensure  => present,
                 source  => 'puppet:///modules/puppetmaster/git/private/commit-msg-master',
                 owner   => $user,
@@ -120,7 +136,7 @@ class puppetmaster::gitclone(
 
             # Syncing hooks
             # This hook updates /var/lib and pushes changes to the backend workers
-            file { '/srv/private/.git/hooks/post-commit':
+            file { "${private_repo_dir}/.git/hooks/post-commit":
                 ensure  => present,
                 content => template('puppetmaster/git-master-postcommit.erb'),
                 owner   => $user,
@@ -131,14 +147,14 @@ class puppetmaster::gitclone(
 
             # Post receive script in case the push is from another master
             # This will reset to head, and transmit data to /var/lib
-            file { '/srv/private/.git/hooks/post-receive':
+            file { "${private_repo_dir}/.git/hooks/post-receive":
                 source  => 'puppet:///modules/puppetmaster/git/private/post-receive-master',
                 owner   => $user,
                 group   => $group,
                 mode    => '0550',
                 require => File['/srv/private'],
             }
-            file { '/srv/private/.git/config':
+            file { "${private_repo_dir}/.git/config":
                 source  => 'puppet:///modules/puppetmaster/git/private/gitconfig-master',
                 owner   => $user,
                 group   => $group,
@@ -146,7 +162,7 @@ class puppetmaster::gitclone(
                 require => File['/srv/private'],
             }
         } else {
-            puppetmaster::gitprivate { '/srv/private':
+            puppetmaster::gitprivate { $private_repo_dir:
                 bare     => true,
                 dir_mode => '0700',
                 owner    => $user,
@@ -154,12 +170,12 @@ class puppetmaster::gitclone(
             }
 
             # This will transmit data to /var/lib...
-            file { '/srv/private/hooks/post-receive':
+            file { "${private_repo_dir}/hooks/post-receive":
                 source  => 'puppet:///modules/puppetmaster/git/private/post-receive',
                 owner   => $user,
                 group   => $group,
                 mode    => '0550',
-                require => Puppetmaster::Gitprivate['/srv/private'],
+                require => Puppetmaster::Gitprivate[$private_repo_dir],
             }
         }
 
@@ -169,16 +185,16 @@ class puppetmaster::gitclone(
         $private_dir = "${puppetmaster::gitdir}/operations/private"
 
         puppetmaster::gitprivate { $private_dir:
-            origin   => '/srv/private',
+            origin   => $private_repo_dir,
             owner    => $user,
             group    => 'puppet',
             dir_mode => '0750',
         }
 
         if $is_git_master {
-            Exec['/srv/private init'] -> Puppetmaster::Gitprivate[$private_dir]
+            Exec["${private_repo_dir} init"] -> Puppetmaster::Gitprivate[$private_dir]
         } else {
-            Puppetmaster::Gitprivate['/srv/private'] -> Puppetmaster::Gitprivate[$private_dir]
+            Puppetmaster::Gitprivate[$private_repo_dir] -> Puppetmaster::Gitprivate[$private_dir]
         }
 
         # ...and linked to /etc/puppet
@@ -211,13 +227,12 @@ class puppetmaster::gitclone(
         directory => "${puppetmaster::gitdir}/labs/private",
     }
 
-    git::clone {
-        'operations/software':
-            require   => File["${puppetmaster::gitdir}/operations"],
-            owner     => $user,
-            group     => $group,
-            directory => "${puppetmaster::gitdir}/operations/software",
-            origin    => 'https://gerrit.wikimedia.org/r/operations/software';
+    git::clone {'operations/software':
+        require   => File["${puppetmaster::gitdir}/operations"],
+        owner     => $user,
+        group     => $group,
+        directory => "${puppetmaster::gitdir}/operations/software",
+        origin    => 'https://gerrit.wikimedia.org/r/operations/software';
     }
 
     # These symlinks will allow us to use /etc/puppet for the puppetmaster to
