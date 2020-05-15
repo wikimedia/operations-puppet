@@ -28,6 +28,8 @@ class samplicator(
         },
     }
 
+    base::service_auto_restart { 'samplicator': }
+
     nrpe::monitor_service { 'samplicator-process':
         description  => 'Samplicator process',
         nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C samplicate',
