@@ -1,5 +1,0 @@
-profile::cache::purge::kafka_topics:
-# TODO: fix with the actual names
-  - eqiad.resource-purge
-  - codfw.resource-purge
-profile::cache::purge::kafka_tls: true
