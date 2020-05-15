@@ -6,19 +6,27 @@
 # available in default apt components.
 #
 class profile::java::java_8 {
-    if os_version('debian == buster') {
-        apt::package_from_component { 'openjdk-8':
-            component => 'component/jdk8',
-            packages  => ['openjdk-8-jdk'],
-        }
 
-        alternatives::select { 'java':
-            path    => '/usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java',
-            require => Package['openjdk-8-jdk']
-        }
-    } else {
-        package { 'openjdk-8-jdk':
-            ensure  => 'present',
+    # In roles where multiple Java daemons are defined,
+    # there might be the chance of duplicate declaration of
+    # the openjdk package. We should create a standard/shared
+    # way of deploying java across our puppet code base,
+    # but for the moment a conditional is sufficient.
+    if !defined(Package['openjdk-8-jdk']) {
+        if os_version('debian == buster') {
+            apt::package_from_component { 'openjdk-8':
+                component => 'component/jdk8',
+                packages  => ['openjdk-8-jdk'],
+            }
+
+            alternatives::select { 'java':
+                path    => '/usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java',
+                require => Package['openjdk-8-jdk']
+            }
+        } else {
+            package { 'openjdk-8-jdk':
+                ensure  => 'present',
+            }
         }
     }
 

@@ -9,16 +9,23 @@ class elasticsearch::packages (
 ) {
     include ::java::tools
 
-    if os_version('debian == buster') and $java_package == 'openjdk-8-jdk' {
+    # In roles where multiple Java daemons are defined,
+    # there might be the chance of duplicate declaration of
+    # the openjdk package. We should create a standard/shared
+    # way of deploying java across our puppet code base,
+    # but for the moment a conditional is sufficient.
+    if !defined(Package[$java_package]) {
+        if os_version('debian == buster') and $java_package == 'openjdk-8-jdk' {
 
-        apt::package_from_component { 'openjdk8-buster':
-            component => 'component/jdk8',
-            packages  => ['openjdk-8-jdk']
+            apt::package_from_component { 'openjdk8-buster':
+                component => 'component/jdk8',
+                packages  => ['openjdk-8-jdk']
+            }
+        } else {
+
+            require_package($java_package)
+
         }
-    } else {
-
-        require_package($java_package)
-
     }
 
     package { 'elasticsearch':
