@@ -14,6 +14,7 @@
 class samplicator(
   Array[String] $targets,
   Stdlib::Port $port = 2000,
+  Integer $recvbuf = 50*1024*1024,
   ) {
 
     require_package('samplicator')
