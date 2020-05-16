@@ -2239,9 +2239,8 @@ node /^cloudvirt100[4,6]\.eqiad\.wmnet$/ {
 
 
 # Private virt hosts for wdqs T221631
-# Temporarily running Ceph based VMs
 node /^cloudvirt-wdqs100[123]\.eqiad\.wmnet$/ {
-    role(wmcs::openstack::eqiad1::virt_ceph)
+    role(wmcs::openstack::eqiad1::virt)
 }
 
 # Wikidata query service
