@@ -5,7 +5,7 @@ class profile::puppet_compiler(
     case $::realm {
         'labs'      : {
             # lint:ignore:wmf_styleguide
-            require role::ci::slave::labs::common
+            require profile::ci::slave::labs::common
             # lint:endignore
 
             ferm::service {'puppet_compiler_web':

@@ -6,7 +6,6 @@ class role::ci::slave::package_builder {
     description => 'CI Debian package builder' }
 
   include ::profile::ci::package_builder
-
-  include role::ci::slave::labs::common
+  include ::profile::ci::slave::labs::common
 
 }

@@ -10,7 +10,7 @@ class role::ci::slave::labs::pipelinebuilder {
     system::role { 'role::ci::slave::labs::pipelinebuilder':
         description => 'CI Jenkins slave for building CD pipeline images' }
 
-    include role::ci::slave::labs::common
+    include profile::ci::slave::labs::common
     include profile::ci::gitcache
     include profile::ci::pipeline::builder
 }

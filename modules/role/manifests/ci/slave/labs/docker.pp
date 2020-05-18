@@ -19,7 +19,7 @@ class role::ci::slave::labs::docker(
     system::role { 'role::ci::slave::labs::docker':
         description => 'CI Jenkins slave using Docker on labs' }
 
-    include role::ci::slave::labs::common
+    include profile::ci::slave::labs::common
     include profile::ci::docker
     include profile::ci::gitcache
 

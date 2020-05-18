@@ -10,7 +10,7 @@ class role::ci::castor::server {
         description => 'rsync server to store caches artifacts'
     }
 
-    require role::ci::slave::labs::common
-    include profile::ci::castor::server
+    require ::profile::ci::slave::labs::common
+    include ::profile::ci::castor::server
 
 }

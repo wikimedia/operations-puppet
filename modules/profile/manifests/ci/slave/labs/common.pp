@@ -1,7 +1,7 @@
 # Common configuration to be applied on any labs Jenkins slave
 #
 # filtertags: labs-project-deployment-prep labs-project-git
-class role::ci::slave::labs::common {
+class profile::ci::slave::labs::common {
 
     # Need the labs instance extended disk space
     require ::profile::labs::lvm::srv
