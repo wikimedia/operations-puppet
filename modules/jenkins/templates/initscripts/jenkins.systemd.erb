@@ -11,7 +11,7 @@ UMask=<%= @umask %>
 LimitNOFILE=<%= @max_open_files %>
 
 Environment=JENKINS_HOME=/var/lib/jenkins
-ExecStart=/usr/bin/java <%= @java_args -%> \
+ExecStart=<%= @java_path -%> <%= @java_args -%> \
     -jar /usr/share/jenkins/jenkins.war \
 <%- if @jenkins_access_log_arg -%>
     <%= @jenkins_access_log_arg -%> \

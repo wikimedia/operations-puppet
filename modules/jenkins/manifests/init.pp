@@ -56,9 +56,6 @@ class jenkins(
     String $workspaces_dir = "\${ITEM_ROOTDIR}/workspace"
 )
 {
-    include jenkins::common
-    $java_version = $jenkins::common::java_version
-
     user { 'jenkins':
         home       => '/var/lib/jenkins',
         shell      => '/bin/bash',  # admins need to be able to login
@@ -94,8 +91,11 @@ class jenkins(
             packages  => ['openjdk-8-jdk', 'openjdk-8-dbg']
         }
     } else {
-        require_package("openjdk-${java_version}-jdk")
+        require_package('openjdk-8-jdk')
     }
+    Package['openjdk-8-jdk'] ~> Service['jenkins']
+
+    $java_path = '/usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java'
 
     file { '/var/lib/jenkins/.daemonrc':
         ensure  => 'absent',
@@ -180,7 +180,6 @@ class jenkins(
         require        => [
             Systemd::Syslog['jenkins'],
             File['/etc/default/jenkins'],
-            Class['jenkins::common'],
         ],
     }
 

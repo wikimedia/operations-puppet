@@ -74,6 +74,5 @@ class profile::ci::slave::labs::common {
     # The slaves on labs use the `jenkins-deploy` user which is already
     # configured in labs LDAP.  Thus, we only need to install the dependencies
     # needed by the slave agent, eg the java jre.
-    include jenkins::common
-
+    ensure_packages('default-jre-headless')
 }

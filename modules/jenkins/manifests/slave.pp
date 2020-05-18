@@ -6,7 +6,7 @@ class jenkins::slave(
     Stdlib::Unixpath $workdir = '/var/lib/jenkins-slave',
 ) {
 
-    include ::jenkins::common
+    ensure_packages('default-jre-headless')
 
     group { $user:
         ensure => present,
