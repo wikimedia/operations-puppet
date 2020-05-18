@@ -410,7 +410,7 @@ node 'db2090.codfw.wmnet' {
 }
 
 # see also db2084 and db2091 below
-node /^db2(073|106|110|119)\.codfw\.wmnet/ {
+node /^db2(073|106|110|119|136)\.codfw\.wmnet/ {
     role(mariadb::core)
 }
 
