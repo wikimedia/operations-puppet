@@ -17,8 +17,6 @@ class role::ci::slave::labs {
 
     include role::ci::slave::labs::common
 
-    include profile::ci::browsers
-
     # The sshkey resource seems to modify file permissions and make it
     # unreadable - this is a known bug (https://tickets.puppetlabs.com/browse/PUP-2900)
     # Trying to define this file resource, and notify the resource to be ensured
