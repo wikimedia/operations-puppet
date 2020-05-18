@@ -164,15 +164,6 @@ VerifyRelease: 8C8C34C524098CB6
 ListShellHook: grep-dctrl -X -S grafana || [ $? -eq 1 ]
 
 Name: confluent
-Method: http://packages.confluent.io/deb/2.0
-Components: main>thirdparty
-UDebComponents:
-Suite: stable
-Architectures: amd64
-VerifyRelease: 670540C841468433
-ListShellHook: grep-dctrl -e -P '^confluent-kafka-2\.11\.7$' || [ $? -eq 1 ]
-
-Name: confluent-stretch
 Method: http://packages.confluent.io/deb/4.0
 Components: main>thirdparty/confluent
 UDebComponents:

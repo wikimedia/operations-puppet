@@ -28,7 +28,6 @@ Update:
 # sorted list, leading whitespace matters!
  cassandra
  cloudera-jessie
- confluent
  elastic
  elastic55
  envoyproxy
@@ -90,7 +89,7 @@ UDebComponents: main component/node10
 Update:
 # sorted list, leading whitespace matters!
  bigtop14
- confluent-stretch
+ confluent
  elastic55
  elastic56
  elastic65
@@ -137,6 +136,7 @@ Components: main
  thirdparty/ceph-nautilus-buster
  thirdparty/ci
  thirdparty/cloudera
+ thirdparty/confluent
  thirdparty/elastic74
  thirdparty/grafana
  thirdparty/hwraid
@@ -151,6 +151,7 @@ Update:
  amd-rocm26
  amd-rocm271
  amd-rocm33
+ confluent
  elastic74
  grafana-stretch
  jenkins-stretch
