@@ -1,0 +1,10 @@
+__hfenv_prompt()
+{
+    if [ -z "${K8S_CLUSTER}" ] || [ -z "${TILLER_NAMESPACE}" ]; then
+        # hfenv is incomplete, don't show it
+        return
+    fi
+    echo "(${K8S_CLUSTER}:${TILLER_NAMESPACE})"
+}
+
+PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w$(__hfenv_prompt)\$ '
