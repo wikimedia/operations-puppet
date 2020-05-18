@@ -131,9 +131,6 @@
 # [*scala_version*]
 #   Used to install proper confluent kafka package.  Default: 2.11
 #
-# [*kafka_version*]
-#   Used to install proper confluent kafka package.  Default: undef
-#
 # [*monitoring_enabled*]
 #   Enable monitoring and alerts for this broker.  Default: false
 #
@@ -174,7 +171,6 @@ class profile::kafka::broker(
     $monitoring_enabled                = hiera('profile::kafka::broker::monitoring_enabled', false),
 
     $scala_version                     = hiera('profile::kafka::broker::scala_version', '2.11'),
-    $kafka_version                     = hiera('profile::kafka::broker::kafka_version', undef),
 
     $max_heap_size                     = hiera('profile::kafka::broker::max_heap_size', undef),
     $num_partitions                    = hiera('profile::kafka::broker::num_partitions', 1),
@@ -322,7 +318,6 @@ class profile::kafka::broker(
 
     class { '::confluent::kafka::common':
         scala_version => $scala_version,
-        kafka_version => $kafka_version,
         java_home     => $java_home,
     }
 
