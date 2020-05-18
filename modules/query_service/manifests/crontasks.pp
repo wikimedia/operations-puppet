@@ -51,6 +51,7 @@ class query_service::crontasks(
     }
 
     $reload_categories_log = "${log_dir}/reloadCategories.log"
+    $reload_dcatap_log = "${log_dir}/reloadDCATAP.log"
     # the reload-categories cron needs to reload nginx once the categories are up to date
     sudo::user { "${username}-reload-nginx":
       ensure     => present,
@@ -88,6 +89,15 @@ class query_service::crontasks(
         user    => $username,
         minute  => fqdn_rand(60),
         hour    => 7
+    }
+
+    cron { 'load-dcatap-weekly':
+        ensure  => $ensure_daily_categories,
+        command => "/usr/local/bin/reloadDCAT-AP.sh ${deploy_name} >> ${reload_dcatap_log} 2>&1",
+        user    => $username,
+        minute  => fqdn_rand(60),
+        hour    => 7,
+        weekday => 5,
     }
 
     $ensure_tests = $run_tests ? {
