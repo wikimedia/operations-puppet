@@ -3770,6 +3770,10 @@ ldap_only_users:
     ensure: absent
     realname: Matthias Geisler
     email: matthias.geisler@wikimedia.de
+  cbogen:
+    ensure: present
+    realname: Carly Bogen
+    email: cbogen@wikimedia.org
   cmadeo:
     ensure: present
     realname: Carolyn Li-Madeo
