@@ -8,6 +8,7 @@ import logging
 from argparse import ArgumentParser
 from collections import defaultdict
 from datetime import datetime, timedelta
+from re import search
 
 from pypuppetdb import connect
 from pypuppetdb.QueryBuilder import ExtractOperator, FunctionOperator, GreaterOperator
@@ -23,6 +24,8 @@ def get_args():
     parser.add_argument('-c', '--critical', default=5, type=int)
     parser.add_argument('--max-age', default=12, type=int,
                         help='the maximum report age in hours')
+    parser.add_argument('-D', '--dev', action='store_true',
+                        help='Also include dev servers in counts')
     parser.add_argument('-v', '--verbose', action='count')
     return parser.parse_args()
 
@@ -41,6 +44,7 @@ def main():
     args = get_args()
     logging.basicConfig(level=get_log_level(args.verbose))
 
+    failed_nodes = []
     pdb = connect()
     nodes = defaultdict(dict)
 
@@ -59,7 +63,18 @@ def main():
 
     for report in reports:
         nodes[report['certname']][report['status']] = report['count']
-    failed_nodes = [hostname for hostname, node in nodes.items() if not node.get('unchanged', 0)]
+
+    if args.dev:
+        failed_nodes = [hostname for hostname, node in nodes.items()
+                        if not node.get('unchanged', 0)]
+    else:
+        for fqdn, node in nodes.items():
+            if node.get('unchanged', 0):
+                continue
+            hostname = fqdn.split('.')[0]
+            if (hostname.startwith('labtest')
+                    or search(r'(:?dev|test)(:?\d{4})?$', hostname) is not None):
+                failed_nodes.append(fqdn)
 
     if len(failed_nodes) >= args.critical:
         print('CRITICAL: the following ({}) node(s) change every puppet run: {}'.format(
