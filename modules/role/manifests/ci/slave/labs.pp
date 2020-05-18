@@ -5,8 +5,6 @@ class role::ci::slave::labs {
     system::role { 'ci::slave::labs':
         description => 'CI Jenkins slave on labs' }
 
-    include ::profile::ci::worker_localhost
-
     include ::apt::unattendedupgrades
 
     # Debian slaves are used to build Debian packages for all our distributions

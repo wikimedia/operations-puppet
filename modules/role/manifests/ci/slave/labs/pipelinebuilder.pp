@@ -13,5 +13,4 @@ class role::ci::slave::labs::pipelinebuilder {
     include role::ci::slave::labs::common
     include profile::ci::gitcache
     include profile::ci::pipeline::builder
-    include profile::ci::worker_localhost
 }
