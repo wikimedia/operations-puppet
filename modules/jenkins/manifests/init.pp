@@ -75,10 +75,6 @@ class jenkins(
         allowdupe => false,
     }
 
-    # jenkins::common uses Debian alternatives to java 11 which is used by
-    # agents.
-    $java_path = '/usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java'
-
     if os_version('debian >= stretch') {
         apt::package_from_component { 'jenkins-thirdparty-ci':
             component => 'thirdparty/ci',
