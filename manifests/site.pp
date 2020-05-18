@@ -1180,12 +1180,12 @@ node /kafka-main200[4-5]\.codfw\.wmnet/ {
 # kafka-jumbo is a large general purpose Kafka cluster.
 # This cluster exists only in eqiad, and serves various uses, including
 # mirroring all data from the main Kafka clusters in both main datacenters.
-node /^kafka-jumbo100[1-6]\.eqiad\.wmnet$/ {
+node /^kafka-jumbo100[1-7]\.eqiad\.wmnet$/ {
     role(kafka::jumbo::broker)
 }
 
 # new kafka-jumbo nodes insetup (T244506)
-node /^kafka-jumbo100[7-9]\.eqiad\.wmnet$/ {
+node /^kafka-jumbo100[8-9]\.eqiad\.wmnet$/ {
     role(insetup)
 }
 
