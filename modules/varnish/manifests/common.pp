@@ -37,7 +37,7 @@ class varnish::common(
         require => Class['varnish::packages'],
     }
 
-    file { '/usr/share/varnish/reload-vcl':
+    file { '/usr/local/sbin/reload-vcl':
         source => 'puppet:///modules/varnish/reload-vcl.py',
         owner  => 'root',
         group  => 'root',

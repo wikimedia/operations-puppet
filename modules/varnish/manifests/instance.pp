@@ -196,7 +196,7 @@ define varnish::instance(
                 Class['varnish::common::errorpage'],
                 Class['varnish::common::browsersec'],
             ], $vcl_files),
-        command     => "/usr/share/varnish/reload-vcl ${reload_vcl_opts} || (touch ${vcl_failed_file}; false)",
+        command     => "/usr/local/sbin/reload-vcl ${reload_vcl_opts} || (touch ${vcl_failed_file}; false)",
         unless      => "test -f ${vcl_failed_file}",
         path        => '/bin:/usr/bin',
         refreshonly => true,
@@ -204,7 +204,7 @@ define varnish::instance(
 
     exec { "retry-load-new-vcl-file${instancesuffix}":
         require => Exec["load-new-vcl-file${instancesuffix}"],
-        command => "/usr/share/varnish/reload-vcl ${reload_vcl_opts} && (rm ${vcl_failed_file}; true)",
+        command => "/usr/local/sbin/reload-vcl ${reload_vcl_opts} && (rm ${vcl_failed_file}; true)",
         onlyif  => "test -f ${vcl_failed_file}",
         path    => '/bin:/usr/bin',
     }
