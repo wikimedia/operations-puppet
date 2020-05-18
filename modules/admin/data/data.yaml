@@ -275,7 +275,7 @@ groups:
               esanders, sukhe, jfishback, iflorez, mayakpwiki, conniecc1, abi, mgerlach, dedcode,
               kevinbazira, keepit-ssh, jiji, cohi, mstyles, accraze, kzeta, snowick,
               aarora, zpapierski, knissen, jiawang, mholloway-shell, joewalsh, tarrow,
-              itamar, phedenskog, aaron, dpifke, aklapper, jmads, andrew-wmde, daniram]
+              itamar, phedenskog, aaron, dpifke, aklapper, jmads, andrew-wmde, daniram, rodolfovalentim]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata]
   analytics-admins:
@@ -3706,6 +3706,18 @@ users:
     expiry_date: 2020-07-26
     expiry_contact: mredi@wikimedia.org
     krb: present
+  rodolfovalentim:
+    ensure: present
+    realname: Rodolfo Valentim
+    email: rodolfovieiravalentim@gmail.com
+    uid: 24415
+    gid: 500
+    ssh_keys:
+      - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBMEVYnja4N20DMdR0dt3utuZ01J3rHPAwS2/4kcLRgO rodolfo@inpiron5457'
+    expiry_date: 2020-08-03
+    expiry_contact: diego@wikimedia.org
+    krb: present
+
 ldap_only_users:
   abartov:
     ensure: present
