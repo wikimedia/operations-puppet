@@ -3790,6 +3790,10 @@ ldap_only_users:
     ensure: present
     realname: (known to Legal)
     email: daimona.wiki@gmail.com
+  dcipoletti:
+    ensure: present
+    realname: Daniel Cipoletti
+    email: dcipoletti@wikimedia.org
   delphinepro:
     ensure: present
     realname: Delphine Menard
