@@ -3797,13 +3797,11 @@ host cloudweb2001-dev {
 host cloudnet2003-dev {
     hardware ethernet 18:66:DA:7E:B3:EE;
     fixed-address cloudnet2003-dev.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host cloudnet2002-dev {
     hardware ethernet 30:e1:71:55:a2:40;
     fixed-address cloudnet2002-dev.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host labtestpuppetmaster2001 {
