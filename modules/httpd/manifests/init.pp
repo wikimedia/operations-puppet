@@ -7,6 +7,7 @@ class httpd(
     Integer $rotate=30,
     Boolean $enable_forensic_log = false,
     Array[String] $extra_pkgs = [],
+    Boolean $purge_manual_config = true,
 ) {
     # Package and service. Links is needed for the status page below
     $base_pkgs = ['apache2', 'links']
@@ -42,8 +43,8 @@ class httpd(
             owner   => 'root',
             group   => 'root',
             mode    => '0755',
-            recurse => true,
-            purge   => true,
+            recurse => $purge_manual_config,
+            purge   => $purge_manual_config,
             notify  => Service['apache2'],
         }
     }

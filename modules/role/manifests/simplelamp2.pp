@@ -28,7 +28,8 @@ class role::simplelamp2 {
     $apache_modules = concat($apache_modules_common, $apache_php_module)
 
     class { 'httpd':
-        modules => $apache_modules,
+        modules             => $apache_modules,
+        purge_manual_config => false,
     }
 
     class { 'memcached':
