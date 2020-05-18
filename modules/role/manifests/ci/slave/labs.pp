@@ -17,9 +17,6 @@ class role::ci::slave::labs {
     include contint::composer
     include contint::slave_scripts
 
-    # Include package unsafe for production
-    include contint::packages::labs
-
     include role::ci::slave::labs::common
 
     include profile::ci::browsers
