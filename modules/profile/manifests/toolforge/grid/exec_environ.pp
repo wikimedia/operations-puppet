@@ -395,16 +395,14 @@ class profile::toolforge::grid::exec_environ {
 
         # T67354, T215693 - Tesseract OCR from stretch-backports
         $tesseract_packages = [
-            'tesseract-ocr-all'
+            'tesseract-ocr-all',
+            'tesseract-ocr',
+            'libtesseract4',
         ]
-        apt::pin { $tesseract_packages:
-            pin      => 'release a=stretch-backports',
-            priority => '2000',
-            before   => Package[$tesseract_packages],
-        }
-        package { $tesseract_packages:
-            ensure          => latest,
-            install_options => ['-t', 'stretch-backports'],
+        apt::package_from_component { 'tesseract':
+            component => 'component/tesseract-410-bpo',
+            distro    => 'stretch-wikimedia',
+            packages  => $tesseract_packages,
         }
 
         # T248376 - {python,python3}-requests from stretch-backports
