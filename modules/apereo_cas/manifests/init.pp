@@ -55,6 +55,7 @@ class apereo_cas (
     Boolean                       $manage_user                   = true,
     Stdlib::Unixpath              $tomcat_webapps_dir            = '/var/lib/tomcat9/webapps',
     Optional[String[1]]           $java_opts                     = undef,
+    Boolean                       $deploy_deb                    = false,
 ) {
     if $keystore_source == undef and $keystore_content == undef and $server_enable_ssl {
         error('you must provide either $keystore_source or $keystore_content')
@@ -127,11 +128,6 @@ class apereo_cas (
         mode    => '0600',
         recurse => true,
     }
-    git::clone {$overlay_repo:
-        ensure    => 'latest',
-        directory => $overlay_dir,
-        branch    => $overlay_branch,
-    }
     file {"${config_dir}/cas.properties":
         ensure  => file,
         owner   => $daemon_user,
@@ -158,41 +154,56 @@ class apereo_cas (
         content => $keystore_content,
         source  => $keystore_source,
     }
-    exec{'update cas war':
-        command     => "${overlay_dir}/gradlew build",
-        cwd         => $overlay_dir,
-        require     => Git::Clone[$overlay_repo],
-        subscribe   => Git::Clone[$overlay_repo],
-        refreshonly => true,
-    }
-    if $external_tomcat {
-        $cas_service_ensure = 'absent'
-        file {"${tomcat_webapps_dir}/ROOT.war":
-            ensure  => file,
-            source  => "${overlay_dir}/build/libs/cas.war",
-            require => Exec['update cas war'],
-            notify  => Service['tomcat9'],
-        }
-        $notify = Service['tomcat9']
+
+    if $deploy_deb {
+        require_package('cas')
     } else {
-        $cas_service_ensure = 'present'
-        file {"${tomcat_webapps_dir}/ROOT.war":
-            ensure => absent,
+        git::clone {$overlay_repo:
+            ensure    => 'latest',
+            directory => $overlay_dir,
+            branch    => $overlay_branch,
         }
-        $notify = Service['cas']
-        Exec['update cas war'] {
-            notify => Service['cas'],
+
+        exec{'update cas war':
+            command     => "${overlay_dir}/gradlew build",
+            cwd         => $overlay_dir,
+            require     => Git::Clone[$overlay_repo],
+            subscribe   => Git::Clone[$overlay_repo],
+            refreshonly => true,
         }
     }
+    unless $deploy_deb {
+        if $external_tomcat {
+            $cas_service_ensure = 'absent'
+            file {"${tomcat_webapps_dir}/ROOT.war":
+                ensure  => file,
+                source  => "${overlay_dir}/build/libs/cas.war",
+                require => Exec['update cas war'],
+                notify  => Service['tomcat9'],
+            }
+            $notify = Service['tomcat9']
+        } else {
+            $cas_service_ensure = 'present'
+            file {"${tomcat_webapps_dir}/ROOT.war":
+                ensure => absent,
+            }
+            $notify = Service['cas']
+            Exec['update cas war'] {
+                notify => Service['cas'],
+            }
+
+            systemd::service {'cas':
+                ensure  => $cas_service_ensure,
+                content => template('apereo_cas/cas.service.erb'),
+                require => Git::Clone[$overlay_repo],
+            }
+        }
+    }
+
     File["${config_dir}/log4j2.xml", $keystore_path, "${config_dir}/cas.properties"] {
         notify => $notify,
     }
 
-    systemd::service {'cas':
-        ensure  => $cas_service_ensure,
-        content => template('apereo_cas/cas.service.erb'),
-        require => Git::Clone[$overlay_repo],
-    }
     $services.each |String $service, Hash $config| {
         apereo_cas::service {$service:
             notify => $notify,

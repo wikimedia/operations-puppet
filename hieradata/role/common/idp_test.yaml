@@ -6,6 +6,7 @@ profile::tlsproxy::envoy::services:
     port: 8080
 profile::tlsproxy::envoy::acme_cert_name: idp-test
 profile::idp::external_tomcat: true
+profile::idp::deploy_deb: true
 profile::idp::services:
   icinga:
     class: 'org.apereo.cas.services.RegexRegisteredService'

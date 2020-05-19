@@ -15,6 +15,7 @@ class profile::idp(
     Array[String]          $actuators              = lookup('profile::idp::actuators'),
     String[1]              $overlay_branch         = lookup('profile::idp::overlay_branch'),
     Boolean                $external_tomcat        = lookup('profile::idp::external_tomcat'),
+    Boolean                $deploy_deb             = lookup('profile::idp::deploy_deb'),
     Stdlib::Fqdn           $idp_primary            = lookup('profile::idp::idp_primary'),
     Optional[Stdlib::Fqdn] $idp_failover           = lookup('profile::idp::idp_failover',
                                                             {'default_value' => undef}),
@@ -98,6 +99,7 @@ class profile::idp(
         daemon_user            => $cas_daemon_user,
         manage_user            => $cas_manage_user,
         log_dir                => $log_dir,
+        deploy_deb             => $deploy_deb,
     }
     profile::prometheus::jmx_exporter{ "idp_${facts['networking']['hostname']}":
         hostname         => $facts['networking']['hostname'],
