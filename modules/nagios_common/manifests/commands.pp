@@ -37,8 +37,6 @@ class nagios_common::commands(
         'python3-requests',
         # check_bfd
         'python3-cffi-backend',
-        # check_dns_query
-        'libnet-dns-perl',
     ])
 
     file { "${config_dir}/commands":
@@ -54,7 +52,6 @@ class nagios_common::commands(
         'check_all_memcached.php',
         'check_bfd.py',
         'check_bgp',
-        'check_dns_query',
         'check_dsh_groups',
         'check_etcd_mw_config_lastindex.py',
         'check_grafana_alert.py',
@@ -80,6 +77,7 @@ class nagios_common::commands(
     nagios_common::check_command::config { [
         'apt',
         'breeze',
+        'check_dns_query',
         'check_ssl_unified',
         'dhcp',
         'disk',
@@ -117,6 +115,10 @@ class nagios_common::commands(
         owner      => $owner,
         group      => $group,
     }
+
+    # This pulls in the actual check command for check_dns_query
+    # the config is in the list above
+    include ::nagios_common::check_dns_query
 
     # Used for cluster checks of "modern" wmf services
     require_package('python3-service-checker')
