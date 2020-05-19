@@ -48,16 +48,7 @@ profile::graphoid::error_headers:
   'Cache-Control': 'public, s-maxage=300, max-age=300'
 ### END GRAPHOID ###
 
-### BEGIN CHANGEPROP ###
-profile::changeprop::restbase_uri: http://restbase-async.discovery.wmnet:7231
-profile::changeprop::purge_host: 239.128.0.112
-profile::changeprop::purge_port: 4827
-profile::changeprop::ores_uris:
-  - http://ores.svc.eqiad.wmnet:8081
-  - http://ores.svc.codfw.wmnet:8081
-profile::changeprop::event_service_uri: https://eventgate-main.discovery.wmnet:4492/v1/events
 
-### END CHANGEPROP ###
 profile::nutcracker::memcached_pools: {}
 profile::nutcracker::monitor_port: 0 # we have nothing exposed via tcp
 
