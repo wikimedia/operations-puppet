@@ -9,3 +9,4 @@ profile::bird::advertise_vips:
     address: 10.3.0.4 # VIP to advertise (limited to a /32)
     check_cmd: "/bin/sh -c 'ss -lun | fgrep -q :10514'"
     ensure: present
+    service_type: centralserver

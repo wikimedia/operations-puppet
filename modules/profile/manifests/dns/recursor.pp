@@ -28,12 +28,13 @@ class profile::dns::recursor (
         $legacy_vips = []
     }
 
-    $all_anycast_vips = $advertise_vips.map |$vip_fqdn,$vip_params| { $vip_params['address'] }
+    $recdns_vips = $advertise_vips.filter |$vip_fqdn,$vip_params| { $vip_params['service_type'] == 'recdns' }
+    $recdns_addrs = $recdns_vips.map |$vip_fqdn,$vip_params| { $vip_params['address'] }
 
     $listen_addrs = [
         $facts['ipaddress'],
         $facts['ipaddress6'],
-        $all_anycast_vips,
+        $recdns_addrs,
     ] + $legacy_vips
 
     class { '::dnsrecursor':

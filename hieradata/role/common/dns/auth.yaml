@@ -8,3 +8,10 @@ prometheus::haproxy_exporter::endpoint: 'http://127.0.0.1:8404/?stats;csv'
 admin::groups:
  - dns-admins
  - fr-tech-admins
+profile::bird::advertise_vips:
+  nsa.wikimedia.org:
+    address: 198.35.27.27 # VIP to advertise (limited to a /32)
+    check_cmd: '/usr/lib/nagios/plugins/check_dns_query -H 198.35.27.27 -a -l -d www.wikipedia.org -t 1'
+    ensure: present
+    service_type: authdns
+profile::bird::bind_anycast_service: 'gdnsd.service'
