@@ -49,18 +49,16 @@ class lvs::monitor() {
             $hostname = $host['hostname']
             $service_title = "${hostname}_${n}"
             $service_title_v6 = "${service_title}_v6"
-            if $data['encryption'] {
-                $description = "LVS HTTPS ${sitename}"
-            }
-            else {
-                $description = "LVS HTTP ${sitename}"
-            }
+            $port = $data['port']
+            $protocol = pick($data['lvs']['protocol'], 'tcp')
+            $description = $data['description']
+            $check_description = "LVS ${n} ${sitename} port ${port}/${protocol} - ${description}"
             # Add ipv4 monitoring if present
             if $hostname in $hosts {
                 @monitoring::service { $service_title:
                     host          => $hostname,
                     group         => 'lvs',
-                    description   => "${description} IPv4",
+                    description   => "${check_description} IPv4",
                     check_command => $monitoring['check_command'],
                     critical      => $critical,
                     contact_group => $monitoring['contact_group'],
@@ -72,7 +70,7 @@ class lvs::monitor() {
                 @monitoring::service { $service_title_v6:
                     host          => "${hostname}_ipv6",
                     group         => 'lvs',
-                    description   => "${description} IPv6",
+                    description   => "${check_description} IPv6",
                     check_command => $monitoring['check_command'],
                     critical      => $monitoring['critical'],
                     contact_group => $monitoring['contact_group'],
