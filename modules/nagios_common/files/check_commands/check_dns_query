@@ -73,13 +73,18 @@ sub get_options {
         help     => 'Only accept an authoritative answer',
     );
 
+    $ng->arg(
+        spec     => 'localonly|l',
+        help     => 'Set query source to 127.0.0.1, to confine success to a local loopback listener',
+    );
+
     $ng->getopts();
     return $ng;
 }
 
 sub execute_check {
     my $ng = shift;
-    my $reso = Net::DNS::Resolver->new(
+    my $res_opts = {
         nameservers => [ $ng->host ],
         port        => $ng->port,
         recurse     => !$ng->authoritative,
@@ -88,7 +93,13 @@ sub execute_check {
         retrans     => $ng->timeout,
         retry       => 1,
         igntc       => 1,
-    );
+    };
+
+    if ($ng->localonly) {
+        $res_opts->{srcaddr} = '127.0.0.1';
+    }
+
+    my $reso = Net::DNS::Resolver->new(%$res_opts);
 
     foreach my $p (qw/udp tcp/) {
         my $packet = $reso->send($ng->domainname, $ng->qtype);
