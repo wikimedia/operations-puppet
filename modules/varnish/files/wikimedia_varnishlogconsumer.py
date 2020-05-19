@@ -4,7 +4,7 @@
   ~~~~~~~~~~~~~~~~~~
   Base class for scripts consuming varnishlog data.
 
-  Copyright 2016-2019 Emanuele Rocca <ema@wikimedia.org>
+  Copyright 2016-2020 Emanuele Rocca <ema@wikimedia.org>
   Copyright 2017-2019 Gilles Dubuc <gilles@wikimedia.org>
 
   Licensed under the Apache License, Version 2.0 (the "License");
@@ -296,8 +296,11 @@ class BaseVarnishLogConsumer(object):
         p = Popen(self.cmd, stdout=PIPE, bufsize=-1, universal_newlines=True)
 
         try:
-            while True:
+            while p.poll() is None:
                 line = p.stdout.readline().rstrip('\n')
                 self.handle_line(line)
+
+            # varnishlog process has terminated
+            sys.exit(p.returncode)
         except KeyboardInterrupt:
             os.waitpid(p.pid, 0)
