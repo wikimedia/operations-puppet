@@ -6,6 +6,7 @@ class profile::dns::auth {
     include ::profile::dns::auth::update
     include ::profile::dns::auth::dotls
     include ::profile::dns::auth::perf
+    include ::profile::dns::check_dns_query
 
     class { 'gdnsd': }
 }

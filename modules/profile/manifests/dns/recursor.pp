@@ -9,6 +9,7 @@ class profile::dns::recursor (
     include ::profile::base::firewall
     include ::profile::bird::anycast
     include ::profile::prometheus::pdns_rec_exporter
+    include ::profile::dns::check_dns_query
 
     # The $legacy_vip is to support the old lvs recdns IP in codfw and eqiad
     # temporarily, since there are a few trailing edge cases using it (a few
