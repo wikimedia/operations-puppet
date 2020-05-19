@@ -54,7 +54,7 @@ class profile::cescout (
     systemd::unit { "postgresql@${postgres_version}-main.service":
         ensure   => present,
         override => true,
-        restart  => false,
+        restart  => true,
         content  => template('cescout/postgres-systemd-override.conf.erb'),
     }
 }
