@@ -1,0 +1,7 @@
+fixtures:
+    symlinks:
+        java: "#{source_dir}"
+        alternatives: "../../../../alternatives"
+        apt: "../../../../apt"
+        stdlib: "../../../../stdlib"
+        wmflib: "../../../../wmflib"

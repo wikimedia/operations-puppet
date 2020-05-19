@@ -1,0 +1,1 @@
+type Java::Version = Enum['8', '11']
