@@ -8,7 +8,7 @@ prometheus::haproxy_exporter::endpoint: 'http://127.0.0.1:8404/?stats;csv'
 profile::bird::advertise_vips:
   recdns.anycast.wmnet:
     address: 10.3.0.1 # VIP to advertise (limited to a /32)
-    check_cmd: '/usr/lib/nagios/plugins/check_dns -H www.wikipedia.org -s 10.3.0.1 -t 1 -c 1'
+    check_cmd: '/usr/lib/nagios/plugins/check_dns_query -H 10.3.0.1 -l -d www.wikipedia.org -t 1'
     ensure: present
 
 profile::dns::auth::acmechief_target::acmechief_hosts:
