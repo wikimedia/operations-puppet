@@ -9,8 +9,19 @@ profile::mediawiki::mcrouter_wancache::num_proxies: 5
 # Use the gutter pool for failover
 profile::mediawiki::mcrouter_wancache::gutter_ttl: 600
 has_lvs: true
-profile::mediawiki::webserver::has_tls: true
-profile::mediawiki::webserver::tls_keepalive_requests: 200
+# TLS configuration: go via Envoy
+profile::mediawiki::webserver::has_tls: "envoy"
+profile::envoy::ensure: present
+profile::tlsproxy::envoy::sni_support: "no" # you need the double quotes, because yaml.
+profile::tlsproxy::envoy::tls_port: 443
+profile::tlsproxy::envoy::services:
+  - server_names: ["*"]
+    port: 80
+profile::tlsproxy::envoy::upstream_response_timeout: 203.0
+profile::tlsproxy::envoy::retries: false
+profile::tlsproxy::envoy::global_cert_name: "appservers.svc.eqiad.wmnet"
+profile::tlsproxy::envoy::access_log: true
+profile::tlsproxy::envoy::capitalize_headers: true
 profile::mediawiki::httpd::logrotate_retention: 12
 
 profile::lvs::realserver::pools:
@@ -31,7 +42,6 @@ profile::mediawiki::php::php_version: "7.2"
 # bail out in case a long-lasting C function is called and
 # excimer can't throw its exception
 profile::mediawiki::php::request_timeout: 201
-profile::tlsproxy::instance::bootstrap_protection: true
 profile::mediawiki::php::fpm_workers_multiplier: 2.0
 profile::mediawiki::apc_shm_size: 6096M
 profile::mediawiki::php::fpm_config:
