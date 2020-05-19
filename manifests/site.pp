@@ -514,7 +514,7 @@ node /^db21(37|38|39|40)\.codfw\.wmnet/ {
 }
 
 # eqiad replicas to be installed T251614
-node /^db11(41|42|43|44|45|46|47|48|49)\.eqiad\.wmnet/ {
+node /^db11(42|43|44|45|46|47|48|49)\.eqiad\.wmnet/ {
     role(spare::system)
 }
 
@@ -1283,7 +1283,7 @@ node 'labsdb1009.eqiad.wmnet' {
 node 'labsdb1010.eqiad.wmnet' {
     role(labs::db::wikireplica_web)
 }
-node 'labsdb1011.eqiad.wmnet' {
+node /(labsdb1011|db1141)\.eqiad\.wmnet$/ {
     role(labs::db::wikireplica_analytics)
 }
 
