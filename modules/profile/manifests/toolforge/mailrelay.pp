@@ -1,7 +1,8 @@
-class profile::toolforge::mailrelay(
-    String $external_hostname = hiera('profile::toolforge::mailrelay::external_hostname', 'mail.tools.wmflabs.org'),
-    String $mail_domain = hiera('profile::toolforge::mail_domain', 'tools.wmflabs.org'),
-    String $cert_name = hiera('profile::toolforge::cert_name', 'tools_mail'),
+class profile::toolforge::mailrelay (
+    String  $external_hostname = lookup('profile::toolforge::mailrelay::external_hostname', {'default_value' => 'mail.tools.wmflabs.org'}),
+    String  $mail_domain       = lookup('profile::toolforge::mail_domain',                  {'default_value' => 'tools.wmflabs.org'}),
+    String  $cert_name         = lookup('profile::toolforge::cert_name',                    {'default_value' => 'tools_mail'}),
+    Boolean $tls               = lookup('profile::toolforge::mailrelay::enable_tls',        {'default_value' => true}),
 ) {
     class { '::exim4':
         queuerunner => 'combined',
@@ -73,24 +74,26 @@ class profile::toolforge::mailrelay(
         source => 'puppet:///modules/profile/toolforge/mailrelay/aliases',
     }
 
-    letsencrypt::cert::integrated { $cert_name:
-        subjects   => $external_hostname,
-        key_group  => 'Debian-exim',
-        puppet_svc => 'nginx',
-        system_svc => 'nginx',
-    }
+    if $tls {
+        letsencrypt::cert::integrated { $cert_name:
+            subjects   => $external_hostname,
+            key_group  => 'Debian-exim',
+            puppet_svc => 'nginx',
+            system_svc => 'nginx',
+        }
 
-    class { 'nginx':
-        variant => 'light',
-    }
+        class { 'nginx':
+            variant => 'light',
+        }
 
-    nginx::site { 'letsencrypt-standalone':
-        content => template('letsencrypt/cert/integrated/standalone.nginx.erb'),
-    }
+        nginx::site { 'letsencrypt-standalone':
+            content => template('letsencrypt/cert/integrated/standalone.nginx.erb'),
+        }
 
-    ferm::service { 'nginx-http':
-        proto => 'tcp',
-        port  => '80',
+        ferm::service { 'nginx-http':
+            proto => 'tcp',
+            port  => '80',
+        }
     }
 
     diamond::collector::extendedexim { 'extended_exim_collector': }
