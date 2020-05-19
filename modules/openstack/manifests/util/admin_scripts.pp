@@ -15,6 +15,12 @@ class openstack::util::admin_scripts(
         ensure => 'present',
     }
 
+    # We need a mysql client in order to run wmcs-cold-migrate; it updates
+    #  some db things.
+    package{ 'mariadb-client':
+        ensure => 'present',
+    }
+
     # Script to cold-migrate instances between compute nodes
     file { '/usr/local/sbin/wmcs-cold-nova-migrate':
         ensure => 'present',
