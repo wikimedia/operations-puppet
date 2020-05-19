@@ -158,6 +158,8 @@ class superset(
         group       => 'root',
     }
 
+    base::service_auto_restart { 'apache2': }
+
     systemd::service { 'superset':
         ensure  => 'present',
         content => systemd_template('superset'),
