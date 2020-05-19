@@ -509,7 +509,7 @@ node /^db20(84|85|86|87|88|89|91)\.codfw\.wmnet/ {
 }
 
 # codfw replicas to be installed T251639
-node /^db21(36|37|38|39|40)\.codfw\.wmnet/ {
+node /^db21(37|38|39|40)\.codfw\.wmnet/ {
     role(spare::system)
 }
 
