@@ -7,6 +7,7 @@ class profile::dns::auth {
     include ::profile::dns::auth::dotls
     include ::profile::dns::auth::perf
     include ::profile::dns::check_dns_query
+    include ::profile::bird::anycast
 
     class { 'gdnsd': }
 }
