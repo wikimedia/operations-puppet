@@ -96,7 +96,7 @@ sub execute_check {
         # Check for no response packet at all, in which case the resolver
         # object has the error
         if (!defined $packet) {
-            plugin_exit(CRITICAL, $reso->error_string());
+            plugin_exit(CRITICAL, $reso->errorstring());
         }
 
         # Check header fields for basics
