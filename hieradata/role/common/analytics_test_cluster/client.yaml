@@ -41,6 +41,3 @@ profile::kerberos::keytabs::keytabs_metadata:
 profile::analytics::cluster::hdfs_mount::kerberos_enabled: true
 
 profile::swap::push_published: false
-
-profile::base::debdeploy::exclude_mounts:
-  - /mnt/hdfs

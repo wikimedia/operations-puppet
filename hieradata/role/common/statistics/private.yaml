@@ -49,9 +49,6 @@ profile::analytics::cluster::hdfs_mount::kerberos_enabled: true
 profile::analytics::search::jobs::use_kerberos: true
 profile::statistics::private::use_kerberos: true
 
-profile::base::debdeploy::exclude_mounts:
-  - /mnt/hdfs
-
 profile::kerberos::keytabs::keytabs_metadata:
   - role: 'analytics'
     owner: 'analytics'
