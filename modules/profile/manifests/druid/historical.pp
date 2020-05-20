@@ -29,9 +29,21 @@ class profile::druid::historical(
         $monitoring_env_vars = {}
     }
 
+    # The suggestion for the Historical daemon is to set the
+    # processing num threads to ncores.
+    # https://druid.apache.org/docs/latest/operations/basic-cluster-tuning.html#process-specific-guidelines
+    # This is useful since we have historicals running on different hw.
+    if !has_key($properties, 'druid.processing.numThreads') {
+        $extra_properties = {
+            'druid.processing.numThreads' => $facts['processors']['count']
+        }
+    } else {
+        $extra_properties = {}
+    }
+
     # Druid historical Service
     class { '::druid::historical':
-        properties       => $properties,
+        properties       => merge($properties, $extra_properties),
         env              => merge($env, $monitoring_env_vars),
         should_subscribe => $daemon_autoreload,
     }
