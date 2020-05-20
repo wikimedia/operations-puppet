@@ -76,14 +76,9 @@ class profile::thanos::swift::frontend (
         srange  => "@resolve((${thanos_access_ferm}))",
     }
 
-    monitoring::service { 'thanos-https-frontend':
-        description   => 'Thanos swift https frontend',
-        check_command => "check_https_url!${service_host}!/monitoring/frontend",
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Thanos',
-    }
-    monitoring::service { 'thanos-https-backend':
-        description   => 'Thanos swift https backend',
-        check_command => "check_https_url!${service_host}!/monitoring/backend",
+    monitoring::service { 'thanos-swift-https':
+        description   => 'Thanos swift https',
+        check_command => "check_https_url!${service_host}!/healthcheck",
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Thanos',
     }
 }
