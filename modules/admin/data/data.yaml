@@ -3966,7 +3966,7 @@ ldap_only_users:
     ensure: present
     realname: Silvan Heintze
     email: silvan.heintze@wikimedia.de
-  soworu:
+  soworu-01:
     ensure: present
     realname: Segun Oworu
     email: soworu@wikimedia.org
