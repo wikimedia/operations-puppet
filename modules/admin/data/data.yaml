@@ -343,7 +343,7 @@ groups:
     description: Users who can manage bulk jobs on phabricator
                  * Move tasks in batches (T251349)
                  * Configure a bulk job to execute silently.
-    members: []
+    members: [mbinder]
     privileges: ['ALL = NOPASSWD: /srv/phab/phabricator/bin/bulk make-silent --id *']
   phabricator-roots:
     gid: 748
@@ -3717,7 +3717,14 @@ users:
     expiry_date: 2020-08-03
     expiry_contact: diego@wikimedia.org
     krb: present
-
+  mbinder:
+    ensure: present
+    realname: Max Binder
+    email: mbinder@wikimedia.org
+    uid: 14304
+    gid: 500
+    ssh-keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJexC21uGdBW6jT1gyUGu/GGNWUBBLIcb1b6ALMLjAYX mbinder@Max-Binders-Super-Duper-Agile-Work-Robot-Clam.local
 ldap_only_users:
   abartov:
     ensure: present
