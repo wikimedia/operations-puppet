@@ -3340,7 +3340,7 @@ users:
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPjZq2lUicJxSAKeKAsb8KT8rm7RbG8MEF3NCjn5ymw/ jhedden@wikimedia.org
     uid: 21436
-    email: jhedden@wikimedia.org
+    email: jason@latigid.net
   accraze:
     ensure: present
     gid: 500
