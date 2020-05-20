@@ -1,13 +1,14 @@
 class kubeadm::init_yaml (
-    Stdlib::Fqdn        $apiserver,
-    String              $pod_subnet,
-    Stdlib::Unixpath    $k8s_etcd_cert_pub,
-    Stdlib::Unixpath    $k8s_etcd_cert_priv,
-    Stdlib::Unixpath    $k8s_etcd_cert_ca,
-    Array[Stdlib::Fqdn] $etcd_hosts,
-    String              $kubernetes_version = '1.15.5',
-    String              $node_token = undef,
-    Optional[String]    $encryption_key = undef,
+    Stdlib::Fqdn                  $apiserver,
+    String                        $pod_subnet,
+    Boolean                       $stacked = false,
+    Optional[Stdlib::Unixpath]    $k8s_etcd_cert_pub,
+    Optional[Stdlib::Unixpath]    $k8s_etcd_cert_priv,
+    Optional[Stdlib::Unixpath]    $k8s_etcd_cert_ca,
+    Optional[Array[Stdlib::Fqdn]] $etcd_hosts,
+    String                        $kubernetes_version = '1.15.5',
+    String                        $node_token = undef,
+    Optional[String]              $encryption_key = undef,
 ) {
     # because /etc/kubernetes
     require ::kubeadm::core

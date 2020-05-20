@@ -1,4 +1,5 @@
 class profile::wmcs::kubeadm::control (
+    Boolean             $stacked_control_plane = lookup('profile::wmcs::kubeadm::stacked', {default_value => false}),
     Array[Stdlib::Fqdn] $etcd_hosts = lookup('profile::wmcs::kubeadm::etcd_nodes',     {default_value => ['localhost']}),
     Stdlib::Fqdn        $apiserver  = lookup('profile::wmcs::kubeadm::apiserver_fqdn', {default_value => 'k8s.example.com'}),
     String              $node_token = lookup('profile::wmcs::kubeadm::node_token',     {default_value => 'example.token'}),
@@ -24,25 +25,28 @@ class profile::wmcs::kubeadm::control (
         owner  => 'root',
         group  => 'root',
     }
-    file { $k8s_etcd_cert_pub:
-        ensure    => present,
-        source    => "file://${puppet_cert_pub}",
-        show_diff => false,
-        owner     => 'root',
-        group     => 'root',
-        mode      => '0444',
-    }
-    file { $k8s_etcd_cert_priv:
-        ensure    => present,
-        source    => "file://${puppet_cert_priv}",
-        show_diff => false,
-        owner     => 'root',
-        group     => 'root',
-        mode      => '0400',
-    }
-    file { $k8s_etcd_cert_ca:
-        ensure => present,
-        source => "file://${puppet_cert_ca}",
+
+    if ! $stacked_control_plane {
+        file { $k8s_etcd_cert_pub:
+            ensure    => present,
+            source    => "file://${puppet_cert_pub}",
+            show_diff => false,
+            owner     => 'root',
+            group     => 'root',
+            mode      => '0444',
+        }
+        file { $k8s_etcd_cert_priv:
+            ensure    => present,
+            source    => "file://${puppet_cert_priv}",
+            show_diff => false,
+            owner     => 'root',
+            group     => 'root',
+            mode      => '0400',
+        }
+        file { $k8s_etcd_cert_ca:
+            ensure => present,
+            source => "file://${puppet_cert_ca}",
+        }
     }
 
     file { '/srv/git':
@@ -67,6 +71,7 @@ class profile::wmcs::kubeadm::control (
     # TODO: eventually we may need overriding this CIDR
     $pod_subnet = '192.168.0.0/16'
     class { '::kubeadm::init_yaml':
+        stacked            => $stacked_control_plane,
         etcd_hosts         => $etcd_hosts,
         apiserver          => $apiserver,
         pod_subnet         => $pod_subnet,

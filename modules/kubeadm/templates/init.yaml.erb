@@ -45,6 +45,7 @@ controller-manager:
 scheduler:
   extraArgs:
     profiling: "false"
+<% if ! @stacked -%>
 etcd:
   external:
     caFile: "<%= @k8s_etcd_cert_ca -%>"
@@ -54,4 +55,5 @@ etcd:
     <% @etcd_hosts.each do |host| -%>
       - "https://<%= host -%>:2379"
     <% end -%>
+<% end -%>
 
