@@ -1235,6 +1235,16 @@ node /kubestage100[12]\.eqiad\.wmnet/ {
     role(kubernetes::staging::worker)
 }
 
+# codfw new kubernetes nodes T252185
+node /kubernetes20(0[7-9]|[10-14])\.codfw\.wmnet/ {
+    role(insetup)
+}
+
+# codfw new kubernetes staging nodes T252185
+node /kubestasge200[12]\.codfw\.wmnet/ {
+    role(insetup)
+}
+
 node 'cloudcontrol2001-dev.wikimedia.org' {
     role(wmcs::openstack::codfw1dev::control)
 }
