@@ -1953,6 +1953,11 @@ node 'otrs1001.eqiad.wmnet' {
     role(insetup)
 }
 
+# Wikidough, experimental (T252132)
+node 'malmok.codfw.wmnet' {
+    role(insetup)
+}
+
 # parser cache databases
 # eqiad
 # pc1
