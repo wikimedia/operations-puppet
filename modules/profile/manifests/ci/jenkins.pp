@@ -23,8 +23,7 @@ class profile::ci::jenkins(
         workspaces_dir  => $workspaces_dir,
     }
 
-    # Templates for Jenkins plugin Email-ext.  The templates are hosted in
-    # the repository integration/jenkins.git, so link to there.
+    # Templates for Jenkins plugin Email-ext.
     file { '/var/lib/jenkins/email-templates':
         ensure => directory,
         mode   => '0755',
