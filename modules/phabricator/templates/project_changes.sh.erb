@@ -165,6 +165,19 @@ SELECT DISTINCT CONCAT("https://phabricator.wikimedia.org/p/", u.userName) AS us
 END
 )
 
+#echo "result_user_profile_urls"
+# see https://phabricator.wikimedia.org/T250946
+result_user_profile_urls=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -P $sql_port -u $sql_user $sql_name << END
+SELECT CONCAT("https://phabricator.wikimedia.org/p/", u.userName)
+    FROM phabricator_user.user u
+    INNER JOIN phabricator_user.user_profile up
+    WHERE up.userPHID = u.phid
+    AND u.isDisabled = 0
+    AND up.blurb LIKE "%http%"
+    AND up.dateModified > (UNIX_TIMESTAMP() - 605300);
+END
+)
+
 #echo "result_past_due_dates"
 # see https://phabricator.wikimedia.org/T249807
 result_past_due_dates=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -P $sql_port -u $sql_user $sql_name << END
@@ -287,6 +300,9 @@ ${result_inactive_users_assigned_tasks}
 
 USER ACCOUNTS WHO BECAME AN ASSIGNEE LAST WEEK AND HAD LESS THAN 5 TASKS EVER ASSIGNED:
 ${result_new_user_assignees}
+
+USER PROFILES WITH A URL IN THEIR DESC WHICH CHANGED WITHIN THE LAST 1 WEEK (to spam check):
+${result_user_profile_urls}
 
 OPEN TASKS WITH A DUE DATE MORE THAN 1 MONTH AGO:
 ${result_past_due_dates}
