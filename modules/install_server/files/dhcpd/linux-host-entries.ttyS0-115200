@@ -464,8 +464,8 @@ host logstash2025 {
 }
 
 host malmok {
-    hardware ethernet aa:00:00:1b:48:24;
-    fixed-address malmok.codfw.wmnet;
+    hardware ethernet aa:00:00:a8:48:0d;
+    fixed-address malmok.wikimedia.org;
 }
 
 host matomo1001 {
