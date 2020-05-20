@@ -23,4 +23,10 @@ class profile::thanos::httpd (
     httpd::site { 'thanos-query':
         content => template('profile/thanos/httpd.conf.erb'),
     }
+
+    ferm::service { 'thanos_httpd':
+        proto  => 'tcp',
+        port   => 80,
+        srange => '$DOMAIN_NETWORKS',
+    }
 }
