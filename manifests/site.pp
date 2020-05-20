@@ -1955,7 +1955,7 @@ node 'otrs1001.eqiad.wmnet' {
 
 # Wikidough, experimental (T252132)
 node 'malmok.wikimedia.org' {
-    role(insetup)
+    role(wikidough)
 }
 
 # parser cache databases
