@@ -717,13 +717,11 @@ host cloudelastic1006 {
 host cloudnet1003 {
     hardware ethernet e0:07:1b:ef:f5:98;
     fixed-address cloudnet1003.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host cloudnet1004 {
     hardware ethernet e0:07:1b:ef:15:d0;
     fixed-address cloudnet1004.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host cloudvirt1012 {
