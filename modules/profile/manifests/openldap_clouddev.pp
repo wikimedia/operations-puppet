@@ -3,7 +3,7 @@ class profile::openldap_clouddev (
     $hostname = lookup('profile::openldap::hostname'),
     $mirror_mode = lookup('profile::openldap::mirror_mode'),
     $backup = lookup('profile::openldap::backup'),
-    $sync_pass = lookup('profile::openldap::sync_pass'),
+    $sync_pass = lookup('profile::openldap::codfw1dev::openldap::sync_pass:'),
     $master = lookup('profile::openldap::master'),
     $server_id = lookup('profile::openldap::server_id'),
     $hash_passwords = lookup('profile::openldap::hash_passwords'),
