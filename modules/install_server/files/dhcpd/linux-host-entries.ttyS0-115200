@@ -463,6 +463,11 @@ host logstash2025 {
     fixed-address logstash2025.codfw.wmnet;
 }
 
+host malmok {
+    hardware ethernet aa:00:00:1b:48:24;
+    fixed-address malmok.codfw.wmnet;
+}
+
 host matomo1001 {
     hardware ethernet aa:00:00:eb:c3:90;
     fixed-address matomo1001.eqiad.wmnet;
