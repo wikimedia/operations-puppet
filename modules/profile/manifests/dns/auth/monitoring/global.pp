@@ -1,6 +1,6 @@
 # This is for the alerting host to monitor the shared public addrs
 class profile::dns::auth::monitoring::global (
-    Hash[String, Hash[String, Any]] $authdns_addrs = lookup('authdns_addrs'),
+    Hash[String, Hash[String, String]] $authdns_addrs = lookup('authdns_addrs'),
 ) {
     $authdns_addrs.each |$label,$data| {
         @monitoring::host { $label:

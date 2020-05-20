@@ -1,5 +1,5 @@
 class profile::dns::auth::config(
-    Hash[String, Hash[String, Any]] $authdns_addrs = lookup('authdns_addrs'),
+    Hash[String, Hash[String, String]] $authdns_addrs = lookup('authdns_addrs'),
 ) {
     include ::network::constants
     include ::profile::base::firewall
@@ -7,11 +7,9 @@ class profile::dns::auth::config(
     # Create the loopback IPs used for public service (defined here since we
     # also create the matching listener config here)
     $authdns_addrs.each |$alabel,$adata| {
-        unless $adata['skip_loopback'] {
-            interface::ip { $alabel:
-                address   => $adata['address'],
-                interface => 'lo',
-            }
+        interface::ip { $alabel:
+            address   => $adata['address'],
+            interface => 'lo',
         }
     }
 
