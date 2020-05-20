@@ -28,6 +28,9 @@ def print_output_pkg(tag, pkg):
     archive = pkg.candidate.origins[0].archive
     if not archive:
         archive = "[unknown]"
+    component = pkg.candidate.origins[0].component
+    if not component:
+        component = "[unknown]"
     name = pkg.name
     if pkg.is_installed:
         vorig = pkg.installed.version
@@ -37,7 +40,7 @@ def print_output_pkg(tag, pkg):
         vdest = pkg.candidate.version
     else:
         vdest = "[remove]"
-    logging.info('{}: {} {} --> {} {}'.format(archive, name, vorig, vdest, tag))
+    logging.info('{}/{}: {} {} --> {} {}'.format(archive, component, name, vorig, vdest, tag))
 
 
 def pkg_upgrade(pkg):
@@ -59,21 +62,29 @@ def pkg_upgrade(pkg):
 
 class AptFilterUpgradeableSrc(apt.cache.Filter):
     """ filter for python-apt cache to filter only packages upgradeable from a
-    specific source.
+    specific source (archive and component).
     """
 
-    def __init__(self, src):
+    def __init__(self, src, component):
         super().__init__()
         self.src = src
+        self.component = component
 
     def apply(self, pkg):
-        """ filtering function: installed and upgradeable pkgs, from a given archive
+        """ filtering function: installed and upgradeable pkgs, from a given
+        source (archive and component).
         :param pkg: Package
         """
-        if pkg.is_installed and pkg.is_upgradable and pkg.candidate.origins[0].archive == self.src:
-            return True
+        if not pkg.is_installed:
+            return False
+        if not pkg.is_upgradable:
+            return False
+        if pkg.candidate.origins[0].archive != self.src:
+            return False
+        if self.component and pkg.candidate.origins[0].component != self.component:
+            return False
 
-        return False
+        return True
 
 
 class AptFilterUpgradeable(apt.cache.Filter):
@@ -130,17 +141,24 @@ def calculate_upgrades(cache, exclude_regex_set):
     return len(pkg_list)
 
 
-def run_upgrade(cache, src, confirm, exclude_regex_set):
+def run_upgrade(cache, archive, confirm, exclude_regex_set):
     """ main upgrade routine: calculate upgrades and commit them
     :param cache: apt.Cache
-    :param src: str
+    :param archive: str
     :param confirm: boolean
     :param exclude_regex_set: set(regex)
     """
-    cache.set_filter(AptFilterUpgradeableSrc(src))
+    string_list = archive.split('/', 1)
+    dist = string_list[0]  # the parser verified this exists
+    comp = string_list[1] if len(string_list) > 1 else None
+    cache.set_filter(AptFilterUpgradeableSrc(dist, comp))
 
     if not calculate_upgrades(cache, exclude_regex_set):
-        logging.info('no packages found to upgrade from {}'.format(src))
+        if comp:
+            repo = "{}/{}".format(dist, comp)
+        else:
+            repo = dist
+        logging.info('no packages found to upgrade from {}'.format(repo))
         return
 
     if not confirm:
@@ -158,7 +176,10 @@ def run_report(cache, archive, exclude_regex_set):
     :param exclude_regex_set: set(regex)
     """
     if archive:
-        cache.set_filter(AptFilterUpgradeableSrc(archive))
+        string_list = archive.split('/', 1)
+        dist = string_list[0]
+        comp = string_list[1] if len(string_list) > 1 else None
+        cache.set_filter(AptFilterUpgradeableSrc(dist, comp))
     else:
         cache.set_filter(AptFilterUpgradeable())
 
@@ -174,18 +195,21 @@ def run_list(cache, exclude_regex_set):
     logging.disable(logging.INFO)
     calculate_upgrades(cache, exclude_regex_set)
     logging.disable(logging.NOTSET)
-    archives = set()
+    set_of_archives = set()
     for pkg in cache.get_changes():
         archive = pkg.candidate.origins[0].archive
-        if archive:
-            archives.add(archive)
-        else:
-            archives.add("[unknown]")
+        if not archive:
+            archive = "[unknown]"
+        component = pkg.candidate.origins[0].component
+        if not component:
+            component = "[unknown]"
 
-    if len(archives) == 0:
+        set_of_archives.add("{}/{}".format(archive, component))
+
+    if len(set_of_archives) == 0:
         return
 
-    logging.info("{}".format(", ".join(a for a in sorted(archives))))
+    logging.info("{}".format(", ".join(a for a in sorted(set_of_archives))))
 
 
 def exclude_regex_set(exclude_file, exclude_list):
