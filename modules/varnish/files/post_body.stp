@@ -1,0 +1,54 @@
+#!/usr/bin/env stap
+# post_body.stp - print the body of HTTP requests going through Varnish
+#
+# Varnish does not support logging request bodies in any way. This script
+# prints all details of HTTP requests with a body, including the body itself.
+#
+# The function 'print_http' takes a pointer to a struct http and prints all
+# headers. It works with both HTTP requests and responses, so it might be
+# useful in other probes too.
+#
+
+function print_http(h:long) {
+    HTTP_HDR_METHOD = 0
+    HTTP_HDR_URL = 1
+    HTTP_HDR_PROTO = 2
+    HTTP_HDR_STATUS = 3
+    HTTP_HDR_REASON = 4
+    HTTP_HDR_FIRST = 5
+
+    http = &@cast(h, "http", "/usr/sbin/varnishd")
+
+    if (http->hd[HTTP_HDR_METHOD]->b) {
+        // Looks like a request
+        printf("%s ", user_string(http->hd[HTTP_HDR_METHOD]->b))
+        printf("%s ", user_string(http->hd[HTTP_HDR_URL]->b))
+        printf("%s\n", user_string(http->hd[HTTP_HDR_PROTO]->b))
+    } else if (http->hd[HTTP_HDR_STATUS]->b) {
+        // Looks like a response
+        printf("%s ", user_string(http->hd[HTTP_HDR_PROTO]->b))
+        printf("%s ", user_string(http->hd[HTTP_HDR_STATUS]->b))
+        printf("%s\n", user_string(http->hd[HTTP_HDR_REASON]->b))
+    } else {
+        println("print_http: nothing to do")
+        return
+    }
+
+    // Headers
+    for (i=HTTP_HDR_FIRST; i<http->nhd; i++)
+        printf("%s\n", user_string(http->hd[i]->b))
+
+    printf("\n")
+}
+
+probe process("/usr/sbin/varnishd").function("vbf_iter_req_body") {
+    bo = &@cast($priv, "busyobj", "/usr/sbin/varnishd")
+    if (bo->req && bo->req->http) {
+        print_http(bo->req->http)
+    } else {
+        next
+    }
+
+    body = user_string_n($ptr, $l)
+    println(body)
+}
