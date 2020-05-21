@@ -2096,13 +2096,13 @@ node /^rpki[12]001\.(eqiad|codfw)\.wmnet$/ {
     role(rpkivalidator)
 }
 
-# people.wikimedia.org, for all shell users
 # replaced rutherfordium in T210036
 node 'people1001.eqiad.wmnet' {
-    role(microsites::peopleweb)
+    role(insetup)
 }
 
-# buster VM replacing people1001 (T247649)
+# people.wikimedia.org, for all shell users
+# buster VM. replaced people1001 (T247649)
 node 'people1002.eqiad.wmnet' {
     role(microsites::peopleweb)
 }
