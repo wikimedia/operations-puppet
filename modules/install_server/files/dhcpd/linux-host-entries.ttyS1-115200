@@ -496,7 +496,7 @@ host auth2001 {
 }
 
 host authdns1001 {
-    hardware ethernet D0:94:66:5F:53:A8;
+    hardware ethernet B0:26:28:DA:0A:D0;
     fixed-address authdns1001.wikimedia.org;
 
 }
