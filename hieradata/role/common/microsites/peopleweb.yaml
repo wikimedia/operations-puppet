@@ -7,7 +7,7 @@ admin::groups:
 profile::tlsproxy::envoy::global_cert_name: "peopleweb.discovery.wmnet"
 profile::microsites::peopleweb::sitename: 'people.wikimedia.org'
 profile::microsites::peopleweb::docroot: '/srv/org/wikimedia/publichtml'
-profile::microsites::peopleweb::rsync_src_host: 'people1001.eqiad.wmnet'
+profile::microsites::peopleweb::rsync_src_host: 'people1002.eqiad.wmnet'
 profile::microsites::peopleweb::rsync_dst_host: 'people1002.eqiad.wmnet'
 profile::idp::client::httpd::vhost_content: 'profile/idp/client/httpd-people.erb'
 profile::idp::client::httpd::document_root: "%{alias('profile::microsites::peopleweb::docroot')}"
