@@ -202,7 +202,7 @@ def exportfs():
     exportfs = ["/usr/bin/sudo", "/usr/sbin/exportfs", "-ra"]
 
     logging.warning(" ".join(exportfs))
-    subprocess.check_call(exportfs)
+    subprocess.call(exportfs)
 
 
 def write_public_exports(public_exports, exports_d_path):
