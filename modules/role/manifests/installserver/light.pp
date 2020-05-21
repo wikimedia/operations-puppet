@@ -9,5 +9,6 @@ class role::installserver::light {
     include ::profile::installserver::tftp
     include ::profile::installserver::dhcp
     include ::profile::installserver::proxy
+    include ::profile::installserver::http_light
     include ::profile::prometheus::squid_exporter
 }
