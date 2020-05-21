@@ -330,7 +330,7 @@ profile::trafficserver::backend::caching_rules:
       value: puppetmaster1001.eqiad.wmnet
       action: never-cache
     - primary_destination: dest_host
-      value: people1001.eqiad.wmnet
+      value: peopleweb.discovery.wmnet
       action: never-cache
     - primary_destination: dest_host
       value: thorium.eqiad.wmnet
