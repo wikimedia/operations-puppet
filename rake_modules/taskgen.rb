@@ -447,6 +447,13 @@ class TaskGen < ::Rake::TaskLib
             raise "Tox tests for admin/data/data.yaml failed!".red unless res
           end
           tasks << 'tox:admin'
+
+          desc 'Run tox to check admin data file matches schema'
+          task :adminschema do
+            res = system('tox -e adminschema')
+            raise "Tox tests for admin/data/data.yaml following admin/data/schema.yaml failed!".red unless res
+          end
+          tasks << 'tox:adminschema'
         end
         mtail_files = filter_files_by("modules/mtail/files/**")
         unless mtail_files.empty?
