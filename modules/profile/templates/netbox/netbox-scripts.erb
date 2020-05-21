@@ -2,6 +2,9 @@
 ### THIS FILE IS MANAGED BY PUPPET
 #####################################################################
 # vim: filetype=apache
+
+Listen <%= @apache_port %>
+
 <VirtualHost *:<%= @apache_port %>>
     ServerName <%= @fqdn %>
     ServerAdmin noc@wikimedia.org
