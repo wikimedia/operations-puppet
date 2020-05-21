@@ -50,7 +50,7 @@
 #
 # [*druid.indexer.task.baseTaskDir*]
 #   Base temporary working directory for tasks.
-#   Default: /var/lib/druid/task
+#   Default: /srv/druid/task
 #
 # [*druid.server.http.numThreads*]
 #   Number of threads for HTTP requests. Default:  4,
@@ -79,7 +79,7 @@ class druid::middlemanager(
         'druid.indexer.runner.javaCommand'  => "${::druid::java_home}/bin/java",
         'druid.indexer.runner.javaOpts'     => '-server -Xmx128m -XX:+UseG1GC -XX:MaxGCPauseMillis=100 -Duser.timezone=UTC -Dfile.encoding=UTF-8 -Djava.util.logging.manager=org.apache.logging.log4j.jul.LogManager -Dhadoop.mapreduce.job.user.classpath.first=true',
 
-        'druid.indexer.task.baseTaskDir'    => '/var/lib/druid/task',
+        'druid.indexer.task.baseTaskDir'    => '/srv/druid/task',
 
         'druid.server.http.numThreads'      => 4,
 

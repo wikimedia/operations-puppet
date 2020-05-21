@@ -48,7 +48,7 @@
 #   Segments assigned to a Historical node are first stored on the local file
 #   system (in a disk cache) and then served by the Historical node. These
 #   locations define where that local cache resides.
-#   Default: '[{"path":"/var/lib/druid/segment-cache","maxSize"\:2147483648}]'
+#   Default: '[{"path":"/srv/druid/segment-cache","maxSize"\:2147483648}]'
 #
 # [*druid.server.maxSize*]
 #   The maximum number of bytes-worth of segments that the node wants assigned
@@ -74,7 +74,7 @@ class druid::historical(
         'druid.processing.numThreads'       => 1,
 
         # Segment storage
-        'druid.segmentCache.locations'      => '[{"path":"/var/lib/druid/segment-cache","maxSize"\:2147483648}]',
+        'druid.segmentCache.locations'      => '[{"path":"/srv/druid/segment-cache","maxSize"\:2147483648}]',
         'druid.server.maxSize'              => 2147483648,
     }
 

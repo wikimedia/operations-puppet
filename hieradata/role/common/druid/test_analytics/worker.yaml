@@ -130,7 +130,7 @@ profile::druid::historical::properties:
   druid.processing.numMergeBuffers: 10
   druid.server.http.numThreads: 20
   druid.server.maxSize: 2748779069440 # 2.5 TB
-  druid.segmentCache.locations: '[{"path":"/var/lib/druid/segment-cache","maxSize"\:2748779069440}]'
+  druid.segmentCache.locations: '[{"path":"/srv/druid/segment-cache","maxSize"\:2748779069440}]'
   # For small clusters it is reccomended to only enable caching on brokers
   # See: http://druid.io/docs/latest/querying/caching.html
   druid.historical.cache.useCache: false

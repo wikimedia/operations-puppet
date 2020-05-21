@@ -105,7 +105,7 @@ profile::druid::broker::properties:
   druid.sql.enable: true
 profile::druid::broker::env:
   DRUID_HEAP_OPTS: "-Xmx10g -Xms5g"
-  DRUID_EXTRA_JVM_OPTS: "-XX:NewSize=4g -XX:MaxNewSize=4g -XX:MaxDirectMemorySize=12g -XX:+UseConcMarkSweepGC -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -Djava.util.logging.manager=org.apache.logging.log4j.jul.LogManager"
+  DRUID_EXTRA_JVM_OPTS: "-XX:NewSize=4g -XX:MaxNewSize=4g -XX:MaxDirectMemorySize=12g -XX:+UseConcMarkSweepGC -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -Djava.util.logging.manager=org.apache.logging.log4j.jul.LogManager -Djava.io.tmpdir=/srv/druid/tmp"
 
 
 # --- Druid Coordinator
@@ -126,15 +126,17 @@ profile::druid::historical::properties:
   druid.emitter: composing
   druid.emitter.composing.emitters: ["logging","http"]
   druid.emitter.http.recipientBaseUrl: "http://localhost:8000/"
-  # 40 cpus listed by nproc, leaving some space for os
-  druid.processing.numThreads: 36
   druid.processing.buffer.sizeBytes: 268435456 # 1024 * 1024 * 256
   # Set numMergeBuffers to use v2 groupBy engine
   druid.processing.numMergeBuffers: 10
-  # 20 Druid http client threads * 3 brokers
-  druid.server.http.numThreads: 60
+  # 20 Druid http client threads * 3 brokers + 10
+  # The value 20 is the lowest among all the node hw types.
+  # We need to pick the lowest since each historical needs to be able
+  # to sustain, at worst, the maximum amount of concurrent reqs from all
+  # brokers plus a safe margin.
+  druid.server.http.numThreads: 70
   druid.server.maxSize: 2748779069440 # 2.5 TB
-  druid.segmentCache.locations: '[{"path":"/var/lib/druid/segment-cache","maxSize"\:2748779069440}]'
+  druid.segmentCache.locations: '[{"path":"/srv/druid/segment-cache","maxSize"\:2748779069440}]'
   # For small clusters it is reccomended to only enable caching on brokers
   # See: http://druid.io/docs/latest/querying/caching.html
   druid.historical.cache.useCache: false
@@ -144,7 +146,7 @@ profile::druid::historical::properties:
   druid.monitoring.monitors: ["io.druid.server.metrics.HistoricalMetricsMonitor", "io.druid.server.metrics.QueryCountStatsMonitor"]
 profile::druid::historical::env:
   DRUID_HEAP_OPTS: "-Xmx8g -Xms4g"
-  DRUID_EXTRA_JVM_OPTS: "-XX:NewSize=2g -XX:MaxNewSize=2g -XX:MaxDirectMemorySize=12g -XX:+UseConcMarkSweepGC -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -Djava.util.logging.manager=org.apache.logging.log4j.jul.LogManager"
+  DRUID_EXTRA_JVM_OPTS: "-XX:NewSize=2g -XX:MaxNewSize=2g -XX:+UseG1GC -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -Djava.util.logging.manager=org.apache.logging.log4j.jul.LogManager -Djava.io.tmpdir=/srv/druid/tmp"
 
 
 # --- Druid MiddleManager
@@ -158,7 +160,7 @@ profile::druid::middlemanager::properties:
   druid.indexer.runner.javaOpts: "-server -Xmx2g -XX:+UseG1GC -XX:MaxGCPauseMillis=100 -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -Dhadoop.mapreduce.job.user.classpath.first=true"
 profile::druid::middlemanager::env:
   DRUID_HEAP_OPTS: "-Xmx64m -Xms64m"
-  DRUID_EXTRA_JVM_OPTS: "-XX:+UseConcMarkSweepGC -XX:+PrintGCDetails -XX:+PrintGCTimeStamps"
+  DRUID_EXTRA_JVM_OPTS: "-XX:+UseConcMarkSweepGC -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -Djava.io.tmpdir=/srv/druid/tmp"
 
 
 # --- Druid Overlord
@@ -171,4 +173,4 @@ profile::druid::overlord::properties:
   druid.indexer.storage.type: metadata
 profile::druid::overlord::env:
   DRUID_HEAP_OPTS: "-Xmx1g -Xms1g"
-  DRUID_EXTRA_JVM_OPTS: "-XX:NewSize=256m -XX:MaxNewSize=256m -XX:+UseConcMarkSweepGC -XX:+PrintGCDetails -XX:+PrintGCTimeStamps"
+  DRUID_EXTRA_JVM_OPTS: "-XX:NewSize=256m -XX:MaxNewSize=256m -XX:+UseConcMarkSweepGC -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -Djava.io.tmpdir=/srv/druid/tmp"

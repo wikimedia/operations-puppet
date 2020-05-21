@@ -39,7 +39,7 @@
 # === Deep Storage Configuration ===
 #
 # By default deep storage is disabled.  Set druid.storage.type to
-# 'local' to configure local deep storage in /var/lib/druid/deep-storage.
+# 'local' to configure local deep storage in /srv/druid/deep-storage.
 #
 # Set druid.storage.type to 'hdfs' to configure HDFS based deep
 # storage in /user/druid/deep-storage.  Make sure that a Hadoop client
@@ -115,7 +115,7 @@
 #   single Coordinator, no fail-over).  Default: derby
 #
 # [*druid.metadata.storage.connector.connectURI*]
-#   Default: jdbc:derby://localhost:1527/var/lib/druid/metadata.db;create=true
+#   Default: jdbc:derby://localhost:1527/srv/druid/metadata.db;create=true
 #
 # [*druid.metadata.storage.connector.host*]
 #   Default: localhost
@@ -127,7 +127,7 @@
 #   Default: local
 #
 # [*druid.storage.storageDirectory*]
-#   Directory to use as deep storage.  Default: /var/lib/druid/deep-storage
+#   Directory to use as deep storage.  Default: /srv/druid/deep-storage
 #
 # [*druid.indexer.logs.type*]
 #   This property must be set for both overlord and middlemanager, hence
@@ -137,7 +137,7 @@
 # [*druid.indexer.logs.directory*]
 #   This property must be set for both overlord and middlemanager, hence
 #   it is present in common.runtime.properties.
-#   Default: /var/lib/druid/indexing-logs
+#   Default: /srv/druid/indexing-logs
 #
 # [*druid.emitter*]
 #   Default: logging
@@ -188,7 +188,7 @@ class druid(
             # passed in more than once.  Note that you'll have to override
             # this if you want to change the path to the derby database file.
             'druid.metadata.storage.connector.connectURI' => inline_template(
-                'jdbc:derby://<%= @properties.fetch("druid.metadata.storage.connector.host", "localhost") %>:<%= @properties.fetch("druid.metadata.storage.connector.port", "1527") %>/var/lib/druid/<%= @metadata_storage_database_name %>_metadata.db;create=true'
+                'jdbc:derby://<%= @properties.fetch("druid.metadata.storage.connector.host", "localhost") %>:<%= @properties.fetch("druid.metadata.storage.connector.port", "1527") %>/srv/druid/<%= @metadata_storage_database_name %>_metadata.db;create=true'
             ),
         }
         # No extra metadata extensions needed
@@ -219,11 +219,11 @@ class druid(
         }
     }
     # Else use local deep storage defaulting storageDirectory to
-    # /var/lib/druid/deep-storage.
+    # /srv/druid/deep-storage.
     elsif $properties['druid.storage.type'] == 'local' or $properties['druid.storage.type'] == undef {
         $default_deep_storage_properties = {
             'druid.storage.type'             => 'local',
-            'druid.storage.storageDirectory' => '/var/lib/druid/deep-storage',
+            'druid.storage.storageDirectory' => '/srv/druid/deep-storage',
         }
         # No extra storage extensions needed
         $storage_extensions              = []
@@ -246,7 +246,7 @@ class druid(
 
     $default_properties = {
         'druid.indexer.logs.type'                     => 'file',
-        'druid.indexer.logs.directory'                => '/var/lib/druid/indexing-logs',
+        'druid.indexer.logs.directory'                => '/srv/druid/indexing-logs',
         'druid.extensions.directory'                  => '/usr/share/druid/extensions',
         'druid.extensions.loadList'                   => $extensions,
         'druid.extensions.hadoopDependenciesDir'      => '/usr/share/druid/hadoop-dependencies',
