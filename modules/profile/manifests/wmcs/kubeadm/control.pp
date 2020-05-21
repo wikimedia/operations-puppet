@@ -1,9 +1,12 @@
+# Note: To bootstrap a cluster $kubernetes_version must match the version of packages
+# in the $component
 class profile::wmcs::kubeadm::control (
     Boolean             $stacked_control_plane = lookup('profile::wmcs::kubeadm::stacked', {default_value => false}),
     Array[Stdlib::Fqdn] $etcd_hosts = lookup('profile::wmcs::kubeadm::etcd_nodes',     {default_value => ['localhost']}),
     Stdlib::Fqdn        $apiserver  = lookup('profile::wmcs::kubeadm::apiserver_fqdn', {default_value => 'k8s.example.com'}),
     String              $node_token = lookup('profile::wmcs::kubeadm::node_token',     {default_value => 'example.token'}),
     String              $component  = lookup('profile::wmcs::kubeadm::component',      {default_value => 'thirdparty/kubeadm-k8s-1-15'}),
+    String              $kubernetes_version = lookup('profile::wmcs::kubeadm::kubernetes_version', {default_value => '1.15.5'}),
     String              $calico_version = lookup('profile::wmcs::kubeadm::calico_version', {default_value => 'v3.14.0'}),
     Boolean             $typha_enabled = lookup('profile::wmcs::kubeadm::typha_enabled', {default_value => false}),
     Integer             $typha_replicas = lookup('profile::wmcs::kubeadm::typha_replicas', {default_value => 3}),
@@ -80,6 +83,7 @@ class profile::wmcs::kubeadm::control (
         k8s_etcd_cert_priv => $k8s_etcd_cert_priv,
         k8s_etcd_cert_ca   => $k8s_etcd_cert_ca,
         encryption_key     => $encryption_key,
+        kubernetes_version => $kubernetes_version,
     }
 
     class { '::kubeadm::calico_yaml':
