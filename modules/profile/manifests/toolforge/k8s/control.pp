@@ -22,7 +22,5 @@ class profile::toolforge::k8s::control (
     }
     contain '::profile::wmcs::kubeadm::control'
 
-    class { '::toolforge::k8s::config':
-        encryption_key => $encryption_key,
-    }
+    class { '::toolforge::k8s::config': }
 }

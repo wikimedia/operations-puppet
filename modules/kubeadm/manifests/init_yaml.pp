@@ -37,4 +37,43 @@ class kubeadm::init_yaml (
         mode    => '0400',
         require => File['/etc/kubernetes/psp'],
     }
+
+    file { '/etc/kubernetes/admission':
+        ensure  => directory,
+        owner   => 'root',
+        group   => 'root',
+        require => File['/etc/kubernetes'],
+    }
+
+        file { '/etc/kubernetes/admission/admission.yaml':
+        ensure  => present,
+        source  => 'puppet:///modules/kubeadm/admission.yaml',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        require => File['/etc/kubernetes/admission'],
+    }
+
+    file { '/etc/kubernetes/admission/eventconfig.yaml':
+        ensure  => present,
+        source  => 'puppet:///modules/kubeadm/eventconfig.yaml',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        require => File['/etc/kubernetes/admission'],
+    }
+
+    # This should never be set in the public repo for hiera. Keep it in a
+    # private repo on a standalone puppetmaster since it is a simple shared key.
+    if $encryption_key {
+        file { '/etc/kubernetes/admission/encryption-conf.yaml':
+            ensure    => present,
+            content   => template('kubeadm/encryption-conf.yaml.erb'),
+            owner     => 'root',
+            group     => 'root',
+            mode      => '0400',
+            require   => File['/etc/kubernetes/admission'],
+            show_diff => false,
+        }
+    }
 }
