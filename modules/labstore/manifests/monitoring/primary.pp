@@ -75,14 +75,6 @@ class labstore::monitoring::primary(
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Data_Services/Admin/Labstore',
     }
 
-    # Set up DRBD service monitoring
-    nrpe::monitor_systemd_unit_state { 'drbd':
-        critical      => $critical,
-        contact_group => $contact_groups,
-        require       => Service['drbd'],
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Data_Services/Admin/Labstore',
-    }
-
     nrpe::monitor_service { 'check_nfs_status':
         description   => 'NFS port is open on cluster IP',
         nrpe_command  => "/usr/lib/nagios/plugins/check_tcp -H ${cluster_ip} -p 2049 --timeout=2",
