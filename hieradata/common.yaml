@@ -1080,7 +1080,7 @@ http_proxy: "http://webproxy.%{::site}.wmnet:8080"
 # IP address information so that authdns tooling can operate in the face of
 # recdns issues.
 authdns_servers:
-#  'authdns1001.wikimedia.org': 208.80.154.134 - offline as part of T241770
+  'authdns1001.wikimedia.org': 208.80.154.134
   'authdns2001.wikimedia.org': 208.80.153.17
   'dns1001.wikimedia.org': 208.80.154.10
   'dns1002.wikimedia.org': 208.80.155.108
