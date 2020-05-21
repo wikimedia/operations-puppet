@@ -1851,11 +1851,6 @@ node /^mw226[3-7]\.codfw\.wmnet$/ {
 
 # Row C
 
-# mw2150-62 are in rack C3
-node /^mw21(5[0-9]|6[0-2])\.codfw\.wmnet$/ {
-    role(mediawiki::jobrunner)
-}
-
 # Row D
 
 # mw2278-80 are in rack D3, mw2281-2 are in rack D4
