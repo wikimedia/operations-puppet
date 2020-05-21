@@ -13,4 +13,12 @@ class profile::wmcs::paws::k8s::control (
         branch    => 'master',
         origin    => 'https://github.com/toolforge/paws.git'
     }
+
+    labs_lvm::volume { 'docker':
+        size      => '60%FREE',
+        mountat   => '/var/lib/docker',
+        mountmode => '711',
+    } -> labs_lvm::volume { 'etcd-disk':
+        mountat => '/var/lib/etcd',
+    }
 }
