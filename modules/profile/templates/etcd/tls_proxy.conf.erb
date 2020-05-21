@@ -64,7 +64,7 @@ server {
 
 
     <%- unless @read_only -%>
-    <%- @acls.each do |url, users| -%>
+    <%- @all_acls.each do |url, users| -%>
     location /v2/keys<%= url %> {
         proxy_pass <%= @upstream_scheme %>://etcd/v2/keys<%= url %>;
         <%- if users.empty? -%>
