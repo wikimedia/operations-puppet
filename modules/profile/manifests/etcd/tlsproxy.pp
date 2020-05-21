@@ -1,15 +1,16 @@
 class profile::etcd::tlsproxy(
-    $cert_name = hiera('profile::etcd::tlsproxy::cert_name'),
-    $acls = hiera('profile::etcd::tlsproxy::acls'),
-    $salt = hiera('profile::etcd::tlsproxy::salt'),
-    $read_only = hiera('profile::etcd::tlsproxy::read_only'),
-    Stdlib::Port $listen_port = hiera('profile::etcd::tlsproxy::listen_port'),
-    Stdlib::Port $upstream_port = hiera('profile::etcd::tlsproxy::upstream_port'),
-    Boolean $tls_upstream = hiera('profile::etcd::tlsproxy::tls_upstream')
+    Stdlib::Fqdn $cert_name = lookup('profile::etcd::tlsproxy::cert_name'),
+    Hash[Stdlib::Unixpath, Array[String]] $acls = lookup('profile::etcd::tlsproxy::acls'),
+    String $salt = lookup('profile::etcd::tlsproxy::salt'),
+    Boolean $read_only = lookup('profile::etcd::tlsproxy::read_only'),
+    Stdlib::Port $listen_port = lookup('profile::etcd::tlsproxy::listen_port'),
+    Stdlib::Port $upstream_port = lookup('profile::etcd::tlsproxy::upstream_port'),
+    Boolean $tls_upstream = lookup('profile::etcd::tlsproxy::tls_upstream')
 ) {
     require ::profile::tlsproxy::instance
     require ::passwords::etcd
 
+    # this is a hash of user => password
     $accounts = $::passwords::etcd::accounts
 
     # TODO: also support TLS cert auth to the backend
@@ -56,13 +57,16 @@ class profile::etcd::tlsproxy(
         content => '{"errorCode":107,"message":"This cluster is in read-only mode","cause":"Cluster configured to be read-only","index":0}',
     }
 
-    # I know, this is pretty horrible. Puppet is too, with its
-    # allergy for any form of data-structure mangling.
-    $htpasswd_files = keys($acls)
-    ::profile::etcd::htpasswd_file { $htpasswd_files:
-        acls  => $acls,
-        users => $accounts,
-        salt  => $salt,
+    $acls.each |$path, $users| {
+        $file_location = regsubst($path, '/', '_', 'G')
+        $file_name = "/etc/nginx/auth/${file_location}.htpasswd"
+
+        file { $file_name:
+            content => template('profile/etcd/htpasswd.erb'),
+            owner   => 'www-data',
+            group   => 'www-data',
+            mode    => '0444',
+        }
     }
 
     nginx::site { 'etcd_tls_proxy':
