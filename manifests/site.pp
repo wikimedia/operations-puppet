@@ -1231,7 +1231,7 @@ node /kubestage100[12]\.eqiad\.wmnet/ {
 }
 
 # codfw new kubernetes nodes T252185
-node /kubernetes20(0[7-9]|[10-14])\.codfw\.wmnet/ {
+node /kubernetes20(0[7-9]|1[0-4])\.codfw\.wmnet/ {
     role(insetup)
 }
 
