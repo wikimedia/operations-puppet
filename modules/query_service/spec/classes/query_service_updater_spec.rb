@@ -16,6 +16,8 @@ describe 'query_service::updater', :type => :class do
         :deploy_name => 'wdqs',
         :logstash_logback_port => 11_514,
         :extra_jvm_opts => [],
+        :updater_startup_script => 'runUpdate.sh',
+        :updater_service_desc   => 'Query Service Updater',
         }
    }
 
