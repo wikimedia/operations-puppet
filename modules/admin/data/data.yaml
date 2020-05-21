@@ -3905,6 +3905,10 @@ ldap_only_users:
     ensure: present
     realname: Margeigh Novotny
     email: mnovotny@wikimedia.org
+  lmata:
+    ensure: present
+    realname: Leonardo Mata
+    email: lmata@wikimedia.org
   multichill:
     ensure: present
     realname: Maarten Dammers
