@@ -3723,8 +3723,9 @@ users:
     email: mbinder@wikimedia.org
     uid: 14304
     gid: 500
-    ssh-keys:
+    ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJexC21uGdBW6jT1gyUGu/GGNWUBBLIcb1b6ALMLjAYX mbinder@Max-Binders-Super-Duper-Agile-Work-Robot-Clam.local
+
 ldap_only_users:
   abartov:
     ensure: present
