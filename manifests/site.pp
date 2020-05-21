@@ -773,15 +773,10 @@ node /^an-druid100[12]\.eqiad\.wmnet$/ {
     role(druid::analytics::worker)
 }
 
-# new druid servers with private vlan (T245569)
-node /^druid100[78]\.eqiad\.wmnet$/ {
-    role(insetup)
-}
-
 # Druid public-eqiad servers.
 # These power AQS and wikistats 2.0 and contain non sensitive datasets.
 # https://wikitech.wikimedia.org/wiki/Analytics/Data_Lake#Druid
-node /^druid100[456]\.eqiad\.wmnet$/ {
+node /^druid100[4-8]\.eqiad\.wmnet$/ {
     role(druid::public::worker)
 }
 
