@@ -51,7 +51,7 @@ mcrouter::shards:
         port: 11214
         ssl: true
       C:
-        host: 10.192.32.51 # mw2163, C3
+        host: 10.192.32.84 # mw2196, C4
         port: 11214
         ssl: true
       D:
