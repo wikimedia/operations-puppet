@@ -70,23 +70,10 @@ class profile::openstack::base::designate::service(
     $prometheus_ferm_srange = "@resolve((${prometheus_ferm_nodes})) @resolve((${prometheus_ferm_nodes}), AAAA)"
     # Open designate API to WMCS web UIs and the commandline on control servers, also prometheus
     ferm::rule { 'designate-api':
-        rule => "saddr (@resolve(${osm_host}) ${labweb_ip6s} @resolve(${keystone_api_fqdn}) @resolve(${keystone_api_fqdn}, AAAA)
-                       ${labweb_ips} @resolve((${join($openstack_controllers,' ')}))
-                       @resolve((${join($openstack_controllers,' ')}), AAAA)
-                       ${prometheus_ferm_srange}
+        rule => "saddr (@resolve((${join($openstack_controllers,' ')}))
+                        @resolve((${join($openstack_controllers,' ')}), AAAA)
+                        ${prometheus_ferm_srange}
                  ) proto tcp dport (9001) ACCEPT;",
-    }
-
-    # Allow labs instances to hit the designate api.
-    #
-    # This is not as permissive as it looks; The wmfkeystoneauth
-    #  plugin (via the password whitelist) only allows 'novaobserver'
-    #  to authenticate from within labs, and the novaobserver is
-    #  limited by the designate policy.json to read-only queries.
-    include network::constants
-    $labs_networks = join($network::constants::labs_networks, ' ')
-    ferm::rule { 'designate-api-for-labs':
-        rule => "saddr (${labs_networks}) proto tcp dport (9001) ACCEPT;",
     }
 
     # allow axfr traffic between mdns and pdns on the pdns hosts
