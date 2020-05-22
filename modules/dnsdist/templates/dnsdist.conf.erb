@@ -1,0 +1,5 @@
+-- This file is managed by Puppet [see dnsdist/dnsdist.conf.erb].
+
+<% @resolvers.each_pair do |resolver, config| -%>
+newServer({address="<%= config['host'] %>:<%= config['port'] %>", name="<%= resolver %>"})
+<% end -%>

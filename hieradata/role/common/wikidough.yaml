@@ -1,0 +1,4 @@
+profile::wikidough::recursive_resolvers:
+  resolver-1:
+    host: 10.3.0.1
+    port: 53
