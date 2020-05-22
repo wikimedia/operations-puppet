@@ -27,7 +27,8 @@ class profile::backup::director(
         $file_storage_production = 'FileStorageProduction'
         $file_storage_archive = 'FileStorageArchive'
         $file_storage_databases = 'FileStorageDatabases'
-        $scheduled_pools = [ $pool, 'Databases', ]
+        $file_storage_databases_codfw = 'FileStorageDatabasesCodfw'
+        $scheduled_pools = [ $pool, 'Databases', 'DatabasesCodfw', ]
     } else {
         $file_storage_production = 'FileStorage1'
         $file_storage_archive = 'FileStorage2'
@@ -67,6 +68,13 @@ class profile::backup::director(
             storage          => "${onsite_sd}-${file_storage_databases}",
             volume_retention => '90 days',
             label_fmt        => 'databases',
+            max_vol_bytes    => '536870912000',
+        }
+        bacula::director::pool { 'DatabasesCodfw':
+            max_vols         => 80,
+            storage          => "${offsite_sd}-${file_storage_databases_codfw}",
+            volume_retention => '90 days',
+            label_fmt        => 'databases-codfw',
             max_vol_bytes    => '536870912000',
         }
     }
