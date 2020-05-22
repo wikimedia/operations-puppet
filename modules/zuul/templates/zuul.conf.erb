@@ -4,7 +4,8 @@
 # Configuration file for the Zuul server and the Zuul merger. Vary depending on
 # $zuul_server (either 'merger' or 'server').
 #
-# The only sections needed by zuul-merger are gearman, gerrit, zuul and merger.
+# The only sections needed by zuul-merger are gearman, connections to gerrit,
+# zuul and merger.
 
 [gearman]
 server=<%= @gearman_server %>
@@ -15,7 +16,7 @@ start=<%= @gearman_server_start %>
 log_config=/etc/zuul/gearman-logging.conf
 <% end -%>
 
-[gerrit]
+[connection gerrit]
 server=<%= @gerrit_server %>
 user=<%= @gerrit_user %>
 <% if @gerrit_baseurl %>baseurl=<%= @gerrit_baseurl %><% end %>
