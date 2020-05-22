@@ -26,6 +26,16 @@ sshkey=/var/lib/zuul/.ssh/id_rsa
 event_delay=<%= @gerrit_event_delay %>
 <% end -%>
 
+[connection gerrit_test]
+driver=gerrit
+server=gerrit-test.wikimedia.org
+user=<%= @gerrit_user %>
+baseurl=https://gerrit-test.wikimedia.org/r
+sshkey=/var/lib/zuul/.ssh/id_rsa
+<% if @gerrit_event_delay -%>
+event_delay=<%= @gerrit_event_delay %>
+<% end -%>
+
 [zuul]
 layout_config=/etc/zuul/wikimedia/zuul/layout.yaml
 log_config=/etc/zuul/logging.conf
