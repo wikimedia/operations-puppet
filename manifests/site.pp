@@ -1136,11 +1136,6 @@ node /^idp-test[12]001\.wikimedia\.org$/ {
     role(idp_test)
 }
 
-# replaced carbon and install1001/install2001 (T132757, T84380, T156440)
-node /^install[12]002\.wikimedia\.org$/ {
-    role(installserver::apt)
-}
-
 # TFTP/DHCP/webproxy but NOT APT repo (T224576)
 node /^install[12]003\.wikimedia\.org$/ {
     role(installserver::light)
