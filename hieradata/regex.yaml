@@ -261,3 +261,4 @@ mediawiki_test_environment:
   profile::mediawiki::php::restarts::opcache_limit: 100
   profile::mediawiki::php::enable_request_profiling: true
   profile::mediawiki::php::phpdbg: true
+  profile::conftool::client::allow_root: false

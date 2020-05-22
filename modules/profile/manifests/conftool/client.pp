@@ -16,6 +16,8 @@ class profile::conftool::client(
     Stdlib::Port           $tcpircbot_port = lookup('tcpircbot_port'),
     Optional[Stdlib::Host] $host           = lookup('etcd_host', {'default_value' => undef}),
     Optional[Stdlib::Port] $port           = lookup('etcd_port', {'default_value' => undef}),
+    String                 $pool_pwd_seed  = lookup('etcd::autogen_pwd_seed'),
+    Boolean                $allow_root     = lookup('profile::conftool::client::allow_root', {'default_value' => true})
 ) {
 
     if os_version('debian >= stretch') {
@@ -33,17 +35,38 @@ class profile::conftool::client(
 
     require ::passwords::etcd
 
+    # This is the configuration shared by all users.
     class { '::etcd::client::globalconfig':
         srv_domain => $srv_domain,
         host       => $host,
         port       => $port,
     }
 
+    if $allow_root {
+        $user = 'root'
+        $pwd = $::passwords::etcd::accounts['root']
+        $conftool_cluster = undef
+    } else {
+        $user = 'conftool'
+        $pwd = $::passwords::etcd::accounts['conftool']
+        # determine which conftool cluster we're part of, if any.
+        $module_path = get_module_path('profile')
+        $site_nodes = loadyaml("${module_path}/../../conftool-data/node/${::site}.yaml")[$::site]
+        $conftool_clusters = $site_nodes.filter |$cl, $pools| {
+            $::fqdn in $pools.keys()
+        }
+        .map |$cl, $pools| { $cl }.unique()
+        # if we found one and only one cluster, install the cluster-site specifc credentials
+        if $conftool_clusters.length() == 1 {
+            $conftool_cluster = $conftool_clusters[0]
+        } else {
+            $conftool_cluster = undef
+        }
+    }
+
+    # This is the configuration for the user root will access.
     ::etcd::client::config { '/root/.etcdrc':
-        settings => {
-            username => 'root',
-            password => $::passwords::etcd::accounts['root'],
-        },
+        settings => conftool::cluster_credentials($user, $pwd, $pool_pwd_seed, $conftool_cluster)
     }
 
     class  { '::conftool::config':

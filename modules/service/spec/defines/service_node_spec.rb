@@ -16,7 +16,7 @@ describe 'service::node', :type => :define do
       end
 
       let(:pre_condition) {
-        ['class passwords::etcd { $accounts = {}}',
+        ['class passwords::etcd { $accounts = {"conftool" => "abc"}}',
          'include ::passwords::etcd',
          'class profile::base { $notifications_enabled = "1"}',
          'include ::profile::base'

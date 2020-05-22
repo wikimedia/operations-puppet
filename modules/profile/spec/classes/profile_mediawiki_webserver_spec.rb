@@ -73,7 +73,7 @@ describe 'profile::mediawiki::webserver' do
         it { is_expected.to contain_class('profile::tlsproxy::envoy') }
         context "with lvs" do
           let(:pre_condition) {
-            super().push('class passwords::etcd($accounts = {}){}')
+            super().push('class passwords::etcd($accounts = {"conftool" => "abc"}){}')
           }
           # We need a real node here
           let(:node) {
