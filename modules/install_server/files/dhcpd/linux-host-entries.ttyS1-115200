@@ -3678,36 +3678,43 @@ host kubernetes2004 {
 host kubernetes2007 {
      hardware ethernet 4C:D9:8F:AF:42:4E;
      fixed-address kubernetes2007.codfw.wmnet;
+     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host kubernetes2008 {
      hardware ethernet 4C:D9:8F:AF:4D:0B;
      fixed-address kubernetes2008.codfw.wmnet;
+     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host kubernetes2009 {
      hardware ethernet 4C:D9:8F:AF:24:A3;
      fixed-address kubernetes2009.codfw.wmnet;
+     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host kubernetes2010 {
      hardware ethernet 4C:D9:8F:AF:1F:07;
      fixed-address kubernetes2010.codfw.wmnet;
+     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host kubernetes2011 {
      hardware ethernet 4C:D9:8F:AF:62:C4;
      fixed-address kubernetes2011.codfw.wmnet;
+     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host kubernetes2012 {
      hardware ethernet 4C:D9:8F:AF:2E:85;
      fixed-address kubernetes2012.codfw.wmnet;
+     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host kubernetes2013 {
      hardware ethernet 4C:D9:8F:AF:34:F7;
      fixed-address kubernetes2013.codfw.wmnet;
+     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host kubernetes2014 {
@@ -3730,11 +3737,13 @@ host kubestage1002 {
 host kubestage2001 {
      hardware ethernet 4C:D9:8F:AF:4F:B1;
      fixed-address kubestage2001.codfw.wmnet;
+     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host kubestage2002 {
      hardware ethernet 4C:D9:8F:AF:35:BF;
      fixed-address kubestage2002.codfw.wmnet;
+     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host cloudmetrics1001 {
