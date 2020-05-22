@@ -69,12 +69,18 @@ def main():
                         if not node.get('unchanged', 0)]
     else:
         for fqdn, node in nodes.items():
+            # skip hosts with no unchanged reports:
             if node.get('unchanged', 0):
                 continue
-            hostname = fqdn.split('.')[0]
-            if (hostname.startwith('labtest')
-                    or search(r'(:?dev|test)(:?\d{4})?$', hostname) is not None):
-                failed_nodes.append(fqdn)
+            # skip staging servers:
+            # - hostname starting labstest*
+            # - hostname ending dev or dev\d{4}
+            # - hostname ending test or test\d{4}
+            if (fqdn.startswith('labtest')
+                    or search(r'(:?dev|test)(:?\d{4})?$', fqdn.split('.')[0]) is not None):
+                logger.debug('%s: Skipping staging host', fqdn)
+                continue
+            failed_nodes.append(fqdn)
 
     if len(failed_nodes) >= args.critical:
         print('CRITICAL: the following ({}) node(s) change every puppet run: {}'.format(
