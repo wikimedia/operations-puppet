@@ -111,7 +111,7 @@ class profile::idp::client::httpd (
     if $enable_monitor {
         monitoring::service {"https-${virtual_host}-unauthorized":
             description   => "${virtual_host} requires authentication",
-            check_command => "check_sso_redirect!${virtual_host}!${protected_uri}",
+            check_command => "check_https_sso_redirect!${virtual_host}!${protected_uri}",
             notes_url     => 'https://wikitech.wikimedia.org/wiki/CAS-SSO/Administration',
         }
     }

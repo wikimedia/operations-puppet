@@ -129,7 +129,7 @@ define command {
 
 # It seems some sits respond with location: and others with Location
 define command {
-    command_name    check_sso_redirect
+    command_name    check_https_sso_redirect
     command_line    $USER1$/check_http -S -I $HOSTADDRESS$ -H $ARG1$ -u $ARG2$ -e "HTTP/1.1 302" -d "ocation: https://idp.wikimedia.org/"
     }
 
