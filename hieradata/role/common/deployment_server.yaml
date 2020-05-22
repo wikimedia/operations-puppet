@@ -282,12 +282,6 @@ profile::kubernetes::deployment_server::services:
     mode: '0640'
     namespace: termbox
     owner: mwdeploy
-  restrouter:
-    username: restrouter
-    group: wikidev
-    mode: '0640'
-    namespace: restrouter
-    owner: mwdeploy
   wikifeeds:
     username: wikifeeds
     group: wikidev
@@ -354,8 +348,6 @@ profile::kubernetes::deployment_server::services:
 #  sessionstore:
 #    token: dummy
 #  termbox:
-#    token: dummy
-#  restrouter:
 #    token: dummy
 #  wikifeeds:
 #    token: dummy

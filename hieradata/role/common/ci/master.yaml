@@ -90,10 +90,6 @@ profile::kubernetes::deployment_server::services:
     username: termbox
     group: wikidev
     mode: '0640'
-  restrouter:
-    username: restrouter
-    group: wikidev
-    mode: '0640'
   wikifeeds:
     username: wikifeeds
     group: wikidev
@@ -163,8 +159,6 @@ profile::kubernetes::deployment_server::services:
 #  sessionstore:
 #    token: dummy
 #  termbox:
-#    token: dummy
-#  restrouter:
 #    token: dummy
 #  wikifeeds:
 #    token: dummy
