@@ -74,21 +74,21 @@ describe 'systemd::timer::job' do
         }
         it { is_expected.not_to contain_exec('systemd start for dummy-test.service') }
       end
-      context "with OnActiveUnitSec" do
+      context "with OnUnitInactiveSec" do
         let(:params) {
           {
             description: 'Some description',
             command: '/bin/true',
-            interval: [{start: 'OnCalendar', interval: 'Mon,Tue *-*-* 00:00:00'},
-                       {start: 'OnUnitInactiveSec', interval: '3600s'},],
+            interval: [{start: 'OnUnitInactiveSec', interval: '3600s'},],
             user: 'root',
           }
         }
         it { is_expected.to compile.with_all_deps }
-        it { is_expected.to contain_exec('systemd start for dummy-test.service') }
         it {
           is_expected.to contain_systemd__timer('dummy-test')
-                           .that_notifies('Exec[systemd start for dummy-test.service]')
+          # We didn't provide any other kind of interval, so an OnActiveSec should be generated.
+          intervals = catalogue.resource('systemd::timer', 'dummy-test').send(:parameters)[:timer_intervals]
+          expect(intervals).to include(include('start' => 'OnActiveSec'))
         }
       end
     end

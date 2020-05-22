@@ -113,13 +113,28 @@ define systemd::timer::job(
     $safe_title = regsubst($title, '[^\w\-]', '_', 'G')
 
 
-    $intervals = $interval ? {
+    $input_intervals = $interval ? {
 #        Systemd::Timer::Schedule           => [$interval],
 #        Array[Systemd::Timer::Schedule, 1] => $interval,
         Hash    => [$interval],
         Array   => $interval,
         # TODO: we can get rid of the default as soon as $interval is properly typed
         default => fail('Illegal value for $interval parameter'),
+    }
+
+    # If we were provided with only OnUnitActive/OnUnitInactive intervals, which are times relative
+    # to when the service unit was last activated or deactivated, we need to add an additional
+    # interval to get systemd to DTRT with this timer: an OnActiveSec that will start the service
+    # for the first time after the timer and service are installed (or after a reboot).
+    #
+    # This activation gives meaning to the OnUnit intervals, as a null value for the timestamp of
+    # last service activation/deactivation acts like NaN, making the comparison always false.
+    $mangled_intervals = $input_intervals.all |$iv| {$iv['start'] =~ /OnUnit(In)?[Aa]ctive/} ? {
+        false => $input_intervals,
+        true  => $input_intervals + [{
+            'interval' => '1s',
+            'start'    => 'OnActiveSec'
+        }],
     }
 
     systemd::unit { "${title}.service":
@@ -129,26 +144,8 @@ define systemd::timer::job(
 
     systemd::timer { $title:
         ensure          => $ensure,
-        timer_intervals => $intervals,
+        timer_intervals => $mangled_intervals,
         unit_name       => "${title}.service",
-    }
-
-    if $ensure == 'present' and  length($intervals.filter |$interval| {$interval['start'] =~ /OnUnit(In)?[Aa]ctive/}) > 0 {
-        # Without this, we will happily install the timer unit and the service unit,
-        # and activate the timer unit -- but as far as systemd is concerned, that
-        # doesn't *do* anything, because the service unit has never been activated
-        # nor deactivated (and those times are what the OnActiveUnitSec and
-        # OnInactiveUnitSec timer intervals care about).
-        #
-        # So we need to start the service unit once, to set the timer in motion.
-        $exec_label = "systemd start for ${title}.service"
-        exec { $exec_label:
-            command     => "/bin/systemctl start '${title}.service'",
-            refreshonly => true,
-            onlyif      => "/bin/systemctl show '${title}.service' | grep -q '^ExecMainStartTimestampMonotonic=0$'"
-        }
-        # Whenever the timer gets modified
-        Systemd::Timer[$title] ~> Exec[$exec_label]
     }
 
     if $logging_enabled {
