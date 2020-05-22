@@ -31,6 +31,10 @@ class zuul ( ){
             group  => 'adm',
             mode   => '0755',
         }
+        file { '/usr/local/bin/zuul':
+            ensure => link,
+            target => '/srv/deployment/zuul/venv/bin/zuul',
+        }
     }
 
 }
