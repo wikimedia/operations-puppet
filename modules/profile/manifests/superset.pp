@@ -45,7 +45,7 @@ class profile::superset(
     $ldap_proxy_enabled = hiera('profile::superset::ldap_proxy_enabled', false),
     $statsd             = hiera('statsd', undef),
     $presto_cluster     = hiera('profile::superset::presto_cluster', undef),
-    $gunicorn_app       = lookup('profile::superset::gunicorn_app', { 'default_value' => 'superset:app' }),
+    $gunicorn_app       = lookup('profile::superset::gunicorn_app', { 'default_value' => 'superset.app:create_app()' }),
 ) {
 
     if os_version('debian == stretch') {
