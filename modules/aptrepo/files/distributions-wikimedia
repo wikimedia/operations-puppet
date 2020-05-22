@@ -126,6 +126,7 @@ Components: main
 # sorted list, leading whitespace matters!
  component/cergen
  component/ci
+ component/dnsdist
  component/jdk8
  component/mtail
  component/spicerack
