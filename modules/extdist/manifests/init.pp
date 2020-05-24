@@ -61,7 +61,7 @@ class extdist(
         group     => 'extdist',
     }
 
-    require_package('python3-requests', 'php-cli')
+    require_package('python3-requests', 'php-cli', 'unzip' )
 
     git::clone { 'integration/composer':
         ensure             => latest,
