@@ -2370,7 +2370,7 @@ service::catalog:
     port: 443
     sites:
     - codfw
-    state: lvs_setup
+    state: service_setup
     discovery:
     - dnsdisc: thanos-swift
       active_active: true
