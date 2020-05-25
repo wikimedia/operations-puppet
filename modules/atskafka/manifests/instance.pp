@@ -8,9 +8,6 @@
 # [*brokers*]
 #   Array of Kafka broker host:ports.
 #
-# [*stats_dir*]
-#   The directory where rdkafka metrics are to be stored.
-#
 # [*stats_interval_ms*]
 #   Flush rdkafka statistics every stats_interval_ms.
 #
@@ -47,7 +44,6 @@
 #
 define atskafka::instance(
     Array[String] $brokers                            = ['localhost:9092'],
-    Stdlib::Absolutepath $stats_dir                   = '/var/cache/atskafka',
     Integer $stats_interval_ms                        = 60000,
     String $topic                                     = 'atskafka_test',
     Array[String] $numeric_fields                     = ['time_firstbyte', 'response_size'],
@@ -66,13 +62,6 @@ define atskafka::instance(
         notify  => Service["atskafka-${name}"],
         content => template('atskafka/atskafka.conf.erb'),
     }
-
-    file { $stats_dir:
-        ensure => directory,
-        mode   => '0755',
-    }
-
-    $stats_file = "${stats_dir}/${name}.stats.json"
 
     systemd::service { "atskafka-${name}":
         content   => systemd_template('atskafka'),
