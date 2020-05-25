@@ -49,7 +49,7 @@ class EchoNotifier(threading.Thread):
 
 class EchoReader():
     '''
-    Essentially an initalization class
+    Essentially an initialization class
     '''
 
     def __init__(self, infile='', associatedchannel=''):

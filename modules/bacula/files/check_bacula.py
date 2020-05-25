@@ -240,7 +240,7 @@ def print_icinga_jobs(msg, level, returncode, cats, index, name, show_examples=T
     Given an existing error message, append to it the one
     for this index dictionary key on cats categories, with
     the given name. If show examples is true, also append one example host.
-    It also sets retun code with the given level if there are members.
+    It also sets return code with the given level if there are members.
     Return the amended message and the new return code (or the input
     one if it was not modified).
     """

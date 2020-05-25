@@ -1,7 +1,7 @@
 # == Define: nginx::snippet
 #
 # Provisions an Nginx snippet. Like file resources, this resource type takes
-# either a 'content' parameter with a string literal value or or 'source'
+# either a 'content' parameter with a string literal value or 'source'
 # parameter with a Puppet file reference. The resource title is used as the
 # snippet name.
 #

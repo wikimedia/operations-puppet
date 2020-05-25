@@ -795,7 +795,7 @@ endfunction " }}}
 " A bonus function: Snip()
 " ============================================================================== 
 " Snip: puts a scissor string above and below block of text {{{
-" Desciption:
+" Description:
 "-------------------------------------%<-------------------------------------
 "   this puts a the string "--------%<---------" above and below the visually
 "   selected block of lines. the length of the 'tearoff' string depends on the

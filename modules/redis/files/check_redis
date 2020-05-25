@@ -900,7 +900,7 @@ sub lib_init {
     # bless to create an object
     bless $self, $class;
 
-    # deal with arguments that maybe passed to library when initalizing
+    # deal with arguments that maybe passed to library when initializing
     if (exists($other_args{'KNOWN_STATUS_VARS'})) {
         $self->{'knownStatusVars'} = $other_args{'KNOWN_STATUS_VARS'};
     }
