@@ -8,7 +8,7 @@ profile::openstack::codfw1dev::designate::domain_id_internal_forward_legacy: '4c
 # This is 16.172.in-addr.arpa.
 profile::openstack::codfw1dev::designate::domain_id_internal_reverse: '187fdc06-c5d2-46e1-ab71-97d34dd067ce'
 
-profile::openstack::codfw1dev::designate::floating_ip_ptr_zone: '17.196.10.in-addr.arpa.'
+profile::openstack::codfw1dev::designate::floating_ip_ptr_zone: '0-29.57.15.185.in-addr.arpa.'
 profile::openstack::codfw1dev::designate::floating_ip_ptr_fqdn_matching_regex: '^(.*)$'
 profile::openstack::codfw1dev::designate::floating_ip_ptr_fqdn_replacement_pattern: '\1'
 
