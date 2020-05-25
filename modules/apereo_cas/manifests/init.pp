@@ -112,7 +112,6 @@ class apereo_cas (
         }
     }
 
-    ensure_packages(['openjdk-11-jdk'])
     $groovy_file = '/etc/cas/global_principal_attribute_predicate.groovy'
     if $groovy_source {
         file{$groovy_file:

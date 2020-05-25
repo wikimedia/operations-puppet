@@ -8,4 +8,5 @@ class role::idp {
     include ::profile::base::firewall
     include ::profile::idp
     include ::profile::backup::host
+    include ::profile::java
 }
