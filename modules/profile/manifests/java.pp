@@ -33,9 +33,9 @@ class profile::java (
 ) {
 
     if os_version('debian == stretch') {
-        $default_java_packages = [{'version' => 8, 'variant' => 'jdk'}]
+        $default_java_packages = [{'version' => '8', 'variant' => 'jdk'}]
     } else {
-        $default_java_packages = [{'version' => 11, 'variant' => 'jdk'}]
+        $default_java_packages = [{'version' => '11', 'variant' => 'jdk'}]
     }
 
     $_java_packages = $java_packages.empty() ? {
