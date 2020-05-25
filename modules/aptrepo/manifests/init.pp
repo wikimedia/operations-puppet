@@ -71,17 +71,6 @@ class aptrepo (
         mode   => '0755',
     }
 
-    # the following files entries can be dropped
-    file { '/usr/local/bin/reprepro-update-filter-wmcs-openstack-jessie-bpo.sh':
-        ensure => absent,
-    }
-    file { '/usr/local/bin/reprepro-update-filter-wmcs-openstack-ocata.sh':
-        ensure => absent,
-    }
-    file { '/usr/local/bin/reprepro-update-filter-wmcs-openstack-pike.sh':
-        ensure => absent,
-    }
-
     file { "${basedir}/conf/updates":
         ensure       => present,
         mode         => '0444',
