@@ -12,7 +12,7 @@
 #
 # === Parameters
 #
-# [*ganeti_nodes*]
+# [*nodes*]
 #   A list of Ganeti nodes in this particular cluster.
 #
 # [*rapi_nodes*]
@@ -26,11 +26,12 @@
 #
 
 class profile::ganeti (
-    String $ganeti_cluster_name = lookup('profile::ganeti::ganeti_cluster_name', { default_value => "ganeti01.svc.${::site}.wmnet" }),
-    Array[Stdlib::Fqdn] $ganeti_nodes = lookup("profile::ganeti::${ganeti_cluster_name}::nodes", { default_value => [] }),
-    Array[Stdlib::Fqdn] $rapi_nodes = lookup('profile::ganeti::rapi_nodes', { default_value => [] }),
-    Optional[String] $rapi_ro_user = lookup('profile::ganeti::rapi::ro_user', { default_value => undef }),
-    Optional[String] $rapi_ro_password = lookup('profile::ganeti::rapi::ro_password', { default_value => undef }),
+    Array[Stdlib::Fqdn] $nodes         = lookup('profile::ganeti::nodes'),
+    Array[Stdlib::Fqdn] $rapi_nodes    = lookup('profile::ganeti::rapi_nodes'),
+    Optional[String] $rapi_ro_user     = lookup('profile::ganeti::rapi::ro_user',
+                                                { default_value => undef }),
+    Optional[String] $rapi_ro_password = lookup('profile::ganeti::rapi::ro_password',
+                                                { default_value => undef }),
 ) {
 
     class { '::ganeti': }
@@ -93,8 +94,8 @@ class profile::ganeti (
     # Firewalling
     #
 
-    $ganeti_ferm_nodes = join($ganeti_nodes, ' ')
-    $rapi_access = join(concat($ganeti_nodes, $rapi_nodes), ' ')
+    $ganeti_ferm_nodes = join($nodes, ' ')
+    $rapi_access = join(concat($nodes, $rapi_nodes), ' ')
 
     # Allow SSH between ganeti cluster members
     ferm::service { 'ganeti_ssh_cluster':

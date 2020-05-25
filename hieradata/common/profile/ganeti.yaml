@@ -1,0 +1,2 @@
+profile::ganeti::nodes: []
+profile::ganeti::rapi_nodes: []
