@@ -10,6 +10,9 @@ profile::lvs::realserver::pools:
   thanos-query:
     services:
       - thanos-query
+  thanos-swift:
+    services:
+      - thanos-swift
 
 profile::envoy::ensure: present
 profile::tlsproxy::envoy::sni_support: 'strict'
