@@ -5,7 +5,6 @@ class role::postgres::common {
 
     $pgversion = $::lsbdistcodename ? {
         'stretch' => '9.6',
-        'jessie'  => '9.4',
     }
 
     file { "/etc/postgresql/${pgversion}/main/tuning.conf":
