@@ -99,6 +99,7 @@ profile::base::enable_adduser: true
 profile::idp::idp_primary: idp1001.wikimedia.org
 profile::idp::idp_failover: idp2001.wikimedia.org
 profile::idp::max_session_length: 604800
+profile::idp::deploy_deb: true
 profile::idp::actuators:
   - prometheus
   - sso
