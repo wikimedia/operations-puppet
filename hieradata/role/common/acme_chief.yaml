@@ -226,6 +226,13 @@ profile::acme_chief::certificates:
         - '^cp3[0-9][0-9][0-9]\.esams\.wmnet$'
         - '^cp4[0-9][0-9][0-9]\.ulsfo\.wmnet$'
         - '^cp5[0-9][0-9][0-9]\.eqsin\.wmnet$'
+    wikidough:
+        CN: 'malmok.wikimedia.org'
+        SNI:
+        - 'malmok.wikimedia.org'
+        challenge: dns-01
+        authorized_hosts:
+        - 'malmok.wikimedia.org'
     wikiworkshop:
         CN: 'wikiworkshop.org'
         SNI:
