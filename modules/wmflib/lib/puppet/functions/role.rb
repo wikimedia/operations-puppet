@@ -1,19 +1,18 @@
 # == Function: role ( string $role_name [, string $... ] )
 #
-# Declare the _roles variable (or add keys to it), and if the role class
-# role::$role_name is in the scope, include it. This is roughly a
+# Declare the _role variable and if the role class
+# role::${::_role} is in the scope, include it. This is roughly a
 # shortcut for
 #
-# $::_roles[foo] = true
-# include role::foo
+# $::_role = 'foo/bar'
+# include role::foo::bar
 #
 # and has the notable advantage over that the syntax is shorter. Also,
 # this function  will refuse to run anywhere but at the node scope,
 # thus making any additional role added to a node explicit.
 #
-# If you have more than one role to declare, you MUST do that in one
-# single role stanza, or you would encounter unexpected behaviour. If
-# you do, an exception will be raised.
+# You can only define one role per server. Trying to call this function multiple
+# times will result in a compilation failure.
 #
 # This function is very useful with our "role" hiera backend if you
 # have global configs that are role-based
@@ -21,17 +20,17 @@
 # === Example
 #
 # node /^www\d+/ {
-#     role mediawiki::appserver  # this will load the role::mediawiki::appserver class
+#     role(mediawiki::appserver)  # this will load the role::mediawiki::appserver class
 #     include ::profile::standard  #this class will use hiera lookups defined for the role.
 # }
 #
 # node monitoring.local {
-#     role icinga, ganglia::collector #GOOD
+#     role(icinga) #GOOD
 # }
 #
 # node monitoring2.local {
-#     role icinga
-#     role ganglia::collector #BAD, issues a warning
+#     role(icinga)
+#     role(prometheus) #BAD, compilation fails.
 # }
 Puppet::Functions.create_function(:role) do
   dispatch :main do
