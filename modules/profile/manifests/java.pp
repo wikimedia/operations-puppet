@@ -29,7 +29,7 @@
 #
 class profile::java (
     Array[Java::PackageInfo] $java_packages = lookup('profile::java::java_packages', { 'default_value' => [] }),
-    String $extra_args = lookup('profile::java::extra_args', { 'default_value' => undef }),
+    Optional[String] $extra_args = lookup('profile::java::extra_args', { 'default_value' => undef }),
 ) {
 
     if os_version('debian == stretch') {
