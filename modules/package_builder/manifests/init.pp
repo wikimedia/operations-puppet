@@ -144,7 +144,7 @@ class package_builder(
     }
 
     # Ship an apt configuration to integrate deb-src entries for jessie and
-    # buster, simplifies fetching the source for older distros by using
+    # stretch, simplifies fetching the source for older distros by using
     # "apt-get source foo=VERSION" on the package build host
     ['jessie', 'stretch'].each |String $dist| {
         apt::repository{"${dist}-wikimedia_source_only":
@@ -160,11 +160,19 @@ class package_builder(
             components => 'main non-free contrib',
         }
         apt::repository{"${dist}-security_source_only":
-            uri        => 'http://security.debian.org/',
-            dist       => $dist,
+            uri        => 'http://security.debian.org/debian-security',
+            dist       => "${dist}/update",
             bin        => false,
             components => 'main non-free contrib',
         }
+    }
+    # Ship an apt configuration to integrate deb-src entries for unstable,
+    # simplifies fetching the source by using"apt-get source foo=VERSION"
+    apt::repository{'unstable_source_only':
+        uri        => 'http://mirrors.wikimedia.org/debian',
+        dist       => 'unstable',
+        bin        => false,
+        components => 'main non-free contrib',
     }
 
     file { '/etc/lintianrc':
