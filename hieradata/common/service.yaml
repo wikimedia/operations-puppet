@@ -2340,6 +2340,40 @@ service::catalog:
     discovery:
     - dnsdisc: thanos-query
       active_active: true
+  thanos-swift:
+    description: Prometheus long-term storage, object storage (swift) access
+    encryption: true
+    ip:
+      codfw:
+        default: 10.2.1.54
+    lvs:
+      class: low-traffic
+      conftool:
+        cluster: thanos
+        service: thanos-swift
+      depool_threshold: '.5'
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+        ProxyFetch:
+          url:
+          - https://thanos-swift.discovery.wmnet/healthcheck
+      scheduler: wrr
+    monitoring:
+      check_command: check_https_url!thanos-swift.discovery.wmnet!/healthcheck
+      critical: false
+      sites:
+        codfw:
+          hostname: thanos-swift.svc.codfw.wmnet
+    port: 443
+    sites:
+    - codfw
+    state: service_setup
+    discovery:
+    - dnsdisc: thanos-swift
+      active_active: true
   termbox:
     description: Wikidata Termbox SSR termbox.svc.%{::site}.wmnet
     encryption: false
