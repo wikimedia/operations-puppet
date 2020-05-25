@@ -43,8 +43,6 @@ Puppet::Functions.create_function(:role) do
       raise Puppet::ParseError, "role() can only be called once per node"
     end
     role = main_role.gsub(/^::/, '')
-    # Backwards compat
-    scope['_roles'] = { role => true }
     # This is where we're going in the future
     # Hack: we transform 'foo::bar' in 'foo/bar' so that it's easy to lookup in hiera
     scope['_role'] = role.gsub(/::/, '/')

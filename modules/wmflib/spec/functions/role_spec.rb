@@ -8,7 +8,7 @@ describe 'role' do
   let(:pre_condition) {"
 class role::test {}
 class role::test::foo {
-      if ($::_roles['test::foo']) { file { '/tmp/test': ensure => present} }
+      if ($::_role == 'test/foo' ) { file { '/tmp/test': ensure => present} }
       file{ \"/tmp/${::_role}\": ensure => present}
 }
 "}

@@ -8,8 +8,8 @@ class profile::cumin::target(
     String $site = $::site,
     Array[Stdlib::IP::Address] $cumin_masters = lookup('cumin_masters', {'default_value' => []}),
 ) {
-    if defined('$::_roles') {
-        $roles = prefix(keys($::_roles), 'role::')
+    if defined('$::_role') {
+        $roles = [regsubst($::_role, '/', '::', 'G')]
     } else {
         $roles = []
     }
