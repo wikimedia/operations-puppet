@@ -15,13 +15,11 @@ profile::lvs::realserver::pools:
       - thanos-swift
 
 profile::envoy::ensure: present
-profile::tlsproxy::envoy::sni_support: 'strict'
+profile::tlsproxy::envoy::sni_support: 'no'
 profile::tlsproxy::envoy::services:
-   - server_names: ['thanos-swift', 'thanos-swift.discovery.wmnet',
-                    'thanos-swift.svc.codfw.wmnet',
-                    'thanos-swift.svc.eqiad.wmnet']
+   - server_names: ['*']
      port: 8888
-     cert_name: 'thanos-swift.discovery.wmnet'
+profile::tlsproxy::envoy::global_cert_name: 'thanos-swift.discovery.wmnet'
 
 profile::prometheus::statsd_exporter::mappings:
   # Authentication subsystem (tempauth)
