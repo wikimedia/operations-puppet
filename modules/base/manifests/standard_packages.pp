@@ -3,6 +3,8 @@ class base::standard_packages {
     require_package ([
         'acct',
         'apt-transport-https',
+        'byobu',
+        'colordiff',
         'curl',
         'debian-goodies',
         'dnsutils',
@@ -45,9 +47,10 @@ class base::standard_packages {
         'zsh',
     ])
 
-    # linux-perf exists only from stretch onwards, once we are free of
-    # jessie, remove the if and move the the array above
+    # These packages exists only from stretch onwards, once we are free of
+    # jessie, remove the if and move them to the array above
     if os_version('debian > jessie') {
+        require_package('icdiff')
         require_package('linux-perf')
     }
 
