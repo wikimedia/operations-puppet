@@ -45,7 +45,8 @@ except ImportError:
 try:
     import jenkinsapi
 except ImportError:
-    raise SystemExit('You need the `jenkinsapi` module. Try `pip install jenkinsapi`.')
+    raise SystemExit("""You need the `jenkinsapi` module. Try `pip install jenkinsapi`
+or `sudo apt-get install python3-jenkinsapi` (if available on your distro).""")
 
 
 JENKINS_URL = 'https://integration.wikimedia.org/ci/'
