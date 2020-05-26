@@ -1838,7 +1838,14 @@ node /^mw22(8[3-9]|90)\.codfw\.wmnet$/ {
 # Row A
 
 # mw2243, mw2246-mw2250 are in rack A4
-node /^mw22(4[36789]|50)\.codfw\.wmnet$/ {
+
+# jobrunner canaries
+node /^mw22(49|50)\.codfw\.wmnet$/ {
+    role(mediawiki::jobrunner)
+}
+
+# jobrunners
+node /^mw22(4[3678])\.codfw\.wmnet$/ {
     role(mediawiki::jobrunner)
 }
 
