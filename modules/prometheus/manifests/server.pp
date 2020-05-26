@@ -47,6 +47,14 @@
 #
 # [*alertmanager_url*]
 #   An url where alertmanager is listening for alerts. host:port when using Prometheus v2
+#
+# [*min_block_duration*]
+#   The minimum duration of local TSDB blocks to consider for compaction
+#
+# [*max_block_duration*]
+#   The maximum duration of local TSDB blocks to consider for compaction. Set
+#   to the same value as min_block_duration to disable compactions (when using
+#   Thanos only)
 
 define prometheus::server (
     $listen_address,
@@ -61,6 +69,8 @@ define prometheus::server (
     $rule_files_extra = [],
     $alertmanager_url = undef,
     $external_url = "http://prometheus/${title}",
+    $min_block_duration = '2h',
+    $max_block_duration = '24h',
 ) {
     include ::prometheus
 
