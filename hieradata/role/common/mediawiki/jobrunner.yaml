@@ -43,9 +43,8 @@ profile::mediawiki::php::restarts::ensure: present
 # We set the restart watermark at 200 MB, which is approximately how much
 # opcache one full day of deployments consume.
 profile::mediawiki::php::restarts::opcache_limit: 200
-# TLS Termination
-# Don't use envoy by default
-profile::mediawiki::jobrunner_tls::use_envoy: true
+
+## TLS Termination
 # There is no reason to separate the two sites at this layer.
 profile::tlsproxy::envoy::sni_support: "no"
 # The timeout at this layer should be equal to the highest between videoscaler.*
@@ -59,3 +58,4 @@ profile::tlsproxy::envoy::services:
 # new certificate including both jobrunners and videoscalers.
 profile::tlsproxy::envoy::global_cert_name: "jobrunner.discovery.wmnet"
 profile::tlsproxy::envoy::max_requests: 1000
+profile::tlsproxy::envoy::ferm_srange: "$DOMAIN_NETWORKS"
