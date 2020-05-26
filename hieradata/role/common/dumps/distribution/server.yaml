@@ -26,3 +26,6 @@ profile::kerberos::keytabs::keytabs_metadata:
     owner: 'dumpsgen'
     group: 'dumpsgen'
     filename: 'dumpsgen.keytab'
+
+profile::base::debdeploy::exclude_mounts:
+  - /mnt/hdfs
