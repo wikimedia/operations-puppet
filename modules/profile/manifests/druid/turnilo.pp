@@ -50,6 +50,8 @@ class profile::druid::turnilo(
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Turnilo-Pivot',
     }
 
+    base::service_auto_restart { 'apache2': }
+
     if $proxy_enabled {
         $server_name = $::realm ? {
             'production' => 'turnilo.wikimedia.org',
