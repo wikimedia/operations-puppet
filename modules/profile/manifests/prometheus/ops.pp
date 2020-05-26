@@ -1556,6 +1556,20 @@ class profile::prometheus::ops (
           { 'files' => [ "${targets_path}/thanos_sidecar_*.yaml" ]}
         ],
       },
+      {
+        'job_name'        => 'thanos_store',
+        'scheme'          => 'http',
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/thanos_store_*.yaml" ]}
+        ],
+      },
+      {
+        'job_name'        => 'thanos_compact',
+        'scheme'          => 'http',
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/thanos_compact_*.yaml" ]}
+        ],
+      },
     ]
 
     prometheus::class_config{ "thanos_query_${::site}":
@@ -1572,6 +1586,19 @@ class profile::prometheus::ops (
         port_parameter => 'http_port',
     }
 
+    prometheus::class_config{ "thanos_store_${::site}":
+        dest       => "${targets_path}/thanos_store_${::site}.yaml",
+        site       => $::site,
+        class_name => 'thanos::store',
+        port       => 11902,
+    }
+
+    prometheus::class_config{ "thanos_compact_${::site}":
+        dest       => "${targets_path}/thanos_compact_${::site}.yaml",
+        site       => $::site,
+        class_name => 'thanos::compact',
+        port       => 12902,
+    }
 
     # Jobs for Netbox script-based exported metrics
     $netbox_jobs = [
