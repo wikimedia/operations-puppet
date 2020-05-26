@@ -34,4 +34,15 @@ class profile::analytics::refinery::job::import_wikidata_entities_dumps (
         use_kerberos      => $use_kerberos,
     }
 
+    # Import lexemes-ttl dumps
+    profile::analytics::refinery::job::import_wikidata_dumps_config { 'refinery-import-wikidata-lexemes-ttl-dumps':
+        ensure            => $ensure_timers,
+        include_pattern   => '/*/*-lexemes-BETA.ttl.bz2',
+        local_source      => $wikidata_local_source,
+        hdfs_destination  => '/wmf/data/raw/wikidata/dumps/lexemes_ttl',
+        timer_description => 'Schedules daily an hdfs-rsync of the wikidata lexemes-ttl dumps into HDFS',
+        timer_interval    => '*-*-* 02:00:00',
+        use_kerberos      => $use_kerberos,
+    }
+
 }
