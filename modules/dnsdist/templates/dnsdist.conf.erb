@@ -1,5 +1,13 @@
 -- This file is managed by Puppet [see dnsdist/dnsdist.conf.erb].
 
+-- dnsdist by default restricts queries from private IPs and other local addresses.
+addACL('0.0.0.0/0')
+addACL('::/0')
+
+-- enable DoH
+addDOHLocal('0.0.0.0:443', '<%= @cert_chain %>', '<%= @cert_privkey %>')
+addDOHLocal('[::]:443', '<%= @cert_chain %>', '<%= @cert_privkey %>')
+
 <% @resolvers.each_pair do |resolver, config| -%>
-newServer({address="<%= config['host'] %>:<%= config['port'] %>", name="<%= resolver %>"})
+newServer({address='<%= config['host'] %>:<%= config['port'] %>', name='<%= resolver %>'})
 <% end -%>

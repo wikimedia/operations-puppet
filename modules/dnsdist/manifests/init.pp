@@ -6,9 +6,17 @@
 #
 #  [*resolvers*]
 #    [hash] downstream recursive resolvers to their configuration. required.
+#
+#  [*cert_chain*]
+#    [path] path to the certificate chain. used for dns-over-https/dns-over-tls. required.
+#
+#  [*cert_privkey*]
+#    [path] path to the certificate private key. used for dns-over-https/dns-over-tls. required.
 
 class dnsdist (
     Hash[String, Dnsdist::Resolver] $resolvers,
+    Stdlib::Unixpath                $cert_chain,
+    Stdlib::Unixpath                $cert_privkey,
 ) {
 
     apt::package_from_component { 'dnsdist':
