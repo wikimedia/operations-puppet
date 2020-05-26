@@ -6,4 +6,9 @@ class profile::wikidough (
         resolvers => $recursive_resolvers
     }
 
+    acme_chief::cert { 'wikidough':
+        puppet_svc => 'dnsdist',
+        key_group  => '_dnsdist',
+    }
+
 }
