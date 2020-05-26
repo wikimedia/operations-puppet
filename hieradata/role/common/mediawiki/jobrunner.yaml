@@ -45,7 +45,7 @@ profile::mediawiki::php::restarts::ensure: present
 profile::mediawiki::php::restarts::opcache_limit: 200
 # TLS Termination
 # Don't use envoy by default
-profile::mediawiki::jobrunner_tls::use_envoy: false
+profile::mediawiki::jobrunner_tls::use_envoy: true
 # There is no reason to separate the two sites at this layer.
 profile::tlsproxy::envoy::sni_support: "no"
 # The timeout at this layer should be equal to the highest between videoscaler.*
