@@ -37,6 +37,9 @@ profile::analytics::search::airflow::run_dir: '/var/run/airflow'
 profile::analytics::search::airflow::conf_dir: '/etc/airflow'
 profile::analytics::search::airflow::conf_file: 'airflow.cfg'
 
+profile::base::debdeploy::exclude_mounts:
+  - /mnt/hdfs
+
 profile::analytics::cluster::hdfs_mount::kerberos_enabled: true
 profile::analytics::cluster::hdfs_mount::monitoring_user: 'analytics-search'
 
