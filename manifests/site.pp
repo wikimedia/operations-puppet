@@ -329,6 +329,7 @@ node 'db1083.eqiad.wmnet' {
     role(mariadb::core)
 }
 # eqiad replicas
+# See also db1099 and db1105 below
 node /^db1(080|089|106|107|118|119|134)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
@@ -340,6 +341,7 @@ node 'db2112.codfw.wmnet' {
 }
 
 # codfw replicas
+# See also db2085 and db2088 below
 node /^db2(071|072|092|103|116|130)\.codfw\.wmnet/ {
     role(mariadb::core)
 }
@@ -351,7 +353,7 @@ node 'db1122.eqiad.wmnet' {
 }
 
 # eqiad replicas
-# see also db1090, db1103, db1105 below
+# See also db1090, db1103, db1105 below
 node /^db1(074|076|129)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
@@ -362,6 +364,8 @@ node 'db2107.codfw.wmnet' {
     role(mariadb::core)
 }
 
+# codfw replicas
+# See also db2088 and db2091 below
 node /^db2(104|108|125|126)\.codfw\.wmnet/ {
     role(mariadb::core)
 }
@@ -373,6 +377,7 @@ node 'db1123.eqiad.wmnet' {
     role(mariadb::core)
 }
 
+# eqiad replicas
 node /^db1(075|078|112)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
@@ -383,6 +388,7 @@ node 'db2105.codfw.wmnet' {
     role(mariadb::core)
 }
 
+# codfw replicas
 node /^db2(074|109|127)\.codfw\.wmnet/ {
     role(mariadb::core)
 }
@@ -393,7 +399,8 @@ node 'db1138.eqiad.wmnet' {
     role(mariadb::core)
 }
 
-# see also db1097 db1103 and db1144 below
+# eqiad replicas
+# See also db1097, db1103 and db1144 below
 node /^db1(081|084|091|121|142|143|149)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
@@ -409,7 +416,8 @@ node 'db2090.codfw.wmnet' {
     role(mariadb::core)
 }
 
-# see also db2084, db2091 and db2137 below
+# codfw replicas
+# See also db2084, db2091 and db2137 below
 node /^db2(073|106|110|119|136)\.codfw\.wmnet/ {
     role(mariadb::core)
 }
@@ -420,7 +428,8 @@ node 'db1100.eqiad.wmnet' {
     role(mariadb::core)
 }
 
-# See also db1096 db1097 db1113 and db1144 below
+# eqiad replicas
+# See also db1096, db1097, db1113 and db1144 below
 node /^db1(082|110|130)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
@@ -431,6 +440,7 @@ node 'db2123.codfw.wmnet' {
     role(mariadb::core)
 }
 
+# codfw replicas
 # See also db2084, db2089 and db2137 below
 node /^db2(075|111|113|128)\.codfw\.wmnet/ {
     role(mariadb::core)
@@ -442,7 +452,8 @@ node 'db1131.eqiad.wmnet' {
     role(mariadb::core)
 }
 
-# See also db1096 db1098 and db1113 below
+# eqiad replicas
+# See also db1096, db1098 and db1113 below
 node /^db1(085|088|093)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
@@ -453,6 +464,8 @@ node 'db2129.codfw.wmnet' {
     role(mariadb::core)
 }
 
+# codfw replicas
+# See also db2087 and db2089 below
 node /^db2(076|114|117|124)\.codfw\.wmnet/ {
     role(mariadb::core)
 }
@@ -463,6 +476,7 @@ node 'db1086.eqiad.wmnet' {
     role(mariadb::core)
 }
 
+# eqiad replicas
 # See also db1090, db1098 and db1101 below
 node /^db1(069|079|094|136)\.eqiad\.wmnet/ {
     role(mariadb::core)
@@ -474,6 +488,8 @@ node 'db2118.codfw.wmnet' {
     role(mariadb::core)
 }
 
+# codfw replicas
+# See also db2086 and db2087 below
 node /^db2(077|120|121|122)\.codfw\.wmnet/ {
     role(mariadb::core)
 }
@@ -484,6 +500,7 @@ node 'db1109.eqiad.wmnet' {
     role(mariadb::core)
 }
 
+# eqiad replicas
 # See also db1099 and db1101 below
 node /^db1(092|087|104|111|114|126)\.eqiad\.wmnet/ {
     role(mariadb::core)
@@ -495,6 +512,7 @@ node 'db2079.codfw.wmnet' {
     role(mariadb::core)
 }
 
+# codfw replicas
 # See also db2085 and db2086 below
 node /^db20(80|81|82|83)\.codfw\.wmnet/ {
     role(mariadb::core)
