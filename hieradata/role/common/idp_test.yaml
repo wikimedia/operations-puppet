@@ -5,8 +5,6 @@ profile::tlsproxy::envoy::services:
   - server_names: ['*']
     port: 8080
 profile::tlsproxy::envoy::acme_cert_name: idp-test
-profile::idp::external_tomcat: true
-profile::idp::deploy_deb: true
 profile::idp::services:
   icinga:
     class: 'org.apereo.cas.services.RegexRegisteredService'
@@ -103,6 +101,5 @@ profile::idp::actuators:
   - prometheus
   - sso
   - ssoSessions
-profile::idp::overlay_branch: staging
 profile::idp::idp_primary: idp-test1001.wikimedia.org
 profile::idp::idp_failover: idp-test2001.wikimedia.org

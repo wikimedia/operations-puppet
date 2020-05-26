@@ -20,7 +20,6 @@ class apereo_cas (
     Optional[Stdlib::Filesource]  $groovy_source                 = undef,
     Optional[Array[Stdlib::Host]] $prometheus_nodes              = [],
     Optional[Array[String]]       $actuators                     = [],
-    Stdlib::Unixpath              $overlay_dir                   = '/srv/cas/overlay-template',
     Stdlib::Unixpath              $devices_dir                   = '/srv/cas/devices',
     Stdlib::Unixpath              $base_dir                      = '/etc/cas',
     Stdlib::Unixpath              $log_dir                       = '/var/log/cas',
@@ -30,8 +29,6 @@ class apereo_cas (
     Stdlib::Unixpath              $keystore_path                 = "${base_dir}/thekeystore",
     String[1]                     $keystore_password             = 'changeit',
     String[1]                     $key_password                  = 'changeit',
-    String                        $overlay_repo                  = 'operations/software/cas-overlay-template',
-    String[1]                     $overlay_branch                = 'master',
     Stdlib::HTTPSUrl              $server_name                   = "https://${facts['fqdn']}:8443",
     Stdlib::Port                  $server_port                   = 8443,
     Stdlib::Unixpath              $server_prefix                 = '/cas',
@@ -51,11 +48,8 @@ class apereo_cas (
     Array[String[1]]              $mfa_attribut_value            = ['mfa'],
     String                        $daemon_user                   = 'cas',
     Hash[String, Hash]            $services                      = {},
-    Boolean                       $external_tomcat               = false,
     Boolean                       $manage_user                   = true,
-    Stdlib::Unixpath              $tomcat_webapps_dir            = '/var/lib/tomcat9/webapps',
     Optional[String[1]]           $java_opts                     = undef,
-    Boolean                       $deploy_deb                    = false,
 ) {
     if $keystore_source == undef and $keystore_content == undef and $server_enable_ssl {
         error('you must provide either $keystore_source or $keystore_content')
@@ -67,6 +61,12 @@ class apereo_cas (
     $services_dir = "${base_dir}/services"
 
     $is_idp_primary = $facts['fqdn'] == $idp_primary
+
+    systemd::unit{'tomcat9':
+        override => true,
+        restart  => true,
+        content  => "[Service]\nReadWritePaths=${devices_dir}\nReadWritePaths=${log_dir}\n",
+    }
 
     if $is_idp_primary {
         $ensure_rsync = 'present'
@@ -118,7 +118,7 @@ class apereo_cas (
             source => $groovy_source,
         }
     }
-    file {wmflib::dirtree($overlay_dir) + [$services_dir, $config_dir, $overlay_dir]:
+    file{[$services_dir, $config_dir]:
         ensure => directory,
     }
     file{[$devices_dir, $base_dir, $log_dir]:
@@ -154,58 +154,15 @@ class apereo_cas (
         source  => $keystore_source,
     }
 
-    if $deploy_deb {
-        require_package('cas')
-    } else {
-        git::clone {$overlay_repo:
-            ensure    => 'latest',
-            directory => $overlay_dir,
-            branch    => $overlay_branch,
-        }
-
-        exec{'update cas war':
-            command     => "${overlay_dir}/gradlew build",
-            cwd         => $overlay_dir,
-            require     => Git::Clone[$overlay_repo],
-            subscribe   => Git::Clone[$overlay_repo],
-            refreshonly => true,
-        }
-    }
-    unless $deploy_deb {
-        if $external_tomcat {
-            $cas_service_ensure = 'absent'
-            file {"${tomcat_webapps_dir}/ROOT.war":
-                ensure  => file,
-                source  => "${overlay_dir}/build/libs/cas.war",
-                require => Exec['update cas war'],
-                notify  => Service['tomcat9'],
-            }
-            $notify = Service['tomcat9']
-        } else {
-            $cas_service_ensure = 'present'
-            file {"${tomcat_webapps_dir}/ROOT.war":
-                ensure => absent,
-            }
-            $notify = Service['cas']
-            Exec['update cas war'] {
-                notify => Service['cas'],
-            }
-
-            systemd::service {'cas':
-                ensure  => $cas_service_ensure,
-                content => template('apereo_cas/cas.service.erb'),
-                require => Git::Clone[$overlay_repo],
-            }
-        }
-    }
+    require_package('cas')
 
     File["${config_dir}/log4j2.xml", $keystore_path, "${config_dir}/cas.properties"] {
-        notify => $notify,
+        notify => Service['tomcat9'],
     }
 
     $services.each |String $service, Hash $config| {
         apereo_cas::service {$service:
-            notify => $notify,
+            notify => Service['tomcat9'],
             *      => $config
         }
     }

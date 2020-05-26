@@ -2,16 +2,8 @@
 
 require_relative '../../../../rake_modules/spec_helper'
 
-test_on = {
-  supported_os: [
-    {
-      'operatingsystem'        => 'Debian',
-      'operatingsystemrelease' => ['8', '9', '10'],
-    }
-  ]
-}
 describe 'apereo_cas' do
-  on_supported_os(test_on).each do |os, facts|
+  on_supported_os(WMFConfig.test_on(10)).each do |os, facts|
     context "on #{os}" do
       let(:facts) { facts }
       let(:params) do
@@ -23,20 +15,17 @@ describe 'apereo_cas' do
       end
       let(:pre_condition) do
         "class profile::base ( $notifications_enabled = 1 ){}
+        service{'tomcat9':}
         include profile::base"
       end
       describe 'test with default settings' do
         it { is_expected.to compile.with_all_deps }
-        ['/srv', '/srv/cas', '/srv/cas/overlay-template',
-         '/etc/cas', '/etc/cas/services', '/etc/cas/config'].each do |dir|
+        ['/etc/cas', '/etc/cas/services', '/etc/cas/config'].each do |dir|
           it do
             is_expected.to contain_file(dir).with_ensure('directory')
           end
         end
         it do
-          is_expected.to contain_git__clone('operations/software/cas-overlay-template').with(
-            directory: '/srv/cas/overlay-template'
-          )
           is_expected.to contain_file('/etc/cas/config/cas.properties').with(
             owner: 'cas',
             group: 'root',
@@ -81,14 +70,6 @@ describe 'apereo_cas' do
             owner: 'cas',
             group: 'root',
             mode: '0400'
-          )
-          is_expected.to contain_exec('update cas war').with(
-            command: '/srv/cas/overlay-template/gradlew build',
-            cwd: '/srv/cas/overlay-template',
-            refreshonly: true
-          )
-          is_expected.to contain_systemd__service('cas').with_content(
-            %r{ExecStart=/usr/bin/java -jar /srv/cas/overlay-template/build/libs/cas.war}
           )
         end
       end

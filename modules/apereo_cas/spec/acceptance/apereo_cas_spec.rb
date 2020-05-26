@@ -10,9 +10,6 @@ describe 'apereo_cas class' do
       apply_manifest(pp, catch_failures: true)
       expect(apply_manifest(pp, catch_failures: true).exit_code).to eq 0
     end
-    describe file('/srv/cas/overlay-template/build/libs/cas.war') do
-      it { is_expected.to be_file }
-    end
     describe service('cas') do
       it { is_expected.to be_enabled }
       it { is_expected.to be_running.under('systemd') }

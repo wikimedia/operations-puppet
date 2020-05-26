@@ -13,9 +13,6 @@ class profile::idp(
     Hash[String,Hash]      $services               = lookup('profile::idp::services'),
     Array[String[1]]       $ldap_attribute_list    = lookup('profile::idp::ldap_attributes'),
     Array[String]          $actuators              = lookup('profile::idp::actuators'),
-    String[1]              $overlay_branch         = lookup('profile::idp::overlay_branch'),
-    Boolean                $external_tomcat        = lookup('profile::idp::external_tomcat'),
-    Boolean                $deploy_deb             = lookup('profile::idp::deploy_deb'),
     Stdlib::Fqdn           $idp_primary            = lookup('profile::idp::idp_primary'),
     Optional[Stdlib::Fqdn] $idp_failover           = lookup('profile::idp::idp_failover',
                                                             {'default_value' => undef}),
@@ -38,6 +35,8 @@ class profile::idp(
         wrap_with_stunnel => true,
     }
 
+    class {'tomcat':}
+
     backup::set { 'idp': }
 
     $jmx_port = 9200
@@ -47,19 +46,10 @@ class profile::idp(
     $groovy_source = 'puppet:///modules/profile/idp/global_principal_attribute_predicate.groovy'
     $devices_dir = '/srv/cas/devices'
     $log_dir = '/var/log/cas'
-    if external_tomcat {
-        class {'tomcat':}
-        $cas_daemon_user = 'tomcat'
-        $cas_manage_user = false
-        systemd::unit{'tomcat9':
-            override => true,
-            restart  => true,
-            content  => "[Service]\nReadWritePaths=${devices_dir}\nReadWritePaths=${log_dir}\n",
-        }
-    } else {
-        $cas_daemon_user = 'cas'
-        $cas_manage_user = true
-    }
+
+    $cas_daemon_user = 'tomcat'
+    $cas_manage_user = false
+
     class { 'apereo_cas':
         server_name            => 'https://idp.wikimedia.org',
         server_prefix          => '/',
@@ -94,12 +84,9 @@ class profile::idp(
         java_opts              => $java_opts,
         max_session_length     => $max_session_length,
         actuators              => $actuators,
-        overlay_branch         => $overlay_branch,
-        external_tomcat        => $external_tomcat,
         daemon_user            => $cas_daemon_user,
         manage_user            => $cas_manage_user,
         log_dir                => $log_dir,
-        deploy_deb             => $deploy_deb,
     }
     profile::prometheus::jmx_exporter{ "idp_${facts['networking']['hostname']}":
         hostname         => $facts['networking']['hostname'],
