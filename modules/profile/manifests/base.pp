@@ -26,8 +26,8 @@ class profile::base(
     # We have included a default here as this seems to be the convention even though 
     # it contradicts https://wikitech.wikimedia.org/wiki/Puppet_coding
     # TODO: need to clarify with _joe_ when he comes back of vacation 2019-03-11
-    $debdeploy_exclude_mounts = hiera('profile::base::debdeploy::exclude_mounts', []),
-    $debdeploy_exclude_filesystems = hiera('profile::base::debdeploy::exclude_filesystems', []),
+    $debdeploy_exclude_mounts = lookup('profile::base::debdeploy::exclude_mounts'),
+    $debdeploy_exclude_filesystems = lookup('profile::base::debdeploy::exclude_filesystems'),
     $debdeploy_filter_services = lookup('profile::base::debdeploy::filter_services', Hash, 'hash', {}),
     $monitoring_hosts = hiera('monitoring_hosts', []),
     Hash $wikimedia_clusters = lookup('wikimedia_clusters'),

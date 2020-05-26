@@ -1,4 +1,5 @@
-profile::base::debdeploy::exclude_mounts: ~
+profile::base::debdeploy::exclude_mounts: []
+profile::base::debdeploy::exclude_filesystems: []
 profile::base::debdeploy::filter_services:
   bacula-fd:
     - '*'
