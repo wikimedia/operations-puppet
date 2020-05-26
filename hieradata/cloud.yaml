@@ -83,3 +83,5 @@ profile::puppetmaster::common::ssl_verify_depth: 1
 profile::base::firewall::block_abuse_nets: false
 
 profile::backup::director_seed: changeme
+profile::base::debdeploy::exclude_mounts: []
+profile::base::debdeploy::exclude_filesystems: []
