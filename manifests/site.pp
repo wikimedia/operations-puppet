@@ -2269,7 +2269,7 @@ node /^cloudvirt-wdqs100[123]\.eqiad\.wmnet$/ {
 
 # Wikidata query service
 node /^wdqs100[4-7]\.eqiad\.wmnet$/ {
-    role(wdqs)
+    role(wdqs::public)
 }
 
 node /^wdqs101[1-3]\.eqiad\.wmnet$/ {
@@ -2277,7 +2277,7 @@ node /^wdqs101[1-3]\.eqiad\.wmnet$/ {
 }
 
 node /^wdqs200[1237]\.codfw\.wmnet$/ {
-    role(wdqs)
+    role(wdqs::public)
 }
 
 # Wikidata query service internal
@@ -2294,13 +2294,8 @@ node /^wdqs200[7-8]\.codfw\.wmnet$/ {
     role(insetup)
 }
 
-# Wikidata query service automated deployment
-node 'wdqs1009.eqiad.wmnet' {
-    role(wdqs::autodeploy)
-}
-
 # Wikidata query service test
-node 'wdqs1010.eqiad.wmnet' {
+node /^wdqs10(09|10)\.eqiad\.wmnet$/ {
     role(wdqs::test)
 }
 

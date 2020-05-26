@@ -1,0 +1,1 @@
+profile::query_service::deploy_mode: 'autodeploy'

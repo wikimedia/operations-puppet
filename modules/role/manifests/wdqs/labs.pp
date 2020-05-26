@@ -1,20 +1,23 @@
 # = Class: role::wdqs::labs
 #
-# This class sets up Wikidata Query Service on Cloud VPS
+# This class defines a Wikidata Query Service endpoint inside
+# Wikimedia Cloud Services.
 #
 # filtertags: labs-project-wikidata-query
 class role::wdqs::labs () {
-    require role::labs::lvm::srv
-
+    # Standard for all roles
     include ::profile::standard
     include ::profile::base::firewall
+    # Standard wdqs installation
     require ::profile::query_service::common
     require ::profile::query_service::blazegraph
     require ::profile::query_service::categories
     require ::profile::query_service::updater
     require ::profile::query_service::gui
+    # Specific to instances in cloud services
+    require role::labs::lvm::srv
 
-    system::role { 'wdqs':
+    system::role { 'wdqs::labs':
         ensure      => 'present',
         description => 'Wikidata Query Service',
     }
