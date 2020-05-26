@@ -9,6 +9,7 @@
 #
 define java::package(
     Java::PackageInfo $package_info,
+    Boolean           $hardened_tls=false,
 ) {
     $package_name = "openjdk-${package_info['version']}-${package_info['variant']}"
 
@@ -20,6 +21,15 @@ define java::package(
     } else {
         package { $package_name:
             ensure  => 'present',
+        }
+    }
+
+    # Use a custom java.security on this host, so that we can restrict the allowed
+    # certificate's sigalgs.
+    if $hardened_tls {
+        file { "/etc/java-${package_info['version']}-openjdk/security/java.security":
+            source  => 'puppet:///modules/java/java.security',
+            require => Package[$package_name],
         }
     }
 }

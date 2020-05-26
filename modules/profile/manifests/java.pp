@@ -29,7 +29,8 @@
 #
 class profile::java (
     Array[Java::PackageInfo] $java_packages = lookup('profile::java::java_packages', { 'default_value' => [] }),
-    Optional[String] $extra_args = lookup('profile::java::extra_args', { 'default_value' => undef }),
+    Optional[String] $extra_args            = lookup('profile::java::extra_args', { 'default_value' => undef }),
+    Boolean $hardened_tls                   = lookup('profile::java::hardened_tls'),
 ) {
 
     if os_version('debian == stretch') {
@@ -44,7 +45,8 @@ class profile::java (
     }
 
     class { 'java':
-        java_packages => $_java_packages
+        java_packages => $_java_packages,
+        hardened_tls  => $hardened_tls,
     }
 
     $default_java_home = $java::java_home
