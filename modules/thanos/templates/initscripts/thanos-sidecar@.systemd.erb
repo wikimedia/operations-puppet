@@ -5,7 +5,7 @@ Documentation=https://github.com/improbable-eng/thanos/
 [Service]
 Restart=always
 User=prometheus
-ExecStart=/usr/bin/thanos sidecar --http-address <%= @http_address %> --grpc-address <%= @grpc_address %> --tsdb.path <%= @tsdb_path %> --prometheus.url <%= @prometheus_url %> <%= @objstore_account ? "--objstore.config-file #{objstore_config_file}" : '' %> <%= @min_time ? "--min-time #{min_time}" : '' %>
+ExecStart=/usr/bin/thanos sidecar --http-address <%= @http_address %> --grpc-address <%= @grpc_address %> --tsdb.path <%= @tsdb_path %> --prometheus.url <%= @prometheus_url %> <%= @objstore_account ? "--objstore.config-file #{@objstore_config_file}" : '' %> <%= @min_time ? "--min-time #{@min_time}" : '' %>
 ExecReload=/bin/kill -HUP $MAINPID
 TimeoutStopSec=20s
 SendSIGKILL=no
