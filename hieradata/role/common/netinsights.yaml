@@ -5,6 +5,10 @@ profile::pmacct::librdkafka_config:
   - 'global,ssl.cipher.suites,ECDHE-ECDSA-AES256-GCM-SHA384'
   - 'global,ssl.curves.list,P-256'
   - 'global,ssl.sigalgs.list,ECDSA+SHA256'
+  - 'global,compression.codec,snappy'
+  - 'global,socket.send.buffer.bytes,1048576'
+  - 'global,queue.buffering.max.messages,500000'
+  - 'global,queue.buffering.max.kbytes,2097151'
 profile::samplicator::targets:
   - 127.0.0.1/2055 #Fastnetmon
   - 127.0.0.1/2100 #Nfacct

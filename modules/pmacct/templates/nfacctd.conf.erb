@@ -32,6 +32,7 @@ kafka_partition: -1
 kafka_refresh_time: 60
 kafka_history: 1m
 kafka_history_roundoff: m
+plugin_pipe_size: 30720000
 <% if @librdkafka_config -%>
 kafka_config_file: <%= @kafka_config_file %>
 <% end -%>
