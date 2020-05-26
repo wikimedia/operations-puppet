@@ -79,7 +79,7 @@ trafficserver_lua_gc_bytes_total:
     - labels: {plugin: global}
       value: plugin.lua.global.gc_bytes
     - labels: {plugin: remap}
-      value: value: plugin.lua.remap.gc_bytes
+      value: plugin.lua.remap.gc_bytes
 trafficserver_lua_states_count:
   documentation: Current configured number of Lua VM states.
   type: gauge
@@ -87,7 +87,7 @@ trafficserver_lua_states_count:
     - labels: {plugin: global}
       value: plugin.lua.global.states
     - labels: {plugin: remap}
-      value: value: plugin.lua.remap.states
+      value: plugin.lua.remap.states
 trafficserver_lua_threads_count:
   documentation: Current number of Lua VM threads.
   type: gauge
@@ -95,7 +95,7 @@ trafficserver_lua_threads_count:
     - labels: {plugin: global}
       value: plugin.lua.global.threads
     - labels: {plugin: remap}
-      value: value: plugin.lua.remap.threads
+      value: plugin.lua.remap.threads
 trafficserver_miss_transaction_time_ms_total:
   documentation: Total cache miss transaction time (ms).
   type: counter
