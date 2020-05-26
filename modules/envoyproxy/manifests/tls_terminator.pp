@@ -74,6 +74,8 @@
 #     If true, will capitalize headers for HTTP/1.1 requests
 # @param idle_timeout
 #     The time in seconds to wait before closing a keepalive connection when inactive.
+# @param max_requests_per_conn
+#     The maximum number of requests to send over a connection
 define envoyproxy::tls_terminator(
     Array[Envoyproxy::Tlsconfig] $upstreams                 = [],
     Boolean                      $access_log                = false,
@@ -88,6 +90,7 @@ define envoyproxy::tls_terminator(
     Optional[String]             $global_cert_path          = undef,
     Optional[String]             $global_key_path           = undef,
     Optional[Float]              $idle_timeout              = undef,
+    Optional[Integer]            $max_requests_per_conn     = undef,
 ) {
 
     # First of all, we can't configure a tls terminator if envoy is not installed.

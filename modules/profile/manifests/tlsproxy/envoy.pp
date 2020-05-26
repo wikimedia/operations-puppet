@@ -70,6 +70,8 @@ class profile::tlsproxy::envoy(
                                                       {'default_value' => undef}),
     Optional[String]              $ferm_srange  = lookup('profile::tlsproxy::envoy::ferm_srange',
                                                       {'default_value' => undef}),
+    Optional[Integer]             $max_requests = lookup('profile::tlsproxy::envoy::max_requests',
+                                                      {'default_value' => undef}),
 ) {
     require profile::envoy
     $ensure = $profile::envoy::ensure
@@ -164,6 +166,7 @@ class profile::tlsproxy::envoy(
             use_remote_address        => $use_remote_address,
             capitalize_headers        => $capitalize_headers,
             idle_timeout              => $idle_timeout,
+            max_requests_per_conn     => $max_requests,
         }
         ferm::service { 'envoy_tls_termination':
             proto   => 'tcp',

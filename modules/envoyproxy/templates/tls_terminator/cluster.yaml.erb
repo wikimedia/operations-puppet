@@ -15,3 +15,10 @@ load_assignment:
           socket_address:
             address: <%= @upstream.fetch('upstream_addr', @fqdn) %>
             port_value: <%= @upstream['upstream_port'] %>
+<%- if @max_requests_per_conn
+# We limit persistent connections to a finite number of requests.
+# This can be important to keep our load-balancing in order if both the
+# client and the server can maintain persistent connections indefinitely.
+-%>
+max_requests_per_connection: <%= @max_requests_per_conn %>
+<%- end -%>
