@@ -12,7 +12,7 @@ class snapshot::cron::commonsdumps::rdf(
 
     $scriptpath = '/usr/local/bin/dumpwikibaserdf.sh'
     if !$filesonly {
-        cron { 'wikidatardf-dumps':
+        cron { 'commonsrdf-dumps':
             ensure      => 'present',
             command     => "${scriptpath} commons mediainfo ttl nt",
             environment => 'MAILTO=ops-dumps@wikimedia.org',
