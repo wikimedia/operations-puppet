@@ -205,3 +205,14 @@ datasources:
    editable: false
    withCredentials: false
    version: 1
+
+ - name: thanos
+   type: prometheus
+   access: proxy
+   orgId: 1
+   url: http://thanos-query.discovery.wmnet
+   database:
+   isDefault: false
+   editable: false
+   withCredentials: false
+   version: 1
