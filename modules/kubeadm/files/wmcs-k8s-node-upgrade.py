@@ -136,7 +136,7 @@ def ssh(host, cmd, capture_output=False):
         logging.info("DRY: {}".format(ssh_cmd))
         return
 
-    logging.debug(ssh_cmd)
+    logging.info(ssh_cmd)
     r = subprocess.run(ssh_cmd, shell=True, capture_output=capture_output)
     if r.returncode != 0:
         logging.critical("failed SSH command, skipping: {}".format(ssh_cmd))
@@ -302,7 +302,7 @@ def stage_prechecks():
 
     node_fqdn = ctx.current_node_fqdn
     # if kubeadm is already installed in the dst version, that's OK.
-    # ginve this is the first step in the upgrade stage anyway
+    # given this is the first step in the upgrade stage anyway
     check_package_versions(node_fqdn, "kubeadm", already_dst_ok=True)
     if ctx.skip is True:
         return
@@ -400,7 +400,11 @@ def main():
     args = parse_args()
     ctx.args = args
 
-    logging_format = "[%(filename)s] %(levelname)s: %(message)s"
+    bold_start = "\033[1m"
+    bold_end = "\033[0m"
+    logging_format = "{}[%(filename)s]{} %(levelname)s: %(message)s".format(
+        bold_start, bold_end
+    )
     if args.debug:
         logging_level = logging.DEBUG
     else:
