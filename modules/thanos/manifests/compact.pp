@@ -56,8 +56,10 @@ class thanos::compact (
     } else { # handle fqdn-based singleton service
         if $run_on_host == $::fqdn {
             $service_ensure = 'present'
+            $service_enable = true
         } else {
             $service_ensure = 'absent'
+            $service_enable = false
         }
     }
 
@@ -66,7 +68,7 @@ class thanos::compact (
         restart        => true,
         content        => systemd_template('thanos-compact'),
         service_params => {
-            enable     => true,
+            enable     => $service_enable,
             hasrestart => true,
         },
     }
