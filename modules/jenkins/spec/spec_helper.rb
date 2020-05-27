@@ -9,7 +9,7 @@ fixture_path = File.expand_path(File.join(__FILE__, '..', 'fixtures'))
 TEST_ON = {
   supported_os: [
     {'operatingsystem' => 'Debian',
-     'operatingsystemrelease' => ['8', '9', '10']}
+     'operatingsystemrelease' => ['9', '10']}
   ]
 }
 

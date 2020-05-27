@@ -7,15 +7,6 @@ class profile::zuul::merger(
 
     include ::zuul::monitoring::merger
 
-    if os_version('debian == jessie') {
-        apt::repository{ 'component-ci':
-            uri        => 'http://apt.wikimedia.org/wikimedia',
-            dist       => "${::lsbdistcodename}-wikimedia",
-            components => 'component/ci',
-            source     => false,
-        }
-    }
-
     # zuul-merger does git operations with Gerrit over ssh on port 29418
     sshkey { 'gerrit':
         ensure => 'present',

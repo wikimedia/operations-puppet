@@ -72,16 +72,9 @@ class jenkins(
         allowdupe => false,
     }
 
-    if os_version('debian >= stretch') {
-        apt::package_from_component { 'jenkins-thirdparty-ci':
-            component => 'thirdparty/ci',
-            packages  => ['jenkins']
-        }
-
-    } else {
-        package { 'jenkins':
-            ensure  => present,
-        }
+    apt::package_from_component { 'jenkins-thirdparty-ci':
+        component => 'thirdparty/ci',
+        packages  => ['jenkins']
     }
 
     # Initially use Java 8 on Buster, switch to Java 11 separately, T224591

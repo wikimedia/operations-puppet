@@ -1,9 +1,7 @@
 # A webserver configured for a CI master, as proxy
 class profile::ci::httpd {
 
-    if os_version('debian == jessie') {
-        $php_version = '5'
-    } elsif os_version('debian == buster') {
+    if os_version('debian == buster') {
         $php_version = '7.3'
     } else {
         $php_version = '7.0'
