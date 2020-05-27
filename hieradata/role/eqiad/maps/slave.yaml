@@ -1,9 +1,3 @@
-profile::maps::hosts:
-  - 'maps1004.eqiad.wmnet'
-  - 'maps1003.eqiad.wmnet'
-  - 'maps1002.eqiad.wmnet'
-  - 'maps1001.eqiad.wmnet'
-
 profile::maps::apps::redis_server: 'redis://maps1004.eqiad.wmnet'
 
 profile::cassandra::single_instance::dc: 'eqiad'
