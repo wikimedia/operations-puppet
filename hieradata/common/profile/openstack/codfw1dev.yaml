@@ -43,6 +43,7 @@ profile::openstack::codfw1dev::primary_glance_image_store: cloudcontrol2001-dev.
 #  running on the first host in this list will be used
 #  as the tooz coordinator.  T250087
 profile::openstack::codfw1dev::designate_hosts:
+  - cloudservices2003-dev.wikimedia.org
   - cloudservices2002-dev.wikimedia.org
 profile::openstack::codfw1dev::puppetmaster_hostname: 'labtest-puppetmaster.wikimedia.org'
 profile::openstack::codfw1dev::labs_hosts_range: '10.192.20.0/24'
