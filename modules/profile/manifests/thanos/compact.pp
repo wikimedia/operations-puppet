@@ -15,6 +15,10 @@ class profile::thanos::compact (
         retention         => $retention,
     }
 
+    if $thanos_compact_host == $::fqdn {
+        class { 'thanos::compact::prometheus': }
+    }
+
     # Allow access only to compact to scrape metrics
     $prometheus_nodes_ferm = join($prometheus_nodes, ' ')
     ferm::service { 'thanos_compact':

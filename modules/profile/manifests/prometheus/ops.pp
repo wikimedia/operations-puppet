@@ -1596,7 +1596,7 @@ class profile::prometheus::ops (
     prometheus::class_config{ "thanos_compact_${::site}":
         dest       => "${targets_path}/thanos_compact_${::site}.yaml",
         site       => $::site,
-        class_name => 'thanos::compact',
+        class_name => 'thanos::compact::prometheus',
         port       => 12902,
     }
 
