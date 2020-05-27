@@ -21,6 +21,14 @@ local red = redis:new()
 red:set_timeout(1000)
 red:connect('127.0.0.1', 6379)
 
+-- Does str end with ending?
+-- @param str String to check
+-- @param ending Substring to look for at end of str
+-- From http://lua-users.org/wiki/StringRecipes
+function ends_with(str, ending)
+    return ending == "" or str:sub(-#ending) == ending
+end
+
 --- Look up a backend for a given tool
 -- @param toolname Name of the tool
 -- @param path url URL
@@ -113,9 +121,14 @@ function try_redirect_and_exit_if_ok(toolname, path)
     return ngx.redirect(compute_redirect_url(toolname,path), 307)
 end
 
-local subdomain = string.match(ngx.var.http_host, "^[^.]+")
 -- case 1: webservices running in the grid using $tool.toolforge.org
-route_backend_and_exit_if_ok(subdomain, "/")
+if ends_with(ngx.var.http_host, ngx.var.canonical_domain) then
+    -- T253816: The hostname used in the request is *.toolforge.org
+    -- Either there is a grid backend, or we should pass on to k8s
+    local subdomain = string.match(ngx.var.http_host, "^[^.]+")
+    route_backend_and_exit_if_ok(subdomain, "/")
+    ngx.exit(ngx.OK)
+end
 
 -- if no subdomain-based routing was found, then use the legacy routing scheme
 local captures = ngx.re.match(ngx.var.uri, "^/([^/]*)(/.*)?$")
