@@ -12,7 +12,6 @@ class profile::toolforge::shell_environ {
 
     package { [
         'apt-file',
-        'byobu',                       # T88989.
         'cvs',  # Because I don't think webhooks or other uses exist anymore outside cli
         'dh-make-perl',
         'elinks',
