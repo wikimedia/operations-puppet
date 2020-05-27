@@ -175,7 +175,7 @@ def stage_refresh():
     ssh(ctx.current_node_fqdn, cmd)
 
 
-def check_package_versions(node_fqdn, package):
+def check_package_versions(node_fqdn, package, already_dst_ok=False):
     # validate that the installed package version is the right one
     cmd = "apt-cache policy {} | grep Installed".format(package)
     output = ssh(node_fqdn, cmd, capture_output=True)
@@ -192,6 +192,14 @@ def check_package_versions(node_fqdn, package):
             ctx.current_node, package, version, ctx.args.src_version
         )
     )
+
+    if already_dst_ok and ctx.args.dst_version in version:
+        # the installed version is the dst version and that's OK!
+        logging.debug(
+            "{}: {} installed in dst version already".format(ctx.current_node, package)
+        )
+        return
+
     if ctx.args.src_version not in version:
         logging.warning(
             "{}: unexpected installed {} deb version ({}), skipping".format(
@@ -293,7 +301,9 @@ def stage_prechecks():
     check_current_node_versions(ctx.args.src_version)
 
     node_fqdn = ctx.current_node_fqdn
-    check_package_versions(node_fqdn, "kubeadm")
+    # if kubeadm is already installed in the dst version, that's OK.
+    # ginve this is the first step in the upgrade stage anyway
+    check_package_versions(node_fqdn, "kubeadm", already_dst_ok=True)
     if ctx.skip is True:
         return
     check_package_versions(node_fqdn, "kubectl")
@@ -309,7 +319,7 @@ def stage_drain():
 
     logging.info("stage: drain for node {}".format(ctx.current_node))
 
-    args = "--force --ignore--daemonsets --delete-local-data"
+    args = "--force --ignore-daemonsets --delete-local-data"
     cmd = "sudo -i kubectl drain {} {}".format(args, ctx.current_node)
     ssh(ctx.control_fqdn, cmd)
 
@@ -323,7 +333,7 @@ def stage_upgrade():
 
     pkgs = "kubeadm"
     noprompt = (
-        '-o "Dpkg::Options::=--force-confdef" -o "Dpkg::Options::=--force-confold'
+        '-o "Dpkg::Options::=--force-confdef" -o "Dpkg::Options::=--force-confold"'
     )
     cmd = "sudo DEBIAN_FRONTEND=noninteractive apt-get install {} {} -y".format(
         pkgs, noprompt
@@ -340,7 +350,7 @@ def stage_upgrade():
     # TODO: verify candidate versions for docker and containerd.io
     pkgs = "kubectl kubelet docker containerd.io"
     noprompt = (
-        '-o "Dpkg::Options::=--force-confdef" -o "Dpkg::Options::=--force-confold'
+        '-o "Dpkg::Options::=--force-confdef" -o "Dpkg::Options::=--force-confold"'
     )
     cmd = "sudo DEBIAN_FRONTEND=noninteractive apt-get install {} {} -y".format(
         pkgs, noprompt
