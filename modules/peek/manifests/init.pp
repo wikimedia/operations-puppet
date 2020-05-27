@@ -28,8 +28,7 @@ class peek (
         mode   => '0640',
     }
 
-    $templates_dir = '/etc/peek/templates'
-    file { $templates_dir:
+    file { '/etc/peek/templates':
         ensure  => 'directory',
         owner   => 'peek',
         group   => 'peek',
@@ -37,28 +36,28 @@ class peek (
         require => File['/etc/peek'],
     }
 
-    file {"${templates_dir}/base.conf":
+    file {'/etc/peek/templates/base.conf':
         owner   => 'peek',
         group   => 'peek',
         mode    => '0444',
         content => template('peek/base.conf.erb'),
-        require => $templates_dir,
+        require => File['/etc/peek/templates'],
     }
 
-    file {"${templates_dir}/weekly.conf":
+    file {'/etc/peek/templates/weekly.conf':
         owner   => 'peek',
         group   => 'peek',
         mode    => '0444',
         content => template('peek/weekly.conf.erb'),
-        require => $templates_dir,
+        require => File['/etc/peek/templates'],
     }
 
-    file {"${templates_dir}/monthly.conf":
+    file {'/etc/peek/templates/monthly.conf':
         owner   => 'peek',
         group   => 'peek',
         mode    => '0444',
         content => template('peek/monthly.conf.erb'),
-        require => $templates_dir,
+        require => File['/etc/peek/templates'],
     }
 
     git::clone { 'peek':
