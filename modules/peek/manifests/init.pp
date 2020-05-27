@@ -60,8 +60,8 @@ class peek (
         require => File['/etc/peek/templates'],
     }
 
-    git::clone { 'peek':
-        directory => '/var/lib/peek/',
+    git::clone { 'wikimedia/security/tooling/peek':
+        directory => '/var/lib/peek/git',
         branch    => 'master',
         owner     => 'peek',
         group     => 'peek',
