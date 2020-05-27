@@ -1591,28 +1591,28 @@ class profile::prometheus::ops (
 
     $thanos_jobs = [
       {
-        'job_name'        => 'thanos_query',
+        'job_name'        => 'thanos-query',
         'scheme'          => 'http',
         'file_sd_configs' => [
           { 'files' => [ "${targets_path}/thanos_query_*.yaml" ]}
         ],
       },
       {
-        'job_name'        => 'thanos_sidecar',
+        'job_name'        => 'thanos-sidecar',
         'scheme'          => 'http',
         'file_sd_configs' => [
           { 'files' => [ "${targets_path}/thanos_sidecar_*.yaml" ]}
         ],
       },
       {
-        'job_name'        => 'thanos_store',
+        'job_name'        => 'thanos-store',
         'scheme'          => 'http',
         'file_sd_configs' => [
           { 'files' => [ "${targets_path}/thanos_store_*.yaml" ]}
         ],
       },
       {
-        'job_name'        => 'thanos_compact',
+        'job_name'        => 'thanos-compact',
         'scheme'          => 'http',
         'file_sd_configs' => [
           { 'files' => [ "${targets_path}/thanos_compact_*.yaml" ]}
