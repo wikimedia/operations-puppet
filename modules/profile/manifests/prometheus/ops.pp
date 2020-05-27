@@ -342,6 +342,13 @@ class profile::prometheus::ops (
         'job_name'        => 'purged',
         'file_sd_configs' => [
           { 'files' => [ "${targets_path}/purged_*.yaml"] },
+        ],
+        # rdkafka produces lots of metrics, keep only those we are interested in for purged
+        'metric_relabel_configs' => [
+          { 'source_labels' => ['__name__'],
+            'regex'         => '^(purged_|go_|process_|rdkafka_consumer_(topics_partitions_msgs|msg_cnt|replyq|msg_size|brokers_txbytes|brokers_req_timeouts|brokers_txerrs|brokers_txretries|brokers_rxbytes|brokers_rxerrs|brokers_rtt_min|brokers_rtt_avg|brokers_rtt_max)).*$',
+            'action'        => 'keep'
+          },
         ]
       },
     ]
