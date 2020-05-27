@@ -70,6 +70,13 @@ GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, ALTER,
       CREATE TEMPORARY TABLES
 ON `designate`.* TO 'designate'@'208.80.154.135';
 
+CREATE USER 'designate'@'2620:0:861:2:208:80:154:135'
+IDENTIFIED BY '<%= @designate_pass %>';
+
+GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, ALTER,
+      CREATE TEMPORARY TABLES
+ON `designate`.* TO 'designate'@'2620:0:861:2:208:80:154:135';
+
 -- designate, cloudservices1004
 
 CREATE USER 'designate'@'208.80.154.11'
@@ -78,6 +85,13 @@ IDENTIFIED BY '<%= @designate_pass %>';
 GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, ALTER,
       CREATE TEMPORARY TABLES
 ON `designate`.* TO 'designate'@'208.80.154.11';
+
+CREATE USER 'designate'@'2620:0:861:1:208:80:154:11'
+IDENTIFIED BY '<%= @designate_pass %>';
+
+GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, ALTER,
+      CREATE TEMPORARY TABLES
+ON `designate`.* TO 'designate'@'2620:0:861:1:208:80:154:11';
 
 -- parsoid testing database from scandium
 CREATE USER 'testreduce'@'10.64.48.94'
