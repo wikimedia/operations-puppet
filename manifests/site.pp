@@ -2126,6 +2126,11 @@ node /^rpki[12]001\.(eqiad|codfw)\.wmnet$/ {
     role(rpkivalidator)
 }
 
+# T252210
+node 'peek2001.codfw.wmnet' {
+    role(insetup)
+}
+
 # people.wikimedia.org, for all shell users
 # buster VM. replaced people1001 (T247649)
 node 'people1002.eqiad.wmnet' {
