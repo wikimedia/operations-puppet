@@ -1,4 +1,5 @@
 profile::maps::hosts:
+  - 'maps2002.codfw.wmnet'
   - 'maps2003.codfw.wmnet'
   - 'maps2004.codfw.wmnet'
 profile::redis::master::clients:
