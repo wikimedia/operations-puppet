@@ -1,8 +1,12 @@
 -- This file is managed by Puppet [see dnsdist/dnsdist.conf.erb].
 
--- dnsdist by default restricts queries from private IPs and other local addresses.
+-- dnsdist by default restricts queries from private IPs and other local addresses
 addACL('0.0.0.0/0')
 addACL('::/0')
+
+-- limit the number of queries per second from an IP (default: /32 for IPv4, /64 for IPv6)
+-- note that we don't use DelayAction() as that is UDP-only
+addAction(MaxQPSIPRule(<%= @maxqps %>), DropAction())
 
 -- enable DoH
 addDOHLocal('0.0.0.0:443', '<%= @cert_chain %>', '<%= @cert_privkey %>')

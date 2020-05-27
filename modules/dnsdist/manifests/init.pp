@@ -12,11 +12,15 @@
 #
 #  [*cert_privkey*]
 #    [path] path to the certificate private key. used for dns-over-https/dns-over-tls. required.
+#
+#  [*maxqps*]
+#    [int] number of queries allowed per second from an IP. default: 10.
 
 class dnsdist (
     Hash[String, Dnsdist::Resolver] $resolvers,
     Stdlib::Unixpath                $cert_chain,
     Stdlib::Unixpath                $cert_privkey,
+    Integer[1]                      $maxqps       = 10,
 ) {
 
     apt::package_from_component { 'dnsdist':
