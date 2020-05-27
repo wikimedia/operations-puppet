@@ -9,11 +9,12 @@ describe 'query_service::blazegraph', :type => :define do
 
    let(:title) { 'wdqs-blazegraph' }
    let(:params) { {
+        :journal => 'wikidata',
         :package_dir => '/srv/deployment/wdqs/wdqs',
         :data_dir => '/srv/wdqs',
         :log_dir => '/var/log/wdqs',
         :port => 9999,
-        :config_file_name => 'RWStore.properties',
+        :config_file_name => 'RWStore.wikidata.properties',
         :heap_size => '1g',
         :username => 'blazegraph',
         :deploy_name => 'wdqs',
@@ -21,6 +22,7 @@ describe 'query_service::blazegraph', :type => :define do
         :logstash_logback_port => 11_514,
         :options => [],
         :extra_jvm_opts => [],
+        :use_geospatial => false,
         }
    }
 
@@ -32,9 +34,9 @@ describe 'query_service::blazegraph', :type => :define do
     } }
 
     it { is_expected.to contain_file('/lib/systemd/system/wdqs-blazegraph.service')
-      .with_content(%r{runBlazegraph.sh -f /etc/wdqs/RWStore.properties})
+      .with_content(%r{runBlazegraph.sh -f /etc/wdqs/RWStore.wikidata.properties})
     }
-    it { is_expected.to contain_file('/etc/wdqs/RWStore.properties')
+    it { is_expected.to contain_file('/etc/wdqs/RWStore.wikidata.properties')
       .with_content(%r{AbstractJournal.file=/srv/wdqs/wikidata.jnl})
     }
   end
@@ -49,11 +51,12 @@ describe 'query_service::blazegraph', :type => :define do
 
    let(:title) { 'wdqs-blazegraph' }
    let(:params) { {
+        :journal => 'wikidata',
         :package_dir => '/srv/deployment/wdqs/wdqs',
         :data_dir => '/srv/wdqs',
         :log_dir => '/var/log/wdqs',
         :port => 9999,
-        :config_file_name => 'RWStore.properties',
+        :config_file_name => 'RWStore.wikidata.properties',
         :heap_size => '1g',
         :username => 'blazegraph',
         :deploy_name => 'wdqs',
@@ -61,6 +64,7 @@ describe 'query_service::blazegraph', :type => :define do
         :logstash_logback_port => 11_514,
         :options => [],
         :extra_jvm_opts => [],
+        :use_geospatial => false,
         }
    }
 
@@ -72,7 +76,7 @@ describe 'query_service::blazegraph', :type => :define do
     } }
 
     it { is_expected.to contain_file('/lib/systemd/system/wdqs-blazegraph.service')
-      .with_content(/runBlazegraph.sh -f RWStore.properties/)
+      .with_content(/runBlazegraph.sh -f RWStore.wikidata.properties/)
     }
   end
 end
@@ -86,6 +90,7 @@ describe 'query_service::blazegraph', :type => :define do
 
    let(:title) { 'wdqs-categories' }
    let(:params) { {
+        :journal => 'categories',
         :package_dir => '/srv/deployment/wdqs/wdqs',
         :data_dir => '/srv/wdqs',
         :log_dir => '/var/log/wdqs',
@@ -98,6 +103,7 @@ describe 'query_service::blazegraph', :type => :define do
         :logstash_logback_port => 11_514,
         :options => [],
         :extra_jvm_opts => [],
+        :use_geospatial => true,
         }
    }
 

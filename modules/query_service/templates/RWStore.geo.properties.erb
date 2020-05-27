@@ -1,0 +1,12 @@
+# Geospatial ON
+com.bigdata.rdf.store.AbstractTripleStore.geoSpatial=true
+com.bigdata.rdf.store.AbstractTripleStore.geoSpatialDefaultDatatype=http\://www.opengis.net/ont/geosparql#wktLiteral
+com.bigdata.rdf.store.AbstractTripleStore.geoSpatialIncludeBuiltinDatatypes=false
+com.bigdata.rdf.store.AbstractTripleStore.geoSpatialDatatypeConfig.0={"config": \
+{"uri":"http://www.opengis.net/ont/geosparql#wktLiteral",\
+ "literalSerializer":"org.wikidata.query.rdf.blazegraph.inline.literal.WKTSerializer",\
+ "fields":[\
+   {"valueType":"DOUBLE","multiplier":"1000000000","serviceMapping":"LONGITUDE"},\
+   {"valueType":"DOUBLE","multiplier":"1000000000","serviceMapping":"LATITUDE"},\
+   {"valueType":"LONG","multiplier":"1","minValue":"0","serviceMapping":"COORD_SYSTEM"}\
+  ]}}

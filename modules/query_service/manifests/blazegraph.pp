@@ -17,6 +17,7 @@
 # - $options: options for Blazegraph startup script
 # - $extra_jvm_opts: Extra JVM configs for blazegraph
 # - $logstash_transport: send logs directly or via rsyslog
+# - $journal: Name to assign instance journal. Must be unique per data_dir.
 define query_service::blazegraph(
     Stdlib::Port $port,
     String $config_file_name,
@@ -30,14 +31,23 @@ define query_service::blazegraph(
     Boolean $use_deployed_config,
     Array[String] $options,
     Array[String] $extra_jvm_opts,
+    Boolean $use_geospatial,
+    String $journal,
 ) {
     if ($use_deployed_config) {
         $config_file = $config_file_name
     } else {
+        $common_config = template('query_service/RWStore.common.properties.erb')
+        $specific_config = template("query_service/${config_file_name}.erb")
+        if ($use_geospatial) {
+            $geo_config = template('query_service/RWStore.geo.properties.erb')
+        } else {
+            $geo_config = 'com.bigdata.rdf.store.AbstractTripleStore.geoSpatial=false'
+        }
         $config_file = "/etc/${deploy_name}/${config_file_name}"
         file { $config_file:
             ensure  => file,
-            content => template("query_service/${config_file_name}.erb"),
+            content => "${common_config}\n${specific_config}\n${geo_config}",
             owner   => 'root',
             group   => 'root',
             mode    => '0644',

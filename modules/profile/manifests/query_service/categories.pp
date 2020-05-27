@@ -40,6 +40,7 @@ class profile::query_service::categories(
     }
 
     query_service::blazegraph { $instance_name:
+        journal               => 'categories',
         package_dir           => $package_dir,
         data_dir              => $data_dir,
         logstash_logback_port => $logstash_logback_port,
@@ -51,7 +52,8 @@ class profile::query_service::categories(
         port                  => 9990,
         config_file_name      => 'RWStore.categories.properties',
         heap_size             => '8g',
-        extra_jvm_opts        => $default_extra_jvm_opts + $extra_jvm_opts +  "-javaagent:${prometheus_agent_path}=${prometheus_agent_port_categories}:${prometheus_agent_config_categories}"
+        extra_jvm_opts        => $default_extra_jvm_opts + $extra_jvm_opts +  "-javaagent:${prometheus_agent_path}=${prometheus_agent_port_categories}:${prometheus_agent_config_categories}",
+        use_geospatial        => false,
     }
 
     class { 'query_service::monitor::categories':   }

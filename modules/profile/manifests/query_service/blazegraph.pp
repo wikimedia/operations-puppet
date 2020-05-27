@@ -59,6 +59,7 @@ class profile::query_service::blazegraph(
     }
 
     query_service::blazegraph { $instance_name:
+        journal               => 'wikidata',
         package_dir           => $package_dir,
         data_dir              => $data_dir,
         logstash_logback_port => $logstash_logback_port,
@@ -68,9 +69,10 @@ class profile::query_service::blazegraph(
         options               => $options,
         use_deployed_config   => $use_deployed_config,
         port                  => 9999,
-        config_file_name      => 'RWStore.properties',
+        config_file_name      => 'RWStore.wikidata.properties',
         heap_size             => $heap_size,
-        extra_jvm_opts        => $default_extra_jvm_opts + $event_service_jvm_opts + $extra_jvm_opts + "-javaagent:${prometheus_agent_path}=${prometheus_agent_port_blazegraph}:${prometheus_agent_config_blazegraph}"
+        extra_jvm_opts        => $default_extra_jvm_opts + $event_service_jvm_opts + $extra_jvm_opts + "-javaagent:${prometheus_agent_path}=${prometheus_agent_port_blazegraph}:${prometheus_agent_config_blazegraph}",
+        use_geospatial        => true,
     }
 
     if $monitoring_enabled {

@@ -1,0 +1,17 @@
+# Disable raw records - see https://phabricator.wikimedia.org/T213375
+com.bigdata.rdf.store.AbstractTripleStore.enableRawRecordsSupport=false
+
+# Use our private vocabularies
+com.bigdata.rdf.store.AbstractTripleStore.vocabularyClass=org.wikidata.query.rdf.blazegraph.WikibaseVocabulary$V004
+# Enable values inlining - see https://phabricator.wikimedia.org/T213375
+com.bigdata.rdf.store.AbstractTripleStore.inlineURIFactory=org.wikidata.query.rdf.blazegraph.WikibaseInlineUriFactory$V001
+
+# Bump up the branching factor for the lexicon indices on the default kb.
+com.bigdata.namespace.wdq.lex.com.bigdata.btree.BTree.branchingFactor=400
+com.bigdata.namespace.wdq.lex.ID2TERM.com.bigdata.btree.BTree.branchingFactor=600
+com.bigdata.namespace.wdq.lex.TERM2ID.com.bigdata.btree.BTree.branchingFactor=330
+
+# Bump up the branching factor for the statement indices on the default kb.
+com.bigdata.namespace.wdq.spo.com.bigdata.btree.BTree.branchingFactor=1024
+com.bigdata.namespace.wdq.spo.OSP.com.bigdata.btree.BTree.branchingFactor=900
+com.bigdata.namespace.wdq.spo.SPO.com.bigdata.btree.BTree.branchingFactor=900
