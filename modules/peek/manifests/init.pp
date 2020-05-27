@@ -2,10 +2,20 @@ class peek (
     $to_email,
     $asana_token,
     $phab_token,
+    $template_dir='/var/lib/peek/git/templates/',
     )
 {
-
     include ::peek::cron
+
+    package { [
+        'python3-jinja2',
+        'python3-phabricator',
+        'python3-requests-oauthlib',
+        'python3-unittest2',
+        'python3-testtools',
+    ]:
+        ensure => present,
+    }
 
     group {'peek':
         ensure => 'present',
@@ -28,7 +38,7 @@ class peek (
         mode   => '0640',
     }
 
-    file { '/etc/peek/templates':
+    file { '/etc/peek/config':
         ensure  => 'directory',
         owner   => 'peek',
         group   => 'peek',
@@ -36,23 +46,23 @@ class peek (
         require => File['/etc/peek'],
     }
 
-    file {'/etc/peek/templates/base.conf':
+    file {'/etc/peek/config/base.conf':
         owner   => 'peek',
         group   => 'peek',
         mode    => '0444',
         content => template('peek/base.conf.erb'),
-        require => File['/etc/peek/templates'],
+        require => File['/etc/peek/config'],
     }
 
-    file {'/etc/peek/templates/weekly.conf':
+    file {'/etc/peek/config/weekly.conf':
         owner   => 'peek',
         group   => 'peek',
         mode    => '0444',
         content => template('peek/weekly.conf.erb'),
-        require => File['/etc/peek/templates'],
+        require => File['/etc/peek/config'],
     }
 
-    file {'/etc/peek/templates/monthly.conf':
+    file {'/etc/peek/config/monthly.conf':
         owner   => 'peek',
         group   => 'peek',
         mode    => '0444',
@@ -65,5 +75,9 @@ class peek (
         branch    => 'master',
         owner     => 'peek',
         group     => 'peek',
+    }
+
+    file {'/var/lib/peek/git/peek.py':
+        mode => '0755',
     }
 }
