@@ -57,10 +57,10 @@ describe 'profile::mediawiki::webserver' do
       context "without hhvm" do
         it { is_expected.to compile.with_all_deps }
       end
-      context "with envoy tls" do
+      context "with tls" do
         let(:params) {
           super().merge(
-            {:has_tls => 'envoy'})
+            {:has_tls => true})
         }
         # stub out the required class. We test it elsewhere
         let(:pre_condition) {
@@ -71,31 +71,6 @@ describe 'profile::mediawiki::webserver' do
         }
         it { is_expected.to compile.with_all_deps }
         it { is_expected.to contain_class('profile::tlsproxy::envoy') }
-      end
-      context "with tls" do
-        let(:params) {
-          super().merge({:has_tls => true})
-        }
-        let(:node) {
-          'test1001.testsite'
-        }
-        # Overload hiera lookups
-        let(:node_params) { super().merge({test_name: 'mediawiki_webserver_tls' })}
-        let(:facts) {
-          super().merge(
-            {
-              :numa =>
-              {
-                :device_to_htset => {:lo => []},
-                :device_to_node  => {:lo => ["a", "test"]}
-              }
-            }
-          )
-        }
-        it { is_expected.to compile.with_all_deps }
-        it { is_expected.to contain_tlsproxy__localssl('unified')
-                              .with_certs(['test1001.testsite'])
-        }
         context "with lvs" do
           let(:pre_condition) {
             super().push('class passwords::etcd($accounts = {}){}')
@@ -107,13 +82,12 @@ describe 'profile::mediawiki::webserver' do
           let(:node_params) {
             super().merge({:site => 'eqiad'})
           }
+          let(:params) {
+            super().merge({:has_lvs => true})
+          }
           it { is_expected.to compile.with_all_deps }
           it { is_expected.to contain_class('lvs::realserver')
                                 .with_realserver_ips(['1.2.3.4'])
-          }
-          # no icinga config present => default to fqdn
-          it { is_expected.to contain_tlsproxy__localssl('unified')
-                                .with_certs(['mw1261.eqiad.wmnet'])
           }
           context "with multiple pools" do
             let(:node_params) {
@@ -122,13 +96,6 @@ describe 'profile::mediawiki::webserver' do
             it { is_expected.to compile.with_all_deps }
             it { is_expected.to contain_class('lvs::realserver')
                                   .with_realserver_ips(['1.2.3.4', '1.2.3.5'])
-            }
-            it { is_expected.to contain_tlsproxy__localssl('unified')
-                                  .with_certs(
-                                    [
-                                      'appservers.svc.eqiad.wmnet',
-                                      'api.svc.eqiad.wmnet'
-                                    ])
             }
           end
         end

@@ -18,7 +18,7 @@ profile::lvs::realserver::pools:
 profile::parsoid::use_php: true
 profile::mediawiki::php::php_version: "7.2"
 has_lvs: true
-profile::mediawiki::webserver::has_tls: "envoy"
+profile::mediawiki::webserver::has_tls: true
 profile::envoy::ensure: present
 profile::tlsproxy::envoy::sni_support: "no" # you need the double quotes, because yaml.
 profile::tlsproxy::envoy::tls_port: 443

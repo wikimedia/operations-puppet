@@ -1,7 +1,6 @@
 class profile::mediawiki::webserver(
     Boolean $has_lvs = hiera('has_lvs'),
-    # Accepted values are true, false and 'envoy'. TODO: revert to boolean
-    $has_tls = lookup('profile::mediawiki::webserver::has_tls'),
+    Boolean $has_tls = lookup('profile::mediawiki::webserver::has_tls'),
     Boolean $stream_to_logstash = lookup('profile::mediawiki::webserver::stream_to_logstash', {'default_value' => false}),
     Optional[Wmflib::UserIpPort] $fcgi_port = hiera('profile::php_fpm::fcgi_port', undef),
     String $fcgi_pool = hiera('profile::mediawiki::fcgi_pool', 'www'),
@@ -82,8 +81,6 @@ class profile::mediawiki::webserver(
     }
 
     if $has_tls == true {
-        include profile::mediawiki::webserver::tls_nginx
-    } elsif $has_tls == 'envoy' {  # Temporary during the switchover.
         # Override niceness to run at -19 like php-fpm
         file { '/etc/systemd/system/envoyproxy.service.d/niceness-override.conf':
             content => "[Service]\nNice=-19\n",

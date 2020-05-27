@@ -9,7 +9,7 @@ profile::mediawiki::mcrouter_wancache::num_proxies: 5
 # Use the gutter pool for failover
 profile::mediawiki::mcrouter_wancache::gutter_ttl: 600
 has_lvs: true
-profile::mediawiki::webserver::has_tls: "envoy"
+profile::mediawiki::webserver::has_tls: true
 profile::envoy::ensure: present
 profile::tlsproxy::envoy::sni_support: "no" # you need the double quotes, because yaml.
 profile::tlsproxy::envoy::tls_port: 443
