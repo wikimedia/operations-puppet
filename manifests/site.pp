@@ -2128,7 +2128,7 @@ node /^rpki[12]001\.(eqiad|codfw)\.wmnet$/ {
 
 # T252210
 node 'peek2001.codfw.wmnet' {
-    role(insetup)
+    role(peek)
 }
 
 # people.wikimedia.org, for all shell users
