@@ -131,7 +131,7 @@ def parse_args():
 
 
 def ssh(host, cmd, capture_output=False):
-    ssh_cmd = 'ssh {} "{}"'.format(host, cmd)
+    ssh_cmd = 'ssh -oStrictHostKeyChecking=no {} "{}"'.format(host, cmd)
     if ctx.args.dry_run:
         logging.info("DRY: {}".format(ssh_cmd))
         return
@@ -292,7 +292,7 @@ def stage_prechecks():
     if ctx.skip is True:
         return
 
-    logging.info("stage: precheks for node {}".format(ctx.current_node))
+    logging.info("stage: prechecks for node {}".format(ctx.current_node))
 
     check_current_node_ready()
     if ctx.skip is True:
