@@ -21,7 +21,7 @@ class profile::druid::common(
     $use_cdh                        = hiera('profile::druid::common::use_cdh', false),
 ) {
     # Need Java before Druid is installed.
-    require ::profile::java
+    require ::profile::java::analytics
 
     # Only need a Hadoop client if we are using CDH.
     if $use_cdh_hadoop_config or $use_cdh {

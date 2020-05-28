@@ -10,7 +10,7 @@ class profile::analytics::database::meta(
     $ferm_srange        = hiera('profile::analytics::database::meta::ferm_srange', '$DOMAIN_NETWORKS'),
 ) {
     # Some CDH database init scripts need Java to run.
-    require profile::java
+    require ::profile::java::analytics
 
     class { '::mariadb::packages_wmf': }
 
