@@ -53,7 +53,7 @@ define thanos::sidecar (
     file { $objstore_config_file:
         ensure    => $objstore_config_state,
         mode      => '0440',
-        owner     => 'thanos',
+        owner     => 'prometheus', # sidecar runs as 'prometheus' to be able to read local TSDB
         group     => 'root',
         show_diff => false,
         content   => $objstore_content,
