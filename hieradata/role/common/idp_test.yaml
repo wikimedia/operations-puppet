@@ -103,3 +103,4 @@ profile::idp::actuators:
   - ssoSessions
 profile::idp::idp_primary: idp-test1001.wikimedia.org
 profile::idp::idp_failover: idp-test2001.wikimedia.org
+profile::idp::is_staging_host: true

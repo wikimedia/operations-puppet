@@ -154,7 +154,7 @@ class apereo_cas (
         source  => $keystore_source,
     }
 
-    require_package('cas')
+    ensure_packages(['cas'])
 
     File["${config_dir}/log4j2.xml", $keystore_path, "${config_dir}/cas.properties"] {
         notify => Service['tomcat9'],

@@ -14,6 +14,7 @@ class profile::idp(
     Array[String[1]]       $ldap_attribute_list    = lookup('profile::idp::ldap_attributes'),
     Array[String]          $actuators              = lookup('profile::idp::actuators'),
     Stdlib::Fqdn           $idp_primary            = lookup('profile::idp::idp_primary'),
+    Boolean                $is_staging_host        = lookup('profile::idp::is_staging_host'),
     Optional[Stdlib::Fqdn] $idp_failover           = lookup('profile::idp::idp_failover',
                                                             {'default_value' => undef}),
     Optional[String]       $totp_signing_key       = lookup('profile::idp::totp_signing_key',
@@ -49,6 +50,14 @@ class profile::idp(
 
     $cas_daemon_user = 'tomcat'
     $cas_manage_user = false
+
+    if $is_staging_host {
+        apt::repository{ 'component-idp-test':
+            uri        => 'http://apt.wikimedia.org/wikimedia',
+            dist       => "${::lsbdistcodename}-wikimedia",
+            components => 'component/idp-test',
+        }
+    }
 
     class { 'apereo_cas':
         server_name            => 'https://idp.wikimedia.org',

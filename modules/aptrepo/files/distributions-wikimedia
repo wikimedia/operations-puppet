@@ -127,6 +127,7 @@ Components: main
  component/cergen
  component/ci
  component/dnsdist
+ component/idp-test
  component/jdk8
  component/mtail
  component/spicerack

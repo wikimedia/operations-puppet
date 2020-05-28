@@ -103,3 +103,4 @@ profile::idp::deploy_deb: true
 profile::idp::actuators:
   - prometheus
   - sso
+profile::idp::is_staging_host: false
