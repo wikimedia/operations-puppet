@@ -2,19 +2,13 @@
 # needed for WMF production
 #
 # filtertags: labs-project-monitoring
-class role::prometheus::analytics {
-    system::role { 'prometheus::analytics':
-        description => 'Prometheus server (analytics)',
-    }
-
-    include ::profile::standard
-    include ::profile::base::firewall
-
+class profile::prometheus::analytics (
+    String $replica_label = lookup('prometheus::replica_label', { 'default_value' => 'unset' }),
+){
     $targets_path = '/srv/prometheus/analytics/targets'
     $storage_retention = hiera('prometheus::server::storage_retention', '4032h')
     $max_chunks_to_persist = hiera('prometheus::server::max_chunks_to_persist', '524288')
     $memory_chunks = hiera('prometheus::server::memory_chunks', '1048576')
-    $replica_label = lookup('prometheus::replica_label', { 'default_value' => 'unset' }) # lint:ignore:wmf_styleguide
 
     $config_extra = {
         # All metrics will get an additional 'site' label when queried by
@@ -251,6 +245,6 @@ class role::prometheus::analytics {
 
     prometheus::rule { 'rules_analytics.yml':
         instance => 'analytics',
-        source   => 'puppet:///modules/role/prometheus/rules_analytics.yml',
+        source   => 'puppet:///modules/profile/prometheus/rules_analytics.yml',
     }
 }
