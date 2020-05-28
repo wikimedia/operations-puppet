@@ -527,7 +527,7 @@ node /^db2(084|085|086|087|088|089|091|137|138)\.codfw\.wmnet/ {
 }
 
 # codfw replicas to be installed T251639
-node /^db21(39|40)\.codfw\.wmnet/ {
+node 'db2140.codfw.wmnet' {
     role(spare::system)
 }
 
@@ -698,6 +698,9 @@ node 'db2100.codfw.wmnet' {
     role(mariadb::dbstore_multiinstance)
 }
 node 'db2101.codfw.wmnet' {
+    role(mariadb::dbstore_multiinstance)
+}
+node 'db2139.codfw.wmnet' {
     role(mariadb::dbstore_multiinstance)
 }
 
