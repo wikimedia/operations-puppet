@@ -23,7 +23,6 @@
     options:
       api_endpoint: http://<%= designate_ip %>:8081
       api_token: <%= @pdns_api_key %>
-      connection: mysql://<%= @pdns_db_user %>:<%= @pdns_db_pass %>@<%= designate_ip %>/<%= @pdns_db_name %>
       host: <%= designate_ip %>
       port: '53'
     type: pdns4
