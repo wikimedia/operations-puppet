@@ -30,6 +30,11 @@ function check_weight {
     fi
 }
 
+if [ -x /usr/bin/confctl ]; then
+    echo "/usr/bin/confctl not found"
+    exit 1
+fi
+
 # Get message to print on screen.
 case $action in
     "pool")
