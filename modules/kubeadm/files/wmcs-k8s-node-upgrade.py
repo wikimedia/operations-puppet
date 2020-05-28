@@ -342,7 +342,7 @@ def stage_upgrade():
     if ctx.skip is True:
         return
 
-    cmd = "sudo kubeadm upgrade node"
+    cmd = "sudo kubeadm upgrade node --certificate-renewal=true"
     ssh(ctx.current_node_fqdn, cmd)
     if ctx.skip is True:
         return
