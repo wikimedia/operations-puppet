@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 import json
 import os
 import sys
@@ -65,7 +65,7 @@ for project in projects:
                                    connect_retries=5, region_name=region)
 
         for server in client.servers.list():
-            for network_name, addresses in server.addresses.items():
+            for network_name, addresses in list(server.addresses.items()):
                 try:
                     private = [
                         str(ip['addr']) for ip in addresses
