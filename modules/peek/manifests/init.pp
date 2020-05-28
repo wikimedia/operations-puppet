@@ -67,7 +67,7 @@ class peek (
         group   => 'peek',
         mode    => '0444',
         content => template('peek/monthly.conf.erb'),
-        require => File['/etc/peek/templates'],
+        require => File['/etc/peek/config'],
     }
 
     git::clone { 'wikimedia/security/tooling/peek':
