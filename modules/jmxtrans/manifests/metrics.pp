@@ -26,8 +26,6 @@
 # $jmx_alias            - Server alias name.              Optional.
 # $jmx_username         - JMX username (if there is one)  Optional.
 # $jmx_password         - JMX password (if there is one)  Optional.
-# $ganglia              - host:port of Ganglia gmond.     Optional.
-# $ganglia_group_name   - Ganglia metrics group.          Optional.
 # $graphite             - host:port of Graphite server    Optional.
 # $graphite_root_prefix - rootPrefix for Graphite.        Optional.
 # $statsd               - host:port of statsd server      Optional.
@@ -41,8 +39,6 @@ define jmxtrans::metrics(
     $jmx_alias            = undef,
     $jmx_username         = undef,
     $jmx_password         = undef,
-    $ganglia              = undef,
-    $ganglia_group_name   = undef,
     $graphite             = undef,
     $graphite_root_prefix = undef,
     $statsd               = undef,

@@ -6,15 +6,13 @@
 #
 # == Parameters
 # $jmx            - host:port of JMX to query.  Default: $title
-# $ganglia        - $ganglia parameter to pass to jmxtrans::metrics
 # $graphite       - $graphite parameter to pass to jmxtrans::metrics
 # $statsd         - host:port of statsd server      Optional.
 # $outfile        - $outfile parameter to pass to jmxtrans::metrics
-# $group_prefix   - Prefix string to prepend to ganglia_group_name and graphite_root_prefix.  Default: ''
+# $group_prefix   - Prefix string to prepend to graphite_root_prefix.  Default: ''
 #
 define jmxtrans::metrics::jvm(
     $jmx          = $title,
-    $ganglia      = undef,
     $graphite     = undef,
     $statsd       = undef,
     $outfile      = undef,
@@ -27,8 +25,6 @@ define jmxtrans::metrics::jvm(
         ensure               => $ensure,
         jmx                  => $jmx,
         outfile              => $outfile,
-        ganglia              => $ganglia,
-        ganglia_group_name   => "${group_prefix}jvm_memory",
         graphite             => $graphite,
         graphite_root_prefix => "${group_prefix}jvm_memory",
         statsd               => $statsd,

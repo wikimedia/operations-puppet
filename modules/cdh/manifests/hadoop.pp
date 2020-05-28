@@ -238,10 +238,6 @@
 #     This is required if you want to use Impala.
 #     Default: undef (false)
 #
-#   [*ganglia_hosts*]
-#     Set this to an array of ganglia host:ports if you want to enable ganglia
-#     sinks in hadoop-metrics2.properites.
-#
 #   [*net_topology_script_content*]
 #     Rendered content of script that will be invoked to resolve node
 #     names to row or rack assignments.
@@ -386,7 +382,6 @@ class cdh::hadoop(
     $yarn_nodemanager_opts                       = undef,
     $yarn_heapsize                               = undef,
     $dfs_datanode_hdfs_blocks_metadata_enabled   = undef,
-    $ganglia_hosts                               = undef,
     $net_topology_script_content                 = undef,
     $fair_scheduler_template                     = 'cdh/hadoop/fair-scheduler.xml.erb',
     $core_site_extra_properties                  = undef,
@@ -597,16 +592,5 @@ class cdh::hadoop(
             mode    => '0550',
             content => template('cdh/hadoop/container-executor.cfg.erb'),
         }
-    }
-
-    # Render hadoop-metrics2.properties
-    # if we have Ganglia Hosts to send metrics to.
-    $hadoop_metrics2_ensure = $ganglia_hosts ? {
-        undef   => 'absent',
-        default => 'present',
-    }
-    file { "${config_directory}/hadoop-metrics2.properties":
-        ensure  => $hadoop_metrics2_ensure,
-        content => template('cdh/hadoop/hadoop-metrics2.properties.erb'),
     }
 }

@@ -6,7 +6,6 @@
 #
 # == Parameters
 # $jmx_port      - DataNode JMX port.  Default: 9981
-# $ganglia       - Ganglia host:port
 # $graphite      - Graphite host:port
 # $statsd        - statsd host:port
 # $outfile       - outfile to which Kafka stats will be written.
@@ -16,7 +15,6 @@
 #
 class cdh::hive::jmxtrans::server(
     $jmx_port       = 9978,
-    $ganglia        = undef,
     $graphite       = undef,
     $statsd         = undef,
     $outfile        = undef,
@@ -30,7 +28,6 @@ class cdh::hive::jmxtrans::server(
         jmx          => $jmx,
         group_prefix => "${group_name}.",
         outfile      => $outfile,
-        ganglia      => $ganglia,
         graphite     => $graphite,
         statsd       => $statsd,
     }
@@ -75,8 +72,6 @@ class cdh::hive::jmxtrans::server(
     jmxtrans::metrics { "hadoop-hive-server-${::hostname}-${jmx_port}":
         jmx                  => $jmx,
         outfile              => $outfile,
-        ganglia              => $ganglia,
-        ganglia_group_name   => $group_name,
         graphite             => $graphite,
         graphite_root_prefix => $group_name,
         statsd               => $statsd,
