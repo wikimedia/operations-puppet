@@ -288,7 +288,7 @@ class TaskGen < ::Rake::TaskLib
     # .ruby-version is for rbenv but is also used by rubocop to override the
     # ruby version to use when parsing files (T250538).
     global_files = ['Gemfile', '.rubocop.todo.yml', '.ruby-version']
-    ruby_files = filter_files_by("**/*.rb", "**/Rakefile", 'Rakefile', 'Gemfile', '**/.rubocop.todo.yml', '.ruby-version')
+    ruby_files = filter_files_by("**/*.rb", "**/Rakefile", 'Rakefile', 'Gemfile', '**/Vagrantfile', '**/.rubocop.todo.yml', '.ruby-version')
     return [] if ruby_files.empty?
     RuboCop::RakeTask.new(:rubocop) do |r|
         r.options = ['--force-exclusion', '--color']
