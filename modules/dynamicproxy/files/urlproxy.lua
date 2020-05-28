@@ -121,12 +121,15 @@ function try_redirect_and_exit_if_ok(toolname, path)
     return ngx.redirect(compute_redirect_url(toolname,path), 307)
 end
 
--- case 1: webservices running in the grid using $tool.toolforge.org
 if ends_with(ngx.var.http_host, ngx.var.canonical_domain) then
     -- T253816: The hostname used in the request is *.toolforge.org
     -- Either there is a grid backend, or we should pass on to k8s
+
+    -- case 1: webservices running in the grid using $tool.toolforge.org
     local subdomain = string.match(ngx.var.http_host, "^[^.]+")
     route_backend_and_exit_if_ok(subdomain, "/")
+
+    -- case 2: webservices running in k8s using $tool.toolforge.org
     ngx.exit(ngx.OK)
 end
 
@@ -134,14 +137,13 @@ end
 local captures = ngx.re.match(ngx.var.uri, "^/([^/]*)(/.*)?$")
 local prefix = captures[1]
 local rest = captures[2] or "/"
--- case 2: webservices running in the grid using tools.wmflabs.org/$tool
--- case 2: the webservice used --canonical and wants a redirect to toolforge.org
--- case 2: eventually, next request will be for case 1
-try_redirect_and_exit_if_ok(prefix, rest)
 -- case 3: webservices running in the grid using tools.wmflabs.org/$tool
--- case 3: the webservice didn't use --canonical
+-- case 3: the webservice used --canonical and wants a redirect to toolforge.org
+-- case 3: eventually, next request will be for case 1
+try_redirect_and_exit_if_ok(prefix, rest)
+-- case 4: webservices running in the grid using tools.wmflabs.org/$tool
+-- case 4: the webservice didn't use --canonical
 route_backend_and_exit_if_ok(prefix, rest)
 
--- case 4: webservices running in the k8s cluster, or
--- case 4: anything else, the tool-fourohfour webservice will handle it!
+-- case 5: anything else, the tool-fourohfour webservice will handle it!
 ngx.exit(ngx.OK)
