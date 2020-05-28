@@ -8,9 +8,13 @@ addACL('::/0')
 -- note that we don't use DelayAction() as that is UDP-only
 addAction(MaxQPSIPRule(<%= @maxqps %>), DropAction())
 
--- enable DoH
-addDOHLocal('0.0.0.0:443', '<%= @cert_chain %>', '<%= @cert_privkey %>')
-addDOHLocal('[::]:443', '<%= @cert_chain %>', '<%= @cert_privkey %>')
+-- enable DoH (default port is 443)
+addDOHLocal('0.0.0.0', '<%= @cert_chain %>', '<%= @cert_privkey %>')
+addDOHLocal('[::]', '<%= @cert_chain %>', '<%= @cert_privkey %>')
+
+-- enable DoT (default port is 853)
+addTLSLocal('0.0.0.0', '<%= @cert_chain %>', '<%= @cert_privkey %>')
+addTLSLocal('[::]', '<%= @cert_chain %>', '<%= @cert_privkey %>')
 
 <% @resolvers.each_pair do |resolver, config| -%>
 newServer({address='<%= config['host'] %>:<%= config['port'] %>', name='<%= resolver %>'})

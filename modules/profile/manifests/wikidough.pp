@@ -2,10 +2,17 @@ class profile::wikidough (
     Hash[String, Dnsdist::Resolver] $recursive_resolvers = lookup(profile::wikidough::recursive_resolvers),
 ) {
 
-    include ::network::constants
+    include network::constants
+
     ferm::service { 'wikidough-doh':
         proto  => 'tcp',
         port   => 443,
+        srange => '$PRODUCTION_NETWORKS',
+    }
+
+    ferm::service { 'wikidough-dot':
+        proto  => 'tcp',
+        port   => 853,
         srange => '$PRODUCTION_NETWORKS',
     }
 
