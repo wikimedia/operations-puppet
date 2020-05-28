@@ -3869,7 +3869,6 @@ host labtestpuppetmaster2001 {
 host cloudservices2002-dev {
     hardware ethernet 30:e1:71:70:a3:34;
     fixed-address cloudservices2002-dev.wikimedia.org;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host cloudservices2003-dev {
