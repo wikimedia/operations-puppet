@@ -352,8 +352,9 @@ def stage_upgrade():
     noprompt = (
         '-o "Dpkg::Options::=--force-confdef" -o "Dpkg::Options::=--force-confold"'
     )
-    cmd = "sudo DEBIAN_FRONTEND=noninteractive apt-get install {} {} -y".format(
-        pkgs, noprompt
+    force = "-y --allow-downgrades"
+    cmd = "sudo DEBIAN_FRONTEND=noninteractive apt-get install {} {} {}".format(
+        pkgs, noprompt, force
     )
     ssh(ctx.current_node_fqdn, cmd)
     if ctx.skip is True:
