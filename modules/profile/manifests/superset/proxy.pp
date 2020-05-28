@@ -9,6 +9,8 @@ class profile::superset::proxy (
 
     require ::profile::analytics::httpd::utils
 
+    include ::profile::prometheus::apache_exporter
+
     class { '::httpd':
         modules => ['proxy_http',
                     'proxy',
