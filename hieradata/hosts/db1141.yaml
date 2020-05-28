@@ -1,2 +1,3 @@
 # db1141
-profile::base::notifications: disabled
+# This host temporary servers analytics role on labs infra
+# See: T249188
