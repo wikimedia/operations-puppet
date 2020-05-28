@@ -1,7 +1,7 @@
 - name: default
   also_notifies: []
   attributes: {}
-  description: Pool for eqiad1/cloudservices1003/cloudservices1004
+  description: Pool for pdns backing designate
   id: 794ccc2c-d751-44fe-b57f-8894c9f5c842
   nameservers:
 <% @designate_host_ips.sort.each do |host_ip| -%>
@@ -9,10 +9,10 @@
     port: 53
 <% end -%>
   ns_records:
-  - hostname: ns0.openstack.eqiad1.wikimediacloud.org.
+<% @pdns_hosts.sort.each do |hostname| -%>
+  - hostname: <%= hostname %>.
     priority: 10
-  - hostname: ns1.openstack.eqiad1.wikimediacloud.org.
-    priority: 11
+<% end -%>
   targets:
 <% @designate_host_ips.sort.each do |designate_ip| -%>
   - masters:
