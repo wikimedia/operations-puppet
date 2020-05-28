@@ -10,6 +10,7 @@ class peek (
     package { [
         'python3-jinja2',
         'python3-phabricator',
+        'python3-asana',
         'python3-requests-oauthlib',
         'python3-unittest2',
         'python3-testtools',
@@ -29,6 +30,14 @@ class peek (
         managehome => true,
         shell      => false,
         system     => true,
+    }
+
+    file { '/var/lib/peek/.profile':
+        ensure  => 'present',
+        owner   => 'peek',
+        group   => 'peek',
+        mode    => '0655',
+        content => template('peek/profile.erb'),
     }
 
     file { '/etc/peek':
