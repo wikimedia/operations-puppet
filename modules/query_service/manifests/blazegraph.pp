@@ -6,8 +6,6 @@
 # - $config_file_name: The name of the config file for this instance
 # - $package_dir:  Directory where the service should be installed.
 # - $data_dir: Directory where the database should be stored
-# - $logstash_host: hostname where to send logs
-# - $logstash_json_port: port on which to send logs in json format
 # - $logstash_logback_port: port which rsyslog server is listening on
 # - $log_dir: Directory where the logs go
 # - $heap_size: heapsize for blazegraph
@@ -16,7 +14,7 @@
 # - $use_deployed_config: Whether we should use config in deployed repo or our own
 # - $options: options for Blazegraph startup script
 # - $extra_jvm_opts: Extra JVM configs for blazegraph
-# - $logstash_transport: send logs directly or via rsyslog
+# - $use_geospatial: Turn on blazegraph geospatial features
 # - $journal: Name to assign instance journal. Must be unique per data_dir.
 define query_service::blazegraph(
     Stdlib::Port $port,

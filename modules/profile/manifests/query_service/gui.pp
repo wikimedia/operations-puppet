@@ -1,4 +1,5 @@
 class profile::query_service::gui (
+    String $username = lookup('profile::query_service::username'),
     Stdlib::Unixpath $package_dir = hiera('profile::query_service::package_dir'),
     Stdlib::Unixpath $data_dir = hiera('profile::query_service::data_dir'),
     Stdlib::Unixpath $log_dir = hiera('profile::query_service::log_dir'),
@@ -9,8 +10,6 @@ class profile::query_service::gui (
     Boolean $high_query_time_port = hiera('profile::query_service::high_query_time_port', false),
 ) {
     require ::profile::query_service::common
-
-    $username = 'blazegraph'
 
     class { 'query_service::gui':
         deploy_mode           => $deploy_mode,

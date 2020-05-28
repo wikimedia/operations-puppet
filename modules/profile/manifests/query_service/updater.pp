@@ -1,4 +1,5 @@
 class profile::query_service::updater (
+    String $username = lookup('profile::query_service::username'),
     String $options = hiera('profile::query_service::updater_options'),
     Boolean $merging_mode = hiera('profile::query_service::merging_mode', false),
     Boolean $async_import = hiera('profile::query_service::async_import', true),
@@ -20,7 +21,6 @@ class profile::query_service::updater (
 ) {
     require ::profile::query_service::common
 
-    $username = 'blazegraph'
     $instance_name = "${deploy_name}-updater"
     $prometheus_agent_path = '/usr/share/java/prometheus/jmx_prometheus_javaagent.jar'
     $prometheus_agent_port = '9101'

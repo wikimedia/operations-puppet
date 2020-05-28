@@ -6,7 +6,8 @@ class role::wdqs::public {
     include ::profile::standard
     include ::profile::base::firewall
     # Standard wdqs installation
-    require ::profile::query_service::wdqs
+    require ::profile::query_service::wikidata
+    require ::profile::query_service::categories
     # Production specific profiles
     include ::profile::lvs::realserver
     # Public endpoint specific profiles

@@ -7,7 +7,8 @@ class role::wdqs::test {
     include ::profile::standard
     include ::profile::base::firewall
     # Standard wdqs installation
-    require ::profile::query_service::wdqs
+    require ::profile::query_service::categories
+    require ::profile::query_service::wikidata
 
     system::role { 'wdqs::test':
         ensure      => 'present',

@@ -1,10 +1,9 @@
-# Monitor exteral blazegraph settings
-class query_service::monitor::blazegraph (
-    String $username,
-    String $contact_groups,
-    Integer[0] $lag_warning,
-    Integer[0] $lag_critical,
-
+# Monitor exteral blazegraph settings for the wikidata.org dataset
+class profile::query_service::monitor::wikidata (
+    String $username = lookup('profile::query_service::username'),
+    String $contact_groups = lookup('contactgroups', {'default_value' => 'admins'}),
+    Integer[0] $lag_warning = lookup('profile::query_service::lag_warning', {'default_value' => 1200}),
+    Integer[0] $lag_critical = lookup('profile::query_service::lag_critical', {'default_value' => 3600}),
 ) {
     nrpe::monitor_service { 'Query_Service_Internal_HTTP_endpoint':
         description  => 'Query Service HTTP Port',
@@ -12,14 +11,12 @@ class query_service::monitor::blazegraph (
         notes_url    => 'https://wikitech.wikimedia.org/wiki/Wikidata_query_service',
     }
 
-    # TODO: Let's move this to profile/wdqs
     monitoring::service { 'WDQS_External_SPARQL_Endpoint':
         description   => 'WDQS SPARQL',
         check_command => 'check_http!query.wikidata.org!/bigdata/namespace/wdq/sparql?query=prefix%20schema:%20%3Chttp://schema.org/%3E%20SELECT%20*%20WHERE%20%7B%3Chttp://www.wikidata.org%3E%20schema:dateModified%20?y%7D&format=json!"xsd:dateTime"',
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Wikidata_query_service/Runbook',
     }
 
-    # TODO: Let's move this to profile/wdqs
     monitoring::check_prometheus { 'WDQS_Lag':
         description     => 'WDQS high update lag',
         dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/wikidata-query-service?orgId=1&panelId=8&fullscreen'],
@@ -30,5 +27,4 @@ class query_service::monitor::blazegraph (
         contact_group   => $contact_groups,
         notes_link      => 'https://wikitech.wikimedia.org/wiki/Wikidata_query_service/Runbook#Update_lag',
     }
-
 }

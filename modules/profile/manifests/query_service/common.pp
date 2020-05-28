@@ -1,4 +1,5 @@
 class profile::query_service::common(
+    String $username = lookup('profile::query_service::username'),
     Query_service::DeployMode $deploy_mode = hiera('profile::query_service::deploy_mode'),
     Stdlib::Unixpath $package_dir = hiera('profile::query_service::package_dir'),
     Stdlib::Unixpath $data_dir = hiera('profile::query_service::data_dir'),
@@ -11,7 +12,6 @@ class profile::query_service::common(
     Stdlib::Httpurl $categories_endpoint =  hiera('profile::query_service::categories_endpoint', 'http://localhost:9990'),
 ) {
 
-    $username = 'blazegraph'
     $deploy_user = 'deploy-service'
 
     # Let's migrate to the new logging pipeline. See T232184.

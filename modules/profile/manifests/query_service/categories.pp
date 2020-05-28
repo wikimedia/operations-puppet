@@ -1,4 +1,16 @@
+# = Class: profile::query_service::categories
+#
+# This class defines a meta-class that pulls in all the query_service profiles
+# necessary for a query service installation servicing the commons.wikimedia.org
+# dataset.
+#
+# This additionally provides a location for defining datasource specific
+# configuration, such as if geo support is necessary. This kind of
+# configuration doesn't end up fitting in hiera as we have multiple blazegraph
+# instances per host (preventing configuration by profile), and multiple roles
+# per datasource (preventing configuration by role).
 class profile::query_service::categories(
+    String $username = lookup('profile::query_service::username'),
     Stdlib::Unixpath $package_dir = hiera('profile::query_service::package_dir'),
     Stdlib::Unixpath $data_dir = hiera('profile::query_service::data_dir'),
     Stdlib::Unixpath $log_dir = hiera('profile::query_service::log_dir'),
@@ -11,57 +23,34 @@ class profile::query_service::categories(
     String $contact_groups = hiera('contactgroups', 'admins'),
 ) {
     require ::profile::query_service::common
+    include ::profile::query_service::monitor::categories
 
-    $username = 'blazegraph'
     $instance_name = "${deploy_name}-categories"
-    $prometheus_agent_path = '/usr/share/java/prometheus/jmx_prometheus_javaagent.jar'
-    $default_extra_jvm_opts = [
-        '-XX:+UseNUMA',
-        '-XX:+UnlockExperimentalVMOptions',
-        '-XX:G1NewSizePercent=20',
-        '-XX:+ParallelRefProcEnabled',
-    ]
+    $blazegraph_port = 9990
+    $prometheus_port = 9194
+    $prometheus_agent_port = 9103
 
-    $prometheus_agent_port_categories = 9103
-    $prometheus_agent_config_categories = "/etc/${deploy_name}/${instance_name}-prometheus-jmx.yaml"
-    profile::prometheus::jmx_exporter { $instance_name:
-        hostname         => $::hostname,
-        prometheus_nodes => $prometheus_nodes,
-        source           => 'puppet:///modules/profile/query_service/blazegraph-prometheus-jmx.yaml',
-        port             => $prometheus_agent_port_categories,
-        before           => Service[$instance_name],
-        config_file      => $prometheus_agent_config_categories,
-    }
-
-    prometheus::blazegraph_exporter { 'wdqs-categories':
-        blazegraph_port  => 9990,
-        prometheus_port  => 9194,
-        prometheus_nodes => $prometheus_nodes,
-    }
-
-    query_service::blazegraph { $instance_name:
-        journal               => 'categories',
-        package_dir           => $package_dir,
-        data_dir              => $data_dir,
-        logstash_logback_port => $logstash_logback_port,
-        log_dir               => $log_dir,
-        deploy_name           => $deploy_name,
-        username              => $username,
-        options               => $options,
-        use_deployed_config   => $use_deployed_config,
-        port                  => 9990,
-        config_file_name      => 'RWStore.categories.properties',
-        heap_size             => '8g',
-        extra_jvm_opts        => $default_extra_jvm_opts + $extra_jvm_opts +  "-javaagent:${prometheus_agent_path}=${prometheus_agent_port_categories}:${prometheus_agent_config_categories}",
-        use_geospatial        => false,
-    }
-
-    class { 'query_service::monitor::categories':   }
-
-    query_service::monitor::blazegraph_instance { $instance_name:
-        username        => $username,
-        contact_groups  => $contact_groups,
-        port            => 9990,
-        prometheus_port => 9194,
+    profile::query_service::blazegraph { $instance_name:
+        journal                => 'categories',
+        username               => $username,
+        package_dir            => $package_dir,
+        data_dir               => $data_dir,
+        log_dir                => $log_dir,
+        deploy_name            => $deploy_name,
+        logstash_logback_port  => $logstash_logback_port,
+        heap_size              => '8g',
+        use_deployed_config    => $use_deployed_config,
+        options                => $options,
+        extra_jvm_opts         => $extra_jvm_opts,
+        prometheus_nodes       => $prometheus_nodes,
+        contact_groups         => $contact_groups,
+        monitoring_enabled     => true, # ????
+        sparql_query_stream    => undef,
+        event_service_endpoint => undef,
+        blazegraph_port        => $blazegraph_port,
+        prometheus_port        => $prometheus_port,
+        prometheus_agent_port  => $prometheus_agent_port,
+        config_file_name       => 'RWStore.categories.properties',
+        use_geospatial         => false,
     }
 }
