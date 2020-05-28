@@ -348,7 +348,7 @@ def stage_upgrade():
         return
 
     # TODO: verify candidate versions for docker and containerd.io
-    pkgs = "kubectl kubelet docker containerd.io"
+    pkgs = "kubectl kubelet docker-ce containerd.io"
     noprompt = (
         '-o "Dpkg::Options::=--force-confdef" -o "Dpkg::Options::=--force-confold"'
     )
