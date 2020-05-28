@@ -17,6 +17,7 @@ log_config=/etc/zuul/gearman-logging.conf
 <% end -%>
 
 [connection gerrit]
+driver=gerrit
 server=<%= @gerrit_server %>
 user=<%= @gerrit_user %>
 <% if @gerrit_baseurl %>baseurl=<%= @gerrit_baseurl %><% end %>
