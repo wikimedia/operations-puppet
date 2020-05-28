@@ -455,6 +455,14 @@ class profile::prometheus::ops (
         port       => 9117,
     }
 
+    # Special config for Apache on Superset deployments
+    prometheus::class_config{ "apache_superset_${::site}":
+        dest       => "${targets_path}/apache_superset_${::site}.yaml",
+        site       => $::site,
+        class_name => 'profile::superset::proxy',
+        port       => 9117,
+    }
+
     # Special config for Apache on OTRS deployment
     prometheus::class_config{ "apache_otrs_${::site}":
         dest       => "${targets_path}/apache_otrs_${::site}.yaml",
