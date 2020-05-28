@@ -85,7 +85,7 @@ groups:
               urbanecm, awight, jakob, accraze, andrew-wmde,
               kevinbazira, mstyles, zpapierski, clarakosi, dpifke,
               niedzielski, phuedx, samwilson, dmaza, tchanders,
-              wikigit, arlolra, daniel]
+              wikigit, arlolra, daniel, bpirkle]
     privileges: ['ALL = (www-data,mwdeploy,l10nupdate) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /usr/sbin/apache2ctl',
                  'ALL = NOPASSWD: /etc/init.d/apache2',
@@ -95,7 +95,7 @@ groups:
     gid: 706
     description: access to mwmaint hosts, mwlog hosts (private data) and bastion hosts
                  restricted folks use sudo to access www-data resources
-    members: [bearloga, tjones, cparle, pearley, bpirkle, ktsouroupidou,
+    members: [bearloga, tjones, cparle, pearley, ktsouroupidou,
               ezachte, jamesur, jdlrobson, sguebo,
               leila, santhosh, amire80, foks, chelsyx, dbarratt, karen,
               kharlan, abi, nikkin, bmansurov, musikanimal, holger]
@@ -4295,4 +4295,3 @@ ldap_only_users:
     ensure: present
     realname: Nik Gkountas
     email: ngkountas@wikimedia.org
-
