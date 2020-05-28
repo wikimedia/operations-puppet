@@ -387,9 +387,6 @@ def stage_uncordon():
 
 def stage_pause():
     # make sure we have time to check everything is OK
-    if ctx.skip is True:
-        return
-
     if not ctx.args.no_pause:
         confirm = input("continue? [y/N]: ")
         if confirm[:1] != "y" and confirm[:1] != "Y":
