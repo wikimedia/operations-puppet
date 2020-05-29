@@ -14,6 +14,7 @@ class profile::zookeeper::server (
     $monitoring_contact_group = hiera('profile::zookeeper::monitoring_contact_group', 'admins'),
     $is_critical              = hiera('profile::zookeeper::is_critical', false),
     $prometheus_instance      = hiera('profile::zookeeper::prometheus_instance', 'ops'),
+    $force_java_11            = lookup('profile::zookeeper::force_java_11', { 'default_value' => false }),
 ) {
 
     require_package('default-jdk')
@@ -57,6 +58,7 @@ class profile::zookeeper::server (
         # and we filter out JAVA_TOOL_OPTIONS messages from stderr.
         cleanup_script_args => '-n 10 2>&1 > /dev/null | grep -v JAVA_TOOL_OPTIONS',
         java_opts           => "-Xms1g -Xmx1g ${extra_java_opts}",
+        force_java_11       => $force_java_11,
     }
 
     if $monitoring_enabled {
