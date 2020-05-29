@@ -1765,8 +1765,12 @@ node /^mw23(5[13579]|6[135])\.codfw\.wmnet$/ {
 
 # Row C
 
-# mw2187-mw2199 are in rack C4
+# mw2335-mw2339 are in rack C3
+node /^mw23(3[5-9])\.codfw\.wmnet$/ {
+    role(insetup)
+}
 
+# mw2187-mw2199 are in rack C4
 node /^mw21(8[7-8])\.codfw\.wmnet$/ {
     role(mediawiki::canary_appserver)
 }
