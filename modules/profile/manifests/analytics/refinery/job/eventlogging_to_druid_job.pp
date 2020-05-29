@@ -116,7 +116,7 @@ define profile::analytics::refinery::job::eventlogging_to_druid_job (
         'table'               => $title,
         'query_granularity'   => 'minute',
         'hadoop_queue'        => $queue,
-        'druid_host'          => 'druid1001.eqiad.wmnet',
+        'druid_host'          => 'an-druid1001.eqiad.wmnet',
         'druid_port'          => '8090',
     }
 
