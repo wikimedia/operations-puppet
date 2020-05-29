@@ -127,7 +127,7 @@ class profile::idp(
     }
     $pools = {$mcrouter_cluster => {'servers' => $servers}}
     $routes = [{
-        'aliases' => [ "/${::site}/${mcrouter_cluster}" ],
+        'aliases' => [ "/${::site}/${mcrouter_cluster}/" ],
         'route'   => {
             'type'               => 'OperationSelectorRoute',
             'default_policy'     => "AllSyncRoute|Pool|${mcrouter_cluster}",
