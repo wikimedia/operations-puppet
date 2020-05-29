@@ -11,6 +11,13 @@
 # [*stats_interval_ms*]
 #   Flush rdkafka statistics every stats_interval_ms.
 #
+# [*buffering_ms*]
+#   How long to wait, in milliseconds, for messages in the producer queue to
+#   accumulate before constructing MessageSets to transmit to brokers. A higher
+#   value allows larger and more effective (less overhead, improved
+#   compression) batches of messages to accumulate at the expense of increased
+#   message delivery latency.
+#
 # [*topic*]
 #   Kafka topic to which all logs must be written.
 #
@@ -45,6 +52,7 @@
 define atskafka::instance(
     Array[String] $brokers                            = ['localhost:9092'],
     Integer $stats_interval_ms                        = 60000,
+    Integer $buffering_ms                             = 200,
     String $topic                                     = 'atskafka_test',
     Array[String] $numeric_fields                     = ['time_firstbyte', 'response_size'],
     Stdlib::Absolutepath $socket                      = '/var/run/log.socket',
