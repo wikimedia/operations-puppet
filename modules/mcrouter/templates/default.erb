@@ -15,7 +15,13 @@ ADDITIONAL_ARGS="--route-prefix=<%= @region %>/<%= @cluster %> \
 <%- end -%>
 <%- if @ssl_options -%>
 --ssl-port <%= @ssl_options['port'] %> \
+<%- if @facts['os']['release']['major'].to_i < 10 -%>
 --pem-cert-path=<%= @ssl_options['cert'] %> \
 --pem-key-path=<%= @ssl_options['key'] %> \
 --pem-ca-path=<%= @ssl_options['ca_cert'] %> \
+<%- else -%>
+--server-pem-cert-path=<%= @ssl_options['cert'] %> \
+--server-pem-key-path=<%= @ssl_options['key'] %> \
+--server-pem-ca-path=<%= @ssl_options['ca_cert'] %> \
+<%- end -%>
 <%- end -%>"
