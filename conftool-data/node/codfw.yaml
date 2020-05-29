@@ -3,13 +3,6 @@ codfw:
     mwdebug2001.codfw.wmnet: [apache2]
     mwdebug2002.codfw.wmnet: [apache2]
   appserver:
-    mw2180.codfw.wmnet: [apache2,nginx]
-    mw2181.codfw.wmnet: [apache2,nginx]
-    mw2182.codfw.wmnet: [apache2,nginx]
-    mw2183.codfw.wmnet: [apache2,nginx]
-    mw2184.codfw.wmnet: [apache2,nginx]
-    mw2185.codfw.wmnet: [apache2,nginx]
-    mw2186.codfw.wmnet: [apache2,nginx]
     mw2187.codfw.wmnet: [apache2,nginx,canary]
     mw2188.codfw.wmnet: [apache2,nginx,canary]
     mw2189.codfw.wmnet: [apache2,nginx]
