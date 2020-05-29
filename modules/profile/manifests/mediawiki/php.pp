@@ -259,46 +259,44 @@ class profile::mediawiki::php(
             readable_by  => 'group',
             log_filename => 'error.log'
         }
+    }
 
-        $profiling_ensure =  $enable_request_profiling ? {
-            true    => 'present',
-            default => 'absent'
-        }
-        # Set up profiling (T206152)
-        # Install tideways-xhprof and mongodb
-        php::extension {  'mongodb':
-            ensure   => $profiling_ensure,
-            priority => 30,
-            sapis    => ['fpm']
-        }
-
-        # Install tideways-xhprof
-        php::extension { 'tideways-xhprof':
-            ensure   => $profiling_ensure,
-            priority => 30,
-            sapis    => ['fpm'],
-            config   => {
-                'extension'                       => 'tideways_xhprof.so',
-                'tideways_xhprof.clock_use_rdtsc' => '0',
-            }
+    # Set up request profiling (T206152, see also T253547)
+    # Install tideways-xhprof and mongodb
+    $profiling_ensure = $enable_request_profiling ? {
+        true    => 'present',
+        default => 'absent'
+    }
+    php::extension { 'mongodb':
+        ensure   => $profiling_ensure,
+        priority => 30,
+    }
+    php::extension { 'tideways-xhprof':
+        ensure   => $profiling_ensure,
+        priority => 30,
+        config   => {
+            'extension'                       => 'tideways_xhprof.so',
+            'tideways_xhprof.clock_use_rdtsc' => '0',
         }
     }
+
     ## Install excimer, our php profiler, if we're on a newer version of php
     # Please note this is not a single request profiler, it is rather a profiling sampler.
-    # Thus, it  is active on all appserver and not just on the ones that allow running profiling.
+    # Thus, it is active on all appserver and not just on the ones that allow running profiling.
     if $php_version != '7.0' {
         php::extension { 'excimer':
             ensure => present,
         }
     }
+
     # Set the default interpreter to php7
     $cli_path = "/usr/bin/php${php_version}"
     $pkg = "php${php_version}-cli"
-
     alternatives::select { 'php':
         path    => $cli_path,
         require => Package[$pkg],
     }
+
     ## Install wmerrors, on fpm only.
     if $php_version != '7.0' and $enable_fpm {
         php::extension { 'wmerrors':
