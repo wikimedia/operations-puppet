@@ -1,8 +1,8 @@
-# = Class: prometheus::node_amd_rocm
+# = Class: prometheus::node_nic_firmware
 #
 # Periodically export network interface device drivers & firmware versions.
 #
-# Intended to run on all physical hosts (not useful on e.g. Ganeti hosts).
+# Intended to run on all physical hosts (not useful on e.g. Ganeti-hosted VMs).
 #
 class prometheus::node_nic_firmware (
     Wmflib::Ensure $ensure = 'present',
