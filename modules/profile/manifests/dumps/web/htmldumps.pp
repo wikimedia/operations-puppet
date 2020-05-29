@@ -7,10 +7,4 @@ class profile::dumps::web::htmldumps {
         proto => 'tcp',
         port  => '80',
     }
-
-    ferm::service { 'html_dumps_https':
-        proto => 'tcp',
-        port  => '443',
-    }
-
 }
