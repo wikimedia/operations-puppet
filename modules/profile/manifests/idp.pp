@@ -37,7 +37,7 @@ class profile::idp(
 
     backup::set { 'idp': }
 
-    $memached_enable = $mcrouter_ensure ? {
+    $memcached_enable = $mcrouter_ensure ? {
         'present' => true,
         default   => false,
     }
@@ -97,7 +97,7 @@ class profile::idp(
         daemon_user            => $cas_daemon_user,
         manage_user            => $cas_manage_user,
         log_dir                => $log_dir,
-        memached_enable        => $memached_enable,
+        memcached_enable       => $memcached_enable,
     }
 
     ferm::service {'cas-https':

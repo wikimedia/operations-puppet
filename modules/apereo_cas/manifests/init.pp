@@ -50,10 +50,10 @@ class apereo_cas (
     Hash[String, Hash]                $services                      = {},
     Boolean                           $manage_user                   = true,
     Optional[String[1]]               $java_opts                     = undef,
-    Boolean                           $memcached_enable       = false,
-    Stdlib::Port                      $memcached_port         = 11211,
-    Stdlib::Host                      $memcached_server       = 'localhost',
-    Apereo_cas::Memcached::Transcoder $memcached_transcoder   = 'KRYO',
+    Boolean                           $memcached_enable              = false,
+    Stdlib::Port                      $memcached_port                = 11211,
+    Stdlib::Host                      $memcached_server              = 'localhost',
+    Apereo_cas::Memcached::Transcoder $memcached_transcoder          = 'KRYO',
 ) {
     if $keystore_source == undef and $keystore_content == undef and $server_enable_ssl {
         error('you must provide either $keystore_source or $keystore_content')
