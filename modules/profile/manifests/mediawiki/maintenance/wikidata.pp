@@ -34,20 +34,14 @@ class profile::mediawiki::maintenance::wikidata {
     }
 
     # Prune wb_changes entries no longer needed from (test)wikidata
-    cron { 'wikibase-repo-prune2':
-        ensure  => $ensure,
-        command => '/usr/local/bin/mwscript extensions/Wikibase/repo/maintenance/pruneChanges.php --wiki wikidatawiki --number-of-days=3 >> /var/log/wikidata/prune2.log 2>&1',
-        user    => $mediawiki::users::web,
-        minute  => [0,15,30,45],
-        require => File['/var/log/wikidata'],
+    profile::mediawiki::periodic_job { 'wikibase_repo_prune2':
+        command  => '/usr/local/bin/mwscript extensions/Wikibase/repo/maintenance/pruneChanges.php --wiki wikidatawiki --number-of-days=3',
+        interval => '*:00,15,30,45',
     }
 
-    cron { 'wikibase-repo-prune-test':
-        ensure  => $ensure_testwiki,
-        command => '/usr/local/bin/mwscript extensions/Wikibase/repo/maintenance/pruneChanges.php --wiki testwikidatawiki --number-of-days=3 >> /var/log/wikidata/prune-testwikidata.log 2>&1',
-        user    => $mediawiki::users::web,
-        minute  => [0,15,30,45],
-        require => File['/var/log/wikidata'],
+    profile::mediawiki::periodic_job { 'wikibase_repo_prune_test':
+        command  => '/usr/local/bin/mwscript extensions/Wikibase/repo/maintenance/pruneChanges.php --wiki testwikidatawiki --number-of-days=3',
+        interval => '*:00,15,30,45',
     }
 
     file { '/var/log/wikidata':
