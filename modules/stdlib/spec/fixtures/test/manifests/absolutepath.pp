@@ -2,5 +2,5 @@
 class test::absolutepath(
     Stdlib::Absolutepath $value,
     ) {
-  notice("Success")
+  notice('Success')
 }
