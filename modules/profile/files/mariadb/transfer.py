@@ -352,7 +352,7 @@ class Transferer(object):
         threads = 16
         socket = self.source_path
         datadir = self.get_datadir_from_socket(socket)
-        xtrabackup_command = ('/opt/wmf-mariadb101/bin/mariabackup --backup --target-dir /tmp '
+        xtrabackup_command = ('xtrabackup --backup --target-dir /tmp '
                               '--user {} --socket={} --close-files --datadir={} --parallel={} '
                               '--stream=xbstream --slave-info --skip-ssl'
                               ).format(user, socket, datadir, str(threads))
@@ -360,7 +360,7 @@ class Transferer(object):
 
     @property
     def mbstream_command(self):
-        return '| /opt/wmf-mariadb101/bin/mbstream -x'
+        return '| mbstream -x'
 
     @property
     def password(self):

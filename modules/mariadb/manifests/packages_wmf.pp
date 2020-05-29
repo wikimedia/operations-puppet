@@ -58,4 +58,10 @@ The only allowed versions are: wmf-mariadb10, wmf-mariadb101, wmf-mariadb102, \
 wmf-mariadb103, wmf-percona-server80 or wmf-mysql80")
         }
     }
+
+    # Manual override until all hosts are in >10.1.44-1 or >10.4.13-1
+    file { '/usr/local/bin/mbstream':
+        ensure => 'link',
+        target => "/opt/${mariadb_package}/bin/mbstream",
+    }
 }
