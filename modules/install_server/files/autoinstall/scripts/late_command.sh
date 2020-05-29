@@ -12,6 +12,12 @@ chmod go-rwx /target/root/.ssh/authorized_keys
 apt-install lsb-release
 LSB_RELEASE=$(chroot /target /usr/bin/lsb_release --codename --short)
 
+if printf $LSB_RELEASE | grep -qv buster
+then
+  # we dont use this service, also the reimage script assumes it is the first to run puppet
+  in-target systemctl mask puppet.service
+fi
+
 # openssh-server: to make the machine accessible
 # puppet: because we'll need it soon anyway
 # lldpd: announce the machine on the network
