@@ -12,6 +12,7 @@ class snapshot::cron::commonsdumps(
 
     class { '::snapshot::cron::commonsdumps::rdf':
         user      => $user,
-        filesonly => $filesonly,
+# This disables the actual cron running for now, should be removed when scripts are ready
+        filesonly => true,
     }
 }
