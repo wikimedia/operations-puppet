@@ -45,19 +45,16 @@ class profile::mediawiki::php::restarts(
 
     if member($all_nodes, $::fqdn) {
         $times = cron_splay($all_nodes, 'daily', "${service}-opcache-restarts")
-        $hour = sprintf('%02d', $times['hour'])
-        $minute = sprintf('%02d', $times['minute'])
-        $systemd_timer_interval = sprintf('*-*-* %02d:%02d:00',$times['hour'], $times['minute'])
     }
     else {
-        $systemd_timer_interval = sprintf('*-*-* %02d:00:00', fqdn_rand(24))
+        $times =  { 'OnCalendar' => sprintf('*-*-* %02d:00:00', fqdn_rand(24)) }
     }
 
     # Using a systemd timer should ensure we can track if the job fails
     systemd::timer::job { "${service}_check_restart":
         description       => 'Cronjob to check the status of the opcache space on PHP7, and restart the service if needed',
         command           => "/usr/local/sbin/check-and-restart-php ${service} ${opcache_limit}",
-        interval          => {'start' => 'OnCalendar', 'interval' => $systemd_timer_interval},
+        interval          => {'start' => 'OnCalendar', 'interval' => $times['OnCalendar']},
         user              => 'root',
         logfile_basedir   => '/var/log/mediawiki',
         syslog_identifier => "${service}_check_restart"

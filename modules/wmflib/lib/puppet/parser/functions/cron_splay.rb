@@ -39,6 +39,14 @@ fields suffixed with '-a' and '-b' as shown in the example below.
         weekday  => $times['weekday'],
     }
 
+    $times = cron_splay($hosts, 'weekly', 'foo-static-seed')
+    systemd::timer::job { 'foo':
+        description       => 'foo bar',
+        command           => "/usr/local/bin/baz --foobar",
+        interval          => {'start' => 'OnCalendar', 'interval' => $times['OnCalendar']},
+        user              => 'root',
+    }
+
     # Semi-weekly operation hits every 3.5 days using dual crontab entries
     $times = cron_splay($hosts, 'semiweekly', 'bar')
     cron { 'bar-a':
@@ -133,29 +141,45 @@ fields suffixed with '-a' and '-b' as shown in the example below.
 
     # generate the output
     output = {}
+    tval_minute = (tval % 60).to_i
+    tval_hour = ((tval / 60) % 24).to_i
+    tval_dow = (tval / 1440).to_i
+    dow = %w[Sun Mon Tue Wed Thu Fri Sat]
+    tval_minute_s = tval_minute.to_s.rjust(2, '0')
+    tval_hour_s = tval_hour.to_s.rjust(2, '0')
 
     case period
     when 'hourly'
-      output['minute'] = tval % 60
+      output['minute'] = tval_minute
       output['hour'] = '*'
       output['weekday'] = '*'
+      output['OnCalendar'] = "*-*-* *:#{tval_minute_s}:00"
     when 'daily'
-      output['minute'] = tval % 60
-      output['hour'] = (tval / 60) % 24
+      output['minute'] = tval_minute
+      output['hour'] = tval_hour
       output['weekday'] = '*'
+      output['OnCalendar'] = "*-*-* #{tval_hour_s}:#{tval_minute_s}:00"
     when 'weekly'
-      output['minute'] = tval % 60
-      output['hour'] = (tval / 60) % 24
-      output['weekday'] = tval / 1440
+      output['minute'] = tval_minute
+      output['hour'] = tval_hour
+      output['weekday'] = tval_dow
+      output['OnCalendar'] = "#{dow[tval_dow]} *-*-* #{tval_hour_s}:#{tval_minute_s}:00"
     when 'semiweekly'
-      output['minute-a'] = tval % 60
-      output['hour-a'] = (tval / 60) % 24
-      output['weekday-a'] = tval / 1440
+      output['minute-a'] = tval_minute
+      output['hour-a'] = tval_hour
+      output['weekday-a'] = tval_dow
+      output['OnCalendar-a'] = "#{dow[tval_dow]} *-*-* #{tval_hour_s}:#{tval_minute_s}:00"
       # tval2 for semiweekly is 3.5 days after tval, modulo 1w
       tval2 = (tval + (84 * 60)) % (7 * 24 * 60)
-      output['minute-b'] = tval2 % 60
-      output['hour-b'] = (tval2 / 60) % 24
-      output['weekday-b'] = tval2 / 1440
+      tval2_minute = (tval2 % 60).to_i
+      tval2_hour = ((tval2 / 60) % 24).to_i
+      tval2_dow = (tval2 / 1440).to_i
+      tval2_minute_s = tval2_minute.to_s.rjust(2, '0')
+      tval2_hour_s = tval2_hour.to_s.rjust(2, '0')
+      output['minute-b'] = tval2_minute
+      output['hour-b'] = tval2_hour
+      output['weekday-b'] = tval2_dow
+      output['OnCalendar-b'] = "#{dow[tval2_dow]} *-*-* #{tval2_hour_s}:#{tval2_minute_s}:00"
     end
 
     output
