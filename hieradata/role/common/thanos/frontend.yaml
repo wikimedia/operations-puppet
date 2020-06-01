@@ -20,6 +20,7 @@ profile::tlsproxy::envoy::services:
    - server_names: ['*']
      port: 8888
 profile::tlsproxy::envoy::global_cert_name: 'thanos-swift.discovery.wmnet'
+profile::tlsproxy::envoy::use_remote_address: true
 
 profile::prometheus::statsd_exporter::mappings:
   # Authentication subsystem (tempauth)
