@@ -39,8 +39,8 @@ class profile::backup::filesets() {
     bacula::director::fileset { 'var-lib-jenkins-config':
         includes     => [ '/var/lib/jenkins/config.xml' ],
     }
-    bacula::director::fileset { 'srv-gerrit-git':
-        includes => [ '/srv/gerrit/git' ]
+    bacula::director::fileset { 'gerrit-repo-data':
+        includes => [ '/srv/gerrit/git', '/srv/gerrit/plugins/lfs' ]
     }
     bacula::director::fileset { 'var-lib-carbon-whisper-coal':
         includes => [ '/var/lib/carbon/whisper/coal' ]

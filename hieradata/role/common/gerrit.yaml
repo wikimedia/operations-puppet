@@ -23,7 +23,7 @@ gerrit::server::rsync_user_name: 'gerrit2'
 
 # External backups
 gerrit::server::backups_enabled: true
-gerrit::server::backup_set: 'srv-gerrit-git'
+gerrit::server::backup_set: 'gerrit-repo-data'
 
 # Database
 gerrit::server::db_user: 'gerrit'
