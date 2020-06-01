@@ -155,13 +155,6 @@ enabled_notification_handlers = nova_fixed_multi, wmf_sink
 # Setting this allows us to listen on ipv6 as well as ipv4
 host = ::
 
-# On Buster I've been having udp connectivity issues; this moves
-#  all traffic to tcp.  Designate devs tell me there's no real
-#  downside to using this.
-all_tcp=true
-xfr_timeout = 10
-
-
 #-----------------------
 # Agent Service
 #-----------------------
