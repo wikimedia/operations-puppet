@@ -17,6 +17,7 @@ class varnish::logging(
     $cache_cluster,
     $statsd_host,
     $mtail_progs='/etc/mtail',
+    $mtail_additional_args=''
 ){
     require_package('python3-logstash')
 
@@ -42,6 +43,15 @@ class varnish::logging(
         mode   => '0555',
         source => 'puppet:///modules/varnish/varnishmtail',
         notify => Systemd::Service['varnishmtail'],
+    }
+
+    file { '/etc/default/varnishmtail':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0555',
+        content => template('varnish/varnishmtail.default.erb'),
+        notify  => Systemd::Service['varnishmtail'],
     }
 
     systemd::service { 'varnishmtail':

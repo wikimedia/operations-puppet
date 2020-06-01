@@ -18,6 +18,7 @@ class profile::cache::base(
     $performance_tweaks = hiera('profile::cache::base::performance_tweaks', true),
     $extra_trust = hiera('profile::cache::base::extra_trust', []),
     Optional[Hash[String, Integer]] $default_weights = lookup('profile::cache::base::default_weights', {'default_value' => undef}),
+    String $mtail_additional_args = lookup('profile::cache::base::mtail_additional_args', {'default_value' => ''})
 ) {
     require network::constants
     # NOTE: Add the public WMCS IP space when T209011 is done
@@ -81,8 +82,9 @@ class profile::cache::base(
     # Analytics/Logging stuff
     ###########################################################################
     class { '::varnish::logging':
-        cache_cluster => $cache_cluster,
-        statsd_host   => $statsd_host,
+        cache_cluster         => $cache_cluster,
+        statsd_host           => $statsd_host,
+        mtail_additional_args => $mtail_additional_args
     }
 
     # auto-depool on shutdown + conditional one-shot auto-pool on start
