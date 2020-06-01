@@ -1,0 +1,27 @@
+[DEFAULT]
+<% if @statsd_host -%>
+log_statsd_host = <%= @statsd_host %>
+log_statsd_port = <%= @statsd_port %>
+log_statsd_metric_prefix = <%= @statsd_metric_prefix %>
+log_statsd_sample_rate_factor = <%= @statsd_sample_rate_factor %>
+<% end -%>
+
+[object-expirer]
+nice_priority = 1
+ionice_class = IOPRIO_CLASS_BE
+ionice_priority = 5
+
+[pipeline:main]
+pipeline = catch_errors cache proxy-server
+
+[filter:catch_errors]
+use = egg:swift#catch_errors
+
+[filter:cache]
+use = egg:swift#memcache
+memcache_servers = <%= @memcached_servers.join(",") %>
+memcache_serialization_support = 2
+memcache_max_connections = 12 # per worker!
+
+[app:proxy-server]
+use = egg:swift#proxy

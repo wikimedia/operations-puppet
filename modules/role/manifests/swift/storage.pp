@@ -14,4 +14,6 @@ class role::swift::storage {
     class { '::profile::prometheus::statsd_exporter':
         relay_address => '',
     }
+
+    include ::profile::swift::storage::expirer
 }
