@@ -12,6 +12,7 @@ class profile::prometheus::ops (
     $netmon_server = lookup('netmon_server'),
     Wmflib::Ensure $ensure_rsync = lookup('profile::prometheus::ops::ensure_rsync'),
     String $replica_label = lookup('prometheus::replica_label', { 'default_value' => 'unset' }),
+    Boolean $enable_thanos_upload = lookup('profile::prometheus::ops::thanos', { 'default_value' => false }),
 ){
     include ::passwords::gerrit
     $gerrit_client_token = $passwords::gerrit::prometheus_bearer_token
@@ -1661,11 +1662,18 @@ class profile::prometheus::ops (
         port           => 8443
     }
 
+    $max_block_duration = $enable_thanos_upload ? {
+        true    => '2h',
+        default => '24h',
+    }
+
     prometheus::server { 'ops':
         listen_address        => "127.0.0.1:${port}",
         storage_retention     => $storage_retention,
         max_chunks_to_persist => $max_chunks_to_persist,
         memory_chunks         => $memory_chunks,
+        min_block_duration    => '2h',
+        max_block_duration    => $max_block_duration,
         scrape_configs_extra  => array_concat(
             $mysql_jobs, $varnish_jobs, $trafficserver_jobs, $purged_jobs, $atskafka_jobs, $memcached_jobs,
             $apache_jobs, $etcd_jobs, $etcdmirror_jobs, $mcrouter_jobs, $pdu_jobs,
@@ -1703,6 +1711,7 @@ class profile::prometheus::ops (
     profile::thanos::sidecar { 'ops':
         prometheus_port     => $port,
         prometheus_instance => 'ops',
+        enable_upload       => $enable_thanos_upload,
     }
 
     file { '/srv/prometheus/ops/gerrit.token':
