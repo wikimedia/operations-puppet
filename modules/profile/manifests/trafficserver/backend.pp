@@ -23,6 +23,7 @@ class profile::trafficserver::backend (
     Wmflib::UserIpPort $prometheus_exporter_port=hiera('profile::trafficserver::backend::prometheus_exporter_port', 9122),
     Stdlib::Absolutepath $atsmtail_backend_progs=hiera('profile::trafficserver::backend::atsmtail_backend_progs', '/etc/atsmtail-backend'),
     Wmflib::UserIpPort $atsmtail_backend_port=hiera('profile::trafficserver::backend::atsmtail_backend_port', 3904),
+    String $mtail_args=lookup('profile::trafficserver::backend::mtail_args', {'default_value' => ''}),
     Boolean $systemd_hardening=hiera('profile::trafficserver::backend::systemd_hardening', true),
 ){
     $global_lua_script = $default_lua_script? {
@@ -153,6 +154,7 @@ class profile::trafficserver::backend (
         atsmtail_progs => $atsmtail_backend_progs,
         atsmtail_port  => $atsmtail_backend_port,
         wanted_by      => 'trafficserver.service',
+        mtail_args     => $mtail_args,
     }
 
     mtail::program { 'atsbackend':

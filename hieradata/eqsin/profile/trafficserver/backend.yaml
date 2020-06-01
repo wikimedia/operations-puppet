@@ -1,0 +1,1 @@
+profile::trafficserver::backend::mtail_args: '-disable_fsnotify'

@@ -28,6 +28,7 @@ class profile::trafficserver::tls (
     Optional[Integer[0,2]] $res_track_memory=lookup('profile::trafficserver::tls::res_track_memory', {'default_value' => undef}),
     Stdlib::Absolutepath $atsmtail_progs=lookup('profile::trafficserver::tls::atsmtail_tls_progs', {'default_value' => '/etc/atsmtail-tls'}),
     Wmflib::UserIpPort $atsmtail_port=lookup('profile::trafficserver::tls::atsmtail_tls_port', {'default_value' => 3905}),
+    String $mtail_args=lookup('profile::trafficserver::tls::mtail_args', {'default_value' => ''}),
 ){
     $errorpage = {
         title       => 'Wikimedia Error',
@@ -243,6 +244,7 @@ class profile::trafficserver::tls (
         atsmtail_progs => $atsmtail_progs,
         atsmtail_port  => $atsmtail_port,
         wanted_by      => "${service_name}.service",
+        mtail_args     => $mtail_args,
     }
 
     mtail::program { 'atstls':

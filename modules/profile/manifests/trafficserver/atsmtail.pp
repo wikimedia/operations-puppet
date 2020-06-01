@@ -3,6 +3,7 @@ define profile::trafficserver::atsmtail(
     Stdlib::Absolutepath $atsmtail_progs,
     Wmflib::UserIpPort $atsmtail_port,
     Systemd::Servicename $wanted_by,
+    String $mtail_args = '',
 ) {
     systemd::service { "atsmtail@${instance_name}":
         ensure  => present,
