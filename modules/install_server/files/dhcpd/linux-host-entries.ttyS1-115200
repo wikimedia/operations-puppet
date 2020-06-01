@@ -4362,24 +4362,6 @@ host sodium {
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
-host ms-be1016 {
-    hardware ethernet c4:34:6b:b9:5a:e4;
-    fixed-address ms-be1016.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
-}
-
-host ms-be1017 {
-    hardware ethernet c4:34:6b:b9:d9:e4;
-    fixed-address ms-be1017.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
-}
-
-host ms-be1018 {
-    hardware ethernet c4:34:6b:b9:b9:3c;
-    fixed-address ms-be1018.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
-}
-
 host ms-be1019 {
     hardware ethernet 3C:A8:2A:0D:5F:E8;
     fixed-address ms-be1019.eqiad.wmnet;
