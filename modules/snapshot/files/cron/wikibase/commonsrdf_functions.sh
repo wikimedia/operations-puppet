@@ -37,4 +37,5 @@ setDumpNameToMinSize() {
 
 setDcatConfig() {
 	# TODO: add DCAT info
+    dcatConfig=""
 }
