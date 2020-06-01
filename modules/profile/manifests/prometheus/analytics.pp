@@ -4,6 +4,7 @@
 # filtertags: labs-project-monitoring
 class profile::prometheus::analytics (
     String $replica_label = lookup('prometheus::replica_label', { 'default_value' => 'unset' }),
+    Boolean $enable_thanos_upload = lookup('profile::prometheus::analytics::thanos', { 'default_value' => false }),
 ){
     $targets_path = '/srv/prometheus/analytics/targets'
     $storage_retention = hiera('prometheus::server::storage_retention', '4032h')
@@ -225,6 +226,11 @@ class profile::prometheus::analytics (
         }
     }
 
+    $max_block_duration = $enable_thanos_upload ? {
+        true    => '2h',
+        default => '24h',
+    }
+
     prometheus::server { 'analytics':
         listen_address        => '127.0.0.1:9905',
         storage_retention     => $storage_retention,
@@ -232,6 +238,8 @@ class profile::prometheus::analytics (
         memory_chunks         => $memory_chunks,
         global_config_extra   => $config_extra,
         scrape_configs_extra  => array_concat($jmx_exporter_jobs, $druid_jobs, $mysql_jobs),
+        min_block_duration    => '2h',
+        max_block_duration    => $max_block_duration,
     }
 
     prometheus::web { 'analytics':
@@ -241,6 +249,7 @@ class profile::prometheus::analytics (
     profile::thanos::sidecar { 'analytics':
         prometheus_port     => 9905,
         prometheus_instance => 'analytics',
+        enable_upload       => $enable_thanos_upload,
     }
 
     prometheus::rule { 'rules_analytics.yml':
