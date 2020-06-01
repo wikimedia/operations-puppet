@@ -1,9 +1,8 @@
 cluster: wmcs
-# Do we want this? Suggesting not.
-# profile::base::check_disk_critical: true
-# profile::base::notifications: critical
+
 contactgroups: 'wmcs-team,admins'
 mgmt_contactgroups: 'wmcs-team-email'
+profile::base::monitor_systemd: false
 
 admin::groups:
   - analytics-admins
