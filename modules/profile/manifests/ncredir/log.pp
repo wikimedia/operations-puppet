@@ -5,6 +5,7 @@ define profile::ncredir::log(
     String $fifo_owner = 'www-data',
     String $fifo_group = 'adm',
     Stdlib::Filemode $fifo_mode = '0640',
+    String $ncredirmtail_args = '',
 ) {
     fifo_log_demux::instance { "ncredir_${title}":
         user        => 'root',
