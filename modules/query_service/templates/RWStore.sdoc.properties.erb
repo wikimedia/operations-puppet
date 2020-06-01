@@ -1,0 +1,21 @@
+# Dump data in target.
+com.bigdata.journal.AbstractJournal.file=<%= @data_dir %>/sdoc.jnl
+
+# Disable raw records - see https://phabricator.wikimedia.org/T213375
+com.bigdata.rdf.store.AbstractTripleStore.enableRawRecordsSupport=false
+
+# Use our private vocabularies
+com.bigdata.rdf.store.AbstractTripleStore.vocabularyClass=org.wikidata.query.rdf.blazegraph.WikibaseVocabulary$V004
+# Enable values inlining - see https://phabricator.wikimedia.org/T213375
+com.bigdata.rdf.store.AbstractTripleStore.inlineURIFactory=org.wikidata.query.rdf.blazegraph.WikibaseInlineUriFactory$V001
+
+# Bump up the branching factor for the lexicon indices on the default kb.
+com.bigdata.namespace.sdc.lex.BLOBS.com.bigdata.btree.BTree.branchingFactor=400
+com.bigdata.namespace.sdc.lex.ID2TERM.com.bigdata.btree.BTree.branchingFactor=599
+com.bigdata.namespace.sdc.lex.TERM2ID.com.bigdata.btree.BTree.branchingFactor=300
+
+# Bump up the branching factor for the statement indices on the default kb.
+com.bigdata.namespace.sdc.spo.JUST.com.bigdata.btree.BTree.branchingFactor=1024
+com.bigdata.namespace.sdc.spo.OSP.com.bigdata.btree.BTree.branchingFactor=866
+com.bigdata.namespace.sdc.spo.POS.com.bigdata.btree.BTree.branchingFactor=954
+com.bigdata.namespace.sdc.spo.SPO.com.bigdata.btree.BTree.branchingFactor=934
