@@ -1,5 +1,6 @@
 class swift::stats::dispersion(
     String $swift_cluster,
+    Wmflib::Ensure $ensure = present,
     Boolean $storage_policies = true,
     $statsd_host   = 'statsd.eqiad.wmnet',
     $statsd_port   = 8125,
@@ -12,7 +13,7 @@ class swift::stats::dispersion(
     ]
 
     file { '/usr/local/bin/swift-dispersion-stats':
-        ensure  => present,
+        ensure  => $ensure,
         owner   => 'root',
         group   => 'root',
         mode    => '0555',
@@ -22,7 +23,7 @@ class swift::stats::dispersion(
 
     # XXX swift-dispersion-populate is not ran/initialized
     cron { 'swift-dispersion-stats':
-        ensure  => present,
+        ensure  => $ensure,
         command => "/usr/local/bin/swift-dispersion-stats --prefix ${statsd_prefix} --statsd-host ${statsd_host} --statsd-port ${statsd_port} >/dev/null 2>&1",
         user    => 'root',
         hour    => '*',
@@ -32,7 +33,7 @@ class swift::stats::dispersion(
 
     if $storage_policies {
         cron { 'swift-dispersion-stats-lowlatency':
-            ensure  => present,
+            ensure  => $ensure,
             command => "/usr/local/bin/swift-dispersion-stats --prefix ${statsd_prefix}.lowlatency --statsd-host ${statsd_host} --statsd-port ${statsd_port} --policy-name lowlatency >/dev/null 2>&1",
             user    => 'root',
             hour    => '*',

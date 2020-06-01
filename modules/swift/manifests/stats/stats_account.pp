@@ -2,6 +2,7 @@ define swift::stats::stats_account (
     $accounts,
     $statsd_prefix,
     $credentials,
+    Wmflib::Ensure $ensure = present,
     $statsd_host = 'statsd.eqiad.wmnet',
     $statsd_port = 8125,
 ) {
@@ -17,6 +18,7 @@ define swift::stats::stats_account (
 
     if $stats_enabled != 'no' {
         file { $account_file:
+            ensure  => $ensure,
             owner   => 'root',
             group   => 'root',
             mode    => '0440',
@@ -24,7 +26,7 @@ define swift::stats::stats_account (
         }
 
         cron { "swift-account-stats_${user}":
-            ensure  => present,
+            ensure  => $ensure,
             command => ". ${account_file} && /usr/local/bin/swift-account-stats --prefix ${account_statsd_prefix} --statsd-host ${statsd_host} --statsd-port ${statsd_port} 1>/dev/null",
             user    => 'root',
             hour    => '*',

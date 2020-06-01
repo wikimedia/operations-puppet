@@ -3,8 +3,6 @@
 tlsproxy::nginx_client_max_body_size: "0"
 tlsproxy::localssl::proxy_request_buffering: 'off'
 profile::tlsproxy::instance::bootstrap_protection: true
-swift::stats_reporter::statsd_host: 'localhost'
-swift::stats_reporter::statsd_port: '9125'
 profile::statsite::ensure: 'absent'
 
 profile::prometheus::statsd_exporter::mappings:

@@ -6,6 +6,7 @@ class role::swift::proxy (
     Hash[String, Hash] $replication_accounts = lookup('profile::swift::replication_accounts'), # lint:ignore:wmf_styleguide
     Hash[String, Hash] $replication_keys = lookup('profile::swift::replication_keys'), # lint:ignore:wmf_styleguide
     String $hash_path_suffix = lookup('profile::swift::hash_path_suffix'), # lint:ignore:wmf_styleguide
+    String $stats_reporter_host = lookup('profile::swift::stats_reporter_host'), # lint:ignore:wmf_styleguide
 ) {
     system::role { 'swift::proxy':
         description => 'swift frontend proxy',
@@ -32,6 +33,24 @@ class role::swift::proxy (
     include ::profile::conftool::client
     class { 'conftool::scripts': }
 
+    $stats_ensure = $stats_reporter_host == $::fqdn ? {
+        true  => present,
+        false => absent,
+    }
+
+    class { '::profile::swift::stats_reporter':
+        ensure        => $stats_ensure,
+        swift_cluster => $swift_cluster,
+        accounts      => $accounts,
+        credentials   => $accounts_keys,
+    }
+
+    swift::stats::stats_container { 'mw-media':
+        ensure        => $stats_ensure,
+        account_name  => 'AUTH_mw',
+        container_set => 'mw-media',
+        statsd_prefix => "swift.${swift_cluster}.containers.mw-media",
+    }
 
     class { '::swift::proxy':
         statsd_metric_prefix => "swift.${swift_cluster}.${::hostname}",

@@ -2,13 +2,14 @@ define swift::stats::stats_container (
     $account_name,
     $container_set,
     $statsd_prefix,
-    $statsd_host = 'statsd.eqiad.wmnet',
-    $statsd_port = 8125,
+    Wmflib::Ensure $ensure = present,
+    $statsd_host = 'localhost',
+    $statsd_port = 9125,
 ) {
     $account_file = "/etc/swift/account_${account_name}.env"
 
     cron { "swift-container-stats_${title}":
-        ensure  => present,
+        ensure  => $ensure,
         command => ". ${account_file} && /usr/local/bin/swift-container-stats --prefix ${statsd_prefix} --statsd-host ${statsd_host} --statsd-port ${statsd_port} --ignore-unknown --container-set ${container_set} 1>/dev/null",
         user    => 'root',
         hour    => '*',
