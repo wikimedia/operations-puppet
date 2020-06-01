@@ -93,6 +93,7 @@ class profile::idp(
         manage_user            => $cas_manage_user,
         log_dir                => $log_dir,
         memcached_enable       => $memcached_enable,
+        memcached_port         => 11213  # we use mcrouter which is on this port
     }
 
     ferm::service {'cas-https':
