@@ -53,8 +53,8 @@ class dumps::web::fetches::stats(
     # Copying only the last 2 dumps explicitely
     # --delete will take care of deleting old ones
     # Dates portions of the command are extracted as variables for reusability
-    $date1_cmd = "\$\$(/bin/date --date=\"\$\$(/bin/date +%%Y-%%m-15) -1 month\" +\"%%Y-%%m\")"
-    $date2_cmd = "\$\$(/bin/date --date=\"\$\$(/bin/date +%%Y-%%m-15) -2 month\" +\"%%Y-%%m\")"
+    $date1_cmd = "\$(/bin/date --date=\"\$(/bin/date +%Y-%m-15) -1 month\" +\"%Y-%m\")"
+    $date2_cmd = "\$(/bin/date --date=\"\$(/bin/date +%Y-%m-15) -2 month\" +\"%Y-%m\")"
     dumps::web::fetches::analytics::job { 'mediawiki_history_dumps':
         hdfs_source           => "${src_hdfs}/mediawiki/history/{${date1_cmd},${date2_cmd}}",
         local_destination     => "${miscdatasetsdir}/mediawiki_history/",
