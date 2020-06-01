@@ -15,6 +15,7 @@ prometheus::server::mysqld_exporter::mysql::user: prometheus-mysqld-exporter
 profile::prometheus::k8s::staging::thanos: true
 profile::prometheus::analytics::thanos: true
 profile::prometheus::services::thanos: true
+profile::prometheus::k8s::thanos: true
 
 profile::lvs::realserver::use_conftool: true
 profile::lvs::realserver::pools:

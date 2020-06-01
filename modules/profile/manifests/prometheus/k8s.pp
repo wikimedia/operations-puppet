@@ -4,6 +4,7 @@
 class profile::prometheus::k8s (
     $users = hiera('k8s_infrastructure_users'), # lint:ignore:wmf_styleguide
     String $replica_label = lookup('prometheus::replica_label', { 'default_value' => 'unset' }),
+    Boolean $enable_thanos_upload = lookup('profile::prometheus::k8s::thanos', { 'default_value' => false }),
 ){
     $targets_path = '/srv/prometheus/k8s/targets'
     $storage_retention = hiera('prometheus::server::storage_retention', '4032h')
@@ -251,6 +252,11 @@ class profile::prometheus::k8s (
         },
     ]
 
+    $max_block_duration = $enable_thanos_upload ? {
+        true    => '2h',
+        default => '24h',
+    }
+
     prometheus::server { 'k8s':
         listen_address        => '127.0.0.1:9906',
         storage_retention     => $storage_retention,
@@ -258,6 +264,8 @@ class profile::prometheus::k8s (
         memory_chunks         => $memory_chunks,
         global_config_extra   => $config_extra,
         scrape_configs_extra  => $scrape_configs_extra,
+        min_block_duration    => '2h',
+        max_block_duration    => $max_block_duration,
     }
 
     prometheus::web { 'k8s':
@@ -267,6 +275,7 @@ class profile::prometheus::k8s (
     profile::thanos::sidecar { 'k8s':
         prometheus_port     => 9906,
         prometheus_instance => 'k8s',
+        enable_upload       => $enable_thanos_upload,
     }
 
     prometheus::rule { 'rules_k8s.yml':
