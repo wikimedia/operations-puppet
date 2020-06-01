@@ -106,3 +106,4 @@ profile::idp::idp_failover: idp-test2001.wikimedia.org
 profile::idp::is_staging_host: true
 profile::idp::memcached_enable: true
 profile::idp::memcached::mcrouter_cluster: 'idp-test'
+profile::prometheus::memcached_exporter::arguments: '--memcached.address=localhost:11000'

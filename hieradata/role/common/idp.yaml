@@ -104,3 +104,4 @@ profile::idp::actuators:
   - prometheus
   - sso
 profile::idp::is_staging_host: false
+profile::prometheus::memcached_exporter::arguments: '--memcached.address=localhost:11000'
