@@ -1,0 +1,3 @@
+profile::idp::memcached::ensure: present
+profile::idp::memcached::idp_nodes: []
+profile::idp::memcached::mcrouter_cluster: idp

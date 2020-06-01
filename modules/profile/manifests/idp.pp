@@ -15,8 +15,7 @@ class profile::idp(
     Array[String]          $actuators              = lookup('profile::idp::actuators'),
     Stdlib::Fqdn           $idp_primary            = lookup('profile::idp::idp_primary'),
     Boolean                $is_staging_host        = lookup('profile::idp::is_staging_host'),
-    Wmflib::Ensure         $mcrouter_ensure        = lookup('profile::idp::mcrouter_ensure'),
-    String[1]              $mcrouter_cluster       = lookup('profile::idp::mcrouter_cluster'),
+    Boolean                $memcached_enable       = lookup('profile::idp::memcached_enable'),
     Optional[Stdlib::Fqdn] $idp_failover           = lookup('profile::idp::idp_failover',
                                                             {'default_value' => undef}),
     Optional[String]       $totp_signing_key       = lookup('profile::idp::totp_signing_key',
@@ -37,10 +36,6 @@ class profile::idp(
 
     backup::set { 'idp': }
 
-    $memcached_enable = $mcrouter_ensure ? {
-        'present' => true,
-        default   => false,
-    }
     $jmx_port = 9200
     $jmx_config = '/etc/prometheus/cas_jmx_exporter.yaml'
     $jmx_jar = '/usr/share/java/prometheus/jmx_prometheus_javaagent.jar'
@@ -113,59 +108,10 @@ class profile::idp(
         config_file      => $jmx_config,
         content          => file('profile/idp/cas_jmx_exporter.yaml'),
     }
-
-
-    class {'memcached': }
-    class { 'profile::prometheus::memcached_exporter': }
-
-    $mcrouter_port = 11214
-    $servers = $apereo_cas::idp_nodes.map |Stdlib::Host $host| {
-        ($host == $facts['fqdn']) ? {
-            true    => "127.0.0.1:${memcached::port}:ascii:plain",
-            default => "${host.ipresolve}:${mcrouter_port}:ascii:ssl",
+    if $memcached_enable {
+        class {'profile::idp::memcached':
+            idp_nodes => $apereo_cas::idp_nodes,
         }
     }
-    $pools = {$mcrouter_cluster => {'servers' => $servers}}
-    $routes = [{
-        'aliases' => [ "/${::site}/${mcrouter_cluster}/" ],
-        'route'   => {
-            'type'               => 'OperationSelectorRoute',
-            'default_policy'     => "AllSyncRoute|Pool|${mcrouter_cluster}",
-            'operation_policies' => {
-                'get'    => "LatestRoute|Pool|${mcrouter_cluster}",
-                'add'    => "AllSyncRoute|Pool|${mcrouter_cluster}",
-                'delete' => "AllSyncRoute|Pool|${mcrouter_cluster}",
-                'set'    => "AllSyncRoute|Pool|${mcrouter_cluster}",
-            },
-        },
-    }]
 
-    base::expose_puppet_certs{'/etc/mcrouter':
-        provide_private => true,
-        group           => 'mcrouter',
-    }
-    $ssl_options = {
-        'port'    => 11214,
-        'cert'    => '/etc/mcrouter/ssl/cert.pem',
-        'key'     => '/etc/mcrouter/ssl/server.key',
-        'ca_cert' => $facts['puppet_config']['hostcert'],
-    }
-    class {'mcrouter':
-        ensure      => $mcrouter_ensure,
-        region      => $::site,
-        cluster     => $mcrouter_cluster,
-        pools       => $pools,
-        routes      => $routes,
-        ssl_options => $ssl_options,
-    }
-    class {'profile::prometheus::mcrouter_exporter': }
-
-    ferm::service {'mcrouter':
-        ensure  => $mcrouter_ensure,
-        desc    => 'Allow connections to mcrouter',
-        proto   => 'tcp',
-        notrack => true,
-        port    => $mcrouter_port,
-        srange  => "@resolve((${apereo_cas::idp_nodes.join(' ')}))",
-    }
 }
