@@ -1249,8 +1249,8 @@ node /^install[12]003\.wikimedia\.org$/ {
     role(installserver::light)
 }
 
-# T254157
-node 'install4001.wikimedia.org' {
+# new install servers in POPs (T254157, T252526, T242602)
+node /^install[345]001\.wikimedia\.org$/ {
     role(insetup)
 }
 
