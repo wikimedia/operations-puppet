@@ -102,4 +102,10 @@ class icinga::monitor::performance {
         contact_group => 'team-performance',
         notes_url     => 'https://phabricator.wikimedia.org/T203485',
     }
+
+    monitoring::grafana_alert { 'search-alerts':
+        dashboard_uid => 'IpmyFNzMz',
+        contact_group => 'team-performance',
+        notes_url     => 'https://phabricator.wikimedia.org/T203485',
+    }
 }
