@@ -31,6 +31,7 @@ class profile::idp::memcached (
     base::expose_puppet_certs{'/etc/mcrouter':
         provide_private => true,
         group           => 'mcrouter',
+        user            => 'mcrouter',
     }
     $ssl_options = {
         'port'    => 11214,
