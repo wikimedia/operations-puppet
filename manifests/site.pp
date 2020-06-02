@@ -401,7 +401,7 @@ node 'db1081.eqiad.wmnet' {
 
 # eqiad replicas
 # See also db1097, db1103, db1144 and db1146 below
-node /^db1(084|091|121|138|142|143|147|149)\.eqiad\.wmnet/ {
+node /^db1(084|091|121|138|142|143|147|148|149)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
 
@@ -532,7 +532,7 @@ node /^db2(084|085|086|087|088|089|091|137|138)\.codfw\.wmnet/ {
 }
 
 # eqiad replicas to be installed T251614
-node /^db11(45|48)\.eqiad\.wmnet/ {
+node /^db11(45)\.eqiad\.wmnet/ {
     role(spare::system)
 }
 
