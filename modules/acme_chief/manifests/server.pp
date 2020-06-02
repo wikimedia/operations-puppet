@@ -255,7 +255,7 @@ class acme_chief::server (
         notes_url    => 'https://wikitech.wikimedia.org/wiki/Acme-chief',
     }
 
-    $timer_ensure = $is_active ? {
+    $timer_ensure = ($is_active and $passive_host != '') ? {
         true  => 'present',
         false => 'absent'
     }
