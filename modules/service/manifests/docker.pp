@@ -21,6 +21,13 @@
 #
 # [*image_name*]
 #   Name of the Docker image.  Default: $title
+# [*volume*]
+#   Whether a volume should be reserved for the configuration file. This is here
+#   just to bypass a 64KB limitation of horizon, so don't use it for other
+#   reasons. If set to true, then instead of bind mounting /etc/${title} from
+#   the host, a named docker volume $title will be mounted. The entire lifecycle
+#   management of that docker volume is left up to the user of the volume. So
+#   precreate it and prepopulate it please
 #
 define service::docker(
     Wmflib::UserIpPort $port,
@@ -31,6 +38,7 @@ define service::docker(
     String $override_cmd = '',
     Hash $environment = {},
     String $image_name = $title,
+    String $volume = false,
 ) {
     # Our docker registry is *not* configurable here.
     $registry = 'docker-registry.wikimedia.org'
@@ -50,12 +58,14 @@ define service::docker(
         mode   => '0755',
     }
 
-    file { "/etc/${title}/config.yaml":
-        ensure  => $ensure,
-        content => ordered_yaml($config),
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
+    if $volume == false {
+        file { "/etc/${title}/config.yaml":
+            ensure  => $ensure,
+            content => ordered_yaml($config),
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0444',
+        }
     }
 
     # Make sure we have at least one version installed. It's strongly
