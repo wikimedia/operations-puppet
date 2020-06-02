@@ -31,6 +31,16 @@ def url_template():
     return "http://puppetmaster.cloudinfra.wmflabs.org:8101/v1/"
 
 
+def all_projects():
+    url = url_template() + "projects"
+    req = requests.get(url, verify=False)
+    if req.status_code != 200:
+        data = []
+    else:
+        data = yaml.safe_load(req.text)
+    return data['projects']
+
+
 def all_prefixes(project):
     """Return a list of prefixes for a given project
     """
@@ -54,9 +64,18 @@ def delete_prefix(project, prefix):
 
 
 def purge_duplicates(delete=False):
-    for project in clients.allprojects():
-        prefixes = all_prefixes(project.id)
-        instances = clients.allinstances(project.id, allregions=True)
+    keystone_projects = [project.id for project in clients.allprojects()]
+    for project in all_projects():
+        if project not in keystone_projects:
+            print("Project %s has puppet prefixes but is not in keystone." % project)
+            for prefix in all_prefixes(project):
+                print("stray prefix: %s" % prefix)
+                if delete:
+                    delete_prefix(project, prefix)
+            continue
+
+        prefixes = all_prefixes(project)
+        instances = clients.allinstances(project, allregions=True)
 
         all_nova_instances_legacy = ["%s.%s.eqiad.wmflabs" % (instance.name.lower(),
                                                               instance.tenant_id)
@@ -73,9 +92,9 @@ def purge_duplicates(delete=False):
             if (prefix not in all_nova_instances and
                     prefix not in all_nova_instances_legacy and
                     prefix not in all_nova_shortname_instances):
-                print "stray prefix: %s" % prefix
+                print("stray prefix: %s" % prefix)
                 if delete:
-                    delete_prefix(project.id, prefix)
+                    delete_prefix(project, prefix)
 
 
 parser = argparse.ArgumentParser(
