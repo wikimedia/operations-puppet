@@ -5,5 +5,5 @@ profile::zuul::server::service_ensure: stopped
 profile::zuul::server::service_enable: false
 
 profile::ci::docker::settings:
-  data-root: '/mnt/docker'
+  data-root: '/srv/docker'
   iptables: false
