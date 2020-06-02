@@ -68,7 +68,7 @@ if $_trusted_certname =~ '\.wmflabs$' or $_trusted_certname =~ '\.wikimedia.clou
     $dnsconfig = lookup('labsdnsconfig',Hash, 'hash', {})
     $nameservers = [
         ipresolve($dnsconfig['recursor'], 4),
-        ipresolve($dnsconfig['recursor_secondary'], 4)
+        #ipresolve($dnsconfig['recursor_secondary'], 4)
     ]
 } else {
     $realm = 'production'
