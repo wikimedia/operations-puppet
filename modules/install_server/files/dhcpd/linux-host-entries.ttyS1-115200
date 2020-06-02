@@ -3093,73 +3093,87 @@ host ganeti1008 {
 }
 
 host ganeti1009 {
-        hardware ethernet 4C:D9:8F:66:1D:C9;
-        fixed-address ganeti1009.eqiad.wmnet;
+    hardware ethernet 4C:D9:8F:66:1D:C9;
+    fixed-address ganeti1009.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host ganeti1010 {
-        hardware ethernet 4C:D9:8F:66:1D:D9;
-        fixed-address ganeti1010.eqiad.wmnet;
+    hardware ethernet 4C:D9:8F:66:1D:D9;
+    fixed-address ganeti1010.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host ganeti1011 {
-        hardware ethernet 4C:D9:8F:66:0B:B2;
-        fixed-address ganeti1011.eqiad.wmnet;
+    hardware ethernet 4C:D9:8F:66:0B:B2;
+    fixed-address ganeti1011.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host ganeti1012 {
-        hardware ethernet 4C:D9:8F:65:FD:91;
-        fixed-address ganeti1012.eqiad.wmnet;
+    hardware ethernet 4C:D9:8F:65:FD:91;
+    fixed-address ganeti1012.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host ganeti1013 {
-        hardware ethernet 4C:D9:8F:66:2A:6F;
-        fixed-address ganeti1013.eqiad.wmnet;
+    hardware ethernet 4C:D9:8F:66:2A:6F;
+    fixed-address ganeti1013.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host ganeti1014 {
-        hardware ethernet 4C:D9:8F:65:F3:91;
-        fixed-address ganeti1014.eqiad.wmnet;
+    hardware ethernet 4C:D9:8F:65:F3:91;
+    fixed-address ganeti1014.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host ganeti1015 {
-        hardware ethernet 4C:D9:8F:66:31:7F;
-        fixed-address ganeti1015.eqiad.wmnet;
+    hardware ethernet 4C:D9:8F:66:31:7F;
+    fixed-address ganeti1015.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host ganeti1016 {
-        hardware ethernet 4C:D9:8F:49:87:B2;
-        fixed-address ganeti1016.eqiad.wmnet;
+    hardware ethernet 4C:D9:8F:49:87:B2;
+    fixed-address ganeti1016.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host ganeti1017 {
-        hardware ethernet 4C:D9:8F:66:20:F9;
-        fixed-address ganeti1017.eqiad.wmnet;
+    hardware ethernet 4C:D9:8F:66:20:F9;
+    fixed-address ganeti1017.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host ganeti1018 {
-        hardware ethernet 4C:D9:8F:66:3C:FD;
-        fixed-address ganeti1018.eqiad.wmnet;
+    hardware ethernet 4C:D9:8F:66:3C:FD;
+    fixed-address ganeti1018.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host ganeti1019 {
     hardware ethernet 4C:D9:8F:66:2F:67;
     fixed-address ganeti1019.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host ganeti1020 {
     hardware ethernet 4C:D9:8F:66:2A:67;
     fixed-address ganeti1020.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host ganeti1021 {
     hardware ethernet 4C:D9:8F:66:35:F3;
     fixed-address ganeti1021.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host ganeti1022 {
     hardware ethernet 4C:D9:8F:66:2C:B7;
     fixed-address ganeti1022.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host ganeti2001 {
@@ -3213,81 +3227,97 @@ host ganeti2008 {
 host ganeti2009 {
     hardware ethernet 4C:D9:8F:6D:AD:20;
     fixed-address ganeti2009.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host ganeti2010 {
     hardware ethernet 4C:D9:8F:6D:A0:85;
     fixed-address ganeti2010.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host ganeti2011 {
     hardware ethernet 4C:D9:8F:6D:B6:B5;
     fixed-address ganeti2011.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host ganeti2012 {
     hardware ethernet 4C:D9:8F:6D:A7:76;
     fixed-address ganeti2012.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host ganeti2013 {
     hardware ethernet 4C:D9:8F:6D:A8:86;
     fixed-address ganeti2013.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host ganeti2014 {
     hardware ethernet 4C:D9:8F:6D:AE:22;
     fixed-address ganeti2014.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host ganeti2015 {
     hardware ethernet 4C:D9:8F:6D:A9:78;
     fixed-address ganeti2015.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host ganeti2016 {
     hardware ethernet 4C:D9:8F:6D:B7:15;
     fixed-address ganeti2016.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host ganeti2017 {
     hardware ethernet 4C:D9:8F:6D:B0:5D;
     fixed-address ganeti2017.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host ganeti2018 {
     hardware ethernet 4C:D9:8F:6D:A9:70;
     fixed-address ganeti2018.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host ganeti2019 {
     hardware ethernet 4C:D9:8F:A0:20:B9;
     fixed-address ganeti2019.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host ganeti2020 {
     hardware ethernet 4C:D9:8F:A0:24:4A;
     fixed-address ganeti2020.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host ganeti2021 {
     hardware ethernet 4C:D9:8F:A0:30:81;
     fixed-address ganeti2021.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host ganeti2022 {
     hardware ethernet 4C:D9:8F:A0:19:08;
     fixed-address ganeti2022.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host ganeti2023 {
     hardware ethernet 4C:D9:8F:A0:15:35;
     fixed-address ganeti2023.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host ganeti2024 {
     hardware ethernet 4C:D9:8F:A0:22:2B;
     fixed-address ganeti2024.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host ganeti3001 {
