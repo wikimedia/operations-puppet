@@ -102,6 +102,7 @@ class mediawiki::web::beta_sites {
                 'commons.wikimedia.beta.wmflabs.org',
                 'deployment.wikimedia.beta.wmflabs.org',
                 'meta.wikimedia.beta.wmflabs.org',
+                'api.wikimedia.beta.wmflabs.org',
             ],
             priority        => 16,
             variant_aliases => [],
