@@ -15,6 +15,8 @@ define systemd::sysuser(
     Array[Systemd::Sysuser::Config] $content,
     Wmflib::Ensure $ensure=present,
 ){
+    require systemd
+
     $safe_title = regsubst($title, '[\W_/]', '-', 'G')
     $conf_path = "/etc/sysusers.d/${safe_title}.conf"
 
