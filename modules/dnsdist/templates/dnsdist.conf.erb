@@ -20,8 +20,8 @@ tlsOptions = {
 }
 
 -- enable DoH (default port is 443)
-addDOHLocal('0.0.0.0', '<%= @tls_config['cert_chain_path'] %>', '<%= @tls_config['cert_privkey_path'] %>', tlsOptions)
-addDOHLocal('[::]', '<%= @tls_config['cert_chain_path'] %>', '<%= @tls_config['cert_privkey_path'] %>', tlsOptions)
+addDOHLocal('0.0.0.0', '<%= @tls_config['cert_chain_path'] %>', '<%= @tls_config['cert_privkey_path'] %>', '<%= @doh_base_url %>', tlsOptions)
+addDOHLocal('[::]', '<%= @tls_config['cert_chain_path'] %>', '<%= @tls_config['cert_privkey_path'] %>', '<%= @doh_base_url %>', tlsOptions)
 
 -- enable DoT (default port is 853)
 addTLSLocal('0.0.0.0', '<%= @tls_config['cert_chain_path'] %>', '<%= @tls_config['cert_privkey_path'] %>', tlsOptions)

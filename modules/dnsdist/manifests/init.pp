@@ -10,6 +10,9 @@
 #  [*tls_config*]
 #    [Dnsdist::TLS_config] TLS configuration settings. see types/tls_config.
 #
+#  [*doh_base_url*]
+#    [string] URL to accept DoH queries on. default: /dns-query.
+#
 #  [*qps_max*]
 #    [int] maximum number of queries allowed per second from an IP. default: 10.
 #
@@ -22,6 +25,7 @@
 class dnsdist (
     Hash[String, Dnsdist::Resolver] $resolvers,
     Dnsdist::TLS_config             $tls_config,
+    String                          $doh_base_url    = '/dns-query',
     Integer[1]                      $qps_max         = 10,
     Boolean                         $packetcache     = true,
     Integer[1]                      $packetcache_max = 10000000,
