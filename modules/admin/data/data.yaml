@@ -4295,3 +4295,7 @@ ldap_only_users:
     ensure: present
     realname: Nik Gkountas
     email: ngkountas@wikimedia.org
+  lulu:
+    ensure: present
+    realname: Yi-Ju Lu
+    email: l852888@gmail.com
