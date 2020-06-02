@@ -22,6 +22,8 @@ profile::tlsproxy::envoy::services:
 profile::tlsproxy::envoy::global_cert_name: 'thanos-swift.discovery.wmnet'
 profile::tlsproxy::envoy::use_remote_address: true
 
+profile::swift::stats_reporter_host: 'thanos-fe2001.codfw.wmnet'
+
 profile::prometheus::statsd_exporter::mappings:
   # Authentication subsystem (tempauth)
   - match: swift.*.*.tempauth.AUTH_.errors

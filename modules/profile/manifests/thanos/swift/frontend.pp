@@ -7,6 +7,7 @@ class profile::thanos::swift::frontend (
     String $hash_path_suffix = lookup('profile::thanos::swift::hash_path_suffix'),
     Hash[String, Hash] $swift_accounts = lookup('profile::thanos::swift::accounts'),
     Hash[String, String] $swift_keys = lookup('profile::thanos::swift::accounts_keys'),
+    String $stats_reporter_host = lookup('profile::swift::stats_reporter_host'),
 ) {
 
     class { '::swift':
@@ -37,6 +38,18 @@ class profile::thanos::swift::frontend (
     include ::profile::statsite
     class { '::profile::prometheus::statsd_exporter':
         relay_address => '',
+    }
+
+    $stats_ensure = $stats_reporter_host == $::fqdn ? {
+        true  => present,
+        false => absent,
+    }
+
+    class { '::profile::swift::stats_reporter':
+        ensure        => $stats_ensure,
+        swift_cluster => $swift_cluster,
+        accounts      => $swift_accounts,
+        credentials   => $swift_keys,
     }
 
     ferm::client { 'swift-object-server-client':
