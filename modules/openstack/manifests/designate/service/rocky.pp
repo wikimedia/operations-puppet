@@ -33,4 +33,30 @@ class openstack::designate::service::rocky
         mode   => '0644',
         source => 'puppet:///modules/openstack/rocky/toozpatch/tooz-memcached.py';
     }
+
+    # Hack to fix domain deletion
+    # Upstream bug: https://bugs.launchpad.net/designate/+bug/1880230
+    # This will need to be forwarded to S and T, at least
+    file { '/usr/lib/python3/dist-packages/designate/backend/impl_pdns4.py':
+        ensure => 'present',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0644',
+        source => 'puppet:///modules/openstack/rocky/designate/hacks/impl_pdns4.py';
+    }
+
+    if os_version('debian >= buster') {
+        # Hack around drastic failure of ThreadPoolExecutor with python 3.7
+        # Upstream bug: https://bugs.launchpad.net/designate/+bug/1782647
+        # This is only needed on buster, and is fixed in the upstream in S
+        file { '/usr/lib/python3/dist-packages/designate/worker/processing.py':
+            ensure => 'present',
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0644',
+            source => 'puppet:///modules/openstack/rocky/designate/hacks/processing.py';
+        }
+    }
+
+
 }
