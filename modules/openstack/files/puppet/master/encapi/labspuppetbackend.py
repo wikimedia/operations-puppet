@@ -92,6 +92,30 @@ def get_all_roles():
         cur.close()
 
 
+@statsd.timer('get_all_projects')
+@app.route('/v1/projects', methods=['GET'])
+def get_all_projects():
+    cur = g.db.cursor()
+    try:
+        cur.execute("""
+            SELECT distinct prefix.project FROM prefix
+        """)
+        projects = [r[0] for r in cur.fetchall()]
+        if len(projects) == 0:
+            return Response(
+                yaml.dump({'status': 'notfound'}),
+                status=404,
+                mimetype='application/x-yaml'
+            )
+        return Response(
+            yaml.dump({'projects': projects}),
+            status=200,
+            mimetype='application/x-yaml'
+        )
+    finally:
+        cur.close()
+
+
 @statsd.timer('set_roles')
 @app.route('/v1/<string:project>/prefix/<string:prefix>/roles', methods=['POST'])
 def set_roles(project, prefix):
