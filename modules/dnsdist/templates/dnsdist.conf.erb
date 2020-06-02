@@ -10,12 +10,12 @@ addAction(MaxQPSIPRule(<%= @qps_max %>), DropAction())
 
 -- TLS configuration options for DoH and DoT
 tlsOptions = {
-  minTLSVersion: '<%= @tls_config['min_tls_version'] %>',
+  minTLSVersion='<%= @tls_config['min_tls_version'] %>',
 <% if @tls_config.has_key?('ciphers_tls13') -%>
-  ciphersTLS13: '<%= @tls_config['ciphers_tls13'].join(':') %>',
+  ciphersTLS13='<%= @tls_config['ciphers_tls13'].join(':') %>',
 <% end -%>
 <% if @tls_config.has_key?('ciphers') -%>
-  ciphers: '<%= @tls_config['ciphers'].join(':') %>',
+  ciphers='<%= @tls_config['ciphers'].join(':') %>',
 <% end -%>
 }
 
