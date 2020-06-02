@@ -2,7 +2,7 @@ define monitoring::service(
     Optional[String] $description,
     String $check_command,
     String $notes_url,
-    Stdlib::Host $host      = $::hostname,
+    Variant[Stdlib::Host,String] $host = $::hostname,
     Integer $retries        = 3,
     Optional[String] $group = undef,
     Wmflib::Ensure $ensure  = present,
