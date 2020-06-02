@@ -15,7 +15,9 @@ class systemd {
     $override_dir = '/etc/systemd/system'
 
     file { '/etc/sysusers.d':
-        ensure => directory,
+        ensure  => directory,
+        purge   => true,
+        recurse => true,
     }
 
     file { '/usr/local/lib/nagios/plugins/check_journal_pattern':

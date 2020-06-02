@@ -45,9 +45,7 @@ class adduser (
         content => template('adduser/etc/adduser.conf.erb'),
     }
 
-    file {'/etc/sysusers.d/sysusers-base.conf':
-        ensure  => file,
-        mode    => '0444',
-        content => template('adduser/sysusers-base.conf.erb'),
+    systemd::sysuser { 'sysusers-base-config':
+        content => ['usertype' => 'r', 'name' => '-', 'id' => "${first_system_uid}-${last_system_uid}"]
     }
 }
