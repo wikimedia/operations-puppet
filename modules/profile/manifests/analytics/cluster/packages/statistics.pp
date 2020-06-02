@@ -30,27 +30,29 @@ class profile::analytics::cluster::packages::statistics {
         'libtext-csv-xs-perl',    # T199131
         'sqlite3',                # For storing and interacting with intermediate results
         'libproj-dev',            # Requested by lzia for rgdal
-        'libbz2-dev',             # for compiling some python libs. T84378
+        'libbz2-dev',             # For compiling some python libs. T84378
         'libboost-regex-dev',     # Ironholds wants these
         'libboost-system-dev',
         'libgoogle-glog-dev',
         'libboost-iostreams-dev',
         'libmaxminddb-dev',
         'build-essential',        # Requested by halfak to install SciPy
-        'libssl-dev',             # Requested by bearloga; necessary for an essential R package (openssl)
-        'libcurl4-openssl-dev',   # Requested by bearloga for an essential R package (devtools)
+        'libssl-dev',             # Requested by bearloga; necessary for an essential R package {openssl}
+        'libcurl4-openssl-dev',   # Requested by bearloga for an essential R package {devtools}
         'libicu-dev',             # ^
         'libssh2-1-dev',          # ^
-        'pandoc',                 # Requested by bearloga; necessary for using RMarkdown and performing format conversions
+        'pandoc',                 # Requested by bearloga for using RMarkdown and performing format conversions
+        'pandoc-citeproc',        # ^
         'lynx',                   # Requested by dcausse to be able to inspect yarn's logs from analytics10XX hosts
         'gsl-bin',
         'libgsl-dev',
-        'libgdal-dev',      # Requested by lzia for rgdal
+        'libgdal-dev',            # Requested by lzia for rgdal
         'g++',
-        'libyaml-cpp-dev',  # Latest version of uaparser (https://github.com/ua-parser/uap-r) supports v0.5+
+        'libyaml-cpp-dev',        # Latest version of uaparser (https://github.com/ua-parser/uap-r) supports v0.5+
         'php-cli',
         'php-curl',
         'php-mysql',
+        'libfontconfig1-dev',     # For {systemfonts} R pkg dep of {hrbrthemes} pkg for dataviz (T254278)
     ])
 
     if !defined(Package['nodejs']) {
@@ -94,18 +96,18 @@ class profile::analytics::cluster::packages::statistics {
         'libapache2-mod-python',
         'python3-mock',
         'python3-mysqldb',
-        'python3-boto',  # Amazon S3 access (to get zero sms logs)
+        'python3-boto',              # Amazon S3 access (to get zero sms logs)
         'python3-ua-parser',
         'python3-netaddr',
         'python3-pymysql',
-        'python3-virtualenv', # T84378
+        'python3-virtualenv',        # T84378
         'python3-venv',
-        'python3-dev',        # T83316
+        'python3-dev',               # T83316
         'python3-protobuf',
         'python3-unidecode',
-        'python3-oauth2client',         # T197896
-        'python3-oauthlib',             # T197896
-        'python3-requests-oauthlib',    # T197896
+        'python3-oauth2client',      # T197896
+        'python3-oauthlib',          # T197896
+        'python3-requests-oauthlib', # T197896
         'python3-ua-parser',
     ])
 
