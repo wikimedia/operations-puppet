@@ -1,14 +1,23 @@
 class profile::mediawiki::maintenance::cirrussearch {
-    # Rebuilds the completion suggester indices daily. The `|| true` statement
-    # ensures one failing wiki doesn't fail the entire job. This job, as of
+
+
+    file { '/usr/local/bin/cirrus_build_completion_indices.sh':
+        ensure => 'present',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/profile/mediawiki/maintenance/cirrus_build_completion_indices.sh',
+    }
+
+    # Rebuilds the completion suggester indices daily. This job, as of
     # mar 2015, takes around 5 hours to run.
     profile::mediawiki::periodic_job { 'cirrus_build_completion_indices_eqiad':
-        command  => '/usr/local/bin/expanddblist all | xargs -I{} -P 4 sh -c \'/usr/local/bin/mwscript extensions/CirrusSearch/maintenance/UpdateSuggesterIndex.php --wiki={} --masterTimeout=10m --replicationTimeout=5400 --indexChunkSize 3000 --cluster=eqiad --optimize || true\'',
+        command  => '/usr/local/bin/cirrus_build_completion_indices.sh eqiad',
         interval => '02:30',
     }
 
     profile::mediawiki::periodic_job { 'cirrus_build_completion_indices_codfw':
-        command  => '/usr/local/bin/expanddblist all | xargs -I{} -P 4 sh -c \'/usr/local/bin/mwscript extensions/CirrusSearch/maintenance/UpdateSuggesterIndex.php --wiki={} --masterTimeout=10m --replicationTimeout=5400 --indexChunkSize 3000 --cluster=codfw --optimize || true\'',
+        command  => '/usr/local/bin/cirrus_build_completion_indices.sh codfw',
         interval => '02:30',
     }
 
