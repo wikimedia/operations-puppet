@@ -54,7 +54,7 @@
 #
 # [*swift_auth_url*]
 #   The authentication URL to be used for image storage.
-#   Setting this to undef will prevent swift form being configured.
+#   Setting this to undef or false will prevent swift form being configured.
 #
 # [*swift_user*]
 #   The user to connect to SWIFT for image storage as.
@@ -101,7 +101,7 @@ class netbox(
     Wmflib::Ensure $ensure='present',
     Optional[Stdlib::Fqdn] $ldap_server = undef,
     Boolean $include_ldap = false,
-    Optional[Stdlib::HTTPUrl] $swift_auth_url = undef,
+    Variant[Stdlib::HTTPUrl, Boolean, Undef] $swift_auth_url = undef,
     Optional[String] $swift_user = undef,
     Optional[String] $swift_key = undef,
     Optional[String] $swift_container = undef,

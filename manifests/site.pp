@@ -1955,6 +1955,10 @@ node /^netboxdb(1001|2001)\.(eqiad|codfw)\.wmnet$/ {
     role(netbox::database)
 }
 
+node /^netbox-dev2001\.wikimedia\.org$/ {
+    role(netbox::standalone)
+}
+
 # network monitoring tools, stretch (T125020, T166180)
 node /^netmon(1002|2001)\.wikimedia\.org$/ {
     role(netmon)

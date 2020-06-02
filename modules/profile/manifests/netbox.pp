@@ -54,7 +54,7 @@ class profile::netbox (
     Optional[String] $librenms_db_name = lookup('profile::librenms::dbname', {'default_value' => undef}),
     Stdlib::Port $librenms_db_port = lookup('profile::librenms::dbport', {'default_value' => 3306}),
 
-    Optional[Stdlib::HTTPUrl] $swift_auth_url = lookup('netbox::swift_auth_url', {'default_value' => undef}),
+    Variant[Stdlib::HTTPUrl, Boolean, Undef] $swift_auth_url = lookup('netbox::swift_auth_url', {'default_value' => undef}),
     Optional[String] $swift_user = lookup('netbox::swift_user', {'default_value' => undef}),
     Optional[String] $swift_key = lookup('netbox::swift_key', {'default_value' => undef}),
     Optional[String] $swift_container = lookup('netbox::swift_container', {'default_value' => undef}),

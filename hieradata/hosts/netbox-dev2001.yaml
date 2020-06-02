@@ -1,0 +1,16 @@
+# Configure dev server for standalone usage
+profile::netbox::active_server: netbox-dev2001.wikimedia.org
+profile::netbox::service_hostname: netbox-next.wikimedia.org
+profile::netbox::db::primary: netbox-dev2001.wikimedia.org
+# profile::netbox::db::password in Private
+# profile::netbox::secret_key in Private
+profile::netbox::netbox_api: "https://%{hiera('profile::netbox::service_hostname')}/"
+profile::netbox::netbox_report_checks: {}
+netbox::swift_auth_url: false
+
+# Configure dev database for standalone
+profile::netbox::secondaries: []
+profile::netbox::frontends: ["netbox-dev2001.wikimedia.org"]
+
+# disable icinga alerting
+profile::base::notifications: disabled
