@@ -1,5 +1,6 @@
 class profile::wikidough (
     Hash[String, Dnsdist::Resolver] $recursive_resolvers = lookup(profile::wikidough::recursive_resolvers),
+    Dnsdist::TLS_config             $tls_config          = lookup(profile::wikidough::tls::config),
 ) {
 
     include network::constants
@@ -22,9 +23,8 @@ class profile::wikidough (
     }
 
     class { 'dnsdist':
-        resolvers    => $recursive_resolvers,
-        cert_chain   => '/etc/acmecerts/wikidough/live/ec-prime256v1.chained.crt',
-        cert_privkey => '/etc/acmecerts/wikidough/live/ec-prime256v1.key',
+        resolvers  => $recursive_resolvers,
+        tls_config => $tls_config,
     }
 
 }

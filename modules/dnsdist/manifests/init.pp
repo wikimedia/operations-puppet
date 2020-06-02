@@ -7,11 +7,8 @@
 #  [*resolvers*]
 #    [hash] downstream recursive resolvers to their configuration. required.
 #
-#  [*cert_chain*]
-#    [path] path to the certificate chain. used for dns-over-https/dns-over-tls. required.
-#
-#  [*cert_privkey*]
-#    [path] path to the certificate private key. used for dns-over-https/dns-over-tls. required.
+#  [*tls_config*]
+#    [Dnsdist::TLS_config] TLS configuration settings. see types/tls_config.
 #
 #  [*qps_max*]
 #    [int] maximum number of queries allowed per second from an IP. default: 10.
@@ -24,8 +21,7 @@
 
 class dnsdist (
     Hash[String, Dnsdist::Resolver] $resolvers,
-    Stdlib::Unixpath                $cert_chain,
-    Stdlib::Unixpath                $cert_privkey,
+    Dnsdist::TLS_config             $tls_config,
     Integer[1]                      $qps_max         = 10,
     Boolean                         $packetcache     = true,
     Integer[1]                      $packetcache_max = 10000000,
