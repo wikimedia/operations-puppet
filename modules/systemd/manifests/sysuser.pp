@@ -33,7 +33,7 @@ define systemd::sysuser(
     }
 
     exec { 'Refresh sysusers':
-        command     => '/usr/bin/systemd-sysusers',
+        command     => '/bin/systemd-sysusers',
         user        => 'root',
         refreshonly => true,
         subscribe   => File[$conf_path],
