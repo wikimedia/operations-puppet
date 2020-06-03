@@ -9,17 +9,19 @@ from keystoneauth1 import session as keystone_session
 with open('/etc/acme-chief/designate-sync-config.yaml') as f:
     config = yaml.safe_load(f)
 
-client = designateclient.Client(
-    session=keystone_session.Session(auth=v3.Password(
-        auth_url=config['OS_AUTH_URL'],
-        username=config['OS_USERNAME'],
-        password=config['OS_PASSWORD'],
-        user_domain_name='default',
-        project_domain_name='default',
-        project_name=config['OS_PROJECT_NAME']
-    )),
-    region_name=config['OS_REGION_NAME']
-)
+project_clients = {}
+for project in config['OS_PROJECT_NAMES']:
+    project_clients[project] = designateclient.Client(
+        session=keystone_session.Session(auth=v3.Password(
+            auth_url=config['OS_AUTH_URL'],
+            username=config['OS_USERNAME'],
+            password=config['OS_PASSWORD'],
+            user_domain_name='default',
+            project_domain_name='default',
+            project_name=project
+        )),
+        region_name=config['OS_REGION_NAME']
+    )
 
 parser = argparse.ArgumentParser(description='Sync DNS changes')
 parser.add_argument('params', metavar='PARAM', nargs='+',
@@ -45,16 +47,19 @@ for i in range(0, len(args.params), 2):
 
     # Find all zones we might want to put this record in
     potential_zones = []
-    for zone in client.zones.list():
-        if domain.endswith('.' + zone['name']):
-            zone['match_specificness'] = len(zone['name'].split('.'))
-            potential_zones.append(zone)
+    for project, client in project_clients.items():
+        for zone in client.zones.list():
+            if domain.endswith('.' + zone['name']):
+                zone['match_specificness'] = len(zone['name'].split('.'))
+                zone['project'] = project
+                potential_zones.append(zone)
 
     # Pick the most specific zone to put it in
     potential_zones.sort(key=lambda z: z['match_specificness'], reverse=True)
     zone = potential_zones[0]
     # This means c.b.a.wmflabs.org will go under b.a.wmflabs.org rather than
     # a.wmflabs.org.
+    client = project_clients[zone['project']]
 
     # Look for existing records to potentially update
     for recordset in client.recordsets.list(zone['id']):

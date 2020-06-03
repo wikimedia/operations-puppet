@@ -4,7 +4,7 @@ class profile::acme_chief::cloud (
     String $designate_sync_auth_url = hiera('profile::acme_chief::cloud::designate_sync_auth_url'),
     String $designate_sync_username = hiera('profile::acme_chief::cloud::designate_sync_username'),
     String $designate_sync_password = hiera('profile::acme_chief::cloud::designate_sync_password'),
-    String $designate_sync_project_name = hiera('profile::acme_chief::cloud::designate_sync_project_name'),
+    Array[String] $designate_sync_project_names = hiera('profile::acme_chief::cloud::designate_sync_project_names'),
     String $designate_sync_region_name = hiera('profile::acme_chief::cloud::designate_sync_region_name'),
     Boolean $designate_sync_tidyup_enabled = hiera('profile::acme_chief::cloud::designate_sync_tidyup_enabled'),
 ) {
@@ -65,11 +65,11 @@ class profile::acme_chief::cloud (
         group   => 'acme-chief',
         mode    => '0400',
         content => ordered_yaml({
-            'OS_AUTH_URL'     => $designate_sync_auth_url,
-            'OS_USERNAME'     => $designate_sync_username,
-            'OS_PASSWORD'     => $designate_sync_password,
-            'OS_PROJECT_NAME' => $designate_sync_project_name,
-            'OS_REGION_NAME'  => $designate_sync_region_name
+            'OS_AUTH_URL'      => $designate_sync_auth_url,
+            'OS_USERNAME'      => $designate_sync_username,
+            'OS_PASSWORD'      => $designate_sync_password,
+            'OS_PROJECT_NAMES' => $designate_sync_project_names,
+            'OS_REGION_NAME'   => $designate_sync_region_name
         })
     }
 }
