@@ -15,6 +15,8 @@
 
     Alias "/strategy" "/srv/org/wikimedia/design-strategy"
 
+    Alias "/blog" "/srv/org/wikimedia/design-blog/_site"
+
     <Directory />
         Options FollowSymLinks
         AllowOverride None
@@ -33,6 +35,12 @@
     </Directory>
 
     <Directory /srv/org/wikimedia/design-strategy>
+        Options Indexes FollowSymLinks MultiViews
+        AllowOverride None
+        Require all granted
+    </Directory>
+
+    <Directory /srv/org/wikimedia/design-blog/_site>
         Options Indexes FollowSymLinks MultiViews
         AllowOverride None
         Require all granted
