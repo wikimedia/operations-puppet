@@ -39,3 +39,5 @@ profile::mediawiki::php::restarts::opcache_limit: 200
 # No Icinga monitoring for systemd state because services
 # can often go down during tests.
 profile::base::monitor_systemd: false
+# T254025
+profile::mediawiki::php::monitoring::monitor_opcache: false

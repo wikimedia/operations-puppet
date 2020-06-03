@@ -6,6 +6,7 @@ class profile::mediawiki::php::monitoring(
     String $fcgi_pool = hiera('profile::mediawiki::fcgi_pool', 'www'),
     Boolean $monitor_page = hiera('profile::mediawiki::php::monitoring::monitor_page', true),
     Array[String] $deployment_nodes = hiera('deployment_hosts', []),
+    Boolean $monitor_opcache = lookup('profile::mediawiki::php::monitoring::monitor_opcache', {default_value => true}),
 ) {
     require ::network::constants
     require ::profile::mediawiki::php
@@ -106,10 +107,12 @@ class profile::mediawiki::php::monitoring(
         group  => 'root',
         mode   => '0555',
     }
-    nrpe::monitor_service { 'opcache':
-        description  => 'PHP opcache health',
-        nrpe_command => '/usr/local/lib/nagios/plugins/nrpe_check_opcache -w 100 -c 50',
-        notes_url    => 'https://wikitech.wikimedia.org/wiki/Application_servers/Runbook#PHP7_opcache_health',
-    }
 
+    if $monitor_opcache {
+        nrpe::monitor_service { 'opcache':
+            description  => 'PHP opcache health',
+            nrpe_command => '/usr/local/lib/nagios/plugins/nrpe_check_opcache -w 100 -c 50',
+            notes_url    => 'https://wikitech.wikimedia.org/wiki/Application_servers/Runbook#PHP7_opcache_health',
+        }
+    }
 }
