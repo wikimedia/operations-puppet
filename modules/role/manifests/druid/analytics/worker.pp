@@ -10,6 +10,7 @@ class role::druid::analytics::worker {
 
     include ::profile::standard
     include ::profile::base::firewall
+    include ::profile::java
     include ::profile::druid::broker
     include ::profile::druid::coordinator
     include ::profile::druid::historical

@@ -12,6 +12,7 @@ class profile::hive::metastore::database(
     $jdbc_username = hiera('profile::hive::metastore::database::jdbc_username', 'hive'),
     $jdbc_password = hiera('profile::hive::metastore::database::jdbc_password', 'hive'),
 ) {
+
     # Install a database server (MariaDB)
     require ::profile::analytics::database::meta
 

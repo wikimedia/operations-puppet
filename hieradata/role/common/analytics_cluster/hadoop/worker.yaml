@@ -59,3 +59,8 @@ profile::kerberos::keytabs::keytabs_metadata:
     group: 'hdfs'
     filename: 'HTTP.keytab'
     parent_dir_grp: 'hadoop'
+
+profile::java::java_packages:
+  - version: '8'
+    variant: 'jdk'
+profile::java::extra_args: 'JAVA_TOOL_OPTIONS="-Dfile.encoding=UTF-8"'

@@ -29,3 +29,9 @@ profile::kerberos::keytabs::keytabs_metadata:
 
 profile::base::debdeploy::exclude_mounts:
   - /mnt/hdfs
+
+# Needed by Analytics java-based tools
+profile::java::java_packages:
+  - version: '8'
+    variant: 'jdk'
+profile::java::extra_args: 'JAVA_TOOL_OPTIONS="-Dfile.encoding=UTF-8"'

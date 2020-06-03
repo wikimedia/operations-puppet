@@ -9,8 +9,9 @@ class profile::analytics::database::meta(
     $monitoring_enabled = hiera('profile::analytics::database::meta::monitoring_enabled', false),
     $ferm_srange        = hiera('profile::analytics::database::meta::ferm_srange', '$DOMAIN_NETWORKS'),
 ) {
+
     # Some CDH database init scripts need Java to run.
-    require ::profile::java::analytics
+    Class['profile::java'] -> Class['profile::analytics::database::meta']
 
     class { '::mariadb::packages_wmf': }
 

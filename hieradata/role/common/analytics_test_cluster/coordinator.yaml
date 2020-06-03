@@ -158,3 +158,8 @@ profile::oozie::server::oozie_authentication_kerberos_principal: 'HTTP/_HOST@WIK
 profile::oozie::server::spark_defaults_config_dir: '/etc/spark2/conf'
 
 profile::base::notifications: disabled
+
+profile::java::java_packages:
+  - version: '8'
+    variant: 'jdk'
+profile::java::extra_args: 'JAVA_TOOL_OPTIONS="-Dfile.encoding=UTF-8"'

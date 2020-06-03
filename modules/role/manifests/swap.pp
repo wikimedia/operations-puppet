@@ -7,6 +7,7 @@ class role::swap {
     system::role { 'SWAP (Jupyter Notebook)': }
     include ::profile::standard
     include ::profile::base::firewall
+    include ::profile::java
     include ::profile::analytics::cluster::gitconfig
     include ::profile::swap
     include ::profile::analytics::cluster::packages::hadoop

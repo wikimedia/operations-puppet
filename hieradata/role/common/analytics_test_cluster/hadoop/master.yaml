@@ -63,3 +63,8 @@ profile::kerberos::keytabs::keytabs_metadata:
     parent_dir_grp: 'analytics'
 
 profile::base::notifications: disabled
+
+profile::java::java_packages:
+  - version: '8'
+    variant: 'jdk'
+profile::java::extra_args: 'JAVA_TOOL_OPTIONS="-Dfile.encoding=UTF-8"'

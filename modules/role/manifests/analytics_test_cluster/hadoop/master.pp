@@ -7,6 +7,7 @@ class role::analytics_test_cluster::hadoop::master {
         description => 'Hadoop Master (NameNode & ResourceManager)',
     }
 
+    include ::profile::java
     include ::profile::hadoop::master
     include ::profile::analytics::cluster::users
     include ::profile::hadoop::firewall::master

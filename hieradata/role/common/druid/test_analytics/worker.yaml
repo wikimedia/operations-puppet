@@ -168,3 +168,8 @@ profile::druid::overlord::properties:
 profile::druid::overlord::env:
   DRUID_HEAP_OPTS: "-Xmx4g -Xms2g"
   DRUID_EXTRA_JVM_OPTS: "-XX:NewSize=256m -XX:MaxNewSize=256m -XX:+UseConcMarkSweepGC -XX:+PrintGCDetails -XX:+PrintGCTimeStamps"
+
+profile::java::java_packages:
+  - version: '8'
+    variant: 'jdk'
+profile::java::extra_args: 'JAVA_TOOL_OPTIONS="-Dfile.encoding=UTF-8"'

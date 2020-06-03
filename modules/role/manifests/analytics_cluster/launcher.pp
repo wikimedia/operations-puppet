@@ -6,6 +6,7 @@ class role::analytics_cluster::launcher {
         description => 'Analytics Cluster host running periodical jobs (Hadoop, Report Updater, etc..)'
     }
 
+    include ::profile::java
     include ::profile::analytics::cluster::client
 
     # This is a Hadoop client, and should

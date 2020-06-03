@@ -5,6 +5,7 @@ class role::dumps::distribution::server {
     include ::profile::base::firewall
     include ::profile::wmcs::nfs::ferm
     # For downloading public datasets from HDFS analytics-hadoop.
+    include ::profile::java
     include ::profile::hadoop::common
     include ::profile::analytics::cluster::hdfs_mount
 

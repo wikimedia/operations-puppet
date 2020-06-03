@@ -287,7 +287,7 @@ class profile::hadoop::common (
     require ::profile::cdh::apt
 
     # Need Java before Hadoop is installed.
-    require ::profile::java::analytics
+    Class['profile::java'] -> Class['profile::hadoop::common']
 
     $hadoop_name_directory                    = "${hadoop_var_directory}/name"
     $hadoop_data_directory                    = "${hadoop_var_directory}/data"
