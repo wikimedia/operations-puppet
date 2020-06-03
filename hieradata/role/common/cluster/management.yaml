@@ -2,3 +2,4 @@ cluster: management
 admin::groups:
   - datacenter-ops
 monitor_screens: false
+profile::conftool::client::etcd_user: 'root'

@@ -8,6 +8,15 @@
 # - The etcd credentials for the root user in /root/.etcdrc
 #
 # === Parameters
+# @srv_domain The srv domain to query to get the etcd cluster servers
+# @conftool_prefix the prefix that conftool uses for its keys
+# @tcpircbot_host the host to contact for tcpircbot
+# @tcpircbot_port the port to contact tcpircbot on
+# @etcd_host the host to contact for etcd, to use in alternative to the srv domain
+# @etcd_port the port for the etcd server, to use in alternative to the srv domain
+# @pool_pwd_seed the secret seed for generating password for automatic users
+# @etcd_user the etcd user to install the credentials for under /root/.etcdrc.
+#    Defaults to '__auto__', which will try to autogenerate the password.
 #
 class profile::conftool::client(
     Stdlib::Host           $srv_domain     = lookup('etcd_client_srv_domain'),
@@ -17,9 +26,8 @@ class profile::conftool::client(
     Optional[Stdlib::Host] $host           = lookup('etcd_host', {'default_value' => undef}),
     Optional[Stdlib::Port] $port           = lookup('etcd_port', {'default_value' => undef}),
     String                 $pool_pwd_seed  = lookup('etcd::autogen_pwd_seed'),
-    Boolean                $allow_root     = lookup('profile::conftool::client::allow_root', {'default_value' => true})
+    String                 $etcd_user      = lookup('profile::conftool::client::etcd_user', {'default_value' => '__auto__'})
 ) {
-
     if os_version('debian >= stretch') {
         $socks_pkg = 'python-socks'
     } else {
@@ -42,11 +50,12 @@ class profile::conftool::client(
         port       => $port,
     }
 
-    if $allow_root {
-        $user = 'root'
-        $pwd = $::passwords::etcd::accounts['root']
+    if $etcd_user != '__auto__' {
+        $user = $etcd_user
+        $pwd = $::passwords::etcd::accounts[$etcd_user]
         $conftool_cluster = undef
     } else {
+        # When autogenerating the password, use conftool as a fallback if we're not in a LVS cluster.
         $user = 'conftool'
         $pwd = $::passwords::etcd::accounts['conftool']
         # determine which conftool cluster we're part of, if any.

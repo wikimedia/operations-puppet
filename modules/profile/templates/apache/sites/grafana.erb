@@ -12,4 +12,7 @@
 
   # Automatically log in all visitors as anonymous.
   RequestHeader set X-WEBAUTH-USER "Anonymous"
+  <Directory "/avatar">
+      Deny from all
+      
 </VirtualHost>
