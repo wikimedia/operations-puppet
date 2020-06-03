@@ -2,3 +2,5 @@ profile::base::remote_syslog_tls: ['centrallog1001.eqiad.wmnet:6514', 'centrallo
 profile::base::remote_syslog: []
 
 profile::base::enable_rsyslog_exporter: true
+
+profile::base::enable_adduser: true
