@@ -3,4 +3,3 @@
 profile::mariadb::dbstore_multiinstance::num_instances: 2
 profile::mariadb::dbstore_multiinstance::s1: '192G'
 profile::mariadb::dbstore_multiinstance::s6: '192G'
-profile::base::notifications: disabled
