@@ -5,6 +5,8 @@ define monitoring::alerts::rsyslog(
         description     => "rsyslog in ${site} is failing to deliver messages",
         dashboard_links => ["https://grafana.wikimedia.org/d/000000596/rsyslog?var-datasource=${site} prometheus/ops"],
         query           => 'sum by (action) (rate(rsyslog_action_suspended[5m]) + rate(rsyslog_action_failed[5m]))',
+        check_interval  => 2,
+        retry_interval  => 2,
         warning         => 5,
         critical        => 10,
         retries         => 5,
