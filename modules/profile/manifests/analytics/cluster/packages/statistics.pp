@@ -53,6 +53,7 @@ class profile::analytics::cluster::packages::statistics {
         'php-curl',
         'php-mysql',
         'libfontconfig1-dev',     # For {systemfonts} R pkg dep of {hrbrthemes} pkg for dataviz (T254278)
+        'libcairo2-dev',          # ^
     ])
 
     if !defined(Package['nodejs']) {
