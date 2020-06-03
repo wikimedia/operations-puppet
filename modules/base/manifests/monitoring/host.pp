@@ -27,6 +27,7 @@
 class base::monitoring::host(
     $contact_group = 'admins',
     $mgmt_contact_group = 'admins',
+    $systemd_contact_group = 'admins',
     # the -A -i ... part is a gross hack to workaround Varnish partitions
     # that are purposefully at 99%. Better ideas are welcome.
     $nrpe_check_disk_options = '-w 6% -c 3% -W 6% -K 3% -l -e -A -i "/srv/sd[a-b][1-3]" -i "/srv/nvme[0-9]n[0-9]p[0-9]" --exclude-type=fuse.fuse_dfs --exclude-type=tracefs',
@@ -173,10 +174,11 @@ class base::monitoring::host(
     }
 
     ::nrpe::monitor_service { 'check_systemd_state':
-        ensure       => $ensure_monitor_systemd,
-        description  => 'Check systemd state',
-        nrpe_command => '/usr/local/lib/nagios/plugins/check_systemd_state',
-        notes_url    => 'https://wikitech.wikimedia.org/wiki/Monitoring/check_systemd_state',
+        ensure        => $ensure_monitor_systemd,
+        description   => 'Check systemd state',
+        nrpe_command  => '/usr/local/lib/nagios/plugins/check_systemd_state',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Monitoring/check_systemd_state',
+        contact_group => $systemd_contact_group,
     }
 
     if $::productname == 'PowerEdge R320' {
