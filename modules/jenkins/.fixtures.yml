@@ -1,6 +1,7 @@
 fixtures:
     symlinks:
         jenkins: "#{source_dir}"
+        apt: "../../../../apt"
         base: "../../../../base"
         alternatives: "../../../../alternatives"
         logrotate: "../../../../logrotate"

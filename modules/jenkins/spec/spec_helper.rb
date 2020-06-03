@@ -6,13 +6,15 @@ include RspecPuppetFacts
 
 fixture_path = File.expand_path(File.join(__FILE__, '..', 'fixtures'))
 
+TEST_ON = {
+  supported_os: [
+    {'operatingsystem' => 'Debian',
+     'operatingsystemrelease' => ['8', '9', '10']}
+  ]
+}
+
 RSpec.configure do |c|
   c.module_path = File.join(fixture_path, 'modules')
   c.manifest_dir = File.join(fixture_path, 'manifests')
   c.hiera_config = File.join(fixture_path, 'hiera.yaml')
-  test_on = { supported_os: [{'operatingsystem' => 'Debian', 'operatingsystemrelease' => ['8']}]}
-  on_supported_os(test_on).each do |_, facts|
-    facts[:initsystem] = 'systemd'
-    c.default_facts = facts
-  end
 end
