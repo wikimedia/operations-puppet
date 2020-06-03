@@ -1,3 +1,4 @@
+profile::query_service::ns: wdq
 profile::query_service::package_dir: '/srv/deployment/wdqs/wdqs'
 profile::query_service::data_dir: '/srv/wdqs'
 profile::query_service::log_dir: '/var/log/wdqs'

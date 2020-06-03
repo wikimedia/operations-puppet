@@ -11,6 +11,7 @@
 # - $deploy_mode: deployment mode. e.g scap3, manual etc
 # - enable_ldf: boolean flag for enabling or disabling ldf
 # - $max_query_time_millis: maximum query time in milliseconds
+# - $ns: The blazegraph namespace to expose over http at /sparql
 class query_service::gui(
     String $package_dir,
     String $data_dir,
@@ -20,6 +21,7 @@ class query_service::gui(
     Query_service::DeployMode $deploy_mode,
     Boolean $enable_ldf,
     Integer $max_query_time_millis,
+    String $ns,
 ) {
     $port = 80
     $additional_port = 8888
@@ -48,7 +50,7 @@ class query_service::gui(
         group   => 'wikidev',
         mode    => '0775',
         # Because nginx site creates /var/lib/nginx
-        require => Nginx::Site['wdqs'],
+        require => Nginx::Site[$deploy_name],
     }
 
     file { '/etc/wdqs/gui_vars.sh':

@@ -1,1 +1,2 @@
 profile::query_service::username: blazegraph
+profile::query_service::forward_rsyslog_host: null

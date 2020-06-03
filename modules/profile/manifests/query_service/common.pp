@@ -10,12 +10,25 @@ class profile::query_service::common(
     Enum['none', 'daily', 'weekly'] $load_categories = hiera('profile::query_service::load_categories', 'daily'),
     Array[String] $nodes = hiera('profile::query_service::nodes'),
     Stdlib::Httpurl $categories_endpoint =  hiera('profile::query_service::categories_endpoint', 'http://localhost:9990'),
+    Optional[String] $forward_rsyslog_host = lookup('profile::query_service::forward_rsyslog_host', { 'default_value' => undef }),
 ) {
 
     $deploy_user = 'deploy-service'
 
-    # Let's migrate to the new logging pipeline. See T232184.
-    include ::profile::rsyslog::udp_json_logback_compat
+    if $forward_rsyslog_host {
+        # This is necessary for instances in WMCS. Those instances can't migrate to
+        # the new logging pipline pushing to kafka as only instances inside the
+        # deployment-prep project can talk to kafka. This uses the direct json lines
+        # input to logstash, meaning there is no intermediate buffer and when logstash
+        # restarts we can lose logs.
+        rsyslog::conf { 'query_service_logging_relay':
+            content  => template('profile/query_service/logging_relay.conf.erb'),
+            priority => 50,
+        }
+    } else {
+        # Let's migrate to the new logging pipeline. See T232184.
+        include ::profile::rsyslog::udp_json_logback_compat
+    }
 
     class { '::query_service::common':
         deploy_mode         => $deploy_mode,

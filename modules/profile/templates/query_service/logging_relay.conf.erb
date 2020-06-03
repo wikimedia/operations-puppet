@@ -1,0 +1,25 @@
+# Provide a UDP input to accept JSON payloads on localhost and forward them directly to logstash
+
+module(load="imudp")
+module(load="mmjsonparse")
+
+template(name="template_udp_json_query_service_logging_relay" type="list") {
+  property(name="$!all-json")
+}
+
+# Use a separate (in memory) queue to limit message processing to this ruleset only.
+ruleset(name="ruleset_udp_json_query_service_logging_relay" queue.type="LinkedList") {
+
+  action(type="mmjsonparse" name="mmjsonparse_udp_json_query_service_logging_relay" cookie="" useRawMsg="on")
+
+  if $parsesuccess == "OK" then {
+    action(type="omfwd"
+           protocol="tcp"
+           target="<%= @forward_rsyslog_host %>"
+           port="11514"
+           template="template_udp_json_query_service_logging_relay"
+    )
+  }
+}
+
+input(type="imudp" port="11514" address="localhost" ruleset="ruleset_udp_json_query_service_logging_relay")
