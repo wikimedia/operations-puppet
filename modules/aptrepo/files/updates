@@ -154,7 +154,7 @@ Architectures: amd64 source
 VerifyRelease: 74A941BA219EC810
 ListShellHook: grep-dctrl -X -S tor || [ $? -eq 1 ]
 
-Name: grafana-stretch
+Name: grafana
 Method: https://packages.grafana.com/oss/deb
 Components: main>thirdparty/grafana
 UDebComponents:

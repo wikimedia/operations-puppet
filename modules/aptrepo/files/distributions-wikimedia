@@ -95,7 +95,7 @@ Update:
  elastic56
  elastic65
  elasticsearch-curator5
- grafana-stretch
+ grafana
  hp-mcp-stretch
  hwraid-stretch
  jenkins-stretch
@@ -156,7 +156,7 @@ Update:
  amd-rocm33
  confluent
  elastic74
- grafana-stretch
+ grafana
  jenkins-stretch
  hp-mcp-buster
  hwraid-stretch
