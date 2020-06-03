@@ -8,7 +8,7 @@ class profile::microsites::design(
         content => template('profile/design/design.wikimedia.org-httpd.erb'),
     }
 
-    $design_blog_repo_dir = '/srv/org/wikimedia/design/blog'
+    $design_blog_repo_dir = '/srv/org/wikimedia/design-blog'
     $design_blog_docroot  = "${design_blog_repo_dir}/_site"
 
     ensure_resource('file', '/srv/org', {'ensure' => 'directory' })
