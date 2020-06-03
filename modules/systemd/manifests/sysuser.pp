@@ -4,7 +4,7 @@
 #
 # Example:
 # systemd::sysuser { 'food':
-#    content => 'u  food   - "foo daemon"  -  -'
+#    content => ['usertype' => 'u', 'name' => 'foo', 'id' => '-', 'gecos' => 'foo daemon']
 # }
 #
 # This allocates the next available UID and creates a "foo" system
