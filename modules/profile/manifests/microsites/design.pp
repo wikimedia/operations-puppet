@@ -34,7 +34,7 @@ class profile::microsites::design(
     git::clone { 'design/blog':
         ensure    => 'latest',
         source    => 'gerrit',
-        directory => '/srv/org/wikimedia/design/blog',
+        directory => $design_blog_repo_dir,
         branch    => 'master',
     }
 
