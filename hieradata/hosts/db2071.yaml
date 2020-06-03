@@ -1,2 +1,3 @@
 # db2071
 mariadb::shard: 's1'
+profile::base::notifications: disabled
