@@ -120,8 +120,7 @@ class profile::superset(
 
     class { '::superset':
         workers          => $workers,
-        # gthread requires python3.
-        worker_class     => 'gthread',
+        worker_class     => 'gevent',
         database_uri     => $full_database_uri,
         secret_key       => $secret_key,
         admin_user       => $admin_user,
