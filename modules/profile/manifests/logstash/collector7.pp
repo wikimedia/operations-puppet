@@ -17,6 +17,8 @@ class profile::logstash::collector7 (
     $maintenance_hosts = hiera('maintenance_hosts', []),
 ) {
 
+    require ::profile::java
+
     nrpe::monitor_service { 'logstash':
         description  => 'logstash process',
         nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -u logstash -C java -a logstash',

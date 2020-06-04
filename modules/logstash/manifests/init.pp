@@ -33,7 +33,8 @@ class logstash (
     String $jmx_exporter_config    = undef,
     Integer[5,7] $logstash_version = 5,
 ) {
-    require_package($java_package)
+    #TODO: fully remove when java installed with ::profile::java
+    #require_package($java_package)
 
     package { 'logstash':
         ensure  => 'present',
@@ -42,6 +43,7 @@ class logstash (
     }
 
     if $gc_log == true {
+        #TODO: move java_package to java_version, or similar
         $gc_log_flags = $java_package ? {
             'openjdk-8-jdk'  => [
                 '-Xloggc:/var/log/logstash/logstash_jvm_gc.%p.log',
@@ -66,6 +68,7 @@ class logstash (
     }
 
     # JVM command line flags to be applied to logstash.service only
+    # TODO: move to java_version
     $service_java_opts = $java_package ? {
         'openjdk-11-jdk' => '-Xlog:safepoint',
         default          => '',

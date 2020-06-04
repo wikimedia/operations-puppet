@@ -32,6 +32,8 @@ class profile::elasticsearch(
     Enum['5', '6', '7'] $config_version = hiera('profile::elasticsearch::config_version', '5'),
 ) {
 
+    require ::profile::java
+
     # Rather than asking hiera to magically merge these settings for us, we
     # explicitly take two sets of defaults for global defaults and per-dc
     # defaults. Per cluster overrides are then provided in $instances.

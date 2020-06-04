@@ -4,6 +4,12 @@ admin::groups:
   - logstash-roots
   - elasticsearch-roots
 
+# Install openjdk-8 using ::profile::java
+# TODO: Install openjdk-8 and openjdk-11 at the same time
+profile::java::java_packages:
+  - version: '8'
+    variant: 'jdk'
+
 # ES-specific
 # NOTE: cluster_name must be kept in sync with the backend
 # node config in hieradata/role/common/collector.yaml

@@ -4,7 +4,6 @@
 #
 # == Parameters:
 # - $default_instance_params: Parameter overrides for ::elasticsearch::instance
-# - $java_package: Name of package containing appropriate JDK. Default: openjdk-8-jdk.
 # - $version: Version of elasticsearch to configure. Either 5 or 6. Default: 5.
 # - $logstash_host: Host to send logs to
 # - $logstash_gelf_port: Tcp port on $logstash_host to send gelf formatted logs to.
@@ -22,7 +21,6 @@
 class elasticsearch (
     Optional[Hash[String, Elasticsearch::InstanceParams]] $instances = undef,
     Elasticsearch::InstanceParams $default_instance_params           = {},
-    String $java_package                                             = 'openjdk-8-jdk',
     Enum['5', '6', '7'] $version                                     = '5',
     Stdlib::Absolutepath $base_data_dir                              = '/srv/elasticsearch',
     Optional[String] $logstash_host                                  = undef,
@@ -65,7 +63,6 @@ class elasticsearch (
     }
 
     class { '::elasticsearch::packages':
-        java_package          => $java_package,
         package_name          => $package_name,
         # Hack to be resolved in followup patch
         send_logs_to_logstash => $configured_instances.reduce(false) |Boolean $agg, $kv_pair| {
