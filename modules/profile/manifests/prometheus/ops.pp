@@ -13,7 +13,6 @@ class profile::prometheus::ops (
     Wmflib::Ensure $ensure_rsync = lookup('profile::prometheus::ops::ensure_rsync'),
     String $replica_label = lookup('prometheus::replica_label', { 'default_value' => 'unset' }),
 ){
-
     include ::passwords::gerrit
     $gerrit_client_token = $passwords::gerrit::prometheus_bearer_token
 
@@ -28,6 +27,9 @@ class profile::prometheus::ops (
             'prometheus' => 'ops',
         },
     }
+
+    class{ '::prometheus::swagger_exporter': }
+    class{ '::prometheus::blackbox_exporter': }
 
     $blackbox_jobs = [
       {
@@ -1722,7 +1724,7 @@ class profile::prometheus::ops (
     # prometheus to poll metrics from. Ganglia::Cluster is used to generate the
     # mapping from cluster to a list of its members.
     $node_site_content = $::use_puppetdb ? {
-        true => template('role/prometheus/node_site.yaml.erb'),
+        true => template('profile/prometheus/node_site.yaml.erb'),
         default => generate('/usr/local/bin/prometheus-ganglia-gen',
         "--site=${::site}"),
     }
@@ -1753,7 +1755,7 @@ class profile::prometheus::ops (
 
     prometheus::rule { 'rules_ops.yml':
         instance => 'ops',
-        source   => 'puppet:///modules/role/prometheus/rules_ops.yml',
+        source   => 'puppet:///modules/profile/prometheus/rules_ops.yml',
     }
 
     prometheus::varnish_2layer{ 'text':

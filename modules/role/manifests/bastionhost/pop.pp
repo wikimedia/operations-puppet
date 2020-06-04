@@ -5,7 +5,7 @@ class role::bastionhost::pop {
     }
     require ::role::bastionhost::general
     require ::profile::installserver::tftp
-    require ::role::prometheus::ops
+    require ::profile::prometheus::ops
     require ::profile::ipmi::mgmt
 
     class { '::httpd':

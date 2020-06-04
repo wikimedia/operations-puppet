@@ -88,7 +88,6 @@ class profile::prometheus::global {
     }
 
     # Used for migrations / hardware refresh, but not continuously
-    include rsync::server
     $prometheus_nodes = hiera('prometheus_nodes')
     rsync::server::module { 'prometheus-global':
         ensure      => absent,
