@@ -215,8 +215,8 @@ class puppetmaster::gitclone(
 
     # The labs/private repo isn't used by production
     #  puppet, but it is maintained by puppet-merge
-    #  so we need a check-out.
-    if $is_master {
+    #  so we need a check-out on the frontends.
+    if $is_master or $::realm == 'labs' {
         file { '/var/lib/git/labs':
             ensure => directory,
             owner  => $user,
