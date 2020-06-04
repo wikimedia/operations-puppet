@@ -1,10 +1,4 @@
-class role::prometheus::global {
-
-    system::role { 'prometheus::global':
-        description => 'Prometheus server (global)',
-    }
-
-    include ::profile::base::firewall
+class profile::prometheus::global {
 
     # Pull selected metrics from all DC-local Prometheus servers.
     $federation_jobs = [
@@ -73,7 +67,7 @@ class role::prometheus::global {
 
     prometheus::rule { 'rules_global.yml':
         instance => 'global',
-        source   => 'puppet:///modules/role/prometheus/rules_global.yml',
+        source   => 'puppet:///modules/profile/prometheus/rules_global.yml',
     }
 
     prometheus::server { 'global':

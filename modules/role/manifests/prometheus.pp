@@ -4,11 +4,11 @@ class role::prometheus {
     }
 
     include ::role::prometheus::ops
-    include ::role::prometheus::global
 
     include ::profile::prometheus::k8s
     include ::profile::prometheus::analytics
     include ::profile::prometheus::services
+    include ::profile::prometheus::global
     include ::conftool::scripts # lint:ignore:wmf_styleguide
 
     # We only have a staging cluster in eqiad, don't poll it from both DCs
