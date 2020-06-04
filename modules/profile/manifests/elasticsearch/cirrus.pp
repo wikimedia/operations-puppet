@@ -23,6 +23,9 @@ class profile::elasticsearch::cirrus(
     # syslog logstash transport type depends on this. See T225125.
     include ::profile::rsyslog::udp_json_logback_compat
 
+    # nginx, which terminates tls for elasticsearch, needs `/etc/ssl/dhparam.pem` to be in place in order to function.
+    class { '::sslcert::dhparam': }
+
     package {'wmf-elasticsearch-search-plugins':
         ensure => present,
     }
