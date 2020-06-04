@@ -53,13 +53,17 @@ class profile::analytics::refinery::job::druid_load(
     # Note that this data set does not belong to EventLogging, but the
     # eventlogging_to_druid_job wrapper is compatible and very convenient!
     profile::analytics::refinery::job::eventlogging_to_druid_job { 'netflow':
-        hourly_hours_until => 3,
-        job_config         => {
+        job_config        => {
             database         => 'wmf',
             timestamp_column => 'stamp_inserted',
             dimensions       => 'as_dst,as_path,peer_as_dst,as_src,ip_dst,ip_proto,ip_src,peer_as_src,port_dst,port_src,tag2,tcp_flags,country_ip_src,country_ip_dst,peer_ip_src',
             metrics          => 'bytes,packets',
         },
+        # settings copied from webrequest_sampled_128 load job
+        # as data-size is similar
+        hourly_shards     => 2,
+        hourly_reduce_mem => '8192',
+        daily_shards      => 32,
     }
     # This second round serves as sanitization, after 90 days of data loading.
     # Note that some dimensions are not present, thus nullifying their values.
