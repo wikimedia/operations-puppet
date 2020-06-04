@@ -8,4 +8,19 @@ profile::ganeti::nodes:
   - ganeti2006.codfw.wmnet
   - ganeti2007.codfw.wmnet
   - ganeti2008.codfw.wmnet
-
+  - ganeti2009.codfw.wmnet
+  - ganeti2010.codfw.wmnet
+  - ganeti2011.codfw.wmnet
+  - ganeti2012.codfw.wmnet
+  - ganeti2013.codfw.wmnet
+  - ganeti2014.codfw.wmnet
+  - ganeti2015.codfw.wmnet
+  - ganeti2016.codfw.wmnet
+  - ganeti2017.codfw.wmnet
+  - ganeti2018.codfw.wmnet
+  - ganeti2019.codfw.wmnet
+  - ganeti2020.codfw.wmnet
+  - ganeti2021.codfw.wmnet
+  - ganeti2022.codfw.wmnet
+  - ganeti2023.codfw.wmnet
+  - ganeti2024.codfw.wmnet

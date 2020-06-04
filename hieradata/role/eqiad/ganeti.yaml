@@ -8,3 +8,17 @@ profile::ganeti::nodes:
   - ganeti1006.eqiad.wmnet
   - ganeti1007.eqiad.wmnet
   - ganeti1008.eqiad.wmnet
+  - ganeti1009.eqiad.wmnet
+  - ganeti1010.eqiad.wmnet
+  - ganeti1011.eqiad.wmnet
+  - ganeti1012.eqiad.wmnet
+  - ganeti1013.eqiad.wmnet
+  - ganeti1014.eqiad.wmnet
+  - ganeti1015.eqiad.wmnet
+  - ganeti1016.eqiad.wmnet
+  - ganeti1017.eqiad.wmnet
+  - ganeti1018.eqiad.wmnet
+  - ganeti1019.eqiad.wmnet
+  - ganeti1020.eqiad.wmnet
+  - ganeti1021.eqiad.wmnet
+  - ganeti1022.eqiad.wmnet
