@@ -10,8 +10,10 @@ profile::elasticsearch::dc_settings:
           - cloudelastic1002.wikimedia.org
           - cloudelastic1003.wikimedia.org
           - cloudelastic1004.wikimedia.org
+          - cloudelastic1005.wikimedia.org
+          - cloudelastic1006.wikimedia.org
 
-        expected_nodes: 4
+        expected_nodes: 6
 
-        # We should be able to run "OK" with 2 servers.
-        recover_after_nodes: 2
+        # We should be able to run "OK" with 3 servers (half of the cluster).
+        recover_after_nodes: 3
