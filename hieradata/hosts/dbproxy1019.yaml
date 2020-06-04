@@ -1,7 +1,7 @@
 # This host supports the wikireplica-web service
 profile::mariadb::proxy::replicas::servers:
-  db1141:
-    address: '10.64.0.219:3306'
+  labsdb1009:
+    address: '10.64.4.14:3306'
     weight: 3
     #  labsdb1010:
     # address: '10.64.37.23:3306'
