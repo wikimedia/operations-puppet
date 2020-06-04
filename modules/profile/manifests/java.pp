@@ -52,6 +52,11 @@ class profile::java (
     $default_java_home = $java::java_home
 
     if $extra_args {
+
+        file { '/etc/environment.d':
+            ensure => 'directory',
+        }
+
         file { '/etc/environment.d/10openjdk.conf':
             content => $extra_args,
         }
