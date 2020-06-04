@@ -4,9 +4,21 @@
 addACL('0.0.0.0/0')
 addACL('::/0')
 
+<% if @enable_console -%>
+-- control socket access (default port is 5199)
+controlSocket('127.0.0.1')
+setKey('<%= @console_key %>')
+<% end -%>
+
 -- limit the number of queries per second from an IP (default: /32 for IPv4, /64 for IPv6)
 -- note that we don't use DelayAction() as that is UDP-only
 addAction(MaxQPSIPRule(<%= @qps_max %>), DropAction())
+
+<% if @enable_packetcache -%>
+-- dnsdist's packet cache configuration
+pc = newPacketCache(<%= @packetcache_max %>)
+getPool(""):setCache(pc)
+<% end -%>
 
 -- TLS configuration options for DoH and DoT
 tlsOptions = {
@@ -26,12 +38,6 @@ addDOHLocal('[::]', '<%= @tls_config['cert_chain_path'] %>', '<%= @tls_config['c
 -- enable DoT (default port is 853)
 addTLSLocal('0.0.0.0', '<%= @tls_config['cert_chain_path'] %>', '<%= @tls_config['cert_privkey_path'] %>', tlsOptions)
 addTLSLocal('[::]', '<%= @tls_config['cert_chain_path'] %>', '<%= @tls_config['cert_privkey_path'] %>', tlsOptions)
-
-<% if @packetcache -%>
--- dnsdist's packet cache configuration
-pc = newPacketCache(<%= @packetcache_max %>)
-getPool(""):setCache(pc)
-<% end -%>
 
 <% @resolvers.each_pair do |resolver, config| -%>
 newServer({address='<%= config['host'] %>:<%= config['port'] %>', name='<%= resolver %>'})

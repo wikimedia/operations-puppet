@@ -16,20 +16,32 @@
 #  [*qps_max*]
 #    [int] maximum number of queries allowed per second from an IP. default: 10.
 #
-#  [*packetcache*]
-#    [bool] whether to use dnsdist's packet cache. default: true.
+#  [*enable_packetcache*]
+#    [bool] whether to enable dnsdist's packet cache. default: true.
 #
 #  [*packetcache_max*]
 #    [int] maximum number of entries in the cache. default: 10,000,000.
+#
+#  [*enable_console*]
+#    [bool] whether to enable dnsdist's console. default: true.
+#
+#  [*console_key*]
+#    [string] key to use for dnsdist's console access. default: undefined.
 
 class dnsdist (
     Hash[String, Dnsdist::Resolver] $resolvers,
     Dnsdist::TLS_config             $tls_config,
-    String                          $doh_base_url    = '/dns-query',
-    Integer[1]                      $qps_max         = 10,
-    Boolean                         $packetcache     = true,
-    Integer[1]                      $packetcache_max = 10000000,
+    String                          $doh_base_url       = '/dns-query',
+    Integer[1]                      $qps_max            = 10,
+    Boolean                         $enable_packetcache = true,
+    Integer[1]                      $packetcache_max    = 10000000,
+    Boolean                         $enable_console     = true,
+    String                          $console_key        = undef,
 ) {
+
+    if ($enable_console and $console_key == undef) {
+        fail('Console access is enabled but no key was set.')
+    }
 
     apt::package_from_component { 'dnsdist':
         component => 'component/dnsdist',
@@ -40,7 +52,7 @@ class dnsdist (
         require => Package['dnsdist'],
         owner   => 'root',
         group   => 'root',
-        mode    => '0444',
+        mode    => '0440',
         content => template('dnsdist/dnsdist.conf.erb'),
         notify  => Service['dnsdist'],
     }

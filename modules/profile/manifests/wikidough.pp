@@ -4,6 +4,7 @@ class profile::wikidough (
 ) {
 
     include network::constants
+    include passwords::dnsdist::wikidough
 
     ferm::service { 'wikidough-doh':
         proto  => 'tcp',
@@ -23,8 +24,10 @@ class profile::wikidough (
     }
 
     class { 'dnsdist':
-        resolvers  => $recursive_resolvers,
-        tls_config => $tls_config,
+        resolvers      => $recursive_resolvers,
+        tls_config     => $tls_config,
+        enable_console => true,
+        console_key    => $passwords::dnsdist::wikidough::console_key,
     }
 
 }
