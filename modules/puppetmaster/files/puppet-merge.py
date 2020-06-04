@@ -88,8 +88,7 @@ def confirm_merge(committers):
         confirm = ['multiple']
     answer = input('Merge these changes? ({}/no)? '.format(confirm[0]))
     if answer.lower() not in confirm:
-        print("User aborted merge")
-        raise SystemExit(PUPPET_MERGE_NO_MERGE)
+        raise SystemExit("Aborting merge.")
 
 
 def main():
