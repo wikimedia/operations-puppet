@@ -69,26 +69,20 @@ class profile::ganeti (
     }
 
     if defined('$rapi_ro_user') and defined('$rapi_ro_password') {
-        $ro_password_hash = md5("${rapi_ro_user}:Ganeti Remote API:${rapi_ro_password}")
         # Authentication for RAPI (for now just a single read-only user)
-        file { '/var/lib/ganeti/rapi/users':
-            ensure  => present,
-            owner   => 'gnt-rapi',
-            group   => 'gnt-masterd',
-            mode    => '0640',
-            content => "${rapi_ro_user} {HA1}${ro_password_hash} read\n",
-        }
-    }
-    else {
+        $ro_password_hash = md5("${rapi_ro_user}:Ganeti Remote API:${rapi_ro_password}")
+        $real_content = "${rapi_ro_user} {HA1}${ro_password_hash} read\n"
+    } else {
         # Provide a blank authentication file for the RAPI server (no users will be defined, thus denying all)
-        file { '/var/lib/ganeti/rapi/users':
-            ensure  => present,
-            owner   => 'gnt-rapi',
-            group   => 'gnt-masterd',
-            mode    => '0640',
-            content => '',
-        }
-
+        $real_content = ''
+    }
+    file { '/var/lib/ganeti/rapi/users':
+        ensure  => present,
+        owner   => 'gnt-rapi',
+        group   => 'gnt-masterd',
+        mode    => '0640',
+        content => $real_content,
+        require => Class['ganeti'],
     }
 
     # Firewalling
