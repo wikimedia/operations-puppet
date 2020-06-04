@@ -106,11 +106,11 @@ node 'analytics-tool1004.eqiad.wmnet' {
     role(analytics_cluster::superset)
 }
 
-# Staging environment of superset.wikimedia.org
+# Staging environment of Superset and Turnilo
 # https://wikitech.wikimedia.org/wiki/Analytics/Systems/Superset
-# T212243
+# https://wikitech.wikimedia.org/wiki/Analytics/Systems/Turnilo
 node 'an-tool1005.eqiad.wmnet' {
-    role(analytics_cluster::superset::staging)
+    role(analytics_cluster::ui::staging)
 }
 
 # Analytics Hadoop client for the Testing cluster

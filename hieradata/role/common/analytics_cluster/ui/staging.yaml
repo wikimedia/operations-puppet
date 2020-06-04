@@ -8,12 +8,18 @@ admin::groups:
 profile::superset::database_uri: mysql://superset_staging@an-coord1001.eqiad.wmnet/superset_staging
 profile::superset::workers: 8
 profile::superset::ldap_proxy_enabled: true
-
+profile::superset::presto_cluster: analytics-presto
 profile::superset::proxy::x_forwareded_proto: 'http'
 
-profile::base::notifications: disabled
+profile::druid::turnilo::port: 9091
+profile::druid::turnilo::druid_clusters:
+  - name: druid-analytics-eqiad
+    host: 'an-druid1001.eqiad.wmnet:8082'
+    sourceListRefreshInterval: 15000
+    sourceReintrospectInterval: 120000
+    type: druid
 
-profile::superset::presto_cluster: analytics-presto
+profile::base::notifications: disabled
 
 profile::kerberos::keytabs::keytabs_metadata:
   - role: 'superset'

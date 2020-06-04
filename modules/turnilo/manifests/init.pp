@@ -29,9 +29,7 @@ class turnilo(
     $scap_repo         = 'analytics/turnilo/deploy',
 ) {
 
-    package { ['nodejs', 'firejail']:
-        ensure => 'present'
-    }
+    require_package(['nodejs', 'firejail'])
 
     $scap_deployment_base_dir = '/srv/deployment'
     $turnilo_deployment_dir = "${scap_deployment_base_dir}/${scap_repo}"
