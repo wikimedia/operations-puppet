@@ -24,7 +24,7 @@ function check_weight {
     if [ "$service" != "all services" ]; then
         selector="${selector},service=${service}"
     fi
-    if confctl select "$selector" get | jq -e ".[\"$host\"] | select(.pooled == \"yes\") | select(.weight == 0)" > /dev/null; then
+    if confctl select "$selector" get | jq -e ".[\"$host\"] | select(.pooled != \"yes\") | select(.weight == 0)" > /dev/null; then
         printf "\033[0;31mYou cannot pool a node where weight is equal to 0\033[0m\n"
         exit 2
     fi
