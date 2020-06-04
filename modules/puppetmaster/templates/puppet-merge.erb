@@ -12,6 +12,18 @@ then
   exit 1
 fi
 
+<%-
+workers = @servers.values.map do |workers_map|
+  workers_map.map { |name| name['worker'] }.select { |name| name != @fqdn }.flatten
+end
+-%>
+MASTERS="<%= @servers.keys.select { |name| name != @fqdn }.join(' ') %>"
+WORKERS="<%= workers.join(' ') %>"
+RED=$(tput bold; tput setaf 1)
+GREEN=$(tput bold; tput setaf 2)
+CYAN=$(tput bold; tput setaf 6)
+RESET=$(tput sgr0)
+
 lock() {
   LABS_PRIVATE=$1
   if [ ${LABS_PRIVATE} -eq 1 ]
@@ -49,10 +61,6 @@ check_remote_error() {
   exit_code=$1
   worker=$2
   repo=$3
-  RED=$(tput bold; tput setaf 1)
-  GREEN=$(tput bold; tput setaf 2)
-  CYAN=$(tput bold; tput setaf 6)
-  RESET=$(tput sgr0)
   if [ ${exit_code} -eq 0 ]; then
     echo "${GREEN}OK${RESET}: puppet-merge on ${worker} (${repo}) succeeded"
   elif [ ${exit_code} -eq 99 ]; then
@@ -62,6 +70,18 @@ check_remote_error() {
   fi
 }
 
+merge() {
+  servers=$1
+  repo=$2
+  sha=$3
+  user=$4
+  for server in ${servers}; do
+    echo "${CYAN}===> Starting run${RESET} on ${server}..."
+    su - $git_user -c "ssh -t -t ${server} true --${repo} ${sha} 2>&1"
+    check_remote_error $? ${server} ${repo}
+    echo
+  done
+}
 FORCE=0
 USAGE=0
 QUIET=0
@@ -118,6 +138,7 @@ lock $LABS_PRIVATE
 # is included already in $ORIG_ARGS), or it will contain 'FETCH_HEAD'.
 # This way, puppet-merge.py always receives some treeish.
 FETCH_HEAD_OR_EMPTY=$([ -n "${1:-}" ] || echo FETCH_HEAD)
+
 # From this point continue despite errors on remote masters. After a change
 # has been merged on the local master a remote merge failure should not
 # cause all remaining masters to be aborted and left out of sync.
@@ -127,29 +148,28 @@ if [ $LABS_PRIVATE -eq 1 ]; then
     # if --labsprivate is used just sync the labsprivate repo
     /usr/local/bin/puppet-merge.py $ORIG_ARGS $FETCH_HEAD_OR_EMPTY
     LABS_EXIT=$?
-    # fake the production exit
-    PROD_EXIT=99
 else
     # We want to do a labs merge every time we do an ops merge -- except if
     # the user gave us an explicit sha1, which only makes sense for one repo.
     if [ -n "${FETCH_HEAD_OR_EMPTY}" ]; then
       /usr/local/bin/puppet-merge.py --labsprivate $ORIG_ARGS $FETCH_HEAD_OR_EMPTY
       LABS_EXIT=$?
-    else
-      LABS_EXIT=99
     fi
     /usr/local/bin/puppet-merge.py --ops $ORIG_ARGS $FETCH_HEAD_OR_EMPTY
     PROD_EXIT=$?
 fi
 # puppet-merge.py exits with 99 if no merge was performed
 if [ ${PROD_EXIT} -eq 99 -a ${LABS_EXIT} -eq 99 ]; then
+  printf '%sNo changes to merge%s\n' "${GREEN}" "${RESET}"
   exit 0
-elif [ ${PROD_EXIT} -ne 0 -a ${PROD_EXIT} -ne 99 ]; then
-  printf 'problems merging production\n'
-  exit ${PROD_EXIT}
-elif [ ${LABS_EXIT} -ne 0 -a ${LABS_EXIT} -ne 99 ]; then
-  printf 'problems merging LABS\n'
-  exit ${LABS_EXIT}
+elif [ ${PROD_EXIT} -eq 99 ]; then
+  printf '%sNo Production changes to merge%s\n' "${GREEN}" "${RESET}"
+elif [ ${LABS_EXIT} -eq 99 ]; then
+  printf '%sNo LABS changes to merge%s\n' "${GREEN}" "${RESET}"
+elif [ ${PROD_EXIT} -ne 0 ]; then
+  printf '%sProblems merging production%s\n' "${RED}" "${RESET}"
+elif [ ${LABS_EXIT} -ne 0 ]; then
+  printf '%sProblems merging LABS%s\n' "${RED}" "${RESET}"
 fi
 
 # Grab the SHAs that were exported by the Python script, so that
@@ -162,27 +182,17 @@ OPS_SHA=$(cat /srv/config-master/puppet-sha1.txt)
 # to the SSH sessions is irrelevant. It's the SSH forced command trick on the
 # worker end that does the actual work. Note that args (the SHA1 and
 # --labsprivate/--ops switch) are used.
-<%-
-workers = @servers.values.map do |workers_map|
-  workers_map.map { |name| name['worker'] }.select { |name| name != @fqdn }.flatten
-end
--%>
-CYAN=$(tput bold; tput setaf 6)
-RESET=$(tput sgr0)
 
-for worker in <%= workers.join(' ') %>; do
-  echo "${CYAN}===> Starting run${RESET} on ${worker}..."
-  if [ $LABS_PRIVATE -eq 1 ]; then
-    su - $git_user -c "ssh -t -t ${worker} true --labsprivate ${1:-${LABSPRIVATE_SHA}} 2>&1"
-    check_remote_error $? ${worker} 'labs'
-  else
-    su - $git_user -c "ssh -t -t ${worker} true --ops ${1:-${OPS_SHA}} 2>&1"
-    check_remote_error $? ${worker} 'ops'
-    su - $git_user -c "ssh -t -t ${worker} true --labsprivate ${1:-${LABSPRIVATE_SHA}} 2>&1"
-    check_remote_error $? ${worker} 'labs'
+if [ $LABS_PRIVATE -eq 1 -a ${LABS_EXIT} -eq 0 ]; then
+  merge "${MASTERS}" 'labsprivate' "${LABSPRIVATE_SHA}" "${git_user}"
+elif [ $LABS_PRIVATE -eq 0 ]; then
+  if [ ${LABS_EXIT} -eq 0 ]; then
+    merge "${MASTERS}" 'labsprivate' "${LABSPRIVATE_SHA}" "${git_user}"
   fi
-  echo
-done
+  if [ ${PROD_EXIT} -eq 0 ]; then
+    merge "${WORKERS}" 'ops' "${OPS_SHA}" "${git_user}"
+  fi
+fi
 
 # Only run this once, and only if we're merging the prod repo
 if [ $LABS_PRIVATE -eq 0 ]; then

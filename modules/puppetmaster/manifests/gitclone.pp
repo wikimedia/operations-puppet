@@ -30,6 +30,8 @@ class puppetmaster::gitclone(
     # lint:endignore
     include puppetmaster
 
+    $is_master = $servers.has_key($facts['fqdn'])
+
     class  { 'puppetmaster::base_repo':
         gitdir   => $puppetmaster::gitdir,
         gitowner => $user,
@@ -214,17 +216,24 @@ class puppetmaster::gitclone(
     # The labs/private repo isn't used by production
     #  puppet, but it is maintained by puppet-merge
     #  so we need a check-out.
-    file { '/var/lib/git/labs':
-        ensure => directory,
-        owner  => $user,
-        group  => $group,
-        mode   => '0755',
-    }
-    git::clone { 'labs/private':
-        require   => File["${puppetmaster::gitdir}/labs"],
-        owner     => $user,
-        group     => $group,
-        directory => "${puppetmaster::gitdir}/labs/private",
+    if $is_master {
+        file { '/var/lib/git/labs':
+            ensure => directory,
+            owner  => $user,
+            group  => $group,
+            mode   => '0755',
+        }
+        git::clone { 'labs/private':
+            require   => File["${puppetmaster::gitdir}/labs"],
+            owner     => $user,
+            group     => $group,
+            directory => "${puppetmaster::gitdir}/labs/private",
+        }
+    } else {
+        file { '/var/lib/git/labs':
+            ensure => absent,
+            force  => true,
+        }
     }
 
     git::clone {'operations/software':
