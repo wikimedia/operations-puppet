@@ -10,5 +10,3 @@ profile::druid::turnilo::druid_clusters:
     sourceListRefreshInterval: 15000
     sourceReintrospectInterval: 120000
     type: druid
-
-profile::druid::turnilo::monitoring_enabled: true

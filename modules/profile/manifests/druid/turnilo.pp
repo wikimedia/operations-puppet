@@ -21,43 +21,17 @@ class profile::druid::turnilo(
     $port               = hiera('profile::druid::turnilo::port', 9091),
     $monitoring_enabled = hiera('profile::druid::turnilo::monitoring_enabled', false),
     $contact_group      = hiera('profile::druid::turnilo::contact_group', 'analytics'),
-    $proxy_enabled      = hiera('profile::druid::turnilo::proxy_enabled', true),
-    Hash $ldap_config   = lookup('ldap', Hash, hash, {}),
 ) {
     class { 'turnilo':
         druid_clusters => $druid_clusters,
     }
 
-    class { '::httpd':
-        modules => ['proxy_http',
-                    'proxy',
-                    'auth_basic',
-                    'authnz_ldap']
-    }
-
-    class { '::passwords::ldap::production': }
-
-    ferm::service { 'turnilo-http':
-        proto  => 'tcp',
-        port   => '80',
-        srange => '$CACHES',
-    }
-
-    monitoring::service { 'turnilo':
-        description   => 'turnilo',
-        check_command => "check_tcp!${port}",
-        contact_group => $contact_group,
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Turnilo-Pivot',
-    }
-
-    base::service_auto_restart { 'apache2': }
-
-    if $proxy_enabled {
-        $server_name = $::realm ? {
-            'production' => 'turnilo.wikimedia.org',
-            'labs'       => "turnilo-${::labsproject}.${::site}.wmflabs",
+    if $monitoring_enabled {
+        monitoring::service { 'turnilo':
+            description   => 'turnilo',
+            check_command => "check_tcp!${port}",
+            contact_group => $contact_group,
+            notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Turnilo-Pivot',
         }
-
-        include ::profile::druid::turnilo::proxy
     }
 }

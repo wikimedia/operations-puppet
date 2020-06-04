@@ -21,6 +21,21 @@ class profile::druid::turnilo::proxy(
 
     require ::profile::analytics::httpd::utils
 
+    class { '::httpd':
+        modules => ['proxy_http',
+                    'proxy',
+                    'auth_basic',
+                    'authnz_ldap']
+    }
+
+    class { '::passwords::ldap::production': }
+
+    ferm::service { 'turnilo-http':
+        proto  => 'tcp',
+        port   => '80',
+        srange => '$CACHES',
+    }
+
     $proxypass = $passwords::ldap::production::proxypass
     $ldap_server_primary = $ldap_config['ro-server']
     $ldap_server_fallback = $ldap_config['ro-server-fallback']
@@ -30,4 +45,6 @@ class profile::druid::turnilo::proxy(
         content => template('profile/druid/turnilo/proxy/turnilo.vhost.erb'),
         require => File['/var/www/health_check'],
     }
+
+    base::service_auto_restart { 'apache2': }
 }
