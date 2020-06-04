@@ -59,16 +59,31 @@
 #   granularity, reduce_memory and num_shards. Therefore, those options are
 #   specified inside this file.
 #
+# [*hourly_shards*]
+#   Number of shards that the hourly segment of this datasource should have.
+#   This will be usually 1, except for big schemas. Default: 1.
+#
+# [*hourly_reduce_mem*]
+#   Reducer memory to allocate for hourly indexing job in hadoop.
+#   This will be usually 4096, except for big schemas. Default: 4096.
+#
 # [*daily_shards*]
 #   Number of shards that the daily segment of this datasource should have.
-#   This will be usually 1, except for very big schemas. Default: 1.
+#   This will be usually 1, except for big schemas. Default: 1.
+#
+# [*daily_reduce_mem*]
+#   Reducer memory to allocate for daily indexing job in hadoop.
+#   This will be usually 8192, except for big schemas. Default: 8192.
 #
 # [*job_name*]
 #   The Spark job name. Default: eventlogging_to_druid_$title
 #
 define profile::analytics::refinery::job::eventlogging_to_druid_job (
     $job_config,
+    $hourly_shards       = 1,
+    $hourly_reduce_mem   = '4096',
     $daily_shards        = 1,
+    $daily_reduce_mem    = '8192',
     $job_name            = "eventlogging_to_druid_${title}",
     $refinery_job_jar    = undef,
     $job_class           = 'org.wikimedia.analytics.refinery.job.HiveToDruid',
@@ -129,8 +144,8 @@ define profile::analytics::refinery::job::eventlogging_to_druid_job (
         ensure     => $_ensure_hourly,
         properties => merge($default_config, $job_config, {
             'segment_granularity' => 'hour',
-            'num_shards'          => 1,
-            'reduce_memory'       => '4096',
+            'num_shards'          => $hourly_shards,
+            'reduce_memory'       => $hourly_reduce_mem,
         }),
     }
     profile::analytics::refinery::job::spark_job { "${job_name}_hourly":
@@ -152,7 +167,7 @@ define profile::analytics::refinery::job::eventlogging_to_druid_job (
         properties => merge($default_config, $job_config, {
             'segment_granularity' => 'day',
             'num_shards'          => $daily_shards,
-            'reduce_memory'       => '8192',
+            'reduce_memory'       => $daily_reduce_mem,
         }),
     }
     profile::analytics::refinery::job::spark_job { "${job_name}_daily":
