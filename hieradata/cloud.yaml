@@ -11,7 +11,7 @@ profile::base::purge_apt_sources: false
 profile::base::purge_apt_preferences: false
 profile::base::manage_apt_source: false
 profile::base::apt_install_audit_installed: false
-profile::base::enable_adduser: false
+profile::base::enable_adduser: true
 profile::base::mirror_server: 'mirrors.wikimedia.org'
 
 profile::base::puppet::interval: 30
