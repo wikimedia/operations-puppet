@@ -1023,22 +1023,22 @@ node /^ganeti[12]00[0-8]\.(codfw|eqiad)\.wmnet$/ {
 
 # new Ganeti hosts - replacing ganeti100[1-4] (T228924)
 node /^ganeti(1009|101[0-2])\.eqiad\.wmnet$/ {
-    role(insetup)
+    role(ganeti)
 }
 
 # new Ganeti hosts - expansion (T228924)
 node /^ganeti101[3-8]\.eqiad\.wmnet$/ {
-    role(insetup)
+    role(ganeti)
 }
 
 # CI Ganeti nodes (T228926)
 node /^ganeti10(19|2[012])\.eqiad\.wmnet$/ {
-    role(insetup)
+    role(ganeti)
 }
 
 # new Ganeti hosts - expansion (T224603)
 node /^ganeti20(09|1[0-9]|2[0-4])\.codfw\.wmnet$/ {
-    role(insetup)
+    role(ganeti)
 }
 
 node /^ganeti300[123]\.esams\.wmnet$/ {
