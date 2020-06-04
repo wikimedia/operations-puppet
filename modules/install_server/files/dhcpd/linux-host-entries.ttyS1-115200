@@ -2320,19 +2320,16 @@ host druid1003 {
 host druid1004 {
     hardware ethernet 18:66:DA:AC:87:A1;
     fixed-address druid1004.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host druid1005 {
     hardware ethernet 18:66:DA:AE:36:FB;
     fixed-address druid1005.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host druid1006 {
     hardware ethernet 18:66:da:ac:75:cd;
     fixed-address druid1006.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host druid1007 {
