@@ -4,7 +4,7 @@
 # During each subsequent run, the destination directory
 # will be created anew and then replace the original.
 
-script_name=$(basename $0)
+script_name=$(basename "$0")
 
 function usage {
     echo "
@@ -53,29 +53,30 @@ set -e
 
 # Echos $@ to stdout prepended by a timestamp
 function log {
+    # shellcheck disable=2046
     echo $(date +"%Y-%m-%dT%H:%M:%S") "$@"
 }
 
 # Logs $@ to stdout prepended by ERROR, and then exit 1.
 function fatal {
-    log ERROR: $@
+    log ERROR: "$@"
     exit 1
 }
 
 # Echoes the filesystem device number of $1
 function device_number_of_file {
-    echo $(stat -c "%d" "${1}")
+    stat -c "%d" "${1}"
 }
 
 # Run $@ as a shell command.
 # If $verbose, log it first.
 # If $dry_run, don't actually run it.
 function cmd {
-    if [ $verbose -eq 1 ]; then
-        log $@
+    if [ "$verbose" -eq 1 ]; then
+        log "$@"
     fi
-    if [ $dry_run -eq 0 ]; then
-        $@
+    if [ "$dry_run" -eq 0 ]; then
+        "$@"
     fi
 }
 
@@ -96,6 +97,10 @@ while getopts "hvnt:" opt; do
     t)
         base_temp_dir=$OPTARG
         ;;
+    *)
+        usage
+        exit 1
+        ;;
     esac
 done
 
@@ -111,10 +116,10 @@ source_dirs=${@:1:$argc}
 dest_dir="${!#}"
 
 # Make an empty dest_dir if it already doesn't exist.
-test -d "${dest_dir}" || cmd mkdir -p $dest_dir
+test -d "${dest_dir}" || cmd mkdir -p "$dest_dir"
 
 # Check that we have $source_dirs and a $dest_dir.
-if [ -z "${source_dirs}" -o -z "${dest_dir}" ]; then
+if [ -z "${source_dirs}" ] || [ -z "${dest_dir}" ]; then
     fatal "Must specify at least one source directory and exactly one destination directory. Aborting."
 fi
 
@@ -123,15 +128,15 @@ fi
 device_number=$(device_number_of_file "${dest_dir}")
 
 # Check that base_tmp_dir is on dest_dir's filesystem.
-if [ $(device_number_of_file "${base_temp_dir}") -ne $device_number ]; then
+if [ $(device_number_of_file "${base_temp_dir}") -ne "$device_number" ]; then
     fatal "base-temp-directory '${base_temp_dir}' must be on the same filesystem as the destination directory '${dest_dir}'. Aborting"
 fi
 
 # Check that all $source_dirs exist and are directories and are on the same filesystem as $dest_dir.
 for source_dir in $source_dirs; do
-    test -d $source_dir || fatal "Source directory '${source_dir}' is not a directory. Aborting."
+    test -d "$source_dir" || fatal "Source directory '${source_dir}' is not a directory. Aborting."
     # Check that $source_dir is on dest_dir's filesystem.
-    if [ $(device_number_of_file "${source_dir}") -ne $device_number ]; then
+    if [ $(device_number_of_file "${source_dir}") -ne "$device_number" ]; then
         fatal "Source directory '${source_dir}' must be on the same filesystem as the destination directory '${dest_dir}'. Aborting"
     fi
 done
@@ -154,13 +159,13 @@ temp_dest_trash=$(mktemp -d$mktemp_dry_run $base_temp_dir/.hardsync.$(basename $
 
 # cp -al each source dir into temp dest
 for source_dir in $source_dirs; do
-    cmd cp -al $source_dir/* $temp_dest/
+    cmd cp -al "$source_dir"/* "$temp_dest/"
 done
 
 #  Remove any existent $dest_dir and mv $temp_dest to $dest_dir
-test -e $dest_dir && cmd mv -f $dest_dir $temp_dest_trash
-cmd chmod 755 $temp_dest
-cmd mv -f $temp_dest $dest_dir
-cmd rm -rf $temp_dest_trash
+test -e "$dest_dir" && cmd mv -f "$dest_dir" "$temp_dest_trash"
+cmd chmod 755 "$temp_dest"
+cmd mv -f "$temp_dest" "$dest_dir"
+cmd rm -rf "$temp_dest_trash"
 
 log "Finished hard syncing $source_dirs into $dest_dir"
