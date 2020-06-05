@@ -5,7 +5,6 @@
 class profile::hadoop::yarn_proxy (
     Hash $ldap_config        = lookup('ldap', Hash, hash, {}),
 ) {
-    require profile::hadoop::common
     require profile::hadoop::httpd
     require ::profile::analytics::httpd::utils
     include ::passwords::ldap::production
