@@ -167,7 +167,7 @@ class profile::ganeti (
         if $facts['ganeti_master'] == $facts['fqdn'] {
             nrpe::monitor_service { "https-gnt-rapi-${::site}":
                 description  => "HTTPS Ganeti RAPI ${::site}",
-                nrpe_command => "/usr/lib/nagios/plugins/check_http -H ${facts}['ganeti_cluster'] -p 5080 -S -e 401",
+                nrpe_command => "/usr/lib/nagios/plugins/check_http -H ${facts['ganeti_cluster']} -p 5080 -S -e 401",
                 notes_url    => 'https://www.mediawiki.org/wiki/Ganeti#RAPI_daemon',
             }
         }
