@@ -1,28 +1,27 @@
 #!/bin/sh
 
-<%- if @facts['fqdn'] != @ca_server -%>
-printf "To ensure consistent locking please run puppet-merge from: %s\n" <%= @ca_server %>
-exit 1
-<%- end -%>
 set -eu
+MASTERS=""
+WORKERS=""
+RED=$(tput bold; tput setaf 1)
+GREEN=$(tput bold; tput setaf 2)
+CYAN=$(tput bold; tput setaf 6)
+RESET=$(tput sgr0)
+CA_SERVER=''
 git_user=gitpuppet
+
+. /etc/puppet-merge.conf
+
+if [ "$(hostname -f)" -ne "${CA_SERVER}" ];then
+  printf "To ensure consistent locking please run puppet-merge from: %s\n" ${CA_SERVER}
+  exit 1
+fi
+
 if [ "$(whoami)" = "gitpuppet" ]
 then
   printf "This script should only be run as a real users.  gitpuppet should use /usr/local/bin/puppet-merge.py\n"
   exit 1
 fi
-
-<%-
-workers = @servers.values.map do |workers_map|
-  workers_map.map { |name| name['worker'] }.select { |name| name != @fqdn }.flatten
-end
--%>
-MASTERS="<%= @servers.keys.select { |name| name != @fqdn }.join(' ') %>"
-WORKERS="<%= workers.join(' ') %>"
-RED=$(tput bold; tput setaf 1)
-GREEN=$(tput bold; tput setaf 2)
-CYAN=$(tput bold; tput setaf 6)
-RESET=$(tput sgr0)
 
 lock() {
   LABS_PRIVATE=$1
