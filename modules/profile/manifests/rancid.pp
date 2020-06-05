@@ -1,6 +1,6 @@
 # Really Awful Notorious CIsco config Differ
 class profile::rancid (
-    $active_server = hiera('netmon_server')
+    Stdlib::Fqdn $active_server = hiera('netmon_server')
 ){
 
     class { '::rancid':

@@ -1,7 +1,7 @@
 # Really Awful Notorious CIsco config Differ
 class rancid (
-    Stdlib::Fqdn $active_server
-    ){
+    Stdlib::Fqdn $active_server,
+){
 
     package { 'rancid':
         ensure => present,
