@@ -97,7 +97,7 @@ CREATE TABLE loading.osmborder_lines (
   disputed bool,
   maritime bool,
   way Geometry(LineString, 3857));
-\copy loading.osmborder_lines FROM $PLANET_DIR/osmborder_lines.csv
+\\copy loading.osmborder_lines FROM $PLANET_DIR/osmborder_lines.csv
 CREATE INDEX osmborder_lines_way_idx ON loading.osmborder_lines USING gist (way) WITH (fillfactor=100);
 CLUSTER loading.osmborder_lines USING osmborder_lines_way_idx;
 CREATE INDEX osmborder_lines_way_low_idx ON loading.osmborder_lines USING gist (way) WITH (fillfactor=100) WHERE admin_level <= 4;
@@ -151,6 +151,7 @@ function import_data() {
 
   cat sql/types/*.sql | psql -1Xq -d $DATABASE
 
+  # shellcheck disable=2086
   osm2pgsql $osm2pgsql_common_opts $osm2pgsql_import_opts --create --slim \
     -d $DATABASE --output multi --style ${BASE_DIR}/cleartables.json \
     -G "$PLANET_DIR/osm-data.osm.pbf"
@@ -184,7 +185,7 @@ function database_update() {
   then
     echo "No new data available. Sleeping..."
     #  Remove file, it will just be an empty changeset
-    rm ${file}
+    rm "${file}"
     # No need to rollback now
     rm state-prev.txt
     exit 0
@@ -197,6 +198,7 @@ function database_update() {
     # Build the ClearTables files
     cat cleartables.yaml wikidata.yaml | ./yaml2json.py > "${BASE_DIR}/cleartables.json"
 
+  # shellcheck disable=2086
     osm2pgsql $osm2pgsql_common_opts $osm2pgsql_update_opts --append --slim \
       -d $DATABASE --output multi --style "${BASE_DIR}/cleartables.json" \
       -G "${file}"
@@ -215,6 +217,7 @@ function database_update() {
 
 
 function clean () {
+  # shellcheck disable=2154
   if [ "$really" != "yes" ]; then
     echo "This will delete downloaded files and drop the database. If you really want to do this, set the enviornment variable \"really\" to yes"
     exit 1
@@ -249,7 +252,7 @@ command="$1"
 case "$command" in
     setup)
     shift
-    setup_data $@
+    setup_data "$@"
     ;;
 
     import)
