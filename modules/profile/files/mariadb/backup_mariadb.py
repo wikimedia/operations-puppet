@@ -2,8 +2,8 @@
 
 # Dependencies: python3 python3-pymysql python3-yaml
 #               mydumper at /usr/bin/mydumper (if dumps are used)
-#               wmf-mariadb101 (for /opt/wmf-mariadb101/bin/mariabackup, if snapshoting is used)
-#               pigz on /usr/bin/pigz (if snapshoting is used)
+#               wmf-mariadb10* (or any xtrabackup installation, if snapshotting is used)
+#               pigz on /usr/bin/pigz (if snapshotting or compression is used)
 #               tar at /bin/tar
 #               TLS certificate installed at /etc/ssl/certs/Puppet_Internal_CA.pem (if data
 #               gathering metrics are used)
@@ -343,7 +343,7 @@ class NullBackup:
 
 class MariaBackup(NullBackup):
 
-    xtrabackup_path = '/opt/wmf-mariadb101/bin/mariabackup'  # FIXME for global path after upgrade
+    xtrabackup_path = 'xtrabackup'
     xtrabackup_prepare_memory = '20G'
 
     def get_backup_cmd(self, backup_dir):
