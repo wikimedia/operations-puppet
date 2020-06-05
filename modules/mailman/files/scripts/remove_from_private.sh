@@ -26,18 +26,18 @@ if [ -z "$user" ]
 fi
 
 echo "looking for lists $user is subscribed to .."
-user_lists=$(${mm_base}find_member $user | grep -v 'found in')
+user_lists=$("${mm_base}find_member" "$user" | grep -v 'found in')
 
-echo -e "found on:\n $user_lists"
+echo -e "found on:\\n $user_lists"
 
-echo -e "analyzing if lists are public or private..\n"
+echo -e "analyzing if lists are public or private..\\n"
 
 for list in $user_lists
 do
     echo -n "$list: "
 
-    spolicy=$(${mm_base}config_list -o - $list | grep -E "^subscribe_policy" | cut -d " " -f3)
-    apolicy=$(${mm_base}config_list -o - $list | grep -E "archive_private" | cut -d " " -f3)
+    spolicy=$("${mm_base}config_list" -o - "$list" | grep -E "^subscribe_policy" | cut -d " " -f3)
+    apolicy=$("${mm_base}config_list" -o - "$list" | grep -E "archive_private" | cut -d " " -f3)
 
     # echo $spolicy
     # echo $apolicy
@@ -69,15 +69,15 @@ do
         ;;
     esac
 
-    if [ $spolicy == "3" ] && [ $apolicy == "1" ]
+    if [ "$spolicy" == "3" ] && [ "$apolicy" == "1" ]
         then
         echo -n " DEFINITELY PRIVATE"
         privatelists+=( "$list" )
-    elif [ $spolicy == "2" ] && [ $apolicy == "1" ]
+    elif [ "$spolicy" == "2" ] && [ "$apolicy" == "1" ]
         then
         echo -n " LOOKS PRIVATE"
         privatelists+=( "$list" )
-    elif [ $spolicy == "1" ] && [ $apolicy == "0" ]
+    elif [ "$spolicy" == "1" ] && [ "$apolicy" == "0" ]
         then
         echo -n " DEFINITELY PUBLIC"
     else
@@ -88,9 +88,9 @@ do
 
 done
 
-echo -e "\nprivate lists: ${privatelists[@]}\n"
-echo "do you want me to remove $user from all the above? (yes/no)"
-read yesorno
+printf "\\nprivate lists: %s\\n" "${privatelists[@]}"
+printf "do you want me to remove %s from all the above? (yes/no)" "${user}"
+read -r yesorno
 
 case $yesorno in
 
@@ -107,13 +107,13 @@ case $yesorno in
     ;;
 esac
 
-echo $user > /tmp/remove-mailman-user
+echo "$user" > /tmp/remove-mailman-user
 
-for privlist in ${privatelists[@]}
+for privlist in "${privatelists[@]}"
 do
     # echo $privlist
     echo "${mm_base}remove_members -n -f /tmp/remove-mailman-user $privlist"
-    ${mm_base}remove_members -n -f /tmp/remove-mailman-user $privlist
+    "${mm_base}remove_members" -n -f /tmp/remove-mailman-user "$privlist"
 done
 
 rm /tmp/remove-mailman-user
