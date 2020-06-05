@@ -1,6 +1,7 @@
 # Sets up a maps server master
 class role::maps::master {
     include ::profile::standard
+    include ::profile::rsyslog::udp_localhost_compat
     include ::profile::base::firewall
     include ::profile::lvs::realserver
 
