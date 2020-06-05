@@ -11,10 +11,10 @@
 #                    configurations, directories and cronjobs are auto-created from this hash.
 #
 class profile::planet (
-    $domain_name = lookup('profile::planet::domain_name'),
-    $meta_link = lookup('profile::planet::meta_link'),
-    $http_proxy = lookup('profile::planet::http_proxy'),
-    $languages = {
+    String $domain_name = lookup('profile::planet::domain_name'),
+    Stdlib::HTTPUrl $meta_link = lookup('profile::planet::meta_link'),
+    Stdlib::HTTPUrl $http_proxy = lookup('profile::planet::http_proxy'),
+    Hash $languages = {
         ar => {
             'subscribe'     => '&#1575;&#1588;&#1578;&#1585;&#1603;',
             'subscriptions' => '&#1575;&#1604;&#1575;&#1588;&#1578;&#1585;&#1575;&#1603;&#1575;&#1578;',
