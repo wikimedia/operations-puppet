@@ -264,11 +264,10 @@ thumbor-canary: P{thumbor1001.eqiad.wmnet}
 thumbor-codfw: A:thumbor and A:codfw
 thumbor-eqiad: A:thumbor and A:eqiad
 url-downloader: P{O:url_downloader}
-wdqs-all: P{O:wdqs or O:wdqs::internal or O:wdqs::test or O:wdqs::autodeploy}
-wdqs-autodeploy: P{O:wdqs::autodeploy}
-wdqs-main: P{O:wdqs or O:wdqs::internal}
+wdqs-all: P{O:wdqs::public or O:wdqs::internal or O:wdqs::test}
+wdqs-main: P{O:wdqs::public or O:wdqs::internal}
 wdqs-internal: P{O:wdqs::internal}
-wdqs-public: P{O:wdqs}
+wdqs-public: P{O:wdqs::public}
 wdqs-test: P{O:wdqs::test}
 weblog: P{O:logging::webrequest::ops}
 webperf: P{O:webperf::processors_and_site or O:webperf::profiling_tools}
