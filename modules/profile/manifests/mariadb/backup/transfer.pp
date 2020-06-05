@@ -65,8 +65,8 @@ class profile::mariadb::backup::transfer {
         hour    => 19,
         weekday => [0, 2, 3, 5],
         user    => 'root',
-        command => "/usr/bin/systemd-cat -t mariadb-snapshots /usr/bin/python3 \
-/usr/local/bin/remote_backup_mariadb.py 2>&1",
+        command => "/usr/bin/python3 \
+/usr/local/bin/remote_backup_mariadb.py > /dev/null 2>&1",
         require => [File['/usr/local/bin/remote_backup_mariadb.py'],
         ],
     }
