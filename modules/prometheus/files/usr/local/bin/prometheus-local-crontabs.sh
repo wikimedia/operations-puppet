@@ -26,7 +26,7 @@ ALLOWED=('root' 'puppet' 'prometheus')
 # Get an array of all crontab files
 mapfile -t CRONTABS < <(/usr/bin/sudo -u root /bin/ls -1 /var/spool/cron/crontabs/)
 # Find the intersection of the local crontabs and the allowed crontabs
-mapfile -t ALLOWED_CRONTABS < <(echo ${CRONTABS[@]} ${ALLOWED[@]} | tr ' ' '\n' | sort | uniq -d)
+mapfile -t ALLOWED_CRONTABS < <(echo "${CRONTABS[@]}" "${ALLOWED[@]}" | tr ' ' '\n' | sort | uniq -d)
 
 # Count members of each array
 TOTAL_CRONTABS=${#CRONTABS[@]}
