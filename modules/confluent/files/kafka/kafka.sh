@@ -33,7 +33,7 @@ Environment Variables:
 "
 
 # Print usage if no <command> given, or $1 starts with '-'
-if [ -z "${1}" -o "${1:0:1}" == '-' ]; then
+if [ -z "${1}" ] || [ "${1:0:1}" == '-' ]; then
     echo "${USAGE}"
     exit 1
 fi
@@ -52,28 +52,28 @@ fi
 # Set ZOOKEEPER_OPT if ZOOKEEPER_URL is set and --zookeeper has not
 # also been passed in as a CLI arg.  This will be included
 # in command functions that take a --zookeeper argument.
-if [ -n "${KAFKA_ZOOKEEPER_URL}" -a -z "$(echo $@ | grep -- --zookeeper)" ]; then
+if [ -n "${KAFKA_ZOOKEEPER_URL}" ] && ! grep -q -- --zookeeper<<<"$@"; then
     ZOOKEEPER_OPT="--zookeeper ${KAFKA_ZOOKEEPER_URL}"
 fi
 
 # Set BROKER_LIST_OPT if KAFKA_BOOTSTRAP_SERVERS is set and --broker-list has not
 # also been passed in as a CLI arg.  This will be included
 # in command functions that take a --broker-list argument.
-if [ -n "${KAFKA_BOOTSTRAP_SERVERS}" -a -z "$(echo $@ | grep -- --broker-list)" ]; then
+if [ -n "${KAFKA_BOOTSTRAP_SERVERS}" ] && ! grep -q -- --broker-list<<<"$@"; then
     BROKER_LIST_OPT="--broker-list ${KAFKA_BOOTSTRAP_SERVERS}"
 fi
 
 # Set BOOTSTRAP_SERVER_OPT if KAFKA_BOOTSTRAP_SERVERS is set and --bootstrap-server has not
 # also been passed in as a CLI arg.  This will be included
 # in command functions that take a --bootstrap-server argument.
-if [ -n "${KAFKA_BOOTSTRAP_SERVERS}" -a -z "$(echo $@ | grep -- --bootstrap-server)" ]; then
+if [ -n "${KAFKA_BOOTSTRAP_SERVERS}" ] && ! grep -q -- --bootstrap-server<<<"$@"; then
     BOOTSTRAP_SERVER_OPT="--bootstrap-server ${KAFKA_BOOTSTRAP_SERVERS}"
 fi
 
 # Set ZOOKEEPER_CONNECT_OPT if KAFKA_ZOOKEEPER_URL is set and '--authorizer-properties zookeeper.connect'
 # has not also been passed in as a CLI arg.  This will be included
 # in command functions that take '--authorizer-properties zookeeper.connect' argument.
-if [ -n "${KAFKA_ZOOKEEPER_URL}" -a -z "$(echo $@ | egrep -- '--authorizer-properties\ *zookeeper\.connect')" ]; then
+if [ -n "${KAFKA_ZOOKEEPER_URL}" ] && ! grep -Eq -- '--authorizer-properties\ *zookeeper\.connect'<<<"$@"; then
     ZOOKEEPER_CONNECT_OPT="--authorizer-properties zookeeper.connect=${KAFKA_ZOOKEEPER_URL}"
 fi
 
@@ -84,24 +84,24 @@ fi
 # inconsistencies in broker CLI parameters.  Some use --bootstrap-server, others
 # use --broker-list, so we have to support both for now.
 # --broker-list should be removed in later versions in favor of --bootstrap-server
-broker_list_commands="kafka-console-producer "\
-"kafka-consumer-perf-test "\
-"kafka-replay-log-producer "\
-"kafka-replica-verification "\
-"kafka-simple-consumer-shell "\
-"kafka-verifiable-consumer "\
-"kafka-verifiable-producer"
+broker_list_commands="kafka-console-producer \
+kafka-consumer-perf-test \
+kafka-replay-log-producer \
+kafka-replica-verification \
+kafka-simple-consumer-shell \
+kafka-verifiable-consumer \
+kafka-verifiable-producer"
 
-bootstrap_server_commands="kafka-console-consumer "\
-"kafka-broker-api-versions "\
-"kafka-consumer-groups "
+bootstrap_server_commands="kafka-console-consumer \
+kafka-broker-api-versions \
+kafka-consumer-groups "
 
-zookeeper_commands="kafka-configs "\
-"kafka-consumer-offset-checker.sh "\
-"kafka-preferred-replica-election "\
-"kafka-reassign-partitions "\
-"kafka-replay-log-producer "\
-"kafka-topics"
+zookeeper_commands="kafka-configs \
+kafka-consumer-offset-checker.sh \
+kafka-preferred-replica-election \
+kafka-reassign-partitions \
+kafka-replay-log-producer \
+kafka-topics"
 
 zookeeper_connect_commands="kafka-acls"
 
@@ -114,5 +114,6 @@ echo "${zookeeper_connect_commands}" | /bin/grep -q "${command}" && EXTRA_OPTS="
 # Print out the command we are about to exec, and then run it
 # set -f to not expand wildcards in command, e.g. --topic '*'
 set -f
-echo ${command} ${EXTRA_OPTS}"$@"
-${command} ${EXTRA_OPTS}"$@"
+echo "${command} ${EXTRA_OPTS}$*"
+# shellcheck disable=SC2086
+${command} ${EXTRA_OPTS}"$*"
