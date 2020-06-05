@@ -46,3 +46,8 @@ profile::kerberos::keytabs::keytabs_metadata:
     owner: 'hue'
     group: 'hue'
     filename: 'hue.keytab'
+
+profile::java::java_packages:
+  - version: '8'
+    variant: 'jdk'
+profile::java::extra_args: 'JAVA_TOOL_OPTIONS="-Dfile.encoding=UTF-8"'

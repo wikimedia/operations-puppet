@@ -7,6 +7,8 @@ class role::analytics_cluster::hadoop::ui {
         description => 'Hadoop GUIs: Hue and Yarn ResourceManager web interfaces'
     }
 
+    include ::profile::java
+
     # hue.wikimedia.org
     #
     # NOTE: We currently (2019-01) use Cloudera's Jessie .deb packages on
