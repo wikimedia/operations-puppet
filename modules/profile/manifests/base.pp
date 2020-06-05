@@ -32,7 +32,8 @@ class profile::base(
     $monitoring_hosts = hiera('monitoring_hosts', []),
     Hash $wikimedia_clusters = lookup('wikimedia_clusters'),
     String $cluster = lookup('cluster'),
-    Boolean $enable_adduser = lookup('profile::base::enable_adduser')
+    Boolean $enable_adduser = lookup('profile::base::enable_adduser'),
+    Wmflib::Ensure $hardware_monitoring = lookup('profile::base::hardware_monitoring', {'default_value' => 'present'}),
 ) {
     # Sanity checks for cluster - T234232
     if ! has_key($wikimedia_clusters, $cluster) {
@@ -132,7 +133,9 @@ class profile::base(
     }
 
     if $facts['has_ipmi'] {
-        class { '::ipmi::monitor': }
+        class { '::ipmi::monitor':
+            ensure => $hardware_monitoring
+        }
     }
 
     class { '::base::initramfs': }
@@ -160,6 +163,7 @@ class profile::base(
         monitor_systemd          => $monitor_systemd,
         puppet_interval          => $profile::base::puppet::interval,
         raid_check               => $check_raid,
+        hardware_monitoring      => $hardware_monitoring
     }
 
     if $check_smart and $facts['is_virtual'] == false {

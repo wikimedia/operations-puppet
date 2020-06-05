@@ -1,4 +1,6 @@
-class ipmi::monitor {
+class ipmi::monitor (
+    Wmflib::Ensure $ensure = 'present'
+) {
     require_package('freeipmi-tools')
 
     # ipmi_devintf needs to be loaded for the checks to work properly (T167121)
@@ -27,6 +29,7 @@ class ipmi::monitor {
     }
 
     nrpe::monitor_service { 'check_ipmi_sensor':
+        ensure         => $ensure,
         description    => 'IPMI Sensor Status',
         nrpe_command   => '/usr/local/lib/nagios/plugins/check_ipmi_sensor --noentityabsent -T Temperature -T Power_Supply --nosel',
         check_interval => 30,

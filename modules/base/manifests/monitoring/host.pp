@@ -39,8 +39,9 @@ class base::monitoring::host(
     $monitor_systemd = true,
     Integer $puppet_interval = 30,
     Boolean $raid_check = true,
+    Wmflib::Ensure $hardware_monitoring = 'present',
 ) {
-    if $raid_check {
+    if $raid_check and $hardware_monitoring == 'present'{
         # RAID checks
         class { 'raid':
             write_cache_policy => $raid_write_cache_policy,
@@ -222,6 +223,7 @@ class base::monitoring::host(
 
     if ! $facts['is_virtual'] {
         monitoring::check_prometheus { 'smart_healthy':
+            ensure          => $hardware_monitoring,
             description     => 'Device not healthy (SMART)',
             dashboard_links => ["https://grafana.wikimedia.org/dashboard/db/host-overview?var-server=${::hostname}&var-datasource=${::site} prometheus/ops"],
             contact_group   => $contact_group,
@@ -240,6 +242,7 @@ class base::monitoring::host(
     # Did an host register an increase in correctable errors over the last 4d? Might indicate faulty
     # memory
     monitoring::check_prometheus { 'edac_correctable_errors':
+        ensure          => $hardware_monitoring,
         description     => 'Memory correctable errors (EDAC)',
         dashboard_links => ["https://grafana.wikimedia.org/dashboard/db/host-overview?orgId=1&var-server=${::hostname}&var-datasource=${::site} prometheus/ops"],
         contact_group   => $contact_group,
@@ -259,6 +262,7 @@ class base::monitoring::host(
     # Some of these events are not being caught through the usual node_edac_correctable_errors mechanism:
     # https://phabricator.wikimedia.org/T214529
     monitoring::check_prometheus { 'edac_syslog_events':
+        ensure          => $hardware_monitoring,
         description     => 'EDAC syslog messages',
         dashboard_links => ["https://grafana.wikimedia.org/dashboard/db/host-overview?orgId=1&var-server=${::hostname}&var-datasource=${::site} prometheus/ops"],
         contact_group   => $contact_group,
