@@ -11,6 +11,9 @@ class profile::httpbb {
     httpbb::test_suite {'test_main.yaml':
         source => 'puppet:///modules/profile/httpbb/test_main.yaml'
     }
+    httpbb::test_suite {'test_miscweb.yaml':
+        source => 'puppet:///modules/profile/httpbb/test_miscweb.yaml'
+    }
     httpbb::test_suite {'test_remnant.yaml':
         source => 'puppet:///modules/profile/httpbb/test_remnant.yaml'
     }
