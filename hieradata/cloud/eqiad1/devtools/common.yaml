@@ -117,7 +117,7 @@ gerrit::server::replica_hosts:
 - gerrit-replica.wmflabs.org
 
 # No IPv6 in cloud
-gerrit::service::ipv6: undef
+gerrit::service::ipv6: ~
 
 # No replication to github from cloud
 gerrit::jetty::replication: {}
