@@ -1,8 +1,9 @@
+# https://wikitech.wikimedia.org/wiki/Security/Peek
 class peek (
-    $to_email,
-    $asana_token,
-    $phab_token,
-    $template_dir='/var/lib/peek/git/templates/',
+    String $to_email,
+    String $asana_token,
+    String $phab_token,
+    Stdlib::Unixpath $template_dir='/var/lib/peek/git/templates/',
     )
 {
     include ::peek::cron
