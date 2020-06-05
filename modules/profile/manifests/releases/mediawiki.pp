@@ -1,15 +1,15 @@
 # server hosting MediaWiki releases
 # https://releases.wikimedia.org/mediawiki/
 class profile::releases::mediawiki (
-    $sitename = lookup('profile::releases::mediawiki::sitename'),
-    $sitename_jenkins = lookup('profile::releases::mediawiki::sitename_jenkins'),
-    $prefix = lookup('profile::releases::mediawiki::prefix'),
-    $http_port = lookup('profile::releases::mediawiki::http_port'),
-    $server_admin = lookup('profile::releases::mediawiki::server_admin'),
-    $active_server = lookup('releases_server'),
-    $passive_server = lookup('releases_server_failover'),
-    $jenkins_agent_username = lookup('jenkins_agent_username'),
-    $jenkins_agent_key = lookup('profile::releases::mediawiki::jenkins_agent_key'),
+    Stdlib::Fqdn $sitename = lookup('profile::releases::mediawiki::sitename'),
+    Stdlib::Fqdn $sitename_jenkins = lookup('profile::releases::mediawiki::sitename_jenkins'),
+    Stdlib::Unixpath $prefix = lookup('profile::releases::mediawiki::prefix'),
+    Stdlib::Port $http_port = lookup('profile::releases::mediawiki::http_port'),
+    String $server_admin = lookup('profile::releases::mediawiki::server_admin'),
+    Stdlib::Fqdn $active_server = lookup('releases_server'),
+    Stdlib::Fqdn $passive_server = lookup('releases_server_failover'),
+    String $jenkins_agent_username = lookup('jenkins_agent_username'),
+    String $jenkins_agent_key = lookup('profile::releases::mediawiki::jenkins_agent_key'),
 ){
     class { '::jenkins':
         access_log => true,
