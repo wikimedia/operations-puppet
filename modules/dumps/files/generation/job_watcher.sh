@@ -23,13 +23,13 @@ dumpsbasedir=""
 verbose=""
 
 while [ $# -gt 0 ]; do
-    if [ $1 == "--locksbasedir" ]; then
+    if [ "$1" == "--locksbasedir" ]; then
         locksbasedir="$2"
         shift; shift
-    elif [ $1 == "--dumpsbasedir" ]; then
+    elif [ "$1" == "--dumpsbasedir" ]; then
         dumpsbasedir="$2"
         shift; shift
-    elif [ $1 == "--verbose" ]; then
+    elif [ "$1" == "--verbose" ]; then
         verbose=1
         shift
     else
@@ -57,11 +57,11 @@ wikis=$( ls -d *wik* )
 locked_wikis=()
 lock_files=()
 for wikiname in $wikis; do
-    ls $wikiname/lock* > /dev/null 2>&1 || continue
+    ls "$wikiname"/lock* > /dev/null 2>&1 || continue
     locked_wikis+=( "$wikiname" )
     # if something went wrong, there could be more than one lockfile; in this case,
     # use the most recent one
-    thisfile=$( ls -t ${wikiname}/lock* 2>/dev/null | head -1 )
+    thisfile=$( ls -t "${wikiname}"/lock* 2>/dev/null | head -1 )
     lock_files+=( "${locksbasedir}/${thisfile}" )
 done
 
@@ -72,16 +72,16 @@ done
 #
 
 cd "$dumpsbasedir" || { echo "failed to cd to $dumpsbasedir" && exit 1; }
-for index in ${!locked_wikis[@]}; do
+for index in "${!locked_wikis[@]}"; do
     wikiname=${locked_wikis[$index]}
-    lock_ts=$( /usr/bin/stat -c %Y ${lock_files[$index]} 2>/dev/null )
+    lock_ts=$( /usr/bin/stat -c %Y "${lock_files[$index]}" 2>/dev/null )
     # lock file could have disappeared, so no stat
     if [ -z "$lock_ts" ]; then
         continue
     fi
     # get the date from the lockfile name
-    locked_date=$( echo ${lock_files[$index]} | /usr/bin/mawk -F_ '{ print $NF }' )
-    inprog=$( ls ${wikiname}/${locked_date}/*inprog 2>/dev/null )
+    locked_date=$( /usr/bin/mawk -F_ '{ print $NF }'<<<"${lock_files[$index]}" )
+    inprog=$( ls "${wikiname}/${locked_date}/"*inprog 2>/dev/null )
     for filename in $inprog; do
 	filename_ts=$( /usr/bin/stat -c %Y "$filename" 2>/dev/null)
 	# dump in progress file could have disappeared, so no stat
@@ -89,11 +89,11 @@ for index in ${!locked_wikis[@]}; do
             continue
         fi
 	if [ ! -z "$verbose" ]; then
-            DIFF=$(( $lock_ts - $filename_ts ))
+            DIFF=$(( lock_ts - filename_ts ))
 	    # note this could be negative if something is weird. we don't care.
             echo "INFO: $wikiname has file ${filename} with age diff ${DIFF} from lockfile (${filename_ts} vs ${lock_ts})"
         fi
-        if [ $(( ${filename_ts} + ${AGE_DIFFERENCE} )) -lt ${lock_ts} ]; then
+        if [ $(( filename_ts + AGE_DIFFERENCE )) -lt "${lock_ts}" ]; then
             echo "PROBLEM: $wikiname has file ${filename} at least ${AGE_DIFF_HOURS} hours older than lock"
         fi
     done

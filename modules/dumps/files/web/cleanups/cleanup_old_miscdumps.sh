@@ -31,13 +31,13 @@ configfile=""
 dryrun=""
 
 while [ $# -gt 0 ]; do
-    if [ $1 == "--miscdumpsdir" ]; then
+    if [ "$1" == "--miscdumpsdir" ]; then
         miscdumpsdir="$2"
         shift; shift
-    elif [ $1 == "--configfile" ]; then
+    elif [ "$1" == "--configfile" ]; then
         configfile="$2"
         shift; shift
-    elif [ $1 == "--dryrun" ]; then
+    elif [ "$1" == "--dryrun" ]; then
 	dryrun="yes"
         shift
     else
@@ -60,12 +60,12 @@ if [ ! -d "$miscdumpsdir" ]; then
 fi
 
 cd "$miscdumpsdir" || exit 1
-config_entries=$( cat $configfile | grep ':' | grep -v '^#' )
+config_entries=$( grep ':' "$configfile" | grep -v '^#' )
 # globalblocks:6
 # cirrussearch:10
 
 for entry in $config_entries; do
-  IFS=':' read -r subdir keep <<<$entry
+  IFS=':' read -r subdir keep <<<"$entry"
 
   if [ ! -d "$subdir" ]; then
       echo "subdir $subdir does not exist, skipping"
@@ -80,19 +80,20 @@ for entry in $config_entries; do
       continue
   fi
 
+  # shellcheck disable=SC2206
   runs=( $runs )
   numruns=${#runs[@]}
-  if [ $numruns -le $keep ]; then
+  if [ "$numruns" -le "$keep" ]; then
       continue
   fi
 
-  num_unwanted=$(( $numruns - $keep ))
-  unwanted=${runs[@]:0:${num_unwanted}}
-  for dirname in ${unwanted[@]}; do
+  num_unwanted=$(( numruns - keep ))
+  unwanted=( "${runs[@]:0:${num_unwanted}}" )
+  for dirname in "${unwanted[@]}"; do
       if [ -n "$dryrun" ]; then
-	  echo "would rm -rf ${subdir}/${dirname}"
+        echo "would rm -rf ${subdir}/${dirname}"
       else
-	  rm -rf "${subdir}/${dirname}"
+        rm -rf "${subdir:?}/${dirname:?}"
       fi
   done
 
