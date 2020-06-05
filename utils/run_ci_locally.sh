@@ -43,12 +43,12 @@ if ! (docker info > /dev/null); then
     exit 1
 fi
 
-IMG_VERSION=${IMG_VERSION:-"0.7.1"}
+IMG_VERSION=${IMG_VERSION:-"0.7.2"}
 IMG_NAME=docker-registry.wikimedia.org/releng/operations-puppet:$IMG_VERSION
 CONT_NAME=puppet-tests-${IMG_VERSION}
 
 SCRIPT_DIR="$( cd "$( dirname "$0" )" && pwd )"
 
 pushd "${SCRIPT_DIR}/.."
-docker run --rm --env ZUUL_REF="" --env RAKE_TARGET="$@" --name $CONT_NAME --volume /$(pwd)://src $IMG_NAME
+docker run --rm --env ZUUL_REF="" --env RAKE_TARGET="$*" --name "$CONT_NAME" --volume /"$(pwd)"://src "$IMG_NAME"
 popd

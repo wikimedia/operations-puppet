@@ -27,6 +27,7 @@ class TaskGen < ::Rake::TaskLib
       :rubocop,
       :common_yaml,
       :hiera_defaults,
+      :shellcheck,
       :python_extensions,
       :spec,
       :tox,
@@ -299,6 +300,38 @@ class TaskGen < ::Rake::TaskLib
     end
 
     [:rubocop]
+  end
+
+  def setup_shellcheck
+    shell_files = filter_files_by('**/*.sh').reject{ |f| f.start_with?('modules/admin/files/home') }
+    return [] if shell_files.empty?
+    desc 'Ensure shell files have no errors as detected by shellcheck'
+    task 'shellcheck' do
+      failures = false
+      result = JSON.parse(` /usr/bin/shellcheck -f json #{shell_files.join(' ')}`)
+      current_file = ''
+      # uncomment can use the following if info and warning gets to noisy
+      # result.select{ |i| i['level'] == 'error'}.each do |issue|
+      result.each do |issue|
+        if current_file.empty? || current_file != (issue['file'])
+          current_file = issue['file']
+          puts current_file
+        end
+        message = "\tline:#{issue['line']}: [SC#{issue['code']}] #{issue['message']}"
+        case issue['level']
+        when 'info'
+          puts message.blue
+        when 'warning'
+          puts message.yellow
+        when 'error'
+          puts message.red
+          failures = true
+        end
+      end
+      abort("shellcheck: FAILED".red) if failures
+      puts "shellcheck: OK".green
+    end
+    [:shellcheck]
   end
 
   def setup_python_extensions

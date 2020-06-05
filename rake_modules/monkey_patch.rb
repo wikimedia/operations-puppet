@@ -29,4 +29,12 @@ class String
   def green
     colorize("\033[32m")
   end
+
+  def yellow
+    colorize("\033[33m")
+  end
+
+  def blue
+    colorize("\033[34m")
+  end
 end
