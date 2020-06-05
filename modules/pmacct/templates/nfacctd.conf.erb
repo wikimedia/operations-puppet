@@ -6,6 +6,10 @@ syslog: daemon
 
 aggregate: src_host, dst_host, src_as, dst_as, src_port, dst_port, proto, tcpflags, as_path, peer_src_as, peer_dst_as, tag2, src_host_country, dst_host_country, peer_src_ip
 
+! For accurate temporal reporting of long-lived flows, throw away the
+! router-reported start timestamp, and use nfacct reception timestamp instead.
+nfacctd_time_new: true
+
 ! Disable some warnings due to JunOS bugs
 nfacctd_disable_checks: true
 
