@@ -164,11 +164,25 @@ class profile::ganeti (
             notes_url    => 'https://wikitech.wikimedia.org/wiki/Ganeti',
         }
 
+
         if $facts['ganeti_master'] == $facts['fqdn'] {
             nrpe::monitor_service { "https-gnt-rapi-${::site}":
                 description  => "HTTPS Ganeti RAPI ${::site}",
                 nrpe_command => "/usr/lib/nagios/plugins/check_http -H ${facts['ganeti_cluster']} -p 5080 -S -e 401",
                 notes_url    => 'https://www.mediawiki.org/wiki/Ganeti#RAPI_daemon',
+            }
+
+            nrpe::monitor_service{ 'ganeti-metad':
+                description  => 'ganeti-mond running',
+                nrpe_command => '/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:1 -u root -C ganeti-metad',
+                notes_url    => 'https://wikitech.wikimedia.org/wiki/Ganeti',
+            }
+
+
+            nrpe::monitor_service{ 'ganeti-wconfd':
+                description  => 'ganeti-mond running',
+                nrpe_command => '/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:1 -u gnt-masterd -C ganeti-wconfd',
+                notes_url    => 'https://wikitech.wikimedia.org/wiki/Ganeti',
             }
         }
     }
