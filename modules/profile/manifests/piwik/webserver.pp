@@ -28,13 +28,18 @@ class profile::piwik::webserver(
         ],
     }
 
-    $php_module = 'php7.0'
-    $php_ini = '/etc/php/7.0/apache2/php.ini'
+    if os_version('debian <= stretch') {
+        $php_module = 'php7.0'
+        $php_ini = '/etc/php/7.0/apache2/php.ini'
+    } else  {
+        $php_module = 'php7.3'
+        $php_ini = '/etc/php/7.3/apache2/php.ini'
+    }
 
-    package { 'php7.0-mbstring':
+    package { "${php_module}-mbstring":
         ensure => 'present',
     }
-    package { 'php7.0-xml':
+    package { "${php_module}-xml":
         ensure => 'present',
     }
 
