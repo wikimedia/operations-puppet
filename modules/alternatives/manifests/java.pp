@@ -21,10 +21,16 @@
 #
 define alternatives::java {
 
-    $java_path = "/usr/lib/jvm/java-${title}-openjdk-amd64"
+    # The following two paths are needed since update-alternatives lists
+    # the java paths using the java-$version format, meanwhile
+    # update-java-alternatives follows the java-1.$version.0 format.
+    # There seems to be no way to use update-java-alternatives to get
+    # the current path set as default, hence we need to use update-alternatives.
+    $update_alternatives_path = "/usr/lib/jvm/java-${title}-openjdk-amd64"
+    $update_java_alternatives_path = "/usr/lib/jvm/java-1.${title}.0-openjdk-amd64"
 
     exec { "update_java_alternatives_${title}":
-        command => "/usr/sbin/update-java-alternatives -s ${java_path}",
-        unless  => "/usr/bin/update-alternatives --query java | /bin/grep 'Value: ${java_path}'",
+        command => "/usr/sbin/update-java-alternatives -s ${update_java_alternatives_path}",
+        unless  => "/usr/bin/update-alternatives --query java | /bin/grep 'Value: ${update_alternatives_path}'",
     }
 }
