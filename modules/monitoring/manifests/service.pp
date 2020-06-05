@@ -25,6 +25,10 @@ define monitoring::service(
         $description_safe = ''
     }
 
+    if $check_command =~ /\\n/ {
+        fail("Parameter check_command cannot contain newlines: ${check_command}")
+    }
+
     if ! $host {
         fail("Parameter ${host} not defined!")
     }
