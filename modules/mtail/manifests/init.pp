@@ -21,7 +21,8 @@ class mtail (
     Stdlib::Port $port              = 3903,
     Wmflib::Ensure $service_ensure  = 'present',
     String $group                   = 'root',
-    Boolean $from_component         = false
+    Boolean $from_component         = false,
+    String $additional_args         = ''
 ) {
     if ( $from_component ) {
         apt::package_from_component { 'mtail':
