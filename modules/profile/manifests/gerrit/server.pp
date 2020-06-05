@@ -3,6 +3,7 @@
 # filtertags: labs-project-git
 class profile::gerrit::server(
     Stdlib::Ipv4 $ipv4 = lookup('gerrit::service::ipv4'),
+    Optional[Stdlib::Ipv6] $ipv6 = lookup('gerrit::service::ipv6', {'default_value' => undef}),
     Stdlib::Fqdn $host = lookup('gerrit::server::host'),
     Array[Stdlib::Fqdn] $replica_hosts = lookup('gerrit::server::replica_hosts'),
     Boolean $backups_enabled = lookup('gerrit::server::backups_enabled'),
@@ -11,7 +12,6 @@ class profile::gerrit::server(
     String $config = lookup('gerrit::server::config'),
     Boolean $use_acmechief = lookup('gerrit::server::use_acmechief'),
     Hash $ldap_config = lookup('ldap', Hash, hash, {}),
-    Optional[Stdlib::Ipv6] $ipv6 = lookup('gerrit::service::ipv6'),
     Integer[8, 11] $java_version = lookup('gerrit::server::java_version'),
     Boolean $is_replica = lookup('gerrit::server::is_replica'),
     Optional[String] $scap_user = lookup('gerrit::server::scap_user'),
