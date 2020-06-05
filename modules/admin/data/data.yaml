@@ -275,7 +275,8 @@ groups:
               esanders, sukhe, jfishback, iflorez, mayakpwiki, conniecc1, abi, mgerlach, dedcode,
               kevinbazira, keepit-ssh, jiji, cohi, mstyles, accraze, kzeta, snowick,
               aarora, zpapierski, knissen, jiawang, mholloway-shell, joewalsh, tarrow,
-              itamar, phedenskog, aaron, dpifke, aklapper, jmads, andrew-wmde, daniram, rodolfovalentim]
+              itamar, phedenskog, aaron, dpifke, aklapper, jmads, andrew-wmde, daniram,
+              rodolfovalentim, lulu]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata]
   analytics-admins:
@@ -3725,7 +3726,16 @@ users:
     gid: 500
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJexC21uGdBW6jT1gyUGu/GGNWUBBLIcb1b6ALMLjAYX mbinder@Max-Binders-Super-Duper-Agile-Work-Robot-Clam.local
-
+  lulu:
+    ensure: present
+    realname: Yi-Ju Lu
+    email: l852888@gmail.com
+    uid: 24659
+    gid: 500
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAII/AS4247NETQf8XOeWWaM42EGaYup8Mi9VCYWp7tXfO lulu@p7820-virtual-machine
+    expiry_date: 2020-08-10
+    expiry_contact: diego@wikimedia.org
 ldap_only_users:
   abartov:
     ensure: present
@@ -4295,7 +4305,3 @@ ldap_only_users:
     ensure: present
     realname: Nik Gkountas
     email: ngkountas@wikimedia.org
-  lulu:
-    ensure: present
-    realname: Yi-Ju Lu
-    email: l852888@gmail.com
