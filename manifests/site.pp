@@ -2123,8 +2123,8 @@ node 'peek2001.codfw.wmnet' {
 }
 
 # people.wikimedia.org, for all shell users
-# buster VM. replaced people1001 (T247649)
-node 'people1002.eqiad.wmnet' {
+# buster VMs. replaced people1001 (T247649)
+node 'people1002.eqiad.wmnet', 'people2001.codfw.wmnet' {
     role(microsites::peopleweb)
 }
 
