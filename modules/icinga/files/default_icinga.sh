@@ -1,3 +1,4 @@
+# managed by puppet
 # /etc/default/icinga
 
 # location of the icinga configuration file

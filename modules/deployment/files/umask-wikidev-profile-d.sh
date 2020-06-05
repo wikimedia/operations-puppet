@@ -1,4 +1,4 @@
-# !this file is managed by puppet!
+# this file is managed by puppet
 # set umask to 0002 for wikidev users
 # to prevent broken repos per T79400
 if groups | grep -w -q wikidev; then
