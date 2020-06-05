@@ -474,6 +474,11 @@ host matomo1001 {
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
+host matomo1002 {
+    hardware ethernet aa:00:00:21:0c:ea;
+    fixed-address matomo1002.eqiad.wmnet;
+}
+
 host mendelevium {
     hardware ethernet aa:00:00:58:6a:10;
     fixed-address mendelevium.eqiad.wmnet;

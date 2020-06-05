@@ -1440,6 +1440,11 @@ node 'matomo1001.eqiad.wmnet' {
     role(piwik)
 }
 
+# Buster replacement for matomo1001 - T252740
+node 'matomo1002.eqiad.wmnet' {
+    role(piwik)
+}
+
 node /^mc10(19|2[0-9]|3[0-6])\.eqiad\.wmnet/ {
     role(mediawiki::memcached)
 }
