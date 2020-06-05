@@ -19,7 +19,8 @@ profile::hadoop::common::hadoop_cluster_name: 'analytics-hadoop'
 profile::zookeeper::cluster_name: druid-public-eqiad
 # To avoid version conflics with Cloudera zookeeper package, this
 # class manually specifies which debian package version should be installed.
-profile::zookeeper::zookeeper_version: '3.4.9-3'
+profile::zookeeper::zookeeper_version: '3.4.13-2'
+profile::zookeeper::force_java_11: true
 profile::zookeeper::firewall::srange: '$DRUID_PUBLIC_HOSTS'
 profile::zookeeper::prometheus_instance: 'analytics'
 profile::zookeeper::monitoring_enabled: true
