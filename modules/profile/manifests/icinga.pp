@@ -166,12 +166,21 @@ class profile::icinga(
     }
 
     if ($is_passive) {
+
+        file { '/etc/icinga/active_host':
+          ensure  => present,
+          owner   => 'root',
+          group   => 'root',
+          mode    => '0444',
+          content => $active_host,
+        }
+
         file { '/usr/local/sbin/sync_icinga_state':
           ensure  => present,
           owner   => 'root',
           group   => 'root',
           mode    => '0755',
-          content => template('role/icinga/sync_icinga_state.sh.erb'),
+          content => file('role/icinga/sync_icinga_state.sh'),
         }
 
         base::service_auto_restart { 'apache2': }
