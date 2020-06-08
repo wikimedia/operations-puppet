@@ -8,7 +8,7 @@ class profile::piwik::instance (
     $admin_password    = lookup('profile::piwik::admin_password'),
     $password_salt     = lookup('profile::piwik::password_salt'),
     $trusted_hosts     = lookup('profile::piwik::trusted_hosts', { 'default_value' => ['piwik.wikimedia.org', 'wikimediafoundation.org'] }),
-    $archive_cron_url  = lookup('profile::piwik::archive_cron_url', { 'default_value' => 'piwik.wikimedia.org' }),
+    $archive_timer_url = lookup('profile::piwik::archive_timer_url', { 'default_value' => 'piwik.wikimedia.org' }),
     $contact_groups    = lookup('profile::piwik::contact_groups', { 'default_value' => 'analytics' }),
     $piwik_username    = lookup('profile::piwik::piwik_username', { 'default_value' => 'www-data' }),
 ) {
@@ -27,17 +27,18 @@ class profile::piwik::instance (
     # Install a systemd timer to run the Archive task periodically.
     # Running it once a day to avoid performance penalties on high trafficated websites
     # (https://piwik.org/docs/setup-auto-archiving/#important-tips-for-medium-to-high-traffic-websites)
-    $archiver_command = "/usr/bin/php /usr/share/matomo/console core:archive --url=\"${archive_cron_url}\""
+    $archiver_command = "/usr/bin/php /usr/share/matomo/console core:archive --url=\"${archive_timer_url}\""
 
     systemd::timer::job { 'matomo-archiver':
         description               => "Runs the Matomo's archive process.",
-        command                   => "bash -c '${archiver_command}'",
+        command                   => "/bin/bash -c '${archiver_command}'",
         interval                  => {
             'start'    => 'OnCalendar',
             'interval' => '*-*-* 00/8:00:00',
         },
         logfile_basedir           => '/var/log/matomo',
         logfile_name              => 'matomo-archive.log',
+        syslog_identifier         => 'matomo-archiver',
         user                      => $piwik_username,
         monitoring_contact_groups => $contact_groups,
         require                   => Class['matomo'],
