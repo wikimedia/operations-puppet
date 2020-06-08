@@ -13,8 +13,8 @@ class profile::thanos::alerts {
         query           => 'sum(up{job=~"thanos-compact.*"})',
         prometheus_url  => 'http://thanos-query.discovery.wmnet',
         method          => 'ge',
-        warning         => 1,
-        critical        => 1,
+        warning         => 2,
+        critical        => 2,
         dashboard_links => ['https://grafana.wikimedia.org/d/651943d05a8123e32867b4673963f42b/thanos-compact'],
         notes_link      => 'https://wikitech.wikimedia.org/wiki/Thanos#Alerts',
     }
