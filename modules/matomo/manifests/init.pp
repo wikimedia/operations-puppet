@@ -22,8 +22,6 @@ class matomo (
     $password_salt      = undef,
     $trusted_hosts      = [],
     $piwik_username     = 'www-data',
-    $archive_cron_url   = undef,
-    $archive_cron_email = undef,
 ) {
 
     apt::package_from_component { 'matomo':
@@ -50,24 +48,5 @@ class matomo (
         group   => $piwik_username,
         mode    => '0755',
         require => Package['matomo'],
-    }
-
-    # Install a cronjob to run the Archive task periodically
-    # (not user triggered to avoid unexpected performance hits)
-    # Running it once a day to avoid performance penalties on high
-    # trafficated websites (https://piwik.org/docs/setup-auto-archiving/#important-tips-for-medium-to-high-traffic-websites)
-    if $archive_cron_url and $archive_cron_email {
-        $cmd = "[ -e /usr/share/matomo/console ] && [ -x /usr/bin/php ] && nice /usr/bin/php /usr/share/matomo/console core:archive --url=\"${archive_cron_url}\" >> /var/log/matomo/matomo-archive.log"
-        cron { 'matomo_archiver':
-            command     => $cmd,
-            user        => $piwik_username,
-            environment => "MAILTO=${archive_cron_email}",
-            hour        => '*/8',
-            minute      => '0',
-            month       => '*',
-            monthday    => '*',
-            weekday     => '*',
-            require     => File['/var/log/matomo'],
-        }
     }
 }

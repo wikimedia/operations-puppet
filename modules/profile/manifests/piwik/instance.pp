@@ -3,23 +3,43 @@
 # Configuration options for piwik.wikimedia.org
 #
 class profile::piwik::instance (
-    $database_password = hiera('profile::piwik::database_password'),
-    $admin_username    = hiera('profile::piwik::admin_username'),
-    $admin_password    = hiera('profile::piwik::admin_password'),
-    $password_salt     = hiera('profile::piwik::password_salt'),
-    $trusted_hosts     = hiera('profile::piwik::trusted_hosts',
-        ['piwik.wikimedia.org', 'wikimediafoundation.org']),
+    $database_password = lookup('profile::piwik::database_password'),
+    $admin_username    = lookup('profile::piwik::admin_username'),
+    $admin_password    = lookup('profile::piwik::admin_password'),
+    $password_salt     = lookup('profile::piwik::password_salt'),
+    $trusted_hosts     = lookup('profile::piwik::trusted_hosts', { 'default_value' => ['piwik.wikimedia.org', 'wikimediafoundation.org'] }),
+    $archive_cron_url  = lookup('profile::piwik::archive_cron_url', { 'default_value' => 'piwik.wikimedia.org' }),
+    $contact_groups    = lookup('profile::piwik::contact_groups', { 'default_value' => 'analytics' }),
+    $piwik_username    = lookup('profile::piwik::piwik_username', { 'default_value' => 'www-data' }),
 ) {
     # Piwik has been rebranded to Matomo, but the core stays the same.
     # We are going to keep profile/roles with the Piwik naming for a bit
     # more since it is harmless.
     class { 'matomo':
-        database_password  => $database_password,
-        admin_username     => $admin_username,
-        admin_password     => $admin_password,
-        password_salt      => $password_salt,
-        trusted_hosts      => $trusted_hosts,
-        archive_cron_url   => 'piwik.wikimedia.org',
-        archive_cron_email => 'analytics-alerts@wikimedia.org',
+        database_password => $database_password,
+        admin_username    => $admin_username,
+        admin_password    => $admin_password,
+        password_salt     => $password_salt,
+        trusted_hosts     => $trusted_hosts,
+        piwik_username    => $piwik_username,
+    }
+
+    # Install a systemd timer to run the Archive task periodically.
+    # Running it once a day to avoid performance penalties on high trafficated websites
+    # (https://piwik.org/docs/setup-auto-archiving/#important-tips-for-medium-to-high-traffic-websites)
+    $archiver_command = "/usr/bin/php /usr/share/matomo/console core:archive --url=\"${archive_cron_url}\""
+
+    systemd::timer::job { 'matomo-archiver':
+        description               => "Runs the Matomo's archive process.",
+        command                   => "bash -c '${archiver_command}'",
+        interval                  => {
+            'start'    => 'OnCalendar',
+            'interval' => '*-*-* 00/8:00:00',
+        },
+        logfile_basedir           => '/var/log/matomo',
+        logfile_name              => 'matomo-archive.log',
+        user                      => $piwik_username,
+        monitoring_contact_groups => $contact_groups,
+        require                   => Class['matomo'],
     }
 }
