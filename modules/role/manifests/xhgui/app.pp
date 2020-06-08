@@ -2,8 +2,7 @@
 #
 # This class provisions XHGui with Apache and PHP
 # and assumes no other web services use Apaache on the same host.
-# It is being replaced by role::webperf::profiling_tools and
-# profile::webperf::xhgui.
+# It is being replaced by role::webperf::xhgui.
 #
 # -------
 #
@@ -95,6 +94,8 @@ class role::xhgui::app {
         proto  => 'tcp',
         srange => '$DOMAIN_NETWORKS',
     }
+
+    $webroot_dir = '/srv/xhgui/webroot'
 
     git::clone { 'operations/software/xhgui':
         ensure    => 'present',

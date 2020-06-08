@@ -1,8 +1,8 @@
 # Apache configuration for XHGUI, a web app for exploration
 # and analysis of PHP profiling data.
 <VirtualHost *:80>
-    DocumentRoot /srv/xhgui/webroot
-    Alias /xhgui /srv/xhgui/webroot
+    DocumentRoot <%= @webroot_dir %>
+    Alias /xhgui <%= @webroot_dir %>
 
     # Restrict non-GET requests to specified ldap-auth'ed user groups.
     # XHGui doesn't do authentication itself and exposes interfaces that
@@ -37,7 +37,7 @@
         Require all denied
     </LocationMatch>
 
-    <Directory /srv/xhgui/webroot>
+    <Directory <%= @webroot_dir %>>
         AllowOverride None
         php_admin_flag engine on
 

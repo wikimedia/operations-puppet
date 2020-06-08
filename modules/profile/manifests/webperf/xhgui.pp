@@ -10,25 +10,22 @@
 # to expose the service at <https://performance.wikimedia.org/xhgui/>.
 #
 class profile::webperf::xhgui (
-    $ldap_config = lookup('ldap', Hash, hash, {}),
+    $ldap_config    = lookup('ldap', Hash, hash, {}),
+    $mysql_host     = lookup('profile::webperf::xhgui::mysql_host'),
+    $mysql_db       = lookup('profile::webperf::xhgui::mysql_db'),
+    $mysql_user     = lookup('profile::webperf::xhgui::mysql_user'),
+    $mysql_password = lookup('profile::webperf::xhgui::mysql_password'),
 ) {
     include ::passwords::ldap::production
 
-    require_package('libapache2-mod-php7.0', 'php-mongodb')
+    # Package xhgui (and dependencies) is built from performance/debs
+    require_package('libapache2-mod-php7.3', 'php7.3-mysql', 'xhgui')
 
     ferm::service { 'webperf-xhgui-http':
         proto  => 'tcp',
         port   => '80',
-        srange => '$INTERNAL',
+        srange => '$DOMAIN_NETWORKS',
     }
-
-    ferm::service { 'webperf-xhgui-mongo':
-        proto  => 'tcp',
-        port   => '27017',
-        srange => '$INTERNAL',
-    }
-
-    class { '::mongodb': }
 
     $auth_ldap = {
         name          => 'nda/ops/wmf',
@@ -42,18 +39,17 @@ class profile::webperf::xhgui (
         ],
     }
 
-    git::clone { 'operations/software/xhgui':
-        ensure    => 'latest',
-        directory => '/srv/xhgui',
-        branch    => 'wmf_deploy',
+    file { 'config.php':
+        ensure  => file,
+        path    => '/etc/xhgui/config.php',
+        content => template('profile/webperf/xhgui/config.php.erb'),
+        owner   => 'www-data',
+        mode    => '0600',
     }
-    -> file { '/srv/xhgui/cache':
-        ensure => directory,
-        owner  => 'www-data',
-        group  => 'www-data',
-        mode   => '0755',
-    }
-    -> httpd::site { 'xhgui_apache_site':
+
+    $webroot_dir = '/usr/share/xhgui/webroot'
+
+    httpd::site { 'xhgui_apache_site':
         content => template('profile/webperf/xhgui/httpd.conf.erb'),
     }
 }

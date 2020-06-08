@@ -35,4 +35,9 @@
     ProxyPassReverse /xhgui http://<%= @xhgui_host %>/xhgui
 <% end -%>
 
+<% if @xhgui_old_host -%>
+    ProxyPass /xhgui-old http://<%= @xhgui_old_host %>/xhgui
+    ProxyPassReverse /xhgui-old http://<%= @xhgui_old_host %>/xhgui
+<% end -%>
+
 </VirtualHost>
