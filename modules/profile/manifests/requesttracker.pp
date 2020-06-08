@@ -11,6 +11,8 @@ class profile::requesttracker {
         modules => ['headers', 'rewrite', 'perl', $cgi_module],
     }
 
+    base::service_auto_restart { 'apache2': }
+
     class { '::requesttracker':
         apache_site => 'rt.wikimedia.org',
         dbhost      => 'm1-master.eqiad.wmnet',
