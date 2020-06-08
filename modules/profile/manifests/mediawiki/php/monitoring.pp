@@ -76,6 +76,11 @@ class profile::mediawiki::php::monitoring(
     # Check that php-fpm is running
     $svc_name = "php${profile::mediawiki::php::php_version}-fpm"
     nrpe::monitor_systemd_unit_state{ $svc_name: }
+    # Export basic php-fpm stats using a textfile exporter
+    class { '::prometheus::node_phpfpm_statustext':
+        service => "${svc_name}.service",
+    }
+
     if $monitor_page {
         # Check that a simple page can be rendered via php-fpm.
         # If a service check happens to run while we are performing a
