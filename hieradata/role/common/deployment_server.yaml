@@ -115,12 +115,6 @@ scap::sources:
     scap_repository: analytics/refinery/scap
   analytics/hdfs-tools/deploy:
     repository: analytics/hdfs-tools/deploy
-  changeprop/deploy:
-    repository: mediawiki/services/change-propagation/deploy
-#    lvs_service: changeprop
-  cpjobqueue/deploy: {
-    repository: mediawiki/services/change-propagation/jobqueue-deploy
-    }
   dumps/dumps:
     repository: operations/dumps
     scap_repository: operations/dumps/scap

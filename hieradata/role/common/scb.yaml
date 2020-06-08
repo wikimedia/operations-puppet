@@ -1,10 +1,8 @@
 cluster: scb
 admin::groups:
   - sc-admins
-  - cpjobqueue-admin
   - apertium-admins
   - graphoid-admin
-  - changeprop-admin
   - recommendation-admin
 profile::lvs::realserver::pools:
   apertium:
@@ -53,8 +51,3 @@ profile::recommendation_api::wdqs_uri: http://wdqs-internal.discovery.wmnet
 profile::recommendation_api::dbhost: m2-master.eqiad.wmnet
 profile::recommendation_api::dbname: recommendationapi
 profile::recommendation_api::dbuser: recommendationapiservice
-
-# ChangePropagation for JobQueue
-profile::cpjobqueue::redis_path: "/var/run/nutcracker/redis_%{::site}.sock"
-profile::cpjobqueue::jobrunner_host: https://jobrunner.discovery.wmnet
-profile::cpjobqueue::videoscaler_host: https://videoscaler.discovery.wmnet

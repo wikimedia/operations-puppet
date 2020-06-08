@@ -3,7 +3,6 @@
 class role::scb {
 
     $services = [
-        'cpjobqueue',
         'graphoid',
         'apertium',
     ]
@@ -21,7 +20,6 @@ class role::scb {
 
     include ::profile::nutcracker
 
-    include ::profile::cpjobqueue
     include ::profile::recommendation_api
     include ::profile::graphoid
     include ::profile::apertium

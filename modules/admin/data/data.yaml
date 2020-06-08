@@ -558,12 +558,6 @@ groups:
                'ALL = NOPASSWD: /usr/sbin/service parsoid-vd-client *',
                'ALL = NOPASSWD: /usr/sbin/service diffservice *',
                'ALL = NOPASSWD: /bin/journalctl *']
-  changeprop-admin:
-    description: Group of changeprop admins
-    gid: 775
-    members: [mobrovac]
-    privileges: ['ALL = NOPASSWD: /usr/sbin/service changeprop *',
-                 'ALL = (changeprop) NOPASSWD: ALL']
   labtest-roots:
     gid: 776
     description: allows full sudo on labtest cluster, T131166
@@ -654,12 +648,6 @@ groups:
     members: [ppchelko, eevans, mobrovac, bmansurov]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service recommendation_api *',
                  'ALL = (recommendation_api) NOPASSWD: ALL']
-  cpjobqueue-admin:
-    description: Group of cpjobqueue admins
-    gid: 795
-    members: [mobrovac, ppchelko, eevans]
-    privileges: ['ALL = NOPASSWD: /usr/sbin/service cpjobqueue *',
-                 'ALL = (cpjobqueue) NOPASSWD: ALL']
   mediawiki-testers:
     description: People who can strace and tcpdump on canary appservers for testing mediawiki
     gid: 797
