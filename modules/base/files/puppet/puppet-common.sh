@@ -75,3 +75,28 @@ RUBY_SCRIPT
 
     return 1
 }
+
+puppet_config_version() {
+    local ruby_script
+    local lastrunreport
+
+    ruby_script=$(cat <<'RUBY_SCRIPT'
+    require 'safe_yaml'
+    SafeYAML::OPTIONS[:default_mode] = :safe
+    begin
+        a = YAML.load(STDIN.read)
+        puts a['configuration_version']
+    end
+RUBY_SCRIPT
+    )
+
+    lastrunreport="$(get_puppet_config lastrunreport)"
+    if [[ -e "${lastrunreport}" ]]; then
+        # The grep kludge makes this an order of magnitude faster (0.1sec vs 1.1sec).
+        # Use only the first match, otherwise changes to this script will temporarily
+        # break this script, as the difflines will appear in the log messages at the end
+        # of the last run report.
+        grep -m1 -A1 '^configuration_version' <"${lastrunreport}" | ruby -e "${ruby_script}" && return 0
+    fi
+    return 1
+}

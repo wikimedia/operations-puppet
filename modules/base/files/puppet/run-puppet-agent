@@ -4,10 +4,11 @@ force=""
 failed_only=""
 attempts=12
 enable=""
+version=""
 
 show_help() {
     cat << EOF
-Usage: ${0##*/} [-q] [-a ATTEMPTS] [-e [MSG]|-f] [--failed-only]
+Usage: ${0##*/} [-q] [-a ATTEMPTS] [-e [MSG]|-f] [--failed-only] [--unless-version SUBSTR]
 Will execute a puppet agent run reliably, waiting for any preceding puppet runs
 to complete before starting. This should allow to ensure a coordinated puppet
 run after a change is effective everywhere.
@@ -17,10 +18,14 @@ Options:
                     difference.
     -e --enable MSG Will enable puppet if it was disabled with reason MSG.
     -f --force      Will forcibly enable puppet if it is not enabled.
-    --failed-only   Will run puppet only if the last run had failed. Will
-                    silently skip if puppet is disabled.
     -a --attempts N When waiting for a preceding puppet run, wait N*10 seconds
                     before giving up.
+    --failed-only   Will run puppet only if the last run had failed. Will
+                    silently skip if puppet is disabled.
+    --unless-version SUBSTR
+                    Will run puppet only if the config version string
+                    does NOT contain the substring SUBSTR.  Best used
+                    with your LDAP cn= or with a git hash abbrev.
 EOF
 }
 
@@ -34,6 +39,15 @@ while :; do
             ;;
         --failed-only)
             failed_only=1
+            ;;
+        --unless-version)
+            if [ -n "$2" ]; then
+                version=$2
+                shift
+            else
+                show_help
+                exit 1
+            fi
             ;;
         -a|--attempts)
             if [ -n "$2" ]; then
@@ -87,6 +101,11 @@ fi
 # Skip hosts where puppet didn't fail if --failed-only is set
 if [[ -n "${failed_only}" ]] && last_run_success; then
     exit 0
+fi
+
+# Skip hosts that are already on the given config version, if --unless-version is set
+if [[ -n "${version}" ]]; then
+    puppet_config_version | fgrep -q "$version" && exit 0
 fi
 
 puppet agent --onetime --no-daemonize $verbose_opts --no-splay --show_diff \
