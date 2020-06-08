@@ -2,4 +2,4 @@ profile::trafficserver::backend::storage_elements:
     - devname: nvme0n1
       id: disk.0
 
-# profile::trafficserver::backend::mtail_args: '-disable_fsnotify'
+profile::trafficserver::backend::mtail_args: '-disable_fsnotify'
