@@ -17,6 +17,7 @@ WORKERS=''
 if [ -z $CA_SERVER ] || [ -z $MASTERS ] || [ -z $WORKERS ]; then
   printf 'Error reading variables from /etc/puppet-merge.conf\\n' >&2
   exit 1
+fi
 
 if [ "$(hostname -f)" -ne "${CA_SERVER}" ];then
   printf "To ensure consistent locking please run puppet-merge from: %s\\n" ${CA_SERVER} >&2
@@ -25,7 +26,7 @@ fi
 
 if [ "$(whoami)" = "gitpuppet" ]
 then
-  printf "This script should only be run as a real users.  gitpuppet should use /usr/local/bin/puppet-merge.py\\n" &>2
+  printf "This script should only be run as a real users.  gitpuppet should use /usr/local/bin/puppet-merge.py\\n" >&2
   exit 1
 fi
 
