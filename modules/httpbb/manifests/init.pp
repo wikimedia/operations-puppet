@@ -10,7 +10,8 @@ class httpbb(
     Stdlib::Unixpath $install_dir = '/srv/deployment/httpbb',
     Stdlib::Unixpath $tests_dir = '/srv/deployment/httpbb-tests',
 ){
-    require_package('python3-attr', 'python3-clustershell', 'python3-jsonschema', 'python3-requests', 'python3-requests-toolbelt', 'python3-yaml')
+    require_package('python3-attr', 'python3-clustershell', 'python3-jsonschema',
+                    'python3-requests', 'python3-requests-toolbelt', 'python3-yaml')
 
     git::clone { 'operations/software/httpbb':
         directory => $install_dir,
@@ -19,7 +20,7 @@ class httpbb(
 
     file { '/usr/local/bin/httpbb':
         ensure  => file,
-        content => template('httpbb/httpbb.sh.erb'),
+        content => "#!/bin/sh\ncd ${install_dir}\npython3 -m httpbb.main \"$@\"",
         owner   => 'root',
         group   => 'root',
         mode    => '0555',
