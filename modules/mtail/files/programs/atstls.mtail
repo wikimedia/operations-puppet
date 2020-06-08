@@ -36,5 +36,17 @@ counter trafficserver_tls_client_ttfb_count by cache_status, http_status_family
   $client_ttfb < 1200 {
     trafficserver_tls_client_ttfb_bucket["1.2"][$cache_status][$http_status_family]++
   }
+  $client_ttfb < 3000 {
+    trafficserver_tls_client_ttfb_bucket["3.0"][$cache_status][$http_status_family]++
+  }
+  $client_ttfb < 10000 {
+    trafficserver_tls_client_ttfb_bucket["10.0"][$cache_status][$http_status_family]++
+  }
+  $client_ttfb < 30000 {
+    trafficserver_tls_client_ttfb_bucket["30.0"][$cache_status][$http_status_family]++
+  }
+  $client_ttfb < 60000 {
+    trafficserver_tls_client_ttfb_bucket["60.0"][$cache_status][$http_status_family]++
+  }
   trafficserver_tls_client_ttfb_bucket["+Inf"][$cache_status][$http_status_family]++
 }

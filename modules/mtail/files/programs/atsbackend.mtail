@@ -51,6 +51,18 @@ counter trafficserver_backend_connections_total by backend
   $client_ttfb < 1200 {
     trafficserver_backend_client_ttfb_bucket["1.2"][$backend]++
   }
+  $client_ttfb < 3000 {
+    trafficserver_backend_client_ttfb_bucket["3.0"][$backend]++
+  }
+  $client_ttfb < 10000 {
+    trafficserver_backend_client_ttfb_bucket["10.0"][$backend]++
+  }
+  $client_ttfb < 30000 {
+    trafficserver_backend_client_ttfb_bucket["30.0"][$backend]++
+  }
+  $client_ttfb < 60000 {
+    trafficserver_backend_client_ttfb_bucket["60.0"][$backend]++
+  }
   trafficserver_backend_client_ttfb_bucket["+Inf"][$backend]++
 }
 
