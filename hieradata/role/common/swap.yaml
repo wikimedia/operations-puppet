@@ -1,8 +1,5 @@
 admin::groups:
-  - researchers
-  - analytics-users
   - analytics-admins
-  - analytics-privatedata-users
 profile::swap::rsync_hosts_allow:
   - notebook1003.eqiad.wmnet
   - notebook1004.eqiad.wmnet
