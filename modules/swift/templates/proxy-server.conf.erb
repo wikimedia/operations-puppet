@@ -15,8 +15,16 @@ log_statsd_sample_rate_factor = <%= @statsd_sample_rate_factor %>
 <% if @enable_wmf_filters -%>
 pipeline = ensure_max_age rewrite healthcheck cache container_sync tempurl ratelimit tempauth cors proxy-logging proxy-server
 <% else %>
-pipeline = healthcheck cache container_sync tempurl ratelimit s3api tempauth proxy-logging proxy-server
+pipeline = healthcheck cache container_sync bulk tempurl ratelimit s3api tempauth slo proxy-logging proxy-server
 <% end -%>
+
+# s3api requirement
+[filter:bulk]
+use = egg:swift#bulk
+
+# s3api requirement
+[filter:slo]
+use = egg:swift#slo
 
 [filter:s3api]
 use = egg:swift#s3api
