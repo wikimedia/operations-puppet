@@ -32,6 +32,7 @@ class profile::thanos::alerts {
 
     monitoring::check_prometheus { 'thanos_compact_failures':
         description     => 'Thanos compact has high percentage of failures',
+        nan_ok          => true, # Denominator can be zero (no compactions running)
         query           => @(QUERY/L)
         ( \
           sum by (job) (rate(thanos_compact_group_compactions_failures_total{job=~"thanos-compact.*"}[5m])) \
@@ -215,6 +216,7 @@ class profile::thanos::alerts {
 
     monitoring::check_prometheus { 'thanos_query_grpc_server_error':
         description     => 'Thanos query has high gRPC server errors',
+        nan_ok          => true, # In normal circumstances Thanos query doesn't serve gRPC traffic
         query           => @(QUERY/L)
         ( \
           sum by (job) (rate(grpc_server_handled_total{grpc_code=~"Unknown|ResourceExhausted|Internal|Unavailable|DataLoss|DeadlineExceeded", job=~"thanos-query.*"}[5m])) \
