@@ -29,6 +29,8 @@ class profile::microsites::peopleweb (
         mpm => 'prefork'
     }
 
+    base::service_auto_restart { 'apache2': }
+
     file{$docroot.wmflib::dirtree() + $docroot:
         ensure => directory
     }
