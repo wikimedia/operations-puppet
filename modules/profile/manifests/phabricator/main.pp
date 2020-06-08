@@ -491,7 +491,7 @@ class profile::phabricator::main (
     phabricator::logmail {'community_metrics':
         ensure           => $logmail_ensure,
         rcpt_address     => 'wikitech-l@lists.wikimedia.org',
-        sndr_address     => 'communitymetrics@wikimedia.org',
+        sndr_address     => 'aklapper@wikimedia.org',
         monthday         => 1,
         require          => Package[$deploy_target],
         mysql_slave      => $mysql_slave,
