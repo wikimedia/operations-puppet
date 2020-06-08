@@ -14,12 +14,12 @@ MASTERS=''
 WORKERS=''
 . /etc/puppet-merge.conf
 
-if [ -z $CA_SERVER ] || [ -z $MASTERS ] || [ -z $WORKERS ]; then
+if [ -z "$CA_SERVER" ] || [ -z "$MASTERS" ] || [ -z "$WORKERS" ]; then
   printf 'Error reading variables from /etc/puppet-merge.conf\\n' >&2
   exit 1
 fi
 
-if [ "$(hostname -f)" -ne "${CA_SERVER}" ];then
+if [ "$(hostname -f)" != "${CA_SERVER}" ];then
   printf "To ensure consistent locking please run puppet-merge from: %s\\n" ${CA_SERVER} >&2
   exit 1
 fi
