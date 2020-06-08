@@ -2097,6 +2097,11 @@ node /^relforge100[1-2]\.eqiad\.wmnet/ {
     role(elasticsearch::relforge)
 }
 
+# New relforge servers T241791
+node /^relforge100[3-4]-dev\.eqiad\.wmnet/ {
+    role(insetup)
+}
+
 # restbase eqiad cluster
 node /^restbase10(1[6-9]|2[0-7])\.eqiad\.wmnet$/ {
     role(restbase::production)
