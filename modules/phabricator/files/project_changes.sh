@@ -2,16 +2,9 @@
 # send project changes in Phabricator for the last week (T85183)
 # to phabricator-reports@lists.wikimedia.org (T136660)
 # ! this file is managed by puppet !
-# ./modules/phabricator/templates/<%= @script_name %>.erb
+# ./modules/phabricator/file/project_changes.sh
 
-declare rcpt_address='<%= Array(@rcpt_address).join(',') %>'
-declare sndr_address='<%= @sndr_address %>'
-
-declare sql_host='<%= scope['::profile::phabricator::main::mysql_slave'] %>'
-declare sql_port='<%= scope['::profile::phabricator::main::mysql_slave_port'] %>'
-declare sql_user='<%= scope.lookupvar('passwords::mysql::phabricator::metrics_user') %>'
-declare sql_name='phabricator_project'
-declare sql_pass='<%= scope.lookupvar('passwords::mysql::phabricator::metrics_pass') %>'
+source /etc/phab_project_changes.conf
 
 #echo "result_creations_and_name_changes"
 result_creations_and_name_changes=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -P $sql_port -u $sql_user $sql_name << END

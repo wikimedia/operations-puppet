@@ -6,14 +6,20 @@
 #
 # === Required Parameters
 #
-# [*scriptname*]
-#   script you want to execute
-#
 # [*rcpt_address*]
 #   mail to: address (or array of addresses)
 #
 # [*sndr_address*]
 #   mail from: address
+#
+# [*mysql_slave*]
+#   mysql (slave) server
+#
+# [*mysql_slave_port*]
+#   port of the mysql (slave) server
+#
+# [*mysql_db_name*]
+#   name of the mysql database accessed by the script
 #
 # === Optional Parameters
 #
@@ -36,9 +42,11 @@
 #    Whether to enable the cron or not, default present
 
 define phabricator::logmail (
-    String $script_name,
     String $sndr_address,
     Variant[String, Array] $rcpt_address,
+    Stdlib::Fqdn $mysql_slave,
+    Stdlib::Port $mysql_slave_port,
+    String $mysql_db_name,
     Stdlib::Unixpath $basedir  = '/usr/local/bin',
     Optional[Integer] $hour = 0,
     Optional[Integer] $minute = 0,
@@ -50,17 +58,25 @@ define phabricator::logmail (
     require_package('mariadb-client')
     require_package('bsd-mailx')
 
-    file { "${basedir}/${script_name}":
+    file { "/etc/phab_${title}.conf":
         ensure  => present,
         owner   => 'root',
         group   => 'root',
         mode    => '0550',
-        content => template("phabricator/${script_name}.erb"),
+        content => template("phabricator/${title}.conf.erb"),
+    }
+
+    file { "${basedir}/${title}.sh":
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0550',
+        content => file("phabricator/${title}.sh"),
     }
 
     cron { "phabstatscron_${title}":
         ensure   => $ensure,
-        command  => "${basedir}/${script_name}",
+        command  => "${basedir}/${title}.sh",
         user     => 'root',
         hour     => $hour,
         minute   => $minute,

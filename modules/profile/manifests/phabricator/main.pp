@@ -488,23 +488,27 @@ class profile::phabricator::main (
     }
 
     # community metrics mail (T81784, T1003)
-    phabricator::logmail {'communitymetrics':
-        ensure       => $logmail_ensure,
-        script_name  => 'community_metrics.sh',
-        rcpt_address => 'wikitech-l@lists.wikimedia.org',
-        sndr_address => 'communitymetrics@wikimedia.org',
-        monthday     => 1,
-        require      => Package[$deploy_target],
+    phabricator::logmail {'community_metrics':
+        ensure           => $logmail_ensure,
+        rcpt_address     => 'wikitech-l@lists.wikimedia.org',
+        sndr_address     => 'communitymetrics@wikimedia.org',
+        monthday         => 1,
+        require          => Package[$deploy_target],
+        mysql_slave      => $mysql_slave,
+        mysql_slave_port => $mysql_slave_port,
+        mysql_db_name    => 'phabricator_maniphest',
     }
 
     # project changes mail (T85183)
-    phabricator::logmail {'projectchanges':
-        ensure       => $logmail_ensure,
-        script_name  => 'project_changes.sh',
-        rcpt_address => [ 'phabricator-reports@lists.wikimedia.org' ],
-        sndr_address => 'aklapper@wikimedia.org',
-        weekday      => 1, # Monday
-        require      => Package[$deploy_target],
+    phabricator::logmail {'project_changes':
+        ensure           => $logmail_ensure,
+        rcpt_address     => [ 'phabricator-reports@lists.wikimedia.org' ],
+        sndr_address     => 'aklapper@wikimedia.org',
+        weekday          => 1, # Monday
+        require          => Package[$deploy_target],
+        mysql_slave      => $mysql_slave,
+        mysql_slave_port => $mysql_slave_port,
+        mysql_db_name    => 'phabricator_project',
     }
 
     # Allow pulling /srv/repos data from the active server.

@@ -4,16 +4,9 @@
 # per T81784 - dzahn 20121219
 # per T1003 - dzahn,aklapper 20141205
 # ! this file is managed by puppet !
-# ./modules/phabricator/templates/<%= @script_name %>.erb
+# ./modules/phabricator/files/community_metrics.sh
 
-declare rcpt_address='<%= Array(@rcpt_address).join(',') %>'
-declare sndr_address='<%= @sndr_address %>'
-
-declare sql_host='<%= scope['::profile::phabricator::main::mysql_slave'] %>'
-declare sql_port='<%= scope['::profile::phabricator::main::mysql_slave_port'] %>'
-declare sql_user='<%= scope.lookupvar('passwords::mysql::phabricator::metrics_user') %>'
-declare sql_name='phabricator_maniphest'
-declare sql_pass='<%= scope.lookupvar('passwords::mysql::phabricator::metrics_pass') %>'
+source /etc/phab_community_metrics.conf
 
 #echo "result_activedifferentialusers"
 result_activedifferentialusers=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -P $sql_port -u $sql_user phabricator_differential << END
