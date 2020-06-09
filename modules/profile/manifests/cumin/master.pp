@@ -76,6 +76,12 @@ class profile::cumin::master (
         $python_version = '3.5'
     } elsif os_version('debian == buster') {
         $python_version = '3.7'
+
+        apt::package_from_component { 'spicerack':
+            component => 'component/spicerack',
+            packages  => ['python3-tqdm'],
+            priority  => '1002',
+        }
     }
 
     file { "/usr/local/lib/python${python_version}/dist-packages/wmf_auto_reimage_lib.py":
