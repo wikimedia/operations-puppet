@@ -44,7 +44,8 @@ profile::services_proxy::envoy::listeners:
     timeout: "2.5s"
   - name: termbox
     port: 6008
-    service: termbox
+    service: termbox-https
+    upstream: termbox.discovery.wmnet
     timeout: "2s"
   - name: wdqs-internal
     port: 6009
