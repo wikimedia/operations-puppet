@@ -1,4 +1,4 @@
-class role::osm::slave (
+class role::osm::replica (
     $osm_master = undef,
 ) {
     include role::osm::common
@@ -6,13 +6,13 @@ class role::osm::slave (
     include passwords::osm
     include ::profile::base::firewall
     include ::profile::prometheus::postgres_exporter
-    # Note: This is here to illustrate the fact that the slave is expected to
+    # Note: This is here to illustrate the fact that the replica is expected to
     # have the same dbs as the master.
     #postgresql::spatialdb { 'gis': }
 
-    system::role { 'osm::slave':
+    system::role { 'osm::replica':
         ensure      => 'present',
-        description => 'openstreetmaps db slave',
+        description => 'openstreetmaps db replica',
     }
 
     class {'postgresql::slave':

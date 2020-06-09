@@ -13,7 +13,7 @@ while getopts "hH" opt; do
 done
 
 function show_help() {
-  echo "initialize-postgres-slave [-H <postgres_master>]"
+  echo "initialize-postgres-replica [-H <postgres_master>]"
   echo "  postgres_master: hostname of the postgresql master, default to maps2001.codfw.wmnet"
 }
 

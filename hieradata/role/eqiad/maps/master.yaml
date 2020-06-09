@@ -21,7 +21,7 @@ profile::cassandra::single_instance::seeds:
 profile::maps::osm_master::planet_sync_hours: '*/2'
 profile::maps::osm_master::disable_replication_cron: true
 profile::maps::osm_master::disable_admin_cron: true
-profile::maps::osm_master::slaves:
+profile::maps::osm_master::replicas:
   maps1004:
     ip_address: '10.64.48.154'
   maps1003:

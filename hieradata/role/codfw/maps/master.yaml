@@ -22,7 +22,7 @@ profile::maps::osm_master::planet_sync_hours: '*/12'
 profile::maps::osm_master::disable_replication_cron: false
 profile::maps::osm_master::disable_admin_cron: true
 
-profile::maps::osm_master::slaves:
+profile::maps::osm_master::replicas:
   maps2001:
     ip_address: 10.192.0.144
   maps2002:

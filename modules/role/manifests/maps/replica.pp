@@ -1,5 +1,5 @@
-# Sets up a maps server slave
-class role::maps::slave {
+# Sets up a maps server replica
+class role::maps::replica {
     include ::profile::standard
     include ::profile::rsyslog::udp_localhost_compat
     include ::profile::base::firewall
@@ -7,11 +7,11 @@ class role::maps::slave {
 
     include ::profile::maps::apps
     include ::profile::maps::cassandra
-    include ::profile::maps::osm_slave
+    include ::profile::maps::osm_replica
     include ::profile::maps::tlsproxy
     include ::profile::prometheus::postgres_exporter
 
-    system::role { 'maps::slave':
+    system::role { 'maps::replica':
       ensure      => 'present',
       description => 'Maps master (postgresql, cassandra, tilerator, kartotherian)',
     }

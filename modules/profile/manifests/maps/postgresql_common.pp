@@ -1,6 +1,6 @@
 # = Class: profile::maps::postgresql_common
 #
-# Manages the postgresql configuration commone to master and slaves.
+# Manages the postgresql configuration commone to master and replicas.
 #
 # == Parameters:
 # - $shared_buffers: postgresql shared buffer. Default: 7680MB (should only be

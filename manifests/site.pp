@@ -1420,7 +1420,7 @@ node /^lvs500[123]\.eqsin\.wmnet$/ {
 }
 
 node /^maps100[1-3]\.eqiad\.wmnet/ {
-    role(maps::slave)
+    role(maps::replica)
 }
 
 node 'maps1004.eqiad.wmnet' {
@@ -1428,7 +1428,7 @@ node 'maps1004.eqiad.wmnet' {
 }
 
 node /^maps200[1-3]\.codfw\.wmnet/ {
-    role(maps::slave)
+    role(maps::replica)
 }
 
 node 'maps2004.codfw.wmnet' {

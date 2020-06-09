@@ -8,7 +8,7 @@ class profile::maps::osm_master (
     $tilerator_pass           = hiera('profile::maps::osm_master::tilerator_pass'),
     $tileratorui_pass         = hiera('profile::maps::osm_master::tileratorui_pass'),
     $replication_pass         = hiera('profile::maps::osm_master::replication_pass'),
-    $postgres_slaves          = hiera('profile::maps::osm_master::slaves', undef),
+    $postgres_replicas        = hiera('profile::maps::osm_master::replicas', undef),
     $cleartables              = hiera('profile::maps::osm_master::cleartables', false),
     $disable_replication_cron = hiera('profile::maps::osm_master::disable_replication_cron', false),
     $disable_admin_cron       = hiera('profile::maps::osm_master::disable_admin_cron', false),
@@ -78,10 +78,10 @@ class profile::maps::osm_master (
         password   => $tilerator_pass,
     }
 
-    if $postgres_slaves {
+    if $postgres_replicas {
         create_resources(
             profile::maps::tilerator_user,
-            $postgres_slaves,
+            $postgres_replicas,
             { password => $tilerator_pass }
         )
     }
@@ -139,11 +139,11 @@ class profile::maps::osm_master (
         source => 'puppet:///modules/profile/maps/osm-initial-import',
     }
 
-    if $postgres_slaves {
-        $postgres_slaves_defaults = {
+    if $postgres_replicas {
+        $postgres_replicas_defaults = {
             replication_pass => $replication_pass,
         }
-        create_resources(postgresql::slave_users, $postgres_slaves, $postgres_slaves_defaults)
+        create_resources(postgresql::slave_users, $postgres_replicas, $postgres_replicas_defaults)
     }
 
     sudo::user { 'tilerator-notification':
@@ -193,7 +193,7 @@ class profile::maps::osm_master (
         prometheus_path => '/var/lib/prometheus/node.d/osm_sync_lag.prom',
     }
 
-    # Access to postgres master from postgres slaves
+    # Access to postgres master from postgres replicas
     ferm::service { 'postgres_maps':
         proto  => 'tcp',
         port   => '5432',
