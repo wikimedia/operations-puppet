@@ -6,14 +6,8 @@ class profile::statistics::gpu (
 
     if $::hostname in $hosts_with_gpu {
 
-        # Testing new version - T247082
-        if $::hostname == 'stat1008' {
-            $rocm_version = '33'
-            $rocm_smi_path = '/opt/rocm-3.3.0/bin/rocm-smi'
-        } else {
-            $rocm_version = '271'
-            $rocm_smi_path = '/opt/rocm/bin/rocm-smi'
-        }
+        $rocm_version = '33'
+        $rocm_smi_path = '/opt/rocm-3.3.0/bin/rocm-smi'
 
         class { 'amd_rocm':
             version => $rocm_version,
