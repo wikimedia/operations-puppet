@@ -4,11 +4,11 @@
 #
 # == Parameters:
 #
-#  [*resolvers*]
-#    [hash] downstream recursive resolvers to their configuration. required.
+#  [*resolver*]
+#    [Dnsdist::Resolver] downstream recursive resolver options. required.
 #
 #  [*tls_config*]
-#    [Dnsdist::TLS_config] TLS configuration settings. see types/tls_config.
+#    [Dnsdist::TLS_config] TLS configuration. required.
 #
 #  [*doh_base_url*]
 #    [string] URL to accept DoH queries on. default: /dns-query.
@@ -29,14 +29,14 @@
 #    [string] key to use for dnsdist's console access. default: undefined.
 
 class dnsdist (
-    Hash[String, Dnsdist::Resolver] $resolvers,
-    Dnsdist::TLS_config             $tls_config,
-    String                          $doh_base_url       = '/dns-query',
-    Integer[1]                      $qps_max            = 10,
-    Boolean                         $enable_packetcache = true,
-    Integer[1]                      $packetcache_max    = 10000000,
-    Boolean                         $enable_console     = true,
-    String                          $console_key        = undef,
+    Dnsdist::Resolver   $resolver,
+    Dnsdist::TLS_config $tls_config,
+    String              $doh_base_url       = '/dns-query',
+    Integer[1]          $qps_max            = 10,
+    Boolean             $enable_packetcache = true,
+    Integer[1]          $packetcache_max    = 10000000,
+    Boolean             $enable_console     = true,
+    String              $console_key        = undef,
 ) {
 
     if ($enable_console and $console_key == undef) {

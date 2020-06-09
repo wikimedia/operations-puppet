@@ -1,6 +1,6 @@
 class profile::wikidough (
-    Hash[String, Dnsdist::Resolver] $recursive_resolvers = lookup(profile::wikidough::recursive_resolvers),
-    Dnsdist::TLS_config             $tls_config          = lookup(profile::wikidough::tls::config),
+    Dnsdist::Resolver   $resolver   = lookup(profile::wikidough::resolver),
+    Dnsdist::TLS_config $tls_config = lookup(profile::wikidough::tls::config),
 ) {
 
     include network::constants
@@ -24,7 +24,7 @@ class profile::wikidough (
     }
 
     class { 'dnsdist':
-        resolvers      => $recursive_resolvers,
+        resolver       => $resolver,
         tls_config     => $tls_config,
         enable_console => true,
         console_key    => $passwords::dnsdist::wikidough::console_key,

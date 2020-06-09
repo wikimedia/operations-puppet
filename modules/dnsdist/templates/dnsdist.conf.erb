@@ -39,6 +39,4 @@ addDOHLocal('[::]', '<%= @tls_config['cert_chain_path'] %>', '<%= @tls_config['c
 addTLSLocal('0.0.0.0', '<%= @tls_config['cert_chain_path'] %>', '<%= @tls_config['cert_privkey_path'] %>', tlsOptions)
 addTLSLocal('[::]', '<%= @tls_config['cert_chain_path'] %>', '<%= @tls_config['cert_privkey_path'] %>', tlsOptions)
 
-<% @resolvers.each_pair do |resolver, config| -%>
-newServer({address='<%= config['host'] %>:<%= config['port'] %>', name='<%= resolver %>'})
-<% end -%>
+newServer({address='<%= @resolver['host'] %>:<%= @resolver['port'] %>', name='<%= @resolver['name'] %>'})
