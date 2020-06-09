@@ -501,6 +501,8 @@ class profile::phabricator::main (
             {
             server_names  => [ $domain ],
             upstream_port => $aphlict_node_port,
+            cert_path     => '/etc/ssl/localcerts/phabricator.discovery.wmnet.crt',
+            key_path      => '/etc/ssl/private/phabricator.discovery.wmnet.key',
             },
           ],
           global_cert_path => '/etc/ssl/localcerts/phabricator.discovery.wmnet.crt',
