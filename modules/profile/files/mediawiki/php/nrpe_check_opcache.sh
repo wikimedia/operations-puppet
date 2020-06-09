@@ -45,16 +45,15 @@ hits=$(echo $OUT | jq .opcache_statistics.hits)
 # don't have enough traffic to reach the stats.
 # Specifically, we need to have a number of hits that, given the number of scripts,
 # would allow to reach such thresholds.
-WARNING_THRESHOLD=$(expr "$scripts" '*' 10000) # 1 miss out of 10k => 99.99%
-CRITICAL_THRESHOLD=$(expr "$scripts" '*' 10000 '/' 15) # 15 misses out of 10k => 99.85%
-if numGe "$hits" "$CRITICAL_THRESHOLD"; then
+THRESHOLD=$(expr "$scripts" '*' 10000) # 1 miss out of 10k => 99.99%
+if numGe "$hits" "$THRESHOLD"; then
     hitrate=$(echo $OUT | jq .opcache_statistics.opcache_hit_rate)
     if numGe 99.85 "$hitrate"; then
         echo "CRITICAL: opcache cache-hit ratio is below 99.85%"
         exit 2
     fi
 
-    if numGe "$hits" "$WARNING_THRESHOLD" && numGe 99.99 "$hitrate"; then
+    if numGe 99.99 "$hitrate"; then
         echo "WARNING: opcache cache-hit ratio is below 99.99"
         exit 1
     fi
