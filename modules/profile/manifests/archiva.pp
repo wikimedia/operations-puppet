@@ -38,7 +38,7 @@ class profile::archiva(
         mode   => '0555',
     }
 
-    $link_command = "cd ${archiva_gitfat_path} && /usr/local/bin/archiva-gitfat-link ${archiva_repository_path}"
+    $link_command = "cd ${archiva_gitfat_path} && /usr/local/bin/archiva-gitfat-link ${archiva_repository_path} ."
 
     systemd::timer::job { 'archiva-gitfat-link':
         description               => 'Archiva tool to create jar symlinks using their sha1 checksum as filename.',
