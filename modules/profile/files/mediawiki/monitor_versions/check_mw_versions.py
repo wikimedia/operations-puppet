@@ -51,7 +51,7 @@ def fetch_production_wikiversions(deployments_url: str) -> Tuple[datetime.dateti
         response = requests.get(deployments_url,
                                 headers={'User-Agent': 'check_mw_version (python-requests)'})
         response.raise_for_status()
-    except requests.exception.RequestException as exc:
+    except requests.exceptions.RequestException as exc:
         raise FetchDeploymentsException("Failed to get deployed version: ({}) {}".format(
             response.status_code,
             exc))
