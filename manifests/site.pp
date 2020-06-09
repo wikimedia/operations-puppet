@@ -401,7 +401,7 @@ node 'db1081.eqiad.wmnet' {
 
 # eqiad replicas
 # See also db1103, db1144 and db1146 below
-node /^db1(084|121|138|142|143|147|148|149)\.eqiad\.wmnet/ {
+node /^db1(084|121|138|141|142|143|147|148|149)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
 
@@ -1306,7 +1306,7 @@ node 'labsdb1009.eqiad.wmnet' {
 node 'labsdb1010.eqiad.wmnet' {
     role(labs::db::wikireplica_web)
 }
-node /(labsdb1011|db1141)\.eqiad\.wmnet$/ {
+node 'labsdb1011.eqiad.wmnet' {
     role(labs::db::wikireplica_analytics)
 }
 

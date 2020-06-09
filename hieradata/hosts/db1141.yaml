@@ -1,4 +1,5 @@
 # db1141
-# This host temporary servers analytics role on labs infra
-# See: T249188
+# Future candidate master for s4
+mariadb::shard: 's4'
+mariadb::binlog_format: 'STATEMENT'
 profile::base::notifications: disabled

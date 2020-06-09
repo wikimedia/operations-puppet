@@ -49,10 +49,6 @@ class profile::wmcs::nfs::maintain_dbusers (
                 'labsdb1012.eqiad.wmnet' => {
                     'grant-type' => 'role',
                 },
-                # T249188, T253930: "temporary" replica
-                'db1141.eqiad.wmnet' => {
-                    'grant-type' => 'role',
-                },
             },
             'username' => $::passwords::mysql::labsdb::user,
             'password' => $::passwords::mysql::labsdb::password,
