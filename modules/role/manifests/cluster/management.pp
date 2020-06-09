@@ -12,7 +12,7 @@ class role::cluster::management {
     include ::profile::standard
     include ::profile::base::firewall
 
-    include ::role::cumin::master
+    include ::profile::cumin::master
     include ::profile::ipmi::mgmt
     include ::profile::access_new_install
     include ::profile::conftool::client
