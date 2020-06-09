@@ -54,11 +54,15 @@ allow-from=<%= (@allow_from + flatten_ips(@listen_addresses)).join(", ") %>
 allow-from=<%= @allow_from.join(", ") %>
 <%- end -%>
 
+<% if @allow_forward_zones -%>
 # Zones for which we forward queries, comma separated domain=ip pairs
 forward-zones=<%= @forward_zones -%>, <%= @additional_forward_zones -%>
+<% end -%>
 
+<% if @allow_edns_whitelist -%>
 # we need ECS to ensure our geoip resolution (e.g. for discovery hostnames) works correctly regardless of which recursor (x-dc) a client uses
 edns-subnet-whitelist=<%= @wmf_authdns.join(', ') %>
+<% end -%>
 <% if @lua_hooks -%>
 # lua scripts allow extending the resolver
 # with custom behavior

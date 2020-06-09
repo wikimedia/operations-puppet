@@ -24,6 +24,8 @@ class dnsrecursor(
     $log_common_errors        = 'yes',
     $bind_service             = undef,
     $allow_from_listen        = true,
+    $allow_forward_zones      = true,
+    $allow_edns_whitelist     = true,
 ) {
 
     include ::network::constants
