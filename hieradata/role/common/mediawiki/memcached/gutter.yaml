@@ -3,8 +3,9 @@ admin::groups:
   - perf-roots
 profile::memcached::version: 'present'
 profile::memcached::threads: 16
-profile::memcached::growth_factor: '1.15'
-profile::memcached::size: '241591'
+profile::memcached::growth_factor: 1.15
+profile::memcached::min_slab_size: 5
+profile::memcached::size: 241591
 profile::memcached::extended_options:
   - 'modern'
-profile::memcached::port: '11211'
+profile::memcached::port: 11211

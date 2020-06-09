@@ -31,7 +31,12 @@ class role::simplelamp2 {
         modules => $apache_modules,
     }
 
-    class { '::memcached': }
+    class { '::memcached':
+        # TODO: the following were implicit defaults from
+        # MW settings, need to be reviewed.
+        growth_factor => 1.05,
+        min_slab_size => 5,
+    }
 
     include ::profile::mariadb::generic_server
 }

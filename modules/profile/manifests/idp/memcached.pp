@@ -4,7 +4,12 @@ class profile::idp::memcached (
     String[1]           $mcrouter_cluster = lookup('profile::idp::memcached::mcrouter_cluster'),
 ) {
     $mcrouter_port = 11214
-    class {'memcached': }
+    class { 'memcached':
+        # TODO: the following were implicit defaults from
+        # MW settings, need to be reviewed.
+        growth_factor => 1.05,
+        min_slab_size => 5,
+    }
     class { 'profile::prometheus::memcached_exporter': }
 
     $servers = $idp_nodes.map |Stdlib::Host $host| {

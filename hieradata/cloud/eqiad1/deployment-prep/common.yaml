@@ -133,11 +133,12 @@ logstash_logback_port: 11514
 mcrouter::port: 11213
 mcrouter::has_ssl: false
 profile::memcached::version: 'present'
-profile::memcached::growth_factor: '1.05'
-profile::memcached::size: '3000'
+profile::memcached::growth_factor: 1.05
+profile::memcached::min_slab_size: 5
+profile::memcached::size: 3000
 profile::memcached::extended_options:
   - 'slab_reassign'
-profile::memcached::port: '11211'
+profile::memcached::port: 11211
 "profile::cache::base::packages_version": latest
 "keyholder::trusted_groups":
    - wikidev

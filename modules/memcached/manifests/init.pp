@@ -19,7 +19,17 @@
 #
 # [*growth_factor*]
 #   Multiplier for computing the sizes of memory chunks that items
-#   are stored in. Corresponds to memcached's -f parameter (default: '1.05').
+#   are stored in. Corresponds to memcached's -f parameter, and it
+#   wil dictate the distribution of slab sizes.
+#   Note: change the default only if you know what you are doing.
+#   Default: 1.25
+#
+# [*growth_factor*]
+#   This is the value of the smallest slab that memcached will use.
+#   All the other slabs will be created using the growth_factor
+#   parameter.
+#   Note: change the default only if you know what you are doing.
+#   Defaulf: 48
 #
 # [*extra_options*]
 #   A hash of additional command-line options and values.
@@ -33,13 +43,14 @@
 #  }
 #
 class memcached(
-    $size          = 2000,
-    $port          = 11000,
-    $ip            = '0.0.0.0',
-    $version       = 'present',
-    $growth_factor = 1.05,
-    $extra_options = {},
-    ) {
+    Integer $size                    = 2000,
+    Stdlib::Port $port               = 11000,
+    Stdlib::IP::Address $ip          = '0.0.0.0',
+    String $version                  = 'present',
+    Integer $min_slab_size           = 48,
+    Float $growth_factor             = 1.25,
+    Hash[String, Any] $extra_options = {},
+) {
 
     package { 'memcached':
         ensure => $version,
