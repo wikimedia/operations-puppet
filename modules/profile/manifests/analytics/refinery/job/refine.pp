@@ -154,6 +154,7 @@ class profile::analytics::refinery::job::refine(
         'MessageGroupStatsRebuildJob',
         'fetchGoogleCloudVisionAnnotations',
         'CleanTermsIfUnused',
+        'KaiOSAppConsent',
     ]
     $mediawiki_job_table_blacklist_regex = sprintf('.*(%s)$', join($mediawiki_job_table_blacklist, '|'))
 
