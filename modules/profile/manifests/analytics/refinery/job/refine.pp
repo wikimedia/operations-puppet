@@ -63,6 +63,7 @@ class profile::analytics::refinery::job::refine(
         'InputDeviceDynamics',
         'PageIssues',
         'MobileWebMainMenuClickTracking',
+        'KaiOSAppConsent',
     ]
     $eventlogging_analytics_table_blacklist_regex = "^(${join($eventlogging_analytics_table_blacklist, '|')})$"
 
@@ -154,7 +155,6 @@ class profile::analytics::refinery::job::refine(
         'MessageGroupStatsRebuildJob',
         'fetchGoogleCloudVisionAnnotations',
         'CleanTermsIfUnused',
-        'KaiOSAppConsent',
     ]
     $mediawiki_job_table_blacklist_regex = sprintf('.*(%s)$', join($mediawiki_job_table_blacklist, '|'))
 
