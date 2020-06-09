@@ -9,6 +9,7 @@ ExecStart=/usr/bin/thanos sidecar --http-address <%= @http_address %> --grpc-add
 ExecReload=/bin/kill -HUP $MAINPID
 TimeoutStopSec=20s
 SendSIGKILL=no
+SyslogIdentifier=%N
 
 [Install]
 WantedBy=multi-user.target

@@ -8,6 +8,7 @@ User=thanos
 ExecStart=/usr/bin/thanos query --http-address <%= @http_address %> --query.replica-label <%= @replica_label %> --store.sd-files <%= @sd_files %>
 ExecReload=/bin/kill -HUP $MAINPID
 TimeoutStopSec=20s
+SyslogIdentifier=%N
 
 [Install]
 WantedBy=multi-user.target
