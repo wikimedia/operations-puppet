@@ -1,0 +1,2 @@
+# Temporary to allow testing via SSH tunnel
+profile::piwik::trusted_hosts: ['piwik.wikimedia.org', 'wikimediafoundation.org', 'localhost:9091']
