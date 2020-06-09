@@ -62,6 +62,8 @@ jupyterhub::authenticator: dummy
 
 # Cache-layer stuff
 profile::cache::base::performance_tweaks: false
+profile::cache::purge::kafka_topics:
+  - eqiad.resource-purge
 profile::cache::varnish::cache_be_opts:
     port: 3128
     connect_timeout: '3s'
