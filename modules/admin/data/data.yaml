@@ -37,7 +37,7 @@ groups:
               ori, jmm, jynus, ema, elukey, gehel, volans, marostegui,
               ayounsi, herron, aborrero, bstorm, vgutierrez, jiji, cwhite,
               crusnov, cdanis, fsero, jbond, jeh, dzahn, phamhi, sukhe, pt1979,
-              rzl, hnowlan, jayme, kormat, wkandek, ryankemper]
+              rzl, hnowlan, jayme, kormat, wkandek, ryankemper, lmata]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   ops-adm-group:
     # No gid for this group on purpose, it's a system provided one
@@ -3745,6 +3745,15 @@ users:
     ssh_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDW9Ves95wovQePlNYA+bBvGT/NjhxzWBuYP5xbDaAqOZ34CscdII8LZY3HfH2Og6TO0qxxaxXGLuVIpDlfDdOWqMzNbTEko1RO1gy7fZqHYL35tsFgZDBxCVuR1DseZjq6QaTXWK67njwBCL/0Duvmi9WqvnzYKpshCKfCZqWovtsplizhjNcSCEAeUIFAAC17ANkn1LxW+hioXONSXWs7i3STBSGzYacZ+MGaD65my9Oe3HO+rYokhOjiie+gmFcMD7QbbVWiWFqHkA9LAmcJ8A0tUeyw8hkvE68q7RK3H5XvNngsm8iZw8tKuH0IhFyZtoTo7mAwq5evUv2yt9GhLxDlvkx/sO9WL3dcSIEYK87yBi5ce+cI3pEnRpxk4mculk111YAWwUrLvPyfuGZL3eH47Ah2elZ1VXDh/oWGUmtXHe9jJB+sLuV50UYx8pNWBfm3U0bQj7NSGscNJtNI5qpSJW7C775NS1e+9sxt0TMIvdSaI94Cv5YkcvO6pd/FcFB5jH1BxkW4LC7GLV9V+D3CzlOTVTPGBPR+otBjb+8gNLK2OffNexO4euQDKv1UJfE7zRzUPJJr+AXH37VGqM0kdJpumCMhsrA5DttUq6nT3UrOlfwddpw2ULzCvfoitL/8aZAF+blW2YIFOIRpyDUjgSe8Oo+EOC1kIgs32Q== danielcipoletti@Daniels-MBP.fios-router.home
     krb: present
+  lmata:
+    ensure: present
+    gid: 500
+    name: lmata
+    realname: Leo Mata
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJAL01LpnPg8qhPGkSnOxaKvXMO2uoXofcSnwCkLgww0 lmata@wikimedia.org
+    uid: 24566
+    email: lmata@wikimedia.org
 ldap_only_users:
   abartov:
     ensure: present
