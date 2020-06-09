@@ -67,7 +67,7 @@ if $_trusted_certname =~ '\.wmflabs$' or $_trusted_certname =~ '\.wikimedia.clou
     $projectgroup = "project-${labsproject}"
     $dnsconfig = lookup('labsdnsconfig',Hash, 'hash', {})
     $nameservers = [
-        #ipresolve($dnsconfig['recursor'], 4),
+        ipresolve($dnsconfig['recursor'], 4),
         ipresolve($dnsconfig['recursor_secondary'], 4)
     ]
 } else {
