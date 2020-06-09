@@ -43,9 +43,7 @@ class gerrit(
         enable_monitoring => $enable_monitoring
     }
 
-    if !$replica {
-        class { '::gerrit::crons':
-            require => Class['gerrit::jetty'],
-        }
+    class { '::gerrit::crons':
+        require => Class['gerrit::jetty'],
     }
 }
