@@ -2448,7 +2448,7 @@ service::catalog:
     sites:
     - eqiad
     - codfw
-    state: monitoring_setup
+    state: production
     discovery:
     - dnsdisc: termbox
       active_active: true
