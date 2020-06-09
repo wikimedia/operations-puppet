@@ -165,7 +165,7 @@ class profile::debmonitor::server (
     # Maintenance cron
     $times = cron_splay($hosts, 'weekly', 'debmonitor-maintenance-gc')
     cron { 'debmonitor-maintenance-gc':
-        command => "/usr/bin/systemd-cat -t 'debmonitor-maintenance' ${base_path}/run-django-command debmonitorgc",
+        command => "/usr/bin/systemd-cat -t 'debmonitor-maintenance' ${base_path}/run-django-command debmonitorgc || echo 'Debmonitor GC failed, check syslog for debmonitor-maintenance'",
         user    => $deploy_user,
         weekday => $times['weekday'],
         hour    => $times['hour'],
