@@ -400,7 +400,7 @@ node 'db1081.eqiad.wmnet' {
 }
 
 # eqiad replicas
-# See also db1097, db1103, db1144 and db1146 below
+# See also db1103, db1144 and db1146 below
 node /^db1(084|121|138|142|143|147|148|149)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
@@ -434,7 +434,7 @@ node 'db1100.eqiad.wmnet' {
 }
 
 # eqiad replicas
-# See also db1096, db1097, db1113 and db1144 below
+# See also db1096, db1113 and db1144 below
 node /^db1(082|110|130)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
@@ -524,7 +524,7 @@ node /^db20(80|81|82|83)\.codfw\.wmnet/ {
 }
 
 # hosts with multiple shards
-node /^db1(090|096|097|098|099|101|103|105|113|144|146)\.eqiad\.wmnet/ {
+node /^db1(090|096|098|099|101|103|105|113|144|146)\.eqiad\.wmnet/ {
     role(mariadb::core_multiinstance)
 }
 node /^db2(084|085|086|087|088|089|091|137|138)\.codfw\.wmnet/ {
@@ -571,6 +571,13 @@ node 'db1135.eqiad.wmnet' {
     class { '::role::mariadb::misc':
         shard  => 'm1',
         master => true,
+    }
+}
+# Future m1 master
+node 'db1097.eqiad.wmnet' {
+    class { '::role::mariadb::misc':
+        shard  => 'm1',
+        master => false,
     }
 }
 
