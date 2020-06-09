@@ -10,174 +10,147 @@ mtail::service_ensure: absent
 cache::websocket_support: true
 cache::req_handling:
   cxserver.wikimedia.org:
-    director: 'cxserver_backend'
     caching: 'pass'
-  default:
-    director: 'appservers'
-    debug_director: 'appservers_debug'
-    subpaths:
-      '^/api/rest_v1/':
-        director: 'restbase_backend'
-      '^/w/api\.php':
-        director: 'api'
-        debug_director: 'appservers_debug'
 cache::alternate_domains:
   15.wikipedia.org:
-    director: 'webserver_misc_static'
+    caching: 'normal'
   analytics.wikimedia.org:
-    director: 'thorium'
+    caching: 'normal'
   annual.wikimedia.org:
-    director: 'webserver_misc_static'
+    caching: 'normal'
   blubberoid.wikimedia.org:
-    director: 'blubberoid'
     caching: 'pass'
   bienvenida.wikimedia.org:
-    director: 'webserver_misc_static'
+    caching: 'normal'
   bugs.wikimedia.org:
-    director: 'phabricator'
+    caching: 'normal'
   bugzilla.wikimedia.org:
-    director: 'phabricator'
+    caching: 'normal'
   config-master.wikimedia.org:
-    director: 'pybal_config'
     caching: 'pass'
   datasets.wikimedia.org:
-    director: 'thorium'
     caching: 'pass'
   dbtree.wikimedia.org:
-    director: 'dbtree'
+    caching: 'normal'
   debmonitor.wikimedia.org:
-    director: 'debmonitor'
     caching: 'pass'
   design.wikimedia.org:
-    director: 'webserver_misc_static'
+    caching: 'normal'
   docker-registry.wikimedia.org:
-    director: 'docker_registry'
+    caching: 'normal'
   doc.wikimedia.org:
-    director: 'doc'
+    caching: 'normal'
   etherpad.wikimedia.org:
-    director: 'etherpad1002'
     caching: 'websockets'
   gerrit.wmfusercontent.org:
-    director: 'gerrit'
+    caching: 'normal'
   git.wikimedia.org:
-    director: 'phabricator'
+    caching: 'normal'
   grafana-labs.wikimedia.org:
-    director: 'cloudmetrics1002'
     caching: 'pass'
   grafana-next.wikimedia.org:
-    director: 'grafana2001'
     caching: 'pass'
   grafana.wikimedia.org:
-    director: 'grafana1002'
     caching: 'pass'
   graphite-labs.wikimedia.org:
-    director: 'cloudmetrics1002'
+    caching: 'normal'
   graphite.wikimedia.org:
-    director: 'graphite'
+    caching: 'normal'
   cas-graphite.wikimedia.org:
-    director: 'graphite'
+    caching: 'normal'
   horizon.wikimedia.org:
-    director: 'labweb'
+    caching: 'normal'
   wikitech.wikimedia.org:
-    director: 'labweb'
+    caching: 'normal'
   hue.wikimedia.org:
-    director: 'hadoop_ui'
+    caching: 'normal'
   iegreview.wikimedia.org:
-    director: 'miscweb'
+    caching: 'normal'
   intake-logging.wikimedia.org:
-    director: 'eventgate_logging_external'
+    caching: 'normal'
   intake-analytics.wikimedia.org:
-    director: 'eventgate_analytics_external'
+    caching: 'normal'
   integration.wikimedia.org:
-    director: 'contint1001'
+    caching: 'normal'
   labtesthorizon.wikimedia.org:
-    director: 'cloudweb2001_dev'
+    caching: 'normal'
   labtestwikitech.wikimedia.org:
-    director: 'cloudweb2001_dev'
+    caching: 'normal'
   labtesttoolsadmin.wikimedia.org:
-    director: 'cloudweb2001_dev'
+    caching: 'normal'
   logstash.wikimedia.org:
-    director: 'logstash_director'
+    caching: 'normal'
   logstash-next.wikimedia.org:
-    director: 'kibana-next'
+    caching: 'normal'
   cas-logstash.wikimedia.org:
-    director: 'kibana-next'
+    caching: 'normal'
   noc.wikimedia.org:
-    director: 'noc'
     caching: 'pass'
   ores.wikimedia.org:
-    director: 'ores'
+    caching: 'normal'
   people.wikimedia.org:
-    director: 'people'
     caching: 'pass'
   performance.wikimedia.org:
-    director: 'performance'
+    caching: 'normal'
   phabricator.wikimedia.org:
-    director: 'phabricator'
+    caching: 'normal'
   phab.wmfusercontent.org:
-    director: 'phabricator'
+    caching: 'normal'
   pivot.wikimedia.org:
-    director: 'turnilo'
+    caching: 'normal'
   piwik.wikimedia.org:
-    director: 'matomo1001'
+    caching: 'normal'
   '^([^.]+\.)?planet\.wikimedia\.org$':
-    director: 'planet'
     regex_key: true
+    caching: 'normal'
   puppetboard.wikimedia.org:
-    director: 'puppetboard'
     caching: 'pass'
   cas-puppetboard.wikimedia.org:
-    director: 'puppetboard'
     caching: 'pass'
   query.wikidata.org:
-    director: 'wdqs_director'
-    subpaths:
-      '^/bigdata/ldf.*':
-        director: 'wdqs_director_ldf'
+    caching: 'normal'
   racktables.wikimedia.org:
-    director: 'miscweb'
+    caching: 'normal'
   releases.wikimedia.org:
-    director: 'releases'
+    caching: 'normal'
   releases-jenkins.wikimedia.org:
-    director: 'releases_jenkins'
+    caching: 'normal'
   research.wikimedia.org:
-    director: 'webserver_misc_static'
+    caching: 'normal'
   rt.wikimedia.org:
-    director: 'requesttracker'
+    caching: 'normal'
   schema.wikimedia.org:
-    director: 'schema'
+    caching: 'normal'
   scholarships.wikimedia.org:
-    director: 'miscweb'
+    caching: 'normal'
   sitemaps.wikimedia.org:
-    director: 'webserver_misc_static'
+    caching: 'normal'
   smokeping.wikimedia.org:
-    director: 'netmon1002'
+    caching: 'normal'
   static-bugzilla.wikimedia.org:
-    director: 'webserver_misc_static'
+    caching: 'normal'
   stats.wikimedia.org:
-    director: 'thorium'
+    caching: 'normal'
   stream.wikimedia.org:
-    director: 'eventstreams'
+    caching: 'normal'
     subpaths:
       '^/v2/stream/.+':
-        director: 'eventstreams'
         caching: 'pipe'
   superset.wikimedia.org:
-    director: 'superset'
+    caching: 'normal'
   ticket.wikimedia.org:
-    director: 'otrs'
     caching: 'pass'
   toolsadmin.wikimedia.org:
-    director: 'labweb'
+    caching: 'normal'
   transparency.wikimedia.org:
-    director: 'webserver_misc_static'
+    caching: 'normal'
   turnilo.wikimedia.org:
-    director: 'turnilo'
+    caching: 'normal'
   '^(www\.)?wikiba\.se$':
-    director: 'webserver_misc_static'
     regex_key: true
+    caching: 'normal'
   yarn.wikimedia.org:
-    director: 'hadoop_ui'
+    caching: 'normal'
 profile::base::systemd::cpu_accounting: 'yes'
 profile::base::systemd::blockio_accounting: 'yes'
 profile::base::systemd::memory_accounting: 'yes'

@@ -8,13 +8,8 @@ prometheus::node_exporter::collectors_extra:
   - meminfo_numa
 mtail::service_ensure: absent
 cache::req_handling:
-  upload.wikimedia.org:
-    director: 'swift'
-    subpaths:
-      '^/+[^/]+/[^/]+/thumb/':
-        director: 'swift_thumbs'
-  maps.wikimedia.org:
-    director: 'kartotherian'
+  default:
+    caching: 'normal'
 # Profile parameters
 profile::base::systemd::cpu_accounting: 'yes'
 profile::base::systemd::blockio_accounting: 'yes'
