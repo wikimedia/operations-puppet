@@ -744,7 +744,7 @@ node /^dbproxy20(01|02|03)\.codfw\.wmnet$/ {
 # labsdb proxies (controling replica service dbs)
 # analytics proxy
 node 'dbproxy1018.eqiad.wmnet' {
-    role(mariadb::proxy::master)
+    role(mariadb::proxy::replicas)
 }
 
 # web proxy
