@@ -161,8 +161,7 @@ def run(args, user, log_path):
         lib.wait_reboot(args.host, start=datetime.utcnow(), installer_key=True)
 
         # Generate the Puppet certificate and signing request
-        if lib.detect_init_system(args.host) == 'systemd':
-            cert_fingerprint = lib.puppet_generate_cert(args.host)
+        cert_fingerprint = lib.puppet_generate_cert(args.host)
 
     # Sign the new Puppet certificate
     if lib.puppet_wait_cert_and_sign(args.host, cert_fingerprint):

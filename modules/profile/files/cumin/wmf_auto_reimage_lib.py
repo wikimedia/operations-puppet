@@ -724,37 +724,17 @@ def puppet_generate_cert(host):
         'Unable to find certificate fingerprint in:\n{msg}'.format(msg=output.message().decode()))
 
 
-def detect_init_system(host):
-    """Detect which init system the host is running and return it.
-
-    It use the installer key for Cumin.
-
-    Arguments:
-    host      -- the FQDN of the host to check
-    """
-    _, worker = run_cumin('detect_init', host, ['ps --no-headers -o comm 1'], installer=True)
-    for _, output in worker.get_results():
-        init_system = output.message().decode()
-        break
-
-    return init_system
-
-
 def puppet_first_run(host):
     """Disable Puppet service, enable Puppet agent and run it for the first time.
 
     Arguments:
     host -- the FQDN of the host for which the Puppet certificate has to be revoked
     """
-    commands = []
-    if detect_init_system(host) == 'systemd':
-        commands += ['systemctl stop puppet.service',
-                     'systemctl reset-failed puppet.service || true']
-
-    commands += [
-        'puppet agent --enable',
-        ('puppet agent --onetime --no-daemonize --verbose --no-splay --show_diff '
-         '--ignorecache --no-usecacheonfailure')]
+    commands = ['systemctl stop puppet.service',
+                'systemctl reset-failed puppet.service || true',
+                'puppet agent --enable',
+                ('puppet agent --onetime --no-daemonize --verbose --no-splay --show_diff '
+                 '--ignorecache --no-usecacheonfailure')]
 
     print_line('Started first puppet run (sit back, relax, and enjoy the wait)', host=host)
     run_cumin('puppet_first_run', host, commands, timeout=10800, installer=True)
