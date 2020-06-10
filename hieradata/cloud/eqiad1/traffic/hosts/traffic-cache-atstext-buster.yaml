@@ -1,0 +1,121 @@
+cache::alternate_domains:
+  grafana.wikimedia.org:
+    caching: pass
+  phab.wmfusercontent.org:
+    caching: normal
+cache::app_def_be_opts:
+  between_bytes_timeout: 31s
+  connect_timeout: 3s
+  first_byte_timeout: 63s
+  max_connections: 1000
+  port: 80
+cache::cluster: text
+cache::lua_support: true
+cache::nodes:
+  text:
+    eqiad_ats:
+    - localhost
+cache::req_handling:
+  cxserver.wikimedia.org:
+    caching: pass
+cache::text::nodes:
+  eqiad:
+  - localhost
+  eqiad_ats:
+  - localhost
+cluster: cache_text
+do_acme: false
+kafka_cluster_name: analytics-traffic
+kafka_clusters:
+  analytics-traffic:
+    api_version: 0.9
+    brokers:
+      deployment-kafka01.deployment-prep.eqiad.wmflabs:
+        id: 1
+      deployment-kafka03.deployment-prep.eqiad.wmflabs:
+        id: 2
+    zookeeper_cluster_name: main-deployment-prep
+  main-deployment-prep:
+    api_version: 0.9
+    brokers:
+      deployment-kafka04.deployment-prep.eqiad.wmflabs:
+        id: 4
+      deployment-kafka05.deployment-prep.eqiad.wmflabs:
+        id: 5
+    zookeeper_cluster_name: main-deployment-prep
+lvs::configuration::lvs_service_ips:
+  text:
+    eqiad: 127.0.0.1
+lvs::configuration::lvs_services: {}
+mtail::service_ensure: absent
+profile::cache::kafka::eventlogging::kafka_cluster_name: jumbo-eqiad
+profile::cache::kafka::statsv::kafka_cluster_name: jumbo-eqiad
+profile::cache::kafka::webrequest::kafka_cluster_name: jumbo-eqiad
+profile::cache::ssl::wikibase::acme_chief: false
+profile::cache::ssl::wikibase::le_subjects:
+- whatever.org
+profile::cache::varnish::frontend::fe_extra_vcl:
+- normalize_path
+- geoip
+profile::cache::varnish::separate_vcl:
+- misc
+profile::trafficserver::backend::default_lua_scripts:
+- set-x-cache
+profile::trafficserver::backend::mapping_rules:
+- replacement: http://deployment-mediawiki-07.deployment-prep.eqiad.wmflabs
+  target: http://en.wikipedia.beta.wmflabs.org
+  type: map
+profile::trafficserver::backend::outbound_tls_settings:
+  cacert_dirpath: /etc/ssl/certs
+  cacert_filename: Puppet_Internal_CA.pem
+  common:
+    cipher_suite: -ALL:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384
+    enable_tlsv1: 0
+    enable_tlsv1_1: 0
+    enable_tlsv1_2: 1
+    enable_tlsv1_3: 0
+  verify_origin: true
+profile::trafficserver::tls::available_unified_certs:
+  lets-encrypt:
+    acme_chief: true
+    cert_files:
+    - acmecerts/unified/live/rsa-2048.chained.crt
+    - acmecerts/unified/live/ec-prime256v1.chained.crt
+    default: true
+    ocsp_stapling_files:
+    - acmecerts/unified/live/rsa-2048.ocsp
+    - acmecerts/unified/live/ec-prime256v1.ocsp
+    private_key_files:
+    - acmecerts/unified/live/rsa-2048.key
+    - acmecerts/unified/live/ec-prime256v1.key
+profile::trafficserver::tls::inbound_tls_settings:
+  common:
+    cipher_suite: -ALL:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES128-SHA:DHE-RSA-AES128-SHA
+    cipher_suite_tlsv1_3: TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_128_GCM_SHA256
+    enable_tlsv1: 0
+    enable_tlsv1_1: 0
+    enable_tlsv1_2: 1
+    enable_tlsv1_3: 1
+    groups_list: X25519:prime256v1
+  dhparams_file: /etc/ssl/dhparam.pem
+  do_ocsp: 1
+  load_elevated: 1
+  max_record_size: 16383
+  prioritize_chacha: 1
+  session_cache: 2
+  session_cache_auto_clear: 1
+  session_cache_buckets: 32768
+  session_cache_size: 512000
+  session_cache_timeout: 86400
+  session_ticket_enable: 1
+  session_ticket_filename: secrets/tickets.key
+  ssl_handshake_timeout_in: 60
+profile::trafficserver::tls::parent_rules: []
+profile::trafficserver::tls::unified_acme_chief: true
+prometheus_nodes: []
+public_tls_unified_cert_vendor: lets-encrypt
+puppetmaster: traffic-puppetmaster-buster.traffic.eqiad.wmflabs
+zookeeper_clusters:
+  main-deployment-prep:
+    hosts:
+      deployment-zookeeper02.eqiad.wmflabs: '2'
