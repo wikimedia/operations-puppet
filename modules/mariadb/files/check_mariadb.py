@@ -392,6 +392,8 @@ def parse_args():
                         help='Set primary datacenter (by default, eqiad).')
     parser.add_argument('--check_read_only', dest='read_only', default=None,
                         help='Check read_only variable matches the given value.')
+    parser.add_argument('--check_event_scheduler', dest='event_scheduler', default=None,
+                        help='Check if the event scheduler is enabled')
     parser.add_argument('--check_warn_lag', type=float, dest='warn_lag', default=15.0,
                         help='Lag from which a Warning is returned. By default, 15 seconds.')
     parser.add_argument('--check_crit_lag', type=float, dest='crit_lag', default=300.0,
@@ -507,6 +509,7 @@ def get_status(options):
         status['connection'] = 'ok'
         version = get_var(mysql, 'version')
         read_only = get_var(mysql, 'read_only')
+        event_scheduler = get_var(mysql, 'event_scheduler')
         uptime = get_var(mysql, 'Uptime', type='STATUS')
         ssl = get_var(mysql, 'Ssl_cipher', type='STATUS')
         ssl_expiration = get_var(mysql, 'Ssl_server_not_after', type='STATUS')
@@ -527,7 +530,8 @@ def get_status(options):
             status['version'] = version
         if read_only is not None:
             status['read_only'] = read_only == 'ON'
-
+        if event_scheduler is not None:
+            status['event_scheduler'] = event_scheduler == 'ON'
         if uptime is not None:
             status['uptime'] = int(uptime)
 
@@ -621,6 +625,16 @@ def icinga_check(options):
             ok_msg.append('read_only: {}'.format(status['read_only']))
     else:
         ok_msg.append('read_only: {}'.format(status['read_only']))
+    # check event_scheduler is enabled
+    if options.event_scheduler is not None:
+        expected_event_scheduler = options.event_scheduler.lower() in ['true', '1', 'on', 'yes']
+        if status['event_scheduler'] != expected_event_scheduler:
+            crit_msg.append('event_scheduler: "{}", expected "{}"'.format(status['event_scheduler'],
+                            expected_event_scheduler))
+        else:
+            ok_msg.append('event_scheduler: {}'.format(status['event_scheduler']))
+    else:
+        ok_msg.append('read_only: {}'.format(status['event_scheduler']))
 
     # # check lag
     # if 'heartbeat' in status:
