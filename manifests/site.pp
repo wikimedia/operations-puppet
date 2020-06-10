@@ -2228,7 +2228,7 @@ node 'theemin.codfw.wmnet' {
 }
 
 node /^thanos-be100[1234]\.eqiad\.wmnet/ {
-    role(insetup)
+    role(thanos::backend)
 }
 
 node /^thanos-be200[1234]\.codfw\.wmnet/ {
