@@ -18,6 +18,13 @@ class profile::wikidough (
         srange => '$PRODUCTION_NETWORKS',
     }
 
+    class { 'dnsrecursor':
+        listen_addresses     => [$resolver['host']],
+        allow_from           => ['127.0.0.0/8'],
+        allow_forward_zones  => false,
+        allow_edns_whitelist => false,
+    }
+
     acme_chief::cert { 'wikidough':
         puppet_svc => 'dnsdist',
         key_group  => '_dnsdist',
@@ -28,6 +35,7 @@ class profile::wikidough (
         tls_config     => $tls_config,
         enable_console => true,
         console_key    => $passwords::dnsdist::wikidough::console_key,
+        require        => Class['dnsrecursor'],
     }
 
 }
