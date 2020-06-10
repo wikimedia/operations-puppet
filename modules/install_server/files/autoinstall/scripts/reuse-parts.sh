@@ -70,6 +70,9 @@
 # For:
 # - restore_ifs: sets $IFS back to the default value
 # - db_get: read a value from the debconf database
+# - db_go: ask all outstanding questions
+# - db_input: add a question to the d-i queue
+# - db_subst: set a debconf template variable
 # - basename (not really desired, as busybox does supply its own basename implementation)
 # - open_dialog: Opens connection to parted server, and sends command.
 # - read_line: reads a line from the parted server.
@@ -83,6 +86,21 @@ log() {
     logger -t reuse "$@"
 }
 
+error() {
+    local tmpl
+    tmpl="reuse-parts/${1:?}"; shift
+
+    log "$@"
+    db_subst "$tmpl" ERROR "$*"
+    db_input critical "$tmpl"
+    db_go
+}
+
+fatal() {
+    error "$@"
+    exit 1
+}
+
 dev_path() {
     echo "$1" | sed 's:/:=:g'
 }
@@ -92,8 +110,10 @@ un_dev_path() {
 }
 
 parse_recipes() {
-    local reuse_recipe dev_recipe item first dev id
+    local - reuse_recipe dev_recipe item first dev id
     reuse_recipe="${1:?}"; shift
+    # Disable globbing in this function, as recipe devices can contain wildcards.
+    set -o noglob
 
     IFS=,
     for dev_recipe in $reuse_recipe; do
@@ -106,7 +126,7 @@ parse_recipes() {
             first="${item# *}"
             first="${first%% *}"
             if [ -z "$dev" ]; then
-                dev=$(dev_path "$first")
+                dev="$(dev_path "$first")"
                 mkdir -p /tmp/reuse-parts/recipes/"$dev"
             else
                 # Drop part num from the start
@@ -126,22 +146,25 @@ get_part_recipe() {
 
     recipe_file="/tmp/reuse-parts/recipes/$recipe_dev/$part_num"
     if [ ! -e "$recipe_file" ]; then
-        log "[$dev_name] ERROR: no recipe entry for ${recipe_dev} partition $part_num"
+        error recipe_mismatch \
+            "[$dev_name] ERROR: no recipe entry for ${recipe_dev} partition $part_num"
         return 1
     fi
 
     read recipe_fs recipe_action recipe_mountpoint < "$recipe_file"
     # Ensure all fields are set
     if ! [ -n "$recipe_fs" -a -n "$recipe_action" -a -n "$recipe_mountpoint" ]; then
-        log "[$dev_name] ERROR: recipe for $recipe_dev partition $part_num does not have all fields set: $(cat "$recipe_file")"
-        exit 1
+        error recipe_parse_failed \
+            "[$dev_name] ERROR: recipe for $recipe_dev partition $part_num does not have all fields set: '$(cat "$recipe_file")'"
+        return 1
     fi
     # Ensure there are no extra fields (which wind up as being added to the last var as extra words)
     if [ $(echo $recipe_mountpoint | wc -w) != 1 ]; then
         set -- $recipe_mountpoint
         shift # Drop the mountpoint from the output
-        log "[$dev_name] ERROR: recipe for $recipe_dev partition $part_num has trailing garbage: '$@'"
-        exit 1
+        error recipe_parse_failed \
+            "[$dev_name] ERROR: recipe for $recipe_dev partition $part_num has trailing garbage: '$@'"
+        return 1
     fi
 }
 
@@ -167,8 +190,8 @@ part_action() {
         ignore)
             return 0
             ;;
-        *) log "[$disk] ERROR: unsupported recipe action $recipe_action "\
-            "(Supported: format|keep|ignore)";
+        *) error recipe_parse_failed \
+            "[$disk] ERROR: unsupported recipe action '$recipe_action' (Supported: format|keep|ignore)";
             return 1
             ;;
     esac
@@ -195,6 +218,26 @@ if [ "$RET" != "reuse_parts" ]; then
     exit 0
 fi
 
+# Create debconf templates to display errors via the d-i interface.
+cat > /tmp/reuse-parts/debconf.templates <<EOF
+Template: reuse-parts/recipe_parse_failed
+Type: error
+Description: reuse-parts: Unable to parse recipe
+ \${ERROR}
+
+Template: reuse-parts/dev_match_failed
+Type: error
+Description: reuse-parts: Recipe device matching failed
+ \${ERROR}
+
+Template: reuse-parts/recipe_mismatch
+Type: error
+Description: reuse-parts: Recipe mismatch with existing partitioning
+ \${ERROR}
+
+EOF
+db_x_loadtemplatefile /tmp/reuse-parts/debconf.templates reuse-parts
+
 db_get partman/reuse_partitions_recipe
 parse_recipes "$RET"
 
@@ -202,19 +245,19 @@ for recipe_dir in /tmp/reuse-parts/recipes/*; do
     recipe_dev="$(basename "$recipe_dir")"
     dev_dir="$DEVICES/$recipe_dev"
     # Deliberately not quoting $dev_dir here, as it can contain wildcards.
-    dev_matches=$(ls -d $dev_dir | wc -l)
+    dev_matches=$(ls -1d $dev_dir | wc -l)
     case $dev_matches in
         0)
-            log "ERROR: $recipe_dev matches zero devices $(ls -1 "$DEVICES")"
-            exit 1
+            fatal dev_match_failed \
+                "ERROR: $recipe_dev matches zero devices $(cd "$DEVICES"; printf "\n\nAll devices:\n$(ls -1)")"
             ;;
         1) ;; # 1 match is a good number.
         *)
-            log "ERROR: $recipe_dev matches more than one device $(ls -1 "$DEVICES")"
-            exit 1
+            fatal dev_match_failed \
+                "ERROR: $recipe_dev matches more than one device $(cd "$DEVICES"; printf "\n\Matching devices:\n$(ls -1d $recipe_dev)")"
             ;;
     esac
-    cd $dev_dir || { log "ERROR: $dev_dir is not a directory"; exit 1; }
+    cd $dev_dir || fatal dev_match_failed "ERROR: $dev_dir is not a directory"
     dev_name=$(un_dev_path $(basename "$PWD"))
 
     ret=0
@@ -228,7 +271,7 @@ for recipe_dir in /tmp/reuse-parts/recipes/*; do
         if [ "$fs" != "$recipe_fs" -a "$recipe_action" = "keep" ]; then
             # If we're supposed to use an existing FS, but the filesystem doesn't match
             # what we've been told, bail out.
-            log "[$dev_name] ERROR: recipe fs ($recipe_fs) != preexisting fs ($fs)"
+            error recipe_mismatch "[$dev_name] ERROR: recipe fs ($recipe_fs) != preexisting fs ($fs)"
             ret=1
             break
         fi
@@ -242,8 +285,8 @@ for recipe_dir in /tmp/reuse-parts/recipes/*; do
 
     recipes_count=$(ls "$recipe_dir"/* | wc -l)
     if [ "$part_count" != "$recipes_count" ]; then
-        log "[$dev_name] ERROR: recipe partition count ($recipes_count) != actual partition count ($part_count)"
-        exit 1
+        fatal recipe_mismatch \
+            "[$dev_name] ERROR: recipe partition count ($recipes_count) != actual partition count ($part_count)"
     fi
 done
 
