@@ -54,6 +54,19 @@ profile::cache::kafka::webrequest::kafka_cluster_name: jumbo-eqiad
 profile::cache::ssl::wikibase::acme_chief: false
 profile::cache::ssl::wikibase::le_subjects:
 - whatever.org
+profile::cache::varnish::frontend::fe_vcl_config:
+    allowed_methods: '^(GET|HEAD|OPTIONS|POST|PURGE|PUT|DELETE)$'
+    purge_host_regex: '^(?!(upload|maps)\.beta\.wmflabs\.org)'
+    static_host: 'en.wikipedia.beta.wmflabs.org'
+    top_domain: 'beta.wmflabs.org'
+    shortener_domain: 'w-beta.wmflabs.org'
+    upload_domain: 'upload.beta.wmflabs.org'
+    upload_webp_hits_threshold: 1000
+    maps_domain: 'maps.beta.wmflabs.org'
+    varnish_probe_ms: 100
+    keep: '1d'
+    public_clouds_shutdown: false
+    large_objects_cutoff: 262144
 profile::cache::varnish::frontend::fe_extra_vcl:
 - normalize_path
 - geoip
