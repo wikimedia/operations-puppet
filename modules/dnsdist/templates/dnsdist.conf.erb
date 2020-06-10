@@ -36,6 +36,8 @@ addDOHLocal('0.0.0.0', '<%= @tls_config['cert_chain_path'] %>', '<%= @tls_config
 addDOHLocal('[::]', '<%= @tls_config['cert_chain_path'] %>', '<%= @tls_config['cert_privkey_path'] %>', '<%= @doh_base_url %>', tlsOptions)
 
 -- enable DoT (default port is 853)
+-- the default TLS library (provider) for DoT in version 1.4.0 is GnuTLS, so set OpenSSL explicitly
+tlsOptions['provider'] = 'openssl'
 addTLSLocal('0.0.0.0', '<%= @tls_config['cert_chain_path'] %>', '<%= @tls_config['cert_privkey_path'] %>', tlsOptions)
 addTLSLocal('[::]', '<%= @tls_config['cert_chain_path'] %>', '<%= @tls_config['cert_privkey_path'] %>', tlsOptions)
 
