@@ -30,7 +30,7 @@ class profile::meet::accountmanager(
             uwsgi => {
                 'plugins'   => 'python',
                 'socket'    => '/run/uwsgi/meet-accountmanager.sock',
-                'wsgi-file' => '?',
+                'wsgi-file' => "${clone_path}/server.py",
                 'callable'  => 'app',
                 'master'    => true,
                 'processes' => 2,
