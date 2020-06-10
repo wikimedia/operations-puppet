@@ -7,7 +7,8 @@ profile::wmcs::nfs::secondary::monitor_iface: eno1
 profile::ldap::client::labs::ldapincludes: ['openldap', 'nss', 'utils']
 profile::wmcs::nfs::secondary::cluster_ip: "208.80.155.119"
 
-systemd_contactgroups: 'wmcs-team-email'
+# Anything we specifically want to monitor already pages, so this is annoying
+profile::base::monitor_systemd: false
 
 # the snapshots created by the backup process cannot be checked
 # by the check_disk nrpe plugin so need to be excluded.
