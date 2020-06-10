@@ -38,7 +38,7 @@ define service::docker(
     String $override_cmd = '',
     Hash $environment = {},
     String $image_name = $title,
-    String $volume = false,
+    Boolean $volume = false,
 ) {
     # Our docker registry is *not* configurable here.
     $registry = 'docker-registry.wikimedia.org'
