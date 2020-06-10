@@ -47,6 +47,7 @@ profile::trafficserver::tls::inbound_tls_settings:
   do_ocsp: 1
   load_elevated: 1
   max_record_size: 16383
+  prioritize_chacha: 1
   session_cache: 2
   session_cache_auto_clear: 1
   session_cache_buckets: 32768
