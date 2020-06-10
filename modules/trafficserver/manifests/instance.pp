@@ -284,7 +284,6 @@ define trafficserver::instance(
     }
 
     # needed by plugin.config.erb
-    $healthchecks_config_path = "${paths['sysconfdir']}/healthchecks.config"
     $compress_config_path = "${paths['sysconfdir']}/compress.config"
 
     ## Config files
@@ -323,11 +322,6 @@ define trafficserver::instance(
 
         "${paths['sysconfdir']}/logging.yaml":
           content => template('trafficserver/logging.yaml.erb');
-
-        $healthchecks_config_path:
-          # Response body can be changed by pointing to a text file with actual
-          # contents instead of /dev/null
-          content => '/check /dev/null text/plain 200 403',;
 
         "${error_template_path}/default/.body_factory_info":
           # This file just needs to be there or ATS will refuse loading any
