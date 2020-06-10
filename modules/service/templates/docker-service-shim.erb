@@ -2,9 +2,9 @@
 envargs = @environment.map{ |k, v| "-e #{k}=\"#{v}\"" }.join(' ')
 
 if @volume then
-  etc = "@title"
+  etc = "#{@title}"
 else
-  etc = "/etc/@title/"
+  etc = "/etc/#{@title}/"
 end
 
 %>
