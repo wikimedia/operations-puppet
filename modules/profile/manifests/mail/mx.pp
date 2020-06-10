@@ -114,7 +114,7 @@ class profile::mail::mx (
 
     # mails the wikimedia.org mail alias file to OIT once per week
     $alias_file = "${exim4::aliases_dir}/wikimedia.org"
-    $recipient  = 'officeit@wikimedia.org'
+    $recipient  = 'its@wikimedia.org'
     $subject    = "wikimedia.org mail aliases from ${::hostname}"
     cron { 'mail_exim_aliases':
         user    => 'Debian-exim',
