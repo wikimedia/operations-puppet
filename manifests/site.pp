@@ -2240,9 +2240,9 @@ node /^thanos-be200[1234]\.codfw\.wmnet/ {
 }
 
 node /^thanos-fe100[123]\.eqiad\.wmnet/ {
-    role(insetup)
-
+    role(thanos::frontend)
 }
+
 node /^thanos-fe200[123]\.codfw\.wmnet/ {
     role(thanos::frontend)
 }
