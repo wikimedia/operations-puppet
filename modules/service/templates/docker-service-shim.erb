@@ -1,5 +1,5 @@
 <%-
-nvargs = @environment.map{ |k, v| "-e #{k}=\"#{v}\"" }.join(' ')
+envargs = @environment.map{ |k, v| "-e #{k}=\"#{v}\"" }.join(' ')
 
 if @volume then
   etc = "@title"
