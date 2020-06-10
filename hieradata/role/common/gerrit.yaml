@@ -5,8 +5,6 @@ admin::groups:
 gerrit::server::host: 'gerrit.wikimedia.org'
 gerrit::server::config: 'gerrit.config.erb'
 
-gerrit::server::db_user: 'gerrit'
-
 # When promoting a master set this to false
 # in the corresponding hosts yaml file.
 gerrit::server::is_replica: true
@@ -27,6 +25,7 @@ gerrit::server::backup_set: 'gerrit-repo-data'
 
 # Database
 gerrit::server::db_user: 'gerrit'
+gerrit::server::db_name: 'reviewdb'
 
 # SSL/TLS certs
 gerrit::server::use_acmechief: true

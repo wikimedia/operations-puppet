@@ -14,8 +14,10 @@ gerrit::server::is_replica: false
 # No backups on the test server
 gerrit::server::backups_enabled: false
 
-# test server does not get write access to DB, readonly
-gerrit::server::db_user: 'gerritro'
+# previously, test server got access to the prod db, but readonly
+# now test server gets a separate test database, readwrite
+gerrit::server::db_user: 'gerrittest'
+gerrit::server::db_name: 'reviewdb-test'
 
 # jetty
 gerrit::jetty::heap_limit: 5g

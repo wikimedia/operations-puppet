@@ -13,6 +13,7 @@ class gerrit(
     Optional[String] $scap_key_name = undef,
     Optional[String] $db_user = undef,
     Optional[String] $db_pass = undef,
+    Optional[String] $db_name = undef,
     Boolean $enable_monitoring = true,
 ) {
 
@@ -29,6 +30,7 @@ class gerrit(
         scap_key_name     => $scap_key_name,
         db_user           => $db_user,
         db_pass           => $db_pass,
+        db_name           => $db_name,
         enable_monitoring => $enable_monitoring
     }
 

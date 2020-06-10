@@ -18,6 +18,7 @@ class profile::gerrit::server(
     Optional[String] $scap_key_name = lookup('gerrit::server::scap_key_name'),
     Optional[String] $db_user = lookup('gerrit::server::db_user'),
     Optional[String] $db_pass = lookup('gerrit::server::db_pass'),
+    Optional[String] $db_name = lookup('gerrit::server::db_name'),
     Boolean $enable_monitoring = lookup('gerrit::server::enable_monitoring', { default_value => true }),
 ) {
 
@@ -97,6 +98,7 @@ class profile::gerrit::server(
         scap_key_name     => $scap_key_name,
         db_user           => $db_user,
         db_pass           => $db_pass,
+        db_name           => $db_name,
         enable_monitoring => $enable_monitoring
     }
 

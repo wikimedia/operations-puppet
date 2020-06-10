@@ -127,6 +127,7 @@ gerrit::jetty::ssh_host_key: ssh_host_key
 
 # Database (MySQL, will not be used in future)
 gerrit::server::db_user: 'gerrit'
+gerrit::server::db_name: 'reviewdb'
 gerrit::server::db_pass: 'foobar'
 
 # Backups
