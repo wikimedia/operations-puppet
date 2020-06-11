@@ -1,6 +1,6 @@
 #!/bin/sh
 
-$active_host="$(cat /etc/icinga/active_host)"
+active_host="$(cat /etc/icinga/active_host)"
 test -n "${active_host}" || exit 1
 
 # Bail out if Icinga configuration is not valid, it would not restart
