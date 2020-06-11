@@ -32,7 +32,7 @@ class dnsdist (
     Dnsdist::Resolver   $resolver,
     Dnsdist::TLS_config $tls_config,
     String              $doh_base_url       = '/dns-query',
-    Integer[1]          $qps_max            = 10,
+    Integer[1]          $qps_max            = 20,
     Boolean             $enable_packetcache = true,
     Integer[1]          $packetcache_max    = 10000000,
     Boolean             $enable_console     = true,
