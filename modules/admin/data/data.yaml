@@ -4310,3 +4310,7 @@ ldap_only_users:
     ensure: present
     realname: Nik Gkountas
     email: ngkountas@wikimedia.org
+  vhargyono:
+    ensure: present
+    realname: Vasanthi Hargyono
+    email: vhargyono@wikimedia.org
