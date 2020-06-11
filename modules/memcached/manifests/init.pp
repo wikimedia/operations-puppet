@@ -50,11 +50,19 @@ class memcached(
     Integer $min_slab_size           = 48,
     Float $growth_factor             = 1.25,
     Hash[String, Any] $extra_options = {},
+    Boolean $enable_16               = false,
 ) {
 
-    package { 'memcached':
-        ensure => $version,
-        before => Service['memcached'],
+    if $enable_16 {
+        apt::package_from_component { 'memcached_16':
+            component => 'component/memcached16',
+            before    => Service['memcached'],
+        }
+    } else {
+        package { 'memcached':
+            ensure => $version,
+            before => Service['memcached'],
+        }
     }
 
     systemd::service { 'memcached':
