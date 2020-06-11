@@ -20,6 +20,11 @@ class profile::statistics::explorer::misc_jobs(
             use_kerberos => $use_kerberos
         }
 
+        # Performance team statistics scripts and cron jobs
+        class { '::statistics::performance':
+            use_kerberos => $use_kerberos
+        }
+
         # WMDE releated statistics & analytics scripts.
         class { '::statistics::wmde':
             statsd_host   => $statsd_host,

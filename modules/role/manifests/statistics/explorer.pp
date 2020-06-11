@@ -34,8 +34,6 @@ class role::statistics::explorer {
 
     # Deploy wikimedia/discovery/analytics repository
     include ::profile::analytics::cluster::elasticsearch
-    # Deploy performance/asoranking repository
-    include ::profile::analytics::asoranking
 
     include ::profile::swap
 }

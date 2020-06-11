@@ -34,10 +34,6 @@ class role::statistics::private {
     # to this node.
     include ::profile::analytics::cluster::elasticsearch
 
-    # Deploy performance/asoranking repository
-    # to this node.
-    include ::profile::analytics::asoranking
-
     include ::profile::statistics::explorer::misc_jobs
 
     include ::profile::analytics::client::limits
