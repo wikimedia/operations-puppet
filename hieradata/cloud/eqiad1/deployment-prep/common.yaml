@@ -12,6 +12,7 @@ service::configuration::restbase_uri: http://deployment-restbase02.deployment-pr
 #service::configuration::http_proxy:
 service::configuration::statsd_host: cloudmetrics1002.eqiad.wmnet
 service::configuration::logstash_host: deployment-logstash03.deployment-prep.eqiad.wmflabs
+profile::cache::purge::kafka_cluster_name: main-deployment-prep
 profile::changeprop::purge_host: deployment-cache-text05.deployment-prep.eqiad.wmflabs
 profile::changeprop::ores_uris: ['http://deployment-ores01.deployment-prep.eqiad.wmflabs:8081']
 profile::changeprop::event_service_uri: http://deployment-eventgate-3.deployment-prep.eqiad.wmflabs:8292/v1/events

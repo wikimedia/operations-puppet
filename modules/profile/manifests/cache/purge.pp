@@ -5,6 +5,7 @@ class profile::cache::purge(
     $multicasts = hiera('profile::cache::purge::multicasts', ['239.128.0.112']),
     Array[String] $kafka_topics = lookup('profile::cache::purge::kafka_topics', {'default_value' => []}),
     Boolean $kafka_tls = lookup('profile::cache::purge::kafka_tls', {'default_value' => false}),
+    String $kafka_cluster_name = lookup('profile::cache::purge::kafka_cluster_name', {'default_value' => 'main-eqiad'}),
     Optional[String] $tls_key_password = lookup('profile::cache::purge::tls_key_password', {'default_value' => undef}),
 ){
     $kafka_ensure = $kafka_topics ? {
@@ -12,11 +13,7 @@ class profile::cache::purge(
         default => 'present'
     }
     if $kafka_topics != [] {
-        # purged should attach to the kafka brokers in the nearest main dc.
-        $kafka_conf = $::site ? {
-            /^(ulsfo|codfw)$/ => kafka_config('main-codfw'),
-            default           => kafka_config('main-eqiad')
-        }
+        $kafka_conf = kafka_config($kafka_cluster_name)
 
         $brokers = $kafka_tls ? {
             false => $kafka_conf['brokers']['string'].split(','),
