@@ -129,6 +129,7 @@ Components: main
  component/dnsdist
  component/idp-test
  component/jdk8
+ component/memcached16
  component/mtail
  component/spicerack
  component/wmf-sre-laptop
