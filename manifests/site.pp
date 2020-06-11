@@ -1982,11 +1982,11 @@ node /orespoolcounter[12]00[34]\.(codfw|eqiad)\.wmnet/ {
 }
 
 node /^oresrdb100[12]\.eqiad\.wmnet$/ {
-    role(ores::redis)
+    role(spare::system)
 }
 
 node /^oresrdb200[12]\.codfw\.wmnet$/ {
-    role(ores::redis)
+    role(spare::system)
 }
 
 # new OTRS machine to replace mendelevium
