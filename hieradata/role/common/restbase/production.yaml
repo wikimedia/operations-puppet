@@ -27,7 +27,17 @@ profile::restbase::cassandra_password: "%{passwords::cassandra::restbase}"
 profile::restbase::monitor_domain: en.wikipedia.org
 profile::restbase::cassandra_tls:
   ca: /dev/null
-
+profile::services_proxy::envoy::enabled_listeners:
+ - parsoid-php
+ - mathoid
+ - mobileapps
+ - graphoid
+ - aqs
+ - proton
+ - citoid
+ - cxserver
+ - recommendation
+ - wikifeeds
 #
 # Cassandra
 # FIXME: no graphite_host since graphite1003 decom'ed in T209357

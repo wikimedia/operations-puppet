@@ -108,3 +108,57 @@ profile::services_proxy::envoy::listeners:
     service: search-psi-https
     timeout: "50s"
     upstream: search.svc.codfw.wmnet
+  # Other services, mostly used by restbase
+  - name: mobileapps
+    port: 6012
+    service: mobileapps
+    timeout: "120s"
+  - name: graphoid
+    port: 6666
+    service: graphoid
+    timeout: "120s"
+  - name: aqs
+    port: 6020
+    service: aqs
+    timeout: "120s"
+  - name: proton
+    port: 6013
+    service: proton
+    timeout: "120s"
+  - name: citoid
+    port: 6014
+    service: citoid
+    timeout: "120s"
+  - name: cxserver
+    port: 6015
+    service: cxserver-https
+    timeout: "120s"
+  - name: recommendation
+    port: 6016
+    service: recommendation-api
+    timeout: "120s"
+  - name: wikifeeds
+    port: 6017
+    service: wikifeeds
+    timeout: "120s"
+# default listeners list used by the MW installations
+profile::services_proxy::envoy::enabled_listeners:
+  - parsoid
+  - parsoid-php
+  - mathoid
+  - eventgate-analytics
+  - eventgate-main
+  - sessionstore
+  - echostore
+  - termbox
+  - wdqs-internal
+  - ores
+  - restbase
+  - swift-eqiad
+  - swift-codfw
+  - search-chi-eqiad
+  - search-chi-codfw
+  - search-omega-eqiad
+  - search-omega-codfw
+  - search-psi-eqiad
+  - search-psi-codfw

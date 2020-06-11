@@ -19,6 +19,7 @@
 # keepalive - keepalive timeout. If not specified, the default envoy value will be used.
 #             For nodejs applications assume the right value is 5 seconds (see T247484)
 # xfp - Set an explicit value for X-Forwarded-Proto, instead of letting envoy inject it (see T249535)
+# [*enabled_listeners*] Optional list of listeners we want to install locally.
 class profile::services_proxy::envoy(
     Wmflib::Ensure $ensure = lookup('profile::envoy::ensure', {'default_value' => 'present'}),
     Array[Struct[{
@@ -31,10 +32,17 @@ class profile::services_proxy::envoy(
         'upstream'  => Optional[Stdlib::Fqdn],
         'retry'     => Optional[Hash],
         'keepalive' => Optional[String],
-    }]] $listeners = lookup('profile::services_proxy::envoy::listeners', {'default_value' => []}),
+    }]] $all_listeners = lookup('profile::services_proxy::envoy::listeners', {'default_value' => []}),
+    Optional[Array[String]] $enabled_listeners = lookup('profile::services_proxy::envoy::enabled_listeners', {'default_value' => undef})
 ) {
+    if $enabled_listeners == undef {
+        $listeners = $all_listeners
+    } else {
+        $listeners = $all_listeners.filter |$listener| {$listener['name'] in $enabled_listeners}
+    }
+
     if $ensure == 'present' {
-        if $listeners == undef {
+        if $listeners == [] {
             fail('You must declare services if the proxy is to be present')
         }
         require ::profile::envoy

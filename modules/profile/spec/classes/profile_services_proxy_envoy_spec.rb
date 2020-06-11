@@ -27,7 +27,7 @@ describe 'profile::services_proxy::envoy' do
         let(:params) {
           {
             ensure: 'present',
-            listeners: [
+            all_listeners: [
               {
                 name: 'commons',
                 port: 8765,
@@ -51,6 +51,7 @@ describe 'profile::services_proxy::envoy' do
                 upstream: 'text-lb.eqiad.wikimedia.org'
               },
             ],
+            enabled_listeners: ['commons', 'meta']
           }
         }
         it { is_expected.to compile.with_all_deps }
