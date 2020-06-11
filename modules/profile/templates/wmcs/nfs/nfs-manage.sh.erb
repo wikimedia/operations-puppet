@@ -52,8 +52,8 @@ case $CMD in
         <% end %>
 
         /usr/sbin/drbd-overview
-        /usr/bin/timeout 10s sudo -u nfsmanager nfs-exportd
         <%= @nfs_start_command %>
+        /usr/bin/timeout 10s sudo -u nfsmanager nfs-exportd
         ;;
     down)
         echo "Taking down drbd and nfs"
@@ -61,7 +61,7 @@ case $CMD in
         <%= @nfs_stop_command %>
 
         <% @drbd_resource_config.each do |resource, config| %>
-        umount <%= config['device'] %> <%= config['mount_path'] -%>
+        umount -f <%= config['device'] %> <%= config['mount_path'] -%>
         <% end %>
 
         /sbin/drbdadm secondary all
