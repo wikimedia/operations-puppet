@@ -1,3 +1,2 @@
 # db1127
 mariadb::shard: 's7'
-profile::base::notifications: disabled
