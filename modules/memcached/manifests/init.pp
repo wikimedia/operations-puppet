@@ -56,6 +56,7 @@ class memcached(
     if $enable_16 {
         apt::package_from_component { 'memcached_16':
             component => 'component/memcached16',
+            packages  => ['memcached'],
             before    => Service['memcached'],
         }
     } else {
