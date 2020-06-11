@@ -9,6 +9,7 @@ class role::bastionhost::pop {
     require ::profile::ipmi::mgmt
 
     class { '::httpd':
-        modules => ['proxy', 'proxy_http'],
+        # 'rewrite' is used by ::profile::prometheus::ops
+        modules => ['proxy', 'proxy_http', 'rewrite'],
     }
 }

@@ -21,6 +21,6 @@ class role::prometheus {
     include ::profile::lvs::realserver
 
     class { '::httpd':
-        modules => ['proxy', 'proxy_http'],
+        modules => ['proxy', 'proxy_http', 'rewrite'],
     }
 }
