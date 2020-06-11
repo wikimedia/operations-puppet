@@ -159,7 +159,7 @@ node 'archiva1001.wikimedia.org' {
 # New Archiva host on Buster
 # T254890
 node 'archiva1002.wikimedia.org' {
-    role(insetup)
+    role(archiva)
 }
 
 node 'auth1002.eqiad.wmnet' {
