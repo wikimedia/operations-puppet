@@ -5,10 +5,11 @@ class profile::toolforge::k8s::haproxy (
     Stdlib::Port        $api_port      = lookup('profile::toolforge::k8s::apiserver_port', {default_value => 6443}),
 ) {
     class { '::profile::wmcs::kubeadm::haproxy':
-        ingress_nodes => $ingress_nodes,
-        ingress_port  => $ingress_port,
-        control_nodes => $control_nodes,
-        api_port      => $api_port,
+        ingress_nodes        => $ingress_nodes,
+        ingress_backend_port => $ingress_port,
+        ingress_bind_port    => $ingress_port,
+        control_nodes        => $control_nodes,
+        api_port             => $api_port,
     }
     contain '::profile::wmcs::kubeadm::haproxy'
 }
