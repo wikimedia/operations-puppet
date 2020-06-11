@@ -42,6 +42,7 @@ class purged (
             ensure  => $ensure,
             content => template('purged/purged-kafka.conf.erb'),
             mode    => '0444',
+            notify  => Service['purged'],
         }
     }
 
@@ -49,5 +50,6 @@ class purged (
         ensure    => $ensure,
         content   => systemd_template('purged'),
         subscribe => Package['purged'],
+        restart   => true,
     }
 }
