@@ -1,5 +1,5 @@
 class profile::wmcs::kubeadm::haproxy (
-    Array[Stdlib::Fqdn] $ingress_nodes = lookup('profile::wmcs::kubeadn::ingress_nodes',  {default_value => ['localhost']}),
+    Array[Stdlib::Fqdn] $ingress_nodes = lookup('profile::wmcs::kubeadm::ingress_nodes',  {default_value => ['localhost']}),
     Stdlib::Port        $ingress_port  = lookup('profile::wmcs::kubeadm::ingress_port',   {default_value => 30000}),
     Array[Stdlib::Fqdn] $control_nodes = lookup('profile::wmcs::kubeadm::control_nodes',  {default_value => ['localhost']}),
     Stdlib::Port        $api_port      = lookup('profile::wmcs::kubeadm::apiserver_port', {default_value => 6443}),
