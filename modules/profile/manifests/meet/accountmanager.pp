@@ -1,6 +1,7 @@
 # Sets up the account manager for Wikimedia Meet (T251034)
 class profile::meet::accountmanager(
     $clone_path = lookup('profile::meet::accountmanager::clone_path'),
+    Array[Stdlib::IP::Address] $nodes = lookup('cache_hosts'),
 ) {
 
     group { 'meet-auth':
@@ -24,7 +25,11 @@ class profile::meet::accountmanager(
         group     => 'meet-auth',
         require   => [User['meet-auth'], Group['meet-auth']]
     }
-
+    ferm::service { 'meet-auth-accountmanager':
+        proto  => 'tcp',
+        port   => 5000,
+        srange => inline_template("@resolve((<%= @nodes.join(' ') %>))"),
+    }
     uwsgi::app { 'meet-accountmanager':
         settings         => {
             uwsgi => {
