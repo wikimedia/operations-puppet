@@ -19,7 +19,7 @@ class profile::cache::purge(
         }
 
         $brokers = $kafka_tls ? {
-            undef => $kafka_conf['brokers']['string'].split(','),
+            false => $kafka_conf['brokers']['string'].split(','),
             default => $kafka_conf['brokers']['ssl_array']
         }
     } else {
