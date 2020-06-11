@@ -1981,14 +1981,6 @@ node /orespoolcounter[12]00[34]\.(codfw|eqiad)\.wmnet/ {
     role(orespoolcounter)
 }
 
-node /^oresrdb100[12]\.eqiad\.wmnet$/ {
-    role(spare::system)
-}
-
-node /^oresrdb200[12]\.codfw\.wmnet$/ {
-    role(spare::system)
-}
-
 # new OTRS machine to replace mendelevium
 node 'otrs1001.eqiad.wmnet' {
     role(insetup)

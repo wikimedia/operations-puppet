@@ -7182,24 +7182,6 @@ host ores2009 {
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
-host oresrdb1001{
-    hardware ethernet C8:1F:66:BF:71:72;
-    fixed-address oresrdb1001.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-}
-
-host oresrdb1002{
-    hardware ethernet C8:1F:66:BF:81:12;
-    fixed-address oresrdb1002.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-}
-
-host oresrdb2002 {
-    hardware ethernet 94:18:82:81:27:84;
-    fixed-address oresrdb2002.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-}
-
 host parse2001 {
     hardware ethernet 4C:D9:8F:A9:D8:99;
     fixed-address parse2001.codfw.wmnet;

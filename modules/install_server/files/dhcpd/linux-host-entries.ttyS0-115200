@@ -662,12 +662,6 @@ host orespoolcounter2004 {
     fixed-address orespoolcounter2004.codfw.wmnet;
 }
 
-host oresrdb2001 {
-    hardware ethernet aa:00:00:3b:a3:0e;
-    fixed-address oresrdb2001.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-}
-
 host otrs1001 {
     hardware ethernet aa:00:00:34:58:37;
     fixed-address otrs1001.eqiad.wmnet;
