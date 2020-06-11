@@ -52,10 +52,12 @@ end
 function do_global_read_request()
     if ts.client_request.header['Host'] == 'varnishcheck' and ts.client_request.get_uri() == '/check' then
         ts.http.intercept(function()
-            ts.say('HTTP/1.0 200 OK\r\n' ..
+            ts.say('HTTP/1.1 200 OK\r\n' ..
                    'Content-Length: 0\r\n' ..
                    'Cache-Control: no-cache\r\n\r\n')
         end)
+
+        return 0
     end
 
     local cookie = ts.client_request.header['Cookie']
