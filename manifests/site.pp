@@ -2089,6 +2089,11 @@ node /^rdb200[46]\.codfw\.wmnet$/ {
     role(redis::misc::slave)
 }
 
+# New rdb node T251626
+node /^rdb200[78]\.codfw\.wmnet$/ {
+    role(insetup)
+}
+
 node /^registry[12]00[12]\.(eqiad|codfw)\.wmnet$/ {
     role(docker_registry_ha::registry)
 }
