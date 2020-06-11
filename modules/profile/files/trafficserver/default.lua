@@ -35,7 +35,7 @@ function cache_status_to_string(status)
         return "pass"
     end
 
-    return "bug"
+    return "int"
 end
 
 function disable_coalescing()
