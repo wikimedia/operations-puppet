@@ -9,7 +9,7 @@ class profile::wmcs::paws::k8s::haproxy (
     # has to be done in the server by hand.
 
     class { '::profile::wmcs::kubeadm::haproxy':
-        ingress_bind_tls_port => '443',
+        ingress_bind_tls_port => 443,
         ingress_tls_pem_file  => "/etc/acmecerts/${cert_name}.pem",
     }
     contain '::profile::wmcs::kubeadm::haproxy'
