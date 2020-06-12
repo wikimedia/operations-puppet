@@ -3,7 +3,7 @@
 # Basic installation of php - only cli modules.
 #
 class php(
-    Enum['7.0', '7.1', '7.2', '7.3'] $version = '7.0',
+    Wmflib::Php_version $version = '7.0',
     Wmflib::Ensure $ensure             = present,
     Array[Php::Sapi] $sapis            = ['cli'],
     Hash $config_by_sapi               = {},
