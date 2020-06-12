@@ -21,14 +21,6 @@ class profile::toolforge::bastion(
         require => Package['misctools'],
     }
 
-    file { '/usr/local/bin/killgridjobs.sh':
-        ensure => file,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        source => 'puppet:///modules/profile/toolforge/gridscripts/killgridjobs.sh',
-    }
-
     file { '/usr/local/sbin/qstat-full':
         ensure => absent,
     }
