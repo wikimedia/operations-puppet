@@ -1,5 +1,9 @@
 class profile::wmcs::nfsclient(
+    # Be careful with this setting. Switching to soft mount on a high-churn mount
+    # may cause data corruption whenever there is a network or storage issue.
     String $mode = lookup('profile::wmcs::nfsclient::mode', {'default_value' => 'hard'}),
+    # This is experimental and should be opt-in. /home on a busy server should be a hard mount.
+    String $home_mode = lookup('profile::wmcs::nfsclient::home_mode', {'default_value' => 'hard'}),
     String $lookupcache = lookup('profile::wmcs::nfsclient::lookupcache', {'default_value' => 'all'}),
     Array[Stdlib::Host] $dumps_servers = hiera('dumps_dist_nfs_servers'),
     Stdlib::Host $dumps_active_server = hiera('dumps_dist_active_vps'),
@@ -26,7 +30,7 @@ class profile::wmcs::nfsclient(
     labstore::nfs_mount { 'home-on-labstore-secondary':
         mount_name  => 'home',
         project     => $::labsproject,
-        options     => ['rw', 'hard'],
+        options     => ['rw', $home_mode],
         mount_path  => '/mnt/nfs/labstore-secondary-home',
         share_path  => "/srv/misc/shared/${::labsproject}/home",
         server      => 'nfs-tools-project.svc.eqiad.wmnet',
@@ -77,7 +81,7 @@ class profile::wmcs::nfsclient(
         labstore::nfs_mount { 'maps-on-secondary':
             mount_name  => 'maps',
             project     => $::labsproject,
-            options     => ['rw', 'hard'],
+            options     => ['rw', $home_mode],  # Careful with mode on maps - /home is there
             mount_path  => '/mnt/nfs/secondary-maps',
             server      => 'nfs-maps.wikimedia.org',
             share_path  => '/srv/maps',
@@ -102,12 +106,16 @@ class profile::wmcs::nfsclient(
         }
     }
 
+    # Only set the $mode on tools where you really know what you are doing.
+    # /data/project there is the home directory for tools so it should never
+    # be set on the grid or most worker nodes. Only set that to soft when it is
+    # a special purpose instance that uses it for backup or similar.
     if $::labsproject == 'tools' {
 
         labstore::nfs_mount { 'tools-home-on-labstore-secondary':
             mount_name  => 'tools-home',
             project     => $::labsproject,
-            options     => ['rw', 'hard'],
+            options     => ['rw', $mode],
             mount_path  => '/mnt/nfs/labstore-secondary-tools-home',
             server      => 'nfs-tools-project.svc.eqiad.wmnet',
             share_path  => '/srv/tools/shared/tools/home',
@@ -117,7 +125,7 @@ class profile::wmcs::nfsclient(
         labstore::nfs_mount { 'tools-project-on-labstore-secondary':
             mount_name  => 'tools-project',
             project     => $::labsproject,
-            options     => ['rw', 'hard'],
+            options     => ['rw', $home_mode],
             mount_path  => '/mnt/nfs/labstore-secondary-tools-project',
             server      => 'nfs-tools-project.svc.eqiad.wmnet',
             share_path  => '/srv/tools/shared/tools/project',
