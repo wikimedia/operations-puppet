@@ -50,7 +50,7 @@ class varnish::logging(
         owner   => 'root',
         group   => 'root',
         mode    => '0555',
-        content => template('varnish/varnishmtail.default.erb'),
+        content => "MTAIL_ARGS=\"${mtail_additional_args}\"\n",
         notify  => Systemd::Service['varnishmtail'],
     }
 
