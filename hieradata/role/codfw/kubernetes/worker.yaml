@@ -9,6 +9,14 @@ profile::calico::kubernetes::bgp_peers:
 - kubernetes2004.codfw.wmnet
 - kubernetes2005.codfw.wmnet
 - kubernetes2006.codfw.wmnet
+- kubernetes2007.codfw.wmnet
+- kubernetes2008.codfw.wmnet
+- kubernetes2009.codfw.wmnet
+- kubernetes2010.codfw.wmnet
+- kubernetes2011.codfw.wmnet
+- kubernetes2012.codfw.wmnet
+- kubernetes2013.codfw.wmnet
+- kubernetes2014.codfw.wmnet
 - cr1-codfw.wikimedia.org
 - cr2-codfw.wikimedia.org
 # TODO: Migrate to k8s API, calico v2.2 doesn't support anything than etcdv2

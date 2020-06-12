@@ -9,6 +9,14 @@ profile::calico::kubernetes::bgp_peers:
 - kubernetes1004.eqiad.wmnet
 - kubernetes1005.eqiad.wmnet
 - kubernetes1006.eqiad.wmnet
+- kubernetes1007.eqiad.wmnet
+- kubernetes1008.eqiad.wmnet
+- kubernetes1009.eqiad.wmnet
+- kubernetes1010.eqiad.wmnet
+- kubernetes1011.eqiad.wmnet
+- kubernetes1012.eqiad.wmnet
+- kubernetes1013.eqiad.wmnet
+- kubernetes1014.eqiad.wmnet
 - cr1-eqiad.wikimedia.org
 - cr2-eqiad.wikimedia.org
 # enable this when coredns is deployed not before
