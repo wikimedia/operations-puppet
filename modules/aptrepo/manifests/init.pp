@@ -116,12 +116,16 @@ class aptrepo (
         validate_cmd => $deb822_validate_cmd,
     }
 
+    $log_script = @("SCRIPT"/$)
+    #!/bin/bash
+    echo -e "reprepro changes:\n\$@" | mail -s "Reprepro changes" ${notify_address}
+    | SCRIPT
     file { "${basedir}/conf/log":
         ensure  => present,
         owner   => 'root',
         group   => 'root',
         mode    => '0755',
-        content => template('aptrepo/log.erb'),
+        content => $log_script,
     }
 
     file { "${basedir}/db":
