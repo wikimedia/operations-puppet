@@ -155,13 +155,6 @@ define labstore::nfs_mount(
             logoutput => true,
             require   => Exec["create-${mount_path}"],
         }
-
-        if !defined(Diamond::Collector['Nfsiostat']) {
-            diamond::collector { 'Nfsiostat':
-                source  => 'puppet:///modules/diamond/collector/nfsiostat.py',
-                require => Package['diamond'],
-            }
-        }
     }
 
     if !defined(File['/etc/modprobe.d/nfs-no-idmap.conf']) {
