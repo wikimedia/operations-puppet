@@ -22,6 +22,11 @@ node 'acmechief-test2001.codfw.wmnet' {
     role(acme_chief)
 }
 
+#New alert node T255070
+node 'alert2001.wikimedia.org' {
+    role(insetup)
+}
+
 # The Hadoop master node:
 # - primary active NameNode
 # - YARN ResourceManager
