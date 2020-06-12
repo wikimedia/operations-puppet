@@ -18,3 +18,6 @@ profile::hadoop::common::config_override:
     - /var/lib/hadoop/data/j
     - /var/lib/hadoop/data/l
     - /var/lib/hadoop/data/m
+
+# Node is out of warranty and due for replacement: T234785.
+profile::base::hardware_monitoring: 'absent'
