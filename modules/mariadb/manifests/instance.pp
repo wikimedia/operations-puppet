@@ -5,11 +5,11 @@
 # * tmpdir: datadir mysql config, by default /srv/tmp.title
 # * socket: socket mysql config, by default /run/mysqld/mysqld.title.sock
 # * innodb_buffer_pool_size: config of the same name, it controls how much
-# * is_critical: config flag to decide whether we page or not for this alert
-#   memory the instace uses. By default (or if it is configured as false,
-#   , it is unconfigured, and it will default to the one on the common
+#   memory the instace uses. By default, or if it is configured as false,
+#   it is unconfigured, and it will default to the one on the common
 #   config template (or the mysql default, if not configured there). When
 #   configured, it must be passed as a string, such as '11G' or '10000000'.
+# * is_critical: config flag to decide whether we page or not for this alert
 define mariadb::instance(
     $port,
     $datadir = 'undefined',
