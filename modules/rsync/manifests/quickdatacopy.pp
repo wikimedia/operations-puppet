@@ -52,6 +52,14 @@ define rsync::quickdatacopy(
               auto_ferm_ipv6 => true,
           }
       }
+      $_bwlimit = $bwlimit ? {
+          undef   => '',
+          default => "--bwlimit=${bwlimit}",
+      }
+      $_rsh = $server_uses_stunnel ? {
+          false   => '',
+          default => "--rsh ${ssl_wrapper_path}"
+      }
 
       if $dest_host == $::fqdn {
 
@@ -67,13 +75,17 @@ define rsync::quickdatacopy(
                   content => template('rsync/quickdatacopy-ssl-wrapper.erb'),
               }
           }
+          $quickdatacopy = @("SCRIPT")
+          #!/bin/sh
+          /usr/bin/rsync ${_rsh} -a ${_bwlimit} rsync://${source_host}/${title} ${module_path}"
+          | SCRIPT
 
           file { "/usr/local/sbin/sync-${title}":
               ensure  => $ensure,
               owner   => 'root',
               group   => 'root',
               mode    => '0755',
-              content => template('rsync/quickdatacopy.erb'),
+              content => $quickdatacopy,
           }
 
           if $auto_sync {

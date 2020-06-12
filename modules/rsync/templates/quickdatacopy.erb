@@ -1,4 +1,0 @@
-#!/bin/sh
-# This file is managed by Puppet
-
-/usr/bin/rsync<% if @server_uses_stunnel %> --rsh <%= @ssl_wrapper_path %><% end %> -a <%= @bwlimit ? "--bwlimit=#{@bwlimit} " : '' %>rsync://<%= @source_host %>/<%= @title %> <%= @module_path %>/
