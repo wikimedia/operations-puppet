@@ -36,20 +36,6 @@ class package_builder(
             'interval' => '*-*-* 03:00:00',  # Every day at 3:00
         }
     }
-    if os_version('debian == jessie') {
-        $php_dev='php5-dev'
-        $dh_php='dh-php5'
-    } else {
-        $php_dev='php-dev'
-        $dh_php='dh-php'
-    }
-
-    if os_version('debian >= stretch') {
-        require_package([
-            'dh-make-golang',
-            'dh-sysuser'
-        ])
-    }
 
     # Install lintian from backports to make sure it checks the latest version
     # of the Debian Policy
@@ -106,8 +92,10 @@ class package_builder(
         'python3-setuptools',
         'dh-exec',
         'python3-setuptools-scm',
-        $php_dev,
-        $dh_php,
+        'dh-make-golang',
+        'dh-sysuser',
+        'php-dev',
+        'dh-php',
     ])
 
     file { '/etc/pbuilderrc':
