@@ -1,1 +1,2 @@
 profile::openstack::eqiad1::galera::enabled: false
+profile::openstack::eqiad1::galera::listen_port: 13306

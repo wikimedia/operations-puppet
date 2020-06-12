@@ -63,4 +63,3 @@ profile::openstack::eqiad1::purge_projects:
     - project: sre-sandbox
       days_to_nag: 10
       days_to_delete: 15
-

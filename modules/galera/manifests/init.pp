@@ -19,6 +19,7 @@ class galera(
     Array[Stdlib::Fqdn] $cluster_nodes,
     Integer             $server_id,
     Boolean             $enabled,
+    Stdlib::Port        $port            = 3306,
     Stdlib::Unixpath    $socket          = '/var/run/mysqld/mysqld.sock',
     Stdlib::Unixpath    $basedir         = '/usr',
     Stdlib::Unixpath    $datadir         = '/var/lib/mysql',

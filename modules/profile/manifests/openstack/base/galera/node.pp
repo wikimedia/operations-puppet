@@ -1,6 +1,7 @@
 class profile::openstack::base::galera::node(
     Integer             $server_id             = lookup('profile::openstack::base::galera::server_id'),
     Boolean             $enabled               = lookup('profile::openstack::base::galera::enabled'),
+    Stdlib::Port        $listen_port           = lookup('profile::openstack::base::galera::listen_port'),
     Array[Stdlib::Fqdn] $openstack_controllers = lookup('profile::openstack::base::openstack_controllers'),
     Array[Stdlib::Fqdn] $designate_hosts       = lookup('profile::openstack::base::designate_hosts'),
     Array[Stdlib::Fqdn] $labweb_hosts          = lookup('profile::openstack::base::labweb_hosts'),
@@ -10,6 +11,7 @@ class profile::openstack::base::galera::node(
         cluster_nodes => $openstack_controllers,
         server_id     => $server_id,
         enabled       => $enabled,
+        port          => $listen_port,
     }
 
     $cluster_node_ips = inline_template("@resolve((<%= @openstack_controllers.join(' ') %>))")
