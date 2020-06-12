@@ -230,7 +230,7 @@ class phabricator (
     }
 
     file { '/usr/local/sbin/phab_deploy_rollback':
-        content => template('phabricator/deployment/phab_deploy_rollback.erb'),
+        content => file('phabricator/phab_deploy_rollback.sh'),
         owner   => 'root',
         group   => 'root',
         mode    => '0700',
