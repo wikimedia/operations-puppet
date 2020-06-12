@@ -216,7 +216,7 @@ class phabricator (
     }
 
     file { '/usr/local/sbin/phab_deploy_promote':
-        content => template('phabricator/deployment/phab_deploy_promote.erb'),
+        content => file('phabricator/phab_deploy_promote.sh'),
         owner   => 'root',
         group   => 'root',
         mode    => '0700',
