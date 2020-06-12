@@ -23,9 +23,18 @@ class profile::analytics::refinery::job::project_namespace_map(
         $http_proxy_option = ''
     }
 
+    $refinery_download_project_namespace_map = @("SCRIPT"/L$)
+    #!/bin/bash
+    /srv/deployment/analytics/refinery/bin/download-project-namespace-map \
+    -x ${output_directory} \
+    -s \$(/bin/date --date="\$(/bin/date +%Y-%m-15) -1 month" +'%Y-%m') \
+    ${http_proxy_option}
+    | SCRIPT
+
+
     file { '/usr/local/bin/refinery-download-project-namespace-map':
         ensure  => $ensure_timer,
-        content => template('profile/analytics/refinery/job/refinery-download-project-namespace-map.sh.erb'),
+        content => $refinery_download_project_namespace_map,
         mode    => '0550',
         owner   => 'analytics',
         group   => 'analytics',
