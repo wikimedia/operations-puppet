@@ -4,6 +4,8 @@ class profile::wmcs::kubeadm::haproxy (
     Stdlib::Port        $ingress_bind_port    = lookup('profile::wmcs::kubeadm::ingress_bind_port',    {default_value => 30000}),
     Array[Stdlib::Fqdn] $control_nodes = lookup('profile::wmcs::kubeadm::control_nodes',  {default_value => ['localhost']}),
     Stdlib::Port        $api_port      = lookup('profile::wmcs::kubeadm::apiserver_port', {default_value => 6443}),
+    Optional[Stdlib::Port]     $ingress_bind_tls_port = lookup('profile::wmcs::kubeadm::ingress_bind_tls_port', {default_value => undef}),
+    Optional[Stdlib::Unixpath] $ingress_tls_pem_file  = lookup('profile::wmcs::kubeadm::ingress_tls_pem_file',  {default_value => undef}),
 ) {
     requires_os('debian >= buster')
 
