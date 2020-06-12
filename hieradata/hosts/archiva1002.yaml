@@ -1,7 +1,8 @@
+profile::archiva::proxy::certificate_name: 'archiva-new'
 profile::archiva::enable_backup: false
-profile::archiva::proxy::ssl_enabled: false
-profile::archiva::proxy::only_localhost: true
-do_acme: false
+profile::archiva::proxy::ssl_enabled: true
+profile::archiva::proxy::only_localhost: false
+do_acme: true
 profile::archiva::proxy::monitoring_enabled: true
 
 # Archiva is not ready Java 11, so we have to force Java 8 to ease
