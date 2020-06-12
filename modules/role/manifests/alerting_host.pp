@@ -21,6 +21,12 @@ class role::alerting_host {
 
     include ::profile::dns::auth::monitoring::global
 
+    include ::profile::openstack::codfw1dev::galera::monitoring
+
+    # I'll uncomment this once I'm convinced this works OK
+    #  in codfw1dev:
+    #include ::profile::openstack::eqiad1::galera::monitoring
+
     class { '::httpd::mpm':
         mpm => 'prefork'
     }

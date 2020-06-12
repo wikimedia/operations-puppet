@@ -152,6 +152,15 @@ class nagios_common::commands(
         require        => File["${config_dir}/commands"],
     }
 
+    # Check a galera cluster
+    nagios_common::check_command { 'check_galera_node.pl':
+        require       => File["${config_dir}/commands"],
+        config_source => 'puppet:///modules/nagios_common/check_commands/check_galera.cfg',
+        config_dir    => $config_dir,
+        owner         => $owner,
+        group         => $group,
+    }
+
     file { "${config_dir}/commands.cfg":
         content => template("${module_name}/checkcommands.cfg.erb"),
         owner   => $owner,
