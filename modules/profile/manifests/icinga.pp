@@ -237,15 +237,20 @@ class profile::icinga(
     }
 
     # On the passive host, replace the downtime script with a warning.
+    $absent_script = @("SCRIPT")
+    #!/bin/sh
+    echo 'This is not the active Icinga host. Please go to ${active_host} instead.'
+    exit 127
+    | SCRIPT
     $downtime_script = $is_passive ? {
-        true  => 'icinga-downtime-absent.sh',
-        false => 'icinga-downtime.sh',
+        true  => $absent_script,
+        false => file('profile/icinga/icinga-downtime.sh'),
     }
 
     # script to schedule host/service downtimes
     file { '/usr/local/bin/icinga-downtime':
         ensure  => present,
-        content => template("profile/icinga/${downtime_script}.erb"),
+        content => $downtime_script,
         owner   => 'root',
         group   => 'root',
         mode    => '0550',
