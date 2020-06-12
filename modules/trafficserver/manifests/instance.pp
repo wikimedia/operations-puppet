@@ -382,7 +382,7 @@ define trafficserver::instance(
     # Script to depool, restart and repool ATS
     file { "/usr/local/sbin/ats-${title}-restart":
         ensure  => present,
-        content => template('trafficserver/ats_instance_restart.sh.erb'),
+        content => "#!/bin/bash\n/usr/local/sbin/ats-restart ${conftool_service} ${service_name}",
         mode    => '0555',
         owner   => 'root',
         group   => 'root',
