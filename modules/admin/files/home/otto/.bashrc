@@ -118,3 +118,6 @@ test -d ~/bin && export PATH=~/bin:$PATH
 
 # Use iTerm2 shell integration
 test -e ${HOME}/.iterm2_shell_integration.bash && source ${HOME}/.iterm2_shell_integration.bash
+
+# Prompt for logging into a kerberos enabled host and no kerberos ticket is active.
+which klist >/dev/null && (klist -s || (echo -n "Kerberos " && kinit))
