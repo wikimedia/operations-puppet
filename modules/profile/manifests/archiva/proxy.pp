@@ -40,7 +40,7 @@ class profile::archiva::proxy(
     }
 
     $ferm_srange = $only_localhost ? {
-        true  => '(127.0.0.1 localhost)',
+        true  => '(127.0.0.1 ::1)',
         false => undef,
     }
 
