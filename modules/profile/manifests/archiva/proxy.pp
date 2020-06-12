@@ -60,7 +60,7 @@ class profile::archiva::proxy(
         if $monitoring_enabled {
             monitoring::service { 'https_archiva':
                 description   => 'HTTPS',
-                check_command => 'check_ssl_http_letsencrypt!archiva.wikimedia.org',
+                check_command => "check_ssl_http_letsencrypt!${certificate_name}.wikimedia.org",
                 notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Archiva',
             }
         }
