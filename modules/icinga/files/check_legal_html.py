@@ -29,7 +29,7 @@ mobile_terms = '<a\shref="(https:)?\/\/m\.wikimediafoundation\.org\/wiki\/Terms_
 Terms\sof\sUse</a>'
 
 mobile_privacy = '<a\shref="(https:)?\/\/foundation\.wikimedia\.org\/wiki\/Privacy_policy"\sclass="extiw"\s\
-title="wmf:Privacy\spolicy">Privacy</a>'
+title="wmf:Privacy\spolicy">Privacy policy</a>'
 
 copyright = 'Text\sis\savailable\sunder\sthe\s<a\srel="license"\s+\
 href="(https:)?\/\/en.wikipedia.org\/wiki\/Wikipedia:\
