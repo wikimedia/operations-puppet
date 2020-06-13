@@ -32,7 +32,7 @@ class profile::wmcs::monitoring (
         show_diff => false,
     }
 
-    # master / slave specific bits
+    # master / replica specific bits
     if $::facts['fqdn'] == $monitoring_master {
         $rsync_ensure = 'absent'
 
