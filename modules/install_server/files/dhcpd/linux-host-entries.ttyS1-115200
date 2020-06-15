@@ -2248,25 +2248,21 @@ host dbproxy1021 {
 host dbproxy2001 {
     hardware ethernet 4C:D9:8F:6C:AC:B0;
     fixed-address dbproxy2001.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host dbproxy2002 {
     hardware ethernet 4C:D9:8F:6C:9A:CD;
     fixed-address dbproxy2002.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host dbproxy2003 {
     hardware ethernet 4C:D9:8F:6C:A5:E2;
     fixed-address dbproxy2003.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host dbproxy2004 {
     hardware ethernet 4C:D9:8F:6C:A5:5E;
     fixed-address dbproxy2004.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host dbstore1003 {
