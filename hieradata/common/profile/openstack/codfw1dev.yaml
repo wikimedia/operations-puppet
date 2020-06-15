@@ -58,5 +58,3 @@ profile::openstack::codfw1dev::labweb_hosts:
 profile::openstack::codfw1dev::all_regions: ['codfw', 'codfw1dev-r']
 profile::openstack::codfw1dev::statsd_host: 'cloudmetrics1002.eqiad.wmnet'
 
-
-profile::openstack::codfw1dev::galera::enabled: false

@@ -64,4 +64,3 @@ profile::openstack::eqiad1::purge_projects:
       days_to_nag: 10
       days_to_delete: 15
 
-profile::openstack::eqiad1::galera::enabled: false
