@@ -1,1 +1,1 @@
-# profile::ncredir::mtail_args: '-disable_fsnotify'
+profile::ncredir::mtail_args: '-disable_fsnotify'

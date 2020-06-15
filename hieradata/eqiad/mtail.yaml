@@ -1,2 +1,2 @@
 mtail::from_component: true
-# mtail::additional_args: '-disable_fsnotify'
+mtail::additional_args: '-disable_fsnotify'
