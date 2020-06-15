@@ -2,10 +2,33 @@ class profile::wmcs::nfs::primary(
   $observer_pass = hiera('profile::openstack::eqiad1::observer_password'),
   $monitor_iface = hiera('profile::wmcs::nfs::primary::monitor_iface', 'eth0'),
   $data_iface    = hiera('profile::wmcs::nfs::primary::data_iface', 'eth1'),
-  $backup_servers = hiera('profile::wmcs::nfs::primary::backup_servers')
+  $backup_servers = hiera('profile::wmcs::nfs::primary::backup_servers'),
+  Hash[String, Hash[String, String]] $drbd_resource_config = lookup('profile::wmcs::nfs::primary::drbd_resource_config'),
+  Stdlib::Fqdn $standby_server     = lookup('profile::wmcs::nfs::primary_standby'),
+  Array[Stdlib::Fqdn] $nfs_cluster = lookup('profile::wmcs::nfs::primary_cluster'),
+  Hash[String, Stdlib::Ipv4] $drbd_cluster = lookup('profile::wmcs::nfs::primary::drbd_cluster'),
+  Stdlib::Ipv4 $cluster_ip = lookup('profile::wmcs::nfs::primary::cluster_ip'),
+  Stdlib::Ipv4 $subnet_gateway_ip = lookup('profile::wmcs::nfs::primary::subnet_gateway_ip'),
 ) {
     require ::profile::openstack::eqiad1::clientpackages
     require ::profile::openstack::eqiad1::observerenv
+
+    $drbd_expected_role = $facts['fqdn'] ? {
+        $standby_server => 'secondary',
+        default         => 'primary',
+    }
+
+    $drbd_ip_address = $drbd_cluster[$facts['hostname']]
+
+    # Determine the actual role from a custom fact.
+    $drbd_actual_role = undef
+    if has_key($facts, 'drbd_role') {
+        if $facts['drbd_role'].values().unique().length() > 1 {
+            $drbd_actual_role = 'inconsistent'
+        } else {
+            $drbd_actual_role = $facts['drbd_role'].values().unique()
+        }
+    }
 
     class {'::labstore':
         nfsd_threads => '300',
@@ -47,85 +70,40 @@ class profile::wmcs::nfs::primary(
         interface => $data_iface,
     }
 
-    if $::hostname == 'labstore1004' {
-        # Define DRBD role for this host, should come from hiera
-        $drbd_role = 'primary'
-
-        # Do not change the 192 address here
-        interface::ip { 'drbd-replication':
-            interface => $data_iface,
-            address   => '192.168.0.1',
-            prefixlen => '30',
-            require   => Interface::Manual['data'],
-        }
-    }
-
-    if $::hostname == 'labstore1005' {
-        # Define DRBD role for this host, should come from hiera
-        $drbd_role = 'secondary'
-
-        # Do not change the 192 address here
-        interface::ip { 'drbd-replication':
-            interface => $data_iface,
-            address   => '192.168.0.2',
-            prefixlen => '30',
-            require   => Interface::Manual['data'],
-        }
+    interface::ip { 'drbd-replication':
+        interface => $data_iface,
+        address   => $drbd_ip_address,
+        prefixlen => '30',
+        require   => Interface::Manual['data'],
     }
 
     $backup_ferm_servers = join($backup_servers, ' ')
-    $cluster_ips_ferm = join(['192.168.0.1', '192.168.0.2'], ' ')
-    ferm::service { 'drbd-test':
-        proto  => 'tcp',
-        port   => '7790',
-        srange => "(${cluster_ips_ferm})",
+    $cluster_ips_ferm = join($drbd_cluster.values(), ' ')
+    $nfs_ferm_servers = join($nfs_cluster, ' ')
+
+    # Generate ferm rules for DRBD replication
+    $drbd_resource_config.each |String $volume, Hash $volume_config| {
+        ferm::service { "drbd-${volume}":
+            proto  => 'tcp',
+            port   => $volume_config['port'],
+            srange => "(${cluster_ips_ferm})",
+        }
     }
 
-    ferm::service { 'drbd-misc':
+    ferm::service { 'labstore_nfs_monitor':
         proto  => 'tcp',
-        port   => '7791',
-        srange => "(${cluster_ips_ferm})",
+        port   => '2049',
+        srange => "@resolve((${nfs_ferm_servers}))",
     }
 
-    ferm::service { 'drbd-tools':
+    ferm::service{ 'cloudbackup_ssh':
         proto  => 'tcp',
-        port   => '7792',
-        srange => "(${cluster_ips_ferm})",
-    }
-    # TODO: hiera this
-    # TODO: use hiera in maintain_dbusers too when this is hiera'd
-
-    # Floating IP assigned to drbd primary(active NFS server). Should come from hiera
-    $cluster_ip = '10.64.37.18'
-
-    $subnet_gateway_ip = '10.64.37.1'
-
-    $drbd_resource_config = {
-        'test'   => {
-            port       => '7790',
-            device     => '/dev/drbd1',
-            disk       => '/dev/misc/test',
-            mount_path => '/srv/test',
-        },
-        'tools'  => {
-            port       => '7791',
-            device     => '/dev/drbd4',
-            disk       => '/dev/tools/tools-project',
-            mount_path => '/srv/tools',
-        },
-        'misc' => {
-            port       => '7792',
-            device     => '/dev/drbd3',
-            disk       => '/dev/misc/misc-project',
-            mount_path => '/srv/misc',
-        },
+        port   => '22',
+        srange => "@resolve((${backup_ferm_servers}))",
     }
 
     $drbd_defaults = {
-        'drbd_cluster' => {
-            'labstore1004' => '192.168.0.1',
-            'labstore1005' => '192.168.0.2',
-        },
+        'drbd_cluster' => $drbd_cluster
     }
 
     create_resources(labstore::drbd::resource, $drbd_resource_config, $drbd_defaults)
@@ -137,7 +115,7 @@ class profile::wmcs::nfs::primary(
         enable => false,
     }
 
-    # state via nfs-manage
+    # state via nfs-manage (TODO: cleanup from jessie deprecation)
     if os_version('debian >= stretch') {
         service { 'nfs-server':
             enable => false,
@@ -161,12 +139,12 @@ class profile::wmcs::nfs::primary(
 
     class {'labstore::monitoring::exports': }
     class {'labstore::monitoring::ldap': }
-    class { 'labstore::monitoring::interfaces':
+    class {'labstore::monitoring::interfaces':
         monitor_iface => $monitor_iface,
     }
 
     class { 'labstore::monitoring::primary':
-        drbd_role     => $drbd_role,
+        drbd_role     => $drbd_expected_role,
         cluster_iface => $monitor_iface,
         cluster_ip    => $cluster_ip,
     }
@@ -185,8 +163,8 @@ class profile::wmcs::nfs::primary(
         group  => 'root',
     }
 
-    if($drbd_role == 'primary') {
-
+    if($drbd_actual_role == 'primary') {
+        # TODO: fix all this. It's broken because of the removal of bind mounts
         class { 'profile::prometheus::node_directory_size':
             directory_size_paths => {
                 'misc_home'     => { 'path' => '/exp/project/*/home', 'filter' => '*/tools/*' },
@@ -196,9 +174,15 @@ class profile::wmcs::nfs::primary(
                 'paws'          => { 'path' => '/exp/project/tools/project/paws/userhomes/*' },
             },
         }
+    } else {
+        # Don't do this if the volumes are not in a "primary" and ready state
+        class { 'profile::prometheus::node_directory_size':
+            ensure => absent,
+        }
     }
 
-    if($drbd_role != 'primary') {
+    # TODO: evaluate if this logcleanup is actually running etc.
+    if($drbd_actual_role != 'primary') {
         cron { 'logcleanup':
             ensure      => absent,
             environment => 'MAILTO=labs-admin@lists.wikimedia.org',
@@ -208,18 +192,5 @@ class profile::wmcs::nfs::primary(
             hour        => '14',
             require     => [File['/usr/local/sbin/logcleanup'], File['/etc/logcleanup-config.yaml']],
         }
-    }
-
-    # TODO: lots of terrible hardcoding exists throughout this class.
-    ferm::service { 'labstore_nfs_monitor':
-        proto  => 'tcp',
-        port   => '2049',
-        srange => '@resolve((labstore1004.eqiad.wmnet labstore1005.eqiad.wmnet))',
-    }
-
-    ferm::service{ 'cloudbackup_ssh':
-        proto  => 'tcp',
-        port   => '22',
-        srange => "@resolve((${backup_ferm_servers}))",
     }
 }

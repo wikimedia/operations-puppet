@@ -20,6 +20,30 @@ profile::wmcs::nfs::primary::backup_servers:
 admin::groups:
   - wmcs-roots
 
+profile::wmcs::nfs::primary::drbd_resource_config:
+  test:
+    port: '7790'
+    device: /dev/drbd1
+    disk: /dev/misc/test
+    mount_path: /srv/test
+  tools:
+    port: '7791'
+    device: /dev/drbd4
+    disk: /dev/tools/tools-project
+    mount_path: /srv/tools
+  misc:
+    port: '7792'
+    device: /dev/drbd3
+    disk: /dev/misc/misc-project
+    mount_path: /srv/misc
+
+profile::wmcs::nfs::primary::drbd_cluster:
+  labstore1004: 192.168.0.1
+  labstore1005: 192.168.0.2
+
+profile::wmcs::nfs::primary::cluster_ip: 10.64.37.18
+profile::wmcs::nfs::primary::subnet_gateway_ip: 10.64.37.1
+
 prometheus::node_exporter::collectors_extra:
   - drbd
 

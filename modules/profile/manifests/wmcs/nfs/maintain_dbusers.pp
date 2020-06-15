@@ -10,6 +10,7 @@
 class profile::wmcs::nfs::maintain_dbusers (
     Hash $ldapconfig            = lookup('labsldapconfig', {'merge' => hash}),
     Hash $production_ldap_config = lookup('ldap', {'merge' => hash}),
+    Stdlib::Ipv4 $cluster_ip = lookup('profile::wmcs::nfs::primary::cluster_ip'),
 ){
 
     package { [
@@ -58,9 +59,7 @@ class profile::wmcs::nfs::maintain_dbusers (
             'username' => $::passwords::labsdbaccounts::db_user,
             'password' => $::passwords::labsdbaccounts::db_password,
         },
-        # Pick this up from Hiera once it gets put into hiera
-        # in role::labs::nfs::secondary
-        'nfs-cluster-ip'   => '10.64.37.18',
+        'nfs-cluster-ip'   => $cluster_ip,
     }
 
     file { '/etc/dbusers.yaml':

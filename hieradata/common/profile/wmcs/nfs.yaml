@@ -1,0 +1,4 @@
+profile::wmcs::nfs::primary_standby: labstore1005.eqiad.wmnet
+profile::wmcs::nfs::primary_cluster:
+  - labstore1004.eqiad.wmnet
+  - labstore1005.eqiad.wmnet
