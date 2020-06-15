@@ -9,3 +9,10 @@ puppetmaster::autosigner: true
 profile::ci::docker::settings:
   # Logging is unnecessary in CI as container output is streamed to Jenkins
   log-driver: none
+
+# We do not hit labstore but the traffic shapping hurts transfers to the CI
+# infrastructure (castor T232644 or the CI masters T255371)
+#
+# When changing this, run `tc-setup` on all the CI instances.
+#
+labstore::traffic_shaping::egress: 100mbps
