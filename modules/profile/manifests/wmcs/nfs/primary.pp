@@ -25,7 +25,7 @@ class profile::wmcs::nfs::primary(
         if $facts['drbd_role'].values().unique().length() > 1 {
             $drbd_actual_role = 'inconsistent'
         } else {
-            $drbd_actual_role = $facts['drbd_role'].values().unique()
+            $drbd_actual_role = $facts['drbd_role'].values().unique()[0]
         }
     } else {
         $drbd_actual_role = undef
