@@ -12,9 +12,8 @@ class profile::openstack::base::galera::node(
         enabled       => $enabled,
     }
 
-    $cluster_node_ips = $openstack_controllers.map |$host| { ipresolve($host, 4) }
-    $cluster_node_ips_v6 = $openstack_controllers.map |$host| { ipresolve($host, 6) }
-
+    $cluster_node_ips = inline_template("@resolve((<%= @openstack_controllers.join(' ') %>))")
+    $cluster_node_ips_v6 = inline_template("@resolve((<%= @openstack_controllers.join(' ') %>), AAAA)")
     # Galera replication
     ferm::rule{'galera_replication':
         ensure => 'present',
