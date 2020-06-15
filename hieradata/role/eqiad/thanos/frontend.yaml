@@ -2,3 +2,4 @@ profile::thanos::swift::memcached_servers:
   - thanos-fe1001.eqiad.wmnet:11211
   - thanos-fe1002.eqiad.wmnet:11211
   - thanos-fe1003.eqiad.wmnet:11211
+profile::thanos::swift::read_affinity: 'r1=100'
