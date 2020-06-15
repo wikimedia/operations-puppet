@@ -1,0 +1,2 @@
+profile::sre::check_user::super_admin: admin@example.org
+profile::sre::check_user::service_file: 'gsuite/mail_serviceaccount.json'
