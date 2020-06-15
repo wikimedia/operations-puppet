@@ -17,6 +17,7 @@ class profile::mail::mx (
     Stdlib::Unixpath      $alias_file               = lookup('profile::mail::mx::alias_file'),
     String[1]             $alias_file_mail_rcpt     = lookup('profile::mail::mx::alias_file_mail_rcpt'),
     String[1]             $alias_file_mail_subject  = lookup('profile::mail::mx::alias_file_mail_subject'),
+    Boolean               $enable_ldap              = lookup('profile::mail::mx::enable_ldap'),
 ) {
     mailalias { 'root':
         recipient => 'root@wikimedia.org',
