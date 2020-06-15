@@ -47,13 +47,14 @@ class homer(
   # The data must be present on the other peer, the current puppetization doesn't
   # cover the case of a fresh start without data in either peer hosts.
   git::clone { 'homer_private_repo':
-      ensure    => 'present',
-      origin    => "ssh://${private_git_peer}/srv/homer/private.git",
-      directory => $private_repo,
-      owner     => 'root',
-      group     => 'ops',
-      mode      => '0440',
-      require   => File['/srv/homer'],
+      ensure                => 'present',
+      origin                => "ssh://${private_git_peer}/srv/homer/private.git",
+      directory             => $private_repo,
+      environment_variables => ['SSH_AUTH_SOCK=/run/keyholder/proxy.sock'],
+      owner                 => 'root',
+      group                 => 'ops',
+      mode                  => '0440',
+      require               => File['/srv/homer'],
   }
 
   file { '/etc/homer':
@@ -90,6 +91,7 @@ class homer(
       group   => 'root',
       mode    => '0644',
       content => template('homer/private-git/config.erb'),
+      require => Git::Clone['homer_private_repo'],
   }
 
   file { "${private_repo_git_dir}/hooks":
@@ -99,5 +101,6 @@ class homer(
       group   => 'root',
       mode    => '0755',
       source  => 'puppet:///modules/homer/private-git/hooks',
+      require => Git::Clone['homer_private_repo'],
   }
 }
