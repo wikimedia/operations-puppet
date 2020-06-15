@@ -47,7 +47,14 @@ class profile::spicerack(
     # Packages required by spicerack cookbooks
     require_package('python3-dateutil', 'python3-requests')
 
-    ensure_packages(['spicerack'])
+    if os_version('debian == buster') {
+        ensure_packages(['spicerack'])
+    } else {
+        apt::package_from_component { 'spicerack':
+            component => 'component/spicerack',
+            packages  => ['spicerack']
+        }
+    }
 
     $cookbooks_dir = '/srv/deployment/spicerack'
 

@@ -80,7 +80,7 @@ class profile::cumin::master (
         apt::package_from_component { 'spicerack':
             component => 'component/spicerack',
             packages  => ['python3-tqdm'],
-            priority  => '1002',
+            priority  => 1002,
         }
     }
 
