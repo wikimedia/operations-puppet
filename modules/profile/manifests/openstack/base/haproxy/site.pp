@@ -43,10 +43,11 @@ define profile::openstack::base::haproxy::site(
     Array[Stdlib::Fqdn] $servers,
     Stdlib::Port $port_backend,
     Stdlib::Port $port_frontend,
-    Stdlib::Compat::String $healthcheck_path,
-    String $healthcheck_method,
+    Stdlib::Compat::String $healthcheck_path = '',
+    String $healthcheck_method = '',
     Array[String] $healthcheck_options = [],
     Wmflib::Ensure $ensure = present,
+    Enum['http', 'tcp'] $type = 'http',
 ) {
     include profile::openstack::base::haproxy
 
@@ -62,13 +63,27 @@ define profile::openstack::base::haproxy::site(
         }
     }
 
-    file { "/etc/haproxy/conf.d/${title}.cfg":
-        ensure  => $ensure,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        content => template('profile/openstack/base/haproxy/conf.d/http-service.cfg.erb'),
-        # restart to pick up new config files in conf.d
-        notify  => Exec['restart-haproxy'],
+    if $type == 'http' {
+        file { "/etc/haproxy/conf.d/${title}.cfg":
+            ensure  => $ensure,
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0444',
+            content => template('profile/openstack/base/haproxy/conf.d/http-service.cfg.erb'),
+            # restart to pick up new config files in conf.d
+            notify  => Exec['restart-haproxy'],
+        }
+    } elsif $type == 'tcp' {
+        file { "/etc/haproxy/conf.d/${title}.cfg":
+            ensure  => $ensure,
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0444',
+            content => template('profile/openstack/base/haproxy/conf.d/tcp-service.cfg.erb'),
+            # restart to pick up new config files in conf.d
+            notify  => Exec['restart-haproxy'],
+        }
+    } else {
+        fail("Unknown service type ${type}")
     }
 }

@@ -88,10 +88,9 @@ class profile::openstack::codfw1dev::haproxy(
     }
 
     profile::openstack::base::haproxy::site { 'mysql':
-        servers            => $openstack_controllers,
-        healthcheck_method => 'HEAD',
-        healthcheck_path   => '/',
-        port_frontend      => 3306,
-        port_backend       => $galera_listen_port,
+        servers       => $openstack_controllers,
+        port_frontend => 3306,
+        port_backend  => $galera_listen_port,
+        type          => 'tcp'
     }
 }

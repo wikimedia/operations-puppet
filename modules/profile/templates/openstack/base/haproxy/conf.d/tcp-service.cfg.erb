@@ -1,0 +1,14 @@
+# Note: This file is managed by puppet.
+
+listen <%= @title %>
+    bind *:<%= @port_frontend %>
+    balance leastconn
+    mode tcp
+<% @healthcheck_options.each do |option| -%>
+    <%= option %>
+<% end -%>
+<% @servers.each do |server| -%>
+    server <%= server %> <%= scope.function_ipresolve([server]) %>:<%= @port_backend %> check inter 1s rise 2 fall 4
+<% end -%>
+    stick store-request src
+    stick-table type ip size 256k expire 30m
