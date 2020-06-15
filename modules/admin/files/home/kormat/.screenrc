@@ -1,9 +1,9 @@
-escape ^Aa
-hardstatus alwayslastline
-hardstatus string "%-w%{= BW}%50>%n %t%{-}%+w%< %=%{= ck}A%{-}"
-
 shell -bash
 term xterm-256color
+
+escape ^Aa
+hardstatus alwayslastline
+hardstatus string "%-w%{= BW}%50>%n %t%{-}%+w%<"
 
 # Don't block output if the terminal stops responding(!)
 defnonblock on

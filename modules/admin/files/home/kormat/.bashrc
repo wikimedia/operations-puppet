@@ -29,16 +29,16 @@ esac
 
 # History
 # Ignore duplicate commands
-export HISTCONTROL=ignoredups
+HISTCONTROL=ignoredups
 # Save decent amounts of history
-export HISTSIZE=10000
-export HISTFILESIZE=10000
+HISTSIZE=10000
+HISTFILESIZE=10000
 # Add timestamp to history
-export HISTTIMEFORMAT="%Y-%m-%dT%H:%M:%S%z "
+HISTTIMEFORMAT="%Y-%m-%dT%H:%M:%S%z "
 # Save multi-line commands into a single history entry, for easier editing.
-export cmdhist=on
+shopt -s cmdhist
 # Perform history substitions on ^M, but don't run the command
-shopt -qs histverify
+shopt -s histverify
 # append to the history file, don't overwrite it
 shopt -s histappend
 
@@ -66,11 +66,7 @@ elif [ -f /etc/bash_completion ]; then
     . /etc/bash_completion
 fi
 
-if [ -n "$(type -P nvim)" ]; then
-    export EDITOR=nvim
-    export VISUAL="$EDITOR"
-    alias vi="nvim"
-elif [ -n "$(type -P vim)" ]; then
+if [ -n "$(type -P vim)" ]; then
     export EDITOR=vim
     export VISUAL="$EDITOR"
     alias vi="vim -N"
@@ -91,6 +87,10 @@ alias xo='xdg-open'
 . ~/.bashfuncs
 
 promptsetup
+
+if [ -f ~/.bashrc.wmf ]; then
+    . ~/.bashrc.wmf
+fi
 
 if [ -f ~/.bashrc.local ]; then
     . ~/.bashrc.local

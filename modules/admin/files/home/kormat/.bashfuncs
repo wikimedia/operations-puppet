@@ -41,18 +41,9 @@ check() {
 
 if [ -n $(type -P tmux) ]; then
     there() {
-        _there ~/.tmux.slash.conf "$@"
-    }
-
-    therea() {
-        _there ~/.tmux.a.conf "$@"
-    }
-
-    _there() {
-        local conf="$1"
-        local sname="${2:-here}"
+        local sname="${1:-here}"
         [ "$sname" = '-ls' ] && { tmux ls; return 0; }
-        tmux source-file "$conf" \; new -ADs "$sname"
+        tmux new -ADs "$sname"
     }
 fi
 
@@ -81,6 +72,15 @@ keyme() {
   echo "Started new ssh-agent ($SSH_AGENT_PID)"
 }
 
+activate() {
+    if which poetry &>/dev/null; then
+        echo "====> Detecting poetry venv"
+        pypath=$(poetry run which python) || return 1
+        echo "====> Activating"
+        . $(dirname $pypath)/activate
+    fi
+}
+
 cdaliassetup() {
     local name
     name="$1"
@@ -103,11 +103,10 @@ promptsetup() {
         [ "$LOGNAME" = "root" ] && USER_COLOUR=31
         PS1='\[\033['$USER_COLOUR';1m\]\u\[\033[0m\]@\[\033[32;1m\]\h\[\033[0m\]:\w(\j:$?)\$ '
     fi
-    export PS1
 
     case "$TERM" in
         xterm*|rxvt*)
-            export PROMPT_COMMAND='echo -ne "\033]0;${USER}@${HOSTNAME}: ${PWD/#$HOME/~}\007"'
+            PROMPT_COMMAND='echo -ne "\033]0;${USER}@${HOSTNAME}: ${PWD/#$HOME/~}\007"'
         ;;
     esac
 }
