@@ -1,2 +1,2 @@
 profile::openstack::codfw1dev::galera::enabled: true
-profile::openstack::codfw1dev::galera::listen_port: 13306
+profile::openstack::codfw1dev::galera::listen_port: 23306
