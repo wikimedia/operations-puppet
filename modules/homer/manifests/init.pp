@@ -33,10 +33,23 @@ class homer(
       require => File['/srv/homer'],
   }
 
-# Clone the public data
+  # Clone the public data
   git::clone { 'operations/homer/public':
       ensure    => 'latest',
       directory => $public_repo,
+      owner     => 'root',
+      group     => 'ops',
+      mode      => '0440',
+      require   => File['/srv/homer'],
+  }
+
+  # Clone the private data from the $private_git_peer host
+  # The data must be present on the other peer, the current puppetization doesn't
+  # cover the case of a fresh start without data in either peer hosts.
+  git::clone { 'homer_private_repo':
+      ensure    => 'present',
+      origin    => "ssh://${private_git_peer}/srv/homer/private.git",
+      directory => $private_repo,
       owner     => 'root',
       group     => 'ops',
       mode      => '0440',
