@@ -1315,7 +1315,6 @@ host contint2001 {
 host cumin1001 {
      hardware ethernet D0:94:66:5F:69:70;
      fixed-address cumin1001.eqiad.wmnet;
-     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host cumin2001 {
