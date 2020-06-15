@@ -8,6 +8,7 @@ class profile::thanos::swift::frontend (
     Hash[String, Hash] $swift_accounts = lookup('profile::thanos::swift::accounts'),
     Hash[String, String] $swift_keys = lookup('profile::thanos::swift::accounts_keys'),
     String $stats_reporter_host = lookup('profile::swift::stats_reporter_host'),
+    Optional[String] $read_affinity = lookup('profile::thanos::swift::read_affinity', { 'default_value' => undef }),
 ) {
 
     class { '::swift':
@@ -26,6 +27,7 @@ class profile::thanos::swift::frontend (
         accounts             => $swift_accounts,
         credentials          => $swift_keys,
         proxy_service_host   => $service_host,
+        read_affinity        => $read_affinity,
     }
 
     class { '::memcached':

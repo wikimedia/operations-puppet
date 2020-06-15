@@ -15,6 +15,7 @@ class swift::proxy (
     $thumborhost               = '',
     $inactivedc_thumborhost    = '',
     $enable_wmf_filters        = true,
+    $read_affinity             = undef,
 ) {
     package {[
         'swift-proxy',

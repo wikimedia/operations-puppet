@@ -32,6 +32,10 @@ use = egg:swift#s3api
 [app:proxy-server]
 use = egg:swift#proxy
 account_autocreate = true
+<% if @read_affinity -%>
+sorting_method = affinity
+read_affinity = <%= @read_affinity %>
+<% end -%>
 
 [filter:tempurl]
 use = egg:swift#tempurl
