@@ -165,14 +165,13 @@ class profile::wmcs::nfs::primary(
     }
 
     if($drbd_actual_role == 'primary') {
-        # TODO: fix all this. It's broken because of the removal of bind mounts
         class { 'profile::prometheus::node_directory_size':
             directory_size_paths => {
-                'misc_home'     => { 'path' => '/exp/project/*/home', 'filter' => '*/tools/*' },
-                'misc_project'  => { 'path' => '/exp/project/*/project', 'filter' => '*/tools/*' },
-                'tools_home'    => { 'path' => '/exp/project/tools/home/*' },
-                'tools_project' => { 'path' => '/exp/project/tools/project/*' },
-                'paws'          => { 'path' => '/exp/project/tools/project/paws/userhomes/*' },
+                'misc_home'     => { 'path' => '/srv/misc/shared/*/home', 'filter' => '*/tools/*' },
+                'misc_project'  => { 'path' => '/srv/misc/shared/*/project', 'filter' => '*/tools/*' },
+                'tools_home'    => { 'path' => '/srv/tools/shared/tools/home/*' },
+                'tools_project' => { 'path' => '/srv/tools/shared/tools/project/*' },
+                'paws'          => { 'path' => '/srv/tools/shared/tools/project/paws/userhomes/*' },
             },
         }
     } else {
