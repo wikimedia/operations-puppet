@@ -7,6 +7,7 @@ class profile::openstack::codfw1dev::haproxy(
     Stdlib::Port $keystone_public_bind_port = lookup('profile::openstack::codfw1dev::keystone::public_bind_port'),
     Stdlib::Port $neutron_bind_port = lookup('profile::openstack::codfw1dev::neutron::bind_port'),
     Stdlib::Port $nova_metadata_listen_port = lookup('profile::openstack::codfw1dev::nova::metadata_listen_port'),
+    Stdlib::Port $galera_listen_port = lookup('profile::openstack::codfw1dev::galera::listen_port'),
     Stdlib::Port $nova_osapi_compute_listen_port = lookup('profile::openstack::codfw1dev::nova::osapi_compute_listen_port'),
     Stdlib::Port $placement_api_port = lookup('profile::openstack::codfw1dev::nova::placement_api_port'),
 ) {
@@ -84,5 +85,13 @@ class profile::openstack::codfw1dev::haproxy(
         healthcheck_path   => '/',
         port_frontend      => 8775,
         port_backend       => $nova_metadata_listen_port,
+    }
+
+    profile::openstack::base::haproxy::site { 'mysql':
+        servers            => $openstack_controllers,
+        healthcheck_method => 'HEAD',
+        healthcheck_path   => '/',
+        port_frontend      => 3306,
+        port_backend       => $galera_listen_port,
     }
 }
