@@ -46,7 +46,11 @@ profile::services_proxy::envoy::listeners:
     port: 6008
     service: termbox-https
     upstream: termbox.discovery.wmnet
-    timeout: "2s"
+    keepalive: "4.5s"
+    retry:
+      retry_on: "5xx"
+      num_retries: 2
+    timeout: "25s"
   - name: wdqs-internal
     port: 6009
     service: wdqs-internal
