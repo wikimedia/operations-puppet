@@ -27,4 +27,6 @@ class role::wmcs::openstack::codfw1dev::control {
     include ::profile::memcached::instance
     # include ::profile::openstack::codfw1dev::neutron::metadata_agent
     # include ::profile::openstack::codfw1dev::pdns::dns_floating_ip_updater
+
+    include ::profile::openstack::codfw1dev::galera::node
 }
