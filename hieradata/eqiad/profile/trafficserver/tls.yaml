@@ -13,5 +13,3 @@ profile::trafficserver::tls::http_settings:
     server_session_sharing_match: ip
     server_session_sharing_pool: thread
     allow_half_open: 1
-
-profile::trafficserver::tls::mtail_args: '-disable_fsnotify'

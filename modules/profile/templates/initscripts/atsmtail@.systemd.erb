@@ -7,7 +7,7 @@ After=<%= @wanted_by %>
 [Service]
 SyslogIdentifier=atsmtail-%i
 Restart=always
-ExecStart=/bin/sh -c 'atslog-%i | mtail -progs "<%= @atsmtail_progs %>" -logs /dev/stdin -port "<%= @atsmtail_port %>" <%= @mtail_args %>'
+ExecStart=/bin/sh -c 'atslog-%i | mtail -progs "<%= @atsmtail_progs %>" -logs /dev/stdin -disable_fsnotify -port "<%= @atsmtail_port %>" <%= @mtail_args %>'
 
 [Install]
 WantedBy=<%= @wanted_by %>

@@ -29,18 +29,16 @@ class mtail (
             component => 'component/mtail'
         }
     } else {
-        if os_version('debian == stretch') {
-            apt::pin { 'mtail':
-                pin      => 'release a=stretch-backports',
-                package  => 'mtail',
-                priority => '1001',
-                before   => Package['mtail'],
-            }
+        apt::pin { 'mtail':
+            pin      => 'version 3.0.0~rc35-3+wmf1',
+            package  => 'mtail',
+            priority => '1001',
+            before   => Package['mtail'],
         }
         # Not using require_package so apt::pin may be
         # applied before attempting to install mtail.
         package { 'mtail':
-            ensure => present,
+            ensure => '3.0.0~rc35-3+wmf1',
         }
     }
 

@@ -2,4 +2,4 @@
 #PORT=<%= @port %>
 #LOGS=<%= @logs.join(',') %>
 
-EXTRA_ARGS="-logs <%= @logs.join(',') %> -port <%= @port %> <%= @additional_args %>"
+EXTRA_ARGS="-disable_fsnotify -logs <%= @logs.join(',') %> -port <%= @port %> <%= @additional_args %>"

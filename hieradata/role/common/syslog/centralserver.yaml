@@ -1,7 +1,6 @@
 cluster: syslog
 mtail::logs:
   - /srv/syslog/*/*.log
-mtail::additional_args: '-disable_fsnotify'
 
 profile::bird::advertise_vips:
   syslog.anycast.wmnet:
