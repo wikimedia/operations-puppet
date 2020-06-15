@@ -31,6 +31,8 @@
 # $+timeout+:: Time out in seconds for the exec command, default: 300
 # $+source+:: Where to request the repo from, if $origin isn't specified
 #             'phabricator', 'github' and 'gerrit' accepted, default is 'gerrit'
+# $+environment_variables+:: An array of additional environment variables to pass
+#                           to the git exec.
 #
 # === Example usage
 #
@@ -63,7 +65,9 @@ define git::clone(
     $recurse_submodules=false,
     $umask=undef,
     $mode=undef,
-    $source='gerrit') {
+    $source='gerrit',
+    $environment_variables=[],
+) {
 
     require_package('git')
 
@@ -126,9 +130,9 @@ define git::clone(
                 $brancharg = ''
             }
             if !empty($ssh) {
-                $env = "GIT_SSH=${ssh}"
+                $env = $environment_variables << "GIT_SSH=${ssh}"
             } else {
-                $env = undef
+                $env = $environment_variables
             }
 
             $deptharg = $depth ?  {
