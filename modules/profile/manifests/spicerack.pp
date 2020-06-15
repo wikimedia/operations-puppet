@@ -47,10 +47,7 @@ class profile::spicerack(
     # Packages required by spicerack cookbooks
     require_package('python3-dateutil', 'python3-requests')
 
-    apt::package_from_component { 'spicerack':
-        component => 'component/spicerack',
-        packages  => ['spicerack']
-    }
+    ensure_packages(['spicerack'])
 
     $cookbooks_dir = '/srv/deployment/spicerack'
 
