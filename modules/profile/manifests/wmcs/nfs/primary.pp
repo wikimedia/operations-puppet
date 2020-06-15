@@ -21,13 +21,14 @@ class profile::wmcs::nfs::primary(
     $drbd_ip_address = $drbd_cluster[$facts['hostname']]
 
     # Determine the actual role from a custom fact.
-    $drbd_actual_role = undef
     if has_key($facts, 'drbd_role') {
         if $facts['drbd_role'].values().unique().length() > 1 {
             $drbd_actual_role = 'inconsistent'
         } else {
             $drbd_actual_role = $facts['drbd_role'].values().unique()
         }
+    } else {
+        $drbd_actual_role = undef
     }
 
     class {'::labstore':
