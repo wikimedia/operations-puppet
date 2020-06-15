@@ -48,7 +48,7 @@ class homer(
   # cover the case of a fresh start without data in either peer hosts.
   git::clone { 'homer_private_repo':
       ensure                => 'present',
-      origin                => "ssh://${private_git_peer}/srv/homer/private.git",
+      origin                => "ssh://${private_git_peer}/srv/homer/private",
       directory             => $private_repo,
       environment_variables => ['SSH_AUTH_SOCK=/run/keyholder/proxy.sock'],
       owner                 => 'root',
