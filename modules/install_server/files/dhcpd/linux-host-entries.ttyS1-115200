@@ -2215,7 +2215,6 @@ host dbproxy1015 {
 host dbproxy1016 {
     hardware ethernet D0:94:66:5F:49:D0;
     fixed-address dbproxy1016.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host dbproxy1017 {
