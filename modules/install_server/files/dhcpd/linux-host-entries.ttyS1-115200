@@ -1321,7 +1321,6 @@ host cumin1001 {
 host cumin2001 {
      hardware ethernet 14:18:77:5B:2A:5D;
      fixed-address cumin2001.codfw.wmnet;
-     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host db1074 {
