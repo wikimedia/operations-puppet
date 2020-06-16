@@ -29,7 +29,26 @@
 #   All the other slabs will be created using the growth_factor
 #   parameter.
 #   Note: change the default only if you know what you are doing.
-#   Defaulf: 48
+#   Default: 48
+#
+# [*enable_tls*]
+#   Configure mcrouter using TLS on external interfaces. This
+#   parameter is only supported on memcached 1.6
+#   Default: false
+#
+# [*enlable_tls_localhost*]
+#   By default the socket on localhost will not be wrapped in TLS
+#   This is to make debugging easier and support the prometheus exporter.
+#   Set this to true to also wrap localhost
+#   Default: false
+#
+# [*ssl_cert*]
+#   The public key used for SSL connections
+#   Default: undef
+#
+# [*ssl_key*]
+#   The public key used for SSL connections
+#   Default: undef
 #
 # [*extra_options*]
 #   A hash of additional command-line options and values.
@@ -43,16 +62,33 @@
 #  }
 #
 class memcached(
-    Integer $size                    = 2000,
-    Stdlib::Port $port               = 11000,
-    Stdlib::IP::Address $ip          = '0.0.0.0',
-    String $version                  = 'present',
-    Integer $min_slab_size           = 48,
-    Float $growth_factor             = 1.25,
-    Hash[String, Any] $extra_options = {},
-    Boolean $enable_16               = false,
+    Integer                    $size                 = 2000,
+    Stdlib::Port               $port                 = 11000,
+    Stdlib::IP::Address        $ip                   = '0.0.0.0',
+    String                     $version              = 'present',
+    Integer                    $min_slab_size        = 48,
+    Float                      $growth_factor        = 1.25,
+    Hash[String, Any]          $extra_options        = {},
+    Boolean                    $enable_16            = false,
+    Boolean                    $enable_tls           = false,
+    Boolean                    $enable_tls_localhost = false,
+    Optional[Stdlib::Unixpath] $ssl_cert             = undef,
+    Optional[Stdlib::Unixpath] $ssl_key              = undef,
 ) {
-
+    if $enable_tls and ! $enable_16 {
+        fail('you can only enable tls with memcached1.6')
+    }
+    if $enable_tls and (!$ssl_key or !$ssl_key) {
+        fail('you must provide ssl_cert and ssl_key if you enable_tls')
+    }
+    if $ip == '0.0.0.0' and $enable_tls and !$enable_tls_localhost {
+        # if the ip is 0.0.0.0, indicating all ipv4 interfaces,
+        # then we need to split theses addresses out to ensure we
+        # have notls on localhost
+        $listen = [$facts['networking']['ip'], 'notls:localhost']
+    } else {
+        $listen = [$ip]
+    }
     if $enable_16 {
         apt::package_from_component { 'memcached_16':
             component => 'component/memcached16',

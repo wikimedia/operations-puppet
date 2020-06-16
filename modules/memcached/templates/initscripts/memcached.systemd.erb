@@ -8,7 +8,23 @@ After=network.target
 <%- if @override -%>
 ExecStart=
 <% end -%>
-ExecStart=/usr/bin/memcached -p <%= @port -%> -u nobody -m <%= @size %> -c 25000 -l <%= @ip %> -n <%= @min_slab_size %> -f <%= @growth_factor -%> <% @extra_options.sort.each do |option,value| -%><%= option %> <%= value %> <% end -%>
+ExecStart=/usr/bin/memcached \
+          -p <%= @port -%> \
+          -u nobody \
+          -m <%= @size %> \
+          -c 25000 \
+          -f <%= @growth_factor -%> \
+          <%- @listen.sort.each do |listen| -%>
+          -l <%= listen %> \
+          <%- end -%>
+          <%- @extra_options.sort.each do |option,value| -%>
+          <%= option %> <%= value %> \
+          <%- end -%>
+          <%- if @enable_tls -%>
+          -Z -o ssl_chain_cert=<%= @ssl_cert %> \
+          -o ssl_key=<%= @ssl_key %> \
+          <%- end -%>
+          -n <%= @min_slab_size %>
 <%- unless @override %>
 
 [Install]
