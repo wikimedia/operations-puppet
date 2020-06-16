@@ -76,12 +76,11 @@ class swift (
     }
 
     file { '/srv/log/swift':
-        ensure  => directory,
-        require => Package['swift'],
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0755',
-        before  => Package['swift'],
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+        before => Package['swift'],
     }
 
     file { '/var/log/swift':
