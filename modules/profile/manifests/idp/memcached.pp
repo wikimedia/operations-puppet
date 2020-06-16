@@ -2,17 +2,22 @@ class profile::idp::memcached (
     Wmflib::Ensure      $ensure           = lookup('profile::idp::memcached::ensure'),
     Array[Stdlib::Host] $idp_nodes        = lookup('profile::idp::memcached::idp_nodes'),
     String[1]           $mcrouter_cluster = lookup('profile::idp::memcached::mcrouter_cluster'),
+    Boolean             $enable_tls       = lookup('profile::idp::memcached::enable_tls'),
+    Stdlib::Unixpath    $ssl_cert         = lookup('profile::idp::memcached::ssl_cert'),
+    Stdlib::Unixpath    $ssl_key          = lookup('profile::idp::memcached::ssl_key'),
 ) {
-    $mcrouter_port = 11214
     class { 'memcached':
-        enable_16     => true,
+        enable_16  => true,
+        enable_tls => $enable_tls,
+        ssl_cert   => $ssl_cert,
+        ssl_key    => $ssl_key,
     }
     class { 'profile::prometheus::memcached_exporter': }
 
     $servers = $idp_nodes.map |Stdlib::Host $host| {
         ($host == $facts['fqdn']) ? {
             true    => "127.0.0.1:${memcached::port}:ascii:plain",
-            default => "${host.ipresolve}:${mcrouter_port}:ascii:ssl",
+            default => "${host.ipresolve}:${memcached::port}:ascii:ssl",
         }
     }
     $pools = {$mcrouter_cluster => {'servers' => $servers}}
@@ -30,33 +35,21 @@ class profile::idp::memcached (
         },
     }]
 
-    base::expose_puppet_certs{'/etc/mcrouter':
-        provide_private => true,
-        group           => 'mcrouter',
-        user            => 'mcrouter',
-    }
-    $ssl_options = {
-        'port'    => 11214,
-        'cert'    => '/etc/mcrouter/ssl/cert.pem',
-        'key'     => '/etc/mcrouter/ssl/server.key',
-        'ca_cert' => $facts['puppet_config']['hostcert'],
-    }
     class {'mcrouter':
-        ensure      => $ensure,
-        region      => $::site,
-        cluster     => $mcrouter_cluster,
-        pools       => $pools,
-        routes      => $routes,
-        ssl_options => $ssl_options,
+        ensure  => $ensure,
+        region  => $::site,
+        cluster => $mcrouter_cluster,
+        pools   => $pools,
+        routes  => $routes,
     }
     class {'profile::prometheus::mcrouter_exporter': }
 
-    ferm::service {'mcrouter':
+    ferm::service {'memcached':
         ensure  => $ensure,
-        desc    => 'Allow connections to mcrouter',
+        desc    => 'Allow connections to memcached',
         proto   => 'tcp',
         notrack => true,
-        port    => $mcrouter_port,
+        port    => $memcached::port,
         srange  => "@resolve((${apereo_cas::idp_nodes.join(' ')}))",
     }
 }
