@@ -1,16 +1,74 @@
 class profile::wmcs::paws::k8s::haproxy (
+    Array[Stdlib::Fqdn] $ingress_nodes          = lookup('profile::wmcs::paws::ingress_nodes',         {default_value => ['localhost']}),
+    Stdlib::Port        $ingress_backend_port   = lookup('profile::wmcs::paws::ingress_backend_port',  {default_value => 30000}),
+    Stdlib::Port        $ingress_bind_tls_port  = lookup('profile::wmcs::paws::ingress_bind_tls_port', {default_value => 443}),
+    Stdlib::Port        $ingress_bind_http_port = lookup('profile::wmcs::paws::ingress_bind_http_port',{default_value => 80}),
+    Array[Stdlib::Fqdn] $control_nodes          = lookup('profile::wmcs::paws::control_nodes',         {default_value => ['localhost']}),
+    Stdlib::Port        $api_port               = lookup('profile::wmcs::paws::apiserver_port',        {default_value => 6443}),
 ) {
+    requires_os('debian >= buster')
+
     $cert_name = 'paws'
     acme_chief::cert { $cert_name:
         puppet_rsc => Service['haproxy'],
     }
+    $cert_file = "/etc/acmecerts/${cert_name}/live/ec-prime256v1.crt.key"
 
-    # TODO: in T255249 we will try to generated the bundled pem file automatically. For now, this
-    # has to be done in the server by hand.
-
-    class { '::profile::wmcs::kubeadm::haproxy':
-        ingress_bind_tls_port => 443,
-        ingress_tls_pem_file  => "/etc/acmecerts/${cert_name}.pem",
+    package { 'haproxy':
+        ensure => present,
     }
-    contain '::profile::wmcs::kubeadm::haproxy'
+
+    file { '/etc/haproxy/conf.d':
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+    }
+
+    file { '/etc/haproxy/haproxy.cfg':
+        ensure  => present,
+        mode    => '0444',
+        owner   => 'root',
+        group   => 'root',
+        content => template('profile/wmcs/paws/k8s/haproxy/haproxy.cfg.erb'),
+        notify  => Service['haproxy'],
+    }
+
+    file { '/etc/haproxy/conf.d/k8s-api-servers.cfg':
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => template('profile/wmcs/paws/k8s/haproxy/k8s-api-servers.cfg.erb'),
+        notify  => Service['haproxy'],
+    }
+
+    file { '/etc/haproxy/conf.d/k8s-ingress.cfg':
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => template('profile/wmcs/paws/k8s/haproxy/k8s-ingress.cfg.erb'),
+        notify  => Service['haproxy'],
+    }
+
+    # this file is loaded as environmentfile in the .service file shipped by
+    # the debian package in Buster
+    file { '/etc/default/haproxy':
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
+        content => "EXTRAOPTS='-f /etc/haproxy/conf.d/'\n",
+        notify  => Service['haproxy'],
+    }
+
+    service { 'haproxy':
+        ensure    => 'running',
+        subscribe => [
+                  File['/etc/haproxy/haproxy.cfg'],
+                  File['/etc/haproxy/conf.d/k8s-api-servers.cfg'],
+                  File['/etc/haproxy/conf.d/k8s-ingress.cfg'],
+                  File['/etc/default/haproxy'],
+        ],
+    }
+
+    class { 'prometheus::haproxy_exporter': }
 }

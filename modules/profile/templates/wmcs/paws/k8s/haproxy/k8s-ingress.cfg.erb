@@ -1,9 +1,7 @@
 # Note: This file is managed by puppet.
 frontend k8s-ingress
-    bind 0.0.0.0:<%= @ingress_bind_port %>
-    <%- if @ingress_bind_tls_port and @ingress_tls_pem_file -%>
-    bind 0.0.0.0:<%= @ingress_bind_tls_port %> ssl crt <%= @ingress_tls_pem_file %>
-    <%- end -%>
+    bind 0.0.0.0:<%= @ingress_bind_http_port %>
+    bind 0.0.0.0:<%= @ingress_bind_tls_port %> ssl crt <%= @cert_file %>
     mode tcp
     option tcplog
     timeout client 1h
