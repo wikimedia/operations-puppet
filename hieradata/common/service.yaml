@@ -2331,7 +2331,7 @@ service::catalog:
       scheduler: wrr
     monitoring:
       check_command: check_http_lvs_on_port!thanos-query.discovery.wmnet!80!/-/ready
-      critical: false
+      critical: true
       sites:
         codfw:
           hostname: thanos-query.svc.codfw.wmnet
@@ -2370,7 +2370,7 @@ service::catalog:
       scheduler: wrr
     monitoring:
       check_command: check_https_url!thanos-swift.discovery.wmnet!/healthcheck
-      critical: false
+      critical: true
       sites:
         codfw:
           hostname: thanos-swift.svc.codfw.wmnet
