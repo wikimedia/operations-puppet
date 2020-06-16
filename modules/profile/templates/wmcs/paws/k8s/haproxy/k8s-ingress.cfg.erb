@@ -1,6 +1,10 @@
 # Note: This file is managed by puppet.
-frontend k8s-ingress
+frontend k8s-ingress-http
     bind 0.0.0.0:<%= @ingress_bind_http_port %>
+    mode http
+    http-request redirect scheme https
+
+frontend k8s-ingress-https
     bind 0.0.0.0:<%= @ingress_bind_tls_port %> ssl crt <%= @cert_file %>
     mode tcp
     option tcplog
