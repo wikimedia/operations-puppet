@@ -126,7 +126,7 @@ class profile::cumin::master (
 
     if $::fqdn == 'cumin1001.eqiad.wmnet' {
         $motd_content = "#!/bin/sh\necho \"This host will be reimaged to Buster on June 22nd, please use cumin2001 until then:\""
-        @motd::script { 'cumin-reimage':
+        motd::script { 'cumin-reimage':
             ensure   => present,
             priority => 98,
             content  => $motd_content,
