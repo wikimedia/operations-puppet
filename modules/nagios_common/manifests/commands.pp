@@ -152,6 +152,9 @@ class nagios_common::commands(
         require        => File["${config_dir}/commands"],
     }
 
+    # perl dependencies for check_galera_nodes.pl
+    require_package('libdbi-perl')
+    require_package('libdbd-mysql-perl')
     # Check a galera cluster
     nagios_common::check_command { 'check_galera_nodes.pl':
         require       => File["${config_dir}/commands"],
