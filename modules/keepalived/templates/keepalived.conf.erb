@@ -14,7 +14,9 @@ vrrp_instance VRRP1 {
     auth_pass <%= @auth_pass %>
   }
   virtual_ipaddress {
-    <%= @vip %>
+<% @vips.each do |vip| -%>
+    <%= vip %>
+<% end -%>
   }
   unicast_peer {
 <% @peers.each do |peer| -%>

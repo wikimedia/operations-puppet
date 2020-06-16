@@ -12,7 +12,7 @@ class profile::toolforge::elasticsearch::keepalived(
         interface         => 'eth0',
         peers             => $peers,
         priority          => $host_priority,
-        vip               => $vip,
+        vips              => [$vip],
         virtual_router_id => 51,
     }
 }

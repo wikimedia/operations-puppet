@@ -12,20 +12,20 @@
 #   List of peers
 # [*priority*]
 #   VRRP priority of this host
-# [*vip_address*]
-#   Virtual IP address managed by keepalived (<ipaddress/cidr)
 # [*virtual_router_id*]
 #   VRRP virtual router id this host belongs to
+# [*vips*]
+#   List of virtual IP address managed by keepalived (<ipaddress/cidr)
 #
 
 class keepalived(
     Array[Stdlib::Fqdn] $peers,
     Integer             $priority,
     Integer             $virtual_router_id,
-    Stdlib::IP::Address $vip,
     String              $auth_pass,
     String              $default_state,
     String              $interface,
+    Array[Stdlib::IP::Address] $vips,
 ) {
 
     package { 'keepalived':
