@@ -70,6 +70,17 @@ class role::puppetmaster::pontoon(
         $config = merge($base_config, $env_config)
     }
 
+    class { '::httpd':
+        modules => [
+            'proxy',
+            'proxy_http',
+            'proxy_balancer',
+            'passenger',
+            'rewrite',
+            'lbmethod_byrequests'],
+    }
+    require_package('libapache2-mod-passenger')
+
     class { '::puppetmaster':
         server_name         => $server_name,
         allow_from          => $allow_from,
