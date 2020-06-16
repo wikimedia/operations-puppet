@@ -1511,6 +1511,12 @@ define service {
 
 define service {
     use                      passive-service
+    service_description      check_kafkatee
+    hostgroup_name           fundraising-banner-logger
+}
+
+define service {
+    use                      passive-service
     service_description      check_load
     hostgroup_name           fundraising-banner-logger
 }
