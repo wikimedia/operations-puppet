@@ -90,6 +90,11 @@
 [container]
     user = gerrit2
     javaHome = <%= @java_home %>
+    # The following `javaOptions` are not used by WMF's systemd
+    # script, and are hence not effective. But Gerrit assumes they are
+    # needed and updates them nonetheless during upgrades as
+    # needed. So they serve as canary for required config updates of
+    # our systemd script. And we leave them in place.
     javaOptions = "<% @java_options.each do |jvm_opt| %><%= jvm_opt %> <% end %>"
     heapLimit = <%= @heap_limit %>
     slave = <%= @replica %>
