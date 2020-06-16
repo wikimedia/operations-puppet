@@ -106,6 +106,7 @@ scap::dsh::groups:
       - maps2004.codfw.wmnet
   netbox:
     hosts:
+      - netbox-dev2001.wikimedia.org
       - netbox1001.wikimedia.org
       - netbox2001.wikimedia.org
   ores:
