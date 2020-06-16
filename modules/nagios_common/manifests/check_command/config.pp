@@ -47,5 +47,6 @@ define nagios_common::check_command::config(
         content => $content,
         owner   => $owner,
         group   => $group,
+        notify  => Service['icinga'],
     }
 }
