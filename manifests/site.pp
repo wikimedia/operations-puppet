@@ -2101,6 +2101,10 @@ node /^releases[12]001\.(codfw|eqiad)\.wmnet$/ {
     role(releases)
 }
 
+node /^releases[12]002\.(codfw|eqiad)\.wmnet$/ {
+    role(insetup)
+}
+
 node /^relforge100[1-2]\.eqiad\.wmnet/ {
     role(elasticsearch::relforge)
 }
