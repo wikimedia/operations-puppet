@@ -99,6 +99,11 @@ class role::puppetmaster::pontoon(
         require => Package['puppet'],
     }
 
+    # Update git checkout
+    class { 'puppetmaster::gitsync':
+        run_every_minutes => $git_sync_minutes,
+    }
+
     ferm::service { 'puppetmaster-pontoon':
         proto  => 'tcp',
         port   => 8140,
