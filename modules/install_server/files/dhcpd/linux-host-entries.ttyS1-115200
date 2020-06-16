@@ -2273,7 +2273,6 @@ host dbstore1003 {
 host dbstore1004 {
     hardware ethernet D0:94:66:8F:B7:C6;
     fixed-address dbstore1004.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host dbstore1005 {
