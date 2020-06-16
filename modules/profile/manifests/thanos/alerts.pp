@@ -158,9 +158,9 @@ class profile::thanos::alerts {
         description     => 'Thanos sidecar cannot connect to Prometheus',
         query           => 'thanos_sidecar_prometheus_up{job=~"thanos-sidecar.*"}',
         prometheus_url  => 'http://thanos-query.discovery.wmnet',
-        method          => 'le',
-        warning         => 1,
-        critical        => 1,
+        method          => 'eq',
+        warning         => 0,
+        critical        => 0,
         dashboard_links => ['https://grafana.wikimedia.org/d/b19644bfbf0ec1e108027cce268d99f7/thanos-sidecar'],
         notes_link      => 'https://wikitech.wikimedia.org/wiki/Thanos#Alerts',
     }
