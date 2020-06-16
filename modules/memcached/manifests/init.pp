@@ -59,16 +59,19 @@ class memcached(
             packages  => ['memcached'],
             before    => Service['memcached'],
         }
+        $override = true
     } else {
         package { 'memcached':
             ensure => $version,
             before => Service['memcached'],
         }
+        $override = false
     }
 
     systemd::service { 'memcached':
-        ensure  => present,
-        content => systemd_template('memcached'),
+        ensure   => present,
+        override => $override,
+        content  => systemd_template('memcached'),
     }
 
     # Prefer a direct check if memcached is not running on localhost.

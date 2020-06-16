@@ -1,10 +1,13 @@
+<%- unless @override -%>
 [Unit]
 Description=memcached daemon
 After=network.target
 
+<% end -%>
 [Service]
 ExecStart=/usr/bin/memcached -p <%= @port -%> -u nobody -m <%= @size %> -c 25000 -l <%= @ip %> -n <%= @min_slab_size %> -f <%= @growth_factor -%> <% @extra_options.sort.each do |option,value| -%><%= option %> <%= value %> <% end -%>
-
+<%- unless @override %>
 
 [Install]
 WantedBy=multi-user.target
+<% end -%>
