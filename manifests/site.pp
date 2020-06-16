@@ -1027,14 +1027,6 @@ node 'francium.eqiad.wmnet' {
     role(dumps::web::htmldumps)
 }
 
-node /^ganeti100[1-4]\.eqiad.wmnet$/ {
-    role(spare::system)
-}
-
-node /^ganeti200[1-6]\.codfw.wmnet$/ {
-    role(spare::system)
-}
-
 # Ganeti virtualization hosts - eqiad
 node /^ganeti10(0[5-9]|1[0-9]|2[0-2])\.eqiad\.wmnet$/ {
     role(ganeti)
