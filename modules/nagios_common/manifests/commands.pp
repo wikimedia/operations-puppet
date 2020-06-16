@@ -153,7 +153,7 @@ class nagios_common::commands(
     }
 
     # Check a galera cluster
-    nagios_common::check_command { 'check_galera_node.pl':
+    nagios_common::check_command { 'check_galera_nodes.pl':
         require       => File["${config_dir}/commands"],
         config_source => 'puppet:///modules/nagios_common/check_commands/check_galera.cfg',
         config_dir    => $config_dir,
