@@ -95,8 +95,6 @@ class profile::wmcs::kubeadm::control (
 
     class { '::kubeadm::calico_workaround': }
 
-    class { '::kubeadm::nginx_ingress_yaml': }
-
     class { '::kubeadm::admin_scripts': }
 
     class { '::kubeadm::metrics_yaml': }
