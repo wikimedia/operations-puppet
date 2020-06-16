@@ -8,7 +8,7 @@ class profile::openstack::codfw1dev::galera::monitoring(
     #  degraded service even if the haproxy'd front end is holding up.
     monitoring::service { 'galera':
         description   => 'WMCS Galera Cluster',
-        check_command => "check_galera_nodes!${nodecount}!${port}!${test_username}!${test_password}",
+        check_command => "check_galera!${nodecount}!${port}!${test_username}!${test_password}",
         critical      => true,
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Troubleshooting',
         contact_group => 'wmcs-team,admins',
