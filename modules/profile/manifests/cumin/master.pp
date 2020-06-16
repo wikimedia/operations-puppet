@@ -124,6 +124,15 @@ class profile::cumin::master (
         source => 'puppet:///modules/profile/cumin/ssh_config',
     }
 
+    if $::fqdn == 'cumin1001.eqiad.wmnet' {
+        $motd_content = "#!/bin/sh\necho \"This host will be reimaged to Buster on June 22nd, please use cumin2001 until then:\""
+        @motd::script { 'cumin-reimage':
+            ensure   => present,
+            priority => 98,
+            content  => $motd_content,
+        }
+    }
+
     # Check aliases cron, splayed between the week across the Cumin masters
     $times = cron_splay($cumin_masters, 'weekly', 'cumin-check-aliases')
     cron { 'cumin-check-aliases':
