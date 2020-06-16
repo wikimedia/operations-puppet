@@ -1027,28 +1027,20 @@ node 'francium.eqiad.wmnet' {
     role(dumps::web::htmldumps)
 }
 
-# Ganeti virtualization hosts
-node /^ganeti[12]00[0-8]\.(codfw|eqiad)\.wmnet$/ {
-    role(ganeti)
+node /^ganeti100[1-4]\.eqiad.wmnet$/ {
+    role(spare::system)
 }
 
-# new Ganeti hosts - replacing ganeti100[1-4] (T228924)
-node /^ganeti(1009|101[0-2])\.eqiad\.wmnet$/ {
-    role(ganeti)
+node /^ganeti200[1-6]\.codfw.wmnet$/ {
+    role(spare::system)
 }
 
-# new Ganeti hosts - expansion (T228924)
-node /^ganeti101[3-8]\.eqiad\.wmnet$/ {
+# Ganeti virtualization hosts - eqiad
+node /^ganeti10(0[5-9]|1[0-9]|2[0-2])\.eqiad\.wmnet$/ {
     role(ganeti)
 }
-
-# CI Ganeti nodes (T228926)
-node /^ganeti10(19|2[012])\.eqiad\.wmnet$/ {
-    role(ganeti)
-}
-
-# new Ganeti hosts - expansion (T224603)
-node /^ganeti20(09|1[0-9]|2[0-4])\.codfw\.wmnet$/ {
+# Ganeti virtualization hosts - codfw
+node /^ganeti20(0[7-9]|1[0-9]|2[0-4])\.codfw\.wmnet$/ {
     role(ganeti)
 }
 
