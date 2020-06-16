@@ -76,6 +76,14 @@ class apt::unattendedupgrades(
         # lint:endignore
     }
 
+    # Clean up the apt cache to avoid filling the disk periodically T127374
+    apt::conf { 'apt-autoclean':
+        ensure   => present,
+        priority => '52',
+        key      => 'APT::Periodic::AutocleanInterval::',
+        value    => '7',
+    }
+
     file { '/usr/local/sbin/report-pending-upgrades':
         ensure => absent,
     }
