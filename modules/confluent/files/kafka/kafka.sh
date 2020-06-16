@@ -115,5 +115,5 @@ echo "${zookeeper_connect_commands}" | /bin/grep -q "${command}" && EXTRA_OPTS="
 # set -f to not expand wildcards in command, e.g. --topic '*'
 set -f
 echo "${command} ${EXTRA_OPTS}$*"
-# shellcheck disable=SC2086
-${command} ${EXTRA_OPTS}"$*"
+# shellcheck disable=SC2086,SC2145
+${command} ${EXTRA_OPTS}"$@"
