@@ -5,10 +5,6 @@ class profile::idp::memcached (
 ) {
     $mcrouter_port = 11214
     class { 'memcached':
-        # TODO: the following were implicit defaults from
-        # MW settings, need to be reviewed.
-        growth_factor => 1.05,
-        min_slab_size => 5,
         enable_16     => true,
     }
     class { 'profile::prometheus::memcached_exporter': }
