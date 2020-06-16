@@ -4,7 +4,7 @@
 # practices used in the WMF.
 #
 # This profile also takes into account the possibility of deploying various kind
-# of openjdk variants (jre, headless-jre, jdk, headless-jdk).
+# of openjdk variants (jre, jre-headless, jdk, jdk-headless).
 #
 # To avoid unnecessary hiera params, we have defaults:
 # - On Debian Stretch, we simply deploy openjdk-8-jdk.

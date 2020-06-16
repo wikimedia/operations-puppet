@@ -80,17 +80,6 @@ class jenkins(
         packages  => ['jenkins']
     }
 
-    # Initially use Java 8 on Buster, switch to Java 11 separately, T224591
-    if os_version('debian == buster') {
-        apt::package_from_component { 'wikimedia-openjdk8':
-            component => 'component/jdk8',
-            packages  => ['openjdk-8-jdk', 'openjdk-8-dbg']
-        }
-    } else {
-        require_package('openjdk-8-jdk')
-    }
-    Package['openjdk-8-jdk'] ~> Service['jenkins']
-
     $java_path = '/usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java'
 
     file { '/var/lib/jenkins/.daemonrc':

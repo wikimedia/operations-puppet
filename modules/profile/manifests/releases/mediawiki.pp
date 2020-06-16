@@ -12,6 +12,10 @@ class profile::releases::mediawiki (
     $jenkins_service_enable = lookup('profile::releases::mediawiki::jenkins_service_enable'),
     $jenkins_service_monitor = lookup('profile::releases::mediawiki::jenkins_service_monitor'),
 ){
+
+    include ::profile::java
+    Class['::profile::java'] ~> Class['::jenkins']
+
     class { '::jenkins':
         access_log      => true,
         http_port       => $http_port,

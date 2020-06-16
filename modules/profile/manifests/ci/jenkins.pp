@@ -10,6 +10,9 @@ class profile::ci::jenkins(
     Stdlib::Unixpath $builds_dir = hiera('profile::ci::jenkins::builds_dir'),
     Stdlib::Unixpath $workspaces_dir = hiera('profile::ci::jenkins::workspaces_dir'),
 ) {
+    include ::profile::java
+    Class['::profile::java'] ~> Class['::jenkins']
+
     # Load the Jenkins module, that setup a Jenkins master
     class { '::jenkins':
         access_log      => true,
