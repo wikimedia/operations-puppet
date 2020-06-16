@@ -24,6 +24,9 @@ profile::tlsproxy::envoy::use_remote_address: true
 
 profile::swift::stats_reporter_host: 'thanos-fe2001.codfw.wmnet'
 
+# Hit object storage only for data older than max_time
+profile::thanos::store::max_time: '-15d'
+
 profile::prometheus::statsd_exporter::mappings:
   # Authentication subsystem (tempauth)
   - match: swift.*.*.tempauth.AUTH_.errors
