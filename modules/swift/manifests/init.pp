@@ -71,6 +71,7 @@ class swift (
             mode   => '0755',
             owner  => 'root',
             group  => 'root',
+            before => Package['swift'],
         }
     }
 
@@ -80,12 +81,14 @@ class swift (
         owner   => 'root',
         group   => 'root',
         mode    => '0755',
+        before  => Package['swift'],
     }
 
     file { '/var/log/swift':
         ensure  => link,
         target  => '/srv/log/swift',
         require => File['/srv/log/swift'],
+        before  => Package['swift'],
     }
 
     logrotate::conf { 'swift':
@@ -96,5 +99,6 @@ class swift (
     rsyslog::conf { 'swift':
         source   => 'puppet:///modules/swift/swift.rsyslog.conf',
         priority => 40,
+        require  => File['/var/log/swift'],
     }
 }
