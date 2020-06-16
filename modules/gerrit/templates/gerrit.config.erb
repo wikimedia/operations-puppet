@@ -90,7 +90,7 @@
 [container]
     user = gerrit2
     javaHome = <%= @java_home %>
-    javaOptions = <% @java_options.each do |jvm_opt| %><%= jvm_opt %> <% end %>
+    javaOptions = "<% @java_options.each do |jvm_opt| %><%= jvm_opt %> <% end %>"
     heapLimit = <%= @heap_limit %>
     slave = <%= @replica %>
     <%- if @replica %>
