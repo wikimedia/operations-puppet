@@ -371,6 +371,7 @@ logging,log_page,K
 machine_vision_freebase_mapping,mvfm_freebase_id,K
 machine_vision_freebase_mapping,mvfm_wikidata_id,K
 machine_vision_image,mvi_id,K
+machine_vision_image,mvi_priority,K
 machine_vision_image,mvi_sha1,K
 machine_vision_image,mvi_rand,K
 machine_vision_label,mvl_id,K
