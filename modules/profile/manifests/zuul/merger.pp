@@ -7,11 +7,22 @@ class profile::zuul::merger(
 
     include ::zuul::monitoring::merger
 
+    $sshkey = 'AAAAB3NzaC1yc2EAAAADAQABAAAAgQCF8pwFLehzCXhbF1jfHWtd9d1LFq2NirplEBQYs7AOrGwQ/6ZZI0gvZFYiEiaw1o+F1CMfoHdny1VfWOJF3mJ1y9QMKAacc8/Z3tG39jBKRQCuxmYLO1SWymv7/Uvx9WQlkNRoTdTTa9OJFy6UqvLQEXKYaokfMIUHZ+oVFf1CgQ=='
+
     # zuul-merger does git operations with Gerrit over ssh on port 29418
     sshkey { 'gerrit':
         ensure => 'present',
         name   => 'gerrit.wikimedia.org',
-        key    => 'AAAAB3NzaC1yc2EAAAADAQABAAAAgQCF8pwFLehzCXhbF1jfHWtd9d1LFq2NirplEBQYs7AOrGwQ/6ZZI0gvZFYiEiaw1o+F1CMfoHdny1VfWOJF3mJ1y9QMKAacc8/Z3tG39jBKRQCuxmYLO1SWymv7/Uvx9WQlkNRoTdTTa9OJFy6UqvLQEXKYaokfMIUHZ+oVFf1CgQ==',
+        key    => $sshkey,
+        type   => 'ssh-rsa',
+        target => '/var/lib/zuul/.ssh/known_hosts',
+    }
+
+    # gerrit-test has the same host key but a different hostname - T253263
+    sshkey { 'gerrit-test':
+        ensure => 'present',
+        name   => 'gerrit-test.wikimedia.org',
+        key    => $sshkey,
         type   => 'ssh-rsa',
         target => '/var/lib/zuul/.ssh/known_hosts',
     }
