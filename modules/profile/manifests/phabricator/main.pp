@@ -79,6 +79,8 @@ class profile::phabricator::main (
                                                       { 'default_value' => 'running' }),
     Boolean                     $dump_enabled       = lookup('profile::phabricator::main::dump_enabled',
                                                       { 'default_value' => false }),
+
+    String                      $http_srange        = lookup('profile::phabricator::main::http_srange'),
 ) {
 
     $mail_alias = $::realm ? {
@@ -105,12 +107,13 @@ class profile::phabricator::main (
         $aphlict_ensure = 'absent'
     }
 
-    # allow http from deployment servers for testing
-    ferm::service { 'phabmain_http_deployment':
+    # in prod we just open port 80 for deployment_hosts for testing, caching layer speaks TLS to envoy
+    # in cloud we need to also open it for proxies which don't speak TLS to backends
+    ferm::service { 'phabmain_http':
         ensure => present,
         proto  => 'tcp',
         port   => '80',
-        srange => '$DEPLOYMENT_HOSTS',
+        srange => $http_srange,
     }
 
     if $aphlict_enabled {
