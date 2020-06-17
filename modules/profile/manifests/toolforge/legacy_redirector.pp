@@ -9,7 +9,7 @@ class profile::toolforge::legacy_redirector (
     if $do_https {
         $ssl_settings = ssl_ciphersuite('nginx', 'compat')
         # SSL certificate for tools.wmflabs.org
-        $ssl_certificate_name = 'toolforge'
+        $ssl_certificate_name = 'tools-legacy'
         acme_chief::cert { $ssl_certificate_name:
             puppet_rsc => Exec['nginx-reload'],
         }
