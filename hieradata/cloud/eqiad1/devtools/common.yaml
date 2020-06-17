@@ -13,7 +13,7 @@ phabricator::tools::dump: false
 apache::logrotate::period: "daily"
 apache::logrotate::rotate: 3
 
-profile::phabricator::main::http_srange: '$DEPLOYMENT_HOSTS $CACHE_HOSTS'
+profile::phabricator::main::http_srange: '($DEPLOYMENT_HOSTS $CACHES)'
 
 profile::phabricator::main::rate_limits:
 # Number of requests per minute for logged out users (per client IP)
