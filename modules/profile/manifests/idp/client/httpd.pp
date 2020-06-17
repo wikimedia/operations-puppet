@@ -93,7 +93,7 @@ class profile::idp::client::httpd (
 
         }
         $proxied_as = $proxied_as_https ? {
-            true    => "https://${vhost}/",
+            true    => "https://${vhost}",
             default => undef,
         }
         $cas_settings = merge({
