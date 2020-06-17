@@ -12,9 +12,10 @@ define openstack::db::project_grants(
     }
 
     file { "/etc/${etc_dir}/${title}_grants.mysl":
-        content => template('openstack/db/grants.mysql.erb'),
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0644',
+        content   => template('openstack/db/grants.mysql.erb'),
+        owner     => 'root',
+        group     => 'root',
+        mode      => '0644',
+        show_diff => false,
     }
 }
