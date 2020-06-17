@@ -35,3 +35,10 @@ profile::kafka::broker::group_initial_rebalance_delay: 10000
 
 profile::kafka::broker::max_heap_size: '2g'
 profile::kafka::broker::num_partitions: 6
+
+# Kafka doesn't support Java 11 for versions
+# lower than 2.1
+# https://issues.apache.org/jira/browse/KAFKA-7264
+profile::java::java_packages:
+  - version: '8'
+    variant: 'jdk'

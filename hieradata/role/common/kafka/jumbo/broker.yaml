@@ -50,3 +50,10 @@ profile::kafka::mirror::consumer_ssl_enabled: true
 profile::kafka::mirror::producer_ssl_enabled: true
 
 profile::kafka::broker::max_heap_size: '2g'
+
+# Kafka doesn't support Java 11 for versions
+# lower than 2.1
+# https://issues.apache.org/jira/browse/KAFKA-7264
+profile::java::java_packages:
+  - version: '8'
+    variant: 'jdk'
