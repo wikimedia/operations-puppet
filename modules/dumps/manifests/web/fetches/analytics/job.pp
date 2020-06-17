@@ -67,7 +67,7 @@ define dumps::web::fetches::analytics::job(
     $ignore_msg = "Ignoring missing hdfs source hdfs://${hdfs_source}"
     $head = "#!/bin/bash\n"
     $script_content = $ignore_missing_source ? {
-        true    => "${head}hdfs dfs -test -d hdfs://${hdfs_source} && ${rsync_command} || echo ${ignore_msg}",
+        true    => "${head}hdfs dfs -ls -d hdfs://${hdfs_source} > /dev/null 2>&1 && ${rsync_command} || echo ${ignore_msg}",
         default => "${head}${rsync_command}"
     }
     file { "/usr/local/bin/rsync-analytics-${title}":
