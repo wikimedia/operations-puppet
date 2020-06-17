@@ -58,4 +58,12 @@ class profile::openstack::base::glance(
         ensure => 'present',
         rule   => "saddr (@resolve(${primary_glance_image_store}) @resolve(${primary_glance_image_store}, AAAA)) proto tcp dport (ssh) ACCEPT;",
     }
+
+    openstack::db::project_grants { 'glance':
+        access_hosts => $openstack_controllers,
+        db_host      => $db_host,
+        db_name      => 'glance',
+        db_user      => $db_user,
+        db_pass      => $db_pass,
+    }
 }

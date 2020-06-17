@@ -109,4 +109,12 @@ class profile::openstack::base::keystone::service(
         rule   => "saddr (${prod_networks} ${labs_networks}
                              ) proto tcp dport (5000) ACCEPT;",
     }
+
+    openstack::db::project_grants { 'keystone':
+        access_hosts => $openstack_controllers,
+        db_host      => $db_host,
+        db_name      => 'keystone',
+        db_user      => $db_user,
+        db_pass      => $db_pass,
+    }
 }

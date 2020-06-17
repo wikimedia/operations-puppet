@@ -41,4 +41,12 @@ class profile::openstack::base::neutron::common(
         bind_port             => $bind_port,
     }
     contain '::openstack::neutron::common'
+
+    openstack::db::project_grants { 'neutron':
+        access_hosts => $openstack_controllers,
+        db_host      => $db_host,
+        db_name      => 'neutron',
+        db_user      => $db_user,
+        db_pass      => $db_pass,
+    }
 }

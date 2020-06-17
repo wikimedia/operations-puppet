@@ -43,4 +43,21 @@ class profile::openstack::base::nova::common(
         dhcp_domain                  => $dhcp_domain,
     }
     contain '::openstack::nova::common'
+
+    openstack::db::project_grants { 'nova_api':
+        access_hosts => $openstack_controllers,
+        db_host      => $db_host,
+        db_name      => $db_name_api,
+        db_user      => $db_user,
+        db_pass      => $db_pass,
+        project_name => 'nova',
+    }
+    openstack::db::project_grants { 'nova':
+        access_hosts => $openstack_controllers,
+        db_host      => $db_host,
+        db_name      => $db_name,
+        db_user      => $db_user,
+        db_pass      => $db_pass,
+        project_name => 'nova',
+    }
 }

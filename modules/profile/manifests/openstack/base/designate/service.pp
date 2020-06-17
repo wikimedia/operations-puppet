@@ -152,4 +152,12 @@ class profile::openstack::base::designate::service(
         srange  => "(@resolve((${join($designate_hosts,' ')}))
                     @resolve((${join($designate_hosts,' ')}), AAAA))",
     }
+
+    openstack::db::project_grants { 'designate':
+        access_hosts => $designate_hosts,
+        db_host      => $db_host,
+        db_name      => $db_name,
+        db_user      => $db_user,
+        db_pass      => $db_pass,
+    }
 }
