@@ -8,6 +8,9 @@ profile::netbox::netbox_api: "https://%{hiera('profile::netbox::service_hostname
 profile::netbox::netbox_report_checks: []
 netbox::swift_auth_url: false
 
+# use the correct acme profile
+profile::netbox::acme_certificate: netbox-dev
+
 # Configure dev database for standalone
 profile::netbox::secondaries: []
 profile::netbox::frontends: ["netbox-dev2001.wikimedia.org"]

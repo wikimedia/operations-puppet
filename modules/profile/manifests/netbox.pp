@@ -35,6 +35,7 @@ class profile::netbox (
 
     Boolean $include_ldap = lookup('profile::netbox::ldap', {'default_value' => true}),
     Boolean $deploy_acme = lookup('profile::netbox::acme', {'default_value' => true}),
+    String $acme_certificate = lookup('profile::netbox::acme_cetificate', {'default_value' => 'netbox'}),
 
     Stdlib::HTTPSUrl $nb_api = lookup('profile::netbox::netbox_api'),
 
@@ -61,6 +62,7 @@ class profile::netbox (
     Optional[String] $swift_url_key = lookup('netbox::swift_url_key', {'default_value' => undef}),
 
     Hash $ldap_config = lookup('ldap', Hash, hash, {}),
+
 ) {
     $nb_ganeti_ca_cert = '/etc/ssl/certs/Puppet_Internal_CA.pem'
     $nb_puppetdb_ca_cert = $nb_ganeti_ca_cert
@@ -122,7 +124,7 @@ class profile::netbox (
     }
 
     if $deploy_acme {
-        acme_chief::cert { 'netbox':
+        acme_chief::cert { $acme_certificate:
             puppet_svc => 'apache2',
         }
     }
