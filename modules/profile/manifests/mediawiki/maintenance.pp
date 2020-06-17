@@ -9,6 +9,10 @@ class profile::mediawiki::maintenance {
         modules => ['rewrite', 'headers'],
     }
 
+    ::httpd::conf { 'server_header':
+        content  => template('mediawiki/apache/server-header.conf.erb'),
+    }
+
     # Deployment
     include ::scap::scripts
 
