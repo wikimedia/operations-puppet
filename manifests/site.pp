@@ -1431,10 +1431,6 @@ node 'maps2004.codfw.wmnet' {
     role(maps::master)
 }
 
-node 'matomo1001.eqiad.wmnet' {
-    role(piwik)
-}
-
 # Buster replacement for matomo1001 - T252740
 node 'matomo1002.eqiad.wmnet' {
     role(piwik)
