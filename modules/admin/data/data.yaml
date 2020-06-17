@@ -4314,3 +4314,9 @@ ldap_only_users:
     ensure: present
     realname: Vasanthi Hargyono
     email: vhargyono@wikimedia.org
+  kuz:
+    ensure: present
+    realname: Andrew Kuznetsov
+    email: kuz@cmu.edu
+    expiry_date: 2020-08-31
+    expiry_contact: mnovotny@wikimedia.org
