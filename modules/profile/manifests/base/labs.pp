@@ -2,12 +2,14 @@ class profile::base::labs(
     $unattended_wmf = hiera('profile::base::labs::unattended_wmf'),
     $unattended_distro = hiera('profile::base::labs::unattended_distro'),
     $send_puppet_failure_emails = hiera('send_puppet_failure_emails', true),
+    Boolean $clean_kernels = lookup('profile::base::labs::clean_kernels'),
     ) {
 
     include ::apt::noupgrade
     class {'::apt::unattendedupgrades':
         unattended_wmf    => $unattended_wmf,
         unattended_distro => $unattended_distro,
+        clean_kernels     => $clean_kernels,
     }
 
     # Labs instances /var is quite small, provide our own default
