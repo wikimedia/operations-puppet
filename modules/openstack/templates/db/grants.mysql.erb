@@ -1,11 +1,11 @@
-GRANT ALL PRIVILEGES ON <%= @db_name %>.* TO '<%= @db_user %>>'@'localhost' \
+GRANT ALL PRIVILEGES ON <%= @db_name %>.* TO '<%= @db_user %>'@'localhost' \
   IDENTIFIED BY PASSWORD '<%= @db_pass %>';
 
 <%- @access_hosts.each do |access_host| -%>
 
-GRANT ALL PRIVILEGES ON <%= @db_name %>.* TO '<db_user>'@'<%= scope.function_ipresolve([access_host, 4]) %>' \
+GRANT ALL PRIVILEGES ON <%= @db_name %>.* TO '<%= @db_user %>'@'<%= scope.function_ipresolve([access_host, 4]) %>' \
   IDENTIFIED BY PASSWORD '<%= @db_pass %>';
 
-GRANT ALL PRIVILEGES ON <%= @db_name %>.* TO '<db_user>'@'<%= scope.function_ipresolve([access_host, 6]) %>' \
+GRANT ALL PRIVILEGES ON <%= @db_name %>.* TO '<%= @db_user %>'@'<%= scope.function_ipresolve([access_host, 6]) %>' \
   IDENTIFIED BY PASSWORD '<%= @db_pass %>';
 <% end -%>
