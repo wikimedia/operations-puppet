@@ -6,9 +6,17 @@ class profile::openstack::codfw1dev::galera::monitoring(
 ){
     # Bypass haproxy and check the backend mysqld port directly. We want to notice
     #  degraded service even if the haproxy'd front end is holding up.
-    monitoring::service { 'galera':
+    monitoring::service { 'galera_cluster':
         description   => 'WMCS Galera Cluster',
-        check_command => "check_galera!${nodecount}!${port}!${test_username}!${test_password}",
+        check_command => "check_galera_node!${nodecount}!${port}!${test_username}!${test_password}",
+        critical      => true,
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Troubleshooting',
+        contact_group => 'wmcs-team,admins',
+    }
+
+    monitoring::service { 'galera_db':
+        description   => 'WMCS Galera Database',
+        check_command => "check_galera_db!${port}!${test_username}!${test_password}",
         critical      => true,
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Troubleshooting',
         contact_group => 'wmcs-team,admins',

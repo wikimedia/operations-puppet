@@ -155,8 +155,18 @@ class nagios_common::commands(
     # perl dependencies for check_galera_nodes.pl
     require_package('libdbi-perl')
     require_package('libdbd-mysql-perl')
+
     # Check a galera cluster
     nagios_common::check_command { 'check_galera_nodes.pl':
+        require       => File["${config_dir}/commands"],
+        config_source => 'puppet:///modules/nagios_common/check_commands/check_galera.cfg',
+        config_dir    => $config_dir,
+        owner         => $owner,
+        group         => $group,
+    }
+
+    # Check an individual galera db
+    nagios_common::check_command { 'check_db_mysql.pl':
         require       => File["${config_dir}/commands"],
         config_source => 'puppet:///modules/nagios_common/check_commands/check_galera.cfg',
         config_dir    => $config_dir,
