@@ -122,9 +122,6 @@ if ( $statsd_host && $statsd_port ) {
 	@socket_sendto( $sock, $stat, strlen( $stat ), 0, $statsd_host, $statsd_port );
 }
 
-// Match wmf-config: logging.php
-$isParsoidCluster = ( $_SERVER['SERVERGROUP'] ?? null ) === 'parsoid';
-
 // Match mediawiki/core: WebRequest::getRequestId
 $reqId = $_SERVER['HTTP_X_REQUEST_ID'] ?? $_SERVER['UNIQUE_ID'] ?? null;
 
@@ -143,10 +140,11 @@ $info = [
 	'caught_by' => '/etc/php/php7-fatal-error.php via php-wmerrors',
 	// Match wmf-config: logging.php
 	'phpversion' => PHP_VERSION,
-	// Avoid sending Parsoid-PHP fatals to MediaWiki logs (T239867).
+	// Match wmf-config: logging.php
+	'servergroup' => $_SERVER['SERVERGROUP'] ?? '',
 	// Match wmf-config: logging.php
 	// Match mediawiki/core: CeeFormatter
-	'type' => $isParsoidCluster ? 'parsoid-php' : 'mediawiki',
+	'type' => 'mediawiki',
 	'normalized_message' => $message . ' in ' . basename( $err['file'] ),
 ];
 if ( $reqId ) {
