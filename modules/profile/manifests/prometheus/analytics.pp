@@ -5,6 +5,7 @@
 class profile::prometheus::analytics (
     String $replica_label = lookup('prometheus::replica_label', { 'default_value' => 'unset' }),
     Boolean $enable_thanos_upload = lookup('profile::prometheus::analytics::thanos', { 'default_value' => false }),
+    Optional[String] $thanos_min_time = lookup('profile::prometheus::thanos::min_time', { 'default_value' => undef }),
 ){
     $targets_path = '/srv/prometheus/analytics/targets'
     $storage_retention = hiera('prometheus::server::storage_retention', '4032h')
@@ -250,6 +251,7 @@ class profile::prometheus::analytics (
         prometheus_port     => 9905,
         prometheus_instance => 'analytics',
         enable_upload       => $enable_thanos_upload,
+        min_time            => $thanos_min_time,
     }
 
     prometheus::rule { 'rules_analytics.yml':

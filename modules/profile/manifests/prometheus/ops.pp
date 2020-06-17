@@ -13,6 +13,7 @@ class profile::prometheus::ops (
     Wmflib::Ensure $ensure_rsync = lookup('profile::prometheus::ops::ensure_rsync'),
     String $replica_label = lookup('prometheus::replica_label', { 'default_value' => 'unset' }),
     Boolean $enable_thanos_upload = lookup('profile::prometheus::ops::thanos', { 'default_value' => false }),
+    Optional[String] $thanos_min_time = lookup('profile::prometheus::thanos::min_time', { 'default_value' => undef }),
 ){
     include ::passwords::gerrit
     $gerrit_client_token = $passwords::gerrit::prometheus_bearer_token
@@ -1712,6 +1713,7 @@ class profile::prometheus::ops (
         prometheus_port     => $port,
         prometheus_instance => 'ops',
         enable_upload       => $enable_thanos_upload,
+        min_time            => $thanos_min_time,
     }
 
     file { '/srv/prometheus/ops/gerrit.token':

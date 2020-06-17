@@ -5,6 +5,7 @@ class profile::prometheus::k8s::staging (
     $users = hiera('k8s_infrastructure_users'), # lint:ignore:wmf_styleguide
     String $replica_label = lookup('prometheus::replica_label', { 'default_value' => 'unset' }),
     Boolean $enable_thanos_upload = lookup('profile::prometheus::k8s::staging::thanos', { 'default_value' => false }),
+    Optional[String] $thanos_min_time = lookup('profile::prometheus::thanos::min_time', { 'default_value' => undef }),
 ){
     $targets_path = '/srv/prometheus/k8s-staging/targets'
     $storage_retention = hiera('prometheus::server::storage_retention', '4032h') # lint:ignore:wmf_styleguide
@@ -275,7 +276,8 @@ class profile::prometheus::k8s::staging (
     profile::thanos::sidecar { 'k8s-staging':
         prometheus_port     => 9907,
         prometheus_instance => 'k8s-staging',
-        enable_upload       => $enable_thanos_upload
+        enable_upload       => $enable_thanos_upload,
+        min_time            => $thanos_min_time,
     }
 
     prometheus::rule { 'rules_k8s-staging.yml':

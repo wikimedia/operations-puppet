@@ -7,11 +7,14 @@
 # = Parameters
 # [*prometheus_port*] The port Prometheus server is listening to
 # [*prometheus_instance*] The name of the Prometheus instance to sidecar
+# [*enable_upload*] Whether to upload Prometheus blocks to object storage
+# [*min_time*] Serve only metrics which happened later than this value. Can be relative, e.g. -2d
 
 define profile::thanos::sidecar (
     Stdlib::Port::Unprivileged $prometheus_port,
     String $prometheus_instance,
     Boolean $enable_upload = false,
+    Optional[String] $min_time = undef,
 ) {
     $http_port = $prometheus_port + 10000
     $grpc_port = $prometheus_port + 20000
@@ -25,6 +28,7 @@ define profile::thanos::sidecar (
         prometheus_instance => $prometheus_instance,
         http_port           => $http_port,
         grpc_port           => $grpc_port,
+        min_time            => $min_time,
     }
 
     if $enable_upload {
