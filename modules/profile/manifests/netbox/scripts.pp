@@ -13,6 +13,7 @@
 #
 class profile::netbox::scripts (
     Boolean $deploy_acme = lookup('profile::netbox::acme', {'default_value' => true}),
+    String $acme_certificate = lookup('profile::netbox::acme_cetificate', {'default_value' => 'netbox'}),
     Array[Stdlib::Fqdn] $prometheus_nodes = lookup('prometheus_nodes', {'default_value' => []}),
 ) {
     $uwsgi_environ=[
@@ -59,7 +60,7 @@ class profile::netbox::scripts (
     }
 
     if !defined(Acme_chief::Cert['netbox']) and $deploy_acme {
-        acme_chief::cert { 'netbox':
+      acme_chief::cert { $acme_certificate:
             puppet_svc => 'apache2',
         }
     }
