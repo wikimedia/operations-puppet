@@ -144,6 +144,13 @@ function do_global_read_response()
         ts.server_response.header['Vary'] = add_vary(ts.server_response.header['Vary'], 'X-Forwarded-Proto')
     end
 
+    -- Temporary workaround for T255368, to be removed once
+    -- https://github.com/apache/trafficserver/issues/6907 is fixed in our
+    -- packages
+    if response_status == 304 then
+        ts.server_response.header['Transfer-Encoding'] = nil
+    end
+
     -- Cap TTL of cacheable 404 responses to 10 minutes
     if response_status == 404 and ts.server_response.is_cacheable() and ts.server_response.get_maxage() > 600 then
         ts.server_response.header['Cache-Control'] = 's-maxage=600'
