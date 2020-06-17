@@ -13,6 +13,7 @@ class profile::toolforge::legacy_redirector (
         acme_chief::cert { $ssl_certificate_name:
             puppet_rsc => Exec['nginx-reload'],
         }
+        class { '::sslcert::dhparam': } # deploys /etc/ssl/dhparam.pem, required by nginx
     } else {
         $ssl_certificate_name = false
     }
