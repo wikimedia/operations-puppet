@@ -2905,7 +2905,6 @@ host es1024 {
 host es1025 {
     hardware ethernet B0:26:28:F2:93:3C;
     fixed-address es1025.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer-bootif/";
 }
 
 host es2011 {
