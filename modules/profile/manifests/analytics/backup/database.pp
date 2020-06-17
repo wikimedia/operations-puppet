@@ -65,6 +65,9 @@ class profile::analytics::backup::database (
             default => $db_instance,
         }
 
+        # Needed to deploy /usr/bin/mysqldump (used by backup::mysqlset)
+        package { 'mariadb-client': }
+
         # Backups older than 15 days will be deleted by the predump script before
         # the mysqldump, so a cron is not needed.
         backup::mysqlset { $db_instance_name:
