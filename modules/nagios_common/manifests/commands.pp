@@ -159,7 +159,7 @@ class nagios_common::commands(
     # Check a galera cluster
     nagios_common::check_command { 'check_galera_nodes.pl':
         require       => File["${config_dir}/commands"],
-        config_source => 'puppet:///modules/nagios_common/check_commands/check_galera.cfg',
+        config_source => 'puppet:///modules/nagios_common/check_commands/check_galera_node.cfg',
         config_dir    => $config_dir,
         owner         => $owner,
         group         => $group,
@@ -168,7 +168,7 @@ class nagios_common::commands(
     # Check an individual galera db
     nagios_common::check_command { 'check_db_mysql.pl':
         require       => File["${config_dir}/commands"],
-        config_source => 'puppet:///modules/nagios_common/check_commands/check_galera.cfg',
+        config_source => 'puppet:///modules/nagios_common/check_commands/check_galera_db.cfg',
         config_dir    => $config_dir,
         owner         => $owner,
         group         => $group,
