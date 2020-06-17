@@ -16,7 +16,7 @@ define planet::cronjob (
         require => [
             Class['planet::packages'],
             File['/var/log/planet'],
-            User['planet'],
+            File['/etc/sysusers.d/planet.conf'],
         ],
     }
 }

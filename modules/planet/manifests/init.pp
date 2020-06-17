@@ -25,7 +25,16 @@ class planet (
     # things done once for all planet per languages
     include ::planet::packages
     include ::planet::dirs
-    include ::planet::user
+
+    systemd::sysuser { 'planet':
+      content    => [
+      'usertype' => 'u',
+      'name'     => 'planet',
+      'gecos'    => 'planet RSS aggregator',
+      'id'       => '-',
+      'home_dir' => '/var/lib/planet',
+                    ]
+    }
 
     class { '::planet::index_site':
         domain_name => $domain_name,
