@@ -94,10 +94,6 @@ profile::elasticsearch::common_settings:
 # Bulk daemon consumes per-datacenter to apply page updates to all clusters.
 # Disable until cloudelastic is setup.
 
-# profile::mjolnir::kafka_bulk_daemon::kafka_cluster: "main-%{::site}"
-# profile::mjolnir::kafka_bulk_daemon::group_id: "cirrussearch_updates_cloudelastic"
-# profile::mjolnir::kafka_bulk_daemon::topics:
-#  - eqiad.cirrussearch.page-index-update
 profile::elasticsearch::cirrus::enable_remote_search: false
 
 # Remove this when T220625 is complete. see T230366 for more details

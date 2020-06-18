@@ -32,23 +32,6 @@ class icinga::monitor::elasticsearch::cirrus_cluster_checks{
             notes_link      => 'https://phabricator.wikimedia.org/T214494',
         }
 
-        # ensure kafka queue is empty at least once in a week
-        # warning or critical here means critical
-        # value for critical was bumped a bit to make check_prometheus_metrics.py work
-        monitoring::check_prometheus { "cirrus_update_lag_${site}":
-            description     => "Cirrus Update lag check - ${site}",
-            dashboard_links => ['https://grafana.wikimedia.org/d/000000484/kafka-consumer-lag?orgId=1&from=now-7d&to=now'],
-            query           => "scalar(sum(min_over_time(kafka_burrow_partition_lag{exported_cluster=~\"main-${site}\", topic=\"${site}.cirrussearch.page-index-update\", group=~\"cirrussearch_updates_${site}\"}[7d])))",
-            prometheus_url  => "http://prometheus.svc.${site}.wmnet/ops",
-            method          => 'gt',
-            critical        => 2,
-            warning         => 1,
-            check_interval  => 1440, # 24h
-            retries         => 1,
-            contact_group   => 'admins,team-discovery',
-            notes_link      => 'https://wikitech.wikimedia.org/wiki/Search',
-        }
-
         # this is checking for update rate over the last 60 minutes. Ideally, we'd like a shorter window for this
         # check, but T224425 makes it generate too much noise.
         # FIXME: reduce moving average to 10 minutes once T224425 is fixed.
