@@ -10,7 +10,9 @@ class profile::archiva(
     # needed by ssl_ciphersuite() used in ::archiva::proxy
     class { '::sslcert::dhparam': }
 
-    class { '::archiva': }
+    class { '::archiva':
+        user_database_base_dir => '/srv/archiva',
+    }
 
     # The rsync daemon module will chroot to this directory
     $archiva_path            = '/var/lib/archiva'

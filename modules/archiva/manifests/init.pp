@@ -5,15 +5,28 @@
 # via the archiva web interface.  Archiva will save
 # its custom configurations to /var/lib/archiva/conf/archiva.xml.
 #
-class archiva($port = 8080)
-{
+class archiva(
+    $port = 8080,
+    $user_database_base_dir = '/srv/archiva',
+) {
     package { 'archiva':
         ensure => 'installed',
     }
 
+    file { [$user_database_base_dir, "${user_database_base_dir}/databases", "${user_database_base_dir}/databases/users"]:
+        ensure  => 'directory',
+        owner   => 'archiva',
+        group   => 'archiva',
+        mode    => '0750',
+        require => Package['archiva']
+    }
+
     file { '/etc/archiva/jetty.xml':
         content => template('archiva/jetty.xml.erb'),
-        require => Package['archiva'],
+        require => [
+            Package['archiva'],
+            File["${user_database_base_dir}/databases/users"]
+        ],
     }
 
     # The Archiva systemd unit requires /var/run/archiva
