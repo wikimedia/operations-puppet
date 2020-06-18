@@ -1,6 +1,7 @@
 # sets up NFS exports on a labstore fileserver
 class labstore::fileserver::exports(
-    $server_vols,
+    Array[String] $server_vols,
+    String $drbd_role = 'primary',
     ) {
     require_package(['python3-yaml'])
 
@@ -88,10 +89,25 @@ class labstore::fileserver::exports(
         source => 'puppet:///modules/labstore/archive-project-volumes.py',
     }
 
-    systemd::service { 'nfs-exportd':
-        ensure    => 'present',
-        content   => systemd_template('nfs-exportd'),
-        require   => File['/usr/local/bin/nfs-exportd'],
-        subscribe => File['/etc/novaobserver.yaml'],
+
+
+    if $drbd_role == 'primary' {
+        systemd::service { 'nfs-exportd':
+            ensure    => 'present',
+            content   => systemd_template('nfs-exportd'),
+            require   => File['/usr/local/bin/nfs-exportd'],
+            subscribe => File['/etc/novaobserver.yaml'],
+        }
+    } else {
+        systemd::service { 'nfs-exportd':
+            ensure         => 'present',
+            content        => systemd_template('nfs-exportd'),
+            require        => File['/usr/local/bin/nfs-exportd'],
+            service_params => {
+                ensure => 'stopped',
+                enable => false,
+            }
+        }
     }
+
 }

@@ -59,7 +59,8 @@ class profile::wmcs::nfs::primary(
     }
 
     class {'::labstore::fileserver::exports':
-        server_vols   => ['project', 'home', 'tools-home', 'tools-project'],
+        server_vols => ['project', 'home', 'tools-home', 'tools-project'],
+        drbd_role   => $drbd_actual_role,
     }
 
     # Enable RPS to balance IRQs over CPUs
@@ -138,7 +139,10 @@ class profile::wmcs::nfs::primary(
         group   => 'root',
     }
 
-    class {'labstore::monitoring::exports': }
+    class {'labstore::monitoring::exports':
+        drbd_role => $drbd_actual_role,
+    }
+
     class {'labstore::monitoring::ldap': }
     class {'labstore::monitoring::interfaces':
         monitor_iface => $monitor_iface,
