@@ -12,17 +12,8 @@ class profile::archiva(
 
     class { '::archiva': }
 
-    $archiva_path = '/var/lib/archiva'
-
     # The rsync daemon module will chroot to this directory
-    $archiva_public_path = '/srv/archiva-public'
-
-    file { $archiva_public_path:
-        ensure => 'directory',
-        owner  => 'archiva',
-        group  => 'archiva',
-    }
-
+    $archiva_path            = '/var/lib/archiva'
     # git-fat symlinks will be created here.
     $archiva_gitfat_path     = "${archiva_path}/git-fat"
 
@@ -75,7 +66,7 @@ class profile::archiva(
     # The git fat store will be available at:
     #   hostname::archiva/git-fat
     rsync::server::module { 'archiva':
-        path      => $archiva_public_path,
+        path      => $archiva_path,
         read_only => 'yes',
         uid       => 'nobody',
         gid       => 'nogroup',
