@@ -108,6 +108,13 @@ class profile::openstack::base::puppetmaster::frontend(
                         proto tcp dport 22 ACCEPT;",
     }
 
+    file {'/etc/labspuppet':
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+    }
+
     openstack::db::project_grants { 'labspuppet':
         access_hosts => flatten([$openstack_controllers, keys($puppetmasters)]),
         db_host      => $encapi_db_host,
