@@ -155,6 +155,7 @@ class profile::icinga(
         ldap_server_fallback  => $ldap_config['ro-server-fallback'],
     }
     include profile::idp::client::httpd
+    include profile::icinga::external_monitoring
 
     class { 'icinga::naggen':
         icinga_user  => $icinga_user,

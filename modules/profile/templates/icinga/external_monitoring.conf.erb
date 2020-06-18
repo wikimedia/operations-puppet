@@ -1,0 +1,51 @@
+# vim: filetype=apache
+
+AddHandler cgi-script .cgi
+ScriptAlias /cgi-bin/icinga /usr/lib/cgi-bin/icinga
+
+<VirtualHost *:443>
+    ServerName <%= @vhost %>
+    ServerAdmin noc@wikimedia.org
+    # https://httpoxy.org/
+    RequestHeader unset Proxy early
+    SSLEngine On
+    SSLCertificateFile /etc/acmecerts/icinga/live/ec-prime256v1.crt
+    SSLCertificateChainFile /etc/acmecerts/icinga/live/ec-prime256v1.chain.crt
+    SSLCertificateKeyFile /etc/acmecerts/icinga/live/ec-prime256v1.key
+    SSLCertificateFile /etc/acmecerts/icinga/live/rsa-2048.crt
+    SSLCertificateChainFile /etc/acmecerts/icinga/live/rsa-2048.chain.crt
+    SSLCertificateKeyFile /etc/acmecerts/icinga/live/rsa-2048.key
+    <%= @ssl_settings.join("\n    ") %>
+
+    DocumentRoot /usr/share/icinga/htdocs
+
+    <Directory />
+        Order deny,allow
+        Deny from all
+    </Directory>
+    <Directory /usr/lib/cgi-bin/icinga>
+        SSLRequireSSL
+        Options ExecCGI
+        AllowOverride None
+
+        <Files extinfo.cgi>
+              AuthName "External Monitoring access"
+              AuthType Basic
+              AuthBasicProvider file
+              AuthUserFile "<%= @auth_user_file %>"
+              allow from <%= @allow_from.join(' ') %>
+              <RequireAll>
+                  # probably overkill checking the ip twice
+                  require ip <%= @allow_from.join(' ') %>
+                  require valid-user
+              </RequireAll>
+        </Files>
+    </Directory>
+
+    <IfModule !mod_alias.c>
+        LoadModule alias_module modules/mod_alias.so
+    </IfModule>
+
+    ErrorLog /var/log/apache2/icinga_<%= @vhost %>.log
+    LogLevel warn
+</VirtualHost>
