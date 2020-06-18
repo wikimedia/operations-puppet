@@ -7,6 +7,8 @@ After=network.target
 [Service]
 <%- if @override -%>
 ExecStart=
+CapabilityBoundingSet=CAP_DAC_OVERRIDE
+ReadOnlyPaths=/var/lib/puppet/ssl/certs /var/lib/puppet/ssl/private_keys
 <% end -%>
 ExecStart=/usr/bin/memcached \
           -p <%= @port -%> \
