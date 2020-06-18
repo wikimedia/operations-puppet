@@ -90,6 +90,8 @@ class role::mariadb::core {
         contact_group => $contact_group,
     }
 
+    profile::mariadb::replication_lag { [ $shard ]: }
+
     class { 'mariadb::monitor_disk':
         is_critical   => $is_on_primary_dc,
         contact_group => $contact_group,

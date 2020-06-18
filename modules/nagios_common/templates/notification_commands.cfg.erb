@@ -214,3 +214,15 @@ define command{
     command_name    notify-service-by-irc-reading-web
     command_line    echo "$NOTIFICATIONTYPE$ - $SERVICEDESC$ on $HOSTNAME$ is $SERVICESTATE$: $SERVICEOUTPUT$ $SERVICEACKAUTHOR$ $SERVICEACKCOMMENT$ $SERVICENOTESURL$" | sed -r -e 's/%27(https)/\1/g' -e 's/%27(\+|$$)/ /g' >> <%= @irc_dir_path %>/irc-reading-web.log
     }
+
+# IRC output for Data Persistence
+
+define command{
+    command_name    notify-host-by-irc-databases
+    command_line    echo "$NOTIFICATIONTYPE$ - Host $HOSTALIAS$ is $HOSTSTATE$: $HOSTOUTPUT$ $HOSTACKAUTHOR$ $HOSTACKCOMMENT$" >> <%= @irc_dir_path %>/irc-databases.log
+    }
+
+define command{
+    command_name    notify-service-by-irc-databases
+    command_line    echo "$NOTIFICATIONTYPE$ - $SERVICEDESC$ on $HOSTNAME$ is $SERVICESTATE$: $SERVICEOUTPUT$ $SERVICEACKAUTHOR$ $SERVICEACKCOMMENT$ $SERVICENOTESURL$" | sed -r -e 's/%27(https)/\1/g' -e 's/%27(\+|$$)/ /g' >> <%= @irc_dir_path %>/irc-databases.log
+    }
