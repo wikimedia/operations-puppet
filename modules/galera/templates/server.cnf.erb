@@ -11,6 +11,8 @@ datadir      = <%= @datadir %>
 tmpdir       = <%= @tmpdir %>
 server_id    = <%= @server_id %>
 bind-address = 0.0.0.0
+max_connections = 500
+
 
 <% if @ssl == 'on' or @ssl == 'puppet-cert' %>
 # ssl
