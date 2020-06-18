@@ -1,4 +1,4 @@
-profile::openstack::codfw1dev::designate::db_host: 'clouddb2001-dev.codfw.wmnet'
+profile::openstack::codfw1dev::designate::db_host: 'openstack.codfw1dev.wikimediacloud.org'
 profile::openstack::codfw1dev::designate::wmflabsdotorg_project: 'wmflabsdotorg'
 
 # This is .codfw1dev.wikimedia.cloud.
