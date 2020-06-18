@@ -26,6 +26,7 @@ class gerrit::jetty(
     Optional[String] $scap_user = undef,
     Optional[String] $scap_key_name = undef,
     Boolean $enable_monitoring = true,
+    Boolean $is_new_version = false,
     ) {
 
     group { 'gerrit2':

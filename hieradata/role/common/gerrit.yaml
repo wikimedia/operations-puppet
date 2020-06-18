@@ -11,6 +11,10 @@ gerrit::server::is_replica: true
 gerrit::server::replica_hosts:
     - 'gerrit-replica.wikimedia.org'
 
+# When upgrading servers, set to true on hosts that have already been
+# upgraded and need the config files for the upgraded Gerrit version.
+gerrit::server::is_new_version: false
+
 # Settings for rsyncing app data for migrations or reinstalls
 gerrit::server::rsync_src_host: 'gerrit1001.wikimedia.org'
 gerrit::server::rsync_dst_hosts:
