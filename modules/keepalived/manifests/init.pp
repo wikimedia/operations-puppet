@@ -20,14 +20,13 @@
 
 class keepalived(
     Array[Stdlib::Fqdn] $peers,
-    Integer             $priority,
-    Integer             $virtual_router_id,
     String              $auth_pass,
-    String              $default_state,
-    String              $interface,
     Array[Stdlib::IP::Address] $vips,
+    Enum['BACKUP', 'MASTER']   $default_state = 'BACKUP',
+    String              $interface            = 'eth0',
+    Integer             $priority             = fqdn_rand(100),
+    Integer             $virtual_router_id    = 51,
 ) {
-
     package { 'keepalived':
         ensure => present,
     }
