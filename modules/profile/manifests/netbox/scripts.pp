@@ -13,7 +13,7 @@
 #
 class profile::netbox::scripts (
     Boolean $deploy_acme = lookup('profile::netbox::acme', {'default_value' => true}),
-    String $acme_certificate = lookup('profile::netbox::acme_cetificate', {'default_value' => 'netbox'}),
+    String $acme_certificate = lookup('profile::netbox::acme_certificate', {'default_value' => 'netbox'}),
     Array[Stdlib::Fqdn] $prometheus_nodes = lookup('prometheus_nodes', {'default_value' => []}),
 ) {
     $uwsgi_environ=[
