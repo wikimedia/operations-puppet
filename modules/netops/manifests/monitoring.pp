@@ -48,8 +48,8 @@ class netops::monitoring(
         'cr3-ulsfo'  => { ipv4 => '198.35.26.192',   ipv6 => '2620:0:863:ffff::1', alarms => false, vrrp_peer => 'cr4-ulsfo.wikimedia.org'},
         'cr4-ulsfo'  => { ipv4 => '198.35.26.193',   ipv6 => '2620:0:863:ffff::2', alarms => false, },
         # eqsin
-        'cr1-eqsin'  => { ipv4 => '103.102.166.129', ipv6 => '2001:df2:e500:ffff::2', vrrp_peer => 'cr2-eqsin.wikimedia.org'},
         'cr2-eqsin'  => { ipv4 => '103.102.166.130', ipv6 => '2001:df2:e500:ffff::3', alarms => false, },
+        'cr3-eqsin'  => { ipv4 => '103.102.166.131', ipv6 => '2001:df2:e500:ffff::4', alarms => false, vrrp_peer => 'cr2-eqsin.wikimedia.org'},
     }
     create_resources(netops::check, $routers, $routers_defaults)
 
@@ -85,7 +85,7 @@ class netops::monitoring(
         're0.cr2-esams' => { ipv4 => '10.21.0.117',     parents => ['mr1-esams'] },
         're0.cr3-ulsfo' => { ipv4 => '10.128.128.4',    parents => ['mr1-ulsfo'] },
         're0.cr4-ulsfo' => { ipv4 => '10.128.128.5',    parents => ['mr1-ulsfo'] },
-        're0.cr1-eqsin' => { ipv4 => '10.132.128.2',    parents => ['mr1-eqsin'] },
+        're0.cr3-eqsin' => { ipv4 => '10.132.128.7',    parents => ['mr1-eqsin'] },
         're0.cr2-eqsin' => { ipv4 => '10.132.128.6',    parents => ['mr1-eqsin'] },
     }
     create_resources(netops::check, $oob)
@@ -121,7 +121,7 @@ class netops::monitoring(
         # ulsfo
         'asw2-ulsfo'    => { ipv4 => '10.128.128.7', parents => ['cr3-ulsfo', 'cr4-ulsfo'] },
         # eqsin
-        'asw1-eqsin'    => { ipv4 => '10.132.128.4', parents => ['cr1-eqsin'] },
+        'asw1-eqsin'    => { ipv4 => '10.132.128.4', parents => ['cr2-eqsin', 'cr3-eqsin'] },
     }
     create_resources(netops::check, $switches, $switches_defaults)
 
