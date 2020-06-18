@@ -144,13 +144,18 @@ class gerrit::jetty(
         require => File['/srv/gerrit/plugins'],
     }
 
+    $homedir_template = $is_new_version ? {
+        true    => 'puppet:///modules/gerrit/homedir-new',
+        default => 'puppet:///modules/gerrit/homedir',
+    }
+
     file { '/var/lib/gerrit2':
         ensure  => directory,
         recurse => 'remote',
         mode    => '0755',
         owner   => $scap_user,
         group   => $scap_user,
-        source  => 'puppet:///modules/gerrit/homedir',
+        source  => $homedir_template,
     }
 
     file { '/var/lib/gerrit2/review_site/bin':
