@@ -19,6 +19,9 @@ gerrit::server::backups_enabled: false
 gerrit::server::db_user: 'gerrittest'
 gerrit::server::db_name: 'reviewdb-test'
 
+# The test server has been migrated to Gerrit 3.x
+gerrit::server::is_new_version: true
+
 # jetty
 gerrit::jetty::heap_limit: 5g
 gerrit::jetty::replication: {}
