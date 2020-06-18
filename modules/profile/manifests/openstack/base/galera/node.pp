@@ -5,6 +5,7 @@ class profile::openstack::base::galera::node(
     Array[Stdlib::Fqdn] $openstack_controllers = lookup('profile::openstack::base::openstack_controllers'),
     Array[Stdlib::Fqdn] $designate_hosts       = lookup('profile::openstack::base::designate_hosts'),
     Array[Stdlib::Fqdn] $labweb_hosts          = lookup('profile::openstack::base::labweb_hosts'),
+    Stdlib::Fqdn        $puppetmaster          = lookup('profile::openstack::codfw1dev::puppetmaster::web_hostname'),
     ) {
 
     class {'::galera':
@@ -43,6 +44,7 @@ class profile::openstack::base::galera::node(
                           @resolve((${join($openstack_controllers,' ')}), AAAA)
                           @resolve((${join($designate_hosts,' ')}))
                           @resolve((${join($designate_hosts,' ')}), AAAA)
+                          @resolve(${puppetmaster}) @resolve(${puppetmaster}, AAAA)
                           ${labweb_ips} ${labweb_ip6s}
                           ) proto tcp dport (3306) ACCEPT;",
     }
