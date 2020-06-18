@@ -1,10 +1,11 @@
 class profile::wikidough (
-    Dnsdist::Resolver   $resolver   = lookup(profile::wikidough::resolver),
-    Dnsdist::TLS_config $tls_config = lookup(profile::wikidough::tls::config),
+    Dnsdist::Resolver         $resolver         = lookup(profile::wikidough::dnsdist::resolver),
+    Dnsdist::TLS_config       $tls_config       = lookup(profile::wikidough::dnsdist::tls),
+    Dnsdist::Webserver_config $webserver_config = lookup(profile::wikidough::dnsdist::webserver, {'merge' => hash}),
 ) {
 
     include network::constants
-    include passwords::dnsdist::wikidough
+    include passwords::wikidough::dnsdist
 
     ferm::service { 'wikidough-doh':
         proto  => 'tcp',
@@ -31,11 +32,13 @@ class profile::wikidough (
     }
 
     class { 'dnsdist':
-        resolver       => $resolver,
-        tls_config     => $tls_config,
-        enable_console => true,
-        console_key    => $passwords::dnsdist::wikidough::console_key,
-        require        => Class['dnsrecursor'],
+        resolver         => $resolver,
+        tls_config       => $tls_config,
+        enable_console   => true,
+        console_key      => $passwords::wikidough::dnsdist::console_key,
+        enable_webserver => true,
+        webserver_config => $webserver_config,
+        require          => Class['dnsrecursor'],
     }
 
 }

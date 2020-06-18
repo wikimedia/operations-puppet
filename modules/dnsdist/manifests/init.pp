@@ -27,20 +27,32 @@
 #
 #  [*console_key*]
 #    [string] key to use for dnsdist's console access. default: undefined.
+#
+#  [*enable_webserver*]
+#    [bool] whether to enable dnsdist's web server. default: false.
+#
+#  [*webserver_config*]
+#    [Dnsdist::Webserver_config] web server configuration. default: undef.
 
 class dnsdist (
-    Dnsdist::Resolver   $resolver,
-    Dnsdist::TLS_config $tls_config,
-    String              $doh_base_url       = '/dns-query',
-    Integer[1]          $qps_max            = 20,
-    Boolean             $enable_packetcache = true,
-    Integer[1]          $packetcache_max    = 10000000,
-    Boolean             $enable_console     = true,
-    String              $console_key        = undef,
+    Dnsdist::Resolver                   $resolver,
+    Dnsdist::TLS_config                 $tls_config,
+    String                              $doh_base_url       = '/dns-query',
+    Integer[1]                          $qps_max            = 20,
+    Boolean                             $enable_packetcache = true,
+    Integer[1]                          $packetcache_max    = 10000000,
+    Boolean                             $enable_console     = true,
+    Optional[String]                    $console_key        = undef,
+    Boolean                             $enable_webserver   = false,
+    Optional[Dnsdist::Webserver_config] $webserver_config   = undef,
 ) {
 
     if ($enable_console and $console_key == undef) {
         fail('Console access is enabled but no key was set.')
+    }
+
+    if ($enable_webserver and $webserver_config == undef) {
+        fail('Web server access is enabled but no configuration was set.')
     }
 
     apt::package_from_component { 'dnsdist':

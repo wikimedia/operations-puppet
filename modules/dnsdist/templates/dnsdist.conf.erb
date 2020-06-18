@@ -10,6 +10,11 @@ controlSocket('127.0.0.1')
 setKey('<%= @console_key %>')
 <% end -%>
 
+<% if @enable_webserver -%>
+-- web server and API access (primarily used for Prometheus)
+webserver('<%= @webserver_config['host'] %>:<%= @webserver_config['port'] %>', '<%= @webserver_config['password'] %>', '<%= @webserver_config['api_key'] %>')
+<% end -%>
+
 -- limit the number of queries per second from an IP (default: /32 for IPv4, /64 for IPv6)
 -- note that we don't use DelayAction() as that is UDP-only
 addAction(MaxQPSIPRule(<%= @qps_max %>, 32, 64), DropAction())
