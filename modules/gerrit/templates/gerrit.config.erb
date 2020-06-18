@@ -109,12 +109,14 @@
     packedGitWindowSize = 16k
     streamFileThreshold = 100m
     useRecursiveMerge = true
+<% if not @is_new_version -%>
 [database]
     type = mysql
     hostname = <%= @db_host %>
     database = <%= @db_name %>
     username = <%= @db_user %>
     url = jdbc:mysql://<%= @db_host %>/<%= @db_name %>?characterSetResults=utf8&characterEncoding=utf8&connectionCollation=utf8_unicode_ci
+<% end -%>
 [execution]
     defaultThreadPoolSize = 2
 [gc]
