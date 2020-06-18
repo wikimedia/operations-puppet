@@ -126,6 +126,10 @@ MaxClients 50
     # In gerrit 2.16, cloning over /p/ is broken, so redirect /r/p/ to /r/
     RewriteRule ^/r/p/(.+)/info/(.+)$ https://<%= @host %>/r/$1/info/$2 [L,R=301,NE]
 
+    <%- if @is_new_version -%>
+    # PolyGerrit cannot serve over /r/project so uses /r/p.
+    RewriteRule ^/r/projects/(.+),dashboards/(.+)$ https://<%= @host %>/r/p/$1/+/dashboard/$2 [L,R=301,NE]
+    <%- end -%>
     <%- if @maint_mode -%>
     RedirectMatch temp "/r" "/error.html#"
     <%- else -%>
