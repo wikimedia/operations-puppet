@@ -32,7 +32,8 @@ define query_service::blazegraph(
     Array[String] $extra_jvm_opts,
     Boolean $use_geospatial,
     String $journal,
-    Optional[Query_service::OAuthSettings] $oauth_settings = undef,
+    String $federation_user_agent,
+    Optional[Query_service::OAuthSettings] $oauth_settings = undef
 ) {
     if ($use_deployed_config) {
         $config_file = $config_file_name

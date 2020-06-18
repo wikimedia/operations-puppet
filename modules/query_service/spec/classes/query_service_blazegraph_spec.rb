@@ -23,6 +23,7 @@ describe 'query_service::blazegraph', :type => :define do
         :options => [],
         :extra_jvm_opts => [],
         :use_geospatial => false,
+        :federation_user_agent => 'TEST User-Agent',
         }
    }
 
@@ -65,6 +66,7 @@ describe 'query_service::blazegraph', :type => :define do
         :options => [],
         :extra_jvm_opts => [],
         :use_geospatial => false,
+        :federation_user_agent => 'TEST User-Agent',
         }
    }
 
@@ -104,6 +106,7 @@ describe 'query_service::blazegraph', :type => :define do
         :options => [],
         :extra_jvm_opts => [],
         :use_geospatial => true,
+        :federation_user_agent => 'TEST User-Agent',
         }
    }
 

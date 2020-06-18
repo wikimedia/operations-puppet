@@ -1,0 +1,27 @@
+{
+  "api": {
+    "sparql": {
+      "uri": "https://wcqs-beta.wmflabs.org/sparql"
+    },
+    "wikibase": {
+      "uri": "https://www.wikidata.org/w/api.php"
+    },
+    "examples": {
+      "server": "https://commons.wikimedia.org/",
+      "apiPath": "w/api.php",
+      "pageTitle": "Commons:SPARQL_query_service/queries/examples",
+      "pagePathElement": "wiki/"
+    },
+    "urlShortener": "tinyurl"
+  },
+  "brand": {
+    "title": "Wikimedia Commons Query Service",
+    "logo": "commons-logo.svg.png",
+    "favicon": "favicon.ico",
+    "copyrightUrl": "https://www.wikidata.org/wiki/Wikidata:SPARQL_query_service/Copyright"
+  },
+  "location": {
+    "root": "https://wcqs-beta.wmflabs.org/",
+    "index": "https://wcqs-beta.wmflabs.org/"
+  }
+}

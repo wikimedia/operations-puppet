@@ -1,9 +1,9 @@
-# = Class: profile::query_service::sdoc
+# = Class: profile::query_service::wcqs
 #
 # This class defines a meta-class that pulls in all the query_service profiles
 # necessary for a query service installation servicing the commons.wikimedia.org
 # dataset.
-class profile::query_service::sdoc(
+class profile::query_service::wcqs(
     Stdlib::Unixpath $package_dir = lookup('profile::query_service::package_dir'),
     Stdlib::Unixpath $data_dir = lookup('profile::query_service::data_dir'),
     Stdlib::Unixpath $log_dir = lookup('profile::query_service::log_dir'),
@@ -19,6 +19,7 @@ class profile::query_service::sdoc(
     Optional[String] $sparql_query_stream = lookup('profile::query_service::sparql_query_stream', {'default_value' => undef}),
     Optional[String] $event_service_endpoint = lookup('profile::query_service::event_service_endpoint', {'default_value' => undef}),
     Optional[Query_service::OAuthSettings] $oauth_settings = lookup('profile::query_service::oauth_settings'),
+    String $federation_user_agent = lookup('profile::query_service::federation_user_agent')
 ) {
     require ::profile::query_service::common
     require ::profile::query_service::gui
@@ -48,9 +49,10 @@ class profile::query_service::sdoc(
         blazegraph_port        => $blazegraph_port,
         prometheus_port        => $prometheus_port,
         prometheus_agent_port  => $prometheus_agent_port,
-        config_file_name       => 'RWStore.sdoc.properties',
+        config_file_name       => 'RWStore.wcqs.properties',
         use_geospatial         => true,
-        journal                => 'sdoc',
+        journal                => 'wcqs',
         oauth_settings         => $oauth_settings,
+        federation_user_agent  => $federation_user_agent,
     }
 }

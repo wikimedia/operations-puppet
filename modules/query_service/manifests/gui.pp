@@ -21,12 +21,13 @@ class query_service::gui(
     Query_service::DeployMode $deploy_mode,
     Boolean $enable_ldf,
     Integer $max_query_time_millis,
-    String $ns,
-    Boolean $oauth,
+    Enum['wdq','wcq'] $ns,
+    Boolean $oauth
 ) {
     $port = 80
     $additional_port = 8888
     $alias_map = "${data_dir}/aliases.map"
+    $gui_config = "/etc/${deploy_name}/gui_config.json"
 
     ::nginx::site { $deploy_name:
         content => template('query_service/nginx.erb'),
@@ -60,5 +61,13 @@ class query_service::gui(
         owner   => 'root',
         group   => 'root',
         mode    => '0644',
+    }
+
+    file { $gui_config:
+        ensure => present,
+        source => "puppet:///modules/query_service/gui/custom-config-${deploy_name}.json",
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0644',
     }
 }

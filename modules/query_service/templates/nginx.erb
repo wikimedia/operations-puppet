@@ -73,6 +73,10 @@ server {
         add_header Cache-Control "public, max-age=300, s-maxage=300";
     }
 
+    location /custom-config.json {
+        alias <%= @gui_config %>;
+    }
+
     location /status {
         stub_status  on;
         access_log   off;

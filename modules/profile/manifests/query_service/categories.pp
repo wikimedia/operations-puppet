@@ -21,6 +21,7 @@ class profile::query_service::categories(
     Array[String] $extra_jvm_opts = hiera('profile::query_service::blazegraph_extra_jvm_opts'),
     Array[String] $prometheus_nodes = hiera('prometheus_nodes'),
     String $contact_groups = hiera('contactgroups', 'admins'),
+    String $federation_user_agent = lookup('profile::query_service::federation_user_agent'),
 ) {
     require ::profile::query_service::common
     include ::profile::query_service::monitor::categories
@@ -52,5 +53,6 @@ class profile::query_service::categories(
         prometheus_agent_port  => $prometheus_agent_port,
         config_file_name       => 'RWStore.categories.properties',
         use_geospatial         => false,
+        federation_user_agent  => $federation_user_agent,
     }
 }

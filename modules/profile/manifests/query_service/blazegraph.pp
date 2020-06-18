@@ -20,6 +20,7 @@ define profile::query_service::blazegraph (
     Optional[String] $event_service_endpoint,
     Boolean $use_geospatial,
     String $journal,
+    String $federation_user_agent,
     String $instance_name = $title,
     Optional[Query_service::OAuthSettings] $oauth_settings = undef,
 
@@ -78,7 +79,7 @@ define profile::query_service::blazegraph (
         extra_jvm_opts        => $default_extra_jvm_opts + $event_service_jvm_opts + $extra_jvm_opts + "-javaagent:${prometheus_agent_path}=${prometheus_agent_port}:${prometheus_agent_config}",
         use_geospatial        => $use_geospatial,
         oauth_settings        => $oauth_settings,
-
+        federation_user_agent => $federation_user_agent
     }
 
     if $monitoring_enabled {

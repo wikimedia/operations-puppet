@@ -39,3 +39,4 @@ monitor_screens: false
 
 profile::query_service::blazegraph::monitoring_enabled: true
 profile::query_service::oauth: false
+profile::query_service::federation_user_agent: 'Wikidata Query Service (internal); https://query.wikidata.org/'

@@ -1,0 +1,18 @@
+{
+  "api": {
+    "sparql": {
+      "uri": "/sparql"
+    },
+    "urlShortener": "wmf"
+  },
+  "brand": {
+    "logo": "logo.svg",
+    "favicon": "favicon.ico",
+    "title": "Wikidata Query Service",
+    "copyrightUrl": "https://www.wikidata.org/wiki/Wikidata:SPARQL_query_service/Copyright"
+  },
+  "location": {
+    "root": "https://query.wikidata.org/",
+    "index": "https://query.wikidata.org/"
+  }
+}

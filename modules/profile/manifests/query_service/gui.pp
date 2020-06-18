@@ -8,7 +8,7 @@ class profile::query_service::gui (
     Boolean $enable_ldf = hiera('profile::query_service::enable_ldf', false),
     Integer $max_query_time_millis = hiera('profile::query_service::max_query_time_millis', 60000),
     Boolean $high_query_time_port = hiera('profile::query_service::high_query_time_port', false),
-    String $ns = lookup('profile::query_service::ns'),
+    Enum['wdq','wcq'] $ns = lookup('profile::query_service::ns'),
     Boolean $oauth = lookup('profile::query_service::oauth')
 ) {
     require ::profile::query_service::common

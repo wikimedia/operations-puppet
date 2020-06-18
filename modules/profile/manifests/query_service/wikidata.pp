@@ -24,7 +24,8 @@ class profile::query_service::wikidata(
     String $contact_groups = lookup('contactgroups', {'default_value' => 'admins'}),
     Boolean $monitoring_enabled = lookup('profile::query_service::blazegraph::monitoring_enabled', {'default_value' => false}),
     Optional[String] $sparql_query_stream = lookup('profile::query_service::sparql_query_stream', {'default_value' => undef}),
-    Optional[String] $event_service_endpoint = lookup('profile::query_service::event_service_endpoint', {'default_value' => undef})
+    Optional[String] $event_service_endpoint = lookup('profile::query_service::event_service_endpoint', {'default_value' => undef}),
+    String $federation_user_agent = lookup('profile::query_service::federation_user_agent')
 ) {
     require ::profile::query_service::common
     require ::profile::query_service::updater
@@ -57,6 +58,7 @@ class profile::query_service::wikidata(
         prometheus_agent_port  => $prometheus_agent_port,
         config_file_name       => 'RWStore.wikidata.properties',
         use_geospatial         => true,
+        federation_user_agent  => $federation_user_agent,
     }
 
     if ($monitoring_enabled) {
