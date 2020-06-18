@@ -59,7 +59,7 @@ class profile::netbox::scripts (
         content => template('profile/netbox/netbox-scripts.erb'),
     }
 
-    if !defined(Acme_chief::Cert['netbox']) and $deploy_acme {
+    if !defined(Acme_chief::Cert[$acme_certificate]) and $deploy_acme {
       acme_chief::cert { $acme_certificate:
             puppet_svc => 'apache2',
         }
