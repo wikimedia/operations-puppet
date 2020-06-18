@@ -12,7 +12,6 @@ class purged (
     # Kafka-related configurations
     Array[String] $kafka_topics                       = [],
     Array[String] $brokers                            = ['localhost:9092'],
-    Stdlib::Absolutepath $stats_dir                   = '/var/cache/purged',
     Integer $stats_interval_ms                        = 60000,
     Stdlib::Absolutepath $kafka_conf_file             = '/etc/purged-kafka.conf',
     Enum['snappy', 'gzip', 'none'] $compression_codec = 'snappy',
@@ -34,10 +33,7 @@ class purged (
         # We use the hostname as group id for now, as every purged
         # will consume the same messages
         $group_id = $::hostname
-        file { $stats_dir:
-            ensure => ensure_directory($ensure),
-            mode   => '0755',
-        }
+
         file { $kafka_conf_file:
             ensure  => $ensure,
             content => template('purged/purged-kafka.conf.erb'),
