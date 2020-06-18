@@ -107,4 +107,12 @@ class profile::openstack::base::puppetmaster::frontend(
                           @resolve((${join($designate_hosts,' ')}), AAAA))
                         proto tcp dport 22 ACCEPT;",
     }
+
+    openstack::db::project_grants { 'labspuppet':
+        access_hosts => $openstack_controllers + $puppetmasters,
+        db_host      => $encapi_db_host,
+        db_name      => $encapi_db_name,
+        db_user      => $encapi_db_user,
+        db_pass      => $encapi_db_pass,
+    }
 }
