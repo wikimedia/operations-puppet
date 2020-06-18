@@ -31,6 +31,16 @@ class profile::mediawiki::alerts {
         dashboard_links => ["https://grafana.wikimedia.org/d/RIA1lzDZk/application-servers-red-dashboard?panelId=9&fullscreen&orgId=1&from=now-3h&to=now&var-datasource=${site} prometheus/ops&var-cluster=${cluster}&var-method=POST"],
       }
 
+      monitoring::check_prometheus { "mediawiki_workers_saturation_${cluster}_${site}":
+        description     => "Not enough idle PHP-FPM workers for Mediawiki ${cluster} at ${site}",
+        query           => "sum (phpfpm_statustext_processes{cluster=\"${cluster}\",state=\"idle\"}) / sum (phpfpm_statustext_processes{cluster=\"${cluster}\"})",
+        prometheus_url  => "http://prometheus.svc.${site}.wmnet/ops",
+        retries         => 2,
+        method          => 'lt',
+        warning         => 0.5,  # Ratio of (idle / total).
+        critical        => 0.3,
+        dashboard_links => ["https://grafana.wikimedia.org/d/RIA1lzDZk/application-servers-red-dashboard?panelId=54&fullscreen&orgId=1&from=now-3h&to=now&var-datasource=${site} prometheus/ops&var-cluster=${cluster}"],
+      }
     }
   }
 
