@@ -35,19 +35,6 @@ Alias /icinga /usr/share/icinga/htdocs
         DirectoryIndex index.html
         AllowOverride None
 
-        # We monitor icinga externally allowing access
-        # to only the extinfo.cgi file.
-        <Files extinfo.cgi>
-            AuthMerging Or
-            Require ip 81.25.198.18
-            Require ip 38.104.3.42
-            Require ip 4.31.195.94
-            Require ip 38.122.67.74
-            Require ip 85.17.12.81
-            Require ip 85.17.12.83
-            Require ip 195.12.224.49/28
-        </Files>
-
         AuthName "Developer account (use wiki login name not shell) - nda/ops/wmf"
         AuthType Basic
         AuthBasicProvider file ldap
