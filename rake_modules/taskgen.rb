@@ -26,6 +26,7 @@ class TaskGen < ::Rake::TaskLib
       :syntax,
       :rubocop,
       :common_yaml,
+      :hiera_defaults,
       :python_extensions,
       :spec,
       :tox,
@@ -325,6 +326,30 @@ class TaskGen < ::Rake::TaskLib
       puts "python_extensions: OK".green
     end
     [:python_extensions]
+  end
+
+  def setup_hiera_defaults
+    profile_yaml_files = filter_files_by("hieradata/common/profile/**/*.yaml")
+    puts profile_yaml_files
+    return [] if profile_yaml_files.empty?
+    desc 'Check profile defaults are also in cloud.yaml'
+    task :hiera_defaults do
+      missing_keys = Set[]
+      cloud_file = 'hieradata/cloud.yaml'
+      cloud_yaml = YAML.safe_load(File.open(cloud_file))
+      cloud_keys = cloud_yaml.keys.to_set
+      profile_yaml_files.each do |profile_yaml_file|
+        profile_yaml = YAML.safe_load(File.open(profile_yaml_file))
+        missing_keys.merge(profile_yaml.keys.to_set - cloud_keys)
+      end
+      unless missing_keys.empty?
+        puts "The following defaults are missing from cloud.yaml".red
+        puts "#{missing_keys.to_a.join("\n")}".red
+        abort("yaml_defaults: FAILED".red)
+      end
+      puts "hiera_defaults: OK".green
+    end
+    [:hiera_defaults]
   end
 
   def setup_common_yaml
