@@ -27,4 +27,14 @@ class profile::dumps::distribution::web (
           dest => 'stat1007.eqiad.wmnet::dumps-webrequest/',
       }
     }
+
+    ferm::service { 'xmldumps_http':
+        proto => 'tcp',
+        port  => '80',
+    }
+
+    ferm::service { 'xmldumps_https':
+        proto => 'tcp',
+        port  => '443',
+    }
 }

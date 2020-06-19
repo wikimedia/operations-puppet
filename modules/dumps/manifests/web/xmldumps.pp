@@ -36,16 +36,6 @@ class dumps::web::xmldumps(
         mode   => '0444',
     }
 
-    ferm::service { 'xmldumps_http':
-        proto => 'tcp',
-        port  => '80',
-    }
-
-    ferm::service { 'xmldumps_https':
-        proto => 'tcp',
-        port  => '443',
-    }
-
     monitoring::service { 'http':
         description   => 'HTTP',
         check_command => 'check_http',
