@@ -17,15 +17,6 @@ class icinga::web (
         ensure => present,
     }
 
-    ferm::service { 'icinga-https':
-      proto => 'tcp',
-      port  => 443,
-    }
-    ferm::service { 'icinga-http':
-      proto => 'tcp',
-      port  => 80,
-    }
-
     include ::passwords::ldap::production
     $proxypass = $passwords::ldap::production::proxypass
 

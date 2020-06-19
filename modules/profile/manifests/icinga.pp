@@ -217,6 +217,17 @@ class profile::icinga(
         hosts_allow => $all_icinga_hosts
     }
 
+    # access to the web interface
+    ferm::service { 'icinga-https':
+      proto => 'tcp',
+      port  => 443,
+    }
+
+    ferm::service { 'icinga-http':
+      proto => 'tcp',
+      port  => 80,
+    }
+
     # allow NSCA (Nagios Service Check Acceptor)
     # connections on port 5667/tcp
     ferm::service { 'icinga-nsca':
