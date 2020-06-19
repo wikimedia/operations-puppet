@@ -23,7 +23,7 @@
 #    [int] maximum number of entries in the cache. default: 10,000,000.
 #
 #  [*enable_console*]
-#    [bool] whether to enable dnsdist's console. default: true.
+#    [bool] whether to enable dnsdist's console. default: false.
 #
 #  [*console_key*]
 #    [string] key to use for dnsdist's console access. default: undefined.
@@ -41,7 +41,7 @@ class dnsdist (
     Integer[1]                          $qps_max            = 20,
     Boolean                             $enable_packetcache = true,
     Integer[1]                          $packetcache_max    = 10000000,
-    Boolean                             $enable_console     = true,
+    Boolean                             $enable_console     = false,
     Optional[String]                    $console_key        = undef,
     Boolean                             $enable_webserver   = false,
     Optional[Dnsdist::Webserver_config] $webserver_config   = undef,
