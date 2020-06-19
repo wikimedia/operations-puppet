@@ -37,9 +37,12 @@ class kibana (
         owner   => 'root',
         group   => 'root',
         content => ordered_yaml({
-            'kibana.defaultAppId'    => $default_app_id,
-            'logging.quiet'          => true,
-            'server.maxPayloadBytes' => 4194304, # 4MB (yes, this is a crazy limit, we need to reduce the number of fields)
+            'kibana.defaultAppId'                  => $default_app_id,
+            'logging.quiet'                        => true,
+            'server.maxPayloadBytes'               => 4194304, # 4MB (yes, this is a crazy limit, we need to reduce the number of fields)
+            'metrics.enabled'                      => false, # T255863
+            'xpack.security.authc.api_key.enabled' => false, # T255863
+            'xpack.upgrade_assistant.enabled'      => false, # T255863
         }),
         mode    => '0444',
         require => Package['kibana'],
