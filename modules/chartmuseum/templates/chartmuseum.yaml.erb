@@ -1,0 +1,26 @@
+debug: <%= @debug %>
+port: <%= @listen_port %>
+listen:
+    host: <%= @listen_host %>
+depth: <%= @repository_depth %>
+disabledelete: <%= @disable_delete %>
+disableforceoverwrite: <%= @disable_force_overwrite %>
+authanonymousget: <%= @allow_anonymous_get %>
+<% if @basic_auth -%>
+basicauth:
+  pass: "<%= @basic_auth['username'] %>"
+  user: "<%= @basic_auth['password'] %>"
+<% end -%>
+
+<% if @swift_backend -%>
+storage:
+  backend: openstack
+  openstack:
+    auth: v1
+    container: "<%= @swift_backend['container'] %>"
+<% else -%>
+storage:
+  backend: local
+  local:
+    rootdir: /var/lib/chartmuseum
+<% end -%>

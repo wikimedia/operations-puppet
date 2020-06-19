@@ -1,0 +1,18 @@
+profile::chartmuseum::hostname: helm-charts.discovery.wmnet
+# This needs to go in private
+# profile::chartmuseum::basic_auth:
+#   username: SnakeOil
+#   password: SnakeOil
+# profile::chartmuseum::swift_backend:
+#   auth_url: https://thanos-swift.discovery.wmnet/auth/v1.0
+#   container: charts
+#   user: SnakeOil
+#   key: SnakeOil
+
+profile::tlsproxy::envoy::upstream_addr: localhost
+profile::tlsproxy::envoy::ensure: present
+profile::tlsproxy::envoy::services:
+- server_names: ['*']
+  port: 8080
+profile::tlsproxy::envoy::global_cert_name: "helm-charts.discovery.wmnet"
+profile::tlsproxy::envoy::sni_support: "no"

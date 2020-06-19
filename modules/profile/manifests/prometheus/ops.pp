@@ -1688,6 +1688,23 @@ class profile::prometheus::ops (
         port       => 8083,
     }
 
+    # Job definition for chartmuseum
+    $chartmuseum_jobs = [
+      {
+        'job_name'        => 'chartmuseum',
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/chartmuseum_*.yaml"] },
+        ],
+      },
+    ]
+    prometheus::class_config{ "chartmuseum_${::site}":
+        dest       => "${targets_path}/chartmuseum_${::site}.yaml",
+        site       => $::site,
+        class_name => 'chartmuseum',
+        port       => 443,
+        labels     => {}
+    }
+
     $max_block_duration = $enable_thanos_upload ? {
         true    => '2h',
         default => '24h',
@@ -1713,7 +1730,7 @@ class profile::prometheus::ops (
             $cloud_dev_pdns_jobs, $cloud_dev_pdns_rec_jobs, $bacula_jobs, $poolcounter_exporter_jobs,
             $apereo_cas_jobs, $atlas_exporter_jobs, $exported_blackbox_jobs, $cadvisor_jobs,
             $envoy_jobs, $webperf_jobs, $squid_jobs, $nic_saturation_exporter_jobs, $thanos_jobs, $netbox_jobs,
-            $wikidough_jobs,
+            $wikidough_jobs, $chartmuseum_jobs,
         ),
         global_config_extra   => $config_extra,
     }
