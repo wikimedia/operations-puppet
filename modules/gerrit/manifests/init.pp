@@ -11,9 +11,6 @@ class gerrit(
     Integer[8, 11] $java_version = 8,
     Optional[String] $scap_user = undef,
     Optional[String] $scap_key_name = undef,
-    Optional[String] $db_user = undef,
-    Optional[String] $db_pass = undef,
-    Optional[String] $db_name = undef,
     Boolean $enable_monitoring = true,
     Boolean $is_new_version = false,
 ) {
@@ -29,9 +26,6 @@ class gerrit(
         java_version      => $java_version,
         scap_user         => $scap_user,
         scap_key_name     => $scap_key_name,
-        db_user           => $db_user,
-        db_pass           => $db_pass,
-        db_name           => $db_name,
         enable_monitoring => $enable_monitoring,
         is_new_version    => $is_new_version,
     }

@@ -27,10 +27,6 @@ gerrit::server::rsync_user_name: 'gerrit2'
 gerrit::server::backups_enabled: true
 gerrit::server::backup_set: 'gerrit-repo-data'
 
-# Database
-gerrit::server::db_user: 'gerrit'
-gerrit::server::db_name: 'reviewdb'
-
 # SSL/TLS certs
 gerrit::server::use_acmechief: true
 

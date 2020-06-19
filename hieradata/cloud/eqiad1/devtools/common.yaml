@@ -127,11 +127,6 @@ gerrit::jetty::replication: {}
 gerrit::jetty::git_dir: /srv/gerrit/git
 gerrit::jetty::ssh_host_key: ssh_host_key
 
-# Database (MySQL, will not be used in future)
-gerrit::server::db_user: 'gerrit'
-gerrit::server::db_name: 'reviewdb'
-gerrit::server::db_pass: 'foobar'
-
 # Backups
 gerrit::server::bacula: gerrit-repo-data
 
@@ -152,7 +147,7 @@ profile::tlsproxy::envoy::capitalize_headers: true
 gerrit::server::backups_enabled: false
 gerrit::server::backup_set: 'gerrit-repo-data'
 
-## Rsync data for server migrations
+## data for server migrations
 gerrit::server::rsync_src_host: 'gerrit-prod-1001.devtools.eqiad.wmflabs'
 gerrit::server::rsync_dst_hosts: []
 gerrit::server::rsync_data_dir: /srv/gerrit

@@ -14,11 +14,6 @@ gerrit::server::is_replica: false
 # No backups on the test server
 gerrit::server::backups_enabled: false
 
-# previously, test server got access to the prod db, but readonly
-# now test server gets a separate test database, readwrite
-gerrit::server::db_user: 'gerrittest'
-gerrit::server::db_name: 'reviewdb-test'
-
 # The test server has been migrated to Gerrit 3.x
 gerrit::server::is_new_version: true
 
