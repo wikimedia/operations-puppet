@@ -1157,6 +1157,11 @@ node /^install[12]003\.wikimedia\.org$/ {
     role(installserver::light)
 }
 
+# T254157
+node 'install4001.wikimedia.org' {
+    role(insetup)
+}
+
 # new icinga systems, replaced einsteinium and tegmen (T201344, T208824)
 node /^icinga[12]001\.wikimedia\.org$/ {
     role(alerting_host)

@@ -3322,6 +3322,11 @@ host icinga2001 {
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
+host install4001 {
+    hardware ethernet aa:00:00:6d:c7:59;
+    fixed-address install4001.wikimedia.org;
+}
+
 host logstash1020 {
     hardware ethernet 14:18:77:33:52:42;
     fixed-address logstash1020.eqiad.wmnet;
