@@ -6,9 +6,6 @@ class profile::ci::slave::labs::common {
     # Need the labs instance extended disk space
     require ::profile::labs::lvm::srv
 
-    # Jenkins slaves need to access beta cluster for the browsertests
-    include contint::firewall::labs
-
     # New file layout based on /srv
 
     # base directory
