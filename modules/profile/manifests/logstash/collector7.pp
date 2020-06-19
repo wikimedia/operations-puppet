@@ -41,6 +41,7 @@ class profile::logstash::collector7 (
     class { '::logstash':
         jmx_exporter_port   => $jmx_exporter_port,
         jmx_exporter_config => $jmx_exporter_config_file,
+        pipeline_workers    => $::processorcount * 2,
     }
 
     sysctl::parameters { 'logstash_receive_skbuf':
