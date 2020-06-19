@@ -13,7 +13,7 @@ class profile::package_builder (
 
     # Set up an rsync module to allow easy copying of pbuilder
     # results to carbon or elsewhere.  You can rsync from this like:
-    #   rsync <host>::pbuilder-result/jessie-amd64/mypackage* ./mypackage/
+    #   rsync <host>::pbuilder-result/buster-amd64/mypackage* ./mypackage/
     rsync::server::module { 'pbuilder-result':
         path        => '/var/cache/pbuilder/result',
     }

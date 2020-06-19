@@ -188,7 +188,6 @@ if AUTHENTICATOR == 'ldap':
 # we want the attacker to not be able to gain any extra privilages at all.
 # We want the attack to be as confined as possible. We'll need auditing and
 # what not built eventually, but here are some basic rudimentary protections.
-# This also requires systemd > 228, so we must have systemd from jessie-backports
 
 # Give each user their own /tmp! Prevents data leaks via accidentally writing
 # to /tmp

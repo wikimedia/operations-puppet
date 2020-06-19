@@ -7,11 +7,11 @@
 #
 # === Examples
 #
-#  # Fail unless version is exactly Debian jessie
-#  requires_os('debian jessie')
+#  # Fail unless version is exactly Debian buster
+#  requires_os('debian buster')
 #
-#  # Fail unless Debian jessie or newer
-#  requires_os(debian >= jessie')
+#  # Fail unless Debian stretch or newer
+#  requires_os(debian >= stretch')
 #
 module Puppet::Parser::Functions
   newfunction(:requires_os, :arity => 1) do |args|

@@ -3,7 +3,6 @@
 class osm {
 
     # Use backports versions of osm2pgsql for improved memory handling and other updates
-    # jessie systems get this from jessie-wikimedia backports
     if os_version('debian == stretch') {
         apt::pin { 'osm2pgsql':
             pin      => 'release a=stretch-backports',

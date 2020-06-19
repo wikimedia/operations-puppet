@@ -178,8 +178,7 @@ class cassandra (
 
     # We pin the version to a specific one
     # The 2.2.6-wmf5 package has been tested on Debian Stretch
-    # and it works nicely, but it gives some problems with Jessie
-    # as described in T197062.
+    # and it works nicely
     $package_version = $target_version ? {
         '2.1' => hiera('cassandra::version', '2.1.13'),
         '2.2' => os_version('debian >= stretch') ? {
@@ -199,8 +198,7 @@ class cassandra (
             before     => Package['cassandra'],
         }
     }
-    # Cassandra 2.2 is installed using the newer component convention, (and
-    # from dists/(stretch|jessie)-wikimedia).
+    # Cassandra 2.2 is installed using the newer component convention
     elsif ($target_version == '2.2') {
         apt::repository { 'wikimedia-cassandra22':
             uri        => 'http://apt.wikimedia.org/wikimedia',

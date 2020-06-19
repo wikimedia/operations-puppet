@@ -6,7 +6,7 @@
 # efficiently, not consuming huge memory or CPU time and outputting
 # ~100K-ish of aggregate stdout data you'll want to redirect to an output file.
 #
-# Assumes installed jessie versions of "tcpdump", "tshark", and "perl".
+# Assumes installed versions of "tcpdump", "tshark", and "perl".
 
 set -e
 set -o pipefail

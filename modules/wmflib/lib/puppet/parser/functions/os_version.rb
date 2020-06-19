@@ -13,11 +13,11 @@
 #
 # === Examples
 #
-#  # True if Ubuntu Trusty or newer or Debian jessie or newer
-#  os_version('ubuntu >= trusty || debian >= jessie')
+#  # True if Debian stretch or newer
+#  os_version(debian >= stretch')
 #
-#  # True if exactly Debian jessie
-#  os_version('debian jessie')
+#  # True if exactly Debian Buster
+#  os_version('debian buster')
 #
 require 'puppet/util/package'
 
@@ -82,7 +82,7 @@ module Puppet::Parser::Functions
       # skip this clause unless it's matching our operating system
       next unless self_id == other_id
 
-      # special-case Debian point-releases, as e.g. jessie is all of 8.x
+      # special-case Debian point-releases, as e.g. buster is all of 10.x
       if other_id == 'Debian' && other_was_codename
         self_release = self_release.split('.')[0]
       end

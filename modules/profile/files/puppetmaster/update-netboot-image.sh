@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [[ $# -eq 0 ]]; then
-    echo 'You need to specific the name of the distro for which firmware should be added, e.g. "jessie"'
+    echo 'You need to specific the name of the distro for which firmware should be added, e.g. "buster"'
     exit 1
 fi
 
