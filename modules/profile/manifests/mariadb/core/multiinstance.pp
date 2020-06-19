@@ -17,6 +17,8 @@ class profile::mariadb::core::multiinstance(
 disabled, use mariadb@<instance_name> instead'; exit 1\"",
     }
 
+    include ::profile::mariadb::mysql_role
+
     $is_critical = ($::site == mediawiki::state('primary_dc'))
     $contact_group = 'admins'
 
@@ -51,6 +53,7 @@ disabled, use mariadb@<instance_name> instead'; exit 1\"",
             innodb_buffer_pool_size => $s1,
             is_critical             => $is_critical,
         }
+        profile::mariadb::section { 's1': }
         profile::mariadb::ferm { 's1': port => 3311, }
         profile::prometheus::mysqld_exporter_instance {'s1': port => 13311, }
     }
@@ -61,6 +64,7 @@ disabled, use mariadb@<instance_name> instead'; exit 1\"",
             innodb_buffer_pool_size => $s2,
             is_critical             => $is_critical,
         }
+        profile::mariadb::section { 's2': }
         profile::mariadb::ferm { 's2': port => 3312, }
         profile::prometheus::mysqld_exporter_instance { 's2': port => 13312, }
     }
@@ -71,6 +75,7 @@ disabled, use mariadb@<instance_name> instead'; exit 1\"",
             innodb_buffer_pool_size => $s3,
             is_critical             => $is_critical,
         }
+        profile::mariadb::section { 's3': }
         profile::mariadb::ferm { 's3': port => 3313, }
         profile::prometheus::mysqld_exporter_instance {'s3': port => 13313, }
     }
@@ -81,6 +86,7 @@ disabled, use mariadb@<instance_name> instead'; exit 1\"",
             innodb_buffer_pool_size => $s4,
             is_critical             => $is_critical,
         }
+        profile::mariadb::section { 's4': }
         profile::mariadb::ferm { 's4': port => 3314, }
         profile::prometheus::mysqld_exporter_instance { 's4': port => 13314, }
     }
@@ -91,6 +97,7 @@ disabled, use mariadb@<instance_name> instead'; exit 1\"",
             innodb_buffer_pool_size => $s5,
             is_critical             => $is_critical,
         }
+        profile::mariadb::section { 's5': }
         profile::mariadb::ferm { 's5': port => 3315, }
         profile::prometheus::mysqld_exporter_instance { 's5': port => 13315, }
     }
@@ -101,6 +108,7 @@ disabled, use mariadb@<instance_name> instead'; exit 1\"",
             innodb_buffer_pool_size => $s6,
             is_critical             => $is_critical,
         }
+        profile::mariadb::section { 's6': }
         profile::mariadb::ferm { 's6': port => 3316, }
         profile::prometheus::mysqld_exporter_instance { 's6': port => 13316, }
     }
@@ -111,6 +119,7 @@ disabled, use mariadb@<instance_name> instead'; exit 1\"",
             innodb_buffer_pool_size => $s7,
             is_critical             => $is_critical,
         }
+        profile::mariadb::section { 's7': }
         profile::mariadb::ferm { 's7': port => 3317, }
         profile::prometheus::mysqld_exporter_instance { 's7': port => 13317, }
     }
@@ -121,6 +130,7 @@ disabled, use mariadb@<instance_name> instead'; exit 1\"",
             innodb_buffer_pool_size => $s8,
             is_critical             => $is_critical,
         }
+        profile::mariadb::section { 's8': }
         profile::mariadb::ferm { 's8': port => 3318, }
         profile::prometheus::mysqld_exporter_instance { 's8': port => 13318, }
     }
@@ -131,6 +141,7 @@ disabled, use mariadb@<instance_name> instead'; exit 1\"",
             innodb_buffer_pool_size => $x1,
             is_critical             => $is_critical,
         }
+        profile::mariadb::section { 'x1': }
         profile::mariadb::ferm { 'x1': port => 3320, }
         profile::prometheus::mysqld_exporter_instance { 'x1': port => 13320, }
     }

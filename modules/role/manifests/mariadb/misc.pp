@@ -18,6 +18,11 @@ class role::mariadb::misc(
         false => 'slave',
     }
 
+    class { '::profile::mariadb::mysql_role':
+        role => $mysql_role,
+    }
+    profile::mariadb::section { $shard: }
+
     include ::profile::standard
     include ::passwords::misc::scripts
     include ::profile::base::firewall

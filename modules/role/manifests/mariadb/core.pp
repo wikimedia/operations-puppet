@@ -22,6 +22,7 @@ class role::mariadb::core {
     include ::profile::base::firewall
     include ::passwords::misc::scripts
     include ::role::mariadb::ferm
+    include ::profile::mariadb::mysql_role
 
     # Semi-sync replication
     # off: for shard(s) of a single machine, with no slaves
@@ -64,6 +65,8 @@ class role::mariadb::core {
         semi_sync        => $semi_sync,
         replication_role => $mysql_role,
     }
+
+    profile::mariadb::section { $shard: }
 
     class { 'profile::mariadb::grants::core': }
     class { 'profile::mariadb::grants::production':

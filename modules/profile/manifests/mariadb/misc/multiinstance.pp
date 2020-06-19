@@ -11,6 +11,8 @@ class profile::mariadb::misc::multiinstance (
 disabled, use mariadb@<instance_name> instead'; exit 1\"",
     }
 
+    include ::profile::mariadb::mysql_role
+
     if os_version('debian == buster') {
         $basedir = '/opt/wmf-mariadb104/'
     }
@@ -40,6 +42,7 @@ disabled, use mariadb@<instance_name> instead'; exit 1\"",
             innodb_buffer_pool_size => $m1,
             # template                => 'profile/mariadb/mysqld_config/misc.my.cnf.erb'
         }
+        profile::mariadb::section { 'm1': }
         profile::mariadb::ferm { 'm1': port => '3321' }
         profile::prometheus::mysqld_exporter_instance { 'm1': port => 13321, }
     }
@@ -49,6 +52,7 @@ disabled, use mariadb@<instance_name> instead'; exit 1\"",
             innodb_buffer_pool_size => $m2,
             # template                => 'profile/mariadb/mysqld_config/misc.my.cnf.erb'
         }
+        profile::mariadb::section { 'm2': }
         profile::mariadb::ferm { 'm2': port => '3322' }
         profile::prometheus::mysqld_exporter_instance { 'm2': port => 13322, }
     }
@@ -58,6 +62,7 @@ disabled, use mariadb@<instance_name> instead'; exit 1\"",
             innodb_buffer_pool_size => $m3,
             template                => 'profile/mariadb/mysqld_config/phabricator_instance.my.cnf.erb',
         }
+        profile::mariadb::section { 'm3': }
         profile::mariadb::ferm { 'm3': port => '3323' }
         profile::prometheus::mysqld_exporter_instance { 'm3': port => 13323, }
         # stopwords are stored prersistently and backed up, so no need to load it every time
@@ -75,6 +80,7 @@ disabled, use mariadb@<instance_name> instead'; exit 1\"",
             innodb_buffer_pool_size => $m5,
             # template                => 'profile/mariadb/mysqld_config/misc.my.cnf.erb'
         }
+        profile::mariadb::section { 'm5': }
         profile::mariadb::ferm { 'm5': port => '3325' }
         include profile::mariadb::ferm_wmcs_on_port_3325
         profile::prometheus::mysqld_exporter_instance { 'm5': port => 13325, }
