@@ -1,3 +1,2 @@
 # db2111
 mariadb::shard: 's5'
-profile::base::notifications: disabled
