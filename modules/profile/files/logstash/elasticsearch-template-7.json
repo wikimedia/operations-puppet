@@ -5,7 +5,7 @@
     "index.refresh_interval" : "5s",
     "index.routing.allocation.require.disktype" : "ssd",
     "index.query.default_field" : "all",
-    "number_of_shards" : 4,
+    "number_of_shards" : 1,
     "number_of_replicas" : 2,
     "index.mapping.total_fields.limit": 2048,
     "analysis" : {
