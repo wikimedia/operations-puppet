@@ -68,6 +68,7 @@ profile::acme_chief::certificates:
         - 'icinga.wikimedia.org'
         - 'icinga1001.wikimedia.org'
         - 'icinga2001.wikimedia.org'
+        - 'icinga-extmon.wikimedia.org'
         challenge: dns-01
         authorized_regexes:
         - '^icinga[12]001\.wikimedia\.org$'
