@@ -40,6 +40,13 @@
     administrateServer = group ldap/gerritadmin
 [change]
     disablePrivateChanges = true
+    # Moving changes may be counter-intuitive and probably needs
+    # discussion before turning it on.
+    # See https://gerrit-review.googlesource.com/Documentation/config-gerrit.html#change.move
+    # Since Gerrit v2.15 does not have the possibility to move
+    # changes, we turn it off for now. Once it has been discussed if
+    # we want it, we can still turn it on.
+    move = false
 [changeCleanup]
     # Not actually used, but Gerrit complains if unset
     interval = 1 week
