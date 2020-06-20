@@ -17,20 +17,19 @@
 {namespace etc.its.templates}
 
 /**
- * The .PatchSetCreated template will determine the contents of the email subject
- * line for ALL emails related to changes.
- * @param branch
- * @param project
- * @param escapedSubject
- * @param changeNumber
- * @param authorName
- * @param uploaderName
- * @param formatChangeUrl
- * @param uploaderUsername
- * @param authorUsername
- *
+ * The .PatchSetCreated template determines the comment left on the
+ * Phabricator task if a related patch set got created.
  */
-{template .PatchSetCreated autoescape="strict" kind="text"}
+{template .PatchSetCreated kind="text"}
+  {@param changeNumber: string}
+  {@param project: string}
+  {@param branch: string}
+  {@param authorName: string}
+  {@param authorUsername: string}
+  {@param uploaderName: string}
+  {@param uploaderUsername: string}
+  {@param escapedSubject: string}
+  {@param formatChangeUrl: string}
 
   Change {$changeNumber} had a related patch set uploaded (by {$uploaderName ? $uploaderName : $uploaderUsername}; owner: {$authorName ? $authorName : $authorUsername}):{\n}
   [{$project}@{$branch}] {$escapedSubject|escapeUri}{\n}{\n}

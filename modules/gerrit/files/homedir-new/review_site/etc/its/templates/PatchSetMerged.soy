@@ -17,17 +17,17 @@
 {namespace etc.its.templates}
 
 /**
- * The .PatchSetMerged template will determine the contents of the email subject
- * line for ALL emails related to changes.
- * @param changeNumber
- * @param submitterName
- * @param project
- * @param branch
- * @param escapedSubject
- * @param formatChangeUrl
- *
+ * The .PatchSetMerged template determines the comment left on the
+ * Phabricator task when a related Change gets merged
  */
-{template .PatchSetMerged autoescape="strict" kind="text"}
+{template .PatchSetMerged kind="text"}
+  {@param changeNumber: string}
+  {@param project: string}
+  {@param branch: string}
+  {@param submitterName: string}
+  {@param escapedSubject: string}
+  {@param formatChangeUrl: string}
+
   Change {$changeNumber} **merged** by {$submitterName}:{\n}
   [{$project}@{$branch}] {$escapedSubject|escapeUri}{\n}{\n}
 
