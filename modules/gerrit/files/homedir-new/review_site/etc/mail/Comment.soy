@@ -14,18 +14,25 @@
  * limitations under the License.
  */
 
+/**
+ * This template is the stock template from Gerrit v3.2.2 with the
+ * following adaptions:
+ *   - add change.ownerName to show who owns the change
+ *   - (this ChangeLog comment :-) )
+ */
+
 {namespace com.google.gerrit.server.mail.template}
 
 /**
  * The .Comment template will determine the contents of the email related to a
  * user submitting comments on changes.
- * @param change
- * @param coverLetter
- * @param email
- * @param fromName
- * @param commentFiles
  */
-{template .Comment autoescape="strict" kind="text"}
+{template .Comment kind="text"}
+  {@param change: ?}
+  {@param coverLetter: ?}
+  {@param email: ?}
+  {@param fromName: ?}
+  {@param commentFiles: ?}
   {$fromName} has posted comments on this change by {$change.ownerName}.
   {if $email.changeUrl} ( {$email.changeUrl} ){/if}{\n}
   {\n}
@@ -38,28 +45,35 @@
     {\n}
   {/if}
 
-  {foreach $group in $commentFiles}
-    {$group.link}{\n}
+  {for $group in $commentFiles}
+    // Insert a space before the newline so that Gmail does not mistakenly link
+    // the following line with the file link. See issue 9201.
+    {$group.link}{sp}{\n}
     {$group.title}:{\n}
     {\n}
 
-    {foreach $comment in $group.comments}
+    {for $comment in $group.comments}
       {if $comment.isRobotComment}
         Robot Comment from {$comment.robotId} (run ID {$comment.robotRunId}):
         {\n}
       {/if}
 
-      {foreach $line in $comment.lines}
+      {for $line in $comment.lines}
         {if isFirst($line)}
           {if $comment.startLine != 0}
             {$comment.link}
-          {/if}{\n}
+          {/if}
+
+          // Insert a space before the newline so that Gmail does not mistakenly
+          // link the following line with the file link. See issue 9201.
+          {sp}{\n}
+
           {$comment.linePrefix}
         {else}
           {$comment.linePrefixEmpty}
         {/if}
         {$line}{\n}
-      {/foreach}
+      {/for}
       {if length($comment.lines) == 0}
         {$comment.linePrefix}{\n}
       {/if}
@@ -70,7 +84,7 @@
       {$comment.message}{\n}
       {\n}
       {\n}
-    {/foreach}
-  {/foreach}
+    {/for}
+  {/for}
   {\n}
 {/template}

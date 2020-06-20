@@ -14,15 +14,28 @@
  * limitations under the License.
  */
 
+/**
+ * This template is the stock template from Gerrit v3.2.2 with the
+ * following adaptions:
+ *   - 'Change in' is replaced by '[Gerrit]'
+ *   - (this ChangeLog comment :-) )
+ */
+
 {namespace com.google.gerrit.server.mail.template}
 
 /**
  * The .ChangeSubject template will determine the contents of the email subject
  * line for ALL emails related to changes.
- * @param branch
- * @param change
- * @param shortProjectName
  */
-{template .ChangeSubject autoescape="strict" kind="text"}
-  [Gerrit] {$shortProjectName}[{$branch.shortName}]: {$change.shortSubject}
+{template .ChangeSubject kind="text"}
+  {@param branch: ?}
+  {@param change: ?}
+  {@param shortProjectName: ?}
+  {@param instanceAndProjectName: ?}
+  {@param addInstanceNameInSubject: ?}  /** boolean */
+  {if not $addInstanceNameInSubject}
+    [Gerrit] {$shortProjectName}[{$branch.shortName}]: {$change.shortSubject}
+  {else}
+    [Gerrit] {$instanceAndProjectName}[{$branch.shortName}]: {$change.shortSubject}
+  {/if}
 {/template}
