@@ -28,16 +28,16 @@ define mariadb::monitor_replication(
 
     $check_mariadb = "${check_command} ${check_set} ${check_warn}"
 
-    nrpe::monitor_service { "mariadb_slave_io_state_${name}":
-        description   => "MariaDB Slave IO: ${name}",
+    nrpe::monitor_service { "mariadb_replica_io_state_${name}":
+        description   => "MariaDB Replica IO: ${name}",
         nrpe_command  => "${check_mariadb} --check=slave_io_state",
         critical      => $is_critical,
         contact_group => $contact_group,
         notes_url     => 'https://wikitech.wikimedia.org/wiki/MariaDB/troubleshooting#Depooling_a_slave',
     }
 
-    nrpe::monitor_service { "mariadb_slave_sql_state_${name}":
-        description   => "MariaDB Slave SQL: ${name}",
+    nrpe::monitor_service { "mariadb_replica_sql_state_${name}":
+        description   => "MariaDB Replica SQL: ${name}",
         nrpe_command  => "${check_mariadb} --check=slave_sql_state",
         critical      => $is_critical,
         contact_group => $contact_group,
@@ -46,8 +46,8 @@ define mariadb::monitor_replication(
 
     # check the lag towards the mw_primary datacenter's master
     $mw_primary = mediawiki::state('primary_dc')
-    nrpe::monitor_service { "mariadb_slave_sql_lag_${name}":
-        description   => "MariaDB Slave Lag: ${name}",
+    nrpe::monitor_service { "mariadb_replica_sql_lag_${name}":
+        description   => "MariaDB Replica Lag: ${name}",
         nrpe_command  => "${check_mariadb} --check=slave_sql_lag \
                           --shard=${name} --datacenter=${mw_primary} \
                           --sql-lag-warn=${lag_warn} \
