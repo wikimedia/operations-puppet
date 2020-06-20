@@ -99,7 +99,11 @@
     javaOptions = "<%= jvm_opt %>"
 <% end %>
     heapLimit = <%= @heap_limit %>
+<%- if @is_new_version -%>
+    replica = <%= @replica %>
+<%- else -%>
     slave = <%= @replica %>
+<%- end -%>
     <%- if @replica %>
     daemonOpt = --enable-httpd --enable-sshd
     <%- end -%>
