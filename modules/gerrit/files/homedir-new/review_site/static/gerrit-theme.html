@@ -21,10 +21,9 @@ limitations under the License.
         if (!window.localStorage.getItem('dark-theme')) {
           plugin.registerStyleModule('app-theme', 'wm-style');
         }
+        plugin.registerStyleModule('app-theme', 'wm-common-style');
         plugin.registerCustomComponent(
             'footer-left', 'wm-custom-links');
-        plugin.registerCustomComponent(
-            'header-title', 'wm-custom-header', {replace: true});
       });
     }
   </script>
@@ -46,37 +45,16 @@ limitations under the License.
   </template>
 </dom-module>
 
-<dom-module id="wm-custom-header">
+<dom-module id="wm-common-style">
   <template>
     <style>
-      .wmHeader::before {
-        background-image: url('/r/static/wikimedia-codereview-logo.cache.svg');
-        background-size: 1.3em 1.3em;
-        background-repeat: no-repeat;
-        content: "";
-        display: inline-block;
-        height: 1.3em;
-        margin-right: 0.5em;
-        margin-left: calc(1em / 3);
-        margin-bottom: 0;
-        vertical-align: middle;
-        width: 1.3em;
-      }
-      .wmHeader::after {
-        content: 'Wikimedia Code Review';
+      html {
+        --header-title-content: "Wikimedia Code Review";
+        --header-icon: url("/r/static/wikimedia-codereview-logo.cache.svg");
+        --header-icon-size: 1.2em;
       }
     </style>
-    <span class="wmHeader"></span>
   </template>
-  <script>
-    (function() {
-      'use strict';
-
-      Polymer({
-        is: 'wm-custom-header',
-      });
-    })();
-  </script>
 </dom-module>
 
 <dom-module id="wm-custom-links">
