@@ -18,8 +18,10 @@ limitations under the License.
   <script>
     if (window.Polymer) {
       Gerrit.install((plugin) => {
-        if (!window.localStorage.getItem('dark-theme')) {
-          plugin.registerStyleModule('app-theme', 'wm-style');
+        if (window.localStorage.getItem('dark-theme')) {
+          plugin.registerStyleModule('app-theme', 'wm-dark-style');
+        } else {
+          plugin.registerStyleModule('app-theme', 'wm-light-style');
         }
         plugin.registerStyleModule('app-theme', 'wm-common-style');
         plugin.registerCustomComponent(
@@ -29,12 +31,23 @@ limitations under the License.
   </script>
 </dom-module>
 
-<dom-module id="wm-style">
+<dom-module id="wm-light-style">
   <template>
     <style>
       html {
         --header-background: white;
         --header-text-color: #001133;
+      }
+    </style>
+  </template>
+</dom-module>
+
+<dom-module id="wm-dark-style">
+  <template>
+    <style>
+      html {
+        --header-background: #3b3d3f;
+        --header-text-color: #e8eaed;
       }
     </style>
   </template>
