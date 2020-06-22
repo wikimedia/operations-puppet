@@ -29,6 +29,7 @@ import time
 import re
 
 
+PIDFILE = "dumps_exception_checker.pid"
 IN_LOG = 0
 IN_EXCEPTION = 1
 
@@ -75,6 +76,63 @@ def safe_set(name, key, value):
         name[key] += value
     else:
         name[key] = value
+
+
+def get_pidfile_path():
+    '''
+    return the full path to the pidfile
+    '''
+    basedir = os.getenv("HOME")
+    if basedir is None:
+        basedir = '/tmp'
+    return os.path.join(basedir, PIDFILE)
+
+
+def is_running(pid):
+    '''
+    check if a process with the specified pid is running
+    '''
+    try:
+        os.kill(pid, 0)
+    except ProcessLookupError:
+        return False
+    except PermissionError:
+        # shouldn't happen as the user running it should always be the same, but just in case
+        return True
+    return True
+
+
+def pidfile_in_use(path):
+    '''
+    check if there is a pidfile for a running process
+    '''
+    try:
+        with open(path) as infile:
+            pid = infile.read().strip()
+            if not pid.isdigit():
+                return False
+            if is_running(int(pid)):
+                return True
+            return False
+    except FileNotFoundError:
+        return False
+
+
+def write_pidfile():
+    '''
+    if there is no pidfile, no other copy of this script
+    is running, write a pidfile and return True
+    if there is a pidfile but the pid in it is not running,
+    remove it, write one, return True
+    otherwise return False (some other process is running
+    this script)
+    '''
+    pidfilepath = get_pidfile_path()
+    if pidfile_in_use(pidfilepath):
+        return False
+    with open(pidfilepath, "w+") as outfile:
+        outfile.write(str(os.getpid()))
+    return True
 
 
 def get_exceptions(dumplog, logpath):
@@ -198,7 +256,7 @@ def usage(message=None):
 def validate_args(basedir, interval, rundate):
     '''sanity check of these args'''
     if not os.path.exists(basedir):
-        usage("specified base dir <basedir> does not exist".format(basedir=basedir))
+        usage("specified base dir <{basedir}> does not exist".format(basedir=basedir))
     if not interval.isdigit():
         usage("interval should be the number of minutes after the start time")
     if rundate == 'latest':
@@ -226,6 +284,9 @@ def get_latest_rundate(basedir):
 
 def do_main():
     '''entry point'''
+    if not write_pidfile():
+        sys.exit(0)
+
     if len(sys.argv) < 4:
         usage()
 
@@ -255,6 +316,7 @@ def do_main():
         if output:
             exception_info[wiki] = output
     display_exception_info(exception_info)
+    os.unlink(get_pidfile_path())
 
 
 if __name__ == '__main__':
