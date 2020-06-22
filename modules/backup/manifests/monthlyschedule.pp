@@ -3,7 +3,6 @@ define backup::monthlyschedule(
     String $day,
 ) {
     bacula::director::schedule { "Monthly-1st-${day}":
-        # lint:ignore:arrow_alignment
         runs => [
             { 'level' => 'Full',
               'at'    => "1st ${day} at 02:05",
@@ -15,6 +14,5 @@ define backup::monthlyschedule(
               'at'    => 'at 04:05',
             },
         ],
-        # lint:endignore
     }
 }

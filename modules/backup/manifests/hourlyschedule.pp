@@ -3,7 +3,6 @@ define backup::hourlyschedule(
     String $day,
 ) {
     bacula::director::schedule { "Hourly-${day}":
-        # lint:ignore:arrow_alignment
         runs => [
             { 'level' => 'Full',
               'at'    => "${day} at 02:05",
@@ -12,6 +11,5 @@ define backup::hourlyschedule(
               'at'    => 'hourly',
             },
                 ],
-        # lint:endignore
     }
 }
