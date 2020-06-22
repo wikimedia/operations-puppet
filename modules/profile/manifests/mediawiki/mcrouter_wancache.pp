@@ -122,14 +122,15 @@ class profile::mediawiki::mcrouter_wancache(
     }
 
     class { '::mcrouter':
-        pools              => $pools,
-        routes             => $routes,
-        region             => $::site,
-        cluster            => 'mw',
-        num_proxies        => $num_proxies,
-        timeouts_until_tko => $timeouts_until_tko,
-        port               => $port,
-        ssl_options        => $ssl_options,
+        pools                  => $pools,
+        routes                 => $routes,
+        region                 => $::site,
+        cluster                => 'mw',
+        num_proxies            => $num_proxies,
+        timeouts_until_tko     => $timeouts_until_tko,
+        probe_delay_initial_ms => 60000,
+        port                   => $port,
+        ssl_options            => $ssl_options,
     }
 
     class { '::mcrouter::monitoring': }
