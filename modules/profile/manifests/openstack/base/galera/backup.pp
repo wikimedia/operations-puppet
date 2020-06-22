@@ -3,7 +3,7 @@ class profile::openstack::base::galera::backup(
     String              $back_pass             = lookup('profile::openstack::base::galera::backup_password'),
     ) {
 
-    $frequency = 'weekly';
+    $frequency = 'Daily';
 
     include ::profile::backup::host
 
