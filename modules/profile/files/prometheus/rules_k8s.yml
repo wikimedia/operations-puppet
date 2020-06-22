@@ -28,3 +28,8 @@ groups:
     expr: histogram_quantile(0.9, sum by(status, le, service) (rate(service_runner_request_duration_seconds_bucket[5m])))
   - record: service_status:service_runner_request_duration_seconds:99pct5m
     expr: histogram_quantile(0.99, sum by(status, le, service) (rate(service_runner_request_duration_seconds_bucket[5m])))
+
+- name: self
+  rules:
+    - record: job:up:avail
+      expr: sum by (job) (up) / count by (job) (up)
