@@ -49,6 +49,6 @@ define prometheus::node_file_count (
         ensure  => $ensure,
         user    => 'root',
         command => inline_template("/usr/local/bin/prometheus-file-count --outfile <%= @outfile %> --metric <%= @metric %> <%= @paths.map{ | i | '\"' + i + '\"' }.join(' ') %>"),
-        require => Package['prometheus-node-exporter'],
+        require => Class['prometheus::node_exporter'],
     }
 }
