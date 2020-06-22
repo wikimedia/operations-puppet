@@ -11,7 +11,12 @@ class profile::mariadb::misc::multiinstance (
 disabled, use mariadb@<instance_name> instead'; exit 1\"",
     }
 
-    $basedir = '/opt/wmf-mariadb101'
+    if os_version('debian == buster') {
+        $basedir = '/opt/wmf-mariadb104/'
+    }
+    else {
+        $basedir = '/opt/wmf-mariadb101/'
+    }
     class { 'mariadb::config':
         datadir       => false,
         basedir       => $basedir,
