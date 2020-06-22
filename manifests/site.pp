@@ -574,14 +574,14 @@ node /^db2(115|131)\.codfw\.wmnet/ {
 node 'db1135.eqiad.wmnet' {
     class { '::role::mariadb::misc':
         shard  => 'm1',
-        master => true,
+        master => false,
     }
 }
 # Future m1 master
 node 'db1097.eqiad.wmnet' {
     class { '::role::mariadb::misc':
         shard  => 'm1',
-        master => false,
+        master => true,
     }
 }
 
