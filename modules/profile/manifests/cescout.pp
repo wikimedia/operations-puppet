@@ -51,10 +51,15 @@ class profile::cescout (
         content => template('cescout/metadb-configure.sh.erb'),
     }
 
+    systemd::tmpfile { 'postgresql':
+        content => 'd /var/run/postgresql 0755 postgres postgres',
+    }
+
     systemd::unit { "postgresql@${postgres_version}-main.service":
         ensure   => present,
         override => true,
         restart  => true,
         content  => template('cescout/postgres-systemd-override.conf.erb'),
     }
+
 }
