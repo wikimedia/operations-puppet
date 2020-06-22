@@ -93,6 +93,9 @@ class PrometheusCheck(object):
             # Skip meta-label used for the metric name.
             if key == '__name__':
                 continue
+            # Rewrite instance to be less visually noisy (port numbers are extraneous).
+            if key == 'instance':
+                values = [v.rsplit(':', 1)[0] for v in values]
             unique_values = sorted(set(values))
             if len(unique_values) > 1:
                 out.append('%s={%s}' % (key, ','.join(unique_values)))
