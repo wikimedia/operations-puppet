@@ -1,7 +1,9 @@
 class profile::cescout (
-    Stdlib::Unixpath $metadb_dir = lookup(profile::cescout::postgres::metadb_dir),
-    String $postgres_version = lookup(profile::cescout::postgres::version),
+    Stdlib::Unixpath $metadb_dir       = lookup(profile::cescout::postgres::metadb_dir),
+    String           $postgres_version = lookup(profile::cescout::postgres::version),
+    String           $http_proxy       = lookup('http_proxy'),
 ) {
+
     require_package('cescout')
 
     # required by metadb_s3_tarx
