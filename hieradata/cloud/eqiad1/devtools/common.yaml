@@ -109,6 +109,7 @@ scap::sources:
 # Gerrit
 
 gerrit::server::config: 'gerrit.config.erb'
+gerrit::server::is_new_version: true
 gerrit::server::host: 'gerrit.devtools.wmflabs.org'
 
 gerrit::servers:
