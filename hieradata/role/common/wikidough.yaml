@@ -12,6 +12,9 @@ profile::wikidough::dnsdist::tls:
     - 'TLS_CHACHA20_POLY1305_SHA256'
     - 'TLS_AES_128_GCM_SHA256'
 
+# password and api_key are defined in the private repo.
 profile::wikidough::dnsdist::webserver:
   host: 127.0.0.1
   port: 8083
+# password:
+# api_key:
