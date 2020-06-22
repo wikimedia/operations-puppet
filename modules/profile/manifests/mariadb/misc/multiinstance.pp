@@ -45,6 +45,7 @@ disabled, use mariadb@<instance_name> instead'; exit 1\"",
         profile::mariadb::section { 'm1': }
         profile::mariadb::ferm { 'm1': port => '3321' }
         profile::prometheus::mysqld_exporter_instance { 'm1': port => 13321, }
+        profile::mariadb::replication_lag { 'm1': prom_port => 13321, }
     }
     if $m2 {
         mariadb::instance { 'm2':
@@ -55,6 +56,7 @@ disabled, use mariadb@<instance_name> instead'; exit 1\"",
         profile::mariadb::section { 'm2': }
         profile::mariadb::ferm { 'm2': port => '3322' }
         profile::prometheus::mysqld_exporter_instance { 'm2': port => 13322, }
+        profile::mariadb::replication_lag { 'm2': prom_port => 13322, }
     }
     if $m3 {
         mariadb::instance { 'm3':
@@ -65,6 +67,7 @@ disabled, use mariadb@<instance_name> instead'; exit 1\"",
         profile::mariadb::section { 'm3': }
         profile::mariadb::ferm { 'm3': port => '3323' }
         profile::prometheus::mysqld_exporter_instance { 'm3': port => 13323, }
+        profile::mariadb::replication_lag { 'm3': prom_port => 13323, }
         # stopwords are stored prersistently and backed up, so no need to load it every time
         file { '/etc/mysql/phabricator-init.sql':
             ensure => present,
@@ -84,6 +87,7 @@ disabled, use mariadb@<instance_name> instead'; exit 1\"",
         profile::mariadb::ferm { 'm5': port => '3325' }
         include profile::mariadb::ferm_wmcs_on_port_3325
         profile::prometheus::mysqld_exporter_instance { 'm5': port => 13325, }
+        profile::mariadb::replication_lag { 'm5': prom_port => 13325, }
     }
 
     class { 'mariadb::monitor_disk':
