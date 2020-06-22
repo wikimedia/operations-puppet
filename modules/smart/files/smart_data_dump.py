@@ -141,7 +141,7 @@ def get_fact(fact_name):
 
     # FIXME: long timeout here due to facter taking a very long time on
     # a very small set of hosts.  T251293
-    raw_output = _check_output(command, timeout=3*60)
+    raw_output = _check_output(command, timeout=3*60, stderr=subprocess.DEVNULL)
     try:
         fact_value = json.loads(raw_output).get(fact_name, None)
     except ValueError:
