@@ -86,6 +86,6 @@ fetch : $(FLAGS)/recovery.conf
 # %p to temporary file and `xzcat` signals on failures.
 $(FLAGS)/recovery.conf : $(FLAGS)/df-ok
 	echo "standby_mode = 'on'" >$@~
-	echo "restore_command = 'curl --fail -sS $(WAL)/%f.xz | xzcat >%p'" >>$@~
+	echo "restore_command = 'curl -x <%= @http_proxy %> --fail -sS $(WAL)/%f.xz | xzcat >%p'" >>$@~
 	cp $@~ $(DEST)/recovery.conf
 	mv $@~ $@

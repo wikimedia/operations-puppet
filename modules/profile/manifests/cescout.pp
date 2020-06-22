@@ -57,11 +57,12 @@ class profile::cescout (
         content => 'd /var/run/postgresql 0755 postgres postgres',
     }
 
-    systemd::unit { "postgresql@${postgres_version}-main.service":
+    systemd::service { "postgresql@${postgres_version}-main.service":
         ensure   => present,
         override => true,
         restart  => true,
         content  => template('cescout/postgres-systemd-override.conf.erb'),
+        require  => Package['postgresql-9.6'],
     }
 
 }
