@@ -16,6 +16,7 @@ admin::groups:
   - analytics-deployers
   - gerrit-deployers
   - zuul-deployers
+  - contint-admins
 
 # screen sessions are common on deployment servers (T165348)
 monitor_screens: false
@@ -91,6 +92,10 @@ profile::keyholder::server::agents:
     trusted_groups:
       - ops
 
+  deploy-ci-docroot:
+    trusted_groups:
+      - contint-admins
+
   deploy-zuul:
     trusted_groups:
       - zuul-deployers
@@ -138,6 +143,7 @@ scap::sources:
   iegreview/iegreview:
     repository: iegreview
     origin: phabricator
+  integration/docroot: {}
   kartotherian/deploy:
     repository: maps/kartotherian/deploy
 #    lvs_service: kartotherian

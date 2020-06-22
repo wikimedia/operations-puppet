@@ -135,6 +135,11 @@ scap::dsh::groups:
     hosts:
       - cumin1001.eqiad.wmnet
       - cumin2001.codfw.wmnet
+  ci-docroot:
+    hosts:
+      - contint1001.wikimedia.org
+      - contint2001.wikimedia.org
+      - doc1001.eqiad.wmnet
   zuul:
     hosts:
       - contint1001.wikimedia.org

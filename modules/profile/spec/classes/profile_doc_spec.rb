@@ -12,9 +12,16 @@ test_on = {
 describe 'profile::doc' do
   on_supported_os(test_on).each do |os, facts|
     context "on #{os}" do
+      before(:each) {
+        Puppet::Parser::Functions.newfunction(:secret, :type => :rvalue) { |_|
+        }
+      }
       let(:facts) { facts }
+      let(:node_params) { {
+        'realm' => 'production',
+      } }
       let(:pre_condition) do
-          'exec { "apt-get update": path => "/bin/true" }'
+        'exec { "apt-get update": path => "/bin/true" }'
       end
       it { should compile }
     end

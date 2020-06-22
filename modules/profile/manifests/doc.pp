@@ -1,6 +1,10 @@
 # web server hosting https://docs.wikimedia.org
 class profile::doc {
 
+    scap::target { 'integration/docroot':
+        deploy_user => 'deploy-ci-docroot',
+    }
+
     require_package(['php-fpm', 'php-xml'])
 
     class { '::httpd':
