@@ -927,7 +927,7 @@ host webperf2002 {
 }
 
 host xhgui1001 {
-    hardware ethernet aa:00:00:68:50:8a;
+    hardware ethernet aa:00:00:3d:da:dc;
     fixed-address xhgui1001.eqiad.wmnet;
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
