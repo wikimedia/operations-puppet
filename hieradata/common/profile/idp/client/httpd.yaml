@@ -16,5 +16,6 @@ profile::idp::client::httpd::priority: 99
 profile::idp::client::httpd::validate_saml: false
 profile::idp::client::httpd::enable_monitor: true
 profile::idp::client::httpd::protected_uri: '/'
+profile::idp::client::httpd::cookie_scope: "%{alias('profile::idp::client::httpd::protected_uri')}"
 profile::idp::client::httpd::proxied_as_https: false
 profile::idp::client::httpd::staging: false

@@ -33,6 +33,7 @@ class profile::idp::client::httpd (
     Boolean                       $validate_saml    = lookup('profile::idp::client::httpd::validate_saml'),
     Boolean                       $enable_monitor   = lookup('profile::idp::client::httpd::enable_monitor'),
     String[1]                     $protected_uri    = lookup('profile::idp::client::httpd::protected_uri'),
+    String[1]                     $cookie_scope     = lookup('profile::idp::client::httpd::cookie_scope'),
     Boolean                       $proxied_as_https = lookup('profile::idp::client::httpd::proxied_as_https'),
     Boolean                       $staging          = lookup('profile::idp::client::httpd::staging'),
     Optional[Array[String[1]]]    $required_groups  = lookup('profile::idp::client::httpd::required_groups'),
@@ -61,6 +62,7 @@ class profile::idp::client::httpd (
     $cas_base_auth = {
         'AuthType'       => 'CAS',
         'CASAuthNHeader' => $authn_header,
+        'CASScope'       => $cookie_scope,
     }
     $cas_auth_require = $required_groups.empty? {
         true    => ['valid-user' ],
