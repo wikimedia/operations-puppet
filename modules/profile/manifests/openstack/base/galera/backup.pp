@@ -3,8 +3,6 @@ class profile::openstack::base::galera::backup(
     String              $back_pass             = lookup('profile::openstack::base::galera::backup_password'),
     ) {
 
-    $frequency = 'Weekly';
-
     include ::profile::backup::host
 
     file { '/srv/backups':
@@ -35,6 +33,5 @@ class profile::openstack::base::galera::backup(
         method           => 'predump',
         mysql_binary     => '/usr/bin/mysql',
         mysqldump_binary => '/usr/bin/mysqldump',
-        jobdefaults      => "${frequency}-${profile::backup::host::day}-${profile::backup::host::pool}",
     }
 }
