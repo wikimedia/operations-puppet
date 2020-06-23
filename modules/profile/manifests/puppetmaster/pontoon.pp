@@ -2,7 +2,7 @@ class profile::puppetmaster::pontoon (
     String                        $stack = lookup('pontoon::stack', {'default_value' => 'template'}),
     Integer[1,30]                 $git_sync_minutes = lookup('profile::puppetmaster::pontoon::git_sync_minutes', {'default_value' => 10}),
     Stdlib::Host                  $labs_puppet_master = lookup('labs_puppet_master'),
-    Boolean                       $storeconfigs = lookup('profile::puppetmaster::common::storeconfigs', {'default_value' => false }),
+    String                        $storeconfigs = lookup('profile::puppetmaster::common::storeconfigs', {'default_value' => '' }),
     Optional[Array[Stdlib::Host]] $puppetdb_hosts = lookup('profile::puppetmaster::common::puppetdb_hosts', {'default_value' => undef}),
 ) {
     class { 'pontoon::enc':
