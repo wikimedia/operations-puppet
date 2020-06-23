@@ -18,7 +18,8 @@ class profile::netbox::postgres (
     #
     Array[Stdlib::Host] $db_secondaries = lookup('profile::netbox::db::secondaries', {'default_value' => []}),
     Array[Stdlib::Host] $frontends = lookup('profile::netbox::frontends', {'default_value' => []}),
-    Boolean $ipv6_ok = lookup('profile::netbox::db::ipv6_ok', {'default_value' => true})
+    Boolean $ipv6_ok = lookup('profile::netbox::db::ipv6_ok', {'default_value' => true}),
+    Boolean $do_backups = lookup('profile::netbox::backup', {'default_value' => true})
 ) {
     # Inspired by modules/puppetprimary/manifests/puppetdb/database.pp
     if $db_primary == $::fqdn {
@@ -165,8 +166,10 @@ class profile::netbox::postgres (
         }
     }
 
-    # Have backups because Netbox is used as a source of truth (T190184)
-    include ::profile::backup::host
-    backup::set { 'netbox-postgres': }
-    class { '::postgresql::backup': }
+    if $do_backups {
+      # Have backups because Netbox is used as a source of truth (T190184)
+      include ::profile::backup::host
+      backup::set { 'netbox-postgres': }
+      class { '::postgresql::backup': }
+    }
 }

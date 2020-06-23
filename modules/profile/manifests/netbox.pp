@@ -63,6 +63,7 @@ class profile::netbox (
 
     Hash $ldap_config = lookup('ldap', Hash, hash, {}),
 
+    Boolean $do_backups = lookup('profile::netbox::backup', {'default_value' => true})
 ) {
     $nb_ganeti_ca_cert = '/etc/ssl/certs/Puppet_Internal_CA.pem'
     $nb_puppetdb_ca_cert = $nb_ganeti_ca_cert
@@ -309,6 +310,8 @@ class profile::netbox (
         user                      => 'netbox',
     }
 
-    include ::profile::backup::host
-    backup::set { 'netbox': }
+    if $do_backups {
+      include ::profile::backup::host
+      backup::set { 'netbox': }
+    }
 }
