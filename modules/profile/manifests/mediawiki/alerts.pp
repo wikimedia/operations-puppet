@@ -41,6 +41,7 @@ class profile::mediawiki::alerts {
         critical        => 0.3,
         notes_link      => 'https://docs.google.com/document/d/1SeXdegjsfL94R6XYB1I4Uv8yjCPH1tVXeL0taJF0NNs/preview#heading=h.qe04i0ld9cvl',
         dashboard_links => ["https://grafana.wikimedia.org/d/RIA1lzDZk/application-servers-red-dashboard?panelId=54&fullscreen&orgId=1&from=now-3h&to=now&var-datasource=${site} prometheus/ops&var-cluster=${cluster}"],
+        nagios_critical => true,
       }
     }
   }
