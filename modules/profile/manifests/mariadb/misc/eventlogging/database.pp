@@ -48,7 +48,12 @@ class profile::mariadb::misc::eventlogging::database (
 
     class { 'mariadb::service': }
 
-    $mariadb_basedir = '/opt/wmf-mariadb101'
+    if os_version('debian == buster') {
+        $mariadb_basedir = '/opt/wmf-mariadb104/'
+    }
+    else {
+        $mariadb_basedir = '/opt/wmf-mariadb101/'
+    }
     $mariadb_socket = '/run/mysqld/mysqld.sock'
 
     # History context: there used to be two hosts with the 'log'
