@@ -796,7 +796,7 @@ host releases1001 {
 }
 
 host releases1002 {
-    hardware ethernet aa:00:00:41:32:4c;
+    hardware ethernet aa:00:00:5b:30:f3;
     fixed-address releases1002.eqiad.wmnet;
 }
 
