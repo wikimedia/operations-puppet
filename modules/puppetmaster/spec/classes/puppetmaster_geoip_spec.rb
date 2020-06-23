@@ -18,12 +18,12 @@ describe 'puppetmaster::geoip' do
     let(:pre_condition) {
         '''
         class profile::base ($notifications_enabled = true){}
-        package {"prometheus-node-exporter": ensure => installed}
         exec{"apt-get update": path => "/usr/bin" }
         include profile::base
         include profile::base::puppet
         include httpd
         include puppetmaster
+        include standard::prometheus
         '''
     }
     it { should compile }
