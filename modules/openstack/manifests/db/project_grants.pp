@@ -11,7 +11,7 @@ define openstack::db::project_grants(
         default => $project_name,
     }
 
-    file { "/etc/${etc_dir}/${title}_grants.mysl":
+    file { "/etc/${etc_dir}/${title}_grants.mysql":
         content   => template('openstack/db/grants.mysql.erb'),
         owner     => 'root',
         group     => 'root',
