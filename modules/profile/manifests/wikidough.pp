@@ -19,6 +19,12 @@ class profile::wikidough (
         srange => '$PRODUCTION_NETWORKS',
     }
 
+    ferm::service { 'wikidough-dnsdist-webserver':
+        proto  => 'tcp',
+        port   => $webserver_config['port'],
+        srange => '$PRODUCTION_NETWORKS',
+    }
+
     class { 'dnsrecursor':
         listen_addresses     => [$resolver['host']],
         allow_from           => ['127.0.0.0/8'],

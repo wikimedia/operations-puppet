@@ -14,7 +14,7 @@ profile::wikidough::dnsdist::tls:
 
 # password and api_key are defined in the private repo.
 profile::wikidough::dnsdist::webserver:
-  host: 127.0.0.1
+  host: 0.0.0.0
   port: 8083
 # password:
 # api_key:
