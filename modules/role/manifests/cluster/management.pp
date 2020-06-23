@@ -30,4 +30,9 @@ class role::cluster::management {
     include ::profile::homer
 
     include ::profile::sre::os_updates
+
+    # Backup all of /srv, including deployment, homer and  pwstore
+    # move to a corresponding profile if the other profiles are split away
+    include ::profile::backup::host
+    include ::profile::cluster::management::backup
 }
