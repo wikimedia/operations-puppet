@@ -5,6 +5,7 @@ class profile::openstack::codfw1dev::galera::node(
     Array[Stdlib::Fqdn] $openstack_controllers = lookup('profile::openstack::codfw1dev::openstack_controllers'),
     Array[Stdlib::Fqdn] $designate_hosts       = lookup('profile::openstack::codfw1dev::designate_hosts'),
     Array[Stdlib::Fqdn] $labweb_hosts          = lookup('profile::openstack::codfw1dev::labweb_hosts'),
+    Stdlib::Fqdn        $puppetmaster          = lookup('profile::openstack::codfw1dev::puppetmaster::web_hostname'),
     ) {
 
     class {'::profile::openstack::base::galera::node':
@@ -14,5 +15,6 @@ class profile::openstack::codfw1dev::galera::node(
         openstack_controllers => $openstack_controllers,
         designate_hosts       => $designate_hosts,
         labweb_hosts          => $labweb_hosts,
+        puppetmaster          => $puppetmaster,
     }
 }

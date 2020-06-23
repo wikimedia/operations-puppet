@@ -28,4 +28,7 @@ class role::wmcs::openstack::eqiad1::control {
     include ::profile::openstack::eqiad1::nova::fullstack::service
     include ::profile::memcached::instance
     include ::profile::openstack::eqiad1::nova::instance_purge
+    include ::profile::openstack::eqiad1::galera::node
+    include ::profile::openstack::eqiad1::galera::monitoring
+    include ::profile::openstack::eqiad1::galera::backup
 }
