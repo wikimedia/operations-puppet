@@ -540,11 +540,6 @@ node /^db2(085|086|087|088|089|137|138)\.codfw\.wmnet/ {
     role(mariadb::core_multiinstance)
 }
 
-# eqiad replicas to be installed T251614
-node /^db11(45)\.eqiad\.wmnet/ {
-    role(spare::system)
-}
-
 ## x1 shard
 # eqiad
 # x1 eqiad master
@@ -695,9 +690,15 @@ node 'db1116.eqiad.wmnet' {
 node 'db1139.eqiad.wmnet' {
     role(mariadb::dbstore_multiinstance)
 }
+
 node 'db1140.eqiad.wmnet' {
     role(mariadb::dbstore_multiinstance)
 }
+
+node 'db1145.eqiad.wmnet' {
+    role(mariadb::dbstore_multiinstance)
+}
+
 
 # codfw backup sources
 
