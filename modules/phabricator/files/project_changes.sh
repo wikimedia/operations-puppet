@@ -9,7 +9,7 @@ source /etc/phab_project_changes.conf
 #echo "result_creations_and_name_changes"
 result_creations_and_name_changes=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -P $sql_port -u $sql_user $sql_name << END
 
-SELECT project_transaction1.oldValue, project_transaction1.newValue, parent.name AS parentProject, user.userName
+SELECT CONCAT("https://phabricator.wikimedia.org/project/profile/", p1.id) AS url, project_transaction1.oldValue, project_transaction1.newValue, parent.name AS parentProject, user.userName
     FROM project_transaction project_transaction1
     LEFT OUTER JOIN
         (SELECT project.name, project_transaction2.objectPHID, project_transaction2.transactionType
@@ -21,7 +21,9 @@ SELECT project_transaction1.oldValue, project_transaction1.newValue, parent.name
         AND project_transaction2.dateModified > UNIX_TIMESTAMP(DATE_SUB(NOW(), INTERVAL 1 WEEK))) parent
         ON parent.objectPHID = project_transaction1.objectPHID
     JOIN phabricator_user.user
+    JOIN project p1
     WHERE project_transaction1.transactionType = "project:name"
+    AND p1.phid = project_transaction1.objectPHID
     AND project_transaction1.authorPHID = user.phid
     AND project_transaction1.dateModified > UNIX_TIMESTAMP(DATE_SUB(NOW(), INTERVAL 1 WEEK));
 
@@ -31,7 +33,7 @@ END
 #echo "result_color_changes"
 result_color_changes=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -P $sql_port -u$sql_user $sql_name << END
 
-SELECT project_transaction.oldValue, project_transaction.newValue, project.name
+SELECT CONCAT("https://phabricator.wikimedia.org/project/profile/", project.id) AS url, project_transaction.oldValue, project_transaction.newValue, project.name
     FROM project_transaction
     JOIN project
     WHERE project_transaction.transactionType = "project:color"
@@ -44,7 +46,7 @@ END
 #echo "result_policy_locking_archiving_changes"
 result_policy_locking_archiving_changes=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -P $sql_port -u$sql_user $sql_name << END
 
-SELECT project_transaction.oldValue, project_transaction.newValue,
+SELECT CONCAT("https://phabricator.wikimedia.org/project/profile/", project.id) AS url, project_transaction.oldValue, project_transaction.newValue,
     project_transaction.transactionType, project.name
     FROM project_transaction
     JOIN project
@@ -64,7 +66,7 @@ END
 #echo "result_column_changes"
 result_column_changes=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -P $sql_port -u$sql_user $sql_name << END
 
-SELECT prj.name AS projectName, cl.name AS columnName, cltr.oldValue, cltr.newValue, usr.userName
+SELECT CONCAT("https://phabricator.wikimedia.org/project/board/", prj.id) AS url, prj.name AS projectName, cl.name AS columnName, cltr.oldValue, cltr.newValue, usr.userName
     FROM phabricator_project.project_columntransaction cltr
     JOIN phabricator_project.project prj
     JOIN phabricator_project.project_column pcl
@@ -85,7 +87,7 @@ END
 # see https://phabricator.wikimedia.org/T133649
 result_archived_projects_open_tasks=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -P $sql_port -u$sql_user $sql_name << END
 
-SELECT sub.parentProject AS parentProject, p.name AS projectName, count(p.name) AS n
+SELECT CONCAT("https://phabricator.wikimedia.org/project/profile/", p.id) AS url, sub.parentProject AS parentProject, p.name AS projectName, count(p.name) AS n
     FROM phabricator_maniphest.edge edg
     JOIN phabricator_maniphest.maniphest_task t
     JOIN phabricator_project.project p
@@ -161,7 +163,7 @@ END
 #echo "result_user_profile_urls"
 # see https://phabricator.wikimedia.org/T250946
 result_user_profile_urls=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -P $sql_port -u $sql_user $sql_name << END
-SELECT CONCAT("https://phabricator.wikimedia.org/p/", u.userName)
+SELECT CONCAT("https://phabricator.wikimedia.org/p/", u.userName) AS userName
     FROM phabricator_user.user u
     INNER JOIN phabricator_user.user_profile up
     WHERE up.userPHID = u.phid
@@ -188,7 +190,7 @@ END
 #echo "result_parent_projects_without_desc"
 # see https://phabricator.wikimedia.org/T249805
 result_parent_projects_without_desc=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -P $sql_port -u $sql_user $sql_name << END
-SELECT CONCAT("https://phabricator.wikimedia.org/tag/", p.primarySlug)
+SELECT CONCAT("https://phabricator.wikimedia.org/tag/", p.primarySlug) AS parentproject
     FROM phabricator_project.project p
     WHERE p.parentProjectPHID IS NULL
     AND p.status != 100
@@ -205,7 +207,7 @@ END
 #echo "result_sub_projects_without_desc"
 # see https://phabricator.wikimedia.org/T249805
 result_sub_projects_without_desc=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -P $sql_port -u $sql_user $sql_name << END
-SELECT CONCAT("https://phabricator.wikimedia.org/tag/", pp.primarySlug) AS parentproject, p.name AS project
+SELECT CONCAT("https://phabricator.wikimedia.org/tag/", pp.primarySlug) AS parentproject, p.name AS subproject
     FROM phabricator_project.project p
     JOIN phabricator_project.project pp
     WHERE pp.phid = p.parentProjectPHID
