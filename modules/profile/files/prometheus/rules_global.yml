@@ -8,13 +8,13 @@ groups:
   - record: site_job:varnish_requests:avail5m
     expr: sum by(site, job) (job_method_status:varnish_requests:rate5m{status=~"5.."})
       / sum by(site, job) (job_method_status:varnish_requests:rate5m{status=~"[12345].."})
-  - record: job:varnish_requests:avail5m
+  - record: global_job:varnish_requests:avail5m
     expr: sum by(job) (job_method_status:varnish_requests:rate5m{status=~"5.."})
       / sum by(job) (job_method_status:varnish_requests:rate5m{status=~"[12345].."})
   - record: site_cluster:nginx_requests:avail5m
     expr: sum by(site, cluster) (cluster_status:nginx_http_requests_total:rate5m{status=~"5.."})
       / sum by(site, cluster) (cluster_status:nginx_http_requests_total:rate5m{status=~"[12345].."})
-  - record: job:nginx_requests:avail5m
+  - record: global_job:nginx_requests:avail5m
     expr: sum by(cluster) (cluster_status:nginx_http_requests_total:rate5m{status=~"5.."})
       / sum by(cluster) (cluster_status:nginx_http_requests_total:rate5m{status=~"[12345].."})
   - record: site_job_backend:varnish_backend_requests:avail5m
@@ -30,25 +30,25 @@ groups:
   - record: site_job:varnish_requests:avail2m
     expr: sum by(site, job) (job_method_status:varnish_requests:rate2m{status=~"5.."})
       / sum by(site, job) (job_method_status:varnish_requests:rate2m{status=~"[12345].."})
-  - record: job:varnish_requests:avail2m
+  - record: global_job:varnish_requests:avail2m
     expr: sum by(job) (job_method_status:varnish_requests:rate2m{status=~"5.."})
       / sum by(job) (job_method_status:varnish_requests:rate2m{status=~"[12345].."})
   - record: site_cluster:nginx_requests:avail2m
     expr: sum by(site, cluster) (cluster_status:nginx_http_requests_total:rate2m{status=~"5.."})
       / sum by(site, cluster) (cluster_status:nginx_http_requests_total:rate2m{status=~"[12345].."})
-  - record: job:nginx_requests:avail2m
+  - record: global_job:nginx_requests:avail2m
     expr: sum by(cluster) (cluster_status:nginx_http_requests_total:rate2m{status=~"5.."})
       / sum by(cluster) (cluster_status:nginx_http_requests_total:rate2m{status=~"[12345].."})
   - record: site_cluster_layer:trafficserver_requests:avail5m
     expr: sum by(site, cluster, layer) (cluster_layer_code:trafficserver_responses_total:rate5m{code=~"5.."})
       / sum by(site, cluster, layer) (cluster_layer_code:trafficserver_responses_total:rate5m{code=~"[12345].."})
-  - record: job:trafficserver_requests:avail5m
+  - record: global_job:trafficserver_requests:avail5m
     expr: sum by(cluster, layer) (cluster_layer_code:trafficserver_responses_total:rate5m{code=~"5.."})
       / sum by(cluster, layer) (cluster_layer_code:trafficserver_responses_total:rate5m{code=~"[12345].."})
   - record: site_cluster_layer:trafficserver_requests:avail2m
     expr: sum by(site, cluster, layer) (cluster_layer_code:trafficserver_responses_total:rate2m{code=~"5.."})
       / sum by(site, cluster, layer) (cluster_layer_code:trafficserver_responses_total:rate2m{code=~"[12345].."})
-  - record: job:trafficserver_requests:avail2m
+  - record: global_job:trafficserver_requests:avail2m
     expr: sum by(cluster, layer) (cluster_layer_code:trafficserver_responses_total:rate2m{code=~"5.."})
       / sum by(cluster, layer) (cluster_layer_code:trafficserver_responses_total:rate2m{code=~"[12345].."})
 
