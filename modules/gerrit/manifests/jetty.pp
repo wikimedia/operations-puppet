@@ -205,10 +205,16 @@ class gerrit::jetty(
         require => File['/var/lib/gerrit2'],
     }
 
-    file { '/var/lib/gerrit2/review_site/lib/javamelody-deps_deploy.jar':
-        ensure  => 'link',
-        target  => '/srv/deployment/gerrit/gerrit/lib/javamelody-deps_deploy.jar',
-        require => [File['/var/lib/gerrit2/review_site/lib'], Scap::Target['gerrit/gerrit']],
+    if $is_new_version {
+        file { '/var/lib/gerrit2/review_site/lib/javamelody-deps_deploy.jar':
+            ensure  => 'absent',
+        }
+    } else {
+        file { '/var/lib/gerrit2/review_site/lib/javamelody-deps_deploy.jar':
+            ensure  => 'link',
+            target  => '/srv/deployment/gerrit/gerrit/lib/javamelody-deps_deploy.jar',
+            require => [File['/var/lib/gerrit2/review_site/lib'], Scap::Target['gerrit/gerrit']],
+        }
     }
 
     file { '/var/lib/gerrit2/review_site/etc/gerrit.config':
