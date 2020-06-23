@@ -301,8 +301,8 @@ groups:
 
   # Availability
   - record: job:varnish_requests:avail2m
-    expr: sum by(job) job_method_status:varnish_requests:rate2m{status=~"5.."}
-      / sum by (job) job_method_status:varnish_requests:rate2m{status=~"[12345].."}
+    expr: sum by(job) (job_method_status:varnish_requests:rate2m{status=~"5.."})
+      / sum by (job) (job_method_status:varnish_requests:rate2m{status=~"[12345].."})
   - record: job_backend:varnish_backend_requests:avail2m
     expr: sum by(job, backend) (job_method_status_backend:varnish_backend_requests_seconds_count:rate2m{status=~"5.."})
       / sum by(job, backend) (job_method_status_backend:varnish_backend_requests_seconds_count:rate2m{status=~"[12345].."})
