@@ -5,7 +5,7 @@ Description=Instance of Arc Lamp for <%= @description %> trace logs
 User=xenon
 Group=xenon
 Restart=always
-ExecStart=/usr/bin/python /usr/local/bin/arclamp-log /etc/arclamp-log-<%= @title %>.yaml
+ExecStart=/usr/bin/python /srv/deployment/performance/arc-lamp/arclamp-log.py /etc/arclamp-log-<%= @title %>.yaml
 
 [Install]
 WantedBy=multi-user.target

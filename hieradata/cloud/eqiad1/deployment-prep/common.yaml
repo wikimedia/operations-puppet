@@ -199,6 +199,9 @@ scap::dsh::groups:
     webperf:
         hosts:
           - deployment-webperf11.deployment-prep.eqiad.wmflabs
+    arclamp:
+        hosts:
+          - deployment-webperf12.deployment-prep.eqiad.wmflabs
 
 
 # Etcd client global configuration

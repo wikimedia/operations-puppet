@@ -60,48 +60,38 @@ class arclamp(
         mode   => '0755',
     }
 
+    file { '/srv/arclamp':
+        ensure => ensure_link($ensure),
+        target => '/srv/xenon',
+    }
+
+    scap::target { 'performance/arc-lamp':
+        service_name => 'arclamp',
+        deploy_user  => 'deploy-service',
+    }
+
+    # These scripts used to be stored in puppet, but are now deployed via scap
+    # from their own repository:
     file { '/usr/local/bin/arclamp-log':
-        ensure => $ensure,
-        source => 'puppet:///modules/arclamp/arclamp-log.py',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
+        ensure => absent,
     }
-
-    # This is the Perl script that generates flame graphs.
-    # It comes from <https://github.com/brendangregg/FlameGraph>.
-    file { '/usr/local/bin/flamegraph.pl':
-        ensure => $ensure,
-        source => 'puppet:///modules/arclamp/flamegraph.pl',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-    }
-
-    # Walks /srv/xenon/logs looking for log files which do not have a
-    # corresponding SVG file and calls flamegraph.pl on each of them.
     file { '/usr/local/bin/arclamp-generate-svgs':
-        ensure => $ensure,
-        source => 'puppet:///modules/arclamp/arclamp-generate-svgs',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
+        ensure => absent,
+    }
+    file { '/usr/local/bin/flamegraph.pl':
+        ensure => absent,
+    }
+    file { '/usr/local/bin/arclamp-grep':
+        ensure => ensure_link($ensure),
+        target => '/srv/deployment/performance/arc-lamp/arclamp-grep.py',
     }
 
     cron { 'arclamp_generate_svgs':
         ensure  => $ensure,
-        command => '/usr/local/bin/arclamp-generate-svgs > /dev/null',
+        command => '/srv/deployment/performance/arc-lamp/arclamp-generate-svgs >/dev/null',
         user    => 'xenon',
         minute  => '*/15',
-        require => File['/usr/local/bin/arclamp-generate-svgs']
-    }
-
-    file { '/usr/local/bin/arclamp-grep':
-        ensure => $ensure,
-        source => 'puppet:///modules/arclamp/arclamp-grep.py',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
+        require => Package['performance/arc-lamp']
     }
 
     # This supports running multiple pipelines; in the past we had one

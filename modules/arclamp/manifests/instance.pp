@@ -34,7 +34,7 @@ define arclamp::instance(
     systemd::service { "${title}-log":
         ensure    => $ensure,
         content   => systemd_template('arclamp-log'),
-        subscribe => File['/usr/local/bin/arclamp-log'],
+        subscribe => Package['performance/arc-lamp'],
         require   => File['/srv/xenon']
     }
 }

@@ -195,6 +195,8 @@ scap::sources:
     repository: search/MjoLniR/deploy
   statsv/statsv:
     repository: analytics/statsv
+  performance/arc-lamp:
+    repository: performance/arc-lamp
   performance/asoranking:
     repository: performance/asoranking
   performance/coal:
