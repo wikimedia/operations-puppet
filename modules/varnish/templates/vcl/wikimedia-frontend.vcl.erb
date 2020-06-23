@@ -52,13 +52,16 @@ acl local_tls_terminator {
        "<%= @ipaddress %>"; // note this matches nginx proxy_pass for TLS
 }
 
-// external trusted proxies aren't allowed to set XCIP (via XFF) to wikimedia_nets
+// external trusted proxies aren't allowed to set XCIP (via XFF) to wikimedia_nets,
+// and this ACL is also used to skip ratelimiting of most requests
 acl wikimedia_nets {
 <% @wikimedia_nets.each do |entry|
        subnet, mask = entry.split("/", 2)
 -%>
        "<%= subnet %>"/<%= mask %>;
 <% end -%>
+       // T255524 : Elastic IP used for some PAPI work under a WMF project
+       "3.23.12.83"/32;
 }
 
 // Only wikimedia_trust can fake X-F-P
