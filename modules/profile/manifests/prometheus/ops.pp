@@ -18,6 +18,9 @@ class profile::prometheus::ops (
     include ::passwords::gerrit
     $gerrit_client_token = $passwords::gerrit::prometheus_bearer_token
 
+    include passwords::wikidough::dnsdist
+    $wikidough_api_key = $passwords::wikidough::dnsdist::api_key
+
     $port = 9900
 
     $config_extra = {
@@ -1663,6 +1666,28 @@ class profile::prometheus::ops (
         port           => 8443
     }
 
+    $wikidough_jobs = [
+      {
+        'job_name'        => 'wikidough',
+        'metrics_path'    => '/metrics',
+        'scheme'          => 'https',
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/wikidough_*.yaml" ]}
+        ],
+        'basic_auth'      => {
+            'username' => anyuser,
+            'password' => $wikidough_api_key,
+        },
+      },
+    ]
+
+    prometheus::class_config { "wikidough_${::site}":
+        dest       => "${targets_path}/wikidough_${::site}.yaml",
+        site       => $::site,
+        class_name => 'profile::wikidough',
+        port       => 8083,
+    }
+
     $max_block_duration = $enable_thanos_upload ? {
         true    => '2h',
         default => '24h',
@@ -1688,6 +1713,7 @@ class profile::prometheus::ops (
             $cloud_dev_pdns_jobs, $cloud_dev_pdns_rec_jobs, $bacula_jobs, $poolcounter_exporter_jobs,
             $apereo_cas_jobs, $atlas_exporter_jobs, $exported_blackbox_jobs, $cadvisor_jobs,
             $envoy_jobs, $webperf_jobs, $squid_jobs, $nic_saturation_exporter_jobs, $thanos_jobs, $netbox_jobs,
+            $wikidough_jobs,
         ),
         global_config_extra   => $config_extra,
     }
