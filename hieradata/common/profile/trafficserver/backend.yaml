@@ -104,9 +104,6 @@ profile::trafficserver::backend::mapping_rules:
       target: http://logstash-next.wikimedia.org
       replacement: https://kibana-next.svc.eqiad.wmnet
     - type: map
-      target: http://cas-logstash.wikimedia.org
-      replacement: https://kibana-next.svc.eqiad.wmnet
-    - type: map
       target: http://maps.wikimedia.org
       replacement: https://kartotherian.discovery.wmnet
     - type: map
