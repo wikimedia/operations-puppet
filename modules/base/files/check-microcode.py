@@ -52,8 +52,7 @@ def main():
 
     # CPUs which were not fixed for SSBD (which was the first) are also not
     # fixed for L1TF/MDS
-    blacklist_ssbd_l1tf = ['dbproxy1008']
-    blacklist_mds = ['helium', 'tungsten', 'dbproxy1003'] + blacklist_ssbd_l1tf
+    blacklist_mds = ['helium', 'tungsten', 'dbproxy1003']
 
     if apt_pkg.version_compare(current_kernelpackage_version, '4.9.107-1') > 0:
         expected_cpu_flags.add('ssbd')
@@ -67,7 +66,7 @@ def main():
     if apt_pkg.version_compare(current_kernelpackage_version, '4.9.168-1+deb9u1') > 0:
         expected_cpu_flags.add('md_clear')
 
-    if 'ssbd' in expected_cpu_flags and hostname in blacklist_ssbd_l1tf:
+    if 'ssbd' in expected_cpu_flags:
         expected_cpu_flags.remove('ssbd')
 
     for flag in ['flush_l1d', 'md_clear']:
@@ -80,9 +79,9 @@ def main():
     # Reading the flags from lscpu is not supported in jessie
     try:
         with open('/proc/cpuinfo', 'r') as proc_file:
-            for l in proc_file.readlines():
-                if l.startswith("flags"):
-                    available_cpu_flags.update(l.split(":")[1].split())
+            for line in proc_file.readlines():
+                if line.startswith("flags"):
+                    available_cpu_flags.update(line.split(":")[1].split())
                     break
     except IOError:
         unknown('Failed to read CPU flags from proc')
