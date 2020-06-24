@@ -113,7 +113,9 @@ def main():
     check_icinga_config = {'emails': {}, 'pagers': {}}
     for name in contact_names:
         contact = contacts['contact'][name]
-        check_icinga_config['emails'][name] = contact['email']
+        if 'email' in contact:
+            check_icinga_config['emails'][name] = contact['email']
+
         start, end = CHECK_ICINGA_START_END[contact['service_notification_period']]
 
         if start is None or end is None:  # Notification disabled
