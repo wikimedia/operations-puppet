@@ -16,6 +16,11 @@ class profile::idp(
     Stdlib::Fqdn           $idp_primary            = lookup('profile::idp::idp_primary'),
     Boolean                $is_staging_host        = lookup('profile::idp::is_staging_host'),
     Boolean                $memcached_enable       = lookup('profile::idp::memcached_enable'),
+    Boolean                $u2f_jpa_enable         = lookup('profile::idp::u2f_jpa_enable'),
+    String                 $u2f_jpa_username       = lookup('profile::idp::u2f_jpa_username'),
+    String                 $u2f_jpa_password       = lookup('profile::idp::u2f_jpa_password'),
+    Stdlib::Host           $u2f_jpa_server         = lookup('profile::idp::u2f_jpa_server'),
+    String                 $u2f_jpa_db             = lookup('profile::idp::u2f_jpa_db'),
     Optional[Stdlib::Fqdn] $idp_failover           = lookup('profile::idp::idp_failover',
                                                             {'default_value' => undef}),
     Optional[String]       $totp_signing_key       = lookup('profile::idp::totp_signing_key',
@@ -93,7 +98,12 @@ class profile::idp(
         manage_user            => $cas_manage_user,
         log_dir                => $log_dir,
         memcached_enable       => $memcached_enable,
-        memcached_port         => 11213  # we use mcrouter which is on this port
+        memcached_port         => 11213,  # we use mcrouter which is on this port
+        u2f_jpa_enable         => $u2f_jpa_enable,
+        u2f_jpa_username       => $u2f_jpa_username,
+        u2f_jpa_password       => $u2f_jpa_password,
+        u2f_jpa_server         => $u2f_jpa_server,
+        u2f_jpa_db             => $u2f_jpa_db,
     }
 
     ferm::service {'cas-https':
