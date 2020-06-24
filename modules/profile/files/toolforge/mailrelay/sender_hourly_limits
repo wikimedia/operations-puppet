@@ -10,4 +10,4 @@
 # *@example.org:              5
 
 # Default per-sender address rate limit
-*@*:                          100
+*:                            100
