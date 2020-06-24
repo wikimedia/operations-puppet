@@ -9,6 +9,6 @@ class profile::pwstore(
         ensure => present,
         owner  => 'root',
         group  => 'ops',
-        mode   => '1770',
+        mode   => '0770',
     }
 }
