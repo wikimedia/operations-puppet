@@ -9,7 +9,7 @@ class profile::ci::website {
 
     # Apache configuration for integration.wikimedia.org
     httpd::site { 'integration.wikimedia.org':
-        content => template('contint/apache/integration.wikimedia.org.erb'),
+        source => 'puppet:///modules/contint/apache/integration.wikimedia.org.conf'
     }
 
     # Static files in these docroots are in integration/docroot.git
