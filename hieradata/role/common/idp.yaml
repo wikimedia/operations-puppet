@@ -103,7 +103,4 @@ profile::idp::actuators:
   - prometheus
   - sso
 profile::idp::is_staging_host: false
-profile::idp::memcached_enable: true
-profile::idp::memcached::mcrouter_cluster: 'idp'
-profile::idp::memcached::enable_tls: true
 profile::prometheus::memcached_exporter::arguments: '--memcached.address=localhost:11000'
