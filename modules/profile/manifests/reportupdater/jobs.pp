@@ -114,6 +114,7 @@ class profile::reportupdater::jobs {
     }
 
     reportupdater::job { 'page-creation':
+        ensure     => absent,
         output_dir => 'metrics/page-creation',
     }
 }
