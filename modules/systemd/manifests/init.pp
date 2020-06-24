@@ -1,7 +1,8 @@
 # == Class systemd ==
 #
 # This class defines a guard against running on non-systemd systems, a few
-# constants, and the check_journal_pattern nrpe plugin.
+# constants, and the check_journal_pattern nrpe plugin.  It also defines an exec
+# shared across all instantations of systemd::sysuser.
 #
 class systemd {
     if $::initsystem != 'systemd' {
@@ -18,6 +19,12 @@ class systemd {
         ensure  => directory,
         purge   => true,
         recurse => true,
+    }
+
+    exec { 'Refresh sysusers':
+        command     => '/bin/systemd-sysusers',
+        user        => 'root',
+        refreshonly => true,
     }
 
     file { '/usr/local/lib/nagios/plugins/check_journal_pattern':

@@ -15,7 +15,7 @@ define systemd::sysuser(
     Array[Systemd::Sysuser::Config] $content,
     Wmflib::Ensure $ensure=present,
 ){
-    require systemd
+    include systemd
 
     $safe_title = regsubst($title, '[\W_/]', '-', 'G')
     $conf_path = "/etc/sysusers.d/${safe_title}.conf"
@@ -30,12 +30,8 @@ define systemd::sysuser(
         mode    => '0444',
         owner   => 'root',
         group   => 'root',
+        require => File['/etc/sysusers.d'],
+        notify  => Exec['Refresh sysusers'],
     }
 
-    exec { 'Refresh sysusers':
-        command     => '/bin/systemd-sysusers',
-        user        => 'root',
-        refreshonly => true,
-        subscribe   => File[$conf_path],
-    }
 }
