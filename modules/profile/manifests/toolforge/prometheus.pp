@@ -6,6 +6,7 @@ class profile::toolforge::prometheus (
     Stdlib::Fqdn  $new_k8s_apiserver_fqdn = lookup('profile::toolforge::k8s::apiserver_fqdn', {default_value => 'k8s.tools.eqiad1.wikimedia.cloud'}),
     Stdlib::Port  $new_k8s_apiserver_port = lookup('profile::toolforge::k8s::apiserver_port', {default_value => 6443}),
     Array[Stdlib::Fqdn] $proxies          = lookup('profile::toolforge::proxies',             {default_value => ['tools-proxy-05.tools.eqiad.wmflabs']}),
+    Stdlib::Fqdn  $email_server           = lookup('profile::toolforge::active_mail_relay',   {default_value => 'tools-mail-02.tools.eqiad1.wikimedia.cloud'}),
 ) {
     require ::profile::labs::lvm::srv
     include ::profile::prometheus::blackbox_exporter
@@ -309,6 +310,16 @@ class profile::toolforge::prometheus (
                         # lint:endignore
                     },
                 ]
+            },
+            {
+                'job_name'       => 'tools-email',
+                'scheme'         => 'http',
+                'static_configs' => [
+                    {
+                        # this is using mtail exim which listens on 3903 by default
+                        'targets' => ["${email_server}:3903"],
+                    },
+                ],
             },
         ]
     }

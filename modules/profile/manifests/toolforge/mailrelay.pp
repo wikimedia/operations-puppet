@@ -78,5 +78,10 @@ class profile::toolforge::mailrelay (
         source => 'puppet:///modules/profile/toolforge/mailrelay/aliases',
     }
 
-    diamond::collector::extendedexim { 'extended_exim_collector': }
+    # prometheus exim monitoring using mtail
+    mtail::program { 'exim':
+        ensure => present,
+        notify => Service['mtail'],
+        source => 'puppet:///modules/mtail/programs/exim.mtail',
+    }
 }
