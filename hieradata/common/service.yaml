@@ -1901,7 +1901,7 @@ service::catalog:
     sites:
     - eqiad
     - codfw
-    state: monitoring_setup
+    state: production
     discovery:
     - dnsdisc: proton
       active_active: true
