@@ -342,12 +342,14 @@ class TaskGen < ::Rake::TaskLib
         profile_yaml = YAML.safe_load(File.open(profile_yaml_file))
         missing_keys.merge(profile_yaml.keys.to_set - cloud_keys)
       end
-      unless missing_keys.empty?
+      if missing_keys.empty?
+        puts "hiera_defaults: OK".green
+      else
         puts "The following defaults are missing from cloud.yaml".red
         puts "#{missing_keys.to_a.join("\n")}".red
-        abort("yaml_defaults: FAILED".red)
+        puts "yaml_defaults: FAILED".red
+        # abort("yaml_defaults: FAILED".red)
       end
-      puts "hiera_defaults: OK".green
     end
     [:hiera_defaults]
   end
