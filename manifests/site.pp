@@ -624,10 +624,9 @@ node 'db2134.codfw.wmnet' {
     role(mariadb::misc::phabricator)
 }
 
-## Eventlogging shard
-
+# T234826
 node 'db1108.eqiad.wmnet' {
-    role(mariadb::misc::eventlogging::replica)
+    role(insetup)
 }
 
 ## m5 shard
