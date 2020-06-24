@@ -27,9 +27,6 @@ class profile::kibana::httpd_proxy (
     Optional[String] $ldap_binddn          = lookup('profile::kibana::httpd_proxy::ldap_binddn', { 'default_value' => undef }),
     Optional[Array[String]] $ldap_groups   = lookup('profile::kibana::httpd_proxy::ldap_groups', { 'default_value' => [] }),
 ) {
-
-    include profile::idp::client::httpd
-
     $httpd_base_modules = ['proxy_http',
                         'proxy',
                         'alias',
