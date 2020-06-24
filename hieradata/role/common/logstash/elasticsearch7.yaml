@@ -9,10 +9,13 @@ admin::groups:
 profile::java::java_packages:
   - version: '8'
     variant: 'jdk'
+  - version: '11'
+    variant: 'jdk'
 
 # ES-specific
 # NOTE: cluster_name must be kept in sync with the backend
 # node config in hieradata/role/common/collector.yaml
+profile::elasticsearch::java_home: '/usr/lib/jvm/java-1.11.0-openjdk-amd64'
 profile::elasticsearch::config_version: '7'
 profile::elasticsearch::rack: ''
 profile::elasticsearch::row: ''

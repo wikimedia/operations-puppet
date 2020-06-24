@@ -14,6 +14,8 @@
 # - $config_version: configure for this versionof elastic. This is independant from $version as during the transition
 #                    ES5 -> ES6, we need to deploy the new package before applying the configuration.
 #                    TODO: remove this configuration option once all instances have been migrated to ES6.
+# - $java_home: optionally specify the JAVA_HOME path in the elasticsearch systemd unit.
+#               note: used only with ES7.
 #
 #
 class profile::elasticsearch(
@@ -30,6 +32,7 @@ class profile::elasticsearch(
     String $row = hiera('profile::elasticsearch::row'),
     Enum['5.5', '5.6', '6.5', '7.4'] $version = hiera('profile::elasticsearch::version', '5.5'),
     Enum['5', '6', '7'] $config_version = hiera('profile::elasticsearch::config_version', '5'),
+    Optional[String] $java_home = lookup('profile::elasticsearch::java_home', { 'default_value' => undef }),
 ) {
 
     require ::profile::java
@@ -126,5 +129,6 @@ class profile::elasticsearch(
         logstash_transport    => $logstash_transport,
         rack                  => $rack,
         row                   => $row,
+        java_home             => $java_home,
     }
 }

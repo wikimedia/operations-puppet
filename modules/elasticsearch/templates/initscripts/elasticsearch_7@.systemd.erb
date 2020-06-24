@@ -15,6 +15,10 @@ Environment=ES_JVM_OPTIONS=/etc/elasticsearch/%i/jvm.options
 Environment=PID_DIR=/var/run/elasticsearch
 Environment=ES_SD_NOTIFY=true
 
+<% if @java_home -%>
+Environment=JAVA_HOME=<%= @java_home %>
+<% end -%>
+
 WorkingDirectory=/usr/share/elasticsearch
 
 User=elasticsearch

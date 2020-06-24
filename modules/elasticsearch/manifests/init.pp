@@ -29,6 +29,7 @@ class elasticsearch (
     Enum['Gelf', 'syslog'] $logstash_transport                       = 'Gelf',
     Optional[String] $rack                                           = undef,
     Optional[String] $row                                            = undef,
+    Optional[String] $java_home                                      = undef,
 ) {
     # Check arguments and set package
     case $version {

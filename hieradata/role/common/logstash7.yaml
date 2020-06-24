@@ -12,9 +12,14 @@ admin::groups:
   - logstash-roots
   - elasticsearch-roots
 
+profile::java::java_packages:
+  - version: '11'
+    variant: 'jdk'
+
 # ES-specific
 # NOTE: cluster_name must be kept in sync with the backend
 # node config in hieradata/role/common/logstash/elasticsearch.yaml
+profile::elasticsearch::java_home: '/usr/lib/jvm/java-1.11.0-openjdk-amd64'
 profile::elasticsearch::config_version: '7'
 profile::elasticsearch::rack: ''
 profile::elasticsearch::row: ''
