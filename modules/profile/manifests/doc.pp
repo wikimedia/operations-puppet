@@ -21,7 +21,7 @@ class profile::doc {
 
     # Apache configuration for doc.wikimedia.org
     httpd::site { 'doc.wikimedia.org':
-        content => template('profile/doc/httpd-doc.wikimedia.org.erb'),
+        source => 'puppet:///modules/profile/doc/httpd-doc.wikimedia.org.conf'
     }
 
     git::clone { 'integration/docroot':
