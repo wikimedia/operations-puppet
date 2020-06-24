@@ -12,7 +12,13 @@ profile::thanos::swift::accounts:
     account_name: 'AUTH_dispersion'
     auth:         'https://thanos-swift.discovery.wmnet'
     user:         'swift:dispersion'
+  chartmuseum_prod:
+    access:       '.admin'
+    account_name: 'AUTH_chartmuseum'
+    auth:         'https://thanos-swift.discovery.wmnet'
+    user:         'chartmuseum:prod'
 # To be kept private
 #profile::thanos::swift::accounts_keys:
 #  thanos_prod: 'foo'
 #  dispersion: 'bar'
+#  chartmuseum_prod: 'bar'
