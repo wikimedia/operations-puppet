@@ -91,7 +91,11 @@ groups:
                  'ALL = NOPASSWD: /etc/init.d/apache2',
                  'ALL = NOPASSWD: /usr/bin/renice',
                  'ALL = NOPASSWD: /usr/local/sbin/fix-staging-perms',
-                 'ALL = NOPASSWD: /usr/local/sbin/restart-php7.2-fpm']
+                 # The restart script must run as a login shell (sudo -i) in order to be fed etcd
+                 # tokens as environment vars. Sudo seemingly implements this by rewriting the
+                 # command before checking sudoers -- but it disallows any arguments that don't
+                 # exactly match what is below, so this is safe.
+                 'ALL = NOPASSWD: /bin/bash -c /usr/local/sbin/restart-php7.2-fpm']
   restricted:  # Is a subset of the deployment group
     gid: 706
     description: access to mwmaint hosts, mwlog hosts (private data) and bastion hosts
