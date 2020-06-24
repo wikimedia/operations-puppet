@@ -1670,7 +1670,7 @@ class profile::prometheus::ops (
       {
         'job_name'        => 'wikidough',
         'metrics_path'    => '/metrics',
-        'scheme'          => 'https',
+        'scheme'          => 'http',
         'file_sd_configs' => [
           { 'files' => [ "${targets_path}/wikidough_*.yaml" ]}
         ],
