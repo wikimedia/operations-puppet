@@ -89,4 +89,16 @@ class profile::puppetmaster::pontoon (
         port   => 8140,
         srange => '$LABS_NETWORKS',
     }
+
+    # Fake confd using a file on disk.
+    # Inspired by puppet_compiler module.
+    file { '/etc/conftool-state':
+        ensure => directory,
+        mode   => '0755'
+    }
+    file { '/etc/conftool-state/mediawiki.yaml':
+        ensure => present,
+        mode   => '0444',
+        source => 'puppet:///modules/puppet_compiler/mediawiki.yaml'
+    }
 }
