@@ -108,7 +108,7 @@ cas.authn.mfa.gauth.json.location=file://<%= @totp_devices_path %>
 cas.authn.mfa.u2f.jpa.user=<%= @u2f_jpa_username %>
 cas.authn.mfa.u2f.jpa.password=<%= @u2f_jpa_password %>
 cas.authn.mfa.u2f.jpa.driver-class=org.mariadb.jdbc.Driver
-cas.authn.mfa.u2f.jpa.url=jdbc:mysql://<%= @u2f_jpa_server %>/<%= @u2f_jpa_db %>
+cas.authn.mfa.u2f.jpa.url=jdbc:mysql://<%= @u2f_jpa_server %>/<%= @u2f_jpa_db %>?useSSL=true
   <%- else -%>
 cas.authn.mfa.u2f.json.location=file://<%= @u2f_devices_path %>
   <%- end -%>
