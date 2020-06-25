@@ -459,6 +459,7 @@ host logstash1025 {
     fixed-address logstash1025.eqiad.wmnet;
 }
 
+
 host logstash2004 {
     hardware ethernet aa:00:00:b8:ec:a0;
     fixed-address logstash2004.codfw.wmnet;
@@ -490,6 +491,16 @@ host logstash2024 {
 host logstash2025 {
     hardware ethernet aa:00:00:b7:fe:53;
     fixed-address logstash2025.codfw.wmnet;
+}
+
+host logstash2030 {
+    hardware ethernet aa:00:00:67:5c:06;
+    fixed-address logstash2030.codfw.wmnet;
+}
+
+host logstash2031 {
+    hardware ethernet aa:00:00:85:5a:a6;
+    fixed-address logstash2031.codfw.wmnet;
 }
 
 host malmok {
