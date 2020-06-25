@@ -8,8 +8,12 @@
 # Macros #
 ##########
 
-INSTANCEPROJECT=<%= @labsproject %>
-MAILDOMAIN=<%= @mail_domain %>
+INSTANCEPROJECT = <%= @labsproject %>
+MAILDOMAIN      = <%= @mail_domain %>
+SRS_DOMAIN      = <%= @mail_domain %>
+SRS_SECRET      = <%= @srs_secret %>
+SRS_OFFSET      = 14159
+SRS_DSN_TIMEOUT = 10
 
 ###############################
 # Main configuration settings #
@@ -119,6 +123,50 @@ acl_check_mail:
 ###########
 
 begin routers
+
+# This was mostly copy & pasted from:
+# https://github.com/hn/exim-misc/blob/master/exim-srs-sender-rewriting-scheme.conf
+
+srs0_return:
+	caseful_local_part
+	domains = SRS_DOMAIN
+	local_part_prefix = srs0=
+	driver = redirect
+	allow_fail
+	data = ${if !match {$local_part}{\N^([^=]+)=([0-9]+)=([^=]+)=(.+)\N}{:fail: Malformed SRS0 bounce} \
+	       {${if !eq {$1}{${length_5:${hmac{sha1}{SRS_SECRET}{${lc:$2&$3&$4}}}}}{:fail: Invalid SRS0 bounce} \
+	       {${if <{$2}{${eval:$tod_epoch/86400-SRS_OFFSET-SRS_DSN_TIMEOUT}}{:fail: Invalid (expired) SRS0 bounce} \
+	       {${quote_local_part:$4}@$3} \
+	}}}}}
+	headers_add = X-SRS-Return: DSN routed via $smtp_active_hostname (SRS0)
+
+srs1_return:
+	caseful_local_part
+	domains = SRS_DOMAIN
+	local_part_prefix = srs1=
+	driver = redirect
+	allow_fail
+	data = ${if !match {$local_part}{\N^([^=]+)=([^=]+)==(.+)\N}{:fail: Malformed SRS1 bounce} \
+	       {${if !eq {$1}{${length_5:${hmac{sha1}{SRS_SECRET}{${lc:$2&$3}}}}}{:fail: Invalid SRS1 bounce} \
+	       {${quote_local_part:SRS0=$3}@$2} \
+	}}}
+	headers_add = X-SRS-Return: DSN routed via $smtp_active_hostname (SRS1)
+
+srs_outgoing:
+  caseful_local_part
+  domains = ! +local_domains
+  senders = ! : ! *@+local_domains
+  errors_to = ${if match {$sender_address_local_part}{\N^[sS][rR][sS]0=(.+)\N} \
+	    {${quote_local_part:SRS1=${length_5:${hmac{sha1}{SRS_SECRET}{${lc:$sender_address_domain&$1}}}}=$sender_address_domain==$1}@SRS_DOMAIN} \
+	    {${if match {$sender_address_local_part}{\N^[sS][rR][sS]1=[^=]+=([^=]+)==(.+)\N} \
+	    {${quote_local_part:SRS1=${length_5:${hmac{sha1}{SRS_SECRET}{${lc:$1&$2}}}}=$1==$2}@SRS_DOMAIN} \
+	    {${quote_local_part:SRS0=${length_5:${hmac{sha1}{SRS_SECRET}{${lc:${eval:$tod_epoch/86400-SRS_OFFSET}&$sender_address_domain&$sender_address_local_part}}}}=${eval:$tod_epoch/86400-SRS_OFFSET}=$sender_address_domain=$sender_address_local_part}@SRS_DOMAIN} \
+	    }}}
+  driver = redirect
+  data = ${quote_local_part:$local_part}@$domain
+  headers_add = "X-SRS-Rewrite: SMTP return-path rewritten from <$sender_address> by $smtp_active_hostname"
+  redirect_router = dnslookup
+  no_verify
 
 dnslookup:
   driver = dnslookup
