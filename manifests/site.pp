@@ -1925,9 +1925,9 @@ node /^ncredir500[12]\.eqsin\.wmnet$/ {
     role(ncredir)
 }
 
-# SWAP (Jupyter Notebook) Servers with Analytics Cluster Access
+# T256363
 node /notebook100[34].eqiad.wmnet/ {
-    role(swap)
+    role(insetup)
 }
 
 node /^netbox(1001|2001)\.wikimedia\.org$/ {

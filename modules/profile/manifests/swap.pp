@@ -33,14 +33,7 @@ class profile::swap(
     $push_published          = lookup('profile::swap::push_published', { 'default_value' => true }),
     $use_dumps_mounts        = lookup('profile::swap::use_dumps_mounts', { 'default_value' => true }),
     $deploy_research_cred    = lookup('profile::swap::deploy_research_cred', { 'default_value' => true }),
-    $add_deprecation_motd    = lookup('profile::swap::add_deprecation_motd', { 'default_value' => false }),
 ) {
-
-    if $add_deprecation_motd {
-        motd::script { 'notebook-deprecation-motd':
-            source   => 'puppet:///modules/profile/swap/notebook_deprecation_motd.sh',
-        }
-    }
 
     if $use_dumps_mounts {
         # Mount mediawiki dataset dumps. T176091

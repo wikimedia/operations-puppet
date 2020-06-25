@@ -244,7 +244,7 @@ groups:
   analytics-users:
     gid: 7080
     description: Gives generic client access to the Analytics cluster
-                 via stat100x and notebook100x.
+                 via stat100x.
                  If a user is added to this group it should not
                  need to be in researchers or analytics-privatedata-users.
                  In case of doubt, please ask to the Analytics team.
