@@ -9,6 +9,12 @@ class profile::mediawiki::maintenance {
         modules => ['rewrite', 'headers'],
     }
 
+    # Set the Server response header to the FQDN. (T255629)
+    package { 'libapache2-mod-security2':
+        ensure => present
+    }
+    ::httpd::mod_conf { 'security2':
+    }
     ::httpd::conf { 'server_header':
         content  => template('mediawiki/apache/server-header.conf.erb'),
     }
