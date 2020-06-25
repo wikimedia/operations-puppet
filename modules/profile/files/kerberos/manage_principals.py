@@ -48,7 +48,7 @@ def create_user_principal(principal, password, realm):
 
 def delete_user_principal(principal, realm):
     try:
-        return subprocess.Popen(
+        return subprocess.call(
             ['/usr/sbin/kadmin.local', 'delete_principal', principal+'@'+realm])
     except subprocess.CalledProcessError as e:
         print("Error while running kadmin.local: " + str(e))
