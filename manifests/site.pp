@@ -1373,6 +1373,11 @@ node /^logstash100[7-9]\.eqiad\.wmnet$/ {
     include ::lvs::realserver
 }
 
+# eqiad logstash - expansion (Ganeti) (T256139)
+node /^logstash103[0-1]\.eqiad\.wmnet$/ {
+    role(insetup)
+}
+
 # codfw logstash kafka/elasticsearch
 node /^logstash200[1-3]\.codfw\.wmnet$/ {
     role(logstash::elasticsearch)
