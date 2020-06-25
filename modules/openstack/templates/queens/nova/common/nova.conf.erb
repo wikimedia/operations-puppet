@@ -74,7 +74,7 @@ driver=filter_scheduler
 
 [filter_scheduler]
 enabled_filters = <%= @scheduler_filters.join(",") %>
-weight_classes=nova.scheduler.weights.metrics.MetricsWeigher
+weight_classes=nova.scheduler.weights.metrics.MetricsWeigher, nova.scheduler.weights.affinity.ServerGroupSoftAntiAffinityWeigher, nova.scheduler.weights.affinity.ServerGroupSoftAffinityWeigher
 host_subset_size = 2
 
 [glance]
