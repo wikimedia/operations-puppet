@@ -11,4 +11,9 @@ RSpec.configure do |c|
   c.manifest_dir = File.join(fixture_path, 'manifests')
   c.environmentpath = File.join(Dir.pwd, 'spec')
   c.hiera_config = File.join(fixture_path, 'hiera.yaml')
+
+  c.default_facts = {
+      :initsystem => 'systemd',
+      :site => 'eqiad',
+  }
 end

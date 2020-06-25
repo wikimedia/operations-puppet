@@ -17,11 +17,11 @@ describe 'zuul' do
         "define scap::target($deploy_user) {}"
       }
       context "on production" do
-        let(:node_params) {{realm: 'production', site: 'test'}}
+        let(:node_params) {{realm: 'production'}}
         it { should compile }
       end
       context "on labs" do
-        let(:node_params) {{realm: 'labs', site: 'test'}}
+        let(:node_params) {{realm: 'labs'}}
         it { should compile }
       end
     end

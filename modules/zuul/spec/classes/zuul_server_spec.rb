@@ -12,12 +12,7 @@ test_on = {
 describe 'zuul::server' do
   on_supported_os(test_on).each do |os, facts|
     context "On #{os} do" do
-      let(:facts) {
-        facts.merge({
-          :site => 'eqiad',
-          :initsystem => 'systemd',
-        })
-      }
+      let(:facts) { facts }
       let(:pre_condition) {
           "define scap::target($deploy_user) {}"
       }
