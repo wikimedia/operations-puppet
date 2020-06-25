@@ -1926,7 +1926,7 @@ node /^ncredir500[12]\.eqsin\.wmnet$/ {
 }
 
 # T256363
-node /notebook100[34].eqiad.wmnet/ {
+node 'notebook1004.eqiad.wmnet' {
     role(insetup)
 }
 
