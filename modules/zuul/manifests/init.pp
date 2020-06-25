@@ -11,30 +11,25 @@ class zuul ( ){
 
     include zuul::user
 
-    if os_version('debian jessie') {
-        package { 'zuul':
-            ensure => present,
-        }
-    } else {
-        require_package('virtualenv', 'make')
+    require_package('virtualenv', 'make')
 
-        # Both merger and server require the zuul class
-        if !defined(Scap::Target['zuul/deploy']) {
-            scap::target { 'zuul/deploy':
-                deploy_user => 'deploy-zuul',
-            }
-        }
-
-        file { '/var/log/zuul':
-            ensure => directory,
-            owner  => 'zuul',
-            group  => 'adm',
-            mode   => '0755',
-        }
-        file { '/usr/local/bin/zuul':
-            ensure => link,
-            target => '/srv/deployment/zuul/venv/bin/zuul',
+    # Both merger and server require the zuul class
+    if !defined(Scap::Target['zuul/deploy']) {
+        scap::target { 'zuul/deploy':
+            deploy_user => 'deploy-zuul',
         }
     }
 
+    file { '/var/log/zuul':
+        ensure => directory,
+        owner  => 'zuul',
+        group  => 'adm',
+        mode   => '0755',
+    }
+
+    file { '/usr/local/bin/zuul':
+        ensure => link,
+        target => '/srv/deployment/zuul/venv/bin/zuul',
+    }
 }
+
