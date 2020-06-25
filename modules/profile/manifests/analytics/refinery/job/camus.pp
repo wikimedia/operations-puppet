@@ -86,7 +86,7 @@ class profile::analytics::refinery::job::camus(
         kafka_brokers       => $kafka_brokers,
         hadoop_cluster_name => $hadoop_cluster_name,
         camus_jar           => "${profile::analytics::refinery::path}/artifacts/org/wikimedia/analytics/camus-wmf/camus-wmf-0.1.0-wmf9.jar",
-        check_jar           => "${profile::analytics::refinery::path}/artifacts/org/wikimedia/analytics/refinery/refinery-camus-0.0.90.jar",
+        check_jar           => "${profile::analytics::refinery::path}/artifacts/org/wikimedia/analytics/refinery/refinery-camus-0.0.128.jar",
         check               => $monitoring_enabled,
         # Email reports if CamusPartitionChecker finds errors.
         check_email_target  => $check_email_target,
