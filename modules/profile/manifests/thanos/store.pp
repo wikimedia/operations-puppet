@@ -16,6 +16,7 @@ class profile::thanos::store (
         grpc_port         => $grpc_port,
         max_time          => $max_time,
         min_time          => $min_time,
+        consistency_delay => '30m',
     }
 
     # Allow access from query hosts

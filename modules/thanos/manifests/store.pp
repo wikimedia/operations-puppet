@@ -14,6 +14,7 @@
 #              absolute time or relative to now (e.g. -1d)
 # [*max_time*] End of time range limit to serve. Can be RFC3339-style
 #              absolute time or relative to now (e.g. -1d)
+# [*consistency_delay*] Minimum age of all blocks before they are being read.
 
 # TODO(filippo) evaluate using memcache (shared with swift) for caching
 class thanos::store (
@@ -23,6 +24,7 @@ class thanos::store (
     Stdlib::Port::Unprivileged $grpc_port = 11901,
     Optional[String] $min_time = undef,
     Optional[String] $max_time = undef,
+    Optional[String] $consistency_delay = undef,
 ) {
     require_package('thanos')
 
