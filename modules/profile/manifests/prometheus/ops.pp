@@ -19,7 +19,7 @@ class profile::prometheus::ops (
     $gerrit_client_token = $passwords::gerrit::prometheus_bearer_token
 
     include passwords::wikidough::dnsdist
-    $wikidough_api_key = $passwords::wikidough::dnsdist::api_key
+    $wikidough_password = $passwords::wikidough::dnsdist::password
 
     $port = 9900
 
@@ -1676,7 +1676,7 @@ class profile::prometheus::ops (
         ],
         'basic_auth'      => {
             'username' => anyuser,
-            'password' => $wikidough_api_key,
+            'password' => $wikidough_password,
         },
       },
     ]
