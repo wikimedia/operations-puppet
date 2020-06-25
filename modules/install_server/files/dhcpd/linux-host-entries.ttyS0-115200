@@ -459,6 +459,15 @@ host logstash1025 {
     fixed-address logstash1025.eqiad.wmnet;
 }
 
+host logstash1030 {
+    hardware ethernet aa:00:00:74:db:34;
+    fixed-address logstash1030.eqiad.wmnet;
+}
+
+host logstash1031 {
+    hardware ethernet aa:00:00:d5:24:1e;
+    fixed-address logstash1031.eqiad.wmnet;
+}
 
 host logstash2004 {
     hardware ethernet aa:00:00:b8:ec:a0;
