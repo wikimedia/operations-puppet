@@ -10,8 +10,9 @@ class profile::codesearch (
     }
 
     ferm::service { 'codesearch':
-        proto => 'tcp',
-        port  => '3002',
+        proto  => 'tcp',
+        port   => '3002',
+        srange => '$CACHES',
     }
 
     class { '::codesearch':
