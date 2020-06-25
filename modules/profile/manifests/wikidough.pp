@@ -8,15 +8,15 @@ class profile::wikidough (
     include passwords::wikidough::dnsdist
 
     ferm::service { 'wikidough-doh':
-        proto  => 'tcp',
-        port   => 443,
-        srange => '$PRODUCTION_NETWORKS',
+        proto   => 'tcp',
+        notrack => true,
+        port    => 443,
     }
 
     ferm::service { 'wikidough-dot':
-        proto  => 'tcp',
-        port   => 853,
-        srange => '$PRODUCTION_NETWORKS',
+        proto   => 'tcp',
+        notrack => true,
+        port    => 853,
     }
 
     ferm::service { 'wikidough-dnsdist-webserver':
