@@ -351,6 +351,18 @@ host kubernetes1006 {
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
+host kubernetes1015 {
+    hardware ethernet aa:00:00:b4:92:c3;
+    fixed-address kubernetes1015.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
+}
+
+host kubernetes1016 {
+    hardware ethernet aa:00:00:5d:00:4a;
+    fixed-address kubernetes1016.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
+}
+
 host kubernetes2005 {
     hardware ethernet aa:00:00:e5:cc:53;
     fixed-address kubernetes2005.codfw.wmnet;
@@ -360,6 +372,18 @@ host kubernetes2005 {
 host kubernetes2006 {
     hardware ethernet aa:00:00:81:03:e8;
     fixed-address kubernetes2006.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
+}
+
+host kubernetes2015 {
+    hardware ethernet aa:00:00:51:45:67;
+    fixed-address kubernetes2015.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
+}
+
+host kubernetes2016 {
+    hardware ethernet aa:00:00:21:66:df;
+    fixed-address kubernetes2016.codfw.wmnet;
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 

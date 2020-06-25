@@ -1233,12 +1233,7 @@ node 'krb2001.codfw.wmnet' {
     role(kerberos::kdc)
 }
 
-# new kubernetes nodes T241850
-node /^kubernetes10(0[7-9]|1[0-4])\.eqiad\.wmnet/ {
-    role(kubernetes::worker)
-}
-
-node /kubernetes[12]00[1-6]\.(codfw|eqiad)\.wmnet/ {
+node /kubernetes[12]0(0[1-9]|1[0-6])\.(codfw|eqiad)\.wmnet/ {
     role(kubernetes::worker)
 }
 
@@ -1246,13 +1241,8 @@ node /kubestage100[12]\.eqiad\.wmnet/ {
     role(kubernetes::staging::worker)
 }
 
-# codfw new kubernetes nodes T252185
-node /kubernetes20(0[7-9]|1[0-4])\.codfw\.wmnet/ {
-    role(kubernetes::worker)
-}
-
 # codfw new kubernetes staging nodes T252185
-node /kubestasge200[12]\.codfw\.wmnet/ {
+node /kubestage200[12]\.codfw\.wmnet/ {
     role(insetup)
 }
 
