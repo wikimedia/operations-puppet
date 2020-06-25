@@ -1,0 +1,1 @@
+profile::reportupdater::jobs::ensure_jobs: 'absent'

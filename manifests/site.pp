@@ -50,7 +50,7 @@ node 'an-launcher1001.eqiad.wmnet' {
 }
 
 node 'an-launcher1002.eqiad.wmnet' {
-    role(insetup)
+    role(analytics_cluster::launcher)
 }
 
 # analytics1028-analytics1040 are Hadoop worker nodes.
