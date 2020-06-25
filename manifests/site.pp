@@ -49,6 +49,10 @@ node 'an-launcher1001.eqiad.wmnet' {
     role(analytics_cluster::launcher)
 }
 
+node 'an-launcher1002.eqiad.wmnet' {
+    role(insetup)
+}
+
 # analytics1028-analytics1040 are Hadoop worker nodes.
 # These hosts are OOW but they are used as temporary
 # Hadoop testing cluster for T211836.
