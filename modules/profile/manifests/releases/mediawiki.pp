@@ -61,9 +61,13 @@ class profile::releases::mediawiki (
         'php-ast',
     ]
 
-    package { $php7_packages :
-        ensure  => present,
+    if os_version('debian < buster') {
+
+        package { $php7_packages :
+            ensure  => present,
+        }
     }
+
     # PHP Extensions dependencies (mediawiki/php/*.git)
     package { [
         'libthai-dev',      # wikidiff2
