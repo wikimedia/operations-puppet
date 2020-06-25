@@ -6979,13 +6979,11 @@ host netmon2001 {
 host notebook1003 {
     hardware ethernet D0:94:66:1B:49:A6;
     fixed-address notebook1003.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host notebook1004 {
     hardware ethernet D0:94:66:1B:33:67;
     fixed-address notebook1004.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host ores1001 {
