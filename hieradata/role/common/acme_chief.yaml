@@ -14,14 +14,14 @@ profile::acme_chief::certificates:
         - 'archiva.wikimedia.org'
         challenge: dns-01
         authorized_hosts:
-        - 'archiva1001.wikimedia.org'
-    archiva-new:
-        CN: 'archiva-new.wikimedia.org'
+        - 'archiva1002.wikimedia.org'
+    archiva-old:
+        CN: 'archiva-old.wikimedia.org'
         SNI:
-        - 'archiva-new.wikimedia.org'
+        - 'archiva-old.wikimedia.org'
         challenge: dns-01
         authorized_hosts:
-        - 'archiva1002.wikimedia.org'
+        - 'archiva1001.wikimedia.org'
     cloudelastic:
         CN: 'cloudelastic.wikimedia.org'
         SNI:
