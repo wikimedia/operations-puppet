@@ -9,9 +9,18 @@ class profile::toolforge::mailrelay (
         puppet_rsc => Service['exim4'],
     }
 
+    class { '::spamassassin':
+        required_score   => '4.0',
+        use_bayes        => '1',
+        bayes_auto_learn => '1',
+        max_children     => 32,
+        trusted_networks => ['255.255.255.255/32'], # hope this means 'nothing is trusted'
+    }
+
     class { '::exim4':
         queuerunner => 'combined',
         config      => template('profile/toolforge/mail-relay.exim4.conf.erb'),
+        filter      => template('profile/toolforge/mail-relay-spam-filter.conf.erb'),
         variant     => 'heavy',
         require     => File['/usr/local/sbin/localuser',
                             '/usr/local/sbin/maintainers'],
