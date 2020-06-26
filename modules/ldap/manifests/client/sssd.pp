@@ -49,6 +49,10 @@ class ldap::client::sssd(
         require => [Package['sssd'], File['/etc/sssd/sssd.conf']],
     }
 
+    file { '/etc/ldap.conf':
+        content => template('ldap/ldap.conf.erb'),
+    }
+
     #
     # start of avoid confusions section
     $packages_absent = [
