@@ -90,6 +90,14 @@
         <level value="DEBUG"/>
         <appender-ref ref="gc_log"/>
     </logger>
+    <logger name="com.google.gerrit.server.git.GarbageCollectionRunner" additivity="false">
+        <level value="DEBUG"/>
+        <appender-ref ref="gc_log"/>
+    </logger>
+    <logger name="com.google.gerrit.server.git.GarbageCollection" additivity="false">
+        <level value="DEBUG"/>
+        <appender-ref ref="gc_log"/>
+    </logger>
     <logger name="delete_log" additivity="false">
         <level value="INFO"/>
         <appender-ref ref="delete_log"/>
