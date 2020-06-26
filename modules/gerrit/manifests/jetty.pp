@@ -255,14 +255,6 @@ class gerrit::jetty(
         require => File['/var/lib/gerrit2'],
     }
 
-    file { '/var/lib/gerrit2/review_site/etc/log4j.xml':
-        content => template('gerrit/log4j.xml.erb'),
-        owner   => $scap_user,
-        group   => $scap_user,
-        mode    => '0444',
-        require => File['/var/lib/gerrit2'],
-    }
-
     if $ssh_host_key != undef {
         file { '/var/lib/gerrit2/review_site/etc/ssh_host_key':
             content   => secret("gerrit/${ssh_host_key}"),
