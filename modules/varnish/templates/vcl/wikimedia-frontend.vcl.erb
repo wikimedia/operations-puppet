@@ -743,6 +743,11 @@ sub wm_backend_response {
 		std.log("Cacheable object with Set-Cookie found! bereq.url: " + bereq.url +
 				" Cache-Control: " + beresp.http.Cache-Control + " Set-Cookie: " +
 				beresp.http.Set-Cookie);
+		if (bereq.http.Host != "performance.wikimedia.org") {
+			std.syslog("Cacheable object with Set-Cookie found! bereq.url: " + bereq.url +
+					   " Cache-Control: " + beresp.http.Cache-Control + " Set-Cookie: " +
+					   beresp.http.Set-Cookie);
+		}
 		set beresp.ttl = 0s;
 		// translated to hit-for-pass below
 	}
