@@ -4,10 +4,7 @@ class profile::mariadb::backup::transfer {
     include ::passwords::mysql::dump
 
     require_package(
-        'python3',
-        'python3-yaml',
-        'python3-pymysql',
-        'cumin',
+        'transferpy',
     )
 
     # mysql dir must be handled by a separate profile, not done here
@@ -31,19 +28,6 @@ class profile::mariadb::backup::transfer {
         ],
     }
 
-    # transfer.py: Base utility that allows remote file transfer between hosts,
-    # as well as generating backups from mysql hosts
-    file { '/usr/local/bin/transfer.py':
-        ensure  => present,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0755',
-        source  => 'puppet:///modules/profile/mariadb/transfer.py',
-        require => [Package['python3'],
-                    Package['cumin'],
-        ],
-    }
-
     # Small utility that reads the backup configuration and produces
     # snapshots of all configured hosts
     file { '/usr/local/bin/remote_backup_mariadb.py':
@@ -52,11 +36,8 @@ class profile::mariadb::backup::transfer {
         group   => 'root',
         mode    => '0755',
         source  => 'puppet:///modules/profile/mariadb/remote_backup_mariadb.py',
-        require => [File['/usr/local/bin/transfer.py'],
+        require => [Package['transferpy'],
                     File['/etc/mysql/backups.cnf'],
-                    Package['python3'],
-                    Package['python3-yaml'],
-                    Package['cumin'],
         ],
     }
 
