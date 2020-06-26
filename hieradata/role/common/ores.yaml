@@ -22,27 +22,27 @@ profile::ores::web::redis_cache_port: 6378
 
 profile::prometheus::statsd_exporter::mappings:
   # timings
-  - match: "^ores\\.([a-z]*)([0-9]*)\\.(datasources_extracted|precache_request|score_processed|score_timed_out|scores_request)\\.([a-z]*)$"
+  - match: "^ores\\.([a-z]*)([0-9]*)\\.(datasources_extracted|precache_request|score_processed|score_timed_out|scores_request|precache_score|precache_scoring_error)\\.([a-z]*)$"
     name: ores_request_duration_seconds
     match_type: regex
     labels:
       type: "$3"
       wiki: "$4"
 
-  - match: "^ores\\.([a-z]*)([0-9]*)\\.locking_response_time\\.([a-z])*$"
+  - match: "^ores\\.([a-z]*)([0-9]*)\\.(locking_response_time|lock_acquired)\\.([a-z])*$"
     name: ores_locking_response_time_seconds
     match_type: regex
     labels:
       source: "$3"
 
   # counters
-  - match: "^ores\\.([a-z]*)([0-9]*)\\.(precache_cache_hit|precache_cache_miss|revision_scored|score_cache_hit|score_cache_miss|score_errored)\\.([a-z]*)$"
+  - match: "^ores\\.([a-z]*)([0-9]*)\\.(precache_cache_hit|precache_cache_miss|revision_scored|score_cache_hit|score_cache_miss|score_errored|score_processor_overloaded)\\.([a-z]*)$"
     name: "ores_${3}_total"
     match_type: regex
     labels:
       wiki: "$4"
 
-  - match: "^ores\\.([a-z]*)([0-9]*)\\.response.([0-9]*)\\.([a-z]*)$"
+  - match: "^ores\\.([a-z]*)([0-9]*)\\.(response|response_made).([0-9]*)\\.([a-z]*)$"
     name: ores_response_total
     match_type: regex
     labels:
