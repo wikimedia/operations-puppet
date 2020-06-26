@@ -87,7 +87,6 @@ class BaseAddressMultiHandler(BaseAddressHandler):
         """
         LOG.debug('Using DomainID: %s' % cfg.CONF[self.name].domain_id)
         zone = self.get_zone(cfg.CONF[self.name].domain_id)
-        legacy_zone = self.get_zone(cfg.CONF[self.name].legacy_domain_id)
         LOG.debug('Domain: %r' % zone)
 
         data = extra.copy()
@@ -151,16 +150,19 @@ class BaseAddressMultiHandler(BaseAddressHandler):
                                     resource_type,
                                     resource_id)
 
-            event_data['zone'] = legacy_zone['name']
-            for fmt in cfg.CONF[self.name].get('legacy_format'):
-                self._create_record(context,
-                                    fmt,
-                                    legacy_zone,
-                                    event_data,
-                                    addr,
-                                    managed,
-                                    resource_type,
-                                    resource_id)
+            legacy_zone_id = cfg.CONF[self.name].get('legacy_domain_id')
+            if legacy_zone_id:
+                legacy_zone = self.get_zone(cfg.CONF[self.name].legacy_zone_id)
+                event_data['zone'] = legacy_zone['name']
+                for fmt in cfg.CONF[self.name].get('legacy_format'):
+                    self._create_record(context,
+                                        fmt,
+                                        legacy_zone,
+                                        event_data,
+                                        addr,
+                                        managed,
+                                        resource_type,
+                                        resource_id)
 
     def _delete(self, managed=True, resource_id=None, resource_type='instance',
                 criterion={}):
