@@ -1,0 +1,63 @@
+fields:
+  type: "syslog"
+codec: "json_lines"
+ignore:
+  - "@timestamp"
+testcases:
+  - input:
+      - >
+        {
+        "timestamp": "2020-06-08T04:23:54+00:00",
+        "logsource": "mw1384",
+        "host": "mw1384",
+        "program": "mediawiki",
+        "severity": "err",
+        "facility": "user",
+        "@timestamp": "2020-06-08T04:23:54.618073+00:00",
+        "@version": 1,
+        "message": "Memcached error for key \"enwiki:pcache:idhash:41768916-0!canonical\" on server \"127.0.0.1:11213\": A TIMEOUT OCCURRED",
+        "type": "mediawiki",
+        "channel": "memcached",
+        "level": "ERROR",
+        "shard": "s1",
+        "normalized_message": "Memcached error for key \"{memcached-key}\" on server \"{memcached-server}\": A TIMEOUT OCCURRED",
+        "phpversion": "7.2.26-1+0~20191218.33+debian9~1.gbpb5a340+wmf1",
+        "url": "/wiki/User:Bennylin/Color/RG?TSQZPPYR=XTPN",
+        "ip": "10.64.48.226",
+        "http_method": "GET",
+        "server": "en.wikipedia.org",
+        "referrer": "http://www.usatoday.com/search/results?q=WSQBCGCPWS",
+        "unique_id": "Xt29WQpAMOIAAuGj4nYAAAAY",
+        "wiki": "enwiki",
+        "mwversion": "1.35.0-wmf.35",
+        "reqId": "44004484-7efc-48a4-bbe1-dfecb2813af5",
+        "memcached-server": "127.0.0.1:11213",
+        "memcached-key": "enwiki:pcache:idhash:41768916-0!canonical"
+        }
+    expected:
+      - "channel": "memcached"
+        "facility": "user"
+        "host": "mw1384"
+        "http_method": "GET"
+        "ip": "10.64.48.226"
+        "level": "ERROR"
+        "logsource": "mw1384"
+        "memcached-key": "enwiki:pcache:idhash:41768916-0!canonical"
+        "memcached-server": "127.0.0.1:11213"
+        "message": "Memcached error for key \"enwiki:pcache:idhash:41768916-0!canonical\" on server \"127.0.0.1:11213\": A TIMEOUT OCCURRED"
+        "mwversion": "1.35.0-wmf.35"
+        "normalized_message": "Memcached error for key \"{memcached-key}\" on server \"{memcached-server}\": A TIMEOUT OCCURRED"
+        "phpversion": "7.2.26-1+0~20191218.33+debian9~1.gbpb5a340+wmf1"
+        "program": "mediawiki"
+        "referrer": "http://www.usatoday.com/search/results?q=WSQBCGCPWS"
+        "reqId": "44004484-7efc-48a4-bbe1-dfecb2813af5"
+        "server": "en.wikipedia.org"
+        "severity": "err"
+        "shard": "s1"
+        "timestamp": "2020-06-08T04:23:54+00:00"
+        "type":
+          - "mediawiki"
+          - "syslog"
+        "unique_id": "Xt29WQpAMOIAAuGj4nYAAAAY"
+        "url": "/wiki/User:Bennylin/Color/RG?TSQZPPYR=XTPN"
+        "wiki": "enwiki"
