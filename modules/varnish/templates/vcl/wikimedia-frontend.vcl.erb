@@ -744,7 +744,7 @@ sub wm_backend_response {
 				" Cache-Control: " + beresp.http.Cache-Control + " Set-Cookie: " +
 				beresp.http.Set-Cookie);
 		if (bereq.http.Host != "performance.wikimedia.org") {
-			std.syslog("Cacheable object with Set-Cookie found! bereq.url: " + bereq.url +
+			std.syslog(27, "Cacheable object with Set-Cookie found! bereq.url: " + bereq.url +
 					   " Cache-Control: " + beresp.http.Cache-Control + " Set-Cookie: " +
 					   beresp.http.Set-Cookie);
 		}
