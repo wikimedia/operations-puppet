@@ -84,11 +84,13 @@ class profile::cache::purge(
         $tls_settings = undef
     }
 
+    $prometheus_port = 2112
+
     class { 'purged':
         backend_addr     => '127.0.0.1:3128',
         frontend_addr    => '127.0.0.1:3127',
         mc_addrs         => $multicasts,
-        prometheus_addr  => ':2112',
+        prometheus_addr  => ":${prometheus_port}",
         frontend_workers => 4,
         backend_workers  => $::processorcount,
         is_active        => true,
@@ -101,5 +103,16 @@ class profile::cache::purge(
 
     nrpe::monitor_systemd_unit_state { 'purged':
         require => Service['purged'],
+    }
+
+    monitoring::check_prometheus { 'purged-event-lag':
+        description     => 'Time elapsed since the last kafka event processed by purged',
+        query           => "purged_event_lag{instance=\"${::hostname}:${prometheus_port}\"} / 1e6",
+        method          => 'gt',
+        warning         => 3000, # 3 seconds
+        critical        => 5000, # 5 seconds
+        prometheus_url  => "http://prometheus.svc.${::site}.wmnet/ops",
+        notes_link      => 'https://wikitech.wikimedia.org/wiki/Purged',
+        dashboard_links => ["https://grafana.wikimedia.org/dashboard/db/purged?var-datasource=${::site} prometheus/ops&var-instance=${::hostname}"],
     }
 }
