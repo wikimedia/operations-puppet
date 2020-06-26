@@ -740,7 +740,7 @@ sub wm_backend_response {
 	}
 	/* Especially don't cache Set-Cookie responses. Log violations. */
 	if (beresp.ttl > 0s && beresp.http.Set-Cookie) {
-		std.log("Cacheable object with Set-Cookie found! req.url: " + req.url +
+		std.log("Cacheable object with Set-Cookie found! bereq.url: " + bereq.url +
 				" Cache-Control: " + beresp.http.Cache-Control + " Set-Cookie: " +
 				beresp.http.Set-Cookie);
 		set beresp.ttl = 0s;
