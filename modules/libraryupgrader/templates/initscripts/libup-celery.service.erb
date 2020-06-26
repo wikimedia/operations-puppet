@@ -1,0 +1,17 @@
+[Unit]
+Description=libup celery daemon
+After=rabbitmq-server.target
+
+[Service]
+PIDFile=/run/celery/pid
+User=libup
+Group=libup
+RuntimeDirectory=celery
+WorkingDirectory=/srv/libraryupgrader/
+ExecStart=/srv/libraryupgrader/venv/bin/celery -A libup.tasks worker --loglevel=info \
+          --pidfile /run/celery/pid --concurrency=1
+ExecReload=/bin/kill -s HUP $MAINPID
+ExecStop=/bin/kill -s TERM $MAINPID
+
+[Install]
+WantedBy=multi-user.target

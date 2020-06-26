@@ -77,4 +77,46 @@ class libraryupgrader(
         creates => "${clone_dir}/venv/bin/gunicorn",
         require => Exec['create virtualenv'],
     }
+
+    # Install libup into venv
+    exec { 'install libup':
+        command => "${clone_dir}/venv/bin/python install setup.py",
+        cwd     => $clone_dir,
+        user    => 'libup',
+        # Just one example file created after libup is installed
+        creates => "${clone_dir}/venv/bin/libup-run",
+        require => Exec['install virtualenv dependencies'],
+    }
+
+    systemd::service { 'libup-celery':
+        ensure  => present,
+        content => template('libraryupgrader/initscripts/libup-celery.service.erb'),
+        require => [
+            Exec['install libup'],
+            Package['rabbitmq-server'],
+        ]
+    }
+
+    systemd::service { 'libup-web':
+        ensure  => present,
+        content => template('libraryupgrader/initscripts/libup-web.service.erb'),
+        require => Exec['install libup']
+    }
+
+    systemd::service { 'libup-ssh-agent':
+        ensure  => present,
+        content => template('libraryupgrader/initscripts/libup-ssh-agent.service.erb'),
+        require => User['libup'],
+    }
+
+    systemd::timer::job { 'libup-run':
+        description => 'Trigger the libup daily run',
+        command     => "${clone_dir}/venv/bin/libup-run",
+        user        => 'libup',
+        interval    => {
+            'start'    => 'OnCalendar',
+            'interval' => '*-*-* 00:00:00',  # Every day at midnight
+        },
+        require     => Exec['install libup'],
+    }
 }
