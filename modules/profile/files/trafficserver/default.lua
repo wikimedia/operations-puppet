@@ -164,8 +164,27 @@ function do_global_read_response()
     local vary = ts.server_response.header['Vary']
 
     if ts.server_response.header['Set-Cookie'] then
-        ts.debug("Do not cache response with Set-Cookie for uri " ..  ts.client_request.get_uri())
+        if ts.server_response.is_cacheable() then
+            -- This should never happen, log the fact that an origin server
+            -- sent a Set-Cookie response claiming that it can be cached
+            local cache_control = ts.server_response.header['Cache-Control'] or "-"
+            local request_id = ts.server_response.header['X-Request-Id'] or "-"
+            local server = ts.server_response.header['Server'] or "-"
+
+            ts.error("Cacheable object with Set-Cookie found! bereq.url: " .. ts.client_request.get_uri() ..
+                    " Cache-Control: " .. cache_control ..
+                    " Set-Cookie: " .. ts.server_response.header['Set-Cookie'] ..
+                    " X-Request-Id: " .. request_id ..
+                    " Server: " .. server)
+        end
+
         do_not_cache()
+        -- At the frontend layer we do have measures in place to ensure that,
+        -- regardless of what the origin says, Set-Cookie responses are never
+        -- cached. To err on the side of caution and to match what Varnish
+        -- backends used to do, override Cache-Control for Set-Cookie responses
+        -- here too. T256395
+        ts.server_response.header['Cache-Control'] = 'private, max-age=0, s-maxage=0'
     elseif uncacheable_cookie(cookie, vary) then
         ts.debug("Do not cache response with Vary: " .. vary .. ", request has Cookie: " .. cookie)
         do_not_cache()

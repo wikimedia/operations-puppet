@@ -26,6 +26,7 @@ describe("Busted unit testing framework", function()
 
   describe("script for ATS Lua Plugin", function()
     stub(ts, "debug")
+    stub(ts, "error")
     stub(ts, "hook")
 
     it("test - do_global_read_response 404 TTL cap", function()
