@@ -10,7 +10,6 @@
 class apt::unattendedupgrades(
     $unattended_distro='present',
     $unattended_wmf='present',
-    Boolean $clean_kernels=false,
     ) {
 
     # package installation should enable security upgrades by default
@@ -52,26 +51,6 @@ class apt::unattendedupgrades(
         value    => '1',
     }
 
-    # If desired, clean up unused kernel packages. T127374
-    # This is writing a string, so ignoring quoted booleans
-    # lint:ignore:quoted_booleans
-    if $clean_kernels {
-        apt::conf { 'auto-kernel-cleanup':
-            ensure   => 'present',
-            priority => '20',
-            key      => 'Unattended-Upgrade::Remove-Unused-Kernel-Packages',
-            value    => 'true',
-        }
-    } else {
-        apt::conf { 'auto-kernel-cleanup':
-            ensure   => 'absent',
-            priority => '20',
-            key      => 'Unattended-Upgrade::Remove-Unused-Kernel-Packages',
-            value    => 'true',
-        }
-    }
-    # lint:endignore
-
     # https://wiki.debian.org/StableUpdates
     # https://www.debian.org/News/2011/20110215
     apt::conf { 'unattended-upgrades-updates':
@@ -101,7 +80,7 @@ class apt::unattendedupgrades(
     apt::conf { 'apt-autoclean':
         ensure   => present,
         priority => '52',
-        key      => 'APT::Periodic::AutocleanInterval',
+        key      => 'APT::Periodic::AutocleanInterval::',
         value    => '7',
     }
 

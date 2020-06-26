@@ -39,7 +39,6 @@ manage_puppet_ca_file: false
 
 profile::base::labs::unattended_wmf: 'present'
 profile::base::labs::unattended_distro: 'present'
-profile::base::labs::clean_kernels: false
 profile::puppetdb::database::users: {}
 profile::puppetdb::database::shared_buffers: '7680MB'
 profile::puppetdb::database::replication_lag_crit: 16777216
