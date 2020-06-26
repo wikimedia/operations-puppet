@@ -99,6 +99,9 @@ make_statusfiles_tarball() {
 	    mv "${tarballpath}.tmp" "$tarballpathgz"
         fi
     fi
+    if [ "$testrun" ]; then
+	/bin/zcat "$tarballpathgz" | /bin/tar tvf - >> /tmp/dumpsrsync_test.txt
+    fi
 }
 
 xmldumpsdir=""
@@ -116,6 +119,8 @@ do_rsync_misc=""
 do_rsync_miscsubs=""
 
 dryrun=""
+testrun=""
+onepass=""
 
 while [ $# -gt 0 ]; do
     if [ "$1" == "--xmldumpsdir" ]; then
@@ -150,6 +155,13 @@ while [ $# -gt 0 ]; do
         shift
     elif [ "$1" == "--dryrun" ]; then
         dryrun="true"
+        shift
+    elif [ $1 == "--test" ]; then
+        testrun="true"
+	onepass="true"
+        shift
+    elif [ $1 == "--onepass" ]; then
+	onepass="true"
         shift
     else
         echo "$0: Unknown option $1" >& 2
@@ -215,6 +227,11 @@ if [ "$do_rsync_miscsubs" ]; then
 fi
 
 BWLIMIT=80000
+
+if [ "$testrun" ]; then
+    /bin/rm -f /tmp/dumpsrsync_test.txt
+fi
+
 while true; do
 
     if [ "$do_rsync_xml" ]; then
@@ -230,6 +247,8 @@ while true; do
 
             if [ "$dryrun" ]; then
                 echo /usr/bin/rsync -a  --contimeout=600 --timeout=600 --bwlimit="$BWLIMIT" --exclude='**bad/' --exclude='**save/' --exclude='**not/' --exclude='**temp/' --exclude='**tmp/' --exclude='*.inprog'  --exclude='*.html' --exclude='*.txt' --exclude='*.json' "${xmldumpsdir}"/*wik* "$dest"
+	    elif [ "$testrun" ]; then
+		/usr/bin/rsync --dry-run --itemize-changes -a  --contimeout=600 --timeout=600 --bwlimit="$BWLIMIT" --exclude='**bad/' --exclude='**save/' --exclude='**not/' --exclude='**temp/' --exclude='**tmp/' --exclude='*.inprog'  --exclude='*.html' --exclude='*.txt' --exclude='*.json' "${xmldumpsdir}"/*wik* "$dest" >> /tmp/dumpsrsync_test.txt
             else
                 /usr/bin/rsync -a  --contimeout=600 --timeout=600 --bwlimit="$BWLIMIT" --exclude='**bad/' --exclude='**save/' --exclude='**not/' --exclude='**temp/' --exclude='**tmp/' --exclude='*.inprog'  --exclude='*.html' --exclude='*.txt' --exclude='*.json' "${xmldumpsdir}"/*wik* "$dest"  > /dev/null 2>&1
             fi
@@ -238,9 +257,11 @@ while true; do
             # made available via rsync
             if [ -f "$tarballpathgz" ]; then
                 if [ "$dryrun" ]; then
-                    echo /usr/bin/rsync -pgo  --contimeout=600 --timeout=600 --bwlimit=$BWLIMIT "$tarballpathgz" "$dest"
+                    echo /usr/bin/rsync -pgo  --contimeout=600 --timeout=600 --bwlimit="$BWLIMIT" "$tarballpathgz" "$dest"
+		elif [ "$testrun" ]; then
+                    /usr/bin/rsync --dry-run --itemize-changes -pgo  --contimeout=600 --timeout=600 --bwlimit="$BWLIMIT" "$tarballpathgz" "$dest" >> /tmp/dumpsrsync_test.txt
                 else
-                    /usr/bin/rsync -pgo  --contimeout=600 --timeout=600 --bwlimit=$BWLIMIT "$tarballpathgz" "$dest" > /dev/null 2>&1
+                    /usr/bin/rsync -pgo  --contimeout=600 --timeout=600 --bwlimit="$BWLIMIT" "$tarballpathgz" "$dest" > /dev/null 2>&1
                 fi
             fi
 
@@ -254,6 +275,8 @@ while true; do
        for dest in "${miscremotedirs_list[@]}"; do
            if [ "$dryrun" ]; then
                echo /usr/bin/rsync -a  --contimeout=600 --timeout=600 --bwlimit="$BWLIMIT" "${miscdumpsdir}"/* "$dest"
+	   elif [ "$testrun" ]; then
+               /usr/bin/rsync --dry-run --itemize-changes -a  --contimeout=600 --timeout=600 --bwlimit="$BWLIMIT" "${miscdumpsdir}"/* "$dest" >> /tmp/dumpsrsync_test.txt
            else
                /usr/bin/rsync -a  --contimeout=600 --timeout=600 --bwlimit="$BWLIMIT" "${miscdumpsdir}"/* "$dest" > /dev/null 2>&1
            fi
@@ -268,12 +291,18 @@ while true; do
 	   for dest in "${miscremotesubs_list[@]}"; do
                if [ "$dryrun" ]; then
                    echo /usr/bin/rsync -a  --contimeout=600 --timeout=600 --bwlimit="$BWLIMIT" "${miscdumpsdir}/${subdir}" "$dest"
+	       elif [ "$testrun" ]; then
+		   /usr/bin/rsync --dry-run --itemize-changes -a  --contimeout=600 --timeout=600 --bwlimit="$BWLIMIT" "${miscdumpsdir}/${subdir}" "$dest" >> /tmp/dumpsrsync_test.txt
                else
                    /usr/bin/rsync -a  --contimeout=600 --timeout=600 --bwlimit="$BWLIMIT" "${miscdumpsdir}/${subdir}" "$dest" > /dev/null 2>&1
                fi
 	   done
        done
 
+   fi
+
+   if [ "$onepass" ]; then
+       exit 0
    fi
 
     # when dumps aren't being generated, no reason to try over and over again to push new files.
