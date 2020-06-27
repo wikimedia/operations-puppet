@@ -1,2 +1,5 @@
 gerrit::server::backups_enabled: false
 gerrit::server::is_replica: true
+
+# The test server has been migrated to Gerrit 3.x
+gerrit::server::is_new_version: true
