@@ -2,3 +2,6 @@ gerrit::service::ipv4: '208.80.154.137'
 gerrit::service::ipv6: '2620:0:861:2:208:80:154:137'
 
 gerrit::server::is_replica: false
+
+# The test server has been migrated to Gerrit 3.x
+gerrit::server::is_new_version: true
