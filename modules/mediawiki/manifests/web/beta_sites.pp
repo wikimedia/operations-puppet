@@ -6,14 +6,6 @@ class mediawiki::web::beta_sites {
         ensure => present,
     }
 
-    mediawiki::web::vhost { 'testwikimedia':
-        server_aliases  => ['test.wikimedia.beta.wmflabs.org'],
-        docroot         => '/srv/mediawiki/docroot/wikimedia.org',
-        declare_site    => false,
-        short_urls      => false,
-        public_rewrites => true,
-    }
-
     ::httpd::site { 'beta-specific':
         source   => 'puppet:///modules/mediawiki/apache/beta/sites/beta_specific.conf',
         priority => 1,
