@@ -14,3 +14,4 @@ profile::codesearch::ports:
     pywikibot: 6091
     services: 6092
     libraries: 6093
+    analytics: 6094
