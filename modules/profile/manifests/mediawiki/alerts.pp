@@ -74,6 +74,8 @@ class profile::mediawiki::alerts {
     retries         => 2,
     method          => 'gt',
     query           => 'sum(rate(logstash_mediawiki_events_total{channel=~"(fatal|exception)",level="ERROR"}[4m])) without (channel, instance) * 60',
+    warning         => 50,
+    critical        => 100,
     notes_link      => 'https://wikitech.wikimedia.org/wiki/Application_servers',
     dashboard_links => ["https://grafana.wikimedia.org/d/000000438/mediawiki-alerts?panelId=2&fullscreen&orgId=1&var-datasource=${::site} prometheus/ops"],
   }
