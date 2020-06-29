@@ -3831,6 +3831,10 @@ ldap_only_users:
     ensure: present
     realname: (known to Legal)
     email: daimona.wiki@gmail.com
+  datn:
+    ensure: present
+    realname: Dan Shick
+    email: dan.shick@wikimedia.de
   delphinepro:
     ensure: present
     realname: Delphine Menard
