@@ -43,6 +43,7 @@ class profile::lvs(
         critical        => 3200,
         query           => "scalar(sum(rate(node_network_receive_bytes_total{instance=~\"${::hostname}:.*\",device\\!~\"lo\"}[5m]))) * 8 / 1024 / 1024",
         prometheus_url  => "http://prometheus.svc.${::site}.wmnet/ops",
+        notes_link      => 'https://docs.google.com/document/d/1SeXdegjsfL94R6XYB1I4Uv8yjCPH1tVXeL0taJF0NNs/preview#heading=h.jh7rcwvjcet8',
         dashboard_links => ["https://grafana.wikimedia.org/d/000000377/host-overview?var-server=${::hostname}&var-datasource=${::site} prometheus/ops"],
         nagios_critical => true,
     }
@@ -53,6 +54,7 @@ class profile::lvs(
         critical        => 0.7,
         query           => "sum by (cpu) (irate(node_cpu_seconds_total{mode\\!=\"idle\",instance=~\"${::hostname}:.*\"}[5m]))",
         prometheus_url  => "http://prometheus.svc.${::site}.wmnet/ops",
+        notes_link      => 'https://docs.google.com/document/d/1SeXdegjsfL94R6XYB1I4Uv8yjCPH1tVXeL0taJF0NNs/preview#heading=h.y5zsnl4xbe2h',
         dashboard_links => ["https://grafana.wikimedia.org/d/000000377/host-overview?var-server=${::hostname}&var-datasource=${::site} prometheus/ops"],
         nagios_critical => false,  # TODO set this to true Soon
     }
