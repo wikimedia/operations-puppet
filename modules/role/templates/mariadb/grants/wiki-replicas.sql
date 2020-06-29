@@ -39,6 +39,8 @@ GRANT SELECT ON *.* TO 'viewmaster'@'%';
 GRANT USAGE ON *.* TO 's52788'@'%' WITH MAX_USER_CONNECTIONS 48;
 -- user for wikiscan granted 15 connections T227462
 GRANT USAGE ON *.* TO 'u12903'@'%' WITH MAX_USER_CONNECTIONS 15;
+-- catscan2 (petscan) user granted 40 connections T255730
+GRANT USAGE ON *.* TO 's51156'@'%' WITH MAX_USER_CONNECTIONS 40;
 
 -- wmf-pt-kill user has to be granted SUPER and SHOW PROCESSLIST and should be able to login via unix_socket (T203674)
 
