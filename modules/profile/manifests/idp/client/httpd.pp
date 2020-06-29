@@ -1,6 +1,7 @@
 # @summary configure an apache web site using mod_auth_cas
 # @param vhost_content an erb template file to use for the apache vhost configuration
 # @param virtual_host the virtual host to use in the apache vhost
+# @param server_aliases an array of additional server aliases
 # @param document_root the document root to configure for the apache vhost
 # @param cookie_path The location where cas stores information relating to authentication cookies issued
 # @param certificate_path the SSL certificate path used for validation
@@ -21,6 +22,7 @@ class profile::idp::client::httpd (
     Apereo_cas::Urls              $apereo_cas       = lookup('apereo_cas', Apereo_cas::Urls, 'deep'),
     String[1]                     $vhost_content    = lookup('profile::idp::client::httpd::vhost_content'),
     Stdlib::Host                  $virtual_host     = lookup('profile::idp::client::httpd::virtual_host'),
+    Array[Stdlib::Host]           $server_aliases   = lookup('profile::idp::client::httpd::server_aliases'),
     Stdlib::Unixpath              $document_root    = lookup('profile::idp::client::httpd::document_root'),
     Stdlib::Unixpath              $cookie_path      = lookup('profile::idp::client::httpd::cookie_path'),
     Stdlib::Unixpath              $certificate_path = lookup('profile::idp::client::httpd::certificate_path'),

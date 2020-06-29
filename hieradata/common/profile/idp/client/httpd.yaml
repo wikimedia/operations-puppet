@@ -3,6 +3,7 @@
 # profile::idp::client::httpd::vhost_content:
 # profile::idp::client::httpd::virtual_host:
 # profile::idp::client::httpd::document_root:
+profile::idp::client::httpd::server_aliases: []
 profile::idp::client::httpd::cookie_path: /var/cache/apache2/mod_auth_cas
 profile::idp::client::httpd::certificate_path: /etc/ssl/certs
 profile::idp::client::httpd::authn_header: CAS-User

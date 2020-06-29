@@ -68,7 +68,8 @@ class icinga::web (
     }
 
     httpd::site { $virtual_host:
-        content => template('icinga/apache.erb'),
+        content  => template('icinga/apache.erb'),
+        priority => 60,
     }
 
     # remove icinga default config
