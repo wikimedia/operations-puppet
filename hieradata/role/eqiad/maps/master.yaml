@@ -10,6 +10,7 @@ profile::redis::master::clients:
   - 'maps1001.eqiad.wmnet'
 
 profile::maps::apps::redis_server: 'redis://maps1004.eqiad.wmnet'
+profile::maps::apps::tilerator_enable: false # disable just in eqiad during T254014
 
 profile::cassandra::single_instance::dc: 'eqiad'
 profile::cassandra::single_instance::seeds:
