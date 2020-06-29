@@ -6,7 +6,7 @@ define monitoring::alerts::http_availability(
     # Varnish HTTP availability as seen by looking at status codes
     monitoring::check_prometheus { "varnish_${title}":
         description     => 'Varnish has reduced HTTP availability',
-        query           => '100 * (1 - job:varnish_requests:avail2m)',
+        query           => '100 * (1 - global_job:varnish_requests:avail2m)',
         prometheus_url  => 'http://prometheus.svc.eqiad.wmnet/global',
         method          => 'le',
         retries         => 2,
@@ -21,7 +21,7 @@ define monitoring::alerts::http_availability(
     # ATS (on Varnish hosts) HTTP availability as seen by looking at status codes
     monitoring::check_prometheus { "ats_${title}":
         description     => 'ATS TLS has reduced HTTP availability',
-        query           => '100 * (1 - job:trafficserver_requests:avail2m{layer="tls"})',
+        query           => '100 * (1 - global_job:trafficserver_requests:avail2m{layer="tls"})',
         prometheus_url  => 'http://prometheus.svc.eqiad.wmnet/global',
         method          => 'le',
         retries         => 2,
