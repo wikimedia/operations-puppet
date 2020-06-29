@@ -3768,6 +3768,10 @@ ldap_only_users:
     ensure: present
     realname: Abban Dunne
     email: abban.dunne@wikimedia.de
+  adancy:
+    ensure: present
+    realname: Ahmon Dancy
+    email: adancy@wikimedia.org
   adavenport:
     ensure: absent
     realname: Allison Davenport
