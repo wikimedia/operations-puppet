@@ -21,7 +21,7 @@ define systemd::sysuser(
     $conf_path = "/etc/sysusers.d/${safe_title}.conf"
 
     $_content = $content.reduce('') |$memo, $v| {
-        "${memo}${v['usertype']}\t${v['name']}\t${v['id']}\t${v['gecos']}\t${v['home_dir']}\t${v['shell']}\n"
+        "${memo}${v['usertype']}\t${v['name']}\t${v['id']}\t\"${v['gecos']}\"\t${v['home_dir']}\t${v['shell']}\n"
     }
 
     file { $conf_path:
