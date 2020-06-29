@@ -53,6 +53,20 @@ class icinga::web (
         content => template('icinga/apache2_auth_user_file.erb'),
     }
 
+    $alias_config = @(ALIAS)
+        LoadModule alias_module modules/mod_alias.so
+        ScriptAlias /icinga/cgi-bin /usr/lib/cgi-bin/icinga
+        ScriptAlias /cgi-bin/icinga /usr/lib/cgi-bin/icinga
+        Alias /icinga/stylesheets /etc/icinga/stylesheets
+        Alias /icinga /usr/share/icinga/htdocs
+    | ALIAS
+    httpd::conf{'icinga_alias':
+        content => $alias_config,
+    }
+    httpd::conf{'icinga_handler':
+        content => "AddHandler cgi-script .cgi\n",
+    }
+
     httpd::site { $virtual_host:
         content => template('icinga/apache.erb'),
     }

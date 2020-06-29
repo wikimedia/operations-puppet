@@ -39,12 +39,11 @@
 
     </DirectoryMatch>
 
-    <IfModule !mod_alias.c>
-        LoadModule alias_module modules/mod_alias.so
-    </IfModule>
-
-    # Shortcut to access unhandled (non-acked) alerts
+    # Documentation for CGI parameters: https://icinga.com/docs/icinga1/latest/en/cgiparams.html
+    # /alerts: Show only firing (HARD state) alerts (props 262144) plus hosts/services with notifications enabled (props 8192)
+    # /problems: Show alerts regardless of status (same as "all problems" from icinga web UI)
     RedirectMatch ^/alerts$ https://<%= @virtual_host %>/cgi-bin/icinga/status.cgi?allunhandledproblems&sortobject=services&sorttype=2&sortoption=3
+    RedirectMatch ^/problems$ https://icinga.wikimedia.org/cgi-bin/icinga/status.cgi?allproblems&sortobject=services&sorttype=2&sortoption=3
     RedirectMatch ^/$ https://<%= @virtual_host %>/icinga
     ErrorLog /var/log/apache2/<%= @virtual_host %>_error.log
     LogLevel warn

@@ -1,8 +1,4 @@
 # vim: filetype=apache
-
-AddHandler cgi-script .cgi
-ScriptAlias /cgi-bin/icinga /usr/lib/cgi-bin/icinga
-
 <VirtualHost *:443>
     ServerName <%= @vhost %>
     ServerAdmin noc@wikimedia.org
@@ -41,10 +37,6 @@ ScriptAlias /cgi-bin/icinga /usr/lib/cgi-bin/icinga
               </RequireAll>
         </Files>
     </Directory>
-
-    <IfModule !mod_alias.c>
-        LoadModule alias_module modules/mod_alias.so
-    </IfModule>
 
     ErrorLog /var/log/apache2/icinga_<%= @vhost %>.log
     LogLevel warn
