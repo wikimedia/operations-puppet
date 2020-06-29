@@ -36,7 +36,7 @@ chroot /target /bin/sh -c 'echo $(cat /etc/issue.net) auto-installed on $(date).
 [ -f /target/etc/sysctl.d/10-ipv6-privacy.conf ] && rm -f /target/etc/sysctl.d/10-ipv6-privacy.conf
 
 case `hostname` in \
-	cp107[5-9]|cp108[0-9]|cp1090|cp30[56][0-9])
+	cp[123][0-9][0-9][0-9])
 		# new cache nodes (mid-2018) use a single NVMe drive (Samsung
 		# pm1725[ab]) for storage, which needs its LBA format changed
 		# to 4K block size before manually partitioning.
