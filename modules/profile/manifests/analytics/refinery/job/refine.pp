@@ -38,7 +38,7 @@ class profile::analytics::refinery::job::refine(
 
     # Update this when you want to change the version of the refinery job jar
     # being used for the refine job.
-    $refinery_version = '0.0.127'
+    $refinery_version = '0.0.129'
 
     # Use this value by default
     Profile::Analytics::Refinery::Job::Refine_job {
@@ -80,7 +80,6 @@ class profile::analytics::refinery::job::refine(
             table_blacklist_regex           => $event_table_excludelist_regex,
             # event_transforms:
             # - deduplicate
-            # - filter_allowed_domains
             # - geocode_ip
             # - parse_user_agent
             transform_functions             => 'org.wikimedia.analytics.refinery.job.refine.event_transforms',
@@ -127,8 +126,9 @@ class profile::analytics::refinery::job::refine(
     ]
     $eventlogging_legacy_table_excludelist_regex = "^(${join($eventlogging_legacy_table_excludelist, '|')})$"
 
-    # TODO: explicitly list filter_allowed_domains after we are on refinery-job 0.0.129
-    $eventlogging_legacy_transform_functions = 'org.wikimedia.analytics.refinery.job.refine.event_transforms'
+    # Since EventLogging legacy data comes from external clients,
+    # non wikimedia domains and other unwanted domains have always been filtered out.
+    $eventlogging_legacy_transform_functions = 'org.wikimedia.analytics.refinery.job.refine.filter_allowed_domains,org.wikimedia.analytics.refinery.job.refine.event_transforms'
 
     profile::analytics::refinery::job::refine_job { 'eventlogging_legacy':
         ensure                   => $ensure_timers,
@@ -160,7 +160,6 @@ class profile::analytics::refinery::job::refine(
     $eventlogging_analytics_input_path = '/wmf/data/raw/eventlogging'
     $eventlogging_analytics_input_path_regex = 'eventlogging_(.+)/hourly/(\\d+)/(\\d+)/(\\d+)/(\\d+)'
     $eventlogging_analytics_input_path_regex_capture_groups = 'table,year,month,day,hour'
-
 
     $eventlogging_analytics_table_excludelist =
         $eventlogging_legacy_table_excludelist + $eventlogging_legacy_table_includelist
