@@ -70,7 +70,7 @@ class profile::idp::client::httpd (
     }
     $cas_auth_settings = merge($cas_base_auth, {'Require' => $cas_auth_require})
 
-    if $acme_chief_cert {
+    if $acme_chief_cert and !defined(Acme_chief::Cert[$acme_chief_cert]) {
         acme_chief::cert { $acme_chief_cert:
             puppet_svc => 'apache2',
         }
