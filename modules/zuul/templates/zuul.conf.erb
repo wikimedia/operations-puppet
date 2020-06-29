@@ -33,7 +33,10 @@ state_dir=/var/lib/zuul
 <% if @zuul_role == 'server' -%>
 url_pattern=<%= @url_pattern %>
 status_url=<%= @status_url %>
-job_name_in_report = true
+# Whether to prefix the url/success report with the job name.
+# That was used with Gerrit 2.x to nicely format reports using commentlink but
+# is no more possible with Gerrit 3. T256575
+job_name_in_report = false
 <% end -%>
 
 <% if @zuul_role == 'merger' -%>
