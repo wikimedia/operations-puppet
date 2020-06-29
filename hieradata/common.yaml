@@ -481,7 +481,6 @@ statistics_servers:
   - stat1008.eqiad.wmnet
   - labstore1006.wikimedia.org
   - labstore1007.wikimedia.org
-  - an-launcher1001.eqiad.wmnet
   - an-launcher1002.eqiad.wmnet
 
 scratch_active_server: cloudstore1009.wikimedia.org
