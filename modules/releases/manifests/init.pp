@@ -97,15 +97,6 @@ class releases (
         require =>  Git::Clone['operations/deployment-charts'],
     }
 
-    # T94486
-    package { 'phpunit':
-        ensure => present,
-    }
-
-    package { 'php-curl':
-        ensure => present,
-    }
-
     package { 'python3-pygerrit2':
         ensure => present,
     }
