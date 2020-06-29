@@ -163,7 +163,7 @@ get_part_recipe() {
         set -- $recipe_mountpoint
         shift # Drop the mountpoint from the output
         error recipe_parse_failed \
-            "[$dev_name] ERROR: recipe for $recipe_dev partition $part_num has trailing garbage: '$@'"
+            "[$dev_name] ERROR: recipe for $recipe_dev partition $part_num has trailing garbage: '$*'"
         return 1
     fi
 }
