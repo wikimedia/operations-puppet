@@ -1,5 +1,5 @@
 profile::openldap::hostname: cloudservices2002-dev.wikimedia.org
-profile::openldap::mirror_mode: false
+profile::openldap::mirror_mode: true
 profile::openldap::backup: false
 profile::openldap::server_id: 1
 profile::openldap::master: cloudservices2002-dev.wikimedia.org
