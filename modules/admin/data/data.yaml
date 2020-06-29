@@ -3768,10 +3768,6 @@ ldap_only_users:
     ensure: present
     realname: Abban Dunne
     email: abban.dunne@wikimedia.de
-  adancy:
-    ensure: present
-    realname: Ahmon Dancy
-    email: adancy@wikimedia.org
   adavenport:
     ensure: absent
     realname: Allison Davenport
@@ -3835,6 +3831,10 @@ ldap_only_users:
     ensure: present
     realname: (known to Legal)
     email: daimona.wiki@gmail.com
+  dancy:
+    ensure: present
+    realname: Ahmon Dancy
+    email: adancy@wikimedia.org
   datn:
     ensure: present
     realname: Dan Shick
