@@ -19,3 +19,5 @@ profile::elasticsearch::dc_settings:
       - logstash2027.codfw.wmnet
       - logstash2028.codfw.wmnet
       - logstash2029.codfw.wmnet
+      - logstash2030.codfw.wmnet
+      - logstash2031.codfw.wmnet

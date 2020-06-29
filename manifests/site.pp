@@ -1364,6 +1364,9 @@ node /^logstash[12]02[0-2]\.(eqiad|codfw)\.wmnet$/ {
 node /^logstash[12]02[345]\.(eqiad|codfw)\.wmnet$/ {
     role(logstash7)
 }
+node /^logstash[12]03[01]\.(eqiad|codfw)\.wmnet$/ {
+    role(logstash7)
+}
 
 # eqiad logstash collectors (Ganeti)
 node /^logstash100[7-9]\.eqiad\.wmnet$/ {
@@ -1371,10 +1374,6 @@ node /^logstash100[7-9]\.eqiad\.wmnet$/ {
     include ::lvs::realserver
 }
 
-# eqiad/codfw logstash - expansion (Ganeti) (T256139)
-node /^logstash[12]03[01]\.(eqiad|codfw)\.wmnet$/ {
-    role(insetup)
-}
 
 # codfw logstash kafka/elasticsearch
 node /^logstash200[1-3]\.codfw\.wmnet$/ {
