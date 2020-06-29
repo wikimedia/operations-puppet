@@ -4,7 +4,7 @@ set -x
 
 # Using token auth env variables
 SERVICE_ENDPOINT=http://openstack.eqiad1.wikimediacloud.org:35357/v2.0/
-SERVICE_TOKEN=<redacted>
+SERVICE_TOKEN='<redacted>'
 
 # ENDPOINT URLS
 NOVA_PUBLIC_URL="http://cloudcontrol1003.eqiad.wmnet:8774/v2/\$(tenant_id)s"
