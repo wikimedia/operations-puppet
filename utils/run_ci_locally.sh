@@ -43,11 +43,16 @@ if ! (docker info > /dev/null); then
     exit 1
 fi
 
-IMG_VERSION=${IMG_VERSION:-"0.7.2"}
+IMG_VERSION=${IMG_VERSION:-"latest"}
 IMG_NAME=docker-registry.wikimedia.org/releng/operations-puppet:$IMG_VERSION
 CONT_NAME=puppet-tests-${IMG_VERSION}
 
 SCRIPT_DIR="$( cd "$( dirname "$0" )" && pwd )"
+if [ "$IMG_VERSION" = "latest" ]
+then
+  echo "Using 'latest' image tag, set IMG_VERSION to use a specific version"
+  docker pull $IMG_NAME
+fi
 
 pushd "${SCRIPT_DIR}/.."
 docker run --rm --env ZUUL_REF="" --env RAKE_TARGET="$*" --name "$CONT_NAME" --volume /"$(pwd)"://src "$IMG_NAME"
