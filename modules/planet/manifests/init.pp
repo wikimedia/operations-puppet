@@ -30,7 +30,7 @@ class planet (
       content    => [
       'usertype' => 'u',
       'name'     => 'planet',
-      'gecos'    => 'planet RSS aggregator',
+      'gecos'    => 'planet_RSS_aggregator',
       'id'       => '-',
       'home_dir' => '/var/lib/planet',
                     ]
