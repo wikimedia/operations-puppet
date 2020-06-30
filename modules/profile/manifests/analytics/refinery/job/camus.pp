@@ -85,6 +85,7 @@ class profile::analytics::refinery::job::camus(
         script              => "${profile::analytics::refinery::path}/bin/camus",
         kafka_brokers       => $kafka_brokers,
         hadoop_cluster_name => $hadoop_cluster_name,
+        # TODO upgrade this default to wmf10 once wmf10 is proved to work for eventlogging job.
         camus_jar           => "${profile::analytics::refinery::path}/artifacts/org/wikimedia/analytics/camus-wmf/camus-wmf-0.1.0-wmf9.jar",
         check_jar           => "${profile::analytics::refinery::path}/artifacts/org/wikimedia/analytics/refinery/refinery-camus-0.0.128.jar",
         check               => $monitoring_enabled,
@@ -120,10 +121,15 @@ class profile::analytics::refinery::job::camus(
     camus::job { 'eventlogging':
         camus_properties      => {
             'kafka.whitelist.topics'        => '^eventlogging_.+',
-            'camus.message.timestamp.field' => 'dt',
+            # During migration to EventGate, events will have both meta.dt and dt.
+            # meta.dt is set by EventGate and is more trustable than dt, which after
+            # migration to EventGate is set by the client.
+            'camus.message.timestamp.field' => 'meta.dt,dt',
             # Set this to at least the number of topic/partitions you will be importing.
             'mapred.map.tasks'              => '100',
         },
+        # TODO: Remove this once default has been changed to wmf10.
+        camus_jar             => "${profile::analytics::refinery::path}/artifacts/org/wikimedia/analytics/camus-wmf/camus-wmf-0.1.0-wmf10.jar",
         # Don't need to write _IMPORTED flags for EventLogging data
         check_dry_run         => true,
         # Only check these topic, since they should have data every hour.
