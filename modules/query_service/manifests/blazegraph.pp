@@ -16,6 +16,7 @@
 # - $extra_jvm_opts: Extra JVM configs for blazegraph
 # - $use_geospatial: Turn on blazegraph geospatial features
 # - $journal: Name to assign instance journal. Must be unique per data_dir.
+# - $oauth_settings: should oauth proxy be run along side blazegraph (to be used by nginx)
 define query_service::blazegraph(
     Stdlib::Port $port,
     String $config_file_name,
@@ -31,6 +32,7 @@ define query_service::blazegraph(
     Array[String] $extra_jvm_opts,
     Boolean $use_geospatial,
     String $journal,
+    Optional[Query_service::OAuthSettings] $oauth_settings = undef,
 ) {
     if ($use_deployed_config) {
         $config_file = $config_file_name

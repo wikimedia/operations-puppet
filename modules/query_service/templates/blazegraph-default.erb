@@ -8,3 +8,13 @@ PORT=<%= @port %>
 EXTRA_JVM_OPTS="
   <%= @extra_jvm_opts.join(" \\\n  ") %>"
 <%- end -%>
+<%- if @oauth_settings -%>
+OAUTH_PROPS_PREFIX="org.wikidata.query.rdf.mwoauth.OAuthProxyConfig"
+OAUTH_RUN=" mw-oauth-proxy-*.war"
+OAUTH_CONSUMER_KEY_PARAM="-D${OAUTH_PROPS_PREFIX}.consumerKey=<%= @oauth_settings['oauth_consumer_key'] %>"
+OAUTH_CONSUMER_SECRET_PARAM="-D${OAUTH_PROPS_PREFIX}.consumerSecret=<%= @oauth_settings['oauth_consumer_secret'] %>"
+OAUTH_SESSION_STORE_LIMIT_PARAM="-D${OAUTH_PROPS_PREFIX}.sessionStoreLimit=<%= @oauth_settings['oauth_session_store_limit'] %>"
+OAUTH_NICE_URL_PARAM="-D${OAUTH_PROPS_PREFIX}.niceUrlBase=<%= @oauth_settings['oauth_nice_url'] %>"
+OAUTH_INDEX_URL_PARAM="-D${OAUTH_PROPS_PREFIX}.indexUrl=<%= @oauth_settings['oauth_index_url'] %>"
+<%- end -%>
+
