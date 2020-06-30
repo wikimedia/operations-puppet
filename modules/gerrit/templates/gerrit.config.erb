@@ -102,14 +102,14 @@
     # needed and updates them nonetheless during upgrades as
     # needed. So they serve as canary for required config updates of
     # our systemd script. And we leave them in place.
-<% @java_options.each do |jvm_opt| %>
+<%- @java_options.each do |jvm_opt| -%>
     javaOptions = "<%= jvm_opt %>"
-<% end %>
+<%- end -%>
     heapLimit = <%= @heap_limit %>
     replica = <%= @replica %>
-    <%- if @replica %>
+<%- if @replica -%>
     daemonOpt = --enable-httpd --enable-sshd
-    <%- end -%>
+<%- end -%>
 [core]
     packedGitOpenFiles = <%= @git_open_files %>
     packedGitLimit = 4g
