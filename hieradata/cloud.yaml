@@ -76,6 +76,23 @@ profile::backup::director: 'backup.example.com'
 profile::backup::days: []
 
 puppetmaster::locale_servers: {}
+profile::puppetmaster::frontend::secure_private: true
+profile::puppetmaster::frontend::ssl_ca_revocation_check: chain
+profile::puppetmaster::frontend::config: {}
+profile::puppetmaster::frontend::web_hostname: puppet
+profile::puppetmaster::frontend::prevent_cherrypicks: true
+profile::puppetmaster::frontend::allow_from:
+  - '*.wikimedia.org'
+  - '*.eqiad.wmnet'
+  - '*.ulsfo.wmnet'
+  - '*.esams.wmnet'
+  - '*.codfw.wmnet'
+  - '*.eqsin.wmnet'
+  - '*.wmflabs'
+  - '*.wikimedia.cloud'
+profile::puppetmaster::frontend: chain
+puppetmaster::servers: {}
+profile::puppetmaster::frontend::extra_auth_rules: ''
 profile::puppetmaster::frontend::canary_hosts: []
 profile::puppetmaster::common::puppetdb_hosts: []
 profile::puppetmaster::common::command_broadcast: false

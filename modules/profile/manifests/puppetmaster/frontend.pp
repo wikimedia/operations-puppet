@@ -1,28 +1,21 @@
 # vim: set tabstop=4 shiftwidth=4 softtabstop=4 expandtab textwidth=80 smarttab
 
 class profile::puppetmaster::frontend(
-    $config = hiera('profile::puppetmaster::frontend::config', {}),
-    # should $secure_priviate really get its config from the same
-    # place as $config?
-    $secure_private = hiera('profile::puppetmaster::frontend::config', true),
-    $web_hostname = hiera('profile::puppetmaster::frontend::web_hostname', 'puppet'),
-    $prevent_cherrypicks = hiera('profile::puppetmaster::frontend::prevent_cherrypicks', true),
-    Stdlib::Host $ca_server = lookup('puppet_ca_server'),
-    Stdlib::Filesource $ca_source = lookup('puppet_ca_source'),
-    Boolean $manage_ca_file = lookup('manage_puppet_ca_file'),
-    Hash[String, Puppetmaster::Backends] $servers = hiera('puppetmaster::servers', {}),
-    Hash[Stdlib::Host, Stdlib::Host] $locale_servers = lookup('puppetmaster::locale_servers'),
-    $ssl_ca_revocation_check = hiera('profile::puppetmaster::frontend::ssl_ca_revocation_check', 'chain'),
-    $allow_from = hiera('profile::puppetmaster::frontend::allow_from', [
-      '*.wikimedia.org',
-      '*.eqiad.wmnet',
-      '*.ulsfo.wmnet',
-      '*.esams.wmnet',
-      '*.codfw.wmnet',
-      '*.eqsin.wmnet']),
-    $extra_auth_rules = '',
-    $mcrouter_ca_secret = hiera('profile::puppetmaster::frontend::mcrouter_ca_secret'),
-    Array[Stdlib::Host] $canary_hosts = lookup('profile::puppetmaster::frontend::canary_hosts')
+    Hash                $config                  = lookup('profile::puppetmaster::frontend::config'),
+    Boolean             $secure_private          = lookup('profile::puppetmaster::frontend::secure_private'),
+    String              $web_hostname            = lookup('profile::puppetmaster::frontend::web_hostname'),
+    Boolean             $prevent_cherrypicks     = lookup('profile::puppetmaster::frontend::prevent_cherrypicks'),
+    Stdlib::Host        $ca_server               = lookup('puppet_ca_server'),
+    Stdlib::Filesource  $ca_source               = lookup('puppet_ca_source'),
+    Boolean             $manage_ca_file          = lookup('manage_puppet_ca_file'),
+    Array[String]       $allow_from              = lookup('profile::puppetmaster::frontend::allow_from'),
+    String              $extra_auth_rules        = lookup('profile::puppetmaster::frontend::extra_auth_rules'),
+    Array[Stdlib::Host] $canary_hosts            = lookup('profile::puppetmaster::frontend::canary_hosts'),
+    Hash[String, Puppetmaster::Backends] $servers          = lookup('puppetmaster::servers'),
+    Hash[Stdlib::Host, Stdlib::Host]     $locale_servers   = lookup('puppetmaster::locale_servers'),
+    Enum['chain', 'leaf', 'none'] $ssl_ca_revocation_check = lookup('profile::puppetmaster::frontend::ssl_ca_revocation_check'),
+    Optional[String[1]] $mcrouter_ca_secret      = lookup('profile::puppetmaster::frontend::mcrouter_ca_secret',
+                                                          {'default_value' => undef}),
 ) {
     backup::set { 'var-lib-puppet-ssl': }
     backup::set { 'var-lib-puppet-volatile': }
