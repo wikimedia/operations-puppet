@@ -46,7 +46,7 @@ keep_environment =
 spamd_address = 127.0.0.1 783
 
 # TLS
-tls_certificate = /etc/acmecerts/<%= @cert_name %>/live/ec-prime256v1.crt
+tls_certificate = /etc/acmecerts/<%= @cert_name %>/live/ec-prime256v1.chained.crt
 tls_privatekey = /etc/acmecerts/<%= @cert_name %>/live/ec-prime256v1.key
 tls_advertise_hosts = *
 tls_require_ciphers = NORMAL:%SERVER_PRECEDENCE
