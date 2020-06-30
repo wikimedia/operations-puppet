@@ -228,9 +228,19 @@ def print_pending_account_expirys(users):
         if 'expiry_date' in attrs.keys():
             expiry = datetime.datetime.strptime(str(attrs['expiry_date']), "%Y-%m-%d").date()
             delta = expiry - current_date
-            if delta.days <= 7:
+            if delta.days > 7:
+                continue
+            if delta.days < -1:
+                log += "The NDA/MOU for " + i + " lapsed " + str(-delta.days) + " days ago.\n"
+            elif delta.days == -1:
+                log += "The NDA/MOU for " + i + " lapsed yesterday.\n"
+            elif delta.days == 0:
+                log += "The NDA/MOU for " + i + " lapses today.\n"
+            elif delta.days == 1:
+                log += "The NDA/MOU for " + i + " will lapse tomorrow.\n"
+            else:
                 log += "The NDA/MOU for " + i + " will lapse in " + str(delta.days) + " days.\n"
-                log += "  Please get in touch with " + str(attrs['expiry_contact']) + "\n"
+            log += "  Please get in touch with " + str(attrs['expiry_contact']) + "\n"
     return log
 
 
