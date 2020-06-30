@@ -7,6 +7,8 @@ class profile::cumin::master (
     $ssh_config_path = '/etc/cumin/ssh_config'
     # Ensure to add FQDN of the current host also the first time the role is applied
     $cumin_masters = unique(concat(query_nodes('Class[Role::Cumin::Master]'), [$::fqdn]))
+    $mariadb_roles = Profile::Mariadb::Role
+    $mariadb_sections = Profile::Mariadb::Valid_section
 
     ::keyholder::agent { 'cumin_master':
         trusted_groups => ['root'],

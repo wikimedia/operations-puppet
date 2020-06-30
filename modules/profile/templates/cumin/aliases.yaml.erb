@@ -74,6 +74,12 @@ db-labsdb: P{O:labs::db::wikireplica_analytics or O:labs::db::wikireplica_web or
 db-misc-servers: P{O:mariadb::sanitarium_multiinstance}
 db-parsercache: P{O:mariadb::parsercache}
 dbmonitor: P{O:tendril}
+<% @mariadb_roles.each do |role| -%>
+db-role-<%= role %>: P{P:mariadb::mysql_role%role = <%= role %>}
+<% end -%>
+<% @mariadb_sections.each do |section| -%>
+db-section-<%= section %>: P{R:profile::mariadb::section%section = <%= section %>}
+<% end -%>
 debmonitor: P{O:debmonitor::server}
 deployment-servers: P{O:deployment_server}
 dns-auth: P{R:Class = profile::dns::auth}
