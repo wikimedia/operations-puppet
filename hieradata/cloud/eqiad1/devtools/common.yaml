@@ -116,7 +116,7 @@ gerrit::servers:
 - gerrit-prod-1001.devtools.eqiad.wmflabs
 
 gerrit::server::is_replica: false
-gerrit::server::replica_hosts: ~
+gerrit::server::replica_hosts: []
 
 # No IPv6 in cloud
 gerrit::service::ipv6: ~

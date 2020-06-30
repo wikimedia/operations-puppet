@@ -11,7 +11,7 @@ MaxClients 50
 <VirtualHost *:80>
     ServerAdmin noc@wikimedia.org
     ServerName <%= @host %>
-    <%- if @replica_hosts -%>
+    <%- if !@replica_hosts.empty? -%>
     ServerAlias <%= Array(@replica_hosts).join(' ') %>
     <%- end -%>
 
