@@ -55,6 +55,17 @@ class profile::analytics::refinery::job::data_purge (
         use_kerberos => $use_kerberos,
     }
 
+    # Keep this many days of pageview_actor_hourly data.
+    kerberos::systemd_timer { 'refinery-drop-pageview-actor-hourly-partitions':
+        ensure       => $ensure_timers,
+        description  => 'Drop pageview_actor_hourly data from HDFS following data retention policies.',
+        command      => "${refinery_path}/bin/refinery-drop-older-than --database='wmf' --tables='pageview_actor_hourly' --base-path='/wmf/data/wmf/pageview/actor/hourly' --path-format='year=(?P<year>[0-9]+)(/month=(?P<month>[0-9]+)(/day=(?P<day>[0-9]+)(/hour=(?P<hour>[0-9]+))?)?)?' --older-than='${refined_retention_days}' --skip-trash --execute='96f2d4a6800314113b9bf23822854d4d'",
+        interval     => '*-*-* 00/4:50:00',
+        environment  => $systemd_env,
+        user         => 'analytics',
+        use_kerberos => $use_kerberos,
+    }
+
     # Keep this many days of raw event data (all data that comes via EventGate instances).
     $event_raw_retention_days = 90
     kerberos::systemd_timer { 'refinery-drop-raw-event':
