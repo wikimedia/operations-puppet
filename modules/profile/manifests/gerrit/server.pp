@@ -73,16 +73,7 @@ class profile::gerrit::server(
             puppet_svc => 'apache2',
         }
     } else {
-        if $is_replica {
-            $tls_host = $replica_hosts[0]
-        } else {
-            $tls_host = $host
-        }
-        letsencrypt::cert::integrated { 'gerrit':
-            subjects   => $tls_host,
-            puppet_svc => 'apache2',
-            system_svc => 'apache2',
-        }
+        ensure_packages('certbot')
     }
 
     class { '::gerrit':
