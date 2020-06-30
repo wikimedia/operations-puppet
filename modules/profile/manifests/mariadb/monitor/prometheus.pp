@@ -20,7 +20,7 @@
 #FIXME: move node_exporter to standard and remove it from here when ready
 class profile::mariadb::monitor::prometheus(
     $mysql_group,
-    $mysql_role,
+    Profile::Mariadb::Role $mysql_role,
     $mysql_shard = '',
     $socket = '/run/mysqld/mysqld.sock',
     ) {
