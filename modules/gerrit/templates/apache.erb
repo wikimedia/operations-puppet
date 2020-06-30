@@ -34,13 +34,7 @@ MaxClients 50
 
     CustomLog /var/log/apache2/<%= @host %>.http.access.log wmf
     ServerSignature Off
-    <%- if @use_acmechief == false -%>
-    IncludeOptional /etc/acme/challenge-apache.conf
-    <%- end -%>
     RewriteEngine on
-    <%- if @use_acmechief == false -%>
-    RewriteCond %{REQUEST_URI} !^/\.well-known/acme-challenge/
-    <%- end -%>
     RewriteRule ^/(.*)$ https://<%= @host %>/$1 [L,R=301,NE]
 </VirtualHost>
 
@@ -63,9 +57,8 @@ MaxClients 50
     SSLCertificateChainFile /etc/acmecerts/gerrit/live/rsa-2048.chain.crt
     SSLCertificateKeyFile /etc/acmecerts/gerrit/live/rsa-2048.key
     <%- else -%>
-    SSLCertificateFile /etc/acme/cert/gerrit.crt
-    SSLCertificateChainFile /etc/acme/cert/gerrit.chain.crt
-    SSLCertificateKeyFile /etc/acme/key/gerrit.key
+    SSLCertificateFile /etc/letsencrypt/live/gerrit.devtools.wmflabs.org/fullchain.pem
+    SSLCertificateKeyFile /etc/letsencrypt/live/gerrit.devtools.wmflabs.org/privkey.pem
     <%- end -%>
     <%= @ssl_settings.join("\n    ") %>
 
