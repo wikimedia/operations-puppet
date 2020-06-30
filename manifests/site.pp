@@ -570,13 +570,21 @@ node /^db2(115|131)\.codfw\.wmnet/ {
 
 ## m1 shard
 
-# Future m1 master
 node 'db1097.eqiad.wmnet' {
     class { '::role::mariadb::misc':
         shard  => 'm1',
         master => true,
     }
 }
+
+# Future m1 master # T256717
+node 'db1080.eqiad.wmnet' {
+    class { '::role::mariadb::misc':
+        shard  => 'm1',
+        master => false,
+    }
+}
+
 
 node 'db2132.codfw.wmnet' {
     class { '::role::mariadb::misc':
@@ -592,14 +600,6 @@ node 'db1132.eqiad.wmnet' {
     class { '::role::mariadb::misc':
         shard  => 'm2',
         master => true,
-    }
-}
-
-# Future m2 master
-node 'db1080.eqiad.wmnet' {
-    class { '::role::mariadb::misc':
-        shard  => 'm2',
-        master => false,
     }
 }
 
