@@ -112,7 +112,18 @@ class profile::cache::purge(
         warning         => 3000, # 3 seconds
         critical        => 5000, # 5 seconds
         prometheus_url  => "http://prometheus.svc.${::site}.wmnet/ops",
-        notes_link      => 'https://wikitech.wikimedia.org/wiki/Purged',
+        notes_link      => 'https://wikitech.wikimedia.org/wiki/Purged#Alerts',
+        dashboard_links => ["https://grafana.wikimedia.org/dashboard/db/purged?var-datasource=${::site} prometheus/ops&var-instance=${::hostname}"],
+    }
+
+    monitoring::check_prometheus { 'purged-backlog':
+        description     => 'Number of messages locally queued by purged for processing',
+        query           => "purged_backlog{instance=\"${::hostname}:${prometheus_port}\"}",
+        method          => 'gt',
+        warning         => 1000,
+        critical        => 10000,
+        prometheus_url  => "http://prometheus.svc.${::site}.wmnet/ops",
+        notes_link      => 'https://wikitech.wikimedia.org/wiki/Purged#Alerts',
         dashboard_links => ["https://grafana.wikimedia.org/dashboard/db/purged?var-datasource=${::site} prometheus/ops&var-instance=${::hostname}"],
     }
 }
