@@ -74,6 +74,12 @@ class profile::gerrit::server(
         }
     } else {
         ensure_packages('certbot')
+        cron { 'certbot_renew':
+            command => "/usr/bin/certbot -q renew --post-hook \"systemctl reload apache\" 2> /var/log/certbot.log",
+            minute  => 4,
+            hour    => 4,
+            user    => 'root',
+        }
     }
 
     class { '::gerrit':
