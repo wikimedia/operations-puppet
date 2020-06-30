@@ -33,6 +33,11 @@
 #  Hostname for the puppetmaster. Defaults to fqdn. Is used for SSL
 #  certificates, virtualhost routing, etc
 #
+# [*hiera_config*]
+#  Allows to select from a range of hiera.yaml files in modules/puppetmaster/files.
+#  Typically the $::realm default works, but in e.g. codfw1dev this should
+#  be specified to pick up the right config.
+#
 # [*enable_geoip*]
 #  Enable/disable provisioning ::puppetmaster::geoip for serving clients who
 #  use the ::geoip::data::puppet class in their manifests.
@@ -50,6 +55,7 @@ class role::puppetmaster::standalone(
                                 $storeconfigs = false,
     Boolean                     $enable_geoip = false,
     Boolean                     $command_broadcast = false,
+    String[1]                   $hiera_config = $::realm,
     Optional[Variant[Array[Stdlib::Host], Stdlib::Host]] $puppetdb_host = undef,
 ) {
     $puppetdb_hosts = ($puppetdb_host =~ Stdlib::Host) ? {
@@ -116,6 +122,7 @@ class role::puppetmaster::standalone(
         extra_auth_rules    => $extra_auth_rules,
         config              => $config,
         enable_geoip        => $enable_geoip,
+        hiera_config        => $hiera_config,
     }
 
     # Don't attempt to use puppet-master service on stretch, we're using passenger.
