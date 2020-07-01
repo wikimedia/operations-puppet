@@ -145,10 +145,6 @@ def get_exceptions(dumplog, logpath):
     state = IN_LOG
     while True:
         line = re.sub(r' -p[^\s]*', ' -pXXXXX', dumplog.readline())
-        if (line.startswith(('Preparing', 'getting/checking text', 'Spawning database subprocess'))
-                or '(Will retry' in line or not line.strip() or line.strip().isdigit()):
-            # ugh we have some junk lines in the log with no timestamp
-            continue
         if not line:
             if -1 in exceptions:
                 # if there's a stack trace last in the file, figure
@@ -157,6 +153,10 @@ def get_exceptions(dumplog, logpath):
                 safe_set(exceptions, timestamp, exceptions[-1])
                 del exceptions[-1]
             return exceptions
+        if (line.startswith(('Preparing', 'getting/checking text', 'Spawning database subprocess'))
+                or '(Will retry' in line or not line.strip() or line.strip().isdigit()):
+            # ugh we have some junk lines in the log with no timestamp
+            continue
         if state == IN_LOG:
             if not re.match('[0-9]{4}-', line):
                 state = IN_EXCEPTION
