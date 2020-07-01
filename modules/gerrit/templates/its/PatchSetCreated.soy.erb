@@ -17,19 +17,21 @@
 {namespace etc.its.templates}
 
 /**
- * The .PatchSetRestored template determines the comment left on the
- * Phabricator task when a related Change gets restored
+ * The .PatchSetCreated template determines the comment left on the
+ * Phabricator task if a related patch set got created.
  */
-{template .PatchSetRestored kind="text"}
+{template .PatchSetCreated kind="text"}
   {@param changeNumber: string}
   {@param project: string}
   {@param branch: string}
-  {@param restorerName: string}
+  {@param authorName: string}
+  {@param authorUsername: string}
+  {@param uploaderName: string}
+  {@param uploaderUsername: string}
   {@param escapedSubject: string}
-  {@param formatChangeUrl: string}
 
-  Change {$changeNumber} **restored** by {$restorerName}:{\n}
-  [{$project}@{$branch}] {$escapedSubject|escapeUri}{\n}
-  {\n}
-  {$formatChangeUrl}
+  Change {$changeNumber} had a related patch set uploaded (by {$uploaderName ? $uploaderName : $uploaderUsername}; owner: {$authorName ? $authorName : $authorUsername}):{\n}
+  [{$project}@{$branch}] {$escapedSubject|escapeUri}{\n}{\n}
+
+  https://<%= @host %>/r/{$changeNumber}
 {/template}

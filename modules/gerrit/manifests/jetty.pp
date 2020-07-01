@@ -219,6 +219,38 @@ class gerrit::jetty(
         require => File['/var/lib/gerrit2'],
     }
 
+    file { '/var/lib/gerrit2/review_site/etc/its/templates/PatchSetAbandoned.soy':
+        content => template('gerrit/its/PatchSetAbandoned.soy.erb'),
+        owner   => $scap_user,
+        group   => $scap_user,
+        mode    => '0444',
+        require => File['/var/lib/gerrit2'],
+    }
+
+    file { '/var/lib/gerrit2/review_site/etc/its/templates/PatchSetRestored.soy':
+        content => template('gerrit/its/PatchSetRestored.soy.erb'),
+        owner   => $scap_user,
+        group   => $scap_user,
+        mode    => '0444',
+        require => File['/var/lib/gerrit2'],
+    }
+
+    file { '/var/lib/gerrit2/review_site/etc/its/templates/PatchSetCreated.soy':
+        content => template('gerrit/its/PatchSetCreated.soy.erb'),
+        owner   => $scap_user,
+        group   => $scap_user,
+        mode    => '0444',
+        require => File['/var/lib/gerrit2'],
+    }
+
+    file { '/var/lib/gerrit2/review_site/etc/its/templates/PatchSetMerged.soy':
+        content => template('gerrit/its/PatchSetRestored.soy.erb'),
+        owner   => $scap_user,
+        group   => $scap_user,
+        mode    => '0444',
+        require => File['/var/lib/gerrit2'],
+    }
+
     file { '/var/lib/gerrit2/review_site/etc/secure.config':
         content => template('gerrit/secure.config.erb'),
         owner   => $scap_user,

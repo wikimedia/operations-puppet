@@ -17,23 +17,18 @@
 {namespace etc.its.templates}
 
 /**
- * The .PatchSetAbandoned template determines the comment left on the
- * Phabricator task when a related Change gets abandoned
+ * The .PatchSetRestored template determines the comment left on the
+ * Phabricator task when a related Change gets restored
  */
-{template .PatchSetAbandoned kind="text"}
+{template .PatchSetRestored kind="text"}
   {@param changeNumber: string}
   {@param project: string}
   {@param branch: string}
-  {@param abandonerName: string}
+  {@param restorerName: string}
   {@param escapedSubject: string}
-  {@param reason: string}
-  {@param formatChangeUrl: string}
 
-  Change {$changeNumber} **abandoned** by {$abandonerName}:{\n}
+  Change {$changeNumber} **restored** by {$restorerName}:{\n}
   [{$project}@{$branch}] {$escapedSubject|escapeUri}{\n}
   {\n}
-  Reason:{\n}
-    {$reason}{\n}
-  {\n}
-  {$formatChangeUrl}
+  https://<%= @host %>/r/{$changeNumber}
 {/template}
