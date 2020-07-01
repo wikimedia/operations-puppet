@@ -1,4 +1,4 @@
-# tendril.wikimedia.org db
+# idp-test*.wikimedia.org db
 class profile::mariadb::misc::idp_test {
 
     class { 'mariadb::packages_wmf': }
@@ -22,6 +22,27 @@ class profile::mariadb::misc::idp_test {
     }
 
     profile::mariadb::ferm { 'idp-test': }
+
+    class { 'profile::mariadb::monitor::prometheus':
+        mysql_group => 'misc',
+        mysql_shard => 'idp-test',
+        mysql_role  => 'standalone',
+    }
+    class { 'mariadb::monitor_disk':
+        is_critical   => false,
+        contact_group => 'admins',
+    }
+
+    class { 'mariadb::monitor_process':
+        is_critical   => false,
+        contact_group => 'admins',
+    }
+
+    mariadb::monitor_readonly { [ 'idp-test' ]:
+        read_only     => false,
+        is_critical   => false,
+        contact_group => 'admins',
+    }
 
     ferm::service { 'idp-test':
         proto   => 'tcp',
