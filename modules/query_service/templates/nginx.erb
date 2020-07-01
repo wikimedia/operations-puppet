@@ -39,7 +39,31 @@ server {
         echo_flush;
     }
 
+    <% if @oauth -%>
+      location /error403 {
+        internal;
+        proxy_pass http://127.0.0.1:9999/oauth/check_login; # TODO Probably address shouldn't be hardcoded
+      }
+
+      location /_check_auth {
+        internal;
+        proxy_pass http://127.0.0.1:9999/oauth/check_auth;
+      }
+
+      location /_oauth_token_verify {
+        error_page 403 = /error403;
+        proxy_set_header 'X-redirect-url' 'http://wcqs-beta.wmflabs.org/';
+        proxy_pass http://127.0.0.1:9999/oauth/oauth_verify$is_args$args; # TODO Probably address shouldn't be hardcoded
+      }
+
+    <% end %>
+
     location / {
+        <% if @oauth -%>
+          auth_request /check_auth;
+          error_page 403 = /error403;
+      <% end %>
+
         root <%= @package_dir %>/gui;
 
         location ~ ^/(css|js) {

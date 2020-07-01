@@ -22,6 +22,7 @@ class query_service::gui(
     Boolean $enable_ldf,
     Integer $max_query_time_millis,
     String $ns,
+    Boolean $oauth,
 ) {
     $port = 80
     $additional_port = 8888

@@ -9,6 +9,7 @@ class profile::query_service::gui (
     Integer $max_query_time_millis = hiera('profile::query_service::max_query_time_millis', 60000),
     Boolean $high_query_time_port = hiera('profile::query_service::high_query_time_port', false),
     String $ns = lookup('profile::query_service::ns'),
+    Boolean $oauth = lookup('profile::query_service::oauth')
 ) {
     require ::profile::query_service::common
 
@@ -22,6 +23,7 @@ class profile::query_service::gui (
         enable_ldf            => $enable_ldf,
         max_query_time_millis => $max_query_time_millis,
         ns                    => $ns,
+        oauth                 => $oauth,
     }
 
     if $high_query_time_port {

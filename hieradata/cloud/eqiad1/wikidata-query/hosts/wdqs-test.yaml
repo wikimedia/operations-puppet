@@ -11,3 +11,4 @@ profile::query_service::blazegraph_heap_size: '8g'
 profile::query_service::enable_ldf: true
 profile::query_service::sparql_query_stream: 'wdqs-beta.sparql-query'
 profile::query_service::use_revisions: false
+profile::query_service::oauth: false

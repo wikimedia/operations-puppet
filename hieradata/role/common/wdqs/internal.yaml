@@ -38,3 +38,4 @@ profile::query_service::use_revisions: true
 monitor_screens: false
 
 profile::query_service::blazegraph::monitoring_enabled: true
+profile::query_service::oauth: false

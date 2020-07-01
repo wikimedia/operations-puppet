@@ -6,3 +6,4 @@ profile::query_service::load_categories: none
 profile::query_service::deploy_name: sdoc
 profile::query_service::enable_ldf: false
 profile::query_service::sparql_query_stream: null
+profile::query_service::oauth: true

@@ -41,3 +41,4 @@ monitor_screens: false
 profile::tlsproxy::envoy::global_cert_name: "wdqs.discovery.wmnet"
 
 profile::query_service::blazegraph::monitoring_enabled: true
+profile::query_service::oauth: false
