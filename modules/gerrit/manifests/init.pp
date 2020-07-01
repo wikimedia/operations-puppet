@@ -12,7 +12,6 @@ class gerrit(
     Optional[String] $scap_user = undef,
     Optional[String] $scap_key_name = undef,
     Boolean $enable_monitoring = true,
-    Boolean $is_new_version = false,
 ) {
 
     class { '::gerrit::jetty':
@@ -27,7 +26,6 @@ class gerrit(
         scap_user         => $scap_user,
         scap_key_name     => $scap_key_name,
         enable_monitoring => $enable_monitoring,
-        is_new_version    => $is_new_version,
     }
 
     class { '::gerrit::proxy':
@@ -39,7 +37,6 @@ class gerrit(
         replica           => $replica,
         use_acmechief     => $use_acmechief,
         enable_monitoring => $enable_monitoring,
-        is_new_version    => $is_new_version,
     }
 
     class { '::gerrit::crons':

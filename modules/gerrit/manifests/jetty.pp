@@ -22,7 +22,6 @@ class gerrit::jetty(
     Optional[String] $scap_user = undef,
     Optional[String] $scap_key_name = undef,
     Boolean $enable_monitoring = true,
-    Boolean $is_new_version = false,
     ) {
 
     group { 'gerrit2':
@@ -141,18 +140,13 @@ class gerrit::jetty(
         require => File['/srv/gerrit/plugins'],
     }
 
-    $homedir_template = $is_new_version ? {
-        true    => 'puppet:///modules/gerrit/homedir-new',
-        default => 'puppet:///modules/gerrit/homedir',
-    }
-
     file { '/var/lib/gerrit2':
         ensure  => directory,
         recurse => 'remote',
         mode    => '0755',
         owner   => $scap_user,
         group   => $scap_user,
-        source  => $homedir_template,
+        source  => 'puppet:///modules/gerrit/homedir-new',
     }
 
     file { '/var/lib/gerrit2/review_site/bin':
@@ -201,16 +195,8 @@ class gerrit::jetty(
         require => File['/var/lib/gerrit2'],
     }
 
-    if $is_new_version {
-        file { '/var/lib/gerrit2/review_site/lib/javamelody-deps_deploy.jar':
-            ensure  => 'absent',
-        }
-    } else {
-        file { '/var/lib/gerrit2/review_site/lib/javamelody-deps_deploy.jar':
-            ensure  => 'link',
-            target  => '/srv/deployment/gerrit/gerrit/lib/javamelody-deps_deploy.jar',
-            require => [File['/var/lib/gerrit2/review_site/lib'], Scap::Target['gerrit/gerrit']],
-        }
+    file { '/var/lib/gerrit2/review_site/lib/javamelody-deps_deploy.jar':
+        ensure  => 'absent',
     }
 
     file { '/var/lib/gerrit2/review_site/etc/gerrit.config':

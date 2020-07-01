@@ -17,7 +17,6 @@ class profile::gerrit::server(
     Optional[String] $scap_user = lookup('gerrit::server::scap_user'),
     Optional[String] $scap_key_name = lookup('gerrit::server::scap_key_name'),
     Boolean $enable_monitoring = lookup('gerrit::server::enable_monitoring', { default_value => true }),
-    Boolean $is_new_version = lookup('gerrit::server::is_new_version'),
 ) {
 
     interface::alias { 'gerrit server':
@@ -92,7 +91,6 @@ class profile::gerrit::server(
         scap_user         => $scap_user,
         scap_key_name     => $scap_key_name,
         enable_monitoring => $enable_monitoring,
-        is_new_version    => $is_new_version,
     }
 
     class { '::gerrit::replication_key':
