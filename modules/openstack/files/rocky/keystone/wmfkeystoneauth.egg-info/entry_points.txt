@@ -2,4 +2,4 @@
 default = wmfkeystoneauth.wmtotp:Wmtotp
 
 [keystone.auth.password]
-whitelist = wmfkeystoneauth.password_whitelist:PasswordWhitelist
+safelist = wmfkeystoneauth.password_safelist:PasswordSafelist

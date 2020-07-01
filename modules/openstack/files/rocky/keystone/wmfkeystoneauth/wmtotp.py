@@ -19,7 +19,7 @@ from oslo_config import cfg
 
 from keystone.auth.plugins import base
 from keystone.auth import plugins as auth_plugins
-from . import password_whitelist
+from . import password_safelist
 from keystone.common import provider_api
 from keystone import exception
 from keystone.i18n import _
@@ -69,8 +69,8 @@ class Wmtotp(base.AuthMethodHandler):
 
         # Before we do anything else, make sure that this user is allowed
         #  access from their source IP
-        password_whitelist.check_whitelist(user_info.user_id,
-                                           request.environ['REMOTE_ADDR'])
+        password_safelist.check_safelist(user_info.user_id,
+                                         request.environ['REMOTE_ADDR'])
 
         try:
             PROVIDERS.identity_api.authenticate(

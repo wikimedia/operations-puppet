@@ -19,20 +19,20 @@ methods = external,password,token,wmtotp
 
 # Override the default password plugin with a custom
 #  one that checks source IPs.
-password = whitelist
+password = safelist
 
 <% @labs_networks.each do |subnet| -%>
-password_whitelist = novaobserver:<%=subnet%>
-password_whitelist = deployment-prep-dns-manager:<%=subnet%>
-password_whitelist = testlabs-dns-manager:<%=subnet%>
-password_whitelist = traffic-cloud-dns-manager:<%=subnet%>
-password_whitelist = tools-dns-manager:<%=subnet%>
-password_whitelist = toolsbeta-dns-manager:<%=subnet%>
-password_whitelist = project-proxy-dns-manager:<%=subnet%>
-password_whitelist = paws-dns-manager:<%=subnet%>
+password_safelist = novaobserver:<%=subnet%>
+password_safelist = deployment-prep-dns-manager:<%=subnet%>
+password_safelist = testlabs-dns-manager:<%=subnet%>
+password_safelist = traffic-cloud-dns-manager:<%=subnet%>
+password_safelist = tools-dns-manager:<%=subnet%>
+password_safelist = toolsbeta-dns-manager:<%=subnet%>
+password_safelist = project-proxy-dns-manager:<%=subnet%>
+password_safelist = paws-dns-manager:<%=subnet%>
 <% end -%>
 <% @prod_networks.each do |subnet| -%>
-password_whitelist = *:<%=subnet%>
+password_safelist = *:<%=subnet%>
 <% end -%>
 
 [oath]

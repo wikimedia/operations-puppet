@@ -26,8 +26,8 @@ METHOD_NAME = 'password'
 
 LOG = log.getLogger(__name__)
 
-whitelist_ops = [
-    cfg.MultiStrOpt('password_whitelist',
+safelist_ops = [
+    cfg.MultiStrOpt('password_safelist',
                     default=[],
                     help='user:ip range permitted to use password auth.'
                          'also supports a simple one-character * wildcard'
@@ -35,16 +35,16 @@ whitelist_ops = [
 ]
 
 CONF = cfg.CONF
-CONF.register_opts(whitelist_ops, group='auth')
+CONF.register_opts(safelist_ops, group='auth')
 
 
-def check_whitelist(user_id, remote_addr):
-    """Return True if the user_id/remote_addr combination is in our whitelist.
+def check_safelist(user_id, remote_addr):
+    """Return True if the user_id/remote_addr combination is in our safelist.
        Otherwise, return raise Unauthorized"""
     LOG.debug("Auth request for user %s from %s" % (user_id,
                                                     remote_addr))
 
-    for entry in CONF.auth.password_whitelist:
+    for entry in CONF.auth.password_safelist:
         user, subnet = entry.split(':', 1)
         if user == "*" or user_id == user:
             if IPAddress(remote_addr) in IPNetwork(subnet):
@@ -57,15 +57,15 @@ def check_whitelist(user_id, remote_addr):
     raise exception.Unauthorized(msg)
 
 
-class PasswordWhitelist(password.Password):
+class PasswordSafelist(password.Password):
 
     def authenticate(self, request, auth_payload):
         """Verify username and password but only allow access for configured
            accounts and from configured IP ranges."""
 
         user_info = auth_plugins.UserAuthInfo.create(auth_payload, METHOD_NAME)
-        check_whitelist(user_info.user_id,
-                        request.environ['REMOTE_ADDR'])
+        check_safelist(user_info.user_id,
+                       request.environ['REMOTE_ADDR'])
 
-        return super(PasswordWhitelist, self).authenticate(request,
-                                                           auth_payload)
+        return super(PasswordSafelist, self).authenticate(request,
+                                                          auth_payload)
