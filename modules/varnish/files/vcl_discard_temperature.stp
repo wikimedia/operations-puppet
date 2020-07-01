@@ -1,0 +1,17 @@
+#!/usr/bin/env stap
+# vcl_discard_temperature.stp - print VCL temperature on discard
+#
+# https://github.com/varnishcache/varnish-cache/issues/2228
+# https://github.com/varnishcache/varnish-cache/issues/2505
+# https://phabricator.wikimedia.org/T236754
+#
+# Sample output:
+#
+# vcl-d2b4eba6-a13e-4363-ae7a-f3c0a91f4770 busy (should be cold instead)
+# vcl-f904c109-91ac-4ea8-a683-a9edf3b9d0f9 busy (should be cold instead)
+probe process("/usr/sbin/varnishd").statement("vcl_cli_discard@cache/cache_vcl.c:955") {
+    temp = user_string($vcl->temp)
+    if (temp != "cold") {
+        printf("%s %s (should be cold instead)\n", user_string($vcl->loaded_name), temp)
+    }
+}
