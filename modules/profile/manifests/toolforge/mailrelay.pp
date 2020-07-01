@@ -94,4 +94,9 @@ class profile::toolforge::mailrelay (
         notify => Service['mtail'],
         source => 'puppet:///modules/mtail/programs/exim.mtail',
     }
+
+    # to know about the exim queue length
+    class { 'prometheus::node_exim_queue':
+        ensure => present,
+    }
 }
