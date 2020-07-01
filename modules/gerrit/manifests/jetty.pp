@@ -195,10 +195,6 @@ class gerrit::jetty(
         require => File['/var/lib/gerrit2'],
     }
 
-    file { '/var/lib/gerrit2/review_site/lib/javamelody-deps_deploy.jar':
-        ensure  => 'absent',
-    }
-
     file { '/var/lib/gerrit2/review_site/etc/gerrit.config':
         content => template("gerrit/${config}"),
         owner   => $scap_user,
