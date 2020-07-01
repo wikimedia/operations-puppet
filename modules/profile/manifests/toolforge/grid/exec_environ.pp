@@ -393,7 +393,7 @@ class profile::toolforge::grid::exec_environ {
             install_options => ['-t', 'stretch-backports'],
         }
 
-        # T67354, T215693 - Tesseract OCR from stretch-backports
+        # T67354, T215693 - Tesseract OCR from our custom backport
         $tesseract_packages = [
             'tesseract-ocr-all',
             'tesseract-ocr',
