@@ -146,7 +146,7 @@ class gerrit::jetty(
         mode    => '0755',
         owner   => $scap_user,
         group   => $scap_user,
-        source  => 'puppet:///modules/gerrit/homedir-new',
+        source  => 'puppet:///modules/gerrit/homedir',
     }
 
     file { '/var/lib/gerrit2/review_site/bin':
