@@ -7,6 +7,9 @@
 #
 # === Parameters
 #
+# [*ensure*]
+#   present or absent to setup or remove
+#
 # [*deploy_user*]
 #   user that will be used for deployments
 #
@@ -53,12 +56,13 @@
 #
 define scap::target(
     String $deploy_user,
-    String $key_name = $deploy_user,
-    Optional[String] $service_name = undef,
-    Array[String] $additional_services_names = [],
-    String $package_name = $title,
-    Boolean $manage_user = true,
-    Array[String] $sudo_rules = [],
+    String $key_name                            = $deploy_user,
+    Wmflib::Ensure   $ensure                    = 'present',
+    Optional[String] $service_name              = undef,
+    Array[String]    $additional_services_names = [],
+    String           $package_name              = $title,
+    Boolean          $manage_user               = true,
+    Array[String]    $sudo_rules                = [],
 ) {
     # Include scap3 package and ssh ferm rules.
     include scap
@@ -72,20 +76,20 @@ define scap::target(
     {
         if !defined(Group[$deploy_user]) {
             group { $deploy_user:
-                ensure => present,
+                ensure => $ensure,
                 system => true,
                 before => User[$deploy_user],
             }
         }
         if !defined(User[$deploy_user]) {
             user { $deploy_user:
-                ensure => present,
+                ensure => $ensure,
                 shell  => '/bin/bash',
                 home   => "/var/lib/${deploy_user}",
                 system => true,
             }
             file { "/var/lib/${deploy_user}":
-                ensure => 'directory',
+                ensure => ensure_directory($ensure),
                 owner  => $deploy_user,
                 group  => $deploy_user,
                 mode   => '0755',
@@ -97,7 +101,7 @@ define scap::target(
             $key_name_safe = regsubst($key_name, '\W', '_', 'G')
 
             ssh::userkey { $deploy_user:
-                ensure  => 'present',
+                ensure  => $ensure,
                 content => secret("keyholder/${key_name_safe}.pub"),
             }
         }
@@ -111,6 +115,7 @@ define scap::target(
             $deployment_host = hiera('scap::deployment_server')
             $deployment_ip = ipresolve($deployment_host, 4, $::nameservers[0])
             security::access::config { "scap-allow-${deploy_user}":
+                ensure   => $ensure,
                 content  => "+ : ${deploy_user} : ${deployment_ip}\n",
                 priority => 60,
             }
@@ -130,6 +135,7 @@ define scap::target(
     if !defined(Sudo::User["scap_${deploy_user}"]) {
 
         sudo::user { "scap_${deploy_user}":
+            ensure     => $ensure,
             user       => $deploy_user,
             privileges => ["ALL=(${deploy_user}) NOPASSWD: ALL"],
         }
@@ -151,6 +157,7 @@ define scap::target(
 
             if !defined(Sudo::User["scap_${deploy_user}_${svc_name}"]) {
                 sudo::user { "scap_${deploy_user}_${svc_name}":
+                    ensure     => $ensure,
                     user       => $deploy_user,
                     privileges => $service_privileges,
                 }
@@ -163,6 +170,7 @@ define scap::target(
 
         if !defined(Sudo::User[$sudo_rule_name]) {
                 sudo::user { $sudo_rule_name:
+                    ensure     => $ensure,
                     user       => $deploy_user,
                     privileges => $sudo_rules,
                 }
@@ -172,8 +180,10 @@ define scap::target(
     # Have scap actually deploy the source, restart the service if needed, etc
     # Assume $deploy_user already has sudo permissions because of the block above.
     package { $package_name:
+        ensure          => $ensure,
         install_options => [{
-                  owner => $deploy_user}],
+            owner => $deploy_user
+        }],
         provider        => 'scap3',
         require         => [Package['scap'], User[$deploy_user]],
     }

@@ -37,6 +37,7 @@
 # }
 
 define security::access::config(
+    Wmflib::Ensure   $ensure   = 'present',
     Optional[String] $content  = undef,
     Optional[String] $source   = undef,
     Integer[0,99]    $priority = 50,
@@ -47,7 +48,7 @@ define security::access::config(
     $file_path  = "/etc/security/access.conf.d/%.2d-${safe_title}".sprintf($priority)
 
     file { $file_path:
-        ensure  => present,
+        ensure  => $ensure,
         source  => $source,
         content => $content,
         owner   => 'root',
