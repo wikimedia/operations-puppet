@@ -14,6 +14,13 @@ profile::idp::services:
       '@class': 'org.apereo.cas.services.ReturnAllAttributeReleasePolicy'
     access_strategy:
       '@class': 'org.apereo.cas.services.DefaultRegisteredServiceAccessStrategy'
+    properties:
+      '@class': 'java.util.HashMap'
+      httpHeaderEnableXFrameOptions:
+        '@class': 'org.apereo.cas.services.DefaultRegisteredServiceProperty'
+        values:
+          - java.util.HashSet
+          - [ false ]
   debmonitor:
     class: 'org.apereo.cas.services.RegexRegisteredService'
     id: 2
