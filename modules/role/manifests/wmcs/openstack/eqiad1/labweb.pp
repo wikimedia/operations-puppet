@@ -26,7 +26,5 @@ class role::wmcs::openstack::eqiad1::labweb {
     # Striker:
     include ::profile::wmcs::striker::web
 
-    include ::profile::waf::apache2::administrative
-
     include ::profile::tlsproxy::envoy # TLS termination
 }

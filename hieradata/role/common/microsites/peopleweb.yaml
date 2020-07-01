@@ -15,3 +15,4 @@ profile::idp::client::httpd::virtual_host: "%{alias('profile::microsites::people
 profile::idp::client::httpd::proxied_as_https: true
 profile::idp::client::httpd::priority: 50
 profile::idp::client::httpd::protected_uri: '/~cdanis/sremap/'
+profile::base::firewall::block_abuse_nets: true

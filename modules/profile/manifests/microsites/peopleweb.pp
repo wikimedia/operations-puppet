@@ -7,8 +7,6 @@ class profile::microsites::peopleweb (
     Stdlib::Host     $rsync_dst_host    = lookup('profile::microsites::peopleweb::rsync_dst_host'),
 ){
 
-    include ::profile::waf::apache2::administrative
-
     ferm::service { 'people-http':
         proto  => 'tcp',
         port   => '80',

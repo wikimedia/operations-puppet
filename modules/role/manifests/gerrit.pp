@@ -13,10 +13,6 @@ class role::gerrit {
     include ::profile::gerrit::migration
     include ::profile::prometheus::apache_exporter
 
-    if $::realm == 'production' {
-        include ::profile::waf::apache2::administrative
-    }
-
     class { '::httpd':
         modules => ['rewrite', 'headers', 'proxy', 'proxy_http', 'remoteip', 'ssl'],
     }

@@ -18,7 +18,6 @@ class role::phabricator {
     include ::rsync::server # copy repo data between servers
 
     if $::realm == 'production' {
-        include ::profile::waf::apache2::administrative
         include ::lvs::realserver
     }
 
