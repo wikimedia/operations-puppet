@@ -15,6 +15,11 @@
 #
 #   Set to true to enable LDAP based authentication to access the graphite interface
 #
+# [*provide_vhost*]
+#
+#   If enabled, configure an Apache vhost config (which is provided by a different
+#   profile if running with CAS auth)
+#
 # filtertags: labs-project-graphite
 class profile::graphite::base(
     $storage_dir      = '/var/lib/carbon',
@@ -25,6 +30,7 @@ class profile::graphite::base(
     $cluster_servers  = undef,
     $uwsgi_max_request_duration_seconds = undef,  # lint:ignore:wmf_styleguide
     $uwsgi_max_request_rss_megabytes = undef,     # lint:ignore:wmf_styleguide
+    $provide_vhost    = true,                     # lint:ignore:wmf_styleguide
     Hash $ldap_config = lookup('ldap', Hash, hash, {}),
 ) {
     include ::passwords::graphite
@@ -245,8 +251,10 @@ class profile::graphite::base(
         $apache_auth   = template('role/graphite/apache-auth-ldap.erb')
     }
 
-    httpd::site { $hostname:
-        content => template('role/graphite/graphite.apache.erb'),
+    if $provide_vhost {
+        httpd::site { $hostname:
+            content => template('role/graphite/graphite.apache.erb'),
+        }
     }
 
     nrpe::monitor_systemd_unit_state{ 'carbon-frontend-relay': }
