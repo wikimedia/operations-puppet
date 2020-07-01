@@ -62,8 +62,15 @@ class profile::webperf::site (
         srange => '$CACHES',
     }
 
+    file { '/var/www/no-robots.txt':
+        ensure  => file,
+        owner   => 'www-data',
+        group   => 'www-data',
+        content => file('profile/webperf/site/no-robots.txt'),
+    }
+
     httpd::site { 'performance-wikimedia-org':
-        content => template('profile/performance/site/performance-website.erb'),
+        content => template('profile/webperf/site/performance-website.erb'),
         require => Git::Clone['performance/docroot'],
     }
 
@@ -74,5 +81,4 @@ class profile::webperf::site (
     }
 
     require_package('libapache2-mod-uwsgi')
-
 }
