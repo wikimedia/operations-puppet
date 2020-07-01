@@ -123,6 +123,7 @@ class profile::analytics::refinery::job::refine(
         'InputDeviceDynamics',
         'PageIssues',
         'MobileWebMainMenuClickTracking',
+        'KaiOSAppConsent',
     ]
     $eventlogging_legacy_table_excludelist_regex = "^(${join($eventlogging_legacy_table_excludelist, '|')})$"
 
