@@ -7,10 +7,18 @@ class profile::mariadb::misc::tendril {
 
     include passwords::misc::scripts
 
+    $mysql_role = 'standalone'
+    $section = 'tendril'
+
+    class { '::profile::mariadb::mysql_role':
+        role => $mysql_role,
+    }
+    profile::mariadb::section { $section: }
+
     class { 'profile::mariadb::monitor::prometheus':
         mysql_group => 'misc',
         mysql_shard => 'tendril',
-        mysql_role  => 'standalone', # FIXME
+        mysql_role  => $mysql_role,
     }
     class { 'mariadb::monitor_disk':
         is_critical   => false,
@@ -22,7 +30,7 @@ class profile::mariadb::misc::tendril {
         contact_group => 'admins',
     }
 
-    mariadb::monitor_readonly { [ 'tendril' ]:
+    mariadb::monitor_readonly { $section:
         read_only     => false,
         is_critical   => false,
         contact_group => 'admins',

@@ -3,6 +3,14 @@ class profile::mariadb::misc::idp_test {
 
     class { 'mariadb::packages_wmf': }
 
+    $mysql_role = 'standalone'
+    $section = 'idp-test'
+
+    class { '::profile::mariadb::mysql_role':
+        role => $mysql_role,
+    }
+    profile::mariadb::section { $section: }
+
     include passwords::misc::scripts
 
     if os_version('debian >= buster') {
@@ -21,12 +29,12 @@ class profile::mariadb::misc::idp_test {
         ssl           => 'puppet-cert',
     }
 
-    profile::mariadb::ferm { 'idp-test': }
+    profile::mariadb::ferm { $section: }
 
     class { 'profile::mariadb::monitor::prometheus':
         mysql_group => 'misc',
         mysql_shard => 'idp-test',
-        mysql_role  => 'standalone',
+        mysql_role  => $mysql_role,
     }
     class { 'mariadb::monitor_disk':
         is_critical   => false,
@@ -38,7 +46,7 @@ class profile::mariadb::misc::idp_test {
         contact_group => 'admins',
     }
 
-    mariadb::monitor_readonly { [ 'idp-test' ]:
+    mariadb::monitor_readonly { $section:
         read_only     => false,
         is_critical   => false,
         contact_group => 'admins',

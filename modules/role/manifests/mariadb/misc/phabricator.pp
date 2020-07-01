@@ -21,6 +21,11 @@ class role::mariadb::misc::phabricator(
         false => 'slave',
     }
 
+    class { '::profile::mariadb::mysql_role':
+        role => $mysql_role,
+    }
+    profile::mariadb::section { $shard: }
+
     include ::passwords::misc::scripts
     include ::profile::base::firewall
     ::profile::mariadb::ferm { 'phabricator': }

@@ -6,11 +6,17 @@ class profile::mariadb::parsercache (
     ){
     $mw_primary = mediawiki::state('primary_dc')
 
+    $mysql_role = 'master'
+    class { '::profile::mariadb::mysql_role':
+        role => $mysql_role,
+    }
+    profile::mariadb::section { $shard: }
+
     include ::passwords::misc::scripts
     class { 'profile::mariadb::monitor::prometheus':
         mysql_group => 'parsercache',
         mysql_shard => $shard,
-        mysql_role  => 'master',
+        mysql_role  => $mysql_role,
     }
 
     class { 'mariadb::packages_wmf': }

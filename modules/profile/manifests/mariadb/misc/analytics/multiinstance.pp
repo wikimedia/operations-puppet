@@ -15,6 +15,8 @@ class profile::mariadb::misc::analytics::multiinstance (
 disabled, use mariadb@<instance_name> instead'; exit 1\"",
     }
 
+    include ::profile::mariadb::mysql_role
+
     $basedir = '/opt/wmf-mariadb104'
     class { 'mariadb::config':
         basedir       => $basedir,
@@ -37,6 +39,7 @@ disabled, use mariadb@<instance_name> instead'; exit 1\"",
             port                    => 3321,
             innodb_buffer_pool_size => $matomo,
         }
+        profile::mariadb::section { 'matomo': }
         profile::mariadb::ferm { 'matomo': port => '3321' }
         profile::prometheus::mysqld_exporter_instance { 'matomo': port => 13321, }
     }
@@ -45,6 +48,7 @@ disabled, use mariadb@<instance_name> instead'; exit 1\"",
             port                    => 3322,
             innodb_buffer_pool_size => $analytics_meta,
         }
+        profile::mariadb::section { 'analytics_meta': }
         profile::mariadb::ferm { 'analytics_meta': port => '3322' }
         profile::prometheus::mysqld_exporter_instance { 'analytics_meta': port => 13322, }
     }

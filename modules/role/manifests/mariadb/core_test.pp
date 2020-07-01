@@ -9,7 +9,7 @@ class role::mariadb::core_test {
     $socket = hiera('mariadb::socket', '/run/mysqld/mysqld.sock')
     $datadir = hiera('mariadb::datadir', '/srv/sqldata')
     $tmpdir = hiera('mariadb::tmpdir', '/srv/tmp')
-    $shard = hiera('mariadb::shard', undef)
+    $shard = hiera('mariadb::shard')
     $mysql_role = hiera('mariadb::mysql_role', 'slave')
     $ssl = hiera('mariadb::ssl', 'puppet-cert')
     $binlog_format = hiera('mariadb::binlog_format', 'ROW')
@@ -17,6 +17,11 @@ class role::mariadb::core_test {
     system::role { 'mariadb::core':
         description => "Core Test DB Server ${shard}",
     }
+
+    class { '::profile::mariadb::mysql_role':
+        role => $mysql_role,
+    }
+    profile::mariadb::section { $shard: }
 
     include ::profile::standard
     include ::profile::base::firewall

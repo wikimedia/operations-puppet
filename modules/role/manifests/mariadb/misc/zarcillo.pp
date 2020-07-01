@@ -5,10 +5,13 @@ class role::mariadb::misc::zarcillo {
         description => 'zarcillo database server',
     }
 
+    $section = 'zarcillo'
+
     include ::profile::standard
     include ::profile::base::firewall
-    ::profile::mariadb::ferm { 'zarcillo': }
+    ::profile::mariadb::ferm { $section: }
 
     include ::profile::mariadb::misc::tendril
     include ::profile::mariadb::backup::check
+    ::profile::mariadb::section { $section: }
 }
