@@ -37,14 +37,16 @@
 # }
 
 define security::access::config(
-    $content  = undef,
-    $source   = undef,
-    $priority = 50,
+    Optional[String] $content  = undef,
+    Optional[String] $source   = undef,
+    Integer[0,99]    $priority = 50,
 )
 {
     include security::access
+    $safe_title = $title.regsubst('\W', '_', 'G')
+    $file_path  = "/etc/security/access.conf.d/%.2d-${safe_title}".sprintf($priority)
 
-    file { "/etc/security/access.conf.d/${priority}-${name}":
+    file { $file_path:
         ensure  => present,
         source  => $source,
         content => $content,

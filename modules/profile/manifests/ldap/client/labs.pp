@@ -32,7 +32,7 @@ class profile::ldap::client::labs(
         # bypass pam_access restrictions for local commands
         security::access::config { 'labs-local':
             content  => "+:ALL:LOCAL\n",
-            priority => '00',
+            priority => 0,
         }
 
         # Labs instance default to allowing root and project members
@@ -51,19 +51,19 @@ class profile::ldap::client::labs(
         if ( $restricted_from ) {
             security::access::config { 'labs-restrict-from':
                 content  => "-:${restricted_from}:ALL\n",
-                priority => '98',
+                priority => 98,
             }
         }
 
         if ( $restricted_to ) {
             security::access::config { 'labs-restrict-to-group':
                 content  => "-:ALL EXCEPT (${restricted_to}) root:ALL\n",
-                priority => '99',
+                priority => 99,
             }
         } else {
             security::access::config { 'labs-restrict-to-project':
                 content  => "-:ALL EXCEPT (${::projectgroup}) root:ALL\n",
-                priority => '99',
+                priority => 99,
             }
         }
 
