@@ -19,4 +19,4 @@ profile::tlsproxy::service::contact_group: 'analytics'
 
 profile::analytics::backup::database::db_instance: 'piwik'
 
-profile::piwik::database::backup_hosts_ferm_range: "((@resolve((db1108.eqiad.wmnet))))"
+profile::piwik::database::backup_hosts_ferm_range: "((@resolve((db1108.eqiad.wmnet)) @resolve((db1108.eqiad.wmnet), AAAA)))"
