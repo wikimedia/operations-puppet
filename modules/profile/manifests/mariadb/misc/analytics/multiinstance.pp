@@ -41,12 +41,12 @@ disabled, use mariadb@<instance_name> instead'; exit 1\"",
         profile::prometheus::mysqld_exporter_instance { 'matomo': port => 13321, }
     }
     if $analytics_meta {
-        mariadb::instance { 'analytics-meta':
+        mariadb::instance { 'analytics_meta':
             port                    => 3322,
             innodb_buffer_pool_size => $analytics_meta,
         }
-        profile::mariadb::ferm { 'analytics-meta': port => '3322' }
-        profile::prometheus::mysqld_exporter_instance { 'analytics-meta': port => 13322, }
+        profile::mariadb::ferm { 'analytics_meta': port => '3322' }
+        profile::prometheus::mysqld_exporter_instance { 'analytics_meta': port => 13322, }
     }
 
     class { 'mariadb::monitor_disk':
