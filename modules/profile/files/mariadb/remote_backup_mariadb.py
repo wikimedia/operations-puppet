@@ -251,7 +251,7 @@ def get_transfer_cmd(config, using_port, path):
     """
     returns a list with the command to run transfer.py with the given options
     """
-    cmd = ['/usr/bin/python3', '/usr/local/bin/transfer.py']
+    cmd = ['transfer.py']
     cmd.extend(['--type', 'xtrabackup'])
     cmd.extend(['--compress', '--no-encrypt', '--no-checksum'])
     cmd.extend(['--port', str(using_port)])

@@ -5,6 +5,7 @@ class profile::mariadb::backup::transfer {
 
     require_package(
         'transferpy',
+        'python3-yaml',
     )
 
     # mysql dir must be handled by a separate profile, not done here
@@ -37,6 +38,7 @@ class profile::mariadb::backup::transfer {
         mode    => '0755',
         source  => 'puppet:///modules/profile/mariadb/remote_backup_mariadb.py',
         require => [Package['transferpy'],
+                    Package['python3-yaml'],
                     File['/etc/mysql/backups.cnf'],
         ],
     }
