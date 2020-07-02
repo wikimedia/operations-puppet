@@ -34,8 +34,7 @@ class puppet_compiler(
     }
     # We don't really need some generators from puppet master, link them to
     # /bin/true
-    file { ['/usr/local/bin/naggen2',
-            '/usr/local/bin/prometheus-ganglia-gen']:
+    file { '/usr/local/bin/naggen2':
         ensure => ensure_link($ensure),
         target => '/bin/true',
     }

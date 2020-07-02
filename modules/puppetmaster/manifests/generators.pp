@@ -20,11 +20,6 @@ class puppetmaster::generators($ensure = 'present'){
     require_package($packages)
 
     file {'/usr/local/bin/prometheus-ganglia-gen':
-        ensure  => 'present',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0555',
-        source  => 'puppet:///modules/puppetmaster/prometheus-ganglia-gen.py',
-        require => Package[$packages],
+        ensure  => absent,
     }
 }
