@@ -67,6 +67,7 @@ Components: main
  component/pyall
  component/python-ldap-bpo
  component/spicerack
+ component/systemd241
  component/tesseract-410-bpo
  component/thumbor
  component/vp9
