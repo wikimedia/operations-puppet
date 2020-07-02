@@ -38,6 +38,8 @@
 # [*hosts*]
 #   The list of RESTBase hosts used for setting up the rate-limiting DHT.
 #
+# In production, URIs are looked up automatically. In other environments,
+# you will need to define via hiera the following variables:
 # [*parsoid_uri*]
 #   URI to reach Parsoid. Format: http://parsoid.svc.eqiad.wmnet:8000
 #
@@ -74,28 +76,59 @@
 #   Wikifeeds service URI. Format: http://wikifeeds.discovery.wmnet:8889
 #
 class profile::restbase(
-    $cassandra_user = hiera('profile::restbase::cassandra_user'),
-    $cassandra_password = hiera('profile::restbase::cassandra_password'),
-    $seeds_ng = hiera('profile::restbase::seeds_ng', []),
-    $hosts = hiera('profile::restbase::hosts'),
-    $cassandra_local_dc = hiera('profile::restbase::cassandra_local_dc'),
-    $cassandra_datacenters = hiera('profile::restbase::cassandra_datacenters'),
-    $cassandra_tls = hiera('profile::restbase::cassandra_tls', {}),
-    $salt_key = hiera('profile::restbase::salt_key'),
-    $logging_label = hiera('profile::restbase::logging_label'),
-    $parsoid_uri = hiera('profile::restbase::parsoid_uri'),
-    $graphoid_uri = hiera('profile::restbase::graphoid_uri'),
-    $mobileapps_uri = hiera('profile::restbase::mobileapps_uri'),
-    $mathoid_uri    = hiera('profile::restbase::mathoid_uri'),
-    $aqs_uri        = hiera('profile::restbase::aqs_uri'),
-    $event_service_uri = hiera('profile::restbase::event_service_uri'),
-    $proton_uri     = hiera('profile::restbase::proton_uri'),
-    $citoid_uri     = hiera('profile::restbase::citoid_uri'),
-    $cxserver_uri   = hiera('profile::restbase::cxserver_uri'),
-    $recommendation_uri = hiera('profile::restbase::recommendation_uri'),
-    $wikifeeds_uri  = hiera('profile::restbase::wikifeeds_uri'),
-    $monitor_restbase = hiera('profile::restbase::monitor_restbase', true),
-    $monitor_domain = hiera('profile::restbase::monitor_domain'),
+    $cassandra_user = lookup('profile::restbase::cassandra_user'),
+    $cassandra_password = lookup('profile::restbase::cassandra_password'),
+    $seeds_ng = lookup('profile::restbase::seeds_ng', {'default_value' => []}),
+    $hosts = lookup('profile::restbase::hosts'),
+    $cassandra_local_dc = lookup('profile::restbase::cassandra_local_dc'),
+    $cassandra_datacenters = lookup('profile::restbase::cassandra_datacenters'),
+    $cassandra_tls = lookup('profile::restbase::cassandra_tls', {'default_value' => {}}),
+    $salt_key = lookup('profile::restbase::salt_key'),
+    $logging_label = lookup('profile::restbase::logging_label'),
+    $listeners  = lookup('profile::services_proxy::envoy::listeners'),
+    $parsoid_uri = lookup(
+        'profile::restbase::parsoid_uri',
+        {'default_value' => wmflib::service::get_url('parsoid-php', '/w/rest.php')}
+    ),
+    $graphoid_uri = lookup(
+        'profile::restbase::graphoid_uri',
+        {'default_value' => wmflib::service::get_url('graphoid')}
+    ),
+    $mobileapps_uri = lookup(
+        'profile::restbase::mobileapps_uri',
+        {'default_value' => wmflib::service::get_url('mobileapps')}
+    ),
+    $mathoid_uri    = lookup(
+        'profile::restbase::mathoid_uri',
+        {'default_value' => wmflib::service::get_url('mathoid')}
+    ),
+    $aqs_uri        = lookup('profile::restbase::aqs_uri'),
+    $event_service_uri = lookup(
+        'profile::restbase::event_service_uri',
+        {'default_value' => wmflib::service::get_url('eventgate-main','/v1/events')}
+    ),
+    $proton_uri     = lookup(
+        'profile::restbase::proton_uri',
+        {'default_value' => wmflib::service::get_url('proton')}
+    ),
+    $citoid_uri     = lookup(
+        'profile::restbase::citoid_uri',
+        {'default_value' => wmflib::service::get_url('citoid')}
+    ),
+    $cxserver_uri   = lookup(
+        'profile::restbase::cxserver_uri',
+        {'default_value' => wmflib::service::get_url('cxserver-https')}
+    ),
+    $recommendation_uri = lookup(
+        'profile::restbase::recommendation_uri',
+        {'default_value' => wmflib::service::get_url('recommendation-api')}
+    ),
+    $wikifeeds_uri  = lookup(
+        'profile::restbase::wikifeeds_uri',
+        {'default_value' => wmflib::service::get_url('wikifeeds')}
+    ),
+    $monitor_restbase = lookup('profile::restbase::monitor_restbase', {'default_value' => true}),
+    $monitor_domain = lookup('profile::restbase::monitor_domain'),
 ) {
     # Default values that need no overriding
     $port = 7231
@@ -104,6 +137,7 @@ class profile::restbase(
     require ::service::configuration
     $local_logfile = "${service::configuration::log_dir}/${title}/main.log"
 
+    # Uris
     service::node { 'restbase':
         port              => $port,
         no_file           => 200000,
