@@ -17,7 +17,7 @@ define apereo_cas::service (
     }
     $data = $properties.empty ? {
         true    => $base_data,
-        default => $base_data + $properties,
+        default => $base_data + {'properties' => $properties},
     }
     file {"${apereo_cas::services_dir}/${title}-${id}.json":
         ensure  => file,
