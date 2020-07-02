@@ -92,40 +92,40 @@ class profile::restbase(
     ),
     $graphoid_uri = lookup(
         'profile::restbase::graphoid_uri',
-        {'default_value' => wmflib::service::get_url('graphoid')}
+        {'default_value' => wmflib::service::get_url('graphoid', '', $listeners)}
     ),
     $mobileapps_uri = lookup(
         'profile::restbase::mobileapps_uri',
-        {'default_value' => wmflib::service::get_url('mobileapps')}
+        {'default_value' => wmflib::service::get_url('mobileapps', '', $listeners)}
     ),
     $mathoid_uri    = lookup(
         'profile::restbase::mathoid_uri',
-        {'default_value' => wmflib::service::get_url('mathoid')}
+        {'default_value' => wmflib::service::get_url('mathoid', '', $listeners)}
     ),
     $aqs_uri        = lookup('profile::restbase::aqs_uri'),
     $event_service_uri = lookup(
         'profile::restbase::event_service_uri',
-        {'default_value' => wmflib::service::get_url('eventgate-main','/v1/events')}
+        {'default_value' => wmflib::service::get_url('eventgate-main','/v1/events', $listeners)}
     ),
     $proton_uri     = lookup(
         'profile::restbase::proton_uri',
-        {'default_value' => wmflib::service::get_url('proton-http')}
+        {'default_value' => wmflib::service::get_url('proton', '', $listeners)}
     ),
     $citoid_uri     = lookup(
         'profile::restbase::citoid_uri',
-        {'default_value' => wmflib::service::get_url('citoid')}
+        {'default_value' => wmflib::service::get_url('citoid', '', $listeners)}
     ),
     $cxserver_uri   = lookup(
         'profile::restbase::cxserver_uri',
-        {'default_value' => wmflib::service::get_url('cxserver-https')}
+        {'default_value' => wmflib::service::get_url('cxserver', '', $listeners)}
     ),
     $recommendation_uri = lookup(
         'profile::restbase::recommendation_uri',
-        {'default_value' => wmflib::service::get_url('recommendation-api')}
+        {'default_value' => wmflib::service::get_url('recommendation', '', $listeners)}
     ),
     $wikifeeds_uri  = lookup(
         'profile::restbase::wikifeeds_uri',
-        {'default_value' => wmflib::service::get_url('wikifeeds')}
+        {'default_value' => wmflib::service::get_url('wikifeeds', '', $listeners)}
     ),
     $monitor_restbase = lookup('profile::restbase::monitor_restbase', {'default_value' => true}),
     $monitor_domain = lookup('profile::restbase::monitor_domain'),
