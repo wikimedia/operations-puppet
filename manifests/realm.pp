@@ -192,6 +192,7 @@ $private_tables = [
     'echo_target_page',
     'echo_unread_wikis',
     'echo_notification',
+    'echo_push_subscription',
     'edit_page_tracking',
     'email_capture',
     'exarchive',
