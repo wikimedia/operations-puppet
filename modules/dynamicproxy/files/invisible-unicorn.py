@@ -29,7 +29,7 @@ API is meant to be used by Wikitech only, and nothing else"""
 import flask
 import redis
 import re
-from flask.ext.sqlalchemy import SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy
 
 
 app = flask.Flask(__name__)
