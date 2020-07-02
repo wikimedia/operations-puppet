@@ -244,7 +244,7 @@ class gerrit::jetty(
     }
 
     file { '/var/lib/gerrit2/review_site/etc/its/templates/PatchSetMerged.soy':
-        content => template('gerrit/its/PatchSetRestored.soy.erb'),
+        content => template('gerrit/its/PatchSetMerged.soy.erb'),
         owner   => $scap_user,
         group   => $scap_user,
         mode    => '0444',
