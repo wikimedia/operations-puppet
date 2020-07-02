@@ -85,7 +85,7 @@ groups:
               urbanecm, awight, jakob, accraze, andrew-wmde,
               kevinbazira, mstyles, zpapierski, clarakosi, dpifke,
               niedzielski, phuedx, samwilson, dmaza, tchanders,
-              wikigit, arlolra, daniel, bpirkle, cicalese]
+              wikigit, arlolra, daniel, bpirkle, cicalese, dancy]
     privileges: ['ALL = (www-data,mwdeploy,l10nupdate) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /usr/sbin/apache2ctl',
                  'ALL = NOPASSWD: /etc/init.d/apache2',
@@ -184,7 +184,7 @@ groups:
     members: [bd808, cscott, dduvall, demon, krinkle, reedy, marktraceur,
               twentyafterfour, zfilipin, thcipriani, legoktm, gjg,
               hashar, niedzielski, addshore, liw, jhuneidi, brennen,
-              jforrester]
+              jforrester, dancy]
     privileges: ['ALL = (jenkins) NOPASSWD: ALL',
                  'ALL = (jenkins-slave) NOPASSWD: ALL',
                  'ALL = (gerritslave) NOPASSWD: ALL',
@@ -717,7 +717,7 @@ groups:
     # Allow this for CI users. There is no gid on purpose, to allow reusing the package provided one
     posix_name: docker # Use posix_name to avoid potential conflicts with other uses of the docker group
     description: Allow releng team to be in the docker group for contint. No gid on purpose
-    members: [*ops_members, dduvall, demon, gjg, hashar, thcipriani, twentyafterfour, zfilipin, legoktm, addshore, reedy, liw, jhuneidi, krinkle, brennen, jforrester]
+    members: [*ops_members, dduvall, demon, gjg, hashar, thcipriani, twentyafterfour, zfilipin, legoktm, addshore, reedy, liw, jhuneidi, krinkle, brennen, jforrester, dancy]
     system_members: [jenkins-slave]
   builder-docker:
     # There is no gid on purpose, same as above
@@ -3759,6 +3759,14 @@ users:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJAL01LpnPg8qhPGkSnOxaKvXMO2uoXofcSnwCkLgww0 lmata@wikimedia.org
     uid: 24566
     email: lmata@wikimedia.org
+  dancy:
+    ensure: present
+    realname: Ahmon Dancy
+    email: adancy@wikimedia.org
+    uid: 25006
+    gid: 500
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHsCfJjIPpRJwDwdq/8oizNK4JL/wtVZsF7wQCismi8t adancy@wikimedia.org
 ldap_only_users:
   abartov:
     ensure: present
@@ -3831,10 +3839,6 @@ ldap_only_users:
     ensure: present
     realname: (known to Legal)
     email: daimona.wiki@gmail.com
-  dancy:
-    ensure: present
-    realname: Ahmon Dancy
-    email: adancy@wikimedia.org
   datn:
     ensure: present
     realname: Dan Shick
