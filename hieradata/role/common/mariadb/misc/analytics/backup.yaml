@@ -1,4 +1,4 @@
 # db1108
 profile::mariadb::misc::analytics::multiinstance::num_instances: 2
 profile::mariadb::misc::analytics::multiinstance::matomo: '100G'
-profile::mariadb::misc::analytics::multiinstance::meta: '100G'
+profile::mariadb::misc::analytics::multiinstance::analytics_meta: '100G'

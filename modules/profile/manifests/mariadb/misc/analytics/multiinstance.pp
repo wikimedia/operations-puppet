@@ -5,9 +5,9 @@
 # a mariadb multi-instance environment that can be used as replica.
 #
 class profile::mariadb::misc::analytics::multiinstance (
-    Integer $num_instances   = lookup('profile::mariadb::misc::analytics::multiinstance::num_instances'),
-    Optional[String] $matomo = lookup('profile::mariadb::misc::analytics::multiinstance::matomo', { 'default_value' => undef }),
-    Optional[String] $meta   = lookup('profile::mariadb::misc::multiinstance::meta', { 'default_value' => undef }),
+    Integer $num_instances           = lookup('profile::mariadb::misc::analytics::multiinstance::num_instances'),
+    Optional[String] $matomo         = lookup('profile::mariadb::misc::analytics::multiinstance::matomo', { 'default_value' => undef }),
+    Optional[String] $analytics_meta = lookup('profile::mariadb::misc::analytics::multiinstance::analytics_meta', { 'default_value' => undef }),
 ) {
     class { 'mariadb::packages_wmf': }
     class { 'mariadb::service':
@@ -40,13 +40,13 @@ disabled, use mariadb@<instance_name> instead'; exit 1\"",
         profile::mariadb::ferm { 'matomo': port => '3321' }
         profile::prometheus::mysqld_exporter_instance { 'matomo': port => 13321, }
     }
-    if $meta {
-        mariadb::instance { 'meta':
+    if $analytics_meta {
+        mariadb::instance { 'analytics-meta':
             port                    => 3322,
-            innodb_buffer_pool_size => $meta,
+            innodb_buffer_pool_size => $analytics_meta,
         }
-        profile::mariadb::ferm { 'meta': port => '3322' }
-        profile::prometheus::mysqld_exporter_instance { 'meta': port => 13322, }
+        profile::mariadb::ferm { 'analytics-meta': port => '3322' }
+        profile::prometheus::mysqld_exporter_instance { 'analytics-meta': port => 13322, }
     }
 
     class { 'mariadb::monitor_disk':
