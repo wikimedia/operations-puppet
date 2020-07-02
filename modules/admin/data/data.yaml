@@ -284,7 +284,7 @@ groups:
               aarora, zpapierski, knissen, jiawang, mholloway-shell, joewalsh, tarrow,
               itamar, phedenskog, aaron, dpifke, aklapper, jmads, andrew-wmde, daniram,
               rodolfovalentim, lulu, dcipoletti, chrisalbon, wikigit, nahidunlimited,
-              agaduran]
+              agaduran, edtadros]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product]
   analytics-admins:
@@ -3807,6 +3807,17 @@ users:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJrQktvFtYDgqDLSijTL+6ot1XyAAR31hlFMTZGKTc5o nskaggs@x1carbon
     uid: 24994
     email: nskaggs@wikimedia.org
+  edtadros:
+    ensure: present
+    realname: Edward Tadros
+    email: proticom-ctr@wikimedia.org
+    uid: 21586
+    gid: 500
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEdflcuMhIJ5BVKdg2C4/3VqM9jeSoGnJoclTEXyPHp1 edward@Edwards-MacBook-Pro.local
+    krb: present
+    expiry_date: 2021-06-30
+    expiry_contact: jbranaa@wikimedia.org
 ldap_only_users:
   abartov:
     ensure: present
