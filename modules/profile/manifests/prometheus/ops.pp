@@ -1774,14 +1774,6 @@ class profile::prometheus::ops (
         srange => '$DOMAIN_NETWORKS',
     }
 
-    # Query puppet exported resources and generate a list of hosts for
-    # prometheus to poll metrics from. Ganglia::Cluster is used to generate the
-    # mapping from cluster to a list of its members.
-    $node_site_content = $::use_puppetdb ? {
-        true => template('profile/prometheus/node_site.yaml.erb'),
-        default => generate('/usr/local/bin/prometheus-ganglia-gen',
-        "--site=${::site}"),
-    }
     $gerrit_targets = {
       'targets' => ['gerrit.wikimedia.org:443'],
       'labels'  => {'cluster' => 'misc', 'site' => 'eqiad'},
@@ -1794,7 +1786,7 @@ class profile::prometheus::ops (
             group  => 'root',
             mode   => '0444';
         "${targets_path}/node_site_${::site}.yaml":
-            content => $node_site_content;
+            content => template('profile/prometheus/node_site.yaml.erb');
         # Ping and SSH probes for all bastions from all machines running
         # prometheus::ops
         "${targets_path}/blackbox_icmp_bastions.yaml":
