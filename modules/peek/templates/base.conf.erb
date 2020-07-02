@@ -23,8 +23,16 @@ sections:
    tasks_breakdown: True
 
 users:
-  moldy: 30
-  show_moldy: 3
+  anti:
+    tasks_old_enough_to_mold:
+        name: 'moldy'
+        method: anti_moldy
+        age: 2592000
+        show: 3
+    assigned_wo_project:
+        name: 'Untracked Assigned'
+        method: anti_assigned_wo_reporting_project
+        show: 3
   attributes:
     name:
       phab: 'userName'
@@ -95,6 +103,14 @@ backends:
     timeout: 10
     query_delay: 1
     agents: False
+    anti:
+      in_progress_unassigned:
+        name: 'Progress But Unassigned'
+        method: anti_punassigned
+      watching_no_updates:
+        name: 'Watching Dormant'
+        method: anti_watching_dormant
+        age: 15552000
     projects:
       security-team:
         columns:
