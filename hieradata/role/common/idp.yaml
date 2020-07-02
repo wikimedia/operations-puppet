@@ -20,7 +20,7 @@ profile::idp::services:
         '@class': 'org.apereo.cas.services.DefaultRegisteredServiceProperty'
         values:
           - java.util.HashSet
-          - [ false ]
+          - [ "false" ]
   debmonitor:
     class: 'org.apereo.cas.services.RegexRegisteredService'
     id: 2
