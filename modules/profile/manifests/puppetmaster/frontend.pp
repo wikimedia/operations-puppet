@@ -20,7 +20,8 @@ class profile::puppetmaster::frontend(
     backup::set { 'var-lib-puppet-ssl': }
     backup::set { 'var-lib-puppet-volatile': }
     if $manage_ca_file {
-        file{$facts['puppet_config']['master']['localcacert']:
+        file{[$facts['puppet_config']['master']['localcacert'],
+              "${facts['puppet_config']['master']['ssldir']}/ca/ca_crt.pem"]:
             ensure => file,
             owner  => 'puppet',
             group  => 'puppet',
