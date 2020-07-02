@@ -85,7 +85,7 @@ groups:
               urbanecm, awight, jakob, accraze, andrew-wmde,
               kevinbazira, mstyles, zpapierski, clarakosi, dpifke,
               niedzielski, phuedx, samwilson, dmaza, tchanders,
-              wikigit, arlolra, daniel, bpirkle, cicalese, dancy]
+              wikigit, arlolra, daniel, bpirkle, cicalese, dancy, chrisalbon]
     privileges: ['ALL = (www-data,mwdeploy,l10nupdate) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /usr/sbin/apache2ctl',
                  'ALL = NOPASSWD: /etc/init.d/apache2',
@@ -281,7 +281,7 @@ groups:
               kevinbazira, keepit-ssh, jiji, cohi, mstyles, accraze, kzeta, snowick,
               aarora, zpapierski, knissen, jiawang, mholloway-shell, joewalsh, tarrow,
               itamar, phedenskog, aaron, dpifke, aklapper, jmads, andrew-wmde, daniram,
-              rodolfovalentim, lulu, dcipoletti]
+              rodolfovalentim, lulu, dcipoletti, chrisalbon]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata]
   analytics-admins:
@@ -473,7 +473,7 @@ groups:
               bsitzmann, mholloway-shell, kartik, halfak, ladsgroup, smalyshev, hoo, tgr,
               ssastry, cscott, arlolra, jdlrobson, jforrester, niedzielski, bmansurov,
               pmiazga, phuedx, mbsantos, mvolz, santhosh, nikerabbit, accraze,
-              kevinbazira, clarakosi]
+              kevinbazira, clarakosi, chrisalbon]
     privileges: []
 
   deploy-aqs:
@@ -611,7 +611,7 @@ groups:
   ores-admin:
     description: ORES admins
     gid: 782
-    members: [halfak, accraze, kevinbazira]
+    members: [halfak, accraze, kevinbazira, chrisalbon]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service uwsgi-ores *',
                  'ALL = NOPASSWD: /usr/sbin/service celery-ores-worker *',
                  'ALL = NOPASSWD: /usr/bin/lsof *']
@@ -3767,6 +3767,14 @@ users:
     gid: 500
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHsCfJjIPpRJwDwdq/8oizNK4JL/wtVZsF7wQCismi8t adancy@wikimedia.org
+  chrisalbon:
+    ensure: present
+    realname: Chris Albon
+    email: calbon@wikimedia.org
+    uid: 24996
+    gid: 500
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINQaxbNSLlNDwRZ2YVLVQ6YswUjX2ID2xUDeDggbIVpM chrisalbon@MacBook-Pro-2.local
 ldap_only_users:
   abartov:
     ensure: present
