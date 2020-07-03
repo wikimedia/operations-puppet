@@ -234,6 +234,7 @@ class profile::toolforge::grid::exec_environ {
         'liburi-perl',
         'libwww-mechanize-perl',       # T59118
         'libwww-perl',
+        'libxml-feed-perl',            # T256734
         'libxml-libxml-perl',
         'libxml-parser-perl',
         'libxml-simple-perl',
