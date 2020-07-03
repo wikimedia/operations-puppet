@@ -1,13 +1,6 @@
 # Add tools to build envoy
 # filtertags: packaging
 class profile::envoy::builder {
-    # this class assumes you have an unused volume group and you want to use it for building envoy.
-    # we need an lvm volume for docker images used during the build
-    labs_lvm::volume { 'docker':
-        size      => '10%FREE',
-        mountat   => '/var/lib/docker',
-        mountmode => '711'
-    }
     # we need a very large /tmp because the envoy build dumps more than 100 GB of
     # waste into it.
     labs_lvm::volume { 'tmp':
@@ -22,7 +15,19 @@ class profile::envoy::builder {
     }
     # Where the source code for envoy is going to be, and also the produced artifacts.
     labs_lvm::volume { 'sources':
+        size    => '10G',
         mountat => '/usr/src',
+    }
+    # We also need a volume to use for docker. We can't use labs_lvm::volume for it
+    # as it contrasts with profile::docker::storage::loopback
+    exec { 'create-vd-docker':
+        creates => '/dev/vd/docker',
+        require => [
+            File['/usr/local/sbin/make-instance-vol'],
+            Exec['create-volume-group']
+        ],
+        before  => Class['profile::docker::storage::loopback'],
+        command => '/usr/local/sbin/make-instance-vol "docker" "10%FREE" "ext4"',
     }
     # Now let's ensure envoy sources are checked out
     git::clone { 'envoyproxy':
@@ -33,6 +38,9 @@ class profile::envoy::builder {
 
     # Install an ugly script that automates building envoy.
     file { '/usr/local/bin/build-envoy-deb':
-        source => 'puppet:///modules/profile/envoy/build_envoy_deb.sh'
+        source => 'puppet:///modules/profile/envoy/build_envoy_deb.sh',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0544',
     }
 }
