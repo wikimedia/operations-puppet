@@ -17,6 +17,11 @@ tmpdir    = <%= @tmpdir %>
 server_id = <%= @server_id %>
 read_only = <%= (@read_only == 'off' or not @read_only) ? 0 : 1 %>
 
+log_bin
+binlog_format = ROW
+expire_logs_days = 7
+max_binlog_size = 100M
+
 secure_file_priv   = /dev/null
 max_allowed_packet = 64M
 sync_binlog        = 0
