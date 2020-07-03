@@ -30,11 +30,25 @@ class profile::envoy::builder {
         command => '/usr/local/sbin/make-instance-vol "docker" "10%FREE" "ext4"',
     }
     # Now let's ensure envoy sources are checked out
-    git::clone { 'envoyproxy':
-        origin    => 'https://github.com/envoyproxy/envoy.git',
+    git::clone { 'operations/debs/envoyproxy':
         directory => '/usr/src/envoyproxy',
         require   => Labs_lvm::Volume['sources']
     }
+
+    systemd::timer::job { 'git_pull_envoy':
+        ensure                    => present,
+        description               => 'Pull changes on the envoyproxy repo',
+        command                   => '/bin/bash -c "cd /usr/src/envoyproxy && /usr/bin/git pull --rebase --tags>/dev/null 2>&1"',
+        interval                  => {
+            'start'    => 'OnUnitInactiveSec',
+            'interval' => '60s',
+        },
+        logging_enabled           => false,
+        monitoring_enabled        => false,
+        monitoring_contact_groups => 'admins',
+        user                      => 'root',
+    }
+
 
     # Install an ugly script that automates building envoy.
     file { '/usr/local/bin/build-envoy-deb':
