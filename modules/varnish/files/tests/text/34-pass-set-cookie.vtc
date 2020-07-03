@@ -1,0 +1,45 @@
+varnishtest "Ensure that cacheable responses with Set-Cookie are not cached"
+
+server s1 {
+    loop 2 {
+        rxreq
+        expect req.url == "/1"
+        # The response is:
+        # - mistakenly marked by the origin as cacheable
+        # - setting a cookie
+        txresp -hdr "Cache-Control: public, s-maxage=10" \
+            -hdr "Set-Cookie: this-is-a-cookie" \
+            -hdr "Server: name.example.org" -hdr "X-Request-Id: 42"
+    }
+} -start
+
+varnish v1 -arg "-p vcl_path=${vcl_path} -p vcc_err_unref=false -p vcc_allow_inline_c=true -p cc_command='${cc_command}'" -vcl+backend {
+   backend vtc_backend {
+       .host = "${s1_addr}"; .port = "${s1_port}";
+   }
+
+   include "${basepath}/usr/share/varnish/tests/wikimedia_misc-frontend.vcl";
+}
+
+# Attach the "wikimedia_misc" label to wikimedia_misc-frontend.vcl
+varnish v1 -cli "vcl.label wikimedia_misc vcl1"
+
+varnish v1 -vcl {
+    backend vtc_backend {
+        .host = "${s1_addr}"; .port = "${s1_port}";
+    }
+
+    include "${basepath}/usr/share/varnish/tests/wikimedia_text-frontend.vcl";
+} -start
+
+client c1 {
+    loop 2 {
+        txreq -url "/1" -hdr "Host: meta.wikimedia.org" -hdr "X-Forwarded-Proto: https"
+        rxresp
+        expect resp.status == 200
+        delay .1
+    }
+} -run
+
+varnish v1 -expect cache_hit == 0
+varnish v1 -expect cache_hitpass == 1
