@@ -1931,11 +1931,6 @@ node /^ncredir500[12]\.eqsin\.wmnet$/ {
     role(ncredir)
 }
 
-# T256363
-node 'notebook1004.eqiad.wmnet' {
-    role(insetup)
-}
-
 node /^netbox(1001|2001)\.wikimedia\.org$/ {
     role(netbox::frontend)
 }

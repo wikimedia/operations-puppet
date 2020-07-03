@@ -257,7 +257,7 @@ groups:
                  Hadoop NameNodes.  Some files in HDFS have sensitive data in them.
                  Those files are group readable by the analytics-privatedata-users group.
                  A kerberos account is only needed if the user will access Hadoop data
-                 via tools on stat/notebook hosts. The user in fact might only want/need
+                 via tools on stat100x hosts. The user in fact might only want/need
                  to access data indirectly via Superset (via Presto) or query Wiki db replicas.
                  In case of doubt, please ask to the Analytics team.
                  More info https://wikitech.wikimedia.org/wiki/Analytics/Data_access#Access_Groups
