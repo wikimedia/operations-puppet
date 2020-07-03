@@ -64,6 +64,13 @@ class profile::mediawiki::common(
         mode   => '0555',
     }
 
+    file { '/etc/firejail/mediawiki.local':
+        source => 'puppet:///modules/mediawiki/firejail-mediawiki.profile',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0644',
+    }
+
     file { '/etc/firejail/mediawiki-converters.profile':
         source => 'puppet:///modules/mediawiki/mediawiki-converters.profile',
         owner  => 'root',
