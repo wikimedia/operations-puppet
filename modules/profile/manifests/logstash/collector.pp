@@ -21,12 +21,6 @@ class profile::logstash::collector (
 
     require ::profile::java
 
-    nrpe::monitor_service { 'logstash':
-        description  => 'logstash process',
-        nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -u logstash -C java -a logstash',
-        notes_url    => 'https://wikitech.wikimedia.org/wiki/Logstash',
-    }
-
     $config_dir = '/etc/prometheus'
     $jmx_exporter_config_file = "${config_dir}/logstash_jmx_exporter.yaml"
 
