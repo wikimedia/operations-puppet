@@ -21,20 +21,6 @@ define prometheus::druid_exporter (
     String $arguments = '',
     String $druid_version = '0.12.3',
 ) {
-
-    # The exporter works in a weird way with the Stretch's
-    # package version, 0.0.18, that is from late 2016.
-    # Rather than keeping compatibility with old code,
-    # force deps to something newer (stretch-backports offers 0.5.0).
-    if os_version('debian == stretch') {
-        apt::pin { 'python3-prometheus-client-package':
-            pin      => 'release a=stretch-backports',
-            package  => 'python3-prometheus-client',
-            priority => '1001',
-            before   => Package['python3-prometheus-client'],
-        }
-    }
-
     package { 'prometheus-druid-exporter':
         ensure => present,
     }
