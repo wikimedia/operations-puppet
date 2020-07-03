@@ -17,6 +17,7 @@ class profile::graphite::production {
         auth                               => true,
         uwsgi_max_request_duration_seconds => 60,
         uwsgi_max_request_rss_megabytes    => 1024,
+        provide_vhost                      => false,
         c_relay_settings                   => {
             forward_clusters => {
                 'default'   => [
