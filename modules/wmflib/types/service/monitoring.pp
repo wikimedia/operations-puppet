@@ -10,4 +10,5 @@ type Wmflib::Service::Monitoring = Struct[{
     'sites'         => Hash[String, Struct[{'hostname' => Stdlib::Fqdn}]],
     'critical'      => Boolean,
     'contact_group' => Optional[String], # TODO: this should really be an array of strings.
+    'notes_url'     => Optional[String],
 }]

@@ -14,7 +14,7 @@ class profile::lvs::realserver(
     Boolean $use_conftool = hiera('profile::lvs::realserver::use_conftool'),
 ) {
     $present_pools = $pools.keys()
-    $services = wmflib::service::fetch().filter |$lvs_name, $svc| {$lvs_name in $present_pools}
+    $services = wmflib::service::fetch(true).filter |$lvs_name, $svc| {$lvs_name in $present_pools}
     require ::lvs::configuration
     $ips = wmflib::service::get_ips_for_services($services, $::site)
 

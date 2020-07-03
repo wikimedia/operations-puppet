@@ -3003,3 +3003,30 @@ service::catalog:
     discovery:
     - dnsdisc: zotero
       active_active: true
+  # Chartmuseum is not an LVS service. However it does warrant using discovery DC records for it.
+  # Note the lack of an 'lvs' stanza in the configuration below. The IPs are the ones of the VMs per DC
+  helm-charts:
+    description: helm-charts
+    encryption: true
+    ip:
+      codfw:
+        default: 10.64.48.26
+      eqiad:
+        default: 10.192.48.159
+    monitoring:
+      check_command: check_https_url_for_string!helm-charts.discovery.wmnet!/health!true
+      notes_url: 'https://wikitech.wikimedia.org/wiki/ChartMuseum' 
+      critical: false
+      sites:
+        codfw:
+          hostname: chartmuseum1001.eqiad.wmnet
+        eqiad:
+          hostname: chartmuseum2001.codfw.wmnet
+    sites:
+      - eqiad
+      - codfw
+    port: 443
+    state: production
+    discovery:
+      - dnsdisc: helm-charts
+        active_active: true

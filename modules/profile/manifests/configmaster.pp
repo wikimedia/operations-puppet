@@ -42,7 +42,7 @@ class profile::configmaster(
     class { '::pybal::web':
         ensure   => present,
         root_dir => $root_dir,
-        services => wmflib::service::fetch()
+        services => wmflib::service::fetch(true),
     }
 
     httpd::site { 'config-master':

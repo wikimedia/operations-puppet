@@ -39,7 +39,7 @@ class profile::icinga(
         atlas_measurements => $atlas_measurements,
     }
     class { 'facilities': }
-    class { 'lvs::monitor': }
+    class { 'service::monitor': }
     # Experimental load-balancer monitoring for services using service-checker
     class { 'lvs::monitor_services':
         main_datacenters => ['eqiad', 'codfw'],

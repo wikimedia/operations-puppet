@@ -2,7 +2,7 @@ function wmflib::service::get_pool_nodes(String $pool) >> Array[String] {
     # TODO: this is a bit hard-coded
     $module_path = get_module_path('wmflib')
     $site_nodes = loadyaml("${module_path}/../../conftool-data/node/${::site}.yaml")[$::site]
-    $pool_data = wmflib::service::fetch()[$pool]
+    $pool_data = wmflib::service::fetch(true)[$pool]
     if $pool_data == undef {
         fail("Could not find a definition for pool '${pool}'")
     }

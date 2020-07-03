@@ -1,6 +1,5 @@
-# lvs/monitor.pp
-
-class lvs::monitor() {
+# A class to setup service based monitoring for all services, LVS based or not
+class service::monitor() {
     # Services in "monitoring_setup" state will be configured but won't page.
     # Services in "production" state will be fully configured.
     $enabled_states = ['monitoring_setup', 'production']
@@ -16,7 +15,12 @@ class lvs::monitor() {
             $hostname = $host['hostname']
             $data['ip'][$sitename].map |$k, $ip| {
                 # TODO: only make critical hosts in production state.
-                $host_params = {'ip_address' => $ip, 'contact_group' => $contact_group, 'critical' => true}
+                $host_params = {
+                    'ip_address'    => $ip,
+                    'contact_group' => $contact_group,
+                    'critical'      => true,
+                    'lvs'           => has_key($data, 'lvs'),
+                }
                 if $ip =~ Stdlib::Ipv4 {
                     { $hostname => $host_params}
                 }
@@ -29,7 +33,9 @@ class lvs::monitor() {
     .flatten()
     .reduce({})|$memo,$el| {$memo.merge($el)} # TODO: improve this. Right now it can coalesce values erratically between different services.
 
-    $hosts.each |$hostname, $params| {
+    # NOTE: We skip creating hosts for non LVS based services, but rather assume
+    # they are created via other means
+    $hosts.filter |$hostname, $params| { $params['lvs'] == true }.each |$hostname, $params| {
         @monitoring::host { $hostname:
             ip_address    => $params['ip_address'],
             contact_group => $params['contact_group'],
@@ -40,6 +46,7 @@ class lvs::monitor() {
 
     # Now that all monitoring hosts have been declared, let's declare the services.
     $monitored_services.each |$n, $data| {
+        $is_lvs = has_key($data, 'lvs')
         $monitoring = $data['monitoring']
         $critical = $data['state'] ? {
             'monitoring_setup' => false,
@@ -50,9 +57,18 @@ class lvs::monitor() {
             $service_title = "${hostname}_${n}"
             $service_title_v6 = "${service_title}_v6"
             $port = $data['port']
-            $protocol = pick($data['lvs']['protocol'], 'tcp')
+            if $is_lvs {
+                $protocol = pick($data['lvs']['protocol'], 'tcp')
+                $descr_prefix = 'LVS '
+            } else {
+                $protocol = 'tcp'  # NOTE: We are making an assumption here
+                $descr_prefix = ''
+            }
             $description = $data['description']
-            $check_description = "LVS ${n} ${sitename} port ${port}/${protocol} - ${description}"
+            $check_description = "${descr_prefix}${n} ${sitename} port ${port}/${protocol} - ${description}"
+            # Let's set a default notes_url if one does not exist
+            $notes_url = pick($monitoring['notes_url'], 'https://wikitech.wikimedia.org/wiki/LVS#Diagnosing_problems')
+
             # Add ipv4 monitoring if present
             if $hostname in $hosts {
                 @monitoring::service { $service_title:
@@ -62,7 +78,7 @@ class lvs::monitor() {
                     check_command => $monitoring['check_command'],
                     critical      => $critical,
                     contact_group => $monitoring['contact_group'],
-                    notes_url     => 'https://wikitech.wikimedia.org/wiki/LVS#Diagnosing_problems',
+                    notes_url     => $notes_url,
                 }
             }
             # Add ipv6 monitoring if present
@@ -72,9 +88,9 @@ class lvs::monitor() {
                     group         => 'lvs',
                     description   => "${check_description} IPv6",
                     check_command => $monitoring['check_command'],
-                    critical      => $monitoring['critical'],
+                    critical      => $critical,
                     contact_group => $monitoring['contact_group'],
-                    notes_url     => 'https://wikitech.wikimedia.org/wiki/LVS#Diagnosing_problems',
+                    notes_url     => $notes_url,
                 }
             }
         }

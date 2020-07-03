@@ -124,7 +124,7 @@ define scap::source(
     # If this deployment is linked to an lvs service, let's find out which conftool
     # cluster / service it's referring to.
     if $lvs_service {
-        $service = pick(wmflib::service::fetch()[$lvs_service], {})
+        $service = pick(wmflib::service::fetch(true)[$lvs_service], {})
         # If we didn't find the lvs service, this will fail. It's ok, and intended
         $conftool = merge($service['lvs']['conftool'], {'datacenters' => $service['sites']})
     } else {
