@@ -36,22 +36,14 @@ class systemd::slice::all_users (
         # we need systemd >= 239 for resource control using the user-.slice trick
         # this version or higher is provided in stretch-backports
 
-        apt::pin { 'systemd_239_slice_all_users':
-            package  => join($systemd_packages, ' '),
-            pin      => 'release a=stretch-backports',
-            priority => '1001',
-        }
-        package { $systemd_packages:
-            ensure          => $pkg_ensure,
-            install_options => ['-t', 'stretch-backports'],
-            require         => Apt::Pin['systemd_239_slice_all_users'],
+        apt::package_from_component { 'systemd241':
+            component => 'component/systemd241',
+            packages  => $systemd_packages,
         }
     } elsif os_version('debian >= buster') {
         package { $systemd_packages:
             ensure => present,
         }
-    } else {
-        fail('systemd::slice::all_users requires Debian >= Stretch')
     }
 
     if $all_users_slice_config {
