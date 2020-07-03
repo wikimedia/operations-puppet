@@ -245,6 +245,10 @@ node 'cescout1001.eqiad.wmnet' {
     role(cescout)
 }
 
+node /^chartmuseum[12]001\.(eqiad|codfw)\.wmnet$/ {
+    role(insetup)
+}
+
 node /^cloudceph200[123]-dev\.wikimedia\.org/ {
     role(insetup)
 }

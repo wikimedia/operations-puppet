@@ -100,6 +100,16 @@ host chlorine {
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
+host chartmuseum1001 {
+    hardware ethernet aa:00:00:fa:99:04;
+    fixed-address chartmuseum1001.eqiad.wmnet;
+}
+
+host chartmuseum2001 {
+    hardware ethernet aa:00:00:02:92:46;
+    fixed-address chartmuseum2001.codfw.wmnet;
+}
+
 host dbmonitor1001 {
     hardware ethernet aa:00:00:d6:5c:05;
     fixed-address dbmonitor1001.wikimedia.org;
