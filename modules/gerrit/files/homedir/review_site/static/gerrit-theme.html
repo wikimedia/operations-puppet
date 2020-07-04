@@ -93,3 +93,198 @@ limitations under the License.
     })();
   </script>
 </dom-module>
+
+<dom-module id="gr-test-result-table-module">
+<!--
+This module for formating CI comments is mostly from
+
+    https://github.com/dburm/pg-test-result-plugin
+
+which comes under the MIT License
+
+MIT License
+
+Copyright (c) 2019 Dmitry
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+-->
+  <template>
+    <style include="shared-styles"></style>
+    <style include="gr-voting-styles"></style>
+    <style>
+      .check_result_chip {
+        padding-left: var(--spacing-m);
+        padding-right: var(--spacing-m);
+        background: #c1c124;
+        @apply --vote-chip-styles;
+      }
+      .check_result_chip_FAILURE {
+        background: var(--vote-color-rejected);
+      }
+      .check_result_chip_SUCCESS {
+        background: var(--vote-color-approved);
+      }
+
+      td.check_cell.check_result {
+        padding-left: 0px;
+      }
+
+      td.check_cell {
+        padding: 0px var(--spacing-s);
+      }
+
+      div.container {
+        margin-left: var(--metadata-horizontal-padding);
+        margin-bottom: var(--spacing-m);
+      }
+    </style>
+    <div class="container">
+      <table>
+        <template is="dom-repeat" items="{{checkers}}" as="checker">
+          <template is="dom-repeat" items="{{checker.checks}}" as="check">
+            <tr class="check_row">
+              <td class="check_cell check_result">
+                <span class$="check_result_chip check_result_chip_[[check.result]]">
+                  [[check.result]]
+                </span>
+              </td>
+              <td class="check_cell check_name">
+                <a href="[[check.url]]">
+                  [[check.name]]
+                </a>
+              </td>
+              <td class="check_cell check_checker">
+                by <gr-account-label
+                  account=[[checker.checker]]
+                  class="authorLabel"
+                >
+                </gr-account-label>
+              </td>
+              <td class="check_cell check_date">
+                <span class="checker-date">
+                  on <gr-date-formatter date-str="[[checker.date]]"></gr-date-formatter>
+                </span>
+              </td>
+              <td class="check_cell check_spent">
+                [[check.spent]]
+              </td>
+            </tr>
+          </template>
+        </template>
+      </table>
+    </div>
+  </template>
+  <script>
+      Polymer({
+        is: "gr-test-result-table-module",
+
+        properties: {
+          plugin: Object,
+          change: Object,
+          checkers: Array,
+        },
+
+        attached() {
+          this.addEventListener('change-changed', this._handleReloadChange.bind(this));
+          this._showTable();
+        },
+
+        _handleReloadChange(e) {
+          this._showTable();
+        },
+
+        _showTable() {
+          if (!this.change) { return; }
+
+          // Get current patchset num
+          var current_patchset = this.getPatchSetNum(
+            this.change.current_revision);
+          // Get all messages to current patchset
+          var verifiedMessages = this.change.messages.filter(it =>
+              it._revision_number == current_patchset);
+
+          var _checkers = {};
+          verifiedMessages.forEach(it => {
+            var _checks = this.parseChecksFromMessage(it.message);
+
+            if (Object.keys(_checks).length > 0) {
+              // Fill checker
+              var checker = _checkers[it.author._account_id];
+              if (checker === undefined) {
+                checker = _checkers[it.author._account_id] = {
+                  checker: it.author,
+                  checks: _checks,
+                  date: it.date
+                };
+              } else {
+                checker.date = it.date;
+                Object.assign(checker.checks, _checks);
+              }
+            };
+          });
+          this.checkers = Object.values(_checkers).map(function(checker) {
+            checker.checks = Object.values(checker.checks);
+            return checker;
+          });
+        },
+
+        getPatchSetNum(revision) {
+          return this.change.revisions[revision]._number;
+        },
+
+        // Gather checks info from messages
+        // check formats:
+        //   - check-name http://check-url : RESULT
+        //   - check-name http://check-url : RESULT in SPENT_TIME
+        //   - check-name http://check-url : RESULT (skipped)
+        //   - check-name http://check-url : RESULT (skipped) in SPENT_TIME
+        // check format (started):
+        //   Build Started http://check-url (1/2)
+        // check format (old):
+        //   http://check-url : RESULT
+        parseChecksFromMessage(message) {
+          var check;
+          var checks = {};
+
+          message = message.replace(/✔/g,'SUCCESS'); // check mark
+          message = message.replace(/❌/g,'FAILURE'); // red cross
+
+          // Reports from Zuul
+          var re = /(?:Build (Started) )?(http[^ ]+\/job\/([^\/ ]+)\/[^ ]+)(?: : ([A-Z_]+)( .*)?$)?/gm;
+          while (check = re.exec(message)) {
+            checks[check[3]] = {
+              name: check[3],
+              url: check[2],
+              result: check[1] || check[4],
+              spent: check[5],
+            };
+          };
+
+          return checks;
+        },
+      });
+
+    Gerrit.install(plugin => {
+      plugin.registerCustomComponent(
+        'commit-container',
+        'gr-test-result-table-module');
+    });
+  </script>
+</dom-module>
