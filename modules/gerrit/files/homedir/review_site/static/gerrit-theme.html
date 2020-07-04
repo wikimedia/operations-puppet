@@ -277,6 +277,27 @@ SOFTWARE.
             };
           };
 
+          // Reports from SonarQube
+          re = /(SUCCESS|FAILURE) Quality gate/;
+          if (re.test(message)) {
+            // Extracting the report url
+            var url = '';
+            re = /^Report: (https:.*)$/gm;
+            if (check = re.exec(message)) {
+              url = check[1];
+            }
+
+            // Extracting the checks themselves
+            re = /^(?:[*] )?(SUCCESS|FAILURE) (.*?)(?: (?:failed|passed!))?$/gm;
+            while (check = re.exec(message)) {
+              checks[check[2]] = {
+                name: check[2],
+                url: url,
+                result: check[1],
+              };
+            }
+          }
+
           return checks;
         },
       });
