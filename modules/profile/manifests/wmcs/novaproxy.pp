@@ -1,11 +1,12 @@
 class profile::wmcs::novaproxy(
-    Array[Stdlib::Fqdn] $all_proxies  = lookup('profile::wmcs::novaproxy::all_proxies',  {default_value => ['localhost']}),
-    Stdlib::Fqdn        $active_proxy = lookup('profile::wmcs::novaproxy::active_proxy', {default_value => 'localhost'}),
-    Boolean             $use_ssl      = lookup('profile::wmcs::novaproxy::use_ssl',      {default_value => true}),
-    Array[Stdlib::Ipv4] $banned_ips   = lookup('profile::wmcs::novaproxy::banned_ips',   {default_value => []}),
-    String              $block_ua_re  = lookup('profile::wmcs::novaproxy::block_ua_re',  {default_value => ''}),
-    String              $block_ref_re = lookup('profile::wmcs::novaproxy::block_ref_re', {default_value => ''}),
-    Array[Stdlib::Fqdn] $xff_fqdns    = lookup('profile::wmcs::novaproxy::xff_fqdns',    {default_value => []}),
+    Array[Stdlib::Fqdn] $all_proxies      = lookup('profile::wmcs::novaproxy::all_proxies',  {default_value => ['localhost']}),
+    Stdlib::Fqdn        $active_proxy     = lookup('profile::wmcs::novaproxy::active_proxy', {default_value => 'localhost'}),
+    Boolean             $use_ssl          = lookup('profile::wmcs::novaproxy::use_ssl',      {default_value => true}),
+    Array[Stdlib::Ipv4] $banned_ips       = lookup('profile::wmcs::novaproxy::banned_ips',   {default_value => []}),
+    String              $block_ua_re      = lookup('profile::wmcs::novaproxy::block_ua_re',  {default_value => ''}),
+    String              $block_ref_re     = lookup('profile::wmcs::novaproxy::block_ref_re', {default_value => ''}),
+    Array[Stdlib::Fqdn] $xff_fqdns        = lookup('profile::wmcs::novaproxy::xff_fqdns',    {default_value => []}),
+    Boolean             $use_wmflabs_root = lookup('profile::wmcs::novaproxy::use_ssl',      {default_value => true}),
 ) {
     $proxy_nodes = join($all_proxies, ' ')
     # Open up redis to all proxies!
@@ -72,7 +73,10 @@ class profile::wmcs::novaproxy(
 
     class { '::dynamicproxy::api': }
 
-    nginx::site { 'wmflabs.org':
-        content => template('profile/wmcs/novaproxy-wmflabs.org.conf')
+    if $use_wmflabs_root {
+        nginx::site { 'wmflabs.org':
+            content => template('profile/wmcs/novaproxy-wmflabs.org.conf')
+        }
     }
 }
+
