@@ -2,6 +2,7 @@ class profile::wmcs::novaproxy(
     Array[Stdlib::Fqdn] $all_proxies      = lookup('profile::wmcs::novaproxy::all_proxies',  {default_value => ['localhost']}),
     Stdlib::Fqdn        $active_proxy     = lookup('profile::wmcs::novaproxy::active_proxy', {default_value => 'localhost'}),
     Boolean             $use_ssl          = lookup('profile::wmcs::novaproxy::use_ssl',      {default_value => true}),
+    String              $acme_certname    = lookup('profile::wmcs::novaproxy::use_ssl',      {default_value => ''}),
     Array[Stdlib::Ipv4] $banned_ips       = lookup('profile::wmcs::novaproxy::banned_ips',   {default_value => []}),
     String              $block_ua_re      = lookup('profile::wmcs::novaproxy::block_ua_re',  {default_value => ''}),
     String              $block_ref_re     = lookup('profile::wmcs::novaproxy::block_ref_re', {default_value => ''}),
@@ -48,16 +49,25 @@ class profile::wmcs::novaproxy(
         $redis_replication = undef
     }
 
-    if $use_ssl {
+    if $acme_certname {
+        acme_chief::cert { $acme_certname:
+            puppet_rsc => Exec['nginx-reload'],
+        }
+        $ssl_settings  = ssl_ciphersuite('nginx', 'compat')
+        $ssl_cert_name = $acme_certname
+        $use_acme_chief = true
+    } elsif $use_ssl {
         sslcert::certificate { 'star.wmflabs.org':
             skip_private => true,
             before       => Class['dynamicproxy'],
         }
         $ssl_settings  = ssl_ciphersuite('nginx', 'compat')
         $ssl_cert_name = 'star.wmflabs.org'
+        $use_acme_chief = false
     } else {
         $ssl_settings  = undef
         $ssl_cert_name = undef
+        $use_acme_chief = false
     }
 
     class { '::dynamicproxy':
@@ -69,6 +79,7 @@ class profile::wmcs::novaproxy(
         banned_ips               => $banned_ips,
         blocked_user_agent_regex => $block_ua_re,
         blocked_referer_regex    => $block_ref_re,
+        use_acme_chief           => $use_acme_chief,
     }
 
     class { '::dynamicproxy::api': }
