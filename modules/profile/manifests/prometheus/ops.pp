@@ -1692,9 +1692,13 @@ class profile::prometheus::ops (
     $chartmuseum_jobs = [
       {
         'job_name'        => 'chartmuseum',
+        'scheme'          => 'https',
         'file_sd_configs' => [
           { 'files' => [ "${targets_path}/chartmuseum_*.yaml"] },
         ],
+        'tls_config'        => {
+            'server_name'   => 'helm-charts.wikimedia.org',
+        },
       },
     ]
     prometheus::class_config{ "chartmuseum_${::site}":
