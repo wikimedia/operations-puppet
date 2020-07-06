@@ -275,10 +275,10 @@ SOFTWARE.
             }
 
             // Extracting the checks themselves
-            re = /^(?:[*] )?(SUCCESS|FAILURE) (.*?)(?: (?:failed|passed!))?$/gm;
+            re = /^(?:[*] )?(SUCCESS|FAILURE) (Quality gate)(?: (?:failed|passed!))?$/gm;
             while (check = re.exec(message)) {
               checks[check[2]] = {
-                name: check[2],
+                name: 'Sonar cloud',
                 url: url,
                 result: check[1],
               };
