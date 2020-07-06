@@ -173,5 +173,6 @@ puppetmaster: puppetmaster.cloudinfra.wmflabs.org
 puppetmaster::enable_geoip: false
 puppetmaster::servers:
   puppetmaster-1001.devtools.eqiad.wmflabs:
-  - puppetmaster-1001.devtools.eqiad.wmflabs
+    - { worker: puppetmaster-1001.devtools.eqiad.wmflabs, loadfactor: 10 }
+puppetmaster::locale_servers: {}
 role::puppetmaster::standalone::autosign: 'true'
