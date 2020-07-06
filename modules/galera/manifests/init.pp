@@ -33,15 +33,24 @@ class galera(
     }
 
     if $enabled {
-        service { 'mysql':
-            ensure => running,
-            enable => true,
+        service { 'mariadb':
+            ensure   => running,
+            enable   => true,
+            provider => 'systemd',
         }
     } else {
-        service { 'mysql':
-            ensure => stopped,
-            enable => false,
+        service { 'mariadb':
+            ensure   => stopped,
+            enable   => false,
+            provider => 'systemd',
         }
+    }
+
+    # The debian package installs this for backwards compatibility with sysV;
+    #  it's confusing to have two different ways to start and stop the service
+    #  so let's just remove it.
+    file { 'init.d/mysql':
+        ensure  => absent,
     }
 
     $cluster_node_ips = $cluster_nodes.map |$host| { ipresolve($host, 4) }
@@ -51,7 +60,7 @@ class galera(
         group   => 'root',
         mode    => '0644',
         content => template('galera/server.cnf.erb'),
-        notify  => Service['mysql'],
+        notify  => Service['mariadb'],
     }
 
     file { '/etc/mysql/mariadb.conf.d/50-mysql-clients.cnf':
@@ -59,7 +68,7 @@ class galera(
         group   => 'root',
         mode    => '0644',
         content => template('galera/client.cnf.erb'),
-        notify  => Service['mysql'],
+        notify  => Service['mariadb'],
     }
 
     file { '/etc/mysql/mariadb.conf.d/50-mysqldump.cnf':
@@ -67,6 +76,6 @@ class galera(
         group   => 'root',
         mode    => '0644',
         content => template('galera/mysqldump.cnf.erb'),
-        notify  => Service['mysql'],
+        notify  => Service['mariadb'],
     }
 }
