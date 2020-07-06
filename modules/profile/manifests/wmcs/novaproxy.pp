@@ -49,7 +49,7 @@ class profile::wmcs::novaproxy(
         $redis_replication = undef
     }
 
-    if $acme_certname {
+    if $acme_certname != '' {
         acme_chief::cert { $acme_certname:
             puppet_rsc => Exec['nginx-reload'],
         }
