@@ -253,14 +253,16 @@ SOFTWARE.
 
           // Reports from Zuul
           var re = /(?:Build (Started) )?(http[^ ]+\/job\/([^\/ ]+)\/[^ ]+)(?: : ([A-Z_]+)( .*)?$)?/gm;
-          while (check = re.exec(message)) {
-            checks[check[3]] = {
-              name: check[3],
-              url: check[2],
-              result: check[1] || check[4],
-              spent: check[5],
-            };
-          };
+          if (message.includes('Main test build')) {
+            while (check = re.exec(message)) {
+              checks[check[3]] = {
+                name: check[3],
+                url: check[2],
+                result: check[1] || check[4],
+                spent: check[5],
+              }
+            }
+          }
 
           // Reports from SonarQube
           re = /(SUCCESS|FAILURE) Quality gate/;
