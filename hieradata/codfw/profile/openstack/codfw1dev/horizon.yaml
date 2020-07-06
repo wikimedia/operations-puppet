@@ -4,3 +4,4 @@ profile::openstack::codfw1dev::horizon::proxy_zone_dict:
   codfw1dev.wmcloud.org.:
     project: cloudinfra-codfw1dev
     username: codfw1dev-proxy-dns-manager
+    default: true
