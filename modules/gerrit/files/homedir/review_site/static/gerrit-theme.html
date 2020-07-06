@@ -156,6 +156,9 @@ SOFTWARE.
       }
     </style>
     <div class="container">
+      <div class="test-header">
+        Test results for Patchset [[_getPatchSetNum()]] (Only main test build and SonarQube)
+      </div>
       <table>
         <template is="dom-repeat" items="{{checkers}}" as="checker">
           <template is="dom-repeat" items="{{checker.checks}}" as="check">
@@ -199,8 +202,7 @@ SOFTWARE.
           if (!this.change) { return; }
 
           // Get current patchset num
-          var current_patchset = this.getPatchSetNum(
-            this.change.current_revision);
+          var current_patchset = this._getPatchSetNum();
           // Get all messages to current patchset
           var verifiedMessages = this.change.messages.filter(it =>
               it._revision_number == current_patchset);
@@ -230,8 +232,9 @@ SOFTWARE.
           });
         },
 
-        getPatchSetNum(revision) {
-          return this.change.revisions[revision]._number;
+        _getPatchSetNum() {
+          const current = this.change.current_revision;
+          return this.change.revisions[current]._number;
         },
 
         // Gather checks info from messages
