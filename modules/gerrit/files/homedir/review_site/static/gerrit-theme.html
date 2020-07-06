@@ -255,16 +255,6 @@ SOFTWARE.
           return this.change.revisions[current]._number;
         },
 
-        // Gather checks info from messages
-        // check formats:
-        //   - check-name http://check-url : RESULT
-        //   - check-name http://check-url : RESULT in SPENT_TIME
-        //   - check-name http://check-url : RESULT (skipped)
-        //   - check-name http://check-url : RESULT (skipped) in SPENT_TIME
-        // check format (started):
-        //   Build Started http://check-url (1/2)
-        // check format (old):
-        //   http://check-url : RESULT
         parseChecksFromMessage(message) {
           var check;
           var checks = {};
