@@ -111,6 +111,8 @@ MaxClients 50
     # trying to reproduce this behavior. But people run into this all the time.
     RewriteRule ^/tools/hooks/commit-msg$ https://<%= @host %>/r/tools/hooks/commit-msg
 
+    # Serve default favicon for Documentation and gitiles pages
+    RewriteRule ^/favicon.ico$ https://<%= @host %>/r/static/wikimedia-codereview-logo.cache.ico [L,R=301,NE]
 
     # In gerrit 2.16, cloning over /p/ is broken, so redirect /r/p/ to /r/
     RewriteRule ^/r/p/(.+)/info/(.+)$ https://<%= @host %>/r/$1/info/$2 [L,R=301,NE]
