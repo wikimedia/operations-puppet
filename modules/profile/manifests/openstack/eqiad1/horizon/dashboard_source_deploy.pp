@@ -13,6 +13,8 @@ class profile::openstack::eqiad1::horizon::dashboard_source_deploy(
     String        $puppet_git_repo_user = lookup('profile::openstack::eqiad1::horizon::puppet_git_repo_user'),
     Boolean       $maintenance_mode = lookup('profile::openstack::eqiad1::horizon::maintenance_mode'),
     String        $secret_key = lookup('profile::openstack::eqiad1::horizon::secret_key'),
+    Hash          $proxy_zone_dict = lookup('profile::openstack::eqiad1::horizon::proxy_zone_dict'),
+    Hash          $proxy_zone_passwords = lookup('profile::openstack::eqiad1::horizon::proxy_zone_passwords'),
     ) {
 
     require ::profile::openstack::eqiad1::clientpackages
@@ -31,5 +33,7 @@ class profile::openstack::eqiad1::horizon::dashboard_source_deploy(
         puppet_git_repo_user => $puppet_git_repo_user,
         maintenance_mode     => $maintenance_mode,
         secret_key           => $secret_key,
+        proxy_zone_dict      => $proxy_zone_dict,
+        proxy_zone_passwords => $proxy_zone_passwords,
     }
 }
