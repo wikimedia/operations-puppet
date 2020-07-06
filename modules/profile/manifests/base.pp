@@ -66,19 +66,19 @@ class profile::base(
     }
 
 
-    class { '::grub::defaults': }
+    class { 'grub::defaults': }
 
-    include ::passwords::root
-    include ::network::constants
+    include passwords::root
+    include network::constants
 
-    class { '::base::resolving':
+    class { 'base::resolving':
         domain_search => $domain_search,
         nameservers   => $nameservers,
     }
 
-    class { '::rsyslog': }
+    class { 'rsyslog': }
     if $enable_rsyslog_exporter {
-        include ::profile::prometheus::rsyslog_exporter
+        include profile::prometheus::rsyslog_exporter
 
         class {'profile::rsyslog::kafka_shipper':
             enable => $enable_kafka_shipping,
@@ -86,7 +86,7 @@ class profile::base(
     }
 
     unless empty($remote_syslog) and empty($remote_syslog_tls) {
-        class { '::base::remote_syslog':
+        class { 'base::remote_syslog':
             enable            => true,
             central_hosts     => $remote_syslog,
             central_hosts_tls => $remote_syslog_tls,
@@ -94,59 +94,59 @@ class profile::base(
     }
 
     #TODO: make base::sysctl a profile itself?
-    class { '::base::sysctl': }
-    class { '::motd': }
-    class { '::base::standard_packages': }
+    class { 'base::sysctl': }
+    class { 'motd': }
+    class { 'base::standard_packages': }
     if os_version('debian <= buster') {
-        class { '::toil::acct_handle_wtmp_not_rotated': }
+        class { 'toil::acct_handle_wtmp_not_rotated': }
     }
-    class { '::base::environment':
+    class { 'base::environment':
         core_dump_pattern => $core_dump_pattern,
     }
 
-    class { '::base::phaste': }
-    class { '::base::screenconfig': }
+    class { 'base::phaste': }
+    class { 'base::screenconfig': }
 
-    class { '::ssh::client': }
+    class { 'ssh::client': }
 
     # Ssh server default settings are good for most installs, but some overrides
     # might be needed
 
     create_resources('class', {'ssh::server' => $ssh_server_settings})
 
-    class { '::nrpe':
+    class { 'nrpe':
         allowed_hosts => join($monitoring_hosts, ','),
     }
 
-    class { '::base::kernel':
-        overlayfs        => $overlayfs,
+    class { 'base::kernel':
+        overlayfs => $overlayfs,
     }
 
     if ($facts['is_virtual'] == false and $::processor0 !~ /AMD/) {
         class { 'prometheus::node_intel_microcode': }
     }
 
-    class { '::base::debdeploy':
+    class { 'base::debdeploy':
       exclude_mounts      => $debdeploy_exclude_mounts,
       exclude_filesystems => $debdeploy_exclude_filesystems,
       filter_services     => $debdeploy_filter_services,
     }
 
     if $facts['has_ipmi'] {
-        class { '::ipmi::monitor':
+        class { 'ipmi::monitor':
             ensure => $hardware_monitoring
         }
     }
 
-    class { '::base::initramfs': }
-    class { '::base::auto_restarts': }
+    class { 'base::initramfs': }
+    class { 'base::auto_restarts': }
 
     $notifications_enabled = $notifications ? {
         'disabled' => '0',
         default    => '1',
     }
 
-    class { '::base::monitoring::host':
+    class { 'base::monitoring::host':
         contact_group            => $group_contact,
         mgmt_contact_group       => $mgmt_group_contact,
         nrpe_check_disk_options  => $check_disk_options,
@@ -167,11 +167,11 @@ class profile::base(
     }
 
     if $check_smart and $facts['is_virtual'] == false {
-        class { '::smart': }
+        class { 'smart': }
     }
 
     if $facts['is_virtual'] == false {
-        include ::profile::prometheus::nic_saturation_exporter
+        include profile::prometheus::nic_saturation_exporter
     }
 
     # This is responsible for ~75%+ of all recdns queries...
