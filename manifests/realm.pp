@@ -167,6 +167,7 @@ $private_wikis = [
     'searchcomwiki',
     'spcomwiki',
     'stewardwiki',
+    'sysop_itwiki',
     'techconductwiki',
     'transitionteamwiki',
     'wg_enwiki',
