@@ -122,10 +122,6 @@ class profile::base(
         overlayfs => $overlayfs,
     }
 
-    if ($facts['is_virtual'] == false and $::processor0 !~ /AMD/) {
-        class { 'prometheus::node_intel_microcode': }
-    }
-
     class { 'base::debdeploy':
       exclude_mounts      => $debdeploy_exclude_mounts,
       exclude_filesystems => $debdeploy_exclude_filesystems,
@@ -166,22 +162,22 @@ class profile::base(
         hardware_monitoring      => $hardware_monitoring
     }
 
-    if $check_smart and $facts['is_virtual'] == false {
-        class { 'smart': }
-    }
-
-    if $facts['is_virtual'] == false {
+    if $facts['is_virtual'] and os_version('debian <= buster') {
+            class {'haveged': }
+    } elsif !$facts['is_virtual'] {
         include profile::prometheus::nic_saturation_exporter
+        class { 'prometheus::node_nic_firmware': }
+        if $check_smart {
+            class { '::smart': }
+        }
+        if $::processor0 !~ /AMD/ {
+            class { 'prometheus::node_intel_microcode': }
+        }
     }
-
     # This is responsible for ~75%+ of all recdns queries...
     # https://phabricator.wikimedia.org/T239862
     host { 'statsd.eqiad.wmnet':
         ip           => '10.64.16.149', # graphite1004
         host_aliases => 'statsd',
-    }
-
-    if $facts['is_virtual'] == false {
-        class { 'prometheus::node_nic_firmware': }
     }
 }
