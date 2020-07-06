@@ -376,7 +376,7 @@ groups:
   maps-admins:
     gid: 753
     description: admin for maps clusters
-    members: [eevans, sbisson, catrope, mholloway-shell, mbsantos]
+    members: [eevans, sbisson, catrope, mholloway-shell, mbsantos, jgiannelos]
     # TODO: Revisit this when moving into production
     privileges: ['ALL = NOPASSWD: /usr/sbin/service cassandra *',
                  'ALL = NOPASSWD: /bin/systemctl mask cassandra.service',
@@ -398,7 +398,7 @@ groups:
   kartotherian-admin:
     description: Group of kartotherian admins
     gid: 754
-    members: [sbisson, catrope, mholloway-shell, mbsantos]
+    members: [sbisson, catrope, mholloway-shell, mbsantos, jgiannelos]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service kartotherian *',
                  'ALL = NOPASSWD: /bin/systemctl mask kartotherian.service',
                  'ALL = NOPASSWD: /bin/systemctl unmask kartotherian.service',
@@ -439,7 +439,7 @@ groups:
   tilerator-admin:
     description: Group of tilerator admins
     gid: 758
-    members: [sbisson, catrope, mholloway-shell, mbsantos]
+    members: [sbisson, catrope, mholloway-shell, mbsantos, jgiannelos]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service tilerator *',
                  'ALL = NOPASSWD: /bin/systemctl mask tilerator.service',
                  'ALL = NOPASSWD: /bin/systemctl unmask tilerator.service',
@@ -452,7 +452,8 @@ groups:
   mobileapps-admin:
     description: Group of mobileapps admins
     gid: 759
-    members: [bsitzmann, mholloway-shell, mobrovac, jforrester, mbsantos]
+    members: [bsitzmann, mholloway-shell, mobrovac, jforrester, mbsantos,
+              jgiannelos]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service mobileapps *',
                  'ALL = (mobileapps) NOPASSWD: ALL']
   mw-log-readers:
@@ -473,7 +474,7 @@ groups:
               bsitzmann, mholloway-shell, kartik, halfak, ladsgroup, smalyshev, hoo, tgr,
               ssastry, cscott, arlolra, jdlrobson, jforrester, niedzielski, bmansurov,
               pmiazga, phuedx, mbsantos, mvolz, santhosh, nikerabbit, accraze,
-              kevinbazira, clarakosi, chrisalbon]
+              kevinbazira, clarakosi, chrisalbon, jgiannelos]
     privileges: []
 
   deploy-aqs:
@@ -727,7 +728,8 @@ groups:
   proton-admins:
     description: Admins for the proton service
     gid: 807
-    members: [pmiazga, bsitzmann, mholloway-shell, mbsantos, tgr, eevans, mobrovac, ppchelko]
+    members: [pmiazga, bsitzmann, mholloway-shell, mbsantos, tgr, eevans,
+              mobrovac, ppchelko, jgiannelos]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service proton *',
                  'ALL = (proton) NOPASSWD: ALL']
   gpu-testers:
@@ -3775,6 +3777,15 @@ users:
     gid: 500
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINQaxbNSLlNDwRZ2YVLVQ6YswUjX2ID2xUDeDggbIVpM chrisalbon@MacBook-Pro-2.local
+  jgiannelos:
+    ensure: present
+    gid: 500
+    name: jgiannelos
+    realname: John (Yiannis) Giannelos
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIP6MjmxioZ+KwKPyFVIfeuG82b0db+VwpBf+EyCIbr4F nemo@nemoworld-wikimedia
+    uid: 24346
+    email: jgiannelos@wikimedia.org
 ldap_only_users:
   abartov:
     ensure: present
@@ -4336,10 +4347,6 @@ ldap_only_users:
     ensure: present
     realname: Antonino Hemmer
     email: ahemmer@wikimedia.org
-  jgiannelos:
-    ensure : present
-    realname: John (Yiannis) Giannelos
-    email: jgiannelos@wikimedia.org
   toan:
     ensure: present
     realname: Tobias Andersson
