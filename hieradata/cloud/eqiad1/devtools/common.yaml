@@ -48,6 +48,8 @@ phabricator_cluster_search:
 
 # Deployment server, scap, acme-chief
 
+deployment_hosts:
+- '172.16.0.238'
 deployment_server: deploy-1002.devtools.eqiad.wmflabs
 scap::deployment_server: deploy-1002.devtools.eqiad.wmflabs
 
