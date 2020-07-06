@@ -1,4 +1,4 @@
-# == Class profile::java
+#== Class profile::java
 #
 # This profile takes care of deploying openjdk following the best
 # practices used in the WMF.
@@ -28,9 +28,11 @@
 # jvm's home directory.
 #
 class profile::java (
-    Array[Java::PackageInfo] $java_packages = lookup('profile::java::java_packages', { 'default_value' => [] }),
-    Optional[String] $extra_args            = lookup('profile::java::extra_args', { 'default_value' => undef }),
-    Boolean $hardened_tls                   = lookup('profile::java::hardened_tls'),
+    Array[Java::PackageInfo] $java_packages = lookup('profile::java::java_packages'),
+    Optional[String]         $extra_args    = lookup('profile::java::extra_args',
+                                                    { 'default_value' => undef }),
+    Boolean                  $hardened_tls  = lookup('profile::java::hardened_tls'),
+    Java::Egd_source         $egd_source    = lookup('profile::java::egd_source'),
 ) {
 
     if os_version('debian == stretch') {
@@ -47,6 +49,7 @@ class profile::java (
     class { 'java':
         java_packages => $_java_packages,
         hardened_tls  => $hardened_tls,
+        egd_source    => $egd_source,
     }
 
     $default_java_home = $java::java_home

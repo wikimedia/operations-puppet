@@ -8,13 +8,15 @@
 #
 class java (
     Array[Java::PackageInfo] $java_packages,
-    Boolean                  $hardened_tls=false,
+    Boolean                  $hardened_tls = false,
+    Java::Egd_source         $egd_source   = '/dev/random'
 ) {
 
     $java_packages.each |$java_package_info| {
         java::package { "openjdk-${java_package_info['variant']}-${java_package_info['version']}":
             package_info => $java_package_info,
             hardened_tls => $hardened_tls,
+            egd_source   => $egd_source,
         }
     }
 

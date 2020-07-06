@@ -115,7 +115,7 @@ security.provider.9=sun.security.smartcardio.SunPCSC
 # specified, the "NativePRNG" implementation will be more preferred than
 # SHA1PRNG in the Sun provider.
 #
-securerandom.source=file:/dev/random
+securerandom.source=file:<%= @_egd_source %>
 
 #
 # A list of known strong SecureRandom implementations.

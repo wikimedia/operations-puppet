@@ -9,8 +9,20 @@
 #
 define java::package(
     Java::PackageInfo $package_info,
-    Boolean           $hardened_tls=false,
+    Boolean           $hardened_tls = false,
+    Java::Egd_source  $egd_source   = '/dev/random',
 ) {
+
+    if $egd_source != '/dev/random' and
+            (os_version('debian < buster') or !('rdrand' in $facts['cpu_details']['flags'])) {
+        warning("EDG Source (${egd_source}) is considered insecure on this system")
+    }
+    # Hack to work around https://bugs.java.com/bugdatabase/view_bug.do?bug_id=6202721
+    $_egd_source = ($egd_source == '/dev/urandom') ? {
+        true    => '/dev/./urandom',
+        default => $egd_source,
+    }
+
     $package_name = "openjdk-${package_info['version']}-${package_info['variant']}"
 
     if $package_info['version'] == '8' and os_version('debian == buster') {
@@ -28,7 +40,7 @@ define java::package(
     # certificate's sigalgs.
     if $hardened_tls {
         file { "/etc/java-${package_info['version']}-openjdk/security/java.security":
-            source  => 'puppet:///modules/java/java.security',
+            source  => template('java/java.security.erb'),
             require => Package[$package_name],
         }
     }
