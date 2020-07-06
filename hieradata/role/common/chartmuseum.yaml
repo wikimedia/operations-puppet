@@ -9,7 +9,7 @@ profile::chartmuseum::hostname: helm-charts.discovery.wmnet
 #   user: SnakeOil
 #   key: SnakeOil
 
-profile::tlsproxy::envoy::upstream_addr: localhost
+profile::tlsproxy::envoy::upstream_addr: 127.0.0.1
 profile::tlsproxy::envoy::ensure: present
 profile::tlsproxy::envoy::services:
 - server_names: ['*']
