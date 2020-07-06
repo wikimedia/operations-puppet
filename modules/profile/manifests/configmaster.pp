@@ -1,5 +1,5 @@
 class profile::configmaster(
-    $conftool_prefix = hiera('conftool_prefix'),
+    $conftool_prefix = lookup('conftool_prefix'),
 ) {
 
     $vhostnames = [
@@ -74,5 +74,22 @@ class profile::configmaster(
         retries        => 2, # We have a spectrum between 4 and 8 hours
         check_interval => 240, # 4h
         retry_interval => 240,
+    }
+    $ssh_fingerprints = query_facts('', ['ssh'])
+    file{"${root_dir}/ssh-fingerprints.txt":
+        ensure  => file,
+        mode    => '0644',
+        owner   => 'root',
+        group   => 'root',
+        content => template('profile/configmaster/ssh-fingerprints.txt.erb')
+    }
+    ['ecdsa', 'ed25519', 'rsa'].each |String $type| {
+        file{"${root_dir}/known_hosts.${type}":
+            ensure  => file,
+            mode    => '0644',
+            owner   => 'root',
+            group   => 'root',
+            content => template('profile/configmaster/known_hosts.erb')
+        }
     }
 }
