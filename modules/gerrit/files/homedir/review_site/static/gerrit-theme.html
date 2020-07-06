@@ -150,6 +150,11 @@ SOFTWARE.
         padding: 0px var(--spacing-s);
       }
 
+      span.no-tests {
+        color: var(--deemphasized-text-color);
+        padding-left: var(--spacing-xl);
+      }
+
       div.container {
         margin-left: var(--metadata-horizontal-padding);
         margin-bottom: var(--spacing-m);
@@ -176,6 +181,13 @@ SOFTWARE.
             </tr>
           </template>
         </template>
+        <template is="dom-if" if="[[!hasChecks]]">
+          <tr>
+            <td colspan="2">
+              <span class="no-tests">(No test results found)</span>
+            </td>
+          </tr>
+        </template>
       </table>
     </div>
   </template>
@@ -187,6 +199,10 @@ SOFTWARE.
           plugin: Object,
           change: Object,
           checkers: Array,
+          hasChecks: {
+            type: Boolean,
+            value: false,
+          },
         },
 
         attached() {
@@ -199,6 +215,7 @@ SOFTWARE.
         },
 
         _showTable() {
+          this.hasChecks = false;
           if (!this.change) { return; }
 
           // Get current patchset num
@@ -230,6 +247,7 @@ SOFTWARE.
             checker.checks = Object.values(checker.checks);
             return checker;
           });
+          this.hasChecks = !!this.checkers.length;
         },
 
         _getPatchSetNum() {
