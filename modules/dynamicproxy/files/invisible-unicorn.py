@@ -217,7 +217,7 @@ def update_mapping(project_name, domain):
     if route is None:
         return "No such domain", 400
 
-    data = flask.request.get_json()
+    data = flask.request.get_json(True)
 
     if 'domain' not in data or 'backends' not in data or not isinstance(data['backends'], list):
         return "Valid JSON but invalid format. Needs domain string and backends array", 400
