@@ -143,6 +143,7 @@ Components: main
  thirdparty/cloudera
  thirdparty/confluent
  thirdparty/elastic74
+ thirdparty/elastic78
  thirdparty/grafana
  thirdparty/hwraid
  thirdparty/kubeadm-k8s-1-15
@@ -158,6 +159,7 @@ Update:
  amd-rocm33
  confluent
  elastic74
+ elastic78
  grafana
  jenkins-stretch
  hp-mcp-buster
