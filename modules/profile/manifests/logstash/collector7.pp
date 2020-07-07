@@ -229,15 +229,16 @@ class profile::logstash::collector7 (
     }
     $eventgate_validation_error_logstash_inputs.each |String $input_title, $input_params| {
         logstash::input::kafka { $input_title:
-            kafka_cluster_name      => $input_params['kafka_cluster_name'],
-            topic                   => $input_params['topic'],
-            group_id                => $input_kafka_consumer_group_id,
-            type                    => 'eventgate_validation_error',
-            tags                    => ["input-kafka-${input_title}", 'kafka', 'es', 'eventgate'],
-            codec                   => 'json',
-            security_protocol       => 'SSL',
-            ssl_truststore_password => $input_kafka_ssl_truststore_passwords[$input_params['kafka_cluster_name']],
-            consumer_threads        => 3,
+            kafka_cluster_name                    => $input_params['kafka_cluster_name'],
+            topic                                 => $input_params['topic'],
+            group_id                              => $input_kafka_consumer_group_id,
+            type                                  => 'eventgate_validation_error',
+            tags                                  => ["input-kafka-${input_title}", 'kafka', 'es', 'eventgate'],
+            codec                                 => 'json',
+            security_protocol                     => 'SSL',
+            ssl_truststore_password               => $input_kafka_ssl_truststore_passwords[$input_params['kafka_cluster_name']],
+            ssl_endpoint_identification_algorithm => '',
+            consumer_threads                      => 3,
         }
     }
 
