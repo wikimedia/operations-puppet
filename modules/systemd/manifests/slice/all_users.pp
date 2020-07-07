@@ -34,7 +34,7 @@ class systemd::slice::all_users (
 
     if os_version('debian == stretch') {
         # we need systemd >= 239 for resource control using the user-.slice trick
-        # this version or higher is provided in stretch-backports
+        # this version or higher is provided in component/systemd241
 
         apt::package_from_component { 'systemd241':
             component => 'component/systemd241',
