@@ -81,12 +81,12 @@ include "<%= @vcl %>.inc.vcl";
 
 # Backend probes
 
-# frontends in front of other varnish instances should send
-# probes that don't depend on the app backend
+# frontends in front of ATS backend instances should send probes that don't
+# depend on the app backend
 probe varnish {
 	.request =
-		"GET /check HTTP/1.1"
-		"Host: varnishcheck"
+		"GET /ats-be HTTP/1.1"
+		"Host: healthcheck.wikimedia.org"
 		"User-agent: Varnish backend check"
 <% if @vcl_config.fetch('varnish_probe_connection', 'close') == 'keep-alive' -%>
 		"Connection: keep-alive";
