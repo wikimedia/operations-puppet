@@ -2,7 +2,7 @@
 # Parameters:
 # [*svc_name*] The service name, as found in the service::catalog hiera variable or in the listeners list
 # [*url*] The url path relative to the server name. Defaults to the empty string
-# [*listeners*] An optional array of service proxy listeners. If provided, the url will be 
+# [*listeners*] An optional array of service proxy listeners. If provided, the url will be
 #     pointed to the service proxy instead than directly to the load balancer.
 
 function wmflib::service::get_url(String $svc_name, String $url = '', Optional[Array[Hash]] $listeners = undef) >> String {
@@ -26,7 +26,7 @@ function wmflib::service::get_url(String $svc_name, String $url = '', Optional[A
     } else {
         # We use the service proxy.
         $host = 'localhost'
-        $related = $listeners.filter |$l| { $l['service'] == $svc_name }
+        $related = $listeners.filter |$l| { $l['name'] == $svc_name }
         if $related.length() != 1 {
             fail("One and only one listener with name '${svc_name}' is expected")
         }
