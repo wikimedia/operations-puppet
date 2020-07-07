@@ -28,6 +28,7 @@ profile::services_proxy::envoy::enabled_listeners:
  - cxserver
  - recommendation
  - wikifeeds
+ - eventgate-main
 #
 # Cassandra
 # FIXME: no graphite_host since graphite1003 decom'ed in T209357
