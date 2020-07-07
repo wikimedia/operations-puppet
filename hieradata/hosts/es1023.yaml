@@ -1,3 +1,4 @@
 # es1023
 mariadb::shard: 'es5'
 mariadb::binlog_format: 'ROW'
+profile::base::notifications: disabled
