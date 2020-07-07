@@ -47,8 +47,8 @@ client c1 {
     rxresp
     expect resp.status == 400
 
-    # OK: healthchecks
-    txreq -url "/from/pybal" -hdr "Host: varnishcheck.wikimedia.org"
+    # OK: healthcheck.wikimedia.org
+    txreq -url "/varnish-fe" -hdr "Host: healthcheck.wikimedia.org"
     rxresp
     expect resp.status == 200
     expect resp.body ~ "^Varnish frontend running on cp[0-9]{4} is up$"

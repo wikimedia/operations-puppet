@@ -465,10 +465,6 @@ sub wm_recv_early {
 		return (synth(405, "Method not allowed"));
 	}
 
-	if (req.http.host == "varnishcheck.wikimedia.org" && (req.url == "/from/pybal" || req.url == "/wikimedia-monitoring-test")) {
-		return (synth(200, "healthcheck"));
-	}
-
 	if (req.http.host == "healthcheck.wikimedia.org" && req.url == "/varnish-fe") {
 		return (synth(200, "healthcheck"));
 	}
