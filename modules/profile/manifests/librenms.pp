@@ -6,24 +6,24 @@
 # Switch it in hieradata/common.yaml, the default is just a fallback.
 #
 class profile::librenms (
-    Stdlib::Fqdn $sitename = hiera('profile::librenms::sitename'),
-    Stdlib::Unixpath $install_dir = hiera('profile::librenms::install_dir'),
-    Stdlib::Fqdn $active_server = hiera('netmon_server'),
-    Stdlib::Fqdn $graphite_host = hiera('graphite_host', 'graphite-in.eqiad.wmnet'),
-    Stdlib::Fqdn $graphite_prefix = hiera('graphite_prefix', 'librenms'),
-    String $laravel_app_key = hiera('profile::librenms::laravel_app_key'),
+    Stdlib::Fqdn     $active_server   = lookup('netmon_server'),
+    Stdlib::Fqdn     $graphite_host   = lookup('graphite_host'),
+    String           $graphite_prefix = lookup('profile::librenms::graphite_prefix'),
+    String           $sitename        = lookup('profile::librenms::sitename'),
+    Stdlib::Unixpath $install_dir     = lookup('profile::librenms::install_dir'),
+    String           $laravel_app_key = lookup('profile::librenms::laravel_app_key'),
 
-    String $librenms_db_user = hiera('profile::librenms::dbuser'),
-    String $librenms_db_password = hiera('profile::librenms::dbpassword'),
-    Stdlib::Fqdn $librenms_db_host = hiera('profile::librenms::dbhost'),
-    String $librenms_db_name = hiera('profile::librenms::dbname'),
+    String           $db_user         = lookup('profile::librenms::dbuser'),
+    String           $db_password     = lookup('profile::librenms::dbpassword'),
+    Stdlib::Fqdn     $db_host         = lookup('profile::librenms::dbhost'),
+    String           $db_name         = lookup('profile::librenms::dbname'),
 
-    String $librenms_irc_password = hiera('profile::librenms::irc_password'),
-    Hash $ldap_config = lookup('ldap', Hash, hash, {}),
+    String           $irc_password    = lookup('profile::librenms::irc_password'),
+    Hash             $ldap_config     = lookup('ldap', Hash, hash, {}),
 ){
 
-    include ::network::constants
-    include ::passwords::network
+    include network::constants
+    include passwords::network
 
     $config = {
         'title_image'      => '//upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Wikimedia_Foundation_logo_-_horizontal_%282012-2016%29.svg/140px-Wikimedia_Foundation_logo_-_horizontal_%282012-2016%29.svg.png',
@@ -31,10 +31,10 @@ class profile::librenms (
         # disable evil daily auto-git pull
         'update'           => 0,
 
-        'db_host'          => $librenms_db_host,
-        'db_user'          => $librenms_db_user,
-        'db_pass'          => $librenms_db_password,
-        'db_name'          => $librenms_db_name,
+        'db_host'          => $db_host,
+        'db_user'          => $db_user,
+        'db_pass'          => $db_password,
+        'db_name'          => $db_name,
         'db'               => {
             'extension' => 'mysqli',
         },
@@ -50,7 +50,7 @@ class profile::librenms (
         'irc_alert_utf8'   => true,
         'irc_alert_short'  => true,
         'irc_nick'         => 'librenms-wmf',
-        'irc_pass'         => "librenms-wmf:${librenms_irc_password}",
+        'irc_pass'         => "librenms-wmf:${irc_password}",
 
         'autodiscovery'    => {
             'xdp'      => true,
@@ -133,23 +133,18 @@ class profile::librenms (
         },
     }
 
-    class { '::librenms':
+    class { 'librenms':
         install_dir     => $install_dir,
         rrd_dir         => '/srv/librenms/rrd',
         config          => $config,
         active_server   => $active_server,
         laravel_app_key => $laravel_app_key,
     }
-    class { '::librenms::syslog':
+    class { 'librenms::syslog':
         require => Class['::librenms']
     }
 
-    class { '::librenms::web':
-        sitename      => $sitename,
-        install_dir   => $install_dir,
-        require       => Class['::librenms'],
-        active_server => $active_server,
-    }
+    include profile::librenms::web
 
     ferm::service { 'librenms-rsyslog':
         proto => 'udp',

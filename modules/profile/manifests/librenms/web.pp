@@ -1,13 +1,14 @@
-class librenms::web(
-    Stdlib::Fqdn $sitename,
-    Stdlib::Unixpath $install_dir,
-    Stdlib::Fqdn $active_server,
-) {
+# @summary profile to configure librenms website
+class profile::librenms::web {
 
-    $ssl_settings = ssl_ciphersuite('apache', 'strong', true)
+    require profile::librenms
+    $sitename      = $profile::librenms::sitename
+    $install_dir   = $profile::librenms::install_dir
+    $active_server = $profile::librenms::active_server
+    $ssl_settings  = ssl_ciphersuite('apache', 'strong', true)
 
     httpd::site { $sitename:
-        content => template('librenms/apache.conf.erb'),
+        content => template('profile/librenms/apache.conf.erb'),
     }
 
     acme_chief::cert { 'librenms':
