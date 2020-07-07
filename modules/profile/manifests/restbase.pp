@@ -109,7 +109,7 @@ class profile::restbase(
     ),
     $proton_uri     = lookup(
         'profile::restbase::proton_uri',
-        {'default_value' => wmflib::service::get_url('proton')}
+        {'default_value' => wmflib::service::get_url('proton-http')}
     ),
     $citoid_uri     = lookup(
         'profile::restbase::citoid_uri',
