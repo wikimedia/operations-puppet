@@ -15,9 +15,9 @@ managed bots, webservices, and tools supporting the Wikimedia movement.
 
 Use of this system is subject to the Toolforge Terms of Use,
 Code of Conduct, and Privacy Policies:
-- [4mhttps://tools.wmflabs.org/?Rules[0m
+- [4mhttps://wikitech.wikimedia.org/wiki/Help:Toolforge/Terms_and_conditions[0m
 
 General guidance and help can be found at:
-- [4mhttps://tools.wmflabs.org/?Help[0m
+- [4mhttps://toolforge.org[0m
 
 EOF
