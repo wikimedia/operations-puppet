@@ -1,13 +1,12 @@
 profile::restbase::seeds_ng:
-  - restbase2009-a.codfw.wmnet
-  - restbase2009-b.codfw.wmnet
-  - restbase2009-c.codfw.wmnet
   - restbase2010-a.codfw.wmnet
   - restbase2010-b.codfw.wmnet
   - restbase2010-c.codfw.wmnet
+  - restbase2011-a.codfw.wmnet
+  - restbase2011-b.codfw.wmnet
+  - restbase2011-c.codfw.wmnet-
 # used for rate limiting
 profile::restbase::hosts:
-  - restbase2009.codfw.wmnet
   - restbase2010.codfw.wmnet
   - restbase2011.codfw.wmnet
   - restbase2012.codfw.wmnet
