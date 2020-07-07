@@ -21,3 +21,4 @@ profile::wmcs::prometheus::metricsinfra::projects:
   - name: integration
   - name: metricsinfra
   - name: tools
+  - name: paws
