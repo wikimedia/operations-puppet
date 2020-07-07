@@ -23,6 +23,19 @@ profile::restbase::monitor_domain: en.wikipedia.org
 
 profile::restbase::cassandra_tls:
   ca: /dev/null
+profile::services_proxy::envoy::enabled_listeners:
+ - parsoid-php
+ - mathoid
+ - mobileapps
+ - graphoid
+ - aqs
+ - proton
+ - citoid
+ - cxserver
+ - recommendation
+ - wikifeeds
+ - eventgate-main
+
 # TODO: get this from cassandra's instances?
 profile::restbase::seeds_ng:
       - restbase-dev1004-a.eqiad.wmnet
