@@ -414,6 +414,13 @@ sub cluster_fe_ratelimit {
 		}
 	}
 
+<% if @vcl_config.fetch("public_clouds_shutdown") -%>
+	// Unconditionally return 429 to all traffic from public clouds like ec2
+	if (std.ip(req.http.X-Client-IP, "192.0.2.1") ~ public_cloud_nets) {
+		return (synth(429, "Too Many Requests"));
+	}
+<% end -%>
+
 	// Ratelimit miss/pass requests per IP:
 	//   * Excluded for now:
 	//       * all WMF IPs (including labs)
@@ -431,12 +438,7 @@ sub cluster_fe_ratelimit {
 				return (synth(429, "Too Many Requests"));
 			}
 		} else {
-<% if @vcl_config.fetch("public_clouds_shutdown") -%>
-			// Unconditionally return 429 to non-API traffic from public clouds like ec2
-			if (std.ip(req.http.X-Client-IP, "192.0.2.1") ~ public_cloud_nets) {
-<% else -%>
 			if (std.ip(req.http.X-Client-IP, "192.0.2.1") ~ public_cloud_nets && vsthrottle.is_denied("cloud:" + req.http.X-Client-IP, 100, 10s)) {
-<% end -%>
 				return (synth(429, "Too Many Requests"));
 			} else if (vsthrottle.is_denied("general:" + req.http.X-Client-IP, 1000, 50s)) {
 				return (synth(429, "Too Many Requests"));
