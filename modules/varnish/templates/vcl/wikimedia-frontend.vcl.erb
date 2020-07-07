@@ -468,6 +468,10 @@ sub wm_recv_early {
 	if (req.http.host == "varnishcheck.wikimedia.org" && (req.url == "/from/pybal" || req.url == "/wikimedia-monitoring-test")) {
 		return (synth(200, "healthcheck"));
 	}
+
+	if (req.http.host == "healthcheck.wikimedia.org" && req.url == "/varnish-fe") {
+		return (synth(200, "healthcheck"));
+	}
 }
 
 sub wm_recv_purge {
