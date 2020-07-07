@@ -18,15 +18,6 @@ class profile::zuul::merger(
         target => '/var/lib/zuul/.ssh/known_hosts',
     }
 
-    # gerrit-test has the same host key but a different hostname - T253263
-    sshkey { 'gerrit-test':
-        ensure => 'absent',
-        name   => 'gerrit-test.wikimedia.org',
-        key    => $sshkey,
-        type   => 'ssh-rsa',
-        target => '/var/lib/zuul/.ssh/known_hosts',
-    }
-
     class { '::zuul::merger':
         # Shared settings
         gerrit_server       => $conf_common['gerrit_server'],
