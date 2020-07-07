@@ -20,7 +20,7 @@ class profile::zuul::merger(
 
     # gerrit-test has the same host key but a different hostname - T253263
     sshkey { 'gerrit-test':
-        ensure => 'present',
+        ensure => 'absent',
         name   => 'gerrit-test.wikimedia.org',
         key    => $sshkey,
         type   => 'ssh-rsa',
