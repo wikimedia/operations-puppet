@@ -8,8 +8,8 @@ disableforceoverwrite: <%= @disable_force_overwrite %>
 authanonymousget: <%= @allow_anonymous_get %>
 <% if @basic_auth -%>
 basicauth:
-  pass: "<%= @basic_auth['username'] %>"
-  user: "<%= @basic_auth['password'] %>"
+  user: "<%= @basic_auth['username'] %>"
+  pass: "<%= @basic_auth['password'] %>"
 <% end -%>
 
 <% if @swift_backend -%>
