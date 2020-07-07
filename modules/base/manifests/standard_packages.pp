@@ -16,6 +16,7 @@ class base::standard_packages {
         'git',
         'htop',
         'httpry',
+        'httpie',
         'iotop',
         'iperf',
         'jq',
