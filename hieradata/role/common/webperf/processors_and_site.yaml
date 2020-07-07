@@ -3,8 +3,6 @@ admin::groups:
   - perf-team
   - eventlogging-admins
 
-graphite_host: graphite-in.eqiad.wmnet
-
 profile::webperf::site::server_name: performance.wikimedia.org
 profile::webperf::site::xhgui_host: tungsten.eqiad.wmnet
 profile::webperf::site::xhgui_old_host: tungsten.eqiad.wmnet

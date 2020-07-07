@@ -11,7 +11,6 @@ admin::groups:
 #
 # Cassandra for AQS
 #
-graphite_host: 'graphite-in.eqiad.wmnet'
 profile::cassandra::allow_analytics: true
 
 profile::cassandra::disable_graphite_metrics: true
