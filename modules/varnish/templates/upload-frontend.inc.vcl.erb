@@ -179,27 +179,15 @@ sub cluster_fe_ratelimit {
 			}
 		}
 
-		// Maps rate limiting: 1000/10s (100/s long term, with 1000 burst)
 		if (req.http.Host == "<%= @vcl_config.fetch('maps_domain') %>") {
-			if (vsthrottle.is_denied("maps:" + req.http.X-Client-IP, 1000, 10s)) {
-				return (synth(429, "Too Many Requests"));
-			}
 			// below is attempted mitigation of https://phabricator.wikimedia.org/T244278
 			if (req.http.referer && req.http.referer !~ "^https?://(([^/]*\.)*(wikipedia|wikimedia|wikibooks|wikinews|wikiquote|wikisource|wikiversity|wikivoyage|wikidata|wikimediafoundation|wiktionary|mediawiki|wmfusercontent|wmflabs|toolforge|wmcloud)\.org|w\.wiki|localhost(:\d*)?)(/|$)") {
 				return (synth(429, "Too Many Requests"));
 			}
 		}
 
-		// Thumbor rate limiting: 1000/10s (100/s long term, with 1000 burst)
-		if (req.url ~ "/thumb/") {
-			// No idea what the correct values should be here?
-			if (vsthrottle.is_denied("thumbor:" + req.http.X-Client-IP, 1000, 10s)) {
-				return (synth(429, "Too Many Requests"));
-			}
-		}
-
-		// General upload rate limiting: 5000/10s (500/s long term, with 5000 burst)
-		if (vsthrottle.is_denied("general:" + req.http.X-Client-IP, 5000, 10s)) {
+		// General upload rate limiting: 1000/10s (100/s long term, with 1000 burst)
+		if (vsthrottle.is_denied("general:" + req.http.X-Client-IP, 1000, 10s)) {
 			return (synth(429, "Too Many Requests"));
 		}
 	}
