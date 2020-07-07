@@ -28,7 +28,8 @@ sub normalize_upload_path { C{
     normalize_path_encoding(ctx, upload_decoder_ring);
 }C }
 
-// For: Temporary experiment in reducing facebookexternalhit / facebookexternalua traffic to cache_upload
+// Facebook ACL to reduce facebookexternalhit / facebookexternalua traffic to
+// cache_upload. T192688
 acl fb_nets {
 	"31.13.24.0"/21;
 	"31.13.64.0"/18;
@@ -157,13 +158,6 @@ sub cluster_fe_ratelimit {
 	// dont apply any rate limiting to internal networks
 	// Fallback to 192.0.2.1, from rfc5735's TEST-NET-1, which is not in wikimedia_nets
 	if (std.ip(req.http.X-Client-IP, "192.0.2.1") !~ wikimedia_nets) {
-		// ratelimit FB in an attempt to mitigate awful outbound traffic spike
-		if (std.ip(req.http.X-Client-IP, "192.0.2.1") ~ fb_nets) {
-			if (vsthrottle.is_denied("fb_limiter", 1000, 30s)) {
-				return (synth(429, "Too Many Requests"));
-			}
-		}
-
 		// Requests in violation of the User-Agent policy
 		if (req.http.User-Agent ~ "^python-requests") {
 			// UA-policy violations: 10/10s (1/s long term, with 10 burst)
@@ -306,7 +300,10 @@ sub cluster_fe_deliver {
 	}
 
 
-	// Temporary experiment in reducing facebookexternalhit / facebookexternalua traffic to cache_upload
+	// We normally emit no-cache headers to protect our ability to purge
+	// images quickly, however facebookexternalhit / facebookexternalua have
+	// created traffic troubles in the past (T192688), so emit CC:public for
+	// Facebook. Do not rely on the User-Agent string but use the source IPs
 	if (std.ip(req.http.X-Client-IP, "192.0.2.1") ~ fb_nets
 		&& (resp.status == 200 || resp.status == 206)) {
 			set resp.http.Cache-control = "public, max-age=3600, s-maxage=3600";
