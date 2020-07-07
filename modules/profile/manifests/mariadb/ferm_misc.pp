@@ -21,13 +21,6 @@ class profile::mariadb::ferm_misc {
         srange  => '@resolve(moscovium.eqiad.wmnet)',
     }
 
-    ferm::service { 'gerrit':
-        proto   => 'tcp',
-        port    => '3306',
-        notrack => true,
-        srange  => '@resolve((gerrit1001.wikimedia.org gerrit2001.wikimedia.org gerrit1002.wikimedia.org))',
-    }
-
     ferm::service { 'exim':
         proto   => 'tcp',
         port    => '3306',
