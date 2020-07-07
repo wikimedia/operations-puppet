@@ -59,7 +59,7 @@ function no_cache_lookup()
 end
 
 function do_global_read_request()
-    if (ts.client_request.header['Host'] == 'varnishcheck' and ts.client_request.get_uri() == '/check') or (ts.client_request.header['Host'] == 'healthcheck.wikimedia.org' and ts.client_request.get_uri() == '/ats-be') then
+    if ts.client_request.header['Host'] == 'healthcheck.wikimedia.org' and ts.client_request.get_uri() == '/ats-be' then
         ts.http.intercept(function()
             ts.say('HTTP/1.1 200 OK\r\n' ..
                    'Content-Length: 0\r\n' ..
