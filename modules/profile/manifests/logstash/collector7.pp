@@ -224,7 +224,7 @@ class profile::logstash::collector7 (
         },
         'eventgate-logging-external-validation-error-codfw' => {
             'kafka_cluster_name' => 'logging-codfw',
-            'topic' => 'codfw.eventgate-loging-external.error.validation'
+            'topic' => 'codfw.eventgate-logging-external.error.validation'
         },
     }
     $eventgate_validation_error_logstash_inputs.each |String $input_title, $input_params| {
