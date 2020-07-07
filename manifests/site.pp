@@ -168,10 +168,6 @@ node /aqs100[456789]\.eqiad\.wmnet/ {
     role(aqs)
 }
 
-node 'archiva1001.wikimedia.org' {
-    role(archiva)
-}
-
 # New Archiva host on Buster
 # T254890
 node 'archiva1002.wikimedia.org' {
