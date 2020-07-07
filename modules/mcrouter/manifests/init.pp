@@ -105,7 +105,6 @@ class mcrouter(
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        notify  => Service['mcrouter'],
     }
 
     systemd::service { 'mcrouter':
