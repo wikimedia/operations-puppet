@@ -113,11 +113,12 @@ class profile::analytics::refinery::job::refine(
     # EventLogging streams that have been migrated to EventGate.
     $eventlogging_legacy_table_includelist = [
         'TemplateWizard',
+        'SearchSatisfaction',
     ]
     $eventlogging_legacy_table_includelist_regex = "^(${join($eventlogging_legacy_table_includelist, '|')})$"
 
     $eventlogging_legacy_table_excludelist = [
-        # Legacy EventLogging tables:
+        # Legacy EventLogging tables to exclude from Refinement.
         'Edit',
         'InputDeviceDynamics',
         'PageIssues',
