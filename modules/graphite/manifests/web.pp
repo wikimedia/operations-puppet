@@ -75,15 +75,7 @@ class graphite::web(
 
     require_package("${python_version}-memcache")
     require_package('libapache2-mod-uwsgi')
-
-    if os_version('debian < buster') {
-        package { 'graphite-web':
-            ensure          => 'present',
-            install_options => ['-t', "${::lsbdistcodename}-backports"],
-        }
-    } else {
-        require_package('graphite-web')
-    }
+    require_package('graphite-web')
 
     file { '/etc/graphite/cors.py':
         source  => 'puppet:///modules/graphite/cors.py',
