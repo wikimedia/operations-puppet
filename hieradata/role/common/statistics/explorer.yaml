@@ -31,7 +31,6 @@ profile::statistics::eventlogging_rsync::hosts_with_rsync:
 
 profile::analytics::search::jobs::use_kerberos: true
 
-profile::statistics::explorer::misc_jobs::graphite_host: 'graphite-in.eqiad.wmnet'
 profile::statistics::explorer::misc_jobs::use_kerberos: true
 profile::statistics::explorer::misc_jobs::hosts_with_jobs:
   - 'stat1007'

@@ -6,27 +6,27 @@
 # on a dedicated VM or similar.
 #
 class profile::statistics::explorer::misc_jobs(
-    $statsd_host         = lookup('statsd'),
-    $labstore_hosts      = lookup('labstore_hosts'),
-    $graphite_host       = lookup('profile::statistics::explorer::misc_jobs::graphite_host'),
-    $wmde_secrets        = lookup('wmde_secrets'),
-    $use_kerberos        = lookup('profile::statistics::explorer::misc_jobs::use_kerberos', { 'default_value' => false }),
-    $hosts_with_jobs     = lookup('profile::statistics::explorer::misc_jobs::hosts_with_jobs'),
+    String              $statsd_host     = lookup('statsd'),
+    Array[Stdlib::Host] $labstore_hosts  = lookup('labstore_hosts'),
+    Stdlib::Host        $graphite_host   = lookup('graphite_host'),
+    Hash[String,String] $wmde_secrets    = lookup('wmde_secrets'),
+    Boolean             $use_kerberos    = lookup('profile::statistics::explorer::misc_jobs::use_kerberos'),
+    Array[String]       $hosts_with_jobs = lookup('profile::statistics::explorer::misc_jobs::hosts_with_jobs'),
 ) {
 
     if $::hostname in $hosts_with_jobs {
         # Discovery team statistics scripts and cron jobs
-        class { '::statistics::discovery':
+        class { 'statistics::discovery':
             use_kerberos => $use_kerberos
         }
 
         # Performance team statistics scripts and cron jobs
-        class { '::statistics::performance':
+        class { 'statistics::performance':
             use_kerberos => $use_kerberos
         }
 
         # WMDE releated statistics & analytics scripts.
-        class { '::statistics::wmde':
+        class { 'statistics::wmde':
             statsd_host   => $statsd_host,
             graphite_host => $graphite_host,
             wmde_secrets  => $wmde_secrets,
