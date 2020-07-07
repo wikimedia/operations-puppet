@@ -145,16 +145,6 @@ class profile::analytics::cluster::packages::statistics {
         ])
     }
 
-    # T214089
-    if os_version('debian == stretch') {
-        apt::pin { 'git-lfs':
-            pin      => 'release a=stretch-backports',
-            package  => 'git-lfs',
-            priority => '1001',
-            before   => Package['git-lfs'],
-        }
-    }
-
     # scap also deploys git-lfs to clients, so guarding
     # the package resource with a !defined as precaution.
     if !defined(Package['git-lfs']) {
