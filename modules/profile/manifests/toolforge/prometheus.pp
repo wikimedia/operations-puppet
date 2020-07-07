@@ -4,7 +4,9 @@
 
 class profile::toolforge::prometheus (
     Stdlib::Fqdn  $new_k8s_apiserver_fqdn = lookup('profile::toolforge::k8s::apiserver_fqdn', {default_value => 'k8s.tools.eqiad1.wikimedia.cloud'}),
+    Stdlib::Fqdn  $paws_apiserver_fqdn    = lookup('profile::wmcs::paws::k8s::apiserver_fqdn', {default_value => 'k8s.svc.paws.eqiad1.wikimedia.cloud'}),
     Stdlib::Port  $new_k8s_apiserver_port = lookup('profile::toolforge::k8s::apiserver_port', {default_value => 6443}),
+    Stdlib::Port  $paws_apiserver_port    = lookup('profile::wmcs::paws::apiserver_port',     {default_value => 6443}),
     Array[Stdlib::Fqdn] $proxies          = lookup('profile::toolforge::proxies',             {default_value => ['tools-proxy-05.tools.eqiad.wmflabs']}),
     Stdlib::Fqdn  $email_server           = lookup('profile::toolforge::active_mail_relay',   {default_value => 'tools-mail-02.tools.eqiad1.wikimedia.cloud'}),
 ) {
@@ -19,12 +21,22 @@ class profile::toolforge::prometheus (
         modules => ['proxy', 'proxy_http'],
     }
 
-    # the certs are used by prometheus to auth to the new k8s API and are
-    # generated in the new k8s control nodes using the wmcs-k8s-get-cert script
-    $certname  = 'toolforge-k8s-prometheus'
-    $cert_pub  = "/etc/ssl/localcerts/${certname}.crt"
-    $cert_priv = "/etc/ssl/private/${certname}.key"
-    sslcert::certificate { $certname:
+    # the certs are used by prometheus to auth to the k8s API and are
+    # generated in the k8s control nodes using the wmcs-k8s-get-cert script
+    $toolforge_certname  = 'toolforge-k8s-prometheus'
+    $cert_pub  = "/etc/ssl/localcerts/${toolforge_certname}.crt"
+    $cert_priv = "/etc/ssl/private/${toolforge_certname}.key"
+    sslcert::certificate { $toolforge_certname:
+        ensure  => present,
+        chain   => false,
+        group   => 'prometheus',
+        require => Package['prometheus'], # group is defined by the package?
+        notify  => Service['prometheus@tools'],
+    }
+    $paws_certname  = 'paws-k8s-prometheus'
+    $paws_cert_pub  = "/etc/ssl/localcerts/${paws_certname}.crt"
+    $paws_cert_priv = "/etc/ssl/private/${paws_certname}.key"
+    sslcert::certificate { $paws_certname:
         ensure  => present,
         chain   => false,
         group   => 'prometheus',
@@ -310,6 +322,231 @@ class profile::toolforge::prometheus (
                         # lint:endignore
                     },
                 ]
+            },
+            {
+                'job_name'              => 'paws-nodes',
+                'scheme'                => 'https',
+                'tls_config'            => {
+                    'insecure_skip_verify' => true,
+                    'cert_file'            => $paws_cert_pub,
+                    'key_file'             => $paws_cert_priv,
+                },
+                'kubernetes_sd_configs' => [
+                    {
+                        'api_server' => "https://${paws_apiserver_fqdn}:${paws_apiserver_port}",
+                        'role'       => 'node',
+                        'tls_config' => {
+                            'insecure_skip_verify' => true,
+                            'cert_file'            => $paws_cert_pub,
+                            'key_file'             => $paws_cert_priv,
+                        },
+                    },
+                ],
+                'relabel_configs'       => [
+                    {
+                        'action' => 'labelmap',
+                        'regex'  => '__meta_kubernetes_node_label_(.+)',
+                    },
+                    {
+                        'target_label' => '__address__',
+                        'replacement'  => "${paws_apiserver_fqdn}:${paws_apiserver_port}",
+                    },
+                    {
+                        'source_labels' => ['__meta_kubernetes_node_name'],
+                        'regex'         => '(.+)',
+                        'target_label'  => '__metrics_path__',
+                        # lint:ignore:single_quote_string_with_variables
+                        'replacement'   => '/api/v1/nodes/${1}/proxy/metrics',
+                        # lint:endignore
+                    },
+                ]
+            },
+            {
+                'job_name'              => 'paws-ingress-nginx',
+                'scheme'                => 'https',
+                'tls_config'            => {
+                    'insecure_skip_verify' => true,
+                    'cert_file'            => $paws_cert_pub,
+                    'key_file'             => $paws_cert_priv,
+                },
+                'kubernetes_sd_configs' => [
+                    {
+                        'api_server' => "https://${paws_apiserver_fqdn}:${paws_apiserver_port}",
+                        'role'       => 'pod',
+                        'tls_config' => {
+                            'insecure_skip_verify' => true,
+                            'cert_file'            => $paws_cert_pub,
+                            'key_file'             => $paws_cert_priv,
+                        },
+                    },
+                ],
+                'relabel_configs'       => [
+                    {
+                        'action'        => 'keep',
+                        'regex'         => 'ingress-nginx',
+                        'source_labels' => ['__meta_kubernetes_pod_label_app_kubernetes_io_name'],
+                    },
+                    {
+                        'action' => 'labelmap',
+                        'regex'  => '__meta_kubernetes_pod_label_(.+)',
+                    },
+                    {
+                        'target_label' => '__address__',
+                        'replacement'  => "${paws_apiserver_fqdn}:${paws_apiserver_port}",
+                    },
+                    {
+                        'source_labels' => ['__meta_kubernetes_pod_name'],
+                        'regex'         => '(nginx-ingress-[a-zA-Z0-9]+-[a-zA-Z0-9]+)',
+                        'target_label'  => '__metrics_path__',
+                        # lint:ignore:single_quote_string_with_variables
+                        # PORT is not arbitrary! the pod is listening on that one
+                        'replacement'   => '/api/v1/namespaces/ingress-nginx/pods/${1}:10254/proxy/metrics',
+                        # lint:endignore
+                    },
+                ]
+            },
+            {
+                'job_name'              => 'paws-api',
+                'scheme'                => 'https',
+                'tls_config'            => {
+                    'insecure_skip_verify' => true,
+                    'cert_file'            => $paws_cert_pub,
+                    'key_file'             => $paws_cert_priv,
+                },
+                'kubernetes_sd_configs' => [
+                    {
+                        'api_server' => "https://${paws_apiserver_fqdn}:${paws_apiserver_port}",
+                        'role'       => 'endpoints',
+                        'tls_config' => {
+                            'insecure_skip_verify' => true,
+                            'cert_file'            => $paws_cert_pub,
+                            'key_file'             => $paws_cert_priv,
+                        },
+                    },
+                ],
+                'relabel_configs'       => [
+                    {
+                        'action' => 'labelmap',
+                        'regex'  => '__meta_kubernetes_node_label_(.+)',
+                    },
+                    {
+                        'target_label' => '__address__',
+                        'replacement'  => "${paws_apiserver_fqdn}:${paws_apiserver_port}",
+                    },
+                    {
+                        'source_labels' => ['__meta_kubernetes_namespace',
+                                            '__meta_kubernetes_service_name',
+                                            '__meta_kubernetes_endpoint_port_name'],
+                        'regex'         => 'default;kubernetes;https',
+                        'action'        => 'keep',
+                    },
+                ]
+            },
+            {
+                'job_name'       => 'paws-haproxy',
+                'scheme'         => 'http',
+                'static_configs' => [
+                    {
+                        'targets' => ["${paws_apiserver_fqdn}:9901"],
+                    },
+                ],
+            },
+            {
+                'job_name'       => 'frontproxy-nginx',
+                'scheme'         => 'http',
+                'static_configs' => [
+                    {
+                        'targets' => map($proxies) |$element| { $value = "${element}:9113" },
+                    },
+                ],
+            },
+            {
+                'job_name'              => 'paws-kube-state-metrics',
+                'scheme'                => 'https',
+                'tls_config'            => {
+                    'insecure_skip_verify' => true,
+                    'cert_file'            => $paws_cert_pub,
+                    'key_file'             => $paws_cert_priv,
+                },
+                'kubernetes_sd_configs' => [
+                    {
+                        'api_server' => "https://${paws_apiserver_fqdn}:${paws_apiserver_port}",
+                        'role'       => 'pod',
+                        'tls_config' => {
+                            'insecure_skip_verify' => true,
+                            'cert_file'            => $paws_cert_pub,
+                            'key_file'             => $paws_cert_priv,
+                        },
+                    },
+                ],
+                'relabel_configs'       => [
+                    {
+                        'action' => 'labelmap',
+                        'regex'  => '__meta_kubernetes_node_label_(.+)',
+                    },
+                    {
+                        'target_label' => '__address__',
+                        'replacement'  => "${paws_apiserver_fqdn}:${paws_apiserver_port}",
+                    },
+                    {
+                        'target_label' => '__metrics_path__',
+                        # this service is not an arbitrary name; it was created
+                        # inside the k8s cluster with that specific name
+                        'replacement'  => '/api/v1/namespaces/metrics/services/kube-state-metrics/proxy/metrics',
+                    },
+                ]
+            },
+            {
+                'job_name'              => 'paws-cadvisor',
+                'scheme'                => 'https',
+                'tls_config'            => {
+                    'insecure_skip_verify' => true,
+                    'cert_file'            => $paws_cert_pub,
+                    'key_file'             => $paws_cert_priv,
+                },
+                'kubernetes_sd_configs' => [
+                    {
+                        'api_server' => "https://${paws_apiserver_fqdn}:${paws_apiserver_port}",
+                        'role'       => 'pod',
+                        'tls_config' => {
+                            'insecure_skip_verify' => true,
+                            'cert_file'            => $paws_cert_pub,
+                            'key_file'             => $paws_cert_priv,
+                        },
+                    },
+                ],
+                'relabel_configs'       => [
+                    {
+                        'action'        => 'keep',
+                        'regex'         => 'cadvisor',
+                        'source_labels' => ['__meta_kubernetes_pod_label_app'],
+                    },
+                    {
+                        'action' => 'labelmap',
+                        'regex'  => '__meta_kubernetes_pod_label_(.+)',
+                    },
+                    {
+                        'target_label' => '__address__',
+                        'replacement'  => "${paws_apiserver_fqdn}:${paws_apiserver_port}",
+                    },
+                    {
+                        'source_labels' => ['__meta_kubernetes_pod_name'],
+                        'regex'         => '(cadvisor-[a-zA-Z0-9]+)',
+                        'target_label'  => '__metrics_path__',
+                        # lint:ignore:single_quote_string_with_variables
+                        'replacement'   => '/api/v1/namespaces/metrics/pods/${1}/proxy/metrics',
+                        # lint:endignore
+                    },
+                ]
+            },
+            {
+                'job_name'       => 'paws-jupyterhub',
+                'scheme'         => 'https',
+                'static_configs' => [
+                    {
+                        'targets' => ['https://hub.paws.wmcloud.org/hub/metrics'],
+                    },
+                ],
             },
             {
                 'job_name'       => 'tools-email',
