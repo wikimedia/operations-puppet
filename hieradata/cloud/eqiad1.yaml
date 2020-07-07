@@ -42,7 +42,7 @@ elasticsearch::expected_nodes: 1
 elasticsearch::recover_after_nodes: 1
 archiva::proxy::ssl_enabled: false
 archiva::proxy::certificate_name: ssl-cert-snakeoil
-statsite::instance::graphite_host: 'cloudmetrics1002.eqiad.wmnet'
+graphite_host: 'cloudmetrics1002.eqiad.wmnet'
 profile::puppetdb::jvm_opts: '-Xmx4G'
 profile::puppetdb::elk_logging: false
 profile::puppetdb::filter_job_id: false

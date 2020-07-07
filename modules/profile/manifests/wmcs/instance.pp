@@ -1,9 +1,9 @@
 # basic profile for every CloudVPS instance
 class profile::wmcs::instance(
-    Boolean      $mount_nfs      = lookup('mount_nfs',                         {default_value => true}),
-    Boolean      $diamond_remove = lookup('diamond::remove',                   {default_value => false}),
-    String       $sudo_flavor    = lookup('sudo_flavor',                       {default_value => 'sudoldap'}),
-    Stdlib::Fqdn $metrics_server = lookup('statsite::instance::graphite_host', {default_value => 'localhost'}),
+    Boolean      $mount_nfs      = lookup('mount_nfs',       {default_value => true}),
+    Boolean      $diamond_remove = lookup('diamond::remove', {default_value => false}),
+    String       $sudo_flavor    = lookup('sudo_flavor',     {default_value => 'sudoldap'}),
+    Stdlib::Fqdn $metrics_server = lookup('graphite_host',   {default_value => 'localhost'}),
 ) {
     # force sudo on buster
     if $sudo_flavor == 'sudo' or os_version('debian >= buster') {

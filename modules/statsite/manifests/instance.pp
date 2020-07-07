@@ -20,12 +20,12 @@
 #   Export additional metrics for counters
 
 define statsite::instance(
-    $port              = 8125,
-    $graphite_host     = hiera('statsite::instance::graphite_host', 'localhost'),
-    $graphite_port     = hiera('statsite::instance::graphite_port', 2003),
-    $input_counter     = "statsd.${::hostname}.received",
-    $extended_counters = hiera('statsite::instance::extended_counters', 1),
-    $ensure            = present,
+    Wmflib::Ensure $ensure            = present,
+    Stdlib::Port   $port              = 8125,
+    Stdlib::Host   $graphite_host     = 'localhost',
+    Stdlib::Port   $graphite_port     = 2003,
+    String         $input_counter     = "statsd.${::hostname}.received",
+    Integer        $extended_counters = 1,
 ) {
     $stream_cmd = "python /usr/lib/statsite/sinks/graphite.py ${graphite_host} ${graphite_port} \"\""
 

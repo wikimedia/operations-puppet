@@ -19,8 +19,7 @@ profile::wmcs::monitoring::statsd_standby: cloudmetrics1001.eqiad.wmnet
 contactgroups: wmcs-team
 mgmt_contactgroups: wmcs-team-email
 # cloudmetrics
-statsite::instance::graphite_host: cloudmetrics1002.eqiad.wmnet
-statsite::instance::extended_counters: 1
+graphite_host: cloudmetrics1002.eqiad.wmnet
 
 profile::grafana::ldap:
   servers:

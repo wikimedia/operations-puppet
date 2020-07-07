@@ -5,7 +5,8 @@
 # Graphite or Ganglia. See <https://github.com/armon/statsite>.
 #
 class profile::statsite (
-  $ensure = lookup('profile::statsite::ensure', { 'default_value' => 'present' }),
+  Stdlib::Host   $graphite_host = lookup('graphite_host'),
+  Wmflib::Ensure $ensure = lookup('profile::statsite::ensure', { 'default_value' => 'present' }),
 ) {
     system::role { 'statsite':
         description => 'statsite server'
@@ -15,7 +16,8 @@ class profile::statsite (
         ensure => $ensure,
     }
     statsite::instance { '8125':
-        ensure => $ensure,
+        ensure        => $ensure,
+        graphite_host => $graphite_host,
     }
 
     ferm::service { 'statsite':

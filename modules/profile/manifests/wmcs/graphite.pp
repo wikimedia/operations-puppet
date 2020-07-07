@@ -1,5 +1,5 @@
 class profile::wmcs::graphite (
-    Stdlib::Fqdn $graphite_host = lookup('statsite::instance::graphite_host', {default_value => 'localhost'}),
+    Stdlib::Fqdn $graphite_host = lookup('graphite_host', {'default_value' => 'localhost'}),
 ) {
 
     include graphite::wmcs::archiver
