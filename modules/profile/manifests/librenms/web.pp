@@ -2,23 +2,29 @@
 class profile::librenms::web {
 
     require profile::librenms
-    $sitename      = $profile::librenms::sitename
-    $install_dir   = $profile::librenms::install_dir
-    $active_server = $profile::librenms::active_server
-    $ssl_settings  = ssl_ciphersuite('apache', 'strong', true)
 
-    httpd::site { $sitename:
-        content => template('profile/librenms/apache.conf.erb'),
-    }
+    $sitename       = $profile::librenms::sitename
+    $install_dir    = $profile::librenms::install_dir
+    $active_server  = $profile::librenms::active_server
+    $auth_mechanism = $profile::librenms::auth_mechanism
+    $ssl_settings   = ssl_ciphersuite('apache', 'strong', true)
 
     acme_chief::cert { 'librenms':
         puppet_svc => 'apache2',
     }
 
-    if $active_server == $::fqdn {
-        $monitoring_ensure = 'present'
+    if $auth_mechanism == 'sso' {
+        include profile::idp::client::httpd
     } else {
-        $monitoring_ensure = 'absent'
+        httpd::site { $sitename:
+            content => template('profile/librenms/apache.conf.erb'),
+        }
+    }
+
+
+    $monitoring_ensure = $active_server ? {
+        $facts['fqdn'] => 'present',
+        default        => 'absent',
     }
 
     monitoring::service { 'https':

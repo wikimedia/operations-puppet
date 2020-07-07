@@ -6,20 +6,21 @@
 # Switch it in hieradata/common.yaml, the default is just a fallback.
 #
 class profile::librenms (
-    Stdlib::Fqdn     $active_server   = lookup('netmon_server'),
-    Stdlib::Fqdn     $graphite_host   = lookup('graphite_host'),
-    String           $graphite_prefix = lookup('profile::librenms::graphite_prefix'),
-    String           $sitename        = lookup('profile::librenms::sitename'),
-    Stdlib::Unixpath $install_dir     = lookup('profile::librenms::install_dir'),
-    String           $laravel_app_key = lookup('profile::librenms::laravel_app_key'),
+    Stdlib::Fqdn     $active_server    = lookup('netmon_server'),
+    Stdlib::Fqdn       $graphite_host   = lookup('graphite_host'),
+    String             $graphite_prefix = lookup('profile::librenms::graphite_prefix'),
+    String             $sitename        = lookup('profile::librenms::sitename'),
+    Stdlib::Unixpath   $install_dir     = lookup('profile::librenms::install_dir'),
+    String             $laravel_app_key = lookup('profile::librenms::laravel_app_key'),
 
-    String           $db_user         = lookup('profile::librenms::dbuser'),
-    String           $db_password     = lookup('profile::librenms::dbpassword'),
-    Stdlib::Fqdn     $db_host         = lookup('profile::librenms::dbhost'),
-    String           $db_name         = lookup('profile::librenms::dbname'),
+    String             $db_user         = lookup('profile::librenms::dbuser'),
+    String             $db_password     = lookup('profile::librenms::dbpassword'),
+    Stdlib::Fqdn       $db_host         = lookup('profile::librenms::dbhost'),
+    String             $db_name         = lookup('profile::librenms::dbname'),
 
-    String           $irc_password    = lookup('profile::librenms::irc_password'),
-    Hash             $ldap_config     = lookup('ldap', Hash, hash, {}),
+    String             $irc_password    = lookup('profile::librenms::irc_password'),
+    Hash               $ldap_config     = lookup('ldap', Hash, hash, {}),
+    Enum['ldap','sso'] $auth_mechanism  = lookup('profile::librenms::auth_mechanism')
 ){
 
     include network::constants
@@ -103,8 +104,17 @@ class profile::librenms (
             'kernel time sync enabled',
             'preauth',
         ],
+        'auth_mechanism'     => $auth_mechanism,
 
-        'auth_mechanism'     => 'ldap',
+        'graphite'   => {
+            'enable' => true,
+            'host'   => $graphite_host,
+            'port'   => '2003',
+            'prefix' => $graphite_prefix,
+        },
+    }
+
+    $ldap = {
         'auth_ldap_server'   => "ldap://${ldap_config[ro-server]} ldap://${ldap_config[ro-server-fallback]}",
         'auth_ldap_starttls' => 'require',
         'auth_ldap_port'     => 389,
@@ -124,24 +134,34 @@ class profile::librenms (
         # Give all ops full read/write permissions
         'auth_ldap_group'  => ['cn=ops,ou=groups,dc=wikimedia,dc=org', 'cn=librenms-readers,ou=groups,dc=wikimedia,dc=org'],
         'auth_ldap_groups' => {'ops' => {'level' => 10}, 'librenms-readers' => {'level' => 5}},
-
-        'graphite'   => {
-            'enable' => true,
-            'host'   => $graphite_host,
-            'port'   => '2003',
-            'prefix' => $graphite_prefix,
-        },
+    }
+    $sso = {
+        'sso' => {
+            'mode'            => 'env',
+            'user_attr'       => 'HTTP_X_CAS_CN',
+            'group_strategy'  => 'map',
+            'group_attr'      => 'HTTP_X_CAS_MEMBEROF',
+            'group_level_map' => [
+                {'cn=ops' => 10},
+                {'cn=librenms-readers' => 5},
+            ],
+            'group_delimiter' => ',',
+        }
     }
 
+    $_config = $auth_mechanism ? {
+        'sso'   => $config + $sso,
+        default => $config + $ldap,
+    }
     class { 'librenms':
         install_dir     => $install_dir,
         rrd_dir         => '/srv/librenms/rrd',
-        config          => $config,
+        config          => $_config,
         active_server   => $active_server,
         laravel_app_key => $laravel_app_key,
     }
     class { 'librenms::syslog':
-        require => Class['::librenms']
+        require => Class['librenms']
     }
 
     include profile::librenms::web
