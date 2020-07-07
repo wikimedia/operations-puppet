@@ -2587,7 +2587,7 @@ service::catalog:
           timeout-clean-reconnect: 3
         ProxyFetch:
           url:
-          - https://varnishcheck.wikimedia.org/from/pybal
+          - https://healthcheck.wikimedia.org/varnish-fe
       scheduler: sh
     monitoring:
       check_command: check_https_url!en.wikipedia.org!/wiki/Special:BlankPage
@@ -2723,7 +2723,7 @@ service::catalog:
           timeout-clean-reconnect: 3
         ProxyFetch:
           url:
-          - https://varnishcheck.wikimedia.org/from/pybal
+          - https://healthcheck.wikimedia.org/varnish-fe
       scheduler: sh
     monitoring:
       check_command: check_https_url!upload.wikimedia.org!/monitoring/backend
