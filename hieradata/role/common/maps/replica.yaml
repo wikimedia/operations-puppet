@@ -21,7 +21,6 @@ admin::groups:
 
 cluster: 'maps'
 
-profile::cassandra::single_instance::graphite_host: 'graphite-in.eqiad.wmnet'
 profile::cassandra::single_instance::jmx_exporter_enabled: true
 
 profile::maps::apps::kartotherian_storage_id: v4

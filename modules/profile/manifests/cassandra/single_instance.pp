@@ -1,16 +1,16 @@
 class profile::cassandra::single_instance(
-  $cassandra_hosts = hiera('profile::cassandra::single_instance::seeds'),
-  $cluster_name = hiera('cluster'),
-  $prometheus_nodes = hiera('prometheus_nodes'),
-  $graphite_host = hiera('profile::cassandra::single_instance::graphite_host'),
-  $dc = hiera('profile::cassandra::single_instance::dc'),
-  $super_pass = hiera('profile::cassandra::single_instance::super_pass'),
-  $jmx_exporter_enabled = hiera('profile::cassandra::single_instance::jmx_exporter_enabled'),
+  Stdlib::Host        $graphite_host        = lookup('graphite_host'),
+  String              $cluster_name         = lookup('cluster'),
+  Array[Stdlib::Host] $prometheus_nodes     = lookup('prometheus_nodes'),
+  Array[Stdlib::Host] $cassandra_hosts      = lookup('profile::cassandra::single_instance::seeds'),
+  String              $dc                   = lookup('profile::cassandra::single_instance::dc'),
+  String              $super_pass           = lookup('profile::cassandra::single_instance::super_pass'),
+  Boolean             $jmx_exporter_enabled = lookup('profile::cassandra::single_instance::jmx_exporter_enabled'),
 ) {
   # localhost udp endpoint for logging pipeline
-  class { '::profile::rsyslog::udp_json_logback_compat': }
+  class { 'profile::rsyslog::udp_json_logback_compat': }
 
-  class { '::cassandra':
+  class { 'cassandra':
     cluster_name            => $cluster_name,
     seeds                   => $cassandra_hosts,
     dc                      => $dc,
@@ -23,12 +23,12 @@ class profile::cassandra::single_instance(
       jmx_exporter_enabled   => $jmx_exporter_enabled,
     }
   }
-  class { '::cassandra::metrics':
+  class { 'cassandra::metrics':
     graphite_host => $graphite_host,
   }
-  include ::cassandra::logging
+  class {'cassandra::logging': }
 
-  ::cassandra::instance::monitoring { 'default':
+  cassandra::instance::monitoring { 'default':
     instances => {
       'default' => {
         'listen_address' => $::cassandra::listen_address,
