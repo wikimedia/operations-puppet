@@ -49,7 +49,7 @@ class galera(
     # The debian package installs this for backwards compatibility with sysV;
     #  it's confusing to have two different ways to start and stop the service
     #  so let's just remove it.
-    file { 'init.d/mysql':
+    file { '/etc/init.d/mysql':
         ensure  => absent,
     }
 
