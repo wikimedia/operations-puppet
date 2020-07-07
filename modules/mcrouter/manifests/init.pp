@@ -112,7 +112,7 @@ class mcrouter(
         ensure   => $ensure,
         content  => "[Service]\nLimitNOFILE=64000\nUser=mcrouter\nNice=-19\n",
         override => true,
-        restart  => true,
+        restart  => false,
     }
 
     # Logging management
