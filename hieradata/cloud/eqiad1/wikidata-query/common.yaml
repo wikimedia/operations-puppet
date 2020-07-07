@@ -12,3 +12,4 @@ profile::query_service::event_service_endpoint: 'http://deployment-eventgate-3.d
 profile::query_service::blazegraph_options: []
 profile::query_service::blazegraph::monitoring_enabled: false
 profile::query_service::username: blazegraph
+profile::query_service::oauth: false
