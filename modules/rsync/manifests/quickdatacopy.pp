@@ -22,6 +22,11 @@
 #
 # [*bwlimit*] Optionally limit the maxmium bandwith used
 #
+# [*delete*] Optionally let rsync delete files on the _destination_ side if they
+#            do not exist on the source.
+#            To create exact mirrors instead of having old files that are deleted
+#            on the source pile up on the destination(s).
+#
 # [*server_uses_stunnel*]
 # For TLS-wrapping rsync.  Must be set here, and must be set true on rsync::server::wrap_with_stunnel
 # in the server's hiera.
@@ -33,6 +38,7 @@ define rsync::quickdatacopy(
   Boolean $auto_sync = true,
   Wmflib::Ensure $ensure = present,
   Optional[Integer] $bwlimit = undef,
+  Optional[Boolean] $delete = false,
   Boolean $server_uses_stunnel = false,  # Must match rsync::server::wrap_with_stunnel as looked up via hiera by the *server*!
   ) {
       if ($title =~ /\s/) {
@@ -62,6 +68,10 @@ define rsync::quickdatacopy(
           false   => '',
           default => "--rsh ${ssl_wrapper_path}"
       }
+      $_delete = $delete ? {
+          true    => ' --delete ',
+          default => ' '
+      }
 
       if $dest_host == $::fqdn {
 
@@ -78,7 +88,7 @@ define rsync::quickdatacopy(
           }
           $quickdatacopy = @("SCRIPT")
           #!/bin/sh
-          /usr/bin/rsync ${_rsh} -a ${_bwlimit} rsync://${source_host}/${title} ${module_path}/
+          /usr/bin/rsync ${_rsh}${_delete}-a ${_bwlimit} rsync://${source_host}/${title} ${module_path}/
           | SCRIPT
 
           file { "/usr/local/sbin/sync-${title}":
