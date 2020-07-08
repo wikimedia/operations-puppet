@@ -152,6 +152,28 @@ class profile::wmcs::prometheus(
         port       => 9283,
     }
 
+    # Don't worry about codfw1dev; no cloudmetrics in codfw anyway
+    if $::site == eqiad {
+        prometheus::class_config{ 'mysql_galera_eqiad1':
+            dest       => "${targets_path}/mysql_galera_eqiad1.yaml",
+            site       => $::site,
+            class_name => 'wmcs::openstack::eqiad1::control',
+            port       => 9104,
+            labels     => {
+                'deployment' => 'eqiad1'
+            }
+        }
+    }
+
+    $galera_jobs = [
+        {
+            'job_name'        => 'mysql-galera',
+            'file_sd_configs' => [
+                { 'files' => [ "${targets_path}/mysql_galera_*.yaml"] },
+            ],
+        }
+    ]
+
     prometheus::server { 'labs':
         listen_address        => '127.0.0.1:9900',
         storage_retention     => $storage_retention,
@@ -160,7 +182,7 @@ class profile::wmcs::prometheus(
         scrape_configs_extra  => array_concat(
             $blackbox_jobs, $rabbitmq_jobs, $pdns_jobs,
             $pdns_rec_jobs, $openstack_jobs, $redis_jobs,
-            $ceph_jobs,
+            $ceph_jobs, $galera_jobs,
         ),
     }
 
