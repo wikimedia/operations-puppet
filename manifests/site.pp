@@ -423,7 +423,7 @@ node /^db1(084|121|138|141|142|143|147|148|149)\.eqiad\.wmnet/ {
 # s4-test hosts on eqiad
 # temporarilly misc
 node 'db1077.eqiad.wmnet' {
-    role(mariadb::misc::idp_test)
+    role(mariadb::core_test)
 }
 
 # s4 (commons) core production dbs on codfw
