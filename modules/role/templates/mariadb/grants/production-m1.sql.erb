@@ -149,3 +149,19 @@ CREATE ROUTINE, ALTER ROUTINE, TRIGGER
 -- rddmarc
 GRANT ALTER, CREATE, SELECT, INSERT, UPDATE, DELETE
     ON rddmarc.* TO 'rddmarc'@'10.192.0.129' IDENTIFIED BY '<%=@rddmarc_pass%>';
+
+-- cas
+-- dbproxy1012
+-- Grants for 'cas'@'10.64.0.134'
+GRANT USAGE ON *.* TO `cas`@`10.64.0.134` IDENTIFIED BY '<%=@u2f_jpa_password%>';
+GRANT ALTER, CREATE, CREATE TEMPORARY TABLES, DELETE, INSERT, SELECT, UPDATE ON `cas_staging`.* TO `cas`@`10.64.0.134`;
+
+-- dbproxy1014
+-- Grants for 'cas'@'10.64.16.18'
+GRANT USAGE ON *.* TO `cas`@`10.64.16.18` IDENTIFIED BY '<%=@u2f_jpa_password%>';
+GRANT ALTER, CREATE, CREATE TEMPORARY TABLES, DELETE, INSERT, SELECT, UPDATE ON `cas_staging`.* TO `cas`@`10.64.16.18`;
+
+-- dbproxy2001
+-- Grants for 'cas'@'10.192.0.129'
+GRANT USAGE ON *.* TO `cas`@`10.192.0.129` IDENTIFIED BY '<%=@u2f_jpa_password%>';
+GRANT ALTER, CREATE, CREATE TEMPORARY TABLES, DELETE, INSERT, SELECT, UPDATE ON `cas_staging`.* TO `cas`@`10.192.0.129`;
