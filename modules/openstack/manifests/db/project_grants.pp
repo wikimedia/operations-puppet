@@ -3,6 +3,7 @@ define openstack::db::project_grants(
     $db_pass,
     $db_name,
     $access_hosts,
+    $privs = 'ALL PRIVILEGES',
     $project_name = undef,
 ) {
     $etc_dir = $project_name ? {

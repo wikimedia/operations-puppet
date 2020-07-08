@@ -1,13 +1,13 @@
-GRANT ALL PRIVILEGES ON <%= @db_name %>.* TO '<%= @db_user %>'@'localhost' \
+GRANT <%= @privs %> ON <%= @db_name %>.* TO '<%= @db_user %>'@'localhost' \
   IDENTIFIED BY '<%= @db_pass %>';
 
 <%- @access_hosts.each do |access_host| -%>
 
-GRANT ALL PRIVILEGES ON <%= @db_name %>.* TO '<%= @db_user %>'@'<%= scope.function_ipresolve([access_host, 4]) %>' \
+GRANT <%= @privs %> ON <%= @db_name %>.* TO '<%= @db_user %>'@'<%= scope.function_ipresolve([access_host, 4]) %>' \
   IDENTIFIED BY '<%= @db_pass %>';
 
 <% if @realm == "production" then %>
-GRANT ALL PRIVILEGES ON <%= @db_name %>.* TO '<%= @db_user %>'@'<%= scope.function_ipresolve([access_host, 6]) %>' \
+GRANT <%= @privs %> ON <%= @db_name %>.* TO '<%= @db_user %>'@'<%= scope.function_ipresolve([access_host, 6]) %>' \
   IDENTIFIED BY '<%= @db_pass %>';
 <% end -%>
 <% end %>
