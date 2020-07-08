@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
 import mwopenstackclients
 
@@ -26,6 +26,6 @@ instances = clients.allinstances(allregions=True)
 i = 0
 for instance in instances:
     if instance.flavor['id'] not in flavordict:
-        print "flavordict missing %s?" % instance.flavor['id']
+        print("flavordict missing %s?" % instance.flavor['id'])
     else:
-        print "%s, %s" % (instance.id, flavordict[instance.flavor['id']])
+        print("%s, %s" % (instance.id, flavordict[instance.flavor['id']]))
