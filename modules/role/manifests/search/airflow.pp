@@ -12,6 +12,7 @@ class role::search::airflow {
     include ::profile::analytics::cluster::users
     include ::profile::analytics::cluster::client
     include ::profile::analytics::cluster::repositories::statistics
+    include ::profile::analytics::refinery::repository
     include ::profile::analytics::search::airflow
 
     include ::profile::kerberos::client
