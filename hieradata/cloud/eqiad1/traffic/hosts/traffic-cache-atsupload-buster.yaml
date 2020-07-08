@@ -57,4 +57,17 @@ profile::trafficserver::tls::inbound_tls_settings:
   session_ticket_enable: 0
   ssl_handshake_timeout_in: 60
 profile::trafficserver::tls::unified_acme_chief: true
+profile::trafficserver::backend::mapping_rules:
+- target: http://upload.beta.wmflabs.org
+  replacement: http://deployment-ms-fe03.deployment-prep.eqiad.wmflabs
+  type: map
+  params:
+      - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
+      - '@pparam=/etc/trafficserver/lua/normalize-path.lua'
+      # decode    /
+      - '@pparam="2F"'
+      # encode    !  $  &  '  (  )  *  +  ,  :  ;  =  @  [  ]
+      - '@pparam="21 24 26 27 28 29 2A 2B 2C 3A 3B 3D 40 5B 5D"'
+      - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
+      - '@pparam=/etc/trafficserver/lua/x-mediawiki-original.lua'
 public_tls_unified_cert_vendor: lets-encrypt
