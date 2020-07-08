@@ -18,7 +18,7 @@
 # == Parameters
 #
 # [*repository*]
-#   Repository name in gerrit/phabricator.  Default: "mediawiki/services/$title"
+#   Repository name in gerrit/phabricator.  Default: "$title"
 #
 # [*scap_repository*]
 #   String or boolean.
@@ -88,7 +88,7 @@
 #   }
 #
 define scap::source(
-    String $repository = "mediawiki/services/${title}",
+    String $repository = $title,
     Variant[String,Boolean] $scap_repository = false,
     # TODO: change scap repo owner when scap figures out
     # how to bootstrap itself properly without trebuchet.

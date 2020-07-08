@@ -290,7 +290,7 @@ profile::keyholder::server::agents:
 # will be cloned on the scap deploy server.
 scap::sources:
   3d2png/deploy:
-    repository: 3d2png/deploy
+    repository: mediawiki/services/3d2png/deploy
 
   phabricator/deployment:
     repository: phabricator/deployment

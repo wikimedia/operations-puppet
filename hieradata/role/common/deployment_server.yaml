@@ -108,13 +108,10 @@ profile::keyholder::server::agents:
 # by the scap::server class.  Each source listed here
 # will be cloned on the scap deploy server.
 scap::sources:
-  3d2png/deploy:
-    repository: 3d2png/deploy
+  3d2png/deploy: {}
   analytics/refinery:
-    repository: analytics/refinery
     scap_repository: analytics/refinery/scap
-  analytics/hdfs-tools/deploy:
-    repository: analytics/hdfs-tools/deploy
+  analytics/hdfs-tools/deploy: {}
   dumps/dumps:
     repository: operations/dumps
     scap_repository: operations/dumps/scap
@@ -125,8 +122,7 @@ scap::sources:
   eventstreams/deploy:
     repository: mediawiki/services/eventstreams/deploy
   # Superset
-  analytics/superset/deploy:
-    repository: analytics/superset/deploy
+  analytics/superset/deploy: {}
   gerrit/gerrit:
     repository: operations/software/gerrit
   gervert/deploy:
@@ -137,24 +133,20 @@ scap::sources:
   iegreview/iegreview:
     repository: iegreview
     origin: phabricator
-  integration/docroot:
-    repository: integration/docroot
+  integration/docroot: {}
   kartotherian/deploy:
     repository: maps/kartotherian/deploy
 #    lvs_service: kartotherian
   logstash/plugins:
     repository: operations/software/logstash/plugins
-  analytics/turnilo/deploy:
-    repository: analytics/turnilo/deploy
-#    lvs_service: mobileapps
+  analytics/turnilo/deploy: {}
   ores/deploy:
     repository: mediawiki/services/ores/deploy
 #    lvs_service: ores
   parsoid/deploy:
     repository: mediawiki/services/parsoid/deploy
 #    lvs_service: parsoid
-  phabricator/deployment:
-    repository: phabricator/deployment
+  phabricator/deployment: {}
   restbase/deploy:
     repository: mediawiki/services/restbase/deploy
   striker/deploy:
@@ -195,26 +187,19 @@ scap::sources:
     repository: search/MjoLniR/deploy
   statsv/statsv:
     repository: analytics/statsv
-  performance/arc-lamp:
-    repository: performance/arc-lamp
-  performance/asoranking:
-    repository: performance/asoranking
-  performance/coal:
-    repository: performance/coal
-  performance/navtiming:
-    repository: performance/navtiming
+  performance/arc-lamp: {}
+  performance/asoranking: {}
+  performance/coal: {}
+  performance/navtiming: {}
   docker-pkg/deploy:
     repository: operations/docker-images/docker-pkg/deploy
   puppetboard/deploy:
     repository: operations/software/puppetboard/deploy
   debmonitor/deploy:
     repository: operations/software/debmonitor/deploy
-  releng/phatality:
-    repository: releng/phatality
-  design/style-guide:
-    repository: design/style-guide
-  search/airflow:
-    repository: search/airflow
+  releng/phatality: {}
+  design/style-guide: {}
+  search/airflow: {}
 
 profile::kubernetes::deployment_server::git_owner: trebuchet
 profile::kubernetes::deployment_server::git_group: wikidev
