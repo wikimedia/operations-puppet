@@ -40,7 +40,7 @@ define java::package(
     # certificate's sigalgs.
     if $hardened_tls {
         file { "/etc/java-${package_info['version']}-openjdk/security/java.security":
-            source  => template('java/java.security.erb'),
+            content => template('java/java.security.erb'),
             require => Package[$package_name],
         }
     }
