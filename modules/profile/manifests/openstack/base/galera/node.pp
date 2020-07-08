@@ -82,4 +82,22 @@ class profile::openstack::base::galera::node(
         port   => '9104',
         srange => "@resolve((${prometheus_ferm_nodes}))",
     }
+
+    openstack::db::project_grants { 'prometheus':
+        privs        => 'REPLICATION CLIENT, PROCESS',
+        access_hosts => $openstack_controllers,
+        db_name      => '*',
+        db_user      => 'prometheus',
+        db_pass      => $prometheus_db_pass,
+        project_name => 'prometheus',
+    }
+
+    openstack::db::project_grants { 'prometheus_performance':
+        privs        => 'SELECT',
+        access_hosts => $openstack_controllers,
+        db_name      => 'performance_schema',
+        db_user      => 'prometheus',
+        db_pass      => $prometheus_db_pass,
+        project_name => 'prometheus',
+    }
 }
