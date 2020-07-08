@@ -6,8 +6,6 @@ class profile::releases::mediawiki (
     Stdlib::Unixpath $prefix = lookup('profile::releases::mediawiki::prefix'),
     Stdlib::Port $http_port = lookup('profile::releases::mediawiki::http_port'),
     String $server_admin = lookup('profile::releases::mediawiki::server_admin'),
-    Stdlib::Fqdn $active_server = lookup('releases_server'),
-    Array[Stdlib::Fqdn] $secondary_servers = lookup('releases_servers_failover'),
     String $jenkins_agent_username = lookup('jenkins_agent_username'),
     String $jenkins_agent_key = lookup('profile::releases::mediawiki::jenkins_agent_key'),
 ){
@@ -65,14 +63,4 @@ class profile::releases::mediawiki (
     }
 
     backup::set { 'srv-org-wikimedia': }
-
-    $secondary_servers.each |String $secondary_server| {
-        rsync::quickdatacopy { "srv-org-wikimedia-releases-${secondary_server}":
-          ensure      => present,
-          auto_sync   => true,
-          source_host => $active_server,
-          dest_host   => $secondary_server,
-          module_path => '/srv/org/wikimedia/releases',
-        }
-    }
 }
