@@ -2,17 +2,21 @@ class profile::openstack::base::galera::node(
     Integer             $server_id             = lookup('profile::openstack::base::galera::server_id'),
     Boolean             $enabled               = lookup('profile::openstack::base::galera::enabled'),
     Stdlib::Port        $listen_port           = lookup('profile::openstack::base::galera::listen_port'),
+    String              $prometheus_db_pass    = lookup('profile::openstack::base::galera::prometheus_db_pass'),
     Array[Stdlib::Fqdn] $openstack_controllers = lookup('profile::openstack::base::openstack_controllers'),
     Array[Stdlib::Fqdn] $designate_hosts       = lookup('profile::openstack::base::designate_hosts'),
     Array[Stdlib::Fqdn] $labweb_hosts          = lookup('profile::openstack::base::labweb_hosts'),
     Stdlib::Fqdn        $puppetmaster          = lookup('profile::openstack::base::puppetmaster::web_hostname'),
     ) {
 
+    $socket = '/var/run/mysqld/mysqld.sock'
+
     class {'::galera':
         cluster_nodes => $openstack_controllers,
         server_id     => $server_id,
         enabled       => $enabled,
         port          => $listen_port,
+        socket        => $socket,
     }
 
     $cluster_node_ips = inline_template("@resolve((<%= @openstack_controllers.join(' ') %>))")
@@ -65,5 +69,17 @@ class profile::openstack::base::galera::node(
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Troubleshooting',
     }
 
-    profile::prometheus::mysqld_exporter_instance { 'wmcs-galera': }
+    prometheus::mysqld_exporter { 'default':
+        client_password => $prometheus_db_pass,
+        client_socket   => $socket,
+    }
+
+    $prometheus_nodes = hiera('prometheus_nodes')
+    $prometheus_ferm_nodes = join($prometheus_nodes, ' ')
+
+    ferm::service { 'prometheus-mysqld-exporter':
+        proto  => 'tcp',
+        port   => '9104',
+        srange => "@resolve((${prometheus_ferm_nodes}))",
+    }
 }
