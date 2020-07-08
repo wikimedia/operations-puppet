@@ -107,8 +107,8 @@ profile::idp::memcached_enable: true
 profile::idp::memcached::mcrouter_cluster: 'idp-test'
 profile::idp::memcached::enable_tls: true
 profile::idp::u2f_jpa_enable: true
-profile::idp::u2f_jpa_server: db1077.eqiad.wmnet
-profile::idp::u2f_jpa_db: cas_test
+profile::idp::u2f_jpa_server: m1-master.eqiad.wmnet
+profile::idp::u2f_jpa_db: cas_staging
 profile::prometheus::memcached_exporter::arguments: '--memcached.address=localhost:11000'
 profile::java::hardened_tls: true
 profile::java::egd_source: '/dev/urandom'
