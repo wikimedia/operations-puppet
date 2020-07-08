@@ -152,7 +152,8 @@ profile::services_proxy::envoy::listeners:
     timeout: "120s"
   - name: mwapi-async # mediawiki api for long-lasting async requests
     port: 6500
-    service: api-https
+    service: "api-https"
+    upstream: "api-rw.discovery.wmnet"
     keepalive: "4s"
     timeout: "120s"
 # default listeners list used by the MW installations
