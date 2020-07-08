@@ -329,10 +329,12 @@ scap::sources:
     repository: performance/navtiming
 
   # RESTBase
-  restbase/deploy: {}
+  restbase/deploy:
+    repository: mediawiki/services/restbase/deploy
 
   # Recommendation API
-  recommendation-api/deploy: {}
+  recommendation-api/deploy:
+    repository: mediawiki/services/recommendation-api/deploy
 
   # Cassandra metrics collection
   cassandra/metrics-collector:

@@ -131,7 +131,8 @@ scap::sources:
     repository: operations/software/gerrit
   gervert/deploy:
     repository: operations/software/gerrit/tools/gervert/deploy
-  graphoid/deploy: {}
+  graphoid/deploy:
+    repository: mediawiki/services/graphoid/deploy
 #    lvs_service: graphoid
   iegreview/iegreview:
     repository: iegreview
@@ -146,13 +147,16 @@ scap::sources:
   analytics/turnilo/deploy:
     repository: analytics/turnilo/deploy
 #    lvs_service: mobileapps
-  ores/deploy: {}
+  ores/deploy:
+    repository: mediawiki/services/ores/deploy
 #    lvs_service: ores
-  parsoid/deploy: {}
+  parsoid/deploy:
+    repository: mediawiki/services/parsoid/deploy
 #    lvs_service: parsoid
   phabricator/deployment:
     repository: phabricator/deployment
-  restbase/deploy: {}
+  restbase/deploy:
+    repository: mediawiki/services/restbase/deploy
   striker/deploy:
     repository: labs/striker/deploy
   horizon/deploy:
@@ -199,7 +203,7 @@ scap::sources:
     repository: performance/coal
   performance/navtiming:
     repository: performance/navtiming
-  "docker-pkg/deploy":
+  docker-pkg/deploy:
     repository: operations/docker-images/docker-pkg/deploy
   puppetboard/deploy:
     repository: operations/software/puppetboard/deploy
