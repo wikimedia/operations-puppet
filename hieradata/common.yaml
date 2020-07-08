@@ -1151,7 +1151,7 @@ ntp_peers:
 # Url to use for reaching graphite
 
 graphite_host: 'graphite-in.eqiad.wmnet'
-graphite_url: "http://%{lookup('graphite_host')}"
+graphite_url: "http://%{hiera('graphite_host')}"
 
 cumin_masters:
 - 10.64.32.25                 # cumin1001.eqiad.wmnet
