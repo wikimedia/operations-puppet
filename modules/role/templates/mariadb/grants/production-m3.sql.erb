@@ -1,9 +1,3 @@
--- start updating grants
--- haproxy@dbproxy1003
-
-GRANT USAGE
-    ON *.* TO 'haproxy'@'10.64.0.198';
-
 -- haproxy@dbproxy1020
 
 GRANT USAGE
@@ -18,14 +12,6 @@ GRANT USAGE
 
 GRANT ALL PRIVILEGES
     ON `phabricator%`.* TO 'phadmin'@'10.64.16.8';
-
--- phadmin@dbproxy1003
-GRANT USAGE
-    ON *.* TO 'phadmin'@'10.64.0.198'
-    IDENTIFIED BY '<%= @phab_admin_pass %>';
-
-GRANT ALL PRIVILEGES
-    ON `phabricator%`.* TO 'phadmin'@'10.64.0.198';
 
 -- phadmin@dbproxy1020
 GRANT USAGE
@@ -48,17 +34,8 @@ GRANT CREATE, DROP
 GRANT DELETE, EXECUTE, INSERT, SELECT, SHOW VIEW, UPDATE
     ON `phabricator%`.* TO 'phuser'@'10.64.16.8';
 
--- phuser@dbproxy1003
-
-GRANT REPLICATION CLIENT
-    ON *.* TO 'phuser'@'10.64.0.198'
-    IDENTIFIED BY '<%= @phab_app_pass %>';
-
 GRANT CREATE, DROP
     ON `phabricator_cache`.`cache_markupcache` TO 'phuser'@'10.64.16.8';
-
-GRANT DELETE, EXECUTE, INSERT, SELECT, SHOW VIEW, UPDATE
-    ON `phabricator%`.* TO 'phuser'@'10.64.0.198';
 
 -- phuser@dbproxy1020
 
@@ -84,17 +61,6 @@ GRANT SELECT ON `phabricator_project`.* TO 'phstats'@'10.64.16.8';
 GRANT SELECT ON `phabricator_differential`.* TO 'phstats'@'10.64.16.8';
 GRANT SELECT ON `phabricator_herald`.* TO 'phstats'@'10.64.16.8';
 
--- phstats@dbproxy1003
-
-GRANT USAGE
-    ON *.* TO 'phstats'@'10.64.0.198'
-    IDENTIFIED BY '<%= @phab_metrics_pass %>';
-GRANT SELECT ON `phabricator_maniphest`.* TO 'phstats'@'10.64.0.198';
-GRANT SELECT ON `phabricator_user`.* TO 'phstats'@'10.64.0.198';
-GRANT SELECT ON `phabricator_project`.* TO 'phstats'@'10.64.0.198';
-GRANT SELECT ON `phabricator_differential`.* TO 'phstats'@'10.64.0.198';
-GRANT SELECT ON `phabricator_herald`.* TO 'phstats'@'10.64.0.198';
-
 -- phstats@dbproxy1020
 
 GRANT USAGE
@@ -115,15 +81,6 @@ GRANT USAGE
 
 GRANT SELECT
     ON `phabricator_maniphest`.* TO 'phmanifest'@'10.64.16.8';
-
--- phmanifest@dbproxy1003
-
-GRANT USAGE
-    ON *.* TO 'phmanifest'@'10.64.0.198'
-    IDENTIFIED BY '<%= @phab_manifest_pass %>';
-
-GRANT SELECT
-    ON `phabricator_maniphest`.* TO 'phmanifest'@'10.64.0.198';
 
 -- phmanifest@dbproxy1020
 
