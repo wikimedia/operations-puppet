@@ -16,6 +16,13 @@ class profile::toolforge::docker::registry(
     class { '::docker::registry':
         storage_backend => 'filebackend',
         datapath        => '/srv/registry',
+        config          => {
+            'storage' => {
+                'delete' => {
+                    'enabled' => true,
+                },
+            },
+        },
     }
 
     class { '::docker::registry::web':
