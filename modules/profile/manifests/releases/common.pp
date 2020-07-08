@@ -1,6 +1,8 @@
 class profile::releases::common(
+    Stdlib::Fqdn $sitename = lookup('profile::releases::mediawiki::sitename'),
     Stdlib::Fqdn $active_server = lookup('releases_server'),
     Array[Stdlib::Fqdn] $secondary_servers = lookup('releases_servers_failover'),
+    String $server_admin = lookup('profile::releases::mediawiki::server_admin'),
 ){
 
     # T205037
@@ -26,4 +28,26 @@ class profile::releases::common(
           module_path => '/srv/org/wikimedia/releases',
         }
     }
+
+    class { '::httpd':
+        modules => ['rewrite', 'headers', 'proxy', 'proxy_http'],
+    }
+
+    httpd::site { $sitename:
+        content => template('releases/apache.conf.erb'),
+    }
+
+    monitoring::service { 'https_releases':
+        description   => "HTTPS ${sitename}",
+        check_command => "check_https_url!${sitename}!/",
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Releases.wikimedia.org',
+    }
+
+    ferm::service { 'releases_http':
+        proto  => 'tcp',
+        port   => '80',
+        srange => "(${::ipaddress} ${::ipaddress6})",
+    }
+
+    backup::set { 'srv-org-wikimedia': }
 }

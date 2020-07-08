@@ -32,22 +32,8 @@ class profile::releases::mediawiki (
         prefix           => $prefix,
     }
 
-    class { '::httpd':
-        modules => ['rewrite', 'headers', 'proxy', 'proxy_http'],
-    }
-
-    httpd::site { $sitename:
-        content => template('releases/apache.conf.erb'),
-    }
-
     httpd::site { $sitename_jenkins:
         content => template('releases/apache-jenkins.conf.erb'),
-    }
-
-    monitoring::service { 'https_releases':
-        description   => "HTTPS ${sitename}",
-        check_command => "check_https_url!${sitename}!/",
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Releases.wikimedia.org',
     }
 
     monitoring::service { 'http_releases_jenkins':
@@ -55,12 +41,4 @@ class profile::releases::mediawiki (
         check_command => "check_http_url!${sitename_jenkins}!/login",
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Releases.wikimedia.org#Jenkins',
     }
-
-    ferm::service { 'releases_http':
-        proto  => 'tcp',
-        port   => '80',
-        srange => "(${::ipaddress} ${::ipaddress6})",
-    }
-
-    backup::set { 'srv-org-wikimedia': }
 }
