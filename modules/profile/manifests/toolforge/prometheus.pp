@@ -452,15 +452,6 @@ class profile::toolforge::prometheus (
                 ],
             },
             {
-                'job_name'       => 'frontproxy-nginx',
-                'scheme'         => 'http',
-                'static_configs' => [
-                    {
-                        'targets' => map($proxies) |$element| { $value = "${element}:9113" },
-                    },
-                ],
-            },
-            {
                 'job_name'              => 'paws-kube-state-metrics',
                 'scheme'                => 'https',
                 'tls_config'            => {
