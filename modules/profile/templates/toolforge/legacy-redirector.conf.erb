@@ -14,6 +14,8 @@ server {
     ssl_session_cache shared:SSL:50m;
     ssl_session_timeout 5m;
     add_header Strict-Transport-Security "max-age=86400";
+    add_header Access-Control-Allow-Origin '*';
+    add_header Access-Control-Allow-Headers 'X-Wikimedia-Debug';
 
     <%= @ssl_settings.join("\n    ") %>
     <%- end -%>
