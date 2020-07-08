@@ -88,7 +88,7 @@ class profile::restbase(
     $listeners  = lookup('profile::services_proxy::envoy::listeners'),
     $parsoid_uri = lookup(
         'profile::restbase::parsoid_uri',
-        {'default_value' => wmflib::service::get_url('parsoid-php', '/w/rest.php')}
+        {'default_value' => wmflib::service::get_url('parsoid-async', '/w/rest.php', $listeners)}
     ),
     $graphoid_uri = lookup(
         'profile::restbase::graphoid_uri',

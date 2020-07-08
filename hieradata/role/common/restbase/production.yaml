@@ -31,6 +31,7 @@ profile::services_proxy::envoy::enabled_listeners:
  - eventgate-main
  - parsoid-async
  - mwapi-async
+service::configuration::mwapi_host: 'http://localhost:6500'
 #
 # Cassandra
 # FIXME: no graphite_host since graphite1003 decom'ed in T209357
