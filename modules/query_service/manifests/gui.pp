@@ -55,7 +55,7 @@ class query_service::gui(
         require => Nginx::Site[$deploy_name],
     }
 
-    file { '/etc/wdqs/gui_vars.sh':
+    file { "/etc/${deploy_name}/gui_vars.sh":
         ensure  => present,
         content => template('query_service/gui_vars.erb'),
         owner   => 'root',
