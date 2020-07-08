@@ -141,6 +141,20 @@ profile::services_proxy::envoy::listeners:
     port: 6017
     service: wikifeeds
     timeout: "120s"
+  - name: parsoid-async # Parsoid-php for long-lasting async requests.
+    port: 6502
+    service: parsoid-php
+    keepalive: "4s"
+    retry:
+      retry_on: "5xx"
+      num_retries: 1
+    xfp: https
+    timeout: "120s"
+  - name: mwapi-async # mediawiki api for long-lasting async requests
+    port: 6500
+    service: api-https
+    keepalive: "4s"
+    timeout: "120s"
 # default listeners list used by the MW installations
 profile::services_proxy::envoy::enabled_listeners:
   - parsoid

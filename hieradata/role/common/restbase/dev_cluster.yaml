@@ -35,6 +35,9 @@ profile::services_proxy::envoy::enabled_listeners:
  - recommendation
  - wikifeeds
  - eventgate-main
+ - parsoid-async
+ - mwapi-async
+
 
 # TODO: get this from cassandra's instances?
 profile::restbase::seeds_ng:
