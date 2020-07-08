@@ -7,7 +7,6 @@ class profile::releases::mediawiki (
     Stdlib::Port $http_port = lookup('profile::releases::mediawiki::http_port'),
     String $server_admin = lookup('profile::releases::mediawiki::server_admin'),
     Stdlib::Fqdn $active_server = lookup('releases_server'),
-    Stdlib::Fqdn $passive_server = lookup('releases_server_failover'),
     Array[Stdlib::Fqdn] $secondary_servers = lookup('releases_servers_failover'),
     String $jenkins_agent_username = lookup('jenkins_agent_username'),
     String $jenkins_agent_key = lookup('profile::releases::mediawiki::jenkins_agent_key'),
