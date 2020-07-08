@@ -2,7 +2,6 @@ define openstack::db::project_grants(
     $db_user,
     $db_pass,
     $db_name,
-    $db_host,
     $access_hosts,
     $project_name = undef,
 ) {

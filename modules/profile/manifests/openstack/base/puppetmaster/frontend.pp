@@ -116,7 +116,6 @@ class profile::openstack::base::puppetmaster::frontend(
 
     openstack::db::project_grants { 'labspuppet':
         access_hosts => flatten([$openstack_controllers, keys($puppetmasters)]),
-        db_host      => $encapi_db_host,
         db_name      => $encapi_db_name,
         db_user      => $encapi_db_user,
         db_pass      => $encapi_db_pass,
