@@ -72,14 +72,14 @@ class profile::openstack::base::galera::node(
     prometheus::mysqld_exporter { 'default':
         client_password => $prometheus_db_pass,
         client_socket   => $socket,
-}
+    }
 
     $prometheus_nodes = hiera('prometheus_nodes')
     $prometheus_ferm_nodes = join($prometheus_nodes, ' ')
 
     ferm::service { 'prometheus-mysqld-exporter':
         proto  => 'tcp',
-        port   => '13306',
+        port   => '9104',
         srange => "@resolve((${prometheus_ferm_nodes}))",
     }
 
