@@ -25,8 +25,11 @@
 #  traffic_layout can be found in https://wikitech.wikimedia.org/wiki/Apache_Traffic_Server#Additional_ATS_instances
 #  and https://docs.trafficserver.apache.org/en/8.0.x/appendices/command-line/traffic_layout.en.html
 #
-# [*port*]
-#   Bind trafficserver to this port (default: 8080).
+# [*http_port*]
+#   Bind trafficserver to this TCP port for HTTP requests.
+#
+# [*https_port*]
+#   Bind trafficserver to this TCP port for HTTPS requests.
 #
 # [*disable_dns_resolution*]
 #   Disables (1) or enables (0) DNS resolution of hosts defined on remapping rules (default: 0)
@@ -203,7 +206,8 @@ define trafficserver::instance(
     Trafficserver::Paths $paths,
     String $conftool_service,
     Boolean $default_instance = false,
-    Stdlib::Port $port = 8080,
+    Optional[Stdlib::Port] $http_port = undef,
+    Optional[Stdlib::Port] $https_port = undef,
     Integer[0, 1] $disable_dns_resolution = 0,
     Optional[Trafficserver::Network_settings] $network_settings = undef,
     Optional[Trafficserver::HTTP_settings] $http_settings = undef,
@@ -235,6 +239,10 @@ define trafficserver::instance(
 
     require ::trafficserver
     $user = $trafficserver::user  # needed by udev_storage.rules.erb and records.config.erb
+
+    if !defined('$http_port') and !defined('$https_port') {
+      fail('You need to specify at least one HTTP(S) port')
+    }
 
     if $network_settings and $network_settings['sock_option_flag_in'] >= 0x8 { # TCP_FASTOPEN is enabled
         if !defined(Sysctl::Parameters['TCP Fast Open']) {  # TODO: Get rid of this as soon as nginx
@@ -354,6 +362,12 @@ define trafficserver::instance(
         $update_ocsp = false
     }
 
+
+    if ($http_port and $http_port < 1024) or ($https_port and $https_port < 1024) {
+      $privileged_port = true
+    } else {
+      $privileged_port = false
+    }
     systemd::service { $service_name:
         content        => init_template('trafficserver', 'systemd_override'),
         override       => $service_override,

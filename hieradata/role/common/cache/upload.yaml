@@ -58,8 +58,6 @@ prometheus::varnishkafka_exporter::config:
 
   num_entries_to_get: 2
 
-# profile::trafficserver::tls
-profile::trafficserver::tls::port: 443
 
 # Default weights for conftool
 profile::cache::base::default_weights:

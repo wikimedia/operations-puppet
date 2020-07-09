@@ -4,7 +4,7 @@
 #
 class profile::trafficserver::backend (
     String $user=hiera('profile::trafficserver::user', 'trafficserver'),
-    Stdlib::Port $port=hiera('profile::trafficserver::backend::port', 3128),
+    Stdlib::Port $http_port=hiera('profile::trafficserver::backend::http_port', 3128),
     Trafficserver::Outbound_TLS_settings $outbound_tls_settings=hiera('profile::trafficserver::backend::outbound_tls_settings'),
     Optional[Trafficserver::Network_settings] $network_settings=hiera('profile::trafficserver::backend::network_settings', undef),
     Optional[Trafficserver::HTTP_settings] $http_settings=hiera('profile::trafficserver::backend::http_settings', undef),
@@ -84,7 +84,7 @@ class profile::trafficserver::backend (
         paths                   => $paths,
         conftool_service        => $conftool_service,
         default_instance        => $default_instance,
-        port                    => $port,
+        http_port               => $http_port,
         network_settings        => $network_settings,
         http_settings           => $http_settings,
         h2_settings             => $h2_settings,
@@ -134,7 +134,7 @@ class profile::trafficserver::backend (
     # Monitoring
     profile::trafficserver::monitoring { "trafficserver_${instance_name}_monitoring":
         paths                    => $paths,
-        port                     => $port,
+        port                     => $http_port,
         prometheus_exporter_port => $prometheus_exporter_port,
         default_instance         => true,
         instance_name            => $instance_name,
