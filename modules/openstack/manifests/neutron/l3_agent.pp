@@ -24,6 +24,11 @@ class openstack::neutron::l3_agent(
         require => Package['neutron-l3-agent'],
     }
 
+    # ensure the module is loaded at boot, otherwise sysctl parameters might be ignored
+    kmod::module { 'nf_conntrack':
+        ensure => present,
+    }
+
     sysctl::parameters { 'openstack':
         values   => {
             # Turn off IP filter
