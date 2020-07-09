@@ -164,10 +164,10 @@ function do_global_read_response()
     local vary = ts.server_response.header['Vary']
 
     if ts.server_response.header['Set-Cookie'] then
-        if ts.server_response.is_cacheable() then
+        local cache_control = ts.server_response.header['Cache-Control'] or "-"
+        if not (string.find(cache_control, "private") or string.find(cache_control, "no%-cache") or string.find(cache_control, "no%-store")) then
             -- This should never happen, log the fact that an origin server
             -- sent a Set-Cookie response claiming that it can be cached
-            local cache_control = ts.server_response.header['Cache-Control'] or "-"
             local request_id = ts.server_response.header['X-Request-Id'] or "-"
             local server = ts.server_response.header['Server'] or "-"
 
