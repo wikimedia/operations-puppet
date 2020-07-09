@@ -1,2 +1,1 @@
 do_acme: false
-profile::librenms::auth_mechanism: sso
