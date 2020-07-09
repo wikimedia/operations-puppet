@@ -1,16 +1,18 @@
 varnishtest "Ensure that cacheable responses with Set-Cookie are not cached"
 
 server s1 {
-    loop 2 {
-        rxreq
-        expect req.url == "/1"
-        # The response is:
-        # - mistakenly marked by the origin as cacheable
-        # - setting a cookie
-        txresp -hdr "Cache-Control: public, s-maxage=10" \
-            -hdr "Set-Cookie: this-is-a-cookie" \
-            -hdr "Server: name.example.org" -hdr "X-Request-Id: 42"
-    }
+    # The response is:
+    # - mistakenly marked by the origin as cacheable
+    # - setting a cookie
+    rxreq
+    expect req.url == "/1"
+    txresp -hdr "Cache-Control: public, s-maxage=10, max-age=0" \
+           -hdr "Set-Cookie: this-is-cookie-1" \
+           -hdr "Server: name.example.org" -hdr "X-Request-Id: 42"
+
+    rxreq
+    expect req.url == "/1"
+    txresp -hdr "Set-Cookie: this-is-cookie-2" -hdr "X-Request-Id: 43"
 } -start
 
 varnish v1 -arg "-p vcl_path=${vcl_path} -p vcc_err_unref=false -p vcc_allow_inline_c=true -p cc_command='${cc_command}'" -vcl+backend {
@@ -33,12 +35,17 @@ varnish v1 -vcl {
 } -start
 
 client c1 {
-    loop 2 {
-        txreq -url "/1" -hdr "Host: meta.wikimedia.org" -hdr "X-Forwarded-Proto: https"
-        rxresp
-        expect resp.status == 200
-        delay .1
-    }
+    txreq -url "/1" -hdr "Host: meta.wikimedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+    expect resp.status == 200
+    expect resp.http.Set-Cookie == "this-is-cookie-1"
+    expect resp.http.X-Request-Id == 42
+
+    txreq -url "/1" -hdr "Host: meta.wikimedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+    expect resp.status == 200
+    expect resp.http.Set-Cookie == "this-is-cookie-2"
+    expect resp.http.X-Request-Id == 43
 } -run
 
 varnish v1 -expect cache_hit == 0
