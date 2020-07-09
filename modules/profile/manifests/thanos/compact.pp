@@ -13,6 +13,7 @@ class profile::thanos::compact (
         objstore_password => $objstore_password,
         http_port         => $http_port,
         retention         => $retention,
+        concurrency       => 1,
     }
 
     if $thanos_compact_host == $::fqdn {
