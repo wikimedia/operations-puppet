@@ -283,6 +283,8 @@ class profile::toolforge::prometheus (
             {
                 'job_name'              => 'new-k8s-cadvisor',
                 'scheme'                => 'https',
+                'scrape_interval'       => '4m',
+                'scrape_timeout'        => '60s',
                 'tls_config'            => {
                     'insecure_skip_verify' => true,
                     'cert_file'            => $cert_pub,
