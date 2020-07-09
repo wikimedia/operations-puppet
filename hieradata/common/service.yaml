@@ -1584,7 +1584,7 @@ service::catalog:
     - dnsdisc: mobileapps
       active_active: true
   ncredir:
-    description: Non canonical redirect service
+    description: Non canonical domains redirect service
     encryption: false
     ip: &id005
       codfw:
