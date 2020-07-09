@@ -21,6 +21,18 @@ class profile::webperf::xhgui (
     # Package xhgui (and dependencies) is built from performance/debs
     require_package('libapache2-mod-php7.3', 'php7.3-mysql', 'xhgui')
 
+    # php-twig 1.24.0 is from stretch.  We've rebuilt it for buster but the
+    # older version needs to be pinned in order for apt to use it.  (xhgui is
+    # not yet compatible with newer versions.)
+    if os_version('debian == buster') {
+        apt::pin { 'php-twig':
+            pin      => 'version 1.*',
+            package  => 'php-twig',
+            priority => '1001',
+            before   => Package['xhgui'],
+        }
+    }
+
     ferm::service { 'webperf-xhgui-http':
         proto  => 'tcp',
         port   => '80',
