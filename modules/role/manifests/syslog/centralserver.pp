@@ -10,10 +10,12 @@ class role::syslog::centralserver (
     include ::profile::backup::host
 
     system::role { 'syslog::centralserver':
-        description => 'Central syslog server'
+        description => 'Central syslog server and web requests debugging'
     }
 
     include ::profile::bird::anycast
+
+    include ::profile::kafkatee::webrequest::ops
 
     ferm::service { 'rsyslog-receiver_udp':
         proto   => 'udp',
