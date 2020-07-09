@@ -281,7 +281,7 @@ funnel	*wikipedia.in	http://wikimedia.in/wikipedia.html
 funnel	*wikipediazero.org	https://foundation.wikimedia.org/wiki/Wikipedia_Zero
 
 # pywikipedia.org (T60803). This domain uses non-WMF DNS servers
-funnel	*pywikipedia.org	//tools.wmflabs.org/pywikibot/
+funnel	*pywikipedia.org	https://pywikibot.toolforge.org/
 
 # pywikibot.org (T106311). This domain uses non-WMF DNS servers
-funnel	*pywikibot.org	//tools.wmflabs.org/pywikibot/
+funnel	*pywikibot.org	https://pywikibot.toolforge.org/
