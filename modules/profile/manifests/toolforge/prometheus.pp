@@ -583,6 +583,14 @@ class profile::toolforge::prometheus (
         user    => 'prometheus',
     }
 
+    cron { 'prometheus_paws_project_targets':
+        ensure  => present,
+        command => "/usr/local/bin/prometheus-labs-targets --project paws > ${targets_path}/node_paws.$$ && mv ${targets_path}/node_paws.$$ ${targets_path}/node_paws.yml",
+        minute  => '*/10',
+        hour    => '*',
+        user    => 'prometheus',
+    }
+
     cron { 'prometheus_tools_project_ssh_targets':
         ensure  => present,
         command => "/usr/local/bin/prometheus-labs-targets --port 22 > ${targets_path}/ssh_banner.$$ && mv ${targets_path}/ssh_banner.$$ ${targets_path}/ssh_banner.yml",
