@@ -124,6 +124,12 @@ class lvs::monitor_services(
                 params      => {'spec_segment' => ['/openapi']},
                 notes_url   => 'https://www.mediawiki.org/wiki/Kask',
                 ;
+            "check_proton_cluster_${dc}":
+                host        => "proton.svc.${dc}.wmnet",
+                description => "proton LVS ${dc}",
+                target      => "https://proton.svc.${dc}.wmnet:4030",
+                notes_url   => 'https://wikitech.wikimedia.org/wiki/Proton',
+                ;
         }
         monitoring::service { "check_docker_registry_cluster_${dc}":
             host          => "docker-registry.svc.${dc}.wmnet",
