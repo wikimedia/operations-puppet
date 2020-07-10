@@ -12,6 +12,12 @@ class role::netmon {
     include ::profile::rancid
     include ::profile::smokeping
 
+    if os_version('debian == stretch') {
+        $php_module = 'php7.2'
+    } else {
+        $php_module = 'php7.3'
+    }
+
     class { '::httpd':
         modules => ['headers',
                     'rewrite',
@@ -19,7 +25,7 @@ class role::netmon {
                     'proxy_http',
                     'ssl',
                     'fcgid',
-                    'php7.2',
+                    $php_module,
                     ],
     }
 }
