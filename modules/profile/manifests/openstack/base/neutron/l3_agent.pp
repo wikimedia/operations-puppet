@@ -33,4 +33,8 @@ class profile::openstack::base::neutron::l3_agent(
         only_dmz_cidr_hack => $only_dmz_cidr_hack,
     }
     contain '::openstack::neutron::l3_agent'
+
+    class { '::prometheus::node_neutron_namespace':
+        ensure => 'present',
+    }
 }
