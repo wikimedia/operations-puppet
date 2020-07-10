@@ -23,8 +23,6 @@ profile::idp::client::httpd::acme_chief_cert: icinga
 profile::idp::client::httpd::document_root: /usr/share/icinga/htdocs
 profile::idp::client::httpd::vhost_content: 'profile/idp/client/httpd-icinga.erb'
 profile::idp::client::httpd::virtual_host: icinga.wikimedia.org
-profile::idp::client::httpd::server_aliases:
-- cas-icinga.wikimedia.org
 profile::idp::client::httpd::required_groups:
   - 'cn=ops,ou=groups,dc=wikimedia,dc=org'
   - 'cn=wmf,ou=groups,dc=wikimedia,dc=org'
