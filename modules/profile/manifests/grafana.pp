@@ -1,21 +1,25 @@
-# == Class: profile::grafana
-#
-# Grafana is a dashboarding webapp for Graphite.
-#
+# @summary Grafana is a dashboarding webapp for Graphite.
+# @param secret_key the secret key
+# @param admin_password the admin password
+# @param config a hash of config settings.  This paramater uses a 'deep' merge strategy
+# @param ldap a Hash of ldap servers
+# @param wpt_graphite_proxy_port If set  Configure a local Apache which will serve as
+#        a reverse proxy for performance-team's Graphite instance.
 class profile::grafana (
-    $domain=hiera('profile::grafana::domain'),
-    $secret_key=hiera('profile::grafana::secret_key'),
-    $admin_password=hiera('profile::grafana::admin_password'),
-    $config=lookup('profile::grafana::config', {'default_value' => {}}),
-    $ldap=lookup('profile::grafana::ldap', {'default_value' => undef}), # Grafana-specific LDAP settings, used by >= 5
-    $wpt_graphite_proxy_port=lookup('profile::grafana::wpt_graphite_proxy_port', {'default_value' => undef}),
+    Stdlib::Fqdn $domain         = lookup('profile::grafana::domain'),
+    String       $secret_key     = lookup('profile::grafana::secret_key'),
+    String       $admin_password = lookup('profile::grafana::admin_password'),
+    Hash         $config         = lookup('profile::grafana::config'),
+    Hash         $ldap           = lookup('profile::grafana::ldap', {'default_value' => undef}),
+    Optional[Stdlib::Port] $wpt_graphite_proxy_port = lookup('profile::grafana::wpt_graphite_proxy_port',
+                                                            {'default_value' => undef}),
 ) {
 
-    include ::profile::backup::host
+    include profile::backup::host
 
-    include ::passwords::ldap::production
+    include passwords::ldap::production
 
-    include ::profile::base::firewall
+    include profile::base::firewall
 
     # This isn't needed by grafana, but is handy for inspecting its database.
     require_package(['sqlite3'])
