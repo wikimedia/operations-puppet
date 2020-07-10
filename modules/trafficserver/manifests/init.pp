@@ -31,4 +31,8 @@ class trafficserver(
         owner  => 'root',
         group  => 'root',
     }
+
+    rsyslog::conf { 'trafficserver':
+        content => file('trafficserver/rsyslog.conf'),
+    }
 }
