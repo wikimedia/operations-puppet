@@ -26,7 +26,7 @@ import sys
 import yaml
 
 
-def flatten(l, a=None):
+def flatten(memberlist, a=None):
     '''
     Flatten a list recursively. Make sure to only flatten list elements, which
     is a problem with itertools.chain which also flattens strings. a defaults
@@ -37,7 +37,7 @@ def flatten(l, a=None):
     if a is None:
         a = []
 
-    for i in l:
+    for i in memberlist:
         if isinstance(i, list):
             flatten(i, a)
         else:
@@ -64,10 +64,12 @@ if args.wikitext:
     TOP_LEFT = '! ' + TOP_LEFT
     ROW_SEPARATOR = '\n|'
     GROUP_BEGIN = '|-\n|'
+    POSITIVE = 'style="background-color:lightgreen" |OK'
 else:
     HEADER_SEPARATOR = '\t'
     ROW_SEPARATOR = '\t'
     GROUP_BEGIN = ''
+    POSITIVE = 'OK'
 
 with open('data.yaml', 'r', encoding='utf-8') as f:
     admins = yaml.safe_load(f)
@@ -92,7 +94,7 @@ for group_name in sorted(groups.keys()):
 
     members = set(users) & set(group_members)
     print(GROUP_BEGIN + ROW_SEPARATOR.join(
-        [group_name] + ['OK' if u in members else ' ' for u in users]))
+        [group_name] + [POSITIVE if u in members else ' ' for u in users]))
 
 if args.wikitext:
     print('|}')
