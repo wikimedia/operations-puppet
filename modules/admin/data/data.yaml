@@ -3835,6 +3835,10 @@ ldap_only_users:
     ensure: present
     realname: Carolyn Li-Madeo
     email: cmadeo@wikimedia.org
+  coka:
+    ensure: present
+    realname: Conny Kawohl
+    email: conny.kawohl@wikimedia.de
   coreyfloyd:
     ensure: present
     realname: Corey Floyd
