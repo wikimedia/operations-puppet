@@ -157,7 +157,7 @@ class profile::wmcs::prometheus(
         prometheus::class_config{ 'mysql_galera_eqiad1':
             dest       => "${targets_path}/mysql_galera_eqiad1.yaml",
             site       => $::site,
-            class_name => 'wmcs::openstack::eqiad1::control',
+            class_name => 'role::wmcs::openstack::eqiad1::control',
             port       => 9104,
             labels     => {
                 'deployment' => 'eqiad1'
