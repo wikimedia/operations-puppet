@@ -24,6 +24,8 @@ ExecReload=/usr/bin/traffic_ctl --run-root=<%= @paths['prefix'] %> config reload
 # number (15)
 SuccessExitStatus=15
 
+SyslogIdentifier=<%= @service_name %>
+
 LimitNOFILE=500000
 LimitMEMLOCK=90000
 
