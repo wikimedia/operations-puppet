@@ -2,13 +2,13 @@
 # We need special rules to allow access for some services which
 # run on hosts with public IPs.
 class profile::mariadb::ferm_misc {
-    ferm::service { 'netmon-tools-stretch':
+    ferm::service { 'netmon-librenms':
         proto   => 'tcp',
         port    => '3306',
         notrack => true,
-        srange  => '@resolve(netmon1002.wikimedia.org)',
+        srange  => '@resolve((netmon1002.wikimedia.org netmon2001.wikimedia.org))',
     }
-    ferm::service { 'netbox-librenms':
+    ferm::service { 'netbox-librenms-reports':
         proto   => 'tcp',
         port    => '3306',
         notrack => true,
