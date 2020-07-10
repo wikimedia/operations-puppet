@@ -281,7 +281,7 @@ groups:
               kevinbazira, keepit-ssh, jiji, cohi, mstyles, accraze, kzeta, snowick,
               aarora, zpapierski, knissen, jiawang, mholloway-shell, joewalsh, tarrow,
               itamar, phedenskog, aaron, dpifke, aklapper, jmads, andrew-wmde, daniram,
-              rodolfovalentim, lulu, dcipoletti, chrisalbon]
+              rodolfovalentim, lulu, dcipoletti, chrisalbon, wikigit]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata]
   analytics-admins:
