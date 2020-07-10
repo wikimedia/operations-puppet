@@ -1,4 +1,4 @@
-profile::query_service::ns: wdq
+profile::query_service::blazegraph_main_ns: wdq
 profile::query_service::package_dir: '/srv/wdqs/blazegraph'
 profile::query_service::data_dir: '/srv/wdqs/blazegraph'
 profile::query_service::deploy_name: 'wdqs'

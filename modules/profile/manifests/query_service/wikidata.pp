@@ -25,7 +25,8 @@ class profile::query_service::wikidata(
     Boolean $monitoring_enabled = lookup('profile::query_service::blazegraph::monitoring_enabled', {'default_value' => false}),
     Optional[String] $sparql_query_stream = lookup('profile::query_service::sparql_query_stream', {'default_value' => undef}),
     Optional[String] $event_service_endpoint = lookup('profile::query_service::event_service_endpoint', {'default_value' => undef}),
-    String $federation_user_agent = lookup('profile::query_service::federation_user_agent')
+    String $federation_user_agent = lookup('profile::query_service::federation_user_agent'),
+    String $blazegraph_main_ns = lookup('profile::query_service::blazegraph_main_ns')
 ) {
     require ::profile::query_service::common
     require ::profile::query_service::updater
@@ -38,6 +39,7 @@ class profile::query_service::wikidata(
 
     profile::query_service::blazegraph { "${deploy_name}-blazegraph":
         journal                => 'wikidata',
+        blazegraph_main_ns     => $blazegraph_main_ns,
         username               => $username,
         package_dir            => $package_dir,
         data_dir               => $data_dir,

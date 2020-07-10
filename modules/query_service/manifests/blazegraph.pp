@@ -32,6 +32,7 @@ define query_service::blazegraph(
     Array[String] $extra_jvm_opts,
     Boolean $use_geospatial,
     String $journal,
+    String $blazegraph_main_ns,
     String $federation_user_agent,
     Optional[Query_service::OAuthSettings] $oauth_settings = undef
 ) {

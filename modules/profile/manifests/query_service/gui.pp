@@ -8,7 +8,7 @@ class profile::query_service::gui (
     Boolean $enable_ldf = hiera('profile::query_service::enable_ldf', false),
     Integer $max_query_time_millis = hiera('profile::query_service::max_query_time_millis', 60000),
     Boolean $high_query_time_port = hiera('profile::query_service::high_query_time_port', false),
-    Enum['wdq','wcq'] $ns = lookup('profile::query_service::ns'),
+    String $blazegraph_main_ns = lookup('profile::query_service::blazegraph_main_ns'),
     Boolean $oauth = lookup('profile::query_service::oauth')
 ) {
     require ::profile::query_service::common
@@ -22,7 +22,7 @@ class profile::query_service::gui (
         username              => $username,
         enable_ldf            => $enable_ldf,
         max_query_time_millis => $max_query_time_millis,
-        ns                    => $ns,
+        blazegraph_main_ns    => $blazegraph_main_ns,
         oauth                 => $oauth,
     }
 

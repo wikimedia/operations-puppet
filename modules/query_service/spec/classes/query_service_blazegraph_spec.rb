@@ -24,6 +24,7 @@ describe 'query_service::blazegraph', :type => :define do
         :extra_jvm_opts => [],
         :use_geospatial => false,
         :federation_user_agent => 'TEST User-Agent',
+        :blazegraph_main_ns => 'wdq',
         }
    }
 
@@ -67,6 +68,7 @@ describe 'query_service::blazegraph', :type => :define do
         :extra_jvm_opts => [],
         :use_geospatial => false,
         :federation_user_agent => 'TEST User-Agent',
+        :blazegraph_main_ns => 'wdq',
         }
    }
 
@@ -107,6 +109,7 @@ describe 'query_service::blazegraph', :type => :define do
         :extra_jvm_opts => [],
         :use_geospatial => true,
         :federation_user_agent => 'TEST User-Agent',
+        :blazegraph_main_ns => 'wdq',
         }
    }
 

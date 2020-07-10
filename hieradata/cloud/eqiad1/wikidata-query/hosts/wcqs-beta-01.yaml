@@ -1,4 +1,4 @@
-profile::query_service::ns: wcq
+profile::query_service::blazegraph_main_ns: wcq
 profile::query_service::blazegraph_heap_size: 31g
 profile::query_service::blazegraph_use_deployed_config: false
 profile::query_service::forward_rsyslog_host: deployment-logstash03.deployment-prep.eqiad.wmflabs

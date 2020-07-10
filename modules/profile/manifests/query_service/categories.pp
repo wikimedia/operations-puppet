@@ -33,6 +33,10 @@ class profile::query_service::categories(
 
     profile::query_service::blazegraph { $instance_name:
         journal                => 'categories',
+        # initial namespace for categories, this will not be used as importing
+        # the categories should always create a new namespace suffixed with the
+        # date and tracked in the aliases.map file
+        blazegraph_main_ns     => 'categories',
         username               => $username,
         package_dir            => $package_dir,
         data_dir               => $data_dir,

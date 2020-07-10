@@ -21,7 +21,7 @@ class query_service::gui(
     Query_service::DeployMode $deploy_mode,
     Boolean $enable_ldf,
     Integer $max_query_time_millis,
-    Enum['wdq','wcq'] $ns,
+    String $blazegraph_main_ns,
     Boolean $oauth
 ) {
     $port = 80
