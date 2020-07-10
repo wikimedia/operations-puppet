@@ -55,5 +55,10 @@ etcd:
     <% @etcd_hosts.each do |host| -%>
       - "https://<%= host -%>:2379"
     <% end -%>
+<% else -%>
+etcd:
+  local:
+    extraArgs:
+      listen-metrics-urls: "http://0.0.0.0:2381"
 <% end -%>
 
