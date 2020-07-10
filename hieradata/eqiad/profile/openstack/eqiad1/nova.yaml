@@ -1,5 +1,5 @@
 profile::openstack::eqiad1::region: 'eqiad1-r'
-profile::openstack::eqiad1::nova::db_host: 'openstack.codfw1dev.wikimediacloud.org'
+profile::openstack::eqiad1::nova::db_host: 'openstack.eqiad1.wikimediacloud.org'
 profile::openstack::eqiad1::nova::db_name: 'nova_eqiad1'
 profile::openstack::eqiad1::nova::db_name_api: 'nova_api_eqiad1'
 profile::openstack::eqiad1::nova::dhcp_domain: 'eqiad.wmflabs'
