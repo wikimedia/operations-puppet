@@ -132,6 +132,33 @@ function uncacheable_cookie(cookie, vary)
     return false
 end
 
+function log_set_cookie_response()
+    -- Log Set-Cookie responses that look cacheable
+    local cache_control = ts.server_response.header['Cache-Control'] or "-"
+
+    if string.find(cache_control, "private") or string.find(cache_control, "no%-cache") or string.find(cache_control, "no%-store") then
+        -- Looks uncacheable
+        return
+    end
+
+    -- This should never happen, log the fact that an origin server
+    -- sent a Set-Cookie response claiming that it can be cached
+    local request_id = ts.server_response.header['X-Request-Id'] or "-"
+    local server = ts.server_response.header['Server'] or "-"
+    local host = ts.client_request.header['Host'] or "-"
+    local msg = "Cacheable object with Set-Cookie found! bereq.url: " .. ts.client_request.get_uri() ..
+                " Host: " .. host ..
+                " Cache-Control: " .. cache_control ..
+                " Set-Cookie: " .. ts.server_response.header['Set-Cookie'] ..
+                " X-Request-Id: " .. request_id ..
+                " Server: " .. server
+
+    if not string.find(host, "wikimedia.org") or host == "meta.wikimedia.org" or host == "commons.wikimedia.org" then
+        -- Send violations for wikis/meta/commons to syslog
+        ts.error(msg)
+    end
+end
+
 function do_global_read_response()
     -- Various fairly severe privacy/security/uptime risks exist if we allow
     -- possibly compromised or misconfigured internal apps to emit these headers
@@ -164,20 +191,7 @@ function do_global_read_response()
     local vary = ts.server_response.header['Vary']
 
     if ts.server_response.header['Set-Cookie'] then
-        local cache_control = ts.server_response.header['Cache-Control'] or "-"
-        if not (string.find(cache_control, "private") or string.find(cache_control, "no%-cache") or string.find(cache_control, "no%-store")) then
-            -- This should never happen, log the fact that an origin server
-            -- sent a Set-Cookie response claiming that it can be cached
-            local request_id = ts.server_response.header['X-Request-Id'] or "-"
-            local server = ts.server_response.header['Server'] or "-"
-
-            ts.error("Cacheable object with Set-Cookie found! bereq.url: " .. ts.client_request.get_uri() ..
-                    " Cache-Control: " .. cache_control ..
-                    " Set-Cookie: " .. ts.server_response.header['Set-Cookie'] ..
-                    " X-Request-Id: " .. request_id ..
-                    " Server: " .. server)
-        end
-
+        log_set_cookie_response()
         do_not_cache()
         -- At the frontend layer we do have measures in place to ensure that,
         -- regardless of what the origin says, Set-Cookie responses are never
