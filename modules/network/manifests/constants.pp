@@ -1,11 +1,13 @@
 class network::constants {
-    # Note this name is misleading.  Most of these are "external" networks,
-    # but some subnets of the IPv6 space are not externally routed, even if
-    # they're externally route-able (the ones used for private vlans).
     $module_path = get_module_path($module_name)
     $network_data = loadyaml("${module_path}/data/data.yaml")
     $all_network_subnets = $network_data['network::subnets']
+
+    # Note this name (external_networks) is misleading.  Most of these are "external" networks,
+    # but some subnets of the IPv6 space are not externally routed, even if
+    # they're externally route-able (the ones used for private vlans).
     $external_networks = $network_data['network::external']
+
     $network_infra = $network_data['network::infrastructure']
     $mgmt_networks = $network_data['network::management']
 
