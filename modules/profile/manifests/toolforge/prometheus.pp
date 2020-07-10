@@ -591,6 +591,14 @@ class profile::toolforge::prometheus (
         user    => 'prometheus',
     }
 
+    cron { 'prometheus_paws_k8s_etcd_targets':
+        ensure  => present,
+        command => "/usr/local/bin/prometheus-labs-targets --project paws --port 2381 --prefix paws-k8s-control- > ${targets_path}/etcd_paws.$$ && mv ${targets_path}/etcd_paws.$$ ${targets_path}/etcd_paws.yml",
+        minute  => '*/10',
+        hour    => '*',
+        user    => 'prometheus',
+    }
+
     cron { 'prometheus_tools_project_ssh_targets':
         ensure  => present,
         command => "/usr/local/bin/prometheus-labs-targets --port 22 > ${targets_path}/ssh_banner.$$ && mv ${targets_path}/ssh_banner.$$ ${targets_path}/ssh_banner.yml",
