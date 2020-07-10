@@ -8,6 +8,8 @@ profile::grafana::config:
   auth.anonymous:
     enabled: true
     org_name: Wikimedia
+  security:
+    allow_embedding: true
 profile::grafana::ldap:
   servers:
     eqiad:
