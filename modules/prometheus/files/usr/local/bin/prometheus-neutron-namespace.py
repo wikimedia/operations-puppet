@@ -51,9 +51,6 @@ def collect_values(netns_dict):
                 sys.exit(1)
 
             netns_dict[netns][key] = r.stdout.decode("utf-8").strip().split()[2]
-            logging.info(
-                "collected {} {} {}".format(netns, key, netns_dict[netns][key])
-            )
 
 
 def dump_values(netns_dict):
@@ -73,14 +70,11 @@ def dump_values(netns_dict):
         pwd.getpwnam("prometheus").pw_uid,
         pwd.getpwnam("prometheus").pw_gid,
     )
+    logging.info("metrics have been dumped to {}".format(OUTPUT_FILE))
 
 
 def main():
-    bold_start = "\033[1m"
-    bold_end = "\033[0m"
-    logging_format = "{}[%(filename)s]{} %(levelname)s: %(message)s".format(
-        bold_start, bold_end
-    )
+    logging_format = "[%(filename)s] %(levelname)s: %(message)s"
     logging.basicConfig(format=logging_format, level=logging.INFO, stream=sys.stdout)
 
     if os.geteuid() != 0:
