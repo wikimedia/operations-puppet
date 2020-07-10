@@ -29,7 +29,7 @@ class profile::mariadb::ferm_misc (
         proto   => 'tcp',
         port    => '3306',
         notrack => true,
-        srange  => '@resolve((mx1001.wikimedia.org mx2001.wikimedia.org wiki-mail-eqiad.wikimedia.org wiki-mail-codfw.wikimedia.org))',
+        srange  => '@resolve((mx1001.wikimedia.org mx2001.wikimedia.org wiki-mail-eqiad.wikimedia.org wiki-mail-codfw.wikimedia.org mx-in1001.wikimedia.org mx-in2001.wikimedia.org))',
     }
 
     ferm::service { 'idp_staging':
