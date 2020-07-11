@@ -94,6 +94,14 @@ class arclamp(
         require => Package['performance/arc-lamp']
     }
 
+    # arclamp used to be known as xenon; clean up old copies of it.
+    file { '/usr/local/bin/xenon-generate-svgs':
+        ensure => absent,
+    }
+    cron { 'xenon_generate_svgs':
+        ensure  => absent,
+    }
+
     # This supports running multiple pipelines; in the past we had one
     # for HHVM and one for PHP7.  Currently only the latter is needed.
     arclamp::instance {
