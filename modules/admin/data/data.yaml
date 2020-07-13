@@ -3635,6 +3635,7 @@ users:
     gid: 500
     ssh_keys:
      - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOiHafWCjGy8aC+Xvq1YoqGHkOnEz4HjMhw+Bpo/4pkK moriel@mowmf'
+    krb: present
   sbailey:
     ensure: present
     realname: Shannon Bailey
