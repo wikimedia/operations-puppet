@@ -25,18 +25,22 @@ DEFAULT_BCONSOLE_PATH = '/usr/sbin/bconsole'
 DEFAULT_PARALLEL_THREADS = 4
 JOB_PATTERN = r'\s*Job\s*\{\s*([^\}]*)\s*\}\s*'
 OPTION_PATTERN = r'\s*([^\=]+)\s*=\s*\"?([^\"\n]+)\"?\s*'
+DEFAULT_JOB_MONITORING_IGNORELIST = '/etc/bacula/job_monitoring_ignorelist'
 
 
 class Bacula(object):
 
     def __init__(self, config_path=DEFAULT_JOB_CONFIG_PATH,
                  bconsole_path=DEFAULT_BCONSOLE_PATH,
-                 parallel_threads=DEFAULT_PARALLEL_THREADS):
+                 parallel_threads=DEFAULT_PARALLEL_THREADS,
+                 ignorelist_path=DEFAULT_JOB_MONITORING_IGNORELIST):
         self.config_path = config_path
         self.bconsole_path = bconsole_path
         self.parallel_threads = parallel_threads
+        self.ignorelist_path = ignorelist_path
         self.backups = None
         self.categories = None
+        self.ignorelist = list()
 
     def get_expected_freshness(self, schedule):
         """
@@ -91,7 +95,11 @@ class Bacula(object):
                     job_properties['expected_full_freshness'] = expected_full_freshness
                 elif key in job_properties.keys():  # TODO: Should we detect duplicates?
                     job_properties[key] = value
+            # ignore non-backups and badly configured jobs
             if job_properties['job_type'] != 'backup' or job_properties['name'] is None:
+                continue
+            # ignore manual list of jobs to skip
+            if job_properties['name'] in self.ignorelist:
                 continue
             backups[job_properties['name']] = job_properties
         return backups
@@ -111,6 +119,19 @@ class Bacula(object):
             config_file = os.path.join(self.config_path, f)
             if os.path.isfile(config_file):  # skip directories
                 self.backups.update(self.read_configuration_file(config_file))
+
+    def read_ignorelist(self):
+        """
+        Tries to read the list of ignored jobs for monitoring and store it on memory
+        """
+        try:
+            with open(self.ignorelist_path, 'r') as file:
+                lines = file.read().splitlines()
+            # ignore empty lines and comments
+            self.ignorelist = [i.strip() for i in lines
+                               if i.strip() and not i.strip().startswith('#')]
+        except Exception:
+            pass
 
     def format_bacula_value(self, value, key):
         """
@@ -585,6 +606,7 @@ class BaculaCollector(object):
         Gather metrics
         """
         bacula = Bacula(self.bconsole_path, self.config_path)
+        bacula.read_ignorelist()
         bacula.read_configured_backups()
         bacula.add_job_executions()
         yield from self.get_good_backup_dates(bacula)  # noqa: E999
@@ -673,6 +695,8 @@ def bacula_print_status(options):
         bacula.print_job_status(options.job)
         sys.exit(0)
 
+    if options.icinga:  # only ignore for icinga output
+        bacula.read_ignorelist()
     bacula.read_configured_backups()
 
     if options.list_jobs:

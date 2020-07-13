@@ -157,6 +157,14 @@ class profile::backup::director(
     }
     base::service_auto_restart { 'prometheus-bacula-exporter': }
 
+    file { '/etc/bacula/job_monitoring_ignorelist':
+        ensure => present,
+        source => 'puppet:///modules/profile/backup/job_monitoring_ignorelist',
+        owner  => 'bacula',
+        group  => 'bacula',
+        mode   => '0550',
+    }
+
     ferm::service { 'bacula-director':
         proto  => 'tcp',
         port   => '9101',
