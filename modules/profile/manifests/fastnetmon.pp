@@ -27,7 +27,7 @@ class profile::fastnetmon (
     nrpe::monitor_service { 'fastnetmon':
         description     => 'fastnetmon is alerting',
         nrpe_command    => "${nrpe_path} ${icinga_dir}",
-        notes_url       => 'https://docs.google.com/document/d/1SeXdegjsfL94R6XYB1I4Uv8yjCPH1tVXeL0taJF0NNs/preview#heading=h.t9asvs2hdthm',
+        notes_url       => 'https://bit.ly/wmf-fastnetmon',
         dashboard_links => [ 'https://w.wiki/8oU', ],
         retries         => 15,
         critical        => true,
