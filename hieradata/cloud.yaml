@@ -45,6 +45,7 @@ profile::puppetdb::database::replication_lag_crit: 16777216
 profile::puppetdb::database::replication_lag_warn: 1048576
 profile::puppetdb::slaves: []
 profile::puppetdb::monitor_agentrun: false
+profile::envoy::ensure: present
 profile::tlsproxy::envoy::sni_support: 'no'
 profile::tlsproxy::envoy::tls_port: 443
 profile::tlsproxy::envoy::websockets: false
@@ -56,6 +57,7 @@ profile::tlsproxy::envoy::services:
   - server_names: ['*']
     port: 80
 profile::tlsproxy::envoy::upstream_addr: "%{facts.fqdn}"
+profile::tlsproxy::envoy::capitalize_headers: false
 
 # Firewall logging
 profile::base::firewall::enable_logging: true
@@ -116,7 +118,12 @@ profile::idp::gauth_signing_key: changeit
 profile::idp::idp_primary: "%{facts.fqdn}"
 profile::idp::totp_encryption_key: ~
 profile::idp::totp_signing_key: ~
-profile::idp::memcached_enable: false
+profile::idp::memcached::ensure: present
+profile::idp::memcached::idp_nodes: []
+profile::idp::memcached::mcrouter_cluster: idp
+profile::idp::memcached::enable_tls: false
+profile::idp::memcached::ssl_cert: "%{facts.puppet_config.hostcert}"
+profile::idp::memcached::ssl_key: "%{facts.puppet_config.hostprivkey}"
 profile::idp::u2f_jpa_enable: false
 profile::idp::u2f_jpa_username: cas
 profile::idp::u2f_jpa_password: changeme
