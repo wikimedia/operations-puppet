@@ -1,4 +1,4 @@
-profile::openstack::eqiad1::designate::db_host: 'm5-master.eqiad.wmnet'
+profile::openstack::eqiad1::designate::db_host: 'openstack.eqiad1.wikimediacloud.org'
 profile::openstack::eqiad1::designate::wmflabsdotorg_project: 'wmflabsdotorg'
 profile::openstack::eqiad1::designate::domain_id_internal_forward_legacy: '114f1333-c2c1-44d3-beb4-ebed1a91742b'
 profile::openstack::eqiad1::designate::domain_id_internal_forward: '67603ef4-3d64-40d6-90d3-5b7776a99034'
