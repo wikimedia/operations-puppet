@@ -26,3 +26,4 @@ profile::query_service::use_revisions: true
 # they are often used to monitor logs, for example by smalyshev
 monitor_screens: false
 profile::query_service::oauth: false
+profile::query_service::federation_user_agent: 'Wikidata Query Service (test); https://query.wikidata.org/'
