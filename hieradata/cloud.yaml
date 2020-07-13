@@ -121,7 +121,7 @@ profile::idp::u2f_jpa_enable: false
 profile::idp::u2f_jpa_username: cas
 profile::idp::u2f_jpa_password: changeme
 profile::idp::u2f_jpa_server: 127.0.0.1
-profile::idp::u2f_jpa_table: cas
+profile::idp::u2f_jpa_db: cas
 profile::idp::client::httpd::cookie_path: /var/cache/apache2/mod_auth_cas
 profile::idp::client::httpd::certificate_path: /etc/ssl/certs
 profile::idp::client::httpd::authn_header: CAS-User
