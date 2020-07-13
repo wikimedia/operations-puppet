@@ -577,15 +577,6 @@ node /^db2(115|131)\.codfw\.wmnet/ {
 
 ## m1 shard
 
-# To be decommissioned
-node 'db1097.eqiad.wmnet' {
-    class { '::role::mariadb::misc':
-        shard  => 'm1',
-        master => false,
-    }
-}
-
-# Future m1 master # T256717
 node 'db1080.eqiad.wmnet' {
     class { '::role::mariadb::misc':
         shard  => 'm1',
