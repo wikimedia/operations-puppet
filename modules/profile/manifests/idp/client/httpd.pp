@@ -15,7 +15,8 @@
 # @param enable_monitor if true an icinga check to make sure the site correctly redirects
 # @param protected_uri The protected URI endpoint which is validated if "enable_monitor" is set.  default: '/'
 # @param required_groups An array of LDAP groups allowed to access this resource
-# @param acme_cheif_cert the name of the acme chief certificate to use
+# @param acme_chief_cert the name of the acme chief certificate to use
+# @param vhost_settings Allows to pass settings to the vhost config which are unrelated to the IDP setup
 # @param proxied_as_https if true set the proxied_as address to https://${vhost}/
 # @param staging if true also configure the staging  vhost as staging-${vhost}
 class profile::idp::client::httpd (
@@ -38,6 +39,7 @@ class profile::idp::client::httpd (
     String[1]                     $cookie_scope     = lookup('profile::idp::client::httpd::cookie_scope'),
     Boolean                       $proxied_as_https = lookup('profile::idp::client::httpd::proxied_as_https'),
     Boolean                       $staging          = lookup('profile::idp::client::httpd::staging'),
+    Optional[Hash[String,String]] $vhost_settings   = lookup('profile::idp::client::httpd::vhost_settings'),
     Optional[Array[String[1]]]    $required_groups  = lookup('profile::idp::client::httpd::required_groups'),
     Optional[String[1]]           $acme_chief_cert  = lookup('profile::idp::client::httpd::acme_chief_cert',
                                                             {'default_value' => undef}),
