@@ -33,6 +33,7 @@ class trafficserver(
     }
 
     rsyslog::conf { 'trafficserver':
-        content => file('trafficserver/rsyslog.conf'),
+        content  => file('trafficserver/rsyslog.conf'),
+        priority => 20,
     }
 }
