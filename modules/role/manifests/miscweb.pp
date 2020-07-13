@@ -25,4 +25,5 @@ class role::miscweb {
     include ::profile::microsites::bienvenida      # https://bienvenida.wikimedia.org (T207816)
     include ::profile::microsites::wikiworkshop    # https://wikiworkshop.org (T242374)
     include ::profile::microsites::static_codereview # https://static-codereview.wikimedia.org (T243056)
+    include ::profile::microsites::security        # https://security.wikimedia.org (T257830)
 }

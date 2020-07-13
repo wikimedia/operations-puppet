@@ -6,6 +6,8 @@ profile::microsites::design::server_name: 'design.wikimedia.org'
 profile::microsites::design::server_admin: 'noc@wikimedia.org'
 profile::microsites::sitemaps::server_name: 'sitemaps.wikimedia.org'
 profile::microsites::sitemaps::server_admin: 'noc@wikimedia.org'
+profile::microsites::security::server_name: 'security.wikimedia.org'
+profile::microsites::security::server_admin: 'noc@wikimedia.org'
 
 # Envoy TLS termination configuration.
 # Configures a full sink of all requests to https to the http port

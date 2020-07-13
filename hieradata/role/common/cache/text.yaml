@@ -118,6 +118,8 @@ cache::alternate_domains:
     caching: 'normal'
   scholarships.wikimedia.org:
     caching: 'normal'
+  security.wikimedia.org:
+    caching: 'normal'
   sitemaps.wikimedia.org:
     caching: 'normal'
   static-bugzilla.wikimedia.org:

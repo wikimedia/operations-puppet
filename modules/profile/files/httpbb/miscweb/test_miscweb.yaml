@@ -74,10 +74,15 @@ https://scholarships.wikimedia.org:
 - path: /apply
   assert_status: 200
 
+https://security.wikimedia.org:
+- path: /
+  assert_status: 200
+  assert_body_contains: Wikimedia Security
+
 https://sitemaps.wikimedia.org:
 - path: /
   assert_status: 200
-  assert_body_contains: Apache Server at sitemaps 
+  assert_body_contains: Apache Server at sitemaps
 
 https://wikiworkshop.org:
 - path: /
