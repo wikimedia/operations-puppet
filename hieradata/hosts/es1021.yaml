@@ -1,3 +1,4 @@
 # es1021
+# candidate master for es4
 mariadb::shard: 'es4'
 mariadb::binlog_format: 'ROW'
