@@ -30,7 +30,13 @@ local backend = red:srandmember('frontend:' .. frontend)
 red:set_keepalive(1000 * 32, 256)
 
 if backend == ngx.null then
-    -- Handle frontends wihout any configuration in them
+    -- Redirect any unknown .wmflabs.org urls to .wmcloud.org
+    if ngx.re.match(ngx.var.http_host, "%.wmflabs%.org$") then
+        redirect_host = ngx.re.gsub(ngx.var.http_host, "%.wmflabs%.org", ".wmcloud.org")
+        return ngx.redirect("https://" .. redirect_host .. ngx.var.request_uri, ngx.HTTP_MOVED_PERMANENTLY)
+    end
+
+    -- anything else, we don't know what to do with
     ngx.exit(404)
 end
 
