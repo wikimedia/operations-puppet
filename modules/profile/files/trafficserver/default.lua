@@ -153,7 +153,7 @@ function log_set_cookie_response()
                 " X-Request-Id: " .. request_id ..
                 " Server: " .. server
 
-    if not string.find(host, "wikimedia.org") or host == "meta.wikimedia.org" or host == "commons.wikimedia.org" then
+    if not string.find(host, "wikimedia.org") or host == "meta.wikimedia.org" or host == "commons.wikimedia.org" or host == "etherpad.wikimedia.org" then
         -- Send violations for wikis/meta/commons to syslog
         ts.error(msg)
     end
