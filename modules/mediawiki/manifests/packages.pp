@@ -14,7 +14,7 @@ class mediawiki::packages {
     require_package('ploticus')
 
     # Score
-    require_package('lilypond', 'timidity', 'freepats', 'fluidsynth', 'fluid-soundfont-gs', 'fluid-soundfont-gm')
+    require_package('timidity', 'freepats', 'fluidsynth', 'fluid-soundfont-gs', 'fluid-soundfont-gm')
 
     require_package('firejail')
 
