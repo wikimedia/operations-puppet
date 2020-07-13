@@ -13,6 +13,15 @@ server s1 {
     rxreq
     expect req.url == "/1"
     txresp -hdr "Set-Cookie: this-is-cookie-2" -hdr "X-Request-Id: 43"
+
+    rxreq
+    expect req.url == "/2"
+    txresp -hdr "Set-Cookie: this-is-cookie-3" \
+        -hdr "Cache-Control: public, s-maxage=0, max-age=0" -hdr "X-Request-Id: 44"
+
+    rxreq
+    expect req.url == "/2"
+    txresp -hdr "Set-Cookie: this-is-cookie-4" -hdr "X-Request-Id: 45"
 } -start
 
 varnish v1 -arg "-p vcl_path=${vcl_path} -p vcc_err_unref=false -p vcc_allow_inline_c=true -p cc_command='${cc_command}'" -vcl+backend {
@@ -46,7 +55,19 @@ client c1 {
     expect resp.status == 200
     expect resp.http.Set-Cookie == "this-is-cookie-2"
     expect resp.http.X-Request-Id == 43
+
+    txreq -url "/2" -hdr "Host: meta.wikimedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+    expect resp.status == 200
+    expect resp.http.Set-Cookie == "this-is-cookie-3"
+    expect resp.http.X-Request-Id == 44
+
+    txreq -url "/2" -hdr "Host: meta.wikimedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+    expect resp.status == 200
+    expect resp.http.Set-Cookie == "this-is-cookie-4"
+    expect resp.http.X-Request-Id == 45
 } -run
 
 varnish v1 -expect cache_hit == 0
-varnish v1 -expect cache_hitpass == 1
+varnish v1 -expect cache_hitpass == 2
