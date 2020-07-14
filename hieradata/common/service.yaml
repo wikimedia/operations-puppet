@@ -24,7 +24,8 @@ service::catalog:
           timeout-clean-reconnect: 3
         ProxyFetch:
           url:
-          - http://en.wikipedia.org/wiki/Special:BlankPage
+          - http://www.wikidata.org/wiki/Special:BlankPage
+          http_status: 302
       scheduler: wrr
     monitoring:
       check_command: check_http_lvs!en.wikipedia.org!/wiki/Special:BlankPage
@@ -3002,4 +3003,3 @@ service::catalog:
     discovery:
     - dnsdisc: zotero
       active_active: true
-
