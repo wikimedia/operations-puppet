@@ -27,13 +27,17 @@ function cache_status_to_string(status)
         return "hit"
     end
 
-    -- We have a cache hit on a stale object. A conditional request was
-    -- performed against the origin, which replied with 304 - Not Modified. The
-    -- object can be served from cache. Arguably this is not exactly a "hit",
-    -- but it is more of a hit than a miss. Further, Varnish calls these "hit",
-    -- so for consistency do the same here too.
     if status == TS_LUA_CACHE_LOOKUP_HIT_STALE then
-        return "hit"
+        -- We have a cache hit on a stale object. A conditional request was
+        -- performed against the origin, which replied with 304 - Not Modified. The
+        -- object can be served from cache. Arguably this is not exactly a "hit",
+        -- but it is more of a hit than a miss. Further, Varnish calls these "hit",
+        -- so for consistency do the same here too.
+        if ts.server_response.get_status() == 304 then
+            return "hit"
+        else
+            return "miss"
+        end
     end
 
     if status == TS_LUA_CACHE_LOOKUP_SKIPPED then
