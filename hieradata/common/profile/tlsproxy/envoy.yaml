@@ -11,3 +11,4 @@ profile::tlsproxy::envoy::services:
 profile::tlsproxy::envoy::sni_support: "no"
 profile::tlsproxy::envoy::upstream_addr: "%{facts.fqdn}"
 profile::tlsproxy::envoy::capitalize_headers: false
+profile::tlsproxy::envoy::listen_ipv6: false

@@ -67,6 +67,9 @@
 # @param connect_timeout
 #     The time is seconds to wait before declaring a connection timeout to the
 #     upstream resource
+# @param listen_ipv6
+#     Listen on IPv6 adding ipv4_compat  allow both IPv4 and IPv6 connections,
+#     with peer IPv4 addresses mapped into IPv6 space as ::FFFF:<IPv4-address>
 # @param retry_policy
 #     An optional hash specifying the retry policy. It should map 1:1 what
 #     goes in the envoy configuration.
@@ -85,6 +88,7 @@ define envoyproxy::tls_terminator(
     Float                        $connect_timeout           = 1.0,
     Float                        $upstream_response_timeout = 65.0,
     Boolean                      $capitalize_headers        = false,
+    Boolean                      $listen_ipv6               = false,
     Optional[Hash]               $retry_policy              = undef,
     Optional[Stdlib::Port]       $redir_port                = undef,
     Optional[String]             $global_cert_path          = undef,

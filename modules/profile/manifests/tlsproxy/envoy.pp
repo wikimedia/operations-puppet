@@ -60,6 +60,7 @@ class profile::tlsproxy::envoy(
     Boolean                       $use_remote_address        = lookup('profile::tlsproxy::envoy::use_remote_address'),
     Boolean                       $access_log                = lookup('profile::tlsproxy::envoy::access_log'),
     Boolean                       $capitalize_headers        = lookup('profile::tlsproxy::envoy::capitalize_headers'),
+    Boolean                       $listen_ipv6               = lookup('profile::tlsproxy::envoy::listen_ipv6'),
     Array[Profile::Tlsproxy::Envoy::Service] $services = lookup('profile::tlsproxy::envoy::services'),
     Optional[Stdlib::Host]        $upstream_addr    = lookup('profile::tlsproxy::envoy::upstream_addr'),
     Optional[String]              $global_cert_name = lookup('profile::tlsproxy::envoy::global_cert_name',
@@ -165,6 +166,7 @@ class profile::tlsproxy::envoy(
             upstream_response_timeout => $upstream_response_timeout,
             use_remote_address        => $use_remote_address,
             capitalize_headers        => $capitalize_headers,
+            listen_ipv6               => $listen_ipv6,
             idle_timeout              => $idle_timeout,
             max_requests_per_conn     => $max_requests,
         }

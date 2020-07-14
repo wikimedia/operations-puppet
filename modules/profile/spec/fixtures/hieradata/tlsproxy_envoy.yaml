@@ -10,3 +10,4 @@ profile::tlsproxy::envoy::access_log: false
 profile::tlsproxy::envoy::use_remote_address: false
 profile::tlsproxy::envoy::upstream_addr: "%{facts.fqdn}"
 profile::tlsproxy::envoy::capitalize_headers: true
+profile::tlsproxy::envoy::listen_ipv6: false

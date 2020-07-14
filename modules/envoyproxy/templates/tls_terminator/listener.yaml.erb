@@ -1,7 +1,12 @@
 address:
     socket_address:
-        address: 0.0.0.0
         port_value: <%= @name %>
+<%- if @listen_ipv6 -%>
+        address: '::'
+        ipv4_compat: true
+<%- else -%>
+        address: 0.0.0.0
+<%- end -%>
 listener_filters:
 - name: "envoy.listener.tls_inspector"
   typed_config: {}
