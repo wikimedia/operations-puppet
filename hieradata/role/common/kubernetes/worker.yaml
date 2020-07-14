@@ -51,3 +51,5 @@ profile::lvs::realserver::pools:
   echostore: {}
   eventstreams: {}
   proton: {}
+prometheus::node_exporter::collectors_extra:
+  - processes
