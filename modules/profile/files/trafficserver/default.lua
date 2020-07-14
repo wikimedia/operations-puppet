@@ -98,6 +98,16 @@ function do_global_send_response()
     ts.client_response.header['X-Cache-Int'] = HOSTNAME .. " " .. cache_status
 
     ts.client_response.header['X-ATS-Timestamp'] = os.time()
+
+    if ts.client_response.header['Set-Cookie'] then
+        -- At the frontend layer we do have measures in place to ensure that,
+        -- regardless of what the origin says, Set-Cookie responses are never
+        -- cached. To err on the side of caution and to match what Varnish
+        -- backends used to do, override Cache-Control for Set-Cookie responses
+        -- here too. T256395
+        ts.client_response.header['Cache-Control'] = 'private, max-age=0, s-maxage=0'
+    end
+
     return 0
 end
 
@@ -197,12 +207,6 @@ function do_global_read_response()
     if ts.server_response.header['Set-Cookie'] then
         log_set_cookie_response()
         do_not_cache()
-        -- At the frontend layer we do have measures in place to ensure that,
-        -- regardless of what the origin says, Set-Cookie responses are never
-        -- cached. To err on the side of caution and to match what Varnish
-        -- backends used to do, override Cache-Control for Set-Cookie responses
-        -- here too. T256395
-        ts.server_response.header['Cache-Control'] = 'private, max-age=0, s-maxage=0'
     elseif uncacheable_cookie(cookie, vary) then
         ts.debug("Do not cache response with Vary: " .. vary .. ", request has Cookie: " .. cookie)
         do_not_cache()
