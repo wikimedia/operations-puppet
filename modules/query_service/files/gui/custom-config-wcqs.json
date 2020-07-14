@@ -23,5 +23,8 @@
   "location": {
     "root": "https://wcqs-beta.wmflabs.org/",
     "index": "https://wcqs-beta.wmflabs.org/"
+  },
+  "logout": {
+    "url": "https://wcqs-beta.wmflabs.org/_logout"
   }
 }
