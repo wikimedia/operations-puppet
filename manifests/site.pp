@@ -924,12 +924,12 @@ node /^es201[89]\.codfw\.wmnet/ {
 # External Storage, Shard 4 (es4) databases
 ## eqiad servers
 # master
-node 'es1020.eqiad.wmnet' {
+node 'es1021.eqiad.wmnet' {
     role(mariadb::core)
 }
 
 # slaves
-node 'es1021.eqiad.wmnet' {
+node 'es1020.eqiad.wmnet' {
     role(mariadb::core)
 }
 
