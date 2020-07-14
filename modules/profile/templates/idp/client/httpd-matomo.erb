@@ -1,8 +1,14 @@
 # Apache configuration for Matomo (formerly Piwik).
 # This file is managed by Puppet.
 <VirtualHost *:80>
-  ServerName piwik.wikimedia.org
-  DocumentRoot /usr/share/matomo
+  ServerName <%= @virtual_host %>
+  DocumentRoot <%= @document_root %>
+
+  <%- @cas_settings.each_pair do |key, setting| -%>
+    <%- unless setting.nil? or setting == :undef -%>
+  <%= key %> <%= setting %>
+    <%-end -%>
+  <%-end -%>
 
   <Directory /var/www>
       AllowOverride None
@@ -33,15 +39,15 @@
   <Directory "/usr/share/matomo">
     php_admin_flag engine on
 
-    AuthName "<%= @auth_ldap['name'] %>"
-    AuthType Basic
-    AuthBasicProvider ldap
-    AuthLDAPBindDN <%= @auth_ldap['bind_dn'] %>
-    AuthLDAPBindPassword <%= @auth_ldap['bind_password'] %>
-    AuthLDAPURL "<%= @auth_ldap['url'] %>"
-    <% @auth_ldap['groups'].each do |group| -%>
-    Require ldap-group <%= group %>
-    <% end -%>
+    <%- @cas_auth_settings.each_pair do |key, setting| -%>
+      <%- if setting.is_a?(Array) -%>
+        <%- setting.each do |_setting| -%>
+      <%= key %> <%= _setting %>
+        <%- end -%>
+      <%- else -%>
+        <%= key %> <%= setting %>
+      <%- end -%>
+    <%- end -%>
     # Public endpoints -- must be open to all for piwik to work properly.
     # See <http://piwik.org/docs/how-to-secure-piwik/>.
     Require expr %{REQUEST_URI} in { '/piwik.php', '/piwik.js', '/matomo.php', '/matomo.js' }

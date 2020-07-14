@@ -7,26 +7,9 @@
 # we are going to just keep the previous name.
 #
 class profile::piwik::webserver(
-    $ldap_config      = lookup('ldap', Hash, hash, {}),
     $prometheus_nodes = hiera('prometheus_nodes')
 ){
     include ::profile::prometheus::apache_exporter
-
-    class { '::passwords::ldap::production': }
-
-    # LDAP configuration. Interpolated into the Apache site template
-    # to provide mod_authnz_ldap-based user authentication.
-    $auth_ldap = {
-        name          => 'nda/ops/wmf',
-        bind_dn       => 'cn=proxyagent,ou=profile,dc=wikimedia,dc=org',
-        bind_password => $passwords::ldap::production::proxypass,
-        url           => "ldaps://${ldap_config[ro-server]} ${ldap_config[ro-server-fallback]}/ou=people,dc=wikimedia,dc=org?cn",
-        groups        => [
-            'cn=ops,ou=groups,dc=wikimedia,dc=org',
-            'cn=nda,ou=groups,dc=wikimedia,dc=org',
-            'cn=wmf,ou=groups,dc=wikimedia,dc=org',
-        ],
-    }
 
     $php_module = 'php7.3'
     $php_ini = '/etc/php/7.3/apache2/php.ini'
@@ -43,7 +26,7 @@ class profile::piwik::webserver(
     }
 
     class { '::httpd':
-        modules => ['authnz_ldap', 'headers', $php_module, 'rewrite'],
+        modules => ['headers', $php_module, 'rewrite'],
         require => Package["libapache2-mod-${php_module}"],
     }
 
@@ -53,11 +36,7 @@ class profile::piwik::webserver(
     }
 
     require ::profile::analytics::httpd::utils
-
-    httpd::site { 'piwik.wikimedia.org':
-        content => template('profile/piwik/piwik.wikimedia.org.erb'),
-        require => File['/var/www/health_check'],
-    }
+    include profile::idp::client::httpd
 
     monitoring::service { 'piwik':
         description   => 'piwik.wikimedia.org',
