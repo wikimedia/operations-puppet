@@ -180,19 +180,31 @@ eqiad:
     scb1003.eqiad.wmnet: [mobileapps, graphoid, apertium, "recommendation-api"]
     scb1004.eqiad.wmnet: [mobileapps, graphoid, apertium, "recommendation-api"]
     # TODO: This is wrong, but is on purpose right now. We want to be able to
-    # gradually increase mathoid traffic sent to kubernetes and we currently
+    # gradually increase scb services traffic sent to kubernetes and we currently
     # don't support a service being provided by >1 clusters, so reuse scb for now
-    kubernetes1001.eqiad.wmnet: []
-    kubernetes1002.eqiad.wmnet: []
-    kubernetes1003.eqiad.wmnet: []
-    kubernetes1004.eqiad.wmnet: []
+    kubernetes1001.eqiad.wmnet: [mobileapps]
+    kubernetes1002.eqiad.wmnet: [mobileapps]
+    kubernetes1003.eqiad.wmnet: [mobileapps]
+    kubernetes1004.eqiad.wmnet: [mobileapps]
+    kubernetes1005.eqiad.wmnet: [mobileapps]
+    kubernetes1006.eqiad.wmnet: [mobileapps]
+    kubernetes1007.eqiad.wmnet: [mobileapps]
+    kubernetes1008.eqiad.wmnet: [mobileapps]
+    kubernetes1009.eqiad.wmnet: [mobileapps]
+    kubernetes1010.eqiad.wmnet: [mobileapps]
+    kubernetes1011.eqiad.wmnet: [mobileapps]
+    kubernetes1012.eqiad.wmnet: [mobileapps]
+    kubernetes1013.eqiad.wmnet: [mobileapps]
+    kubernetes1014.eqiad.wmnet: [mobileapps]
+    kubernetes1015.eqiad.wmnet: [mobileapps]
+    kubernetes1016.eqiad.wmnet: [mobileapps]
   dns:
     dns1001.wikimedia.org: [pdns_recursor]
     dns1002.wikimedia.org: [pdns_recursor]
   parsoid:
     # Don't forget to update $wgLinterSubmitterWhitelist in operations/mediawiki-config
-    wtp1025.eqiad.wmnet: [parsoid, parsoid-php,canary]
-    wtp1026.eqiad.wmnet: [parsoid, parsoid-php,canary]
+    wtp1025.eqiad.wmnet: [parsoid, parsoid-php, canary]
+    wtp1026.eqiad.wmnet: [parsoid, parsoid-php, canary]
     wtp1027.eqiad.wmnet: [parsoid, parsoid-php]
     wtp1028.eqiad.wmnet: [parsoid, parsoid-php]
     wtp1029.eqiad.wmnet: [parsoid, parsoid-php]
