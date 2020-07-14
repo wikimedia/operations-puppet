@@ -15,7 +15,11 @@ class profile::openstack::codfw1dev::puppetmaster::frontend(
     $cert_secret_path = hiera('profile::openstack::codfw1dev::puppetmaster::cert_secret_path'),
     ) {
 
-    require ::profile::openstack::codfw1dev::clientpackages
+    # until we dismantle labtestpuppetmaster we need some realm checking here to set this up on a VM
+    if ( $::realm != 'labs' ) {
+        require ::profile::openstack::codfw1dev::clientpackages
+    }
+
     class {'::profile::openstack::base::puppetmaster::frontend':
         openstack_controllers    => $openstack_controllers,
         designate_hosts          => $designate_hosts,
