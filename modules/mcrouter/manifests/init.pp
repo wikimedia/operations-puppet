@@ -72,18 +72,18 @@
 #  }
 #
 class mcrouter(
-    Hash $pools,
-    Array $routes,
-    String $region,
-    String $cluster,
-    Integer $port,
-    Wmflib::Ensure $ensure = present,
-    Integer $cross_region_timeout_ms = 250,
-    Integer $cross_cluster_timeout_ms = 1000,
-    Mcrouter::Ssl $ssl_options = undef,
-    Integer $num_proxies = 1,
-    Integer $probe_delay_initial_ms = 3000,
-    Optional[Integer] $timeouts_until_tko = undef,
+    Hash              $pools,
+    Array             $routes,
+    String            $region,
+    String            $cluster,
+    Wmflib::Ensure    $ensure                   = present,
+    Stdlib::Port      $port                     = 11213,
+    Integer           $cross_region_timeout_ms  = 250,
+    Integer           $cross_cluster_timeout_ms = 1000,
+    Mcrouter::Ssl     $ssl_options              = undef,
+    Integer           $num_proxies              = 1,
+    Integer           $probe_delay_initial_ms   = 3000,
+    Optional[Integer] $timeouts_until_tko       = undef,
 ) {
     require_package('mcrouter')
 
