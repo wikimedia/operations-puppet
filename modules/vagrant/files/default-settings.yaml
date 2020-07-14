@@ -1,2 +1,3 @@
 ---
 host_ip: 0.0.0.0
+nfs_force_v4: true
