@@ -42,7 +42,9 @@ class profile::idp::memcached (
         pools   => $pools,
         routes  => $routes,
     }
-    class {'profile::prometheus::mcrouter_exporter': }
+    class {'profile::prometheus::mcrouter_exporter':
+        mcrouter_port => $mcrouter::port,
+    }
 
     ferm::service {'memcached':
         ensure  => $ensure,
