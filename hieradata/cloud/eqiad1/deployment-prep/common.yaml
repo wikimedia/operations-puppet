@@ -117,22 +117,6 @@ logstash_json_lines_port: 11514
 # UDP logback/json input
 logstash_logback_port: 11514
 
-"mcrouter::shards":
-  gutter:
-    eqiad: {}
-  wancache:
-    eqiad:
-      shard01:
-        host: deployment-memc04
-        port: 11211
-      shard02:
-        host: deployment-memc05
-        port: 11211
-      shard03:
-        host: deployment-memc08
-        port: 11211
-mcrouter::port: 11213
-mcrouter::has_ssl: false
 profile::memcached::version: 'present'
 profile::memcached::growth_factor: 1.05
 profile::memcached::min_slab_size: 5
@@ -442,3 +426,17 @@ logstash::pipeline_batch_size: 1000
 profile::mediawiki::deployment::server::rsync_host: deployment-deploy01.deployment-prep.eqiad.wmflabs
 profile::mediawiki::apc_shm_size: 128M
 profile::mediawiki::mcrouter_wancache::prometheus_exporter: true
+profile::mediawiki::mcrouter_wancache::shards:
+  gutter:
+    eqiad: {}
+  wancache:
+    eqiad:
+      shard01:
+        host: deployment-memc04
+        port: 11211
+      shard02:
+        host: deployment-memc05
+        port: 11211
+      shard03:
+        host: deployment-memc08
+        port: 11211

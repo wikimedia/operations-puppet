@@ -2,15 +2,15 @@
 #
 # Configures a mcrouter instance for multi-datacenter caching
 class profile::mediawiki::mcrouter_wancache(
-    Hash $servers_by_datacenter_category = hiera('mcrouter::shards'),
-    Integer $port = hiera('mcrouter::port'),
-    Boolean $has_ssl = hiera('mcrouter::has_ssl'),
-    Integer $ssl_port = hiera('mcrouter::ssl_port', $port + 1),
-    Integer $num_proxies = hiera('profile::mediawiki::mcrouter_wancache::num_proxies', 1),
-    Optional[Integer] $timeouts_until_tko = lookup('profile::mediawiki::mcrouter_wancache::timeouts_until_tko', {'default_value' => 10}),
-    Integer $gutter_ttl = lookup('profile::mediawiki::mcrouter_wancache::gutter_ttl', {'default_value' => 60}),
-    Boolean $use_onhost_memcache = lookup('profile::mediawiki::mcrouter_wancache::use_onhost_memcache', {'default_value' => false}),
-    Boolean $prometheus_exporter = lookup('profile::mediawiki::mcrouter_wancache::prometheus_exporter')
+    Stdlib::Port $port                = lookup('profile::mediawiki::mcrouter_wancache::port'),
+    Boolean      $has_ssl             = lookup('profile::mediawiki::mcrouter_wancache::has_ssl'),
+    Stdlib::Port $ssl_port            = lookup('profile::mediawiki::mcrouter_wancache::ssl_port'),
+    Integer      $num_proxies         = lookup('profile::mediawiki::mcrouter_wancache::num_proxies'),
+    Integer      $timeouts_until_tko  = lookup('profile::mediawiki::mcrouter_wancache::timeouts_until_tko'),
+    Integer      $gutter_ttl          = lookup('profile::mediawiki::mcrouter_wancache::gutter_ttl'),
+    Boolean      $use_onhost_memcache = lookup('profile::mediawiki::mcrouter_wancache::use_onhost_memcache'),
+    Boolean      $prometheus_exporter = lookup('profile::mediawiki::mcrouter_wancache::prometheus_exporter'),
+    Hash         $servers_by_datacenter_category = lookup('profile::mediawiki::mcrouter_wancache::shards'),
 ) {
 
     $servers_by_datacenter = $servers_by_datacenter_category['wancache']
