@@ -31,21 +31,9 @@ class testreduce {
             priority => 1005,
             before   => Package['nodejs'],
         }
-
-        apt::pin { 'npm-stretch-backports':
-            package  => 'npm',
-            pin      => 'release a=stretch-backports',
-            priority => 1004,
-        }
-
     }
 
-    ensure_packages('nodejs')
-
-    ensure_packages(
-        ['npm'],
-        { 'install_options' => ['-t', 'stretch-backports']}
-    )
+    ensure_packages('nodejs', 'npm')
 
     group { 'testreduce':
         ensure => present,
