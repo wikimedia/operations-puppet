@@ -11,14 +11,15 @@ class prometheus::node_neutron_namespace (
     }
 
     systemd::timer::job { 'prometheus-node-neutron-namespace':
-        ensure      => $ensure,
-        user        => 'root',
-        description => 'Generate prometheus node metrics for conntrack in neutron namespaces',
-        command     => $script,
-        interval    => {
+        ensure             => $ensure,
+        user               => 'root',
+        description        => 'Generate prometheus node metrics for conntrack in neutron namespaces',
+        command            => $script,
+        monitoring_enabled => false,
+        interval           => {
             'start'    => 'OnCalendar',
             'interval' => 'minutely',
         },
-        require     => [File[$script], Class['prometheus::node_exporter'],]
+        require            => [File[$script], Class['prometheus::node_exporter'],]
     }
 }
