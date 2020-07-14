@@ -1,0 +1,2 @@
+profile::prometheus::mcrouter_exporter::mcrouter_port: 11213
+profile::prometheus::mcrouter_exporter::listen_port: 9151

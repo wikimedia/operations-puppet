@@ -10,6 +10,7 @@ class profile::mediawiki::mcrouter_wancache(
     Optional[Integer] $timeouts_until_tko = lookup('profile::mediawiki::mcrouter_wancache::timeouts_until_tko', {'default_value' => 10}),
     Integer $gutter_ttl = lookup('profile::mediawiki::mcrouter_wancache::gutter_ttl', {'default_value' => 60}),
     Boolean $use_onhost_memcache = lookup('profile::mediawiki::mcrouter_wancache::use_onhost_memcache', {'default_value' => false}),
+    Boolean $prometheus_exporter = lookup('profile::mediawiki::mcrouter_wancache::prometheus_exporter')
 ) {
 
     $servers_by_datacenter = $servers_by_datacenter_category['wancache']
@@ -163,7 +164,7 @@ class profile::mediawiki::mcrouter_wancache(
         $ssl_options = undef
     }
 
-    class { '::mcrouter':
+    class { 'mcrouter':
         pools                  => $pools,
         routes                 => $routes,
         region                 => $::site,
@@ -175,7 +176,7 @@ class profile::mediawiki::mcrouter_wancache(
         ssl_options            => $ssl_options,
     }
 
-    class { '::mcrouter::monitoring': }
+    class { 'mcrouter::monitoring': }
 
     ferm::rule { 'skip_mcrouter_wancache_conntrack_out':
         desc  => 'Skip outgoing connection tracking for mcrouter',
@@ -189,5 +190,10 @@ class profile::mediawiki::mcrouter_wancache(
         table => 'raw',
         chain => 'PREROUTING',
         rule  => "proto tcp dport (${port} ${ssl_port}) NOTRACK;",
+    }
+    if $prometheus_exporter {
+        class {'profile::prometheus::mcrouter_exporter':
+            mcrouter_port => $mcrouter::port
+        }
     }
 }

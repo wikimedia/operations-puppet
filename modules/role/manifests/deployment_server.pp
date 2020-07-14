@@ -6,7 +6,6 @@ class role::deployment_server {
     # Install the scap server components.
     include profile::mediawiki::common
     include profile::mediawiki::mcrouter_wancache
-    include profile::prometheus::mcrouter_exporter
     include profile::mediawiki::nutcracker
     include profile::mediawiki::deployment::server
     include profile::scap::dsh

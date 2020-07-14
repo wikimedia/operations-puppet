@@ -1,7 +1,7 @@
 class profile::prometheus::mcrouter_exporter (
-    Integer $mcrouter_port = hiera('mcrouter::port'),
-    Integer $listen_port = hiera('profile::prometheus::mcrouter_exporter::listen_port', 9151),
-    $prometheus_nodes = hiera('prometheus_nodes'),
+    Array[Stdlib::Host] $prometheus_nodes = lookup('prometheus_nodes'),
+    Stdlib::Port        $mcrouter_port    = lookup('profile::prometheus::mcrouter_exporter::mcrouter_port'),
+    Stdlib::Port        $listen_port      = lookup('profile::prometheus::mcrouter_exporter::listen_port'),
 ) {
     prometheus::mcrouter_exporter { 'default':
         arguments => "-mcrouter.address localhost:${mcrouter_port} -web.listen-address :${listen_port} -mcrouter.server_metrics",

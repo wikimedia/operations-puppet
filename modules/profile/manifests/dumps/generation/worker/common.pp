@@ -8,11 +8,13 @@ class profile::dumps::generation::worker::common(
     $dumps_misc_cronrunner = lookup('profile::dumps::generation::worker::common::dumps_misc_cronrunner'),
 ) {
     # mw packages and dependencies
-    require ::profile::mediawiki::scap_proxy
-    require ::profile::mediawiki::common
-    require ::profile::mediawiki::nutcracker
-    require ::profile::mediawiki::mcrouter_wancache
-    require ::profile::services_proxy::envoy
+    require profile::mediawiki::scap_proxy
+    require profile::mediawiki::common
+    require profile::mediawiki::nutcracker
+    class { 'profile::mediawiki::mcrouter_wancache':
+        prometheus_exporter => false
+    }
+    require profile::services_proxy::envoy
 
     $xmldumpsmount = '/mnt/dumpsdata'
 

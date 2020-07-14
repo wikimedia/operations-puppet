@@ -153,3 +153,5 @@ profile::services_proxy::envoy::listeners: []
 profile::services_proxy::envoy::enabled_listeners: []
 profile::java::java_packages: []
 graphite_host: localhost
+profile::prometheus::mcrouter_exporter::mcrouter_port: 11213
+profile::prometheus::mcrouter_exporter::listen_port: 9151
