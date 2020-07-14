@@ -10,3 +10,11 @@ if first_delivery then
 		headers add "X-Spam-Report: $acl_m1"
 	endif
 endif
+
+# reject these excessive bounces temporarily
+if $header_from: matches "MAILER-DAEMON@fickja.de" and $header_to: matches "abuse@wikipedia.org" then
+	fail text "Message rejected due to excessive volume. If you believe this is an error please contact postmaster@wikimedia.org"
+endif
+if $header_from: matches "keineantwortadresse@web.de" and $header_to: matches "abuse@wikipedia.org" then
+	fail text "Message rejected due to excessive volume. If you believe this is an error please contact postmaster@wikimedia.org"
+endif
