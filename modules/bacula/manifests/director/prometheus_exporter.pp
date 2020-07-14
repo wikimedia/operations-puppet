@@ -5,6 +5,6 @@ class bacula::director::prometheus_exporter(
         ensure  => present,
         restart => true,
         content => systemd_template('prometheus-bacula-exporter'),
-        require => File['/usr/local/bin/check_bacula.py'],
+        require => File['/usr/bin/check_bacula.py'],
     }
 }
