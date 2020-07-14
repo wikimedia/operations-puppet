@@ -40,12 +40,13 @@ define labstore::nfs_mount(
     $options = [],
     $block_timeout = 180,
     $lookupcache='none',
+    $nfs_version = '4',
 )
     {
 
     include ::labstore::traffic_shaping
 
-    $set_opts = ['vers=4',
+    $set_opts = ["vers=${nfs_version}",
                 'bg',
                 'intr',
                 'sec=sys',

@@ -5,6 +5,7 @@ class profile::wmcs::nfsclient(
     # This is experimental and should be opt-in. /home on a busy server should be a hard mount.
     String $home_mode = lookup('profile::wmcs::nfsclient::home_mode', {'default_value' => 'hard'}),
     String $lookupcache = lookup('profile::wmcs::nfsclient::lookupcache', {'default_value' => 'all'}),
+    String $nfs_version = lookup('profile::wmcs::nfsclient::nfs_version', {'default_value' => '4'}),
     Array[Stdlib::Host] $dumps_servers = hiera('dumps_dist_nfs_servers'),
     Stdlib::Host $dumps_active_server = hiera('dumps_dist_active_vps'),
     Array[Stdlib::Host] $secondary_servers = lookup('secondary_nfs_servers', {'default_value' => []}),
@@ -25,6 +26,7 @@ class profile::wmcs::nfsclient(
         share_path  => "/srv/misc/shared/${::labsproject}/project",
         server      => 'nfs-tools-project.svc.eqiad.wmnet',
         lookupcache => $lookupcache,
+        nfs_version => $nfs_version,
     }
 
     labstore::nfs_mount { 'home-on-labstore-secondary':
@@ -35,6 +37,7 @@ class profile::wmcs::nfsclient(
         share_path  => "/srv/misc/shared/${::labsproject}/home",
         server      => 'nfs-tools-project.svc.eqiad.wmnet',
         lookupcache => $lookupcache,
+        nfs_version => $nfs_version,
     }
 
     if mount_nfs_volume($::labsproject, 'project') {
@@ -66,6 +69,7 @@ class profile::wmcs::nfsclient(
             share_path  => '/srv/scratch',
             server      => $server,
             lookupcache => $lookupcache,
+            nfs_version => $nfs_version,
         }
     }
     if mount_nfs_volume($::labsproject, 'scratch') {
@@ -86,6 +90,7 @@ class profile::wmcs::nfsclient(
             server      => 'nfs-maps.wikimedia.org',
             share_path  => '/srv/maps',
             lookupcache => $lookupcache,
+            nfs_version => $nfs_version,
         }
 
         if mount_nfs_volume($::labsproject, 'maps') {
@@ -120,6 +125,7 @@ class profile::wmcs::nfsclient(
             server      => 'nfs-tools-project.svc.eqiad.wmnet',
             share_path  => '/srv/tools/shared/tools/home',
             lookupcache => $lookupcache,
+            nfs_version => $nfs_version,
         }
 
         labstore::nfs_mount { 'tools-project-on-labstore-secondary':
@@ -130,6 +136,7 @@ class profile::wmcs::nfsclient(
             server      => 'nfs-tools-project.svc.eqiad.wmnet',
             share_path  => '/srv/tools/shared/tools/project',
             lookupcache => $lookupcache,
+            nfs_version => $nfs_version,
         }
 
         # Sets up symlinks from new tools mounts to /data/project and /home
@@ -160,6 +167,7 @@ class profile::wmcs::nfsclient(
             share_path  => '',
             server      => $server,
             lookupcache => $lookupcache,
+            nfs_version => $nfs_version,
         }
     }
 
