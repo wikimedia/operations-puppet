@@ -57,4 +57,6 @@ class openstack::neutron::l3_agent(
         },
         priority => 50,
     }
+
+    class { '::openstack::monitor::neutron::l3_agent_conntrack': }
 }
