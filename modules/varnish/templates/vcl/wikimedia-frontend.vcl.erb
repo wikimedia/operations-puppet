@@ -953,8 +953,10 @@ sub deliver_synth_ {
 		<%- if @varnish_testing -%>
 		// The test VCL version uses X-Cache-Int-Testing accepted as is
 		// from the upstream server to simplify writing VTC tests.
-		set resp.http.X-Cache = resp.http.X-Cache-Int-Testing;
-		unset resp.http.X-Cache-Int-Testing;
+		if (resp.http.X-Cache-Int-Testing) {
+			set resp.http.X-Cache = resp.http.X-Cache-Int-Testing;
+			unset resp.http.X-Cache-Int-Testing;
+		}
 		<%- end -%>
 		set resp.http.X-Cache-Status = regsuball(resp.http.X-Cache, "cp[0-9]{4} (hit|miss|pass|int)(?:/[0-9]+)?", "\1");
 
