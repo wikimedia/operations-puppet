@@ -9,4 +9,4 @@ profile::openstack::codfw1dev::pdns::hosts:
 # Used for things that would ideally be in a .svc. DNS zone but
 # we do not have one. REMEMBER THE TRAILING DOT.
 profile::openstack::codfw1dev::pdns::recursor_aliaser_extra_records:
-  puppet.: 208.80.153.108 # labtestpuppetmaster2001.wikimedia.org
+  puppet.: 172.16.128.20 # puppetmaster-01.cloudinfra-codfw1dev.codfw1dev.wikimedia.cloud
