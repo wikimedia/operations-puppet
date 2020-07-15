@@ -35,6 +35,11 @@ host acrux {
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
+host aphlict1001 {
+    hardware ethernet aa:00:00:1b:6e:94;
+    fixed-address aphlict1001.eqiad.wmnet;
+}
+
 host archiva1002 {
     hardware ethernet aa:00:00:03:b6:d2;
     fixed-address archiva1002.wikimedia.org;
