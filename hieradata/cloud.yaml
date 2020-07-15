@@ -58,6 +58,7 @@ profile::tlsproxy::envoy::services:
     port: 80
 profile::tlsproxy::envoy::upstream_addr: "%{facts.fqdn}"
 profile::tlsproxy::envoy::capitalize_headers: false
+profile::tlsproxy::envoy::global_cert_name: ~
 
 # Firewall logging
 profile::base::firewall::enable_logging: true
