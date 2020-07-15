@@ -33,7 +33,7 @@ class testreduce {
         }
     }
 
-    ensure_packages('nodejs', 'npm')
+    ensure_packages(['nodejs', 'npm'])
 
     group { 'testreduce':
         ensure => present,
