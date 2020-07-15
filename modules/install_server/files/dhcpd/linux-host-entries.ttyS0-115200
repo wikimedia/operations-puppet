@@ -925,6 +925,11 @@ host serpens {
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
+host testreduce1001 {
+    hardware ethernet aa:00:00:e6:ed:36;
+    fixed-address testreduce1001.eqiad.wmnet;
+}
+
 host urldownloader1001.wikimedia.org {
     hardware ethernet aa:00:00:d2:7d:c6;
     fixed-address urldownloader1001.wikimedia.org;
