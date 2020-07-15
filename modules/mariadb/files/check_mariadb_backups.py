@@ -22,23 +22,20 @@ DEFAULT_FRESHNESS = 691200  # 8 days, in seconds
 DEFAULT_MIN_SIZE = 1024 * 1024  # size smaller than 1M is considered failed
 DEFAULT_WARN_SIZE_PERCENTAGE = 1  # size of previous ones minus or plus this percentage is weird
 DEFAULT_CRIT_SIZE_PERCENTAGE = 10  # size of previous ones minus or plus this percentage is a fail
-DEFAULT_SSL_CA = '/etc/ssl/certs/Puppet_Internal_CA.pem'  # CA path used for mysql TLS connection
+
+DB_HOST = 'localhost'
+DB_USER = 'nagios'
+DB_SOCKET = '/run/mysqld/mysqld.sock'
+DB_SCHEMA = 'zarcillo'
+DB_PASSWORD = ''  # socket authentication
 
 
 def get_options():
     parser = argparse.ArgumentParser(description='Checks if backups for a '
                                                  'specific section are fresh.')
-    parser.add_argument('--host', '-o', required=True,
-                        help='Host with the database to connect to')
-    parser.add_argument('--user', '-u', required=True,
-                        help='user used for the mysql connection')
-    parser.add_argument('--password', '-w', default='',
-                        help='Password used for the mysql connection')
-    parser.add_argument('--database', '-D', required=True,
-                        help='Database where the backup metadata is stored')
     parser.add_argument('--section', '-s', required=True,
                         choices=SECTIONS,
-                        help='Database section/shard to check')
+                        help='Database section to check')
     parser.add_argument('--datacenter', '-d', required=True,
                         choices=DATACENTERS,
                         help='Datacenter storage location of the backup to check.')
@@ -56,11 +53,11 @@ def get_options():
     parser.add_argument('--warn-size-percentage', '-p', default=DEFAULT_WARN_SIZE_PERCENTAGE,
                         type=float,
                         help='Percentage of size change compared to previous backups, '
-                             'above which a WARNING is produced (default: 1%%)')
+                             'above which a WARNING is produced (default: 1%)')
     parser.add_argument('--crit-size-percentage', '-P', default=DEFAULT_CRIT_SIZE_PERCENTAGE,
                         type=float,
                         help='Percentage of size change compared to previous backups, '
-                             'above which a CRITICAL is produced (default: 10%%)')
+                             'above which a CRITICAL is produced (default: 10%)')
 
     return parser.parse_args()
 
@@ -85,8 +82,9 @@ def check_backup_database(options):
 
     # Connect and query the metadata database
     try:
-        db = pymysql.connect(host=options.host, user=options.user, password=options.password,
-                             database=options.database, ssl={'ca': DEFAULT_SSL_CA})
+        db = pymysql.connect(host=DB_HOST, database=DB_SCHEMA,
+                             unix_socket=DB_SOCKET,
+                             user=DB_USER, password=DB_PASSWORD)
     except (pymysql.err.OperationalError, pymysql.err.InternalError):
         return (CRITICAL, 'We could not connect to the backup metadata database')
     with db.cursor(pymysql.cursors.DictCursor) as cursor:
