@@ -1,6 +1,10 @@
 # Checks the metadata database backups of a particular section, datacenter
 # and type, and sets up an icinga alert about it
 define mariadb::monitor_backup (
+    $db_host,
+    $db_user,
+    $db_password,
+    $db_database,
     $section,
     $datacenter,
     $type                 = 'dump',
@@ -10,7 +14,9 @@ define mariadb::monitor_backup (
     $crit_size_percentage = 15,
 ) {
 
-    $check_command = "/usr/local/bin/check_mariadb_backups.py --section='${section}' --datacenter='${datacenter}' \
+    $check_command = "/usr/local/bin/check_mariadb_backups.py \
+--host='${db_host}' --user='${db_user}' --password='${db_password}' --database='${db_database} \
+--section='${section}' --datacenter='${datacenter}' \
 --type='${type}' --freshness='${freshness}' --min-size='${min_size}' \
 --warn-size-percentage='${warn_size_percentage}' --crit-size-percentage='${crit_size_percentage}'"
 

@@ -6,10 +6,10 @@ compress: False
 archive: False
 retention: 18
 statistics:
-  host: 'db2093.codfw.wmnet'
+  host: 'db1080.eqiad.wmnet'
   user: '<%= @stats_user %>'
   password: '<%= @stats_password %>'
-  database: 'zarcillo'
+  database: 'dbbackups'
 sections:
   s1:
     host: 'db2097.codfw.wmnet'
@@ -36,4 +36,3 @@ sections:
     port: 3323
   zarcillo:
     host: 'db2093.codfw.wmnet'
-
