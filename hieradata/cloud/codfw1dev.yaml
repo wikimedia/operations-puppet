@@ -4,7 +4,7 @@
 # Because we love clarity and consistency.
 
 puppetmaster: "puppet"
-labs_puppet_master: "labtest-puppetmaster.wikimedia.org"
+labs_puppet_master: "puppetmaster.cloudinfra-codfw1dev.codfw1dev.wmcloud.org"
 
 labsdnsconfig:
   recursor: 'ns-recursor0.openstack.codfw1dev.wikimediacloud.org'
