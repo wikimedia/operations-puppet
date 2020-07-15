@@ -6,10 +6,10 @@ compress: False
 archive: False
 retention: 18
 statistics:
-  host: 'db2093.codfw.wmnet'
+  host: 'db1080.eqiad.wmnet'
   user: '<%= @stats_user %>'
   password: '<%= @stats_password %>'
-  database: 'zarcillo'
+  database: 'dbbackups'
 sections:
   # Skip read-only replica sets after the initial backup:
   # es1:

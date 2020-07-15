@@ -9,6 +9,10 @@ class profile::mariadb::backup::check (
     $freshness            = lookup('profile::mariadb::backup::check::freshness', Hash[String, Integer], ),
     $warn_size_percentage = lookup('profile::mariadb::backup::check::warn_size_percentage', Float[0, 100]),
     $crit_size_percentage = lookup('profile::mariadb::backup::check::crit_size_percentage', Float[0, 100]),
+    $db_host              = lookup('profile::mariadb::backup::check::db_host', String, ),
+    $db_user              = lookup('profile::mariadb::backup::check::db_user', String, ),
+    $db_password          = lookup('profile::mariadb::backup::check::db_password', String, ),
+    $db_database          = lookup('profile::mariadb::backup::check::db_database', String, ),
 ) {
     class { 'mariadb::monitor_backup_script': }
 
@@ -22,6 +26,10 @@ class profile::mariadb::backup::check (
                     freshness            => $freshness[$type],
                     warn_size_percentage => $warn_size_percentage,
                     crit_size_percentage => $crit_size_percentage,
+                    db_user              => $db_user,
+                    db_host              => $db_host,
+                    db_password          => $db_password,
+                    db_database          => $db_database,
                 }
             }
         }
