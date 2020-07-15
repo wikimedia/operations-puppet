@@ -75,8 +75,11 @@ profile::cache::varnish::separate_vcl:
 profile::trafficserver::backend::default_lua_scripts:
 - set-x-cache
 profile::trafficserver::backend::mapping_rules:
-- replacement: http://deployment-mediawiki-07.deployment-prep.eqiad.wmflabs
-  target: http://en.wikipedia.beta.wmflabs.org
+- target: http://en.wikipedia.beta.wmflabs.org
+  replacement: http://deployment-mediawiki-07.deployment-prep.eqiad.wmflabs
+  type: map
+- target: http://local-origin-server
+  replacement: http://127.0.0.1:6533
   type: map
 profile::trafficserver::backend::outbound_tls_settings:
   cacert_dirpath: /etc/ssl/certs
