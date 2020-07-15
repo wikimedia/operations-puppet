@@ -1,12 +1,16 @@
+# extra_pkgs: An Array of Debian package names of Apache modules which are
+#             not pulled in by the "apache" base package.
 class httpd(
     Array[String] $modules = [],
     Wmflib::Ensure $legacy_compat = present,
     Enum['daily', 'weekly'] $period='daily',
     Integer $rotate=30,
     Boolean $enable_forensic_log = false,
+    Array[String] $extra_pkgs = [],
 ) {
     # Package and service. Links is needed for the status page below
-    require_package('apache2', 'links')
+    $base_pkgs = ['apache2', 'links']
+    require_package($base_pkgs + $extra_pkgs)
 
     # Puppet restarts are reloads in apache, as typically that's enough
     service { 'apache2':
