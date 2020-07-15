@@ -104,6 +104,14 @@ profile::idp::services:
       '@class': 'org.apereo.cas.services.ReturnAllAttributeReleasePolicy'
     access_strategy:
       '@class': 'org.apereo.cas.services.DefaultRegisteredServiceAccessStrategy'
+  piwik:
+    class: 'org.apereo.cas.services.RegexRegisteredService'
+    id: 9
+    service_id: 'https://piwik.wikimedia.org(/.*)?'
+    attribute_release_policy:
+      '@class': 'org.apereo.cas.services.ReturnAllAttributeReleasePolicy'
+    access_strategy:
+      '@class': 'org.apereo.cas.services.DefaultRegisteredServiceAccessStrategy'
 profile::idp::ldap_attributes:
   - cn
   - memberOf
