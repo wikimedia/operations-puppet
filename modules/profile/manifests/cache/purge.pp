@@ -2,7 +2,6 @@
 
 class profile::cache::purge(
     $host_regex = hiera('profile::cache::purge::host_regex', undef),
-    $multicasts = hiera('profile::cache::purge::multicasts', ['239.128.0.112']),
     Array[String] $kafka_topics = lookup('profile::cache::purge::kafka_topics', {'default_value' => []}),
     Boolean $kafka_tls = lookup('profile::cache::purge::kafka_tls', {'default_value' => false}),
     String $kafka_cluster_name = lookup('profile::cache::purge::kafka_cluster_name', {'default_value' => 'main-eqiad'}),
@@ -89,7 +88,6 @@ class profile::cache::purge(
     class { 'purged':
         backend_addr     => '127.0.0.1:3128',
         frontend_addr    => '127.0.0.1:3127',
-        mc_addrs         => $multicasts,
         prometheus_addr  => ":${prometheus_port}",
         frontend_workers => 4,
         backend_workers  => $::processorcount,

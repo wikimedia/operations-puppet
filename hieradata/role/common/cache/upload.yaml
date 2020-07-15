@@ -16,7 +16,6 @@ profile::base::systemd::blockio_accounting: 'yes'
 profile::base::systemd::memory_accounting: 'yes'
 # Profile::cache::base
 profile::cache::purge::host_regex: '[um][pa][lp][os]'
-profile::cache::purge::multicasts: ['239.128.0.112', '239.128.0.113', '239.128.0.114', '239.128.0.115']
 profile::cache::purge::kafka_topics:
   - eqiad.resource-purge
   - codfw.resource-purge

@@ -3,7 +3,6 @@
 class purged (
     String $backend_addr,
     String $frontend_addr,
-    Array[String] $mc_addrs,
     String $prometheus_addr,
     Integer $frontend_workers,
     Integer $backend_workers,
@@ -20,8 +19,6 @@ class purged (
     package { 'purged':
         ensure => present,
     }
-
-    $mcast_str = join($mc_addrs, ',')
 
     $ensure = $is_active? {
         true    => 'present',
