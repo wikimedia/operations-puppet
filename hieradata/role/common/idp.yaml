@@ -112,6 +112,30 @@ profile::idp::services:
       '@class': 'org.apereo.cas.services.ReturnAllAttributeReleasePolicy'
     access_strategy:
       '@class': 'org.apereo.cas.services.DefaultRegisteredServiceAccessStrategy'
+  yarn:
+    class: 'org.apereo.cas.services.RegexRegisteredService'
+    id: 10
+    service_id: 'https://yarn.wikimedia.org(/.*)?'
+    attribute_release_policy:
+      '@class': 'org.apereo.cas.services.ReturnAllAttributeReleasePolicy'
+    access_strategy:
+      '@class': 'org.apereo.cas.services.DefaultRegisteredServiceAccessStrategy'
+  turnilo:
+    class: 'org.apereo.cas.services.RegexRegisteredService'
+    id: 11
+    service_id: 'https://turnilo.wikimedia.org(/.*)?'
+    attribute_release_policy:
+      '@class': 'org.apereo.cas.services.ReturnAllAttributeReleasePolicy'
+    access_strategy:
+      '@class': 'org.apereo.cas.services.DefaultRegisteredServiceAccessStrategy'
+  superset:
+    class: 'org.apereo.cas.services.RegexRegisteredService'
+    id: 12
+    service_id: 'https://superset.wikimedia.org(/.*)?'
+    attribute_release_policy:
+      '@class': 'org.apereo.cas.services.ReturnAllAttributeReleasePolicy'
+    access_strategy:
+      '@class': 'org.apereo.cas.services.DefaultRegisteredServiceAccessStrategy'
 profile::idp::ldap_attributes:
   - cn
   - memberOf
