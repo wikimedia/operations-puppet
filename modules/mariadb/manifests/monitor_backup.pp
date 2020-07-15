@@ -15,7 +15,7 @@ define mariadb::monitor_backup (
 ) {
 
     $check_command = "/usr/local/bin/check_mariadb_backups.py \
---host='${db_host}' --user='${db_user}' --password='${db_password}' --database='${db_database} \
+--host='${db_host}' --user='${db_user}' --password='${db_password}' --database='${db_database}' \
 --section='${section}' --datacenter='${datacenter}' \
 --type='${type}' --freshness='${freshness}' --min-size='${min_size}' \
 --warn-size-percentage='${warn_size_percentage}' --crit-size-percentage='${crit_size_percentage}'"
