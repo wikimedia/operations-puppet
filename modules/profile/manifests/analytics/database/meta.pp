@@ -30,6 +30,7 @@ class profile::analytics::database::meta(
         datadir   => $datadir,
         tmpdir    => $tmpdir,
         basedir   => $mariadb_basedir,
+        ssl       => 'puppet-cert',
         read_only => false,
         require   => Class['mariadb::packages_wmf'],
     }
