@@ -1,0 +1,3 @@
+profile::otrs::database_host: db1077.eqiad.wmnet
+profile::otrs::database_user: otrstest
+# profile::otrs::database_pass: in the private repo

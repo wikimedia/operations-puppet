@@ -1978,7 +1978,7 @@ node /orespoolcounter[12]00[34]\.(codfw|eqiad)\.wmnet/ {
 
 # new OTRS machine to replace mendelevium
 node 'otrs1001.eqiad.wmnet' {
-    role(insetup)
+    role(otrs)
 }
 
 # Wikidough, experimental (T252132)
