@@ -38,12 +38,6 @@ class profile::piwik::webserver(
     require ::profile::analytics::httpd::utils
     include profile::idp::client::httpd
 
-    monitoring::service { 'piwik':
-        description   => 'piwik.wikimedia.org',
-        check_command => 'check_http_unauthorized!piwik.wikimedia.org!/',
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Piwik',
-    }
-
     file_line { 'enable_php_opcache':
         line   => 'opcache.enable=1',
         match  => '^;?opcache.enable\s*\=',
@@ -56,11 +50,5 @@ class profile::piwik::webserver(
         match  => '^;?memory_limit\s*\=',
         path   => $php_ini,
         notify => Class['::httpd'],
-    }
-
-    ferm::service { 'piwik_http':
-        proto  => 'tcp',
-        port   => '80',
-        srange => '$CACHES',
     }
 }
