@@ -10,7 +10,6 @@ class profile::mail::mx (
     Array[Stdlib::Host]   $verp_domains             = lookup('profile::mail::mx::verp_domains'),
     Stdlib::Host          $verp_post_connect_server = lookup('profile::mail::mx::verp_post_connect_server'),
     String[1]             $verp_bounce_post_url     = lookup('profile::mail::mx::verp_bounce_post_url'),
-    Boolean               $enable_jumpcloud         = lookup('profile::mail::mx::enable_jumpcloud')
 ) {
     mailalias { 'root':
         recipient => 'root@wikimedia.org',
@@ -42,11 +41,6 @@ class profile::mail::mx (
         config  => template('role/exim/exim4.conf.mx.erb'),
         filter  => template('role/exim/system_filter.conf.erb'),
         require => Class['spamassassin'],
-    }
-    if $enable_jumpcloud {
-        class {'profile::mail::jumpcloud':
-            aliases_dir => $exim4::aliases_dir,
-        }
     }
 
     file { "${exim4::config_dir}/defer_domains":
