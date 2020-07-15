@@ -1122,7 +1122,7 @@ node 'cloudcontrol2004-dev.wikimedia.org' {
 }
 
 node 'labtestpuppetmaster2001.wikimedia.org' {
-    role(wmcs::openstack::codfw1dev::puppetmaster::frontend)
+    role(spare::system)
 }
 
 node 'cloudservices2002-dev.wikimedia.org' {
