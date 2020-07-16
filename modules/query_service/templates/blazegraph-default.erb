@@ -16,6 +16,7 @@ OAUTH_CONSUMER_SECRET_PARAM="-D${OAUTH_PROPS_PREFIX}.consumerSecret=<%= @oauth_s
 OAUTH_SESSION_STORE_LIMIT_PARAM="-D${OAUTH_PROPS_PREFIX}.sessionStoreLimit=<%= @oauth_settings['oauth_session_store_limit'] %>"
 OAUTH_NICE_URL_PARAM="-D${OAUTH_PROPS_PREFIX}.niceUrlBase=<%= @oauth_settings['oauth_nice_url'] %>"
 OAUTH_INDEX_URL_PARAM="-D${OAUTH_PROPS_PREFIX}.indexUrl=<%= @oauth_settings['oauth_index_url'] %>"
+OAUTH_WIKI_LOGOUT_LINK_PARAM="-D${OAUTH_PROPS_PREFIX}.wikiLogoutLink=<%= @oauth_settings['oauth_wiki_logout_link'] %>"
 <%- end -%>
 
 USER_AGENT="<%= @federation_user_agent %>"

@@ -55,6 +55,9 @@ server {
       proxy_set_header 'X-redirect-url' 'https://wcqs-beta.wmflabs.org/'; # TODO should be generalized if we ever go oauth with other endpoints
       proxy_pass http://127.0.0.1:9999/oauth/oauth_verify$is_args$args;
     }
+    location /_logout {
+      proxy_pass http://127.0.0.1:9999/oauth/logout;
+    }
 <% end %>
 
     location / {

@@ -9,4 +9,5 @@ type Query_service::OAuthSettings = Struct[{
   'oauth_session_store_limit' => Integer,
   'oauth_nice_url' => String,
   'oauth_index_url' => String,
+  'oauth_wiki_logout_link' => String,
 }]
