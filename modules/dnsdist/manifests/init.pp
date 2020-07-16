@@ -66,13 +66,21 @@ class dnsdist (
         group   => 'root',
         mode    => '0440',
         content => template('dnsdist/dnsdist.conf.erb'),
-        notify  => Service['dnsdist'],
     }
 
-    service { 'dnsdist':
-        ensure     => 'running',
-        require    => Package['dnsdist'],
-        hasrestart => true,
+    systemd::service { 'dnsdist':
+        ensure         => present,
+        override       => true,
+        restart        => true,
+        content        => template('dnsdist/dnsdist-systemd-override.conf.erb'),
+        require        => [
+            Package['dnsdist'],
+            File['/etc/dnsdist/dnsdist.conf'],
+        ],
+        service_params => {
+            restart => 'systemctl reload dnsdist.service',
+            enable  => true,
+        },
     }
 
 }
