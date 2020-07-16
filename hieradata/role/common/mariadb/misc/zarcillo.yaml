@@ -88,6 +88,7 @@ profile::mariadb::backup::check::backups:
     - codfw
   zarcillo:
     dump:
+    - eqiad
     - codfw
 profile::mariadb::backup::check::freshness:
   dump: 691200
