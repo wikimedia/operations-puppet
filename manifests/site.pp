@@ -2042,6 +2042,10 @@ node /^prometheus100[34]\.eqiad\.wmnet$/ {
     role(prometheus)
 }
 
+node /^prometheus[345]001\.(esams|ulsfo|eqsin)\.wmnet$/ {
+    role(insetup)
+}
+
 node /^proton[12]00[12]\.(eqiad|codfw)\.wmnet$/ {
     role(proton)
 
