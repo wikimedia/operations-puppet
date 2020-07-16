@@ -773,6 +773,21 @@ host poolcounter2004 {
     fixed-address poolcounter2004.codfw.wmnet;
 }
 
+host prometheus3001 {
+    hardware ethernet aa:00:00:e5:cb:43;
+    fixed-address prometheus3001.esams.wmnet;
+}
+
+host prometheus4001 {
+    hardware ethernet aa:00:00:4f:70:42;
+    fixed-address prometheus4001.ulsfo.wmnet;
+}
+
+host prometheus5001 {
+    hardware ethernet aa:00:00:57:4c:cb;
+    fixed-address prometheus5001.eqsin.wmnet;
+}
+
 host proton1001 {
     hardware ethernet aa:00:00:ec:82:4e;
     fixed-address proton1001.eqiad.wmnet;
