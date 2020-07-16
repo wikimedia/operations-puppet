@@ -68,7 +68,7 @@ profile::restbase::cassandra_datacenters:
 profile::restbase::cassandra_local_dc: "datacenter1"
 profile::restbase::parsoid_uri: http://deployment-parsoid11.deployment-prep.eqiad.wmflabs/w/rest.php
 profile::restbase::graphoid_uri: http://deployment-sca01.deployment-prep.eqiad.wmflabs:19000
-profile::restbase::mobileapps_uri: http://deployment-mcs01.deployment-prep.eqiad.wmflabs:8888
+profile::restbase::mobileapps_uri: http://deployment-docker-mobileapps01.deployment-prep.eqiad.wmflabs:8888
 profile::restbase::mathoid_uri: http://deployment-docker-mathoid01.deployment-prep.eqiad.wmflabs:10044
 profile::restbase::aqs_uri: https://wikimedia.org/api/rest_v1/metrics
 profile::restbase::event_service_uri: http://deployment-eventgate-3.deployment-prep.eqiad.wmflabs:8292/v1/events
