@@ -69,20 +69,19 @@ event_scheduler = 1
 event_scheduler = 0
 <% end %>
 
-
-# Binlog disabled as replication is not possible so far due to
-# events breaking replication and performance while replicating such a big amount of writes
-# See discussion from here: T184704#4005398
-
-# log-bin
-# log-slave_updates
-# sync-binlog                    = 0
-# binlog-cache-size              = 1M
-# max-binlog-size                = 1000M
-# binlog-format                  = <%= @binlog_format %>
-# binlog_cache_size              = 1M
-# expire_logs_days               = 7
-# slave_transaction_retries      = 4294967295
+log-bin
+log-slave_updates
+sync-binlog                    = 0
+binlog-cache-size              = 1M
+max-binlog-size                = 1000M
+binlog-format                  = <%= @binlog_format %>
+binlog_cache_size              = 1M
+expire_logs_days               = 7
+slave_transaction_retries      = 4294967295
+# Do not enable replication of tendril; the large number of writes cause major issues:
+# T184704#4005398
+binlog-do-db                   = zarcillo
+binlog-do-db                   = heartbeat
 
 # dump and load innodb buffer at start and stop
 innodb_buffer_pool_load_at_startup  = 1
