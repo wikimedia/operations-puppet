@@ -3,11 +3,7 @@ rotate: True
 retention: 4
 compress: True
 archive: False
-statistics:
-  host: 'db1080.eqiad.wmnet'
-  user: '<%= @stats_user %>'
-  password: '<%= @stats_password %>'
-  database: 'dbbackups'
+<%= scope.function_template([File.dirname(__FILE__) + "/" + "stats_subtemplate.cnf.erb"]) %>
 sections:
   s1:
     host: 'db1139.eqiad.wmnet'
