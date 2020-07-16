@@ -51,4 +51,10 @@ class profile::kubernetes::deployment_server(
             # lint:endignore
         }
     }
+    # Add a script to profile.d with functions to set the configuration for kubernetes.
+    file { '/etc/profile.d/kube-env.sh':
+        ensure => present,
+        source => 'puppet:///modules/profile/kubernetes/kube-env.sh',
+        mode   => '0555',
+    }
 }
