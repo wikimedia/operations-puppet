@@ -351,6 +351,12 @@ profile::kubernetes::deployment_server::services:
     namespace: recommendation-api
     mode: '0640'
     owner: mwdeploy
+  push-notifications:
+    username: push-notifications
+    group: wikidev
+    namespace: push-notifications
+    mode: '0640'
+    owner: mwdeploy
 
 # Specified in the private repo in this form
 #profile::kubernetes::deployment_server::tokens:
@@ -395,6 +401,8 @@ profile::kubernetes::deployment_server::services:
 #  mobileapps:
 #    token: dummy
 #  recommendation-api:
+#    token: dummy
+#  push-notifications:
 #    token: dummy
 #
 
