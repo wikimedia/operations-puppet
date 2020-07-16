@@ -1,0 +1,37 @@
+nagios_group: analytics_eqiad
+cluster: analytics
+admin::groups:
+  - analytics-admins
+
+profile::hadoop::common::hadoop_cluster_name: 'analytics-hadoop'
+
+profile::oozie::client::oozie_host: 'an-coord1001.eqiad.wmnet'
+
+# Hive Client settings.
+# Hive configuration is common to multiple clients, but because of role based
+# hiera lookups, we need to repeat it in multiple places. If you change this,
+# make sure you change it in all the right places!
+profile::hive::client::server_host: an-coord1001.eqiad.wmnet
+profile::hive::client::server_port: 10000
+profile::hive::client::metastore_host: 'an-coord1001.eqiad.wmnet'
+
+# These kerberos configs are needed since Hue looks into hive-site.xml
+# to know how to authenticate to Hive.
+profile::hive::client::hive_metastore_sasl_enabled: true
+profile::hive::client::hive_metastore_kerberos_principal: 'hive/_HOST@WIKIMEDIA'
+profile::hive::client::hive_server2_authentication: 'KERBEROS'
+profile::hive::client::hive_server2_authentication_kerberos_principal: 'hive/_HOST@WIKIMEDIA'
+
+# TLS Terminator settings
+profile::tlsproxy::instance::ssl_compatibility_mode: strong
+profile::tlsproxy::service::cert_domain_name: yarn.wikimedia.org
+profile::tlsproxy::service::upstream_ports:
+  - 80
+profile::tlsproxy::service::check_uri: "/health_check"
+profile::tlsproxy::service::notes_url: "https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster"
+profile::tlsproxy::service::contact_group: 'analytics'
+
+profile::java::java_packages:
+  - version: '8'
+    variant: 'jdk'
+profile::java::extra_args: 'JAVA_TOOL_OPTIONS="-Dfile.encoding=UTF-8"'
