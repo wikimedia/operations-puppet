@@ -19,13 +19,7 @@ class role::netmon {
     }
 
     class { '::httpd':
-        modules => ['headers',
-                    'rewrite',
-                    'proxy',
-                    'proxy_http',
-                    'ssl',
-                    'fcgid',
-                    $php_module,
-                    ],
+        modules    => ['headers','rewrite','proxy','proxy_http','ssl','fcgid',$php_module],
+        extra_pkgs => ['libapache2-mod-fcgid'],
     }
 }
