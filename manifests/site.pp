@@ -164,7 +164,7 @@ node /^an-presto100[1-5]\.eqiad\.wmnet$/ {
 
 # notification server for Phabricator (T257617)
 node 'aphlict1001.eqiad.wmnet' {
-    role(insetup)
+    role(aphlict)
 }
 
 # new APT repositories (NOT DHCP/TFTP)
