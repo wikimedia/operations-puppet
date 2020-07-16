@@ -4,19 +4,13 @@
 # vim: filetype=apache
 
 <VirtualHost *:80>
-    ServerName <%= @virtual_host %>
+    ServerName <%= @server_name %>
     ServerSignature Off
 
     # Not used since this VHost will only act as proxy,
     # but it is needed to avoid error messages in the httpd
     # logs and logrotate crons.
-    DocumentRoot <%= @document_root %>
-
-    <%- @cas_settings.each_pair do |key, setting| -%>
-      <%- unless setting.nil? or setting == :undef -%>
-    <%= key %> <%= setting %>
-      <%-end -%>
-    <%-end -%>
+    DocumentRoot /var/www
 
     <Directory />
         Options FollowSymLinks
@@ -28,19 +22,14 @@
     </Directory>
 
     <Location />
-        Order allow,deny
-        Allow from all
-        <LimitExcept OPTIONS>
-        <%- @cas_auth_settings.each_pair do |key, setting| -%>
-          <%- if setting.is_a?(Array) -%>
-            <%- setting.each do |_setting| -%>
-          <%= key %> <%= _setting %>
-            <%- end -%>
-          <%- else -%>
-          <%= key %> <%= setting %>
-          <%- end -%>
-        <%- end -%>
-        </LimitExcept>
+        AuthName "Developer account (use wiki login name not shell) - allowed groups: wmf, nda"
+        AuthType Basic
+        AuthBasicProvider ldap
+        AuthLDAPBindDN cn=proxyagent,ou=profile,dc=wikimedia,dc=org
+        AuthLDAPBindPassword <%= @proxypass %>
+        AuthLDAPURL "ldaps://<%= @ldap_server_primary %> <%= @ldap_server_fallback %>/ou=people,dc=wikimedia,dc=org?cn"
+        Require ldap-group cn=wmf,ou=groups,dc=wikimedia,dc=org
+        Require ldap-group cn=nda,ou=groups,dc=wikimedia,dc=org
 
         # The Jetty Webserver (responsible for the Yarn UI) returns HTML with hardcoded
         # links in the HTML hrefs, so we need a way to avoid broken links.
@@ -61,8 +50,8 @@
         # if left untouched.
         ProxyHTMLExtended On
         ProxyHTMLLinks a href
-        ProxyHTMLURLMap http://<%= @vhost_settings['res_manager'] %>:8088/ / L
-        ProxyHTMLURLMap http://<%= @vhost_settings['res_manager'] %>:19888/ / L
+        ProxyHTMLURLMap http://<%= @resourcemanager_primary_host %>:8088/ / L
+        ProxyHTMLURLMap http://<%= @resourcemanager_primary_host %>:19888/ / L
     </Location>
 
     <Location /health_check>
@@ -70,16 +59,16 @@
         Alias /var/www/health_check
     </Location>
 
-    CustomLog /var/log/apache2/<%= @virtual_host %>-access.log wmf
-    ErrorLog /var/log/apache2/<%= @virtual_host %>.log
+    CustomLog /var/log/apache2/<%= @server_name %>-access.log wmf
+    ErrorLog /var/log/apache2/<%= @server_name %>.log
 
     LogLevel warn
 
     ProxyPass /health_check !
-    ProxyPass /jobhistory/ http://<%= @vhost_settings['res_manager'] %>:19888/jobhistory/
-    ProxyPassReverse /jobhistory/ http://<%= @vhost_settings['res_manager'] %>:19888/jobhistory/
+    ProxyPass /jobhistory/ http://<%= @resourcemanager_primary_host %>:19888/jobhistory/
+    ProxyPassReverse /jobhistory/ http://<%= @resourcemanager_primary_host %>:19888/jobhistory/
 
     ProxyPass /health_check !
-    ProxyPass / http://<%= @vhost_settings['res_manager'] %>:8088/
-    ProxyPassReverse / http://<%= @vhost_settings['res_manager'] %>:8088/
+    ProxyPass / http://<%= @resourcemanager_primary_host %>:8088/
+    ProxyPassReverse / http://<%= @resourcemanager_primary_host %>:8088/
 </VirtualHost>
