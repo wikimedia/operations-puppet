@@ -51,17 +51,17 @@ class profile::kubernetes::deployment_server::helmfile(
               fail("unexpected servicename ${svcname}")
           }
           file { $hfdir:
-            ensure => directory,
-            owner  => $data['owner'],
-            group  => $data['group'],
+              ensure => directory,
+              owner  => $data['owner'],
+              group  => $data['group'],
           }
           file { $hfenv:
-            ensure  => present,
-            owner   => $data['owner'],
-            group   => $data['group'],
-            mode    => $data['mode'],
-            content => template('profile/kubernetes/.hfenv.erb'),
-            require => File[$hfdir]
+              ensure  => present,
+              owner   => $data['owner'],
+              group   => $data['group'],
+              mode    => $data['mode'],
+              content => "kube_env \"${svcname}\" \"${environment}\"",
+              require => File[$hfdir]
           }
         }
         $merged_services.map |String $svcname, Hash $data| {
