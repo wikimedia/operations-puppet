@@ -2228,7 +2228,7 @@ node /^sretest100[1-2]\.eqiad\.wmnet$/ {
 
 # visual diff testing (T257940)
 node 'testreduce1001.eqiad.wmnet' {
-    role(insetup)
+    role(parsoid::testreduce)
 }
 # Used for various d-i tests
 node 'theemin.codfw.wmnet' {

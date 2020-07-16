@@ -1,0 +1,9 @@
+cluster: parsoid
+
+admin::groups:
+  - parsoid-roots
+  - parsoid-admin
+  - parsoid-test-admins
+  - parsoid-test-roots
+
+parsoid::testing::parsoid_port: 8142
