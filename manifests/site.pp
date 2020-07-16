@@ -162,6 +162,11 @@ node /^an-presto100[1-5]\.eqiad\.wmnet$/ {
     role(analytics_cluster::presto::server)
 }
 
+# notification server for Phabricator (T257617)
+node 'aphlict1001.eqiad.wmnet' {
+    role(insetup)
+}
+
 # new APT repositories (NOT DHCP/TFTP)
 node /^apt[12]001\.wikimedia\.org/ {
     role(apt_repo)
