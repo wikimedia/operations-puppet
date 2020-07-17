@@ -13,7 +13,6 @@ class profile::phabricator::aphlict (
 
     class { '::phabricator::aphlict':
         ensure     => present,
-        basedir    => '/srv/aphlict',
         enable_ssl => $aphlict_ssl,
         sslcert    => $aphlict_cert,
         sslkey     => $aphlict_key,
