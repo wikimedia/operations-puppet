@@ -33,7 +33,7 @@ define mariadb::monitor_replication(
         nrpe_command  => "${check_mariadb} --check=slave_io_state",
         critical      => $is_critical,
         contact_group => $contact_group,
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/MariaDB/troubleshooting#Depooling_a_slave',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/MariaDB/troubleshooting#Depooling_a_replica',
     }
 
     nrpe::monitor_service { "mariadb_replica_sql_state_${name}":
@@ -41,7 +41,7 @@ define mariadb::monitor_replication(
         nrpe_command  => "${check_mariadb} --check=slave_sql_state",
         critical      => $is_critical,
         contact_group => $contact_group,
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/MariaDB/troubleshooting#Depooling_a_slave',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/MariaDB/troubleshooting#Depooling_a_replica',
     }
 
     # check the lag towards the mw_primary datacenter's master
@@ -55,6 +55,6 @@ define mariadb::monitor_replication(
         retries       => 10,
         critical      => $is_critical,
         contact_group => $contact_group,
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/MariaDB/troubleshooting#Depooling_a_slave',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/MariaDB/troubleshooting#Depooling_a_replica',
     }
 }
