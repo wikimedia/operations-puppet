@@ -5,4 +5,3 @@ profile::mariadb::sanitarium_multiinstance::s1: '48G'
 profile::mariadb::sanitarium_multiinstance::s3: '48G'
 profile::mariadb::sanitarium_multiinstance::s5: '8G'
 profile::mariadb::sanitarium_multiinstance::s8: '48G'
-profile::base::notifications: disabled
