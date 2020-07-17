@@ -55,4 +55,56 @@ class profile::chartmuseum(
         check_command => "check_https_url_for_string!${hostname}!/health!true",
         notes_url     => $monitoring_notes_url,
     }
+
+
+    # Setup a to package and sync (new) charts automatically
+    #
+    package { 'python3-docker-report':
+        ensure => present,
+    }
+    package { 'helm':
+        ensure => present,
+    }
+
+    # Clone deployment-charts repository
+    $charts_git = '/srv/deployment-charts'
+    git::clone { 'operations/deployment-charts':
+        ensure    => 'present',
+        owner     => 'chartmuseum',
+        group     => 'chartmuseum',
+        directory => $charts_git,
+        require   => Class['chartmuseum'],
+    }
+
+    # Provide chartmuseum username and passwort for the timer
+    $defaults_file = '/etc/default/helm-chartctl-package-all'
+    file { $defaults_file:
+        ensure  => file,
+        mode    => '0440',
+        owner   => 'root',
+        group   => 'root',
+        content => template('profile/chartmuseum/helm-chartctl.defaults.erb'),
+        notify  => Systemd::Timer::Job['helm-chartctl-package-all'],
+    }
+
+    # Pull the latest changes from git, package and push new charts every 2 minutes
+    $cmd_pull = '/usr/bin/git pull >/dev/null 2>&1'
+    $cmd_package = "/usr/bin/helm-chartctl --cm-url http://${listen_host}:${listen_port} walk ${charts_git}/charts >/dev/null 2>&1"
+    systemd::timer::job { 'helm-chartctl-package-all':
+        ensure             => present,
+        description        => 'Package and push new charts to local Chartmuseum instance',
+        command            => "cd ${charts_git} && ${cmd_pull} && ${cmd_package}",
+        environment_file   => $defaults_file,
+        user               => 'chartmuseum',
+        logging_enabled    => false,
+        monitoring_enabled => true,
+        require            => [Class['chartmuseum'], Git::Clone['operations/deployment-charts'], Package['python3-docker-report'], File[$defaults_file]],
+        interval           => {
+            # We don't care about when this runs, as long as it runs every 2 minutes.
+            # We also explicitly *don't* want to synchronize its execution across hosts,
+            # as OnCalendar would do, and this should have some natural splay.
+            'start'    => 'OnUnitInactiveSec',
+            'interval' => '120s',
+        },
+    }
 }

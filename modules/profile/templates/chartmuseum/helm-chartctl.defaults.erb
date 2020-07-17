@@ -1,0 +1,6 @@
+# This is a default file providing chartmuseum username and password
+# to the systemd timer helm-chartctl-package-all.
+<% if @basic_auth -%>
+HELM_REPO_USERNAME="<%= @basic_auth['username'] %>"
+HELM_REPO_PASSWORD="<%= @basic_auth['password'] %>"
+<% end -%>
