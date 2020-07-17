@@ -8,6 +8,9 @@ User=<%= @user %>
 Environment=<%= key -%>=<%= @environment[key] %>
 <%- end -%>
 <%- end -%>
+<%- if @environment_file -%>
+EnvironmentFile=<%= @environment_file %>
+<%- end -%>
 <%- if @syslog_identifier -%>
 SyslogIdentifier=<%= @syslog_identifier %>
 <%- end -%>

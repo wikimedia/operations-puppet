@@ -93,6 +93,9 @@
 #    By default the service unit will run under the system.slice.
 #    Default: undef (do not add any Slice setting to the unit)
 #
+#  [*environment_file*]
+#   String containing a file path to be used as 'EnvironmentFile=' in the Systemd unit.
+#
 define systemd::timer::job(
     String $description,
     String $command,
@@ -115,6 +118,7 @@ define systemd::timer::job(
     Wmflib::Ensure $ensure = 'present',
     Optional[Integer] $max_runtime_seconds = undef,
     Optional[Pattern[/\w+\.slice/]] $slice = undef,
+    Optional[Stdlib::Unixpath] $environment_file = undef,
 ) {
     # Sanitize the title for use on the filesystem
     $safe_title = regsubst($title, '[^\w\-]', '_', 'G')
