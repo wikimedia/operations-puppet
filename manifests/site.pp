@@ -2165,6 +2165,12 @@ node /schema[12]00[12].(eqiad|codfw).wmnet/ {
     role(eventschemas::service)
 }
 
+# See T258189
+node /search-loader[12]001.(eqiad|codfw).wmnet/ {
+    role(insetup)
+}
+
+
 # new sessionstore servers via T209393 & T209389
 node /sessionstore[1-2]00[1-3].(eqiad|codfw).wmnet/ {
     role(sessionstore)
