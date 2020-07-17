@@ -22,6 +22,9 @@
 #  [*packetcache_max*]
 #    [int] maximum number of entries in the cache. default: 10,000,000.
 #
+#  [*ringbuffer_max*]
+#    [int] maximum number of entries in the ring buffer. default: 10.
+#
 #  [*enable_console*]
 #    [bool] whether to enable dnsdist's console. default: false.
 #
@@ -41,6 +44,7 @@ class dnsdist (
     Integer[1]                          $qps_max            = 20,
     Boolean                             $enable_packetcache = true,
     Integer[1]                          $packetcache_max    = 10000000,
+    Integer[1]                          $ringbuffer_max     = 10,
     Boolean                             $enable_console     = false,
     Optional[String]                    $console_key        = undef,
     Boolean                             $enable_webserver   = false,

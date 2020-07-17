@@ -25,6 +25,8 @@ pc = newPacketCache(<%= @packetcache_max %>)
 getPool(""):setCache(pc)
 <% end -%>
 
+setRingBuffersSize(<%= @ringbuffer_max %>)
+
 -- TLS configuration options for DoH and DoT
 tlsOptions = {
   minTLSVersion='<%= @tls_config['min_tls_version'] %>',
