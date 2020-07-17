@@ -85,7 +85,7 @@ class apt(
         comment_old => true,
     }
 
-    if os_version('debian >= stretch'){
+    if os_version('debian >= buster'){
         apt::repository { 'debian-backports':
             uri         => 'http://mirrors.wikimedia.org/debian/',
             dist        => "${::lsbdistcodename}-backports",
