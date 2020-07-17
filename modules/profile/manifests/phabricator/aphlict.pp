@@ -18,7 +18,6 @@ class profile::phabricator::aphlict (
         sslcert    => $aphlict_cert,
         sslkey     => $aphlict_key,
         sslchain   => $aphlict_chain,
-        require    => Class[phabricator],
     }
 
     ferm::service { 'notification_server':
