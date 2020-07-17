@@ -25,6 +25,7 @@ class profile::piwik::database(
         datadir   => '/var/lib/mysql',
         basedir   => '/opt/wmf-mariadb101',
         read_only => false,
+        ssl       => 'puppet-cert',
         require   => Class['mariadb::packages_wmf'],
     }
 

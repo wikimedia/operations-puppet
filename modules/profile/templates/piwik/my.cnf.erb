@@ -17,6 +17,12 @@ tmpdir    = <%= @tmpdir %>
 server_id = <%= @server_id %>
 read_only = <%= (@read_only == 'off' or not @read_only) ? 0 : 1 %>
 
+# ssl
+ssl-ca=/etc/ssl/certs/Puppet_Internal_CA.pem
+ssl-cert=/etc/mysql/ssl/cert.pem
+ssl-key=/etc/mysql/ssl/server.key
+ssl-cipher=TLSv1.2
+
 log_bin
 binlog_format = ROW
 expire_logs_days = 7
