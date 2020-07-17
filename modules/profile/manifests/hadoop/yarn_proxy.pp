@@ -7,6 +7,7 @@ class profile::hadoop::yarn_proxy (
 ) {
     require profile::hadoop::httpd
     require ::profile::analytics::httpd::utils
+    require ::profile::hadoop::common
     include ::passwords::ldap::production
 
     $ldap_server_primary = $ldap_config['ro-server']
