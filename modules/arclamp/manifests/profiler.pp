@@ -1,4 +1,4 @@
-define arclamp::instance(
+define arclamp::profiler(
     String $description,
     Stdlib::Host $redis_host,
     Stdlib::Port::Unprivileged $redis_port,

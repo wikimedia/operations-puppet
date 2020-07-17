@@ -75,6 +75,7 @@ class arclamp(
         target => '/srv/deployment/performance/arc-lamp/arclamp-grep.py',
     }
 
+    # Generate flamegraphs from raw log data:
     cron { 'arclamp_generate_svgs':
         ensure      => $ensure,
         command     => '/srv/deployment/performance/arc-lamp/arclamp-generate-svgs >/dev/null',
@@ -94,9 +95,19 @@ class arclamp(
         require     => Package['performance/arc-lamp']
     }
 
+    # Write Prometheus metrics to file under HTTP document root:
+    cron { 'arclamp_generate_metrics':
+        ensure      => $ensure,
+        command     => '/srv/deployment/performance/arc-lamp/arclamp-generate-metrics >/dev/null',
+        user        => 'xenon',
+        minute      => '*/2',
+        environment => 'MAILTO=performance-team@wikimedia.org',
+        require     => Package['performance/arc-lamp']
+    }
+
     # This supports running multiple pipelines; in the past we had one
     # for HHVM and one for PHP7.  Currently only the latter is needed.
-    arclamp::instance {
+    arclamp::profiler {
         default:
             ensure     => present,
             redis_host => $redis_host,

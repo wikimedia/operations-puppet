@@ -1596,6 +1596,13 @@ class profile::prometheus::ops (
         'file_sd_configs' => [
           { 'files' => [ "${targets_path}/webperf_navtiming_*.yaml" ]}
         ],
+      }, {
+        'job_name'        => 'webperf_arclamp',
+        'scheme'          => 'http',
+        'metrics_path'    => '/arclamp/metrics',
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/webperf_arclamp_*.yaml" ]}
+        ],
       },
     ]
     prometheus::class_config{ "webperf_navtiming_${::site}":
@@ -1603,6 +1610,12 @@ class profile::prometheus::ops (
         site       => $::site,
         class_name => 'profile::webperf::processors',
         port       => 9230,
+    }
+    prometheus::class_config{ "webperf_arclamp_${::site}":
+        dest       => "${targets_path}/webperf_arclamp_${::site}.yaml",
+        site       => $::site,
+        class_name => 'profile::webperf::arclamp',
+        port       => 80,
     }
 
     $thanos_jobs = [
