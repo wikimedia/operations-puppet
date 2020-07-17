@@ -20,8 +20,7 @@ def main():
 
     print '\033[91m'
     print 'If you are still relying on ldaplist and not using ldapsearch,'
-    print 'please comment on https://phabricator.wikimedia.org/T114063'
-    print 'before 30 August 2016. If nobody comments, ldaplist will be removed!'
+    print 'please comment on https://phabricator.wikimedia.org/T114063.'
     print '\033[0m'
     parser = OptionParser(conflict_handler="resolve")
     parser.set_usage(
