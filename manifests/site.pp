@@ -142,7 +142,7 @@ node 'an-tool1007.eqiad.wmnet' {
 }
 
 node 'an-tool1008.eqiad.wmnet' {
-    role(insetup)
+    role(analytics_cluster::hadoop::yarn)
 }
 
 # Analytics/Search instance of Apache Airflow
