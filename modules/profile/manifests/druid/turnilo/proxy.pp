@@ -14,21 +14,14 @@
 #   Port bound by the Turnilo nodejs service.
 #
 class profile::druid::turnilo::proxy(
-    Hash $ldap_config         = lookup('ldap', Hash, hash, {}),
-    Integer $turnilo_port     = lookup('profile::turnilo::proxy::turnilo_port', { 'default_value' => 9091 }),
-    Stdlib::Fqdn $server_name = lookup('profile::turnilo::proxy::server_name', { 'default_value' =>'turnilo.wikimedia.org' }),
+    String $turnilo_port     = lookup('profile::turnilo::proxy::turnilo_port', { 'default_value' => '9091' }),
 ) {
 
     require ::profile::analytics::httpd::utils
 
     class { '::httpd':
-        modules => ['proxy_http',
-                    'proxy',
-                    'auth_basic',
-                    'authnz_ldap']
+        modules => ['proxy_http', 'proxy', 'auth_basic']
     }
-
-    class { '::passwords::ldap::production': }
 
     ferm::service { 'turnilo-http':
         proto  => 'tcp',
@@ -36,14 +29,8 @@ class profile::druid::turnilo::proxy(
         srange => '$CACHES',
     }
 
-    $proxypass = $passwords::ldap::production::proxypass
-    $ldap_server_primary = $ldap_config['ro-server']
-    $ldap_server_fallback = $ldap_config['ro-server-fallback']
-
-    # Set up the VirtualHost
-    httpd::site { $server_name:
-        content => template('profile/druid/turnilo/proxy/turnilo.vhost.erb'),
-        require => File['/var/www/health_check'],
+    class {'profile::idp::client::httpd':
+        vhost_settings => { 'turnilo_port' => $turnilo_port },
     }
 
     base::service_auto_restart { 'apache2': }

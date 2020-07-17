@@ -1,0 +1,57 @@
+#####################################################################
+### THIS FILE IS MANAGED BY PUPPET
+#####################################################################
+# vim: filetype=apache
+
+<VirtualHost *:80>
+    ServerName <%= @virtual_host %>
+    ServerSignature Off
+
+    # Not used since this VHost will only act as proxy,
+    # but it is needed to avoid error messages in the httpd
+    # logs and logrotate crons.
+    DocumentRoot <%= @document_root %>
+
+    <%- @cas_settings.each_pair do |key, setting| -%>
+      <%- unless setting.nil? or setting == :undef -%>
+    <%= key %> <%= setting %>
+      <%-end -%>
+    <%-end -%>
+
+    <Directory />
+        Options FollowSymLinks
+        AllowOverride None
+        Require all denied
+        <Files health_check>
+            Require all granted
+        </Files>
+    </Directory>
+
+    <Location />
+        <LimitExcept OPTIONS>
+        <%- @cas_auth_settings.each_pair do |key, setting| -%>
+          <%- if setting.is_a?(Array) -%>
+            <%- setting.each do |_setting| -%>
+          <%= key %> <%= _setting %>
+            <%- end -%>
+          <%- else -%>
+          <%= key %> <%= setting %>
+          <%- end -%>
+        <%- end -%>
+        </LimitExcept>
+    </Location>
+
+    <Location /health_check>
+        Require all granted
+        Alias /var/www/health_check
+    </Location>
+
+    CustomLog /var/log/apache2/<%= @virtual_host %>-access.log wmf
+    ErrorLog /var/log/apache2/<%= @virtual_host %>-error.log
+    LogLevel warn
+
+    ProxyPass /health_check !
+    ProxyPass / http://localhost:<%= @vhost_settings['turnilo_port'] %>/
+    ProxyPassReverse / http://localhost:<%= @vhost_settings['turnilo_port'] %>/
+</VirtualHost>
+
