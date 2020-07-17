@@ -15,6 +15,8 @@
 # and on nfs server holding misc dumps as they are produced (may be
 # different servers).
 
+source /usr/local/bin/rsyncer_lib.sh
+
 usage() {
     cat<<EOF
 Usage: $0 --xmldumpsdir <path> --xmlremotedirs <path>,<path>,<path>...  \\
@@ -70,40 +72,6 @@ EOF
     exit 1
 }
 
-make_statusfiles_tarball() {
-    # make tarball of all xml/sql dumps status and html files
-    tarballpath="${xmldumpsdir}/dumpstatusfiles.tar"
-    tarballpathgz="${tarballpath}.gz"
-
-    # Only pick up the html/json/txt files from the latest run; even if it's
-    # only partially done or for some wikis it's not started, that's fine.
-    # Files from the previous run will have already been sent over before
-    # the new run started, unless there are 0 minutes between end of
-    # one dump run across all wikis and start of the next (in which case
-    #  we are cutting things WAY too close with the runs)
-    latestwiki=$( cd "$xmldumpsdir"; ls -td *wik* | head -1 )
-
-    # dirname is YYYYMMDD, i.e. 8 digits. ignore all other directories.
-    latestrun=$( cd "${xmldumpsdir}/${latestwiki}" ; ls -d [0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9] | sort | tail -1 )
-    if [ -n "$latestrun" ]; then
-
-	# top-level index files first
-        ( cd "$xmldumpsdir"; /bin/tar cfp "$tarballpath" ./*html ./*json )
-        # add per-wiki files next: ( cd /data/xmldatadumps/public; /usr/bin/find . -maxdepth 3 -regextype sed -regex ".*/20171120/.*\(json\|html\|txt\)" )
-        ( cd "$xmldumpsdir"; /usr/bin/find "." -maxdepth 3 -regextype sed -regex ".*/${latestrun}/.*\\.\\(json\\|html\\|txt\\)" | /usr/bin/xargs -s 1048576 /bin/tar rfp "$tarballpath" )
-	# add txt files from 'latest' directory, they also will be skipped by the regular rsync
-	( cd "$xmldumpsdir"; /usr/bin/find "." -maxdepth 3 -regextype sed -regex ".*/latest/.*\\.txt" | /usr/bin/xargs -s 1048576 /bin/tar rfp "$tarballpath" )
-        # if no files found, there will be no tarball created either
-	if [ -f "$tarballpath" ]; then
-            /bin/gzip -S '.tmp' "$tarballpath"
-	    mv "${tarballpath}.tmp" "$tarballpathgz"
-        fi
-    fi
-    if [ "$testrun" ]; then
-	/bin/zcat "$tarballpathgz" | /bin/tar tvf - >> /tmp/dumpsrsync_test.txt
-    fi
-}
-
 xmldumpsdir=""
 xmlremotedirs=""
 
@@ -155,12 +123,13 @@ while [ $# -gt 0 ]; do
         shift
     elif [ "$1" == "--dryrun" ]; then
         dryrun="true"
+	onepass="true"
         shift
-    elif [ $1 == "--test" ]; then
+    elif [ "$1" == "--test" ]; then
         testrun="true"
 	onepass="true"
         shift
-    elif [ $1 == "--onepass" ]; then
+    elif [ "$1" == "--onepass" ]; then
 	onepass="true"
         shift
     else
@@ -202,100 +171,58 @@ if [ "$do_rsync_miscsubs" ]; then
     fi
 fi
 
+declare -A dirs
+
 if [ "$do_rsync_xml" ]; then
-    IFS_SAVE=$IFS
-    IFS=','
-    # shellcheck disable=SC2086
-    read -ra xmlremotedirs_list <<<$xmlremotedirs
-    IFS=$IFS_SAVE
+    dirs[xmlremotedirs]=$( get_comma_sep "$xmlremotedirs" )
 fi
 if [ "$do_rsync_misc" ]; then
-    IFS_SAVE=$IFS
-    IFS=','
-    # shellcheck disable=SC2086
-    read -ra miscremotedirs_list <<<$miscremotedirs
-    IFS=$IFS_SAVE
+    dirs[miscremotedirs]=$( get_comma_sep "$miscremotedirs" )
 fi
 if [ "$do_rsync_miscsubs" ]; then
-    IFS_SAVE=$IFS
-    IFS=','
-    # shellcheck disable=SC2086
-    read -ra miscremotesubs_list <<<$miscremotesubs
-    # shellcheck disable=SC2086
-    read -ra miscsubdirs_list <<<$miscsubdirs
-    IFS=$IFS_SAVE
+    dirs[miscremotesubs]=$( get_comma_sep "$miscremotesubs" )
+    dirs[misclocalsubs]=$( get_comma_sep "$miscsubdirs" )
 fi
 
 BWLIMIT=80000
+set_rsync_stdargs "$BWLIMIT"
 
 if [ "$testrun" ]; then
     /bin/rm -f /tmp/dumpsrsync_test.txt
 fi
+
+init_rlib "$testrun" "$dryrun"
 
 while true; do
 
     if [ "$do_rsync_xml" ]; then
 
         # rsync of xml/sql dumps for public wikis
-        for dest in "${xmlremotedirs_list[@]}"; do
+        for dest in ${dirs[xmlremotedirs]}; do
             # do this for each remote; if we do it once and then do all the rsyncs
             # back to back, the status files in the tarball may be quite stale
             # by the time they arrive at the last host
             if [ "$do_tarball" ]; then
-                make_statusfiles_tarball
+		tarballpathgz=$( make_statusfiles_tarball "$xmldumpsdir" "$testrun" "$dryrun" )
             fi
 
-            if [ "$dryrun" ]; then
-                echo /usr/bin/rsync -a  --contimeout=600 --timeout=600 --bwlimit="$BWLIMIT" --exclude='**bad/' --exclude='**save/' --exclude='**not/' --exclude='**temp/' --exclude='**tmp/' --exclude='*.inprog'  --exclude='*.html' --exclude='*.txt' --exclude='*.json' "${xmldumpsdir}"/*wik* "$dest"
-	    elif [ "$testrun" ]; then
-		/usr/bin/rsync --dry-run --itemize-changes -a  --contimeout=600 --timeout=600 --bwlimit="$BWLIMIT" --exclude='**bad/' --exclude='**save/' --exclude='**not/' --exclude='**temp/' --exclude='**tmp/' --exclude='*.inprog'  --exclude='*.html' --exclude='*.txt' --exclude='*.json' "${xmldumpsdir}"/*wik* "$dest" >> /tmp/dumpsrsync_test.txt
-            else
-                /usr/bin/rsync -a  --contimeout=600 --timeout=600 --bwlimit="$BWLIMIT" --exclude='**bad/' --exclude='**save/' --exclude='**not/' --exclude='**temp/' --exclude='**tmp/' --exclude='*.inprog'  --exclude='*.html' --exclude='*.txt' --exclude='*.json' "${xmldumpsdir}"/*wik* "$dest"  > /dev/null 2>&1
-            fi
-            # send statusfiles tarball over last, remote can unpack it when it notices the arrival
-            # this way, content of status and html files always reflects dump output already
-            # made available via rsync
-            if [ -f "$tarballpathgz" ]; then
-                if [ "$dryrun" ]; then
-                    echo /usr/bin/rsync -pgo  --contimeout=600 --timeout=600 --bwlimit="$BWLIMIT" "$tarballpathgz" "$dest"
-		elif [ "$testrun" ]; then
-                    /usr/bin/rsync --dry-run --itemize-changes -pgo  --contimeout=600 --timeout=600 --bwlimit="$BWLIMIT" "$tarballpathgz" "$dest" >> /tmp/dumpsrsync_test.txt
-                else
-                    /usr/bin/rsync -pgo  --contimeout=600 --timeout=600 --bwlimit="$BWLIMIT" "$tarballpathgz" "$dest" > /dev/null 2>&1
-                fi
-            fi
-
+	    push_dumpfiles "$xmldumpsdir" "$dest"
+	    push_tarball "$tarballpathgz" "$dest"
         done
 
    fi
    if [ "$do_rsync_misc" ]; then
-
-       # rsync of misc dumps to public-facing hosts, not necessarily to/from the same tree as the public wikis
-       # these hosts must get all the contents we have available
-       for dest in "${miscremotedirs_list[@]}"; do
-           if [ "$dryrun" ]; then
-               echo /usr/bin/rsync -a  --contimeout=600 --timeout=600 --bwlimit="$BWLIMIT" "${miscdumpsdir}"/* "$dest"
-	   elif [ "$testrun" ]; then
-               /usr/bin/rsync --dry-run --itemize-changes -a  --contimeout=600 --timeout=600 --bwlimit="$BWLIMIT" "${miscdumpsdir}"/* "$dest" >> /tmp/dumpsrsync_test.txt
-           else
-               /usr/bin/rsync -a  --contimeout=600 --timeout=600 --bwlimit="$BWLIMIT" "${miscdumpsdir}"/* "$dest" > /dev/null 2>&1
-           fi
+       for dest in ${dirs[miscremotedirs]}; do
+	   push_misc_dumps "$miscdumpsdir" "$dest"
        done
-
    fi
    if [ "$do_rsync_miscsubs" ]; then
 
        # rsync of limited subdirs of misc dumps to internal, not necessarily to/from the same tree as the public wikis
        # these internal hosts only need data they will use in future misc dumps generation, not the entire tree
-       for subdir in $miscsubdirs_list; do
-	   for dest in "${miscremotesubs_list[@]}"; do
-               if [ "$dryrun" ]; then
-                   echo /usr/bin/rsync -a  --contimeout=600 --timeout=600 --bwlimit="$BWLIMIT" "${miscdumpsdir}/${subdir}" "$dest"
-	       elif [ "$testrun" ]; then
-		   /usr/bin/rsync --dry-run --itemize-changes -a  --contimeout=600 --timeout=600 --bwlimit="$BWLIMIT" "${miscdumpsdir}/${subdir}" "$dest" >> /tmp/dumpsrsync_test.txt
-               else
-                   /usr/bin/rsync -a  --contimeout=600 --timeout=600 --bwlimit="$BWLIMIT" "${miscdumpsdir}/${subdir}" "$dest" > /dev/null 2>&1
-               fi
+       for subdir in ${dirs[misclocalsubs]}; do
+	   for dest in ${dirs[miscremotesubs]}; do
+	       push_misc_subdirs "$miscdumpsdir" "$dest" "$subdir"
 	   done
        done
 
