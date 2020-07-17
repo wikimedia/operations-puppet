@@ -3,6 +3,7 @@
 
 prometheus_nodes:
   - bast3004.wikimedia.org
+  - prometheus3001.esams.wmnet
 
 # Which of our redundant unified cert vendors to use in each DC
 public_tls_unified_cert_vendor: "digicert-2019a"
