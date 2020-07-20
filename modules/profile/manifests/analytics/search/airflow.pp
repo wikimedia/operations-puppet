@@ -58,7 +58,7 @@ class profile::analytics::search::airflow(
 
     $sql_user = $::passwords::mysql::airflow::search::user
     $sql_pass = $::passwords::mysql::airflow::search::password
-    $sql_alchemy_conn = "mysql://${sql_user}:${sql_pass}@${mysql_host}/${db_name}"
+    $sql_alchemy_conn = "mysql://${sql_user}:${sql_pass}@${mysql_host}/${db_name}?ssl_ca=/etc/ssl/certs/Puppet_Internal_CA.pem"
 
     file { "${conf_dir}/${conf_file}":
         ensure  => present,
