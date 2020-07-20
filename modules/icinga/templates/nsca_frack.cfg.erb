@@ -651,6 +651,14 @@ define service {
 
 define service {
     use                      passive-service
+    service_description      check_recurring_contrib_processing
+    host_name                frdb1002
+    notification_interval    1440
+    contact_groups           fr-tech,fr-tech-ops
+}
+
+define service {
+    use                      passive-service
     service_description      check_recurring_gc_contribs_missed
     host_name                frdb1002
     contact_groups           fr-tech,fr-tech-ops
