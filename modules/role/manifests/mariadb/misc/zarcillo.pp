@@ -13,4 +13,5 @@ class role::mariadb::misc::zarcillo {
 
     include ::profile::mariadb::misc::tendril
     ::profile::mariadb::section { $section: }
+    ::profile::mariadb::replication_lag { $section: }
 }
