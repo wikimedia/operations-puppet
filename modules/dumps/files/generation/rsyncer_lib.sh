@@ -158,7 +158,7 @@ push_misc_subdirs() {
     local remote="$2"
     local subdir="$3"
 
-    RSYNC_MISCDIRS_ARGS=( "${miscdumpsdir}/${subdir}" "$remote" )
+    RSYNC_MISCDIRS_ARGS=( "${localdir}/${subdir}" "$remote" )
 
     if [ "$rl_show" ]; then
         echo /usr/bin/rsync -a "${RSYNC_STD_ARGS[@]}" "${RSYNC_MISCDIRS_ARGS[@]}"

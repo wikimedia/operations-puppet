@@ -72,100 +72,60 @@ EOF
     exit 1
 }
 
-xmldumpsdir=""
-xmlremotedirs=""
-
-miscdumpsdir=""
-miscremotedirs=""
-
-miscsubdirs=""
-miscremotesubs=""
-
-do_tarball=""
-do_rsync_xml=""
-do_rsync_misc=""
-do_rsync_miscsubs=""
-
-dryrun=""
-testrun=""
-onepass=""
+declare -A opts
+declare -A flags
 
 while [ $# -gt 0 ]; do
-    if [ "$1" == "--xmldumpsdir" ]; then
-        xmldumpsdir="$2"
-        shift; shift
-    elif [ "$1" == "--xmlremotedirs" ]; then
-        xmlremotedirs="$2"
-        shift; shift
-    elif [ "$1" == "--miscdumpsdir" ]; then
-        miscdumpsdir="$2"
-        shift; shift
-    elif [ "$1" == "--miscremotedirs" ]; then
-        miscremotedirs="$2"
-        shift; shift
-    elif [ "$1" == "--miscsubdirs" ]; then
-        miscsubdirs="$2"
-        shift; shift
-    elif [ "$1" == "--miscremotesubs" ]; then
-        miscremotesubs="$2"
-        shift; shift
-    elif [ "$1" == "--do_tarball" ]; then
-        do_tarball="true"
-        shift
-    elif [ "$1" == "--do_rsync_xml" ]; then
-        do_rsync_xml="true"
-        shift
-    elif [ "$1" == "--do_rsync_misc" ]; then
-        do_rsync_misc="true"
-        shift
-    elif [ "$1" == "--do_rsync_miscsubs" ]; then
-        do_rsync_miscsubs="true"
-        shift
-    elif [ "$1" == "--dryrun" ]; then
-        dryrun="true"
-	onepass="true"
-        shift
-    elif [ "$1" == "--test" ]; then
-        testrun="true"
-	onepass="true"
-        shift
-    elif [ "$1" == "--onepass" ]; then
-	onepass="true"
-        shift
-    else
-        echo "$0: Unknown option $1" >& 2
-        usage
-    fi
+    case "$1" in
+	"--xmldumpsdir")        opts[xmldumpsdir]="$2";    shift                ;;
+	"--xmlremotedirs")      opts[xmlremotedirs]="$2";  shift                ;;
+	"--miscdumpsdir")       opts[miscdumpsdir]="$2";   shift                ;;
+	"--miscremotedirs")     opts[miscremotedirs]="$2"; shift                ;;
+	"--miscsubdirs")        opts[miscsubdirs]="$2";    shift                ;;
+	"--miscremotesubs")     opts[miscremotesubs]="$2"; shift                ;;
+	"--do_tarball")         flags[do_tarball]="true"                        ;;
+	"--do_rsync_xml")       flags[do_rsync_xml]="true"                      ;;
+	"--do_rsync_misc")      flags[do_rsync_misc]="true"                     ;;
+	"--do_rsync_miscsubs")  flags[do_rsync_miscsubs]="true"                 ;;
+	"--dryrun")             flags[dryrun]="true"; flags[onepass]="true"     ;;
+	"--test")               flags[testrun]="true"; flags[onepass]="true"    ;;
+	"--onepass")            flags[onepass]="true"                           ;;
+	*)
+            echo "$0: Unknown option $1" >& 2
+            usage
+	    ;;
+    esac
+    shift
 done
 
-if [ "$do_rsync_xml" ]; then
-    if [ -z "$xmldumpsdir" ]; then
+if [ "${flags[do_rsync_xml]}" ]; then
+    if [ -z "${opts[xmldumpsdir]}" ]; then
 	echo "$0: missing argument --xmldumpsdir"
 	usage && exit 1
-    elif [ -z "$xmlremotedirs" ]; then
+    elif [ -z "${opts[xmlremotedirs]}" ]; then
        echo "$0: missing argument --xmlremotedirs"
         usage && exit 1
     fi
 fi
 
-if [ "$do_rsync_misc" ]; then
-    if [ -z "$miscdumpsdir" ]; then
+if [ "${flags[do_rsync_misc]}" ]; then
+    if [ -z "${opts[miscdumpsdir]}" ]; then
 	echo "$0: missing argument --miscdumpsdir"
 	usage && exit 1
-    elif [ -z "$miscremotedirs" ]; then
+    elif [ -z "${opts[miscremotedirs]}" ]; then
 	echo "$0: missing argument --miscremotedirs"
 	usage && exit 1
     fi
 fi
 
-if [ "$do_rsync_miscsubs" ]; then
-    if [ -z "$miscsubdirs" ]; then
+if [ "${flags[do_rsync_miscsubs]}" ]; then
+    if [ -z "${opts[miscsubdirs]}" ]; then
 	echo "$0: missing argument --miscsubdirs"
         usage && exit 1
-    elif [ -z "$miscremotesubs" ]; then
+    elif [ -z "${opts[miscremotesubs]}" ]; then
         echo "$0: missing argument --miscremotesubs"
         usage && exit 1
-    elif [ -z "$miscdumpsdir" ]; then
+    elif [ -z "${opts[miscdumpsdir]}" ]; then
 	echo "$0: missing argument --miscdumpsdir"
 	usage && exit 1
     fi
@@ -173,62 +133,62 @@ fi
 
 declare -A dirs
 
-if [ "$do_rsync_xml" ]; then
-    dirs[xmlremotedirs]=$( get_comma_sep "$xmlremotedirs" )
+if [ "${flags[do_rsync_xml]}" ]; then
+    dirs[xmlremotedirs]=$( get_comma_sep "${opts[xmlremotedirs]}" )
 fi
-if [ "$do_rsync_misc" ]; then
-    dirs[miscremotedirs]=$( get_comma_sep "$miscremotedirs" )
+if [ "${flags[do_rsync_misc]}" ]; then
+    dirs[miscremotedirs]=$( get_comma_sep "${opts[miscremotedirs]}" )
 fi
-if [ "$do_rsync_miscsubs" ]; then
-    dirs[miscremotesubs]=$( get_comma_sep "$miscremotesubs" )
-    dirs[misclocalsubs]=$( get_comma_sep "$miscsubdirs" )
+if [ "${flags[do_rsync_miscsubs]}" ]; then
+    dirs[miscremotesubs]=$( get_comma_sep "${opts[miscremotesubs]}" )
+    dirs[misclocalsubs]=$( get_comma_sep "${opts[miscsubdirs]}" )
 fi
 
 BWLIMIT=80000
 set_rsync_stdargs "$BWLIMIT"
 
-if [ "$testrun" ]; then
+if [ "${flags[testrun]}" ]; then
     /bin/rm -f /tmp/dumpsrsync_test.txt
 fi
 
-init_rlib "$testrun" "$dryrun"
+init_rlib "${flags[testrun]}" "${flags[dryrun]}"
 
 while true; do
 
-    if [ "$do_rsync_xml" ]; then
+    if [ "${flags[do_rsync_xml]}" ]; then
 
         # rsync of xml/sql dumps for public wikis
         for dest in ${dirs[xmlremotedirs]}; do
             # do this for each remote; if we do it once and then do all the rsyncs
             # back to back, the status files in the tarball may be quite stale
             # by the time they arrive at the last host
-            if [ "$do_tarball" ]; then
-		tarballpathgz=$( make_statusfiles_tarball "$xmldumpsdir" "$testrun" "$dryrun" )
+            if [ "${flags[do_tarball]}" ]; then
+		tarballpathgz=$( make_statusfiles_tarball "${opts[xmldumpsdir]}" )
             fi
 
-	    push_dumpfiles "$xmldumpsdir" "$dest"
+	    push_dumpfiles "${opts[xmldumpsdir]}" "$dest"
 	    push_tarball "$tarballpathgz" "$dest"
         done
 
    fi
-   if [ "$do_rsync_misc" ]; then
+   if [ "${flags[do_rsync_misc]}" ]; then
        for dest in ${dirs[miscremotedirs]}; do
-	   push_misc_dumps "$miscdumpsdir" "$dest"
+	   push_misc_dumps "${opts[miscdumpsdir]}" "$dest"
        done
    fi
-   if [ "$do_rsync_miscsubs" ]; then
+   if [ "${flags[do_rsync_miscsubs]}" ]; then
 
        # rsync of limited subdirs of misc dumps to internal, not necessarily to/from the same tree as the public wikis
        # these internal hosts only need data they will use in future misc dumps generation, not the entire tree
        for subdir in ${dirs[misclocalsubs]}; do
 	   for dest in ${dirs[miscremotesubs]}; do
-	       push_misc_subdirs "$miscdumpsdir" "$dest" "$subdir"
+	       push_misc_subdirs "${opts[miscdumpsdir]}" "$dest" "$subdir"
 	   done
        done
 
    fi
 
-   if [ "$onepass" ]; then
+   if [ "${flags[onepass]}" ]; then
        exit 0
    fi
 

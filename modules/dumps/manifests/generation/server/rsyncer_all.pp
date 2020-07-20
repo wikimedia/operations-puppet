@@ -26,6 +26,6 @@ class dumps::generation::server::rsyncer_all(
         ensure    => 'present',
         restart   => true,
         content   => systemd_template('dumps-rsync-peers-all'),
-        subscribe => File['/usr/local/bin/rsync-to-peers.sh'],
+        subscribe => [File['/usr/local/bin/rsync-to-peers.sh'], File['/usr/local/bin/rsyncer_lib.sh']],
     }
 }
