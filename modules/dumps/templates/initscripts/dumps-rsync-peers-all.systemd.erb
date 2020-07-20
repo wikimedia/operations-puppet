@@ -8,7 +8,7 @@ After=network.target
 
 [Service]
 User=root
-ExecStart=/bin/bash /usr/local/bin/rsync-to-peers.sh --do_tarball --do_rsync_xml --do_rsync_misc --do_rsync_miscsubs --xmldumpsdir <%= @xmldumpsdir %>  --xmlremotedirs <%= @xmlremotedirs -%> --miscdumpsdir <%= @miscdumpsdir %>  --miscremotedirs <%= @miscremotedirs %> --miscsubdirs <%= @miscsubdirs %> --miscremotesubs <%= @miscremotesubs %>
+ExecStart=/bin/bash /usr/local/bin/rsync-via-primary.sh --do_tarball --do_rsync_xml --do_rsync_misc --do_rsync_miscsubs --xmldumpsdir <%= @xmldumpsdir %>  --xmlremotedirs <%= @xmlremotedirs -%> --miscdumpsdir <%= @miscdumpsdir %>  --miscremotedirs <%= @miscremotedirs %> --miscsubdirs <%= @miscsubdirs %> --miscremotesubs <%= @miscremotesubs %>
 
 SyslogIdentifier=%N
 

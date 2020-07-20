@@ -8,7 +8,7 @@ After=network.target
 
 [Service]
 User=root
-ExecStart=/bin/bash /usr/local/bin/rsync-to-peers.sh --do_tarball --do_rsync_xml --xmldumpsdir <%= @xmldumpsdir %>  --xmlremotedirs <%= @xmlremotedirs -%>
+ExecStart=/bin/bash /usr/local/bin/rsync-via-primary.sh --do_tarball --do_rsync_xml --xmldumpsdir <%= @xmldumpsdir %>  --xmlremotedirs <%= @xmlremotedirs -%>
 
 SyslogIdentifier=%N
 

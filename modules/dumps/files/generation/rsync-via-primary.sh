@@ -2,7 +2,7 @@
 
 ##############################
 # This file is managed by puppet!
-# puppet:///modules/dumps/generation/rsync-to-peers.sh
+# puppet:///modules/dumps/generation/rsync-via-primary.sh
 ##############################
 
 # This script rsyncs xml/sql dumps and/or misc dumps to web, cloud nfs and
