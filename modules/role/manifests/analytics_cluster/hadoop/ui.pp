@@ -27,7 +27,7 @@ class role::analytics_cluster::hadoop::ui {
     include ::profile::tlsproxy::service
 
     # yarn.wikimedia.org
-    include ::profile::hadoop::yarn_proxy
+    #include ::profile::hadoop::yarn_proxy
 
     include ::profile::kerberos::client
     include ::profile::kerberos::keytabs
