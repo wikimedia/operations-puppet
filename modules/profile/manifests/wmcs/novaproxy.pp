@@ -54,7 +54,7 @@ class profile::wmcs::novaproxy(
             puppet_rsc => Exec['nginx-reload'],
         }
         $ssl_settings  = ssl_ciphersuite('nginx', 'compat')
-        $ssl_cert_name = $acme_certname
+        $ssl_certificate_name = $acme_certname
         $use_acme_chief = true
     } elsif $use_ssl {
         sslcert::certificate { 'star.wmflabs.org':
@@ -62,16 +62,16 @@ class profile::wmcs::novaproxy(
             before       => Class['dynamicproxy'],
         }
         $ssl_settings  = ssl_ciphersuite('nginx', 'compat')
-        $ssl_cert_name = 'star.wmflabs.org'
+        $ssl_certificate_name = 'star.wmflabs.org'
         $use_acme_chief = false
     } else {
         $ssl_settings  = undef
-        $ssl_cert_name = undef
+        $ssl_certificate_name = false
         $use_acme_chief = false
     }
 
     class { '::dynamicproxy':
-        ssl_certificate_name     => $ssl_cert_name,
+        ssl_certificate_name     => $ssl_certificate_name,
         ssl_settings             => $ssl_settings,
         xff_fqdns                => $xff_fqdns,
         luahandler               => 'domainproxy',
