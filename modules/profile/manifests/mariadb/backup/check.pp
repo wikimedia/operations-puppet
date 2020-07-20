@@ -1,5 +1,4 @@
-# A module that gets installed on the backup metadata database
-# And checks backups are being generated regularly and correctly,
+# Check backups are being generated regularly and correctly,
 # they are "fresh" (last backup isn't too old) and seemingly
 # correct. Generate an icinga alert if not.
 # Only metadata checks are done- full backup tests are to be

@@ -12,6 +12,5 @@ class role::mariadb::misc::zarcillo {
     ::profile::mariadb::ferm { $section: }
 
     include ::profile::mariadb::misc::tendril
-    include ::profile::mariadb::backup::check
     ::profile::mariadb::section { $section: }
 }

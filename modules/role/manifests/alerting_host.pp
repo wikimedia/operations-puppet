@@ -20,6 +20,7 @@ class role::alerting_host {
     include ::profile::scap::dsh
 
     include ::profile::dns::auth::monitoring::global
+    include ::profile::mariadb::backup::check
 
     class { '::httpd::mpm':
         mpm => 'prefork'
