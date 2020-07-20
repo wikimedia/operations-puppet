@@ -146,7 +146,7 @@ groups:
   cloudelastic-roots:
     gid: 809
     description: manage cloudelastic nodes
-    members: [ebernhardson, dcausse, bd808, mstyles, zpapierski]
+    members: [ebernhardson, dcausse, bd808, mstyles, zpapierski, nskaggs]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   udp2log-users:
     gid: 713
@@ -576,7 +576,7 @@ groups:
   labtest-roots:
     gid: 776
     description: allows full sudo on labtest cluster, T131166
-    members: [bd808]
+    members: [bd808, nskaggs]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   swift-roots:
     gid: 777
@@ -654,12 +654,12 @@ groups:
   wmcs-roots:
     description: root for cloud services infrastructure
     gid: 792
-    members: [bd808]
+    members: [bd808, nskaggs]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   wmcs-admin:
     description: admin for cloud services infrastructure (labsdb only atm)
     gid: 793
-    members: [bd808]
+    members: [bd808, nskaggs]
     privileges: ['ALL = (ALL) NOPASSWD: /usr/local/sbin/maintain-views',
                  'ALL = (ALL) NOPASSWD: /usr/local/sbin/maintain-meta_p',
                  'ALL = (ALL) NOPASSWD: /usr/local/sbin/maintain-replica-indexes']
@@ -3812,7 +3812,15 @@ users:
     expiry_date: 2021-1-30
     expiry_contact: mgerlach@wikimedia.org
     comment: Research fellow
-
+  nskaggs:
+    ensure: present
+    gid: 500
+    name: nskaggs
+    realname: Nicholas Skaggs
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJrQktvFtYDgqDLSijTL+6ot1XyAAR31hlFMTZGKTc5o nskaggs@x1carbon
+    uid: 24994
+    email: nskaggs@wikimedia.org
 ldap_only_users:
   abartov:
     ensure: present
