@@ -65,7 +65,7 @@ def host_fact(fact_name, host_name):
     if fact_name not in WHITELIST:
         abort(403)
 
-    pdb_query = {"query": ["~", "certname", str(host_name)]}
+    pdb_query = {"query": ["~", "certname", "^{}\\.".format(str(host_name))]}
     results = requests.post(PUPPETDB_URL.format(fact=fact_name), json=pdb_query)
     if results.status_code != 200:
         abort(results.status_code)
