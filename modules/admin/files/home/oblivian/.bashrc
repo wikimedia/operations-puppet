@@ -32,8 +32,10 @@ if [ -f ~/.bash_aliases ]; then
 fi
 
 # Host-specific entries
-if [ -r "${HOME}/.hosts/${HOSTNAME}" ]; then
-    . "${HOME}/.hosts/${HOSTNAME}"
+# use non-numbered part of the hostname
+__hostbase=${HOSTNAME//[[:digit:]]/}
+if [ -r "${HOME}/.hosts/${__hostbase}" ]; then
+    . "${HOME}/.hosts/${__hostbase}"
 fi
 
 # Aliases
