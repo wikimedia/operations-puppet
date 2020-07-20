@@ -110,7 +110,7 @@ function toolname_allowed(toolname)
         'james','jarry-common','javatest','jayprakashbot','jeh-dev',
         'jembot','jimmy','jitrixis-test','joanjoc','jogobot',
         'jogotools','joinedventure','jorobot','jshint','jtools',
-        'jury','kaleem-bot','kaleem-bot-i','kasper-data-translator','khanamalumat',
+        'jury','k8s-status','kaleem-bot','kaleem-bot-i','kasper-data-translator','khanamalumat',
         'khanomalumat','kian','kmlexport','knowledgegrapher','kokolores',
         'krdbot','krinkle-redirect','ksamsok-rest','lahitools','langviews',
         'langviews-test','ldap','lestaty','lexeme-forms','lexeme-senses',
