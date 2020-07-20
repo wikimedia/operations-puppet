@@ -3779,6 +3779,7 @@ users:
     gid: 500
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINQaxbNSLlNDwRZ2YVLVQ6YswUjX2ID2xUDeDggbIVpM chrisalbon@MacBook-Pro-2.local
+    krb: present
   jgiannelos:
     ensure: present
     gid: 500
