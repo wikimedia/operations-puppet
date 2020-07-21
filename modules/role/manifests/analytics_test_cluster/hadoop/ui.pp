@@ -23,8 +23,8 @@ class role::analytics_test_cluster::hadoop::ui {
     # More info: T152712#3424883
     include ::profile::hue
 
-    # yarn.wikimedia.org
-    include ::profile::hadoop::yarn_proxy
+    # Test cluster setup uses LDAP (in contrast to the prod setup with CAS)
+    include ::profile::hadoop::yarn_proxy_testcluster
 
     include ::profile::kerberos::client
     include ::profile::kerberos::keytabs
