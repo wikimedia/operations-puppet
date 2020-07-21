@@ -9,6 +9,7 @@ class role::prometheus {
     include ::profile::prometheus::global
     include ::profile::prometheus::ops
     include ::profile::prometheus::ops_mysql
+    include ::profile::prometheus::ext
 
     # We only have a staging cluster in eqiad, don't poll it from both DCs
     if $::site == 'eqiad' {
