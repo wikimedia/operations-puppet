@@ -11,6 +11,8 @@
 #       The MySQL OTRS database user
 #   $otrs_database_pw,
 #       The MySQL OTRS database pass
+#   $otrs_daemon,
+#       Whether to run the daemon. NOTE: only 1 daemon MUST run at time
 #   $exim_database_name,
 #       The MySQL OTRS database name (probably the same)
 #   $exim_database_user,
@@ -29,7 +31,8 @@
 #      otrs_database_host => 'host1',
 #      otrs_database_name => 'otrs',
 #      otrs_database_user => 'user',
-#      otrs_database_pw =>  'pass
+#      otrs_database_pw   => 'pass',
+#      otrs_daemon        => true,
 #      exim_database_name => 'otrs',
 #      exim_database_user => 'eximuser',
 #      exim_database_pass => 'eximpass',
@@ -41,6 +44,7 @@ class otrs(
     $otrs_database_name,
     $otrs_database_user,
     $otrs_database_pw,
+    $otrs_daemon,
     $exim_database_name,
     $exim_database_user,
     $exim_database_pass,
@@ -137,8 +141,12 @@ class otrs(
         source => 'puppet:///modules/otrs/loginlogo_wmf.png',
     }
 
+    $daemon_ensure = $otrs_daemon ? {
+        true    => present,
+        default => absent,
+    }
     systemd::service { 'otrs-daemon':
-        ensure         => present,
+        ensure         => $daemon_ensure,
         content        => systemd_template('otrs-daemon'),
         restart        => true,
         service_params => {

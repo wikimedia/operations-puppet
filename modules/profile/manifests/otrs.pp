@@ -6,10 +6,11 @@ class profile::otrs(
     $otrs_database_name = hiera('profile::otrs::database_name'),
     $otrs_database_user = hiera('profile::otrs::database_user'),
     $otrs_database_pw   = hiera('profile::otrs::database_pass'),
+    $otrs_daemon        = lookup('profile::otrs::daemon'),
     $exim_database_name = hiera('profile::otrs::exim_database_name'),
     $exim_database_user = hiera('profile::otrs::exim_database_user'),
     $exim_database_pass = hiera('profile::otrs::exim_database_pass'),
-    $prometheus_nodes = hiera('prometheus_nodes'),
+    $prometheus_nodes   = hiera('prometheus_nodes'),
 ){
     include network::constants
     include ::profile::prometheus::apache_exporter
@@ -23,6 +24,7 @@ class profile::otrs(
         otrs_database_name => $otrs_database_name,
         otrs_database_user => $otrs_database_user,
         otrs_database_pw   => $otrs_database_pw,
+        otrs_daemon        => $otrs_daemon,
         exim_database_name => $exim_database_name,
         exim_database_user => $exim_database_user,
         exim_database_pass => $exim_database_pass,
