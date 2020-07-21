@@ -81,10 +81,14 @@ class otrs(
         'libmoo-perl',
         'libnamespace-clean-perl',
 
-        'mysql-client',
         'perl-doc',
     ]
     require_package($packages)
+    if os_version('debian >= buster') {
+        require_package('default-mysql-client')
+    } else { # NOTE: This mean jessie for OTRS
+        require_package('mysql-client')
+    }
 
     user { 'otrs':
         home       => '/var/lib/otrs',
