@@ -1,28 +1,51 @@
-:backends:
-  - nuyaml3
-  # the nuyaml3 backend searches the private datadir if the hierarchy
-  # entry is prefixed with either private.  newer version of puppet
-  # require all top level keys i.e. backends to be defined in this array
-  # we have also created an empty custom backend to keep the hiera cli happy
-  - private3
-:nuyaml3:
-  :datadir: /etc/puppet/hieradata
-  :expand_path:
-    - common
-    - "%{::site}"
-:private3:
-  :datadir: /etc/puppet/private/hieradata
-:hierarchy:
-  - "pontoon"
-  - "hosts/%{::hostname}"
-  - "regex/%{::fqdn}"
-  - "%{::site}"
-  - "private/hosts/%{::hostname}" # Currently only used for labtest hosts
-  - "private/%{::site}"
-  - "role/%{::site}/%{::_role}"
-  - "role/common/%{::_role}"
-  - "private/role/%{::site}/%{::_role}"
-  - "private/role/common/%{::_role}"
-  - "common"
-  - "private/common"
-  - "auto"
+# Please see the following docs for a more in depth explanation of our hiera
+# configuration including a simplified view of the hierarchy
+# https://wikitech.wikimedia.org/wiki/Puppet_Hiera
+version: 5
+defaults:
+  datadir: /etc/puppet/hieradata
+  data_hash: yaml_data
+hierarchy:
+  - name: "Pontoon"
+    path: "pontoon.yaml"
+  - name: "node hierarchy"
+    path: "hosts/%{::hostname}.yaml"
+  - name: "netbox node hierarchy"
+    path: "hosts/%{::hostname}"
+    datadir: "/etc/puppet/netbox/hieradata"
+  - name: "Regex lookup"
+    lookup_key: 'wmflib::regex_data'
+    path: 'regex.yaml'
+    options:
+      node: "%{::fqdn}"
+  - name: "private site"
+    lookup_key: 'wmflib::expand_path'
+    datadir: "/etc/puppet/private/hieradata"
+    path: "%{::site}"
+  - name: "private node"
+    datadir: "/etc/puppet/private/hieradata"
+    path: "hosts/%{::hostname}.yaml" # Currently only used for labtest hosts
+  - name: "expand_path site"
+    path: "%{::site}"
+    lookup_key: 'wmflib::expand_path'
+  - name: "role"
+    paths:
+      - "role/%{::site}/%{::_role}.yaml"
+      - "role/common/%{::_role}.yaml"
+  - name: "private role"
+    datadir: "/etc/puppet/private/hieradata"
+    paths:
+      - "role/%{::site}/%{::_role}.yaml"
+      - "role/common/%{::_role}.yaml"
+  - name: "common"
+    lookup_key: 'wmflib::expand_path'
+    path: "common"
+  - name: "netbox common hierarchy"
+    path: "hosts/%{::hostname}"
+    datadir: "/etc/puppet/netbox/hieradata"
+  - name: "private common"
+    lookup_key: 'wmflib::expand_path'
+    datadir: "/etc/puppet/private/hieradata"
+    path: "common"
+  - name: "Pontoon - realm.pp workarounds"
+    path: "auto.yaml"
