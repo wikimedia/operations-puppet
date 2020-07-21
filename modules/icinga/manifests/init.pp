@@ -25,6 +25,7 @@ class icinga(
     ],
     Stdlib::Unixpath $retention_file = '/var/cache/icinga/retention.dat',
     Integer $max_concurrent_checks = 0,
+    Integer[1] $logs_keep_days = 780,
 ) {
 
     file { [ '/etc/nagios/nagios_host.cfg', '/etc/nagios/nagios_service.cfg' ]:
@@ -210,6 +211,12 @@ class icinga(
         owner  => $icinga_user,
         group  => 'adm',
         mode   => '2755',
+    }
+
+    # Complement Icinga's log archival/rotation with tmpfiles.d cleanup
+    systemd::tmpfile { 'icinga-logs':
+        ensure  => present,
+        content => "e /srv/icinga-logs/ - - - ${logs_keep_days}d",
     }
 
     # Check that the icinga config is sane

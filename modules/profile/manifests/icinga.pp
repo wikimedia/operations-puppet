@@ -24,6 +24,7 @@ class profile::icinga(
     Hash[String, String]          $apache2_auth_users    = lookup('profile::icinga::apache2_auth_users'),
     Array[String]                 $datacenters           = lookup('datacenters'),
     Hash[String, Hash]            $atlas_measurements    = lookup('ripeatlas_measurements'),
+    Integer[1]                    $logs_keep_days        = lookup('profile::icinga::logs_keep_days'),
 ){
     $is_passive = !($::fqdn == $active_host)
 
@@ -142,6 +143,7 @@ class profile::icinga(
         icinga_group          => $icinga_group,
         max_concurrent_checks => $max_concurrent_checks,
         retention_file        => $retention_file,
+        logs_keep_days        => $logs_keep_days,
     }
 
     class { 'sslcert::dhparam': }
