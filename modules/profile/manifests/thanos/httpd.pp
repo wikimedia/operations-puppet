@@ -20,6 +20,7 @@ class profile::thanos::httpd (
         modules => ['proxy_http'],
     }
 
+    include profile::idp::client::httpd
     httpd::site { 'thanos-query':
         content => template('profile/thanos/httpd.conf.erb'),
     }
