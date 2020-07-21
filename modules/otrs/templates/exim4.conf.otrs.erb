@@ -142,7 +142,6 @@ acl_check_data:
 
 	# silently discard messages with malware attached
 	discard log_message = malware detected ($malware_name)
-		demime = *
 		malware = *
 
 	accept
