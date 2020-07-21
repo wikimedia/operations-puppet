@@ -139,14 +139,14 @@ class profile::netbox (
     monitoring::service { 'netbox-ssl':
         ensure        => $active_ensure,
         description   => 'netbox SSL',
-        check_command => 'check_ssl_http_letsencrypt!netbox.wikimedia.org',
+        check_command => "check_ssl_http_letsencrypt!${nb_service_hostname}",
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Netbox',
     }
 
     monitoring::service { 'netbox-https':
         ensure        => $active_ensure,
         description   => 'netbox HTTPS',
-        check_command => 'check_https_url!netbox.wikimedia.org!https://netbox.wikimedia.org',
+        check_command => "check_https_url!netbox.wikimedia.org!https://${nb_service_hostname}",
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Netbox',
     }
 
