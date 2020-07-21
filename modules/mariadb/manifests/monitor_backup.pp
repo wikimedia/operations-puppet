@@ -9,8 +9,8 @@ define mariadb::monitor_backup (
     $datacenter,
     $type                 = 'dump',
     $freshness            = 691200,  # 8 days
-    $min_size             = 1000000,
-    $warn_size_percentage = 3,
+    $min_size             = 307200,
+    $warn_size_percentage = 5,
     $crit_size_percentage = 15,
 ) {
 

@@ -126,5 +126,5 @@ profile::mariadb::backup::check::freshness:
 profile::mariadb::backup::check::db_host: db1080.eqiad.wmnet
 profile::mariadb::backup::check::db_user: backupcheck
 profile::mariadb::backup::check::db_database: dbbackups
-profile::mariadb::backup::check::warn_size_percentage: 3
+profile::mariadb::backup::check::warn_size_percentage: 5
 profile::mariadb::backup::check::crit_size_percentage: 15

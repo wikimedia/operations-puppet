@@ -19,9 +19,9 @@ SECTIONS = ['s1', 's2', 's3', 's4', 's5', 's6', 's7', 's8',
 DATACENTERS = ['eqiad', 'codfw']
 TYPES = ['dump', 'snapshot']
 DEFAULT_FRESHNESS = 691200  # 8 days, in seconds
-DEFAULT_MIN_SIZE = 1024 * 1024  # size smaller than 1M is considered failed
-DEFAULT_WARN_SIZE_PERCENTAGE = 1  # size of previous ones minus or plus this percentage is weird
-DEFAULT_CRIT_SIZE_PERCENTAGE = 10  # size of previous ones minus or plus this percentage is a fail
+DEFAULT_MIN_SIZE = 300 * 1024  # size smaller than 300K is considered failed
+DEFAULT_WARN_SIZE_PERCENTAGE = 5  # size of previous ones minus or plus this percentage is weird
+DEFAULT_CRIT_SIZE_PERCENTAGE = 15  # size of previous ones minus or plus this percentage is a fail
 DEFAULT_SSL_CA = '/etc/ssl/certs/Puppet_Internal_CA.pem'  # CA path used for mysql TLS connection
 
 
@@ -52,15 +52,15 @@ def get_options():
     parser.add_argument('--min-size', '-c', default=DEFAULT_MIN_SIZE,
                         type=int,
                         help='Size, in bytes, below which the backup is considered '
-                             'failed in any case (default: 1 MB)')
+                             'failed in any case (default: 300 KB)')
     parser.add_argument('--warn-size-percentage', '-p', default=DEFAULT_WARN_SIZE_PERCENTAGE,
                         type=float,
                         help='Percentage of size change compared to previous backups, '
-                             'above which a WARNING is produced (default: 1%%)')
+                             'above which a WARNING is produced (default: 5%%)')
     parser.add_argument('--crit-size-percentage', '-P', default=DEFAULT_CRIT_SIZE_PERCENTAGE,
                         type=float,
                         help='Percentage of size change compared to previous backups, '
-                             'above which a CRITICAL is produced (default: 10%%)')
+                             'above which a CRITICAL is produced (default: 15%%)')
 
     return parser.parse_args()
 
