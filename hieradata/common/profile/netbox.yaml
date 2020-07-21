@@ -4,8 +4,6 @@ profile::netbox::netbox_api: "https://%{hiera('profile::netbox::service_hostname
 
 profile::netbox::frontends: "%{alias('netbox_frontend')}"
 
-profile::netbox::netbox_api: https://netbox.wikimedia.org/
-
 profile::netbox::ganeti_sync_interval: 15
 profile::netbox::netbox_report_checks:
     -   name: puppetdb_physical

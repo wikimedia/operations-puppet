@@ -7,6 +7,7 @@ profile::netbox::backup: false
 # profile::netbox::secret_key in Private
 profile::netbox::netbox_api: "https://%{hiera('profile::netbox::service_hostname')}/"
 profile::netbox::netbox_report_checks: []
+profile::netbox::ganeti_sync_profiles: []
 netbox::swift_auth_url: false
 
 # use the correct acme profile
