@@ -56,8 +56,6 @@ cache::alternate_domains:
     caching: 'normal'
   graphite.wikimedia.org:
     caching: 'normal'
-  cas-graphite.wikimedia.org:
-    caching: 'normal'
   horizon.wikimedia.org:
     caching: 'normal'
   wikitech.wikimedia.org:
