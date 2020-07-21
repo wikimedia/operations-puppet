@@ -1290,6 +1290,11 @@ node /^cloudcephosd100[1-3]\.wikimedia\.org$/ {
     role(wmcs::ceph::osd)
 }
 
+# new servers  waiting for deployment  T251619
+node /^cloudcephosd10(0[4-9]|1[0-5])\.wikimedia\.org$/ {
+    role(insetup)
+}
+
 # New systems placed into service by cloud team via T194186 and T249062
 node /^cloudelastic100[1-6]\.wikimedia\.org$/ {
     role(elasticsearch::cloudelastic)
