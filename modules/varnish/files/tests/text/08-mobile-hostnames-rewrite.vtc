@@ -29,7 +29,7 @@ server s1 {
     expect req.http.x-dt-host == "zh-classical.wikipedia.org"
     txresp
 
-    loop 7 {
+    loop 11 {
         rxreq
         expect req.http.x-dt-host == <undef>
         txresp
@@ -79,6 +79,26 @@ client c1 {
 
     txreq -url "/" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
+
+    txreq -url "/" -hdr "Host: donate.wikipedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+    expect resp.status == 200
+    expect resp.http.location == <undef>
+
+    txreq -url "/" -hdr "User-Agent: nintendo" -hdr "Host: donate.wikipedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+    expect resp.status == 200
+    expect resp.http.location == <undef>
+
+    txreq -url "/" -hdr "Host: donate.wikimedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+    expect resp.status == 200
+    expect resp.http.location == <undef>
+
+    txreq -url "/" -hdr "User-Agent: nintendo" -hdr "Host: donate.wikimedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+    expect resp.status == 200
+    expect resp.http.location == <undef>
 
     txreq -url "/wiki/Main_Page" -hdr "User-Agent: nintendo" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
