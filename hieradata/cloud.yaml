@@ -168,3 +168,5 @@ profile::mediawiki::mcrouter_wancache::shards:
   wancache:
     eqiad: {}
 profile::java::java_packages: []
+profile::thanos::httpd::query_port: 10902
+profile::thanos::httpd::maxconn: 10

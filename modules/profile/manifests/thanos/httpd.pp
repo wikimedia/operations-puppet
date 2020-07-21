@@ -13,8 +13,8 @@
 #   The maximum number of connections per Apache worker.
 
 class profile::thanos::httpd (
-    Stdlib::Port::Unprivileged $query_port = lookup('profile::thanos::httpd::query_port', {'default_value' => 10902}),
-    Integer $maxconn = lookup('profile::thanos::httpd::maxconn', {'default_value' => 10}),
+    Stdlib::Port::Unprivileged $query_port = lookup('profile::thanos::httpd::query_port'),
+    Integer                    $maxconn    = lookup('profile::thanos::httpd::maxconn'),
 ) {
     class { '::httpd':
         modules => ['proxy_http'],

@@ -1,0 +1,2 @@
+profile::thanos::httpd::query_port: 10902
+profile::thanos::httpd::maxconn: 10
