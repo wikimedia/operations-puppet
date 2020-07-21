@@ -38,7 +38,7 @@ class profile::analytics::refinery::job::refine(
 
     # Update this when you want to change the version of the refinery job jar
     # being used for the refine job.
-    $refinery_version = '0.0.131'
+    $refinery_version = '0.0.129'
 
     # Use this value by default
     Profile::Analytics::Refinery::Job::Refine_job {
@@ -169,18 +169,13 @@ class profile::analytics::refinery::job::refine(
     profile::analytics::refinery::job::refine_job { 'eventlogging_analytics':
         ensure                   => $ensure_timers,
         job_config               => merge($default_config, {
-            input_path                         => $eventlogging_analytics_input_path,
-            input_path_regex                   => $eventlogging_analytics_input_path_regex,
-            input_path_regex_capture_groups    => $eventlogging_analytics_input_path_regex_capture_groups,
-            table_blacklist_regex              => $eventlogging_analytics_table_excludelist_regex,
-            transform_functions                => $eventlogging_legacy_transform_functions,
+            input_path                      => $eventlogging_analytics_input_path,
+            input_path_regex                => $eventlogging_analytics_input_path_regex,
+            input_path_regex_capture_groups => $eventlogging_analytics_input_path_regex_capture_groups,
+            table_blacklist_regex           => $eventlogging_analytics_table_excludelist_regex,
+            transform_functions             => $eventlogging_legacy_transform_functions,
             # Get EventLogging JSONSchemas from meta.wikimedia.org.
-            schema_base_uris                   => 'eventlogging',
-            # Use a merged Hive + event schema when reading raw JSON data.
-            # This relies on the Hive table schema to remember old fields that might
-            # have been removed from the latest event schema but are still present
-            # in event data.
-            merge_with_hive_schema_before_read => true,
+            schema_base_uris                => 'eventlogging',
         }),
         # Use webproxy so that this job can access meta.wikimedia.org to retrive JSONSchemas.
         spark_extra_opts         => '--driver-java-options=\'-Dhttp.proxyHost=webproxy.eqiad.wmnet -Dhttp.proxyPort=8080 -Dhttps.proxyHost=webproxy.eqiad.wmnet -Dhttps.proxyPort=8080\'',
