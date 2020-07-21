@@ -1,0 +1,9 @@
+cluster: prometheus
+profile::prometheus::ops::thanos: false
+profile::base::domain_search:
+  - wikimedia.org
+  - eqiad.wmnet
+  - codfw.wmnet
+  - esams.wmnet
+  - ulsfo.wmnet
+  - eqsin.wmnet
