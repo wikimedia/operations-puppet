@@ -194,60 +194,6 @@ class profile::prometheus::alerts (
     monitoring::alerts::rsyslog{'rsyslog_ulsfo': site => 'ulsfo'}
     monitoring::alerts::rsyslog{'rsyslog_eqsin': site => 'eqsin'}
 
-    # Alert on unusual day-over-day logstash ingestion rate change - T202307
-    monitoring::check_prometheus { 'logstash_ingestion_spike':
-        description     => 'Logstash rate of ingestion percent change compared to yesterday',
-        # Divide rate of input now vs yesterday, multiplied by 100
-        query           => '100 * (sum (rate(logstash_node_plugin_events_out_total{plugin_id=~"input/.*"}[5m])) / sum (rate(logstash_node_plugin_events_out_total{plugin_id=~"input/.*"}[5m] offset 1d)))',
-        prometheus_url  => 'http://prometheus.svc.eqiad.wmnet/ops',
-        warning         => 150,
-        critical        => 210,
-        method          => 'ge',
-        dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/logstash?orgId=1&panelId=2&fullscreen'],
-        # Check every 120 minutes, once in breach check every 10 minutes up to 5 times
-        check_interval  => 120,
-        retry_interval  => 10,
-        retries         => 5,
-        notes_link      => 'https://phabricator.wikimedia.org/T202307',
-    }
-
-    # Logstash Elasticsearch indexing failures - T236343 T240667
-    monitoring::check_prometheus { 'logstash_ingestion_errors':
-        description     => 'Logstash Elasticsearch indexing errors',
-        dashboard_links => ['https://logstash.wikimedia.org/goto/1cee1f1b5d4e6c5e06edb3353a2a4b83', 'https://grafana.wikimedia.org/dashboard/db/logstash'],
-        query           => 'sum(rate(logstash_elasticsearch_index_failure_total[5m]))',
-        warning         => 1,
-        critical        => 8,
-        method          => 'ge',
-        retries         => 2,
-        prometheus_url  => "http://prometheus.svc.${::site}.wmnet/ops",
-        notes_link      => 'https://wikitech.wikimedia.org/wiki/Logstash#Indexing_errors',
-    }
-
-    monitoring::check_prometheus { 'kafka logging-eqiad consumer lag':
-        description     => 'Too many messages in kafka logging-eqiad',
-        query           => 'kafka_burrow_partition_lag{exported_cluster="logging-eqiad"}',
-        prometheus_url  => 'http://prometheus.svc.eqiad.wmnet/ops',
-        warning         => 1000,
-        critical        => 1500,
-        retries         => 10,
-        method          => 'ge',
-        dashboard_links => ['https://grafana.wikimedia.org/d/000000484/kafka-consumer-lag?from=now-3h&to=now&orgId=1&var-datasource=eqiad prometheus/ops&var-cluster=logging-eqiad&var-topic=All&var-consumer_group=All'],
-        notes_link      => 'https://wikitech.wikimedia.org/wiki/Logstash#Kafka_consumer_lag',
-    }
-
-    monitoring::check_prometheus { 'kafka logging-codfw consumer lag':
-        description     => 'Too many messages in kafka logging-codfw',
-        query           => 'kafka_burrow_partition_lag{exported_cluster="logging-codfw"}',
-        prometheus_url  => 'http://prometheus.svc.codfw.wmnet/ops',
-        warning         => 1000,
-        critical        => 1500,
-        retries         => 10,
-        method          => 'ge',
-        dashboard_links => ['https://grafana.wikimedia.org/d/000000484/kafka-consumer-lag?from=now-3h&to=now&orgId=1&var-datasource=codfw prometheus/ops&var-cluster=logging-codfw&var-topic=All&var-consumer_group=All'],
-        notes_link      => 'https://wikitech.wikimedia.org/wiki/Logstash#Kafka_consumer_lag',
-    }
-
     monitoring::check_prometheus { 'widespread-puppet-agent-fail':
         description     => 'Widespread puppet agent failures',
         dashboard_links => ['https://grafana.wikimedia.org/d/yOxVDGvWk/puppet'],
