@@ -8,7 +8,7 @@ address:
         address: 0.0.0.0
 <%- end -%>
 listener_filters:
-- name: "envoy.listener.tls_inspector"
+- name: "envoy.filters.listener.tls_inspector"
   typed_config: {}
 tcp_fast_open_queue_length: <%= @fast_open_queue %>
 filter_chains:
@@ -64,7 +64,7 @@ filter_chains:
                 <%= k %>: <%= scope.call_function('to_json',[v]) %>
                 <%- end -%>
               <%- end -%>
-      http_filters: [{name: envoy.router, typed_config: {}}]
+      http_filters: [{name: envoy.filters.http.router, typed_config: {}}]
       server_header_transformation: APPEND_IF_ABSENT
 <%- end -%>
 <%- end -%>
@@ -119,7 +119,7 @@ filter_chains:
                 <%- end -%>
               <%- end -%>
         <%- end -%>
-      http_filters: [{name: envoy.router, typed_config: {}}]
+      http_filters: [{name: envoy.filters.http.router, typed_config: {}}]
       http_protocol_options:
         accept_http_10: true
 <%- if @capitalize_headers -%>

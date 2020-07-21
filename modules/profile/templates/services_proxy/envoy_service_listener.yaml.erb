@@ -20,7 +20,7 @@ filter_chains:
           path: "/var/log/envoy/<%= n %>.log"
       stat_prefix: <%= n %>_egress
       http_filters:
-      - name: envoy.router
+      - name: envoy.filters.http.router
         typed_config: {}
       route_config:
         <%- if @listener['xfp'] -%>

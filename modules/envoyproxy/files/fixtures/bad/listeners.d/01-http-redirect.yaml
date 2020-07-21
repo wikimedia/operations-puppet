@@ -20,6 +20,6 @@ filter_chains:
           path_redirect: "/"
           https_redirect: true
         http_filters:
-        - name: envoy.router
+        - name: envoy.filters.http.router
           config: {}this-is_garbagecd bad/
 *this-is_garbagecd bad/
