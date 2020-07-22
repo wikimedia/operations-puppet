@@ -5,6 +5,5 @@ profile::idp::client::httpd::virtual_host: puppetboard.wikimedia.org
 profile::idp::client::httpd::required_groups:
   - 'cn=ops,ou=groups,dc=wikimedia,dc=org'
 profile::idp::client::httpd::proxied_as_https: true
-profile::idp::client::httpd::priority: 50
 # Ship logs to logging pipeline local shim
 service::configuration::logstash_host: localhost

@@ -12,7 +12,6 @@ profile::icinga::ircbot::ircecho_nick: icinga-wm
 profile::icinga::ircbot::ircecho_server: 'chat.freenode.net +6697'
 profile::idp::client::httpd::protected_uri: '/icinga'
 profile::idp::client::httpd::cookie_scope: '/'
-profile::idp::client::httpd::priority: 50
 
 # NOTE: update the senders whitelist on our paging infrastructure (AQL as of 20190211) when modifying Icinga hostnames
 profile::icinga::virtual_host: ldap-icinga.wikimedia.org

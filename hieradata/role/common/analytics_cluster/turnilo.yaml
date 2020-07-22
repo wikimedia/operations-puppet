@@ -33,7 +33,6 @@ profile::idp::client::httpd::vhost_content: 'profile/idp/client/httpd-turnilo.er
 profile::idp::client::httpd::document_root: '/var/www'
 profile::idp::client::httpd::virtual_host: 'turnilo.wikimedia.org'
 profile::idp::client::httpd::proxied_as_https: true
-profile::idp::client::httpd::priority: 50
 profile::idp::client::httpd::required_groups:
   - 'cn=ops,ou=groups,dc=wikimedia,dc=org'
   - 'cn=wmf,ou=groups,dc=wikimedia,dc=org'
