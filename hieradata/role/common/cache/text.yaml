@@ -41,8 +41,6 @@ cache::alternate_domains:
     caching: 'normal'
   etherpad.wikimedia.org:
     caching: 'websockets'
-  gerrit.wmfusercontent.org:
-    caching: 'normal'
   git.wikimedia.org:
     caching: 'normal'
   grafana-labs.wikimedia.org:
