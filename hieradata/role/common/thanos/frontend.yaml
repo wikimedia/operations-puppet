@@ -15,10 +15,22 @@ profile::lvs::realserver::pools:
       - thanos-swift
 
 profile::envoy::ensure: present
-profile::tlsproxy::envoy::sni_support: 'no'
+profile::tlsproxy::envoy::sni_support: 'yes'
 profile::tlsproxy::envoy::services:
-   - server_names: ['*']
+   - server_names:
+     - 'thanos-swift'
+     - 'thanos-swift.svc.eqiad.wmnet'
+     - 'thanos-swift.svc.codfw.wmnet'
+     - 'thanos-swift.discovery.wmnet'
      port: 8888
+   - server_names:
+     - 'thanos-query'
+     - 'thanos-query.svc.eqiad.wmnet'
+     - 'thanos-query.svc.codfw.wmnet'
+     - 'thanos-query.discovery.wmnet'
+     - 'thanos.wikimedia.org'
+     port: 80
+     cert_name: 'thanos-query.discovery.wmnet'
 profile::tlsproxy::envoy::global_cert_name: 'thanos-swift.discovery.wmnet'
 profile::tlsproxy::envoy::use_remote_address: true
 
