@@ -26,6 +26,7 @@ class dnsrecursor(
     $allow_from_listen        = true,
     $allow_forward_zones      = true,
     $allow_edns_whitelist     = true,
+    $allow_incoming_ecs       = false,
 ) {
 
     include ::network::constants

@@ -63,6 +63,10 @@ forward-zones=<%= @forward_zones -%>, <%= @additional_forward_zones -%>
 # we need ECS to ensure our geoip resolution (e.g. for discovery hostnames) works correctly regardless of which recursor (x-dc) a client uses
 edns-subnet-whitelist=<%= @wmf_authdns.join(', ') %>
 <% end -%>
+<% if @allow_incoming_ecs -%>
+# whether to process and pass along source ECS information (example: received by and passed from dnsdist)
+use-incoming-edns-subnet=yes
+<% end -%>
 <% if @lua_hooks -%>
 # lua scripts allow extending the resolver
 # with custom behavior
