@@ -57,7 +57,13 @@ class docker::registry(
 
 
     file { '/etc/docker/registry/config.yml':
-        content => ordered_yaml(merge($config, $base_config)),
+        # Deep merge so that base settings can be overwritten. Base settings
+        # as the first arg so that param provided config can be overridden:
+        # * When there is a duplicate key that is a hash, they are recursively
+        #   merged.
+        # * When there is a duplicate key that is not a hash, the key in the
+        #   rightmost hash will "win."
+        content => ordered_yaml(deep_merge($base_config, $config)),
         owner   => 'docker-registry',
         group   => 'docker-registry',
         mode    => '0440',
