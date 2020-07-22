@@ -2984,7 +2984,7 @@ service::catalog:
         default: 10.64.48.26
     monitoring:
       check_command: check_https_url_for_string!helm-charts.discovery.wmnet!/health!true
-      notes_url: 'https://wikitech.wikimedia.org/wiki/ChartMuseum' 
+      notes_url: 'https://wikitech.wikimedia.org/wiki/ChartMuseum'
       critical: false
       sites:
         codfw:
@@ -2999,3 +2999,40 @@ service::catalog:
     discovery:
       - dnsdisc: helm-charts
         active_active: true
+  api-gateway:
+    description: API gateway, api-gateway.svc.%{::site}.wmnet
+    encryption: true
+    ip:
+      codfw:
+        default: 10.2.1.55
+      eqiad:
+        default: 10.2.2.55
+    lvs:
+      class: low-traffic
+      conftool:
+        cluster: kubernetes
+        service: kubesvc
+      depool_threshold: '.5'
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+      scheduler: wrr
+      protocol: tcp
+    monitoring:
+      check_command: check_https_lvs_on_port!api-gateway.discovery.wmnet!8087!/_healthz
+      critical: false # don't enable paging while testing
+      sites:
+        codfw:
+          hostname: api-gateway.svc.codfw.wmnet
+        eqiad:
+          hostname: api-gateway.svc.eqiad.wmnet
+    port: 8087
+    sites:
+    - eqiad
+    - codfw
+    state: service_setup # this is the most important entry in your service definition! See below for details
+    discovery:
+    - dnsdisc: api-gateway
+      active_active: true
