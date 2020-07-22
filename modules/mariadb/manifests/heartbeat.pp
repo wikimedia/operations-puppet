@@ -26,7 +26,7 @@ class mariadb::heartbeat (
             --user=root --host=localhost -D heartbeat \
             --shard=${shard} --datacenter=${datacenter} \
             --update --replace --interval=${interval} \
-            --set-vars=\"binlog_format=STATEMENT\" \
+            --set-vars=\"binlog_format=${mariadb::config::binlog_format}\" \
             -S ${socket} --daemonize \
             --pid /var/run/pt-heartbeat.pid",
             unless  => '/bin/ps --pid $(cat /var/run/pt-heartbeat.pid) \
