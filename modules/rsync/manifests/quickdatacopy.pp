@@ -56,6 +56,8 @@ define rsync::quickdatacopy(
           undef   => '',
           default => "--bwlimit=${bwlimit}",
       }
+
+      $ssl_wrapper_path = "/usr/local/sbin/sync-${title}-ssl-wrapper"
       $_rsh = $server_uses_stunnel ? {
           false   => '',
           default => "--rsh ${ssl_wrapper_path}"
@@ -66,7 +68,6 @@ define rsync::quickdatacopy(
           if $server_uses_stunnel {
               require_package('stunnel4')
 
-              $ssl_wrapper_path = "/usr/local/sbin/sync-${title}-ssl-wrapper"
               file { $ssl_wrapper_path:
                   ensure  => $ensure,
                   owner   => 'root',
@@ -77,7 +78,7 @@ define rsync::quickdatacopy(
           }
           $quickdatacopy = @("SCRIPT")
           #!/bin/sh
-          /usr/bin/rsync ${_rsh} -a ${_bwlimit} rsync://${source_host}/${title} ${module_path}"
+          /usr/bin/rsync ${_rsh} -a ${_bwlimit} rsync://${source_host}/${title} ${module_path}/
           | SCRIPT
 
           file { "/usr/local/sbin/sync-${title}":
