@@ -4,7 +4,7 @@
 #
 class role::analytics_cluster::hadoop::ui {
     system::role { 'analytics_cluster::hadoop::ui':
-        description => 'Hadoop GUIs: Hue and Yarn ResourceManager web interfaces'
+        description => 'Hadoop GUIs: Hue ResourceManager web interface'
     }
 
     include ::profile::java
@@ -23,11 +23,8 @@ class role::analytics_cluster::hadoop::ui {
     # More info: T152712#3424883
     include ::profile::hue
 
-    # TLS terminator/proxy for Yarn/Hue
+    # TLS terminator/proxy for Hue
     include ::profile::tlsproxy::service
-
-    # yarn.wikimedia.org
-    #include ::profile::hadoop::yarn_proxy
 
     include ::profile::kerberos::client
     include ::profile::kerberos::keytabs
