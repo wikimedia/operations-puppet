@@ -5,3 +5,5 @@ profile::librenms::dbuser: 'librenms'
 profile::librenms::dbhost: 'm1-master.eqiad.wmnet'
 profile::librenms::dbname: 'librenms'
 profile::librenms::auth_mechanism: 'ldap'
+
+rsync::server::wrap_with_stunnel: true

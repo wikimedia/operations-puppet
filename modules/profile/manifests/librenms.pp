@@ -6,7 +6,8 @@
 # Switch it in hieradata/common.yaml, the default is just a fallback.
 #
 class profile::librenms (
-    Stdlib::Fqdn     $active_server    = lookup('netmon_server'),
+    Stdlib::Fqdn       $active_server   = lookup('netmon_server'),
+    Stdlib::Fqdn       $passive_server  = lookup('netmon_server_failover'),
     Stdlib::Fqdn       $graphite_host   = lookup('graphite_host'),
     String             $graphite_prefix = lookup('profile::librenms::graphite_prefix'),
     String             $sitename        = lookup('profile::librenms::sitename'),
@@ -188,10 +189,11 @@ class profile::librenms (
     backup::set {'librenms': }
 
     rsync::quickdatacopy { 'srv-librenms-rrd':
-        ensure      => present,
-        auto_sync   => false,
-        source_host => 'netmon1002.wikimedia.org',
-        dest_host   => 'netmon2001.wikimedia.org',
-        module_path => '/srv/librenms/rrd',
+        ensure              => present,
+        auto_sync           => false,
+        source_host         => $active_server,
+        dest_host           => $passive_server,
+        module_path         => '/srv/librenms/rrd',
+        server_uses_stunnel => true,
     }
 }
