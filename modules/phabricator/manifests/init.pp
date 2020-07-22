@@ -70,6 +70,7 @@ class phabricator (
     String $deploy_target     = 'phabricator/deployment',
     Integer $opcache_validate = 0,
     Stdlib::Ensure::Service $phd_service_ensure = running,
+    Boolean $manage_scap_user = undef,
 ) {
     $deploy_root = "/srv/deployment/${deploy_target}"
 
@@ -160,6 +161,7 @@ class phabricator (
     scap::target { $deploy_target:
         deploy_user => $deploy_user,
         key_name    => 'phabricator',
+        manage_user => $manage_scap_user,
         require     => File['/usr/local/sbin/phab_deploy_finalize'],
         sudo_rules  => [
             'ALL=(root) NOPASSWD: /usr/local/sbin/phab_deploy_promote',

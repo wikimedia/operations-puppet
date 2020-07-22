@@ -13,6 +13,8 @@ phabricator::tools::dump: false
 apache::logrotate::period: "daily"
 apache::logrotate::rotate: 3
 
+profile::phabricator::main::manage_scap_user: false
+
 profile::phabricator::main::http_srange: '($DEPLOYMENT_HOSTS $CACHES)'
 
 profile::phabricator::main::rate_limits:

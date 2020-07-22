@@ -81,6 +81,9 @@ class profile::phabricator::main (
                                                       { 'default_value' => false }),
 
     String                      $http_srange        = lookup('profile::phabricator::main::http_srange'),
+
+    Boolean                     $manage_scap_user       = lookup('profile::phabricator::main::manage_scap_user',
+                                                      { 'default_value' => true }),
 ) {
 
     $mail_alias = $::realm ? {
@@ -283,7 +286,8 @@ class profile::phabricator::main (
         conf_files          => $conf_files,
         opcache_validate    => $opcache_validate,
         timezone            => $timezone,
-        phd_service_ensure  => $phd_service_ensure
+        phd_service_ensure  => $phd_service_ensure,
+        manage_scap_user    => $manage_scap_user
     }
     # lint:endignore
 
