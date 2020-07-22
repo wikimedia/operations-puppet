@@ -49,6 +49,14 @@ class profile::analytics::search::airflow(
         deploy_user => $deploy_user,
     }
 
+    if $deploy_user != $service_user {
+        # Allow scap to deploy revision controlled variables
+        sudo::user { "scap_${deploy_user}_${service_user}":
+            user       => $deploy_user,
+            privileges => ["ALL=(${service_user}) NOPASSWD: /usr/local/bin/airflow variables *" ]
+        }
+    }
+
     file { $conf_dir:
         ensure => 'directory',
         owner  => 'root',
