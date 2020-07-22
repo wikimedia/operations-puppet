@@ -357,6 +357,12 @@ profile::kubernetes::deployment_server::services:
     namespace: push-notifications
     mode: '0640'
     owner: mwdeploy
+  api-gateway:
+    username: api-gateway
+    group: wikidev
+    namespace: api-gateway
+    mode: '0640'
+    owner: mwdeploy
 
 # Specified in the private repo in this form
 #profile::kubernetes::deployment_server::tokens:
