@@ -11,7 +11,7 @@ class profile::smokeping (
     class{ '::smokeping::web': }
 
     rsync::quickdatacopy { 'var-lib-smokeping':
-        ensure              => present,
+        ensure              => absent,
         auto_sync           => true,
         source_host         => $active_server,
         dest_host           => $passive_server,
