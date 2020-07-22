@@ -1,31 +1,30 @@
-version: 5
-defaults:
-  datadir: /etc/puppet/hieradata
-  data_hash: yaml_data
-hierarchy:
-  - name: 'Http Yaml'
-    data_hash: cloudlib::httpyaml
-    uri: "http://puppetmaster.cloudinfra-codfw1dev.codfw1dev.wmcloud.org:8100/v1/%{::labsproject}/node/%{facts.fqdn}"
-  - name: "cloud hierarchy"
-    paths:
-      - "cloud/%{::wmcs_deployment}/%{::labsproject}/hosts/%{::hostname}.yaml"
-      - "cloud/%{::wmcs_deployment}/%{::labsproject}/common.yaml"
-      - "cloud/%{::wmcs_deployment}.yaml"
-      - "cloud.yaml"
-  - name: "Secret hierarchy"
-    path: "%{::labsproject}.yaml"
-    datadir: "/etc/puppet/secret/hieradata"
-  - name: "Private hierarchy"
-    paths:
-      - "labs/%{::labsproject}/common.yaml"
-      - "%{::labsproject}.yaml"
-      - "labs.yaml"
-    datadir: "/etc/puppet/private/hieradata"
-  - name: "Common hierarchy"
-    path: "common.yaml"
-  - name: "Secret Common hierarchy"
-    path: "common.yaml"
-    datadir: "/etc/puppet/secret/hieradata"
-  - name: "Private Common hierarchy"
-    path: "common.yaml"
-    datadir: "/etc/puppet/private/hieradata"
+:backends:
+  - httpyaml
+  - nuyaml
+  # the nuyaml3 backend searches the private and secret datadir if the hierarchy
+  # entry is prefixed with either private or secret.  newer version of puppet
+  # require all top level keys i.e. backends to be defined in this array
+  # we have also created an empty custom backend to keep the hiera cli happy
+  - private
+  - secret
+:nuyaml:
+  :datadir: /etc/puppet/hieradata
+:private:
+  :datadir: /etc/puppet/private/hieradata
+:secret:
+  :datadir: /etc/puppet/secret/hieradata
+:httpyaml:
+  :url_prefix: http://puppetmaster.cloudinfra-codfw1dev.codfw1dev.wmcloud.org:8100/v1/
+:hierarchy:
+  - "cloud/%{::wmcs_deployment}/%{::labsproject}/hosts/%{::hostname}"
+  - "cloud/%{::wmcs_deployment}/%{::labsproject}/common"
+  - "cloud/%{::wmcs_deployment}"
+  - "cloud"
+  - "secret/%{::labsproject}"
+  - "private/labs/%{::labsproject}/common"
+  - "private/%{::labsproject}"
+  - "private/labs"
+  - "common"
+  - "secret/common"
+  - "private/common"
+  - "httpyaml/%{::labsproject}/node/%{::fqdn}"
