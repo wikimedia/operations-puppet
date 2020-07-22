@@ -1,6 +1,10 @@
 # == Class: dnsdist
 #
-# Install and configure dnsdist.
+# Install and configure dnsdist with DNS-over-HTTPS and DNS-over-TLS support.
+#
+# This class configures a dnsdist installation to act as a DoH and DoT resolver
+# with a single backend recursor. It sets up a basic configuration to run a
+# public DoH/DoT service with safe secure defaults but without any UDP support.
 #
 # == Parameters:
 #
@@ -29,7 +33,7 @@
 #    [bool] whether to enable dnsdist's console. default: false.
 #
 #  [*console_key*]
-#    [string] key to use for dnsdist's console access. default: undefined.
+#    [string] key to use for dnsdist's console access. default: undef.
 #
 #  [*enable_webserver*]
 #    [bool] whether to enable dnsdist's web server. default: false.
