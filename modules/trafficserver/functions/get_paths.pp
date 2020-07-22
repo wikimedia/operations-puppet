@@ -9,8 +9,8 @@ function trafficserver::get_paths(Boolean $default_instance, String $instance_na
       $exec_prefix = $prefix
       $sysconfdir = '/etc/trafficserver'
       $datadir = '/var/cache/trafficserver'
-      $localstatedir = '/var/run'
-      $runtimedir = '/var/run/trafficserver'
+      $localstatedir = '/run'
+      $runtimedir = '/run/trafficserver'
       $logdir = '/var/log/trafficserver'
     } else {
       $base_path = '/srv/trafficserver'
