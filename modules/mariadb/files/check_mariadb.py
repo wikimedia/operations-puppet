@@ -634,7 +634,7 @@ def icinga_check(options):
         else:
             ok_msg.append('event_scheduler: {}'.format(status['event_scheduler']))
     else:
-        ok_msg.append('read_only: {}'.format(status['event_scheduler']))
+        ok_msg.append('event_scheduler: {}'.format(status['event_scheduler']))
 
     # # check lag
     # if 'heartbeat' in status:
