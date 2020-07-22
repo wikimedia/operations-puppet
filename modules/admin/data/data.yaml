@@ -19,7 +19,7 @@ groups:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
               marble, mmarble, raz-shuty, jeroendedauw, nharateh, pdrouin, tschumann, jaufrecht,
-              bitpogo]
+              bitpogo, petarpetkovic, ha78na]
   wikidev:
     gid: 500
     description: container group for primary user groups.
@@ -3926,9 +3926,8 @@ ldap_only_users:
     realname: Greta Doci
     email: greta.doci@wikimedia.de
   ha78na:
-    ensure: present
+    ensure: absent
     realname: Hana Worku
-    email: hworku@wikimedia.org
   heather:
     ensure: present
     realname: Heather Walls
@@ -4028,9 +4027,8 @@ ldap_only_users:
     realname: Tyler Romeo
     email: tylerromeo@gmail.com
   petarpetkovic:
-    ensure: present
+    ensure: absent
     realname: Petar Petkovic
-    email: ppetkovic@wikimedia.org
   prtksxna:
     ensure: present
     realname: Prateek Saxena
