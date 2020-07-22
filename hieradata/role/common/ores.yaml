@@ -159,3 +159,11 @@ profile::prometheus::statsd_exporter::mappings:
 
 profile::ores::logstash_host: localhost
 service::configuration::logstash_host: localhost
+
+# envoy for TLS between ATS and backend servers
+profile::tlsproxy::envoy::ensure: present
+profile::tlsproxy::envoy::services:
+  - server_names: ['*']
+    port: 8081
+profile::tlsproxy::envoy::global_cert_name: "ores.discovery.wmnet"
+profile::tlsproxy::envoy::sni_support: "no"

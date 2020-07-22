@@ -11,4 +11,5 @@ class role::ores {
 
     include ::profile::ores::worker
     include ::profile::ores::web
+    include ::profile::tlsproxy::envoy # TLS termination
 }
