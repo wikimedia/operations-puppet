@@ -48,4 +48,5 @@ tlsOptions['provider'] = 'openssl'
 addTLSLocal('0.0.0.0', '<%= @tls_config['cert_chain_path'] %>', '<%= @tls_config['cert_privkey_path'] %>', tlsOptions)
 addTLSLocal('[::]', '<%= @tls_config['cert_chain_path'] %>', '<%= @tls_config['cert_privkey_path'] %>', tlsOptions)
 
-newServer({address='<%= @resolver['host'] %>:<%= @resolver['port'] %>', name='<%= @resolver['name'] %>'})
+newServer({address='<%= @resolver['host'] %>:<%= @resolver['port'] %>', name='<%= @resolver['name'] %>'},
+           useClientSubnet=<%= @enable_ecs ? true : false %>)

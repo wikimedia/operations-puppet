@@ -36,6 +36,9 @@
 #
 #  [*webserver_config*]
 #    [Dnsdist::Webserver_config] web server configuration. default: undef.
+#
+#  [*enable_ecs*]
+#    [bool] whether to enable EDNS Client Subnet. default: true.
 
 class dnsdist (
     Dnsdist::Resolver                   $resolver,
@@ -49,6 +52,7 @@ class dnsdist (
     Optional[String]                    $console_key        = undef,
     Boolean                             $enable_webserver   = false,
     Optional[Dnsdist::Webserver_config] $webserver_config   = undef,
+    Boolean                             $enable_ecs         = true,
 ) {
 
     if ($enable_console and $console_key == undef) {
