@@ -12,9 +12,6 @@ class role::wmcs::db::toolsdb_secondary {
     $socket = '/var/run/mysqld/mysqld.sock'
 
     class { 'profile::mariadb::monitor::prometheus':
-        mysql_group => 'labs',
-        mysql_role  => 'slave',
-        mysql_shard => 'tools',
         socket      => $socket,
     }
 

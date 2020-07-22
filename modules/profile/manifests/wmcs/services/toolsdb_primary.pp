@@ -9,9 +9,6 @@ class profile::wmcs::services::toolsdb_primary (
     $socket = '/var/run/mysqld/mysqld.sock'
 
     class { 'profile::mariadb::monitor::prometheus':
-        mysql_group => 'labs',
-        mysql_role  => 'master',
-        mysql_shard => 'tools',
         socket      => $socket,
     }
 

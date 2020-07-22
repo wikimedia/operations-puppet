@@ -30,11 +30,7 @@ class role::mariadb::misc::phabricator(
     include ::profile::base::firewall
     ::profile::mariadb::ferm { 'phabricator': }
 
-    class { 'profile::mariadb::monitor::prometheus':
-        mysql_group => 'misc',
-        mysql_shard => $shard,
-        mysql_role  => $mysql_role,
-    }
+    include ::profile::mariadb::monitor::prometheus
 
     $read_only = $master ? {
         true  => 0,

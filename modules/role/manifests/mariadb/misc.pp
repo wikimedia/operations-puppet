@@ -31,11 +31,7 @@ class role::mariadb::misc(
     if $shard == 'm5' {
         include ::profile::mariadb::ferm_wmcs
     }
-    class { 'profile::mariadb::monitor::prometheus':
-        mysql_group => 'misc',
-        mysql_shard => $shard,
-        mysql_role  => $mysql_role,
-    }
+    include ::profile::mariadb::monitor::prometheus
 
     include mariadb::packages_wmf
     include mariadb::service

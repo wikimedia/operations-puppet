@@ -29,9 +29,6 @@ class profile::labs::db::wikireplica (
     }
 
     class { 'profile::mariadb::monitor::prometheus':
-        mysql_group => 'labs',
-        mysql_role  => 'slave',
-        mysql_shard => 'multi',
         socket      => '/run/mysqld/mysqld.sock',
     }
     if os_version('debian == buster') {

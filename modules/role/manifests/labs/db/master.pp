@@ -13,9 +13,6 @@ class role::labs::db::master {
     $socket = '/var/run/mysqld/mysqld.sock'
 
     class { 'profile::mariadb::monitor::prometheus':
-        mysql_group => 'labs',
-        mysql_role  => 'master',
-        mysql_shard => 'tools',
         socket      => $socket,
     }
 

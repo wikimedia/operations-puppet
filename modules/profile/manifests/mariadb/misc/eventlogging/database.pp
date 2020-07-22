@@ -31,11 +31,7 @@ class profile::mariadb::misc::eventlogging::database (
         contact_group => 'admins',
     }
 
-    class { 'profile::mariadb::monitor::prometheus':
-        mysql_group => 'misc',
-        mysql_shard => $shard,
-        mysql_role  => $mysql_role,
-    }
+    include profile::mariadb::monitor::prometheus
 
     mariadb::monitor_readonly { [ $shard ]:
         read_only     => true,

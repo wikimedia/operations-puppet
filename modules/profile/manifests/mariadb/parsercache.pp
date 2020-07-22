@@ -13,11 +13,7 @@ class profile::mariadb::parsercache (
     profile::mariadb::section { $shard: }
 
     include ::passwords::misc::scripts
-    class { 'profile::mariadb::monitor::prometheus':
-        mysql_group => 'parsercache',
-        mysql_shard => $shard,
-        mysql_role  => $mysql_role,
-    }
+    include ::profile::mariadb::monitor::prometheus
 
     class { 'mariadb::packages_wmf': }
     class { 'mariadb::service': }

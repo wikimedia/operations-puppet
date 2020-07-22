@@ -37,9 +37,6 @@ class role::mariadb::core {
     }
 
     class { 'profile::mariadb::monitor::prometheus':
-        mysql_group => 'core',
-        mysql_shard => $shard,
-        mysql_role  => $mysql_role,
         socket      => $socket,
     }
 

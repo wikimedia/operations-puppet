@@ -17,10 +17,7 @@ class role::mariadb::cloudinfra (
     include ::profile::mariadb::monitor
     include ::profile::base::firewall
 
-    class { 'profile::mariadb::monitor::prometheus':
-        mysql_group => 'misc',
-        mysql_role  => $mysql_role,
-    }
+    include ::profile::mariadb::monitor::prometheus
 
     include ::profile::mariadb::grants::cloudinfra
     class { '::profile::mariadb::cloudinfra':

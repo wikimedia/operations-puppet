@@ -15,11 +15,7 @@ class profile::mariadb::misc::tendril {
     }
     profile::mariadb::section { $section: }
 
-    class { 'profile::mariadb::monitor::prometheus':
-        mysql_group => 'misc',
-        mysql_shard => 'tendril',
-        mysql_role  => $mysql_role,
-    }
+    include ::profile::mariadb::monitor::prometheus
     class { 'mariadb::monitor_disk':
         is_critical   => false,
         contact_group => 'admins',
