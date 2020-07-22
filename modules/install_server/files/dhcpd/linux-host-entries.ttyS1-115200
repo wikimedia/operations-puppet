@@ -7017,7 +7017,6 @@ host netmon1002 {
 host netmon2001 {
     hardware ethernet 30:e1:71:70:2b:94;
     fixed-address netmon2001.wikimedia.org;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host ores1001 {
