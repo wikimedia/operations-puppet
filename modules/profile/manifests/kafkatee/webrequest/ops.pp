@@ -47,4 +47,13 @@ class profile::kafkatee::webrequest::ops (
         destination   => "/bin/grep --line-buffered '\"http_status\":\"5' | jq --compact-output --arg type webrequest '. + {type: \$type}' | sed 's/^/@cee: /' | logger --size 16384 -t webrequest",
         type          => 'pipe',
     }
+
+    rsync::quickdatacopy { 'webrequest':
+        ensure              => present,
+        source_host         => 'weblog1001.eqiad.wmnet',
+        dest_host           => 'centrallog1001.eqiad.wmnet',
+        auto_sync           => false,
+        module_path         => '/srv/log',
+        server_uses_stunnel => true,
+    }
 }
