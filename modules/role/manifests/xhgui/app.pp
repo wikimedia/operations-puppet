@@ -45,7 +45,8 @@ class role::xhgui::app {
     }
 
     class { '::httpd':
-        modules => ['authnz_ldap', $httpd_php, 'rewrite'],
+        modules    => ['authnz_ldap', $httpd_php, 'rewrite'],
+        extra_pkgs => [$mongo_driver, $httpd_php_module],
     }
 
     include ::profile::standard
@@ -66,8 +67,6 @@ class role::xhgui::app {
     }
 
     system::role { 'xhgui::app': }
-
-    require_package($mongo_driver, $httpd_php_module)
 
     file_line { 'set_php_memory_limit':
         path   => $php_ini,
