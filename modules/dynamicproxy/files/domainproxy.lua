@@ -1,4 +1,4 @@
---   Copyright 2013 Yuvi Panda <yuvipanda@gmail.com>
+--   Copyright 2020 Wikimedia Foundation and contributors
 --
 --   Licensed under the Apache License, Version 2.0 (the "License");
 --   you may not use this file except in compliance with the License.
@@ -18,27 +18,45 @@
 local redis = require 'resty.redis'
 local red = redis:new()
 red:set_timeout(1000)
-
 red:connect('127.0.0.1', 6379)
 
-local frontend = ngx.re.match(ngx.var.http_host, "^([^:]*)")[1]
-
-local backend = red:srandmember('frontend:' .. frontend)
-
--- Use a connection pool of 256 connections with a 32s idle timeout
--- This also closes the current redis connection.
-red:set_keepalive(1000 * 32, 256)
-
-if backend == ngx.null then
-    -- Redirect any unknown .wmflabs.org urls to .wmcloud.org
-    if ngx.re.match(ngx.var.http_host, "\\.wmflabs\\.org$") then
-        redirect_host = ngx.re.gsub(ngx.var.http_host, "\\.wmflabs\\.org", ".wmcloud.org")
-        return ngx.redirect("https://" .. redirect_host .. ngx.var.request_uri, ngx.HTTP_MOVED_PERMANENTLY)
-    end
-
-    -- anything else, we don't know what to do with
-    ngx.exit(404)
+--- Lookup backend host and port to proxy
+-- @parm hostname Hostname to lookup
+function lookup_backend(hostname)
+    return red:srandmember('frontend:' .. hostname)
 end
 
-ngx.var.backend = backend
-ngx.var.vhost = frontend
+function redis_shutdown()
+    -- Use a connection pool of 256 connections with a 32s idle timeout
+    -- This also closes the current redis connection.
+    red:set_keepalive(1000 * 32, 256)
+end
+
+local fqdn = ngx.re.match(ngx.var.http_host, "^([^:]*)")[1]
+local backend = lookup_backend(fqdn)
+
+if backend ~= ngx.null then
+    -- Set vars to be used by ngix to proxy to the located service
+    ngx.var.backend = backend
+    ngx.var.vhost = fqdn
+    redis_shutdown()
+    return ngx.exit(ngx.OK)
+else
+    -- No configured backend found for this FQDN.
+    -- Next steps are either:
+    -- * Redirect to a matching host in the wmcloud.org domain
+    -- * Return a 404 response
+    local re_wmflabs = "\\.wmflabs\\.org$"
+    if ngx.re.match(fqdn, re_wmflabs) then
+        -- Check for a .wmcloud.org version of the hostname
+        local wmcloud_host = ngx.re.sub(fqdn, re_wmflabs, ".wmcloud.org")
+        if lookup_backend(wmcloud_host) ~= ngx.null then
+            -- Redirect to .wmcloud.org hostname
+            redis_shutdown()
+            return ngx.redirect("https://" .. wmcloud_host .. ngx.var.request_uri, ngx.HTTP_MOVED_PERMANENTLY)
+        end
+    end
+    -- we don't know where to go so return a 404 response
+    redis_shutdown()
+    return ngx.exit(404)
+end
