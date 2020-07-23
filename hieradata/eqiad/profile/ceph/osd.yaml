@@ -1,3 +1,15 @@
+# OSD nodes have their own storage vlan; these hosts
+#  will have arbitrary cluster addresses in 192.168.4.0/22
+#
+# The 'public' address here does not refer to the WMF public vlan,
+#  but rather the ceph 'public' address which is used by clients
+#  (in the near-term, hypervisors) to access storage.  Do not be
+#  alarmed that the public addresses are on private IPs.
+#
+# Note that 1001 through 1003 are from a proof of concept install
+#  that uses different vlans.  They will be standardized soon, at
+#  which point this paragraph should be removed.
+#
 profile::ceph::osd::hosts:
   'cloudcephosd1001.wikimedia.org':
     public:
@@ -23,3 +35,99 @@ profile::ceph::osd::hosts:
       addr: '10.64.16.146'
       prefix: '22'
       iface: 'ens2f1np1'
+  'cloudcephosd1004.eqiad.wmnet':
+    public:
+      addr: '10.64.20.55'
+      iface: 'ens3f0np0'
+    cluster:
+      addr: '192.168.4.4'
+      prefix: '24'
+      iface: 'ens3f1np1'
+  'cloudcephosd1005.eqiad.wmnet':
+    public:
+      addr: '10.64.20.56'
+      iface: 'ens3f0np0'
+    cluster:
+      addr: '192.168.4.5'
+      prefix: '24'
+      iface: 'ens3f1np1'
+  'cloudcephosd1006.eqiad.wmnet':
+    public:
+      addr: '10.64.20.57'
+      iface: 'ens3f0np0'
+    cluster:
+      addr: '192.168.4.6'
+      prefix: '24'
+      iface: 'ens3f1np1'
+  'cloudcephosd1007.eqiad.wmnet':
+    public:
+      addr: '10.64.20.58'
+      iface: 'ens3f0np0'
+    cluster:
+      addr: '192.168.4.7'
+      prefix: '24'
+      iface: 'ens3f1np1'
+  'cloudcephosd1008.eqiad.wmnet':
+    public:
+      addr: '10.64.20.59'
+      iface: 'ens3f0np0'
+    cluster:
+      addr: '192.168.4.8'
+      prefix: '24'
+      iface: 'ens3f1np1'
+  'cloudcephosd1009.eqiad.wmnet':
+    public:
+      addr: '10.64.20.60'
+      iface: 'ens3f0np0'
+    cluster:
+      addr: '192.168.4.9'
+      prefix: '24'
+      iface: 'ens3f1np1'
+  'cloudcephosd1010.eqiad.wmnet':
+    public:
+      addr: '10.64.20.61'
+      iface: 'ens3f0np0'
+    cluster:
+      addr: '192.168.4.10'
+      prefix: '24'
+      iface: 'ens3f1np1'
+  'cloudcephosd1011.eqiad.wmnet':
+    public:
+      addr: '10.64.20.62'
+      iface: 'ens3f0np0'
+    cluster:
+      addr: '192.168.4.11'
+      prefix: '24'
+      iface: 'ens3f1np1'
+  'cloudcephosd1012.eqiad.wmnet':
+    public:
+      addr: '10.64.20.63'
+      iface: 'ens3f0np0'
+    cluster:
+      addr: '192.168.4.12'
+      prefix: '24'
+      iface: 'ens3f1np1'
+  'cloudcephosd1013.eqiad.wmnet':
+    public:
+      addr: '10.64.20.64'
+      iface: 'ens3f0np0'
+    cluster:
+      addr: '192.168.4.13'
+      prefix: '24'
+      iface: 'ens3f1np1'
+  'cloudcephosd1014.eqiad.wmnet':
+    public:
+      addr: '10.64.20.65'
+      iface: 'ens3f0np0'
+    cluster:
+      addr: '192.168.4.14'
+      prefix: '24'
+      iface: 'ens3f1np1'
+  'cloudcephosd1015.eqiad.wmnet':
+    public:
+      addr: '10.64.20.66'
+      iface: 'ens3f0np0'
+    cluster:
+      addr: '192.168.4.15'
+      prefix: '24'
+      iface: 'ens3f1np1'
