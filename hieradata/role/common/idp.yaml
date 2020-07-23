@@ -105,6 +105,12 @@ profile::idp::services:
       '@class': 'org.apereo.cas.services.ReturnAllAttributeReleasePolicy'
     access_strategy:
       '@class': 'org.apereo.cas.services.DefaultRegisteredServiceAccessStrategy'
+      'requiredAttributes':
+        '@class': 'java.util.HashMap'
+        'memberOf': ['java.util.HashSet', [
+          'cn=ops,ou=groups,dc=wikimedia,dc=org',
+          'cn=librenms-readers,ou=groups,dc=wikimedia,dc=org'
+        ]]
   piwik:
     class: 'org.apereo.cas.services.RegexRegisteredService'
     id: 9
