@@ -180,7 +180,7 @@ class profile::ganeti (
 
 
             nrpe::monitor_service{ 'ganeti-wconfd':
-                description  => 'ganeti-mond running',
+                description  => 'ganeti-wconfd running',
                 nrpe_command => '/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:1 -u gnt-masterd -C ganeti-wconfd',
                 notes_url    => 'https://wikitech.wikimedia.org/wiki/Ganeti',
             }
