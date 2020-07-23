@@ -2348,7 +2348,7 @@ service::catalog:
       active_active: true
   thanos-query:
     description: Prometheus long-term storage, query service
-    encryption: false
+    encryption: true
     ip:
       codfw:
         default: 10.2.1.53
@@ -2367,17 +2367,17 @@ service::catalog:
           timeout-clean-reconnect: 3
         ProxyFetch:
           url:
-          - http://localhost/-/ready
+          - https://localhost/-/ready
       scheduler: wrr
     monitoring:
-      check_command: check_http_lvs_on_port!thanos-query.discovery.wmnet!80!/-/ready
+      check_command: check_https_url!thanos-query.discovery.wmnet!/-/ready
       critical: true
       sites:
         codfw:
           hostname: thanos-query.svc.codfw.wmnet
         eqiad:
           hostname: thanos-query.svc.eqiad.wmnet
-    port: 80
+    port: 443
     sites:
     - codfw
     - eqiad
