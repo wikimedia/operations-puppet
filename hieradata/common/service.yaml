@@ -2381,7 +2381,7 @@ service::catalog:
     sites:
     - codfw
     - eqiad
-    state: monitoring_setup
+    state: production
     discovery:
     - dnsdisc: thanos-query
       active_active: true
