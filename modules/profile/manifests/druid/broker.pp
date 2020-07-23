@@ -11,6 +11,7 @@ class profile::druid::broker(
     $ferm_srange        = hiera('profile::druid::broker::ferm_srange', '$DOMAIN_NETWORKS'),
     $daemon_autoreload  = hiera('profile::druid::daemons_autoreload', true),
     $monitoring_enabled = hiera('profile::druid::broker::monitoring_enabled', false),
+    $apache_release     = lookup('profile::druid::apache_release', { 'default_value' => false }),
 ) {
 
     require ::profile::druid::common
@@ -34,11 +35,18 @@ class profile::druid::broker(
         $monitoring_env_vars = {}
     }
 
+    if $apache_release {
+        $class_prefix = 'org.apache.druid'
+    } else {
+        $class_prefix = 'io.druid'
+    }
+
     # Druid Broker Service
     class { '::druid::broker':
         properties       => $properties,
         env              => merge($env, $monitoring_env_vars),
         should_subscribe => $daemon_autoreload,
+        logger_prefix    => $class_prefix,
     }
 
     ferm::service { 'druid-broker':
@@ -50,7 +58,7 @@ class profile::druid::broker(
     if $monitoring_enabled {
         nrpe::monitor_service { 'druid-broker':
             description  => 'Druid broker',
-            nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a \'io.druid.cli.Main server broker\'',
+            nrpe_command => "/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a \'${class_prefix}.cli.Main server broker\'",
             critical     => false,
             notes_url    => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Druid',
         }

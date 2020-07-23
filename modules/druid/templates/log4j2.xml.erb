@@ -44,16 +44,16 @@
     </Appenders>
 
     <Loggers>
-        <Logger name="io.druid.java.util.emitter.core.LoggingEmitter" level="info" additivity="false">
+        <Logger name="<%= @logger_prefix %>.java.util.emitter.core.LoggingEmitter" level="info" additivity="false">
           <AppenderRef ref="RollingMetricsFile"/>
         </Logger>
         <% if @service == 'broker' or @service == 'historical' or @service == 'middlemanager' -%>
-        <Logger name="io.druid.server.log.LoggingRequestLogger" level="info" additivity="false">
+        <Logger name="<%= @logger_prefix %>.server.log.LoggingRequestLogger" level="info" additivity="false">
           <AppenderRef ref="RollingRequestsFile"/>
         </Logger>
         <% end -%>
         <% if @service == 'broker' or @service == 'historical' -%>
-        <Logger name="io.druid.jetty.RequestLog" additivity="false" level="DEBUG">
+        <Logger name="<%= @logger_prefix %>.jetty.RequestLog" additivity="false" level="DEBUG">
             <AppenderRef ref="AccessLogFile"/>
         </Logger>
         <% end -%>

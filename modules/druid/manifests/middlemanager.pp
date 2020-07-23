@@ -65,6 +65,7 @@ class druid::middlemanager(
     $properties       = {},
     $env              = {},
     $should_subscribe = false,
+    $logger_prefix    = 'io.druid',
 )
 {
     require ::druid
@@ -102,5 +103,6 @@ class druid::middlemanager(
         runtime_properties => $runtime_properties,
         env                => $environment,
         should_subscribe   => $should_subscribe,
+        logger_prefix      => $logger_prefix,
     }
 }

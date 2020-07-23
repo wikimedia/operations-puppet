@@ -11,6 +11,7 @@ class profile::druid::coordinator(
     $daemon_autoreload  = hiera('profile::druid::daemons_autoreload', true),
     $ferm_srange        = hiera('profile::druid::coordinator::ferm_srange', '$DOMAIN_NETWORKS'),
     $monitoring_enabled = hiera('profile::druid::coordinator::monitoring_enabled', false),
+    $apache_release     = lookup('profile::druid::apache_release', { 'default_value' => false }),
 ) {
 
     require ::profile::druid::common
@@ -34,11 +35,18 @@ class profile::druid::coordinator(
         $monitoring_env_vars = {}
     }
 
+    if $apache_release {
+        $class_prefix = 'org.apache.druid'
+    } else {
+        $class_prefix = 'io.druid'
+    }
+
     # Druid coordinator Service
     class { '::druid::coordinator':
         properties       => $properties,
         env              => merge($env, $monitoring_env_vars),
         should_subscribe => $daemon_autoreload,
+        logger_prefix    => $class_prefix,
     }
 
     ferm::service { 'druid-coordinator':
@@ -50,7 +58,7 @@ class profile::druid::coordinator(
     if $monitoring_enabled {
         nrpe::monitor_service { 'druid-coordinator':
             description  => 'Druid coordinator',
-            nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a \'io.druid.cli.Main server coordinator\'',
+            nrpe_command => "/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a \'${class_prefix}.cli.Main server coordinator\'",
             critical     => false,
             notes_url    => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Druid',
         }

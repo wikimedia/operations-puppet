@@ -25,12 +25,19 @@
 #   True if the service should refresh if any of its config files change.
 #   Default: false
 #
+# [*logger_prefix*]
+#   Druid has not always been an Apache project, so some versions
+#   offer Java classes with the package prefix 'io.druid' meanwhile
+#   the most recent ones 'org.apache.druid'.
+#   Default: 'io.druid'
+#
 define druid::service(
     $runtime_properties,
     $service          = $title,
     $env              = undef,
     $enable           = true,
     $should_subscribe = false,
+    $logger_prefix    = 'io.druid',
 )
 {
     require_package("druid-${service}")
