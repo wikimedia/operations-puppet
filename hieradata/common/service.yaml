@@ -3019,9 +3019,9 @@ service::catalog:
       critical: false
       sites:
         codfw:
-          hostname: chartmuseum1001.eqiad.wmnet
+          hostname: chartmuseum1001
         eqiad:
-          hostname: chartmuseum2001.codfw.wmnet
+          hostname: chartmuseum2001
     sites:
       - eqiad
       - codfw
