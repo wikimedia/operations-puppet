@@ -127,6 +127,14 @@ class librenms(
         recurse => true,
     }
 
+    file { "${install_dir}/bootstrap/cache":
+        ensure  => directory,
+        owner   => 'www-data',
+        group   => 'librenms',
+        mode    => '0775',
+        recurse => true,
+    }
+
     logrotate::conf { 'librenms':
         ensure => present,
         source => 'puppet:///modules/librenms/logrotate',
