@@ -4,8 +4,8 @@
 #
 # parameters: $active_server
 # In a multi-server setup, set $active_server to the FQDN
-# of the server that should run the smokeping service
-# and be the rsync source of RRD files.
+# of the server that should send smokeping alerts.
+
 class smokeping(
     Stdlib::Fqdn $active_server,
 ) {
@@ -14,26 +14,35 @@ class smokeping(
 
     file { '/etc/smokeping/config.d':
         ensure  => directory,
-        recurse => true,
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        source  => 'puppet:///modules/smokeping/config.d',
         require => Package['smokeping'],
     }
 
     if $active_server == $::fqdn {
-        $service_ensure = 'running'
+        $alerts = true
     } else {
-        $service_ensure = 'stopped'
+        $alerts = false
+    }
+
+    ['Targets', 'General', 'pathnames', 'Alerts', 'Probes'].each |String $f| {
+        file { "/etc/smokeping/config.d/${f}":
+            ensure  => present,
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0444',
+            content => template("smokeping/config.d/${f}.erb"),
+            require => Package['smokeping'],
+            notify  => Service['smokeping'],
+        }
     }
 
     service { 'smokeping':
-        ensure    => $service_ensure,
-        require   => [
+        ensure  => running,
+        require => [
             Package['smokeping'],
             File['/etc/smokeping/config.d'],
         ],
-        subscribe => File['/etc/smokeping/config.d'],
     }
 }

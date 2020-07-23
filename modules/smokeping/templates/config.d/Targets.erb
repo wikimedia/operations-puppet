@@ -16,7 +16,9 @@ remark = Smokeping installation for Wikimedia Foundation
 
 menu = eqiad
 title = Wikimedia Ashburn, VA network
+<% if @alerts -%>
 alerts = bigloss,someloss,startloss
+<% end -%>
 
 ++ Core
 menu = Core
@@ -99,7 +101,9 @@ host = frpig1001.frack.eqiad.wmnet
 
 menu = eqord
 title = Wikimedia Chicago, IL network
+<% if @alerts -%>
 alerts = bigloss,someloss,startloss
+<% end -%>
 
 ++ Core
 menu = Core
@@ -114,7 +118,9 @@ host = cr2-eqord.wikimedia.org
 
 menu = codfw
 title = Wikimedia Dallas, TX network
+<% if @alerts -%>
 alerts = bigloss,someloss,startloss
+<% end -%>
 
 ++ Core
 menu = Core
@@ -228,7 +234,9 @@ host = frpig2001.frack.codfw.wmnet
 
 menu = esams
 title = Wikimedia Amsterdam, The Netherlands network
+<% if @alerts -%>
 alerts = bigloss,someloss,startloss
+<% end -%>
 
 ++ Core
 menu = Core
@@ -267,7 +275,9 @@ host = bast3004.wikimedia.org
 
 menu = ulsfo
 title = Wikimedia San Francisco, CA network
+<% if @alerts -%>
 alerts = bigloss,someloss,startloss
+<% end -%>
 
 ++ Core
 menu = Core
@@ -301,7 +311,9 @@ host = bast4002.wikimedia.org
 
 menu = eqsin
 title = Wikimedia Singapore network
+<% if @alerts -%>
 alerts = bigloss,someloss,startloss
+<% end -%>
 
 ++ Core
 menu = Core
