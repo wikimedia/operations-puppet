@@ -210,7 +210,7 @@ datasources:
    type: prometheus
    access: proxy
    orgId: 1
-   url: http://thanos-query.discovery.wmnet
+   url: https://thanos-query.discovery.wmnet
    database:
    isDefault: false
    editable: false

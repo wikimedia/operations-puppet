@@ -11,7 +11,7 @@ class profile::thanos::alerts {
     monitoring::check_prometheus { 'thanos_compact_multiple_running':
         description     => 'More than one Thanos compact running',
         query           => 'sum(up{job=~"thanos-compact.*"})',
-        prometheus_url  => 'http://thanos-query.discovery.wmnet',
+        prometheus_url  => 'https://thanos-query.discovery.wmnet',
         method          => 'ge',
         warning         => 2,
         critical        => 2,
@@ -22,7 +22,7 @@ class profile::thanos::alerts {
     monitoring::check_prometheus { 'thanos_compact_halted':
         description     => 'Thanos compact is halted',
         query           => 'thanos_compactor_halted{job=~"thanos-compact.*"}',
-        prometheus_url  => 'http://thanos-query.discovery.wmnet',
+        prometheus_url  => 'https://thanos-query.discovery.wmnet',
         method          => 'ge',
         warning         => 1,
         critical        => 1,
@@ -41,7 +41,7 @@ class profile::thanos::alerts {
         ) * 100
         | - QUERY
         ,
-        prometheus_url  => 'http://thanos-query.discovery.wmnet',
+        prometheus_url  => 'https://thanos-query.discovery.wmnet',
         method          => 'ge',
         warning         => 2,
         critical        => 5,
@@ -59,7 +59,7 @@ class profile::thanos::alerts {
         ) * 100
         | - QUERY
         ,
-        prometheus_url  => 'http://thanos-query.discovery.wmnet',
+        prometheus_url  => 'https://thanos-query.discovery.wmnet',
         method          => 'ge',
         warning         => 2,
         critical        => 5,
@@ -74,7 +74,7 @@ class profile::thanos::alerts {
         / 60 / 60
         | - QUERY
         ,
-        prometheus_url  => 'http://thanos-query.discovery.wmnet',
+        prometheus_url  => 'https://thanos-query.discovery.wmnet',
         method          => 'ge',
         warning         => 12,
         critical        => 24,
@@ -94,7 +94,7 @@ class profile::thanos::alerts {
         ) * 100
         | - QUERY
         ,
-        prometheus_url  => 'http://thanos-query.discovery.wmnet',
+        prometheus_url  => 'https://thanos-query.discovery.wmnet',
         method          => 'ge',
         warning         => 2,
         critical        => 5,
@@ -110,7 +110,7 @@ class profile::thanos::alerts {
         sum by (job) (rate(thanos_bucket_store_series_gate_duration_seconds_count{job=~"thanos-store.*"}[5m])) > 0
         | - QUERY
         ,
-        prometheus_url  => 'http://thanos-query.discovery.wmnet',
+        prometheus_url  => 'https://thanos-query.discovery.wmnet',
         method          => 'ge',
         warning         => 1,
         critical        => 2,
@@ -128,7 +128,7 @@ class profile::thanos::alerts {
         ) * 100
         | - QUERY
         ,
-        prometheus_url  => 'http://thanos-query.discovery.wmnet',
+        prometheus_url  => 'https://thanos-query.discovery.wmnet',
         method          => 'ge',
         warning         => 2,
         critical        => 5,
@@ -144,7 +144,7 @@ class profile::thanos::alerts {
         sum by (job) (rate(thanos_objstore_bucket_operation_duration_seconds_count{job=~"thanos-store.*"}[5m])) > 0
         | - QUERY
         ,
-        prometheus_url  => 'http://thanos-query.discovery.wmnet',
+        prometheus_url  => 'https://thanos-query.discovery.wmnet',
         method          => 'ge',
         warning         => 1,
         critical        => 2,
@@ -157,7 +157,7 @@ class profile::thanos::alerts {
     monitoring::check_prometheus { 'thanos_sidecar_prometheus_down':
         description     => 'Thanos sidecar cannot connect to Prometheus',
         query           => 'thanos_sidecar_prometheus_up{job=~"thanos-sidecar.*"}',
-        prometheus_url  => 'http://thanos-query.discovery.wmnet',
+        prometheus_url  => 'https://thanos-query.discovery.wmnet',
         method          => 'eq',
         warning         => 0,
         critical        => 0,
@@ -168,7 +168,7 @@ class profile::thanos::alerts {
     monitoring::check_prometheus { 'thanos_sidecar_unhealthy':
         description     => 'Thanos sidecar is unhealthy',
         query           => 'count(time() - max(thanos_sidecar_last_heartbeat_success_time_seconds{job=~"thanos-sidecar.*"}) by (job) >= 300)',
-        prometheus_url  => 'http://thanos-query.discovery.wmnet',
+        prometheus_url  => 'https://thanos-query.discovery.wmnet',
         method          => 'ge',
         warning         => 1,
         critical        => 1,
@@ -188,7 +188,7 @@ class profile::thanos::alerts {
         ) * 100
         | - QUERY
         ,
-        prometheus_url  => 'http://thanos-query.discovery.wmnet',
+        prometheus_url  => 'https://thanos-query.discovery.wmnet',
         method          => 'ge',
         warning         => 3,
         critical        => 5,
@@ -206,7 +206,7 @@ class profile::thanos::alerts {
         ) * 100
         | - QUERY
         ,
-        prometheus_url  => 'http://thanos-query.discovery.wmnet',
+        prometheus_url  => 'https://thanos-query.discovery.wmnet',
         method          => 'ge',
         warning         => 3,
         critical        => 5,
@@ -225,7 +225,7 @@ class profile::thanos::alerts {
         ) * 100
         | - QUERY
         ,
-        prometheus_url  => 'http://thanos-query.discovery.wmnet',
+        prometheus_url  => 'https://thanos-query.discovery.wmnet',
         method          => 'ge',
         warning         => 3,
         critical        => 5,
@@ -243,7 +243,7 @@ class profile::thanos::alerts {
         ) * 100
         | - QUERY
         ,
-        prometheus_url  => 'http://thanos-query.discovery.wmnet',
+        prometheus_url  => 'https://thanos-query.discovery.wmnet',
         method          => 'ge',
         warning         => 3,
         critical        => 5,
@@ -259,7 +259,7 @@ class profile::thanos::alerts {
         sum by (job) (rate(http_request_duration_seconds_bucket{job=~"thanos-query.*", handler="query"}[5m])) > 1
         | - QUERY
         ,
-        prometheus_url  => 'http://thanos-query.discovery.wmnet',
+        prometheus_url  => 'https://thanos-query.discovery.wmnet',
         method          => 'ge',
         warning         => 35,
         critical        => 40,
@@ -275,7 +275,7 @@ class profile::thanos::alerts {
         sum by (job) (rate(http_request_duration_seconds_bucket{job=~"thanos-query.*", handler="query_range"}[5m])) > 1
         | - QUERY
         ,
-        prometheus_url  => 'http://thanos-query.discovery.wmnet',
+        prometheus_url  => 'https://thanos-query.discovery.wmnet',
         method          => 'ge',
         warning         => 80,
         critical        => 90,
@@ -289,7 +289,7 @@ class profile::thanos::alerts {
         monitoring::check_prometheus { "thanos_component_${c}_absent":
             description     => "Thanos ${c} has disappeared from Prometheus discovery",
             query           => "count(absent(up{job=~\"thanos-${c}.*\"} == 1))",
-            prometheus_url  => 'http://thanos-query.discovery.wmnet',
+            prometheus_url  => 'https://thanos-query.discovery.wmnet',
             method          => 'ge',
             warning         => 1,
             critical        => 1,
