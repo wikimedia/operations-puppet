@@ -172,13 +172,6 @@ class profile::ganeti (
                 notes_url    => 'https://www.mediawiki.org/wiki/Ganeti#RAPI_daemon',
             }
 
-            nrpe::monitor_service{ 'ganeti-metad':
-                description  => 'ganeti-metad running',
-                nrpe_command => '/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:1 -u root -C ganeti-metad',
-                notes_url    => 'https://wikitech.wikimedia.org/wiki/Ganeti',
-            }
-
-
             nrpe::monitor_service{ 'ganeti-wconfd':
                 description  => 'ganeti-wconfd running',
                 nrpe_command => '/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:1 -u gnt-masterd -C ganeti-wconfd',
