@@ -139,6 +139,10 @@ class profile::librenms (
         'sso' => {
             'mode'            => 'env',
             'user_attr'       => 'HTTP_X_CAS_CN',
+            'realname_attr'   => 'HTTP_CAS_USER',
+            'email_attr'      => 'HTTP_X_CAS_MAIL',
+            'create_users'    => true,
+            'update_users'    => true,
             'group_strategy'  => 'map',
             'group_attr'      => 'HTTP_X_CAS_MEMBEROF',
             'group_level_map' => [
