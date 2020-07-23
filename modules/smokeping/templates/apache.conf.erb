@@ -19,9 +19,9 @@
     SSLCertificateChainFile /etc/acmecerts/smokeping/live/rsa-2048.chain.crt
     SSLCertificateKeyFile /etc/acmecerts/smokeping/live/rsa-2048.key
     <%= @ssl_settings.join("\n    ") %>
-    DocumentRoot /var/www
+    DocumentRoot /usr/share/smokeping/www
 
-    <Directory /var/www>
+    <Directory /usr/share/smokeping/www>
         Options Indexes FollowSymLinks MultiViews
         AllowOverride None
         Require all granted
