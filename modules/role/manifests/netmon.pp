@@ -18,8 +18,12 @@ class role::netmon {
         $php_module = 'php7.3'
     }
 
+    class { '::httpd::mpm':
+        mpm => 'prefork'
+    }
+
     class { '::httpd':
-        modules    => ['headers','rewrite','proxy','proxy_http','ssl','fcgid',$php_module],
+        modules    => ['headers','rewrite','proxy','proxy_http','ssl','fcgid', $php_module],
         extra_pkgs => ['libapache2-mod-fcgid'],
     }
 }
