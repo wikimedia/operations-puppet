@@ -14,6 +14,14 @@ class mediawiki::packages {
     require_package('ploticus')
 
     # Score
+    if os_version('debian == stretch') {
+        apt::package_from_component { 'lilypond':
+            component => 'component/lilypond',
+            packages  => ['lilypond', 'lilypond-data']
+        }
+    } else {
+        require_package('lilypond')
+    }
     require_package('timidity', 'freepats', 'fluidsynth', 'fluid-soundfont-gs', 'fluid-soundfont-gm')
 
     require_package('firejail')
