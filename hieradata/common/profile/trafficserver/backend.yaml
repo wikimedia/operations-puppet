@@ -118,16 +118,15 @@ profile::trafficserver::backend::mapping_rules:
     - type: map
       target: http://performance.wikimedia.org
       replacement: https://performance.discovery.wmnet
-# ws temporary disabled in phabricator T238593
-#   - type: map
-#     target: ws://phabricator.wikimedia.org/ws/
-#     replacement: wss://phabricator.discovery.wmnet/ws/
     - type: map
       target: http://phabricator.wikimedia.org
       replacement: https://phabricator.discovery.wmnet
     - type: map
       target: http://phab.wmfusercontent.org
       replacement: https://phabricator.discovery.wmnet
+    - type: map
+      target: ws://phabricator.wikimedia.org
+      replacement: wss://aphlict.discovery.wmnet
     - type: map
       target: http://pivot.wikimedia.org
       replacement: https://an-tool1007.eqiad.wmnet
