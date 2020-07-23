@@ -173,7 +173,7 @@ class profile::ganeti (
             }
 
             nrpe::monitor_service{ 'ganeti-metad':
-                description  => 'ganeti-mond running',
+                description  => 'ganeti-metad running',
                 nrpe_command => '/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:1 -u root -C ganeti-metad',
                 notes_url    => 'https://wikitech.wikimedia.org/wiki/Ganeti',
             }
