@@ -145,10 +145,10 @@ class profile::librenms (
             'update_users'    => true,
             'group_strategy'  => 'map',
             'group_attr'      => 'HTTP_X_CAS_MEMBEROF',
-            'group_level_map' => [
+            'group_level_map' => {
                 'cn=ops' => 10,
                 'cn=librenms-readers' => 5,
-            ],
+            },
             'group_delimiter' => ',',
         }
     }
