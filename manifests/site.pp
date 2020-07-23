@@ -1291,7 +1291,7 @@ node /^cloudcephosd100[1-3]\.wikimedia\.org$/ {
 }
 
 # new servers  waiting for deployment  T251619
-node /^cloudcephosd10(0[4-9]|1[0-5])\.wikimedia\.org$/ {
+node /^cloudcephosd10(0[4-9]|1[0-5])\.eqiad\.wmnet$/ {
     role(insetup)
 }
 
