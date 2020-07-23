@@ -5,6 +5,7 @@
 class profile::superset::proxy (
     Hash $ldap_config          = lookup('ldap', Hash, hash, {}),
     String $x_forwareded_proto = lookup('profile::superset::proxy::x_forwareded_proto', {'default_value' => 'https'}),
+    Boolean $enable_cas        = lookup('profile::superset::enable_cas'),
 ) {
 
     require ::profile::analytics::httpd::utils
@@ -19,16 +20,20 @@ class profile::superset::proxy (
                     'authnz_ldap']
     }
 
-    class { '::passwords::ldap::production': }
+    if $enable_cas {
+        class {'profile::idp::client::httpd':
+            vhost_settings => { 'x-forwarded-proto' => $x_forwareded_proto },
+        }
+    } else {
+        class { '::passwords::ldap::production': }
+        $proxypass = $passwords::ldap::production::proxypass
+        $ldap_server_primary = $ldap_config['ro-server']
+        $ldap_server_fallback = $ldap_config['ro-server-fallback']
 
-    $proxypass = $passwords::ldap::production::proxypass
-    $ldap_server_primary = $ldap_config['ro-server']
-    $ldap_server_fallback = $ldap_config['ro-server-fallback']
-
-    # Set up the VirtualHost
-    httpd::site { 'superset.wikimedia.org':
-        content => template('profile/superset/proxy/superset.wikimedia.org.erb'),
-        require => File['/var/www/health_check'],
+        httpd::site { 'superset.wikimedia.org':
+            content => template('profile/superset/proxy/superset.wikimedia.org.erb'),
+            require => File['/var/www/health_check'],
+        }
     }
 
     ferm::service { 'superset-http':

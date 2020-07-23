@@ -61,6 +61,9 @@
 #   Superset. Default is still for older releases, up to 0.35.x
 #   Default: 'superset.app'
 #
+# [*enable_cas*]
+#   Enable authentication via CAS instead of LDAP
+#
 class superset(
     $port              = 9080,
     $database_uri      = 'sqlite:////var/lib/superset/superset.db',
@@ -74,7 +77,8 @@ class superset(
     $auth_settings     = undef,
     $statsd            = undef,
     $deployment_user   = 'analytics_deploy',
-    $gunicorn_app      = 'superset:app'
+    $gunicorn_app      = 'superset:app',
+    $enable_cas        = false,
 ) {
     require_package(
         'virtualenv',
@@ -120,6 +124,12 @@ class superset(
         owner  => 'root',
         group  => 'root',
         mode   => '0755',
+    }
+
+    if $enable_cas {
+        $remote_user = 'HTTP_X_CAS_UID'
+    } else {
+        $remote_user = 'HTTP_X_REMOTE_USER'
     }
 
     file { '/etc/superset/gunicorn_config.py':

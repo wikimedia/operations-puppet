@@ -10,6 +10,7 @@ profile::superset::workers: 8
 profile::superset::ldap_proxy_enabled: true
 profile::superset::presto_cluster: analytics-presto
 profile::superset::proxy::x_forwareded_proto: 'http'
+profile::superset::enable_cas: false
 
 profile::druid::turnilo::port: 9091
 profile::druid::turnilo::druid_clusters:

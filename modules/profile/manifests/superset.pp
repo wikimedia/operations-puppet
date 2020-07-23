@@ -46,6 +46,7 @@ class profile::superset(
     $statsd             = hiera('statsd', undef),
     $presto_cluster     = hiera('profile::superset::presto_cluster', undef),
     $gunicorn_app       = lookup('profile::superset::gunicorn_app', { 'default_value' => 'superset.app:create_app()' }),
+    Boolean $enable_cas = lookup('profile::superset::enable_cas'),
 ) {
 
     if os_version('debian == stretch') {
@@ -130,6 +131,7 @@ class profile::superset(
         password_mapping => $password_mapping,
         statsd           => $statsd,
         gunicorn_app     => $gunicorn_app,
+        enable_cas       => $enable_cas,
     }
 
     monitoring::service { 'superset':
