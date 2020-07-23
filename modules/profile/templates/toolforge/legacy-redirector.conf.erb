@@ -25,6 +25,8 @@ server {
     <%= @ssl_settings.join("\n    ") %>
     <%- end -%>
 
+    client_max_body_size 128m;
+
     # T257495: reverse proxy wpcleaner until 2020-09-15
     location /wpcleaner {
         proxy_pass http://k8s.tools.eqiad1.wikimedia.cloud:30000;
