@@ -426,7 +426,8 @@ groups:
                  'ALL = (blazegraph) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /bin/journalctl *',
                  'ALL = NOPASSWD: /usr/local/bin/depool',
-                 'ALL = NOPASSWD: /usr/local/bin/pool']
+                 'ALL = NOPASSWD: /usr/local/bin/pool',
+                 'ALL = NOPASSWD: /bin/cat /var/log/nginx/*']
   wdqs-roots:
     gid: 806
     description: Root level access for WikiData Query Service project
