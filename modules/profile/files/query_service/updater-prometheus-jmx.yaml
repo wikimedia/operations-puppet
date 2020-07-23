@@ -6,4 +6,3 @@ whitelistObjectNames:
   - 'metrics:name=*'
   - 'kafka.consumer:*'
   - 'wdqs-updater:name=*'
-  - 'wdqs-streaming-updater:name=*'

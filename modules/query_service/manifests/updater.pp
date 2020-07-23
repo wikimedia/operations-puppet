@@ -21,8 +21,6 @@ class query_service::updater(
     String $username,
     String $deploy_name,
     Array[String] $extra_jvm_opts,
-    String $updater_startup_script,
-    String $updater_service_desc,
     Boolean $log_sparql = false,
 ) {
     file { "/etc/default/${deploy_name}-updater":
