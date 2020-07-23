@@ -52,6 +52,7 @@ class profile::puppetboard (
             chdir        => $directory,
             venv         => $venv_path,
             wsgi         => 'puppetboard.wsgi',
+            buffer-size  => 8096,
             vacuum       => true,
             http-socket  => "127.0.0.1:${port}",
             # T164034: make sure Python has a sane default encoding
