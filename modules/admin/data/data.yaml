@@ -61,7 +61,7 @@ groups:
     gid: 703
     description: manage gerrit server
     # qchris is T252194
-    members: &gerrit_root_members [demon, twentyafterfour, hashar, thcipriani, qchris]
+    members: &gerrit_root_members [twentyafterfour, hashar, thcipriani, qchris]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   gerrit-admin:
     gid: 704
@@ -359,7 +359,7 @@ groups:
   phabricator-roots:
     gid: 748
     description: people who have full root on phabricator
-    members: [demon, twentyafterfour, thcipriani]
+    members: [twentyafterfour, thcipriani]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   htmldumps-admin:
     gid: 749
