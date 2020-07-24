@@ -19,7 +19,7 @@ class profile::phabricator::aphlict (
         sslcert    => $aphlict_cert,
         sslkey     => $aphlict_key,
         sslchain   => $aphlict_chain,
-        base_dir   => $base_dir,
+        basedir    => $base_dir,
     }
 
     ferm::service { 'notification_server':
