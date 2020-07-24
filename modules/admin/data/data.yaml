@@ -679,9 +679,8 @@ groups:
   mediawiki-testers:
     description: People who can strace and tcpdump on canary appservers for testing mediawiki
     gid: 797
-    members: [hoo]
-    privileges: ['ALL = NOPASSWD: /usr/bin/strace *',
-                 'ALL = NOPASSWD: /usr/sbin/tcpdump *']
+    members: []
+    privileges: []
   varnish-log-readers:
     description: People who can read Varnish logs for debugging
     gid: 798
