@@ -685,8 +685,8 @@ groups:
     description: People who can read Varnish logs for debugging
     gid: 798
     members: [hoo]
-    privileges: ['ALL = NOPASSWD: /usr/bin/varnishncsa *',
-                 'ALL = NOPASSWD: /usr/bin/varnishlog *']
+    privileges: ['ALL = (varnish) NOPASSWD: /usr/bin/varnishncsa *',
+                 'ALL = (varnish) NOPASSWD: /usr/bin/varnishlog *']
   maintenance-log-readers:
     description: People who can read syslog and dmesg on mediawiki maintenance servers
     gid: 799
