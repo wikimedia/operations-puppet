@@ -26,7 +26,10 @@ class DataTest(unittest.TestCase):
 
     admins = {}
     bad_privileges_re = [
-        re.compile(r'systemctl (?:\*|edit)')
+        re.compile(r'systemctl (?:\*|edit)'),
+        re.compile(r'(\s|^|\/)vi(m|ew)?(\s|$)'),
+        re.compile(r'(\s|^|\/)strace(\s|$)'),
+        re.compile(r'(\s|^|\/)tcpdump(\s|$)'),
     ]
     system_gid_min = 900
     system_gid_max = 950
