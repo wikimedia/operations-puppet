@@ -27,26 +27,38 @@ getPool(""):setCache(pc)
 
 setRingBuffersSize(<%= @ringbuffer_max %>)
 
--- TLS configuration options for DoH and DoT
-tlsOptions = {
-  minTLSVersion='<%= @tls_config['min_tls_version'] %>',
-<% if @tls_config.has_key?('ciphers_tls13') -%>
-  ciphersTLS13='<%= @tls_config['ciphers_tls13'].join(':') %>',
+-- TLS configuration for DoH
+tlsOptionsDOH = {
+  minTLSVersion='<%= @tls_config_doh['min_tls_version'] %>',
+<% if @tls_config_doh.has_key?('ciphers_tls13') -%>
+  ciphersTLS13='<%= @tls_config_doh['ciphers_tls13'].join(':') %>',
 <% end -%>
-<% if @tls_config.has_key?('ciphers') -%>
-  ciphers='<%= @tls_config['ciphers'].join(':') %>',
+<% if @tls_config_doh.has_key?('ciphers') -%>
+  ciphers='<%= @tls_config_doh['ciphers'].join(':') %>',
 <% end -%>
 }
 
 -- enable DoH (default port is 443)
-addDOHLocal('0.0.0.0', '<%= @tls_config['cert_chain_path'] %>', '<%= @tls_config['cert_privkey_path'] %>', '<%= @doh_base_url %>', tlsOptions)
-addDOHLocal('[::]', '<%= @tls_config['cert_chain_path'] %>', '<%= @tls_config['cert_privkey_path'] %>', '<%= @doh_base_url %>', tlsOptions)
+addDOHLocal('0.0.0.0', '<%= @tls_common['cert_chain_path'] %>', '<%= @tls_common['cert_privkey_path'] %>', '<%= @doh_base_url %>', tlsOptionsDOH)
+addDOHLocal('[::]', '<%= @tls_common['cert_chain_path'] %>', '<%= @tls_common['cert_privkey_path'] %>', '<%= @doh_base_url %>', tlsOptionsDOH)
+
+-- TLS configuration for DoT
+tlsOptionsDOT = {
+  minTLSVersion='<%= @tls_config_dot['min_tls_version'] %>',
+<% if @tls_config_dot.has_key?('ciphers_tls13') -%>
+  ciphersTLS13='<%= @tls_config_dot['ciphers_tls13'].join(':') %>',
+<% end -%>
+<% if @tls_config_dot.has_key?('ciphers') -%>
+  ciphers='<%= @tls_config_dot['ciphers'].join(':') %>',
+<% end -%>
+<% if @tls_config_dot.has_key?('provider') -%>
+  provider='<%= @tls_config_dot['provider'] -%>',
+<% end -%>
+}
 
 -- enable DoT (default port is 853)
--- the default TLS library (provider) for DoT in version 1.4.0 is GnuTLS, so set OpenSSL explicitly
-tlsOptions['provider'] = 'openssl'
-addTLSLocal('0.0.0.0', '<%= @tls_config['cert_chain_path'] %>', '<%= @tls_config['cert_privkey_path'] %>', tlsOptions)
-addTLSLocal('[::]', '<%= @tls_config['cert_chain_path'] %>', '<%= @tls_config['cert_privkey_path'] %>', tlsOptions)
+addTLSLocal('0.0.0.0', '<%= @tls_common['cert_chain_path'] %>', '<%= @tls_common['cert_privkey_path'] %>', tlsOptionsDOT)
+addTLSLocal('[::]', '<%= @tls_common['cert_chain_path'] %>', '<%= @tls_common['cert_privkey_path'] %>', tlsOptionsDOT)
 
 newServer({address='<%= @resolver['host'] %>:<%= @resolver['port'] %>', name='<%= @resolver['name'] %>',
            useClientSubnet=<%= @enable_ecs ? true : false %>})

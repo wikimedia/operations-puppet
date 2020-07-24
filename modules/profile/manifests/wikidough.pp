@@ -1,6 +1,8 @@
 class profile::wikidough (
     Dnsdist::Resolver         $resolver         = lookup(profile::wikidough::dnsdist::resolver),
-    Dnsdist::TLS_config       $tls_config       = lookup(profile::wikidough::dnsdist::tls),
+    Dnsdist::TLS_common       $tls_common       = lookup(profile::wikidough::dnsdist::tls::common),
+    Dnsdist::TLS_config       $tls_config_doh   = lookup(profile::wikidough::dnsdist::tls::doh),
+    Dnsdist::TLS_config       $tls_config_dot   = lookup(profile::wikidough::dnsdist::tls::dot),
     Dnsdist::Webserver_config $webserver_config = lookup(profile::wikidough::dnsdist::webserver, {'merge' => hash}),
 ) {
 
@@ -39,7 +41,9 @@ class profile::wikidough (
 
     class { 'dnsdist':
         resolver         => $resolver,
-        tls_config       => $tls_config,
+        tls_common       => $tls_common,
+        tls_config_doh   => $tls_config_doh,
+        tls_config_dot   => $tls_config_dot,
         enable_console   => true,
         console_key      => $passwords::wikidough::dnsdist::console_key,
         enable_webserver => true,

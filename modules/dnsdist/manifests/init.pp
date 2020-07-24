@@ -11,8 +11,14 @@
 #  [*resolver*]
 #    [Dnsdist::Resolver] downstream recursive resolver options. required.
 #
-#  [*tls_config*]
-#    [Dnsdist::TLS_config] TLS configuration. required.
+#  [*tls_common*]
+#    [Dnsdist::TLS_common] Common TLS configuration (certificates). required.
+#
+#  [*tls_config_doh*]
+#    [Dnsdist::TLS_config] TLS configuration for DoH. required.
+#
+#  [*tls_config_dot*]
+#    [Dnsdist::TLS_config] TLS configuration for DoT. required.
 #
 #  [*doh_base_url*]
 #    [string] URL to accept DoH queries on. default: /dns-query.
@@ -46,7 +52,9 @@
 
 class dnsdist (
     Dnsdist::Resolver                   $resolver,
-    Dnsdist::TLS_config                 $tls_config,
+    Dnsdist::TLS_common                 $tls_common,
+    Dnsdist::TLS_config                 $tls_config_doh,
+    Dnsdist::TLS_config                 $tls_config_dot,
     String                              $doh_base_url       = '/dns-query',
     Integer[1]                          $qps_max            = 20,
     Boolean                             $enable_packetcache = true,

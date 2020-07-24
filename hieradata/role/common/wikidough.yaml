@@ -3,14 +3,28 @@ profile::wikidough::dnsdist::resolver:
   host: 127.0.0.1
   port: 53
 
-profile::wikidough::dnsdist::tls:
-  min_tls_version: 'tls1.3'
+profile::wikidough::dnsdist::tls::common:
   cert_chain_path: '/etc/acmecerts/wikidough/live/ec-prime256v1.chained.crt'
   cert_privkey_path: '/etc/acmecerts/wikidough/live/ec-prime256v1.key'
+
+profile::wikidough::dnsdist::tls::doh:
+  min_tls_version: 'tls1.3'
   ciphers_tls13:
     - 'TLS_AES_256_GCM_SHA384'
     - 'TLS_CHACHA20_POLY1305_SHA256'
     - 'TLS_AES_128_GCM_SHA256'
+
+profile::wikidough::dnsdist::tls::dot:
+  min_tls_version: 'tls1.2'
+  ciphers: # optimize DoT for Android (dnsdist's order is preferred)
+    - 'ECDHE-ECDSA-CHACHA20-POLY1305'
+    - 'ECDHE-ECDSA-AES256-GCM-SHA384'
+    - 'ECDHE-ECDSA-AES128-GCM-SHA256'
+  ciphers_tls13:
+    - 'TLS_AES_256_GCM_SHA384'
+    - 'TLS_CHACHA20_POLY1305_SHA256'
+    - 'TLS_AES_128_GCM_SHA256'
+  provider: 'openssl' # dnsdist 1.4.0 sets GnuTLS as the default for DoT.
 
 # password and api_key are defined in the private repo.
 profile::wikidough::dnsdist::webserver:
