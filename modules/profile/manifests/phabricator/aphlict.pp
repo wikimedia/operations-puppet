@@ -44,4 +44,6 @@ class profile::phabricator::aphlict (
         target  => $deploy_root,
         require => Package[$deploy_target],
     }
+
+    require_package('php-cli')
 }
