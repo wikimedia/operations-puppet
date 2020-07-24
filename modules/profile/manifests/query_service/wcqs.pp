@@ -41,7 +41,7 @@ class profile::query_service::wcqs(
         heap_size              => $heap_size,
         use_deployed_config    => $use_deployed_config,
         options                => $options,
-        extra_jvm_opts         => $extra_jvm_opts,
+        extra_jvm_opts         => $extra_jvm_opts + ['-DwikibaseConceptUri=http://www.wikidata.org', '-DcommonsConceptUri=https://commons.wikimedia.org'],
         prometheus_nodes       => $prometheus_nodes,
         contact_groups         => $contact_groups,
         monitoring_enabled     => $monitoring_enabled,
