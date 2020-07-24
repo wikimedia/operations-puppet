@@ -94,6 +94,15 @@ class arclamp(
         require => Package['performance/arc-lamp']
     }
 
+    # Compress logs older than 7 days:
+    cron { 'arclamp_compress_logs':
+        ensure  => $ensure,
+        command => '/srv/deployment/performance/arc-lamp/arclamp-compress-logs 7 >/dev/null',
+        user    => 'xenon',
+        hour    => '*',
+        require => Package['performance/arc-lamp']
+    }
+
     # arclamp used to be known as xenon; clean up old copies of it.
     file { '/usr/local/bin/xenon-generate-svgs':
         ensure => absent,
