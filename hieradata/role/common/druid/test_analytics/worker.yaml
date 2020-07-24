@@ -35,6 +35,8 @@ profile::kerberos::keytabs::keytabs_metadata:
     group: 'druid'
     filename: 'druid.keytab'
 
+profile::prometheus::druid_exporter::druid_version: '0.19.0'
+
 # -- Druid common configuration
 
 # The logical name of this druid cluster
