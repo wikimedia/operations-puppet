@@ -1284,10 +1284,6 @@ node /^cloudcontrol100[3-5]\.wikimedia\.org$/ {
     role(wmcs::openstack::eqiad1::control)
 }
 
-node /^cloudcephmon100[1-3]\.wikimedia\.org$/ {
-    role(wmcs::ceph::mon)
-}
-
 node /^cloudcephmon100[1-3]\.eqiad\.wmnet$/ {
     role(wmcs::ceph::mon)
 }
