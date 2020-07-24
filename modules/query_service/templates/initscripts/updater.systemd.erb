@@ -1,5 +1,5 @@
 [Unit]
-Description=Query Service Updater
+Description=<%= @updater_service_desc %>
 Wants=<%= @deploy_name %>-blazegraph.service
 After=<%= @deploy_name %>-blazegraph.service
 ConditionPathExists=<%= @data_dir %>/wikidata.jnl
@@ -10,7 +10,7 @@ StartLimitBurst=5
 [Service]
 Type=simple
 WorkingDirectory=<%= @package_dir %>
-ExecStart=/bin/bash <%= @package_dir %>/runUpdate.sh <%= @options.join(' ') %>
+ExecStart=/bin/bash <%= @package_dir %>/<%= @updater_startup_script %> <%= @options.join(' ') %>
 User=<%= @username %>
 StandardOutput=journal+console
 Restart=always

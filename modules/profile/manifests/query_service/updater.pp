@@ -4,7 +4,7 @@ class profile::query_service::updater (
     Boolean $async_import = hiera('profile::query_service::async_import', true),
     Stdlib::Port $logstash_logback_port = hiera('logstash_logback_port'),
     Stdlib::Unixpath $package_dir = hiera('profile::query_service::package_dir'),
-    Stdlib::Unixpath $data_dir = hiera('profile::query_service::data_dir'),
+    Stdlib::Unixpath $data_dir = lookup('profile::query_service::data_dir'),
     Stdlib::Unixpath $log_dir = hiera('profile::query_service::log_dir'),
     String $deploy_name = hiera('profile::query_service::deploy_name'),
     Boolean $log_sparql = hiera('profile::query_service::log_sparql', false),
@@ -73,19 +73,22 @@ class profile::query_service::updater (
     $extra_updater_options = $async_import_option + $poller_options + $fetch_constraints_options + $dump_options + $revision_options + [ '--entityNamespaces', '0,120,146' ]
 
     class { 'query_service::updater':
-        package_dir           => $package_dir,
-        data_dir              => $data_dir,
-        log_dir               => $log_dir,
-        deploy_name           => $deploy_name,
-        username              => $username,
-        logstash_logback_port => $logstash_logback_port,
-        options               => split($options, ' ') + ['--'] + $extra_updater_options,
-        extra_jvm_opts        => $default_jvm_options + $kafka_jvm_opts,
-        log_sparql            => $log_sparql,
+        package_dir            => $package_dir,
+        data_dir               => $data_dir,
+        log_dir                => $log_dir,
+        deploy_name            => $deploy_name,
+        username               => $username,
+        logstash_logback_port  => $logstash_logback_port,
+        options                => split($options, ' ') + ['--'] + $extra_updater_options,
+        extra_jvm_opts         => $default_jvm_options + $kafka_jvm_opts,
+        updater_startup_script => 'runUpdate.sh',
+        updater_service_desc   => 'Query Service Updater',
+        log_sparql             => $log_sparql,
     }
 
     class { 'query_service::monitor::updater':
-        username => $username,
+        username           => $username,
+        updater_main_class => 'org.wikidata.query.rdf.tool.Update',
     }
 
 }
