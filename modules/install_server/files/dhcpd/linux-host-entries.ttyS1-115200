@@ -626,7 +626,7 @@ host cloudcephmon1001 {
 
 host cloudcephmon1002 {
     hardware ethernet B0:26:28:3A:92:20;
-    fixed-address cloudcephmon1002.wikimedia.org;
+    fixed-address cloudcephmon1002.eqiad.wmnet;
 }
 
 host cloudcephmon1003 {

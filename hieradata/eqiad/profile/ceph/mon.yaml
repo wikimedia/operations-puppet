@@ -2,9 +2,9 @@ profile::ceph::mon::hosts:
   'cloudcephmon1001.wikimedia.org':
     public:
       addr: '208.80.154.148'
-  'cloudcephmon1002.wikimedia.org':
+  'cloudcephmon1002.eqiad.wmnet':
     public:
-      addr: '208.80.154.149'
+      addr: '10.64.20.68'
   'cloudcephmon1003.eqiad.wmnet':
     public:
       addr: '10.64.20.69'
