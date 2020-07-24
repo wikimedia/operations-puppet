@@ -1284,8 +1284,11 @@ node /^cloudcontrol100[3-5]\.wikimedia\.org$/ {
     role(wmcs::openstack::eqiad1::control)
 }
 
-# new systems deployment in process T225320
 node /^cloudcephmon100[1-3]\.wikimedia\.org$/ {
+    role(wmcs::ceph::mon)
+}
+
+node /^cloudcephmon100[1-3]\.eqiad\.wmnet$/ {
     role(wmcs::ceph::mon)
 }
 
