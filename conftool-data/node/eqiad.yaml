@@ -386,7 +386,7 @@ eqiad:
   cloudceph:
     cloudcephmon1001.wikimedia.org: [cloudceph]
     cloudcephmon1002.wikimedia.org: [cloudceph]
-    cloudcephmon1003.eqiad.wmnet: [cloudceph]
+    cloudcephmon1003.wikimedia.org: [cloudceph]
   thanos:
     thanos-fe1001.eqiad.wmnet: [thanos-query, thanos-swift]
     thanos-fe1002.eqiad.wmnet: [thanos-query, thanos-swift]
