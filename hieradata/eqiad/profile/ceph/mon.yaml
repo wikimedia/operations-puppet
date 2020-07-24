@@ -5,6 +5,6 @@ profile::ceph::mon::hosts:
   'cloudcephmon1002.wikimedia.org':
     public:
       addr: '208.80.154.149'
-  'cloudcephmon1003.wikimedia.org':
+  'cloudcephmon1003.eqiad.wmnet':
     public:
-      addr: '208.80.154.150'
+      addr: '10.64.20.69'
