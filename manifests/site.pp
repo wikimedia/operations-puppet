@@ -1290,12 +1290,12 @@ node /^cloudcephmon100[1-3]\.wikimedia\.org$/ {
 }
 
 # new systems deployment in process T225320
-node /^cloudcephosd100[1-3]\.wikimedia\.org$/ {
+node /^cloudcephosd100[1-4]\.wikimedia\.org$/ {
     role(wmcs::ceph::osd)
 }
 
 # new servers  waiting for deployment  T251619
-node /^cloudcephosd10(0[4-9]|1[0-5])\.eqiad\.wmnet$/ {
+node /^cloudcephosd10(0[5-9]|1[0-5])\.eqiad\.wmnet$/ {
     role(insetup)
 }
 
