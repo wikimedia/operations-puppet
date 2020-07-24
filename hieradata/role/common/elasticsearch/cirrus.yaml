@@ -75,6 +75,10 @@ profile::elasticsearch::common_settings:
     bulk_thread_pool_capacity: 1000
     filter_cache_size: '20%'
 
+# Moving mjolnir daemon to search-loader hosts - T258245
+profile::mjolnir::kafka_msearch_daemon::ensure: 'absent'
+profile::mjolnir::kafka_bulk_daemon::ensure: 'absent'
+
 # Msearch daemons read same topic in same consumer group in all dcs. They
 # toggle themselves on/off based on load of the local elasticsearch cluster.
 profile::mjolnir::kafka_msearch_daemon::kafka_cluster: jumbo-eqiad

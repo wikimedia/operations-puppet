@@ -2181,7 +2181,7 @@ node /schema[12]00[12].(eqiad|codfw).wmnet/ {
 
 # See T258189
 node /search-loader[12]001.(eqiad|codfw).wmnet/ {
-    role(insetup)
+    role(search::loader)
 }
 
 

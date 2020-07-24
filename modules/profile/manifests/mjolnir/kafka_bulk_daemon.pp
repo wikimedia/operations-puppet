@@ -14,19 +14,24 @@ class profile::mjolnir::kafka_bulk_daemon(
     String $group_id = hiera('profile::mjolnir::kafka_bulk_daemon::group_id'),
     Array[String] $topics = hiera('profile::mjolnir::kafka_bulk_daemon::topics'),
     Array[String] $prometheus_nodes = hiera('prometheus_nodes', []),
+    Wmflib::Ensure $ensure = lookup('profile::mjolnir::kafka_bulk_daemon::ensure', { 'default_value' => 'present' }),
 ) {
     require ::profile::mjolnir
 
     $prometheus_port = 9170
     $kafka_config = kafka_config($kafka_cluster)
     ::systemd::service { 'mjolnir-kafka-bulk-daemon':
+        ensure  => $ensure,
         content => template('profile/mjolnir/kafka-bulk-daemon.service.erb'),
     }
 
-    ::base::service_auto_restart { 'mjolnir-kafka-bulk-daemon': }
+    ::base::service_auto_restart { 'mjolnir-kafka-bulk-daemon':
+        ensure => $ensure,
+    }
 
     $prometheus_nodes_ferm = join($prometheus_nodes, ' ')
     ferm::service { 'mjolnir-bulk-metrics':
+        ensure => $ensure,
         proto  => 'tcp',
         port   => $prometheus_port,
         srange => "(@resolve((${prometheus_nodes_ferm})) @resolve((${prometheus_nodes_ferm}), AAAA))",
