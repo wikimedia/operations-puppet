@@ -1,2 +1,3 @@
 admin::groups:
   - phabricator-roots
+profile::tlsproxy::envoy::global_cert_name: "aphlict.discovery.wmnet"
