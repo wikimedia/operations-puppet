@@ -167,8 +167,8 @@ class profile::analytics::refinery::job::refine(
     $eventlogging_analytics_table_excludelist_regex = "^(${join($eventlogging_analytics_table_excludelist, '|')})$"
 
     profile::analytics::refinery::job::refine_job { 'eventlogging_analytics':
-        ensure                   => $ensure_timers,
-        job_config               => merge($default_config, {
+        ensure                         => $ensure_timers,
+        job_config                     => merge($default_config, {
             input_path                      => $eventlogging_analytics_input_path,
             input_path_regex                => $eventlogging_analytics_input_path_regex,
             input_path_regex_capture_groups => $eventlogging_analytics_input_path_regex_capture_groups,
@@ -178,11 +178,12 @@ class profile::analytics::refinery::job::refine(
             schema_base_uris                => 'eventlogging',
         }),
         # Use webproxy so that this job can access meta.wikimedia.org to retrive JSONSchemas.
-        spark_extra_opts         => '--driver-java-options=\'-Dhttp.proxyHost=webproxy.eqiad.wmnet -Dhttp.proxyPort=8080 -Dhttps.proxyHost=webproxy.eqiad.wmnet -Dhttps.proxyPort=8080\'',
-        interval                 => '*-*-* *:30:00',
-        monitor_interval         => '*-*-* 00:15:00',
-        monitor_failure_interval => '*-*-* 00:45:00',
-        use_kerberos             => $use_kerberos,
+        spark_extra_opts               => '--driver-java-options=\'-Dhttp.proxyHost=webproxy.eqiad.wmnet -Dhttp.proxyPort=8080 -Dhttps.proxyHost=webproxy.eqiad.wmnet -Dhttps.proxyPort=8080\'',
+        interval                       => '*-*-* *:30:00',
+        monitor_interval               => '*-*-* 00:15:00',
+        monitor_failure_interval       => '*-*-* 00:45:00',
+        use_kerberos                   => $use_kerberos,
+        refine_monitor_failure_enabled => false,
     }
 
 
