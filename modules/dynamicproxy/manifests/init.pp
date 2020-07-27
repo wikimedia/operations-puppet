@@ -36,6 +36,8 @@ class dynamicproxy (
     $error_details            = undef,
     $banned_ips               = [],
     $banned_description       = 'You have been banned from accessing this service.',
+    $noproxy_description      = 'No proxy is configured for this host name.
+    Please see <a href="https://wikitech.wikimedia.org/wiki/Help:Proxy">our documentation on Wikitech</a> for more information on configuring a proxy.',
     $web_domain               = undef,
     $blocked_user_agent_regex = 'TweetmemeBot', # T73120 - misbehaving crawler
     $blocked_referer_regex    = '',
@@ -157,6 +159,21 @@ class dynamicproxy (
         logo_alt    => $error_config['logo_alt'],
         logo_link   => $error_config['logo_link'],
         content     => "<p>${banned_description}</p>",
+        owner       => 'www-data',
+        group       => 'www-data',
+        mode        => '0444',
+    }
+
+    mediawiki::errorpage { '/var/www/error/noproxy.html':
+        favicon     => $error_config['favicon'],
+        pagetitle   => $error_config['title'],
+        logo_src    => $error_config['logo'],
+        logo_srcset => "${error_config['logo_2x']} 2x",
+        logo_width  => $error_config['logo_width'],
+        logo_height => $error_config['logo_height'],
+        logo_alt    => $error_config['logo_alt'],
+        logo_link   => $error_config['logo_link'],
+        content     => "<p>${noproxy_description}</p>",
         owner       => 'www-data',
         group       => 'www-data',
         mode        => '0444',
