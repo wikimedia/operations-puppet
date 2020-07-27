@@ -5,7 +5,7 @@
 
   fsid = <%= @fsid %>
 
-  public network = <%= @public_network %>, 10.64.20.0/24
+  public network = <%= @public_network %>
   cluster network = <%= @cluster_network %>
 
   mon initial members = <%= @mon_hosts.map{|k, v| "#{k.split('.')[0]}"}.join(',') %>
