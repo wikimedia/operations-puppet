@@ -1,0 +1,17 @@
+http_host: <%= @listen_host %>
+http_port: <%= @listen_port %>
+
+# Connect to this IRC host/port.
+#
+# Note: SSL is enabled by default, use "irc_use_ssl: no" to disable.
+irc_host: <%= @irc_host %>
+irc_port: <%= @irc_port %>
+
+irc_nickname: <%= @irc_nickname %>
+irc_realname: <%= @irc_realname %>
+<% if @irc_nickname_password %>
+irc_nickname_password: <%= @irc_nickname_password %>
+<% end %>
+
+msg_once_per_alert_group: no
+msg_template: "({{ .Labels.alertname }}) {{ .Annotations.summary }}"

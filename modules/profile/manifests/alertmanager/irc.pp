@@ -1,0 +1,35 @@
+class profile::alertmanager::irc (
+    Stdlib::Host        $active_host = lookup('profile::icinga::active_host'),
+    Array[Stdlib::Host] $partners    = lookup('profile::icinga::partners'),
+    Stdlib::Host        $irc_host    = lookup('profile::alertmanager::irc::host'),
+    Stdlib::Port        $irc_port    = lookup('profile::alertmanager::irc::port'),
+    String              $irc_nickname = lookup('profile::alertmanager::irc::nickname'),
+    String              $irc_realname = lookup('profile::alertmanager::irc::realname'),
+    String              $irc_nickname_password = lookup('profile::alertmanager::irc::nickname_password'),
+    Array[Stdlib::Host] $prometheus_nodes = lookup('prometheus_nodes'),
+) {
+    if $active_host == $::fqdn {
+        $irc_ensure = running
+    } else {
+        $irc_ensure = stopped
+    }
+
+    class { 'alertmanager::irc':
+        listen_host           => '0.0.0.0',
+        listen_port           => 19190,
+        irc_host              => $irc_host,
+        irc_port              => $irc_port,
+        irc_nickname          => $irc_nickname,
+        irc_realname          => $irc_realname,
+        irc_nickname_password => $irc_nickname_password,
+        service_ensure        => $irc_ensure,
+    }
+
+    # API (webhook) + metrics access
+    $hosts = join($partners + $active_host + $prometheus_nodes, ' ')
+    ferm::service { 'alertmanager-irc':
+        proto  => 'tcp',
+        port   => 19190,
+        srange => "@resolve((${hosts}))",
+    }
+}
