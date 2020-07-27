@@ -3803,6 +3803,7 @@ users:
     expiry_date: 2021-1-30
     expiry_contact: mgerlach@wikimedia.org
     comment: Research fellow
+    krb: present
   nskaggs:
     ensure: present
     gid: 500
