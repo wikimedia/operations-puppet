@@ -14,6 +14,7 @@ profile::hue::kerberos_keytab: '/etc/security/keytabs/hue/hue.keytab'
 profile::hue::kerberos_principal: "hue/%{::hostname}.eqiad.wmnet@WIKIMEDIA"
 profile::hue::kerberos_kinit_path: '/usr/bin/kinit'
 profile::hue::oozie_security_enabled: true
+profile::hue::enable_cas: false
 
 profile::oozie::client::oozie_host: 'analytics1030.eqiad.wmnet'
 

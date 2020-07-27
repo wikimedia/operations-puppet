@@ -22,6 +22,7 @@ class profile::hue (
     $use_hdfs_ssl_config        = hiera('profile::hue::use_hdfs_ssl_config', false),
     $use_mapred_ssl_config      = hiera('profile::hue::use_mapred_ssl_config', false),
     $oozie_security_enabled     = hiera('profile::hue::oozie_security_enabled', false),
+    Boolean $enable_cas         = lookup('profile::hue::enable_cas'),
 ){
 
     # Require that all Hue applications
@@ -110,9 +111,12 @@ class profile::hue (
 
     $hue_port = $::cdh::hue::http_port
 
-    # Set up the VirtualHost
-    httpd::site { $server_name:
-        content => template('profile/hue/hue.vhost.erb'),
-        require => File['/var/www/health_check'],
+    if $enable_cas {
+        include profile::idp::client::httpd
+    } else {
+        httpd::site { $server_name:
+            content => template('profile/hue/hue.vhost.erb'),
+            require => File['/var/www/health_check'],
+        }
     }
 }
