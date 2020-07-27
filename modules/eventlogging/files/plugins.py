@@ -49,7 +49,6 @@ eventlogging_valid_mixed_schema_whitelist = (
     'MobileAppUploadAttempts',
     'MobileWebMainMenuClickTracking',
     'MobileWebSearch',
-    'MobileWebUIClickTracking',
     'MobileWikiAppAppearanceSettings',
     'MobileWikiAppArticleSuggestions',
     'MobileWikiAppCreateAccount',
