@@ -1,5 +1,3 @@
-profile::query_service::deploy_mode: 'autodeploy'
-
 profile::query_service::updater_type: 'streaming'
 profile::query_service::streaming_updater_kafka_cluster: jumbo
 profile::query_service::streaming_updater_kafka_topic: wdqs_streaming_updater_test
