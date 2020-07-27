@@ -110,7 +110,7 @@ node /an-worker10(7[89]|8[0-9]|9[0-5]).eqiad.wmnet/ {
     role(analytics_cluster::hadoop::worker)
 }
 
-# hue.wikimedia.org, yarn.wikimedia.org
+# hue.wikimedia.org
 node 'analytics-tool1001.eqiad.wmnet' {
     role(analytics_cluster::hadoop::ui)
 }
@@ -146,7 +146,7 @@ node 'an-tool1008.eqiad.wmnet' {
 }
 
 node 'an-tool1009.eqiad.wmnet' {
-    role(insetup)
+    role(analytics_cluster::hadoop::ui)
 }
 
 # Analytics/Search instance of Apache Airflow
