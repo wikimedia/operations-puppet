@@ -22,6 +22,12 @@ class role::alerting_host {
     include ::profile::dns::auth::monitoring::global
     include ::profile::mariadb::backup::check
 
+    # Temporary until all hosts are on Buster
+    # https://phabricator.wikimedia.org/T247966
+    if os_version('debian >= buster') {
+        include ::profile::alertmanager::irc
+    }
+
     class { '::httpd::mpm':
         mpm => 'prefork'
     }
