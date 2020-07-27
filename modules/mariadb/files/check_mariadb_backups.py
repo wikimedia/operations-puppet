@@ -15,7 +15,8 @@ UNKNOWN = 3
 SECTIONS = ['s1', 's2', 's3', 's4', 's5', 's6', 's7', 's8',
             'x1', 'pc1', 'pc2', 'pc3', 'es1', 'es2', 'es3',
             'es4', 'es5', 's10',
-            'm1', 'm2', 'm3', 'm4', 'm5', 'tendril', 'zarcillo']
+            'm1', 'm2', 'm3', 'm4', 'm5', 'tendril', 'zarcillo',
+            'matomo', 'analytics_meta']
 DATACENTERS = ['eqiad', 'codfw']
 TYPES = ['dump', 'snapshot']
 DEFAULT_FRESHNESS = 691200  # 8 days, in seconds

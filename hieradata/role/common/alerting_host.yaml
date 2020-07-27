@@ -119,6 +119,12 @@ profile::mariadb::backup::check::backups:
     dump:
     - eqiad
     - codfw
+  matomo:
+    dump:
+    - eqiad
+  analytics_meta:
+    dump:
+    - eqiad
 profile::mariadb::backup::check::freshness:
   dump: 691200
   snapshot: 259200
