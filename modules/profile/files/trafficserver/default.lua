@@ -77,11 +77,6 @@ function do_global_read_request()
        ts.http.config_int_set(TS_LUA_CONFIG_HTTP_CACHE_GENERATION, 1595415018)
     end
 
-    if ts.client_request.header['Host'] == 'secure.wikimedia.org' then
-        -- CDN cache revalidation for 301s previously served by secure.wikimedia.org T151977
-        ts.http.config_int_set(TS_LUA_CONFIG_HTTP_CACHE_GENERATION, 1595522159)
-    end
-
     local cookie = ts.client_request.header['Cookie']
 
     if cookie then
