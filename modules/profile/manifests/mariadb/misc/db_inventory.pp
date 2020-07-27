@@ -30,7 +30,7 @@ class profile::mariadb::misc::db_inventory{
 
     mariadb::monitor_replication { $id: }
     mariadb::monitor_readonly { $id:
-        read_only     => $is_master,
+        read_only     => !($is_master),
     }
     profile::mariadb::replication_lag { $id: }
     class { 'mariadb::monitor_disk': }
