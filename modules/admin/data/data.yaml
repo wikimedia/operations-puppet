@@ -105,7 +105,7 @@ groups:
     members: [bearloga, tjones, cparle, pearley, ktsouroupidou,
               ezachte, jamesur, jdlrobson, sguebo,
               leila, santhosh, amire80, foks, chelsyx, dbarratt, karen,
-              kharlan, abi, nikkin, bmansurov, musikanimal, holger]
+              kharlan, abi, nikkin, bmansurov, musikanimal, holger, nahidunlimited]
     privileges: ['ALL = (www-data) NOPASSWD: ALL']
   cassandra-test-roots:
     gid: 708
