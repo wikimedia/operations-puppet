@@ -23,12 +23,13 @@ class dynamicproxy (
     $redis_replication        = undef,
     $error_enabled            = false,
     $error_config             = {
-        title       => 'Wikimedia Labs Error',
-        logo        => '/.error/labs-logo.png',
-        logo_2x     => '/.error/labs-logo-2x.png',
-        logo_width  => 135,
-        logo_height => 157,
-        logo_alt    => 'Wikimedia Labs',
+        title       => 'Wikimedia Cloud Services Error',
+        logo        => '/.error/wmcs-logo.png',
+        logo_2x     => '/.error/wmcs-logo-2x.png',
+        logo_width  => 120,
+        logo_height => 137,
+        logo_alt    => 'Wikimedia Cloud Services',
+        logo_link   => 'https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS',
         favicon     => 'https://wikitech.wikimedia.org/static/favicon/wikitech.ico',
     },
     $error_description        = 'Our servers are currently experiencing a technical problem. This is probably temporary and should be fixed soon. Please try again later.',
@@ -106,20 +107,28 @@ class dynamicproxy (
         mode   => '0444',
     }
 
-    file { '/var/www/error/labs-logo.png':
+    file { '/var/www/error/wmcs-logo.png':
         ensure => file,
-        source => 'puppet:///modules/dynamicproxy/labs-logo.png',
+        source => 'puppet:///modules/dynamicproxy/wmcs-logo.png',
         owner  => 'www-data',
         group  => 'www-data',
         mode   => '0444',
     }
 
-    file { '/var/www/error/labs-logo-2x.png':
+    file { '/var/www/error/wmcs-logo-2x.png':
         ensure => file,
-        source => 'puppet:///modules/dynamicproxy/labs-logo-2x.png',
+        source => 'puppet:///modules/dynamicproxy/wmcs-logo-2x.png',
         owner  => 'www-data',
         group  => 'www-data',
         mode   => '0444',
+    }
+
+    # Clean up legacy logo files. Can be removed after files have been purged.
+    file { '/var/www/error/labs-logo.png':
+        ensure => absent,
+    }
+    file { '/var/www/error/labs-logo-2x.png':
+        ensure => absent,
     }
 
     mediawiki::errorpage { '/var/www/error/errorpage.html':
@@ -130,15 +139,12 @@ class dynamicproxy (
         logo_width  => $error_config['logo_width'],
         logo_height => $error_config['logo_height'],
         logo_alt    => $error_config['logo_alt'],
+        logo_link   => $error_config['logo_link'],
         content     => "<p>${error_description}</p>",
         footer      => $error_details,
         owner       => 'www-data',
         group       => 'www-data',
         mode        => '0444',
-        require     => [File['/var/www/error'],
-                        File['/var/www/error/labs-logo.png'],
-                        File['/var/www/error/labs-logo-2x.png']
-        ],
     }
 
     mediawiki::errorpage { '/var/www/error/banned.html':
@@ -146,17 +152,14 @@ class dynamicproxy (
         pagetitle   => $error_config['title'],
         logo_src    => $error_config['logo'],
         logo_srcset => "${error_config['logo_2x']} 2x",
-        logo_alt    => $error_config['logo_alt'],
         logo_width  => $error_config['logo_width'],
         logo_height => $error_config['logo_height'],
+        logo_alt    => $error_config['logo_alt'],
+        logo_link   => $error_config['logo_link'],
         content     => "<p>${banned_description}</p>",
         owner       => 'www-data',
         group       => 'www-data',
         mode        => '0444',
-        require     => [File['/var/www/error'],
-                        File['/var/www/error/labs-logo.png'],
-                        File['/var/www/error/labs-logo-2x.png']
-        ],
     }
 
     file { '/etc/security/limits.conf':
