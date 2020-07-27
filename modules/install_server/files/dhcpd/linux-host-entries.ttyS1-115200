@@ -7523,7 +7523,7 @@ host restbase1030 {
 }
 
 host restbase2009 {
-    hardware ethernet 14:02:ec:06:9a:fc;
+    hardware ethernet 14:02:ec:06:a9:dc;
     fixed-address restbase2009.codfw.wmnet;
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
