@@ -4,7 +4,7 @@
 #
 class profile::superset::proxy (
     Hash $ldap_config          = lookup('ldap', Hash, hash, {}),
-    String $x_forwareded_proto = lookup('profile::superset::proxy::x_forwareded_proto', {'default_value' => 'https'}),
+    String $x_forwarded_proto  = lookup('profile::superset::proxy::x_forwarded_proto', {'default_value' => 'https'}),
     Boolean $enable_cas        = lookup('profile::superset::enable_cas'),
 ) {
 
@@ -22,7 +22,7 @@ class profile::superset::proxy (
 
     if $enable_cas {
         class {'profile::idp::client::httpd':
-            vhost_settings => { 'x-forwarded-proto' => $x_forwareded_proto },
+            vhost_settings => { 'x-forwarded-proto' => $x_forwarded_proto },
         }
     } else {
         class { '::passwords::ldap::production': }

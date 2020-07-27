@@ -9,7 +9,7 @@ profile::superset::database_uri: mysql://superset_staging@an-coord1001.eqiad.wmn
 profile::superset::workers: 8
 profile::superset::ldap_proxy_enabled: true
 profile::superset::presto_cluster: analytics-presto
-profile::superset::proxy::x_forwareded_proto: 'http'
+profile::superset::proxy::x_forwarded_proto: 'http'
 profile::superset::enable_cas: false
 
 profile::druid::turnilo::port: 9091
