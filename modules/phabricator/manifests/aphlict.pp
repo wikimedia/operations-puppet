@@ -57,10 +57,8 @@ class phabricator::aphlict(
     File[$node_modules] ~> Service['aphlict']
 
     if $ensure == 'present' {
-        $directory = 'directory'
         $service_ensure = 'running'
     } else {
-        $directory = 'absent'
         $service_ensure = 'stopped'
     }
 
@@ -80,13 +78,13 @@ class phabricator::aphlict(
     }
 
     file { '/var/run/aphlict/':
-        ensure => $directory,
+        ensure => 'directory',
         owner  => $user,
         group  => $group,
     }
 
     file { '/var/log/aphlict/':
-        ensure => $directory,
+        ensure => 'directory',
         owner  => $user,
         group  => $group,
     }
