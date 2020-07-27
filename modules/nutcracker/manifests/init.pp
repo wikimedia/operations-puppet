@@ -34,55 +34,32 @@
 #  }
 #
 class nutcracker(
-    $pools,
-    $ensure    = present,
-    $mbuf_size = undef,
-    $verbosity = 4,
+    Hash                            $pools,
+    Wmflib::Ensure                  $ensure    = present,
+    Optional[String]                $mbuf_size = undef,
+    Variant[String, Integer[0,11]]  $verbosity = 4,
 ) {
-    validate_hash($pools)
-    validate_re($ensure, '^(present|absent)$')
-    validate_numeric($verbosity, 11, 0)
 
-    require_package('nutcracker')
+    ensure_packages(['nutcracker'])
 
-    file { '/etc/nutcracker/nutcracker.yml':
-        ensure  => $ensure,
-        content => template('nutcracker/nutcracker.yml.erb'),
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        require => Package['nutcracker'],
+    file {
+        default:
+            ensure  => $ensure,
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0444',
+            notify  => Service['nutcracker'],
+            require => Package['nutcracker'];
+        '/etc/nutcracker/nutcracker.yml':
+            content      => template('nutcracker/nutcracker.yml.erb'),
+            validate_cmd => '/usr/sbin/nutcracker --test-conf --conf-file %';
+        '/etc/default/nutcracker':
+            content => template('nutcracker/default.erb');
+        '/etc/init/nutcracker.override':
+            content => "limit nofile 64000 64000\n";
     }
-
-    if (
-        $ensure == 'present' and
-        versioncmp($::puppetversion, '3.5') >= 0 and
-        versioncmp($::serverversion, '3.5') >= 0
-        ) {
-        File['/etc/nutcracker/nutcracker.yml'] {
-          validate_cmd => '/usr/sbin/nutcracker --test-conf --conf-file %',
-        }
-    }
-
-    file { '/etc/default/nutcracker':
-        ensure  => $ensure,
-        content => template('nutcracker/default.erb'),
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        notify  => Service['nutcracker'],
-    }
-
-    file { '/etc/init/nutcracker.override':
-        ensure  => $ensure,
-        content => "limit nofile 64000 64000\n",
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        notify  => Service['nutcracker'],
-    }
-
     service { 'nutcracker':
-        ensure => ensure_service($ensure),
+        ensure  => ensure_service($ensure),
+        require => Package['nutcracker'],
     }
 }
