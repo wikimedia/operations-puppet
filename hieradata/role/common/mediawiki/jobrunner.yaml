@@ -4,8 +4,6 @@ admin::groups:
   - deployment
   - perf-roots
 
-nutcracker::verbosity: "4"
-
 profile::lvs::realserver::use_safe_restart: true
 profile::lvs::realserver::pools:
   jobrunner:

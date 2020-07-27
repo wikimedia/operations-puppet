@@ -32,7 +32,6 @@ profile::tlsproxy::envoy::access_log: true
 profile::mediawiki::httpd::logrotate_retention: 12
 profile::tlsproxy::envoy::capitalize_headers: true
 
-nutcracker::verbosity: "4"
 # Bump the connections per backend to 5 in mcrouter, see T203786
 profile::mediawiki::mcrouter_wancache::num_proxies: 5
 # Use the gutter pool for failover

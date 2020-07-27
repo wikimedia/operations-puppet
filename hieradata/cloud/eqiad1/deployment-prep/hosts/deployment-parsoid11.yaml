@@ -1,6 +1,5 @@
 cluster: parsoid
 has_lvs: false
-nutcracker::verbosity: '4'
 profile::envoy::ensure: absent
 profile::mediawiki::apc_shm_size: 128M
 profile::mediawiki::httpd::logrotate_retention: 12

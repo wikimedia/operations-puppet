@@ -3,7 +3,6 @@ admin::groups:
   - deployment
   - perf-roots
   - mediawiki-testers
-nutcracker::verbosity: "4"
 profile::mediawiki::php::enable_fpm: true
 #profile::php_fpm::fcgi_port: 8000
 # Bump the connections per backend to 5 in mcrouter, see T203786

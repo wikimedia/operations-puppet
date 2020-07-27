@@ -34,10 +34,10 @@
 #  }
 #
 class nutcracker(
-    Hash                            $pools,
-    Wmflib::Ensure                  $ensure    = present,
-    Optional[String]                $mbuf_size = undef,
-    Variant[String, Integer[0,11]]  $verbosity = 4,
+    Hash             $pools,
+    Wmflib::Ensure   $ensure    = present,
+    Optional[String] $mbuf_size = undef,
+    Integer[0,11]    $verbosity = 4,
 ) {
 
     ensure_packages(['nutcracker'])

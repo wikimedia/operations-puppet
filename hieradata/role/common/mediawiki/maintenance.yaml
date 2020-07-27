@@ -8,7 +8,6 @@ profile::base::domain_search:
   - wikimedia.org
   - eqiad.wmnet
   - codfw.wmnet
-nutcracker::verbosity: "4"
 profile::mariadb::maintenance::ensure: present
 
 # whitelist maintenance servers from screen monitoring
