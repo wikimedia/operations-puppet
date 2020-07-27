@@ -131,6 +131,7 @@ Components: main
  component/ci
  component/cloudera
  component/dnsdist
+ component/envoy-future
  component/idp-test
  component/jdk8
  component/memcached16
