@@ -82,6 +82,13 @@ class otrs(
         'libnamespace-clean-perl',
 
         'perl-doc',
+        # T187984. Added in 6.0.x as prereqs and optionals
+        'libdatetime-perl',
+        'libdatetime-timezone-perl',
+        'libxml-libxml-perl',
+        'libxml-libxslt-perl',
+        'libencode-hanextra-perl',
+
     ]
     require_package($packages)
     if os_version('debian >= buster') {
