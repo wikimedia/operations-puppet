@@ -3897,6 +3897,10 @@ ldap_only_users:
     ensure: present
     realname: Delphine Menard
     email: dmenard@wikimedia.org
+  dvrandecic:
+    ensure: present
+    realname: Denny Vrandecic
+    email: dvrandecic@wikimedia.org
   egardner:
     ensure: present
     realname: Eric Gardner
