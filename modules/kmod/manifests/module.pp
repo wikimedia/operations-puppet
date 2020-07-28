@@ -8,13 +8,12 @@
 #   If 'present', the module will be loaded. If 'absent', unloaded.
 #   The default is 'present'.
 #
-define kmod::module($ensure=present) {
-    validate_ensure($ensure)
-
-    if $ensure == 'present' {
-        $modprobe_cmd = "/sbin/modprobe ${name}"
-    } else {
-        $modprobe_cmd = "/sbin/modprobe -r ${name}"
+define kmod::module(
+    Wmflib::Ensure $ensure = present
+) {
+    $modprobe_cmd = $ensure ? {
+        'present' => "/sbin/modprobe ${name}",
+        'absent' => "/sbin/modprobe -r ${name}",
     }
 
     file { "/etc/modules-load.d/${name}.conf":
