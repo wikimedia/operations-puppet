@@ -10,6 +10,8 @@ class profile::phabricator::aphlict (
     Optional[String] $deploy_user = lookup('phabricator_deploy_user', { 'default_value' => 'phab-deploy' }),
     Boolean $manage_scap_user = lookup('profile::phabricator::main::manage_scap_user', { 'default_value' => true }),
     Optional[String] $phabricator_server = lookup('phabricator_server', { 'default_value' => undef }),
+    Optional[Stdlib::Port] $admin_port = lookup('aphlict_admin_port', { 'default_value' => undef }),
+    Optional[Stdlib::Ip_address] $admin_ip = lookup('aphlict_admin_ip', { 'default_value' => undef }),
 ) {
 
     $deploy_root = "/srv/deployment/${deploy_target}"
@@ -21,6 +23,8 @@ class profile::phabricator::aphlict (
         sslkey     => $aphlict_key,
         sslchain   => $aphlict_chain,
         basedir    => $base_dir,
+        admin_port => $admin_port,
+        admin_ip   => $admin_ip,
     }
 
     ferm::service { 'notification_server':

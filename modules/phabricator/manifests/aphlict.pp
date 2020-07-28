@@ -28,6 +28,13 @@
 #
 # [*sslchain*]
 #   path to the ssl certificate chain file
+#
+# [*admin_port*]
+#   port used for the aphlict admin interface (default: 22281)
+#
+# [*admin_ip*]
+#   IP address used for the aphlict admin interface (default: 127.0.0.1)
+#
 class phabricator::aphlict(
     Wmflib::Ensure $ensure,
     String $user = 'aphlict',
@@ -37,6 +44,8 @@ class phabricator::aphlict(
     Optional[Stdlib::Unixpath] $sslcert = undef,
     Optional[Stdlib::Unixpath] $sslkey = undef,
     Optional[Stdlib::Unixpath] $sslchain = undef,
+    Stdlib::Port $admin_port = 22281,
+    Stdlib::Ip_address $admin_ip = '127.0.0.1',
 ) {
 
     # packages
