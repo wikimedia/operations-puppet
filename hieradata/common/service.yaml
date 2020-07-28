@@ -2367,7 +2367,7 @@ service::catalog:
           timeout-clean-reconnect: 3
         ProxyFetch:
           url:
-          - https://localhost/-/ready
+          - https://thanos-query.discovery.wmnet/-/ready
       scheduler: wrr
     monitoring:
       check_command: check_https_url!thanos-query.discovery.wmnet!/-/ready
