@@ -6,14 +6,12 @@ admin::groups:
 apache::logrotate::period: "daily"
 apache::logrotate::rotate: 3
 
-# The current production aka "active" server.
-# Enables dumps and opens firewall holes for http/smtp/aphlict.
-# Switching backend for caching servers needs to be done in DNS.
-phabricator_server: 'phab1001.eqiad.wmnet'
-
 # List of all Phabricator servers.
-# Used in firewall as sources who are allowed to rsync from the above.
-# That's all.
+# Used in firewall as sources who are allowed to rsync from the
+# active phabricator server. That's it.
+# The definition of the "active server" which enables dumps an opens
+# needed firewall holes is the "phabricator_server" key in common.yaml
+# Switching backend for caching servers needs to be done in DNS.
 phabricator_servers:
   - phab1001.eqiad.wmnet
   - phab2001.codfw.wmnet

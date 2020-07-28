@@ -1041,6 +1041,13 @@ releases_servers_failover:
     - 'releases1002.eqiad.wmnet'
     - 'releases2002.codfw.wmnet'
 
+# Defines which Phabricator server is the active
+# one to open needed firewall holes and decide where
+# dumps are created.
+# Note there is an additional list of all Phabricator
+# servers in the role specific Hiera.
+phabricator_server: phab1001.eqiad.wmnet
+
 kerberos_realm_name: WIKIMEDIA
 kerberos_kadmin_server_primary: 'krb1001.eqiad.wmnet'
 kerberos_kadmin_keytabs_repo: 'puppetmaster1001.eqiad.wmnet'
