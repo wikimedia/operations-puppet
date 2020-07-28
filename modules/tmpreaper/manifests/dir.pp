@@ -20,12 +20,10 @@
 #  }
 #
 define tmpreaper::dir(
-    $ensure = present,
-    $path   = $name,
+    Wmflib::Ensure   $ensure = present,
+    Stdlib::Unixpath $path   = $name,
 ) {
-    include ::tmpreaper
-
-    validate_absolute_path($path)
+    include tmpreaper
 
     $safe_name = regsubst($title, '\W', '-', 'G')
     $safe_path = regsubst($path, '/?$', '/')

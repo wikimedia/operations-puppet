@@ -35,16 +35,13 @@
 #  }
 #
 define tmpreaper::reap(
-    $path             = $name,
-    $age              = '7d',
-    $protect          = [],
-    $include_symlinks = false,
-    $include_all      = false,
+    Stdlib::Unixpath       $path             = $name,
+    Pattern[/^\d+[smhd]$/] $age              = '7d',
+    Array                  $protect          = [],
+    Boolean                $include_symlinks = false,
+    Boolean                $include_all      = false,
 ) {
-    include ::tmpreaper
-
-    validate_re($age, '^\d+[smhd]$')
-    validate_absolute_path($path)
+    include tmpreaper
 
     $args = template('tmpreaper/args.erb')
 
