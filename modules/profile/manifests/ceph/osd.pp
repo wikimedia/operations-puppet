@@ -113,7 +113,7 @@ class profile::ceph::osd(
     }
 
     # We need this to finish initial osd setup
-    ceph::keyring { 'bootstrap.':
+    ceph::keyring { 'osd.bootstrap':
         keyring => $bootstrap_keyring,
         keydata => $bootstrap_keydata,
     }
