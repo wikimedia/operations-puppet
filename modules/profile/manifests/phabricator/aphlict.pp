@@ -3,12 +3,13 @@
 class profile::phabricator::aphlict (
     Stdlib::Unixpath $base_dir = lookup('aphlict_base_dir', { 'default_value' => '/srv/aphlict' }),
     Boolean $aphlict_ssl = lookup('phabricator_aphlict_enable_ssl', { 'default_value' => false }),
-    Optional[Stdlib::Unixpath]  $aphlict_cert  = lookup('phabricator_aphlict_cert', { 'default_value' => undef }),
-    Optional[Stdlib::Unixpath]  $aphlict_key   = lookup('phabricator_aphlict_key', { 'default_value' => undef }),
-    Optional[Stdlib::Unixpath]  $aphlict_chain = lookup('phabricator_aphlict_chain', { 'default_value' => undef }),
+    Optional[Stdlib::Unixpath] $aphlict_cert  = lookup('phabricator_aphlict_cert', { 'default_value' => undef }),
+    Optional[Stdlib::Unixpath] $aphlict_key   = lookup('phabricator_aphlict_key', { 'default_value' => undef }),
+    Optional[Stdlib::Unixpath] $aphlict_chain = lookup('phabricator_aphlict_chain', { 'default_value' => undef }),
     String $deploy_target = lookup('phabricator_deploy_target', { 'default_value' => 'phabricator/deployment'}),
-    Optional[String] $deploy_user   = lookup('phabricator_deploy_user', { 'default_value' => 'phab-deploy' }),
+    Optional[String] $deploy_user = lookup('phabricator_deploy_user', { 'default_value' => 'phab-deploy' }),
     Boolean $manage_scap_user = lookup('profile::phabricator::main::manage_scap_user', { 'default_value' => true }),
+    Optional[String] $phabricator_server = lookup('phabricator_server', { 'default_value' => undef }),
 ) {
 
     $deploy_root = "/srv/deployment/${deploy_target}"
@@ -45,5 +46,13 @@ class profile::phabricator::aphlict (
         require => Package[$deploy_target],
     }
 
+    # needed by deployment scripts only
     require_package('php-cli')
+
+    # phabricator server needs to connect to the aphlict admin port
+    ferm::service { 'phab_aphlict_admin_port':
+        proto  => 'tcp',
+        port   => '(22281)',
+        srange => "@resolve(${phabricator_server})",
+    }
 }
