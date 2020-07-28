@@ -39,15 +39,12 @@
 #  }
 #
 define redis::instance(
-    $ensure   = present,
-    $settings = {},
-    $map = {}
-    ) {
-    validate_ensure($ensure)
-    validate_hash($settings)
-    validate_hash($map)
+    Wmflib::Ensure $ensure   = present,
+    Hash           $settings = {},
+    Hash           $map = {}
+) {
 
-    require ::redis
+    require redis
 
     if $title =~ /^[1-9]\d*/ {
         # Listen on TCP port
