@@ -7,7 +7,7 @@ class profile::logstash::alerts {
     monitoring::check_prometheus { 'logstash_no_logs_indexed':
         description     => 'Logs are not being indexed by Elasticsearch',
         query           => 'sum(irate(elasticsearch_indices_indexing_index_total{cluster="logstash"}[5m]))',
-        prometheus_url  => 'http://thanos-query.discovery.wmnet',
+        prometheus_url  => 'https://thanos-query.discovery.wmnet',
         method          => 'le',
         warning         => 100,
         critical        => 10,
@@ -49,7 +49,7 @@ class profile::logstash::alerts {
         monitoring::check_prometheus { "kafka logging-${site} consumer lag":
             description     => "Too many messages in kafka logging-${site}",
             query           => "kafka_burrow_partition_lag{exported_cluster=\"logging-${site}\"}",
-            prometheus_url  => 'http://thanos-query.discovery.wmnet',
+            prometheus_url  => 'https://thanos-query.discovery.wmnet',
             warning         => 1000,
             critical        => 1500,
             retries         => 10,
