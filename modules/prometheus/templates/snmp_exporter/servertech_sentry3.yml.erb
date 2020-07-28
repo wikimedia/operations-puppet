@@ -4,785 +4,936 @@
     community: <%= @community %>
 <% end -%>
   walk:
-  - 1.3.6.1.2.1.1.3
   - 1.3.6.1.4.1.1718.3.2
+  get:
+  - 1.3.6.1.2.1.1.3.0
   metrics:
   - name: sysUpTime
     oid: 1.3.6.1.2.1.1.3
     type: gauge
+    help: The time (in hundredths of a second) since the network management portion
+      of the system was last re-initialized. - 1.3.6.1.2.1.1.3
   - name: towerIndex
     oid: 1.3.6.1.4.1.1718.3.2.1.1.1
     type: gauge
+    help: Index for the tower table. - 1.3.6.1.4.1.1718.3.2.1.1.1
     indexes:
     - labelname: towerIndex
-      type: Integer
+      type: gauge
   - name: towerID
     oid: 1.3.6.1.4.1.1718.3.2.1.1.2
-    type: string
+    type: DisplayString
+    help: The ID of the tower. - 1.3.6.1.4.1.1718.3.2.1.1.2
     indexes:
     - labelname: towerIndex
-      type: Integer
+      type: gauge
   - name: towerName
     oid: 1.3.6.1.4.1.1718.3.2.1.1.3
-    type: string
+    type: DisplayString
+    help: The name of the tower. - 1.3.6.1.4.1.1718.3.2.1.1.3
     indexes:
     - labelname: towerIndex
-      type: Integer
+      type: gauge
   - name: towerStatus
     oid: 1.3.6.1.4.1.1718.3.2.1.1.4
     type: gauge
+    help: The operational status of the tower. - 1.3.6.1.4.1.1718.3.2.1.1.4
     indexes:
     - labelname: towerIndex
-      type: Integer
+      type: gauge
   - name: towerInfeedCount
     oid: 1.3.6.1.4.1.1718.3.2.1.1.5
     type: gauge
+    help: The number of input feeds on the tower. - 1.3.6.1.4.1.1718.3.2.1.1.5
     indexes:
     - labelname: towerIndex
-      type: Integer
+      type: gauge
   - name: towerProductSN
     oid: 1.3.6.1.4.1.1718.3.2.1.1.6
-    type: string
+    type: DisplayString
+    help: The product serial number of the tower. - 1.3.6.1.4.1.1718.3.2.1.1.6
     indexes:
     - labelname: towerIndex
-      type: Integer
+      type: gauge
   - name: towerModelNumber
     oid: 1.3.6.1.4.1.1718.3.2.1.1.7
-    type: string
+    type: DisplayString
+    help: The model number of the tower. - 1.3.6.1.4.1.1718.3.2.1.1.7
     indexes:
     - labelname: towerIndex
-      type: Integer
+      type: gauge
+  - name: towerCapabilities
+    oid: 1.3.6.1.4.1.1718.3.2.1.1.8
+    type: OctetString
+    help: The capabilities of the tower. - 1.3.6.1.4.1.1718.3.2.1.1.8
+    indexes:
+    - labelname: towerIndex
+      type: gauge
   - name: towerVACapacity
     oid: 1.3.6.1.4.1.1718.3.2.1.1.9
     type: gauge
+    help: The total apparent power capacity of the tower circuit - 1.3.6.1.4.1.1718.3.2.1.1.9
     indexes:
     - labelname: towerIndex
-      type: Integer
+      type: gauge
   - name: towerVACapacityUsed
     oid: 1.3.6.1.4.1.1718.3.2.1.1.10
     type: gauge
+    help: The used percentage of the tower circuit total apparent power capacity (towerApparentPower
+      / towerVACapacity x 100) - 1.3.6.1.4.1.1718.3.2.1.1.10
     indexes:
     - labelname: towerIndex
-      type: Integer
+      type: gauge
   - name: towerActivePower
     oid: 1.3.6.1.4.1.1718.3.2.1.1.11
     type: gauge
+    help: The total active power consumption of the tower circuit - 1.3.6.1.4.1.1718.3.2.1.1.11
     indexes:
     - labelname: towerIndex
-      type: Integer
+      type: gauge
   - name: towerApparentPower
     oid: 1.3.6.1.4.1.1718.3.2.1.1.12
     type: gauge
+    help: The total apparent power consumption of the tower circuit - 1.3.6.1.4.1.1718.3.2.1.1.12
     indexes:
     - labelname: towerIndex
-      type: Integer
+      type: gauge
   - name: towerPowerFactor
     oid: 1.3.6.1.4.1.1718.3.2.1.1.13
     type: gauge
+    help: The overall power factor of the tower circuit - 1.3.6.1.4.1.1718.3.2.1.1.13
     indexes:
     - labelname: towerIndex
-      type: Integer
+      type: gauge
   - name: towerEnergy
     oid: 1.3.6.1.4.1.1718.3.2.1.1.14
     type: gauge
+    help: The total energy consumption of the tower circuit - 1.3.6.1.4.1.1718.3.2.1.1.14
     indexes:
     - labelname: towerIndex
-      type: Integer
+      type: gauge
   - name: towerLineFrequency
     oid: 1.3.6.1.4.1.1718.3.2.1.1.15
     type: gauge
+    help: The frequency of the input feed line voltage - 1.3.6.1.4.1.1718.3.2.1.1.15
     indexes:
     - labelname: towerIndex
-      type: Integer
+      type: gauge
   - name: infeedIndex
     oid: 1.3.6.1.4.1.1718.3.2.2.1.1
     type: gauge
+    help: Index for the input feed table. - 1.3.6.1.4.1.1718.3.2.2.1.1
     indexes:
     - labelname: towerIndex
-      type: Integer
+      type: gauge
     - labelname: infeedIndex
-      type: Integer
+      type: gauge
   - name: infeedID
     oid: 1.3.6.1.4.1.1718.3.2.2.1.2
-    type: string
+    type: DisplayString
+    help: The ID of the input feed. - 1.3.6.1.4.1.1718.3.2.2.1.2
     indexes:
     - labelname: towerIndex
-      type: Integer
+      type: gauge
     - labelname: infeedIndex
-      type: Integer
+      type: gauge
   - name: infeedName
     oid: 1.3.6.1.4.1.1718.3.2.2.1.3
-    type: string
+    type: DisplayString
+    help: The name of the input feed. - 1.3.6.1.4.1.1718.3.2.2.1.3
     indexes:
     - labelname: towerIndex
-      type: Integer
+      type: gauge
     - labelname: infeedIndex
-      type: Integer
+      type: gauge
+  - name: infeedCapabilities
+    oid: 1.3.6.1.4.1.1718.3.2.2.1.4
+    type: OctetString
+    help: The capabilities of the input feed. - 1.3.6.1.4.1.1718.3.2.2.1.4
+    indexes:
+    - labelname: towerIndex
+      type: gauge
+    - labelname: infeedIndex
+      type: gauge
   - name: infeedStatus
     oid: 1.3.6.1.4.1.1718.3.2.2.1.5
     type: gauge
+    help: The status of the input feed line - 1.3.6.1.4.1.1718.3.2.2.1.5
     indexes:
     - labelname: towerIndex
-      type: Integer
+      type: gauge
     - labelname: infeedIndex
-      type: Integer
+      type: gauge
   - name: infeedLoadStatus
     oid: 1.3.6.1.4.1.1718.3.2.2.1.6
     type: gauge
+    help: The status of the load measured on the input feed line - 1.3.6.1.4.1.1718.3.2.2.1.6
     indexes:
     - labelname: towerIndex
-      type: Integer
+      type: gauge
     - labelname: infeedIndex
-      type: Integer
+      type: gauge
   - name: infeedLoadValue
     oid: 1.3.6.1.4.1.1718.3.2.2.1.7
     type: gauge
+    help: The load measured on the input feed line - 1.3.6.1.4.1.1718.3.2.2.1.7
     indexes:
     - labelname: towerIndex
-      type: Integer
+      type: gauge
     - labelname: infeedIndex
-      type: Integer
+      type: gauge
   - name: infeedLoadHighThresh
     oid: 1.3.6.1.4.1.1718.3.2.2.1.8
     type: gauge
+    help: The load high threshold value of the input feed line in Amps. - 1.3.6.1.4.1.1718.3.2.2.1.8
     indexes:
     - labelname: towerIndex
-      type: Integer
+      type: gauge
     - labelname: infeedIndex
-      type: Integer
+      type: gauge
   - name: infeedOutletCount
     oid: 1.3.6.1.4.1.1718.3.2.2.1.9
     type: gauge
+    help: The number of controlled and/or monitored outlets on the input feed. - 1.3.6.1.4.1.1718.3.2.2.1.9
     indexes:
     - labelname: towerIndex
-      type: Integer
+      type: gauge
     - labelname: infeedIndex
-      type: Integer
+      type: gauge
   - name: infeedCapacity
     oid: 1.3.6.1.4.1.1718.3.2.2.1.10
     type: gauge
+    help: The load capacity of the input feed line - 1.3.6.1.4.1.1718.3.2.2.1.10
     indexes:
     - labelname: towerIndex
-      type: Integer
+      type: gauge
     - labelname: infeedIndex
-      type: Integer
+      type: gauge
   - name: infeedVoltage
     oid: 1.3.6.1.4.1.1718.3.2.2.1.11
     type: gauge
+    help: The line-to-line voltage of the input feed - 1.3.6.1.4.1.1718.3.2.2.1.11
     indexes:
     - labelname: towerIndex
-      type: Integer
+      type: gauge
     - labelname: infeedIndex
-      type: Integer
+      type: gauge
   - name: infeedPower
     oid: 1.3.6.1.4.1.1718.3.2.2.1.12
     type: gauge
+    help: The active power consumption of the input feed phase - 1.3.6.1.4.1.1718.3.2.2.1.12
     indexes:
     - labelname: towerIndex
-      type: Integer
+      type: gauge
     - labelname: infeedIndex
-      type: Integer
+      type: gauge
   - name: infeedApparentPower
     oid: 1.3.6.1.4.1.1718.3.2.2.1.13
     type: gauge
+    help: The apparent power consumption of the input feed phase - 1.3.6.1.4.1.1718.3.2.2.1.13
     indexes:
     - labelname: towerIndex
-      type: Integer
+      type: gauge
     - labelname: infeedIndex
-      type: Integer
+      type: gauge
   - name: infeedPowerFactor
     oid: 1.3.6.1.4.1.1718.3.2.2.1.14
     type: gauge
+    help: The power factor of the input feed phase - 1.3.6.1.4.1.1718.3.2.2.1.14
     indexes:
     - labelname: towerIndex
-      type: Integer
+      type: gauge
     - labelname: infeedIndex
-      type: Integer
+      type: gauge
   - name: infeedCrestFactor
     oid: 1.3.6.1.4.1.1718.3.2.2.1.15
     type: gauge
+    help: The crest factor for the load of the input feed phase - 1.3.6.1.4.1.1718.3.2.2.1.15
     indexes:
     - labelname: towerIndex
-      type: Integer
+      type: gauge
     - labelname: infeedIndex
-      type: Integer
+      type: gauge
   - name: infeedEnergy
     oid: 1.3.6.1.4.1.1718.3.2.2.1.16
     type: gauge
+    help: The energy consumption of the input feed phase - 1.3.6.1.4.1.1718.3.2.2.1.16
     indexes:
     - labelname: towerIndex
-      type: Integer
+      type: gauge
     - labelname: infeedIndex
-      type: Integer
+      type: gauge
   - name: infeedReactance
     oid: 1.3.6.1.4.1.1718.3.2.2.1.17
     type: gauge
+    help: The characterization of the phase relation between the voltage and current
+      of the input feed phase. - 1.3.6.1.4.1.1718.3.2.2.1.17
     indexes:
     - labelname: towerIndex
-      type: Integer
+      type: gauge
     - labelname: infeedIndex
-      type: Integer
+      type: gauge
   - name: infeedPhaseVoltage
     oid: 1.3.6.1.4.1.1718.3.2.2.1.18
     type: gauge
+    help: The voltage measured for the input feed phase - 1.3.6.1.4.1.1718.3.2.2.1.18
     indexes:
     - labelname: towerIndex
-      type: Integer
+      type: gauge
     - labelname: infeedIndex
-      type: Integer
+      type: gauge
   - name: infeedPhaseCurrent
     oid: 1.3.6.1.4.1.1718.3.2.2.1.19
     type: gauge
+    help: The current measured for the input feed phase - 1.3.6.1.4.1.1718.3.2.2.1.19
     indexes:
     - labelname: towerIndex
-      type: Integer
+      type: gauge
     - labelname: infeedIndex
-      type: Integer
+      type: gauge
   - name: infeedCapacityUsed
     oid: 1.3.6.1.4.1.1718.3.2.2.1.20
     type: gauge
+    help: The used percentage of the input feed line load capacity (infeedLoadValue
+      / infeedCapacity x 100) - 1.3.6.1.4.1.1718.3.2.2.1.20
     indexes:
     - labelname: towerIndex
-      type: Integer
+      type: gauge
     - labelname: infeedIndex
-      type: Integer
+      type: gauge
   - name: infeedLineID
     oid: 1.3.6.1.4.1.1718.3.2.2.1.21
-    type: string
+    type: DisplayString
+    help: The ID of the input feed line. - 1.3.6.1.4.1.1718.3.2.2.1.21
     indexes:
     - labelname: towerIndex
-      type: Integer
+      type: gauge
     - labelname: infeedIndex
-      type: Integer
+      type: gauge
   - name: infeedLineToLineID
     oid: 1.3.6.1.4.1.1718.3.2.2.1.22
-    type: string
+    type: DisplayString
+    help: The line-to-line ID of the input feed. - 1.3.6.1.4.1.1718.3.2.2.1.22
     indexes:
     - labelname: towerIndex
-      type: Integer
+      type: gauge
     - labelname: infeedIndex
-      type: Integer
+      type: gauge
   - name: infeedPhaseID
     oid: 1.3.6.1.4.1.1718.3.2.2.1.23
-    type: string
+    type: DisplayString
+    help: The ID of the input feed phase. - 1.3.6.1.4.1.1718.3.2.2.1.23
     indexes:
     - labelname: towerIndex
-      type: Integer
+      type: gauge
     - labelname: infeedIndex
-      type: Integer
+      type: gauge
   - name: infeedVACapacity
     oid: 1.3.6.1.4.1.1718.3.2.2.1.24
     type: gauge
+    help: The apparent power capacity of the input feed circuit - 1.3.6.1.4.1.1718.3.2.2.1.24
     indexes:
     - labelname: towerIndex
-      type: Integer
+      type: gauge
     - labelname: infeedIndex
-      type: Integer
+      type: gauge
   - name: infeedVACapacityUsed
     oid: 1.3.6.1.4.1.1718.3.2.2.1.25
     type: gauge
+    help: The used percentage of the input feed circuit apparent power capacity (infeedApparentPower
+      / infeedVACapacity x 100) - 1.3.6.1.4.1.1718.3.2.2.1.25
     indexes:
     - labelname: towerIndex
-      type: Integer
+      type: gauge
     - labelname: infeedIndex
-      type: Integer
+      type: gauge
   - name: outletIndex
     oid: 1.3.6.1.4.1.1718.3.2.3.1.1
     type: gauge
+    help: Index for the outlet table. - 1.3.6.1.4.1.1718.3.2.3.1.1
     indexes:
     - labelname: towerIndex
-      type: Integer
+      type: gauge
     - labelname: infeedIndex
-      type: Integer
+      type: gauge
     - labelname: outletIndex
-      type: Integer
+      type: gauge
   - name: outletID
     oid: 1.3.6.1.4.1.1718.3.2.3.1.2
-    type: string
+    type: DisplayString
+    help: The ID of the outlet. - 1.3.6.1.4.1.1718.3.2.3.1.2
     indexes:
     - labelname: towerIndex
-      type: Integer
+      type: gauge
     - labelname: infeedIndex
-      type: Integer
+      type: gauge
     - labelname: outletIndex
-      type: Integer
+      type: gauge
   - name: outletName
     oid: 1.3.6.1.4.1.1718.3.2.3.1.3
-    type: string
+    type: DisplayString
+    help: The name of the outlet. - 1.3.6.1.4.1.1718.3.2.3.1.3
     indexes:
     - labelname: towerIndex
-      type: Integer
+      type: gauge
     - labelname: infeedIndex
-      type: Integer
+      type: gauge
     - labelname: outletIndex
-      type: Integer
+      type: gauge
+  - name: outletCapabilities
+    oid: 1.3.6.1.4.1.1718.3.2.3.1.4
+    type: OctetString
+    help: The capabilities of the outlet. - 1.3.6.1.4.1.1718.3.2.3.1.4
+    indexes:
+    - labelname: towerIndex
+      type: gauge
+    - labelname: infeedIndex
+      type: gauge
+    - labelname: outletIndex
+      type: gauge
   - name: outletStatus
     oid: 1.3.6.1.4.1.1718.3.2.3.1.5
     type: gauge
+    help: The status of the outlet - 1.3.6.1.4.1.1718.3.2.3.1.5
     indexes:
     - labelname: towerIndex
-      type: Integer
+      type: gauge
     - labelname: infeedIndex
-      type: Integer
+      type: gauge
     - labelname: outletIndex
-      type: Integer
+      type: gauge
   - name: outletLoadStatus
     oid: 1.3.6.1.4.1.1718.3.2.3.1.6
     type: gauge
+    help: The status of the load measured on the outlet - 1.3.6.1.4.1.1718.3.2.3.1.6
     indexes:
     - labelname: towerIndex
-      type: Integer
+      type: gauge
     - labelname: infeedIndex
-      type: Integer
+      type: gauge
     - labelname: outletIndex
-      type: Integer
+      type: gauge
   - name: outletLoadValue
     oid: 1.3.6.1.4.1.1718.3.2.3.1.7
     type: gauge
+    help: The load measured on the outlet - 1.3.6.1.4.1.1718.3.2.3.1.7
     indexes:
     - labelname: towerIndex
-      type: Integer
+      type: gauge
     - labelname: infeedIndex
-      type: Integer
+      type: gauge
     - labelname: outletIndex
-      type: Integer
+      type: gauge
   - name: outletLoadLowThresh
     oid: 1.3.6.1.4.1.1718.3.2.3.1.8
     type: gauge
+    help: The load low threshold value of the outlet in Amps. - 1.3.6.1.4.1.1718.3.2.3.1.8
     indexes:
     - labelname: towerIndex
-      type: Integer
+      type: gauge
     - labelname: infeedIndex
-      type: Integer
+      type: gauge
     - labelname: outletIndex
-      type: Integer
+      type: gauge
   - name: outletLoadHighThresh
     oid: 1.3.6.1.4.1.1718.3.2.3.1.9
     type: gauge
+    help: The load high threshold value of the outlet in Amps. - 1.3.6.1.4.1.1718.3.2.3.1.9
     indexes:
     - labelname: towerIndex
-      type: Integer
+      type: gauge
     - labelname: infeedIndex
-      type: Integer
+      type: gauge
     - labelname: outletIndex
-      type: Integer
+      type: gauge
   - name: outletControlState
     oid: 1.3.6.1.4.1.1718.3.2.3.1.10
     type: gauge
+    help: The control state of the outlet - 1.3.6.1.4.1.1718.3.2.3.1.10
     indexes:
     - labelname: towerIndex
-      type: Integer
+      type: gauge
     - labelname: infeedIndex
-      type: Integer
+      type: gauge
     - labelname: outletIndex
-      type: Integer
+      type: gauge
   - name: outletControlAction
     oid: 1.3.6.1.4.1.1718.3.2.3.1.11
     type: gauge
+    help: An action to change the control state of the outlet - 1.3.6.1.4.1.1718.3.2.3.1.11
     indexes:
     - labelname: towerIndex
-      type: Integer
+      type: gauge
     - labelname: infeedIndex
-      type: Integer
+      type: gauge
     - labelname: outletIndex
-      type: Integer
+      type: gauge
   - name: outletCapacity
     oid: 1.3.6.1.4.1.1718.3.2.3.1.12
     type: gauge
+    help: The load capacity of the outlet - 1.3.6.1.4.1.1718.3.2.3.1.12
     indexes:
     - labelname: towerIndex
-      type: Integer
+      type: gauge
     - labelname: infeedIndex
-      type: Integer
+      type: gauge
     - labelname: outletIndex
-      type: Integer
+      type: gauge
   - name: outletVoltage
     oid: 1.3.6.1.4.1.1718.3.2.3.1.13
     type: gauge
+    help: The voltage of the outlet - 1.3.6.1.4.1.1718.3.2.3.1.13
     indexes:
     - labelname: towerIndex
-      type: Integer
+      type: gauge
     - labelname: infeedIndex
-      type: Integer
+      type: gauge
     - labelname: outletIndex
-      type: Integer
+      type: gauge
   - name: outletPower
     oid: 1.3.6.1.4.1.1718.3.2.3.1.14
     type: gauge
+    help: The active power consumption of the device plugged into the outlet - 1.3.6.1.4.1.1718.3.2.3.1.14
     indexes:
     - labelname: towerIndex
-      type: Integer
+      type: gauge
     - labelname: infeedIndex
-      type: Integer
+      type: gauge
     - labelname: outletIndex
-      type: Integer
+      type: gauge
   - name: outletApparentPower
     oid: 1.3.6.1.4.1.1718.3.2.3.1.15
     type: gauge
+    help: The apparent power consumption of the device plugged into the outlet - 1.3.6.1.4.1.1718.3.2.3.1.15
     indexes:
     - labelname: towerIndex
-      type: Integer
+      type: gauge
     - labelname: infeedIndex
-      type: Integer
+      type: gauge
     - labelname: outletIndex
-      type: Integer
+      type: gauge
   - name: outletPowerFactor
     oid: 1.3.6.1.4.1.1718.3.2.3.1.16
     type: gauge
+    help: The power factor of the device plugged into the outlet - 1.3.6.1.4.1.1718.3.2.3.1.16
     indexes:
     - labelname: towerIndex
-      type: Integer
+      type: gauge
     - labelname: infeedIndex
-      type: Integer
+      type: gauge
     - labelname: outletIndex
-      type: Integer
+      type: gauge
   - name: outletCrestFactor
     oid: 1.3.6.1.4.1.1718.3.2.3.1.17
     type: gauge
+    help: The crest factor for the load of the device plugged into the outlet - 1.3.6.1.4.1.1718.3.2.3.1.17
     indexes:
     - labelname: towerIndex
-      type: Integer
+      type: gauge
     - labelname: infeedIndex
-      type: Integer
+      type: gauge
     - labelname: outletIndex
-      type: Integer
+      type: gauge
   - name: outletEnergy
     oid: 1.3.6.1.4.1.1718.3.2.3.1.18
     type: gauge
+    help: The energy consumption of the device plugged into the outlet - 1.3.6.1.4.1.1718.3.2.3.1.18
     indexes:
     - labelname: towerIndex
-      type: Integer
+      type: gauge
     - labelname: infeedIndex
-      type: Integer
+      type: gauge
     - labelname: outletIndex
-      type: Integer
+      type: gauge
   - name: outletWakeupState
     oid: 1.3.6.1.4.1.1718.3.2.3.1.19
     type: gauge
+    help: The wakeup state of the outlet. - 1.3.6.1.4.1.1718.3.2.3.1.19
     indexes:
     - labelname: towerIndex
-      type: Integer
+      type: gauge
     - labelname: infeedIndex
-      type: Integer
+      type: gauge
     - labelname: outletIndex
-      type: Integer
+      type: gauge
   - name: outletPostOnDelay
     oid: 1.3.6.1.4.1.1718.3.2.3.1.20
     type: gauge
+    help: The post-on delay of the outlet. - 1.3.6.1.4.1.1718.3.2.3.1.20
     indexes:
     - labelname: towerIndex
-      type: Integer
+      type: gauge
     - labelname: infeedIndex
-      type: Integer
+      type: gauge
     - labelname: outletIndex
-      type: Integer
+      type: gauge
   - name: envMonIndex
     oid: 1.3.6.1.4.1.1718.3.2.4.1.1
     type: gauge
+    help: Index for the environmental monitor table. - 1.3.6.1.4.1.1718.3.2.4.1.1
     indexes:
     - labelname: envMonIndex
-      type: Integer
+      type: gauge
   - name: envMonID
     oid: 1.3.6.1.4.1.1718.3.2.4.1.2
-    type: string
+    type: DisplayString
+    help: The ID of the environmental monitor. - 1.3.6.1.4.1.1718.3.2.4.1.2
     indexes:
     - labelname: envMonIndex
-      type: Integer
+      type: gauge
   - name: envMonName
     oid: 1.3.6.1.4.1.1718.3.2.4.1.3
-    type: string
+    type: DisplayString
+    help: The name of the environmental monitor. - 1.3.6.1.4.1.1718.3.2.4.1.3
     indexes:
     - labelname: envMonIndex
-      type: Integer
+      type: gauge
   - name: envMonStatus
     oid: 1.3.6.1.4.1.1718.3.2.4.1.4
     type: gauge
+    help: The operational status of the environmental monitor. - 1.3.6.1.4.1.1718.3.2.4.1.4
     indexes:
     - labelname: envMonIndex
-      type: Integer
+      type: gauge
   - name: envMonWaterSensorName
     oid: 1.3.6.1.4.1.1718.3.2.4.1.5
-    type: string
+    type: DisplayString
+    help: The name of the water sensor. - 1.3.6.1.4.1.1718.3.2.4.1.5
     indexes:
     - labelname: envMonIndex
-      type: Integer
+      type: gauge
   - name: envMonWaterSensorStatus
     oid: 1.3.6.1.4.1.1718.3.2.4.1.6
     type: gauge
+    help: The status of the water sensor. - 1.3.6.1.4.1.1718.3.2.4.1.6
     indexes:
     - labelname: envMonIndex
-      type: Integer
+      type: gauge
   - name: envMonADCName
     oid: 1.3.6.1.4.1.1718.3.2.4.1.7
-    type: string
+    type: DisplayString
+    help: The name of the analog-to-digital converter. - 1.3.6.1.4.1.1718.3.2.4.1.7
     indexes:
     - labelname: envMonIndex
-      type: Integer
+      type: gauge
   - name: envMonADCStatus
     oid: 1.3.6.1.4.1.1718.3.2.4.1.8
     type: gauge
+    help: The status of the analog-to-digital converter. - 1.3.6.1.4.1.1718.3.2.4.1.8
     indexes:
     - labelname: envMonIndex
-      type: Integer
+      type: gauge
   - name: envMonADCCount
     oid: 1.3.6.1.4.1.1718.3.2.4.1.9
     type: gauge
+    help: The 8-bit count value from the analog-to-digital converter - 1.3.6.1.4.1.1718.3.2.4.1.9
     indexes:
     - labelname: envMonIndex
-      type: Integer
+      type: gauge
   - name: envMonADCLowThresh
     oid: 1.3.6.1.4.1.1718.3.2.4.1.10
     type: gauge
+    help: The 8-bit count low threshold value of the analog-to-digital converter.
+      - 1.3.6.1.4.1.1718.3.2.4.1.10
     indexes:
     - labelname: envMonIndex
-      type: Integer
+      type: gauge
   - name: envMonADCHighThresh
     oid: 1.3.6.1.4.1.1718.3.2.4.1.11
     type: gauge
+    help: The 8-bit count high threshold value of the analog-to-digital converter.
+      - 1.3.6.1.4.1.1718.3.2.4.1.11
     indexes:
     - labelname: envMonIndex
-      type: Integer
+      type: gauge
   - name: envMonTempHumidSensorCount
     oid: 1.3.6.1.4.1.1718.3.2.4.1.12
     type: gauge
+    help: The number of temperature/humidity sensors on the environmental monitor.
+      - 1.3.6.1.4.1.1718.3.2.4.1.12
     indexes:
     - labelname: envMonIndex
-      type: Integer
+      type: gauge
   - name: envMonContactClosureCount
     oid: 1.3.6.1.4.1.1718.3.2.4.1.13
     type: gauge
+    help: The number of contact closures on the environmental monitor. - 1.3.6.1.4.1.1718.3.2.4.1.13
     indexes:
     - labelname: envMonIndex
-      type: Integer
+      type: gauge
   - name: tempHumidSensorIndex
     oid: 1.3.6.1.4.1.1718.3.2.5.1.1
     type: gauge
+    help: Index for the temperature/humidity sensor table. - 1.3.6.1.4.1.1718.3.2.5.1.1
     indexes:
     - labelname: envMonIndex
-      type: Integer
+      type: gauge
     - labelname: tempHumidSensorIndex
-      type: Integer
+      type: gauge
   - name: tempHumidSensorID
     oid: 1.3.6.1.4.1.1718.3.2.5.1.2
-    type: string
+    type: DisplayString
+    help: The ID of the temperature/humidity sensor. - 1.3.6.1.4.1.1718.3.2.5.1.2
     indexes:
     - labelname: envMonIndex
-      type: Integer
+      type: gauge
     - labelname: tempHumidSensorIndex
-      type: Integer
+      type: gauge
   - name: tempHumidSensorName
     oid: 1.3.6.1.4.1.1718.3.2.5.1.3
-    type: string
+    type: DisplayString
+    help: The name of the temperature/humidity sensor. - 1.3.6.1.4.1.1718.3.2.5.1.3
     indexes:
     - labelname: envMonIndex
-      type: Integer
+      type: gauge
     - labelname: tempHumidSensorIndex
-      type: Integer
+      type: gauge
   - name: tempHumidSensorStatus
     oid: 1.3.6.1.4.1.1718.3.2.5.1.4
     type: gauge
+    help: The operational status of the temperature/humidity sensor. - 1.3.6.1.4.1.1718.3.2.5.1.4
     indexes:
     - labelname: envMonIndex
-      type: Integer
+      type: gauge
     - labelname: tempHumidSensorIndex
-      type: Integer
+      type: gauge
   - name: tempHumidSensorTempStatus
     oid: 1.3.6.1.4.1.1718.3.2.5.1.5
     type: gauge
+    help: The status of the temperature sensor. - 1.3.6.1.4.1.1718.3.2.5.1.5
     indexes:
     - labelname: envMonIndex
-      type: Integer
+      type: gauge
     - labelname: tempHumidSensorIndex
-      type: Integer
+      type: gauge
   - name: tempHumidSensorTempValue
     oid: 1.3.6.1.4.1.1718.3.2.5.1.6
     type: gauge
+    help: The temperature measured by the sensor - 1.3.6.1.4.1.1718.3.2.5.1.6
     indexes:
     - labelname: envMonIndex
-      type: Integer
+      type: gauge
     - labelname: tempHumidSensorIndex
-      type: Integer
+      type: gauge
   - name: tempHumidSensorTempLowThresh
     oid: 1.3.6.1.4.1.1718.3.2.5.1.7
     type: gauge
+    help: The temperature low threshold value of the sensor in degrees, using the
+      scale selected by tempHumidSensorTempScale - 1.3.6.1.4.1.1718.3.2.5.1.7
     indexes:
     - labelname: envMonIndex
-      type: Integer
+      type: gauge
     - labelname: tempHumidSensorIndex
-      type: Integer
+      type: gauge
   - name: tempHumidSensorTempHighThresh
     oid: 1.3.6.1.4.1.1718.3.2.5.1.8
     type: gauge
+    help: The temperature high threshold value of the sensor in degrees, using the
+      scale selected by tempHumidSensorTempScale - 1.3.6.1.4.1.1718.3.2.5.1.8
     indexes:
     - labelname: envMonIndex
-      type: Integer
+      type: gauge
     - labelname: tempHumidSensorIndex
-      type: Integer
+      type: gauge
   - name: tempHumidSensorHumidStatus
     oid: 1.3.6.1.4.1.1718.3.2.5.1.9
     type: gauge
+    help: The status of the humidity sensor. - 1.3.6.1.4.1.1718.3.2.5.1.9
     indexes:
     - labelname: envMonIndex
-      type: Integer
+      type: gauge
     - labelname: tempHumidSensorIndex
-      type: Integer
+      type: gauge
   - name: tempHumidSensorHumidValue
     oid: 1.3.6.1.4.1.1718.3.2.5.1.10
     type: gauge
+    help: The humidity measured by the sensor - 1.3.6.1.4.1.1718.3.2.5.1.10
     indexes:
     - labelname: envMonIndex
-      type: Integer
+      type: gauge
     - labelname: tempHumidSensorIndex
-      type: Integer
+      type: gauge
   - name: tempHumidSensorHumidLowThresh
     oid: 1.3.6.1.4.1.1718.3.2.5.1.11
     type: gauge
+    help: The humidity low threshold value of the sensor in percentage relative humidity.
+      - 1.3.6.1.4.1.1718.3.2.5.1.11
     indexes:
     - labelname: envMonIndex
-      type: Integer
+      type: gauge
     - labelname: tempHumidSensorIndex
-      type: Integer
+      type: gauge
   - name: tempHumidSensorHumidHighThresh
     oid: 1.3.6.1.4.1.1718.3.2.5.1.12
     type: gauge
+    help: The humidity low threshold value of the sensor in percentage relative humidity.
+      - 1.3.6.1.4.1.1718.3.2.5.1.12
     indexes:
     - labelname: envMonIndex
-      type: Integer
+      type: gauge
     - labelname: tempHumidSensorIndex
-      type: Integer
+      type: gauge
   - name: tempHumidSensorTempScale
     oid: 1.3.6.1.4.1.1718.3.2.5.1.13
     type: gauge
+    help: The scale used for temperature values - 1.3.6.1.4.1.1718.3.2.5.1.13
     indexes:
     - labelname: envMonIndex
-      type: Integer
+      type: gauge
     - labelname: tempHumidSensorIndex
-      type: Integer
+      type: gauge
   - name: tempHumidSensorTempRecDelta
     oid: 1.3.6.1.4.1.1718.3.2.5.1.14
     type: gauge
+    help: The temperature recovery delta (hysteresis) value of the sensor in degrees,
+      using the scale selected by tempHumidSensorTempScale. - 1.3.6.1.4.1.1718.3.2.5.1.14
     indexes:
     - labelname: envMonIndex
-      type: Integer
+      type: gauge
     - labelname: tempHumidSensorIndex
-      type: Integer
+      type: gauge
   - name: tempHumidSensorHumidRecDelta
     oid: 1.3.6.1.4.1.1718.3.2.5.1.15
     type: gauge
+    help: The humidity recovery delta (hysteresis) value of the sensor in percentage
+      relative humidity. - 1.3.6.1.4.1.1718.3.2.5.1.15
     indexes:
     - labelname: envMonIndex
-      type: Integer
+      type: gauge
     - labelname: tempHumidSensorIndex
-      type: Integer
+      type: gauge
   - name: contactClosureIndex
     oid: 1.3.6.1.4.1.1718.3.2.6.1.1
     type: gauge
+    help: Index for the contact closure table. - 1.3.6.1.4.1.1718.3.2.6.1.1
     indexes:
     - labelname: envMonIndex
-      type: Integer
+      type: gauge
     - labelname: contactClosureIndex
-      type: Integer
+      type: gauge
   - name: contactClosureID
     oid: 1.3.6.1.4.1.1718.3.2.6.1.2
-    type: string
+    type: DisplayString
+    help: The ID of the contact closure. - 1.3.6.1.4.1.1718.3.2.6.1.2
     indexes:
     - labelname: envMonIndex
-      type: Integer
+      type: gauge
     - labelname: contactClosureIndex
-      type: Integer
+      type: gauge
   - name: contactClosureName
     oid: 1.3.6.1.4.1.1718.3.2.6.1.3
-    type: string
+    type: DisplayString
+    help: The name of the contact closure. - 1.3.6.1.4.1.1718.3.2.6.1.3
     indexes:
     - labelname: envMonIndex
-      type: Integer
+      type: gauge
     - labelname: contactClosureIndex
-      type: Integer
+      type: gauge
   - name: contactClosureStatus
     oid: 1.3.6.1.4.1.1718.3.2.6.1.4
     type: gauge
+    help: The status of the contact closure. - 1.3.6.1.4.1.1718.3.2.6.1.4
     indexes:
     - labelname: envMonIndex
-      type: Integer
+      type: gauge
     - labelname: contactClosureIndex
-      type: Integer
+      type: gauge
   - name: branchIndex
     oid: 1.3.6.1.4.1.1718.3.2.7.1.1
     type: gauge
+    help: Index for the branch table. - 1.3.6.1.4.1.1718.3.2.7.1.1
     indexes:
     - labelname: towerIndex
-      type: Integer
+      type: gauge
     - labelname: infeedIndex
-      type: Integer
+      type: gauge
     - labelname: branchIndex
-      type: Integer
+      type: gauge
   - name: branchID
     oid: 1.3.6.1.4.1.1718.3.2.7.1.2
-    type: string
+    type: DisplayString
+    help: The ID of the branch. - 1.3.6.1.4.1.1718.3.2.7.1.2
     indexes:
     - labelname: towerIndex
-      type: Integer
+      type: gauge
     - labelname: infeedIndex
-      type: Integer
+      type: gauge
     - labelname: branchIndex
-      type: Integer
+      type: gauge
   - name: branchName
     oid: 1.3.6.1.4.1.1718.3.2.7.1.3
-    type: string
+    type: DisplayString
+    help: The name of the branch. - 1.3.6.1.4.1.1718.3.2.7.1.3
     indexes:
     - labelname: towerIndex
-      type: Integer
+      type: gauge
     - labelname: infeedIndex
-      type: Integer
+      type: gauge
     - labelname: branchIndex
-      type: Integer
+      type: gauge
+  - name: branchCapabilities
+    oid: 1.3.6.1.4.1.1718.3.2.7.1.4
+    type: OctetString
+    help: The capabilities of the branch. - 1.3.6.1.4.1.1718.3.2.7.1.4
+    indexes:
+    - labelname: towerIndex
+      type: gauge
+    - labelname: infeedIndex
+      type: gauge
+    - labelname: branchIndex
+      type: gauge
   - name: branchStatus
     oid: 1.3.6.1.4.1.1718.3.2.7.1.5
     type: gauge
+    help: The status of the branch. - 1.3.6.1.4.1.1718.3.2.7.1.5
     indexes:
     - labelname: towerIndex
-      type: Integer
+      type: gauge
     - labelname: infeedIndex
-      type: Integer
+      type: gauge
     - labelname: branchIndex
-      type: Integer
+      type: gauge
   - name: branchLoadStatus
     oid: 1.3.6.1.4.1.1718.3.2.7.1.6
     type: gauge
+    help: The status of the load measured on the branch. - 1.3.6.1.4.1.1718.3.2.7.1.6
     indexes:
     - labelname: towerIndex
-      type: Integer
+      type: gauge
     - labelname: infeedIndex
-      type: Integer
+      type: gauge
     - labelname: branchIndex
-      type: Integer
+      type: gauge
   - name: branchLoadValue
     oid: 1.3.6.1.4.1.1718.3.2.7.1.7
     type: gauge
+    help: The load measured on the branch - 1.3.6.1.4.1.1718.3.2.7.1.7
     indexes:
     - labelname: towerIndex
-      type: Integer
+      type: gauge
     - labelname: infeedIndex
-      type: Integer
+      type: gauge
     - labelname: branchIndex
-      type: Integer
+      type: gauge
   - name: branchLoadHighThresh
     oid: 1.3.6.1.4.1.1718.3.2.7.1.8
     type: gauge
+    help: The load high threshold value of the branch in Amps. - 1.3.6.1.4.1.1718.3.2.7.1.8
     indexes:
     - labelname: towerIndex
-      type: Integer
+      type: gauge
     - labelname: infeedIndex
-      type: Integer
+      type: gauge
     - labelname: branchIndex
-      type: Integer
+      type: gauge
   - name: branchCapacity
     oid: 1.3.6.1.4.1.1718.3.2.7.1.9
     type: gauge
+    help: The load capacity of the branch - 1.3.6.1.4.1.1718.3.2.7.1.9
     indexes:
     - labelname: towerIndex
-      type: Integer
+      type: gauge
     - labelname: infeedIndex
-      type: Integer
+      type: gauge
     - labelname: branchIndex
-      type: Integer
+      type: gauge
