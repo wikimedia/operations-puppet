@@ -8,12 +8,9 @@
 #   Boolean value to establish if the host is acting as Master or Replica.
 #
 class profile::mariadb::misc::eventlogging::database (
-    $shard  = hiera('profile::mariadb::misc::eventlogging::database::shard'),
-    $master = hiera('profile::mariadb::misc::eventlogging::database::master'),
+    String  $shard  = lookup('profile::mariadb::misc::eventlogging::database::shard'),
+    Boolean $master = lookup('profile::mariadb::misc::eventlogging::database::master'),
 ) {
-
-    validate_bool($master)
-
     $mysql_role = $master ? {
         true  => 'master',
         false => 'slave',
