@@ -1293,14 +1293,9 @@ node /^cloudcephosd100[1-3]\.wikimedia\.org$/ {
     role(wmcs::ceph::osd)
 }
 
-# new servers under construction
-node /^cloudcephosd100[4-6]\.eqiad\.wmnet$/ {
+# ceph storage nodes
+node /^cloudcephosd10(0[4-9]|1[0-5])\.eqiad\.wmnet$/ {
     role(wmcs::ceph::osd)
-}
-
-# new servers  waiting for deployment  T251619
-node /^cloudcephosd10(0[7-9]|1[0-5])\.eqiad\.wmnet$/ {
-    role(insetup)
 }
 
 # New systems placed into service by cloud team via T194186 and T249062
