@@ -69,14 +69,6 @@ function do_global_read_request()
         return 0
     end
 
-    if ts.client_request.header['Host'] == 'eu.wikipedia.org' or
-       ts.client_request.header['Host'] == 'fr.wiktionary.org' or
-       ts.client_request.header['Host'] == 'pt.wikiversity.org' then
-       -- CDN cache revalidation for desktop improvements deployment T256750
-       -- The record.config setting is proxy.config.http.cache.generation
-       ts.http.config_int_set(TS_LUA_CONFIG_HTTP_CACHE_GENERATION, 1595415018)
-    end
-
     local cookie = ts.client_request.header['Cookie']
 
     if cookie then
