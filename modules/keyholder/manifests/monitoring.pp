@@ -3,8 +3,9 @@
 # Provisions an Icinga check that ensures the keyholder is armed
 # with all configured identities.
 #
-class keyholder::monitoring( $ensure = present ) {
-    validate_ensure($ensure)
+class keyholder::monitoring(
+    Wmflib::Ensure $ensure = present
+) {
 
     $plugin_path = '/usr/lib/nagios/plugins/check_keyholder'
 

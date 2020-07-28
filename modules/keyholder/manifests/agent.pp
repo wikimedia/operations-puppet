@@ -34,15 +34,14 @@
 #  }
 #
 define keyholder::agent(
-    $trusted_groups = ['ops'],
-    $ensure = 'present',
-    $key_name = $name,
-    $priv_key_path = undef,
+    Array[String]              $trusted_groups = ['ops'],
+    Wmflib::Ensure             $ensure         = 'present',
+    String                     $key_name       = $name,
+    Optional[Stdlib::Unixpath] $priv_key_path  = undef,
 ) {
-    validate_ensure($ensure)
 
-    require ::keyholder
-    require ::keyholder::monitoring
+    require keyholder
+    require keyholder::monitoring
 
     # Always add ops in the mix
     if !('ops' in $trusted_groups) {
