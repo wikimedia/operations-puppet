@@ -14,13 +14,11 @@
 #   The rule priority.
 
 define udev::rule (
-    $content = undef,
-    $source = undef,
-    $ensure = 'present',
-    $priority = 40,
+    Optional[String] $content = undef,
+    Optional[String] $source = undef,
+    Wmflib::Ensure   $ensure = 'present',
+    Integer          $priority = 40,
 ) {
-    validate_ensure($ensure)
-
     include udev
 
     file { "/etc/udev/rules.d/${priority}-${title}.rules":
