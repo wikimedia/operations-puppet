@@ -3,9 +3,11 @@
 # Periodically export SGE stats via node-exporter textfile collector.
 #
 class prometheus::node_sge (
-    $outfile = '/var/lib/prometheus/node.d/sge.prom',
+    Stdlib::Unixpath $outfile = '/var/lib/prometheus/node.d/sge.prom',
 ) {
-    validate_re($outfile, '\.prom$')
+    if $outfile !~ '\.prom$' {
+        fail("outfile (${outfile}): Must have a .prom extension")
+    }
 
     require_package('python3-prometheus-client')
 

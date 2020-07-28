@@ -11,15 +11,11 @@
 # $labels:     Labels to attach to every host. 'Cluster' will be added automagically as well
 
 define prometheus::redis_exporter_config(
-    $dest,
-    $class_name,
-    $site,
-    $labels = {},
+    String $dest,
+    String $class_name,
+    String $site,
+    Hash $labels = {},
 ) {
-    validate_string($dest)
-    validate_string($site)
-    validate_hash($labels)
-
     $resources = query_resources(
                   "Class[\"${class_name}\"]",
                   'Prometheus::Redis_exporter[~".*"]',

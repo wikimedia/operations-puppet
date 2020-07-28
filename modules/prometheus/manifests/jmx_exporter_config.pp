@@ -22,15 +22,12 @@
 #   Hash of labels to attach to every host. 'cluster' will be added automatically as well.
 #
 define prometheus::jmx_exporter_config(
-    $dest,
-    $class_name,
-    $site,
-    $instance_selector = '.*',
-    $labels            = {},
+    String $dest,
+    String $class_name,
+    String $site,
+    String $instance_selector = '.*',
+    Hash   $labels            = {},
 ) {
-    validate_string($dest)
-    validate_string($site)
-    validate_hash($labels)
 
     $resources = query_resources(
                   "Class[\"${class_name}\"]",

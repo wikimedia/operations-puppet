@@ -9,15 +9,12 @@
 # discovered resources.
 
 define prometheus::pdu_config(
-    $dest,
-    $site,
-    $model = 'sentry3',
-    $resource = 'Facilities::Monitor_pdu_3phase',
-    $labels = {},
+    String $dest,
+    String $site,
+    String $model    = 'sentry3',
+    String $resource = 'Facilities::Monitor_pdu_3phase',
+    Hash   $labels   = {},
 ) {
-    validate_string($dest)
-    validate_string($site)
-    validate_hash($labels)
 
     $pdu_resources = query_resources(false, "${resource}[~\".*\"]{model=${model}}", false)
 

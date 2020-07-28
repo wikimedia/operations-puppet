@@ -57,22 +57,22 @@
 #   Thanos only)
 
 define prometheus::server (
-    $listen_address,
-    $scrape_interval = '60s',
-    $base_path = "/srv/prometheus/${title}",
-    $storage_retention = '730h',
-    $storage_encoding = '2',
-    $max_chunks_to_persist = '524288',
-    $memory_chunks = '1048576',
-    $global_config_extra = {},
-    $scrape_configs_extra = [],
-    $rule_files_extra = [],
-    $alertmanager_url = undef,
-    $external_url = "http://prometheus/${title}",
-    $min_block_duration = '2h',
-    $max_block_duration = '24h',
+    String           $listen_address,
+    String           $scrape_interval       = '60s',
+    Stdlib::Unixpath $base_path             = "/srv/prometheus/${title}",
+    String           $storage_retention     = '730h',
+    String           $storage_encoding      = '2',
+    String           $max_chunks_to_persist = '524288',
+    String           $memory_chunks         = '1048576',
+    Hash             $global_config_extra   = {},
+    Array            $scrape_configs_extra  = [],
+    Array            $rule_files_extra      = [],
+    Stdlib::HTTPUrl  $external_url          = "http://prometheus/${title}",
+    String           $min_block_duration    = '2h',
+    String           $max_block_duration    = '24h',
+    Optional[Pattern[/^[a-zA-Z][-a-zA-Z0-9]+:[0-9]+$/]] $alertmanager_url      = undef,
 ) {
-    include ::prometheus
+    include prometheus
 
     require_package('prometheus')
 
@@ -120,7 +120,6 @@ define prometheus::server (
     if $alertmanager_url {
       # Prometheus v2 expects an hostport, not url
       # https://prometheus.io/docs/prometheus/latest/migration/#alertmanager-service-discovery
-      validate_re($alertmanager_url, '^[a-zA-Z][-a-zA-Z0-9]+:[0-9]+$')
       $alertmanager_config = [
         { 'targets' =>  [ $alertmanager_url ] },
       ]

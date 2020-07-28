@@ -13,18 +13,19 @@
 #   The Prometheus instance path on filesystem.
 
 define prometheus::rule (
-    $instance,
-    $ensure = 'present',
-    $source = undef,
-    $content = undef,
-    $instance_path = "/srv/prometheus/${instance}",
+    String           $instance,
+    Wmflib::Ensure   $ensure = 'present',
+    Stdlib::Unixpath $instance_path = "/srv/prometheus/${instance}",
+    Optional[String] $source = undef,
+    Optional[String] $content = undef,
 ) {
-    validate_ensure($ensure)
 
     $service_name = "prometheus@${instance}"
     $file_path = "${instance_path}/rules/${title}"
 
-    validate_re($title, '.yml$')
+    if $title !~ '.yml$' {
+        fail("Title(${title}): must have a .yml extention")
+    }
     $validate_cmd = '/usr/bin/promtool check rules %'
 
     file { $file_path:

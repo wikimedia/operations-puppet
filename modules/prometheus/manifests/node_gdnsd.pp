@@ -9,11 +9,12 @@
 # aggregate stats on other dimensions rather than per-cluster or per-site.
 
 class prometheus::node_gdnsd (
-    $ensure = 'present',
-    $outfile = '/var/lib/prometheus/node.d/gdnsd.prom',
+    Wmflib::Ensure   $ensure  = 'present',
+    Stdlib::Unixpath $outfile = '/var/lib/prometheus/node.d/gdnsd.prom',
 ) {
-    validate_re($outfile, '\.prom$')
-    validate_ensure($ensure)
+    if $outfile !~ '\.prom$' {
+        fail("outfile (${outfile}): Must have a .prom extension")
+    }
 
     require_package( [
         'python-prometheus-client',

@@ -8,12 +8,13 @@
 # number of metrics to collect are really few.
 #
 class prometheus::node_amd_rocm (
-    $ensure = 'present',
-    $outfile = '/var/lib/prometheus/node.d/rocm.prom',
-    $rocm_smi_path = '/opt/rocm/bin/rocm-smi',
+    Wmflib::Ensure   $ensure = 'present',
+    Stdlib::Unixpath $outfile = '/var/lib/prometheus/node.d/rocm.prom',
+    Stdlib::Unixpath $rocm_smi_path = '/opt/rocm/bin/rocm-smi',
 ) {
-    validate_re($outfile, '\.prom$')
-    validate_ensure($ensure)
+    if $outfile !~ '\.prom$' {
+        fail("outfile (${outfile}): Must have a .prom extension")
+    }
 
     require_package( [
         'python3-prometheus-client',
