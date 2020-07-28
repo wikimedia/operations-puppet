@@ -318,37 +318,6 @@ service::catalog:
     discovery:
     - dnsdisc: citoid
       active_active: true
-  cloudceph:
-    description: "CloudVPS Ceph Cluster Stats, cloudceph.svc.eqiad.wmnet"
-    encryption: false
-    ip:
-      eqiad:
-        default: 10.2.2.51
-    lvs:
-      class: low-traffic
-      conftool:
-        cluster: cloudceph
-        service: cloudceph
-      depool_threshold: '.5'
-      enabled: true
-      monitors:
-        ProxyFetch:
-          url:
-            - http://localhost:9283/
-        IdleConnection:
-            timeout-clean-reconnect: 3
-            max-delay: 300
-      scheduler: wrr
-    monitoring:
-      check_command: check_http_on_port!9283
-      critical: false
-      sites:
-        eqiad:
-          hostname: cloudceph.svc.eqiad.wmnet
-    port: 9283
-    sites:
-    - eqiad
-    state: production
   cloudelastic-chi-https:
     description: Elasticsearch prod replica for WMF Cloud (Chi Cluster) - Prod MW
       AppServer Port - HTTPS

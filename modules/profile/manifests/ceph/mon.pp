@@ -49,16 +49,6 @@ class profile::ceph::mon(
         before => Class['ceph::common'],
     }
 
-    # Allow LVS to load balance manager services
-    $lvs_network = $network::constants::all_network_subnets['production']['eqiad']['public']['public1-b-eqiad']['ipv4']
-    $prometheus_nodes_ferm = join($prometheus_nodes, ' ')
-    ferm::service { 'ceph_mgr_prometheus_lvs':
-        proto  => 'tcp',
-        port   => 9283,
-        srange => "(@resolve((${prometheus_nodes_ferm})) @resolve((${prometheus_nodes_ferm}), AAAA) (${lvs_network}))",
-        before => Class['ceph::common'],
-    }
-
     if os_version('debian == buster') {
         apt::repository { 'thirdparty-ceph-nautilus-buster':
             uri        => 'http://apt.wikimedia.org/wikimedia',
