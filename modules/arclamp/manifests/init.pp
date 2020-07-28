@@ -99,7 +99,7 @@ class arclamp(
         ensure  => $ensure,
         command => '/srv/deployment/performance/arc-lamp/arclamp-compress-logs 7 >/dev/null',
         user    => 'xenon',
-        hour    => '*',
+        minute  => '17', # intentionally offset from other jobs
         require => Package['performance/arc-lamp']
     }
 
