@@ -7,9 +7,8 @@
 # [*ensure*]
 #
 class zuul::monitoring::server (
-    $ensure = present,
+    Wmflib::Ensure $ensure = present,
 ) {
-    validate_ensure($ensure)
 
     # only monitor these on the active master host
     # zuul service will be stopped on the warm standby server
