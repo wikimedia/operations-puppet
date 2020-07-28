@@ -129,6 +129,7 @@ Components: main
 # sorted list, leading whitespace matters!
  component/cergen
  component/ci
+ component/cloudera
  component/dnsdist
  component/idp-test
  component/jdk8
