@@ -29,16 +29,12 @@
 #  }
 #
 class statsd_proxy(
-    $server_port,
-    $backend_ports,
-    $ensure = present,
-    $threads = 4,
-    $socket_receive_bufsize = 6291456,
+    Stdlib::Port        $server_port,
+    Array[Stdlib::Port] $backend_ports,
+    Wmflib::Ensure      $ensure                 = present,
+    Integer             $threads                  = 4,
+    Integer             $socket_receive_bufsize = 6291456,
 ) {
-    validate_ensure($ensure)
-    validate_array($backend_ports)
-    validate_numeric($backend_ports)
-    validate_numeric($server_port)
 
     package { 'statsd-proxy':
         ensure => $ensure,
