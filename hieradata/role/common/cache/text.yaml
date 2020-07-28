@@ -118,8 +118,6 @@ cache::alternate_domains:
     caching: 'normal'
   sitemaps.wikimedia.org:
     caching: 'normal'
-  smokeping.wikimedia.org:
-    caching: 'normal'
   static-bugzilla.wikimedia.org:
     caching: 'normal'
   stats.wikimedia.org:

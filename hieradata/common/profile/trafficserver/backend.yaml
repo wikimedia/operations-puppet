@@ -174,9 +174,6 @@ profile::trafficserver::backend::mapping_rules:
       target: http://sitemaps.wikimedia.org
       replacement: https://webserver-misc-apps.discovery.wmnet
     - type: map
-      target: http://smokeping.wikimedia.org
-      replacement: https://netmon2001.wikimedia.org
-    - type: map
       target: http://static-bugzilla.wikimedia.org
       replacement: https://webserver-misc-apps.discovery.wmnet
     - type: map
