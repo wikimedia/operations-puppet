@@ -11,29 +11,29 @@
 #  which point this paragraph should be removed.
 #
 profile::ceph::osd::hosts:
-  'cloudcephosd1001.wikimedia.org':
+  'cloudcephosd1001.eqiad.wmnet':
     public:
-      addr: '208.80.154.151'
+      addr: '10.64.20.70'
       iface: 'ens2f0np0'
     cluster:
-      addr: '10.64.16.144'
-      prefix: '22'
+      addr: '192.168.4.1'
+      prefix: '24'
       iface: 'ens2f1np1'
-  'cloudcephosd1002.wikimedia.org':
+  'cloudcephosd1002.eqiad.wmnet':
     public:
-      addr: '208.80.154.152'
+      addr: '10.64.20.71'
       iface: 'ens2f0np0'
     cluster:
-      addr: '10.64.16.145'
-      prefix: '22'
+      addr: '192.168.4.2'
+      prefix: '24'
       iface: 'ens2f1np1'
-  'cloudcephosd1003.wikimedia.org':
+  'cloudcephosd1003.eqiad.wmnet':
     public:
-      addr: '208.80.154.153'
+      addr: '10.64.20.72'
       iface: 'ens2f0np0'
     cluster:
-      addr: '10.64.16.146'
-      prefix: '22'
+      addr: '192.168.4.3'
+      prefix: '24'
       iface: 'ens2f1np1'
   'cloudcephosd1004.eqiad.wmnet':
     public:

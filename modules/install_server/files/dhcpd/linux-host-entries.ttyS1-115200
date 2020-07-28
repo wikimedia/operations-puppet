@@ -636,17 +636,17 @@ host cloudcephmon1003 {
 
 host cloudcephosd1001 {
     hardware ethernet B0:26:28:40:7D:B0;
-    fixed-address cloudcephosd1001.wikimedia.org;
+    fixed-address cloudcephosd1001.eqiad.wmnet;
 }
 
 host cloudcephosd1002 {
     hardware ethernet B0:26:28:40:6E:E0;
-    fixed-address cloudcephosd1002.wikimedia.org;
+    fixed-address cloudcephosd1002.eqiad.wmnet;
 }
 
 host cloudcephosd1003 {
     hardware ethernet B0:26:28:40:77:60;
-    fixed-address cloudcephosd1003.wikimedia.org;
+    fixed-address cloudcephosd1003.eqiad.wmnet;
 }
 
 host cloudcephosd1004 {
