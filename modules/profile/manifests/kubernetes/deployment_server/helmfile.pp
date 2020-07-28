@@ -3,6 +3,7 @@ class profile::kubernetes::deployment_server::helmfile(
     Hash[String, Any] $services_secrets=hiera('profile::kubernetes::deployment_server_secrets::services', {}),
     Hash[String, Any] $admin_services_secrets=hiera('profile::kubernetes::deployment_server_secrets::admin_services', {}),
     Array[Stdlib::Fqdn] $prometheus_nodes = lookup('prometheus_all_nodes'),
+    Array[Profile::Service_listener] $service_listeners = lookup('profile::services_proxy::envoy::listeners', {'default_value' => []}),
 ){
 
     require_package('helmfile')
@@ -151,5 +152,13 @@ class profile::kubernetes::deployment_server::helmfile(
           }
         }
     } # end clusters
-
+    # Global file defining the services proxy upstreams
+    file { '/etc/helmfile-defaults':
+        ensure => directory
+    }
+    $services_proxy = wmflib::service::fetch()
+    file { '/etc/helmfile-defaults/service-proxy.yaml':
+        ensure  => present,
+        content => template('profile/kubernetes/helmfile_service_proxy.yaml.erb')
+    }
 }

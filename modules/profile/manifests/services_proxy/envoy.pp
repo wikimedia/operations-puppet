@@ -22,17 +22,7 @@
 # [*enabled_listeners*] Optional list of listeners we want to install locally.
 class profile::services_proxy::envoy(
     Wmflib::Ensure $ensure = lookup('profile::envoy::ensure', {'default_value' => 'present'}),
-    Array[Struct[{
-        'name'      => String,
-        'port'      => Stdlib::Port::Unprivileged,
-        'timeout'   => String,
-        'service'   => String,
-        'http_host' => Optional[Stdlib::Fqdn],
-        'xfp'       => Optional[Enum['http', 'https']],
-        'upstream'  => Optional[Stdlib::Fqdn],
-        'retry'     => Optional[Hash],
-        'keepalive' => Optional[String],
-    }]] $all_listeners = lookup('profile::services_proxy::envoy::listeners', {'default_value' => []}),
+    Array[Profile::Service_listener] $all_listeners = lookup('profile::services_proxy::envoy::listeners', {'default_value' => []}),
     Optional[Array[String]] $enabled_listeners = lookup('profile::services_proxy::envoy::enabled_listeners', {'default_value' => undef})
 ) {
     if $enabled_listeners == undef {
