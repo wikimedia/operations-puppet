@@ -4,6 +4,8 @@
 #
 # See also https://www.servertech.com/support/sentry-mib-oid-tree-downloads
 modules:
+  default:
+    walk: [sysUpTime, interfaces, ifXTable]
   servertech_sentry3:
     walk:
       - sysUpTime
