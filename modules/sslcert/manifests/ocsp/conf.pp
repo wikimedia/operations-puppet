@@ -24,13 +24,11 @@
 #
 
 define sslcert::ocsp::conf(
-  $ensure=present,
-  $certs=[ $title ],
-  $proxy=undef,
+  Wmflib::Ensure   $ensure = present,
+  Array[String]    $certs  = [$title],
+  Optional[String] $proxy  = undef,
 ) {
     require sslcert::ocsp::init
-
-    validate_ensure($ensure)
 
     $output = "/var/cache/ocsp/${title}.ocsp"
     $config = "/etc/update-ocsp.d/${title}.conf"

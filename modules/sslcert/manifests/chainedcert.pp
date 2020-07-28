@@ -30,12 +30,10 @@
 #
 
 define sslcert::chainedcert(
-  $ensure=present,
-  $group='ssl-cert',
+  Wmflib::Ensure $ensure = present,
+  String         $group  = 'ssl-cert',
 ) {
     require sslcert
-
-    validate_ensure($ensure)
 
     $chainedfile = "/etc/ssl/localcerts/${title}.chained.crt"
     $chainfile = "/etc/ssl/localcerts/${title}.chain.crt"

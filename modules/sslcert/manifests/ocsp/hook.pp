@@ -25,13 +25,12 @@
 #
 
 define sslcert::ocsp::hook(
-  $ensure=present,
-  $source=undef,
-  $content=undef,
+  Wmflib::Ensure $ensure=present,
+  Optional[String] $source=undef,
+  Optional[String] $content=undef,
 ) {
     require sslcert::ocsp::init
 
-    validate_ensure($ensure)
 
     file { "/etc/update-ocsp.d/hooks/${title}":
         ensure  => $ensure,
