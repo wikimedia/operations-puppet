@@ -86,21 +86,24 @@
 #    }
 #
 define service::uwsgi(
-    $port,
-    $config                 = undef,
-    $no_workers             = $::processorcount,
-    $healthcheck_url        = '/_info',
-    $has_spec               = false,
-    $repo                   = "${title}/deploy",
-    $icinga_check           = true,
-    $local_logging          = true,
-    $deployment_user        = 'deploy-service',
-    $deployment_manage_user = true,
-    $deployment             = 'scap3',
-    $sudo_rules             = [],
-    $contact_groups         = lookup('contactgroups', {default_value => 'admins'}),
-    $add_logging_config     = true,
-    $core_limit             = '0',
+    Stdlib::Port  $port,
+    Hash          $config                 = {},
+    Integer       $no_workers             = $::processorcount,
+    String        $healthcheck_url        = '/_info',
+    Boolean       $has_spec               = false,
+    String        $repo                   = "${title}/deploy",
+    Boolean       $firejail               = true,
+    Boolean       $icinga_check           = true,
+    Boolean       $local_logging          = true,
+    String        $deployment_user        = 'deploy-service',
+    Boolean       $deployment_manage_user = true,
+    String        $deployment             = 'scap3',
+    Array[String] $sudo_rules             = [],
+    Boolean       $add_logging_config     = true,
+    String        $core_limit             = '0',
+    # lint:ignore:wmf_styleguide
+    String        $contact_groups         = lookup('contactgroups', {'default_value' => 'admins'}),
+    # lint:endignore
 ) {
     if $deployment == 'scap3' {
         scap::target { $repo:
@@ -119,12 +122,6 @@ define service::uwsgi(
     unless $title and size($title) > 0 {
         fail('No name for this resource given!')
     }
-
-    # sanity check since a default port cannot be assigned
-    unless $port {
-        fail('Service port must be specified!')
-    }
-    validate_numeric($port)
 
     # the local log file name
     $local_logdir = "${service::configuration::log_dir}/${title}"

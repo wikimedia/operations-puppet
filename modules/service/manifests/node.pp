@@ -156,36 +156,38 @@
 #
 #
 define service::node(
-    $port,
-    $enable          = true,
-    $config          = undef,
-    $full_config     = false,
-    $no_workers      = 'ncpu',
-    $heap_limit      = 300,
-    $heartbeat_to    = 7500,
-    $no_file         = 10000,
-    $healthcheck_url = '/_info',
-    $has_spec        = false,
-    $monitor_to      = 5,
-    $repo            = "${title}/deploy",
-    $starter_module  = './src/app.js',
-    $entrypoint      = '',
-    $starter_script  = 'src/server.js',
-    $use_proxy       = false,
-    $local_logging   = true,
-    $logging_name    = $title,
-    $statsd_prefix   = $title,
-    $auto_refresh    = true,
-    $init_restart    = true,
-    $environment     = undef,
-    $deployment      = undef,
-    $deployment_user = 'deploy-service',
-    $deployment_config = false,
-    $deployment_vars = {},
-    $contact_groups  = lookup('contactgroups', {default_value => 'admins'}), # lint:ignore:wmf_styleguide
-    $use_nodejs10    = false,
-){
-
+    Stdlib::Port                       $port,
+    Boolean                            $enable            = true,
+    Variant[Hash,String]               $config            = {},
+    Variant[Enum['external'], Boolean] $full_config       = false,
+    Variant[Integer, Enum['ncpu']]     $no_workers        = 'ncpu',
+    Integer                            $heap_limit        = 300,
+    Integer                            $heartbeat_to      = 7500,
+    Integer                            $no_file           = 10000,
+    String                             $healthcheck_url   = '/_info',
+    Boolean                            $has_spec          = false,
+    Integer                            $monitor_to        = 5,
+    String                             $repo              = "${title}/deploy",
+    String                             $starter_module    = './src/app.js',
+    String                             $entrypoint        = '',
+    String                             $starter_script    = 'src/server.js',
+    Boolean                            $use_proxy         = false,
+    Boolean                            $local_logging     = true,
+    String                             $logging_name      = $title,
+    String                             $statsd_prefix     = $title,
+    Boolean                            $auto_refresh      = true,
+    Boolean                            $init_restart      = true,
+    Hash                               $environment       = {},
+    Optional[String]                   $deployment        = undef,
+    String                             $deployment_user   = 'deploy-service',
+    Boolean                            $deployment_config = false,
+    Hash                               $deployment_vars   = {},
+    Boolean                            $use_nodejs10      = false,
+    # lint:ignore:wmf_styleguide
+    String                             $contact_groups    = lookup('contactgroups',
+                                                                  {'default_value' => 'admins'}),
+    # lint:endignore
+) {
     case $deployment {
         'git': {
             service::deploy::gitclone { $title:
@@ -195,7 +197,7 @@ define service::node(
         }
         default: {
             if ! defined(Scap::Target[$repo]) {
-                require ::service::deploy::common
+                require service::deploy::common
                 scap::target { $repo:
                     service_name => $title,
                     deploy_user  => $deployment_user,
@@ -203,7 +205,9 @@ define service::node(
                     manage_user  => true,
                 }
             }
-            include ::scap::conftool
+            # lint:ignore:wmf_styleguide
+            include scap::conftool
+            # lint:endignore
         }
     }
 
@@ -214,10 +218,6 @@ define service::node(
     unless $title and size($title) > 0 {
         fail('No name for this resource given!')
     }
-
-    # sanity check since a default port cannot be assigned
-    # TODO/puppet4 convert parameter to integer
-    validate_numeric($port)
 
     # the local log directory
     $local_logdir = "${service::configuration::log_dir}/${title}"
