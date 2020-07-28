@@ -25,10 +25,12 @@ class labstore::fileserver::exports(
         mode   => '2775',
     }
 
+    $safe_mkdir = sudo::safe_wildcard_cmd('/bin/mkdir -p', '/srv/*')
+    $safe_rmdir = sudo::safe_wildcard_cmd('/bin/rmdir', '/srv/*')
     sudo::user { 'nfsmanager':
         privileges => [
-            'ALL = NOPASSWD: /bin/mkdir -p /srv/*',
-            'ALL = NOPASSWD: /bin/rmdir /srv/*',
+            "ALL = NOPASSWD: ${safe_mkdir}",
+            "ALL = NOPASSWD: ${safe_rmdir}",
             'ALL = NOPASSWD: /usr/sbin/exportfs',
         ],
         require    => User['nfsmanager'],
