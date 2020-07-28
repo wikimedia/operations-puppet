@@ -36,8 +36,6 @@ class tilerator(
     Boolean $use_nodejs10   = false,
 ) {
 
-    validate_array($cassandra_servers)
-
     $cassandra_user = 'tilerator'
     $pgsql_user = 'tilerator'
     $redis_url = "${redis_server}?password=${redis_pass}"
