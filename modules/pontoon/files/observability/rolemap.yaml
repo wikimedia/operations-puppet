@@ -36,3 +36,6 @@ alerting_host:
 
 acme_chief:
   - pontoon-acmechief-01.monitoring.eqiad.wmflabs
+
+netmon:
+  - pontoon-netmon-01.monitoring.eqiad.wmflabs
