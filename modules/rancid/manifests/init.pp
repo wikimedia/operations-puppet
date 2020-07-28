@@ -75,6 +75,14 @@ class rancid (
         content => template('rancid/cloginrc.erb'),
     }
 
+    file { '/var/lib/rancid/.gitconfig':
+        require => Package['rancid'],
+        owner   => 'rancid',
+        group   => 'rancid',
+        mode    => '0440',
+        content => template('rancid/gitconfig.erb'),
+    }
+
     file_line { 'opengear_script':
       path => '/etc/rancid/rancid.types.base',
       line => 'opengear;script;ograncid',
