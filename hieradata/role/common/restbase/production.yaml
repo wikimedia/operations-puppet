@@ -1092,7 +1092,7 @@ profile::cassandra::instances:
 
 
 profile::cassandra::settings:
-  start_rpc: 'false'
+  start_rpc: false
   tls_cluster_name: "restbase"
   dc: "%{::site}"
   cluster_name: "restbase"

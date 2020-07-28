@@ -114,36 +114,29 @@
 #   Default: cassandra
 #
 class cassandra (
-    $cluster_name            = 'Test Cluster',
-    $tls_cluster_name        = undef,
-    $instances               = undef,
-    $default_instance_params = {},
-    $seeds                   = [$::ipaddress],
-    $listen_address          = $::ipaddress,
-    $additional_jvm_opts     = [],
-    $extra_classpath         = [],
-    $target_version          = '2.1',
-    $memory_allocator        = 'JEMallocAllocator',
-    $application_username    = undef,
-    $application_password    = undef,
-    $native_transport_port   = 9042,
-    $dc                      = 'datacenter1',
-    $rack                    = 'rack1',
-    $logstash_host           = 'logstash.svc.eqiad.wmnet',
-    $logstash_port           = 11514,
-    $start_rpc               = true,
-    $jbod_devices            = [],
-    $super_username          = 'cassandra',
-    $super_password          = 'cassandra',
+    String                           $cluster_name            = 'Test Cluster',
+    Optional[String]                 $tls_cluster_name        = undef,
+    Hash                             $instances               = {},
+    Hash                             $default_instance_params = {},
+    Array[Stdlib::Host]              $seeds                   = [$::ipaddress],
+    Stdlib::IP::Address              $listen_address          = $::ipaddress,
+    Array[String]                    $additional_jvm_opts     = [],
+    Array[String]                    $extra_classpath         = [],
+    Enum['2.1', '2.2', '3.x', 'dev'] $target_version          = '2.1',
+    String                           $memory_allocator        = 'JEMallocAllocator',
+    Optional[String]                 $application_username    = undef,
+    Optional[String]                 $application_password    = undef,
+    Stdlib::Port                     $native_transport_port   = 9042,
+    String                           $dc                      = 'datacenter1',
+    String                           $rack                    = 'rack1',
+    Stdlib::Host                     $logstash_host           = 'logstash.svc.eqiad.wmnet',
+    Stdlib::Port                     $logstash_port           = 11514,
+    Boolean                          $start_rpc               = true,
+    Array[String]                    $jbod_devices            = [],
+    String                           $super_username          = 'cassandra',
+    String                           $super_password          = 'cassandra',
+    Optional[String]                 $version                 = undef
 ) {
-    validate_string($cluster_name)
-
-    validate_array($extra_classpath)
-
-
-    if (!($target_version in ['2.1', '2.2', '3.x', 'dev'])) {
-        fail("${target_version} is not a valid Cassandra target version!")
-    }
 
     # Cassandra fully supports opendjdk-11 only from 4.0,
     # and on Buster openjdk-8 is not available.
@@ -180,12 +173,12 @@ class cassandra (
     # The 2.2.6-wmf5 package has been tested on Debian Stretch
     # and it works nicely
     $package_version = $target_version ? {
-        '2.1' => hiera('cassandra::version', '2.1.13'),
+        '2.1' => pick($version, '2.1.13'),
         '2.2' => os_version('debian >= stretch') ? {
-            true  => hiera('cassandra::version', '2.2.6-wmf5'),
-            false => hiera('cassandra::version', '2.2.6-wmf3'), },
-        '3.x' => hiera('cassandra::version', '3.11.4'),
-        'dev' => hiera('cassandra::version', '3.11.4')
+            true  => pick($version, '2.2.6-wmf5'),
+            false => pick($version, '2.2.6-wmf3'), },
+        '3.x' => pick($version, '3.11.4'),
+        'dev' => pick($version, '3.11.4')
     }
 
     # Cassandra 3.x is installed using the newer component convention, (and

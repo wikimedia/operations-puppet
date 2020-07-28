@@ -26,22 +26,13 @@
 #   (i.e. send to graphite, even if matched by a blacklist entry)
 
 class cassandra::metrics(
-    $graphite_prefix = "cassandra.${::hostname}",
-    $graphite_host   = 'localhost',
-    $graphite_port   = '2003',
-    $blacklist       = undef,
-    $whitelist       = undef,
-    $ensure          = present,
+    Wmflib::Ensure  $ensure          = present,
+    String          $graphite_prefix = "cassandra.${::hostname}",
+    Stdlib::Host    $graphite_host   = 'localhost',
+    Stdlib::Port    $graphite_port   = 2003,
+    Optional[Array] $blacklist       = undef,
+    Optional[Array] $whitelist       = undef,
 ) {
-    validate_string($graphite_prefix)
-    validate_string($graphite_host)
-    validate_string($graphite_port)
-    if $blacklist {
-        validate_array($blacklist)
-    }
-    if $whitelist {
-        validate_array($whitelist)
-    }
 
     $target_cassandra_version = $::cassandra::target_version
 

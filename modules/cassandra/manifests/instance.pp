@@ -177,134 +177,80 @@
 #
 define cassandra::instance(
     # the following parameters are injected by the main cassandra class
-    $cluster_name,
-    $memory_allocator,
-    $listen_address,
-    $tls_cluster_name,
-    $application_username,
-    $application_password,
-    $native_transport_port,
-    $target_version,
-    $seeds,
-    $dc,
-    $rack,
-    $additional_jvm_opts,
-    $extra_classpath,
-    $logstash_host,
-    $logstash_port,
-    $start_rpc,
-    $super_username,
-    $super_password,
+    Optional[String]                 $cluster_name          = undef,
+    Optional[String]                 $memory_allocator      = undef,
+    Optional[Stdlib::IP::Address]    $listen_address        = undef,
+    Optional[String]                 $tls_cluster_name      = undef,
+    Optional[String]                 $application_username  = undef,
+    Optional[String]                 $application_password  = undef,
+    Optional[Stdlib::Port]           $native_transport_port = undef,
+    Optional[String]                 $target_version        = undef,
+    Optional[Array[Stdlib::Host, 1]] $seeds                 = undef,
+    Optional[String]                 $dc                    = undef,
+    Optional[String]                 $rack                  = undef,
+    Optional[Array[String]]          $additional_jvm_opts   = undef,
+    Optional[Array[String]]          $extra_classpath       = undef,
+    Optional[Stdlib::Host]           $logstash_host         = undef,
+    Optional[Stdlib::Port]           $logstash_port         = undef,
+    Optional[Boolean]                $start_rpc             = undef,
+    Optional[String]                 $super_username        = undef,
+    Optional[String]                 $super_password        = undef,
 
     # the following parameters need specific default values for single instance
-    $config_directory       = "/etc/cassandra-${title}",
-    $service_name           = "cassandra-${title}",
-    $tls_hostname           = "${::hostname}-${title}",
-    $pid_file               = "/var/run/cassandra/cassandra-${title}.pid",
-    $instance_id            = "${::hostname}-${title}",
-    $jmx_port               = undef,
-    $data_directory_base    = "/srv/cassandra-${title}",
-    $data_directories       = ['data'],
-    $data_file_directories  = undef,
-    $commitlog_directory    = "/srv/cassandra-${title}/commitlog",
-    $hints_directory        = "/srv/cassandra-${title}/data/hints",
-    $heapdump_directory     = "/srv/cassandra-${title}",
-    $saved_caches_directory = "/srv/cassandra-${title}/saved_caches",
+    Stdlib::Unixpath        $config_directory       = "/etc/cassandra-${title}",
+    String                  $service_name           = "cassandra-${title}",
+    String                  $tls_hostname           = "${::hostname}-${title}",
+    Stdlib::Unixpath        $pid_file               = "/var/run/cassandra/cassandra-${title}.pid",
+    String                  $instance_id            = "${::hostname}-${title}",
+    Optional[Stdlib::Port]  $jmx_port               = undef,
+    Stdlib::Unixpath        $data_directory_base    = "/srv/cassandra-${title}",
+    Array[String]           $data_directories       = ['data'],
+    Array[Stdlib::Unixpath] $data_file_directories  = [],
+    Stdlib::Unixpath        $commitlog_directory    = "/srv/cassandra-${title}/commitlog",
+    Stdlib::Unixpath        $hints_directory        = "/srv/cassandra-${title}/data/hints",
+    Stdlib::Unixpath        $heapdump_directory     = "/srv/cassandra-${title}",
+    Stdlib::Unixpath        $saved_caches_directory = "/srv/cassandra-${title}/saved_caches",
 
     # the following parameters have defaults that are sane both for single-
     # and multi-instances
-    $jmx_exporter_enabled             = false,
-    $num_tokens                       = 256,
-    $authenticator                    = true,
-    $authorizor                       = true,
-    $permissions_validity_in_ms       = 2000,
-    $disk_failure_policy              = 'stop',
-    $row_cache_size_in_mb             = 200,
-    $concurrent_reads                 = 32,
-    $concurrent_writes                = 32,
-    $concurrent_counter_writes        = 32,
-    $trickle_fsync                    = true,
-    $trickle_fsync_interval_in_kb     = 30240,
-    $storage_port                     = 7000,
-    $broadcast_address                = undef,
-    $start_native_transport           = true,
-    $rpc_address                      = undef,
-    $rpc_port                         = 9160,
-    $rpc_server_type                  = 'sync',
-    $incremental_backups              = false,
-    $snapshot_before_compaction       = false,
-    $auto_snapshot                    = true,
-    $compaction_throughput_mb_per_sec = 16,
-    $concurrent_compactors            = 1,
-    $streaming_socket_timeout_in_ms   = 0,
-    $endpoint_snitch                  = 'GossipingPropertyFileSnitch',
-    $internode_compression            = 'all',
-    $max_heap_size                    = undef,
-    $heap_newsize                     = undef,
-    $key_cache_size_in_mb             = 400,
-    $internode_encryption             = none,
-    $client_encryption_enabled        = false,
-    $auto_bootstrap                   = true,
-    $monitor_enabled                  = true,
+    Boolean                               $jmx_exporter_enabled             = false,
+    Integer                               $num_tokens                       = 256,
+    Boolean                               $authenticator                    = true,
+    Boolean                               $authorizor                       = true,
+    Integer                               $permissions_validity_in_ms       = 2000,
+    Enum['stop', 'best_effort', 'ignore'] $disk_failure_policy              = 'stop',
+    Integer                               $row_cache_size_in_mb             = 200,
+    Integer                               $concurrent_reads                 = 32,
+    Integer                               $concurrent_writes                = 32,
+    Integer                               $concurrent_counter_writes        = 32,
+    Boolean                               $trickle_fsync                    = true,
+    Integer                               $trickle_fsync_interval_in_kb     = 30240,
+    Stdlib::Port                          $storage_port                     = 7000,
+    Optional[Stdlib::IP::Address]         $broadcast_address                = undef,
+    Boolean                               $start_native_transport           = true,
+    Optional[Stdlib::IP::Address]         $rpc_address                      = undef,
+    Stdlib::Port                          $rpc_port                         = 9160,
+    Enum['hsha', 'sync', 'async']         $rpc_server_type                  = 'sync',
+    Boolean                               $incremental_backups              = false,
+    Boolean                               $snapshot_before_compaction       = false,
+    Boolean                               $auto_snapshot                    = true,
+    Integer                               $compaction_throughput_mb_per_sec = 16,
+    Integer                               $concurrent_compactors            = 1,
+    Integer                               $streaming_socket_timeout_in_ms   = 0,
+    String                                $endpoint_snitch                  = 'GossipingPropertyFileSnitch',
+    Enum['all', 'dc', 'none']             $internode_compression            = 'all',
+    Optional[String]                      $max_heap_size                    = undef,
+    Optional[String]                      $heap_newsize                     = undef,
+    Integer                               $key_cache_size_in_mb             = 400,
+    Enum['all','dc', 'none']              $internode_encryption             = 'none',
+    Boolean                               $client_encryption_enabled        = false,
+    Boolean                               $auto_bootstrap                   = true,
+    Boolean                               $monitor_enabled                  = true,
 ) {
-    validate_absolute_path($commitlog_directory)
-    validate_absolute_path($hints_directory)
-    validate_absolute_path($saved_caches_directory)
-    validate_absolute_path($data_directory_base)
 
-    validate_string($endpoint_snitch)
-
-    validate_re($rpc_server_type, '^(hsha|sync|async)$')
-    # lint:ignore:only_variable_string
-    validate_re("${concurrent_reads}", '^[0-9]+$')
-    validate_re("${concurrent_writes}", '^[0-9]+$')
-    validate_re("${num_tokens}", '^[0-9]+$')
-    # lint:endignore
-    validate_re($internode_compression, '^(all|dc|none)$')
-    validate_re($disk_failure_policy, '^(stop|best_effort|ignore)$')
-
-    validate_array($additional_jvm_opts)
-
-    validate_string($logstash_host)
-    # lint:ignore:only_variable_string
-    validate_re("${logstash_port}", '^[0-9]+$')
-    # lint:endignore
-
-    if (!is_integer($trickle_fsync_interval_in_kb)) {
-        fail('trickle_fsync_interval_in_kb must be number')
-    }
-
-    if (!is_ip_address($listen_address)) {
-        fail('listen_address must be an IP address')
-    }
-
-    if (!empty($broadcast_address) and !is_ip_address($broadcast_address)) {
-        fail('broadcast_address must be an IP address')
-    }
-
-    if (!is_integer($rpc_port)) {
-        fail('rpc_port must be a port number between 1 and 65535')
-    }
-
-    if (!is_integer($native_transport_port)) {
-        fail('native_transport_port must be a port number between 1 and 65535')
-    }
-
-    if (!is_integer($storage_port)) {
-        fail('storage_port must be a port number between 1 and 65535')
-    }
-
-    if (!is_array($seeds) or empty($seeds)) {
-        fail('seeds must be an array and not be empty')
-    }
-
-    $instance_data_file_directories = $data_file_directories ? {
-        undef => prefix($data_directories, "${data_directory_base}/"),
+    $instance_data_file_directories = $data_file_directories.empty? {
+        true => prefix($data_directories, "${data_directory_base}/"),
         default => $data_file_directories,
-    }
-
-    if (empty($instance_data_file_directories)) {
-        fail('data_file_directories must not be empty')
     }
 
     # Choose real authenticator and authorizor values
@@ -326,14 +272,9 @@ define cassandra::instance(
 
     # Relevant values, choosing convention over configuration
     $instance_jmx_port    = pick($jmx_port, $default_jmx_port)
-    if (!is_integer($instance_jmx_port)) {
-        fail('jmx_port must be a port number between 1 and 65535')
-    }
 
     $instance_rpc_address = pick($rpc_address, $listen_address)
-    if (!is_ip_address($instance_rpc_address)) {
-        fail('rpc_address must be an IP address')
-    }
+
     # Add the IP address if not present
     if $instance_rpc_address != $facts['ipaddress'] {
         interface::alias { "cassandra-${instance_name}":

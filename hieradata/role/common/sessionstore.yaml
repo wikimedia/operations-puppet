@@ -43,7 +43,7 @@ profile::cassandra::instances:
       jmx_exporter_enabled: true
 
 profile::cassandra::settings:
-  start_rpc: 'false'
+  start_rpc: false
   tls_cluster_name: "sessions"
   dc: "%{::site}"
   cluster_name: "sessions"

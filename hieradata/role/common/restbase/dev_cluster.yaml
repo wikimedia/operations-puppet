@@ -120,7 +120,7 @@ profile::cassandra::instances:
       jmx_exporter_enabled: true
 
 profile::cassandra::settings:
-  start_rpc: 'true'
+  start_rpc: true
   tls_cluster_name: "services-dev"
   dc: "%{::site}"
   cluster_name: "services-dev"
