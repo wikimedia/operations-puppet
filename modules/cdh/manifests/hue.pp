@@ -212,6 +212,13 @@ class cdh::hue(
         ensure => 'installed'
     }
 
+    if (os_version('debian == buster')) {
+        apt::package_from_component { 'cloudera-deps':
+            component => 'component/cloudera',
+            packages  => ['libmysqlclient18']
+        }
+    }
+
     $config_directory = "/etc/hue/conf.${cdh::hadoop::cluster_name}"
     # Create the $cluster_name based $config_directory.
     file { $config_directory:
