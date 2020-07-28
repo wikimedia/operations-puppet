@@ -10,27 +10,31 @@ class profile::phabricator::aphlict (
     Optional[String] $deploy_user = lookup('phabricator_deploy_user', { 'default_value' => 'phab-deploy' }),
     Boolean $manage_scap_user = lookup('profile::phabricator::main::manage_scap_user', { 'default_value' => true }),
     Optional[String] $phabricator_server = lookup('phabricator_server', { 'default_value' => undef }),
-    Optional[Stdlib::Port] $admin_port = lookup('aphlict_admin_port', { 'default_value' => undef }),
-    Optional[Stdlib::Ip_address] $admin_ip = lookup('aphlict_admin_ip', { 'default_value' => undef }),
+    Optional[Stdlib::Port] $client_port = lookup('profile::phabricator::aphlict::client_port', { 'default_value' => undef }),
+    Optional[Stdlib::Ip_address] $client_listen = lookup('profile::phabricator::aphlict::client_listen', { 'default_value' => undef }),
+    Optional[Stdlib::Port] $admin_port = lookup('profile::phabricator::aphlict::admin_port', { 'default_value' => undef }),
+    Optional[Stdlib::Ip_address] $admin_listen = lookup('profile::phabricator::aphlict::admin_listen', { 'default_value' => undef }),
 ) {
 
     $deploy_root = "/srv/deployment/${deploy_target}"
 
     class { '::phabricator::aphlict':
-        ensure     => present,
-        enable_ssl => $aphlict_ssl,
-        sslcert    => $aphlict_cert,
-        sslkey     => $aphlict_key,
-        sslchain   => $aphlict_chain,
-        basedir    => $base_dir,
-        admin_port => $admin_port,
-        admin_ip   => $admin_ip,
+        ensure        => 'present',
+        enable_ssl    => $aphlict_ssl,
+        sslcert       => $aphlict_cert,
+        sslkey        => $aphlict_key,
+        sslchain      => $aphlict_chain,
+        basedir       => $base_dir,
+        client_port   => $client_port,
+        client_listen => $client_listen,
+        admin_port    => $admin_port,
+        admin_listen  => $admin_listen,
     }
 
     ferm::service { 'notification_server':
         ensure => present,
         proto  => 'tcp',
-        port   => '22280',
+        port   => $client_port,
     }
 
     scap::target { $deploy_target:
@@ -56,7 +60,7 @@ class profile::phabricator::aphlict (
     # phabricator server needs to connect to the aphlict admin port
     ferm::service { 'phab_aphlict_admin_port':
         proto  => 'tcp',
-        port   => '(22281)',
+        port   => "(${admin_port})",
         srange => "@resolve(${phabricator_server})",
     }
 }

@@ -2,8 +2,8 @@
   "servers": [
     {
       "type": "client",
-      "port": 22280,
-      "listen": "0.0.0.0"
+      "port": <%= @client_port %>,
+      "listen": "<%= @client_listen %>"
 <% if @enable_ssl -%>
       ,
       "ssl.key": "<%= @sslkey %>",
@@ -14,7 +14,7 @@
     {
       "type": "admin",
       "port": <%= @admin_port %>,
-      "listen": "<%= @admin_ip %>"
+      "listen": "<%= @admin_listen %>"
     }
   ],
   "logs": [
