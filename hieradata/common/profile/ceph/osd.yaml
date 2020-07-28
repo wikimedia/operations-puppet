@@ -1,0 +1,1 @@
+profile::ceph::osd::bootstrap_keyring: '/var/lib/ceph/bootstrap-osd/ceph.keyring'

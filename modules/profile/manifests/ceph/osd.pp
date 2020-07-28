@@ -2,14 +2,16 @@
 #
 # This profile configures Ceph object storage hosts with the osd daemon
 class profile::ceph::osd(
-    Hash[String,Hash]    $mon_hosts       = lookup('profile::ceph::mon::hosts'),
-    Hash[String,Hash]    $osd_hosts       = lookup('profile::ceph::osd::hosts'),
-    Stdlib::AbsolutePath $admin_keyring   = lookup('profile::ceph::admin_keyring'),
-    Stdlib::IP::Address  $cluster_network = lookup('profile::ceph::cluster_network'),
-    Stdlib::IP::Address  $public_network  = lookup('profile::ceph::public_network'),
-    Stdlib::Unixpath     $data_dir        = lookup('profile::ceph::data_dir'),
-    String               $admin_keydata   = lookup('profile::ceph::admin_keydata'),
-    String               $fsid            = lookup('profile::ceph::fsid'),
+    Hash[String,Hash]    $mon_hosts         = lookup('profile::ceph::mon::hosts'),
+    Hash[String,Hash]    $osd_hosts         = lookup('profile::ceph::osd::hosts'),
+    Stdlib::AbsolutePath $admin_keyring     = lookup('profile::ceph::admin_keyring'),
+    Stdlib::IP::Address  $cluster_network   = lookup('profile::ceph::cluster_network'),
+    Stdlib::IP::Address  $public_network    = lookup('profile::ceph::public_network'),
+    Stdlib::Unixpath     $data_dir          = lookup('profile::ceph::data_dir'),
+    String               $admin_keydata     = lookup('profile::ceph::admin_keydata'),
+    String               $fsid              = lookup('profile::ceph::fsid'),
+    Stdlib::AbsolutePath $bootstrap_keyring = lookup('profile::ceph::osd::bootstrap_keyring'),
+    String               $bootstrap_keydata = lookup('profile::ceph::osd::bootstrap_keydata'),
 ) {
     include ::network::constants
     # Limit the client connections to the hypervisors in eqiad and codfw
@@ -108,5 +110,11 @@ class profile::ceph::osd(
         admin_keyring => $admin_keyring,
         admin_keydata => $admin_keydata,
         data_dir      => $data_dir,
+    }
+
+    # We need this to finish initial osd setup
+    ceph::keyring { 'bootstrap.':
+        keyring => $bootstrap_keyring,
+        keydata => $bootstrap_keydata,
     }
 }
