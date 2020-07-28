@@ -12,12 +12,13 @@
 #   The SSH public key used by Cumin master
 #
 class profile::openstack::eqiad1::cumin::target(
-    $project_masters = hiera('profile::openstack::eqiad1::cumin::project_masters'),
-    $project_pub_key = hiera('profile::openstack::eqiad1::cumin::project_pub_key'),
+    Array $project_masters = lookup('profile::openstack::eqiad1::cumin::project_masters'),
+    $project_pub_key = lookup('profile::openstack::eqiad1::cumin::project_pub_key'),
     $cluster = lookup('cluster'),
     $site = $::site,  # lint:ignore:wmf_styleguide
-    Array[Stdlib::IP::Address] $cumin_masters = hiera('cumin_masters', []),
-    Boolean $permit_port_forwarding = hiera('profile::openstack::eqiad1::cumin::permit_port_forwarding', false),
+    Array[Stdlib::IP::Address] $cumin_masters = lookup('cumin_masters', {'default_value' => []}),
+    Boolean $permit_port_forwarding = lookup('profile::openstack::eqiad1::cumin::permit_port_forwarding',
+                                            {'default_value' => false}),
 ) {
     require ::network::constants
 
@@ -28,8 +29,6 @@ class profile::openstack::eqiad1::cumin::target(
         cluster => $cluster,
         site    => $site,
     }
-
-    validate_array($project_masters)
 
     $ssh_authorized_sources = join($cumin_masters, ',')
     $ssh_project_authorized_sources = join($project_masters, ',')

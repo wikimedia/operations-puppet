@@ -14,18 +14,16 @@
 #     key: 'alias query'
 #
 class profile::openstack::eqiad1::cumin::master(
-    $keystone_protocol = hiera('profile::openstack::base::keystone::auth_protocol'),
+    $keystone_protocol = lookup('profile::openstack::base::keystone::auth_protocol'),
     Stdlib::Fqdn $keystone_api_fqdn = lookup('profile::openstack::eqiad1::keystone_api_fqdn'),
-    $keystone_port = hiera('profile::openstack::base::keystone::public_port'),
-    $observer_username = hiera('profile::openstack::base::observer_user'),
-    $observer_password = hiera('profile::openstack::eqiad1::observer_password'),
-    $nova_dhcp_domain = hiera('profile::openstack::eqiad1::nova::dhcp_domain'),
-    $aliases = hiera('profile::openstack::eqiad1::cumin::aliases'),
-    $project_ssh_priv_key_path = hiera('profile::openstack::eqiad1::cumin::project_ssh_priv_key_path'),
-    $region = hiera('profile::openstack::eqiad1::region'),
+    $keystone_port = lookup('profile::openstack::base::keystone::public_port'),
+    $observer_username = lookup('profile::openstack::base::observer_user'),
+    $observer_password = lookup('profile::openstack::eqiad1::observer_password'),
+    $nova_dhcp_domain = lookup('profile::openstack::eqiad1::nova::dhcp_domain'),
+    Hash $aliases = lookup('profile::openstack::eqiad1::cumin::aliases'),
+    $project_ssh_priv_key_path = lookup('profile::openstack::eqiad1::cumin::project_ssh_priv_key_path'),
+    $region = lookup('profile::openstack::eqiad1::region'),
     ) {
-        validate_hash($aliases)
-
         # TODO: simplify once hiera converts null properly to undef
         if $::labsproject and $project_ssh_priv_key_path and $project_ssh_priv_key_path != '' and $project_ssh_priv_key_path != 'undef' {
             $is_project = true
