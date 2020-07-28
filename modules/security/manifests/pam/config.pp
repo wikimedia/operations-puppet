@@ -26,14 +26,12 @@
 #
 
 define security::pam::config(
-    $ensure  = present,
-    $source  = undef,
-    $content = undef,
+    Wmflib::Ensure   $ensure  = present,
+    Optional[String] $source  = undef,
+    Optional[String] $content = undef,
 )
 {
     include security::pam
-
-    validate_ensure($ensure)
 
     file { "/usr/share/pam-configs/${name}":
         ensure  => $ensure,
