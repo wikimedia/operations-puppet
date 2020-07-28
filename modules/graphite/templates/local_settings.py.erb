@@ -48,7 +48,7 @@ DATABASES = {
 
 ## Carbon
 
-<%- if @cluster_servers -%>
+<%- unless @cluster_servers.empty? -%>
   <% non_local_servers = @cluster_servers.length > 1 \
          ? @cluster_servers.select { |x| x != @hostname \
                                          && x != @fqdn \

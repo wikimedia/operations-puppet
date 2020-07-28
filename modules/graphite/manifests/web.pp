@@ -48,22 +48,20 @@
 # [*uwsgi_max_request_rss_megabytes*]
 #   If specified, have uwsgi kill a worker whose RSS exceeds this value.
 class graphite::web(
-    $admin_pass,
-    $secret_key,
-    $storage_dir,
-    $uwsgi_processes   = 8,
-    $memcached_size    = 200,
-    $admin_user        = 'admin',
-    $documentation_url = 'http://graphite.readthedocs.org/',
-    $remote_user_auth  = false,
-    $cors_origins      = undef,
-    $cluster_servers   = undef,
-    $uwsgi_max_request_duration_seconds = undef,
-    $uwsgi_max_request_rss_megabytes = undef,
+    String              $admin_pass,
+    String              $secret_key,
+    Stdlib::Unixpath    $storage_dir,
+    Integer             $uwsgi_processes                    = 8,
+    Integer             $memcached_size                     = 200,
+    String              $admin_user                         = 'admin',
+    String              $documentation_url                  = 'http://graphite.readthedocs.org/',
+    Boolean             $remote_user_auth                   = false,
+    Array[String]       $cors_origins                       = [],
+    Array[Stdlib::Host] $cluster_servers                    = [],
+    Optional[Integer]   $uwsgi_max_request_duration_seconds = undef,
+    Optional[Integer]   $uwsgi_max_request_rss_megabytes    = undef,
 ) {
-    include ::graphite
-
-    validate_bool($remote_user_auth)
+    include graphite
 
     require_package('memcached')
 
