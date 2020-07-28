@@ -70,6 +70,10 @@ profile::kerberos::keytabs::keytabs_metadata:
     owner: 'analytics-search'
     group: 'analytics-search'
     filename: 'analytics-search.keytab'
+  - role: 'analytics-product'
+    owner: 'analytics-product'
+    group: 'analytics-product'
+    filename: 'analytics-product.keytab'
 
 profile::java::java_packages:
   - version: '8'
