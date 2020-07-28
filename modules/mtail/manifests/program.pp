@@ -20,15 +20,12 @@
 #   string. Defaults to '/etc/mtail'.
 #
 define mtail::program(
-    $ensure      = present,
-    $content     = undef,
-    $source      = undef,
-    $destination = '/etc/mtail',
+    Wmflib::Ensure   $ensure      = present,
+    Optional[String] $content     = undef,
+    Optional[String] $source      = undef,
+    Stdlib::Unixpath $destination = '/etc/mtail',
 ) {
-    validate_ensure($ensure)
-    validate_absolute_path($destination)
-
-    include ::mtail
+    include mtail
 
     $basename = regsubst($title, '\W', '-', 'G')
     $filename = "${destination}/${basename}.mtail"
