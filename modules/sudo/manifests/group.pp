@@ -25,9 +25,9 @@
 #  }
 #
 define sudo::group(
-    $privileges,
-    $ensure                              = present,
-    $group                               = $title,
+    Array[String]           $privileges  = [],
+    Wmflib::Ensure          $ensure      = present,
+    String                  $group       = $title,
     # lint:ignore:wmf_styleguide
     Enum['sudo','sudoldap'] $sudo_flavor = lookup('sudo_flavor', {default_value => 'sudo'}),
     # lint:endignore
@@ -37,8 +37,6 @@ define sudo::group(
     } else {
         require sudo::sudoldap
     }
-
-    validate_ensure($ensure)
 
     $title_safe = regsubst($title, '\W', '-', 'G')
     $filename = "/etc/sudoers.d/${title_safe}"

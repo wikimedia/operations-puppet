@@ -25,7 +25,7 @@
 #  }
 #
 define sudo::user(
-    $privileges,
+    Array[String] $privileges            = [],
     $ensure                              = present,
     $user                                = $title,
     # lint:ignore:wmf_styleguide
@@ -37,8 +37,6 @@ define sudo::user(
     } else {
         require sudo::sudoldap
     }
-
-    validate_ensure($ensure)
 
     $title_safe = regsubst($title, '\W', '-', 'G')
     $filename = "/etc/sudoers.d/${title_safe}"
