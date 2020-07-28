@@ -26,9 +26,6 @@ profile::analytics::geoip::archive::use_kerberos: true
 profile::statistics::gpu::hosts_with_gpu:
   - 'stat1005'
   - 'stat1008'
-profile::statistics::eventlogging_rsync::hosts_with_rsync:
-  - 'stat1006'
-  - 'stat1007'
 
 profile::analytics::search::jobs::use_kerberos: true
 
