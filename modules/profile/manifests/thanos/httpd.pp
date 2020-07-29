@@ -20,7 +20,12 @@ class profile::thanos::httpd (
         modules => ['proxy_http'],
     }
 
-    include profile::idp::client::httpd
+    class {'profile::idp::client::httpd':
+        vhost_settings => {
+            query_port => $query_port,
+            maxconn    => $maxconn,
+        }
+    }
     httpd::site { 'thanos-query':
         content => template('profile/thanos/httpd.conf.erb'),
     }

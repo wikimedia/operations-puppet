@@ -24,5 +24,5 @@
 
     # max connections _per apache child process_
     # wait 1s to acquire a free connection before returning "server busy"
-    ProxyPass / http://localhost:<%= @query_port %>/ max=<%= @maxconn %> acquire=1000
+    ProxyPass / http://localhost:<%= @vhost_settings['query_port'] %>/ max=<%= @vhost_settings['maxconn'] %> acquire=1000
 </VirtualHost>

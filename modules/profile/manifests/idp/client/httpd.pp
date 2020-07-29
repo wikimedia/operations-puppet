@@ -39,7 +39,7 @@ class profile::idp::client::httpd (
     String[1]                     $cookie_scope     = lookup('profile::idp::client::httpd::cookie_scope'),
     Boolean                       $proxied_as_https = lookup('profile::idp::client::httpd::proxied_as_https'),
     Boolean                       $staging          = lookup('profile::idp::client::httpd::staging'),
-    Optional[Hash[String,String]] $vhost_settings   = lookup('profile::idp::client::httpd::vhost_settings'),
+    Optional[Hash[String,Any]]    $vhost_settings   = lookup('profile::idp::client::httpd::vhost_settings'),
     Optional[Array[String[1]]]    $required_groups  = lookup('profile::idp::client::httpd::required_groups'),
     Optional[String[1]]           $acme_chief_cert  = lookup('profile::idp::client::httpd::acme_chief_cert',
                                                             {'default_value' => undef}),
