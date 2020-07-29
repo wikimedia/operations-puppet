@@ -196,6 +196,9 @@ profile::trafficserver::backend::mapping_rules:
       target: http://superset.wikimedia.org
       replacement: https://analytics-tool1004.eqiad.wmnet
     - type: map
+      target: http://thanos.wikimedia.org
+      replacement: https://thanos-query.discovery.wmnet
+    - type: map
       target: http://ticket.wikimedia.org
       replacement: https://ticket.discovery.wmnet:1443
     - type: map

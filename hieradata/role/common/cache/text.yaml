@@ -129,6 +129,8 @@ cache::alternate_domains:
         caching: 'pipe'
   superset.wikimedia.org:
     caching: 'normal'
+  thanos.wikimedia.org:
+    caching: 'pass'
   ticket.wikimedia.org:
     caching: 'pass'
   ticket-test.wikimedia.org:
