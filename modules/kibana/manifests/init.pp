@@ -41,9 +41,6 @@ class kibana (
             'logging.quiet'          => true,
             'server.maxPayloadBytes' => 4194304, # 4MB (yes, this is a crazy limit, we need to reduce the number of fields)
             'metrics.enabled'        => false, # T255863
-            'timelion.enabled'       => false, #T259000
-            'region_map.enabled'     => false, #T259000
-            'tile_map.enabled'       => false, #T259000
         }),
         mode    => '0444',
         require => Package['kibana'],
