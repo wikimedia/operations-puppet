@@ -31,12 +31,14 @@
 # @param extra_args A string of extra arguments to use
 # @param hardened_tls if true enable a hardened security profile
 # @param trust_puppet_ca if true add the puppet ca to the java trust store
+# @param enable_dbg Install debug packages (off by default)
 class profile::java (
     Array[Java::PackageInfo] $java_packages   = lookup('profile::java::java_packages'),
     Optional[String]         $extra_args      = lookup('profile::java::extra_args'),
     Boolean                  $hardened_tls    = lookup('profile::java::hardened_tls'),
     Java::Egd_source         $egd_source      = lookup('profile::java::egd_source'),
-    Boolean                  $trust_puppet_ca = lookup('profile::java::trust_puppet_ca')
+    Boolean                  $trust_puppet_ca = lookup('profile::java::trust_puppet_ca'),
+    Boolean                  $enable_dbg      = lookup('profile::java::enable_dbg'),
 ) {
 
     if os_version('debian == stretch') {
@@ -65,6 +67,7 @@ class profile::java (
         hardened_tls  => $hardened_tls,
         egd_source    => $egd_source,
         cacerts       => $cacerts,
+        enable_dbg    => $enable_dbg,
     }
 
     $default_java_home = $java::java_home

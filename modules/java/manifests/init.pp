@@ -16,6 +16,7 @@ class java (
     Boolean                  $hardened_tls = false,
     Java::Egd_source         $egd_source   = '/dev/random',
     Hash[String, Hash]       $cacerts      = {},
+    Boolean                  $enable_dbg   = false,
 ) {
 
     $java_packages.each |$java_package_info| {
@@ -23,6 +24,10 @@ class java (
             package_info => $java_package_info,
             hardened_tls => $hardened_tls,
             egd_source   => $egd_source,
+        }
+
+        if $enable_dbg {
+            ensure_packages(["openjdk-${java_package_info['version']}-dbg"])
         }
     }
 

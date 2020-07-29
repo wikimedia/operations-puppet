@@ -3,3 +3,4 @@ profile::java::extra_args: ~
 profile::java::hardened_tls: false
 profile::java::egd_source: '/dev/random'
 profile::java::trust_puppet_ca: true
+profile::java::enable_dbg: false
