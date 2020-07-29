@@ -4,9 +4,15 @@
 # Provisions Elasticsearch backend node for a Logstash cluster.
 #
 class profile::elasticsearch::logstash(
-    Array[String] $prometheus_nodes = hiera('prometheus_nodes'),
+    Array[String]          $prometheus_nodes = lookup('prometheus_nodes'),
+    Optional[Stdlib::Fqdn] $es_exporter_host = lookup('profile::elasticsearch::logstash::es_exporter_host', { default_value => undef })
 ) {
     include ::profile::elasticsearch
+
+    # prometheus-es-exporter should only run on one host per cluster
+    if $es_exporter_host == $::fqdn {
+        include ::profile::prometheus::es_exporter
+    }
 
     file { '/usr/share/elasticsearch/plugins':
         ensure => 'directory',

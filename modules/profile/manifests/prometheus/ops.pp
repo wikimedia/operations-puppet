@@ -514,6 +514,24 @@ class profile::prometheus::ops (
         port       => 9245,
     }
 
+    # Job definition for prometheus-es-exporter
+    $es_exporter_jobs = [
+        {
+            'job_name'        => 'es_exporter',
+            'file_sd_configs' => [
+                { 'files' => [ "${targets_path}/es_exporter_*.yaml" ]}
+            ],
+        },
+    ]
+
+    # Special config for prometheus-es-exporter
+    prometheus::class_config { "es_exporter_${::site}":
+        dest       => "${targets_path}/es_exporter_${::site}.yaml",
+        site       => $::site,
+        class_name => 'profile::prometheus::es_exporter ',
+        port       => 9206
+    }
+
     # Job definition for cadvisor exporter
     $cadvisor_jobs = [
       {
@@ -1734,7 +1752,7 @@ class profile::prometheus::ops (
             $cloud_dev_pdns_jobs, $cloud_dev_pdns_rec_jobs, $bacula_jobs, $poolcounter_exporter_jobs,
             $apereo_cas_jobs, $atlas_exporter_jobs, $exported_blackbox_jobs, $cadvisor_jobs,
             $envoy_jobs, $webperf_jobs, $squid_jobs, $nic_saturation_exporter_jobs, $thanos_jobs, $netbox_jobs,
-            $wikidough_jobs, $chartmuseum_jobs,
+            $wikidough_jobs, $chartmuseum_jobs, $es_exporter_jobs,
         ),
         global_config_extra   => $config_extra,
     }

@@ -1,0 +1,43 @@
+# This directory contains prometheus-es-exporter configuration fragments that are
+# managed by Puppet. PUPPET WILL DELETE ANY UNMANAGED FILES IN THIS
+# DIRECTORY WITHOUT WARNING.
+
+# Queries are defined in sections beginning with 'query_'.
+# Characters following this prefix will be used as a prefix for all metrics
+# generated for this query
+
+# Example 1:
+# [query_all]
+# Settings that are not specified are inherited from the DEFAULT section.
+# The search query to run.
+# QueryJson = {
+#         "size": 0,
+#         "query": {
+#             "match_all": {}
+#         }
+#     }
+
+# Example 2:
+# [query_terms]
+# The DEFAULT settings can be overridden.
+# QueryIntervalSecs = 20
+# QueryTimeoutSecs = 15
+# QueryIndices = <logstash-{now/d}>
+# QueryOnError = preserve
+# QueryOnMissing = zero
+# QueryJson = {
+#         "size": 0,
+#         "query": {
+#             "match_all": {}
+#         },
+#         "aggs": {
+#             "group1_terms": {
+#                 "terms": {"field": "group1"},
+#                 "aggs": {
+#                     "val_sum": {
+#                         "sum": {"field": "val"}
+#                     }
+#                 }
+#             }
+#         }
+#     }
