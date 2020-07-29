@@ -141,7 +141,7 @@ profile::druid::historical::properties:
   # See: http://druid.io/docs/latest/querying/caching.html
   druid.historical.cache.useCache: false
   druid.historical.cache.populateCache: false
-  druid.monitoring.monitors: ["org.apache.druid.server.metrics.HistoricalMetricsMonitor", "org.apache.server.metrics.QueryCountStatsMonitor"]
+  druid.monitoring.monitors: ["org.apache.druid.server.metrics.HistoricalMetricsMonitor", "org.apache.druid.server.metrics.QueryCountStatsMonitor"]
 profile::druid::historical::env:
   DRUID_HEAP_OPTS: "-Xmx8g -Xms4g"
   DRUID_EXTRA_JVM_OPTS: "-XX:NewSize=2g -XX:MaxNewSize=2g -XX:MaxDirectMemorySize=10g -XX:+UseConcMarkSweepGC -XX:+PrintGCDetails -XX:+PrintGCTimeStamps"
