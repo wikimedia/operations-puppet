@@ -1226,6 +1226,10 @@ node /kafkamon[12]001\.(codfw|eqiad)\.wmnet/ {
     role(kafka::monitoring)
 }
 
+node /kafkamon[12]002\.(codfw|eqiad)\.wmnet/ {
+    role(insetup)
+}
+
 # virtual machines for misc. applications and static sites
 # replaced miscweb1001/2001 in T247648 and bromine/vega in T247650
 #
