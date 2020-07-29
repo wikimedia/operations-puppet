@@ -1,7 +1,7 @@
 # This file is managed by puppet
 
 [rsync]
-accept = 1873
+accept = :::1873
 client = no
 
 CAfile = <%= scope.call_function('puppet_ssldir', []) + "/certs/ca.pem" %>
