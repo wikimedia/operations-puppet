@@ -16,11 +16,14 @@ filter_chains:
 <%- if upstream['cert_path'] != :undef -%>
 - filter_chain_match:
     server_names: <%= upstream['server_names'] %>
-  tls_context:
-    common_tls_context:
-      tls_certificates:
-      - certificate_chain: { filename: "<%= upstream['cert_path'] %>" }
-        private_key: { filename: "<%= upstream['key_path'] %>" }
+  transport_socket:
+    name: envoy.transport_sockets.tls
+    typed_config:
+      '@type': type.googleapis.com/envoy.api.v2.auth.DownstreamTlsContext
+      common_tls_context:
+        tls_certificates:
+        - certificate_chain: { filename: "<%= upstream['cert_path'] %>" }
+          private_key: { filename: "<%= upstream['key_path'] %>" }
   filters:
   - name: envoy.http_connection_manager
     typed_config:
@@ -70,11 +73,14 @@ filter_chains:
 <%- end -%>
 <%- if @global_cert_path != nil && @global_key_path != nil -%>
 # Non-SNI support
-- tls_context:
-    common_tls_context:
-      tls_certificates:
-      - certificate_chain: { filename: "<%= @global_cert_path %>" }
-        private_key: { filename: "<%= @global_key_path %>" }
+- transport_socket:
+    name: envoy.transport_sockets.tls
+    typed_config:
+      '@type': type.googleapis.com/envoy.api.v2.auth.DownstreamTlsContext
+      common_tls_context:
+        tls_certificates:
+        - certificate_chain: { filename: "<%= @global_cert_path %>" }
+          private_key: { filename: "<%= @global_key_path %>" }
   filters:
   - name: envoy.http_connection_manager
     typed_config:
