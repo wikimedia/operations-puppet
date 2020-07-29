@@ -5,28 +5,14 @@
 #
 # filtertags: labs-project-deployment-prep
 class role::logstash::puppetreports {
-    require ::role::logstash::collector
-
-    if $::realm != 'labs' {
-        # Constrain to only labs, security issues in prod have not been worked out yet
-        fail('role::logstash::puppetreports may only be deployed to Labs.')
+    system::role { 'logstash::puppetreports':
+      description => 'Logstash, Kibana and Elasticsearch ingest node for puppet reports',
     }
-
-    logstash::input::tcp { 'tcp_json':
-        port  => 5229,
-        codec => 'json_lines',
-    }
-
-    ferm::service { 'logstash_tcp_json':
-        proto  => 'tcp',
-        port   => '5229',
-        srange => '$DOMAIN_NETWORKS',
-    }
-
-    # lint:ignore:puppet_url_without_modules
-    logstash::conf { 'filter_puppet':
-        source   => 'puppet:///modules/role/logstash/filter-puppet.conf',
-        priority => 50,
-    }
-    # lint:endignore
+    include profile::standard
+    include profile::base::firewall
+    include profile::logstash::collector
+    include profile::elasticsearch::logstash
+    include profile::elasticsearch::monitor::base_checks
+    include profile::logstash::puppetreports
+    include profile::logstash::apifeatureusage
 }
