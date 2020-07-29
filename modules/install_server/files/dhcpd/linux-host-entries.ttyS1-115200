@@ -3,6 +3,11 @@
 #### puppet:///modules/install_server/dhcpd/linux-host-entries.ttyS1-115200
 ######################################################################
 
+host alert1001 {
+    hardware ethernet  2C:EA:7F:46:AC:B4;
+    fixed-address alert1001.wikimedia.org;
+}
+
 host alert2001 {
     hardware ethernet 2C:EA:7F:44:DF:DE;
     fixed-address alert2001.wikimedia.org;
