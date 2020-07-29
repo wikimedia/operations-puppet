@@ -135,13 +135,15 @@ class bacula::director(
         require => Package["bacula-director-${sqlvariant}"],
     }
 
-    # Exporting configuration for console users
-    @@file { '/etc/bacula/bconsole.conf':
-        ensure  => present,
-        mode    => '0400',
-        owner   => 'bacula',
-        group   => 'bacula',
-        content => template('bacula/bconsole.conf.erb'),
-        tag     => "bacula-console-${::fqdn}",
+    if wmflib::have_puppetdb() {
+        # Exporting configuration for console users
+        @@file { '/etc/bacula/bconsole.conf':
+            ensure  => present,
+            mode    => '0400',
+            owner   => 'bacula',
+            group   => 'bacula',
+            content => template('bacula/bconsole.conf.erb'),
+            tag     => "bacula-console-${::fqdn}",
+        }
     }
 }

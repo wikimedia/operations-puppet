@@ -32,14 +32,16 @@ define bacula::client::job(
     $director = $::bacula::client::director
 
     # We export to the director
-    @@file { "/etc/bacula/jobs.d/${::fqdn}-${name}.conf":
-        ensure  => present,
-        owner   => 'root',
-        group   => 'bacula',
-        mode    => '0440',
-        content => template('bacula/bacula-client-job.erb'),
-        notify  => Service['bacula-director'],
-        require => File['/etc/bacula/jobs.d'],
-        tag     => "bacula-client-${director}",
+    if wmflib::have_puppetdb() {
+        @@file { "/etc/bacula/jobs.d/${::fqdn}-${name}.conf":
+            ensure  => present,
+            owner   => 'root',
+            group   => 'bacula',
+            mode    => '0440',
+            content => template('bacula/bacula-client-job.erb'),
+            notify  => Service['bacula-director'],
+            require => File['/etc/bacula/jobs.d'],
+            tag     => "bacula-client-${director}",
+        }
     }
 }

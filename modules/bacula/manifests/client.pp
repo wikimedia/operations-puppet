@@ -67,14 +67,16 @@ class bacula::client(
                 ],
     }
 
-    # We export oufself to the director
-    @@file { "/etc/bacula/clients.d/${::fqdn}.conf":
-        ensure  => present,
-        owner   => 'root',
-        group   => 'bacula',
-        mode    => '0440',
-        content => template('bacula/bacula-client.erb'),
-        notify  => Service['bacula-director'],
-        tag     => "bacula-client-${director}",
+    if wmflib::have_puppetdb() {
+        # We export oufself to the director
+        @@file { "/etc/bacula/clients.d/${::fqdn}.conf":
+            ensure  => present,
+            owner   => 'root',
+            group   => 'bacula',
+            mode    => '0440',
+            content => template('bacula/bacula-client.erb'),
+            notify  => Service['bacula-director'],
+            tag     => "bacula-client-${director}",
+        }
     }
 }

@@ -53,14 +53,16 @@ define bacula::storage::device($device_type, $media_type,
     }
 
     # We export ourself to the director
-    @@file { "/etc/bacula/storages.d/${::hostname}-${name}.conf":
-        ensure  => present,
-        owner   => 'bacula',
-        group   => 'tape',
-        mode    => '0440',
-        content => template('bacula/bacula-storage.erb'),
-        notify  => Service['bacula-director'],
-        require => File['/etc/bacula/storages.d'],
-        tag     => "bacula-storage-${director}",
+    if wmflib::have_puppetdb() {
+        @@file { "/etc/bacula/storages.d/${::hostname}-${name}.conf":
+            ensure  => present,
+            owner   => 'bacula',
+            group   => 'tape',
+            mode    => '0440',
+            content => template('bacula/bacula-storage.erb'),
+            notify  => Service['bacula-director'],
+            require => File['/etc/bacula/storages.d'],
+            tag     => "bacula-storage-${director}",
+        }
     }
 }
