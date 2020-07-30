@@ -144,12 +144,18 @@ class Clients(object):
                 region_name=self.region)
         return self.glanceclients[project]
 
-    def designateclient(self, project=None):
+    # In many cases we might be accessing records in one project (e.g. 'noauth-project')
+    #  while using a token from a different project (e.g. 'admin').
+    # The 'project' arg refers to the project that contains the zones or records of interest.
+    def designateclient(self, auth_project=None, project=None):
         if not project:
             project = self.project
 
+        if not auth_project:
+            auth_project = self.project
+
         if project not in self.designateclients:
-            session = self.session(project)
+            session = self.session(auth_project)
             self.designateclients[project] = designateclient.Client(
                 session=session, timeout=300, sudo_project_id=project,
                 region_name=self.region)
@@ -208,7 +214,7 @@ class DnsManager(object):
         self.tenant = tenant
         self.logger = logging.getLogger('mwopenstackclients.DnsManager')
 
-        self.designateclient = client.designateclient(project=tenant)
+        self.designateclient = client.designateclient(auth_project=client.project, project=tenant)
 
     def _json_http_kwargs(self, kwargs):
         kwargs['headers'] = {
