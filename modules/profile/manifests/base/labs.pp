@@ -20,15 +20,13 @@ class profile::base::labs(
         source => 'puppet:///modules/base/labs-acct.default',
     }
 
-    if $::operatingsystem == 'Debian' {
-        # Turn on idmapd by default
-        file { '/etc/default/nfs-common':
-            ensure => present,
-            owner  => 'root',
-            group  => 'root',
-            mode   => '0444',
-            source => 'puppet:///modules/base/labs/nfs-common.default',
-        }
+    # Turn on idmapd by default
+    file { '/etc/default/nfs-common':
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+        source => 'puppet:///modules/base/labs/nfs-common.default',
     }
 
     file { '/usr/local/sbin/notify_maintainers.py':
@@ -53,38 +51,18 @@ class profile::base::labs(
         default => 'absent',
     }
 
-    if os_version('debian >= jessie') {
-
-        # TODO: Remove after change is applied
-        cron { 'send_puppet_failure_emails':
-            ensure => absent,
-            user   => 'root',
-        }
-
-        systemd::timer::job { 'send_puppet_failure_emails':
-            ensure             => $ensure_puppet_emails,
-            description        => 'Send emails about Puppet failures',
-            command            => '/usr/local/sbin/puppet_alert.py',
-            interval           => {
-                'start'    => 'OnCalendar',
-                'interval' => '*-*-* 08:15:00',
-            },
-            logging_enabled    => false,
-            monitoring_enabled => false,
-            user               => 'root',
-            require            => File['/usr/local/sbin/puppet_alert.py'],
-        }
-
-    } else {
-
-        # TODO: Remove once Trusty is deprecated
-        cron { 'send_puppet_failure_emails':
-            ensure  => $ensure_puppet_emails,
-            command => '/usr/local/sbin/puppet_alert.py',
-            hour    => 8,
-            minute  => '15',
-            user    => 'root',
-        }
+    systemd::timer::job { 'send_puppet_failure_emails':
+        ensure             => $ensure_puppet_emails,
+        description        => 'Send emails about Puppet failures',
+        command            => '/usr/local/sbin/puppet_alert.py',
+        interval           => {
+            'start'    => 'OnCalendar',
+            'interval' => '*-*-* 08:15:00',
+        },
+        logging_enabled    => false,
+        monitoring_enabled => false,
+        user               => 'root',
+        require            => File['/usr/local/sbin/puppet_alert.py'],
     }
 
     # Set a root password only if we're still governed by the official Labs
