@@ -1,9 +1,9 @@
 # This file is managed by puppet
 
-/var/log/exim4/mainlog /var/log/exim4/rejectlog {
+/var/log/exim4/paniclog {
     daily
     missingok
-    rotate 60
+    rotate 7
     compress
     delaycompress
     notifempty

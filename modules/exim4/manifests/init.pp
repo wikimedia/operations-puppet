@@ -141,4 +141,10 @@ class exim4(
         require => Package['exim4-config'],
         notify  => Service['exim4'],
     }
+
+    # Rotate the paniclog daily to prevent duplicate email notifications
+    logrotate::conf { 'exim4-paniclog':
+        ensure => 'present',
+        source => 'puppet:///modules/exim4/logrotate/exim4-paniclog',
+    }
 }
