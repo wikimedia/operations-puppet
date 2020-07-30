@@ -61,6 +61,7 @@ class profile::webperf::xhgui (
         content => template('profile/webperf/xhgui/config.php.erb'),
         owner   => 'www-data',
         mode    => '0600',
+        require => Package['xhgui'],
     }
 
     $webroot_dir = '/usr/share/xhgui/webroot'
