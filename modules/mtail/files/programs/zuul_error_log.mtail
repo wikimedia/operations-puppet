@@ -1,0 +1,25 @@
+# Counts unexpected Exception lines
+
+# Prometheus style name
+counter zuul_exceptions_total
+
+hidden gauge last_timestamp
+
+# Grok the timestamp, to be used in the Exception line which comes later
+/^(?P<date>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}),\d{3} / {
+  strptime($date, "2006-01-02 03:04:05")
+  last_timestamp = timestamp()
+}
+
+/^Exception:/ {
+  settime(last_timestamp)
+
+  # Skip exceptions that we don't care about.
+  /error: fatal: Cannot reduce vote on labels for closed change:/ {
+
+  } else {
+    # Something unexpected
+    zuul_exceptions_total++
+  }
+}
+

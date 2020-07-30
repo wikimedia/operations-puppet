@@ -1,12 +1,13 @@
 # == Class zuul::monitoring::server
 #
-# Icinga monitoring for the Zuul server
+# Icinga and mtail monitoring for the Zuul server
 #
 # == Parameters
 #
 # [*ensure*]
 #
 class zuul::monitoring::server (
+    $prometheus_nodes,
     Wmflib::Ensure $ensure = present,
 ) {
 
@@ -41,5 +42,18 @@ class zuul::monitoring::server (
         warning         => 90,
         critical        => 150,
         notes_link      => 'https://www.mediawiki.org/wiki/Continuous_integration/Zuul',
+    }
+
+    # Installs a particular mtail program into /etc/mtail/
+    mtail::program { 'zuul_error_log':
+      source => 'puppet:///modules/mtail/programs/zuul_error_log.mtail',
+    }
+
+    $prometheus_nodes_ferm = join($prometheus_nodes, ' ')
+
+    ferm::service { 'mtail':
+      proto  => 'tcp',
+      port   => '3903',
+      srange => "(@resolve((${prometheus_nodes_ferm})) @resolve((${prometheus_nodes_ferm}), AAAA))",
     }
 }
