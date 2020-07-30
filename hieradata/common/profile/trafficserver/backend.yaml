@@ -197,7 +197,7 @@ profile::trafficserver::backend::mapping_rules:
       replacement: https://analytics-tool1004.eqiad.wmnet
     - type: map
       target: http://thanos.wikimedia.org
-      replacement: https://thanos-query.discovery.wmnet
+      replacement: https://thanos-sso.discovery.wmnet
     - type: map
       target: http://ticket.wikimedia.org
       replacement: https://ticket.discovery.wmnet:1443
