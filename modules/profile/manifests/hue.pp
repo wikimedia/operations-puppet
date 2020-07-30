@@ -112,7 +112,9 @@ class profile::hue (
     $hue_port = $::cdh::hue::http_port
 
     if $enable_cas {
-        include profile::idp::client::httpd
+        class {'profile::idp::client::httpd':
+            vhost_settings => { 'hue_port' => $hue_port },
+        }
     } else {
         httpd::site { $server_name:
             content => template('profile/hue/hue.vhost.erb'),
