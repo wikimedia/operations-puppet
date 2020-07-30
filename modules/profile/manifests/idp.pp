@@ -27,6 +27,8 @@ class profile::idp(
                                                             {'default_value' => undef}),
     Optional[String]       $totp_encryption_key    = lookup('profile::idp::totp_encryption_key',
                                                             {'default_value' => undef}),
+    Optional[Integer]      $u2f_token_expiry_days  = lookup('profile::idp::u2f_token_expiry_days',
+                                                            {'default_value' => undef}),
 ){
 
     include passwords::ldap::production
@@ -104,6 +106,7 @@ class profile::idp(
         u2f_jpa_password       => $u2f_jpa_password,
         u2f_jpa_server         => $u2f_jpa_server,
         u2f_jpa_db             => $u2f_jpa_db,
+        u2f_token_expiry_days  => $u2f_token_expiry_days,
     }
 
     ferm::service {'cas-https':

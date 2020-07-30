@@ -59,6 +59,7 @@ class apereo_cas (
     String                            $u2f_jpa_password              = 'changeme',
     String                            $u2f_jpa_server                = '127.0.0.1',
     String                            $u2f_jpa_db                    = 'cas',
+    Optional[Integer]                 $u2f_token_expiry_days         = undef,
 ) {
     if $keystore_source == undef and $keystore_content == undef and $server_enable_ssl {
         error('you must provide either $keystore_source or $keystore_content')
