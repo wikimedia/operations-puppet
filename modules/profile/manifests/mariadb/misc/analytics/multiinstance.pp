@@ -36,21 +36,21 @@ disabled, use mariadb@<instance_name> instead'; exit 1\"",
 
     if $matomo {
         mariadb::instance { 'matomo':
-            port                    => 3321,
+            port                    => 3351,
             innodb_buffer_pool_size => $matomo,
         }
         profile::mariadb::section { 'matomo': }
-        profile::mariadb::ferm { 'matomo': port => '3321' }
-        profile::prometheus::mysqld_exporter_instance { 'matomo': port => 13321, }
+        profile::mariadb::ferm { 'matomo': port => '3351' }
+        profile::prometheus::mysqld_exporter_instance { 'matomo': port => 13351, }
     }
     if $analytics_meta {
         mariadb::instance { 'analytics_meta':
-            port                    => 3322,
+            port                    => 3352,
             innodb_buffer_pool_size => $analytics_meta,
         }
         profile::mariadb::section { 'analytics_meta': }
-        profile::mariadb::ferm { 'analytics_meta': port => '3322' }
-        profile::prometheus::mysqld_exporter_instance { 'analytics_meta': port => 13322, }
+        profile::mariadb::ferm { 'analytics_meta': port => '3352' }
+        profile::prometheus::mysqld_exporter_instance { 'analytics_meta': port => 13352, }
     }
 
     class { 'mariadb::monitor_disk':
