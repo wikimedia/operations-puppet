@@ -1,0 +1,313 @@
+# backy configuration for backy2 Version 2
+
+[DEFAULTS]
+# Where should the backy logfile be placed?
+# Backy will by default log INFO, WARNING and ERROR to this log.
+# If you also need DEBUG information, please start backy with '-v'.
+logfile: /var/log/backy.log
+
+# Default block size. 4MB are recommended.
+# DO NOT CHANGE WHEN BACKUPS EXIST!
+block_size: 4194304
+
+# Hash function to use. Use a large one to avoid collisions.
+# DO NOT CHANGE WHEN BACKUPS EXIST!
+hash_function: sha512
+
+# for some operations, full backy or single versions need to be locked for
+# simulatanous access. In the lock_dir we will create backy_*.lock files.
+lock_dir: /run
+
+# Directory where temporary data is stored when changing data in fuse mounts
+cachedir: /tmp
+
+# To be able to find other backys running, we need a system-wide unique name
+# for all backy processes.
+# DO NOT CHANGE WHILE backy2 PROCESSES ARE RUNNING!
+process_name: backy2
+
+# Allow rm of backup versions after n days (set to 0 to disable, i.e. to be
+# able to delete any version)
+disallow_rm_when_younger_than_days: 6
+
+# Use deduplication? This will create some load on your database
+# but we will find same blocks and won't store them twice.
+deduplication: 1
+
+# All backy2 data is encrypted in the data backends. Generate a key via
+# $ openssl rand -hex 32
+# The key must be in hex notation (which the above command will output).
+# Here is an example. Create your own and make sure you save it elsewhere. If
+# this key is lost, all your backups are too.
+# If unset, no encryption will be used.
+# encryption_key: none
+
+# Encryption versions:
+# 0: No encryption/compression
+# 1: AES_GCM 256 bit encryption + zstandard level 1 compression
+# NOTE:
+# If you install this on ubuntu 18.04 (or less) you cannot use the system's
+# packages for zstandard (non existant) or pycryptodome (too old).
+# You will have to manually
+#   $ sudo pip3 install zstandard
+#   $ sudo pip3 install pycryptodome
+# Until ubuntu has newer packages, we will stick with default
+# encryption_version 0 for better user experience.
+encryption_version: 0
+
+
+[MetaBackend]
+# Of which type is the Metadata Backend Engine?
+# Available types:
+#   backy2.meta_backends.sql
+
+#######################################
+# backy2.meta_backends.sql
+#######################################
+type: backy2.meta_backends.sql
+
+# Which SQL Server?
+# Available servers:
+#   sqlite:////path/to/sqlitefile
+#   postgresql:///database
+#   postgresql://user:password@host:port/database
+
+engine: mysql://<%= @db_user %>:<%= @db_pass %>@<%= @db_host %>/<%= @db_name %>
+
+[DataBackend]
+# Which data backend to use?
+# Available types:
+#   backy2.data_backends.file
+#   backy2.data_backends.s3
+
+
+#######################################
+# backy2.data_backends.file
+#######################################
+type: backy2.data_backends.file
+
+# Store data to this path. A structure of 2 folders depth will be created
+# in this path (e.g. '0a/33'). Blocks of DEFAULTS.block_size will be stored
+# there. This is your backup storage!
+path: /srv/backy2/data
+
+# How many writes to perform in parallel. This is useful if your backup space
+# can perform parallel writes faster than serial ones.
+simultaneous_writes: 5
+
+# How many reads to perform in parallel. This is useful if your backup space
+# can perform parallel reads faster than serial ones.
+simultaneous_reads: 5
+
+# Bandwidth throttling (set to 0 to disable, i.e. use full bandwidth)
+# bytes per second
+#bandwidth_read: 78643200
+#bandwidth_write: 78643200
+
+#######################################
+# backy2.data_backends.s3
+#######################################
+#type: backy2.data_backends.s3
+
+# Your s3 access key
+#aws_access_key_id: key
+# Or the file containing the key
+#aws_access_key_id_file: file
+
+# Your s3 secret access key
+#aws_secret_access_key: secretkey
+# Or the file containing the secret key
+#aws_secret_access_key_file: file
+
+# Optional: The region name
+#region_name:
+
+# The endpoint URL (e.g. https://storage.googleapis.com/)
+# endpoint_url: http://localhost:9000/
+
+# Optional: The signature version
+#signature_version:
+
+# Use SSL?
+#use_ssl: false
+
+# Store to this bucket name:
+#bucket_name: backy2
+
+# Optional: Addressing style
+#addressing_style: path
+
+# Optional:
+#disable_encoding_type: false
+
+# How many s3 puts to perform in parallel
+#simultaneous_writes: 5
+
+# How many reads to perform in parallel. This is useful if your backup space
+# can perform parallel reads faster than serial ones.
+#simultaneous_reads: 5
+
+# Bandwidth throttling (set to 0 to disable, i.e. use full bandwidth)
+# bytes per second
+#bandwidth_read: 78643200
+#bandwidth_write: 78643200
+
+
+#######################################
+# backy2.enterprise.data_backends.minio
+# This lib is faster than amazon's boto3
+# You must install the minio python library:
+#   sudo pip3 install minio
+#######################################
+# type: backy2.data_backends.minio
+
+# Your s3 access key
+#aws_access_key_id: minioadmin
+# Or the file containing the key
+#aws_access_key_id_file:
+
+# Your s3 secret access key
+#aws_secret_access_key: minioadmin
+# Or the file containing the secret key
+#aws_secret_access_key_file: file
+
+# Optional: The region name
+#region_name:
+
+# The endpoint host (e.g. storage.googleapis.com)
+#host: localhost:9000
+
+# Use SSL?
+#secure: false
+
+# Store to this bucket name:
+#bucket_name: backy2
+
+# How many s3 puts to perform in parallel
+#simultaneous_writes: 20
+
+# How many reads to perform in parallel. This is useful if your backup space
+# can perform parallel reads faster than serial ones.
+#simultaneous_reads: 20
+
+# Bandwidth throttling (set to 0 to disable, i.e. use full bandwidth)
+# bytes per second
+#bandwidth_read: 78643200
+#bandwidth_write: 78643200
+
+
+#######################################
+# backy2.data_backends.null
+#######################################
+# DO NOT USE THIS IN PRODUCTION. THIS IS ONLY FOR TESTING!!!
+# This target writes to nowhere, so all data is lost. This is especially
+# used for performance bottleneck testing.
+#type: backy2.data_backends.null
+# Bandwidth throttling (set to 0 to disable, i.e. use full bandwidth)
+# bytes per second
+#bandwidth_read: 78643200
+#bandwidth_write: 78643200
+# DO NOT USE THIS IN PRODUCTION. THIS IS ONLY FOR TESTING!!!
+
+
+[io_file]
+# Configure the file IO (file://<path>)
+# This is for a file or a blockdevice (e.g. /dev/sda)
+
+# How many parallel reads are permitted? (also affects the queue length)
+simultaneous_reads: 5
+
+# How many parallel writes are permitted for restore?
+simultaneous_writes: 5
+
+
+[io_rbd]
+# Configure the rbd IO (rbd://<pool>/<imagename>[@<snapshotname>])
+# This accepts rbd images in the form rbd://pool/image@snapshot or rbd://pool/image
+
+# Rados name (default: client.admin)
+rados_name: <%= @rados_name %>
+
+# Cluster name (default: ceph)
+cluster_name: <%= @cluster_name %>
+
+# Where to look for the ceph configfile to read keys and hosts from it
+ceph_conffile: /etc/ceph/ceph.conf
+
+# How many parallel reads are permitted? (also affects the queue length)
+simultaneous_reads: 10
+
+# How many parallel writes are permitted for restore?
+simultaneous_writes: 5
+
+# When restoring images, new images are created (if you don't --force). For these
+# newly created images, use these features:
+new_image_features:
+    RBD_FEATURE_LAYERING
+    RBD_FEATURE_EXCLUSIVE_LOCK
+#RBD_FEATURE_STRIPINGV2
+#RBD_FEATURE_OBJECT_MAP
+#RBD_FEATURE_FAST_DIFF
+#RBD_FEATURE_DEEP_FLATTEN
+
+
+[io_null]
+# Configure the random / null IO (null://<size>)
+# FOR TESTING ONLY. DO NOT USE IN PRODUCTION
+
+# How many parallel reads are permitted? (also affects the queue length)
+simultaneous_reads: 5
+simultaneous_writes: 5
+
+
+
+# Schedulers
+
+# Allowed for sla and interval:
+# number+s
+# number+m
+# number+h
+# number+d
+# Please note that SLA is +-.
+
+[hourly]
+interval: 1h
+keep: 25
+sla: 1h
+
+[daily]
+interval: 1d
+keep: 8
+sla: 6h
+
+[weekly]
+interval: 7d
+keep: 5
+sla: 12h
+
+[monthly]
+interval: 30d
+keep: 3
+sla: 3d
+
+
+
+[longterm_hourly]
+interval: 1h
+keep: 49
+sla: 2h
+
+[longterm_daily]
+interval: 1d
+keep: 14
+sla: 12h
+
+[longterm_weekly]
+interval: 7d
+keep: 10
+sla: 1d
+
+[longterm_monthly]
+interval: 30d
+keep: 6
+sla: 7d
