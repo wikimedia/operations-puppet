@@ -6,6 +6,7 @@ class profile::druid::historical(
     $daemon_autoreload  = hiera('profile::druid::daemons_autoreload', true),
     $ferm_srange        = hiera('profile::druid::ferm_srange', '$DOMAIN_NETWORKS'),
     $monitoring_enabled = hiera('profile::druid::historical::monitoring_enabled', false),
+    $apache_release     = lookup('profile::druid::apache_release', { 'default_value' => false }),
 ) {
 
     require ::profile::druid::common
@@ -49,11 +50,18 @@ class profile::druid::historical(
         }
     }
 
+    if $apache_release {
+        $class_prefix = 'org.apache.druid'
+    } else {
+        $class_prefix = 'io.druid'
+    }
+
     # Druid historical Service
     class { '::druid::historical':
         properties       => merge($properties, $extra_properties),
         env              => merge($env, $druid_extra_env_var),
         should_subscribe => $daemon_autoreload,
+        logger_prefix    => $class_prefix,
     }
 
     ferm::service { 'druid-historical':
@@ -65,7 +73,7 @@ class profile::druid::historical(
     if $monitoring_enabled {
         nrpe::monitor_service { 'druid-historical':
             description  => 'Druid historical',
-            nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a \'io.druid.cli.Main server historical\'',
+            nrpe_command => "/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a \'${class_prefix}.cli.Main server historical\'",
             critical     => false,
             notes_url    => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Druid',
         }
