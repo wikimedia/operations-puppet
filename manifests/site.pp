@@ -2364,8 +2364,12 @@ node /^wtp20(0[1-9]|1[0-9]|2[0-4])\.codfw\.wmnet$/ {
     role(parsoid)
 }
 
-node 'xhgui1001.eqiad.wmnet', 'xhgui2001.codfw.wmnet' {
+node 'xhgui1001.eqiad.wmnet' {
     role(xhgui::app)
+}
+
+node 'xhgui2001.codfw.wmnet' {
+    role(webperf::xhgui)
 }
 
 node default {
