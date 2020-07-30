@@ -49,8 +49,8 @@ class profile::kafkatee::webrequest::ops (
     }
 
     rsync::quickdatacopy { 'webrequest':
-        ensure              => present,
-        source_host         => 'weblog1001.eqiad.wmnet',
+        ensure              => absent,
+        source_host         => 'centrallog1001.eqiad.wmnet',
         dest_host           => 'centrallog2001.codfw.wmnet',
         auto_sync           => false,
         module_path         => '/srv/log',

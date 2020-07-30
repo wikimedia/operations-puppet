@@ -2345,11 +2345,6 @@ node /^wdqs10(09|10)\.eqiad\.wmnet$/ {
     role(wdqs::test)
 }
 
-node 'weblog1001.eqiad.wmnet'
-{
-    role(logging::webrequest::ops)
-}
-
 # VMs for performance team replacing hafnium (T179036)
 node /^webperf[12]001\.(codfw|eqiad)\.wmnet/ {
     role(webperf::processors_and_site)
