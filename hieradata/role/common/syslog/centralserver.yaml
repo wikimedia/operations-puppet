@@ -8,3 +8,5 @@ profile::bird::advertise_vips:
     check_cmd: "/bin/sh -c 'ss -lun | fgrep -q :10514'"
     ensure: present
     service_type: centralserver
+
+profile::profile::kafkatee::webrequest::ops::active_host: 'centrallog1001.eqiad.wmnet'

@@ -1,9 +1,8 @@
-# == Class role::logging::kafkatee::webrequest::ops
+# == Class profile::kafkatee::webrequest::ops
 # Includes output filters useful for operational debugging.
 #
 class profile::kafkatee::webrequest::ops (
-    $logstash_host = hiera('logstash_host'),
-    $logstash_port = hiera('logstash_json_lines_port'),
+    Stdlib::Host $active_host = lookup('profile::profile::kafkatee::webrequest::ops::active_host')
 ) {
     include ::profile::kafkatee::webrequest::base
     include ::geoip
@@ -40,9 +39,17 @@ class profile::kafkatee::webrequest::ops (
         type          => 'pipe',
     }
 
+    # Make sure only the active host sends 5xx to logging pipeline
+    if ($active_host == $::fqdn) {
+        $syslog_output = present
+    } else {
+        $syslog_output = absent
+    }
+
     # Send 5xx to syslog, append "type: webrequest" and "@cee: " for syslog structured logging
     # These logs will be injected into the logging pipeline and thus to logstash
     kafkatee::output { 'logstash-5xx':
+        ensure        => $syslog_output,
         instance_name => 'webrequest',
         destination   => "/bin/grep --line-buffered '\"http_status\":\"5' | jq --compact-output --arg type webrequest '. + {type: \$type}' | sed 's/^/@cee: /' | logger --size 16384 -t webrequest",
         type          => 'pipe',
