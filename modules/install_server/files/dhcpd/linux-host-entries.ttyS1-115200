@@ -917,6 +917,51 @@ host cloudvirt1030 {
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
+host cloudvirt1031 {
+        hardware ethernet BC:97:E1:4A:7B:BA;
+        fixed-address cloudvirt1031.eqiad.wmnet;
+}
+
+host cloudvirt1032 {
+        hardware ethernet BC:97:E1:4A:12:D2;
+        fixed-address cloudvirt1032.eqiad.wmnet;
+}
+
+host cloudvirt1033 {
+        hardware ethernet BC:97:E1:4A:37:2C;
+        fixed-address cloudvirt1033.eqiad.wmnet;
+}
+
+host cloudvirt1034 {
+        hardware ethernet BC:97:E1:4A:6D:50;
+        fixed-address cloudvirt1034.eqiad.wmnet;
+}
+
+host cloudvirt1035 {
+        hardware ethernet BC:97:E1:4A:68:52;
+        fixed-address cloudvirt1035.eqiad.wmnet;
+}
+
+host cloudvirt1036 {
+        hardware ethernet BC:97:E1:4A:06:DE;
+        fixed-address cloudvirt1036.eqiad.wmnet;
+}
+
+host cloudvirt1037 {
+        hardware ethernet BC:97:E1:4A:14:B8;
+        fixed-address cloudvirt1037.eqiad.wmnet;
+}
+
+host cloudvirt1038 {
+        hardware ethernet BC:97:E1:4A:52:62;
+        fixed-address cloudvirt1038.eqiad.wmnet;
+}
+
+host cloudvirt1039 {
+        hardware ethernet BC:97:E1:4A:7D:22;
+        fixed-address cloudvirt1039.eqiad.wmnet;
+}
+
 host cloudvirt-wdqs1001 {
     hardware ethernet 4C:D9:8F:93:C7:3E;
     fixed-address cloudvirt-wdqs1001.eqiad.wmnet;
