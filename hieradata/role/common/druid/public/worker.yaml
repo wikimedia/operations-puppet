@@ -31,6 +31,8 @@ profile::kerberos::keytabs::keytabs_metadata:
     group: 'druid'
     filename: 'druid.keytab'
 
+profile::druid::apache_release: true
+profile::prometheus::druid_exporter::druid_version: '0.19.0'
 
 # -- Druid common configuration
 
@@ -86,7 +88,7 @@ profile::druid::broker::properties:
   druid.emitter: composing
   druid.emitter.composing.emitters: ["logging","http"]
   druid.emitter.http.recipientBaseUrl: "http://localhost:8000/"
-  druid.monitoring.monitors: ["io.druid.server.metrics.QueryCountStatsMonitor"]
+  druid.monitoring.monitors: ["org.apache.druid.server.metrics.QueryCountStatsMonitor"]
   druid.processing.numThreads: 10
   druid.processing.buffer.sizeBytes: 268435456 # 1024 * 1024 * 256
   # Set numMergeBuffers to use v2 groupBy engine
@@ -144,7 +146,7 @@ profile::druid::historical::properties:
   druid.historical.cache.populateCache: false
   # Sane value to abort a query that takes more than 5s to complete
   druid.server.http.defaultQueryTimeout: 5000
-  druid.monitoring.monitors: ["io.druid.server.metrics.HistoricalMetricsMonitor", "io.druid.server.metrics.QueryCountStatsMonitor"]
+  druid.monitoring.monitors: ["org.apache.druid.server.metrics.HistoricalMetricsMonitor", "org.apache.druid.server.metrics.QueryCountStatsMonitor"]
 profile::druid::historical::env:
   DRUID_HEAP_OPTS: "-Xmx8g -Xms4g"
   DRUID_EXTRA_JVM_OPTS: "-XX:NewSize=2g -XX:MaxNewSize=2g -XX:+UseG1GC -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -Djava.util.logging.manager=org.apache.logging.log4j.jul.LogManager -Djava.io.tmpdir=/srv/druid/tmp"
@@ -158,7 +160,7 @@ profile::druid::middlemanager::properties:
   druid.processing.numThreads: 3
   druid.processing.buffer.sizeBytes: 356515840
   druid.server.http.numThreads: 20
-  druid.indexer.runner.javaOpts: "-server -Xmx2g -XX:+UseG1GC -XX:MaxGCPauseMillis=100 -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -Dhadoop.mapreduce.job.user.classpath.first=true"
+  druid.indexer.runner.javaOpts: "-server -Xmx2g -XX:+UseG1GC -XX:MaxGCPauseMillis=100 -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -Dhadoop.mapreduce.job.classloader=true"
 profile::druid::middlemanager::env:
   DRUID_HEAP_OPTS: "-Xmx64m -Xms64m"
   DRUID_EXTRA_JVM_OPTS: "-XX:+UseConcMarkSweepGC -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -Djava.io.tmpdir=/srv/druid/tmp"
