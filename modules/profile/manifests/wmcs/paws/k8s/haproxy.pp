@@ -15,7 +15,7 @@ class profile::wmcs::paws::k8s::haproxy (
     acme_chief::cert { $cert_name:
         puppet_rsc => Service['haproxy'],
     }
-    $cert_file = "/etc/acmecerts/${cert_name}/live/ec-prime256v1.crt.key"
+    $cert_file = "/etc/acmecerts/${cert_name}/live/ec-prime256v1.chained.crt.key"
 
     package { 'haproxy':
         ensure => present,
