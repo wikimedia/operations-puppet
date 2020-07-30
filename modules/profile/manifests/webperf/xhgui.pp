@@ -19,7 +19,7 @@ class profile::webperf::xhgui (
     include ::passwords::ldap::production
 
     # Package xhgui (and dependencies) is built from performance/debs
-    require_package('libapache2-mod-php7.3', 'php7.3-mysql', 'xhgui')
+    require_package('libapache2-mod-php7.3', 'php7.3-mysql')
 
     # php-twig 1.24.0 is from stretch.  We've rebuilt it for buster but the
     # older version needs to be pinned in order for apt to use it.  (xhgui is
@@ -31,6 +31,10 @@ class profile::webperf::xhgui (
             priority => '1001',
             before   => Package['xhgui'],
         }
+    }
+
+    package { 'xhgui':
+        ensure => 'present',
     }
 
     ferm::service { 'webperf-xhgui-http':
