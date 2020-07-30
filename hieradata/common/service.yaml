@@ -2979,18 +2979,18 @@ service::catalog:
     encryption: true
     ip:
       codfw:
-        default: 10.64.48.26
-      eqiad:
         default: 10.192.48.159
+      eqiad:
+        default: 10.64.48.26
     monitoring:
       check_command: check_https_url_for_string!helm-charts.discovery.wmnet!/health!true
       notes_url: 'https://wikitech.wikimedia.org/wiki/ChartMuseum' 
       critical: false
       sites:
         codfw:
-          hostname: chartmuseum1001
-        eqiad:
           hostname: chartmuseum2001
+        eqiad:
+          hostname: chartmuseum1001
     sites:
       - eqiad
       - codfw
