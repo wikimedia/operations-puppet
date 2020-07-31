@@ -2295,10 +2295,8 @@ node /^urldownloader[12]00[12]\.wikimedia\.org/ {
     role(url_downloader)
 }
 
-# To see cloudvirt nodes active in the scheduler look at hiera:
-#  key: profile::openstack::eqiad1::nova::scheduler_pool
-# We try to keep a few empty as emergency fail-overs
-#  or transition hosts for maintenance to come
+# To learn what will get scheduled on a given cloudvirt, consult
+# https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Host_aggregates
 node /^cloudvirt100[1-3,5,7-9]\.eqiad\.wmnet$/ {
     role(wmcs::openstack::eqiad1::virt)
 }
