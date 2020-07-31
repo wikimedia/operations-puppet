@@ -27,7 +27,8 @@ class profile::graphite::base(
     $hostname         = 'graphite.wikimedia.org',
     $cors_origins     = [ 'https://grafana.wikimedia.org', 'https://grafana-next.wikimedia.org' ],
     $c_relay_settings = {},
-    $cluster_servers  = undef,
+    $cluster_servers  = lookup('profile::graphite::base::cluster_servers'),
+    $uwsgi_processes  = lookup('profile::graphite::base::uwsgi_processes'),
     $uwsgi_max_request_duration_seconds = undef,  # lint:ignore:wmf_styleguide
     $uwsgi_max_request_rss_megabytes = undef,     # lint:ignore:wmf_styleguide
     $provide_vhost    = true,                     # lint:ignore:wmf_styleguide
@@ -231,6 +232,7 @@ class profile::graphite::base(
         cors_origins                       => $cors_origins,
         uwsgi_max_request_duration_seconds => $uwsgi_max_request_duration_seconds,
         uwsgi_max_request_rss_megabytes    => $uwsgi_max_request_rss_megabytes,
+        uwsgi_processes                    => $uwsgi_processes,
     }
 
 

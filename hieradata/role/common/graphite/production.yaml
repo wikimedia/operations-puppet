@@ -2,7 +2,7 @@ cluster: graphite
 admin::groups:
   - perf-roots
   - graphite-admins
-graphite::web::uwsgi_processes: 16
+profile::graphite::base::uwsgi_processes: 16
 profile::tlsproxy::envoy::global_cert_name: "graphite.discovery.wmnet"
 profile::idp::client::httpd::vhost_content: 'profile/idp/client/httpd-graphite.erb'
 profile::idp::client::httpd::virtual_host: 'graphite.wikimedia.org'
