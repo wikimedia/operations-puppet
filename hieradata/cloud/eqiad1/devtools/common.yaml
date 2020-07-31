@@ -10,8 +10,6 @@ phabricator_logmail: false
 phabricator_deploy_user: 'deploy-devtools'
 phabricator::tools::dump: false
 
-apache::logrotate::period: "daily"
-apache::logrotate::rotate: 3
 
 profile::phabricator::main::manage_scap_user: false
 

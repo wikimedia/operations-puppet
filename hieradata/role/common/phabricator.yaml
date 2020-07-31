@@ -3,8 +3,6 @@ admin::groups:
   - phabricator-admin
   - phabricator-roots
   - phabricator-bulk-manager
-apache::logrotate::period: "daily"
-apache::logrotate::rotate: 3
 
 # List of all Phabricator servers.
 # Used in firewall as sources who are allowed to rsync from the

@@ -48,8 +48,6 @@ striker::uwsgi::config:
 
 # striker::uwsgi::secret_config: exists in private repo
 
-apache::logrotate::period: 'daily'
-apache::logrotate::rotate: 30
 
 # Currently unused:
 profile::openstack::base::nutcracker::memcached::size: 6000

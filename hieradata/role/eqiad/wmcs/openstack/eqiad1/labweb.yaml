@@ -48,8 +48,6 @@ striker::uwsgi::config:
 
 # striker::uwsgi::secret_config: exists in private repo
 
-apache::logrotate::period: 'daily'
-apache::logrotate::rotate: 30
 
 #lvs::realserver::realserver_ips:
 #    - '10.2.2.40' # labweb.svc.eqiad.wmnet
