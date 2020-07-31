@@ -1,9 +1,9 @@
 class profile::zuul::server(
-    $conf_common = hiera('zuul::common'),
-    $conf_server = hiera('profile::zuul::server::conf'),
-    $service_enable = hiera('profile::zuul::server::service_enable', true),
-    $service_ensure = hiera('profile::zuul::server::service_ensure', 'running'),
-    $email_server = hiera('profile::zuul::server::email_server', undef),
+    $conf_common = lookup('zuul::common'),
+    $conf_server = lookup('profile::zuul::server::conf'),
+    $service_enable = lookup('profile::zuul::server::service_enable', {default_value => true}),
+    $service_ensure = lookup('profile::zuul::server::service_ensure', {default_value => 'running'}),
+    $email_server = lookup('profile::zuul::server::email_server'),
 ) {
     system::role { 'zuul::server': description => 'Zuul server (scheduler)' }
 
