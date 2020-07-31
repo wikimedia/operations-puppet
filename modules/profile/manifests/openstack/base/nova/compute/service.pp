@@ -122,7 +122,6 @@ class profile::openstack::base::nova::compute::service(
         ceph_rbd_pool        => $ceph_rbd_pool,
         ceph_rbd_client_name => $ceph_rbd_client_name,
         libvirt_rbd_uuid     => $libvirt_rbd_uuid,
-        require              => Mount['/var/lib/nova/instances'],
     }
     contain '::openstack::nova::compute::service'
 }
