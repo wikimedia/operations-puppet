@@ -365,6 +365,15 @@ class MariaBackup(NullBackup):
         elif port == 3320:
             data_dir = '/srv/sqldata.x1'
             socket_dir = '/run/mysqld/mysqld.x1.sock'
+        elif port == 3350:
+            data_dir = '/srv/sqldata.staging'
+            socket_dir = '/run/mysqld/mysqld.staging.sock'
+        elif port == 3351:
+            data_dir = '/srv/sqldata.matomo'
+            socket_dir = '/run/mysqld/mysqld.matomo.sock'
+        elif port == 3352:
+            data_dir = '/srv/sqldata.analytics_meta'
+            socket_dir = '/run/mysqld/mysqld.analytics_meta.sock'
         else:
             data_dir = '/srv/sqldata.m' + str(port)[-1:]
             socket_dir = '/run/mysqld/mysqld.m' + str(port)[-1:] + '.sock'

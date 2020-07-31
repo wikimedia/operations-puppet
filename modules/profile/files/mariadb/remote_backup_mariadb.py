@@ -241,6 +241,10 @@ def get_socket_from_port(port):
         socket = '/run/mysqld/mysqld.x1.sock'
     elif port == 3350:
         socket = '/run/mysqld/mysqld.staging.sock'
+    elif port == 3351:
+        socket = '/run/mysqld/mysqld.matomo.sock'
+    elif port == 3352:
+        socket = '/run/mysqld/mysqld.analytics_meta.sock'
     else:
         socket = '/run/mysqld/mysqld.m' + str(port)[-1:] + '.sock'
 
