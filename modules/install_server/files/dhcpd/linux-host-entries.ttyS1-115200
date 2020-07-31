@@ -932,43 +932,36 @@ host cloudvirt1032 {
 host cloudvirt1033 {
     hardware ethernet BC:97:E1:4A:37:2C;
     fixed-address cloudvirt1033.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host cloudvirt1034 {
     hardware ethernet BC:97:E1:4A:6D:50;
     fixed-address cloudvirt1034.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host cloudvirt1035 {
     hardware ethernet BC:97:E1:4A:68:52;
     fixed-address cloudvirt1035.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host cloudvirt1036 {
     hardware ethernet BC:97:E1:4A:06:DE;
     fixed-address cloudvirt1036.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host cloudvirt1037 {
     hardware ethernet BC:97:E1:4A:14:B8;
     fixed-address cloudvirt1037.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host cloudvirt1038 {
     hardware ethernet BC:97:E1:4A:52:62;
     fixed-address cloudvirt1038.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host cloudvirt1039 {
     hardware ethernet BC:97:E1:4A:7D:22;
     fixed-address cloudvirt1039.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host cloudvirt-wdqs1001 {
