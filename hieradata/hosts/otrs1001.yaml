@@ -1,4 +1,5 @@
 profile::otrs::database_host: db1077.eqiad.wmnet
 profile::otrs::database_user: otrstest
 profile::otrs::daemon: true
+profile::otrs::reject_outgoing_smtp: true
 # profile::otrs::database_pass: in the private repo

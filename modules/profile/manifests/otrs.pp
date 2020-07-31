@@ -11,6 +11,7 @@ class profile::otrs(
     $exim_database_user = hiera('profile::otrs::exim_database_user'),
     $exim_database_pass = hiera('profile::otrs::exim_database_pass'),
     $prometheus_nodes   = hiera('prometheus_nodes'),
+    $reject_outgoing_smtp = lookup('profile::otrs::reject_outgoing_smtp', {default_value => false}),
 ){
     include network::constants
     include ::profile::prometheus::apache_exporter
@@ -52,6 +53,15 @@ class profile::otrs(
         proto  => 'tcp',
         port   => '80',
         srange => '$CACHES',
+    }
+    # T187984: Make sure no outgoing emails flow out from the test instance for
+    # the migration period
+    if $reject_outgoing_smtp {
+        ferm::rule { 'reject_outgoing_smtp':
+            rule  => 'proto tcp dport 25 REJECT',
+            chain => 'OUTPUT',
+            desc  => 'Avoid the test instance sending emails to users',
+        }
     }
 
     $smtp_ferm = join($::mail_smarthost, ' ')
