@@ -15,7 +15,7 @@ groups:
               mtizzoni, panisson, paolotti, ciro, dartar, melodykramer, gtirloni, tbayer, pirroh,
               bawolff, dkg, juliaglen, cwdent, hpham, atgomez, dfoy, alaasarhan, onimisionipe,
               tieu, flemmerich, jsamra, anomie, lexnasser, jmorgan, thargrove, nathante,
-              drossi, fsalutari]
+              drossi, fsalutari, demon]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -124,7 +124,7 @@ groups:
   releasers-mediawiki:
     gid: 711
     description: people who upload mediawiki releases
-    members: [catrope, demon, hashar, legoktm, reedy, thcipriani, twentyafterfour, brennen,
+    members: [catrope, hashar, legoktm, reedy, thcipriani, twentyafterfour, brennen,
               jforrester]
     privileges: ['ALL = (jenkins) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /usr/sbin/service jenkins *']
@@ -139,7 +139,7 @@ groups:
   releasers-wikidiff2:
     gid: 804
     description: people who upload wikidiff2 releases (T202473)
-    members: [demon, legoktm, wmde-fisch, thiemowmde]
+    members: [legoktm, wmde-fisch, thiemowmde]
   releasers-blubber:
     gid: 808
     description: people who upload blubber releases
@@ -152,7 +152,7 @@ groups:
   udp2log-users:
     gid: 713
     description: general user tasks for udp2log (RT 5391)
-    members: [milimetric, demon, andyrussg]
+    members: [milimetric, andyrussg]
   researchers:
     gid: 714
     description: Access statistics hosts and also provides
@@ -168,7 +168,7 @@ groups:
   ldap-admins:
     gid: 715
     description: ldap admins
-    members: [reedy, demon, foks]
+    members: [reedy, foks]
     privileges: ['ALL = NOPASSWD: /usr/local/sbin/add-ldap-user',
                  'ALL = NOPASSWD: /usr/local/sbin/delete-ldap-user',
                  'ALL = NOPASSWD: /usr/local/sbin/modify-ldap-user',
@@ -183,7 +183,7 @@ groups:
   contint-admins:
     gid: 719
     description: users with some sudo permissions on the CI masters (Jenkins, Zuul).
-    members: [bd808, cscott, dduvall, demon, krinkle, reedy, marktraceur,
+    members: [bd808, cscott, dduvall, krinkle, reedy, marktraceur,
               twentyafterfour, zfilipin, thcipriani, legoktm, gjg,
               hashar, niedzielski, addshore, liw, jhuneidi, brennen,
               jforrester, dancy]
@@ -217,7 +217,7 @@ groups:
   logstash-roots:
     gid: 722
     description: users with root access on logstash nodes (rt 6366, 6896)
-    members: [demon, reedy]
+    members: [reedy]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   statistics-web-users:
     gid: 724
@@ -274,7 +274,7 @@ groups:
               dcausse, bd808, tjones, mobrovac, jdrewniak, ejegg, jdcc, ori,
               bmansurov, amire80, kartik, pcoombe, foks, kemayo, jkumalah,
               jdlrobson, chelsyx, ovasileva, filippo, pmiazga, faidon,
-              piccardi, fdans, eevans, demon, ladsgroup, musikanimal,
+              piccardi, fdans, eevans, ladsgroup, musikanimal,
               kaldari, goransm, ema, dsaez, shiladsen, rho, mirrys, slaporte, jk,
               ayounsi, mepps, mmiller, seddon, gilles, tstarling, rush, karen,
               cicalese, gbirke, isaacj, sbassett, jdl, gsingers,
@@ -475,7 +475,7 @@ groups:
   deploy-service:
     gid: 763
     description: Service deploy users
-    members: [bd808, eevans, mobrovac, ppchelko, demon, twentyafterfour, thcipriani, dduvall,
+    members: [bd808, eevans, mobrovac, ppchelko, twentyafterfour, thcipriani, dduvall,
               bsitzmann, mholloway-shell, kartik, halfak, ladsgroup, smalyshev, hoo, tgr,
               ssastry, cscott, arlolra, jdlrobson, jforrester, niedzielski, bmansurov,
               pmiazga, phuedx, mbsantos, mvolz, santhosh, nikerabbit, accraze,
@@ -589,7 +589,7 @@ groups:
   deploy-phabricator:
     gid: 778
     description: Group of phabricator deployers
-    members: [twentyafterfour, demon, rush, thcipriani]
+    members: [twentyafterfour, rush, thcipriani]
   sc-admins:
     description: General service cluster admins - sc(a|b)
     gid: 779
@@ -613,7 +613,7 @@ groups:
   labnet-users:
     description: unprivileged access on labnet servers
     gid: 781
-    members: [thcipriani, hashar, dduvall, demon, twentyafterfour, zfilipin, legoktm, liw]
+    members: [thcipriani, hashar, dduvall, twentyafterfour, zfilipin, legoktm, liw]
   ores-admin:
     description: ORES admins
     gid: 782
@@ -722,7 +722,7 @@ groups:
     # Allow this for CI users. There is no gid on purpose, to allow reusing the package provided one
     posix_name: docker # Use posix_name to avoid potential conflicts with other uses of the docker group
     description: Allow releng team to be in the docker group for contint. No gid on purpose
-    members: [*ops_members, dduvall, demon, gjg, hashar, thcipriani, twentyafterfour, zfilipin, legoktm, addshore, reedy, liw, jhuneidi, krinkle, brennen, jforrester, dancy]
+    members: [*ops_members, dduvall, gjg, hashar, thcipriani, twentyafterfour, zfilipin, legoktm, addshore, reedy, liw, jhuneidi, krinkle, brennen, jforrester, dancy]
     system_members: [jenkins-slave]
   builder-docker:
     # There is no gid on purpose, same as above
@@ -1335,14 +1335,13 @@ users:
     uid: 2316
     email: ssastry@wikimedia.org
   demon:
-    ensure: present
+    ensure: absent
     gid: 500
     name: demon
     realname: Chad Horohoe
-    ssh_keys:
-        - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAID3cCf8KZ1UqZvUjg3HbaDvV/X1isC2L30cKBpw/3cFH demon@wmf
+    ssh_keys: []
     uid: 1145
-    email: chad@anyonecanedit.com
+    email: chad@horohoe.email
   qchris:
     ensure: present
     gid: 500
