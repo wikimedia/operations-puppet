@@ -134,7 +134,7 @@ class package_builder(
     # Ship an apt configuration to integrate deb-src entries for jessie and
     # stretch, simplifies fetching the source for older distros by using
     # "apt-get source foo=VERSION" on the package build host
-    ['jessie', 'stretch'].each |String $dist| {
+    ['stretch'].each |String $dist| {
         apt::repository{"${dist}-wikimedia_source_only":
             uri        => 'http://apt.wikimedia.org/wikimedia',
             dist       => "${dist}-wikimedia",
@@ -149,7 +149,7 @@ class package_builder(
         }
         apt::repository{"${dist}-security_source_only":
             uri        => 'http://security.debian.org/debian-security',
-            dist       => "${dist}/update",
+            dist       => "${dist}/updates",
             bin        => false,
             components => 'main non-free contrib',
         }
