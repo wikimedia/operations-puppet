@@ -33,5 +33,5 @@ profile::wmcs::nfs::misc::maps_project_ips:
   - '172.16.5.153' # maps-puppetmaster
   - '172.16.5.154' # maps-tiles1
 
-admin::groups:
+profile::standard::admin_groups:
   - wmcs-roots

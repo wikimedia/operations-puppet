@@ -1,5 +1,5 @@
 cluster: ores
-admin::groups:
+profile::standard::admin_groups:
   - ores-admin
 profile::lvs::realserver::pools:
   ores:

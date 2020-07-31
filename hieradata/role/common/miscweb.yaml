@@ -1,4 +1,4 @@
-admin::groups:
+profile::standard::admin_groups:
   - sitemaps-admins
 profile::microsites::research::server_name: 'research.wikimedia.org'
 profile::microsites::research::server_admin: 'noc@wikimedia.org'

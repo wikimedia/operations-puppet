@@ -1,6 +1,6 @@
 nagios_group: analytics_eqiad
 cluster: analytics
-admin::groups:
+profile::standard::admin_groups:
   - analytics-admins
 
 # Database password will be filled added in profile::superset from the

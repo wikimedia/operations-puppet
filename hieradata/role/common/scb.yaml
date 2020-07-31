@@ -1,5 +1,5 @@
 cluster: scb
-admin::groups:
+profile::standard::admin_groups:
   - sc-admins
   - apertium-admins
   - graphoid-admin

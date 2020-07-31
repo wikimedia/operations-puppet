@@ -4,7 +4,7 @@ contactgroups: 'wmcs-team,admins'
 mgmt_contactgroups: 'wmcs-team-email'
 profile::base::monitor_systemd: false
 
-admin::groups:
+profile::standard::admin_groups:
   - analytics-admins
 
 profile::dumps::distribution::blocked_user_agent_regex: 'Mozilla\/5\.0 \(Linux; Android\) AppleWebKit\/537\.36 \(KHTML, like Gecko\) Chrome\/34\.0\.1847\.131 Safari\/537\.36'

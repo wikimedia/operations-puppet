@@ -1,5 +1,5 @@
 cluster: wmcs
-admin::groups:
+profile::standard::admin_groups:
   - wmcs-roots
 contactgroups: wmcs-team
 mgmt_contactgroups: wmcs-team-email

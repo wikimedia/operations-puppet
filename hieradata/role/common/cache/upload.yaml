@@ -1,6 +1,6 @@
 cluster: cache_upload
 cache::cluster: upload
-admin::groups:
+profile::standard::admin_groups:
   - perf-roots
   - varnish-log-readers
 prometheus::node_exporter::collectors_extra:

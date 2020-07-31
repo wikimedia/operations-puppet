@@ -1,8 +1,8 @@
 nagios_group: analytics_eqiad
 cluster: analytics
-admin::groups:
+profile::standard::admin_groups:
   - analytics-admins
-admin::groups_no_ssh:
+profile::standard::admin_groups_no_ssh:
   - analytics-users
   - analytics-privatedata-users
   # elasticsearch::analytics creates the analytics-search user and group

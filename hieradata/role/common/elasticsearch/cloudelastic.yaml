@@ -1,6 +1,6 @@
 # General configs
 cluster: cloudelastic
-admin::groups:
+profile::standard::admin_groups:
   - cloudelastic-roots
 
 # T130329

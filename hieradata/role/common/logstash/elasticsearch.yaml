@@ -1,6 +1,6 @@
 # General configs
 cluster: logstash
-admin::groups:
+profile::standard::admin_groups:
   - logstash-roots
   - elasticsearch-roots
 

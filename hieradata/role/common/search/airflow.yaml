@@ -1,4 +1,4 @@
-admin::groups:
+profile::standard::admin_groups:
  - airflow-search-admins
  - analytics-search-users
  - analytics-admins

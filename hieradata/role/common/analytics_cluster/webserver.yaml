@@ -1,5 +1,5 @@
 cluster: analytics
-admin::groups:
+profile::standard::admin_groups:
   - analytics-admins
 
 # TLS Terminator settings

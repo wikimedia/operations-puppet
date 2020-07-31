@@ -1,6 +1,6 @@
 cluster: parsoid
 
-admin::groups:
+profile::standard::admin_groups:
   - parsoid-roots
   - parsoid-admin
   - parsoid-test-admins

@@ -3,7 +3,7 @@ profile::base::domain_search:
   - eqiad.wmnet
   - codfw.wmnet
 cluster: misc
-admin::groups:
+profile::standard::admin_groups:
   - deployment
   - deploy-service
   - parsoid-admin

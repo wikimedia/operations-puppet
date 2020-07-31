@@ -1,4 +1,4 @@
-admin::groups:
+profile::standard::admin_groups:
   - analytics-users
   - analytics-privatedata-users
   - analytics-admins

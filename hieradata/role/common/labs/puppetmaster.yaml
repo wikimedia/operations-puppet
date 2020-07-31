@@ -6,5 +6,5 @@ labspuppetbackend::mysql_username: "labspuppet"
 labspuppetbackend::statsd_host: "cloudmetrics1002.eqiad.wmnet"
 labspuppetbackend::statsd_prefix: "labs.puppetbackend"
 
-admin::groups:
+profile::standard::admin_groups:
   - wmcs-roots

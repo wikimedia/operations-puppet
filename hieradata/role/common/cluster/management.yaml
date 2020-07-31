@@ -1,5 +1,5 @@
 cluster: management
-admin::groups:
+profile::standard::admin_groups:
   - datacenter-ops
   - wmcs-admin
 monitor_screens: false

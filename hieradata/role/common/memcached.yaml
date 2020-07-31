@@ -1,5 +1,5 @@
 cluster: memcached
-admin::groups:
+profile::standard::admin_groups:
   - perf-roots
 profile::memcached::version: 'present'
 profile::memcached::growth_factor: 1.05

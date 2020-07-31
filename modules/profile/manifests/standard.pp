@@ -2,10 +2,15 @@ class profile::standard(
     Boolean                    $has_default_mail_relay = lookup('profile::standard::has_default_mail_relay'),
     Array[Stdlib::IP::Address] $monitoring_hosts       = lookup('monitoring_hosts'),
     Boolean                    $enable_ip6_mapped      = lookup('profile::standard::enable_ip6_mapped'),
+    Array[String]              $admin_groups           = lookup('profile::standard::admin_groups'),
+    Array[String]              $admin_groups_no_ssh    = lookup('profile::standard::admin_groups_no_ssh'),
 ) {
     include profile::base
     if $::realm == 'production' {
-        class {'admin': }
+        class {'admin':
+            groups        => $admin_groups,
+            groups_no_ssh => $admin_groups_no_ssh,
+        }
         # Contain the admin module so we create all the required groups before
         # something else creates a system group with one of our GID's
         # e.g. ::profile::debmonitor::client

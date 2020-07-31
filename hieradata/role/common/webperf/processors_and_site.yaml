@@ -1,5 +1,5 @@
 cluster: webperf
-admin::groups:
+profile::standard::admin_groups:
   - perf-team
   - eventlogging-admins
 

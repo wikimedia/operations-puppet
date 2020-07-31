@@ -1,6 +1,6 @@
 cluster: jobrunner
 has_lvs: true
-admin::groups:
+profile::standard::admin_groups:
   - deployment
   - perf-roots
 

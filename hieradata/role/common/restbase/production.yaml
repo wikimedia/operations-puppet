@@ -1128,7 +1128,7 @@ profile::lvs::realserver::pools:
     # TODO: add cassandra instances?
 service::configuration::log_dir: "/var/log"
 
-admin::groups:
+profile::standard::admin_groups:
   - restbase-roots
   - restbase-admins
 profile::tlsproxy::envoy::tls_port: 7443

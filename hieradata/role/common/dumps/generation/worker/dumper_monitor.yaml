@@ -1,5 +1,5 @@
 cluster: dumps
-admin::groups:
+profile::standard::admin_groups:
   - udp2log-users
   - deployment
   - snapshot-admins

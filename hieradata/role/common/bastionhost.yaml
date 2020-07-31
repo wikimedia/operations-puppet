@@ -6,5 +6,5 @@ profile::base::domain_search:
   - esams.wmnet
   - ulsfo.wmnet
   - eqsin.wmnet
-admin::groups:
+profile::standard::admin_groups:
   - all-users

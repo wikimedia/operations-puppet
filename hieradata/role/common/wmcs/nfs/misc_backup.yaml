@@ -5,5 +5,5 @@ profile::wmcs::nfs::monitoring::interfaces::int_throughput_crit: 106250000
 profile::wmcs::nfs::monitoring::interfaces::load_warn_ratio: 0.75
 profile::wmcs::nfs::monitoring::interfaces::load_crit_ratio: 1.25
 
-admin::groups:
+profile::standard::admin_groups:
   - wmcs-roots

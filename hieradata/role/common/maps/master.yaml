@@ -13,7 +13,7 @@ profile::lvs::realserver::pools:
     services:
       - kartotherian
 
-admin::groups:
+profile::standard::admin_groups:
   - maps-roots
   - maps-admins
   - kartotherian-admin

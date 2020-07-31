@@ -1,4 +1,4 @@
-admin::groups:
+profile::standard::admin_groups:
   - gitpuppet
   - datacenter-ops
   - fr-tech-admins

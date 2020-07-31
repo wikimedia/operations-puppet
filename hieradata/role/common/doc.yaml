@@ -1,4 +1,4 @@
-admin::groups:
+profile::standard::admin_groups:
   - contint-users
   - contint-admins
 cluster: ci

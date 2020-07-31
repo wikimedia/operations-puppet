@@ -1,4 +1,4 @@
-admin::groups:
+profile::standard::admin_groups:
   - druid-admins
 
 cluster: 'druid_public'
