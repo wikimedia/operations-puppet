@@ -11,7 +11,6 @@ profile::restbase::logging_label: restbase
 profile::restbase::cassandra_datacenters:
     - "eqiad"
     - "codfw"
-profile::restbase::aqs_uri: "http://aqs.svc.%{::aqs_site}.wmnet:7232/analytics.wikimedia.org/v1"
 profile::restbase::cassandra_user: restb
 profile::restbase::cassandra_password: "%{passwords::cassandra::restbase}"
 profile::restbase::monitor_domain: en.wikipedia.org
