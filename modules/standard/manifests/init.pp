@@ -2,22 +2,12 @@
 # Class for *most* servers, standard includes
 
 class standard(
-    $has_default_mail_relay = true,
-    Array[String] $monitoring_hosts = [],
-    ) {
-    include profile::base
+    $has_default_mail_relay                = true,
+    Array[String] $monitoring_hosts        = [],
+) {
     include standard::ntp
 
-    if $::realm == 'production' {
-        # Include this first so we create all the required groups before
-        # something else creates a system group with one of our GID's
-        # e.g. ::profile::debmonitor::client
-        contain admin
-        include profile::cumin::target
-        include profile::debmonitor::client
-    }
-
-    unless $facts['fqdn'] in $::ntp_peers[$::site] {
+    unless $::fqdn in $::ntp_peers[$::site] {
         include standard::ntp::timesyncd
     }
 
