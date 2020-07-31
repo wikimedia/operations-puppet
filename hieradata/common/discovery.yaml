@@ -1,0 +1,9 @@
+# Application routes
+discovery::app_routes:
+  aqs: 'eqiad'
+
+# confctl-based dynamic global discovery pooling
+# This variable is no more!
+# Please edit service::catalog in hieradata/common/service.yaml instead!
+# Invalid value to ensure puppet fails if something still accesses it.
+discovery::services: invalid
