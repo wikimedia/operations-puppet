@@ -1,6 +1,6 @@
 class helm(
     Stdlib::Unixpath $helm_home='/etc/helm',
-    Stdlib::Httpurl $stable_repo='https://releases.wikimedia.org/charts/',
+    Hash[String[1], Stdlib::Httpurl] $repositories={'stable' => 'https://releases.wikimedia.org/charts/', 'chartmuseum' => 'https://helm-charts.wikimedia.org/stable/'},
 ) {
     package { [
         'helm',
@@ -34,11 +34,24 @@ class helm(
     }
 
     exec { 'helm-init':
-        command     => "/usr/bin/helm init --client-only --stable-repo-url ${stable_repo}",
+        command     => "/usr/bin/helm init --client-only --stable-repo-url ${repositories['stable']}",
         environment => "HELM_HOME=${helm_home}",
         creates     => "${helm_home}/repository",
         user        => 'helm',
         require     => [User['helm'], File[$helm_home],]
+    }
+
+    $repositories.each |$name, $url| {
+        # Ensure we don't overwrite local
+        if ($name != 'stable' and $name != 'local') {
+            exec { 'helm-repo-add':
+                command     => "/usr/bin/helm repo add ${name} ${url}",
+                environment => "HELM_HOME=${helm_home}",
+                creates     => "${helm_home}/repository/cache/${name}-index.yaml",
+                user        => 'helm',
+                require     => [User['helm'], File[$helm_home],]
+            }
+        }
     }
 
     cron { 'helm-repo-update':
