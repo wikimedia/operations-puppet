@@ -89,7 +89,7 @@ class profile::chartmuseum(
 
     # Pull the latest changes from git, package and push new charts every 2 minutes
     $cmd_pull = '/usr/bin/git pull'
-    $cmd_package = "/usr/bin/helm-chartctl --cm-url http://${listen_host}:${listen_port} walk ${charts_git}/charts production"
+    $cmd_package = "/usr/bin/helm-chartctl --cm-url http://${listen_host}:${listen_port} walk ${charts_git}/charts stable"
     systemd::timer::job { 'helm-chartctl-package-all':
         ensure             => present,
         description        => 'Package and push new charts to local Chartmuseum instance',
