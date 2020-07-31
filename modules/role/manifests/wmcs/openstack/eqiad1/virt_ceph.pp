@@ -1,4 +1,4 @@
-# Temporary class used for testing Ceph based block storage on CloudVPS hypervisors
+# Nova hypervisors with ceph for instance storage
 #
 class role::wmcs::openstack::eqiad1::virt_ceph {
     system::role { $name: }

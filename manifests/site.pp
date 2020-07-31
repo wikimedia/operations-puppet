@@ -2302,7 +2302,11 @@ node /^urldownloader[12]00[12]\.wikimedia\.org/ {
 node /^cloudvirt100[1-3,5,7-9]\.eqiad\.wmnet$/ {
     role(wmcs::openstack::eqiad1::virt)
 }
-node /^cloudvirt10[1-3][0-9]\.eqiad\.wmnet$/ {
+node /^cloudvirt10[1-2][0-9]\.eqiad\.wmnet$/ {
+    role(wmcs::openstack::eqiad1::virt)
+}
+
+node 'cloudvirt1030.eqiad.wmnet' {
     role(wmcs::openstack::eqiad1::virt)
 }
 
@@ -2311,7 +2315,9 @@ node /^cloudvirt10[1-3][0-9]\.eqiad\.wmnet$/ {
 node /^cloudvirt100[4,6]\.eqiad\.wmnet$/ {
     role(wmcs::openstack::eqiad1::virt_ceph)
 }
-
+node /^cloudvirt103[1-9]\.eqiad\.wmnet$/ {
+    role(wmcs::openstack::eqiad1::virt_ceph)
+}
 
 # Private virt hosts for wdqs T221631
 node /^cloudvirt-wdqs100[123]\.eqiad\.wmnet$/ {

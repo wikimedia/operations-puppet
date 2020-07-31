@@ -34,18 +34,23 @@ class profile::openstack::base::nova::compute::service(
         }
     }
 
-    file { '/var/lib/nova/instances':
-        ensure => 'directory',
-        owner  => 'nova',
-        group  => 'nova',
-    }
+    # The special value 'thinvirt' indicates that there's no local instance
+    #  storage on this host. Ultimately all cloudvirts will be like this,
+    #  at which point we won't need this hack.
+    if $instance_dev != 'thinvirt' {
+        file { '/var/lib/nova/instances':
+            ensure => 'directory',
+            owner  => 'nova',
+            group  => 'nova',
+        }
 
-    mount { '/var/lib/nova/instances':
-        ensure  => mounted,
-        device  => $instance_dev,
-        fstype  => 'xfs',
-        options => 'defaults',
-        require => File['/var/lib/nova/instances'],
+        mount { '/var/lib/nova/instances':
+            ensure  => mounted,
+            device  => $instance_dev,
+            fstype  => 'xfs',
+            options => 'defaults',
+            require => File['/var/lib/nova/instances'],
+        }
     }
 
     # Increase the size of conntrack table size (default is 65536)
