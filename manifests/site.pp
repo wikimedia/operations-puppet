@@ -2316,7 +2316,7 @@ node /^cloudvirt100[4,6]\.eqiad\.wmnet$/ {
     role(wmcs::openstack::eqiad1::virt_ceph)
 }
 node /^cloudvirt103[1-9]\.eqiad\.wmnet$/ {
-    role(wmcs::openstack::eqiad1::virt_ceph)
+    role(insetup)
 }
 
 # Private virt hosts for wdqs T221631
