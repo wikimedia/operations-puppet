@@ -97,6 +97,7 @@ define profile::analytics::refinery::job::eventlogging_to_druid_job (
     $ensure_hourly       = 'present',
     $ensure_daily        = 'present',
     $ensure              = 'present',
+    $deploy_mode         = 'client',
 ) {
     require ::profile::analytics::refinery
     $refinery_path = $profile::analytics::refinery::path
@@ -136,7 +137,7 @@ define profile::analytics::refinery::job::eventlogging_to_druid_job (
     }
 
     # Common Spark options for all jobs
-    $default_spark_opts = "--master yarn --deploy-mode cluster --queue ${queue} --conf spark.driver.extraClassPath=/usr/lib/hive/lib/hive-jdbc.jar:/usr/lib/hadoop-mapreduce/hadoop-mapreduce-client-common.jar:/usr/lib/hive/lib/hive-service.jar"
+    $default_spark_opts = "--master yarn --deploy-mode ${deploy_mode} --queue ${queue} --conf spark.driver.extraClassPath=/usr/lib/hive/lib/hive-jdbc.jar:/usr/lib/hadoop-mapreduce/hadoop-mapreduce-client-common.jar:/usr/lib/hive/lib/hive-service.jar"
 
     # Hourly job
     $hourly_job_config_file = "${job_config_dir}/${job_name}_hourly.properties"
