@@ -172,3 +172,5 @@ profile::thanos::httpd::query_port: 10902
 profile::thanos::httpd::maxconn: 10
 profile::icinga::logs_keep_days: 780
 profile::thanos::httpd::enable_sso: false
+profile::gerrit::server::ipv6: ~
+profile::gerrit::server::enable_monitoring: true

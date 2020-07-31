@@ -2,21 +2,21 @@
 #
 # filtertags: labs-project-git
 class profile::gerrit::server(
-    Stdlib::Ipv4 $ipv4 = lookup('gerrit::service::ipv4'),
-    Optional[Stdlib::Ipv6] $ipv6 = lookup('gerrit::service::ipv6', {'default_value' => undef}),
-    Stdlib::Fqdn $host = lookup('gerrit::server::host'),
-    Boolean $backups_enabled = lookup('gerrit::server::backups_enabled'),
-    String $backup_set = lookup('gerrit::server::backup_set'),
-    Array[Stdlib::Fqdn] $gerrit_servers = lookup('gerrit::servers'),
-    String $config = lookup('gerrit::server::config'),
-    Boolean $use_acmechief = lookup('gerrit::server::use_acmechief'),
-    Hash $ldap_config = lookup('ldap', Hash, hash, {}),
-    Integer[8, 11] $java_version = lookup('gerrit::server::java_version'),
-    Boolean $is_replica = lookup('gerrit::server::is_replica'),
-    Optional[Array[Stdlib::Fqdn]] $replica_hosts = lookup('gerrit::server::replica_hosts'),
-    Optional[String] $scap_user = lookup('gerrit::server::scap_user'),
-    Optional[String] $scap_key_name = lookup('gerrit::server::scap_key_name'),
-    Boolean $enable_monitoring = lookup('gerrit::server::enable_monitoring', { default_value => true }),
+    Hash                              $ldap_config       = lookup('ldap', Hash, hash, {}),
+    Stdlib::IP::Address::V4           $ipv4              = lookup('profile::gerrit::server::ipv4'),
+    Optional[Stdlib::IP::Address::V6] $ipv6              = lookup('profile::gerrit::server::ipv6'),
+    Stdlib::Fqdn                      $host              = lookup('profile::gerrit::server::host'),
+    Boolean                           $backups_enabled   = lookup('profile::gerrit::server::backups_enabled'),
+    String                            $backup_set        = lookup('profile::gerrit::server::backup_set'),
+    Array[Stdlib::Fqdn]               $gerrit_servers    = lookup('profile::gerrit::server::servers'),
+    String                            $config            = lookup('profile::gerrit::server::config'),
+    Boolean                           $use_acmechief     = lookup('profile::gerrit::server::use_acmechief'),
+    Integer[8, 11]                    $java_version      = lookup('profile::gerrit::server::java_version'),
+    Boolean                           $is_replica        = lookup('profile::gerrit::server::is_replica'),
+    Optional[Array[Stdlib::Fqdn]]     $replica_hosts     = lookup('profile::gerrit::server::replica_hosts'),
+    Optional[String]                  $scap_user         = lookup('profile::gerrit::server::scap_user'),
+    Optional[String]                  $scap_key_name     = lookup('profile::gerrit::server::scap_key_name'),
+    Boolean                           $enable_monitoring = lookup('profile::gerrit::server::enable_monitoring'),
 ) {
 
     interface::alias { 'gerrit server':
@@ -64,7 +64,7 @@ class profile::gerrit::server(
     }
 
     if $use_acmechief {
-        class { '::sslcert::dhparam': }
+        class { 'sslcert::dhparam': }
         acme_chief::cert { 'gerrit':
             puppet_svc => 'apache2',
         }
@@ -78,7 +78,7 @@ class profile::gerrit::server(
         }
     }
 
-    class { '::gerrit':
+    class { 'gerrit':
         host              => $host,
         ipv4              => $ipv4,
         ipv6              => $ipv6,
@@ -93,7 +93,7 @@ class profile::gerrit::server(
         enable_monitoring => $enable_monitoring,
     }
 
-    class { '::gerrit::replication_key':
+    class { 'gerrit::replication_key':
         require => Class['gerrit'],
     }
 

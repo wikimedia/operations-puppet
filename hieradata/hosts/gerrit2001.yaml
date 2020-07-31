@@ -1,2 +1,2 @@
-gerrit::server::backups_enabled: false
-gerrit::server::is_replica: true
+profile::gerrit::server::backups_enabled: false
+profile::gerrit::server::is_replica: true

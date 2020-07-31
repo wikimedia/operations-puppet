@@ -1,2 +1,2 @@
-gerrit::service::ipv4: 172.16.0.148
+profile::gerrit::server::ipv4: 172.16.0.148
 gerrit::jetty::heap_limit: 1500M

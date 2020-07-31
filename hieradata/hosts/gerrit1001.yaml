@@ -1,4 +1,4 @@
-gerrit::service::ipv4: '208.80.154.137'
-gerrit::service::ipv6: '2620:0:861:2:208:80:154:137'
+profile::gerrit::server::ipv4: '208.80.154.137'
+profile::gerrit::server::ipv6: '2620:0:861:2:208:80:154:137'
 
-gerrit::server::is_replica: false
+profile::gerrit::server::is_replica: false
