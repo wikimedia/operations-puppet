@@ -23,8 +23,10 @@ function usage() {
 		'                  "spread": distribute urls via load-balancer\n' +
 		'                  "clone": send each url to each server\n' +
 		'                  "clone-debug": send urls to debug server\n' +
+		'                  "dry": print list of urls to standard out\n' +
 		'\nExamples:\n' +
 		' $ ' + arg.self + ' urls-cluster.txt spread appservers.svc.codfw.wmnet\n' +
+		' $ ' + arg.self + ' urls-cluster.txt dry\n' +
 		' $ ' + arg.self + ' urls-server.txt clone-debug\n' +
 		' $ ' + arg.self + ' urls-server.txt clone appserver codfw\n'
 	);
@@ -36,7 +38,7 @@ if ( !arg.file || !arg.mode ) {
 	process.exit( 1 );
 }
 
-if ( ![ 'spread', 'clone', 'clone-debug' ].includes( arg.mode ) ) {
+if ( ![ 'spread', 'clone', 'clone-debug', 'dry' ].includes( arg.mode ) ) {
 	console.error( 'Error: Invalid mode' );
 	usage();
 	process.exit( 1 );
@@ -150,14 +152,19 @@ util.expandUrlList( urlList ).then( function ( urlList ) {
 			target: arg.spreadTarget,
 			globalConcurrency: 1000
 		} );
-	} else {
-		// mode: clone-debug
+	} else if ( arg.mode === 'clone-debug' ) {
 		let dataset = {
 			// Randomize order
 			debug: util.shuffle( urlList )
 		};
+		console.log( '[spread] Sending ' + urlList.length + ' urls to the debug server.' );
 		doRequests( dataset, {
 			globalConcurrency: 100
 		} );
+	} else {
+		// mode: dry
+		let dataset = util.shuffle( urlList );
+		console.log( '[dry] Would send ' + urlList.length + ' urls.' );
+		console.log( '\n' + dataset.slice( 0,  20 ).join( '\n' ) + '\n' + ( dataset.length > 20 ? '…' : '' ) );
 	}
 } );
