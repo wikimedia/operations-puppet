@@ -36,6 +36,7 @@ class profile::redis::multidc(
     class { 'confd':
         interval => 300,
         prefix   => $conftool_prefix,
+        srv_dns  => "${::site}.wmnet",
     }
 
     profile::redis::multidc_instance{ $instances:

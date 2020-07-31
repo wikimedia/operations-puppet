@@ -15,7 +15,8 @@ class profile::conftool::state(
     class { '::confd':
         ensure   => $ensure,
         prefix   => $prefix,
-        interval => $query_interval
+        interval => $query_interval,
+        srv_dns  => "${::site}.wmnet",
     }
 
     $base_dir = '/etc/conftool-state'

@@ -57,7 +57,8 @@ class profile::dns::auth::discovery(
     }
 
     class { 'confd':
-        prefix => $conftool_prefix,
+        prefix  => $conftool_prefix,
+        srv_dns => "${::site}.wmnet",
     }
 
     $discovery_services.each |$svc_data| {

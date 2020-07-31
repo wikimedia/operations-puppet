@@ -25,15 +25,15 @@
 #            operations. Default: undef
 #
 class confd(
-    $ensure=present,
-    $running=true,
-    $backend='etcd',
-    $node=undef,
-    $srv_dns=$::domain,
-    $scheme='https',
-    $interval=undef,
-    $monitor_files=true,
-    $prefix=undef,
+    Wmflib::Ensure   $ensure        = present,
+    Boolean          $running       = true,
+    String           $backend       = 'etcd',
+    Optional[String] $node          = undef,
+    Stdlib::Fqdn     $srv_dns       = $facts['domain'],
+    String           $scheme        = 'https',
+    Integer          $interval      = 3,
+    Boolean          $monitor_files = true,
+    Optional[String] $prefix        = undef,
 ) {
 
     package { 'confd':

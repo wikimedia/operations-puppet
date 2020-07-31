@@ -11,6 +11,7 @@ class profile::scap::dsh(
     class { 'confd':
         interval => 300,
         prefix   => $conftool_prefix,
+        srv_dns  => "${::site}.wmnet",
     }
 
     class { '::scap::dsh':
