@@ -2,13 +2,13 @@ admin::groups:
   - gerrit-root
   - gerrit-admin
 
-profile::gerrit::server::host: 'gerrit.wikimedia.org'
-profile::gerrit::server::config: 'gerrit.config.erb'
+profile::gerrit::host: 'gerrit.wikimedia.org'
+profile::gerrit::config: 'gerrit.config.erb'
 
 # When promoting a master set this to false
 # in the corresponding hosts yaml file.
-profile::gerrit::server::is_replica: true
-profile::gerrit::server::replica_hosts:
+profile::gerrit::is_replica: true
+profile::gerrit::replica_hosts:
     - 'gerrit-replica.wikimedia.org'
 
 # Settings for rsyncing app data for migration or reinstalls
@@ -18,28 +18,28 @@ profile::gerrit::migration::dst_hosts:
 profile::gerrit::migration::data_dir: '/srv/gerrit'
 
 # External backups
-profile::gerrit::server::backups_enabled: true
-profile::gerrit::server::backup_set: 'gerrit-repo-data'
+profile::gerrit::backups_enabled: true
+profile::gerrit::backup_set: 'gerrit-repo-data'
 
 # SSL/TLS certs
-profile::gerrit::server::use_acmechief: true
+profile::gerrit::use_acmechief: true
 
 # Java
-profile::gerrit::server::java_version: 8
+profile::gerrit::java_version: 8
 
 ## Deployment
-profile::gerrit::server::scap_user: 'gerrit2'
-profile::gerrit::server::scap_key_name: 'gerrit'
+profile::gerrit::scap_user: 'gerrit2'
+profile::gerrit::scap_key_name: 'gerrit'
 
 # List of gerrit servers used in firewall rules.
-profile::gerrit::server::servers:
+profile::gerrit::servers:
  - gerrit1001.wikimedia.org
  - gerrit2001.wikimedia.org
 
 # Assume all production nodes are slaves
-profile::gerrit::server::git_dir: '/srv/gerrit/git'
-profile::gerrit::server::ssh_host_key: 'ssh_host_key'
-profile::gerrit::server::replication:
+profile::gerrit::git_dir: '/srv/gerrit/git'
+profile::gerrit::ssh_host_key: 'ssh_host_key'
+profile::gerrit::replication:
     github:
         url: 'git@github.com:wikimedia/${name}'
         authGroup: 'mediawiki-replication'

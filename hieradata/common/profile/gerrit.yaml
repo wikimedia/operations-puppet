@@ -1,0 +1,2 @@
+profile::gerrit::ipv6: ~
+profile::gerrit::enable_monitoring: true

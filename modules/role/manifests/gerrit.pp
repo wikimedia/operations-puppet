@@ -9,7 +9,7 @@ class role::gerrit {
     include ::profile::backup::host
     include ::profile::base::firewall
     include ::passwords::gerrit
-    include ::profile::gerrit::server
+    include ::profile::gerrit
     include ::profile::gerrit::migration
     include ::profile::prometheus::apache_exporter
 

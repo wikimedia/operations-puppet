@@ -102,43 +102,43 @@ scap::sources:
 
 # Gerrit
 
-profile::gerrit::server::config: 'gerrit.config.erb'
-profile::gerrit::server::host: 'gerrit.devtools.wmflabs.org'
+profile::gerrit::config: 'gerrit.config.erb'
+profile::gerrit::host: 'gerrit.devtools.wmflabs.org'
 
-profile::gerrit::server::servers:
+profile::gerrit::servers:
 - gerrit-prod-1001.devtools.eqiad.wmflabs
 
-profile::gerrit::server::is_replica: false
-profile::gerrit::server::replica_hosts: []
+profile::gerrit::is_replica: false
+profile::gerrit::replica_hosts: []
 
 # No IPv6 in cloud
-profile::gerrit::server::ipv6: ~
+profile::gerrit::ipv6: ~
 
 # No replication to github from cloud
-profile::gerrit::server::replication: {}
+profile::gerrit::replication: {}
 
-profile::gerrit::server::git_dir: /srv/gerrit/git
-profile::gerrit::server::ssh_host_key: ssh_host_key
+profile::gerrit::git_dir: /srv/gerrit/git
+profile::gerrit::ssh_host_key: ssh_host_key
 
 # Backups
-profile::gerrit::server::bacula: gerrit-repo-data
+profile::gerrit::bacula: gerrit-repo-data
 
 ## Java
-profile::gerrit::server::java_version: 8
+profile::gerrit::java_version: 8
 
 ## Deployment
-profile::gerrit::server::scap_user: 'gerrit2'
-profile::gerrit::server::scap_key_name: 'gerrit'
+profile::gerrit::scap_user: 'gerrit2'
+profile::gerrit::scap_key_name: 'gerrit'
 profile::base::ssh_server_settings:
   authorized_keys_file: /etc/ssh/userkeys/%u /etc/ssh/userkeys/%u.d/cumin /etc/ssh/userkeys/%u.d/gerrit-scap
 
 ## TLS
-profile::gerrit::server::use_acmechief: false
+profile::gerrit::use_acmechief: false
 profile::tlsproxy::envoy::capitalize_headers: true
 
 ## Backups
-profile::gerrit::server::backups_enabled: false
-profile::gerrit::server::backup_set: 'gerrit-repo-data'
+profile::gerrit::backups_enabled: false
+profile::gerrit::backup_set: 'gerrit-repo-data'
 
 ## data for server migration
 profile::gerrit::migration::src_host: 'gerrit-prod-1001.devtools.eqiad.wmflabs'

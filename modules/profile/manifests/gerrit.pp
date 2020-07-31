@@ -1,25 +1,25 @@
 # modules/profile/manifests/gerrit/server.pp
 #
 # filtertags: labs-project-git
-class profile::gerrit::server(
+class profile::gerrit(
     Hash                              $ldap_config       = lookup('ldap', Hash, hash, {}),
-    Stdlib::IP::Address::V4           $ipv4              = lookup('profile::gerrit::server::ipv4'),
-    Optional[Stdlib::IP::Address::V6] $ipv6              = lookup('profile::gerrit::server::ipv6'),
-    Stdlib::Fqdn                      $host              = lookup('profile::gerrit::server::host'),
-    Boolean                           $backups_enabled   = lookup('profile::gerrit::server::backups_enabled'),
-    String                            $backup_set        = lookup('profile::gerrit::server::backup_set'),
-    Array[Stdlib::Fqdn]               $gerrit_servers    = lookup('profile::gerrit::server::servers'),
-    String                            $config            = lookup('profile::gerrit::server::config'),
-    Boolean                           $use_acmechief     = lookup('profile::gerrit::server::use_acmechief'),
-    Integer[8, 11]                    $java_version      = lookup('profile::gerrit::server::java_version'),
-    Boolean                           $is_replica        = lookup('profile::gerrit::server::is_replica'),
-    Optional[Array[Stdlib::Fqdn]]     $replica_hosts     = lookup('profile::gerrit::server::replica_hosts'),
-    Optional[String]                  $scap_user         = lookup('profile::gerrit::server::scap_user'),
-    Optional[String]                  $scap_key_name     = lookup('profile::gerrit::server::scap_key_name'),
-    Boolean                           $enable_monitoring = lookup('profile::gerrit::server::enable_monitoring'),
-    Hash[String, Hash]                $replication       = lookup('profile::gerrit::server::replication'),
-    String                            $ssh_host_key      = lookup('profile::gerrit::server::ssh_host_key'),
-    Stdlib::Unixpath                  $git_dir           = lookup('profile::gerrit::server::git_dir'),
+    Stdlib::IP::Address::V4           $ipv4              = lookup('profile::gerrit::ipv4'),
+    Optional[Stdlib::IP::Address::V6] $ipv6              = lookup('profile::gerrit::ipv6'),
+    Stdlib::Fqdn                      $host              = lookup('profile::gerrit::host'),
+    Boolean                           $backups_enabled   = lookup('profile::gerrit::backups_enabled'),
+    String                            $backup_set        = lookup('profile::gerrit::backup_set'),
+    Array[Stdlib::Fqdn]               $gerrit_servers    = lookup('profile::gerrit::servers'),
+    String                            $config            = lookup('profile::gerrit::config'),
+    Boolean                           $use_acmechief     = lookup('profile::gerrit::use_acmechief'),
+    Integer[8, 11]                    $java_version      = lookup('profile::gerrit::java_version'),
+    Boolean                           $is_replica        = lookup('profile::gerrit::is_replica'),
+    Optional[Array[Stdlib::Fqdn]]     $replica_hosts     = lookup('profile::gerrit::replica_hosts'),
+    Optional[String]                  $scap_user         = lookup('profile::gerrit::scap_user'),
+    Optional[String]                  $scap_key_name     = lookup('profile::gerrit::scap_key_name'),
+    Boolean                           $enable_monitoring = lookup('profile::gerrit::enable_monitoring'),
+    Hash[String, Hash]                $replication       = lookup('profile::gerrit::replication'),
+    String                            $ssh_host_key      = lookup('profile::gerrit::ssh_host_key'),
+    Stdlib::Unixpath                  $git_dir           = lookup('profile::gerrit::git_dir'),
 ) {
 
     interface::alias { 'gerrit server':
