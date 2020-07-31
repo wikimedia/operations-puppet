@@ -565,7 +565,7 @@ class WMFBackup:
     @property
     def name_regex(self):
         return self.config['type'] + \
-               r'\.([a-z0-9\-]+)\.(20\d\d-[01]\d-[0123]\d\--\d\d-\d\d-\d\d)(\.[a-z0-9\.]+)?'
+               r'\.([a-z0-9\-_]+)\.(20\d\d-[01]\d-[0123]\d\--\d\d-\d\d-\d\d)(\.[a-z0-9\.]+)?'
 
     def generate_file_name(self, backup_dir):
         formatted_date = datetime.datetime.now().strftime(DATE_FORMAT)
