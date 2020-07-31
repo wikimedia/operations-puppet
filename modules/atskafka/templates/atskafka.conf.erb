@@ -13,5 +13,12 @@
   "bootstrap.servers":        "<%= @kafka_servers %>",
   "statistics.interval.ms":   <%= @stats_interval_ms %>,
   "queue.buffering.max.ms":   <%= @buffering_ms %>,
+  "queue.buffering.max.messages": <%= @buffering_max_messages %>,
+  "batch.num.messages":       <%= @batch_num_messages %>,
+  "message.send.max.retries": <%= @send_max_retries %>,
+  "socket.send.buffer.bytes": <%= @send_buffer_bytes %>,
+  "request.required.acks":    <%= @request_required_acks %>,
+  "request.timeout.ms":       <%= @request_timeout_ms %>,
+  "message.timeout.ms":       <%= @message_timeout_ms %>,
   "compression.codec":        "<%= @compression_codec %>"
 }
