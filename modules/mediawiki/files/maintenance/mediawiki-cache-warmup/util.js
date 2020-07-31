@@ -56,10 +56,17 @@ function fetchUrl( options ) {
 }
 
 /**
- * @return {Promise}
+ * @return {Promise<string,Object>} Map of dbname to `{ dbname:, url:, host: }` of large wikis.
  */
-function getSiteMatrix() {
-	return fetchHttpsUrl( 'https://meta.wikimedia.org/w/api.php?format=json&action=sitematrix&smlangprop=site&smsiteprop=url|dbname' )
+function getLargeWikis() {
+	var largeDbnames;
+	return fetchHttpsUrl( 'https://noc.wikimedia.org/conf/dblists/large.dblist' )
+		.then( function ( resp ) {
+			largeDbnames = resp.split('\n').filter( function ( line ) {
+				return line !== '' && line[0] !== '#';
+			} );
+			return fetchHttpsUrl( 'https://meta.wikimedia.org/w/api.php?format=json&action=sitematrix&smlangprop=site&smsiteprop=url|dbname' );
+		} )
 		.then( JSON.parse )
 		.then( function ( data ) {
 			var map = Object.create( null );
@@ -71,12 +78,7 @@ function getSiteMatrix() {
 				if ( group && group.length ) {
 					for ( let i = 0; i < group.length; i++ ) {
 						let wiki = group[ i ];
-						if ( wiki.private === undefined &&
-							wiki.closed === undefined &&
-							// Exlude labswiki (wikitech) and labtestwiki
-							wiki.nonglobal === undefined &&
-							wiki.fishbowl === undefined
-						) {
+						if ( largeDbnames.indexOf( wiki.dbname ) !== -1 ) {
 							map[ wiki.dbname ] = {
 								dbname: wiki.dbname,
 								url: wiki.url,
@@ -130,11 +132,11 @@ function reduceTxtLines( lines ) {
 }
 
 /**
- * @param {string[]} urls
- * @return {Promise} List of strings
+ * @param {string[]} urls Short list of URL patterns
+ * @return {Promise<string[]>} Longer list of actual URLs
  */
 function expandUrlList( urls ) {
-	return getSiteMatrix().then( function ( wikis ) {
+	return getLargeWikis().then( function ( wikis ) {
 		return urls.reduce( function ( out, url ) {
 			var dbname, mhost;
 			// Ensure HTTP instead of HTTPS
@@ -292,7 +294,6 @@ function shuffle( array ) {
 
 module.exports = {
 	fetchUrl,
-	getSiteMatrix,
 	makeMobileHost,
 	reduceTxtLines,
 	expandUrlList,
