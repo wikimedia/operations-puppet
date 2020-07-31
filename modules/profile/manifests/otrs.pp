@@ -58,7 +58,7 @@ class profile::otrs(
     # the migration period
     if $reject_outgoing_smtp {
         ferm::rule { 'reject_outgoing_smtp':
-            rule  => 'proto tcp dport 25 REJECT',
+            rule  => 'proto tcp dport 25 REJECT;',
             chain => 'OUTPUT',
             desc  => 'Avoid the test instance sending emails to users',
         }
