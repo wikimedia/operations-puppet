@@ -108,6 +108,7 @@ profile::druid::broker::properties:
   # TBD: Perhaps we should also try using memcached?
   druid.cache.sizeInBytes: 2147483648
   druid.sql.enable: true
+  druid.monitoring.monitors: ["org.apache.druid.client.cache.CacheMonitor"]
 profile::druid::broker::env:
   DRUID_HEAP_OPTS: "-Xmx10g -Xms5g"
   DRUID_EXTRA_JVM_OPTS: "-XX:NewSize=4g -XX:MaxNewSize=4g -XX:MaxDirectMemorySize=12g -XX:+UseConcMarkSweepGC -XX:+PrintGCDetails -XX:+PrintGCTimeStamps"
@@ -141,7 +142,7 @@ profile::druid::historical::properties:
   # See: http://druid.io/docs/latest/querying/caching.html
   druid.historical.cache.useCache: false
   druid.historical.cache.populateCache: false
-  druid.monitoring.monitors: ["org.apache.druid.server.metrics.HistoricalMetricsMonitor", "org.apache.druid.server.metrics.QueryCountStatsMonitor"]
+  druid.monitoring.monitors: ["org.apache.druid.server.metrics.HistoricalMetricsMonitor", "org.apache.druid.server.metrics.QueryCountStatsMonitor", "org.apache.druid.client.cache.CacheMonitor"]
 profile::druid::historical::env:
   DRUID_HEAP_OPTS: "-Xmx8g -Xms4g"
   DRUID_EXTRA_JVM_OPTS: "-XX:NewSize=2g -XX:MaxNewSize=2g -XX:MaxDirectMemorySize=10g -XX:+UseConcMarkSweepGC -XX:+PrintGCDetails -XX:+PrintGCTimeStamps"

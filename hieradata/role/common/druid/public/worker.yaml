@@ -106,6 +106,7 @@ profile::druid::broker::properties:
   # TBD: Perhaps we should also try using memcached?
   druid.cache.sizeInBytes: 2147483648
   druid.sql.enable: true
+  druid.monitoring.monitors: ["org.apache.druid.client.cache.CacheMonitor"]
 profile::druid::broker::env:
   DRUID_HEAP_OPTS: "-Xmx10g -Xms5g"
   DRUID_EXTRA_JVM_OPTS: "-XX:NewSize=4g -XX:MaxNewSize=4g -XX:MaxDirectMemorySize=12g -XX:+UseConcMarkSweepGC -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -Djava.util.logging.manager=org.apache.logging.log4j.jul.LogManager -Djava.io.tmpdir=/srv/druid/tmp"
@@ -146,7 +147,7 @@ profile::druid::historical::properties:
   druid.historical.cache.populateCache: false
   # Sane value to abort a query that takes more than 5s to complete
   druid.server.http.defaultQueryTimeout: 5000
-  druid.monitoring.monitors: ["org.apache.druid.server.metrics.HistoricalMetricsMonitor", "org.apache.druid.server.metrics.QueryCountStatsMonitor"]
+  druid.monitoring.monitors: ["org.apache.druid.server.metrics.HistoricalMetricsMonitor", "org.apache.druid.server.metrics.QueryCountStatsMonitor", "org.apache.druid.client.cache.CacheMonitor"]
 profile::druid::historical::env:
   DRUID_HEAP_OPTS: "-Xmx8g -Xms4g"
   DRUID_EXTRA_JVM_OPTS: "-XX:NewSize=2g -XX:MaxNewSize=2g -XX:+UseG1GC -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -Djava.util.logging.manager=org.apache.logging.log4j.jul.LogManager -Djava.io.tmpdir=/srv/druid/tmp"
