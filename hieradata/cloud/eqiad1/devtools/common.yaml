@@ -140,11 +140,10 @@ profile::tlsproxy::envoy::capitalize_headers: true
 gerrit::server::backups_enabled: false
 gerrit::server::backup_set: 'gerrit-repo-data'
 
-## data for server migrations
-gerrit::server::rsync_src_host: 'gerrit-prod-1001.devtools.eqiad.wmflabs'
-gerrit::server::rsync_dst_hosts: []
-gerrit::server::rsync_data_dir: /srv/gerrit
-gerrit::server::rsync_user_name: gerrit2
+## data for server migration
+profile::gerrit::migration::src_host: 'gerrit-prod-1001.devtools.eqiad.wmflabs'
+profile::gerrit::migration::dst_hosts: []
+profile::gerrit::migration::data_dir: /srv/gerrit
 
 # Cache Proxy
 cache::nodes:

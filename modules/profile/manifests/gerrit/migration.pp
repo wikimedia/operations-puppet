@@ -1,12 +1,12 @@
 # Allow rsyncing gerrit data to another server for
-# migrations and reinstalls.
+# migration and reinstalls.
 class profile::gerrit::migration (
-    Stdlib::Fqdn $src_host = lookup(gerrit::server::rsync_src_host),
-    Array[Stdlib::Fqdn] $dst_hosts = lookup(gerrit::server::rsync_dst_hosts),
-    Stdlib::Unixpath $data_dir = lookup(gerrit::server::rsync_data_dir),
+    Stdlib::Fqdn        $src_host  = lookup('profile::gerrit::migration::src_host'),
+    Array[Stdlib::Fqdn] $dst_hosts = lookup('profile::gerrit::migration::dst_hosts'),
+    Stdlib::Unixpath    $data_dir  = lookup('profile::gerrit::migration::data_dir'),
 ) {
 
-    if $::fqdn in $dst_hosts {
+    if $facts['fqdn'] in $dst_hosts {
 
         ferm::service { 'gerrit-migration-rsync':
             proto  => 'tcp',
@@ -14,7 +14,7 @@ class profile::gerrit::migration (
             srange => "(@resolve((${src_host})) @resolve((${src_host}), AAAA))",
         }
 
-        class { '::rsync::server': }
+        class { 'rsync::server': }
 
         rsync::server::module { 'gerrit-data':
             path        => $data_dir,
