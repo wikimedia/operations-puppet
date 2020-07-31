@@ -39,4 +39,18 @@ class openstack::nova::compute::service::rocky::buster() {
         enable  => true,
         require => Package[libvirt-daemon-system],
     }
+
+    # The default ebtables installed on Buster causes a fail in the l3 bridge:
+    #
+    #  Exit code: 255; Stdin: ; Stdout: ; Stderr: Policy DROP not allowed for user defined chains.
+    #
+    # This is resolved by using the legacy alternative, as discussed (briefly) here:
+    #  https://ask.openstack.org/en/question/120060/neutron-failing-to-deploy-with-policy-drop-not-allowed-for-user-defined-chains/
+    #
+    exec {'use_legacy_ebtables_for_neutron':
+        command   => '/usr/bin/update-alternatives --set ebtables  /usr/sbin/ebtables-legacy',
+        unless    => '/usr/bin/update-alternatives --query ebtables | /usr/bin/grep Value | /usr/bin/grep ebtables-legacy',
+        logoutput => true,
+        require   => Package['nova-compute'],
+    }
 }
