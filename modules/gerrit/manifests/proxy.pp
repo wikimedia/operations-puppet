@@ -8,8 +8,9 @@ class gerrit::proxy(
     Optional[Stdlib::Ipv6] $ipv6,
     Optional[Array[Stdlib::Fqdn]] $replica_hosts = $::gerrit::replica_hosts,
     Boolean $enable_monitoring                   = true,
-    ) {
+) {
 
+    require gerrit::jetty
     if $replica {
         $tls_host = $replica_hosts[0]
     } else {

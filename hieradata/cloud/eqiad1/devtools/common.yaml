@@ -115,10 +115,10 @@ profile::gerrit::server::replica_hosts: []
 profile::gerrit::server::ipv6: ~
 
 # No replication to github from cloud
-gerrit::jetty::replication: {}
+profile::gerrit::server::replication: {}
 
-gerrit::jetty::git_dir: /srv/gerrit/git
-gerrit::jetty::ssh_host_key: ssh_host_key
+profile::gerrit::server::git_dir: /srv/gerrit/git
+profile::gerrit::server::ssh_host_key: ssh_host_key
 
 # Backups
 profile::gerrit::server::bacula: gerrit-repo-data

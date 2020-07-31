@@ -37,9 +37,9 @@ profile::gerrit::server::servers:
  - gerrit2001.wikimedia.org
 
 # Assume all production nodes are slaves
-gerrit::jetty::git_dir: '/srv/gerrit/git'
-gerrit::jetty::ssh_host_key: 'ssh_host_key'
-gerrit::jetty::replication:
+profile::gerrit::server::git_dir: '/srv/gerrit/git'
+profile::gerrit::server::ssh_host_key: 'ssh_host_key'
+profile::gerrit::server::replication:
     github:
         url: 'git@github.com:wikimedia/${name}'
         authGroup: 'mediawiki-replication'

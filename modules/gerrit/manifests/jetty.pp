@@ -1,28 +1,28 @@
 # sets up jetty for gerrit
 # https://projects.eclipse.org/projects/rt.jetty/developer
 class gerrit::jetty(
-    Stdlib::Fqdn $host,
-    Stdlib::Ipv4 $ipv4,
-    Optional[Stdlib::Ipv6] $ipv6,
-    Array[Stdlib::Fqdn] $replica_hosts = [],
-    Hash $replication = {},
-    Stdlib::HTTPSUrl $url = "https://${::gerrit::host}/r",
-    Stdlib::HTTPSUrl $gitiles_url = "https://${::gerrit::host}/g",
-    String $git_dir = 'git',
-    Optional[String] $ssh_host_key = undef,
-    String $heap_limit = '32g',
-    Boolean $replica = false,
-    Stdlib::Unixpath $java_home = '/usr/lib/jvm/java-8-openjdk-amd64/jre',
-    String $config = 'gerrit.config.erb',
-    Integer $git_open_files = 20000,
-    String $smtp_encryption = 'none',
-    Optional[Hash] $ldap_config = undef,
+    Stdlib::Fqdn                      $host,
+    Stdlib::IP::Address::V4           $ipv4,
+    Optional[Stdlib::IP::Address::V6] $ipv6,
+    Array[Stdlib::Fqdn]               $replica_hosts     = [],
+    Hash                              $replication       = {},
+    Stdlib::HTTPSUrl                  $url               = "https://${::gerrit::host}/r",
+    Stdlib::HTTPSUrl                  $gitiles_url       = "https://${::gerrit::host}/g",
+    String                            $git_dir           = 'git',
+    Optional[String]                  $ssh_host_key      = undef,
+    String                            $heap_limit        = '32g',
+    Boolean                           $replica           = false,
+    Stdlib::Unixpath                  $java_home         = '/usr/lib/jvm/java-8-openjdk-amd64/jre',
+    String                            $config            = 'gerrit.config.erb',
+    Integer                           $git_open_files    = 20000,
+    String                            $smtp_encryption   = 'none',
+    Optional[Hash]                    $ldap_config       = undef,
     # You must also change $java_home when changing versions.
-    Integer[8, 11] $java_version = 8,
-    Optional[String] $scap_user = undef,
-    Optional[String] $scap_key_name = undef,
-    Boolean $enable_monitoring = true,
-    ) {
+    Integer[8, 11]                    $java_version      = 8,
+    Optional[String]                  $scap_user         = undef,
+    Optional[String]                  $scap_key_name     = undef,
+    Boolean                           $enable_monitoring = true,
+) {
 
     group { 'gerrit2':
         ensure => present,
@@ -45,10 +45,9 @@ class gerrit::jetty(
     $ldap_host = $ldap_config['ro-server']
     $ldap_base_dn = $ldap_config['base-dn']
 
-    if $replica {
-        $sshd_host = $replica_hosts[0]
-    } else {
-        $sshd_host = $host
+    $sshd_host = $replica ? {
+        true    => $replica_hosts[0],
+        default => $host,
     }
 
     $java_options = [

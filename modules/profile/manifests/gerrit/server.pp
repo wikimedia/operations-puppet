@@ -17,6 +17,9 @@ class profile::gerrit::server(
     Optional[String]                  $scap_user         = lookup('profile::gerrit::server::scap_user'),
     Optional[String]                  $scap_key_name     = lookup('profile::gerrit::server::scap_key_name'),
     Boolean                           $enable_monitoring = lookup('profile::gerrit::server::enable_monitoring'),
+    Hash[String, Hash]                $replication       = lookup('profile::gerrit::server::replication'),
+    String                            $ssh_host_key      = lookup('profile::gerrit::server::ssh_host_key'),
+    Stdlib::Unixpath                  $git_dir           = lookup('profile::gerrit::server::git_dir'),
 ) {
 
     interface::alias { 'gerrit server':
@@ -91,6 +94,9 @@ class profile::gerrit::server(
         scap_user         => $scap_user,
         scap_key_name     => $scap_key_name,
         enable_monitoring => $enable_monitoring,
+        replication       => $replication,
+        ssh_host_key      => $ssh_host_key,
+        git_dir           => $git_dir,
     }
 
     class { 'gerrit::replication_key':
