@@ -1,6 +1,6 @@
 class helm(
     Stdlib::Unixpath $helm_home='/etc/helm',
-    Hash[String[1], Stdlib::Httpurl] $repositories={'stable' => 'https://releases.wikimedia.org/charts/', 'chartmuseum' => 'https://helm-charts.wikimedia.org/stable/'},
+    Hash[String[1], Stdlib::Httpurl] $repositories={'stable' => 'https://helm-charts.wikimedia.org/stable/'},
 ) {
     package { [
         'helm',
