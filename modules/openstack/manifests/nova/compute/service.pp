@@ -10,12 +10,7 @@ class openstack::nova::compute::service(
     Optional[String]    $libvirt_rbd_uuid     = undef,
     ){
 
-    # jessie: libvirt:x:121:nova
-    # stretch: libvirt:x:121:nova
-    $libvirt_unix_sock_group = $::facts['lsbdistcodename'] ? {
-        'jessie'  => 'libvirt',
-        'stretch' => 'libvirt',
-    }
+    $libvirt_unix_sock_group = 'libvirt'
 
     class { "openstack::nova::compute::service::${version}::${::lsbdistcodename}":
     }
