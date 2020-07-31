@@ -85,10 +85,6 @@ $other_site = $site ? {
     default => '(undefined)'
 }
 
-$app_routes = hiera('discovery::app_routes')
-
-$aqs_site = $app_routes['aqs']
-
 $network_zone = $facts['ipaddress'] ? {
     /^10./  => 'internal',
     default => 'public'
