@@ -613,18 +613,19 @@ node 'db2132.codfw.wmnet' {
 
 # See also multiinstance misc hosts db1117 and db2078 below
 
+# To be moved to m3
 node 'db1132.eqiad.wmnet' {
     class { '::role::mariadb::misc':
         shard  => 'm2',
-        master => true,
+        master => false,
     }
 }
 
-# Future m2 master T257540
+# m2 master T257540
 node 'db1107.eqiad.wmnet' {
     class { '::role::mariadb::misc':
         shard  => 'm2',
-        master => false,
+        master => true,
     }
 }
 
