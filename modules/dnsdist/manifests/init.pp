@@ -24,7 +24,7 @@
 #    [string] URL to accept DoH queries on. default: /dns-query.
 #
 #  [*qps_max*]
-#    [int] maximum number of queries allowed per second from an IP. default: 10.
+#    [int] maximum number of queries allowed per second from an IP. default: 40.
 #
 #  [*enable_packetcache*]
 #    [bool] whether to enable dnsdist's packet cache. default: true.
@@ -56,7 +56,7 @@ class dnsdist (
     Dnsdist::TLS_config                 $tls_config_doh,
     Dnsdist::TLS_config                 $tls_config_dot,
     String                              $doh_base_url       = '/dns-query',
-    Integer[1]                          $qps_max            = 20,
+    Integer[1]                          $qps_max            = 40,
     Boolean                             $enable_packetcache = true,
     Integer[1]                          $packetcache_max    = 10000000,
     Integer[1]                          $ringbuffer_max     = 10,
