@@ -32,19 +32,23 @@ class galera(
         ensure => 'present',
     }
 
-    $service_ensure = $enabled ? {
-        true => running,
-        default => stopped,
-    }
-
     # Override the packaged service so we can increase TimeoutStartSec
     systemd::service { 'mariadb':
-        ensure   => $service_ensure,
         content  => systemd_template('mariadb'),
         override => true,
         require  =>  [
             Package['mariadb-server'],
         ],
+    }
+
+    $service_ensure = $enabled ? {
+        true => running,
+        default => stopped,
+    }
+    service { 'mariadb':
+        ensure   => $service_ensure,
+        enable   => true,
+        provider => 'systemd',
     }
 
     # The debian package installs this for backwards compatibility with sysV;
