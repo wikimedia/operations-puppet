@@ -36,6 +36,9 @@ profile::kerberos::keytabs::keytabs_metadata:
     filename: 'druid.keytab'
 
 
+profile::druid::apache_release: true
+profile::prometheus::druid_exporter::druid_version: '0.19.0'
+
 # -- Druid common configuration
 
 # The logical name of this druid cluster
@@ -110,6 +113,7 @@ profile::druid::broker::properties:
   # TBD: Perhaps we should also try using memcached?
   druid.cache.sizeInBytes: 2147483648
   druid.sql.enable: true
+  druid.monitoring.monitors: ["org.apache.druid.client.cache.CacheMonitor"]
 profile::druid::broker::env:
   DRUID_HEAP_OPTS: "-Xmx10g -Xms5g"
   DRUID_EXTRA_JVM_OPTS: "-XX:NewSize=4g -XX:MaxNewSize=4g -XX:MaxDirectMemorySize=12g -XX:+UseConcMarkSweepGC -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -Djava.io.tmpdir=/srv/druid/tmp"
@@ -149,7 +153,7 @@ profile::druid::historical::properties:
   druid.historical.cache.populateCache: false
   # Sane value to abort a query that takes more than 10s to complete
   druid.server.http.defaultQueryTimeout: 10000
-  druid.monitoring.monitors: ["io.druid.server.metrics.HistoricalMetricsMonitor", "io.druid.server.metrics.QueryCountStatsMonitor"]
+  druid.monitoring.monitors: ["org.apache.druid.server.metrics.HistoricalMetricsMonitor", "org.apache.druid.server.metrics.QueryCountStatsMonitor", "org.apache.druid.client.cache.CacheMonitor"]
 profile::druid::historical::env:
   DRUID_HEAP_OPTS: "-Xmx8g -Xms4g"
   # Note -XX:MaxDirectMemorySize is calculated in the profile together with druid.processing.numThreads
@@ -168,7 +172,7 @@ profile::druid::middlemanager::properties:
   druid.processing.numThreads: 3
   druid.processing.buffer.sizeBytes: 356515840
   druid.server.http.numThreads: 20
-  druid.indexer.runner.javaOpts: "-server -Xmx2g -XX:+UseG1GC -XX:MaxGCPauseMillis=100 -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -Dhadoop.mapreduce.job.user.classpath.first=true"
+  druid.indexer.runner.javaOpts: "-server -Xmx2g -XX:+UseG1GC -XX:MaxGCPauseMillis=100 -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -Dhadoop.mapreduce.job.classloader=true"
 profile::druid::middlemanager::env:
   DRUID_HEAP_OPTS: "-Xmx64m -Xms64m"
   DRUID_EXTRA_JVM_OPTS: "-XX:+UseConcMarkSweepGC -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -Djava.io.tmpdir=/srv/druid/tmp"
