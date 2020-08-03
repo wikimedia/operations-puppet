@@ -168,6 +168,7 @@ class librenms(
             'mtr-tiny',
             'nmap',
             'python-mysqldb',
+            'python3-pymysql',
             'rrdtool',
             'snmp',
             'snmp-mibs-downloader',
@@ -210,7 +211,7 @@ class librenms(
     cron { 'librenms-poller-all':
         ensure  => $cron_ensure,
         user    => 'librenms',
-        command => "python ${install_dir}/poller-wrapper.py 16 >/dev/null 2>&1",
+        command => "${install_dir}/poller-wrapper.py 16 >/dev/null 2>&1",
         minute  => '*/5',
         require => User['librenms'],
     }
@@ -261,13 +262,13 @@ class librenms(
         ensure => present,
         owner  => 'root',
         group  => 'root',
-        mode   => '0444',
+        mode   => '0555',
         source => 'puppet:///modules/librenms/purge.py',
     }
     cron { 'purge-syslog-eventlog':
         ensure  => $cron_ensure,
         user    => 'librenms',
-        command => "python ${install_dir}/purge.py --syslog --eventlog --perftimes '1 month' >/dev/null 2>&1",
+        command => "${install_dir}/purge.py --syslog --eventlog --perftimes '1 month' >/dev/null 2>&1",
         hour    => '0',
         minute  => '45',
     }
