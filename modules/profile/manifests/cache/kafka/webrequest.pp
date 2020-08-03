@@ -175,6 +175,12 @@ class profile::cache::kafka::webrequest(
             brokers           => $kafka_brokers,
             topic             => "atskafka_test_${topic}",
             stats_interval_ms => 60000,
+            # Instead of sending messages every 5 milliseconds (the default),
+            # buffer locally and send once per second. Having chosen 1s here,
+            # the size of the MessageSet is the number of rps served by the
+            # ATS instance. Larger MessageSets benefit from better compression
+            # and less overhead improving throughput at the expense of latency.
+            buffering_ms      => 1000,
             socket            => '/srv/trafficserver/tls/var/run/analytics.sock',
             tls               => {
                 ca_location          => $ssl_ca_location,
