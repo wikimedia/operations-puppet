@@ -1,7 +1,15 @@
-#!/bin/sh
+#!/bin/bash
 
 set -e
 set -u
+
+trap 'reporterr' ERR
+
+reporterr() {
+  echo "⚠️  Something went wrong!  Maybe you attempted to rewrite history?"
+  echo "You can't rebase or commit --amend in this repo.  If you tried that,"
+  echo "perform the repair steps under = What NOT to do = in the README."
+}
 
 # Refresh the local copy
 su -c 'cd /var/lib/git/operations/private && git pull' gitpuppet
