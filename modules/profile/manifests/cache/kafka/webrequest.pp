@@ -172,17 +172,11 @@ class profile::cache::kafka::webrequest(
 
     if $atskafka_enabled {
         atskafka::instance { 'webrequest':
-            brokers                => $kafka_brokers,
-            topic                  => "atskafka_test_${topic}",
-            stats_interval_ms      => 60000,
-            buffering_ms           => 1000,
-            buffering_max_messages => 80 * $peak_rps_estimate,
-            batch_num_messages     => $peak_rps_estimate,
-            send_max_retries       => 3,
-            request_required_acks  => 1,
-            request_timeout_ms     => 2000,
-            socket                 => '/srv/trafficserver/tls/var/run/analytics.sock',
-            tls                    => {
+            brokers           => $kafka_brokers,
+            topic             => "atskafka_test_${topic}",
+            stats_interval_ms => 60000,
+            socket            => '/srv/trafficserver/tls/var/run/analytics.sock',
+            tls               => {
                 ca_location          => $ssl_ca_location,
                 key_location         => $ssl_key_location,
                 key_password         => $ssl_key_password,
