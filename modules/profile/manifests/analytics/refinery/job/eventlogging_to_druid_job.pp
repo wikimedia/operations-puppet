@@ -149,12 +149,18 @@ define profile::analytics::refinery::job::eventlogging_to_druid_job (
             'reduce_memory'       => $hourly_reduce_mem,
         }),
     }
+
+    $config_file_path = $deploy_mode ? {
+        'client' => $hourly_job_config_file,
+        default  => "${job_name}_hourly.properties",
+    }
+
     profile::analytics::refinery::job::spark_job { "${job_name}_hourly":
         ensure       => $_ensure_hourly,
         jar          => $_refinery_job_jar,
         class        => $job_class,
         spark_opts   => "${default_spark_opts} --files /etc/hive/conf/hive-site.xml,${hourly_job_config_file} --conf spark.dynamicAllocation.maxExecutors=32 --driver-memory 2G",
-        job_opts     => "--config_file ${job_name}_hourly.properties --since $(date --date '-${hourly_hours_since}hours' -u +'%Y-%m-%dT%H:00:00') --until $(date --date '-${hourly_hours_until}hours' -u +'%Y-%m-%dT%H:00:00')",
+        job_opts     => "--config_file ${config_file_path} --since $(date --date '-${hourly_hours_since}hours' -u +'%Y-%m-%dT%H:00:00') --until $(date --date '-${hourly_hours_until}hours' -u +'%Y-%m-%dT%H:00:00')",
         require      => Profile::Analytics::Refinery::Job::Config[$hourly_job_config_file],
         user         => $user,
         interval     => '*-*-* *:00:00',
