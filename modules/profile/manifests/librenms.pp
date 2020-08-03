@@ -33,6 +33,7 @@ class profile::librenms (
         # disable evil daily auto-git pull
         'update'           => 0,
 
+        # Note that the DB settings will be copied in $install_dir/.env too
         'db_host'          => $db_host,
         'db_user'          => $db_user,
         'db_pass'          => $db_password,
