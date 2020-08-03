@@ -62,22 +62,24 @@ class librenms(
     }
 
     file { "${install_dir}/config.php":
-        ensure  => present,
-        owner   => 'www-data',
-        group   => 'librenms',
-        mode    => '0440',
-        content => template('librenms/config.php.erb'),
-        require => Group['librenms'],
-        notify  => Service['librenms-ircbot'],
+        ensure    => present,
+        owner     => 'www-data',
+        group     => 'librenms',
+        mode      => '0440',
+        show_diff => false,
+        content   => template('librenms/config.php.erb'),
+        require   => Group['librenms'],
+        notify    => Service['librenms-ircbot'],
     }
 
     file { "${install_dir}/.env":
-        ensure  => present,
-        owner   => 'www-data',
-        group   => 'librenms',
-        mode    => '0440',
-        content => template('librenms/.env.erb'),
-        require => Group['librenms'],
+        ensure    => present,
+        owner     => 'www-data',
+        group     => 'librenms',
+        mode      => '0440',
+        show_diff => false,
+        content   => template('librenms/.env.erb'),
+        require   => Group['librenms'],
     }
 
     file { "${install_dir}/storage":
