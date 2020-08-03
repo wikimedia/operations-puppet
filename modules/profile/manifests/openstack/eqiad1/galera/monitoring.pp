@@ -10,13 +10,13 @@ class profile::openstack::eqiad1::galera::monitoring(
         description   => 'WMCS Galera Cluster',
         check_command => "check_galera_node!${nodecount}!${port}!${test_username}!${test_password}",
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Troubleshooting',
-        contact_group => 'wmcs-team,admins',
+        contact_group => 'wmcs-team',
     }
 
     monitoring::service { 'galera_db':
         description   => 'WMCS Galera Database',
         check_command => "check_galera_db!${port}!${test_username}!${test_password}",
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Troubleshooting',
-        contact_group => 'wmcs-team,admins',
+        contact_group => 'wmcs-team',
     }
 }

@@ -62,10 +62,9 @@ class profile::openstack::base::galera::node(
     }
     nrpe::monitor_service { 'check_galera_mysqld_process':
         ensure        => $ensure,
-        critical      => true,
         description   => 'mysql (galera) process',
         nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C mysqld',
-        contact_group => 'wmcs-bots,admins',
+        contact_group => 'wmcs-bots',
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Troubleshooting',
     }
 
