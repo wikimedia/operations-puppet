@@ -60,7 +60,6 @@ class galera(
         group   => 'root',
         mode    => '0644',
         content => template('galera/server.cnf.erb'),
-        notify  => Service['mariadb'],
     }
 
     file { '/etc/mysql/mariadb.conf.d/50-mysql-clients.cnf':
@@ -68,7 +67,6 @@ class galera(
         group   => 'root',
         mode    => '0644',
         content => template('galera/client.cnf.erb'),
-        notify  => Service['mariadb'],
     }
 
     file { '/etc/mysql/mariadb.conf.d/50-mysqldump.cnf':
@@ -76,6 +74,5 @@ class galera(
         group   => 'root',
         mode    => '0644',
         content => template('galera/mysqldump.cnf.erb'),
-        notify  => Service['mariadb'],
     }
 }
