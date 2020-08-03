@@ -42,12 +42,13 @@ class helm(
     }
 
     $repositories.each |$name, $url| {
-        # Ensure we don't overwrite local
-        if ($name != 'stable' and $name != 'local') {
+        # Ensure we don't overwrite local.
+        # "helm repo add" will change the URL if a repository with ${name} already exists.
+        if ($name != 'local') {
             exec { 'helm-repo-add':
                 command     => "/usr/bin/helm repo add ${name} ${url}",
                 environment => "HELM_HOME=${helm_home}",
-                creates     => "${helm_home}/repository/cache/${name}-index.yaml",
+                unless      => "/usr/bin/helm repo list | /usr/bin/grep -E -q '^${name}\\s+${url}'",
                 user        => 'helm',
                 require     => [User['helm'], File[$helm_home],]
             }
