@@ -1,7 +1,7 @@
 {
   "api": {
     "sparql": {
-      "uri": "https://wcqs-beta.wmflabs.org/sparql"
+      "uri": "/sparql"
     },
     "wikibase": {
       "uri": "https://www.wikidata.org/w/api.php"
