@@ -2,7 +2,7 @@ define profile::mariadb::replication_lag(
     Integer $prom_port = 9104,
 ){
     include ::profile::mariadb::mysql_role
-    $role = profile::mariadb::mysql_role::role
+    $role = $profile::mariadb::mysql_role::role
     $is_on_primary_dc = (mediawiki::state('primary_dc') == $::site)
 
     # Don't monitor replication lag for 'standalone' hosts, or section masters in the primary DC
