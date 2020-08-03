@@ -54,6 +54,7 @@ class profile::analytics::cluster::packages::statistics {
         'php-mysql',
         'libfontconfig1-dev',     # For {systemfonts} R pkg dep of {hrbrthemes} pkg for dataviz (T254278)
         'libcairo2-dev',          # ^
+        'anaconda-wmf'            # WMF packaged distribution of anaconda and conda.
     ])
 
     if !defined(Package['nodejs']) {
