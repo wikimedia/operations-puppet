@@ -8,7 +8,7 @@ groups:
     labels:
       severity: crit
     annotations:
-      SUMMARY: '{{$labels.instance}} FS {{$labels.mountpoint}} at {{ printf "%3.2f"
+      summary: '{{$labels.instance}} FS {{$labels.mountpoint}} at {{ printf "%3.2f"
         $value }}% avail'
   - alert: InstanceIOWaitCrit
     expr: max by(instance) (irate(node_cpu{mode="iowait"}[5m])) * 100 > 80
@@ -16,7 +16,7 @@ groups:
     labels:
       severity: crit
     annotations:
-      SUMMARY: '{{$labels.instance}} sustained iowait at {{ printf "%3.2f" $value }}%'
+      summary: '{{$labels.instance}} sustained iowait at {{ printf "%3.2f" $value }}%'
 - name: beta_puppet_alerts
   rules:
   - alert: PuppetHugeFail
@@ -25,32 +25,32 @@ groups:
     labels:
       severity: crit
     annotations:
-      SUMMARY: 'Puppet widespread failure: {{ printf "%3.2f" $value }}%'
+      summary: 'Puppet widespread failure: {{ printf "%3.2f" $value }}%'
   - alert: meta_PuppetHugeFail
     expr: absent((sum(puppet_agent_failed) / count(puppet_agent_failed)) * 100)
     for: 10m
     labels:
       severity: crit
     annotations:
-      SUMMARY: Data not found for PuppetHugeFail
+      summary: Data not found for PuppetHugeFail
   - alert: PuppetFail
     expr: puppet_agent_failed == 1
     for: 2m
     labels:
       severity: warn
     annotations:
-      LOGS: https://logstash-beta.wmflabs.org/app/kibana#/dashboard/66ed4030-782f-11e7-b59f-bdb74a2a8a82?_g=(time:(from:now-1h,mode:quick,to:now))&_a=(filters:!((query:(match:(host:(query:{{
+      logs: https://logstash-beta.wmflabs.org/app/kibana#/dashboard/66ed4030-782f-11e7-b59f-bdb74a2a8a82?_g=(time:(from:now-1h,mode:quick,to:now))&_a=(filters:!((query:(match:(host:(query:{{
         reReplaceAll ":\\d+" "" $labels.instance }},type:phrase))),meta:(alias:!n,disabled:!f,index:'logstash-*',key:host,negate:!f,value:{{
         reReplaceAll ":\\d+" "" $labels.instance }})),(meta:(alias:!n,disabled:!f,index:'logstash-*',key:program,negate:!f,value:puppet-agent),query:(match:(program:(query:puppet-agent,type:phrase)))),(meta:(alias:!n,disabled:!f,index:'logstash-*',key:level,negate:!f,value:ERROR),query:(match:(level:(query:ERROR,type:phrase))))))
-      OPEN_TASK: https://phabricator.wikimedia.org/maniphest/task/create/?title=Puppet
+      open_task: https://phabricator.wikimedia.org/maniphest/task/create/?title=Puppet
         failure on {{$labels.instance}}&projects=Beta-Cluster-Infrastructure&description=Puppet
         has failed on {{$labels.instance}}
-      SUMMARY: Puppet failed on {{$labels.instance}}
+      summary: Puppet failed on {{$labels.instance}}
   - alert: PuppetStale
     expr: time() - puppet_agent_last_run > (60 * 35)
     for: 5m
     labels:
       severity: warn
     annotations:
-      LOGS: https://logstash-beta.wmflabs.org/app/kibana#/dashboard/puppet
-      SUMMARY: Puppet stale on {{$labels.instance}} for {{$value | humanizeDuration}}
+      logs: https://logstash-beta.wmflabs.org/app/kibana#/dashboard/puppet
+      summary: Puppet stale on {{$labels.instance}} for {{$value | humanizeDuration}}
