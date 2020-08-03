@@ -10,6 +10,7 @@ class profile::mariadb::wmf_root_client {
     }
 
     class { 'mariadb::packages_client': }
+    require_package('wmfmariadbpy')
     include passwords::misc::scripts
 
     class { 'mariadb::config':
@@ -32,13 +33,5 @@ class profile::mariadb::wmf_root_client {
         mode      => '0400',
         show_diff => false,
         content   => template('profile/mariadb/mysqld_config/root.my.cnf.erb'),
-    }
-
-    file { '/usr/local/sbin/mysql.py':
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0544',
-        source  => 'puppet:///modules/profile/mariadb/mysql.py',
-        require => File['/root/.my.cnf'],
     }
 }
