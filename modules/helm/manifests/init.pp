@@ -48,7 +48,7 @@ class helm(
             exec { 'helm-repo-add':
                 command     => "/usr/bin/helm repo add ${name} ${url}",
                 environment => "HELM_HOME=${helm_home}",
-                unless      => "/usr/bin/helm repo list | /usr/bin/grep -E -q '^${name}\\s+${url}'",
+                unless      => "/usr/bin/helm repo list | /bin/grep -E -q '^${name}\\s+${url}'",
                 user        => 'helm',
                 require     => [User['helm'], File[$helm_home],]
             }
