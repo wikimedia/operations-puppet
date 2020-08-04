@@ -14,6 +14,7 @@ class profile::releases::mediawiki::security (
         rsync::quickdatacopy { "srv-patches-${releases_server}":
             ensure      => present,
             auto_sync   => true,
+            delete      => true,
             source_host => $deployment_server,
             dest_host   => $releases_server,
             module_path => '/srv/patches',

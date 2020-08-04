@@ -24,6 +24,7 @@ class profile::releases::common(
         rsync::quickdatacopy { "srv-org-wikimedia-releases-${secondary_server}":
           ensure      => present,
           auto_sync   => true,
+          delete      => true,
           source_host => $active_server,
           dest_host   => $secondary_server,
           module_path => '/srv/org/wikimedia/releases',
