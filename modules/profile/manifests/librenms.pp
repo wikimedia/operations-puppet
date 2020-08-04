@@ -52,7 +52,7 @@ class profile::librenms (
             'community' => [ $passwords::network::snmp_ro_community ],
         },
         'irc_host'         => 'irc.freenode.org',
-        'irc_chan'         => '#wikimedia-operations',
+        'irc_chan'         => ['#wikimedia-operations'],
         'irc_alert'        => true,
         'irc_debug'        => false,
         'irc_alert_chan'   => '#wikimedia-operations',
