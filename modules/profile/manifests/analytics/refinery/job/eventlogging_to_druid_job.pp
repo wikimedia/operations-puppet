@@ -150,7 +150,7 @@ define profile::analytics::refinery::job::eventlogging_to_druid_job (
         }),
     }
 
-    $config_file_path = $deploy_mode ? {
+    $config_file_path_hourly = $deploy_mode ? {
         'client' => $hourly_job_config_file,
         default  => "${job_name}_hourly.properties",
     }
@@ -160,7 +160,7 @@ define profile::analytics::refinery::job::eventlogging_to_druid_job (
         jar          => $_refinery_job_jar,
         class        => $job_class,
         spark_opts   => "${default_spark_opts} --files /etc/hive/conf/hive-site.xml,${hourly_job_config_file} --conf spark.dynamicAllocation.maxExecutors=32 --driver-memory 2G",
-        job_opts     => "--config_file ${config_file_path} --since $(date --date '-${hourly_hours_since}hours' -u +'%Y-%m-%dT%H:00:00') --until $(date --date '-${hourly_hours_until}hours' -u +'%Y-%m-%dT%H:00:00')",
+        job_opts     => "--config_file ${config_file_path_hourly} --since $(date --date '-${hourly_hours_since}hours' -u +'%Y-%m-%dT%H:00:00') --until $(date --date '-${hourly_hours_until}hours' -u +'%Y-%m-%dT%H:00:00')",
         require      => Profile::Analytics::Refinery::Job::Config[$hourly_job_config_file],
         user         => $user,
         interval     => '*-*-* *:00:00',
@@ -177,12 +177,18 @@ define profile::analytics::refinery::job::eventlogging_to_druid_job (
             'reduce_memory'       => $daily_reduce_mem,
         }),
     }
+
+    $config_file_path_daily = $deploy_mode ? {
+        'client' => $daily_job_config_file,
+        default  => "${job_name}_daily.properties",
+    }
+
     profile::analytics::refinery::job::spark_job { "${job_name}_daily":
         ensure       => $_ensure_daily,
         jar          => $_refinery_job_jar,
         class        => $job_class,
         spark_opts   => "${default_spark_opts} --files /etc/hive/conf/hive-site.xml,${daily_job_config_file} --conf spark.dynamicAllocation.maxExecutors=64 --driver-memory 2G",
-        job_opts     => "--config_file ${config_file_path} --since $(date --date '-${daily_days_since}days' -u +'%Y-%m-%dT00:00:00') --until $(date --date '-${daily_days_until}days' -u +'%Y-%m-%dT00:00:00')",
+        job_opts     => "--config_file ${config_file_path_daily} --since $(date --date '-${daily_days_since}days' -u +'%Y-%m-%dT00:00:00') --until $(date --date '-${daily_days_until}days' -u +'%Y-%m-%dT00:00:00')",
         require      => Profile::Analytics::Refinery::Job::Config[$daily_job_config_file],
         user         => $user,
         interval     => '*-*-* 00:00:00',
