@@ -260,6 +260,8 @@
             "labels": ["dataSource"],
             "description": "Number of bytes returned in query response."
         },
+    },
+    "peon": {
         "ingest/events/thrownAway": {
             "prometheus_metric_name": "druid_realtime_ingest_events_thrown_away_count",
             "type": "gauge",
