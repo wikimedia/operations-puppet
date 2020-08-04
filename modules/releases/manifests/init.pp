@@ -81,18 +81,18 @@ class releases (
     }
 
     git::clone { 'operations/deployment-charts':
-        ensure    => 'present',
+        ensure    => 'absent',
         directory => '/srv/deployment-charts',
     }
 
     cron { 'git_pull_charts':
-        ensure  => present,
+        ensure  => absent,
         command => 'cd /srv/deployment-charts && /usr/bin/git pull >/dev/null 2>&1',
         minute  => '*/1',
     }
 
     file { '/srv/org/wikimedia/releases/charts':
-        ensure  => 'link',
+        ensure  => 'absent',
         target  => '/srv/deployment-charts/charts',
         require =>  Git::Clone['operations/deployment-charts'],
     }
