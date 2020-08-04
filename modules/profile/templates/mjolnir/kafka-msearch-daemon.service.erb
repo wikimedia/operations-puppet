@@ -13,7 +13,8 @@ ExecStart=/srv/deployment/search/mjolnir/deploy/venv/bin/mjolnir-utilities.py ka
     --output-topic <%= @output_topic %> \
     --num-workers <%= @num_workers %> \
     --max-concurrent-searches <%= @max_concurrent_searches %> \
-    --prometheus-port <%= @prometheus_port %>
+    --prometheus-port <%= @prometheus_port %> \
+    --elastic-endpoint <%= @es_cluster_endpoint %>
 
 StandardInput=null
 RestartSec=2

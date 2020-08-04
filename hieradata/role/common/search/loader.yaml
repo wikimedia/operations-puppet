@@ -29,3 +29,4 @@ profile::mjolnir::kafka_bulk_daemon::topics:
   - codfw.swift.search_mjolnir_model.upload-complete
 
 profile::mjolnir::kafka_bulk_daemon::es_cluster_endpoint: 'https://search.svc.%{::site}.wmnet:9243'
+profile::mjolnir::kafka_msearch_daemon::es_cluster_endpoint: 'https://search.svc.%{::site}.wmnet:9243'
