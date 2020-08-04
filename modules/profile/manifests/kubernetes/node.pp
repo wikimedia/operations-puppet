@@ -144,10 +144,16 @@ class profile::kubernetes::node(
 
     # kube-proxy on startup sets the following. However sysctl values may be
     # changed after that. Enforce them in puppet as well to avoid nasty
-    # surprises
+    # surprises. Furthermore, since we don't want our kubernetes nodes, which
+    # act as routers, to send ICMP redirects to other nodes when reached for
+    # workloads that don't reside on them but do know the router for, disable
+    # send_redirects. T226237
     sysctl::parameters { 'kube_proxy_conntrack':
         values   => {
-            'net.netfilter.nf_conntrack_max' => 1048576,
+            'net.netfilter.nf_conntrack_max'                             => 1048576,
+            'net.ipv4.conf.all.send_redirects'                           => 0,
+            'net.ipv4.conf.default.send_redirects'                       => 0,
+            "net.ipv4.conf.${facts['interface_primary']}.send_redirects" => 0,
         },
         priority => 75,
     }
