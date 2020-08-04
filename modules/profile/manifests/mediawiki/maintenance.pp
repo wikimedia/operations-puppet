@@ -10,7 +10,10 @@ class profile::mediawiki::maintenance {
     }
 
     # Set the Server response header to the FQDN. (T255629)
-    package { 'libapache2-mod-security2':
+    # Installing libapache2-mod-security2 without also installing modsecurity-crs
+    # leads to a syntax error due to a bug in the former package which has
+    # an include that is supposed to be optional but isn't optional. --dz 20200803
+    package { [ 'libapache2-mod-security2', 'modsecurity-crs']:
         ensure => present
     }
     ::httpd::mod_conf { 'security2':
