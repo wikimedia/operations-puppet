@@ -83,6 +83,7 @@ innodb_stats_sample_pages      = 16
 innodb_strict_mode             = 1
 innodb_thread_concurrency      = 0
 innodb_write_io_threads        = 8
+innodb_autoinc_lock_mode       = 2  # interleaved to allow galera slave threads to work in parallel
 
 # galera configuration
 wsrep_on=ON
@@ -90,6 +91,7 @@ wsrep_cluster_address="gcomm://<%= @cluster_node_ips.map{|host_ip| "#{host_ip}"}
 wsrep_cluster_name="openstack"
 wsrep_provider=/usr/lib/galera/libgalera_smm.so
 wsrep_sst_method=rsync
+wsrep_slave_threads=24  # 4x CPU is recommended, but CPU is heavily used by rabbit
 
 wsrep_node_address="<%= @ipaddress %>"
 wsrep_node_name="<%= @fqdn %>"
