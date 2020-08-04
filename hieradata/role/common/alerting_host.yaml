@@ -18,6 +18,8 @@ profile::icinga::virtual_host: ldap-icinga.wikimedia.org
 profile::icinga::active_host: icinga1001.wikimedia.org
 profile::icinga::partners:
   - 'icinga2001.wikimedia.org'
+  - 'alert1001.wikimedia.org'
+  - 'alert2001.wikimedia.org'
 profile::idp::client::httpd::acme_chief_cert: icinga
 profile::idp::client::httpd::document_root: /usr/share/icinga/htdocs
 profile::idp::client::httpd::vhost_content: 'profile/idp/client/httpd-icinga.erb'
