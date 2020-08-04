@@ -126,7 +126,7 @@ class profile::reportupdater::jobs(
     }
 
     reportupdater::job { 'ee-beta-features':
-        ensure     => $ensure_jobs,
+        ensure     => absent,
         output_dir => 'metrics/beta-feature-enables',
     }
 
