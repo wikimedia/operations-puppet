@@ -25,5 +25,9 @@ blacklist /home
 # TODO: investigate upstreaming this into FirejailCommand
 caps.drop all
 
+# /run contains many exploitable UNIX sockets
+blacklist /run
+
 # MediaWiki private stuff
 blacklist /srv/mediawiki/private
+blacklist /tmp/mw-cache-*
