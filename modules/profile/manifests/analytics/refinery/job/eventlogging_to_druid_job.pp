@@ -182,7 +182,7 @@ define profile::analytics::refinery::job::eventlogging_to_druid_job (
         jar          => $_refinery_job_jar,
         class        => $job_class,
         spark_opts   => "${default_spark_opts} --files /etc/hive/conf/hive-site.xml,${daily_job_config_file} --conf spark.dynamicAllocation.maxExecutors=64 --driver-memory 2G",
-        job_opts     => "--config_file ${job_name}_daily.properties --since $(date --date '-${daily_days_since}days' -u +'%Y-%m-%dT00:00:00') --until $(date --date '-${daily_days_until}days' -u +'%Y-%m-%dT00:00:00')",
+        job_opts     => "--config_file ${config_file_path} --since $(date --date '-${daily_days_since}days' -u +'%Y-%m-%dT00:00:00') --until $(date --date '-${daily_days_until}days' -u +'%Y-%m-%dT00:00:00')",
         require      => Profile::Analytics::Refinery::Job::Config[$daily_job_config_file],
         user         => $user,
         interval     => '*-*-* 00:00:00',
