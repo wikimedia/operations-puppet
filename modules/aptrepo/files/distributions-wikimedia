@@ -136,6 +136,7 @@ Components: main
  component/jdk8
  component/memcached16
  component/mtail
+ component/pdns-recursor
  component/spicerack
  component/wmf-sre-laptop
  thirdparty/amd-rocm25
