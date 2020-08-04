@@ -259,7 +259,7 @@
             "buckets": ["10", "100", "500", "1000", "2000", "3000", "5000", "7000", "10000", "inf", "sum"],
             "labels": ["dataSource"],
             "description": "Number of bytes returned in query response."
-        },
+        }
     },
     "peon": {
         "ingest/events/thrownAway": {
