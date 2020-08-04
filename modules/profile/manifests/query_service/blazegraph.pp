@@ -16,6 +16,7 @@ define profile::query_service::blazegraph (
     Stdlib::Port $prometheus_port,
     Stdlib::Port $prometheus_agent_port,
     String $config_file_name,
+    String $prefixes_file,
     Optional[String] $sparql_query_stream,
     Optional[String] $event_service_endpoint,
     Boolean $use_geospatial,
@@ -81,6 +82,7 @@ define profile::query_service::blazegraph (
         use_geospatial        => $use_geospatial,
         oauth_settings        => $oauth_settings,
         blazegraph_main_ns    => $blazegraph_main_ns,
+        prefixes_file         => $prefixes_file,
         federation_user_agent => $federation_user_agent
     }
 

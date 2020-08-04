@@ -56,6 +56,7 @@ class profile::query_service::categories(
         prometheus_port        => $prometheus_port,
         prometheus_agent_port  => $prometheus_agent_port,
         config_file_name       => 'RWStore.categories.properties',
+        prefixes_file          => 'prefixes.conf',
         use_geospatial         => false,
         federation_user_agent  => $federation_user_agent,
     }

@@ -9,6 +9,9 @@ PORT=<%= @port %>
 EXTRA_JVM_OPTS="
   <%= @extra_jvm_opts.join(" \\\n  ") %>"
 <%- end -%>
+<%- if @prefixes_file -%>
+PREFIXES_FILE="<%= @prefixes_file %>"
+<%- end -%>
 <%- if @oauth_settings -%>
 OAUTH_PROPS_PREFIX="org.wikidata.query.rdf.mwoauth.OAuthProxyConfig"
 OAUTH_RUN=" mw-oauth-proxy-*.war"

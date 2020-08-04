@@ -64,6 +64,7 @@ class profile::query_service::wikidata(
         prometheus_port        => $prometheus_port,
         prometheus_agent_port  => $prometheus_agent_port,
         config_file_name       => 'RWStore.wikidata.properties',
+        prefixes_file          => 'prefixes.conf',
         use_geospatial         => true,
         federation_user_agent  => $federation_user_agent,
     }

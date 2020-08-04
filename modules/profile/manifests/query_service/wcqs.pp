@@ -51,6 +51,7 @@ class profile::query_service::wcqs(
         prometheus_port        => $prometheus_port,
         prometheus_agent_port  => $prometheus_agent_port,
         config_file_name       => 'RWStore.wcqs.properties',
+        prefixes_file          => 'prefixes-sdc.conf',
         use_geospatial         => true,
         journal                => 'wcqs',
         blazegraph_main_ns     => $blazegraph_main_ns,

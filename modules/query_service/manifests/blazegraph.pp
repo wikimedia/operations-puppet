@@ -34,6 +34,7 @@ define query_service::blazegraph(
     String $journal,
     String $blazegraph_main_ns,
     String $federation_user_agent,
+    String $prefixes_file,
     Optional[Query_service::OAuthSettings] $oauth_settings = undef
 ) {
     $data_file = "${data_dir}/${journal}.jnl"

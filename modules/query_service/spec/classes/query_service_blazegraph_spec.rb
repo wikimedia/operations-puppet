@@ -25,6 +25,7 @@ describe 'query_service::blazegraph', :type => :define do
         :use_geospatial => false,
         :federation_user_agent => 'TEST User-Agent',
         :blazegraph_main_ns => 'wdq',
+        :prefixes_file => 'prefixes.conf',
         }
    }
 
@@ -69,6 +70,7 @@ describe 'query_service::blazegraph', :type => :define do
         :use_geospatial => false,
         :federation_user_agent => 'TEST User-Agent',
         :blazegraph_main_ns => 'wdq',
+        :prefixes_file => 'prefixes.conf',
         }
    }
 
@@ -110,6 +112,7 @@ describe 'query_service::blazegraph', :type => :define do
         :use_geospatial => true,
         :federation_user_agent => 'TEST User-Agent',
         :blazegraph_main_ns => 'wdq',
+        :prefixes_file => 'prefixes.conf',
         }
    }
 

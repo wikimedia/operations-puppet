@@ -26,5 +26,25 @@
   },
   "logout": {
     "url": "https://wcqs-beta.wmflabs.org/_logout"
+  },
+  "prefixes": {
+    "sdc": "https://commons.wikimedia.org/entity/",
+    "sdcdata": "https://commons.wikimedia.org/wiki/Special:EntityData/",
+    "sdcs": "https://commons.wikimedia.org/entity/statement/",
+    "sdcref": "https://commons.wikimedia.org/reference/",
+    "sdcv": "https://commons.wikimedia.org/value/",
+    "sdct": "https://commons.wikimedia.org/prop/direct/",
+    "sdctn": "https://commons.wikimedia.org/prop/direct-normalized/",
+    "sdcp": "https://commons.wikimedia.org/prop/",
+    "sdcps": "https://commons.wikimedia.org/prop/statement/",
+    "sdcpsv": "https://commons.wikimedia.org/prop/statement/value/",
+    "sdcpsn": "https://commons.wikimedia.org/prop/statement/value-normalized/",
+    "sdcpq": "https://commons.wikimedia.org/prop/qualifier/",
+    "sdcpqv": "https://commons.wikimedia.org/prop/qualifier/value/",
+    "sdcpqn": "https://commons.wikimedia.org/prop/qualifier/value-normalized/",
+    "sdcpr": "https://commons.wikimedia.org/prop/reference/",
+    "sdcprv": "https://commons.wikimedia.org/prop/reference/value/",
+    "sdcprn": "https://commons.wikimedia.org/prop/reference/value-normalized/",
+    "sdcno": "https://commons.wikimedia.org/prop/novalue/"
   }
 }
