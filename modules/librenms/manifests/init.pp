@@ -169,7 +169,6 @@ class librenms(
             'ipmitool',
             'mtr-tiny',
             'nmap',
-            'python-mysqldb',
             'python3-pymysql',
             'rrdtool',
             'snmp',
@@ -260,15 +259,16 @@ class librenms(
         target => "${install_dir}/syslog.php",
     }
 
+    # Obsoleted by https://docs.librenms.org/Support/Cleanup-options/
     file { "${install_dir}/purge.py":
-        ensure => present,
+        ensure => absent,
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
         source => 'puppet:///modules/librenms/purge.py',
     }
     cron { 'purge-syslog-eventlog':
-        ensure  => $cron_ensure,
+        ensure  => absent,
         user    => 'librenms',
         command => "${install_dir}/purge.py --syslog --eventlog --perftimes '1 month' >/dev/null 2>&1",
         hour    => '0',
