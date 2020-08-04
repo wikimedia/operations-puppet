@@ -4,5 +4,7 @@ class profile::ores::worker {
     # same role class. scap::target also ends up using it
     include ::git::lfs # lint:ignore:wmf_styleguide
     class { '::ores::worker': }
-    class { '::profile::prometheus::statsd_exporter': }
+    class { '::profile::prometheus::statsd_exporter':
+        relay_address => ''
+    }
 }
