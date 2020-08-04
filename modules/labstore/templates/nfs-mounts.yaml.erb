@@ -15,11 +15,6 @@ private:
     gid: 50116
     mounts:
       project: true
-  wikidata-query:
-    gid: 52354
-    mounts:
-      scratch: true
-      dumps: true
   dumps:
     gid: 50124
     mounts:
@@ -27,7 +22,7 @@ private:
       home: true
       project: true
       scratch: true
-  etytree:
+  etytree:  # T151933
     gid: 53231
     mounts:
       dumps: true
@@ -36,12 +31,16 @@ private:
     mounts:
       home: true
       project: true
+  gratitude:  # T240737
+    gid: 54032
+    mounts:
+      dumps: true
   huggle:
     gid: 50168
     mounts:
       home: true
       project: true
-  language:
+  language:  # T242187
     gid: 50794
     mounts:
       scratch: true
@@ -51,7 +50,7 @@ private:
       dumps: true
       scratch: true
       maps: true
-  math:
+  math:  # T134026
     gid: 50398
     mounts:
       project: true
@@ -61,10 +60,21 @@ private:
     gid: 52376
     mounts:
       scratch: true
-  osmit:
+  ores-staging:  # T252204
+    gid: 52938
+    mounts:
+      dumps: true
+  osmit:  # T156586
     gid: 51933
     mounts:
       dumps: true
+  paws:  # T219077
+    gid: 52863
+    mounts:
+      dumps: true
+      scratch: true
+      home: true
+      project: true
   project-proxy:
     gid: 50254
     mounts:
@@ -73,7 +83,7 @@ private:
     gid: 52243
     mounts:
       project: true
-  recommendation-api:
+  recommendation-api:  # T244166
     gid: 53150
     mounts:
       dumps: true
@@ -84,6 +94,10 @@ private:
       home: true
       project: true
       scratch: true
+  soweego:  # T209818
+    gid: 53892
+    mounts:
+      dumps: true
   testlabs:
     gid: 50302
     mounts:
@@ -91,13 +105,6 @@ private:
       home: true
       project: true
       scratch: true
-  paws:
-    gid: 52863
-    mounts:
-      dumps: true
-      scratch: true
-      home: true
-      project: true
   tools:
     gid: 50380
     mounts:
@@ -127,10 +134,19 @@ private:
       home: true
       project: true
       scratch: true
+  wcdo:  # T228450
+    gid: 53693
+    mounts:
+      dumps: true
   wikidata-dev:
     gid: 50084
     mounts:
       home: true
+  wikidata-query:  # T128815, T135205
+    gid: 52354
+    mounts:
+      scratch: true
+      dumps: true
   wikidumpparse:
     gid: 51824
     mounts:
@@ -138,19 +154,3 @@ private:
       home: true
       project: true
       scratch: true
-  soweego:
-    gid: 53892
-    mounts:
-      dumps: true
-  gratitude:
-    gid: 54032
-    mounts:
-      dumps: true
-  wcdo:
-    gid: 53693
-    mounts:
-      dumps: true
-  ores-staging:
-    gid: 52938
-    mounts:
-      dumps: true
