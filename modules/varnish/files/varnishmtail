@@ -18,4 +18,13 @@ fmt_cache_int='cache_int %{X-Cache-Int}o'
 FMT="${fmt_side}\t${fmt_url}\t${fmt_cache_status}\t${fmt_http_status}\t${fmt_http_method}\t${fmt_cache_control}\t${fmt_inm}\t${fmt_ttfb}\t${fmt_cache_int}\t"
 
 # Pass -c and -b to log requests from clients (tls terminators) and to backends (origin)
-/usr/bin/varnishncsa -n frontend -c -b -F "${FMT}" | mtail -progs "${PROGS}" -logs /dev/stdin -disable_fsnotify $MTAIL_ARGS
+/usr/bin/varnishncsa -P /run/varnishncsa-mtail.pid -n frontend -c -b -F "${FMT}" | mtail -progs "${PROGS}" -logs /dev/stdin -disable_fsnotify $MTAIL_ARGS &
+
+while :; do
+    sleep 1
+
+    if ! kill -0 "$(cat /run/varnishncsa-mtail.pid)" 2> /dev/null ; then
+        echo "varnishncsa seems to have crashed, exiting" >&2
+        exit 1
+    fi
+done
