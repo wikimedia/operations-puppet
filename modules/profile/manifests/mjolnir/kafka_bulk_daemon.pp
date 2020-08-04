@@ -12,6 +12,7 @@
 class profile::mjolnir::kafka_bulk_daemon(
     String $kafka_cluster = hiera('profile::mjolnir::kafka_bulk_daemon::kafka_cluster'),
     String $group_id = hiera('profile::mjolnir::kafka_bulk_daemon::group_id'),
+    String $es_cluster_endpoint = lookup('profile::mjolnir::kafka_bulk_daemon::es_cluster_endpoint', { 'default_value' => 'localhost:9200' }),
     Array[String] $topics = hiera('profile::mjolnir::kafka_bulk_daemon::topics'),
     Array[String] $prometheus_nodes = hiera('prometheus_nodes', []),
     Wmflib::Ensure $ensure = lookup('profile::mjolnir::kafka_bulk_daemon::ensure', { 'default_value' => 'present' }),

@@ -9,7 +9,7 @@ Group=nogroup
 Environment=REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
 ExecStart=/srv/deployment/search/mjolnir/deploy/venv/bin/mjolnir-utilities.py kafka_bulk_daemon \
         --brokers <%= @kafka_config['brokers']['string'] %> \
-        --es-clusters localhost:9200 \
+        --es-clusters <%= @es_cluster_endpoint %> \
         --group-id <%= @group_id %> \
         --topic <%= @topics.join(' ') %> \
         --prometheus-port <%= @prometheus_port %>
