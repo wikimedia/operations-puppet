@@ -27,6 +27,8 @@ class dnsrecursor(
     $allow_forward_zones      = true,
     $allow_edns_whitelist     = true,
     $allow_incoming_ecs       = false,
+    $allow_qname_minimisation = false,
+    $enable_pdns43            = false, # enable pdns-recursor 4.3.3, used by wikidough
 ) {
 
     include ::network::constants
@@ -64,8 +66,14 @@ class dnsrecursor(
         before      => Service['pdns-recursor'],
     }
 
-    package { 'pdns-recursor':
-        ensure => 'present',
+    if os_version('debian == buster') and $enable_pdns43 {
+        apt::package_from_component { 'pdns-recursor':
+            component => 'component/pdns-recursor',
+        }
+    } else {
+        package { 'pdns-recursor':
+            ensure => 'present',
+        }
     }
 
     file { '/etc/powerdns/recursor.conf':
