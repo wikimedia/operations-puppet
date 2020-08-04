@@ -176,11 +176,13 @@ class profile::cache::kafka::webrequest(
             topic                 => "atskafka_test_${topic}",
             stats_interval_ms     => 60000,
             # Instead of sending messages every 5 milliseconds (the default),
-            # buffer locally and send once per second. Having chosen 1s here,
-            # the size of the MessageSet is the number of rps served by the
-            # ATS instance. Larger MessageSets benefit from better compression
-            # and less overhead improving throughput at the expense of latency.
-            buffering_ms          => 1000,
+            # buffer locally and send once every 2 seconds. Having chosen 2s
+            # here, the amount of messages sent per batch is 2x the number of
+            # rps served by the ATS instance divided by the number of kafka
+            # partitions for the topic. Larger batches benefit from better
+            # compression and less overhead improving throughput at the expense
+            # of latency.
+            buffering_ms          => 2000,
             # Instead of waiting for all replicas to commit the message
             # (default value -1), wait for the leader only.
             request_required_acks => 1,
