@@ -37,6 +37,7 @@ class arclamp(
 ) {
     require_package('python-redis')
     require_package('python-yaml')
+    require_package('python-swiftclient')
 
     # Global setup
     group { 'xenon':
