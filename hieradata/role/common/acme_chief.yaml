@@ -59,11 +59,14 @@ profile::acme_chief::certificates:
         - 'icinga.wikimedia.org'
         - 'icinga1001.wikimedia.org'
         - 'icinga2001.wikimedia.org'
+        - 'alert1001.wikimedia.org'
+        - 'alert2001.wikimedia.org'
         - 'icinga-extmon.wikimedia.org'
         - 'ldap-icinga.wikimedia.org'
         challenge: dns-01
         authorized_regexes:
         - '^icinga[12]001\.wikimedia\.org$'
+        - '^alert[12]001\.wikimedia\.org$'
     idp:
         CN: 'idp.wikimedia.org'
         SNI:
