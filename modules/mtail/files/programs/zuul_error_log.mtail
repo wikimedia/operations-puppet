@@ -1,25 +1,25 @@
-# Counts unexpected Exception lines
+counter zuul_gerrit_reporting_errors_total
+counter zuul_mutexhandler_errors_total
+counter zuul_unexpected_errors_total
 
-# Prometheus style name
-counter zuul_exceptions_total
-
-hidden gauge last_timestamp
-
-# Grok the timestamp, to be used in the Exception line which comes later
-/^(?P<date>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}),\d{3} / {
+/^(?P<date>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}),\d{3} ERROR / {
   strptime($date, "2006-01-02 03:04:05")
-  last_timestamp = timestamp()
-}
 
-/^Exception:/ {
-  settime(last_timestamp)
+  /ERROR zuul\.MutexHandler:/ {
+    # These happen from time to time but they don't seem to indicate a
+    # real problem so they're tracked separately.
+    zuul_mutexhandler_errors_total++
+  }
 
-  # Skip exceptions that we don't care about.
-  /error: fatal: Cannot reduce vote on labels for closed change:/ {
+  /ERROR zuul\.(Inde|De)pendentPipelineManager: Exception while reporting:/ {
+    # These happen from time to time but they don't seem to indicate a
+    # real problem so they're tracked separately.
+    zuul_gerrit_reporting_errors_total++
+  }
 
-  } else {
-    # Something unexpected
-    zuul_exceptions_total++
+  otherwise {
+    # Something unexpected.  Probably a real problem.
+    zuul_unexpected_errors_total++
   }
 }
 
