@@ -1,5 +1,6 @@
 class profile::releases::common(
     Stdlib::Fqdn $sitename = lookup('profile::releases::mediawiki::sitename'),
+    Stdlib::Host $deployment_server = lookup('deployment_server'),
     Stdlib::Fqdn $active_server = lookup('releases_server'),
     Array[Stdlib::Fqdn] $secondary_servers = lookup('releases_servers_failover'),
     String $server_admin = lookup('profile::releases::mediawiki::server_admin'),
@@ -47,6 +48,12 @@ class profile::releases::common(
         proto  => 'tcp',
         port   => '80',
         srange => "(${::ipaddress} ${::ipaddress6})",
+    }
+
+    ferm::service { 'releases_http_deployment':
+        proto  => 'tcp',
+        port   => '80',
+        srange => "(@resolve((${deployment_server})) @resolve((${deployment_server}), AAAA))"
     }
 
     backup::set { 'srv-org-wikimedia': }
