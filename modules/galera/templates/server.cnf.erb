@@ -92,6 +92,8 @@ wsrep_cluster_name="openstack"
 wsrep_provider=/usr/lib/galera/libgalera_smm.so
 wsrep_sst_method=rsync
 wsrep_slave_threads=24  # 4x CPU is recommended, but CPU is heavily used by rabbit
+# Because we are using this in primary/backup mode, reduce restrictions on replication
+wsrep_provider_options="gcs.fc_limit = 256; gcs.fc_factor = 0.99; gcs.fc_master_slave = yes"
 
 wsrep_node_address="<%= @ipaddress %>"
 wsrep_node_name="<%= @fqdn %>"
