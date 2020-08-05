@@ -612,15 +612,6 @@ node 'db2132.codfw.wmnet' {
 ## m2 shard
 
 # See also multiinstance misc hosts db1117 and db2078 below
-
-# To be moved to m3
-node 'db1132.eqiad.wmnet' {
-    class { '::role::mariadb::misc':
-        shard  => 'm2',
-        master => false,
-    }
-}
-
 # m2 master T257540
 node 'db1107.eqiad.wmnet' {
     class { '::role::mariadb::misc':
@@ -636,7 +627,6 @@ node 'db2133.codfw.wmnet' {
 }
 
 ## m3 shard
-
 # See also multiinstance misc hosts db1117 and db2078 below
 
 node 'db1128.eqiad.wmnet' {
@@ -645,6 +635,13 @@ node 'db1128.eqiad.wmnet' {
     }
 }
 
+# Future m3 master
+node 'db1132.eqiad.wmnet' {
+    class { '::role::mariadb::misc':
+        shard  => 'm3',
+        master => false,
+    }
+}
 
 # codfw
 node 'db2134.codfw.wmnet' {
