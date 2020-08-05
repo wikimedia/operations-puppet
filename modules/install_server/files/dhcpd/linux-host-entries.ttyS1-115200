@@ -2260,7 +2260,7 @@ host dbprov2002 {
 }
 
 host dbprov2003 {
-    hardware ethernet 10:0e:7e:b4:6c:80;
+    hardware ethernet BC:97:E1:53:E7:76;
     fixed-address dbprov2003.codfw.wmnet;
 }
 
