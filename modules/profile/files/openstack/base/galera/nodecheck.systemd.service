@@ -1,0 +1,8 @@
+[Unit]
+Description=Service to check galera node state
+
+[Service]
+User=prometheus
+Group=prometheus
+ExecStart=-/usr/local/sbin/nodecheck.sh
+StandardInput=socket

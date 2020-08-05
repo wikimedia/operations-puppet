@@ -1,0 +1,9 @@
+[Unit]
+Description=Socket to check galera node state
+
+[Socket]
+ListenStream=9990
+Accept=yes
+
+[Install]
+WantedBy=sockets.target

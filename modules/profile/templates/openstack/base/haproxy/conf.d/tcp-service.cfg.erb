@@ -9,9 +9,7 @@ listen <%= @title %>
     <%= option %>
 <% end -%>
 <% @servers.each do |server| -%>
-    server <%= server %> <%= scope.function_ipresolve([server]) %>:<%= @port_backend %> check inter 1s rise 2 fall 4
+    server <%= server %> <%= scope.function_ipresolve([server]) %>:<%= @port_backend %> check port 9990 inter 1s rise 2 fall 4
 <% end -%>
-    stick  on dst
-    stick-table  type ip size 2
     timeout  client 90m
     timeout  server 90m

@@ -99,4 +99,43 @@ class profile::openstack::base::galera::node(
         db_pass      => $prometheus_db_pass,
         project_name => 'prometheus',
     }
+
+    # nodechecker service -- should be able to run as prometheus user
+    # This is a simple shellscript running on a systemd socket that replies
+    # with a 200 or error so we get a real healthcheck for haproxy
+    ferm::rule{'galera_nodecheck':
+        ensure => 'present',
+        rule   => "saddr (${cluster_node_ips} ${cluster_node_ips_v6}) proto tcp dport 9990 ACCEPT;",
+    }
+    file { '/var/log/nodecheck':
+        ensure => directory,
+        owner  => 'prometheus',
+        group  => 'prometheus',
+        mode   => '0755',
+    }
+    file { '/usr/local/sbin/nodecheck.sh':
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/profile/openstack/base/galera/nodecheck.sh',
+    }
+    file { '/lib/systemd/system/nodecheck@.service':
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+        source => 'puppet:///modules/profile/openstack/base/galera/nodecheck.systemd.service',
+    }
+    file { '/lib/systemd/system/nodecheck.socket':
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+        source => 'puppet:///modules/profile/openstack/base/galera/nodecheck.systemd.socket',
+        notify => Exec['nodecheck-enable'],
+    }
+    # We aren't enabling the service. It's the socket we want.
+    exec { 'nodecheck-enable':
+        command     => 'systemctl daemon-reload; systemctl enable nodecheck.socket; systemctl restart nodecheck.socket',
+        path        => [ '/usr/bin', '/bin', '/usr/sbin' ],
+        refreshonly => true,
+    }
 }
