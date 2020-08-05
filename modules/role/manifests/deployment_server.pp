@@ -21,8 +21,6 @@ class role::deployment_server {
     # Kubernetes deployments
     include profile::kubernetes::deployment_server
 
-    # apache-fast-test and co.
-    include profile::mediawiki::web_testing
     include profile::httpbb
 
     include profile::backup::host
