@@ -936,9 +936,9 @@ hadoop_clusters:
     # R720s will have 52G for YARN with room for 26 2G containers.
     # R730dxs will have 116G for YARN with room for 52 2G containers.
 
-    # Setting minimum_allocations to 0 to allow Impala to submit small reservation requests.
-    # TODO: do we need to set this anymore?  We don't use Impala.
-    yarn_scheduler_minimum_allocation_mb: 0
+    # https://issues.apache.org/jira/browse/YARN-5774
+    # Flink 1.1+ also needs this value to be >= 0
+    yarn_scheduler_minimum_allocation_mb: 1
     # Allow a job to request up to the smallest value of yarn_nodemanager_resource_memory_mb
     # in the cluster. The smallest value is 52G on the R720s (analytics1069 and below).
     yarn_scheduler_maximum_allocation_mb: 49152
