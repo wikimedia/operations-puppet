@@ -1,2 +1,3 @@
 profile::openstack::eqiad1::galera::enabled: true
 profile::openstack::eqiad1::galera::listen_port: 23306
+profile::openstack::eqiad1::galera::primary_host: "cloudcontrol1005.wikimedia.org"

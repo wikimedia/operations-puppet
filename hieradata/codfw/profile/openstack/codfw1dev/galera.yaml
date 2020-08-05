@@ -1,2 +1,3 @@
 profile::openstack::codfw1dev::galera::enabled: true
 profile::openstack::codfw1dev::galera::listen_port: 23306
+profile::openstack::codfw1dev::galera::primary_host: "cloudcontrol2004-dev.wikimedia.org"

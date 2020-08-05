@@ -18,6 +18,13 @@
 #   Port (int)
 #   The frontend port HAproxy will bind to for this service.
 #
+# [*primary_host*]
+#   Stdlib::Fqdn
+#   When specified, the primary host will be the only active service;
+#   others will be marked as backups. If this item is set but not
+#   a member of the $servers below, all servers will be marked as backups
+#   and nothing much will work.
+#
 # [*servers*]
 #   Array of Stdlib::Fqdn
 #   A list of backend servers providing the service.
@@ -43,6 +50,7 @@ define profile::openstack::base::haproxy::site(
     Array[Stdlib::Fqdn] $servers,
     Stdlib::Port $port_backend,
     Stdlib::Port $port_frontend,
+    Optional[Stdlib::Fqdn] $primary_host = undef,
     Stdlib::Compat::String $healthcheck_path = '',
     String $healthcheck_method = '',
     Array[String] $healthcheck_options = [],

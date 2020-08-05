@@ -8,6 +8,7 @@ class profile::openstack::codfw1dev::haproxy(
     Stdlib::Port $neutron_bind_port = lookup('profile::openstack::codfw1dev::neutron::bind_port'),
     Stdlib::Port $nova_metadata_listen_port = lookup('profile::openstack::codfw1dev::nova::metadata_listen_port'),
     Stdlib::Port $galera_listen_port = lookup('profile::openstack::codfw1dev::galera::listen_port'),
+    Stdlib::Fqdn $galera_primary_host = lookup('profile::openstack::codfw1dev::galera::primary_host'),
     Stdlib::Port $nova_osapi_compute_listen_port = lookup('profile::openstack::codfw1dev::nova::osapi_compute_listen_port'),
     Stdlib::Port $placement_api_port = lookup('profile::openstack::codfw1dev::nova::placement_api_port'),
 ) {
@@ -91,6 +92,7 @@ class profile::openstack::codfw1dev::haproxy(
         servers             => $openstack_controllers,
         port_frontend       => 3306,
         port_backend        => $galera_listen_port,
+        primary_host        => $galera_primary_host,
         healthcheck_options => ['option httpchk'],
         type                => 'tcp'
     }

@@ -8,6 +8,7 @@ class profile::openstack::eqiad1::haproxy(
     Stdlib::Port $neutron_bind_port = lookup('profile::openstack::eqiad1::neutron::bind_port'),
     Stdlib::Port $nova_metadata_listen_port = lookup('profile::openstack::eqiad1::nova::metadata_listen_port'),
     Stdlib::Port $galera_listen_port = lookup('profile::openstack::eqiad1::galera::listen_port'),
+    Stdlib::Fqdn $galera_primary_host = lookup('profile::openstack::eqiad1::galera::primary_host'),
     Stdlib::Port $nova_osapi_compute_listen_port = lookup('profile::openstack::eqiad1::nova::osapi_compute_listen_port'),
     Stdlib::Port $placement_api_port = lookup('profile::openstack::eqiad1::nova::placement_api_port'),
 ) {
@@ -92,6 +93,7 @@ class profile::openstack::eqiad1::haproxy(
         servers             => $openstack_controllers,
         port_frontend       => 3306,
         port_backend        => $galera_listen_port,
+        primary_host        => $galera_primary_host,
         healthcheck_options => ['option httpchk'],
         type                => 'tcp'
     }
