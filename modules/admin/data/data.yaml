@@ -454,13 +454,6 @@ groups:
                  'ALL = NOPASSWD: /bin/systemctl unmask tileratorui.service',
                  'ALL = (tileratorui) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /bin/journalctl *']
-  mobileapps-admin:
-    description: Group of mobileapps admins
-    gid: 759
-    members: [bsitzmann, mholloway-shell, mobrovac, jforrester, mbsantos,
-              jgiannelos]
-    privileges: ['ALL = NOPASSWD: /usr/sbin/service mobileapps *',
-                 'ALL = (mobileapps) NOPASSWD: ALL']
   mw-log-readers:
     gid: 760
     description: users who can login on mwlog hosts and read mediawiki logs
@@ -595,12 +588,6 @@ groups:
     gid: 779
     members: [eevans, mobrovac, ppchelko]
     privileges: ['ALL = NOPASSWD: /usr/bin/puppet agent *',
-               'ALL = NOPASSWD: /usr/sbin/service changeprop *',
-               'ALL = NOPASSWD: /usr/sbin/service cpjobqueue *',
-               'ALL = NOPASSWD: /usr/sbin/service graphoid *',
-               'ALL = NOPASSWD: /usr/sbin/service mathoid *',
-               'ALL = NOPASSWD: /usr/sbin/service mobileapps *',
-               'ALL = NOPASSWD: /usr/sbin/service proton *',
                'ALL = (proton) NOPASSWD: ALL',
                'ALL = NOPASSWD: /usr/sbin/service recommendation_api *',
                'ALL = (recommendation_api) NOPASSWD: ALL',

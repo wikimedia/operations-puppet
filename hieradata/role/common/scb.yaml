@@ -4,16 +4,12 @@ admin::groups:
   - cpjobqueue-admin
   - apertium-admins
   - graphoid-admin
-  - mobileapps-admin
   - changeprop-admin
   - recommendation-admin
 profile::lvs::realserver::pools:
   apertium:
     services:
       - "apertium-apy"
-  mobileapps:
-    services:
-      - mobileapps
   graphoid:
     services:
       - graphoid
