@@ -4400,3 +4400,7 @@ ldap_only_users:
     ensure: present
     realname: Chad Horohoe
     email: chad@horohoe.email
+  cdunn:
+    ensure: present
+    realname: Carol Dunn
+    email: cdunn@wikimedia.org
