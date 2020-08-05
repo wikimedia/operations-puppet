@@ -3,8 +3,9 @@
 class role::scb {
 
     $services = [
-        'cpjobqueue', 'graphoid',
-        'mobileapps',
+        'cpjobqueue',
+        'graphoid',
+        'apertium',
     ]
     $msg_services = join($services, "\n\t")
 
@@ -22,7 +23,6 @@ class role::scb {
 
     include ::profile::cpjobqueue
     include ::profile::recommendation_api
-    include ::profile::mobileapps
     include ::profile::graphoid
     include ::profile::apertium
 }
