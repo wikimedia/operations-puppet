@@ -1,8 +1,0 @@
-#!/bin/sh
-
-cat <<EOF
-apache-fast-test has been removed -- the replacement tool is httpbb
-(https://wikitech.wikimedia.org/wiki/Httpbb). For more information contact
-rlazarus@wikimedia.org or comment on https://phabricator.wikimedia.org/T236699.
-EOF
-exit 1
