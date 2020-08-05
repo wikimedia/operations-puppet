@@ -35,21 +35,6 @@ class profile::httpbb {
         source => 'puppet:///modules/profile/httpbb/miscweb/test_miscweb.yaml'
     }
 
-    # Temporary: Moving test files into subdirectories. (T259665)
-    file {
-        [
-            '/srv/deployment/httpbb-tests/baseurls.yaml',
-            '/srv/deployment/httpbb-tests/test_foundation.yaml',
-            '/srv/deployment/httpbb-tests/test_main.yaml',
-            '/srv/deployment/httpbb-tests/test_remnant.yaml',
-            '/srv/deployment/httpbb-tests/test_search.yaml',
-            '/srv/deployment/httpbb-tests/test_secure.yaml',
-            '/srv/deployment/httpbb-tests/test_wikimania_wikimedia.yaml',
-            '/srv/deployment/httpbb-tests/test_miscweb.yaml',
-        ]:
-            ensure => 'absent'
-    }
-
     systemd::timer::job { 'git_pull_httpbb':
         ensure          => present,
         description     => 'Pull changes from operations/software/httpbb',
