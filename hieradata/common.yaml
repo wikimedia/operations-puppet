@@ -942,7 +942,9 @@ hadoop_clusters:
     # Allow a job to request up to the smallest value of yarn_nodemanager_resource_memory_mb
     # in the cluster. The smallest value is 52G on the R720s (analytics1069 and below).
     yarn_scheduler_maximum_allocation_mb: 49152
-    yarn_scheduler_minimum_allocation_vcores:   0
+    # https://issues.apache.org/jira/browse/YARN-5774
+    # Flink 1.1+ also needs this value to be >= 0
+    yarn_scheduler_minimum_allocation_vcores:   1
     yarn_scheduler_maximum_allocation_vcores:   32
     # Raised for T206943
     yarn_resourcemanager_zk_timeout_ms: 20000
