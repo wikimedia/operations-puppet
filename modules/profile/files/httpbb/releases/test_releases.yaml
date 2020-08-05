@@ -1,0 +1,25 @@
+http://releases-jenkins.wikimedia.org:
+- path: /
+  assert_status: 403
+  assert_body_contains: Authentication required
+
+https://releases-jenkins.wikimedia.org:
+- path: /
+  assert_status: 403
+  assert_body_contains: Authentication required
+
+http://releases.wikimedia.org:
+- path: /
+  assert_status: 200
+  assert_body_contains: Wikimedia Software Releases
+
+https://releases.wikimedia.org:
+- path: /
+  assert_status: 200
+  assert_body_contains: Wikimedia Software Releases
+- path: /mobile/android/
+  assert_status: 200
+  assert_body_contains: Wiktionary-v1.0.1.apk
+- path: /debian/pool/main/p/parsoid/
+  assert_status: 200
+  assert_body_contains: parsoid_0.11.0all_all.deb

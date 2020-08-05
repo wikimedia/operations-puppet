@@ -6,6 +6,7 @@ class profile::httpbb {
         [
             '/srv/deployment/httpbb-tests/appserver',
             '/srv/deployment/httpbb-tests/miscweb',
+            '/srv/deployment/httpbb-tests/releases',
         ]:
             ensure => directory
     }
@@ -33,6 +34,9 @@ class profile::httpbb {
     }
     httpbb::test_suite {'miscweb/test_miscweb.yaml':
         source => 'puppet:///modules/profile/httpbb/miscweb/test_miscweb.yaml'
+    }
+    httpbb::test_suite {'miscweb/test_releases.yaml':
+        source => 'puppet:///modules/profile/httpbb/releases/test_releases.yaml'
     }
 
     systemd::timer::job { 'git_pull_httpbb':
