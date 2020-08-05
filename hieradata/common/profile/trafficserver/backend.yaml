@@ -301,40 +301,6 @@ profile::trafficserver::backend::mapping_rules:
           # Re-use origin server connections if origin IP and port match
           - '@plugin=/usr/lib/trafficserver/modules/conf_remap.so'
           - '@pparam=proxy.config.http.server_session_sharing.match=2'
-profile::trafficserver::backend::caching_rules:
-    - primary_destination: dest_host
-      value: cxserver.discovery.wmnet
-      action: never-cache
-    - primary_destination: dest_host
-      value: debmonitor.discovery.wmnet
-      action: never-cache
-    - primary_destination: dest_host
-      value: grafana1002.eqiad.wmnet
-      action: never-cache
-    - primary_destination: dest_host
-      value: grafana-labs.discovery.wmnet
-      action: never-cache
-    - primary_destination: dest_host
-      value: graphite-labs.discovery.wmnet
-      action: never-cache
-    - primary_destination: dest_host
-      value: mendelevium.eqiad.wmnet
-      action: never-cache
-    - primary_destination: dest_host
-      value: mwmaint.discovery.wmnet
-      action: never-cache
-    - primary_destination: dest_host
-      value: puppetmaster1001.eqiad.wmnet
-      action: never-cache
-    - primary_destination: dest_host
-      value: peopleweb.discovery.wmnet
-      action: never-cache
-    - primary_destination: dest_host
-      value: thorium.eqiad.wmnet
-      action: never-cache
-    - primary_destination: dest_host
-      value: webserver-misc-apps.discovery.wmnet
-      action: never-cache
 profile::trafficserver::backend::default_lua_script: 'default'
 profile::trafficserver::backend::enable_compress: false
 profile::trafficserver::backend::outbound_tls_settings:
