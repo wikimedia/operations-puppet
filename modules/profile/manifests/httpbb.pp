@@ -2,6 +2,14 @@
 class profile::httpbb {
     class {'::httpbb':}
 
+    file {
+        [
+            '/srv/deployment/httpbb-tests/appserver',
+            '/srv/deployment/httpbb-tests/miscweb',
+        ]:
+            ensure => directory
+    }
+
     httpbb::test_suite {'appserver/baseurls.yaml':
         source => 'puppet:///modules/profile/httpbb/appserver/baseurls.yaml'
     }
