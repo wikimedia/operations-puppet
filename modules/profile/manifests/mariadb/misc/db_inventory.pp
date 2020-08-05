@@ -7,6 +7,10 @@ class profile::mariadb::misc::db_inventory{
 
     $id = 'db_inventory'
     $is_master = $profile::mariadb::mysql_role::role == 'master'
+    $binlog_format = $is_master ? {
+        true    => 'STATEMENT',
+        default => 'ROW',
+    }
 
     class { 'mariadb::packages_wmf': }
     profile::mariadb::ferm { $id: }
@@ -21,7 +25,7 @@ class profile::mariadb::misc::db_inventory{
         config        => 'profile/mariadb/mysqld_config/db_inventory.my.cnf.erb',
         datadir       => '/srv/sqldata',
         tmpdir        => '/srv/tmp',
-        binlog_format => 'ROW',
+        binlog_format => $binlog_format,
         p_s           => 'on',
         ssl           => 'puppet-cert',
     }
