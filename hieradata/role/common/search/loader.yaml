@@ -10,10 +10,10 @@ profile::mjolnir::kafka_msearch_daemon::input_topic: mjolnir.msearch-prod-reques
 profile::mjolnir::kafka_msearch_daemon::output_topic: mjolnir.msearch-prod-response
 # Max concurrent search threads consumed is:
 #   # kafka partitions * num_workers * max_concurrent_searches * # shards per index
-#   = (35 * 2 * 2 * 7)
-#   = max 980 concurrent shard searches
+#   = (1 * 25 * 2 * 16)
+#   = max 800 concurrent shard searches
 # Unfortunately # shards per index is variable, so some caution is still required.
-profile::mjolnir::kafka_msearch_daemon::num_workers: 10
+profile::mjolnir::kafka_msearch_daemon::num_workers: 25
 profile::mjolnir::kafka_msearch_daemon::max_concurrent_searches: 2
 
 # Bulk daemon defines group_id per-datacenter and applies updates to all
