@@ -1368,13 +1368,13 @@ class profile::prometheus::ops (
     prometheus::class_config { "mjolnir_bulk_${::site}}.yaml":
         dest       => "${targets_path}/mjolnir_bulk_${::site}.yaml",
         site       => $::site,
-        class_name => 'profile::mjolnir::kafka_bulk_daemon',
+        class_name => 'role::search::loader',
         port       => 9170,
     }
     prometheus::class_config { "mjolnir_msearch_${::site}}.yaml":
         dest       => "${targets_path}/mjolnir_msearch_${::site}.yaml",
         site       => $::site,
-        class_name => 'profile::mjolnir::kafka_msearch_daemon',
+        class_name => 'role::search::loader',
         port       => 9171,
     }
 
