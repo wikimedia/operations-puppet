@@ -759,7 +759,9 @@ node 'dbprov2001.codfw.wmnet' {
 node 'dbprov2002.codfw.wmnet' {
     role(mariadb::backups)
 }
-
+node 'dbprov2003.codfw.wmnet' {
+    role(insetup)
+}
 # Active eqiad proxies for misc databases
 node /^dbproxy10(12|13|14|15|16|17|20|21)\.eqiad\.wmnet$/ {
     role(mariadb::proxy::master)
