@@ -982,7 +982,7 @@ def run_httpbb(host):
     Arguments:
     host -- the host against which the httpbb tests must be executed
     """
-    command = 'httpbb /srv/deployment/httpbb-tests/* --host={host}'.format(host=host)
+    command = 'httpbb /srv/deployment/httpbb-tests/appserver/* --host={host}'.format(host=host)
     deployment_host = resolve_dns(DEPLOYMENT_DOMAIN, 'CNAME')
     try:
         run_cumin('run_httpbb', deployment_host, [command], timeout=120)
