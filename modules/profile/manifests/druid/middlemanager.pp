@@ -6,7 +6,6 @@ class profile::druid::middlemanager(
     $daemon_autoreload  = hiera('profile::druid::daemons_autoreload', true),
     $ferm_srange        = hiera('profile::druid::ferm_srange', '$DOMAIN_NETWORKS'),
     $monitoring_enabled = hiera('profile::druid::middlemanager::monitoring_enabled', false),
-    $apache_release     = lookup('profile::druid::apache_release', { 'default_value' => false }),
 ) {
 
     require ::profile::druid::common
@@ -30,11 +29,7 @@ class profile::druid::middlemanager(
         $monitoring_env_vars = {}
     }
 
-    if $apache_release {
-        $class_prefix = 'org.apache.druid'
-    } else {
-        $class_prefix = 'io.druid'
-    }
+    $class_prefix = 'org.apache.druid'
 
     # Druid middlemanager Service
     class { '::druid::middlemanager':

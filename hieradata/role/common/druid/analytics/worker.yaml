@@ -36,7 +36,6 @@ profile::kerberos::keytabs::keytabs_metadata:
     filename: 'druid.keytab'
 
 
-profile::druid::apache_release: true
 profile::prometheus::druid_exporter::druid_version: '0.19.0'
 
 # -- Druid common configuration

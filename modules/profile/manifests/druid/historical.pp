@@ -6,7 +6,6 @@ class profile::druid::historical(
     $daemon_autoreload  = hiera('profile::druid::daemons_autoreload', true),
     $ferm_srange        = hiera('profile::druid::ferm_srange', '$DOMAIN_NETWORKS'),
     $monitoring_enabled = hiera('profile::druid::historical::monitoring_enabled', false),
-    $apache_release     = lookup('profile::druid::apache_release', { 'default_value' => false }),
 ) {
 
     require ::profile::druid::common
@@ -50,11 +49,7 @@ class profile::druid::historical(
         }
     }
 
-    if $apache_release {
-        $class_prefix = 'org.apache.druid'
-    } else {
-        $class_prefix = 'io.druid'
-    }
+    $class_prefix = 'org.apache.druid'
 
     # Druid historical Service
     class { '::druid::historical':

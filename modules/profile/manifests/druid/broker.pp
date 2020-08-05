@@ -11,7 +11,6 @@ class profile::druid::broker(
     $ferm_srange        = hiera('profile::druid::broker::ferm_srange', '$DOMAIN_NETWORKS'),
     $daemon_autoreload  = hiera('profile::druid::daemons_autoreload', true),
     $monitoring_enabled = hiera('profile::druid::broker::monitoring_enabled', false),
-    $apache_release     = lookup('profile::druid::apache_release', { 'default_value' => false }),
 ) {
 
     require ::profile::druid::common
@@ -35,11 +34,8 @@ class profile::druid::broker(
         $monitoring_env_vars = {}
     }
 
-    if $apache_release {
-        $class_prefix = 'org.apache.druid'
-    } else {
-        $class_prefix = 'io.druid'
-    }
+
+    $class_prefix = 'org.apache.druid'
 
     # Druid Broker Service
     class { '::druid::broker':
