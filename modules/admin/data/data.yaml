@@ -4396,3 +4396,7 @@ ldap_only_users:
     ensure: present
     realname: Guergana Tzatchkova
     email: guergana.tzatchkova@wikimedia.de
+  demon:
+    ensure: present
+    realname: Chad Horohoe
+    email: chad@horohoe.email
