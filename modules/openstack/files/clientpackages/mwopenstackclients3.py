@@ -347,7 +347,8 @@ class DnsManager(object):
             rs = r[0]
         if rs['records'] != records:
             self.logger.info('Updating %s', name)
-            rs = self.designateclient.recordsets.update(zone, rs['id'], records)
+            rs = self.designateclient.recordsets.update(zone, rs['id'],
+                                                        {"records": records})
 
     def delete_recordset(self, uuid, rs):
         self._delete('/v2/zones/{}/recordsets/{}'.format(uuid, rs))
