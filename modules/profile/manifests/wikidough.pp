@@ -28,10 +28,12 @@ class profile::wikidough (
     }
 
     class { 'dnsrecursor':
-        listen_addresses    => [$resolver['host']],
-        allow_from          => ['127.0.0.0/8'],
-        allow_forward_zones => false,
-        allow_incoming_ecs  => true,
+        listen_addresses         => [$resolver['host']],
+        allow_from               => ['127.0.0.0/8'],
+        allow_forward_zones      => false,
+        allow_incoming_ecs       => true,
+        allow_qname_minimisation => true,
+        enable_pdns43            => true,
     }
 
     acme_chief::cert { 'wikidough':
