@@ -98,7 +98,12 @@ client-tcp-timeout=<%= @client_tcp_timeout %>
 stats-ringbuffer-entries=1000
 
 # where the controlsocket will live
+<% if @enable_pdns43 -%>
+# the location of the socket-dir was changed in 4.3.0
+socket-dir=/var/run/pdns-recursor/
+<% else -%>
 socket-dir=/var/run/
+<% end -%>
 
 # loads /etc/host entries on start
 # useful for debugging
