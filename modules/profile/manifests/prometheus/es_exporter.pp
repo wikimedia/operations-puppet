@@ -8,6 +8,10 @@ class profile::prometheus::es_exporter (
 
     class { 'prometheus::es_exporter': }
 
+    prometheus::es_exporter_config { 'mediawiki-errors':
+        source => 'puppet:///modules/profile/prometheus/es_exporter/mediawki-errors.cfg'
+    }
+
     ferm::service { 'prometheus-es-exporter':
         proto  => 'tcp',
         port   => '9206',
