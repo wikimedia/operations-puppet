@@ -43,9 +43,8 @@ class backy2(
         'python3-shortuuid',
         'python3-sqlalchemy',
         'python3-lz4',
-        'python3-pycrypto',
+        'python3-crypto',
         'python3-pycryptodome',
-        'python3-alembic',
     ]
     package { $packages:
         ensure => 'present',
@@ -56,8 +55,11 @@ class backy2(
     }
 
     file {
+        '/srv/backy2':
+            ensure => 'directory';
         '/srv/backy2/data':
-            ensure    => 'directory';
+            ensure  => 'directory',
+            require => File['/srv/backy2'];
         '/etc/backy.cfg':
             content   => template('backy2/backy.cfg.erb'),
             owner     => 'root',
