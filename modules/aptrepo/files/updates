@@ -5,7 +5,7 @@ Suite: binary
 Flat: thirdparty
 GetInRelease: no
 Architectures: all>amd64
-VerifyRelease: 9B7D32F2D50582E6
+VerifyRelease: FCEF32E745F2C3D5
 ListShellHook: grep-dctrl -X -S jenkins || [ $? -eq 1 ]
 
 Name: jenkins-stretch
@@ -14,7 +14,7 @@ Suite: binary
 Flat: thirdparty/ci
 GetInRelease: no
 Architectures: all>amd64
-VerifyRelease: 9B7D32F2D50582E6
+VerifyRelease: FCEF32E745F2C3D5
 ListShellHook: grep-dctrl -X -S jenkins || [ $? -eq 1 ]
 
 Name: cloudera-jessie
