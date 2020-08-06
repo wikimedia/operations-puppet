@@ -43,12 +43,10 @@ class labstore::fileserver::exports(
         notify  => Service['nfs-exportd'],
     }
 
+    # Clean up the bind script following Change-Id: I8fe9cbb84331c527cf3623a2204ceb835c604ff5
+    # This script is actively dangerous to failover. See also T169570
     file { '/usr/local/sbin/nfs-manage-binds':
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0555',
-        source  => 'puppet:///modules/labstore/nfs-manage-binds.py',
-        require => File['/etc/nfs-mounts.yaml'],
+        ensure => absent,
     }
 
 
