@@ -1,2 +1,0 @@
-# disable icinga alerting
-profile::base::notifications: disabled
