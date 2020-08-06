@@ -528,7 +528,7 @@ class profile::prometheus::ops (
     prometheus::class_config { "es_exporter_${::site}":
         dest       => "${targets_path}/es_exporter_${::site}.yaml",
         site       => $::site,
-        class_name => 'profile::prometheus::es_exporter ',
+        class_name => 'profile::prometheus::es_exporter',
         port       => 9206
     }
 
