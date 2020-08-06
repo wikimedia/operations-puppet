@@ -1,0 +1,13 @@
+type: 'dump'
+user: '<%= @user %>'
+password: '<%= @password %>'
+rotate: True
+compress: False
+archive: False
+retention: 18
+<%= scope.function_template([File.dirname(__FILE__) + "/" + "stats_subtemplate.cnf.erb"]) %>
+sections:
+  x1:
+    host: 'db2101.codfw.wmnet'
+    port: 3320
+    archive: True
