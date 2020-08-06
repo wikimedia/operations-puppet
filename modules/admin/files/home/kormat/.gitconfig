@@ -23,3 +23,5 @@
 	meld = difftool -y -t meld
 	st = status
 	vimdiff = difftool -y -t vimdiff
+[diff]
+	noprefix = true
