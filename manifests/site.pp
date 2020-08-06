@@ -2308,11 +2308,14 @@ node 'cloudvirt1030.eqiad.wmnet' {
 
 # cloudvirts using Ceph backend storage
 # https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Ceph
-node /^cloudvirt100[4,6]\.eqiad\.wmnet$/ {
-    role(wmcs::openstack::eqiad1::virt_ceph)
-}
 node /^cloudvirt103[1-9]\.eqiad\.wmnet$/ {
     role(wmcs::openstack::eqiad1::virt_ceph)
+}
+
+# These hosts are being used as temporary backy2 test nodes.
+#  Despite their names they are not hosting any VMs.
+node /^cloudvirt100[4,6]\.eqiad\.wmnet$/ {
+    role(wmcs::ceph::backup)
 }
 
 # Private virt hosts for wdqs T221631
