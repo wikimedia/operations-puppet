@@ -14,7 +14,7 @@ groups:
               cy534, pnorman, mpany, deskana, arnad, nithum, banyek, imarlier, mkroetzsch,
               mtizzoni, panisson, paolotti, ciro, dartar, melodykramer, gtirloni, tbayer, pirroh,
               bawolff, dkg, juliaglen, cwdent, hpham, atgomez, dfoy, alaasarhan, onimisionipe,
-              tieu, flemmerich, jsamra, anomie, lexnasser, jmorgan, thargrove, nathante,
+              tieu, flemmerich, jsamra, anomie, lexnasser, jmorgan, thargrove,
               drossi, fsalutari, demon]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
@@ -284,7 +284,7 @@ groups:
               aarora, zpapierski, knissen, jiawang, mholloway-shell, joewalsh, tarrow,
               itamar, phedenskog, aaron, dpifke, aklapper, jmads, andrew-wmde, daniram,
               rodolfovalentim, lulu, dcipoletti, chrisalbon, wikigit, nahidunlimited,
-              agaduran, edtadros]
+              agaduran, edtadros, nathante]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product]
   analytics-admins:
@@ -3123,13 +3123,17 @@ users:
     uid: 19582
     email: kharlan@wikimedia.org
   nathante:
-    ensure: absent
+    ensure: present
     realname: Nathan TeBlunthuis
     name: nathante
     gid: 500
-    ssh_keys: []
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDpS5G+UFv3n1oQCkNZyynPS3PGwrk7kK7mc8OJlvPx77x+tow77BnP5r6S3dNMLYuhFeI6VWveenG7ERIlBnoj9FQ4DL868mtySJ7LJOWCJ8s+avAqmN/SQjdcHPWrMqSbvL4gDsroPq+tub+VRkm32vqmOSI9N7hHKKcBlVw35rAZLecnNgxahw/gMOqlbnUKc+BDkpUVc/fvONuEl3TdoVlP27BTnYpzORur+qYCaHYUmWjKieG7YjS/Gtg2wKJYcmvypCrMByZFxXijh68AgD2TeniS/GlClYNbH6Ju9ahQBXjMOYBvGSoIJ13hezHHja9cHRIyg/56BGT3WTUx nathante@nathante-x1
     uid: 20110
-    krb: absent
+    email: nathante@uw.edu
+    expiry_date: 2020-09-30
+    expiry_contact: leila@wikimedia.org
+    krb: present
   isaacj:
     ensure: present
     realname: Isaac Johnson
