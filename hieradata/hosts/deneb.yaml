@@ -1,3 +1,3 @@
 profile::docker::builder::prune_images: false
-profile::docker::engine::version: "18.09.1+dfsg1-7.1+deb10u1"
+profile::docker::engine::version: "18.09.1+dfsg1-7.1+deb10u2"
 profile::docker::engine::packagename: "docker.io"
