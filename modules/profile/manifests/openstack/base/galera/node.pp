@@ -48,8 +48,8 @@ class profile::openstack::base::galera::node(
                           @resolve((${join($openstack_controllers,' ')}), AAAA)
                           @resolve((${join($designate_hosts,' ')}))
                           @resolve((${join($designate_hosts,' ')}), AAAA)
-                          @resolve(('cloudvirt1004.eqiad.wmnet cloudvirt1006.eqiad.wmnet'), AAAA)
-                          @resolve(('cloudvirt1004.eqiad.wmnet cloudvirt1006.eqiad.wmnet'))
+                          @resolve((cloudvirt1004.eqiad.wmnet cloudvirt1006.eqiad.wmnet), AAAA)
+                          @resolve((cloudvirt1004.eqiad.wmnet cloudvirt1006.eqiad.wmnet))
                           @resolve(${puppetmaster}) @resolve(${puppetmaster}, AAAA)
                           ${labweb_ips} ${labweb_ip6s}
                           ) proto tcp dport (3306) ACCEPT;",

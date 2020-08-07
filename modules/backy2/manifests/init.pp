@@ -38,6 +38,7 @@ class backy2(
         'python3-alembic',
         'python3-dateutil',
         'python3-fusepy',
+        'python3-mysqldb',
         'python3-prettytable',
         'python3-setproctitle',
         'python3-shortuuid',
