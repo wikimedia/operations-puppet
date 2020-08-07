@@ -1,8 +1,3 @@
-cache::alternate_domains:
-  grafana.wikimedia.org:
-    caching: pass
-  phab.wmfusercontent.org:
-    caching: normal
 cache::app_def_be_opts:
   between_bytes_timeout: 31s
   connect_timeout: 3s
@@ -16,7 +11,10 @@ cache::nodes:
     eqiad_ats:
     - localhost
 cache::req_handling:
-  cxserver.wikimedia.org:
+  default:
+    caching: normal
+cache::alternate_domains:
+  ores.beta.wmflabs.org:
     caching: pass
 cache::text::nodes:
   eqiad:
@@ -77,6 +75,9 @@ profile::trafficserver::backend::default_lua_scripts:
 profile::trafficserver::backend::mapping_rules:
 - target: http://en.wikipedia.beta.wmflabs.org
   replacement: http://deployment-mediawiki-07.deployment-prep.eqiad.wmflabs
+  type: map
+- target: http://ores.beta.wmflabs.org
+  replacement: http://deployment-ores01.deployment-prep.eqiad.wmflabs:8081
   type: map
 - target: http://local-origin-server
   replacement: http://127.0.0.1:6533
