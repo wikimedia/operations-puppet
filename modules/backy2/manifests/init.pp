@@ -40,6 +40,8 @@ class backy2(
         'python3-fusepy',
         'python3-mysqldb',
         'python3-prettytable',
+        'python3-rados',
+        'python3-rbd',
         'python3-setproctitle',
         'python3-shortuuid',
         'python3-sqlalchemy',
