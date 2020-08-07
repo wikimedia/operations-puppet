@@ -10,15 +10,15 @@ class icinga::monitor::toollabs {
     }
 
     # monitoring of https://meta.wikimedia.org/wiki/PAWS
-    @monitoring::host { 'paws.wmflabs.org':
-        host_fqdn     => 'paws.wmflabs.org',
+    @monitoring::host { 'paws.wmcloud.org':
+        host_fqdn     => 'paws.wmcloud.org',
         contact_group => 'team-paws',
     }
 
     monitoring::service { 'paws_main_page':
         description    => 'PAWS Main page',
-        check_command  => 'check_http_url!paws.wmflabs.org!/paws/hub/login',
-        host           => 'paws.wmflabs.org',
+        check_command  => 'check_http_url!hub.paws.wmcloud.org!/hub/login',
+        host           => 'paws.wmcloud.org',
         contact_group  => 'team-paws',
         check_interval => 5,
         retry_interval => 5,
