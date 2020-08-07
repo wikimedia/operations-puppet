@@ -8,8 +8,8 @@ class profile::wmcs::backy2(
     class {'::backy2':
         cluster_name => $cluster_name,
         db_host      => $db_host,
-        db_name      => $db_host,
-        db_user      => $db_host,
-        db_pass      => $db_host,
+        db_name      => $db_name,
+        db_user      => $db_user,
+        db_pass      => $db_pass,
     }
 }
