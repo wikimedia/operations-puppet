@@ -44,6 +44,8 @@ class kibana (
             'timelion.enabled'       => false, #T259000
             'region_map.enabled'     => false, #T259000
             'tile_map.enabled'       => false, #T259000
+            'telemetry.enabled'      => false, # T259794
+            'newsfeed.enabled'       => false, # T259794
         }),
         mode    => '0444',
         require => Package['kibana'],
