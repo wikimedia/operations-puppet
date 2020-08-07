@@ -104,4 +104,6 @@ class role::mariadb::core_test {
         enabled    => $heartbeat_enabled,
         socket     => $socket,
     }
+
+    class { 'mariadb::monitor_memory': }
 }
