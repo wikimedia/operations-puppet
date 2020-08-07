@@ -35,10 +35,6 @@ class profile::docker_registry_ha::registry(
         $builders = $image_builders
     }
 
-    $varnish_hosts = pick($cache_nodes['text']['eqiad'], []) + pick($cache_nodes['text']['codfw'], [])
-    $ats_hosts = pick($cache_nodes['text']['eqiad_ats'], []) + pick($cache_nodes['text']['codfw_ats'], [])
-    $http_allowed_hosts = $varnish_hosts + $ats_hosts
-
     # Nginx frontend
     class { '::sslcert::dhparam': }
 
@@ -81,7 +77,7 @@ class profile::docker_registry_ha::registry(
         use_puppet_certs     => $use_puppet,
         ssl_certificate_name => $certname,
         http_endpoint        => true,
-        http_allowed_hosts   => $http_allowed_hosts,
+        http_allowed_hosts   => $cache_nodes['text']['eqiad'] + $cache_nodes['text']['codfw'],
         read_only_mode       => $registry_read_only_mode,
     }
 

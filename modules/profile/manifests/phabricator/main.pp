@@ -247,9 +247,6 @@ class profile::phabricator::main (
         }
     ]
 
-    $cache_text_nodes = pick($cache_nodes['text'], {})
-    $trusted_proxies = pick($cache_text_nodes[$::site], []) + pick($cache_text_nodes["${::site}_ats"], [])
-
     # lint:ignore:arrow_alignment
     class { '::phabricator':
         deploy_target    => $deploy_target,
@@ -258,7 +255,7 @@ class profile::phabricator::main (
         serveraliases    => [ $altdom,
                               'bugzilla.wikimedia.org',
                               'bugs.wikimedia.org' ],
-        trusted_proxies  => $trusted_proxies,
+        trusted_proxies  => $cache_nodes['text'][$::site],
         mysql_admin_user => $mysql_admin_user,
         mysql_admin_pass => $mysql_admin_pass,
         libraries        => [ "${phab_root_dir}/libext/Sprint/src",

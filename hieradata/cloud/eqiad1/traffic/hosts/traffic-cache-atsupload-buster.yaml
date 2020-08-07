@@ -2,7 +2,7 @@ cache::cluster: upload
 cache::lua_support: true
 cache::nodes:
   upload:
-    eqiad_ats:
+    eqiad:
     - localhost
 cache::req_handling:
   default:

@@ -116,7 +116,7 @@ class profile::cache::varnish::frontend (
         runtime_params     => join(prefix($runtime_params, '-p '), ' '),
         storage            => "-s malloc,${fe_mem_gb}G ${fe_transient_storage}",
         jemalloc_conf      => $fe_jemalloc_conf,
-        backend_caches     => $cache_nodes[$cache_cluster]["${::site}_ats"],
+        backend_caches     => $cache_nodes[$cache_cluster][$::site],
         backend_options    => $fe_cache_be_opts,
         vcl_config         => $vcl_config,
         wikimedia_nets     => $wikimedia_nets,

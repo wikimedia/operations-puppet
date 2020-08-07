@@ -8,7 +8,7 @@ cache::cluster: text
 cache::lua_support: true
 cache::nodes:
   text:
-    eqiad_ats:
+    eqiad:
     - localhost
 cache::req_handling:
   default:
@@ -18,8 +18,6 @@ cache::alternate_domains:
     caching: pass
 cache::text::nodes:
   eqiad:
-  - localhost
-  eqiad_ats:
   - localhost
 cluster: cache_text
 do_acme: false
