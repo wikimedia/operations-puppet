@@ -117,7 +117,7 @@ profile::druid::coordinator::ferm_srange: '$ANALYTICS_NETWORKS'
 profile::druid::coordinator::properties:
   druid.emitter: composing
   druid.emitter.composing.emitters: ["logging","http"]
-  druid.emitter.http.recipientBaseUrl: "http://127.0.0.1::8000/"
+  druid.emitter.http.recipientBaseUrl: "http://127.0.0.1:8000/"
 profile::druid::coordinator::env:
   DRUID_HEAP_OPTS: "-Xmx4g -Xms2g"
   DRUID_EXTRA_JVM_OPTS: "-XX:NewSize=512m -XX:MaxNewSize=512m -XX:+UseG1GC -XX:+PrintGCDetails -XX:+PrintGCTimeStamps"
@@ -128,7 +128,7 @@ profile::druid::historical::monitoring_enabled: true
 profile::druid::historical::properties:
   druid.emitter: composing
   druid.emitter.composing.emitters: ["logging","http"]
-  druid.emitter.http.recipientBaseUrl: "http://127.0.0.1::8000/"
+  druid.emitter.http.recipientBaseUrl: "http://127.0.0.1:8000/"
   druid.processing.numThreads: 10
   druid.processing.buffer.sizeBytes: 268435456 # 1024 * 1024 * 256
   # Set numMergeBuffers to use v2 groupBy engine
@@ -151,7 +151,7 @@ profile::druid::middlemanager::monitoring_enabled: true
 profile::druid::middlemanager::properties:
   druid.emitter: composing
   druid.emitter.composing.emitters: ["logging","http"]
-  druid.emitter.http.recipientBaseUrl: "http://127.0.0.1::8000/"
+  druid.emitter.http.recipientBaseUrl: "http://127.0.0.1:8000/"
   druid.worker.ip: "%{::fqdn}"
   druid.worker.capacity: 12
   druid.processing.numThreads: 3
