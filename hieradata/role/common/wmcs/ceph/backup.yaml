@@ -3,7 +3,7 @@ profile::wmcs::backy2::db_host: m5-master.eqiad.wmnet
 profile::wmcs::backy2::db_name: eqiad1_ceph_backy
 profile::wmcs::backy2::db_user: backy
 
-profile::ceph::client::rbd::keyfile_group: 'libvirt-qemu'
+profile::ceph::client::rbd::keyfile_group: 'root'
 profile::ceph::client::rbd::client_name: 'eqiad1-compute'
 profile::ceph::client::rbd::keyfile_owner: 'root'
 profile::ceph::client::rbd::pool: 'eqiad1-compute'
