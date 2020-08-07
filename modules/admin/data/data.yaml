@@ -4406,3 +4406,7 @@ ldap_only_users:
     ensure: present
     realname: Carol Dunn
     email: cdunn@wikimedia.org
+  drochford:
+    ensure: present
+    realname: David Rochford
+    email: drochford@wikimedia.org
