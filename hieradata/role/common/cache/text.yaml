@@ -88,7 +88,7 @@ cache::alternate_domains:
   performance.wikimedia.org:
     caching: 'normal'
   phabricator.wikimedia.org:
-    caching: 'normal'
+    caching: 'websockets'
   phab.wmfusercontent.org:
     caching: 'normal'
   pivot.wikimedia.org:
