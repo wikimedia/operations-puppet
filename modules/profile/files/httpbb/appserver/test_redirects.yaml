@@ -3,7 +3,7 @@ http://wikimedia.org:
 - path: /research
   assert_status: 301
   assert_headers:
-      Location: https://wikimedia.qualtrics.com/SE/?SID=SV_6R04ammTX8uoJFP
+      Location: https://research.wikimedia.org
 
 # Url shortner
 https://w.wiki:

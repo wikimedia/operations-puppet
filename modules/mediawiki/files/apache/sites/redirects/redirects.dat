@@ -246,8 +246,8 @@ funnel	*w.wiki	https://meta.wikimedia.org/wiki/Special:UrlShortener
 # T264367
 funnel	20.wikipedia.org	https://wikimediafoundation.org/wikipedia20
 
-# T84277
-override	wikimedia.org/research	https://wikimedia.qualtrics.com/SE/?SID=SV_6R04ammTX8uoJFP
+# T84277, T259979
+override	wikimedia.org/research	https://research.wikimedia.org
 
 # dev.wikimedia.org - T372
 funnel	dev.wikimedia.org	https://www.mediawiki.org/wiki/API:Data_and_developer_hub
