@@ -2011,7 +2011,7 @@ users:
     gid: 500
     name: neilpquinn-wmf
     realname: Neil P. Quinn
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDA6j1BKp5iz7VLQ+yy/IOlwjSfpbdMHUjUgtUtN/CNYSsrlig9heWxR6vd0UURaLB1WgeFgsc0Co3339bpqAUA08oBwfCjdScqkE/qu74jYlFBaA3hqd0rS9/UbWR5uCbNZVsv9ckvMGv8iq0syarW/Vvk5KVM0DppxY/2Tvcj/HfDUXHXpHr8+0iSwsiknjOuRj8a89FcABS2ilHhLY1GkUpJAV0UkMMYt4Kz99PWVx5DSvcKO7oraT/bTiD3GKzKIXm76CBWoC7jsTrCpPF6Ow0kLs8bnvUE9MAjFxkxNDPW8PE3hssV3x02xc6yUanYHLrNC1F8xMRH2OJWOG3h nquinn@wikimedia.org]
+    ssh_keys: []
     uid: 12049
     email: nquinn@wikimedia.org
     krb: present
