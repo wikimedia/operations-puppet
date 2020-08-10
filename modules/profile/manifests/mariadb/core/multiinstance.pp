@@ -166,4 +166,5 @@ disabled, use mariadb@<instance_name> instead'; exit 1\"",
         contact_group => $contact_group,
     }
 
+    class { 'mariadb::monitor_memory': }
 }

@@ -53,4 +53,6 @@ class profile::labs::db::wikireplica (
         port      => 3306,
         read_only => 1,
     }
+
+    class { 'mariadb::monitor_memory': }
 }

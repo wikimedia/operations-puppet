@@ -71,4 +71,6 @@ class profile::mariadb::parsercache (
       contact_group => $contact_group,
       socket        => '/run/mysqld/mysqld.sock',
     }
+
+    class { 'mariadb::monitor_memory': }
 }

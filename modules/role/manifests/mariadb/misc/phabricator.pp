@@ -107,5 +107,7 @@ class role::mariadb::misc::phabricator(
         is_critical   => false,
         contact_group => 'admins',
     }
+
+    class { 'mariadb::monitor_memory': }
 }
 

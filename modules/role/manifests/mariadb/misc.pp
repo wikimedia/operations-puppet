@@ -75,5 +75,7 @@ class role::mariadb::misc(
         is_critical   => false,
         contact_group => 'admins',
     }
+
+    class { 'mariadb::monitor_memory': }
 }
 

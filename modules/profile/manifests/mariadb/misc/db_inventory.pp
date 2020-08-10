@@ -45,4 +45,6 @@ class profile::mariadb::misc::db_inventory{
         datacenter => $::site,
         enabled    => $is_master,
     }
+
+    class { 'mariadb::monitor_memory': }
 }
