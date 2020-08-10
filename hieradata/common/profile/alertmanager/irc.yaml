@@ -2,3 +2,4 @@ profile::alertmanager::irc::host: 'chat.freenode.net'
 profile::alertmanager::irc::port: 6697
 profile::alertmanager::irc::nickname: 'jinxer-wm'
 profile::alertmanager::irc::realname: 'I jinx things at WMF'
+profile::alertmanager::irc::channel: 'wikimedia-observability-spam'
