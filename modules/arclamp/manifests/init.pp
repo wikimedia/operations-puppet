@@ -70,17 +70,6 @@ class arclamp(
         deploy_user  => 'deploy-service',
     }
 
-    # These scripts used to be stored in puppet, but are now deployed via scap
-    # from their own repository:
-    file { '/usr/local/bin/arclamp-log':
-        ensure => absent,
-    }
-    file { '/usr/local/bin/arclamp-generate-svgs':
-        ensure => absent,
-    }
-    file { '/usr/local/bin/flamegraph.pl':
-        ensure => absent,
-    }
     file { '/usr/local/bin/arclamp-grep':
         ensure => ensure_link($ensure),
         target => '/srv/deployment/performance/arc-lamp/arclamp-grep.py',
@@ -102,14 +91,6 @@ class arclamp(
         user    => 'xenon',
         minute  => '17', # intentionally offset from other jobs
         require => Package['performance/arc-lamp']
-    }
-
-    # arclamp used to be known as xenon; clean up old copies of it.
-    file { '/usr/local/bin/xenon-generate-svgs':
-        ensure => absent,
-    }
-    cron { 'xenon_generate_svgs':
-        ensure  => absent,
     }
 
     # This supports running multiple pipelines; in the past we had one
