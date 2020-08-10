@@ -51,10 +51,10 @@ class profile::releases::common(
         srange => "(${::ipaddress} ${::ipaddress6})",
     }
 
-    ferm::service { 'releases_http_deployment':
+    ferm::service { 'releases_http_deployment_cumin':
         proto  => 'tcp',
         port   => '80',
-        srange => "(@resolve((${deployment_server})) @resolve((${deployment_server}), AAAA))"
+        srange => '($DEPLOYMENT_HOSTS $CUMIN_MASTERS)',
     }
 
     backup::set { 'srv-org-wikimedia': }
