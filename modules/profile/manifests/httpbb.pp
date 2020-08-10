@@ -35,7 +35,7 @@ class profile::httpbb {
     httpbb::test_suite {'miscweb/test_miscweb.yaml':
         source => 'puppet:///modules/profile/httpbb/miscweb/test_miscweb.yaml'
     }
-    httpbb::test_suite {'miscweb/test_releases.yaml':
+    httpbb::test_suite {'releases/test_releases.yaml':
         source => 'puppet:///modules/profile/httpbb/releases/test_releases.yaml'
     }
 
