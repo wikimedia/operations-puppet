@@ -68,33 +68,36 @@ class profile::webperf::processors(
     }
 
     monitoring::check_prometheus { 'webperf-navtiming-latest-handled':
-        description    => 'too long since latest timing beacon',
-        query          => 'time() - min(webperf_latest_handled_time_seconds)',
-        method         => 'gt',
-        warning        => 900,   # 15 minutes; <60 seconds is normal
-        critical       => 86400, # 1 day
-        prometheus_url => "http://prometheus.svc.${::site}.wmnet/ops",
-        contact_group  => 'team-performance',
+        description     => 'too long since latest timing beacon',
+        query           => 'time() - min(webperf_latest_handled_time_seconds)',
+        method          => 'gt',
+        warning         => 900,   # 15 minutes; <60 seconds is normal
+        critical        => 86400, # 1 day
+        prometheus_url  => "http://prometheus.svc.${::site}.wmnet/ops",
+        contact_group   => 'team-performance',
+        dashboard_links => ['https://grafana.wikimedia.org/d/000000143/navigation-timing'],
     }
 
     monitoring::check_prometheus { 'webperf-navtiming-error-rate':
-        description    => 'high navtiming exception rate',
-        query          => 'rate(webperf_errors[5m])', # Python exceptions per second
-        method         => 'gt',
-        warning        => 0.1, # 0 is normal
-        critical       => 1,
-        prometheus_url => "http://prometheus.svc.${::site}.wmnet/ops",
-        contact_group  => 'team-performance',
+        description     => 'high navtiming exception rate',
+        query           => 'rate(webperf_errors[5m])', # Python exceptions per second
+        method          => 'gt',
+        warning         => 0.1, # 0 is normal
+        critical        => 1,
+        prometheus_url  => "http://prometheus.svc.${::site}.wmnet/ops",
+        contact_group   => 'team-performance',
+        dashboard_links => ['https://grafana.wikimedia.org/d/000000143/navigation-timing'],
     }
 
     monitoring::check_prometheus { 'webperf-navtiming-invalid-message-rate':
-        description    => 'high navtiming invalid event rate',
-        query          => 'sum(rate(webperf_navtiming_invalid_events[5m]))', # discards per second, across all groups
-        method         => 'gt',
-        warning        => 1, # ~0.2-0.5 is normal
-        critial        => 5,
-        prometheus_url => "http://prometheus.svc.${::site}.wmnet/ops",
-        contact_group  => 'team-performance',
+        description     => 'high navtiming invalid event rate',
+        query           => 'sum(rate(webperf_navtiming_invalid_events[5m]))', # discards per second, across all groups
+        method          => 'gt',
+        warning         => 1, # ~0.2-0.5 is normal
+        critical        => 5,
+        prometheus_url  => "http://prometheus.svc.${::site}.wmnet/ops",
+        contact_group   => 'team-performance',
+        dashboard_links => ['https://grafana.wikimedia.org/d/000000143/navigation-timing'],
     }
 
     # Make a valid target for coal, and set up what's needed for the consumer
