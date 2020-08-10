@@ -61,6 +61,10 @@ server {
 <% end %>
 
     location / {
+      if (-f /var/lib/nginx/wdqs/data-reload) {
+        add_header Content-Type text/html always;
+        return 503 '<H2>Data Reload in progress</H2>\nPlease come back later.';
+      }
     <% if @oauth -%>
         auth_request /_check_auth;
         error_page 403 = /error403;
@@ -102,7 +106,11 @@ server {
 <% else -%>
     location ~ ^/bigdata/(namespace/[a-zA-Z0-9_]+/sparql|assets) {
 <% end -%>
-      <% if @oauth -%>
+      if (-f /var/lib/nginx/wdqs/data-reload) {
+        add_header Content-Type text/html always;
+        return 503 '<H2>Data Reload in progress</H2>\nPlease come back later.';
+      }
+<% if @oauth -%>
         auth_request /_check_auth;
         error_page 403 = /error403;
       <% end %>
