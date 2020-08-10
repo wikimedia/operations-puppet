@@ -87,11 +87,12 @@ class arclamp(
     }
 
     cron { 'arclamp_generate_svgs':
-        ensure  => $ensure,
-        command => '/srv/deployment/performance/arc-lamp/arclamp-generate-svgs >/dev/null',
-        user    => 'xenon',
-        minute  => '*/15',
-        require => Package['performance/arc-lamp']
+        ensure      => $ensure,
+        command     => '/srv/deployment/performance/arc-lamp/arclamp-generate-svgs >/dev/null',
+        user        => 'xenon',
+        minute      => '*/15',
+        environment => 'MAILTO=performance-team@wikimedia.org',
+        require     => Package['performance/arc-lamp']
     }
 
     # Compress logs older than 7 days:
