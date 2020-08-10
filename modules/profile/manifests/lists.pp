@@ -78,7 +78,7 @@ class profile::lists (
         rsync::quickdatacopy { 'var-lib-mailman':
             source_host         => $primary_host,
             dest_host           => $standby_host,
-            auto_sync           => true,
+            auto_sync           => false,
             module_path         => '/var/lib/mailman',
             server_uses_stunnel => true,
         }
