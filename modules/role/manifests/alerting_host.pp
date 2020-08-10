@@ -25,6 +25,7 @@ class role::alerting_host {
     # Temporary until all hosts are on Buster
     # https://phabricator.wikimedia.org/T247966
     if os_version('debian >= buster') {
+        include ::profile::alertmanager
         include ::profile::alertmanager::irc
     }
 
