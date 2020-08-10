@@ -54,5 +54,8 @@ class profile::labs::db::wikireplica (
         read_only => 1,
     }
 
-    class { 'mariadb::monitor_memory': }
+    class { 'mariadb::monitor_memory':
+        warning  => 92,
+        critical => 97,
+    }
 }
