@@ -17,6 +17,7 @@ class query_service::crontasks(
     String $deploy_name,
     Enum['none', 'daily', 'weekly'] $load_categories,
     Boolean $run_tests,
+    Boolean $reload_wcqs_data,
 ) {
     file { '/usr/local/bin/cronUtils.sh':
         ensure => present,
@@ -52,6 +53,7 @@ class query_service::crontasks(
 
     $reload_categories_log = "${log_dir}/reloadCategories.log"
     $reload_dcatap_log = "${log_dir}/reloadDCATAP.log"
+    $reload_wcqs_data_log = "${log_dir}/reloadWCQS.log"
     # the reload-categories cron needs to reload nginx once the categories are up to date
     sudo::user { "${username}-reload-nginx":
       ensure     => present,
@@ -105,12 +107,26 @@ class query_service::crontasks(
         default => absent,
     }
 
+    $ensure_reload_wcqs_data = $reload_wcqs_data ? {
+        true    => present,
+        default => absent,
+    }
+
     cron { 'run-query-service-test-queries':
         ensure      => $ensure_tests,
         environment => 'MAILTO=wdqs-admins',
         command     => "${package_dir}/queries/test.sh > /dev/null",
         user        => $username,
         minute      => '*/30',
+    }
+
+    cron { 'wcqs-data-reload-weekly':
+      ensure  => $ensure_reload_wcqs_data,
+      command => "${package_dir}/wcqs-data-reload.sh >> ${reload_wcqs_data_log} 2>&1",
+      user    => 'root',        #we need to restart blazegraph, so we need sudo priviliges
+      minute  => fqdn_rand(60),
+      hour    => 7,
+      weekday => 1,
     }
 
     logrotate::rule { 'query-service-reload-categories':

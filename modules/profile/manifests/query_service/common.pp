@@ -11,6 +11,7 @@ class profile::query_service::common(
     Array[String] $nodes = hiera('profile::query_service::nodes'),
     Stdlib::Httpurl $categories_endpoint =  hiera('profile::query_service::categories_endpoint', 'http://localhost:9990'),
     Optional[String] $forward_rsyslog_host = lookup('profile::query_service::forward_rsyslog_host', { 'default_value' => undef }),
+    Boolean $reload_wcqs_data = lookup('profile::query_service::reload_wcqs_data', { 'default_value' => false })
 ) {
 
     $deploy_user = 'deploy-service'
@@ -43,13 +44,14 @@ class profile::query_service::common(
     }
 
     class { 'query_service::crontasks':
-        package_dir     => $package_dir,
-        data_dir        => $data_dir,
-        log_dir         => $log_dir,
-        deploy_name     => $deploy_name,
-        username        => $username,
-        load_categories => $load_categories,
-        run_tests       => $run_tests,
+        package_dir      => $package_dir,
+        data_dir         => $data_dir,
+        log_dir          => $log_dir,
+        deploy_name      => $deploy_name,
+        username         => $username,
+        load_categories  => $load_categories,
+        run_tests        => $run_tests,
+        reload_wcqs_data => $reload_wcqs_data,
     }
 
     require_package('python3-dateutil', 'python3-prometheus-client')
