@@ -1,0 +1,5 @@
+ceph_pool: <%= @ceph_vm_pool %>
+projects:
+<% @backup_projects.each do |project| -%>
+ - <%= project %>
+<% end -%>

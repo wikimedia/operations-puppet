@@ -3,6 +3,7 @@ class role::wmcs::ceph::backup {
     include ::profile::standard
     include ::profile::base::firewall
 
+    include ::profile::openstack::eqiad1::clientpackages
     include profile::wmcs::backy2
     include profile::ceph::client::rbd
 }

@@ -8,3 +8,7 @@ profile::ceph::client::rbd::client_name: 'eqiad1-compute'
 profile::ceph::client::rbd::keyfile_owner: 'root'
 profile::ceph::client::rbd::pool: 'eqiad1-compute'
 profile::ceph::client::rbd::enable_v2_messenger: false
+
+profile::wmcs::backy2::backup_projects:
+ - tools
+ - testlabs
