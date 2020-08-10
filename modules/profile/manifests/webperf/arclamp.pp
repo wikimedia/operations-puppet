@@ -15,13 +15,18 @@
 # [*redis_port*]
 #   Port of Redis server that is publishing stack traces (usually port 6379).
 #
+# [*errors_mailto*]
+#   Email address for cron errors (usually performance-team@wikimedia.org)
+#
 class profile::webperf::arclamp (
     $redis_host = hiera('profiler::webperf::arclamp::redis_host'),
     $redis_port = hiera('profiler::webperf::arclamp::redis_port'),
+    $errors_mailto = lookup('profile::webperf::arclamp::errors_mailto'),
 ) {
     class { 'arclamp':
-        redis_host => $redis_host,
-        redis_port => $redis_port,
+        redis_host    => $redis_host,
+        redis_port    => $redis_port,
+        errors_mailto => $errors_mailto,
     }
 
     httpd::site { 'arclamp':

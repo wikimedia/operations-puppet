@@ -34,6 +34,7 @@ class arclamp(
     $ensure = present,
     $redis_host = '127.0.0.1',
     $redis_port = 6379,
+    $errors_mailto = 'performance-team@wikimedia.org',
 ) {
     require_package('python-redis')
     require_package('python-yaml')
@@ -82,7 +83,7 @@ class arclamp(
         command     => '/srv/deployment/performance/arc-lamp/arclamp-generate-svgs >/dev/null',
         user        => 'xenon',
         minute      => '*/15',
-        environment => 'MAILTO=performance-team@wikimedia.org',
+        environment => "MAILTO=${errors_mailto}",
         require     => Package['performance/arc-lamp']
     }
 
@@ -92,7 +93,7 @@ class arclamp(
         command     => '/srv/deployment/performance/arc-lamp/arclamp-compress-logs 7 >/dev/null',
         user        => 'xenon',
         minute      => '17', # intentionally offset from other jobs
-        environment => 'MAILTO=performance-team@wikimedia.org',
+        environment => "MAILTO=${errors_mailto}",
         require     => Package['performance/arc-lamp']
     }
 
@@ -102,7 +103,7 @@ class arclamp(
         command     => '/srv/deployment/performance/arc-lamp/arclamp-generate-metrics >/dev/null',
         user        => 'xenon',
         minute      => '*/2',
-        environment => 'MAILTO=performance-team@wikimedia.org',
+        environment => "MAILTO=${errors_mailto}",
         require     => Package['performance/arc-lamp']
     }
 
