@@ -86,11 +86,12 @@ class arclamp(
 
     # Compress logs older than 7 days:
     cron { 'arclamp_compress_logs':
-        ensure  => $ensure,
-        command => '/srv/deployment/performance/arc-lamp/arclamp-compress-logs 7 >/dev/null',
-        user    => 'xenon',
-        minute  => '17', # intentionally offset from other jobs
-        require => Package['performance/arc-lamp']
+        ensure      => $ensure,
+        command     => '/srv/deployment/performance/arc-lamp/arclamp-compress-logs 7 >/dev/null',
+        user        => 'xenon',
+        minute      => '17', # intentionally offset from other jobs
+        environment => 'MAILTO=performance-team@wikimedia.org',
+        require     => Package['performance/arc-lamp']
     }
 
     # This supports running multiple pipelines; in the past we had one
