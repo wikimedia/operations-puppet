@@ -150,20 +150,21 @@ define camus::job (
         # events with a timestamp older than this will be discarded.
         'kafka.max.historical.days'           => '7',
         # Max minutes for each mapper to pull messages (-1 means no limit)
-        # Let each mapper run for no more than 9 minutes.
+        # Let each mapper run for no more than this.
         # Camus creates hourly directories, and we don't want a single
         # long running mapper keep other Camus jobs from being launched.
+        # You should set this to something just short of the interval at which you run this job.
         'kafka.max.pull.minutes.per.task'     => '55',
         # if whitelist has values, only whitelisted topic are pulled.  nothing on the blacklist is pulled
         'kafka.blacklist.topics'              => '',
-        # These are the kafka topics camus brings to HDFS
+        # These are the kafka topics camus brings to HDFS, set on CLI if using dynamic stream config.
         'kafka.whitelist.topics'              => '',
         # Name of the client as seen by kafka
         'kafka.client.name'                   => "camus-${camus_name}",
         # Fetch Request Parameters
         #kafka.fetch.buffer.size=
         #kafka.fetch.request.correlationid=
-        #kafka.fetch.request.max.wait=
+        #kafka.fetch.request.max.wait=s
         #kafka.fetch.request.min.bytes=
         'kafka.client.buffer.size'            => '20971520',
         'kafka.client.so.timeout'             => '60000',

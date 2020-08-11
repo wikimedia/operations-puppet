@@ -116,7 +116,7 @@ class profile::analytics::refinery::job::camus(
         interval              => '*-*-* *:00/10:00',
     }
 
-    # Import eventlogging_* topics into /wmf/data/raw/eventlogging
+    # Import legacy eventlogging_* topics into /wmf/data/raw/eventlogging
     # once every hour.
     camus::job { 'eventlogging':
         camus_properties      => {
@@ -137,9 +137,60 @@ class profile::analytics::refinery::job::camus(
         interval              => '*-*-* *:05:00',
     }
 
+    # Shortcut for declaring a camus job that imports streams from specific event services.
+    # We want separate camus jobs for each event service as their throughput volume can
+    # vary significantly, and we don't want high volume topics to starve out small ones.
+    $event_service_jobs = {
+        'eventgate-analytics-external' => {
+            'camus_properties' =>  {
+                'etl.destination.path'          => "hdfs://${hadoop_cluster_name}/wmf/data/raw/event",
+                'camus.message.timestamp.field' => 'meta.dt',
+                # eventgate-analytics-external handles both legacy eventlogging_.* streams.
+                # as well as new event platform based streams. The eventlogging_ topics
+                # are different enough, so we use a separate camus job (declared above)
+                # to import those.
+                'kafka.blacklist.topics'        => '^eventlogging_.*',
+                # Set this to at least the number of topic-partitions you will be importing.
+                'mapred.map.tasks'              => '10',
+                # Since this job is replacing 'event_dynamic_stream_configs', and
+                # they are writing into the same etl.destination.path
+                # we want the first runs of this job to just start at latest.
+                # TODO: change this back to earliest after migration.
+                'kafka.move.to.earliest.offset' => false
+            },
+            'interval' => '*-*-* *:30:00'
+        },
+
+        # TODO:
+        # Add more jobs here as we migrated from static to dynamic topic discovery via EventStreamConfig.
+        # - eventgate-analytics (replaces mediawiki_analytics_events job)
+        # - eventgate-main (replaces mediawiki_events job)
+    }
+
+    # Declare each of the $event_service_jobs.
+    $event_service_jobs.each |String $event_service_name, Hash $parameters| {
+        camus::job { "${event_service_name}_events":
+            ensure                     => $ensure_timers,
+            camus_properties           => $parameters['camus_properties'],
+            # Build kafka.whitelist.topics using EventStreamConfig API.
+            dynamic_stream_configs     => true,
+            # Only get topics for streams that have this destination_event_service set to event_service_name
+            stream_configs_constraints => "destination_event_service=${event_service_name}",
+            # Don't need to write _IMPORTED flags for event data
+            check_dry_run              => true,
+            # Only check topics that will have data every hour.
+            # For we know that there are test topics for this event service should always have
+            # events, as they are produced when k8s uses its readinessProbe for the service.
+            check_topic_whitelist      => "(eqiad|codfw).${event_service_name}.test.event",
+            interval                   => $parameters['interval'],
+        }
+    }
+
     # Imports active stream topics defined in MediaWiki config wgEventStreams
     # into /wmf/data/raw/event.
     camus::job { 'event_dynamic_stream_configs':
+        # This job is being replaced by event service specific jobs declared above.
+        ensure                 => 'absent',
         camus_properties       => {
             # Write these into the /wmf/data/raw/event directory
             'etl.destination.path'          => "hdfs://${hadoop_cluster_name}/wmf/data/raw/event",
@@ -159,7 +210,6 @@ class profile::analytics::refinery::job::camus(
         check_topic_whitelist  => '(eqiad|codfw).test.event',
         interval               => '*-*-* *:30:00',
     }
-
 
     # Import MediaWiki events into
     # /wmf/data/raw/event once every hour.
