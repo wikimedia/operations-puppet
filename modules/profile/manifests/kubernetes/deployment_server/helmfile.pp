@@ -62,7 +62,7 @@ class profile::kubernetes::deployment_server::helmfile(
             file { "${general_private_dir}/${svcname}":
                 ensure => directory,
                 owner  => $data['owner'],
-                group  => $data['gropup'],
+                group  => $data['group'],
                 mode   => '0750',
             }
         }
