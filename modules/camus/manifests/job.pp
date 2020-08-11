@@ -39,6 +39,10 @@
 #   of active streams from the MediaWiki EventStreamConfig API.
 #   If this is set, http proxy will be configured via the environment variables.
 #
+# [*stream_configs_constraints*]
+#   If usinig dynamic_stream_configs, this will be passed as the constraints parameter.
+#   Use this to help restrict the topics a Camus job should import.
+#
 # [*check*]
 #   If true, CamusPartitionChecker will be run after the Camus run finishes.
 #   Default: undef, (false)
@@ -80,25 +84,26 @@
 #
 define camus::job (
     $kafka_brokers,
-    $camus_properties        = {},
-    $hadoop_cluster_name     = 'analytics-hadoop',
-    $script                  = '/srv/deployment/analytics/refinery/bin/camus',
-    $user                    = 'analytics',
-    $camus_name              = "${title}-00",
-    $camus_jar               = undef,
-    $dynamic_stream_configs  = false,
-    $check                   = undef,
-    $check_jar               = undef,
-    $check_dry_run           = undef,
-    $check_email_target      = undef,
-    $check_topic_whitelist   = undef,
-    $libjars                 = undef,
-    $template                = 'camus/camus.properties.erb',
-    $interval                = undef,
-    $environment             = undef,
-    $monitoring_enabled      = true,
-    $use_kerberos            = false,
-    $ensure                  = 'present',
+    $camus_properties           = {},
+    $hadoop_cluster_name        = 'analytics-hadoop',
+    $script                     = '/srv/deployment/analytics/refinery/bin/camus',
+    $user                       = 'analytics',
+    $camus_name                 = "${title}-00",
+    $camus_jar                  = undef,
+    $dynamic_stream_configs     = false,
+    $stream_configs_constraints = undef,
+    $check                      = undef,
+    $check_jar                  = undef,
+    $check_dry_run              = undef,
+    $check_email_target         = undef,
+    $check_topic_whitelist      = undef,
+    $libjars                    = undef,
+    $template                   = 'camus/camus.properties.erb',
+    $interval                   = undef,
+    $environment                = undef,
+    $monitoring_enabled         = true,
+    $use_kerberos               = false,
+    $ensure                     = 'present',
 )
 {
     require ::camus
@@ -219,12 +224,19 @@ define camus::job (
     # so https://meta.wikimedia.org/w/api.php can be requested at runtime.
     if $dynamic_stream_configs {
         $dynamic_stream_configs_opt = '--dynamic-stream-configs'
+
+        $stream_configs_constraints_opt = $stream_configs_constraints ? {
+            undef => '',
+            default => "--stream-config-constraints=${stream_configs_constraints}"
+        }
+
         $http_proxy_environment = {
             'http_proxy'  => 'http://webproxy.eqiad.wmnet:8080',
             'https_proxy' => 'http://webproxy.eqiad.wmnet:8080',
         }
     } else {
         $dynamic_stream_configs_opt = ''
+        $stream_configs_constraints_opt = ''
         $http_proxy_environment = {}
     }
 
@@ -255,7 +267,7 @@ define camus::job (
         default => "--check ${check_jar_opt}${check_dry_run_opt}${check_email_enabled_opt}${check_topic_whitelist_opt}",
     }
 
-    $unit_command = "${script} --run --job-name camus-${title} ${camus_jar_opt} ${libjars_opt} ${dynamic_stream_configs_opt} ${check_opts} ${properties_file}"
+    $unit_command = "${script} --run --job-name camus-${title} ${camus_jar_opt} ${libjars_opt} ${dynamic_stream_configs_opt} ${stream_configs_constraints_opt} ${check_opts} ${properties_file}"
 
     kerberos::systemd_timer { "camus-${title}":
         ensure                    => $ensure,
