@@ -80,23 +80,6 @@ class releases (
         source => 'puppet:///modules/releases/releases-header-mw.html',
     }
 
-    git::clone { 'operations/deployment-charts':
-        ensure    => 'absent',
-        directory => '/srv/deployment-charts',
-    }
-
-    cron { 'git_pull_charts':
-        ensure  => absent,
-        command => 'cd /srv/deployment-charts && /usr/bin/git pull >/dev/null 2>&1',
-        minute  => '*/1',
-    }
-
-    file { '/srv/org/wikimedia/releases/charts':
-        ensure  => 'absent',
-        target  => '/srv/deployment-charts/charts',
-        require =>  Git::Clone['operations/deployment-charts'],
-    }
-
     package { 'python3-pygerrit2':
         ensure => present,
     }
