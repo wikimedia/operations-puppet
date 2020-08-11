@@ -29,7 +29,7 @@ server s1 {
     expect req.http.x-dt-host == "zh-classical.wikipedia.org"
     txresp
 
-    loop 11 {
+    loop 12 {
         rxreq
         expect req.http.x-dt-host == <undef>
         txresp
@@ -96,6 +96,11 @@ client c1 {
     expect resp.http.location == <undef>
 
     txreq -url "/" -hdr "User-Agent: nintendo" -hdr "Host: donate.wikimedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+    expect resp.status == 200
+    expect resp.http.location == <undef>
+
+    txreq -url "/wiki/Main_Page" -hdr "User-Agent: nintendo" -hdr "Host: thankyou.wikipedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
     expect resp.status == 200
     expect resp.http.location == <undef>
