@@ -22,7 +22,7 @@ class profile::grafana (
     include profile::base::firewall
 
     # This isn't needed by grafana, but is handy for inspecting its database.
-    require_package(['sqlite3'])
+    require_package(['sqlite3', 'grafana-plugins'])
 
     $base_config = {
         # Configuration settings for /etc/grafana/grafana.ini.
@@ -147,17 +147,16 @@ class profile::grafana (
         require => Class['::grafana'],
     }
 
-    # https://phabricator.wikimedia.org/T147329
-    # We clone this, but need to symlink into the 'dist' directory for plugin to actually work
+    # Grafana plugins are shipped via a Debian package, see also https://gerrit.wikimedia.org/r/c/618953
     git::clone { 'operations/software/grafana/simple-json-datasource':
-        ensure    => present,
+        ensure    => absent,
         branch    => '3.0',
         directory => '/usr/share/grafana/public/app/plugins/datasource/simple-json-datasource',
         require   => Package['grafana'],
     }
 
     file { '/usr/share/grafana/public/app/plugins/datasource/datasource-plugin-genericdatasource':
-        ensure  => link,
+        ensure  => absent,
         target  => '/usr/share/grafana/public/app/plugins/datasource/simple-json-datasource/dist',
         require => Git::Clone['operations/software/grafana/simple-json-datasource'],
     }
