@@ -569,6 +569,15 @@ class TaskGen < ::Rake::TaskLib
           end
           tasks << 'tox:smart_data_dump'
         end
+        prometheus_files = filter_files_by("modules/prometheus/files/**")
+        unless prometheus_files.empty?
+          desc 'Run tox for prometheus'
+          task :prometheus do
+            res = system("tox -e prometheus")
+            raise 'Tests for prometheus failed!'.red unless res
+          end
+          tasks << 'tox:prometheus'
+        end
         # Get all python files that don't have a tox.ini in their module
         py_files = sort_python_files(filter_files_by("*.py"))
 
