@@ -26,4 +26,24 @@ class openstack::nova::fullstack::monitor {
         contact_group => 'wmcs-team,admins',
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Troubleshooting#Nova-fullstack',
     }
+
+    # Script to make sure that every flavor is assigned to a host aggregate
+    file { '/usr/local/bin/check_flavor_aggregates':
+        ensure => 'present',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+        source => 'puppet:///modules/openstack/monitor/nova/check_flavor_aggregates.py',
+    }
+
+    # Make sure every flavor is assigned to an aggregate, to avoid
+    #  things like T259542
+    nrpe::monitor_service { 'check-flavor_aggregates':
+        ensure        => 'present',
+        nrpe_command  => '/usr/local/bin/check_flavor_aggregates',
+        description   => 'all nova flavors are assigned a flavor aggregate',
+        require       => File['/usr/local/bin/check_flavor_aggregates'],
+        contact_group => 'wmcs-team,admins',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Host_aggregates';
+    }
 }
