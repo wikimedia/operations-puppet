@@ -9,7 +9,7 @@ class mariadb::packages_wmf(
     require_package (
         'percona-toolkit',
         'grc',
-        'python3-pymysql',    # for mariadb_check.py
+        'wmfmariadbpy-common',
     )
 
     # Do not try to install xtrabackup on stretch, it has been removed.
