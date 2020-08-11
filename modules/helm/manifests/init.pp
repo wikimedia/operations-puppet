@@ -1,6 +1,6 @@
 class helm(
     Stdlib::Unixpath $helm_home='/etc/helm',
-    Hash[String[1], Stdlib::Httpurl] $repositories={'stable' => 'https://helm-charts.wikimedia.org/stable/'},
+    Hash[String[1], Stdlib::Httpurl] $repositories={'stable' => 'https://helm-charts.wikimedia.org/stable/', 'wmf-stable' => 'https://helm-charts.wikimedia.org/stable'},
 ) {
     package { [
         'helm',
@@ -45,7 +45,7 @@ class helm(
         # Ensure we don't overwrite local.
         # "helm repo add" will change the URL if a repository with ${name} already exists.
         if ($name != 'local') {
-            exec { 'helm-repo-add':
+            exec { "helm-repo-add-${name}":
                 command     => "/usr/bin/helm repo add ${name} ${url}",
                 environment => "HELM_HOME=${helm_home}",
                 unless      => "/usr/bin/helm repo list | /bin/grep -E -q '^${name}\\s+${url}'",
