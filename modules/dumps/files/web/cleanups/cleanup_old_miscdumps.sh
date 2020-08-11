@@ -75,9 +75,15 @@ for entry in $config_entries; do
       continue
   fi
 
+  # expect one subdir per dump with directory name in YYYYMMDD format
   runs=$( cd "$subdir"; ls -d [0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9] 2>/dev/null | sort )
   if [ -z "$runs" ]; then
-      continue
+      # no such subdirs? then...
+      # expect one output file per date, with the date in a YYYYMMDD string somewhere in the filename
+      runs=$( cd "$subdir"; ls *[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]* 2>/dev/null | sort )
+      if [ -z "$runs" ]; then
+	  continue
+      fi
   fi
 
   # shellcheck disable=SC2206
@@ -89,11 +95,13 @@ for entry in $config_entries; do
 
   num_unwanted=$(( numruns - keep ))
   unwanted=( "${runs[@]:0:${num_unwanted}}" )
-  for dirname in "${unwanted[@]}"; do
+  for name in "${unwanted[@]}"; do
+      # $name may be a filename in a list of files, or a dirname
+      # in a list of subdirs; either way, clean up the old ones
       if [ -n "$dryrun" ]; then
-        echo "would rm -rf ${subdir}/${dirname}"
+        echo "would rm -rf ${subdir}/${name}"
       else
-        rm -rf "${subdir:?}/${dirname:?}"
+        rm -rf "${subdir:?}/${name:?}"
       fi
   done
 
