@@ -21,6 +21,3 @@ if [ "$(hostname -s | cut -c 1-3)" == "apt" ]; then
     export REPREPRO_BASE_DIR=/srv/wikimedia
 fi
 
-domain=$(facter domain)
-export http_proxy="http://webproxy.${domain}:8080"
-export https_proxy="$http_proxy"
