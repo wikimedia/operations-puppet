@@ -38,7 +38,7 @@ class profile::analytics::refinery::job::refine(
 
     # Update this when you want to change the version of the refinery job jar
     # being used for the refine job.
-    $refinery_version = '0.0.129'
+    $refinery_version = '0.0.132'
 
     # Use this value by default
     Profile::Analytics::Refinery::Job::Refine_job {
@@ -48,15 +48,17 @@ class profile::analytics::refinery::job::refine(
 
     # These configs will be used for all refine jobs unless otherwise overridden.
     $default_config = {
-        'to_emails'           => 'analytics-alerts@wikimedia.org',
-        'should_email_report' => true,
-        'database'            => 'event',
-        'output_path'         => '/wmf/data/event',
-        'hive_server_url'     => "${::profile::hive::client::hiveserver_host}:${::profile::hive::client::hiveserver_port}",
+        'to_emails'                          => 'analytics-alerts@wikimedia.org',
+        'should_email_report'                => true,
+        'database'                           => 'event',
+        'output_path'                        => '/wmf/data/event',
+        'hive_server_url'                    => "${::profile::hive::client::hiveserver_host}:${::profile::hive::client::hiveserver_port}",
         # Look for data to refine from 26 hours ago to 2 hours ago, giving some time for
         # raw data to be imported in the last hour or 2 before attempting refine.
-        'since'               => '26',
-        'until'               => '2',
+        'since'                              => '26',
+        'until'                              => '2',
+        # Until T259924 is fixed, we MUST merge with Hive schema before reading JSON data.
+        'merge_with_hive_schema_before_read' => true,
     }
 
     # === Event data ===
