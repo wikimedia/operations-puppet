@@ -138,10 +138,10 @@ class ToolViews(object):
         return log
 
     @staticmethod
-    def split_list(l, size):
+    def split_list(the_list, size):
         """Yield successive sub-lists of a given list."""
-        for i in range(0, len(l), size):
-            yield l[i:i + size]
+        for i in range(0, len(the_list), size):
+            yield the_list[i:i + size]
 
     def run(self, files):
         # Count rows per tool per day

@@ -163,7 +163,7 @@ if __name__ == "__main__":
         num_contacts = len(contact_list)
         print("{} contacts found. Are you sure you want to send '{}' to all of them? \
 You can answer 'yes', 'no' or 'dry' for a dry-run."
-              .format(num_contacts, mail_msg, dry_run))
+              .format(num_contacts, mail_msg))
         yes = {'yes', 'y'}
         no = {'no', 'n', ''}
         dry = {'dry', 'd'}

@@ -180,7 +180,7 @@ class GridHostGroup(GridConfig):
         [k, v] = lines.pop(0).split(maxsplit=1)  # First line like 'group_name @general'
         current_state.update({k: v})
         hosts = [
-            host for l in lines for host in l.split() if host not in ["hostlist", "\\"]
+            host for x in lines for host in x.split() if host not in ["hostlist", "\\"]
         ]
         current_state["hostlist"] = hosts
         return current_state
