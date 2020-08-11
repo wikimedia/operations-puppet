@@ -146,24 +146,33 @@ class profile::analytics::refinery::job::camus(
                 'etl.destination.path'          => "hdfs://${hadoop_cluster_name}/wmf/data/raw/event",
                 'camus.message.timestamp.field' => 'meta.dt',
                 # eventgate-analytics-external handles both legacy eventlogging_.* streams.
-                # as well as new event platform based streams. The eventlogging_ topics
+                # as well as new event platform based streams. The eventlogging_.* topics
                 # are different enough, so we use a separate camus job (declared above)
                 # to import those.
                 'kafka.blacklist.topics'        => '^eventlogging_.*',
                 # Set this to at least the number of topic-partitions you will be importing.
                 'mapred.map.tasks'              => '10',
+            },
+            'interval' => '*-*-* *:30:00',
+        },
+
+        'eventgate-analytics' => {
+            'camus_properties' =>  {
+                'etl.destination.path'          => "hdfs://${hadoop_cluster_name}/wmf/data/raw/event",
+                'camus.message.timestamp.field' => 'meta.dt',
+                # Set this to at least the number of topic-partitions you will be importing.
+                'mapred.map.tasks'              => '60',
                 # Since this job is replacing 'event_dynamic_stream_configs', and
                 # they are writing into the same etl.destination.path
                 # we want the first runs of this job to just start at latest.
                 # TODO: change this back to earliest after migration.
-                'kafka.move.to.earliest.offset' => false
+                'kafka.move.to.last.offset.list' => 'eqiad.eventgate-analytics.error.validation,codfw.eventgate-analytics.error.validation,eqiad.eventgate-analytics.test.event,codfw.eventgate-analytics.test.event,eqiad.cqs-external.sparql-query,codfw.cqs-external.sparql-query,eqiad.wdqs-external.sparql-query,codfw.wdqs-external.sparql-query,eqiad.wdqs-internal.sparql-query,codfw.wdqs-internal.sparql-query,eqiad.mediawiki.cirrussearch-request,codfw.mediawiki.cirrussearch-request,eqiad.mediawiki.api-request,codfw.mediawiki.api-request',
             },
-            'interval' => '*-*-* *:30:00'
+            'interval' => '*-*-* *:05:00',
         },
 
         # TODO:
         # Add more jobs here as we migrated from static to dynamic topic discovery via EventStreamConfig.
-        # - eventgate-analytics (replaces mediawiki_analytics_events job)
         # - eventgate-main (replaces mediawiki_events job)
     }
 
@@ -184,31 +193,6 @@ class profile::analytics::refinery::job::camus(
             check_topic_whitelist      => "(eqiad|codfw).${event_service_name}.test.event",
             interval                   => $parameters['interval'],
         }
-    }
-
-    # Imports active stream topics defined in MediaWiki config wgEventStreams
-    # into /wmf/data/raw/event.
-    camus::job { 'event_dynamic_stream_configs':
-        # This job is being replaced by event service specific jobs declared above.
-        ensure                 => 'absent',
-        camus_properties       => {
-            # Write these into the /wmf/data/raw/event directory
-            'etl.destination.path'          => "hdfs://${hadoop_cluster_name}/wmf/data/raw/event",
-            'camus.message.timestamp.field' => 'meta.dt',
-            # Set this to at least the number of topic/partitions you will be importing.
-            'mapred.map.tasks'              => '10',
-            # make sure we don't import any dynamically configured
-            # eventlogging_* topics. These are handled by the
-            # eventlogging Camus job declared above.
-            'kafka.blacklist.topics'        => '^eventlogging_.*'
-        },
-        # Build kafka.whitelist.topics using EventStreamConfig API.
-        dynamic_stream_configs => true,
-        # Don't need to write _IMPORTED flags for event data
-        check_dry_run          => true,
-        # Only check topics th at will have data every hour.
-        check_topic_whitelist  => '(eqiad|codfw).test.event',
-        interval               => '*-*-* *:30:00',
     }
 
     # Import MediaWiki events into
@@ -241,13 +225,14 @@ class profile::analytics::refinery::job::camus(
         interval              => '*-*-* *:05:00',
     }
 
-
     # Imports MediaWiki (EventBus) events that are produced via eventgate-analytics
     # TODO: These are no longer all 'mediawiki' events.  Rename this job.
     # These are events that are produced by MediaWiki
     # to eventgate-analytics and into the Kafka Jumbo cluster.
     # They are relatively high volume compared to the other 'mediawiki_events'.
     camus::job { 'mediawiki_analytics_events':
+        # Being replaced by 'eventgate-analytics_events' job declared above.
+        ensure                => 'absent',
         camus_properties      => {
             # Write these into the /wmf/data/raw/event directory
             'etl.destination.path'            => "hdfs://${hadoop_cluster_name}/wmf/data/raw/event",
