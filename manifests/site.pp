@@ -1032,10 +1032,6 @@ node 'eventlog1002.eqiad.wmnet' {
 }
 
 # virtual machine for mailman list server
-node 'fermium.wikimedia.org' {
-    role(lists)
-}
-
 node 'lists1001.wikimedia.org' {
     role(lists)
 }
