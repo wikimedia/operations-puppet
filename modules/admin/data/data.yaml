@@ -2010,10 +2010,10 @@ users:
     ensure: present
     gid: 500
     name: neilpquinn-wmf
-    realname: Neil P. Quinn
-    ssh_keys: []
+    realname: Neil Shah-Quinn
+    ssh_keys: [ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFvdgZSS9FVp+GTF29K3OmkaOgtLAMjBROeZ/3KpuBoX nshahquinn@wikimedia.org_Wikimedia_production]
     uid: 12049
-    email: nquinn@wikimedia.org
+    email: nshahquinn@wikimedia.org
     krb: present
   dkg:
     ensure: absent
