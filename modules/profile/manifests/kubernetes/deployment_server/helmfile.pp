@@ -37,9 +37,69 @@ class profile::kubernetes::deployment_server::helmfile(
         user                      => 'root',
     }
 
+    # General directory holding all configurations managed by puppet
+    # that are used in helmfiles
+    $general_dir = '/etc/helmfile-defaults'
+    file { $general_dir:
+        ensure => directory
+    }
+
+    # directory holding private data for services
+    # This is only writable by root, and readable by group wikidev
+    $general_private_dir = "${general_dir}/private"
+    file { $general_private_dir:
+        ensure => directory,
+        owner  => 'root',
+        group  => 'wikidev',
+        mode   => '0750'
+    }
+
     $merged_services = deep_merge($services, $services_secrets)
+
+    # New-style private directories are one per service, not per cluster too.
+    $merged_services.each |String $svcname, Hash $data| {
+        if $svcname != 'admin' {
+            file { "${general_private_dir}/${svcname}":
+                ensure => directory,
+                owner  => $data['owner'],
+                group  => $data['gropup'],
+                mode   => '0750',
+            }
+        }
+    }
+
     $clusters = ['staging', 'eqiad', 'codfw']
     $clusters.each |String $environment| {
+        if $environment == 'staging' {
+            $dc = 'eqiad'
+        }
+        else {
+            $dc = $environment
+        }
+
+        $puppet_ca_data = file($facts['puppet_config']['localcacert'])
+
+        $filtered_prometheus_nodes = $prometheus_nodes.filter |$node| { "${dc}.wmnet" in $node }.map |$node| { ipresolve($node) }
+
+        unless empty($filtered_prometheus_nodes) {
+            $deployment_config_opts = {
+                'tls' => {
+                    'telemetry' => {
+                        'prometheus_nodes' => $filtered_prometheus_nodes
+                    }
+                },
+                'puppet_ca_crt' => $puppet_ca_data,
+            }
+        } else {
+            $deployment_config_opts = {
+                'puppet_ca_crt' => $puppet_ca_data
+            }
+        }
+        file { "${general_dir}/general-${environment}.yaml":
+            content => to_yaml($deployment_config_opts),
+            mode    => '0444'
+        }
+
         # populate .hfenv is a temporary workaround for hemlfile checkout T212130 for context
         $merged_services.map |String $svcname, Hash $data| {
           if $svcname == 'admin' {
@@ -74,31 +134,6 @@ class profile::kubernetes::deployment_server::helmfile(
                     group   => $data['group'],
                     require => Git::Clone['operations/deployment-charts'],
                 }
-                if $environment == 'staging' {
-                    $dc = 'eqiad'
-                }
-                else {
-                    $dc = $environment
-                }
-
-                $puppet_ca_data = file($facts['puppet_config']['localcacert'])
-
-                $filtered_prometheus_nodes = $prometheus_nodes.filter |$node| { "${dc}.wmnet" in $node }.map |$node| { ipresolve($node) }
-
-                unless empty($filtered_prometheus_nodes) {
-                  $deployment_config_opts = {
-                    'tls' => {
-                      'telemetry' => {
-                        'prometheus_nodes' => $filtered_prometheus_nodes
-                      }
-                    },
-                    'puppet_ca_crt' => $puppet_ca_data,
-                  }
-                } else {
-                  $deployment_config_opts = {
-                    'puppet_ca_crt' => $puppet_ca_data
-                  }
-                }
 
                 # Add here values provided by puppet, like the IPs of the prometheus nodes.
                 file { "${secrets_dir}/general.yaml":
@@ -117,12 +152,19 @@ class profile::kubernetes::deployment_server::helmfile(
                     # for example.
                     $secret_data = wmflib::inject_secret($raw_data)
 
-                    file { "${secrets_dir}/secrets.yaml":
-                        owner   => $data['owner'],
-                        group   => $data['group'],
-                        mode    => $data['mode'],
-                        content => ordered_yaml($secret_data),
-                        require => [ Git::Clone['operations/deployment-charts'], File[$secrets_dir], ]
+                    file {
+                        default:
+                            owner   => $data['owner'],
+                            group   => $data['group'],
+                            mode    => $data['mode'],
+                            content => ordered_yaml($secret_data),
+                            ;
+                        "${secrets_dir}/secrets.yaml": # Legacy secrets position
+                            require => [ Git::Clone['operations/deployment-charts'], File[$secrets_dir], ]
+                            ;
+                        "${general_private_dir}/${svcname}/${environment}.yaml": # new secrets position
+                            require => "File[${general_private_dir}/${svcname}]"
+                            ;
                     }
                 }
             }
@@ -152,10 +194,9 @@ class profile::kubernetes::deployment_server::helmfile(
           }
         }
     } # end clusters
+
     # Global file defining the services proxy upstreams
-    file { '/etc/helmfile-defaults':
-        ensure => directory
-    }
+    # TODO: move this to the general helmfile file.
     # Services proxy list of definitions to use by our helm charts.
     # They come from two hiera data structures:
     # - profile::services_proxy::envoy::listeners
