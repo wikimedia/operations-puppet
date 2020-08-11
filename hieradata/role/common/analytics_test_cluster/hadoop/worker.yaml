@@ -12,8 +12,8 @@ admin::groups_no_ssh:
   - analytics-search-users
 
 # Testing Apache BigTop in T244499
-profile::cdh::apt::use_bigtop: false
-profile::analytics::cluster::packages::common::use_bigtop_settings: false
+profile::cdh::apt::use_bigtop: true
+profile::analytics::cluster::packages::common::use_bigtop_settings: true
 
 profile::hadoop::common::hadoop_cluster_name: 'analytics-test-hadoop'
 
