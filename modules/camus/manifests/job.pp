@@ -164,7 +164,7 @@ define camus::job (
         # Fetch Request Parameters
         #kafka.fetch.buffer.size=
         #kafka.fetch.request.correlationid=
-        #kafka.fetch.request.max.wait=s
+        #kafka.fetch.request.max.wait=
         #kafka.fetch.request.min.bytes=
         'kafka.client.buffer.size'            => '20971520',
         'kafka.client.so.timeout'             => '60000',
@@ -228,7 +228,7 @@ define camus::job (
 
         $stream_configs_constraints_opt = $stream_configs_constraints ? {
             undef => '',
-            default => "--stream-config-constraints=${stream_configs_constraints}"
+            default => "--stream-configs-constraints=${stream_configs_constraints}"
         }
 
         $http_proxy_environment = {
