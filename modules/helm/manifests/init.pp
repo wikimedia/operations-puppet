@@ -55,15 +55,6 @@ class helm(
         }
     }
 
-    # Replaced by systemd timer below
-    cron { 'helm-repo-update':
-        ensure      => 'absent',
-        command     => '/usr/bin/helm repo update >/dev/null 2>&1',
-        environment => "HELM_HOME=${helm_home}",
-        user        => 'helm',
-        minute      => '*/1',
-    }
-
     systemd::timer::job { 'helm-repo-update':
         ensure             => present,
         description        => 'Update helm repositories indices',
