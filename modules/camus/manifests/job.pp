@@ -170,7 +170,14 @@ define camus::job (
         'kafka.client.so.timeout'             => '60000',
         # If camus offsets and kafka offsets mismatch
         # then camus should start from the earliest offset.
+        # NOTE: This only works if camus actually has offsets stored for a topic partition.
+        # If it does not, it will always move to earliest, unless the topic is explicitly
+        # listed in kafka.move.to.last.offset.list.
         'kafka.move.to.earliest.offset'       => true,
+        # If a topic is in this list, its offsets will be forceably moved to the latest offset.
+        # You probably shouldn't set this in a job config, but use it for camus job migration
+        # tasks manually.
+        #kafka.move.to.last.offset.list=
         # Controls the submitting of counts to Kafka
         # Default value set to true
         'post.tracking.counts.to.kafka'       => false,

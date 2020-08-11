@@ -22,24 +22,18 @@
 #   /wmf/data/raw/webrequest/.
 #
 # - eventlogging
-#   Ingests eventlogging_.+ topics into /wmf/data/raw/eventlogging/.
+#   Ingests legacy eventlogging_.+ topics into /wmf/data/raw/eventlogging/.
 #
-# - event_dynamic_stream_config
-#   Ingests topics belonging to all streams defined in MediaWiki Config
-#   via the EventStreamConfig MediaWiki Extension API.  A list of active streams
-#   is requested from the MW API at job launch time, and a list of topics
-#   to ingest is built from that.  These topics are ingested into
-#   /wmf/data/raw/event/.  Because eventlogging_.+ topics are not prefixed
-#   with the datacenter name (eqiad|codfw), they are explicitly blacklisted,
-#   even if they are in stream config.
+# - eventgate-*
+#   Each eventgate-* camus job is responsible for importing the topics for streams
+#   configured in Mediawiki EventStreamConfig that have destination_event_service name
+#   matching the eventgate service name.
+#   Note: we don't yet import eventgate-logging-external streams, as these are not
+#   (yet) mirrored to Kafka jumbo.
 #
 # - mediawiki_events
 #   Ingests whitelisted mediawiki.*  (non job) events into /wmf/data/raw/event/.
-#
-# - mediawiki_analytics_events
-#   Ingests high volume whitelistsed mediawiki._ (non job) events into
-#   /wmf/data/raw/event.  This exists separately from mediawiki_events to keep long
-#   running high volume topic imports from starving out smaller volume ones.
+#   TO BE DEPRECATED in favor of eventgate-main job.
 #
 # - mediawiki_job
 #   Ingests mediawiki.job.* topics into /wmf/data/raw/mediawiki_job.
@@ -162,12 +156,10 @@ class profile::analytics::refinery::job::camus(
                 'camus.message.timestamp.field' => 'meta.dt',
                 # Set this to at least the number of topic-partitions you will be importing.
                 'mapred.map.tasks'              => '60',
-                # Since this job is replacing 'event_dynamic_stream_configs', and
-                # they are writing into the same etl.destination.path
-                # we want the first runs of this job to just start at latest.
-                # TODO: change this back to earliest after migration.
-                'kafka.move.to.last.offset.list' => 'eqiad.eventgate-analytics.error.validation,codfw.eventgate-analytics.error.validation,eqiad.eventgate-analytics.test.event,codfw.eventgate-analytics.test.event,eqiad.cqs-external.sparql-query,codfw.cqs-external.sparql-query,eqiad.wdqs-external.sparql-query,codfw.wdqs-external.sparql-query,eqiad.wdqs-internal.sparql-query,codfw.wdqs-internal.sparql-query,eqiad.mediawiki.cirrussearch-request,codfw.mediawiki.cirrussearch-request,eqiad.mediawiki.api-request,codfw.mediawiki.api-request',
             },
+            # Check the test topics and mediawiki.api-requests topics.  mediawiki.api-request should
+            # always have data every hour in both datacenters.
+            'check_topic_whitelist' => '(eqiad|codfw)\\.(eventgate-analytics\\.test\\.event|mediawiki\\.api-request)',
             'interval' => '*-*-* *:05:00',
         },
 
@@ -178,6 +170,16 @@ class profile::analytics::refinery::job::camus(
 
     # Declare each of the $event_service_jobs.
     $event_service_jobs.each |String $event_service_name, Hash $parameters| {
+
+        # Default to using .*$event_service_name.test.event for camus checker.
+        # We know that there are test topics for this event service should always have
+        # events, as they are produced when k8s uses its readinessProbe for the service.
+        # We should only check topics we know have data every hour.
+        $check_topic_whitelist = $parameters['check_topic_whitelist'] ? {
+            undef   => "(eqiad|codfw)\\.${event_service_name}\\.test\\.event",
+            default => $parameters['check_topic_whitelist']
+        }
+
         camus::job { "${event_service_name}_events":
             ensure                     => $ensure_timers,
             camus_properties           => $parameters['camus_properties'],
@@ -187,10 +189,7 @@ class profile::analytics::refinery::job::camus(
             stream_configs_constraints => "destination_event_service=${event_service_name}",
             # Don't need to write _IMPORTED flags for event data
             check_dry_run              => true,
-            # Only check topics that will have data every hour.
-            # For we know that there are test topics for this event service should always have
-            # events, as they are produced when k8s uses its readinessProbe for the service.
-            check_topic_whitelist      => "(eqiad|codfw).${event_service_name}.test.event",
+            check_topic_whitelist      => $check_topic_whitelist,
             interval                   => $parameters['interval'],
         }
     }
@@ -223,34 +222,6 @@ class profile::analytics::refinery::job::camus(
         # Only check high volume topics that will almost certainly have data every hour.
         check_topic_whitelist => "${primary_mediawiki_dc}.mediawiki.revision-create",
         interval              => '*-*-* *:05:00',
-    }
-
-    # Imports MediaWiki (EventBus) events that are produced via eventgate-analytics
-    # TODO: These are no longer all 'mediawiki' events.  Rename this job.
-    # These are events that are produced by MediaWiki
-    # to eventgate-analytics and into the Kafka Jumbo cluster.
-    # They are relatively high volume compared to the other 'mediawiki_events'.
-    camus::job { 'mediawiki_analytics_events':
-        # Being replaced by 'eventgate-analytics_events' job declared above.
-        ensure                => 'absent',
-        camus_properties      => {
-            # Write these into the /wmf/data/raw/event directory
-            'etl.destination.path'            => "hdfs://${hadoop_cluster_name}/wmf/data/raw/event",
-            'kafka.whitelist.topics'          => '(eqiad|codfw)\.(mediawiki\.(api-request|cirrussearch-request)|.+\.sparql-query)',
-            'camus.message.timestamp.field'   => 'meta.dt',
-            # Set this to at least the number of topic/partitions you will be importing.
-            'mapred.map.tasks'                => '60',
-            # This camus runs every 15 minutes, so limiting it to 14 should keep runs fresh.
-            'kafka.max.pull.minutes.per.task' => '14',
-        },
-        # mediawiki_analytics_events has been reset so its 'camus_name' has changed from the default.
-        # This is just used for the default path to the camus history files in HDFS.
-        camus_name            => 'mediawiki_analytics_events-01',
-        # Don't need to write _IMPORTED flags for event data
-        check_dry_run         => true,
-        # Only check high volume topics that will almost certainly have data every hour.
-        check_topic_whitelist => "${primary_mediawiki_dc}.mediawiki.(api-request|cirrussearch-request)",
-        interval              => '*-*-* *:00/15:00',
     }
 
     # Import mediawiki.job queue topics into /wmf/data/raw/mediawiki_job
