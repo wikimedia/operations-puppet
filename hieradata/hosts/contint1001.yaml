@@ -1,8 +1,6 @@
-profile::ci::jenkins::service_enable: false
-profile::ci::jenkins::service_monitor: false
-
 profile::zuul::server::service_ensure: stopped
 profile::zuul::server::service_enable: false
+profile::ci::jenkins::service_monitor: false
 
 profile::ci::docker::settings:
   data-root: '/srv/docker'

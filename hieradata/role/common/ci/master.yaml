@@ -11,9 +11,8 @@ profile::ci::proxy_jenkins::http_port: 8080
 profile::ci::proxy_jenkins::prefix: '/ci'
 profile::ci::jenkins::builds_dir: '/srv/jenkins/builds/${ITEM_FULL_NAME}'
 profile::ci::jenkins::workspaces_dir: '/srv/jenkins/workspace/${ITEM_FULL_NAME}'
-profile::ci::jenkins::service_ensure: unmanaged
-profile::ci::jenkins::service_enable: true
-profile::ci::jenkins::service_monitor: true
+profile::ci::jenkins::service_ensure: 'stopped'
+profile::ci::jenkins::service_enable: 'mask'
 
 profile::zuul::server::service_ensure: running
 profile::zuul::server::service_enable: true

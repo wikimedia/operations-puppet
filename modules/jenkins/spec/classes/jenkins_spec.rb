@@ -22,13 +22,6 @@ describe 'jenkins' do
       it { should compile }
 
       describe 'when service_ensure' do
-        context "is 'unmanaged'" do
-          let(:params) { {
-            :prefix => '/ci',
-            :service_ensure => 'unmanaged',
-          } }
-          it { should contain_service('jenkins').without_ensure }
-        end
         context "is 'running'" do
           let(:params) { {
             :prefix => '/ci',

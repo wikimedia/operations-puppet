@@ -6,7 +6,7 @@ class profile::ci::jenkins(
     $prefix = hiera('profile::ci::jenkins::prefix'),
     $service_ensure = hiera('profile::ci::jenkins::service_ensure'),
     $service_enable = hiera('profile::ci::jenkins::service_enable'),
-    $service_monitor = hiera('profile::ci::jenkins::monitor'),
+    $service_monitor = hiera('profile::ci::jenkins::service_monitor'),
     $builds_dir = hiera('profile::ci::jenkins::builds_dir'),
     $workspaces_dir = hiera('profile::ci::jenkins::workspaces_dir'),
 ) {

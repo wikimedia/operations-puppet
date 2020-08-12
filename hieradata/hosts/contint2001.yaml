@@ -1,3 +1,7 @@
 profile::ci::docker::settings:
   data-root: '/srv/docker'
   iptables: false
+
+profile::ci::jenkins::service_ensure: 'running'
+profile::ci::jenkins::service_enable: true
+profile::ci::jenkins::service_monitor: true

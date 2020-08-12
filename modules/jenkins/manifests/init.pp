@@ -22,11 +22,14 @@
 # Default: 8192.
 #
 # [*service_ensure*]
-# Passed to Puppet Service['jenkins']. If set to 'unmanaged', pass undef to
-# prevent Puppet from managing the service. Default: 'running'.
+# Passed to Puppet Service['jenkins']
+# Allowed values: (Boolean) true, false (Strings) running, stopped
+# Default: stopped
 #
 # [*service_enable*]
-# Passed to Puppet Service['jenkins'] as 'enable'. Default: true.
+# Passed to Puppet Service['jenkins']
+# Allowed values: (Boolean) true, false (Strings) mask, manual
+# Default: mask
 #
 # [*umask*]
 # Control permission bits of files created by Jenkins. Passed to systemd.
@@ -48,8 +51,8 @@ class jenkins(
     String $log_group = 'wikidev',
     Stdlib::Port $http_port = 8080,
     Integer $max_open_files = 8192,
-    Enum['running', 'stopped', 'unmanaged'] $service_ensure = 'running',
-    Boolean $service_enable = true,
+    Variant[Enum['mask', 'manual'], Boolean] $service_enable = 'mask',
+    Variant[Enum['running', 'stopped'], Boolean] $service_ensure = 'stopped',
     Boolean $service_monitor = true,
     Stdlib::Filemode $umask = '0002',
     String $builds_dir = "\${ITEM_ROOTDIR}/builds",
@@ -157,18 +160,12 @@ class jenkins(
         "\"-Dhudson.model.DirectoryBrowserSupport.CSP=sandbox; default-src 'none'; img-src 'self'; style-src 'self' 'unsafe-inline'; media-src 'self'\""
     ], ' ')
 
-    $real_service_ensure = $service_ensure ? {
-        'unmanaged' => undef,
-        # Normalize to 'running' or 'stopped'
-        default     => ensure_service($service_ensure),
-    }
-
     systemd::service { 'jenkins':
         ensure         => 'present',
         content        => systemd_template('jenkins'),
         service_params => {
             enable => $service_enable,
-            ensure => $real_service_ensure,
+            ensure => $service_ensure,
         },
         require        => [
             Systemd::Syslog['jenkins'],

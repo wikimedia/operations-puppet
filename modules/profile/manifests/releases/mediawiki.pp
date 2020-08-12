@@ -8,12 +8,18 @@ class profile::releases::mediawiki (
     String $server_admin = lookup('profile::releases::mediawiki::server_admin'),
     String $jenkins_agent_username = lookup('jenkins_agent_username'),
     String $jenkins_agent_key = lookup('profile::releases::mediawiki::jenkins_agent_key'),
+    $jenkins_service_ensure = lookup('profile::releases::mediawiki::jenkins_service_ensure'),
+    $jenkins_service_enable = lookup('profile::releases::mediawiki::jenkins_service_enable'),
+    $jenkins_service_monitor = lookup('profile::releases::mediawiki::jenkins_service_monitor'),
 ){
     class { '::jenkins':
-        access_log => true,
-        http_port  => $http_port,
-        prefix     => $prefix,
-        umask      => '0002',
+        access_log      => true,
+        http_port       => $http_port,
+        prefix          => $prefix,
+        umask           => '0002',
+        service_ensure  => $jenkins_service_ensure,
+        service_enable  => $jenkins_service_enable,
+        service_monitor => $jenkins_service_monitor,
     }
 
     base::service_auto_restart { 'jenkins': }
