@@ -134,6 +134,8 @@ class profile::analytics::refinery::job::camus(
     # Shortcut for declaring a camus job that imports streams from specific event services.
     # We want separate camus jobs for each event service as their throughput volume can
     # vary significantly, and we don't want high volume topics to starve out small ones.
+    # See also:
+    # https://wikitech.wikimedia.org/wiki/Event_Platform/EventGate#EventGate_clusters
     $event_service_jobs = {
         'eventgate-analytics-external' => {
             'camus_properties' =>  {
@@ -174,8 +176,6 @@ class profile::analytics::refinery::job::camus(
                 'kafka.blacklist.topics'        => '^(eqiad|codfw)\\.mediawiki\\.job\\..*',
                 # Set this to at least the number of topic-partitions you will be importing.
                 'mapred.map.tasks'              => '40',
-                # migrating from mediawiki_events job below, this job will start importing from latest.
-                'kafka.move.to.last.offset.list' => 'eqiad.eventgate-main.error.validation,codfw.eventgate-main.error.validation,eqiad.eventgate-main.test.event,codfw.eventgate-main.test.event,eqiad.change-prop.transcludes.resource-change,codfw.change-prop.transcludes.resource-change,eqiad.resource-purge,codfw.resource-purge,eqiad.resource_change,codfw.resource_change,eqiad.mediawiki.user-blocks-change,codfw.mediawiki.user-blocks-change,eqiad.mediawiki.revision-visibility-change,codfw.mediawiki.revision-visibility-change,eqiad.mediawiki.page-move,codfw.mediawiki.page-move,eqiad.mediawiki.page-links-change,codfw.mediawiki.page-links-change,eqiad.mediawiki.page-delete,codfw.mediawiki.page-delete,eqiad.mediawiki.page-create,codfw.mediawiki.page-create,eqiad.mediawiki.centralnotice.campaign-delete,codfw.mediawiki.centralnotice.campaign-delete,eqiad.mediawiki.centralnotice.campaign-create,codfw.mediawiki.centralnotice.campaign-create,eqiad.mediawiki.centralnotice.campaign-change,codfw.mediawiki.centralnotice.campaign-change,/^(eqiad\\.|codfw\\.)mediawiki\\.job\\..+/,eqiad.mediawiki.page-properties-change,codfw.mediawiki.page-properties-change,eqiad.mediawiki.page-restrictions-change,codfw.mediawiki.page-restrictions-change,eqiad.mediawiki.page-suppress,codfw.mediawiki.page-suppress,eqiad.mediawiki.page-undelete,codfw.mediawiki.page-undelete,eqiad.mediawiki.recentchange,codfw.mediawiki.recentchange,eqiad.mediawiki.revision-create,codfw.mediawiki.revision-create,eqiad.mediawiki.revision-score,codfw.mediawiki.revision-score,eqiad.mediawiki.revision-tags-change,codfw.mediawiki.revision-tags-change'
             },
             # Check the test topics and resource_change topics.  resource_change should
             # always have data every hour in both datacenters.
@@ -208,38 +208,6 @@ class profile::analytics::refinery::job::camus(
             check_topic_whitelist      => $check_topic_whitelist,
             interval                   => $parameters['interval'],
         }
-    }
-
-    # Import MediaWiki events into
-    # /wmf/data/raw/event once every hour.
-    # Also check that camus is always finding data in the revision-create
-    # topic from the primary mediawiki datacenter.
-    # NOTE: Using mediawiki::state is a bit of a hack; this data should
-    # be read from confd/etcd directly instead of using this hacky function.
-    $primary_mediawiki_dc = $::realm ? {
-        'labs'  => 'eqiad',
-        default => mediawiki::state('primary_dc'),
-    }
-    # Imports MediaWiki (EventBus) events that are produced via eventgate-main
-    camus::job { 'mediawiki_events':
-        # Being replaced by eventgate-main_events job declared above.
-        ensure                => 'absent',
-        camus_properties      => {
-            # Write these into the /wmf/data/raw/event directory
-            'etl.destination.path'          => "hdfs://${hadoop_cluster_name}/wmf/data/raw/event",
-            'kafka.whitelist.topics'        => '(eqiad|codfw)\.(resource_change|mediawiki\.(page|revision|user|recentchange).*)',
-            'camus.message.timestamp.field' => 'meta.dt',
-            # Set this to at least the number of topic/partitions you will be importing.
-            'mapred.map.tasks'              => '40',
-        },
-        # This job was called 'eventbus' in the past and still uses the
-        # old camus history paths with this name.
-        camus_name            => 'eventbus-00',
-        # Don't need to write _IMPORTED flags for event data
-        check_dry_run         => true,
-        # Only check high volume topics that will almost certainly have data every hour.
-        check_topic_whitelist => "${primary_mediawiki_dc}.mediawiki.revision-create",
-        interval              => '*-*-* *:05:00',
     }
 
     # Import mediawiki.job queue topics into /wmf/data/raw/mediawiki_job
