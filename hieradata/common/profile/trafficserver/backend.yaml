@@ -156,7 +156,7 @@ profile::trafficserver::backend::mapping_rules:
       replacement: https://releases.discovery.wmnet
     - type: map
       target: http://releases-jenkins.wikimedia.org
-      replacement: https://releases.discovery.wmnet
+      replacement: https://releases1001.eqiad.wmnet
     - type: map
       target: http://research.wikimedia.org
       replacement: https://webserver-misc-apps.discovery.wmnet
