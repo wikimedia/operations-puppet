@@ -14,6 +14,7 @@ class profile::prometheus::ops (
     String $replica_label = lookup('prometheus::replica_label', { 'default_value' => 'unset' }),
     Boolean $enable_thanos_upload = lookup('profile::prometheus::ops::thanos', { 'default_value' => false }),
     Optional[String] $thanos_min_time = lookup('profile::prometheus::thanos::min_time', { 'default_value' => undef }),
+    $alertmanagers = lookup('alertmanagers', {'default_value' => []}),
 ){
     include ::passwords::gerrit
     $gerrit_client_token = $passwords::gerrit::prometheus_bearer_token
@@ -1777,6 +1778,7 @@ class profile::prometheus::ops (
         memory_chunks         => $memory_chunks,
         min_block_duration    => '2h',
         max_block_duration    => $max_block_duration,
+        alertmanagers         => $alertmanagers.map |$a| { "${a}:9093" },
         scrape_configs_extra  => array_concat(
             $mysql_jobs, $varnish_jobs, $trafficserver_jobs, $purged_jobs, $atskafka_jobs, $memcached_jobs,
             $apache_jobs, $etcd_jobs, $etcdmirror_jobs, $mcrouter_jobs, $pdu_jobs,

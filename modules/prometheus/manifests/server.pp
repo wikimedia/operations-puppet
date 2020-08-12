@@ -45,8 +45,8 @@
 #   https://prometheus.io/docs/alerting/rules/. Note that defining alerting
 #   rules won't trigger any notifications of any kind.
 #
-# [*alertmanager_url*]
-#   An url where alertmanager is listening for alerts. host:port when using Prometheus v2
+# [*alertmanagers*]
+#   A list of host:port of alertmanagers to send alerts to.
 #
 # [*min_block_duration*]
 #   The minimum duration of local TSDB blocks to consider for compaction
@@ -70,7 +70,7 @@ define prometheus::server (
     Stdlib::HTTPUrl  $external_url          = "http://prometheus/${title}",
     String           $min_block_duration    = '2h',
     String           $max_block_duration    = '24h',
-    Optional[Pattern[/^[a-zA-Z][-a-zA-Z0-9]+:[0-9]+$/]] $alertmanager_url      = undef,
+    Array            $alertmanagers         = [],
 ) {
     include prometheus
 
@@ -117,11 +117,9 @@ define prometheus::server (
       'scrape_configs' => $scrape_configs,
     }
 
-    if $alertmanager_url {
-      # Prometheus v2 expects an hostport, not url
-      # https://prometheus.io/docs/prometheus/latest/migration/#alertmanager-service-discovery
+    if !empty($alertmanagers) {
       $alertmanager_config = [
-        { 'targets' =>  [ $alertmanager_url ] },
+        { 'targets' => $alertmanagers },
       ]
       $prometheus_config = $common_config + {
         'alerting' => {
