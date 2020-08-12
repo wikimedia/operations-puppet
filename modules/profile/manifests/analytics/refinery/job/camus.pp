@@ -167,6 +167,11 @@ class profile::analytics::refinery::job::camus(
             'camus_properties' =>  {
                 'etl.destination.path'          => "hdfs://${hadoop_cluster_name}/wmf/data/raw/event",
                 'camus.message.timestamp.field' => 'meta.dt',
+                # eventgate-main handles event platform streams, as well as 'schemaless' mediawiki job
+                # streams.  We use a separate camus job (for now) to import mediawiki job
+                # events into a separate /wmf/data/raw/mediawiki_job etl.destination.path.
+                # We need to exclude the mediawiki job topics from this job.
+                'kafka.blacklist.topics'        => '^(eqiad|codfw)\\.mediawiki\\.job\\..*',
                 # Set this to at least the number of topic-partitions you will be importing.
                 'mapred.map.tasks'              => '40',
                 # migrating from mediawiki_events job below, this job will start importing from latest.
