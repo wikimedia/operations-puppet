@@ -160,12 +160,23 @@ class profile::analytics::refinery::job::camus(
             # Check the test topics and mediawiki.api-requests topics.  mediawiki.api-request should
             # always have data every hour in both datacenters.
             'check_topic_whitelist' => '(eqiad|codfw)\\.(eventgate-analytics\\.test\\.event|mediawiki\\.api-request)',
-            'interval' => '*-*-* *:05:00',
+            'interval' => '*-*-* *:15:00',
         },
 
-        # TODO:
-        # Add more jobs here as we migrated from static to dynamic topic discovery via EventStreamConfig.
-        # - eventgate-main (replaces mediawiki_events job)
+        'eventgate-main' => {
+            'camus_properties' =>  {
+                'etl.destination.path'          => "hdfs://${hadoop_cluster_name}/wmf/data/raw/event",
+                'camus.message.timestamp.field' => 'meta.dt',
+                # Set this to at least the number of topic-partitions you will be importing.
+                'mapred.map.tasks'              => '40',
+                # migrating from mediawiki_events job below, this job will start importing from latest.
+                'kafka.move.to.last.offset.list' => 'eqiad.eventgate-main.error.validation,codfw.eventgate-main.error.validation,eqiad.eventgate-main.test.event,codfw.eventgate-main.test.event,eqiad.change-prop.transcludes.resource-change,codfw.change-prop.transcludes.resource-change,eqiad.resource-purge,codfw.resource-purge,eqiad.resource_change,codfw.resource_change,eqiad.mediawiki.user-blocks-change,codfw.mediawiki.user-blocks-change,eqiad.mediawiki.revision-visibility-change,codfw.mediawiki.revision-visibility-change,eqiad.mediawiki.page-move,codfw.mediawiki.page-move,eqiad.mediawiki.page-links-change,codfw.mediawiki.page-links-change,eqiad.mediawiki.page-delete,codfw.mediawiki.page-delete,eqiad.mediawiki.page-create,codfw.mediawiki.page-create,eqiad.mediawiki.centralnotice.campaign-delete,codfw.mediawiki.centralnotice.campaign-delete,eqiad.mediawiki.centralnotice.campaign-create,codfw.mediawiki.centralnotice.campaign-create,eqiad.mediawiki.centralnotice.campaign-change,codfw.mediawiki.centralnotice.campaign-change,/^(eqiad\\.|codfw\\.)mediawiki\\.job\\..+/,eqiad.mediawiki.page-properties-change,codfw.mediawiki.page-properties-change,eqiad.mediawiki.page-restrictions-change,codfw.mediawiki.page-restrictions-change,eqiad.mediawiki.page-suppress,codfw.mediawiki.page-suppress,eqiad.mediawiki.page-undelete,codfw.mediawiki.page-undelete,eqiad.mediawiki.recentchange,codfw.mediawiki.recentchange,eqiad.mediawiki.revision-create,codfw.mediawiki.revision-create,eqiad.mediawiki.revision-score,codfw.mediawiki.revision-score,eqiad.mediawiki.revision-tags-change,codfw.mediawiki.revision-tags-change'
+            },
+            # Check the test topics and resource_change topics.  resource_change should
+            # always have data every hour in both datacenters.
+            'check_topic_whitelist' => '(eqiad|codfw)\\.(eventgate-main\\.test\\.event|resource_change)',
+            'interval' => '*-*-* *:05:00',
+        },
     }
 
     # Declare each of the $event_service_jobs.
@@ -206,6 +217,8 @@ class profile::analytics::refinery::job::camus(
     }
     # Imports MediaWiki (EventBus) events that are produced via eventgate-main
     camus::job { 'mediawiki_events':
+        # Being replaced by eventgate-main_events job declared above.
+        ensure                => 'absent',
         camus_properties      => {
             # Write these into the /wmf/data/raw/event directory
             'etl.destination.path'          => "hdfs://${hadoop_cluster_name}/wmf/data/raw/event",
