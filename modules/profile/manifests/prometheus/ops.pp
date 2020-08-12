@@ -532,6 +532,31 @@ class profile::prometheus::ops (
         port       => 9206
     }
 
+    # Job definition for alertmanager
+    $alertmanager_jobs = [
+      {
+        'job_name'        => 'alertmanager',
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/alertmanager_*.yaml"] },
+        ],
+      },
+    ]
+
+    prometheus::class_config{ "alertmanager_${::site}":
+        dest       => "${targets_path}/alertmanager_${::site}.yaml",
+        site       => $::site,
+        class_name => 'profile::alertmanager',
+        port       => 9093,
+    }
+
+    prometheus::class_config{ "alertmanager_irc_${::site}":
+        dest             => "${targets_path}/alertmanager_irc_${::site}.yaml",
+        site             => $::site,
+        class_name       => 'alertmanager::irc',
+        class_parameters => { 'service_ensure' => running },
+        port             => 19190,
+    }
+
     # Job definition for cadvisor exporter
     $cadvisor_jobs = [
       {
@@ -1765,7 +1790,7 @@ class profile::prometheus::ops (
             $cloud_dev_pdns_jobs, $cloud_dev_pdns_rec_jobs, $bacula_jobs, $poolcounter_exporter_jobs,
             $apereo_cas_jobs, $atlas_exporter_jobs, $exported_blackbox_jobs, $cadvisor_jobs,
             $envoy_jobs, $webperf_jobs, $squid_jobs, $nic_saturation_exporter_jobs, $thanos_jobs, $netbox_jobs,
-            $wikidough_jobs, $chartmuseum_jobs, $es_exporter_jobs,
+            $wikidough_jobs, $chartmuseum_jobs, $es_exporter_jobs, $alertmanager_jobs
         ),
         global_config_extra   => $config_extra,
     }
