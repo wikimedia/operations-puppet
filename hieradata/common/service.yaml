@@ -3032,7 +3032,7 @@ service::catalog:
     sites:
     - eqiad
     - codfw
-    state: service_setup # this is the most important entry in your service definition! See below for details
+    state: lvs_setup
     discovery:
     - dnsdisc: api-gateway
       active_active: true
