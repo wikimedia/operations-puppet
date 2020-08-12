@@ -707,11 +707,6 @@ hadoop_clusters:
     yarn_scheduler_minimum_allocation_mb: 1
     yarn_scheduler_maximum_allocation_mb: 53248
 
-    # When testing spark2 on yarn, the AM was often killed
-    # due to virtual memory usage.
-    # More info: https://phabricator.wikimedia.org/T244499#6378887
-    yarn.nodemanager.vmem-pmem-ratio: 5.1
-
     # https://issues.apache.org/jira/browse/YARN-5774
     yarn_scheduler_minimum_allocation_vcores:   1
     yarn_scheduler_maximum_allocation_vcores:   32
@@ -779,6 +774,10 @@ hadoop_clusters:
       spark.authenticate: true
       spark.network.crypto.enabled: true
       spark.executorEnv.LD_LIBRARY_PATH: '/usr/lib/hadoop/lib/native'
+      # When testing spark2 on yarn, the AM was often killed
+      # due to virtual memory usage.
+      # More info: https://phabricator.wikimedia.org/T244499#6378887
+      yarn.nodemanager.vmem-pmem-ratio: 5.1
 
     yarn_nodemanager_container_executor_config:
       yarn.nodemanager.linux-container-executor.group: 'yarn'
