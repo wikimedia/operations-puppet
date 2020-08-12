@@ -3,7 +3,7 @@ class profile::alertmanager (
     Array[Stdlib::Host] $partners    = lookup('profile::icinga::partners'),
     String              $irc_channel = lookup('profile::alertmanager::irc::channel'),
     Optional[String]    $victorops_api_key = lookup('profile::alertmanager::victorops_api_key'),
-    Array $prometheus_nodes = lookup('prometheus_nodes'),
+    Array $prometheus_all_nodes = lookup('prometheus_all_nodes'),
 ) {
     class { '::alertmanager':
         irc_channel       => $irc_channel,
@@ -12,8 +12,9 @@ class profile::alertmanager (
         victorops_api_key => $victorops_api_key,
     }
 
-    $prometheus_nodes_ferm = join($prometheus_nodes, ' ')
-    ferm::service { 'alertmanager-metrics':
+    # All Prometheus servers need access to Alertmanager to send alerts
+    $prometheus_nodes_ferm = join($prometheus_all_nodes, ' ')
+    ferm::service { 'alertmanager-prometheus':
         proto  => 'tcp',
         port   => '9093',
         srange => "(@resolve((${prometheus_nodes_ferm})))",
