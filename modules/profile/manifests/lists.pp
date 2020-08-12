@@ -175,6 +175,15 @@ class profile::lists (
         notify => Service['mtail'],
     }
 
+    # in buster, the 'list' group has access to /var/log/mailman
+    if os_version('debian >= buster') {
+        user { 'mtail':
+            ensure  => 'present',
+            groups  => ['list'],
+            require => Package['mailman']
+        }
+    }
+
     # Mtail program to gather exim logs
     mtail::program { 'exim':
         ensure => 'present',
