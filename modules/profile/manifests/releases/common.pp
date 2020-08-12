@@ -1,3 +1,4 @@
+# all things common to Wikimedia releases* servers
 class profile::releases::common(
     Stdlib::Fqdn $sitename = lookup('profile::releases::mediawiki::sitename'),
     Stdlib::Host $deployment_server = lookup('deployment_server'),
@@ -21,6 +22,8 @@ class profile::releases::common(
     base::service_auto_restart { 'rsync': }
 
     $secondary_servers.each |String $secondary_server| {
+        # automatically sync relases files to all secondary
+        # servers and ensure they are real mirrors of each other
         rsync::quickdatacopy { "srv-org-wikimedia-releases-${secondary_server}":
           ensure      => present,
           auto_sync   => true,
@@ -28,6 +31,16 @@ class profile::releases::common(
           source_host => $active_server,
           dest_host   => $secondary_server,
           module_path => '/srv/org/wikimedia/releases',
+        }
+        # allow syncing jenkins data between servers for migrations
+        # but do not automatically do it
+        rsync::quickdatacopy { "var-lib-jenkins-${secondary_server}":
+          ensure      => present,
+          auto_sync   => false,
+          delete      => true,
+          source_host => $active_server,
+          dest_host   => $secondary_server,
+          module_path => '/var/lib/jenkins',
         }
     }
 
