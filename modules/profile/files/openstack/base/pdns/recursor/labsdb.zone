@@ -502,7 +502,7 @@ mgwikibooks	1H	IN	CNAME	s3.analytics.db.svc.eqiad.wmflabs.
 mgwiktionary	1H	IN	CNAME	s3.analytics.db.svc.eqiad.wmflabs.
 mhrwiki	1H	IN	CNAME	s3.analytics.db.svc.eqiad.wmflabs.
 mhwiki	1H	IN	CNAME	s3.analytics.db.svc.eqiad.wmflabs.
-mhwiktionary	1H	IN	CNAME	s3.analytics.db.svc.eqiad.wmflabs.
+mhwiktionary	1H	IN	CNAME	s5.analytics.db.svc.eqiad.wmflabs.
 minwiki	1H	IN	CNAME	s3.analytics.db.svc.eqiad.wmflabs.
 miwiki	1H	IN	CNAME	s3.analytics.db.svc.eqiad.wmflabs.
 miwikibooks	1H	IN	CNAME	s3.analytics.db.svc.eqiad.wmflabs.
@@ -532,7 +532,7 @@ mswikibooks	1H	IN	CNAME	s3.analytics.db.svc.eqiad.wmflabs.
 mswiktionary	1H	IN	CNAME	s3.analytics.db.svc.eqiad.wmflabs.
 mtwiki	1H	IN	CNAME	s3.analytics.db.svc.eqiad.wmflabs.
 mtwiktionary	1H	IN	CNAME	s3.analytics.db.svc.eqiad.wmflabs.
-muswiki	1H	IN	CNAME	s3.analytics.db.svc.eqiad.wmflabs.
+muswiki	1H	IN	CNAME	s5.analytics.db.svc.eqiad.wmflabs.
 mwlwiki	1H	IN	CNAME	s3.analytics.db.svc.eqiad.wmflabs.
 mxwikimedia	1H	IN	CNAME	s3.analytics.db.svc.eqiad.wmflabs.
 myvwiki	1H	IN	CNAME	s3.analytics.db.svc.eqiad.wmflabs.
