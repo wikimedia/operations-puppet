@@ -20,6 +20,10 @@ ntp_peers:
     eqsin: []
     esams: []
 
+## Disable remote syslog logging, as it breaks rsyslog in cloud VPSes.
+profile::base::remote_syslog: []
+profile::base::remote_syslog_tls: []
+
 ## Customizations
 #pontoon::stack: 'your_stack'
 
