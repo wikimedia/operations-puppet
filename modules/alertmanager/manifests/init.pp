@@ -12,7 +12,8 @@ class alertmanager (
 
     # Build cluster peers argv with all non-local hostnames
     $all_hosts = $partners + $active_host
-    $cluster_opts = $all_hosts.reduce([]) |$agg, $host| {
+    $cluster_opts = $all_hosts.reduce(
+      ['--cluster.advertise-address', "${::ipaddress}:9093"]) |$agg, $host| {
         if $host != $::fqdn {
             $tmp = ['--cluster.peer', "${host}:9093"]
         } else {
