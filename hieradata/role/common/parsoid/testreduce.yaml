@@ -7,3 +7,4 @@ admin::groups:
   - parsoid-test-roots
 
 parsoid::testing::parsoid_port: 8142
+profile::parsoid::vd_server::service_ensure: 'stopped'

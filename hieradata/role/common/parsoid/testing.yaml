@@ -40,3 +40,5 @@ profile::mediawiki::php::restarts::opcache_limit: 200
 profile::base::monitor_systemd: false
 # T254025
 profile::mediawiki::php::monitoring::monitor_opcache: false
+
+profile::parsoid::vd_server::service_ensure: 'running'

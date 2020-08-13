@@ -24,15 +24,18 @@
 #   The user-facing webapp that displays test results will listen on
 #   this port. Default: 8003.
 #
+# [*service_ensure*]
+#    The usual parameter to ensure the service is stopped or running. Default: running
 define testreduce::server(
     $instance_name,
     $db_name,
     $db_user,
     $db_pass,
-    $db_host     = 'localhost',
-    $db_port     = 3306,
-    $coord_port  = 8002,
-    $webapp_port = 8003,
+    $db_host        = 'localhost',
+    $db_port        = 3306,
+    $coord_port     = 8002,
+    $webapp_port    = 8003,
+    $service_ensure = 'running',
 ) {
     file { "/etc/testreduce/${instance_name}.settings.js":
         # FIXME: Ideally this would be testreduce/settings.js.rb
@@ -54,7 +57,7 @@ define testreduce::server(
     }
 
     service { $instance_name:
-        ensure  => running,
+        ensure  => $service_ensure,
         require => [
             File["/etc/testreduce/${instance_name}.settings.js"],
             File["/lib/systemd/system/${instance_name}.service"],
