@@ -69,7 +69,7 @@ class profile::wmcs::backy2(
         },
         logging_enabled           => true,
         monitoring_enabled        => true,
-        monitoring_contact_groups => 'wmcs-email',
+        monitoring_contact_groups => 'wmcs-team-email',
         user                      => 'root',
     }
 
@@ -83,7 +83,7 @@ class profile::wmcs::backy2(
         },
         logging_enabled           => true,
         monitoring_enabled        => true,
-        monitoring_contact_groups => 'wmcs-email',
+        monitoring_contact_groups => 'wmcs-team-email',
         user                      => 'root',
     }
 }
