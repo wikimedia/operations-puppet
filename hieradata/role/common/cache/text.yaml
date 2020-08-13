@@ -17,7 +17,7 @@ cache::alternate_domains:
     caching: 'normal'
   annual.wikimedia.org:
     caching: 'normal'
-  api-gateway.wikimedia.org:
+  api.wikimedia.org:
     caching: 'pass'
   blubberoid.wikimedia.org:
     caching: 'pass'
