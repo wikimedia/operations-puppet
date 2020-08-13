@@ -15,7 +15,7 @@ BACKY = "/usr/bin/backy2"
 #  at http://backy2.com/docs/backup.html
 
 
-def _initial_backup(pool, volume):
+def _initial_backup(pool, volume, expire):
     snapname = datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
 
     logging.info("Creating initial backup of %s/%s" % (pool, volume))
@@ -39,11 +39,13 @@ def _initial_backup(pool, volume):
                 blockdiff.name,
                 "rbd://%s" % snapref,
                 volume,
+                "-e",
+                expire,
             ]
         )
 
 
-def _differential_backup(pool, volume, last_snap, backy_snap_version_uid):
+def _differential_backup(pool, volume, last_snap, backy_snap_version_uid, expire):
     snapname = datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
 
     logging.info(
@@ -84,16 +86,22 @@ def _differential_backup(pool, volume, last_snap, backy_snap_version_uid):
                 backy_snap_version_uid,
                 "rbd://%s" % snapref,
                 volume,
+                "-e",
+                expire,
             ]
         )
 
 
 # determine whether or not this is the first backup of a given volume. If yes,
 #  do a full backup; if no, do an incremental backup.
-def backup_volume(pool, volume):
+def backup_volume(pool, volume, live_for_days):
+    expire = (
+        datetime.datetime.now() + datetime.timedelta(days=live_for_days)
+    ).strftime("%Y-%m-%d")
+
     all_snaps = subprocess.check_output([RBD, "snap", "ls", "%s/%s" % (pool, volume)])
     if not all_snaps:
-        _initial_backup(pool, volume)
+        _initial_backup(pool, volume, expire)
     else:
         # Throw out the first line of output, it's a header
         snaplist = [snap.split() for snap in all_snaps.decode("utf8").splitlines()[1:]]
@@ -112,16 +120,18 @@ def backup_volume(pool, volume):
             logging.warning(
                 "Existing rbd snapshot not found in backy2, reverting to initial backup."
             )
-            _initial_backup(pool, volume)
+            _initial_backup(pool, volume, expire)
         else:
             backy_snap_version_uid = backup.split(b"|")[5]
-            _differential_backup(pool, volume, last_snap, backy_snap_version_uid)
+            _differential_backup(
+                pool, volume, last_snap, backy_snap_version_uid, expire
+            )
 
 
 # Convenience function that takes a nova VM id
-def backup_vm(pool, vm):
+def backup_vm(pool, vm, live_for_days):
     vm_disk = "%s_disk" % vm
-    backup_volume(pool, vm_disk)
+    backup_volume(pool, vm_disk, live_for_days)
 
 
 # Return all volumes stored in a given pool.

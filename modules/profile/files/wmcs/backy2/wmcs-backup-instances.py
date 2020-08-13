@@ -19,7 +19,9 @@ for project in config["projects"]:
     for server in servers:
         if server.id in ceph_servers:
             logging.info("Backing up %s:%s" % (project, server.name))
-            rbd2backy2.backup_vm(config["ceph_pool"], server.id)
+            rbd2backy2.backup_vm(
+                config["ceph_pool"], server.id, config["live_for_days"]
+            )
         else:
             not_in_ceph.append(server)
 

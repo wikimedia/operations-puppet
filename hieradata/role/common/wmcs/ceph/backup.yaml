@@ -12,3 +12,4 @@ profile::ceph::client::rbd::enable_v2_messenger: false
 profile::wmcs::backy2::backup_projects:
  - tools
  - testlabs
+ - transferpy-test
