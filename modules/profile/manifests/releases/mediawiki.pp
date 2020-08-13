@@ -42,9 +42,11 @@ class profile::releases::mediawiki (
         content => template('releases/apache-jenkins.conf.erb'),
     }
 
-    monitoring::service { 'http_releases_jenkins':
-        description   => "HTTP ${sitename_jenkins}",
-        check_command => "check_http_url!${sitename_jenkins}!/login",
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Releases.wikimedia.org#Jenkins',
+    if $jenkins_service_monitor {
+        monitoring::service { 'http_releases_jenkins':
+            description   => "HTTP ${sitename_jenkins}",
+            check_command => "check_http_url!${sitename_jenkins}!/login",
+            notes_url     => 'https://wikitech.wikimedia.org/wiki/Releases.wikimedia.org#Jenkins',
+        }
     }
 }
