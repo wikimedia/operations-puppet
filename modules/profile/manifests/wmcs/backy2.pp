@@ -60,6 +60,7 @@ class profile::wmcs::backy2(
         logging_enabled           => true,
         monitoring_enabled        => true,
         monitoring_contact_groups => 'wmcs-email',
+        user                      => 'root',
     }
 
     systemd::timer::job { 'purge_vm_backup':
@@ -73,5 +74,6 @@ class profile::wmcs::backy2(
         logging_enabled           => true,
         monitoring_enabled        => true,
         monitoring_contact_groups => 'wmcs-email',
+        user                      => 'root',
     }
 }
