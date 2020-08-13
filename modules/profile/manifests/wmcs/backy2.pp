@@ -49,6 +49,16 @@ class profile::wmcs::backy2(
         source => 'puppet:///modules/profile/wmcs/backy2/wmcs-backup-instances.py';
     }
 
+    # Script to cleanup expired backups.  Expiration date is
+    #   set when the backups are first created.
+    file { '/usr/local/sbin/wmcs-purge-backups':
+        ensure => 'present',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+        source => 'puppet:///modules/profile/wmcs/backy2/wmcs-purge-backups.sh';
+    }
+
     systemd::timer::job { 'backup_vms':
         ensure                    => present,
         description               => 'snapshot and backup vms in specified projects',
@@ -66,7 +76,7 @@ class profile::wmcs::backy2(
     systemd::timer::job { 'purge_vm_backup':
         ensure                    => present,
         description               => 'purge old VM backups; allow backy2 to decide what is too old',
-        command                   => 'for version in `/usr/bin/backy2 -ms ls -e -f uid`; do /usr/bin/backy2 rm $version; done && /usr/bin/backy2 cleanup',
+        command                   => '/usr/local/sbin/wmcs-purge-backups',
         interval                  => {
         'start'    => 'OnCalendar',
         'interval' => '*-*-* 00:05:00', # daily at five past midnight
