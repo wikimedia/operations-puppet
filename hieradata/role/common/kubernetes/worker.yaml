@@ -52,5 +52,6 @@ profile::lvs::realserver::pools:
   eventstreams: {}
   proton: {}
   mobileapps: {}
+  api-gateway: {}
 prometheus::node_exporter::collectors_extra:
   - processes
