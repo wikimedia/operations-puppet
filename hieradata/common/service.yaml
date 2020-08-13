@@ -3032,7 +3032,7 @@ service::catalog:
     sites:
     - eqiad
     - codfw
-    state: monitoring_setup
+    state: production
     discovery:
     - dnsdisc: api-gateway
       active_active: true
