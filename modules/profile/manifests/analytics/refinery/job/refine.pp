@@ -70,6 +70,8 @@ class profile::analytics::refinery::job::refine(
     $event_table_excludelist = [
         'mediawiki_page_properties_change',
         'mediawiki_recentchange',
+        # Cannot be refined until https://gerrit.wikimedia.org/r/c/operations/deployment-charts/+/620008 is deployed
+        'resource_purge',
     ]
     $event_table_excludelist_regex = "^(${join($event_table_excludelist, '|')})$"
 
