@@ -72,7 +72,7 @@ type: backy2.meta_backends.sql
 #   postgresql:///database
 #   postgresql://user:password@host:port/database
 
-engine: mysql://<%= @db_user %>:<%= @db_pass %>@<%= @db_host %>/<%= @db_name %>
+engine: sqlite:////var/lib/backy2/backy.sqlite
 
 [DataBackend]
 # Which data backend to use?
