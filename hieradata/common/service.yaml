@@ -3021,7 +3021,7 @@ service::catalog:
       scheduler: wrr
       protocol: tcp
     monitoring:
-      check_command: check_https_lvs_on_port!api-gateway.discovery.wmnet!8087!/_healthz
+      check_command: check_https_lvs_on_port!api-gateway.discovery.wmnet!8087!/healthz
       critical: false # don't enable paging while testing
       sites:
         codfw:
