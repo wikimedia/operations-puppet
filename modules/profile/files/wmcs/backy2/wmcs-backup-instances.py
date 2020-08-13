@@ -3,13 +3,13 @@
 import logging
 import yaml
 
-import mwopenstackclients3
+import mwopenstackclients
 import rbd2backy2
 
 with open("/etc/wmcs_backup_instances.yaml") as f:
     config = yaml.safe_load(f)
 
-openstackclients = mwopenstackclients3.Clients(envfile="/etc/novaobserver.yaml")
+openstackclients = mwopenstackclients.Clients(envfile="/etc/novaobserver.yaml")
 
 for project in config["projects"]:
     servers = openstackclients.allinstances(projectid=project)
