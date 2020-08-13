@@ -8,6 +8,7 @@ class profile::wmcs::novaproxy(
     String              $block_ref_re     = lookup('profile::wmcs::novaproxy::block_ref_re', {default_value => ''}),
     Array[Stdlib::Fqdn] $xff_fqdns        = lookup('profile::wmcs::novaproxy::xff_fqdns',    {default_value => []}),
     Boolean             $use_wmflabs_root = lookup('profile::wmcs::novaproxy::use_ssl',      {default_value => true}),
+    Boolean             $do_https     = lookup('profile::wmcs::novaproxy::do_https',   {default_value => true}),
 ) {
     $proxy_nodes = join($all_proxies, ' ')
     # Open up redis to all proxies!
@@ -79,6 +80,7 @@ class profile::wmcs::novaproxy(
         banned_ips               => $banned_ips,
         blocked_user_agent_regex => $block_ua_re,
         blocked_referer_regex    => $block_ref_re,
+        https_upgrade            => $do_https,
         use_acme_chief           => $use_acme_chief,
     }
 
