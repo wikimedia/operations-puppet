@@ -18,17 +18,10 @@
 #   For example "xhgui.example" or "127.0.0.3:8000".
 #   Optional. If undefined, the "/xhgui" path is not proxied.
 #
-# [*xhgui_old_host*]
-#   HTTP host address where the old, MongoDB-based XHGui application is served.
-#   This is a transitional parameter, which will be removed once we've fully
-#   migrated to the new MariaDB-based instance.  If undefined, "/xhgui-old" is
-#   not proxied.
-#
 class profile::webperf::site (
     $server_name = lookup('profile::webperf::site::server_name'),
     $arclamp_host = lookup('arclamp_host'),
     $xhgui_host = lookup('profile::webperf::site::xhgui_host'),
-    $xhgui_old_host = lookup('profile::webperf::site::xhgui_old_host')
 ) {
 
     require ::profile::webperf::coal_web

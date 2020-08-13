@@ -35,11 +35,6 @@
     ProxyPassReverse /xhgui http://<%= @xhgui_host %>/xhgui
 <% end -%>
 
-<% if @xhgui_old_host -%>
-    ProxyPass /xhgui-old http://<%= @xhgui_old_host %>/xhgui
-    ProxyPassReverse /xhgui-old http://<%= @xhgui_old_host %>/xhgui
-<% end -%>
-
 <% if @server_name != "performance.wikimedia.org" -%>
     # This is not the canonical site, so we don't want content indexed here.
     Alias /robots.txt /var/www/no-robots.txt
