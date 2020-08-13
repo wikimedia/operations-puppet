@@ -2295,11 +2295,6 @@ node 'deploy1001.eqiad.wmnet', 'deploy2001.codfw.wmnet' {
     role(deployment_server)
 }
 
-# test system for performance team (T117888)
-node 'tungsten.eqiad.wmnet' {
-    role(xhgui::app)
-}
-
 # new url-downloaders (T224551)
 # https://wikitech.wikimedia.org/wiki/Url-downloader
 node /^urldownloader[12]00[12]\.wikimedia\.org/ {
