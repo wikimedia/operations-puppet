@@ -55,6 +55,13 @@ class profile::webperf::xhgui (
         ],
     }
 
+    file_line { 'set_php_memory_limit':
+        path   => '/etc/php/7.3/apache2/php.ini',
+        match  => '^;?memory_limit\s*=',
+        line   => 'memory_limit = 512M',
+        notify => Class['::httpd'],
+    }
+
     file { 'config.php':
         ensure  => file,
         path    => '/etc/xhgui/config.php',
