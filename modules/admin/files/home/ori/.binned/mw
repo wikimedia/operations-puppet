@@ -17,7 +17,7 @@ if ( strpos( $__script, '.php' ) === false ) {
 }
 
 @require_once '/srv/mediawiki/multiversion/MWMultiVersion.php';
-@require_once MWMultiVersion::getMediaWiki( 'maintenance/commandLine.inc', $__wiki ?: 'enwiki' );
+@require_once MWMultiVersion::getMediaWiki( 'maintenance/CommandLineInc.php', $__wiki ?: 'enwiki' );
 
 if ( !is_string( $__script ) ) {
 	// The command-line invocation did not specify a script. Load the REPL.

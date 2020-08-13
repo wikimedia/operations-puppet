@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+read -r -d '' USAGE <<-EOF
+Show MediaWiki log volume trend lines from SINCE_DATE until yesterday.
+Must run on MediaWiki log aggregator hosts (mwlog*).
+
+Usage: $0 SINCE_DATE
+
+Examples:
+  $0 "30 days ago"
+  $0 "$(date +"%Y-%m-%d")"
+  $0 "last week"
+
+
+    "Furious grepping may occasionally substitute for analytical thought."
+        -- Alastair Pilkington (paraphrased)
+
+EOF
+
+[[ $# -lt 1 || $1 = "-h" || $1 = "--help" ]] && {
+  echo >&2 "$USAGE"
+  exit 1
+}
+[[ -d /srv/mw-log ]] || {
+  echo >&2 "ERROR: /srv/mw-log doesn't exist on this host."
+  exit 1
+}
+command -v spark &>/dev/null || {
+  echo >&2 "ERROR: this script requires spark (https://github.com/holman/spark)"
+  exit 1
+}
+
+since="$*"
+
+start_date="$(date --date="$since" +"%Y%m%d")" || exit 1
+printf "MediaWiki log trends from %s to yesterday\n\n" "$(date --date="$since" +"%Y-%m-%d")"
+for f in /srv/mw-log/*.log ; do
+  log="$(basename "$f")"
+  [[ $log == api.log ]] && continue  # exclude api.log, it's huge
+  printf "%-40s " "$log"
+  for gz in /srv/mw-log/archive/"$log"-*.gz ; do
+    [[ "${gz: -11:-3}" -ge "$start_date" ]] && echo "%gz"
+  done | xargs du -BM | grep -Po '^\d+' | spark  # TODO: Use gnuplot
+  printf "\n"
+done
