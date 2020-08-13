@@ -2308,10 +2308,15 @@ node /^cloudvirt103[1-9]\.eqiad\.wmnet$/ {
     role(wmcs::openstack::eqiad1::virt_ceph)
 }
 
-# These hosts are being used as temporary backy2 test nodes.
-#  Despite their names they are not hosting any VMs.
-node /^cloudvirt100[4,6]\.eqiad\.wmnet$/ {
+# This hosts is being used as a temporary backy2 test node.
+#  Despite its names it is not hosting any VMs.
+node 'cloudvirt1006.eqiad.wmnet' {
     role(wmcs::ceph::backup)
+}
+
+# old cloudvirt awaiting decom
+node 'cloudvirt1004.eqiad.wmnet' {
+    role(spare::system)
 }
 
 # Private virt hosts for wdqs T221631
