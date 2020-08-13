@@ -1,7 +1,7 @@
 # server hosting MediaWiki releases
 # https://releases.wikimedia.org/mediawiki/
 class profile::releases::reprepro(
-    Stdlib::Fqdn $active_server = lookup('releases_server'),
+    Stdlib::Fqdn $primary_server = lookup('releases_server'),
     Array[Stdlib::Fqdn] $secondary_servers = lookup('releases_servers_failover'),
 ){
 
@@ -15,13 +15,17 @@ class profile::releases::reprepro(
       srange => '$DEPLOYMENT_HOSTS',
   }
 
-    $secondary_servers.each |String $secondary_server| {
-        rsync::quickdatacopy { "srv-org-wikimedia-reprepro-${secondary_server}":
+    $all_secondary_servers = join($secondary_servers, ' ')
+    $all_releases_servers = "${primary_server} ${all_secondary_servers}"
+    $all_releases_servers_array = split($all_releases_servers, ' ')
+
+    $all_releases_servers_array.each |String $releases_server| {
+        rsync::quickdatacopy { "srv-org-wikimedia-reprepro-${releases_server}":
           ensure      => present,
           auto_sync   => true,
           delete      => true,
-          source_host => $active_server,
-          dest_host   => $secondary_server,
+          source_host => $primary_server,
+          dest_host   => $releases_server,
           module_path => '/srv/org/wikimedia/reprepro',
         }
     }
