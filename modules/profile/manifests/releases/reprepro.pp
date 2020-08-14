@@ -20,13 +20,15 @@ class profile::releases::reprepro(
     $all_releases_servers_array = split($all_releases_servers, ' ')
 
     $all_releases_servers_array.each |String $releases_server| {
-        rsync::quickdatacopy { "srv-org-wikimedia-reprepro-${releases_server}":
-          ensure      => present,
-          auto_sync   => true,
-          delete      => true,
-          source_host => $primary_server,
-          dest_host   => $releases_server,
-          module_path => '/srv/org/wikimedia/reprepro',
+        unless $primary_server == $releases_server {
+            rsync::quickdatacopy { "srv-org-wikimedia-reprepro-${releases_server}":
+              ensure      => present,
+              auto_sync   => true,
+              delete      => true,
+              source_host => $primary_server,
+              dest_host   => $releases_server,
+              module_path => '/srv/org/wikimedia/reprepro',
+            }
         }
     }
 }
