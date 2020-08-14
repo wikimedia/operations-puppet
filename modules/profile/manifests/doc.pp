@@ -51,6 +51,15 @@ class profile::doc {
 
     backup::set { 'srv-docroot-org-wikimedia-doc': }
 
+    file { '/srv/doc':
+        ensure => 'directory',
+        owner  => 'doc-uploader',
+        group  => 'doc-uploader',
+        mode   => '0755',
+    }
+
+    backup::set { 'srv-doc': }
+
     class { '::rsync::server': }
 
     rsync::server::module { 'doc':
