@@ -8,8 +8,15 @@ class profile::releases::common(
 ){
 
     # T205037
-    $motd_ensure = mediawiki::state('primary_dc') ? {
-        $::site => 'absent',
+    # $motd_ensure = mediawiki::state('primary_dc') ? {
+    #     $::site => 'absent',
+    #     default => 'present',
+    # }
+
+    # when there is more than one releases server per DC
+    # we can't rely on primary_dc alone
+    $motd_ensure = $primary_server ? {
+        $::fqdn => 'absent',
         default => 'present',
     }
 
