@@ -172,6 +172,13 @@ class icinga(
         options => "size=1024m,uid=${icinga_user},gid=${icinga_group},mode=755",
         require => File['/var/icinga-tmpfs'],
     }
+
+    # Ensure periodic cleanup
+    systemd::tmpfile { 'icinga-tmpfs':
+        ensure  => present,
+        content => 'e /var/icinga-tmpfs/ - - - 1d',
+    }
+
     # Fix the ownerships of some files. This is ugly but will do for now
     file { ['/var/cache/icinga',
             '/var/lib/icinga',
