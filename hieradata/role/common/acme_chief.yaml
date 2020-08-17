@@ -1,5 +1,12 @@
 cluster: acmechief
 profile::acme_chief::certificates:
+    alerts:
+        CN: 'alerts.wikimedia.org'
+        SNI:
+        - 'alerts.wikimedia.org'
+        challenge: dns-01
+        authorized_regexes:
+        - '^alert[12].*\.wikimedia\.org$'
     apt:
         CN: 'apt.wikimedia.org'
         SNI:
