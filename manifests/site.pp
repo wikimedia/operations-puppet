@@ -2309,6 +2309,12 @@ node /^cloudvirt103[1-9]\.eqiad\.wmnet$/ {
     role(wmcs::openstack::eqiad1::virt_ceph)
 }
 
+# New clouddb hosts that will replace labsdb hosts
+# Set them to spare individually as it will take take to transfer the data
+node /^clouddb10(13|14|15|16|17|18|19|20)\.eqiad\.wmnet$/ {
+    role(spare::system)
+}
+
 # This hosts is being used as a temporary backy2 test node.
 #  Despite its names it is not hosting any VMs.
 node 'cloudvirt1006.eqiad.wmnet' {
