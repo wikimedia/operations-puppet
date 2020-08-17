@@ -8,7 +8,6 @@ class profile::wmcs::backy2(
     Stdlib::AbsolutePath $admin_keyring   = lookup('profile::ceph::admin_keyring'),
     String               $admin_keydata   = lookup('profile::ceph::admin_keydata'),
     String               $ceph_vm_pool    = lookup('profile::ceph::client::rbd::pool'),
-    Array[String]        $backup_projects = lookup('profile::wmcs::backy2::backup_projects'),
 ) {
     class {'::backy2':
         cluster_name => $cluster_name,
