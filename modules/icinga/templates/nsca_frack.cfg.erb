@@ -631,6 +631,15 @@ define service {
 
 # SERVICES - HOST
 
+# fran1001
+
+define service {
+    use                      passive-service
+    service_description      check_ipsec
+    host_name                fran1001
+    contact_groups           fr-tech,fr-tech-ops
+}
+
 # frav1002
 
 define service {
@@ -1206,12 +1215,6 @@ define service {
     service_description      check_endpoints
     hostgroup_name           fundraising-civicrm
     contact_groups           fr-tech,fr-tech-ops
-}
-
-define service {
-    use                      passive-service
-    service_description      check_ipsec
-    hostgroup_name           fundraising-civicrm
 }
 
 define service {
