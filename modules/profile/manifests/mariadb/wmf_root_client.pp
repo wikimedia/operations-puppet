@@ -1,8 +1,9 @@
 # hosts with client utilities to conect to remote servers
 # This role provides remote access to mysql server
 # **DO NOT ADD** to non-dedicated hosts**
-class profile::mariadb::wmf_root_client {
-
+class profile::mariadb::wmf_root_client (
+    Hash[String, Stdlib::Port] $section_ports = lookup('profile::mariadb::section_ports', ),
+) {
     # prevent accidental addition on a db server or a non-dedicated client
     if !($::fqdn in ['cumin1001.eqiad.wmnet', 'cumin2001.codfw.wmnet']) {
         fail('role::mariadb::wmf_root_client should only be used on root-owned, \
@@ -10,7 +11,11 @@ class profile::mariadb::wmf_root_client {
     }
 
     class { 'mariadb::packages_client': }
-    require_package('wmfmariadbpy-admin')
+    class { 'mariadb::wmfmariadbpy':
+        role          => 'admin',
+        section_ports => $section_ports,
+    }
+
     include passwords::misc::scripts
 
     class { 'mariadb::config':
