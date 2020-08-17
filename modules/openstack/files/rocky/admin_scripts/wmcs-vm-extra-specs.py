@@ -101,8 +101,8 @@ if __name__ == "__main__":
     )
     argparser.add_argument(
         "--nova-db-server",
-        help="nova database server (FQDNs). Default is m5-master.eqiad.wmnet",
-        default="m5-master.eqiad.wmnet",
+        help="nova database server (FQDNs). Default is openstack.eqiad1.wikimediacloud.org",
+        default="openstack.eqiad1.wikimediacloud.org",
     )
     argparser.add_argument(
         "--nova-db",
