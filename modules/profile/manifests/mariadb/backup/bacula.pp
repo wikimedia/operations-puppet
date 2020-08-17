@@ -7,8 +7,11 @@ class profile::mariadb::backup::bacula (
         backup::set { 'mysql-srv-backups-dumps-latest':
             jobdefaults => 'Monthly-1st-Wed-Databases',
         }
-        backup::set { 'mysql-srv-backups-snapshots-latest':
-            jobdefaults => 'Weekly-Sun-Databases',
-        }
+        # Disable snapshoting sending to long term storage.
+        # It takes a lot of space and is rarely used beyond
+        # the 1 week window.
+        # backup::set { 'mysql-srv-backups-snapshots-latest':
+        #     jobdefaults => 'Weekly-Sun-Databases',
+        # }
     }
 }
