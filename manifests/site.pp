@@ -621,15 +621,14 @@ node 'db2133.codfw.wmnet' {
 
 node 'db1128.eqiad.wmnet' {
     class { '::role::mariadb::misc::phabricator':
-        master => true,
+        master => false,
     }
 }
 
 # Future m3 master
 node 'db1132.eqiad.wmnet' {
     class { '::role::mariadb::misc':
-        shard  => 'm3',
-        master => false,
+        master => true,
     }
 }
 
