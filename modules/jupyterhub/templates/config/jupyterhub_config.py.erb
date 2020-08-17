@@ -1,0 +1,249 @@
+import sys
+import os
+import grp
+import socket
+from tornado import gen
+from traitlets import List
+
+# Our custom CondaEnvProfilesSpawner.
+# We will configure this to use SystemdSpawner
+# to spawn jupyterhub-singleuser servers
+# out of selected user conda environments.
+from spawners import CondaEnvProfilesSpawner
+
+# == Configurables used throughout this file ==
+puppet_config = {
+<% @jupyterhub_config.each do |key, val| -%>
+    '<%= key %>': '<%= val %>',
+<% end -%>
+}
+
+# Config defaults, overridden by puppet_config.
+config = {
+    # Run JupyterHub out of this conda environment.
+    'conda_base_env_path': '/usr/lib/anaconda-wmf',
+
+    # The port JupyterHub users should connect on.
+    'port': '8880',
+    # Have the hub service itself listen on this.  This needs to be accessible
+    # by the proxy and the spawned notebook servers.
+    'hub_port': '8881',
+    # Port configurable-http-proxy will use.
+    'proxy_api_port': '8882',
+
+    'db_url': 'sqlite:////srv/jupyterhub/data/jupyterhub.sqlite.db',
+    'cookie_secret_file': '/srv/jupyterhub/data/jupyterhub_cookie_secret',
+
+    'authenticator': 'ldap', # TODO: support CAS.
+    # LDAP authentication settings
+    'ldap_server': 'ldap-ro.eqiad.wikimedia.org',
+    'ldap_bind_dn_template': 'uid={username},ou=people,dc=wikimedia,dc=org',
+    'allowed_ldap_groups': ['cn=nda,ou=groups,dc=wikimedia,dc=org','cn=wmf,ou=groups,dc=wikimedia,dc=org'],
+
+    # Posix group authentication settings
+    'allowed_posix_groups': ['analytics-users','analytics-privatedata-users','analytics-admins','researchers','gpu-testers','gpu-users','analytics-search-users','analytics-wmde-users','analytics-product-users'],
+
+    # If set, JupyterHub admin access will be enabled for users in these groups.
+    'admin_posix_groups': ['ops', 'analytics-admins'],
+
+    # JupyterHub log_level
+    'log_level': 'DEBUG',
+
+    'external_http_proxy_host': 'webproxy.eqiad.wmnet',
+    'external_http_proxy_port': '8080',
+    'java_home': '/usr/lib/jvm/java-1.8.0-openjdk-amd64',
+}
+
+config.update(puppet_config)
+
+if not os.path.exists(config['conda_base_env_path']):
+    print(f'Cannot start JupyterHub. {config["conda_base_env_path"]} does not exist.', file=sys.stderr)
+    sys.exit(1)
+
+host_ip_address = socket.gethostbyname(socket.gethostname())
+
+
+# == Base JupyterHub Configuration ==
+
+c.JupyterHub.log_level = config['log_level']
+
+# Configurable-http-proxy will use this address and port.
+# This is what users should connect to.
+c.JupyterHub.ip = '0.0.0.0'
+c.JupyterHub.port = int(config['port'])
+
+# Have the hub service itself listen on this.  This needs to be accessible
+# by the proxy and the spawned notebook servers.
+c.JupyterHub.hub_ip = '0.0.0.0'
+c.JupyterHub.hub_connect_ip = host_ip_address
+c.JupyterHub.hub_port = int(config['hub_port'])
+
+c.ConfigurableHTTPProxy.command = ['{0}/bin/node'.format(config['conda_base_env_path']), '{0}/bin/configurable-http-proxy'.format(config['conda_base_env_path'])]
+c.ConfigurableHTTPProxy.api_url = f'http://127.0.0.1:{config["proxy_api_port"]}'
+if 'proxy_pid_file' in config:
+    c.ConfigurableHTTPProxy.pid_file = config['proxy_pid_file']
+
+# Isolate the db file into a specific directory, and give JupyterHub write
+# access only to this. This prevents it from overwriting its own code easily.
+c.JupyterHub.db_url = config['db_url']
+
+# Path to cookie secret for user sessions.
+c.JupyterHub.cookie_secret_file = config['cookie_secret_file']
+
+# TODO: do we want this?  It will allow users to have multiple jupyterhub-singleuser
+# servers running with possible different conda environments at any given time.
+c.JupyterHub.allow_named_servers = True
+
+# TODO: do we want this?
+# Do not kill servers when the hub restarts
+c.JupyterHub.cleanup_servers = False
+
+
+# === JupyterHub admin access configuration ===
+
+# Allow admin access to JupyterHub for users in admin_posix_groups.
+if 'admin_posix_groups' in config:
+
+    def get_users_in_groups(groups):
+        members = []
+        for group in groups:
+            try:
+                members = members + grp.getgrnam(group).gr_mem
+            except KeyError:
+                pass
+        return members
+
+    # LDAPAuthenticator does not support admin_groups. Get the list of posix
+    # users in the configured posix groups and set them as JupyterHub admin users
+    # and allow admin access to JupyterHub.
+    admin_users = get_users_in_groups(config['admin_posix_groups'])
+    if len(admin_users) > 0:
+        c.JupyterHub.admin_access = True
+        c.Authenticator.admin_users = admin_users
+
+
+# === Authenticator Configuration ===
+
+if config['authenticator'] == 'ldap':
+    from ldapauthenticator import LDAPAuthenticator
+    AuthenticatorClass = LDAPAuthenticator
+
+    c.LDAPAuthenticator.server_address   = config['ldap_server']
+    c.LDAPAuthenticator.bind_dn_template = config['ldap_bind_dn_template']
+    # This still restricts it to only people in the local posix groups
+    c.LDAPAuthenticator.allowed_groups   = config['allowed_ldap_groups']
+
+# TODO: https://phabricator.wikimedia.org/T260386
+elif config['authenticator'] == 'cas':
+    raise Exception("CASAuthenticator not yet supported")
+
+    # from jhub_cas_authenticator.cas_auth import CASAuthenticator
+    # c.JupyterHub.authenticator_class = CASAuthenticator
+    # AuthenticatorClass = CASAuthenticator
+
+    # # The CAS URL to redirect unauthenticated users to.
+    # c.CASAuthenticator.cas_login_url = 'https://idp.wikimedia.org/login'
+
+    # # The service URL the CAS server will redirect the browser back to on successful authentication.
+    # # If not set, this is set to the same URL the request comes in on.  This will work fine for
+    # # simple deployments, but deployments behind a proxy or load banalncer will likely need to
+    # # be adjusted so the CAS service redirects back to the *real* login URL for your Jupyterhub.
+    # # c.CASAuthenticator.cas_service_url = 'https://your-jupyterhub.tld/login'
+
+    # # Path to CA certificates the CAS client will trust when validating a service ticket.
+    # c.CASAuthenticator.cas_client_ca_certs = '/home/otto/ca.pem'
+
+    # # The CAS endpoint for validating service tickets.
+    # c.CASAuthenticator.cas_service_validate_url = 'https://idp.wikimedia.org/serviceValidate'
+
+    # # A set of attribute name and value tuples a user must have to be allowed access.
+    # c.CASAuthenticator.cas_required_attribs = {('memberOf', ('cn=nda,ou=groups,dc=wikimedia,dc=org','cn=wmf,ou=groups,dc=wikimedia,dc=org'))}
+
+# SHOULD ONLY BE USED FOR TESTING.
+elif config['authenticator'] == 'dummy':
+    from dummyauthenticator import DummyAuthenticator
+    AuthenticatorClass = DummyAuthenticator
+
+else:
+    raise Exception(f'config["authenticator"] is not a supported authenticator.')
+
+class PosixGroupCheckingAuthenticator(AuthenticatorClass):
+    """
+    Authenticator that ensures a user is a member of one of configured allowed posix groups.
+    """
+    allowed_posix_groups = List(
+        default_value=['ops'],
+        help='If set, the list of posix groups that a user must be members of on the JupyterHub server.',
+    ).tag(config=True)
+
+    @gen.coroutine
+    def authenticate(self, handler, data):
+        username = data['username']
+        for group in self.allowed_posix_groups:
+            try:
+                if username in grp.getgrnam(group).gr_mem:
+                    break
+            except KeyError:
+                # if one of the groups is not present on the system,
+                # don't fail but keep checking the other ones.
+                pass
+        else:
+            self.log.warn('User %s not in allowed groups (%s)'
+                          % (username, ', '.join(self.allowed_posix_groups)))
+            return None
+        return (yield super().authenticate(handler, data))
+
+if 'allowed_posix_groups' in config:
+    # Use PosixGroupCheckingAuthenticator as our authenticator.
+    c.PosixGroupCheckingAuthenticator.allowed_posix_groups = config['allowed_posix_groups']
+    c.JupyterHub.authenticator_class = PosixGroupCheckingAuthenticator
+else:
+    c.Jupyterhub.authenticator_class = AuthenticatorClass
+
+
+# === Spawner Configuration ===
+
+# Set up user environment variables.
+# These will be set in the spawned jupyter-singleuser server's environment.
+user_environment = {
+    'JAVA_HOME': config['java_home'],
+}
+# HTTP proxy to use for outgoing user connections
+if 'external_http_proxy_host' in config:
+    external_http_proxy_url = 'http://{0}:{1}'.format(config['external_http_proxy_host'], config['external_http_proxy_port'])
+    user_environment['http_proxy'] = external_http_proxy_url
+    user_environment['https_proxy'] = external_http_proxy_url
+    # Set JAVA_OPTS to properly set up external http proxy for JVM processes too.
+    user_environment['JAVA_OPTS'] = '-Dhttps.proxyHost={0} -Dhttps.proxyPort={1} -Dhttp.proxyHost={0} -Dhttp.proxyPort={1}'.format(config['external_http_proxy_host'], config['external_http_proxy_port'])
+    # Do not use proxying to talk to localhost. This will mostly just
+    # never work, and will cause strange errors when the spawned
+    # notebooks talk to the hub or if the hub tries to talk to them
+    user_environment['no_proxy'] = 'localhost,127.0.0.1,{}'.format(host_ip_address)
+
+c.JupyterHub.spawner_class = CondaEnvProfilesSpawner
+c.CondaEnvProfilesSpawner.environment = user_environment
+# The Conda Env Profiles will spawn user processes via this.
+c.CondaEnvProfilesSpawner.spawner_class = 'systemdspawner.SystemdSpawner'
+
+# Sudo as the user so that we can execute conda info --envs as if
+# we were that user when getting the list of conda envs to create profiles for.
+c.CondaEnvProfilesSpawner.conda_cmd = [
+    'sudo', '--set-home', '-u', '{USERNAME}',
+    os.path.join(config['conda_base_env_path'], 'condabin', 'conda')
+]
+
+# c.CondaEnvProfilesSpawner.debug = True
+
+# Configure SystemdSpawner.  Each conda env profile will use this spawner.
+c.SystemdSpawner.slice = 'user.slice'
+# Give each user their own /tmp! Prevents data leaks via accidentally writing to /tmp
+c.SystemdSpawner.isolate_tmp = True
+# Disable users from ever gaining root privilages for anything at all.
+# This protects against the notebook of a privilaged user being compromised
+# to gain root
+c.SystemdSpawner.disable_user_sudo = True
+# We allow users to only write to their homedirs and /dev/shm, and nowhere else
+c.SystemdSpawner.readonly_paths = ['/']
+c.SystemdSpawner.readwrite_paths = ['/home/{USERNAME}', '/dev/shm', '/run/user']
+
+# TODO: can we use existing user kerberos ticket?

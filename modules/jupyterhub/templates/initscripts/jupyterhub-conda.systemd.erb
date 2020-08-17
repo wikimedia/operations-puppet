@@ -1,0 +1,27 @@
+[Unit]
+Description=JupyterHub (conda)
+
+[Service]
+Restart=always
+RestartSec=2s
+# wait 60 seconds for a graceful restart before killing
+TimeoutStopSec=60
+
+WorkingDirectory=<%= @base_path %>
+
+# Our custom CondaEnvProfilesSpawner class is here.
+# Make sure it can be loaded.
+Environment=PYTHONPATH=<%= @config_path %>
+
+# Only allow this process to write into user home directories
+ReadOnlyDirectories=/
+ReadWriteDirectories=/home
+
+PrivateTmp=yes
+PrivateDevices=yes
+SyslogIdentifier=<%= @service_name %>
+
+ExecStart=<%= @jupyterhub_config['conda_base_env_path'] %>/bin/jupyterhub --config=<%= @jupyterhub_config_file %> --no-ssl
+
+[Install]
+WantedBy=multi-user.target

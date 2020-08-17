@@ -35,4 +35,7 @@ class role::statistics::explorer {
     include ::profile::analytics::cluster::elasticsearch
 
     include ::profile::swap
+    # This class will soon deprecate profile::swap.
+    # T224658
+    include ::profile::analytics::jupyterhub
 }
