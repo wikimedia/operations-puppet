@@ -8,3 +8,15 @@ admin::groups:
 
 parsoid::testing::parsoid_port: 8142
 profile::parsoid::vd_server::service_ensure: 'stopped'
+
+parsoid::testing::default_api_proxy_uri: 'http://api-rw.discovery.wmnet'
+
+parsoid::logging_name: parsoid-tests
+parsoid::statsd_prefix: parsoid-tests
+
+# No Icinga monitoring for systemd state because services
+# can often go down during tests. (also T254025)
+profile::base::monitor_systemd: false
+profile::base::notifications: disabled
+profile::mediawiki::php::monitoring::monitor_opcache: false
+
