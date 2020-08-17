@@ -17,6 +17,9 @@ profile::prometheus::analytics::thanos: true
 profile::prometheus::services::thanos: true
 profile::prometheus::k8s::thanos: true
 
+# Thanos will ask Prometheus (via Thanos Sidecar) for last 15d only
+profile::prometheus::thanos::min_time: '-15d'
+
 profile::lvs::realserver::use_conftool: true
 profile::lvs::realserver::pools:
   prometheus:
