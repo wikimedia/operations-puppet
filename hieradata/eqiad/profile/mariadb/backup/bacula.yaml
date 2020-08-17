@@ -1,1 +1,1 @@
-profile::mariadb::backup::bacula::active: False
+profile::mariadb::backup::bacula::active: True

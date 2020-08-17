@@ -85,7 +85,10 @@ class profile::backup::storage(
                 archive_device  => '/srv/databases',
                 max_concur_jobs => 2,
             }
+        } else {
+            fail('Only eqiad or codfw pools are configured for database backups.')
         }
+
     } else {
         # Legacy setup (to be decommissioned):
         # We have two storage devices to overcome any limitations from backend
