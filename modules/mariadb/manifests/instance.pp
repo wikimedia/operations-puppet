@@ -30,7 +30,7 @@ define mariadb::instance(
     } else {
         $tmpdir_instance = $tmpdir
     }
-    if $tmpdir == 'undefined' {
+    if $socket == 'undefined' {
         $socket_instance = "/run/mysqld/mysqld.${title}.sock"
     } else {
         $socket_instance = $socket
