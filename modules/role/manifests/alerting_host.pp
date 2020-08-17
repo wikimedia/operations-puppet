@@ -27,6 +27,7 @@ class role::alerting_host {
     if os_version('debian >= buster') {
         include ::profile::alertmanager
         include ::profile::alertmanager::irc
+        include ::profile::alertmanager::web
     }
 
     class { '::httpd::mpm':
@@ -34,6 +35,7 @@ class role::alerting_host {
     }
 
     class { '::httpd':
-        modules => ['headers', 'rewrite', 'authnz_ldap', 'authn_file', 'cgi', 'ssl'],
+        modules => ['headers', 'rewrite', 'authnz_ldap', 'authn_file', 'cgi',
+                    'ssl', 'proxy_http', 'allowmethods'],
     }
 }
