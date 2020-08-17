@@ -255,13 +255,13 @@ class profile::mediawiki::php(
     }
 
     # Set up request profiling (T206152, see also T253547)
-    # Install tideways-xhprof and mongodb
+    # Install tideways-xhprof
     $profiling_ensure = $enable_request_profiling ? {
         true    => 'present',
         default => 'absent'
     }
     php::extension { 'mongodb':
-        ensure   => $profiling_ensure,
+        ensure   => 'absent',
         priority => 30,
     }
     php::extension { 'tideways-xhprof':
