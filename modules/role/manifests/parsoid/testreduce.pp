@@ -8,6 +8,8 @@ class role::parsoid::testreduce {
     include ::profile::standard
     include ::profile::base::firewall
 
-    include ::profile::parsoid::vd_server
     include ::profile::parsoid::vd_client
+    include ::profile::parsoid::vd_server
+
+    include ::profile::parsoid::rt_client
 }
