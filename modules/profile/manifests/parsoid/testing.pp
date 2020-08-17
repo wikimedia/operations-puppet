@@ -34,10 +34,16 @@ class profile::parsoid::testing (
     $parsoid_cli_password = $passwords::testreduce::mysql::mysql_client_pass
     $parsoid_test_db_host = 'm5-master.eqiad.wmnet'
 
-    package { [
-        'mysql-client',
-        ]: ensure => present,
+    if os_version('debian <= stretch') {
+        package { [
+            'mysql-client',
+            ]: ensure => present,
+        }
+    } else {
+        require_package('mariadb-client')
     }
+
+
 
     file { '/etc/my.cnf':
         content => template('role/mariadb/mysqld_config/parsoid_testing.my.cnf'),
