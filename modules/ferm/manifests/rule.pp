@@ -8,10 +8,6 @@ define ferm::rule(
     $desc   = '',
     $prio   = '10',
 ) {
-    $_rule = ($rule =~ ';$') ? {
-        true    => $rule,
-        default => "${rule};",
-    }
     @file { "/etc/ferm/conf.d/${prio}_${name}":
         ensure  => $ensure,
         owner   => 'root',
