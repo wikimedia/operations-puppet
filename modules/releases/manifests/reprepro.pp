@@ -13,9 +13,9 @@
 #   The result will be signed by the default key present in the secret
 #   keyring.
 #
-# == WARNING:
-#   This module seems to be unused at the moment, you should probably look into
-#   install_server::apt_repository instead.
+#   This is a reprepro setup specific to releases* servers.
+#   If you are looking for reprepo as installed on APT servers such
+#   as apt1001.wikimedia.org, see role::apt_repo instead.
 #
 class releases::reprepro (
     Stdlib::Unixpath $basedir = '/srv/org/wikimedia/reprepro',
