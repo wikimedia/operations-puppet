@@ -71,11 +71,20 @@ class profile::backup::storage(
             archive_device  => '/srv/production',
             max_concur_jobs => 2,
         }
-        bacula::storage::device { 'FileStorageDatabases':
-            device_type     => 'File',
-            media_type      => 'File',
-            archive_device  => '/srv/databases',
-            max_concur_jobs => 2,
+        if $::site == 'eqiad' {
+            bacula::storage::device { 'FileStorageDatabases':
+                device_type     => 'File',
+                media_type      => 'File',
+                archive_device  => '/srv/databases',
+                max_concur_jobs => 2,
+            }
+        } elsif $::site == 'codfw' {
+            bacula::storage::device { 'FileStorageDatabasesCodfw':
+                device_type     => 'File',
+                media_type      => 'File',
+                archive_device  => '/srv/databases',
+                max_concur_jobs => 2,
+            }
         }
     } else {
         # Legacy setup (to be decommissioned):
