@@ -34,4 +34,9 @@ class mediawiki::cgroup {
     grub::bootparam { 'swapaccount':
         value => '1',
     }
+
+    # Disable cgroup memory accounting, see: T260329
+    grub::bootparam { 'cgroup.memory':
+        value => 'nokmem',
+    }
 }
