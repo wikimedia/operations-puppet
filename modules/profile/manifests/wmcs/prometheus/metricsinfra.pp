@@ -51,12 +51,24 @@ class profile::wmcs::prometheus::metricsinfra(
         }
     }
 
+    $alertmanager_configs = [
+        {
+            'job_name'       => 'alertmanager',
+            'metrics_path'   => '/metrics',
+            'static_configs' => [
+                { 'targets'  => [ 'localhost:9093' ] },
+            ],
+        },
+    ]
+
+    $scrape_configs = concat($project_configs, $alertmanager_configs)
+
     prometheus::server { 'cloud':
         # Localhost is being used here to pass prometheus module input validation
-        alertmanager_url     => 'localhost:9093',
+        alertmanagers        => [ 'localhost:9093', ],
         external_url         => "https://${$ext_fqdn}/cloud",
         listen_address       => '127.0.0.1:9900',
-        scrape_configs_extra => $project_configs,
+        scrape_configs_extra => $scrape_configs,
     }
 
     # Prometheus alert rules
