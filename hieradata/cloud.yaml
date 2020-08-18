@@ -113,21 +113,9 @@ profile::idp::u2f_jpa_server: 127.0.0.1
 profile::idp::u2f_jpa_db: cas
 profile::idp::client::httpd::cookie_path: /var/cache/apache2/mod_auth_cas
 profile::idp::client::httpd::certificate_path: /etc/ssl/certs
-profile::idp::client::httpd::authn_header: CAS-User
-profile::idp::client::httpd::attribute_prefix: X-CAS-
-profile::idp::client::httpd::debug: false
-profile::idp::client::httpd::validate_saml: false
 profile::idp::client::httpd::apache_owner: www-data
 profile::idp::client::httpd::apache_group: www-data
-profile::idp::client::httpd::required_groups: []
-profile::idp::client::httpd::priority: 50
-profile::idp::client::httpd::validate_saml: false
-profile::idp::client::httpd::enable_monitor: true
-profile::idp::client::httpd::protected_uri: '/'
-profile::idp::client::httpd::cookie_scope: "%{alias('profile::idp::client::httpd::protected_uri')}"
-profile::idp::client::httpd::proxied_as_https: false
-profile::idp::client::httpd::staging: false
-profile::idp::client::httpd::vhost_settings: {}
+profile::idp::client::httpd::sites: {}
 # Service proxy
 profile::services_proxy::envoy::listeners: []
 profile::services_proxy::envoy::enabled_listeners: []
