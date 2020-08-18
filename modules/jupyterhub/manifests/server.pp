@@ -87,8 +87,8 @@ class jupyterhub::server (
         content   => systemd_template($service_name),
         restart   => true,
         subscribe => [
-            File[$config_path],
             File[$jupyterhub_config_file],
+            File["${config_path}/spawners.py"],
             Exec['jupyterhub_cookie_secret_generate']
         ],
         require   => [
