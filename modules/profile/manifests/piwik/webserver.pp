@@ -9,7 +9,7 @@
 class profile::piwik::webserver(
     $prometheus_nodes = hiera('prometheus_nodes')
 ){
-    include ::profile::prometheus::apache_exporter
+    include profile::prometheus::apache_exporter
 
     $php_module = 'php7.3'
     $php_ini = '/etc/php/7.3/apache2/php.ini'
@@ -25,18 +25,18 @@ class profile::piwik::webserver(
         ensure => 'present',
     }
 
-    class { '::httpd':
+    class { 'httpd':
         modules => ['headers', $php_module, 'rewrite'],
         require => Package["libapache2-mod-${php_module}"],
     }
 
-    class { '::httpd::mpm':
+    class { 'httpd::mpm':
         mpm    => 'prefork',
         source => 'puppet:///modules/profile/piwik/mpm_prefork.conf',
     }
 
-    require ::profile::analytics::httpd::utils
-    include profile::idp::client::httpd_legacy
+    require profile::analytics::httpd::utils
+    include profile::idp::client::httpd
 
     file_line { 'enable_php_opcache':
         line   => 'opcache.enable=1',

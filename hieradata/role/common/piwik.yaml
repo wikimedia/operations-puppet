@@ -21,11 +21,12 @@ profile::analytics::backup::database::db_instance: 'piwik'
 
 profile::piwik::database::backup_hosts_ferm_range: "((@resolve((db1108.eqiad.wmnet)) @resolve((db1108.eqiad.wmnet), AAAA)))"
 
-profile::idp::client::httpd::vhost_content: 'profile/idp/client/httpd-matomo.erb'
-profile::idp::client::httpd::virtual_host: 'piwik.wikimedia.org'
-profile::idp::client::httpd::document_root: '/usr/share/matomo'
-profile::idp::client::httpd::required_groups:
-  - 'cn=ops,ou=groups,dc=wikimedia,dc=org'
-  - 'cn=wmf,ou=groups,dc=wikimedia,dc=org'
-  - 'cn=nda,ou=groups,dc=wikimedia,dc=org'
-profile::idp::client::httpd::proxied_as_https: true
+profile::idp::client::httpd::sites:
+  'piwik.wikimedia.org':
+    vhost_content: 'profile/idp/client/httpd-matomo.erb'
+    document_root: '/usr/share/matomo'
+    required_groups:
+      - 'cn=ops,ou=groups,dc=wikimedia,dc=org'
+      - 'cn=wmf,ou=groups,dc=wikimedia,dc=org'
+      - 'cn=nda,ou=groups,dc=wikimedia,dc=org'
+    proxied_as_https: true
