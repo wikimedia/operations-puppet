@@ -1,0 +1,7 @@
+profile::wmcs::backy2::cluster_name: ceph
+
+profile::ceph::client::rbd::keyfile_group: 'root'
+profile::ceph::client::rbd::client_name: 'eqiad1-compute'
+profile::ceph::client::rbd::keyfile_owner: 'root'
+profile::ceph::client::rbd::pool: 'eqiad1-compute'
+profile::ceph::client::rbd::enable_v2_messenger: false

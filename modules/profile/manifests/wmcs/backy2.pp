@@ -1,6 +1,5 @@
 class profile::wmcs::backy2(
     String               $cluster_name    = lookup('profile::wmcs::backy2::cluster_name'),
-    Stdlib::Fqdn         $active_host     = lookup('profile::wmcs::backy2::active_host'),
     Stdlib::Unixpath     $data_dir        = lookup('profile::ceph::data_dir'),
     Stdlib::AbsolutePath $admin_keyring   = lookup('profile::ceph::admin_keyring'),
     String               $admin_keydata   = lookup('profile::ceph::admin_keydata'),
@@ -51,13 +50,8 @@ class profile::wmcs::backy2(
         source => 'puppet:///modules/profile/wmcs/backy2/wmcs-purge-backups.sh';
     }
 
-    $ensure = $active_host ? {
-        $::fqdn => present,
-        default => absent,
-    }
-
     systemd::timer::job { 'backup_vms':
-        ensure                    => $ensure,
+        ensure                    => present,
         description               => 'snapshot and backup vms in specified projects',
         command                   => '/usr/local/sbin/wmcs-backup-instances',
         interval                  => {
@@ -71,7 +65,7 @@ class profile::wmcs::backy2(
     }
 
     systemd::timer::job { 'purge_vm_backup':
-        ensure                    => $ensure,
+        ensure                    => present,
         description               => 'purge old VM backups; allow backy2 to decide what is too old',
         command                   => '/usr/local/sbin/wmcs-purge-backups',
         interval                  => {
