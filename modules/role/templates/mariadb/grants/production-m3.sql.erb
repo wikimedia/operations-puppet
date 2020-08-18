@@ -49,6 +49,33 @@ GRANT CREATE, DROP
 GRANT DELETE, EXECUTE, INSERT, SELECT, SHOW VIEW, UPDATE
     ON `phabricator%`.* TO 'phuser'@'10.64.32.179';
 
+-- phabricatorphd@phab1001
+
+GRANT REPLICATION CLIENT
+    ON *.* TO 'phabricatorphd'@'10.64.16.8'
+    IDENTIFIED BY '<%= @phab_phd_pass %>';
+
+GRANT CREATE, DROP
+    ON `phabricator_cache`.`cache_markupcache` TO 'phabricatorphd'@'10.64.16.8';
+
+GRANT DELETE, EXECUTE, INSERT, SELECT, SHOW VIEW, UPDATE
+    ON `phabricator%`.* TO 'phabricatorphd'@'10.64.16.8';
+
+GRANT CREATE, DROP
+    ON `phabricator_cache`.`cache_markupcache` TO 'phabricatorphd'@'10.64.16.8';
+
+-- phabricatorphd@dbproxy1020
+
+GRANT REPLICATION CLIENT
+    ON *.* TO 'phabricatorphd'@'10.64.32.179'
+    IDENTIFIED BY '<%= @phab_phd_pass %>';
+
+GRANT CREATE, DROP
+    ON `phabricator_cache`.`cache_markupcache` TO 'phabricatorphd'@'10.64.32.179';
+
+GRANT DELETE, EXECUTE, INSERT, SELECT, SHOW VIEW, UPDATE
+    ON `phabricator%`.* TO 'phabricatorphd'@'10.64.32.179';
+
 
 -- phstats@phab1001
 
@@ -124,8 +151,24 @@ GRANT REPLICATION CLIENT
     ON *.* TO 'phuser'@'10.192.32.137'
     IDENTIFIED BY '<%= @phab_app_pass %>';
 
+GRANT CREATE, DROP
+    ON `phabricator_cache`.`cache_markupcache` TO 'phuser'@'10.192.32.137';
+
 GRANT DELETE, EXECUTE, INSERT, SELECT, SHOW VIEW, UPDATE
     ON `phabricator%`.* TO 'phuser'@'10.192.32.137';
+
+-- phabricatorphd@dbproxy2003
+
+GRANT REPLICATION CLIENT
+    ON *.* TO 'phabricatorphd'@'10.192.32.137'
+    IDENTIFIED BY '<%= @phab_phd_pass %>';
+
+GRANT CREATE, DROP
+    ON `phabricator_cache`.`cache_markupcache` TO 'phabricatorphd'@'10.192.32.137';
+
+GRANT DELETE, EXECUTE, INSERT, SELECT, SHOW VIEW, UPDATE
+    ON `phabricator%`.* TO 'phabricatorphd'@'10.192.32.137';
+
 
 -- phstats@dbproxy2003
 
@@ -166,8 +209,23 @@ GRANT REPLICATION CLIENT
     ON *.* TO 'phuser'@'10.64.48.42'
     IDENTIFIED BY '<%= @phab_app_pass %>';
 
+GRANT CREATE, DROP
+    ON `phabricator_cache`.`cache_markupcache` TO 'phuser'@'10.64.48.42';
+
 GRANT DELETE, EXECUTE, INSERT, SELECT, SHOW VIEW, UPDATE
     ON `phabricator%`.* TO 'phuser'@'10.64.48.42';
+
+-- phabricatorphd@dbproxy1016
+
+GRANT REPLICATION CLIENT
+    ON *.* TO 'phabricatorphd'@'10.64.48.42'
+    IDENTIFIED BY '<%= @phab_phd_pass %>';
+
+GRANT CREATE, DROP
+    ON `phabricator_cache`.`cache_markupcache` TO 'phabricatorphd'@'10.64.48.42';
+
+GRANT DELETE, EXECUTE, INSERT, SELECT, SHOW VIEW, UPDATE
+    ON `phabricator%`.* TO 'phabricatorphd'@'10.64.48.42';
 
 -- phstats@dbproxy1016
 

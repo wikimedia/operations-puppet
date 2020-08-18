@@ -58,6 +58,7 @@ class profile::mariadb::grants::production(
         $wikiadmin_pass      = $passwords::misc::scripts::wikiadmin_pass
         $rddmarc_pass        = $passwords::rddmarc::db_password
         $phab_admin_pass     = $passwords::mysql::phabricator::admin_pass
+        $phab_phd_pass       = $passwords::mysql::phabricator::phd_pass
         $phab_app_pass       = $passwords::mysql::phabricator::app_pass
         $phab_bz_pass        = $passwords::mysql::phabricator::bz_pass
         $phab_rt_pass        = $passwords::mysql::phabricator::rt_pass
