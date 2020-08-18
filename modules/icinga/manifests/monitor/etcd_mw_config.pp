@@ -16,7 +16,7 @@ class icinga::monitor::etcd_mw_config (
     systemd::service { 'update-etcd-mw-config-lastindex':
         ensure         => present,
         content        => systemd_template('update-etcd-mw-config-lastindex'),
-        service_params => { 'ensure' => undef },
+        service_params => { 'ensure' => undef, 'enable' => true },
     }
 
     systemd::service { 'update-etcd-mw-config-lastindex.timer':
