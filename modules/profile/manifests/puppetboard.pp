@@ -10,8 +10,8 @@
 #       include ::profile::puppetboard
 #
 class profile::puppetboard (
-    String $puppetdb_host    = hiera('puppetdb_host'),
-    String $flask_secret_key = hiera('profile::puppetboard::flask_secret_key'),
+    String $puppetdb_host    = lookup('puppetdb_host'),
+    String $flask_secret_key = lookup('profile::puppetboard::flask_secret_key'),
 ) {
     $port = 8001
     $base_path = '/srv/deployment/puppetboard'
@@ -23,7 +23,7 @@ class profile::puppetboard (
     require_package('make', 'python3-pip', 'virtualenv')
 
     # rsyslog forwards json messages sent to localhost along to logstash via kafka
-    class { '::profile::rsyslog::udp_json_logback_compat': }
+    class { 'profile::rsyslog::udp_json_logback_compat': }
 
 
     file { "${base_path}/settings.py":
@@ -79,11 +79,20 @@ class profile::puppetboard (
         port  => '80',
     }
 
-    class { '::httpd':
+    class { 'httpd':
         modules => ['headers', 'rewrite', 'proxy', 'proxy_http'],
     }
 
-    class {'profile::idp::client::httpd_legacy':
-        document_root => $directory,
+    $cas_sites = {
+        'puppetboard.wikimedia.org' => {
+            'vhost_content'  => 'profile/idp/client/httpd-puppetboard.erb',
+            required_groups  => ['cn=ops,ou=groups,dc=wikimedia,dc=org'],
+            proxied_as_https => true,
+            document_root => $directory,
+        }
+    }
+
+    class {'profile::idp::client::httpd':
+        sites => $cas_sites,
     }
 }

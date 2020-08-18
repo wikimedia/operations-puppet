@@ -41,7 +41,15 @@ define profile::idp::client::httpd::site (
     $certificate_path  = $profile::idp::client::httpd::certificate_path
     $cookie_path       = "${profile::idp::client::httpd::cookie_path}/${title}/"
     $ssl_settings      = ssl_ciphersuite('apache', 'strong', true)
-    $cas_base_settings = {
+    $proxied_as = $proxied_as_https ? {
+        true    => "https://${title}",
+        default => undef,
+    }
+    $cas_settings = {
+        'CASLoginURL'        => $apereo_cas[$environment]['login_url'],
+        'CASValidateURL'     => $apereo_cas[$environment]['validate_url'],
+        'CASDebug'           => $debug ? { true => 'On', default => 'Off' },
+        'CASRootProxiedAs'   => $proxied_as,
         'CASVersion'         => 2,
         'CASCertificatePath' => $certificate_path,
         'CASCookiePath'      => $cookie_path,
@@ -49,16 +57,16 @@ define profile::idp::client::httpd::site (
         'CASValidateSAML'    => $validate_saml ? { true => 'On', default => 'Off' },
     }
 
-    $cas_base_auth = {
-        'AuthType'       => 'CAS',
-        'CASAuthNHeader' => $authn_header,
-        'CASScope'       => $cookie_scope,
-    }
     $cas_auth_require = $required_groups.empty? {
         true    => ['valid-user' ],
         default => $required_groups.map |$group| { "cas-attribute memberOf:${group}" },
     }
-    $cas_auth_settings = merge($cas_base_auth, {'Require' => $cas_auth_require})
+    $cas_auth_settings = {
+        'AuthType'       => 'CAS',
+        'CASAuthNHeader' => $authn_header,
+        'CASScope'       => $cookie_scope,
+        'Require'        => $cas_auth_require,
+    }
     file{$cookie_path:
         ensure => directory,
         owner  => $apache_owner,
@@ -71,16 +79,6 @@ define profile::idp::client::httpd::site (
         }
     }
 
-    $proxied_as = $proxied_as_https ? {
-        true    => "https://${title}",
-        default => undef,
-    }
-    $cas_settings = merge({
-        'CASLoginURL'        => $apereo_cas[$environment]['login_url'],
-        'CASValidateURL'     => $apereo_cas[$environment]['validate_url'],
-        'CASDebug'           => $debug,
-        'CASRootProxiedAs'   => $proxied_as,
-    }, $cas_base_settings)
     httpd::site {$title:
         content  => template($vhost_content),
         priority => $priority,

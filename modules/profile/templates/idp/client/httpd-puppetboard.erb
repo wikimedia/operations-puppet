@@ -4,7 +4,7 @@
 # vim: filetype=apache
 <%- @directory = @document_root -%>
 <VirtualHost *:80>
-    ServerName <%= @virtual_host %>
+    ServerName <%= @title %>
     ServerAdmin noc@wikimedia.org
 
     <%- @cas_settings.each_pair do |key, setting| -%>
@@ -53,6 +53,6 @@
     </Proxy>
 
     LogLevel warn
-    CustomLog /var/log/apache2/<%= @virtual_host %>-access.log wmf
-    ErrorLog /var/log/apache2/<%= @virtual_host %>-error.log
+    CustomLog /var/log/apache2/<%= @title %>-access.log wmf
+    ErrorLog /var/log/apache2/<%= @title %>-error.log
 </VirtualHost>

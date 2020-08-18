@@ -1,9 +1,4 @@
 cluster: puppet
 profile::tlsproxy::envoy::global_cert_name: "puppetboard.discovery.wmnet"
-profile::idp::client::httpd::vhost_content: 'profile/idp/client/httpd-puppetboard.erb'
-profile::idp::client::httpd::virtual_host: puppetboard.wikimedia.org
-profile::idp::client::httpd::required_groups:
-  - 'cn=ops,ou=groups,dc=wikimedia,dc=org'
-profile::idp::client::httpd::proxied_as_https: true
 # Ship logs to logging pipeline local shim
 service::configuration::logstash_host: localhost
