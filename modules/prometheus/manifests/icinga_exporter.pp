@@ -6,9 +6,11 @@ class prometheus::icinga_exporter(
     ensure => $ensure,
   }
 
-  service { 'prometheus-icinga-exporter':
-    ensure => running,
-    enable => true,
+  systemd::service { 'prometheus-icinga-exporter':
+    ensure   => present,
+    content  => init_template('prometheus-icinga-exporter', 'systemd_override'),
+    override => true,
+    restart  => true,
   }
 
   base::service_auto_restart { 'prometheus-icinga-exporter': }
