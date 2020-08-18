@@ -558,6 +558,13 @@ class profile::prometheus::ops (
         port             => 19190,
     }
 
+    prometheus::class_config{ "alertmanager_web_${::site}":
+        dest       => "${targets_path}/alertmanager_web_${::site}.yaml",
+        site       => $::site,
+        class_name => 'profile::alertmanager::web',
+        port       => 19194,
+    }
+
     # Job definition for cadvisor exporter
     $cadvisor_jobs = [
       {
