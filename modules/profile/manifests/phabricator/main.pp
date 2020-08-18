@@ -145,7 +145,6 @@ class profile::phabricator::main (
         default => 'absent',
     }
 
-    # todo: change the password for app_user
     if $phab_app_user == undef {
         $app_user = $passwords::mysql::phabricator::app_user
     } else {
@@ -157,14 +156,16 @@ class profile::phabricator::main (
         $app_pass = $phab_app_pass
     }
 
-    # todo: create a separate phd_user and phd_pass
+    # As of T146055: phd_user and phd_pass exist to separate privileges. phd_user could eventually
+    # be granted less or different privs in mysql as compared to app_user.
+    # phd could also run on a different hardware from the web frontend.
     if $phab_daemons_user == undef {
-        $daemons_user = $passwords::mysql::phabricator::app_user
+        $daemons_user = $passwords::mysql::phabricator::phd_user
     } else {
         $daemons_user = $phab_daemons_user
     }
     if $phab_daemons_pass == undef {
-        $daemons_pass = $passwords::mysql::phabricator::app_pass
+        $daemons_pass = $passwords::mysql::phabricator::phd_pass
     } else {
         $daemons_pass = $phab_daemons_pass
     }
