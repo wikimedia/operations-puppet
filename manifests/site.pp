@@ -2306,7 +2306,12 @@ node /^urldownloader[12]00[12]\.wikimedia\.org/ {
 node /^cloudvirt100[1-3,5,7-9]\.eqiad\.wmnet$/ {
     role(wmcs::openstack::eqiad1::virt)
 }
-node /^cloudvirt10[1-2][0-9]\.eqiad\.wmnet$/ {
+
+node /^cloudvirt101[0-9]\.eqiad\.wmnet$/ {
+    role(wmcs::openstack::eqiad1::virt)
+}
+
+node /^cloudvirt102[0-3,5-9]\.eqiad\.wmnet$/ {
     role(wmcs::openstack::eqiad1::virt)
 }
 
@@ -2316,6 +2321,9 @@ node 'cloudvirt1030.eqiad.wmnet' {
 
 # cloudvirts using Ceph backend storage
 # https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Ceph
+node 'cloudvirt1024.eqiad.wmnet' {
+    role(wmcs::openstack::eqiad1::virt_ceph)
+}
 node /^cloudvirt103[1-9]\.eqiad\.wmnet$/ {
     role(wmcs::openstack::eqiad1::virt_ceph)
 }
