@@ -49,7 +49,7 @@ class jupyterhub::server (
     }
 
     $default_config = {
-        'conda_base_env_path' => '/usr/lib/anconda-wmf',
+        'conda_base_env_path' => '/usr/lib/anaconda-wmf',
         'cookie_secret_file'  => "${data_path}/jupyterhub_cookie_secret",
         'db_url'              => "sqlite:///${data_path}/jupyterhub.sqlite.db",
     }
