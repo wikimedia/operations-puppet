@@ -979,6 +979,17 @@ node /^failoid[12]001\.(eqiad|codfw)\.wmnet$/ {
     role(failoid)
 }
 
+# New external store hosts that will refresh existing es1, es2 and es3.
+# Set them to spare individually as it will take take to transfer the data
+# eqiad hosts
+node /^es10(26|27|28|29|30|31|32|33|34)\.eqiad\.wmnet$/ {
+    role(spare::system)
+}
+# codfw hosts
+node /^es20(26|27|28|29|30|31|32|33|34)\.codfw\.wmnet$/ {
+    role(spare::system)
+}
+
 # Backup system, see T176505.
 # This is a reserved system. Ask Otto or Faidon.
 node 'flerovium.eqiad.wmnet' {
