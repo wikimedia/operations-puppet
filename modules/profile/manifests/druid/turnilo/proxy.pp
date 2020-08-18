@@ -29,8 +29,15 @@ class profile::druid::turnilo::proxy(
         srange => '$CACHES',
     }
 
-    class {'profile::idp::client::httpd_legacy':
-        vhost_settings => { 'turnilo_port' => $turnilo_port },
+    profile::idp::client::httpd::site {'turnilo.wikimedia.org':
+        vhost_content    => 'profile/idp/client/httpd-turnilo.erb',
+        proxied_as_https => true,
+        vhost_settings   => { 'turnilo_port' => $turnilo_port },
+        required_groups  => [
+            'cn=ops,ou=groups,dc=wikimedia,dc=org',
+            'cn=wmf,ou=groups,dc=wikimedia,dc=org',
+            'cn=nda,ou=groups,dc=wikimedia,dc=org',
+        ],
     }
 
     base::service_auto_restart { 'apache2': }
