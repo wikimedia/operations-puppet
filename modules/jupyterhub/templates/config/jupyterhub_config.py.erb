@@ -34,6 +34,7 @@ config = {
     'hub_port': '8881',
     # Port configurable-http-proxy will use.
     'proxy_api_port': '8882',
+    'proxy_pid_file': '/srv/jupyterhub/data/jupyterhub-proxy.pid'
 
     'db_url': 'sqlite:////srv/jupyterhub/data/jupyterhub.sqlite.db',
     'cookie_secret_file': '/srv/jupyterhub/data/jupyterhub_cookie_secret',
@@ -84,8 +85,7 @@ c.JupyterHub.hub_port = int(config['hub_port'])
 
 c.ConfigurableHTTPProxy.command = ['{0}/bin/node'.format(config['conda_base_env_path']), '{0}/bin/configurable-http-proxy'.format(config['conda_base_env_path'])]
 c.ConfigurableHTTPProxy.api_url = f'http://127.0.0.1:{config["proxy_api_port"]}'
-if 'proxy_pid_file' in config:
-    c.ConfigurableHTTPProxy.pid_file = config['proxy_pid_file']
+c.ConfigurableHTTPProxy.pid_file = config['proxy_pid_file']
 
 # Isolate the db file into a specific directory, and give JupyterHub write
 # access only to this. This prevents it from overwriting its own code easily.

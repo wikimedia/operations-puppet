@@ -39,25 +39,16 @@ class jupyterhub::server (
         source  => 'puppet:///modules/jupyterhub/config',
     }
 
-    # I don't know why we need this on buster.
-    $http_proxy_env_config = os_version('debian >= buster') ? {
-        true => {
-            'JUPYTERHUB_CONFIGURABLE_HTTP_PROXY_PID_FILE' =>
-                "${data_path}/jupyterhub_configurable_http_proxy.pid"
-        },
-        default => {}
-    }
-
     $default_config = {
         'conda_base_env_path' => '/usr/lib/anaconda-wmf',
         'cookie_secret_file'  => "${data_path}/jupyterhub_cookie_secret",
         'db_url'              => "sqlite:///${data_path}/jupyterhub.sqlite.db",
+        'proxy_pid_file'      => "${data_path}/jupyterhub-proxy.pid",
     }
 
     # This will be rendered as key,val pairs in a dict in jupyterhub_config.py.
     $jupyterhub_config = merge(
         $default_config,
-        $http_proxy_env_config,
         $config
     )
 
