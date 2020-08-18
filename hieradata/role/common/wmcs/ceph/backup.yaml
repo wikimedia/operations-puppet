@@ -1,7 +1,4 @@
 profile::wmcs::backy2::cluster_name: ceph
-profile::wmcs::backy2::db_host: openstack.eqiad1.wikimediacloud.org
-profile::wmcs::backy2::db_name: eqiad1_ceph_backy
-profile::wmcs::backy2::db_user: backy
 
 profile::ceph::client::rbd::keyfile_group: 'root'
 profile::ceph::client::rbd::client_name: 'eqiad1-compute'

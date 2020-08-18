@@ -20,10 +20,6 @@
 #   include backy2
 class backy2(
     String       $cluster_name,
-    Stdlib::Fqdn $db_host,
-    String       $db_name,
-    String       $db_user,
-    String       $db_pass,
     String       $rados_name = 'client.admin',
     ) {
 
