@@ -94,11 +94,10 @@ c.JupyterHub.db_url = config['db_url']
 # Path to cookie secret for user sessions.
 c.JupyterHub.cookie_secret_file = config['cookie_secret_file']
 
-# TODO: do we want this?  It will allow users to have multiple jupyterhub-singleuser
-# servers running with possible different conda environments at any given time.
-c.JupyterHub.allow_named_servers = True
+# We allow users to select a from a conda env profile when starting their server,
+# but don't allow them to run multiple servers at once.
+c.JupyterHub.allow_named_servers = False
 
-# TODO: do we want this?
 # Do not kill servers when the hub restarts
 c.JupyterHub.cleanup_servers = False
 
