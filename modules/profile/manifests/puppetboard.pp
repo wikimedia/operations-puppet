@@ -20,7 +20,8 @@ class profile::puppetboard (
     $directory = "${venv_path}/lib/python3.5/site-packages/puppetboard"
     $puppet_ssl_dir = puppet_ssldir()
 
-    require_package('make', 'python3-pip', 'virtualenv')
+    $packages = ['make', 'python3-pip', 'virtualenv']
+    require_package($packages)
 
     # rsyslog forwards json messages sent to localhost along to logstash via kafka
     class { 'profile::rsyslog::udp_json_logback_compat': }
@@ -70,6 +71,7 @@ class profile::puppetboard (
             'ALL=(root) NOPASSWD: /usr/sbin/service uwsgi-puppetboard status',
             'ALL=(root) NOPASSWD: /usr/sbin/service uwsgi-puppetboard stop',
         ],
+        require         => Package[$packages],
     }
 
     base::service_auto_restart { 'uwsgi-puppetboard': }
