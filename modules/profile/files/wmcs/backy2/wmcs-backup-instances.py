@@ -18,7 +18,7 @@ def exclude_server(config, project, servername):
     return False
 
 
-with open("/home/andrew/wmcs_backup_instances.yaml") as f:
+with open("/etc/wmcs_backup_instances.yaml") as f:
     config = yaml.safe_load(f)
 
 openstackclients = mwopenstackclients.Clients(envfile="/etc/novaobserver.yaml")
