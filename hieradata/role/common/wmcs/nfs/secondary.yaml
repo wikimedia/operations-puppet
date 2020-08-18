@@ -27,3 +27,13 @@ admin::groups:
 
 contactgroups: wmcs-team
 mgmt_contactgroups: wmcs-team-email
+
+
+# For ceph backup things:
+profile::wmcs::backy2::cluster_name: ceph
+profile::wmcs::backy2::active_host: cloudstore1009.wikimedia.org
+profile::ceph::client::rbd::keyfile_group: 'root'
+profile::ceph::client::rbd::client_name: 'eqiad1-compute'
+profile::ceph::client::rbd::keyfile_owner: 'root'
+profile::ceph::client::rbd::pool: 'eqiad1-compute'
+profile::ceph::client::rbd::enable_v2_messenger: false
