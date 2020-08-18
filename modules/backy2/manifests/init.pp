@@ -67,4 +67,16 @@ class backy2(
             show_diff => false,
             require   => Package['backy2'];
     }
+
+    # Hack in a one-character fix to an upstream bug.  There is a pending
+    #  pull request for this, here: https://github.com/wamdam/backy2/pull/72
+    file { '/usr/lib/python3/dist-packages/backy2/meta_backends/sql.py':
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
+        source  => 'puppet:///modules/backy2/sql.py',
+        require => Package['backy2'];
+    }
+
+
 }
