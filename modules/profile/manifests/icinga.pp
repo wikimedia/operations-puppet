@@ -157,7 +157,20 @@ class profile::icinga(
         ldap_server           => $ldap_config['ro-server'],
         ldap_server_fallback  => $ldap_config['ro-server-fallback'],
     }
-    include profile::idp::client::httpd_legacy
+    profile::idp::client::httpd::site { 'icinga.wikimedia.org':
+        vhost_content   => 'profile/idp/client/httpd-icinga.erb',
+        acme_chief_cert => 'icinga',
+        document_root   => '/usr/share/icinga/htdocs',
+        protected_uri   => '/icinga',
+        cookie_scope    => '/',
+        required_groups => [
+            'cn=ops,ou=groups,dc=wikimedia,dc=org',
+            'cn=wmf,ou=groups,dc=wikimedia,dc=org',
+            'cn=nda,ou=groups,dc=wikimedia,dc=org',
+        ]
+    }
+
+
     include profile::icinga::external_monitoring
 
     class { 'icinga::naggen':

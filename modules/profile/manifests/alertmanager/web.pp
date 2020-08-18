@@ -1,8 +1,4 @@
-# enable_sso is a temporary workaround for the fact that:
-# * the alerting_host role is shared with icinga
-# * profile::idp::client::httpd_legacy is already used by icinga
-# * profile::idp::client::httpd_legacy is a class, so we can't reuse for alerts.w.o
-# Thus ship a httpd::site with the mod_auth_cas parameters expanded as needed
+# enable_sso is used to disable sso in cloud
 
 class profile::alertmanager::web (
     # lint:ignore:wmf_styleguide - T260574
@@ -24,13 +20,22 @@ class profile::alertmanager::web (
         auth_header    => $auth_header,
     }
 
-    acme_chief::cert { 'alerts':
-        puppet_svc => 'apache2',
-    }
-
-    httpd::site { $vhost:
-        content => template('profile/alertmanager/web.apache.erb'),
-        require => Class['Profile::Idp::Client::Httpd_legacy'],
+    if $enable_sso {
+        profile::idp::client::httpd::site { $vhost:
+            document_root   => '/var/www/html',
+            acme_chief_cert => 'alerts',
+            vhost_content   => 'profile/idp/client/httpd-karma.erb',
+            vhost_settings  => { 'readonly' => $readonly },
+            required_groups => [
+                'cn=ops,ou=groups,dc=wikimedia,dc=org',
+                'cn=wmf,ou=groups,dc=wikimedia,dc=org',
+                'cn=nda,ou=groups,dc=wikimedia,dc=org',
+            ],
+        }
+    } else {
+        httpd::site { $vhost:
+            content => template('profile/alertmanager/web.apache.erb'),
+        }
     }
 
     $hosts = join($prometheus_nodes, ' ')

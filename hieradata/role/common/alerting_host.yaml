@@ -10,8 +10,6 @@ profile::base::domain_search:
 profile::icinga::ircbot::ensure: present
 profile::icinga::ircbot::ircecho_nick: icinga-wm
 profile::icinga::ircbot::ircecho_server: 'chat.freenode.net +6697'
-profile::idp::client::httpd::protected_uri: '/icinga'
-profile::idp::client::httpd::cookie_scope: '/'
 
 # NOTE: update the senders whitelist on our paging infrastructure (AQL as of 20190211) when modifying Icinga hostnames
 profile::icinga::virtual_host: ldap-icinga.wikimedia.org
@@ -20,14 +18,6 @@ profile::icinga::partners:
   - 'icinga2001.wikimedia.org'
   - 'alert1001.wikimedia.org'
   - 'alert2001.wikimedia.org'
-profile::idp::client::httpd::acme_chief_cert: icinga
-profile::idp::client::httpd::document_root: /usr/share/icinga/htdocs
-profile::idp::client::httpd::vhost_content: 'profile/idp/client/httpd-icinga.erb'
-profile::idp::client::httpd::virtual_host: icinga.wikimedia.org
-profile::idp::client::httpd::required_groups:
-  - 'cn=ops,ou=groups,dc=wikimedia,dc=org'
-  - 'cn=wmf,ou=groups,dc=wikimedia,dc=org'
-  - 'cn=nda,ou=groups,dc=wikimedia,dc=org'
 
 profile::mariadb::backup::check::backups:
   s1:
