@@ -28,7 +28,7 @@ class jupyterhub::server (
     # TODO: rename this once old venv based jupyterhub is gone.
     $config_path         = "/etc/${service_name}"
 
-    file { [$base_path, $data_path]:
+    file { [$base_path, $data_path, $config_path]:
         ensure => 'directory',
     }
 
