@@ -628,6 +628,7 @@ node 'db1128.eqiad.wmnet' {
 # Future m3 master
 node 'db1132.eqiad.wmnet' {
     class { '::role::mariadb::misc':
+        shard  => 'm3',
         master => true,
     }
 }
