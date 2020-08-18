@@ -159,6 +159,14 @@ profile::idp::services:
       '@class': 'org.apereo.cas.services.ReturnAllAttributeReleasePolicy'
     access_strategy:
       '@class': 'org.apereo.cas.services.DefaultRegisteredServiceAccessStrategy'
+  alerts:
+    class: 'org.apereo.cas.services.RegexRegisteredService'
+    id: 15
+    service_id: 'https://alerts.wikimedia.org(/.*)?'
+    attribute_release_policy:
+      '@class': 'org.apereo.cas.services.ReturnAllAttributeReleasePolicy'
+    access_strategy:
+      '@class': 'org.apereo.cas.services.DefaultRegisteredServiceAccessStrategy'
 profile::idp::ldap_attributes:
   - cn
   - memberOf
