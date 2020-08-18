@@ -1873,6 +1873,11 @@ class profile::prometheus::ops (
         source   => 'puppet:///modules/profile/prometheus/rules_ops.yml',
     }
 
+    prometheus::rule { 'alerts_ops.yml':
+        instance => 'ops',
+        source   => 'puppet:///modules/role/prometheus/alerts_ops.yml',
+    }
+
     prometheus::varnish_2layer{ 'text':
         targets_path => $targets_path,
         cache_name   => 'text',

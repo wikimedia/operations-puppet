@@ -1,0 +1,8 @@
+groups:
+- name: icinga_compat
+  rules:
+  - alert: IcingaServiceProblem
+    expr: icinga_service_problem == 1
+    for: 1m
+    annotations:
+      summary: '{{$labels.info}}'
