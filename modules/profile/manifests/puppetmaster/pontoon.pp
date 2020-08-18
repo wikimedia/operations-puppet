@@ -6,7 +6,7 @@ class profile::puppetmaster::pontoon (
     Optional[Array[Stdlib::Host]] $puppetdb_hosts = lookup('profile::puppetmaster::common::puppetdb_hosts', {'default_value' => undef}),
 ) {
     class { 'pontoon::enc':
-        stack => "${stack}.yml",
+        stack => $stack,
     }
 
     # Ensure the file is writable by 'puppet' user

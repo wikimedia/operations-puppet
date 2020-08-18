@@ -6,10 +6,12 @@ defaults:
   datadir: /etc/puppet/hieradata
   data_hash: yaml_data
 hierarchy:
+  - name: "Pontoon stack-specific settings"
+    glob: "pontoon/*.yaml"
   - name: "Pontoon"
     path: "pontoon.yaml"
   - name: "node hierarchy"
-    path: "hosts/%{::hostname}.yaml"
+    path: "pontoon/hosts/%{::hostname}.yaml"
   - name: "netbox node hierarchy"
     path: "hosts/%{::hostname}"
     datadir: "/etc/puppet/netbox/hieradata"
