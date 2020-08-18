@@ -1,0 +1,3 @@
+profile::releases::mediawiki::jenkins_service_ensure: 'running'
+profile::releases::mediawiki::jenkins_service_enable: true
+profile::releases::mediawiki::jenkins_service_monitor: true
