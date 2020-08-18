@@ -649,6 +649,15 @@ define service {
     contact_groups           fr-tech,fr-tech-ops
 }
 
+# frdata1001
+
+define service {
+    use                      passive-service
+    service_description      check_ssl
+    host_name                frdata1001
+    contact_groups           fr-tech,fr-tech-ops
+}
+
 # frdb1002 (these can be run on any db in the replication cluster)
 
 define service {
@@ -1186,6 +1195,12 @@ define service {
 
 define service {
     use                      passive-service
+    service_description      check_rsyslog_backlog
+    hostgroup_name           fundraising-database
+}
+
+define service {
+    use                      passive-service
     service_description      check_swap
     hostgroup_name           fundraising-database
 }
@@ -1342,6 +1357,12 @@ define service {
 
 define service {
     use                      passive-service
+    service_description      check_raid
+    hostgroup_name           fundraising-listener
+}
+
+define service {
+    use                      passive-service
     service_description      check_rsyslog_backlog
     hostgroup_name           fundraising-listener
 }
@@ -1491,6 +1512,12 @@ define service {
 define service {
     use                      passive-service
     service_description      check_timesync
+    hostgroup_name           fundraising-auth
+}
+
+define service {
+    use                      passive-service
+    service_description      check_yubico
     hostgroup_name           fundraising-auth
 }
 
