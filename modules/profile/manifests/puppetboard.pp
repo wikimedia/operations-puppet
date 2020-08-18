@@ -85,7 +85,7 @@ class profile::puppetboard (
         modules => ['headers', 'rewrite', 'proxy', 'proxy_http'],
     }
 
-    profile::idp::client::httpd{ 'puppetboard.wikimedia.org':
+    profile::idp::client::httpd::site {'puppetboard.wikimedia.org':
         vhost_content    => 'profile/idp/client/httpd-puppetboard.erb',
         required_groups  => ['cn=ops,ou=groups,dc=wikimedia,dc=org'],
         proxied_as_https => true,
