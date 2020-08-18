@@ -4,4 +4,4 @@ profile::librenms::graphite_prefix: librenms
 profile::librenms::dbuser: 'librenms'
 profile::librenms::dbhost: 'm1-master.eqiad.wmnet'
 profile::librenms::dbname: 'librenms'
-profile::librenms::auth_mechanism: 'ldap'
+profile::librenms::auth_mechanism: 'sso'
