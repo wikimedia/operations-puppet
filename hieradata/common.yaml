@@ -1080,7 +1080,7 @@ jenkins_agent_username: 'jenkins-slave'
 http_proxy_host: webproxy.%{::site}.wmnet
 http_proxy_port: 8080
 # And as a url (can be used as an env variable).
-http_proxy: "http://%{hiera('http_proxy_host')}.wmnet:%{hiera('http_proxy_port')}"
+http_proxy: "http://%{hiera('http_proxy_host')}:%{hiera('http_proxy_port')}"
 
 # This is the "live" authdns server set, which feeds into any other tooling
 # that needs to operate on them (including themselves).  It includes redundant
