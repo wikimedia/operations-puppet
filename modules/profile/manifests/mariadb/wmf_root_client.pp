@@ -10,7 +10,7 @@ class profile::mariadb::wmf_root_client {
     }
 
     class { 'mariadb::packages_client': }
-    require_package('wmfmariadbpy')
+    require_package('wmfmariadbpy-admin')
     include passwords::misc::scripts
 
     class { 'mariadb::config':
