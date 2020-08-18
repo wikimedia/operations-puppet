@@ -1,8 +1,8 @@
 class profile::ci::shipyard(
-    $registry = hiera('docker::registry'),
-    $username = hiera('docker::registry::username'),
-    $password = hiera('docker::registry::password'),
-    $http_proxy = hiera('http_proxy', undef),
+    Stdlib::Fqdn $registry = hiera('docker::registry'),
+    String $username = hiera('docker::registry::username'),
+    String $password = hiera('docker::registry::password'),
+    Variant[Stdlib::HTTPUrl, Stdlib::HTTPSUrl] $http_proxy = hiera('http_proxy', undef),
 ) {
     class { '::docker_pkg': }
 

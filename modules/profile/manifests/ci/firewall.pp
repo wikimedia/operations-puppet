@@ -7,8 +7,8 @@
 # [$zuul_merger_hosts] List of zuul-mergers
 #
 class profile::ci::firewall (
-    $jenkins_master_hosts = lookup('profile::ci::firewall::jenkins_master_hosts'),
-    $zuul_merger_hosts = lookup('profile::ci::firewall::zuul_merger_hosts'),
+    Array[Stdlib::Fqdn] $jenkins_master_hosts = lookup('profile::ci::firewall::jenkins_master_hosts'),
+    Array[Stdlib::Fqdn] $zuul_merger_hosts = lookup('profile::ci::firewall::zuul_merger_hosts'),
 ) {
     class { '::profile::base::firewall': }
     include ::network::constants
