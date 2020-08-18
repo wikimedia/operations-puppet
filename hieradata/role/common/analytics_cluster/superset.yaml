@@ -33,12 +33,3 @@ profile::kerberos::keytabs::keytabs_metadata:
     owner: 'superset'
     group: 'superset'
     filename: 'superset.keytab'
-
-profile::idp::client::httpd::vhost_content: 'profile/idp/client/httpd-superset.erb'
-profile::idp::client::httpd::document_root: '/var/www'
-profile::idp::client::httpd::virtual_host: 'superset.wikimedia.org'
-profile::idp::client::httpd::proxied_as_https: true
-profile::idp::client::httpd::required_groups:
-  - 'cn=ops,ou=groups,dc=wikimedia,dc=org'
-  - 'cn=wmf,ou=groups,dc=wikimedia,dc=org'
-  - 'cn=nda,ou=groups,dc=wikimedia,dc=org'

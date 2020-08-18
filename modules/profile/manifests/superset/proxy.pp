@@ -21,8 +21,15 @@ class profile::superset::proxy (
     }
 
     if $enable_cas {
-        class {'profile::idp::client::httpd_legacy':
-            vhost_settings => { 'x-forwarded-proto' => $x_forwarded_proto },
+        profile::idp::client::httpd::site {'superset.wikimedia.org':
+            vhost_content    => 'profile/idp/client/httpd-superset.erb',
+            proxied_as_https => true,
+            vhost_settings   => { 'x-forwarded-proto' => $x_forwarded_proto },
+            required_groups  => [
+                'cn=ops,ou=groups,dc=wikimedia,dc=org',
+                'cn=wmf,ou=groups,dc=wikimedia,dc=org',
+                'cn=nda,ou=groups,dc=wikimedia,dc=org',
+            ]
         }
     } else {
         class { '::passwords::ldap::production': }
