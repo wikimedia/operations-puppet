@@ -1,7 +1,7 @@
 # enable_sso is a temporary workaround for the fact that:
 # * the alerting_host role is shared with icinga
-# * profile::idp::client::httpd is already used by icinga
-# * profile::idp::client::httpd is a class, so we can't reuse for alerts.w.o
+# * profile::idp::client::httpd_legacy is already used by icinga
+# * profile::idp::client::httpd_legacy is a class, so we can't reuse for alerts.w.o
 # Thus ship a httpd::site with the mod_auth_cas parameters expanded as needed
 
 class profile::alertmanager::web (
@@ -30,7 +30,7 @@ class profile::alertmanager::web (
 
     httpd::site { $vhost:
         content => template('profile/alertmanager/web.apache.erb'),
-        require => Class['Profile::Idp::Client::Httpd'],
+        require => Class['Profile::Idp::Client::Httpd_legacy'],
     }
 
     $hosts = join($prometheus_nodes, ' ')

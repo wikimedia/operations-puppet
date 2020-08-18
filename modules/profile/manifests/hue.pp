@@ -112,7 +112,7 @@ class profile::hue (
     $hue_port = $::cdh::hue::http_port
 
     if $enable_cas {
-        class {'profile::idp::client::httpd':
+        class {'profile::idp::client::httpd_legacy':
             vhost_settings => { 'hue_port' => $hue_port },
         }
     } else {

@@ -1,3 +1,8 @@
+############################################################
+############################################################
+############# THIS CLASS WILL IS DEPRECATED ################
+############################################################
+############################################################
 # @summary configure an apache web site using mod_auth_cas
 # @param vhost_content an erb template file to use for the apache vhost configuration
 # @param virtual_host the virtual host to use in the apache vhost
@@ -19,7 +24,7 @@
 # @param vhost_settings Allows to pass settings to the vhost config which are unrelated to the IDP setup
 # @param proxied_as_https if true set the proxied_as address to https://${vhost}/
 # @param staging if true also configure the staging  vhost as staging-${vhost}
-class profile::idp::client::httpd (
+class profile::idp::client::httpd_legacy (
     Apereo_cas::Urls              $apereo_cas       = lookup('apereo_cas', Apereo_cas::Urls, 'deep'),
     String[1]                     $vhost_content    = lookup('profile::idp::client::httpd::vhost_content'),
     Stdlib::Host                  $virtual_host     = lookup('profile::idp::client::httpd::virtual_host'),

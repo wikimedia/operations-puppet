@@ -29,7 +29,7 @@ class profile::druid::turnilo::proxy(
         srange => '$CACHES',
     }
 
-    class {'profile::idp::client::httpd':
+    class {'profile::idp::client::httpd_legacy':
         vhost_settings => { 'turnilo_port' => $turnilo_port },
     }
 

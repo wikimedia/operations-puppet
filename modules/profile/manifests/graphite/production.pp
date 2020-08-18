@@ -11,7 +11,7 @@ class profile::graphite::production {
         modules => ['headers', 'rewrite', 'proxy', 'proxy_http', 'uwsgi', 'authnz_ldap'],
     }
 
-    include profile::idp::client::httpd
+    include profile::idp::client::httpd_legacy
     class { 'profile::graphite::base':
         storage_dir                        => $storage_dir,
         auth                               => true,

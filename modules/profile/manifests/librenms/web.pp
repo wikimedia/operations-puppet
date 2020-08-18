@@ -14,7 +14,7 @@ class profile::librenms::web {
     }
 
     if $auth_mechanism == 'sso' {
-        include profile::idp::client::httpd
+        include profile::idp::client::httpd_legacy
     } else {
         httpd::site { $sitename:
             content => template('profile/librenms/apache.conf.erb'),

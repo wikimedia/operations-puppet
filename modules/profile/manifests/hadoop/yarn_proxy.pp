@@ -15,7 +15,7 @@ class profile::hadoop::yarn_proxy (
 
     $resourcemanager_primary_host = $profile::hadoop::common::resourcemanager_hosts[0]
 
-    class {'profile::idp::client::httpd':
+    class {'profile::idp::client::httpd_legacy':
         vhost_settings => { 'res_manager' => $resourcemanager_primary_host },
     }
 }

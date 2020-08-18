@@ -36,7 +36,7 @@ class profile::piwik::webserver(
     }
 
     require ::profile::analytics::httpd::utils
-    include profile::idp::client::httpd
+    include profile::idp::client::httpd_legacy
 
     file_line { 'enable_php_opcache':
         line   => 'opcache.enable=1',

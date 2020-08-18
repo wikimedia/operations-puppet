@@ -38,7 +38,7 @@ class profile::microsites::peopleweb (
         owner   => 'root',
         group   => 'root',
     }
-    include profile::idp::client::httpd
+    include profile::idp::client::httpd_legacy
 
     monitoring::service { 'https-peopleweb':
         description   => 'HTTPS-peopleweb',

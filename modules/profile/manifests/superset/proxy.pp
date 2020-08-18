@@ -21,7 +21,7 @@ class profile::superset::proxy (
     }
 
     if $enable_cas {
-        class {'profile::idp::client::httpd':
+        class {'profile::idp::client::httpd_legacy':
             vhost_settings => { 'x-forwarded-proto' => $x_forwarded_proto },
         }
     } else {

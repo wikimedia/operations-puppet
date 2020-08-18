@@ -83,7 +83,7 @@ class profile::puppetboard (
         modules => ['headers', 'rewrite', 'proxy', 'proxy_http'],
     }
 
-    class {'profile::idp::client::httpd':
+    class {'profile::idp::client::httpd_legacy':
         document_root => $directory,
     }
 }

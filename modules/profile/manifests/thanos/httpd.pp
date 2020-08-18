@@ -20,7 +20,7 @@ class profile::thanos::httpd (
         modules => ['proxy_http'],
     }
 
-    class {'profile::idp::client::httpd':
+    class {'profile::idp::client::httpd_legacy':
         vhost_settings => {
             query_port => $query_port,
             maxconn    => $maxconn,
