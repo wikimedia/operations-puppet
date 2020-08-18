@@ -1,6 +1,5 @@
-profile::openstack::base::nova::instance_dev: '/dev/mapper/tank-data'
-profile::openstack::eqiad1::nova::network_flat_tagged_base_interface: enp175s0f1d1
-profile::openstack::eqiad1::nova::network_flat_interface: vlan1105
+profile::openstack::base::nova::instance_dev: 'thinvirt'
+profile::openstack::eqiad1::nova::network_flat_tagged_base_interface: ens3f1np1
+profile::openstack::eqiad1::nova::network_flat_interface: 'ens3f1np1.1105'
 profile::openstack::eqiad1::nova::physical_interface_mappings:
-  cloudinstances2b: vlan1105
-legacy_vlan_naming: false
+  cloudinstances2b: 'ens3f1np1.1105'
