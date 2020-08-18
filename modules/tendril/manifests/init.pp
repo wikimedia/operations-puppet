@@ -20,7 +20,7 @@ class tendril (
     $ssl_settings = ssl_ciphersuite('apache', 'strong', true)
 
     if $cas_enable {
-        include profile::idp::client::httpd_legacy # lint:ignore:wmf_styleguide
+        include profile::idp::client::httpd  # lint:ignore:wmf_styleguide
     } else {
         httpd::site { $site_name:
           content => template("tendril/apache/${site_name}.erb");

@@ -1,11 +1,12 @@
-profile::idp::client::httpd::vhost_content: 'profile/idp/client/httpd-tendril.erb'
-profile::idp::client::httpd::virtual_host: 'tendril.wikimedia.org'
-profile::idp::client::httpd::document_root: '/srv/tendril/web'
-profile::idp::client::httpd::validate_saml: true
-profile::idp::client::httpd::required_groups:
-  - 'cn=ops,ou=groups,dc=wikimedia,dc=org'
-  - 'cn=wmf,ou=groups,dc=wikimedia,dc=org'
-  - 'cn=nda,ou=groups,dc=wikimedia,dc=org'
+profile::idp::client::httpd::sites:
+  'tendril.wikimedia.org':
+    vhost_content: 'profile/idp/client/httpd-tendril.erb'
+    document_root: '/srv/tendril/web'
+    validate_saml: true
+    required_groups:
+      - 'cn=ops,ou=groups,dc=wikimedia,dc=org'
+      - 'cn=wmf,ou=groups,dc=wikimedia,dc=org'
+      - 'cn=nda,ou=groups,dc=wikimedia,dc=org'
 monitor_auth: false
 apereo_cas:
   production:
