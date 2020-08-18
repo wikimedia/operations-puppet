@@ -157,7 +157,7 @@ class CondaEnvProfilesSpawner(wrapspawner.ProfilesSpawner):
                 conda_env_description += ' (read only)'
 
             profile = self.make_profile(
-                conda_env_path=conda_env_name,
+                conda_env_path=conda_env_path,
                 name=conda_env_name,
                 description=conda_env_description,
                 # TODO: YarnSpawner?
