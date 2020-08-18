@@ -14,7 +14,11 @@ from spawners import CondaEnvProfilesSpawner
 # == Configurables used throughout this file ==
 puppet_config = {
 <% @jupyterhub_config.each do |key, val| -%>
+    <%- if val.kind_of?(String) -%>
     '<%= key %>': '<%= val %>',
+    <%- else -%>
+    '<%= key %>': <%= val %>,
+    <%- end -%>
 <% end -%>
 }
 
