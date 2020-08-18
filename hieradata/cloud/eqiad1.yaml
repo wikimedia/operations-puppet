@@ -259,7 +259,7 @@ profile::openstack::eqiad1::cumin::project_masters: []
 profile::openstack::eqiad1::cumin::project_pub_key: undef
 profile::openstack::base::keystone::auth_protocol: http
 profile::openstack::base::keystone::public_port: 5000
-profile::openstack::eqiad1::nova::dhcp_domain: 'eqiad.wmflabs'
+profile::openstack::eqiad1::nova::dhcp_domain: 'eqiad1.wikimedia.cloud'
 cumin_masters:
 - 172.16.4.46  # cloud-cumin-01.cloudinfra.eqiad.wmflabs
 - 172.16.6.133 # cloud-cumin-02.cloudinfra.eqiad.wmflabs
