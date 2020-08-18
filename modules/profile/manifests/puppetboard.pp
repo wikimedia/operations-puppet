@@ -85,16 +85,10 @@ class profile::puppetboard (
         modules => ['headers', 'rewrite', 'proxy', 'proxy_http'],
     }
 
-    $cas_sites = {
-        'puppetboard.wikimedia.org' => {
-            'vhost_content'  => 'profile/idp/client/httpd-puppetboard.erb',
-            required_groups  => ['cn=ops,ou=groups,dc=wikimedia,dc=org'],
-            proxied_as_https => true,
-            document_root => $directory,
-        }
-    }
-
-    class {'profile::idp::client::httpd':
-        sites => $cas_sites,
+    profile::idp::client::httpd{ 'puppetboard.wikimedia.org':
+        vhost_content    => 'profile/idp/client/httpd-puppetboard.erb',
+        required_groups  => ['cn=ops,ou=groups,dc=wikimedia,dc=org'],
+        proxied_as_https => true,
+        document_root    => $directory,
     }
 }

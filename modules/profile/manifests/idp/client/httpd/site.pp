@@ -33,7 +33,6 @@ define profile::idp::client::httpd::site (
     Optional[Array[String[1]]]    $required_groups  = [],
     Optional[String[1]]           $acme_chief_cert  = undef,
 ) {
-    assert_private()
     include profile::idp::client::httpd
     $apereo_cas        = $profile::idp::client::httpd::apereo_cas
     $apache_owner      = $profile::idp::client::httpd::apache_owner

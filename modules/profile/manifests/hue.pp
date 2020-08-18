@@ -112,8 +112,16 @@ class profile::hue (
     $hue_port = $::cdh::hue::http_port
 
     if $enable_cas {
-        class {'profile::idp::client::httpd_legacy':
-            vhost_settings => { 'hue_port' => $hue_port },
+        profile::idp::client::httpd::site {$server_name:
+            vhost_content    => 'profile/idp/client/httpd-hue.erb',
+            document_root    => '/var/www',
+            proxied_as_https => true,
+            vhost_settings   => { 'hue_port' => $hue_port },
+            required_groups  => [
+                'cn=ops,ou=groups,dc=wikimedia,dc=org',
+                'cn=wmf,ou=groups,dc=wikimedia,dc=org',
+                'cn=nda,ou=groups,dc=wikimedia,dc=org',
+            ]
         }
     } else {
         httpd::site { $server_name:
