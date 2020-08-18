@@ -21,3 +21,4 @@ profile::idp::client::httpd::cookie_scope: "%{alias('profile::idp::client::httpd
 profile::idp::client::httpd::proxied_as_https: false
 profile::idp::client::httpd::staging: false
 profile::idp::client::httpd::vhost_settings: {}
+profile::idp::client::httpd::sites: {}
