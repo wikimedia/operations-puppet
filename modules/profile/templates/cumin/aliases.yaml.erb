@@ -283,6 +283,10 @@ wdqs-internal: P{O:wdqs::internal}
 wdqs-public: P{O:wdqs::public}
 wdqs-test: P{O:wdqs::test}
 webperf: P{O:webperf::processors_and_site or O:webperf::profiling_tools}
+wikireplicas-all: P{O:labs::db::wikireplica_analytics or O:labs::db::wikireplica_analytics::dedicated or O:labs::db::wikireplica_web}
+wikireplicas-analytics: P{O:labs::db::wikireplica_analytics}
+wikireplicas-dedicated: P{O:labs::db::wikireplica_analytics::dedicated}
+wikireplicas-web: P{O:labs::db::wikireplica_web}
 xhgui: P{O:xhgui::app}
 zookeeper-main-eqiad: P{O:configcluster_stretch} and A:eqiad
 zookeeper-main-codfw: P{O:configcluster} and A:codfw
