@@ -16,12 +16,20 @@ class profile::thanos::httpd (
     Stdlib::Port::Unprivileged $query_port = lookup('profile::thanos::httpd::query_port'),
     Integer                    $maxconn    = lookup('profile::thanos::httpd::maxconn'),
 ) {
-    class { '::httpd':
+    class { 'httpd':
         modules => ['proxy_http'],
     }
 
-    class {'profile::idp::client::httpd_legacy':
-        vhost_settings => {
+    profile::idp::client::httpd::site {'thanos.wikimedia.org':
+        vhost_content    => 'profile/idp/client/httpd-thanos.erb',
+        proxied_as_https => true,
+        document_root    => '/var/www/html',
+        required_groups  => [
+            'cn=ops,ou=groups,dc=wikimedia,dc=org',
+            'cn=wmf,ou=groups,dc=wikimedia,dc=org',
+            'cn=nda,ou=groups,dc=wikimedia,dc=org',
+        ],
+        vhost_settings   => {
             query_port => $query_port,
             maxconn    => $maxconn,
         }
