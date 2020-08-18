@@ -9,9 +9,10 @@ profile::microsites::peopleweb::sitename: 'people.wikimedia.org'
 profile::microsites::peopleweb::docroot: '/srv/org/wikimedia/publichtml'
 profile::microsites::peopleweb::rsync_src_host: 'people1002.eqiad.wmnet'
 profile::microsites::peopleweb::rsync_dst_host: 'people1002.eqiad.wmnet'
-profile::idp::client::httpd::vhost_content: 'profile/idp/client/httpd-people.erb'
-profile::idp::client::httpd::document_root: "%{alias('profile::microsites::peopleweb::docroot')}"
-profile::idp::client::httpd::virtual_host: "%{alias('profile::microsites::peopleweb::sitename')}"
-profile::idp::client::httpd::proxied_as_https: true
-profile::idp::client::httpd::protected_uri: '/~cdanis/sremap/'
+profile::idp::client::httpd::sites:
+  "%{alias('profile::microsites::peopleweb::sitename')}":
+    vhost_content: 'profile/idp/client/httpd-people.erb'
+    document_root: "%{alias('profile::microsites::peopleweb::docroot')}"
+    proxied_as_https: true
+    protected_uri: '/~cdanis/sremap/'
 profile::base::firewall::block_abuse_nets: true
