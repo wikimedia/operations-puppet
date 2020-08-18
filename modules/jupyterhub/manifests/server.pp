@@ -32,11 +32,16 @@ class jupyterhub::server (
         ensure => 'directory',
     }
 
-    # Sync the files in files/config to $config_path.
-    file { $config_path:
-        ensure  => 'directory',
-        recurse => true,
-        source  => 'puppet:///modules/jupyterhub/config',
+    # spawners.py contains our custom CondaEnvProfilesSpawner.
+    file { "${config_path}/spawners.py":
+        source => 'puppet:///modules/jupyterhub/config/spawners.py',
+        mode   => '0444',
+    }
+
+    # This launches jupyterhub-singleuser from the specified conda env.
+    file { "${config_path}/jupyterhub-singleuser-conda-env.sh":
+        source => 'puppet:///modules/jupyterhub/config/jupyterhub-singleuser-conda-env.sh',
+        mode   => '0555',
     }
 
     $default_config = {
@@ -56,6 +61,7 @@ class jupyterhub::server (
     $jupyterhub_config_file = "${config_path}/jupyterhub_config.py"
     file { $jupyterhub_config_file:
         content => template('jupyterhub/config/jupyterhub_config.py.erb'),
+        mode    => '0444',
     }
 
     # Generate a cookie secret.
