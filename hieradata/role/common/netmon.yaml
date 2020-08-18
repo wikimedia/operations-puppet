@@ -1,6 +1,7 @@
 profile::librenms::sitename: 'librenms.wikimedia.org'
 profile::librenms::install_dir: '/srv/deployment/librenms/librenms'
-profile::idp::client::httpd::virtual_host: "%{alias('profile::librenms::sitename')}"
-profile::idp::client::httpd::document_root: "%{hiera('profile::librenms::install_dir')}/html"
-profile::idp::client::httpd::vhost_content: 'profile/idp/client/httpd-librenms.erb'
+profile::idp::client::httpd::sites: 
+  "%{alias('profile::librenms::sitename')}":
+    document_root: "%{hiera('profile::librenms::install_dir')}/html"
+    vhost_content: 'profile/idp/client/httpd-librenms.erb'
 rsync::server::wrap_with_stunnel: true
