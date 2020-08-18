@@ -4,12 +4,22 @@ admin::groups:
   - graphite-admins
 profile::graphite::base::uwsgi_processes: 16
 profile::tlsproxy::envoy::global_cert_name: "graphite.discovery.wmnet"
-profile::idp::client::httpd::vhost_content: 'profile/idp/client/httpd-graphite.erb'
-profile::idp::client::httpd::virtual_host: 'graphite.wikimedia.org'
-profile::idp::client::httpd::document_root: '/usr/share/graphite-web'
-profile::idp::client::httpd::required_groups:
-  - 'cn=ops,ou=groups,dc=wikimedia,dc=org'
-  - 'cn=wmf,ou=groups,dc=wikimedia,dc=org'
-  - 'cn=nda,ou=groups,dc=wikimedia,dc=org'
-profile::idp::client::httpd::proxied_as_https: true
-profile::idp::client::httpd::staging: true
+profile::idp::client::httpd::sites:
+  'graphite.wikimedia.org':
+    vhost_content: 'profile/idp/client/httpd-graphite.erb'
+    document_root: '/usr/share/graphite-web'
+    required_groups:
+    - 'cn=ops,ou=groups,dc=wikimedia,dc=org'
+    - 'cn=wmf,ou=groups,dc=wikimedia,dc=org'
+    - 'cn=nda,ou=groups,dc=wikimedia,dc=org'
+    proxied_as_https: true
+  'staging-graphite.wikimedia.org':
+    priority: 99
+    vhost_content: 'profile/idp/client/httpd-graphite.erb'
+    document_root: '/usr/share/graphite-web'
+    required_groups:
+    - 'cn=ops,ou=groups,dc=wikimedia,dc=org'
+    - 'cn=wmf,ou=groups,dc=wikimedia,dc=org'
+    - 'cn=nda,ou=groups,dc=wikimedia,dc=org'
+    proxied_as_https: true
+    environment: staging

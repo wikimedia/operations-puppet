@@ -17,6 +17,7 @@
 # @param proxied_as_https if true set the proxied_as address to https://${vhost}/
 define profile::idp::client::httpd::site (
     String[1]                     $vhost_content,
+    Stdlib::Host                  $virtual_host      = $title,
     Stdlib::Unixpath              $document_root    = '/var/www',
     Array[Stdlib::Host]           $server_aliases   = [],
     String[1]                     $authn_header     = 'CAS-User',
@@ -34,7 +35,6 @@ define profile::idp::client::httpd::site (
     Optional[String[1]]           $acme_chief_cert  = undef,
 ) {
     include profile::idp::client::httpd
-    $virtual_host      = $title
     $apereo_cas        = $profile::idp::client::httpd::apereo_cas
     $apache_owner      = $profile::idp::client::httpd::apache_owner
     $apache_group      = $profile::idp::client::httpd::apache_group
