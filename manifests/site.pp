@@ -2311,7 +2311,16 @@ node /^cloudvirt100[1-3,5,7-9]\.eqiad\.wmnet$/ {
     role(wmcs::openstack::eqiad1::virt)
 }
 
-node /^cloudvirt101[0-9]\.eqiad\.wmnet$/ {
+node /^cloudvirt101[0-4]\.eqiad\.wmnet$/ {
+    role(wmcs::openstack::eqiad1::virt)
+}
+
+# Cloudvirt1015 has hardware problems, decomming for T257366
+node 'cloudvirt1015.eqiad.wmnet' {
+    role(spare::system)
+}
+
+node /^cloudvirt101[6-9]\.eqiad\.wmnet$/ {
     role(wmcs::openstack::eqiad1::virt)
 }
 
