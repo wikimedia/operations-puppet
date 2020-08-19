@@ -68,7 +68,6 @@ class graphite::web(
     $python_version = $::lsbdistcodename ? {
         buster  => 'python3',
         stretch => 'python',
-        jessie  => 'python',
     }
 
     require_package("${python_version}-memcache")
@@ -96,12 +95,7 @@ class graphite::web(
         require => Package['graphite-web'],
     }
 
-    # django 1.9 compat, remove once the jessie -> stretch or buster migration is completed
-    $syncdb_command = $::lsbdistcodename ? {
-        buster  => '/usr/bin/graphite-manage migrate --run-syncdb --noinput',
-        stretch  => '/usr/bin/graphite-manage migrate --run-syncdb --noinput',
-        jessie  => '/usr/bin/graphite-manage syncdb --noinput',
-    }
+    $syncdb_command = '/usr/bin/graphite-manage migrate --run-syncdb --noinput'
 
     exec { 'graphite_syncdb':
         command   => $syncdb_command,

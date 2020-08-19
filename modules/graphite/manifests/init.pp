@@ -21,7 +21,6 @@ class graphite(
     $required_packages = $::lsbdistcodename ? {
         buster  => [ 'graphite-carbon', 'python3-whisper' ],
         stretch => [ 'graphite-carbon', 'python-whisper' ],
-        jessie  => [ 'graphite-carbon', 'python-whisper' ],
     }
 
     package { $required_packages:
