@@ -175,7 +175,7 @@ sub cluster_fe_ratelimit {
 
 		if (req.http.Host == "<%= @vcl_config.fetch('maps_domain') %>") {
 			// below is attempted mitigation of https://phabricator.wikimedia.org/T244278
-			if (req.http.referer && req.http.referer !~ "^https?://(([^/]*\.)*(wikipedia|wikimedia|wikibooks|wikinews|wikiquote|wikisource|wikiversity|wikivoyage|wikidata|wikimediafoundation|wiktionary|mediawiki|wmfusercontent|wmflabs|toolforge|wmcloud)\.org|w\.wiki|localhost(:\d*)?)(/|$)") {
+			if (req.http.referer && req.http.referer !~ "^https?://(([^/]*\.)*(wikipedia|wikimedia|wikibooks|wikinews|wikiquote|wikisource|wikiversity|wikivoyage|wikidata|wikimediafoundation|wiktionary|mediawiki|wmfusercontent|wmflabs|toolforge|wmcloud|wikilovesmonuments)\.org|w\.wiki|localhost(:\d*)?)(/|$)") {
 				return (synth(429, "Too Many Requests"));
 			}
 		}
