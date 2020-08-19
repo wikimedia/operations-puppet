@@ -118,6 +118,14 @@ class profile::cumin::master (
         group  => 'root',
     }
 
+    file { '/usr/local/bin/secure-cookbook':
+        ensure => present,
+        source => 'puppet:///modules/profile/cumin/secure_cookbook.py',
+        mode   => '0555',
+        owner  => 'root',
+        group  => 'root',
+    }
+
     file { $ssh_config_path:
         ensure => present,
         owner  => 'root',
