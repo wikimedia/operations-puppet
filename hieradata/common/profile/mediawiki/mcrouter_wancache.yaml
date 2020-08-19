@@ -47,23 +47,23 @@ profile::mediawiki::mcrouter_wancache::shards:
         port: 11214
         ssl: true
     codfw:
+      A:
+        host: 10.192.0.61 # mw2236, A3
+        port: 11214
+        ssl: true
+      B:
+        host: 10.192.16.55 # mw2256, B3
+        port: 11214
+        ssl: true
 # Temporarily commented out for reboots
-#      A:
-#        host: 10.192.0.61 # mw2236, A3
+#      C:
+#        host: 10.192.32.84 # mw2196, C4
 #        port: 11214
 #        ssl: true
-#      B:
-#        host: 10.192.16.55 # mw2256, B3
+#      D:
+#        host: 10.192.48.94 # mw2272, D3
 #        port: 11214
 #        ssl: true
-      C:
-        host: 10.192.32.84 # mw2196, C4
-        port: 11214
-        ssl: true
-      D:
-        host: 10.192.48.94 # mw2272, D3
-        port: 11214
-        ssl: true
   wancache:
     eqiad:
       shard01:
