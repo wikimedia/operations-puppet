@@ -872,6 +872,11 @@ host releases1002 {
     fixed-address releases1002.eqiad.wmnet;
 }
 
+host releases2002 {
+    hardware ethernet aa:00:00:c1:bf:5d;
+    fixed-address releases2002.codfw.wmnet;
+}
+
 host registry1001 {
     hardware ethernet aa:00:00:85:e5:d2;
     fixed-address registry1001.eqiad.wmnet;
@@ -894,17 +899,6 @@ host registry2002 {
     hardware ethernet aa:00:00:5a:cb:48;
     fixed-address registry2002.codfw.wmnet;
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
-}
-
-host releases2001 {
-    hardware ethernet aa:00:00:ae:36:40;
-    fixed-address releases2001.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
-}
-
-host releases2002 {
-    hardware ethernet aa:00:00:c1:bf:5d;
-    fixed-address releases2002.codfw.wmnet;
 }
 
 host rpki1001 {
