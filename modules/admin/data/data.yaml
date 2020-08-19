@@ -3828,6 +3828,7 @@ users:
     uid: 25198
     email: dvrandecic@wikimedia.org
     krb: present
+
 ldap_only_users:
   abartov:
     ensure: present
@@ -4416,3 +4417,7 @@ ldap_only_users:
     ensure: present
     realname: Jan Eissfeldt
     email: jeissfeldt@wikimedia.org
+  astinson:
+    ensure: present
+    realname: Alex Stinson
+    email: astinson@wikimedia.org
