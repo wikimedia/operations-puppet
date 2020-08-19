@@ -135,14 +135,14 @@ class CondaEnvProfilesSpawner(wrapspawner.ProfilesSpawner):
     def _profile_sort_key(self, profile):
         """
         Sort key function for profiles.  We want
-        profiles that start with user.name to come first, in descending order.
+        profiles that contain user.name to come first, in descending order.
         Other profiles should be after.
         """
-        name = profile[1]
-        if name.startswith(self.user.name):
-            return '1_{0}'.format(name)
+        profile_name = profile[1]
+        if self.user.name in profile_name:
+            return '1_{0}'.format(profile_name)
         else:
-            return '0_{0}'.format(name)
+            return '0_{0}'.format(profile_name)
 
     def make_conda_env_profiles(self):
         """

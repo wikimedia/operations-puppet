@@ -101,6 +101,10 @@ c.JupyterHub.allow_named_servers = False
 # Do not kill servers when the hub restarts
 c.JupyterHub.cleanup_servers = False
 
+# Set larger timeout for CondaEnvProfilesSpawner.
+# It can take a litte while to create new conda envs on demand.
+c.Spawner.http_timeout = 120
+c.Spawner.start_timeout = 120
 
 # === JupyterHub admin access configuration ===
 
