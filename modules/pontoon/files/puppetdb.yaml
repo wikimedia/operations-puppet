@@ -1,0 +1,11 @@
+# PuppetDB
+profile::puppetmaster::common::puppetdb_hosts: "%{alias('__hosts_for_role_puppetmaster__puppetdb')}"
+profile::puppetmaster::common::storeconfigs: puppetdb
+puppetdb_host: "%{alias('__master_for_role_puppetmaster__puppetdb')}"
+profile::puppetdb::master: "%{alias('__master_for_role_puppetmaster__puppetdb')}"
+profile::puppetdb::jvm_opts: '-Xmx256m'
+
+# To open puppetdb firewall
+puppetmaster::servers:
+  pontoon:
+    - { worker: "%{alias('__master_for_role_puppetmaster__pontoon')}", loadfactor: 10 }
