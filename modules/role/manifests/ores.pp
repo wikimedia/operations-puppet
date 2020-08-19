@@ -12,4 +12,5 @@ class role::ores {
     include ::profile::ores::worker
     include ::profile::ores::web
     include ::profile::tlsproxy::envoy # TLS termination
+    include ::profile::services_proxy::envoy # RPC proxy
 }
