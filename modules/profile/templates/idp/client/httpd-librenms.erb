@@ -39,6 +39,8 @@
         <%= key %> <%= setting %>
           <%- end -%>
         <%- end -%>
+        # Bypass CAS/SSO for API end points which use an API token
+        Require expr %{REQUEST_URI} =~ m#^/(api/v0/|api_v0.php)#
     </Directory>
 
     ErrorLog /var/log/apache2/<%= @virtual_host %>.error.log
