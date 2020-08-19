@@ -1,0 +1,17 @@
+# Map a role to a list of FQDNs that are running the role.
+# 'pontoon::stack' variable must be also set in hiera (e.g.
+# hieradata/pontoon.yaml) with the name of the stack to use.
+puppetmaster::pontoon:
+  - puppetmaster.mariadb104-test.eqiad.wmflabs
+
+puppetmaster::puppetdb:
+  - puppetdb.mariadb104-test.eqiad.wmflabs
+
+cluster::management:
+  - cumin.mariadb104-test.eqiad.wmflabs
+
+mariadb::misc::db_inventory:
+  - zarcillo0.mariadb104-test.eqiad.wmflabs
+  - zarcillo1.mariadb104-test.eqiad.wmflabs
+  - slave1.mariadb104-test.eqiad.wmflabs
+  - slave2.mariadb104-test.eqiad.wmflabs
