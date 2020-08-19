@@ -147,7 +147,7 @@ class profile::librenms (
         'sso' => {
             'mode'            => 'env',
             'user_attr'       => 'HTTP_X_CAS_UID',
-            'realname_attr'   => 'HTTP_CAS_USER',
+            'realname_attr'   => 'HTTP_X_CAS_CN',
             'email_attr'      => 'HTTP_X_CAS_MAIL',
             'create_users'    => true,
             'update_users'    => true,
