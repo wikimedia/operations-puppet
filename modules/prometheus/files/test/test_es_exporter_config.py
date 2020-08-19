@@ -15,8 +15,12 @@ def make_test(config, section):
         # raises ValueError
         config.getfloat(section, 'QueryIntervalSecs', fallback=15)
         config.getfloat(section, 'QueryTimeoutSecs', fallback=10)
-        # raises json.decoder.JSONDecodeError
         if section != 'DEFAULT':
+            # raises AssertionError
+            self.assertRegex(section, r'^query_log(_[a-zA-Z0-9]+)+$',
+                             msg="Sections must begin with 'query_log_'"
+                                 " and contain only alphanumerics and underscores.")
+            # raises json.decoder.JSONDecodeError
             json.loads(config.get(section, 'QueryJson'))
         # raises AssertionError
         self.assertIn(config.get(section, 'QueryOnError', fallback='drop'),
