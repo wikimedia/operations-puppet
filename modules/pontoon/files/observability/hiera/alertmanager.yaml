@@ -1,0 +1,6 @@
+profile::alertmanager::irc::nickname: 'jinxer-wm-test'
+profile::alertmanager::irc::channel: 'wikimedia-o11y-test'
+
+profile::alertmanager::web::vhost: o11y-alerts.wmflabs.org
+
+alertmanagers: "%{alias('__hosts_for_role_alerting_host')}"
