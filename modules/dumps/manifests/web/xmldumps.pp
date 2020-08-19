@@ -8,7 +8,6 @@ class dumps::web::xmldumps(
     $xmldumps_server  = undef,
     $webuser          = undef,
     $webgroup         = undef,
-    String $blocked_user_agent_regex = '',
 ) {
     class {'dumps::web::html':
         datadir         => $datadir,

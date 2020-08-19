@@ -27,10 +27,6 @@ server {
 
    root <%= @xmldumpsdir %>;
 
-   if ($http_user_agent ~* <%= @blocked_user_agent_regex -%>") {
-        return 403 "Blocked user agent";
-   }
-
    location / {
       index index.html index.htm;
       autoindex on;
