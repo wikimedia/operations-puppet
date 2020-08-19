@@ -4416,3 +4416,7 @@ ldap_only_users:
     ensure: present
     realname: David Rochford
     email: drochford@wikimedia.org
+  jan-e:
+    ensure: present
+    realname: Jan Eissfeldt
+    email: jeissfeldt@wikimedia.org
