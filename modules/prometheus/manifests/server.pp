@@ -123,8 +123,12 @@ define prometheus::server (
       ]
       $prometheus_config = $common_config + {
         'alerting' => {
-          'alertmanagers' => [
+          'alertmanagers'         => [
             { 'static_configs' => $alertmanager_config }
+          ],
+          'alert_relabel_configs' => [
+            # Drop 'replica' label to get proper deduplication of alerts from HA pairs
+            { 'source_labels' => ['replica'], 'action' => 'labeldrop' },
           ],
         }
       }
