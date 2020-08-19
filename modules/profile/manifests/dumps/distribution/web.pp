@@ -3,6 +3,7 @@ class profile::dumps::distribution::web (
     $datadir = lookup('profile::dumps::distribution::basedatadir'),
     $xmldumpsdir = lookup('profile::dumps::distribution::xmldumpspublicdir'),
     $miscdatasetsdir = lookup('profile::dumps::distribution::miscdumpsdir'),
+    String $blocked_user_agent_regex = lookup('profile::dumps::distribution::blocked_user_agent_regex'),
 ){
     # includes module for bandwidth limits
     class { '::nginx':
@@ -11,14 +12,15 @@ class profile::dumps::distribution::web (
 
     class { '::sslcert::dhparam': }
     class {'::dumps::web::xmldumps':
-        do_acme          => $do_acme,
-        datadir          => $datadir,
-        xmldumpsdir      => $xmldumpsdir,
-        miscdatasetsdir  => $miscdatasetsdir,
-        htmldumps_server => 'francium.eqiad.wmnet',
-        xmldumps_server  => 'dumps.wikimedia.org',
-        webuser          => 'dumpsgen',
-        webgroup         => 'dumpsgen',
+        do_acme                  => $do_acme,
+        datadir                  => $datadir,
+        xmldumpsdir              => $xmldumpsdir,
+        miscdatasetsdir          => $miscdatasetsdir,
+        htmldumps_server         => 'francium.eqiad.wmnet',
+        xmldumps_server          => 'dumps.wikimedia.org',
+        webuser                  => 'dumpsgen',
+        webgroup                 => 'dumpsgen',
+        blocked_user_agent_regex => $blocked_user_agent_regex,
     }
 
     # copy web server logs to stat host
