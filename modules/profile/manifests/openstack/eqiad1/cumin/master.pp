@@ -92,9 +92,7 @@ class profile::openstack::eqiad1::cumin::master(
             require => File['/etc/cumin'],
         }
 
-        if os_version('debian == jessie') {
-            $python_version = '3.4'
-        } elsif os_version('debian == stretch') {
+        if os_version('debian == stretch') {
             $python_version = '3.5'
         } elsif os_version('debian == buster') {
             $python_version = '3.7'
