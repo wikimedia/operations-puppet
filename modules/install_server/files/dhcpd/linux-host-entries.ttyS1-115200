@@ -4350,6 +4350,12 @@ host mc2036 {
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
 }
 
+host mc2037 {
+    hardware ethernet 14:02:EC:07:90:08;
+    fixed-address mc2037.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
+}
+
 host mc-gp2001 {
     hardware ethernet B0:26:28:CD:0D:F0;
     fixed-address mc-gp2001.codfw.wmnet;
