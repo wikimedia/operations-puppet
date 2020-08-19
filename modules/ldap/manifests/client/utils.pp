@@ -4,20 +4,8 @@
 # ldap database will then be listed as users of the system, so use care.
 
 class ldap::client::utils($ldapconfig) {
-    require_package('python-pycurl')
-    require_package('python3-pycurl')
 
-    # this may be already declared by openstack's keystone, where
-    # we need python-pyldap rather than python-ldap (so is ensure => absent there)
-    if ! defined(Package['python-ldap']) {
-        require_package('python-ldap')
-    }
-
-    if os_version('debian > jessie') {
-        if ! defined(Package['python3-pyldap']) {
-            require_package('python3-pyldap')
-        }
-    }
+    require_package('python-pycurl', 'python3-pycurl', 'python-ldap', 'python3-pyldap')
 
     file { '/usr/local/sbin/add-ldap-group':
         owner  => 'root',
@@ -45,21 +33,13 @@ class ldap::client::utils($ldapconfig) {
         # and sshd refuses to use anything under /usr/local because of the permissive group
         # permission there (and group is set to 'staff', slightly different from root).
         # https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=538392
-        if os_version('debian == jessie') {
-            file { '/usr/sbin/ssh-key-ldap-lookup':
-                owner  => 'root',
-                group  => 'root',
-                mode   => '0555',
-                source => 'puppet:///modules/ldap/scripts/ssh-key-ldap-lookup-python2.py',
-            }
-        } else {
-            file { '/usr/sbin/ssh-key-ldap-lookup':
-                owner  => 'root',
-                group  => 'root',
-                mode   => '0555',
-                source => 'puppet:///modules/ldap/scripts/ssh-key-ldap-lookup.py',
-            }
+        file { '/usr/sbin/ssh-key-ldap-lookup':
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0555',
+            source => 'puppet:///modules/ldap/scripts/ssh-key-ldap-lookup.py',
         }
+
         # For security purposes, sshd will only run ssh-key-ldap-lookup as the 'ssh-key-ldap-lookup' user.
         user { 'ssh-key-ldap-lookup':
             ensure => present,
