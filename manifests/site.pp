@@ -1479,6 +1479,10 @@ node /^mc20(19|2[0-9]|3[0-6])\.codfw\.wmnet/ {
     role(mediawiki::memcached)
 }
 
+node 'mc2037.codfw.wmnet' {
+    role(insetup)
+}
+
 node /^mc-gp100[1-3]\.eqiad\.wmnet/ {
     role(mediawiki::memcached::gutter)
 }
