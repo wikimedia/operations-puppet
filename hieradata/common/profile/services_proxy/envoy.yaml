@@ -156,7 +156,6 @@ profile::services_proxy::envoy::listeners:
     upstream: "api-rw.discovery.wmnet"
     keepalive: "4s"
     timeout: "120s"
-    xfp: https
 # default listeners list used by the MW installations
 profile::services_proxy::envoy::enabled_listeners:
   - parsoid
