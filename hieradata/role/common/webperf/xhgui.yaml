@@ -3,3 +3,4 @@ profile::standard::admin_groups:
 profile::webperf::xhgui::mysql_host: 'm2-master.eqiad.wmnet'
 profile::webperf::xhgui::mysql_db: 'xhgui'
 profile::webperf::xhgui::mysql_user: 'xhgui'
+profile::webperf::xhgui::mysql_admin_user: 'xhguiadmin'

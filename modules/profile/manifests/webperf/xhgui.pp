@@ -1,8 +1,5 @@
 # == Class: profile::webperf::xhgui
 #
-# This class is still a work in progress!
-# See https://phabricator.wikimedia.org/T180761.
-#
 # Provision XHGui, a graphical interface for XHProf data
 # built on MongoDB. Used by the Performance Team.
 #
@@ -10,16 +7,17 @@
 # to expose the service at <https://performance.wikimedia.org/xhgui/>.
 #
 class profile::webperf::xhgui (
-    Hash $ldap_config        = lookup('ldap', Hash, hash, {}),
-    Stdlib::Fqdn $mysql_host = lookup('profile::webperf::xhgui::mysql_host'),
-    String $mysql_db         = lookup('profile::webperf::xhgui::mysql_db'),
-    String $mysql_user       = lookup('profile::webperf::xhgui::mysql_user'),
-    String $mysql_password   = lookup('profile::webperf::xhgui::mysql_password'),
+    Hash $ldap_config            = lookup('ldap', Hash, hash, {}),
+    Stdlib::Fqdn $mysql_host     = lookup('profile::webperf::xhgui::mysql_host'),
+    String $mysql_db             = lookup('profile::webperf::xhgui::mysql_db'),
+    String $mysql_user           = lookup('profile::webperf::xhgui::mysql_user'),
+    String $mysql_password       = lookup('profile::webperf::xhgui::mysql_password'),
+    String $mysql_admin_user     = lookup('profile::webperf::xhgui::mysql_admin_user'),
+    String $mysql_admin_password = lookup('profile::webperf::xhgui::mysql_admin_password'),
 ) {
     include passwords::ldap::production
 
-    # Package xhgui (and dependencies) is built from performance/debs
-    ensure_packages(['libapache2-mod-php7.3', 'php7.3-mysql'])
+    ensure_packages(['libapache2-mod-php7.3', 'php7.3-mysql', 'mariadb-client'])
 
     # php-twig 1.24.0 is from stretch.  We've rebuilt it for buster but the
     # older version needs to be pinned in order for apt to use it.  (xhgui is
@@ -33,6 +31,7 @@ class profile::webperf::xhgui (
         }
     }
 
+    # Package xhgui (and dependencies) is built from performance/debs
     package { 'xhgui':
         ensure => 'present',
     }
@@ -78,4 +77,15 @@ class profile::webperf::xhgui (
     }
 
     base::service_auto_restart { 'apache2': }
+
+    if $::realm == 'production' {
+        $::admin::data['groups']['perf-team']['members'].each |String $user| {
+            file { "/home/${user}/.my.cnf":
+                content => template('profile/webperf/xhgui/my.cnf.erb'),
+                owner   => $user,
+                group   => 'root',
+                mode    => '0440',
+            }
+        }
+    } # else labs, which uses LDAP
 }
