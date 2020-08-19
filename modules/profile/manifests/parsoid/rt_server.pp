@@ -2,7 +2,7 @@
 
 # This instantiates testreduce::server
 class profile::parsoid::rt_server (
-    Variant[Enum['running', 'stopped'], Boolean] $service_ensure = lookup('profile::parsoid::rt_server::service_ensure'),
+    Stdlib::Ensure::Service $service_ensure = lookup('profile::parsoid::rt_server::service_ensure'),
 ){
     include ::testreduce
     include ::passwords::testreduce::mysql

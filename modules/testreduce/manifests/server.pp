@@ -27,15 +27,15 @@
 # [*service_ensure*]
 #    The usual parameter to ensure the service is stopped or running. Default: running
 define testreduce::server(
-    $instance_name,
-    $db_name,
-    $db_user,
-    $db_pass,
-    $db_host        = 'localhost',
-    $db_port        = 3306,
-    $coord_port     = 8002,
-    $webapp_port    = 8003,
-    $service_ensure = 'running',
+    String $instance_name,
+    String $db_name,
+    String $db_user,
+    String $db_pass,
+    Stdlib::Fqdn $db_host = 'localhost',
+    Stdlib::Port $db_port = 3306,
+    Stdlib::Port $coord_port = 8002,
+    Stdlib::Port $webapp_port = 8003,
+    Stdlib::Ensure::Service $service_ensure = 'running',
 ) {
     file { "/etc/testreduce/${instance_name}.settings.js":
         # FIXME: Ideally this would be testreduce/settings.js.rb
