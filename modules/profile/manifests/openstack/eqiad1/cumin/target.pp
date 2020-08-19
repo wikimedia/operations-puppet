@@ -41,6 +41,13 @@ class profile::openstack::eqiad1::cumin::target(
         content => template('profile/openstack/eqiad1/cumin/userkey.erb'),
     }
 
+    ssh::userkey { 'root-cloud-cumin':
+        ensure  => present,
+        user    => 'root',
+        skey    => 'cloud_cumin',
+        content => secret('keyholder/cloud-cumin_master.pub'),
+    }
+
     if $project_masters_str != '' {
         ferm::conf { 'cumin-project-defs':
             content => "@def \$CUMIN_MASTERS = (${cumin_masters.join(' ')} ${project_masters_str});\n",

@@ -29,6 +29,12 @@ define profile::mariadb::ferm (
         notrack => true,
         srange  => '@resolve((dborch1001.wikimedia.org))',
     }
+    ferm::service{ "${prefix}mariadb_internal_labs":
+        proto   => 'tcp',
+        port    => $port,
+        notrack => true,
+        srange  => '172.16.0.0/12',
+    }
 
     # auxiliary port
     if $port == '3306' {

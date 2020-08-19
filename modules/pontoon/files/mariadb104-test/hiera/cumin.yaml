@@ -1,4 +1,4 @@
 cumin_masters:
   - 172.16.4.160 # cloud-cumin-03.cloudinfra.eqiad1.wikimedia.cloud
   - 172.16.2.249 # cloud-cumin-04.cloudinfra.eqiad1.wikimedia.cloud
-  - 172.16.2.34  # cumin.mariadb104-test.eqiad.wmflabs
+  - 172.16.6.101 # cumin.mariadb104-test.eqiad.wmflabs

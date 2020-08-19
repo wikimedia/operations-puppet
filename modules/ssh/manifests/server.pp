@@ -18,7 +18,7 @@ class ssh::server (
     Stdlib::Port                 $listen_port              = 22,
     Array[Stdlib::IP::Address]   $listen_addresses         = [],
     Ssh::Config::PermitRootLogin $permit_root              = true,
-    Array[Stdlib::Unixpath]      $authorized_keys_file     = ['/etc/ssh/userkeys/%u', '/etc/ssh/userkeys/%u.d/cumin'],
+    Array[Stdlib::Unixpath]      $authorized_keys_file     = ['/etc/ssh/userkeys/%u', '/etc/ssh/userkeys/%u.d/cumin', '/etc/ssh/userkeys/%u.d/cloud_cumin'],
     Stdlib::Unixpath             $authorized_keys_command  = '/usr/sbin/ssh-key-ldap-lookup',
     Boolean                      $disable_nist_kex         = true,
     Boolean                      $explicit_macs            = true,
