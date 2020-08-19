@@ -42,3 +42,4 @@ profile::base::monitor_systemd: false
 profile::mediawiki::php::monitoring::monitor_opcache: false
 
 profile::parsoid::vd_server::service_ensure: 'running'
+profile::parsoid::rt_server::service_ensure: 'running'

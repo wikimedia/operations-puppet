@@ -8,6 +8,7 @@ admin::groups:
 
 parsoid::testing::parsoid_port: 8142
 profile::parsoid::vd_server::service_ensure: 'stopped'
+profile::parsoid::rt_server::service_ensure: 'stopped'
 
 parsoid::testing::default_api_proxy_uri: 'http://api-rw.discovery.wmnet'
 
