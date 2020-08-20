@@ -5,6 +5,7 @@ profile::lvs::realserver::pools:
   ores:
     services:
       - uwsgi-ores
+      - envoyproxy
 
 profile::ores::celery::workers: 90
 
