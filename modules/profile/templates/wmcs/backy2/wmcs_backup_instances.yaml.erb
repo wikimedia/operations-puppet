@@ -7,13 +7,23 @@ exclude_servers:
  cloudvirt-canary:
    - ".*"
  integration:
-   - "^integration-agent.*"
+   - "^integration-agent.*$"
  mwoffliner:
+   - ".*"
+ paws:
+   - "^paws-k8s-worker.*$"
+ sre-sandbox:
    - ".*"
  tools:
    - "^.*worker.*$"
-   - "tools-sgeexec-.*$"
+   - "^tools-sgeexec-.*$"
    - "^.*sgewebgrid-lighttpd.*$"
+ toolsbeta:
+   - "^.*worker.*$"
+   - "^tools-sgeexec-.*$"
+   - "^.*sgewebgrid-lighttpd.*$"
+ transferpy-test:
+   - ".*"
  video:
    - "encoding.*$"
 
