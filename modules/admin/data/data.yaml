@@ -4421,3 +4421,7 @@ ldap_only_users:
     ensure: present
     realname: Alex Stinson
     email: astinson@wikimedia.org
+  cwylo:
+    ensure: present
+    realname: Claudia Lo
+    email: clo@wikimedia.org
