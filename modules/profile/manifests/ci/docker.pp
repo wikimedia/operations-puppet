@@ -3,6 +3,7 @@
 # Configures a host to be a docker-backed Jenkins agent
 #
 class profile::ci::docker(
+    $jenkins_agent_username = lookup('jenkins_agent_username'),
     $settings = lookup('profile::ci::docker::settings'),
 ) {
     # Let us elevate permissions to the user running a containerized process
@@ -36,6 +37,17 @@ class profile::ci::docker(
     class { '::docker':
         package_name => $docker_package,
         version      => $docker_version,
+    }
+
+    if $::realm == 'labs' {
+        # ensure jenkins-deploy membership in the docker group
+        exec { 'jenkins user docker membership':
+            unless  => "/usr/bin/id -Gn '${jenkins_agent_username}' | /bin/grep -qw 'docker'",
+            command => "/usr/sbin/usermod -aG docker '${jenkins_agent_username}'",
+            require => [
+                Package['docker-ce'],
+            ],
+        }
     }
 
     # Ship the entire docker iptables configuration via ferm
