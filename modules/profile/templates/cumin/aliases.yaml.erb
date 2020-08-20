@@ -287,7 +287,7 @@ wikireplicas-all: P{O:labs::db::wikireplica_analytics or O:labs::db::wikireplica
 wikireplicas-analytics: P{O:labs::db::wikireplica_analytics}
 wikireplicas-dedicated: P{O:labs::db::wikireplica_analytics::dedicated}
 wikireplicas-web: P{O:labs::db::wikireplica_web}
-xhgui: P{O:xhgui::app}
+xhgui: P{O:webperf::xhgui}
 zookeeper-main-eqiad: P{O:configcluster_stretch} and A:eqiad
 zookeeper-main-codfw: P{O:configcluster} and A:codfw
 zookeeper-druid-public: P{O:druid::public::worker} and P{C:profile::zookeeper::server}
