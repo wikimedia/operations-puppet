@@ -5,12 +5,17 @@
 # [*instance_name*]
 #   Name of the testreduce client service
 #
+# [*service_ensure*]
+#   Should the service be 'running' or 'stopped'.
+#   Default: 'running'
+#
 # [*parsoid_port*]
 #   Port number on localhost when using Parsoid/JS
 #
 define testreduce::client(
-    $instance_name,
+    String $instance_name,
     Stdlib::Port $parsoid_port,
+    Stdlib::Ensure::Service $service_ensure = 'running',
 ) {
     file { "/etc/testreduce/${instance_name}.config.js":
         content => template("testreduce/${instance_name}.config.js.erb"),
@@ -29,6 +34,6 @@ define testreduce::client(
     }
 
     service { $instance_name:
-        ensure => running,
+        ensure => $service_ensure,
     }
 }
