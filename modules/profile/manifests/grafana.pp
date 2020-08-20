@@ -48,6 +48,7 @@ class profile::grafana (
             secret_key       => $secret_key,
             admin_password   => $admin_password,
             disable_gravatar => true,
+            cookie_secure    => true,
         },
 
         # Disabled auth.basic, because it conflicts with auth.proxy.
@@ -68,12 +69,6 @@ class profile::grafana (
             auto_assign_org_role => 'Editor',
             allow_org_create     => false,
             allow_sign_up        => false,
-        },
-
-        'session'    => {
-            provider      => 'file',
-            file          => 'sessions.db',
-            cookie_secure => true,
         },
 
         # We don't like it when software phones home.

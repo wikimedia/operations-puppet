@@ -3,8 +3,6 @@
 profile::grafana::config:
   panels:
     disable_sanitize_html: true
-  security:
-    cookie_secure: true
 
 lookup_options:
   profile::grafana::config:
