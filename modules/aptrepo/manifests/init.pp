@@ -47,13 +47,14 @@ class aptrepo (
     $authorized_keys = [],
 ) {
 
-    package { 'reprepro':
-        ensure => present,
-    }
-
-    if os_version('debian >= buster') {
-        require_package('python-apt')
-    }
+    require_package(
+        'reprepro',
+        'dpkg-dev',
+        'dctrl-tools',
+        'gnupg',
+        'python-apt',
+        'bsd-mailx', # mail(1) is needed to send a notification mail after package imports
+    )
 
     $deb822_validate_cmd = '/usr/bin/python -c "import apt_pkg; f=\'%\'; list(apt_pkg.TagFile(f))"'
 
@@ -203,18 +204,21 @@ class aptrepo (
         }
     }
 
-    # mail(1) is needed to send a notification mail after package imports
-    if os_version('debian >= buster') {
-        require_package('bsd-mailx')
+    file { '/root/.gnupg/reprepro-updates-keys.d':
+        ensure  => directory,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0550',
+        recurse => true,
+        purge   => true,
+        source  => 'puppet:///modules/aptrepo/updates-keys',
+        notify  => Exec['reprepro-import-updates-keys'],
     }
 
-    # apt repository managements tools
-    package { [
-        'dpkg-dev',
-        'dctrl-tools',
-        'gnupg',
-        ]:
-        ensure => present,
+    exec { 'reprepro-import-updates-keys':
+        refreshonly => true,
+        provider    => 'shell',
+        command     => '/usr/bin/gpg --import /root/.gnupg/reprepro-updates-keys.d/*.gpg',
     }
 
     file_line { 'reprepro_basedir':
