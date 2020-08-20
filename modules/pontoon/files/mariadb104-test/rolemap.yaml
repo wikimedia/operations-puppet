@@ -2,16 +2,16 @@
 # 'pontoon::stack' variable must be also set in hiera (e.g.
 # hieradata/pontoon.yaml) with the name of the stack to use.
 puppetmaster::pontoon:
-  - puppetmaster.mariadb104-test.eqiad.wmflabs
+  - puppetmaster.mariadb104-test.eqiad1.wikimedia.cloud
 
 puppetmaster::puppetdb:
-  - puppetdb.mariadb104-test.eqiad.wmflabs
+  - puppetdb.mariadb104-test.eqiad1.wikimedia.cloud
 
 cluster::management:
-  - cumin.mariadb104-test.eqiad.wmflabs
+  - cumin.mariadb104-test.eqiad1.wikimedia.cloud
 
 mariadb::misc::db_inventory:
-  - zarcillo0.mariadb104-test.eqiad.wmflabs
-  - zarcillo1.mariadb104-test.eqiad.wmflabs
-  - slave1.mariadb104-test.eqiad.wmflabs
-  - slave2.mariadb104-test.eqiad.wmflabs
+  - zarcillo0.mariadb104-test.eqiad1.wikimedia.cloud
+  - zarcillo1.mariadb104-test.eqiad1.wikimedia.cloud
+  - slave1.mariadb104-test.eqiad1.wikimedia.cloud
+  - slave2.mariadb104-test.eqiad1.wikimedia.cloud
