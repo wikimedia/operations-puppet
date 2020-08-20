@@ -44,6 +44,6 @@ for project in openstackclients.allprojects():
             not_in_ceph.append(server)
 
     if not_in_ceph:
-        logging.warning("In project %s the following servers are not in ceph:")
+        logging.warning("In project %s the following servers are not in ceph:" % project.id)
         for server in not_in_ceph:
             logging.warning(" - %s (%s)" % (server.name, server.id))

@@ -72,7 +72,7 @@ def _differential_backup(pool, volume, last_snap, backy_snap_version_uid, expire
         )
 
         # Now that we have the diff we don't need the old snapshot.  Delete it.
-        subprocess.run([RBD, "rm", "%s/%s@%s" % (pool, volume, last_snap)])
+        subprocess.run([RBD, "snap", "rm", "%s/%s@%s" % (pool, volume, last_snap)])
 
         subprocess.run(
             [
