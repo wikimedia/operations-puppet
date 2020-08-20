@@ -32,6 +32,7 @@ class profile::wikidough (
         allow_from               => ['127.0.0.0/8'],
         max_tcp_per_client       => 0,
         client_tcp_timeout       => 5,
+        dnssec                   => 'validate',
         allow_forward_zones      => false,
         allow_incoming_ecs       => true,
         allow_qname_minimisation => true,
