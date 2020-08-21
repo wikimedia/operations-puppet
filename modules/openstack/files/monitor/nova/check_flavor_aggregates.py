@@ -45,7 +45,7 @@ def check_flavors():
 
     if orphan_flavors:
         return (
-            WARNING,
+            CRITICAL,
             "Some flavors are not assigned to aggregates: " + ", ".join(orphan_flavors),
         )
 
