@@ -1,7 +1,7 @@
 class profile::zuul::merger(
-    $conf_common = hiera('zuul::common'),
-    $conf_merger = hiera('profile::zuul::merger::conf'),
-    $ferm_srange = hiera('profile::zuul::merger::ferm_srange'),
+    Hash $conf_common = lookup('zuul::common'),
+    Hash $conf_merger = lookup('profile::zuul::merger::conf'),
+    String $ferm_srange = lookup('profile::zuul::merger::ferm_srange'),
     Enum['stopped', 'running', 'masked'] $ensure_service = lookup('profile::zuul::merger::ensure_service'),
 ) {
 

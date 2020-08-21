@@ -1,10 +1,10 @@
 class profile::zuul::server(
-    $conf_common = lookup('zuul::common'),
-    $conf_server = lookup('profile::zuul::server::conf'),
-    $service_enable = lookup('profile::zuul::server::service_enable', {default_value => true}),
-    $service_ensure = lookup('profile::zuul::server::service_ensure', {default_value => 'running'}),
-    $email_server = lookup('profile::zuul::server::email_server'),
-    $prometheus_nodes = lookup('prometheus_nodes'),
+    Hash $conf_common = lookup('zuul::common'),
+    Hash $conf_server = lookup('profile::zuul::server::conf'),
+    Variant[Enum['mask', 'manual'], Boolean] $service_enable = lookup('profile::zuul::server::service_enable', {default_value => true}),
+    Variant[Enum['running', 'stopped'], Boolean] $service_ensure = lookup('profile::zuul::server::service_ensure', {default_value => 'running'}),
+    Stdlib::Fqdn $email_server = lookup('profile::zuul::server::email_server'),
+    Array[Stdlib::Fqdn] $prometheus_nodes = lookup('prometheus_nodes'),
 ) {
     system::role { 'zuul::server': description => 'Zuul server (scheduler)' }
 
