@@ -81,8 +81,11 @@ def get_gerrit_blob(url):
 
     """
     req = urllib2.urlopen(url)
-    # unsure why but the response from gerrit always starts with the following 4 chars: )]}\
-    return json.loads(req.read()[4:])
+    # To prevent against Cross Site Script Inclusion (XSSI) attacks, the JSON response
+    # body starts with a magic prefix line: `)]}'` that must be stripped before feeding the
+    # rest of the response body to a JSON
+    # https://gerrit-review.googlesource.com/Documentation/rest-api.html#output
+    return json.loads(req.read().split(b'\n', 1)[1])
 
 
 def get_change_number(change_id):
