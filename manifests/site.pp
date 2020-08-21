@@ -1033,7 +1033,7 @@ node 'neon.eqiad.wmnet' {
 }
 
 # Kubernetes for flink in k8s T258745
-node 'kubernetes2017.odfw.labnet' {
+node 'kubernetes2017.codfw.wmnet' {
     role(insetup)
 }
 
@@ -1207,6 +1207,11 @@ node /^alert[12]001\.wikimedia\.org$/ {
 # Phabricator
 node /^(phab1001\.eqiad|phab2001\.codfw)\.wmnet$/ {
     role(phabricator)
+}
+
+# New pki server T259825
+node 'pki2001.codfw.wmnet' {
+    role(insetup)
 }
 
 node /kafka-main100[4-5]\.eqiad\.wmnet/ {
