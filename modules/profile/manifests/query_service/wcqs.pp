@@ -30,6 +30,24 @@ class profile::query_service::wcqs(
     $blazegraph_port = 9999
     $prometheus_port = 9195
     $prometheus_agent_port = 9102
+    $query_event_log='/var/log/wdqs/query_event.log'
+
+
+    $uri_scheme_options = ['-DwikibaseConceptUri=http://www.wikidata.org', '-DcommonsConceptUri=https://commons.wikimedia.org']
+    $event_sender_options = ['-Dwdqs.event-sender-filter.file-event-sender=true',
+        "-Dwdqs.event-sender-filter.file-event-sender-filepath=${query_event_log}",
+        '-Dwdqs.event-sender-filter.enable-event-sender-if-header=']
+
+    logrotate::rule { 'query_event_sender_log':
+      ensure        => present,
+      file_glob     => $query_event_log,
+      frequency     => 'weekly',
+      copy_truncate => true,
+      missing_ok    => true,
+      not_if_empty  => true,
+      rotate        => 7,
+      compress      => true,
+    }
 
     profile::query_service::blazegraph { $instance_name:
         username               => $username,
@@ -41,7 +59,7 @@ class profile::query_service::wcqs(
         heap_size              => $heap_size,
         use_deployed_config    => $use_deployed_config,
         options                => $options,
-        extra_jvm_opts         => $extra_jvm_opts + ['-DwikibaseConceptUri=http://www.wikidata.org', '-DcommonsConceptUri=https://commons.wikimedia.org'],
+        extra_jvm_opts         => $extra_jvm_opts + $uri_scheme_options + $event_sender_options,
         prometheus_nodes       => $prometheus_nodes,
         contact_groups         => $contact_groups,
         monitoring_enabled     => $monitoring_enabled,
