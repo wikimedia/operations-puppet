@@ -19,9 +19,9 @@
 #   Email address for cron errors (usually performance-team@wikimedia.org)
 #
 class profile::webperf::arclamp (
-    $redis_host = hiera('profiler::webperf::arclamp::redis_host'),
-    $redis_port = hiera('profiler::webperf::arclamp::redis_port'),
-    $errors_mailto = lookup('profile::webperf::arclamp::errors_mailto'),
+    Stdlib::Fqdn $redis_host = hiera('profiler::webperf::arclamp::redis_host'),
+    Stdlib::Port $redis_port = hiera('profiler::webperf::arclamp::redis_port'),
+    String $errors_mailto = lookup('profile::webperf::arclamp::errors_mailto'),
 ) {
     class { 'arclamp':
         redis_host    => $redis_host,

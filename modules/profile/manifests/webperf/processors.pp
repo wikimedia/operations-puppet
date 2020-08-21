@@ -13,9 +13,9 @@
 # - coal
 #
 class profile::webperf::processors(
-    $statsd = hiera('statsd'),
-    $graphite_host = hiera('graphite_host'),
-    $prometheus_nodes = hiera('prometheus_nodes')
+    String $statsd = hiera('statsd'),
+    Stdlib::Fqdn $graphite_host = hiera('graphite_host'),
+    Array[Stdlib::Fqdn] $prometheus_nodes = hiera('prometheus_nodes')
 ) {
     $statsd_parts = split($statsd, ':')
     $statsd_host = $statsd_parts[0]

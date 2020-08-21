@@ -10,11 +10,11 @@
 # to expose the service at <https://performance.wikimedia.org/xhgui/>.
 #
 class profile::webperf::xhgui (
-    $ldap_config    = lookup('ldap', Hash, hash, {}),
-    $mysql_host     = lookup('profile::webperf::xhgui::mysql_host'),
-    $mysql_db       = lookup('profile::webperf::xhgui::mysql_db'),
-    $mysql_user     = lookup('profile::webperf::xhgui::mysql_user'),
-    $mysql_password = lookup('profile::webperf::xhgui::mysql_password'),
+    Hash $ldap_config        = lookup('ldap', Hash, hash, {}),
+    Stdlib::Fqdn $mysql_host = lookup('profile::webperf::xhgui::mysql_host'),
+    String $mysql_db         = lookup('profile::webperf::xhgui::mysql_db'),
+    String $mysql_user       = lookup('profile::webperf::xhgui::mysql_user'),
+    String $mysql_password   = lookup('profile::webperf::xhgui::mysql_password'),
 ) {
     include ::passwords::ldap::production
 
