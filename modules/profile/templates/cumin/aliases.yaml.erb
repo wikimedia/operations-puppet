@@ -71,7 +71,7 @@ db-core-codfw: A:db-core and A:codfw
 db-core-eqiad: A:db-core and A:eqiad
 db-dbproxy: P{O:mariadb::proxy::master or O:mariadb::proxy::replicas}
 db-dbstore: P{O:mariadb::backup or O:mariadb::dbstore_multiinstance or O:mariadb::backups_and_dbstore_multiinstance}
-db-labsdb: P{O:labs::db::wikireplica_analytics or O:labs::db::wikireplica_web or O:labs::db::wikireplica_analytics::dedicated}
+db-labsdb: P{O:wmcs::db::wikireplicas::analytics or O:wmcs::db::wikireplicas::dedicated::analytics or O:wmcs::db::wikireplicas::web}
 db-misc-servers: P{O:mariadb::sanitarium_multiinstance}
 db-parsercache: P{O:mariadb::parsercache}
 dbmonitor: P{O:tendril}
@@ -283,10 +283,10 @@ wdqs-internal: P{O:wdqs::internal}
 wdqs-public: P{O:wdqs::public}
 wdqs-test: P{O:wdqs::test}
 webperf: P{O:webperf::processors_and_site or O:webperf::profiling_tools}
-wikireplicas-all: P{O:labs::db::wikireplica_analytics or O:labs::db::wikireplica_analytics::dedicated or O:labs::db::wikireplica_web}
-wikireplicas-analytics: P{O:labs::db::wikireplica_analytics}
-wikireplicas-dedicated: P{O:labs::db::wikireplica_analytics::dedicated}
-wikireplicas-web: P{O:labs::db::wikireplica_web}
+wikireplicas-all: P{O:wmcs::db::wikireplicas::analytics or O:wmcs::db::wikireplicas::dedicated::analytics or O:wmcs::db::wikireplicas::web}
+wikireplicas-analytics: P{O:wmcs::db::wikireplica::analytics}
+wikireplicas-dedicated: P{O:wmcs::db::wikireplicas::dedicated::analytics}
+wikireplicas-web: P{O:wmcs::db::wikireplicas::web}
 xhgui: P{O:webperf::xhgui}
 zookeeper-main-eqiad: P{O:configcluster_stretch} and A:eqiad
 zookeeper-main-codfw: P{O:configcluster} and A:codfw

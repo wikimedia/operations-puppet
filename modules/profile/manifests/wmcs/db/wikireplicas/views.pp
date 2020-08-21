@@ -1,9 +1,9 @@
 # deploy scripts and its dependencies to create replica views
-class profile::labs::db::views (
-    $view_user = hiera('profile::labs::db::views::maintainviews::user'),
-    $view_pass = hiera('profile::labs::db::views::maintainviews::db_pass'),
-    $idx_user = hiera('profile::labs::db::views::maintainindexes::user'),
-    $idx_pass = hiera('profile::labs::db::views::maintainindexes::db_pass'),
+class profile::wmcs::db::wikireplicas::views (
+    String $view_user = lookup('profile::wmcs::db::wikireplicas::views::maintainviews::user'),
+    String $view_pass = lookup('profile::wmcs::db::wikireplicas::views::maintainviews::db_pass'),
+    String $idx_user  = lookup('profile::wmcs::db::wikireplicas::maintainindexes::user'),
+    String $idx_pass  = lookup('profile::wmcs::db::wikireplicas::maintainindexes::db_pass'),
 ){
 
     package { [
@@ -17,7 +17,7 @@ class profile::labs::db::views (
 
     file { '/etc/maintain-views.yaml':
         ensure  => file,
-        content => template('profile/labs/db/views/maintain-views.yaml'),
+        content => template('profile/wmcs/db/wikireplicas/maintain-views.yaml'),
         owner   => 'root',
         group   => 'root',
         mode    => '0400',
@@ -25,7 +25,7 @@ class profile::labs::db::views (
 
     file { '/usr/local/sbin/maintain-views':
         ensure  => file,
-        source  => 'puppet:///modules/profile/labs/db/views/maintain-views.py',
+        source  => 'puppet:///modules/profile/wmcs/db/wikireplicas/views/maintain-views.py',
         owner   => 'root',
         group   => 'root',
         mode    => '0755',
@@ -36,7 +36,7 @@ class profile::labs::db::views (
 
     file { '/etc/index-conf.yaml':
         ensure  => file,
-        content => template('profile/labs/db/views/index-conf.yaml'),
+        content => template('profile/wmcs/db/wikireplicas/index-conf.yaml'),
         owner   => 'root',
         group   => 'root',
         mode    => '0400',
@@ -44,7 +44,7 @@ class profile::labs::db::views (
 
     file { '/usr/local/sbin/maintain-replica-indexes':
         ensure  => file,
-        source  => 'puppet:///modules/profile/labs/db/views/maintain_replica_indexes.py',
+        source  => 'puppet:///modules/profile/wmcs/db/wikireplicas/maintain_replica_indexes.py',
         owner   => 'root',
         group   => 'root',
         mode    => '0755',
@@ -55,7 +55,7 @@ class profile::labs::db::views (
 
     file { '/usr/local/sbin/maintain-meta_p':
         ensure  => file,
-        source  => 'puppet:///modules/profile/labs/db/views/maintain-meta_p.py',
+        source  => 'puppet:///modules/profile/wmcs/db/wikireplicas/maintain-meta_p.py',
         owner   => 'root',
         group   => 'root',
         mode    => '0755',
@@ -64,7 +64,7 @@ class profile::labs::db::views (
 
     file { '/usr/local/src/heartbeat-views.sql':
         ensure => file,
-        source => 'puppet:///modules/profile/labs/db/views/heartbeat-views.sql',
+        source => 'puppet:///modules/profile/wmcs/db/wikireplicas/heartbeat-views.sql',
         owner  => 'root',
         group  => 'root',
         mode   => '0755',

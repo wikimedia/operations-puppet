@@ -1,6 +1,6 @@
 # Deploy script and dependencies needed to check no private data
 # persists on the database
-class role::labs::db::check_private_data {
+class profile::mariadb::check_private_data {
 
     file { '/etc/mysql/private_tables.txt':
         ensure  => file,

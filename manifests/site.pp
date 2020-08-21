@@ -1348,19 +1348,19 @@ node /^cloudnet100[3-4]\.eqiad\.wmnet$/ {
     role(wmcs::openstack::eqiad1::net)
 }
 
-## labsdb dbs
+## wikireplicas dbs
 node 'labsdb1009.eqiad.wmnet' {
-    role(labs::db::wikireplica_web)
+    role(wmcs::db::wikireplicas::web)
 }
 node 'labsdb1010.eqiad.wmnet' {
-    role(labs::db::wikireplica_web)
+    role(wmcs::db::wikireplicas::web)
 }
 node 'labsdb1011.eqiad.wmnet' {
-    role(labs::db::wikireplica_analytics)
+    role(wmcs::db::wikireplicas::analytics)
 }
 
 node 'labsdb1012.eqiad.wmnet'{
-    role(labs::db::wikireplica_analytics::dedicated)
+    role(wmcs::db::wikireplicas::dedicated::analytics)
 }
 
 node /labstore100[45]\.eqiad\.wmnet/ {
