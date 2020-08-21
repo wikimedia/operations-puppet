@@ -1,17 +1,42 @@
-# wikistats - mediawiki statistics site
+# wikistats - a mediawiki statistics site
 #
-# this sets up a site with statistics about
-# as many public mediawiki installs as possible
-# not just WMF wikis, but any mediawiki
+# https://wikistats.wmcloud.org
 #
-# this is https://wikistats.wmflabs.org and will likely
-# forever stay a labs project but be semi production
-# results from it are used for WMF projects since
+# This sets up a site with statistics about
+# as many public MediaWiki installs as possible.
 #
-# it started out as an external project to create
+# It runs on instance in the 'cloud VPS' project 'wikistats'.
+#
+# You can control this instance via https://horizon.wikimedia.org
+# if you are a member or admin of the project.
+#
+#
+# I will likely stay a labs project forever although
+# results from it are used for some statistic tables
+# inside Wikipedia and other WMF wikis.
+#
+# If it goes down it would be missed but it will not cause
+# any issues for production wikis. Just some outdated tables.
+#
+# The matching software is in another repo:
+# operations/debs/wikistats which you can clone from Gerrit.
+#
+# git clone "https://gerrit.wikimedia.org/r/operations/debs/wikistats"
+#
+# Despite the repo name it is not an actual deb package any longer.
+# It gets deployed by simple git clone of PHP files and a local
+# deployment script that is also in the repo itself.
+#
+# This started out as an external project to create
 # wiki syntax tables for pages like "List of largest wikis"
 # on meta and several similar ones for other projects
-# not to be confused with stats.wm by analytics
+#
+# Not to be confused with stats.wikimedia.org and wikistats2
+# run by the WMF Analytics team.
+#
+# To report bugs use https://phabricator.wikimedia.org and
+# tag a ticket with 'VPS-project-Wikistats'.
+#
 class wikistats (
     Stdlib::Fqdn $wikistats_host,
 ) {

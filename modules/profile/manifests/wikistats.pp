@@ -1,7 +1,16 @@
-# this is labs-only - wikistats.wmflabs.org (dzahn)
-# NOT stats.wikimedia.org (analytics)
-# these projects are often confused
+# https://wikistats.wmcloud.org
 #
+# This is a historic cloud-only project.
+#
+# It is NOT stats.wikimedia.org or wikistats2
+# run by the WMF Analytics team.
+#
+# These projects are unrelated despite the
+# similar names.
+#
+# maintainer: dzahn
+# phabricator-tag: VPS-project-Wikistats
+# filtertags: labs-project-wikistats
 class profile::wikistats {
 
     motd::script { 'deployment_info':

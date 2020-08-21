@@ -1,8 +1,16 @@
-# wikistats host role class
-# this is labs-only - https://wikistats.wmflabs.org (dzahn)
-# NOT stats.wikimedia.org (analytics)
-# these projects are often confused
+# role to setup a wikistats instance on a cloud VPS
+# https://wikistats.wmcloud.org
 #
+# This is a historic cloud-only project.
+#
+# It is NOT stats.wikimedia.org or wikistats2
+# run by the WMF Analytics team.
+#
+# These projects are unrelated despite the
+# similar names.
+#
+# maintainer: dzahn
+# phabricator-tag: VPS-project-Wikistats
 # filtertags: labs-project-wikistats
 class role::wikistats::instance {
 
