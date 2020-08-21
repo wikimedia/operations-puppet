@@ -1,17 +1,17 @@
 class profile::openstack::base::puppetmaster::backend(
     Array[Stdlib::Fqdn] $openstack_controllers = lookup('profile::openstack::base::openstack_controllers'),
     Array[Stdlib::Fqdn] $designate_hosts = lookup('profile::openstack::base::designate_hosts'),
-    $puppetmaster_webhostname = hiera('profile::openstack::base::puppetmaster::web_hostname'),
-    $puppetmaster_hostname = hiera('profile::openstack::base::puppetmaster_hostname'),
-    $puppetmaster_ca = hiera('profile::openstack::base::puppetmaster::ca'),
-    $puppetmasters = hiera('profile::openstack::base::puppetmaster::servers'),
-    $encapi_db_host = hiera('profile::openstack::base::puppetmaster::encapi::db_host'),
-    $encapi_db_name = hiera('profile::openstack::base::puppetmaster::encapi::db_name'),
-    $encapi_db_user = hiera('profile::openstack::base::puppetmaster::encapi::db_user'),
-    $encapi_db_pass = hiera('profile::openstack::base::puppetmaster::encapi::db_pass'),
-    $encapi_statsd_prefix = hiera('profile::openstack::base::puppetmaster::encapi::statsd_prefix'),
-    $statsd_host = hiera('profile::openstack::base::statsd_host'),
-    $labweb_hosts = hiera('profile::openstack::base::labweb_hosts'),
+    $puppetmaster_webhostname = lookup('profile::openstack::base::puppetmaster::web_hostname'),
+    $puppetmaster_hostname = lookup('profile::openstack::base::puppetmaster_hostname'),
+    $puppetmaster_ca = lookup('profile::openstack::base::puppetmaster::ca'),
+    $puppetmasters = lookup('profile::openstack::base::puppetmaster::servers'),
+    $encapi_db_host = lookup('profile::openstack::base::puppetmaster::encapi::db_host'),
+    $encapi_db_name = lookup('profile::openstack::base::puppetmaster::encapi::db_name'),
+    $encapi_db_user = lookup('profile::openstack::base::puppetmaster::encapi::db_user'),
+    $encapi_db_pass = lookup('profile::openstack::base::puppetmaster::encapi::db_pass'),
+    $encapi_statsd_prefix = lookup('profile::openstack::base::puppetmaster::encapi::statsd_prefix'),
+    $statsd_host = lookup('profile::openstack::base::statsd_host'),
+    $labweb_hosts = lookup('profile::openstack::base::labweb_hosts'),
     ) {
 
     require ::profile::conftool::client

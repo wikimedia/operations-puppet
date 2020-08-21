@@ -1,16 +1,16 @@
 class profile::openstack::base::puppetmaster::common(
     Array[Stdlib::Fqdn] $openstack_controllers = lookup('profile::openstack::base::puppetmaster::common::openstack_controllers'),
     Array[Stdlib::Fqdn] $designate_hosts = lookup('profile::openstack::base::puppetmaster::common::designate_hosts'),
-    $puppetmaster_webhostname = hiera('profile::openstack::base::puppetmaster::web_hostname'),
-    $puppetmaster_hostname = hiera('profile::openstack::base::puppetmaster::common::puppetmaster_hostname'),
-    $puppetmasters = hiera('profile::openstack::base::puppetmaster::common::puppetmasters'),
-    $encapi_db_host = hiera('profile::openstack::base::puppetmaster::common::encapi_db_host'),
-    $encapi_db_name = hiera('profile::openstack::base::puppetmaster::common::encapi_db_name'),
-    $encapi_db_user = hiera('profile::openstack::base::puppetmaster::common::encapi_db_user'),
-    $encapi_db_pass = hiera('profile::openstack::base::puppetmaster::common::encapi_db_pass'),
-    $encapi_statsd_prefix = hiera('profile::openstack::base::puppetmaster::common::encapi_statsd_prefix'),
-    $statsd_host = hiera('profile::openstack::base::puppetmaster::common::statsd_host'),
-    $labweb_hosts = hiera('profile::openstack::base::labweb_hosts'),
+    $puppetmaster_webhostname = lookup('profile::openstack::base::puppetmaster::web_hostname'),
+    $puppetmaster_hostname = lookup('profile::openstack::base::puppetmaster::common::puppetmaster_hostname'),
+    $puppetmasters = lookup('profile::openstack::base::puppetmaster::common::puppetmasters'),
+    $encapi_db_host = lookup('profile::openstack::base::puppetmaster::common::encapi_db_host'),
+    $encapi_db_name = lookup('profile::openstack::base::puppetmaster::common::encapi_db_name'),
+    $encapi_db_user = lookup('profile::openstack::base::puppetmaster::common::encapi_db_user'),
+    $encapi_db_pass = lookup('profile::openstack::base::puppetmaster::common::encapi_db_pass'),
+    $encapi_statsd_prefix = lookup('profile::openstack::base::puppetmaster::common::encapi_statsd_prefix'),
+    $statsd_host = lookup('profile::openstack::base::puppetmaster::common::statsd_host'),
+    $labweb_hosts = lookup('profile::openstack::base::labweb_hosts'),
     ) {
 
     # array of puppetmasters
