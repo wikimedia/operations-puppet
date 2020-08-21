@@ -8,7 +8,8 @@ class profile::doc {
     require_package(['php-fpm', 'php-xml'])
 
     class { '::httpd':
-        modules => ['headers',
+        modules => ['setenvif',
+                    'headers',
                     'rewrite',
                     'proxy',
                     'proxy_fcgi'],
