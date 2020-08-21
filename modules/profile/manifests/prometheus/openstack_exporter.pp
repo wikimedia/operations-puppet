@@ -1,17 +1,18 @@
 class profile::prometheus::openstack_exporter (
-    Array[Stdlib::Host] $prometheus_nodes = lookup('prometheus_nodes'),
-    $cpu_allocation_ratio = hiera('profile::prometheus::cpu_allocation_ratio'),
-    $ram_allocation_ratio = hiera('profile::prometheus::ram_allocation_ratio'),
-    $disk_allocation_ratio = hiera('profile::prometheus::disk_allocation_ratio'),
-    $listen_port = hiera('profile::prometheus::listen_port'),
-    $cache_refresh_interval = hiera('profile::prometheus::cache_refresh_interval'),
-    $cache_file = hiera('profile::prometheus::cache_file'),
-    $sched_ram_mbs = hiera('profile::prometheus::sched_ram_mbs'),
-    $sched_vcpu = hiera('profile::prometheus::sched_vcpu'),
-    $sched_disk_gbs = hiera('profile::prometheus::sched_disk_gbs'),
-    $region = hiera('profile::prometheus::region'),
-    $observer_password = hiera('profile::prometheus::observer_password'),
-) {
+    Array[Stdlib::Host] $prometheus_nodes       = lookup('prometheus_nodes'),
+    Float               $cpu_allocation_ratio   = lookup('profile::prometheus::cpu_allocation_ratio'),
+    Float               $ram_allocation_ratio   = lookup('profile::prometheus::ram_allocation_ratio'),
+    Float               $disk_allocation_ratio  = lookup('profile::prometheus::disk_allocation_ratio'),
+    Stdlib::Port        $listen_port            = lookup('profile::prometheus::listen_port'),
+    Integer             $cache_refresh_interval = lookup('profile::prometheus::cache_refresh_interval'),
+    Stdlib::Unixpath    $cache_file             = lookup('profile::prometheus::cache_file'),
+    Integer             $sched_ram_mbs          = lookup('profile::prometheus::sched_ram_mbs'),
+    Integer             $sched_vcpu             = lookup('profile::prometheus::sched_vcpu'),
+    Integer             $sched_disk_gbs         = lookup('profile::prometheus::sched_disk_gbs'),
+    String              $region                 = lookup('profile::prometheus::region'),
+    String              $observer_password      = lookup('profile::prometheus::observer_password'),
+){
+
     require_package('prometheus-openstack-exporter')
 
     file { '/etc/prometheus-openstack-exporter.yaml':

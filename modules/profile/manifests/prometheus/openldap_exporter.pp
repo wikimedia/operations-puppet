@@ -1,7 +1,8 @@
 class profile::prometheus::openldap_exporter (
     Array[Stdlib::Host] $prometheus_nodes = lookup('prometheus_nodes'),
-    $monitor_pass = hiera('profile::prometheus::openldap_exporter::monitor_pass')
-) {
+    String $monitor_pass = lookup('profile::prometheus::openldap_exporter::monitor_pass')
+){
+
     $prometheus_ferm_nodes = join($prometheus_nodes, ' ')
     $ferm_srange = "(@resolve((${prometheus_ferm_nodes})) @resolve((${prometheus_ferm_nodes}), AAAA))"
 

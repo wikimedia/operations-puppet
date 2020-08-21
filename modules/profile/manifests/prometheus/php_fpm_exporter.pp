@@ -2,10 +2,10 @@
 #
 # Installs and configures the prometheus php-fpm exporter.
 class profile::prometheus::php_fpm_exporter (
-    Optional[Wmflib::UserIpPort] $fcgi_port = hiera('profile::php_fpm::fcgi_port', undef),
-    String $fcgi_pool = hiera('profile::mediawiki::fcgi_pool', 'www'),
-    Array[Stdlib::Host] $prometheus_nodes = lookup('prometheus_nodes'),
-) {
+    Optional[Wmflib::UserIpPort] $fcgi_port        = lookup('profile::php_fpm::fcgi_port', {'default_value' => undef}),
+    String                       $fcgi_pool        = lookup('profile::mediawiki::fcgi_pool', {'default_value' => 'www'}),
+    Array[Stdlib::Host]          $prometheus_nodes = lookup('prometheus_nodes'),
+){
 
     if $fcgi_port == undef {
         $fcgi_endpoint = "unix:///run/php/fpm-${fcgi_pool}.sock"

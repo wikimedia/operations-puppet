@@ -5,7 +5,7 @@
 # for all hosts that include this class.
 #
 class profile::prometheus::alerts (
-    $datacenters = hiera('datacenters'),
+    Array[String] $datacenters = lookup('datacenters'),
 ) {
 
     # Monitor Druid realtime ingestion event rate.

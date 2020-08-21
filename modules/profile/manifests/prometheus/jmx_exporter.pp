@@ -55,15 +55,15 @@
 #    prometheus jmx exporter in ferm rules.
 #
 define profile::prometheus::jmx_exporter (
-    $hostname,
-    $port,
-    Array[Stdlib::Host] $prometheus_nodes,
-    $config_file,
-    $config_dir = undef,
-    $content = undef,
-    $source  = undef,
-    $labels = {},
-    Array[String] $extra_ferm_allowed_nodes = [],
+    Stdlib::Host               $hostname,
+    Stdlib::Port               $port,
+    Array[Stdlib::Host]        $prometheus_nodes,
+    Stdlib::Unixpath           $config_file,
+    Optional[Stdlib::Unixpath] $config_dir = undef,
+    Optional[String]           $content = undef,
+    Optional[String]           $source  = undef,
+    Optional[Hash]             $labels = {},
+    Array[String]              $extra_ferm_allowed_nodes = [],
 ) {
     if $source == undef and $content == undef {
         fail('you must provide either "source" or "content"')

@@ -12,10 +12,11 @@
 #   Port to monitor elasticsearch on
 #
 define profile::prometheus::wmf_elasticsearch_exporter(
-    Array[String] $prometheus_nodes,
+    Array[Stdlib::Host] $prometheus_nodes,
     Stdlib::Port $prometheus_port,
     Stdlib::Port $elasticsearch_port,
-) {
+){
+
     $prometheus_nodes_ferm = join($prometheus_nodes, ' ')
 
     prometheus::wmf_elasticsearch_exporter { $title:

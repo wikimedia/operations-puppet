@@ -1,8 +1,9 @@
 class profile::prometheus::rabbitmq_exporter (
-    Array[Stdlib::Host] $prometheus_nodes = lookup('prometheus_nodes'),
-    $rabbit_monitor_username = hiera('profile::prometheus::rabbit_monitor_user'),
-    $rabbit_monitor_password = hiera('profile::prometheus::rabbit_monitor_pass'),
-) {
+    Array[Stdlib::Host] $prometheus_nodes        = lookup('prometheus_nodes'),
+    String              $rabbit_monitor_username = lookup('profile::prometheus::rabbit_monitor_user'),
+    String              $rabbit_monitor_password = lookup('profile::prometheus::rabbit_monitor_pass'),
+){
+
     $rabbit_host = 'localhost:15672'
 
     file { '/etc/prometheus/':

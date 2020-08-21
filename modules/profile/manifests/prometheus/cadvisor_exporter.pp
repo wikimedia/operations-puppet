@@ -1,7 +1,8 @@
 class profile::prometheus::cadvisor_exporter (
-  Stdlib::Port $port = lookup('profile::prometheus::cadvisor_exporter::port'),
-  Array[String] $prometheus_nodes = lookup('prometheus_nodes'),
-) {
+  Stdlib::Port        $port             = lookup('profile::prometheus::cadvisor_exporter::port'),
+  Array[Stdlib::Host] $prometheus_nodes = lookup('prometheus_nodes'),
+){
+
   class { 'prometheus::cadvisor_exporter':
     port   => $port,
     ensure => 'present',

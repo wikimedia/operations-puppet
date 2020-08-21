@@ -2,7 +2,7 @@
 # needed for WMF production
 #
 class profile::prometheus::k8s::staging (
-    $users = hiera('k8s_infrastructure_users'), # lint:ignore:wmf_styleguide
+    Hash $users = lookup('k8s_infrastructure_users'),
     String $replica_label = lookup('prometheus::replica_label', { 'default_value' => 'unset' }),
     Boolean $enable_thanos_upload = lookup('profile::prometheus::k8s::staging::thanos', { 'default_value' => false }),
     Optional[String] $thanos_min_time = lookup('profile::prometheus::thanos::min_time', { 'default_value' => undef }),

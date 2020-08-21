@@ -1,7 +1,8 @@
 class profile::prometheus::haproxy_exporter(
     Array[Stdlib::Host] $prometheus_nodes = lookup('prometheus_nodes'),
-    $listen_port = hiera('listen_port'),
-) {
+    Stdlib::Port $listen_port = lookup('listen_port'),
+){
+
     $prometheus_nodes_ferm = join($prometheus_nodes, ' ')
 
     class {
