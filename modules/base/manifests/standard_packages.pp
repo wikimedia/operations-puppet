@@ -91,9 +91,6 @@ class base::standard_packages {
         ensure => purged,
     }
 
-    # Can be dropped once jessie are gone, not installed by default in stretch onwards
-    package { 'at': ensure => purged }
-
     # real-hardware specific
     if $facts['is_virtual'] == false {
         # As of September 2015, mcelog still does not support newer AMD processors.
