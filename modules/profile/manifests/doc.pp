@@ -58,6 +58,17 @@ class profile::doc {
         mode   => '0755',
     }
 
+    # This is to prevent monitoring from alerting. The directory is empty until
+    # we have completed the migration of generated documentations. Once done,
+    # we should remove the file.
+    file { '/srv/doc/BACKMEUP':
+        ensure  => 'file',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => 'Placeholder for Bacula',
+    }
+
     backup::set { 'srv-doc': }
 
     class { '::rsync::server': }
