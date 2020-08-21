@@ -1032,6 +1032,11 @@ node 'neon.eqiad.wmnet' {
     role(kubernetes::staging::master)
 }
 
+# Kubernetes for flink in k8s T258745
+node 'kubernetes2017.odfw.labnet' {
+    role(insetup)
+}
+
 # Etherpad on buster (virtual machine)
 node 'etherpad1002.eqiad.wmnet' {
     role(etherpad)
