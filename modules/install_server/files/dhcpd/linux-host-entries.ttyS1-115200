@@ -3733,6 +3733,12 @@ host kubernetes2014 {
      option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
+host kubernetes2017 {
+     hardware ethernet 2C:EA:7F:4B:18:1D;
+     fixed-address kubernetes2017.codfw.wmnet;
+     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
+}
+
 host kubestage1001 {
      hardware ethernet 18:66:DA:A3:F3:13;
      fixed-address kubestage1001.eqiad.wmnet;
