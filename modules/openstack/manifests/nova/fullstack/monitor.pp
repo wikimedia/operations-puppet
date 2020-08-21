@@ -44,7 +44,7 @@ class openstack::nova::fullstack::monitor {
         description   => 'all nova flavors are assigned a flavor aggregate',
         require       => File['/usr/local/bin/check_flavor_aggregates'],
         timeout       => 180,
-        contact_group => 'wmcs-team,admins',
+        contact_group => 'wmcs-team-email,wmcs-bots',
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Host_aggregates';
     }
 }
