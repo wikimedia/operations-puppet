@@ -12,17 +12,15 @@ class pontoon::enc (
     }
 
     $stack_hiera = "/var/lib/git/operations/puppet/modules/pontoon/files/${stack}/hiera/"
-    file { '/etc/puppet/hieradata/pontoon/':
-        ensure  => find_file($stack_hiera) ? {
+    file { '/etc/puppet/hieradata/pontoon':
+        ensure => find_file($stack_hiera) ? {
                         undef   => 'absent',
-                        default => 'directory',
+                        default => 'link',
                   },
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        recurse => true,
-        source  => $stack_hiera,
-        links   => 'follow',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+        target => $stack_hiera,
     }
 
     file { '/usr/local/bin/puppet-enc':
