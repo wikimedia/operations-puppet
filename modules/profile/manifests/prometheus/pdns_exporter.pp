@@ -1,5 +1,5 @@
 class profile::prometheus::pdns_exporter (
-    Array[Stdlib::Fqdn] $prometheus_nodes = lookup('prometheus_nodes'),
+    Array[Stdlib::Host] $prometheus_nodes = lookup('prometheus_nodes'),
 ) {
     require_package('prometheus-pdns-exporter')
 

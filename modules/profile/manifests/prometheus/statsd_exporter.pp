@@ -1,5 +1,5 @@
 class profile::prometheus::statsd_exporter (
-    Array[String] $prometheus_nodes = hiera('prometheus_nodes'),
+    Array[Stdlib::Host] $prometheus_nodes = lookup('prometheus_nodes'),
     Array[Hash] $mappings = hiera('profile::prometheus::statsd_exporter::mappings'),
     String $relay_address = hiera('statsd'),
 ) {

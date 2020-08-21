@@ -1,5 +1,5 @@
 class profile::prometheus::rsyslog_exporter (
-    $prometheus_nodes = hiera('prometheus_nodes'),
+    Array[Stdlib::Host] $prometheus_nodes = lookup('prometheus_nodes'),
 ) {
     class { '::prometheus::rsyslog_exporter':
         listen_address => ':9105',

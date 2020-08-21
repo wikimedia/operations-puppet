@@ -1,5 +1,5 @@
 class profile::prometheus::rabbitmq_exporter (
-    Array[Stdlib::Fqdn] $prometheus_nodes = lookup('prometheus_nodes'),
+    Array[Stdlib::Host] $prometheus_nodes = lookup('prometheus_nodes'),
     $rabbit_monitor_username = hiera('profile::prometheus::rabbit_monitor_user'),
     $rabbit_monitor_password = hiera('profile::prometheus::rabbit_monitor_pass'),
 ) {

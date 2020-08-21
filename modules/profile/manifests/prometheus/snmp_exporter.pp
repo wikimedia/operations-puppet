@@ -1,7 +1,7 @@
 class profile::prometheus::snmp_exporter (
     # Allow Prometheus (ops instance) hosts to talk to netmon's snmp_exporter in
     # eqiad and codfw.
-    $prometheus_nodes = hiera('prometheus_all_nodes'),
+    Array[Stdlib::Host] $prometheus_nodes = lookup('prometheus_all_nodes'),
 ) {
     include passwords::network
 

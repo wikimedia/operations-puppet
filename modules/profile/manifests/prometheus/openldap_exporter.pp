@@ -1,5 +1,5 @@
 class profile::prometheus::openldap_exporter (
-    $prometheus_nodes = hiera('prometheus_nodes'),
+    Array[Stdlib::Host] $prometheus_nodes = lookup('prometheus_nodes'),
     $monitor_pass = hiera('profile::prometheus::openldap_exporter::monitor_pass')
 ) {
     $prometheus_ferm_nodes = join($prometheus_nodes, ' ')

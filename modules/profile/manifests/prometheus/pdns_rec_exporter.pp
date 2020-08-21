@@ -1,5 +1,5 @@
 class profile::prometheus::pdns_rec_exporter (
-    $prometheus_nodes = hiera('prometheus_nodes'),
+    Array[Stdlib::Host] $prometheus_nodes = lookup('prometheus_nodes'),
 ) {
     $prometheus_ferm_nodes = join($prometheus_nodes, ' ')
     $ferm_srange = "(@resolve((${prometheus_ferm_nodes})) @resolve((${prometheus_ferm_nodes}), AAAA))"

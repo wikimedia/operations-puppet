@@ -13,7 +13,7 @@
 #   Port to monitor elasticsearch on
 #
 define profile::prometheus::elasticsearch_exporter(
-    Array[String] $prometheus_nodes,
+    Array[Stdlib::Host] $prometheus_nodes,
     Stdlib::Port $prometheus_port,
     Stdlib::Port $elasticsearch_port,
 ) {

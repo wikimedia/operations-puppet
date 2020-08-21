@@ -8,7 +8,7 @@
 # filtertags: labs-project-deployment-prep
 
 class profile::prometheus::varnish_exporter(
-        $nodes = hiera('prometheus_nodes')
+    Array[Stdlib::Host] $nodes = lookup('prometheus_nodes')
 ) {
     $prometheus_ferm_nodes = join($nodes, ' ')
     $ferm_srange = "(@resolve((${prometheus_ferm_nodes})) @resolve((${prometheus_ferm_nodes}), AAAA))"

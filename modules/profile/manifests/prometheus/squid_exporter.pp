@@ -1,7 +1,7 @@
 # Installs prometheus-squid-exporter and open matching ACLs
 
 class profile::prometheus::squid_exporter (
-    Array[Stdlib::Fqdn] $prometheus_nodes = lookup('prometheus_nodes'),
+    Array[Stdlib::Host] $prometheus_nodes = lookup('prometheus_nodes'),
     Stdlib::HTTPUrl $http_proxy = lookup('http_proxy', {'default_value' => undef}),
 ) {
     $prometheus_ferm_nodes = join($prometheus_nodes, ' ')

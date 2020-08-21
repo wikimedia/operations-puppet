@@ -88,7 +88,7 @@ class profile::prometheus::global {
     }
 
     # Used for migrations / hardware refresh, but not continuously
-    $prometheus_nodes = hiera('prometheus_nodes')
+    $prometheus_nodes = lookup('prometheus_nodes')
     rsync::server::module { 'prometheus-global':
         ensure      => absent,
         path        => '/srv/prometheus/global/metrics',

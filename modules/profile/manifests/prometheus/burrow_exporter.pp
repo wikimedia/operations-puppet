@@ -17,7 +17,7 @@
 #  Default: 3
 #
 define profile::prometheus::burrow_exporter(
-    $prometheus_nodes,
+    Array[Stdlib::Host] $prometheus_nodes,
     $burrow_addr = 'localhost:8000',
     $hostname = '0.0.0.0',
     $port = '9000',

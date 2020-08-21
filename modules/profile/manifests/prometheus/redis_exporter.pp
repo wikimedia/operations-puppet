@@ -19,7 +19,7 @@
 #
 define profile::prometheus::redis_exporter (
     $password,
-    $prometheus_nodes,
+    Array[Stdlib::Host] $prometheus_nodes,
     $hostname = $::hostname,
     $port = $title + 10000,
     $arguments = '',

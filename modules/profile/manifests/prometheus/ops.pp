@@ -3,7 +3,7 @@
 #
 # filtertags: labs-project-monitoring
 class profile::prometheus::ops (
-    $prometheus_nodes = lookup('prometheus_nodes'),
+    Array[Stdlib::Host] $prometheus_nodes = lookup('prometheus_nodes'),
     $storage_retention = hiera('prometheus::server::storage_retention', '3024h'), # 4.5 months
     $max_chunks_to_persist = hiera('prometheus::server::max_chunks_to_persist', '524288'),
     $memory_chunks = hiera('prometheus::server::memory_chunks', '1048576'),

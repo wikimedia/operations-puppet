@@ -1,5 +1,5 @@
 class profile::prometheus::ipsec_exporter(
-    $prometheus_nodes = hiera('prometheus_nodes'),
+    Array[Stdlib::Host] $prometheus_nodes = lookup('prometheus_nodes'),
 ) {
     $prometheus_nodes_ferm = join($prometheus_nodes, ' ')
 

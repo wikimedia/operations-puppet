@@ -1,5 +1,5 @@
 class profile::prometheus::openstack_exporter (
-    Array[Stdlib::Fqdn] $prometheus_nodes = lookup('prometheus_nodes'),
+    Array[Stdlib::Host] $prometheus_nodes = lookup('prometheus_nodes'),
     $cpu_allocation_ratio = hiera('profile::prometheus::cpu_allocation_ratio'),
     $ram_allocation_ratio = hiera('profile::prometheus::ram_allocation_ratio'),
     $disk_allocation_ratio = hiera('profile::prometheus::disk_allocation_ratio'),

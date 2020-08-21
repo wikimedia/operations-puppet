@@ -57,7 +57,7 @@
 define profile::prometheus::jmx_exporter (
     $hostname,
     $port,
-    $prometheus_nodes,
+    Array[Stdlib::Host] $prometheus_nodes,
     $config_file,
     $config_dir = undef,
     $content = undef,

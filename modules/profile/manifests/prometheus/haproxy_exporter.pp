@@ -1,5 +1,5 @@
 class profile::prometheus::haproxy_exporter(
-    $prometheus_nodes = hiera('prometheus_nodes'),
+    Array[Stdlib::Host] $prometheus_nodes = lookup('prometheus_nodes'),
     $listen_port = hiera('listen_port'),
 ) {
     $prometheus_nodes_ferm = join($prometheus_nodes, ' ')

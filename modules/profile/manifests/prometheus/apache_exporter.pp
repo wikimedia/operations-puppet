@@ -1,5 +1,5 @@
 class profile::prometheus::apache_exporter (
-    $prometheus_nodes = hiera('prometheus_nodes'),
+    Array[Stdlib::Host] $prometheus_nodes = lookup('prometheus_nodes'),
 ) {
     prometheus::apache_exporter { 'default': }
     $prometheus_ferm_nodes = join($prometheus_nodes, ' ')
