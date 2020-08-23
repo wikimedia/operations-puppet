@@ -1214,6 +1214,11 @@ node 'pki2001.codfw.wmnet' {
     role(insetup)
 }
 
+# New pki server T259826
+node 'pki1001.eqiad.wmnet' {
+    role(insetup)
+}
+
 node /kafka-main100[4-5]\.eqiad\.wmnet/ {
     role(insetup)
 }
