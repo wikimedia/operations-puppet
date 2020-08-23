@@ -7352,6 +7352,11 @@ host phab2001 {
     fixed-address phab2001.codfw.wmnet;
 }
 
+host pki1001 {
+    hardware ethernet D0:94:66:5F:4A:3C;
+    fixed-address pki1001.eqiad.wmnet;
+}
+
 host pki2001 {
     hardware ethernet 18:66:DA:AA:19:EF;
     fixed-address pki2001.codfw.wmnet;
