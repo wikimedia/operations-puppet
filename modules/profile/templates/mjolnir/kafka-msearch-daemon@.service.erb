@@ -1,0 +1,25 @@
+[Unit]
+Description=MjoLniR kafka msearch daemon %i
+After=network.target
+PartOf=kafka-msearch-daemon.service
+
+[Service]
+SyslogIdentifier=mjolnir-kafka-msearch-daemon %i
+User=nobody
+Group=nogroup
+Environment=REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
+ExecStart=/bin/bash -c "/srv/deployment/search/mjolnir/deploy/venv/bin/mjolnir-utilities.py kafka_msearch_daemon \
+    --brokers <%= @kafka_config['brokers']['string'] %> \
+    --input-topic <%= @input_topic %> \
+    --output-topic <%= @output_topic %> \
+    --num-workers <%= @num_workers %> \
+    --max-concurrent-searches <%= @max_concurrent_searches %> \
+    --prometheus-port $((<%= @prometheus_port %> + %i)) \
+    --elastic-endpoint <%= @es_cluster_endpoint %>"
+
+StandardInput=null
+RestartSec=2
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

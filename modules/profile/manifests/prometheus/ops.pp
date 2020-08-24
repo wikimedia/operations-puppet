@@ -1422,11 +1422,11 @@ class profile::prometheus::ops (
         class_name => 'role::search::loader',
         port       => 9170,
     }
-    prometheus::class_config { "mjolnir_msearch_${::site}}.yaml":
-        dest       => "${targets_path}/mjolnir_msearch_${::site}.yaml",
-        site       => $::site,
-        class_name => 'role::search::loader',
-        port       => 9171,
+    prometheus::resource_config { "mjolnir_kafka_msearch_daemon_instance_${::site}":
+      dest           => "${targets_path}/mjolnir_kafka_msearch_daemon_instance_${::site}.yaml",
+      site           => $::site,
+      define_name    => 'profile::mjolnir::kafka_msearch_daemon_instance',
+      port_parameter => 'prometheus_port',
     }
 
     $ncredir_jobs = [
