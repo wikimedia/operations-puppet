@@ -299,3 +299,14 @@ GRANT INSERT, SELECT ON `xhgui`.* TO 'xhgui'@'10.64.0.135';
 -- Grants for 'xhgui'@'10.64.16.19'
 GRANT USAGE ON *.* TO 'xhgui'@'10.64.16.19' IDENTIFIED BY PASSWORD 'REDACTED' WITH MAX_USER_CONNECTIONS 100;
 GRANT INSERT, SELECT ON `xhgui`.* TO 'xhgui'@'10.64.16.19';
+-- xhguiadmin user (T260640)
+-- Password at: puppetmaster1001:/srv/private/hieradata/role/common/webperf/xhgui.yaml
+-- Grants for 'xhguiadmin'@'10.192.16.9'
+GRANT USAGE ON *.* TO 'xhguiadmin'@'10.192.16.9' IDENTIFIED BY PASSWORD 'REDACTED' WITH MAX_USER_CONNECTIONS 10;
+GRANT INSERT, SELECT, ALTER, CREATE, DELETE, UPDATE ON `xhgui`.* TO 'xhguiadmin'@'10.192.16.9';
+--- Grants for 'xhguiadmin'@'10.64.0.135'
+GRANT USAGE ON *.* TO 'xhguiadmin'@'10.64.0.135' IDENTIFIED BY PASSWORD 'REDACTED' WITH MAX_USER_CONNECTIONS 10;
+GRANT INSERT, SELECT, ALTER, CREATE, DELETE, UPDATE ON `xhgui`.* TO 'xhguiadmin'@'10.64.0.135';
+-- Grants for 'xhguiadmin'@'10.64.16.19'
+GRANT USAGE ON *.* TO 'xhguiadmin'@'10.64.16.19' IDENTIFIED BY PASSWORD 'REDACTED' WITH MAX_USER_CONNECTIONS 10;
+GRANT INSERT, SELECT, ALTER, CREATE, DELETE, UPDATE ON `xhgui`.* TO 'xhguiadmin'@'10.64.16.19';
