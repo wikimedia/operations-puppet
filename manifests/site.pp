@@ -633,13 +633,6 @@ node 'db2133.codfw.wmnet' {
 ## m3 shard
 # See also multiinstance misc hosts db1117 and db2078 below
 
-# Old m3 master, to be moved to m5 T260324
-node 'db1128.eqiad.wmnet' {
-    class { '::role::mariadb::misc::phabricator':
-        master => false,
-    }
-}
-
 # m3 master
 node 'db1132.eqiad.wmnet' {
     class { '::role::mariadb::misc::phabricator':
@@ -666,6 +659,14 @@ node 'db1133.eqiad.wmnet' {
     class { '::role::mariadb::misc':
         shard  => 'm5',
         master => true,
+    }
+}
+
+# Future m5 new master T260324
+node 'db1128.eqiad.wmnet' {
+    class { '::role::mariadb::misc':
+        shard  => 'm5',
+        master => false,
     }
 }
 
