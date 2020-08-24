@@ -280,7 +280,7 @@ groups:
               cicalese, gbirke, isaacj, sbassett, jdl, gsingers,
               niharika29, ryanmax, afandian2, jgleeson, toddleroux, srishakatux, dsharpe, eyener,
               esanders, sukhe, jfishback, iflorez, mayakpwiki, conniecc1, abi, mgerlach, dedcode,
-              kevinbazira, keepit-ssh, jiji, cohi, mstyles, accraze, kzeta, snowick,
+              kevinbazira, keepit-ssh, jiji, cohi, mstyles, accraze, snowick,
               aarora, zpapierski, knissen, jiawang, mholloway-shell, joewalsh, tarrow,
               itamar, phedenskog, aaron, dpifke, aklapper, jmads, andrew-wmde, daniram,
               rodolfovalentim, dcipoletti, chrisalbon, wikigit, nahidunlimited,
@@ -3529,8 +3529,7 @@ users:
     uid: 20435
     gid: 500
     name: kzeta
-    ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPMWu5DNleqah845EhqYF3yYqVBhHCFseT1lEq5dzym1 kzimmerman@wikimedia.org
+    ssh_keys: []
   snowick:
     ensure: present
     realname: Shay Nowick
