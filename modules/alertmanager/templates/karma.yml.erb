@@ -13,17 +13,20 @@ authentication:
     value_re: ^(.+)$
 <% end %>
 
-# Match Icinga colors for 'severity' label
 labels:
+  strip:
+    # Hide 'info' label since it is duplicated into 'summary' annotation for Icinga alerts
+    - 'info'
   color:
     custom:
+      # Match Icinga background colors for 'severity'
       severity:
         - value: 'critical'
-          color: '#ff3300'
+          color: '#ffd4c9'
         - value: 'warning'
-          color: '#ffa500'
+          color: '#ffda9f'
         - value: 'unknown'
-          color: '#E066FF'
+          color: '#eeaeee'
 
 # Sort by decreasing severity (Icinga compat)
 grid:
