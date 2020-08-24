@@ -769,7 +769,7 @@ node 'dbprov1002.eqiad.wmnet' {
     role(mariadb::backups)
 }
 node 'dbprov1003.eqiad.wmnet' {
-    role(insetup)
+    role(mariadb::backups)
 }
 node 'dbprov2001.codfw.wmnet' {
     role(mariadb::backups)

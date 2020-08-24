@@ -1,0 +1,34 @@
+type: 'dump'
+user: '<%= @user %>'
+password: '<%= @password %>'
+rotate: True
+compress: False
+archive: False
+retention: 18
+<%= scope.function_template([File.dirname(__FILE__) + "/" + "stats_subtemplate.cnf.erb"]) %>
+sections:
+  x1:
+    host: 'db1102.eqiad.wmnet'
+    port: 3320
+    archive: True
+  m1:
+    host: 'db1117.eqiad.wmnet'
+    port: 3321
+  m2:
+    host: 'db1117.eqiad.wmnet'
+    port: 3322
+  m3:
+    host: 'db1117.eqiad.wmnet'
+    port: 3323
+  m5:
+    host: 'db1117.eqiad.wmnet'
+    port: 3325
+  zarcillo:
+    host: 'db1115.eqiad.wmnet'
+  matomo:
+    host: 'db1108.eqiad.wmnet'
+    port: 3351
+  analytics_meta:
+    host: 'db1108.eqiad.wmnet'
+    port: 3352
+
