@@ -13,6 +13,31 @@ authentication:
     value_re: ^(.+)$
 <% end %>
 
+# Match Icinga colors for 'severity' label
+labels:
+  color:
+    custom:
+      severity:
+        - value: 'critical'
+          color: '#ff3300'
+        - value: 'warning'
+          color: '#ffa500'
+        - value: 'unknown'
+          color: '#E066FF'
+
+# Sort by decreasing severity (Icinga compat)
+grid:
+  sorting:
+    order: label
+    reverse: false
+    label: severity
+    customValues:
+      labels:
+        severity:
+          critical: 1
+          warning: 2
+          unknown: 3
+
 # Start with 'description' label collapsed
 annotations:
   hidden:
@@ -23,4 +48,4 @@ filters:
     - "@state=active"
 
 karma:
-  name: "Alerts@<%= @facts['domain'] %>"
+  name: "Alerts for <%= @facts['domain'] %>"
