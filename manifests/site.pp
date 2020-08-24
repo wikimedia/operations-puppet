@@ -54,6 +54,16 @@ node 'an-launcher1002.eqiad.wmnet' {
 node 'an-scheduler1001.eqiad.wmnet' {
     role(insetup)
 }
+
+# new an-test-coord1001  T255518
+node 'an-test-coord1001.eqiad.wmnet' {
+    role(insetup)
+}
+
+# new an-test-masters T255518
+node /^an-test-master100[1-2]\.eqiad\.wmnet$/ {
+    role(insetup)
+}
 # new an-test-workers T255520
 node /^an-test-worker100[1-3]\.eqiad\.wmnet$/ {
     role(insetup)
