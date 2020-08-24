@@ -54,6 +54,10 @@ node 'an-launcher1002.eqiad.wmnet' {
 node 'an-scheduler1001.eqiad.wmnet' {
     role(insetup)
 }
+# new an-test-workers T255520
+node /^an-test-worker100[1-3]\.eqiad\.wmnet$/ {
+    role(insetup)
+}
 
 # analytics1028-analytics1040 are Hadoop worker nodes.
 # These hosts are OOW but they are used as temporary
