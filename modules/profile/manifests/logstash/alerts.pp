@@ -5,7 +5,7 @@
 
 class profile::logstash::alerts {
     monitoring::check_prometheus { 'logstash_no_logs_indexed':
-        description     => 'Logs are not being indexed by Elasticsearch',
+        description     => 'Logstash logs are not being indexed by Elasticsearch #o11y',
         query           => 'sum(irate(elasticsearch_indices_indexing_index_total{cluster="logstash"}[5m]))',
         prometheus_url  => 'https://thanos-query.discovery.wmnet',
         method          => 'le',
@@ -17,7 +17,7 @@ class profile::logstash::alerts {
 
     # Alert on unusual day-over-day logstash ingestion rate change - T202307
     monitoring::check_prometheus { 'logstash_ingestion_spike':
-        description     => 'Logstash rate of ingestion percent change compared to yesterday',
+        description     => 'Logstash rate of ingestion percent change compared to yesterday #o11y',
         # Divide rate of input now vs yesterday, multiplied by 100
         query           => '100 * (sum (rate(logstash_node_plugin_events_out_total{plugin_id=~"input/.*"}[5m])) / sum (rate(logstash_node_plugin_events_out_total{plugin_id=~"input/.*"}[5m] offset 1d)))',
         prometheus_url  => 'http://prometheus.svc.eqiad.wmnet/ops',
@@ -34,7 +34,7 @@ class profile::logstash::alerts {
 
     # Logstash Elasticsearch indexing failures - T236343 T240667
     monitoring::check_prometheus { 'logstash_ingestion_errors':
-        description     => 'Logstash Elasticsearch indexing errors',
+        description     => 'Logstash Elasticsearch indexing errors #o11y',
         dashboard_links => ['https://logstash.wikimedia.org/goto/1cee1f1b5d4e6c5e06edb3353a2a4b83', 'https://grafana.wikimedia.org/dashboard/db/logstash'],
         query           => 'sum(rate(logstash_elasticsearch_index_failure_total[5m]))',
         warning         => 1,
@@ -47,7 +47,7 @@ class profile::logstash::alerts {
 
     ['eqiad', 'codfw'].each |String $site| {
         monitoring::check_prometheus { "kafka logging-${site} consumer lag":
-            description     => "Too many messages in kafka logging-${site}",
+            description     => "Too many messages in kafka logging-${site} #o11y",
             query           => "kafka_burrow_partition_lag{exported_cluster=\"logging-${site}\"}",
             prometheus_url  => 'https://thanos-query.discovery.wmnet',
             warning         => 1000,
