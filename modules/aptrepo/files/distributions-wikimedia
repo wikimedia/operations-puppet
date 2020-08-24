@@ -149,6 +149,7 @@ Components: main
  thirdparty/confluent
  thirdparty/elastic74
  thirdparty/elastic78
+ thirdparty/elastic79
  thirdparty/grafana
  thirdparty/hwraid
  thirdparty/kubeadm-k8s-1-15
@@ -165,6 +166,7 @@ Update:
  confluent
  elastic74
  elastic78
+ elastic79
  grafana
  jenkins-stretch
  hp-mcp-buster

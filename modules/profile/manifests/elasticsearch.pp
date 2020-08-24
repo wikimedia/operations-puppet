@@ -100,6 +100,7 @@ class profile::elasticsearch(
         '6.5' => 'elastic65',
         '7.4' => 'elastic74',
         '7.8' => 'elastic78',
+        '7.9' => 'elastic79',
     }
 
     apt::repository { 'wikimedia-elastic':
