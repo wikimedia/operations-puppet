@@ -6,4 +6,4 @@ groups:
     for: 1m
     annotations:
       # The 'summary' annotation is shown verbatim on IRC.
-      summary: '{{$labels.service}} on {{$labels.host}} is {{$labels.status | toUpper}}: {{$labels.info}}'
+      summary: '{{$labels.service}} on {{$labels.host}} is {{$labels.severity | toUpper}}: {{$labels.info}}'
