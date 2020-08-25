@@ -30,7 +30,7 @@ class profile::elasticsearch(
     Enum['Gelf', 'syslog'] $logstash_transport = hiera('profile::elasticsearch::logstash_transport', 'Gelf'),
     String $rack = hiera('profile::elasticsearch::rack'),
     String $row = hiera('profile::elasticsearch::row'),
-    Enum['5.5', '5.6', '6.5', '7.4', '7.8'] $version = hiera('profile::elasticsearch::version', '5.5'),
+    Enum['5.5', '5.6', '6.5', '7.4', '7.8', '7.9'] $version = hiera('profile::elasticsearch::version', '5.5'),
     Enum['5', '6', '7'] $config_version = hiera('profile::elasticsearch::config_version', '5'),
     Optional[String] $java_home = lookup('profile::elasticsearch::java_home', { 'default_value' => undef }),
 ) {
