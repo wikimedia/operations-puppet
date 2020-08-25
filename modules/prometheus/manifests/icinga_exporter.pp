@@ -1,6 +1,7 @@
 class prometheus::icinga_exporter(
-  $prometheus_user = 'prometheus',
-  $ensure='present'
+  String $prometheus_user = 'prometheus',
+  Wmflib::Ensure $ensure = present,
+  Boolean $export_problems = false,
 ) {
   package { 'prometheus-icinga-exporter':
     ensure => $ensure,
