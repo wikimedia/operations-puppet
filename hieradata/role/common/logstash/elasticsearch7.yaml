@@ -22,7 +22,7 @@ profile::elasticsearch::row: ''
 profile::elasticsearch::instances: {}
 profile::elasticsearch::dc_settings: {}
 profile::elasticsearch::base_data_dir: '/srv/elasticsearch'
-profile::elasticsearch::version: '7.8'
+profile::elasticsearch::version: '7.9'
 profile::elasticsearch::common_settings:
     auto_create_index: true
     short_cluster_name: elk7
