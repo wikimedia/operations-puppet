@@ -1,0 +1,7 @@
+User-agent: *
+Disallow: /
+
+# Default robots.txt for Toolforge hosted tools.
+# Toolforge maintainers: override this default by handling /robots.txt in your
+# tool's webservice. See https://www.robotstxt.org/ for more information on
+# /robots.txt in general.

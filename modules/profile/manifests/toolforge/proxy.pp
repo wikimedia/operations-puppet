@@ -101,6 +101,14 @@ class profile::toolforge::proxy (
         require => [File['/var/www/error']],
     }
 
+    file { '/var/www/error/robots.txt':
+        ensure => file,
+        source => 'puppet:///modules/profile/toolforge/robots.txt',
+        owner  => 'www-data',
+        group  => 'www-data',
+        mode   => '0444',
+    }
+
     require_package('goaccess')  # webserver statistics, T121233
 
     $graphite_metric_prefix = "${::labsproject}.reqstats"
