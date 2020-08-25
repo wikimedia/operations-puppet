@@ -64,7 +64,7 @@ class profile::wmcs::db::wikireplicas::views (
 
     file { '/usr/local/src/heartbeat-views.sql':
         ensure => file,
-        source => 'puppet:///modules/profile/wmcs/db/wikireplicas/heartbeat-views.sql',
+        source => 'puppet:///modules/profile/wmcs/db/wikireplicas/views/heartbeat-views.sql',
         owner  => 'root',
         group  => 'root',
         mode   => '0755',
