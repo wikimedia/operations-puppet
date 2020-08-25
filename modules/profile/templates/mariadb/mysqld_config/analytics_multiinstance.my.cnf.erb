@@ -1,0 +1,126 @@
+# Analytics replicas (Meta, Matomo, ..)
+
+[client]
+port   = 3306
+socket = <%= @socket %>
+
+[mysqld]
+
+user       = mysql
+socket     = <%= @socket %>
+basedir    = <%= @basedir %>
+datadir    = <%= @datadir %>
+tmpdir     = <%= @tmpdir %>
+server_id  = <%= @server_id %>
+<% if @sql_mode != '' -%>
+sql-mode   = <%= @sql_mode %>
+<% end -%>
+read_only  = <%= @read_only %>
+
+# enable socket authentication
+plugin-load = unix_socket=auth_socket.so
+
+log_bin
+log_slave_updates
+skip-external-locking
+skip-name-resolve
+temp-pool
+
+secure_file_priv               = /dev/null
+max_connections                = 500
+extra_max_connections          = 10
+max_connect_errors             = 1000000000
+max_allowed_packet             = 32M
+connect_timeout                = 3
+query_cache_size               = 0
+query_cache_type               = 0
+event_scheduler                = 1
+userstat                       = 1
+log-warnings                   = 0
+thread_stack                   = 192K
+thread_cache_size              = 100
+interactive_timeout            = 28800
+wait_timeout                   = 3600
+
+sync_binlog                    = 1
+binlog_cache_size              = 1M
+max_binlog_size                = 1000M
+binlog_format                  = <%= @row_format %>
+expire_logs_days               = 14
+slave_transaction_retries      = 4294967295
+
+table_open_cache               = 5000
+table_definition_cache         = 4000
+character_set_server           = binary
+character_set_filesystem       = binary
+collation_server               = binary
+
+default-storage-engine         = InnoDB
+innodb_file_per_table          = 1
+innodb_buffer_pool_instances   = 1
+innodb_log_file_size           = 1G
+innodb_flush_log_at_trx_commit = 1
+innodb_flush_method            = O_DIRECT
+innodb_thread_concurrency      = 0
+innodb_io_capacity             = 1000
+innodb_read_io_threads         = 16
+innodb_write_io_threads        = 8
+innodb_stats_sample_pages      = 16
+innodb_stats_method            = nulls_unequal
+innodb_locks_unsafe_for_binlog = 1
+<% if @basedir == '/opt/wmf-mariadb10' or @basedir == '/opt/wmf-mariadb101' -%>
+# force default file format for MariaDB < 10.2
+innodb_file_format             = barracuda
+<% end -%>
+innodb_strict_mode             = 1
+innodb_large_prefix            = 1
+# innodb_default_row_format is not available until 5.7.9 / 10.2.2
+aria_pagecache_buffer_size     = 512M
+
+# gtid_domain_id flag is needed for multisource replication and GTID.
+# Strictly it is only needed on masters or servers that can potentially be
+# masters but for consistency it should be set in all of them.
+# https://mariadb.com/kb/en/mariadb/gtid/
+
+gtid_domain_id  = <%= @gtid_domain_id %>
+
+<% if @ssl == 'on' or @ssl == 'puppet-cert' %>
+# ssl
+ssl-ca=/etc/ssl/certs/Puppet_Internal_CA.pem
+ssl-cert=/etc/mysql/ssl/cert.pem
+ssl-key=/etc/mysql/ssl/server.key
+ssl-cipher=TLSv1.2
+<% end %>
+<% if @p_s == 'on' %>
+# Enabling performance_schema (disabled by default in MariaDB10)
+performance_schema                                     = 1
+# downsizing performance schema memory usage: T99485
+performance_schema_max_thread_instances                = 500
+performance_schema_max_cond_instances                  = 1000
+performance_schema_accounts_size                       = 300
+performance_schema_hosts_size                          = 300
+performance_schema_events_statements_history_size      = 10
+performance_schema_events_statements_history_long_size = 1000
+performance_schema_events_waits_history_size           = 10
+performance_schema_events_waits_history_long_size      = 1000
+performance_schema_events_stages_history_size          = 10
+performance_schema_events_stages_history_long_size     = 1000
+performance_schema_max_mutex_instances                 = 5000
+performance_schema_max_rwlock_instances                = 2000
+performance_schema_max_socket_instances                = 500
+performance_schema_max_table_instances                 = 1000
+<% else %>
+# only enable userstat if p_s is disabled
+performance_schema                                     = 0
+userstat                                               = 1
+<% end %>
+
+# Do not replicate the following databases
+replicate_wild_ignore_table=superset\_staging.%
+
+[mysqldump]
+
+quick
+max_allowed_packet = 32M
+
+!includedir /etc/mysql/mysqld.conf.d/

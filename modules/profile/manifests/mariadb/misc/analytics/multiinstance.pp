@@ -20,7 +20,7 @@ disabled, use mariadb@<instance_name> instead'; exit 1\"",
     $basedir = '/opt/wmf-mariadb104'
     class { 'mariadb::config':
         basedir       => $basedir,
-        config        => 'profile/mariadb/mysqld_config/misc_multiinstance.my.cnf.erb',
+        config        => 'profile/mariadb/mysqld_config/analytics_multiinstance.my.cnf.erb',
         p_s           => 'on',
         ssl           => 'puppet-cert',
         binlog_format => 'ROW',
