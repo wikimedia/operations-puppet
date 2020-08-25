@@ -1769,6 +1769,7 @@ asns:
   esams: 65003
   ulsfo: 65004
   eqsin: 65005
+  eqord: 65020
 
 swift_storage_drives:
   - '/dev/sdc'
