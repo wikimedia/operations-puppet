@@ -12,14 +12,34 @@ class snapshot::cron::wikidatadumps::rdf(
 
     $scriptpath = '/usr/local/bin/dumpwikibaserdf.sh'
     if !$filesonly {
-        cron { 'wikidatardf-dumps':
+        cron { 'wikidatardf-all-dumps':
             ensure      => 'present',
-            command     => "${scriptpath} wikidata all ttl nt; ${scriptpath} wikidata truthy nt; ${scriptpath} wikidata lexemes ttl nt",
+            command     => "${scriptpath} wikidata all ttl nt",
             environment => 'MAILTO=ops-dumps@wikimedia.org',
             user        => $user,
             minute      => '0',
             hour        => '23',
             weekday     => '1',
+            require     => File[$scriptpath],
+        }
+        cron { 'wikidatardf-truthy-dumps':
+            ensure      => 'present',
+            command     => "${scriptpath} wikidata truthy nt",
+            environment => 'MAILTO=ops-dumps@wikimedia.org',
+            user        => $user,
+            minute      => '0',
+            hour        => '23',
+            weekday     => '3',
+            require     => File[$scriptpath],
+        }
+        cron { 'wikidatardf-lexemes-dumps':
+            ensure      => 'present',
+            command     => "${scriptpath} wikidata lexemes ttl nt",
+            environment => 'MAILTO=ops-dumps@wikimedia.org',
+            user        => $user,
+            minute      => '0',
+            hour        => '23',
+            weekday     => '5',
             require     => File[$scriptpath],
         }
     }
