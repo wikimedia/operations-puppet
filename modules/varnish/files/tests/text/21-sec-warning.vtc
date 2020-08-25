@@ -31,17 +31,17 @@ logexpect l0 -v v1 {
 } -start
 
 client c1 {
-    txreq -url "/wiki/Main_Page" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https" -hdr "X-Connection-Properties: H2=0; SSR=0; SSL=TLSv1.2; C=ECDHE-RSA-AES128-SHA; EC=prime256v1;"
+    txreq -url "/wiki/Main_Page" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https" -hdr "X-Connection-Properties: H2=0; SSR=0; SSL=TLSv1.2; C=DHE-RSA-AES128-SHA; EC=prime256v1;"
     rxresp
     expect resp.status == 302
     expect resp.http.location == "https://en.wikipedia.org/sec-warning"
 
-    txreq -url "/sec-warning" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https" -hdr "X-Connection-Properties: H2=0; SSR=0; SSL=TLSv1.2; C=ECDHE-RSA-AES128-SHA; EC=prime256v1;"
+    txreq -url "/sec-warning" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https" -hdr "X-Connection-Properties: H2=0; SSR=0; SSL=TLSv1.2; C=DHE-RSA-AES128-SHA; EC=prime256v1;"
     rxresp
     expect resp.status == 200
     expect resp.http.Content-Type == "text/html; charset=utf-8"
 
-    txreq -url "/static/images/wmf-logo.png" -hdr "Host: www.wikimedia.org" -hdr "X-Forwarded-Proto: https" -hdr "X-Connection-Properties: H2=0; SSR=0; SSL=TLSv1.2; C=ECDHE-RSA-AES128-SHA; EC=prime256v1;"
+    txreq -url "/static/images/wmf-logo.png" -hdr "Host: www.wikimedia.org" -hdr "X-Forwarded-Proto: https" -hdr "X-Connection-Properties: H2=0; SSR=0; SSL=TLSv1.2; C=DHE-RSA-AES128-SHA; EC=prime256v1;"
     rxresp
     expect resp.status == 200
 } -run

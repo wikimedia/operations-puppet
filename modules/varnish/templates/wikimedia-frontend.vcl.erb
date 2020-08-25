@@ -651,10 +651,10 @@ sub vcl_recv {
 	call wm_recv_purge;
 
 	// The idea here is to block our worst clients (in TLS terms: those
-	// using ECDHE-RSA-AES128-SHA)
+	// using DHE-RSA-AES128-SHA)
 	// This will remain in place until the
 	// future removal of protocol-level support.
-	if (req.http.X-Connection-Properties ~ "C=ECDHE-RSA-AES128-SHA;") {
+	if (req.http.X-Connection-Properties ~ "C=DHE-RSA-AES128-SHA;") {
 		if (req.method == "GET" || req.method == "HEAD") {
 			if (req.http.host != "wikitech.wikimedia.org" && req.url != "/sec-warning" && req.url !~ "^/static/images/") {
 				set req.http.Location = "https://" + req.http.Host + "/sec-warning";
