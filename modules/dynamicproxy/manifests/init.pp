@@ -125,14 +125,6 @@ class dynamicproxy (
         mode   => '0444',
     }
 
-    # Clean up legacy logo files. Can be removed after files have been purged.
-    file { '/var/www/error/labs-logo.png':
-        ensure => absent,
-    }
-    file { '/var/www/error/labs-logo-2x.png':
-        ensure => absent,
-    }
-
     mediawiki::errorpage { '/var/www/error/errorpage.html':
         favicon     => $error_config['favicon'],
         pagetitle   => $error_config['title'],
