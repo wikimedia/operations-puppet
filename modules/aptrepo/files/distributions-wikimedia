@@ -52,6 +52,7 @@ Components: main
 # sorted list, leading whitespace matters!
  component/cassandra22
  component/cassandra311
+ component/ceph
  component/ci
  component/elastalert
  component/elastic55
