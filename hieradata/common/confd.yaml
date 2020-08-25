@@ -1,0 +1,2 @@
+# We don't want to use -watch. see T260889
+confd::interval: 3
