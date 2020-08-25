@@ -5,4 +5,5 @@ groups:
     expr: icinga_service_problem == 1
     for: 1m
     annotations:
-      summary: '{{$labels.info}}'
+      # The 'summary' annotation is shown verbatim on IRC.
+      summary: '{{$labels.service}} on {{$labels.host}} is {{$labels.status | toUpper}}: {{$labels.info}}'
