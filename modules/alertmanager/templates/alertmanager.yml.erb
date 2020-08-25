@@ -18,24 +18,10 @@ route:
   receiver: default
   group_by: ['alertname', 'cluster', 'scope']
   routes:
-    # Icinga compatibility, group by 'service' only
+    # Icinga compatibility, group by 'service' only (other than alertname)
     - match:
         alertname: IcingaServiceProblem
       group_by: ['alertname', 'service']
-
-
-# Inhibition rules allow to mute a set of alerts given that another alert is
-# firing.
-# We use this to mute any warning-level notifications if the same alert is
-# already critical.
-inhibit_rules:
-- source_match:
-    severity: 'critical'
-  target_match:
-    severity: 'warning'
-  # Apply inhibition if the alertname is the same.
-  equal: ['alertname', 'cluster', 'scope']
-
 
 receivers:
 - name: 'default'
