@@ -15,8 +15,8 @@ class openstack::util::admin_scripts(
         ensure => 'present',
     }
 
-    # We need a mysql client in order to run wmcs-cold-migrate; it updates
-    #  some db things.
+    # We need a mysql client in order to run wmcs-cold-migrate and wmcs-ceph-migrate;
+    #  they modify the VM host directly in the db
     package{ 'mariadb-client':
         ensure => 'present',
     }
@@ -146,6 +146,16 @@ class openstack::util::admin_scripts(
         group  => 'root',
         mode   => '0755',
         source => "puppet:///modules/openstack/${version}/admin_scripts/wmcs-cold-migrate.py",
+    }
+
+    # Script to copy a host from a non-ceph cloudvirt
+    #  to a ceph-enabled cloudvirt
+    file { '/usr/local/sbin/wmcs-ceph-migrate':
+        ensure => 'present',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+        source => "puppet:///modules/openstack/${version}/admin_scripts/wmcs-ceph-migrate.py",
     }
 
     # Script and config to maintain DNS records for *.db.svc.eqiad.wmflabs
