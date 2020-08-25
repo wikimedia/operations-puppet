@@ -13,6 +13,8 @@ class profile::wmcs::db::wikireplicas::kill_long_running_queries (
     $log            = lookup(profile::wmcs::db::wikireplicas::kill_long_running_queries::pt_kill_log,),
     $socket         = lookup(profile::wmcs::db::wikireplicas::kill_long_running_queries::pt_kill_socket,),
 ){
+    require ::profile::wmcs::db::scriptconfig
+
     file { '/etc/default/wmf-pt-kill':
         ensure  => file,
         content => template('role/mariadb/wmf-pt-kill.erb'),

@@ -5,6 +5,7 @@ class profile::wmcs::db::wikireplicas::views (
     String $idx_user  = lookup('profile::wmcs::db::wikireplicas::maintainindexes::user'),
     String $idx_pass  = lookup('profile::wmcs::db::wikireplicas::maintainindexes::db_pass'),
 ){
+    require ::profile::wmcs::db::scriptconfig
 
     package { [
         'python-pymysql',
