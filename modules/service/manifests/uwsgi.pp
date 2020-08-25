@@ -30,10 +30,6 @@
 # [*repo*]
 #   The name of the repo to use for deployment. Default: ${title}/deploy
 #
-# [*firejail*]
-#   Whether to use firejail when starting the service. Default: true.
-#   TODO: This is a NOOP still, need to implement
-#
 # [*local_logging*]
 #   Whether to store log entries on the target node as well. Default: true
 #
@@ -96,7 +92,6 @@ define service::uwsgi(
     $healthcheck_url        = '/_info',
     $has_spec               = false,
     $repo                   = "${title}/deploy",
-    $firejail               = true,
     $icinga_check           = true,
     $local_logging          = true,
     $deployment_user        = 'deploy-service',
@@ -205,9 +200,6 @@ define service::uwsgi(
         die-on-term => true,
     }
     $complete_config = deep_merge($base_config, $logging_config, $config)
-
-    # TODO: firejail for containment. Not used yet, but the idea is to add it
-    require_package('firejail')
 
     uwsgi::app { $title:
         core_limit => $core_limit,
