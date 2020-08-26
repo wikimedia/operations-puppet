@@ -8,7 +8,10 @@ define cfssl::csr (
     include cfssl
 
     if $key['algo'] == 'rsa' and $key['size'] < 2048 {
-        fail('RSA keys must be at least 2048 bytes')
+        fail('RSA keys must be either 2048, 4096 or 8192 bits')
+    }
+    if $key['algo'] == 'ecdsa' and $key['size'] > 2048 {
+        fail('ECDSA keys must be either 256, 384 or 521 bits')
     }
     $safe_title = $title.regsubst('[^\w\-]', '_', 'G')
     $csr_file = "${cfssl::csr_dir}/${safe_title}.csr"

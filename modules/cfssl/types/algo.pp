@@ -1,1 +1,1 @@
-type Cfssl::Algo = Enum['rsa']
+type Cfssl::Algo = Enum['rsa', 'ecdsa']
