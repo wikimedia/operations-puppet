@@ -39,3 +39,9 @@ acme_chief:
 
 netmon:
   - pontoon-netmon-01.monitoring.eqiad.wmflabs
+
+apt_repo:
+  - pontoon-apt-01.monitoring.eqiad.wmflabs
+
+logging::mediawiki::udp2log:
+  - pontoon-mwlog-01.monitoring.eqiad.wmflabs
