@@ -54,31 +54,37 @@ host an-druid1002 {
 host an-test-coord1001 {
     hardware ethernet 2C:EA:7F:40:10:6C;
     fixed-address an-test-coord1001.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host an-test-master1001 {
     hardware ethernet 2C:EA:7F:40:39:DC;
     fixed-address an-test-master1001.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host an-test-master1002 {
     hardware ethernet 2C:EA:7F:44:E6:CF;
     fixed-address an-test-master1002.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host an-test-worker1001 {
     hardware ethernet 2C:EA:7F:3D:A3:CC;
     fixed-address an-test-worker1001.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host an-test-worker1002 {
     hardware ethernet 2C:EA:7F:3D:61:D5;
     fixed-address an-test-worker1002.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host an-test-worker1003 {
     hardware ethernet 2C:EA:7F:3D:6D:71;
     fixed-address an-test-worker1003.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host analytics1028 {
