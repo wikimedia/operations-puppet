@@ -1,0 +1,11 @@
+profile::pki::server::ca_names:
+  - organisation: Wikimedia Foundation, Inc
+    organisational_unit: Technolagy
+    locality: San Francisco
+    state: California
+    country: US
+profile::pki::server::ca_key_params:
+  algo: ecdsa
+  size: 521
+profile::pki::server::gen_csr: false
+profile::pki::server::profiles: {}

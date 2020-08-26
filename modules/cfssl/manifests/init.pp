@@ -1,11 +1,15 @@
 # @summary configure cfssl api service
 class cfssl (
-    Stdlib::Port     $port             = 8888,
-    Stdlib::Host     $host            = 'localhost',
-    Cfssl::Loglevel  $log_level       = 'info',
-    Stdlib::Unixpath $conf_dir        = '/etc/cfssl',
-    Optional[String] $ca_key_content  = undef,
-    Optional[String] $ca_cert_content = undef,
+    Stdlib::Host                 $host            = $facts['fqdn'],
+    Stdlib::Port                 $port            = 8888,
+    Cfssl::Loglevel              $log_level       = 'info',
+    Stdlib::Unixpath             $conf_dir        = '/etc/cfssl',
+    Cfssl::Expiry                $default_expiry  = '720h',
+    Array[Cfssl::Usage]          $default_usages  = ['signing', 'key encipherment', 'client auth'],
+    Stdlib::HTTPUrl              $crl_url         = "http://${host}:${port}/crl",
+    Hash[String, Cfssl::Profile] $profiles        = {},
+    Optional[String]             $ca_key_content  = undef,
+    Optional[String]             $ca_cert_content = undef,
 ) {
     ensure_packages(['golang-cfssl'])
     $conf_file = "${conf_dir}/cfssl.conf"
@@ -13,13 +17,30 @@ class cfssl (
     $internal_dir = "${conf_dir}/internal"
     $ca_key_file = '/etc/ssl/private/ca_key.pem'
     $ca_file = '/etc/ssl/certs/ca.pem'
+    $config = {
+        'signing' => {
+            'default'  => {
+                'crl_url' => $crl_url,
+                'expiry'  => $default_expiry,
+                'usages'  => $default_usages,
+            },
+            'profiles' => $profiles,
+        }
+    }
 
-    file{[$conf_dir, $csr_dir, $internal_dir]:
-        ensure  => directory,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0550',
-        require => Package['golang-cfssl'],
+    file{
+        default:
+            owner   => 'root',
+            group   => 'root',
+            require => Package['golang-cfssl'];
+        [$conf_dir, $csr_dir, $internal_dir]:
+            ensure => directory,
+            mode   => '0550';
+        $conf_file:
+            ensure  => file,
+            mode    => '0440',
+            content => $config.to_json(),
+            notify  => Service['cfssl'];
     }
     if $ca_key_content and $ca_cert_content {
         file {
