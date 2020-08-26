@@ -16,6 +16,7 @@ class profile::mariadb::beta {
     }
 
     class { 'mariadb::config':
+        basedir => $profile::mariadb::packages_wmf::basedir,
         config  => 'role/mariadb/mysqld_config/beta.my.cnf.erb',
     }
 

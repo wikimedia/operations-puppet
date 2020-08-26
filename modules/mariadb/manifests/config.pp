@@ -12,10 +12,10 @@
 # 'standalone' | 'slave' | 'master' | 'multisource_slave'
 
 class mariadb::config(
+    Stdlib::UnixPath $basedir,
     $config                 = 'mariadb/default.my.cnf.erb',
     $prompt                 = '\u@\h(\d)>\_',
     $password               = 'undefined',
-    $basedir                = '/opt/wmf-mariadb10',
     $datadir                = '/srv/sqldata',
     $tmpdir                 = '/srv/tmp',
     $socket                 = '/run/mysqld/mysqld.sock',
