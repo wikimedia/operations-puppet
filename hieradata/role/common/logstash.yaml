@@ -81,3 +81,6 @@ profile::tlsproxy::envoy::global_cert_name: "kibana.discovery.wmnet"
 
 mtail::logs:
   - /var/log/logstash/logstash-plain.log
+
+profile::kibana::region_map_enabled: false
+profile::kibana::tile_map_enabled: false

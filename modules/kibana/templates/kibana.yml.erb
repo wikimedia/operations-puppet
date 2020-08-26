@@ -1,0 +1,16 @@
+kibana.defaultAppId: <%= @default_app_id %>
+logging.quiet: <%= @logging_quiet %>
+metrics.enabled: <%= @metrics_enabled %>
+newsfeed.enabled: <%= @newsfeed_enabled %>
+<%- unless @region_map_enabled.nil? or @region_map_enabled == :undef -%>
+region_map.enabled: <%= @region_map_enabled %>
+<%- end -%>
+server.maxPayloadBytes: <%= @server_max_payload_bytes %>
+telemetry.enabled: <%= @telemetry_enabled %>
+<%- unless @tile_map_enabled.nil? or @tile_map_enabled == :undef -%>
+tile_map.enabled: <%= @tile_map_enabled %>
+<%- end -%>
+<%- unless @timelion_enabled.nil? or @timelion_enabled == :undef -%>
+timelion.enabled: <%= @timelion_enabled %>
+<%- end -%>
+

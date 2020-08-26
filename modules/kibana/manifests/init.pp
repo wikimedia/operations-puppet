@@ -7,6 +7,13 @@
 # - $default_app_id: Default landing page. You can specify files, scripts or
 #     saved dashboards here. Default: '/dashboard/file/default.json'.
 # - $enable_phatality: Defaults to true. Adds the phatality package to kibana
+# - $logging_quiet: Set to true to suppress all logging output other than error messages.
+# - $metrics_enabled: Enable/disable time series visual builder
+# - $telemetry_enabled: Report cluster statistics back to elastic. Set to false to disable telemetry capabilities entirely
+# - $newsfeed_enabled: Controls whether to enable the newsfeed system for the Kibana UI notification center. Set to false to disable the newsfeed system
+# - $region_map_enabled: Enable/disable region map visualizations
+# - $tile_map_enabled:  Enable/disable tile map visualizations
+# - $timelion_enabled: Enable/disable timelion feature
 #
 # == Sample usage:
 #
@@ -15,9 +22,17 @@
 #   }
 #
 class kibana (
-    String $default_app_id = 'dashboard/default',
-    String $kibana_package = 'kibana',
-    Boolean $enable_phatality = true
+    String $default_app_id           = 'dashboard/default',
+    String $kibana_package           = 'kibana',
+    String $server_max_payload_bytes = '4194304',  #4MB (yes, this is a crazy limit, we need to reduce the number of fields)
+    Boolean $enable_phatality        = true,
+    Boolean $logging_quiet           = true,
+    Boolean $metrics_enabled         = false,      #T255863
+    Boolean $telemetry_enabled       = false,      #T259794
+    Boolean $newsfeed_enabled        = false,      #T259794
+    Boolean $timelion_enabled        = false,      #T259000
+    Optional[Boolean] $region_map_enabled = undef, #T259000
+    Optional[Boolean] $tile_map_enabled   = undef, #T259000
 ) {
     package { 'kibana':
         ensure => 'present',
@@ -36,17 +51,7 @@ class kibana (
         ensure  => file,
         owner   => 'root',
         group   => 'root',
-        content => ordered_yaml({
-            'kibana.defaultAppId'    => $default_app_id,
-            'logging.quiet'          => true,
-            'server.maxPayloadBytes' => 4194304, # 4MB (yes, this is a crazy limit, we need to reduce the number of fields)
-            'metrics.enabled'        => false, # T255863
-            'timelion.enabled'       => false, #T259000
-            'region_map.enabled'     => false, #T259000
-            'tile_map.enabled'       => false, #T259000
-            'telemetry.enabled'      => false, # T259794
-            'newsfeed.enabled'       => false, # T259794
-        }),
+        content => template('kibana/kibana.yml.erb'),
         mode    => '0444',
         require => Package['kibana'],
     }
