@@ -1224,9 +1224,9 @@ node /^(phab1001\.eqiad|phab2001\.codfw)\.wmnet$/ {
     role(phabricator)
 }
 
-# New pki server T259825
+# PKI server
 node 'pki2001.codfw.wmnet' {
-    role(insetup)
+    role(pki)
 }
 
 # New pki server T259826
