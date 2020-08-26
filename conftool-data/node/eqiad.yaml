@@ -307,6 +307,8 @@ eqiad:
   eventschemas:
     schema1001.eqiad.wmnet: [eventschemas]
     schema1002.eqiad.wmnet: [eventschemas]
+    schema1003.eqiad.wmnet: [eventschemas]
+    schema1004.eqiad.wmnet: [eventschemas]
   thumbor:
     thumbor1001.eqiad.wmnet: [thumbor]
     thumbor1002.eqiad.wmnet: [thumbor]
