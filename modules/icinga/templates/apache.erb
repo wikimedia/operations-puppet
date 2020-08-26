@@ -56,6 +56,7 @@
 
     RewriteEngine on
     RewriteCond %{SERVER_PORT} !^443$
+    RewriteCond %{HTTP:X-Forwarded-Proto} !https
     RewriteRule ^/(.*)$ https://<%= @virtual_host %>/$1 [L,R=301]
 
     ErrorLog /var/log/apache2/icinga.log
