@@ -1,0 +1,49 @@
+#!/usr/bin/env stap
+#
+# Usage: stap hostdb_ttls.stp -x $ats_be_pid
+#
+# For origin servers accessed often, max age and TTL tend to be the same value,
+# or close.
+#
+# Example output:
+# <--- CUT HERE --->
+# max age for 10.2.2.22=300, ttl=300
+# max age for 10.2.2.1=300, ttl=300
+# max age for 10.2.2.17=300, ttl=300
+# max age for 10.2.2.52=300, ttl=300
+# max age for 10.2.2.32=301, ttl=300
+# max age for 10.2.2.18=309, ttl=300
+# max age for 10.64.32.137=455, ttl=1325
+# max age for 10.64.32.178=730, ttl=3600
+
+global ages, ttls
+
+# Line 553 is currently the location in probe() where we do have a cache hit
+# See https://github.com/wikimedia/operations-debs-trafficserver/blob/cffea787be50f477ceb169db3bdf21ccdfd725f5/iocore/hostdb/HostDB.cc#L553
+probe process("/usr/bin/traffic_server").statement("probe@./iocore/hostdb/HostDB.cc:553") {
+    if (pid() == target()) {
+        p = $r->m_ptr
+        age = gettimeofday_s() - p->ip_timestamp
+        ip = ip_ntop(p->data->ip->sin->sin_addr->s_addr)
+        ttl = p->ip_timeout_interval
+
+        if (age > ages[ip]) {
+            ages[ip] = age
+        }
+
+        if (ttl > ttls[ip]) {
+            ttls[ip] = ttl
+        }
+    }
+}
+
+probe timer.s(300) {
+    exit()
+}
+
+probe timer.s(10) {
+    println("<--- CUT HERE --->")
+    foreach (ip in ages) {
+        printf("max age for %s=%u, ttl=%u\n", ip, ages[ip], ttls[ip])
+    }
+}
