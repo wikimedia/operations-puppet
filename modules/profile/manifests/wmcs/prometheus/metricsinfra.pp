@@ -72,10 +72,6 @@ class profile::wmcs::prometheus::metricsinfra(
     }
 
     # Prometheus alert rules
-    File<|title == "${base_path}/rules/alerts_default.yml"|> {
-        source => 'puppet:///modules/profile/wmcs/prometheus/metricsinfra/alerts_default.yml',
-    }
-
     file { "${base_path}/rules/alerts_projects.yml":
         ensure  => file,
         mode    => '0444',
