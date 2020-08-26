@@ -27,7 +27,8 @@ class cfssl (
                 ensure => file,
                 owner  => 'root',
                 group  => 'root',
-                mode   => '0400';
+                mode   => '0400',
+                notify => Service['cfssl'];
             $ca_key_file:
                 content => $ca_key_content;
             $ca_file:
