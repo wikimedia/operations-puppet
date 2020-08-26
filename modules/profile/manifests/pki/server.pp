@@ -1,7 +1,7 @@
 # @summary configure a PKI sevrver
 class profile::pki::server () {
     class {'cfssl':
-        ca_key_content  => secret('profile/pki/Wikimedia_ROOT_CA.pem'),
+        ca_key_content  => secret('pki/Wikimedia_ROOT_CA.key'),
         ca_cert_content => file('profile/pki/Wikimedia_ROOT_CA.pem'),
     }
     $names = [{
