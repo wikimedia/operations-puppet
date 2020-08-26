@@ -1,7 +1,7 @@
 class labstore::monitoring::ldap(
-    $critical=false,
-    $contact_groups='wmcs-team',
-    ) {
+    Boolean $critical=false,
+    String $contact_groups='wmcs-team',
+){
 
     file { '/usr/local/bin/getent_check':
         ensure => present,

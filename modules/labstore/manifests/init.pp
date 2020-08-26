@@ -6,7 +6,7 @@
 #
 
 class labstore (
-    $nfsd_threads = '192',
+    Integer $nfsd_threads = 192,
 ){
 
     require_package('nfs-kernel-server')

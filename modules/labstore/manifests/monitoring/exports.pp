@@ -1,7 +1,7 @@
 class labstore::monitoring::exports(
     String $contact_groups='wmcs-team,admins',
     String $drbd_role='primary',
-    ) {
+){
     # This really doesn't need to be running on the secondary.
     if $drbd_role == 'primary' {
         nrpe::monitor_systemd_unit_state { 'nfs-exportd':

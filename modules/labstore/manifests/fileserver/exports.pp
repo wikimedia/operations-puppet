@@ -2,7 +2,7 @@
 class labstore::fileserver::exports(
     Array[String] $server_vols,
     String $drbd_role = 'primary',
-    ) {
+){
     require_package(['python3-yaml'])
 
     group { 'nfsmanager':

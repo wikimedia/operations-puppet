@@ -8,8 +8,8 @@
 #  bandwidth to use between nodes
 
 class labstore::drbd::node (
-    $protocol = 'B',
-    $sync_rate = '300M',
+    String $protocol = 'B',
+    Stdlib::Datasize $sync_rate = '300M',
 ) {
 
     package {'drbd8-utils':

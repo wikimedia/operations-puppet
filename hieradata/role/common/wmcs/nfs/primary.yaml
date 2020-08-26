@@ -22,17 +22,17 @@ profile::standard::admin_groups:
 
 profile::wmcs::nfs::primary::drbd_resource_config:
   test:
-    port: '7790'
+    port: 7790
     device: /dev/drbd1
     disk: /dev/misc/test
     mount_path: /srv/test
   tools:
-    port: '7791'
+    port: 7791
     device: /dev/drbd4
     disk: /dev/tools/tools-project
     mount_path: /srv/tools
   misc:
-    port: '7792'
+    port: 7792
     device: /dev/drbd3
     disk: /dev/misc/misc-project
     mount_path: /srv/misc

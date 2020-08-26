@@ -1,9 +1,9 @@
 class labstore::traffic_shaping(
-    $nfs_write = '8500kbps',
-    $nfs_read = '1000kbps',
-    $nfs_dumps_read = '5000kbps',
-    $egress = '30000kbps',
-    $interface = $facts['interface_primary'],
+    String $nfs_write = '8500kbps',
+    String $nfs_read = '1000kbps',
+    String $nfs_dumps_read = '5000kbps',
+    String $egress = '30000kbps',
+    String $interface = $facts['networking']['primary'],
 ) {
 
     file { '/usr/local/sbin/tc-setup':

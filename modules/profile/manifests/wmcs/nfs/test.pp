@@ -39,7 +39,7 @@ class profile::wmcs::nfs::test(
     require profile::openstack::eqiad1::observerenv
 
     class {'labstore':
-        nfsd_threads => '8',
+        nfsd_threads => 8,
     }
 
     package { [
@@ -74,19 +74,19 @@ class profile::wmcs::nfs::test(
 
     $drbd_resource_config = {
         'test'   => {
-            port       => '7790',
+            port       => 7790,
             device     => '/dev/drbd1',
             disk       => '/dev/vd/test',
             mount_path => '/srv/test',
         },
         'tools'  => {
-            port       => '7791',
+            port       => 7791,
             device     => '/dev/drbd4',
             disk       => '/dev/vd/tools-project',
             mount_path => '/srv/tools',
         },
         'misc' => {
-            port       => '7792',
+            port       => 7792,
             device     => '/dev/drbd3',
             disk       => '/dev/vd/misc-project',
             mount_path => '/srv/misc',

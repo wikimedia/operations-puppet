@@ -10,13 +10,13 @@
 # - NFS is being served over cluster IP
 
 class labstore::monitoring::primary(
-    $drbd_role,
-    $cluster_iface,
-    $cluster_ip,
-    $critical=false,
-    $resource = 'all',
-    $contact_groups='wmcs-team',
-    ) {
+    String $drbd_role,
+    String $cluster_iface,
+    Stdlib::IP::Address $cluster_ip,
+    Boolean $critical = false,
+    String $resource = 'all',
+    String $contact_groups = 'wmcs-team',
+){
 
     sudo::user { 'nagios_check_drbd':
         user       => 'nagios',

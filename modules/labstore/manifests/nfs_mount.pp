@@ -31,18 +31,17 @@
 #  timeout to block for share availability
 
 define labstore::nfs_mount(
-    $mount_path,
-    $mount_name,
-    $ensure = 'present',
-    $project = undef,
-    $share_path = undef,
-    $server = undef,
-    $options = [],
-    $block_timeout = 180,
-    $lookupcache='none',
-    $nfs_version = '4',
-)
-    {
+    Stdlib::Unixpath $mount_path,
+    String $mount_name,
+    Wmflib::Ensure $ensure = 'present',
+    Array $options = [],
+    Integer $block_timeout = 180,
+    String $lookupcache='none',
+    String $nfs_version = '4',
+    Optional[String] $project = undef,
+    Optional[Stdlib::Host] $server = undef,
+    Optional[Variant[Stdlib::Unixpath,'']] $share_path = undef,
+){
 
     include ::labstore::traffic_shaping
 

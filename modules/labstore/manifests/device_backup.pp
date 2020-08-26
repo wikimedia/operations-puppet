@@ -1,5 +1,5 @@
 define labstore::device_backup (
-    String $remotehost,
+    Stdlib::Fqdn $remotehost,
     String $remote_vg,
     String $remote_lv,
     String $remote_snapshot,

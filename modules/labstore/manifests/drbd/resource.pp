@@ -51,11 +51,11 @@
 #
 
 define labstore::drbd::resource (
-    $drbd_cluster,
-    $port,
-    $device,
-    $disk,
-    $mount_path,
+    Hash $drbd_cluster,
+    Stdlib::Port $port,
+    Stdlib::Unixpath $device,
+    Stdlib::Unixpath $disk,
+    Stdlib::Unixpath $mount_path,
 ) {
 
     require ::labstore::drbd::node
@@ -67,7 +67,7 @@ define labstore::drbd::resource (
     }
 
     # cheap way to ensure uniqueness across resources
-    labstore::drbd::resource::port { $port: }
+    labstore::drbd::resource::port { "${port}": }  # lint:ignore:only_variable_string  titles must be strings
     labstore::drbd::resource::port { $disk: }
     labstore::drbd::resource::port { $device: }
     labstore::drbd::resource::port { $mount_path: }

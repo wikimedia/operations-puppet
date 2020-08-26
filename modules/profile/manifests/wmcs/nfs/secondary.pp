@@ -12,7 +12,7 @@ class profile::wmcs::nfs::secondary(
     require ::profile::openstack::eqiad1::observerenv
 
     class {'::labstore':
-        nfsd_threads => '192',
+        nfsd_threads => 192,
     }
 
     package { [

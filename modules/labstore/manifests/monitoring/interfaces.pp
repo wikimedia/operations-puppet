@@ -9,11 +9,11 @@
 #   that serves NFS
 
 class labstore::monitoring::interfaces(
-    $monitor_iface = 'eth0',
-    $contact_groups='wmcs-team,admins',
-    $int_throughput_warn = 93750000,  # 750Mbps
-    $int_throughput_crit = 106250000, # 850Mbps
-) {
+    String $monitor_iface = 'eth0',
+    String $contact_groups='wmcs-team,admins',
+    Integer $int_throughput_warn = 93750000,  # 750Mbps
+    Integer $int_throughput_crit = 106250000, # 850Mbps
+){
 
     # In minutes, how long icinga will wait before considering HARD state, see also T188624
     $retries = 10
