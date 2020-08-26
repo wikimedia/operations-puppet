@@ -6,6 +6,7 @@ class profile::prometheus::k8s::staging (
     String $replica_label = lookup('prometheus::replica_label', { 'default_value' => 'unset' }),
     Boolean $enable_thanos_upload = lookup('profile::prometheus::k8s::staging::thanos', { 'default_value' => false }),
     Optional[String] $thanos_min_time = lookup('profile::prometheus::thanos::min_time', { 'default_value' => undef }),
+    Array[Stdlib::Host] $alertmanagers = lookup('alertmanagers', {'default_value' => []}),
 ){
     $targets_path = '/srv/prometheus/k8s-staging/targets'
     $storage_retention = hiera('prometheus::server::storage_retention', '4032h') # lint:ignore:wmf_styleguide
@@ -267,6 +268,7 @@ class profile::prometheus::k8s::staging (
         scrape_configs_extra  => $scrape_configs_extra,
         min_block_duration    => '2h',
         max_block_duration    => $max_block_duration,
+        alertmanagers         => $alertmanagers.map |$a| { "${a}:9093" },
     }
 
     prometheus::web { 'k8s-staging':

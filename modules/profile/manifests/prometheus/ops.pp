@@ -14,7 +14,7 @@ class profile::prometheus::ops (
     String $replica_label = lookup('prometheus::replica_label', { 'default_value' => 'unset' }),
     Boolean $enable_thanos_upload = lookup('profile::prometheus::ops::thanos', { 'default_value' => false }),
     Optional[String] $thanos_min_time = lookup('profile::prometheus::thanos::min_time', { 'default_value' => undef }),
-    $alertmanagers = lookup('alertmanagers', {'default_value' => []}),
+    Array[Stdlib::Host] $alertmanagers = lookup('alertmanagers', {'default_value' => []}),
 ){
     include ::passwords::gerrit
     $gerrit_client_token = $passwords::gerrit::prometheus_bearer_token

@@ -1,4 +1,6 @@
-class profile::prometheus::global {
+class profile::prometheus::global (
+    Array[Stdlib::Host] $alertmanagers = lookup('alertmanagers', {'default_value' => []}),
+){
 
     # Pull selected metrics from all DC-local Prometheus servers.
     $federation_jobs = [
@@ -75,6 +77,7 @@ class profile::prometheus::global {
         storage_retention    => '19656h',
         listen_address       => '127.0.0.1:9904',
         scrape_configs_extra => $federation_jobs,
+        alertmanagers        => $alertmanagers.map |$a| { "${a}:9093" },
     }
 
     prometheus::web { 'global':

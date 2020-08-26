@@ -6,6 +6,7 @@ class profile::prometheus::services (
     String $replica_label = lookup('prometheus::replica_label', { 'default_value' => 'unset' }),
     Boolean $enable_thanos_upload = lookup('profile::prometheus::services::thanos', { 'default_value' => false }),
     Optional[String] $thanos_min_time = lookup('profile::prometheus::thanos::min_time', { 'default_value' => undef }),
+    Array[Stdlib::Host] $alertmanagers = lookup('alertmanagers', {'default_value' => []}),
 ) {
     $targets_path = '/srv/prometheus/services/targets'
     $storage_retention = hiera('prometheus::server::storage_retention', '4032h')
@@ -82,6 +83,7 @@ class profile::prometheus::services (
         global_config_extra   => $config_extra,
         min_block_duration    => '2h',
         max_block_duration    => $max_block_duration,
+        alertmanagers         => $alertmanagers.map |$a| { "${a}:9093" },
     }
 
     prometheus::web { 'services':
