@@ -142,7 +142,13 @@ class profile::wmcs::nfs::primary(
     class {'labstore::monitoring::exports':
         drbd_role => $drbd_actual_role,
     }
-
+    class {'labstore::monitoring::volumes':
+        server_vols => [
+            '/srv/tools',
+            '/srv/misc'
+        ],
+        drbd_role   => $drbd_actual_role,
+    }
     class {'labstore::monitoring::ldap': }
     class {'labstore::monitoring::interfaces':
         monitor_iface => $monitor_iface,

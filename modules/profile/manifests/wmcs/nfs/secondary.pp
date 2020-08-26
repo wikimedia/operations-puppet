@@ -61,7 +61,12 @@ class profile::wmcs::nfs::secondary(
 
     class {'labstore::monitoring::exports': }
     class {'labstore::monitoring::ldap': }
-
+    class {'labstore::monitoring::volumes':
+        server_vols => [
+            '/srv/scratch',
+            '/srv/maps'
+        ],
+    }
     class { 'labstore::monitoring::interfaces':
         monitor_iface       => 'eno1',
         int_throughput_warn => 937500000,  # 7500Mbps
