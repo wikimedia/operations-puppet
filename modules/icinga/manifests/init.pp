@@ -26,6 +26,7 @@ class icinga(
     Stdlib::Unixpath $retention_file = '/var/cache/icinga/retention.dat',
     Integer $max_concurrent_checks = 0,
     Integer[1] $logs_keep_days = 780,
+    Boolean $stub_contactgroups = false,
 ) {
 
     file { [ '/etc/nagios/nagios_host.cfg', '/etc/nagios/nagios_service.cfg' ]:
@@ -78,6 +79,20 @@ class icinga(
       config_dir => '/etc/icinga/objects',
       require    => Package['icinga'],
       notify     => Service['icinga'],
+    }
+
+    if ($stub_contactgroups) {
+        if ( $::realm == 'production' ) {
+            fail('Do not use $stub_contactgroups in production')
+        }
+
+        # Icinga needs all contactgroups' members to be defined. Pretend 'stub'
+        # contact (defined in labs/private.git) is part of all contactgroups.
+        # For testing only!
+        exec { 'stub_contactgroups':
+            command => '/usr/bin/sed -i "s/members.*/members stub/" /etc/icinga/objects/contactgroups.cfg',
+            require => Class['Nagios_common::Contactgroups'],
+        }
     }
 
     class { '::nagios_common::contacts':
