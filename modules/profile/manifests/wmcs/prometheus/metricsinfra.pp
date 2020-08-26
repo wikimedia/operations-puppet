@@ -123,7 +123,13 @@ class profile::wmcs::prometheus::metricsinfra(
 
     # Apache config
     class { '::httpd':
-        modules => ['proxy', 'proxy_http', 'rewrite', 'headers'],
+        modules => [
+            'proxy',
+            'proxy_http',
+            'rewrite',
+            'headers',
+            'allowmethods',
+        ],
     }
 
     httpd::site{ 'prometheus':
@@ -134,6 +140,15 @@ class profile::wmcs::prometheus::metricsinfra(
     prometheus::web { 'cloud':
         proxy_pass => 'http://localhost:9900/cloud',
         require    => Httpd::Site['prometheus'],
+    }
+
+    # Expose alertmanager as /.alertmanager via apache reverse proxy
+    file { '/etc/apache2/prometheus.d/alertmanager.conf':
+        ensure  => present,
+        content => template('profile/wmcs/prometheus/alertmanager-apache.erb'),
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
     }
 
     ferm::service { 'prometheus-web':
