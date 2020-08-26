@@ -14,125 +14,48 @@
 # With $manage = true this class will set $ensure and $enabled as specified.
 
 class mariadb::service (
-    $package  = 'undefined',
-    $basedir  = 'undefined',
     $manage   = false,
     $ensure   = stopped,
     $enable   = false,
     $override = false,
     ) {
 
-    # default strech to mariadb 10.1, others to 10.0
-    if os_version('debian >= stretch') and $package == 'undefined' {
-        $installed_package = 'wmf-mariadb101'
-    } elsif $package == 'undefined' {
-        $installed_package = 'wmf-mariadb10'
-    } else {
-        $installed_package = $package
-    }
-
-    # mariadb 10.1 and later use systemd, others use init.d
-    # Also identify vendor
-
-    case $installed_package {
-        'wmf-mariadb', 'wmf-mariadb10': {
-            $systemd = false
-            $vendor  = 'mariadb'
-        }
-        'wmf-mariadb101', 'wmf-mariadb102', 'wmf-mariadb103', 'wmf-mariadb104': {
-            $systemd = true
-            $vendor  = 'mariadb'
-        }
-        'wmf-mysql80': {
-            $systemd = true
-            $vendor = 'mysql'
-        }
-        'wmf-percona-server80': {
-            $systemd = true
-            $vendor = 'percona-server'
-        }
-        default: {
-            fail("Invalid package version \"${installed_package}\". \
-The only allowed versions are: wmf-mariadb10, wmf-mariadb101, wmf-mariadb102, \
-wmf-mariadb103, wmf-mariadb104, wmf-percona-server80 or wmf-mysql80")
+    # TODO: use the base::service configuration
+    if $manage {
+        service { 'mariadb':
+            # $manage assumes only the main instance is managed-
+            # multiple instances have to be managed manually
+            ensure => $ensure,
+            enable => $enable,
         }
     }
-
-    if $systemd {
-        # TODO: use the base::service configuration
-        if $manage {
-            service { $vendor:
-                # $manage assumes only the main instance is managed-
-                # multiple instances have to be managed manually
-                ensure => $ensure,
-                enable => $enable,
-            }
+    # handle per-host special configuration
+    if $override {
+        file { '/etc/systemd/system/mariadb.service.d':
+            ensure => directory,
+            mode   => '0755',
+            owner  => 'root',
+            group  => 'root',
         }
-        # handle per-host special configuration
-        if $override {
-            file { "/etc/systemd/system/${vendor}.service.d":
-                ensure => directory,
-                mode   => '0755',
-                owner  => 'root',
-                group  => 'root',
-            }
-            file { "/etc/systemd/system/${vendor}.service.d/override.conf":
-                ensure  => present,
-                mode    => '0755',
-                owner   => 'root',
-                group   => 'root',
-                content => $override,
-                notify  => Exec['systemctl-daemon-reload'],
-            }
-            exec { 'systemctl-daemon-reload':
-                command     => '/bin/systemctl daemon-reload',
-                refreshonly => true,
-            }
-        } else {
-            file { "/etc/systemd/system/${vendor}.service.d/override.conf":
-                ensure => absent,
-                notify => File["/etc/systemd/system/${vendor}.service.d"]
-            }
-            file { "/etc/systemd/system/${vendor}.service.d":
-                ensure => absent,
-            }
-        }
-
-    } else {
-        # using still init.d
-        if $basedir == 'undefined' {
-            $initd_basedir = "/opt/${installed_package}"
-        } else {
-            $initd_basedir = $basedir
-        }
-
-        file { "${initd_basedir}/service":
+        file { '/etc/systemd/system/mariadb.service.d/override.conf':
             ensure  => present,
+            mode    => '0755',
             owner   => 'root',
             group   => 'root',
-            mode    => '0755',
-            content => template('mariadb/mariadb.server.erb'),
-            require => Package[$installed_package],
+            content => $override,
+            notify  => Exec['systemctl-daemon-reload'],
         }
-
-        file { '/etc/init.d/mysql':
-            ensure  => 'link',
-            target  => "${initd_basedir}/service",
-            require => File["${initd_basedir}/service"],
+        exec { 'systemctl-daemon-reload':
+            command     => '/bin/systemctl daemon-reload',
+            refreshonly => true,
         }
-
-        file { '/etc/init.d/mariadb':
-            ensure  => 'link',
-            target  => "${initd_basedir}/service",
-            require => File["${initd_basedir}/service"],
+    } else {
+        file { '/etc/systemd/system/mariadb.service.d/override.conf':
+            ensure => absent,
+            notify => File['/etc/systemd/system/mariadb.service.d']
         }
-
-        if $manage {
-            service { 'mysql':
-                ensure  => $ensure,
-                enable  => $enable,
-                require => File['/etc/init.d/mysql'],
-            }
+        file { '/etc/systemd/system/mariadb.service.d':
+            ensure => absent,
         }
     }
 }

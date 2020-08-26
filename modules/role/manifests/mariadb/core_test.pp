@@ -40,7 +40,6 @@ class role::mariadb::core_test {
 
     require profile::mariadb::packages_wmf
     class { 'mariadb::service':
-        package  => $profile::mariadb::packages_wmf::mariadb_package,
         # override not needed, default configuration changed on package
         # override => "[Service]\nLimitNOFILE=200000",
     }

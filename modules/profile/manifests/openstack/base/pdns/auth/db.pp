@@ -40,10 +40,9 @@ class profile::openstack::base::pdns::auth::db(
     }
 
     class { 'mariadb::service':
-        ensure  => 'running',
-        package => $profile::mariadb::packages_wmf::mariadb_package,
-        manage  => true,
-        enable  => true,
+        ensure => 'running',
+        manage => true,
+        enable => true,
     }
 
     class { 'mariadb::config':
