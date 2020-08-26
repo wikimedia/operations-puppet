@@ -14,11 +14,12 @@ class cfssl (
     $ca_key_file = '/etc/ssl/private/ca_key.pem'
     $ca_file = '/etc/ssl/certs/ca.pem'
 
-    file{[$csr_dir, $internal_dir]:
-        ensure => directory,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0550';
+    file{[$conf_dir, $csr_dir, $internal_dir]:
+        ensure  => directory,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0550',
+        require => Package['golang-cfssl'],
     }
     if $ca_key_content and $ca_cert_content {
         file {
