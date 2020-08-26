@@ -19,6 +19,11 @@ profile::icinga::partners:
   - 'alert1001.wikimedia.org'
   - 'alert2001.wikimedia.org'
 
+profile::alertmanager::active_host: alert1001.wikimedia.org
+profile::alertmanager::partners:
+  - 'alert1001.wikimedia.org'
+  - 'alert2001.wikimedia.org'
+
 profile::mariadb::backup::check::backups:
   s1:
     dump:

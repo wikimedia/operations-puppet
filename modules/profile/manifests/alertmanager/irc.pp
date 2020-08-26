@@ -1,6 +1,6 @@
 class profile::alertmanager::irc (
-    Stdlib::Host        $active_host = lookup('profile::icinga::active_host'),
-    Array[Stdlib::Host] $partners    = lookup('profile::icinga::partners'),
+    Stdlib::Host        $active_host = lookup('profile::alertmanager::active_host'),
+    Array[Stdlib::Host] $partners    = lookup('profile::alertmanager::partners'),
     Stdlib::Host        $irc_host    = lookup('profile::alertmanager::irc::host'),
     Stdlib::Port        $irc_port    = lookup('profile::alertmanager::irc::port'),
     String              $irc_nickname = lookup('profile::alertmanager::irc::nickname'),

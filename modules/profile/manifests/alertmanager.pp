@@ -1,6 +1,6 @@
 class profile::alertmanager (
-    Stdlib::Host        $active_host = lookup('profile::icinga::active_host'),
-    Array[Stdlib::Host] $partners    = lookup('profile::icinga::partners'),
+    Stdlib::Host        $active_host = lookup('profile::alertmanager::active_host'),
+    Array[Stdlib::Host] $partners    = lookup('profile::alertmanager::partners'),
     String              $irc_channel = lookup('profile::alertmanager::irc::channel'),
     Optional[String]    $victorops_api_key = lookup('profile::alertmanager::victorops_api_key'),
     Array $prometheus_all_nodes = lookup('prometheus_all_nodes'),
