@@ -3432,9 +3432,21 @@ host icinga2001 {
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
+host install3001 {
+    hardware ethernet aa:00:00:fc:63:c4;
+    fixed-address install3001.wikimedia.org;
+    next-server 208.80.153.51; # install2003 (tftp server)
+}
+
 host install4001 {
     hardware ethernet aa:00:00:6d:c7:59;
     fixed-address install4001.wikimedia.org;
+    next-server 208.80.153.51; # install2003 (tftp server)
+}
+
+host install5001 {
+    hardware ethernet aa:00:00:39:f6:0a;
+    fixed-address install5001.wikimedia.org;
     next-server 208.80.153.51; # install2003 (tftp server)
 }
 
