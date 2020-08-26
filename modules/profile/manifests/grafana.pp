@@ -35,6 +35,7 @@ class profile::grafana (
             domain      => $domain,
             protocol    => 'http',
             enable_gzip => true,
+            root_url    => 'https://%(domain)s/',
         },
 
         # Grafana needs a database to store users and dashboards.
