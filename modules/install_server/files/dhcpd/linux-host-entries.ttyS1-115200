@@ -3445,6 +3445,7 @@ host install4001 {
 host install5001 {
     hardware ethernet aa:00:00:39:f6:0a;
     fixed-address install5001.wikimedia.org;
+    option pxelinux.pathprefix "buster-installer/";
 }
 
 host logstash1020 {
