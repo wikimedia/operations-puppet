@@ -4432,3 +4432,7 @@ ldap_only_users:
     ensure: present
     realname: Chelsea Riley
     email: criley@wikimedia.org
+  seve-kim:
+    ensure: present
+    realname: Seve Kim
+    email: kim@wikimedia.org
