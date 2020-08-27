@@ -2211,7 +2211,7 @@ node 'scandium.eqiad.wmnet' {
     role(parsoid::testing)
 }
 
-node /schema[12]00[1-4].(eqiad|codfw).wmnet/ {
+node /schema[12]00[3-4].(eqiad|codfw).wmnet/ {
     role(eventschemas::service)
 }
 
