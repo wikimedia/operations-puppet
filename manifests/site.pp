@@ -1798,8 +1798,8 @@ node /^mw23(3[5-9])\.codfw\.wmnet$/ {
     role(mediawiki::appserver)
 }
 
-# mw2187-mw2199 are in rack C4
-node /^mw21(8[7-8])\.codfw\.wmnet$/ {
+# mw2196 is in rack C4 and an mcrouter proxy
+node 'mw2196.codfw.wmnet' {
     role(mediawiki::canary_appserver)
 }
 
@@ -1851,11 +1851,6 @@ node /^mw22(5[1-3])\.codfw\.wmnet$/ {
 
 # Row B
 
-# mw2135-2147 are in rack B4
-node /^mw21([3][5-9]|4[0-7])\.codfw\.wmnet$/ {
-    role(mediawiki::appserver::api)
-}
-
 # mw2261-mw2262 are in rack B3
 node /^mw226[1-2]\.codfw\.wmnet$/ {
     role(mediawiki::appserver::api)
@@ -1867,11 +1862,6 @@ node /^mw23(2[68]|3[024])\.codfw\.wmnet$/ {
 }
 
 # Row C
-
-# mw2200-2212,mw2214 are in rack C4
-node /^mw22(0[0-9]|1[0124])\.codfw\.wmnet$/ {
-    role(mediawiki::appserver::api)
-}
 
 # rack C6
 node /^mw23(5[02468]|6[024])\.codfw\.wmnet$/ {
