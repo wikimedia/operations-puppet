@@ -284,7 +284,7 @@ groups:
               aarora, zpapierski, knissen, jiawang, mholloway-shell, joewalsh, tarrow,
               itamar, phedenskog, aaron, dpifke, aklapper, jmads, andrew-wmde, daniram,
               rodolfovalentim, dcipoletti, chrisalbon, wikigit, nahidunlimited,
-              agaduran, edtadros, nathante, dvrandecic]
+              agaduran, edtadros, nathante, dvrandecic, razzi]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product]
   analytics-admins:
@@ -293,7 +293,7 @@ groups:
                  This will grant shell access on all Analytics Cluster nodes, as well
                  as the ability to sudo to certain Analytics Cluster system users.
                  This group should contain members of the Analytics team.
-    members: &analytics_admins_members [joal, nuria, mforns, milimetric, fdans]
+    members: &analytics_admins_members [joal, nuria, mforns, milimetric, fdans, razzi]
     privileges: ['ALL = (hdfs)  NOPASSWD: ALL',
                  'ALL = (analytics)  NOPASSWD: ALL',
                  'ALL = NOPASSWD: /bin/journalctl *',
@@ -3826,6 +3826,16 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCiiWPaPdEGsyjzpM2nzJjH7Mu9vMCqdhKFcdpbHu/UeiXKhAwUdy6prPkLlSwO69KKr2DUGAwgPforDxSEJ9UdaWlXmmDkxNlYo9htryusAMwRJKPXB7VaRWogek/eIvBzI1H2KNTD1Zc0PEVcD+b0wdwlaJWpWo/X5vPVQl5utbmW7EOjqwl79kqv43O4dcH2RsT9+jjRdDMNRV9EfL2mLZ2ZvypqHafxLNUukZMCGaTD7ToFgvjpwcXtshOJVE438uvk74nVmgDlEgvLyHRE5rwcO/uJMR7mFDikVxo1j9zmg3So9ug5iqYzgzBhKOhIcFWxmmP199FiE2WVdMoBMMLIaeOoLZ4HXarwSATQGEuhNu2lt2uO/0ZBJa44yE14T6Wwdw/or/ux4TA3vrnK95SEuwSYiHnWyzzQAnUJpST6fR3RMDysRxIYIGQLdDlyi9Z9qs7k/vxwZ0wFPnvoI5eXDaAcxEO7Ncm9tMG2GmGL9utRuL4qSuUWzbfVW28= dvrandecic@wikimedia.org
     uid: 25198
     email: dvrandecic@wikimedia.org
+    krb: present
+  razzi:
+    ensure: present
+    gid: 500
+    name: razzi
+    realname: Razzi Abuissa
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDOETw1B56Sj5+s2mssruTQRZqaveOf2ortJbawxiUE3 razzi@razzi-macbook-air
+    uid: 26051
+    email: rabuissa@wikimedia.org
     krb: present
 
 ldap_only_users:
