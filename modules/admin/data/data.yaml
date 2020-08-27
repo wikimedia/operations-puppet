@@ -4424,3 +4424,7 @@ ldap_only_users:
     ensure: present
     realname: Claudia Lo
     email: clo@wikimedia.org
+  ryanbrounley:
+    ensure: present
+    realname: Ryan Brounley
+    email: rbrounley@wikimedia.org
