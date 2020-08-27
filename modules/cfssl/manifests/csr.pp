@@ -44,8 +44,9 @@ define cfssl::csr (
         content => $csr.to_json_pretty()
     }
     $gen_command = @("GENCOMMAND"/L)
-        /usr/bin/cfssl gencert -ca=${cfssl::ca_file} -ca-key=${cfssl::ca_key_file} -config=${cfssl::conf_file}
-         -profile=${profile} ${csr_file} | /usr/bin/cfssljson -bare ${outdir}/${safe_title}
+        /usr/bin/cfssl gencert -ca=${cfssl::ca_file} -ca-key=${cfssl::ca_key_file} \
+        -config=${cfssl::conf_file} -profile=${profile} ${csr_file} \
+        | /usr/bin/cfssljson -bare ${outdir}/${safe_title}
         | GENCOMMAND
     exec{"Generate cert ${title}":
         command => $gen_command,
