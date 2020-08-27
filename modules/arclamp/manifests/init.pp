@@ -35,6 +35,10 @@ class arclamp(
     Stdlib::Host $redis_host = '127.0.0.1',
     Stdlib::Port $redis_port = 6379,
     String $errors_mailto    = 'performance-team@wikimedia.org',
+    Optional[String] $swift_account_name = undef,
+    Optional[String] $swift_auth_url     = undef,
+    Optional[String] $swift_user         = undef,
+    Optional[String] $swift_key          = undef,
 ){
 
     require_package('python-redis')
@@ -78,13 +82,38 @@ class arclamp(
         target => '/srv/deployment/performance/arc-lamp/arclamp-grep.py',
     }
 
+    $cron_environment = "MAILTO=${errors_mailto}"
+    if $swift_account_name == undef {
+        $swift_cron_environment = $cron_environment
+    } else {
+        $swift_cron_environment = "${cron_environment}\nST_AUTH=${swift_auth_url}/auth/v1.0\nST_USER=${swift_user}\nST_KEY=${swift_key}"
+
+        # Also write credentials where they can be sourced by root
+        # users who need to manually run the swift CLI tool for setup
+        # or debugging:
+        $account_file = "/etc/swift/account_${swift_account_name}.env"
+        file { '/etc/swift':
+            ensure => ensure_directory($ensure),
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0750',
+        }
+        file { $account_file:
+            ensure  => $ensure,
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0440',
+            content => "export ST_AUTH=${swift_auth_url}/auth/v1.0\nexport ST_USER=${swift_user}\nexport ST_KEY=${swift_key}\n"
+        }
+    }
+
     # Generate flamegraphs from raw log data:
     cron { 'arclamp_generate_svgs':
         ensure      => $ensure,
         command     => '/srv/deployment/performance/arc-lamp/arclamp-generate-svgs >/dev/null',
         user        => 'xenon',
         minute      => '*/15',
-        environment => "MAILTO=${errors_mailto}",
+        environment => $swift_cron_environment,
         require     => Package['performance/arc-lamp']
     }
 
@@ -94,7 +123,7 @@ class arclamp(
         command     => '/srv/deployment/performance/arc-lamp/arclamp-compress-logs 7 >/dev/null',
         user        => 'xenon',
         minute      => '17', # intentionally offset from other jobs
-        environment => "MAILTO=${errors_mailto}",
+        environment => $cron_environment,
         require     => Package['performance/arc-lamp']
     }
 
@@ -104,7 +133,7 @@ class arclamp(
         command     => '/srv/deployment/performance/arc-lamp/arclamp-generate-metrics >/dev/null',
         user        => 'xenon',
         minute      => '*/2',
-        environment => "MAILTO=${errors_mailto}",
+        environment => $cron_environment,
         require     => Package['performance/arc-lamp']
     }
 
