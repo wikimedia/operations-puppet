@@ -1800,10 +1800,6 @@ node /^mw23(3[5-9])\.codfw\.wmnet$/ {
 
 # mw2196 is in rack C4 and an mcrouter proxy
 node 'mw2196.codfw.wmnet' {
-    role(mediawiki::canary_appserver)
-}
-
-node /^mw21(89|9[0-9])\.codfw\.wmnet$/ {
     role(mediawiki::appserver)
 }
 
