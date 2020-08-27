@@ -1,4 +1,4 @@
 profile::mediawiki::webserver::stream_to_logstash: true
 profile::mediawiki::php::fpm_config:
   opcache.memory_consumption: 512
-profile::mediawiki::php::restarts::ensure: absent
+profile::mediawiki::php::restarts::opcache_limit: 0
