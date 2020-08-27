@@ -4428,3 +4428,7 @@ ldap_only_users:
     ensure: present
     realname: Ryan Brounley
     email: rbrounley@wikimedia.org
+  criley:
+    ensure: present
+    realname: Chelsea Riley
+    email: criley@wikimedia.org
