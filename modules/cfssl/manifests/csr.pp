@@ -2,7 +2,7 @@
 define cfssl::csr (
     Cfssl::Key                    $key,
     Array[Cfssl::Name]            $names,
-    Boolean                       $sign  = true,
+    String                        $profile = 'default',
     Optional[Array[Stdlib::Host]] $hosts = [],
 ) {
     include cfssl
@@ -13,8 +13,14 @@ define cfssl::csr (
     if $key['algo'] == 'ecdsa' and $key['size'] > 2048 {
         fail('ECDSA keys must be either 256, 384 or 521 bits')
     }
+    unless $profile in $cfssl::profiles.keys() {
+        fail("${profile} is not a valid profile")
+    }
+
     $safe_title = $title.regsubst('[^\w\-]', '_', 'G')
     $csr_file = "${cfssl::csr_dir}/${safe_title}.csr"
+    $outdir   = "${cfssl::internal_dir}/${profile}"
+
     $_names = $names.map |Cfssl::Name $name| {
         {
             'C'  => $name['country'],
@@ -37,9 +43,12 @@ define cfssl::csr (
         mode    => '0400',
         content => $csr.to_json_pretty()
     }
-    if $sign {
-        exec{"Sign ${csr_file}":
-            command => "/usr/bin/cfssl sign -ca ${cfssl::ca_file} -ca-key ${cfssl::ca_key_file} ${csr_file}"
-        }
+    $gen_command = @("GENCOMMAND"/L)
+        /usr/bin/cfssl gencert -ca=${cfssl::ca_file} -ca-key=${cfssl::ca_key_file} -config=${cfssl::conf_file}
+         -profile=${profile} ${csr_file} | /usr/bin/cfssljson -bare ${outdir}/${title}
+        | GENCOMMAND
+    exec{"Generate cert ${title}":
+        command => $gen_command,
+        creates => "${outdir}/${title}.key"
     }
 }

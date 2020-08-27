@@ -14,9 +14,10 @@ class cfssl (
     ensure_packages(['golang-cfssl'])
     $conf_file = "${conf_dir}/cfssl.conf"
     $csr_dir = "${conf_dir}/csr"
+    $ca_dir = "${conf_dir}/ca"
     $internal_dir = "${conf_dir}/internal"
-    $ca_key_file = '/etc/ssl/private/ca_key.pem'
-    $ca_file = '/etc/ssl/certs/ca.pem'
+    $ca_key_file = "${ca_dir}/ca_key.pem"
+    $ca_file = "${ca_dir}/ca.pem"
     $config = {
         'signing' => {
             'default'  => {
@@ -27,13 +28,14 @@ class cfssl (
             'profiles' => $profiles,
         }
     }
+    $profile_dirs = $profiles.keys().map |$profile| { "${internal_dir}/${profile}" }
 
     file{
         default:
             owner   => 'root',
             group   => 'root',
             require => Package['golang-cfssl'];
-        [$conf_dir, $csr_dir, $internal_dir]:
+        [$conf_dir, $csr_dir, $internal_dir, $ca_dir] + $profile_dirs:
             ensure => directory,
             mode   => '0550';
         $conf_file:
