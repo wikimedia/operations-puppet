@@ -16,6 +16,7 @@ class openstack::clientpackages::train::buster(
     $py3packages = [
         'python3-novaclient',
         'python3-glanceclient',
+        'python3-keystoneauth1',
         'python3-keystoneclient',
         'python3-openstackclient',
         'python3-designateclient',
