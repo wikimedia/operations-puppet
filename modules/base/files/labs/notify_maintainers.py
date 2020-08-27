@@ -29,8 +29,12 @@ from keystoneclient.auth.identity.v3 import Password as KeystonePassword
 from keystoneclient.session import Session as KeystoneSession
 from keystoneclient.v3 import client as keystone_client
 
-# Don't bother to notify the novaadmin user as it spams ops@
-USER_IGNORE_LIST = ['uid=novaadmin,ou=people,dc=wikimedia,dc=org']
+# Don't bother to notify the novaadmin and nova-tools-bot user as it spams ops@
+# and noc@, respectively
+USER_IGNORE_LIST = [
+    'uid=novaadmin,ou=people,dc=wikimedia,dc=org',
+    'uid=nova-tools-bot,ou=people,dc=wikimedia,dc=org'
+    ]
 
 
 def connect(server, username, password):
