@@ -50,6 +50,6 @@ define cfssl::csr (
         | GENCOMMAND
     exec{"Generate cert ${title}":
         command => $gen_command,
-        creates => "${outdir}/${safe_title}.key"
+        creates => "${outdir}/${safe_title}-key.pem"
     }
 }
