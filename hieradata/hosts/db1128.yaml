@@ -1,2 +1,3 @@
 # db1128
+mariadb::shard: 'm5'
 mariadb::binlog_format: 'ROW'

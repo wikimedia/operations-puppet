@@ -6,10 +6,7 @@ class profile::mariadb::parsercache (
     ){
     $mw_primary = mediawiki::state('primary_dc')
 
-    $mysql_role = 'master'
-    class { '::profile::mariadb::mysql_role':
-        role => $mysql_role,
-    }
+    include ::profile::mariadb::mysql_role
     profile::mariadb::section { $shard: }
 
     include ::passwords::misc::scripts

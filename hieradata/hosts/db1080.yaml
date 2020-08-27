@@ -1,1 +1,3 @@
 # db1080
+mariadb::mysql_role: 'master'
+mariadb::shard: 'm1'

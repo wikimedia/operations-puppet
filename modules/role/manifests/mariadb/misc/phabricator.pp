@@ -2,11 +2,10 @@
 # strict sql_mode -- nice! but other services moan
 # admin tool that needs non-trivial permissions
 class role::mariadb::misc::phabricator(
-    $shard     = 'm3',
-    $master    = false,
     $ssl       = 'puppet-cert',
     $p_s       = 'on',
     ) {
+    $shard = lookup('mariadb::shard')
 
     system::role { 'mariadb::misc':
         description => "Misc Services Database ${shard} (phabricator)",
@@ -15,15 +14,8 @@ class role::mariadb::misc::phabricator(
     include ::profile::standard
     include mariadb::packages_wmf
     include mariadb::service
+    include profile::mariadb::mysql_role
 
-    $mysql_role = $master ? {
-        true  => 'master',
-        false => 'slave',
-    }
-
-    class { '::profile::mariadb::mysql_role':
-        role => $mysql_role,
-    }
     profile::mariadb::section { $shard: }
 
     include ::passwords::misc::scripts
@@ -32,7 +24,8 @@ class role::mariadb::misc::phabricator(
 
     include ::profile::mariadb::monitor::prometheus
 
-    $read_only = $master ? {
+    $is_master = $profile::mariadb::mysql_role::role == 'master'
+    $read_only = $is_master ? {
         true  => 0,
         false => 1,
     }
@@ -83,16 +76,16 @@ class role::mariadb::misc::phabricator(
     class { 'mariadb::heartbeat':
         shard      => $shard,
         datacenter => $::site,
-        enabled    => $master,
+        enabled    => $is_master,
     }
 
     class { 'mariadb::monitor_disk':
-        is_critical   => $master,
+        is_critical   => $is_master,
         contact_group => 'admins',
     }
 
     class { 'mariadb::monitor_process':
-        is_critical   => $master,
+        is_critical   => $is_master,
         contact_group => 'admins',
     }
 

@@ -1,26 +1,19 @@
 # miscellaneous services clusters
-class role::mariadb::misc(
-    $shard  = 'm1',
-    $master = false,
-    ) {
+class role::mariadb::misc {
+    $shard = lookup('mariadb::shard')
 
     system::role { 'mariadb::misc':
         description => "Misc Services Database ${shard}",
     }
 
-    $read_only = $master ? {
+    include ::profile::mariadb::mysql_role
+
+    $is_master = $profile::mariadb::mysql_role::role == 'master'
+    $read_only = $is_master ? {
         true  => 0,
         false => 1,
     }
 
-    $mysql_role = $master ? {
-        true  => 'master',
-        false => 'slave',
-    }
-
-    class { '::profile::mariadb::mysql_role':
-        role => $mysql_role,
-    }
     profile::mariadb::section { $shard: }
 
     include ::profile::standard
@@ -55,15 +48,15 @@ class role::mariadb::misc(
     class { 'mariadb::heartbeat':
         shard      => $shard,
         datacenter => $::site,
-        enabled    => $master,
+        enabled    => $is_master,
     }
     class { 'mariadb::monitor_disk':
-        is_critical   => $master,
+        is_critical   => $is_master,
         contact_group => 'admins',
     }
 
     class { 'mariadb::monitor_process':
-        is_critical   => $master,
+        is_critical   => $is_master,
         contact_group => 'admins',
     }
     mariadb::monitor_readonly { [ $shard ]:

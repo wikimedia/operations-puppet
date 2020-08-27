@@ -1,1 +1,2 @@
 monitor_screens: false
+mariadb::mysql_role: 'master'
