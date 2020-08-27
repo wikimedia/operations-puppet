@@ -34,11 +34,11 @@ logger = logging.getLogger(__name__)
 
 
 def lastrun():
-    datafile = file("/var/lib/puppet/state/last_run_summary.yaml")
-    for line in datafile:
-        fields = line.strip().split(": ")
-        if fields[0] == "last_run":
-            return int(fields[1])
+    with open("/var/lib/puppet/state/last_run_summary.yaml") as datafile:
+        for line in datafile.readlines():
+            fields = line.strip().split(": ")
+            if fields[0] == "last_run":
+                return int(fields[1])
     return 0
 
 
