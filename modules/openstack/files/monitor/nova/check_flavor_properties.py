@@ -28,7 +28,8 @@ UNKNOWN = 3
 def check_flavors():
     orphan_flavors = []
     ceph_flavors_without_bytes_sec = []
-    ceph_flavors_without_iops_sec = []
+    ceph_flavors_without_read_iops = []
+    ceph_flavors_without_write_iops = []
 
     clients = mwopenstackclients.clients("/etc/novaobserver.yaml")
     allprojects = clients.allprojects()
@@ -50,12 +51,15 @@ def check_flavors():
                     if "ceph" in key:
                         # Make sure this is throttled properly
                         ceph_flavors_without_bytes_sec.append(flavor.name)
-                        ceph_flavors_without_iops_sec.append(flavor.name)
+                        ceph_flavors_without_read_iops.append(flavor.name)
+                        ceph_flavors_without_write_iops.append(flavor.name)
                         for throttlekey in keys:
                             if throttlekey.startswith("quota:disk_total_bytes_sec"):
                                 ceph_flavors_without_bytes_sec.remove(flavor.name)
-                            elif throttlekey.startswith("quota:disk_total_iops_sec"):
-                                ceph_flavors_without_iops_sec.remove(flavor.name)
+                            elif throttlekey.startswith("quota:disk_read_iops_sec"):
+                                ceph_flavors_without_read_iops.remove(flavor.name)
+                            elif throttlekey.startswith("quota:disk_write_iops_sec"):
+                                ceph_flavors_without_write_iops.remove(flavor.name)
 
                     break
 
@@ -72,10 +76,16 @@ def check_flavors():
             + ", ".join(ceph_flavors_without_bytes_sec)
             + "\n"
         )
-    if ceph_flavors_without_iops_sec:
+    if ceph_flavors_without_read_iops:
         errstring += (
-            "Some ceph flavors lack quota:disk_total_iops_sec: "
-            + ", ".join(ceph_flavors_without_iops_sec)
+            "Some ceph flavors lack quota:disk_read_iops_sec: "
+            + ", ".join(ceph_flavors_without_read_iops)
+            + "\n"
+        )
+    if ceph_flavors_without_write_iops:
+        errstring += (
+            "Some ceph flavors lack quota:disk_write_iops_sec: "
+            + ", ".join(ceph_flavors_without_write_iops)
             + "\n"
         )
 
