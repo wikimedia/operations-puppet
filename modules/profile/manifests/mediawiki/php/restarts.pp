@@ -16,14 +16,24 @@ class profile::mediawiki::php::restarts(
     $service = $::profile::mediawiki::php::fpm_programname
     # Check, then restart php-fpm if needed.
     # This implicitly depends on the other MediaWiki/PHP profiles
-    file { '/usr/local/sbin/check-and-restart-php':
-        ensure => $ensure,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        source => 'puppet:///modules/profile/mediawiki/php/php-check-and-restart.sh',
+    # Setting $opcache_limit to 0 will replace the script with a noop and thus disable restarts
+    if $opcache_limit == 0 {
+        file { '/usr/local/sbin/check-and-restart-php':
+            ensure  => present,
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0555',
+            content => "#!/bin/sh\nexit 0"
+        }
+    } else {
+            file { '/usr/local/sbin/check-and-restart-php':
+                ensure => $ensure,
+                owner  => 'root',
+                group  => 'root',
+                mode   => '0555',
+                source => 'puppet:///modules/profile/mediawiki/php/php-check-and-restart.sh',
+            }
     }
-
 
     # If the server is part of a load-balanced cluster, we need to coordinate the cronjobs across
     # the cluster
@@ -52,6 +62,7 @@ class profile::mediawiki::php::restarts(
 
     # Using a systemd timer should ensure we can track if the job fails
     systemd::timer::job { "${service}_check_restart":
+        ensure            => $ensure,
         description       => 'Cronjob to check the status of the opcache space on PHP7, and restart the service if needed',
         command           => "/usr/local/sbin/check-and-restart-php ${service} ${opcache_limit}",
         interval          => {'start' => 'OnCalendar', 'interval' => $times['OnCalendar']},
