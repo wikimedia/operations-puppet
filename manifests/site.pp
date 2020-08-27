@@ -1540,6 +1540,10 @@ node /^ms-be20(1[6-9]|[2345][0-9])\.codfw\.wmnet$/ {
     role(swift::storage)
 }
 
+# New ms-be test server T260188
+node 'ms-be2057.codfw.wmnet' {
+    role(insetup)
+}
 
 ## MEDIAWIKI APPLICATION SERVERS
 
