@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 #
 #   Copyright 2016
 #   Andrew Bogott <andrewbogott@gmail.com>
