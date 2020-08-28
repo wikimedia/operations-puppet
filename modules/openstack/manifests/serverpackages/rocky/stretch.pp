@@ -1,6 +1,6 @@
 class openstack::serverpackages::rocky::stretch(
 ){
-    $ceph_packages = [
+    $stretch_bpo_packages = [
       'librados2',
       'librgw2',
       'librbd1',
@@ -9,17 +9,12 @@ class openstack::serverpackages::rocky::stretch(
       'ceph-common',
       'python-cephfs',
       'libradosstriper1',
-      'libcephfs2',
-      'python3-rados',
-      'python3-rbd',
-      'python3-cephfs',
-      'python3-rgw',
     ]
 
-    apt::package_from_component { 'ceph-stretch':
-        component => 'component/ceph',
-        packages  => $ceph_packages,
-        priority  => 1002,
+    apt::pin { 'openstack-rocky-stretch-bpo':
+        package  => join($stretch_bpo_packages, ' '),
+        pin      => 'release n=stretch-backports',
+        priority => '1002',
     }
 
     # Force these packages to come from the nochange bpo
