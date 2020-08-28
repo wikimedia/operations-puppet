@@ -19,14 +19,14 @@
 #   }
 #
 class wikimania_scholarships(
-    $hostname     = 'scholarships.wikimedia.org',
-    $deploy_dir   = '/srv/deployment/scholarships/scholarships',
-    $cache_dir    = '/var/cache/scholarships',
-    $udp2log_dest = 'mwlog1001.eqiad.wmnet:8420',
-    $serveradmin  = 'noc@wikimedia.org',
-    $mysql_host   = 'localhost',
-    $mysql_db     = 'scholarships',
-    $smtp_host    = 'localhost'
+    Stdlib::Fqdn $hostname     = 'scholarships.wikimedia.org',
+    Stdlib::Unixpath $deploy_dir   = '/srv/deployment/scholarships/scholarships',
+    Stdlib::Unixpath $cache_dir    = '/var/cache/scholarships',
+    String $udp2log_dest = 'mwlog1001.eqiad.wmnet:8420',
+    String $serveradmin  = 'noc@wikimedia.org',
+    Stdlib::Host $mysql_host   = 'localhost',
+    String $mysql_db     = 'scholarships',
+    Stdlib::Host $smtp_host    = 'localhost'
 ) {
 
     include ::passwords::mysql::wikimania_scholarships
