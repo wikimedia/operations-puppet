@@ -53,4 +53,15 @@ class openstack::nova::compute::service::rocky::buster() {
         logoutput => true,
         require   => Package['nova-compute'],
     }
+
+    # Hack to fix live migration deletion
+    # This applies a bug fix that is in upstream version S;
+    # without it nova-compute deadlocks after a live migration.
+    file { '/usr/lib/python3/dist-packages/nova/compute/manager.py':
+        ensure => 'present',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0644',
+        source => 'puppet:///modules/openstack/rocky/nova/hacks/manager.py';
+    }
 }
