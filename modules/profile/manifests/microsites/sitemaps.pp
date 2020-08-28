@@ -1,7 +1,7 @@
 # https://sitemaps.wikimedia.org/
 class profile::microsites::sitemaps(
-  $server_name = lookup('profile::microsites::sitemaps::server_name'),
-  $server_admin = lookup('profile::microsites::sitemaps::server_admin'),
+  Stdlib::Fqdn $server_name = lookup('profile::microsites::sitemaps::server_name'),
+  String $server_admin = lookup('profile::microsites::sitemaps::server_admin'),
 ) {
 
     httpd::site { $server_name:

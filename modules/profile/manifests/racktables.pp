@@ -5,8 +5,8 @@
 ## http://racktables.org/ and unzipped into /srv/org/wikimedia/racktables
 #
 class profile::racktables (
-    $racktables_host = lookup('profile::racktables::racktables_host'),
-    $racktables_db_host = lookup('profile::racktables::racktables_db_host'),
+    Stdlib::Fqdn $racktables_host = lookup('profile::racktables::racktables_host'),
+    Stdlib::Fqdn $racktables_db_host = lookup('profile::racktables::racktables_db_host'),
 ){
     system::role { 'racktables': description => 'Racktables server' }
 

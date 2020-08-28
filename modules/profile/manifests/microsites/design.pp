@@ -1,7 +1,7 @@
 # https://design.wikimedia.org (T185282)
 class profile::microsites::design(
-  $server_name = lookup('profile::microsites::design::server_name'),
-  $server_admin = lookup('profile::microsites::design::server_admin'),
+  Stdlib::Fqdn $server_name = lookup('profile::microsites::design::server_name'),
+  String $server_admin = lookup('profile::microsites::design::server_admin'),
 ) {
 
     httpd::site { 'design.wikimedia.org':

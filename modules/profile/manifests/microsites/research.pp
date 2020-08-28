@@ -1,7 +1,7 @@
 # https://research.wikimedia.org (T183916)
 class profile::microsites::research(
-  $server_name = lookup('profile::microsites::research::server_name'),
-  $server_admin = lookup('profile::microsites::research::server_admin'),
+  Stdlib::Fqdn $server_name = lookup('profile::microsites::research::server_name'),
+  String $server_admin = lookup('profile::microsites::research::server_admin'),
 ) {
 
     httpd::site { 'research.wikimedia.org':

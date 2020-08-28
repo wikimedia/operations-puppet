@@ -1,6 +1,6 @@
 # setup a webserver for misc. apps
 class profile::misc_apps::httpd (
-    $deployment_server = hiera('deployment_server'),
+    Stdlib::Fqdn $deployment_server = lookup('deployment_server'),
 ){
 
     $apache_modules_common = ['rewrite', 'headers', 'proxy', 'proxy_http']

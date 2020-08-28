@@ -3,7 +3,7 @@
 # This class sets up the Wikimania Scholarships application
 #
 class profile::wikimania_scholarships(
-    $db_host = lookup('profile::wikimania_scholarships::db_host'),
+    Stdlib::Fqdn $db_host = lookup('profile::wikimania_scholarships::db_host'),
 ) {
 
     class { '::wikimania_scholarships':

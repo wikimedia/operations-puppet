@@ -3,7 +3,7 @@
 # This class provisions the IEG grant review application.
 #
 class profile::iegreview (
-    $iegreview_db_host = lookup('profile::iegreview::db_host'),
+    Stdlib::Fqdn $iegreview_db_host = lookup('profile::iegreview::db_host'),
 ){
 
     class { '::iegreview':
