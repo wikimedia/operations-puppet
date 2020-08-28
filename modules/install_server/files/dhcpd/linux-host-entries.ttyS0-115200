@@ -135,10 +135,20 @@ host debmonitor1001 {
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
+host debmonitor1002 {
+    hardware ethernet aa:00:00:c6:96:00;
+    fixed-address debmonitor1002.eqiad.wmnet;
+}
+
 host debmonitor2001 {
     hardware ethernet aa:00:00:7f:2e:e7;
     fixed-address debmonitor2001.codfw.wmnet;
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
+}
+
+host debmonitor2002 {
+    hardware ethernet aa:00:00:46:49:83;
+    fixed-address debmonitor2002.codfw.wmnet;
 }
 
 host deneb {

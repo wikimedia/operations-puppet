@@ -798,6 +798,14 @@ node /^debmonitor[12]001\.(codfw|eqiad)\.wmnet$/ {
     role(debmonitor::server)
 }
 
+node 'debmonitor1002.eqiad.wmnet' {
+    role(insetup)
+}
+
+node 'debmonitor2002.codfw.wmnet' {
+    role(insetup)
+}
+
 # Debian package/docker images building host in production (Buster)
 node 'deneb.codfw.wmnet' {
     role(builder)
