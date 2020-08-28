@@ -2,9 +2,9 @@
 #
 # Sets up an ircecho instance that sends icinga alerts to IRC
 class profile::icinga::ircbot(
-    $ensure = hiera('profile::icinga::ircbot::ensure'),
-    $ircecho_nick   = hiera('profile::icinga::ircbot::ircecho_nick'),
-    $ircecho_server = hiera('profile::icinga::ircbot::ircecho_server'),
+    Wmflib::Ensure $ensure = lookup('profile::icinga::ircbot::ensure'),
+    String $ircecho_nick   = lookup('profile::icinga::ircbot::ircecho_nick'),
+    String $ircecho_server = lookup('profile::icinga::ircbot::ircecho_server'),
 ) {
     $ircecho_logs   = {
         '/var/log/icinga/irc.log'             => '#wikimedia-operations',
