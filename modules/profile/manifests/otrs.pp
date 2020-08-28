@@ -2,16 +2,16 @@
 # sets up an instance of the 'Open-source Ticket Request System'
 # https://en.wikipedia.org/wiki/OTRS
 class profile::otrs(
-    $otrs_database_host = hiera('profile::otrs::database_host'),
-    $otrs_database_name = hiera('profile::otrs::database_name'),
-    $otrs_database_user = hiera('profile::otrs::database_user'),
-    $otrs_database_pw   = hiera('profile::otrs::database_pass'),
-    $otrs_daemon        = lookup('profile::otrs::daemon'),
-    $exim_database_name = hiera('profile::otrs::exim_database_name'),
-    $exim_database_user = hiera('profile::otrs::exim_database_user'),
-    $exim_database_pass = hiera('profile::otrs::exim_database_pass'),
-    $prometheus_nodes   = hiera('prometheus_nodes'),
-    $reject_outgoing_smtp = lookup('profile::otrs::reject_outgoing_smtp', {default_value => false}),
+    Stdlib::Fqdn $otrs_database_host = lookup('profile::otrs::database_host'),
+    String $otrs_database_name       = lookup('profile::otrs::database_name'),
+    String $otrs_database_user       = lookup('profile::otrs::database_user'),
+    String $otrs_database_pw         = lookup('profile::otrs::database_pass'),
+    Boolean $otrs_daemon             = lookup('profile::otrs::daemon'),
+    String $exim_database_name       = lookup('profile::otrs::exim_database_name'),
+    String $exim_database_user       = lookup('profile::otrs::exim_database_user'),
+    String $exim_database_pass       = lookup('profile::otrs::exim_database_pass'),
+    Array[Stdlib::Host] $prometheus_nodes = lookup('prometheus_nodes'),
+    Boolean $reject_outgoing_smtp    = lookup('profile::otrs::reject_outgoing_smtp', {default_value => false}),
 ){
     include network::constants
     include ::profile::prometheus::apache_exporter

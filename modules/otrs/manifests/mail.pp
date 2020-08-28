@@ -26,10 +26,10 @@
 #   }
 #
 class otrs::mail(
-    $otrs_mysql_database,
-    $otrs_mysql_user,
-    $otrs_mysql_password,
-    $trusted_networks,
+    String $otrs_mysql_database,
+    String $otrs_mysql_user,
+    String $otrs_mysql_password,
+    Array $trusted_networks,
 ){
     class { '::clamav':
         proxy => "webproxy.${::site}.wmnet:8080",

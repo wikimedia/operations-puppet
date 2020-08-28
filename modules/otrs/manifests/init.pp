@@ -40,15 +40,15 @@
 #  }
 #
 class otrs(
-    $otrs_database_host,
-    $otrs_database_name,
-    $otrs_database_user,
-    $otrs_database_pw,
-    $otrs_daemon,
-    $exim_database_name,
-    $exim_database_user,
-    $exim_database_pass,
-    $trusted_networks,
+    Stdlib::Host $otrs_database_host,
+    String $otrs_database_name,
+    String $otrs_database_user,
+    String $otrs_database_pw,
+    Boolean $otrs_daemon,
+    String $exim_database_name,
+    String $exim_database_user,
+    String $exim_database_pass,
+    Array $trusted_networks,
 ) {
     # Implementation classes
     include ::otrs::web
