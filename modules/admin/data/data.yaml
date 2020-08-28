@@ -4394,7 +4394,7 @@ ldap_only_users:
     ensure: present
     realname: Andrew Kuznetsov
     email: kuz@cmu.edu
-    expiry_date: 2020-08-31
+    expiry_date: 2020-09-15
     expiry_contact: mnovotny@wikimedia.org
   gtzatchkova:
     ensure: present
