@@ -158,6 +158,15 @@ class openstack::util::admin_scripts(
         source => "puppet:///modules/openstack/${version}/admin_scripts/wmcs-ceph-migrate.py",
     }
 
+    # Script to list all flavors and number of VMs using the flavor
+    file { '/usr/local/sbin/wmcs-flavorusage':
+        ensure => 'present',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+        source => "puppet:///modules/openstack/${version}/admin_scripts/wmcs-flavorusage.py",
+    }
+
     # Script and config to maintain DNS records for *.db.svc.eqiad.wmflabs
     # zones in Designate. These DNS zones are used by clients inside Cloud
     # VPS/Toolforge to connect to the Wiki Replica databases.
