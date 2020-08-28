@@ -24,12 +24,12 @@ class profile::mariadb::cloudinfra (
         srange  => "(${$cloudinfra_dbs_joined})",
     }
 
-    class { 'mariadb::packages_wmf': }
+    require profile::mariadb::packages_wmf
     class { 'mariadb::service': }
 
     class { 'mariadb::config':
         config    => 'role/mariadb/mysqld_config/misc.my.cnf.erb',
-        basedir   => '/opt/wmf-mariadb101',
+        basedir   => $profile::mariadb::packages_wmf::basedir,
         datadir   => '/srv/sqldata',
         tmpdir    => '/srv/tmp',
         ssl       => 'puppet-cert',

@@ -6,7 +6,7 @@ class profile::wmcs::services::toolsdb_secondary (
 ) {
     require profile::wmcs::services::toolsdb_apt_pinning
 
-    class { '::mariadb::packages_wmf': }
+    require profile::mariadb::packages_wmf
     class { '::mariadb::service': }
     include ::passwords::misc::scripts
 
@@ -17,7 +17,7 @@ class profile::wmcs::services::toolsdb_secondary (
         config        => 'role/mariadb/mysqld_config/tools.my.cnf.erb',
         datadir       => '/srv/labsdb/data',
         tmpdir        => '/srv/labsdb/tmp',
-        basedir       => '/opt/wmf-mariadb101',
+        basedir       => $profile::mariadb::packages_wmf::basedir,
         read_only     => 'ON',
         p_s           => 'on',
         ssl           => 'puppet-cert',

@@ -1,11 +1,4 @@
 class role::mariadb::core {
-    if os_version('debian >= buster') {
-        $default_package = 'wmf-mariadb104'
-    } else {
-        $default_package = 'wmf-mariadb101'
-    }
-    $package = hiera('mariadb::package', $default_package)
-    $basedir = hiera('mariadb::basedir',  "/opt/${package}")
     $socket = hiera('mariadb::socket', '/run/mysqld/mysqld.sock')
     $datadir = hiera('mariadb::datadir', '/srv/sqldata')
     $tmpdir = hiera('mariadb::tmpdir', '/srv/tmp')
@@ -40,11 +33,9 @@ class role::mariadb::core {
         socket      => $socket,
     }
 
-    class {'mariadb::packages_wmf':
-        package => $package,
-    }
+    require profile::mariadb::packages_wmf
     class {'mariadb::service':
-        package  => $package,
+        package  => $profile::mariadb::packages_wmf::mariadb_package,
         # override not needed, default configuration changed on package
         # override => "[Service]\nLimitNOFILE=200000",
     }
@@ -52,7 +43,7 @@ class role::mariadb::core {
     # Read only forced on also for the masters of the primary datacenter
     class { 'mariadb::config':
         config           => 'role/mariadb/mysqld_config/production.my.cnf.erb',
-        basedir          => $basedir,
+        basedir          => $profile::mariadb::packages_wmf::basedir,
         datadir          => $datadir,
         tmpdir           => $tmpdir,
         socket           => $socket,

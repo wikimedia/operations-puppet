@@ -36,17 +36,11 @@ class profile::mariadb::misc::eventlogging::database (
         contact_group => 'admins',
     }
 
-    class { 'mariadb::packages_wmf': }
+    require profile::mariadb::packages_wmf
     require_package ('mydumper')
 
     class { 'mariadb::service': }
 
-    if os_version('debian == buster') {
-        $mariadb_basedir = '/opt/wmf-mariadb104/'
-    }
-    else {
-        $mariadb_basedir = '/opt/wmf-mariadb101/'
-    }
     $mariadb_socket = '/run/mysqld/mysqld.sock'
 
     # History context: there used to be two hosts with the 'log'
@@ -54,7 +48,7 @@ class profile::mariadb::misc::eventlogging::database (
     # After T159170 we keep only one instance as read-only replica
     # in case historical queries are needed (for data not yet in Hadoop).
     class { 'mariadb::config':
-        basedir       => $mariadb_basedir,
+        basedir       => $profile::mariadb::packages_wmf::basedir,
         config        => 'profile/mariadb/misc/eventlogging/eventlogging.my.cnf.erb',
         datadir       => '/srv/sqldata',
         tmpdir        => '/srv/tmp',

@@ -26,29 +26,22 @@ class profile::openstack::base::pdns::auth::db(
     #   https://computingforgeeks.com/install-powerdns-and-powerdns-admin-on-ubuntu-18-04-debian-9-mariadb-backend/
     #
 
+    require profile::mariadb::packages_wmf
+
     # this override/split should probably go elsewhere, but hey
-    if $::lsbdistcodename == 'buster' {
-        $mariadb_pkg = 'wmf-mariadb104'
-        $mysql_client_pkg = 'default-mysql-client'
-    } elsif $::lsbdistcodename == 'stretch' {
-        $mariadb_pkg = 'wmf-mariadb101'
-        $mysql_client_pkg = 'mysql-client'
-    } else {
-        $mariadb_pkg = 'wmf-mariadb10'
-        $mysql_client_pkg = 'mysql-client'
+    $mysql_client_pkg = case $::lsbdistcodename {
+        'buster': { 'default-mysql-client' }
+        'stretch': { 'mysql-client' }
+        default: { fail("Unsupported distro ${::lsbdistcodename}") }
     }
 
     package { $mysql_client_pkg:
         ensure => present,
     }
 
-    class { 'mariadb::packages_wmf':
-        package => $mariadb_pkg,
-    }
-
     class { 'mariadb::service':
         ensure  => 'running',
-        package => $mariadb_pkg,
+        package => $profile::mariadb::packages_wmf::mariadb_package,
         manage  => true,
         enable  => true,
     }
@@ -58,7 +51,8 @@ class profile::openstack::base::pdns::auth::db(
         datadir   => '/srv/sqldata',
         tmpdir    => '/srv/tmp',
         read_only => 'off',
-        basedir   => "/opt/${mariadb_pkg}",
+        basedir   => $profile::mariadb::packages_wmf::basedir
+,
     }
 
     file { '/etc/mysql/production-grants-dns.sql':

@@ -12,16 +12,11 @@ class profile::mariadb::misc::db_inventory{
         default => 'ROW',
     }
 
-    class { 'mariadb::packages_wmf': }
+    require profile::mariadb::packages_wmf
     profile::mariadb::ferm { $id: }
 
-    if os_version('debian >= buster') {
-        $basedir = '/opt/wmf-mariadb104'
-    } else {
-        $basedir = '/opt/wmf-mariadb101'
-    }
     class { 'mariadb::config':
-        basedir       => $basedir,
+        basedir       => $profile::mariadb::packages_wmf::basedir,
         config        => 'profile/mariadb/mysqld_config/db_inventory.my.cnf.erb',
         datadir       => '/srv/sqldata',
         tmpdir        => '/srv/tmp',

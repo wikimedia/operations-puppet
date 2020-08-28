@@ -13,15 +13,10 @@ class profile::analytics::database::meta(
     # Some CDH database init scripts need Java to run.
     Class['profile::java'] -> Class['profile::analytics::database::meta']
 
-    class { '::mariadb::packages_wmf': }
+    require profile::mariadb::packages_wmf
+    $basedir = $profile::mariadb::packages_wmf::basedir
 
     $mariadb_socket = '/run/mysqld/mysqld.sock'
-
-    if os_version('debian >= stretch') {
-        $mariadb_basedir = '/opt/wmf-mariadb101'
-    } else {
-        $mariadb_basedir = '/opt/wmf-mariadb10'
-    }
 
     class { '::mariadb::config':
         config    => 'profile/analytics/database/meta/analytics-meta.my.cnf.erb',
@@ -29,18 +24,17 @@ class profile::analytics::database::meta(
         port      => 3306,
         datadir   => $datadir,
         tmpdir    => $tmpdir,
-        basedir   => $mariadb_basedir,
+        basedir   => $basedir,
         ssl       => 'puppet-cert',
         read_only => false,
-        require   => Class['mariadb::packages_wmf'],
     }
 
     # If labs, automate mysql_install_db. Supported only for recent
     # Debian OS like Stretch.
     if $::realm == 'labs' and os_version('debian >= stretch') {
         exec { 'analytics_meta_mysql_install_db':
-            command => '/opt/wmf-mariadb101/scripts/mysql_install_db',
-            cwd     => '/opt/wmf-mariadb101',
+            command => "${basedir}/scripts/mysql_install_db",
+            cwd     => $basedir,
             creates => "${datadir}/ibdata1",
             require => Class['mariadb::config'],
             before  => Class['mariadb::service'],

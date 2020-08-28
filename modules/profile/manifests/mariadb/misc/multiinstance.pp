@@ -5,7 +5,7 @@ class profile::mariadb::misc::multiinstance (
     $m3            = hiera('profile::mariadb::misc::multiinstance::m3', false),
     $m5            = hiera('profile::mariadb::misc::multiinstance::m5', false),
 ) {
-    class { 'mariadb::packages_wmf': }
+    require profile::mariadb::packages_wmf
     class { 'mariadb::service':
         override => "[Service]\nExecStartPre=/bin/sh -c \"echo 'mariadb main service is \
 disabled, use mariadb@<instance_name> instead'; exit 1\"",
@@ -13,15 +13,9 @@ disabled, use mariadb@<instance_name> instead'; exit 1\"",
 
     include ::profile::mariadb::mysql_role
 
-    if os_version('debian == buster') {
-        $basedir = '/opt/wmf-mariadb104/'
-    }
-    else {
-        $basedir = '/opt/wmf-mariadb101/'
-    }
     class { 'mariadb::config':
         datadir       => false,
-        basedir       => $basedir,
+        basedir       => $profile::mariadb::packages_wmf::basedir,
         read_only     => 'ON',
         config        => 'profile/mariadb/mysqld_config/misc_multiinstance.my.cnf.erb',
         p_s           => 'on',

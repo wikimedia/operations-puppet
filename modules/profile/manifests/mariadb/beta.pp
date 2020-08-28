@@ -2,7 +2,7 @@
 class profile::mariadb::beta {
 
     include ::profile::standard
-    include mariadb::packages_wmf
+    require profile::mariadb::packages_wmf
     include passwords::misc::scripts
     include mariadb::stock_heartbeat
 
@@ -13,7 +13,6 @@ class profile::mariadb::beta {
     labs_lvm::volume { 'second-local-disk':
         mountat => '/srv',
         size    => '80%FREE',
-        before  => Class['mariadb::packages_wmf'],
     }
 
     class { 'mariadb::config':

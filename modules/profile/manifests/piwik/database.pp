@@ -16,17 +16,16 @@ class profile::piwik::database(
 
     $mariadb_socket = '/run/mysqld/mysqld.sock'
 
-    class { '::mariadb::packages_wmf': }
+    require profile::mariadb::packages_wmf
 
     class { '::mariadb::config':
         config    => 'profile/piwik/my.cnf.erb',
         socket    => $mariadb_socket,
         port      => $database_port ,
         datadir   => '/var/lib/mysql',
-        basedir   => '/opt/wmf-mariadb101',
+        basedir   => $profile::mariadb::packages_wmf::basedir,
         read_only => false,
         ssl       => 'puppet-cert',
-        require   => Class['mariadb::packages_wmf'],
     }
 
     class { '::mariadb::service':

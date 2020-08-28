@@ -5,7 +5,7 @@ class role::wmcs::db::wikireplicas::web {
     }
 
     include ::profile::standard
-    class { '::mariadb::packages_wmf': }
+    require profile::mariadb::packages_wmf
     class { '::mariadb::service': }
     include ::profile::mariadb::monitor
     include ::profile::base::firewall

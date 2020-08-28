@@ -26,12 +26,12 @@ class role::mariadb::misc {
     }
     include ::profile::mariadb::monitor::prometheus
 
-    include mariadb::packages_wmf
+    require profile::mariadb::packages_wmf
     include mariadb::service
 
     class { 'mariadb::config':
         config    => 'role/mariadb/mysqld_config/misc.my.cnf.erb',
-        basedir   => '/opt/wmf-mariadb101',
+        basedir   => $profile::mariadb::packages_wmf::basedir,
         datadir   => '/srv/sqldata',
         tmpdir    => '/srv/tmp',
         ssl       => 'puppet-cert',

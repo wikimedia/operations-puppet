@@ -12,7 +12,7 @@ class role::mariadb::misc::phabricator(
     }
 
     include ::profile::standard
-    include mariadb::packages_wmf
+    require profile::mariadb::packages_wmf
     include mariadb::service
     include profile::mariadb::mysql_role
 
@@ -34,7 +34,7 @@ class role::mariadb::misc::phabricator(
 
     class { 'mariadb::config':
         config    => 'role/mariadb/mysqld_config/phabricator.my.cnf.erb',
-        basedir   => '/opt/wmf-mariadb101', # FIXME: config should default to 10.1
+        basedir   => $profile::mariadb::packages_wmf::basedir,
         datadir   => '/srv/sqldata',
         tmpdir    => '/srv/tmp',
         sql_mode  => 'STRICT_ALL_TABLES',

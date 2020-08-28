@@ -9,7 +9,7 @@ class profile::mariadb::sanitarium_multiinstance (
     $s7            = hiera('profile::mariadb::sanitarium_multiinstance::s7', false),
     $s8            = hiera('profile::mariadb::sanitarium_multiinstance::s8', false),
 ) {
-    class { 'mariadb::packages_wmf': }
+    require profile::mariadb::packages_wmf
     class { 'mariadb::service':
         override => "[Service]\nExecStartPre=/bin/sh -c \"echo 'mariadb main service is \
 disabled, use mariadb@<instance_name> instead'; exit 1\"",
@@ -17,10 +17,9 @@ disabled, use mariadb@<instance_name> instead'; exit 1\"",
 
     include ::profile::mariadb::mysql_role
 
-    $basedir = '/opt/wmf-mariadb101'
     class { 'mariadb::config':
         datadir       => false,
-        basedir       => $basedir,
+        basedir       => $profile::mariadb::packages_wmf::basedir,
         read_only     => 1,
         config        => 'profile/mariadb/mysqld_config/sanitarium_multiinstance.my.cnf.erb',
         p_s           => 'on',

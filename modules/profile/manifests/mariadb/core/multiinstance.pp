@@ -11,7 +11,7 @@ class profile::mariadb::core::multiinstance(
     $s8 = hiera('profile::mariadb::core::multiinstance::s8', false),
     $x1 = hiera('profile::mariadb::core::multiinstance::x1', false),
 ) {
-    class { 'mariadb::packages_wmf': }
+    require profile::mariadb::packages_wmf
     class { 'mariadb::service':
         override => "[Service]\nExecStartPre=/bin/sh -c \"echo 'mariadb main service is \
 disabled, use mariadb@<instance_name> instead'; exit 1\"",
@@ -22,17 +22,10 @@ disabled, use mariadb@<instance_name> instead'; exit 1\"",
     $is_critical = ($::site == mediawiki::state('primary_dc'))
     $contact_group = 'admins'
 
-    if os_version('debian == buster') {
-        $basedir = '/opt/wmf-mariadb104/'
-    }
-    else {
-        $basedir = '/opt/wmf-mariadb101/'
-    }
-
     # Read only forced on also for the masters of the primary datacenter
     class { 'mariadb::config':
         datadir       => false,
-        basedir       => $basedir,
+        basedir       => $profile::mariadb::packages_wmf::basedir,
         config        => 'profile/mariadb/mysqld_config/core_multiinstance.my.cnf.erb',
         p_s           => 'on',
         ssl           => 'puppet-cert',

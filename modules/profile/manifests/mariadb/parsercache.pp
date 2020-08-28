@@ -12,7 +12,7 @@ class profile::mariadb::parsercache (
     include ::passwords::misc::scripts
     include ::profile::mariadb::monitor::prometheus
 
-    class { 'mariadb::packages_wmf': }
+    require profile::mariadb::packages_wmf
     class { 'mariadb::service': }
 
     include ::profile::mariadb::grants::core
@@ -22,20 +22,13 @@ class profile::mariadb::parsercache (
         password => $passwords::misc::scripts::mysql_root_pass,
     }
 
-    if os_version('debian == buster') {
-        $mysqlbasedir = '/opt/wmf-mariadb104/'
-    }
-    else {
-        $mysqlbasedir = '/opt/wmf-mariadb101/'
-    }
-
     class { 'mariadb::config':
         config  => 'role/mariadb/mysqld_config/parsercache.my.cnf.erb',
         datadir => '/srv/sqldata-cache',
         tmpdir  => '/srv/tmp',
         ssl     => 'puppet-cert',
         p_s     => 'on',
-        basedir => $mysqlbasedir,
+        basedir => $profile::mariadb::packages_wmf::basedir,
     }
 
     class { 'mariadb::heartbeat':

@@ -9,7 +9,7 @@ class profile::mariadb::misc::analytics::multiinstance (
     Optional[String] $matomo         = lookup('profile::mariadb::misc::analytics::multiinstance::matomo', { 'default_value' => undef }),
     Optional[String] $analytics_meta = lookup('profile::mariadb::misc::analytics::multiinstance::analytics_meta', { 'default_value' => undef }),
 ) {
-    class { 'mariadb::packages_wmf': }
+    require profile::mariadb::packages_wmf
     class { 'mariadb::service':
         override => "[Service]\nExecStartPre=/bin/sh -c \"echo 'mariadb main service is \
 disabled, use mariadb@<instance_name> instead'; exit 1\"",
@@ -17,9 +17,8 @@ disabled, use mariadb@<instance_name> instead'; exit 1\"",
 
     include ::profile::mariadb::mysql_role
 
-    $basedir = '/opt/wmf-mariadb104'
     class { 'mariadb::config':
-        basedir       => $basedir,
+        basedir       => $profile::mariadb::packages_wmf::basedir,
         config        => 'profile/mariadb/mysqld_config/analytics_multiinstance.my.cnf.erb',
         p_s           => 'on',
         ssl           => 'puppet-cert',

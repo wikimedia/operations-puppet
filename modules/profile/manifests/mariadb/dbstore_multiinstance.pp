@@ -12,7 +12,7 @@ class profile::mariadb::dbstore_multiinstance (
     # Analytics staging database
     $staging       = hiera('profile::mariadb::dbstore_multiinstance::staging', false),
 ) {
-    class { 'mariadb::packages_wmf': }
+    require profile::mariadb::packages_wmf
     class { 'mariadb::service':
         override => "[Service]\nExecStartPre=/bin/sh -c \"echo 'mariadb main service is \
 disabled, use mariadb@<instance_name> instead'; exit 1\"",
@@ -20,10 +20,9 @@ disabled, use mariadb@<instance_name> instead'; exit 1\"",
 
     include ::profile::mariadb::mysql_role
 
-    $basedir = '/opt/wmf-mariadb101'
     class { 'mariadb::config':
         datadir       => false,
-        basedir       => $basedir,
+        basedir       => $profile::mariadb::packages_wmf::basedir,
         read_only     => 1,
         config        => 'role/mariadb/mysqld_config/dbstore_multiinstance.my.cnf.erb',
         p_s           => 'on',
