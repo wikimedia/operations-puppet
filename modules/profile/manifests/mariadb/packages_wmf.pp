@@ -1,5 +1,9 @@
-class profile::mariadb::packages_wmf {
-    if os_version('debian == buster') {
+class profile::mariadb::packages_wmf (
+    Optional[String[1]] $package = lookup('mariadb::package', { 'default_value' => undef }),
+) {
+    if $package != undef {
+        $mariadb_package = $package
+    } elsif os_version('debian == buster') {
         $mariadb_package = 'wmf-mariadb104'
     } elsif os_version('debian == stretch') {
         $mariadb_package = 'wmf-mariadb101'
