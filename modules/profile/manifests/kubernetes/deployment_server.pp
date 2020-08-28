@@ -1,9 +1,9 @@
 # Class makes sure we got a deployment server ready
 class profile::kubernetes::deployment_server(
-    Hash[String, Any] $services=hiera('profile::kubernetes::deployment_server::services', {}),
-    Hash[String, Any] $tokens=hiera('profile::kubernetes::deployment_server::tokens', {}),
-    String $git_owner=hiera('profile::kubernetes::deployment_server::git_owner'),
-    String $git_group=hiera('profile::kubernetes::deployment_server::git_group'),
+    Hash[String, Any] $services = lookup('profile::kubernetes::deployment_server::services', {default_value => {}}),
+    Hash[String, Any] $tokens   = lookup('profile::kubernetes::deployment_server::tokens', {default_value => {}}),
+    String $git_owner           = lookup('profile::kubernetes::deployment_server::git_owner'),
+    String $git_group           = lookup('profile::kubernetes::deployment_server::git_group'),
 ){
     include profile::kubernetes::deployment_server::helmfile
     class { '::helm': }
