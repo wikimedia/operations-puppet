@@ -1810,11 +1810,6 @@ node /^mw23(3[5-9])\.codfw\.wmnet$/ {
     role(mediawiki::appserver)
 }
 
-# mw2196 is in rack C4 and an mcrouter proxy
-node 'mw2196.codfw.wmnet' {
-    role(mediawiki::appserver)
-}
-
 # Row D
 
 # rack D3
