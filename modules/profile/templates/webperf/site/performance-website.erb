@@ -24,10 +24,27 @@
         Require all granted
     </Directory>
 
+    # Swift should already reject unauthenticated write requests to
+    # the arclamp buckets.  Also filtering those requests here adds
+    # another layer of protection against misconfiguration.
+    <Location /arclamp>
+        Order allow,deny
+        Allow from all
+        <LimitExcept GET HEAD>
+            Deny from all
+        </LimitExcept>
+    </Location>
+
+<% if @swift_auth_url -%>
+    # These are evaluated in the order in which they appear; the first directive
+    # to match a given URI is used.
+    ProxyPassMatch "^/arclamp/svgs/(hourly|daily)/(\d{4}-\d\d-\d\d(_\d\d)?\.[a-zA-Z0-9\._-]+(\.reversed)?)\.svgz$" "<%= @swift_auth_url %>/v1/<%= @swift_account_name %>/arclamp-svgs-$1/$2.svgz"
+    ProxyPassMatch "^/arclamp/logs/(hourly|daily)/(\d{4}-\d\d-\d\d(_\d\d)?\.[a-zA-Z0-9\._-]+)\.log\.gz$" "<%= @swift_auth_url %>/v1/<%= @swift_account_name %>/arclamp-logs-$1/$2.log.gz"
+<% end -%>
 <% if @arclamp_host -%>
-    Redirect 301 /xenon /arclamp
     ProxyPass /arclamp http://<%= @arclamp_host %>/arclamp
     ProxyPassReverse /arclamp http://<%= @arclamp_host %>/arclamp
+    Redirect 301 /xenon /arclamp
 <% end -%>
 
 <% if @xhgui_host -%>

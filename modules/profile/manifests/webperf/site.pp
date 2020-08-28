@@ -19,9 +19,10 @@
 #   Optional. If undefined, the "/xhgui" path is not proxied.
 #
 class profile::webperf::site (
-    Stdlib::Fqdn $server_name  = lookup('profile::webperf::site::server_name'),
-    Stdlib::Fqdn $arclamp_host = lookup('arclamp_host'),
-    Stdlib::Fqdn $xhgui_host   = lookup('profile::webperf::site::xhgui_host'),
+    Stdlib::Fqdn $server_name          = lookup('profile::webperf::site::server_name'),
+    Stdlib::Fqdn $arclamp_host         = lookup('arclamp_host'),
+    Stdlib::Fqdn $xhgui_host           = lookup('profile::webperf::site::xhgui_host'),
+    Hash[String, Hash] $swift_accounts = lookup('profile::swift::accounts'),
 ) {
 
     require ::profile::webperf::coal_web
@@ -61,6 +62,9 @@ class profile::webperf::site (
         group   => 'www-data',
         content => file('profile/webperf/site/no-robots.txt'),
     }
+
+    $swift_auth_url = $swift_accounts['performance_arclamp']['auth']
+    $swift_account_name = $swift_accounts['performance_arclamp']['account_name']
 
     httpd::site { 'performance-wikimedia-org':
         content => template('profile/webperf/site/performance-website.erb'),
