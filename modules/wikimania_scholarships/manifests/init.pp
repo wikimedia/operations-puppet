@@ -19,15 +19,16 @@
 #   }
 #
 class wikimania_scholarships(
-    Stdlib::Fqdn $hostname     = 'scholarships.wikimedia.org',
-    Stdlib::Unixpath $deploy_dir   = '/srv/deployment/scholarships/scholarships',
-    Stdlib::Unixpath $cache_dir    = '/var/cache/scholarships',
-    String $udp2log_dest = 'mwlog1001.eqiad.wmnet:8420',
-    String $serveradmin  = 'noc@wikimedia.org',
-    Stdlib::Host $mysql_host   = 'localhost',
-    String $mysql_db     = 'scholarships',
-    Stdlib::Host $smtp_host    = 'localhost'
-) {
+    Stdlib::Fqdn $hostname       = 'scholarships.wikimedia.org',
+    Stdlib::Unixpath $deploy_dir = '/srv/deployment/scholarships/scholarships',
+    Stdlib::Unixpath $cache_dir  = '/var/cache/scholarships',
+    Stdlib::Fqdn $udp2log_host   = 'mwlog1001.eqiad.wmnet',
+    Stdlib::Port $udp2log_port   = 8420,
+    String $serveradmin          = 'noc@wikimedia.org',
+    Stdlib::Host $mysql_host     = 'localhost',
+    String $mysql_db             = 'scholarships',
+    Stdlib::Host $smtp_host      = 'localhost'
+){
 
     include ::passwords::mysql::wikimania_scholarships
 
@@ -35,7 +36,7 @@ class wikimania_scholarships(
 
     $mysql_user = $passwords::mysql::wikimania_scholarships::app_user
     $mysql_pass = $passwords::mysql::wikimania_scholarships::app_password
-    $log_file   = "udp://${udp2log_dest}/scholarships"
+    $log_file   = "udp://${udp2log_host}:${udp2log_port}/scholarships"
 
     system::role { 'wikimania_scholarships':
         description => 'Wikimania Scholarships server'
