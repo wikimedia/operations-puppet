@@ -43,7 +43,7 @@ class profile::openstack::eqiad1::cumin::master(
         # Explicitely require cumin's suggested packages to enable OpenStack backend,
         # --install-suggests would recursively install many more unwanted dependencies.
         # Install clustershell as it provides nodeset CLI that is useful to mangle host lists.
-        package { ['clustershell', 'cumin', 'python3-keystoneauth1', 'python3-keystoneclient', 'python3-novaclient']:
+        package { ['clustershell', 'cumin']:
             ensure => present,
         }
 
