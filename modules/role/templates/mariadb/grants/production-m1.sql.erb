@@ -165,3 +165,60 @@ GRANT ALTER, CREATE, CREATE TEMPORARY TABLES, DELETE, INSERT, SELECT, UPDATE ON 
 -- Grants for 'cas'@'10.192.0.129'
 GRANT USAGE ON *.* TO `cas`@`10.192.0.129` IDENTIFIED BY '<%=@u2f_jpa_password%>';
 GRANT ALTER, CREATE, CREATE TEMPORARY TABLES, DELETE, INSERT, SELECT, UPDATE ON `cas_staging`.* TO `cas`@`10.192.0.129`;
+
+-- backupcheck @ dbbackups
+
+GRANT USAGE
+    ON *.* TO 'backupcheck'@'208.80.154.84'
+    IDENTIFIED BY '<%=@backupcheck_pass%>';
+
+GRANT SELECT
+    ON `dbbackups`.* TO 'backupcheck'@'208.80.154.84';
+
+GRANT USAGE
+    ON *.* TO 'backupcheck'@'208.80.153.74'
+    IDENTIFIED BY '<%=@backupcheck_pass%>';
+
+GRANT SELECT
+    ON `dbbackups`.* TO 'backupcheck'@'208.80.153.74';
+
+GRANT USAGE
+    ON *.* TO 'backupcheck'@'208.80.154.88'
+    IDENTIFIED BY '<%=@backupcheck_pass%>';
+
+GRANT SELECT
+    ON `dbbackups`.* TO 'backupcheck'@'208.80.154.88';
+
+GRANT USAGE
+    ON *.* TO 'backupcheck'@'208.80.153.84'
+    IDENTIFIED BY '<%=@backupcheck_pass%>';
+
+GRANT SELECT
+    ON `dbbackups`.* TO 'backupcheck'@'208.80.153.84';
+
+-- stats @ dbbackups
+
+GRANT USAGE ON *.* TO `stats`@`10.192.0.114` IDENTIFIED BY '<%=@backup_stats_pass%>';
+GRANT INSERT, SELECT, UPDATE ON `dbbackups`.* TO `stats`@`10.192.0.114`;
+
+GRANT USAGE ON *.* TO `stats`@`10.192.0.190` IDENTIFIED BY '<%=@backup_stats_pass%>';
+GRANT INSERT, SELECT, UPDATE ON `dbbackups`.* TO `stats`@`10.192.0.190`;
+
+GRANT USAGE ON *.* TO `stats`@`10.192.16.96` IDENTIFIED BY '<%=@backup_stats_pass%>';
+GRANT INSERT, SELECT, UPDATE ON `dbbackups`.* TO `stats`@`10.192.16.96`;
+
+GRANT USAGE ON *.* TO `stats`@`10.192.48.161` IDENTIFIED BY '<%=@backup_stats_pass%>';
+GRANT INSERT, SELECT, UPDATE ON `dbbackups`.* TO `stats`@`10.192.48.161`;
+
+GRANT USAGE ON *.* TO `stats`@`10.64.0.95` IDENTIFIED BY '<%=@backup_stats_pass%>';
+GRANT INSERT, SELECT, UPDATE ON `dbbackups`.* TO `stats`@`10.64.0.95`;
+
+GRANT USAGE ON *.* TO `stats`@`10.64.16.31` IDENTIFIED BY '<%=@backup_stats_pass%>';
+GRANT INSERT, SELECT, UPDATE ON `dbbackups`.* TO `stats`@`10.64.16.31`;
+
+GRANT USAGE ON *.* TO `stats`@`10.64.32.107` IDENTIFIED BY '<%=@backup_stats_pass%>';
+GRANT INSERT, SELECT, UPDATE ON `dbbackups`.* TO `stats`@`10.64.32.107`;
+
+GRANT USAGE ON *.* TO `stats`@`10.64.32.26` IDENTIFIED BY '<%=@backup_stats_pass%>';
+GRANT INSERT, SELECT, UPDATE ON `dbbackups`.* TO `stats`@`10.64.32.26`;
+
