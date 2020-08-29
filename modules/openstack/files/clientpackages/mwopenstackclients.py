@@ -140,7 +140,7 @@ class Clients(object):
         if project not in self.glanceclients:
             session = self.session(project)
             self.glanceclients[project] = glanceclient.Client(
-                '1', session=session, connect_retries=5, timeout=300,
+                '2', session=session, connect_retries=5,
                 region_name=self.region)
         return self.glanceclients[project]
 
