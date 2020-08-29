@@ -1,7 +1,7 @@
 # a webserver for misc. apps and static sites
-class role::webserver_misc_apps {
+class role::miscweb {
 
-    system::role { 'webserver_misc_apps':
+    system::role { 'miscweb':
         description => 'WMF misc apps and sites web server'
     }
 

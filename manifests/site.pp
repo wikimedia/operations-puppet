@@ -1275,7 +1275,7 @@ node /kafkamon[12]002\.(codfw|eqiad)\.wmnet/ {
 # profile::microsites::static_codereview # https://static-codereview.wikimedia.org (T243056)
 
 node 'miscweb1002.eqiad.wmnet', 'miscweb2002.codfw.wmnet' {
-    role(webserver_misc_apps)
+    role(miscweb)
 }
 
 # This node will eventually replace kerberos1001
