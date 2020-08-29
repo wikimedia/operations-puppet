@@ -10,8 +10,8 @@
 #   Should l10nupdate be run automatically from cron? (default: false)
 #
 class scap::l10nupdate(
-    $deployment_group = 'wikidev',
-    $run_l10nupdate   = false,
+    String $deployment_group  = 'wikidev',
+    Boolean $run_l10nupdate   = false,
 ) {
     require ::mediawiki::users
 

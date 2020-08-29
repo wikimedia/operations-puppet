@@ -2,12 +2,12 @@
 #
 # Sets up a scap master (currently deploy1001 and deploy2001)
 class scap::master(
-    $common_path        = '/srv/mediawiki',
-    $common_source_path = '/srv/mediawiki-staging',
-    $patches_path       = '/srv/patches',
-    $deployment_group   = 'wikidev',
-    Array[String] $deployment_hosts = [],
-) {
+    Stdlib::Unixpath $common_path        = '/srv/mediawiki',
+    Stdlib::Unixpath $common_source_path = '/srv/mediawiki-staging',
+    Stdlib::Unixpath $patches_path       = '/srv/patches',
+    String $deployment_group             = 'wikidev',
+    Array[String] $deployment_hosts      = [],
+){
     include network::constants
 
     require_package('python3-service-checker', 'python3-pygerrit2')

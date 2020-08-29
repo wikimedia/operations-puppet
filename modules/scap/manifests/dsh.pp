@@ -12,9 +12,9 @@
 #   List of FQDNs for servers to be used as scap masters. Default []
 #
 class scap::dsh (
-    $groups = {},
-    $scap_proxies = [],
-    $scap_masters = [],
+    Hash $groups = {},
+    Array $scap_proxies = [],
+    Array $scap_masters = [],
 ){
     package { 'dsh':
         ensure => present,

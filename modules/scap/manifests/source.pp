@@ -88,18 +88,18 @@
 #   }
 #
 define scap::source(
-    $repository           = "mediawiki/services/${title}",
-    $scap_repository      = false,
+    String $repository = "mediawiki/services/${title}",
+    Variant[String,Boolean] $scap_repository = false,
     # TODO: change scap repo owner when scap figures out
     # how to bootstrap itself properly without trebuchet.
-    $owner                = 'trebuchet',
-    $group                = 'wikidev',
-    $base_path            = '/srv/deployment',
-    $origin               = 'gerrit',
-    $canaries             = undef,
-    $lvs_service          = undef,
-    $hosts                = undef,
-    ) {
+    String $owner                        = 'trebuchet',
+    String $group                        = 'wikidev',
+    Stdlib::Unixpath $base_path          = '/srv/deployment',
+    String $origin                       = 'gerrit',
+    Optional[Hash] $canaries             = undef,
+    Optional[String] $lvs_service        = undef,
+    Optional[Array[Stdlib::Fqdn]] $hosts = undef,
+){
 
     # Checkout and prepare the scap repositories
     scap_source { $title:

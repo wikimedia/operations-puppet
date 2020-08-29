@@ -6,7 +6,10 @@
 # host list, or defining scap::dsh::group::$title in hiera. Also,
 # this can gather all non-inactive nodes from one or more conftool
 # pools.
-define scap::dsh::group($hosts=undef, $conftool=undef,) {
+define scap::dsh::group(
+    Optional[Array[Stdlib::Fqdn]] $hosts = undef,
+    Optional[Array] $conftool            = undef,
+){
 
     $host_list = $hosts ? {
         undef   => hiera("scap::dsh::${title}", []),
@@ -21,14 +24,11 @@ define scap::dsh::group($hosts=undef, $conftool=undef,) {
         }
 
         # And extract the confd keys
-        # Puppet lint seems to have a bug here
-        # lint:ignore:variable_scope
         $k = $data.map |$datum| {
             $datum['datacenters'].map |$y| {
                 "/${y}/${datum['cluster']}/${datum['service']}"
             }
         }
-        # lint:endignore
         $keys = flatten($k)
 
         confd::file { "/etc/dsh/group/${title}":
