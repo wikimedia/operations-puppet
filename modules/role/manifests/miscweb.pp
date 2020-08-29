@@ -8,8 +8,8 @@ class role::miscweb {
     include ::profile::standard                    # base tools
     include ::profile::base::firewall              # firewalling
     include ::profile::backup::host                # Bacula backups 
-    include ::profile::misc_apps::httpd            # common webserver setup
-    include ::profile::misc_apps::rsync            # copy data for migrations
+    include ::profile::miscweb::httpd              # common webserver setup
+    include ::profile::miscweb::rsync              # copy data for migrations
     include ::profile::tlsproxy::envoy             # TLS termination
 
     include ::profile::wikimania_scholarships      # https://scholarships.wikimedia.org

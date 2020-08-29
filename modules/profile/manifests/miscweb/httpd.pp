@@ -1,5 +1,5 @@
 # setup a webserver for misc. apps
-class profile::misc_apps::httpd (
+class profile::miscweb::httpd (
     Stdlib::Fqdn $deployment_server = lookup('deployment_server'),
 ){
 

@@ -1,7 +1,7 @@
 # setup rsync for misc. apps data 
-class profile::misc_apps::rsync (
-    Stdlib::Fqdn $src_host = lookup('profile::misc_apps::rsync::src_host'),
-    Array[Stdlib::Fqdn] $dst_hosts = lookup('profile::misc_apps::rsync::dst_hosts'),
+class profile::miscweb::rsync (
+    Stdlib::Fqdn        $src_host  = lookup('profile::miscweb::rsync::src_host'),
+    Array[Stdlib::Fqdn] $dst_hosts = lookup('profile::miscweb::rsync::dst_hosts'),
 ){
 
     if $::fqdn in $dst_hosts {
