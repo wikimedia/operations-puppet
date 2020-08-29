@@ -4,10 +4,11 @@
 #
 
 class deployment::rsync(
-    $deployment_server,
-    $cron_ensure = 'absent',
-    Array[String] $deployment_hosts = [],
-) {
+    Stdlib::Host $deployment_server,
+    Wmflib::Ensure $cron_ensure           = 'absent',
+    Array[Stdlib::Host] $deployment_hosts = [],
+){
+
     include ::rsync::server
 
     rsync::server::module { 'trebuchet_server':
@@ -21,6 +22,4 @@ class deployment::rsync(
         command => "/usr/bin/rsync -avz --delete ${deployment_server}::trebuchet_server /srv/deployment > /dev/null 2>&1",
         minute  => 0,
     }
-
-
 }
