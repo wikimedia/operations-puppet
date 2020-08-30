@@ -2244,13 +2244,13 @@ node /^snapshot100[569]\.eqiad\.wmnet/ {
     role(dumps::generation::worker::dumper)
 }
 node /^snapshot1007\.eqiad\.wmnet/ {
-    role(dumps::generation::worker::dumper_monitor)
+    role(dumps::generation::worker::testbed)
 }
 node /^snapshot1008\.eqiad\.wmnet/ {
     role(dumps::generation::worker::dumper_misc_crons_only)
 }
 node /^snapshot1010\.eqiad\.wmnet/ {
-    role(dumps::generation::worker::testbed)
+    role(dumps::generation::worker::dumper_monitor)
 }
 
 # test nodes for akosiaris and moritzm
