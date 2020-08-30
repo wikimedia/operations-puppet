@@ -9,5 +9,5 @@ class role::wmcs::openstack::eqiad1::virt {
     include ::profile::openstack::eqiad1::nova::common
     include ::profile::openstack::eqiad1::nova::compute::service
     include ::profile::openstack::eqiad1::envscripts
-    include ::profile::ceph::client::rbd
+    include ::profile::ceph::client::rbd_libvirt
 }

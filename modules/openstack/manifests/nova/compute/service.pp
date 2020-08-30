@@ -5,6 +5,7 @@ class openstack::nova::compute::service(
     Array[Stdlib::Fqdn] $all_cloudvirts,
     Stdlib::Unixpath    $certpath,
     String              $version,
+    Optional[Boolean]   $enable_nova_rbd      = false,
     Optional[String]    $ceph_rbd_pool        = undef,
     Optional[String]    $ceph_rbd_client_name = undef,
     Optional[String]    $libvirt_rbd_uuid     = undef,
