@@ -9,6 +9,7 @@ class profile::base::puppet(
   Integer[2,3]       $facter_major_version = lookup('profile::base::puppet::facter_major_version'),
   Integer[4,5]       $puppet_major_version = lookup('profile::base::puppet::puppet_major_version'),
   String             $serialization_format = lookup('profile::base::puppet::serialization_format'),
+  Boolean            $export_p12           = lookup('profile::base::puppet::export_p12'),
   # Looks like we need hiera version 5 to pass undef via hiera
   Optional[String] $dns_alt_names          = lookup('profile::base::puppet::dns_alt_names',
                                                     {'default_value' => undef}),
@@ -33,4 +34,12 @@ class profile::base::puppet(
       metric_format => 'puppet.<%= metric %>',
   }
   class { 'prometheus::node_puppet_agent': }
+  if $export_p12 {
+      sslcert::x509_to_pkcs12 {$facts['fqdn']:
+          public_key  => $facts['puppet_config']['hostpubkey'],
+          private_key => $facts['puppet_config']['hostprivkey'],
+          outfile     => "${facts['puppet_config']['ssldir']}/private/${facts['fqdn']}.p12",
+          certfile    => $facts['puppet_config']['localcacert'],
+      }
+  }
 }
