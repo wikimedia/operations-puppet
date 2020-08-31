@@ -105,7 +105,9 @@ class profile::cache::purge(
 
     monitoring::check_prometheus { 'purged-event-lag':
         description     => 'Time elapsed since the last kafka event processed by purged',
-        query           => "purged_event_lag{instance=\"${::hostname}:${prometheus_port}\"} / 1e6",
+        # HACK: We take the minimum to work around scenarios where one EventGate datacenter is
+        # depooled and not actively sending messages.
+        query           => "min(purged_event_lag{instance=\"${::hostname}:${prometheus_port}\"}) / 1e6",
         method          => 'gt',
         warning         => 3000, # 3 seconds
         critical        => 5000, # 5 seconds
