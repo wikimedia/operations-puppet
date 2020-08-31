@@ -284,7 +284,7 @@ groups:
               aarora, zpapierski, knissen, jiawang, mholloway-shell, joewalsh, tarrow,
               itamar, phedenskog, aaron, dpifke, aklapper, jmads, andrew-wmde, daniram,
               rodolfovalentim, dcipoletti, chrisalbon, wikigit, nahidunlimited,
-              agaduran, edtadros, nathante, dvrandecic, razzi]
+              agaduran, edtadros, nathante, dvrandecic, razzi, cparle]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product]
   analytics-admins:
