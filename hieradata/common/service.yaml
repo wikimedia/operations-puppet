@@ -2001,6 +2001,14 @@ service::catalog:
           url:
           - https://localhost/
       scheduler: wrr
+    monitoring:
+      check_command: check_https_lvs_on_port!restbase.discovery.wmnet!7443!/
+      critical: true
+      sites:
+        codfw:
+          hostname: restbase.svc.codfw.wmnet
+        eqiad:
+          hostname: restbase.svc.eqiad.wmnet
     port: 7443
     sites:
     - eqiad
