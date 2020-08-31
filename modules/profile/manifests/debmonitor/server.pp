@@ -19,9 +19,15 @@ class profile::debmonitor::server (
 ) {
     include ::passwords::ldap::production
 
-    # Debmonitor depends on 'mysqlclient' Python package that in turn requires a MySQL connector
     # Make is required by the deploy system
-    require_package(['libldap-2.4-2', 'libmariadb2', 'make', 'python3-pip', 'virtualenv'])
+    require_package(['libldap-2.4-2', 'make', 'python3-pip', 'virtualenv'])
+
+    # Debmonitor depends on 'mysqlclient' Python package that in turn requires a MySQL connector
+    if os_version('debian == buster') {
+        require_package('libmariadb3')
+    } else {
+        require_package('libmariadb2')
+    }
 
     class { '::sslcert::dhparam': }
 
