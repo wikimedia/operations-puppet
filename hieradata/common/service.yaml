@@ -1149,6 +1149,14 @@ service::catalog:
           url:
           - https://localhost/api/status
       scheduler: sh
+    monitoring:
+      check_command: check_https_url!kibana.discovery.wmnet!/api/status
+      critical: true
+      sites:
+        codfw:
+          hostname: kibana.svc.codfw.wmnet
+        eqiad:
+          hostname: kibana.svc.eqiad.wmnet
     port: 443
     sites:
     - eqiad
