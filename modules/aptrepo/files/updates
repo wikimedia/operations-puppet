@@ -53,6 +53,7 @@ UDebComponents:
 GetInRelease: no
 Suite: jessie/current
 Architectures: amd64
+# Multiple keys in use: https://downloads.linux.hpe.com/SDR/keys.html
 VerifyRelease: FADD8D64B1275EA3|C208ADDE26C2B797
 ListShellHook: grep-dctrl -e -S '^hp-health|hpssa|hpssacli|hpssaducli|hpacucli|ssacli$' || [ $? -eq 1 ]
 
@@ -63,6 +64,7 @@ UDebComponents:
 GetInRelease: no
 Suite: stretch/current
 Architectures: amd64
+# Multiple keys in use: https://downloads.linux.hpe.com/SDR/keys.html
 VerifyRelease: FADD8D64B1275EA3|C208ADDE26C2B797
 ListShellHook: grep-dctrl -e -S '^hp-health|hpssa|hpssacli|hpssaducli|hpacucli|ssaducli|ssacli$' || [ $? -eq 1 ]
 
@@ -73,6 +75,7 @@ UDebComponents:
 GetInRelease: no
 Suite: buster/current
 Architectures: amd64
+# Multiple keys in use: https://downloads.linux.hpe.com/SDR/keys.html
 VerifyRelease: FADD8D64B1275EA3|C208ADDE26C2B797
 ListShellHook: grep-dctrl -e -S '^hp-health|hpssa|hpssacli|hpssaducli|hpacucli|ssaducli|ssacli$' || [ $? -eq 1 ]
 
@@ -82,6 +85,7 @@ Components: main>thirdparty
 UDebComponents:
 Suite: 21x
 Architectures: amd64 source
+# Multiple keys in use: https://downloads.apache.org/cassandra/KEYS
 VerifyRelease: 749D6EEC0353B12C|A278B781FE4B2BDA
 ListShellHook: grep-dctrl -X -S cassandra || [ $? -eq 1 ]
 
