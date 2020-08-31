@@ -529,6 +529,14 @@ service::catalog:
           url:
           - https://localhost/_info
       scheduler: wrr
+    monitoring:
+      check_command: check_https_lvs_on_port!cxserver.discovery.wmnet!4002!/_info
+      critical: true
+      sites:
+        codfw:
+          hostname: cxserver.svc.codfw.wmnet
+        eqiad:
+          hostname: cxserver.svc.eqiad.wmnet
     port: 4002
     sites:
     - eqiad
