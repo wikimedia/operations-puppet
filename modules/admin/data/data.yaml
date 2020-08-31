@@ -2853,6 +2853,7 @@ users:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDTroA/q8voMNw9A4skHh1DQLIP2Hb3L4bb9dwinwFER cormacparle@Cormacs-MacBook-Pro.local
     uid: 17761
     email: cparle@wikimedia.org
+    krb: present
   jk:
     ensure: present
     gid: 500
