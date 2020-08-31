@@ -803,7 +803,7 @@ node 'debmonitor1002.eqiad.wmnet' {
 }
 
 node 'debmonitor2002.codfw.wmnet' {
-    role(insetup)
+    role(debmonitor::server)
 }
 
 # Debian package/docker images building host in production (Buster)
