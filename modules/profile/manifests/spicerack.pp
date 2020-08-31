@@ -145,4 +145,19 @@ class profile::spicerack(
         mode    => '0440',
         content => secret('spicerack/cookbooks/sre.network.cf.yaml'),
     }
+
+    # Configuration file for switching services between datacenters
+    # For each discovery record for active-active services, extract the
+    # actual dns from monitoring if available.
+    $discovery_records = wmflib::service::fetch().filter |$label, $record| {
+        $record['discovery'] != undef
+    }
+
+    file { '/etc/spicerack/cookbooks/sre.switchdc.services.yaml':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'ops',
+        mode    => '0440',
+        content => template('profile/spicerack/sre.switchdc.services.yaml.erb')
+    }
 }

@@ -1,0 +1,20 @@
+<%-
+output = {}
+@discovery_records.each do |l, record|
+  next unless record.include?('discovery')
+  record['discovery'].each do |dnsdisc|
+    name = dnsdisc['dnsdisc']
+    output[name] = {'active_active' => dnsdisc['active_active'], 'rec' => {}}
+    if record.include?('monitoring')
+      record['monitoring']['sites'].each do |dc, value|
+        output[name]['rec'][dc] = value['hostname']
+      end
+    else
+      record['sites'].each do |dc|
+        output[name]['rec'][dc] = "#{l}.svc.#{dc}.wmnet"
+      end
+    end
+  end
+end
+-%>
+<%= scope.call_function('to_yaml',[output]) %>
