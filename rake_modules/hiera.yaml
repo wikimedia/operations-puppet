@@ -1,12 +1,21 @@
-:backends:
-  - nuyaml3
-:nuyaml3:
-  :datadir: '../../hieradata'
-  :expand_path:
-    - common
-    - "%{::site}"
-:hierarchy:
-  - "hosts/%{::hostname}"
-  - "regex/%{::fqdn}"
-  - "%{::site}"
-  - "common"
+# Please see the following docs for a more in depth explanation of our hiera
+# configuration including a simplified view of the hierarchy
+# https://wikitech.wikimedia.org/wiki/Puppet_Hiera
+version: 5
+defaults:
+  datadir: ../hieradata
+  data_hash: yaml_data
+hierarchy:
+  - name: "node hierarchy"
+    path: "hosts/%{::hostname}.yaml"
+  - name: "Regex lookup"
+    lookup_key: 'wmflib::regex_data'
+    path: 'regex.yaml'
+    options:
+      node: "%{::fqdn}"
+  - name: "expand_path site"
+    path: "%{::site}"
+    lookup_key: 'wmflib::expand_path'
+  - name: "common"
+    lookup_key: 'wmflib::expand_path'
+    path: "common"
