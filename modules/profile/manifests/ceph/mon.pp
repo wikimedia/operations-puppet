@@ -90,4 +90,11 @@ class profile::ceph::mon(
     class { 'ceph::mgr':
         data_dir => $data_dir,
     }
+
+    $prometheus_nodes_ferm = join($prometheus_nodes, ' ')
+    ferm::service { 'ceph_mgr_prometheus_lvs':
+        proto  => 'tcp',
+        port   => 9283,
+        srange => "(@resolve((${prometheus_nodes_ferm})) @resolve((${prometheus_nodes_ferm}), AAAA))"
+    }
 }
