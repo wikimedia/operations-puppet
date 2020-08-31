@@ -38,7 +38,7 @@ groups:
               ori, jmm, jynus, ema, elukey, gehel, volans, marostegui,
               ayounsi, herron, aborrero, bstorm, vgutierrez, jiji, cwhite,
               crusnov, cdanis, fsero, jbond, jeh, dzahn, phamhi, sukhe, pt1979,
-              rzl, hnowlan, jayme, kormat, wkandek, ryankemper, lmata]
+              rzl, hnowlan, jayme, kormat, wkandek, ryankemper, lmata, klausman]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   ops-adm-group:
     # No gid for this group on purpose, it's a system provided one
@@ -284,7 +284,7 @@ groups:
               aarora, zpapierski, knissen, jiawang, mholloway-shell, joewalsh, tarrow,
               itamar, phedenskog, aaron, dpifke, aklapper, jmads, andrew-wmde, daniram,
               rodolfovalentim, dcipoletti, chrisalbon, wikigit, nahidunlimited,
-              agaduran, edtadros, nathante, dvrandecic, razzi, cparle]
+              agaduran, edtadros, nathante, dvrandecic, razzi, cparle, klausman]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product]
   analytics-admins:
@@ -3668,6 +3668,15 @@ users:
     gid: 500
     ssh_keys:
       - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJ1YZhevj9nTDh7Gs2Sm9mY8Aq2PaZNUmXDAIOrYkZ38 kormat@prod.wmf'
+  klausman:
+    ensure: present
+    realname: Tobias Klausmann
+    email: tklausmann@wikimedia.org
+    uid: 26124
+    gid: 500
+    ssh_keys:
+      - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIC70NjTsRUjZxH7bWPpRdaV8z9jD3RGnP25YbA4/DdN3 tklausmann@wikimedia.org-prod'
+    krb: present
   jmads:
     ensure: present
     realname: Jim Maddock
