@@ -6,6 +6,9 @@
 # @param verp_bounce_post_url the url top post verp bounces to
 class profile::mail::mx (
     Array[Stdlib::Host]   $prometheus_nodes         = lookup('prometheus_nodes'),
+    Stdlib::Host          $otrs_mysql_server        = lookup('profile::mail::mx::otrs_mysql_server'),
+    Stdlib::Host          $otrs_mysql_user          = lookup('profile::mail::mx::otrs_mysql_user'),
+    Stdlib::Host          $otrs_mysql_dbname        = lookup('profile::mail::mx::otrs_mysql_dbname'),
     Stdlib::Host          $dkim_domain              = lookup('profile::mail::mx::dkim_domain'),
     Array[Stdlib::Host]   $verp_domains             = lookup('profile::mail::mx::verp_domains'),
     Stdlib::Host          $verp_post_connect_server = lookup('profile::mail::mx::verp_post_connect_server'),
