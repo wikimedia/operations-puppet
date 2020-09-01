@@ -6,6 +6,7 @@
 # @param verp_bounce_post_url the url top post verp bounces to
 class profile::mail::mx (
     Array[Stdlib::Host]   $prometheus_nodes         = lookup('prometheus_nodes'),
+    Stdlib::Host          $gmail_smtp_server        = lookup('profile::mail::mx::gmail_smtp_server'),
     Stdlib::Host          $otrs_mysql_server        = lookup('profile::mail::mx::otrs_mysql_server'),
     Stdlib::Host          $otrs_mysql_user          = lookup('profile::mail::mx::otrs_mysql_user'),
     Stdlib::Host          $otrs_mysql_dbname        = lookup('profile::mail::mx::otrs_mysql_dbname'),
@@ -54,7 +55,8 @@ class profile::mail::mx (
         require => Class['exim4'],
     }
 
-    file { "${exim4::config_dir}/wikimedia_domains":
+    $wikimedia_domains_path = "${exim4::config_dir}/wikimedia_domains"
+    file { $wikimedia_domains_path:
         ensure  => present,
         owner   => 'root',
         group   => 'root',
@@ -162,5 +164,29 @@ class profile::mail::mx (
         proto  => 'tcp',
         port   => '3903',
         srange => "(@resolve((${prometheus_nodes_ferm})) @resolve((${prometheus_nodes_ferm}), AAAA))",
+    }
+
+    ensure_packages(['python3-pymysql'])
+    $otrs_aliases_file = '/etc/exim4/otrs_emails'
+    file { "${exim4::config_dir}/otrs.conf":
+        ensure  => present,
+        owner   => 'root',
+        group   => 'Debian-exim',
+        mode    => '0444',
+        content => template('profile/mail.mx/otrs.conf.erb')
+    }
+    file {'/usr/local/bin/otrs_aliases':
+        ensure => file,
+        owner  => 'root',
+        group  => 'Debian-exim',
+        mode   => '0550',
+        source => 'puppet:///modules/profile/mail/otrs_aliases.py',
+    }
+    systemd::timer::job {'generate_otrs_aliases':
+        ensure      => 'present',
+        description => 'Generate OTRS aliases file for Exim',
+        command     => '/usr/local/bin/otrs_aliases',
+        user        => 'root',
+        interval    => {'start' => 'OnUnitInactiveSec', 'interval' => '1h'},
     }
 }
