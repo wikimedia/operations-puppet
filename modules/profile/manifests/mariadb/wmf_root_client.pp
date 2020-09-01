@@ -10,7 +10,7 @@ class profile::mariadb::wmf_root_client (
              dedicated servers.')
     }
 
-    class { 'mariadb::packages_client': }
+    require profile::mariadb::packages_client
     class { 'mariadb::wmfmariadbpy':
         role          => 'admin',
         section_ports => $section_ports,
@@ -26,6 +26,7 @@ class profile::mariadb::wmf_root_client (
         ssl_cert => '/etc/mysql/ssl/cert.pem',
         ssl_key  => '/etc/mysql/ssl/server.key',
         datadir  => false,
+        basedir  => $profile::mariadb::packages_client::basedir,
     }
 
     $password = $passwords::misc::scripts::mysql_root_pass
