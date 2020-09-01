@@ -1,6 +1,6 @@
 class nftables (
-    Wmflib::Ensure             $ensure_package = 'present',
-    Enum['stopped', 'running'] $ensure_service = 'stopped',
+    Wmflib::Ensure $ensure_package = 'present',
+    Wmflib::Ensure $ensure_service = 'absent',
 ) {
     requires_os('debian >= buster')
 
@@ -8,23 +8,23 @@ class nftables (
         ensure => $ensure_package,
     }
 
+    # if we want the service to be stopped, it indicates we actually don't want this unit running
+    # this may prevent accidents in servers whose firewall is managed by others (e.g, neutron)
+    if $ensure_service == 'absent' {
+        systemd::mask { 'nftables.service': }
+    }
+    if $ensure_service == 'present' {
+        systemd::unmask { 'nftables.service': }
+    }
+
     $nft_main_file = '/etc/nftables/main.nft' # used in the systemd template
     systemd::service { 'nftables':
-        ensure         => $ensure_package,
+        ensure         => $ensure_service,
         content        => systemd_template('nftables'),
         override       => true,
         service_params => {
             ensure => $ensure_service,
         }
-    }
-
-    # if we want the service to be stopped, it indicates we actually don't want this unit running
-    # this may prevent accidents in servers whose firewall is managed by others (e.g, neutron)
-    if $ensure_service == 'stopped' {
-        systemd::mask { 'nftables.service': }
-    }
-    if $ensure_service == 'running' {
-        systemd::unmask { 'nftables.service': }
     }
 
     # create a directory to hold the nftables config

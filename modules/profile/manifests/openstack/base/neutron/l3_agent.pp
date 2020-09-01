@@ -40,6 +40,6 @@ class profile::openstack::base::neutron::l3_agent(
 
     class { '::nftables':
         ensure_package => 'present',
-        ensure_service => 'stopped',
+        ensure_service => 'absent',
     }
 }
