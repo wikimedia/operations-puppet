@@ -311,12 +311,6 @@ groups:
     description: Full root on EventLogging servers. (Deprecated)
     members: []
     privileges: []
-  chromium-admin:
-    gid: 742
-    description: people who run benchmarking tests with chromium (and xvfb)
-    members: [catrope]
-    privileges: ['ALL = NOPASSWD: /usr/sbin/service chromium *',
-                 'ALL = NOPASSWD: /usr/sbin/service xvfb *']
   snapshot-admins:
     gid: 743
     description: People who can sudo into the dumpsgen user on snapshot hosts.
