@@ -131,6 +131,16 @@ class profile::analytics::refinery::job::camus(
         interval              => '*-*-* *:05:00',
     }
 
+    # Used to determine the topic prefixes of topics used for the check_topic_whitelist
+    # on some event service jobs.  If a Datacenter is deactivated due to e.g. a
+    # datacenter switchover, you should comment out the deactive datacenter to avoid
+    # false alerts.
+    $active_datacenters = [
+        # 'eqiad',
+        'codfw',
+    ]
+    $check_topic_whitelist_prefixes = "(${active_datacenters.join('|')})"
+
     # Shortcut for declaring a camus job that imports streams from specific event services.
     # We want separate camus jobs for each event service as their throughput volume can
     # vary significantly, and we don't want high volume topics to starve out small ones.
@@ -161,7 +171,7 @@ class profile::analytics::refinery::job::camus(
             },
             # Check the test topics and mediawiki.api-requests topics.  mediawiki.api-request should
             # always have data every hour in both datacenters.
-            'check_topic_whitelist' => '(eqiad|codfw)\\.(eventgate-analytics\\.test\\.event|mediawiki\\.api-request)',
+            'check_topic_whitelist' => "${check_topic_whitelist_prefixes}\\.(eventgate-analytics\\.test\\.event|mediawiki\\.api-request)",
             'interval' => '*-*-* *:15:00',
         },
 
@@ -179,7 +189,7 @@ class profile::analytics::refinery::job::camus(
             },
             # Check the test topics and resource_change topics.  resource_change should
             # always have data every hour in both datacenters.
-            'check_topic_whitelist' => '(eqiad|codfw)\\.(eventgate-main\\.test\\.event|resource_change)',
+            'check_topic_whitelist' => "${check_topic_whitelist_prefixes}\\.(eventgate-main\\.test\\.event|resource_change)",
             'interval' => '*-*-* *:05:00',
         },
     }
