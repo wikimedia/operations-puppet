@@ -170,15 +170,38 @@ class profile::analytics::refinery::job::data_purge (
         }
     }
 
-    # keep this many mediawiki history snapshots, 6 minimum
-    # runs once a month
-    $keep_snapshots = 6
+    # Purge snapshots keeping only last 6 (except wmf.mediawiki_wikitext_history, keeping 2):
+    #  wmf_raw.mediawiki_archive
+    #  wmf_raw.mediawiki_change_tag
+    #  wmf_raw.mediawiki_ipblocks
+    #  wmf_raw.mediawiki_logging
+    #  wmf_raw.mediawiki_page
+    #  wmf_raw.mediawiki_pagelinks
+    #  wmf_raw.mediawiki_project_namespace_map
+    #  wmf_raw.mediawiki_redirect
+    #  wmf_raw.mediawiki_revision
+    #  wmf_raw.mediawiki_user
+    #  wmf_raw.mediaiki_user_groups
+    #
+    #  wmf.mediawiki_history
+    #  wmf.mediawiki_metrics
+    #  wmf.mediawiki_page_history
+    #  wmf.mediawiki_user_history
+    #  wmf.mediawiki_history_reduced
+    #  wmf.edit_hourly
+    #  wmf.mediawiki_wikitext_history
+    #  wmf.mediawiki_wikitext_current
+    #  wmf.wikidata_entity
+    #  wmf.wikidata_item_page_link
+    #
+    # runs twice a month on the 15th and 30th
+    # (30th is to drop wikitext fast as it gets released at the end of the month)
     kerberos::systemd_timer { 'mediawiki-history-drop-snapshot':
         ensure       => $ensure_timers,
         description  => 'Drop snapshots from multiple raw and refined mediawiki datasets, configured in the refinery-drop script.',
-        command      => "${refinery_path}/bin/refinery-drop-mediawiki-snapshots -s ${keep_snapshots}",
+        command      => "${refinery_path}/bin/refinery-drop-mediawiki-snapshots",
         environment  => $systemd_env,
-        interval     => '*-*-15 06:15:00',
+        interval     => '*-*-15,30 06:15:00',
         user         => 'analytics',
         use_kerberos => $use_kerberos,
     }
