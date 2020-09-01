@@ -108,7 +108,7 @@ define varnish::instance(
     }
 
     # varnish frontend needs CAP_NET_BIND_SERVICE as it binds to port 80
-    $capabilities = 'CAP_SETUID CAP_SETGID CAP_CHOWN CAP_NET_BIND_SERVICE CAP_KILL'
+    $capabilities = 'CAP_SETUID CAP_SETGID CAP_CHOWN CAP_NET_BIND_SERVICE CAP_KILL CAP_DAC_OVERRIDE'
 
     # Array of VCL files required by Varnish systemd::service.
     # load-new-vcl-file below subscribes to these too, reload-vcl needs to be
