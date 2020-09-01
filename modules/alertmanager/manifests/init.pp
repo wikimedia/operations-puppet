@@ -38,13 +38,14 @@ class alertmanager (
     }
 
     file { '/etc/prometheus/alertmanager.yml':
-        ensure    => present,
-        owner     => 'prometheus',
-        group     => 'root',
-        mode      => '0440',
-        show_diff => false,
-        content   => template('alertmanager/alertmanager.yml.erb'),
-        notify    => Exec['alertmanager-reload'],
+        ensure       => present,
+        owner        => 'prometheus',
+        group        => 'root',
+        mode         => '0440',
+        show_diff    => false,
+        content      => template('alertmanager/alertmanager.yml.erb'),
+        notify       => Exec['alertmanager-reload'],
+        validate_cmd => '/usr/bin/amtool check-config %',
     }
 
     exec { 'alertmanager-reload':
