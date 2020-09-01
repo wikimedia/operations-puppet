@@ -27,7 +27,6 @@ class role::wmcs::db::wikireplicas::dedicated::analytics {
     include ::profile::wmcs::db::wikireplicas::monitor
     include ::profile::wmcs::db::wikireplicas::dedicated::analytics
 
-    include ::passwords::misc::scripts
     include ::profile::wmcs::db::wikireplicas::views
     include ::profile::mariadb::check_private_data
     include ::profile::wmcs::db::wikireplicas::kill_long_running_queries
