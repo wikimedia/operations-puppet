@@ -321,7 +321,7 @@ class NullBackup:
         """
         return False
 
-    def errors_on_log(self, log_file):
+    def errors_on_log(self):
         """
         Returns true if there were errors on the log of the backup command. As a parameter,
         a string containing the full path of the log file.
@@ -421,7 +421,7 @@ class MariaBackup(NullBackup):
             return True
         return False
 
-    def errors_on_log(self, log_file):
+    def errors_on_log(self):
         return False
 
     def get_prepare_cmd(self, backup_dir):
@@ -526,7 +526,8 @@ class MyDumperBackup(NullBackup):
         if ' CRITICAL ' in errors:
             return 3
 
-    def errors_on_log(self, log_file):
+    def errors_on_log(self):
+        log_file = self.backup.log_file
         try:
             with open(log_file, 'r') as output:
                 log = output.read()
@@ -778,6 +779,12 @@ class WMFBackup:
             if backup.errors_on_output(out, err):
                 stats.fail()
                 return 3
+
+        # Check log for errors
+        if backup.errors_on_log():
+            self.logger.error('Error log found at {}'.format(backup.log_file))
+            stats.fail()
+            return 4
 
         # Check medatada file exists and containg the finish date
         if backup.errors_on_metadata(backup_dir):
