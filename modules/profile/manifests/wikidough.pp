@@ -4,6 +4,7 @@ class profile::wikidough (
     Dnsdist::TLS_config       $tls_config_doh   = lookup(profile::wikidough::dnsdist::tls::doh),
     Dnsdist::TLS_config       $tls_config_dot   = lookup(profile::wikidough::dnsdist::tls::dot),
     Dnsdist::Webserver_config $webserver_config = lookup(profile::wikidough::dnsdist::webserver, {'merge' => hash}),
+    String                    $landing_text     = lookup(profile::wikidough::dnsdist::landing_text),
 ) {
 
     include network::constants
@@ -53,6 +54,8 @@ class profile::wikidough (
         console_key      => $passwords::wikidough::dnsdist::console_key,
         enable_webserver => true,
         webserver_config => $webserver_config,
+        enable_landing   => true,
+        landing_text     => $landing_text,
         require          => Class['dnsrecursor'],
     }
 

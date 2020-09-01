@@ -20,8 +20,8 @@
 #  [*tls_config_dot*]
 #    [Dnsdist::TLS_config] TLS configuration for DoT. required.
 #
-#  [*doh_base_url*]
-#    [string] URL to accept DoH queries on. default: /dns-query.
+#  [*doh_paths*]
+#    [array] URL paths to accept queries on. default: /, /dns-query.
 #
 #  [*qps_max*]
 #    [int] maximum number of queries allowed per second from an IP. default: 40.
@@ -49,13 +49,19 @@
 #
 #  [*enable_ecs*]
 #    [bool] whether to enable EDNS Client Subnet. default: true.
+#
+#  [*enable_landing*]
+#    [bool] whether to enable the landing page (/). default: false.
+#
+#  [*landing_text*]
+#    [string] text on the landing page. default: undef.
 
 class dnsdist (
     Dnsdist::Resolver                   $resolver,
     Dnsdist::TLS_common                 $tls_common,
     Dnsdist::TLS_config                 $tls_config_doh,
     Dnsdist::TLS_config                 $tls_config_dot,
-    String                              $doh_base_url       = '/dns-query',
+    Array[String[1]]                    $doh_paths          = ['/', '/dns-query'],
     Integer[1]                          $qps_max            = 40,
     Boolean                             $enable_packetcache = true,
     Integer[1]                          $packetcache_max    = 10000000,
@@ -65,6 +71,8 @@ class dnsdist (
     Boolean                             $enable_webserver   = false,
     Optional[Dnsdist::Webserver_config] $webserver_config   = undef,
     Boolean                             $enable_ecs         = true,
+    Boolean                             $enable_landing     = false,
+    Optional[String]                    $landing_text       = undef,
 ) {
 
     if ($enable_console and $console_key == undef) {
