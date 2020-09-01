@@ -38,7 +38,7 @@ groups:
               ori, jmm, jynus, ema, elukey, gehel, volans, marostegui,
               ayounsi, herron, aborrero, bstorm, vgutierrez, jiji, cwhite,
               crusnov, cdanis, fsero, jbond, jeh, dzahn, phamhi, sukhe, pt1979,
-              rzl, hnowlan, jayme, kormat, wkandek, ryankemper, lmata, klausman]
+              rzl, hnowlan, jayme, kormat, wkandek, ryankemper, lmata, klausman, lsobanski]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   ops-adm-group:
     # No gid for this group on purpose, it's a system provided one
@@ -3847,6 +3847,15 @@ users:
     uid: 26051
     email: rabuissa@wikimedia.org
     krb: present
+  lsobanski:
+    ensure: present
+    name: lsobanski
+    realname: Lukasz Sobanski
+    email: lsobanski@wikimedia.org
+    uid: 26128
+    gid: 500
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILVVotK5XPDEs+M1V7GoolJjktoGm0y1ffpyz9bd5A4m lsobanski@wikimedia.org
 
 ldap_only_users:
   abartov:
