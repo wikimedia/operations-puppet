@@ -12,6 +12,7 @@ class nftables (
     systemd::service { 'nftables':
         ensure         => $ensure_package,
         content        => systemd_template('nftables'),
+        override       => true,
         service_params => {
             ensure => $ensure_service,
         }
