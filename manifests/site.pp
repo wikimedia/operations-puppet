@@ -2122,12 +2122,6 @@ node /^registry[12]00[12]\.(eqiad|codfw)\.wmnet$/ {
     role(docker_registry_ha::registry)
 }
 
-
-# formerly VM for releases.wikimedia.org, to be removed soonish
-node 'releases1001.eqiad.wmnet' {
-    role(releases)
-}
-
 # https://releases.wikimedia.org - VMs for releases files (mediawiki and other)
 # https://releases-jenkins.wikimedia.org (automatic Mediawiki builds)
 node /^releases[12]002\.(codfw|eqiad)\.wmnet$/ {
