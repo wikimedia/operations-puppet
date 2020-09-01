@@ -5,8 +5,8 @@ class profile::aptrepo::wikimedia (
     Stdlib::Unixpath $basedir = lookup('profile::aptrepo::wikimedia::basedir'),
     Stdlib::Unixpath $homedir = lookup('profile::aptrepo::wikimedia::basedir'),
     String $gpg_user = lookup('profile::aptrepo::wikimedia::gpg_user'),
-    String $gpg_pubring = lookup('profile::aptrepo::wikimedia::gpg_pubring'),
-    String $gpg_secring = lookup('profile::aptrepo::wikimedia::gpg_secring'),
+    Optional[String] $gpg_pubring = lookup('profile::aptrepo::wikimedia::gpg_pubring', {'default_value' => undef}),
+    Optional[String] $gpg_secring = lookup('profile::aptrepo::wikimedia::gpg_secring', {'default_value' => undef}),
 ){
 
     class { '::aptrepo':
