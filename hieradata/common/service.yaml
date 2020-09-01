@@ -1942,7 +1942,7 @@ service::catalog:
     sites:
     - eqiad
     - codfw
-    state: service_setup
+    state: lvs_setup
     discovery:
     - dnsdisc: push-notifications
       active_active: true
