@@ -11,7 +11,6 @@ class varnish::packages($version='installed') {
         'varnish-modules',
         'libvmod-netmapper',
         'libvmod-re2',
-        'libvmod-tbf',
         ]:
         ensure  => 'installed',
     }
