@@ -7,18 +7,19 @@
 # - purging
 #
 class profile::cache::base(
-    $cache_cluster = hiera('cache::cluster'),
-    $statsd_host = hiera('statsd'),
-    $logstash_host = hiera('logstash_host', undef),
-    $logstash_syslog_port = hiera('logstash_syslog_port', undef),
-    $logstash_json_lines_port = hiera('logstash_json_lines_port', undef),
-    $log_slow_request_threshold = hiera('profile::cache::base::log_slow_request_threshold', '60.0'),
-    $allow_iptables = hiera('profile::cache::base::allow_iptables', false),
-    $performance_tweaks = hiera('profile::cache::base::performance_tweaks', true),
-    $extra_trust = hiera('profile::cache::base::extra_trust', []),
+    String $cache_cluster                            = lookup('cache::cluster'),
+    String $statsd_host                              = lookup('statsd'),
+    Optional[Stdlib::Host] $logstash_host            = lookup('logstash_host', {'default_value' => undef}),
+    Optional[Stdlib::Port] $logstash_syslog_port     = lookup('logstash_syslog_port', {'default_value' => undef}),
+    Optional[Stdlib::Port] $logstash_json_lines_port = lookup('logstash_json_lines_port', {'default_value' => undef}),
+    Float $log_slow_request_threshold                = lookup('profile::cache::base::log_slow_request_threshold', {'default_value' => 60.0}),
+    Boolean $allow_iptables                          = lookup('profile::cache::base::allow_iptables', {'default_value' => false}),
+    Boolean $performance_tweaks                      = lookup('profile::cache::base::performance_tweaks', {'default_value' => true}),
+    Array $extra_trust                               = lookup('profile::cache::base::extra_trust', {'default_value' => []}),
     Optional[Hash[String, Integer]] $default_weights = lookup('profile::cache::base::default_weights', {'default_value' => undef}),
-    String $mtail_additional_args = lookup('profile::cache::base::mtail_additional_args', {'default_value' => ''})
-) {
+    String $mtail_additional_args                    = lookup('profile::cache::base::mtail_additional_args', {'default_value' => ''}),
+){
+
     require network::constants
     # NOTE: Add the public WMCS IP space when T209011 is done
     $wikimedia_nets = flatten(concat($::network::constants::aggregate_networks, '172.16.0.0/12'))

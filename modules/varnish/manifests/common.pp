@@ -1,7 +1,7 @@
 class varnish::common(
-    $log_slow_request_threshold='60.0',
-    $logstash_host=undef,
-    $logstash_json_lines_port=undef,
+    Float $log_slow_request_threshold = 60.0,
+    Optional[Stdlib::Host] $logstash_host = undef,
+    Optional[Stdlib::Port] $logstash_json_lines_port = undef,
 ) {
     # Frontend memory cache sizing
     $mem_gb = $::memorysize_mb / 1024.0
