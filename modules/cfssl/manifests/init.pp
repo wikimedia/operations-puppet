@@ -1,15 +1,31 @@
 # @summary configure cfssl api service
+# @param ca_key_content content of the CA private key
+# @param ca_cert_content content of the CA public key
+# @param host hostname of the cfssl server
+# @param port port of the cfssl server
+# @param ocsp_port ocsp_port of the cfssl server
+# @param log_level the logging level
+# @param conf_dir location of the configuration directory
+# @param default_expiry the default signing expiry time
+# @param default_usages the default signing usages
+# @param crl_url the URL of the CRL
+# @param ocsp_url the URL of the OCSP responder
+# @param profiles A hash of signing profiles
 class cfssl (
+    String                       $ca_key_content,
+    String                       $ca_cert_content,
     Stdlib::Host                 $host            = $facts['fqdn'],
     Stdlib::Port                 $port            = 8888,
+    Stdlib::Port                 $ocsp_port       = 8889,
     Cfssl::Loglevel              $log_level       = 'info',
     Stdlib::Unixpath             $conf_dir        = '/etc/cfssl',
     Cfssl::Expiry                $default_expiry  = '720h',
     Array[Cfssl::Usage]          $default_usages  = ['signing', 'key encipherment', 'client auth'],
     Stdlib::HTTPUrl              $crl_url         = "http://${host}:${port}/crl",
+    Stdlib::HTTPUrl              $ocsp_url        = "http://${host}:${ocsp_port}",
     Hash[String, Cfssl::Profile] $profiles        = {},
-    Optional[String]             $ca_key_content  = undef,
-    Optional[String]             $ca_cert_content = undef,
+    Optional[Stdlib::Unixpath]   $ocsp_cert_path  = undef,
+    Optional[Stdlib::Unixpath]   $ocsp_key_path   = undef,
 ) {
     ensure_packages(['golang-cfssl'])
     $conf_file = "${conf_dir}/cfssl.conf"
@@ -24,15 +40,17 @@ class cfssl (
     $config = {
         'signing' => {
             'default'  => {
-                'crl_url' => $crl_url,
-                'expiry'  => $default_expiry,
-                'usages'  => $default_usages,
+                'crl_url'  => $crl_url,
+                'ocsp_url' => $ocsp_url,
+                'expiry'   => $default_expiry,
+                'usages'   => $default_usages,
             },
             'profiles' => $profiles,
         }
     }
     $db_config = {'driver' => 'sqlite3', 'data_source' => $db_path}
     $profile_dirs = $profiles.keys().map |$profile| { "${internal_dir}/${profile}" }
+    $enable_ocsp = ($ocsp_cert_path and $ocsp_key_path)
 
     file{
         default:

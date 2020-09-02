@@ -19,6 +19,8 @@ class profile::pki::server(
         profiles        => $profiles,
         ca_key_content  => secret($ca_key_content),
         ca_cert_content => file($ca_cert_content),
+        ocsp_cert_path  => '/etc/cfssl/internal/ocsp/OCSP_signer.pem',
+        ocsp_key_path   => '/etc/cfssl/internal/ocsp/OCSP_signer-key.pem',
     }
     cfssl::csr {'OCSP signer':
         key     => $key_params,
