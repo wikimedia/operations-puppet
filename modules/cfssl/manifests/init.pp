@@ -18,6 +18,7 @@ class cfssl (
     $internal_dir = "${conf_dir}/internal"
     $ca_key_file = "${ca_dir}/ca_key.pem"
     $ca_file = "${ca_dir}/ca.pem"
+    $sql_dir = '/usr/local/share/cfssl'
     $config = {
         'signing' => {
             'default'  => {
@@ -32,17 +33,24 @@ class cfssl (
 
     file{
         default:
+            ensure  => file,
+            mode    => '0440',
             owner   => 'root',
             group   => 'root',
             require => Package['golang-cfssl'];
-        [$conf_dir, $csr_dir, $internal_dir, $ca_dir] + $profile_dirs:
+        [$conf_dir, $csr_dir, $internal_dir, $ca_dir, $sql_dir] + $profile_dirs:
             ensure => directory,
             mode   => '0550';
         $conf_file:
-            ensure  => file,
-            mode    => '0440',
             content => $config.to_json(),
             notify  => Service['cfssl'];
+        "${sql_dir}/sqlite_initdb.sql":
+            source => 'puppet:///modules/cfssl/sqlite_initdb.sql';
+    }
+    sqlite::db {'cfssl':
+        path       => "${conf_dir}/cfssl.db",
+        sql_schema => "${sql_dir}/sqlite_initdb.sql",
+        require    => File["${sql_dir}/sqlite_initdb.sql"],
     }
     if $ca_key_content and $ca_cert_content {
         file {
