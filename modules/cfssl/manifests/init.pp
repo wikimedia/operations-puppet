@@ -48,7 +48,7 @@ class cfssl (
             source => 'puppet:///modules/cfssl/sqlite_initdb.sql';
     }
     sqlite::db {'cfssl':
-        path       => "${conf_dir}/cfssl.db",
+        db_path    => "${conf_dir}/cfssl.db",
         sql_schema => "${sql_dir}/sqlite_initdb.sql",
         require    => File["${sql_dir}/sqlite_initdb.sql"],
     }
