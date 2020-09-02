@@ -13,5 +13,9 @@ irc_realname: <%= @irc_realname %>
 irc_nickname_password: <%= @irc_nickname_password %>
 <% end %>
 
+# NOTICE for bots has been rejected
+# See also https://phabricator.wikimedia.org/T101575
+use_privmsg: yes
+
 msg_once_per_alert_group: no
-msg_template: "({{ .Labels.alertname }}) {{ .Annotations.summary }}"
+msg_template: "({{ .Labels.alertname }}) {{ .Status }}: {{ .Annotations.summary }}"
