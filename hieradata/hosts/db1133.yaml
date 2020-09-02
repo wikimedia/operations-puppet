@@ -1,3 +1,2 @@
 # db1133
-mariadb::mysql_role: 'master'
 mariadb::shard: 'm5'
