@@ -3895,7 +3895,6 @@ host cloudcontrol2003-dev {
 host labtestvirt2003 {
     hardware ethernet 30:e1:71:60:e9:7c;
     fixed-address labtestvirt2003.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host clouddb2001-dev {
