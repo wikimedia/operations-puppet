@@ -6,13 +6,11 @@ class role::kafka::jumbo::broker {
         description => "Kafka Broker in a 'jumbo' Kafka cluster",
     }
 
-    # Something in labs is including standard.  Only include if not already defined.
-    if !defined(Class['::profile::standard']) {
-        include ::profile::standard
-    }
     include profile::base::firewall
     include profile::kafka::broker
 
     # Mirror main-eqiad -> jumbo-eqiad
     include profile::kafka::mirror
+
+    include ::profile::standard
 }
