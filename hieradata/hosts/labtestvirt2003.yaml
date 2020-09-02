@@ -1,0 +1,9 @@
+profile::base::notifications: disabled
+profile::openstack::codfw1dev::cloudgw::dmz_cidr:
+ - "172.16.128.0/24 . 10.0.0.0/8"
+ - "172.16.128.0/24 . 208.80.155.0/22"
+profile::openstack::codfw1dev::cloudgw::routing_source_ip: 185.15.57.1
+profile::openstack::codfw1dev::cloudgw::virt_subnet_cidr: 172.16.128.0/24
+profile::openstack::codfw1dev::cloudgw::nic_host: bond0.2118
+profile::openstack::codfw1dev::cloudgw::nic_virt: bond0.2120
+profile::openstack::codfw1dev::cloudgw::nic_wan: bond0.21xx

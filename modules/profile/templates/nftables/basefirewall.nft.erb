@@ -1,0 +1,36 @@
+table inet basefirewall {
+    set ssh_allowed_ipv4 {
+        type ipv4_addr
+        elements = {
+        <% @bastion_hosts_ipv4.each do |addr| -%>
+            <%= addr %> ,
+        <% end -%>
+        <% @cumin_masters_ipv4.each do |addr| -%>
+            <%= addr %> ,
+        <% end -%>
+        }
+    }
+    set ssh_allowed_ipv6 {
+        type ipv6_addr
+        elements = {
+        <% @bastion_hosts_ipv6.each do |addr| -%>
+            <%= addr %> ,
+        <% end -%>
+        <% @cumin_masters_ipv6.each do |addr| -%>
+            <%= addr %> ,
+        <% end -%>
+        }
+    }
+
+    chain input {
+        type filter hook input priority filter ; policy drop;
+        ip saddr @ssh_allowed_ipv4 tcp dport 22 ct state new counter accept;
+        ip6 saddr @ssh_allowed_ipv6 tcp dport 22 ct state new counter accept;
+        counter comment "counter dopped packets"
+    }
+
+    chain output {
+        type filter hook output priority filter ; policy accept;
+        counter comment "conter accepted packets"
+    }
+}
