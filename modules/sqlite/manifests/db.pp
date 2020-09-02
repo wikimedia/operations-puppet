@@ -22,7 +22,7 @@ define sqlite::db (
             path        => ['/bin', '/usr/bin'],
             user        => $owner,
             group       => $group,
-            command     => "cat ${_db_path} | ${sqlite::sqlite_cmd} ${_db_path}",
+            command     => "cat ${sql_schema} | ${sqlite::sqlite_cmd} ${_db_path}",
             refreshonly => true,
             subscribe   => File[$_db_path],
         }
