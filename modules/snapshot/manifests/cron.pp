@@ -31,7 +31,7 @@ class snapshot::cron(
     }
     class { '::snapshot::cron::categoriesrdf':
         user      => $miscdumpsuser,
-        filesonly => $filesonly,
+        filesonly => true,
     }
     class { '::snapshot::cron::dump_global_blocks':
         user      => $miscdumpsuser,
