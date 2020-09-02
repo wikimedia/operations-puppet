@@ -1389,21 +1389,21 @@ class profile::prometheus::ops (
     prometheus::class_config{ "burrow_main_${::site}":
         dest       => "${targets_path}/burrow_main_${::site}.yaml",
         site       => $::site,
-        class_name => 'role::kafka::monitoring_buster',
+        class_name => 'role::kafka::monitoring',
         port       => 9500,
     }
 
     prometheus::class_config{ "burrow_logging_${::site}":
         dest       => "${targets_path}/burrow_logging_${::site}.yaml",
         site       => $::site,
-        class_name => 'role::kafka::monitoring_buster',
+        class_name => 'role::kafka::monitoring',
         port       => 9501,
     }
 
     prometheus::class_config{ "burrow_jumbo_${::site}":
         dest       => "${targets_path}/burrow_jumbo_${::site}.yaml",
         site       => $::site,
-        class_name => 'role::kafka::monitoring_buster',
+        class_name => 'role::kafka::monitoring',
         port       => 9700,
     }
 
