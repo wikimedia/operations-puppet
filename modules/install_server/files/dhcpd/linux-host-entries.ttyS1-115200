@@ -503,6 +503,115 @@ host an-worker1095 {
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
+host an-worker1096 {
+    hardware ethernet BC:97:E1:51:33:A4;
+    fixed-address an-worker1096.eqiad.wmnet;
+}
+
+host an-worker1097 {
+    hardware ethernet BC:97:E1:4D:49:1E;
+    fixed-address an-worker1097.eqiad.wmnet;
+}
+
+host an-worker1098 {
+    hardware ethernet BC:97:E1:51:72:EC;
+    fixed-address an-worker1098.eqiad.wmnet;
+}
+
+host an-worker1099 {
+    hardware ethernet BC:97:E1:51:0E:72;
+    fixed-address an-worker1099.eqiad.wmnet;
+}
+
+host an-worker1100 {
+    hardware ethernet BC:97:E1:50:85:68;
+    fixed-address an-worker1100.eqiad.wmnet;
+}
+
+host an-worker1101 {
+    hardware ethernet BC:97:E1:51:0E:06;
+    fixed-address an-worker1101.eqiad.wmnet;
+}
+
+host an-worker1102 {
+    hardware ethernet BC:97:E1:50:8E:B0;
+    fixed-address an-worker1102.eqiad.wmnet;
+}
+
+host an-worker1103 {
+    hardware ethernet BC:97:E1:50:8E:9E;
+    fixed-address an-worker1103.eqiad.wmnet;
+}
+
+host an-worker1104 {
+    hardware ethernet BC:97:E1:50:E6:4C;
+    fixed-address an-worker1104.eqiad.wmnet;
+}
+
+host an-worker1105 {
+    hardware ethernet BC:97:E1:50:A0:56;
+    fixed-address an-worker1105.eqiad.wmnet;
+}
+
+host an-worker1106 {
+    hardware ethernet BC:97:E1:53:40:42;
+    fixed-address an-worker1106.eqiad.wmnet;
+}
+
+host an-worker1107 {
+    hardware ethernet BC:97:E1:53:49:54;
+    fixed-address an-worker1107.eqiad.wmnet;
+}
+
+host an-worker1108 {
+    hardware ethernet BC:97:E1:53:3E:5C;
+    fixed-address an-worker1108.eqiad.wmnet;
+}
+host an-worker1109 {
+    hardware ethernet BC:97:E1:54:A8:C0;
+    fixed-address an-worker1109.eqiad.wmnet;
+}
+
+host an-worker1110 {
+    hardware ethernet BC:97:E1:53:36:34;
+    fixed-address an-worker1110.eqiad.wmnet;
+}
+
+host an-worker1111 {
+    hardware ethernet BC:97:E1:54:14:88;
+    fixed-address an-worker1111.eqiad.wmnet;
+}
+
+host an-worker1112 {
+    hardware ethernet BC:97:E1:50:95:94;
+    fixed-address an-worker1112.eqiad.wmnet;
+}
+
+host an-worker1113 {
+    hardware ethernet BC:97:E1:50:FB:F4;
+    fixed-address an-worker1113.eqiad.wmnet;
+}
+
+host an-worker1114 {
+    hardware ethernet BC:97:E1:50:93:66;
+    fixed-address an-worker1114.eqiad.wmnet;
+}
+
+host an-worker1115 {
+    hardware ethernet BC:97:E1:51:57:26;
+    fixed-address an-worker1115.eqiad.wmnet;
+}
+
+host an-worker1116 {
+    hardware ethernet BC:97:E1:50:9D:1A;
+    fixed-address an-worker1116.eqiad.wmnet;
+}
+
+host an-worker1117 {
+    hardware ethernet BC:97:E1:50:91:EC;
+    fixed-address an-worker1117.eqiad.wmnet;
+}
+
 host aqs1004 {
     hardware ethernet 1c:98:ec:2a:94:e0;
     fixed-address aqs1004.eqiad.wmnet;
