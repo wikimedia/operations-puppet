@@ -7,13 +7,14 @@
 # @param profiles a Hash of signing profiles
 # @param intermediates a list of intermediate CN's to create
 class profile::pki::server(
-    String                       $ca_key_content  = lookup('profile::pki::server::ca_key_content'),
-    String                       $ca_cert_content = lookup('profile::pki::server::ca_cert_content'),
-    Array[Cfssl::Name]           $names           = lookup('profile::pki::server::names'),
-    Cfssl::Key                   $key_params      = lookup('profile::pki::server::key_params'),
-    Boolean                      $gen_csr         = lookup('profile::pki::server::gen_csr'),
-    Hash[String, Cfssl::Profile] $profiles        = lookup('profile::pki::server::profiles'),
-    Array[String]                $intermediates   = lookup('profile::pki::server::intermediates'),
+    String                        $ca_key_content  = lookup('profile::pki::server::ca_key_content'),
+    String                        $ca_cert_content = lookup('profile::pki::server::ca_cert_content'),
+    Array[Cfssl::Name]            $names           = lookup('profile::pki::server::names'),
+    Cfssl::Key                    $key_params      = lookup('profile::pki::server::key_params'),
+    Boolean                       $gen_csr         = lookup('profile::pki::server::gen_csr'),
+    Hash[String, Cfssl::Profile]  $profiles        = lookup('profile::pki::server::profiles'),
+    Hash[String, Cfssl::Auth_key] $auth_keys       = lookup('profile::pki::server::auth_keys'),
+    Array[String]                 $intermediates   = lookup('profile::pki::server::intermediates'),
 ) {
     class {'cfssl':
         profiles        => $profiles,
@@ -21,6 +22,7 @@ class profile::pki::server(
         ca_cert_content => file($ca_cert_content),
         ocsp_cert_path  => '/etc/cfssl/internal/ocsp/OCSP_signer.pem',
         ocsp_key_path   => '/etc/cfssl/internal/ocsp/OCSP_signer-key.pem',
+        auth_keys       => $auth_keys,
     }
     cfssl::csr {'OCSP signer':
         key     => $key_params,
