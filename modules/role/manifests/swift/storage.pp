@@ -63,10 +63,10 @@ class role::swift::storage (
     # - base object server (6000)
     # - container server (6001)
     # - account server (6002)
-    # - per-disk object-server ports T222366 (6010:6030)
+    # - per-disk object-server ports T222366 (6010:6040)
     ferm::service { 'swift-object-server':
         proto   => 'tcp',
-        port    => '(6000:6002 6010:6030)',
+        port    => '(6000:6002 6010:6040)',
         notrack => true,
         srange  => "@resolve((${swift_access_ferm}))",
     }

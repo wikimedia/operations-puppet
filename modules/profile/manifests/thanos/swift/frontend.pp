@@ -65,12 +65,10 @@ class profile::thanos::swift::frontend (
     }
 
     # Per-disk object-server ports T222366
-    range(6010, 6030).each |$port| {
-        ferm::client { "swift-object-server-client-${port}":
-            proto   => 'tcp',
-            notrack => true,
-            port    => $port,
-        }
+    ferm::client { 'swift-object-server-client-disks':
+        proto   => 'tcp',
+        notrack => true,
+        port    => '(6010:6040)'
     }
 
     ferm::client { 'swift-container-server-client':
