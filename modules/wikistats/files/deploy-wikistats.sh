@@ -26,6 +26,16 @@ function deploy {
   sed -i "s/<not included>/${dbpass}/g" /etc/${pn}/config.php
 }
 
+function diff {
+
+  for dp in "${dps[@]}"; do
+    mkdir -p /${dp}/${pn}
+    echo "/${dp}/${pn}/"
+    rsync -avn ${pp}/${pn}/${dp}/${pn}/ /${dp}/${pn}/ | tail -n4 | head -n1 | grep -v "sending incremental"
+    echo -e "\n"
+  done
+}
+
 function backup {
 
   mkdir -p ${bp}
@@ -55,6 +65,7 @@ function help {
 
   echo -e "usage: $0 <action>. action can be one of "deploy", "backup" or "restore"\n"
   echo -e "deploy: syncs file from ${pp}/${pn} (where puppet git pulls to automatically) into the right places.\n"
+  echo -e "diff: identifies files that have local hacks that have not been deployed.\n"
   echo -e "backup: syncs files currently used to a backup location at ${bp}.\n"
   echo -e "restore: syncs file from the backup location {$bp} into the right places.\n"
 }
@@ -65,6 +76,9 @@ case $1 in
  ;;
  "deploy")
   deploy
+ ;;
+ "diff")
+  diff
  ;;
  "restore")
   restore
