@@ -119,6 +119,19 @@ node /an-worker10(7[89]|8[0-9]|9[0-5]).eqiad.wmnet/ {
     role(analytics_cluster::hadoop::worker)
 }
 
+# new an-worker nodes an-worker1096-1117 Tasks T254892 and T259071.
+node /^an-worker109[6-9]\.eqiad\.wmnet$/ {
+    role(insetup)
+}
+
+node /^an-worker110[0-9]\.eqiad\.wmnet$/ {
+    role(insetup)
+}
+
+node /^an-worker111[0-7]\.eqiad\.wmnet$/ {
+    role(insetup)
+}
+
 # hue.wikimedia.org
 node 'analytics-tool1001.eqiad.wmnet' {
     role(analytics_cluster::hadoop::ui)
