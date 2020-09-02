@@ -12,10 +12,10 @@
 # }
 
 class profile::prometheus::node_directory_size (
-  $ensure = hiera('profile::prometheus::node_directory_size::ensure', 'present'),
-  $directory_size_paths = hiera('profile::prometheus::node_directory_size::directory_size_paths', {}),
-  $outfile = hiera('profile::prometheus::node_directory_size::outfile', '/var/lib/prometheus/node.d/node_directory_size_bytes'),
-) {
+    Wmflib::Ensure   $ensure               = lookup('profile::prometheus::node_directory_size::ensure', { 'default_value' => 'present'}),
+    Hash             $directory_size_paths = lookup('profile::prometheus::node_directory_size::directory_size_paths', {'default_value' => {}}),
+    Stdlib::Unixpath $outfile              = lookup('profile::prometheus::node_directory_size::outfile', {'default_value' => '/var/lib/prometheus/node.d/node_directory_size_bytes'}),
+){
 
   if ($ensure == 'absent') {
     file { "${outfile}.prom":

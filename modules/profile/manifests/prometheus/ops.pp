@@ -4,17 +4,17 @@
 # filtertags: labs-project-monitoring
 class profile::prometheus::ops (
     Array[Stdlib::Host] $prometheus_nodes = lookup('prometheus_nodes'),
-    $storage_retention = hiera('prometheus::server::storage_retention', '3024h'), # 4.5 months
-    $max_chunks_to_persist = hiera('prometheus::server::max_chunks_to_persist', '524288'),
-    $memory_chunks = hiera('prometheus::server::memory_chunks', '1048576'),
-    $targets_path = lookup('prometheus::server::target_path', String, 'first', '/srv/prometheus/ops/targets'),
-    $bastion_hosts = hiera('bastion_hosts', []),
-    $netmon_server = lookup('netmon_server'),
-    Wmflib::Ensure $ensure_rsync = lookup('profile::prometheus::ops::ensure_rsync'),
-    String $replica_label = lookup('prometheus::replica_label', { 'default_value' => 'unset' }),
-    Boolean $enable_thanos_upload = lookup('profile::prometheus::ops::thanos', { 'default_value' => false }),
-    Optional[String] $thanos_min_time = lookup('profile::prometheus::thanos::min_time', { 'default_value' => undef }),
-    Array[Stdlib::Host] $alertmanagers = lookup('alertmanagers', {'default_value' => []}),
+    String $storage_retention             = lookup('prometheus::server::storage_retention', { 'default_value' => '3024h' }), # 4.5 months
+    Integer $max_chunks_to_persist        = lookup('prometheus::server::max_chunks_to_persist', { 'default_value' => 524288 }),
+    Integer $memory_chunks                = lookup('prometheus::server::memory_chunks', { 'default_value' => 1048576 }),
+    Stdlib::Unixpath $targets_path        = lookup('prometheus::server::target_path', { 'default_value' => '/srv/prometheus/ops/targets' }),
+    Array[Stdlib::Host] $bastion_hosts    = lookup('bastion_hosts', { 'default_value' => [] }),
+    Stdlib::Host $netmon_server           = lookup('netmon_server'),
+    Wmflib::Ensure $ensure_rsync          = lookup('profile::prometheus::ops::ensure_rsync'),
+    String $replica_label                 = lookup('prometheus::replica_label', { 'default_value' => 'unset' }),
+    Boolean $enable_thanos_upload         = lookup('profile::prometheus::ops::thanos', { 'default_value' => false }),
+    Optional[String] $thanos_min_time     = lookup('profile::prometheus::thanos::min_time', { 'default_value' => undef }),
+    Array $alertmanagers                  = lookup('alertmanagers', {'default_value' => []}),
 ){
     include ::passwords::gerrit
     $gerrit_client_token = $passwords::gerrit::prometheus_bearer_token

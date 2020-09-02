@@ -1,10 +1,11 @@
 class profile::wmcs::prometheus(
-    $targets_path = '/srv/prometheus/labs/targets',
-    $storage_retention = hiera('prometheus::server::storage_retention', '4032h'),
-    $max_chunks_to_persist = hiera('prometheus::server::max_chunks_to_persist', '524288'),
-    $memory_chunks = hiera('prometheus::server::memory_chunks', '1048576'),
-    $toolforge_redis_hosts = hiera('profile::wmcs::prometheus::toolforge_redis_hosts', []),
-) {
+    Stdlib::Unixpath $targets_path = '/srv/prometheus/labs/targets',
+    String $storage_retention = lookup('prometheus::server::storage_retention', {'default_value' => '4032h'}),
+    Integer $max_chunks_to_persist = lookup('prometheus::server::max_chunks_to_persist', {'default_value' => 524288}),
+    Integer $memory_chunks = lookup('prometheus::server::memory_chunks', {'default_value' => 1048576}),
+    Array[Stdlib::Host] $toolforge_redis_hosts = lookup('profile::wmcs::prometheus::toolforge_redis_hosts', {'default_value' => []}),
+){
+
     include ::prometheus::blackbox_exporter
     $blackbox_jobs = [
         {

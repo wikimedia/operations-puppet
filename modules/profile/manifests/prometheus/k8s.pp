@@ -2,16 +2,17 @@
 # needed for WMF production
 #
 class profile::prometheus::k8s (
-    $users = hiera('k8s_infrastructure_users'), # lint:ignore:wmf_styleguide
-    String $replica_label = lookup('prometheus::replica_label', { 'default_value' => 'unset' }),
-    Boolean $enable_thanos_upload = lookup('profile::prometheus::k8s::thanos', { 'default_value' => false }),
-    Optional[String] $thanos_min_time = lookup('profile::prometheus::thanos::min_time', { 'default_value' => undef }),
-    Array[Stdlib::Host] $alertmanagers = lookup('alertmanagers', {'default_value' => []}),
+    Hash                $users                = lookup('k8s_infrastructure_users'),
+    String              $replica_label        = lookup('prometheus::replica_label', { 'default_value' => 'unset' }),
+    Boolean             $enable_thanos_upload = lookup('profile::prometheus::k8s::thanos', { 'default_value' => false }),
+    Optional[String]    $thanos_min_time      = lookup('profile::prometheus::thanos::min_time', { 'default_value' => undef }),
+    Array[Stdlib::Host] $alertmanagers        = lookup('alertmanagers', {'default_value' => []}),
+    String $storage_retention                 = lookup('prometheus::server::storage_retention', {'default_value' => '4032h'}),
+    Integer $max_chunks_to_persist            = lookup('prometheus::server::max_chunks_to_persist', {'default_value' => 524288}),
+    Integer $memory_chunks                    = lookup('prometheus::server::memory_chunks', {'default_value' => 1048576}),
 ){
+
     $targets_path = '/srv/prometheus/k8s/targets'
-    $storage_retention = hiera('prometheus::server::storage_retention', '4032h')
-    $max_chunks_to_persist = hiera('prometheus::server::max_chunks_to_persist', '524288')
-    $memory_chunks = hiera('prometheus::server::memory_chunks', '1048576')
     $bearer_token_file = '/srv/prometheus/k8s/k8s.token'
     $master_host = "kubemaster.svc.${::site}.wmnet"
     $client_token = $users['prometheus']['token']

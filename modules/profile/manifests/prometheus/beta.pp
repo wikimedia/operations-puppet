@@ -1,7 +1,7 @@
 class profile::prometheus::beta (
-    $storage_retention = hiera('prometheus::server::storage_retention', '730h'),
+    String $storage_retention = lookup('prometheus::server::storage_retention', {'default_value' => '730h'}),
     Array[Stdlib::Host] $alertmanagers = lookup('alertmanagers', {'default_value' => []}),
-) {
+){
 
     $targets_path = '/srv/prometheus/beta/targets'
     $rules_path = '/srv/prometheus/beta/rules'
