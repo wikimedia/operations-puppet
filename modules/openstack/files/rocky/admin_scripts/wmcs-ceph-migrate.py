@@ -23,20 +23,20 @@ if sys.version_info[0] >= 3:
 #  be 'resized' after migration.  In reality the new flavor
 #  has the same specs as the old, but with disk use limits.
 flavor_map = {
-    "ci1.medium": "cores2.ram2.disk40",
-    "justdisk": "cores4.ram8.disk300",
-    "parsingtest": "cores12.ram32.disk400",
-    "c8.m8.s60": "cores8.ram8.disk60",
-    "m1.gigantic": "cores16.ram16.disk80",
-    "c1.m2.s80": "cores1.ram2.disk80",
-    "xlarge-xtradisk": "cores8.ram16.disk300",
-    "bigdisk2": "cores4.ram24.disk300",
-    "bigram": "cores8.ram36.disk80",
-    "mediumram": "cores8.ram24.disk80",
-    "m1.xlarge": "xlarge",
-    "m1.large": "large",
-    "m1.medium": "medium",
-    "m1.small": "small",
+    "ci1.medium": "g2.cores2.ram2.disk40",
+    "justdisk": "g2.cores4.ram8.disk300",
+    "parsingtest": "g2.cores12.ram32.disk400",
+    "c8.m8.s60": "g2.cores8.ram8.disk60",
+    "m1.gigantic": "g2.cores16.ram16.disk80",
+    "c1.m2.s80": "g2.cores1.ram2.disk80",
+    "xlarge-xtradisk": "g2.cores8.ram16.disk300",
+    "bigdisk2": "g2.cores4.ram24.disk300",
+    "bigram": "g2.cores8.ram36.disk80",
+    "mediumram": "g2.cores8.ram24.disk80",
+    "m1.xlarge": "g2.cores8.ram16.disk160",
+    "m1.large": "g2.cores4.ram8.disk80",
+    "m1.medium": "g2.cores2.ram4.disk40",
+    "m1.small": "g2.cores1.ram2.disk20",
 }
 
 
