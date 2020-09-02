@@ -418,7 +418,8 @@ class mediawiki::web::prod_sites(String $fcgi_proxy) {
     $other_wikis = [
         'transitionteam.wikimedia.org', 'iegcom.wikimedia.org',
         'legalteam.wikimedia.org', 'zero.wikimedia.org',
-        'fixcopyright.wikimedia.org'
+        'fixcopyright.wikimedia.org',
+        'api.wikimedia.org'
     ]
     mediawiki::web::vhost {
         default:

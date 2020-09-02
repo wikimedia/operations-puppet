@@ -57,3 +57,8 @@ https://foundation.wikimedia.org:
 - path: /wiki/Main_Page
   assert_status: 200
   assert_body_contains: Wikimedia Foundation Governance Wiki
+
+https://api.wikimedia.org:
+- path: /wiki/Main_Page
+  assert_status: 200
+  assert_body_contains: API Portal
