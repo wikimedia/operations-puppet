@@ -65,6 +65,10 @@ profile::services_proxy::envoy::listeners:
     upstream: restbase.discovery.wmnet
     timeout: "10s"
     xfp: https # this is needed for private wikis - see T249535
+  - name: push-notifications
+    port: 6012
+    service: push-notifications
+    timeout: "2.5s"
   # Non-discovery records
   # Eqiad ports are at 61xx
   # Codfw ports are at 62xx
