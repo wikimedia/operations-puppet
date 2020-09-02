@@ -186,6 +186,13 @@ class openstack::util::admin_scripts(
         source => 'puppet:///modules/openstack/util/wmcs-wikireplica-dns.py',
     }
 
+    file { '/usr/local/sbin/wmcs-instance-fqdns':
+        source => "puppet:///modules/openstack/${version}/admin_scripts/wmcs-instance-fqdns.py",
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0744',
+    }
+
     file { '/usr/local/sbin/wmcs-makedomain':
         source => "puppet:///modules/openstack/${version}/admin_scripts/wmcs-makedomain.py",
         owner  => 'root',
