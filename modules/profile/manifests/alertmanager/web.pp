@@ -23,7 +23,7 @@ class profile::alertmanager::web (
     if $enable_sso {
         profile::idp::client::httpd::site { $vhost:
             document_root   => '/var/www/html',
-            acme_chief_cert => 'alerts',
+            acme_chief_cert => 'icinga',
             vhost_content   => 'profile/idp/client/httpd-karma.erb',
             vhost_settings  => { 'readonly' => $readonly },
             required_groups => [

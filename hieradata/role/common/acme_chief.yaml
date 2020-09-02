@@ -1,12 +1,5 @@
 cluster: acmechief
 profile::acme_chief::certificates:
-    alerts:
-        CN: 'alerts.wikimedia.org'
-        SNI:
-        - 'alerts.wikimedia.org'
-        challenge: dns-01
-        authorized_regexes:
-        - '^alert[12].*\.wikimedia\.org$'
     apt:
         CN: 'apt.wikimedia.org'
         SNI:
@@ -66,6 +59,7 @@ profile::acme_chief::certificates:
         - 'icinga.wikimedia.org'
         - 'icinga1001.wikimedia.org'
         - 'icinga2001.wikimedia.org'
+        - 'alerts.wikimedia.org'
         - 'alert1001.wikimedia.org'
         - 'alert2001.wikimedia.org'
         - 'icinga-extmon.wikimedia.org'
