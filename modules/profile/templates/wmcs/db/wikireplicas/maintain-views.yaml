@@ -94,6 +94,12 @@ fullviews:
   - langlinks
   - links
   - linter
+  - machine_vision_freebase_mapping
+  - machine_vision_image
+  - machine_vision_label
+  - machine_vision_provider
+  - machine_vision_safe_search
+  - machine_vision_suggestion
   - module_deps
   - msg_resource_links
   - namespaces
