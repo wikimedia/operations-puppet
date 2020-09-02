@@ -4,7 +4,13 @@ After=network.target remote-fs.target nss-lookup.target
 Documentation=https://github.com/cloudflare/cfssl/tree/master/doc
 
 [Service]
-ExecStart=/usr/bin/cfssl serve -address <%= @host %> -port <%= @port %> -ca <%= @ca_file %> -ca-key <%= @ca_key_file %> -int-dir <%= @internal_dir %>
+ExecStart=/usr/bin/cfssl serve \
+          -db-config <%= @db_conf_file %> \
+          -config <%= @conf_file %> \
+          -address <%= @host %> \
+          -port <%= @port %> \
+          -ca <%= @ca_file %> \
+          -ca-key <%= @ca_key_file %>
 Restart=always
 RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6 AF_NETLINK
 

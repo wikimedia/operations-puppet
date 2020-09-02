@@ -20,6 +20,11 @@ class profile::pki::server(
         ca_key_content  => secret($ca_key_content),
         ca_cert_content => file($ca_cert_content),
     }
+    cfssl::csr {'OCSP signer':
+        key     => $key_params,
+        names   => $names,
+        profile => 'ocsp',
+    }
     $intermediates.each |$intermediate| {
         cfssl::csr {$intermediate:
             key     => $key_params,

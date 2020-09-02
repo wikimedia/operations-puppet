@@ -13,6 +13,8 @@ class cfssl (
 ) {
     ensure_packages(['golang-cfssl'])
     $conf_file = "${conf_dir}/cfssl.conf"
+    $db_conf_file = "${conf_dir}/db.conf"
+    $db_path = "${conf_dir}/cfssl.db"
     $csr_dir = "${conf_dir}/csr"
     $ca_dir = "${conf_dir}/ca"
     $internal_dir = "${conf_dir}/internal"
@@ -29,6 +31,7 @@ class cfssl (
             'profiles' => $profiles,
         }
     }
+    $db_config = {'driver' => 'sqlite3', 'data_source' => $db_path}
     $profile_dirs = $profiles.keys().map |$profile| { "${internal_dir}/${profile}" }
 
     file{
@@ -44,11 +47,14 @@ class cfssl (
         $conf_file:
             content => $config.to_json(),
             notify  => Service['cfssl'];
+        $db_conf_file:
+            content => $db_config.to_json(),
+            notify  => Service['cfssl'];
         "${sql_dir}/sqlite_initdb.sql":
             source => 'puppet:///modules/cfssl/sqlite_initdb.sql';
     }
     sqlite::db {'cfssl':
-        db_path    => "${conf_dir}/cfssl.db",
+        db_path    => $db_path,
         sql_schema => "${sql_dir}/sqlite_initdb.sql",
         require    => File["${sql_dir}/sqlite_initdb.sql"],
     }
