@@ -1,7 +1,7 @@
 # == Class profile::analytics::cluster::secrets
 #
 # Creates protected files in HDFS that contains
-# credentials used to access MySQL slaves, Swift, etc.
+# credentials used to access MySQL replicas, Swift, etc.
 # This is so we can automate sqooping of data
 # out of MySQL into Hadoop and uploading into Swift.
 #
@@ -12,7 +12,6 @@
 # [*swift_group*]
 #   Group that the swift auth env file should be group owned by.
 #   This group must already exist on the node.
-#   Default: analytics-privatedata-users
 #
 # [*swift_accounts*]
 #   The accounts map to use for swift.
@@ -20,10 +19,10 @@
 # [*swift_accounts_keys*]
 #   The accounts keys map to use for swift.
 class profile::analytics::cluster::secrets(
-    $use_kerberos       = hiera('profile::analytics::cluster::secrets::use_kerberos', false),
-    $swift_group        = hiera('profile::analytics::cluster::secrets::swift_group', 'analytics-privatedata-users'),
-    $swift_accounts     = lookup('profile::swift::accounts'),
-    $swift_account_keys = lookup('profile::swift::accounts_keys'),
+    Boolean $use_kerberos = hiera('profile::analytics::cluster::secrets::use_kerberos', false),
+    String $swift_group = hiera('profile::analytics::cluster::secrets::swift_group', 'analytics-privatedata-users'),
+    Hash[String, Hash[String, String]] $swift_accounts = lookup('profile::swift::accounts'),
+    Hash[String, String] $swift_account_keys = lookup('profile::swift::accounts_keys'),
 ) {
     require ::profile::hadoop::common
 
