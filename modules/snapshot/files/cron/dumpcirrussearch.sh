@@ -40,23 +40,29 @@ if [ ! -f "$configFile" ]; then
 	exit 1
 fi
 
-args="wiki:dblist,privatelist,multiversion;tools:gzip,php"
+args="wiki:dblist,privatelist,multiversion;output:temp;tools:gzip,php"
 results=`python3 "${repodir}/getconfigvals.py" --configfile "$configFile" --args "$args"`
 
 allList=`getsetting "$results" "wiki" "dblist"` || exit 1
 privateList=`getsetting "$results" "wiki" "privatelist"` || exit 1
 multiversion=`getsetting "$results" "wiki" "multiversion"` || exit 1
+tempDir=`getsetting "$results" "output" "temp"` || exit 1
 gzip=`getsetting "$results" "tools" "gzip"` || exit 1
 php=`getsetting "$results" "tools" "php"` || exit 1
 
-for settingname in "allList" "privateList" "multiversion" "gzip"; do
+for settingname in "allList" "privateList" "multiversion" "tempDir" "gzip" "php"; do
     checkval "$settingname" "${!settingname}"
 done
+
+function log_err {
+	logger --no-act -s -- $*
+}
 
 today=$(date +'%Y%m%d')
 targetDirBase="${cronsdir}/cirrussearch"
 targetDir="$targetDirBase/$today"
 multiVersionScript="${multiversion}/MWScript.php"
+hasErrors=0
 
 # create todays folder
 if [ "$dryrun" == "true" ]; then
@@ -70,7 +76,7 @@ else
 fi
 
 # iterate over all known wikis
-cat $allList | while read wiki; do
+while read wiki; do
 	# exclude all private wikis
 	if ! egrep -q "^$wiki$" $privateList; then
 		# most wikis only have two indices
@@ -83,20 +89,33 @@ cat $allList | while read wiki; do
 		for type in $types; do
 			filename="$wiki-$today-cirrussearch-$type"
 			targetFile="$targetDir/$filename.json.gz"
-			if [ "$dryrun" == "true" ]; then
-				echo "$php $multiVersionScript extensions/CirrusSearch/maintenance/DumpIndex.php --wiki=$wiki --indexType=$type 2> /var/log/cirrusdump/cirrusdump-$filename.log | $gzip > ${targetFile}.tmp"
+			tempFile="$tempDir/$filename.json.gz"
+			if [ -e $tempFile ] || [ -e $targetFile ]; then
+				log_err "$targetFile or $tempFile already exists, skipping..."
+				hasErrors=1
 			else
-				$php $multiVersionScript \
-					extensions/CirrusSearch/maintenance/DumpIndex.php \
-					--wiki=$wiki \
-					--indexType=$type \
-					2> /var/log/cirrusdump/cirrusdump-$filename.log \
-					| $gzip > ${targetFile}.tmp
-				mv ${targetFile}.tmp $targetFile
+				if [ "$dryrun" == "true" ]; then
+					echo "$php $multiVersionScript extensions/CirrusSearch/maintenance/DumpIndex.php --wiki=$wiki --indexType=$type 2> /var/log/cirrusdump/cirrusdump-$filename.log | $gzip > $tempFile"
+				else
+					$php $multiVersionScript \
+						extensions/CirrusSearch/maintenance/DumpIndex.php \
+						--wiki=$wiki \
+						--indexType=$type \
+						2> /var/log/cirrusdump/cirrusdump-$filename.log \
+						| $gzip > $tempFile
+					PSTATUS_COPY=( "${PIPESTATUS[@]}" )
+					if [ "${PSTATUS_COPY[0]}" == "0" ] && [ "${PSTATUS_COPY[1]}" == "0" ]; then
+						mv $tempFile $targetFile
+					else
+						log_err "extensions/CirrusSearch/maintenance/DumpIndex.php failed for $targetFile"
+						rm $tempFile
+						hasErrors=1
+					fi
+				fi
 			fi
 		done
 	fi
-done
+done < $allList
 
 # dump the metastore index (contains persistent states used by cirrus
 # administrative tasks). This index is cluster scoped and not bound to a
@@ -131,3 +150,5 @@ fi
 
 # clean up old log files
 find /var/log/cirrusdump/ -name 'cirrusdump-*.log*' -mtime +22 -delete
+
+exit $hasErrors
