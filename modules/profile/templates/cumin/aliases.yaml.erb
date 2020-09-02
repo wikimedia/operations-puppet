@@ -62,25 +62,24 @@ cp-<%= cache %>_<%= dc %>: A:cp-<%= cache %> and A:<%= dc %>
 cp-ats: P{P:trafficserver::backend}
 cp-ats-ulsfo: A:cp-ats and A:ulsfo
 cumin: P{O:cluster::management}
-db-all-codfw: (A:db-parsercache or A:db-labsdb or A:db-dbstore or A:db-core or A:db-misc or A:db-misc-servers or A:db-backups) and A:codfw
-db-all-eqiad: (A:db-parsercache or A:db-labsdb or A:db-dbstore or A:db-core or A:db-misc or A:db-misc-servers or A:db-backups) and A:eqiad
-db-misc: P{O:mariadb::misc or O:mariadb::misc::phabricator or O:mariadb::misc::eventlogging::master or O:mariadb::misc::eventlogging::replica or O:mariadb::misc::tendril or O:mariadb::misc::zarcillo or O:mariadb::misc::multiinstance}
-db-backups: P{O:mariadb::backups or O:mariadb::temporary_storage}
+db-all: A:db-core or A:db-inventory or A:db-labsdb or A:db-misc or A:db-parsercache or A:db-sanitarium or A:db-store
+db-multiinstance: P{O:mariadb::core_multiinstance or O:mariadb::misc::analytics::backup or O:mariadb::misc::multiinstance} or A:db-sanitarium or A:db-store
 db-core: P{O:mariadb::core or O:mariadb::core_multiinstance}
-db-core-codfw: A:db-core and A:codfw
-db-core-eqiad: A:db-core and A:eqiad
-db-dbproxy: P{O:mariadb::proxy::master or O:mariadb::proxy::replicas}
-db-dbstore: P{O:mariadb::backup or O:mariadb::dbstore_multiinstance or O:mariadb::backups_and_dbstore_multiinstance}
+db-inventory: P{O:mariadb::misc::db_inventory}
 db-labsdb: P{O:wmcs::db::wikireplicas::analytics or O:wmcs::db::wikireplicas::dedicated::analytics or O:wmcs::db::wikireplicas::web}
-db-misc-servers: P{O:mariadb::sanitarium_multiinstance}
+db-misc: P{O:mariadb::misc or O:mariadb::misc::multiinstance or O:mariadb::misc::phabricator or O:mariadb::misc::analytics::backup}
 db-parsercache: P{O:mariadb::parsercache}
-dbmonitor: P{O:tendril}
+db-sanitarium: P{O:mariadb::sanitarium_multiinstance}
+db-store: P{O:mariadb::dbstore_multiinstance}
 <% @mariadb_roles.each do |role| -%>
 db-role-<%= role %>: P{P:mariadb::mysql_role%role = <%= role %>}
 <% end -%>
 <% @mariadb_sections.each do |section| -%>
 db-section-<%= section %>: P{R:profile::mariadb::section%section = <%= section %>}
 <% end -%>
+db-backups: P{O:mariadb::backups}
+db-proxy: P{O:mariadb::proxy::master or O:mariadb::proxy::replicas}
+dbmonitor: P{O:tendril}
 debmonitor: P{O:debmonitor::server}
 deployment-servers: P{O:deployment_server}
 dns-auth: P{R:Class = profile::dns::auth}
