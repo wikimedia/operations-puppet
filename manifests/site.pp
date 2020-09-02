@@ -1051,6 +1051,11 @@ node 'neon.eqiad.wmnet' {
     role(kubernetes::staging::master)
 }
 
+# new Kubernetes host T258747
+node 'kubernetes1017.eqiad.wmnet' {
+    role(insetup)
+}
+
 # Kubernetes for flink in k8s T258745
 node 'kubernetes2017.codfw.wmnet' {
     role(insetup)
