@@ -87,7 +87,7 @@ groups:
               kevinbazira, mstyles, zpapierski, clarakosi, dpifke,
               niedzielski, phuedx, samwilson, dmaza, tchanders,
               wikigit, arlolra, daniel, bpirkle, cicalese, dancy, chrisalbon,
-              jdl]
+              jdl, holger]
     privileges: ['ALL = (www-data,mwdeploy,l10nupdate) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /usr/sbin/apache2ctl',
                  'ALL = NOPASSWD: /etc/init.d/apache2',
@@ -105,7 +105,7 @@ groups:
     members: [bearloga, tjones, cparle, pearley, ktsouroupidou,
               ezachte, jamesur, jdlrobson, sguebo,
               leila, santhosh, amire80, foks, chelsyx, dbarratt, karen,
-              kharlan, abi, nikkin, bmansurov, musikanimal, holger, nahidunlimited]
+              kharlan, abi, nikkin, bmansurov, musikanimal, nahidunlimited]
     privileges: ['ALL = (www-data) NOPASSWD: ALL']
   cassandra-test-roots:
     gid: 708
