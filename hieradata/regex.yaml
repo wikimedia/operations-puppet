@@ -208,6 +208,35 @@ swift_servers_per_port:
   __regex: !ruby/regexp /^ms-be[12]0([1-4][0-9]|50)\.(codfw|eqiad)\.wmnet$/
   swift::storage::servers_per_port: 0
 
+# Hosts with 24x HDD https://phabricator.wikimedia.org/T252216
+swift_24_drives:
+  __regex: !ruby/regexp /^ms-be2057\.codfw\.wmnet$/
+  swift_storage_drives:
+    - '/dev/sdc'
+    - '/dev/sdd'
+    - '/dev/sde'
+    - '/dev/sdf'
+    - '/dev/sdg'
+    - '/dev/sdh'
+    - '/dev/sdi'
+    - '/dev/sdj'
+    - '/dev/sdk'
+    - '/dev/sdl'
+    - '/dev/sdm'
+    - '/dev/sdn'
+    - '/dev/sdo'
+    - '/dev/sdp'
+    - '/dev/sdq'
+    - '/dev/sdr'
+    - '/dev/sds'
+    - '/dev/sdt'
+    - '/dev/sdu'
+    - '/dev/sdv'
+    - '/dev/sdw'
+    - '/dev/sdx'
+    - '/dev/sdy'
+    - '/dev/sdz'
+
 labtest:
   __regex: !ruby/regexp /^labtest/
   cluster: labtest
