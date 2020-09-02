@@ -102,20 +102,10 @@ class base::standard_packages {
           }
           require_package('intel-microcode')
         }
-        # It should be possible to run mcelog and rasdaemon in parallel
-        # however we should first gain operational experience
-        if $::lsbdistcodename == 'buster' or hiera('install_rasdaemon', false) {  # lint:ignore:wmf_styleguide
+        # rasdaemon replaces mcelog on buster
+        if os_version('debian == buster') {
             require_package('rasdaemon')
             base::service_auto_restart { 'rasdaemon': }
-        }
-        # If we once used the hiera override to install rasdaemon on a stretch host,
-        # and then we remove the hiera override, we should purge the package and service.
-        # Package doesn't exist in jessie, so don't have to worry about that.
-        # TODO: remove this (and the hiera overrides) after we've finished evaluating rasdaemon
-        # or have completed the move to buster; see also T205396
-        elsif $::lsbdistcodename == 'stretch' and !hiera('install_rasdaemon', false) {  # lint:ignore:wmf_styleguide
-            package { 'rasdaemon': ensure => purged }
-            base::service_auto_restart { 'rasdaemon': ensure => absent }
         }
     }
 

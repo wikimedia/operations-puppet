@@ -1,4 +1,2 @@
-install_rasdaemon: true
-
 # Node is out of warranty and due to be decomissioned: T215411.
 profile::base::hardware_monitoring: 'absent'
