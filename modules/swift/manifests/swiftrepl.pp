@@ -3,7 +3,8 @@ class swift::swiftrepl (
   $destination_site,
   $source_site = $::site,
 ) {
-    require_package('python-cloudfiles')
+    require_package(['python-cloudfiles', 'time'])
+
     $basedir = '/srv/software'
     $account = 'mw:media'
 
@@ -24,7 +25,7 @@ class swift::swiftrepl (
     }
 
     file { '/var/log/swiftrepl':
-        ensure  => ensure_directory($ensure),
+        ensure  => present, # don't clean up logs immediately, tidy{} eventually will
         owner   => 'swiftrepl',
         group   => 'swiftrepl',
         mode    => '0750',
