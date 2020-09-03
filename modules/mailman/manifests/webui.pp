@@ -1,12 +1,12 @@
 # Sets up a web server to be used by mailman.
-class mailman::webui {
-
-    $lists_servername = hiera('mailman::lists_servername')
+class mailman::webui (
+    Stdlib::Fqdn $lists_servername,
+){
 
     $ssl_settings = ssl_ciphersuite('apache', 'mid', true)
 
-    httpd::site { 'lists.wikimedia.org':
-        content => template('mailman/lists.wikimedia.org.erb'),
+    httpd::site { $lists_servername:
+        content => template("mailman/${lists_servername}.erb"),
     }
 
     # htdigest file for private list archives
