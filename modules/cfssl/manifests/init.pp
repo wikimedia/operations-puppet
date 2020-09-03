@@ -47,9 +47,10 @@ class cfssl (
     $ca_file = "${ca_dir}/ca.pem"
     $sql_dir = '/usr/local/share/cfssl'
     # make sure all profiles use the default auth key
-    $_profiles = $profiles.map |$key, $value| {
-        {$key => {'auth_key' => $default_auth_key} + $value}
-    }
+    # first map to an array of [key, values] then convert to a hash
+    $_profiles = Hash($profiles.map |$key, $value| {
+        [$key, {'auth_key' => $default_auth_key} + $value]
+    })
     $config = {
         'signing' => {
             'default'   => {
@@ -63,7 +64,7 @@ class cfssl (
             'auth_keys' => $auth_keys,
         }
     }
-    $db_config = {'driver'                            => 'sqlite3', 'data_source' => $db_path}
+    $db_config = {'driver' => 'sqlite3', 'data_source' => $db_path}
     $profile_dirs = $profiles.keys().map |$profile| { "${internal_dir}/${profile}" }
     $enable_ocsp = ($ocsp_cert_path and $ocsp_key_path)
 
