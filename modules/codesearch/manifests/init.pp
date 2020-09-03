@@ -1,7 +1,7 @@
 # = Class: codesearch
 #
 # This class sets up the basics needed for MediaWiki code search
-# hosted at codesearch.wmflabs.org
+# hosted at codesearch.wmcloud.org
 #
 class codesearch(
     Optional[Stdlib::Unixpath] $base_dir = undefined,

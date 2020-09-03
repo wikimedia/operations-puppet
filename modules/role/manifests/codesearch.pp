@@ -1,9 +1,9 @@
-# sets up Wikimedia Codesearch
-# https://codesearch.wmflabs.org/search/
+# sets up MediaWiki Codesearch
+# https://codesearch.wmcloud.org/search/
 class role::codesearch {
 
     system::role { 'codesearch':
-        description => 'Wikimedia Codesearch instance'
+        description => 'MediaWiki Codesearch instance'
     }
 
     include ::profile::standard
