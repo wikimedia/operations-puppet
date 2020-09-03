@@ -31,6 +31,7 @@ class role::analytics_cluster::launcher {
     include ::profile::analytics::refinery::job::data_check
     include ::profile::analytics::refinery::job::refine
     include ::profile::analytics::refinery::job::camus
+    include ::profile::analytics::refinery::job::canary_events
     include ::profile::analytics::refinery::job::hdfs_cleaner
     include ::profile::analytics::refinery::job::project_namespace_map
     include ::profile::analytics::refinery::job::sqoop_mediawiki

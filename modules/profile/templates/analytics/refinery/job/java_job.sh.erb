@@ -1,0 +1,19 @@
+#!/bin/bash
+# NOTE: This file is managed by puppet
+#
+# Wrapper script for launching Java Job <%= @job_name %>
+
+/usr/bin/java \
+<% if @proxy_host -%>
+-Dhttp.proxyHost=<%= @proxy_host %> -Dhttp.proxyPort<%= @proxy_port %> -Dhttps.proxyHost=<%= @proxy_host %> -Dhttps.proxyPort<%= @proxy_port %> \
+<% end -%>
+<% if @java_opts -%>
+<%= Array(@java_opts).join(" ") %> \
+<% end -%>
+-cp '<%= Array(@classpath).join(":") %>' \
+<%= @main_class %> \
+<% if @job_opts -%>
+<%= Array(@job_opts).join(" ") %> "${@}"
+<% else -%>
+"${@}"
+<% end -%>

@@ -1,6 +1,6 @@
-# == Define profile::analytics::refinery::job::refine_job
+# == Define profile::analytics::refinery::job::spark_job
 #
-# Renders a spark2-submit wrapper script and sets up a cron to run it.
+# Renders a spark2-submit wrapper script and sets up a systemd timer to run it.
 #
 # == Properties
 #
