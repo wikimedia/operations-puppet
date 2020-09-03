@@ -93,6 +93,7 @@ class profile::puppetmaster::frontend(
         extra_auth_rules    => $extra_auth_rules,
         ca_server           => $ca_server,
         ssl_verify_depth    => $profile::puppetmaster::common::ssl_verify_depth,
+        servers             => $servers,
     }
 
     $locale_server = $locale_servers[$facts['fqdn']]

@@ -40,6 +40,9 @@
 #    - $enable_geoip
 #        Bool - Provision ::puppetmaster::geoip for serving clients who use
 #        the ::geoip::data::puppet class in their manifests
+#    - $servers
+#        Hash - Hash of puppetmaster servers, their workers and loadfactors
+# 
 class puppetmaster(
     String[1]                        $server_name        = 'puppet',
     String[1]                        $bind_address       = '*',
@@ -65,7 +68,8 @@ class puppetmaster(
     String[1]                        $git_group           = 'gitpuppet',
     Boolean                          $enable_geoip        = true,
     Stdlib::Host                     $ca_server           = $facts['fqdn'],
-    Integer[1,2]                     $ssl_verify_depth    = 1
+    Integer[1,2]                     $ssl_verify_depth    = 1,
+    Hash[String, Puppetmaster::Backends] $servers         = {},
 ){
 
     $gitdir = '/var/lib/git'
@@ -144,6 +148,7 @@ class puppetmaster(
     }
 
     class { 'puppetmaster::scripts' :
+        servers      => $servers,
         has_puppetdb => $has_puppetdb,
         ca_server    => $ca_server,
     }

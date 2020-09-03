@@ -13,8 +13,9 @@ class puppetmaster::scripts(
     Integer      $keep_reports_minutes = 960, # 16 hours
     Boolean      $has_puppetdb         = true,
     Stdlib::Host $ca_server            = $facts['fqdn'],
-) {
-    $servers = hiera('puppetmaster::servers', {})
+    Hash[String, Puppetmaster::Backends] $servers = {},
+){
+
     $masters = $servers.keys().filter |$server| { $server != $facts['fqdn'] }
     $workers = $servers.values().map |$worker| {
         $worker.map |$name| { $name['worker'] }.filter |$name| { $name != $facts['fqdn'] }
