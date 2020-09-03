@@ -88,12 +88,13 @@ class dnsdist (
     }
 
     file { '/etc/dnsdist/dnsdist.conf':
-        ensure  => 'present',
-        require => Package['dnsdist'],
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0440',
-        content => template('dnsdist/dnsdist.conf.erb'),
+        ensure       => 'present',
+        require      => Package['dnsdist'],
+        owner        => 'root',
+        group        => 'root',
+        mode         => '0440',
+        content      => template('dnsdist/dnsdist.conf.erb'),
+        validate_cmd => '/usr/bin/dnsdist --check-config --config %',
     }
 
     systemd::service { 'dnsdist':
