@@ -1,5 +1,13 @@
-define ntp::daemon($servers=[], $pools=[], $peers=[], $query_acl=[], $time_acl=[], $extra_config='',
-    $ensure=hiera('ntp::daemon::ensure', 'present')) {
+define ntp::daemon(
+    Array[Stdlib::Host] $servers      = [],
+    Array[Stdlib::Host] $pools        = [],
+    Array[Stdlib::Host] $peers        = [],
+    Array[Stdlib::Host] $query_acl    = [],
+    Array[String]       $time_acl     = [],
+    String              $extra_config = '',
+    Wmflib::Ensure      $ensure       = lookup('ntp::daemon::ensure', {'default_value' => 'present'}),
+){
+
     package { 'ntp': ensure => present }
 
     file { 'ntp.conf':
