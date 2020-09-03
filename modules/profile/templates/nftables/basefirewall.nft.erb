@@ -24,6 +24,12 @@ table inet basefirewall {
 
     chain input {
         type filter hook input priority 0 ; policy drop;
+
+        ct state related,established accept
+        iifname "lo" accept
+        pkttype multicast accept
+        meta l4proto ipv6-icmp accept
+
         ip saddr @ssh_allowed_ipv4 tcp dport 22 ct state new counter accept;
         ip6 saddr @ssh_allowed_ipv6 tcp dport 22 ct state new counter accept;
         counter comment "counter dopped packets"
