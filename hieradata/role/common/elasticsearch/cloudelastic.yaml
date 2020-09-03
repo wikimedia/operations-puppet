@@ -102,4 +102,4 @@ profile::lvs::realserver::pools:
   cloudelastic-chi-https:
     services:
       - "elasticsearch_6@cloudelastic-chi-eqiad.service"
-profile::lvs::realserver::use_conftool: false
+profile::lvs::realserver::use_conftool: true
