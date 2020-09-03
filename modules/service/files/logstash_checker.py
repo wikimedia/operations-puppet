@@ -1,5 +1,4 @@
-#!/usr/bin/python
-
+#!/usr/bin/python3
 """
 Basic logstash error rate checker.
 
@@ -53,11 +52,8 @@ def fetch_url(client, url, **kw):
                 **kw
             )
         elif method == 'POST':
-            try:
-                headers = kw.get('headers', {})
-                content_type = headers.get('content-type', '')
-            except:
-                content_type = ''
+            headers = kw.get('headers', {})
+            content_type = headers.get('content-type', '')
 
             # Handle json-encoded requests
             if content_type.lower() == 'application/json':
