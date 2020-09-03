@@ -46,6 +46,7 @@ class cfssl (
     $ca_key_file = "${ca_dir}/ca_key.pem"
     $ca_file = "${ca_dir}/ca.pem"
     $sql_dir = '/usr/local/share/cfssl'
+    $ocsp_response_path = "${ca_dir}/ocspdump.txt"
     # make sure all profiles use the default auth key
     # first map to an array of [key, values] then convert to a hash
     $_profiles = Hash($profiles.map |$key, $value| {
