@@ -8,4 +8,10 @@ class profile::openstack::eqiad1::nova::placement::service(
         version            => $version,
         placement_api_port => $placement_api_port,
     }
+
+    class {'::openstack::nova::placement::monitor':
+        active         => true,
+        critical       => false,
+        contact_groups => 'wmcs-team-email',
+    }
 }

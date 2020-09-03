@@ -10,4 +10,10 @@ class profile::openstack::eqiad1::nova::api::service(
         labs_hosts_range    => $labs_hosts_range,
         labs_hosts_range_v6 => $labs_hosts_range_v6,
     }
+
+    class {'::openstack::nova::api::monitor':
+        active         => true,
+        critical       => false,
+        contact_groups => 'wmcs-team-email',
+    }
 }

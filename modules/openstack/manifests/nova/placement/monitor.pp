@@ -20,6 +20,7 @@ class openstack::nova::placement::monitor(
         description   => 'nova-placement-api process',
         nrpe_command  => "/usr/lib/nagios/plugins/check_procs -c 1: --ereg-argument-array '^/usr/bin/python.* /usr/bin/nova-placement-api'",
         contact_group => $contact_groups,
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Troubleshooting',
     }
 
     monitoring::service { 'nova-placement-api-http':
