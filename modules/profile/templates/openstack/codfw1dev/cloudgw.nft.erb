@@ -10,11 +10,13 @@ table inet cloudgw {
     set dmz_cidr_set {
         type ipv4_addr . ipv4_addr
         flags interval
+        <%- if !@dmz_cidr.empty? -%>
         elements = {
         <% @dmz_cidr.each do |element| -%>
-            <%= @element %> ,
+            <%= element %> ,
         <% end -%>
         }
+        <%- end -%>
     }
 
     chain prerouting {

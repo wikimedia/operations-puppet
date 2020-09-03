@@ -1,6 +1,7 @@
 table inet basefirewall {
     set ssh_allowed_ipv4 {
         type ipv4_addr
+        <%- if !@bastion_hosts_ipv4.empty? or !@cumin_masters_ipv4.empty? -%>
         elements = {
         <% @bastion_hosts_ipv4.each do |addr| -%>
             <%= addr %> ,
@@ -9,9 +10,11 @@ table inet basefirewall {
             <%= addr %> ,
         <% end -%>
         }
+        <%- end -%>
     }
     set ssh_allowed_ipv6 {
         type ipv6_addr
+        <%- if !@bastion_hosts_ipv6.empty? or !@cumin_masters_ipv6.empty? -%>
         elements = {
         <% @bastion_hosts_ipv6.each do |addr| -%>
             <%= addr %> ,
@@ -20,6 +23,7 @@ table inet basefirewall {
             <%= addr %> ,
         <% end -%>
         }
+        <%- end -%>
     }
 
     chain input {
