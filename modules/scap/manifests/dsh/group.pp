@@ -12,7 +12,7 @@ define scap::dsh::group(
 ){
 
     $host_list = $hosts ? {
-        undef   => hiera("scap::dsh::${title}", []),
+        undef   => lookup("scap::dsh::${title}", {'default_value' => []}),
         default => $hosts,
     }
 

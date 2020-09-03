@@ -112,7 +112,7 @@ define scap::target(
             # Allow $deploy_user login from scap deployment host.
             # adds an exception in /etc/security/access.conf
             # to work around labs-specific restrictions
-            $deployment_host = hiera('scap::deployment_server')
+            $deployment_host = lookup('scap::deployment_server')
             $deployment_ip = ipresolve($deployment_host, 4, $::nameservers[0])
             security::access::config { "scap-allow-${deploy_user}":
                 ensure   => $ensure,
