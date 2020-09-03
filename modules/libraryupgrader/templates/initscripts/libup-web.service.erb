@@ -12,6 +12,7 @@ ExecStart=/srv/libraryupgrader/venv/bin/gunicorn --pid /run/gunicorn/pid   \
           -w 4 -b 0.0.0.0:3002 libup.web:app
 ExecReload=/bin/kill -s HUP $MAINPID
 ExecStop=/bin/kill -s TERM $MAINPID
+RuntimeMaxSec=86400
 PrivateTmp=true
 
 [Install]
