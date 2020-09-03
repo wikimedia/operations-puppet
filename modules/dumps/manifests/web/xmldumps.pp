@@ -1,6 +1,6 @@
 # serve xml/sql dumps: https://wikitech.wikimedia.org/wiki/Dumps
 class dumps::web::xmldumps(
-    $do_acme          = true,
+    $is_primary_server = true,
     $datadir          = undef,
     $xmldumpsdir      = undef,
     $miscdatasetsdir  = undef,
@@ -44,7 +44,7 @@ class dumps::web::xmldumps(
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Dumps/XML-SQL_Dumps#A_labstore_host_dies_(web_or_nfs_server_for_dumps)',
     }
 
-    if ($do_acme == true) {
+    if $is_primary_server {
         monitoring::service { 'https':
             description   => 'HTTPS',
             check_command => "check_ssl_http_letsencrypt!${xmldumps_server}",

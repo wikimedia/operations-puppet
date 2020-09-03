@@ -1,5 +1,5 @@
 class profile::dumps::distribution::web (
-    $do_acme = lookup('do_acme'),
+    $is_primary_server = lookup('profile::dumps::distribution::web::is_primary_server'),
     $datadir = lookup('profile::dumps::distribution::basedatadir'),
     $xmldumpsdir = lookup('profile::dumps::distribution::xmldumpspublicdir'),
     $miscdatasetsdir = lookup('profile::dumps::distribution::miscdumpsdir'),
@@ -12,7 +12,7 @@ class profile::dumps::distribution::web (
 
     class { '::sslcert::dhparam': }
     class {'::dumps::web::xmldumps':
-        do_acme                  => $do_acme,
+        is_primary_server        => $is_primary_server,
         datadir                  => $datadir,
         xmldumpsdir              => $xmldumpsdir,
         miscdatasetsdir          => $miscdatasetsdir,
@@ -24,10 +24,10 @@ class profile::dumps::distribution::web (
     }
 
     # copy web server logs to stat host
-    if $do_acme {
-      class {'::dumps::web::rsync::nginxlogs':
+    if $is_primary_server {
+        class {'::dumps::web::rsync::nginxlogs':
           dest => 'stat1007.eqiad.wmnet::dumps-webrequest/',
-      }
+        }
     }
 
     ferm::service { 'xmldumps_http':

@@ -1,1 +1,1 @@
-do_acme: false
+profile::dumps::distribution::web::is_primary_server: false
