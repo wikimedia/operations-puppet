@@ -23,7 +23,7 @@ class cfssl (
     Stdlib::Port                  $ocsp_port        = 8889,
     Cfssl::Loglevel               $log_level        = 'info',
     Stdlib::Unixpath              $conf_dir         = '/etc/cfssl',
-    String                        $default_auth_key = 'default',
+    String                        $default_auth_key = 'default_auth',
     Cfssl::Expiry                 $default_expiry   = '720h',
     Array[Cfssl::Usage]           $default_usages   = ['signing', 'key encipherment', 'client auth'],
     Stdlib::HTTPUrl               $crl_url          = "http://${host}:${port}/crl",
@@ -52,6 +52,7 @@ class cfssl (
         [$key, {'auth_key' => $default_auth_key} + $value]
     })
     $config = {
+        'auth_keys' => $auth_keys,
         'signing' => {
             'default'   => {
                 'auth_key' => $default_auth_key,
@@ -61,7 +62,6 @@ class cfssl (
                 'usages'   => $default_usages,
             },
             'profiles'  => $_profiles,
-            'auth_keys' => $auth_keys,
         }
     }
     $db_config = {'driver' => 'sqlite3', 'data_source' => $db_path}
