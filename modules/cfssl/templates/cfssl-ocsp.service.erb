@@ -1,0 +1,21 @@
+[Unit]
+Description=Cloudflare SSL OCSP Responder
+After=network.target remote-fs.target nss-lookup.target
+Documentation=https://github.com/cloudflare/cfssl/tree/master/doc
+
+[Service]
+ExecStartPre=/usr/bin/cfssl ocsprefresh \
+          -db-config <%= @db_conf_file %> \
+          -responder <%= @ocsp_cert_path %> \
+          -responder-key <%= @ocsp_key_path %> \
+          -ca <%= @ca_file %>
+ExecStartPre=/bin/sh -c '/usr/bin/cfssl ocspdump -db-config <%= @db_conf_file %> > <%= @ocsp_response_path %>'
+ExecStart=/usr/bin/cfssl ocspserve \
+          -address <%= @host %> \
+          -port <%= @ocsp_port %> \
+          -responses <%= @ocsp_response_path %>
+Restart=always
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6 AF_NETLINK
+
+[Install]
+WantedBy=multi-user.target

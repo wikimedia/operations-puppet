@@ -111,4 +111,10 @@ class cfssl (
         content => template('cfssl/cfssl.service.erb'),
         restart => true,
     }
+    if $enable_ocsp {
+        systemd::service {'cfssl-ocsp':
+            content => template('cfssl/cfssl-ocsp.service.erb'),
+            restart => true,
+        }
+    }
 }
