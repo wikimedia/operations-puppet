@@ -23,7 +23,7 @@ class profile::lists (
     mailalias { 'root': recipient => 'root@wikimedia.org' }
 
     # This will be a noop if $lists_ipv[46] are undef
-    interface::alias { 'lists.wikimedia.org':
+    interface::alias { $lists_servername:
         ipv4 => $lists_ipv4,
         ipv6 => $lists_ipv6,
     }
@@ -56,11 +56,11 @@ class profile::lists (
         filter  => template('profile/exim/system_filter.conf.mailman.erb'),
         require => [
             Class['spamassassin'],
-            Interface::Alias['lists.wikimedia.org'],
+            Interface::Alias[$lists_servername],
         ],
     }
 
-    file { '/etc/exim4/aliases/lists.wikimedia.org':
+    file { "/etc/exim4/aliases/${lists_servername}":
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
@@ -68,10 +68,10 @@ class profile::lists (
         require => Class['exim4'],
     }
 
-    exim4::dkim { 'lists.wikimedia.org':
-        domain   => 'lists.wikimedia.org',
+    exim4::dkim { $lists_servername:
+        domain   => $lists_servername,
         selector => 'wikimedia',
-        content  => secret('dkim/lists.wikimedia.org-wikimedia.key'),
+        content  => secret("dkim/${lists_servername}-wikimedia.key"),
     }
 
     backup::set { 'var-lib-mailman': }
@@ -94,7 +94,7 @@ class profile::lists (
 
     monitoring::service { 'https':
         description   => 'HTTPS',
-        check_command => 'check_ssl_http_letsencrypt!lists.wikimedia.org',
+        check_command => "check_ssl_http_letsencrypt!${lists_servername}",
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Mailman#Monitoring',
     }
 
@@ -128,13 +128,13 @@ class profile::lists (
 
     monitoring::service { 'mailman_listinfo':
         description   => 'mailman list info',
-        check_command => 'check_https_url_for_string!lists.wikimedia.org!/mailman/listinfo/wikimedia-l!\'Wikimedia Mailing List\'',
+        check_command => "check_https_url_for_string!${lists_servername}!/mailman/listinfo/wikimedia-l!\'Wikimedia Mailing List\'",
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Mailman#Monitoring',
     }
 
     monitoring::service { 'mailman_archives':
         description   => 'mailman archives',
-        check_command => 'check_https_url_for_string!lists.wikimedia.org!/pipermail/wikimedia-l/!\'The Wikimedia-l Archives\'',
+        check_command => "check_https_url_for_string!${lists_servername}!/pipermail/wikimedia-l/!\'The Wikimedia-l Archives\'",
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Mailman#Monitoring',
     }
 
