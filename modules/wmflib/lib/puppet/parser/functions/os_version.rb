@@ -24,10 +24,10 @@ require 'puppet/util/package'
 module Puppet::Parser::Functions
   os_versions = {
     'Debian' => {
-      'wheezy'  => '7',
-      'jessie'  => '8',
-      'stretch' => '9',
-      'buster'  => '10',
+      'jessie'   => '8',
+      'stretch'  => '9',
+      'buster'   => '10',
+      'bullseye' => '11',
     }
   }
 
