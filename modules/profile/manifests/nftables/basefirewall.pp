@@ -3,11 +3,15 @@ class profile::nftables::basefirewall (
                                                                 {default_value => []}),
     Array[Stdlib::IP::Address] $bastion_hosts           = lookup('bastion_hosts',
                                                                 {default_value => []}),
+    Array[Stdlib::IP::Address] $monitoring_hosts        = lookup('monitoring_hosts',
+                                                                {default_value => []}),
 ) {
     $bastion_hosts_ipv4 = filter($bastion_hosts) |$addr| { is_ipv4_address($addr) }
     $bastion_hosts_ipv6 = filter($bastion_hosts) |$addr| { is_ipv6_address($addr) }
     $cumin_masters_ipv4 = filter($cumin_masters) |$addr| { is_ipv4_address($addr) }
     $cumin_masters_ipv6 = filter($cumin_masters) |$addr| { is_ipv6_address($addr) }
+    $monitoring_hosts_ipv4 = filter($monitoring_hosts) |$addr| { is_ipv4_address($addr) }
+    $monitoring_hosts_ipv6 = filter($monitoring_hosts) |$addr| { is_ipv6_address($addr) }
 
     nftables::file { 'basefirewall':
         ensure  => 'present',
