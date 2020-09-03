@@ -8,6 +8,7 @@ class profile::puppetdb(
     Stdlib::Unixpath                     $ca_path           = lookup('profile::puppetdb::ca_path'),
     String                               $puppetboard_hosts = lookup('profile::puppetdb::puppetboard_hosts'),
     Boolean                              $monitor_agentrun  = lookup('profile::puppetdb::monitor_agentrun'),
+    String                               $puppetdb_pass     = lookup('puppetdb::password::rw'),
     # default value of undef still needs to be in the manifest untill we move to hiera 5
     Optional[Stdlib::Unixpath]           $ssldir            = lookup('profile::puppetdb::ssldir',
                                                                     {'default_value' => undef}),
@@ -24,7 +25,8 @@ class profile::puppetdb(
         jvm_opts      => "${jvm_opts} ${prometheus_java_opts}",
         ssldir        => $ssldir,
         ca_path       => $ca_path,
-        filter_job_id => $filter_job_id
+        filter_job_id => $filter_job_id,
+        puppetdb_pass => $puppetdb_pass,
     }
 
     # Export JMX metrics to prometheus

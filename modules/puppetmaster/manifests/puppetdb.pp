@@ -9,8 +9,8 @@ class puppetmaster::puppetdb(
     Optional[Stdlib::Unixpath] $ssldir        = undef,
     Stdlib::Unixpath           $ca_path       = '/etc/ssl/certs/Puppet_Internal_CA.pem',
     Boolean                    $filter_job_id = false,
-) {
-    $puppetdb_pass = hiera('puppetdb::password::rw')
+    String                     $puppetdb_pass = '',
+){
 
     if $filter_job_id {
         ensure_packages(['libnginx-mod-http-lua'])
