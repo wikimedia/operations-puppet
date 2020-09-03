@@ -23,14 +23,14 @@ table inet basefirewall {
     }
 
     chain input {
-        type filter hook input priority filter ; policy drop;
+        type filter hook input priority 0 ; policy drop;
         ip saddr @ssh_allowed_ipv4 tcp dport 22 ct state new counter accept;
         ip6 saddr @ssh_allowed_ipv6 tcp dport 22 ct state new counter accept;
         counter comment "counter dopped packets"
     }
 
     chain output {
-        type filter hook output priority filter ; policy accept;
+        type filter hook output priority 0 ; policy accept;
         counter comment "conter accepted packets"
     }
 }
