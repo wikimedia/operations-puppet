@@ -118,8 +118,8 @@
 #
 # [*contact_groups*]
 #   Contact groups for alerting.
-#   Default: hiera('contactgroups', 'admins') - use 'contactgroups' hiera
-#            variable with a fallback to 'admins' if 'contactgroups' isn't set.
+#   Default: lookup('contactgroups', {default_value => 'admins'}), - use 'contactgroups'
+#            hiera variable with a fallback to 'admins' if 'contactgroups' isn't set.
 #
 # [*use_nodejs10*]
 #   Deploy an apt component for nodejs 10 for hosts running Debian Stretch.
@@ -182,9 +182,10 @@ define service::node(
     $deployment_user = 'deploy-service',
     $deployment_config = false,
     $deployment_vars = {},
-    $contact_groups  = hiera('contactgroups', 'admins'),
+    $contact_groups  = lookup('contactgroups', {default_value => 'admins'}), # lint:ignore:wmf_styleguide
     $use_nodejs10    = false,
-) {
+){
+
     case $deployment {
         'git': {
             service::deploy::gitclone { $title:
