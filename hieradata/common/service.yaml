@@ -1530,7 +1530,7 @@ service::catalog:
     discovery:
     - dnsdisc: mathoid
       active_active: true
-  mobileapps:
+  mobileapps-http:
     description: A service for use by mobile apps. Provides DOM manipulation, aggregation,
       JSON flattening. mobileapps.svc.%{::site}.wmnet
     encryption: false
@@ -1565,6 +1565,41 @@ service::catalog:
     - eqiad
     - codfw
     state: production
+  mobileapps:
+    description: A service for use by mobile apps. Provides DOM manipulation, aggregation,
+      JSON flattening. mobileapps.svc.%{::site}.wmnet
+    encryption: true
+    ip:
+      codfw:
+        default: 10.2.1.14
+      eqiad:
+        default: 10.2.2.14
+    lvs:
+      class: low-traffic
+      conftool:
+        cluster: kubernetes
+        service: kubesvc
+      depool_threshold: '.5'
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+      scheduler: wrr
+    monitoring:
+      check_command: check_https_lvs_on_port!mobileapps.discovery.wmnet!4102!/_info
+      contact_group: mobileapps
+      critical: true
+      sites:
+        codfw:
+          hostname: mobileapps.svc.codfw.wmnet
+        eqiad:
+          hostname: mobileapps.svc.eqiad.wmnet
+    port: 4102
+    sites:
+    - eqiad
+    - codfw
+    state: lvs_setup
     discovery:
     - dnsdisc: mobileapps
       active_active: true

@@ -111,7 +111,7 @@ profile::services_proxy::envoy::listeners:
   # Other services, mostly used by restbase
   - name: mobileapps
     port: 6012
-    service: mobileapps
+    service: mobileapps-http
     timeout: "120s"
   - name: graphoid
     port: 6666
