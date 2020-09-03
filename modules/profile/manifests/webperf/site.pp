@@ -19,9 +19,9 @@
 #   Optional. If undefined, the "/xhgui" path is not proxied.
 #
 class profile::webperf::site (
-    Stdlib::Fqdn $server_name = lookup('profile::webperf::site::server_name'),
+    Stdlib::Fqdn $server_name  = lookup('profile::webperf::site::server_name'),
     Stdlib::Fqdn $arclamp_host = lookup('arclamp_host'),
-    Stdlib::Fqdn $xhgui_host = lookup('profile::webperf::site::xhgui_host'),
+    Stdlib::Fqdn $xhgui_host   = lookup('profile::webperf::site::xhgui_host'),
 ) {
 
     require ::profile::webperf::coal_web

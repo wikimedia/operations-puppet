@@ -13,10 +13,11 @@
 # - coal
 #
 class profile::webperf::processors(
-    String $statsd = hiera('statsd'),
-    Stdlib::Fqdn $graphite_host = hiera('graphite_host'),
-    Array[Stdlib::Fqdn] $prometheus_nodes = hiera('prometheus_nodes')
-) {
+    String              $statsd           = lookup('statsd'),
+    Stdlib::Fqdn        $graphite_host    = lookup('graphite_host'),
+    Array[Stdlib::Fqdn] $prometheus_nodes = lookup('prometheus_nodes')
+){
+
     $statsd_parts = split($statsd, ':')
     $statsd_host = $statsd_parts[0]
     $statsd_port = 0 + $statsd_parts[1]
