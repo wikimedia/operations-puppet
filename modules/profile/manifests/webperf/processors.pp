@@ -13,9 +13,10 @@
 # - coal
 #
 class profile::webperf::processors(
-    String              $statsd           = lookup('statsd'),
-    Stdlib::Fqdn        $graphite_host    = lookup('graphite_host'),
-    Array[Stdlib::Fqdn] $prometheus_nodes = lookup('prometheus_nodes')
+    String              $statsd                = lookup('statsd'),
+    Stdlib::Fqdn        $graphite_host         = lookup('graphite_host'),
+    Array[Stdlib::Fqdn] $prometheus_nodes      = lookup('prometheus_nodes'),
+    Boolean             $monitor_timing_beacon_disabled = lookup('profile::webperf::processors::monitor_timing_beacon', {'default_value' => false}),
 ){
 
     $statsd_parts = split($statsd, ':')
@@ -68,8 +69,14 @@ class profile::webperf::processors(
         srange => $ferm_srange,
     }
 
+    $monitor_beacon_ensure = $monitor_timing_beacon_disabled ? {
+      true  => 'absent',
+      false => 'present',
+    }
+
     monitoring::check_prometheus { 'webperf-navtiming-latest-handled':
-        description     => 'too long since latest timing beacon',
+        ensure          => $monitor_beacon_ensure,
+        description     => "too long since latest timing beacon in ${::site}",
         query           => 'time() - min(webperf_latest_handled_time_seconds)',
         method          => 'gt',
         warning         => 900,   # 15 minutes; <60 seconds is normal
