@@ -10,7 +10,6 @@ class openstack::neutron::common::queens(
     $ldap_user_pass,
     $rabbit_user,
     $rabbit_pass,
-    $tld,
     $log_agent_heartbeats,
     $agent_down_time,
     Stdlib::Port $bind_port,
