@@ -6,6 +6,7 @@ class role::wmcs::db::wikireplicas::analytics {
 
     include ::profile::standard
     require profile::mariadb::packages_wmf
+    include profile::mariadb::wmfmariadbpy
     class { '::mariadb::service': }
     include ::profile::mariadb::monitor
     include ::profile::base::firewall

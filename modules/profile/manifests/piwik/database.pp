@@ -17,6 +17,7 @@ class profile::piwik::database(
     $mariadb_socket = '/run/mysqld/mysqld.sock'
 
     require profile::mariadb::packages_wmf
+    include profile::mariadb::wmfmariadbpy
 
     class { '::mariadb::config':
         config    => 'profile/piwik/my.cnf.erb',

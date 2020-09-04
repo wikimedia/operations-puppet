@@ -34,6 +34,7 @@ class role::mariadb::core {
     }
 
     require profile::mariadb::packages_wmf
+    include profile::mariadb::wmfmariadbpy
     class {'mariadb::service':
         # override not needed, default configuration changed on package
         # override => "[Service]\nLimitNOFILE=200000",

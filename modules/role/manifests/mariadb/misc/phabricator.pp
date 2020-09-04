@@ -13,6 +13,7 @@ class role::mariadb::misc::phabricator(
 
     include ::profile::standard
     require profile::mariadb::packages_wmf
+    include profile::mariadb::wmfmariadbpy
     include mariadb::service
     include profile::mariadb::mysql_role
 

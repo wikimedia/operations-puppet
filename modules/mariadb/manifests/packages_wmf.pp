@@ -9,7 +9,6 @@ class mariadb::packages_wmf (
         $package,
         'percona-toolkit',
         'grc',
-        'wmfmariadbpy-common',
     )
 
     if os_version('debian >= buster') {

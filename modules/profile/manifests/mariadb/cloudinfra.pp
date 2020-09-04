@@ -25,6 +25,7 @@ class profile::mariadb::cloudinfra (
     }
 
     require profile::mariadb::packages_wmf
+    include profile::mariadb::wmfmariadbpy
     class { 'mariadb::service': }
 
     class { 'mariadb::config':

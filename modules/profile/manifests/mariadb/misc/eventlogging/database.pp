@@ -37,6 +37,7 @@ class profile::mariadb::misc::eventlogging::database (
     }
 
     require profile::mariadb::packages_wmf
+    include profile::mariadb::wmfmariadbpy
     require_package ('mydumper')
 
     class { 'mariadb::service': }

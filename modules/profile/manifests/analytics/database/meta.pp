@@ -15,6 +15,7 @@ class profile::analytics::database::meta(
 
     require profile::mariadb::packages_wmf
     $basedir = $profile::mariadb::packages_wmf::basedir
+    include profile::mariadb::wmfmariadbpy
 
     $mariadb_socket = '/run/mysqld/mysqld.sock'
 

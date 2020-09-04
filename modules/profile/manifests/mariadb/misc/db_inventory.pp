@@ -13,6 +13,7 @@ class profile::mariadb::misc::db_inventory{
     }
 
     require profile::mariadb::packages_wmf
+    include profile::mariadb::wmfmariadbpy
     profile::mariadb::ferm { $id: }
 
     class { 'mariadb::config':

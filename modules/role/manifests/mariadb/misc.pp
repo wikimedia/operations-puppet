@@ -27,6 +27,7 @@ class role::mariadb::misc {
     include ::profile::mariadb::monitor::prometheus
 
     require profile::mariadb::packages_wmf
+    include profile::mariadb::wmfmariadbpy
     include mariadb::service
 
     class { 'mariadb::config':

@@ -3,3 +3,4 @@ admin::groups:
   - datacenter-ops
 monitor_screens: false
 profile::conftool::client::etcd_user: 'root'
+profile::mariadb::wmfmariadbpy::role: 'admin'

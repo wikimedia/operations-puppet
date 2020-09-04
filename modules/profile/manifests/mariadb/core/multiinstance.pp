@@ -18,6 +18,7 @@ disabled, use mariadb@<instance_name> instead'; exit 1\"",
     }
 
     include ::profile::mariadb::mysql_role
+    include profile::mariadb::wmfmariadbpy
 
     $is_critical = ($::site == mediawiki::state('primary_dc'))
     $contact_group = 'admins'

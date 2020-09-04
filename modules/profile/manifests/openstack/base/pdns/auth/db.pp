@@ -27,6 +27,7 @@ class profile::openstack::base::pdns::auth::db(
     #
 
     require profile::mariadb::packages_wmf
+    include profile::mariadb::wmfmariadbpy
 
     # this override/split should probably go elsewhere, but hey
     $mysql_client_pkg = case $::lsbdistcodename {

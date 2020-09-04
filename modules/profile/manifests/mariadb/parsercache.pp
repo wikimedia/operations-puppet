@@ -13,6 +13,7 @@ class profile::mariadb::parsercache (
     include ::profile::mariadb::monitor::prometheus
 
     require profile::mariadb::packages_wmf
+    include profile::mariadb::wmfmariadbpy
     class { 'mariadb::service': }
 
     include ::profile::mariadb::grants::core

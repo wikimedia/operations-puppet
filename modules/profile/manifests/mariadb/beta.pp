@@ -3,6 +3,7 @@ class profile::mariadb::beta {
 
     include ::profile::standard
     require profile::mariadb::packages_wmf
+    include profile::mariadb::wmfmariadbpy
     include passwords::misc::scripts
     include mariadb::stock_heartbeat
 

@@ -16,6 +16,7 @@ disabled, use mariadb@<instance_name> instead'; exit 1\"",
     }
 
     include ::profile::mariadb::mysql_role
+    include profile::mariadb::wmfmariadbpy
 
     class { 'mariadb::config':
         datadir       => false,
