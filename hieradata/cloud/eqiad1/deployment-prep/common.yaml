@@ -440,3 +440,5 @@ profile::mediawiki::mcrouter_wancache::shards:
       shard03:
         host: deployment-memc08
         port: 11211
+
+profile::prometheus::memcached_exporter::arguments: ''
