@@ -1,6 +1,5 @@
-#! /usr/bin/python
+#! /usr/bin/python3
 # -*- coding: utf-8 -*-
-
 """
 Displays the amount of packages that have been updated or installed on
 a system per month (this also accounts for installed packages since some
@@ -19,7 +18,7 @@ import collections
 import dateutil.parser
 
 if os.geteuid() != 0:
-    print "needs to be run as root"
+    print("needs to be run as root")
     sys.exit(1)
 
 history_files = glob.glob("/var/log/apt/history*")
@@ -29,7 +28,7 @@ package_update_count = collections.defaultdict(int)
 
 for history_file in history_files:
     if history_file.endswith(".gz"):
-        f = gzip.open(history_file, "r")
+        f = gzip.open(history_file, "rt")
     else:
         f = open(history_file, "r")
 
@@ -42,20 +41,20 @@ for history_file in history_files:
         elif header in ("Upgrade", "Install"):
             # Strip the information on the versions which were upgraded (noted in brackets):
             updated_packages = 0
-            for package in re.sub('\(.*?\)', '', value.strip()).split(","):
+            for package in re.sub(r'\(.*?\)', '', value.strip()).split(","):
                 updated_packages += 1
                 package_update_count[package.strip()] += 1
             months[month] += updated_packages
 
 for i in sorted(months):
-    print i, months[i]
+    print(i, months[i])
 
 if len(sys.argv) > 1 and sys.argv[1] == "--top10":
-    print
+    print()
     package_amount = len(package_update_count)
     cnt = 0
 
-    for key, value in sorted(package_update_count.iteritems(), key=lambda(k, v): (v, k)):
+    for key, value in sorted(iter(package_update_count.items()), key=lambda k_v: (k_v[1], k_v[0])):
         cnt += 1
         if package_amount - 10 - cnt < 0:
-            print "%s: %s" % (key, value)
+            print("%s: %s" % (key, value))
