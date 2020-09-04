@@ -9,11 +9,11 @@ define monitoring::host (
     $ensure                = present,
     $critical              = false,
     $parents               = undef,
-    $contact_group         = hiera('contactgroups', 'admins'),
+    $contact_group         = lookup('contactgroups', {'default_value' => 'admins'}),
     $mgmt_contact_group    = 'admins',
     $notifications_enabled = '1',
     Hash[String, String] $mgmt_parents = lookup('monitoring::mgmt_parents', {'default_value' => {}}), # lint:ignore:wmf_styleguide
-    ) {
+){
 
     $nagios_address = $host_fqdn ? {
         undef   => $ip_address,
