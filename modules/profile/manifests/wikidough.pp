@@ -1,10 +1,10 @@
 class profile::wikidough (
-    Dnsdist::Resolver         $resolver         = lookup(profile::wikidough::dnsdist::resolver),
-    Dnsdist::TLS_common       $tls_common       = lookup(profile::wikidough::dnsdist::tls::common),
-    Dnsdist::TLS_config       $tls_config_doh   = lookup(profile::wikidough::dnsdist::tls::doh),
-    Dnsdist::TLS_config       $tls_config_dot   = lookup(profile::wikidough::dnsdist::tls::dot),
-    Dnsdist::Webserver_config $webserver_config = lookup(profile::wikidough::dnsdist::webserver, {'merge' => hash}),
-    String                    $landing_text     = lookup(profile::wikidough::dnsdist::landing_text),
+    Dnsdist::Resolver         $resolver         = lookup('profile::wikidough::dnsdist::resolver'),
+    Dnsdist::TLS_common       $tls_common       = lookup('profile::wikidough::dnsdist::tls::common'),
+    Dnsdist::TLS_config       $tls_config_doh   = lookup('profile::wikidough::dnsdist::tls::doh'),
+    Dnsdist::TLS_config       $tls_config_dot   = lookup('profile::wikidough::dnsdist::tls::dot'),
+    Dnsdist::Webserver_config $webserver_config = lookup('profile::wikidough::dnsdist::webserver', {'merge' => hash}),
+    String                    $landing_text     = lookup('profile::wikidough::dnsdist::landing_text'),
 ) {
 
     include network::constants
