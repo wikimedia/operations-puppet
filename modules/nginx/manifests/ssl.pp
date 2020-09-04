@@ -13,10 +13,11 @@
 #   If we need to support ie6, we need to enable ssl3 and in general make
 #   things less secure.
 class nginx::ssl (
-    $ensure     = 'present',
-    $pfs        = true,
-    $ie6_compat = false
-) {
+    Wmflib::Ensure $ensure     = 'present',
+    Boolean        $pfs        = true,
+    Boolean        $ie6_compat = false,
+){
+
     # This will work only on debian derivatives, of course.
     # TODO make it include RH-derivatives as well, or make it fail in that case.
     file {'/etc/nginx/conf.d/ssl.conf':

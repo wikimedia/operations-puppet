@@ -29,11 +29,12 @@
 # include /etc/nginx/snippets/csp_header.conf;
 #
 define nginx::snippet(
-    Wmflib::Ensure $ensure = present,
-    Optional[String] $content = undef,
-    Optional[Wmflib::Sourceurl] $source = undef,
-) {
-    include ::nginx
+    Wmflib::Ensure               $ensure  = present,
+    Optional[String]             $content = undef,
+    Optional[Stdlib::Filesource] $source  = undef,
+){
+
+    include nginx
 
     file { "/etc/nginx/snippets/${title}.conf":
         ensure  => $ensure,

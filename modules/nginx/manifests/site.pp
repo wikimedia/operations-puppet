@@ -26,11 +26,12 @@
 #  }
 #
 define nginx::site(
-    $ensure  = present,
-    $content = undef,
-    $source  = undef,
-) {
-    include ::nginx
+    Wmflib::Ensure               $ensure  = 'present',
+    Optional[String]             $content = undef,
+    Optional[Stdlib::Filesource] $source  = undef,
+){
+
+    include nginx
 
     $basename = regsubst($title, '[\W_]', '-', 'G')
 

@@ -11,11 +11,13 @@
 #   Port to listen on. Defaults to 8080.
 #
 define nginx::status_site(
-    $ensure = present,
-    $port   = 8080,
-) {
+    Wmflib::Ensure $ensure = 'present',
+    Stdlib::Port   $port   = 8080,
+){
+
     nginx::site { 'status':
         ensure  => $ensure,
         content => template('nginx/status.nginx.erb'),
     }
+
 }

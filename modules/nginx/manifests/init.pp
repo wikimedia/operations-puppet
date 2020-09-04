@@ -22,16 +22,11 @@
 #   'nginx-full', 'nginx-light' or 'nginx-extras' packages.
 #
 class nginx(
-    $ensure = 'present',
-    $managed = true,
-    $variant = 'full',
-    $tmpfs_size = '1g',
-) {
-    validate_re($ensure, ['^present$', '^absent$'])
-
-    if $variant !~ /^(full|extras|light$)/ {
-        fail("'variant' must be 'full', 'extras', or 'light' (got: '${variant}').")
-    }
+    Wmflib::Ensure                  $ensure = 'present',
+    Boolean                         $managed = true,
+    Enum['full', 'extras', 'light'] $variant = 'full',
+    String                          $tmpfs_size = '1g',
+){
 
     package { [ "nginx-${variant}", 'nginx-common' ]:
         ensure => $ensure,
