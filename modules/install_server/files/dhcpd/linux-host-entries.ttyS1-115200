@@ -3205,6 +3205,11 @@ host es2025 {
     fixed-address es2025.codfw.wmnet;
 }
 
+host es2026 {
+    hardware ethernet BC:97:E1:57:BA:9A;
+    fixed-address es2026.codfw.wmnet;
+}
+
 host eventlog1002 {
     hardware ethernet 14:18:77:5B:0D:42;
     fixed-address eventlog1002.eqiad.wmnet;
