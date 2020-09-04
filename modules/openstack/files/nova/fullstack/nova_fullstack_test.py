@@ -615,7 +615,7 @@ def main():
                     raise Exception("Bad address of {}".format(addr))
 
             if not args.skip_dns:
-                host = '{}.{}.eqiad.wmflabs'.format(server.name, server.tenant_id)
+                host = '{}.{}.eqiad1.wikimedia.cloud'.format(server.name, server.tenant_id)
                 dnsd = args.dns_resolvers.split(',')
                 vdns = verify_dns(host,
                                   dnsd,
@@ -670,7 +670,7 @@ def main():
                 stat('verify.fullstack', round(loop_end - loop_start, 2))
 
             if not args.skip_dns:
-                host = '{}.{}.eqiad.wmflabs'.format(server.name, server.tenant_id)
+                host = '{}.{}.eqiad1.wikimedia.cloud'.format(server.name, server.tenant_id)
                 dnsd = args.dns_resolvers.split(',')
                 vdns = verify_dns_cleanup(host,
                                           dnsd,
@@ -678,7 +678,7 @@ def main():
                 stat('verify.dns-cleanup', vdns)
 
             if not args.skip_puppet:
-                host = '{}.{}.eqiad.wmflabs'.format(server.name, server.tenant_id)
+                host = '{}.{}.eqiad1.wikimedia.cloud'.format(server.name, server.tenant_id)
                 certs = verify_puppet_cert_cleanup(args.puppetmaster,
                                                    host,
                                                    args.certmanager,
