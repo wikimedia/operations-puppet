@@ -31,11 +31,12 @@
 #  }
 #
 class arclamp(
-    $ensure = present,
-    $redis_host = '127.0.0.1',
-    $redis_port = 6379,
-    $errors_mailto = 'performance-team@wikimedia.org',
-) {
+    Wmflib::Ensure $ensure   = 'present',
+    Stdlib::Host $redis_host = '127.0.0.1',
+    Stdlib::Port $redis_port = 6379,
+    String $errors_mailto    = 'performance-team@wikimedia.org',
+){
+
     require_package('python-redis')
     require_package('python-yaml')
     require_package('python-swiftclient')
