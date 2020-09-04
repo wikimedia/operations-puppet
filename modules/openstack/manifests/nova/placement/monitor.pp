@@ -18,7 +18,7 @@ class openstack::nova::placement::monitor(
         ensure        => $ensure,
         critical      => $critical,
         description   => 'nova-placement-api process',
-        nrpe_command  => "/usr/lib/nagios/plugins/check_procs -c 1: --ereg-argument-array '^/usr/bin/python.* /usr/bin/nova-placement-api'",
+        nrpe_command  => "/usr/lib/nagios/plugins/check_procs -c 1: --ereg-argument-array '^/usr/bin/uwsgi_python.* /etc/nova/nova-placement-api-uwsgi.ini'",
         contact_group => $contact_groups,
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Troubleshooting',
     }
