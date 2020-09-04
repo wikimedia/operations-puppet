@@ -14,11 +14,11 @@
 # With $manage = true this class will set $ensure and $enabled as specified.
 
 class mariadb::service (
-    $manage   = false,
-    $ensure   = stopped,
-    $enable   = false,
-    $override = false,
-    ) {
+    Boolean $manage                 = false,
+    Stdlib::Ensure::Service $ensure = stopped,
+    Wmflib::Enable_Service $enable  = false,
+    Optional[String] $override      = undef,
+) {
 
     # TODO: use the base::service configuration
     if $manage {
