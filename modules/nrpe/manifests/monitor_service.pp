@@ -36,7 +36,7 @@
 define nrpe::monitor_service( Optional[Stdlib::HTTPSUrl] $notes_url = undef,
                               $description      = undef,
                               $nrpe_command     = undef,
-                              $contact_group    = hiera('contactgroups', 'admins'),
+                              $contact_group    = lookup('contactgroups', {default_value => 'admins'}),
                               $retries          = 3,
                               $timeout          = 10,
                               Boolean $critical = false,
