@@ -89,6 +89,10 @@ server {
         alias <%= @gui_config %>;
     }
 
+    location /favicon.ico {
+        alias <%= @favicon %>;
+    }
+
     location /status {
         stub_status  on;
         access_log   off;

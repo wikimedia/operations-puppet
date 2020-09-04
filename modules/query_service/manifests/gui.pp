@@ -27,7 +27,8 @@ class query_service::gui(
     $port = 80
     $additional_port = 8888
     $alias_map = "${data_dir}/aliases.map"
-    $gui_config = "/etc/${deploy_name}/gui_config.json"
+    $gui_config = '/var/lib/nginx/wdqs/gui_config.json'
+    $favicon = '/var/lib/nginx/wdqs/favicon.ico'
 
     ::nginx::site { $deploy_name:
         content => template('query_service/nginx.erb'),
@@ -45,7 +46,7 @@ class query_service::gui(
         tag    => 'in-wdqs-data-dir',
     }
 
-    # The directory for operator-controlled nginx flags
+    # The directory for operator-controlled nginx flags, config files and icons
     file { '/var/lib/nginx/wdqs/':
         ensure  => directory,
         owner   => 'root',
@@ -69,5 +70,13 @@ class query_service::gui(
         owner  => 'root',
         group  => 'root',
         mode   => '0644',
+    }
+
+    file { $favicon:
+      ensure => present,
+      source => "puppet:///modules/query_service/gui/favicon-${deploy_name}.ico",
+      owner  => 'root',
+      group  => 'root',
+      mode   => '0644',
     }
 }
