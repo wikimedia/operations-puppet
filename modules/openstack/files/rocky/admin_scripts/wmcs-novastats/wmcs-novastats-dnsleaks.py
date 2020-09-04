@@ -160,14 +160,16 @@ def purge_duplicates(delete=False):
                 # For an A record, we can just delete the whole recordset
                 #  if it's for a missing instance.
                 if name not in all_possible_names:
-                    print("%s is linked to missing instance %s" % (recordsetid, name))
+                    print(("%s is linked to missing instance %s" % (recordsetid, name)))
                     if delete:
                         delete_recordset(endpoint, token, zone["id"], recordsetid)
                 # If the instance exists, check to see that it doesn't have multiple IPs.
                 if len(recordset["records"]) > 1:
                     print(
-                        "A record for %s has multiple IPs: %s"
-                        % (name, recordset["records"])
+                        (
+                            "A record for %s has multiple IPs: %s"
+                            % (name, recordset["records"])
+                        )
                     )
                     print(
                         "This needs cleanup but that isn't implemented and almost never happens."
@@ -181,8 +183,10 @@ def purge_duplicates(delete=False):
                         goodrecords += [record]
                     else:
                         print(
-                            "PTR %s is linked to missing instance %s"
-                            % (recordsetid, record)
+                            (
+                                "PTR %s is linked to missing instance %s"
+                                % (recordsetid, record)
+                            )
                         )
                 if not goodrecords:
                     if delete:

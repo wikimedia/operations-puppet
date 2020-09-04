@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 #
 # Copyright 2017 Wikimedia Foundation
 #
@@ -38,7 +38,7 @@ def all_projects():
         data = []
     else:
         data = yaml.safe_load(req.text)
-    return data['projects']
+    return data["projects"]
 
 
 def all_prefixes(project):
@@ -50,14 +50,14 @@ def all_prefixes(project):
         data = []
     else:
         data = yaml.safe_load(req.text)
-    return data['prefixes']
+    return data["prefixes"]
 
 
 def delete_prefix(project, prefix):
     """Return a list of prefixes for a given project
     """
     url = url_template() + project + "/prefix/" + prefix
-    print("Deleting %s" % url)
+    print(("Deleting %s" % url))
     req = requests.delete(url, verify=False)
     req.raise_for_status()
     time.sleep(1)
@@ -67,9 +67,9 @@ def purge_duplicates(delete=False):
     keystone_projects = [project.id for project in clients.allprojects()]
     for project in all_projects():
         if project not in keystone_projects:
-            print("Project %s has puppet prefixes but is not in keystone." % project)
+            print(("Project %s has puppet prefixes but is not in keystone." % project))
             for prefix in all_prefixes(project):
-                print("stray prefix: %s" % prefix)
+                print(("stray prefix: %s" % prefix))
                 if delete:
                     delete_prefix(project, prefix)
             continue
@@ -77,32 +77,40 @@ def purge_duplicates(delete=False):
         prefixes = all_prefixes(project)
         instances = clients.allinstances(project, allregions=True)
 
-        all_nova_instances_legacy = ["%s.%s.eqiad.wmflabs" % (instance.name.lower(),
-                                                              instance.tenant_id)
-                                     for instance in instances]
-        all_nova_instances = ["%s.%s.eqiad1.wikimedia.cloud" % (instance.name.lower(),
-                                                                instance.tenant_id)
-                              for instance in instances]
-        all_nova_shortname_instances = ["%s.eqiad.wmflabs" % (instance.name)
-                                        for instance in instances]
+        all_nova_instances_legacy = [
+            "%s.%s.eqiad.wmflabs" % (instance.name.lower(), instance.tenant_id)
+            for instance in instances
+        ]
+        all_nova_instances = [
+            "%s.%s.eqiad1.wikimedia.cloud" % (instance.name.lower(), instance.tenant_id)
+            for instance in instances
+        ]
+        all_nova_shortname_instances = [
+            "%s.eqiad.wmflabs" % (instance.name) for instance in instances
+        ]
 
         for prefix in prefixes:
-            if not prefix.endswith('wmflabs'):
+            if not prefix.endswith("wmflabs"):
                 continue
-            if (prefix not in all_nova_instances and
-                    prefix not in all_nova_instances_legacy and
-                    prefix not in all_nova_shortname_instances):
-                print("stray prefix: %s" % prefix)
+            if (
+                prefix not in all_nova_instances
+                and prefix not in all_nova_instances_legacy
+                and prefix not in all_nova_shortname_instances
+            ):
+                print(("stray prefix: %s" % prefix))
                 if delete:
                     delete_prefix(project, prefix)
 
 
 parser = argparse.ArgumentParser(
-    description='Find (and, optionally, remove) leaked dns records.')
-parser.add_argument('--delete',
-                    dest='delete',
-                    help='Actually delete leaked records',
-                    action='store_true')
+    description="Find (and, optionally, remove) leaked dns records."
+)
+parser.add_argument(
+    "--delete",
+    dest="delete",
+    help="Actually delete leaked records",
+    action="store_true",
+)
 args = parser.parse_args()
 
 purge_duplicates(args.delete)
