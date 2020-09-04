@@ -14,7 +14,10 @@
 #   include install_server::web_server
 
 class install_server::web_server {
-    include ::nginx
+
+    class { '::nginx':
+        variant => 'light',
+    }
 
     $ssl_settings = ssl_ciphersuite('nginx', 'mid', true)
 
