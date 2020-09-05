@@ -159,6 +159,19 @@ function prometheus_metrics(): array {
 			'value' => $oc['memory_usage']['free_memory']
 		],
 		[
+			'name' => 'php_opcache_memory',
+			'type' => 'gauge',
+			'label' => ['type', 'wasted'],
+			'desc' => '',
+			'value' => $oc['memory_usage']['wasted_memory']
+		],
+		[
+			'name' => 'php_opcache_wasted_memory',
+			'type' => 'gauge',
+			'desc' => 'Percentage of wasted memory in opcache',
+			'value' => round($oc['memory_usage']['current_wasted_percentage'],5, PHP_ROUND_HALF_UP)
+		],
+		[
 			'name' => 'php_opcache_strings_memory',
 			'type' => 'gauge',
 			'label' => ['type', 'used'],
