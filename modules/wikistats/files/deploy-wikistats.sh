@@ -6,7 +6,7 @@
 pn="wikistats"
 dps=('var/www' 'etc' 'usr/lib' 'usr/share/php' 'usr/local/bin')
 pp="/srv"
-bp="/usr/lib/wikistats/backup"
+bp="/root/backup"
 dbpass=$(cat /usr/lib/wikistats/wikistats-db-pass)
 
 function deploy {
@@ -31,7 +31,7 @@ function diff {
   for dp in "${dps[@]}"; do
     mkdir -p /${dp}/${pn}
     echo "/${dp}/${pn}/"
-    rsync -avn ${pp}/${pn}/${dp}/${pn}/ /${dp}/${pn}/ | tail -n4 | head -n1 | grep -v "sending incremental"
+    rsync -avn ${pp}/${pn}/${dp}/${pn}/ /${dp}/${pn}/ --info=stats0,flist0 | grep -v "./"
     echo -e "\n"
   done
 }
