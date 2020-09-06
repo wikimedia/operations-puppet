@@ -100,4 +100,7 @@ class wikistats::updates (
         'miraheze@5', # https://phabricator.wikimedia.org/T153930
     ]: }
 
+    wikistats::cronjob::import { [
+        'neoseeker@7', # https://phabricator.wikimedia.org/T1262113
+    ]: }
 }
