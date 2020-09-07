@@ -29,8 +29,7 @@
 #
 class profile::java (
     Array[Java::PackageInfo] $java_packages = lookup('profile::java::java_packages'),
-    Optional[String]         $extra_args    = lookup('profile::java::extra_args',
-                                                    { 'default_value' => undef }),
+    Optional[String]         $extra_args    = lookup('profile::java::extra_args'),
     Boolean                  $hardened_tls  = lookup('profile::java::hardened_tls'),
     Java::Egd_source         $egd_source    = lookup('profile::java::egd_source'),
 ) {
