@@ -1,6 +1,6 @@
 # web server hosting https://doc.wikimedia.org
 class profile::doc (
-    Stdlib::Unixpath $wmf_doc_path = lookup('profile::doc::wmf_doc_path', {'default_value' => '/srv/docroot/org/wikimedia/doc'}),
+    Stdlib::Unixpath $wmf_doc_path = lookup('profile::doc::wmf_doc_path', {'default_value' => '/srv/doc'}),
 ) {
 
     scap::target { 'integration/docroot':
@@ -85,7 +85,7 @@ class profile::doc (
         ensure         => present,
         comment        => 'Docroot of https://doc.wikimedia.org/',
         read_only      => 'no',
-        path           => '/srv/docroot/org/wikimedia/doc',
+        path           => '/srv/doc',
         uid            => 'doc-uploader',
         gid            => 'doc-uploader',
         incoming_chmod => 'D775,F664',
@@ -94,7 +94,7 @@ class profile::doc (
         auto_ferm_ipv6 => true,
         require        => [
             User['doc-uploader'],
-            File['/srv/docroot/org/wikimedia/doc'],
+            File['/srv/doc'],
         ],
     }
 
