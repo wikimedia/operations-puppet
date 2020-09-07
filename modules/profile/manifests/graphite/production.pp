@@ -14,7 +14,6 @@ class profile::graphite::production {
     include profile::idp::client::httpd
     class { 'profile::graphite::base':
         storage_dir                        => $storage_dir,
-        auth                               => true,
         uwsgi_max_request_duration_seconds => 60,
         uwsgi_max_request_rss_megabytes    => 1024,
         provide_vhost                      => false,

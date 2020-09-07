@@ -13,7 +13,6 @@ class profile::wmcs::graphite (
 
     class { 'profile::graphite::base':
         storage_dir  => '/srv/carbon',
-        auth         => false,
         hostname     => 'graphite-labs.wikimedia.org',
         cors_origins => [ 'https?://grafana-labs.wikimedia.org' ],
     }

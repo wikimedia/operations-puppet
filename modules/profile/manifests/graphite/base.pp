@@ -11,10 +11,6 @@
 #
 #   Location to store the whisper files used by graphite in
 #
-# [*auth*]
-#
-#   Set to true to enable LDAP based authentication to access the graphite interface
-#
 # [*provide_vhost*]
 #
 #   If enabled, configure an Apache vhost config (which is provided by a different
@@ -23,7 +19,6 @@
 # filtertags: labs-project-graphite
 class profile::graphite::base(
     $storage_dir      = '/var/lib/carbon',
-    $auth             = true,
     $hostname         = 'graphite.wikimedia.org',
     $cors_origins     = [ 'https://grafana.wikimedia.org', 'https://grafana-next.wikimedia.org' ],
     $c_relay_settings = {},
@@ -233,24 +228,6 @@ class profile::graphite::base(
         uwsgi_max_request_duration_seconds => $uwsgi_max_request_duration_seconds,
         uwsgi_max_request_rss_megabytes    => $uwsgi_max_request_rss_megabytes,
         uwsgi_processes                    => $uwsgi_processes,
-    }
-
-
-
-    if $auth {
-        # Production
-        include ::passwords::ldap::production
-
-        $ldap_authurl  = "ldaps://${ldap_config[ro-server]} ${ldap_config[ro-server-fallback]}/ou=people,dc=wikimedia,dc=org?cn"
-        $ldap_bindpass = $passwords::ldap::production::proxypass
-        $ldap_binddn   = 'cn=proxyagent,ou=profile,dc=wikimedia,dc=org'
-        $ldap_groups   = [
-            'cn=ops,ou=groups,dc=wikimedia,dc=org',
-            'cn=nda,ou=groups,dc=wikimedia,dc=org',
-            'cn=wmf,ou=groups,dc=wikimedia,dc=org'
-        ]
-        $auth_realm    = 'Developer account (use wiki login name not shell) - nda/ops/wmf'
-        $apache_auth   = template('role/graphite/apache-auth-ldap.erb')
     }
 
     if $provide_vhost {
