@@ -22,9 +22,17 @@ class profile::tendril::webserver (
         modules => ['rewrite',
                     'headers',
                     'ssl',
-                    $php_module,
                     'authnz_ldap',
                     ],
+    }
+
+    # mod-php can only work with the prefork MPM
+    class { '::httpd::mpm':
+        mpm => 'prefork',
+    }
+
+    httpd::mod_conf { $php_module:
+        ensure => present,
     }
 
     $ssl_settings = ssl_ciphersuite('apache', 'strong', true)
