@@ -2,6 +2,8 @@
 profile::pki::server::ca_key_content: pki/Wikimedia_ROOT_CA.key
 # this param is passed to the file function
 profile::pki::server::ca_cert_content: profile/pki/Wikimedia_ROOT_CA.pem
+profile::pki::server::vhost: pki.discovery.wmnet
+profile::pki::server::ocsp_vhost: ocsp.discovery.wmnet
 profile::pki::server::profiles:
   intermediate:
     usages:
