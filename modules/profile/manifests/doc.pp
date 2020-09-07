@@ -32,12 +32,6 @@ class profile::doc (
         source => 'puppet:///modules/profile/doc/httpd-doc.wikimedia.org.conf'
     }
 
-    git::clone { 'integration/docroot':
-        directory => '/srv/docroot',
-        owner     => 'doc-uploader',
-        group     => 'doc-uploader',
-    }
-
     ferm::service { 'doc-http':
         proto  => 'tcp',
         port   => '80',
@@ -48,13 +42,6 @@ class profile::doc (
         ensure => present,
         shell  => '/bin/false',
         system => true,
-    }
-    file { '/srv/docroot/org/wikimedia/doc':
-        ensure  => 'directory',
-        owner   => 'doc-uploader',
-        group   => 'doc-uploader',
-        mode    => '0755',
-        require => Git::Clone['integration/docroot'],
     }
 
     file { '/srv/doc':
