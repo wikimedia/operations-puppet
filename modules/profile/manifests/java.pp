@@ -27,11 +27,16 @@
 # For convenience a variable named "default_java_home" is provided to expose the default
 # jvm's home directory.
 #
+# @param java_packages Array of Java::PackageInfo describing what to install and configure
+# @param extra_args A string of extra arguments to use
+# @param hardened_tls if true enable a hardened security profile
+# @param trust_puppet_ca if true add the puppet ca to the java trust store
 class profile::java (
-    Array[Java::PackageInfo] $java_packages = lookup('profile::java::java_packages'),
-    Optional[String]         $extra_args    = lookup('profile::java::extra_args'),
-    Boolean                  $hardened_tls  = lookup('profile::java::hardened_tls'),
-    Java::Egd_source         $egd_source    = lookup('profile::java::egd_source'),
+    Array[Java::PackageInfo] $java_packages   = lookup('profile::java::java_packages'),
+    Optional[String]         $extra_args      = lookup('profile::java::extra_args'),
+    Boolean                  $hardened_tls    = lookup('profile::java::hardened_tls'),
+    Java::Egd_source         $egd_source      = lookup('profile::java::egd_source'),
+    Boolean                  $trust_puppet_ca = lookup('profile::java::trust_puppet_ca')
 ) {
 
     if os_version('debian == stretch') {
@@ -45,10 +50,21 @@ class profile::java (
         false => $java_packages
     }
 
+    $cacerts_ensure = $trust_puppet_ca ? {
+        true    => 'present',
+        default => 'absent',
+    }
+    $cacerts = {
+        'wmf:puppetca.pem' => {
+            'ensure' => $cacerts_ensure,
+            'path'  => $facts['puppet_config']['localcacert'],
+        }
+    }
     class { 'java':
         java_packages => $_java_packages,
         hardened_tls  => $hardened_tls,
         egd_source    => $egd_source,
+        cacerts       => $cacerts,
     }
 
     $default_java_home = $java::java_home
