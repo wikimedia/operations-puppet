@@ -20,7 +20,7 @@ class lvs::monitor_services(
             "check_mobileapps_cluster_${dc}":
                 host          => "mobileapps.svc.${dc}.wmnet",
                 description   => "Mobileapps LVS ${dc}",
-                target        => "http://mobileapps.svc.${dc}.wmnet:8888",
+                target        => "https://mobileapps.svc.${dc}.wmnet:4102",
                 contact_group => 'admins,mobileapps',
                 notes_url     => 'https://wikitech.wikimedia.org/wiki/Mobileapps_(service)',
                 ;

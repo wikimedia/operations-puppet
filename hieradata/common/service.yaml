@@ -1599,7 +1599,7 @@ service::catalog:
     sites:
     - eqiad
     - codfw
-    state: lvs_setup
+    state: production
     discovery:
     - dnsdisc: mobileapps
       active_active: true
