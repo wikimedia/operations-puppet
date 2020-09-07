@@ -315,9 +315,6 @@ service::catalog:
     - eqiad
     - codfw
     state: production
-    discovery:
-    - dnsdisc: citoid
-      active_active: true
   citoid:
     description: Citation lookup service, citoid.svc.%{::site}.wmnet
     encryption: true
@@ -354,7 +351,7 @@ service::catalog:
     sites:
     - eqiad
     - codfw
-    state: lvs_setup
+    state: production
     discovery:
     - dnsdisc: citoid
       active_active: true
