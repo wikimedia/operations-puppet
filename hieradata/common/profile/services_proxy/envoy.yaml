@@ -141,6 +141,10 @@ profile::services_proxy::envoy::listeners:
     port: 6017
     service: wikifeeds
     timeout: "120s"
+  - name: zotero
+    port: 6018
+    service: zotero
+    timeout: "120s"
   - name: parsoid-async # Parsoid-php for long-lasting async requests.
     port: 6502
     service: parsoid-php
