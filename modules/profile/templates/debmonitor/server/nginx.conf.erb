@@ -3,24 +3,6 @@ upstream debmonitor {
 }
 
 server {
-    listen 80 default_server;
-    server_name <%= @public_server_name -%>;
-
-    error_log /var/log/nginx/<%= @public_server_name -%>.error.log;
-    access_log /var/log/nginx/<%= @public_server_name -%>.access.log;
-
-    include /etc/nginx/snippets/debmonitor_static.conf;
-
-    location / {
-        include /etc/nginx/snippets/debmonitor_proxy.conf;
-
-        # Unset eventual SSL Credential headers
-        proxy_set_header X-Client-Cert-Subject-Dn "";
-        proxy_set_header X-Client-Cert-Verify "";
-    }
-}
-
-server {
     # TLS termination, CDN nodes connect here
     listen [::]:7443 default_server deferred backlog=16384 reuseport ipv6only=on fastopen=150 ssl http2;
     listen 7443 default_server deferred backlog=16384 reuseport fastopen=150 ssl http2;

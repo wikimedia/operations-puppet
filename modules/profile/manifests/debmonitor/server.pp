@@ -99,14 +99,7 @@ class profile::debmonitor::server (
 
     base::service_auto_restart { 'uwsgi-debmonitor': }
 
-    # Public endpoint: incoming traffic from cache_text for the WebUI, both
-    # HTTP and HTTPS
-    ferm::service { 'nginx-http':
-        proto  => 'tcp',
-        port   => '80',
-        srange => '$CACHES',
-    }
-
+    # Public endpoint: incoming traffic from cache_text for the Web UI
     ferm::service { 'nginx-cdn-https':
         proto  => 'tcp',
         port   => '7443',
@@ -139,12 +132,6 @@ class profile::debmonitor::server (
 
     nginx::site { 'debmonitor':
         content => template('profile/debmonitor/server/nginx.conf.erb'),
-    }
-
-    monitoring::service { 'debmonitor-http':
-        description   => 'debmonitor.wikimedia.org:80',
-        check_command => "check_http_redirect!debmonitor.wikimedia.org!/!301!https://${public_server_name}/",
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Debmonitor',
     }
 
     monitoring::service { 'debmonitor-cdn-https':
