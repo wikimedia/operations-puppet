@@ -127,7 +127,7 @@ profile::services_proxy::envoy::listeners:
     timeout: "120s"
   - name: citoid
     port: 6014
-    service: citoid-http
+    service: citoid
     timeout: "120s"
   - name: cxserver
     port: 6015
