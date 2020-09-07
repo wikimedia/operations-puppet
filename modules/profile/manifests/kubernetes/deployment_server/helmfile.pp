@@ -68,6 +68,42 @@ class profile::kubernetes::deployment_server::helmfile(
         }
     }
 
+    # Global data defining the services proxy upstreams
+    # Services proxy list of definitions to use by our helm charts.
+    # They come from two hiera data structures:
+    # - profile::services_proxy::envoy::listeners
+    # - service::catalog
+    $services_proxy = wmflib::service::fetch()
+    $proxies = $service_listeners.map |$listener| {
+        $address = $listener['upstream'] ? {
+            undef   => "${listener['service']}.discovery.wmnet",
+            default => $listener['upstream'],
+        }
+        $svc = $services_proxy[$listener['service']]
+        $upstream_port = $svc['port']
+        $encryption = $svc['encryption']
+        $retval = {
+            $listener['name'] => {
+                'keepalive' => $listener['keepalive'],
+                'port' => $listener['port'],
+                'http_host' => $listener['http_host'],
+                'timeout'   => $listener['timeout'],
+                'retry_policy' => $listener['retry'],
+                'xfp' => $listener['xfp'],
+                'upstream' => {
+                    'address' => $address,
+                    'port' => $upstream_port,
+                    'encryption' => $encryption,
+                }
+            }.filter |$key, $val| { $val =~ NotUndef }
+        }
+    }.reduce({}) |$mem, $val| { $mem.merge($val) }
+    # TODO: remove this
+    file { '/etc/helmfile-defaults/service-proxy.yaml':
+        ensure  => present,
+        content => to_yaml({'services_proxy' => $proxies}),
+    }
+
     $clusters = ['staging', 'eqiad', 'codfw']
     $clusters.each |String $environment| {
         if $environment == 'staging' {
@@ -95,8 +131,10 @@ class profile::kubernetes::deployment_server::helmfile(
                 'puppet_ca_crt' => $puppet_ca_data
             }
         }
+        # Add services proxy
+        $opts = merge($deployment_config_opts, {'services_proxy' => $proxies})
         file { "${general_dir}/general-${environment}.yaml":
-            content => to_yaml($deployment_config_opts),
+            content => to_yaml($opts),
             mode    => '0444'
         }
 
@@ -195,39 +233,4 @@ class profile::kubernetes::deployment_server::helmfile(
         }
     } # end clusters
 
-    # Global file defining the services proxy upstreams
-    # TODO: move this to the general helmfile file.
-    # Services proxy list of definitions to use by our helm charts.
-    # They come from two hiera data structures:
-    # - profile::services_proxy::envoy::listeners
-    # - service::catalog
-    $services_proxy = wmflib::service::fetch()
-    $proxies = $service_listeners.map |$listener| {
-        $address = $listener['upstream'] ? {
-            undef   => "${listener['service']}.discovery.wmnet",
-            default => $listener['upstream'],
-        }
-        $svc = $services_proxy[$listener['service']]
-        $upstream_port = $svc['port']
-        $encryption = $svc['encryption']
-        $retval = {
-            $listener['name'] => {
-                'keepalive' => $listener['keepalive'],
-                'port' => $listener['port'],
-                'http_host' => $listener['http_host'],
-                'timeout'   => $listener['timeout'],
-                'retry_policy' => $listener['retry'],
-                'xfp' => $listener['xfp'],
-                'upstream' => {
-                    'address' => $address,
-                    'port' => $upstream_port,
-                    'encryption' => $encryption,
-                }
-            }.filter |$key, $val| { $val =~ NotUndef }
-        }
-    }.reduce({}) |$mem, $val| { $mem.merge($val) }
-    file { '/etc/helmfile-defaults/service-proxy.yaml':
-        ensure  => present,
-        content => to_yaml({'services_proxy' => $proxies}),
-    }
 }
