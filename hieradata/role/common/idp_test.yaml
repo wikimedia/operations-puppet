@@ -122,4 +122,5 @@ profile::idp::u2f_jpa_db: cas_staging
 profile::prometheus::memcached_exporter::arguments: '--memcached.address=localhost:11000'
 profile::java::hardened_tls: true
 profile::java::egd_source: '/dev/urandom'
+profile::java::trust_puppet_ca: true
 profile::idp::u2f_token_expiry_days: 3650
