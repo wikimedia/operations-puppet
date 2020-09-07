@@ -57,8 +57,6 @@ class profile::doc (
         require => Git::Clone['integration/docroot'],
     }
 
-    backup::set { 'srv-docroot-org-wikimedia-doc': }
-
     file { '/srv/doc':
         ensure => 'directory',
         owner  => 'doc-uploader',
