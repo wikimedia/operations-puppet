@@ -2138,7 +2138,7 @@ node /^relforge100[1-2]\.eqiad\.wmnet/ {
 }
 
 # New relforge servers T241791
-node /^relforge100[3-4]-dev\.eqiad\.wmnet/ {
+node /^relforge100[3-4]\.eqiad\.wmnet/ {
     role(insetup)
 }
 
