@@ -3228,7 +3228,7 @@ host es2025 {
 }
 
 host es2026 {
-    hardware ethernet BC:97:E1:57:BA:9A;
+    hardware ethernet BC:97:E1:57:BA:98;
     fixed-address es2026.codfw.wmnet;
 }
 
