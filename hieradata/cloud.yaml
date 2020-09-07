@@ -119,7 +119,6 @@ profile::idp::client::httpd::sites: {}
 # Service proxy
 profile::services_proxy::envoy::listeners: []
 profile::services_proxy::envoy::enabled_listeners: []
-profile::java::java_packages: []
 graphite_host: localhost
 profile::prometheus::mcrouter_exporter::mcrouter_port: 11213
 profile::prometheus::mcrouter_exporter::listen_port: 9151
@@ -136,6 +135,9 @@ profile::mediawiki::mcrouter_wancache::shards:
   wancache:
     eqiad: {}
 profile::java::java_packages: []
+profile::java::extra_args: ~
+profile::java::hardened_tls: false
+profile::java::egd_source: '/dev/random'
 profile::thanos::httpd::query_port: 10902
 profile::thanos::httpd::maxconn: 10
 profile::icinga::logs_keep_days: 780
@@ -152,3 +154,4 @@ profile::alertmanager::irc::channel: 'wikimedia-observability-spam'
 profile::restbase::aqs_uri: http://aqs.svc.eqiad.wmnet:7232/analytics.wikimedia.org/v1
 profile::graphite::base::cluster_servers: []
 profile::graphite::base::uwsgi_processes: 8
+profile::base::puppet::export_p12: false
