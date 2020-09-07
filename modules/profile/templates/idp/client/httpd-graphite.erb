@@ -9,9 +9,6 @@
       <%-end -%>
     <%-end -%>
     <Location />
-        Order allow,deny
-        Allow from all
-        <LimitExcept OPTIONS>
         <%- @cas_auth_settings.each_pair do |key, setting| -%>
           <%- if setting.is_a?(Array) -%>
             <%- setting.each do |_setting| -%>
@@ -21,7 +18,6 @@
           <%= key %> <%= setting %>
           <%- end -%>
         <%- end -%>
-        </LimitExcept>
         # uWSGI reverse-proxy
         uWSGIsocket /run/uwsgi/graphite-web.sock
         uWSGIForceWSGIScheme https
