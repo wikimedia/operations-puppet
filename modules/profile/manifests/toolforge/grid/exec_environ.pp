@@ -456,6 +456,7 @@ class profile::toolforge::grid::exec_environ {
             # php-xhprof isn't available in stretch
             'php7.2-xml',
             'php7.2-zip',
+            'php-igbinary',                # T262186
             'opencv-data',                 # T142321
             'openjdk-11-jre-headless',
             'tcl-thread',
