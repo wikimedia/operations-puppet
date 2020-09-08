@@ -56,7 +56,7 @@ class profile::mediawiki::alerts {
   # https://logstash.wikimedia.org/#/dashboard/elasticsearch/memcached
   monitoring::check_prometheus { 'mediawiki-memcached-threshold':
     description     => 'MediaWiki memcached error rate',
-    query           => 'sum(rate(logstash_mediawiki_events_total{channel="memcached", level="ERROR"}[4m])) * 60',
+    query           => 'sum(log_mediawiki_level_channel_doc_count{channel="memcached", level="ERROR"})',
     prometheus_url  => "http://prometheus.svc.${::site}.wmnet/ops",
     retries         => 2,
     method          => 'gt',
@@ -73,7 +73,7 @@ class profile::mediawiki::alerts {
     prometheus_url  => "http://prometheus.svc.${::site}.wmnet/ops",
     retries         => 2,
     method          => 'gt',
-    query           => 'sum(rate(logstash_mediawiki_events_total{channel=~"(fatal|exception)",level="ERROR"}[4m])) without (channel, instance) * 60',
+    query           => 'sum(log_mediawiki_level_channel_doc_count{channel=~"(fatal|exception)", level="ERROR"})',
     warning         => 50,
     critical        => 100,
     notes_link      => 'https://wikitech.wikimedia.org/wiki/Application_servers',
