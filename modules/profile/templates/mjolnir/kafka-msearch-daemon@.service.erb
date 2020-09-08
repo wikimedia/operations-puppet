@@ -4,7 +4,7 @@ After=network.target
 PartOf=kafka-msearch-daemon.service
 
 [Service]
-SyslogIdentifier=mjolnir-kafka-msearch-daemon %i
+SyslogIdentifier=mjolnir-kafka-msearch-daemon@%i
 User=nobody
 Group=nogroup
 Environment=REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
