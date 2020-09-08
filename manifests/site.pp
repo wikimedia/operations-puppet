@@ -657,11 +657,6 @@ node 'db1108.eqiad.wmnet' {
 ## m5 shard
 # See also multiinstance misc hosts db1117 and db2078 below
 
-# old m5 eqiad master to be moved somewhere else
-node 'db1133.eqiad.wmnet' {
-    role(mariadb::misc)
-}
-
 # m5 eqiad master
 node 'db1128.eqiad.wmnet' {
     role(mariadb::misc)
@@ -744,6 +739,11 @@ node 'db2101.codfw.wmnet' {
 }
 node 'db2139.codfw.wmnet' {
     role(mariadb::dbstore_multiinstance)
+}
+
+# backup testing hosts
+node 'db1133.eqiad.wmnet' {
+    role(mariadb::core_test)
 }
 
 node 'db2102.codfw.wmnet' {
