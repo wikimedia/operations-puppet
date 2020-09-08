@@ -42,7 +42,8 @@ class profile::pki::server(
             profile => 'intermediate'
         }
     }
-    class{'httpd':
+    class { 'sslcert::dhparam': }
+    class {'httpd':
         modules => ['proxy', 'proxy_http', 'ssl']
     }
     # create variables used in vhost
