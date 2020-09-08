@@ -8,7 +8,6 @@
 # @param intermediates a list of intermediate CN's to create
 class profile::pki::server(
     String                        $vhost           = lookup('profile::pki::server::vhost'),
-    String                        $ocsp_vhost      = lookup('profile::pki::server::ocsp_vhost'),
     String                        $ca_key_content  = lookup('profile::pki::server::ca_key_content'),
     String                        $ca_cert_content = lookup('profile::pki::server::ca_cert_content'),
     Array[Cfssl::Name]            $names           = lookup('profile::pki::server::names'),
@@ -19,7 +18,7 @@ class profile::pki::server(
     Array[String]                 $intermediates   = lookup('profile::pki::server::intermediates'),
 ) {
     $crl_url = "http://${vhost}/crl"
-    $ocsp_url = "http://${ocsp_vhost}"
+    $ocsp_url = "http://${vhost}/ocsp"
     class {'cfssl':
         profiles        => $profiles,
         ca_key_content  => secret($ca_key_content),
@@ -49,11 +48,8 @@ class profile::pki::server(
     # create variables used in vhost
     $ssl_settings = ssl_ciphersuite('apache', 'strong', true)
     $cfssl_backend = "http://${cfssl::host}:${cfssl::port}/"
-    httpd::site {$vhost:
-        content => template('profile/pki/cfssl_vhost.conf.erb')
-    }
     $ocsp_backend  = "http://${cfssl::host}:${cfssl::ocsp_port}/"
-    httpd::site {$ocsp_vhost:
-        content => template('profile/pki/ocsp_vhost.conf.erb')
+    httpd::site {$vhost:
+        content => template('profile/pki/pki_vhost.conf.erb')
     }
 }

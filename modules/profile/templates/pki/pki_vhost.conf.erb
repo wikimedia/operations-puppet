@@ -1,0 +1,47 @@
+#####################################################################
+### THIS FILE IS MANAGED BY PUPPET
+#####################################################################
+# vim: filetype=apache
+<VirtualHost *:80>
+  ServerName <%= @vhost %>
+  DocumentRoot /var/www/html
+  <Location /ocsp>
+    ProxyPass <%= @ocsp_backend %>
+  </Location>
+  <Location /crl>
+    ProxyPass <%= @cfssl_backend %>/crl
+  </Location>
+  LogLevel warn
+  ErrorLog /var/log/apache2/<%= @vhost %>_error.log
+  CustomLog /var/log/apache2/<%= @vhost %>_access.log wmf
+</VirtualHost>
+
+<VirtualHost *:443>
+  ServerName <%= @vhost %>
+
+  DocumentRoot /var/www/html
+
+  SSLEngine on
+  <%= @ssl_settings.join("\n  ") %>
+  SSLCertificateFile <%= @facts['puppet_config']['hostcert'] %>
+  SSLCertificateKeyFile <%= @facts['puppet_config']['hostprivkey'] %>
+  SSLCACertificateFile <%= @facts['puppet_config']['localcacert'] %>
+  SSLCARevocationFile <%= @facts['puppet_config']['ssldir'] %>/crl.pem
+  SSLVerifyClient require
+  SSLVerifyDepth 1
+
+  <Location />
+    ProxyPass <%= @cfssl_backend %>
+  </Location>
+
+  # The following doesn't work with python or ruby as installed in buster
+  # ruby missing: https://github.com/ruby/openssl/issues/237
+  # guissing urlib is missing something simlar to above but not tracked down
+  # <Location /crl>
+  #   SSLVerifyClient none
+  # </Location>
+  #
+  LogLevel warn
+  ErrorLog /var/log/apache2/<%= @vhost %>_ssl_error.log
+  CustomLog /var/log/apache2/<%= @vhost %>_ssl_access.log wmf
+</VirtualHost>
