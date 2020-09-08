@@ -129,21 +129,9 @@ host dbmonitor2001 {
     fixed-address dbmonitor2001.wikimedia.org;
 }
 
-host debmonitor1001 {
-    hardware ethernet aa:00:00:99:e1:5d;
-    fixed-address debmonitor1001.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
-}
-
 host debmonitor1002 {
     hardware ethernet aa:00:00:c6:96:00;
     fixed-address debmonitor1002.eqiad.wmnet;
-}
-
-host debmonitor2001 {
-    hardware ethernet aa:00:00:7f:2e:e7;
-    fixed-address debmonitor2001.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host debmonitor2002 {

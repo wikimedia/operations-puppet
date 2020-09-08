@@ -817,7 +817,7 @@ node /^dbmonitor[12]001\.wikimedia\.org$/ {
     role(tendril)
 }
 
-node /^debmonitor[12]00[12]\.(codfw|eqiad)\.wmnet$/ {
+node /^debmonitor[12]002\.(codfw|eqiad)\.wmnet$/ {
     role(debmonitor::server)
 }
 
