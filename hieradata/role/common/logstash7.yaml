@@ -29,22 +29,22 @@ profile::elasticsearch::dc_settings: {}
 profile::elasticsearch::base_data_dir: '/srv/elasticsearch'
 profile::elasticsearch::version: '7.9'
 profile::elasticsearch::common_settings:
-    awareness_attributes: ''
-    auto_create_index: true
-    short_cluster_name: elk7
-    expected_nodes: 10
-    heap_memory: '4G'
-    # The ES nodes that are run on the same box as Logstash+Kibana are only used
-    # as client nodes to communicate with the backing cluster.
-    holds_data: false
-    minimum_master_nodes: 2
-    recover_after_nodes: 2
-    recover_after_time: '1m'
+  awareness_attributes: ''
+  auto_create_index: true
+  short_cluster_name: elk7
+  expected_nodes: 10
+  heap_memory: '4G'
+  # The ES nodes that are run on the same box as Logstash+Kibana are only used
+  # as client nodes to communicate with the backing cluster.
+  holds_data: false
+  minimum_master_nodes: 2
+  recover_after_nodes: 2
+  recover_after_time: '1m'
 
-    send_logs_to_logstash: false
-    curator_uses_unicast_hosts: false
-    http_port: 9200
-    transport_tcp_port: 9300
+  send_logs_to_logstash: false
+  curator_uses_unicast_hosts: false
+  http_port: 9200
+  transport_tcp_port: 9300
 
 # Logstash specific
 logstash::heap_memory: 1g
@@ -67,20 +67,6 @@ profile::kibana::httpd_proxy::ldap_groups:
 profile::kibana::package_name: kibana-oss
 
 profile::prometheus::statsd_exporter::relay_address: ''  # unset to disable relaying
-
-profile::prometheus::statsd_exporter::mappings:
-  # All others default "channel" to "sender"
-  - match: 'logstash.rate.*.*'
-    name: 'logstash_events_total'
-    labels:
-      channel: '$1'
-      level: '$2'
-  # Sender.channel delimited rule
-  - match: 'logstash.rate.*.*.*'
-    name: 'logstash_${1}_events_total'
-    labels:
-      channel: '$2'
-      level: '$3'
 
 # these checks should not be here - T218691
 profile::elasticsearch::monitor::shard_size_warning: 150

@@ -491,25 +491,10 @@ class profile::logstash::collector (
         ssl_truststore_password => $input_kafka_ssl_truststore_passwords['logging-eqiad'],
     }
 
-    logstash::output::statsd { 'MW_channel_rate':
-        host            => '127.0.0.1',
-        port            => '9125',
-        guard_condition => '[type] == "mediawiki" and "es" in [tags]',
-        namespace       => 'logstash.rate',
-        sender          => 'mediawiki',
-        increment       => [ '%{channel}.%{level}' ],
+    # TODO: cleanup -- T256418
+    package { 'prometheus-statsd-exporter':
+        ensure => 'absent'
     }
-
-    logstash::output::statsd { 'Apache2_channel_rate':
-        host            => '127.0.0.1',
-        port            => '9125',
-        guard_condition => '[type] == "apache2" and "syslog" in [tags]',
-        namespace       => 'logstash.rate',
-        sender          => 'apache2',
-        increment       => [ '%{level}' ],
-    }
-
-    class { '::profile::prometheus::statsd_exporter': }
 
     # Alerting
     monitoring::check_prometheus { 'logstash-udp-loss-ratio':
