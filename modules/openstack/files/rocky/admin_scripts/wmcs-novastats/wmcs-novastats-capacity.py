@@ -32,7 +32,7 @@ ONEMEG = 1024 * 1024
 
 clients = mwopenstackclients.clients()
 
-hosts = clients.novaclient().hosts.list()
+hosts = clients.novaclient().hypervisors.list()
 
 computenodedict = {}
 
@@ -63,104 +63,110 @@ def printstat(string, alert=False):
 
 all_disk_instances = {}
 for host in hosts:
-    if host.service == "compute":
-        computenodedict[host.host_name] = {"instances": {}}
+    computenodedict[host.hypervisor_hostname] = {"instances": {}}
 
-        # Learn about CPU usage
-        args = [
-            "ssh",
-            "-i",
-            "/root/.ssh/compute-hosts-key",
-            "nova@%s.eqiad.wmnet" % host.host_name,
-            "mpstat 10 1",
-        ]
-        r = subprocess.check_output(args)
-        for line in r.split("\n"):
-            fields = line.split()
-            if fields:
-                if fields[0] == "Average:":
-                    computenodedict[host.host_name]["cpuidle"] = float(fields[11])
+    # Learn about CPU usage
+    args = [
+        "ssh",
+        "-i",
+        "/root/.ssh/compute-hosts-key",
+        "nova@%s" % host.hypervisor_hostname,
+        "mpstat 10 1",
+    ]
+    r = subprocess.check_output(args)
+    for line in r.decode("utf8").split("\n"):
+        fields = line.split()
+        if fields:
+            if fields[0] == "Average:":
+                computenodedict[host.hypervisor_hostname]["cpuidle"] = float(fields[11])
 
-        # Learn about available RAM on this host
-        args = [
-            "ssh",
-            "-i",
-            "/root/.ssh/compute-hosts-key",
-            "nova@%s.eqiad.wmnet" % host.host_name,
-            "free",
-        ]
-        r = subprocess.check_output(args)
-        for line in r.split("\n"):
-            fields = line.split()
-            if fields:
-                if fields[0] == "Mem:":
-                    computenodedict[host.host_name]["freetotal"] = int(fields[1])
-                elif fields[0] == "-/+":
-                    computenodedict[host.host_name]["freefree"] = int(fields[3])
+    # Learn about available RAM on this host
+    args = [
+        "ssh",
+        "-i",
+        "/root/.ssh/compute-hosts-key",
+        "nova@%s" % host.hypervisor_hostname,
+        "free",
+    ]
+    r = subprocess.check_output(args)
+    for line in r.decode("utf8").split("\n"):
+        fields = line.split()
+        if fields:
+            if fields[0] == "Mem:":
+                computenodedict[host.hypervisor_hostname]["freetotal"] = int(fields[1])
+                computenodedict[host.hypervisor_hostname]["freefree"] = int(fields[6])
 
-        # Learn about available space on this host
-        args = [
-            "ssh",
-            "-i",
-            "/root/.ssh/compute-hosts-key",
-            "nova@%s.eqiad.wmnet" % host.host_name,
-            "df",
-        ]
-        r = subprocess.check_output(args)
-        for line in r.split("\n"):
-            fields = line.split()
-            if len(fields) == 6:
-                if os.path.basename(fields[5]) == "instances":
-                    # These are all in k
-                    computenodedict[host.host_name]["dfused"] = int(fields[2])
-                    computenodedict[host.host_name]["dfavail"] = int(fields[3])
-                    computenodedict[host.host_name]["dftotal"] = int(fields[1])
+    # Learn about available space on this host
+    args = [
+        "ssh",
+        "-i",
+        "/root/.ssh/compute-hosts-key",
+        "nova@%s" % host.hypervisor_hostname,
+        "df",
+    ]
+    r = subprocess.check_output(args)
 
-        # Learn about real per instance on-disk usage
-        args = [
-            "ssh",
-            "-i",
-            "/root/.ssh/compute-hosts-key",
-            "nova@%s.eqiad.wmnet" % host.host_name,
-            "du -d1 /var/lib/nova/instances",
-        ]
+    computenodedict[host.hypervisor_hostname]["dfused"] = 1
+    computenodedict[host.hypervisor_hostname]["dfavail"] = 1
+    computenodedict[host.hypervisor_hostname]["dftotal"] = 1
+    for line in r.decode("utf8").split("\n"):
+        fields = line.split()
+        if len(fields) == 6:
+            if "instances" in os.path.basename(fields[5]):
+                # These are all in k
+                computenodedict[host.hypervisor_hostname]["dfused"] = int(fields[2])
+                computenodedict[host.hypervisor_hostname]["dfavail"] = int(fields[3])
+                computenodedict[host.hypervisor_hostname]["dftotal"] = int(fields[1])
 
-        r = subprocess.check_output(args)
-        for line in r.split("\n"):
-            fields = line.split()
-            if not fields:
-                continue
-            size = fields[0]
-            filepath = fields[1]
-            filename = os.path.basename(filepath)
-            if filename == "instances":
-                computenodedict[host.host_name]["duused"] = int(size)
-            if filename == "_base":
-                computenodedict[host.host_name]["base"] = int(size)
-            elif len(filename.split("-")) == 5:
-                # This is an entry for an instance
-                computenodedict[host.host_name]["instances"][filename] = int(size)
+    # Learn about real per instance on-disk usage
+    args = [
+        "ssh",
+        "-i",
+        "/root/.ssh/compute-hosts-key",
+        "nova@%s" % host.hypervisor_hostname,
+        "du -d1 /var/lib/nova/instances",
+    ]
 
-        computenodedict[host.host_name]["novainstances"] = []
+    r = subprocess.check_output(args)
+    for line in r.decode("utf8").split("\n"):
+        fields = line.split()
+        if not fields:
+            continue
+        size = fields[0]
+        filepath = fields[1]
+        filename = os.path.basename(filepath)
+        computenodedict[host.hypervisor_hostname]["duused"] = 0
+        computenodedict[host.hypervisor_hostname]["base"] = 0
+        if filename == "instances":
+            computenodedict[host.hypervisor_hostname]["duused"] = int(size)
+        if filename == "_base":
+            computenodedict[host.hypervisor_hostname]["base"] = int(size)
+        elif len(filename.split("-")) == 5:
+            # This is an entry for an instance
+            computenodedict[host.hypervisor_hostname]["instances"][filename] = int(size)
 
-        # Also keep a running list that correlates VMs to virt hosts.
-        for instance in list(computenodedict[host.host_name]["instances"].keys()):
-            if instance in all_disk_instances:
-                all_disk_instances[instance] += [host.host_name]
-            else:
-                all_disk_instances[instance] = [host.host_name]
+    computenodedict[host.hypervisor_hostname]["novainstances"] = []
+
+    # Also keep a running list that correlates VMs to virt hosts.
+    for instance in computenodedict[host.hypervisor_hostname]["instances"].keys():
+        if instance in all_disk_instances:
+            all_disk_instances[instance] += [host.hypervisor_hostname]
+        else:
+            all_disk_instances[instance] = [host.hypervisor_hostname]
 
 
 fsduplicates = [
     instance
-    for instance in list(all_disk_instances.keys())
+    for instance in all_disk_instances.keys()
     if len(all_disk_instances[instance]) > 1
 ]
 
 
 for instance in fsduplicates:
     printstat(
-        "In filesystem twice: %s (%s)" % (instance, all_disk_instances[instance]), True
+        "In filesystem twice: %s (%s)"
+        % (instance, ", ".join(all_disk_instances[instance])),
+        True,
     )
 
 instances = clients.allinstances()
@@ -174,7 +180,7 @@ for instance in instances:
 
 novaduplicates = [
     instance
-    for instance, count in list(collections.Counter(all_nova_instances).items())
+    for instance, count in collections.Counter(all_nova_instances).items()
     if count > 1
 ]
 if novaduplicates:
@@ -196,13 +202,13 @@ if novastrays:
         if instance.id in novastrays:
             printstat("%s (%s)" % (instance.id, instance.status), True)
 
-for hostname in list(computenodedict.keys()):
+for hostname in computenodedict.keys():
     hostdict = computenodedict[hostname]
     printstat("")
     printstat("== %s == " % hostname)
 
     instance_space_on_disk = 0
-    for instance in list(hostdict["instances"].keys()):
+    for instance in hostdict["instances"].keys():
         instance_space_on_disk += hostdict["instances"][instance]
 
     if "base" in hostdict:
