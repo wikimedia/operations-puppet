@@ -13,6 +13,10 @@ class profile::ceph::osd(
     Stdlib::AbsolutePath $bootstrap_keyring = lookup('profile::ceph::osd::bootstrap_keyring'),
     String               $bootstrap_keydata = lookup('profile::ceph::osd::bootstrap_keydata'),
 ) {
+    # Ceph OSDs should use the performance governor, not the default 'powersave'
+    # governor
+    class { '::cpufrequtils': }
+
     include ::network::constants
     # Limit the client connections to the hypervisors in eqiad and codfw
     $client_networks = [
