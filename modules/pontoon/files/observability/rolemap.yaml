@@ -45,3 +45,10 @@ apt_repo:
 
 logging::mediawiki::udp2log:
   - pontoon-mwlog-01.monitoring.eqiad1.wikimedia.cloud
+
+thanos::backend:
+  - pontoon-ms-be-01.monitoring.eqiad1.wikimedia.cloud
+  - pontoon-ms-be-02.monitoring.eqiad1.wikimedia.cloud
+
+thanos::frontend:
+  - pontoon-thanos-01.monitoring.eqiad1.wikimedia.cloud
