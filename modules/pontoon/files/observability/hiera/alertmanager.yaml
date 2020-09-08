@@ -6,3 +6,6 @@ profile::alertmanager::web::vhost: o11y-alerts.wmflabs.org
 profile::alertmanager::web::enable_sso: false
 
 alertmanagers: "%{alias('__hosts_for_role_alerting_host')}"
+
+profile::alertmanager::active_host: "%{alias('__master_for_role_alerting_host')}"
+profile::alertmanager::partners: "%{alias('__hosts_for_role_alerting_host')}"
