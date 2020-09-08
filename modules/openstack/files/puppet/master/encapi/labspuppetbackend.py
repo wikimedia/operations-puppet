@@ -2,6 +2,7 @@ from flask import Flask, request, g, Response
 from statsd.defaults.env import statsd
 import pymysql
 import os
+import re
 import yaml
 
 app = Flask(__name__)
@@ -19,6 +20,12 @@ def _preprocess_prefix(prefix):
     """
     if prefix == '_':
         return ''
+
+    # If the VM thinks it's under .eqiad.wmflabs, give it
+    #  a .eqiad1.wikimedia.cloud config anyway.
+    exp = re.compile(r'/\.eqiad\.wmflabs$/.eqiad1.wikimedia.cloud/')
+    prefix = exp.sub(prefix)
+
     return prefix
 
 
@@ -265,6 +272,12 @@ def set_hiera(project, prefix):
 @statsd.timer('get_node_config')
 @app.route('/v1/<string:project>/node/<string:fqdn>', methods=['GET'])
 def get_node_config(project, fqdn):
+
+    # If the VM thinks it's under .eqiad.wmflabs, give it
+    #  a .eqiad1.wikimedia.cloud config anyway.
+    exp = re.compile(r'/\.eqiad\.wmflabs$/.eqiad1.wikimedia.cloud/')
+    fqdn = exp.sub(fqdn)
+
     cur = g.db.cursor()
     roles = []
     try:
