@@ -23,8 +23,8 @@ def _preprocess_prefix(prefix):
 
     # If the VM thinks it's under .eqiad.wmflabs, give it
     #  a .eqiad1.wikimedia.cloud config anyway.
-    exp = re.compile(r'/\.eqiad\.wmflabs$/.eqiad1.wikimedia.cloud/')
-    prefix = exp.sub(prefix)
+    exp = re.compile(r'\.eqiad\.wmflabs$')
+    prefix = exp.sub(prefix, '.eqiad1.wikimedia.cloud')
 
     return prefix
 
@@ -275,8 +275,8 @@ def get_node_config(project, fqdn):
 
     # If the VM thinks it's under .eqiad.wmflabs, give it
     #  a .eqiad1.wikimedia.cloud config anyway.
-    exp = re.compile(r'/\.eqiad\.wmflabs$/.eqiad1.wikimedia.cloud/')
-    fqdn = exp.sub(fqdn)
+    exp = re.compile(r'\.eqiad\.wmflabs$')
+    fqdn = exp.sub(fqdn, '.eqiad1.wikimedia.cloud')
 
     cur = g.db.cursor()
     roles = []
