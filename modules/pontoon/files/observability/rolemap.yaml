@@ -1,47 +1,47 @@
 graphite::production:
-  - pontoon-graphite-03.monitoring.eqiad.wmflabs
+  - pontoon-graphite-03.monitoring.eqiad1.wikimedia.cloud
 
 syslog::centralserver:
-  - pontoon-log-01.monitoring.eqiad.wmflabs
+  - pontoon-log-01.monitoring.eqiad1.wikimedia.cloud
 
 puppetmaster::pontoon:
-  - pontoon-puppet-01.monitoring.eqiad.wmflabs
+  - pontoon-puppet-01.monitoring.eqiad1.wikimedia.cloud
 
 puppetmaster::puppetdb:
-  - pontoon-puppetdb-01.monitoring.eqiad.wmflabs
+  - pontoon-puppetdb-01.monitoring.eqiad1.wikimedia.cloud
 
 builder:
-  - pontoon-builder-01.monitoring.eqiad.wmflabs
+  - pontoon-builder-01.monitoring.eqiad1.wikimedia.cloud
 
 prometheus:
-  - pontoon-prometheus-01.monitoring.eqiad.wmflabs
+  - pontoon-prometheus-01.monitoring.eqiad1.wikimedia.cloud
 
 grafana:
-  - pontoon-grafana-01.monitoring.eqiad.wmflabs
+  - pontoon-grafana-01.monitoring.eqiad1.wikimedia.cloud
 
 logstash::elasticsearch7:
-  - pontoon-elastic7-01.monitoring.eqiad.wmflabs
+  - pontoon-elastic7-01.monitoring.eqiad1.wikimedia.cloud
 
 kafka::logging:
-  - pontoon-kafka-01.monitoring.eqiad.wmflabs
+  - pontoon-kafka-01.monitoring.eqiad1.wikimedia.cloud
 
 logstash7:
-  - pontoon-logstash7-02.monitoring.eqiad.wmflabs
+  - pontoon-logstash7-02.monitoring.eqiad1.wikimedia.cloud
 
 configcluster:
-  - pontoon-conf-01.monitoring.eqiad.wmflabs
+  - pontoon-conf-01.monitoring.eqiad1.wikimedia.cloud
 
 alerting_host:
-  - pontoon-icinga-01.monitoring.eqiad.wmflabs
+  - pontoon-icinga-01.monitoring.eqiad1.wikimedia.cloud
 
 acme_chief:
-  - pontoon-acmechief-01.monitoring.eqiad.wmflabs
+  - pontoon-acmechief-01.monitoring.eqiad1.wikimedia.cloud
 
 netmon:
-  - pontoon-netmon-01.monitoring.eqiad.wmflabs
+  - pontoon-netmon-01.monitoring.eqiad1.wikimedia.cloud
 
 apt_repo:
-  - pontoon-apt-01.monitoring.eqiad.wmflabs
+  - pontoon-apt-01.monitoring.eqiad1.wikimedia.cloud
 
 logging::mediawiki::udp2log:
-  - pontoon-mwlog-01.monitoring.eqiad.wmflabs
+  - pontoon-mwlog-01.monitoring.eqiad1.wikimedia.cloud
