@@ -9,27 +9,38 @@
 #  [*settings*]
 #    Hash of gitconfig section name, each should be in turn a hash
 #    of configuration name => value.
+#  [*priority*]
+#    Configuration loading priority. Default: '10'.
 #
 # Example usage:
 #
-# class { 'git::systemconfig':
-#    # https://wikitech.wikimedia.org/wiki/HTTP_proxy
-#    'http'  => {
-#        'proxy' => "http://webproxy.${::site}.wmnet:8080"
-#    },
-#    'https' => {
-#        'proxy' => "http://webproxy.${::site}.wmnet:8080"
-#    },
+# git::systemconfig { 'setup_http_proxy':
+#    settings => {
+#        # https://wikitech.wikimedia.org/wiki/HTTP_proxy
+#        'http'  => {
+#            'proxy' => "http://webproxy.${::site}.wmnet:8080"
+#        },
+#        'https' => {
+#            'proxy' => "http://webproxy.${::site}.wmnet:8080"
+#        },
+#     },
 # }
 #
-class git::systemconfig(
-    $settings,
+define git::systemconfig(
+    Hash[String, Hash[String, String]] $settings,
+    Integer[1,99] $priority = 10,
 ) {
-  file { '/etc/gitconfig':
+  include ::git::globalconfig
+
+  $safe_title = $title.regsubst('\W', '_', 'G')
+  $file_path = '/etc/gitconfig.d/%.2d-%s.gitconfig'.sprintf($priority, $safe_title)
+
+  file { $file_path:
     ensure  => present,
     owner   => 'root',
     group   => 'root',
     mode    => '0444',
     content => template( 'git/gitconfig.erb' ),
+    notify  => Exec['update-gitconfig'],
   }
 }
