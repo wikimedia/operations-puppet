@@ -44,7 +44,7 @@ class profile::pki::server(
     }
     class { 'sslcert::dhparam': }
     class {'httpd':
-        modules => ['proxy', 'proxy_http', 'ssl']
+        modules => ['proxy', 'proxy_http', 'ssl', 'headers']
     }
     # create variables used in vhost
     $ssl_settings = ssl_ciphersuite('apache', 'strong', true)
