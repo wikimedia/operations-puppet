@@ -4,6 +4,7 @@ profile::puppetmaster::common::storeconfigs: puppetdb
 puppetdb_host: "%{alias('__master_for_role_puppetmaster__puppetdb')}"
 profile::puppetdb::master: "%{alias('__master_for_role_puppetmaster__puppetdb')}"
 profile::puppetdb::jvm_opts: '-Xmx256m'
+profile::puppetdb::database::shared_buffers: '768MB'
 
 # To open puppetdb firewall
 puppetmaster::servers:
