@@ -104,6 +104,13 @@ class profile::base(
     class { 'base::sysctl': }
     class { 'motd': }
     class { 'base::standard_packages': }
+    git::systemconfig { 'protocol_v2':
+        settings => {
+            'protocol' => {
+                'version' => '2',
+            }
+        }
+    }
     if os_version('debian <= buster') {
         class { 'toil::acct_handle_wtmp_not_rotated': }
     }
