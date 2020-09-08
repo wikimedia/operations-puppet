@@ -13,7 +13,7 @@ class profile::analytics::cluster::gitconfig {
     # all the users to set up their own settings.
     # Not needed in labs.
     if $::realm == 'production' {
-        class { 'git::systemconfig':
+        git::systemconfig { 'setup_http_proxy':
             settings => {
                 # https://wikitech.wikimedia.org/wiki/HTTP_proxy
                 'http'  => {

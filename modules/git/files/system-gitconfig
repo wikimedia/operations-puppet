@@ -1,0 +1,6 @@
+#
+# This file is managed by Puppet!
+# puppet:://modules/git/gitconfig
+#
+[include]
+  path = /etc/gitconfig.d/*.gitconfig
