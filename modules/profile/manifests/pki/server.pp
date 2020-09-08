@@ -43,7 +43,7 @@ class profile::pki::server(
         }
     }
     class{'httpd':
-        modules => ['proxy', 'proxy_http']
+        modules => ['proxy', 'proxy_http', 'ssl']
     }
     # create variables used in vhost
     $ssl_settings = ssl_ciphersuite('apache', 'strong', true)

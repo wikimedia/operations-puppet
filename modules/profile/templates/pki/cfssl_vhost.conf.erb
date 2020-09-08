@@ -9,7 +9,7 @@
   DocumentRoot /var/www/html
 
   SSLEngine on
-  <%= @ssl_settings.join("\n    ") %>
+  <%= @ssl_settings.join("\n  ") %>
   SSLCertificateFile <%= @facts['puppet_config']['hostcert'] %>
   SSLCertificateKeyFile <%= @facts['puppet_config']['hostprivkey'] %>
   SSLCACertificateFile <%= @facts['puppet_config']['localcacert'] %>
