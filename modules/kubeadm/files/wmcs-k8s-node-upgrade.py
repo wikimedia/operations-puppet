@@ -82,8 +82,8 @@ def parse_args():
     parser.add_argument(
         "--domain",
         default="eqiad1.wikimedia.cloud",
-        help="The CloudVPS domain for building FQDNs. Typical values are: 'eqiad1.wikimedia.cloud'"
-        " or 'eqiad.wmflabs'. Defaults to '%(default)s'",
+        help="The CloudVPS domain for building FQDNs. Typical value is 'eqiad1.wikimedia.cloud'."
+        "Defaults to '%(default)s'",
     )
     parser.add_argument(
         "--src-version",
