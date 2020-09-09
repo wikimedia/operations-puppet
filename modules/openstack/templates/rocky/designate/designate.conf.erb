@@ -207,7 +207,8 @@ retry_interval = 10
 # Nova Fixed Multi Handler
 #-----------------------
 [handler:nova_fixed_multi]
-# Domain ID of domain to create records in. For a pre-existing domain, in this case eqiad.wmflabs
+# Domain ID of domain to create records in. For a pre-existing domain,
+#  in this case eqiad1.wikimedia.cloud
 domain_id = '<%= @domain_id_internal_forward %>'
 legacy_domain_id = ''
 site = '<%= scope.lookupvar("::site") %>'
@@ -225,7 +226,7 @@ reverse_format = '%(hostname)s.%(project_name)s.%(zone)s'
 #-----------------------
 [handler:wmf_sink]
 # Domain ID of domain for instances.
-#  For a pre-existing domain, in this case eqiad.wmflabs
+#  For a pre-existing domain, in this case eqiad1.wikimedia.cloud
 domain_id = '<%= @domain_id_internal_forward %>'
 legacy_domain_id = '<%= @domain_id_internal_forward_legacy %>'
 notification_topics = monitor
