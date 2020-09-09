@@ -91,6 +91,7 @@ profile::mjolnir::kafka_msearch_daemon::output_topic: mjolnir.msearch-prod-respo
 # Unfortunately # shards per index is variable, so some caution is still required.
 profile::mjolnir::kafka_msearch_daemon::num_workers: 2
 profile::mjolnir::kafka_msearch_daemon::max_concurrent_searches: 2
+profile::mjolnir::kafka_msearch_daemon::num_running_daemons: 1
 
 # Bulk daemon defines group_id per-datacenter and applies updates to all
 # clusters in that datacenter.
