@@ -22,15 +22,6 @@ class profile::mjolnir::kafka_msearch_daemon(
     $prometheus_port = 9171
     $prometheus_nodes_ferm = join($prometheus_nodes, ' ')
 
-    # clear out the previous service
-    ::systemd::service { 'mjolnir-kafka-msearch-daemon':
-      ensure  => 'absent',
-      content => template('profile/mjolnir/kafka-msearch-daemon.service.erb'),
-    }
-    ::base::service_auto_restart { 'mjolnir-kafka-msearch-daemon':
-      ensure => 'absent',
-    }
-
     systemd::unit { 'mjolnir-kafka-msearch-daemon@.service':
       ensure  => $ensure,
       content => template('profile/mjolnir/kafka-msearch-daemon@.service.erb'),
