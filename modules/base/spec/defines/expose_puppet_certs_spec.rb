@@ -1,8 +1,9 @@
-require 'spec_helper'
+require_relative '../../../../rake_modules/spec_helper'
 
 describe 'base::expose_puppet_certs', :type => :define do
   let(:title) { '/my/ssl/dir' }
   let(:facts) { { :fqdn => 'host.example.net'} }
+  let(:pre_condition) { "class {'base::puppet': ca_source => 'puppet:///files/puppet/ca.production.pem'}" }
 
   describe 'directory structure is created' do
     it { should contain_file('/my/ssl/dir/ssl').with({ 'ensure' => 'directory', 'mode' => '0555' }) }

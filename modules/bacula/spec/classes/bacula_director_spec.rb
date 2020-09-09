@@ -1,4 +1,4 @@
-require 'spec_helper'
+require_relative '../../../../rake_modules/spec_helper'
 
 describe 'bacula::director', :type => :class do
     let(:node) { 'testhost.example.com' }
@@ -15,6 +15,8 @@ describe 'bacula::director', :type => :class do
         :bconsolepassword => 'bconsolepass',
         }
     }
+    let(:pre_condition) { "class {'base::puppet': ca_source => 'puppet:///files/puppet/ca.production.pem'}" }
+
     it { should contain_package('bacula-director') }
     it { should contain_package('bacula-director-testsql') }
     it { should contain_service('bacula-director') }

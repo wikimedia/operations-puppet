@@ -1,4 +1,4 @@
-require 'spec_helper'
+require_relative '../../../../rake_modules/spec_helper'
 
 describe 'bacula::director::pool', :type => :define do
     let(:title) { 'something' }
@@ -18,7 +18,8 @@ describe 'bacula::director::pool', :type => :define do
       "class {'bacula::director':
         sqlvariant          => 'mysql',
         max_dir_concur_jobs => '10',
-      }"
+      }
+      class {'base::puppet': ca_source => 'puppet:///files/puppet/ca.production.pem'}"
     end
 
     context 'without label_fmt, max_vol_bytes' do

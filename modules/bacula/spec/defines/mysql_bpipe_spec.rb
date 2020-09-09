@@ -1,4 +1,4 @@
-require 'spec_helper'
+require_relative '../../../../rake_modules/spec_helper'
 
 describe 'bacula::client::mysql_bpipe', :type => :define do
     let(:title) { 'something' }
@@ -16,7 +16,8 @@ describe 'bacula::client::mysql_bpipe', :type => :define do
         file_retention   => 5,
         job_retention    => 5,
         directorpassword => 'SECRET',
-      }"
+      }
+      class {'base::puppet': ca_source => 'puppet:///files/puppet/ca.production.pem'}"
     end
     context 'with per database' do
         let(:params) { {

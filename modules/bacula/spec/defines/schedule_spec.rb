@@ -1,4 +1,4 @@
-require 'spec_helper'
+require_relative '../../../../rake_modules/spec_helper'
 
 describe 'bacula::director::schedule', :type => :define do
     let(:title) { 'something' }
@@ -19,7 +19,8 @@ describe 'bacula::director::schedule', :type => :define do
       "class {'bacula::director':
         sqlvariant          => 'mysql',
         max_dir_concur_jobs => '10',
-      }"
+      }
+      class {'base::puppet': ca_source => 'puppet:///files/puppet/ca.production.pem'}"
     end
 
     it 'should create /etc/bacula/conf.d/schedule-something.conf' do

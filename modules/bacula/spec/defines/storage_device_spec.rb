@@ -1,4 +1,4 @@
-require 'spec_helper'
+require_relative '../../../../rake_modules/spec_helper'
 
 describe 'bacula::storage::device', :type => :define do
     let(:title) { 'something' }
@@ -20,7 +20,8 @@ describe 'bacula::storage::device', :type => :define do
         director            => 'dir.example.com',
         sd_max_concur_jobs  => 5,
         sqlvariant          => 'mysql',
-      }"
+      }
+      class {'base::puppet': ca_source => 'puppet:///files/puppet/ca.production.pem'}"
     end
 
     context 'without spool_dir, max_spool_size' do

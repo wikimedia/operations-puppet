@@ -48,3 +48,4 @@ puppet_config:
   master:
     localcacert: '/var/lib/puppet/server/ssl/certs/ca.pem'
     ssldir: '/var/lib/puppet/server/ssl'
+uniqueid: abcdef12
