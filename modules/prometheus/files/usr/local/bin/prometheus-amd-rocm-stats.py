@@ -36,7 +36,7 @@ def collect_stats_from_romc_smi(registry, rocm_smi_path):
     )
     gpu_stats['temperature'] = Gauge(
         'temperature_celsius', 'GPU temperature (in Celsius)',
-        ['card'], namespace='amd_rocm_gpu', registry=registry
+        ['card', 'location'], namespace='amd_rocm_gpu', registry=registry
     )
     gpu_stats['power'] = Gauge(
         'power_consumption_watts', 'GPU power consumption (in Watts)',
@@ -49,19 +49,36 @@ def collect_stats_from_romc_smi(registry, rocm_smi_path):
 
     for card in rocm_metrics:
         for metric in rocm_metrics[card]:
+            # General usage
             if metric == 'GPU use (%)':
                 # format example: 42
                 gpu_stats['usage'].labels(card=card).set(
                     rocm_metrics[card][metric].strip())
+
+            # All temperature readings use the same format, e.g. 27.0
+            # The old kernel-native driver has one temp reading:
             elif metric == 'Temperature (Sensor #1) (c)' \
                     or metric == 'Temperature (Sensor #1) (C)':
-                # format example: 27.0
-                gpu_stats['temperature'].labels(card=card).set(
+                gpu_stats['temperature'].labels(card=card, location="sensor1").set(
                     rocm_metrics[card][metric].strip())
+            # The newer rocm-dkms driver has three separate readings:
+            elif metric == 'Temperature (Sensor edge) (C)':
+                gpu_stats['temperature'].labels(card=card, location="edge").set(
+                    rocm_metrics[card][metric].strip())
+            elif metric == 'Temperature (Sensor junction) (C)':
+                gpu_stats['temperature'].labels(card=card, location="junction").set(
+                    rocm_metrics[card][metric].strip())
+            elif metric == 'Temperature (Sensor mem) (C)':
+                gpu_stats['temperature'].labels(card=card, location="mem").set(
+                    rocm_metrics[card][metric].strip())
+
+            # Power
             elif metric == 'Average Graphics Package Power (W)':
                 # format example: 7.0
                 gpu_stats['power'].labels(card=card).set(
                     rocm_metrics[card][metric].strip())
+
+            # Fan speeds
             elif metric == 'Fan Speed (%)':
                 # format example: 14
                 gpu_stats['fan'].labels(card=card).set(
