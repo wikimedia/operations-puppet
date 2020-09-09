@@ -36,7 +36,7 @@ class profile::base::puppet(
   class { 'prometheus::node_puppet_agent': }
   if $export_p12 {
       sslcert::x509_to_pkcs12 {$facts['fqdn']:
-          public_key  => $facts['puppet_config']['hostpubkey'],
+          public_key  => $facts['puppet_config']['hostcert'],
           private_key => $facts['puppet_config']['hostprivkey'],
           outfile     => "${facts['puppet_config']['ssldir']}/private/${facts['fqdn']}.p12",
           certfile    => $facts['puppet_config']['localcacert'],
