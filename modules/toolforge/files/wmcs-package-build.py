@@ -77,7 +77,7 @@ def parse_args():
            """
     parser.add_argument(
         "--build-host",
-        default="tools-package-builder-02.tools.eqiad.wmflabs",
+        default="tools-package-builder-02.tools.eqiad1.wikimedia.cloud",
         help=help,
     )
     help = """target distribution in aptly. The resulting deb package will be
@@ -92,7 +92,7 @@ def parse_args():
            Defaults to "%(default)s"
            """
     parser.add_argument(
-        "--aptly-host", default="tools-sge-services-03.tools.eqiad.wmflabs", help=help
+        "--aptly-host", default="tools-sge-services-03.tools.eqiad1.wikimedia.cloud", help=help
     )
     help = """If this option is present, this script won't backup aptly data
            over NFS
