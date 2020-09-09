@@ -13,7 +13,7 @@ class profile::query_service::streaming_updater (
 
     $instance_name = "${deploy_name}-updater"
     $prometheus_agent_path = '/usr/share/java/prometheus/jmx_prometheus_javaagent.jar'
-    $prometheus_agent_port = '9101'
+    $prometheus_agent_port = 9101
     $prometheus_agent_config = "/etc/${deploy_name}/${instance_name}-prometheus-jmx.yaml"
     profile::prometheus::jmx_exporter { $instance_name:
         hostname         => $::hostname,
