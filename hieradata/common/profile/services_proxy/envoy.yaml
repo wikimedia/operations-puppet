@@ -161,6 +161,13 @@ profile::services_proxy::envoy::listeners:
     keepalive: "4s"
     timeout: "120s"
     xfp: https
+  - name: restbase-for-services # applications that have call loops with restbase
+    port: 6503
+    service: restbase-https
+    timeout: "122s"
+    upstream: restbase.discovery.wmnet
+    xfp: https # this is needed for private wikis - see T249535
+
 # default listeners list used by the MW installations
 profile::services_proxy::envoy::enabled_listeners:
   - parsoid
