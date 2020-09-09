@@ -22,6 +22,9 @@
 #   be exposed? The order is [key, cert] Defaults to false. Unrelated to
 #   provide_private parameter
 #
+# [*provide_p12*]
+#   Should the p12 file also be exposed, useful for java clients? Defaults to false
+#
 # [*user/group*]
 #   User who will own the exposed SSL certificates. Default to root
 #
@@ -33,10 +36,15 @@ define base::expose_puppet_certs (
     Wmflib::Ensure $ensure       = 'present',
     Boolean $provide_private     = false,
     Boolean $provide_keypair     = false,
+    Boolean $provide_p12         = false,
     String $user                 = 'root',
     String $group                = 'root',
     Stdlib::Absolutepath $ssldir = puppet_ssldir(),
 ) {
+    include base::puppet
+    if $provide_p12 and !$base::puppet::export_p12 {
+        fail('Must set `base::puppet::export_p12: true` in order to use provide_p12')
+    }
 
     $target_basedir = $title
     $puppet_cert_name = $::fqdn
@@ -69,6 +77,18 @@ define base::expose_puppet_certs (
         ensure => $private_key_ensure,
         mode   => '0400',
         source => "${ssldir}/private_keys/${puppet_cert_name}.pem",
+    }
+    $p12_key_ensure = $ensure ? {
+        'present' => $provide_p12 ? {
+            true    => 'present',
+            default => 'absent',
+        },
+        default => 'absent',
+    }
+    file { "${target_basedir}/ssl/server.p12":
+        ensure => $p12_key_ensure,
+        mode   => '0400',
+        source => "${ssldir}/private/${puppet_cert_name}.p12",
     }
 
     # Provide a keypair of key and cert concatenated. The file resource is used
