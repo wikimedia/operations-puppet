@@ -168,5 +168,33 @@ describe("Busted unit testing framework", function()
       do_global_read_request()
       assert.are.equals(nil, _G.ts.client_request.header['Accept-Encoding'])
     end)
+
+    it("test - do_global_read_request T262437 ban mobile-html", function()
+      stub(ts.http, "config_int_set")
+      _G.ts.client_request.header['Authorization'] = nil
+      _G.ts.client_request.header['Cookie'] = nil
+      _G.ts.client_request.get_uri = function() return "/api/rest_v1/page/mobile-html/Elephant" end
+      do_global_read_request()
+      assert.stub(ts.http.config_int_set).was.called_with(TS_LUA_CONFIG_HTTP_CACHE_GENERATION, 1599679366)
+    end)
+
+    it("test - do_global_read_request T262437 ban mobile-html-offline-resources", function()
+      stub(ts.http, "config_int_set")
+      _G.ts.client_request.header['Authorization'] = nil
+      _G.ts.client_request.header['Cookie'] = nil
+      _G.ts.client_request.get_uri = function() return "/api/rest_v1/page/mobile-html-offline-resources/Elephant" end
+      do_global_read_request()
+      assert.stub(ts.http.config_int_set).was.called_with(TS_LUA_CONFIG_HTTP_CACHE_GENERATION, 1599679366)
+    end)
+
+    it("test - do_global_read_request T262437 don't ban", function()
+      stub(ts.http, "config_int_set")
+      _G.ts.client_request.header['Authorization'] = nil
+      _G.ts.client_request.header['Cookie'] = nil
+      _G.ts.client_request.get_uri = function() return "/wiki/Elephant" end
+      do_global_read_request()
+      assert.stub(ts.http.config_int_set).was_not_called()
+    end)
+
   end)
 end)

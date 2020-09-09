@@ -69,6 +69,12 @@ function do_global_read_request()
         return 0
     end
 
+    -- Temporary ban for T262437
+    url = ts.client_request.get_uri()
+    if url:match('^/api/rest_v1/page/mobile%-html/') or url:match('^/api/rest_v1/page/mobile%-html%-offline%-resources/') then
+        ts.http.config_int_set(TS_LUA_CONFIG_HTTP_CACHE_GENERATION, 1599679366)
+    end
+
     local cookie = ts.client_request.header['Cookie']
 
     if cookie then
