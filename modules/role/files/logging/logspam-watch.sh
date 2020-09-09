@@ -25,11 +25,6 @@ COLUMN_LABELS=(
 # Our "view":
 function display {
   logspam_output=$(run_logspam)
-  # Only refresh if we've got new info - saves some terminal flashing:
-  if [ "$old_logspam_output" == "$logspam_output" ]; then
-    return
-  fi
-  old_logspam_output="$logspam_output"
 
   tput clear
   # Print column headers, highlighting the currently-selected sort and bolding
@@ -45,7 +40,7 @@ function display {
   printf '\n%s\n' "$logspam_output"
 
   # Current date and pattern, plus some pointers to hotkeys:
-  printf '[%s]' "$COLOR$(date '+%H%M %Z')$NORMAL"
+  printf '[%s]' "$COLOR$(date '+%H:%M:%S %Z')$NORMAL"
   printf '  [%sp%sattern: %s]' "$BOLD" "$NORMAL" "$COLOR$filter$NORMAL"
   printf '  [%s12345%s sort]  [%sq%suit] ' "$BOLD" "$NORMAL" "$BOLD" "$NORMAL"
 }
@@ -74,7 +69,6 @@ function flip_sort {
 }
 
 # State variables:
-old_logspam_output=''
 sort_key=1
 sort_type='-n'
 sort_dir='-r'
