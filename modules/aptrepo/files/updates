@@ -167,7 +167,7 @@ Suite: stable
 GetInRelease: no
 Architectures: amd64
 VerifyRelease: D27D666CD88E42B4
-ListShellHook: grep-dctrl \( -S 'elasticsearch-oss' -a -F Version --eq 7.9.0 \) -o \( -S 'kibana-oss' -a -F Version --eq 7.9.0 \) -o \( -S 'logstash-oss' -a -F Version --eq 1:7.9.0-1 \) || [ $? -eq 1 ]
+ListShellHook: grep-dctrl \( -S 'elasticsearch-oss' -a -F Version --eq 7.9.1 \) -o \( -S 'kibana-oss' -a -F Version --eq 7.9.1 \) -o \( -S 'logstash-oss' -a -F Version --eq 1:7.9.1-1 \) || [ $? -eq 1 ]
 
 Name: tor-stretch
 Method: http://deb.torproject.org/torproject.org/
