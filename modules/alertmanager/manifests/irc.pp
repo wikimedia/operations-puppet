@@ -10,8 +10,14 @@ class alertmanager::irc (
 ) {
     require_package('alertmanager-irc-relay')
 
+    $service_enable = $service_ensure ? {
+        running => true,
+        stopped => false,
+    }
+
     service { 'alertmanager-irc-relay':
         ensure => $service_ensure,
+        enable => $service_enable,
     }
 
     file { '/etc/alertmanager-irc-relay.yml':
