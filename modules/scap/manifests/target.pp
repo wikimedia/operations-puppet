@@ -177,6 +177,18 @@ define scap::target(
         }
     }
 
+    if $::realm == 'labs' {
+        $require_package = $manage_user ? {
+            true    => [
+                Package['scap'],
+                User[$deploy_user],
+            ],
+            default => Package['scap'],
+        }
+    } else {
+        $require_package = [ Package['scap'], User[$deploy_user] ]
+    }
+
     # Have scap actually deploy the source, restart the service if needed, etc
     # Assume $deploy_user already has sudo permissions because of the block above.
     package { $package_name:
@@ -185,7 +197,7 @@ define scap::target(
             owner => $deploy_user
         }],
         provider        => 'scap3',
-        require         => [Package['scap'], User[$deploy_user]],
+        require         => $require_package,
     }
 
     # XXX: Temporary work-around for switching services from Trebuchet to Scap3
@@ -202,12 +214,23 @@ define scap::target(
     $chown_target = "/srv/deployment/${pkg_root}"
     $exec_name = "chown ${chown_target} for ${deploy_user}"
     if !defined(Exec[$exec_name]) {
+        if $::realm == 'labs' {
+            $require_exec = $manage_user ? {
+                true    => [
+                    User[$deploy_user],
+                    Group[$deploy_user]
+                ],
+                default => undef,
+            }
+        } else {
+            $require_exec = [User[$deploy_user], Group[$deploy_user]]
+        }
+
         exec { $exec_name:
             command => "/bin/chown -R ${chown_user} ${chown_target}",
             # perform the chown only if root is the effective owner
             onlyif  => "/usr/bin/test -O /srv/deployment/${package_name}",
-            require => [User[$deploy_user], Group[$deploy_user]]
+            require => $require_exec,
         }
     }
-
 }
