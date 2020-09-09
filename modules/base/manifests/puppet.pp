@@ -11,6 +11,7 @@ class base::puppet(
     Integer[4,5]                    $puppet_major_version   = 5,
     Integer[2,3]                    $facter_major_version   = 3,
     Enum['pson', 'json', 'msgpack'] $serialization_format   = 'json',
+    Boolean                         $export_p12             = false,
     Optional[Enum['chain', 'leaf']] $certificate_revocation = undef,
 ) {
     include ::passwords::puppet::database # lint:ignore:wmf_styleguide
@@ -170,5 +171,13 @@ class base::puppet(
         ensure   => present,
         priority => 97,
         source   => 'puppet:///modules/base/puppet/97-last-puppet-run',
+    }
+    if $export_p12 {
+        sslcert::x509_to_pkcs12 {$facts['fqdn']:
+            public_key  => $facts['puppet_config']['hostcert'],
+            private_key => $facts['puppet_config']['hostprivkey'],
+            outfile     => "${facts['puppet_config']['ssldir']}/private/${facts['fqdn']}.p12",
+            certfile    => $facts['puppet_config']['localcacert'],
+        }
     }
 }

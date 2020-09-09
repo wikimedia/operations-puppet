@@ -28,18 +28,11 @@ class profile::base::puppet(
       facter_major_version   => $facter_major_version,
       puppet_major_version   => $puppet_major_version,
       certificate_revocation => $certificate_revocation,
+      export_p12             => $export_p12,
   }
   class { 'puppet_statsd':
       statsd_host   => 'statsd.eqiad.wmnet',
       metric_format => 'puppet.<%= metric %>',
   }
   class { 'prometheus::node_puppet_agent': }
-  if $export_p12 {
-      sslcert::x509_to_pkcs12 {$facts['fqdn']:
-          public_key  => $facts['puppet_config']['hostcert'],
-          private_key => $facts['puppet_config']['hostprivkey'],
-          outfile     => "${facts['puppet_config']['ssldir']}/private/${facts['fqdn']}.p12",
-          certfile    => $facts['puppet_config']['localcacert'],
-      }
-  }
 }
