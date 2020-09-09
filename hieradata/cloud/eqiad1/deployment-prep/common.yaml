@@ -396,8 +396,8 @@ wikimail_smarthost:
 - 'deployment-mx02.deployment-prep.eqiad.wmflabs'
 
 deployment_hosts:
-- '172.16.4.18' # deployment-deploy01.deployment-prep.eqiad.wmflabs
-- '172.16.4.19' # deployment-deploy02.deployment-prep.eqiad.wmflabs
+- '172.16.4.18' # deployment-deploy01.deployment-prep.eqiad1.wikimedia.cloud
+- '172.16.4.19' # deployment-deploy02.deployment-prep.eqiad1.wikimedia.cloud
 
 profile::rsyslog::kafka_shipper::kafka_brokers:
   - 'deployment-logstash03.deployment-prep.eqiad.wmflabs:9093'
