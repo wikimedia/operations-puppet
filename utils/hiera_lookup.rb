@@ -26,7 +26,7 @@ For Wmflabs a FQDN should be: <hostname>.<project>.<site>.wmflabs
 
 Examples:
   hiera_lookup --fqdn=mw1020.eqiad.wmnet --roles=mediawiki::appserver admin::groups
-  hiera_lookup --fqdn=host.tools.eqiad.wmflabs classes
+  hiera_lookup --fqdn=host.tools.eqiad1.wikimedia.cloud classes
 
 
 end
