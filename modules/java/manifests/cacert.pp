@@ -6,12 +6,17 @@ define java::cacert (
     Wmflib::Ensure   $ensure    = 'present',
     String           $storepass = 'changeit',
 ) {
+    include java
+    $keystore = $java::default_java_package['version'] ? {
+        '8'     => '-keystore /etc/ssl/certs/java/cacerts',
+        default => '-cacerts',
+    }
     $import_cmd = @("IMPORT"/L)
-        /usr/bin/keytool -import -trustcacerts -noprompt -cacerts \
+        /usr/bin/keytool -import -trustcacerts -noprompt ${keystore} \
             -file ${path} -storepass ${storepass} -alias ${title}
         | IMPORT
-    $delete_cmd = "/usr/bin/keytool -delete -cacerts -noprompt -storepass ${storepass} -alias ${title}"
-    $validate_cmd = "/usr/bin/keytool -list -cacerts -noprompt -storepass ${storepass} -alias ${title}"
+    $delete_cmd = "/usr/bin/keytool -delete ${keystore} -noprompt -storepass ${storepass} -alias ${title}"
+    $validate_cmd = "/usr/bin/keytool -list ${keystore} -noprompt -storepass ${storepass} -alias ${title}"
     if $ensure == 'present' {
         exec {"java__cacert_${title}":
             command => $import_cmd,
