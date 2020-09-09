@@ -8,6 +8,15 @@ class profile::mariadb::backup::transfer {
         'python3-yaml',
     )
 
+    # we can override transferpy defaults if needed
+    file { '/etc/transferpy/transferpy.conf':
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+        source => 'puppet:///modules/profile/mariadb/transferpy.conf',
+    }
+
     # mysql dir must be handled by a separate profile, not done here
     # as it depends on the available owner (root, mysql, dump)
     # file { '/etc/mysql':
