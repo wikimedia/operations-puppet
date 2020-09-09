@@ -86,7 +86,7 @@ UDebComponents:
 Suite: 21x
 Architectures: amd64 source
 # Multiple keys in use: https://downloads.apache.org/cassandra/KEYS
-VerifyRelease: 749D6EEC0353B12C|A278B781FE4B2BDA
+VerifyRelease: 749D6EEC0353B12C|A278B781FE4B2BDA|E91335D77E3E87CB
 ListShellHook: grep-dctrl -X -S cassandra || [ $? -eq 1 ]
 
 Name: elastic
