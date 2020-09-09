@@ -472,6 +472,11 @@ node 'db2140.codfw.wmnet' {
     role(mariadb::core)
 }
 
+# codfw MySQL source backups expansion T260819
+node 'db2141.codfw.wmnet' {
+    role(insetup)
+}
+
 # codfw replicas
 # See also db2137 and db2138 below
 node /^db2(073|106|110|119|136)\.codfw\.wmnet/ {
