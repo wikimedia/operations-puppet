@@ -413,7 +413,7 @@ sub cluster_fe_ratelimit {
 		if (req.http.accept-language) {
 			// Experimentally lowercase AL to reduce variations
 			// (this should probably later be done globally for all traffic)
-			req.http.accept-language = std.tolower(req.http.accept-language);
+			set req.http.accept-language = std.tolower(req.http.accept-language);
 			// These are true variants that aren't cached in RB,
 			// any other AL string (or empty) will be normalized to
 			// cacheable zh internally:
