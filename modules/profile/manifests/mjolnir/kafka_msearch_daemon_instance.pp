@@ -15,7 +15,7 @@ define profile::mjolnir::kafka_msearch_daemon_instance(
     service { $service_name:
       ensure   => 'present' == $ensure,
       provider => 'systemd',
-      enable   => true,
+      enable   => 'present' == $ensure,
       require  => Systemd::Unit['mjolnir-kafka-msearch-daemon@.service'],
     }
 
