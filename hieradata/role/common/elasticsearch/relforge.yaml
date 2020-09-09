@@ -77,6 +77,7 @@ profile::mjolnir::kafka_msearch_daemon::input_topic: mjolnir.msearch-relforge-re
 profile::mjolnir::kafka_msearch_daemon::output_topic: mjolnir.msearch-relforge-response
 profile::mjolnir::kafka_msearch_daemon::num_workers: 7
 profile::mjolnir::kafka_msearch_daemon::max_concurrent_searches: 10
+profile::mjolnir::kafka_msearch_daemon::num_running_daemons: 1
 profile::elasticsearch::cirrus::enable_remote_search: false
 
 #kibana configuration
