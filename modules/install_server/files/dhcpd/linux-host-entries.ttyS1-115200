@@ -2395,6 +2395,11 @@ host db2140 {
     fixed-address db2140.codfw.wmnet;
 }
 
+host db2141 {
+    hardware ethernet 2C:EA:7F:56:B8:0B;
+    fixed-address db2141.codfw.wmnet;
+}
+
 host dbprov1001 {
     hardware ethernet B0:26:28:23:50:90;
     fixed-address dbprov1001.eqiad.wmnet;
