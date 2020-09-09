@@ -158,6 +158,11 @@ sub cluster_fe_recv_pre_purge {
 		return (synth(403, "Abuse"));
 	}
 
+	// Big hammer: Temporary mitigative action for 2020-09-08 parsoid overload via restbase
+	if (req.http.host == "zh.wikipedia.org" && req.url ~ "^/api/rest_v1/") {
+		return (synth(403, "Abuse"));
+	}
+
 	if (req.http.referer && req.http.referer ~ "^http://(www\.(keeprefreshing|refreshthis|refresh-page|urlreload)\.com|tuneshub\.blogspot\.com|itunes24x7\.blogspot\.com|autoreload\.net|www\.lazywebtools\.co\.uk)/") {
 		return (synth(403, "Noise"));
 	}
