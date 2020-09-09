@@ -15,11 +15,15 @@
 #   A list of host:port (port is *required*) to forward syslog using TLS.
 #   (e.g. ["centrallog1001.eqiad.wmnet:6514"])
 #
+# [*queue_size*]
+#   Local queue size, unit is messages. Setting to 0 disables the local queue.
 #
+
 class base::remote_syslog (
-    $enable,
-    $central_hosts = [],
-    $central_hosts_tls = [],
+    Boolean $enable,
+    Array[String] $central_hosts = [],
+    Array[String] $central_hosts_tls = [],
+    Integer $queue_size = 10000,
 ) {
     $owner = 'root'
     $group = 'root'

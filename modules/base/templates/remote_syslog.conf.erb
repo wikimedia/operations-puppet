@@ -20,7 +20,13 @@ if ($syslogseverity-text == 'info' and
   <% host, port = log_host.split(':') %>
   action(type="omfwd" name="fwd_<%= log_host %>" Target="<%= host %>" Port="<%= port or '6514' %>"
     StreamDriver="gtls" StreamDriverAuthMode="x509/certvalid" StreamDriverMode="1"
-    Protocol="tcp" template="LongTagForwardFormat")
+    Protocol="tcp" template="LongTagForwardFormat"
+<%- if @queue_size > 0 -%>
+    queue.type="LinkedList" queue.size="<%= @queue_size %>" queue.filename="<%= log_host %>"
+    queue.highWatermark="<%= (@queue_size * 0.7).to_i %>" queue.lowWatermark="<%= (@queue_size * 0.6).to_i %>"
+    queue.checkpointInterval="5"
+<% end -%>
+    )
 <% end -%>
 
 <%- @central_hosts.sort.each do |log_host| %>
