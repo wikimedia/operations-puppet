@@ -129,25 +129,16 @@ def _check_output(cmd, timeout=60, suppress_errors=False, stderr=subprocess.STDO
         raise
 
 
-def get_fact(fact_name):
-    """Ask 'facter' for the given fact name. Return the fact's value or None."""
-    facter_version = int(_check_output('/usr/bin/facter --version', stderr=subprocess.DEVNULL)
-                         .split('.')[0])
-
-    if facter_version == 3:
-        command = '/usr/bin/facter --puppet --json -l error {}'.format(fact_name)
-    else:
-        command = '/usr/bin/facter --puppet --json {}'.format(fact_name)
-
-    # FIXME: long timeout here due to facter taking a very long time on
-    # a very small set of hosts.  T251293
-    raw_output = _check_output(command, timeout=3*60, stderr=subprocess.DEVNULL)
+def get_raid_drivers():
+    """Ask facter script for the raid drivers. Return the fact's value or None."""
+    command = '/usr/bin/ruby /var/lib/puppet/lib/facter/raid.rb'
+    raw_output = _check_output(command, timeout=60, stderr=subprocess.DEVNULL)
     try:
-        fact_value = json.loads(raw_output).get(fact_name, None)
+        fact_value = json.loads(raw_output).get('raid', None)
     except ValueError:
         return None
 
-    log.debug('Fact %r discovered: %r', fact_name, fact_value)
+    log.debug('Fact raid discovered: %r', fact_value)
     return fact_value
 
 
@@ -426,7 +417,7 @@ def main():
 
     physical_disks = []
 
-    raid_drivers = get_fact('raid')
+    raid_drivers = get_raid_drivers()
     if raid_drivers is None:
         log.error('Invalid value for "raid" fact: %r', raid_drivers)
         return 1

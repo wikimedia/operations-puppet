@@ -1,3 +1,5 @@
+require 'facter'
+
 Facter.add('raid') do
   confine :kernel => :linux
   # ref: http://pci-ids.ucw.cz/v2.2/pci.ids
@@ -37,4 +39,10 @@ Facter.add('raid') do
 
     raids.sort.uniq
   end
+end
+
+# Enable calling directly as a bypass for T251293
+if $PROGRAM_NAME == __FILE__
+  require 'json'
+  puts JSON.dump({ :raid => Facter.value('raid') })
 end
