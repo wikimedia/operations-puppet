@@ -2,12 +2,35 @@ class profile::openstack::codfw1dev::cloudgw (
     Array[String]                 $dmz_cidr       = lookup('profile::openstack::codfw1dev::cloudgw::dmz_cidr',         {default_value => ['0.0.0.0/0 . 0.0.0.0/0']}),
     Stdlib::IP::Address           $routing_source = lookup('profile::openstack::codfw1dev::cloudgw::routing_source_ip',{default_value => '185.15.57.1'}),
     Stdlib::IP::Address::V4::CIDR $virt_subnet    = lookup('profile::openstack::codfw1dev::cloudgw::virt_subnet_cidr', {default_value => '172.16.128.0/24'}),
-    String                        $nic_host       = lookup('profile::openstack::codfw1dev::cloudgw::nic_host',         {default_value => 'bond0.2118'}),
-    String                        $nic_virt       = lookup('profile::openstack::codfw1dev::cloudgw::nic_virt',         {default_value => 'bond0.2120'}),
-    String                        $nic_wan        = lookup('profile::openstack::codfw1dev::cloudgw::nic_wan',          {default_value => 'bond0.21xx'}),
+    Array[String]                 $all_phy_nics   = lookup('profile::openstack::codfw1dev::cloudgw::all_phy_nics',     {default_value => ['eno1']}),
+    Integer                       $host_vlan      = lookup('profile::openstack::codfw1dev::cloudgw::host_vlan',        {default_value => 2118}),
+    Stdlib::IP::Address           $host_addr      = lookup('profile::openstack::codfw1dev::cloudgw::host_addr',        {default_value => '127.0.0.2'}),
+    Integer                       $host_netm      = lookup('profile::openstack::codfw1dev::cloudgw::host_netm',        {default_value => 8}),
+    Integer                       $virt_vlan      = lookup('profile::openstack::codfw1dev::cloudgw::virt_vlan',        {default_value => '2120'}),
+    Stdlib::IP::Address           $virt_addr      = lookup('profile::openstack::codfw1dev::cloudgw::virt_addr',        {default_value => '127.0.0.3'}),
+    Integer                       $virt_netm      = lookup('profile::openstack::codfw1dev::cloudgw::virt_netm',        {default_value => 8}),
+    Integer                       $wan_vlan       = lookup('profile::openstack::codfw1dev::cloudgw::wan_vlan',         {default_value => 2107}),
+    Stdlib::IP::Address           $wan_addr       = lookup('profile::openstack::codfw1dev::cloudgw::wan_addr',         {default_value => '127.0.0.4'}),
+    Integer                       $wan_netm       = lookup('profile::openstack::codfw1dev::cloudgw::wan_netm',         {default_value => 8}),
 ) {
-    class { '::profile::openstack::base::cloudgw': }
+    class { '::profile::openstack::base::cloudgw':
+        host_vlan    => $host_vlan,
+        host_addr    => $host_addr,
+        host_netm    => $host_netm,
+        virt_vlan    => $virt_vlan,
+        virt_addr    => $virt_addr,
+        virt_netm    => $virt_netm,
+        wan_vlan     => $wan_vlan,
+        wan_addr     => $wan_addr,
+        wan_netm     => $wan_netm,
+        all_phy_nics => $all_phy_nics,
+    }
     contain '::profile::openstack::base::cloudgw'
+
+    # NOTE: the base class is not using the legacy naming
+    $nic_host = "vlan${host_vlan}"
+    $nic_virt = "vlan${virt_vlan}"
+    $nic_wan  = "vlan${wan_vlan}"
 
     nftables::file { 'cloudgw':
         ensure  => present,

@@ -39,7 +39,7 @@ define interface::aggregate($orig_interface=undef, $members=[], $lacp_rate='fast
         require => Augeas["create ${aggr_interface}"],
         context => '/files/etc/network/interfaces/',
         changes => [
-            inline_template("set iface[. = '<%= aggr_interface %>']/bond-slaves '<%= members.join(' ') %>"),
+            inline_template("set iface[. = '<%= @aggr_interface %>']/bond-slaves '<%= @members.join(' ') %>"),
             "set iface[. = '${aggr_interface}']/bond-mode '802.3ad'",
             "set iface[. = '${aggr_interface}']/bond-lacp-rate '${lacp_rate}'",
             "set iface[. = '${aggr_interface}']/bond-miimon '100'",
