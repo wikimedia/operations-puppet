@@ -50,7 +50,7 @@ class r_lang (
 
     if $devtools {
         $devtools_essentials = [
-            'git-core',             # for git2r
+            'git',                  # for git2r
             'libxml2-dev',          # for xml2
             'libssl-dev',           # for openssl
             'libcurl4-openssl-dev', # for curl
