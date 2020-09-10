@@ -88,6 +88,7 @@ def recordset_is_service(recordset):
     if recordset["name"].lower().startswith("k8s."):
         # These are a weird, badly-named service records, not a managed records for
         #  a VM named 'k8s'.
+        # Should eventually be unnecesssary once T262562 is resolved
         return True
 
     if recordset["type"] == "A":
