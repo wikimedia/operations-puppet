@@ -81,11 +81,18 @@ canary_dashboard_url: https://logstash.wikimedia.org/goto/e474f13ffac6b8c3bf919c
 mw_web_clusters: appserver,api_appserver,jobrunner,testserver,parsoid_php
 mediawiki_canary_swagger_url: https://en.wikipedia.org
 
-[eqiad.wmflabs]
+[eqiad1.wikimedia.cloud]
 # Wikimedia Foundation beta eqiad datacenter
 datacenter: eqiad
-logstash_host: deployment-logstash03.deployment-prep.eqiad.wmflabs:9200
+logstash_host: deployment-logstash03.deployment-prep.eqiad1.wikimedia.cloud:9200
 mediawiki_canary_swagger_url: http://en.wikipedia.beta.wmflabs.org
+
+[eqiad.wmflabs]
+# Wikimedia Foundation beta eqiad datacenter (legacy duplicate)
+datacenter: eqiad
+logstash_host: deployment-logstash03.deployment-prep.eqiad1.wikimedia.cloud:9200
+mediawiki_canary_swagger_url: http://en.wikipedia.beta.wmflabs.org
+
 
 [wikimedia.org]
 # Wikimedia Foundation production cluster configuration for "public" hosts
@@ -102,7 +109,7 @@ udp2log_host: mwlog1001.eqiad.wmnet
 git_server: <%= @wmflabs_master %>
 master_rsync: <%= @wmflabs_master %>
 statsd_host: <%= @cloud_statsd_host %>
-udp2log_host: deployment-fluorine02.deployment-prep.eqiad.wmflabs
+udp2log_host: deployment-fluorine02.deployment-prep.eqiad1.wikimedia.cloud
 wmf_realm: labs
 # No pybal in labs, but pretend that there is anyway
 pybal_interface: lo
