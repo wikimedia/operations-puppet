@@ -85,6 +85,11 @@ def edit_recordset(endpoint, token, project_id, zoneid, recordset, newrecords):
 
 
 def recordset_is_service(recordset):
+    if recordset["name"].lower().startswith("k8s."):
+        # These are a weird, badly-named service records, not a managed records for
+        #  a VM named 'k8s'.
+        return True
+
     if recordset["type"] == "A":
         if ".svc." in recordset["name"].lower():
             return True
