@@ -53,6 +53,12 @@ class profile::analytics::cluster::packages::common(
         # For any package that requires gss-api libs,
         # like requests-kerberos (used by presto-python-client).
         'libkrb5-dev',
+
+        # We hope to eventually replace all of the above python packages
+        # with this one.  It is easier to maintain this single anaconda
+        # based package than many different python debian packages.
+        # See: https://wikitech.wikimedia.org/wiki/Analytics/Systems/Anaconda
+        'anaconda-wmf',
     )
 
     if os_version('debian == stretch') and $use_bigtop_settings {
