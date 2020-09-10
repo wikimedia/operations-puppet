@@ -202,7 +202,7 @@ subjects:
 # change: no 443/tcp for the pod
 # change: declare port 10254 for prometheus metrics
 # change: --default-backend-service=tool-fourohfour/fourohfour
-# change: 3 pod replicas instead of 1
+# change: 2 pod replicas instead of 1
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -212,7 +212,7 @@ metadata:
     app.kubernetes.io/name: ingress-nginx
     app.kubernetes.io/part-of: ingress-nginx
 spec:
-  replicas: 3
+  replicas: 2
   selector:
     matchLabels:
       app.kubernetes.io/name: ingress-nginx
@@ -227,6 +227,22 @@ spec:
         prometheus.io/scrape: "true"
     spec:
       serviceAccountName: nginx-ingress
+      # affinity and taints, only schedule pods in ingress nodes
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              preference:
+                matchExpressions:
+                  - key: kubernetes.io/role
+                    operator: In
+                    values:
+                      - ingress
+      tolerations:
+        - key: "ingress"
+          operator: "Equal"
+          value: "true"
+          effect: "NoSchedule"
       containers:
         - name: nginx-ingress-controller
           image: docker-registry.tools.wmflabs.org/nginx-ingress-controller:0.25.1
