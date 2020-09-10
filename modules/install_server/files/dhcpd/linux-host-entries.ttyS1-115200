@@ -3236,6 +3236,46 @@ host es2026 {
     fixed-address es2026.codfw.wmnet;
 }
 
+host es2027 {
+    hardware ethernet BC:97:E1:58:2E:C0;
+    fixed-address es2027.codfw.wmnet;
+}
+
+host es2028 {
+    hardware ethernet BC:97:E1:57:DA:84;
+    fixed-address es2028.codfw.wmnet;
+}
+
+host es2029 {
+    hardware ethernet BC:97:E1:57:C9:A4 ;
+    fixed-address es2029.codfw.wmnet;
+}
+
+host es2030 {
+    hardware ethernet BC:97:E1:57:C4:DC ;
+    fixed-address es2030.codfw.wmnet;
+}
+
+host es2031 {
+    hardware ethernet BC:97:E1:5A:8F:86;
+    fixed-address es2031.codfw.wmnet;
+}
+
+host es2032 {
+    hardware ethernet BC:97:E1:5A:96:FA ;
+    fixed-address es2032.codfw.wmnet;
+}
+
+host es2033 {
+    hardware ethernet BC:97:E1:5A:AF:DE;
+    fixed-address es2033.codfw.wmnet;
+}
+
+host es2034 {
+    hardware ethernet BC:97:E1:5A:A1:CE;
+    fixed-address es2034.codfw.wmnet;
+}
+
 host eventlog1002 {
     hardware ethernet 14:18:77:5B:0D:42;
     fixed-address eventlog1002.eqiad.wmnet;
