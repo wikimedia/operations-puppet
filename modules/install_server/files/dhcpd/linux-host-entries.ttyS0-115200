@@ -156,24 +156,6 @@ host doc1001 {
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
-host etcd1001 {
-    hardware ethernet aa:00:00:34:69:70;
-    fixed-address etcd1001.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-}
-
-host etcd1002 {
-    hardware ethernet aa:00:00:e8:d2:90;
-    fixed-address etcd1002.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-}
-
-host etcd1003 {
-    hardware ethernet aa:00:00:42:5d:36;
-    fixed-address etcd1003.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-}
-
 host etherpad1002 {
     hardware ethernet aa:00:00:70:0e:8b;
     fixed-address etherpad1002.eqiad.wmnet;

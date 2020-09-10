@@ -1049,12 +1049,6 @@ node 'furud.codfw.wmnet' {
     role(analytics_cluster::hadoop::client)
 }
 
-# Etcd cluster for kubernetes
-# TODO: Rename the eqiad etcds to the codfw etcds naming scheme
-node /^etcd100[123]\.(eqiad|codfw)\.wmnet$/ {
-    role(etcd::kubernetes)
-}
-
 # Etcd clusters for kubernetes, v3
 node /^kubetcd[12]00[456]\.(eqiad|codfw)\.wmnet$/ {
     role(etcd::v3::kubernetes)
