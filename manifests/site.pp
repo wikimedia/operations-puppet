@@ -2061,8 +2061,13 @@ node /^pc20(09)\.codfw\.wmnet$/ {
 }
 
 # new parsoid nodes (T243112)
-node /^parse20(0[1-9]|1[0-9]|20)\.codfw\.wmnet$/ {
+node /^parse20(0[1-9]|1[0-9])\.codfw\.wmnet$/ {
     role(insetup)
+}
+
+# T247441
+node 'parse2020.codfw.wmnet' {
+    role(parsoid)
 }
 
 # virtual machines for https://wikitech.wikimedia.org/wiki/Ping_offload
