@@ -4,7 +4,8 @@ class profile::openstack::eqiad1::pdns::recursor::service(
     Stdlib::Fqdn $recursor_service_name  = lookup('profile::openstack::eqiad1::pdns::recursor_service_name'),
     Stdlib::Fqdn $keystone_api_fqdn      = lookup('profile::openstack::eqiad1::keystone_api_fqdn'),
     $observer_password = hiera('profile::openstack::eqiad1::observer_password'),
-    $tld = hiera('profile::openstack::eqiad1::pdns::tld'),
+    $tld = lookup('profile::openstack::eqiad1::pdns::tld'),
+    $legacy_tld = lookup('profile::openstack::eqiad1::pdns::legacy_tld'),
     $private_reverse_zones = hiera('profile::openstack::eqiad1::pdns::private_reverse_zones'),
     $aliaser_extra_records = hiera('profile::openstack::eqiad1::pdns::recursor_aliaser_extra_records'),
     ) {
@@ -25,6 +26,7 @@ class profile::openstack::eqiad1::pdns::recursor::service(
         pdns_host             => $service_pdns_host,
         pdns_recursor         => $recursor_service_name,
         tld                   => $tld,
+        legacy_tld            => $legacy_tld,
         private_reverse_zones => $private_reverse_zones,
         aliaser_extra_records => $aliaser_extra_records,
     }

@@ -3,7 +3,8 @@ class profile::openstack::codfw1dev::pdns::recursor::service(
     $observer_password = hiera('profile::openstack::codfw1dev::observer_password'),
     Array[Stdlib::Fqdn] $pdns_hosts = lookup('profile::openstack::codfw1dev::pdns::hosts'),
     Stdlib::Fqdn $recursor_service_name = lookup('profile::openstack::codfw1dev::pdns::recursor_service_name'),
-    $tld = hiera('profile::openstack::codfw1dev::pdns::tld'),
+    $tld = lookup('profile::openstack::codfw1dev::pdns::tld'),
+    $legacy_tld = lookup('profile::openstack::codfw1dev::pdns::legacy_tld'),
     $private_reverse_zones = hiera('profile::openstack::codfw1dev::pdns::private_reverse_zones'),
     $aliaser_extra_records = hiera('profile::openstack::codfw1dev::pdns::recursor_aliaser_extra_records'),
     ) {
@@ -25,6 +26,7 @@ class profile::openstack::codfw1dev::pdns::recursor::service(
         pdns_host             => $service_pdns_host,
         pdns_recursor         => $recursor_service_name,
         tld                   => $tld,
+        legacy_tld            => $legacy_tld,
         private_reverse_zones => $private_reverse_zones,
         aliaser_extra_records => $aliaser_extra_records,
     }

@@ -1,4 +1,5 @@
-profile::openstack::codfw1dev::pdns::tld: 'cloud'
+profile::openstack::codfw1dev::pdns::legacy_tld: 'wmflabs'
+profile::openstack::codfw1dev::pdns::tld: 'wikimedia.cloud'
 profile::openstack::codfw1dev::pdns::private_reverse_zones:
   - '16.172.in-addr.arpa'
 profile::openstack::codfw1dev::pdns::hosts:

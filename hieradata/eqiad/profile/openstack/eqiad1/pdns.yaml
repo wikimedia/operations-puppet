@@ -1,4 +1,5 @@
-profile::openstack::eqiad1::pdns::tld: 'wmflabs'
+profile::openstack::eqiad1::pdns::legacy_tld: 'wmflabs'
+profile::openstack::eqiad1::pdns::tld: 'wikimedia.cloud'
 profile::openstack::eqiad1::pdns::private_reverse_zones:
   - '68.10.in-addr.arpa'
   - '16.172.in-addr.arpa'

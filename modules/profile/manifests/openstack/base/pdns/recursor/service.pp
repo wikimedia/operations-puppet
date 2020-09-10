@@ -25,7 +25,8 @@ class profile::openstack::base::pdns::recursor::service(
     $observer_project = hiera('profile::openstack::base::observer_project'),
     $pdns_host = hiera('profile::openstack::base::pdns::host'),
     $pdns_recursor = hiera('profile::openstack::base::pdns::recursor'),
-    $tld = hiera('profile::openstack::base::pdns::tld'),
+    $tld = lookup('profile::openstack::base::pdns::tld'),
+    $legacy_tld = lookup('profile::openstack::base::pdns::legacy_tld'),
     $private_reverse_zones = hiera('profile::openstack::base::pdns::private_reverse_zones'),
     $aliaser_extra_records = hiera('profile::openstack::base::pdns::recursor_aliaser_extra_records'),
     ) {
@@ -74,7 +75,7 @@ class profile::openstack::base::pdns::recursor::service(
     class { '::dnsrecursor':
             listen_addresses         => [$pdns_recursor_ip],
             allow_from               => $all_networks,
-            additional_forward_zones => "${tld}=${pdns_host_ip}, ${reverse_zone_rules}",
+            additional_forward_zones => "${tld}=${pdns_host_ip}, ${legacy_tld}=${pdns_host_ip}, ${reverse_zone_rules}",
             auth_zones               => 'labsdb=/var/zones/labsdb',
             lua_hooks                => $lua_hooks,
             max_negative_ttl         => 900,
