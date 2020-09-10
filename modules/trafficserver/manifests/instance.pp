@@ -193,7 +193,7 @@
 #                         'replacement' => 'http://krypton.eqiad.wmnet/', },
 #                       { 'type'        => 'map',
 #                         'target'      => '/',
-#                         'replacement' => 'http://deployment-mediawiki05.deployment-prep.eqiad.wmflabs/' }, ],
+#                         'replacement' => 'http://deployment-mediawiki05.deployment-prep.eqiad1.wikimedia.cloud/' }, ],
 #    caching_rules => [ { 'primary_destination' => 'dest_domain',
 #                         'value'               => 'grafana.wikimedia.org',
 #                         'action'              => 'never-cache' }, ],
