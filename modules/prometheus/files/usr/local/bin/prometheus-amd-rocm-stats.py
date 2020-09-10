@@ -15,7 +15,7 @@ log = logging.getLogger(__name__)
 def collect_stats_from_romc_smi(registry, rocm_smi_path):
     out = subprocess.run([
         rocm_smi_path, "--showuse", "--showpower",
-        "--showtemp", "--showfan", "--json"
+        "--showtemp", "--showfan", "--showmeminfo", "all", "--json"
     ], capture_output=True, text=True)
     rocm_metrics = {}
     for line in out.stdout.splitlines():
@@ -47,6 +47,14 @@ def collect_stats_from_romc_smi(registry, rocm_smi_path):
         namespace='amd_rocm_gpu', registry=registry
     )
 
+    gpu_stats['memory_total'] = Gauge(
+        'memory_total_bytes', 'Total GPU memory (bytes)', ['card', 'memtype'],
+        namespace='amd_rocm_gpu', registry=registry
+    )
+    gpu_stats['memory_used'] = Gauge(
+        'memory_used_bytes', 'Used GPU memory (bytes)', ['card', 'memtype'],
+        namespace='amd_rocm_gpu', registry=registry
+    )
     for card in rocm_metrics:
         for metric in rocm_metrics[card]:
             # General usage
@@ -86,6 +94,30 @@ def collect_stats_from_romc_smi(registry, rocm_smi_path):
             elif metric == 'Fan Speed (level)':
                 # we care only about the percentage value
                 continue
+
+            # Memory
+            # Total memory amounts, for percentage calculation with used memory
+            elif metric == 'vram Total Memory (B)':
+                gpu_stats['memory_total'].labels(card=card, memtype='vram').set(
+                    rocm_metrics[card][metric].strip())
+            elif metric == 'gtt Total Memory (B)':
+                gpu_stats['memory_total'].labels(card=card, memtype='gtt').set(
+                    rocm_metrics[card][metric].strip())
+            elif metric == 'vis_vram Total Memory (B)':
+                gpu_stats['memory_total'].labels(card=card, memtype='vis').set(
+                    rocm_metrics[card][metric].strip())
+            # Used memory amounts
+            elif metric == 'vram Total Used Memory (B)':
+                gpu_stats['memory_used'].labels(card=card, memtype='vram').set(
+                    rocm_metrics[card][metric].strip())
+            elif metric == 'gtt Total Used Memory (B)':
+                gpu_stats['memory_used'].labels(card=card, memtype='gtt').set(
+                    rocm_metrics[card][metric].strip())
+            elif metric == 'vis_vram Total Used Memory (B)':
+                gpu_stats['memory_used'].labels(card=card, memtype='vis').set(
+                    rocm_metrics[card][metric].strip())
+
+            # Unknown stuff should emit a warning (to be delivered by cron mail)
             else:
                 log.warning(
                     "Metric {} listed in rocm-smi's JSON  but not parsed"
