@@ -3443,9 +3443,7 @@ users:
   eyener:
     ensure: present
     realname: Erin Yener
-    email: eyener-ctr@wikimedia.org
-    expiry_date: 2020-09-16
-    expiry_contact: jrobell@wikimedia.org
+    email: eyener@wikimedia.org
     uid: 22127
     gid: 500
     name: eyener
