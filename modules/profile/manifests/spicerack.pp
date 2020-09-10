@@ -39,7 +39,6 @@ class profile::spicerack(
     require ::profile::cumin::master
     require ::profile::ipmi::mgmt
     require ::profile::access_new_install
-    require ::profile::conftool::client
 
     include ::service::deploy::common
     include ::passwords::redis
