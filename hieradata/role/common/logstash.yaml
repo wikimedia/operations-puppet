@@ -35,7 +35,7 @@ profile::elasticsearch::common_settings:
     transport_tcp_port: 9300
 
 # Logstash specific
-logstash::heap_memory: 1g
+logstash::heap_memory: 2g
 logstash::pipeline_batch_size: 1000
 
 # Kibana
