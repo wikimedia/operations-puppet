@@ -472,11 +472,6 @@ node 'db2140.codfw.wmnet' {
     role(mariadb::core)
 }
 
-# codfw MySQL source backups expansion T260819
-node 'db2141.codfw.wmnet' {
-    role(insetup)
-}
-
 # codfw replicas
 # See also db2137 and db2138 below
 node /^db2(073|106|110|119|136)\.codfw\.wmnet/ {
@@ -726,25 +721,35 @@ node 'db1145.eqiad.wmnet' {
 
 
 # codfw backup sources
-
+## s1 & s6, stretch
 node 'db2097.codfw.wmnet' {
     role(mariadb::dbstore_multiinstance)
 }
+## s2 & s3, stretch
 node 'db2098.codfw.wmnet' {
     role(mariadb::dbstore_multiinstance)
 }
+## s4 & s5, stretch
 node 'db2099.codfw.wmnet' {
     role(mariadb::dbstore_multiinstance)
 }
+## s7 & s8, stretch
 node 'db2100.codfw.wmnet' {
     role(mariadb::dbstore_multiinstance)
 }
+## x1, buster
 node 'db2101.codfw.wmnet' {
     role(mariadb::dbstore_multiinstance)
 }
+## s4 & s5, buster
 node 'db2139.codfw.wmnet' {
     role(mariadb::dbstore_multiinstance)
 }
+## s1 & s6, buster
+node 'db2141.codfw.wmnet' {
+    role(mariadb::dbstore_multiinstance)
+}
+
 
 # backup testing hosts
 node 'db1133.eqiad.wmnet' {
