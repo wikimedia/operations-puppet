@@ -48,17 +48,17 @@ PROMPTCOLOR="\[$(tput setaf 3)\]\[$(tput bold)\]"
 PROMPTRESET="\[$(tput sgr0)\]"
 case ${TERM} in
         xterm*|rxvt*|Eterm|aterm|kterm|gnome)
-		export PS1="$PROMPTCOLOR$HN\W\ \$$PROMPTRESET "
+		export PS1="$PROMPTCOLOR$HN\W \$$PROMPTRESET "
                 PROMPT_COMMAND='echo -ne "\033]0;${HOSTNAME%%.*}:${PWD/$HOME/\~}\007";stty echo'
                 ;;
         screen*)
-		export PS1="$PROMPTCOLOR$HN\W\ \$$PROMPTRESET "
+		export PS1="$PROMPTCOLOR$HN\W \$$PROMPTRESET "
                 PROMPT_COMMAND='echo -ne "\033_${HOSTNAME%%.*}:${PWD/$HOME/\~}\033\\";stty echo'
 		export TERM=screen-256color
 		unset DISPLAY
                 ;;
         tmux*)
-		export PS1="$PROMPTCOLOR$HN\W\ \$$PROMPTRESET "
+		export PS1="$PROMPTCOLOR$HN\W \$$PROMPTRESET "
                 PROMPT_COMMAND='echo -ne "\033_${HOSTNAME%%.*}:${PWD/$HOME/\~}\033\\";stty echo'
 		export TERM=tmux-256color
 		unset DISPLAY
