@@ -1,7 +1,7 @@
 " Python indent file
 " Language:	    Python
 " Maintainer:	    Eric Mc Sween <em@tomcom.de>
-" Original Author:  David Bustos <bustos@caltech.edu> 
+" Original Author:  David Bustos <bustos@caltech.edu>
 " Last Change:      2004 Jun 07
 
 " Only load this indent file when no other was loaded.
@@ -22,7 +22,7 @@ let s:maxoff = 50
 function! s:SearchParensPair()
     let line = line('.')
     let col = col('.')
-    
+
     " Skip strings and comments and don't look too far
     let skip = "line('.') < " . (line - s:maxoff) . " ? dummy :" .
                 \ 'synIDattr(synID(line("."), col("."), 0), "name") =~? ' .
@@ -51,7 +51,7 @@ function! s:SearchParensPair()
     if par3lnum > parlnum || (par3lnum == parlnum && par3col > parcol)
         let parlnum = par3lnum
         let parcol = par3col
-    endif 
+    endif
 
     " Put the cursor on the match
     if parlnum > 0
@@ -87,7 +87,7 @@ function! s:BlockStarter(lnum, block_start_re)
         if indent(lnum) < maxindent
             if getline(lnum) =~ a:block_start_re
                 return lnum
-            else 
+            else
                 let maxindent = indent(lnum)
                 " It's not worth going further if we reached the top level
                 if maxindent == 0
@@ -98,14 +98,14 @@ function! s:BlockStarter(lnum, block_start_re)
     endwhile
     return -1
 endfunction
-                
+
 function! GetPythonIndent(lnum)
 
     " First line has indent 0
     if a:lnum == 1
         return 0
     endif
-    
+
     " If we can find an open parenthesis/bracket/brace, line up with it.
     call cursor(a:lnum, 1)
     let parlnum = s:SearchParensPair()
@@ -126,7 +126,7 @@ function! GetPythonIndent(lnum)
             endif
         endif
     endif
-    
+
     " Examine this line
     let thisline = getline(a:lnum)
     let thisindent = indent(a:lnum)
@@ -140,7 +140,7 @@ function! GetPythonIndent(lnum)
             return -1
         endif
     endif
-        
+
     " If the line starts with 'except' or 'finally', line up with 'try'
     " or 'except'
     if thisline =~ '^\s*\(except\|finally\)\>'
@@ -151,19 +151,19 @@ function! GetPythonIndent(lnum)
             return -1
         endif
     endif
-    
+
     " Examine previous line
     let plnum = a:lnum - 1
     let pline = getline(plnum)
     let sslnum = s:StatementStart(plnum)
-    
+
     " If the previous line is blank, keep the same indentation
     if pline =~ '^\s*$'
         return -1
     endif
-    
+
     " If this line is explicitly joined, try to find an indentation that looks
-    " good. 
+    " good.
     if pline =~ '\\$'
         let compound_statement = '^\s*\(if\|while\|for\s.*\sin\|except\)\s*'
         let maybe_indent = matchend(getline(sslnum), compound_statement)
@@ -173,7 +173,7 @@ function! GetPythonIndent(lnum)
             return indent(sslnum) + &sw * 2
         endif
     endif
-    
+
     " If the previous line ended with a colon, indent relative to
     " statement start.
     if pline =~ ':\s*$'
