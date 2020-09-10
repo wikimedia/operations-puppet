@@ -1,0 +1,4 @@
+set tabstop=4
+set shiftwidth=4
+set nosmarttab
+set noexpandtab
