@@ -78,17 +78,19 @@ define base::expose_puppet_certs (
         mode   => '0400',
         source => "${ssldir}/private_keys/${puppet_cert_name}.pem",
     }
-    $p12_key_ensure = $ensure ? {
-        'present' => $provide_p12 ? {
-            true    => 'present',
+    if $base::puppet::export_p12 {
+        $p12_key_ensure = $ensure ? {
+            'present' => $provide_p12 ? {
+                true    => 'present',
+                default => 'absent',
+            },
             default => 'absent',
-        },
-        default => 'absent',
-    }
-    file { "${target_basedir}/ssl/server.p12":
-        ensure => $p12_key_ensure,
-        mode   => '0400',
-        source => "${ssldir}/private/${puppet_cert_name}.p12",
+        }
+        file { "${target_basedir}/ssl/server.p12":
+            ensure => $p12_key_ensure,
+            mode   => '0400',
+            source => "${ssldir}/private/${puppet_cert_name}.p12",
+        }
     }
 
     # Provide a keypair of key and cert concatenated. The file resource is used
