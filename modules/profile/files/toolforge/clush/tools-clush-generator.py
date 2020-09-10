@@ -100,7 +100,7 @@ def get_hostgroups(classifier, observer_pass, regions):
             for prefix in classifier:
                 if name.startswith("tools-" + prefix):
                     role = classifier[prefix]
-                    hostgroups[role].append(name + ".tools.eqiad.wmflabs")
+                    hostgroups[role].append(name + ".tools.eqiad1.wikimedia.cloud")
 
     return hostgroups
 
