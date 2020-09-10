@@ -55,10 +55,10 @@ def designate_endpoint_and_token():
     return (url, token)
 
 
-def delete_recordset(endpoint, token, zoneid, recordsetid):
+def delete_recordset(endpoint, token, project_id, zoneid, recordsetid):
     headers = {
         "X-Auth-Token": token,
-        "X-Auth-Sudo-Tenant-ID": "noauth-project",
+        "X-Auth-Sudo-Tenant-ID": project_id,
         "X-Designate-Edit-Managed-Records": "true",
     }
     recordseturl = "%s/v2/zones/%s/recordsets/%s" % (endpoint, zoneid, recordsetid)
@@ -68,10 +68,10 @@ def delete_recordset(endpoint, token, zoneid, recordsetid):
     time.sleep(1)
 
 
-def edit_recordset(endpoint, token, zoneid, recordset, newrecords):
+def edit_recordset(endpoint, token, project_id, zoneid, recordset, newrecords):
     headers = {
         "X-Auth-Token": token,
-        "X-Auth-Sudo-Tenant-ID": "noauth-project",
+        "X-Auth-Sudo-Tenant-ID": project_id,
         "X-Designate-Edit-Managed-Records": "true",
     }
 
@@ -97,15 +97,28 @@ def recordset_is_service(recordset):
     return False
 
 
-def purge_duplicates(delete=False):
+def purge_duplicates(project_id, delete=False):
     (endpoint, token) = designate_endpoint_and_token()
 
-    headers = {"X-Auth-Token": token, "X-Auth-Sudo-Tenant-ID": "noauth-project"}
+    headers = {"X-Auth-Token": token, "X-Auth-Sudo-Tenant-ID": project_id}
+
     req = requests.get("%s/v2/zones" % (endpoint), headers=headers, verify=False)
     req.raise_for_status()
     zones = yaml.safe_load(req.text)["zones"]
 
     for zone in zones:
+        if "svc." in zone["name"].lower():
+            # We don't want to mess with service records
+            print("skipping service zone: %s" % zone["name"])
+            continue
+
+        if zone["name"].lower().endswith(".org."):
+            # We don't want to mess with user-defined public records
+            print("skipping public zone: %s" % zone["name"])
+            continue
+
+        print("checking zone: %s" % zone["name"])
+
         req = requests.get(
             "%s/v2/zones/%s/recordsets" % (endpoint, zone["id"]),
             headers=headers,
@@ -162,7 +175,9 @@ def purge_duplicates(delete=False):
                 if name not in all_possible_names:
                     print(("%s is linked to missing instance %s" % (recordsetid, name)))
                     if delete:
-                        delete_recordset(endpoint, token, zone["id"], recordsetid)
+                        delete_recordset(
+                            endpoint, token, project_id, zone["id"], recordsetid
+                        )
                 # If the instance exists, check to see that it doesn't have multiple IPs.
                 if len(recordset["records"]) > 1:
                     print(
@@ -191,7 +206,9 @@ def purge_duplicates(delete=False):
                 if not goodrecords:
                     if delete:
                         print("Deleting the whole recordset.")
-                        delete_recordset(endpoint, token, zone["id"], recordsetid)
+                        delete_recordset(
+                            endpoint, token, project_id, zone["id"], recordsetid
+                        )
                 else:
                     if len(goodrecords) != len(originalrecords):
                         if delete:
@@ -202,7 +219,12 @@ def purge_duplicates(delete=False):
                                 )
                             )
                             edit_recordset(
-                                endpoint, token, zone["id"], recordset, goodrecords
+                                endpoint,
+                                token,
+                                project_id,
+                                zone["id"],
+                                recordset,
+                                goodrecords,
                             )
 
 
@@ -217,4 +239,5 @@ parser.add_argument(
 )
 args = parser.parse_args()
 
-purge_duplicates(args.delete)
+purge_duplicates("cloudinfra", args.delete)
+purge_duplicates("noauth-project", args.delete)
