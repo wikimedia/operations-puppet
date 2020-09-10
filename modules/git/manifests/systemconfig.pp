@@ -12,24 +12,20 @@
 #
 # Example usage:
 #
-# git::systemconfig { 'setup_http_proxy':
-#    settings => {
-#        # https://wikitech.wikimedia.org/wiki/HTTP_proxy
-#        'http'  => {
-#            'proxy' => "http://webproxy.${::site}.wmnet:8080"
-#        },
-#        'https' => {
-#            'proxy' => "http://webproxy.${::site}.wmnet:8080"
-#        },
-#     },
+# class { 'git::systemconfig':
+#    # https://wikitech.wikimedia.org/wiki/HTTP_proxy
+#    'http'  => {
+#        'proxy' => "http://webproxy.${::site}.wmnet:8080"
+#    },
+#    'https' => {
+#        'proxy' => "http://webproxy.${::site}.wmnet:8080"
+#    },
 # }
 #
-define git::systemconfig(
-    Hash[String, Hash[String, String]] $settings,
+class git::systemconfig(
+    $settings,
 ) {
-  require ::git::globalconfig
-
-  file { "/etc/gitconfig.d/${title}.gitconfig":
+  file { '/etc/gitconfig':
     ensure  => present,
     owner   => 'root',
     group   => 'root',
