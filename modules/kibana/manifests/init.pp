@@ -26,7 +26,7 @@ class kibana (
     String $kibana_package           = 'kibana',
     String $server_max_payload_bytes = '4194304',  #4MB (yes, this is a crazy limit, we need to reduce the number of fields)
     Boolean $enable_phatality        = true,
-    Boolean $logging_quiet           = true,
+    Boolean $logging_quiet           = false,
     Boolean $metrics_enabled         = false,      #T255863
     Boolean $telemetry_enabled       = false,      #T259794
     Boolean $newsfeed_enabled        = false,      #T259794
