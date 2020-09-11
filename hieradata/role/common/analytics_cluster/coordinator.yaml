@@ -98,6 +98,21 @@ profile::analytics::refinery::job::data_purge::ensure_timers: 'absent'
 profile::oozie::server::monitoring_enabled: true
 profile::oozie::server::ferm_srange: '$ANALYTICS_NETWORKS'
 
+# Comment taken from profile::oozie::server:
+#
+# This is not currently working.  Disabling
+# this allows any user to manage any Oozie
+# job.  Since access to our cluster is limited,
+# this isn't a big deal.  But, we should still
+# figure out why this isn't working and
+# turn it back on.
+# I was not able to kill any oozie jobs
+# with this on, even though the
+# oozie.service.ProxyUserService.proxyuser.*
+# settings look like they are properly configured.
+profile::oozie::server::use_admins_list: false
+profile::oozie::server::admin_users: ['otto', 'nuria', 'milimetric', 'mforns', 'fdans', 'joal', 'elukey', 'klausman', 'razzi']
+
 # Following Cloudera recommandations for ~20 users
 profile::hive::client::hive_metastore_opts: '-Xms4g -Xmx4g -XX:+UseG1GC -XX:+UseStringDeduplication -XX:MaxGCPauseMillis=1000 -Djava.net.preferIPv4Stack=false -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=[::]:9183:/etc/prometheus/hive_metastore_jmx_exporter.yaml'
 profile::hive::client::hive_server_opts: '-Xms8g -Xmx8g -XX:+UseG1GC -XX:+UseStringDeduplication -XX:MaxGCPauseMillis=1000 -Djava.net.preferIPv4Stack=false -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=[::]:10100:/etc/prometheus/hive_server_jmx_exporter.yaml'

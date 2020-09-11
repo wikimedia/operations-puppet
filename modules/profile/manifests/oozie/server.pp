@@ -23,6 +23,8 @@ class profile::oozie::server(
     $jdbc_password                            = hiera('profile::oozie::server::jdbc_password', undef),
     $spark_defaults_config_dir                = hiera('profile::oozie::server::spark_defaults_config_dir', undef),
     $oozie_sharelib_archive                   = hiera('profile::oozie::server::oozie_sharelib_archive', '/usr/lib/oozie/oozie-sharelib-yarn'),
+    Array[String] $oozie_admin_users          = lookup('profile::oozie::server::admin_users', { 'default_value' => ['hdfs'] }),
+    Boolean $use_admins_list                  = lookup('profile::oozie::server::use_admins_list', { 'default_value' => False }),
 ) {
     require ::profile::oozie::client
 
@@ -34,17 +36,8 @@ class profile::oozie::server(
     class { '::cdh::oozie::server':
         smtp_host                                   => 'localhost',
         smtp_from_email                             => "oozie@${::fqdn}",
-        # This is not currently working.  Disabling
-        # this allows any user to manage any Oozie
-        # job.  Since access to our cluster is limited,
-        # this isn't a big deal.  But, we should still
-        # figure out why this isn't working and
-        # turn it back on.
-        # I was not able to kill any oozie jobs
-        # with this on, even though the
-        # oozie.service.ProxyUserService.proxyuser.*
-        # settings look like they are properly configured.
-        authorization_service_authorization_enabled => false,
+        authorization_service_authorization_enabled => $use_admins_list,
+        admin_users                                 => $oozie_admin_users,
         jvm_opts                                    => $jvm_opts,
         java_home                                   => $java_home,
         oozie_service_kerberos_enabled              => $oozie_service_kerberos_enabled,
