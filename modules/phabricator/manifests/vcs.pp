@@ -58,11 +58,24 @@ class phabricator::vcs (
     }
 
     # Configure all git repositories we host
-    file { '/etc/gitconfig':
-        content => template('phabricator/vcs/system.gitconfig.erb'),
-        require => Package['git'],
-        owner   => 'root',
-        group   => 'root',
+    git::systemconfig { 'setup proxy':
+        settings => {
+            '[http "https://gerrit.googlesource.com"]'   => {
+                'proxy' => $proxy,
+            },
+            '[http "https://github.com"]'                => {
+                'proxy' => $proxy,
+            },
+            '[http "https://gitlab.com"]'                => {
+                'proxy' => $proxy,
+            },
+            '[http "https://gerrit.wikimedia.org"]'      => {
+                'proxy' => '',
+            },
+            '[http "https://phabricator.wikimedia.org"]' => {
+                'proxy' => '',
+            },
+        }
     }
 
     file { '/usr/libexec':
