@@ -2060,13 +2060,8 @@ node /^pc20(09)\.codfw\.wmnet$/ {
     role(mariadb::parsercache)
 }
 
-# new parsoid nodes (T243112)
-node /^parse20(0[1-9]|1[0-9])\.codfw\.wmnet$/ {
-    role(insetup)
-}
-
-# T247441
-node 'parse2020.codfw.wmnet' {
+# new parsoid nodes (T243112, T247441)
+node /^parse20(0[1-9]|1[0-9]|20)\.codfw\.wmnet$/ {
     role(parsoid)
 }
 
