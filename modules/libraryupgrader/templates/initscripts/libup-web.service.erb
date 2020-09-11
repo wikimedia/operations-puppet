@@ -13,6 +13,7 @@ ExecStart=/srv/libraryupgrader/venv/bin/gunicorn --pid /run/gunicorn/pid   \
 ExecReload=/bin/kill -s HUP $MAINPID
 ExecStop=/bin/kill -s TERM $MAINPID
 RuntimeMaxSec=86400
+Restart=on-failure
 PrivateTmp=true
 
 [Install]
