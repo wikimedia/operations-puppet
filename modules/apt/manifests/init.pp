@@ -2,6 +2,8 @@ class apt(
     Boolean $purge_sources     = false,
     Boolean $purge_preferences = false,
     Boolean $use_proxy         = true,
+    Boolean $manage_apt_source = false,
+    String  $mirror            = 'mirrors.wikimedia.org',
 ) {
     exec { 'apt-get update':
         path        => '/usr/bin',
@@ -25,6 +27,16 @@ class apt(
         package  => '*',
         pin      => 'release o=Wikimedia',
         priority => 1001,
+    }
+
+    if $manage_apt_source {
+        file { '/etc/apt/sources.list':
+            ensure  => file,
+            mode    => '0555',
+            owner   => 'root',
+            group   => 'root',
+            content => template('apt/base-apt-conf.erb'),
+        }
     }
 
     file { '/etc/apt/sources.list.d':

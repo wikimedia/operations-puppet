@@ -2,6 +2,7 @@ class profile::base(
     Boolean $use_apt_proxy = lookup('profile::base::use_apt_proxy'),
     Boolean $purge_apt_sources = lookup('profile::base::purge_apt_sources'),
     Boolean $purge_apt_preferences = lookup('profile::base::purge_apt_preferences'),
+    Boolean $manage_apt_source = lookup('profile::base::manage_apt_source'),
     $domain_search = hiera('profile::base::domain_search', $::domain), # lint:ignore:wmf_styleguide
     $nameservers   = hiera('profile::base::nameservers', $::nameservers), # lint:ignore:wmf_styleguide
     $remote_syslog = hiera('profile::base::remote_syslog', []),
@@ -52,6 +53,7 @@ class profile::base(
         use_proxy         => $use_apt_proxy,
         purge_sources     => $purge_apt_sources,
         purge_preferences => $purge_apt_preferences,
+        manage_apt_source => $manage_apt_source,
     }
 
     file { ['/usr/local/sbin', '/usr/local/share/bash']:
