@@ -16,14 +16,6 @@ class deployment::deployment_server(
         'python-git',
         ])
 
-    file { '/etc/gitconfig':
-        content => template('deployment/gitconfig.erb'),
-        mode    => '0444',
-        owner   => 'root',
-        group   => 'root',
-        require => Package['git'],
-    }
-
     file { '/usr/local/bin/git-new-workdir':
         source  => 'puppet:///modules/deployment/git-new-workdir',
         mode    => '0555',
