@@ -158,6 +158,15 @@ class openstack::util::admin_scripts(
         source => "puppet:///modules/openstack/${version}/admin_scripts/wmcs-ceph-migrate.py",
     }
 
+    # Script to drain a ceph-enabled cloudvirt via live migration
+    file { '/usr/local/sbin/wmcs-drain-hypervisor':
+        ensure => 'present',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+        source => "puppet:///modules/openstack/${version}/admin_scripts/wmcs-drain-hypervisor.py",
+    }
+
     # Script to list all flavors and number of VMs using the flavor
     file { '/usr/local/sbin/wmcs-flavorusage':
         ensure => 'present',
