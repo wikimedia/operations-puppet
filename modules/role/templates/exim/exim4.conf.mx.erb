@@ -322,7 +322,7 @@ otrs:
 	driver = manualroute
 	domains = +local_domains
 	condition = ${lookup mysql{OTRSQUERY}{true}fail}
-	route_list = *  mendelevium.eqiad.wmnet  byname
+	route_list = *  otrs1001.eqiad.wmnet  byname
 	transport = remote_smtp
 
 # Redirect postmaster@$domain if it hasn't been accepted before
