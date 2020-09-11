@@ -82,11 +82,15 @@ class arclamp(
         target => '/srv/deployment/performance/arc-lamp/arclamp-grep.py',
     }
 
-    $cron_environment = "MAILTO=${errors_mailto}"
+    $cron_environment = ["MAILTO=${errors_mailto}"]
     if $swift_account_name == undef {
-        $swift_cron_environment = $cron_environment
+        $swift_cron_environment = []
     } else {
-        $swift_cron_environment = "${cron_environment}\nST_AUTH=${swift_auth_url}/auth/v1.0\nST_USER=${swift_user}\nST_KEY=${swift_key}"
+        $swift_cron_environment = [
+            "ST_AUTH=${swift_auth_url}/auth/v1.0",
+            "ST_USER=${swift_user}",
+            "ST_KEY=${swift_key}",
+        ]
 
         # Also write credentials where they can be sourced by root
         # users who need to manually run the swift CLI tool for setup
@@ -113,7 +117,7 @@ class arclamp(
         command     => '/srv/deployment/performance/arc-lamp/arclamp-generate-svgs >/dev/null',
         user        => 'xenon',
         minute      => '*/15',
-        environment => $swift_cron_environment,
+        environment => $cron_environment + $swift_cron_environment,
         require     => Package['performance/arc-lamp']
     }
 
@@ -123,7 +127,7 @@ class arclamp(
         command     => '/srv/deployment/performance/arc-lamp/arclamp-compress-logs 7 >/dev/null',
         user        => 'xenon',
         minute      => '17', # intentionally offset from other jobs
-        environment => $cron_environment,
+        environment => $cron_environment + $swift_cron_environment,
         require     => Package['performance/arc-lamp']
     }
 
