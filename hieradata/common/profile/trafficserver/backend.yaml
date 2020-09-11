@@ -204,9 +204,6 @@ profile::trafficserver::backend::mapping_rules:
       target: http://ticket.wikimedia.org
       replacement: https://ticket.discovery.wmnet:1443
     - type: map
-      target: http://ticket-test.wikimedia.org
-      replacement: http://otrs1001.eqiad.wmnet
-    - type: map
       target: http://toolsadmin.wikimedia.org
       replacement: https://labweb.svc.eqiad.wmnet:7443
     - type: map
