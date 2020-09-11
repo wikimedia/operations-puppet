@@ -48,3 +48,12 @@ profile::grafana::ldap:
 #profile::grafana::admin_password:
 profile::tlsproxy::envoy::global_cert_name: "grafana.discovery.wmnet"
 rsync::server::wrap_with_stunnel: true
+
+profile::idp::client::httpd::vhost_content: 'profile/idp/client/httpd-grafana.erb'
+profile::idp::client::httpd::document_root: '/usr/share/grafana/public'
+profile::idp::client::httpd::virtual_host: 'grafana-rw.wikimedia.org'
+profile::idp::client::httpd::proxied_as_https: true
+profile::idp::client::httpd::required_groups:
+  - 'cn=wmf,ou=groups,dc=wikimedia,dc=org'
+  - 'cn=nda,ou=groups,dc=wikimedia,dc=org'
+profile::grafana::enable_cas: false

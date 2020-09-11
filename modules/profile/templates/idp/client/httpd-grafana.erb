@@ -1,0 +1,15 @@
+# Apache configuration for Grafana for authenticated editors/admin
+<VirtualHost *:80>
+  ServerName <%= @virtual_host %>
+  DocumentRoot /usr/share/grafana/public
+  DocumentRoot <%= @document_root %>
+
+  ProxyPreserveHost On
+  ProxyPass / http://localhost:3000/
+  ProxyPassReverse / http://localhost:3000/
+
+  # TODO: Adapt below for authenticated editors/admins
+  # RequestHeader unset X-WEBAUTH-USER
+  # Automatically log in all visitors as anonymous.
+  # RequestHeader set X-WEBAUTH-USER "Anonymous"
+</VirtualHost>

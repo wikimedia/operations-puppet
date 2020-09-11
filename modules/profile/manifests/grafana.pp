@@ -11,14 +11,13 @@ class profile::grafana (
     String       $admin_password = lookup('profile::grafana::admin_password'),
     Hash         $config         = lookup('profile::grafana::config'),
     Hash         $ldap           = lookup('profile::grafana::ldap', {'default_value' => undef}),
+    Boolean      $enable_cas     = lookup('profile::grafana::enable_cas'),
     Optional[Stdlib::Port] $wpt_graphite_proxy_port = lookup('profile::grafana::wpt_graphite_proxy_port',
                                                             {'default_value' => undef}),
 ) {
 
     include profile::backup::host
-
     include passwords::ldap::production
-
     include profile::base::firewall
 
     # This isn't needed by grafana, but is handy for inspecting its database.
@@ -115,6 +114,12 @@ class profile::grafana (
         require => Package['grafana'],
     }
 
+    # read/write access for editors/admins using CAS
+    if $enable_cas {
+        include profile::idp::client::httpd
+    }
+
+    # read-only, public access
     httpd::site { $domain:
         content => template('profile/apache/sites/grafana.erb'),
         require => Class['::grafana'],
