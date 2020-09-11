@@ -728,13 +728,14 @@ def puppet_first_run(host):
     """Disable Puppet service, enable Puppet agent and run it for the first time.
 
     Arguments:
-    host -- the FQDN of the host for which the Puppet certificate has to be revoked
+    host -- the FQDN of the host where to make the first Puppet run.
     """
+    ipv4 = resolve_dns(host, 'A')
     commands = ['systemctl stop puppet.service',
                 'systemctl reset-failed puppet.service || true',
                 'puppet agent --enable',
                 ('puppet agent --onetime --no-daemonize --verbose --no-splay --show_diff '
-                 '--ignorecache --no-usecacheonfailure')]
+                 '--ignorecache --no-usecacheonfailure --sourceaddress {ip}'.format(ip=ipv4))]
 
     print_line('Started first puppet run (sit back, relax, and enjoy the wait)', host=host)
     run_cumin('puppet_first_run', host, commands, timeout=10800, installer=True)
