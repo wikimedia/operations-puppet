@@ -10,6 +10,8 @@ profile::grafana::config:
     org_name: Wikimedia
   security:
     allow_embedding: true
+  panels:
+    disable_sanitize_html: true
 profile::grafana::ldap:
   servers:
     eqiad:
