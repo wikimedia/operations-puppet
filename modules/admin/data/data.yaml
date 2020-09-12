@@ -4018,6 +4018,10 @@ ldap_only_users:
     ensure: present
     realname: Michael Grosse
     email: michael.grosse@wikimedia.de
+  mraish:
+    ensure: present
+    realname: Michael Raish
+    email: mraish@gmail.com
   moushirael:
     ensure: present
     realname: Moushira Elamrawy
