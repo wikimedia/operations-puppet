@@ -204,7 +204,9 @@ ncredir-eqiad: A:ncredir and A:eqiad
 ncredir-esams: A:ncredir and A:esams
 ncredir-ulsfo: A:ncredir and A:ulsfo
 ncredir-eqsin: A:ncredir and A:eqsin
-netbox: P{O:netbox::frontend or O:netbox::standalone}
+netbox: P{O:netbox::frontend}
+netbox-canary: P{O:netbox::standalone}
+netbox-all: A:netbox or A:netbox-canary
 netboxdb: P{O:netbox::database}
 netflow: P{O:netinsights}
 netmon: P{O:network::monitor}
