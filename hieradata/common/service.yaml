@@ -2468,7 +2468,7 @@ service::catalog:
     sites:
     - eqiad
     - codfw
-    state: production
+    state: lvs_setup
   termbox:
     description: Wikidata Termbox SSR termbox.svc.%{::site}.wmnet
     encryption: true
