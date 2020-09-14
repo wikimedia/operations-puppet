@@ -18,6 +18,7 @@ from logging import FileHandler
 import cumin
 import dns.resolver
 import requests
+import yaml
 
 from conftool import configuration, kvobject, loader
 from conftool.drivers import BackendError
@@ -30,6 +31,7 @@ DEPLOYMENT_DOMAIN = 'deployment.eqiad.wmnet'
 DEBMONITOR_URL = 'https://debmonitor.discovery.wmnet/hosts/{host}'
 DEBMONITOR_CERT = '/etc/debmonitor/ssl/cert.pem'
 DEBMONITOR_KEY = '/etc/debmonitor/ssl/server.key'
+NETBOX_CONFIG = '/etc/spicerack/netbox/config.yaml'
 INTERNAL_TLD = 'wmnet'
 MANAGEMENT_DOMAIN = 'mgmt'
 CERT_DESTROY = 'destroy'
@@ -893,6 +895,30 @@ def wait_puppet_run(host, start=None):
         time.sleep(WATCHER_LONG_SLEEP)
 
     print_line('Puppet run checked', host=host)
+
+
+def update_netbox(host):
+    """Update Netbox with the actual interfaces of the host.
+
+    Arguments:
+    host -- the FQDN of the host
+    """
+    with open(NETBOX_CONFIG, 'r') as fh:
+        config = yaml.safe_load(fh)
+
+    api_url = '{}api/extras/scripts/interface_automation.ImportPuppetDB/'.format(config['api_url'])
+    headers = {'Authorization': 'Token {}'.format(config['api_token_rw'])}
+    data = {'data': {'device': host.split('.')[0]}, 'commit': 1}
+    result = requests.post(api_url, headers=headers, json=data)
+    if result.ok:
+        print_line('Updated Netbox:')
+        for line in result.json()['output'].splitlines():
+            print_line(line, host=host)
+    else:
+        print_line('Failed to update Netbox, manual intervention required:',
+                   host=host, level=logging.ERROR)
+        for line in result.text.splitlines():
+            print_line(line, host=host, level=logging.ERROR)
 
 
 def reboot_host(host):

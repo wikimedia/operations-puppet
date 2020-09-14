@@ -195,6 +195,7 @@ def run(args, user, log_path):
                             '{msg}').format(msg=downtime_message))
 
     lib.check_bios_bootparams(args.host, args.mgmt)
+    lib.update_netbox(args.host)
 
     # Issue a reboot and wait for it and also for Puppet to complete
     if not args.no_reboot:
