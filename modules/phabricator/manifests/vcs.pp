@@ -60,19 +60,19 @@ class phabricator::vcs (
     # Configure all git repositories we host
     git::systemconfig { 'setup proxy':
         settings => {
-            '[http "https://gerrit.googlesource.com"]'   => {
+            'http "https://gerrit.googlesource.com"'   => {
                 'proxy' => $proxy,
             },
-            '[http "https://github.com"]'                => {
+            'http "https://github.com"'                => {
                 'proxy' => $proxy,
             },
-            '[http "https://gitlab.com"]'                => {
+            'http "https://gitlab.com"'                => {
                 'proxy' => $proxy,
             },
-            '[http "https://gerrit.wikimedia.org"]'      => {
+            'http "https://gerrit.wikimedia.org"'      => {
                 'proxy' => '',
             },
-            '[http "https://phabricator.wikimedia.org"]' => {
+            'http "https://phabricator.wikimedia.org"' => {
                 'proxy' => '',
             },
         }

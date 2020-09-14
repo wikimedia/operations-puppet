@@ -10,7 +10,7 @@ class git::globalconfig {
 
   file { '/etc/gitconfig.d/00-header.gitconfig':
       ensure  => file,
-      content => '# This file is managed by Puppet\n',
+      content => "# vim: set ts=4 sw=4 et:\n# This file is managed by Puppet\n",
       owner   => 'root',
       group   => 'root',
       mode    => '0444',
