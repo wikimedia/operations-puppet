@@ -174,7 +174,7 @@ class profile::kafka::broker(
 
     $max_heap_size                     = hiera('profile::kafka::broker::max_heap_size', undef),
     $num_partitions                    = hiera('profile::kafka::broker::num_partitions', 1),
-    $custom_ferm_srange                = lookup('profile::kafka::broker::custom_ferm_srange', { 'default_value' => undef }),
+    $custom_ferm_srange_components     = lookup('profile::kafka::broker::custom_ferm_srange_components', { 'default_value' => undef }),
 ) {
     $config         = kafka_config($kafka_cluster_name)
     $cluster_name   = $config['name']
@@ -377,8 +377,9 @@ class profile::kafka::broker(
         num_partitions                   => $num_partitions,
     }
 
-    if $custom_ferm_srange {
-        $ferm_srange = $custom_ferm_srange
+    if $custom_ferm_srange_components {
+        $ferm_srange_components = join($custom_ferm_srange_components, ' ')
+        $ferm_srange = "(${ferm_srange_components})"
     } else {
         $ferm_srange = $::realm ? {
             'production' => '($PRODUCTION_NETWORKS $FRACK_NETWORKS)',
