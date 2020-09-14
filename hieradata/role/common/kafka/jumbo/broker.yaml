@@ -64,6 +64,7 @@ profile::kafka::broker::max_heap_size: '2g'
 # - wdqs1009 (wdqs-updater)
 # - search-loader[12]001 - mjolnir (Search team)
 # - kafkamon hosts (1001/1002 and 2002 in case of failover to codfw)
+# - webperf hosts (due to coal's processors)
 profile::kafka::broker::custom_ferm_srange_components:
   - '$ANALYTICS_NETWORKS'
   - '$KAFKA_BROKERS_JUMBO'
@@ -86,6 +87,10 @@ profile::kafka::broker::custom_ferm_srange_components:
   - '(@resolve((kafkamon1001.eqiad.wmnet)) @resolve((kafkamon1001.eqiad.wmnet), AAAA))'
   - '(@resolve((kafkamon1002.eqiad.wmnet)) @resolve((kafkamon1002.eqiad.wmnet), AAAA))'
   - '(@resolve((kafkamon2002.codfw.wmnet)) @resolve((kafkamon2002.codfw.wmnet), AAAA))'
+  - '(@resolve((webperf2001.codfw.wmnet)) @resolve((webperf2001.codfw.wmnet), AAAA))'
+  - '(@resolve((webperf2002.codfw.wmnet)) @resolve((webperf2002.codfw.wmnet), AAAA))'
+  - '(@resolve((webperf1001.eqiad.wmnet)) @resolve((webperf1001.eqiad.wmnet), AAAA))'
+  - '(@resolve((webperf1002.eqiad.wmnet)) @resolve((webperf1002.eqiad.wmnet), AAAA))'
 
 # Kafka doesn't support Java 11 for versions
 # lower than 2.1
