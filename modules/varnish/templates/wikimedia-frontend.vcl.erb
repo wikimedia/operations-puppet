@@ -281,6 +281,10 @@ sub normalize_request {
 		return (synth(400, ""));
 	}
 
+	if (req.http.Accept-Language) {
+		set req.http.Accept-Language = std.tolower(req.http.Accept-Language);
+	}
+
 	// Check that the normalized hostname actually matches our SAN set from
 	// the Unified multi/wildcard certificate we use for prod cache cluster
 	// termination.  This won't eliminate every bad hostname down at the

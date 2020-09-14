@@ -2,7 +2,7 @@ varnishtest "REST API Accept-Language normalization"
 
 server s1 {
     rxreq
-    expect req.http.Accept-Language == "sv-SE"
+    expect req.http.Accept-Language == "sv-se"
     txresp
 
     rxreq
