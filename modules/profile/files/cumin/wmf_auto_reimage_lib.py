@@ -912,8 +912,9 @@ def update_netbox(host):
     result = requests.post(api_url, headers=headers, json=data)
     if result.ok:
         print_line('Updated Netbox:')
-        for line in result.json()['output'].splitlines():
-            print_line(line, host=host)
+        for log_line in result.json()['log']:
+            print_line(log_line['message'], host=host,
+                       level=getattr(logging, log_line['status'].upper()))
     else:
         print_line('Failed to update Netbox, manual intervention required:',
                    host=host, level=logging.ERROR)
