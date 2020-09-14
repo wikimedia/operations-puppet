@@ -137,6 +137,7 @@ $private_wikis = [
     'arbcom_enwiki',
     'arbcom_fiwiki',
     'arbcom_nlwiki',
+    'arbcom_ruwiki',
     'auditcomwiki',
     'boardgovcomwiki',
     'boardwiki',
