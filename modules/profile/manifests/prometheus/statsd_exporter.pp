@@ -12,14 +12,6 @@ class profile::prometheus::statsd_exporter (
     $prometheus_ferm_nodes = join($prometheus_nodes, ' ')
     $ferm_srange = "(@resolve((${prometheus_ferm_nodes})) @resolve((${prometheus_ferm_nodes}), AAAA))"
 
-    # Don't spam conntrack with localhost statsd clients
-    ferm::client { 'statsd-exporter-client':
-        proto   => 'udp',
-        notrack => true,
-        port    => '9125',
-        drange  => '127.0.0.1',
-    }
-
     ferm::service { 'prometheus-statsd-exporter':
         proto  => 'tcp',
         port   => '9112',
