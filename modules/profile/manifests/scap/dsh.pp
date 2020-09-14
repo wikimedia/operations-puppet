@@ -2,11 +2,12 @@
 #
 # Installs the dsh files used by scap on a host
 class profile::scap::dsh(
-    $groups = hiera('scap::dsh::groups'),
-    $proxies = hiera('scap::dsh::scap_proxies', []),
-    $masters = hiera('scap::dsh::scap_masters', []),
-    $conftool_prefix = hiera('conftool_prefix'),
-) {
+    Hash $groups = lookup('scap::dsh::groups'),
+    Array[Stdlib::Host] $proxies = lookup('scap::dsh::scap_proxies', {'default_value' => []}),
+    Array[Stdlib::Host] $masters = lookup('scap::dsh::scap_masters', {'default_value' => []}),
+    String $conftool_prefix = lookup('conftool_prefix'),
+){
+
     class { 'confd':
         interval => 300,
         prefix   => $conftool_prefix,
