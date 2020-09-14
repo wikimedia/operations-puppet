@@ -177,6 +177,30 @@ class profile::logstash::collector7 (
         consumer_threads                      => 3,
     }
 
+    logstash::input::kafka { 'networkerror-eqiad':
+        kafka_cluster_name                    => 'logging-eqiad',
+        topic                                 => 'eqiad.w3c.reportingapi.network_error',
+        group_id                              => $input_kafka_consumer_group_id,
+        tags                                  => ['input-kafka-networkerror-eqiad', 'kafka', 'es'],
+        codec                                 => 'json',
+        security_protocol                     => 'SSL',
+        ssl_truststore_password               => $input_kafka_ssl_truststore_passwords['logging-eqiad'],
+        ssl_endpoint_identification_algorithm => '',
+        consumer_threads                      => 3,
+    }
+
+    logstash::input::kafka { 'networkerror-codfw':
+        kafka_cluster_name                    => 'logging-codfw',
+        topic                                 => 'codfw.w3c.reportingapi.network_error',
+        group_id                              => $input_kafka_consumer_group_id,
+        tags                                  => ['input-kafka-networkerror-codfw', 'kafka', 'es'],
+        codec                                 => 'json',
+        security_protocol                     => 'SSL',
+        ssl_truststore_password               => $input_kafka_ssl_truststore_passwords['logging-codfw'],
+        ssl_endpoint_identification_algorithm => '',
+        consumer_threads                      => 3,
+    }
+
     # Collect all EventGate instance error.validation topics into logstash.
     # Maps logstash::input::kafka title to a kafka cluster and topic to consume.
     $eventgate_validation_error_logstash_inputs = {
