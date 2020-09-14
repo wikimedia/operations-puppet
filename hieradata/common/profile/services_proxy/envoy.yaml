@@ -44,7 +44,7 @@ profile::services_proxy::envoy::listeners:
     timeout: "2.5s"
   - name: termbox
     port: 6008
-    service: termbox-https
+    service: termbox
     upstream: termbox.discovery.wmnet
     keepalive: "4.5s"
     retry:

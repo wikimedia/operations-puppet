@@ -2489,7 +2489,7 @@ service::catalog:
     discovery:
     - dnsdisc: thanos-swift
       active_active: true
-  termbox:
+  termbox-http:
     description: Wikidata Termbox SSR termbox.svc.%{::site}.wmnet
     encryption: false
     ip:
@@ -2525,10 +2525,7 @@ service::catalog:
     - eqiad
     - codfw
     state: production
-    discovery:
-    - dnsdisc: termbox
-      active_active: true
-  termbox-https:
+  termbox:
     description: Wikidata Termbox SSR termbox.svc.%{::site}.wmnet
     encryption: true
     ip:

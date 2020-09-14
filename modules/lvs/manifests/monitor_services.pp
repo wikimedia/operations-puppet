@@ -108,7 +108,7 @@ class lvs::monitor_services(
             "check_termbox_${dc}":
                 host        => "termbox.svc.${dc}.wmnet",
                 description => "termbox ${dc}",
-                target      => "http://termbox.svc.${dc}.wmnet:3030",
+                target      => "https://termbox.svc.${dc}.wmnet:4004",
                 notes_url   => 'https://wikitech.wikimedia.org/wiki/WMDE/Wikidata/SSR_Service',
                 ;
             "check_wikifeeds_${dc}":
