@@ -408,23 +408,6 @@ sub cluster_fe_hash { }
 sub cluster_fe_hit { }
 
 sub cluster_fe_ratelimit {
-	// Medium hammer: Temporary mitigative action for 2020-09-08 parsoid overload via restbase
-	if (req.http.host == "zh.wikipedia.org" && req.url ~ "^/api/rest_v1/") {
-		if (req.http.accept-language) {
-			// Experimentally lowercase AL to reduce variations
-			// (this should probably later be done globally for all traffic)
-			set req.http.accept-language = std.tolower(req.http.accept-language);
-			// These are true variants that aren't cached in RB,
-			// any other AL string (or empty) will be normalized to
-			// cacheable zh internally:
-			if (req.http.accept-language ~ "^zh-(hans|hant|cn|hk|mo|my|sg|tw)$") {
-				if (vsthrottle.is_denied("zhwiki-restbase", 50, 10s)) {
-					return (synth(429, "Too Many Requests"));
-				}
-			}
-		}
-	}
-
 	if (req.url ~ "^/api/rest_v1/page/pdf/") {
 		if (vsthrottle.is_denied("proton_limiter:" + req.http.X-Client-IP, 10, 10s)) {
 			return (synth(429, "Too Many Requests"));
