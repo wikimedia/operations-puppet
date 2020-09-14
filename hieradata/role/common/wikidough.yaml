@@ -33,4 +33,4 @@ profile::wikidough::dnsdist::webserver:
 # password:
 # api_key:
 
-profile::wikidough::dnsdist::landing_text: 'Please visit https://wikitech.wikimedia.org/wiki/Wikidough for more information.'
+profile::wikidough::dnsdist::landing_text: '<!DOCTYPE html><title>Wikidough</title><p>Please visit the <a href="https://wikitech.wikimedia.org/wiki/Wikidough">Wikitech page</a> for more information.</p>'
