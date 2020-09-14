@@ -913,8 +913,8 @@ def update_netbox(host):
     if result.ok:
         print_line('Updated Netbox:')
         for log_line in result.json()['log']:
-            print_line(log_line['message'], host=host,
-                       level=getattr(logging, log_line['status'].upper()))
+            message = '[{status}] {msg}'.format(status=log_line['status'], msg=log_line['message'])
+            print_line(message, host=host)
     else:
         print_line('Failed to update Netbox, manual intervention required:',
                    host=host, level=logging.ERROR)
