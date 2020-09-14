@@ -19,7 +19,6 @@ class git::globalconfig {
 
   exec { 'update-gitconfig':
       command     => '/bin/cat /etc/gitconfig.d/*.gitconfig > /etc/gitconfig',
-      creates     => '/etc/gitconfig',
       refreshonly => true,
   }
 }
