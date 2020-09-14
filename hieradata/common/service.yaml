@@ -339,7 +339,7 @@ service::catalog:
           timeout-clean-reconnect: 3
         ProxyFetch:
           url:
-          - http://localhost/_info
+          - https://localhost/_info
       scheduler: wrr
     monitoring:
       check_command: check_https_lvs_on_port!citoid.discovery.wmnet!4003!/_info
