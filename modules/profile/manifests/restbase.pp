@@ -47,7 +47,7 @@
 #   graphoid host + port. Format: http://graphoid.svc.eqiad.wmnet:19000
 #
 # [*mobileapps_uri*]
-#   MobileApps service URI. Format: http://mobileapps.svc.eqiad.wmnet:8888
+#   MobileApps service URI. Format: https://mobileapps.svc.eqiad.wmnet:4102
 #
 # [*mathoid_uri*]
 #   Mathoid service URI. Format: http://mathoid.svc.eqiad.wmnet:10042
