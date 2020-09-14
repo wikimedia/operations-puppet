@@ -10,11 +10,18 @@ profile::idp::services:
   icinga:
     class: 'org.apereo.cas.services.RegexRegisteredService'
     id: 1
-    service_id: 'https://(cas-)?icinga.wikimedia.org(/.*)?'
+    service_id: 'https://icinga.wikimedia.org(/.*)?'
     attribute_release_policy:
       '@class': 'org.apereo.cas.services.ReturnAllAttributeReleasePolicy'
     access_strategy:
       '@class': 'org.apereo.cas.services.DefaultRegisteredServiceAccessStrategy'
+      'requiredAttributes':
+        '@class': 'java.util.HashMap'
+        'memberOf': ['java.util.HashSet', [
+          'cn=ops,ou=groups,dc=wikimedia,dc=org',
+          'cn=nda,ou=groups,dc=wikimedia,dc=org',
+          'cn=wmf,ou=groups,dc=wikimedia,dc=org',
+        ]]
     properties:
       '@class': 'java.util.HashMap'
       httpHeaderEnableXFrameOptions:
