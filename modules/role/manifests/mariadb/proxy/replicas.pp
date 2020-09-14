@@ -7,4 +7,5 @@ class role::mariadb::proxy::replicas {
     }
     include ::profile::mariadb::proxy
     include ::profile::mariadb::proxy::replicas
+    include ::profile::mariadb::proxy::multiinstance_replicas
 }
