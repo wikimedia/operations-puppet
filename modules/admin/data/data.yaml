@@ -4461,3 +4461,7 @@ ldap_only_users:
     ensure: present
     realname: Seve Kim
     email: kim@wikimedia.org
+  sudhanshugautam:
+    ensure: present
+    realname: Sudhanshu Gautam
+    email: sgautam@wikimedia.org
