@@ -418,7 +418,7 @@ sub cluster_fe_ratelimit {
 			// any other AL string (or empty) will be normalized to
 			// cacheable zh internally:
 			if (req.http.accept-language ~ "^zh-(hans|hant|cn|hk|mo|my|sg|tw)$") {
-				if (vsthrottle.is_denied("zhwiki-restbase", 10, 10s)) {
+				if (vsthrottle.is_denied("zhwiki-restbase", 50, 10s)) {
 					return (synth(429, "Too Many Requests"));
 				}
 			}
