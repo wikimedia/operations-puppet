@@ -104,6 +104,8 @@ profile::idp::services:
       '@class': 'org.apereo.cas.services.ReturnAllAttributeReleasePolicy'
     access_strategy:
       '@class': 'org.apereo.cas.services.DefaultRegisteredServiceAccessStrategy'
+    # No requiredAttributes is defined for people.wikimedia.org as access is
+    # controlled via local .htaccess files for specific sub pages
   librenms:
     class: 'org.apereo.cas.services.RegexRegisteredService'
     id: 8
