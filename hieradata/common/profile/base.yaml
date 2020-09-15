@@ -6,3 +6,5 @@ profile::base::enable_adduser: true
 profile::base::remote_syslog_queue_enabled:
   - 'ulsfo'
   - 'eqsin'
+  - 'esams'
+  - 'eqiad'
