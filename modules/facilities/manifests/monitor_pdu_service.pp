@@ -49,10 +49,7 @@ define facilities::monitor_pdu_service(
         $crit_hi = $breaker * 0.8 * 100
     }
 
-    $snmp_community = $site ? {
-        'codfw' => $passwords::network::snmp_ro_community_pdus_codfw,
-        default => $passwords::network::snmp_ro_community,
-    }
+    $snmp_community =  $passwords::network::snmp_ro_community
 
     @monitoring::service { $title:
         host          => $host,
@@ -63,4 +60,3 @@ define facilities::monitor_pdu_service(
     }
 
 }
-
