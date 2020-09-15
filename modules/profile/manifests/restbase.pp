@@ -57,7 +57,7 @@
 #   http://aqs.svc.eqiad.wmnet:7232/analytics.wikimedia.org/v1
 #
 # [*event_service_uri*]
-#   Eventgate service URI. Format: http://eventgate-main.discovery.wmnet:32192/v1/events
+#   Eventgate service URI. Format: https://eventgate-main.discovery.wmnet:4492/v1/events
 #
 # [*proton_uri*]
 #   Proton PDF Render service URI. Format: http://proton.discovery.wmnet:24766
