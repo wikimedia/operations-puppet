@@ -505,6 +505,12 @@ class profile::prometheus::ops (
           { 'files' => [ "${targets_path}/icinga_*.yaml" ]}
         ],
       },
+      {
+        'job_name'        => 'icinga-am',
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/icinga-am_*.yaml" ]}
+        ],
+      },
     ]
 
     # Special config for Icinga exporter
@@ -513,6 +519,14 @@ class profile::prometheus::ops (
         site       => $::site,
         class_name => 'profile::icinga',
         port       => 9245,
+    }
+
+    prometheus::class_config{ "icinga-am_${::site}":
+        dest             => "${targets_path}/icinga-am_${::site}.yaml",
+        site             => $::site,
+        class_name       => 'prometheus::icinga_exporter',
+        class_parameters => { 'export_problems' => true },
+        port             => 9247,
     }
 
     # Job definition for prometheus-es-exporter
