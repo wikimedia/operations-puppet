@@ -162,6 +162,29 @@ sub https_deliver_hsts {
 	}
 }
 
+// *** HTTPS deliver code - domain-based W3C Reporting API / Network Error Logging headers
+// https://phabricator.wikimedia.org/T257527
+// c.f. https://www.w3.org/TR/network-error-logging/ and https://w3c.github.io/reporting/
+sub https_deliver_networkerrorlogging {
+	// User agents only accept these headers via HTTPS.
+	if (req.http.X-Forwarded-Proto == "https") {
+		// We're doing a phased deployment.  To begin with, only group0 wikis.
+		if (req.http.Host ~ "(test\.(wikipedia|wikidata)|mediawiki|office\.wikimedia)\.org$") {
+			// The values of these headers are JSON, but you must be careful to *not* embed `{"` or `"}`
+			// in the JSON itself, as those bigrams are VCL long-string delimiters.  One way to mangle JSON
+			// in the needed fashion is with the following Python snippet:
+			//     report_to = dict(group='wm_nel', max_age=86400, endpoints=[dict(url='https://intake-logging.wikimedia.org/v1/events?stream=w3c.reportingapi.network_error&schema_uri=/w3c/reportingapi/network_error/1.0.0')])
+			//     print(json.dumps(report_to).replace('{"', '{ "').replace('"}', '" }'))
+			// VTC string literals can similarly be obtained with:
+			//     print(json.dumps(report_to).replace('{"', '{ "').replace('"}', '" }').replace('"', '\\"'))
+			set resp.http.Report-To = {"{ "group": "wm_nel", "max_age": 86400, "endpoints": [{ "url": "https://intake-logging.wikimedia.org/v1/events?stream=w3c.reportingapi.network_error&schema_uri=/w3c/reportingapi/network_error/1.0.0" }] }"};
+			//     nel=dict(report_to='wm_nel', max_age=86400, failure_fraction=1.0, success_fraction=0.0)
+			set resp.http.NEL = {"{ "report_to": "wm_nel", "max_age": 86400, "failure_fraction": 1.0, "success_fraction": 0.0}"};
+			// TODO: we should likely pick a lower failure_fraction before deploying past group0.
+		}
+	}
+}
+
 // *** X-Connection-Properties parsing recv code
 sub log_xcps_info {
 	// Sanity-check the overall format defined by the config of ATS-TLS
@@ -989,6 +1012,8 @@ sub deliver_synth_ {
 	std.collect(resp.http.X-Varnish);
 
 	call https_deliver_hsts;
+
+	call https_deliver_networkerrorlogging;
 
 	call analytics_deliver;
 

@@ -3,6 +3,14 @@ varnishtest "cache_text frontend headers"
 server s1 {
     rxreq
     txresp
+    rxreq
+    txresp
+    rxreq
+    txresp
+    rxreq
+    txresp
+    rxreq
+    txresp
 } -start
 
 varnish v1 -arg "-p vcl_path=${vcl_path} -p vcc_err_unref=false -p vcc_allow_inline_c=true -p cc_command='${cc_command}'" -vcl+backend {
@@ -40,6 +48,34 @@ client c1 {
     expect resp.http.X-Analytics == "https=1;nocookies=1"
     expect resp.http.X-Client-IP == "91.198.174.192"
     expect resp.http.Set-Cookie ~ "WMF-Last-Access="
+    # These should not be set (yet, at this point in the deployment of T257527)
+    expect resp.http.Report-To == <undef>
+    expect resp.http.NEL == <undef>
+    # TODO: how to expect the *lack* of a response header??
+
+    txreq -url "/" -hdr "Host: test.wikipedia.org" -hdr "X-Forwarded-Proto: https" -hdr "X-Client-IP: 91.198.174.192"
+    rxresp
+    expect resp.http.Strict-Transport-Security == "max-age=106384710; includeSubDomains; preload"
+    expect resp.http.X-Analytics == "https=1;nocookies=1"
+    expect resp.http.X-Client-IP == "91.198.174.192"
+    expect resp.http.Set-Cookie ~ "WMF-Last-Access="
+    expect resp.http.Report-To == "{ \"group\": \"wm_nel\", \"max_age\": 86400, \"endpoints\": [{ \"url\": \"https://intake-logging.wikimedia.org/v1/events?stream=w3c.reportingapi.network_error&schema_uri=/w3c/reportingapi/network_error/1.0.0\" }] }"
+    expect resp.http.NEL == "{ \"report_to\": \"wm_nel\", \"max_age\": 86400, \"failure_fraction\": 1.0, \"success_fraction\": 0.0}"
+
+    txreq -url "/" -hdr "Host: test.wikidata.org" -hdr "X-Forwarded-Proto: https" -hdr "X-Client-IP: 91.198.174.192"
+    rxresp
+    expect resp.http.Report-To == "{ \"group\": \"wm_nel\", \"max_age\": 86400, \"endpoints\": [{ \"url\": \"https://intake-logging.wikimedia.org/v1/events?stream=w3c.reportingapi.network_error&schema_uri=/w3c/reportingapi/network_error/1.0.0\" }] }"
+    expect resp.http.NEL == "{ \"report_to\": \"wm_nel\", \"max_age\": 86400, \"failure_fraction\": 1.0, \"success_fraction\": 0.0}"
+
+    txreq -url "/" -hdr "Host: office.wikimedia.org" -hdr "X-Forwarded-Proto: https" -hdr "X-Client-IP: 91.198.174.192"
+    rxresp
+    expect resp.http.Report-To == "{ \"group\": \"wm_nel\", \"max_age\": 86400, \"endpoints\": [{ \"url\": \"https://intake-logging.wikimedia.org/v1/events?stream=w3c.reportingapi.network_error&schema_uri=/w3c/reportingapi/network_error/1.0.0\" }] }"
+    expect resp.http.NEL == "{ \"report_to\": \"wm_nel\", \"max_age\": 86400, \"failure_fraction\": 1.0, \"success_fraction\": 0.0}"
+
+    txreq -url "/" -hdr "Host: www.mediawiki.org" -hdr "X-Forwarded-Proto: https" -hdr "X-Client-IP: 91.198.174.192"
+    rxresp
+    expect resp.http.Report-To == "{ \"group\": \"wm_nel\", \"max_age\": 86400, \"endpoints\": [{ \"url\": \"https://intake-logging.wikimedia.org/v1/events?stream=w3c.reportingapi.network_error&schema_uri=/w3c/reportingapi/network_error/1.0.0\" }] }"
+    expect resp.http.NEL == "{ \"report_to\": \"wm_nel\", \"max_age\": 86400, \"failure_fraction\": 1.0, \"success_fraction\": 0.0}"
 } -run
 
 logexpect l1 -wait
