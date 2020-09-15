@@ -859,7 +859,7 @@ service::catalog:
     sites:
     - eqiad
     - codfw
-    state: production
+    state: lvs_setup
 
   eventstreams:
     description: Public streams of events via HTTP + SSE, backed by Kafka. eventstreams.svc.%{::site}.wmnet
