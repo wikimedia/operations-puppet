@@ -1,0 +1,17 @@
+fields:
+  type: "w3creportingapi"
+codec: "json_lines"
+ignore:
+  - "@timestamp"
+  - "host"
+testcases:
+  - input:
+      - >
+        {
+          "body": { "type": "tcp.connectionrefused" }
+        }
+    expected:
+      - report_body:
+          type: "tcp.connectionrefused"
+        tags: ["es"]
+        type: "w3creportingapi"

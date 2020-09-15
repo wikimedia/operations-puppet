@@ -240,6 +240,7 @@ class profile::logstash::collector (
         kafka_cluster_name      => 'logging-eqiad',
         topic                   => 'eqiad.w3c.reportingapi.network_error',
         group_id                => $input_kafka_consumer_group_id,
+        type                    => 'w3creportingapi',
         tags                    => ['input-kafka-networkerror-eqiad', 'kafka', 'es'],
         codec                   => 'json',
         security_protocol       => 'SSL',
@@ -251,6 +252,7 @@ class profile::logstash::collector (
         kafka_cluster_name      => 'logging-codfw',
         topic                   => 'codfw.w3c.reportingapi.network_error',
         group_id                => $input_kafka_consumer_group_id,
+        type                    => 'w3creportingapi',
         tags                    => ['input-kafka-networkerror-codfw', 'kafka', 'es'],
         codec                   => 'json',
         security_protocol       => 'SSL',
@@ -446,6 +448,11 @@ class profile::logstash::collector (
 
     logstash::conf { 'filter_clienterror':
         source   => 'puppet:///modules/profile/logstash/filter-clienterror.conf',
+        priority => 50,
+    }
+
+    logstash::conf { 'filter_w3creportingapi':
+        source   => 'puppet:///modules/profile/logstash/filter-w3creportingapi.conf',
         priority => 50,
     }
 

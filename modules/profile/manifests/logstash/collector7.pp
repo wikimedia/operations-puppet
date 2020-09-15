@@ -394,6 +394,11 @@ class profile::logstash::collector7 (
         priority => 50,
     }
 
+    logstash::conf { 'filter_w3creportingapi':
+        source   => 'puppet:///modules/profile/logstash/filter-w3creportingapi.conf',
+        priority => 50,
+    }
+
     ## Global post-processing (70)
 
     logstash::conf { 'filter_add_normalized_message':
