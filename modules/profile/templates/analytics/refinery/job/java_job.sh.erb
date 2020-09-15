@@ -5,7 +5,7 @@
 
 /usr/bin/java \
 <% if @proxy_host -%>
--Dhttp.proxyHost=<%= @proxy_host %> -Dhttp.proxyPort<%= @proxy_port %> -Dhttps.proxyHost=<%= @proxy_host %> -Dhttps.proxyPort<%= @proxy_port %> \
+-Dhttp.proxyHost=<%= @proxy_host %> -Dhttp.proxyPort=<%= @proxy_port %> -Dhttps.proxyHost=<%= @proxy_host %> -Dhttps.proxyPort=<%= @proxy_port %> \
 <% end -%>
 <% if @java_opts -%>
 <%= Array(@java_opts).join(" ") %> \
