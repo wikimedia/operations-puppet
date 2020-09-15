@@ -98,16 +98,21 @@ define rsync::quickdatacopy(
               mode    => '0755',
               content => $quickdatacopy,
           }
+      }
 
-          if $auto_sync {
-              $cron_ensure = $ensure
-          } else {
-              $cron_ensure = 'absent'
-          }
-          cron { "rsync-${title}":
-              ensure  => $cron_ensure,
-              minute  => '*/10',
-              command => "/usr/local/sbin/sync-${title} >/dev/null 2>&1",
-          }
+      # Manage the cron entry on both source and dest host.
+      # Default to 'absent' to handle proper cleanup when 'flipping' replication
+      # (i.e. swap source and dest hosts)
+
+      if $auto_sync and ($dest_host == $::fqdn) {
+          $cron_ensure = $ensure
+      } else {
+          $cron_ensure = 'absent'
+      }
+
+      cron { "rsync-${title}":
+          ensure  => $cron_ensure,
+          minute  => '*/10',
+          command => "/usr/local/sbin/sync-${title} >/dev/null 2>&1",
       }
 }
