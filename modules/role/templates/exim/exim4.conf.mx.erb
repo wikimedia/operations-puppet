@@ -156,11 +156,6 @@ acl_check_rcpt:
 	# Check whether the sender address domain exists
 	require verify = sender
 
-	# Drop connections from IP addresses listed in DNSBL
-	drop message = refusing mail from $sender_host_address - address is blocklisted by $dnslist_domain ($dnslist_value: $dnslist_text)
-		dnslists = zen.spamhaus.org
-		delay = 15s
-
 	accept
 
 acl_check_connect:
