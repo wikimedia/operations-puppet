@@ -8,8 +8,8 @@ class profile::grafana::production {
 
     rsync::quickdatacopy { 'var-lib-grafana':
       ensure              => present,
-      source_host         => 'grafana2001.codfw.wmnet',
-      dest_host           => 'grafana1002.eqiad.wmnet',
+      source_host         => 'grafana1002.eqiad.wmnet',
+      dest_host           => 'grafana2001.codfw.wmnet',
       module_path         => '/var/lib/grafana',
       server_uses_stunnel => true,
     }
