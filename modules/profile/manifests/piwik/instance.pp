@@ -24,12 +24,6 @@ class profile::piwik::instance (
         piwik_username    => $piwik_username,
     }
 
-    # Install GeoIP data files to matomo.
-    class { 'geoip::data::puppet':
-      require        => Class['matomo'],
-      data_directory => '/usr/share/matomo/misc'
-    }
-
     # Install a systemd timer to run the Archive task periodically.
     # Running it once a day to avoid performance penalties on high trafficated websites
     # (https://piwik.org/docs/setup-auto-archiving/#important-tips-for-medium-to-high-traffic-websites)
