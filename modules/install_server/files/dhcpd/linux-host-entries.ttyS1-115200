@@ -4354,6 +4354,42 @@ host maps2004 {
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
+host maps2005 {
+    hardware ethernet 2C:EA:7F:56:9F:E6;
+    fixed-address maps2005.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
+}
+
+host maps2006 {
+    hardware ethernet 2C:EA:7F:56:9D:5E;
+    fixed-address maps2006.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
+}
+
+host maps2007 {
+    hardware ethernet 2C:EA:7F:56:A0:26;
+    fixed-address maps2007.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
+}
+
+host maps2008 {
+    hardware ethernet 2C:EA:7F:56:97:ED;
+    fixed-address maps2008.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
+}
+
+host maps2009 {
+    hardware ethernet 2C:EA:7F:56:9F:06;
+    fixed-address maps2009.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
+}
+
+host maps2010 {
+    hardware ethernet 2C:EA:7F:56:97:75;
+    fixed-address maps2010.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
+}
+
 host mc1019 {
     hardware ethernet 1c:98:ec:29:27:04;
     fixed-address mc1019.eqiad.wmnet;
