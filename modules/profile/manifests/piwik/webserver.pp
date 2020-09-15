@@ -51,15 +51,4 @@ class profile::piwik::webserver(
         path   => $php_ini,
         notify => Class['::httpd'],
     }
-
-    class { 'geoip::data::puppet': }
-
-    $geoip_directory = $::geoip::data::puppet::data_directory
-
-    file_line { 'geoip_custom_directory':
-        line   => "geoip.custom_directory = ${geoip_directory}",
-        match  => '^;?geoip.custom_directory\s*\=',
-        path   => $php_ini,
-        notify => Class['::httpd'],
-    }
 }
