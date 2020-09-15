@@ -904,6 +904,11 @@ node /^es201[123]\.codfw\.wmnet/ {
     role(mariadb::core)
 }
 
+# es2028 will replace es2011 T261717
+node 'es2028.codfw.wmnet' {
+    role(mariadb::core)
+}
+
 # External Storage, Shard 2 (es2) databases
 
 ## eqiad servers
@@ -1018,7 +1023,7 @@ node /^es10(26|27|28|29|30|31|32|33|34)\.eqiad\.wmnet$/ {
     role(spare::system)
 }
 # codfw hosts
-node /^es20(28|29|30|31|32|33|34)\.codfw\.wmnet$/ {
+node /^es20(29|30|31|32|33|34)\.codfw\.wmnet$/ {
     role(spare::system)
 }
 
