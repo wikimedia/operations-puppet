@@ -66,7 +66,7 @@
 #   Citoid service URI. Format: http://citoid.svc.eqiad.wmnet:1970
 #
 # [*cxserver_uri*]
-#   CXServer service uri. Format: http://cxserver.discovery.wmnet:8080
+#   CXServer service uri. Format: https://cxserver.discovery.wmnet:4002
 #
 # [*recommendation_uri*]
 #   Recommendation API service URI. Format:

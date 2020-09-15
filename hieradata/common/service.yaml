@@ -507,7 +507,7 @@ service::catalog:
     sites:
     - eqiad
     state: production
-  cxserver:
+  cxserver-http:
     description: Content Translation service, cxserver.svc.%{::site}.wmnet
     encryption: false
     ip:
@@ -543,7 +543,7 @@ service::catalog:
     - eqiad
     - codfw
     state: production
-  cxserver-https:
+  cxserver:
     description: Content Translation service, cxserver.svc.%{::site}.wmnet
     encryption: true
     ip:

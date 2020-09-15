@@ -131,7 +131,7 @@ profile::services_proxy::envoy::listeners:
     timeout: "120s"
   - name: cxserver
     port: 6015
-    service: cxserver-https
+    service: cxserver
     timeout: "120s"
   - name: recommendation
     port: 6016

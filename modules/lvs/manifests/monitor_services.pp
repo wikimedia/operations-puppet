@@ -51,7 +51,7 @@ class lvs::monitor_services(
             "check_cxserver_cluster_${dc}":
                 host        => "cxserver.svc.${dc}.wmnet",
                 description => "Cxserver LVS ${dc}",
-                target      => "http://cxserver.svc.${dc}.wmnet:8080",
+                target      => "https://cxserver.svc.${dc}.wmnet:4002",
                 notes_url   => 'https://wikitech.wikimedia.org/wiki/CX',
                 ;
             "check_kartotherian_cluster_${dc}":
