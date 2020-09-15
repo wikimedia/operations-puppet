@@ -660,6 +660,33 @@ class profile::prometheus::ops (
         port             => 8000,
     }
 
+    # kubernetes etcd. TODO: Investigate whether all of these can be merged with
+    # the above using ::profile::etcd::v3. But this requires conf200X hosts
+    # first to be upgraded
+    prometheus::class_config{ "kubetcd_${::site}":
+        dest       => "${targets_path}/kubetcd_${::site}.yaml",
+        site       => $::site,
+        class_name => 'role::etcd::v3::kubernetes',
+        port       => 2379,
+    }
+    prometheus::class_config{ "kubetcd_staging_${::site}":
+        dest       => "${targets_path}/kubetcd_staging_${::site}.yaml",
+        site       => $::site,
+        class_name => 'role::etcd::v3::kubernetes::staging',
+        port       => 2379,
+    }
+    $kubetcd_jobs = [
+      {
+        'job_name'        => 'kubetcd',
+        'scheme'          => 'https',
+        'file_sd_configs' => [
+          { 'files' => [
+              "${targets_path}/kubetcd_*.yaml",
+              ],}
+        ],
+      },
+    ]
+
     # mcrouter
     # Job definition for mcrouter_exporter
     $mcrouter_jobs = [
@@ -1802,7 +1829,7 @@ class profile::prometheus::ops (
         alertmanagers         => $alertmanagers.map |$a| { "${a}:9093" },
         scrape_configs_extra  => array_concat(
             $mysql_jobs, $varnish_jobs, $trafficserver_jobs, $purged_jobs, $atskafka_jobs, $memcached_jobs,
-            $apache_jobs, $etcd_jobs, $etcdmirror_jobs, $mcrouter_jobs, $pdu_jobs,
+            $apache_jobs, $etcd_jobs, $etcdmirror_jobs, $kubetcd_jobs, $mcrouter_jobs, $pdu_jobs,
             $pybal_jobs, $blackbox_jobs, $jmx_exporter_jobs,
             $redis_jobs, $mtail_jobs, $ldap_jobs, $ircd_jobs, $pdns_rec_jobs,
             $etherpad_jobs, $elasticsearch_jobs, $wmf_elasticsearch_jobs,
