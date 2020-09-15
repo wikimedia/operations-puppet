@@ -68,12 +68,6 @@ class lvs::monitor_services(
                 target      => "https://eventgate-analytics.svc.${dc}.wmnet:4592",
                 notes_url   => 'https://wikitech.wikimedia.org/wiki/Event_Platform/EventGate',
                 ;
-            "check_eventgate_analytics_http_cluster_${dc}":
-                host        => "eventgate-analytics.svc.${dc}.wmnet",
-                description => "eventgate-analytics-http LVS ${dc}",
-                target      => "http://eventgate-analytics.svc.${dc}.wmnet:35192",
-                notes_url   => 'https://wikitech.wikimedia.org/wiki/Event_Platform/EventGate',
-                ;
             "check_eventgate_main_cluster_${dc}":
                 host        => "eventgate-main.svc.${dc}.wmnet",
                 description => "eventgate-main LVS ${dc}",
