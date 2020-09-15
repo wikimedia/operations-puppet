@@ -705,7 +705,7 @@ service::catalog:
     sites:
     - eqiad
     - codfw
-    state: production
+    state: lvs_setup
   eventgate-logging-external:
     description: EventGate logging endpoint, eventgate-logging-external.svc.%{::site}.wmnet and intake-logging.wikimedia.org
     encryption: true
