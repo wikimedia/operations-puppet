@@ -60,33 +60,20 @@ class profile::toolforge::grid::master (
     # gridmaster in this setup.  They could have been done on
     # any singleton instance.
 
+    # TODO: Cleanup when these are gone!
+    # These four files are from an old process. Once they are gone from the master
+    # please remove these lines:
     file { '/usr/local/bin/dequeugridnodes.sh':
-        ensure => file,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        source => 'puppet:///modules/profile/toolforge/gridscripts/dequeuegridnodes.sh',
+        ensure => absent,
     }
     file { '/usr/local/bin/requeugridnodes.sh':
-        ensure => file,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        source => 'puppet:///modules/profile/toolforge/gridscripts/requeuegridnodes.sh',
+        ensure => absent,
     }
     file { '/usr/local/bin/runninggridtasks.py':
-        ensure => file,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        source => 'puppet:///modules/profile/toolforge/gridscripts/runninggridtasks.py',
+        ensure => absent,
     }
     file { '/usr/local/bin/runninggridjobsmail.py':
-        ensure => file,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        source => 'puppet:///modules/profile/toolforge/gridscripts/runninggridjobsmail.py',
+        ensure => absent,
     }
 
     file { "${geconf}/spool":
