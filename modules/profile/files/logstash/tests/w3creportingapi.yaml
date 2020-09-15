@@ -1,5 +1,9 @@
 fields:
-  type: "w3creportingapi"
+  type: "network-error"
+  tags:
+    - "w3creportingapi"
+    - "kafka"
+    - "input-kafka-networkerror-eqiad"
 codec: "json_lines"
 ignore:
   - "@timestamp"
@@ -13,5 +17,9 @@ testcases:
     expected:
       - report_body:
           type: "tcp.connectionrefused"
-        tags: ["es"]
-        type: "w3creportingapi"
+        tags:
+          - "w3creportingapi"
+          - "kafka"
+          - "input-kafka-networkerror-eqiad"
+          - "es"
+        type: "network-error"
