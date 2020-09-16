@@ -4,9 +4,27 @@
   DocumentRoot /usr/share/grafana/public
   DocumentRoot <%= @document_root %>
 
+  <%- @cas_settings.each_pair do |key, setting| -%>
+    <%- unless setting.nil? or setting == :undef -%>
+  <%= key %> <%= setting %>
+    <%-end -%>
+  <%-end -%>
+
   ProxyPreserveHost On
   ProxyPass / http://localhost:3000/
   ProxyPassReverse / http://localhost:3000/
+
+  <Location />
+    <%- @cas_auth_settings.each_pair do |key, setting| -%>
+      <%- if setting.is_a?(Array) -%>
+        <%- setting.each do |_setting| -%>
+      <%= key %> <%= _setting %>
+        <%- end -%>
+      <%- else -%>
+      <%= key %> <%= setting %>
+      <%- end -%>
+    <%- end -%>
+  </Location>
 
   # TODO: Adapt below for authenticated editors/admins
   # RequestHeader unset X-WEBAUTH-USER
