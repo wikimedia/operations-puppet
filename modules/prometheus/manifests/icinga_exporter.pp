@@ -21,7 +21,7 @@ class prometheus::icinga_exporter(
     false => absent,
   }
 
-  $am_urls = $alertmanagers.map |$u| { "--alertmanager.url http://${u}" }
+  $am_urls = $alertmanagers.map |$u| { "--alertmanager.url http://${u}:9093" }
 
   systemd::service { 'prometheus-icinga-am':
     ensure   => $icinga_am_ensure,
