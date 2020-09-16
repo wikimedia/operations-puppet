@@ -116,6 +116,7 @@ class profile::analytics::refinery::job::refine(
     # While we migrate we will use an explicit include list of
     # EventLogging streams that have been migrated to EventGate.
     $eventlogging_legacy_table_includelist = [
+        'Test',
         'TemplateWizard',
         'SearchSatisfaction',
     ]
