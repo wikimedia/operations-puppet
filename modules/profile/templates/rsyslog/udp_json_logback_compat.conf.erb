@@ -24,6 +24,11 @@ ruleset(name="ruleset_udp_json_logback_compat" queue.type="LinkedList") {
            dynatopic.cachesize="1000"
            partitions.auto="on"
            template="template_udp_json_logback_compat"
+       <%- if @queue_size > 0 -%>
+           queue.type="LinkedList" queue.size="<%= @queue_size %>" queue.filename="udp_json_logback_compat"
+           queue.highWatermark="<%= (@queue_size * 0.7).to_i %>" queue.lowWatermark="<%= (@queue_size * 0.6).to_i %>"
+           queue.checkpointInterval="5"
+       <%- end -%>
            confParam=[ "security.protocol=ssl",
                        "ssl.ca.location=/etc/ssl/certs/Puppet_Internal_CA.pem",
                        "compression.codec=snappy",

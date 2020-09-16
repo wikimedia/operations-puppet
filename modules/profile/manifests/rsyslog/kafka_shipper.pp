@@ -17,7 +17,9 @@ class profile::rsyslog::kafka_shipper (
     Array   $logging_kafka_brokers = lookup('profile::rsyslog::kafka_shipper::kafka_brokers',
                                             {'default_value' => []}),
     Boolean $enable                = lookup('profile::rsyslog::kafka_shipper::enable',
-                                            {'default_value' => true})
+                                            {'default_value' => true}),
+    Array[String] $queue_enabled_sites = lookup('profile::rsyslog::kafka_queue_enabled_sites',
+                                                {'default_value' => []}),
 ) {
 
     require_package('rsyslog-kafka')
@@ -25,6 +27,11 @@ class profile::rsyslog::kafka_shipper (
     $ensure = $enable ? {
       true    => present,
       default => absent,
+    }
+
+    $queue_size = $::site in $queue_enabled_sites ? {
+        true  => 10000,
+        false => 0,
     }
 
     file { '/etc/rsyslog.lookup.d':
