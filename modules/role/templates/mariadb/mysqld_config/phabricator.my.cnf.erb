@@ -40,7 +40,7 @@ secure_file_priv               = /dev/null
 max_connections                = 1500
 extra_max_connections          = 10
 max_connect_errors             = 1000000000
-max_allowed_packet             = 32M # T98339
+max_allowed_packet             = 64M # T98339
 connect_timeout                = 3
 query_cache_size               = 0
 query_cache_type               = 0
@@ -132,5 +132,5 @@ init_file                      = /etc/mysql/phabricator-init.sql
 [mysqldump]
 
 quick
-max_allowed_packet = 32M
+max_allowed_packet = 64M
 
