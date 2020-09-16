@@ -329,12 +329,6 @@ wikimedia_clusters:
     id: 67
     sites:
       eqiad: []
-  proton:
-    description: "Proton PDF rendering service"
-    id: 68
-    sites:
-      eqiad: []
-      codfw: []
   dnsbox:
     description: "DNS and NTP Combo Infra Boxes"
     id: 69

@@ -2084,11 +2084,6 @@ node /^prometheus[345]001\.(esams|ulsfo|eqsin)\.wmnet$/ {
     role(prometheus::pop)
 }
 
-node /^proton[12]00[12]\.(eqiad|codfw)\.wmnet$/ {
-    role(proton)
-
-}
-
 node /^puppetmaster[12]001\.(codfw|eqiad)\.wmnet$/ {
     role(puppetmaster::frontend)
 }
