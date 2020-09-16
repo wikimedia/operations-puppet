@@ -47,3 +47,5 @@ profile::rsyslog::kubernetes::kubernetes_url: https://neon.eqiad.wmnet:6443
 profile::rsyslog::kubernetes::enable: true
 # Define in the private repo
 # profile::rsyslog::kubernetes::token
+# Use Kernel 4.19 - T262527
+profile::base::linux419::enable: true
