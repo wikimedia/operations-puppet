@@ -56,8 +56,13 @@
   # Used if Apache is being used as a WSGI container.
   ## enable_server=yes
 
+  <% if @gunicorn_work_class -%>
+  use_cherrypy_server=false
+  gunicorn_work_class=<%= @gunicorn_work_class -%>
+  <% else -%>
   # Number of threads used by the CherryPy web server
   ## cherrypy_server_threads=10
+  <% end -%>
 
   # Truste Certificate authority
   <%= @ssl_cacerts ? "ssl_cacerts=#{@ssl_cacerts}" : '## ssl_cacerts=' %>

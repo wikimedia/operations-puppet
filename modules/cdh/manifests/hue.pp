@@ -164,8 +164,10 @@ class cdh::hue(
     if $use_hue4_settings {
         $hive_thrift_version = 5
         $config_directory = '/etc/hue'
+        $gunicorn_work_class = 'eventlet'
     } else {
         $hive_thrift_version = undef
+        $gunicorn_work_class = undef
         $config_directory = "/etc/hue/conf.${cdh::hadoop::cluster_name}"
     }
 
