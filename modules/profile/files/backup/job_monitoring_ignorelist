@@ -1,1 +1,4 @@
-# no job ids configured so far
+# remove before closing T239835
+etcd1001.eqiad.wmnet-Monthly-1st-Mon-production-etcd
+etcd1002.eqiad.wmnet-Monthly-1st-Wed-production-etcd
+etcd1003.eqiad.wmnet-Monthly-1st-Fri-production-etcd
