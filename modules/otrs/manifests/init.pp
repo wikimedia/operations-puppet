@@ -165,4 +165,12 @@ class otrs(
             hasrestart => false,
         },
     }
+
+    cron { 'otrs-cache-cleanup':
+        ensure  => 'present',
+        user    => 'otrs',
+        minute  => '50',
+        hour    => '*',
+        command => '/opt/otrs/bin/otrs.Console.pl Maint::Cache::Delete',
+    }
 }
