@@ -12,7 +12,7 @@
 #   be rsynced elsewhere.
 #
 class profile::analytics::database::meta::backup(
-    $dest = hiera('profile::analytics::database::meta::backup::rsync_dest'),
+    String $dest = hiera('profile::analytics::database::meta::backup::rsync_dest'),
 ) {
     # Take hourly backups of the analytics-meta instance
     # and rsync those backups to $dest.

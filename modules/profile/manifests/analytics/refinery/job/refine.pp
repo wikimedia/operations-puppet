@@ -30,8 +30,8 @@
 #   /wmf/data/raw/netflow -> /wmf/data/wmf/netflow in the Hive wmf database.
 #
 class profile::analytics::refinery::job::refine(
-    $use_kerberos  = lookup('profile::analytics::refinery::job::refine::use_kerberos', { 'default_value' => false }),
-    $ensure_timers = lookup('profile::analytics::refinery::job::refine::ensure_timers', { 'default_value' => 'present' }),
+    Boolean $use_kerberos         = lookup('profile::analytics::refinery::job::refine::use_kerberos', { 'default_value' => false }),
+    Wmflib::Ensure $ensure_timers = lookup('profile::analytics::refinery::job::refine::ensure_timers', { 'default_value' => 'present' }),
 ) {
     require ::profile::analytics::refinery
     require ::profile::hive::client

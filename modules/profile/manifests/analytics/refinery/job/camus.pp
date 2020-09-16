@@ -46,10 +46,10 @@
 #   Ingests the netflow topic into /wmf/data/raw/netflow.
 #
 class profile::analytics::refinery::job::camus(
-    $kafka_cluster_name = lookup('profile::analytics::refinery::job::camus::kafka_cluster_name', { 'default_value' => 'jumbo-eqiad' }),
-    $monitoring_enabled = lookup('profile::analytics::refinery::job::camus::monitoring_enabled', { 'default_value' => false }),
-    $use_kerberos       = lookup('profile::analytics::refinery::job::camus::use_kerberos', { 'default_value' => false }),
-    $ensure_timers      = lookup('profile::analytics::refinery::job::camus::ensure_timers', { 'default_value' => 'present' }),
+    String $kafka_cluster_name    = lookup('profile::analytics::refinery::job::camus::kafka_cluster_name', { 'default_value' => 'jumbo-eqiad' }),
+    Boolean $monitoring_enabled   = lookup('profile::analytics::refinery::job::camus::monitoring_enabled', { 'default_value' => false }),
+    Boolean $use_kerberos         = lookup('profile::analytics::refinery::job::camus::use_kerberos', { 'default_value' => false }),
+    Wmflib::Ensure $ensure_timers = lookup('profile::analytics::refinery::job::camus::ensure_timers', { 'default_value' => 'present' }),
 ) {
     require ::profile::hadoop::common
     require ::profile::analytics::refinery

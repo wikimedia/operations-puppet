@@ -25,20 +25,20 @@
 #       Users in these groups will be allowed admin access to JupyterHub.
 
 class profile::analytics::jupyterhub(
-    Integer $port               = lookup(
+    Integer $port                       = lookup(
         'profile::analytics::jupyterhub::port', default_value => 8880,
     ),
-    $allowed_ldap_groups        = lookup(
+    Array[String] $allowed_ldap_groups  = lookup(
         'profile::analytics::jupyterhub::allowed_ldap_groups', default_value => [
             'cn=nda,ou=groups,dc=wikimedia,dc=org',
             'cn=wmf,ou=groups,dc=wikimedia,dc=org',
         ]
     ),
-    Hash $ldap_config           = lookup('ldap', Hash, hash, {}),
-    Array $allowed_posix_groups = lookup('admin::groups', default_value => ['wikidev']),
-    Array $admin_posix_groups   = lookup('profile::analytics::jupyterhub::admin_posix_groups', default_value => ['ops']),
-    String $http_proxy_host     = lookup('http_proxy_host', default_value => undef),
-    Integer $http_proxy_port    = lookup('http_proxy_port', default_value => undef),
+    Hash $ldap_config                   = lookup('ldap', Hash, hash, {}),
+    Array[String] $allowed_posix_groups = lookup('admin::groups', default_value => ['wikidev']),
+    Array[String] $admin_posix_groups   = lookup('profile::analytics::jupyterhub::admin_posix_groups', default_value => ['ops']),
+    Optional[String] $http_proxy_host   = lookup('http_proxy_host', default_value => undef),
+    Optional[Integer] $http_proxy_port  = lookup('http_proxy_port', default_value => undef),
 ) {
 
     class { 'jupyterhub::server':

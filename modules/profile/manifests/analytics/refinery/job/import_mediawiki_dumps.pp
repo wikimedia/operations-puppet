@@ -5,8 +5,8 @@
 # can be found is mounted under /mnt/data
 #
 class profile::analytics::refinery::job::import_mediawiki_dumps (
-    $use_kerberos = lookup('profile::analytics::refinery::job::import_mediawiki_dumps::use_kerberos', { 'default_value' => false }),
-    $ensure_timers = lookup('profile::analytics::refinery::job::import_mediawiki_dumps::ensure_timers', { 'default_value' => 'present' }),
+    Boolean $use_kerberos         = lookup('profile::analytics::refinery::job::import_mediawiki_dumps::use_kerberos', { 'default_value' => false }),
+    Wmflib::Ensure $ensure_timers = lookup('profile::analytics::refinery::job::import_mediawiki_dumps::ensure_timers', { 'default_value' => 'present' }),
 ) {
 
     # Import siteinfo-namespaces

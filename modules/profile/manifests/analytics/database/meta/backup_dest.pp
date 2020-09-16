@@ -4,9 +4,9 @@
 # the role running profile::analytics::database::meta::backup.
 #
 class profile::analytics::database::meta::backup_dest(
-    $hive_metastore_host = hiera('profile::analytics::database::meta::backup_dest::hive::metastore_host'),
-    $oozie_host          = hiera('profile::analytics::database::meta::backup_dest::oozie_host'),
-    $enable_backup       = hiera('profile::analytics::database::meta::backup_dest::enable_backup', false),
+    Stdlib::Fqdn $hive_metastore_host = hiera('profile::analytics::database::meta::backup_dest::hive::metastore_host'),
+    Stdlib::Fqdn $oozie_host          = hiera('profile::analytics::database::meta::backup_dest::oozie_host'),
+    Boolean $enable_backup            = hiera('profile::analytics::database::meta::backup_dest::enable_backup', false),
 ) {
 
     $backup_dir_group = $::realm ? {

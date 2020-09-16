@@ -3,8 +3,8 @@
 # Deletes files and empty directories older than 31 days from HDFS /tmp dir.
 #
 class profile::analytics::refinery::job::hdfs_cleaner(
-    $use_kerberos = lookup('profile::analytics::refinery::job::hdfs_cleaner::use_kerberos', { 'default_value' => false }),
-    $ensure_timer = lookup('profile::analytics::refinery::job::hdfs_cleaner::ensure_timer', { 'default_value' => 'present' }),
+    Boolean $use_kerberos         = lookup('profile::analytics::refinery::job::hdfs_cleaner::use_kerberos', { 'default_value' => false }),
+    Wmflib::Ensure $ensure_timer  = lookup('profile::analytics::refinery::job::hdfs_cleaner::ensure_timer', { 'default_value' => 'present' }),
 ) {
     # Include refinery for HDFSCleaner class.
     require ::profile::analytics::refinery

@@ -10,7 +10,7 @@
 #                       role/common/cache/text.yaml.
 #
 class profile::analytics::refinery::job::streams_check(
-    $kafka_cluster_name = hiera('profile::analytics::refinery:job::streams_check::kafka_cluster_name', 'jumbo-eqiad')
+    String $kafka_cluster_name = hiera('profile::analytics::refinery:job::streams_check::kafka_cluster_name', 'jumbo-eqiad')
 ) {
     require ::profile::analytics::refinery
 

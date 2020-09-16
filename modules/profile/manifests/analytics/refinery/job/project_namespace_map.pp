@@ -5,9 +5,9 @@
 # exist.
 #
 class profile::analytics::refinery::job::project_namespace_map(
-    $http_proxy = hiera('profile::analytics::refinery::job::project_namespace_map::http_proxy', undef),
-    $monitoring_enabled = hiera('profile::analytics::refinery::job::project_namespace_map::monitoring_enabled', true),
-    $ensure_timer = lookup('profile::analytics::refinery::job::project_namespace_map::ensure_timer', { 'default_value' => 'present' }),
+    Optional[String] $http_proxy = hiera('profile::analytics::refinery::job::project_namespace_map::http_proxy', undef),
+    Boolean $monitoring_enabled  = hiera('profile::analytics::refinery::job::project_namespace_map::monitoring_enabled', true),
+    Wmflib::Ensure $ensure_timer = lookup('profile::analytics::refinery::job::project_namespace_map::ensure_timer', { 'default_value' => 'present' }),
   ) {
     require ::profile::analytics::refinery
 

@@ -4,7 +4,7 @@
 # for the Search team.
 #
 class profile::analytics::search::jobs (
-    $use_kerberos = lookup('profile::analytics::search::jobs::use_kerberos', { 'default_value' => false }),
+    Boolean $use_kerberos = lookup('profile::analytics::search::jobs::use_kerberos', { 'default_value' => false }),
 ) {
     require ::profile::analytics::refinery
 

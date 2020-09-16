@@ -6,8 +6,8 @@
 # on a different node.)
 #
 class profile::analytics::refinery::job::sqoop_mediawiki (
-    $use_kerberos = lookup('profile::analytics::refinery::job::sqoop_mediawiki::use_kerberos', { 'default_value' => false }),
-    $ensure_timers = lookup('profile::analytics::refinery::job::sqoop_mediawiki::ensure_timers', { 'default_value' => 'present' }),
+    Boolean $use_kerberos         = lookup('profile::analytics::refinery::job::sqoop_mediawiki::use_kerberos', { 'default_value' => false }),
+    Wmflib::Ensure $ensure_timers = lookup('profile::analytics::refinery::job::sqoop_mediawiki::ensure_timers', { 'default_value' => 'present' }),
 ){
     require ::profile::analytics::refinery
 

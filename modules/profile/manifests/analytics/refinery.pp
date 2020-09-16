@@ -4,7 +4,7 @@
 # and using the analytics/refinery repository.
 #
 class profile::analytics::refinery (
-    $deploy_hadoop_config = hiera('profile::analytics::refinery::deploy_hadoop_config', true)
+    Boolean $deploy_hadoop_config = hiera('profile::analytics::refinery::deploy_hadoop_config', true)
 ) {
     if $deploy_hadoop_config {
         # Make this class depend on hadoop::common configs.  Refinery

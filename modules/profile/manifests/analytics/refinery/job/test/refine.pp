@@ -7,7 +7,7 @@
 # This version is only for the Hadoop testing cluster
 #
 class profile::analytics::refinery::job::test::refine(
-    $use_kerberos = lookup('profile::analytics::refinery::job::test::refine::use_kerberos', { 'default_value' => false }),
+    Boolean $use_kerberos = lookup('profile::analytics::refinery::job::test::refine::use_kerberos', { 'default_value' => false }),
 ) {
     require ::profile::analytics::refinery
     require ::profile::hive::client

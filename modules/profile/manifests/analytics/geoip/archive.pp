@@ -4,8 +4,8 @@
 # snapshots of the database over time.
 #
 class profile::analytics::geoip::archive(
-    $archive_to_hdfs_host = lookup('profile::analytics::geoip::archive::archive_host'),
-    $use_kerberos         = lookup('profile::analytics::geoip::archive::use_kerberos'),
+    String $archive_to_hdfs_host = lookup('profile::analytics::geoip::archive::archive_host'),
+    Boolean $use_kerberos        = lookup('profile::analytics::geoip::archive::use_kerberos'),
 ) {
 
     if $::hostname == $archive_to_hdfs_host {

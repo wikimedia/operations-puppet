@@ -4,7 +4,7 @@
 # delete old data from HDFS (Testing cluster)
 #
 class profile::analytics::refinery::job::test::data_purge(
-    $use_kerberos = lookup('profile::analytics::refinery::job::test::data_purge::use_kerberos', { 'default_value' => false }),
+    Boolean $use_kerberos = lookup('profile::analytics::refinery::job::test::data_purge::use_kerberos', { 'default_value' => false }),
 ) {
     require ::profile::analytics::refinery
 

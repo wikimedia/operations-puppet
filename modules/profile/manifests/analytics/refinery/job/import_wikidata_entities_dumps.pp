@@ -6,8 +6,8 @@
 #
 
 class profile::analytics::refinery::job::import_wikidata_entities_dumps (
-    $use_kerberos = lookup('profile::analytics::refinery::job::import_wikidata_entities_dumps::use_kerberos', { 'default_value' => false }),
-    $ensure_timers = lookup('profile::analytics::refinery::job::import_wikidata_entities_dumps::ensure_timers', { 'default_value' => 'present' }),
+    Boolean $use_kerberos         = lookup('profile::analytics::refinery::job::import_wikidata_entities_dumps::use_kerberos', { 'default_value' => false }),
+    Wmflib::Ensure $ensure_timers = lookup('profile::analytics::refinery::job::import_wikidata_entities_dumps::ensure_timers', { 'default_value' => 'present' }),
 ) {
 
     $wikidata_local_source = '/mnt/data/xmldatadumps/public/wikidatawiki/entities/'
