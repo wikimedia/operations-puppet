@@ -1791,7 +1791,7 @@ service::catalog:
     sites:
     - eqiad
     - codfw
-    state: production
+    state: lvs_setup
     discovery:
     - dnsdisc: proton
       active_active: true
