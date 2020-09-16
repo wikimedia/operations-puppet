@@ -24,6 +24,7 @@ class profile::hue (
     $oozie_security_enabled     = hiera('profile::hue::oozie_security_enabled', false),
     $server_name                = lookup('profile::hue::servername'),
     Boolean $enable_cas         = lookup('profile::hue::enable_cas'),
+    Boolean $use_hue4_settings  = lookup('profile::hue::use_hue4_settings', { 'default_value' => false }),
 ){
 
     # Require that all Hue applications
@@ -80,6 +81,7 @@ class profile::hue (
         use_yarn_ssl_config        => $use_yarn_ssl_config,
         use_hdfs_ssl_config        => $use_hdfs_ssl_config,
         use_mapred_ssl_config      => $use_mapred_ssl_config,
+        use_hue4_settings          => $use_hue4_settings,
     }
 
     # Include icinga alerts if production realm.

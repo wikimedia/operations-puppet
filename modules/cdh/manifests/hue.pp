@@ -140,6 +140,8 @@ class cdh::hue(
 
     $oozie_security_enabled     = false,
 
+    $use_hue4_settings          = false,
+
 ) {
     Class['cdh::hadoop'] -> Class['cdh::hue']
 
@@ -154,6 +156,17 @@ class cdh::hue(
         $oozie_url              = undef
         $oozie_proxy_regex      = ''
 
+    }
+
+    # The Hue 4.x package is not provided by CDH, but it is packaged
+    # internally by us. Some options are different, including the config
+    # paths under /etc/hue.
+    if $use_hue4_settings {
+        $hive_thrift_version = 5
+        $config_directory = '/etc/hue'
+    } else {
+        $hive_thrift_version = undef
+        $config_directory = "/etc/hue/conf.${cdh::hadoop::cluster_name}"
     }
 
     $namenode_hosts = $cdh::hadoop::namenode_hosts
@@ -219,7 +232,6 @@ class cdh::hue(
         }
     }
 
-    $config_directory = "/etc/hue/conf.${cdh::hadoop::cluster_name}"
     # Create the $cluster_name based $config_directory.
     file { $config_directory:
         ensure  => 'directory',

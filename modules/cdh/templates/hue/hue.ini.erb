@@ -639,6 +639,8 @@ if @oozie_url
   # This will free all the query resources in HiveServer2, but also make its results inaccessible.
   ## close_queries=false
 
+  <%= @hive_thrift_version ? "thrift_version=#{@hive_thrift_version}" : '## thrift_version=11' %>
+
   [[ssl]]
     # SSL communication enabled for this server.
     ## enabled=false
