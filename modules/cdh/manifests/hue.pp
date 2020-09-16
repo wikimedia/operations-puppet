@@ -164,7 +164,7 @@ class cdh::hue(
     if $use_hue4_settings {
         $hive_thrift_version = 5
         $config_directory = '/etc/hue'
-        $gunicorn_work_class = 'eventlet'
+        $gunicorn_work_class = 'sync'
     } else {
         $hive_thrift_version = undef
         $gunicorn_work_class = undef
