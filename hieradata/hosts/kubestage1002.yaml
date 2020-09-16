@@ -1,3 +1,5 @@
 profile::kubernetes::node::kubelet_node_labels:
   - failure-domain.beta.kubernetes.io/region=eqiad
   - failure-domain.beta.kubernetes.io/zone=row-b
+# Use Kernel 4.19 - T262527
+profile::base::linux419::enable: true
