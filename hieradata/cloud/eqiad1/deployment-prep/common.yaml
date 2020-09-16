@@ -330,10 +330,6 @@ scap::sources:
   performance/navtiming:
     repository: performance/navtiming
 
-  # Proton / chromium-render
-  proton/deploy:
-    repository: mediawiki/services/chromium-render/deploy
-
   # RESTBase
   restbase/deploy: {}
 
