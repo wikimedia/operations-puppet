@@ -19,13 +19,15 @@ class openstack::monitor::spreadcheck {
             source => "puppet:///modules/openstack/monitor/wmcs-spreadcheck-${project}.yaml",
         }
         nrpe::monitor_service { "check-${project}-spread":
-            nrpe_command => "/usr/local/sbin/wmcs-spreadcheck --config /etc/wmcs-spreadcheck-${project}.yaml",
-            description  => "${project} project instance distribution",
-            require      => File[
+            nrpe_command  => "/usr/local/sbin/wmcs-spreadcheck --config /etc/wmcs-spreadcheck-${project}.yaml",
+            description   => "${project} project instance distribution",
+            critical      => false,
+            contact_group => 'wmcs-team-email,wmcs-bots',
+            require       => File[
                 '/usr/local/sbin/wmcs-spreadcheck',
                 "/etc/wmcs-spreadcheck-${project}.yaml"
             ],
-            notes_url    => 'https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Troubleshooting',
+            notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Troubleshooting',
         }
     }
 }
