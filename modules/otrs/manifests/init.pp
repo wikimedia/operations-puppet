@@ -171,6 +171,6 @@ class otrs(
         user    => 'otrs',
         minute  => '50',
         hour    => '*',
-        command => '/opt/otrs/bin/otrs.Console.pl Maint::Cache::Delete',
+        command => '/opt/otrs/bin/otrs.Console.pl Maint::Cache::Delete >/dev/null 2>&1',
     }
 }
