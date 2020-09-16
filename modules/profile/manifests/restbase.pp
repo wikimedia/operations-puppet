@@ -60,7 +60,7 @@
 #   Eventgate service URI. Format: https://eventgate-main.discovery.wmnet:4492/v1/events
 #
 # [*proton_uri*]
-#   Proton PDF Render service URI. Format: http://proton.discovery.wmnet:24766
+#   Proton PDF Render service URI. Format: https://proton.discovery.wmnet:4030
 #
 # [*citoid_uri*]
 #   Citoid service URI. Format: http://citoid.svc.eqiad.wmnet:1970

@@ -1719,45 +1719,6 @@ service::catalog:
     - eqiad
     - codfw
     state: production
-  proton-http:
-    description: Proton PDF rendering service. proton.svc%{::site}.wmnet - non-TLS-version
-    encryption: false
-    ip:
-      codfw:
-        default: 10.2.1.21
-      eqiad:
-        default: 10.2.2.21
-    lvs:
-      class: low-traffic
-      conftool:
-        cluster: proton
-        service: proton
-      depool_threshold: '.5'
-      enabled: true
-      monitors:
-        IdleConnection:
-          max-delay: 300
-          timeout-clean-reconnect: 3
-        ProxyFetch:
-          url:
-          - http://localhost/_info
-      scheduler: wrr
-    monitoring:
-      check_command: check_http_lvs_on_port!proton.discovery.wmnet!24766!/_info
-      critical: true
-      sites:
-        codfw:
-          hostname: proton.svc.codfw.wmnet
-        eqiad:
-          hostname: proton.svc.eqiad.wmnet
-    port: 24766
-    sites:
-    - eqiad
-    - codfw
-    state: lvs_setup
-    discovery:
-    - dnsdisc: proton
-      active_active: true
   proton:
     description: Proton PDF rendering service. proton.svc.%{::site}.wmnet
     encryption: true
