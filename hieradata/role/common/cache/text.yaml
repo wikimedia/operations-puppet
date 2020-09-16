@@ -49,6 +49,8 @@ cache::alternate_domains:
     caching: 'pass'
   grafana-next.wikimedia.org:
     caching: 'pass'
+  grafana-rw.wikimedia.org:
+    caching: 'pass'
   grafana.wikimedia.org:
     caching: 'pass'
   graphite-labs.wikimedia.org:
