@@ -75,33 +75,4 @@ profile::elasticsearch::common_settings:
     bulk_thread_pool_capacity: 1000
     filter_cache_size: '20%'
 
-# Moving mjolnir daemon to search-loader hosts - T258245
-profile::mjolnir::kafka_msearch_daemon::ensure: 'absent'
-profile::mjolnir::kafka_bulk_daemon::ensure: 'absent'
-
-# Msearch daemons read same topic in same consumer group in all dcs. They
-# toggle themselves on/off based on load of the local elasticsearch cluster.
-profile::mjolnir::kafka_msearch_daemon::kafka_cluster: jumbo-eqiad
-profile::mjolnir::kafka_msearch_daemon::input_topic: mjolnir.msearch-prod-request
-profile::mjolnir::kafka_msearch_daemon::output_topic: mjolnir.msearch-prod-response
-# Max concurrent search threads consumed is:
-#   # kafka partitions * num_workers * max_concurrent_searches * # shards per index
-#   = (35 * 2 * 2 * 7)
-#   = max 980 concurrent shard searches
-# Unfortunately # shards per index is variable, so some caution is still required.
-profile::mjolnir::kafka_msearch_daemon::num_workers: 2
-profile::mjolnir::kafka_msearch_daemon::max_concurrent_searches: 2
-profile::mjolnir::kafka_msearch_daemon::num_running_daemons: 1
-
-# Bulk daemon defines group_id per-datacenter and applies updates to all
-# clusters in that datacenter.
-profile::mjolnir::kafka_bulk_daemon::kafka_cluster: "jumbo-eqiad"
-profile::mjolnir::kafka_bulk_daemon::group_id: "cirrussearch_updates_%{::site}"
-profile::mjolnir::kafka_bulk_daemon::topics:
-  - eqiad.swift.search_glent.upload-complete
-  - codfw.swift.search_glent.upload-complete
-  - eqiad.swift.search_popularity_score.upload-complete
-  - codfw.swift.search_popularity_score.upload-complete
-  - eqiad.swift.search_mjolnir_model.upload-complete
-  - codfw.swift.search_mjolnir_model.upload-complete
 profile::elasticsearch::cirrus::enable_remote_search: true

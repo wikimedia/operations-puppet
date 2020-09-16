@@ -4,7 +4,6 @@ class profile::elasticsearch::relforge (
 ) {
     include ::profile::elasticsearch::cirrus
     include ::profile::elasticsearch::monitor::base_checks
-    include ::profile::mjolnir::kafka_msearch_daemon
 
     # the relforge cluster is serving labs, it should never be connected from
     # production, except from mwmaint hosts to import production indices and the

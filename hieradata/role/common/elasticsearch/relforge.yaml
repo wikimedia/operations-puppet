@@ -68,16 +68,6 @@ profile::elasticsearch::common_settings:
     script_max_compilations_per_minute: 10000
 
 
-# MjoLniR daemon configuration
-# The configuration is not active, it will be re-enabled
-# when the cluster will be migrated to the Analytics VLAN.
-profile::mjolnir::kafka_msearch_daemon::ensure: 'absent'
-profile::mjolnir::kafka_msearch_daemon::kafka_cluster: jumbo-eqiad
-profile::mjolnir::kafka_msearch_daemon::input_topic: mjolnir.msearch-relforge-request
-profile::mjolnir::kafka_msearch_daemon::output_topic: mjolnir.msearch-relforge-response
-profile::mjolnir::kafka_msearch_daemon::num_workers: 7
-profile::mjolnir::kafka_msearch_daemon::max_concurrent_searches: 10
-profile::mjolnir::kafka_msearch_daemon::num_running_daemons: 1
 profile::elasticsearch::cirrus::enable_remote_search: false
 
 #kibana configuration

@@ -9,9 +9,6 @@ class role::elasticsearch::cloudelastic {
     include ::profile::elasticsearch::monitor::base_checks
     include ::profile::lvs::realserver
 
-    # To be enabled after elasticsearch is setup as kafka topic has not been created
-    #include ::profile::mjolnir::kafka_bulk_daemon
-
     system::role { 'elasticsearch::cloudelastic':
         ensure      => 'present',
         description => 'elasticsearch cloud elastic cirrus',
