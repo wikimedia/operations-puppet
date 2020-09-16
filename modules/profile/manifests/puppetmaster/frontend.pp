@@ -66,9 +66,6 @@ class profile::puppetmaster::frontend(
         master => $ca_server
     }
 
-    ## Configuration
-    $workers = $servers[$::fqdn]
-
     $common_config = {
         'ca'              => $ca,
         'ca_server'       => $ca_server,
@@ -85,7 +82,6 @@ class profile::puppetmaster::frontend(
         bind_address        => '*',
         server_type         => 'frontend',
         is_git_master       => true,
-        workers             => $workers,
         config              => $profile::puppetmaster::common::config,
         secure_private      => $secure_private,
         prevent_cherrypicks => $prevent_cherrypicks,
@@ -96,6 +92,7 @@ class profile::puppetmaster::frontend(
         servers             => $servers,
     }
 
+    $workers = $servers[$facts['fqdn']]
     $locale_server = $locale_servers[$facts['fqdn']]
     # Main site to respond to
     puppetmaster::web_frontend { $web_hostname:

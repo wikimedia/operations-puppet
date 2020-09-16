@@ -16,12 +16,6 @@
 #    - $config:
 #        Hash containing all config settings for the [master] section of
 #        puppet.conf (ini-style)
-#    - $workers:
-#        Array of hashes in the form. If 'loadfactor' is omitted, it is assumed to
-#        be equal to 1.
-#        An 'offline' parameter is supported to allow fully depooling a host
-#        without removing it from the stanza.
-#         [{ 'worker' => 'worker1.example.com', loadfactor => '1' }]
 #    - $hiera_config:
 #        Specifies which file to use for hiera.yaml.  Defaults to $::realm
 #    - $is_git_master:
@@ -42,14 +36,13 @@
 #        the ::geoip::data::puppet class in their manifests
 #    - $servers
 #        Hash - Hash of puppetmaster servers, their workers and loadfactors
-# 
+#
 class puppetmaster(
     String[1]                        $server_name        = 'puppet',
     String[1]                        $bind_address       = '*',
     String[1]                        $verify_client      = 'optional',
     Array                            $deny_from          = [],
     String[1]                        $server_type        = 'standalone',
-    Optional[Puppetmaster::Backends] $workers            = undef,
     Hash                             $config             = {},
     Array[String]                    $allow_from         = [
                                                             '*.wikimedia.org',
@@ -72,6 +65,7 @@ class puppetmaster(
     Hash[String, Puppetmaster::Backends] $servers         = {},
 ){
 
+    $workers = $servers[$facts['fqdn']]
     $gitdir = '/var/lib/git'
     $volatiledir = '/var/lib/puppet/volatile'
 
