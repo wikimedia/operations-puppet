@@ -86,6 +86,9 @@ profile::trafficserver::backend::mapping_rules:
       target: http://hue.wikimedia.org
       replacement: https://analytics-tool1001.eqiad.wmnet
     - type: map
+      target: http://hue-next.wikimedia.org
+      replacement: https://an-tool1009.eqiad.wmnet
+    - type: map
       target: http://iegreview.wikimedia.org
       replacement: https://webserver-misc-apps.discovery.wmnet
     - type: map
