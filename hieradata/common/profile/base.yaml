@@ -8,3 +8,4 @@ profile::base::remote_syslog_queue_enabled:
   - 'eqsin'
   - 'esams'
   - 'eqiad'
+  - 'codfw'
