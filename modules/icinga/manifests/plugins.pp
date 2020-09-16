@@ -53,6 +53,7 @@ class icinga::plugins(
         owner   => $icinga_user,
         group   => $icinga_group,
         mode    => '0755',
+        notify  => Service['icinga'],
     }
 
     # WMF custom service checks

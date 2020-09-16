@@ -29,9 +29,10 @@ class icinga(
     Boolean $stub_contactgroups = false,
 ) {
 
-    file { [ '/etc/nagios/nagios_host.cfg', '/etc/nagios/nagios_service.cfg' ]:
+    file { $cfg_files:
       ensure => 'file',
-      mode   => '0444'
+      mode   => '0444',
+      notify => Service['icinga'],
     }
 
     # Replaces custom icinga init script.
