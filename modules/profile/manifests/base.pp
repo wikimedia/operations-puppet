@@ -7,7 +7,6 @@ class profile::base(
     $remote_syslog = hiera('profile::base::remote_syslog', []),
     $remote_syslog_tls = hiera('profile::base::remote_syslog_tls', []),
     Array[String] $remote_syslog_queue_enabled = lookup('profile::base::remote_syslog_queue_enabled', {'default_value' => []}),
-    $enable_rsyslog_exporter = hiera('profile::base::enable_rsyslog_exporter', false),
     $enable_kafka_shipping = hiera('profile::base::enable_kafka_shipping', true),
     Enum['critical', 'disabled', 'enabled'] $notifications = hiera('profile::base::notifications', 'enabled'),
     $monitor_systemd = hiera('profile::base::monitor_systemd', true),
@@ -78,12 +77,10 @@ class profile::base(
     }
 
     class { 'rsyslog': }
-    if $enable_rsyslog_exporter {
-        include profile::prometheus::rsyslog_exporter
+    include profile::prometheus::rsyslog_exporter
 
-        class {'profile::rsyslog::kafka_shipper':
-            enable => $enable_kafka_shipping,
-        }
+    class {'profile::rsyslog::kafka_shipper':
+        enable => $enable_kafka_shipping,
     }
 
     unless empty($remote_syslog) and empty($remote_syslog_tls) {
