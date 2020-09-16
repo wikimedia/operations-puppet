@@ -1,1 +1,2 @@
 profile::hue::database_name: 'hue_next'
+profile::hue::servername: 'hue-next.wikimedia.org'

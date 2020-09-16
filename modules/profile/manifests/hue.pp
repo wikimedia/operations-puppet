@@ -22,6 +22,7 @@ class profile::hue (
     $use_hdfs_ssl_config        = hiera('profile::hue::use_hdfs_ssl_config', false),
     $use_mapred_ssl_config      = hiera('profile::hue::use_mapred_ssl_config', false),
     $oozie_security_enabled     = hiera('profile::hue::oozie_security_enabled', false),
+    $server_name                = lookup('profile::hue::servername'),
     Boolean $enable_cas         = lookup('profile::hue::enable_cas'),
 ){
 
@@ -103,11 +104,6 @@ class profile::hue (
 
     # Vhost proxy to Hue app server.
     # This is not for LDAP auth, LDAP is done by Hue itself.
-
-    $server_name = $::realm ? {
-        'production' => 'hue.wikimedia.org',
-        'labs'       => "hue-${::labsproject}.${::site}.wmflabs",
-    }
 
     $hue_port = $::cdh::hue::http_port
 
