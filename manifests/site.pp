@@ -2342,11 +2342,6 @@ node /^urldownloader[12]00[12]\.wikimedia\.org/ {
     role(url_downloader)
 }
 
-# old cloudvirts awaiting decom
-node /^cloudvirt100[1-9]\.eqiad\.wmnet$/ {
-    role(spare::system)
-}
-
 # To learn what will get scheduled on a given cloudvirt, consult
 # https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Host_aggregates
 node /^cloudvirt101[0-4]\.eqiad\.wmnet$/ {
