@@ -1,6 +1,4 @@
 cluster: kafka_main
-admin::groups:
-  - cpjobqueue-admin
 
 profile::kafka::broker::kafka_cluster_name: main
 
