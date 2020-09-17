@@ -120,8 +120,9 @@ class icinga::plugins(
     }
 
     class { '::nagios_common::commands':
-        owner => $icinga_user,
-        group => $icinga_group,
+        owner  => $icinga_user,
+        group  => $icinga_group,
+        notify => Service['icinga'],
     }
 
     include ::passwords::nagios::mysql
