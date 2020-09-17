@@ -1,6 +1,5 @@
 cluster: kafka_main
 admin::groups:
-  - changeprop-admin
   - cpjobqueue-admin
 
 profile::kafka::broker::kafka_cluster_name: main
