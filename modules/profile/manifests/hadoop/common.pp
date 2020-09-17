@@ -448,7 +448,7 @@ class profile::hadoop::common (
             $keystore_type = 'pkcs12'
             $keystore_keypassword = ''
             $keystore_password = ''
-            $keystore_path = "${::cdh::hadoop::config_directory}/ssl/${::fqdn}.p12"
+            $keystore_path = "${::cdh::hadoop::config_directory}/ssl/server.p12"
 
             $truststore_type = 'pkcs12'
             $truststore_password = ''
