@@ -70,3 +70,6 @@ prometheus::node_exporter::collectors_extra:
   - meminfo_numa
 
 profile::base::notifications: disabled
+
+profile::base::puppet::export_p12: true
+profile::hadoop::common::use_puppet_ssl_certs: true

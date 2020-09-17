@@ -191,6 +191,7 @@ class profile::hadoop::common (
     $hadoop_clusters_secrets = hiera('hadoop_clusters_secrets', {}),
     $config_override         = hiera('profile::hadoop::common::config_override', {}),
     $ensure_ssl_config       = hiera('profile::hadoop::common::ensure_ssl_config', false),
+    $use_puppet_ssl_certs    = lookup('profile::hadoop::common::use_puppet_ssl_certs', { 'default_value' => false }),
 ) {
     # Properties that are not meant to have undef as default value (a hash key
     # without a correspondent value returns undef) should be listed in here.
@@ -424,7 +425,12 @@ class profile::hadoop::common (
     # Also please remember that the configuration below takes care of deploying the trustores/keystores and
     # the related ssl-(client|server).xml configs, but it does not enable any TLS setting for Yarn/HDFS.
     # In order to do it, specific settings to the main hadoop_clusters hiera config need to be made.
+    #
+    # We have also recently added the possibility to use the puppet local SSL certificates instead of
+    # other ones provided by cergen etc.. This is currently under testing, and it can be enabled with
+    # the option $use_puppet_ssl_certs = true.
     if $ensure_ssl_config {
+
         $hadoop_ssl_config_name = "hadoop_${cluster_name}"
 
         $hostname_suffix = $::realm ? {
@@ -432,42 +438,72 @@ class profile::hadoop::common (
             default => "${::site}.wmnet",
         }
 
-        $hostname_tls_cn = "${::hostname}.${hostname_suffix}"
+        if $use_puppet_ssl_certs {
+            base::expose_puppet_certs { $::cdh::hadoop::config_directory:
+                provide_p12 => true,
+                user        => 'root',
+                group       => 'hadoop',
+            }
 
-        # Ensure trustore/keystore files
-        $keystore_path = "${::cdh::hadoop::config_directory}/keystore.jks"
-        file { $keystore_path:
-            content => secret("certificates/${hadoop_ssl_config_name}/${hostname_tls_cn}/${hostname_tls_cn}.keystore.jks"),
-            owner   => 'root',
-            group   => 'hadoop',
-            mode    => '0440',
-            require => File[$::cdh::hadoop::config_directory],
-        }
+            $keystore_type = 'pkcs12'
+            $keystore_keypassword = ''
+            $keystore_password = ''
+            $keystore_path = "${::cdh::hadoop::config_directory}/${::fqdn}.p12"
 
-        $truststore_path = "${::cdh::hadoop::config_directory}/truststore.jks"
-        file { $truststore_path:
-            content => secret("certificates/${hadoop_ssl_config_name}/${hostname_tls_cn}/truststore.jks"),
-            owner   => 'root',
-            group   => 'hadoop',
-            mode    => '0444',
-            require => File[$::cdh::hadoop::config_directory],
+            $truststore_type = 'pkcs12'
+            $truststore_password = ''
+
+            # By default we ensure that the puppet CA is trusted in the default
+            # JVM's truststore. No need for ssl-client.xml config in this case.
+            $ssl_client_config = undef
+
+        } else {
+            $hostname_tls_cn = "${::hostname}.${hostname_suffix}"
+
+            $keystore_type = 'jks'
+            $keystore_keypassword = $hadoop_secrets_config['ssl_keystore_keypassword']
+            $keystore_password = $hadoop_secrets_config['ssl_keystore_password']
+
+            # Ensure trustore/keystore files
+            $keystore_path = "${::cdh::hadoop::config_directory}/keystore.jks"
+            file { $keystore_path:
+                content => secret("certificates/${hadoop_ssl_config_name}/${hostname_tls_cn}/${hostname_tls_cn}.keystore.jks"),
+                owner   => 'root',
+                group   => 'hadoop',
+                mode    => '0440',
+                require => File[$::cdh::hadoop::config_directory],
+            }
+
+            $truststore_type = 'jks'
+            $truststore_password = $hadoop_secrets_config['ssl_trustore_password']
+
+            $truststore_path = "${::cdh::hadoop::config_directory}/truststore.jks"
+            file { $truststore_path:
+                content => secret("certificates/${hadoop_ssl_config_name}/${hostname_tls_cn}/truststore.jks"),
+                owner   => 'root',
+                group   => 'hadoop',
+                mode    => '0444',
+                require => File[$::cdh::hadoop::config_directory],
+            }
+
+            $ssl_client_config = {
+                'ssl.client.truststore.password' => $truststore_password,
+                'ssl.client.truststore.type' => $truststore_type,
+                'ssl.client.truststore.location' => $truststore_path,
+            }
+
         }
 
         $ssl_server_config = {
-            'ssl.server.keystore.type' => 'jks',
-            'ssl.server.keystore.keypassword' => $hadoop_secrets_config['ssl_keystore_keypassword'],
-            'ssl.server.keystore.password' => $hadoop_secrets_config['ssl_keystore_password'],
+            'ssl.server.keystore.type' => $keystore_type,
+            'ssl.server.keystore.keypassword' => $keystore_keypassword,
+            'ssl.server.keystore.password' => $keystore_password,
             'ssl.server.keystore.location' => $keystore_path,
-            'ssl.server.truststore.type' => 'jks',
+            'ssl.server.truststore.type' => $truststore_type,
             'ssl.server.truststore.location' => $truststore_path,
-            'ssl.server.truststore.password' => $hadoop_secrets_config['ssl_trustore_password'],
+            'ssl.server.truststore.password' => $truststore_password,
         }
 
-        $ssl_client_config = {
-            'ssl.client.truststore.password' => $hadoop_secrets_config['ssl_trustore_password'],
-            'ssl.client.truststore.type' => 'jks',
-            'ssl.client.truststore.location' => $truststore_path,
-        }
 
         class { 'cdh::hadoop::ssl_config':
             config_directory  => $::cdh::hadoop::config_directory,
