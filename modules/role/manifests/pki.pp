@@ -4,4 +4,5 @@ class role::pki {
     include profile::standard
     include profile::base::firewall
     include profile::pki::server
+    include profile::pki::client
 }

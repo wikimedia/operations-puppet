@@ -1,0 +1,9 @@
+profile::pki::client::ensure: absent
+profile::pki::client::signer_host: pki2001.codfw.wmnet
+profile::pki::client::signer_port: 443
+profile::pki::client::use_stunnel: true
+profile::pki::client::ca_path: "%{facts.puppet_config.localcacert}"
+profile::pki::client::cert_path: "%{facts.puppet_config.hostcert}"
+profile::pki::client::key_path: "%{facts.puppet_config.hostprivkey}"
+# private repo
+# profile::pki::client::auth_key: changeme
