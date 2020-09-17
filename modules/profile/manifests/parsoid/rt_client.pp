@@ -1,6 +1,6 @@
 # This instantiates testreduce::client
 class profile::parsoid::rt_client(
-    $parsoid_port = hiera('parsoid::testing::parsoid_port'),
+    Stdlib::Port $parsoid_port = lookup('parsoid::testing::parsoid_port'),
     Stdlib::Ensure::Service $service_ensure = lookup('profile::parsoid::rt_client::service_ensure'),
 ){
     include ::testreduce

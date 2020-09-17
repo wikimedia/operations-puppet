@@ -1,7 +1,7 @@
 # Parsoid roundtrip testing, Parsoid & PHP parser visual diff testing
 class profile::parsoid::testing (
-    Stdlib::Port $parsoid_port = hiera('parsoid::testing::parsoid_port'),
-    Stdlib::Httpurl $default_api_proxy_uri = hiera('parsoid::testing::default_api_proxy_uri'),
+    Stdlib::Port $parsoid_port = lookup('parsoid::testing::parsoid_port'),
+    Stdlib::Httpurl $default_api_proxy_uri = lookup('parsoid::testing::default_api_proxy_uri'),
 ) {
 
     class { '::parsoid':
