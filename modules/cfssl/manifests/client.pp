@@ -7,40 +7,23 @@ class cfssl::client (
     String           $auth_key,
     Wmflib::Ensure   $ensure    = 'present',
     Cfssl::Loglevel  $log_level = 'info',
-    Stdlib::Unixpath $conf_dir  = '/etc/cfssl',
 ) {
+    $conf_file = '/etc/cfssl/client-cfssl.conf'
     ensure_packages(['golang-cfssl'])
-    $conf_file = "${conf_dir}/client-cfssl.conf"
-    $config = {
-        'auth_keys' => {
-            'default' => {
-                'type' => 'standard',
-                'key'  => $auth_key,
-            },
-        },
-        'signing'   => {
-            'default' => {
-                'auth_remote' => {
-                    'remote'   => 'default',
-                    'auth_key' => 'default',
-                }
-            }
-        },
-        'remotes'   => {
-            'default' => $signer,
-        }
+    $default_auth_remote = {'remote' => 'default_remote', 'auth_key' => 'default_auth'}
+    $auth_keys = {'default_auth'     => { 'type' => 'standard', 'key'  => $auth_key}}
+    $remotes = {'default_remote' => $signer}
+    cfssl::config {'client-cfssl':
+        default_auth_remote => $default_auth_remote,
+        auth_keys           => $auth_keys,
+        remotes             => $remotes,
+        require             => Package['golang-cfssl'],
     }
-    file {
-        default:
-            ensure  => $ensure,
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0440',
-            require => Package['golang-cfssl'];
-        $conf_file:
-            content => $config.to_json();
-        '/usr/local/sbin/cfssl-client':
-            mode    => '0550',
-            content => "#!/bin/sh\n/usr/bin/cfssl \"$@\" -config ${conf_file}";
+    file {'/usr/local/sbin/cfssl-client':
+        ensure  => file,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0550',
+        content => "#!/bin/sh\n/usr/bin/cfssl \"$@\" -config ${conf_file}";
     }
 }
