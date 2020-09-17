@@ -169,5 +169,5 @@ profile::java::trust_puppet_ca: true
 
 profile::base::debdeploy::exclude_mounts:
   - /mnt/hdfs
-profile::base::puppet::export_p12: true
+
 profile::hadoop::common::use_puppet_ssl_certs: true

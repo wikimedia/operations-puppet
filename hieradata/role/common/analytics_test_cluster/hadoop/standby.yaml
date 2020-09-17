@@ -65,5 +65,4 @@ profile::java::extra_args: 'JAVA_TOOL_OPTIONS="-Dfile.encoding=UTF-8"'
 
 profile::base::notifications: disabled
 
-profile::base::puppet::export_p12: true
 profile::hadoop::common::use_puppet_ssl_certs: true
