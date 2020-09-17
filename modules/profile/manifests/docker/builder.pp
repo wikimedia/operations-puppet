@@ -18,14 +18,14 @@
 # [*docker_pkg*] Boolean value for enabling the docker_pkg component
 #
 class profile::docker::builder(
-    $proxy_address = hiera('profile::docker::builder::proxy_address', undef),
-    $proxy_port = hiera('profile::docker::builder::proxy_port', undef),
-    $registry = hiera('docker::registry'),
-    $username = hiera('docker::registry::username'),
-    $password = hiera('docker::registry::password'),
-    $docker_pkg = hiera('profile::docker::docker_pkg', false),
-    $prune_prod_images = lookup('profile::docker::builder::prune_images'),
-) {
+    Optional[Stdlib::Host] $proxy_address = lookup('profile::docker::builder::proxy_address', {default_value => undef}),
+    Optional[Stdlib::Port] $proxy_port = lookup('profile::docker::builder::proxy_port', {default_value => undef}),
+    Stdlib::Host $registry = lookup('docker::registry'),
+    String $username = lookup('docker::registry::username'),
+    String $password = lookup('docker::registry::password'),
+    Boolean $docker_pkg = lookup('profile::docker::docker_pkg', {default_value => false}),
+    Boolean $prune_prod_images = lookup('profile::docker::builder::prune_images'),
+){
 
     if $docker_pkg {
         class { '::docker_pkg': }

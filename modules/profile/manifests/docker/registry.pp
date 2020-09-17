@@ -1,15 +1,15 @@
 class profile::docker::registry(
     # The following variables might be useful elsewhere too
-    $username = hiera('docker::registry::username'),
-    $hash = hiera('docker::registry::hash'),
+    String $username = lookup('docker::registry::username'),
+    Hash $hash = lookup('docker::registry::hash'),
     # Which machines are allowed to build images.
-    $image_builders = hiera('profile::docker::registry::image_builders', undef),
+    Optional[Array[Stdlib::Host]] $image_builders = lookup('profile::docker::registry::image_builders', {default_value => undef}),
     # cache text nodes are allowed to connect via HTTP, if defined
-    $cache_nodes = hiera('cache::nodes', {}),
+    Hash $cache_nodes = lookup('cache::nodes', {default_value => {}}),
     # Storage configuration
-    $storage_backend = hiera('profile::docker::registry::storage_backend', 'filebackend'),
-    $certname = hiera('profile::docker::registry::certname', undef),
-    Array[String] $deployment_hosts = hiera('deployment_hosts', []),
+    String $storage_backend = lookup('profile::docker::registry::storage_backend', {default_value => 'filebackend'}),
+    String $certname = lookup('profile::docker::registry::certname', {default_value => undef}),
+    Array[String] $deployment_hosts = lookup('deployment_hosts', {default_value => []}),
 ) {
     require ::network::constants
     # Hiera configurations

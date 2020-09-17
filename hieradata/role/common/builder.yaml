@@ -8,7 +8,7 @@ profile::docker::engine::settings:
   live-restore: true
   iptables: false
 profile::docker::builder::proxy_address: "webproxy.%{::site}.wmnet"
-profile::docker::builder::proxy_port: "8080"
+profile::docker::builder::proxy_port: 8080
 profile::docker::builder::docker_pkg: true
 monitor_screens: false
 # The default setup has no lvm, so no source
