@@ -1,5 +1,5 @@
 class profile::openstack::base::optional_firewall (
-    $use_firewall = hiera('profile::openstack::base::optional_firewall', true),
+    $use_firewall = lookup('profile::openstack::base::optional_firewall', {'default_value' => true}),
 ) {
     if $use_firewall {
         include ::profile::base::firewall

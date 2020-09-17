@@ -2,8 +2,8 @@ class profile::openstack::base::pdns::auth::db(
     Array[Stdlib::Fqdn] $designate_hosts = lookup('profile::openstack::base::designate_hosts'),
     $pdns_db_pass = lookup('profile::openstack::base::pdns:db_pass'),
     $pdns_admin_db_pass = lookup('profile::openstack::base::pdns::db_admin_pass'),
-    Array[String] $mysql_root_clients = hiera('mysql_root_clients', []),
-    ) {
+    Array[String] $mysql_root_clients = lookup('mysql_root_clients', {'default_value' => []}),
+){
 
     $designate_host_ips = $designate_hosts.map |$host| { ipresolve($host, 4) }
 

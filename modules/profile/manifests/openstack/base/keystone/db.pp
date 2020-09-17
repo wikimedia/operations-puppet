@@ -6,7 +6,7 @@ class profile::openstack::base::keystone::db(
     $puppetmaster_hostname = lookup('profile::openstack::base::puppetmaster_hostname'),
     $designate_host = lookup('profile::openstack::base::designate_host'),
     $osm_host = lookup('profile::openstack::base::osm_host'),
-    Array[String] $mysql_root_clients = hiera('mysql_root_clients', []),
+    Array[String] $mysql_root_clients = lookup('mysql_root_clients', {'default_value' => []}),
 ){
 
     # mysql monitoring and administration from root clients/tendril
