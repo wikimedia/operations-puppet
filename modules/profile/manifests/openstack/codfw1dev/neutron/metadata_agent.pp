@@ -1,8 +1,8 @@
 class profile::openstack::codfw1dev::neutron::metadata_agent(
-    $version = hiera('profile::openstack::codfw1dev::version'),
-    Stdlib::Fqdn $keystone_api_fqdn = hiera('profile::openstack::codfw1dev::keystone_api_fqdn'),
-    $metadata_proxy_shared_secret = hiera('profile::openstack::codfw1dev::neutron::metadata_proxy_shared_secret'),
-    $report_interval = hiera('profile::openstack::codfw1dev::neutron::report_interval'),
+    $version = lookup('profile::openstack::codfw1dev::version'),
+    Stdlib::Fqdn $keystone_api_fqdn = lookup('profile::openstack::codfw1dev::keystone_api_fqdn'),
+    $metadata_proxy_shared_secret = lookup('profile::openstack::codfw1dev::neutron::metadata_proxy_shared_secret'),
+    $report_interval = lookup('profile::openstack::codfw1dev::neutron::report_interval'),
     ) {
 
     require ::profile::openstack::codfw1dev::clientpackages

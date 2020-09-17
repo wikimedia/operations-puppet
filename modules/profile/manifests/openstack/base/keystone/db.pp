@@ -1,13 +1,13 @@
 # this class is currently unused. Perhaps worth reallocating code
 # to profile::openstack::codfw1dev::db
 class profile::openstack::base::keystone::db(
-    $labs_hosts_range = hiera('profile::openstack::base::labs_hosts_range'),
-    $labs_hosts_range_v6 = hiera('profile::openstack::base::labs_hosts_range_v6'),
-    $puppetmaster_hostname = hiera('profile::openstack::base::puppetmaster_hostname'),
-    $designate_host = hiera('profile::openstack::base::designate_host'),
-    $osm_host = hiera('profile::openstack::base::osm_host'),
+    $labs_hosts_range = lookup('profile::openstack::base::labs_hosts_range'),
+    $labs_hosts_range_v6 = lookup('profile::openstack::base::labs_hosts_range_v6'),
+    $puppetmaster_hostname = lookup('profile::openstack::base::puppetmaster_hostname'),
+    $designate_host = lookup('profile::openstack::base::designate_host'),
+    $osm_host = lookup('profile::openstack::base::osm_host'),
     Array[String] $mysql_root_clients = hiera('mysql_root_clients', []),
-    ) {
+){
 
     # mysql monitoring and administration from root clients/tendril
     $mysql_root_clients_str = join($mysql_root_clients, ' ')

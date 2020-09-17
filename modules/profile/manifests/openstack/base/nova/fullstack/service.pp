@@ -1,9 +1,9 @@
 class profile::openstack::base::nova::fullstack::service(
-    $osstackcanary_pass = hiera('profile::openstack::base::nova::fullstack_pass'),
-    $openstack_controllers = hiera('profile::openstack::base::openstack_controllers'),
-    $region = hiera('profile::openstack::base::region'),
-    $network = hiera('profile::openstack::base::nova::instance_network_id'),
-    $puppetmaster = hiera('profile::openstack::base::puppetmaster_hostname'),
+    $osstackcanary_pass = lookup('profile::openstack::base::nova::fullstack_pass'),
+    $openstack_controllers = lookup('profile::openstack::base::openstack_controllers'),
+    $region = lookup('profile::openstack::base::region'),
+    $network = lookup('profile::openstack::base::nova::instance_network_id'),
+    $puppetmaster = lookup('profile::openstack::base::puppetmaster_hostname'),
     ) {
 
     # We only want this running in one place; just pick the first

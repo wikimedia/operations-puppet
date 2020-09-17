@@ -20,15 +20,15 @@
 
 class profile::openstack::base::pdns::recursor::service(
     Stdlib::Fqdn $keystone_api_fqdn = lookup('profile::openstack::base::keystone_api_fqdn'),
-    $observer_user = hiera('profile::openstack::base::observer_user'),
-    $observer_password = hiera('profile::openstack::base::observer_password'),
-    $observer_project = hiera('profile::openstack::base::observer_project'),
-    $pdns_host = hiera('profile::openstack::base::pdns::host'),
-    $pdns_recursor = hiera('profile::openstack::base::pdns::recursor'),
+    $observer_user = lookup('profile::openstack::base::observer_user'),
+    $observer_password = lookup('profile::openstack::base::observer_password'),
+    $observer_project = lookup('profile::openstack::base::observer_project'),
+    $pdns_host = lookup('profile::openstack::base::pdns::host'),
+    $pdns_recursor = lookup('profile::openstack::base::pdns::recursor'),
     $tld = lookup('profile::openstack::base::pdns::tld'),
     $legacy_tld = lookup('profile::openstack::base::pdns::legacy_tld'),
-    $private_reverse_zones = hiera('profile::openstack::base::pdns::private_reverse_zones'),
-    $aliaser_extra_records = hiera('profile::openstack::base::pdns::recursor_aliaser_extra_records'),
+    $private_reverse_zones = lookup('profile::openstack::base::pdns::private_reverse_zones'),
+    $aliaser_extra_records = lookup('profile::openstack::base::pdns::recursor_aliaser_extra_records'),
     ) {
 
     include ::network::constants

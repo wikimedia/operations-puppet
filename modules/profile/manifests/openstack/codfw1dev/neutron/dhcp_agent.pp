@@ -1,7 +1,7 @@
 class profile::openstack::codfw1dev::neutron::dhcp_agent(
-    $version = hiera('profile::openstack::codfw1dev::version'),
-    $dhcp_domain = hiera('profile::openstack::codfw1dev::nova::dhcp_domain'),
-    $report_interval = hiera('profile::openstack::codfw1dev::neutron::report_interval'),
+    $version = lookup('profile::openstack::codfw1dev::version'),
+    $dhcp_domain = lookup('profile::openstack::codfw1dev::nova::dhcp_domain'),
+    $report_interval = lookup('profile::openstack::codfw1dev::neutron::report_interval'),
     ) {
 
     require ::profile::openstack::codfw1dev::neutron::common

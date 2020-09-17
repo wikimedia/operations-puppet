@@ -1,11 +1,11 @@
 class profile::openstack::base::envscripts(
-    $ldap_user_pass = hiera('profile::openstack::base::ldap_user_pass'),
+    $ldap_user_pass = lookup('profile::openstack::base::ldap_user_pass'),
     Stdlib::Fqdn $keystone_api_fqdn = lookup('profile::openstack::base::keystone_api_fqdn'),
-    $region = hiera('profile::openstack::base::region'),
-    $nova_db_pass = hiera('profile::openstack::base::nova::db_pass'),
-    $wmflabsdotorg_admin = hiera('profile::openstack::base::designate::wmflabsdotorg_admin'),
-    $wmflabsdotorg_pass = hiera('profile::openstack::base::designate::wmflabsdotorg_pass'),
-    $wmflabsdotorg_project = hiera('profile::openstack::base::designate::wmflabsdotorg_project'),
+    $region = lookup('profile::openstack::base::region'),
+    $nova_db_pass = lookup('profile::openstack::base::nova::db_pass'),
+    $wmflabsdotorg_admin = lookup('profile::openstack::base::designate::wmflabsdotorg_admin'),
+    $wmflabsdotorg_pass = lookup('profile::openstack::base::designate::wmflabsdotorg_pass'),
+    $wmflabsdotorg_project = lookup('profile::openstack::base::designate::wmflabsdotorg_project'),
     ) {
 
     class {'::openstack::util::envscripts':

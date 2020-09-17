@@ -1,7 +1,7 @@
 class profile::openstack::eqiad1::pdns::auth::service(
     Array[Stdlib::Fqdn] $hosts = lookup('profile::openstack::eqiad1::pdns::hosts'),
-    $db_pass = hiera('profile::openstack::eqiad1::pdns::db_pass'),
-    $monitor_target_fqdn = hiera('profile::openstack::eqiad1::pdns::monitor_target_fqdn'),
+    $db_pass = lookup('profile::openstack::eqiad1::pdns::db_pass'),
+    $monitor_target_fqdn = lookup('profile::openstack::eqiad1::pdns::monitor_target_fqdn'),
     String $pdns_api_key = lookup('profile::openstack::eqiad1::pdns::api_key'),
     ) {
 

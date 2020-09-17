@@ -1,8 +1,8 @@
 class profile::openstack::eqiad1::neutron::metadata_agent(
-    $version = hiera('profile::openstack::eqiad1::version'),
+    $version = lookup('profile::openstack::eqiad1::version'),
     Stdlib::Fqdn $keystone_api_fqdn = lookup('profile::openstack::eqiad1::keystone_api_fqdn'),
-    $metadata_proxy_shared_secret = hiera('profile::openstack::eqiad1::neutron::metadata_proxy_shared_secret'),
-    $report_interval = hiera('profile::openstack::eqiad1::neutron::report_interval'),
+    $metadata_proxy_shared_secret = lookup('profile::openstack::eqiad1::neutron::metadata_proxy_shared_secret'),
+    $report_interval = lookup('profile::openstack::eqiad1::neutron::report_interval'),
     ) {
 
     require ::profile::openstack::eqiad1::clientpackages

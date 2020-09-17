@@ -1,9 +1,9 @@
 class profile::openstack::eqiad1::nova::fullstack::service(
-    $osstackcanary_pass = hiera('profile::openstack::eqiad1::nova::fullstack_pass'),
+    $osstackcanary_pass = lookup('profile::openstack::eqiad1::nova::fullstack_pass'),
     Array[Stdlib::Fqdn] $openstack_controllers = lookup('profile::openstack::eqiad1::openstack_controllers'),
-    $region = hiera('profile::openstack::eqiad1::region'),
-    $network = hiera('profile::openstack::eqiad1::nova::instance_network_id'),
-    $puppetmaster = hiera('profile::openstack::eqiad1::puppetmaster_hostname'),
+    $region = lookup('profile::openstack::eqiad1::region'),
+    $network = lookup('profile::openstack::eqiad1::nova::instance_network_id'),
+    $puppetmaster = lookup('profile::openstack::eqiad1::puppetmaster_hostname'),
     ) {
 
     require ::profile::openstack::eqiad1::clientpackages

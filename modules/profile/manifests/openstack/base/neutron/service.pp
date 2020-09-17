@@ -1,5 +1,5 @@
 class profile::openstack::base::neutron::service(
-    $version = hiera('profile::openstack::base::version'),
+    $version = lookup('profile::openstack::base::version'),
     Stdlib::Port $bind_port = lookup('profile::openstack::base::neutron::bind_port'),
     ) {
 

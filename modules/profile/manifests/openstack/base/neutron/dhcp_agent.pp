@@ -1,7 +1,7 @@
 class profile::openstack::base::neutron::dhcp_agent(
-    $version = hiera('profile::openstack::base::version'),
-    $dhcp_domain = hiera('profile::openstack::base::nova::dhcp_domain'),
-    $report_interval = hiera('profile::openstack::base::neutron::report_interval'),
+    $version = lookup('profile::openstack::base::version'),
+    $dhcp_domain = lookup('profile::openstack::base::nova::dhcp_domain'),
+    $report_interval = lookup('profile::openstack::base::neutron::report_interval'),
     ) {
 
     class {'::openstack::neutron::dhcp_agent':

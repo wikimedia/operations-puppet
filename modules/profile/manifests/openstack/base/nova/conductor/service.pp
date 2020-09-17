@@ -1,5 +1,5 @@
 class profile::openstack::base::nova::conductor::service(
-    $version = hiera('profile::openstack::base::version'),
+    $version = lookup('profile::openstack::base::version'),
     ) {
 
     class {'::openstack::nova::conductor::service':

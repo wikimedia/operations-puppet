@@ -1,7 +1,7 @@
 class profile::openstack::base::nova::api::service(
-    $version = hiera('profile::openstack::base::version'),
-    $labs_hosts_range = hiera('profile::openstack::base::labs_hosts_range'),
-    $labs_hosts_range_v6 = hiera('profile::openstack::base::labs_hosts_range_v6')
+    $version = lookup('profile::openstack::base::version'),
+    $labs_hosts_range = lookup('profile::openstack::base::labs_hosts_range'),
+    $labs_hosts_range_v6 = lookup('profile::openstack::base::labs_hosts_range_v6')
     ) {
 
     $prod_networks = join($::network::constants::production_networks, ' ')

@@ -73,7 +73,7 @@ class profile::openstack::base::galera::node(
         client_socket   => $socket,
     }
 
-    $prometheus_nodes = hiera('prometheus_nodes')
+    $prometheus_nodes = lookup('prometheus_nodes')
     $prometheus_ferm_nodes = join($prometheus_nodes, ' ')
 
     ferm::service { 'prometheus-mysqld-exporter':

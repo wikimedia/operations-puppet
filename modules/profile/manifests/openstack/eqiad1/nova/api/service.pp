@@ -1,7 +1,7 @@
 class profile::openstack::eqiad1::nova::api::service(
-    $version = hiera('profile::openstack::eqiad1::version'),
-    $labs_hosts_range = hiera('profile::openstack::eqiad1::labs_hosts_range'),
-    $labs_hosts_range_v6 = hiera('profile::openstack::eqiad1::labs_hosts_range_v6')
+    $version = lookup('profile::openstack::eqiad1::version'),
+    $labs_hosts_range = lookup('profile::openstack::eqiad1::labs_hosts_range'),
+    $labs_hosts_range_v6 = lookup('profile::openstack::eqiad1::labs_hosts_range_v6')
     ) {
 
     require ::profile::openstack::eqiad1::nova::common

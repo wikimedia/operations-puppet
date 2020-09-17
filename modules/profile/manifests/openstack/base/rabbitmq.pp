@@ -1,16 +1,16 @@
 class profile::openstack::base::rabbitmq(
     Array[Stdlib::Fqdn] $prometheus_nodes        = lookup('prometheus_nodes'),
     Array[Stdlib::Fqdn] $openstack_controllers = lookup('profile::openstack::base::openstack_controllers'),
-    $monitor_user = hiera('profile::openstack::base::rabbit_monitor_user'),
-    $monitor_password = hiera('profile::openstack::base::rabbit_monitor_pass'),
-    $cleanup_password = hiera('profile::openstack::base::rabbit_cleanup_pass'),
-    $file_handles = hiera('profile::openstack::base::rabbit_file_handles'),
+    $monitor_user = lookup('profile::openstack::base::rabbit_monitor_user'),
+    $monitor_password = lookup('profile::openstack::base::rabbit_monitor_pass'),
+    $cleanup_password = lookup('profile::openstack::base::rabbit_cleanup_pass'),
+    $file_handles = lookup('profile::openstack::base::rabbit_file_handles'),
     Array[Stdlib::Fqdn] $designate_hosts = lookup('profile::openstack::base::designate_hosts'),
-    $labs_hosts_range = hiera('profile::openstack::base::labs_hosts_range'),
-    $labs_hosts_range_v6 = hiera('profile::openstack::base::labs_hosts_range_v6'),
-    $nova_rabbit_user = hiera('profile::openstack::base::nova::rabbit_user'),
-    $nova_rabbit_password = hiera('profile::openstack::base::nova::rabbit_pass'),
-    $rabbit_erlang_cookie = hiera('profile::openstack::base::rabbit_erlang_cookie'),
+    $labs_hosts_range = lookup('profile::openstack::base::labs_hosts_range'),
+    $labs_hosts_range_v6 = lookup('profile::openstack::base::labs_hosts_range_v6'),
+    $nova_rabbit_user = lookup('profile::openstack::base::nova::rabbit_user'),
+    $nova_rabbit_password = lookup('profile::openstack::base::nova::rabbit_pass'),
+    $rabbit_erlang_cookie = lookup('profile::openstack::base::rabbit_erlang_cookie'),
 ){
 
     class { '::rabbitmq':

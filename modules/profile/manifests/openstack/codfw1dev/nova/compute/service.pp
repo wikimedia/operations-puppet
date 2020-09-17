@@ -1,10 +1,10 @@
 class profile::openstack::codfw1dev::nova::compute::service(
-    $version = hiera('profile::openstack::codfw1dev::version'),
-    $network_flat_interface = hiera('profile::openstack::codfw1dev::nova::network_flat_interface'),
-    $network_flat_tagged_base_interface = hiera('profile::openstack::codfw1dev::nova::network_flat_tagged_base_interface'),
-    $network_flat_interface_vlan = hiera('profile::openstack::codfw1dev::nova::network_flat_interface_vlan'),
-    $network_flat_name = hiera('profile::openstack::codfw1dev::neutron::network_flat_name'),
-    $physical_interface_mappings = hiera('profile::openstack::codfw1dev::nova::physical_interface_mappings'),
+    $version = lookup('profile::openstack::codfw1dev::version'),
+    $network_flat_interface = lookup('profile::openstack::codfw1dev::nova::network_flat_interface'),
+    $network_flat_tagged_base_interface = lookup('profile::openstack::codfw1dev::nova::network_flat_tagged_base_interface'),
+    $network_flat_interface_vlan = lookup('profile::openstack::codfw1dev::nova::network_flat_interface_vlan'),
+    $network_flat_name = lookup('profile::openstack::codfw1dev::neutron::network_flat_name'),
+    $physical_interface_mappings = lookup('profile::openstack::codfw1dev::nova::physical_interface_mappings'),
     ) {
 
     require ::profile::openstack::codfw1dev::neutron::common

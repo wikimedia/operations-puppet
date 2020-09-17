@@ -1,5 +1,5 @@
 class profile::openstack::base::wikitech::monitor(
-    $osm_host = hiera('profile::openstack::base::osm_host'),
+    $osm_host = lookup('profile::openstack::base::osm_host'),
     ) {
 
     # T89323

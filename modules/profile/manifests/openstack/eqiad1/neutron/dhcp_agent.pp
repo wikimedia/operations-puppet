@@ -1,7 +1,7 @@
 class profile::openstack::eqiad1::neutron::dhcp_agent(
-    $version = hiera('profile::openstack::eqiad1::version'),
-    $dhcp_domain = hiera('profile::openstack::eqiad1::nova::dhcp_domain'),
-    $report_interval = hiera('profile::openstack::eqiad1::neutron::report_interval'),
+    $version = lookup('profile::openstack::eqiad1::version'),
+    $dhcp_domain = lookup('profile::openstack::eqiad1::nova::dhcp_domain'),
+    $report_interval = lookup('profile::openstack::eqiad1::neutron::report_interval'),
     ) {
 
     require ::profile::openstack::eqiad1::clientpackages

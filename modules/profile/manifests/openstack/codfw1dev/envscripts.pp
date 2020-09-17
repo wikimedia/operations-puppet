@@ -1,11 +1,11 @@
 class profile::openstack::codfw1dev::envscripts(
-    $ldap_user_pass = hiera('profile::openstack::codfw1dev::ldap_user_pass'),
+    $ldap_user_pass = lookup('profile::openstack::codfw1dev::ldap_user_pass'),
     Stdlib::Fqdn $keystone_api_fqdn = lookup('profile::openstack::codfw1dev::keystone_api_fqdn'),
-    $region = hiera('profile::openstack::codfw1dev::region'),
-    $nova_db_pass = hiera('profile::openstack::codfw1dev::nova::db_pass'),
-    $wmflabsdotorg_admin = hiera('profile::openstack::codfw1dev::designate::wmflabsdotorg_admin'),
-    $wmflabsdotorg_pass = hiera('profile::openstack::codfw1dev::designate::wmflabsdotorg_pass'),
-    $wmflabsdotorg_project = hiera('profile::openstack::codfw1dev::designate::wmflabsdotorg_project'),
+    $region = lookup('profile::openstack::codfw1dev::region'),
+    $nova_db_pass = lookup('profile::openstack::codfw1dev::nova::db_pass'),
+    $wmflabsdotorg_admin = lookup('profile::openstack::codfw1dev::designate::wmflabsdotorg_admin'),
+    $wmflabsdotorg_pass = lookup('profile::openstack::codfw1dev::designate::wmflabsdotorg_pass'),
+    $wmflabsdotorg_project = lookup('profile::openstack::codfw1dev::designate::wmflabsdotorg_project'),
     ) {
     class {'::profile::openstack::base::envscripts':
         ldap_user_pass        => $ldap_user_pass,

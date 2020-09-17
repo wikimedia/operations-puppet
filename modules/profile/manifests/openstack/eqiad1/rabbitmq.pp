@@ -1,16 +1,16 @@
 class profile::openstack::eqiad1::rabbitmq(
     Array[Stdlib::Fqdn] $openstack_controllers = lookup('profile::openstack::eqiad1::openstack_controllers'),
-    $monitor_user = hiera('profile::openstack::eqiad1::rabbit_monitor_user'),
-    $monitor_password = hiera('profile::openstack::eqiad1::rabbit_monitor_pass'),
-    $cleanup_password = hiera('profile::openstack::eqiad1::rabbit_cleanup_pass'),
-    $file_handles = hiera('profile::openstack::eqiad1::rabbit_file_handles'),
-    $labs_hosts_range = hiera('profile::openstack::eqiad1::labs_hosts_range'),
-    $labs_hosts_range_v6 = hiera('profile::openstack::eqiad1::labs_hosts_range_v6'),
+    $monitor_user = lookup('profile::openstack::eqiad1::rabbit_monitor_user'),
+    $monitor_password = lookup('profile::openstack::eqiad1::rabbit_monitor_pass'),
+    $cleanup_password = lookup('profile::openstack::eqiad1::rabbit_cleanup_pass'),
+    $file_handles = lookup('profile::openstack::eqiad1::rabbit_file_handles'),
+    $labs_hosts_range = lookup('profile::openstack::eqiad1::labs_hosts_range'),
+    $labs_hosts_range_v6 = lookup('profile::openstack::eqiad1::labs_hosts_range_v6'),
     Array[Stdlib::Fqdn] $designate_hosts = lookup('profile::openstack::eqiad1::designate_hosts'),
-    $nova_rabbit_password = hiera('profile::openstack::eqiad1::nova::rabbit_pass'),
-    $neutron_rabbit_user = hiera('profile::openstack::base::neutron::rabbit_user'),
-    $neutron_rabbit_password = hiera('profile::openstack::eqiad1::neutron::rabbit_pass'),
-    $rabbit_erlang_cookie = hiera('profile::openstack::eqiad1::rabbit_erlang_cookie'),
+    $nova_rabbit_password = lookup('profile::openstack::eqiad1::nova::rabbit_pass'),
+    $neutron_rabbit_user = lookup('profile::openstack::base::neutron::rabbit_user'),
+    $neutron_rabbit_password = lookup('profile::openstack::eqiad1::neutron::rabbit_pass'),
+    $rabbit_erlang_cookie = lookup('profile::openstack::eqiad1::rabbit_erlang_cookie'),
 ){
 
     require ::profile::openstack::eqiad1::clientpackages

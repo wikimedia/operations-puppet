@@ -1,5 +1,5 @@
 class profile::openstack::codfw1dev::nova::conductor::service(
-    $version = hiera('profile::openstack::codfw1dev::version'),
+    $version = lookup('profile::openstack::codfw1dev::version'),
     ) {
 
     require ::profile::openstack::codfw1dev::nova::common

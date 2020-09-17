@@ -1,6 +1,6 @@
 class profile::openstack::codfw1dev::pdns::auth::service(
     Array[Stdlib::Fqdn] $hosts = lookup('profile::openstack::codfw1dev::pdns::hosts'),
-    $db_pass = hiera('profile::openstack::codfw1dev::pdns::db_pass'),
+    $db_pass = lookup('profile::openstack::codfw1dev::pdns::db_pass'),
     String $pdns_api_key = lookup('profile::openstack::codfw1dev::pdns::api_key'),
     ) {
 

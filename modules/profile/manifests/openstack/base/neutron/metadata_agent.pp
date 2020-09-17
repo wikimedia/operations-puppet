@@ -1,8 +1,8 @@
 class profile::openstack::base::neutron::metadata_agent(
-    $version = hiera('profile::openstack::base::version'),
+    $version = lookup('profile::openstack::base::version'),
     Stdlib::Fqdn $keystone_api_fqdn = lookup('profile::openstack::base::keystone_api_fqdn'),
-    $metadata_proxy_shared_secret = hiera('profile::openstack::base::neutron::metadata_proxy_shared_secret'),
-    $report_interval = hiera('profile::openstack::base::neutron::report_interval'),
+    $metadata_proxy_shared_secret = lookup('profile::openstack::base::neutron::metadata_proxy_shared_secret'),
+    $report_interval = lookup('profile::openstack::base::neutron::report_interval'),
     ) {
 
     class {'::openstack::neutron::metadata_agent':

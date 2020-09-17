@@ -1,12 +1,12 @@
 class profile::openstack::base::wikitech::web(
-    $osm_host = hiera('profile::openstack::base::wikitech::web::osm_host'),
-    $webserver_hostname_aliases = hiera('profile::openstack::base::wikitech::webserver_hostname_aliases'),
-    $wikidb = hiera('profile::openstack::base::wikitech::db_name'),
-    $wikitech_nova_ldap_proxyagent_pass = hiera('profile::openstack::base::ldap_proxyuser_pass'),
-    $wikitech_nova_ldap_user_pass = hiera('profile::openstack::base::ldap_user_pass'),
-    $phabricator_api_token = hiera('profile::openstack::base::wikitech::web::phabricator_api_token'),
-    $gerrit_api_user = hiera('profile::openstack::base::wikitech::web::gerrit_api_user'),
-    $gerrit_api_password = hiera('profile::openstack::base::wikitech::web::gerrit_api_password'),
+    $osm_host = lookup('profile::openstack::base::wikitech::web::osm_host'),
+    $webserver_hostname_aliases = lookup('profile::openstack::base::wikitech::webserver_hostname_aliases'),
+    $wikidb = lookup('profile::openstack::base::wikitech::db_name'),
+    $wikitech_nova_ldap_proxyagent_pass = lookup('profile::openstack::base::ldap_proxyuser_pass'),
+    $wikitech_nova_ldap_user_pass = lookup('profile::openstack::base::ldap_user_pass'),
+    $phabricator_api_token = lookup('profile::openstack::base::wikitech::web::phabricator_api_token'),
+    $gerrit_api_user = lookup('profile::openstack::base::wikitech::web::gerrit_api_user'),
+    $gerrit_api_password = lookup('profile::openstack::base::wikitech::web::gerrit_api_password'),
 ) {
 
     require profile::mediawiki::common

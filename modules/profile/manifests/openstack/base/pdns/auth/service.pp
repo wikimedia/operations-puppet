@@ -1,8 +1,8 @@
 class profile::openstack::base::pdns::auth::service(
     Array[Stdlib::Fqdn] $hosts = lookup('profile::openstack::base::pdns::hosts'),
     Stdlib::Fqdn $service_fqdn = lookup('profile::openstack::base::pdns::service_fqdn'),
-    $db_host = hiera('profile::openstack::base::pdns::db_host'),
-    $db_pass = hiera('profile::openstack::base::pdns::db_pass'),
+    $db_host = lookup('profile::openstack::base::pdns::db_host'),
+    $db_pass = lookup('profile::openstack::base::pdns::db_pass'),
     $pdns_webserver = hiera('profile::openstack::base::pdns::pdns_webserver', false),
     String $pdns_api_key = lookup('profile::openstack::base::pdns::pdns_api_key', {'default_value' => ''}),
     $pdns_api_allow_from = hiera('profile::openstack::base::pdns::pdns_api_allow_from', ''),

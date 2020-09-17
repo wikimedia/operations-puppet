@@ -1,12 +1,12 @@
 class profile::openstack::codfw1dev::pdns::recursor::service(
     Stdlib::Fqdn $keystone_api_fqdn = lookup('profile::openstack::codfw1dev::keystone_api_fqdn'),
-    $observer_password = hiera('profile::openstack::codfw1dev::observer_password'),
+    $observer_password = lookup('profile::openstack::codfw1dev::observer_password'),
     Array[Stdlib::Fqdn] $pdns_hosts = lookup('profile::openstack::codfw1dev::pdns::hosts'),
     Stdlib::Fqdn $recursor_service_name = lookup('profile::openstack::codfw1dev::pdns::recursor_service_name'),
     $tld = lookup('profile::openstack::codfw1dev::pdns::tld'),
     $legacy_tld = lookup('profile::openstack::codfw1dev::pdns::legacy_tld'),
-    $private_reverse_zones = hiera('profile::openstack::codfw1dev::pdns::private_reverse_zones'),
-    $aliaser_extra_records = hiera('profile::openstack::codfw1dev::pdns::recursor_aliaser_extra_records'),
+    $private_reverse_zones = lookup('profile::openstack::codfw1dev::pdns::private_reverse_zones'),
+    $aliaser_extra_records = lookup('profile::openstack::codfw1dev::pdns::recursor_aliaser_extra_records'),
     ) {
 
     # This iterates on $hosts and returns the entry in $hosts with the same

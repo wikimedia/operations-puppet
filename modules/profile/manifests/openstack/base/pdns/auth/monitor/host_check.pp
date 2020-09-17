@@ -1,6 +1,6 @@
 class profile::openstack::base::pdns::auth::monitor::host_check(
-    $target_host = hiera('profile::openstack::base::pdns::host'),
-    $target_fqdn = hiera('profile::openstack::base::pdns::monitor::target_fqdn'),
+    $target_host = lookup('profile::openstack::base::pdns::host'),
+    $target_fqdn = lookup('profile::openstack::base::pdns::monitor::target_fqdn'),
     ) {
 
     monitoring::service { "${target_host} Resolution":
