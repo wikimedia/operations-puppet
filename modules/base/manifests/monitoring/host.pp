@@ -37,6 +37,7 @@ class base::monitoring::host(
     $notifications_enabled = '1',
     Boolean $is_critical = false,
     $monitor_systemd = true,
+    $monitor_screens = true,
     Integer $puppet_interval = 30,
     Boolean $raid_check = true,
     Wmflib::Ensure $hardware_monitoring = 'present',
@@ -197,7 +198,7 @@ class base::monitoring::host(
         }
     }
 
-    if hiera('monitor_screens', true) {
+    if $monitor_screens {
 
         file { '/usr/local/lib/nagios/plugins/check_long_procs':
             ensure => present,

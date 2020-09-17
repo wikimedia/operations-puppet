@@ -11,6 +11,7 @@ class profile::base(
     $enable_kafka_shipping = hiera('profile::base::enable_kafka_shipping', true),
     Enum['critical', 'disabled', 'enabled'] $notifications = hiera('profile::base::notifications', 'enabled'),
     $monitor_systemd = hiera('profile::base::monitor_systemd', true),
+    Boolean $monitor_screens = lookup('monitor_screens', {default_value => true}),
     $core_dump_pattern = hiera('profile::base::core_dump_pattern', '/var/tmp/core/core.%h.%e.%p.%t'),
     $ssh_server_settings = hiera('profile::base::ssh_server_settings', {}),
     $group_contact = hiera('contactgroups', 'admins'),
@@ -170,6 +171,7 @@ class profile::base(
         notifications_enabled    => $notifications_enabled,
         is_critical              => ($notifications == 'critical'),
         monitor_systemd          => $monitor_systemd,
+        monitor_screens          => $monitor_screens,
         puppet_interval          => $profile::base::puppet::interval,
         raid_check               => $check_raid,
         hardware_monitoring      => $hardware_monitoring
