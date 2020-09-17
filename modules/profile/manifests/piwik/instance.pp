@@ -24,6 +24,22 @@ class profile::piwik::instance (
         piwik_username    => $piwik_username,
     }
 
+    # Copy the MaxMind geoip data files from the puppetmaster into Matomo's /misc directory
+    # Matomo can then be manually configured to use these data files for geocoding IP addresses.
+    # Functionally this is similar to including geoip::data::puppet, but that uses
+    # a recursive copy with different permissions which would clobber other files' permissions in /misc.
+    file { '/usr/share/matomo/misc' :
+        ensure    => directory,
+        owner     => 'root',
+        group     => 'root',
+        mode      => '0755',
+        # lint:ignore:puppet_url_without_modules
+        source    => 'puppet:///volatile/GeoIP',
+        # lint:endignore
+        backup    => false,
+        show_diff => false,
+    }
+
     # Install a systemd timer to run the Archive task periodically.
     # Running it once a day to avoid performance penalties on high trafficated websites
     # (https://piwik.org/docs/setup-auto-archiving/#important-tips-for-medium-to-high-traffic-websites)
