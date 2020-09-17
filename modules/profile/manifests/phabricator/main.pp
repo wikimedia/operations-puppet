@@ -535,4 +535,10 @@ class profile::phabricator::main (
         path => '/var/log/apache2/*access*.log',
     }
 
+    file { '/usr/local/bin/chk_phuser':
+        content => template('phabricator/chk_phuser.sh.erb'),
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0550',
+    }
 }
