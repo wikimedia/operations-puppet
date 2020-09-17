@@ -165,6 +165,7 @@ profile::services_proxy::envoy::listeners:
     port: 6503
     service: restbase-https
     timeout: "122s"
+    keepalive: "4s" # this is needed to avoid reusing upstream-closed connections - see T263043
     upstream: restbase.discovery.wmnet
     xfp: https # this is needed for private wikis - see T249535
 
