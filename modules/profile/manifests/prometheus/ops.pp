@@ -664,16 +664,18 @@ class profile::prometheus::ops (
     # the above using ::profile::etcd::v3. But this requires conf200X hosts
     # first to be upgraded
     prometheus::class_config{ "kubetcd_${::site}":
-        dest       => "${targets_path}/kubetcd_${::site}.yaml",
-        site       => $::site,
-        class_name => 'role::etcd::v3::kubernetes',
-        port       => 2379,
+        dest           => "${targets_path}/kubetcd_${::site}.yaml",
+        site           => $::site,
+        class_name     => 'role::etcd::v3::kubernetes',
+        port           => 2379,
+        hostnames_only => false,
     }
     prometheus::class_config{ "kubetcd_staging_${::site}":
-        dest       => "${targets_path}/kubetcd_staging_${::site}.yaml",
-        site       => $::site,
-        class_name => 'role::etcd::v3::kubernetes::staging',
-        port       => 2379,
+        dest           => "${targets_path}/kubetcd_staging_${::site}.yaml",
+        site           => $::site,
+        class_name     => 'role::etcd::v3::kubernetes::staging',
+        port           => 2379,
+        hostnames_only => false,
     }
     $kubetcd_jobs = [
       {
