@@ -1,0 +1,29 @@
+<%-
+  def print_param(name, value)
+    if value.is_a?(TrueClass)
+      return "#{name} = yes\n"
+    elsif value.is_a?(FalseClass)
+      return "#{name} = no\n"
+    elsif value.is_a?(Array)
+      return "#{name} = #{value.join(' ')}\n"
+    elsif not value.nil?
+      return "#{name} = #{value}\n"
+    end
+  end
+-%>
+<%= print_param('client', @client) -%>
+<%= print_param('verifyChain', @verify_chain) -%>
+<%= print_param('verifyPeer', @verify_peer) -%>
+<%= print_param('sslVersion', @ssl_version) -%>
+<%= print_param('debug', @debug) -%>
+<%= print_param('CAfile', @ca_path) -%>
+<%= print_param('cert', @cert_path) -%>
+<%= print_param('key', @key_path) -%>
+
+[<%= @safe_title %>]
+<%= print_param('accept', "#{@accept_host}:#{@accept_port}") -%>
+<%= print_param('connect', @connect_string) -%>
+<%= print_param('exec', @exec) -%>
+<%- unless @exec.nil? or @exec_args.empty? -%>
+<%= print_param('execargs', @exec_args) -%>
+<%- end -%>
