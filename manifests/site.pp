@@ -2344,16 +2344,7 @@ node /^urldownloader[12]00[12]\.wikimedia\.org/ {
 
 # To learn what will get scheduled on a given cloudvirt, consult
 # https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Host_aggregates
-node /^cloudvirt101[0-4]\.eqiad\.wmnet$/ {
-    role(wmcs::openstack::eqiad1::virt)
-}
-
-# Cloudvirt1015 has hardware problems, decomming for T257366
-node 'cloudvirt1015.eqiad.wmnet' {
-    role(spare::system)
-}
-
-node /^cloudvirt101[6-9]\.eqiad\.wmnet$/ {
+node /^cloudvirt101[0-9]\.eqiad\.wmnet$/ {
     role(wmcs::openstack::eqiad1::virt)
 }
 
