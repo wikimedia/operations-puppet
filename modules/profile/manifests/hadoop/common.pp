@@ -464,6 +464,7 @@ class profile::hadoop::common (
                 ensure  => file,
                 owner   => 'root',
                 group   => 'hadoop',
+                mode    => '0440',
                 require => Sslcert::X509_to_pkcs12[$facts['fqdn']]
             }
 
