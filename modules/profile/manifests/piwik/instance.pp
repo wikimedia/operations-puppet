@@ -36,6 +36,7 @@ class profile::piwik::instance (
         # lint:ignore:puppet_url_without_modules
         source    => 'puppet:///volatile/GeoIP',
         # lint:endignore
+        recurse   => 'remote',
         backup    => false,
         show_diff => false,
     }
