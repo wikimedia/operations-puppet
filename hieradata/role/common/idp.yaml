@@ -198,7 +198,7 @@ profile::idp::services:
   hue:
     class: 'org.apereo.cas.services.RegexRegisteredService'
     id: 14
-    service_id: 'https://hue.wikimedia.org(/.*)?'
+    service_id: 'https://hue-next.wikimedia.org(/.*)?'
     attribute_release_policy:
       '@class': 'org.apereo.cas.services.ReturnAllAttributeReleasePolicy'
     access_strategy:
