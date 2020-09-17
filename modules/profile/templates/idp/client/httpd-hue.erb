@@ -36,7 +36,7 @@
     # rather than having the Hue backend doing it.
     Alias /static/ /usr/lib/hue/build/static/
 
-    <Directory /usr/lib/hue/build/static>
+    <Location />
         <%- @cas_auth_settings.each_pair do |key, setting| -%>
           <%- if setting.is_a?(Array) -%>
             <%- setting.each do |_setting| -%>
@@ -46,7 +46,7 @@
           <%= key %> <%= setting %>
           <%- end -%>
         <%- end -%>
-    </Directory>
+    </Location>
 
     <Location /health_check>
         Require all granted
