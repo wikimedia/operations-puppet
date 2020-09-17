@@ -227,6 +227,9 @@ class cdh::hue(
         ensure => 'installed'
     }
 
+    # Needed to support Kerberos with GSS-API and SASLß
+    package { 'libsasl2-modules-gssapi-mit': }
+
     if (os_version('debian == buster')) {
         apt::package_from_component { 'cloudera-deps':
             component => 'component/cloudera',
