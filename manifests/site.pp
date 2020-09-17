@@ -2342,12 +2342,13 @@ node /^urldownloader[12]00[12]\.wikimedia\.org/ {
     role(url_downloader)
 }
 
-# To learn what will get scheduled on a given cloudvirt, consult
-# https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Host_aggregates
-node /^cloudvirt100[1-3,5,7-9]\.eqiad\.wmnet$/ {
-    role(wmcs::openstack::eqiad1::virt)
+# old cloudvirts awaiting decom
+node /^cloudvirt100[1-9]\.eqiad\.wmnet$/ {
+    role(spare::system)
 }
 
+# To learn what will get scheduled on a given cloudvirt, consult
+# https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Host_aggregates
 node /^cloudvirt101[0-4]\.eqiad\.wmnet$/ {
     role(wmcs::openstack::eqiad1::virt)
 }
@@ -2381,14 +2382,6 @@ node /^cloudvirt103[1-9]\.eqiad\.wmnet$/ {
 # New clouddb hosts that will replace labsdb hosts
 # Set them to spare individually as it will take take to transfer the data
 node /^clouddb10(13|14|15|16|17|18|19|20)\.eqiad\.wmnet$/ {
-    role(spare::system)
-}
-
-# old cloudvirts awaiting decom
-node 'cloudvirt1004.eqiad.wmnet' {
-    role(spare::system)
-}
-node 'cloudvirt1006.eqiad.wmnet' {
     role(spare::system)
 }
 
