@@ -23,12 +23,12 @@
 #
 
 class profile::spicerack(
-    String $tcpircbot_host = hiera('tcpircbot_host'),
-    Stdlib::Port $tcpircbot_port = hiera('tcpircbot_port'),
-    Hash $redis_shards = hiera('redis::shards'),
-    String $ganeti_user = hiera('profile::ganeti::rapi::ro_user'),
-    String $ganeti_password = hiera('profile::ganeti::rapi::ro_password'),
-    Integer $ganeti_timeout = hiera('profile::spicerack::ganeti_rapi_timeout', 30),
+    String $tcpircbot_host = lookup('tcpircbot_host'),
+    Stdlib::Port $tcpircbot_port = lookup('tcpircbot_port'),
+    Hash $redis_shards = lookup('redis::shards'),
+    String $ganeti_user = lookup('profile::ganeti::rapi::ro_user'),
+    String $ganeti_password = lookup('profile::ganeti::rapi::ro_password'),
+    Integer $ganeti_timeout = lookup('profile::spicerack::ganeti_rapi_timeout', {'default_value' => 30}),
     Stdlib::HTTPUrl $netbox_api = lookup('netbox::api_url'),
     String $netbox_token_ro = lookup('netbox::ro_token'),
     String $netbox_token_rw = lookup('netbox::rw_token'),
