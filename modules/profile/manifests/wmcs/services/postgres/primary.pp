@@ -1,7 +1,7 @@
 class profile::wmcs::services::postgres::primary (
-    $postgres_secondary = hiera('profile::wmcs::services::postgres::secondary', undef),
-    $replication_pass = hiera('profile::wmcs::services::postgres::replication_pass', undef),
-    $root_dir = hiera('profile::wmcs::services::postgres::root_dir', '/srv/postgres'),
+    Optional[Stdlib::Host] $postgres_secondary = lookup('profile::wmcs::services::postgres::secondary', {default_value => undef}),
+    Optional[String] $replication_pass = lookup('profile::wmcs::services::postgres::replication_pass', {default_value => undef}),
+    Stdlib::Unixpath $root_dir = lookup('profile::wmcs::services::postgres::root_dir', {default_value => '/srv/postgres'}),
 ){
     include profile::wmcs::services::postgres::common
     class {'::postgresql::postgis': }

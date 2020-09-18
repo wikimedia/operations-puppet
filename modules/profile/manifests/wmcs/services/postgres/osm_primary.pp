@@ -1,9 +1,9 @@
 
 class profile::wmcs::services::postgres::osm_primary (
-    $osm_password = hiera('profile::wmcs::services::postgres::osm_password'),
-    $kolossos_password = hiera('profile::wmcs::services::postgres::kolossos_password'),
-    $aude_password = hiera('profile::wmcs::services::postgres::aude_password'),
-    $planemad_password = hiera('profile::wmcs::services::postgres::planemad_password'),
+    String $osm_password = lookup('profile::wmcs::services::postgres::osm_password'),
+    String $kolossos_password = lookup('profile::wmcs::services::postgres::kolossos_password'),
+    String $aude_password = lookup('profile::wmcs::services::postgres::aude_password'),
+    String $planemad_password = lookup('profile::wmcs::services::postgres::planemad_password'),
 ){
     include profile::wmcs::services::postgres::primary
     class {'osm': }

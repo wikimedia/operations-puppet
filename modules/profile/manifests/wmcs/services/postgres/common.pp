@@ -1,5 +1,5 @@
 class profile::wmcs::services::postgres::common (
-    $root_dir = hiera('profile::wmcs::services::postgres::root_dir', '/srv/postgres'),
+    Stdlib::Unixpath $root_dir = lookup('profile::wmcs::services::postgres::root_dir', {default_value => '/srv/postgres'}),
 ){
     $pgversion = $::lsbdistcodename ? {
         'stretch' => 9.6,
