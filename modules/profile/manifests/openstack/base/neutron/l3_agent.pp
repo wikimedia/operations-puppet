@@ -37,9 +37,4 @@ class profile::openstack::base::neutron::l3_agent(
     class { '::prometheus::node_neutron_namespace':
         ensure => 'present',
     }
-
-    class { '::nftables':
-        ensure_package => 'present',
-        ensure_service => 'absent',
-    }
 }

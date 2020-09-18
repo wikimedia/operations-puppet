@@ -28,7 +28,6 @@ class openstack::clientpackages::rocky::buster(
     }
 
     $otherpackages = [
-        'ebtables',
         'python-netaddr',
     ]
 

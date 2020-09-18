@@ -11,16 +11,23 @@ class openstack::neutron::linuxbridge_agent::rocky::buster(
     }
 
     # use iptables >= 1.8.5-3~bpo10+1 to avoid potential nft compat issues on buster
+    $packages = [
+        'iptables',
+        'netbase',
+        'libnftnl11',
+        'libxtables12',
+        'ebtables',
+    ]
     apt::pin { 'apt_pin_iptables_linuxbridge_rocky_buster':
         pin      => 'release n=buster-backports',
         priority => 1002,
-        package  => 'iptables',
+        package  => join($packages, ' '),
     }
 
     # let puppet update the package to the latest, according to the pin above.
     # the upload to buster-bpo is usually made by Arturo anyway in upstream Debian
     # so if something breaks you can safely blame both him and FLOSS projects in general
-    package { 'iptables' :
+    package { $packages :
         ensure => latest,
     }
 }
