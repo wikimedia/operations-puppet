@@ -93,7 +93,7 @@ class profile::hadoop::spark2(
 ) {
     require ::profile::hadoop::common
 
-    require_package('spark2')
+    package { 'spark2': }
 
     # Get spark_verison from facter.  Fail if not set.
     $spark_version = $::spark_version
