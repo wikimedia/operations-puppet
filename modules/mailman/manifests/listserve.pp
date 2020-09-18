@@ -36,4 +36,7 @@ class mailman::listserve (
         pattern   => 'mailmanctl',
         subscribe => File['/etc/mailman/mm_cfg.py'],
     }
+
+    # to create random passwords for list password resets
+    require_package('pwgen')
 }
