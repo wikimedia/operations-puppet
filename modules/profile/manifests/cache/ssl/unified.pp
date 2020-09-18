@@ -5,17 +5,17 @@
 # multiple-wildcard cert is needed, as in production).
 #
 class profile::cache::ssl::unified(
-    $tls_port=hiera('profile::cache::ssl::unified::tls_port', 443),
-    $monitoring=hiera('profile::cache::ssl::unified::monitoring'),
-    $acme_chief=hiera('profile::cache::ssl::unified::acme_chief'),
-    $certs_hiera=hiera('profile::cache::ssl::unified::certs', undef),
-    $certs_active_hiera=hiera('profile::cache::ssl::unified::certs_active', undef),
-    $letsencrypt=hiera('profile::cache::ssl::unified::letsencrypt'),
-    $ucv=hiera('public_tls_unified_cert_vendor', undef),
-    $le_server_name=hiera('profile::cache::ssl::unified::le_server_name', undef),
-    $le_subjects=hiera('profile::cache::ssl::le_subjects', undef),
-    $ocsp_proxy = hiera('http_proxy', ''),
-    $use_trafficserver_tls = hiera('profile::cache::ssl::unified::use_trafficserver_tls', false)
+    Stdlib::Port $tls_port=lookup('profile::cache::ssl::unified::tls_port', {default_value => 443}),
+    Boolean $monitoring=lookup('profile::cache::ssl::unified::monitoring'),
+    Boolean $acme_chief=lookup('profile::cache::ssl::unified::acme_chief'),
+    Array $certs_hiera=lookup('profile::cache::ssl::unified::certs', {default_value => []}),
+    Array $certs_active_hiera=lookup('profile::cache::ssl::unified::certs_active', {default_value => []}),
+    Boolean $letsencrypt=lookup('profile::cache::ssl::unified::letsencrypt'),
+    String $ucv=lookup('public_tls_unified_cert_vendor', {default_value => undef}),
+    Optional[String] $le_server_name=lookup('profile::cache::ssl::unified::le_server_name', {default_value => undef}),
+    Array $le_subjects=lookup('profile::cache::ssl::le_subjects', {default_value => []}),
+    String $ocsp_proxy = lookup('http_proxy', {default_value => ''}),
+    Boolean $use_trafficserver_tls = lookup('profile::cache::ssl::unified::use_trafficserver_tls', {default_value => false}),
 ) {
     if $use_trafficserver_tls {
         $redir_port = undef
@@ -44,16 +44,13 @@ class profile::cache::ssl::unified(
                 "${ucv}-ecdsa-unified", "${ucv}-rsa-unified",
             ]
         }
-        if $certs_hiera {
-            $certs = $certs_hiera
-        } else {
-            # These certs are deployed to all caches and OCSP stapled,
-            # ready for use in $certs_active as options
-            $certs = [
-                'globalsign-2019-ecdsa-unified', 'globalsign-2019-rsa-unified',
-                'digicert-2019a-ecdsa-unified', 'digicert-2019a-rsa-unified',
-            ]
+
+        $certs = $certs_hiera.empty? {
+          true    => ['globalsign-2019-ecdsa-unified', 'globalsign-2019-rsa-unified',
+                      'digicert-2019a-ecdsa-unified', 'digicert-2019a-rsa-unified'],
+          default => $certs_hiera,
         }
+
         tlsproxy::localssl { 'unified':
             server_name    => 'www.wikimedia.org',
             certs          => $certs,
