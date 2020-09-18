@@ -90,7 +90,7 @@ class profile::hue (
         if $monitoring_enabled {
             nrpe::monitor_service { 'hue-gunicorn':
                 description   => 'Hue Gunicorn Python server',
-                nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C python3.7 -a "/usr/lib/hue/build/env/bin/hue rungunicornserver"',
+                nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C /usr/lib/hue/build/env/bin/python3.7 -a "/usr/lib/hue/build/env/bin/hue rungunicornserver"',
                 contact_group => 'analytics',
                 require       => Class['cdh::hue'],
                 notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Cluster/Hue/Administration',
@@ -98,7 +98,7 @@ class profile::hue (
             if $kerberos_kinit_path {
                 nrpe::monitor_service { 'hue-kt-renewer':
                     description   => 'Hue Kerberos keytab renewer',
-                    nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C python3.7 -a "/usr/lib/hue/build/env/bin/hue kt_renewer"',
+                    nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C /usr/lib/hue/build/env/bin/python3.7 -a "/usr/lib/hue/build/env/bin/hue kt_renewer"',
                     contact_group => 'analytics',
                     require       => Class['cdh::hue'],
                     notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Cluster/Hue/Administration',
