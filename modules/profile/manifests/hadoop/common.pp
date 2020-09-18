@@ -443,6 +443,7 @@ class profile::hadoop::common (
             $keystore_type = 'pkcs12'
             $keystore_keypassword = ''
             $keystore_password = $hadoop_secrets_config['ssl_keystore_password']
+            $keystore_keypassword = $hadoop_secrets_config['ssl_keystore_keypassword']
             $keystore_path = "${::cdh::hadoop::config_directory}/ssl/server.p12"
 
             file { "${::cdh::hadoop::config_directory}/ssl":
