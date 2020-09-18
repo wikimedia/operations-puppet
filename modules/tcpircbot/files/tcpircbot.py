@@ -1,5 +1,5 @@
-#!/usr/bin/env python
-# -*- coding: utf8 -*-
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 """
 TCP -> IRC forwarder bot
 Forward data from a TCP socket to one or more IRC channels,
@@ -27,10 +27,10 @@ CONFIGFILE should be a JSON file with the following structure:
 Requirements:
  * irc >=8.5.3
    <http://bitbucket.org/jaraco/irc>
-   Debian package: 'python-irc'
+   Debian package: 'python3-irc'
  * netaddr >=0.7.5
    <https://pypi.python.org/pypi/netaddr>
-   Ubuntu package: 'python-netaddr'
+   Ubuntu package: 'python3-netaddr'
    (Not required for infile support)
 
 The Puppet module bundled with this script will manage these
@@ -38,11 +38,10 @@ dependencies for you.
 
 """
 import sys
-reload(sys)
-sys.setdefaultencoding('utf8')
 
 import atexit
 import codecs
+import io
 import json
 import logging
 import select
@@ -156,7 +155,7 @@ while 1:
             files.append(conn)
         elif f is bot.connection.socket:
             bot.connection.process_data()
-        elif isinstance(f, file):
+        elif isinstance(f, io.IOBase):
             data = f.readline().rstrip()
             if data:
                 logging.info('infile: %s', data)

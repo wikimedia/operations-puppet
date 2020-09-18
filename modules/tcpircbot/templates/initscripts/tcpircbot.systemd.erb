@@ -3,7 +3,7 @@ Description=TCP socket to IRC bot: <%= @service_name %>
 
 [Service]
 
-ExecStart=/usr/bin/python tcpircbot.py <%= @service_name %>.json
+ExecStart=/usr/bin/python3 tcpircbot.py <%= @service_name %>.json
 Restart=always
 RestartSec=5s
 WorkingDirectory=/srv/tcpircbot
