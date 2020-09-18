@@ -107,6 +107,21 @@ profile::services_proxy::envoy::listeners:
     service: search-psi-https
     timeout: "50s"
     upstream: search.svc.eqiad.wmnet
+  - name: cloudelastic-chi-eqiad
+    port: 6105
+    service: cloudelastic-chi-https
+    timeout: "50s"
+    upstream: cloudelastic.wikimedia.org
+  - name: cloudelastic-omega-eqiad
+    port: 6106
+    service: cloudelastic-omega-https
+    timeout: "50s"
+    upstream: cloudelastic.wikimedia.org
+  - name: cloudelastic-psi-eqiad
+    port: 6107
+    service: cloudelastic-psi-https
+    timeout: "50s"
+    upstream: cloudelastic.wikimedia.org
   - name: search-psi-codfw
     port: 6204
     service: search-psi-https
@@ -195,3 +210,6 @@ profile::services_proxy::envoy::enabled_listeners:
   - search-omega-codfw
   - search-psi-eqiad
   - search-psi-codfw
+  - cloudelastic-chi-eqiad
+  - cloudelastic-omega-eqiad
+  - cloudelastic-psi-eqiad
