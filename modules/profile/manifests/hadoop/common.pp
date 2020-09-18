@@ -441,8 +441,12 @@ class profile::hadoop::common (
         if $use_puppet_ssl_certs {
 
             $keystore_type = 'pkcs12'
-            $keystore_keypassword = ''
             $keystore_password = $hadoop_secrets_config['ssl_keystore_password']
+            # The keystore password is needed for the Journalnode to start,
+            # since not adding it or using an empty value lead to null pointer
+            # exceptions. Even if the key in the keystore is not pretected by a password,
+            # the setting needs to be present anyway. Upstream tutorials suggest to
+            # put this value equal to the value of the keystore password.
             $keystore_keypassword = $hadoop_secrets_config['ssl_keystore_keypassword']
             $keystore_path = "${::cdh::hadoop::config_directory}/ssl/server.p12"
 
