@@ -69,6 +69,10 @@ class gerrit::jetty(
         '-XX:+UseGCLogFileRotation',
         '-XX:NumberOfGCLogFiles=10',
         '-XX:GCLogFileSize=2M',
+        # Whenever we run out of heap space, we want a full snapshot in order
+        # to investigate.
+        '-XX:+HeapDumpOnOutOfMemoryError',
+        '-XX:HeapDumpPath=/srv/gerrit',
     ]
 
     if $java_version == 11 {
