@@ -2,9 +2,9 @@
 #
 # Configures a generic nutcracker instance
 class profile::nutcracker(
-    $redis_pools = hiera('profile::nutcracker::redis_pools'),
-    $memcached_pools = hiera('profile::nutcracker::memcached_pools'),
-    $monitor_port = hiera('profile::nutcracker::monitor_port'), # set to 0 if no port available
+    Hash $redis_pools          = lookup('profile::nutcracker::redis_pools'),
+    Hash $memcached_pools      = lookup('profile::nutcracker::memcached_pools'),
+    Stdlib::Port $monitor_port = lookup('profile::nutcracker::monitor_port'), # set to 0 if no port available
 ) {
     include ::passwords::redis
 
