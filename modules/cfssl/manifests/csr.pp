@@ -13,9 +13,6 @@ define cfssl::csr (
     if $key['algo'] == 'ecdsa' and $key['size'] > 2048 {
         fail('ECDSA keys must be either 256, 384 or 521 bits')
     }
-    unless $profile in $cfssl::profiles.keys() {
-        fail("${profile} is not a valid profile")
-    }
 
     $safe_title = $title.regsubst('[^\w\-]', '_', 'G')
     $csr_file = "${cfssl::csr_dir}/${safe_title}.csr"

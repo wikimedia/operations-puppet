@@ -12,6 +12,9 @@ define cfssl::config (
     Hash[String, Cfssl::Profile]  $profiles            = {},
     Hash[String, Stdlib::HTTPUrl] $remotes             = {},
 ) {
+    unless $auth_keys.has_key($default_auth_key) {
+        fail("auth_keys must have an entry for '${default_auth_key}'")
+    }
     include cfssl
     $safe_title = $title.regsubst('[^\w-]', '_', 'G')
     $default = {
@@ -22,9 +25,14 @@ define cfssl::config (
         'ocsp_url'    => $default_ocsp_url,
         'auth_remote' => $default_auth_remote,
     }.filter |$key, $value| { $value =~ Boolean or !$value.empty() }
+    # make sure all profiles use the default auth key
+    # first map to an array of [key, values] then convert to a hash
+    $_profiles = Hash($profiles.map |$key, $value| {
+        [$key, {'auth_key' => $default_auth_key} + $value]
+    })
     $signing = {
         'default'  => $default,
-        'profiles' => $profiles,
+        'profiles' => $_profiles,
     }.filter |$key, $value| { $value =~ Boolean or !$value.empty() }
     $config = {
         'auth_keys' => $auth_keys,

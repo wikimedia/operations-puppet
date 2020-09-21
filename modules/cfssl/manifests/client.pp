@@ -8,8 +8,8 @@ class cfssl::client (
     Wmflib::Ensure   $ensure    = 'present',
     Cfssl::Loglevel  $log_level = 'info',
 ) {
-    $conf_file = '/etc/cfssl/client-cfssl.conf'
-    ensure_packages(['golang-cfssl'])
+    include cfssl
+    $conf_file = "${cfssl::conf_dir}/client-cfssl.conf"
     $default_auth_remote = {'remote' => 'default_remote', 'auth_key' => 'default_auth'}
     $auth_keys = {'default_auth'     => { 'type' => 'standard', 'key'  => $auth_key}}
     $remotes = {'default_remote' => $signer}
@@ -17,7 +17,6 @@ class cfssl::client (
         default_auth_remote => $default_auth_remote,
         auth_keys           => $auth_keys,
         remotes             => $remotes,
-        require             => Package['golang-cfssl'],
     }
     file {'/usr/local/sbin/cfssl-client':
         ensure  => file,
