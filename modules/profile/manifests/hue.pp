@@ -25,6 +25,7 @@ class profile::hue (
     $server_name                = lookup('profile::hue::servername'),
     Boolean $enable_cas         = lookup('profile::hue::enable_cas'),
     Boolean $use_hue4_settings  = lookup('profile::hue::use_hue4_settings', { 'default_value' => false }),
+    Enum['ldap', 'remote_user'] $auth_backend = lookup('profile::hue::auth_backend', { 'default_value' => 'ldap' }),
 ){
 
     # Require that all Hue applications
@@ -82,6 +83,7 @@ class profile::hue (
         use_hdfs_ssl_config        => $use_hdfs_ssl_config,
         use_mapred_ssl_config      => $use_mapred_ssl_config,
         use_hue4_settings          => $use_hue4_settings,
+        auth_backend               => $auth_backend,
     }
 
     # Include icinga alerts if production realm.

@@ -141,7 +141,8 @@
     # - libopenid.backend.OpenIDBackend
     # - liboauth.backend.OAuthBackend
     #     (Support Twitter, Facebook, Google+ and Linkedin
-    <%= @ldap_url ? 'backend=desktop.auth.backend.LdapBackend' : '## backend=desktop.auth.backend.AllowFirstUserDjangoBackend' %>
+    <%= @auth_backend == 'ldap' ? 'backend=desktop.auth.backend.LdapBackend' : '## backend=backend=desktop.auth.backend.LdapBackend' %>
+    <%= @auth_backend == 'remote_user' ? 'backend=desktop.auth.backend.RemoteUserDjangoBackend' : '## backend=desktop.auth.backend.RemoteUserDjangoBackend' %>
 
     # The service to use when querying PAM.
     ## pam_service=login
@@ -154,7 +155,7 @@
     # is called Remote-User that would be configured as HTTP_REMOTE_USER
     #
     # Defaults to HTTP_REMOTE_USER
-    ## remote_user_header=HTTP_REMOTE_USER
+    <%= @auth_backend == 'remote_user' ? 'remote_user_header=HTTP_X_CAS_UID' : '## remote_user_header=HTTP_REMOTE_USER' %>
 
     # Synchronize a users groups when they login
     ## sync_groups_on_login=false

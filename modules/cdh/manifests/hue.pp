@@ -141,6 +141,7 @@ class cdh::hue(
     $oozie_security_enabled     = false,
 
     $use_hue4_settings          = false,
+    $auth_backend               = 'ldap',
 
 ) {
     Class['cdh::hadoop'] -> Class['cdh::hue']
