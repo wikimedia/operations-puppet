@@ -7,11 +7,8 @@
 
 class profile::toolforge::grid::exec_environ {
 
-    include ::profile::locales::extended
-    # TODO: remove after oidentd has been deployed and pidentd cleaned up
-    class { '::identd':
-        ensure => absent,
-    }
+    include ::profile::locales::all
+
     class {'::redis::client::python': }
 
     apt::repository { "mono-external-${::lsbdistcodename}":
@@ -351,7 +348,7 @@ class profile::toolforge::grid::exec_environ {
         'fakechroot',                  # T138138
         ]:
         ensure => latest,
-        before => Class['::profile::locales::extended'],
+        before => Class['::profile::locales::all'],
     }
 
     file { '/etc/mysql/conf.d/override.my.cnf':
