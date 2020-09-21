@@ -183,6 +183,7 @@ profile::services_proxy::envoy::enabled_listeners:
   - sessionstore
   - echostore
   - termbox
+  - push-notifications
   - wdqs-internal
   - ores
   - restbase
