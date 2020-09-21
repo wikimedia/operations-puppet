@@ -1608,7 +1608,7 @@ service::catalog:
     sites:
       - eqiad
       - codfw
-    state: production
+    state: lvs_setup
   ores:
     description: Objective Revision Evaluation Service. ores.svc.%{::site}.wmnet
     encryption: true
