@@ -6348,12 +6348,6 @@ host mw2255 {
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
-host mw2256 {
-    hardware ethernet 14:18:77:5F:43:64;
-    fixed-address mw2256.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
-}
-
 host mw2257 {
     hardware ethernet 18:66:DA:85:B2:42;
     fixed-address mw2257.codfw.wmnet;
