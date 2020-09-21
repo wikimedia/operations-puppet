@@ -1,2 +1,5 @@
 # es2032
+mariadb::shard: 'es1'
+mariadb::mysql_role: 'standalone'
+mariadb::binlog_format: 'ROW'
 profile::base::notifications: disabled

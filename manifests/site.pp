@@ -914,6 +914,12 @@ node 'es2030.codfw.wmnet' {
     role(mariadb::core)
 }
 
+# es2032 will replace es2013 T261717
+node 'es2032.codfw.wmnet' {
+    role(mariadb::core)
+}
+
+
 # External Storage, Shard 2 (es2) databases
 
 ## eqiad servers
@@ -944,6 +950,10 @@ node 'es2031.codfw.wmnet' {
     role(mariadb::core)
 }
 
+## es2033 will replace es2016 T261717
+node 'es2033.codfw.wmnet' {
+    role(mariadb::core)
+}
 
 # External Storage, Shard 3 (es3) databases
 
@@ -972,6 +982,11 @@ node 'es2027.codfw.wmnet' {
 
 # es2029 will replace es2018 T261717
 node 'es2029.codfw.wmnet' {
+    role(mariadb::core)
+}
+
+# es2034 will replace es2019 T261717
+node 'es2034.codfw.wmnet' {
     role(mariadb::core)
 }
 
@@ -1035,10 +1050,6 @@ node /^failoid[12]001\.(eqiad|codfw)\.wmnet$/ {
 # Set them to spare individually as it will take take to transfer the data
 # eqiad hosts
 node /^es10(26|27|28|29|30|31|32|33|34)\.eqiad\.wmnet$/ {
-    role(spare::system)
-}
-# codfw hosts
-node /^es20(32|33|34)\.codfw\.wmnet$/ {
     role(spare::system)
 }
 
