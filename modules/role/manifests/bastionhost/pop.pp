@@ -5,11 +5,6 @@ class role::bastionhost::pop {
     }
     require ::role::bastionhost::general
     require ::profile::installserver::tftp
-    require ::profile::prometheus::ops
     require ::profile::ipmi::mgmt
 
-    class { '::httpd':
-        # 'rewrite' is used by ::profile::prometheus::ops
-        modules => ['proxy', 'proxy_http', 'rewrite'],
-    }
 }
