@@ -3,6 +3,7 @@
 # This profile configures Ceph monitor hosts with the mon and mgr daemons
 class profile::ceph::mon(
     Array[Stdlib::Fqdn]  $prometheus_nodes = lookup('prometheus_nodes'),
+    Array[Stdlib::Fqdn]  $openstack_controllers = lookup('profile::openstack::eqiad1::openstack_controllers'),
     Hash[String,Hash]    $mon_hosts        = lookup('profile::ceph::mon::hosts'),
     Hash[String,Hash]    $osd_hosts        = lookup('profile::ceph::osd::hosts'),
     Stdlib::AbsolutePath $admin_keyring    = lookup('profile::ceph::admin_keyring'),
@@ -23,7 +24,8 @@ class profile::ceph::mon(
     $mon_addrs = $mon_hosts.map | $key, $value | { $value['public']['addr'] }
     $osd_addrs = $osd_hosts.map | $key, $value | { $value['public']['addr'] }
 
-    $ferm_srange = join(concat($mon_addrs, $osd_addrs, $client_networks), ' ')
+    $openstack_controller_ips = $openstack_controllers.map |$host| { ipresolve($host, 4) }
+    $ferm_srange = join(concat($mon_addrs, $osd_addrs, $client_networks, $openstack_controller_ips), ' ')
     ferm::service { 'ceph_mgr_v2':
         proto  => 'tcp',
         port   => 6800,
