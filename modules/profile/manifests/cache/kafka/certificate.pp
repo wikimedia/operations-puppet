@@ -25,13 +25,13 @@
 #   cergen created ca.crt.pem file will be used.
 #
 class profile::cache::kafka::certificate(
-    $ssl_key_password  = hiera('profile::cache::kafka::certificate::ssl_key_password', undef),
-    $certificate_name = hiera('profile::cache::kafka::certificate::certificate_name', 'varnishkafka'),
-    $use_puppet_internal_ca = hiera('profile::cache::kafka::certificate::use_puppet_internal_ca', true),
-    $ssl_cipher_suites = hiera('profile::cache::kafka::certificate::ssl_cipher_suites', 'ECDHE-ECDSA-AES256-GCM-SHA384'),
-    $ssl_curves_list = hiera('profile::cache::kafka::certificate::ssl_curves_list', 'P-256'),
-    $ssl_sigalgs_list = hiera('profile::cache::kafka::certificate::ssl_sigalgs_list', 'ECDSA+SHA256'),
-) {
+    Optional[String] $ssl_key_password = lookup('profile::cache::kafka::certificate::ssl_key_password', {'default_value' => undef}),
+    String $certificate_name           = lookup('profile::cache::kafka::certificate::certificate_name', {'default_value' => 'varnishkafka'}),
+    Boolean $use_puppet_internal_ca    = lookup('profile::cache::kafka::certificate::use_puppet_internal_ca', {'default_value' => true}),
+    String $ssl_cipher_suites          = lookup('profile::cache::kafka::certificate::ssl_cipher_suites', {'default_value' => 'ECDHE-ECDSA-AES256-GCM-SHA384'}),
+    String $ssl_curves_list            = lookup('profile::cache::kafka::certificate::ssl_curves_list', {'default_value' => 'P-256'}),
+    String $ssl_sigalgs_list           = lookup('profile::cache::kafka::certificate::ssl_sigalgs_list', {'default_value' => 'ECDSA+SHA256'}),
+){
     # TLS/SSL configuration
     $ssl_location = '/etc/varnishkafka/ssl'
     $ssl_location_private = '/etc/varnishkafka/ssl/private'
