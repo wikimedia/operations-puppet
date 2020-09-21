@@ -57,7 +57,7 @@ profile::services_proxy::envoy::listeners:
     timeout: "10s"
   - name: ores
     port: 6010
-    service: ores
+    service: ores-http
     timeout: "10s"
   - name: restbase
     port: 6011
