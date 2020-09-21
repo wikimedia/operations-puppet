@@ -3,14 +3,14 @@
 define cfssl::config (
     Wmflib::Ensure                $ensure              = 'present',
     String                        $default_auth_key    = 'default_auth',
-    Cfssl::Expiry                 $default_expiry      = '720h',
-    Array[Cfssl::Usage]           $default_usages      = ['signing', 'key encipherment', 'client auth'],
+    Array[Cfssl::Usage]           $default_usages      = [],
     Hash[String, String]          $default_auth_remote = {},
-    Optional[Stdlib::HTTPUrl]     $default_crl_url     = undef,
-    Optional[Stdlib::HTTPUrl]     $default_ocsp_url    = undef,
     Hash[String, Cfssl::Auth_key] $auth_keys           = {},
     Hash[String, Cfssl::Profile]  $profiles            = {},
     Hash[String, Stdlib::HTTPUrl] $remotes             = {},
+    Optional[Cfssl::Expiry]       $default_expiry      = undef,
+    Optional[Stdlib::HTTPUrl]     $default_crl_url     = undef,
+    Optional[Stdlib::HTTPUrl]     $default_ocsp_url    = undef,
 ) {
     unless $auth_keys.has_key($default_auth_key) {
         fail("auth_keys must have an entry for '${default_auth_key}'")
