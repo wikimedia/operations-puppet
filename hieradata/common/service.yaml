@@ -1675,9 +1675,6 @@ service::catalog:
     - eqiad
     - codfw
     state: production
-    discovery:
-    - dnsdisc: ores
-      active_active: true
   ores:
     description: Objective Revision Evaluation Service. ores.svc.%{::site}.wmnet
     encryption: true
@@ -1713,7 +1710,7 @@ service::catalog:
     sites:
     - eqiad
     - codfw
-    state: lvs_setup
+    state: production
     discovery:
     - dnsdisc: ores
       active_active: true
