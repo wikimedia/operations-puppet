@@ -136,9 +136,6 @@ class profile::backup::filesets() {
     bacula::director::fileset { 'srv-repos':
         includes => [ '/srv/repos' ],
     }
-    bacula::director::fileset { 'yubiauth-aeads':
-        includes => [ '/var/cache/yubikey-ksm/aeads' ],
-    }
     bacula::director::fileset { 'openldap':
         includes => [ '/var/run/openldap-backup' ],
     }
