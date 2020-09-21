@@ -158,8 +158,7 @@ profile::services_proxy::envoy::listeners:
     timeout: "120s"
   - name: wikifeeds
     port: 6017
-    service: wikifeeds-http
-    upstream: wikifeeds.discovery.wmnet
+    service: wikifeeds
     timeout: "120s"
   - name: zotero
     port: 6018

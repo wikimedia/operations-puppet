@@ -108,7 +108,7 @@ class lvs::monitor_services(
             "check_wikifeeds_${dc}":
                 host        => "wikifeeds.svc.${dc}.wmnet",
                 description => "wikifeeds ${dc}",
-                target      => "http://wikifeeds.svc.${dc}.wmnet:8889",
+                target      => "https://wikifeeds.svc.${dc}.wmnet:4101",
                 notes_url   => 'https://wikitech.wikimedia.org/wiki/Wikifeeds',
                 ;
             "check_echostore_${dc}":

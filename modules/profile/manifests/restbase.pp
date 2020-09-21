@@ -73,7 +73,7 @@
 #   http://recommendation-api.discovery.wmnet:9632
 #
 # [*wikifeeds_uri*]
-#   Wikifeeds service URI. Format: http://wikifeeds.discovery.wmnet:8889
+#   Wikifeeds service URI. Format: https://wikifeeds.discovery.wmnet:4101
 #
 class profile::restbase(
     $cassandra_user = lookup('profile::restbase::cassandra_user'),
