@@ -57,8 +57,7 @@ profile::services_proxy::envoy::listeners:
     timeout: "10s"
   - name: ores
     port: 6010
-    service: ores-http
-    upstream: ores.discovery.wmnet
+    service: ores
     timeout: "10s"
   - name: restbase
     port: 6011

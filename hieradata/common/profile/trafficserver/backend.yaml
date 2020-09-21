@@ -120,7 +120,7 @@ profile::trafficserver::backend::mapping_rules:
           - '@pparam=/etc/trafficserver/lua/x-wikimedia-debug-routing.lua'
     - type: map
       target: http://ores.wikimedia.org
-      replacement: http://ores.discovery.wmnet:8081
+      replacement: https://ores.discovery.wmnet
     - type: map
       target: http://people.wikimedia.org
       replacement: https://peopleweb.discovery.wmnet
