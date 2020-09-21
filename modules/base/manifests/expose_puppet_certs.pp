@@ -42,9 +42,6 @@ define base::expose_puppet_certs (
     Stdlib::Absolutepath $ssldir = puppet_ssldir(),
 ) {
     include base::puppet
-    if $provide_p12 and !$base::puppet::export_p12 {
-        fail('Must set `base::puppet::export_p12: true` in order to use provide_p12')
-    }
 
     $target_basedir = $title
     $puppet_cert_name = $::fqdn
@@ -78,21 +75,6 @@ define base::expose_puppet_certs (
         mode   => '0400',
         source => "${ssldir}/private_keys/${puppet_cert_name}.pem",
     }
-    if $base::puppet::export_p12 {
-        $p12_key_ensure = $ensure ? {
-            'present' => $provide_p12 ? {
-                true    => 'present',
-                default => 'absent',
-            },
-            default => 'absent',
-        }
-        file { "${target_basedir}/ssl/server.p12":
-            ensure => $p12_key_ensure,
-            mode   => '0400',
-            source => "${ssldir}/private/${puppet_cert_name}.p12",
-        }
-    }
-
     # Provide a keypair of key and cert concatenated. The file resource is used
     # to ensure file attributes/presence and the exec resource the contents
     $keypair_ensure = $ensure ? {

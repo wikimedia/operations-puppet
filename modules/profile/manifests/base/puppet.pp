@@ -9,7 +9,6 @@ class profile::base::puppet(
   Integer[2,3]       $facter_major_version = lookup('profile::base::puppet::facter_major_version'),
   Integer[4,5]       $puppet_major_version = lookup('profile::base::puppet::puppet_major_version'),
   String             $serialization_format = lookup('profile::base::puppet::serialization_format'),
-  Boolean            $export_p12           = lookup('profile::base::puppet::export_p12'),
   # Looks like we need hiera version 5 to pass undef via hiera
   Optional[String] $dns_alt_names          = lookup('profile::base::puppet::dns_alt_names',
                                                     {'default_value' => undef}),
@@ -28,7 +27,6 @@ class profile::base::puppet(
       facter_major_version   => $facter_major_version,
       puppet_major_version   => $puppet_major_version,
       certificate_revocation => $certificate_revocation,
-      export_p12             => $export_p12,
   }
   class { 'puppet_statsd':
       statsd_host   => 'statsd.eqiad.wmnet',

@@ -9,7 +9,6 @@ profile::base::purge_apt_sources: false
 profile::base::purge_apt_preferences: false
 profile::base::enable_adduser: false
 profile::base::puppet::interval: 30
-profile::base::puppet::export_p12: false
 
 profile::base::puppet::environment: production
 profile::base::puppet::puppet_major_version: 5
@@ -156,4 +155,3 @@ profile::alertmanager::irc::channel: 'wikimedia-observability-spam'
 profile::restbase::aqs_uri: http://aqs.svc.eqiad.wmnet:7232/analytics.wikimedia.org/v1
 profile::graphite::base::cluster_servers: []
 profile::graphite::base::uwsgi_processes: 8
-profile::base::puppet::export_p12: false
