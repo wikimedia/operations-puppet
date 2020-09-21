@@ -3086,7 +3086,7 @@ service::catalog:
       eqiad:
         default: 10.64.48.17
     monitoring:
-      check_command: check_https_url_for_string!releases.wikimedia.org!/mediawiki!MediaWiki
+      check_command: check_https_url_for_string!releases.wikimedia.org!/mediawiki/!MediaWiki
       notes_url: 'https://wikitech.wikimedia.org/wiki/Releases.wikimedia.org'
       critical: false
       sites:
