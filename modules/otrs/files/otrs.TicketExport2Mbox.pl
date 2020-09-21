@@ -51,13 +51,15 @@ local $Kernel::OM = Kernel::System::ObjectManager->new(
 	},
 );
 
-$CommonObject{ConfigObject} = $Kernel::OM->Get('Kernel::Config');
-$CommonObject{EncodeObject} = $Kernel::OM->Get('Kernel::System::Encode');
-$CommonObject{LogObject}    = $Kernel::OM->Get('Kernel::System::Log');
-$CommonObject{TimeObject}   = $Kernel::OM->Get('Kernel::System::Time');
-$CommonObject{MainObject}   = $Kernel::OM->Get('Kernel::System::Main');
-$CommonObject{DBObject}     = $Kernel::OM->Get('Kernel::System::DB');
-$CommonObject{TicketObject} = $Kernel::OM->Get('Kernel::System::Ticket');
+$CommonObject{ConfigObject}         = $Kernel::OM->Get('Kernel::Config');
+$CommonObject{EncodeObject}         = $Kernel::OM->Get('Kernel::System::Encode');
+$CommonObject{LogObject}            = $Kernel::OM->Get('Kernel::System::Log');
+$CommonObject{TimeObject}           = $Kernel::OM->Get('Kernel::System::Time');
+$CommonObject{MainObject}           = $Kernel::OM->Get('Kernel::System::Main');
+$CommonObject{DBObject}             = $Kernel::OM->Get('Kernel::System::DB');
+$CommonObject{TicketObject}         = $Kernel::OM->Get('Kernel::System::Ticket');
+$CommonObject{ArticleObject}        = $Kernel::OM->Get('Kernel::System::Ticket::Article');
+$CommonObject{ArticleBackendObject} = $Kernel::OM->Get('Kernel::System::Ticket::Article')->BackendForChannel(ChannelName => 'Email');
 
 GetOptions(
 	'close'               => \$Close,
@@ -109,15 +111,15 @@ for my $TicketID (@TicketIDs) {
 	} elsif (($HistoryData{'State'} =~ /^closed successful$/) and (! defined $Rebuild)) {
 		printlog("Skip TicketID $TicketID, it is already 'Closed successful'.",'debug');
 	} else {
-		my @TicketArticleIds = $CommonObject{TicketObject}->ArticleIndex(
+		my @TicketArticles = $CommonObject{ArticleObject}->ArticleList(
 			TicketID => $TicketID,
 			UserID => 1,
 			Silent => 0,
 		);
-		if (@TicketArticleIds) {
-			for my $ArticleID (@TicketArticleIds) {
+		if (@TicketArticles) {
+			for my $Article (@TicketArticles) {
 				eval {
-					printArticle($ArticleID);
+					printArticle($Article->{ArticleID});
 				};
 				if ($@) {
 					printlog("printArticle error: $@");
@@ -148,7 +150,7 @@ sub closeTicket {
 
 sub printArticle {
 	my $ArticleID = shift;
-	my $PlainMessage = $CommonObject{TicketObject}->ArticlePlain(
+	my $PlainMessage = $CommonObject{ArticleBackendObject}->ArticlePlain(
 		ArticleID => $ArticleID,
 		UserID => 1,
 		Silent => 0,
