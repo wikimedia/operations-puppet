@@ -253,10 +253,10 @@ s3_store_create_bucket_on_put = False
 rbd_store_ceph_conf = /etc/ceph/ceph.conf
 
 # RADOS user to authenticate as (only applicable if using cephx)
-rbd_store_user = glance
+rbd_store_user = eqiad1-glance-images
 
 # RADOS pool in which images are stored
-rbd_store_pool = images
+rbd_store_pool = eqiad1-glance-images
 
 # Images will be chunked into objects of this size (in megabytes).
 # For best performance, this should be a power of two
@@ -307,7 +307,7 @@ connection =  mysql://<%= @db_user %>:<%= @db_pass %>@<%= @db_host %>/<%= @db_na
 # in a request to add a new image to Glance? Known schemes are determined
 # by the known_stores option below.
 # Default: 'file'
-default_store = file
+default_store = rbd
 
 # ============ Filesystem Store Options ========================
 
