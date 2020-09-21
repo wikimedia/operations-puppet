@@ -1931,14 +1931,14 @@ service::catalog:
           - https://localhost/_info
       scheduler: wrr
     monitoring:
-      check_command: check_https_lvs_on_port!push-notifications.discovery.wmnet!4890!/_info
+      check_command: check_https_lvs_on_port!push-notifications.discovery.wmnet!4104!/_info
       critical: false #change to true when in production
       sites:
         codfw:
           hostname: push-notifications.svc.codfw.wmnet
         eqiad:
           hostname: push-notifications.svc.eqiad.wmnet
-    port: 4890
+    port: 4104
     sites:
     - eqiad
     - codfw
