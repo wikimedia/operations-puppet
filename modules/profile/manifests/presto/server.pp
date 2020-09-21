@@ -51,7 +51,6 @@ class profile::presto::server(
     Boolean $use_kerberos       = hiera('profile::presto::use_kerberos', false),
     Boolean $monitoring_enabled = lookup('profile::presto::monitoring_enabled', { 'default_value' => false }),
     Optional[Hash[String, Hash[String, String]]] $presto_clusters_secrets = hiera('presto_clusters_secrets', {}),
-    Boolean $use_puppet_ssl_certs = lookup('profile::presto::server::use_puppet_ssl_certs', { 'default_value' => false }),
 ) {
 
     $default_node_properties = {
@@ -77,38 +76,15 @@ class profile::presto::server(
             default => "${::site}.wmnet",
         }
 
-        if $use_puppet_ssl_certs {
-            $keystore_password = $presto_clusters_secrets[$cluster_name]['ssl_keystore_password']
-            $ssl_keystore_path = '/etc/presto/ssl/server.p12'
-            base::expose_puppet_certs{ '/etc/presto':
-                user         => 'root',
-                group        => 'presto',
-                provide_p12  => true,
-                provide_pem  => false,
-                p12_password => $keystore_password,
-                require      => Package['presto-server'],
-            }
-        } else {
-            $hostname_tls_cn = "${::hostname}.${hostname_suffix}"
-            $ssl_keystore_path = '/etc/presto/keystore.jks'
-            file { $ssl_keystore_path:
-                content => secret("certificates/presto_${cluster_name}/${hostname_tls_cn}/${hostname_tls_cn}.keystore.jks"),
-                owner   => 'presto',
-                group   => 'presto',
-                mode    => '0440',
-                require => Package['presto-server'],
-            }
-
-            $ssl_truststore_path = '/etc/presto/truststore.jks'
-            file { $ssl_truststore_path:
-                content => secret("certificates/presto_${cluster_name}/root_ca/truststore.jks"),
-                owner   => 'presto',
-                group   => 'presto',
-                mode    => '0444',
-                require => Package['presto-server'],
-            }
-
-            $ssl_truststore_password = $presto_clusters_secrets[$cluster_name]['ssl_truststore_password']
+        $keystore_password = $presto_clusters_secrets[$cluster_name]['ssl_keystore_password']
+        $ssl_keystore_path = '/etc/presto/ssl/server.p12'
+        base::expose_puppet_certs{ '/etc/presto':
+            user         => 'root',
+            group        => 'presto',
+            provide_p12  => true,
+            provide_pem  => false,
+            p12_password => $keystore_password,
+            require      => Package['presto-server'],
         }
 
         file { '/usr/local/bin/presto':
