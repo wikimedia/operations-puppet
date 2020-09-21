@@ -66,6 +66,11 @@ workers = 1
 # Allow access to version 2 of glance api
 #enable_v2_api = True
 
+
+# Support rbd and local file backends.  Eventually we can
+#  change this to ceph-only
+enabled_backends = rbd:rbd, file:file
+
 # ================= Syslog Options ============================
 
 # Send logs to syslog (/dev/log) instead of to file specified
@@ -303,17 +308,21 @@ flavor=keystone
 connection =  mysql://<%= @db_user %>:<%= @db_pass %>@<%= @db_host %>/<%= @db_name %>
 
 [glance_store]
-# Which backend scheme should Glance use by default is not specified
-# in a request to add a new image to Glance? Known schemes are determined
-# by the known_stores option below.
-# Default: 'file'
-default_store = rbd
+stores = file
+default_store = file
+default_backend = rbd
 
-# ============ Filesystem Store Options ========================
+[rbd]
+store_description = "default rbd backend"
+rbd_store_chunk_size = 8
+rbd_store_pool = eqiad1-glance-images
+rbd_store_user = eqiad1-glance-images
+rbd_store_ceph_conf = /etc/ceph/ceph.conf
+rados_connect_timeout = 0
 
-# Directory that the Filesystem backend store
-# writes image data to
-filesystem_store_datadir = <%= @glance_data_dir %>/images/
+[file]
+filesystem_store_datadir = /srv/glance/images/
+store_description = "local filesystem store"
 
 [oslo_policy]
 policy_file = policy.yaml
