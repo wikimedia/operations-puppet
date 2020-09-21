@@ -77,6 +77,27 @@ class profile::analytics::refinery::job::data_purge (
         user         => 'analytics',
         use_kerberos => $use_kerberos,
     }
+    # mediawiki_job events are imported separately from regular events, so they need their own purge job.
+    kerberos::systemd_timer { 'refinery-drop-raw-mediawiki-job-event':
+        ensure       => $ensure_timers,
+        description  => 'Drop raw mediawiki job event (/wmf/data/raw/mediawiki_job) data imported on HDFS following data retention policies.',
+        command      => "${refinery_path}/bin/refinery-drop-older-than --base-path='/wmf/data/raw/mediawiki_job' --path-format='[^/]+/hourly/(?P<year>[0-9]+)(/(?P<month>[0-9]+)(/(?P<day>[0-9]+)(/(?P<hour>[0-9]+))?)?)?' --older-than='${event_raw_retention_days}' --skip-trash --execute='23ee7ee56c3b87b6f0b971d6fb29425f'",
+        interval     => '*-*-* 00/4:30:00',
+        environment  => $systemd_env,
+        user         => 'analytics',
+        use_kerberos => $use_kerberos,
+    }
+    # netflow events are imported separately from regular events, so they need their own purge job.
+    kerberos::systemd_timer { 'refinery-drop-raw-netflow-event':
+        ensure       => $ensure_timers,
+        description  => 'Drop raw netflow event (/wmf/data/raw/netflow) data imported on HDFS following data retention policies.',
+        command      => "${refinery_path}/bin/refinery-drop-older-than --base-path='/wmf/data/raw/netflow' --path-format='[^/]+/hourly/(?P<year>[0-9]+)(/(?P<month>[0-9]+)(/(?P<day>[0-9]+)(/(?P<hour>[0-9]+))?)?)?' --older-than='${event_raw_retention_days}' --skip-trash --execute='8be45ca349b01f84fde8b5481b85094c'",
+        interval     => '*-*-* 00/4:35:00',
+        environment  => $systemd_env,
+        user         => 'analytics',
+        use_kerberos => $use_kerberos,
+    }
+
 
     # Keep this many days of refined event data (all data that comes via EventGate instances).
     $event_refined_retention_days = 90
