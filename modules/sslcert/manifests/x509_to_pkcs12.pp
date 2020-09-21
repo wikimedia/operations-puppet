@@ -28,7 +28,7 @@ define sslcert::x509_to_pkcs12 (
     if $ensure == 'present' {
         exec {"sslcert generate ${title}.p12":
             command => $command,
-            creates => $outfile,
+            unless  => "/usr/bin/openssl pkcs12 -in ${outfile} -password 'pass:${password}' -noout",
             require => Package['openssl'],
             before  => File[$outfile],
         }
