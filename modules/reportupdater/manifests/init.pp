@@ -44,12 +44,16 @@ class reportupdater(
         require => File[$log_path],
     }
 
+    package { 'python3-pid':
+        ensure => 'installed'
+    }
+
     # Ensure reportupdater is cloned and latest version.
     git::clone { 'analytics/reportupdater':
         ensure    => 'latest',
         directory => $path,
         origin    => 'https://gerrit.wikimedia.org/r/analytics/reportupdater.git',
         owner     => $user,
-        require   => File[$base_path],
+        require   => [File[$base_path], Package['python3-pid']]
     }
 }
