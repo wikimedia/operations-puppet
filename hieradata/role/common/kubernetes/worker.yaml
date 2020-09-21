@@ -53,6 +53,6 @@ profile::lvs::realserver::pools:
   proton: {}
   mobileapps: {}
   api-gateway: {}
-  push_notifications: {}
+  push-notifications: {}
 prometheus::node_exporter::collectors_extra:
   - processes
