@@ -82,7 +82,7 @@ class profile::presto::server(
             $ssl_keystore_path = '/etc/presto/ssl/server.p12'
             base::expose_puppet_certs{ '/etc/presto':
                 user         => 'root',
-                group        => 'hadoop',
+                group        => 'presto',
                 provide_p12  => true,
                 provide_pem  => false,
                 p12_password => $keystore_password,
