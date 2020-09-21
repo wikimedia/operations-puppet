@@ -1573,42 +1573,6 @@ service::catalog:
       - ulsfo
       - eqsin
     state: production
-  ores-http:
-    description: Objective Revision Evaluation Service. ores.svc.%{::site}.wmnet
-    encryption: false
-    ip:
-      codfw:
-        default: 10.2.1.10
-      eqiad:
-        default: 10.2.2.10
-    lvs:
-      class: low-traffic
-      conftool:
-        cluster: ores
-        service: ores
-      depool_threshold: ".5"
-      enabled: true
-      monitors:
-        IdleConnection:
-          max-delay: 300
-          timeout-clean-reconnect: 3
-        ProxyFetch:
-          url:
-            - http://localhost/v2/scores/
-      scheduler: wrr
-    monitoring:
-      check_command: check_http_lvs_on_port!ores.discovery.wmnet!8081!/v2/scores/
-      critical: true
-      sites:
-        codfw:
-          hostname: ores.svc.codfw.wmnet
-        eqiad:
-          hostname: ores.svc.eqiad.wmnet
-    port: 8081
-    sites:
-      - eqiad
-      - codfw
-    state: lvs_setup
   ores:
     description: Objective Revision Evaluation Service. ores.svc.%{::site}.wmnet
     encryption: true
