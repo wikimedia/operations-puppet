@@ -448,28 +448,14 @@ class profile::hadoop::common (
             # the setting needs to be present anyway. Upstream tutorials suggest to
             # put this value equal to the value of the keystore password.
             $keystore_keypassword = $hadoop_secrets_config['ssl_keystore_keypassword']
-            $keystore_path = "${::cdh::hadoop::config_directory}/ssl/server.p12"
+            $keystore_path = "${cdh::hadoop::config_directory}/ssl/server.p12"
 
-            file { "${::cdh::hadoop::config_directory}/ssl":
-                ensure => directory,
-                owner  => 'root',
-                group  => 'hadoop',
-                mode   => '0750',
-            }
-
-            # We explicitly create the p12 files (rather than relying on profile::base)
-            # since Hadoop wants the keystores to be password protected. Having a single
-            # place in which we set the password for the file and the related hadoop config
-            # (ssl-server.xml) is very handy and convenient.
-            sslcert::x509_to_pkcs12 {$facts['fqdn']:
-                owner       => 'root',
-                group       => 'hadoop',
-                public_key  => $facts['puppet_config']['hostcert'],
-                private_key => $facts['puppet_config']['hostprivkey'],
-                outfile     => $keystore_path,
-                certfile    => $facts['puppet_config']['localcacert'],
-                password    => $keystore_password,
-                require     => File["${::cdh::hadoop::config_directory}/ssl"],
+            base::expose_puppet_certs{$cdh::hadoop::config_directory:
+                user         => 'root',
+                group        => 'hadoop',
+                provide_p12  => true,
+                provide_pem  => false,
+                p12_password => $keystore_password,
             }
 
             $truststore_type = 'pkcs12'
