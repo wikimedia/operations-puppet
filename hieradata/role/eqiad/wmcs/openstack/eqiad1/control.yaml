@@ -13,3 +13,10 @@ profile::memcached::extended_options:
   - 'slab_reassign'
 profile::memcached::size: 2000
 profile::memcached::port: 11211
+
+
+profile::ceph::client::rbd::keyfile_group: 'glance'
+profile::ceph::client::rbd::client_name: 'eqiad1-glance-images'
+profile::ceph::client::rbd::keyfile_owner: 'glance'
+profile::ceph::client::rbd::pool: 'eqiad1-glance-images'
+profile::ceph::client::rbd::enable_v2_messenger: false

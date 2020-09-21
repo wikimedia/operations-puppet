@@ -1,8 +1,8 @@
-# Class: profile::ceph::client:rbd
+# Class: profile::ceph::client:rbd_ceph
 #
 # This profile will configure clients for connecting to Ceph rados block storage
 # using the native kernel driver or librbd
-class profile::ceph::client::rbd(
+class profile::ceph::client::rbd_glance(
     Boolean             $enable_v2_messenger = lookup('profile::ceph::client::rbd::enable_v2_messenger'),
     Hash[String,Hash]   $mon_hosts           = lookup('profile::ceph::mon::hosts'),
     Stdlib::IP::Address $cluster_network     = lookup('profile::ceph::cluster_network'),
@@ -10,7 +10,7 @@ class profile::ceph::client::rbd(
     Stdlib::Unixpath    $data_dir            = lookup('profile::ceph::data_dir'),
     String              $client_name         = lookup('profile::ceph::client::rbd::client_name'),
     String              $fsid                = lookup('profile::ceph::fsid'),
-    String              $keydata             = lookup('profile::ceph::client::rbd::keydata'),
+    String              $keydata             = lookup('profile::ceph::client::rbd::glance_client_keydata'),
     String              $keyfile_group       = lookup('profile::ceph::client::rbd::keyfile_group'),
     String              $keyfile_owner       = lookup('profile::ceph::client::rbd::keyfile_owner'),
 ) {
