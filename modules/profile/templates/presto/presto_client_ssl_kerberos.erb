@@ -1,9 +1,10 @@
 #!/bin/bash
 
 /usr/bin/presto \
---server <%= @discovery_uri %> \
+--server <%= @discovery_uri %> <% if not @use_puppet_ssl_certs -%> \
 --truststore-path <%= @ssl_truststore_path %> \
 --truststore-password <%= @ssl_truststore_password %> \
+<%- end -%>
 <% if @use_kerberos -%>
 --krb5-config-path /etc/krb5.conf \
 --krb5-principal $(whoami)@WIKIMEDIA  \

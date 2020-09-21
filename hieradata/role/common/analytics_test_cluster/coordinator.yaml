@@ -37,6 +37,8 @@ profile::presto::monitoring_enabled: true
 profile::presto::cluster_name: analytics-test-presto
 profile::presto::discovery_uri: https://analytics1030.eqiad.wmnet:8281
 profile::presto::server::heap_max: 4G
+
+profile::presto::server::use_puppet_ssl_certs: true
 profile::presto::server::config_properties:
   coordinator: true
   # since we only run presto as a single node on the coordinator

@@ -20,6 +20,7 @@ class profile::presto::client(
     String $discovery_uri = hiera('profile::presto::discovery_uri'),
     Boolean $use_kerberos = hiera('profile::presto::use_kerberos', false),
     Optional[Hash[String, Hash[String, String]]] $presto_clusters_secrets = hiera('presto_clusters_secrets', {}),
+    Boolean $use_puppet_ssl_certs = lookup('profile::presto::client::use_puppet_ssl_certs', { 'default_value' => false }),
 ) {
 
     if $presto_clusters_secrets[$cluster_name] {
