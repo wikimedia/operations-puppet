@@ -462,23 +462,14 @@ class profile::hadoop::common (
             # place in which we set the password for the file and the related hadoop config
             # (ssl-server.xml) is very handy and convenient.
             sslcert::x509_to_pkcs12 {$facts['fqdn']:
+                owner       => 'root',
+                group       => 'hadoop',
                 public_key  => $facts['puppet_config']['hostcert'],
                 private_key => $facts['puppet_config']['hostprivkey'],
                 outfile     => $keystore_path,
                 certfile    => $facts['puppet_config']['localcacert'],
                 password    => $keystore_password,
                 require     => File["${::cdh::hadoop::config_directory}/ssl"],
-            }
-
-            # Temporary hack to force permissions on the puppet cert exposed so
-            # that Yarn/HDFS daemons can read it. The idea is to test if this works with
-            # Hadoop before doing other changes to the base's expose functionality.
-            file { $keystore_path:
-                ensure  => file,
-                owner   => 'root',
-                group   => 'hadoop',
-                mode    => '0440',
-                require => Sslcert::X509_to_pkcs12[$facts['fqdn']]
             }
 
             $truststore_type = 'pkcs12'

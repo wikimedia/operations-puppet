@@ -4,10 +4,13 @@
 # @param outfile location to store the pkcs12 file
 # @param certfile a certificate bundle to add to the exported file
 define sslcert::x509_to_pkcs12 (
+    Wmflib::Ensure              $ensure      = 'present',
     Stdlib::Unixpath            $public_key  = "/etc/ssl/localcerts/${title}.crt",
     Stdlib::Unixpath            $private_key = "/etc/ssl/private/${title}.key",
     Stdlib::Unixpath            $outfile     = "/etc/ssl/localcerts/${title}.p12",
     String                      $password    = '',
+    String                      $owner       = 'root',
+    String                      $group       = 'root',
     Optional[Stdlib::Unixpath]  $certfile    = undef,
 ) {
     ensure_packages(['openssl'])
@@ -22,9 +25,18 @@ define sslcert::x509_to_pkcs12 (
         -out ${outfile} \
         -password 'pass:${password}'
         | COMMAND
-    exec {"sslcert generate ${title}.p12":
-        command => $command,
-        creates => $outfile,
-        require => Package['openssl'],
+    if $ensure == 'present' {
+        exec {"sslcert generate ${title}.p12":
+            command => $command,
+            creates => $outfile,
+            require => Package['openssl'],
+            before  => File[$outfile],
+        }
+    }
+    file {$outfile:
+        ensure => $ensure,
+        owner  => $owner,
+        group  => $group,
+        mode   => '0440',
     }
 }
