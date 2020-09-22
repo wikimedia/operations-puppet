@@ -25,6 +25,9 @@
 # [*provide_p12*]
 #   Should the p12 file also be exposed, useful for java clients? Defaults to false
 #
+# [*p12_encrypt_keys*]
+#   Should the p12 keys be encypted using the keystore password
+#
 # [*provide_pem*]
 #   Should the public pem file also be exposed? Defaults to true
 #
@@ -36,15 +39,16 @@
 #   supplying this unless you know what you are doing
 #
 define base::expose_puppet_certs (
-    Wmflib::Ensure       $ensure          = 'present',
-    Boolean              $provide_private = false,
-    Boolean              $provide_keypair = false,
-    Boolean              $provide_pem     = true,
-    Boolean              $provide_p12     = false,
-    String               $p12_password    = '',
-    String               $user            = 'root',
-    String               $group           = 'root',
-    Stdlib::Absolutepath $ssldir          = puppet_ssldir(),
+    Wmflib::Ensure       $ensure           = 'present',
+    Boolean              $provide_private  = false,
+    Boolean              $provide_keypair  = false,
+    Boolean              $provide_pem      = true,
+    Boolean              $provide_p12      = false,
+    String               $p12_password     = '',
+    Boolean              $p12_encrypt_keys = false,
+    String               $user             = 'root',
+    String               $group            = 'root',
+    Stdlib::Absolutepath $ssldir           = puppet_ssldir(),
 ) {
     include base::puppet
 
@@ -119,13 +123,14 @@ define base::expose_puppet_certs (
         default => 'absent',
     }
     sslcert::x509_to_pkcs12 {"base::expose_puppet_cert: ${title}":
-        ensure      => $p12_key_ensure,
-        owner       => $user,
-        group       => $group,
-        public_key  => $facts['puppet_config']['hostcert'],
-        private_key => $facts['puppet_config']['hostprivkey'],
-        outfile     => "${target_basedir}/ssl/server.p12",
-        certfile    => $facts['puppet_config']['localcacert'],
-        password    => $p12_password,
+        ensure       => $p12_key_ensure,
+        owner        => $user,
+        group        => $group,
+        public_key   => $facts['puppet_config']['hostcert'],
+        private_key  => $facts['puppet_config']['hostprivkey'],
+        outfile      => "${target_basedir}/ssl/server.p12",
+        certfile     => $facts['puppet_config']['localcacert'],
+        password     => $p12_password,
+        encrypt_keys => $p12_encrypt_keys,
     }
 }
