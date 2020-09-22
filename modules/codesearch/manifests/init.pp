@@ -89,6 +89,13 @@ class codesearch(
         require => Git::Clone['operations/puppet'],
     }
 
+    file { '/etc/hound-gitconfig':
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/codesearch/hound-gitconfig',
+    }
+
     systemd::timer::job { 'codesearch-write-config':
         description => 'Generate hound configuration files',
         command     => "${clone_dir}/write_config.py",
@@ -132,6 +139,7 @@ class codesearch(
                 Git::Clone['operations/puppet'],
                 Systemd::Service['hound_proxy'],
                 Systemd::Timer::Job['codesearch-write-config'],
+                File['/etc/hound-gitconfig'],
             ]
         }
     }
