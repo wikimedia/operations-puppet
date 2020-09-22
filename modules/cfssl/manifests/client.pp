@@ -17,6 +17,7 @@ class cfssl::client (
         default_auth_remote => $default_auth_remote,
         auth_keys           => $auth_keys,
         remotes             => $remotes,
+        path                => $conf_file,
     }
     file {'/usr/local/sbin/cfssl-client':
         ensure  => file,

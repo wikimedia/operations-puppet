@@ -2,8 +2,10 @@
 define cfssl::csr (
     Cfssl::Key                    $key,
     Array[Cfssl::Name]            $names,
+    String                        $signer,
     String                        $profile = 'default',
     Optional[Array[Stdlib::Host]] $hosts = [],
+
 ) {
     include cfssl
 
@@ -16,7 +18,7 @@ define cfssl::csr (
 
     $safe_title = $title.regsubst('[^\w\-]', '_', 'G')
     $csr_file = "${cfssl::csr_dir}/${safe_title}.csr"
-    $outdir   = "${cfssl::internal_dir}/${profile}"
+    $outdir   = "${cfssl::ssl_dir}/${safe_title}"
 
     $_names = $names.map |Cfssl::Name $name| {
         {
@@ -43,7 +45,7 @@ define cfssl::csr (
     $gen_command = @("GENCOMMAND"/L)
         /usr/bin/cfssl gencert -ca=${cfssl::ca_file} -ca-key=${cfssl::ca_key_file} \
         -config=${cfssl::conf_file} -profile=${profile} ${csr_file} \
-        | /usr/bin/cfssljson -bare ${outdir}/${safe_title}
+        | /usr/bin/cfssljson -bare ${outdir}/
         | GENCOMMAND
     exec{"Generate cert ${title}":
         command => $gen_command,

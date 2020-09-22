@@ -35,7 +35,7 @@ define cfssl::signer (
     include cfssl
     $safe_title = $title.regsubst('\W', '_', 'G')
     $conf_dir = "${cfssl::signer_dir}/${safe_title}"
-    $conf_file = "${conf_dir}/cfssl.conf"
+    $conf_file = "${cfssl::signer_dir}/${safe_title}/cfssl.conf"
     $db_conf_file = "${conf_dir}/db.conf"
     $db_path = "${conf_dir}/cfssl.db"
     $ca_dir = "${conf_dir}/ca"
@@ -50,7 +50,7 @@ define cfssl::signer (
         default_ocsp_url => $default_ocsp_url,
         auth_keys        => $auth_keys,
         profiles         => $profiles,
-        conf_dir         => $conf_dir,
+        path             => $conf_file,
     }
     $db_config = {'driver' => 'sqlite3', 'data_source' => $db_path}
 
