@@ -45,3 +45,6 @@ Thumbs.db
 
 # XXX Pontoon hacks
 hieradata/auto.yaml
+
+# files created by shared spec_helper
+/spec/fixtures
