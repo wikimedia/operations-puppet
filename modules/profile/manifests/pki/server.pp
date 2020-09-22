@@ -36,6 +36,15 @@ class profile::pki::server(
             profile       => 'intermediate',
             require       => Cfssl::Signer['WMF_root_CA'],
         }
+        $safe_title = $intermediate.regsubst('\W', '_', 'G')
+        cfssl::signer {$intermediate:
+            profiles         => $profiles,
+            ca_key_file      => "${cfssl::ssl_dir}/${safe_title}/${safe_title}-key.pem",
+            ca_file          => "${cfssl::ssl_dir}/${safe_title}/${safe_title}.pem",
+            auth_keys        => $auth_keys,
+            default_crl_url  => $crl_url,
+            default_ocsp_url => $ocsp_url,
+        }
     }
     # cfssl::csr {'OCSP signer':
     #    key     => $key_params,

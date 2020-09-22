@@ -82,7 +82,7 @@ define cfssl::signer (
             notify  => Service[$serve_service];
 
     }
-    sqlite::db {'cfssl':
+    sqlite::db {"cfssl ${title} signer DB":
         db_path    => $db_path,
         sql_schema => "${cfssl::sql_dir}/sqlite_initdb.sql",
         require    => File["${cfssl::sql_dir}/sqlite_initdb.sql"],
