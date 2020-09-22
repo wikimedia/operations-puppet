@@ -41,6 +41,7 @@ class profile::pki::server(
             profiles         => $profiles,
             ca_key_file      => "${cfssl::ssl_dir}/${safe_title}/${safe_title}-key.pem",
             ca_file          => "${cfssl::ssl_dir}/${safe_title}/${safe_title}.pem",
+            ca_bundle_file   => "${cfssl::signer_dir}/WMF_root_CA/ca/ca.pem",
             auth_keys        => $auth_keys,
             default_crl_url  => $crl_url,
             default_ocsp_url => $ocsp_url,

@@ -29,6 +29,7 @@ define cfssl::signer (
     Hash[String, Cfssl::Auth_key] $auth_keys        = {},
     Optional[Stdlib::Unixpath]    $ca_key_file      = undef,
     Optional[Stdlib::Unixpath]    $ca_file          = undef,
+    Optional[Stdlib::Unixpath]    $ca_bundle_file   = undef,
     Optional[String]              $ca_key_content   = undef,
     Optional[String]              $ca_cert_content  = undef,
     Optional[Stdlib::Unixpath]    $ocsp_cert_path   = undef,

@@ -9,6 +9,9 @@ ExecStart=/usr/bin/cfssl serve \
           -config <%= @conf_file %> \
           -address <%= @host %> \
           -port <%= @port %> \
+<%- if @ca_bundle_file -%>
+          -ca-bundle <%= @ca_bundle_file %>
+<%- end -%>
 <%- if @enable_ocsp -%>
           -responder <%= @ocsp_cert_path %> \
           -responder-key <%= @ocsp_key_path %> \
