@@ -44,6 +44,7 @@ class profile::pki::server(
             auth_keys        => $auth_keys,
             default_crl_url  => $crl_url,
             default_ocsp_url => $ocsp_url,
+            serve_ensure     => 'present',
         }
     }
     # cfssl::csr {'OCSP signer':
