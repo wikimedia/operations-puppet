@@ -29,7 +29,7 @@ class profile::pki::server(
         default_ocsp_url => $ocsp_url,
     }
     $intermediates.each |String $intermediate| {
-        cfssl::csr{$intermediate:
+        cfssl::cert{$intermediate:
             key           => $key_params,
             names         => $names,
             signer_config => {'config_dir' => "${cfssl::signer_dir}/WMF_root_CA"},
@@ -48,7 +48,7 @@ class profile::pki::server(
             serve_ensure     => 'present',
         }
     }
-    # cfssl::csr {'OCSP signer':
+    # cfssl::cert {'OCSP signer':
     #    key     => $key_params,
     #    names   => $names,
     #    profile => 'ocsp',

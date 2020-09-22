@@ -1,5 +1,5 @@
 # @summary a resource for creating csr json files
-define cfssl::csr (
+define cfssl::cert (
     Cfssl::Key                    $key,
     Array[Cfssl::Name]            $names,
     Cfssl::Signer_config          $signer_config,
