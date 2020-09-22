@@ -81,7 +81,7 @@ define cfssl::csr (
     # TODO: would be nice to check its signed with the correct CA
     $test_command = @("TEST_COMMAND"/L)
         /usr/bin/test \
-        "$(/usr/bin/openssl x509 -in ${cert_path} -noout -pubkey)" -eq \
+        "$(/usr/bin/openssl x509 -in ${cert_path} -noout -pubkey)" == \
         "$(/usr/bin/openssl pkey -pubout -in ${key_path})"
         | TEST_COMMAND
     if $ensure == 'present' {
