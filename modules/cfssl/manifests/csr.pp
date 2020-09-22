@@ -70,19 +70,26 @@ define cfssl::csr (
             -config=${signer_config['config_dir']}/cfssl.conf \
             | SIGNER_ARGS
     }
+    $cert_path = "${_outdir}/${safe_title}.pem"
+    $key_path = "${_outdir}/${safe_title}-key.pem"
+    $csr_pem_path = "${_outdir}/${safe_title}.csr"
     $gen_command = @("GEN_COMMAND"/L)
         /usr/bin/cfssl gencert ${signer_args} -profile=${profile} ${csr_json_path} \
         | /usr/bin/cfssljson -bare ${_outdir}/${safe_title}
         | GEN_COMMAND
+
+    # TODO: would be nice to check its signed with the correct CA
+    $test_command = @("TEST_COMMAND"/L)
+        /usr/bin/test \
+        "$(/usr/bin/openssl x509 -in ${cert_path} -noout -pubkey)" -eq \
+        "$(/usr/bin/openssl pkey -pubout -in ${key_path})"
+        | TEST_COMMAND
     if $ensure == 'present' {
         exec{"Generate cert ${title}":
             command => $gen_command,
-            creates => "${_outdir}/${safe_title}-key.pem"
+            unless  => $test_command,
         }
     }
-    $cert_path = "${_outdir}/${safe_title}.pem"
-    $key_path = "${_outdir}/${safe_title}-key.pem"
-    $csr_pem_path = "${_outdir}/${safe_title}.csr"
     file{[$cert_path, $key_path, $csr_pem_path]:
         ensure => $ensure_file,
         owner  => $owner,
