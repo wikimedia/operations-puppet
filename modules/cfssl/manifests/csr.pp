@@ -62,12 +62,12 @@ define cfssl::csr (
         default                      => @("SIGNER_ARGS"/L)
             -ca=${signer_config['config_dir']}/ca/ca.pem \
             -ca-key=${signer_config['config_dir']}/ca/ca_key.pem \
-            -config=${signer_config['config_dir']}/cfssl.conf
+            -config=${signer_config['config_dir']}/cfssl.conf \
             | SIGNER_ARGS
     }
     $gen_command = @("GEN_COMMAND"/L)
         /usr/bin/cfssl gencert ${signer_args} -profile=${profile} ${csr_file} \
-        | /usr/bin/cfssljson -bare ${_outdir}
+        | /usr/bin/cfssljson -bare ${_outdir}/${safe_title}
         | GEN_COMMAND
     exec{"Generate cert ${title}":
         command => $gen_command,
