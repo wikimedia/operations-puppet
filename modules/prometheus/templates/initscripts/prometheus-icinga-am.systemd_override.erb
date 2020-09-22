@@ -1,3 +1,5 @@
 [Service]
+# Required to be able to exec status.cgi
+Group=www-data
 ExecStart=
 ExecStart=/usr/bin/prometheus-icinga-am <%= @am_urls.sort.join(' ') %>
