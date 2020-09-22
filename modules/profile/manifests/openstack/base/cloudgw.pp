@@ -38,7 +38,7 @@ class profile::openstack::base::cloudgw (
 
     file { '/etc/iproute2/rt_tables.d/cloudgw.conf':
         ensure  => present,
-        content => '10 cloudgw\n',
+        content => '10 cloudgw',
     }
 
     # placeholder for HA stuff: keepalived and conntrackd
