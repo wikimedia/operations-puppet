@@ -1,7 +1,7 @@
 # sets up a webserver configured for phabricator
 #
 class profile::phabricator::httpd (
-    Boolean $enable_forensic_log = hiera('profile::phabricator::httpd::enable_forensic_log', false),
+    Boolean $enable_forensic_log = lookup('profile::phabricator::httpd::enable_forensic_log', {'default_value' => false}),
 ) {
 
     $httpd_base_modules = [ 'headers', 'rewrite', 'remoteip' ]

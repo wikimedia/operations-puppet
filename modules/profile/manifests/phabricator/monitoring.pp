@@ -1,8 +1,8 @@
 # == Class: profile::phabricator::monitoring
 #
 class profile::phabricator::monitoring (
-    Stdlib::Fqdn $active_server = hiera('phabricator_server'),
-    Stdlib::Ensure::Service $phd_service_ensure = hiera('profile::phabricator::main::phd_service_ensure', 'running'),
+    Stdlib::Fqdn $active_server = lookup('phabricator_server'),
+    Stdlib::Ensure::Service $phd_service_ensure = lookup('profile::phabricator::main::phd_service_ensure', {'default_value' => 'running'}),
 ){
 
     # All checks are paging because the "sms" contact group is added.
