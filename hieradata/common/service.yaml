@@ -16,7 +16,7 @@ service::catalog:
       conftool:
         cluster: appserver
         service: apache2
-      depool_threshold: '.7'
+      depool_threshold: ".7"
       enabled: true
       monitors:
         IdleConnection:
@@ -24,7 +24,7 @@ service::catalog:
           timeout-clean-reconnect: 3
         ProxyFetch:
           url:
-          - http://www.wikidata.org/wiki/Special:BlankPage
+            - http://www.wikidata.org/wiki/Special:BlankPage
           http_status: 302
       scheduler: wrr
     monitoring:
@@ -37,8 +37,8 @@ service::catalog:
           hostname: appservers.svc.eqiad.wmnet
     port: 80
     sites:
-    - eqiad
-    - codfw
+      - eqiad
+      - codfw
     state: production
   apertium:
     description: Machine Translation service. apertium.svc.%{::site}.wmnet
@@ -53,7 +53,7 @@ service::catalog:
       conftool:
         cluster: scb
         service: apertium
-      depool_threshold: '.5'
+      depool_threshold: ".5"
       enabled: true
       monitors:
         IdleConnection:
@@ -61,7 +61,7 @@ service::catalog:
           timeout-clean-reconnect: 3
         ProxyFetch:
           url:
-          - http://localhost/listPairs
+            - http://localhost/listPairs
       scheduler: wrr
     monitoring:
       check_command: check_http_lvs_on_port!apertium.discovery.wmnet!2737!/listPairs
@@ -73,8 +73,8 @@ service::catalog:
           hostname: apertium.svc.eqiad.wmnet
     port: 2737
     sites:
-    - codfw
-    - eqiad
+      - codfw
+      - eqiad
     state: production
     discovery:
       - dnsdisc: apertium
@@ -92,7 +92,7 @@ service::catalog:
       conftool:
         cluster: api_appserver
         service: apache2
-      depool_threshold: '.7'
+      depool_threshold: ".7"
       enabled: true
       monitors:
         IdleConnection:
@@ -100,7 +100,7 @@ service::catalog:
           timeout-clean-reconnect: 3
         ProxyFetch:
           url:
-          - http://en.wikipedia.org/w/api.php
+            - http://en.wikipedia.org/w/api.php
       scheduler: wrr
     monitoring:
       check_command: check_http_lvs!en.wikipedia.org!/w/api.php?action=query&meta=siteinfo
@@ -112,8 +112,8 @@ service::catalog:
           hostname: api.svc.eqiad.wmnet
     port: 80
     sites:
-    - eqiad
-    - codfw
+      - eqiad
+      - codfw
     state: production
   api-https:
     description: MediaWiki API cluster, api.svc.%{::site}.wmnet
@@ -124,7 +124,7 @@ service::catalog:
       conftool:
         cluster: api_appserver
         service: nginx
-      depool_threshold: '.7'
+      depool_threshold: ".7"
       enabled: true
       monitors:
         IdleConnection:
@@ -132,7 +132,7 @@ service::catalog:
           timeout-clean-reconnect: 3
         ProxyFetch:
           url:
-          - https://en.wikipedia.org/w/api.php
+            - https://en.wikipedia.org/w/api.php
       scheduler: wrr
     monitoring:
       check_command: check_https_url!en.wikipedia.org!/w/api.php?action=query&meta=siteinfo
@@ -144,16 +144,17 @@ service::catalog:
           hostname: api.svc.eqiad.wmnet
     port: 443
     sites:
-    - eqiad
-    - codfw
+      - eqiad
+      - codfw
     state: production
     discovery: &api_discovery
-    - dnsdisc: api-rw
-      active_active: false
-    - dnsdisc: api-ro
-      active_active: true
+      - dnsdisc: api-rw
+        active_active: false
+      - dnsdisc: api-ro
+        active_active: true
   appservers-https:
-    description: Main MediaWiki application server cluster, appservers.svc.%{::site}.wmnet
+    description:
+      Main MediaWiki application server cluster, appservers.svc.%{::site}.wmnet
       (https)
     encryption: true
     ip: *appservers_ips
@@ -162,7 +163,7 @@ service::catalog:
       conftool:
         cluster: appserver
         service: nginx
-      depool_threshold: '.7'
+      depool_threshold: ".7"
       enabled: true
       monitors:
         IdleConnection:
@@ -170,7 +171,7 @@ service::catalog:
           timeout-clean-reconnect: 3
         ProxyFetch:
           url:
-          - https://en.wikipedia.org/wiki/Special:BlankPage
+            - https://en.wikipedia.org/wiki/Special:BlankPage
       scheduler: wrr
     monitoring:
       check_command: check_https_url!en.wikipedia.org!/wiki/Special:BlankPage
@@ -182,8 +183,8 @@ service::catalog:
           hostname: appservers.svc.eqiad.wmnet
     port: 443
     sites:
-    - eqiad
-    - codfw
+      - eqiad
+      - codfw
     state: production
     discovery: &appservers-disc
       - dnsdisc: appservers-ro
@@ -201,7 +202,7 @@ service::catalog:
       conftool:
         cluster: aqs
         service: aqs
-      depool_threshold: '.5'
+      depool_threshold: ".5"
       enabled: true
       monitors:
         IdleConnection:
@@ -209,7 +210,7 @@ service::catalog:
           timeout-clean-reconnect: 3
         ProxyFetch:
           url:
-          - http://localhost/
+            - http://localhost/
       scheduler: wrr
     monitoring:
       check_command: check_http_lvs_on_port!aqs.svc.eqiad.wmnet!7232!/
@@ -219,7 +220,7 @@ service::catalog:
           hostname: aqs.svc.eqiad.wmnet
     port: 7232
     sites:
-    - eqiad
+      - eqiad
     state: production
   blubberoid:
     description: Blubberoid, blubberoid.svc.%{::site}.wmnet (https)
@@ -234,7 +235,7 @@ service::catalog:
       conftool:
         cluster: kubernetes
         service: kubesvc
-      depool_threshold: '.5'
+      depool_threshold: ".5"
       enabled: true
       monitors:
         IdleConnection:
@@ -251,12 +252,12 @@ service::catalog:
           hostname: blubberoid.svc.eqiad.wmnet
     port: 4666
     sites:
-    - eqiad
-    - codfw
+      - eqiad
+      - codfw
     state: production
     discovery:
-    - dnsdisc: blubberoid
-      active_active: true
+      - dnsdisc: blubberoid
+        active_active: true
   citoid:
     description: Citation lookup service, citoid.svc.%{::site}.wmnet
     encryption: true
@@ -270,7 +271,7 @@ service::catalog:
       conftool:
         cluster: kubernetes
         service: kubesvc
-      depool_threshold: '.5'
+      depool_threshold: ".5"
       enabled: true
       monitors:
         IdleConnection:
@@ -278,7 +279,7 @@ service::catalog:
           timeout-clean-reconnect: 3
         ProxyFetch:
           url:
-          - https://localhost/_info
+            - https://localhost/_info
       scheduler: wrr
     monitoring:
       check_command: check_https_lvs_on_port!citoid.discovery.wmnet!4003!/_info
@@ -291,14 +292,15 @@ service::catalog:
           hostname: citoid.svc.eqiad.wmnet
     port: 4003
     sites:
-    - eqiad
-    - codfw
+      - eqiad
+      - codfw
     state: production
     discovery:
-    - dnsdisc: citoid
-      active_active: true
+      - dnsdisc: citoid
+        active_active: true
   cloudelastic-chi-https:
-    description: Elasticsearch prod replica for WMF Cloud (Chi Cluster) - Prod MW
+    description:
+      Elasticsearch prod replica for WMF Cloud (Chi Cluster) - Prod MW
       AppServer Port - HTTPS
     encryption: true
     ip:
@@ -310,7 +312,7 @@ service::catalog:
       conftool:
         cluster: cloudelastic
         service: cloudelastic-chi-ssl
-      depool_threshold: '.5'
+      depool_threshold: ".5"
       enabled: true
       monitors:
         IdleConnection:
@@ -318,14 +320,15 @@ service::catalog:
           timeout-clean-reconnect: 3
         ProxyFetch:
           url:
-          - https://localhost/
+            - https://localhost/
       scheduler: wrr
     port: 9243
     sites:
-    - eqiad
+      - eqiad
     state: production
   cloudelastic-chi-https-public:
-    description: Elasticsearch prod replica for WMF Cloud (Chi Cluster) - Public Internet
+    description:
+      Elasticsearch prod replica for WMF Cloud (Chi Cluster) - Public Internet
       Port - HTTPS
     encryption: true
     ip:
@@ -335,7 +338,7 @@ service::catalog:
       conftool:
         cluster: cloudelastic
         service: cloudelastic-chi-ssl-public
-      depool_threshold: '.5'
+      depool_threshold: ".5"
       enabled: true
       monitors:
         IdleConnection:
@@ -343,14 +346,15 @@ service::catalog:
           timeout-clean-reconnect: 3
         ProxyFetch:
           url:
-          - https://localhost/
+            - https://localhost/
       scheduler: wrr
     port: 8243
     sites:
-    - eqiad
+      - eqiad
     state: production
   cloudelastic-omega-https:
-    description: Elasticsearch prod replica for WMF Cloud (Omega Cluster) - Prod MW
+    description:
+      Elasticsearch prod replica for WMF Cloud (Omega Cluster) - Prod MW
       AppServer Port - HTTPS
     encryption: true
     ip:
@@ -360,7 +364,7 @@ service::catalog:
       conftool:
         cluster: cloudelastic
         service: cloudelastic-omega-ssl
-      depool_threshold: '.5'
+      depool_threshold: ".5"
       enabled: true
       monitors:
         IdleConnection:
@@ -368,14 +372,15 @@ service::catalog:
           timeout-clean-reconnect: 3
         ProxyFetch:
           url:
-          - https://localhost/
+            - https://localhost/
       scheduler: wrr
     port: 9443
     sites:
-    - eqiad
+      - eqiad
     state: production
   cloudelastic-omega-https-public:
-    description: Elasticsearch prod replica for WMF Cloud (Omega Cluster) - Public
+    description:
+      Elasticsearch prod replica for WMF Cloud (Omega Cluster) - Public
       Internet Port - HTTPS
     encryption: true
     ip:
@@ -385,7 +390,7 @@ service::catalog:
       conftool:
         cluster: cloudelastic
         service: cloudelastic-omega-ssl-public
-      depool_threshold: '.5'
+      depool_threshold: ".5"
       enabled: true
       monitors:
         IdleConnection:
@@ -393,14 +398,15 @@ service::catalog:
           timeout-clean-reconnect: 3
         ProxyFetch:
           url:
-          - https://localhost/
+            - https://localhost/
       scheduler: wrr
     port: 8443
     sites:
-    - eqiad
+      - eqiad
     state: production
   cloudelastic-psi-https:
-    description: Elasticsearch prod replica for WMF Cloud (Psi Cluster) - Prod MW
+    description:
+      Elasticsearch prod replica for WMF Cloud (Psi Cluster) - Prod MW
       AppServer Port - HTTPS
     encryption: true
     ip:
@@ -410,7 +416,7 @@ service::catalog:
       conftool:
         cluster: cloudelastic
         service: cloudelastic-psi-ssl
-      depool_threshold: '.5'
+      depool_threshold: ".5"
       enabled: true
       monitors:
         IdleConnection:
@@ -418,14 +424,15 @@ service::catalog:
           timeout-clean-reconnect: 3
         ProxyFetch:
           url:
-          - https://localhost/
+            - https://localhost/
       scheduler: wrr
     port: 9643
     sites:
-    - eqiad
+      - eqiad
     state: production
   cloudelastic-psi-https-public:
-    description: Elasticsearch prod replica for WMF Cloud (Psi Cluster) - Public Internet
+    description:
+      Elasticsearch prod replica for WMF Cloud (Psi Cluster) - Public Internet
       Port - HTTPS
     encryption: true
     ip:
@@ -435,7 +442,7 @@ service::catalog:
       conftool:
         cluster: cloudelastic
         service: cloudelastic-psi-ssl-public
-      depool_threshold: '.5'
+      depool_threshold: ".5"
       enabled: true
       monitors:
         IdleConnection:
@@ -443,11 +450,11 @@ service::catalog:
           timeout-clean-reconnect: 3
         ProxyFetch:
           url:
-          - https://localhost/
+            - https://localhost/
       scheduler: wrr
     port: 8643
     sites:
-    - eqiad
+      - eqiad
     state: production
   cxserver:
     description: Content Translation service, cxserver.svc.%{::site}.wmnet
@@ -462,7 +469,7 @@ service::catalog:
       conftool:
         cluster: kubernetes
         service: kubesvc
-      depool_threshold: '.5'
+      depool_threshold: ".5"
       enabled: true
       monitors:
         IdleConnection:
@@ -470,7 +477,7 @@ service::catalog:
           timeout-clean-reconnect: 3
         ProxyFetch:
           url:
-          - https://localhost/_info
+            - https://localhost/_info
       scheduler: wrr
     monitoring:
       check_command: check_https_lvs_on_port!cxserver.discovery.wmnet!4002!/_info
@@ -482,12 +489,12 @@ service::catalog:
           hostname: cxserver.svc.eqiad.wmnet
     port: 4002
     sites:
-    - eqiad
-    - codfw
+      - eqiad
+      - codfw
     state: production
     discovery:
-    - dnsdisc: cxserver
-      active_active: true
+      - dnsdisc: cxserver
+        active_active: true
   docker-registry:
     description: docker registry service
     encryption: true
@@ -501,7 +508,7 @@ service::catalog:
       conftool:
         cluster: docker-registry
         service: docker-registry
-      depool_threshold: '.5'
+      depool_threshold: ".5"
       enabled: true
       monitors:
         IdleConnection:
@@ -518,12 +525,12 @@ service::catalog:
           hostname: docker-registry.svc.eqiad.wmnet
     port: 443
     sites:
-    - eqiad
-    - codfw
+      - eqiad
+      - codfw
     state: production
     discovery:
-    - dnsdisc: docker-registry
-      active_active: false
+      - dnsdisc: docker-registry
+        active_active: false
   druid-public-broker:
     description: Broker query service for the Druid Public Cluster
     encryption: false
@@ -535,7 +542,7 @@ service::catalog:
       conftool:
         cluster: druid-public
         service: druid-public-broker
-      depool_threshold: '.5'
+      depool_threshold: ".5"
       enabled: true
       monitors:
         IdleConnection:
@@ -543,7 +550,7 @@ service::catalog:
           timeout-clean-reconnect: 3
         ProxyFetch:
           url:
-          - http://localhost/status
+            - http://localhost/status
       scheduler: wrr
     monitoring:
       check_command: check_http_lvs_on_port!druid-public-broker.svc.eqiad.wmnet!8082!/status
@@ -553,7 +560,7 @@ service::catalog:
           hostname: druid-public-broker.svc.eqiad.wmnet
     port: 8082
     sites:
-    - eqiad
+      - eqiad
     state: production
   echostore:
     description: Echo store, echostore.svc.%{::site}.wmnet
@@ -568,7 +575,7 @@ service::catalog:
       conftool:
         cluster: kubernetes
         service: kubesvc
-      depool_threshold: '.5'
+      depool_threshold: ".5"
       enabled: true
       monitors:
         IdleConnection:
@@ -576,7 +583,7 @@ service::catalog:
           timeout-clean-reconnect: 3
         ProxyFetch:
           url:
-          - https://localhost/healthz
+            - https://localhost/healthz
       scheduler: wrr
     monitoring:
       check_command: check_https_port_status!8082!200!/healthz
@@ -588,12 +595,12 @@ service::catalog:
           hostname: echostore.svc.eqiad.wmnet
     port: 8082
     sites:
-    - eqiad
-    - codfw
+      - eqiad
+      - codfw
     state: production
     discovery:
-    - dnsdisc: echostore
-      active_active: true
+      - dnsdisc: echostore
+        active_active: true
   eventgate-analytics:
     description: EventGate Analytics endpoint, TLS enabled. https://eventgate-analytics.svc.%{::site}.wmnet
     encryption: true
@@ -607,7 +614,7 @@ service::catalog:
       conftool:
         cluster: kubernetes
         service: kubesvc
-      depool_threshold: '.5'
+      depool_threshold: ".5"
       enabled: true
       monitors:
         IdleConnection:
@@ -615,7 +622,7 @@ service::catalog:
           timeout-clean-reconnect: 3
         ProxyFetch:
           url:
-          - https://localhost/_info
+            - https://localhost/_info
       scheduler: wrr
     monitoring:
       check_command: check_https_lvs_on_port!eventgate-analytics.discovery.wmnet!4592!/_info
@@ -627,12 +634,12 @@ service::catalog:
           hostname: eventgate-analytics.svc.eqiad.wmnet
     port: 4592
     sites:
-    - eqiad
-    - codfw
+      - eqiad
+      - codfw
     state: production
     discovery:
-    - dnsdisc: eventgate-analytics
-      active_active: true
+      - dnsdisc: eventgate-analytics
+        active_active: true
   eventgate-logging-external:
     description: EventGate logging endpoint, eventgate-logging-external.svc.%{::site}.wmnet and intake-logging.wikimedia.org
     encryption: true
@@ -646,7 +653,7 @@ service::catalog:
       conftool:
         cluster: kubernetes
         service: kubesvc
-      depool_threshold: '.5'
+      depool_threshold: ".5"
       enabled: true
       monitors:
         IdleConnection:
@@ -654,7 +661,7 @@ service::catalog:
           timeout-clean-reconnect: 3
         ProxyFetch:
           url:
-          - https://localhost/_info
+            - https://localhost/_info
       scheduler: wrr
     monitoring:
       check_command: check_https_lvs_on_port!eventgate-logging-external.discovery.wmnet!4392!/_info
@@ -666,12 +673,12 @@ service::catalog:
           hostname: eventgate-logging-external.svc.eqiad.wmnet
     port: 4392
     sites:
-    - eqiad
-    - codfw
+      - eqiad
+      - codfw
     state: production
     discovery:
-    - dnsdisc: eventgate-logging-external
-      active_active: true
+      - dnsdisc: eventgate-logging-external
+        active_active: true
   eventgate-analytics-external:
     description: EventGate analytics external endpoint, eventgate-analytics-external.svc.%{::site}.wmnet and intake-analytics.wikimedia.org
     encryption: true
@@ -685,7 +692,7 @@ service::catalog:
       conftool:
         cluster: kubernetes
         service: kubesvc
-      depool_threshold: '.5'
+      depool_threshold: ".5"
       enabled: true
       monitors:
         IdleConnection:
@@ -693,7 +700,7 @@ service::catalog:
           timeout-clean-reconnect: 3
         ProxyFetch:
           url:
-          - https://localhost/_info
+            - https://localhost/_info
       scheduler: wrr
       protocol: tcp
     monitoring:
@@ -706,12 +713,12 @@ service::catalog:
           hostname: eventgate-analytics-external.svc.eqiad.wmnet
     port: 4692
     sites:
-    - eqiad
-    - codfw
+      - eqiad
+      - codfw
     state: production
     discovery:
-    - dnsdisc: eventgate-analytics-external
-      active_active: true
+      - dnsdisc: eventgate-analytics-external
+        active_active: true
   eventgate-main:
     description: EventGate main endpoint, TLS enabled, https://eventgate-main.svc.%{::site}.wmnet
     encryption: true
@@ -725,7 +732,7 @@ service::catalog:
       conftool:
         cluster: kubernetes
         service: kubesvc
-      depool_threshold: '.5'
+      depool_threshold: ".5"
       enabled: true
       monitors:
         IdleConnection:
@@ -733,7 +740,7 @@ service::catalog:
           timeout-clean-reconnect: 3
         ProxyFetch:
           url:
-          - https://localhost/_info
+            - https://localhost/_info
       scheduler: wrr
     monitoring:
       check_command: check_https_lvs_on_port!eventgate-main.discovery.wmnet!4492!/_info
@@ -745,12 +752,12 @@ service::catalog:
           hostname: eventgate-main.svc.eqiad.wmnet
     port: 4492
     sites:
-    - eqiad
-    - codfw
+      - eqiad
+      - codfw
     state: production
     discovery:
-    - dnsdisc: eventgate-main
-      active_active: true
+      - dnsdisc: eventgate-main
+        active_active: true
   eventstreams:
     description: Public streams of events via HTTP + SSE, backed by Kafka. eventstreams.svc.%{::site}.wmnet
     encryption: true
@@ -764,7 +771,7 @@ service::catalog:
       conftool:
         cluster: kubernetes
         service: kubesvc
-      depool_threshold: '.5'
+      depool_threshold: ".5"
       enabled: true
       monitors:
         IdleConnection:
@@ -772,7 +779,7 @@ service::catalog:
           timeout-clean-reconnect: 3
         ProxyFetch:
           url:
-          - https://localhost/_info
+            - https://localhost/_info
       scheduler: wrr
     monitoring:
       check_command: check_https_lvs_on_port!eventstreams.discovery.wmnet!4892!/_info
@@ -784,12 +791,12 @@ service::catalog:
           hostname: eventstreams.svc.eqiad.wmnet
     port: 4892
     sites:
-    - eqiad
-    - codfw
+      - eqiad
+      - codfw
     state: production
     discovery:
-    - dnsdisc: eventstreams
-      active_active: true
+      - dnsdisc: eventstreams
+        active_active: true
   git-ssh:
     description: Git - to Phabricator hosting, git-ssh.wikimedia.org
     encryption: true
@@ -805,7 +812,7 @@ service::catalog:
       conftool:
         cluster: phabricator
         service: git-ssh
-      depool_threshold: '.6'
+      depool_threshold: ".6"
       enabled: true
       monitors:
         IdleConnection:
@@ -814,8 +821,8 @@ service::catalog:
       scheduler: wrr
     port: 22
     sites:
-    - eqiad
-    - codfw
+      - eqiad
+      - codfw
     state: production
   graphoid:
     description: Graph-rendering service, graphoid.svc.%{::site}.wmnet
@@ -830,7 +837,7 @@ service::catalog:
       conftool:
         cluster: scb
         service: graphoid
-      depool_threshold: '.5'
+      depool_threshold: ".5"
       enabled: true
       monitors:
         IdleConnection:
@@ -838,7 +845,7 @@ service::catalog:
           timeout-clean-reconnect: 3
         ProxyFetch:
           url:
-          - http://localhost/_info
+            - http://localhost/_info
       scheduler: wrr
     monitoring:
       check_command: check_http_lvs_on_port!graphoid.discovery.wmnet!19000!/_info
@@ -851,12 +858,12 @@ service::catalog:
           hostname: graphoid.svc.eqiad.wmnet
     port: 19000
     sites:
-    - eqiad
-    - codfw
+      - eqiad
+      - codfw
     state: production
     discovery:
-    - dnsdisc: graphoid
-      active_active: true
+      - dnsdisc: graphoid
+        active_active: true
   jobrunner:
     description: JobRunner LVS interface (https). jobrunner.svc.%{::site}.wmnet
     encryption: true
@@ -870,7 +877,7 @@ service::catalog:
       conftool:
         cluster: jobrunner
         service: nginx
-      depool_threshold: '.2'
+      depool_threshold: ".2"
       enabled: true
       monitors:
         IdleConnection:
@@ -878,7 +885,7 @@ service::catalog:
           timeout-clean-reconnect: 3
         ProxyFetch:
           url:
-          - https://localhost/w/health-check.php
+            - https://localhost/w/health-check.php
       scheduler: wrr
     monitoring:
       check_command: check_https_url!jobrunner.discovery.wmnet!/w/health-check.php
@@ -890,12 +897,12 @@ service::catalog:
           hostname: jobrunner.svc.eqiad.wmnet
     port: 443
     sites:
-    - eqiad
-    - codfw
+      - eqiad
+      - codfw
     state: production
     discovery:
-    - dnsdisc: jobrunner
-      active_active: false
+      - dnsdisc: jobrunner
+        active_active: false
   kartotherian:
     description: Kartotherian, kartotherian.svc.%{::site}.wmnet
     encryption: false
@@ -909,7 +916,7 @@ service::catalog:
       conftool:
         cluster: maps
         service: kartotherian
-      depool_threshold: '.5'
+      depool_threshold: ".5"
       enabled: true
       monitors:
         IdleConnection:
@@ -926,8 +933,8 @@ service::catalog:
           hostname: kartotherian.svc.eqiad.wmnet
     port: 6533
     sites:
-    - codfw
-    - eqiad
+      - codfw
+      - eqiad
     state: production
   kartotherian-ssl:
     description: Kartotherian, kartotherian.svc.%{::site}.wmnet - HTTPS
@@ -942,7 +949,7 @@ service::catalog:
       conftool:
         cluster: maps
         service: kartotherian-ssl
-      depool_threshold: '.5'
+      depool_threshold: ".5"
       enabled: true
       monitors:
         IdleConnection:
@@ -950,7 +957,7 @@ service::catalog:
           timeout-clean-reconnect: 3
         ProxyFetch:
           url:
-          - https://localhost/
+            - https://localhost/
       scheduler: wrr
     monitoring:
       check_command: check_https_url!kartotherian.discovery.wmnet!/osm-intl/6/23/24.png
@@ -962,12 +969,12 @@ service::catalog:
           hostname: kartotherian.svc.eqiad.wmnet
     port: 443
     sites:
-    - codfw
-    - eqiad
+      - codfw
+      - eqiad
     state: production
     discovery:
-    - dnsdisc: kartotherian
-      active_active: true
+      - dnsdisc: kartotherian
+        active_active: true
   kibana:
     description: Kibana
     encryption: false
@@ -981,7 +988,7 @@ service::catalog:
       conftool:
         cluster: logstash
         service: kibana
-      depool_threshold: '.5'
+      depool_threshold: ".5"
       enabled: true
       monitors:
         IdleConnection:
@@ -989,7 +996,7 @@ service::catalog:
           timeout-clean-reconnect: 3
         ProxyFetch:
           url:
-          - http://localhost/api/status
+            - http://localhost/api/status
       scheduler: sh
     monitoring:
       check_command: check_http_lvs_on_port!kibana.discovery.wmnet!80!/api/status
@@ -1001,8 +1008,8 @@ service::catalog:
           hostname: kibana.svc.eqiad.wmnet
     port: 80
     sites:
-    - eqiad
-    - codfw
+      - eqiad
+      - codfw
     state: production
   kibana-ssl:
     description: Kibana - HTTPS
@@ -1017,7 +1024,7 @@ service::catalog:
       conftool:
         cluster: logstash
         service: kibana-ssl
-      depool_threshold: '.5'
+      depool_threshold: ".5"
       enabled: true
       monitors:
         IdleConnection:
@@ -1025,7 +1032,7 @@ service::catalog:
           timeout-clean-reconnect: 3
         ProxyFetch:
           url:
-          - https://localhost/api/status
+            - https://localhost/api/status
       scheduler: sh
     monitoring:
       check_command: check_https_url!kibana.discovery.wmnet!/api/status
@@ -1037,12 +1044,12 @@ service::catalog:
           hostname: kibana.svc.eqiad.wmnet
     port: 443
     sites:
-    - eqiad
-    - codfw
+      - eqiad
+      - codfw
     state: production
     discovery:
-    - dnsdisc: kibana
-      active_active: false
+      - dnsdisc: kibana
+        active_active: false
   kibana-next:
     description: Kibana upgrade env - HTTPS
     encryption: true
@@ -1056,7 +1063,7 @@ service::catalog:
       conftool:
         cluster: kibana
         service: kibana-next
-      depool_threshold: '.5'
+      depool_threshold: ".5"
       enabled: true
       monitors:
         IdleConnection:
@@ -1064,7 +1071,7 @@ service::catalog:
           timeout-clean-reconnect: 3
         ProxyFetch:
           url:
-          - https://localhost/api/status
+            - https://localhost/api/status
       scheduler: sh
     monitoring:
       check_command: check_https_url!logstash-next.wikimedia.org!/api/status
@@ -1076,8 +1083,8 @@ service::catalog:
           hostname: kibana-next.svc.eqiad.wmnet
     port: 443
     sites:
-    - eqiad
-    - codfw
+      - eqiad
+      - codfw
     state: lvs_setup
   kubemaster:
     description: Kubernetes master service. kubemaster.svc.%{::site}.wmnet
@@ -1092,7 +1099,7 @@ service::catalog:
       conftool:
         cluster: kubernetes
         service: kubemaster
-      depool_threshold: '.5'
+      depool_threshold: ".5"
       enabled: true
       monitors:
         IdleConnection:
@@ -1101,11 +1108,11 @@ service::catalog:
       scheduler: wrr
     port: 6443
     sites:
-    - eqiad
-    - codfw
+      - eqiad
+      - codfw
     state: production
   labweb:
-    description: 'lvs for labweb services: horizon, striker, wikitech'
+    description: "lvs for labweb services: horizon, striker, wikitech"
     encryption: false
     ip:
       eqiad:
@@ -1115,7 +1122,7 @@ service::catalog:
       conftool:
         cluster: labweb
         service: labweb
-      depool_threshold: '.5'
+      depool_threshold: ".5"
       enabled: true
       monitors:
         IdleConnection:
@@ -1124,7 +1131,7 @@ service::catalog:
         ProxyFetch:
           http_status: 301
           url:
-          - http://localhost
+            - http://localhost
       scheduler: wrr
     monitoring:
       check_command: check_http_on_port!80
@@ -1134,10 +1141,10 @@ service::catalog:
           hostname: labweb.svc.eqiad.wmnet
     port: 80
     sites:
-    - eqiad
+      - eqiad
     state: production
   labweb-ssl:
-    description: 'lvs for labweb services: horizon, striker, wikitech - HTTPS'
+    description: "lvs for labweb services: horizon, striker, wikitech - HTTPS"
     encryption: true
     ip:
       eqiad:
@@ -1147,7 +1154,7 @@ service::catalog:
       conftool:
         cluster: labweb
         service: labweb-ssl
-      depool_threshold: '.5'
+      depool_threshold: ".5"
       enabled: true
       monitors:
         IdleConnection:
@@ -1156,11 +1163,11 @@ service::catalog:
         ProxyFetch:
           http_status: 301
           url:
-          - https://wikitech.wikimedia.org:7443
+            - https://wikitech.wikimedia.org:7443
       scheduler: wrr
     port: 7443
     sites:
-    - eqiad
+      - eqiad
     state: production
   ldap-ro:
     description: Ldap for cloud and developer accounts
@@ -1175,7 +1182,7 @@ service::catalog:
       conftool:
         cluster: ldap-ro
         service: ldap-ro
-      depool_threshold: '.5'
+      depool_threshold: ".5"
       enabled: true
       monitors:
         IdleConnection:
@@ -1184,8 +1191,8 @@ service::catalog:
       scheduler: wrr
     port: 389
     sites:
-    - codfw
-    - eqiad
+      - codfw
+      - eqiad
     state: production
   ldap-ro-ssl:
     description: Ldap for cloud and developer accounts (ssl access)
@@ -1200,7 +1207,7 @@ service::catalog:
       conftool:
         cluster: ldap-ro
         service: ldap-ro-ssl
-      depool_threshold: '.5'
+      depool_threshold: ".5"
       enabled: true
       monitors:
         IdleConnection:
@@ -1209,8 +1216,8 @@ service::catalog:
       scheduler: wrr
     port: 636
     sites:
-    - codfw
-    - eqiad
+      - codfw
+      - eqiad
     state: production
   logstash-gelf:
     description: Logstash ingestion gelf
@@ -1223,7 +1230,7 @@ service::catalog:
       conftool:
         cluster: logstash
         service: logstash-gelf
-      depool_threshold: '.5'
+      depool_threshold: ".5"
       enabled: true
       monitors:
         UDP:
@@ -1233,7 +1240,7 @@ service::catalog:
       scheduler: sh
     port: 12201
     sites:
-    - eqiad
+      - eqiad
     state: production
   logstash-json-tcp:
     description: Logstash ingestion json tcp
@@ -1246,7 +1253,7 @@ service::catalog:
       conftool:
         cluster: logstash
         service: logstash-json
-      depool_threshold: '.5'
+      depool_threshold: ".5"
       enabled: true
       monitors:
         IdleConnection:
@@ -1261,7 +1268,7 @@ service::catalog:
           hostname: logstash.svc.eqiad.wmnet
     port: 11514
     sites:
-    - eqiad
+      - eqiad
     state: production
   logstash-json-udp:
     description: Logstash ingestion json udp
@@ -1274,7 +1281,7 @@ service::catalog:
       conftool:
         cluster: logstash
         service: logstash-json
-      depool_threshold: '.5'
+      depool_threshold: ".5"
       enabled: true
       monitors:
         UDP:
@@ -1284,7 +1291,7 @@ service::catalog:
       scheduler: wrr
     port: 11514
     sites:
-    - eqiad
+      - eqiad
     state: production
   logstash-syslog-tcp:
     description: Logstash ingestion syslog tcp
@@ -1297,7 +1304,7 @@ service::catalog:
       conftool:
         cluster: logstash
         service: logstash-syslog
-      depool_threshold: '.5'
+      depool_threshold: ".5"
       enabled: true
       monitors:
         IdleConnection:
@@ -1313,7 +1320,7 @@ service::catalog:
           hostname: logstash.svc.eqiad.wmnet
     port: 10514
     sites:
-    - eqiad
+      - eqiad
     state: production
   logstash-syslog-udp:
     description: Logstash ingestion syslog udp
@@ -1326,7 +1333,7 @@ service::catalog:
       conftool:
         cluster: logstash
         service: logstash-syslog
-      depool_threshold: '.5'
+      depool_threshold: ".5"
       enabled: true
       monitors:
         UDP:
@@ -1336,7 +1343,7 @@ service::catalog:
       scheduler: wrr
     port: 10514
     sites:
-    - eqiad
+      - eqiad
     state: production
   logstash-udp2log:
     description: Logstash ingestion udp2log
@@ -1349,7 +1356,7 @@ service::catalog:
       conftool:
         cluster: logstash
         service: logstash-udp2log
-      depool_threshold: '.5'
+      depool_threshold: ".5"
       enabled: true
       monitors:
         UDP:
@@ -1359,7 +1366,7 @@ service::catalog:
       scheduler: wrr
     port: 8324
     sites:
-    - eqiad
+      - eqiad
     state: production
   mathoid:
     description: Mathematical rendering service, mathoid.svc.%{::site}.wmnet
@@ -1374,7 +1381,7 @@ service::catalog:
       conftool:
         cluster: kubernetes
         service: kubesvc
-      depool_threshold: '.5'
+      depool_threshold: ".5"
       enabled: true
       monitors:
         IdleConnection:
@@ -1382,7 +1389,7 @@ service::catalog:
           timeout-clean-reconnect: 3
         ProxyFetch:
           url:
-          - http://localhost/_info
+            - http://localhost/_info
       scheduler: wrr
     monitoring:
       check_command: check_http_lvs_on_port!mathoid.discovery.wmnet!10042!/_info
@@ -1394,14 +1401,15 @@ service::catalog:
           hostname: mathoid.svc.eqiad.wmnet
     port: 10042
     sites:
-    - eqiad
-    - codfw
+      - eqiad
+      - codfw
     state: production
     discovery:
-    - dnsdisc: mathoid
-      active_active: true
+      - dnsdisc: mathoid
+        active_active: true
   mobileapps:
-    description: A service for use by mobile apps. Provides DOM manipulation, aggregation,
+    description:
+      A service for use by mobile apps. Provides DOM manipulation, aggregation,
       JSON flattening. mobileapps.svc.%{::site}.wmnet
     encryption: true
     ip:
@@ -1414,7 +1422,7 @@ service::catalog:
       conftool:
         cluster: kubernetes
         service: kubesvc
-      depool_threshold: '.5'
+      depool_threshold: ".5"
       enabled: true
       monitors:
         IdleConnection:
@@ -1432,12 +1440,12 @@ service::catalog:
           hostname: mobileapps.svc.eqiad.wmnet
     port: 4102
     sites:
-    - eqiad
-    - codfw
+      - eqiad
+      - codfw
     state: production
     discovery:
-    - dnsdisc: mobileapps
-      active_active: true
+      - dnsdisc: mobileapps
+        active_active: true
   ncredir:
     description: Non canonical domains redirect service
     encryption: false
@@ -1462,12 +1470,12 @@ service::catalog:
       conftool:
         cluster: ncredir
         service: nginx
-      depool_threshold: '.5'
+      depool_threshold: ".5"
       enabled: true
       monitors:
         ProxyFetch:
           url:
-          - http://en.wikipedia.com/_status
+            - http://en.wikipedia.com/_status
       scheduler: wrr
     monitoring:
       check_command: check_http_lvs!en.wikipedia.com!/_status
@@ -1485,11 +1493,11 @@ service::catalog:
           hostname: ncredir-lb.ulsfo.wikimedia.org
     port: 80
     sites:
-    - eqiad
-    - codfw
-    - esams
-    - ulsfo
-    - eqsin
+      - eqiad
+      - codfw
+      - esams
+      - ulsfo
+      - eqsin
     state: production
   ncredir-https:
     description: Non canonical redirect service
@@ -1500,12 +1508,12 @@ service::catalog:
       conftool:
         cluster: ncredir
         service: nginx
-      depool_threshold: '.5'
+      depool_threshold: ".5"
       enabled: true
       monitors:
         ProxyFetch:
           url:
-          - https://en.wikipedia.com/_status
+            - https://en.wikipedia.com/_status
       scheduler: wrr
     monitoring:
       check_command: check_https_url!en.wikipedia.com!/_status
@@ -1523,11 +1531,11 @@ service::catalog:
           hostname: ncredir-lb.ulsfo.wikimedia.org
     port: 443
     sites:
-    - eqiad
-    - codfw
-    - esams
-    - ulsfo
-    - eqsin
+      - eqiad
+      - codfw
+      - esams
+      - ulsfo
+      - eqsin
     state: production
   ores-http:
     description: Objective Revision Evaluation Service. ores.svc.%{::site}.wmnet
@@ -1542,7 +1550,7 @@ service::catalog:
       conftool:
         cluster: ores
         service: ores
-      depool_threshold: '.5'
+      depool_threshold: ".5"
       enabled: true
       monitors:
         IdleConnection:
@@ -1550,7 +1558,7 @@ service::catalog:
           timeout-clean-reconnect: 3
         ProxyFetch:
           url:
-          - http://localhost/v2/scores/
+            - http://localhost/v2/scores/
       scheduler: wrr
     monitoring:
       check_command: check_http_lvs_on_port!ores.discovery.wmnet!8081!/v2/scores/
@@ -1562,8 +1570,8 @@ service::catalog:
           hostname: ores.svc.eqiad.wmnet
     port: 8081
     sites:
-    - eqiad
-    - codfw
+      - eqiad
+      - codfw
     state: production
   ores:
     description: Objective Revision Evaluation Service. ores.svc.%{::site}.wmnet
@@ -1578,7 +1586,7 @@ service::catalog:
       conftool:
         cluster: ores
         service: ores
-      depool_threshold: '.5'
+      depool_threshold: ".5"
       enabled: true
       monitors:
         IdleConnection:
@@ -1586,7 +1594,7 @@ service::catalog:
           timeout-clean-reconnect: 3
         ProxyFetch:
           url:
-          - https://localhost/v2/scores/
+            - https://localhost/v2/scores/
       scheduler: wrr
     monitoring:
       check_command: check_https_url!ores.discovery.wmnet!/v2/scores/
@@ -1598,12 +1606,12 @@ service::catalog:
           hostname: ores.svc.eqiad.wmnet
     port: 443
     sites:
-    - eqiad
-    - codfw
+      - eqiad
+      - codfw
     state: production
     discovery:
-    - dnsdisc: ores
-      active_active: true
+      - dnsdisc: ores
+        active_active: true
   parsoid:
     description: Parsoid wikitext parser for VisualEditor (%{::site})
     encryption: false
@@ -1617,7 +1625,7 @@ service::catalog:
       conftool:
         cluster: parsoid
         service: parsoid
-      depool_threshold: '.5'
+      depool_threshold: ".5"
       enabled: true
       monitors:
         IdleConnection:
@@ -1625,7 +1633,7 @@ service::catalog:
           timeout-clean-reconnect: 3
         ProxyFetch:
           url:
-          - http://localhost/
+            - http://localhost/
       scheduler: wrr
     monitoring:
       check_command: check_http_on_port!8000
@@ -1638,12 +1646,12 @@ service::catalog:
           hostname: parsoid.svc.eqiad.wmnet
     port: 8000
     sites:
-    - eqiad
-    - codfw
+      - eqiad
+      - codfw
     state: production
     discovery:
-    - dnsdisc: parsoid
-      active_active: true
+      - dnsdisc: parsoid
+        active_active: true
   parsoid-php:
     description: Parsoid/PHP wikitext parser for VisualEditor (%{::site})
     encryption: true
@@ -1657,7 +1665,7 @@ service::catalog:
       conftool:
         cluster: parsoid
         service: parsoid-php
-      depool_threshold: '.6'
+      depool_threshold: ".6"
       enabled: true
       monitors:
         IdleConnection:
@@ -1665,7 +1673,7 @@ service::catalog:
           timeout-clean-reconnect: 3
         ProxyFetch:
           url:
-          - https://en.wikipedia.org/wiki/Special:BlankPage
+            - https://en.wikipedia.org/wiki/Special:BlankPage
       scheduler: wrr
     monitoring:
       check_command: check_https_url!en.wikipedia.org!/wiki/Special:BlankPage
@@ -1677,12 +1685,12 @@ service::catalog:
           hostname: parsoid.svc.eqiad.wmnet
     port: 443
     sites:
-    - eqiad
-    - codfw
+      - eqiad
+      - codfw
     state: production
     discovery:
-    - dnsdisc: parsoid-php
-      active_active: false
+      - dnsdisc: parsoid-php
+        active_active: false
   prometheus:
     description: Prometheus monitoring
     encryption: false
@@ -1696,7 +1704,7 @@ service::catalog:
       conftool:
         cluster: prometheus
         service: prometheus
-      depool_threshold: '.5'
+      depool_threshold: ".5"
       enabled: true
       monitors:
         IdleConnection:
@@ -1704,7 +1712,7 @@ service::catalog:
           timeout-clean-reconnect: 3
         ProxyFetch:
           url:
-          - http://localhost/
+            - http://localhost/
       scheduler: wrr
     monitoring:
       check_command: check_http_lvs_on_port!prometheus.svc.%{::site}.wmnet!80!/
@@ -1716,8 +1724,8 @@ service::catalog:
           hostname: prometheus.svc.eqiad.wmnet
     port: 80
     sites:
-    - eqiad
-    - codfw
+      - eqiad
+      - codfw
     state: production
   proton:
     description: Proton PDF rendering service. proton.svc.%{::site}.wmnet
@@ -1732,7 +1740,7 @@ service::catalog:
       conftool:
         cluster: kubernetes
         service: kubesvc
-      depool_threshold: '.5'
+      depool_threshold: ".5"
       enabled: true
       monitors:
         IdleConnection:
@@ -1740,7 +1748,7 @@ service::catalog:
           timeout-clean-reconnect: 3
         ProxyFetch:
           url:
-          - https://localhost/_info
+            - https://localhost/_info
       scheduler: wrr
     monitoring:
       check_command: check_https_lvs_on_port!proton.discovery.wmnet!4030!/_info
@@ -1752,12 +1760,12 @@ service::catalog:
           hostname: proton.svc.eqiad.wmnet
     port: 4030
     sites:
-    - eqiad
-    - codfw
+      - eqiad
+      - codfw
     state: production
     discovery:
-    - dnsdisc: proton
-      active_active: true
+      - dnsdisc: proton
+        active_active: true
   push-notifications:
     description: Push-notifications service push-notifications.svc.%{::site}.wmnet
     encryption: true
@@ -1771,7 +1779,7 @@ service::catalog:
       conftool:
         cluster: kubernetes
         service: kubesvc
-      depool_threshold: '.5'
+      depool_threshold: ".5"
       enabled: true
       monitors:
         IdleConnection:
@@ -1779,7 +1787,7 @@ service::catalog:
           timeout-clean-reconnect: 3
         ProxyFetch:
           url:
-          - https://localhost/_info
+            - https://localhost/_info
       scheduler: wrr
     monitoring:
       check_command: check_https_lvs_on_port!push-notifications.discovery.wmnet!4104!/_info
@@ -1791,12 +1799,12 @@ service::catalog:
           hostname: push-notifications.svc.eqiad.wmnet
     port: 4104
     sites:
-    - eqiad
-    - codfw
+      - eqiad
+      - codfw
     state: production
     discovery:
-    - dnsdisc: push-notifications
-      active_active: true
+      - dnsdisc: push-notifications
+        active_active: true
   recommendation-api:
     description: Service for recommendation API. recommandation-api.svc%{::site}.wmnet
     encryption: false
@@ -1810,7 +1818,7 @@ service::catalog:
       conftool:
         cluster: scb
         service: recommendation-api
-      depool_threshold: '.5'
+      depool_threshold: ".5"
       enabled: true
       monitors:
         IdleConnection:
@@ -1818,7 +1826,7 @@ service::catalog:
           timeout-clean-reconnect: 3
         ProxyFetch:
           url:
-          - http://localhost/robots.txt
+            - http://localhost/robots.txt
       scheduler: wrr
     monitoring:
       check_command: check_http_lvs_on_port!recommendation-api.discovery.wmnet!9632!/robots.txt
@@ -1830,12 +1838,12 @@ service::catalog:
           hostname: recommendation-api.svc.eqiad.wmnet
     port: 9632
     sites:
-    - eqiad
-    - codfw
+      - eqiad
+      - codfw
     state: production
     discovery:
-    - dnsdisc: recommendation-api
-      active_active: true
+      - dnsdisc: recommendation-api
+        active_active: true
   restbase:
     description: RESTBase, restbase.svc.%{::site}.wmnet
     encryption: false
@@ -1849,7 +1857,7 @@ service::catalog:
       conftool:
         cluster: restbase
         service: restbase
-      depool_threshold: '.5'
+      depool_threshold: ".5"
       enabled: true
       monitors:
         IdleConnection:
@@ -1857,7 +1865,7 @@ service::catalog:
           timeout-clean-reconnect: 3
         ProxyFetch:
           url:
-          - http://localhost/
+            - http://localhost/
       scheduler: wrr
     monitoring:
       check_command: check_http_lvs_on_port!restbase.discovery.wmnet!7231!/
@@ -1869,8 +1877,8 @@ service::catalog:
           hostname: restbase.svc.eqiad.wmnet
     port: 7231
     sites:
-    - eqiad
-    - codfw
+      - eqiad
+      - codfw
     state: production
   restbase-backend:
     description: RESTBase backend, restbase.svc.%{::site}.wmnet
@@ -1885,7 +1893,7 @@ service::catalog:
       conftool:
         cluster: restbase
         service: restbase-backend
-      depool_threshold: '.5'
+      depool_threshold: ".5"
       enabled: true
       monitors:
         IdleConnection:
@@ -1893,12 +1901,12 @@ service::catalog:
           timeout-clean-reconnect: 3
         ProxyFetch:
           url:
-          - http://localhost/
+            - http://localhost/
       scheduler: wrr
     port: 7233
     sites:
-    - eqiad
-    - codfw
+      - eqiad
+      - codfw
     state: production
   restbase-https:
     description: RESTBase, restbase.svc.%{::site}.wmnet - HTTPS
@@ -1913,7 +1921,7 @@ service::catalog:
       conftool:
         cluster: restbase
         service: restbase-ssl
-      depool_threshold: '.5'
+      depool_threshold: ".5"
       enabled: true
       monitors:
         IdleConnection:
@@ -1921,7 +1929,7 @@ service::catalog:
           timeout-clean-reconnect: 3
         ProxyFetch:
           url:
-          - https://localhost/
+            - https://localhost/
       scheduler: wrr
     monitoring:
       check_command: check_https_lvs_on_port!restbase.discovery.wmnet!7443!/
@@ -1933,14 +1941,14 @@ service::catalog:
           hostname: restbase.svc.eqiad.wmnet
     port: 7443
     sites:
-    - eqiad
-    - codfw
+      - eqiad
+      - codfw
     state: production
     discovery:
-    - dnsdisc: restbase
-      active_active: true
-    - dnsdisc: restbase-async
-      active_active: true
+      - dnsdisc: restbase
+        active_active: true
+      - dnsdisc: restbase-async
+        active_active: true
   schema:
     description: Event Schema HTTP service
     encryption: true
@@ -1954,7 +1962,7 @@ service::catalog:
       conftool:
         cluster: eventschemas
         service: eventschemas
-      depool_threshold: '.5'
+      depool_threshold: ".5"
       enabled: true
       monitors:
         IdleConnection:
@@ -1962,7 +1970,7 @@ service::catalog:
           timeout-clean-reconnect: 3
         ProxyFetch:
           url:
-          - https://localhost/repositories/
+            - https://localhost/repositories/
       scheduler: wrr
     monitoring:
       check_command: check_https_lvs_on_port!schema.discovery.wmnet!443!/repositories/
@@ -1974,12 +1982,12 @@ service::catalog:
           hostname: schema.svc.eqiad.wmnet
     port: 443
     sites:
-    - eqiad
-    - codfw
+      - eqiad
+      - codfw
     state: production
     discovery:
-    - dnsdisc: schema
-      active_active: true
+      - dnsdisc: schema
+        active_active: true
   search:
     description: Elasticsearch search for MediaWiki
     encryption: false
@@ -1993,7 +2001,7 @@ service::catalog:
       conftool:
         cluster: elasticsearch
         service: elasticsearch
-      depool_threshold: '.5'
+      depool_threshold: ".5"
       enabled: true
       monitors:
         IdleConnection:
@@ -2001,7 +2009,7 @@ service::catalog:
           timeout-clean-reconnect: 3
         ProxyFetch:
           url:
-          - http://localhost/
+            - http://localhost/
       scheduler: wrr
     monitoring:
       check_command: check_http_on_port!9200
@@ -2013,8 +2021,8 @@ service::catalog:
           hostname: search.svc.eqiad.wmnet
     port: 9200
     sites:
-    - eqiad
-    - codfw
+      - eqiad
+      - codfw
     state: production
   search-https:
     description: Elasticsearch search for MediaWiki - HTTPS
@@ -2029,7 +2037,7 @@ service::catalog:
       conftool:
         cluster: elasticsearch
         service: elasticsearch-ssl
-      depool_threshold: '.5'
+      depool_threshold: ".5"
       enabled: true
       monitors:
         IdleConnection:
@@ -2037,7 +2045,7 @@ service::catalog:
           timeout-clean-reconnect: 3
         ProxyFetch:
           url:
-          - https://localhost/
+            - https://localhost/
       scheduler: wrr
     monitoring:
       check_command: check_https_on_port!9243
@@ -2049,12 +2057,12 @@ service::catalog:
           hostname: search.svc.eqiad.wmnet
     port: 9243
     sites:
-    - eqiad
-    - codfw
+      - eqiad
+      - codfw
     state: production
     discovery:
-    - dnsdisc: search
-      active_active: true
+      - dnsdisc: search
+        active_active: true
   search-omega-https:
     description: Elasticsearch search for MediaWiki (Omega cluster) - HTTPS
     encryption: true
@@ -2068,7 +2076,7 @@ service::catalog:
       conftool:
         cluster: elasticsearch
         service: elasticsearch-omega-ssl
-      depool_threshold: '.5'
+      depool_threshold: ".5"
       enabled: true
       monitors:
         IdleConnection:
@@ -2076,7 +2084,7 @@ service::catalog:
           timeout-clean-reconnect: 3
         ProxyFetch:
           url:
-          - https://localhost/
+            - https://localhost/
       scheduler: wrr
     monitoring:
       check_command: check_https_on_port!9443
@@ -2088,8 +2096,8 @@ service::catalog:
           hostname: search.svc.eqiad.wmnet
     port: 9443
     sites:
-    - eqiad
-    - codfw
+      - eqiad
+      - codfw
     state: production
   search-psi-https:
     description: Elasticsearch search for MediaWiki (Psi cluster) - HTTPS
@@ -2104,7 +2112,7 @@ service::catalog:
       conftool:
         cluster: elasticsearch
         service: elasticsearch-psi-ssl
-      depool_threshold: '.5'
+      depool_threshold: ".5"
       enabled: true
       monitors:
         IdleConnection:
@@ -2112,7 +2120,7 @@ service::catalog:
           timeout-clean-reconnect: 3
         ProxyFetch:
           url:
-          - https://localhost/
+            - https://localhost/
       scheduler: wrr
     monitoring:
       check_command: check_https_on_port!9643
@@ -2124,8 +2132,8 @@ service::catalog:
           hostname: search.svc.eqiad.wmnet
     port: 9643
     sites:
-    - eqiad
-    - codfw
+      - eqiad
+      - codfw
     state: production
   sessionstore:
     description: Session store, sessionstore.svc.%{::site}.wmnet
@@ -2140,7 +2148,7 @@ service::catalog:
       conftool:
         cluster: kubernetes
         service: kubesvc
-      depool_threshold: '.5'
+      depool_threshold: ".5"
       enabled: true
       monitors:
         IdleConnection:
@@ -2148,7 +2156,7 @@ service::catalog:
           timeout-clean-reconnect: 3
         ProxyFetch:
           url:
-          - https://localhost/healthz
+            - https://localhost/healthz
       scheduler: wrr
     monitoring:
       check_command: check_https_port_status!8081!200!/healthz
@@ -2160,12 +2168,12 @@ service::catalog:
           hostname: sessionstore.svc.eqiad.wmnet
     port: 8081
     sites:
-    - eqiad
-    - codfw
+      - eqiad
+      - codfw
     state: production
     discovery:
-    - dnsdisc: sessionstore
-      active_active: true
+      - dnsdisc: sessionstore
+        active_active: true
   swift:
     description: Swift/Ceph media storage
     encryption: false
@@ -2179,7 +2187,7 @@ service::catalog:
       conftool:
         cluster: swift
         service: swift-fe
-      depool_threshold: '.5'
+      depool_threshold: ".5"
       enabled: true
       monitors:
         IdleConnection:
@@ -2187,7 +2195,7 @@ service::catalog:
           timeout-clean-reconnect: 3
         ProxyFetch:
           url:
-          - http://localhost/monitoring/backend
+            - http://localhost/monitoring/backend
       scheduler: wrr
     monitoring:
       check_command: check_http_lvs!localhost!/monitoring/backend
@@ -2199,8 +2207,8 @@ service::catalog:
           hostname: ms-fe.svc.eqiad.wmnet
     port: 80
     sites:
-    - codfw
-    - eqiad
+      - codfw
+      - eqiad
     state: production
   swift-https:
     description: Swift/Ceph media storage
@@ -2215,7 +2223,7 @@ service::catalog:
       conftool:
         cluster: swift
         service: nginx
-      depool_threshold: '.5'
+      depool_threshold: ".5"
       enabled: true
       monitors:
         IdleConnection:
@@ -2223,7 +2231,7 @@ service::catalog:
           timeout-clean-reconnect: 3
         ProxyFetch:
           url:
-          - https://localhost/monitoring/backend
+            - https://localhost/monitoring/backend
       scheduler: wrr
     monitoring:
       check_command: check_https_url!localhost!/monitoring/backend
@@ -2235,16 +2243,16 @@ service::catalog:
           hostname: ms-fe.svc.eqiad.wmnet
     port: 443
     sites:
-    - codfw
-    - eqiad
+      - codfw
+      - eqiad
     state: production
     discovery:
-    - dnsdisc: swift
-      active_active: true
-    - dnsdisc: swift-rw # TODO: remove this from DNS!
-      active_active: false
-    - dnsdisc: swift-ro # TODO: remove this from DNS!
-      active_active: true
+      - dnsdisc: swift
+        active_active: true
+      - dnsdisc: swift-rw # TODO: remove this from DNS!
+        active_active: false
+      - dnsdisc: swift-ro # TODO: remove this from DNS!
+        active_active: true
   thanos-query:
     description: Prometheus long-term storage, query service
     encryption: true
@@ -2258,7 +2266,7 @@ service::catalog:
       conftool:
         cluster: thanos
         service: thanos-query
-      depool_threshold: '.5'
+      depool_threshold: ".5"
       enabled: true
       monitors:
         IdleConnection:
@@ -2266,7 +2274,7 @@ service::catalog:
           timeout-clean-reconnect: 3
         ProxyFetch:
           url:
-          - https://thanos-query.discovery.wmnet/-/ready
+            - https://thanos-query.discovery.wmnet/-/ready
       scheduler: wrr
     monitoring:
       check_command: check_https_url!thanos-query.discovery.wmnet!/-/ready
@@ -2278,12 +2286,12 @@ service::catalog:
           hostname: thanos-query.svc.eqiad.wmnet
     port: 443
     sites:
-    - codfw
-    - eqiad
+      - codfw
+      - eqiad
     state: production
     discovery:
-    - dnsdisc: thanos-query
-      active_active: true
+      - dnsdisc: thanos-query
+        active_active: true
   thanos-swift:
     description: Prometheus long-term storage, object storage (swift) access
     encryption: true
@@ -2297,7 +2305,7 @@ service::catalog:
       conftool:
         cluster: thanos
         service: thanos-swift
-      depool_threshold: '.5'
+      depool_threshold: ".5"
       enabled: true
       monitors:
         IdleConnection:
@@ -2305,7 +2313,7 @@ service::catalog:
           timeout-clean-reconnect: 3
         ProxyFetch:
           url:
-          - https://thanos-swift.discovery.wmnet/healthcheck
+            - https://thanos-swift.discovery.wmnet/healthcheck
       scheduler: wrr
     monitoring:
       check_command: check_https_url!thanos-swift.discovery.wmnet!/healthcheck
@@ -2317,12 +2325,12 @@ service::catalog:
           hostname: thanos-swift.svc.eqiad.wmnet
     port: 443
     sites:
-    - codfw
-    - eqiad
+      - codfw
+      - eqiad
     state: production
     discovery:
-    - dnsdisc: thanos-swift
-      active_active: true
+      - dnsdisc: thanos-swift
+        active_active: true
   termbox:
     description: Wikidata Termbox SSR termbox.svc.%{::site}.wmnet
     encryption: true
@@ -2336,7 +2344,7 @@ service::catalog:
       conftool:
         cluster: kubernetes
         service: kubesvc
-      depool_threshold: '.5'
+      depool_threshold: ".5"
       enabled: true
       monitors:
         IdleConnection:
@@ -2344,7 +2352,7 @@ service::catalog:
           timeout-clean-reconnect: 3
         ProxyFetch:
           url:
-          - https://localhost/_info
+            - https://localhost/_info
       scheduler: wrr
     monitoring:
       check_command: check_https_lvs_on_port!termbox.discovery.wmnet!4004!/_info
@@ -2356,12 +2364,12 @@ service::catalog:
           hostname: termbox.svc.eqiad.wmnet
     port: 4004
     sites:
-    - eqiad
-    - codfw
+      - eqiad
+      - codfw
     state: production
     discovery:
-    - dnsdisc: termbox
-      active_active: true
+      - dnsdisc: termbox
+        active_active: true
   text:
     description: Main wiki platform LVS service, text.%{::site}.wikimedia.org (Varnish)
     encryption: false
@@ -2396,7 +2404,7 @@ service::catalog:
       conftool:
         cluster: cache_text
         service: varnish-fe
-      depool_threshold: '.5'
+      depool_threshold: ".5"
       enabled: true
       monitors:
         IdleConnection:
@@ -2419,11 +2427,11 @@ service::catalog:
           hostname: text-lb.ulsfo.wikimedia.org
     port: 80
     sites:
-    - codfw
-    - eqiad
-    - esams
-    - ulsfo
-    - eqsin
+      - codfw
+      - eqiad
+      - esams
+      - ulsfo
+      - eqsin
     state: production
   text-https:
     description: Main wiki platform LVS service, text.%{::site}.wikimedia.org (nginx)
@@ -2439,7 +2447,7 @@ service::catalog:
       conftool:
         cluster: cache_text
         service: ats-tls
-      depool_threshold: '.5'
+      depool_threshold: ".5"
       enabled: true
       monitors:
         IdleConnection:
@@ -2447,7 +2455,7 @@ service::catalog:
           timeout-clean-reconnect: 3
         ProxyFetch:
           url:
-          - https://healthcheck.wikimedia.org/varnish-fe
+            - https://healthcheck.wikimedia.org/varnish-fe
       scheduler: sh
     monitoring:
       check_command: check_https_url!en.wikipedia.org!/wiki/Special:BlankPage
@@ -2465,11 +2473,11 @@ service::catalog:
           hostname: text-lb.ulsfo.wikimedia.org
     port: 443
     sites:
-    - codfw
-    - eqiad
-    - esams
-    - ulsfo
-    - eqsin
+      - codfw
+      - eqiad
+      - esams
+      - ulsfo
+      - eqsin
     state: production
   thumbor:
     description: Thumbor image scaling
@@ -2484,7 +2492,7 @@ service::catalog:
       conftool:
         cluster: thumbor
         service: thumbor
-      depool_threshold: '.5'
+      depool_threshold: ".5"
       enabled: true
       monitors:
         IdleConnection:
@@ -2493,7 +2501,7 @@ service::catalog:
         ProxyFetch:
           timeout: 10
           url:
-          - http://localhost/healthcheck
+            - http://localhost/healthcheck
       scheduler: wrr
     monitoring:
       check_command: check_http_lvs_on_port_timeout!thumbor.discovery.wmnet!8800!/healthcheck!20
@@ -2505,8 +2513,8 @@ service::catalog:
           hostname: thumbor.svc.eqiad.wmnet
     port: 8800
     sites:
-    - eqiad
-    - codfw
+      - eqiad
+      - codfw
     state: production
   upload:
     description: Images and other media, upload.%{::site}.wikimedia.org
@@ -2532,7 +2540,7 @@ service::catalog:
       conftool:
         cluster: cache_upload
         service: varnish-fe
-      depool_threshold: '.5'
+      depool_threshold: ".5"
       enabled: true
       monitors:
         IdleConnection:
@@ -2555,11 +2563,11 @@ service::catalog:
           hostname: upload-lb.ulsfo.wikimedia.org
     port: 80
     sites:
-    - codfw
-    - eqiad
-    - esams
-    - ulsfo
-    - eqsin
+      - codfw
+      - eqiad
+      - esams
+      - ulsfo
+      - eqsin
     state: production
   upload-https:
     description: Images and other media, upload.%{::site}.wikimedia.org
@@ -2575,7 +2583,7 @@ service::catalog:
       conftool:
         cluster: cache_upload
         service: ats-tls
-      depool_threshold: '.5'
+      depool_threshold: ".5"
       enabled: true
       monitors:
         IdleConnection:
@@ -2583,7 +2591,7 @@ service::catalog:
           timeout-clean-reconnect: 3
         ProxyFetch:
           url:
-          - https://healthcheck.wikimedia.org/varnish-fe
+            - https://healthcheck.wikimedia.org/varnish-fe
       scheduler: sh
     monitoring:
       check_command: check_https_url!upload.wikimedia.org!/monitoring/backend
@@ -2601,11 +2609,11 @@ service::catalog:
           hostname: upload-lb.ulsfo.wikimedia.org
     port: 443
     sites:
-    - codfw
-    - eqiad
-    - esams
-    - ulsfo
-    - eqsin
+      - codfw
+      - eqiad
+      - esams
+      - ulsfo
+      - eqsin
     state: production
   videoscaler:
     description: Videoscaler LVS interface (https). videoscaler.svc.%{::site}.wmnet
@@ -2620,7 +2628,7 @@ service::catalog:
       conftool:
         cluster: videoscaler
         service: nginx
-      depool_threshold: '.2'
+      depool_threshold: ".2"
       enabled: true
       monitors:
         IdleConnection:
@@ -2628,7 +2636,7 @@ service::catalog:
           timeout-clean-reconnect: 3
         ProxyFetch:
           url:
-          - https://localhost/w/health-check.php
+            - https://localhost/w/health-check.php
       scheduler: wrr
     monitoring:
       check_command: check_https_url!videoscaler.discovery.wmnet!/w/health-check.php
@@ -2640,12 +2648,12 @@ service::catalog:
           hostname: videoscaler.svc.eqiad.wmnet
     port: 443
     sites:
-    - eqiad
-    - codfw
+      - eqiad
+      - codfw
     state: production
     discovery:
-    - dnsdisc: videoscaler
-      active_active: false
+      - dnsdisc: videoscaler
+        active_active: false
   wdqs:
     description: Wikidata Query Service
     encryption: false
@@ -2659,7 +2667,7 @@ service::catalog:
       conftool:
         cluster: wdqs
         service: wdqs
-      depool_threshold: '.5'
+      depool_threshold: ".5"
       enabled: true
       monitors:
         IdleConnection:
@@ -2667,7 +2675,7 @@ service::catalog:
           timeout-clean-reconnect: 3
         ProxyFetch:
           url:
-          - http://localhost/readiness-probe
+            - http://localhost/readiness-probe
       scheduler: wrr
     monitoring:
       check_command: check_http_lvs_on_port!wdqs.discovery.wmnet!80!/readiness-probe
@@ -2679,8 +2687,8 @@ service::catalog:
           hostname: wdqs.svc.eqiad.wmnet
     port: 80
     sites:
-    - eqiad
-    - codfw
+      - eqiad
+      - codfw
     state: production
   wdqs-heavy-queries:
     description: Wikidata Query Service for heavy queries
@@ -2695,7 +2703,7 @@ service::catalog:
       conftool:
         cluster: wdqs
         service: wdqs-heavy-queries
-      depool_threshold: '.5'
+      depool_threshold: ".5"
       enabled: true
       monitors:
         IdleConnection:
@@ -2703,12 +2711,12 @@ service::catalog:
           timeout-clean-reconnect: 3
         ProxyFetch:
           url:
-          - http://localhost/readiness-probe
+            - http://localhost/readiness-probe
       scheduler: wrr
     port: 8888
     sites:
-    - eqiad
-    - codfw
+      - eqiad
+      - codfw
     state: production
   wdqs-internal:
     description: Wikidata Query Service - internal
@@ -2723,7 +2731,7 @@ service::catalog:
       conftool:
         cluster: wdqs-internal
         service: wdqs
-      depool_threshold: '.5'
+      depool_threshold: ".5"
       enabled: true
       monitors:
         IdleConnection:
@@ -2731,7 +2739,7 @@ service::catalog:
           timeout-clean-reconnect: 3
         ProxyFetch:
           url:
-          - http://localhost/readiness-probe
+            - http://localhost/readiness-probe
       scheduler: wrr
     monitoring:
       check_command: check_http_lvs_on_port!wdqs-internal.discovery.wmnet!80!/readiness-probe
@@ -2743,12 +2751,12 @@ service::catalog:
           hostname: wdqs-internal.svc.eqiad.wmnet
     port: 80
     sites:
-    - eqiad
-    - codfw
+      - eqiad
+      - codfw
     state: production
     discovery:
-    - dnsdisc: wdqs-internal
-      active_active: true
+      - dnsdisc: wdqs-internal
+        active_active: true
   wdqs-ssl:
     description: Wikidata Query Service - HTTPS
     encryption: true
@@ -2762,7 +2770,7 @@ service::catalog:
       conftool:
         cluster: wdqs
         service: wdqs-ssl
-      depool_threshold: '.5'
+      depool_threshold: ".5"
       enabled: true
       monitors:
         IdleConnection:
@@ -2770,7 +2778,7 @@ service::catalog:
           timeout-clean-reconnect: 3
         ProxyFetch:
           url:
-          - https://localhost/readiness-probe
+            - https://localhost/readiness-probe
       scheduler: wrr
     monitoring:
       check_command: check_https_url!wdqs.discovery.wmnet!/readiness-probe
@@ -2782,12 +2790,12 @@ service::catalog:
           hostname: wdqs.svc.eqiad.wmnet
     port: 443
     sites:
-    - eqiad
-    - codfw
+      - eqiad
+      - codfw
     state: production
     discovery:
-    - dnsdisc: wdqs
-      active_active: true
+      - dnsdisc: wdqs
+        active_active: true
   wikifeeds:
     description: A node webservice supporting featured wiki content feeds. termbox.svc.%{::site}.wmnet
     encryption: false
@@ -2801,7 +2809,7 @@ service::catalog:
       conftool:
         cluster: kubernetes
         service: kubesvc
-      depool_threshold: '.5'
+      depool_threshold: ".5"
       enabled: true
       monitors:
         IdleConnection:
@@ -2809,7 +2817,7 @@ service::catalog:
           timeout-clean-reconnect: 3
         ProxyFetch:
           url:
-          - http://localhost/_info
+            - http://localhost/_info
       scheduler: wrr
     monitoring:
       check_command: check_http_lvs_on_port!wikifeeds.discovery.wmnet!8889!/_info
@@ -2821,12 +2829,12 @@ service::catalog:
           hostname: wikifeeds.svc.eqiad.wmnet
     port: 8889
     sites:
-    - eqiad
-    - codfw
+      - eqiad
+      - codfw
     state: production
     discovery:
-    - dnsdisc: wikifeeds
-      active_active: true
+      - dnsdisc: wikifeeds
+        active_active: true
   zotero:
     description: Zotero, zotero.svc.%{::site}.wmnet
     encryption: false
@@ -2840,7 +2848,7 @@ service::catalog:
       conftool:
         cluster: kubernetes
         service: kubesvc
-      depool_threshold: '.5'
+      depool_threshold: ".5"
       enabled: true
       monitors:
         IdleConnection:
@@ -2857,12 +2865,12 @@ service::catalog:
           hostname: zotero.svc.eqiad.wmnet
     port: 1969
     sites:
-    - eqiad
-    - codfw
+      - eqiad
+      - codfw
     state: production
     discovery:
-    - dnsdisc: zotero
-      active_active: true
+      - dnsdisc: zotero
+        active_active: true
   # Chartmuseum is not an LVS service. However it does warrant using discovery DC records for it.
   # Note the lack of an 'lvs' stanza in the configuration below. The IPs are the ones of the VMs per DC
   helm-charts:
@@ -2875,7 +2883,7 @@ service::catalog:
         default: 10.64.48.26
     monitoring:
       check_command: check_https_url_for_string!helm-charts.discovery.wmnet!/health!true
-      notes_url: 'https://wikitech.wikimedia.org/wiki/ChartMuseum'
+      notes_url: "https://wikitech.wikimedia.org/wiki/ChartMuseum"
       critical: false
       sites:
         codfw:
@@ -2902,7 +2910,7 @@ service::catalog:
         default: 10.64.48.17
     monitoring:
       check_command: check_https_url_for_string!releases.wikimedia.org!/mediawiki/!MediaWiki
-      notes_url: 'https://wikitech.wikimedia.org/wiki/Releases.wikimedia.org'
+      notes_url: "https://wikitech.wikimedia.org/wiki/Releases.wikimedia.org"
       critical: false
       sites:
         codfw:
@@ -2930,7 +2938,7 @@ service::catalog:
       conftool:
         cluster: kubernetes
         service: kubesvc
-      depool_threshold: '.5'
+      depool_threshold: ".5"
       enabled: true
       monitors:
         IdleConnection:
@@ -2948,9 +2956,9 @@ service::catalog:
           hostname: api-gateway.svc.eqiad.wmnet
     port: 8087
     sites:
-    - eqiad
-    - codfw
+      - eqiad
+      - codfw
     state: production
     discovery:
-    - dnsdisc: api-gateway
-      active_active: true
+      - dnsdisc: api-gateway
+        active_active: true
