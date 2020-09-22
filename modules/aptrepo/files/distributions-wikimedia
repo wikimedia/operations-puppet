@@ -139,6 +139,7 @@ Components: main
  component/mtail
  component/pdns-recursor
  component/spicerack
+ component/varnish6
  component/wmf-sre-laptop
  thirdparty/amd-rocm25
  thirdparty/amd-rocm26
