@@ -14,7 +14,7 @@
 # @param ocsp_key_path path to the ocsp private key
 # @param profiles A hash of signing profiles
 # @param auth_keys A hash of authentication keys, this must contain an entry for the default_auth_key
-class cfssl::signer (
+define cfssl::signer (
     String                        $ca_key_content,
     String                        $ca_cert_content,
     Stdlib::Host                  $host             = $facts['fqdn'],
@@ -26,20 +26,23 @@ class cfssl::signer (
     Array[Cfssl::Usage]           $default_usages   = ['signing', 'key encipherment', 'client auth'],
     Stdlib::HTTPUrl               $default_crl_url  = "http://${host}:${port}/crl",
     Stdlib::HTTPUrl               $default_ocsp_url = "http://${host}:${ocsp_port}",
-    Optional[Stdlib::Unixpath]    $ocsp_cert_path   = undef,
-    Optional[Stdlib::Unixpath]    $ocsp_key_path    = undef,
+    Wmflib::Ensure                $serve_ensure     = 'absent',
     Hash[String, Cfssl::Profile]  $profiles         = {},
     Hash[String, Cfssl::Auth_key] $auth_keys        = {},
+    Optional[Stdlib::Unixpath]    $ocsp_cert_path   = undef,
+    Optional[Stdlib::Unixpath]    $ocsp_key_path    = undef,
 ) {
     include cfssl
-    $conf_file = "${cfssl::conf_dir}/cfssl.conf"
-    $db_conf_file = "${cfssl::conf_dir}/db.conf"
-    $db_path = "${cfssl::conf_dir}/cfssl.db"
-    $ca_dir = "${cfssl::conf_dir}/ca"
+    $safe_title = $title.regsubst('\W', '_', 'G')
+    $conf_dir = "${cfssl::signer_dir}/${safe_title}"
+    $conf_file = "${conf_dir}/cfssl.conf"
+    $db_conf_file = "${conf_dir}/db.conf"
+    $db_path = "${conf_dir}/cfssl.db"
+    $ca_dir = "${conf_dir}/ca"
     $ca_key_file = "${ca_dir}/ca_key.pem"
     $ca_file = "${ca_dir}/ca.pem"
     $ocsp_response_path = "${ca_dir}/ocspdump.txt"
-    cfssl::config{'cfssl':
+    cfssl::config{$safe_title:
         default_auth_key => $default_auth_key,
         default_expiry   => $default_expiry,
         default_usages   => $default_usages,
@@ -47,16 +50,16 @@ class cfssl::signer (
         default_ocsp_url => $default_ocsp_url,
         auth_keys        => $auth_keys,
         profiles         => $profiles,
+        conf_dir         => $conf_dir,
     }
     $db_config = {'driver' => 'sqlite3', 'data_source' => $db_path}
-    $enable_ocsp = ($ocsp_cert_path and $ocsp_key_path)
 
     file{
         default:
             owner   => 'root',
             group   => 'root',
             require => Package[$cfssl::packages];
-        $ca_dir:
+        [$conf_dir, $ca_dir]:
             ensure => directory,
             mode   => '0550';
         $db_conf_file:
@@ -86,13 +89,17 @@ class cfssl::signer (
         }
     }
     systemd::service {'cfssl':
+        ensure  => $serve_ensure,
         content => template('cfssl/cfssl.service.erb'),
         restart => true,
     }
-    if $enable_ocsp {
-        systemd::service {'cfssl-ocsp':
-            content => template('cfssl/cfssl-ocsp.service.erb'),
-            restart => true,
-        }
+    $ocsp_ensure = ($ocsp_cert_path and $ocsp_key_path) ? {
+        true    => 'present',
+        default => 'absent',
+    }
+    systemd::service {'cfssl-ocsp':
+        ensure  => $ocsp_ensure,
+        content => template('cfssl/cfssl-ocsp.service.erb'),
+        restart => true,
     }
 }

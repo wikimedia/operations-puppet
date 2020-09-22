@@ -18,12 +18,10 @@ class profile::pki::server(
 ) {
     $crl_url = "http://${vhost}/crl"
     $ocsp_url = "http://${vhost}/ocsp"
-    class {'cfssl::signer':
+    cfssl::signer {'WMF_root_CA':
         profiles         => $profiles,
         ca_key_content   => secret($ca_key_content),
         ca_cert_content  => file($ca_cert_content),
-        ocsp_cert_path   => '/etc/cfssl/internal/ocsp/OCSP_signer.pem',
-        ocsp_key_path    => '/etc/cfssl/internal/ocsp/OCSP_signer-key.pem',
         auth_keys        => $auth_keys,
         default_crl_url  => $crl_url,
         default_ocsp_url => $ocsp_url,
@@ -39,8 +37,8 @@ class profile::pki::server(
     }
     # create variables used in vhost
     $ssl_settings = ssl_ciphersuite('apache', 'strong', true)
-    $cfssl_backend = "http://${cfssl::signer::host}:${cfssl::signer::port}/"
-    $ocsp_backend  = "http://${cfssl::signer::host}:${cfssl::signer::ocsp_port}/"
+    $cfssl_backend = "http://${facts['fqdn']}:8888/"
+    $ocsp_backend  = "http://${facts['fqdn']}:8889/"
     httpd::site {$vhost:
         content => template('profile/pki/pki_vhost.conf.erb')
     }

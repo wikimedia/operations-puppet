@@ -11,11 +11,16 @@ define cfssl::config (
     Optional[Cfssl::Expiry]       $default_expiry      = undef,
     Optional[Stdlib::HTTPUrl]     $default_crl_url     = undef,
     Optional[Stdlib::HTTPUrl]     $default_ocsp_url    = undef,
+    Optional[Stdlib::Unixpath]    $conf_dir            = undef,
 ) {
     unless $auth_keys.has_key($default_auth_key) {
         fail("auth_keys must have an entry for '${default_auth_key}'")
     }
     include cfssl
+    $_conf_dir = $conf_dir ? {
+        undef   => $cfssl::conf_dir,
+        default => $conf_dir,
+    }
     $safe_title = $title.regsubst('[^\w-]', '_', 'G')
     $default = {
         'auth_key'    => $default_auth_key,
@@ -39,7 +44,7 @@ define cfssl::config (
         'signing'   => $signing,
         'remotes'   => $remotes,
     }.filter |$key, $value| { $value =~ Boolean or !$value.empty() }
-    file{"${cfssl::conf_dir}/${safe_title}.conf":
+    file{"${_conf_dir}/${safe_title}.conf":
         ensure  => $ensure,
         owner   => root,
         group   => root,
