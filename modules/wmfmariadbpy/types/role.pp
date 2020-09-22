@@ -1,1 +1,1 @@
-type Wmfmariadbpy::Role = Enum['admin', 'db']
+type Wmfmariadbpy::Role = Enum['admin', 'db', 'library']
