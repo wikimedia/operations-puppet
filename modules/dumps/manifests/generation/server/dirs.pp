@@ -31,6 +31,8 @@ class dumps::generation::server::dirs(
     $otherwikibasedir             = "${miscdatasetsdir}/wikibase"
     $otherwikibasewikidatadir     = "${miscdatasetsdir}/wikibase/wikidatawiki"
     $otherwikidatadir             = "${miscdatasetsdir}/wikidata"
+    $otherwikibasecommonsdir      = "${miscdatasetsdir}/wikibase/commonswiki"
+    $othercommonsdir              = "${miscdatasetsdir}/commons"
 
     # top level directories for various dumps/datasets, on generation hosts only
     file { $tempdir:
@@ -52,7 +54,8 @@ class dumps::generation::server::dirs(
     }
 
     # needed for wikidata weekly crons
-    file { [ $otherwikibasedir, $otherwikibasewikidatadir, $otherwikidatadir ]:
+    file { [ $otherwikibasedir, $otherwikibasewikidatadir, $otherwikidatadir,
+        $otherwikibasecommonsdir, $othercommonsdir ]:
         ensure => 'directory',
         mode   => '0755',
         owner  => $user,

@@ -24,6 +24,17 @@ class snapshot::cron::wikibase(
         source => 'puppet:///modules/snapshot/cron/wikibase/dumpwikibaserdf.sh',
     }
 
+    # dump script for wikibase json output
+    # to add a new project, add the projectname to the list in this
+    # file, and add a script with the appropriate functions in
+    # puppet:///modules/snapshot/cron/wikibase/<projectname>_json_functions.sh
+    file { '/usr/local/bin/dumpwikibasejson.sh':
+        mode   => '0755',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/snapshot/cron/wikibase/dumpwikibasejson.sh',
+    }
+
     # serdi for translating ttl to nt
     ensure_packages(['serdi'])
 

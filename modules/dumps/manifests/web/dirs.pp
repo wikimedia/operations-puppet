@@ -17,7 +17,9 @@ class dumps::web::dirs(
     $othertestfilesdir        = "${miscdatasetsdir}/testfiles"
     $miscdatasetsdir_wikidata_legacy = "${miscdatasetsdir}/wikidata"
     $miscdatasetsdir_wikibase        = "${miscdatasetsdir}/wikibase/"
+    $miscdatasetsdir_commons_legacy  = "${miscdatasetsdir}/commons"
     $relative_wikidatawiki    = 'other/wikibase/wikidatawiki'
+    $relative_commonswiki     = 'other/wikibase/commonswiki'
 
     # subdirs for misc datasets that aren't dumps
     file { [ $analyticsdir, $othertestfilesdir ]:
@@ -27,10 +29,10 @@ class dumps::web::dirs(
         group  => $group,
     }
 
-    # subdirs for wikidata/wikibase weekly dumps
+    # subdirs for various wikibase weekly dumps
     file { [ $miscdatasetsdir_wikibase, "${xmldumpsdir}/${relative_wikidatawiki}",
-        $miscdatasetsdir_wikidata_legacy ]:
-
+        $miscdatasetsdir_wikidata_legacy, "${xmldumpsdir}/${relative_commonswiki}",
+        $miscdatasetsdir_commons_legacy ]:
         ensure => 'directory',
         mode   => '0755',
         owner  => $user,
@@ -40,5 +42,9 @@ class dumps::web::dirs(
     file { "${xmldumpsdir}/wikidatawiki/entities":
         ensure => 'link',
         target => "../${relative_wikidatawiki}",
+    }
+    file { "${xmldumpsdir}/commonswiki/entities":
+        ensure => 'link',
+        target => "../${relative_commonswiki}",
     }
 }

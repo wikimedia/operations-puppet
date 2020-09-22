@@ -2,15 +2,15 @@ class snapshot::cron::wikidatadumps::json(
     $user      = undef,
     $filesonly = false,
 ) {
-    $scriptpath = '/usr/local/bin/dumpwikidatajson.sh'
-    file { $scriptpath:
-        mode    => '0755',
-        owner   => 'root',
-        group   => 'root',
-        source  => 'puppet:///modules/snapshot/cron/dumpwikidatajson.sh',
-        require => Class['snapshot::cron::wikibase'],
+    # functions for wikibase json dumps, with values specific to Wikidata
+    file { '/usr/local/bin/wikidatajson_functions.sh':
+        mode   => '0755',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/snapshot/cron/wikibase/wikidatajson_functions.sh',
     }
 
+    $scriptpath = '/usr/local/bin/dumpwikibasejson.sh'
     if !$filesonly {
         # project: wikidata, dump type: all, entities to be dumped (default): item|property
         cron { 'wikidatajson-dump':

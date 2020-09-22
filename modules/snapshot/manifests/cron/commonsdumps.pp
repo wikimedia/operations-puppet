@@ -10,6 +10,10 @@ class snapshot::cron::commonsdumps(
         group  => $group,
     }
 
+    class { '::snapshot::cron::commonsdumps::json':
+        user      => $user,
+        filesonly => $filesonly,
+    }
     class { '::snapshot::cron::commonsdumps::rdf':
         user      => $user,
         filesonly => $filesonly,

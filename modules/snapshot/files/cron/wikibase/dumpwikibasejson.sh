@@ -1,34 +1,33 @@
 #!/bin/bash
 #############################################################
 # This file is maintained by puppet!
-# puppet:///modules/snapshot/cron/dumpwikidatajson.sh
+# puppet:///modules/snapshot/cron/wikibase/dumpwikibasejson.sh
 #############################################################
 #
-# Generate a json dump for Wikidata and remove old ones.
+# Generate a json dump for wikibase (wikidata or commons) and remove old ones.
 #
 # Marius Hoch < hoo@online.de >
 
-# when/if commons or other projects are included in json entity
-# dumps, this script can become dumpwikibasejson.sh with shared
-# functions analogous to the rdf dumps. For now however, hardcode
-# the projectName here and leave the rest alone.
-
-PROJECTS=("wikidata")
+PROJECTS=("wikidata" "commons")
 
 source /usr/local/etc/dump_functions.sh
 
 usage() {
-    echo "Usage: $0 --project <name> --dump <name> --format <name> [--config <path>]" >& 2
-    echo "[--continue] [--dryrun] [--help]" >& 2
+    echo "Usage: $0 --project <name> --dump <name> [--entities <name>[|name...]] [--extra <option>]" >& 2
+    echo "[--config <path>] [--continue] [--dryrun] [--help]" >& 2
     echo >& 2
     echo "Args: " >& 2
     echo "  --config   (-c) path to configuration file for dump generation" >& 2
     echo "                  (default value: ${confsdir}/wikidump.conf.other" >& 2
-    echo "  --project  (-p) 'wikidata' (soon to be expanded)" >& 2
+    echo "  --project  (-p) 'wikidata' or 'commons'" >& 2
     echo "                  (default value: wikidata)" >& 2
     echo "  --dump     (-d) 'all' or 'lexemes' (for wikidata)" >& 2
+    echo "                  'all' (for commons)" >&2
     echo "                  (default value: all)" >& 2
     echo "  --entities (-e) one of 'item|property' or 'lexemes' (for wikidata)" >& 2
+    echo "                  'mediainfo' (for commons)" >& 2
+    echo "  --extra    (-E) extra args, e.g. '--ignore-missing' for commons" >& 2
+    echo "                  (default value: empty)" >& 2
     echo >& 2
     echo "Flags: " >& 2
     echo "  --continue (-C) resume the specified dump from where it left off" >& 2
@@ -44,6 +43,7 @@ projectName="wikidata"
 dumpName="all"
 entities="item|property"
 dryrun="false"
+extra=""
 continue=0
 
 while [ $# -gt 0 ]; do
@@ -62,6 +62,10 @@ while [ $# -gt 0 ]; do
 	    ;;
 	"--entities"|"-e")
             entities="$2"
+            shift; shift
+	    ;;
+	"--extra"|"-E")
+            extra="$2"
             shift; shift
 	    ;;
 	"--dryrun"|"-D")
@@ -87,7 +91,6 @@ if [ -z "$projectName" ]; then
     usage
     exit 1
 fi
-
 projectOK=""
 for value in "${PROJECTS[@]}"; do
   if [ "$value" == "$projectName" ]; then
@@ -100,7 +103,6 @@ if [ -z "$projectOK" ]; then
     usage
     exit 1
 fi
-
 IFS='|' read -r -a entityArray <<< "$entities"
 entityTypes=()
 for value in "${entityArray[@]}"; do
@@ -109,41 +111,50 @@ for value in "${entityArray[@]}"; do
 done
 
 . /usr/local/bin/wikibasedumps-shared.sh
-
-minSize=58000000000 # across all shards (to be divided by $shards)
-if [[ "$dumpName" == "lexemes" ]]; then
-	minSize=100000000
-fi
+. /usr/local/bin/${projectName}json_functions.sh
 
 if [ $continue -eq 0 ]; then
 	# Remove old leftovers, as we start from scratch.
-	rm -f $tempDir/wikidataJson$dumpName.*-batch*.gz
+	rm -f "${tempDir}/${projectName}-${dumpName}."*-batch*.json.gz
 fi
 
-filename=wikidata-$today-$dumpName
-targetFileGzip=$targetDir/$filename.json.gz
-targetFileBzip2=$targetDir/$filename.json.bz2
-failureFile=/tmp/dumpwikidatajson-$dumpName-failure
-mainLogFile=/var/log/wikidatadump/dumpwikidatajson-$filename-main.log
+filename=${projectName}-$today-$dumpName
+failureFile=/tmp/dump${projectName}json-$dumpName-failure
+logLocation="/var/log/${projectName}dump"
+mainLogFile="${logLocation}/dump${projectName}-${filename}-main.json.log"
 
 shards=8
+
+setDumpNameToMinSize
 
 i=0
 rm -f $failureFile
 
 getNumberOfBatchesNeeded
 numberOfBatchesNeeded=$(($numberOfBatchesNeeded / $shards))
+if [[ $numberOfBatchesNeeded -lt 1 ]]; then
+    # wiki is too small for default settings, change settings to something sane
+    # this assumes wiki has at least four entities, which sounds plausible
+	shards=4
+	numberOfBatchesNeeded=1
+	pagesPerBatch=$(( $maxPageId / $shards ))
+fi
+
 function returnWithCode { return $1; }
 
+extraArgs="--dbgroupdefault dump"
+if  [ -n "$extra" ]; then
+    extraArgs="$extra $extraArgs"
+fi
 while [ $i -lt $shards ]; do
 	(
 		set -o pipefail
-		errorLog=/var/log/wikidatadump/dumpwikidatajson-$filename-$i.log
+		errorLog=${logLocation}/dump$projectName-$filename-$i.json.log
 
 		batch=0
 
 		if [ $continue -gt 0 ]; then
-			getContinueBatchNumber "$tempDir/wikidataJson$dumpName.$i-batch*.gz"
+			getContinueBatchNumber "${tempDir}/${projectName}-${dumpName}.$i-batch*.json.gz"
 		fi
 
 		retries=0
@@ -151,23 +162,23 @@ while [ $i -lt $shards ]; do
 			setPerBatchVars
 
 			echo "(`date --iso-8601=minutes`) Starting batch $batch" >> $errorLog
-			# This separates the run-parts by ,\n. For this we assume the last run to not be empty, which should
-			# always be the case for Wikidata (given the number of runs needed is rounded down and new pages are
-			# added all the time).
+			# This separates the run-parts by ,\n. For this we assume the last run to not be empty,
+			# which should always be the case (given the number of runs needed is rounded down and
+			# new pages are added all the time).
 			( $php $multiversionscript extensions/Wikibase/repo/maintenance/dumpJson.php \
-				--wiki wikidatawiki \
+				--wiki ${projectName}wiki \
 				--shard $i \
 				--sharding-factor $shards \
 				--batch-size $(($shards * 250)) \
 				--snippet 2 \
 				"${entityTypes[@]}" \
-				--dbgroupdefault dump \
+				$extraArgs \
 				$firstPageIdParam \
 				$lastPageIdParam; \
 				dumpExitCode=$?; \
 				[ $lastRun -eq 0 ] && echo ','; \
 				returnWithCode $dumpExitCode ) \
-				2>> $errorLog | gzip -9 > $tempDir/wikidataJson$dumpName.$i-batch$batch.gz
+				2>> $errorLog | gzip -9 > "${tempDir}/${projectName}-${dumpName}.${i}-batch${batch}.json.gz"
 
 			exitCode=$?
 			if [ $exitCode -gt 0 ]; then
@@ -192,49 +203,50 @@ if [ -f $failureFile ]; then
 fi
 
 # Open the json list
-echo '[' | gzip -f > $tempDir/wikidataJson$dumpName.gz
+echo '[' | gzip -f > "$tempDir/${projectName}-${dumpName}.json.gz"
 
-minSizePerShard=$((minSize / shards))
 i=0
 while [ $i -lt $shards ]; do
-	getTempFiles "$tempDir/wikidataJson$dumpName.$i-batch*.gz"
-	getFileSize "$tempFiles"
-	if (( fileSize < minSizePerShard )); then
-		echo "File size for shard $i is only $fileSize, expecting at least $minSizePerShard. Aborting." >> $mainLogFile
+
+	getTempFiles "${tempDir}/${projectName}-${dumpName}.${i}-batch*.gz"
+	if [ -z "$tempFiles" ]; then
+		echo "No files for shard $i!" >> $mainLogFile
 		exit 1
 	fi
-	cat $tempFiles >> $tempDir/wikidataJson$dumpName.gz
-	rm -f $tempFiles
-	let i++
-	if [ $i -lt $shards ]; then
-		# Shards don't end with commas so add commas to separate them
-		echo ',' | gzip -f >> $tempDir/wikidataJson$dumpName.gz
+	getFileSize "$tempFiles"
+	if [ $fileSize -lt ${dumpNameToMinSize[$dumpName]} ]; then
+		echo "File size for shard $i is only $fileSize. Aborting." >> $mainLogFile
+		exit 1
 	fi
+	cat $tempFiles >> "${tempDir}/${projectName}-${dumpName}.json.gz"
+	let i++
 done
 
 # Close the json list
-echo -e '\n]' | gzip -f >> $tempDir/wikidataJson$dumpName.gz
+echo -e '\n]' | gzip -f >> "$tempDir/${projectName}-${dumpName}.json.gz"
 
-mv $tempDir/wikidataJson$dumpName.gz $targetFileGzip
-putDumpChecksums $targetFileGzip
+i=0
+while [ $i -lt $shards ]; do
+	getTempFiles "${tempDir}/${projectName}-${dumpName}.${i}-batch*.json.gz"
+	rm -f $tempFiles
+	let i++
+done
 
-# Legacy directory (with legacy naming scheme)
-legacyDirectory=${cronsdir}/wikidata
-ln -s "../wikibase/wikidatawiki/$today/$filename.json.gz" "$legacyDirectory/$today.json.gz"
-find $legacyDirectory -name '*.json.gz' -mtime +`expr $daysToKeep + 1` -delete
-
-# (Re-)create the link to the latest
-ln -fs "$today/$filename.json.gz" "$targetDirBase/latest-$dumpName.json.gz"
-
-# Create the bzip2 from the gzip one and update the latest-....json.bz2 link
+moveLinkFile "${projectName}-${dumpName}.json.gz" "${filename}.json.gz" "latest-${dumpName}.json.gz"
 nthreads=$(( $shards / 2))
 if [ $nthreads -lt 1 ]; then
     nthreads=1
 fi
-gzip -dc $targetFileGzip | "$lbzip2" -n $nthreads -c > $tempDir/wikidataJson$dumpName.bz2
-mv $tempDir/wikidataJson$dumpName.bz2 $targetFileBzip2
-ln -fs "$today/$filename.json.bz2" "$targetDirBase/latest-$dumpName.json.bz2"
-putDumpChecksums $targetFileBzip2
+
+gzip -dc $targetDir/$filename.json.gz | "$lbzip2" -n $nthreads -c > "${tempDir}/${projectName}-${dumpName}.json.bz2"
+moveLinkFile "${projectName}-${dumpName}.json.bz2" "${filename}.json.bz2" "latest-${dumpName}.json.bz2"
+
+# Legacy directory (with legacy naming scheme)
+legacyDirectory="${cronsdir}/${projectName}"
+ln -s "../wikibase/${projectName}wiki/$today/$filename.json.gz" "$legacyDirectory/$today.json.gz"
+find $legacyDirectory -name '*.json.gz' -mtime +`expr $daysToKeep + 1` -delete
+
 
 pruneOldLogs
+setDcatConfig
 runDcat
