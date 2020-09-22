@@ -12,6 +12,7 @@ class profile::openstack::codfw1dev::cloudgw (
     Integer                       $wan_vlan       = lookup('profile::openstack::codfw1dev::cloudgw::wan_vlan',         {default_value => 2107}),
     Stdlib::IP::Address           $wan_addr       = lookup('profile::openstack::codfw1dev::cloudgw::wan_addr',         {default_value => '127.0.0.4'}),
     Integer                       $wan_netm       = lookup('profile::openstack::codfw1dev::cloudgw::wan_netm',         {default_value => 8}),
+    Stdlib::IP::Address           $wan_gw         = lookup('profile::openstack::codfw1dev::cloudgw::wan_gw',           {default_value => '127.0.0.1'}),
 ) {
     class { '::profile::openstack::base::cloudgw':
         host_vlan    => $host_vlan,
@@ -23,6 +24,7 @@ class profile::openstack::codfw1dev::cloudgw (
         wan_vlan     => $wan_vlan,
         wan_addr     => $wan_addr,
         wan_netm     => $wan_netm,
+        wan_gw       => $wan_gw,
         all_phy_nics => $all_phy_nics,
     }
     contain '::profile::openstack::base::cloudgw'

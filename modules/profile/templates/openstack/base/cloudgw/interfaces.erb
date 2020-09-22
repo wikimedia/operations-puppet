@@ -1,0 +1,49 @@
+# managed by puppet (cloudgw)
+
+auto lo
+iface lo inet loopback
+
+<% @all_phy_nics.each do |nic| -%>
+auto <%= nic %>
+iface <%= nic %> inet manual
+<% end -%>
+
+auto bond0
+iface bond0 inet manual
+    slaves <% @all_phy_nics.each do |nic| -%> <%= nic %> <% end -%>
+    bond-mode 802.3ad
+    bond-miimon 100
+    bond-lacp-rate fast
+    bond-xmit-hash-policy layer2+3
+
+auto vlan<%= @host_vlan %>
+iface vlan<%= @host_vlan %> inet static
+    vlan-raw-device bond0
+    address <%= @host_addr %>
+    netmask <%= @host_netm %>
+    # TODO: template these values
+    gateway 10.192.20.1
+    dns-nameservers 10.3.0.1
+    dns-search codfw.wmnet
+    post-up ip token set ::10:192:20:8 dev vlan2118
+    post-up ip addr add 2620:0:860:118:10:192:20:8/64 dev vlan2118
+
+auto vrf-cloudgw
+iface vrf-cloudgw inet manual
+    pre-up ip link add vrf-cloudgw type vrf table cloudgw
+
+auto vlan<%= @virt_vlan %>
+iface vlan<%= @virt_vlan %> inet static
+    vlan-raw-device bond0
+    address <%= @virt_addr %>
+    netmask <%= @virt_netm %>
+    post-up ip link set vlan<%= @virt_vlan %> master vrf-cloudgw
+
+auto vlan<%= @wan_vlan %>
+iface vlan<%= @wan_vlan %> inet static
+    vlan-raw-device bond0
+    address <%= @wan_addr %>
+    netmask <%= @wan_netm %>
+    post-up ip link set vlan<%= @wan_vlan %> master vrf-cloudgw
+    post-up ip route add default via <%= @wan_gw %> table cloudgw
+
