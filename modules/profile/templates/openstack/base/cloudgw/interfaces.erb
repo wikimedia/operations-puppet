@@ -10,7 +10,7 @@ iface <%= nic %> inet manual
 
 auto bond0
 iface bond0 inet manual
-    slaves <% @all_phy_nics.each do |nic| -%> <%= nic %> <% end -%>
+    slaves <% @all_phy_nics.each do |nic| -%><%= nic -%><% end -%>
     bond-mode 802.3ad
     bond-miimon 100
     bond-lacp-rate fast
@@ -26,6 +26,8 @@ iface vlan<%= @host_vlan %> inet static
     dns-nameservers 10.3.0.1
     dns-search codfw.wmnet
 
+   pre-up /sbin/ip token set ::10:192:20:8 dev vlan2118
+   up ip addr add 2620:0:860:118:10:192:20:8/64 dev vlan2118
 auto vrf-cloudgw
 iface vrf-cloudgw inet manual
     pre-up ip link add vrf-cloudgw type vrf table cloudgw
