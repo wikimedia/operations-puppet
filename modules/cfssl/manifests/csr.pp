@@ -7,6 +7,8 @@ define cfssl::csr (
     String                        $profile       = 'default',
     String                        $owner         = 'root',
     String                        $group         = 'root',
+    Boolean                       $auto_renew    = true,
+    Integer[1800]                 $renew_seconds = 604800,  # 1 week
     Optional[Array[Stdlib::Host]] $hosts         = [],
     Optional[Stdlib::Unixpath]    $outdir        = undef,
 
@@ -90,6 +92,13 @@ define cfssl::csr (
             unless  => $test_command,
         }
     }
+    if $auto_renew {
+        exec {'renew certificate':
+            command => $gen_command.regsubst('gencert', 'sign'),
+            unless  => "/usr/bin/openssl x509 -in ${cert_path} -checkend ${renew_seconds}",
+        }
+    }
+
     file{[$cert_path, $key_path, $csr_pem_path]:
         ensure => $ensure_file,
         owner  => $owner,
