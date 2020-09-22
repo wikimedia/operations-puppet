@@ -293,7 +293,7 @@ service::catalog:
     sites:
     - eqiad
     - codfw
-    state: production
+    state: lvs_setup
   citoid:
     description: Citation lookup service, citoid.svc.%{::site}.wmnet
     encryption: true
