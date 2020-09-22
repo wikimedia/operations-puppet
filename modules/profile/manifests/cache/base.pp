@@ -9,7 +9,6 @@
 class profile::cache::base(
     $cache_cluster = hiera('cache::cluster'),
     $statsd_host = hiera('statsd'),
-    $packages_version = hiera('profile::cache::base::packages_version', 'installed'),
     $logstash_host = hiera('logstash_host', undef),
     $logstash_syslog_port = hiera('logstash_syslog_port', undef),
     $logstash_json_lines_port = hiera('logstash_json_lines_port', undef),
@@ -58,9 +57,6 @@ class profile::cache::base(
         class { 'cacheproxy::performance': }
     }
     # Basic varnish classes
-    class { '::varnish::packages':
-        version         => $packages_version,
-    }
 
     class { '::varnish::common':
         log_slow_request_threshold => $log_slow_request_threshold,

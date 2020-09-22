@@ -9,6 +9,7 @@ class profile::cache::varnish::frontend (
     $runtime_params = hiera('profile::cache::varnish::frontend::runtime_params'),
     Profile::Cache::Sites $req_handling = lookup('cache::req_handling'),
     Profile::Cache::Sites $alternate_domains = lookup('cache::alternate_domains', {'default_value' => {}}),
+    String $packages_component = lookup('profile::cache::varnish::frontend::packages_component', {'default_value' => 'main'}),
     $separate_vcl = hiera('profile::cache::varnish::separate_vcl', []),
     $fe_transient_gb = hiera('profile::cache::varnish::frontend::transient_gb', 0),
     Boolean $has_lvs = lookup('has_lvs', {'default_value' => true}),
@@ -19,6 +20,38 @@ class profile::cache::varnish::frontend (
 
     if $has_lvs {
         require ::profile::lvs::realserver
+    }
+
+    $packages = [
+        'varnish',
+        'varnish-dbg',
+        'varnish-modules',
+        'libvmod-netmapper',
+        'libvmod-re2',
+    ]
+
+    if $packages_component == 'main' {
+        package { $packages:
+            ensure => installed,
+            before => Mount['/var/lib/varnish'],
+        }
+    } else {
+        apt::package_from_component { 'varnish':
+            component => $packages_component,
+            packages  => $packages,
+            before    => Mount['/var/lib/varnish'],
+        }
+    }
+
+    # Mount /var/lib/varnish as tmpfs to avoid Linux flushing mlocked
+    # shm memory to disk
+    mount { '/var/lib/varnish':
+        ensure  => mounted,
+        device  => 'tmpfs',
+        fstype  => 'tmpfs',
+        options => 'noatime,defaults,size=512M',
+        pass    => 0,
+        dump    => 0,
     }
 
     # Frontend memory cache sizing

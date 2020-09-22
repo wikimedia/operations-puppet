@@ -3,8 +3,6 @@ class varnish::common(
     $logstash_host=undef,
     $logstash_json_lines_port=undef,
 ) {
-    require ::varnish::packages
-
     # Frontend memory cache sizing
     $mem_gb = $::memorysize_mb / 1024.0
 
@@ -23,18 +21,6 @@ class varnish::common(
         $python_version = '3.5'
     } elsif os_version('debian == buster') {
         $python_version = '3.7'
-    }
-
-    # Mount /var/lib/varnish as tmpfs to avoid Linux flushing mlocked
-    # shm memory to disk
-    mount { '/var/lib/varnish':
-        ensure  => mounted,
-        device  => 'tmpfs',
-        fstype  => 'tmpfs',
-        options => 'noatime,defaults,size=512M',
-        pass    => 0,
-        dump    => 0,
-        require => Class['varnish::packages'],
     }
 
     file { '/usr/local/sbin/reload-vcl':
