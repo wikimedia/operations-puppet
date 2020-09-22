@@ -11,32 +11,24 @@ class profile::pki::client (
     Wmflib::Ensure   $ensure      = lookup('profile::pki::client::ensure'),
     Stdlib::Host     $signer_host = lookup('profile::pki::client::signer_host'),
     Stdlib::Port     $signer_port = lookup('profile::pki::client::signer_port'),
-    Boolean          $use_stunnel = lookup('profile::pki::client::use_stunnel'),
     String           $auth_key    = lookup('profile::pki::client::auth_key'),
     Stdlib::Unixpath $ca_path     = lookup('profile::pki::client::ca_path'),
     Stdlib::Unixpath $cert_path   = lookup('profile::pki::client::cert_path'),
     Stdlib::Unixpath $key_path    = lookup('profile::pki::client::key_path'),
+    Hash             $certs       = lookup('profile::pki::client::certs')
 ) {
-    if $use_stunnel {
-        $signer = 'http://localhost:8888'
-        stunnel::daemon {'cfssl':
-            ensure       => $ensure,
-            accept_port  => 8888,
-            connect_host => $signer_host,
-            connect_port => $signer_port,
-            client       => true,
-            verify_chain => true,
-            ca_path      => $ca_path,
-            cert_path    => $cert_path,
-            key_path     => $key_path,
-            before       => Class['cfssl::client'],
-        }
-    } else {
-        $signer = "https://${signer_host}:${signer_port}"
-    }
+    $signer = "https://${signer_host}:${signer_port}"
     class {'cfssl::client':
         ensure   => $ensure,
         signer   => $signer,
         auth_key => $auth_key,
+    }
+    $certs.each |$title, $cert| {
+        cfssl::cert{$title:
+            signer_config => {'config_file' => $cfssl::client::conf_file},
+            tls_cert      => $facts['puppet_config']['hostcert'],
+            tls_key       => $facts['puppet_config']['hostprivkey'],
+            *             => $cert,
+        }
     }
 }

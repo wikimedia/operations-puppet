@@ -18,5 +18,9 @@ profile::pki::server::profiles:
       - digital signature
       - ocsp signing
     expiry: 43800h
+profile::pki::server::default_signer: Wikimedia_SRE_Internal
 profile::pki::server::intermediates:
   "Wikimedia SRE Internal": {}
+profile::pki::client::certs:
+  'foobar.example.com':
+    label: Wikimedia_SRE_Internal

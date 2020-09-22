@@ -1,16 +1,19 @@
 # @summary a resource for creating csr json files
 define cfssl::cert (
-    Cfssl::Key                    $key,
-    Array[Cfssl::Name]            $names,
     Cfssl::Signer_config          $signer_config,
+    Array[Cfssl::Name]            $names         = [],
+    Cfssl::Key                    $key           = {'algo' => 'ecdsa', 'size' => 521},
     Wmflib::Ensure                $ensure        = 'present',
     String                        $profile       = 'default',
     String                        $owner         = 'root',
     String                        $group         = 'root',
     Boolean                       $auto_renew    = true,
     Integer[1800]                 $renew_seconds = 604800,  # 1 week
+    Optional[String]              $label         = undef,
     Optional[Array[Stdlib::Host]] $hosts         = [],
     Optional[Stdlib::Unixpath]    $outdir        = undef,
+    Optional[Stdlib::Unixpath]    $tls_cert      = undef,
+    Optional[Stdlib::Unixpath]    $tls_key       = undef,
 
 ) {
     include cfssl
@@ -63,9 +66,17 @@ define cfssl::cert (
         recurse => true,
         purge   => true,
     }
+    $tls_config = ($tls_cert and $tls_key) ? {
+        true    => "-mutual-tls-client-cert ${tls_cert} -mutual-tls-client-key ${tls_key}",
+        default => '',
+    }
+    $_label = $label ? {
+        undef   => '',
+        default => "-label ${label}",
+    }
     $signer_args = $signer_config ? {
-        Stdlib::HTTPUrl              => "-remote ${signer_config}",
-        Cfssl::Signer_config::Client => "-config ${signer_config['config_file']}",
+        Stdlib::HTTPUrl              => "-remote ${signer_config} ${tls_config} ${_label}",
+        Cfssl::Signer_config::Client => "-config ${signer_config['config_file']} ${tls_config} ${_label}",
         default                      => @("SIGNER_ARGS"/L)
             -ca=${signer_config['config_dir']}/ca/ca.pem \
             -ca-key=${signer_config['config_dir']}/ca/ca_key.pem \
@@ -93,7 +104,7 @@ define cfssl::cert (
         }
     }
     if $auto_renew {
-        exec {'renew certificate':
+        exec {"renew certificate - ${title}":
             command => $gen_command.regsubst('gencert', 'sign'),
             unless  => "/usr/bin/openssl x509 -in ${cert_path} -checkend ${renew_seconds}",
         }
