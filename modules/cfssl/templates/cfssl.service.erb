@@ -10,7 +10,7 @@ ExecStart=/usr/bin/cfssl serve \
           -address <%= @host %> \
           -port <%= @port %> \
 <%- if @ca_bundle_file -%>
-          -ca-bundle <%= @ca_bundle_file %>
+          -ca-bundle <%= @ca_bundle_file %> \
 <%- end -%>
 <%- if @enable_ocsp -%>
           -responder <%= @ocsp_cert_path %> \
