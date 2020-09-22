@@ -3,6 +3,7 @@ define cfssl::csr (
     Cfssl::Key                    $key,
     Array[Cfssl::Name]            $names,
     Cfssl::Signer_config          $signer_config,
+    Wmflib::Ensure                $ensure        = 'present',
     String                        $profile       = 'default',
     String                        $owner         = 'root',
     String                        $group         = 'root',
@@ -18,9 +19,13 @@ define cfssl::csr (
     if $key['algo'] == 'ecdsa' and $key['size'] > 2048 {
         fail('ECDSA keys must be either 256, 384 or 521 bits')
     }
+    $ensure_file = $ensure ? {
+        'present' => 'file',
+        default   => $ensure,
+    }
 
     $safe_title = $title.regsubst('[^\w\-]', '_', 'G')
-    $csr_file = "${cfssl::csr_dir}/${safe_title}.csr"
+    $csr_json_path = "${cfssl::csr_dir}/${safe_title}.csr"
     $_outdir   = $outdir ? {
         undef   => "${cfssl::ssl_dir}/${safe_title}",
         default => $outdir,
@@ -41,15 +46,15 @@ define cfssl::csr (
         'key'   => $key,
         'names' => $_names,
     }
-    file{$csr_file:
-        ensure  => file,
+    file{$csr_json_path:
+        ensure  => $ensure_file,
         owner   => 'root',
         group   => 'root',
         mode    => '0400',
         content => $csr.to_json_pretty()
     }
     file {$_outdir:
-        ensure  => directory,
+        ensure  => ensure_directory($ensure),
         owner   => $owner,
         group   => $group,
         mode    => '0440',
@@ -66,11 +71,22 @@ define cfssl::csr (
             | SIGNER_ARGS
     }
     $gen_command = @("GEN_COMMAND"/L)
-        /usr/bin/cfssl gencert ${signer_args} -profile=${profile} ${csr_file} \
+        /usr/bin/cfssl gencert ${signer_args} -profile=${profile} ${csr_json_path} \
         | /usr/bin/cfssljson -bare ${_outdir}/${safe_title}
         | GEN_COMMAND
-    exec{"Generate cert ${title}":
-        command => $gen_command,
-        creates => "${_outdir}/${safe_title}-key.pem"
+    if $ensure == 'present' {
+        exec{"Generate cert ${title}":
+            command => $gen_command,
+            creates => "${_outdir}/${safe_title}-key.pem"
+        }
+    }
+    $cert_path = "${_outdir}/${safe_title}.pem"
+    $key_path = "${_outdir}/${safe_title}-key.pem"
+    $csr_pem_path = "${_outdir}/${safe_title}.csr"
+    file{[$cert_path, $key_path, $csr_pem_path]:
+        ensure => $ensure_file,
+        owner  => $owner,
+        group  => $group,
+        mode   => '0440',
     }
 }
