@@ -20,6 +20,8 @@ class role::alerting_host {
     include ::profile::scap::dsh
 
     include ::profile::dns::auth::monitoring::global
+    # backup checks directly to db to avoid spof
+    include ::profile::mariadb::wmfmariadbpy
     include ::profile::mariadb::backup::check
 
     # Temporary until all hosts are on Buster

@@ -13,8 +13,6 @@ class profile::mariadb::backup::check (
     $db_password          = lookup('profile::mariadb::backup::check::db_password', String, ),
     $db_database          = lookup('profile::mariadb::backup::check::db_database', String, ),
 ) {
-    class { 'mariadb::monitor_backup_script': }
-
     $backups.each |String $section, Hash $section_hash| {
         $section_hash.each |String $type, Array[String] $type_array| {
             $type_array.each |String $dc| {

@@ -13,8 +13,10 @@ define mariadb::monitor_backup (
     $warn_size_percentage = 5,
     $crit_size_percentage = 15,
 ) {
+    # require ::profile::mariadb::wmfmariadbpy
+    require_package('wmfbackups-check')
 
-    $check_command = "/usr/local/bin/check_mariadb_backups.py \
+    $check_command = "check-mariadb-backups \
 --host='${db_host}' --user='${db_user}' --password='${db_password}' --database='${db_database}' \
 --section='${section}' --datacenter='${datacenter}' \
 --type='${type}' --freshness='${freshness}' --min-size='${min_size}' \
@@ -26,7 +28,7 @@ define mariadb::monitor_backup (
         critical       => false,
         contact_group  => 'admins',
         check_interval => 30,  # Don't check too often
-        require        => File['/usr/local/bin/check_mariadb_backups.py'],
+        require        => Package['wmfbackups-check'],
         notes_url      => 'https://wikitech.wikimedia.org/wiki/MariaDB/Backups#Alerting',
     }
 }

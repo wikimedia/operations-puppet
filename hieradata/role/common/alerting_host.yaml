@@ -24,6 +24,7 @@ profile::alertmanager::partners:
   - 'alert1001.wikimedia.org'
   - 'alert2001.wikimedia.org'
 
+profile::mariadb::wmfmariadbpy::role: 'library'
 profile::mariadb::backup::check::backups:
   s1:
     dump:
