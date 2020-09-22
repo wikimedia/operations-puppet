@@ -20,8 +20,9 @@ class wmfmariadbpy (
     }
 
     $packages = $role ? {
-        'admin' => ['wmfmariadbpy-admin'],
-        default => ['wmfmariadbpy-common'],
+        'admin'   => ['wmfmariadbpy-admin'],
+        'library' => ['python3-wmfmariadbpy'],
+        default   => ['wmfmariadbpy-common'],
     }
     ensure_packages($packages)
 }
