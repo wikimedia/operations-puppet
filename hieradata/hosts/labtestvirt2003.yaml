@@ -16,12 +16,13 @@ profile::openstack::codfw1dev::cloudgw::host_vlan: 2118
 profile::openstack::codfw1dev::cloudgw::host_addr: 10.192.20.8
 profile::openstack::codfw1dev::cloudgw::host_netmask: 24
 
-# leg in the cloud-instances-transport1-b-codfw (vlan 2120) 208.80.153.184/29
-profile::openstack::codfw1dev::cloudgw::virt_vlan: 2120
-profile::openstack::codfw1dev::cloudgw::virt_addr: 208.80.153.189
+# leg in the cloud-gw-transport-codfw (vlan 2107) 185.15.57.144/29
+profile::openstack::codfw1dev::cloudgw::virt_vlan: 2107
+profile::openstack::codfw1dev::cloudgw::virt_addr: 185.15.57.145
 profile::openstack::codfw1dev::cloudgw::virt_netmask: 29
 
-# leg in the cloud-gw-transport-codfw (vlan 2107) x.x.x.x/x
-profile::openstack::codfw1dev::cloudgw::wan_vlan: 2107
-profile::openstack::codfw1dev::cloudgw::wan_addr: 127.0.0.4
-profile::openstack::codfw1dev::cloudgw::wan_netmask: 8
+# leg in the cloud-instances-transport1-b-codfw (vlan 2120) 185.15.57.128/29
+# for now using the old 208.80.153.184/29
+profile::openstack::codfw1dev::cloudgw::wan_vlan: 2120
+profile::openstack::codfw1dev::cloudgw::wan_addr: 208.80.153.189
+profile::openstack::codfw1dev::cloudgw::wan_netmask: 29
