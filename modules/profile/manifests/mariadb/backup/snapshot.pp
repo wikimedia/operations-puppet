@@ -2,9 +2,7 @@
 # are placed on the right place at the provisioning server
 class profile::mariadb::backup::snapshot {
     require_package(
-        'python3',  # also requires either mariabackup or wmf-mariadb*
-        'python3-yaml',
-        'python3-pymysql',
+        'wmfbackups',  # depends on either mariabackup or wmf-mariadb*
     )
     require profile::mariadb::packages_wmf  # needed for xbstream and --prepare
 

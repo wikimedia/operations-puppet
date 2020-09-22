@@ -8,10 +8,8 @@ class profile::mariadb::backup::mydumper {
     include ::passwords::mysql::dump
 
     require_package(
-        'mydumper',
-        'python3',
-        'python3-yaml',
-        'python3-pymysql',
+        'wmfbackups',  # we now install all software from debian package
+        # mydumper is installed as a dependency
     )
 
     group { 'dump':
@@ -58,7 +56,7 @@ class profile::mariadb::backup::mydumper {
     $password = $passwords::mysql::dump::pass
     $stats_user = $passwords::mysql::dump::stats_user
     $stats_password = $passwords::mysql::dump::stats_pass
-    file { '/etc/mysql/backups.cnf':
+    file { '/etc/wmfbackups/backups.cnf':
         ensure    => present,
         owner     => 'dump',
         group     => 'dump',
@@ -74,31 +72,14 @@ class profile::mariadb::backup::mydumper {
         mode   => '0740',
     }
 
-    file { '/usr/local/bin/backup_mariadb.py':
-        ensure  => present,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0755',
-        source  => 'puppet:///modules/profile/mariadb/backup_mariadb.py',
-        require => File['/var/log/mariadb-backups'],
-    }
-    file { '/usr/local/bin/recover_dump.py':
-        ensure  => present,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0755',
-        source  => 'puppet:///modules/profile/mariadb/recover_dump.py',
-        require => File['/srv/backups/dumps/latest'],
-    }
-
     cron { 'dumps-sections':
         minute  => 0,
         hour    => 0,
         weekday => 2,
         user    => 'dump',
-        command => '/usr/bin/python3 /usr/local/bin/backup_mariadb.py --config-file=/etc/mysql/backups.cnf >/dev/null 2>&1',
-        require => [File['/usr/local/bin/backup_mariadb.py'],
-                    File['/etc/mysql/backups.cnf'],
+        command => 'backup-mariadb --config-file=/etc/wmfbackups/backups.cnf >/dev/null 2>&1',
+        require => [Package['wmfbackups'],
+                    File['/etc/wmfbackups/backups.cnf'],
                     File['/srv/backups/dumps/ongoing'],
         ],
     }
