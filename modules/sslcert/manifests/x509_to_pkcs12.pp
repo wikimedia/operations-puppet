@@ -4,31 +4,26 @@
 # @param outfile location to store the pkcs12 file
 # @param certfile a certificate bundle to add to the exported file
 define sslcert::x509_to_pkcs12 (
-    Wmflib::Ensure              $ensure       = 'present',
-    Stdlib::Unixpath            $public_key   = "/etc/ssl/localcerts/${title}.crt",
-    Stdlib::Unixpath            $private_key  = "/etc/ssl/private/${title}.key",
-    Stdlib::Unixpath            $outfile      = "/etc/ssl/localcerts/${title}.p12",
-    String                      $password     = '',
-    String                      $owner        = 'root',
-    String                      $group        = 'root',
-    Boolean                     $encrypt_keys = false,
-    Optional[Stdlib::Unixpath]  $certfile     = undef,
+    Wmflib::Ensure              $ensure      = 'present',
+    Stdlib::Unixpath            $public_key  = "/etc/ssl/localcerts/${title}.crt",
+    Stdlib::Unixpath            $private_key = "/etc/ssl/private/${title}.key",
+    Stdlib::Unixpath            $outfile     = "/etc/ssl/localcerts/${title}.p12",
+    String                      $password    = '',
+    String                      $owner       = 'root',
+    String                      $group       = 'root',
+    Optional[Stdlib::Unixpath]  $certfile    = undef,
 ) {
     ensure_packages(['openssl'])
     $_certfile = $certfile ? {
         undef   => '',
         default => "-certfile ${certfile}",
     }
-    $encrypt_arg = $encrypt_keys ? {
-        false   => '-nodes',
-        default => '',
-    }
     $command = @("COMMAND"/L)
-        /usr/bin/openssl pkcs12 -export ${_certfile} ${encrypt_arg} \
+        /usr/bin/openssl pkcs12 -export ${_certfile} \
         -in ${public_key} \
         -inkey ${private_key} \
         -out ${outfile} \
-        -passout 'pass:${password}'
+        -password 'pass:${password}'
         | COMMAND
     if $ensure == 'present' {
         exec {"sslcert generate ${title}.p12":
