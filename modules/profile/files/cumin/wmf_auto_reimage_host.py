@@ -200,6 +200,8 @@ def run(args, user, log_path):
     if not args.no_reboot:
         reboot_time = datetime.utcnow()
         # Ensure the host is in the known hosts
+        lib.print_line('Waiting 2 minutes to ensure PuppetDB is in sync')
+        time.sleep(120)
         lib.run_puppet([socket.getfqdn()], no_raise=True)
         lib.reboot_host(args.host)
         boot_time = datetime.utcnow()
