@@ -6,6 +6,7 @@ profile::openstack::codfw1dev::cloudgw::routing_source_ip: 185.15.57.1
 profile::openstack::codfw1dev::cloudgw::virt_subnet_cidr: 172.16.128.0/24
 
 # network settings
+profile::standard::enable_ip6_mapped: false
 profile::openstack::codfw1dev::cloudgw::orig_nic: 'eno1'
 profile::openstack::codfw1dev::cloudgw::all_phy_nics:
  - "eno1"
