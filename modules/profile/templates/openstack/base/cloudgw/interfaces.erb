@@ -10,7 +10,7 @@ iface <%= nic %> inet manual
 
 auto bond0
 iface bond0 inet manual
-    slaves <% @all_phy_nics.each do |nic| -%><%= nic -%><% end -%>
+    slaves<% @all_phy_nics.each do |nic| -%> <%= nic -%><% end %>
     bond-mode 802.3ad
     bond-miimon 100
     bond-lacp-rate fast
