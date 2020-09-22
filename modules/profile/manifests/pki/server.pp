@@ -15,9 +15,11 @@ class profile::pki::server(
     Boolean                       $gen_csr         = lookup('profile::pki::server::gen_csr'),
     Hash[String, Cfssl::Profile]  $profiles        = lookup('profile::pki::server::profiles'),
     Hash[String, Cfssl::Auth_key] $auth_keys       = lookup('profile::pki::server::auth_keys'),
+    Array[String]                 $intermediates   = lookup('profile::pki::server::intermediates'),
 ) {
     $crl_url = "http://${vhost}/crl"
     $ocsp_url = "http://${vhost}/ocsp"
+    class {'cfssl': }
     cfssl::signer {'WMF_root_CA':
         profiles         => $profiles,
         ca_key_content   => secret($ca_key_content),
@@ -25,6 +27,15 @@ class profile::pki::server(
         auth_keys        => $auth_keys,
         default_crl_url  => $crl_url,
         default_ocsp_url => $ocsp_url,
+    }
+    $intermediates.each |String $intermediate| {
+        cfssl::csr{$intermediate:
+            key           => $key_params,
+            names         => $names,
+            signer_config => {'config_dir' => "${cfssl::signer_dir}/WMF_root_CA"},
+            profile       => 'intermediate',
+            require       => Cfssl::Signer['WMF_root_CA'],
+        }
     }
     # cfssl::csr {'OCSP signer':
     #    key     => $key_params,

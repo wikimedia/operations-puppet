@@ -2,9 +2,12 @@
 define cfssl::csr (
     Cfssl::Key                    $key,
     Array[Cfssl::Name]            $names,
-    String                        $signer,
-    String                        $profile = 'default',
-    Optional[Array[Stdlib::Host]] $hosts = [],
+    Cfssl::Signer_config          $signer_config,
+    String                        $profile       = 'default',
+    String                        $owner         = 'root',
+    String                        $group         = 'root',
+    Optional[Array[Stdlib::Host]] $hosts         = [],
+    Optional[Stdlib::Unixpath]    $outdir        = undef,
 
 ) {
     include cfssl
@@ -18,7 +21,10 @@ define cfssl::csr (
 
     $safe_title = $title.regsubst('[^\w\-]', '_', 'G')
     $csr_file = "${cfssl::csr_dir}/${safe_title}.csr"
-    $outdir   = "${cfssl::ssl_dir}/${safe_title}"
+    $_outdir   = $outdir ? {
+        undef   => "${cfssl::ssl_dir}/${safe_title}",
+        default => $outdir,
+    }
 
     $_names = $names.map |Cfssl::Name $name| {
         {
@@ -42,13 +48,29 @@ define cfssl::csr (
         mode    => '0400',
         content => $csr.to_json_pretty()
     }
-    $gen_command = @("GENCOMMAND"/L)
-        /usr/bin/cfssl gencert -ca=${cfssl::ca_file} -ca-key=${cfssl::ca_key_file} \
-        -config=${cfssl::conf_file} -profile=${profile} ${csr_file} \
-        | /usr/bin/cfssljson -bare ${outdir}/
-        | GENCOMMAND
+    file {$_outdir:
+        ensure  => directory,
+        owner   => $owner,
+        group   => $group,
+        mode    => '0440',
+        recurse => true,
+        purge   => true,
+    }
+    $signer_args = $signer_config ? {
+        Stdlib::HTTPUrl              => "-remote ${signer_config}",
+        Cfssl::Signer_config::Client => "-config ${signer_config['config_file']}",
+        default                      => @("SIGNER_ARGS"/L)
+            -ca=${signer_config['config_dir']}/ca/ca.pem \
+            -ca-key=${signer_config['config_dir']}/ca/ca_key.pem \
+            -config=${signer_config['config_dir']}/cfssl.conf
+            | SIGNER_ARGS
+    }
+    $gen_command = @("GEN_COMMAND"/L)
+        /usr/bin/cfssl gencert ${signer_args} -profile=${profile} ${csr_file} \
+        | /usr/bin/cfssljson -bare ${_outdir}
+        | GEN_COMMAND
     exec{"Generate cert ${title}":
         command => $gen_command,
-        creates => "${outdir}/${safe_title}-key.pem"
+        creates => "${_outdir}/${safe_title}-key.pem"
     }
 }
