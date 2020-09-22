@@ -18,6 +18,7 @@ class role::mariadb::backups {
     include ::profile::standard
 
     include ::profile::backup::host
+    include ::profile::mariadb::wmfmariadbpy
     include ::profile::mariadb::backup::mydumper
     include ::profile::mariadb::backup::snapshot
     include ::profile::mariadb::backup::bacula
