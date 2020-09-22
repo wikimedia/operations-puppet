@@ -38,7 +38,7 @@ class profile::webperf::processors(
         kafka_brokers     => $kafka_main_brokers,
         kafka_api_version => $kafka_main_config['api_version'],
         statsd_host       => '127.0.0.1',  # relay through statsd_exporter
-        statsd_port       => 9112,
+        statsd_port       => 9125,
     }
     class { 'profile::prometheus::statsd_exporter': }
 
