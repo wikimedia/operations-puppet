@@ -17,9 +17,9 @@
 #   Defaults to "diffscan".
 #
 class profile::diffscan(
-  $ipranges=hiera('profile::diffscan::ipranges'),
-  $emailto=hiera('profile::diffscan::emailto'),
-  $groupname=hiera('profile::diffscan::groupname'),
+  Array[Stdlib::IP::Address] $ipranges = lookup('profile::diffscan::ipranges'),
+  String $emailto                      = lookup('profile::diffscan::emailto'),
+  String $groupname                    = lookup('profile::diffscan::groupname'),
 ) {
     class { '::diffscan':
         ipranges  => $ipranges,
