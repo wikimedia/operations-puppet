@@ -8,6 +8,8 @@ broker.id=<%= @id %>
 # Always require a static broker id.
 broker.id.generation.enable=false
 
+ssl.endpoint.identification.algorithm=
+
 <% if @rack -%>
 broker.rack=<%= @rack %>
 
