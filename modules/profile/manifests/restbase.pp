@@ -50,7 +50,7 @@
 #   MobileApps service URI. Format: https://mobileapps.svc.eqiad.wmnet:4102
 #
 # [*mathoid_uri*]
-#   Mathoid service URI. Format: http://mathoid.svc.eqiad.wmnet:10042
+#   Mathoid service URI. Format: https://mathoid.svc.eqiad.wmnet:4001
 #
 # [*aqs_uri*]
 #   Analytics Query Service URI. Format:
