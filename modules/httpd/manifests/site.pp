@@ -33,10 +33,10 @@
 #  }
 #
 define httpd::site(
-    Wmflib::Ensure $ensure   = 'present',
-    Integer[0,99] $priority = 50,
-    Optional[String] $content  = undef,
-    Wmflib::Sourceurl $source   = undef,
+    Wmflib::Ensure               $ensure   = 'present',
+    Integer[0,99]                $priority = 50,
+    Optional[String]             $content  = undef,
+    Optional[Stdlib::Filesource] $source   = undef,
 ) {
 
     httpd::conf { $name:

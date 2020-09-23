@@ -8,10 +8,6 @@ Custom Puppet functions and types that help you get things done.
 Accepts either 'present' or 'absent' as values.
 Should be used to validate standard ensure parameters
 
-## Wmflib::Sourceurl
-Ensures the provided string begins with puppet:///modules/. This is useful to
-validate the format of `source` arguments to file resources.
-
 # Functions
 
 ## apply_format

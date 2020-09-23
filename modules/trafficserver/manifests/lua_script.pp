@@ -22,10 +22,10 @@
 #      }
 #
 define trafficserver::lua_script(
-    Wmflib::Sourceurl $source,
-    Wmflib::Sourceurl $unit_test=undef,
-    String $service_name='trafficserver',
-    Stdlib::Absolutepath $config_prefix='/etc/trafficserver',
+    Stdlib::Filesource           $source,
+    Optional[Stdlib::Filesource] $unit_test     = undef,
+    String                       $service_name  = 'trafficserver',
+    Stdlib::Absolutepath         $config_prefix = '/etc/trafficserver',
 ) {
     if !defined(Trafficserver::Lua_infra["infra-${service_name}"]) {
         trafficserver::lua_infra{ "infra-${service_name}":

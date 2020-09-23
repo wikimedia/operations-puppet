@@ -43,12 +43,12 @@
 #  }
 #
 define httpd::conf(
-    Wmflib::Ensure $ensure = present,
+    Wmflib::Ensure               $ensure    = present,
     Enum['conf', 'env', 'sites'] $conf_type = 'conf',
-    Integer[0, 99] $priority  = 50,
-    Optional[String] $content   = undef,
-    Wmflib::Sourceurl $source    = undef,
-    Optional[String] $replaces  = undef,
+    Integer[0, 99]               $priority  = 50,
+    Optional[String]             $content   = undef,
+    Optional[Stdlib::Filesource] $source    = undef,
+    Optional[String]             $replaces  = undef,
 ) {
     require_package('apache2')
     if $source == undef and $content == undef and $ensure == 'present' {
