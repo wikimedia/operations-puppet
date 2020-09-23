@@ -92,7 +92,7 @@ class puppetmaster(
         deny_from     => $deny_from,
     }
 
-    $ssl_settings = ssl_ciphersuite('apache', 'compat')
+    $ssl_settings = ssl_ciphersuite('apache', 'strong')
 
     # path and name change with puppet 4 packages
     $puppetmaster_rack_path = '/usr/share/puppet/rack/puppet-master'

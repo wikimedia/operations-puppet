@@ -52,7 +52,7 @@ define puppetmaster::web_frontend(
     Optional[Stdlib::Host]                  $locale_server           = undef,
 ){
     $server_name = $title
-    $ssl_settings = ssl_ciphersuite('apache', 'compat')
+    $ssl_settings = ssl_ciphersuite('apache', 'strong')
 
     if $server_name != $::fqdn {
         # The files called with secret() should be generated on the current
