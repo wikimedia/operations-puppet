@@ -32,13 +32,13 @@
 # and mark your nginx::site with require => Acme_chief::Cert['testing']
 
 class profile::acme_chief (
-    Hash[String, Hash[String, String]] $accounts = hiera('profile::acme_chief::accounts'),
-    Hash[String, Hash[String, Any]] $certificates = hiera('profile::acme_chief::certificates'),
-    Optional[Hash[String, Hash[String, Any]]] $shared_acme_certificates = hiera('shared_acme_certificates', undef),
-    Hash[String, Hash[String, Any]] $challenges = hiera('profile::acme_chief::challenges'),
-    String $http_proxy = hiera('http_proxy'),
-    String $active_host = hiera('profile::acme_chief::active'),
-    String $passive_host = hiera('profile::acme_chief::passive'),
+    Hash[String, Hash[String, String]] $accounts = lookup('profile::acme_chief::accounts'),
+    Hash[String, Hash[String, Any]] $certificates = lookup('profile::acme_chief::certificates'),
+    Optional[Hash[String, Hash[String, Any]]] $shared_acme_certificates = lookup('shared_acme_certificates', {default_value => undef}),
+    Hash[String, Hash[String, Any]] $challenges = lookup('profile::acme_chief::challenges'),
+    String $http_proxy = lookup('http_proxy'),
+    String $active_host = lookup('profile::acme_chief::active'),
+    String $passive_host = lookup('profile::acme_chief::passive'),
     Hash[Stdlib::Fqdn, Stdlib::IP::Address::Nosubnet] $authdns_servers = lookup('authdns_servers'),
 ) {
     if(!empty($shared_acme_certificates)) {

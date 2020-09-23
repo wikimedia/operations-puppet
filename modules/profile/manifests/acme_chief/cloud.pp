@@ -1,12 +1,12 @@
 class profile::acme_chief::cloud (
-    String $active_host = hiera('profile::acme_chief::active'),
-    String $passive_host = hiera('profile::acme_chief::passive'),
-    String $designate_sync_auth_url = hiera('profile::acme_chief::cloud::designate_sync_auth_url'),
-    String $designate_sync_username = hiera('profile::acme_chief::cloud::designate_sync_username'),
-    String $designate_sync_password = hiera('profile::acme_chief::cloud::designate_sync_password'),
-    Array[String] $designate_sync_project_names = hiera('profile::acme_chief::cloud::designate_sync_project_names'),
-    String $designate_sync_region_name = hiera('profile::acme_chief::cloud::designate_sync_region_name'),
-    Boolean $designate_sync_tidyup_enabled = hiera('profile::acme_chief::cloud::designate_sync_tidyup_enabled'),
+    String $active_host = lookup('profile::acme_chief::active'),
+    String $passive_host = lookup('profile::acme_chief::passive'),
+    String $designate_sync_auth_url = lookup('profile::acme_chief::cloud::designate_sync_auth_url'),
+    String $designate_sync_username = lookup('profile::acme_chief::cloud::designate_sync_username'),
+    String $designate_sync_password = lookup('profile::acme_chief::cloud::designate_sync_password'),
+    Array[String] $designate_sync_project_names = lookup('profile::acme_chief::cloud::designate_sync_project_names'),
+    String $designate_sync_region_name = lookup('profile::acme_chief::cloud::designate_sync_region_name'),
+    Boolean $designate_sync_tidyup_enabled = lookup('profile::acme_chief::cloud::designate_sync_tidyup_enabled'),
 ) {
     if $::fqdn == $passive_host {
         $active_host_ip = ipresolve($active_host, 4, $::nameservers[0])
