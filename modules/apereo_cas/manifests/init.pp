@@ -164,7 +164,15 @@ class apereo_cas (
         source  => $keystore_source,
     }
 
-    ensure_packages(['cas'])
+    ensure_packages(['cas', 'python3-memcache'])
+
+    file { '/usr/local/sbin/memcached-dump':
+        ensure => present,
+        mode   => '0550',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/apereo_cas/memcached-dump.py',
+    }
 
     File["${config_dir}/log4j2.xml", $keystore_path, "${config_dir}/cas.properties"] {
         notify => Service['tomcat9'],
