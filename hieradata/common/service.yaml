@@ -2906,7 +2906,7 @@ service::catalog:
     sites:
       - eqiad
       - codfw
-    state: lvs_setup
+    state: monitoring_setup
     discovery:
       - dnsdisc: zotero
         active_active: true
