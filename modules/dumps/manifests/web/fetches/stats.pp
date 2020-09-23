@@ -72,4 +72,13 @@ class dumps::web::fetches::stats(
         user              => $user,
         use_kerberos      => $use_kerberos,
     }
+
+    # Copies over pageview complete daily dumps from HDFS archive
+    dumps::web::fetches::analytics::job { 'pageview_complete_dumps':
+        hdfs_source       => "${src_hdfs}/archive/pageview/complete/",
+        local_destination => "${miscdatasetsdir}/pageview_complete/",
+        interval          => '*-*-* 05:00:00',
+        user              => $user,
+        use_kerberos      => $use_kerberos,
+    }
 }
