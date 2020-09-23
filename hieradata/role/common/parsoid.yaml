@@ -36,7 +36,7 @@ profile::tlsproxy::envoy::capitalize_headers: true
 profile::mediawiki::mcrouter_wancache::num_proxies: 5
 # Use the gutter pool for failover
 profile::mediawiki::mcrouter_wancache::gutter_ttl: 600
-profile::mediawiki::mcrouter_wancache::use_onhost_memcache: false
+profile::mediawiki::mcrouter_wancache::use_onhost_memcached: false
 profile::mediawiki::httpd::logrotate_retention: 12
 profile::mediawiki::vhost_feature_flags: {}
 # bail out in case a long-lasting C function is called and

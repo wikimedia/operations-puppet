@@ -26,7 +26,7 @@ profile::mediawiki::php::enable_fpm: true
 profile::mediawiki::mcrouter_wancache::num_proxies: 5
 # Use the gutter pool for failover
 profile::mediawiki::mcrouter_wancache::gutter_ttl: 600
-profile::mediawiki::mcrouter_wancache::use_onhost_memcache: false
+profile::mediawiki::mcrouter_wancache::use_onhost_memcached: false
 profile::mediawiki::php::php_version: "7.2"
 profile::mediawiki::php::monitoring::monitor_page: false
 # we need to allow the scripts to run for 1 day for transcoding.

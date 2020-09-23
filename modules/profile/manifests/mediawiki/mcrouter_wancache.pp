@@ -2,20 +2,20 @@
 #
 # Configures a mcrouter instance for multi-datacenter caching
 class profile::mediawiki::mcrouter_wancache(
-    Stdlib::Port $port                = lookup('profile::mediawiki::mcrouter_wancache::port'),
-    Boolean      $has_ssl             = lookup('profile::mediawiki::mcrouter_wancache::has_ssl'),
-    Stdlib::Port $ssl_port            = lookup('profile::mediawiki::mcrouter_wancache::ssl_port'),
-    Integer      $num_proxies         = lookup('profile::mediawiki::mcrouter_wancache::num_proxies'),
-    Integer      $timeouts_until_tko  = lookup('profile::mediawiki::mcrouter_wancache::timeouts_until_tko'),
-    Integer      $gutter_ttl          = lookup('profile::mediawiki::mcrouter_wancache::gutter_ttl'),
-    Boolean      $use_onhost_memcache = lookup('profile::mediawiki::mcrouter_wancache::use_onhost_memcache'),
-    Boolean      $prometheus_exporter = lookup('profile::mediawiki::mcrouter_wancache::prometheus_exporter'),
+    Stdlib::Port $port                 = lookup('profile::mediawiki::mcrouter_wancache::port'),
+    Boolean      $has_ssl              = lookup('profile::mediawiki::mcrouter_wancache::has_ssl'),
+    Stdlib::Port $ssl_port             = lookup('profile::mediawiki::mcrouter_wancache::ssl_port'),
+    Integer      $num_proxies          = lookup('profile::mediawiki::mcrouter_wancache::num_proxies'),
+    Integer      $timeouts_until_tko   = lookup('profile::mediawiki::mcrouter_wancache::timeouts_until_tko'),
+    Integer      $gutter_ttl           = lookup('profile::mediawiki::mcrouter_wancache::gutter_ttl'),
+    Boolean      $use_onhost_memcached = lookup('profile::mediawiki::mcrouter_wancache::use_onhost_memcached'),
+    Boolean      $prometheus_exporter  = lookup('profile::mediawiki::mcrouter_wancache::prometheus_exporter'),
     Hash         $servers_by_datacenter_category = lookup('profile::mediawiki::mcrouter_wancache::shards'),
 ) {
 
     $servers_by_datacenter = $servers_by_datacenter_category['wancache']
     $proxies_by_datacenter = pick($servers_by_datacenter_category['proxies'], {})
-    if $use_onhost_memcache {
+    if $use_onhost_memcached {
         # TODO: Consider using a unix socket instead of a loopback address.
         $onhost_pool = profile::mcrouter_pools('onhost', {'' => {'host' => '127.0.0.1', 'port' => 11211}})
     } else {
@@ -81,7 +81,7 @@ class profile::mediawiki::mcrouter_wancache(
         $servers_by_datacenter.map |$region, $servers| {
             {
                 'aliases' => [ "/${region}/mw-with-onhost-tier/" ],
-                'route'   => $use_onhost_memcache ? {
+                'route'   => $use_onhost_memcached ? {
                     true  => {
                         'type'               => 'OperationSelectorRoute',
                         'operation_policies' => {
@@ -106,7 +106,7 @@ class profile::mediawiki::mcrouter_wancache(
                         # behave differently from the rest of prod, which would be confusing.)
                         'default_policy'     => profile::mcrouter_route($region, $gutter_ttl)
                     },
-                    # If use_onhost_memcache is turned off, always bypass the onhost tier.
+                    # If use_onhost_memcached is turned off, always bypass the onhost tier.
                     false => profile::mcrouter_route($region, $gutter_ttl)
                 }
             }
