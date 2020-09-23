@@ -3,29 +3,30 @@
 # Installs the Oozie server.
 #
 class profile::oozie::server(
-    $monitoring_enabled                       = hiera('profile::oozie::server::monitoring_enabled', false),
-    $ferm_srange                              = hiera('profile::oozie::server::ferm_srange', '$DOMAIN_NETWORKS'),
-    $jvm_opts                                 = hiera('profile::oozie::server::jvm_opts', '-Xmx2048m'),
-    $java_home                                = hiera('profile::oozie::server::java_home', '/usr/lib/jvm/java-8-openjdk-amd64/jre'),
-    $oozie_service_kerberos_enabled           = hiera('profile::oozie::server::oozie_service_kerberos_enabled', undef),
-    $local_realm                              = hiera('profile::oozie::server::local_realm', undef),
-    $oozie_service_keytab_file                = hiera('profile::oozie::server::oozie_service_keytab_file', undef),
-    $oozie_service_kerberos_principal         = hiera('profile::oozie::server::oozie_service_kerberos_principal', undef),
-    $oozie_authentication_type                = hiera('profile::oozie::server::oozie_authentication_type', undef),
-    $oozie_authentication_kerberos_principal  = hiera('profile::oozie::server::oozie_authentication_kerberos_principal', undef),
-    $oozie_authentication_kerberos_name_rules = hiera('profile::oozie::server::oozie_authentication_kerberos_name_rules', undef),
-    $hcatalog_enabled                         = hiera('profile::oozie::server::hcatalog_enabled', true),
-    $use_kerberos                             = hiera('profile::oozie::server::use_kerberos', false),
-    Stdlib::Host $jdbc_host                   = lookup('profile::oozie::server::jdbc_host', { 'default_value' => 'localhost' }),
-    Integer $jdbc_port                        = lookup('profile::oozie::server::jdbc_port', { 'default_value' => 3306 }),
-    $jdbc_database                            = hiera('profile::oozie::server::jdbc_database', undef),
-    $jdbc_username                            = hiera('profile::oozie::server::jdbc_username', undef),
-    $jdbc_password                            = hiera('profile::oozie::server::jdbc_password', undef),
-    $spark_defaults_config_dir                = hiera('profile::oozie::server::spark_defaults_config_dir', undef),
-    $oozie_sharelib_archive                   = hiera('profile::oozie::server::oozie_sharelib_archive', '/usr/lib/oozie/oozie-sharelib-yarn'),
-    Array[String] $oozie_admin_users          = lookup('profile::oozie::server::admin_users', { 'default_value' => ['hdfs'] }),
-    Boolean $use_admins_list                  = lookup('profile::oozie::server::use_admins_list', { 'default_value' => False }),
-) {
+    Boolean $monitoring_enabled                                = lookup('profile::oozie::server::monitoring_enabled', { 'default_value' => false }),
+    String $ferm_srange                                        = lookup('profile::oozie::server::ferm_srange', { 'default_value' => '$DOMAIN_NETWORKS' }),
+    String $jvm_opts                                           = lookup('profile::oozie::server::jvm_opts', { 'default_value' => '-Xmx2048m' }),
+    Stdlib::Unixpath $java_home                                = lookup('profile::oozie::server::java_home', { 'default_value' => '/usr/lib/jvm/java-8-openjdk-amd64/jre' }),
+    Optional[Boolean] $oozie_service_kerberos_enabled          = lookup('profile::oozie::server::oozie_service_kerberos_enabled', { 'default_value' => undef }),
+    Optional[String] $local_realm                              = lookup('profile::oozie::server::local_realm', { 'default_value' => undef }),
+    Optional[Stdlib::Unixpath] $oozie_service_keytab_file      = lookup('profile::oozie::server::oozie_service_keytab_file', { 'default_value' => undef }),
+    Optional[String] $oozie_service_kerberos_principal         = lookup('profile::oozie::server::oozie_service_kerberos_principal', { 'default_value' => undef }),
+    Optional[String] $oozie_authentication_type                = lookup('profile::oozie::server::oozie_authentication_type', { 'default_value' => undef }),
+    Optional[String] $oozie_authentication_kerberos_principal  = lookup('profile::oozie::server::oozie_authentication_kerberos_principal', { 'default_value' => undef }),
+    Optional[String] $oozie_authentication_kerberos_name_rules = lookup('profile::oozie::server::oozie_authentication_kerberos_name_rules', { 'default_value' => undef }),
+    Boolean $hcatalog_enabled                                  = lookup('profile::oozie::server::hcatalog_enabled', { 'default_value' => true }),
+    Boolean $use_kerberos                                      = lookup('profile::oozie::server::use_kerberos', { 'default_value' => false }),
+    Stdlib::Host $jdbc_host                                    = lookup('profile::oozie::server::jdbc_host', { 'default_value' => 'localhost' }),
+    Stdlib::Port $jdbc_port                                    = lookup('profile::oozie::server::jdbc_port', { 'default_value' => 3306 }),
+    Optional[String] $jdbc_database                            = lookup('profile::oozie::server::jdbc_database', { 'default_value' => undef }),
+    Optional[String] $jdbc_username                            = lookup('profile::oozie::server::jdbc_username', { 'default_value' => undef }),
+    Optional[String] $jdbc_password                            = lookup('profile::oozie::server::jdbc_password', { 'default_value' => undef }),
+    Optional[Stdlib::Unixpath] $spark_defaults_config_dir      = lookup('profile::oozie::server::spark_defaults_config_dir', { 'default_value' => undef }),
+    Stdlib::Unixpath $oozie_sharelib_archive                   = lookup('profile::oozie::server::oozie_sharelib_archive', { 'default_value' => '/usr/lib/oozie/oozie-sharelib-yarn' }),
+    Array[String] $oozie_admin_users                           = lookup('profile::oozie::server::admin_users', { 'default_value' => ['hdfs'] }),
+    Boolean $use_admins_list                                   = lookup('profile::oozie::server::use_admins_list', { 'default_value' => false }),
+){
+
     require ::profile::oozie::client
 
     # cdh::oozie::server will ensure that its MySQL DB is

@@ -8,9 +8,9 @@
 # set so that configured hosts can properly connect to this database.
 #
 class profile::oozie::server::database(
-    $jdbc_database = hiera('profile::oozie::server::database::jdbc_database', 'oozie'),
-    $jdbc_username = hiera('profile::oozie::server::database::jdbc_username', 'oozie'),
-    $jdbc_password = hiera('profile::oozie::server::database::jdbc_password', 'oozie'),
+    String $jdbc_database = lookup('profile::oozie::server::database::jdbc_database', {'default_value' => 'oozie'}),
+    String $jdbc_username = lookup('profile::oozie::server::database::jdbc_username', {'default_value' => 'oozie'}),
+    String $jdbc_password = lookup('profile::oozie::server::database::jdbc_password', {'default_value' => 'oozie'}),
 ) {
     # Install a database server (MariaDB)
     require ::profile::analytics::database::meta
