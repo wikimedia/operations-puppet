@@ -1,7 +1,8 @@
 class profile::maps::tlsproxy(
-    $servicename = hiera('profile::maps::tlsproxy::servicename'),
-    $ocsp_proxy = hiera('http_proxy', ''),
-) {
+    String $servicename = lookup('profile::maps::tlsproxy::servicename'),
+    String $ocsp_proxy  = lookup('http_proxy', {'default_value' => ''}),
+){
+
     tlsproxy::localssl { $servicename:
         server_name    => $servicename,
         certs          => [$servicename],

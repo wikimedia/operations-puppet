@@ -1,5 +1,8 @@
 # Define various checks for Maps
-class profile::maps::alerts($graphite_url = hiera('graphite_url')) {
+class profile::maps::alerts(
+    Stdlib::HTTPUrl $graphite_url = lookup('graphite_url'),
+){
+
     monitoring::graphite_threshold { 'tilerator-tile-generation':
         description     => 'Maps tiles generation',
         dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/maps-performances?panelId=8&fullscreen&orgId=1'],

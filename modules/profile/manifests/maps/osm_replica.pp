@@ -1,10 +1,11 @@
 class profile::maps::osm_replica(
-    $master = hiera('profile::maps::osm_replica::master'),
+    Stdlib::Host $master     = lookup('profile::maps::osm_replica::master'),
     # check_postgres_replication_lag script relies on values that are only
     # readable by superuser or replication user. This prevents using a
     # dedicated user for monitoring.
-    $replication_pass = hiera('postgresql::slave::replication_pass'),
-) {
+    String $replication_pass = lookup('postgresql::slave::replication_pass'),
+){
+
     require ::profile::maps::postgresql_common
 
     class { '::postgresql::slave':

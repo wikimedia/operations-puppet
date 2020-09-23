@@ -7,8 +7,8 @@
 # level abstractions in the postgresql module itself.
 #
 define profile::maps::tilerator_user (
-    $ip_address,
-    $password,
+    Stdlib::IP::Address $ip_address,
+    String $password,
 ) {
     postgresql::user { "tilerator@${title}":
         user     => 'tilerator',

@@ -8,9 +8,10 @@
 # - $maintenance_work_mem: postgresql maintenance work mem. Default: 4GB
 #                    (should only be overriden for tests or VMs on lab).
 class profile::maps::postgresql_common(
-    $shared_buffers = hiera('profile::maps::postgresql_common::shared_buffers', '7680MB'),
-    $maintenance_work_mem = hiera('profile::maps::postgresql_common::maintenance_work_mem', '4GB'),
-) {
+    String $shared_buffers       = lookup('profile::maps::postgresql_common::shared_buffers', { 'default_value' => '7680MB' }),
+    String $maintenance_work_mem = lookup('profile::maps::postgresql_common::maintenance_work_mem', { 'default_value' => '4GB' }),
+){
+
     class { '::postgresql::postgis': }
 
     $pgversion = $::lsbdistcodename ? {
