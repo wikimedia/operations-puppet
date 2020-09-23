@@ -8170,12 +8170,6 @@ host wtp2004 {
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
-host wtp2005 {
-    hardware ethernet B0:83:FE:E7:D8:34;
-    fixed-address wtp2005.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
-}
-
 host wtp2006 {
     hardware ethernet B0:83:FE:DB:C9:7D;
     fixed-address wtp2006.codfw.wmnet;

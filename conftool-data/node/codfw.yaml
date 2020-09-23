@@ -163,7 +163,6 @@ codfw:
     wtp2002.codfw.wmnet: [parsoid, parsoid-php,canary]
     wtp2003.codfw.wmnet: [parsoid, parsoid-php]
     wtp2004.codfw.wmnet: [parsoid, parsoid-php]
-    wtp2005.codfw.wmnet: [parsoid, parsoid-php]
     wtp2006.codfw.wmnet: [parsoid, parsoid-php]
     wtp2007.codfw.wmnet: [parsoid, parsoid-php]
     wtp2008.codfw.wmnet: [parsoid, parsoid-php]
