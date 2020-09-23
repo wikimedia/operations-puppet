@@ -715,34 +715,29 @@ host backup2002 {
 host bast1002 {
     hardware ethernet 14:18:77:58:86:BC;
     fixed-address bast1002.wikimedia.org;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host bast2002 {
     hardware ethernet D0:94:66:5F:4B:B8;
     fixed-address bast2002.wikimedia.org;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host bast3004 {
     hardware ethernet B0:26:28:6E:FA:20;
     fixed-address bast3004.wikimedia.org;
     next-server 208.80.154.32; # install1003 (tftp server)
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host bast4002 {
     hardware ethernet F4:E9:D4:BA:EE:D0;
     fixed-address bast4002.wikimedia.org;
     next-server 208.80.153.51; # install2003 (tftp server)
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host bast5001 {
     hardware ethernet F4:E9:D4:D0:8B:80;
     fixed-address bast5001.wikimedia.org;
     next-server 208.80.153.51; # install2003 (tftp server)
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host bohrium {
