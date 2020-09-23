@@ -21,9 +21,10 @@
 # xfp - Set an explicit value for X-Forwarded-Proto, instead of letting envoy inject it (see T249535)
 # [*enabled_listeners*] Optional list of listeners we want to install locally.
 class profile::services_proxy::envoy(
-    Wmflib::Ensure $ensure = lookup('profile::envoy::ensure', {'default_value' => 'present'}),
-    Array[Profile::Service_listener] $all_listeners = lookup('profile::services_proxy::envoy::listeners', {'default_value' => []}),
-    Optional[Array[String]] $enabled_listeners = lookup('profile::services_proxy::envoy::enabled_listeners', {'default_value' => undef})
+    Wmflib::Ensure                   $ensure            = lookup('profile::envoy::ensure', {'default_value' => 'present'}),
+    Array[Profile::Service_listener] $all_listeners     = lookup('profile::services_proxy::envoy::listeners', {'default_value' => []}),
+    Optional[Array[String]]          $enabled_listeners = lookup('profile::services_proxy::envoy::enabled_listeners', {'default_value' => undef}),
+    Boolean                          $listen_ipv6       = lookup('profile::services_proxy::envoy::listen_ipv6'),
 ) {
     if $enabled_listeners == undef {
         $listeners = $all_listeners

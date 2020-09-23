@@ -1,6 +1,10 @@
 <%- n = @listener['name'] -%>
 address:
+<%- if @listen_ipv6 -%>
+  socket_address: {protocol: TCP, address: "::", port_value: <%= @listener['port'] %>, ipv4_compat: true}
+<%- else -%>
   socket_address: {protocol: TCP, address: 0.0.0.0, port_value: <%= @listener['port'] %>}
+<%- end -%>
 filter_chains:
 - filters:
   - name:  envoy.http_connection_manager

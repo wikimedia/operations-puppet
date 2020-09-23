@@ -1,5 +1,6 @@
 # TODO: move this to module data.
 # Local ports go between 6000 and 7000
+profile::services_proxy::envoy::listen_ipv6: false
 profile::services_proxy::envoy::listeners:
   - name: parsoid
     port: 6001
