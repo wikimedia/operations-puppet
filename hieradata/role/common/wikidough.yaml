@@ -16,9 +16,9 @@ profile::wikidough::dnsdist::tls::doh:
 
 profile::wikidough::dnsdist::tls::dot:
   min_tls_version: 'tls1.2'
-  ciphers: # optimize DoT for Android (dnsdist's order is preferred)
-    - 'ECDHE-ECDSA-CHACHA20-POLY1305'
+  ciphers:
     - 'ECDHE-ECDSA-AES256-GCM-SHA384'
+    - 'ECDHE-ECDSA-CHACHA20-POLY1305'
     - 'ECDHE-ECDSA-AES128-GCM-SHA256'
   ciphers_tls13:
     - 'TLS_AES_256_GCM_SHA384'
