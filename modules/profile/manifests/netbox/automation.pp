@@ -66,6 +66,7 @@ class profile::netbox::automation (
         ensure         => $active_ensure,
         check_interval => 60,
         retry_interval => 15,
+        timeout        => 300,
         description    => 'Uncommitted DNS changes in Netbox',
         nrpe_command   => "/usr/bin/sudo ${nagios_command}",
         notes_url      => 'https://wikitech.wikimedia.org/wiki/Monitoring/Netbox_DNS_uncommitted_changes',
