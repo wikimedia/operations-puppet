@@ -1,5 +1,5 @@
 # === Define monitoring::host
-# Exports the resource that monitors hosts in icinga/shinken
+# Exports the resource that monitors hosts in icinga
 #
 define monitoring::host (
     $ip_address            = $facts['ipaddress'],

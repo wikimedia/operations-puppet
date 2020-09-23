@@ -285,7 +285,7 @@ profile::idp::key_password: changeit
 profile::idp::keystore_password: changeit
 
 monitoring_hosts:
-- 172.16.7.178 # shinken-02.shinken.eqiad1.wikimedia.cloud
+- 172.16.7.178 # was once shinken but has been deleted
 
 # We do not have support for LVS systems in Cloud VPS
 has_lvs: false
