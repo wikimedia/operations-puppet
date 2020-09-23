@@ -1,7 +1,7 @@
 # == Class profile::statistics::web
 #
 class profile::statistics::web(
-    $statistics_servers = hiera('statistics_servers'),
+    Array[Stdlib::Host] $statistics_servers = lookup('statistics_servers'),
 ) {
 
     include ::deployment::umask_wikidev
