@@ -10,6 +10,10 @@ class role::wmcs::openstack::codfw1dev::control {
     include ::profile::openstack::codfw1dev::envscripts
     include ::profile::openstack::codfw1dev::keystone::bootstrap
     include ::profile::openstack::codfw1dev::glance
+
+    # For testing purposes:
+    include ::profile::openstack::codfw1dev::barbican
+
     # NOTE: ceph is not enabled in this role. Starting in Queens
     #       ceph-common is a dependency for the nova-common package
     include ::profile::ceph::common
