@@ -1403,7 +1403,7 @@ service::catalog:
     sites:
       - eqiad
       - codfw
-    state: lvs_setup
+    state: production
     discovery:
       - dnsdisc: mathoid
         active_active: true

@@ -42,10 +42,16 @@ class lvs::monitor_services(
                 target      => "http://restbase.svc.${dc}.wmnet:7231/en.wikipedia.org/v1",
                 notes_url   => 'https://wikitech.wikimedia.org/wiki/RESTBase',
                 ;
-            "check_mathoid_cluster_${dc}":
+            "check_mathoid_http_cluster_${dc}":
                 host        => "mathoid.svc.${dc}.wmnet",
                 description => "Mathoid LVS ${dc}",
                 target      => "http://mathoid.svc.${dc}.wmnet:10042",
+                notes_url   => 'https://wikitech.wikimedia.org/wiki/Mathoid',
+                ;
+            "check_mathoid_cluster_${dc}":
+                host        => "mathoid.svc.${dc}.wmnet",
+                description => "Mathoid LVS ${dc}",
+                target      => "https://mathoid.svc.${dc}.wmnet:4001",
                 notes_url   => 'https://wikitech.wikimedia.org/wiki/Mathoid',
                 ;
             "check_cxserver_cluster_${dc}":
