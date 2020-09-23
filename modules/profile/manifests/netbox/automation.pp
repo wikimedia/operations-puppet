@@ -18,6 +18,7 @@ class profile::netbox::automation (
     Stdlib::HTTPSUrl $nb_api = lookup('profile::netbox::netbox_api'),
     String $nb_ro_token = lookup('profile::netbox::tokens::read_only'),
     Integer $dns_min_records = lookup('profile::netbox::automation::dns_min_records'),
+    Stdlib::Fqdn $active_server = lookup('profile::netbox::active_server'),
 ) {
     $ssl_settings = ssl_ciphersuite('apache', 'strong', true)
 
@@ -47,4 +48,27 @@ class profile::netbox::automation (
         mode    => '0440',
         content => template('profile/netbox/dns.cfg.erb'),
     }
+
+    if $active_server == $::fqdn {
+        $active_ensure = 'present'
+    } else {
+        $active_ensure = 'absent'
+    }
+
+    $nagios_command = '/srv/deployment/netbox-extras/dns/generate_dns_snippets.py commit --icinga-check "icinga-check"'
+    sudo::user { 'nagios_uncommitted_dns_changes':
+        ensure     => $active_ensure,
+        user       => 'nagios',
+        privileges => ["ALL = NOPASSWD: ${nagios_command}"],
+    }
+
+    nrpe::monitor_service { 'check_uncommitted_dns_changes':
+        ensure         => $active_ensure,
+        check_interval => 60,
+        retry_interval => 15,
+        description    => 'Uncommitted DNS changes in Netbox',
+        nrpe_command   => "/usr/bin/sudo ${nagios_command}",
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/Monitoring/Netbox_DNS_uncommitted_changes',
+    }
+
 }
