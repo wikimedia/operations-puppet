@@ -553,4 +553,8 @@ define command {
     command_name    check_http_zotero_lvs_on_port
     command_line    $USER1$/check_http -I $HOSTADDRESS$ -H $ARG1$ -p $ARG2$ -P '[{"itemType":"journalArticle"}]' -T 'application/json' -u "$ARG3$"
 }
+define command {
+    command_name    check_https_zotero_lvs_on_port
+    command_line    $USER1$/check_http --ssl --sni -I $HOSTADDRESS$ -H $ARG1$ -p $ARG2$ -P '[{"itemType":"journalArticle"}]' -T 'application/json' -u "$ARG3$"
+}
 

@@ -2876,6 +2876,42 @@ service::catalog:
         active_active: true
   zotero:
     description: Zotero, zotero.svc.%{::site}.wmnet
+    encryption: true
+    ip:
+      codfw:
+        default: 10.2.1.16
+      eqiad:
+        default: 10.2.2.16
+    lvs:
+      class: low-traffic
+      conftool:
+        cluster: kubernetes
+        service: kubesvc
+      depool_threshold: ".5"
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+      scheduler: wrr
+    monitoring:
+      check_command: check_https_zotero_lvs_on_port!zotero.discovery.wmnet!4969!/export?format=wikipedia
+      critical: true
+      sites:
+        codfw:
+          hostname: zotero.svc.codfw.wmnet
+        eqiad:
+          hostname: zotero.svc.eqiad.wmnet
+    port: 4969
+    sites:
+      - eqiad
+      - codfw
+    state: lvs_setup
+    discovery:
+      - dnsdisc: zotero
+        active_active: true
+  zotero-http:
+    description: Zotero, zotero.svc.%{::site}.wmnet
     encryption: false
     ip:
       codfw:
