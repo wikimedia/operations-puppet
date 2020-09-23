@@ -17,8 +17,7 @@ profile::services_proxy::envoy::listeners:
   - name: mathoid
     port: 6003
     timeout: "3s"
-    service: mathoid-http
-    upstream: mathoid.discovery.wmnet
+    service: mathoid
   - name: eventgate-analytics
     port: 6004
     timeout: "10s"
