@@ -56,8 +56,8 @@
 #
 # [*contact_groups*]
 #   Contact groups for alerting.
-#   Default: hiera('contactgroups', 'admins') - use 'contactgroups' hiera
-#            variable with a fallback to 'admins' if 'contactgroups' isn't set.
+#   Default: lookup('contactgroups', {'default_value' => 'admins'})) - use 'contactgroups'
+#            hiera variable with a fallback to 'admins' if 'contactgroups' isn't set.
 #
 # [*add_logging_config*]
 #   Boolean. Inject logging configuration into the generated uwsgi config file
@@ -98,7 +98,7 @@ define service::uwsgi(
     $deployment_manage_user = true,
     $deployment             = 'scap3',
     $sudo_rules             = [],
-    $contact_groups         = hiera('contactgroups', 'admins'),
+    $contact_groups         = lookup('contactgroups', {default_value => 'admins'}),
     $add_logging_config     = true,
     $core_limit             = '0',
 ) {
