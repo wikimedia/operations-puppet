@@ -1370,6 +1370,45 @@ service::catalog:
     state: production
   mathoid:
     description: Mathematical rendering service, mathoid.svc.%{::site}.wmnet
+    encryption: true
+    ip:
+      codfw:
+        default: 10.2.1.20
+      eqiad:
+        default: 10.2.2.20
+    lvs:
+      class: low-traffic
+      conftool:
+        cluster: kubernetes
+        service: kubesvc
+      depool_threshold: ".5"
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+        ProxyFetch:
+          url:
+            - https://localhost/_info
+      scheduler: wrr
+    monitoring:
+      check_command: check_https_lvs_on_port!mathoid.discovery.wmnet!4001!/_info
+      critical: true
+      sites:
+        codfw:
+          hostname: mathoid.svc.codfw.wmnet
+        eqiad:
+          hostname: mathoid.svc.eqiad.wmnet
+    port: 4001
+    sites:
+      - eqiad
+      - codfw
+    state: lvs_setup
+    discovery:
+      - dnsdisc: mathoid
+        active_active: true
+  mathoid-http:
+    description: Mathematical rendering service, mathoid.svc.%{::site}.wmnet
     encryption: false
     ip:
       codfw:
