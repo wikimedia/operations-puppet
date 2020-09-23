@@ -7,5 +7,4 @@ class profile::ci::pipeline::builder {
 
     require_package('helm')
     require_package('kubernetes-client')
-    require_package('python3-ruamel.yaml')
 }
