@@ -3159,12 +3159,6 @@ host es2013 {
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
-host es2014 {
-    hardware ethernet 14:18:77:53:AE:C5;
-    fixed-address es2014.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
-}
-
 host es2015 {
     hardware ethernet 14:18:77:53:BC:87;
     fixed-address es2015.codfw.wmnet;
