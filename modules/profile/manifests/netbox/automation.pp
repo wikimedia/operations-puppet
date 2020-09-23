@@ -42,6 +42,7 @@ class profile::netbox::automation (
 
     # Configuration for Netbox extras dns scripts
     $dns_repo_path = "${repo_path}/dns.git/"
+    $icinga_state_file = '/var/tmp/netbox_generate_dns_snippets.state'
     file { '/etc/netbox/dns.cfg':
         owner   => 'netbox',
         group   => 'netbox',
@@ -55,20 +56,41 @@ class profile::netbox::automation (
         $active_ensure = 'absent'
     }
 
+    systemd::timer::job { 'check_netbox_uncommitted_dns_changes':
+        ensure                    => $active_ensure,
+        description               => 'Run check for uncommitted DNS changes in Netbox and save state for NRPE',
+        command                   => '/srv/deployment/netbox-extras/dns/generate_dns_snippets.py commit --icinga-check "icinga-check"',
+        interval                  => {
+            'start'    => 'OnUnitInactiveSec',
+            'interval' => '5m',
+        },
+        logging_enabled           => false,
+        monitoring_enabled        => false,
+        monitoring_contact_groups => 'admins',
+        user                      => 'netbox',
+    }
+
+    # TODO: remove once absented
     $nagios_command = '/srv/deployment/netbox-extras/dns/generate_dns_snippets.py commit --icinga-check "icinga-check"'
     sudo::user { 'nagios_uncommitted_dns_changes':
-        ensure     => $active_ensure,
+        ensure     => 'absent',
         user       => 'nagios',
         privileges => ["ALL = NOPASSWD: ${nagios_command}"],
     }
 
+    $check_command = '/usr/lib/nagios/plugins/check_json_file'
+    $max_age = 4800  # 80 minutes
+    file { $check_command:
+        source => 'puppet:///modules/profile/netbox/check_json_file.py',
+        mode   => '0755',
+    }
+
     nrpe::monitor_service { 'check_uncommitted_dns_changes':
         ensure         => $active_ensure,
-        check_interval => 60,
-        retry_interval => 15,
-        timeout        => 300,
+        check_interval => 5,
+        retry_interval => 2,
         description    => 'Uncommitted DNS changes in Netbox',
-        nrpe_command   => "/usr/bin/sudo ${nagios_command}",
+        nrpe_command   => "${check_command} ${icinga_state_file} ${max_age}",
         notes_url      => 'https://wikitech.wikimedia.org/wiki/Monitoring/Netbox_DNS_uncommitted_changes',
     }
 
