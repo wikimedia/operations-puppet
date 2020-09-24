@@ -26,12 +26,16 @@ def main():
                                                    'seconds, before considering the result stale'))
     args = parser.parse_args()
 
-    with open(args.file) as f:
-        try:
-            data = json.load(f)
-        except Exception as e:
-            print('Failed to load data: {e}'.format(e=e))
-            return UNKNOWN
+    try:
+        with open(args.file) as f:
+            try:
+                data = json.load(f)
+            except Exception as e:
+                print('Failed to load data: {e}'.format(e=e))
+                return UNKNOWN
+    except Exception as e:
+        print('Unable to read state file {name}: {e}'.format(name=args.file, e=e))
+        return UNKNOWN
 
     if sum(1 for i in ('exit_code', 'timestamp', 'message') if i not in data):
         print('Invalid data: {data}'.format(data=data))

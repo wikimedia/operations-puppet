@@ -70,14 +70,6 @@ class profile::netbox::automation (
         user                      => 'netbox',
     }
 
-    # TODO: remove once absented
-    $nagios_command = '/srv/deployment/netbox-extras/dns/generate_dns_snippets.py commit --icinga-check "icinga-check"'
-    sudo::user { 'nagios_uncommitted_dns_changes':
-        ensure     => 'absent',
-        user       => 'nagios',
-        privileges => ["ALL = NOPASSWD: ${nagios_command}"],
-    }
-
     $check_command = '/usr/lib/nagios/plugins/check_json_file'
     $max_age = 4800  # 80 minutes
     file { $check_command:
