@@ -37,9 +37,9 @@
 class postgresql::master(
     Stdlib::Host $master_server=$::fqdn,
     Array $includes=[],
-    String $pgversion = $::lsbdistcodename ? {
-        'buster'  => '11',
-        'stretch' => '9.6',
+    Numeric $pgversion = $::lsbdistcodename ? {
+        'buster'  => 11,
+        'stretch' => 9.6,
     },
     Wmflib::Ensure $ensure='present',
     Integer $max_wal_senders=5,

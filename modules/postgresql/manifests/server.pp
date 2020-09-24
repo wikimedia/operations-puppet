@@ -27,30 +27,42 @@
 #  include postgresql::server
 #
 class postgresql::server(
-    $pgversion        = $::lsbdistcodename ? {
-        'buster'  => '11',
-        'stretch' => '9.6',
-    },
-    $ensure           = 'present',
-    $includes         = [],
-    $listen_addresses = '*',
-    $port             = '5432',
-    $root_dir         = '/var/lib/postgresql',
-    $use_ssl          = false,
-    $ssldir           = undef,
+    Wmflib::Ensure             $ensure                     = 'present',
+    Array                      $includes                   = [],
+    String                     $listen_addresses           = '*',
+    Stdlib::Port               $port                       = 5432,
+    Stdlib::Unixpath           $root_dir                   = '/var/lib/postgresql',
+    Boolean                    $use_ssl                    = false,
+    String                     $log_line_prefix            = '%t ',
+    Optional[Numeric]          $pgversion                  = undef,
+    Optional[Stdlib::Unixpath] $ssldir                     = undef,
+    Optional[Integer[250]]     $log_min_duration_statement = undef,
 ) {
 
+    case $facts['os']['distro']['codename'] {
+        'stretch': {
+            $_pgtop = 'ptop'
+            $_pgversion_default = 9.6
+        }
+        default: {
+            $_pgtop = 'pgtop'
+            $_pgversion_default = 11
+        }
+    }
+    $_pgversion = $pgversion ? {
+        undef   => 11,
+        default => $_pgversion_default,
+    }
+
+
     package { [
-        "postgresql-${pgversion}",
-        "postgresql-${pgversion}-debversion",
-        "postgresql-client-${pgversion}",
+        "postgresql-${_pgversion}",
+        "postgresql-${_pgversion}-debversion",
+        "postgresql-client-${_pgversion}",
         'libdbi-perl',
         'libdbd-pg-perl',
-        $::lsbdistcodename ? {
-            'buster' => 'pgtop',
-            default  => 'ptop',
-        },
         'check-postgres',
+        $_pgtop,
     ]:
         ensure => $ensure,
     }
@@ -58,29 +70,29 @@ class postgresql::server(
     # The contrib package got dropped from Postgres in 10, it's only a virtual
     # package and not needed starting with Buster
     if os_version('debian < buster') {
-        package { "postgresql-contrib-${pgversion}":
+        package { "postgresql-contrib-${_pgversion}":
             ensure => $ensure,
         }
     }
 
-    class { '::postgresql::dirs':
+    class { 'postgresql::dirs':
         ensure    => $ensure,
-        pgversion => $pgversion,
+        pgversion => $_pgversion,
         root_dir  => $root_dir,
     }
 
-    $data_dir = "${root_dir}/${pgversion}/main"
+    $data_dir = "${root_dir}/${_pgversion}/main"
 
     $service_name = 'postgresql'
 
     exec { 'pgreload':
-        command     => "/usr/bin/pg_ctlcluster ${pgversion} main reload",
+        command     => "/usr/bin/pg_ctlcluster ${_pgversion} main reload",
         user        => 'postgres',
         refreshonly => true,
     }
 
     if $use_ssl {
-        file { "/etc/postgresql/${pgversion}/main/ssl.conf":
+        file { "/etc/postgresql/${_pgversion}/main/ssl.conf":
             ensure  => $ensure,
             source  => 'puppet:///modules/postgresql/ssl.conf',
             owner   => 'root',
@@ -103,7 +115,7 @@ class postgresql::server(
         ensure  => ensure_service($ensure),
     }
 
-    file { "/etc/postgresql/${pgversion}/main/postgresql.conf":
+    file { "/etc/postgresql/${_pgversion}/main/postgresql.conf":
         ensure  => $ensure,
         content => template('postgresql/postgresql.conf.erb'),
         owner   => 'root',

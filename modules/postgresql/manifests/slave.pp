@@ -37,9 +37,9 @@ class postgresql::slave(
     # of postgresql::server / postgresql::master (also it is used inconsistently).
     # T232358
     $includes=undef,
-    String $pgversion = $::lsbdistcodename ? {
-        'buster'  => '11',
-        'stretch' => '9.6',
+    Numeric $pgversion = $::lsbdistcodename ? {
+        'buster'  => 11,
+        'stretch' => 9.6,
     },
     Optional[String] $rep_app=undef,
     String $ensure='present',
