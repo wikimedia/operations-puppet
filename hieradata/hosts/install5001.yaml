@@ -1,3 +1,3 @@
-profile::installserver::dhcp::ensure_service: 'stopped'
+profile::installserver::dhcp::ensure_service: 'running'
 profile::installserver::tftp::ensure_service: 'running'
 profile::installserver::proxy::ensure: 'absent'
