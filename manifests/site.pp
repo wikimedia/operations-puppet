@@ -1251,7 +1251,7 @@ node /^install[12]003\.wikimedia\.org$/ {
 
 # new install servers in POPs (T254157, T252526, T242602)
 node /^install[345]001\.wikimedia\.org$/ {
-    role(insetup)
+    role(installserver::light)
 }
 
 # new icinga systems, replaced einsteinium and tegmen (T201344, T208824)
