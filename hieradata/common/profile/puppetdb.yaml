@@ -6,3 +6,4 @@ profile::puppetdb::puppetboard_hosts: ''
 profile::puppetdb::ssldir: ~
 profile::puppetdb::slaves: []
 profile::puppetdb::monitor_agentrun: false
+profile::puppetdb::log_level: info

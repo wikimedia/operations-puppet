@@ -14,6 +14,7 @@ class puppetdb::app(
     Stdlib::Unixpath              $ca_path                    = '/etc/ssl/certs/Puppet_Internal_CA.pem',
     Boolean                       $perform_gc                 = false,
     Integer                       $command_processing_threads = 16,
+    Puppetdb::Loglevel            $log_level                  = 'info',
     Optional[String]              $db_rw_host                 = undef,
     Optional[Stdlib::IP::Address] $bind_ip                    = undef,
     Optional[String]              $db_ro_host                 = undef,
@@ -136,5 +137,12 @@ class puppetdb::app(
         settings => {
             'threads' => $command_processing_threads,
         },
+    }
+    file {'/etc/puppetdb/logback.xml':
+        ensure  => file,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
+        content => template('puppetdb/logback.xml.erb'),
     }
 }

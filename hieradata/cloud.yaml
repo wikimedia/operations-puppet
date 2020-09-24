@@ -26,6 +26,7 @@ profile::puppetdb::database::replication_lag_crit: 16777216
 profile::puppetdb::database::replication_lag_warn: 1048576
 profile::puppetdb::slaves: []
 profile::puppetdb::monitor_agentrun: false
+profile::puppetdb::log_level: info
 profile::envoy::ensure: present
 profile::tlsproxy::envoy::sni_support: 'no'
 profile::tlsproxy::envoy::tls_port: 443

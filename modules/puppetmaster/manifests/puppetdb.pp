@@ -10,6 +10,7 @@ class puppetmaster::puppetdb(
     Stdlib::Unixpath           $ca_path       = '/etc/ssl/certs/Puppet_Internal_CA.pem',
     Boolean                    $filter_job_id = false,
     String                     $puppetdb_pass = '',
+    Puppetdb::Loglevel         $log_level     = 'info',
 ){
 
     if $filter_job_id {
@@ -53,5 +54,6 @@ class puppetmaster::puppetdb(
         jvm_opts    => $jvm_opts,
         ssldir      => $ssldir,
         ca_path     => $ca_path,
+        log_level   => $log_level,
     }
 }
