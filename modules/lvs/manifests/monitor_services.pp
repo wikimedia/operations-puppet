@@ -33,7 +33,7 @@ class lvs::monitor_services(
             "check_citoid_cluster_${dc}":
                 host        => "citoid.svc.${dc}.wmnet",
                 description => "Citoid LVS ${dc}",
-                target      => "http://citoid.svc.${dc}.wmnet:1970",
+                target      => "https://citoid.svc.${dc}.wmnet:4003",
                 notes_url   => 'https://wikitech.wikimedia.org/wiki/Citoid',
                 ;
             "check_restbase_cluster_${dc}":
