@@ -220,6 +220,10 @@ sub analytics_deliver {
     if (req.http.X-WMF-UUID) {
         set resp.http.X-Analytics = resp.http.X-Analytics + ";wmfuuid=" + req.http.X-WMF-UUID;
     }
+    # We set debug=1, so analytics won't count those requests as real pageviews.
+    if (req.http.X-Wikimedia-Debug) {
+        set resp.http.X-Analytics = resp.http.X-Analytics + ";debug=1";
+    }
 
     // Add proxy=IORG X-Analytics tag if appropriate.
     // Although Via: Internet.org usually comes via proxying, it isn't guaranteed to come that way.
