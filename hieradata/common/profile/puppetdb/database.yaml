@@ -2,3 +2,6 @@ profile::puppetdb::database::shared_buffers: '7680MB'
 profile::puppetdb::database::users: {}
 profile::puppetdb::database::replication_lag_crit: 16777216
 profile::puppetdb::database::replication_lag_warn: 1048576
+profile::puppetdb::database::log_line_prefix: '%t '
+profile::puppetdb::database::log_min_duration_statement: ~
+profile::puppetdb::database::ssldir: ~

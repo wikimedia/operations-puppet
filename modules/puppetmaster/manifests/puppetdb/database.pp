@@ -16,13 +16,15 @@
 # [*puppetdb_users*] Hash of users to create (if any), additionally to the local ones
 #
 class puppetmaster::puppetdb::database(
-    String           $master,
-    Numeric          $pgversion,
-    String           $shared_buffers,
-    String           $replication_pass,
-    String           $puppetdb_pass,
-    Optional[String] $ssldir         = undef,
-    Hash             $puppetdb_users = {},
+    String            $master,
+    Numeric           $pgversion,
+    String            $shared_buffers,
+    String            $replication_pass,
+    String            $puppetdb_pass,
+    String            $log_line_prefix            = '%t ',
+    Optional[String]  $ssldir                     = undef,
+    Hash              $puppetdb_users             = {},
+    Optional[Integer] $log_min_duration_statement = undef,
 ) {
     unless $pgversion in  [9.6, 11] {
         fail("Unsupported pgversion: ${pgversion}")
@@ -47,14 +49,16 @@ class puppetmaster::puppetdb::database(
 
     $on_master = ($master == $::fqdn)
     if $on_master {
-        class { '::postgresql::master':
-            includes => ['tuning.conf'],
-            root_dir => '/srv/postgres',
-            use_ssl  => true,
-            ssldir   => $ssldir,
+        class { 'postgresql::master':
+            includes                   => ['tuning.conf'],
+            root_dir                   => '/srv/postgres',
+            use_ssl                    => true,
+            ssldir                     => $ssldir,
+            log_line_prefix            => $log_line_prefix,
+            log_min_duration_statement => $log_min_duration_statement,
         }
     } else {
-        class { '::postgresql::slave':
+        class { 'postgresql::slave':
             includes         => ['tuning.conf'],
             master_server    => $master,
             root_dir         => '/srv/postgres',
