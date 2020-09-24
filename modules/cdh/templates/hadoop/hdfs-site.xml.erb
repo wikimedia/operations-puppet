@@ -87,7 +87,7 @@ end
    <value>file://<%= (@dfs_name_dir.class == Array) ? @dfs_name_dir.join(',file://') : @dfs_name_dir %></value>
   </property>
 
-<% if @datanode_mounts -%>
+<% if @datanode_mounts and not @datanode_mounts.empty? -%>
   <property>
    <name>dfs.datanode.data.dir</name>
    <value>file://<%= @datanode_mounts.sort.collect { |mount| mount + "/" + @dfs_data_path }.join(',file://') %></value>

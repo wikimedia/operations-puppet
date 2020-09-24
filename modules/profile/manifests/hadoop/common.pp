@@ -62,10 +62,6 @@
 #  [*journalnode_hosts*]
 #    List of hostnames acting as HDFS Journalnodes for the cluster.
 #
-#  [*datanode_mounts*]
-#    List of file system partitions to use on each Hadoop worker for HDFS.
-#    Default: undef
-#
 #  [*datanode_volumes_failed_tolerated*]
 #    Number of disk/volume failures tolerated by the datanode before
 #    shutting down.
@@ -184,14 +180,23 @@
 #    A mapping of FQDN hostname to 'rack'.  This will be used by net-topology.py.erb
 #    to render a script that will be used for Hadoop node rack awareness.
 #
+#  [*datanode_mounts_prefix*]
+#    Gets the list of partitions mounted on the host that match a given prefix
+#    to form the list of mountpoints that Yarn and HDFS will rely on.
+#    IMPORTANT: make sure that the partitions are mounted on the OS before using this
+#    parameter.
+#    Default: '/var/lib/hadoop/data'
+#
 class profile::hadoop::common (
-    $zookeeper_clusters      = hiera('zookeeper_clusters'),
-    $hadoop_clusters         = hiera('hadoop_clusters'),
-    $cluster_name            = hiera('profile::hadoop::common::hadoop_cluster_name'),
-    $hadoop_clusters_secrets = hiera('hadoop_clusters_secrets', {}),
-    $config_override         = hiera('profile::hadoop::common::config_override', {}),
-    $ensure_ssl_config       = hiera('profile::hadoop::common::ensure_ssl_config', false),
-    $use_puppet_ssl_certs    = lookup('profile::hadoop::common::use_puppet_ssl_certs', { 'default_value' => true }),
+    $zookeeper_clusters                    = hiera('zookeeper_clusters'),
+    $hadoop_clusters                       = hiera('hadoop_clusters'),
+    $cluster_name                          = hiera('profile::hadoop::common::hadoop_cluster_name'),
+    $hadoop_clusters_secrets               = hiera('hadoop_clusters_secrets', {}),
+    $config_override                       = hiera('profile::hadoop::common::config_override', {}),
+    $ensure_ssl_config                     = hiera('profile::hadoop::common::ensure_ssl_config', false),
+    $use_puppet_ssl_certs                  = lookup('profile::hadoop::common::use_puppet_ssl_certs', { 'default_value' => true }),
+    String $datanode_mounts_prefix         = lookup('profile::hadoop::common::datanode_mounts_prefix', { 'default_value' => '/var/lib/hadoop/data'}),
+    Optional[Integer] $min_datanode_mounts = lookup('profile::hadoop::common::min_datanode_mounts', { 'default_value' => undef }),
 ) {
     # Properties that are not meant to have undef as default value (a hash key
     # without a correspondent value returns undef) should be listed in here.
@@ -220,7 +225,6 @@ class profile::hadoop::common (
     $namenode_hosts                           = $hadoop_config['namenode_hosts']
     $journalnode_hosts                        = $hadoop_config['journalnode_hosts']
     $hadoop_var_directory                     = $hadoop_config['hadoop_var_directory']
-    $datanode_mounts                          = $hadoop_config['datanode_mounts']
     $datanode_volumes_failed_tolerated        = $hadoop_config['datanode_volumes_failed_tolerated']
     $dfs_namenode_handler_count               = $hadoop_config['dfs_namenode_handler_count']
     $hdfs_trash_checkpoint_interval           = $hadoop_config['hdfs_trash_checkpoint_interval']
@@ -281,6 +285,20 @@ class profile::hadoop::common (
         default => $hadoop_config['mapred_site_extra_properties'],
     }
     $yarn_nm_container_executor_config        = $hadoop_config['yarn_nodemanager_container_executor_config']
+
+
+    # The datanode mountpoints are retrieved from facter, among the list of mounted
+    # partitions on the host. Once a partition is not available anymore (disk broken for example),
+    # it is sufficient to run puppet to update the configs (and restart daemons if needed).
+    $all_partitions = $facts['partitions'].map |$device, $partition_metadata| { $partition_metadata['mount'] }
+    $datanode_mounts = $all_partitions.filter |$partitions| { $datanode_mounts_prefix in $partitions }
+
+    # Fail-safe for Hadoop workers only meant to avoid running a datanode with a low number of partition by mistake.
+    # The minimum number of datanode partitions is set via hiera following:
+    # Number of datanode partitions - disk failures tolerated
+    if $min_datanode_mounts and length($datanode_mounts) < $min_datanode_mounts {
+        fail('The number of datanode mountpoints dropped below the safety threshold, please check.')
+    }
 
     # Include Wikimedia's thirdparty/cloudera apt component
     # as an apt source on all Hadoop hosts.  This is needed

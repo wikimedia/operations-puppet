@@ -13,6 +13,10 @@ admin::groups_no_ssh:
 
 profile::hadoop::common::hadoop_cluster_name: 'analytics-hadoop'
 
+# This is the setting for the default 12-disks hadoop worker
+# More specific settings for other workers are in regex.yaml
+profile::hadoop::common::min_datanode_mounts: 10
+
 profile::hadoop::worker::monitoring_enabled: true
 
 # Analytics worker disks are large.  We will install a custom

@@ -669,21 +669,6 @@ hadoop_clusters:
       - analytics1031.eqiad.wmnet
       - analytics1034.eqiad.wmnet
       - analytics1038.eqiad.wmnet
-    # analytics* Dell R720s have mounts on disks sdb - sdm.
-    # (sda is hardware raid on the 2 2.5 drives in the flex bays.)
-    datanode_mounts:
-      - /var/lib/hadoop/data/b
-      - /var/lib/hadoop/data/c
-      - /var/lib/hadoop/data/d
-      - /var/lib/hadoop/data/e
-      - /var/lib/hadoop/data/f
-      - /var/lib/hadoop/data/g
-      - /var/lib/hadoop/data/h
-      - /var/lib/hadoop/data/i
-      - /var/lib/hadoop/data/j
-      - /var/lib/hadoop/data/k
-      - /var/lib/hadoop/data/l
-      - /var/lib/hadoop/data/m
     net_topology:
       analytics1028.eqiad.wmnet:  /eqiad/C/2
       analytics1029.eqiad.wmnet:  /eqiad/C/2
@@ -821,21 +806,6 @@ hadoop_clusters:
       - analytics1072.eqiad.wmnet  # ROW B2
       - an-worker1090.eqiad.wmnet  # Row C4
       - analytics1069.eqiad.wmnet  # Row D8
-    # analytics* Dell R720s have mounts on disks sdb - sdm.
-    # (sda is hardware raid on the 2 2.5 drives in the flex bays.)
-    datanode_mounts:
-      - /var/lib/hadoop/data/b
-      - /var/lib/hadoop/data/c
-      - /var/lib/hadoop/data/d
-      - /var/lib/hadoop/data/e
-      - /var/lib/hadoop/data/f
-      - /var/lib/hadoop/data/g
-      - /var/lib/hadoop/data/h
-      - /var/lib/hadoop/data/i
-      - /var/lib/hadoop/data/j
-      - /var/lib/hadoop/data/k
-      - /var/lib/hadoop/data/l
-      - /var/lib/hadoop/data/m
     net_topology:
       an-master1001.eqiad.wmnet:  /eqiad/A/5
       an-master1002.eqiad.wmnet:  /eqiad/B/8

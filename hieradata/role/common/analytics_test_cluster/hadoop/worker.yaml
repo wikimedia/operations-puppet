@@ -17,6 +17,11 @@ profile::analytics::cluster::packages::common::use_bigtop_settings: true
 
 profile::hadoop::common::hadoop_cluster_name: 'analytics-test-hadoop'
 
+# Due to how the Test cluster is currently set up (OOW nodes, Sep 2020)
+# the threshold for min_datanode_mounts is lower since we run hosts with failed
+# disks.
+profile::hadoop::common::min_datanode_mounts: 8
+
 # Deploy TLS keys and xml configuration files
 profile::hadoop::common::ensure_ssl_config: true
 

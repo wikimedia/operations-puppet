@@ -1,22 +1,2 @@
-# A disk completely broken caused
-# /var/lib/hadoop/data/e to become read-only,
-# so puppet cannot enforce the directory and fails.
-# If we simply umount /var/lib/hadoop/data/{e,k} then
-# puppet creates the new directories and yarn/hdfs
-# start using them, allocating space on the root
-# partition.
-profile::hadoop::common::config_override:
-  datanode_mounts:
-    - /var/lib/hadoop/data/b
-    - /var/lib/hadoop/data/c
-    - /var/lib/hadoop/data/d
-    - /var/lib/hadoop/data/f
-    - /var/lib/hadoop/data/g
-    - /var/lib/hadoop/data/h
-    - /var/lib/hadoop/data/i
-    - /var/lib/hadoop/data/j
-    - /var/lib/hadoop/data/l
-    - /var/lib/hadoop/data/m
-
 # Node is out of warranty.
 profile::base::hardware_monitoring: 'absent'

@@ -288,3 +288,7 @@ mediawiki_test_environment:
   profile::mediawiki::php::restarts::opcache_limit: 100
   profile::mediawiki::php::enable_request_profiling: true
   profile::mediawiki::php::phpdbg: true
+
+hadoop_gpu_workers:
+  __regex: !ruby/regexp /^an-worker(109[6-9]|110[0-1])\.eqiad\.wmnet$/
+  profile::hadoop::common::min_datanode_mounts: 20
