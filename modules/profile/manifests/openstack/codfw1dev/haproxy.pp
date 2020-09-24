@@ -3,6 +3,7 @@ class profile::openstack::codfw1dev::haproxy(
     Array[Stdlib::Fqdn] $designate_hosts = lookup('profile::openstack::codfw1dev::designate_hosts'),
     Stdlib::Port $glance_api_bind_port = lookup('profile::openstack::codfw1dev::glance::api_bind_port'),
     Stdlib::Port $glance_registry_bind_port = lookup('profile::openstack::codfw1dev::glance::registry_bind_port'),
+    Stdlib::Port $barbican_bind_port = lookup('profile::openstack::codfw1dev::barbican::bind_port'),
     Stdlib::Port $keystone_admin_bind_port = lookup('profile::openstack::codfw1dev::keystone::admin_bind_port'),
     Stdlib::Port $keystone_public_bind_port = lookup('profile::openstack::codfw1dev::keystone::public_bind_port'),
     Stdlib::Port $neutron_bind_port = lookup('profile::openstack::codfw1dev::neutron::bind_port'),
@@ -50,6 +51,14 @@ class profile::openstack::codfw1dev::haproxy(
         healthcheck_path   => '/healthcheck',
         port_frontend      => 9191,
         port_backend       => $glance_registry_bind_port,
+    }
+
+    profile::openstack::base::haproxy::site { 'barbican':
+        servers            => $openstack_controllers,
+        healthcheck_method => 'GET',
+        healthcheck_path   => '/',
+        port_frontend      => 9311,
+        port_backend       => $barbican_bind_port,
     }
 
     profile::openstack::base::haproxy::site { 'neutron':
