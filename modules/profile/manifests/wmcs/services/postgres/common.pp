@@ -2,8 +2,8 @@ class profile::wmcs::services::postgres::common (
     $root_dir = hiera('profile::wmcs::services::postgres::root_dir', '/srv/postgres'),
 ){
     $pgversion = $::lsbdistcodename ? {
-        'stretch' => '9.6',
-        'jessie'  => '9.4',
+        'stretch' => 9.6,
+        'jessie'  => 9.4,
     }
 
     file { "/etc/postgresql/${pgversion}/main/tuning.conf":
