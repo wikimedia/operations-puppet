@@ -1,5 +1,3 @@
-admin::groups:
-  - datacenter-ops
 profile::installserver::dhcp::ensure_service: 'stopped'
 profile::installserver::tftp::ensure_service: 'stopped'
 profile::installserver::proxy::ensure: 'absent'
