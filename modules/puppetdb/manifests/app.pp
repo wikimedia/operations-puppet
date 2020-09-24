@@ -7,17 +7,17 @@
 #
 
 class puppetdb::app(
-    Optional[String] $db_rw_host,
-    String $jvm_opts='-Xmx4G',
-    String $db_user='puppetdb',
-    String $db_driver='postgres',
-    String $ssldir=puppet_ssldir(),
-    String $ca_path='/etc/ssl/certs/Puppet_Internal_CA.pem',
-    Boolean $perform_gc=false,
-    Integer $command_processing_threads=16,
-    Optional[String] $bind_ip=undef,
-    Optional[String] $db_ro_host=undef,
-    Optional[String] $db_password=undef,
+    String                        $jvm_opts                   = '-Xmx4G',
+    String                        $db_user                    = 'puppetdb',
+    String                        $db_driver                  = 'postgres',
+    Stdlib::Unixpath              $ssldir                     = puppet_ssldir(),
+    Stdlib::Unixpath              $ca_path                    = '/etc/ssl/certs/Puppet_Internal_CA.pem',
+    Boolean                       $perform_gc                 = false,
+    Integer                       $command_processing_threads = 16,
+    Optional[String]              $db_rw_host                 = undef,
+    Optional[Stdlib::IP::Address] $bind_ip                    = undef,
+    Optional[String]              $db_ro_host                 = undef,
+    Optional[String]              $db_password                = undef,
 ) {
     ## PuppetDB installation
 
@@ -41,9 +41,7 @@ class puppetdb::app(
         enable => true,
     }
 
-
     ## Configuration
-
     file { '/etc/puppetdb/conf.d':
         ensure  => directory,
         owner   => 'puppetdb',
@@ -53,39 +51,34 @@ class puppetdb::app(
     }
 
     # Ensure the default debian config file is not there
-
     file { '/etc/puppetdb/conf.d/config.ini':
         ensure => absent,
     }
 
-    $postgres_rw_db_subname = "//${db_rw_host}:5432/puppetdb?ssl=true&sslfactory=org.postgresql.ssl.jdbc4.LibPQFactory&sslmode=verify-full&sslrootcert=${ca_path}"
-    $postgres_ro_db_subname = "//${db_ro_host}:5432/puppetdb?ssl=true&sslfactory=org.postgresql.ssl.jdbc4.LibPQFactory&sslmode=verify-full&sslrootcert=${ca_path}"
+    $postgres_uri = "ssl=true&sslfactory=org.postgresql.ssl.jdbc4.LibPQFactory&sslmode=verify-full&sslrootcert=${ca_path}"
+    $postgres_rw_db_subname = "//${db_rw_host}:5432/puppetdb?${postgres_uri}"
+    $postgres_ro_db_subname = "//${db_ro_host}:5432/puppetdb?${postgres_uri}"
 
-    if $db_driver == 'postgres' {
-        $default_db_settings = {
+    $default_db_settings = {
+        'postgres' => {
             'classname'   => 'org.postgresql.Driver',
             'subprotocol' => 'postgresql',
             'username'    => 'puppetdb',
             'password'    => $db_password,
             'subname'     => $postgres_rw_db_subname,
-        }
-    } elsif $db_driver == 'hsqldb' {
-        $default_db_settings = {
+        },
+        'hsqldb'   => {
             'classname'   => 'org.hsqldb.jdbcDriver',
             'subprotocol' => 'hsqldb',
             'subname'     => 'file:/var/lib/puppetdb/db/puppet.hsql;hsqldb.tx=mvcc;sql.syntax_pgs=true',
         }
-    } else {
+    }[$db_driver]
+    unless $default_db_settings {
         fail("Unsupported db driver ${db_driver}")
     }
-
-    if $perform_gc {
-        $db_settings = merge(
-            $default_db_settings,
-            { 'report-ttl' => '1d', 'gc-interval' => '20' }
-        )
-    } else {
-        $db_settings = $default_db_settings
+    $db_settings = $perform_gc ? {
+        true    => merge($default_db_settings, { 'report-ttl' => '1d', 'gc-interval' => '20' }),
+        default => $default_db_settings
     }
 
     puppetdb::config { 'database':
@@ -114,7 +107,7 @@ class puppetdb::app(
         settings => {'enabled' => false},
     }
 
-    ::base::expose_puppet_certs { '/etc/puppetdb':
+    base::expose_puppet_certs { '/etc/puppetdb':
         ensure          => present,
         provide_private => true,
         user            => 'puppetdb',
@@ -129,11 +122,9 @@ class puppetdb::app(
         'ssl-cert'    => '/etc/puppetdb/ssl/cert.pem',
         'ssl-ca-cert' => $ca_path,
     }
-    if $bind_ip {
-        $actual_jetty_settings = merge($jetty_settings, {'ssl-host' => $bind_ip})
-    }
-    else {
-        $actual_jetty_settings = $jetty_settings
+    $actual_jetty_settings = $bind_ip ? {
+        undef   => $jetty_settings,
+        default => merge($jetty_settings, {'ssl-host' => $bind_ip}),
     }
 
     puppetdb::config { 'jetty':
@@ -146,5 +137,4 @@ class puppetdb::app(
             'threads' => $command_processing_threads,
         },
     }
-
 }
