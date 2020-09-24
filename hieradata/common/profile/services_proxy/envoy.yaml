@@ -162,7 +162,8 @@ profile::services_proxy::envoy::listeners:
     timeout: "120s"
   - name: zotero
     port: 6018
-    service: zotero
+    service: zotero-http
+    upstream: zotero.discovery.wmnet
     timeout: "120s"
   - name: parsoid-async # Parsoid-php for long-lasting async requests.
     port: 6502
