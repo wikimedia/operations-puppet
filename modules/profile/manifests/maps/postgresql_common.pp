@@ -14,7 +14,7 @@ class profile::maps::postgresql_common(
     class { '::postgresql::postgis': }
 
     $pgversion = $::lsbdistcodename ? {
-        'stretch' => '9.6',
+        'stretch' => 9.6,
     }
 
     # Tuning

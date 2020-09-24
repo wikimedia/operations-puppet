@@ -31,25 +31,29 @@
 #  }
 #
 class postgresql::slave(
-    Stdlib::Host $master_server,
-    String $replication_pass,
+    Stdlib::Host               $master_server,
+    String                     $replication_pass,
+    String                     $ensure          = 'present',
+    Integer                    $max_wal_senders = 5,
+    Stdlib::Unixpath           $root_dir        = '/var/lib/postgresql',
+    Boolean                    $use_ssl         = false,
+    Optional[String]           $rep_app         = undef,
+    Optional[Numeric]          $pgversion       = undef,
+    Optional[Stdlib::Unixpath] $ssldir          = undef,
     # this should probably be an array and properly fixed to match the semantics
     # of postgresql::server / postgresql::master (also it is used inconsistently).
     # T232358
-    $includes=undef,
-    Numeric $pgversion = $::lsbdistcodename ? {
-        'buster'  => 11,
-        'stretch' => 9.6,
-    },
-    Optional[String] $rep_app=undef,
-    String $ensure='present',
-    Integer $max_wal_senders=5,
-    Stdlib::Unixpath $root_dir='/var/lib/postgresql',
-    Boolean $use_ssl=false,
-    Optional[Stdlib::Unixpath] $ssldir=undef,
+    $includes = undef,
 ) {
 
-    $data_dir = "${root_dir}/${pgversion}/main"
+    $_pgversion = $pgversion ? {
+        undef   => $facts['os']['distro']['codename'] ? {
+            'stretch' => 9.6,
+            default   => 11,
+        },
+        default => $pgversion,
+    }
+    $data_dir = "${root_dir}/${_pgversion}/main"
 
     if $includes {
         $fullincludes = [ $includes, 'slave.conf']
@@ -60,20 +64,20 @@ class postgresql::slave(
 
     class { '::postgresql::server':
         ensure    => $ensure,
-        pgversion => $pgversion,
+        pgversion => $_pgversion,
         includes  => $fullincludes,
         root_dir  => $root_dir,
         use_ssl   => $use_ssl,
         ssldir    => $ssldir,
     }
 
-    file { "/etc/postgresql/${pgversion}/main/slave.conf":
+    file { "/etc/postgresql/${_pgversion}/main/slave.conf":
         ensure  => $ensure,
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
         content => template('postgresql/slave.conf.erb'),
-        require => Package["postgresql-${pgversion}"],
+        require => Package["postgresql-${_pgversion}"],
     }
     file { "${data_dir}/recovery.conf":
         ensure  => $ensure,
@@ -86,13 +90,13 @@ class postgresql::slave(
 
     # Having this file here helps perform slave initialization.
     # This file should not be deleted when performing slave init.
-    file { "/etc/postgresql/${pgversion}/main/.pgpass":
+    file { "/etc/postgresql/${_pgversion}/main/.pgpass":
         ensure  => $ensure,
         owner   => 'postgres',
         group   => 'postgres',
         mode    => '0600',
         content => template('postgresql/.pgpass.erb'),
-        require => Package["postgresql-${pgversion}"],
+        require => Package["postgresql-${_pgversion}"],
     }
 
     # Let's sync once all our content from the master

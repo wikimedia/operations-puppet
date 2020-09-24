@@ -16,7 +16,7 @@ class profile::maps::osm_master (
     $use_proxy                = hiera('profile::maps::apps::use_proxy'),
 ) {
 
-    require ::profile::maps::postgresql_common
+    require profile::maps::postgresql_common
 
     $maps_hosts_ferm = join($maps_hosts, ' ')
 
@@ -26,10 +26,10 @@ class profile::maps::osm_master (
     }
 
     $pgversion = $::lsbdistcodename ? {
-        'stretch' => '9.6',
+        'stretch' => 9.6,
     }
 
-    class { '::postgresql::master':
+    class { 'postgresql::master':
         root_dir            => '/srv/postgresql',
         includes            => [ 'tuning.conf', 'logging.conf' ],
         checkpoint_segments => 768,

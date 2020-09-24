@@ -16,14 +16,17 @@
 # [*puppetdb_users*] Hash of users to create (if any), additionally to the local ones
 #
 class puppetmaster::puppetdb::database(
-    String $master,
-    Enum['9.6', '11'] $pgversion,
-    String $shared_buffers,
-    String $replication_pass,
-    String $puppetdb_pass,
-    Optional[String] $ssldir = undef,
-    Hash $puppetdb_users={},
+    String           $master,
+    Numeric          $pgversion,
+    String           $shared_buffers,
+    String           $replication_pass,
+    String           $puppetdb_pass,
+    Optional[String] $ssldir         = undef,
+    Hash             $puppetdb_users = {},
 ) {
+    unless $pgversion in  [9.6, 11] {
+        fail("Unsupported pgversion: ${pgversion}")
+    }
     # Tuning
     file { "/etc/postgresql/${pgversion}/main/tuning.conf":
         ensure  => 'present',

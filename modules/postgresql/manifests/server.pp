@@ -34,9 +34,9 @@ class postgresql::server(
     Stdlib::Unixpath           $root_dir                   = '/var/lib/postgresql',
     Boolean                    $use_ssl                    = false,
     String                     $log_line_prefix            = '%t ',
+    Optional[Integer[250]]     $log_min_duration_statement = undef,
     Optional[Numeric]          $pgversion                  = undef,
     Optional[Stdlib::Unixpath] $ssldir                     = undef,
-    Optional[Integer[250]]     $log_min_duration_statement = undef,
 ) {
 
     case $facts['os']['distro']['codename'] {

@@ -35,37 +35,45 @@
 #  include postgresql::master
 
 class postgresql::master(
-    Stdlib::Host $master_server=$::fqdn,
-    Array $includes=[],
-    Numeric $pgversion = $::lsbdistcodename ? {
-        'buster'  => 11,
-        'stretch' => 9.6,
-    },
-    Wmflib::Ensure $ensure='present',
-    Integer $max_wal_senders=5,
-    Integer $checkpoint_segments=64,
-    Integer $wal_keep_segments=128,
-    Stdlib::Unixpath $root_dir='/var/lib/postgresql',
-    Boolean $use_ssl=false,
-    Optional[Stdlib::Unixpath] $ssldir=undef,
-    String $locale='en_US.UTF-8',
-    Optional[Array[String]] $sync_replicas=undef,
-    Integer $sync_count=1,
-    String $sync_mode='on',
+    Wmflib::Ensure             $ensure                     = 'present',
+    Stdlib::Host               $master_server              = $facts['fqdn'],
+    Array                      $includes                   = [],
+    Integer                    $max_wal_senders            = 5,
+    Integer                    $checkpoint_segments        = 64,
+    Integer                    $wal_keep_segments          = 128,
+    Stdlib::Unixpath           $root_dir                   = '/var/lib/postgresql',
+    Boolean                    $use_ssl                    = false,
+    String                     $locale                     = 'en_US.UTF-8',
+    Integer                    $sync_count                 = 1,
+    String                     $sync_mode                  = 'on',
+    String                     $log_line_prefix            = '%t ',
+    Optional[Stdlib::Unixpath] $ssldir                     = undef,
+    Optional[Array[String]]    $sync_replicas              = undef,
+    Optional[Integer[250]]     $log_min_duration_statement = undef,
+    Optional[Numeric]          $pgversion                  = undef,
 ) {
 
-    $data_dir = "${root_dir}/${pgversion}/main"
+    $_pgversion = $pgversion ? {
+        undef   => $facts['os']['distro']['codename'] ? {
+            'stretch' => 9.6,
+            default   => 11,
+        },
+        default => $pgversion,
+    }
+    $data_dir = "${root_dir}/${_pgversion}/main"
 
-    class { '::postgresql::server':
-        ensure    => $ensure,
-        pgversion => $pgversion,
-        includes  => [ $includes, 'master.conf'],
-        root_dir  => $root_dir,
-        use_ssl   => $use_ssl,
-        ssldir    => $ssldir,
+    class { 'postgresql::server':
+        ensure                     => $ensure,
+        pgversion                  => $_pgversion,
+        includes                   => [ $includes, 'master.conf'],
+        root_dir                   => $root_dir,
+        use_ssl                    => $use_ssl,
+        ssldir                     => $ssldir,
+        log_line_prefix            => $log_line_prefix,
+        log_min_duration_statement => $log_min_duration_statement,
     }
 
-    file { "/etc/postgresql/${pgversion}/main/master.conf":
+    file { "/etc/postgresql/${_pgversion}/main/master.conf":
         ensure  => $ensure,
         owner   => 'root',
         group   => 'root',
@@ -76,7 +84,7 @@ class postgresql::master(
 
     if $ensure == 'present' {
         exec { 'pg-initdb':
-            command => "/usr/lib/postgresql/${pgversion}/bin/initdb --locale ${locale} -D ${data_dir}",
+            command => "/usr/lib/postgresql/${_pgversion}/bin/initdb --locale ${locale} -D ${data_dir}",
             user    => 'postgres',
             unless  => "/usr/bin/test -f ${data_dir}/PG_VERSION",
             require => Class['postgresql::server'],

@@ -14,9 +14,9 @@ class profile::puppetdb::database(
     Optional[Stdlib::Unixpath]    $ssldir = lookup('profile::puppetdb::database::ssldir',
                                                   {'default_value' => undef}),
 ) {
-    $pgversion = $::lsbdistcodename ? {
-        'buster'  => '11',
-        'stretch' => '9.6',
+    $pgversion = $facts['os']['distro']['codename'] ? {
+        'buster'  => 11,
+        'stretch' => 9.6,
     }
     $slave_range = join($slaves, ' ')
 

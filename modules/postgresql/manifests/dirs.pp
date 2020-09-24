@@ -24,15 +24,19 @@
 #  include postgresql::dirs
 #
 class postgresql::dirs(
-    $pgversion        = $::lsbdistcodename ? {
-        'buster'  => '11',
-        'stretch' => '9.6',
-    },
-    $ensure           = 'present',
-    $root_dir         = '/var/lib/postgresql',
+    String            $ensure    = 'present',
+    Stdlib::Unixpath  $root_dir  = '/var/lib/postgresql',
+    Optional[Numeric] $pgversion = undef,
 ) {
-    $data_dir = "${root_dir}/${pgversion}/main"
-    file {  [ $root_dir, "${root_dir}/${pgversion}" ] :
+    $_pgversion = $pgversion ? {
+        undef   => $facts['os']['distro']['codename'] ? {
+            'stretch' => 9.6,
+            default   => 11,
+        },
+        default => $pgversion,
+    }
+    $data_dir = "${root_dir}/${_pgversion}/main"
+    file {  [ $root_dir, "${root_dir}/${_pgversion}" ] :
         ensure => ensure_directory($ensure),
         owner  => 'postgres',
         group  => 'postgres',

@@ -25,22 +25,26 @@
 # Based upon https://github.com/uggedal/puppet-module-postgresql
 #
 define postgresql::user(
-    $user,
-    $password = undef,
-    $database = 'template1',
-    $type = 'host',
-    $method = 'md5',
-    $cidr = '127.0.0.1/32',
-    $pgversion = $::lsbdistcodename ? {
-        'buster'  => '11',
-        'stretch' => '9.6',
-    },
-    $attrs = '',
-    $master = true,
-    $ensure = 'present'
-    ) {
+    String              $user,
+    String              $ensure    = 'present',
+    String              $database  = 'template1',
+    String              $type      = 'host',
+    String              $method    = 'md5',
+    Stdlib::IP::Address $cidr      = '127.0.0.1/32',
+    String              $attrs     = '',
+    Boolean             $master    = true,
+    Optional[String]    $password  = undef,
+    Optional[Numeric]   $pgversion = undef,
+) {
 
-    $pg_hba_file = "/etc/postgresql/${pgversion}/main/pg_hba.conf"
+    $_pgversion = $pgversion ? {
+        undef   => $facts['os']['distro']['codename'] ? {
+            'stretch' => 9.6,
+            default   => 11,
+        },
+        default => $pgversion,
+    }
+    $pg_hba_file = "/etc/postgresql/${_pgversion}/main/pg_hba.conf"
 
     # Check if our user exists and store it
     $userexists = "/usr/bin/psql --tuples-only -c \'SELECT rolname FROM pg_catalog.pg_roles;\' | /bin/grep -P \'^ ${user}$\'"
