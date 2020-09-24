@@ -191,7 +191,7 @@ class profile::hadoop::common (
     $hadoop_clusters_secrets = hiera('hadoop_clusters_secrets', {}),
     $config_override         = hiera('profile::hadoop::common::config_override', {}),
     $ensure_ssl_config       = hiera('profile::hadoop::common::ensure_ssl_config', false),
-    $use_puppet_ssl_certs    = lookup('profile::hadoop::common::use_puppet_ssl_certs', { 'default_value' => false }),
+    $use_puppet_ssl_certs    = lookup('profile::hadoop::common::use_puppet_ssl_certs', { 'default_value' => true }),
 ) {
     # Properties that are not meant to have undef as default value (a hash key
     # without a correspondent value returns undef) should be listed in here.
