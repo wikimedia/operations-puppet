@@ -96,10 +96,14 @@ profile::elasticsearch::common_settings:
 
 profile::elasticsearch::cirrus::enable_remote_search: false
 
-# Remove this when T220625 is complete. see T230366 for more details
-profile::elasticsearch::monitor::timeout: 15
 profile::lvs::realserver::pools:
   cloudelastic-chi-https:
     services:
       - "elasticsearch_6@cloudelastic-chi-eqiad.service"
+  cloudelastic-psi-https:
+    services:
+      - "elasticsearch_6@cloudelastic-psi-eqiad.service"
+  cloudelastic-omega-https:
+    services:
+      - "elasticsearch_6@cloudelastic-omega-eqiad.service"
 profile::lvs::realserver::use_conftool: true
