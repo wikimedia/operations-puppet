@@ -10,16 +10,16 @@ sections:
     port: 3311
     destination: 'dbprov1002.eqiad.wmnet'
     stop_slave: True
-    order: 1
+    order: 2
   s2:
     host: 'db1095.eqiad.wmnet'
     port: 3312
-    destination: 'dbprov1003.eqiad.wmnet'
+    destination: 'dbprov1002.eqiad.wmnet'
     order: 4
   s3:
     host: 'db1095.eqiad.wmnet'
     port: 3313
-    destination: 'dbprov1003.eqiad.wmnet'
+    destination: 'dbprov1002.eqiad.wmnet'
     stop_slave: True
     order: 8
   s4:
@@ -31,12 +31,12 @@ sections:
   s5:
     host: 'db1145.eqiad.wmnet'
     port: 3315
-    destination: 'dbprov1002.eqiad.wmnet'
+    destination: 'dbprov1001.eqiad.wmnet'
     order: 5
   s6:
     host: 'db1139.eqiad.wmnet'
     port: 3316
-    destination: 'dbprov1003.eqiad.wmnet'
+    destination: 'dbprov1001.eqiad.wmnet'
     order: 7
   s7:
     host: 'db1116.eqiad.wmnet'
@@ -48,7 +48,7 @@ sections:
     port: 3318
     destination: 'dbprov1001.eqiad.wmnet'
     stop_slave: True
-    order: 2
+    order: 1
   x1:
     host: 'db1102.eqiad.wmnet'
     port: 3320
