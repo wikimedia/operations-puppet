@@ -1,6 +1,8 @@
 # == openstack::designate::dns_floating_ip_updater ==
 #
 # === Parameters ===
+# [*ensure*]
+#     ensure the job is present/running or not
 # [*floating_ip_pr_zone*]
 #    Reverse DNS zone
 # [*floating_ip_ptr_fqdn_matching_regex*]
@@ -9,9 +11,10 @@
 #    Regular expression that matches PTR records to be replaced
 #
 class openstack::designate::dns_floating_ip_updater(
-    String $floating_ip_ptr_zone,
-    String $floating_ip_ptr_fqdn_matching_regex,
-    String $floating_ip_ptr_fqdn_replacement_pattern,
+    Wmflib::Ensure $ensure,
+    String         $floating_ip_ptr_zone,
+    String         $floating_ip_ptr_fqdn_matching_regex,
+    String         $floating_ip_ptr_fqdn_replacement_pattern,
 ) {
 
     # Also requires openstack::clientpackages
@@ -51,7 +54,7 @@ class openstack::designate::dns_floating_ip_updater(
         }
 
         systemd::timer::job { 'designate_floating_ip_ptr_records_updater':
-            ensure                    => present,
+            ensure                    => $ensure,
             description               => 'Designate Floating IP PTR records updater',
             command                   => '/usr/local/sbin/wmcs-dns-floating-ip-updater',
             interval                  => {
