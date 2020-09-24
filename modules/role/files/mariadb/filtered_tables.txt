@@ -136,7 +136,6 @@ archive,ar_comment_id,F
 archive,ar_timestamp,K
 archive,ar_minor_edit,K
 archive,ar_rev_id,K
-archive,ar_text_id,K
 archive,ar_deleted,K
 archive,ar_len,K
 archive,ar_page_id,K
@@ -527,12 +526,10 @@ redirect,rd_namespace,K
 redirect,rd_title,K
 redirect,rd_interwiki,K
 redirect,rd_fragment,K
+revision,rev_actor,K
+revision,rev_comment_id,K
 revision,rev_id,K
 revision,rev_page,K
-revision,rev_text_id,F
-revision,rev_comment,K
-revision,rev_user,K
-revision,rev_user_text,K
 revision,rev_timestamp,K
 revision,rev_minor_edit,K
 revision,rev_deleted,K
