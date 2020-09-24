@@ -42,7 +42,7 @@ class profile::netbox::automation (
 
     # Configuration for Netbox extras dns scripts
     $dns_repo_path = "${repo_path}/dns.git/"
-    $icinga_state_file = '/var/tmp/netbox_generate_dns_snippets.state'
+    $icinga_state_file = '/var/run/netbox_generate_dns_snippets.state'
     file { '/etc/netbox/dns.cfg':
         owner   => 'netbox',
         group   => 'netbox',
