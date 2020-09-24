@@ -1,1 +1,1 @@
-profile::puppetdb::log_level: debug
+#profile::puppetdb::log_level: debug
