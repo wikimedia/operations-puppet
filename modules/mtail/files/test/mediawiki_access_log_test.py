@@ -24,17 +24,28 @@ class MediaWikiAccessLogTest(unittest.TestCase):
 
     def testByHandler(self):
         """Test requests are correctly divided by handler."""
-        s = self.store.get_samples('mediawiki_http_requests_duration_count')
-        self.assertIn((self.id_str('php7'), 5), s)
-        self.assertIn((self.id_str('static', code=301), 1), s)
+        s = self.store.get_samples('mediawiki_http_requests_duration')
+        for sample in s:
+            if sample[0] == self.id_str('php7'):
+                self.assertEqual(sample[1]['count'], 5)
+            elif sample[0] == self.id_str('static', code=301):
+                self.assertEqual(sample[1]['count'], 1)
 
     def testByBucket(self):
         """Tests requests are correctly divided by bucket."""
-        s = self.store.get_samples('mediawiki_http_requests_duration_bucket')
-        req_id = self.id_str('php7') + ',le=0.05'
-        self.assertIn((req_id, 2), s)
-        req_id = self.id_str('php7') + ',le=0.1'
-        self.assertIn((req_id, 3), s)
-        # All similar requests are in bucket +inf
-        req_id = self.id_str('php7') + ',le=+Inf'
-        self.assertIn((req_id, 5), s)
+        s = self.store.get_samples('mediawiki_http_requests_duration')
+        req_id = self.id_str('php7')
+        my_sample = None
+        # Find the sample with the correct labels
+        for sample in s:
+            if sample[0] == req_id:
+                my_sample = sample
+                break
+        # verify the sample was found
+        self.assertIsNotNone(my_sample)
+        # now verify the distribution of requests in the histogram
+        bucket = my_sample[1]['buckets']
+        self.assertEqual(bucket['0.05'], 2)
+        self.assertEqual(bucket['0.1'], 1)
+        self.assertEqual(bucket['0.25'], 2)
+        self.assertEqual(my_sample[1]['count'], 5)

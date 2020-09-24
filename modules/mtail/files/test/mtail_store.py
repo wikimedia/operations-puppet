@@ -47,7 +47,26 @@ class MtailMetricStore(object):
         for metric in self._store[name][0]['LabelValues']:
             label_names = self._store[name][0].get('Keys', [])
             label_values = metric.get('Labels', [])
-            value = metric['Value']['Value']
+            metric_value = metric['Value']
+            # Counter/gauge
+            if 'Value' in metric_value:
+                value = metric_value['Value']
+            elif 'Buckets' in metric_value:
+                # histogram support
+                value = {
+                    'buckets': metric_value['Buckets'],
+                    'count': metric_value['Count'],
+                    'sum': metric_value['Sum']
+                }
+            else:
+                raise ValueError('Unrecognized metric type')
             labelpairs = ["%s=%s" % (k, v) for k, v in zip(label_names, label_values)]
             samples.append((','.join(labelpairs), value))
         return samples
+
+    def get_histogram_samples(self, name):
+        """Return all samples for metric name as a list of histogram samples.
+        Each sample is in this form: ("k1=v1,k2=v2", {"buckets": {..}, "sum": sum, "count": count}))
+        """
+        if name not in self._store:
+            raise ValueError('metric %s not found in store' % name)
