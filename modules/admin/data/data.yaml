@@ -15,7 +15,7 @@ groups:
               mtizzoni, panisson, paolotti, ciro, dartar, melodykramer, gtirloni, tbayer, pirroh,
               bawolff, dkg, juliaglen, cwdent, hpham, atgomez, dfoy, alaasarhan, onimisionipe,
               tieu, flemmerich, jsamra, anomie, lexnasser, jmorgan, thargrove,
-              drossi, fsalutari, demon, lulu]
+              drossi, fsalutari, demon, lulu, jkumalah]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -273,7 +273,7 @@ groups:
               andyrussg, niedzielski, hoo, daniel, krinkle, tgr,
               ebernhardson, addshore, jminor, neilpquinn-wmf,
               dcausse, bd808, tjones, mobrovac, jdrewniak, ejegg, jdcc, ori,
-              bmansurov, amire80, kartik, pcoombe, foks, kemayo, jkumalah,
+              bmansurov, amire80, kartik, pcoombe, foks, kemayo,
               jdlrobson, chelsyx, ovasileva, filippo, pmiazga, faidon,
               piccardi, fdans, eevans, ladsgroup, musikanimal,
               kaldari, goransm, ema, dsaez, shiladsen, rho, mirrys, slaporte, jk,
@@ -3402,15 +3402,13 @@ users:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINj/yFpJoyyIYy8DaRkA92YOQbsZyNh/l3OfQSezZ5t6 martin@nitram
     krb: present
   jkumalah:
-    ensure: present
+    ensure: absent
     realname: Jerrie Kumalah
-    email: jkumalah@wikimedia.org
     uid: 22085
     gid: 500
     name: jkumalah
-    ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKtmaRXYmgqNYVDr+ISthBNCwkgo0eAvfKgw20PTuzD+ jkumalah@Jerries-MacBook-Pro.local
-    krb: present
+    ssh_keys: []
+    krb: absent
   andrew-wmde:
     ensure: present
     realname: Andrew Kostka
