@@ -131,6 +131,7 @@ class profile::analytics::refinery::job::refine(
         'KaiOSAppConsent',
         'MobileWebUIClickTracking',
         'CitationUsagePageLoad', # Schema is deleted.
+        'CitationUsage',         # Schema is deleted.
     ]
     $eventlogging_legacy_table_excludelist_regex = "^(${join($eventlogging_legacy_table_excludelist, '|')})$"
 
