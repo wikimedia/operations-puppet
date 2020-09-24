@@ -168,8 +168,8 @@ sub https_deliver_hsts {
 sub https_deliver_networkerrorlogging {
 	// User agents only accept these headers via HTTPS.
 	if (req.http.X-Forwarded-Proto == "https") {
-		// We're doing a phased deployment.  To begin with, only group0 wikis.
-		if (req.http.Host ~ "(test\.(wikipedia|wikidata)|mediawiki|office\.wikimedia)\.org$") {
+		// We're doing a phased deployment.  To begin with, only group0 and group1 wikis.
+		if (req.http.Host ~ "(^|\.)(mediawiki|(test2?|ca|he)(\.m)?\.wikipedia|wikidata|wiktionary|wikisource|wikinews|wikibooks|wikiquote|wikivoyage|wikiversity|wikimedia)\.org$") {
 			// The values of these headers are JSON, but you must be careful to *not* embed `{"` or `"}`
 			// in the JSON itself, as those bigrams are VCL long-string delimiters.  One way to mangle JSON
 			// in the needed fashion is with the following Python snippet:
@@ -178,9 +178,9 @@ sub https_deliver_networkerrorlogging {
 			// VTC string literals can similarly be obtained with:
 			//     print(json.dumps(report_to).replace('{"', '{ "').replace('"}', '" }').replace('"', '\\"'))
 			set resp.http.Report-To = {"{ "group": "wm_nel", "max_age": 86400, "endpoints": [{ "url": "https://intake-logging.wikimedia.org/v1/events?stream=w3c.reportingapi.network_error&schema_uri=/w3c/reportingapi/network_error/1.0.0" }] }"};
-			//     nel=dict(report_to='wm_nel', max_age=86400, failure_fraction=1.0, success_fraction=0.0)
-			set resp.http.NEL = {"{ "report_to": "wm_nel", "max_age": 86400, "failure_fraction": 1.0, "success_fraction": 0.0}"};
-			// TODO: we should likely pick a lower failure_fraction before deploying past group0.
+			//     nel=dict(report_to='wm_nel', max_age=86400, failure_fraction=0.05, success_fraction=0.0)
+			set resp.http.NEL = {"{ "report_to": "wm_nel", "max_age": 86400, "failure_fraction": 0.05, "success_fraction": 0.0}"};
+			// The failure_fraction was guesstimated based on group0's reporting ratio: https://phabricator.wikimedia.org/T257527#6489683
 		}
 	}
 }
