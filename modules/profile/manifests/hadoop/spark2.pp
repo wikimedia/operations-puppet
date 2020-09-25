@@ -90,15 +90,16 @@ class profile::hadoop::spark2(
     $port_max_retries         = hiera('profile::hadoop::spark2::port_max_retries', 100),
     $executor_env_ld_lib_path = hiera('profile::hadoop::spark2::executor_env_ld_lib_path', '/usr/lib/hadoop/lib/native'),
     $encryption_enabled       = hiera('profile::hadoop::spark2::encryption_enabled', true),
+    String $default_version   = lookup('profile::hadoop::spark::default_version', { 'default_value' => '2.4.4'}),
 ) {
     require ::profile::hadoop::common
 
     package { 'spark2': }
 
-    # Get spark_verison from facter.  Fail if not set.
-    $spark_version = $::spark_version
-    if !$spark_version or $spark_version == '' {
-        fail('Failed getting spark version via facter.')
+    # Get spark_verison from facter. Use the default provided via hiera if not set.
+    $spark_version = $::spark_version ? {
+        undef   => $default_version,
+        default => $::spark_version
     }
 
     # Ensure that a symlink to hive-site.xml exists so that
