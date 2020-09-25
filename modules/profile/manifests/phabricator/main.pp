@@ -536,9 +536,9 @@ class profile::phabricator::main (
     }
 
     file { '/usr/local/bin/chk_phuser':
-        content => template('phabricator/chk_phuser.sh.erb'),
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0550',
+        source => 'puppet:///modules/phabricator/chk_phuser.sh',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0550',
     }
 }
