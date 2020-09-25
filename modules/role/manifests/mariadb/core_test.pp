@@ -1,102 +1,15 @@
 class role::mariadb::core_test {
-    $socket = hiera('mariadb::socket', '/run/mysqld/mysqld.sock')
-    $datadir = hiera('mariadb::datadir', '/srv/sqldata')
-    $tmpdir = hiera('mariadb::tmpdir', '/srv/tmp')
-    $shard = hiera('mariadb::shard')
-    $mysql_role = hiera('mariadb::mysql_role', 'slave')
-    $ssl = hiera('mariadb::ssl', 'puppet-cert')
-    $binlog_format = hiera('mariadb::binlog_format', 'ROW')
-    $mw_primary = mediawiki::state('primary_dc')
-    system::role { 'mariadb::core':
-        description => "Core Test DB Server ${shard}",
-    }
 
-    class { '::profile::mariadb::mysql_role':
-        role => $mysql_role,
+    system::role { 'mariadb::core':
+        description => 'Core Test DB Server',
     }
-    profile::mariadb::section { $shard: }
 
     include ::profile::standard
     include ::profile::base::firewall
     include ::profile::mariadb::monitor
     include ::passwords::misc::scripts
     include ::role::mariadb::ferm
-
-    # Semi-sync replication
-    # off: for shard(s) of a single machine, with no slaves
-    # slave: for all slaves
-    # both: for masters (they are slaves and masters at the same time)
-    if ($mysql_role == 'standalone') {
-        $semi_sync = 'off'
-    } elsif $mysql_role == 'master' {
-        $semi_sync = 'master'
-    } else {
-        $semi_sync = 'slave'
-    }
-
-    class { 'profile::mariadb::monitor::prometheus':
-        socket      => $socket,
-    }
-
-    require profile::mariadb::packages_wmf
-    include profile::mariadb::wmfmariadbpy
-    class { 'mariadb::service':
-        # override not needed, default configuration changed on package
-        # override => "[Service]\nLimitNOFILE=200000",
-    }
-
-    if $profile::mariadb::packages_wmf::mariadb_package in [
-            'wmf-mariadb', 'wmf-mariadb10', 'wmf-mariadb101',
-            'wmf-mariadb102', 'wmf-mariadb103', 'wmf-mariadb104'
-    ] {
-        $config_template = 'production.my.cnf.erb'
-    } else {
-        $config_template = 'core-mysql.my.cnf.erb'
-    }
-    # Read only forced on also for the masters of the primary datacenter
-    class { 'mariadb::config':
-        config           => "role/mariadb/mysqld_config/${config_template}",
-        basedir          => $profile::mariadb::packages_wmf::basedir,
-        datadir          => $datadir,
-        tmpdir           => $tmpdir,
-        socket           => $socket,
-        p_s              => 'on',
-        ssl              => $ssl,
-        binlog_format    => $binlog_format,
-        semi_sync        => $semi_sync,
-        replication_role => $mysql_role,
-    }
-
-    class { 'profile::mariadb::grants::core': }
-    class { 'profile::mariadb::grants::production':
-        shard    => 'core',
-        prompt   => "PRODUCTION ${shard} ${mysql_role}",
-        password => $passwords::misc::scripts::mysql_root_pass,
-    }
-
-    $replication_is_critical = ($mw_primary == $::site)
-    $read_only = !($mw_primary == $::site and $mysql_role == 'master')  # could we have rw hosts on the secondary dc?
-    $contact_group = 'admins'
-
-    mariadb::monitor_readonly { [ $shard ]:
-        read_only   => $read_only,
-        is_critical => false,
-    }
-
-    mariadb::monitor_replication { [ $shard ]:
-        multisource   => false,
-        is_critical   => false,
-        contact_group => $contact_group,
-        socket        => $socket,
-    }
-
-    $heartbeat_enabled = $mysql_role == 'master'
-    class { 'mariadb::heartbeat':
-        shard      => $shard,
-        datacenter => $::site,
-        enabled    => $heartbeat_enabled,
-        socket     => $socket,
-    }
-
-    class { 'mariadb::monitor_memory': }
+    require ::profile::mariadb::packages_wmf
+    include ::profile::mariadb::wmfmariadbpy
+    include ::profile::mariadb::core_test
 }
