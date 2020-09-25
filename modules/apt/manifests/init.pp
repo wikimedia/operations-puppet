@@ -36,6 +36,7 @@ class apt(
             owner   => 'root',
             group   => 'root',
             content => template('apt/base-apt-conf.erb'),
+            require => Apt::Repository['wikimedia'],
         }
     }
 
