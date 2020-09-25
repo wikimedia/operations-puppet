@@ -2301,7 +2301,7 @@ host db2124 {
 }
 
 host db2125 {
-    hardware ethernet 4C:D9:8F:7D:68:A7;
+    hardware ethernet 4C:D9:8F:B7:A2:26;
     fixed-address db2125.codfw.wmnet;
 }
 
