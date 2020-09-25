@@ -1,5 +1,5 @@
 define facilities::monitor_pdu_3phase(
-    Stdlib::Ip_address $ip,
+    Stdlib::IP::Address $ip,
     String $row,
     String $site,
     Integer $breaker = 30,

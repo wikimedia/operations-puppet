@@ -3,8 +3,8 @@
 # TODO: Monitor infeed status
 define facilities::monitor_pdu_service(
     # Interestingly, not FQDN, not even valid hostname
-    String $host,
-    Stdlib::Ip_address $ip,
+    Stdlib::Host $host,
+    Stdlib::IP::Address $ip,
     String $row,
     String $site,
     String $tower,

@@ -4,7 +4,7 @@
 # See also https://phabricator.wikimedia.org/T229101
 # and https://phabricator.wikimedia.org/T148541
 define facilities::monitor_pdu_1phase(
-    Stdlib::Ip_address $ip,
+    Stdlib::IP::Address $ip,
     String $row,
     String $site,
     Integer $breaker = 30,
