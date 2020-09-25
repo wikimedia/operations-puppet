@@ -64,9 +64,13 @@ C{
      * characters to "ip" including the (always present) terminal NUL.  The
      * return value is the zero for success, non-zero for failure (input IP is
      * invalid or the encoding of it is too long).
+     *
+     * Callers must specify 'which' data structure to extract the header from:
+     * either HDR_REQ for the client request object (req.http.X-Client-IP in VCL)
+     * or HDR_BEREQ for the request to the upstream backend (bereq.http.X-Client-IP).
      */
-    static int geo_get_xcip(const struct vrt_ctx *ctx, char* ip) {
-        const struct gethdr_s hdr = { HDR_REQ, "\014X-Client-IP:" };
+    static int geo_get_xcip(const struct vrt_ctx *ctx, enum gethdr_e which, char* ip) {
+        const struct gethdr_s hdr = { which, "\014X-Client-IP:" };
         const char* client_ip = VRT_GetHdr(ctx, &hdr);
         size_t len = 0;
         int rv = -1;
@@ -213,7 +217,7 @@ C{
 
         if (!mmdb)
             goto out;
-        if (geo_get_xcip(ctx, ip))
+        if (geo_get_xcip(ctx, HDR_REQ, ip))
             goto out;
         MMDB_lookup_result_s result = MMDB_lookup_string(mmdb, ip,
             &gai_error, &mmdb_error);
