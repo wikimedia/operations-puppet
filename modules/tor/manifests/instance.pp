@@ -1,7 +1,7 @@
 # sets up additional Tor instances
 # needs Tor >= 0.2.7.4-rc-1
 define tor::instance(
-    Variant[Stdlib::Ip_address, Stdlib::Fqdn] $address,
+    Stdlib::Host $address,
     String $nickname,
     String $contact,
     Stdlib::Port $controlport,

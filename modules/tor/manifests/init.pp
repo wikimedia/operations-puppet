@@ -1,6 +1,6 @@
 # sets up a Tor relay
 class tor(
-    Variant[Stdlib::Ip_address, Stdlib::Fqdn] $address,
+    Stdlib::Host $address,
     String $nickname,
     String $contact,
     Stdlib::Port $controlport,
