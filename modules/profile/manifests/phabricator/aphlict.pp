@@ -11,9 +11,9 @@ class profile::phabricator::aphlict (
     Boolean $manage_scap_user = lookup('profile::phabricator::main::manage_scap_user', { 'default_value' => true }),
     Optional[String] $phabricator_server = lookup('phabricator_server', { 'default_value' => undef }),
     Optional[Stdlib::Port] $client_port = lookup('profile::phabricator::aphlict::client_port', { 'default_value' => undef }),
-    Optional[Stdlib::Ip_address] $client_listen = lookup('profile::phabricator::aphlict::client_listen', { 'default_value' => undef }),
+    Optional[Stdlib::IP::Address] $client_listen = lookup('profile::phabricator::aphlict::client_listen', { 'default_value' => undef }),
     Optional[Stdlib::Port] $admin_port = lookup('profile::phabricator::aphlict::admin_port', { 'default_value' => undef }),
-    Optional[Stdlib::Ip_address] $admin_listen = lookup('profile::phabricator::aphlict::admin_listen', { 'default_value' => undef }),
+    Optional[Stdlib::IP::Address] $admin_listen = lookup('profile::phabricator::aphlict::admin_listen', { 'default_value' => undef }),
 ) {
 
     $deploy_root = "/srv/deployment/${deploy_target}"

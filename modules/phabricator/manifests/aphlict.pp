@@ -51,9 +51,9 @@ class phabricator::aphlict(
     Optional[Stdlib::Unixpath] $sslkey = undef,
     Optional[Stdlib::Unixpath] $sslchain = undef,
     Stdlib::Port $client_port = 22280,
-    Stdlib::Ip_address $client_listen = '0.0.0.0',
+    Stdlib::IP::Address $client_listen = '0.0.0.0',
     Stdlib::Port $admin_port = 22281,
-    Stdlib::Ip_address $admin_listen = '127.0.0.1',
+    Stdlib::IP::Address $admin_listen = '127.0.0.1',
 ) {
 
     # packages
