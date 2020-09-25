@@ -1,5 +1,7 @@
 # vi: set ft=ruby :
 
+# rubocop:disable Metrics/LineLength
+
 Vagrant.configure("2") do |config|
   config.vm.box = 'debian/contrib-buster64'
   config.vm.hostname = 'vtcpcc'
@@ -14,6 +16,7 @@ Vagrant.configure("2") do |config|
   config.vm.provision :shell, inline: 'pip3 install jenkinsapi'
 
   config.vm.provision :shell, inline: 'mkdir -p /usr/share/varnish/tests/ && cp /vagrant/{carriers,trusted_proxies}.json /usr/share/varnish/tests/'
+  config.vm.provision :shell, inline: 'ln -s /vagrant/usr/share/GeoIP/*.mmdb /usr/share/GeoIP'
 
   config.vm.post_up_message = <<-MSG
     Done! Run VTC tests as follows:

@@ -5,6 +5,26 @@ server s1 {
         rxreq
         txresp
     }
+
+    rxreq
+    # Data here corresponds to test data entries for 216.160.83.56 (see client section)
+    expect req.http.Host == "intake-logging.wikimedia.org"
+    expect req.http.X-GeoIP-ISP == "Century Link"
+    expect req.http.X-GeoIP-Organization == "Lariat Software"
+    expect req.http.X-GeoIP-AS-Number == "209"
+    expect req.http.X-GeoIP-Country == "US"
+    expect req.http.X-GeoIP-Subdivision == "WA"
+    txresp
+
+    rxreq
+    # Data here corresponds to test data entries for 67.43.156.1 (see client section)
+    expect req.http.Host == "intake-logging.wikimedia.org"
+    expect req.http.X-GeoIP-ISP == "Loud Packet"
+    expect req.http.X-GeoIP-Organization == "zudoarichikito_"
+    expect req.http.X-GeoIP-AS-Number == "35908"
+    expect req.http.X-GeoIP-Country == "BT"
+    expect req.http.X-GeoIP-Subdivision == <undef>
+    txresp
 } -start
 
 varnish v1 -arg "-p vcl_path=${vcl_path} -p vcc_err_unref=false -p vcc_allow_inline_c=true -p cc_command='${cc_command}'" -vcl+backend {
@@ -91,6 +111,15 @@ client c1 {
     expect resp.http.NEL == <undef>
 
 
+    # Test POSTing some reports, and (in the server section up top) make sure they get the right headers attached to their bereq.
+
+    # This IP address is one of the few in the City test data that has a subdivision (US state) while also being present in the ISP test data.
+    txreq -req "POST" -url "/" -hdr "Host: intake-logging.wikimedia.org" -hdr "X-Forwarded-Proto: https" -hdr "X-Client-IP: 216.160.83.56" -body ""
+    rxresp
+
+    # This is a randomly-chosen IP address that overlaps between City and ISP test data.
+    txreq -req "POST" -url "/" -hdr "Host: intake-logging.wikimedia.org" -hdr "X-Forwarded-Proto: https" -hdr "X-Client-IP: 67.43.156.1" -body ""
+    rxresp
 } -run
 
 logexpect l1 -wait

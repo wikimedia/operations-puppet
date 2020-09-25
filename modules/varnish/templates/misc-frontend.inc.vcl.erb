@@ -1,3 +1,5 @@
+include "geoip.inc.vcl";
+
 sub cluster_fe_vcl_switch {
 // XXX testing whether this works at all - note this duplicates similar code in text-frontend, as apparently request data is re-set on VCL switching.  If this works, next week we'll want to factor this out a little differently...
 	// Rewrite sitemap requests for itwiki into the sitemaps backend.
@@ -80,7 +82,12 @@ sub cluster_fe_pass {
     call cluster_fe_ratelimit;
 }
 
-sub cluster_fe_backend_fetch { }
+sub cluster_fe_backend_fetch {
+    // When we receive NEL reports, attach some GeoIP data as backend request headers.
+	if (bereq.http.Host == "intake-logging.wikimedia.org") {
+		call nel_geoip_bereq;
+	}
+}
 sub cluster_fe_backend_response_early { }
 
 sub cluster_fe_backend_response {

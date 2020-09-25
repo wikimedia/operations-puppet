@@ -18,6 +18,8 @@ C{
 
     MMDB_s* mmdb = NULL;
     #define GEO_FILE "/usr/share/GeoIP/GeoIP2-City.mmdb"
+    MMDB_s* mmdb_isp = NULL;
+    #define ISP_FILE "/usr/share/GeoIP/GeoIP2-ISP.mmdb"
 
     static void init_mmdb(MMDB_s** mmdb, const char* file) {
         if (!mmdb)
@@ -47,6 +49,7 @@ C{
 // to a vmod post-varnish4)
 sub vcl_init { C{
     init_mmdb(&mmdb, GEO_FILE);
+    init_mmdb(&mmdb_isp, ISP_FILE);
 }C }
 
 // This de-allocates MMDB resources when a VCL is actually discarded, which may
@@ -54,6 +57,7 @@ sub vcl_init { C{
 // clusters.
 sub vcl_fini { C{
     free_mmdb(&mmdb);
+    free_mmdb(&mmdb_isp);
 }C }
 
 // runtime stuff
@@ -252,7 +256,102 @@ C{
         out:
         geo_out_cookie(ctx, geo);
     }
+
+    // mmdb paths to attach to respective header names on the backend request.
+    static const char* nel_geo_path[2][4] = {
+        {"country", "iso_code", NULL, NULL},
+        {"subdivisions", "0", "iso_code", NULL},
+    };
+    static const char* nel_geo_hdrname[2] = {
+        "\020X-GeoIP-Country:",
+        "\024X-GeoIP-Subdivision:",
+    };
+    static const int _NEL_GEO_SIZE = sizeof(nel_geo_path)/sizeof(nel_geo_path[0]);
+
+    // mmdb_isp paths to attach to respective header names on the backend request.
+    static const char* nel_asn_path[3][2] = {
+        {"autonomous_system_number", NULL},
+        {"isp", NULL},
+        {"organization", NULL},
+    };
+    static const char* nel_asn_hdrname[3] = {
+        "\022X-GeoIP-AS-Number:",
+        "\014X-GeoIP-ISP:",
+        "\025X-GeoIP-Organization:",
+    };
+    static const int _NEL_ASN_SIZE = sizeof(nel_asn_path)/sizeof(nel_asn_path[0]);
+
+    // Given a MMDB entry data, and a header name, set the entry's data as the backend request header value.
+    static void edata_to_hdr(const struct vrt_ctx *ctx, const char* hdrname, const MMDB_entry_data_s* edata) {
+        if (edata && edata->has_data) {
+            const struct gethdr_s hdr = { HDR_BEREQ, hdrname };
+            char* tmp = NULL;
+            switch (edata->type) {
+                case MMDB_DATA_TYPE_UTF8_STRING:
+                    tmp = alloca(edata->data_size + 1);
+                    memcpy(tmp, edata->utf8_string, edata->data_size);
+                    tmp[edata->data_size] = '\0';
+                    VRT_SetHdr(ctx, &hdr, tmp, vrt_magic_string_end);
+                    break;
+                case MMDB_DATA_TYPE_UINT32:
+                    VRT_SetHdr(ctx, &hdr, VRT_INT_string(ctx, edata->uint32), vrt_magic_string_end);
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+    // Attach all nel_geo_paths and nel_asn_paths as backend request headers.
+    static void nel_xcip_output(const struct vrt_ctx *ctx) {
+        int gai_error, mmdb_error;
+        char ip[INET6_ADDRSTRLEN];
+        if (!mmdb && !mmdb_isp)
+            goto done;
+        if (geo_get_xcip(ctx, HDR_BEREQ, ip))
+            goto done;
+        // First, the geographical part.
+        if (!mmdb)
+            goto asn;
+        MMDB_lookup_result_s result = MMDB_lookup_string(mmdb, ip,
+            &gai_error, &mmdb_error);
+        if (gai_error || mmdb_error != MMDB_SUCCESS || !result.found_entry)
+            goto asn;
+
+        // Fill country code and subdivision if any
+        int g = 0;
+        for (g = 0; g < _NEL_GEO_SIZE; g++) {
+            MMDB_entry_data_s edata;
+            int st = MMDB_aget_value(&result.entry, &edata, nel_geo_path[g]);
+            if (st == MMDB_SUCCESS && edata.has_data) {
+                edata_to_hdr(ctx, nel_geo_hdrname[g], &edata);
+            }
+        }
+
+        // Fill AS number, ISP, organization
+        asn:
+        if (!mmdb_isp)
+            goto done;
+        result = MMDB_lookup_string(mmdb_isp, ip,
+            &gai_error, &mmdb_error);
+        if (gai_error || mmdb_error != MMDB_SUCCESS || !result.found_entry)
+            goto done;
+        for (g = 0; g < _NEL_ASN_SIZE; g++) {
+            MMDB_entry_data_s edata;
+            int st = MMDB_aget_value(&result.entry, &edata, nel_asn_path[g]);
+            if (st == MMDB_SUCCESS && edata.has_data) {
+                edata_to_hdr(ctx, nel_asn_hdrname[g], &edata);
+            }
+        }
+
+        done:
+        return;
+    }
 }C
+
+sub nel_geoip_bereq {
+    C{nel_xcip_output(ctx);}C
+}
 
 // Emits a Set-Cookie
 sub geoip_cookie {
