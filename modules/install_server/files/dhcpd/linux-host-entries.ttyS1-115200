@@ -7758,6 +7758,7 @@ host sretest1001 {
 host sretest1002 {
     hardware ethernet 4C:D9:8F:60:AF:47;
     fixed-address sretest1002.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host stat1004 {

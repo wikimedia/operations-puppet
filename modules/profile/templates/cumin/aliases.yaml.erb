@@ -264,6 +264,7 @@ sessionstore: P{O:sessionstore}
 snapshot: P{O:dumps::generation::worker::dumper or O:dumps::generation::worker::dumper_monitor or O:dumps::generation::worker::dumper_misc_crons_only or O:dumps::generation::worker::testbed}
 snapshot-canary: P{O:dumps::generation::worker::testbed}
 spare: P{O:spare::system}
+sretest: P{O:sretest}
 stat: P{O:statistics::private or O:statistics::cruncher or O:statistics::explorer::gpu or O:statistics::explorer}
 stat-hdfs: P{O:statistics::private or O:statistics::explorer}
 swift: A:swift-fe or A:swift-be
@@ -301,7 +302,7 @@ zookeeper-analytics: P{O:analytics_cluster::zookeeper}
 misc-analytics: P{O:statistics::web or O:statistics::cruncher or O:statistics::private or O:piwik or O:analytics_cluster::coordinator or O:kafka::monitoring or O:analytics_cluster::webserver} or A:eventlogging
 misc-apache: P{O:microsites::peopleweb or C:grafana::production or O:doc or O:requesttracker or O:otrs or O:miscweb} or A:planet or A:releases
 misc-devel: P{O:webperf::processors_and_site or O:webperf::profiling_tools or O:ve or O:archiva or O:docker::registry} or A:mwlog
-misc-nonprod: P{O:spare::system or O:test or O:pybaltest or O:insetup or O:insetup_noferm}
+misc-nonprod: P{O:spare::system or O:test or O:pybaltest or O:insetup or O:insetup_noferm or O:sretest}
 misc-ops: A:installserver or A:cumin or A:url-downloader or A:icinga or A:netmon or A:puppetboard or A:apt or A:debmonitor or A:debmonitor or A:backup or A:ping or A:rpki or A:flowspec or P{O:logging::webrequest::ops or O:builder or O:syslog::centralserver or O:pmacct or O:mirrors}
 misc-others: P{O:mw_rc_irc or O:etherpad or O:tor_relay or O:lists or O:netinsights}
 misc-releng: P{O:phabricator} or A:contint or A:gerrit or A:mw-maintenance

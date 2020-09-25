@@ -2302,9 +2302,9 @@ node /^snapshot1010\.eqiad\.wmnet/ {
     role(dumps::generation::worker::dumper_monitor)
 }
 
-# test nodes for akosiaris and moritzm
+# Servers for SRE tests which are not suitable for Cloud VPS
 node /^sretest100[1-2]\.eqiad\.wmnet$/ {
-    role(insetup)
+    role(sretest)
 }
 
 # visual diff testing (T257940)
