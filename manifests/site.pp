@@ -120,7 +120,11 @@ node /an-worker10(7[89]|8[0-9]|9[0-5]).eqiad.wmnet/ {
 }
 
 # new an-worker nodes an-worker1096-1117 Tasks T254892 and T259071.
-node /^an-worker109[6-9]\.eqiad\.wmnet$/ {
+node 'an-worker1096.eqiad.wmnet' {
+    role(analytics_cluster::hadoop::worker)
+}
+
+node /^an-worker109[7-9]\.eqiad\.wmnet$/ {
     role(insetup)
 }
 
