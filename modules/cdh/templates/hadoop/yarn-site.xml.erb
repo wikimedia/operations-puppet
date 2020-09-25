@@ -222,7 +222,7 @@ end
   <property>
     <description>Where to store container logs.</description>
     <name>yarn.nodemanager.log-dirs</name>
-    <value><%= @datanode_mounts.collect { |mount| mount + "/" + @yarn_logs_path}.join(',') %></value>
+    <value><%= @datanode_mounts.sort.collect { |mount| mount + "/" + @yarn_logs_path}.join(',') %></value>
   </property>
 <% end -%>
 
