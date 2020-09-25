@@ -1,14 +1,4 @@
-# "reprepro update" doesn't work for Jenkins due to https://issues.jenkins-ci.org/browse/INFRA-165
 Name: jenkins
-Method: http://pkg.jenkins-ci.org/debian-stable/
-Suite: binary
-Flat: thirdparty
-GetInRelease: no
-Architectures: all>amd64
-VerifyRelease: FCEF32E745F2C3D5
-ListShellHook: grep-dctrl -X -S jenkins || [ $? -eq 1 ]
-
-Name: jenkins-stretch
 Method: http://pkg.jenkins-ci.org/debian-stable/
 Suite: binary
 Flat: thirdparty/ci

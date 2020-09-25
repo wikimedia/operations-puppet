@@ -33,7 +33,6 @@ Update:
  envoyproxy
  hp-mcp-jessie
  hwraid
- jenkins
  mono-project-jessie
 Description: Wikimedia packages for Debian Jessie
 SignWith: 09DBD9F93F6CD44A
@@ -102,7 +101,6 @@ Update:
  grafana
  hp-mcp-stretch
  hwraid-stretch
- jenkins-stretch
  matomo
  mono-project-stretch
  tor-stretch
@@ -170,7 +168,7 @@ Update:
  elastic78
  elastic79
  grafana
- jenkins-stretch
+ jenkins
  hp-mcp-buster
  hwraid-stretch
  postgres
