@@ -18,6 +18,27 @@ C{
 
     MMDB_s* mmdb = NULL;
     #define GEO_FILE "/usr/share/GeoIP/GeoIP2-City.mmdb"
+
+    static void init_mmdb(MMDB_s** mmdb, const char* file) {
+        if (!mmdb)
+            return;
+
+        *mmdb = malloc(sizeof(MMDB_s));
+        int st = MMDB_open(file, MMDB_MODE_MMAP, *mmdb);
+        if (st != MMDB_SUCCESS) {
+            free(*mmdb);
+            *mmdb = NULL;
+            syslog(LOG_CRIT, "geoip.inc.vcl: failed to load MMDB '%s'", file);
+        }
+    }
+
+    static void free_mmdb(MMDB_s** mmdb) {
+        if (mmdb && *mmdb) {
+            MMDB_close(*mmdb);
+            free(*mmdb);
+            *mmdb = NULL;
+        }
+    }
 }C
 
 // This loads a fresh MaxMind DB on every VCL reload, but does not check for
@@ -25,24 +46,14 @@ C{
 // URCU-based scheme like netmapper uses.  Better to save this for future move
 // to a vmod post-varnish4)
 sub vcl_init { C{
-    mmdb = malloc(sizeof(*mmdb));
-    int st = MMDB_open(GEO_FILE, MMDB_MODE_MMAP, mmdb);
-    if (st != MMDB_SUCCESS) {
-        free(mmdb);
-        mmdb = NULL;
-        syslog(LOG_CRIT, "geoip.inc.vcl: failed to load MMDB '%s'", GEO_FILE);
-    }
+    init_mmdb(&mmdb, GEO_FILE);
 }C }
 
 // This de-allocates MMDB resources when a VCL is actually discarded, which may
 // be a long while after the triggering reload, especially on low-traffic
 // clusters.
 sub vcl_fini { C{
-    if (mmdb) {
-        MMDB_close(mmdb);
-        free(mmdb);
-        mmdb = NULL;
-    }
+    free_mmdb(&mmdb);
 }C }
 
 // runtime stuff
