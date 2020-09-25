@@ -82,6 +82,12 @@ scap::dsh::groups:
   search-airflow:
     hosts:
       - an-airflow1001.eqiad.wmnet
+  wdqs:
+    conftool:
+      - {'cluster': 'wdqs', 'service': 'wdqs', 'datacenters': ['eqiad', 'codfw']}
+    hosts:
+      - wdqs1009.eqiad.wmnet
+      - wdqs1010.eqiad.wmnet
   librenms:
     hosts:
       - netmon1002.wikimedia.org
