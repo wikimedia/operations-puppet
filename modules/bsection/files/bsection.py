@@ -5,7 +5,7 @@ import os
 import sys
 
 
-def main() -> None:
+def main() -> int:
     opts = parse_args()
     if opts.needle == "":
         print("ERROR: needle cannot be empty", file=sys.stderr)
@@ -14,7 +14,7 @@ def main() -> None:
         loc = find_needle(f, opts.needle)
         if loc < 0:
             print("ERROR: needle not found", file=sys.stderr)
-            sys.exit(1)
+            return 1
         lower_loc = lower_bound(f, opts.needle, loc)
         assert lower_loc >= 0
         upper_loc = upper_bound(f, opts.needle, loc)
@@ -25,6 +25,7 @@ def main() -> None:
         o = os.open("/dev/stdout", os.O_WRONLY)
         os.sendfile(o, f.fileno(), lower_loc, upper_loc - lower_loc)
         os.close(o)
+    return 0
 
 
 def parse_args() -> argparse.Namespace:
@@ -257,4 +258,4 @@ def peek_line(f) -> str:
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())
