@@ -16,10 +16,10 @@
 # [*distributions*]
 #  List of distributions to build. Defaults to stretch
 class docker::baseimages(
-    $docker_registry,
-    $proxy_address=undef,
-    $proxy_port=undef,
-    $distributions=['stretch'],
+    Stdlib::Host $docker_registry,
+    Optional[Stdlib::Host] $proxy_address = undef,
+    Optional[Stdlib::Port] $proxy_port = undef,
+    Array[String] $distributions = ['stretch'],
 ) {
     # We need docker running
     Service[docker] -> Class[docker::baseimages]

@@ -12,8 +12,8 @@
 # names multiple times already. Support that so we can choose which one we want.
 # Defaults to docker-engine currently, but is subject to change
 class docker(
-    $version,
-    $package_name='docker-engine',
+    String $version,
+    String $package_name='docker-engine',
 ){
     require ::docker::configuration
     package { $package_name:

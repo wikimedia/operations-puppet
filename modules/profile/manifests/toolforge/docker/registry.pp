@@ -1,9 +1,9 @@
 class profile::toolforge::docker::registry(
-    $user = lookup('docker::username'),
-    $hash = lookup('docker::password_hash'),
-    $builder_host = lookup('docker::builder_host'),
-    $active_node = lookup('profile::toolforge::docker::registry::active_node'),
-    $standby_node = lookup('profile::toolforge::docker::registry::standby_node'),
+    String $user = lookup('docker::username'),
+    String $hash = lookup('docker::password_hash'),
+    Stdlib::Host $builder_host = lookup('docker::builder_host'),
+    Stdlib::Host $active_node = lookup('profile::toolforge::docker::registry::active_node'),
+    Stdlib::Host $standby_node = lookup('profile::toolforge::docker::registry::standby_node'),
 ) {
     $ssl_certificate_name = 'toolforge'
     acme_chief::cert { $ssl_certificate_name:

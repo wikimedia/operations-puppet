@@ -10,9 +10,9 @@
 #              Defaults to /etc/docker/daemon.json
 #
 class docker::configuration(
-    $settings,
-    $directory='/etc/docker',
-    $location='/etc/docker/daemon.json',
+    Hash $settings,
+    Stdlib::Unixpath $directory = '/etc/docker',
+    Stdlib::Unixpath $location = '/etc/docker/daemon.json',
 ) {
     file { $directory:
         ensure => directory,

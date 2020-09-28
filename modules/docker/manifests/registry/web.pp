@@ -1,14 +1,14 @@
 class docker::registry::web(
-    $docker_username,
-    $docker_password_hash,
-    $allow_push_from,
-    $ssl_settings,
-    $use_puppet_certs=false,
-    $use_acme_chief_certs=false,
-    $ssl_certificate_name=undef,
-    $http_endpoint=false,
-    $http_allowed_hosts=[],
-    $cors=false,
+    Boolean $use_puppet_certs = false,
+    Boolean $use_acme_chief_certs = false,
+    Boolean $http_endpoint = false,
+    Array[Stdlib::Host] $http_allowed_hosts = [],
+    Boolean $cors = false,
+    Optional[String] $docker_username,
+    Optional[String] $docker_password_hash,
+    Optional[Array[Stdlib::Host]] $allow_push_from,
+    Optional[Array[String]] $ssl_settings,
+    Optional[String] $ssl_certificate_name = undef,
 ) {
     if (!$use_puppet_certs and ($ssl_certificate_name == undef)) {
         fail('Either puppet certs should be used, or an ssl cert name should be provided')

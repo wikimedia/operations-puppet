@@ -1,11 +1,11 @@
 class docker::registry(
-    $config={},
-    $storage_backend='filebackend',
-    $datapath='/srv/registry',
-    $swift_user=undef,
-    $swift_password=undef,
-    $swift_url=undef,
-    $swift_container=undef,
+    Hash $config = {},
+    String $storage_backend = 'filebackend',
+    Stdlib::Unixpath $datapath = '/srv/registry',
+    Optinal[String] $swift_user = undef,
+    Optional[String] $swift_password = undef,
+    Optional[Stdlib::Httpsurl] $swift_url = undef,
+    Optional[String] $swift_container = undef,
 ){
 
     require_package('docker-registry')
