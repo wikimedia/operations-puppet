@@ -28,17 +28,18 @@
 #   }
 #
 define logstash::output::elasticsearch(
-    $ensure          = present,
-    $host            = '127.0.0.1',
-    $index           = "${title}-%{+YYYY.MM.dd}",
-    $prefix          = "${title}-",
-    $port            = 9200,
-    $guard_condition = undef,
-    $manage_indices  = false,
-    $priority        = 10,
-    $template        = undef,
-    $template_name   = $title,
-    $plugin_id       = "output/elasticsearch/${title}",
+    $ensure           = present,
+    $host             = '127.0.0.1',
+    $index            = "${title}-%{+YYYY.MM.dd}",
+    $prefix           = "${title}-",
+    $port             = 9200,
+    $guard_condition  = undef,
+    $manage_indices   = false,
+    $priority         = 10,
+    $template         = undef,
+    $template_name    = $title,
+    $plugin_id        = "output/elasticsearch/${title}",
+    $cleanup_template = 'logstash/curator/cleanup.yaml.erb',
 ) {
     require ::logstash::output::elasticsearch::scripts
 
@@ -62,7 +63,7 @@ define logstash::output::elasticsearch(
         "config-${title}":
             content => template('elasticsearch/curator_cluster.yaml.erb');
         "cleanup_${title}":
-            content => template('logstash/curator/cleanup.yaml.erb')
+            content => template($cleanup_template)
     }
 
     cron { "logstash_cleanup_indices_${title}":
