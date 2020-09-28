@@ -21,6 +21,8 @@ labels:
     custom:
       # Match Icinga background colors for 'severity'
       severity:
+        - value: 'page'
+          color: '#e74c3c'
         - value: 'critical'
           color: '#ffd4c9'
         - value: 'warning'
@@ -28,7 +30,7 @@ labels:
         - value: 'unknown'
           color: '#eeaeee'
 
-# Sort by decreasing severity (Icinga compat)
+# Sort by decreasing severity
 grid:
   sorting:
     order: label
@@ -37,6 +39,7 @@ grid:
     customValues:
       labels:
         severity:
+          page: 0
           critical: 1
           warning: 2
           unknown: 3

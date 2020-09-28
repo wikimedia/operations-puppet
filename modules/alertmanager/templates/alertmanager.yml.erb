@@ -18,14 +18,12 @@ route:
   receiver: default
   group_by: ['alertname', 'cluster', 'scope']
   routes:
-    # Icinga compatibility alerts 'branch'
     - match:
-        alertname: IcingaServiceProblem
-      group_by: ['alertname', 'service']
-      routes:
-        - match:
-            severity: 'critical'
-          receiver: 'irc'
+        severity: 'page'
+      receiver: 'irc'
+    - match:
+        severity: 'critical'
+      receiver: 'irc'
 
 receivers:
 - name: 'default'

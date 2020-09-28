@@ -17,5 +17,5 @@ irc_nickname_password: <%= @irc_nickname_password %>
 # See also https://phabricator.wikimedia.org/T101575
 use_privmsg: yes
 
-msg_once_per_alert_group: no
-msg_template: "({{ .Labels.alertname }}) {{ .Status }}: {{ .Annotations.summary }}"
+msg_once_per_alert_group: yes
+msg_template: "({{ .GroupLabels.alertname }}) {{.Status}}{{ if .Alerts | len | le 2 }} (+{{ .Alerts | len }}){{ end }} {{ (index .Alerts 0).Annotations.summary }}"
