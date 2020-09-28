@@ -1929,6 +1929,11 @@ host db1149 {
     fixed-address db1149.eqiad.wmnet;
 }
 
+host db1150 {
+    hardware ethernet 2C:EA:7F:56:DB:36;
+    fixed-address db1150.eqiad.wmnet;
+}
+
 host db2071 {
     hardware ethernet 18:66:DA:F8:F2:20;
     fixed-address db2071.codfw.wmnet;

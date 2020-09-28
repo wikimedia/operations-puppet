@@ -378,6 +378,11 @@ node /^db1(074|076|129)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
 
+# new eqiad db host T260817
+node 'db1150.eqiad.wmnet' {
+    role(insetup)
+}
+
 # s2 (large wikis) core production dbs on codfw
 # codfw master
 node 'db2107.codfw.wmnet' {
