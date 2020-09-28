@@ -1,13 +1,14 @@
 class profile::thumbor(
-    $memcached_servers_nutcracker = hiera('thumbor_memcached_servers_nutcracker'),
-    $logstash_port = hiera('logstash_logback_port'),
-    $swift_sharded_containers = hiera_array('profile::swift::proxy::shard_container_list'),
-    $swift_private_containers = hiera_array('profile::swift::proxy::private_container_list'),
-    $thumbor_mediawiki_shared_secret = hiera('thumbor::mediawiki::shared_secret'),
-    $prometheus_nodes         = hiera('prometheus_nodes', []),
-    $statsd_port = hiera('statsd_exporter_port'),
-    $swift_account_keys = lookup('profile::swift::accounts_keys'),
-) {
+    Array[String] $memcached_servers_nutcracker = lookup('thumbor_memcached_servers_nutcracker'),
+    Stdlib::Port $logstash_port = lookup('logstash_logback_port'),
+    Array[String] $swift_sharded_containers = lookup('profile::swift::proxy::shard_container_list', {'merge' => 'unique'}),
+    Array[String] $swift_private_containers = lookup('profile::swift::proxy::private_container_list', {'merge' => 'unique'}),
+    String $thumbor_mediawiki_shared_secret = lookup('thumbor::mediawiki::shared_secret'),
+    Array[Stdlib::Host] $prometheus_nodes = lookup('prometheus_nodes', {'default_value' => []}),
+    Stdlib::Port $statsd_port = lookup('statsd_exporter_port'),
+    Hash $swift_account_keys = lookup('profile::swift::accounts_keys'),
+){
+
     include ::profile::conftool::client
     class { 'conftool::scripts': }
 

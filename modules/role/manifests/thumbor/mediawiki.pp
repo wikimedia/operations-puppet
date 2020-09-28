@@ -5,6 +5,7 @@
 # filtertags: labs-project-deployment-prep
 
 class role::thumbor::mediawiki {
+
     include ::profile::standard
     include ::profile::base::firewall
     include ::mediawiki::packages::fonts
@@ -12,8 +13,8 @@ class role::thumbor::mediawiki {
     include ::profile::prometheus::nutcracker_exporter
     include ::profile::thumbor
     include ::lvs::realserver
-    include ::threedtopng::deploy # lint:ignore:wmf_styleguide
-
+    include ::threedtopng::deploy
+    include ::profile::prometheus::memcached_exporter
 
     class { '::profile::statsite':
       ensure => absent,
@@ -30,7 +31,6 @@ class role::thumbor::mediawiki {
 
     class {'::imagemagick::install': }
 
-    include ::profile::prometheus::memcached_exporter
     class { '::profile::prometheus::statsd_exporter':
         relay_address => '',
     }
