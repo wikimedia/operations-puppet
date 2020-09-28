@@ -378,11 +378,6 @@ node /^db1(074|076|129)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
 
-# new eqiad db host T260817
-node 'db1150.eqiad.wmnet' {
-    role(insetup)
-}
-
 # s2 (large wikis) core production dbs on codfw
 # codfw master
 node 'db2107.codfw.wmnet' {
@@ -670,27 +665,32 @@ node 'db2093.codfw.wmnet' {
 }
 
 # eqiad backup sources
+## s2 & s3, stretch
 node 'db1095.eqiad.wmnet' {
     role(mariadb::dbstore_multiinstance)
 }
-
+## x1, buster
 node 'db1102.eqiad.wmnet' {
     role(mariadb::dbstore_multiinstance)
 }
-
+## s7 & s8, stretch
 node 'db1116.eqiad.wmnet' {
     role(mariadb::dbstore_multiinstance)
 }
-
+## s1 & s6, stretch
 node 'db1139.eqiad.wmnet' {
     role(mariadb::dbstore_multiinstance)
 }
-
+## s1 & s6, buster
 node 'db1140.eqiad.wmnet' {
     role(mariadb::dbstore_multiinstance)
 }
-
+## s4 & s5, stretch
 node 'db1145.eqiad.wmnet' {
+    role(mariadb::dbstore_multiinstance)
+}
+## s4 & s5, buster
+node 'db1150.eqiad.wmnet' {
     role(mariadb::dbstore_multiinstance)
 }
 
