@@ -747,7 +747,8 @@ groups:
                  'ALL = NOPASSWD: /bin/systemctl stop airflow-webserver',
                  'ALL = NOPASSWD: /bin/systemctl restart airflow-webserver',
                  'ALL = NOPASSWD: /bin/systemctl stop airflow-kerberos',
-                 'ALL = NOPASSWD: /bin/systemctl restart airflow-kerberos']
+                 'ALL = NOPASSWD: /bin/systemctl restart airflow-kerberos',
+                 'ALL = NOPASSWD: /bin/journalctl *']
   dns-admins:
     gid: 817
     description: People allowed to merge DNS changes
