@@ -9,7 +9,7 @@ class profile::cache::varnish::frontend (
     $runtime_params = hiera('profile::cache::varnish::frontend::runtime_params'),
     Profile::Cache::Sites $req_handling = lookup('cache::req_handling'),
     Profile::Cache::Sites $alternate_domains = lookup('cache::alternate_domains', {'default_value' => {}}),
-    String $packages_component = lookup('profile::cache::varnish::frontend::packages_component', {'default_value' => 'main'}),
+    String $packages_component = lookup('profile::cache::varnish::frontend::packages_component', {'default_value' => 'component/varnish6'}),
     $separate_vcl = hiera('profile::cache::varnish::separate_vcl', []),
     $fe_transient_gb = hiera('profile::cache::varnish::frontend::transient_gb', 0),
     Boolean $has_lvs = lookup('has_lvs', {'default_value' => true}),

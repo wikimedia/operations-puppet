@@ -23,7 +23,6 @@ profile::cache::varnish::frontend::fe_vcl_config:
   upload_webp_hits_threshold: 1000
   varnish_probe_ms: 100
   large_objects_cutoff: 262144
-profile::cache::varnish::frontend::packages_component: component/varnish6
 profile::trafficserver::tls::available_unified_certs:
   lets-encrypt:
     acme_chief: true
