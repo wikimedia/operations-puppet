@@ -1,20 +1,16 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
   phaste: Phabricator paste tool
 
 """
-import sys
-reload(sys)
-sys.setdefaultencoding('utf-8')
-
 from argparse import ArgumentParser
 import fileinput
 import hashlib
 import json
 import time
-import urllib
-import urllib2
+from urllib.request import Request, urlopen
+from urllib.parse import urlencode
 
 
 class Conduit(object):
@@ -28,10 +24,11 @@ class Conduit(object):
 
     def _do_request(self, method, data):
         url = '%s/api/%s' % (self.phab, method)
-        headers = {'User-Agent': 'wmf/phaste.py urllib2 (root@wikimedia.org)'}
-        req = urllib2.Request(url, data=urllib.urlencode(data), headers=headers)
-        resp = urllib2.urlopen(req)
-        resp_data = json.load(resp)
+        headers = {'User-Agent': 'wmf/phaste.py urllib (root@wikimedia.org)'}
+        req = Request(url, data=urlencode(data).encode('utf-8'), headers=headers)
+        with urlopen(req) as resp:
+            data = resp.read().decode('utf-8')
+            resp_data = json.loads(data)
         if resp_data.get('error_info'):
             raise RuntimeError('%(error_code)s: %(error_info)s' % resp_data)
         return resp_data['result']
@@ -39,7 +36,7 @@ class Conduit(object):
     def _get_credentials(self):
         if self.credentials is None:
             token = int(time.time())
-            signature = hashlib.sha1(str(token) + self.cert).hexdigest()
+            signature = hashlib.sha1((str(token) + self.cert).encode()).hexdigest()
             params = {
                 'client': 'phaste',
                 'clientVersion': 0,
@@ -81,4 +78,4 @@ call_kwargs['content'] = ''.join(fileinput.input(args.files))
 if args.title is not None:
     call_kwargs['title'] = args.title
 res = p.call('paste.create', **call_kwargs)
-print res['uri']
+print(res['uri'])
