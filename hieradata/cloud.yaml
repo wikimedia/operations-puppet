@@ -21,12 +21,13 @@ manage_puppet_ca_file: false
 profile::base::labs::unattended_wmf: 'present'
 profile::base::labs::unattended_distro: 'present'
 profile::puppetdb::database::users: {}
-profile::puppetdb::database::shared_buffers: '7680MB'
+profile::puppetdb::database::shared_buffers: '768MB'
 profile::puppetdb::database::replication_lag_crit: 16777216
 profile::puppetdb::database::replication_lag_warn: 1048576
 profile::puppetdb::database::log_line_prefix: '%t '
 profile::puppetdb::database::log_min_duration_statement: ~
 profile::puppetdb::database::ssldir: ~
+profile::puppetdb::jvm_opts: '-Xmx256m'
 profile::puppetdb::slaves: []
 profile::puppetdb::monitor_agentrun: false
 profile::puppetdb::log_level: info
