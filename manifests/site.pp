@@ -2162,13 +2162,8 @@ node /^relforge100[3-4]\.eqiad\.wmnet/ {
 }
 
 # restbase eqiad cluster
-node /^restbase10(1[6-9]|2[0-7])\.eqiad\.wmnet$/ {
+node /^restbase10(1[6-9]|2[0-9]|30)\.eqiad\.wmnet$/ {
     role(restbase::production)
-}
-
-# new restbase nodes (T241784)
-node /^restbase10(2[8-9]|3[0])\.eqiad\.wmnet$/ {
-    role(insetup)
 }
 
 # restbase codfw cluster
