@@ -945,7 +945,6 @@ host testreduce1001 {
 host testvm5001 {
     hardware ethernet aa:00:00:0a:c2:83;
     fixed-address testvm5001.eqsin.wmnet;
-    next-server 103.102.166.13; # install5001 (tftp server)
 }
 
 host urldownloader1001.wikimedia.org {
