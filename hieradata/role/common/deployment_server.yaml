@@ -118,7 +118,6 @@ scap::sources:
   dumps/dumps:
     repository: operations/dumps
     scap_repository: operations/dumps/scap
-  electron-render/deploy: {}
   eventlogging/analytics:
     repository: eventlogging
     scap_repository: eventlogging/scap/analytics
@@ -146,7 +145,6 @@ scap::sources:
     repository: operations/software/logstash/plugins
   analytics/turnilo/deploy:
     repository: analytics/turnilo/deploy
-  mobileapps/deploy: {}
 #    lvs_service: mobileapps
   ores/deploy: {}
 #    lvs_service: ores
@@ -154,8 +152,6 @@ scap::sources:
 #    lvs_service: parsoid
   phabricator/deployment:
     repository: phabricator/deployment
-  proton/deploy:
-    repository: mediawiki/services/chromium-render/deploy
   recommendation-api/deploy: {}
   restbase/deploy: {}
   striker/deploy:
