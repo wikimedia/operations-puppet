@@ -56,43 +56,13 @@ class profile::analytics::cluster::packages::statistics {
         'libcairo2-dev',          # ^
     ])
 
-    if !defined(Package['nodejs']) {
-        # nodejs6 is EOL
-        if os_version('debian == stretch') {
-            if !defined(Apt::Package_from_component['wikimedia-node10']){
-                apt::package_from_component { 'wikimedia-node10':
-                    component => 'component/node10',
-                    packages  => ['nodejs'],
-                }
-            }
-        } else {
-            # For embedded configurable-http-proxy
-            require_package('nodejs')
-        }
-    }
-
-    if os_version('debian >= buster') {
-        require_package([
-            'libgslcblas0',
-            'mariadb-client-10.3',
-            'libyaml-cpp0.6',
-        ])
-    } else {
-        require_package([
-            'libgsl2',
-            'mariadb-client-10.1',
-            'libyaml-cpp0.5v5',
-        ])
-
-        # We sometimes run eventlogging code from stat boxes for backfilling, etc.
-        # Include eventlogging::dependencies.
-        # Not all eventlogging dependencies are built for buster, so we don't include
-        # on buster hosts.
-        class { '::eventlogging::dependencies': }
-    }
-
-    # Python packages
-    require_package ([
+    require_package([
+        # For embedded configurable-http-proxy
+        'nodejs',
+        'libgslcblas0',
+        'mariadb-client-10.3',
+        'libyaml-cpp0.6',
+        # Python packages
         'virtualenv',
         'libapache2-mod-python',
         'python3-mock',
@@ -112,38 +82,12 @@ class profile::analytics::cluster::packages::statistics {
         'python3-ua-parser',
     ])
 
-
-
-    # These packages need to be reviewed in the context of Debian Buster
-    # to figure out if we need to rebuild them or simply copy them over in reprepro.
-    if os_version('debian <= stretch') {
-        require_package([
-            # WMF maintains python-google-api at
-            # https://gerrit.wikimedia.org/r/#/admin/projects/operations/debs/python-google-api
-            'python3-google-api', # T190767
-        ])
-    }
-
-
     # FORTRAN packages (T89414)
     require_package([
         'gfortran',        # GNU Fortran 95 compiler
         'liblapack-dev',   # FORTRAN library of linear algebra routines
         'libopenblas-dev', # Optimized BLAS (linear algebra) library
     ])
-
-    # These packages need to be reviewed in the context of Debian Buster
-    # to figure out if we need to rebuild them or simply copy them over in reprepro.
-    if os_version('debian <= stretch') {
-        # Plotting packages
-        require_package([
-            'ploticus',
-            'libploticus0',
-            'libcairo2',
-            'libcairo2-dev',
-            'libxt-dev',
-        ])
-    }
 
     # scap also deploys git-lfs to clients, so guarding
     # the package resource with a !defined as precaution.
