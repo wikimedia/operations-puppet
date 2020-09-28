@@ -69,40 +69,6 @@ node /^an-test-worker100[1-3]\.eqiad\.wmnet$/ {
     role(insetup)
 }
 
-# analytics1028-analytics1040 are Hadoop worker nodes.
-# These hosts are OOW but they are used as temporary
-# Hadoop testing cluster for T211836.
-#
-# Hadoop Test cluster's master
-node 'analytics1028.eqiad.wmnet' {
-    role(analytics_test_cluster::hadoop::master)
-}
-
-# Hadoop Test cluster's standby master
-node 'analytics1029.eqiad.wmnet' {
-    role(analytics_test_cluster::hadoop::standby)
-}
-
-# Hadoop Test cluster's coordinator
-node 'analytics1030.eqiad.wmnet' {
-    role(analytics_test_cluster::coordinator)
-}
-
-# Hadoop Test cluster's workers
-node /analytics10(31|3[3-8]|40).eqiad.wmnet/ {
-    role(analytics_test_cluster::hadoop::worker)
-}
-
-# Hadoop Test cluster's UIs
-node 'analytics1039.eqiad.wmnet' {
-    role(analytics_test_cluster::hadoop::ui)
-}
-
-# Druid Analytics Test cluster
-node 'analytics1041.eqiad.wmnet' {
-    role(druid::test_analytics::worker)
-}
-
 # analytics1042-analytics1077 are Analytics Hadoop worker nodes.
 #
 # NOTE:  If you add, remove or move Hadoop nodes, you should edit

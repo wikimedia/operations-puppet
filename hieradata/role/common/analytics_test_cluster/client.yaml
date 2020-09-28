@@ -12,7 +12,7 @@ profile::hadoop::common::hadoop_cluster_name: 'analytics-test-hadoop'
 
 profile::analytics::cluster::hdfs_mount::monitoring_user: 'analytics'
 
-profile::oozie::client::oozie_host: 'analytics1030.eqiad.wmnet'
+profile::oozie::client::oozie_host: 'an-test-coord1001.eqiad.wmnet'
 
 profile::swap::use_dumps_mounts: false
 
@@ -20,9 +20,9 @@ profile::swap::use_dumps_mounts: false
 # Hive configuration is common to multiple clients, but because of role based
 # hiera lookups, we need to repeat it in multiple places. If you change this,
 # make sure you change it in all the right places!
-profile::hive::client::server_host: analytics1030.eqiad.wmnet
+profile::hive::client::server_host: an-test-coord1001.eqiad.wmnet
 profile::hive::client::server_port: 10000
-profile::hive::client::metastore_host: 'analytics1030.eqiad.wmnet'
+profile::hive::client::metastore_host: 'an-test-coord1001.eqiad.wmnet'
 
 # These kerberos configs are needed since some options needs to be in sync
 # between client and coordinator (or where hive server/metastore runs).

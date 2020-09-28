@@ -10,9 +10,9 @@ profile::analytics::cluster::packages::common::use_bigtop_settings: true
 profile::hadoop::common::hadoop_cluster_name: 'analytics-test-hadoop'
 
 # Periodical backups of the analytics-meta mysql database.
-profile::analytics::database::meta::backup::rsync_dest: 'analytics1029.eqiad.wmnet::backup/mysql/analytics-meta'
+profile::analytics::database::meta::backup::rsync_dest: 'an-test-master1002.eqiad.wmnet::backup/mysql/analytics-meta'
 
-profile::oozie::client::oozie_host: 'analytics1030.eqiad.wmnet'
+profile::oozie::client::oozie_host: 'an-test-coord1001.eqiad.wmnet'
 
 # Set the hive-site.xml file with group ownership 'analytics' so systemd timers
 # can read the file.
@@ -24,9 +24,9 @@ profile::analytics::cluster::hdfs_mount::monitoring_user: 'analytics'
 # Hive configuration is common to multiple clients, but because of role based
 # hiera lookups, we need to repeat it in multiple places. If you change this,
 # make sure you change it in all the right places!
-profile::hive::client::server_host: analytics1030.eqiad.wmnet
+profile::hive::client::server_host: an-test-coord1001.eqiad.wmnet
 profile::hive::client::server_port: 10000
-profile::hive::client::metastore_host: 'analytics1030.eqiad.wmnet'
+profile::hive::client::metastore_host: 'an-test-coord1001.eqiad.wmnet'
 
 # Hive Server Settings
 profile::hive::server::ferm_srange: '$ANALYTICS_NETWORKS'
@@ -35,7 +35,7 @@ profile::hive::metastore::ferm_srange: '$ANALYTICS_NETWORKS'
 # Presto Server settings
 profile::presto::monitoring_enabled: true
 profile::presto::cluster_name: analytics-test-presto
-profile::presto::discovery_uri: https://analytics1030.eqiad.wmnet:8281
+profile::presto::discovery_uri: https://an-test-coord1001.eqiad.wmnet:8281
 profile::presto::server::heap_max: 4G
 
 profile::presto::server::use_puppet_ssl_certs: true
@@ -68,7 +68,7 @@ profile::presto::server::catalogs:
       hive.security: read-only
       # Add Hadoop config files so Hive connector can work with HA Hadoop NameNodes.
       hive.config.resources: /etc/hadoop/conf/core-site.xml,/etc/hadoop/conf/hdfs-site.xml
-      hive.metastore.uri: thrift://analytics1030.eqiad.wmnet:9083
+      hive.metastore.uri: thrift://an-test-coord1001.eqiad.wmnet:9083
       hive.metastore.username: presto
       hive.storage-format: PARQUET
       hive.compression-codec: SNAPPY
@@ -80,12 +80,12 @@ profile::presto::server::catalogs:
       hive.non-managed-table-writes-enabled: true
       hive.non-managed-table-creates-enabled: true
       hive.metastore.authentication.type: 'KERBEROS'
-      hive.metastore.service.principal: 'hive/analytics1030.eqiad.wmnet@WIKIMEDIA'
-      hive.metastore.client.principal: 'presto/analytics1030.eqiad.wmnet@WIKIMEDIA'
+      hive.metastore.service.principal: 'hive/an-test-coord1001.eqiad.wmnet@WIKIMEDIA'
+      hive.metastore.client.principal: 'presto/an-test-coord1001.eqiad.wmnet@WIKIMEDIA'
       hive.metastore.client.keytab: '/etc/security/keytabs/presto/presto.keytab'
       hive.hdfs.authentication.type: 'KERBEROS'
       hive.hdfs.impersonation.enabled: true
-      hive.hdfs.presto.principal: 'presto/analytics1030.eqiad.wmnet@WIKIMEDIA'
+      hive.hdfs.presto.principal: 'presto/an-test-coord1001.eqiad.wmnet@WIKIMEDIA'
       hive.hdfs.presto.keytab: '/etc/security/keytabs/presto/presto.keytab'
       hive.hdfs.wire-encryption.enabled: true
 profile::presto::server::ferm_srange: $ANALYTICS_NETWORKS

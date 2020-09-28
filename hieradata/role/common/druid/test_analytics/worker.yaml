@@ -60,7 +60,7 @@ profile::druid::ferm_srange: '$ANALYTICS_NETWORKS'
 
 profile::druid::common::properties:
   druid.metadata.storage.type: mysql
-  druid.metadata.storage.connector.host: analytics1030.eqiad.wmnet
+  druid.metadata.storage.connector.host: an-test-coord1001.eqiad.wmnet
   # druid.metadata.storage.connector.password is set in the private repo.
   druid.storage.type: hdfs
   druid.hadoop.security.kerberos.principal: "druid/%{::fqdn}@WIKIMEDIA"
