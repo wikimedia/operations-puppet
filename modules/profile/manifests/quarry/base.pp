@@ -3,10 +3,10 @@
 # This class sets up the basic underlying structure for both
 # Quarry web frontends and Quarry query runners.
 class profile::quarry::base(
-    $clone_path = hiera('profile::quarry::base::clone_path'),
-    $venv_path = hiera('profile::quarry::base::venv_path'),
-    $result_path_parent = hiera('profile::quarry::base::result_path_parent'),
-    $result_path = hiera('profile::quarry::base::result_path'),
+    Stdlib::Unixpath $clone_path         = lookup('profile::quarry::base::clone_path'),
+    Stdlib::Unixpath $venv_path          = lookup('profile::quarry::base::venv_path'),
+    Stdlib::Unixpath $result_path_parent = lookup('profile::quarry::base::result_path_parent'),
+    Stdlib::Unixpath $result_path        = lookup('profile::quarry::base::result_path'),
 ) {
     package { 'python3-venv':
         ensure => latest,

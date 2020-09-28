@@ -4,8 +4,8 @@
 # users run SQL queries against LabsDB.
 # Deployment is handled using fabric
 class profile::quarry::web(
-    $clone_path = hiera('profile::quarry::base::clone_path'),
-    $venv_path = hiera('profile::quarry::base::venv_path'),
+    Stdlib::Unixpath $clone_path = lookup('profile::quarry::base::clone_path'),
+    Stdlib::Unixpath $venv_path  = lookup('profile::quarry::base::venv_path'),
 ) {
     require ::profile::quarry::base
 

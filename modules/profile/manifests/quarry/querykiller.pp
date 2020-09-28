@@ -3,8 +3,8 @@
 #
 # Sets up a cron based query-killer
 class profile::quarry::querykiller(
-    $clone_path = hiera('profile::quarry::base::clone_path'),
-    $venv_path = hiera('profile::quarry::base::venv_path'),
+    Stdlib::Unixpath $clone_path = lookup('profile::quarry::base::clone_path'),
+    Stdlib::Unixpath $venv_path  = lookup('profile::quarry::base::venv_path'),
 ) {
     require ::profile::quarry::base
 
