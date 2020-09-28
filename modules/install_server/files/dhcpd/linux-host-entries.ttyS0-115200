@@ -530,12 +530,6 @@ host matomo1002 {
     fixed-address matomo1002.eqiad.wmnet;
 }
 
-host mendelevium {
-    hardware ethernet aa:00:00:58:6a:10;
-    fixed-address mendelevium.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-}
-
 host miscweb1002 {
     hardware ethernet aa:00:00:3c:59:f6;
     fixed-address miscweb1002.eqiad.wmnet;

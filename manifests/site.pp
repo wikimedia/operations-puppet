@@ -1538,11 +1538,6 @@ node /^mc-gp200[1-3]\.codfw\.wmnet/ {
     role(mediawiki::memcached::gutter)
 }
 
-# OTRS - ticket.wikimedia.org
-node 'mendelevium.eqiad.wmnet' {
-    role(otrs)
-}
-
 # RT, replaced ununpentium
 node 'moscovium.eqiad.wmnet' {
     role(requesttracker)
@@ -2026,7 +2021,6 @@ node /orespoolcounter[12]00[34]\.(codfw|eqiad)\.wmnet/ {
     role(orespoolcounter)
 }
 
-# new OTRS machine to replace mendelevium
 node 'otrs1001.eqiad.wmnet' {
     role(otrs)
 }
