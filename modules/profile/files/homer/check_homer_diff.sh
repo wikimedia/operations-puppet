@@ -10,12 +10,18 @@ DIFF="$(/usr/local/bin/homer --quiet '*' diff --omit-diff 2>&1)"
 EXIT="${?}"
 set -e
 
-if [[ "${EXIT}" -ne "99" ]]; then
+if [[ "${EXIT}" -eq "0" ]]; then
     echo "No diff found"
     exit 0
 fi
 
-echo "Found diff for some devices, sending email to ${ADDRESS}"
-echo -e "${DIFF}\n\n${INFO}" | mail -s "[Homer] Device live config differs from committed one" "${ADDRESS}"
+if [[ "${EXIT}" -eq "99" ]]; then
+    SUBJECT="Device live config differs from committed one"
+else
+    SUBJECT="Live config check failed to run"
+fi
 
-# Do not make the systemd timer fail even if the email was sent
+echo "${SUBJECT}, sending email to ${ADDRESS}"
+echo -e "${DIFF}\n\n${INFO}" | mail -s "[Homer] ${SUBJECT}" "${ADDRESS}"
+
+# Do not make the systemd timer fail if the email was sent but fail if the email send step fails.
