@@ -1,6 +1,5 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
-from __future__ import division
 import sys
 import os
 
@@ -19,8 +18,8 @@ def get_sysctl(name):
 
 def main():
     if len(sys.argv) != 3:
-        print "Usage:"
-        print "check_conntrack WARNING CRITICAL"
+        print("Usage:")
+        print("check_conntrack WARNING CRITICAL")
         sys.exit(-1)
 
     w = int(sys.argv[1])
