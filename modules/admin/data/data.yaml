@@ -3885,6 +3885,10 @@ ldap_only_users:
     ensure: absent
     realname: Victoria Coleman
     email: vcoleman@wikimedia.org
+  bteshome:
+    ensure: present
+    realname: Bereket Teshome
+    email: bereket.teshome@wikimedia.de
   bitpogo:
     ensure: absent
     realname: Matthias Geisler
