@@ -10,14 +10,30 @@ class profile::mediawiki::mcrouter_wancache(
     Integer      $gutter_ttl           = lookup('profile::mediawiki::mcrouter_wancache::gutter_ttl'),
     Boolean      $use_onhost_memcached = lookup('profile::mediawiki::mcrouter_wancache::use_onhost_memcached'),
     Boolean      $prometheus_exporter  = lookup('profile::mediawiki::mcrouter_wancache::prometheus_exporter'),
-    Hash         $servers_by_datacenter_category = lookup('profile::mediawiki::mcrouter_wancache::shards'),
+    Hash         $servers_by_datacenter_category = lookup('profile::mediawiki::mcrouter_wancache::shards')
 ) {
+
+    # install onhost memcached if this server is going to use a Warmup Route
+    # MediaWiki servers are running an onhost memcached instance which
+    # they query before reaching out to the memcached cluster
+    # size should be 1/4 of total memory
+    $onhost_port          = 11210
+
+    if $use_onhost_memcached {
+        class { '::memcached':
+            size          => floor($facts['memorysize_mb'] * 0.25),
+            port          => $onhost_port,
+            growth_factor => 1.05,
+            min_slab_size => 5,
+        }
+        include ::profile::prometheus::memcached_exporter
+    }
 
     $servers_by_datacenter = $servers_by_datacenter_category['wancache']
     $proxies_by_datacenter = pick($servers_by_datacenter_category['proxies'], {})
     if $use_onhost_memcached {
         # TODO: Consider using a unix socket instead of a loopback address.
-        $onhost_pool = profile::mcrouter_pools('onhost', {'' => {'host' => '127.0.0.1', 'port' => 11211}})
+        $onhost_pool = profile::mcrouter_pools('onhost', {'' => {'host' => '127.0.0.1', 'port' => $onhost_port}})
     } else {
         $onhost_pool = {}
     }
