@@ -1,5 +1,4 @@
 class profile::openstack::base::cloudgw (
-    String              $orig_nic     = lookup('profile::openstack::base::cloudgw::orig_nic',     {default_value => 'eno1'}),
     Array[String]       $all_phy_nics = lookup('profile::openstack::base::cloudgw::all_phy_nics', {default_value => ['eno1']}),
     Integer             $host_vlan    = lookup('profile::openstack::base::cloudgw::host_vlan',    {default_value => 2118}),
     Stdlib::IP::Address $host_addr    = lookup('profile::openstack::base::cloudgw::host_addr',    {default_value => '127.0.0.2'}),
