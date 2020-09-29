@@ -9,7 +9,7 @@ class profile::prometheus::snmp_exporter (
 
     prometheus::snmp_exporter::module { 'pdu_codfw':
         template  => 'servertech_sentry3',
-        community => $passwords::network::snmp_ro_community_pdus_codfw,
+        community => $passwords::network::snmp_ro_community,
     }
 
     prometheus::snmp_exporter::module { 'pdu_eqiad':
@@ -19,7 +19,7 @@ class profile::prometheus::snmp_exporter (
 
     prometheus::snmp_exporter::module { 'pdu_sentry4_codfw':
         template  => 'servertech_sentry4',
-        community => $passwords::network::snmp_ro_community_pdus_codfw,
+        community => $passwords::network::snmp_ro_community,
     }
 
     prometheus::snmp_exporter::module { 'pdu_sentry4_eqiad':
