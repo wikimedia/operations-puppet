@@ -69,10 +69,10 @@ def main():
     try:
         output = subprocess.check_output(
             ['/bin/systemctl', 'is-system-running'],
-            stderr=subprocess.STDOUT).strip().decode()
+            stderr=subprocess.STDOUT).decode().strip()
         func = ok
     except subprocess.CalledProcessError as e:
-        output = e.output.strip()
+        output = e.output.decode().strip()
         if output in ['initializing', 'starting', 'stopping']:
             func = warning
         if output == 'unknown':
