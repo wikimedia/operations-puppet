@@ -22,4 +22,5 @@ testcases:
           - "kafka"
           - "input-kafka-networkerror-eqiad"
           - "es"
+          - "throttle-exempt"
         type: "network-error"

@@ -13,5 +13,5 @@ testcases:
     expected:
       - dummy: "key"
         level: "ERROR"
-        tags: ["es"]
+        tags: ["es", "throttle-exempt"]
         type: "clienterror"
