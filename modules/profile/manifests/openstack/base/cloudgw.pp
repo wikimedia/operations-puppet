@@ -3,6 +3,8 @@ class profile::openstack::base::cloudgw (
     Integer             $host_vlan    = lookup('profile::openstack::base::cloudgw::host_vlan',    {default_value => 2118}),
     Stdlib::IP::Address $host_addr    = lookup('profile::openstack::base::cloudgw::host_addr',    {default_value => '127.0.0.2'}),
     Integer             $host_netm    = lookup('profile::openstack::base::cloudgw::host_netm',    {default_value => 8}),
+    Stdlib::IP::Address $host_gw      = lookup('profile::openstack::base::cloudgw::host_gw',      {default_value => '127.0.0.1'}),
+    String              $host_prefixv6= lookup('profile::openstack::base::cloudgw::host_prefixv6',{default_value => 'fe00:'}),
     Integer             $virt_vlan    = lookup('profile::openstack::base::cloudgw::virt_vlan',    {default_value => 2120}),
     Stdlib::IP::Address $virt_addr    = lookup('profile::openstack::base::cloudgw::virt_addr',    {default_value => '127.0.0.3'}),
     Integer             $virt_netm    = lookup('profile::openstack::base::cloudgw::virt_netm',    {default_value => 8}),

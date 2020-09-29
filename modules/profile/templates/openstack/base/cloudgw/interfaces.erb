@@ -21,12 +21,11 @@ iface vlan<%= @host_vlan %> inet static
     vlan-raw-device bond0
     address <%= @host_addr %>
     netmask <%= @host_netm %>
-    # TODO: template these values
-    gateway 10.192.20.1
-    dns-nameservers 10.3.0.1
-    dns-search codfw.wmnet
-    up ip token set ::10:192:20:8 dev vlan2118
-    up ip addr add 2620:0:860:118:10:192:20:8/64 dev vlan2118
+    gateway <%= @host_gw %>
+    dns-nameservers<% @nameservers.each do |nameserver| -%> <%= nameserver -%><% end %>
+    dns-search <%= @site %>.wmnet
+    up ip token set ::<%= @host_addr %> dev vlan<%= @host_vlan %>
+    up ip addr add <%= @host_prefixv6 %>:<%= @host_addr %>/64 dev vlan<%= @host_vlan %>
 
 auto vrf-cloudgw
 iface vrf-cloudgw inet manual
