@@ -134,10 +134,14 @@ fi
 
 lock $LABS_PRIVATE
 
-# This will either be empty (if a sha1/treeish was passed to us, and thus,
-# is included already in $ORIG_ARGS), or it will contain 'FETCH_HEAD'.
-# This way, puppet-merge.py always receives some treeish.
-FETCH_HEAD_OR_EMPTY=$([ -n "${1:-}" ] || echo FETCH_HEAD)
+# if a specific sha1 was not requested push FETCH_HEAD on to the list of arguments
+if [ -z "${1}" ]
+then
+  FETCH_SHA1=0
+  ORIG_ARGS=( "$@" "FETCH_HEAD")
+else
+  FETCH_SHA1=1
+fi
 
 # From this point continue despite errors on remote masters. After a change
 # has been merged on the local master a remote merge failure should not
@@ -146,16 +150,16 @@ set +e
 
 if [ $LABS_PRIVATE -eq 1 ]; then
     # if --labsprivate is used just sync the labsprivate repo
-    /usr/local/bin/puppet-merge.py "${ORIG_ARGS[@]}" "$FETCH_HEAD_OR_EMPTY"
+    /usr/local/bin/puppet-merge.py "${ORIG_ARGS[@]}"
     LABS_EXIT=$?
 else
     # We want to do a labs merge every time we do an ops merge -- except if
     # the user gave us an explicit sha1, which only makes sense for one repo.
-    if [ -n "${FETCH_HEAD_OR_EMPTY}" ]; then
-      /usr/local/bin/puppet-merge.py --labsprivate "${ORIG_ARGS[@]}" "$FETCH_HEAD_OR_EMPTY"
+    if [ $FETCH_SHA1 -eq 0 ]; then
+      /usr/local/bin/puppet-merge.py --labsprivate "${ORIG_ARGS[@]}"
       LABS_EXIT=$?
     fi
-    /usr/local/bin/puppet-merge.py --ops "${ORIG_ARGS[@]}" "$FETCH_HEAD_OR_EMPTY"
+    /usr/local/bin/puppet-merge.py --ops "${ORIG_ARGS[@]}"
     PROD_EXIT=$?
 fi
 # puppet-merge.py exits with 99 if no merge was performed
