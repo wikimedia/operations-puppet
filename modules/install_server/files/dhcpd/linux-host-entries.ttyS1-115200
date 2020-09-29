@@ -648,19 +648,16 @@ host bast2002 {
 host bast3004 {
     hardware ethernet B0:26:28:6E:FA:20;
     fixed-address bast3004.wikimedia.org;
-    next-server 208.80.154.32; # install1003 (tftp server)
 }
 
 host bast4002 {
     hardware ethernet F4:E9:D4:BA:EE:D0;
     fixed-address bast4002.wikimedia.org;
-    next-server 208.80.153.51; # install2003 (tftp server)
 }
 
 host bast5001 {
     hardware ethernet F4:E9:D4:D0:8B:80;
     fixed-address bast5001.wikimedia.org;
-    next-server 208.80.153.51; # install2003 (tftp server)
 }
 
 host bohrium {
