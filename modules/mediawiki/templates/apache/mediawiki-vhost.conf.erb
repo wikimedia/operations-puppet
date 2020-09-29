@@ -89,5 +89,5 @@
         SetHandler "proxy:<%= @php_fpm_fcgi_endpoint %>"
     </FilesMatch>
 
-    RewriteRule ^/\.well-known/change-password/$ /wiki/Special:ChangeCredentials/MediaWiki%5CAuth%5CPasswordAuthenticationRequest [R=302]
+    RewriteRule ^/\.well-known/change-password$ /wiki/Special:ChangeCredentials/MediaWiki%5CAuth%5CPasswordAuthenticationRequest [R=302]
 </VirtualHost>
