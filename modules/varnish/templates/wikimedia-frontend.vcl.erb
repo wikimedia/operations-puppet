@@ -168,8 +168,9 @@ sub https_deliver_hsts {
 sub https_deliver_networkerrorlogging {
 	// User agents only accept these headers via HTTPS.
 	if (req.http.X-Forwarded-Proto == "https") {
-		// We're doing a phased deployment.  To begin with, only group0 and group1 wikis.
-		if (req.http.Host ~ "(^|\.)(mediawiki|(test2?|ca|he)(\.m)?\.wikipedia|wikidata|wiktionary|wikisource|wikinews|wikibooks|wikiquote|wikivoyage|wikiversity|wikimedia)\.org$") {
+		// Don't serve NEL response headers if users somehow wind up routed for us for domains that aren't ours.
+		// (See also normalize_request's Host header processing.)
+		if (req.http.Host != "invalid") {
 			// The values of these headers are JSON, but you must be careful to *not* embed `{"` or `"}`
 			// in the JSON itself, as those bigrams are VCL long-string delimiters.  One way to mangle JSON
 			// in the needed fashion is with the following Python snippet:
