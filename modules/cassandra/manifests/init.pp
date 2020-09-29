@@ -221,9 +221,15 @@ class cassandra (
     # Make sure libjemalloc is installed if
     # we are going to use the JEMallocAllocator.
     if $memory_allocator == 'JEMallocAllocator' {
+      if os_version('debian <= stretch') {
         package { 'libjemalloc1':
-            ensure => 'installed',
+          ensure => 'installed',
         }
+      } else {
+        package { 'libjemalloc2':
+          ensure => 'installed',
+        }
+      }
     }
 
     # Create non-default cassandra instances if requested.
