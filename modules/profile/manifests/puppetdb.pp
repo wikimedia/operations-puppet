@@ -1,18 +1,17 @@
 class profile::puppetdb(
-    Array[Stdlib::Host]                  $prometheus_nodes  = lookup('prometheus_nodes'),
-    Hash[String, Puppetmaster::Backends] $puppetmasters     = lookup('puppetmaster::servers'),
-    Stdlib::Host                         $master            = lookup('profile::puppetdb::master'),
-    String                               $jvm_opts          = lookup('profile::puppetdb::jvm_opts'),
-    Boolean                              $elk_logging       = lookup('profile::puppetdb::elk_logging'),
-    Boolean                              $filter_job_id     = lookup('profile::puppetdb::filter_job_id'),
-    Stdlib::Unixpath                     $ca_path           = lookup('profile::puppetdb::ca_path'),
-    String                               $puppetboard_hosts = lookup('profile::puppetdb::puppetboard_hosts'),
-    Boolean                              $monitor_agentrun  = lookup('profile::puppetdb::monitor_agentrun'),
-    String                               $puppetdb_pass     = lookup('puppetdb::password::rw'),
-    Puppetdb::Loglevel                   $log_level         = lookup('profile::puppetdb::log_level'),
-    # default value of undef still needs to be in the manifest untill we move to hiera 5
-    Optional[Stdlib::Unixpath]           $ssldir            = lookup('profile::puppetdb::ssldir',
-                                                                    {'default_value' => undef}),
+    Array[Stdlib::Host]                  $prometheus_nodes      = lookup('prometheus_nodes'),
+    Hash[String, Puppetmaster::Backends] $puppetmasters         = lookup('puppetmaster::servers'),
+    Stdlib::Host                         $master                = lookup('profile::puppetdb::master'),
+    String                               $jvm_opts              = lookup('profile::puppetdb::jvm_opts'),
+    Boolean                              $elk_logging           = lookup('profile::puppetdb::elk_logging'),
+    Boolean                              $filter_job_id         = lookup('profile::puppetdb::filter_job_id'),
+    Stdlib::Unixpath                     $ca_path               = lookup('profile::puppetdb::ca_path'),
+    String                               $puppetboard_hosts     = lookup('profile::puppetdb::puppetboard_hosts'),
+    Boolean                              $monitor_agentrun      = lookup('profile::puppetdb::monitor_agentrun'),
+    Boolean                              $tmpfs_stockpile_queue = lookup('profile::puppetdb::tmpfs_stockpile_queue'),
+    String                               $puppetdb_pass         = lookup('puppetdb::password::rw'),
+    Puppetdb::Loglevel                   $log_level             = lookup('profile::puppetdb::log_level'),
+    Optional[Stdlib::Unixpath]           $ssldir                = lookup('profile::puppetdb::ssldir')
 ) {
 
     # Prometheus JMX agent for the Puppetdb's JVM
@@ -21,14 +20,15 @@ class profile::puppetdb(
     $prometheus_java_opts = "-javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=${::ipaddress}:${prometheus_jmx_exporter_port}:${jmx_exporter_config_file}"
 
     # The JVM heap size has been raised to 6G for T170740
-    class { '::puppetmaster::puppetdb':
-        master        => $master,
-        jvm_opts      => "${jvm_opts} ${prometheus_java_opts}",
-        ssldir        => $ssldir,
-        ca_path       => $ca_path,
-        filter_job_id => $filter_job_id,
-        puppetdb_pass => $puppetdb_pass,
-        log_level     => $log_level,
+    class { 'puppetmaster::puppetdb':
+        master                => $master,
+        jvm_opts              => "${jvm_opts} ${prometheus_java_opts}",
+        ssldir                => $ssldir,
+        ca_path               => $ca_path,
+        filter_job_id         => $filter_job_id,
+        puppetdb_pass         => $puppetdb_pass,
+        log_level             => $log_level,
+        tmpfs_stockpile_queue => $tmpfs_stockpile_queue,
     }
 
     # Export JMX metrics to prometheus

@@ -12,6 +12,9 @@ class puppetdb::app(
     String                        $db_driver                  = 'postgres',
     Stdlib::Unixpath              $ssldir                     = puppet_ssldir(),
     Stdlib::Unixpath              $ca_path                    = '/etc/ssl/certs/Puppet_Internal_CA.pem',
+    Stdlib::Unixpath              $vardir                     = '/var/lib/puppetdb',
+    Stdlib::Unixpath              $stockpile_queue_dir        = "${vardir}/stockpile/cmd/q",
+    Boolean                       $tmpfs_stockpile_queue      = false,
     Boolean                       $perform_gc                 = false,
     Integer                       $command_processing_threads = 16,
     Puppetdb::Loglevel            $log_level                  = 'info',
@@ -24,10 +27,21 @@ class puppetdb::app(
 
     require_package('puppetdb')
 
-    file { '/var/lib/puppetdb':
+    file { $vardir:
         ensure => directory,
         owner  => 'puppetdb',
         group  => 'puppetdb',
+    }
+    $stockpile_queue_dir_ensure = $tmpfs_stockpile_queue ? {
+        true    => 'mounted',
+        default => 'absent',
+    }
+    mount {$stockpile_queue_dir:
+        ensure => $stockpile_queue_dir_ensure,
+        atboot => true,
+        device => 'tmpfs',
+        fstype => 'tmpfs',
+        notify => Service['puppetdb'],
     }
 
     file { '/etc/default/puppetdb':

@@ -3,14 +3,15 @@
 # Sets up a puppetdb instance and the corresponding database server.
 class puppetmaster::puppetdb(
     Stdlib::Host               $master,
-    Stdlib::Port               $port          = 443,
-    Stdlib::Port               $jetty_port    = 8080,
-    String                     $jvm_opts      ='-Xmx4G',
-    Optional[Stdlib::Unixpath] $ssldir        = undef,
-    Stdlib::Unixpath           $ca_path       = '/etc/ssl/certs/Puppet_Internal_CA.pem',
-    Boolean                    $filter_job_id = false,
-    String                     $puppetdb_pass = '',
-    Puppetdb::Loglevel         $log_level     = 'info',
+    Stdlib::Port               $port                  = 443,
+    Stdlib::Port               $jetty_port            = 8080,
+    String                     $jvm_opts              ='-Xmx4G',
+    Optional[Stdlib::Unixpath] $ssldir                = undef,
+    Stdlib::Unixpath           $ca_path               = '/etc/ssl/certs/Puppet_Internal_CA.pem',
+    Boolean                    $filter_job_id         = false,
+    String                     $puppetdb_pass         = '',
+    Puppetdb::Loglevel         $log_level             = 'info',
+    Boolean                    $tmpfs_stockpile_queue = false,
 ){
 
     if $filter_job_id {
@@ -47,13 +48,14 @@ class puppetmaster::puppetdb(
     }
 
     class { 'puppetdb::app':
-        db_rw_host  => $master,
-        db_ro_host  => $::fqdn,
-        db_password => $puppetdb_pass,
-        perform_gc  => ($master == $::fqdn), # only the master must perform GC
-        jvm_opts    => $jvm_opts,
-        ssldir      => $ssldir,
-        ca_path     => $ca_path,
-        log_level   => $log_level,
+        db_rw_host            => $master,
+        db_ro_host            => $::fqdn,
+        db_password           => $puppetdb_pass,
+        perform_gc            => ($master == $::fqdn), # only the master must perform GC
+        jvm_opts              => $jvm_opts,
+        ssldir                => $ssldir,
+        ca_path               => $ca_path,
+        log_level             => $log_level,
+        tmpfs_stockpile_queue => $tmpfs_stockpile_queue,
     }
 }
