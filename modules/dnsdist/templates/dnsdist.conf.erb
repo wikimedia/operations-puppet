@@ -1,8 +1,21 @@
 -- This file is managed by Puppet [see dnsdist/dnsdist.conf.erb].
 
+-- == Generic Configuration (dnsdist 1.4.0) ==
+
 -- dnsdist by default restricts queries from private IPs and other local addresses
+-- we allow traffic from anywhere as a public service
 addACL('0.0.0.0/0')
 addACL('::/0')
+
+<% if @enable_packetcache -%>
+-- packet cache configuration, applied to the default pool
+pc = newPacketCache(<%= @packetcache_max %>)
+getPool(""):setCache(pc)
+<% end -%>
+
+-- downstream backend recursor (running pdns-recursor)
+-- ECS is only enabled for queries to WMF authoritative nameservers; see `edns-subnet-whitelist' in dnsrecursor/recursor.conf.erb
+newServer({address='<%= @resolver['host'] %>:<%= @resolver['port'] %>', name='<%= @resolver['name'] %>', useClientSubnet=<%= @enable_ecs ? true : false %>})
 
 <% if @enable_console -%>
 -- control socket access (default port is 5199)
@@ -19,13 +32,12 @@ webserver('<%= @webserver_config['host'] %>:<%= @webserver_config['port'] %>', '
 -- note that we don't use DelayAction() as that is UDP-only
 addAction(MaxQPSIPRule(<%= @qps_max %>, 32, 64), DropAction())
 
-<% if @enable_packetcache -%>
--- dnsdist's packet cache configuration
-pc = newPacketCache(<%= @packetcache_max %>)
-getPool(""):setCache(pc)
-<% end -%>
+-- == Privacy ==
 
+-- restrict the size of the in-memory ring buffers used for traffic inspection
 setRingBuffersSize(<%= @ringbuffer_max %>)
+
+-- == DNS over HTTPS (DoH) ==
 
 -- TLS configuration for DoH
 tlsOptionsDOH = {
@@ -44,6 +56,7 @@ addDOHLocal('[::]', '<%= @tls_common['cert_chain_path'] %>', '<%= @tls_common['c
 
 <% if @enable_landing -%>
 -- static pages for the DoH frontend (/)
+-- used to display help information and/or privacy policy
 staticMap = { newDOHResponseMapEntry("^/$", 200, '<%= @landing_text %>') }
 
 -- dohFE0 is the DoH frontend for 0.0.0.0:443
@@ -54,6 +67,8 @@ dohFE0:setResponsesMap(staticMap)
 dohFE1 = getDOHFrontend(1)
 dohFE1:setResponsesMap(staticMap)
 <% end -%>
+
+-- == DNS over TLS (DoT) ==
 
 -- TLS configuration for DoT
 tlsOptionsDOT = {
@@ -72,6 +87,3 @@ tlsOptionsDOT = {
 -- enable DoT (default port is 853)
 addTLSLocal('0.0.0.0', '<%= @tls_common['cert_chain_path'] %>', '<%= @tls_common['cert_privkey_path'] %>', tlsOptionsDOT)
 addTLSLocal('[::]', '<%= @tls_common['cert_chain_path'] %>', '<%= @tls_common['cert_privkey_path'] %>', tlsOptionsDOT)
-
-newServer({address='<%= @resolver['host'] %>:<%= @resolver['port'] %>', name='<%= @resolver['name'] %>',
-           useClientSubnet=<%= @enable_ecs ? true : false %>})
