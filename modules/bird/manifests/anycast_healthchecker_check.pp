@@ -13,10 +13,14 @@
 # [*ensure*]
 #  Standard file ensure. Default: present
 #
+# [*check_fail*]
+#  Number of failures after which to consider the service down. Default: 1
+#
 define bird::anycast_healthchecker_check(
   Stdlib::IP::Address::V4::Nosubnet $address,
   String $check_cmd,
   Wmflib::Ensure $ensure = 'present',
+  Integer $check_fail = 1,
   ){
   file { "/etc/anycast-healthchecker.d/${title}.conf":
       ensure  => $ensure,

@@ -76,9 +76,10 @@ class profile::bird::anycast(
       before    => Class['::bird']
     }
     bird::anycast_healthchecker_check { "hc-vip-${vip_fqdn}":
-      ensure    => $vip_params['ensure'],
-      address   => $vip_params['address'],
-      check_cmd => $vip_params['check_cmd'],
+      ensure     => $vip_params['ensure'],
+      address    => $vip_params['address'],
+      check_cmd  => $vip_params['check_cmd'],
+      check_fail => $vip_params['check_fail'],
     }
   }
 }
