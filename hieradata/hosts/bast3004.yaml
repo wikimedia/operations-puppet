@@ -1,1 +1,2 @@
 prometheus::replica_label: 'a'
+profile::installserver::tftp::ensure_service: 'stopped'
