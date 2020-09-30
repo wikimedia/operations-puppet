@@ -3,8 +3,9 @@
 # Firewall rules for a zookeeper cluster.
 #
 class profile::zookeeper::firewall (
-    $srange = hiera('profile::zookeeper::firewall::srange'),
-) {
+    String $srange = lookup('profile::zookeeper::firewall::srange'),
+){
+
     ferm::service { 'zookeeper':
         proto  => 'tcp',
         # Zookeeper client, protocol ports

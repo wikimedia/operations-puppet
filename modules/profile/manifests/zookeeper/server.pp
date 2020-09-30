@@ -5,17 +5,17 @@
 #
 # filtertags: labs-project-deployment-prep labs-project-analytics
 class profile::zookeeper::server (
-    $clusters                 = hiera('zookeeper_clusters'),
-    $cluster_name             = hiera('profile::zookeeper::cluster_name'),
-    $version                  = hiera('profile::zookeeper::zookeeper_version'),
-    $max_client_connections   = hiera('profile::zookeeper::max_client_connections', 1024),
-    $sync_limit               = hiera('profile::zookeeper::sync_limit', 8),
-    $monitoring_enabled       = hiera('profile::zookeeper::monitoring_enabled', false),
-    $monitoring_contact_group = hiera('profile::zookeeper::monitoring_contact_group', 'admins'),
-    $is_critical              = hiera('profile::zookeeper::is_critical', false),
-    $prometheus_instance      = hiera('profile::zookeeper::prometheus_instance', 'ops'),
-    $force_java_11            = lookup('profile::zookeeper::force_java_11', { 'default_value' => false }),
-) {
+    Hash $clusters                   = lookup('zookeeper_clusters'),
+    String $cluster_name             = lookup('profile::zookeeper::cluster_name'),
+    String $version                  = lookup('profile::zookeeper::zookeeper_version'),
+    Integer $max_client_connections  = lookup('profile::zookeeper::max_client_connections', {default_value => 1024}),
+    Integer $sync_limit              = lookup('profile::zookeeper::sync_limit', {default_value => 8}),
+    Boolean $monitoring_enabled      = lookup('profile::zookeeper::monitoring_enabled', {default_value => false}),
+    String $monitoring_contact_group = lookup('profile::zookeeper::monitoring_contact_group', {default_value => 'admins'}),
+    Boolean $is_critical             = lookup('profile::zookeeper::is_critical', {default_value => false}),
+    String $prometheus_instance      = lookup('profile::zookeeper::prometheus_instance', {default_value => 'ops'}),
+    Boolean $force_java_11           = lookup('profile::zookeeper::force_java_11', {default_value => false }),
+){
 
     require_package('default-jdk')
 
