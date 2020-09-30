@@ -6,7 +6,7 @@ Documentation=https://github.com/cloudflare/cfssl/blob/master/doc/cmd/multiroot.
 [Service]
 ExecStart=/usr/bin/multirootca \
           -a "<%= @host %>:<%= @port %>" \
-          -roots <%= @conf_file %> \
+          -roots <%= @config_file %> \
           -tls-cert <%= @tls_cert %> \
           -tls-key <%= @tls_key %>
 Restart=always
