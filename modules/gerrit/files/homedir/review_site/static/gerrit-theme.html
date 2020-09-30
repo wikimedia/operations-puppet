@@ -91,6 +91,10 @@ limitations under the License.
         is: 'wm-custom-links',
       });
     })();
+  Gerrit.install(plugin => {
+    plugin.admin()
+      .addMenuLink('Code Search', 'https://codesearch.wmcloud.org/search/');
+  });
   </script>
 </dom-module>
 
