@@ -93,6 +93,7 @@ Components: main
 UDebComponents: main component/node10
 Update:
 # sorted list, leading whitespace matters!
+ amd-rocm33
  bigtop14
  confluent
  elastic55
@@ -105,7 +106,6 @@ Update:
  matomo
  mono-project-stretch
  tor-stretch
- thirdparty/amd-rocm33
  thirdparty/docker-ci
 # NOTE:  Cloudera does not (yet) provide Stretch packages.  We use the Jessie ones,
 # along with a fake equivs to satisfy hadoop-mapreduce's (unnecessary) dependency on libssl1.0.0
