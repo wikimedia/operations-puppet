@@ -9,4 +9,4 @@ profile::base::domain_search:
 admin::groups:
   - all-users
 
-profile::installserver::tftp::ensure_service: 'running'
+profile::installserver::tftp::ensure_service: 'stopped'
