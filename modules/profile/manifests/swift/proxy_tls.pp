@@ -1,6 +1,7 @@
 class profile::swift::proxy_tls (
-    String $ocsp_proxy   = hiera('http_proxy', ''),
-) {
+    String $ocsp_proxy = lookup('http_proxy', {'default_value' => ''}),
+){
+
     require ::profile::tlsproxy::instance
 
     tlsproxy::localssl { 'unified':
