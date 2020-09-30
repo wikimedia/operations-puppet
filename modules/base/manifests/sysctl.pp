@@ -104,7 +104,7 @@ class base::sysctl {
     # instead of the TCP congestion window.
     #
     # It has been added to Linux in version 4.9.
-    $use_bbr = hiera('bbr_congestion_control', false)
+    $use_bbr = lookup('bbr_congestion_control', {'default_value' => false})
     if ($use_bbr) and (versioncmp($::kernelversion, '4.9') >= 0) {
         sysctl::parameters { 'tcp_bbr':
             values => {
