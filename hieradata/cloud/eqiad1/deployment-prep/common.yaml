@@ -158,6 +158,7 @@ scap::dsh::groups:
             - deployment-mediawiki-09.deployment-prep.eqiad.wmflabs
             - deployment-mediawiki-07.deployment-prep.eqiad.wmflabs
             - deployment-snapshot01.deployment-prep.eqiad.wmflabs
+            - deployment-snapshot02.deployment-prep.eqiad1.wikimedia.cloud
             - deployment-deploy01.deployment-prep.eqiad.wmflabs
             - deployment-deploy02.deployment-prep.eqiad.wmflabs
             - deployment-mwmaint01.deployment-prep.eqiad.wmflabs
