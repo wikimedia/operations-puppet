@@ -1,27 +1,36 @@
 # filtertags: labs-project-deployment-prep labs-project-swift
 class profile::swift::proxy (
-    Boolean $use_tls = lookup('role::swift::proxy::use_tls', {'default_value' => false}),
-    Hash $accounts = lookup('profile::swift::accounts'),
-    Hash $accounts_keys = lookup('profile::swift::accounts_keys'),
-    Hash[String, Hash] $replication_accounts = lookup('profile::swift::replication_accounts'),
-    Hash[String, Hash] $replication_keys = lookup('profile::swift::replication_keys'),
-    String $hash_path_suffix = lookup('profile::swift::hash_path_suffix'),
-    String $stats_reporter_host = lookup('profile::swift::stats_reporter_host'),
-    String $swift_cluster = lookup('profile::swift::cluster'),
-    Array[Stdlib::Host] $swift_backends = lookup('swift::storagehosts'),
-    Array[Stdlib::Host] $swift_frontends = lookup('swift::proxyhosts'),
+    Hash $accounts                             = lookup('profile::swift::accounts'),
+    Hash $accounts_keys                        = lookup('profile::swift::accounts_keys'),
+    Hash[String, Hash] $replication_accounts   = lookup('profile::swift::replication_accounts'),
+    Hash[String, Hash] $replication_keys       = lookup('profile::swift::replication_keys'),
+    String $hash_path_suffix                   = lookup('profile::swift::hash_path_suffix'),
+    String $stats_reporter_host                = lookup('profile::swift::stats_reporter_host'),
+    String $swift_cluster                      = lookup('profile::swift::cluster'),
+    Array[Stdlib::Host] $swift_backends        = lookup('swift::storagehosts'),
+    Array[Stdlib::Host] $swift_frontends       = lookup('swift::proxyhosts'),
+    Boolean $use_tls                           = lookup('profile::swift::proxy::use_tls'),
+    String $proxy_service_host                 = lookup('profile::swift::proxy::proxy_service_host'),
+    Array[String] $shard_container_list        = lookup('profile::swift::proxy::shard_container_list'),
+    Optional[Stdlib::Host] $statsd_host        = lookup('profile::swift::proxy::statsd_host'),
+    Optional[Stdlib::Port] $statsd_port        = lookup('profile::swift::proxy::statsd_port'),
+    Optional[String] $dispersion_account       = lookup('profile::swift::proxy::dispersion_account'),
+    Optional[String] $rewrite_account          = lookup('profile::swift::proxy::rewrite_account'),
+    Optional[Array[String]] $memcached_servers = lookup('profile::swift::proxy::memcached_servers'),
+    Optional[String] $thumborhost              = lookup('profile::swift::proxy::thumborhost'),
+    Optional[String] $inactivedc_thumborhost   = lookup('profile::swift::proxy::inactivedc_thumborhost'),
 ){
 
-    class { '::swift':
+    class { 'swift':
         hash_path_suffix => $hash_path_suffix,
     }
 
-    class { '::swift::container_sync':
+    class { 'swift::container_sync':
         accounts => $replication_accounts,
         keys     => $replication_keys,
     }
 
-    class { '::swift::ring':
+    class { 'swift::ring':
         swift_cluster => $swift_cluster,
     }
 
@@ -32,7 +41,7 @@ class profile::swift::proxy (
         false => absent,
     }
 
-    class { '::profile::swift::stats_reporter':
+    class { 'profile::swift::stats_reporter':
         ensure        => $stats_ensure,
         swift_cluster => $swift_cluster,
         accounts      => $accounts,
@@ -43,20 +52,31 @@ class profile::swift::proxy (
         ensure        => $stats_ensure,
         account_name  => 'AUTH_mw',
         container_set => 'mw-media',
+        statsd_host   => $statsd_host,
+        statsd_port   => $statsd_port,
         statsd_prefix => "swift.${swift_cluster}.containers.mw-media",
     }
 
-    class { '::swift::proxy':
-        statsd_metric_prefix => "swift.${swift_cluster}.${::hostname}",
-        accounts             => $accounts,
-        credentials          => $accounts_keys,
+    class { 'swift::proxy':
+        proxy_service_host     => $proxy_service_host,
+        shard_container_list   => $shard_container_list,
+        statsd_metric_prefix   => "swift.${swift_cluster}.${::hostname}",
+        accounts               => $accounts,
+        credentials            => $accounts_keys,
+        statsd_host            => $statsd_host,
+        statsd_port            => $statsd_port,
+        dispersion_account     => $dispersion_account,
+        rewrite_account        => $rewrite_account,
+        memcached_servers      => $memcached_servers,
+        thumborhost            => $thumborhost,
+        inactivedc_thumborhost => $inactivedc_thumborhost,
     }
 
     if $use_tls {
-        include ::profile::swift::proxy_tls
+        include profile::swift::proxy_tls
     }
 
-    class { '::memcached':
+    class { 'memcached':
         size          => 128,
         port          => 11211,
         # TODO: the following were implicit defaults from
@@ -65,7 +85,7 @@ class profile::swift::proxy (
         min_slab_size => 5,
     }
 
-    class { '::profile::prometheus::statsd_exporter':
+    class { 'profile::prometheus::statsd_exporter':
         relay_address => '',
     }
 

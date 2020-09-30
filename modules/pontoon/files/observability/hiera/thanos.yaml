@@ -2,7 +2,7 @@ profile::thanos::compact_host: "%{alias('__master_for_role_thanos__frontend')}"
 profile::thanos::frontends: "%{alias('__hosts_for_role_thanos__frontend')}"
 profile::thanos::backends: "%{alias('__hosts_for_role_thanos__backend')}"
 # wants port appended, can't use alias()
-swift::proxy::memcached_servers:
+profile::swift::proxy::memcached_servers:
   - "pontoon-thanos-01.monitoring.eqiad.wmflabs:11211"
 
 profile::thanos::objstore_password: 'foo'

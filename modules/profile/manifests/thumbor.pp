@@ -1,8 +1,8 @@
 class profile::thumbor(
     $memcached_servers_nutcracker = hiera('thumbor_memcached_servers_nutcracker'),
     $logstash_port = hiera('logstash_logback_port'),
-    $swift_sharded_containers = hiera_array('swift::proxy::shard_container_list'),
-    $swift_private_containers = hiera_array('swift::proxy::private_container_list'),
+    $swift_sharded_containers = hiera_array('profile::swift::proxy::shard_container_list'),
+    $swift_private_containers = hiera_array('profile::swift::proxy::private_container_list'),
     $thumbor_mediawiki_shared_secret = hiera('thumbor::mediawiki::shared_secret'),
     $prometheus_nodes         = hiera('prometheus_nodes', []),
     $statsd_port = hiera('statsd_exporter_port'),

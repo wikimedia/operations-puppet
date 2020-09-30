@@ -1,7 +1,11 @@
-swift::proxy::statsd_host: 'localhost'
-swift::proxy::dispersion_account: 'dispersion'
-swift::proxy::rewrite_account: 'mw_media'
-swift::proxy::shard_container_list: [
+profile::swift::proxy::use_tls: false
+profile::swift::proxy::statsd_host: localhost
+profile::swift::proxy::proxy_service_host: ~
+profile::swift::proxy::statsd_port: ~
+profile::swift::proxy::memcached_servers: ~
+profile::swift::proxy::dispersion_account: dispersion
+profile::swift::proxy::rewrite_account: mw_media
+profile::swift::proxy::shard_container_list: [
   'global-data-math-render',
 
   'wikipedia-commons-local-public', 'wikipedia-commons-local-temp',
@@ -53,10 +57,9 @@ swift::proxy::shard_container_list: [
   'wikipedia-zh-local-thumb', 'wikipedia-zh-local-transcoded'
 # no trailing comma!
  ]
-
 # Manually generated from private.dblist
 # Needs to be updated whenever a new private wiki is added
-swift::proxy::private_container_list: [
+profile::swift::proxy::private_container_list: [
   'wikimedia-ec-local-public',
   'wikimedia-id-internal-local-public',
   'wikimedia-il-local-public',
@@ -95,3 +98,5 @@ swift::proxy::private_container_list: [
   'wikipedia-zero-local-public'
 # no trailing comma!
  ]
+profile::swift::proxy::thumborhost: ~
+profile::swift::proxy::inactivedc_thumborhost: ~

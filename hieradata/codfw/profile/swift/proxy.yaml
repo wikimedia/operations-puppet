@@ -1,0 +1,12 @@
+profile::swift::proxy::proxy_service_host: 'ms-fe.svc.codfw.wmnet'
+profile::swift::proxy::memcached_servers: [
+  'ms-fe2005.codfw.wmnet:11211',
+  'ms-fe2006.codfw.wmnet:11211',
+  'ms-fe2007.codfw.wmnet:11211',
+  'ms-fe2008.codfw.wmnet:11211'
+# no trailing comma!
+]
+
+profile::swift::proxy::thumborhost: 'thumbor.svc.codfw.wmnet:8800'
+profile::swift::proxy::inactivedc_thumborhost: 'thumbor.svc.eqiad.wmnet:8800'
+profile::swift::proxy::statsd_port: 9125

@@ -171,3 +171,10 @@ profile::swift::storage::container_replicator_interval: ~
 profile::swift::stats_reporter::ensure: present
 profile::swift::stats_reporter::statsd_host: ~
 profile::swift::stats_reporter::statsd_port: 8125
+profile::swift::proxy::use_tls: false
+profile::swift::proxy::statsd_host: ~
+profile::swift::proxy::statsd_port: 8125
+profile::swift::proxy::dispersion_account: ~
+profile::swift::proxy::rewrite_account: ~
+profile::swift::proxy::thumborhost: ~
+profile::swift::proxy::inactivedc_thumborhost: ~

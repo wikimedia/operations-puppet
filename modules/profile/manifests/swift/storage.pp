@@ -5,7 +5,7 @@ class profile::swift::storage (
     Hash[String, Hash] $replication_keys             = lookup('profile::swift::replication_keys'),
     String $hash_path_suffix                         = lookup('profile::swift::hash_path_suffix'),
     String $swift_cluster                            = lookup('profile::swift::cluster'),
-    Array[String] $memcached_servers                 = lookup('swift::proxy::memcached_servers'),
+    Array[String] $memcached_servers                 = lookup('profile::swift::proxy::memcached_servers'),
     Array[Stdlib::Host] $swift_backends              = lookup('swift::storagehosts'),
     Array[Stdlib::Host] $swift_frontends             = lookup('swift::proxyhosts'),
     Stdlib::Port $statsd_port                        = lookup('profile::swift::storage::statsd_port'),
