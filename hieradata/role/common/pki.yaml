@@ -19,4 +19,4 @@ profile::pki::server::profiles:
       - ocsp signing
     expiry: 43800h
 profile::pki::server::intermediates:
-  - "Wikimedia SRE Internal"
+  "Wikimedia SRE Internal": {}

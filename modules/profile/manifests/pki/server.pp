@@ -15,7 +15,7 @@ class profile::pki::server(
     Boolean                       $gen_csr         = lookup('profile::pki::server::gen_csr'),
     Hash[String, Cfssl::Profile]  $profiles        = lookup('profile::pki::server::profiles'),
     Hash[String, Cfssl::Auth_key] $auth_keys       = lookup('profile::pki::server::auth_keys'),
-    Array[String]                 $intermediates   = lookup('profile::pki::server::intermediates'),
+    Hash[String, Hash]            $intermediates   = lookup('profile::pki::server::intermediates'),
 ) {
     $crl_url = "http://${vhost}/crl"
     $ocsp_url = "http://${vhost}/ocsp"
@@ -28,40 +28,45 @@ class profile::pki::server(
         default_crl_url  => $crl_url,
         default_ocsp_url => $ocsp_url,
     }
-    $intermediates.each |String $intermediate| {
-        cfssl::cert{$intermediate:
-            key           => $key_params,
-            names         => $names,
-            signer_config => {'config_dir' => "${cfssl::signer_dir}/WMF_root_CA"},
-            profile       => 'intermediate',
-            require       => Cfssl::Signer['WMF_root_CA'],
-        }
+    $signers = $intermediates.reduce({}) |$memo, $value| {
+        $intermediate = $value[0]
+        $config = $value[1]
         $safe_title = $intermediate.regsubst('\W', '_', 'G')
+        if 'private' in $config and 'certificate' in $config {
+            $ca_key_file = $config['private']
+            $ca_file = $config['certificate']
+        } else {
+            cfssl::cert{$intermediate:
+                key           => $key_params,
+                names         => $names,
+                signer_config => {'config_dir' => "${cfssl::signer_dir}/WMF_root_CA"},
+                profile       => 'intermediate',
+                require       => Cfssl::Signer['WMF_root_CA'],
+            }
+            $ca_key_file = "${cfssl::ssl_dir}/${safe_title}/${safe_title}-key.pem"
+            $ca_file = "${cfssl::ssl_dir}/${safe_title}/${safe_title}.pem"
+        }
         cfssl::signer {$intermediate:
             profiles         => $profiles,
-            ca_key_file      => "${cfssl::ssl_dir}/${safe_title}/${safe_title}-key.pem",
-            ca_file          => "${cfssl::ssl_dir}/${safe_title}/${safe_title}.pem",
+            ca_key_file      => $ca_key_file,
+            ca_file          => $ca_file,
             ca_bundle_file   => "${cfssl::signer_dir}/WMF_root_CA/ca/ca.pem",
             auth_keys        => $auth_keys,
             default_crl_url  => $crl_url,
             default_ocsp_url => $ocsp_url,
-            serve_ensure     => 'present',
+        }
+        $memo + {
+            $intermediate => {
+                'private'     => $ca_key_file,
+                'certificate' => $ca_file,
+                'config'      => "${cfssl::signer_dir}/${safe_title}/cfssl.conf",
+                'nets'        => $config['nets'],
+            }
         }
     }
-    # cfssl::cert {'OCSP signer':
-    #    key     => $key_params,
-    #    names   => $names,
-    #    profile => 'ocsp',
-    # }
-    class { 'sslcert::dhparam': }
-    class {'httpd':
-        modules => ['proxy', 'proxy_http', 'ssl', 'headers']
-    }
-    # create variables used in vhost
-    $ssl_settings = ssl_ciphersuite('apache', 'strong', true)
-    $cfssl_backend = "http://${facts['fqdn']}:8888/"
-    $ocsp_backend  = "http://${facts['fqdn']}:8889/"
-    httpd::site {$vhost:
-        content => template('profile/pki/pki_vhost.conf.erb')
+    class {'cfssl::multirootca':
+        tls_cert => $facts['puppet_config']['hostcert'],
+        tls_key  => $facts['puppet_config']['hostprivkey'],
+        signers  => $signers,
     }
 }

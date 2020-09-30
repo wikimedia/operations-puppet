@@ -1,0 +1,10 @@
+<%- @signers.each_pair do |name, config| -%>
+[<%= name %>]
+private = file://<%= config['private'] %>
+certificate = <%= config['certificate'] %>
+config = <%= config['config'] %>
+  <%- unless config.fetch('nets', nil) -%>
+nets = <%= config['nets'].join(',') %>
+  <%- end -%>
+
+<%- end -%>

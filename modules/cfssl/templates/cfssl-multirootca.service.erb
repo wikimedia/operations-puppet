@@ -1,0 +1,16 @@
+[Unit]
+Description=Cloudflare SSL MultiRootCA
+After=network.target remote-fs.target nss-lookup.target
+Documentation=https://github.com/cloudflare/cfssl/blob/master/doc/cmd/multiroot.txt
+
+[Service]
+ExecStart=/usr/bin/multirootca \
+          -a "<%= @host %>:<%= @port %>"
+          -roots <%= @conf_file %> \
+          -tls-cert <%= @tls_cert %> \
+          -tls-key <%= @tls_key %>
+Restart=always
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6 AF_NETLINK
+
+[Install]
+WantedBy=multi-user.target
