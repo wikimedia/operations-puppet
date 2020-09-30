@@ -4,16 +4,16 @@ define cfssl::cert (
     Array[Cfssl::Name]            $names         = [],
     Cfssl::Key                    $key           = {'algo' => 'ecdsa', 'size' => 521},
     Wmflib::Ensure                $ensure        = 'present',
-    String                        $profile       = 'default',
     String                        $owner         = 'root',
     String                        $group         = 'root',
     Boolean                       $auto_renew    = true,
     Integer[1800]                 $renew_seconds = 604800,  # 1 week
     Optional[String]              $label         = undef,
-    Optional[Array[Stdlib::Host]] $hosts         = [],
+    Optional[String]              $profile       = undef,
     Optional[Stdlib::Unixpath]    $outdir        = undef,
     Optional[Stdlib::Unixpath]    $tls_cert      = undef,
     Optional[Stdlib::Unixpath]    $tls_key       = undef,
+    Optional[Array[Stdlib::Host]] $hosts         = [],
 
 ) {
     include cfssl
@@ -74,6 +74,10 @@ define cfssl::cert (
         undef   => '',
         default => "-label ${label}",
     }
+    $_profile = $profile ? {
+        undef   => '',
+        default => "-profile ${profile}",
+    }
     $signer_args = $signer_config ? {
         Stdlib::HTTPUrl              => "-remote ${signer_config} ${tls_config} ${_label}",
         Cfssl::Signer_config::Client => "-config ${signer_config['config_file']} ${tls_config} ${_label}",
@@ -87,7 +91,7 @@ define cfssl::cert (
     $key_path = "${_outdir}/${safe_title}-key.pem"
     $csr_pem_path = "${_outdir}/${safe_title}.csr"
     $gen_command = @("GEN_COMMAND"/L)
-        /usr/bin/cfssl gencert ${signer_args} -profile=${profile} ${csr_json_path} \
+        /usr/bin/cfssl gencert ${signer_args} ${_profile} ${csr_json_path} \
         | /usr/bin/cfssljson -bare ${_outdir}/${safe_title}
         | GEN_COMMAND
 
