@@ -1,9 +1,10 @@
 # Base class for all compute nodes
 
 class profile::toolforge::grid::node::all(
-    $swap_partition = hiera('swap_partition', true),
-    $tmp_partition = hiera('tmp_partition', true),
-) {
+    Boolean $swap_partition = lookup('swap_partition', {'default_value' => true}),
+    Boolean $tmp_partition  = lookup('tmp_partition', {'default_value' => true}),
+){
+
     if $tmp_partition {
         labs_lvm::volume { 'separate-tmp':
             size      => '16GB',

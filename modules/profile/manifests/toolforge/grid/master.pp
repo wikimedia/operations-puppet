@@ -1,10 +1,10 @@
 # Establish the gridengine master role (one per cluster)
 
 class profile::toolforge::grid::master (
-    $etcdir = hiera('profile::toolforge::etcdir'),
-    $sge_root = lookup('profile::toolforge::grid::base::sge_root'),
-    $geconf = lookup('profile::toolforge::grid::base::geconf'),
-    $collectors = lookup('profile::toolforge::grid::base::collectors'),
+    Stdlib::Unixpath $etcdir     = lookup('profile::toolforge::etcdir'),
+    Stdlib::Unixpath $sge_root   = lookup('profile::toolforge::grid::base::sge_root'),
+    Stdlib::Unixpath $geconf     = lookup('profile::toolforge::grid::base::geconf'),
+    Stdlib::Unixpath $collectors = lookup('profile::toolforge::grid::base::collectors'),
 ){
     include profile::openstack::eqiad1::clientpackages::vms
     include profile::openstack::eqiad1::observerenv

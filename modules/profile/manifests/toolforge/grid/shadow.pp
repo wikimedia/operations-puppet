@@ -1,9 +1,10 @@
 # This profile sets up a grid shadow master in the Toolforge model.
 
 class profile::toolforge::grid::shadow(
-    $gridmaster = hiera('sonofgridengine::gridmaster'),
-    $geconf = lookup('profile::toolforge::grid::base::geconf'),
+    Stdlib::Host $gridmaster = lookup('sonofgridengine::gridmaster'),
+    Stdlib::Unixpath $geconf = lookup('profile::toolforge::grid::base::geconf'),
 ){
+
     include profile::openstack::eqiad1::clientpackages::vms
     include profile::openstack::eqiad1::observerenv
     include profile::toolforge::infrastructure

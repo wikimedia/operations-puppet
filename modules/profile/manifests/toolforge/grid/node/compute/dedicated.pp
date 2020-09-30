@@ -17,8 +17,8 @@
 # likely.  It is not well tested yet and rarely used now.
 # TODO: automate the user_list creation 
 class profile::toolforge::grid::node::compute::dedicated(
-    $dedicated_tool = hiera('node_dedicated_tool', undef),
-) {
+    Optional[String] $dedicated_tool = lookup('node_dedicated_tool', {default_value => undef}),
+){
 
     include profile::toolforge::grid::node::compute
 

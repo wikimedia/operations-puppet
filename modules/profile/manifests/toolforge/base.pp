@@ -1,8 +1,9 @@
 class profile::toolforge::base(
-    $is_mail_relay = hiera('profile::toolforge::is_mail_relay', false),
-    $active_mail_relay = hiera('profile::toolforge::active_mail_relay', 'tools-mail-02.tools.eqiad.wmflabs'),
-    $mail_domain = hiera('profile::toolforge::mail_domain', 'tools.wmflabs.org'),
-) {
+    $is_mail_relay     = lookup('profile::toolforge::is_mail_relay', {default_value => false}),
+    $active_mail_relay = lookup('profile::toolforge::active_mail_relay', {default_value => 'tools-mail-02.tools.eqiad.wmflabs'}),
+    $mail_domain       = lookup('profile::toolforge::mail_domain', {default_value => 'tools.wmflabs.org'}),
+){
+
     require ::profile::toolforge::clush::target
 
     package { 'nano':

@@ -5,7 +5,7 @@
 # will add functionality and place it on queues or hostgroups.
 
 class profile::toolforge::grid::node::compute (
-    $etcdir = hiera('profile::toolforge::etcdir'),
+    Stdlib::Unixpath $etcdir = lookup('profile::toolforge::etcdir'),
 ){
     include ::profile::toolforge::grid::exec_environ
     include ::profile::toolforge::grid::hba

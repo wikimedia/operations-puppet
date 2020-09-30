@@ -1,6 +1,6 @@
 # This profile sets up an bastion/dev instance in the Toolforge model.
 class profile::toolforge::bastion(
-    $active_cronrunner = hiera('profile::toolforge::active_cronrunner'),
+    Stdlib::Host $active_cronrunner = lookup('profile::toolforge::active_cronrunner'),
 ){
     # Son of Grid Engine Configuration
     # admin_host???

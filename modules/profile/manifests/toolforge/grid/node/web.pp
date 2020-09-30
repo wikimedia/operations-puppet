@@ -14,7 +14,7 @@
 #
 # filtertags: labs-project-tools
 class profile::toolforge::grid::node::web (
-    $etcdir = hiera('profile::toolforge::etcdir'),
+    Stdlib::Unixpath $etcdir = lookup('profile::toolforge::etcdir'),
 ){
     include profile::toolforge::grid::node::compute
     include profile::toolforge::k8s::client

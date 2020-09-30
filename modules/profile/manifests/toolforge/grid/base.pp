@@ -1,16 +1,16 @@
 # This establishes the basics for every SGE node
 
 class profile::toolforge::grid::base (
-    $external_hostname = hiera('profile::toolforge::external_hostname', undef),
-    $external_ip = hiera('profile::toolforge::external_ip', undef),
-    $active_proxy = hiera('profile::toolforge::active_proxy_host'),
-    $etcdir = hiera('profile::toolforge::etcdir'),
-    $project_path = lookup('profile::toolforge::grid::base::project_path'),
-    $sge_root = lookup('profile::toolforge::grid::base::sge_root'),
-    $sysdir = lookup('profile::toolforge::grid::base::sysdir'),
-    $geconf = lookup('profile::toolforge::grid::base::geconf'),
-    $collectors = lookup('profile::toolforge::grid::base::collectors'),
-) {
+    Stdlib::Host $active_proxy       = lookup('profile::toolforge::active_proxy_host'),
+    Stdlib::Unixpath $etcdir         = lookup('profile::toolforge::etcdir'),
+    Stdlib::Unixpath $project_path   = lookup('profile::toolforge::grid::base::project_path'),
+    Stdlib::Unixpath $sge_root       = lookup('profile::toolforge::grid::base::sge_root'),
+    Stdlib::Unixpath $sysdir         = lookup('profile::toolforge::grid::base::sysdir'),
+    Stdlib::Unixpath $geconf         = lookup('profile::toolforge::grid::base::geconf'),
+    Stdlib::Unixpath $collectors     = lookup('profile::toolforge::grid::base::collectors'),
+    Optional[Stdlib::Host] $external_hostname  = lookup('profile::toolforge::external_hostname', {'default_value' => undef}),
+    Optional[Stdlib::IP::Address] $external_ip = lookup('profile::toolforge::external_ip', {'default_value' => undef}),
+){
 
     class { '::labs_lvm': }
 
