@@ -163,6 +163,8 @@ profile::restbase::aqs_uri: http://aqs.svc.eqiad.wmnet:7232/analytics.wikimedia.
 profile::graphite::base::cluster_servers: []
 profile::graphite::base::uwsgi_processes: 8
 
+profile::swift::storagehosts: []
+profile::swift::proxyhosts: []
 profile::swift::storage::statsd_port: 8125
 profile::swift::storage::object_replicator_interval: ~
 profile::swift::storage::servers_per_port: ~
