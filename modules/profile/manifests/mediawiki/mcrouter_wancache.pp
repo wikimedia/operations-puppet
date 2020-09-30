@@ -101,14 +101,14 @@ class profile::mediawiki::mcrouter_wancache(
                     true  => {
                         'type'               => 'OperationSelectorRoute',
                         'operation_policies' => {
-                            # For reads, use WarmupRoute to try on-host memcache first. If it's not
-                            # there, WarmupRoute tries the ordinary regional pool next, and writes the
+                            # For reads, use WarmUpRoute to try on-host memcache first. If it's not
+                            # there, WarmUpRoute tries the ordinary regional pool next, and writes the
                             # result back to the on-host cache, with a short expiration time. The
                             # exptime is ten seconds in order to match our tolerance for DB replication
                             # delay; that level of staleness is acceptable. Based on
                             # https://github.com/facebook/mcrouter/wiki/Two-level-caching#local-instance-with-small-ttl
                             'get' => {
-                                'type'    => 'WarmupRoute',
+                                'type'    => 'WarmUpRoute',
                                 'cold'    => 'PoolRoute|onhost',
                                 'warm'    => profile::mcrouter_route($region, $gutter_ttl),
                                 'exptime' => 10,
