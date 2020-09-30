@@ -945,10 +945,6 @@ node 'es2017.codfw.wmnet' {
     role(mariadb::core)
 }
 
-node /^es201[9]\.codfw\.wmnet/ {
-    role(mariadb::core)
-}
-
 # es2027 will replace es2017 T261717
 node 'es2027.codfw.wmnet' {
     role(mariadb::core)
@@ -959,7 +955,7 @@ node 'es2029.codfw.wmnet' {
     role(mariadb::core)
 }
 
-# es2034 will replace es2019 T261717
+# es2034
 node 'es2034.codfw.wmnet' {
     role(mariadb::core)
 }
