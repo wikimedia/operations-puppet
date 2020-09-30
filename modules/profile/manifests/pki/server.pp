@@ -56,7 +56,7 @@ class profile::pki::server(
             default_ocsp_url => $ocsp_url,
         }
         $memo + {
-            $intermediate => {
+            $safe_title => {
                 'private'     => $ca_key_file,
                 'certificate' => $ca_file,
                 'config'      => "${cfssl::signer_dir}/${safe_title}/cfssl.conf",

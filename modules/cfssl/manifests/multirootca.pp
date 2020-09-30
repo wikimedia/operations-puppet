@@ -5,7 +5,7 @@ class cfssl::multirootca (
     Stdlib::Unixpath                $tls_cert,
     Stdlib::Unixpath                $tls_key,
     Wmflib::Ensure                  $ensure  = 'present',
-    Stdlib::Host                    $host    = '0.0.0.0',
+    Stdlib::Host                    $host    = $facts['networking']['ipaddress'],
     Stdlib::Port                    $port    = 8888,
     Hash[String, Cfssl::CA::Config] $signers = {},
 ) {
