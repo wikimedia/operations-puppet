@@ -45,7 +45,6 @@ profile::services_proxy::envoy::listeners:
   - name: termbox
     port: 6008
     service: termbox
-    upstream: termbox.discovery.wmnet
     keepalive: "4.5s"
     retry:
       retry_on: "5xx"
@@ -148,6 +147,7 @@ profile::services_proxy::envoy::listeners:
     port: 6014
     service: citoid
     timeout: "120s"
+    keepalive: "4.5s"
   - name: cxserver
     port: 6015
     service: cxserver
@@ -164,6 +164,7 @@ profile::services_proxy::envoy::listeners:
     port: 6018
     service: zotero
     timeout: "120s"
+    keepalive: "4.5s"
   - name: parsoid-async # Parsoid-php for long-lasting async requests.
     port: 6502
     service: parsoid-php
