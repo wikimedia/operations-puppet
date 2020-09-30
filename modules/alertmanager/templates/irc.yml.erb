@@ -18,4 +18,4 @@ irc_nickname_password: <%= @irc_nickname_password %>
 use_privmsg: yes
 
 msg_once_per_alert_group: yes
-msg_template: "({{ .GroupLabels.alertname }}) {{.Status}}{{ if .Alerts | len | le 2 }} (+{{ .Alerts | len }}){{ end }} {{ (index .Alerts 0).Annotations.summary }}"
+msg_template: "({{ .GroupLabels.alertname }}) {{.Status}}:{{ if .Alerts | len | le 2 }} (+{{ .Alerts | len }}){{ end }} {{ (index .Alerts 0).Annotations.summary }}"
