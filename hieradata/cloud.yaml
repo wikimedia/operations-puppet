@@ -162,3 +162,9 @@ profile::alertmanager::irc::channel: 'wikimedia-observability-spam'
 profile::restbase::aqs_uri: http://aqs.svc.eqiad.wmnet:7232/analytics.wikimedia.org/v1
 profile::graphite::base::cluster_servers: []
 profile::graphite::base::uwsgi_processes: 8
+
+profile::swift::storage::statsd_port: 8125
+profile::swift::storage::object_replicator_interval: ~
+profile::swift::storage::servers_per_port: ~
+profile::swift::storage::statsd_host: ~
+profile::swift::storage::container_replicator_interval: ~

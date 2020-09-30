@@ -206,7 +206,7 @@ labs:
 # https://phabricator.wikimedia.org/T222366
 swift_servers_per_port:
   __regex: !ruby/regexp /^ms-be[12]0([1-4][0-9]|50)\.(codfw|eqiad)\.wmnet$/
-  swift::storage::servers_per_port: 0
+  profile::swift::storage::servers_per_port: 0
 
 # Hosts with 24x HDD https://phabricator.wikimedia.org/T252216
 swift_24_drives:
