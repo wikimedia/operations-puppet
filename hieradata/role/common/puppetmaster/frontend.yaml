@@ -17,3 +17,7 @@ profile::conftool::state::query_interval: 30
 profile::discovery::path: "/srv/config-master/discovery"
 profile::puppetmaster::common::storeconfigs: puppetdb
 profile::conftool::client::etcd_user: 'root'
+
+profile::java::java_packages:
+  - version: '11'
+    variant: 'jre-headless'
