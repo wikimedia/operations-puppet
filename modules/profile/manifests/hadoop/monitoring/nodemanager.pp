@@ -5,9 +5,10 @@
 # up its configuration file, but it does not instruct the target JVM to use it.
 #
 class profile::hadoop::monitoring::nodemanager(
-    $prometheus_nodes        = hiera('prometheus_nodes'),
-    $hadoop_cluster_name     = hiera('profile::hadoop::common::hadoop_cluster_name'),
-) {
+    Array[Stdlib::Host] $prometheus_nodes = lookup('prometheus_nodes'),
+    String $hadoop_cluster_name           = lookup('profile::hadoop::common::hadoop_cluster_name'),
+){
+
     $jmx_exporter_config_file = '/etc/prometheus/yarn_nodemanager_jmx_exporter.yaml'
     $prometheus_jmx_exporter_nodemanager_port = 8141
     profile::prometheus::jmx_exporter { "yarn_nodemanager_${::hostname}":
