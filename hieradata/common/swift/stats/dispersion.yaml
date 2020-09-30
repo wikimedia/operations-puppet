@@ -1,2 +1,0 @@
-swift::stats::dispersion::statsd_host: 'localhost'
-swift::stats::dispersion::statsd_port: '9125'

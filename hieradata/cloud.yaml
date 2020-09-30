@@ -168,3 +168,6 @@ profile::swift::storage::object_replicator_interval: ~
 profile::swift::storage::servers_per_port: ~
 profile::swift::storage::statsd_host: ~
 profile::swift::storage::container_replicator_interval: ~
+profile::swift::stats_reporter::ensure: present
+profile::swift::stats_reporter::statsd_host: ~
+profile::swift::stats_reporter::statsd_port: 8125
