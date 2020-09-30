@@ -3964,6 +3964,10 @@ ldap_only_users:
   jaufrecht:
     ensure: absent
     realname: Joel Aufrecht
+  jrabah:
+    ensure: present
+    realname: Jack Rabah
+    email: jrabah@wikimedia.org
   jrbranaa:
     ensure: present
     realname: Jean-Rene Branaa
