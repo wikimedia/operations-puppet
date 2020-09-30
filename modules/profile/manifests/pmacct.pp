@@ -19,9 +19,10 @@
 #   configuration file and use its defaults instead.
 #
 class profile::pmacct (
-    $kafka_cluster     = hiera('profile::pmacct::kafka_cluster'),
-    $librdkafka_config = hiera('profile::pmacct::librdkafka_config'),
-) {
+    String $kafka_cluster            = lookup('profile::pmacct::kafka_cluster'),
+    Array[String] $librdkafka_config = lookup('profile::pmacct::librdkafka_config'),
+){
+
     $kafka_config = kafka_config($kafka_cluster)
     $pmacct_librdkafka_conf = $librdkafka_config ? {
         []      => undef,
