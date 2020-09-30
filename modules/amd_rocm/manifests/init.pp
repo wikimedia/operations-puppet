@@ -21,10 +21,6 @@ class amd_rocm (
         fail('The version of ROCm requested is not supported or misspelled.')
     }
 
-    if os_version('debian < buster'){
-        fail('The class is supported only from Debian Buster onward.')
-    }
-
     # AMD firmwares for GPU cards
     package { 'firmware-amd-graphics':
         ensure => present,
