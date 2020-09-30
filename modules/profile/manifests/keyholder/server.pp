@@ -6,9 +6,10 @@
 #
 # [*agents*] List of keyholder::agent instances to declare.
 class profile::keyholder::server(
-    $agents = hiera('profile::keyholder::server::agents', {}),
-    $require_encrypted_keys = hiera('profile::keyholder::server::require_encrypted_keys', 'yes'),
-) {
+    Hash $agents = lookup('profile::keyholder::server::agents', { 'default_value' => {}}),
+    Enum['yes','no'] $require_encrypted_keys = lookup('profile::keyholder::server::require_encrypted_keys', { 'default_value' => 'yes' }),
+){
+
     class { '::keyholder':
         require_encrypted_keys => $require_encrypted_keys,
     }

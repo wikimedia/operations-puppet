@@ -25,7 +25,9 @@
 #
 #  $ SSH_AUTH_SOCK=/run/keyholder/proxy.sock ssh remote-host ...
 #
-class keyholder($require_encrypted_keys='yes') {
+class keyholder(
+    Enum['yes','no'] $require_encrypted_keys = 'yes'
+){
 
     require_package('python3-yaml')
 
