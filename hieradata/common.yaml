@@ -818,9 +818,11 @@ hadoop_clusters:
       analytics1059.eqiad.wmnet:  /eqiad/A/3
       analytics1060.eqiad.wmnet:  /eqiad/A/3
       analytics1070.eqiad.wmnet:  /eqiad/A/4
+      an-worker1102.eqiad.wmnet:  /eqiad/A/4
       analytics1071.eqiad.wmnet:  /eqiad/A/5
       an-worker1081.eqiad.wmnet:  /eqiad/A/7
       an-worker1082.eqiad.wmnet:  /eqiad/A/7
+      an-worker1103.eqiad.wmnet:  /eqiad/A/7
 
       analytics1072.eqiad.wmnet:  /eqiad/B/2
       an-worker1083.eqiad.wmnet:  /eqiad/B/2
@@ -832,9 +834,12 @@ hadoop_clusters:
       analytics1050.eqiad.wmnet:  /eqiad/B/3
       analytics1051.eqiad.wmnet:  /eqiad/B/3
       an-worker1085.eqiad.wmnet:  /eqiad/B/4
+      an-worker1097.eqiad.wmnet:  /eqiad/B/4
+      an-worker1117.eqiad.wmnet:  /eqiad/B/4
       analytics1073.eqiad.wmnet:  /eqiad/B/7
       an-worker1086.eqiad.wmnet:  /eqiad/B/7
       an-worker1087.eqiad.wmnet:  /eqiad/B/7
+      an-worker1098.eqiad.wmnet:  /eqiad/B/7
       analytics1061.eqiad.wmnet:  /eqiad/B/8
       analytics1062.eqiad.wmnet:  /eqiad/B/8
       analytics1062.eqiad.wmnet:  /eqiad/B/8
@@ -845,10 +850,20 @@ hadoop_clusters:
       analytics1066.eqiad.wmnet:  /eqiad/C/2
       analytics1074.eqiad.wmnet:  /eqiad/C/2
       an-worker1088.eqiad.wmnet:  /eqiad/C/2
+      an-worker1099.eqiad.wmnet:  /eqiad/C/2
+      an-worker1104.eqiad.wmnet:  /eqiad/C/2
       an-worker1089.eqiad.wmnet:  /eqiad/C/4
       an-worker1090.eqiad.wmnet:  /eqiad/C/4
+      an-worker1100.eqiad.wmnet:  /eqiad/C/4
+      an-worker1105.eqiad.wmnet:  /eqiad/C/4
+      an-worker1106.eqiad.wmnet:  /eqiad/C/4
+      an-worker1107.eqiad.wmnet:  /eqiad/C/4
+      an-worker1108.eqiad.wmnet:  /eqiad/C/4
       analytics1075.eqiad.wmnet:  /eqiad/C/7
       an-worker1091.eqiad.wmnet:  /eqiad/C/7
+      an-worker1109.eqiad.wmnet:  /eqiad/C/7
+      an-worker1110.eqiad.wmnet:  /eqiad/C/7
+      an-worker1111.eqiad.wmnet:  /eqiad/C/8
 
       analytics1042.eqiad.wmnet:  /eqiad/D/2
       analytics1043.eqiad.wmnet:  /eqiad/D/2
@@ -859,9 +874,15 @@ hadoop_clusters:
       analytics1076.eqiad.wmnet:  /eqiad/D/2
       an-worker1092.eqiad.wmnet:  /eqiad/D/2
       an-worker1093.eqiad.wmnet:  /eqiad/D/2
+      an-worker1112.eqiad.wmnet:  /eqiad/D/2
+      an-worker1113.eqiad.wmnet:  /eqiad/D/5
+      an-worker1114.eqiad.wmnet:  /eqiad/D/5
       analytics1077.eqiad.wmnet:  /eqiad/D/7
       an-worker1094.eqiad.wmnet:  /eqiad/D/7
       an-worker1095.eqiad.wmnet:  /eqiad/D/7
+      an-worker1101.eqiad.wmnet:  /eqiad/D/7
+      an-worker1115.eqiad.wmnet:  /eqiad/D/7
+      an-worker1116.eqiad.wmnet:  /eqiad/D/7
       analytics1069.eqiad.wmnet:  /eqiad/D/8
 
     # The datanode daemon by default begins the shutdown procedure as soon as
