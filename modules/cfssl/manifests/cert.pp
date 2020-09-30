@@ -98,19 +98,20 @@ define cfssl::cert (
     # TODO: would be nice to check its signed with the correct CA
     $test_command = @("TEST_COMMAND"/L)
         /usr/bin/test \
-        "$(/usr/bin/openssl x509 -in ${cert_path} -noout -pubkey)" == \
-        "$(/usr/bin/openssl pkey -pubout -in ${key_path})"
+        "$(/usr/bin/openssl x509 -in ${cert_path} -noout -pubkey 2>&1)" == \
+        "$(/usr/bin/openssl pkey -pubout -in ${key_path} 2>&1)"
         | TEST_COMMAND
     if $ensure == 'present' {
         exec{"Generate cert ${title}":
             command => $gen_command,
             unless  => $test_command,
         }
-    }
-    if $auto_renew {
-        exec {"renew certificate - ${title}":
-            command => $gen_command.regsubst('gencert', 'sign'),
-            unless  => "/usr/bin/openssl x509 -in ${cert_path} -checkend ${renew_seconds}",
+        if $auto_renew {
+            exec {"renew certificate - ${title}":
+                command => $gen_command.regsubst('gencert', 'sign'),
+                unless  => "/usr/bin/openssl x509 -in ${cert_path} -checkend ${renew_seconds}",
+                require => Exec["Generate cert ${title}"]
+            }
         }
     }
 
