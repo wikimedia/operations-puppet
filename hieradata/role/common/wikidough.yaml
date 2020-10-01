@@ -32,5 +32,8 @@ profile::wikidough::dnsdist::webserver:
   port: 8083
 # password:
 # api_key:
+  acl:
+    - '0.0.0.0/0'
+    - '::/0'
 
 profile::wikidough::dnsdist::landing_text: '<!DOCTYPE html><title>Wikidough</title><p>Please visit the <a href="https://wikitech.wikimedia.org/wiki/Wikidough">Wikitech page</a> for more information.</p>'

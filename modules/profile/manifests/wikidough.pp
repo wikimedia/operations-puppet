@@ -53,7 +53,7 @@ class profile::wikidough (
         enable_console   => true,
         console_key      => $passwords::wikidough::dnsdist::console_key,
         enable_webserver => true,
-        webserver_config => $webserver_config,
+        webserver        => $webserver_config,
         enable_landing   => true,
         landing_text     => $landing_text,
         require          => Class['dnsrecursor'],

@@ -44,7 +44,7 @@
 #  [*enable_webserver*]
 #    [bool] whether to enable dnsdist's web server. default: false.
 #
-#  [*webserver_config*]
+#  [*webserver*]
 #    [Dnsdist::Webserver_config] web server configuration. default: undef.
 #
 #  [*enable_ecs*]
@@ -69,7 +69,7 @@ class dnsdist (
     Boolean                             $enable_console     = false,
     Optional[String]                    $console_key        = undef,
     Boolean                             $enable_webserver   = false,
-    Optional[Dnsdist::Webserver_config] $webserver_config   = undef,
+    Optional[Dnsdist::Webserver_config] $webserver          = undef,
     Boolean                             $enable_ecs         = true,
     Boolean                             $enable_landing     = false,
     Optional[String]                    $landing_text       = undef,
@@ -79,7 +79,7 @@ class dnsdist (
         fail('Console access is enabled but no key was set.')
     }
 
-    if ($enable_webserver and $webserver_config == undef) {
+    if ($enable_webserver and $webserver == undef) {
         fail('Web server access is enabled but no configuration was set.')
     }
 
