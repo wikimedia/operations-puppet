@@ -52,8 +52,9 @@ class mtail (
     }
 
     systemd::service { 'mtail':
-        ensure  => $service_ensure,
-        content => systemd_template('mtail'),
-        restart => true,
+        ensure   => $service_ensure,
+        content  => init_template('mtail', 'systemd_override'),
+        override => true,
+        restart  => true,
     }
 }

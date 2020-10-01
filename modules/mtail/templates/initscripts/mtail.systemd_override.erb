@@ -1,0 +1,5 @@
+[Service]
+ExecStart=
+ExecStart=/usr/bin/mtail -progs /etc/mtail -logtostderr $EXTRA_ARGS
+Group=<%= @group %>
+LimitNOFILE=16384
