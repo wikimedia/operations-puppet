@@ -913,7 +913,6 @@ host cloudvirt1017 {
 host cloudvirt1018 {
     hardware ethernet F4:E9:D4:BA:F4:80;
     fixed-address cloudvirt1018.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host cloudvirt1019 {
