@@ -15,7 +15,7 @@ groups:
               mtizzoni, panisson, paolotti, ciro, dartar, melodykramer, gtirloni, tbayer, pirroh,
               bawolff, dkg, juliaglen, cwdent, hpham, atgomez, dfoy, alaasarhan, onimisionipe,
               tieu, flemmerich, jsamra, anomie, lexnasser, jmorgan, thargrove,
-              drossi, fsalutari, demon, lulu, jkumalah]
+              drossi, fsalutari, demon, lulu, jkumalah, nathante, shiladsen]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -276,7 +276,7 @@ groups:
               bmansurov, amire80, kartik, pcoombe, foks, kemayo,
               jdlrobson, chelsyx, ovasileva, filippo, pmiazga, faidon,
               piccardi, fdans, eevans, ladsgroup, musikanimal,
-              kaldari, goransm, ema, dsaez, shiladsen, rho, mirrys, slaporte, jk,
+              kaldari, goransm, ema, dsaez, rho, mirrys, slaporte, jk,
               ayounsi, mepps, mmiller, seddon, gilles, tstarling, rush, karen,
               cicalese, gbirke, isaacj, sbassett, jdl, gsingers,
               niharika29, ryanmax, afandian2, jgleeson, toddleroux, srishakatux, dsharpe, eyener,
@@ -285,7 +285,7 @@ groups:
               aarora, zpapierski, knissen, jiawang, mholloway-shell, joewalsh, tarrow,
               itamar, phedenskog, aaron, dpifke, aklapper, jmads, andrew-wmde, daniram,
               rodolfovalentim, dcipoletti, chrisalbon, wikigit, nahidunlimited,
-              agaduran, edtadros, nathante, dvrandecic, razzi, cparle, klausman]
+              agaduran, edtadros, dvrandecic, razzi, cparle, klausman]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product]
   analytics-admins:
@@ -2728,16 +2728,12 @@ users:
     email: diego@wikimedia.org
     krb: present
   shiladsen:
-    ensure: present
+    ensure: absent
     gid: 500
     name: shiladsen
     realname: Shilad Sen
-    ssh_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDrSCbT7GL3eYqdIISBaajhusTPvXhd/sK3ANdU46qzIbvRADGJjB1/OAIbq8NlWChv8RV2ahA409tphVJl2cKmu6a8++V4s1K73yLuASJR3t5q6M3vfZqHEncR6nPLc6aO5S8Vc76cV4DFFfeW83M5F4d43AvunRnzXakFODdWwwFtyqRHyc5eHUf++X2E8ghZ66MKOQ+9Q0RoBL+9d2vQvk5IFDR7FahIFX8eR5jNIQOQ9nf517IDQ8c2dt5+3MrZC+rux384txKsFV3ytJmctxlqaDJeLFRHweumNrE8pSYif+MfZNM6QLPW8kSjifZBekrWL2smdk5RncORbd5j a558989@600308a4c4c6
+    ssh_keys: []
     uid: 10339
-    email: shilad@gmail.com
-    expiry_date: 2020-09-30
-    expiry_contact: ahalfaker@wikimedia.org
   cooltey:
     ensure: present
     gid: 500
@@ -3109,17 +3105,13 @@ users:
     uid: 19582
     email: kharlan@wikimedia.org
   nathante:
-    ensure: present
+    ensure: absent
     realname: Nathan TeBlunthuis
     name: nathante
     gid: 500
-    ssh_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDpS5G+UFv3n1oQCkNZyynPS3PGwrk7kK7mc8OJlvPx77x+tow77BnP5r6S3dNMLYuhFeI6VWveenG7ERIlBnoj9FQ4DL868mtySJ7LJOWCJ8s+avAqmN/SQjdcHPWrMqSbvL4gDsroPq+tub+VRkm32vqmOSI9N7hHKKcBlVw35rAZLecnNgxahw/gMOqlbnUKc+BDkpUVc/fvONuEl3TdoVlP27BTnYpzORur+qYCaHYUmWjKieG7YjS/Gtg2wKJYcmvypCrMByZFxXijh68AgD2TeniS/GlClYNbH6Ju9ahQBXjMOYBvGSoIJ13hezHHja9cHRIyg/56BGT3WTUx nathante@nathante-x1
+    ssh_keys: []
     uid: 20110
-    email: nathante@uw.edu
-    expiry_date: 2020-09-30
-    expiry_contact: leila@wikimedia.org
-    krb: present
+    krb: absent
   isaacj:
     ensure: present
     realname: Isaac Johnson
