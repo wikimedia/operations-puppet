@@ -3407,13 +3407,15 @@ users:
   dedcode:
     ensure: present
     realname: Djellel Difallah
-    email: ddifallah@wikimedia.org
+    email: difallah@gmail.com
     uid: 22235
     gid: 500
     name: dedcode
     ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICXUWuz8fmG9LkK3vLeAFJF1+uQV7eNR1eiDdfpYcTIq djellel@dedmac.local
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDKOQuvYUM24VSu66EabGuHYGvFp6w7uT6w1Ffq4rzlgn/SJLU8Js/++AumTzOCqv5ClWxkJvHwbewckDF8tnAokwRGesfJiAmD5DClsU7T49dRhVyU8X+15mwdGjRBMFxtShnOvkjR0m5ezQCGTnvfyRl6GlgncP1BotVW9y99phsaIb18jyc+9c2yGsUO6BZQULwsJP4lS7hMNtBkx6Wil+iw2fK2dviOxB5XgVc8XleWMqEy6MMJkrgAg3YtKX/QdPP9v7cWr6AI56uCrOSnObjOYly5IyB8lqty2CZnS3B5QK4W3paa/T3Yndy06gLQp1n2gz9vosTBKvfEm6LdAwLBYGF+Izj8ppx0xfmuqPY9xsIdM/s+WSvVcIZZ2Cr1yAZH6RIJvTSQ9QOEylIT6gUF4k/qd3q0upkgDn80roIzCyFgUkZoAgaHRUgcG3aa3jsiJBdf8hL+Z9b2PvvGU/XQoEC+MSIhpEx3klLhZgqRB/NTAK0Wf7100szc6AIjBE3mpnYtxNMjz7uJjtfXMcPYl2WEMJvb60ziMk7DlWhR+TWl3sGxpi1QOlQlJrFUNpwxt9fjf9OAZIX8J8OvoF1OnZTlkPnGPq5MF2EmA1noNBAXgfQfr76nrwV+7uS4wP2TK5tI8R8pdcAu0Zj5nWWJbUznngV6PyXlZK7mbQ== difallah@gmail.com
     krb: present
+    expiry_date: 2021-03-10
+    expiry_contact: lzia@wikimedia.org
   eyener:
     ensure: present
     realname: Erin Yener
