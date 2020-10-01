@@ -7,7 +7,6 @@ class profile::base(
     $nameservers   = hiera('profile::base::nameservers', $::nameservers), # lint:ignore:wmf_styleguide
     $remote_syslog = hiera('profile::base::remote_syslog', []),
     $remote_syslog_tls = hiera('profile::base::remote_syslog_tls', []),
-    Array[String] $remote_syslog_queue_enabled = lookup('profile::base::remote_syslog_queue_enabled', {'default_value' => []}),
     $enable_kafka_shipping = hiera('profile::base::enable_kafka_shipping', true),
     Enum['critical', 'disabled', 'enabled'] $notifications = hiera('profile::base::notifications', 'enabled'),
     $monitor_systemd = hiera('profile::base::monitor_systemd', true),
@@ -87,16 +86,10 @@ class profile::base(
     }
 
     unless empty($remote_syslog) and empty($remote_syslog_tls) {
-        $queue_size = $::site in $remote_syslog_queue_enabled ? {
-            true  => 10000,
-            false => 0,
-        }
-
         class { 'base::remote_syslog':
             enable            => true,
             central_hosts     => $remote_syslog,
             central_hosts_tls => $remote_syslog_tls,
-            queue_size        => $queue_size,
         }
     }
 
