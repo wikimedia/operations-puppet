@@ -43,9 +43,9 @@ if ( $.log_outputs contains "kafka" ) then {
                dynatopic.cachesize="1000"
                partitions.auto="on"
                template="syslog_cee"
-            <%- if @queue_size > 0 -%>
-               queue.type="LinkedList" queue.size="<%= @queue_size %>" queue.filename="output_kafka_cee"
-               queue.highWatermark="<%= (@queue_size * 0.7).to_i %>" queue.lowWatermark="<%= (@queue_size * 0.6).to_i %>"
+            <%- if scope['queue_size'] > 0 -%>
+               queue.type="LinkedList" queue.size="<%= scope['queue_size'] %>" queue.filename="output_kafka_cee"
+               queue.highWatermark="<%= (scope['queue_size'] * 0.7).to_i %>" queue.lowWatermark="<%= (scope['queue_size'] * 0.6).to_i %>"
                queue.checkpointInterval="5"
             <%- end -%>
                confParam=[ "security.protocol=ssl",
@@ -64,9 +64,9 @@ if ( $.log_outputs contains "kafka" ) then {
                dynatopic.cachesize="1000"
                partitions.auto="on"
                template="syslog_json"
-           <%- if @queue_size > 0 -%>
-               queue.type="LinkedList" queue.size="<%= @queue_size %>" queue.filename="output_kafka_json"
-               queue.highWatermark="<%= (@queue_size * 0.7).to_i %>" queue.lowWatermark="<%= (@queue_size * 0.6).to_i %>"
+           <%- if scope['queue_size'] > 0 -%>
+               queue.type="LinkedList" queue.size="<%= scope['queue_size'] %>" queue.filename="output_kafka_json"
+               queue.highWatermark="<%= (scope['queue_size'] * 0.7).to_i %>" queue.lowWatermark="<%= (scope['queue_size'] * 0.6).to_i %>"
                queue.checkpointInterval="5"
            <%- end -%>
                confParam=[ "security.protocol=ssl",
