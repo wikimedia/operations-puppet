@@ -7656,7 +7656,6 @@ host sretest1002 {
 host stat1004 {
     hardware ethernet 14:18:77:33:4C:E9;
     fixed-address stat1004.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host stat1005 {
@@ -7667,13 +7666,11 @@ host stat1005 {
 host stat1006 {
     hardware ethernet 30:e1:71:51:54:48;
     fixed-address stat1006.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host stat1007 {
     hardware ethernet D0:94:66:7F:9A:D1;
     fixed-address stat1007.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host stat1008 {
