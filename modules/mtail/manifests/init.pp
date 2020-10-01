@@ -30,7 +30,7 @@ class mtail (
         }
     } else {
         apt::pin { 'mtail':
-            pin      => 'version 3.0.0~rc35-3+wmf2',
+            pin      => 'version 3.0.0~rc35-3+wmf3',
             package  => 'mtail',
             priority => '1001',
             before   => Package['mtail'],
@@ -38,7 +38,7 @@ class mtail (
         # Not using require_package so apt::pin may be
         # applied before attempting to install mtail.
         package { 'mtail':
-            ensure => '3.0.0~rc35-3+wmf2',
+            ensure => '3.0.0~rc35-3+wmf3',
         }
     }
 
