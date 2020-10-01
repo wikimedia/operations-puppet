@@ -14,9 +14,12 @@ class geoip::data::archive(
     # manually without sudo.
     file { $archive_dir:
         ensure  => directory,
-        owner   => 'analytics',
-        group   => 'wikidev',
-        require => User['analytics'],
+        owner   => 'analytics-privatedata',
+        group   => 'analytics-privatedata-users',
+        require => [
+            User['analytics-privatedata'],
+            Group['analytics-privatedata-users']
+        ],
     }
 
     $archive_script = '/usr/local/bin/geoip_archive.sh'
@@ -35,7 +38,7 @@ class geoip::data::archive(
         description               => 'Archives Maxmind GeoIP files',
         command                   => $archive_command,
         interval                  => 'Tue *-*-* 05:30:00',
-        user                      => 'analytics',
+        user                      => 'analytics-privatedata',
         monitoring_contact_groups => 'analytics',
         use_kerberos              => $use_kerberos,
         require                   => [File[$archive_script], User['analytics']],
