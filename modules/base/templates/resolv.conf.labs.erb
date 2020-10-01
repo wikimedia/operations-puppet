@@ -4,7 +4,11 @@
 ## from:   base::resolving
 
 domain <%= @labsproject %>.<%= @labs_site %>.<%= @labs_tld %>
-search <%= @labsproject %>.<%= @labs_site %>.<%= @labs_tld %> <%= @labs_site %>.<%= @labs_tld %> <%= @labs_additional_domains.join(' ') %>
+
+# These eqiad.wmflabs and <project>.eqiad.wmflabs entries are hacked in to support legacy workflows
+# from before the move to .wikimedia.cloud
+search <%= @labsproject %>.<%= @labs_site %>.<%= @labs_tld %> <%= @labs_additional_domains.join(' ') %> <%= @labsproject %>.eqiad.wmflabs eqiad.wmflabs
+
 <% scope.lookupvar('::nameservers').each do |nsip| -%>
 nameserver <%= nsip %>
 <% end -%>

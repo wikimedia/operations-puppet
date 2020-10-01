@@ -505,7 +505,7 @@ dumps_dist_active_web: labstore1006.wikimedia.org
 # Cloud Services <
 #
 # Cumin
-labs_tld: "wmflabs"
+labs_tld: "wikimedia.cloud"
 
 # /> Cloud Services
 #

@@ -15,7 +15,6 @@ labsldapconfig:
   hostname: "cloudservices2002-dev.wikimedia.org"
   secondary_hostname: "cloudservices2002-dev.wikimedia.org"
 
-labs_tld: "wikimedia.cloud"
 labs_site: "codfw1dev"
 
 ntp_peers:

@@ -330,3 +330,5 @@ profile::mariadb::cloudinfra::puppetmasters:
 profile::mariadb::cloudinfra::cloudinfra_dbs:
 - cloudinfra-db01.cloudinfra.eqiad.wmflabs
 - cloudinfra-db02.cloudinfra.eqiad.wmflabs
+
+labs_site: "eqiad1"
