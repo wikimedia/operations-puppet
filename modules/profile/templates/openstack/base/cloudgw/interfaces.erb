@@ -15,17 +15,13 @@ iface bond0 inet manual
     bond-miimon 100
     bond-lacp-rate fast
     bond-xmit-hash-policy layer2+3
-
-auto vlan<%= @host_vlan %>
-iface vlan<%= @host_vlan %> inet static
-    vlan-raw-device bond0
     address <%= @host_addr %>
     netmask <%= @host_netm %>
     gateway <%= @host_gw %>
     dns-nameservers<% @nameservers.each do |nameserver| -%> <%= nameserver -%><% end %>
     dns-search <%= @site %>.wmnet
-    up ip token set ::<%= @host_addr %> dev vlan<%= @host_vlan %>
-    up ip addr add <%= @host_prefixv6 %>:<%= @host_addr %>/64 dev vlan<%= @host_vlan %>
+    up ip token set ::<%= @host_addr %> dev bond0
+    up ip addr add <%= @host_prefixv6 %>:<%= @host_addr %>/64 dev bond0
 
 auto vrf-cloudgw
 iface vrf-cloudgw inet manual

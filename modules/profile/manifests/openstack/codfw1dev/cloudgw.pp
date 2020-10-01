@@ -3,7 +3,6 @@ class profile::openstack::codfw1dev::cloudgw (
     Stdlib::IP::Address           $routing_source = lookup('profile::openstack::codfw1dev::cloudgw::routing_source_ip',{default_value => '185.15.57.1'}),
     Stdlib::IP::Address::V4::CIDR $virt_subnet    = lookup('profile::openstack::codfw1dev::cloudgw::virt_subnet_cidr', {default_value => '172.16.128.0/24'}),
     Array[String]                 $all_phy_nics   = lookup('profile::openstack::codfw1dev::cloudgw::all_phy_nics',     {default_value => ['eno1']}),
-    Integer                       $host_vlan      = lookup('profile::openstack::codfw1dev::cloudgw::host_vlan',        {default_value => 2118}),
     Stdlib::IP::Address           $host_addr      = lookup('profile::openstack::codfw1dev::cloudgw::host_addr',        {default_value => '127.0.0.2'}),
     Integer                       $host_netm      = lookup('profile::openstack::codfw1dev::cloudgw::host_netm',        {default_value => 8}),
     Stdlib::IP::Address           $host_gw        = lookup('profile::openstack::codfw1dev::cloudgw::host_gw',          {default_value => '127.0.0.1'}),
@@ -17,7 +16,6 @@ class profile::openstack::codfw1dev::cloudgw (
     Stdlib::IP::Address           $wan_gw         = lookup('profile::openstack::codfw1dev::cloudgw::wan_gw',           {default_value => '127.0.0.1'}),
 ) {
     class { '::profile::openstack::base::cloudgw':
-        host_vlan     => $host_vlan,
         host_addr     => $host_addr,
         host_netm     => $host_netm,
         host_gw       => $host_gw,
@@ -34,7 +32,7 @@ class profile::openstack::codfw1dev::cloudgw (
     contain '::profile::openstack::base::cloudgw'
 
     # NOTE: the base class is not using the legacy naming
-    $nic_host = "vlan${host_vlan}"
+    $nic_host = 'bond0'
     $nic_virt = "vlan${virt_vlan}"
     $nic_wan  = "vlan${wan_vlan}"
 

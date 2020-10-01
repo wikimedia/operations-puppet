@@ -11,8 +11,7 @@ profile::openstack::codfw1dev::cloudgw::all_phy_nics:
  - "eno1"
  - "eno2"
 
-# leg in the cloud-hosts1-b-codfw (vlan 2118) 10.192.20.0/24
-profile::openstack::codfw1dev::cloudgw::host_vlan: 2118
+# leg in the cloud-hosts1-b-codfw (vlan 2118) 10.192.20.0/24 (native vlan!)
 profile::openstack::codfw1dev::cloudgw::host_addr: 10.192.20.8
 profile::openstack::codfw1dev::cloudgw::host_netm: 24
 # this is vrrp-gw-2118.codfw.wmnet
