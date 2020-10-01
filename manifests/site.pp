@@ -1068,6 +1068,11 @@ node 'etherpad1002.eqiad.wmnet' {
     role(etherpad)
 }
 
+# Etherpad on buster - next version (virtual machine)
+node 'etherpad1003.eqiad.wmnet' {
+    role(insetup)
+}
+
 # Receives log data from Kafka processes it, and broadcasts
 # to Kafka Schema based topics.
 node 'eventlog1002.eqiad.wmnet' {
