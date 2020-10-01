@@ -3287,7 +3287,7 @@ users:
     name: urbanecm
     realname: Martin Urbanec
     ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIArd1VWJLSPUzG+J758/6TtLeGNTWm2M4aNoaIZZdor urbanecm+wmnet@notebook
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOKBGnnWotDTo/92I2MakxTAoBDYLbFA/+0uT2F5y4U5 urbanecm@LAPTOP-A3BHKQ07
     uid: 13367
     email: martin.urbanec@wikimedia.cz
   iflorez:
