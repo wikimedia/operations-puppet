@@ -1035,19 +1035,16 @@ host cloudvirt1039 {
 host cloudvirt-wdqs1001 {
     hardware ethernet 4C:D9:8F:93:C7:3E;
     fixed-address cloudvirt-wdqs1001.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host cloudvirt-wdqs1002 {
     hardware ethernet 4C:D9:8F:93:8C:2E;
     fixed-address cloudvirt-wdqs1002.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host cloudvirt-wdqs1003 {
     hardware ethernet  4C:D9:8F:93:8E:D4;
     fixed-address cloudvirt-wdqs1003.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host an-presto1001 {
