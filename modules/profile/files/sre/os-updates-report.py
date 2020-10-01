@@ -117,21 +117,22 @@ def get_roles(puppetdb_host):
     return fqdns_roles
 
 
-# Returns True if the target quarter is not reached
+# Returns True if the target quarter is within the current quarter or the future
+# current_quarter, target_quarter are strings like "2020-3"
 def quarter_in_plan(current_quarter, target_quarter):
     current_year = current_quarter.split("-")[0]
     current_quarter = current_quarter.split("-")[1]
     target_year = target_quarter.split("-")[0]
     target_quarter = target_quarter.split("-")[1]
 
-    if current_year < target_year:
-        return True
+    if current_year > target_year:
+        return False
 
     elif current_year == target_year:
-        if current_quarter <= target_quarter:
-            return True
+        if current_quarter > target_quarter:
+            return False
 
-    return False
+    return True
 
 
 def unroll_result_list(entries):
@@ -203,8 +204,8 @@ def main():
         targets_planned = ''
         targets_plan = ''
         for i in sorted(targets):
-            targets_planned += '\n\nThe following hosts are planned for {} ' \
-                'and are in plan:\n{}'.format(i, unroll_result_list(targets[i]))
+            targets_planned += '\n\nThe following hosts are/were planned for {} ' \
+                ':\n{}'.format(i, unroll_result_list(targets[i]))
             targets_plan += "- {} systems are planned for {}\n".format(len(targets[i]), i)
 
         with open(file_name, 'w') as report:
