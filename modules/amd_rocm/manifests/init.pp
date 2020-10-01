@@ -11,14 +11,32 @@
 #  so please check the supported versions before setting it.
 #  Default: "25"
 #
+# [*kfd_access_group*]
+#  Add a udev rule for the kfd device to allow access to users
+#  of a specific group. This is usually not needed since the kfd
+#  device should be readable by the 'render' group.
+#  Default: undef
+#
+#
 class amd_rocm (
-    String $version = '25',
+    String $version = '33',
+    Optional[String] $kfd_access_group = undef,
 ) {
 
     $supported_versions = ['25', '26', '271', '33']
 
     if ! ($version in $supported_versions) {
         fail('The version of ROCm requested is not supported or misspelled.')
+    }
+
+    if $kfd_access_group {
+        file { '/etc/udev/rules.d/70-kfd.rules':
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0544',
+            content => "SUBSYSTEM==\"kfd\", KERNEL==\"kfd\", TAG+=\"uaccess\", GROUP=\"${kfd_access_group}\"",
+            require => Group[$kfd_access_group],
+        }
     }
 
     # AMD firmwares for GPU cards

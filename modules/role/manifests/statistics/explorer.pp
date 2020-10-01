@@ -26,7 +26,7 @@ class role::statistics::explorer {
     include ::profile::kerberos::keytabs
 
     include ::profile::presto::client
-    include ::profile::statistics::gpu
+    include ::profile::amd_gpu
     include ::profile::statistics::dataset_mount
     include ::profile::analytics::geoip::archive
     include ::profile::statistics::explorer::misc_jobs

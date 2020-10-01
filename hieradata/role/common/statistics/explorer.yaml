@@ -23,10 +23,6 @@ profile::presto::use_kerberos: true
 
 profile::analytics::geoip::archive::archive_host: 'stat1007'
 profile::analytics::geoip::archive::use_kerberos: true
-profile::statistics::gpu::hosts_with_gpu:
-  - 'stat1005'
-  - 'stat1008'
-
 profile::analytics::search::jobs::use_kerberos: true
 
 profile::statistics::explorer::misc_jobs::use_kerberos: true
