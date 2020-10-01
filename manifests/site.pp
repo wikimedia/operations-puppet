@@ -2311,7 +2311,7 @@ node /^urldownloader[12]00[12]\.wikimedia\.org/ {
 
 # To learn what will get scheduled on a given cloudvirt, consult
 # https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Host_aggregates
-node /^cloudvirt101[7-9]\.eqiad\.wmnet$/ {
+node /^cloudvirt101[8-9]\.eqiad\.wmnet$/ {
     role(wmcs::openstack::eqiad1::virt)
 }
 
@@ -2332,7 +2332,7 @@ node /^cloudvirt103[1-9]\.eqiad\.wmnet$/ {
     role(wmcs::openstack::eqiad1::virt_ceph)
 }
 
-node /^cloudvirt101[2-6]\.eqiad\.wmnet$/ {
+node /^cloudvirt101[2-7]\.eqiad\.wmnet$/ {
     role(wmcs::openstack::eqiad1::virt_ceph)
 }
 
