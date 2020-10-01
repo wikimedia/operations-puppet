@@ -2906,10 +2906,7 @@ service::catalog:
     sites:
       - eqiad
       - codfw
-    state: production
-    discovery:
-      - dnsdisc: wikifeeds
-        active_active: true
+    state: lvs_setup
   zotero:
     description: Zotero, zotero.svc.%{::site}.wmnet
     encryption: true
