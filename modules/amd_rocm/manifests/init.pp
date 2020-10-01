@@ -70,6 +70,7 @@ class amd_rocm (
         'rocm-smi',
         'rccl',
         'rocm-libs',
+        'rock-dkms',
     ]
 
     apt::package_from_component { "amd-rocm${version}":
