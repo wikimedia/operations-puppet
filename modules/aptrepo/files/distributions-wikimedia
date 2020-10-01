@@ -179,6 +179,7 @@ Update:
  thirdparty/ceph-nautilus-buster
  thirdparty/kubeadm-k8s-kubernetes.io-1-15
  thirdparty/kubeadm-k8s-kubernetes.io-1-16
+ thirdparty/kubeadm-k8s-kubernetes.io-1-17
  thirdparty/kubeadm-k8s-kubernetes.io
  thirdparty/kubeadm-k8s-docker.com
 # NOTE:  Cloudera does not (yet) provide Stretch/Buster packages.  We use the Jessie ones,
