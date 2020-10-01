@@ -62,7 +62,7 @@ class profile::services_proxy::envoy(
                 $svc_name = "${listener['service']}_${1}"
             }
             else {
-                $svc_name = $address
+                $svc_name = $listener['service']
             }
         } else {
             $svc_name = $listener['service']
