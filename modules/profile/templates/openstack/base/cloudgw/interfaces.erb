@@ -9,7 +9,7 @@ iface <%= nic %> inet manual
 <% end -%>
 
 auto bond0
-iface bond0 inet manual
+iface bond0 inet static
     slaves<% @all_phy_nics.each do |nic| -%> <%= nic -%><% end %>
     bond-mode 802.3ad
     bond-miimon 100
@@ -21,7 +21,7 @@ iface bond0 inet manual
     dns-nameservers<% @nameservers.each do |nameserver| -%> <%= nameserver -%><% end %>
     dns-search <%= @site %>.wmnet
     up ip token set ::<%= @host_addr %> dev bond0
-    up ip addr add <%= @host_prefixv6 %>:<%= @host_addr %>/64 dev bond0
+    up ip addr add <%= @host_prefixv6 %>:<%= scope.call_function('regsubst', [@host_addr, '\.', ':', 'G']) %>/64 dev bond0
 
 auto vrf-cloudgw
 iface vrf-cloudgw inet manual
