@@ -1,0 +1,2 @@
+profile::rsyslog::kafka_queue_enabled_sites:
+  - 'ulsfo'
