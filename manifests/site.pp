@@ -873,11 +873,7 @@ node /^es101[268]\.eqiad\.wmnet/ {
 }
 
 ## codfw servers
-node /^es201[1]\.codfw\.wmnet/ {
-    role(mariadb::core)
-}
-
-# es2028 will replace es2011 T261717
+# es2028
 node 'es2028.codfw.wmnet' {
     role(mariadb::core)
 }

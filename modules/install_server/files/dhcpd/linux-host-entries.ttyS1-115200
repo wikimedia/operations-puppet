@@ -3052,12 +3052,6 @@ host es1025 {
     fixed-address es1025.eqiad.wmnet;
 }
 
-host es2011 {
-    hardware ethernet 14:18:77:54:48:37;
-    fixed-address es2011.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
-}
-
 host es2015 {
     hardware ethernet 14:18:77:53:BC:87;
     fixed-address es2015.codfw.wmnet;
