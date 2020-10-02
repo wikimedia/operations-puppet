@@ -38,7 +38,7 @@
 #
 # $authorization_service_security_enabled - If disabled any user can manage Oozie
 #                                           system and manage any job.  Default: true
-# $admin_users                   - Array of users that are oozie admins.  Default: ['hdfs']
+# $admin_groups                  - Array of groups which make member users admins.
 # $heapsize                      - Xmx in MB to pass to oozie server.  Default: 1024
 # $purge_jobs_older_than_days    - Completed workflow, coordinator, and bundle
 #                                  jobs will be deleted after this many days.
@@ -70,7 +70,7 @@ class cdh::oozie::server(
     $smtp_password                               = undef,
 
     $authorization_service_authorization_enabled = true,
-    $admin_users                                 = ['hdfs'],
+    $admin_groups                                = undef,
     $java_home                                   = undef,
     $jvm_opts                                    = '-Xmx1024m',
     $purge_jobs_older_than_days                  = 90,
@@ -194,12 +194,6 @@ class cdh::oozie::server(
     file { "${config_directory}/oozie-log4j.properties":
         content => template($oozie_log4j_template),
         mode    => '0444',
-        owner   => 'root',
-        group   => 'oozie',
-    }
-    file { "${config_directory}/adminusers.txt":
-        content => inline_template("# Admin Users, one user by line\n<%= Array(@admin_users).join('\n') %>\n"),
-        mode    => '0440',  # has database pw in it, shouldn't be world readable.
         owner   => 'root',
         group   => 'oozie',
     }
