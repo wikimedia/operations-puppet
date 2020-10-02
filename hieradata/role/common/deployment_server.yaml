@@ -413,14 +413,26 @@ profile::kubernetes::deployment_server::general:
 #
 
 # Specified in the private repo in this form
+#
+# Environment specific default secrets for services
+# may be overridden by each service
+#profile::kubernetes::deployment_server_secrets::defaults:
+#  staging:
+#    somekey: somevalue
+#  codfw:
+#    somekey: somevalue
+#  eqiad:
+#    somekey: somevalue
+#
+# Service specific secrets
 #profile::kubernetes::deployment_server_secrets::services:
-#    zotero:
-#      staging:
-#         somekey: somevalue
-#      codfw:
-#         somekey: somevalue
-#      eqiad:
-#         somekey: somevalue
+#  zotero:
+#    staging:
+#      somekey: somevalue
+#    codfw:
+#      somekey: somevalue
+#    eqiad:
+#      somekey: somevalue
 #profile::kubernetes::deployment_server_secrets::admin_services:
 #  calico:
 #    owner: root

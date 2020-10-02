@@ -3,6 +3,7 @@ class profile::kubernetes::deployment_server::helmfile(
     Hash[String, Any] $services_secrets=hiera('profile::kubernetes::deployment_server_secrets::services', {}),
     Hash[String, Any] $admin_services_secrets=hiera('profile::kubernetes::deployment_server_secrets::admin_services', {}),
     Hash[String, Any] $general_values=lookup('profile::kubernetes::deployment_server::general', {'default_value' => {}}),
+    Hash[String, Any] $default_secrets=lookup('profile::kubernetes::deployment_server_secrets::defaults', {'default_value' => {}}),
     Array[Stdlib::Fqdn] $prometheus_nodes = lookup('prometheus_all_nodes'),
     Array[Profile::Service_listener] $service_listeners = lookup('profile::services_proxy::envoy::listeners', {'default_value' => []}),
 ){
@@ -182,9 +183,10 @@ class profile::kubernetes::deployment_server::helmfile(
                     mode    => $data['mode'],
                     content => to_yaml($deployment_config_opts)
                 }
+
+                $raw_data = deep_merge($default_secrets[$environment], $data[$environment])
                 # write private section only if there is any secret defined.
-                $raw_data = $data[$environment]
-                if $raw_data {
+                unless $raw_data.empty {
                     # Substitute the value of any key in the form <somekey>: secret__<somevalue>
                     # with <somekey>: secret(<somevalue>)
                     # This allows to avoid having to copy/paste certs inside of yaml files directly,
