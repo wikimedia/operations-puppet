@@ -400,6 +400,7 @@ cache::nodes:
         eqiad:
           - 'deployment-cache-upload05.deployment-prep.eqiad.wmflabs'
 
+## Swift settings
 # Beta requires slower replication - T160990
 # Container server
 profile::swift::storage::object_replicator_concurrency: 1
@@ -409,6 +410,135 @@ profile::swift::storage::object_server_default_workers: 12
 
 profile::swift::storage::container_replicator_concurrency: 1
 profile::swift::storage::container_replicator_interval: 1200 # seconds
+
+profile::swift::cluster: deployment-prep
+profile::swift::hash_path_suffix: abcdef
+profile::swift::proxyhosts:
+  - deployment-ms-fe03
+profile::swift::storagehosts:
+  - deployment-ms-be05
+  - deployment-ms-be06
+profile::swift::stats_reporter_host: somenonexistenthost
+swift_aux_partitions: []
+swift_storage_drives:
+  - lv-a
+profile::swift::accounts:
+  mw_media:
+    access: .admin
+    account_name: AUTH_mw
+    auth: http://deployment-ms-fe03.deployment-prep.eqiad.wmflabs
+    user: mw:media
+  mw_thumbor:
+    access: ''
+    account_name: AUTH_mw
+    auth: http://deployment-ms-fe03.deployment-prep.eqiad.wmflabs
+    stats_enabled: 'no'
+    user: mw:thumbor
+  netbox_attachments:
+    access: .admin
+    account_name: AUTH_netbox
+    auth: http://deployment-ms-fe03.deployment-prep.eqiad.wmflabs
+    stats_enabled: 'no'
+    user: netbox:attachments
+  pagecompilation_zim:
+    access: .admin
+    account_name: AUTH_pagecompilation
+    auth: http://deployment-ms-fe03.deployment-prep.eqiad.wmflabs
+    user: pagecompilation:zim
+  performance_arclamp:
+    access: .admin
+    account_name: AUTH_performance
+    auth: http://deployment-ms-fe03.deployment-prep.eqiad.wmflabs
+    user: performance:arclamp
+  phabricator_files:
+    access: .admin
+    account_name: AUTH_phab
+    auth: http://deployment-ms-fe03.deployment-prep.eqiad.wmflabs
+    user: phabricator:files
+  swift_dispersion:
+    access: .admin
+    account_name: AUTH_dispersion
+    auth: http://deployment-ms-fe03.deployment-prep.eqiad.wmflabs
+    stats_enabled: 'no'
+    user: swift:dispersion
+profile::swift::replication_accounts:
+  mw_media:
+    cluster_codfw: http://deployment-ms-fe03.deployment-prep.eqiad.wmflabs/v1/
+
+profile::swift::proxy::shard_container_list:
+  - global-data-math-render
+  - wikipedia-commons-local-public
+  - wikipedia-commons-local-temp
+  - wikipedia-commons-local-thumb
+  - wikipedia-commons-local-transcoded
+  - wikipedia-de-local-public
+  - wikipedia-de-local-temp
+  - wikipedia-de-local-thumb
+  - wikipedia-de-local-transcoded
+  - wikipedia-en-local-public
+  - wikipedia-en-local-temp
+  - wikipedia-en-local-thumb
+  - wikipedia-en-local-transcoded
+  - wikipedia-fi-local-public
+  - wikipedia-fi-local-temp
+  - wikipedia-fi-local-thumb
+  - wikipedia-fi-local-transcoded
+  - wikipedia-fr-local-public
+  - wikipedia-fr-local-temp
+  - wikipedia-fr-local-thumb
+  - wikipedia-fr-local-transcoded
+  - wikipedia-he-local-public
+  - wikipedia-he-local-temp
+  - wikipedia-he-local-thumb
+  - wikipedia-he-local-transcoded
+  - wikipedia-hu-local-public
+  - wikipedia-hu-local-temp
+  - wikipedia-hu-local-thumb
+  - wikipedia-hu-local-transcoded
+  - wikipedia-id-local-public
+  - wikipedia-id-local-temp
+  - wikipedia-id-local-thumb
+  - wikipedia-id-local-transcoded
+  - wikipedia-it-local-public
+  - wikipedia-it-local-temp
+  - wikipedia-it-local-thumb
+  - wikipedia-it-local-transcoded
+  - wikipedia-ja-local-public
+  - wikipedia-ja-local-temp
+  - wikipedia-ja-local-thumb
+  - wikipedia-ja-local-transcoded
+  - wikipedia-ro-local-public
+  - wikipedia-ro-local-temp
+  - wikipedia-ro-local-thumb
+  - wikipedia-ro-local-transcoded
+  - wikipedia-ru-local-public
+  - wikipedia-ru-local-temp
+  - wikipedia-ru-local-thumb
+  - wikipedia-ru-local-transcoded
+  - wikipedia-th-local-public
+  - wikipedia-th-local-temp
+  - wikipedia-th-local-thumb
+  - wikipedia-th-local-transcoded
+  - wikipedia-tr-local-public
+  - wikipedia-tr-local-temp
+  - wikipedia-tr-local-thumb
+  - wikipedia-tr-local-transcoded
+  - wikipedia-uk-local-public
+  - wikipedia-uk-local-temp
+  - wikipedia-uk-local-thumb
+  - wikipedia-uk-local-transcoded
+  - wikipedia-zh-local-public
+  - wikipedia-zh-local-temp
+  - wikipedia-zh-local-thumb
+  - wikipedia-zh-local-transcoded
+
+profile::swift::proxy::statsd_host: localhost
+profile::swift::proxy::memcached_servers:
+  - deployment-ms-fe03
+profile::swift::proxy::proxy_service_host: deployment-ms-fe03.deployment-prep.eqiad.wmflabs
+profile::swift::proxy::rewrite_account: mw_media
+profile::swift::proxy::thumborhost: deployment-imagescaler03.eqiad.wmflabs:8800
+profile::swift::storage::statsd_host: localhost
 
 logstash::heap_memory: 1G
 logstash::pipeline_batch_size: 1000
