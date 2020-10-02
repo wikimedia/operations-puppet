@@ -1,16 +1,16 @@
 # bastion host for all users
-class role::bastionhost::general {
-    system::role { 'bastionhost::general':
+class role::bastionhost{
+    system::role { 'bastionhost':
         description => 'Bastion host for all shell users',
     }
 
-    include ::bastionhost
     include ::profile::standard
     include ::profile::base::firewall
     include ::profile::backup::host
 
-    # Used by parsoid deployers
+    include ::profile::bastionhost::packages
 
+    # Used by parsoid deployers
     include ::profile::scap::dsh
 
     backup::set {'home': }

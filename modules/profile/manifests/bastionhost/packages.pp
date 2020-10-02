@@ -1,5 +1,5 @@
-# bastion hosts
-class bastionhost {
+# packages installed on bastion hosts
+class profile::bastionhost::packages {
     package { [
         'mtr-tiny',
         'traceroute',

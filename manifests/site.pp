@@ -204,27 +204,27 @@ node 'backup2002.codfw.wmnet' {
 
 # Bastion in Virginia
 node 'bast1002.wikimedia.org' {
-    role(bastionhost::general)
+    role(bastionhost)
 }
 
 # Bastion in Texas - (T196665, replaced bast2001)
 node 'bast2002.wikimedia.org' {
-    role(bastionhost::general)
+    role(bastionhost)
 }
 
 # Bastion in the Netherlands (replaced bast3002)
 node 'bast3004.wikimedia.org' {
-    role(bastionhost::pop)
+    role(bastionhost)
 }
 
 # Bastion in California
 node 'bast4002.wikimedia.org' {
-    role(bastionhost::pop)
+    role(bastionhost)
 }
 
 # Bastion in Singapore
 node 'bast5001.wikimedia.org' {
-    role(bastionhost::pop)
+    role(bastionhost)
 }
 
 node 'centrallog1001.eqiad.wmnet', 'centrallog2001.codfw.wmnet' {
