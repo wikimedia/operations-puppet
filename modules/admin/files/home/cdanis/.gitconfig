@@ -1,3 +1,39 @@
 [user]
 	email = cdanis@wikimedia.org
 	name = Chris Danis
+
+[diff]
+    noprefix = true
+
+[url "https://github.com/"]
+	insteadOf = git@github.com:
+[url "git@github.com:"]
+	pushInsteadOf = https://github.com/
+# This looks mysterious, but is what stops a cloned-via-SSH repo
+# from being rewritten to HTTPS for push.
+[url "git@github.com:"]
+	pushInsteadOf = git@github.com:
+
+[url "https://gerrit.wikimedia.org/r/"]
+	insteadOf = ssh://cdanis@gerrit.wikimedia.org:29418/
+	insteadOf = ssh://gerrit.wikimedia.org:29418/
+[url "ssh://cdanis@gerrit.wikimedia.org:29418/"]
+	pushInsteadOf = https://gerrit.wikimedia.org/r/
+# This looks mysterious, but is what stops a cloned-via-SSH repo
+# from being rewritten to HTTPS for push.
+[url "ssh://cdanis@gerrit.wikimedia.org:29418/"]
+	pushInsteadOf = ssh://cdanis@gerrit.wikimedia.org:29418/
+[url "ssh://gerrit.wikimedia.org:29418/"]
+	pushInsteadOf = ssh://gerrit.wikimedia.org:29418/
+[pull]
+	ff = only
+	rebase = true
+
+[url "https://salsa.debian.org/"]
+	insteadOf = git@salsa.debian.org:
+[url "git@salsa.debian.org:"]
+	pushInsteadOf = https://salsa.debian.org/
+# This looks mysterious, but is what stops a cloned-via-SSH repo
+# from being rewritten to HTTPS for push.
+[url "git@salsa.debian.org:"]
+	pushInsteadOf = git@salsa.debian.org:
