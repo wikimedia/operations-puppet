@@ -3,8 +3,7 @@ require_relative '../../../../rake_modules/spec_helper'
 describe 'cassandra::instance' do
     let(:title) {'foobar'}
     let(:pre_condition) do
-      'include cassandra
-      include apt'
+      'include cassandra'
     end
 
     on_supported_os(WMFConfig.test_on).each do |os, facts|

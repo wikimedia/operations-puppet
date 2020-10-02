@@ -1,7 +1,9 @@
 fixtures:
     symlinks:
         cassandra: "#{source_dir}"
-        apt: "../../../../apt"
-        stdlib: "../../../../stdlib"
-        systemd: "../../../../systemd"
-        wmflib: "../../../../wmflib"
+        apt: "#{source_dir}/../apt"
+        stdlib: "#{source_dir}/../stdlib"
+        profile: "#{source_dir}/../profile"
+        systemd: "#{source_dir}/../systemd"
+        wmflib: "#{source_dir}/../wmflib"
+        java: "#{source_dir}/../java"

@@ -8,6 +8,7 @@ class profile::cassandra::single_instance(
 ) {
   # localhost udp endpoint for logging pipeline
   class { 'profile::rsyslog::udp_json_logback_compat': }
+  contain ::profile::java
 
   class { 'cassandra':
     cluster_name            => $cluster_name,

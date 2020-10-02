@@ -138,35 +138,14 @@ class cassandra (
     Optional[String]                 $version                 = undef
 ) {
 
-    # Cassandra fully supports opendjdk-11 only from 4.0,
-    # and on Buster openjdk-8 is not available.
-    # https://issues.apache.org/jira/browse/CASSANDRA-9608
-    if debian::codename::eq('buster') {
-        apt::package_from_component { 'openjdk-8':
-            component => 'component/jdk8',
-            packages  => ['openjdk-8-jdk'],
-        }
-
-        alternatives::select { 'java':
-            path    => '/usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java',
-            require => Package['openjdk-8-jdk']
-        }
-    }
-
-    if debian::codename::le('stretch') {
-        package { 'openjdk-8-jdk':
-            ensure  => 'installed',
-        }
-    }
-
     # Tools packages
     package { 'cassandra-tools-wmf':
         ensure  => 'installed',
         require => Package['cassandra'],
     }
+
     package { 'jvm-tools':
-        ensure  => 'installed',
-        require => Package['openjdk-8-jdk'],
+        ensure => 'installed',
     }
 
     # We pin the version to a specific one
@@ -180,27 +159,16 @@ class cassandra (
 
     # Cassandra 3.x is installed using the newer component convention, (and
     # from dists/stretch-wikimedia).
-    if ($target_version in ['3.x', 'dev']) {
-        apt::repository { 'wikimedia-cassandra311':
-            uri        => 'http://apt.wikimedia.org/wikimedia',
-            dist       => 'stretch-wikimedia',
-            components => 'component/cassandra311',
-            before     => Package['cassandra'],
-        }
-    }
-    # Cassandra 2.2 is installed using the newer component convention
-    elsif ($target_version == '2.2') {
-        apt::repository { 'wikimedia-cassandra22':
-            uri        => 'http://apt.wikimedia.org/wikimedia',
-            dist       => "${::lsbdistcodename}-wikimedia",
-            components => 'component/cassandra22',
-            before     => Package['cassandra'],
-        }
+    $component = $target_version  ? {
+        '2.2' => 'component/cassandra22',
+        '3.x' => 'component/cassandra311',
+        'dev' => 'component/cassandra311'
     }
 
-    package { 'cassandra':
-        ensure  => $package_version,
-        require => [ Package['openjdk-8-jdk'], Exec['apt-get update'] ],
+
+    apt::package_from_component { 'cassandra':
+        packages  => { 'cassandra' => $target_version},
+        component => $component,
     }
 
     package { 'cassandra-tools':

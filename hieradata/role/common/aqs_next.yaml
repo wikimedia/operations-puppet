@@ -126,3 +126,6 @@ profile::lvs::realserver::pools:
       - aqs
 
 profile::contacts::role_contacts: ['Analytics SREs']
+profile::java::java_packages:
+  - version: '8'
+    variant: 'jdk'

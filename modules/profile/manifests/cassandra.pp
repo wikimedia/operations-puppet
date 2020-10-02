@@ -12,6 +12,7 @@ class profile::cassandra(
 ){
 
     include ::passwords::cassandra
+    contain ::profile::java
     $instances = $all_instances[$::fqdn]
     # We get the cassandra seeds from $all_instances, with a template hack
     # This is preferred over a very specialized parser function.
