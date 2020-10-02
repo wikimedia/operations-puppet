@@ -645,6 +645,15 @@ sub vcl_recv {
 			return (synth(429, "Scripted requests from your IP have been blocked, please see https://meta.wikimedia.org/wiki/User-Agent_policy. In case of further questions, please contact noc@wikimedia.org."));
 		}
 
+<% if @vcl_config.fetch('attack_mode', false) -%>
+		// A heavy hammer for dire circumstances.
+		// This is a long-term average of 20rps, which is more than enough
+		// for a couple human users.
+		if (vsthrottle.is_denied("attack_mode:" + req.http.X-Client-IP, 200, 10s)) {
+			return (synth(429, "Too Many Requests. Sorry, please try again later"));
+		}
+<% end -%>
+
 		// This unwraps proxy-style URLs and sanitizes the Host header
 		// (lowercase, no port, no funny chars, matches cert SAN, etc)
 		call normalize_request;

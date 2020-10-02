@@ -601,7 +601,7 @@ sub cluster_fe_err_synth {
 		set resp.http.Content-Length = "0"; // BZ #62245
 	}
 
-	if (resp.reason == "Too Many Requests") {
+	if (resp.reason ~ "^Too Many Requests") {
 		set resp.http.Retry-After = 1;
 	}
 
