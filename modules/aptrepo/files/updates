@@ -255,7 +255,7 @@ Suite: all
 Components: main>thirdparty/kubeadm-k8s-1-17
 UDebComponents:
 Architectures: amd64
-VerifyRelease: 8D81803C0EBFCD88
+VerifyRelease: 294AC4827C1A168A
 ListShellHook: grep-dctrl -e -P '^helm$' -a -FVersion --ge 3.3 || [ $? -eq 1 ]
 
 Name: thirdparty/docker-ci
