@@ -2,7 +2,7 @@ class docker::registry(
     Hash $config = {},
     String $storage_backend = 'filebackend',
     Stdlib::Unixpath $datapath = '/srv/registry',
-    Optinal[String] $swift_user = undef,
+    Optional[String] $swift_user = undef,
     Optional[String] $swift_password = undef,
     Optional[Stdlib::Httpsurl] $swift_url = undef,
     Optional[String] $swift_container = undef,
