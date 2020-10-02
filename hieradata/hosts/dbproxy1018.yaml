@@ -5,5 +5,5 @@ profile::mariadb::proxy::replicas::servers:
     weight: 1
   labsdb1011:
     address: '10.64.37.24:3306'
-    weight: 3
+    weight: 2 
 profile::mariadb::proxy::firewall: 'public'
