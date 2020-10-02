@@ -267,6 +267,15 @@ Architectures: amd64
 VerifyRelease: 7EA0A9C3F273FCD8
 ListShellHook: grep-dctrl -e -P '^docker-ce|docker-ce-cli|containerd\.io$' || [ $? -eq 1 ]
 
+Name: amd-rocm38
+Method: http://repo.radeon.com/rocm/apt/3.8/
+Suite: xenial
+Components: main>thirdparty/amd-rocm38
+UDebComponents:
+Architectures: amd64
+VerifyRelease: 9386B48A1A693C5C
+ListShellHook: grep-dctrl -e -S '^(rocthrust|hipcub|hcc|hip-hcc|hip-base|hip-doc|hip-samples|rocm-smi-lib64|rocm-debug-agent|roctracer-dev|hsa-rocr-dev|hsakmt-roct|miopen-hip|miopen-opencl|mivisionx|rocblas|rocfft|rocm-cmake|rocm-dev|rocm-device-libs|rocm-opencl|rocm-opencl-dev|rocm-utils|rocrand|hsakmt-roct-dev|rocprofiler-dev|hip_hcc|hip_base|rocm-clang-ocl|hip_doc|hip_samples|rocm-smi|rccl|rocm-libs|hipblas|rocminfo|comgr|rocr_debug_agent|hsa-amd-aqlprofile|rocsparse|hipsparse|rocalution|rocprim|miopengemm|rock-dkms|rock-dkms-firmware)$' || [ $? -eq 1 ]
+
 Name: amd-rocm33
 Method: http://repo.radeon.com/rocm/apt/3.3/
 Suite: xenial
