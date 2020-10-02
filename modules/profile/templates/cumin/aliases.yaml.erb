@@ -273,6 +273,13 @@ swift-fe: P{O:swift::proxy}
 swift-fe-canary: P{ms-fe1005.eqiad.wmnet}
 swift-fe-codfw: A:swift-fe and A:codfw
 swift-fe-eqiad: A:swift-fe and A:eqiad
+thanos: A:thanos-fe or A:thanos-be
+thanos-be: P{O:thanos::backend}
+thanos-be-codfw: A:thanos-be and A:codfw
+thanos-be-eqiad: A:thanos-be and A:eqiad
+thanos-fe: P{O:thanos::frontend}
+thanos-fe-codfw: A:thanos-fe and A:codfw
+thanos-fe-eqiad: A:thanos-fe and A:eqiad
 thumbor: P{O:thumbor::mediawiki}
 thumbor-canary: P{thumbor1001.eqiad.wmnet}
 thumbor-codfw: A:thumbor and A:codfw
