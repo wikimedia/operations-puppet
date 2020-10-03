@@ -1,10 +1,10 @@
 # Profile class for recommendation_api
 class profile::recommendation_api(
-    String $wdqs_uri = hiera('profile::recommendation_api::wdqs_uri'),
-    String $dbhost = hiera('profile::recommendation_api::dbhost'),
-    String $dbname = hiera('profile::recommendation_api::dbname'),
-    String $dbuser = hiera('profile::recommendation_api::dbuser'),
-) {
+    Stdlib::Httpurl $wdqs_uri = lookup('profile::recommendation_api::wdqs_uri'),
+    Stdlib::Host $dbhost      = lookup('profile::recommendation_api::dbhost'),
+    String $dbname            = lookup('profile::recommendation_api::dbname'),
+    String $dbuser            = lookup('profile::recommendation_api::dbuser'),
+){
 
     include passwords::recommendationapi::mysql
     $pwd = $::passwords::recommendationapi::mysql::recommendationapiservice_pass
