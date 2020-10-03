@@ -1,3 +1,4 @@
+#!/bin/bash
 # ack.sh
 export ACK_PAGER_COLOR="${PAGER:-less -R}"
 

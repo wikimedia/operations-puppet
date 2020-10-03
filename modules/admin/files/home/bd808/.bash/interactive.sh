@@ -1,3 +1,4 @@
+#!/bin/bash
 # interactive shell specific config
 
 # load additional configs

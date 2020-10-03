@@ -1,3 +1,4 @@
+#!/bin/bash
 # 000-essential.sh
 # foundational functions that other homedir scripts rely on
 
