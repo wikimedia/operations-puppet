@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 # check if wikitech and wikitech-static are in sync
 # T89323 - dzahn 20150511
 

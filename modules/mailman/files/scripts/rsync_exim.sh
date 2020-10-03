@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 # rsync exim queue - T110138
 
 SPOOL_DIR="/var/spool/exim4"

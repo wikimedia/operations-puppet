@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 # rsync lists - T108071, T109399#1561586
 
 /usr/bin/rsync -avz --delete /var/lib/mailman/lists/ rsync://lists1001.wikimedia.org/lists

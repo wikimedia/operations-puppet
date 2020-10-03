@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 # schedule a host downtime in Icinga
 # Daniel Zahn (dzahn) 20150513 - T79842
 #

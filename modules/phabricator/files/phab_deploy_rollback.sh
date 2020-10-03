@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 puppet agent --test
 puppet agent --enable
 systemctl reload apache2
