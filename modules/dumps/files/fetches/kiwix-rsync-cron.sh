@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 ######################################
 # This file is managed by puppet!
 #  puppet:///modules/dumps/fetches/kiwix-rsync-cron.sh
