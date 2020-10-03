@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 # shim to get started using utils/localrun
 sudo puppet agent --test
 cd /root
