@@ -7,7 +7,7 @@
 # we are going to just keep the previous name.
 #
 class profile::piwik::webserver(
-    $prometheus_nodes = hiera('prometheus_nodes')
+    Array[Stdlib::Host] $prometheus_nodes = lookup('prometheus_nodes')
 ){
     include profile::prometheus::apache_exporter
 

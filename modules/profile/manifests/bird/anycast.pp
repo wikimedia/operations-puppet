@@ -10,7 +10,7 @@ class profile::bird::anycast(
   Optional[Array[Stdlib::IP::Address::V4::Nosubnet]] $neighbors_list = lookup('profile::bird::neighbors_list', {'default_value' => []}),
   Optional[String] $bind_anycast_service = lookup('profile::bird::bind_anycast_service', {'default_value' => undef}),
   Optional[Hash[String, Wmflib::Advertise_vip]] $advertise_vips = lookup('profile::bird::advertise_vips', {'default_value' => {}}),
-  Optional[Array[Stdlib::Fqdn]] $prometheus_nodes = hiera('prometheus_nodes', undef),
+  Optional[Array[Stdlib::Fqdn]] $prometheus_nodes = lookup('prometheus_nodes', {'default_value' => undef}),
 ){
   if $neighbors_list {
     $neighbors_for_ferm = join($neighbors_list, ' ')
