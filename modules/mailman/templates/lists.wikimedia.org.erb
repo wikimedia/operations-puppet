@@ -143,4 +143,7 @@
 
     ErrorLog /var/log/apache2/<%= @lists_servername %>-error.log
     CustomLog /var/log/apache2/<%= @lists_servername %>-access.log wmf
+
+    # Make sure we serve with utf-8 charset (T261031)
+    AddDefaultCharset utf-8
 </VirtualHost>
