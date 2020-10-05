@@ -59,6 +59,7 @@ Components: main
  component/elastic65
  component/facter3
  component/git
+ component/icu63
  component/lilypond
  component/mtail
  component/node10
