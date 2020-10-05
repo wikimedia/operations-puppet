@@ -23,7 +23,11 @@ class amd_rocm (
     Optional[String] $kfd_access_group = undef,
 ) {
 
-    $supported_versions = ['25', '26', '271', '33']
+    $supported_versions = ['25', '26', '271', '33', '38']
+    # Starting with v3.5.0, the firmware has been split out of the dkms package
+    # https://github.com/RadeonOpenCompute/ROCm/tree/63ed31781dab993baad65bc262cdcdabe83ca218#Upgrading-to-This-Release
+    $add_firmware_versions = ['38']
+
 
     if ! ($version in $supported_versions) {
         fail('The version of ROCm requested is not supported or misspelled.')
@@ -51,27 +55,31 @@ class amd_rocm (
     # [..]
     # trying to overwrite '/opt/rocm/miopen/bin/MIOpenDriver',
     # which is also in package miopen-hip 2.0.0-7a8f787
-    $packages = [
+    $basepkgs = [
         'hcc',
-        'hsa-rocr-dev',
         'hsakmt-roct',
+        'hsa-rocr-dev',
         'miopen-hip',
         'mivisionx',
         'radeontop',
+        'rccl',
         'rocblas',
         'rocfft',
+        'rock-dkms',
         'rocm-cmake',
         'rocm-dev',
         'rocm-device-libs',
+        'rocm-libs',
         'rocm-opencl',
         'rocm-opencl-dev',
+        'rocm-smi',
         'rocm-utils',
         'rocrand',
-        'rocm-smi',
-        'rccl',
-        'rocm-libs',
-        'rock-dkms',
     ]
+    if ($version in $add_firmware_versions) {
+        $packages = $basepkgs << 'rock-dkms-firmware'
+    }
+
 
     apt::package_from_component { "amd-rocm${version}":
         component => "thirdparty/amd-rocm${version}",
