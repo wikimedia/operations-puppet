@@ -11,7 +11,6 @@ class profile::gerrit(
     Array[Stdlib::Fqdn]               $gerrit_servers    = lookup('profile::gerrit::servers'),
     String                            $config            = lookup('profile::gerrit::config'),
     Boolean                           $use_acmechief     = lookup('profile::gerrit::use_acmechief'),
-    Integer[8, 11]                    $java_version      = lookup('profile::gerrit::java_version'),
     Boolean                           $is_replica        = lookup('profile::gerrit::is_replica'),
     Optional[Array[Stdlib::Fqdn]]     $replica_hosts     = lookup('profile::gerrit::replica_hosts'),
     Optional[String]                  $scap_user         = lookup('profile::gerrit::scap_user'),
@@ -21,6 +20,7 @@ class profile::gerrit(
     String                            $ssh_host_key      = lookup('profile::gerrit::ssh_host_key'),
     Stdlib::Unixpath                  $git_dir           = lookup('profile::gerrit::git_dir'),
 ) {
+    require ::profile::java
 
     interface::alias { 'gerrit server':
         ipv4 => $ipv4,
@@ -90,13 +90,13 @@ class profile::gerrit(
         config            => $config,
         use_acmechief     => $use_acmechief,
         ldap_config       => $ldap_config,
-        java_version      => $java_version,
         scap_user         => $scap_user,
         scap_key_name     => $scap_key_name,
         enable_monitoring => $enable_monitoring,
         replication       => $replication,
         ssh_host_key      => $ssh_host_key,
         git_dir           => $git_dir,
+        java_home         => "${$::profile::java::default_java_home}/jre",
     }
 
     class { 'gerrit::replication_key':

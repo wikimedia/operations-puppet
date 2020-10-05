@@ -11,19 +11,16 @@ class gerrit::jetty(
     String                            $git_dir           = 'git',
     Optional[String]                  $ssh_host_key      = undef,
     String                            $heap_limit        = '32g',
+    Stdlib::Unixpath                  $java_home         = '',
     Boolean                           $replica           = false,
-    Stdlib::Unixpath                  $java_home         = '/usr/lib/jvm/java-8-openjdk-amd64/jre',
     String                            $config            = 'gerrit.config.erb',
     Integer                           $git_open_files    = 20000,
     String                            $smtp_encryption   = 'none',
     Optional[Hash]                    $ldap_config       = undef,
-    # You must also change $java_home when changing versions.
-    Integer[8, 11]                    $java_version      = 8,
     Optional[String]                  $scap_user         = undef,
     Optional[String]                  $scap_key_name     = undef,
     Boolean                           $enable_monitoring = true,
 ) {
-
     group { 'gerrit2':
         ensure => present,
     }
@@ -74,16 +71,6 @@ class gerrit::jetty(
         '-XX:+HeapDumpOnOutOfMemoryError',
         '-XX:HeapDumpPath=/srv/gerrit',
     ]
-
-    if $java_version == 11 {
-        require_package('openjdk-11-jdk')
-        require_package('openjdk-11-dbg')
-    } else {
-        apt::package_from_component { 'wikimedia-openjdk8':
-            component => 'component/jdk8',
-            packages  => ['openjdk-8-jdk', 'openjdk-8-dbg']
-        }
-    }
 
     require_package([
         'python3',

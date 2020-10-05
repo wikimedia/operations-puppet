@@ -68,3 +68,8 @@ profile::gerrit::replication:
 profile::base::ssh_server_settings:
     authorized_keys_file: '/etc/ssh/userkeys/%u /etc/ssh/userkeys/%u.d/cumin /etc/ssh/userkeys/%u.d/gerrit-scap'
 profile::base::firewall::block_abuse_nets: true
+
+profile::java::java_packages:
+  - version: '8'
+    variant: 'jdk'
+profile::java::enable_dbg: true

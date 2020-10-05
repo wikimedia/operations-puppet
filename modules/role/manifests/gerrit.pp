@@ -12,6 +12,7 @@ class role::gerrit {
     include ::profile::gerrit
     include ::profile::gerrit::migration
     include ::profile::prometheus::apache_exporter
+    include ::profile::java
 
     class { '::httpd':
         modules => ['rewrite', 'headers', 'proxy', 'proxy_http', 'remoteip', 'ssl'],
