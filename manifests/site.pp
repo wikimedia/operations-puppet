@@ -2303,7 +2303,7 @@ node 'cloudvirt1019.eqiad.wmnet' {
     role(wmcs::openstack::eqiad1::virt)
 }
 
-node /^cloudvirt102[0-3,5-9]\.eqiad\.wmnet$/ {
+node /^cloudvirt102[0,3,5-9]\.eqiad\.wmnet$/ {
     role(wmcs::openstack::eqiad1::virt)
 }
 
@@ -2321,6 +2321,10 @@ node /^cloudvirt103[1-9]\.eqiad\.wmnet$/ {
 }
 
 node /^cloudvirt101[2-8]\.eqiad\.wmnet$/ {
+    role(wmcs::openstack::eqiad1::virt_ceph)
+}
+
+node /^cloudvirt102[1-2]\.eqiad\.wmnet$/ {
     role(wmcs::openstack::eqiad1::virt_ceph)
 }
 
