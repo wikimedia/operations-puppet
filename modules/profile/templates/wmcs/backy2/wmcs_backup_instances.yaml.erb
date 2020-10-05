@@ -6,6 +6,16 @@ exclude_servers:
    - ".*"
  cloudvirt-canary:
    - ".*"
+ codesearch:
+   - ".*"
+ deployment-prep:
+   - "^.*snapshot02.*$"
+   - '^deployment-docker.*$
+   - '^deployment-elastic.*$
+   - '^deployment-mediawiki-.*'
+   - '^deployment-mwmaint.*'
+ extdist:
+   - ".*"
  integration:
    - "^integration-agent.*$"
  mwoffliner:
@@ -14,14 +24,14 @@ exclude_servers:
    - "^paws-k8s-worker.*$"
  sre-sandbox:
    - ".*"
+ testlabs:
+   - ".*"
  tools:
    - "^.*worker.*$"
    - "^tools-sgeexec-.*$"
    - "^.*sgewebgrid-lighttpd.*$"
  toolsbeta:
-   - "^.*worker.*$"
-   - "^tools-sgeexec-.*$"
-   - "^.*sgewebgrid-lighttpd.*$"
+   - ".*"
  transferpy-test:
    - ".*"
  video:
