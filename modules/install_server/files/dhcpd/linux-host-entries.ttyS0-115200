@@ -430,6 +430,11 @@ host ldap-replica2002.wikimedia.org {
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
+host ldap-replica2003.wikimedia.org {
+    hardware ethernet aa:00:00:c8:b6:c9;
+    fixed-address ldap-replica2003.wikimedia.org;
+}
+
 host ldap-replica2004.wikimedia.org {
     hardware ethernet aa:00:00:82:d6:34;
     fixed-address ldap-replica2004.wikimedia.org;
