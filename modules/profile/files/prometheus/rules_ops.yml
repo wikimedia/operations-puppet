@@ -316,6 +316,8 @@ groups:
   # ats-tls TTFB and rates for clients
   - record: cluster_http_status_family_cache_status_le:trafficserver_tls_client_ttfb_bucket:rate2m
     expr: sum by (cluster, http_status_family, cache_status, le) (rate(trafficserver_tls_client_ttfb_bucket[2m]))
+  - record: cluster_http_status_family_cache_status:trafficserver_tls_client_ttfb:50p2m
+    expr: histogram_quantile(0.50, cluster_http_status_family_cache_status_le:trafficserver_tls_client_ttfb_bucket:rate2m)
   - record: cluster_http_status_family_cache_status:trafficserver_tls_client_ttfb:75p2m
     expr: histogram_quantile(0.75, cluster_http_status_family_cache_status_le:trafficserver_tls_client_ttfb_bucket:rate2m)
   - record: cluster_http_status_family_cache_status:trafficserver_tls_client_ttfb:95p2m
