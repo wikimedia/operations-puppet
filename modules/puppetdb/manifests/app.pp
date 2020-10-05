@@ -31,6 +31,7 @@ class puppetdb::app(
         ensure => directory,
         owner  => 'puppetdb',
         group  => 'puppetdb',
+        mode   => '0755',
     }
     $stockpile_queue_dir_ensure = $tmpfs_stockpile_queue ? {
         true    => 'mounted',
