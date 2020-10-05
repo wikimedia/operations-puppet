@@ -1,8 +1,0 @@
-groups:
-- name: icinga_compat
-  rules:
-  - alert: IcingaServiceProblem
-    expr: icinga_service_problem == 1
-    annotations:
-      # The 'summary' annotation is shown verbatim on IRC.
-      summary: '{{$labels.service}} on {{$labels.host}} is {{$labels.severity | toUpper}}: {{$labels.info}}'
