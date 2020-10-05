@@ -115,8 +115,9 @@ class profile::elasticsearch::cirrus(
         }
     }
 
+    $read_ahead_kb = 16
     udev::rule { 'elasticsearch-readahead':
-        content => "SUBSYSTEM==\"block\", KERNEL==\"${storage_device}\", ACTION==\"add|change\", ATTR{bdi/read_ahead_kb}=\"128\"",
+        content => "SUBSYSTEM==\"block\", KERNEL==\"${storage_device}\", ACTION==\"add|change\", ATTR{bdi/read_ahead_kb}=\"${read_ahead_kb}\"",
     }
 
     # Install prometheus data collection
