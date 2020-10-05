@@ -80,9 +80,6 @@ tlsOptionsDOT = {
 <% if @tls_config_dot.has_key?('ciphers') -%>
   ciphers='<%= @tls_config_dot['ciphers'].join(':') %>',
 <% end -%>
-<% if @tls_config_dot.has_key?('provider') -%>
-  provider='<%= @tls_config_dot['provider'] -%>',
-<% end -%>
 }
 
 -- enable DoT (default port is 853)

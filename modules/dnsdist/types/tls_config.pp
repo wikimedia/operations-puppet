@@ -10,13 +10,9 @@
 #
 #  [*ciphers*]
 #    [array] TLS ciphers to use. optional.
-#
-#  [*provider*]
-#    [string] The TLS library to use for DoT. optional.
 
 type Dnsdist::TLS_config = Struct[{
     min_tls_version => Enum['tls1.2', 'tls1.3'],
     ciphers_tls13   => Optional[Array[String]],
     ciphers         => Optional[Array[String]],
-    provider        => Optional[Enum['openssl', 'gnutls']],
 }]

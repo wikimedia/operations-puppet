@@ -24,7 +24,6 @@ profile::wikidough::dnsdist::tls::dot:
     - 'TLS_AES_256_GCM_SHA384'
     - 'TLS_CHACHA20_POLY1305_SHA256'
     - 'TLS_AES_128_GCM_SHA256'
-  provider: 'openssl' # dnsdist 1.4.0 sets GnuTLS as the default for DoT.
 
 # password and api_key are defined in the private repo.
 profile::wikidough::dnsdist::webserver:
