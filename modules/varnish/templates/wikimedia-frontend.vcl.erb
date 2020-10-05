@@ -772,14 +772,16 @@ sub wm_backend_response {
 	}
 	/* Especially don't cache Set-Cookie responses. Log violations. */
 	if ((beresp.ttl > 0s || beresp.http.Cache-Control ~ "public") && beresp.http.Set-Cookie) {
-		std.log("Cacheable object with Set-Cookie found! bereq.url: " + bereq.url +
-				" Cache-Control: " + beresp.http.Cache-Control + " Set-Cookie: " +
-				beresp.http.Set-Cookie);
 		if (bereq.http.Host !~ "^.*\.wikimedia\.org$" || bereq.http.Host ~ "^(meta|commons)\.wikimedia\.org$") {
-			std.syslog(27, "Cacheable object with Set-Cookie found! bereq.http.Host: " + bereq.http.Host + " bereq.url: " + bereq.url +
-					   " Cache-Control: " + beresp.http.Cache-Control + " Set-Cookie: " +
-					   beresp.http.Set-Cookie + " Server: " + beresp.http.Server + " ReqId: " + beresp.http.X-Request-Id +
-						  " X-Cache-Int: " + beresp.http.X-Cache-Int);
+			std.syslog(27, "Cacheable object with Set-Cookie found!" +
+				           " beresp.status: " + beresp.status +
+				           " bereq.http.Host: " + bereq.http.Host +
+				           " bereq.url: " + bereq.url +
+				           " Cache-Control: " + beresp.http.Cache-Control +
+				           " Set-Cookie: " + beresp.http.Set-Cookie +
+				           " Server: " + beresp.http.Server +
+				           " ReqId: " + beresp.http.X-Request-Id +
+				           " X-Cache-Int: " + beresp.http.X-Cache-Int);
 		}
 		set beresp.ttl = 0s;
 		// translated to hit-for-pass below
