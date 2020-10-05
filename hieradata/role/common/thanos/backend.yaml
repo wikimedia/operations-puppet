@@ -115,21 +115,21 @@ profile::prometheus::statsd_exporter::mappings:
     name: swift_object_server_quarantines_total
   - match: swift.*.*.object-server.async_pendings
     name: swift_object_server_async_pendings_total
-  # Drop the generic timing in favor of per-device timing below
+  # Generic per-method success/error
   - match: swift.*.*.object-server.*.timing
     name: swift_object_server_success_seconds
-    action: drop
     labels:
         method: "$3"
   - match: swift.*.*.object-server.*.errors.timing
     name: swift_object_server_errors_seconds
     labels:
         method: "$3"
-  - match: swift.*.*.object-server.*.*.timing
-    name: swift_object_server_success_seconds
+  # PUT-specific per-device success timing
+  - match: swift.*.*.object-server.PUT.*.timing
+    name: swift_object_server_device_success_seconds
     labels:
-        method: "$3"
-        device: "$4"
+        method: "PUT"
+        device: "$3"
 
   - match: swift.*.*.object-updater.errors
     name: swift_object_updater_errors_total
