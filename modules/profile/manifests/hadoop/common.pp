@@ -296,7 +296,7 @@ class profile::hadoop::common (
     # The minimum number of datanode partitions is set via hiera following:
     # Number of datanode partitions - disk failures tolerated
     if $min_datanode_mounts and length($datanode_mounts) < $min_datanode_mounts {
-        fail('The number of datanode mountpoints dropped below the safety threshold, please check.')
+        fail("Number of datanode mountpoints (${datanode_mounts.length}) below threshold: ${min_datanode_mounts}, please check.")
     }
 
     # Include Wikimedia's thirdparty/cloudera apt component
