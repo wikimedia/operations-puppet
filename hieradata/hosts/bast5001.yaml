@@ -1,2 +1,0 @@
-prometheus::replica_label: 'a'
-profile::installserver::dhcp::ensure_service: 'stopped'

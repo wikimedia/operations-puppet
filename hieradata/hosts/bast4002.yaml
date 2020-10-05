@@ -1,3 +1,0 @@
-monitor_screens: false
-prometheus::server::prometheus_v2: true
-prometheus::replica_label: 'a'
