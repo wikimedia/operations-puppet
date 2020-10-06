@@ -69,7 +69,8 @@ node /^an-test-worker100[1-3]\.eqiad\.wmnet$/ {
     role(insetup)
 }
 
-# analytics1042-analytics1077 are Analytics Hadoop worker nodes.
+# analytics1042-analytics1077 and an-worker10XX
+# are Analytics Hadoop worker nodes.
 #
 # NOTE:  If you add, remove or move Hadoop nodes, you should edit
 # hieradata/common.yaml hadoop_clusters net_topology
@@ -79,20 +80,20 @@ node /analytics10(4[2-9]|5[0-9]|6[0-9]|7[0-7]).eqiad.wmnet/ {
     role(analytics_cluster::hadoop::worker)
 }
 
-# an-worker1078-1095 are new Hadoop worker nodes.
-# T207192
+# NOTE:  If you add, remove or move Hadoop nodes, you should edit
+# hieradata/common.yaml hadoop_clusters net_topology
+# to make sure the hostname -> /datacenter/rack/row id is correct.
+# This is used for Hadoop network topology awareness.
 node /an-worker10(7[89]|8[0-9]|9[0-9]).eqiad.wmnet/ {
     role(analytics_cluster::hadoop::worker)
 }
 
-node /^an-worker11(0[0-9]|1[0123567])\.eqiad\.wmnet$/ {
+# NOTE:  If you add, remove or move Hadoop nodes, you should edit
+# hieradata/common.yaml hadoop_clusters net_topology
+# to make sure the hostname -> /datacenter/rack/row id is correct.
+# This is used for Hadoop network topology awareness.
+node /^an-worker11(0[0-9]|1[0-7])\.eqiad\.wmnet$/ {
     role(analytics_cluster::hadoop::worker)
-}
-
-# new an-worker nodes an-worker1096-1117 Tasks T254892 and T259071.
-
-node 'an-worker1114.eqiad.wmnet' {
-    role(insetup)
 }
 
 # hue.wikimedia.org
