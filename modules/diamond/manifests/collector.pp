@@ -75,7 +75,6 @@ define diamond::collector(
     $source      = undef,
     $content     = undef,
 ) {
-    validate_ensure($ensure)
 
     include ::diamond
 

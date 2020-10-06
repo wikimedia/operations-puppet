@@ -24,7 +24,7 @@
 module Puppet::Parser::Functions
   newfunction(:shell_exports, :type => :rvalue, :arity => 1) do |args|
     vars, uppercase_keys = args
-    fail(ArgumentError, 'validate_ensure(): hash argument required') unless vars.is_a?(Hash)
+    fail(ArgumentError, 'shell_exports(): hash argument required') unless vars.is_a?(Hash)
     vars = Hash[vars.map { |k, v| [k.upcase, v] }] unless uppercase_keys == false
     vars.sort.map { |k, v| "export #{k}=#{v.to_pson}" }.push('').join("\n")
   end

@@ -17,7 +17,6 @@ define diamond::collector::servicestats (
     $upstart_name = $title,
     $ensure = 'present',
 ) {
-    validate_ensure($ensure)
 
     include ::diamond::collector::servicestats_lib
 
