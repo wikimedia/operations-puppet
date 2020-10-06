@@ -35,6 +35,7 @@ class profile::openldap (
         master         => $master,
         hash_passwords => $hash_passwords,
         read_only      => $read_only,
+        size_limit     => 4096,
     }
 
     # Ldap services are used all over the place, including within
