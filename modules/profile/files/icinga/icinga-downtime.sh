@@ -63,5 +63,5 @@ fi
 start_time=$(date +%s) # now
 end_time=$(( start_time + duration ))
 
-printf "[%lu] SCHEDULE_HOST_DOWNTIME;${hostname};${start_time};${end_time};1;0;${duration};${user};${reason}\\n" "$(date +%s)" > $commandfile
-printf "[%lu] SCHEDULE_HOST_SVC_DOWNTIME;${hostname};${start_time};${end_time};1;0;${duration};${user};${reason}\\n" "$(date +%s)" > $commandfile
+printf "[%s] SCHEDULE_HOST_DOWNTIME;${hostname};${start_time};${end_time};1;0;${duration};${user};${reason}\\n" "$(date +%s)" > $commandfile
+printf "[%s] SCHEDULE_HOST_SVC_DOWNTIME;${hostname};${start_time};${end_time};1;0;${duration};${user};${reason}\\n" "$(date +%s)" > $commandfile
