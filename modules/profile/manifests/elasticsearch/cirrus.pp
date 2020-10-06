@@ -10,13 +10,13 @@
 #   to disable that, and cleanup the old ones. For transition, let's make this
 #   configureable.
 class profile::elasticsearch::cirrus(
-    String $ferm_srange = hiera('profile::elasticsearch::cirrus::ferm_srange'),
-    String $ferm_ro_srange = hiera('profile::elasticsearch::cirrus::ferm_ro_srange', ''),
-    Boolean $expose_http = hiera('profile::elasticsearch::cirrus::expose_http'),
-    String $storage_device = hiera('profile::elasticsearch::cirrus::storage_device'),
-    Boolean $use_acme_chief = hiera('profile::elasticsearch::cirrus::use_acme_chief', false),
-    Boolean $enable_remote_search = hiera('profile::elasticsearch::cirrus::enable_remote_search'),
-    Array[String] $prometheus_nodes = hiera('prometheus_nodes'),
+    String $ferm_srange = lookup('profile::elasticsearch::cirrus::ferm_srange'),
+    String $ferm_ro_srange = lookup('profile::elasticsearch::cirrus::ferm_ro_srange', {default_value => ''}),
+    Boolean $expose_http = lookup('profile::elasticsearch::cirrus::expose_http'),
+    String $storage_device = lookup('profile::elasticsearch::cirrus::storage_device'),
+    Boolean $use_acme_chief = lookup('profile::elasticsearch::cirrus::use_acme_chief', {default_value => false}),
+    Boolean $enable_remote_search = lookup('profile::elasticsearch::cirrus::enable_remote_search'),
+    Array[Stdlib::Host] $prometheus_nodes = lookup('prometheus_nodes'),
 ) {
     include ::profile::elasticsearch
 
