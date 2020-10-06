@@ -38,7 +38,6 @@ packages:
     - curl
     - debdeploy-client
     - debian-goodies
-    - diamond
     - dnsutils
     - dstat
     - ebtables

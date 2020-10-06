@@ -116,7 +116,6 @@ packages:
     - ncdu
     - prometheus-node-exporter
     - quickstack
-    - diamond
     - ntp
     - command-not-found
     - gdisk
