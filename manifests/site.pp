@@ -1492,6 +1492,11 @@ node 'maps1004.eqiad.wmnet' {
     role(maps::master)
 }
 
+# New maps servers T260269
+node /^maps10(0[5-9]|1[0])\.eqiad\.wmnet$/ {
+    role(insetup)
+}
+
 node /^maps200[1-3]\.codfw\.wmnet/ {
     role(maps::replica)
 }
