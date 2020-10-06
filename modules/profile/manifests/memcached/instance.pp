@@ -79,7 +79,8 @@ class profile::memcached::instance (
     }
 
     ferm::service { 'memcached':
-        proto => 'tcp',
-        port  => $port,
+        proto  => 'tcp',
+        port   => $port,
+        srange => '$DOMAIN_NETWORKS',
     }
 }
