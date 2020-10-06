@@ -5,11 +5,13 @@
 # in a timestamped directory in $archive_dir, and pushes its contents to hdfs.
 #
 class geoip::data::archive(
-    $maxmind_db_source_dir = '/usr/share/GeoIP',
-    $hdfs_archive_dir = '/wmf/data/archive/geoip',
-    $archive_dir = "${maxmind_db_source_dir}/archive",
-    $use_kerberos = false,
-) {
+    Stdlib::Unixpath $maxmind_db_source_dir = '/usr/share/GeoIP',
+    Stdlib::Unixpath $hdfs_archive_dir = '/wmf/data/archive/geoip',
+    Stdlib::Unixpath $archive_dir = "${maxmind_db_source_dir}/archive",
+    Boolean $use_kerberos = false,
+    Boolean $enable_timer = false,
+){
+
     # Puppet assigns 755 permissions to files and dirs, so the script can be ran
     # manually without sudo.
     file { $archive_dir:

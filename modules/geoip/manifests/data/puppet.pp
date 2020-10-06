@@ -7,11 +7,11 @@
 #
 class geoip::data::puppet(
   # lint:ignore:puppet_url_without_modules
-  $source = 'puppet:///volatile/GeoIP',
+  String $source = 'puppet:///volatile/GeoIP',
   # lint:endignore
-  $data_directory = '/usr/share/GeoIP',
-)
-{
+  Stdlib::Unixpath $data_directory = '/usr/share/GeoIP',
+){
+
   # recursively copy the $data_directory from $source.
   file { $data_directory:
     ensure    => directory,
