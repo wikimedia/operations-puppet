@@ -8,9 +8,9 @@ class profile::alertmanager::alerts {
         description     => 'Alertmanager config is not valid',
         query           => 'alertmanager_config_last_reload_successful',
         prometheus_url  => 'https://thanos-query.discovery.wmnet',
-        method          => 'ge',
-        warning         => 1,
-        critical        => 1,
+        method          => 'le',
+        warning         => 0,
+        critical        => 0,
         dashboard_links => ['https://grafana.wikimedia.org/d/eea-9_sik/alertmanager'],
         notes_link      => 'https://wikitech.wikimedia.org/wiki/Alertmanager#Alerts',
     }
