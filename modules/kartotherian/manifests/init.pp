@@ -38,8 +38,6 @@ class kartotherian(
     Boolean $use_nodejs10   = false,
 ) {
 
-    validate_array($cassandra_servers)
-
     ensure_packages(['libmapnik3.0'])
 
     service::node { 'kartotherian':
