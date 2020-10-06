@@ -1,6 +1,6 @@
 # dbstore1004
 # Buffer pool sizes/instance enabled
 profile::mariadb::dbstore_multiinstance::num_instances: 3
-profile::mariadb::dbstore_multiinstance::s2: '100G'
-profile::mariadb::dbstore_multiinstance::s3: '90G'
-profile::mariadb::dbstore_multiinstance::s4: '200G'
+profile::mariadb::dbstore_multiinstance::s2: '95G'
+profile::mariadb::dbstore_multiinstance::s3: '85G'
+profile::mariadb::dbstore_multiinstance::s4: '195G'
