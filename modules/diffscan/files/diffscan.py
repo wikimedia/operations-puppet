@@ -30,7 +30,7 @@ from string import Template
 #
 # Be sure to include -vv so hosts that are down are reported in the
 # output for correct tracking.
-nmap_scanoptions = '-vv -sS -PE -PS22,25,80,443,3306,8443,9100 -T5 ' + \
+nmap_scanoptions = '-vv -sS -PE -PS22,25,80,443,3306,8443,9100 -T4 ' + \
         '--privileged --min-hostgroup 256'
 
 nmap_topports = Template('--top-ports $topports')
