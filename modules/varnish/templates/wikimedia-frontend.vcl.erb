@@ -775,6 +775,7 @@ sub wm_backend_response {
 		if (bereq.http.Host !~ "^.*\.wikimedia\.org$" || bereq.http.Host ~ "^(meta|commons)\.wikimedia\.org$") {
 			std.syslog(27, "Cacheable object with Set-Cookie found!" +
 				           " beresp.status: " + beresp.status +
+				           " beresp.was_304: " + beresp.was_304 +
 				           " bereq.http.Host: " + bereq.http.Host +
 				           " bereq.url: " + bereq.url +
 				           " Cache-Control: " + beresp.http.Cache-Control +
