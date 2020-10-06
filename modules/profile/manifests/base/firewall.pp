@@ -28,6 +28,7 @@ class profile::base::firewall (
                                                                 {default_value => []}),
     Boolean                    $enable_logging   = lookup('profile::base::firewall::enable_logging'),
     Boolean                    $block_abuse_nets = lookup('profile::base::firewall::block_abuse_nets'),
+    Boolean                    $default_reject   = lookup('profile::base::firewall::default_reject'),
 ) {
     class { '::base::firewall':
         monitoring_hosts        => $monitoring_hosts,
@@ -44,6 +45,7 @@ class profile::base::firewall (
         mysql_root_clients      => $mysql_root_clients,
         deployment_hosts        => $deployment_hosts,
         block_abuse_nets        => $block_abuse_nets,
+        default_reject          => $default_reject,
     }
     if $enable_logging {
         include profile::base::firewall::log

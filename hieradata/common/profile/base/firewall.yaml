@@ -1,2 +1,3 @@
 profile::base::firewall::enable_logging: true
 profile::base::firewall::block_abuse_nets: false
+profile::base::firewall::default_reject: false

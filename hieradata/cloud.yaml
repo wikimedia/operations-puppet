@@ -90,6 +90,7 @@ profile::puppetmaster::common::command_broadcast: false
 profile::puppetmaster::common::ssl_verify_depth: 1
 
 profile::base::firewall::block_abuse_nets: false
+profile::base::firewall::default_reject: false
 
 profile::backup::director_seed: changeme
 profile::base::debdeploy::exclude_mounts: []

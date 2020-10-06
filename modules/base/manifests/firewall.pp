@@ -15,6 +15,7 @@ class base::firewall (
     Array[Stdlib::IP::Address] $mysql_root_clients = [],
     Array[Stdlib::IP::Address] $deployment_hosts = [],
     Boolean                    $block_abuse_nets = false,
+    Boolean                    $default_reject = false,
 ) {
     include network::constants
     include ferm
@@ -22,6 +23,11 @@ class base::firewall (
     ferm::conf { 'defs':
         prio    => '00',
         content => template('base/firewall/defs.erb'),
+    }
+    ferm::conf { 'default-reject':
+        ensure  => $default_reject.bool2str('present', 'absent'),
+        prio    => '99',
+        content => 'REJECT;'
     }
 
     # Increase the size of conntrack table size (default is 65536)
@@ -62,7 +68,7 @@ class base::firewall (
         rule   => "saddr (${monitoring_hosts_str}) ACCEPT;",
     }
 
-    ::ferm::service { 'ssh-from-cumin-masters':
+    ferm::service { 'ssh-from-cumin-masters':
         proto  => 'tcp',
         port   => '22',
         srange => '$CUMIN_MASTERS',
