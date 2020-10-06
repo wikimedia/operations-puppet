@@ -174,8 +174,32 @@ sub cluster_fe_ratelimit {
 		}
 
 		if (req.http.Host == "<%= @vcl_config.fetch('maps_domain') %>") {
-			// below is attempted mitigation of https://phabricator.wikimedia.org/T244278
-			if (req.http.referer && req.http.referer !~ "^https?://(([^/]*\.)*(wikipedia|wikimedia|wikibooks|wikinews|wikiquote|wikisource|wikiversity|wikivoyage|wikidata|wikimediafoundation|wiktionary|mediawiki|wmfusercontent|wmflabs|toolforge|wmcloud|wikilovesmonuments)\.org|w\.wiki|wikimedia\.pl|localhost(:\d*)?)(/|$)") {
+			// The Maps service has been chronically underprovisioned (in terms of staffing and
+			// hardware) for a while. WMF has made the policy decision we can only support Maps
+			// traffic that is relevant to the Movement, and to not serve as a tileserver for the
+			// whole Internet; prior to this, much of our Maps traffic was serving unrelated sites,
+			// including for-profit organizations.
+			// See https://phabricator.wikimedia.org/T261424 and https://lists.wikimedia.org/pipermail/maps-l/2020-August/001729.html
+			// We allow a Referer of only Wikimedia domains, plus several affiliates: https://phabricator.wikimedia.org/T261694
+			//
+			// To implement this, we regex on the Referer header.  Similar to wikimedia-frontend's
+			// normalize_request, said regex is encoded here as a VCL Long String with {""} delimiters
+			// containing a PCRE regex with the x-flag to allow expansion with whitespace, newlines,
+			// and comments for clarity:
+			if (req.http.referer && req.http.referer !~ {"(?x)		# Allow inline comments & whitespace
+				^https?://		# http or https, anchored to start
+				([^/]*\.)*(		# any number of subdomain components, but only within the hostname portion
+					# First, WMF-owned domains.
+					(wikipedia|wikimedia|wikibooks|wikinews|wikiquote|wikisource|wikiversity|wikivoyage|wikidata
+					 |wikimediafoundation|wiktionary|mediawiki|wmfusercontent|wmflabs|toolforge|wmcloud)
+					\.org		# all WMF-owned .org domains
+					|w\.wiki	# WMF-owned URL shortener
+					|localhost(:\d*)?	# to ease the lives of devs
+					# Now the affiliates https://phabricator.wikimedia.org/T261694
+					|wikilovesmonuments\.org
+					|wikimedia\.pl
+				)(/|$)		# Anchor to the end of the hostname portion: either end of string or a /.
+			"}) {
 				return (synth(429, "Too Many Requests"));
 			}
 		}
