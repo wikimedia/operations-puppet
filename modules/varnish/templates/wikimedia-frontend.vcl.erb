@@ -685,7 +685,7 @@ sub vcl_recv {
 	if (req.http.X-Connection-Properties ~ "C=ECDHE-ECDSA-AES128-SHA;") {
 		if (req.method == "GET" || req.method == "HEAD") {
 			if (req.http.host != "wikitech.wikimedia.org" && req.url != "/sec-warning" && req.url !~ "^/static/images/"
-				&& std.random(0,100) < 2.0) {
+				&& std.random(0,100) < 5.0) {
 				set req.http.Location = "https://" + req.http.Host + "/sec-warning";
 				return (synth(302, "Browser Connection Security Redirect"));
 			}
