@@ -198,6 +198,7 @@ sub cluster_fe_ratelimit {
 					# Now the affiliates https://phabricator.wikimedia.org/T261694
 					|wikilovesmonuments\.org
 					|wikimedia\.pl
+					|wikimedia\.cz
 				)(/|$)		# Anchor to the end of the hostname portion: either end of string or a /.
 			"}) {
 				return (synth(429, "Too Many Requests"));
