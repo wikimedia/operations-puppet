@@ -3056,12 +3056,6 @@ host es2015 {
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
-host es2017 {
-    hardware ethernet 14:18:77:52:49:32;
-    fixed-address es2017.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
-}
-
 host es2020 {
     hardware ethernet B0:26:28:F5:28:02;
     fixed-address es2020.codfw.wmnet;
