@@ -10,18 +10,6 @@ Should be used to validate standard ensure parameters
 
 # Functions
 
-## apply_format
-
-`apply_format( string $format, array $items )`
-
-Apply a format string to each element of an array.
-
-### Examples
-
-    $languages = [ 'finnish', 'french', 'greek', 'hebrew' ]
-    $packages = apply_format('texlive-lang-%s', $languages)
-
-
 ## conflicts
 
 `conflicts( string|resource $resource )`

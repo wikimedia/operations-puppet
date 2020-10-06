@@ -10,7 +10,7 @@ class profile::redis::master(
                                                     {'default_value' => []}),
     Array[Stdlib::Host] $prometheus_nodes   = lookup('prometheus_nodes'),
 ){
-    $uris = apply_format("localhost:%s/${password}", $instances)
+    $uris = $instances.map |$instance| { "localhost:${instance}/${password}" }
     $redis_ports = join($instances, ' ')
 
     $auth_settings = {

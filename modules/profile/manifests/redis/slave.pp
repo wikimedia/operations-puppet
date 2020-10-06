@@ -21,7 +21,7 @@ class profile::redis::slave(
     # PCC for some hosts
     $redis_ports = inline_template("<%= @resources.map{|r| r['title']}.join ' ' -%>")
     $instances = split($redis_ports, ' ')
-    $uris = apply_format("localhost:%s/${password}", $instances)
+    $uris = $instances.map |$instance| { "localhost:${instance}/${password}" }
 
     $auth_settings = {
         'masterauth'  => $password,

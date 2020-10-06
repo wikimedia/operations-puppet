@@ -12,7 +12,7 @@ class profile::redis::multidc(
     $ip = $facts['ipaddress']
     $instances = redis_get_instances($ip, $shards)
     $password = $passwords::redis::main_password
-    $uris = apply_format("localhost:%s/${password}", $instances)
+    $uris = $instances.map |$instance| { "localhost:${instance}/${password}" }
     $redis_ports = join($instances, ' ')
     $auth_settings = {
         'masterauth'  => $password,

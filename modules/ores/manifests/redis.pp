@@ -69,5 +69,5 @@ class ores::redis(
     }
     redis::monitoring::nrpe_instance{ $instances: }
 
-    $uris = apply_format("localhost:%s/${password}", $instances)
+    $uris = $instances.map |$instance| { "localhost:${instance}/${password}" }
 }
