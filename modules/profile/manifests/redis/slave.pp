@@ -9,7 +9,16 @@ class profile::redis::slave(
     $resources = query_resources(
         "fqdn='${master}'",
         'Redis::Instance[~".*"]', false)
-    $password = $resources[0]['parameters']['settings']['requirepass']
+
+    # TODO: T228266, this is a not so temporary workaround
+    if length($resources) > 0 and has_key($resources[0], 'parameters') and has_key($resources[0]['parameters'], 'settings') {
+        $password = $resources[0]['parameters']['settings']['requirepass']
+    } else {
+        # Only PCC should hit this, but at least be explicit
+        $password = ''
+    }
+    # TODO: T228266 is properly resolved, $instances will probably be 0 in
+    # PCC for some hosts
     $redis_ports = inline_template("<%= @resources.map{|r| r['title']}.join ' ' -%>")
     $instances = split($redis_ports, ' ')
     $uris = apply_format("localhost:%s/${password}", $instances)
@@ -47,5 +56,4 @@ class profile::redis::slave(
         notrack => true,
         port    => inline_template('(<%= @redis_ports %>)'),
     }
-
 }
