@@ -23,22 +23,16 @@
 #
 define logstash::input::tcp(
     Wmflib::Ensure   $ensure     = present,
-    String           $type       = $title,
-    String           $codec      = 'plain',
-    Integer          $port       = 5229,
-    Integer          $priority   = 10,
-    Boolean          $ssl_enable = false,
-    Optional[String] $ssl_cert   = undef,
-    Optional[String] $ssl_key    = undef,
-    String           $plugin_id  = "input/tcp/${port}",
-    Optional[Array]  $tags       = undef,
+    String                     $type       = $title,
+    String                     $codec      = 'plain',
+    Stdlib::Port               $port       = 5229,
+    Integer                    $priority   = 10,
+    Boolean                    $ssl_enable = false,
+    Optional[Stdlib::Unixpath] $ssl_cert   = undef,
+    Optional[Stdlib::Unixpath] $ssl_key    = undef,
+    String                     $plugin_id  = "input/tcp/${port}",
+    Optional[Array]            $tags       = undef,
 ) {
-
-    # Ensure cert/key params look like filesystem paths when ssl is enabled.
-    if $ssl_enable == true {
-      validate_absolute_path($ssl_cert)
-      validate_absolute_path($ssl_key)
-    }
 
     logstash::conf { "input-tcp-${title}":
         ensure   => $ensure,
