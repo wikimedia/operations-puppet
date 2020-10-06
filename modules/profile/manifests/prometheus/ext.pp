@@ -8,6 +8,7 @@ class profile::prometheus::ext (
     String           $replica_label        = lookup('prometheus::replica_label',             { 'default_value' => 'unset' }),
     Boolean          $enable_thanos_upload = lookup('profile::prometheus::ext::thanos',      { 'default_value' => false   }),
     Optional[String] $thanos_min_time      = lookup('profile::prometheus::thanos::min_time', { 'default_value' => undef   }),
+    Array            $alertmanagers        = lookup('alertmanagers', {'default_value' => []}),
 ){
     $instance_name  = 'ext'
     $targets_path   = "/srv/prometheus/${instance_name}/targets"
@@ -53,6 +54,7 @@ class profile::prometheus::ext (
         scrape_configs_extra => $scrape_configs_extra,
         min_block_duration   => '2h',
         max_block_duration   => $max_block_duration,
+        alertmanagers        => $alertmanagers.map |$a| { "${a}:9093" },
     }
 
     prometheus::web { $instance_name:
