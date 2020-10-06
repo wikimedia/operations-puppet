@@ -56,6 +56,12 @@ function route_backend_and_exit_if_ok(toolname, url)
     ngx.exit(ngx.OK)
 end
 
+if ngx.var.http_host == nil then
+    -- missing HOST: header from client. We can't figure out where to route
+    -- the request without it, so tell the client this was a bad request.
+    return ngx.exit(400)
+end
+
 local subdomain = string.match(ngx.var.http_host, "^[^.]+")
 route_backend_and_exit_if_ok(subdomain, "/")
 

@@ -32,6 +32,12 @@ function redis_shutdown()
     red:set_keepalive(1000 * 32, 256)
 end
 
+if ngx.var.http_host == nil then
+    -- missing HOST: header from client. We can't figure out where to route
+    -- the request without it, so tell the client this was a bad request.
+    return ngx.exit(400)
+end
+
 local fqdn = ngx.re.match(ngx.var.http_host, "^([^:]*)")[1]
 local backend = lookup_backend(fqdn)
 
