@@ -277,8 +277,8 @@ rewrite	download.wikipedia.org	https://dumps.wikimedia.org
 # keep redirect as the domain moved (in 2012?) – T126281, T80444
 funnel	stats.wikipedia.org	https://stats.wikimedia.org
 
-# redirect 2030.wikimedia.org to meta (T158981, T202498)
-funnel	2030.wikimedia.org	https://meta.wikimedia.org/wiki/Strategy/Wikimedia_movement/2018-20
+# redirect 2030.wikimedia.org to meta (T158981, T202498, T264797)
+funnel	2030.wikimedia.org	https://meta.wikimedia.org/wiki/Wikimedia_2030
 
 # redirect wikimedia.org/resources to meta (T172417)
 override	wikimedia.org/resources	https://meta.wikimedia.org/wiki/Wikimedia_Resource_Center
