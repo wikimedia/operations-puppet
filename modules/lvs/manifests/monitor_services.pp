@@ -39,7 +39,7 @@ class lvs::monitor_services(
             "check_restbase_cluster_${dc}":
                 host        => "restbase.svc.${dc}.wmnet",
                 description => "Restbase LVS ${dc}",
-                target      => "http://restbase.svc.${dc}.wmnet:7231/en.wikipedia.org/v1",
+                target      => "https://restbase.svc.${dc}.wmnet:7443/en.wikipedia.org/v1",
                 notes_url   => 'https://wikitech.wikimedia.org/wiki/RESTBase',
                 ;
             "check_mathoid_cluster_${dc}":

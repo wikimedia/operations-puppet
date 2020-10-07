@@ -10,7 +10,7 @@
 #
 # [*restbase_uri*]
 #   The host/IP where to reach RESTBase. Default:
-#   http://restbase.discovery.wmnet:7231
+#   https://restbase.discovery.wmnet:7443
 #
 # [*http_proxy*]
 #   Full URL of the proxy to use
