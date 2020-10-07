@@ -81,6 +81,15 @@ define redis::instance(
         notify  => Service["redis-instance-${instance_name}"],
     }
 
+    # Set the maximum number of open files to maxclients + 32
+    # See https://redis.io/topics/clients for details
+    # The default maxclient setting is 10000
+    $maxclients = $settings['maxclients'] ? {
+        undef   => 10000,
+        default => $settings['maxclients']
+    }
+
+    $open_files = $maxclients + 32
     systemd::service { "redis-instance-${instance_name}":
         ensure  => $ensure,
         content => systemd_template('redis-instance'),
