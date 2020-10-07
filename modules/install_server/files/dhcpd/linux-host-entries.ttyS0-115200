@@ -941,21 +941,6 @@ host testreduce1001 {
     fixed-address testreduce1001.eqiad.wmnet;
 }
 
-host testvm3001 {
-    hardware ethernet aa:00:00:af:d9:7b;
-    fixed-address testvm3001.esams.wmnet;
-}
-
-host testvm4001 {
-    hardware ethernet aa:00:00:20:92:10;
-    fixed-address testvm4001.ulsfo.wmnet;
-}
-
-host testvm5001 {
-    hardware ethernet aa:00:00:0a:c2:83;
-    fixed-address testvm5001.eqsin.wmnet;
-}
-
 host urldownloader1001.wikimedia.org {
     hardware ethernet aa:00:00:d2:7d:c6;
     fixed-address urldownloader1001.wikimedia.org;
