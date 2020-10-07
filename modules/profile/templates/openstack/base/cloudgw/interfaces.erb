@@ -3,25 +3,20 @@
 auto lo
 iface lo inet loopback
 
-<% @all_phy_nics.each do |nic| -%>
-auto <%= nic %>
-iface <%= nic %> inet manual
-<% end -%>
-
-auto bond0
-iface bond0 inet static
-    slaves<% @all_phy_nics.each do |nic| -%> <%= nic -%><% end %>
-    bond-mode 802.3ad
-    bond-miimon 100
-    bond-lacp-rate fast
-    bond-xmit-hash-policy layer2+3
+# in the PoC we are using this iface for control plane (ssh etc)
+auto eno1
+iface eno1 inet static
     address <%= @host_addr %>
     netmask <%= @host_netm %>
     gateway <%= @host_gw %>
     dns-nameservers<% @nameservers.each do |nameserver| -%> <%= nameserver -%><% end %>
     dns-search <%= @site %>.wmnet
-    up ip token set ::<%= @host_addr %> dev bond0
-    up ip addr add <%= @host_prefixv6 %>:<%= scope.call_function('regsubst', [@host_addr, '\.', ':', 'G']) %>/64 dev bond0
+    up ip token set ::<%= @host_addr %> dev eno1
+    up ip addr add <%= @host_prefixv6 %>:<%= scope.call_function('regsubst', [@host_addr, '\.', ':', 'G']) %>/64 dev eno1
+
+# in the PoC we are using this iface for data plane (vlan-trunked)
+auto eno2
+iface eno2 inet manual
 
 auto vrf-cloudgw
 iface vrf-cloudgw inet manual
@@ -29,14 +24,14 @@ iface vrf-cloudgw inet manual
 
 auto vlan<%= @virt_vlan %>
 iface vlan<%= @virt_vlan %> inet static
-    vlan-raw-device bond0
+    vlan-raw-device eno2
     address <%= @virt_addr %>
     netmask <%= @virt_netm %>
     post-up ip link set vlan<%= @virt_vlan %> master vrf-cloudgw
 
 auto vlan<%= @wan_vlan %>
 iface vlan<%= @wan_vlan %> inet static
-    vlan-raw-device bond0
+    vlan-raw-device eno2
     address <%= @wan_addr %>
     netmask <%= @wan_netm %>
     post-up ip link set vlan<%= @wan_vlan %> master vrf-cloudgw
