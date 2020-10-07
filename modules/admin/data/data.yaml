@@ -15,7 +15,7 @@ groups:
               mtizzoni, panisson, paolotti, ciro, dartar, melodykramer, gtirloni, tbayer, pirroh,
               bawolff, dkg, juliaglen, cwdent, hpham, atgomez, dfoy, alaasarhan, onimisionipe,
               tieu, flemmerich, jsamra, anomie, lexnasser, jmorgan, thargrove,
-              drossi, fsalutari, demon, lulu, jkumalah, nathante, shiladsen]
+              drossi, fsalutari, demon, lulu, jkumalah, nathante, shiladsen, leila]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -105,7 +105,7 @@ groups:
                  restricted folks use sudo to access www-data resources
     members: [bearloga, tjones, cparle, pearley, ktsouroupidou,
               ezachte, jamesur, jdlrobson, sguebo,
-              leila, santhosh, amire80, foks, chelsyx, dbarratt, karen,
+              santhosh, amire80, foks, chelsyx, dbarratt, karen,
               kharlan, abi, nikkin, bmansurov, musikanimal, nahidunlimited]
     privileges: ['ALL = (www-data) NOPASSWD: ALL']
   cassandra-test-roots:
@@ -267,7 +267,7 @@ groups:
     members: &analytics_privatedata_users [milimetric, aude, jforrester,
               halfak, dr0ptp4kt, bearloga, elukey, ppchelko, mneisler,
               nuria, otto, jgreen, sguebo,
-              bsitzmann, dbrant, nettrom, leila, jmm,
+              bsitzmann, dbrant, nettrom, leizi, jmm,
               ezachte, mforns, reedy, west1, phuedx, awight,
               joal, akosiaris, jkatz, tonina, pearley, ktsouroupidou,
               andyrussg, niedzielski, hoo, daniel, krinkle, tgr,
@@ -1473,15 +1473,23 @@ users:
     realname: Charles Salvia
     ssh_keys: []
     uid: 4415
-  leila:
-    ensure: present
+  leila: # Dropped in favour of leizi: https://phabricator.wikimedia.org/T264472#6521165
+    ensure: absent
     gid: 500
     name: leila
     realname: Leila Zia
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDaZ8/149Yz44kP3X+0hse6O1aOXiWTvI3o/qT5q+elDaVzvJleV8C5DR7r5NF6xOWhf1qVXVKHZqqECV3FPS5b+COtuzsvM7B3iGKv8IEvZKCChe8LfMKnXYMJdFPOyhfLrEhNW633NdKRhwp627ln9/M8R+5wUEGUjYWxyuJ0y7w/QrDZ2Q4qLWajNc+ExfO9KX83wOxKCBFIOB2/+eGPUzuqIFAeQTC6CIlH6GQxXqU7gfQj0DnqKOKU3BPsfmhLBZejUb483pmMUspZOsEHsEN+SZKujICHaHmvC1kBYDnvYZEuMaX032mkxDr21tv94lnTyHNbfvOfRWBf6y4p
-        leila@starfruit]
+    ssh_keys: []
     uid: 3963
     email: lzia@wikimedia.org
+  leizi:
+    ensure: present
+    gid: 500
+    name: leizi
+    realname: Leila Zia
+    ssh_keys: [ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICPnKMMpXEX5hRWvuy591pfgtdezDUE+ZHJf/RCf/PbX root@maracuja]
+    uid: 15808
+    email: lzia@wikimedia.org
+    krb: present
   santhosh:
     ensure: present
     gid: 500
