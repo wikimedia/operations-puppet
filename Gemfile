@@ -14,9 +14,9 @@ gem 'chronic', '~> 0.10.2'
 
 gem 'rake', '~> 12.0.0'
 gem 'git', '1.3.0'
-gem 'puppet-lint', '2.3.6'
+gem 'puppet-lint', '2.4.2'
 gem 'rubocop', '~> 0.49.1', require: false
-gem 'puppet-lint-wmf_styleguide-check', '1.0.5'
+gem 'puppet-lint-wmf_styleguide-check', '1.0.7'
 
 # last versions supporting ruby 2.3 (Stretch)
 gem 'byebug', '~> 11.0.1'
