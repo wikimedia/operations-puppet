@@ -49,6 +49,9 @@ tlsOptionsDOH = {
 <% if @tls_config_doh.has_key?('ciphers') -%>
   ciphers='<%= @tls_config_doh['ciphers'].join(':') %>',
 <% end -%>
+<% if @tls_common.has_key?('ocsp_response_path') -%>
+  ocspResponses={'<%= @tls_common['ocsp_response_path'] %>'},
+<% end -%>
 }
 
 -- enable DoH (default port is 443)
@@ -79,6 +82,9 @@ tlsOptionsDOT = {
 <% end -%>
 <% if @tls_config_dot.has_key?('ciphers') -%>
   ciphers='<%= @tls_config_dot['ciphers'].join(':') %>',
+<% end -%>
+<% if @tls_common.has_key?('ocsp_response_path') -%>
+  ocspResponses={'<%= @tls_common['ocsp_response_path'] %>'},
 <% end -%>
 }
 

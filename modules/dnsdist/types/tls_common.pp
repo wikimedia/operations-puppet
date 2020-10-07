@@ -7,8 +7,12 @@
 #
 #  [*cert_privkey_path*]
 #    [path] path to the certificate private key. required.
+#
+#  [*ocsp_response_path*]
+#    [path] path to the OCSP response file. optional.
 
 type Dnsdist::TLS_common = Struct[{
-    cert_chain_path   => Stdlib::Unixpath,
-    cert_privkey_path => Stdlib::Unixpath,
+    cert_chain_path    => Stdlib::Unixpath,
+    cert_privkey_path  => Stdlib::Unixpath,
+    ocsp_response_path => Optional[Stdlib::Unixpath],
 }]
