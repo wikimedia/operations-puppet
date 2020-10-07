@@ -55,6 +55,18 @@ class profile::analytics::refinery::job::data_purge (
         use_kerberos => $use_kerberos,
     }
 
+    # Keep this many days of webrequest sequence stats data (400 days =~ 13 months) .
+    $webrequest_sequence_stats_retention_days = 400
+    kerberos::systemd_timer { 'refinery-drop-webrequest-sequence-stats-partitions':
+        ensure       => $ensure_timers,
+        description  => 'Drop Webrequest sequence stats (detailed and hourly) from HDFS to prevent small-files number to grow.',
+        command      => "${refinery_path}/bin/refinery-drop-older-than --database='wmf_raw' --tables='^webrequest_sequence_stats(_hourly)?$' --base-path='/user/hive/warehouse/wmf_raw.db' --path-format='webrequest_sequence_stats(_hourly)?/webrequest_source=[a-z]+/year=(?P<year>[0-9]+)(/month=(?P<month>[0-9]+)(/day=(?P<day>[0-9]+)(/hour=(?P<hour>[0-9]+))?)?)?' --older-than='${webrequest_sequence_stats_retention_days}' --skip-trash --execute='0b38d1307add57841c6726082fb04cd7'",
+        interval     => '*-*-* 00:30:00',
+        environment  => $systemd_env,
+        user         => 'analytics',
+        use_kerberos => $use_kerberos,
+    }
+
     # Keep this many days of pageview_actor_hourly data.
     kerberos::systemd_timer { 'refinery-drop-pageview-actor-hourly-partitions':
         ensure       => $ensure_timers,
