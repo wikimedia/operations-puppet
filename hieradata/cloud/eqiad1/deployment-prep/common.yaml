@@ -465,6 +465,7 @@ profile::swift::replication_accounts:
   mw_media:
     cluster_codfw: http://deployment-ms-fe03.deployment-prep.eqiad.wmflabs/v1/
 
+profile::swift::proxy::private_container_list: []
 profile::swift::proxy::shard_container_list:
   - global-data-math-render
   - wikipedia-commons-local-public
