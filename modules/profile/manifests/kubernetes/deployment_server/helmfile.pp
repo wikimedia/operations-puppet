@@ -2,6 +2,7 @@ class profile::kubernetes::deployment_server::helmfile(
     Hash[String, Any] $services=hiera('profile::kubernetes::deployment_server::services', {}),
     Hash[String, Any] $services_secrets=hiera('profile::kubernetes::deployment_server_secrets::services', {}),
     Hash[String, Any] $admin_services_secrets=hiera('profile::kubernetes::deployment_server_secrets::admin_services', {}),
+    Hash[String, Any] $general_values=lookup('profile::kubernetes::deployment_server::general', {'default_value' => {}}),
     Array[Stdlib::Fqdn] $prometheus_nodes = lookup('prometheus_all_nodes'),
     Array[Profile::Service_listener] $service_listeners = lookup('profile::services_proxy::envoy::listeners', {'default_value' => []}),
 ){
@@ -131,8 +132,8 @@ class profile::kubernetes::deployment_server::helmfile(
                 'puppet_ca_crt' => $puppet_ca_data
             }
         }
-        # Add services proxy
-        $opts = merge($deployment_config_opts, {'services_proxy' => $proxies})
+        # Merge default and environment specific general values with deployment config and service proxies
+        $opts = deep_merge($general_values['default'], $general_values[$environment], $deployment_config_opts, {'services_proxy' => $proxies})
         file { "${general_dir}/general-${environment}.yaml":
             content => to_yaml($opts),
             mode    => '0444'

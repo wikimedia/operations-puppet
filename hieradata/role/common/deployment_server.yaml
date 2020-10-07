@@ -354,6 +354,16 @@ profile::kubernetes::deployment_server::services:
     mode: '0640'
     owner: mwdeploy
 
+# Default and environment specific generic values go here.
+# default:
+#   ..
+# eqiad:
+#   ..
+profile::kubernetes::deployment_server::general:
+  default:
+    tls:
+      image_version: 1.15.1-2
+
 # Specified in the private repo in this form
 #profile::kubernetes::deployment_server::tokens:
 #  admin:
