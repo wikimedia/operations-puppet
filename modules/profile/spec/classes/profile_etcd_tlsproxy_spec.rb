@@ -38,7 +38,7 @@ describe 'profile::etcd::tlsproxy' do
       let(:params) {
         {
           cert_name: 'etcd.eqiad.wmnet',
-          acls: { "/conftool": ["root", "conftool"] },
+          acls: { '/conftool' => ['root', 'conftool'] },
           salt: 'salt',
           read_only: false,
           listen_port: 4001,

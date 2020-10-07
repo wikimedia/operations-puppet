@@ -18,6 +18,7 @@ AllCops:
     - 'modules/lvm/**/*'
     # bundler installation files
     - 'vendor/**/*'
+    - '**/Vagrantfile'
 
 # Uncomment when lines are 100 characters or less
 # Metrics/LineLength:
@@ -58,8 +59,7 @@ Layout/IndentHeredoc:
 Style/GuardClause:
   Enabled: false
 
-# This cannot be enabled because of the naming conventions
-# on hiera backend classes imposed by puppet itself
-Style/ClassAndModuleCamelCase:
-   Exclude:
-     - 'modules/wmflib/lib/hiera/backend/*_backend.rb'
+# We still have to support ruby 2.1 because of jessie however i suspect many users have there
+# editor lint checks set to a higher ruby version hence the warnings
+Lint/UnneededDisable:
+  Enabled: false
