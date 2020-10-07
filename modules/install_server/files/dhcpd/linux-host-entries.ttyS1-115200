@@ -39,6 +39,7 @@ host an-launcher1002.eqiad.wmnet {
 host an-scheduler1001.eqiad.wmnet {
     hardware ethernet D0:94:66:1B:33:67;
     fixed-address an-scheduler1001.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host an-druid1001 {
