@@ -279,7 +279,7 @@ class profile::netbox (
             interval                  => {
                 'start'    => 'OnCalendar',
                 # Splay by 1 minute per profile, offset by 5 minutes from 00 (sync process takes far less than 1 minute)
-                'interval' => "*-*-* *:${String($prof_index + 5, '%02d')}/${String($ganeti_sync_interval, '%02d')}:00",
+                'interval' => '*-*-* *:%02d/%02d:00'.sprintf($prof_index + 5, $ganeti_sync_interval)
             },
             logging_enabled           => false,
             monitoring_enabled        => true,
