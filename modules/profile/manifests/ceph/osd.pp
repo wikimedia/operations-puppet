@@ -58,11 +58,11 @@ class profile::ceph::osd(
     }
     # Make sure the interface is in sync with configuration changes
     exec { 'set-osd-cluster-mtu':
-        command     => "/usr/sbin/ip link set mtu 9000 ${osd_hosts["$::fqdn"]['cluster']['iface']}",
+        command     => "/usr/sbin/ip link set mtu 9000 ${osd_hosts[$facts['fqdn']]['cluster']['iface']}",
         refreshonly => true,
     }
     exec { 'set-osd-public-mtu':
-        command     => "/usr/sbin/ip link set mtu 9000 ${osd_hosts["$::fqdn"]['public']['iface']}",
+        command     => "/usr/sbin/ip link set mtu 9000 ${osd_hosts[$facts['fqdn']]['public']['iface']}",
         refreshonly => true,
     }
 
