@@ -12,9 +12,9 @@ admin::groups_no_ssh:
 
 profile::hadoop::common::hadoop_cluster_name: 'analytics-hadoop'
 
-profile::hadoop::standby_master::monitoring_enabled: true
+profile::hadoop::master::standby::monitoring_enabled: true
 
-profile::hadoop::standby_master::use_kerberos: true
+profile::hadoop::master::standby::use_kerberos: true
 profile::hadoop::backup::namenode::use_kerberos: true
 
 # Deploy TLS keys and xml configuration files
@@ -63,6 +63,6 @@ profile::hadoop::firewall::master::client_ferm_srange: '(($ANALYTICS_NETWORKS $D
 
 # Hosts to decommission - T255140
 # https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hadoop/Administration#Decommissioning
-profile::hadoop::standby_master::excluded_hosts:
+profile::hadoop::master::standby::excluded_hosts:
   - 'analytics1042.eqiad.wmnet'
   - 'analytics1042'

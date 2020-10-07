@@ -6,10 +6,10 @@
 #    If production monitoring needs to be enabled or not.
 #
 class profile::hadoop::master::standby(
-    $cluster_name             = hiera('profile::hadoop::common::hadoop_cluster_name'),
-    $monitoring_enabled       = hiera('profile::hadoop::standby_master::monitoring_enabled', false),
-    $use_kerberos             = hiera('profile::hadoop::standby_master::use_kerberos', false),
-    $excluded_hosts           = hiera('profile::hadoop::standby_master::excluded_hosts', []),
+    $cluster_name             = lookup('profile::hadoop::common::hadoop_cluster_name'),
+    $monitoring_enabled       = lookup('profile::hadoop::master::standby::monitoring_enabled', { 'default_value' => false }),
+    $use_kerberos             = lookup('profile::hadoop::master::standby::use_kerberos', { 'default_value' => false }),
+    $excluded_hosts           = lookup('profile::hadoop::master::standby::excluded_hosts', { 'default_value' => [] }),
 ) {
     require ::profile::hadoop::common
 
