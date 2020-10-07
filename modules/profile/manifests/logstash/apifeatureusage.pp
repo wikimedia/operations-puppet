@@ -18,6 +18,7 @@ class profile::logstash::apifeatureusage(
         group  => 'root',
         mode   => '0444',
     }
+    # lint:endignore
 
     # Add configuration to logstash
     # Needs to come after 'filter_mediawiki' (priority 50)
