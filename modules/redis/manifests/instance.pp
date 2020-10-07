@@ -78,11 +78,12 @@ define redis::instance(
         owner   => 'root',
         group   => 'redis',
         mode    => '0440',
+        notify  => Service["redis-instance-${instance_name}"],
     }
 
-    base::service_unit { "redis-instance-${instance_name}":
-        ensure    => $ensure,
-        systemd   => systemd_template('redis-instance'),
-        subscribe => File["/etc/redis/${instance_name}.conf"],
+    systemd::service { "redis-instance-${instance_name}":
+        ensure  => $ensure,
+        content => systemd_template('redis-instance'),
+        restart => false,
     }
 }
