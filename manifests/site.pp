@@ -1398,12 +1398,8 @@ node /^ldap-replica100[1-2]\.wikimedia\.org$/ {
 }
 
 # Read-only ldap replicas in codfw
-node /^ldap-replica200[1-2]\.wikimedia\.org$/ {
+node /^ldap-replica200[1-4]\.wikimedia\.org$/ {
     role(openldap::replica)
-}
-
-node /^ldap-replica200[3-4]\.wikimedia\.org$/ {
-    role(insetup)
 }
 
 node /^logstash101[0-2]\.eqiad\.wmnet$/ {
