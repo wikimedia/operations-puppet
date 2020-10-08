@@ -34,7 +34,7 @@ class geoip::data::archive(
         content => file('geoip/archive.sh')
     }
 
-    $archive_command = "${archive_script} ${maxmind_db_source_dir} ${archive_dir} ${hdfs_archive_dir}"
+    $archive_command = "${archive_script} ${maxmind_db_source_dir} ${hdfs_archive_dir}"
 
     kerberos::systemd_timer { 'archive-maxmind-geoip-database':
         description               => 'Archives Maxmind GeoIP files',
