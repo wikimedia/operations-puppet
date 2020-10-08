@@ -2261,11 +2261,6 @@ node /^sretest100[1-2]\.eqiad\.wmnet$/ {
 node 'testreduce1001.eqiad.wmnet' {
     role(parsoid::testreduce)
 }
-
-node 'testvm4001.ulsfo.wmnet' {
-    role(mediawiki::appserver)
-}
-
 # Used for various d-i tests
 node 'theemin.codfw.wmnet' {
     role(test)
