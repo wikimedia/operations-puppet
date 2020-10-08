@@ -8,8 +8,6 @@ import yaml
 import mwopenstackclients
 import rbd2backy2
 
-special_projects = ["admin", "wmflabsdotorg"]
-
 
 def exclude_server(config, project, servername):
     if project in config["exclude_servers"].keys():
@@ -22,6 +20,9 @@ def exclude_server(config, project, servername):
 def backup_this_project_on_this_host(config, project):
     # This should return the short hostname, e.g. 'cloudvirt1024'
     hostname = socket.gethostname()
+
+    if config["project_assignments"].get(project, "").lower() == "ignore":
+        return False
 
     if project in config["project_assignments"]:
         return config["project_assignments"][project] == hostname
@@ -36,9 +37,6 @@ openstackclients = mwopenstackclients.Clients(envfile="/etc/novaobserver.yaml")
 ceph_servers = rbd2backy2.ceph_vms(config["ceph_pool"])
 
 for project in openstackclients.allprojects():
-    if project.id in special_projects:
-        continue
-
     if not backup_this_project_on_this_host(project.id):
         continue
 
