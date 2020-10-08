@@ -29,7 +29,7 @@ class profile::puppetmaster::pontoon (
 
     $base_config = {
         'node_terminus'     => 'exec',
-        'external_nodes'    => '/usr/local/bin/puppet-enc --hiera-output /etc/puppet/hieradata/auto.yaml',
+        'external_nodes'    => '/usr/local/bin/puppet-enc --hiera.output /etc/puppet/hieradata/auto.yaml',
         'thin_storeconfigs' => false,
         'autosign'          => '/usr/local/bin/puppet-enc',
     }
