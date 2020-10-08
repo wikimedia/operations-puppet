@@ -17,8 +17,6 @@ iface eno1 inet static
 # in the PoC we are using this iface for data plane (vlan-trunked)
 auto eno2
 iface eno2 inet manual
-    up ifup eno2.<%= @wan_vlan %>
-    up ifup eno2.<%= @virt_vlan %>
 
 auto vrf-cloudgw
 iface vrf-cloudgw inet manual
