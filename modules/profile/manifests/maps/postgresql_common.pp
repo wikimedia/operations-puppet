@@ -7,9 +7,12 @@
 #                    overriden for tests or VMs on lab).
 # - $maintenance_work_mem: postgresql maintenance work mem. Default: 4GB
 #                    (should only be overriden for tests or VMs on lab).
+# - $chgrp_log: chgrp the postgresql log to maps-admin group. Disable in
+#                    deployment-prep.
 class profile::maps::postgresql_common(
     String $shared_buffers       = lookup('profile::maps::postgresql_common::shared_buffers', { 'default_value' => '7680MB' }),
     String $maintenance_work_mem = lookup('profile::maps::postgresql_common::maintenance_work_mem', { 'default_value' => '4GB' }),
+    Boolean $chgrp_log = lookup('profile::maps::postgresql_common::chown_logfile', {'default_value' => true}),
 ){
 
     class { '::postgresql::postgis': }
@@ -35,11 +38,13 @@ class profile::maps::postgresql_common(
         },
     }
 
-    # TODO: Figure out a better way to do this
-    # Ensure postgresql logs as maps-admin to allow maps-admin to read them
-    # Rely on logrotate's copytruncate policy for postgres for the rest of the
-    # log file
-    file { "/var/log/postgresql/postgresql-${pgversion}-main.log":
-        group => 'maps-admins',
+    if $chgrp_log {
+        # TODO: Figure out a better way to do this
+        # Ensure postgresql logs as maps-admin to allow maps-admin to read them
+        # Rely on logrotate's copytruncate policy for postgres for the rest of the
+        # log file
+        file { "/var/log/postgresql/postgresql-${pgversion}-main.log":
+          group => 'maps-admins',
+        }
     }
 }
