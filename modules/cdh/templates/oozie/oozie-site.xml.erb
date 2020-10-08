@@ -57,16 +57,6 @@
         </description>
     </property>
 
-    <% if @admin_groups and !@admin_groups.empty? -%>
-        <property>
-            <name>oozie.service.AuthorizationService.admin.groups</name>
-            <value><%= @admin_groups.join(",") %></value>
-            <description>
-                Comma-separated list of admin groups. Users belonging to any of these groups are admins.
-            </description>
-        </property>
-    <% end -%>
-
     <property>
         <name>oozie.service.PurgeService.older.than</name>
         <value><%= @purge_jobs_older_than_days %></value>
