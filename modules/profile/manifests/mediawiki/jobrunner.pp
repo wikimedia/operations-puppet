@@ -15,10 +15,10 @@
 #
 class profile::mediawiki::jobrunner(
     String $cluster = lookup('cluster'),
-    $statsd = hiera('statsd'),
-    Optional[Stdlib::Port::User] $fcgi_port = hiera('profile::php_fpm::fcgi_port', undef),
-    String $fcgi_pool = hiera('profile::mediawiki::fcgi_pool', 'www'),
-    Boolean $expose_endpoint = hiera('profile::mediawiki::jobrunner::expose_endpoint', false),
+    String $statsd = lookup('statsd'),
+    Optional[Stdlib::Port::User] $fcgi_port = lookup('profile::php_fpm::fcgi_port', {default_value => undef}),
+    String $fcgi_pool = lookup('profile::mediawiki::fcgi_pool', {default_value => 'www'}),
+    Boolean $expose_endpoint = lookup('profile::mediawiki::jobrunner::expose_endpoint', {default_value => false}),
 ) {
     # Parameters we don't need to override
     $port = 9005

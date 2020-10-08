@@ -16,13 +16,13 @@
 # bcmath, gmp - various extensions and vendor libraries
 #
 class profile::mediawiki::php(
-    Boolean $enable_fpm = hiera('profile::mediawiki::php::enable_fpm'),
-    Optional[Hash] $fpm_config = hiera('profile::mediawiki::php::fpm_config', undef),
-    Wmflib::Php_version $php_version = hiera('profile::mediawiki::php::php_version', '7.0'),
-    Optional[Stdlib::Port::User] $port = hiera('profile::php_fpm::fcgi_port', undef),
-    String $fcgi_pool = hiera('profile::mediawiki::fcgi_pool', 'www'),
-    Integer $request_timeout = hiera('profile::mediawiki::php::request_timeout', 240),
-    String $apc_shm_size = hiera('profile::mediawiki::apc_shm_size'),
+    Boolean $enable_fpm = lookup('profile::mediawiki::php::enable_fpm'),
+    Optional[Hash] $fpm_config = lookup('profile::mediawiki::php::fpm_config', {default_value => undef}),
+    Wmflib::Php_version $php_version = lookup('profile::mediawiki::php::php_version', {default_value => '7.0'}),
+    Optional[Stdlib::Port::User] $port = lookup('profile::php_fpm::fcgi_port', {default_value => undef}),
+    String $fcgi_pool = lookup('profile::mediawiki::fcgi_pool', {default_value => 'www'}),
+    Integer $request_timeout = lookup('profile::mediawiki::php::request_timeout', {default_value => 240}),
+    String $apc_shm_size = lookup('profile::mediawiki::apc_shm_size'),
     # temporary, for php restarts
     String $cluster = lookup('cluster'),
     # Needed for wmerrors

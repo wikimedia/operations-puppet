@@ -2,9 +2,9 @@
 #
 # Configures nutcracker for mediawiki
 class profile::mediawiki::nutcracker(
-    $redis_shards      = lookup('redis::shards'),
-    $datacenters       = lookup('datacenters'),
-    $memcached_servers = lookup('mediawiki_memcached_servers', {'default_value' => []}),
+    Hash $redis_shards = lookup('redis::shards'),
+    Array[String] $datacenters = lookup('datacenters'),
+    Array[Variant[Stdlib::Host,String]] $memcached_servers = lookup('mediawiki_memcached_servers', {'default_value' => []}),
 ) {
     $redis_servers = $redis_shards['sessions']
     include ::passwords::redis

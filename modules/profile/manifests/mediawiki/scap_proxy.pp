@@ -3,7 +3,7 @@
 # Sets up an rsync proxy for scap, if the server is set up to be one
 #
 class profile::mediawiki::scap_proxy(
-    $scap_proxies = lookup('scap::dsh::scap_proxies', {'default_value' => []}),
+    Array[Stdlib::Host] $scap_proxies = lookup('scap::dsh::scap_proxies', {'default_value' => []}),
 ) {
     include ::network::constants
 

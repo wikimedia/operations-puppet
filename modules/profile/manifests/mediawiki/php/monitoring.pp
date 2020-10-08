@@ -1,11 +1,11 @@
 class profile::mediawiki::php::monitoring(
-    $prometheus_nodes = hiera('prometheus_nodes'),
-    $auth_passwd = hiera('profile::mediawiki::php::monitoring::password'),
-    $auth_salt = hiera('profile::mediawiki::php::monitoring::salt'),
-    Optional[Stdlib::Port::User] $fcgi_port = hiera('profile::php_fpm::fcgi_port', undef),
-    String $fcgi_pool = hiera('profile::mediawiki::fcgi_pool', 'www'),
-    Boolean $monitor_page = hiera('profile::mediawiki::php::monitoring::monitor_page', true),
-    Array[String] $deployment_nodes = hiera('deployment_hosts', []),
+    Array[Stdlib::Host] $prometheus_nodes = lookup('prometheus_nodes'),
+    String $auth_passwd = lookup('profile::mediawiki::php::monitoring::password'),
+    String $auth_salt = lookup('profile::mediawiki::php::monitoring::salt'),
+    Optional[Stdlib::Port::User] $fcgi_port = lookup('profile::php_fpm::fcgi_port', {default_value => undef}),
+    String $fcgi_pool = lookup('profile::mediawiki::fcgi_pool', {default_value => 'www'}),
+    Boolean $monitor_page = lookup('profile::mediawiki::php::monitoring::monitor_page', {default_value => true}),
+    Array[String] $deployment_nodes = lookup('deployment_hosts', {default_value => []}),
     Boolean $monitor_opcache = lookup('profile::mediawiki::php::monitoring::monitor_opcache', {default_value => true}),
 ) {
     require ::network::constants
