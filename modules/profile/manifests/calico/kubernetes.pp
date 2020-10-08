@@ -4,14 +4,14 @@
 # This follows http://docs.projectcalico.org/v2.0/getting-started/kubernetes/installation/#manual-installation
 
 class profile::calico::kubernetes(
-    $etcd_endpoints = hiera('profile::calico::kubernetes::etcd_endpoints'),
-    $bgp_peers = hiera('profile::calico::kubernetes::bgp_peers'),
-    $calico_version = hiera('profile::calico::kubernetes::calico_version'),
-    $registry = hiera('profile::calico::kubernetes::docker::registry'),
-    $kubeconfig = hiera('profile::kubernetes::node::kubelet_config'),
-    $datastore_type = hiera('profile::calico::kubernetes::calico_datastore_type', 'etcdv2'),
-    $prometheus_nodes = hiera('prometheus_nodes', []),
-) {
+    Array[String] $etcd_endpoints = lookup('profile::calico::kubernetes::etcd_endpoints'),
+    $bgp_peers = lookup('profile::calico::kubernetes::bgp_peers'),
+    String $calico_version = lookup('profile::calico::kubernetes::calico_version'),
+    Stdlib::Host $registry = lookup('profile::calico::kubernetes::docker::registry'),
+    Stdlib::Unixpath $kubeconfig = lookup('profile::kubernetes::node::kubelet_config'),
+    String $datastore_type = lookup('profile::calico::kubernetes::calico_datastore_type', {default_value => 'etcdv2'}),
+    Array[Stdlib::Host] $prometheus_nodes = lookup('prometheus_nodes', {default_value => []}),
+){
 
     class { '::calico':
         etcd_endpoints => $etcd_endpoints,

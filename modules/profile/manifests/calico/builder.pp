@@ -1,11 +1,11 @@
 class profile::calico::builder(
-    $calico_release=hiera('profile::calico::builder::calico_release'),
+    String $calico_release=lookup('profile::calico::builder::calico_release'),
     # Calico builder directory
-    $directory=hiera('profile::calico::builder::directory'),
+    Stdlib::Unixpath $directory=lookup('profile::calico::builder::directory'),
     # Proxy url, if present
-    $proxy_address=hiera('profile::calico::builder::proxy_address'),
-    $registry_address=hiera('docker::registry'),
-    $registry_user=hiera('docker::registry_user'),
+    Stdlib::Host $proxy_address=lookup('profile::calico::builder::proxy_address'),
+    Stdlib::Host $registry_address=lookup('docker::registry'),
+    String $registry_user=lookup('docker::registry_user'),
 ) {
 
     # Needs docker to be installed and working
