@@ -2,13 +2,13 @@
 #
 # Configures pybal on a server, lvs or otherwise.
 class profile::pybal(
-    $bgp = hiera('profile::pybal::bgp'),
-    $primary = hiera('profile::pybal::primary'),
-    $conftool_prefix = hiera('conftool_prefix'),
-    $config_source = hiera('profile::pybal::config_source'),
-    $config_host = hiera('profile::pybal::config_host'),
-    $wikimedia_clusters = hiera('wikimedia_clusters'),
-    $etcd_port = hiera('profile::pybal::etcd_port', 2379),
+    String $bgp = lookup('profile::pybal::bgp'),
+    Boolean $primary = lookup('profile::pybal::primary'),
+    String $conftool_prefix = lookup('conftool_prefix'),
+    String $config_source = lookup('profile::pybal::config_source'),
+    Stdlib::Host $config_host = lookup('profile::pybal::config_host'),
+    Hash $wikimedia_clusters = lookup('wikimedia_clusters'),
+    Stdlib::Port $etcd_port = lookup('profile::pybal::etcd_port', {'default_value' => 2379}),
     Optional[Integer] $override_bgp_med = lookup('profile::pybal::override_bgp_med', {'default_value' => undef}),
 ) {
     # Includes all the common configs.
