@@ -1,5 +1,5 @@
 class profile::parsoid(
-    Boolean $has_lvs = hiera('has_lvs', true),
+    Boolean $has_lvs = lookup('has_lvs', {'default_value' => true }),
     Integer[1025, 65535] $port = lookup('profile::parsoid::port', {'default_value' => 8000}),
     Boolean $use_php = lookup('profile::parsoid::use_php', {'default_value' => false }),
 ) {
