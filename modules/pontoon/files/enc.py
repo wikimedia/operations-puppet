@@ -69,11 +69,22 @@ if __name__ == "__main__":
         help="The hostname to return data for",
     )
     parser.add_argument(
-        "--config",
+        "--stack.path",
         type=str,
         metavar="PATH",
-        default=os.environ.get("PONTOON_CONFIG", "/etc/pontoon-enc.yaml"),
-        help="Config file, default PONTOON_CONFIG / /etc/pontoon-enc.yaml",
+        dest="stack_path",
+        default=os.environ.get(
+            "PONTOON_STACK_PATH", "/var/lib/git/operations/puppet/modules/pontoon/files"
+        ),
+        help="The path where all stacks are located",
+    )
+    parser.add_argument(
+        "--stack.file",
+        type=str,
+        metavar="PATH",
+        dest="stack_file",
+        default=os.environ.get("PONTOON_STACK_FILE", "/etc/pontoon-stack"),
+        help="File with the Pontoon stack, default PONTOON_STACK_FILE / /etc/pontoon-stack",
     )
     parser.add_argument(
         "--hiera-output",
@@ -84,17 +95,22 @@ if __name__ == "__main__":
     )
     args = parser.parse_args()
 
-    with open(args.config, encoding="utf-8") as f:
+    with open(args.stack_file) as f:
+        stack = f.readline().strip()
+
+    config = os.path.join(args.stack_path, stack, "rolemap.yaml")
+
+    with open(config, encoding="utf-8") as f:
         p = Pontoon(f)
 
     if args.hiera_output:
         # Autogenerate hiera variables from Pontoon's map. These variables can be referenced in
         # hiera itself via %{alias('variable')}
-        update_hiera(p, args.config, args.hiera_output)
+        update_hiera(p, config, args.hiera_output)
 
     role = p.role_for_host(args.hostname)
     if not role:
-        log.error("Host %s not found in %s", args.hostname, args.config)
+        log.error("Host %s not found in %s", args.hostname, config)
         sys.exit(-1)
 
     agent_server = (p.hosts_for_role("puppetmaster::pontoon")[0],)
