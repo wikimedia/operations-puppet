@@ -19,19 +19,18 @@
 #
 #
 class profile::elasticsearch(
-    Hash[String, Elasticsearch::InstanceParams] $instances = hiera('profile::elasticsearch::instances'),
-    Elasticsearch::InstanceParams $dc_settings = hiera('profile::elasticsearch::dc_settings'),
-    Elasticsearch::InstanceParams $common_settings = hiera('profile::elasticsearch::common_settings'),
-    Stdlib::AbsolutePath $base_data_dir = hiera('profile::elasticsearch::base_data_dir'),
-
-    String $logstash_host = hiera('logstash_host'),
-    Stdlib::Port $logstash_gelf_port = hiera('logstash_gelf_port'),
-    Stdlib::Port $logstash_logback_port = hiera('logstash_logback_port'),
-    Enum['Gelf', 'syslog'] $logstash_transport = hiera('profile::elasticsearch::logstash_transport', 'Gelf'),
-    String $rack = hiera('profile::elasticsearch::rack'),
-    String $row = hiera('profile::elasticsearch::row'),
-    Enum['5.5', '5.6', '6.5', '7.4', '7.8', '7.9'] $version = hiera('profile::elasticsearch::version', '5.5'),
-    Enum['5', '6', '7'] $config_version = hiera('profile::elasticsearch::config_version', '5'),
+    Hash[String, Elasticsearch::InstanceParams] $instances = lookup('profile::elasticsearch::instances'),
+    Elasticsearch::InstanceParams $dc_settings = lookup('profile::elasticsearch::dc_settings'),
+    Elasticsearch::InstanceParams $common_settings = lookup('profile::elasticsearch::common_settings'),
+    Stdlib::AbsolutePath $base_data_dir = lookup('profile::elasticsearch::base_data_dir'),
+    String $logstash_host = lookup('logstash_host'),
+    Stdlib::Port $logstash_gelf_port = lookup('logstash_gelf_port'),
+    Stdlib::Port $logstash_logback_port = lookup('logstash_logback_port'),
+    Enum['Gelf', 'syslog'] $logstash_transport = lookup('profile::elasticsearch::logstash_transport', {'default_value' => 'Gelf'}),
+    String $rack = lookup('profile::elasticsearch::rack'),
+    String $row = lookup('profile::elasticsearch::row'),
+    Enum['5.5', '5.6', '6.5', '7.4', '7.8', '7.9'] $version = lookup('profile::elasticsearch::version', {'default_value' => '5.5'}),
+    Enum['5', '6', '7'] $config_version = lookup('profile::elasticsearch::config_version', {'default_value' => '5'}),
     Optional[String] $java_home = lookup('profile::elasticsearch::java_home', { 'default_value' => undef }),
 ) {
 

@@ -1,6 +1,6 @@
 class profile::elasticsearch::relforge (
-    Array[Stdlib::IP::Address] $maintenance_hosts = hiera('maintenance_hosts'),
-    Array[Stdlib::IP::Address] $cumin_masters = hiera('cumin_masters'),
+    Array[Stdlib::IP::Address] $maintenance_hosts = lookup('maintenance_hosts'),
+    Array[Stdlib::IP::Address] $cumin_masters = lookup('cumin_masters'),
 ) {
     include ::profile::elasticsearch::cirrus
     include ::profile::elasticsearch::monitor::base_checks

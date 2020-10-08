@@ -1,8 +1,8 @@
 class profile::elasticsearch::monitor::base_checks(
-    Integer $shard_size_warning = hiera('profile::elasticsearch::monitor::shard_size_warning', 50),
-    Integer $shard_size_critical = hiera('profile::elasticsearch::monitor::shard_size_critical', 60),
-    String $threshold = hiera('profile::elasticsearch::monitor::threshold', '>=0.15'),
-    Integer $timeout = hiera('profile::elasticsearch::monitor::timeout', 4),
+    Integer $shard_size_warning = lookup('profile::elasticsearch::monitor::shard_size_warning', {'default_value' => 50}),
+    Integer $shard_size_critical = lookup('profile::elasticsearch::monitor::shard_size_critical', {'default_value' => 60}),
+    String $threshold = lookup('profile::elasticsearch::monitor::threshold', {'default_value' => '>=0.15'}),
+    Integer $timeout = lookup('profile::elasticsearch::monitor::timeout', {'default_value' => 4}),
 ) {
     require ::profile::elasticsearch
 
