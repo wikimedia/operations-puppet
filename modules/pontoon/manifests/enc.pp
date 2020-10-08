@@ -3,22 +3,19 @@ class pontoon::enc (
 ) {
     require_package(['python3-yaml'])
 
+    # Write the file once if absent, and don't change the file otherwise.
+    # The idea is to protect against accidental changes of "$stack" after a Pontoon server has been
+    # initialized.
     file { '/etc/pontoon-stack':
         ensure  => 'present',
-        replace => 'no', # Write the file once if absent, don't change it afterwards
+        replace => 'no',
         content => $stack,
         mode    => '0444',
     }
 
-    file { '/etc/pontoon-enc.yaml':
-        ensure => 'link',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
-        target => "/var/lib/git/operations/puppet/modules/pontoon/files/${stack}/rolemap.yaml",
-    }
+    $configured_stack = file('/etc/pontoon-stack').strip('\n')
 
-    $stack_hiera = "/var/lib/git/operations/puppet/modules/pontoon/files/${stack}/hiera/"
+    $stack_hiera = "/var/lib/git/operations/puppet/modules/pontoon/files/${configured_stack}/hiera/"
     file { '/etc/puppet/hieradata/pontoon':
         ensure => find_file($stack_hiera) ? {
                         undef   => 'absent',
