@@ -3,6 +3,13 @@ class pontoon::enc (
 ) {
     require_package(['python3-yaml'])
 
+    file { '/etc/pontoon-stack':
+        ensure  => 'present',
+        replace => 'no', # Write the file once if absent, don't change it afterwards
+        content => $stack,
+        mode    => '0444',
+    }
+
     file { '/etc/pontoon-enc.yaml':
         ensure => 'link',
         owner  => 'root',
