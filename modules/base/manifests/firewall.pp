@@ -24,10 +24,10 @@ class base::firewall (
         prio    => '00',
         content => template('base/firewall/defs.erb'),
     }
-    ferm::conf { 'default-reject':
-        ensure  => $default_reject.bool2str('present', 'absent'),
-        prio    => '99',
-        content => 'REJECT;'
+    ferm::rule { 'default-reject':
+        ensure => $default_reject.bool2str('present', 'absent'),
+        prio   => '99',
+        rule   => 'REJECT;'
     }
 
     # Increase the size of conntrack table size (default is 65536)
