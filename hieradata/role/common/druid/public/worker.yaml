@@ -57,6 +57,8 @@ profile::druid::common::properties:
   druid.metadata.storage.type: mysql
   druid.metadata.storage.connector.host: an-coord1001.eqiad.wmnet
   # druid.metadata.storage.connector.password is set in the private repo.
+  druid.metadata.mysql.ssl.useSSL: true
+  druid.metadata.mysql.ssl.enabledTLSProtocols: ["TLSv1.2"]
   druid.storage.type: hdfs
   druid.request.logging.type: slf4j
   druid.request.logging.dir: /var/log/druid
