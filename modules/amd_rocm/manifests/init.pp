@@ -76,10 +76,10 @@ class amd_rocm (
         'rocm-utils',
         'rocrand',
     ]
-    if ($version in $add_firmware_versions) {
-        $packages = $basepkgs << 'rock-dkms-firmware'
+    $packages = $version in $add_firmware_versions ? {
+        true  => $basepkgs << 'rock-dkms-firmware',
+        false => $basepkgs,
     }
-
 
     apt::package_from_component { "amd-rocm${version}":
         component => "thirdparty/amd-rocm${version}",
