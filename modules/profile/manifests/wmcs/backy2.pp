@@ -4,6 +4,7 @@ class profile::wmcs::backy2(
     Stdlib::AbsolutePath $admin_keyring   = lookup('profile::ceph::admin_keyring'),
     String               $admin_keydata   = lookup('profile::ceph::admin_keydata'),
     String               $ceph_vm_pool    = lookup('profile::ceph::client::rbd::pool'),
+    String               $backup_interval = lookup('profile::wmcs::backy2::backup_time'),
 ) {
     class {'::backy2':
         cluster_name => $cluster_name,
@@ -56,7 +57,7 @@ class profile::wmcs::backy2(
         command                   => '/usr/local/sbin/wmcs-backup-instances',
         interval                  => {
         'start'    => 'OnCalendar',
-        'interval' => '*-*-* 2:00:00', # daily at 02:00
+        'interval' => $backup_interval,
         },
         logging_enabled           => true,
         monitoring_enabled        => true,
