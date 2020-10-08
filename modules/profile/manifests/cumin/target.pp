@@ -4,9 +4,9 @@
 # Note that once the role/profile transition is complete, we should not need
 # those anymore.
 class profile::cumin::target(
-    $cluster = lookup('cluster'),
-    $site = $::site,  # lint:ignore:wmf_styleguide
-    Array[Stdlib::IP::Address] $cumin_masters = hiera('cumin_masters', []),
+    String $cluster = lookup('cluster'),
+    String $site = $::site,
+    Array[Stdlib::IP::Address] $cumin_masters = lookup('cumin_masters', {'default_value' => []}),
 ) {
     if defined('$::_roles') {
         $roles = prefix(keys($::_roles), 'role::')

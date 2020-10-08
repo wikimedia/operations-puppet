@@ -1,6 +1,6 @@
 class profile::cumin::master (
-    $puppetdb_host  = hiera('puppetdb_host'),
-    $datacenters    = hiera('datacenters'),
+    Stdlib::Host  $puppetdb_host = lookup('puppetdb_host'),
+    Array[String] $datacenters   = lookup('datacenters'),
 ) {
     include passwords::phabricator
     $cumin_log_path = '/var/log/cumin'
