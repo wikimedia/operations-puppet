@@ -66,3 +66,5 @@ profile::hadoop::firewall::master::client_ferm_srange: '(($ANALYTICS_NETWORKS $D
 profile::hadoop::master::standby::excluded_hosts:
   - 'analytics1042.eqiad.wmnet'
   - 'analytics1042'
+  - 'analytics1043.eqiad.wmnet'
+  - 'analytics1043'

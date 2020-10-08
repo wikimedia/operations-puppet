@@ -69,14 +69,21 @@ node /^an-test-worker100[1-3]\.eqiad\.wmnet$/ {
     role(insetup)
 }
 
-# analytics1042-analytics1077 and an-worker10XX
+# Hadoop nodes that will be part of the future
+# backup cluster.
+# T260411
+node 'analytics1042.eqiad.wmnet' {
+    role(insetup)
+}
+
+# analytics1043-analytics1077 and an-worker10XX
 # are Analytics Hadoop worker nodes.
 #
 # NOTE:  If you add, remove or move Hadoop nodes, you should edit
 # hieradata/common.yaml hadoop_clusters net_topology
 # to make sure the hostname -> /datacenter/rack/row id is correct.
 # This is used for Hadoop network topology awareness.
-node /analytics10(4[2-9]|5[0-9]|6[0-9]|7[0-7]).eqiad.wmnet/ {
+node /analytics10(4[3-9]|5[0-9]|6[0-9]|7[0-7]).eqiad.wmnet/ {
     role(analytics_cluster::hadoop::worker)
 }
 
