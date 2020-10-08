@@ -1,0 +1,1 @@
+profile::base::firewall::default_reject: true
