@@ -17,23 +17,23 @@ iface eno1 inet static
 # in the PoC we are using this iface for data plane (vlan-trunked)
 auto eno2
 iface eno2 inet manual
+    up ifup eno2.<%= @wan_vlan %>
+    up ifup eno2.<%= @virt_vlan %>
 
 auto vrf-cloudgw
 iface vrf-cloudgw inet manual
     pre-up ip link add vrf-cloudgw type vrf table cloudgw
 
-auto vlan<%= @virt_vlan %>
-iface vlan<%= @virt_vlan %> inet static
-    vlan-raw-device eno2
+auto eno2.<%= @virt_vlan %>
+iface eno2.<%= @virt_vlan %> inet static
     address <%= @virt_addr %>
     netmask <%= @virt_netm %>
-    post-up ip link set vlan<%= @virt_vlan %> master vrf-cloudgw
+    post-up ip link set eno2.<%= @virt_vlan %> master vrf-cloudgw
 
-auto vlan<%= @wan_vlan %>
-iface vlan<%= @wan_vlan %> inet static
-    vlan-raw-device eno2
+auto eno2.<%= @wan_vlan %>
+iface eno2.<%= @wan_vlan %> inet static
     address <%= @wan_addr %>
     netmask <%= @wan_netm %>
-    post-up ip link set vlan<%= @wan_vlan %> master vrf-cloudgw
+    post-up ip link set eno2.<%= @wan_vlan %> master vrf-cloudgw
     post-up ip route add default via <%= @wan_gw %> table cloudgw
 

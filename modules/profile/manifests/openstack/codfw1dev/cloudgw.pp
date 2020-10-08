@@ -31,10 +31,9 @@ class profile::openstack::codfw1dev::cloudgw (
     }
     contain '::profile::openstack::base::cloudgw'
 
-    # NOTE: the base class is not using the legacy naming
-    $nic_host = 'bond0'
-    $nic_virt = "vlan${virt_vlan}"
-    $nic_wan  = "vlan${wan_vlan}"
+    $nic_host = 'eno1'
+    $nic_virt = "eno2.${virt_vlan}"
+    $nic_wan  = "eno2.${wan_vlan}"
 
     nftables::file { 'cloudgw':
         ensure  => present,
