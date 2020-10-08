@@ -17,11 +17,12 @@
 #   HTTP proxy (if needed).
 #
 class profile::local_dev::docker_publish(
-    $registry = hiera('docker::registry'),
-    $username = hiera('docker::registry::username'),
-    $password = hiera('docker::registry::password'),
-    $http_proxy = hiera('http_proxy', undef),
-) {
+    Stdlib::Host $registry = lookup('docker::registry'),
+    String $username = lookup('docker::registry::username'),
+    String $password = lookup('docker::registry::password'),
+    Optional[Stdlib::Httpurl] $http_proxy = lookup('http_proxy', {'default_value' => undef})
+){
+
     git::clone { 'releng/dev-images':
         directory => '/srv/dev-images',
         owner     => 'root',
