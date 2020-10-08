@@ -144,3 +144,6 @@ SUBSCRIBE_FORM_SECRET = open('/etc/machine-id', 'r').readline().rstrip()
 # 3 = Reject
 # 4 = Discard
 DEFAULT_DMARC_MODERATION_ACTION = 1
+
+DEFAULT_CHARSET = 'utf-8'
+VERBATIM_ENCODING = ['iso-2022-jp', 'utf-8']
