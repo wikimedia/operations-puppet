@@ -3,12 +3,12 @@
 # Default: '/ci'.
 #
 class profile::ci::jenkins(
-    Stdlib::Unixpath $prefix = hiera('profile::ci::jenkins::prefix'),
-    Variant[Enum['running', 'stopped'], Boolean] $service_ensure = hiera('profile::ci::jenkins::service_ensure'),
-    Variant[Enum['mask', 'manual'], Boolean] $service_enable = hiera('profile::ci::jenkins::service_enable'),
-    Boolean $service_monitor = hiera('profile::ci::jenkins::service_monitor'),
-    Stdlib::Unixpath $builds_dir = hiera('profile::ci::jenkins::builds_dir'),
-    Stdlib::Unixpath $workspaces_dir = hiera('profile::ci::jenkins::workspaces_dir'),
+    Stdlib::Unixpath $prefix = lookup('profile::ci::jenkins::prefix'),
+    Variant[Enum['running', 'stopped'], Boolean] $service_ensure = lookup('profile::ci::jenkins::service_ensure'),
+    Variant[Enum['mask', 'manual'], Boolean] $service_enable = lookup('profile::ci::jenkins::service_enable'),
+    Boolean $service_monitor = lookup('profile::ci::jenkins::service_monitor'),
+    Stdlib::Unixpath $builds_dir = lookup('profile::ci::jenkins::builds_dir'),
+    Stdlib::Unixpath $workspaces_dir = lookup('profile::ci::jenkins::workspaces_dir'),
 ) {
     include ::profile::java
     Class['::profile::java'] ~> Class['::jenkins']

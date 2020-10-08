@@ -3,8 +3,8 @@
 # Pipeline server that can publish Docker images to the WMF registry.
 #
 class profile::ci::pipeline::publisher(
-    $docker_pusher_user = hiera('jenkins_agent_username'),
-) {
+    String $docker_pusher_user = lookup('jenkins_agent_username'),
+){
     require_package('python3-ruamel.yaml')
 
     class{ '::docker_pusher':
