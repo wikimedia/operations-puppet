@@ -54,6 +54,9 @@ ionice_class = IOPRIO_CLASS_BE
 # default is 4; higher number => less important
 ionice_priority = 5
 
+# Double the default (900 seconds) to give aged filesystems a better chance of completion
+rsync_timeout = 1800
+
 [object-updater]
 concurrency = 1
 
