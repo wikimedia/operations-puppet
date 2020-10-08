@@ -3,7 +3,8 @@
 # Runs hdfs balancer periodically to keep data balanced across all DataNodes
 #
 class profile::hadoop::balancer(
-    $use_kerberos       = hiera('profile::hadoop::balancer::use_kerberos', false),
+    Boolean $use_kerberos   = lookup('profile::hadoop::balancer::use_kerberos', { 'default_value' => false }),
+    Wmflib::Ensure $ensure  = lookup('profile::hadoop::balancer::ensure', { 'default_value' => 'present' }),
 ) {
     require ::profile::hadoop::common
 
@@ -15,6 +16,7 @@ class profile::hadoop::balancer(
     }
 
     kerberos::systemd_timer { 'hdfs-balancer':
+        ensure          => $ensure,
         description     => 'Run the HDFS balancer script to keep HDFS blocks replicated in the most redundant and efficient way.',
         command         => '/usr/local/bin/hdfs-balancer',
         interval        => '*-*-* 06:00:00',

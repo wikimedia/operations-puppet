@@ -21,6 +21,8 @@ class role::analytics_cluster::launcher {
 
     include ::profile::statistics::base
 
+    include ::profile::hadoop::balancer
+
     # Run Hadoop/Hive reportupdater jobs here.
     include ::profile::reportupdater::jobs
 
