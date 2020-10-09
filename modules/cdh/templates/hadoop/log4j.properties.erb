@@ -19,7 +19,7 @@ log4j.appender.NullAppender=org.apache.log4j.varia.NullAppender
 # Rolling File Appender - cap space usage at 512MB
 #
 hadoop.log.maxfilesize=256MB
-hadoop.log.maxbackupindex=2
+hadoop.log.maxbackupindex=6
 log4j.appender.RFA=org.apache.log4j.RollingFileAppender
 log4j.appender.RFA.File=${hadoop.log.dir}/${hadoop.log.file}
 log4j.appender.RFA.MaxFileSize=${hadoop.log.maxfilesize}
