@@ -995,7 +995,7 @@ hadoop_clusters:
       # hdfs is allowed to make distCP working (mapred user that can be started by hdfs
       # to be able to avoid permission issues while copying).
       allowed.system.users: 'hive, hdfs'
-      banned.users: 'root,hdfs,yarn,mapred,bin,nobody'
+      banned.users: 'root,yarn,mapred,bin,nobody'
 
     core_site_extra_properties:
       hadoop.ssl.enabled.protocols: 'TLSv1.2'
