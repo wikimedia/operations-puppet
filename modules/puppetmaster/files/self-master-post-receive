@@ -8,6 +8,6 @@ set -e
 set -u
 
 source_dir=$PWD
-cd /var/lib/git/operations/puppet
+cd $(git remote get-url origin)
 sudo git fetch $source_dir
 sudo git checkout FETCH_HEAD
