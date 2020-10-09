@@ -446,6 +446,27 @@ sub cluster_fe_ratelimit {
 		}
 	}
 
+	// Temporarily ratelimit requests for `/api/rest_v1/page/random/summary` by the iOS app.
+	// This ought to be able to be deleted by 2020-10-23.
+	// https://phabricator.wikimedia.org/T264881
+	// Unlike most of our blocks, this is *not* a per-IP block, but rather one that applies to all
+	// users.  This is because current versions of the iOS app send these requests at their local
+	// midnight, and as the random page requests are uncacheable, their volume causes issues for
+	// multiple backend services, from restbase to wikifeeds to appservers to the s8 read replicas.
+	if (req.url == "/api/rest_v1/page/random/summary" && req.http.User-Agent ~ "^WikipediaApp/") {
+		// Per webrequest_128 data, 300*128 requests/minute is a threshold that cuts off only
+		// the steepest, most impactful peaks.  https://w.wiki/g3W
+		// 300*128/minute == 6400/10seconds.
+		// Of course, we need to scale this by the number of text frontends in a site...
+		if (vsthrottle.is_denied(
+				"iosrandom:global",
+				<%= 6400 / (["ulsfo","eqsin"].include?(@site) ? 6 : 8) -%>,
+				10s)
+			) {
+				return (synth(429, "Too Many Requests"));
+			}
+	}
+
 	<%- if @varnish_testing -%>
 	if (req.http.User-Agent ~ "^varnishTest") {
 		if (vsthrottle.is_denied("varnishTest:" + req.http.X-Client-IP, 25, 5s)) {
