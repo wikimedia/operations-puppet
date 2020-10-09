@@ -15,7 +15,7 @@ groups:
               mtizzoni, panisson, paolotti, ciro, dartar, melodykramer, gtirloni, tbayer, pirroh,
               bawolff, dkg, juliaglen, cwdent, hpham, atgomez, dfoy, alaasarhan, onimisionipe,
               tieu, flemmerich, jsamra, anomie, jmorgan, thargrove,
-              drossi, fsalutari, demon, lulu, jkumalah, nathante, shiladsen, leila]
+              drossi, fsalutari, demon, lulu, jkumalah, nathante, shiladsen, leila, rush]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -33,7 +33,7 @@ groups:
   ops:
     gid: 700
     description: include everywhere ops folks
-    members: &ops_members [filippo, jgreen, bblack, andrew, faidon, rush, oblivian,
+    members: &ops_members [filippo, jgreen, bblack, andrew, faidon, oblivian,
               akosiaris, mark, ariel, cmjohnson, otto, robh, tstarling,
               ori, jmm, jynus, ema, elukey, gehel, volans, marostegui,
               ayounsi, herron, aborrero, bstorm, vgutierrez, jiji, cwhite,
@@ -277,7 +277,7 @@ groups:
               jdlrobson, chelsyx, ovasileva, filippo, pmiazga, faidon,
               piccardi, fdans, eevans, ladsgroup, musikanimal,
               kaldari, goransm, ema, dsaez, rho, mirrys, slaporte, jk,
-              ayounsi, mepps, mmiller, seddon, gilles, tstarling, rush, karen,
+              ayounsi, mepps, mmiller, seddon, gilles, tstarling, karen,
               cicalese, gbirke, isaacj, sbassett, jdl, gsingers,
               niharika29, ryanmax, afandian2, jgleeson, toddleroux, srishakatux, dsharpe, eyener,
               esanders, sukhe, jfishback, iflorez, mayakpwiki, conniecc1, abi, mgerlach, dedcode,
@@ -571,7 +571,7 @@ groups:
   deploy-phabricator:
     gid: 778
     description: Group of phabricator deployers
-    members: [twentyafterfour, rush, thcipriani]
+    members: [twentyafterfour, thcipriani]
   sc-admins:
     description: General service cluster admins - sc(a|b)
     gid: 779
@@ -787,15 +787,13 @@ users:
   #   home_dir: '/var/lib/swift'
   #   shell: '/bin/false'
   rush:
-    ensure: present
+    ensure: absent
     gid: 500
     name: rush
     realname: Chase Pettet
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC+IUUkFX0t/8UqTZJFRJ6JaDPvwIOTsGu2mIg7OGA0lDhJH8eRz2dCPSM7Z4IwKPh92mtct3+aZy8ziT6bb88TNESU9n92m4HdHogOLMz/ksJW07oY2fTjXs9DeaPZUP5Sf8uSrU0ip40wPn8fDuXIjEX2MhUgzafNk2nm0+VFqdU+p4vMf8PvTjtjDMqhq0r9mml0YH4T4kknibwAWlcJaM7O29FlRWoRsI2nIzde5fYASdvrstPN620EScBQo3vAlfbkQCvxvWpr/xO1DfkFDUcIOmrC5uWbOKrGCZRLfnOQTBaMCjHcKmEPJ5YzII692G3BTvbIZ+6AqnLSoA81
-        cpettet@wikimedia.org]
+    ssh_keys: []
     uid: 4610
-    email: cpettet@wikimedia.org
-    krb: present
+    krb: absent
   dzahn:
     ensure: present
     gid: 500
