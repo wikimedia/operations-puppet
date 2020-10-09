@@ -67,6 +67,7 @@ profile::services_proxy::envoy::listeners:
   - name: push-notifications
     port: 6012
     service: push-notifications
+    keepalive: "4.5s"
     timeout: "2.5s"
   # Non-discovery records
   # Eqiad ports are at 61xx
