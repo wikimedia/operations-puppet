@@ -75,6 +75,13 @@ class apt(
                 value    => $http_proxy,
                 before   => File['/etc/apt/apt.conf']
             }
+            apt::conf { 'deb-debian-org':
+                ensure   => present,
+                priority => '80',
+                key      => 'Acquire::http::Proxy::deb.debian.org',
+                value    => $http_proxy,
+                before   => File['/etc/apt/apt.conf']
+            }
         } else {
             fail("Unknown operating system '${::operatingsystem}'.")
         }
