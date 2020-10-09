@@ -22,6 +22,8 @@ profile::hadoop::common::hadoop_cluster_name: 'analytics-test-hadoop'
 # disks.
 profile::hadoop::common::min_datanode_mounts: 8
 
+profile::hadoop::common::datanode_mounts_prefix: '/srv/hadoop'
+
 # Deploy TLS keys and xml configuration files
 profile::hadoop::common::ensure_ssl_config: true
 
