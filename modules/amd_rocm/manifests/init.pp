@@ -48,6 +48,16 @@ class amd_rocm (
         ensure => present,
     }
 
+    # rock-dkms quietly skips compiling the kernel module if we don't
+    # have the headers for the revelant kernels installed. So before we
+    # add the ROCm packages to the machine, install the kernel headers.
+    # We don't fold this install into the package list below since we
+    # can't rely on apt/dpkg getting the ordering right.
+    package{'linux-headers-amd64':
+        ensure => present,
+    }
+
+
     # Note: the miopen-opencl package is imported
     # in the amd-rocm component, but not listed
     # in the packages below for the following reason:
