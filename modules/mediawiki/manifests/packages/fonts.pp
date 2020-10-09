@@ -38,7 +38,7 @@ class mediawiki::packages::fonts {
         'fonts-unfonts-core',
         'fonts-unfonts-extra',
         'texlive-fonts-recommended',
-        'ttf-alee',
+        'fonts-alee',
         'ttf-ubuntu-font-family',    # Not in Debian. T32288, T103325
         'ttf-wqy-zenhei',
         'xfonts-100dpi',
