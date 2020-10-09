@@ -1,0 +1,3 @@
+alias helmdeploy-staging='helmfile -e staging -i apply'
+alias helmdeploy-eqiad='helmfile -e eqiad -i apply'
+alias helmdeploy-codfw='helmfile -e codfw -i apply'
