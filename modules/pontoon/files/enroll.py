@@ -78,17 +78,16 @@ class Enroller(object):
             "sudo puppet config --section agent set server %s" % self.agent_server
         )
         wipe_puppet_certs_cmd = "sudo find /var/lib/puppet/ssl -type f -delete"
-        client_self_certs_cmd = """
+        client_certs_cmd = """
         [ -h /var/lib/puppet/client/ssl ] || { \
             sudo ln -s ../ssl /var/lib/puppet/client/ssl; \
         }
         """
 
         # flip master and wipe certs
-        # if self-client, then symlink
-        enroll_cmd = "&&".join((set_master_cmd, wipe_puppet_certs_cmd))
-        if host == self.agent_server:
-            enroll_cmd += "&&" + client_self_certs_cmd
+        enroll_cmd = "&&".join(
+            (set_master_cmd, wipe_puppet_certs_cmd, client_certs_cmd)
+        )
 
         log.info("Enrolling %s to %s", host, self.agent_server)
         p = self._ssh_bash(host, enroll_cmd)
