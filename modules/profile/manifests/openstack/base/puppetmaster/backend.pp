@@ -46,7 +46,7 @@ class profile::openstack::base::puppetmaster::backend(
         config           => $config,
         secure_private   => false,
         allow_from       => $allow_from,
-        puppetmasters    => $puppetmasters,
+        servers          => $puppetmasters,
         ca_server        => $puppetmaster_ca,
         extra_auth_rules => template('profile/openstack/base/puppetmaster/extra_auth_rules.conf.erb'),
     }
