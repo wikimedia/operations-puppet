@@ -1,2 +1,4 @@
+# es2027
 mariadb::shard: 'es3'
 mariadb::mysql_role: 'standalone'
+mariadb::binlog_format: 'ROW'
