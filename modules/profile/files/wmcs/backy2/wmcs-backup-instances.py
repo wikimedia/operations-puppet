@@ -37,7 +37,7 @@ openstackclients = mwopenstackclients.Clients(envfile="/etc/novaobserver.yaml")
 ceph_servers = rbd2backy2.ceph_vms(config["ceph_pool"])
 
 for project in openstackclients.allprojects():
-    if not backup_this_project_on_this_host(project.id):
+    if not backup_this_project_on_this_host(config, project.id):
         continue
 
     servers = openstackclients.allinstances(projectid=project.id)
