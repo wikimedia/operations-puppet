@@ -762,8 +762,10 @@ hadoop_clusters:
     yarn_nodemanager_container_executor_config:
       yarn.nodemanager.linux-container-executor.group: 'yarn'
       min.user.id: '100'
-      allowed.system.users: 'nobody,hive'
-      banned.users: 'root,hdfs,yarn,mapred,bin'
+      # hdfs is allowed to make distCP working (mapred user that can be started by hdfs
+      # to be able to avoid permission issues while copying).
+      allowed.system.users: 'hive,hdfs'
+      banned.users: 'root,yarn,mapred,bin,nobody'
 
     core_site_extra_properties:
       hadoop.ssl.enabled: true
@@ -990,8 +992,10 @@ hadoop_clusters:
     yarn_nodemanager_container_executor_config:
       yarn.nodemanager.linux-container-executor.group: 'yarn'
       min.user.id: '100'
-      allowed.system.users: 'nobody,hive'
-      banned.users: 'root,hdfs,yarn,mapred,bin'
+      # hdfs is allowed to make distCP working (mapred user that can be started by hdfs
+      # to be able to avoid permission issues while copying).
+      allowed.system.users: 'hive, hdfs'
+      banned.users: 'root,hdfs,yarn,mapred,bin,nobody'
 
     core_site_extra_properties:
       hadoop.ssl.enabled.protocols: 'TLSv1.2'
