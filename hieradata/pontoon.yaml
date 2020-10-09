@@ -4,6 +4,9 @@ profile::base::labs::unattended_distro: 'present'
 profile::openstack::eqiad1::version: 'rocky'
 profile::base::labs::clean_kernels: false
 
+labs_tld: 'wikimedia.cloud'
+labs_site: 'eqiad1'
+
 mail_smarthost:
 - 'mx-out01.wmflabs.org'
 - 'mx-out02.wmflabs.org'
