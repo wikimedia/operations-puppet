@@ -1,2 +1,5 @@
 profile::base::remote_syslog_tls: "%{alias('__hosts_for_role_syslog__centralserver')}"
 acmechief_host: "%{alias('__master_for_role_acme_chief')}"
+
+monitoring_hosts:
+  - '172.16.1.57' # pontoon-icinga-01
