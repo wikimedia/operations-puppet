@@ -2,15 +2,10 @@
 # and writing it to local mariadb
 class wikistats::updates (
     String $db_pass,
-) {
+){
 
-    if os_version('debian == buster') {
-        require_package('php7.3-cli')
-    } else {
-        require_package('php7.0-cli')
-    }
+    require_package('php7.3-cli')
 
-    # log dir for wikistats
     file { '/var/log/wikistats':
         ensure => directory,
         mode   => '0664',

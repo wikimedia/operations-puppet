@@ -1,21 +1,16 @@
-# the apache setup for the wikistats site
+# webserver setup for a wikistats site
 class wikistats::web (
     Stdlib::Fqdn $wikistats_host,
-) {
+    String $php_version = '7.3',
+){
+    $php_xml_pkg = "php${php_version}-xml"
+    $php_http_module_pkg = "libapache2-mod-php${php_version}"
 
-    if os_version('debian == buster') {
-        require_package('php7.3-xml')
-        $apache_php_package = 'libapache2-mod-php7.3'
-    } else {
-        require_package('php7.0-xml')
-        $apache_php_package = 'libapache2-mod-php7.0'
-    }
-
-    require_package($apache_php_package)
+    require_package($php_xml_pkg, $php_http_module_pkg)
 
     httpd::site { $wikistats_host:
         content => template('wikistats/apache/wikistats.erb'),
-        require => Package[$apache_php_package],
+        require => Package[$php_http_module_pkg],
     }
 
     file { '/var/www/wikistats':

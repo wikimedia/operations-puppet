@@ -2,13 +2,9 @@
 class wikistats::db (
     String $db_pass,
     Stdlib::Unixpath $backupdir = '/usr/lib/wikistats/backup',
-) {
+){
 
-    if os_version('debian == buster') {
-        require_package('php7.3-mysql')
-    } else {
-        require_package('php7.0-mysql')
-    }
+    require_package('php7.3-mysql')
 
     # db backup
     cron { 'mysql-dump-wikistats':
