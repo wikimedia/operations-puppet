@@ -39,7 +39,8 @@
 #
 class wikistats (
     Stdlib::Fqdn $wikistats_host,
-) {
+    Wmflib::Ensure $cron_ensure,
+){
 
     group { 'wikistatsuser':
         ensure => present,
@@ -113,6 +114,7 @@ class wikistats (
 
     class { 'wikistats::updates':
         db_pass => $db_pass,
+        ensure  => $cron_ensure,
     }
 }
 

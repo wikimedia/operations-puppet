@@ -11,7 +11,9 @@
 # maintainer: dzahn
 # phabricator-tag: VPS-project-Wikistats
 # filtertags: labs-project-wikistats
-class profile::wikistats {
+class profile::wikistats (
+    Wmflib::Ensure $cron_ensure = lookup('profile::wikistats::cron_ensure', {default_value => 'present'}),
+){
 
     motd::script { 'deployment_info':
         ensure   => 'present',
@@ -21,5 +23,6 @@ class profile::wikistats {
 
     class { '::wikistats':
         wikistats_host => $::fqdn,
+        cron_ensure    => $cron_ensure,
     }
 }

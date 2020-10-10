@@ -2,6 +2,7 @@
 # and writing it to local mariadb
 class wikistats::updates (
     String $db_pass,
+    Wmflib::Ensure $ensure,
 ){
 
     require_package('php7.3-cli')
@@ -22,43 +23,42 @@ class wikistats::updates (
         content => "[client]\npassword=${db_pass}\n"
     }
 
-    # update table data: usage: <project prefix>@<hour>
-    wikistats::cronjob::update { [
-                'wp@0',  # Wikipedias
-                'lx@1',  # LXDE
-                'si@1',  # Wikisite
-                'wt@2',  # Wiktionaries
-                'ws@3',  # Wikisources
-                'wn@4',  # Wikinews
-                'wb@5',  # Wikibooks
-                'wq@6',  # Wikiquotes
-                'os@7',  # OpenSUSE
-                'gt@8',  # Gentoo
-                'sf@8',  # Sourceforge
-                'an@9',  # Anarchopedias
-                'et@9',  # EdiThis
-                'wf@10', # Wikifur
-                'wy@10', # Wikivoyage
-                'wv@11', # Wikiversities
-                'wi@11', # Wikia
-                'sc@12', # Scoutwikis
-                'ne@13', # Neoseeker
-                'wr@14', # Wikitravel
-                'et@15', # EditThis
-                'mt@16', # Metapedias
-                'un@17', # Uncylomedias
-                'wx@18', # Wikimedia Special
-                'mh@18', # Miraheze
-                'mw@19', # MediaWikis
-                'sw@20', # Shoutwikis
-                'ro@21', # Rodovid
-                'wk@21', # Wikkii
-                're@22', # Referata
-                'ga@22', # Gamepedias
-                'w3@23', # W3C
-                ]: }
+    # fetch new wiki data
+    wikistats::cronjob::update {
+        'wp' : ensure => $ensure, hour => 0;  # Wikipedias
+        'lx' : ensure => $ensure, hour => 1;  # LXDE
+        'si' : ensure => $ensure, hour => 1;  # Wikisite
+        'wt' : ensure => $ensure, hour => 2;  # Wiktionaries
+        'ws' : ensure => $ensure, hour => 3;  # Wikisources
+        'wn' : ensure => $ensure, hour => 4;  # Wikinews
+        'wb' : ensure => $ensure, hour => 5;  # Wikibooks
+        'wq' : ensure => $ensure, hour => 6;  # Wikiquotes
+        'os' : ensure => $ensure, hour => 7;  # OpenSUSE
+        'gt' : ensure => $ensure, hour => 8;  # Gentoo
+        'sf' : ensure => $ensure, hour => 8;  # Sourceforge
+        'an' : ensure => $ensure, hour => 9;  # Anarchopedias
+        'wf' : ensure => $ensure, hour => 10; # Wikifur
+        'wy' : ensure => $ensure, hour => 10; # Wikivoyage
+        'wv' : ensure => $ensure, hour => 11; # Wikiversities
+        'wi' : ensure => $ensure, hour => 11; # Wikia
+        'sc' : ensure => $ensure, hour => 12; # Scoutwikis
+        'ne' : ensure => $ensure, hour => 13; # Neoseeker
+        'wr' : ensure => $ensure, hour => 14; # Wikitravel
+        'et' : ensure => $ensure, hour => 15; # EditThis
+        'mt' : ensure => $ensure, hour => 16; # Metapedias
+        'un' : ensure => $ensure, hour => 17; # Uncylomedias
+        'wx' : ensure => $ensure, hour => 18; # Wikimedia Special
+        'mh' : ensure => $ensure, hour => 18; # Miraheze
+        'mw' : ensure => $ensure, hour => 19; # MediaWikis
+        'sw' : ensure => $ensure, hour => 20; # Shoutwikis
+        'ro' : ensure => $ensure, hour => 21; # Rodovid
+        'wk' : ensure => $ensure, hour => 21; # Wikkii
+        're' : ensure => $ensure, hour => 22; # Referata
+        'ga' : ensure => $ensure, hour => 22; # Gamepedias
+        'w3' : ensure => $ensure, hour => 23; # W3C
+      }
 
-    # dump xml data: usage: <project prefix>@<hour>
+    # dump xml data
     wikistats::cronjob::xmldump {
         'wp' : db_pass => $db_pass, table => 'wikipedias',   minute => 3;
         'wt' : db_pass => $db_pass, table => 'wiktionaries', minute => 5;
