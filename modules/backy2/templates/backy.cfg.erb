@@ -99,10 +99,13 @@ simultaneous_writes: 5
 # can perform parallel reads faster than serial ones.
 simultaneous_reads: 5
 
-# Bandwidth throttling (set to 0 to disable, i.e. use full bandwidth)
-# bytes per second
-#bandwidth_read: 78643200
-#bandwidth_write: 78643200
+# Throttle read/writes so we don't starve other Ceph clients.  Units are
+#  bytes/second, so this throttles at 100MB/second
+bandwidth_read: 104857600
+
+# Restoring is likely to be more urgent than backing up, so the throttle
+#  here is 200MB/second
+bandwidth_write: 209715200
 
 #######################################
 # backy2.data_backends.s3
