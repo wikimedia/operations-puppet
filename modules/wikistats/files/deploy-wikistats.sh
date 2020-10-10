@@ -32,6 +32,7 @@ function diff {
     mkdir -p /${dp}/${pn}
     echo "/${dp}/${pn}/"
     rsync -avn ${pp}/${pn}/${dp}/${pn}/ /${dp}/${pn}/ --info=stats0,flist0 | grep -v "./"
+    echo "diff -r ${pp}/${pn}/${dp}/${pn}/ /${dp}/${pn}/"
     echo -e "\n"
   done
 }
