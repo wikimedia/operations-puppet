@@ -11,6 +11,7 @@
   cif = !git commit --fixup=$(git-log-vgrep-most-recent-commit 'fixup!')
   lg = log -p HEAD..@{u}
   push-for-review = push origin HEAD:refs/for/master
+  push-and-merge = push origin HEAD:refs/for/master%l=Code-Review+2
 [user]
 	name = Martin Urbanec
 	email = martin.urbanec@wikimedia.cz
