@@ -16,14 +16,15 @@ class profile::hadoop::balancer(
     }
 
     kerberos::systemd_timer { 'hdfs-balancer':
-        ensure          => $ensure,
-        description     => 'Run the HDFS balancer script to keep HDFS blocks replicated in the most redundant and efficient way.',
-        command         => '/usr/local/bin/hdfs-balancer',
-        interval        => '*-*-* 06:00:00',
-        logfile_name    => 'balancer.log',
-        logfile_basedir => '/var/log/hadoop-hdfs',
-        require         => File['/usr/local/bin/hdfs-balancer'],
-        user            => 'hdfs',
-        use_kerberos    => $use_kerberos,
+        ensure            => $ensure,
+        description       => 'Run the HDFS balancer script to keep HDFS blocks replicated in the most redundant and efficient way.',
+        command           => '/usr/local/bin/hdfs-balancer',
+        interval          => '*-*-* 06:00:00',
+        logfile_name      => 'balancer.log',
+        logfile_basedir   => '/var/log/hadoop-hdfs',
+        syslog_identifier => 'hdfs-balancer',
+        require           => File['/usr/local/bin/hdfs-balancer'],
+        user              => 'hdfs',
+        use_kerberos      => $use_kerberos,
     }
 }
