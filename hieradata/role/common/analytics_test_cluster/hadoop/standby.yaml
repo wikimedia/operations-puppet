@@ -24,9 +24,6 @@ profile::hadoop::master::standby::monitoring_enabled: true
 profile::hadoop::master::standby::use_kerberos: true
 profile::hadoop::backup::namenode::use_kerberos: true
 
-profile::analytics::database::meta::backup_dest::hive::metastore_host: 'an-test-coord1001.eqiad.wmnet'
-profile::analytics::database::meta::backup_dest::oozie_host: 'an-test-coord1001.eqiad.wmnet'
-
 profile::hadoop::firewall::master::hdfs::ssl_enabled: true
 
 # Hadoop Services must be in this srange to be part of Hadoop.
