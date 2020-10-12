@@ -33,10 +33,6 @@ class role::analytics_test_cluster::coordinator {
     # for interacting with HDFS.
     include ::profile::analytics::cluster::users
 
-    # Back up analytics-meta MySQL instance
-    # to an-master1002.
-    include ::profile::analytics::database::meta::backup
-
     # SQL-like queries to data stored in HDFS
     include ::profile::hive::metastore
     include ::profile::hive::server

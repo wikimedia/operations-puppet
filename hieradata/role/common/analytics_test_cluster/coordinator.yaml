@@ -9,9 +9,6 @@ profile::analytics::cluster::packages::common::use_bigtop_settings: true
 
 profile::hadoop::common::hadoop_cluster_name: 'analytics-test-hadoop'
 
-# Periodical backups of the analytics-meta mysql database.
-profile::analytics::database::meta::backup::rsync_dest: 'an-test-master1002.eqiad.wmnet::backup/mysql/analytics-meta'
-
 profile::oozie::client::oozie_host: 'an-test-coord1001.eqiad.wmnet'
 
 # Set the hive-site.xml file with group ownership 'analytics' so systemd timers
