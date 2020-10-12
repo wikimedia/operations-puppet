@@ -24,6 +24,7 @@ class profile::toolforge::shell_environ {
         'lintian',
         'lynx',
         'mc', # Popular{{cn}} on Toolserver
+        'neovim',                      # T219501
         'pastebinit',
         'pep8',                        # T59863
         'redis-tools',
