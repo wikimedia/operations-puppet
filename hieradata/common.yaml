@@ -736,6 +736,9 @@ hadoop_clusters:
       # from clients.
       dfs.client.failover.max.attempts: 3
       dfs.namenode.acls.enabled: true
+      # Since we have less space available on the test cluster (due to fewer workers),
+      # better to use a smaller replication factor (3 is the Hadoop's default).
+      dfs.replication: 2
 
     mapred_site_extra_properties:
       mapreduce.ssl.enabled: true
