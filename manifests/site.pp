@@ -2305,16 +2305,20 @@ node /^urldownloader[12]00[12]\.wikimedia\.org/ {
     role(url_downloader)
 }
 
-# To learn what will get scheduled on a given cloudvirt, consult
-# https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Host_aggregates
+# Cloudvirt1019 and 1020 are special hypervisors;
+#  they host giant database servers using local storage.
 node 'cloudvirt1019.eqiad.wmnet' {
     role(wmcs::openstack::eqiad1::virt)
 }
-
-node /^cloudvirt102[0,5-9]\.eqiad\.wmnet$/ {
+node 'cloudvirt1020.eqiad.wmnet' {
     role(wmcs::openstack::eqiad1::virt)
 }
 
+# To learn what will get scheduled on a given cloudvirt, consult
+# https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Host_aggregates
+node /^cloudvirt102[5-9]\.eqiad\.wmnet$/ {
+    role(wmcs::openstack::eqiad1::virt)
+}
 node 'cloudvirt1030.eqiad.wmnet' {
     role(wmcs::openstack::eqiad1::virt)
 }
