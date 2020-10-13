@@ -1,10 +1,11 @@
 class profile::ldap::client::labs(
     Enum['sudo','sudoldap'] $sudo_flavor = lookup('sudo_flavor', {default_value => 'sudoldap'}),
     String $client_stack = lookup('profile::ldap::client::labs::client_stack', String, 'first', 'classic'),
-    $ldapincludes=hiera('profile::ldap::client::labs::ldapincludes', ['openldap', 'utils']),
-    $restricted_to=hiera('profile::ldap::client::labs::restricted_to', $::restricted_to),
-    $restricted_from=hiera('profile::ldap::client::labs::restricted_from', $::restricted_from),
-) {
+    $ldapincludes = lookup('profile::ldap::client::labs::ldapincludes', {'default_value' => ['openldap', 'utils']}),
+    $restricted_to = lookup('profile::ldap::client::labs::restricted_to', {default_value => false}),
+    $restricted_from = lookup('profile::ldap::client::labs::restricted_from', {default_value => false}),
+){
+
     class { '::ldap::config::labs': }
 
     if ( $::realm == 'labs' ) {
