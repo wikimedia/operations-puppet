@@ -1,12 +1,7 @@
 class role::mariadb::core {
-    $socket = hiera('mariadb::socket', '/run/mysqld/mysqld.sock')
-    $datadir = hiera('mariadb::datadir', '/srv/sqldata')
-    $tmpdir = hiera('mariadb::tmpdir', '/srv/tmp')
     $shard = hiera('mariadb::shard', undef)
     $mysql_role = hiera('mariadb::mysql_role', 'slave')
-    $ssl = hiera('mariadb::ssl', 'puppet-cert')
     $binlog_format = hiera('mariadb::binlog_format', 'ROW')
-    $mw_primary = mediawiki::state('primary_dc')
     system::role { 'mariadb::core':
         description => "Core DB Server ${shard}",
     }
@@ -29,9 +24,7 @@ class role::mariadb::core {
         $semi_sync = 'slave'
     }
 
-    class { 'profile::mariadb::monitor::prometheus':
-        socket      => $socket,
-    }
+    include profile::mariadb::monitor::prometheus
 
     require profile::mariadb::packages_wmf
     include profile::mariadb::wmfmariadbpy
@@ -44,11 +37,8 @@ class role::mariadb::core {
     class { 'mariadb::config':
         config           => 'role/mariadb/mysqld_config/production.my.cnf.erb',
         basedir          => $profile::mariadb::packages_wmf::basedir,
-        datadir          => $datadir,
-        tmpdir           => $tmpdir,
-        socket           => $socket,
         p_s              => 'on',
-        ssl              => $ssl,
+        ssl              => 'puppet-cert',
         binlog_format    => $binlog_format,
         semi_sync        => $semi_sync,
         replication_role => $mysql_role,
@@ -63,7 +53,7 @@ class role::mariadb::core {
         password => $passwords::misc::scripts::mysql_root_pass,
     }
 
-    $is_on_primary_dc = ($mw_primary == $::site)
+    $is_on_primary_dc = (mediawiki::state('primary_dc') == $::site)
     $is_master = ($mysql_role == 'master')
     $contact_group = 'admins'
 
@@ -71,7 +61,6 @@ class role::mariadb::core {
         multisource   => false,
         is_critical   => $is_on_primary_dc,
         contact_group => $contact_group,
-        socket        => $socket,
     }
     $read_only = !($is_on_primary_dc and $is_master)
     $read_only_is_critical = ($is_master and $is_on_primary_dc)
@@ -98,7 +87,6 @@ class role::mariadb::core {
         shard      => $shard,
         datacenter => $::site,
         enabled    => $heartbeat_enabled,
-        socket     => $socket,
     }
 
     class { 'mariadb::monitor_memory': }

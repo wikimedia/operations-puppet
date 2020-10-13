@@ -1,12 +1,7 @@
 class profile::mariadb::core_test (
-    Stdlib::Unixpath $socket  = lookup('mariadb::socket', {'default_value' => '/run/mysqld/mysqld.sock'}),
-    Stdlib::Unixpath $datadir = lookup('mariadb::datadir', {'default_value' => '/srv/sqldata'}),
-    Stdlib::Unixpath $tmpdir  = lookup('mariadb::tmpdir', {'default_value' => '/srv/tmp'}),
     String $shard             = lookup('mariadb::shard'),
     String $mysql_role        = lookup('mariadb::mysql_role', {'default_value' => 'slave'}),
-    String $ssl               = lookup('mariadb::ssl', {'default_value' => 'puppet-cert'}),
     String $binlog_format     = lookup('mariadb::binlog_format', {'default_value' => 'ROW'}),
-    String $mw_primary        = mediawiki::state('primary_dc'),
 ){
 
     class { '::profile::mariadb::mysql_role':
@@ -27,9 +22,7 @@ class profile::mariadb::core_test (
         $semi_sync = 'slave'
     }
 
-    class { 'profile::mariadb::monitor::prometheus':
-        socket      => $socket,
-    }
+    include profile::mariadb::monitor::prometheus
 
     class { 'mariadb::service':
         # override not needed, default configuration changed on package
@@ -48,11 +41,8 @@ class profile::mariadb::core_test (
     class { 'mariadb::config':
         config           => "role/mariadb/mysqld_config/${config_template}",
         basedir          => $profile::mariadb::packages_wmf::basedir,
-        datadir          => $datadir,
-        tmpdir           => $tmpdir,
-        socket           => $socket,
         p_s              => 'on',
-        ssl              => $ssl,
+        ssl              => 'puppet-cert',
         binlog_format    => $binlog_format,
         semi_sync        => $semi_sync,
         replication_role => $mysql_role,
@@ -65,6 +55,7 @@ class profile::mariadb::core_test (
         password => $passwords::misc::scripts::mysql_root_pass,
     }
 
+    $mw_primary = mediawiki::state('primary_dc')
     $replication_is_critical = ($mw_primary == $::site)
     $read_only = !($mw_primary == $::site and $mysql_role == 'master')  # could we have rw hosts on the secondary dc?
     $contact_group = 'admins'
@@ -78,7 +69,6 @@ class profile::mariadb::core_test (
         multisource   => false,
         is_critical   => false,
         contact_group => $contact_group,
-        socket        => $socket,
     }
 
     $heartbeat_enabled = $mysql_role == 'master'
@@ -86,7 +76,6 @@ class profile::mariadb::core_test (
         shard      => $shard,
         datacenter => $::site,
         enabled    => $heartbeat_enabled,
-        socket     => $socket,
     }
 
     class { 'mariadb::monitor_memory': }
