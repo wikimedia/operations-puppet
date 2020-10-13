@@ -32,9 +32,8 @@ table inet cloudgw {
 
     chain forward {
         type filter hook forward priority filter; policy drop;
-        # only forward packets between neutron and WAN
-        iifname $nic_virt oifname $nic_wan counter accept
-        iifname $nic_wan oifname $nic_virt counter accept
+        # only forward packets in the VRF
+        iifname "vrf-cloudgw" oifname { $nic_virt, $nic_wan } counter accept
         counter comment "counter dropped packets"
     }
 }

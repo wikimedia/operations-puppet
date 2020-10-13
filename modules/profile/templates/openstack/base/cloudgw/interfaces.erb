@@ -21,6 +21,10 @@ iface eno2 inet manual
 auto vrf-cloudgw
 iface vrf-cloudgw inet manual
     pre-up ip link add vrf-cloudgw type vrf table cloudgw
+    # route default to the core router
+    post-up ip route add table cloudgw default via <%= @wan_gw %>
+    # route floating IPs to neutron
+    post-up ip route add table cloudgw 185.15.57.0/29 nexthop via 185.15.57.10
 
 auto eno2.<%= @virt_vlan %>
 iface eno2.<%= @virt_vlan %> inet static
@@ -33,5 +37,4 @@ iface eno2.<%= @wan_vlan %> inet static
     address <%= @wan_addr %>
     netmask <%= @wan_netm %>
     post-up ip link set eno2.<%= @wan_vlan %> master vrf-cloudgw
-    post-up ip route add default via <%= @wan_gw %> table cloudgw
 

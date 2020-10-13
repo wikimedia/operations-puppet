@@ -41,5 +41,11 @@ class profile::openstack::base::cloudgw (
         content => '10 cloudgw',
     }
 
+    sysctl::parameters { 'forwarding':
+        values => {
+            'net.ipv4.ip_forward' => '1',
+        }
+    }
+
     # placeholder for HA stuff: keepalived and conntrackd
 }
