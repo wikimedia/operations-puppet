@@ -1,0 +1,1 @@
+profile::wikistats::cron_ensure: 'absent'
