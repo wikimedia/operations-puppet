@@ -1,6 +1,6 @@
 class profile::docker::registry::filebackend(
-    $config = hiera('profile::docker::registry::config', {}),
-    $datapath = hiera('profile::docker::registry::datapath', '/srv/registry'),
+    Hash $config = lookup('profile::docker::registry::config', {default_value => {}}),
+    Stdlib::Unixpath $datapath = lookup('profile::docker::registry::datapath', {default_value => '/srv/registry'}),
 ) {
     class { '::docker::registry':
         config   => $config,

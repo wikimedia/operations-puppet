@@ -1,11 +1,11 @@
 class profile::docker::registry::swift (
-    $config = hiera('profile::docker::registry::config', {}),
-    $swift_accounts = hiera('profile::swift::accounts'),
-    $swift_auth_url = hiera('profile::docker::registry::swift_auth_url'),
+    Hash $config = lookup('profile::docker::registry::config', {default_value => {}}),
+    Hash[String, Hash] $swift_accounts = lookup('profile::swift::accounts'),
+    Stdlib::Httpsurl $swift_auth_url = lookup('profile::docker::registry::swift_auth_url'),
     # By default, the password will be extracted from swift, but can be overridden
-    $swift_account_keys = hiera('profile::swift::accounts_keys'),
-    $swift_container = hiera('profile::docker::registry::swift_container', 'docker_registry'),
-    $swift_password = hiera('profile::docker::registry::swift_password', undef),
+    Hash[String, String] $swift_account_keys = lookup('profile::swift::accounts_keys'),
+    String $swift_container = lookup('profile::docker::registry::swift_container', {default_value => 'docker_registry'}),
+    Optional[String] $swift_password = lookup('profile::docker::registry::swift_password', {default_value => undef}),
 ) {
     $swift_account = $swift_accounts['docker_registry']
     if !$swift_password {
