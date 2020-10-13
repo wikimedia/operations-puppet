@@ -10,6 +10,9 @@ class role::netmon {
     # webserver for netmon servers
     include ::profile::netmon::httpd
 
+    # common tools for netmon servers
+    include ::profile::netmon::tools
+
     include ::profile::atlasexporter
     include ::profile::librenms
     include ::profile::rancid
