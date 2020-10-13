@@ -22,7 +22,7 @@
 #       ... [all the config should go here]
 #
 class profile::docker::runner(
-    $service_defs = hiera('profile::docker::runner::service_defs')
+    $service_defs = lookup('profile::docker::runner::service_defs')
 ) {
     require ::profile::docker::engine
     $service_defs.each |$svc_name, $svc_params| {

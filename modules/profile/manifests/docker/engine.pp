@@ -8,11 +8,11 @@ class profile::docker::engine(
     # wide. So use hiera_hash to merge keys across the hierarchy
     $settings = hiera_hash('profile::docker::engine::settings'),
     # Version to install; the default is not to pick one.
-    $version = hiera('profile::docker::engine::version'),
-    $packagename = lookup('profile::docker::engine::packagename'),
+    $version = lookup('profile::docker::engine::version'),
+    String $packagename = lookup('profile::docker::engine::packagename'),
     # Set to false if we don't want to declare the docker service here
     # We want this to be on if we want to use a different docker systemd service (with flannel support, for eg.)
-    $declare_service = hiera('profile::docker::engine::declare_service')
+    $declare_service = lookup('profile::docker::engine::declare_service')
 ) {
 
     # On Buster and later we use Docker from Debian

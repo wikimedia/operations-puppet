@@ -9,9 +9,9 @@
 #
 class profile::docker::storage(
     # list of physical volumes to use.
-    $physical_volumes = hiera('profile::docker::storage::physical_volumes'),
+    $physical_volumes = lookup('profile::docker::storage::physical_volumes'),
     # Volume group to substitute.
-    $vg_to_remove = hiera('profile::docker::storage::vg_to_remove'),
+    $vg_to_remove = lookup('profile::docker::storage::vg_to_remove'),
 ) {
     # Size of the thin pool and the metadata pool.
     $extents = '95%VG'
