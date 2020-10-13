@@ -31,7 +31,7 @@ define profile::redis::multidc_instance(
             watch_keys => ['/'],
             content    => template('profile/jobqueue_redis/statefile.tpl.erb'),
         }
-        Base::Service_unit['confd'] -> Base::Service_unit["redis-instance-tcp_${title}"]
+        Base::Service_unit['confd'] -> Systemd::Service["redis-instance-tcp_${title}"]
 
     } else {
         file { $replica_state_file:
@@ -40,7 +40,7 @@ define profile::redis::multidc_instance(
             owner   => 'root',
             group   => 'root',
             mode    => '0444',
-            before  => Base::Service_unit["redis-instance-tcp_${title}"]
+            before  => Systemd::Service["redis-instance-tcp_${title}"]
         }
     }
 }
