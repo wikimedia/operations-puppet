@@ -3,6 +3,7 @@ define wikistats::cronjob::xmldump(
     String $table,
     Integer $minute,
     String $db_pass,
+    Wmflib::Ensure $ensure = 'present',
     String $db_user = 'wikistatsuser',
     String $db_name = 'wikistats',
     Stdlib::Unixpath $file_path = '/var/www/wikistats/xml',
@@ -16,7 +17,7 @@ define wikistats::cronjob::xmldump(
     $command = "mysql --defaults-extra-file=/usr/lib/wikistats/.my.cnf -X -u ${db_user} -e '${query}' ${db_name} > ${file_path}/${table}.xml 2>&1"
 
     cron { "cron-wikistats-xmldump-${name}":
-        ensure  => present,
+        ensure  => $ensure,
         command => $command,
         user    => 'wikistatsuser',
         minute  => $minute,
