@@ -15,6 +15,7 @@ class profile::prometheus::ops (
     Boolean $enable_thanos_upload         = lookup('profile::prometheus::ops::thanos', { 'default_value' => false }),
     Optional[String] $thanos_min_time     = lookup('profile::prometheus::thanos::min_time', { 'default_value' => undef }),
     Array $alertmanagers                  = lookup('alertmanagers', {'default_value' => []}),
+    Boolean $disable_compaction           = lookup('profile::prometheus::thanos::disable_compaction', { 'default_value' => true }),
 ){
     include ::passwords::gerrit
     $gerrit_client_token = $passwords::gerrit::prometheus_bearer_token
@@ -1816,7 +1817,7 @@ class profile::prometheus::ops (
         labels     => {}
     }
 
-    $max_block_duration = $enable_thanos_upload ? {
+    $max_block_duration = ($enable_thanos_upload and $disable_compaction) ? {
         true    => '2h',
         default => '24h',
     }

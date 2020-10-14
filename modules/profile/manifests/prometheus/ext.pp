@@ -9,6 +9,7 @@ class profile::prometheus::ext (
     Boolean          $enable_thanos_upload = lookup('profile::prometheus::ext::thanos',      { 'default_value' => false   }),
     Optional[String] $thanos_min_time      = lookup('profile::prometheus::thanos::min_time', { 'default_value' => undef   }),
     Array            $alertmanagers        = lookup('alertmanagers', {'default_value' => []}),
+    Boolean          $disable_compaction   = lookup('profile::prometheus::thanos::disable_compaction', { 'default_value' => true }),
 ){
     $instance_name  = 'ext'
     $targets_path   = "/srv/prometheus/${instance_name}/targets"
@@ -42,7 +43,7 @@ class profile::prometheus::ext (
         port       => 9112,
     }
 
-    $max_block_duration = $enable_thanos_upload ? {
+    $max_block_duration = ($enable_thanos_upload and $disable_compaction) ? {
         true    => '2h',
         default => '24h',
     }

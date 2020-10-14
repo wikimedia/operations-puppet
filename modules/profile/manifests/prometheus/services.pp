@@ -10,6 +10,7 @@ class profile::prometheus::services (
     String $storage_retention          = lookup('prometheus::server::storage_retention', {'default_value' => '4032h'}),
     Integer $max_chunks_to_persist     = lookup('prometheus::server::max_chunks_to_persist', {'default_value' => 524288}),
     Integer $memory_chunks             = lookup('prometheus::server::memory_chunks', {'default_value' => 1048576}),
+    Boolean $disable_compaction        = lookup('profile::prometheus::thanos::disable_compaction', { 'default_value' => true }),
 ){
 
     $targets_path = '/srv/prometheus/services/targets'
@@ -70,7 +71,7 @@ class profile::prometheus::services (
         site       => $::site,
     }
 
-    $max_block_duration = $enable_thanos_upload ? {
+    $max_block_duration = ($enable_thanos_upload and $disable_compaction) ? {
         true    => '2h',
         default => '24h',
     }
