@@ -3,7 +3,9 @@ class prometheus::rsyslog_exporter (
     String $listen_address = ':9105',
 ) {
     package { 'prometheus-rsyslog-exporter':
-        ensure => $ensure,
+        # TODO: use $ensure after T210137 is complete
+        ensure => '0.0.0+git20201008-1',
+        notify => Service['rsyslog']
     }
 
     rsyslog::conf { 'exporter':
