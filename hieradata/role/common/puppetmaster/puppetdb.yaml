@@ -21,3 +21,16 @@ profile::puppetdb::slaves: [puppetdb2002.codfw.wmnet]
 profile::puppetdb::puppetboard_hosts: 'puppetboard1001.eqiad.wmnet puppetboard2001.codfw.wmnet'
 profile::puppetdb::monitor_agentrun: true
 profile::puppetdb::tmpfs_stockpile_queue: true
+profile::puppetdb::facts_blacklist_type: 'regex'
+profile::puppetdb::facts_blacklist:
+  - '^ipaddress6_cali.*'
+  - '^ipaddress6_tap.*'
+  - '^macaddress_cali.*'
+  - '^macaddress_tap.*'
+  - '^mtu_cali.*'
+  - '^mtu_tap.*'
+  - '^netmask6_cali.*'
+  - '^netmask6_tap.*'
+  - '^network6_cali.*'
+  - '^network6_tap.*'
+  - '^lvm_vg_.*'
