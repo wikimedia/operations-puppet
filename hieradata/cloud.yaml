@@ -10,6 +10,7 @@ profile::base::purge_apt_preferences: false
 profile::base::manage_apt_source: false
 profile::base::enable_adduser: false
 profile::base::puppet::interval: 30
+profile::base::mirror_server: 'mirrors.wikimedia.org'
 
 profile::base::puppet::environment: production
 profile::base::puppet::puppet_major_version: 5
