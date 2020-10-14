@@ -65,6 +65,7 @@ profile::kafka::broker::max_heap_size: '2g'
 # - search-loader[12]001 - mjolnir (Search team)
 # - kafkamon hosts (1001/1002 and 2002 in case of failover to codfw)
 # - webperf hosts (due to coal's processors)
+# - an-test-coord1001 (Analytics Hadoop test cluster)
 profile::kafka::broker::custom_ferm_srange_components:
   - '$ANALYTICS_NETWORKS'
   - '$KAFKA_BROKERS_JUMBO'
@@ -107,6 +108,7 @@ profile::kafka::broker::custom_ferm_srange_components:
   - '(@resolve((logstash2025.codfw.wmnet)) @resolve((logstash2025.codfw.wmnet), AAAA))'
   - '(@resolve((logstash2030.codfw.wmnet)) @resolve((logstash2030.codfw.wmnet), AAAA))'
   - '(@resolve((logstash2031.codfw.wmnet)) @resolve((logstash2031.codfw.wmnet), AAAA))'
+  - '(@resolve((an-test-coord1001.eqiad.wmnet)) @resolve((an-test-coord1001.eqiad.wmnet), AAAA))'
 
 # Kafka doesn't support Java 11 for versions
 # lower than 2.1
