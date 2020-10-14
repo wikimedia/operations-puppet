@@ -19,14 +19,31 @@ Facter.add(:lldp) do
       interface.elements.each('chassis/name') do |switch|
         lldp[eth]['neighbor'] = switch.text
       end
-      interface.elements.each('port/id') do |port|
-        lldp[eth]['port'] = port.text
+      interface.elements.each('port') do |port|
+        lldp[eth]['port'] = port.elements['id'].text
+        lldp[eth]['descr'] = port.elements['descr'].text if port.elements['descr']
+        lldp[eth]['mtu'] = port.elements['mfs'].text.to_i if port.elements['mfs']
       end
+      next unless interface.elements['vlan']
+      lldp[eth]['vlans'] = {'tagged_vlans' => []}
       interface.elements.each('vlan') do |vlan|
-        lldp[eth]['vlan'] = vlan.text
+        if vlan.attributes.fetch('pvid', 'no').to_s == 'yes'
+          lldp[eth]['vlans']['untagged_vlan'] = vlan.attributes['vlan-id'].to_i
+        end
+        lldp[eth]['vlans']['tagged_vlans'] << vlan.attributes['vlan-id'].to_i
+      end
+      if lldp[eth]['vlans'].key?('untagged_vlan')
+        if lldp[eth]['vlans']['tagged_vlans'].length > 1
+          lldp[eth]['vlans']['mode'] = 'tagged'
+        else
+          lldp[eth]['vlans'].delete('tagged_vlans')
+          lldp[eth]['vlans']['mode'] = 'access'
+        end
+      else
+        # not sure if we would ever hit this
+        lldp[eth]['vlans']['mode'] = 'tagged-all'
       end
     end
-
     lldp
   end
 end
