@@ -1,12 +1,10 @@
 class profile::mariadb::core_test (
     String $shard             = lookup('mariadb::shard'),
-    String $mysql_role        = lookup('mariadb::mysql_role', {'default_value' => 'slave'}),
     String $binlog_format     = lookup('mariadb::binlog_format', {'default_value' => 'ROW'}),
 ){
+    require profile::mariadb::mysql_role
 
-    class { '::profile::mariadb::mysql_role':
-        role => $mysql_role,
-    }
+    $mysql_role = $profile::mariadb::mysql_role::role
 
     profile::mariadb::section { $shard: }
 
