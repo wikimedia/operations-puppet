@@ -1,9 +1,6 @@
 class profile::mariadb::misc::multiinstance (
-    $num_instances = hiera('profile::mariadb::misc::multiinstance::num_instances'),
-    $m1            = hiera('profile::mariadb::misc::multiinstance::m1', false),
-    $m2            = hiera('profile::mariadb::misc::multiinstance::m2', false),
-    $m3            = hiera('profile::mariadb::misc::multiinstance::m3', false),
-    $m5            = hiera('profile::mariadb::misc::multiinstance::m5', false),
+    Hash[String, Pattern[/^\d+[KMG]?$/]] $instances = lookup('profile::mariadb::misc::multiinstance::instances'),
+    Hash[String, Stdlib::Port] $section_ports = lookup('profile::mariadb::section_ports'),
 ) {
     require profile::mariadb::packages_wmf
     class { 'mariadb::service':
@@ -31,58 +28,40 @@ disabled, use mariadb@<instance_name> instead'; exit 1\"",
         mode   => '0755',
     }
 
-    if $m1 {
-        mariadb::instance { 'm1':
-            port                    => 3321,
-            innodb_buffer_pool_size => $m1,
-            # template                => 'profile/mariadb/mysqld_config/misc.my.cnf.erb'
+    $instances.each |$section, $buffer_pool| {
+        $port = $section_ports[$section]
+        if (!$port) {
+            fail("'${section}' is not a valid section.")
         }
-        profile::mariadb::section { 'm1': }
-        profile::mariadb::ferm { 'm1': port => '3321' }
-        profile::prometheus::mysqld_exporter_instance { 'm1': port => 13321, }
-        profile::mariadb::replication_lag { 'm1': prom_port => 13321, }
-    }
-    if $m2 {
-        mariadb::instance { 'm2':
-            port                    => 3322,
-            innodb_buffer_pool_size => $m2,
-            # template                => 'profile/mariadb/mysqld_config/misc.my.cnf.erb'
+        $prom_port = Integer("1${port}")
+
+        $template =  $section ? {
+            default => undef,
+            'm3' => 'profile/mariadb/mysqld_config/phabricator_instance.my.cnf.erb',
         }
-        profile::mariadb::section { 'm2': }
-        profile::mariadb::ferm { 'm2': port => '3322' }
-        profile::prometheus::mysqld_exporter_instance { 'm2': port => 13322, }
-        profile::mariadb::replication_lag { 'm2': prom_port => 13322, }
-    }
-    if $m3 {
-        mariadb::instance { 'm3':
-            port                    => 3323,
-            innodb_buffer_pool_size => $m3,
-            template                => 'profile/mariadb/mysqld_config/phabricator_instance.my.cnf.erb',
+
+        mariadb::instance { $section:
+            port                    => $port,
+            innodb_buffer_pool_size => $buffer_pool,
+            template                => $template,
         }
-        profile::mariadb::section { 'm3': }
-        profile::mariadb::ferm { 'm3': port => '3323' }
-        profile::prometheus::mysqld_exporter_instance { 'm3': port => 13323, }
-        profile::mariadb::replication_lag { 'm3': prom_port => 13323, }
-        # stopwords are stored prersistently and backed up, so no need to load it every time
-        file { '/etc/mysql/phabricator-init.sql':
-            ensure => present,
-            owner  => 'root',
-            group  => 'root',
-            mode   => '0644',
-            source => 'puppet:///modules/profile/mariadb/phabricator-init.sql',
+        profile::mariadb::section { $section: }
+        profile::mariadb::ferm { $section: port => $port, }
+        profile::prometheus::mysqld_exporter_instance { $section: port => $prom_port }
+        profile::mariadb::replication_lag { $section: prom_port => $prom_port }
+
+        if $section == 'm3' {
+            # stopwords are stored prersistently and backed up, so no need to load it every time
+            file { '/etc/mysql/phabricator-init.sql':
+                ensure => present,
+                owner  => 'root',
+                group  => 'root',
+                mode   => '0644',
+                source => 'puppet:///modules/profile/mariadb/phabricator-init.sql',
+            }
+        } elsif $section == 'm5' {
+            include profile::mariadb::ferm_wmcs_on_port_3325
         }
-    }
-    if $m5 {
-        mariadb::instance { 'm5':
-            port                    => 3325,
-            innodb_buffer_pool_size => $m5,
-            # template                => 'profile/mariadb/mysqld_config/misc.my.cnf.erb'
-        }
-        profile::mariadb::section { 'm5': }
-        profile::mariadb::ferm { 'm5': port => '3325' }
-        include profile::mariadb::ferm_wmcs_on_port_3325
-        profile::prometheus::mysqld_exporter_instance { 'm5': port => 13325, }
-        profile::mariadb::replication_lag { 'm5': prom_port => 13325, }
     }
 
     class { 'mariadb::monitor_disk':
@@ -91,7 +70,7 @@ disabled, use mariadb@<instance_name> instead'; exit 1\"",
     }
 
     class { 'mariadb::monitor_process':
-        process_count => $num_instances,
+        process_count => length($instances),
         is_critical   => false,
         contact_group => 'admins',
     }
