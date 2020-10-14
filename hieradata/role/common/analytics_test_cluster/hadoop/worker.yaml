@@ -69,3 +69,5 @@ prometheus::node_exporter::collectors_extra:
 profile::base::notifications: disabled
 
 profile::hadoop::common::use_puppet_ssl_certs: true
+
+profile::hadoop::worker::check_mountpoints_disk_space: false

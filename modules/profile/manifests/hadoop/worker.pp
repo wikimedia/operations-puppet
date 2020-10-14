@@ -11,9 +11,10 @@
 #    Make Puppet use Kerberos authentication when executing hdfs commands.
 #
 class profile::hadoop::worker(
-    $cluster_name       = hiera('profile::hadoop::common::hadoop_cluster_name'),
-    $monitoring_enabled = hiera('profile::hadoop::worker::monitoring_enabled', false),
-    $ferm_srange        = hiera('profile::hadoop::worker::ferm_srange', '$DOMAIN_NETWORKS'),
+    String $cluster_name                  = lookup('profile::hadoop::common::hadoop_cluster_name'),
+    Boolean $monitoring_enabled           = lookup('profile::hadoop::worker::monitoring_enabled', { 'default_value' => false }),
+    String $ferm_srange                   = lookup('profile::hadoop::worker::ferm_srange', { 'default_value' => '$DOMAIN_NETWORKS' }),
+    Boolean $check_mountpoints_disk_space = lookup('profile::hadoop::worker::check_mountpoints_disk_space', { 'default_value' => true }),
 ) {
     require ::profile::analytics::cluster::packages::common
     require ::profile::hadoop::common
@@ -95,14 +96,16 @@ class profile::hadoop::worker(
             }
         }
 
-        # Alert on datanode mount disk space.  These mounts are ignored by the
-        # base module's check_disk via the base::monitoring::host::nrpe_check_disk_options
-        # override in worker.yaml hieradata.
-        nrpe::monitor_service { 'disk_space_hadoop_worker':
-            description   => 'Disk space on Hadoop worker',
-            nrpe_command  => '/usr/lib/nagios/plugins/check_disk --units GB -w 32 -c 16 -e -l  -r "/var/lib/hadoop/data"',
-            contact_group => 'admins,analytics',
-            notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hadoop/Administration',
+        if $check_mountpoints_disk_space {
+            # Alert on datanode mount disk space.  These mounts are ignored by the
+            # base module's check_disk via the base::monitoring::host::nrpe_check_disk_options
+            # override in worker.yaml hieradata.
+            nrpe::monitor_service { 'disk_space_hadoop_worker':
+                description   => 'Disk space on Hadoop worker',
+                nrpe_command  => '/usr/lib/nagios/plugins/check_disk --units GB -w 32 -c 16 -e -l  -r "/var/lib/hadoop/data"',
+                contact_group => 'admins,analytics',
+                notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hadoop/Administration',
+            }
         }
 
         monitoring::check_prometheus { 'analytics_hadoop_hdfs_datanode':
