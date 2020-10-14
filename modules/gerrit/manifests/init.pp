@@ -44,5 +44,5 @@ class gerrit(
         enable_monitoring => $enable_monitoring,
     }
 
-    class { 'gerrit::crons': }
+    class { 'gerrit::jobs': }
 }
