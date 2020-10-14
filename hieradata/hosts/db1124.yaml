@@ -1,7 +1,7 @@
 # db1124
 # Buffer pool sizes/instance enabled
-profile::mariadb::sanitarium_multiinstance::num_instances: 4
-profile::mariadb::sanitarium_multiinstance::s1: '48G'
-profile::mariadb::sanitarium_multiinstance::s3: '48G'
-profile::mariadb::sanitarium_multiinstance::s5: '8G'
-profile::mariadb::sanitarium_multiinstance::s8: '48G'
+profile::mariadb::sanitarium_multiinstance::instances:
+  s1: 48G
+  s3: 48G
+  s5: 8G
+  s8: 48G
