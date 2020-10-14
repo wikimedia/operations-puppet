@@ -73,3 +73,5 @@ profile::hadoop::master::standby::excluded_hosts:
   - 'analytics1047'
   - 'analytics1048.eqiad.wmnet'
   - 'analytics1048'
+  - 'analytics1049.eqiad.wmnet'
+  - 'analytics1049'
