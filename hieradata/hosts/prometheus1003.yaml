@@ -1,1 +1,2 @@
 prometheus::replica_label: 'a'
+profile::prometheus::thanos::disable_compaction: false
