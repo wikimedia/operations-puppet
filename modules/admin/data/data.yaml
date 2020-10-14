@@ -4453,3 +4453,7 @@ ldap_only_users:
     ensure: present
     realname: Sudhanshu Gautam
     email: sgautam@wikimedia.org
+  nnair:
+    ensure: present
+    realname: Neha Nair
+    email: nnair@wikimedia.org
