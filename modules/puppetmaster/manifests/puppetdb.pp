@@ -12,6 +12,8 @@ class puppetmaster::puppetdb(
     String                     $puppetdb_pass         = '',
     Puppetdb::Loglevel         $log_level             = 'info',
     Boolean                    $tmpfs_stockpile_queue = false,
+    Array[String]              $facts_blacklist       = [],
+    Enum['literal', 'regex']   $facts_blacklist_type  = 'literal',
 ){
 
     if $filter_job_id {
@@ -57,5 +59,7 @@ class puppetmaster::puppetdb(
         ca_path               => $ca_path,
         log_level             => $log_level,
         tmpfs_stockpile_queue => $tmpfs_stockpile_queue,
+        facts_blacklist       => $facts_blacklist,
+        facts_blacklist_type  => $facts_blacklist_type,
     }
 }

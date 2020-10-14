@@ -18,6 +18,8 @@ class puppetdb::app(
     Boolean                       $perform_gc                 = false,
     Integer                       $command_processing_threads = 16,
     Puppetdb::Loglevel            $log_level                  = 'info',
+    Array[String]                 $facts_blacklist            = [],
+    Enum['literal', 'regex']      $facts_blacklist_type       = 'literal',
     Optional[String]              $db_rw_host                 = undef,
     Optional[Stdlib::IP::Address] $bind_ip                    = undef,
     Optional[String]              $db_ro_host                 = undef,
@@ -152,6 +154,14 @@ class puppetdb::app(
         settings => {
             'threads' => $command_processing_threads,
         },
+    }
+    unless $facts_blacklist.empty {
+        puppetdb::config { 'facts-blacklist':
+            settings => {
+                'facts-blacklist-type' => $facts_blacklist_type,
+                'facts-blacklist'      => $facts_blacklist.join(', '),
+            },
+        }
     }
     file {'/etc/puppetdb/logback.xml':
         ensure  => file,

@@ -11,7 +11,9 @@ class profile::puppetdb(
     Boolean                              $tmpfs_stockpile_queue = lookup('profile::puppetdb::tmpfs_stockpile_queue'),
     String                               $puppetdb_pass         = lookup('puppetdb::password::rw'),
     Puppetdb::Loglevel                   $log_level             = lookup('profile::puppetdb::log_level'),
-    Optional[Stdlib::Unixpath]           $ssldir                = lookup('profile::puppetdb::ssldir')
+    Array[String]                        $facts_blacklist       = lookup('profile::puppetdb::facts_blacklist'),
+    Enum['literal', 'regex']             $facts_blacklist_type  = lookup('profile::puppetdb::facts_blacklist_type'),
+    Optional[Stdlib::Unixpath]           $ssldir                = lookup('profile::puppetdb::ssldir'),
 ) {
 
     # Prometheus JMX agent for the Puppetdb's JVM
@@ -29,6 +31,8 @@ class profile::puppetdb(
         puppetdb_pass         => $puppetdb_pass,
         log_level             => $log_level,
         tmpfs_stockpile_queue => $tmpfs_stockpile_queue,
+        facts_blacklist       => $facts_blacklist,
+        facts_blacklist_type  => $facts_blacklist_type,
     }
 
     # Export JMX metrics to prometheus
