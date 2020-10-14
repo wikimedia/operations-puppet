@@ -1,8 +1,8 @@
 # dbstore1005
 # Buffer pool sizes/instance enabled
-profile::mariadb::dbstore_multiinstance::num_instances: 4
-profile::mariadb::dbstore_multiinstance::s6: '90G'
-profile::mariadb::dbstore_multiinstance::s8: '210G'
-profile::mariadb::dbstore_multiinstance::x1: '65G'
-# Analytics staging database
-profile::mariadb::dbstore_multiinstance::staging: '20G'
+profile::mariadb::dbstore_multiinstance::instances:
+  s6: 90G
+  s8: 210G
+  x1: 65G
+  # Analytics staging database
+  staging: 20G

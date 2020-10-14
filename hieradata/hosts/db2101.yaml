@@ -1,4 +1,4 @@
 # db2101
 # Buffer pool sizes/instance enabled
-profile::mariadb::dbstore_multiinstance::num_instances: 1
-profile::mariadb::dbstore_multiinstance::x1: '192G'
+profile::mariadb::dbstore_multiinstance::instances:
+  x1: 192G
