@@ -18,6 +18,7 @@ WHITELIST = [
     "interfaces",
     "networking",
     "net_driver",
+    "lldp",
 ]
 
 # PuppetDB api URL template
