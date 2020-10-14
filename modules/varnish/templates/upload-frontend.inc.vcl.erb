@@ -89,11 +89,6 @@ sub cluster_fe_recv {
 
 	unset req.http.X-Range;
 
-	if (req.http.host != "<%= @vcl_config.fetch('upload_domain') %>"
-	    && req.http.host != "<%= @vcl_config.fetch('maps_domain') %>") {
-		return (synth(404, "Requested domainname does not exist on this server"));
-	}
-
 	if (req.http.Host == "<%= @vcl_config.fetch('maps_domain') %>") {
 		// The Maps service has been chronically underprovisioned (in terms of staffing and
 		// hardware) for a while. WMF has made the policy decision we can only support Maps
