@@ -4,6 +4,7 @@ class openstack::neutron::l3_agent(
     $network_public_ip,
     $report_interval,
     $enabled=true,
+    Boolean $enable_hacks = true,
     ) {
 
     class { "openstack::neutron::l3_agent::${version}":
@@ -12,7 +13,9 @@ class openstack::neutron::l3_agent(
         report_interval   => $report_interval,
     }
 
-    class { "openstack::neutron::l3_agent::${version}::l3_agent_hacks": }
+    if $enable_hacks {
+        class { "openstack::neutron::l3_agent::${version}::l3_agent_hacks": }
+    }
 
     service {'neutron-l3-agent':
         ensure  => $enabled,
