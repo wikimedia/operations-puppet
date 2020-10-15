@@ -39,6 +39,13 @@ class profile::ci::docker(
         version      => $docker_version,
     }
 
+    file { '/usr/local/bin/docker-credential-environment':
+        source => 'puppet:///modules/docker/docker-credential-environment.py',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+    }
+
     if $::realm == 'labs' {
         # ensure jenkins-deploy membership in the docker group
         exec { 'jenkins user docker membership':
