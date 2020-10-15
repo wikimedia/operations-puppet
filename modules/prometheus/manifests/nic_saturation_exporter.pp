@@ -5,7 +5,8 @@
 # too high in a one-second window.  Catches micro-bursts of saturation that
 # escape detection by normal monitoring (which has a 30-second window).
 class prometheus::nic_saturation_exporter(
-    Wmflib::Ensure $ensure = 'present',
+    Wmflib::Ensure         $ensure         = 'present',
+    Optional[Stdlib::Host] $listen_address = undef,
 ) {
     require_package(['python3-prometheus-client'])
 

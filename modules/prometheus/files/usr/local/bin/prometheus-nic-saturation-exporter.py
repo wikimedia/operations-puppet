@@ -6,7 +6,7 @@ saturation/congestion possibly occurred.
 """
 
 __author__ = 'Chris Danis'
-__version__ = '0.0.1'
+__version__ = '0.0.2'
 __copyright__ = """
 Copyright © 2020 Chris Danis & the Wikimedia Foundation
 
@@ -98,8 +98,8 @@ def get_nics():
 
 def main(args):
     log.debug('Arguments: %s', args)
-    log.info('Starting nic_saturation_exporter on port %d', args.port)
-    start_http_server(args.port)
+    log.info('Starting nic_saturation_exporter on port %s:%d', args.addr, args.port)
+    start_http_server(args.port, args.addr)
 
     # TODO: Would we ever want to support sampling intervals other than a second?
     # If so, we'd need different metric names, and probably to export the interval itself
@@ -159,6 +159,7 @@ def main(args):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument('nics', nargs='*', help='Interface names to poll, or none to autodetect')
+    parser.add_argument('-l', '--listen', help='Listen on this address', default='')
     parser.add_argument('-p', '--port', help='Listen on this port', default=9710, type=int)
     parser.add_argument('--warm', help='Utilization percentage at which a NIC is considered warm.',
                         default=80, type=float)
