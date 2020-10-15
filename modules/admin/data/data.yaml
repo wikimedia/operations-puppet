@@ -4457,3 +4457,7 @@ ldap_only_users:
     ensure: present
     realname: Neha Nair
     email: nnair@wikimedia.org
+  maryana:
+    ensure: present
+    realname: Maryana Pinchuk
+    email: mpinchuk@wikimedia.org
