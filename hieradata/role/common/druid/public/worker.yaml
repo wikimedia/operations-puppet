@@ -133,12 +133,12 @@ profile::druid::historical::properties:
   druid.processing.buffer.sizeBytes: 268435456 # 1024 * 1024 * 256
   # Set numMergeBuffers to use v2 groupBy engine
   druid.processing.numMergeBuffers: 10
-  # 20 Druid http client threads * 5 brokers + 10
+  # 20 Druid http client threads * 5 brokers + 20
   # The value 20 is the lowest among all the node hw types.
   # We need to pick the lowest since each historical needs to be able
   # to sustain, at worst, the maximum amount of concurrent reqs from all
   # brokers plus a safe margin.
-  druid.server.http.numThreads: 110
+  druid.server.http.numThreads: 120
   druid.server.maxSize: 2748779069440 # 2.5 TB
   druid.segmentCache.locations: '[{"path":"/srv/druid/segment-cache","maxSize"\:2748779069440}]'
   # For small clusters it is reccomended to only enable caching on brokers
