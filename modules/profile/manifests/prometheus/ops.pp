@@ -12,7 +12,7 @@ class profile::prometheus::ops (
     Stdlib::Host $netmon_server           = lookup('netmon_server'),
     Wmflib::Ensure $ensure_rsync          = lookup('profile::prometheus::ops::ensure_rsync'),
     String $replica_label                 = lookup('prometheus::replica_label', { 'default_value' => 'unset' }),
-    Boolean $enable_thanos_upload         = lookup('profile::prometheus::ops::thanos', { 'default_value' => false }),
+    Boolean $enable_thanos_upload         = lookup('profile::prometheus::ops::enable_thanos_upload', { 'default_value' => false }),
     Optional[String] $thanos_min_time     = lookup('profile::prometheus::thanos::min_time', { 'default_value' => undef }),
     Array $alertmanagers                  = lookup('alertmanagers', {'default_value' => []}),
     Boolean $disable_compaction           = lookup('profile::prometheus::thanos::disable_compaction', { 'default_value' => true }),

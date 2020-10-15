@@ -1,5 +1,5 @@
 cluster: prometheus
-profile::prometheus::ops::thanos: false
+profile::prometheus::ops::enable_thanos_upload: true
 profile::base::domain_search:
   - wikimedia.org
   - eqiad.wmnet
