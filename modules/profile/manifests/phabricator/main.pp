@@ -247,47 +247,45 @@ class profile::phabricator::main (
         }
     ]
 
-    # lint:ignore:arrow_alignment
     class { '::phabricator':
-        deploy_target    => $deploy_target,
-        deploy_user      => $deploy_user,
-        phabdir          => $phab_root_dir,
-        serveraliases    => [ $altdom,
+        deploy_target      => $deploy_target,
+        deploy_user        => $deploy_user,
+        phabdir            => $phab_root_dir,
+        serveraliases      => [ $altdom,
                               'bugzilla.wikimedia.org',
                               'bugs.wikimedia.org' ],
-        trusted_proxies  => $cache_nodes['text'][$::site],
-        mysql_admin_user => $mysql_admin_user,
-        mysql_admin_pass => $mysql_admin_pass,
-        libraries        => [ "${phab_root_dir}/libext/Sprint/src",
+        trusted_proxies    => $cache_nodes['text'][$::site],
+        mysql_admin_user   => $mysql_admin_user,
+        mysql_admin_pass   => $mysql_admin_pass,
+        libraries          => [ "${phab_root_dir}/libext/Sprint/src",
                               "${phab_root_dir}/libext/security/src",
                               "${phab_root_dir}/libext/misc",
                               "${phab_root_dir}/libext/ava/src",
                               "${phab_root_dir}/libext/translations/src" ],
-        settings         => {
-            'cluster.search'                         => $cluster_search,
-            'darkconsole.enabled'                    => false,
-            'differential.allow-self-accept'         => true,
-            'phabricator.base-uri'                   => "https://${domain}",
-            'security.alternate-file-domain'         => "https://${altdom}",
-            'mysql.host'                             => $mysql_host,
-            'cluster.mailers'                        => $mail_config,
-            'metamta.default-address'                => "no-reply@${domain}",
-            'metamta.reply-handler-domain'           => $domain,
-            'repository.default-local-path'          => '/srv/repos',
-            'phd.taskmasters'                        => $phd_taskmasters,
-            'events.listeners'                       => [],
-            'diffusion.allow-http-auth'              => true,
-            'diffusion.ssh-host'                     => $phab_diffusion_ssh_host,
-            'gitblit.hostname'                       => 'git.wikimedia.org',
-            'notification.servers'                   => $notification_servers,
+        settings           => {
+            'cluster.search'                 => $cluster_search,
+            'darkconsole.enabled'            => false,
+            'differential.allow-self-accept' => true,
+            'phabricator.base-uri'           => "https://${domain}",
+            'security.alternate-file-domain' => "https://${altdom}",
+            'mysql.host'                     => $mysql_host,
+            'cluster.mailers'                => $mail_config,
+            'metamta.default-address'        => "no-reply@${domain}",
+            'metamta.reply-handler-domain'   => $domain,
+            'repository.default-local-path'  => '/srv/repos',
+            'phd.taskmasters'                => $phd_taskmasters,
+            'events.listeners'               => [],
+            'diffusion.allow-http-auth'      => true,
+            'diffusion.ssh-host'             => $phab_diffusion_ssh_host,
+            'gitblit.hostname'               => 'git.wikimedia.org',
+            'notification.servers'           => $notification_servers,
         },
-        conf_files          => $conf_files,
-        opcache_validate    => $opcache_validate,
-        timezone            => $timezone,
-        phd_service_ensure  => $phd_service_ensure,
-        manage_scap_user    => $manage_scap_user
+        conf_files         => $conf_files,
+        opcache_validate   => $opcache_validate,
+        timezone           => $timezone,
+        phd_service_ensure => $phd_service_ensure,
+        manage_scap_user   => $manage_scap_user
     }
-    # lint:endignore
 
     $fpm_config = {
         'date'                   => {
