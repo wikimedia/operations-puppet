@@ -12,16 +12,10 @@
 #   eventlogging::processor is the only configured analytics eventlogging kafka producer, so we
 #   only need to define this here.
 #
-# [*valid_mixed_filter_enabled*]
-#   If enabled, eventlogging_valid_mixed_filter in plugins.py will be used to only
-#   allow whitelisted schemas into the 'eventlogging-valid-mixed' topic, which is eventually
-#   used to ingest events into the EventLogging MySQL log database. Default: false
-#
 class profile::eventlogging::analytics::processor(
     $client_side_processors     = hiera('profile::eventlogging::analytics::processor::client_side_processors', ['client-side-00', 'client-side-01']),
     $kafka_consumer_group       = hiera('profile::eventlogging::analytics::processor::kafka_consumer_group', 'eventlogging_processor_client_side_00'),
     $kafka_producer_scheme      = hiera('profile::eventlogging::analytics::processor::kafka_producer_scheme', 'kafka://'),
-    $valid_mixed_filter_enabled = hiera('profile::eventlogging::analytics::processor::valid_mixed_filter_enabled', false)
 ){
 
     include profile::eventlogging::analytics::server
@@ -34,7 +28,6 @@ class profile::eventlogging::analytics::processor(
     # Read in raw events from Kafka, process them, and send them to
     # the schema corresponding to their topic in Kafka.
     $kafka_schema_output_uri  = "${kafka_producer_scheme}/${kafka_brokers_string}?topic=eventlogging_{schema}"
-    $kafka_mixed_output_uri = "${kafka_producer_scheme}/${kafka_brokers_string}?topic=eventlogging-valid-mixed"
 
     # Increase number and backoff time of retries for async
     # analytics uses.  If metadata changes, we should give
@@ -51,20 +44,6 @@ class profile::eventlogging::analytics::processor(
     # it will not be sent to its topic, but a message will be logged about skipping it.
     $kafka_per_schema_output = "map://${kafka_schema_output_uri}&${kafka_producer_args}&function=eventlogging_schemas_disabled_filter"
 
-    # This output writes 'mixed' schemas to the same 'eventlogging-valid-mixed' Kafka topic.
-    # Only pass valid mixed output through eventlogging_valid_mixed_filter plugin
-    # filter function if $valid_mixed_filter_enabled is true.
-    $kafka_valid_mixed_output = $valid_mixed_filter_enabled ? {
-        # Custom URI scheme to pass events through map function
-        # The downstream eventlogging MySQL consumer expects schemas to be
-        # all mixed up in a single stream.  We send processed events to a
-        # 'mixed' kafka topic in order to keep supporting it for now.
-        # We whitelist certain low volume schemas for this topic.
-        # The whitelist is maintained in plugins.py.
-        true    => "map://${kafka_mixed_output_uri}&${kafka_producer_args}&function=eventlogging_valid_mixed_filter",
-        default => "${kafka_mixed_output_uri}&${kafka_producer_args}",
-    }
-
     # Incoming format from /beacon/event via varnishkafka eventlogging-client-side
     # is of the format:
     #   %q          - GET query with encoded event
@@ -78,7 +57,7 @@ class profile::eventlogging::analytics::processor(
         format         => $format,
         input          => $kafka_client_side_raw_uri,
         sid            => $kafka_consumer_group,
-        outputs        => [$kafka_per_schema_output, $kafka_valid_mixed_output],
+        outputs        => [$kafka_per_schema_output],
         output_invalid => true,
     }
 }

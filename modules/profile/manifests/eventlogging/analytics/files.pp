@@ -49,22 +49,12 @@ class profile::eventlogging::analytics::files(
     # These commonly used URIs are defined for DRY purposes in
     # profile::eventlogging::analytics::server.
     $kafka_client_side_raw_uri = $profile::eventlogging::analytics::server::kafka_client_side_raw_uri
-    $kafka_mixed_uri           = $profile::eventlogging::analytics::server::kafka_mixed_uri
 
     # Raw client side events:
     eventlogging::service::consumer { 'client-side-events.log':
         input  => "${kafka_client_side_raw_uri}&raw=True",
         output => "file://${out_dir}/client-side-events.log",
         sid    => 'eventlogging_consumer_client_side_events_log_00',
-    }
-    # Processed and valid all (AKA 'mixed').
-    # Note that this does not include events that were
-    # 'blacklisted' during processing.  Events are blacklisted
-    # from these logs for volume reasons.
-    eventlogging::service::consumer { 'all-events.log':
-        input  => $kafka_mixed_uri,
-        output => "file://${out_dir}/all-events.log",
-        sid    => 'eventlogging_consumer_all_events_log_00',
     }
 
     if ( $backup_destinations ) {
