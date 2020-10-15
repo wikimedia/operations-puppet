@@ -162,7 +162,7 @@ class librenms(
         }
     }
 
-    package { [
+    ensure_packages([
             'php-pear',
             'fping',
             'graphviz',
@@ -174,9 +174,7 @@ class librenms(
             'snmp',
             'snmp-mibs-downloader',
             'whois',
-        ]:
-        ensure => present,
-    }
+        ])
 
     include ::imagemagick::install
 
