@@ -28,11 +28,11 @@
 #    Default: false
 #
 class profile::archiva::proxy(
-    $certificate_name   = hiera('profile::archiva::proxy::certificate_name', 'archiva'),
-    $ssl_enabled        = hiera('profile::archiva::proxy::ssl_enabled', false),
-    $only_localhost     = hiera('profile::archiva::proxy::only_localhost', false),
-    $monitoring_enabled = hiera('profile::archiva::proxy::monitoring_enabled', false),
-) {
+    String  $certificate_name   = lookup('profile::archiva::proxy::certificate_name', { 'default_value' => 'archiva' }),
+    Boolean $ssl_enabled        = lookup('profile::archiva::proxy::ssl_enabled', { 'default_value' => false }),
+    Boolean $only_localhost     = lookup('profile::archiva::proxy::only_localhost', { 'default_value' => false }),
+    Boolean $monitoring_enabled = lookup('profile::archiva::proxy::monitoring_enabled', { 'default_value' => false }),
+){
 
     class { '::archiva::proxy':
         certificate_name => $certificate_name,
