@@ -46,9 +46,10 @@ class profile::eventlogging::analytics::processor(
         'kafka://'           => 'retries=6&retry_backoff_ms=200'
     }
 
-
     # This output URL writes to per schema Kafka topics like eventlogging_<SchemaName>
-    $kafka_per_schema_output = "${kafka_schema_output_uri}&${kafka_producer_args}"
+    # If an event's SchemaName is in the eventlogging_schemas_disabled list (defined in plugins.py),
+    # it will not be sent to its topic, but a message will be logged about skipping it.
+    $kafka_per_schema_output = "map://${kafka_schema_output_uri}&${kafka_producer_args}&function=eventlogging_schemas_disabled_filter"
 
     # This output writes 'mixed' schemas to the same 'eventlogging-valid-mixed' Kafka topic.
     # Only pass valid mixed output through eventlogging_valid_mixed_filter plugin

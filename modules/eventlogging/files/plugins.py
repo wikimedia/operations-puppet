@@ -2,7 +2,7 @@ import dateutil.parser
 import json
 import time
 import unittest
-
+import logging
 
 """
 Only EventLogging schemas that match entries in this list
@@ -126,6 +126,34 @@ def eventlogging_valid_mixed_filter(event):
     eventlogging_valid_mixed_schema_whitelist, else the event.
     """
     if event.get('schema', '') not in eventlogging_valid_mixed_schema_whitelist:
+        return None
+
+    return event
+
+
+"""
+If a schema is in this list, it will be mapped to None, causing
+eventlogging-processor to skip it.  This will be used
+for the migration to Event Platform, away from the python eventlogging
+backend.  Once a schema has been fully migrated to an Event Platform stream,
+it can be added to this list.
+See: https://phabricator.wikimedia.org/T259163
+"""
+eventlogging_schemas_disabled = (
+    'SearchSatisfaction',
+    'TemplateWizard',
+    'Test',
+)
+
+
+def eventlogging_schemas_disabled_filter(event):
+    """
+    Returns None if this event's schema_name is in
+    eventlogging_schemas_disabled list, else the event.
+    """
+    schema_name = event.get('schema', '')
+    if schema_name in eventlogging_schemas_disabled:
+        logging.warn('Encountered event with disabled schema %s, skipping.', schema_name)
         return None
 
     return event
