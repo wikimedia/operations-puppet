@@ -4,11 +4,11 @@
 #
 
 class netconsole::client (
-    Wmflib::Ensure $ensure = present,
-    Optional[String] $dev_name = undef,
-    Optional[Stdlib::Ipv4] $local_ip = undef,
-    Optional[Stdlib::Ipv4] $remote_ip = undef,
-    Optional[Stdlib::MAC] $remote_mac = undef,
+    Wmflib::Ensure                    $ensure = present,
+    Optional[String]                  $dev_name = undef,
+    Optional[Stdlib::IP::Address::V4] $local_ip = undef,
+    Optional[Stdlib::IP::Address::V4] $remote_ip = undef,
+    Optional[Stdlib::MAC]             $remote_mac = undef,
 ) {
     kmod::module { 'netconsole':
         ensure => $ensure,

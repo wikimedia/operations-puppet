@@ -8,9 +8,9 @@
 #
 
 class profile::wmcs::nfs::maintain_dbusers (
-    Hash $ldapconfig            = lookup('labsldapconfig', {'merge' => hash}),
-    Hash $production_ldap_config = lookup('ldap', {'merge' => hash}),
-    Stdlib::Ipv4 $cluster_ip = lookup('profile::wmcs::nfs::primary::cluster_ip'),
+    Hash                    $ldapconfig             = lookup('labsldapconfig', {'merge' => hash}),
+    Hash                    $production_ldap_config = lookup('ldap', {'merge' => hash}),
+    Stdlib::IP::Address::V4 $cluster_ip             = lookup('profile::wmcs::nfs::primary::cluster_ip'),
 ){
 
     package { [

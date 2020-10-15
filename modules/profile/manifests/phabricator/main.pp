@@ -43,9 +43,9 @@ class profile::phabricator::main (
     Stdlib::Fqdn                $phab_diffusion_ssh_host=
                                                       lookup('phabricator_diffusion_ssh_host',
                                                       { 'default_value' => 'git-ssh.wikimedia.org' }),
-    Stdlib::Ipv4                $vcs_ip_v4          = lookup('phabricator::vcs::address::v4',
+    Stdlib::IP::Address::V4     $vcs_ip_v4          = lookup('phabricator::vcs::address::v4',
                                                       { 'default_value' => undef }),
-    Stdlib::Ipv6                $vcs_ip_v6          = lookup('phabricator::vcs::address::v6',
+    Stdlib::IP::Address::V6     $vcs_ip_v6          = lookup('phabricator::vcs::address::v6',
                                                       { 'default_value' => undef }),
     Array                       $cluster_search     = lookup('phabricator_cluster_search'),
     Optional[String]            $active_server      = lookup('phabricator_server',

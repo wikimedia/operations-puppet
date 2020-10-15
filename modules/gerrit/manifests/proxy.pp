@@ -1,13 +1,13 @@
 # sets up a TLS proxy for Gerrit
 class gerrit::proxy(
-    Stdlib::Ipv4 $ipv4,
+    Stdlib::IP::Address::V4 $ipv4,
     Stdlib::Fqdn $host                           = $::gerrit::host,
     Boolean $replica                             = false,
     Boolean $maint_mode                          = false,
     Boolean $use_acmechief                       = false,
-    Optional[Stdlib::Ipv6] $ipv6,
     Optional[Array[Stdlib::Fqdn]] $replica_hosts = $::gerrit::replica_hosts,
     Boolean $enable_monitoring                   = true,
+    Optional[Stdlib::IP::Address::V6] $ipv6      = undef,
 ) {
 
     require gerrit::jetty

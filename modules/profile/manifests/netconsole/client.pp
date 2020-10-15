@@ -7,7 +7,7 @@
 #
 class profile::netconsole::client (
     Wmflib::Ensure $ensure = lookup('profile::netconsole::client::ensure'),
-    Optional[Stdlib::Ipv4] $remote_ip = lookup('profile::netconsole::client::remote_ip', {default_value => undef}),
+    Optional[Stdlib::IP::Address::V4] $remote_ip = lookup('profile::netconsole::client::remote_ip', {default_value => undef}),
     Optional[Stdlib::MAC] $remote_mac = lookup('profile::netconsole::client::remote_mac', {default_value => undef}),
 ) {
     class { '::netconsole::client':

@@ -21,7 +21,7 @@ class service::monitor() {
                     'critical'      => true,
                     'lvs'           => has_key($data, 'lvs'),
                 }
-                if $ip =~ Stdlib::Ipv4 {
+                if $ip =~ Stdlib::IP::Address::V4 {
                     { $hostname => $host_params}
                 }
                 else {

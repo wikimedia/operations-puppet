@@ -17,7 +17,7 @@
 #
 class webperf::navtiming(
     String $kafka_brokers,
-    Variant[Stdlib::Ipv4, Stdlib::Fqdn] $statsd_host = '127.0.0.1',
+    Stdlib::Host $statsd_host = '127.0.0.1',
     Stdlib::Port $statsd_port = 8125,
 ) {
     include ::webperf
