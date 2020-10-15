@@ -131,6 +131,7 @@ class puppetmaster(
         prevent_cherrypicks => $prevent_cherrypicks,
         user                => $git_user,
         group               => $git_group,
+        servers             => $servers,
     }
 
     include puppetmaster::monitoring

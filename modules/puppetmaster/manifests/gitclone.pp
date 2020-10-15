@@ -24,12 +24,10 @@ class puppetmaster::gitclone(
     Boolean   $prevent_cherrypicks = true,
     String[1] $user                = 'gitpuppet',
     String[1] $group               = 'gitpuppet',
+    Hash[String, Puppetmaster::Backends] $servers = {},
 ){
-    # lint:ignore:wmf_styleguide
-    $servers = lookup('puppetmaster::servers', {'default_value' => {}})
-    # lint:endignore
-    include puppetmaster
 
+    include puppetmaster
     $is_master = $servers.has_key($facts['fqdn'])
 
     class  { 'puppetmaster::base_repo':
