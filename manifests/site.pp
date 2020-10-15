@@ -2012,6 +2012,11 @@ node 'malmok.wikimedia.org' {
     role(wikidough)
 }
 
+# new parsoid nodes - codfw (T243112, T247441)
+node /^parse20(0[1-9]|1[0-9]|20)\.codfw\.wmnet$/ {
+    role(parsoid)
+}
+
 # parser cache databases
 # eqiad
 # pc1
@@ -2039,11 +2044,6 @@ node /^pc20(08)\.codfw\.wmnet$/ {
 # pc3
 node /^pc20(09)\.codfw\.wmnet$/ {
     role(mariadb::parsercache)
-}
-
-# new parsoid nodes (T243112, T247441)
-node /^parse20(0[1-9]|1[0-9]|20)\.codfw\.wmnet$/ {
-    role(parsoid)
 }
 
 # virtual machines for https://wikitech.wikimedia.org/wiki/Ping_offload
@@ -2376,12 +2376,8 @@ node /^webperf[12]002\.(codfw|eqiad)\.wmnet/ {
     role(webperf::profiling_tools)
 }
 
-# https://www.mediawiki.org/wiki/Parsoid
+# https://www.mediawiki.org/wiki/Parsoid - new machines are called parse*
 node /^wtp10(2[5-9]|[34][0-9])\.eqiad\.wmnet$/ {
-    role(parsoid)
-}
-
-node /^wtp20(0[1-9]|1[0-9]|2[0-4])\.codfw\.wmnet$/ {
     role(parsoid)
 }
 
