@@ -1,5 +1,5 @@
 class profile::netmon::httpd (
-    Float $php_version = lookup(profile::netmon::httpd::php_version, {default_value => '7.3'}),
+    Float $php_version = lookup(profile::netmon::httpd::php_version, {default_value => 7.3}),
 ){
 
     # needed by librenms and netbox web servers
