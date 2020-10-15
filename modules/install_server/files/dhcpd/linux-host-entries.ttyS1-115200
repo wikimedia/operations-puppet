@@ -31,6 +31,12 @@ host an-coord1001 {
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
+host an-coord1002.eqiad.wmnet {
+    hardware ethernet D0:94:66:1B:33:67;
+    fixed-address an-coord1002.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
+}
+
 host an-launcher1002.eqiad.wmnet {
     hardware ethernet D0:94:66:1B:49:A6;
     fixed-address an-launcher1002.eqiad.wmnet;

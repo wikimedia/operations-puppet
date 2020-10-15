@@ -40,6 +40,10 @@ node 'an-coord1001.eqiad.wmnet' {
     role(analytics_cluster::coordinator)
 }
 
+node 'an-coord1002.eqiad.wmnet' {
+    role(insetup)
+}
+
 node 'an-launcher1002.eqiad.wmnet' {
     role(analytics_cluster::launcher)
 }
