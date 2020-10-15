@@ -19,11 +19,27 @@ listen = {
     }
 <%- end -%>
 
-    # PROXY protocol listener on port 535 of IPv4 localhost.
-    # This is for future experimentation with e.g. DNS-over-TLS.
+    # PROXY protocol listener on port 535 of IPv4 localhost for DoTLS forwarded
+    # by a separate TLS reverse proxy daemon.
     127.0.0.1:535 = {
         tcp_proxy = true
         tcp_threads = <%= @physicalcorecount %>
+
+        # idle timeout: default is 37s.  We're raising this to 157s (advertised
+        # to client) which implies a hard 314s server-side limit.  We've heard
+        # from some high traffic clients that they're configuring 120s as a
+        # fixed client-side timeout (and not yet paying attention to our
+        # dynamic adverts), so we need to at least exceed that value.  Larger
+        # values help amortize connection setup costs, at the risk of leaving
+        # so many long-running idle connections that we exceed configured
+        # parallelism limits, which will cause early termination of the
+        # most-idle ones.
+        tcp_timeout = 157
+
+        # clients-per-thread: default is 256, but larger may be better if we're
+        # expecting many lingering idle opportunistic connections, to avoid the
+        # scenario described above.
+        tcp_clients_per_thread = 1024
     }
 
     # These are monitor listeners, so they only get one thread per protocol per
