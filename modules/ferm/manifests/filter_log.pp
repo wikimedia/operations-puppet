@@ -1,10 +1,10 @@
 # defines a custom ferm rule to filter logs
 define ferm::filter_log (
-    Optional[Enum['tcp', 'udp']] $proto = undef,
-    Optional[Stdlib::Ip_address] $saddr = undef,
-    Optional[Stdlib::Ip_address] $daddr = undef,
-    Optional[Stdlib::Port]       $sport = undef,
-    Optional[Stdlib::Port]       $dport = undef,
+    Optional[Enum['tcp', 'udp']]  $proto = undef,
+    Optional[Stdlib::IP::Address] $saddr = undef,
+    Optional[Stdlib::IP::Address] $daddr = undef,
+    Optional[Stdlib::Port]        $sport = undef,
+    Optional[Stdlib::Port]        $dport = undef,
 ) {
   $_proto = $proto ? {
     undef   => '',
