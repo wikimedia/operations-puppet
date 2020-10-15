@@ -30,8 +30,9 @@ class profile::thanos::httpd (
             'cn=nda,ou=groups,dc=wikimedia,dc=org',
         ],
         vhost_settings   => {
-            query_port => $query_port,
-            maxconn    => $maxconn,
+            query_port      => $query_port,
+            maxconn         => $maxconn,
+            bucket_web_port => 15902,
         }
     }
     httpd::site { 'thanos-query':
