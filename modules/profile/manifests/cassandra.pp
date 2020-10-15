@@ -1,18 +1,19 @@
 # == Class profile::cassandra
 #
 class profile::cassandra(
-    $all_instances = hiera('profile::cassandra::instances'),
-    $rack = hiera('profile::cassandra::rack'),
-    $cassandra_settings = hiera('profile::cassandra::settings'),
-    $graphite_host = hiera('graphite_host'),
-    $prometheus_nodes = hiera('prometheus_nodes'),
-    Array[Stdlib::IP::Address] $client_ips = hiera('profile::cassandra::client_ips', []),
-    $allow_analytics = hiera('profile::cassandra::allow_analytics'),
-    $metrics_blacklist = hiera('profile::cassandra::metrics_blacklist', undef),
-    $metrics_whitelist = hiera('profile::cassandra::metrics_whitelist', undef),
-    $monitor_enabled = hiera('profile::cassandra::monitor_enabled', true),
-    $disable_graphite_metrics = hiera('profile::cassandra::disable_graphite_metrics', false),
-) {
+    Hash $all_instances = lookup('profile::cassandra::instances'),
+    String $rack = lookup('profile::cassandra::rack'),
+    Hash $cassandra_settings = lookup('profile::cassandra::settings'),
+    Stdlib::Host $graphite_host = lookup('graphite_host'),
+    Array[Stdlib::Host] $prometheus_nodes = lookup('prometheus_nodes'),
+    Array[Stdlib::IP::Address] $client_ips = lookup('profile::cassandra::client_ips', {'default_value' => []}),
+    Boolean $allow_analytics = lookup('profile::cassandra::allow_analytics'),
+    Boolean $monitor_enabled = lookup('profile::cassandra::monitor_enabled', {'default_value' => true}),
+    Boolean $disable_graphite_metrics = lookup('profile::cassandra::disable_graphite_metrics', {'default_value' => false}),
+    Optional[Array[String]] $metrics_blacklist = lookup('profile::cassandra::metrics_blacklist', {'default_value' => undef}),
+    Optional[Array[String]] $metrics_whitelist = lookup('profile::cassandra::metrics_whitelist', {'default_value' => undef}),
+){
+
     include ::passwords::cassandra
     $instances = $all_instances[$::fqdn]
     # We get the cassandra seeds from $all_instances, with a template hack
