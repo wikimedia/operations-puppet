@@ -44,17 +44,6 @@ node 'an-launcher1002.eqiad.wmnet' {
     role(analytics_cluster::launcher)
 }
 
-# This node was previously notebook1004,
-# but the Analytics team renamed it to allow
-# testing of solutions like Airflow/etc..
-# There is not yet a precise timeline for when
-# this host will get a more definitive role,
-# if you need any info please contact
-# the Analytics team.
-node 'an-scheduler1001.eqiad.wmnet' {
-    role(insetup)
-}
-
 # Analytics Hadoop test cluster
 node 'an-test-master1001.eqiad.wmnet' {
     role(analytics_test_cluster::hadoop::master)
