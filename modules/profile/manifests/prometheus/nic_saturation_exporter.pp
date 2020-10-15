@@ -3,7 +3,8 @@ class profile::prometheus::nic_saturation_exporter (
     Wmflib::Ensure      $ensure           = lookup('profile::prometheus::nic_saturation_exporter::ensure')
 ) {
     class {'prometheus::nic_saturation_exporter':
-        ensure => $ensure,
+        ensure         => $ensure,
+        listen_address => $facts['networking']['ip']
     }
 
     $prometheus_ferm_nodes = join($prometheus_nodes, ' ')
