@@ -98,8 +98,8 @@ def get_nics():
 
 def main(args):
     log.debug('Arguments: %s', args)
-    log.info('Starting nic_saturation_exporter on port %s:%d', args.addr, args.port)
-    start_http_server(args.port, args.addr)
+    log.info('Starting nic_saturation_exporter on port %s:%d', args.listen, args.port)
+    start_http_server(args.port, args.listen)
 
     # TODO: Would we ever want to support sampling intervals other than a second?
     # If so, we'd need different metric names, and probably to export the interval itself
