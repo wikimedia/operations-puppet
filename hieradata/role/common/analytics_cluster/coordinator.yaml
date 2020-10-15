@@ -94,8 +94,6 @@ profile::analytics::refinery::job::data_purge::ensure_timers: 'absent'
 
 profile::oozie::server::monitoring_enabled: true
 profile::oozie::server::ferm_srange: '$ANALYTICS_NETWORKS'
-profile::oozie::server::use_admins_list: true
-profile::oozie::server::admin_users: ['otto', 'nuria', 'milimetric', 'mforns', 'fdans', 'joal', 'elukey', 'klausman', 'razzi']
 
 # Comment taken from profile::oozie::server:
 #
@@ -109,7 +107,7 @@ profile::oozie::server::admin_users: ['otto', 'nuria', 'milimetric', 'mforns', '
 # with this on, even though the
 # oozie.service.ProxyUserService.proxyuser.*
 # settings look like they are properly configured.
-profile::oozie::server::use_admins_list: false
+profile::oozie::server::use_admins_list: true
 profile::oozie::server::admin_users: ['otto', 'nuria', 'milimetric', 'mforns', 'fdans', 'joal', 'elukey', 'klausman', 'razzi']
 
 # Following Cloudera recommandations for ~20 users
