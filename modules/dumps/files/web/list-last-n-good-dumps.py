@@ -418,7 +418,7 @@ class DumpList():
         # output will be None, we can ignore it
         dummy_output, error = proc.communicate()
         if proc.returncode:
-            if 'some files/attrs were not transferred' in error:
+            if b'some files/attrs were not transferred' in error:
                 # this can be files that are being rewritten at
                 # the moment, we don't care.
                 return
