@@ -22,21 +22,10 @@ profile::hive::client::hive_metastore_kerberos_principal: 'hive/_HOST@WIKIMEDIA'
 profile::hive::client::hive_server2_authentication: 'KERBEROS'
 profile::hive::client::hive_server2_authentication_kerberos_principal: 'hive/_HOST@WIKIMEDIA'
 
-# TLS Terminator settings
-profile::tlsproxy::instance::ssl_compatibility_mode: strong
-profile::tlsproxy::service::cert_domain_name: yarn.wikimedia.org
-profile::tlsproxy::service::upstream_ports:
-  - 80
-profile::tlsproxy::service::check_uri: "/health_check"
-profile::tlsproxy::service::notes_url: "https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster"
-profile::tlsproxy::service::contact_group: 'analytics'
-
 profile::envoy::ensure: present
 profile::tlsproxy::envoy::services:
    - server_names: ['*']
      port: 80
-
-profile::tlsproxy::envoy::tls_port: 8443
 
 profile::tlsproxy::envoy::global_cert_name: "yarn.wikimedia.org"
 
