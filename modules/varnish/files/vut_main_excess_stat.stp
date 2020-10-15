@@ -1,0 +1,25 @@
+#!/usr/bin/env stap
+# vut_main_excess_stat.stp - trace calls to VSM_Status and VSLQ_Dispatch
+#
+# Do to a issue in libvarnishapi, after receiving a HUP signal varnishkafka's
+# CPU usage increases significantly. See https://phabricator.wikimedia.org/T264074.
+#
+# This script helps debugging the issue by tracing calls to VSLQ_Dispatch, the
+# function doing actual work, and VSM_Status, the function calling fstatat(2).
+#
+global c
+
+probe process("/usr/lib/x86_64-linux-gnu/libvarnishapi.so.2.0.0").function("VSLQ_Dispatch") {
+        c[execname(),ppfunc()]++
+}
+
+probe process("/usr/lib/x86_64-linux-gnu/libvarnishapi.so.2.0.0").function("VSM_Status") {
+        c[execname(),ppfunc()]++
+}
+
+probe timer.s(1) {
+        foreach ([p,f] in c) {
+                printf("%s %s: %d\n", p, f, c[p,f])
+        }
+        exit()
+}
