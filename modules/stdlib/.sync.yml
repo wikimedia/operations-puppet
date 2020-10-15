@@ -1,18 +1,67 @@
 ---
-.gitignore:
-  paths:
-    - '!spec/fixtures/'
-    - 'spec/fixtures/manifests/site.pp'
-    - 'spec/fixtures/modules/*'
-
+".gitlab-ci.yml":
+  delete: true
+".rubocop.yml":
+  default_configs:
+    inherit_from: ".rubocop_todo.yml"
+".travis.yml":
+  global_env: 
+    - HONEYCOMB_WRITEKEY="7f3c63a70eecc61d635917de46bea4e6",HONEYCOMB_DATASET="litmus tests"
+  deploy_to_forge:
+    enabled: false
+  dist: trusty
+  user: puppet
+  secure: ''
+  branches:
+  - release
+  use_litmus: true
+  litmus:
+    provision_list:
+    - ---travis_el
+    - travis_deb
+    - travis_el6
+    - travis_el7
+    - travis_el8
+    complex:
+    - collection:
+        puppet_collection:
+        - puppet6
+        provision_list:
+        - travis_ub_6
+    - collection:
+        puppet_collection:
+        - puppet5
+        provision_list:
+        - travis_ub_5
+  simplecov: true
+  notifications:
+    slack:
+      secure: j5y9T97u6QlDPs4eEnDNch2IGAzbfWycVcMutP3u9Klvkgqu33xtxHgyAQOW+2A/Xw2sKQs/LzIiUeQRzlNMcAPRZ0rK19sW1w5OgZGcd131HViFDfX8W7V4R41sZVNF232JekMr7RwPGIaZ9htaGsDJeJF8TaiG1Akk32LQZV8=
+appveyor.yml:
+  environment:
+    HONEYCOMB_WRITEKEY: 7f3c63a70eecc61d635917de46bea4e6
+    HONEYCOMB_DATASET: litmus tests
+  use_litmus: true
+  matrix_extras:
+  - RUBY_VERSION: 25-x64
+    ACCEPTANCE: 'yes'
+    TARGET_HOST: localhost
+  - RUBY_VERSION: 25-x64
+    ACCEPTANCE: 'yes'
+    TARGET_HOST: localhost
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+  simplecov: true
+Gemfile:
+  use_litmus: true
+  optional:
+    ":development":
+    - gem: github_changelog_generator
+      git: https://github.com/skywinder/github-changelog-generator
+      ref: 20ee04ba1234e9e83eb2ffb5056e23d641c7a018
+      condition: Gem::Version.new(RUBY_VERSION.dup) >= Gem::Version.new('2.2.2')
+Rakefile:
+  requires:
+  - puppet-lint/tasks/puppet-lint
 spec/spec_helper.rb:
-  allow_deprecations: true
-
-.travis.yml:
-  extras:
-    - rvm: 2.1.9
-      env: PUPPET_GEM_VERSION="~> 4.6.0"
-      bundler_args: --without system_tests
-    - rvm: 2.1.9
-      env: PUPPET_GEM_VERSION="~> 4.7.0"
-      bundler_args: --without system_tests
+  mock_with: ":rspec"
+  coverage_report: true

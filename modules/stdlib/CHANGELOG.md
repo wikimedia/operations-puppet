@@ -1,39 +1,134 @@
 # Change log
 
-All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
-and this project adheres to [Semantic Versioning](http://semver.org).
+All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
-## Supported Release 5.2.0
+## [v6.5.0](https://github.com/puppetlabs/puppetlabs-stdlib/tree/v6.5.0) (2020-09-30)
+
+[Full Changelog](https://github.com/puppetlabs/puppetlabs-stdlib/compare/v6.5.0...v6.5.0)
+
+### Added
+
+- Add parsehocon\(\) function [\#1130](https://github.com/puppetlabs/puppetlabs-stdlib/pull/1130) ([reidmv](https://github.com/reidmv))
+- Add new types for Stdlib::Ensure::File [\#1129](https://github.com/puppetlabs/puppetlabs-stdlib/pull/1129) ([b4ldr](https://github.com/b4ldr))
+- Add additional types Stdlib::Port::Dynamic,Ephemeral,Registered,User} [\#1128](https://github.com/puppetlabs/puppetlabs-stdlib/pull/1128) ([b4ldr](https://github.com/b4ldr))
+- Stdlib::Datasize: This CR adds a new data size type alias [\#1126](https://github.com/puppetlabs/puppetlabs-stdlib/pull/1126) ([b4ldr](https://github.com/b4ldr))
+
+## [v6.4.0](https://github.com/puppetlabs/puppetlabs-stdlib/tree/v6.4.0) (2020-08-20)
+
+[Full Changelog](https://github.com/puppetlabs/puppetlabs-stdlib/compare/v6.3.0...v6.4.0)
+
+### Added
+
+- pdksync - \(IAC-973\) - Update travis/appveyor to run on new default branch `main` [\#1117](https://github.com/puppetlabs/puppetlabs-stdlib/pull/1117) ([david22swan](https://github.com/david22swan))
+- \(IAC-746\) - Add ubuntu 20.04 support [\#1110](https://github.com/puppetlabs/puppetlabs-stdlib/pull/1110) ([david22swan](https://github.com/david22swan))
+
+### Fixed
+
+- \[MODULES-10781\] Fix defined type defined\_with\_params\(\) [\#1122](https://github.com/puppetlabs/puppetlabs-stdlib/pull/1122) ([trevor-vaughan](https://github.com/trevor-vaughan))
+- \[MODULES-10729\] defined\_with\_params - unnamed type [\#1115](https://github.com/puppetlabs/puppetlabs-stdlib/pull/1115) ([trevor-vaughan](https://github.com/trevor-vaughan))
+
+## [v6.3.0](https://github.com/puppetlabs/puppetlabs-stdlib/tree/v6.3.0) (2020-04-16)
+
+[Full Changelog](https://github.com/puppetlabs/puppetlabs-stdlib/compare/v6.2.0...v6.3.0)
+
+### Added
+
+- Add start\_with function [\#1086](https://github.com/puppetlabs/puppetlabs-stdlib/pull/1086) ([baurmatt](https://github.com/baurmatt))
+- stdlib::end\_with: create String.end\_with function [\#1084](https://github.com/puppetlabs/puppetlabs-stdlib/pull/1084) ([b4ldr](https://github.com/b4ldr))
+- Adding str2saltedpbkdf2 function [\#1040](https://github.com/puppetlabs/puppetlabs-stdlib/pull/1040) ([genebean](https://github.com/genebean))
+
+### Fixed
+
+- \(MODULES-10623\) explicitly top-scope calls to JSON methods [\#1101](https://github.com/puppetlabs/puppetlabs-stdlib/pull/1101) ([tkishel](https://github.com/tkishel))
+- \[IAC-547\] Remove strftime from stdlib as it has already been replaced by the puppet agent since 4.8.0 [\#1097](https://github.com/puppetlabs/puppetlabs-stdlib/pull/1097) ([carabasdaniel](https://github.com/carabasdaniel))
+- Add correct namespace for start\_with function [\#1095](https://github.com/puppetlabs/puppetlabs-stdlib/pull/1095) ([baurmatt](https://github.com/baurmatt))
+- intersection: show types in exception due to invalid arguments [\#1077](https://github.com/puppetlabs/puppetlabs-stdlib/pull/1077) ([runejuhl](https://github.com/runejuhl))
+- Make type aliases stricter [\#1066](https://github.com/puppetlabs/puppetlabs-stdlib/pull/1066) ([pegasd](https://github.com/pegasd))
+
+## [v6.2.0](https://github.com/puppetlabs/puppetlabs-stdlib/tree/v6.2.0) (2019-12-10)
+
+[Full Changelog](https://github.com/puppetlabs/puppetlabs-stdlib/compare/v6.1.0...v6.2.0)
+
+### Added
+
+- \(FM-8696\) - Addition of Support for CentOS 8 [\#1065](https://github.com/puppetlabs/puppetlabs-stdlib/pull/1065) ([david22swan](https://github.com/david22swan))
+- Add support for additional options to to\_json\_pretty [\#1055](https://github.com/puppetlabs/puppetlabs-stdlib/pull/1055) ([runejuhl](https://github.com/runejuhl))
+
+### Fixed
+
+- Fix PE detection \(for the moment\) [\#1049](https://github.com/puppetlabs/puppetlabs-stdlib/pull/1049) ([trevor-vaughan](https://github.com/trevor-vaughan))
+
+## [v6.1.0](https://github.com/puppetlabs/puppetlabs-stdlib/tree/v6.1.0) (2019-09-20)
+
+[Full Changelog](https://github.com/puppetlabs/puppetlabs-stdlib/compare/v6.0.0...v6.1.0)
+
+### Added
+
+- \(MODULES-9915\) Add type aliases for cloud object store uris [\#1048](https://github.com/puppetlabs/puppetlabs-stdlib/pull/1048) ([hooten](https://github.com/hooten))
+- FM-8411 - add support for debian10 [\#1045](https://github.com/puppetlabs/puppetlabs-stdlib/pull/1045) ([lionce](https://github.com/lionce))
+- \(FM-8230\) Convert testing to litmus [\#1031](https://github.com/puppetlabs/puppetlabs-stdlib/pull/1031) ([eimlav](https://github.com/eimlav))
+- \(FM-8160\) Add Windows Server 2019 support [\#1025](https://github.com/puppetlabs/puppetlabs-stdlib/pull/1025) ([eimlav](https://github.com/eimlav))
+- \(FM-8048\) Add RedHat 8 support [\#1022](https://github.com/puppetlabs/puppetlabs-stdlib/pull/1022) ([eimlav](https://github.com/eimlav))
+- \(MODULES-9049\) Add type alias for 'yes' and 'no'. [\#1017](https://github.com/puppetlabs/puppetlabs-stdlib/pull/1017) ([ghoneycutt](https://github.com/ghoneycutt))
+- add Stdlib::Syslogfacility type [\#1005](https://github.com/puppetlabs/puppetlabs-stdlib/pull/1005) ([bastelfreak](https://github.com/bastelfreak))
+
+### Fixed
+
+- fix lib/puppet/parser/functions/fqdn\_rand\_string.rb:21: syntax error [\#1029](https://github.com/puppetlabs/puppetlabs-stdlib/pull/1029) ([pulecp](https://github.com/pulecp))
+- Limit the maximum array size produced by range\(\). [\#1023](https://github.com/puppetlabs/puppetlabs-stdlib/pull/1023) ([mbaynton](https://github.com/mbaynton))
+
+## [v6.0.0](https://github.com/puppetlabs/puppetlabs-stdlib/tree/v6.0.0) (2019-05-10)
+
+[Full Changelog](https://github.com/puppetlabs/puppetlabs-stdlib/compare/5.2.0...v6.0.0)
+
+### Changed
+
+- pdksync - \(MODULES-8444\) - Raise lower Puppet bound [\#1011](https://github.com/puppetlabs/puppetlabs-stdlib/pull/1011) ([david22swan](https://github.com/david22swan))
+- \(MODULES-8760\) Add iterative feature to merge\(\) function [\#1008](https://github.com/puppetlabs/puppetlabs-stdlib/pull/1008) ([hlindberg](https://github.com/hlindberg))
+
+### Added
+
+- Add a stdlib::ip\_in\_range\(\) function [\#1003](https://github.com/puppetlabs/puppetlabs-stdlib/pull/1003) ([iglov](https://github.com/iglov))
+
+## [5.2.0](https://github.com/puppetlabs/puppetlabs-stdlib/tree/5.2.0) (2019-01-17)
+
+[Full Changelog](https://github.com/puppetlabs/puppetlabs-stdlib/compare/5.1.0...5.2.0)
+
+### Added
+
+- \(MODULES-8404\) - Relax `Stdlib::Filesource` type [\#981](https://github.com/puppetlabs/puppetlabs-stdlib/pull/981) ([alexjfisher](https://github.com/alexjfisher))
+- Creates new type Stdlib::IP::Address::V6::CIDR [\#980](https://github.com/puppetlabs/puppetlabs-stdlib/pull/980) ([timhughes](https://github.com/timhughes))
+- \(MODULES-8137\) - Addition of support for SLES 15 [\#978](https://github.com/puppetlabs/puppetlabs-stdlib/pull/978) ([david22swan](https://github.com/david22swan))
+- \(MODULES-8322\) Consider IPs with /0 as valid [\#975](https://github.com/puppetlabs/puppetlabs-stdlib/pull/975) ([simondeziel](https://github.com/simondeziel))
+- Add a function to compare the OS version [\#972](https://github.com/puppetlabs/puppetlabs-stdlib/pull/972) ([ekohl](https://github.com/ekohl))
+- \(MODULES-8273\) - Make unquoted classes useable [\#971](https://github.com/puppetlabs/puppetlabs-stdlib/pull/971) ([baurmatt](https://github.com/baurmatt))
+- add Function extname\(\) [\#949](https://github.com/puppetlabs/puppetlabs-stdlib/pull/949) ([cocker-cc](https://github.com/cocker-cc))
+- \(MODULES-7024\) Add 20-octet MAC addresses [\#905](https://github.com/puppetlabs/puppetlabs-stdlib/pull/905) ([ananace](https://github.com/ananace))
+
+### Fixed
+
+- pdksync - \(FM-7655\) Fix rubygems-update for ruby \< 2.3 [\#979](https://github.com/puppetlabs/puppetlabs-stdlib/pull/979) ([tphoney](https://github.com/tphoney))
+- fix ensure\_packages duplicate checking [\#969](https://github.com/puppetlabs/puppetlabs-stdlib/pull/969) ([netzvieh](https://github.com/netzvieh))
+
+## [5.1.0](https://github.com/puppetlabs/puppetlabs-stdlib/tree/5.1.0) (2018-09-28)
+
+[Full Changelog](https://github.com/puppetlabs/puppetlabs-stdlib/compare/5.0.0...5.1.0)
+
+### Added
+
+- pdksync - \(MODULES-6805\) metadata.json shows support for puppet 6 [\#958](https://github.com/puppetlabs/puppetlabs-stdlib/pull/958) ([tphoney](https://github.com/tphoney))
+- \(maint\) Convert from mocking with mocha to rspec-mocks [\#948](https://github.com/puppetlabs/puppetlabs-stdlib/pull/948) ([rodjek](https://github.com/rodjek))
+
+### Fixed
+
+- \(FM-7388\) - Fixing unit tests for puppet 4, 5 and 6 [\#962](https://github.com/puppetlabs/puppetlabs-stdlib/pull/962) ([tphoney](https://github.com/tphoney))
+- Fix `pick` function docs [\#955](https://github.com/puppetlabs/puppetlabs-stdlib/pull/955) ([alexjfisher](https://github.com/alexjfisher))
+- \(MODULES-7768\) Handle nil in delete\_undef\_values\(\) function [\#954](https://github.com/puppetlabs/puppetlabs-stdlib/pull/954) ([hlindberg](https://github.com/hlindberg))
+- Update docs for 'concat' to be correct [\#950](https://github.com/puppetlabs/puppetlabs-stdlib/pull/950) ([rhowe-gds](https://github.com/rhowe-gds))
+
+## 5.0.0
 ### Summary
-This is a moderate release made in order to roll up various new features.
-
-#### Fixed
-- `ensure-packages()` duplicate checking now works as it should.
-
-#### Added
-- (MODULES-7024) - Support for 20-octet MAC addresses added.
-- `extname()` function added - This function returns the extensionof whatever file it is passed.
-- (MODULES-8273) - Unquoted classes can now be used with the `defined_with_params()` function.
-- (MODULES-8137) - Support has been added for SLES 15.
-- (MODULES-8404) - `Stdlib::Filesource` has been relaxed and now supports custom mount points.
-- (MODULES-8322) - IPs values of `0.0.0.0/0` and `::/0` are now considered to be valid.
-- New type `Stdlib::IP::Address::V6::CIDR` has been created.
-
-## Supported Release 5.1.0
-### Summary
-This is a moderate release which adds support for Puppet 6.
-
-#### Fixed
-- Handle nil in `delete_undef_values()` function
-- Readme error regarding concatenation fixed.
-- Fix to the `pick()` function documentation.
-
-#### Added
-- Support added for Puppet 6
-
-## Supported Release 5.0.0
-### Summary
-This is a major release which removes support for the Scientific 5 and Debian 7 OS, as well as a removal of the `Stdlib::(Ipv4|IPv6|Ip_address)` data types in favour of `Stdlib::IP::*`.
+This is a major release which removes support for the Scientific 5 and Debian 7 OS, as well as a removal of the `Stdlib::(Ipv4|IPv6|Ip_address)` data types in favour of `Stdlib::IP::*`. 
 
 **In addition it contains a substantial piece of work centered around updating functions that have now been migrated into Puppet itself. Please note that this will be the last major release to support Puppet 2 and Puppet 3 and that they will soon be removed.**
 
@@ -497,7 +592,7 @@ Includes the addition of several new functions and considerable improvements to 
 
 #### Bugfixes
 - Fix backwards compatibility from an improvement to the parseyaml function
-- Renaming of load_module_metadata test to include _spec.rb
+- Renaming of load_module_metadata test to include \_spec.rb
 - Fix root_home fact on AIX 5.x, now '-c' rather than '-C'
 - Fixed Gemfile to work with ruby 1.8.7
 
@@ -1098,3 +1193,6 @@ This is a supported release
 ##### 0.1.1 2011-05-24 Jeff McCune <jeff@puppetlabs.com>
 
 * Add stdlib::stages class with a standard set of stages
+
+
+\* *This Changelog was automatically generated by [github_changelog_generator](https://github.com/github-changelog-generator/github-changelog-generator)*

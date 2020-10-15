@@ -8,18 +8,24 @@
 #
 # Caveats:
 #
+# Fact: pe_version
 Facter.add('pe_version') do
   setcode do
-    puppet_ver = Facter.value('puppetversion')
-    if !puppet_ver.nil?
-      pe_ver = puppet_ver.match(%r{Puppet Enterprise (\d+\.\d+\.\d+)})
-      pe_ver[1] if pe_ver
-    else
-      nil
+    found_version = Facter.value('pe_build')
+
+    unless found_version
+      puppet_ver = Facter.value('puppetversion')
+      unless puppet_ver.nil?
+        pe_ver = puppet_ver.match(%r{Puppet Enterprise (\d+\.\d+\.\d+)})
+        found_version = pe_ver[1] if pe_ver
+      end
     end
+
+    found_version
   end
 end
 
+# Fact: is_pe
 Facter.add('is_pe') do
   setcode do
     if Facter.value(:pe_version).to_s.empty?
@@ -30,6 +36,7 @@ Facter.add('is_pe') do
   end
 end
 
+# Fact: pe_major_version
 Facter.add('pe_major_version') do
   confine :is_pe => true
   setcode do
@@ -40,6 +47,7 @@ Facter.add('pe_major_version') do
   end
 end
 
+# Fact: pe_minor_version
 Facter.add('pe_minor_version') do
   confine :is_pe => true
   setcode do
@@ -50,6 +58,7 @@ Facter.add('pe_minor_version') do
   end
 end
 
+# Fact: pe_patch_version
 Facter.add('pe_patch_version') do
   confine :is_pe => true
   setcode do
