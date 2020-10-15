@@ -5,9 +5,8 @@
 # a mariadb multi-instance environment that can be used as replica.
 #
 class profile::mariadb::misc::analytics::multiinstance (
-    Integer $num_instances           = lookup('profile::mariadb::misc::analytics::multiinstance::num_instances'),
-    Optional[String] $matomo         = lookup('profile::mariadb::misc::analytics::multiinstance::matomo', { 'default_value' => undef }),
-    Optional[String] $analytics_meta = lookup('profile::mariadb::misc::analytics::multiinstance::analytics_meta', { 'default_value' => undef }),
+    Hash[String, Pattern[/^\d+[KMG]?$/]] $instances = lookup('profile::mariadb::misc::analytics::multiinstance::instances'),
+    Hash[String, Stdlib::Port] $section_ports = lookup('profile::mariadb::section_ports'),
 ) {
     require profile::mariadb::packages_wmf
     class { 'mariadb::service':
@@ -34,23 +33,19 @@ disabled, use mariadb@<instance_name> instead'; exit 1\"",
         mode   => '0755',
     }
 
-    if $matomo {
-        mariadb::instance { 'matomo':
-            port                    => 3351,
-            innodb_buffer_pool_size => $matomo,
+    $instances.each |$section, $buffer_pool| {
+        $port = $section_ports[$section]
+        if (!$port) {
+            fail("'${section}' is not a valid section.")
         }
-        profile::mariadb::section { 'matomo': }
-        profile::mariadb::ferm { 'matomo': port => '3351' }
-        profile::prometheus::mysqld_exporter_instance { 'matomo': port => 13351, }
-    }
-    if $analytics_meta {
-        mariadb::instance { 'analytics_meta':
-            port                    => 3352,
-            innodb_buffer_pool_size => $analytics_meta,
+        $prom_port = Integer("1${port}")
+        mariadb::instance { $section:
+            port                    => $port,
+            innodb_buffer_pool_size => $buffer_pool,
         }
-        profile::mariadb::section { 'analytics_meta': }
-        profile::mariadb::ferm { 'analytics_meta': port => '3352' }
-        profile::prometheus::mysqld_exporter_instance { 'analytics_meta': port => 13352, }
+        profile::mariadb::section { $section: }
+        profile::mariadb::ferm { $section: port => $port }
+        profile::prometheus::mysqld_exporter_instance { $section: port => $prom_port }
     }
 
     class { 'mariadb::monitor_disk':
@@ -59,7 +54,7 @@ disabled, use mariadb@<instance_name> instead'; exit 1\"",
     }
 
     class { 'mariadb::monitor_process':
-        process_count => $num_instances,
+        process_count => length($instances),
         is_critical   => false,
         contact_group => 'admins,analytics',
     }
