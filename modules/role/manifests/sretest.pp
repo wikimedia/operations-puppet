@@ -12,4 +12,5 @@ class role::sretest {
 
     include ::profile::standard
     include ::profile::base::firewall
+    include ::profile::docker::firewall
 }
