@@ -1,7 +1,7 @@
 function wmflib::service::get_ips_for_services(
     Hash[String, Wmflib::Service] $services,
     String $site,
-) >> Array[Stdlib::Ip_address] {
+) >> Array[Stdlib::IP::Address] {
     $services.filter |$lvs_name, $svc| {
         $site in $svc['ip']
     }
