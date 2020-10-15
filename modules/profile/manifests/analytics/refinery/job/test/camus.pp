@@ -43,8 +43,8 @@ class profile::analytics::refinery::job::test::camus(
         script              => "${profile::analytics::refinery::path}/bin/camus",
         kafka_brokers       => $kafka_brokers,
         hadoop_cluster_name => $hadoop_cluster_name,
-        camus_jar           => "${profile::analytics::refinery::path}/artifacts/org/wikimedia/analytics/camus-wmf/camus-wmf-0.1.0-wmf9.jar",
-        check_jar           => "${profile::analytics::refinery::path}/artifacts/org/wikimedia/analytics/refinery/refinery-camus-0.0.128.jar",
+        camus_jar           => "${profile::analytics::refinery::path}/artifacts/org/wikimedia/analytics/camus-wmf/camus-wmf-0.1.0-wmf12.jar",
+        check_jar           => "${profile::analytics::refinery::path}/artifacts/org/wikimedia/analytics/refinery/refinery-camus-0.0.137.jar",
         check               => $monitoring_enabled,
         # Email reports if CamusPartitionChecker finds errors.
         check_email_target  => $check_email_target,
@@ -55,7 +55,7 @@ class profile::analytics::refinery::job::test::camus(
     # Import webrequest_* topics into /wmf/data/raw/webrequest
     # every 10 minutes, check runs and flag fully imported hours.
     camus::job { 'webrequest':
-        camus_properties      => {
+        camus_properties => {
             'kafka.whitelist.topics'          => 'webrequest_test_text',
             'mapreduce.job.queuename'         => 'essential',
             'camus.message.timestamp.field'   => 'dt',
@@ -66,22 +66,57 @@ class profile::analytics::refinery::job::test::camus(
             # Set HDFS umask so that webrequest files and directories created by Camus are not world readable.
             'fs.permissions.umask-mode'       => '027'
         },
-        check_topic_whitelist => 'webrequest_test_text',
-        interval              => '*-*-* *:00/10:00',
+        interval         => '*-*-* *:00/10:00',
     }
 
     # Import eventlogging_NavigationTiming topic into /wmf/data/raw/eventlogging
     # once every hour.
     camus::job { 'eventlogging':
-        camus_properties      => {
+        camus_properties => {
             'kafka.whitelist.topics'        => 'eventlogging_NavigationTiming',
             'camus.message.timestamp.field' => 'dt',
             'mapred.map.tasks'              => '1',
         },
         # Don't need to write _IMPORTED flags for EventLogging data
-        check_dry_run         => true,
+        check_dry_run    => true,
         # Only check these topic, since they should have data every hour.
-        check_topic_whitelist => 'eventlogging_NavigationTiming',
-        interval              => '*-*-* *:05:00',
+        check_java_opts  => '-Dkafka.whitelist.topics=eventlogging_NavigationTiming',
+        interval         => '*-*-* *:05:00',
+    }
+
+
+    # Shortcut for declaring a camus job that imports streams from specific event services.
+    # We want separate camus jobs for each event service as their throughput volume can
+    # vary significantly, and we don't want high volume topics to starve out small ones.
+    # See also:
+    # https://wikitech.wikimedia.org/wiki/Event_Platform/EventGate#EventGate_clusters
+    $event_service_jobs = {
+        'eventgate-analytics' => {
+            'camus_properties' =>  {
+                'etl.destination.path'          => "hdfs://${hadoop_cluster_name}/wmf/data/raw/event",
+                'camus.message.timestamp.field' => 'meta.dt',
+                # Set this to at least the number of topic-partitions you will be importing.
+                'mapred.map.tasks'              => '1',
+                'eventstreamconfig.uri'         => 'https://meta.wikimedia.org/w/api.php',
+                # Here we explicitly restrict this test camus job to import only the test.event stream for eventgate-analytics.
+                'eventstreamconfig.settings_filters' => 'destination_event_service:eventgate-analytics,stream_names:eventgate-analytics.test.event'
+            },
+            # Add settings_filters to only check topics that have canary_events_enabled.
+            # Here, this won't make a differences since we also specify stream_names for the test job.
+            # This is mostly testing that the check_java_opts override works properly.
+            'check_java_opts' => '-Deventstreamconfig.settings_filters=destination_event_service:eventgate-analytics,stream_names:eventgate-analytics.test.event,canary_events_enabled:true',
+            'interval' => '*-*-* *:15:00',
+        },
+    }
+
+    # Declare each of the $event_service_jobs.
+    $event_service_jobs.each |String $event_service_name, Hash $parameters| {
+        camus::job { "${event_service_name}_events":
+            camus_properties => $parameters['camus_properties'],
+            # Don't need to write _IMPORTED flags for event data
+            check_dry_run    => true,
+            check_java_opts  => $parameters['check_java_opts'],
+            interval         => $parameters['interval'],
+        }
     }
 }

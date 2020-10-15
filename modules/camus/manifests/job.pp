@@ -59,8 +59,12 @@
 #   If not undef, any errors encountered by CamusPartitionChecker will be sent as an email report
 #   to the email address provided as input.
 #
-# [*check_topic_whitelist*]
-#   If given, only topics matching this regex will be checked by the CamusPartitionChecker.
+# [*check_java_opts*]
+#   Any job overrides you might want to provide to CamusPartionChecker.  You can use this
+#   to override any of the Camus properties used by the Camus import job that you might
+#   want different for CamusPartitionChecker, e.g. kafka.whitelist.topics or
+#   eventstreamconfig.settings_filters.  Example:
+#     check_java_opts => '-Deventstreamconfig.settings_filters=destination_event_stream:eventgate-analytics,canary_events_enabled:true'
 #
 # [*libjars*]
 #    Any additional jar files to pass to Hadoop when starting the MapReduce job.
@@ -96,7 +100,7 @@ define camus::job (
     $check_jar                  = undef,
     $check_dry_run              = undef,
     $check_email_target         = undef,
-    $check_topic_whitelist      = undef,
+    $check_java_opts            = undef,
     $libjars                    = undef,
     $template                   = 'camus/camus.properties.erb',
     $interval                   = undef,
@@ -155,10 +159,11 @@ define camus::job (
         # long running mapper keep other Camus jobs from being launched.
         # You should set this to something just short of the interval at which you run this job.
         'kafka.max.pull.minutes.per.task'     => '55',
-        # if whitelist has values, only whitelisted topic are pulled.  nothing on the blacklist is pulled
-        'kafka.blacklist.topics'              => '',
-        # These are the kafka topics camus brings to HDFS, set on CLI if using dynamic stream config.
-        'kafka.whitelist.topics'              => '',
+        # If whitelist has values, only whitelisted topic are pulled.  nothing on the blacklist is pulled
+        #'kafka.blacklist.topics'              => '',
+        # These are the kafka topics camus brings to HDFS.
+        # If this is unset, eventstreamconfig.* may be used to discover topics.
+        #'kafka.whitelist.topics'              => '',
         # Name of the client as seen by kafka
         'kafka.client.name'                   => "camus-${camus_name}",
         # Fetch Request Parameters
@@ -178,6 +183,13 @@ define camus::job (
         # You probably shouldn't set this in a job config, but use it for camus job migration
         # tasks manually.
         #kafka.move.to.last.offset.list=
+        # If set (and kafka.whitelist.topics is not set), topics will be looked up from this
+        # EventStreamConfig MW API.
+        #'eventstreamconfig.uri'               => 'https://meta.wikimedia.org/w/api.php'
+        # If set, only topics for these streams will be ingested.
+        #'eventstreamconfig.stream_names'      => undef
+        # If set, only topics for streams that have configs that match these settings will be ingested.
+        #'eventstreamconfig.settings_filters'  => undef
         # Controls the submitting of counts to Kafka
         # Default value set to true
         'post.tracking.counts.to.kafka'       => false,
@@ -206,6 +218,17 @@ define camus::job (
 
     # Each key=value here will be the content of the camus properties file.
     $template_properties = merge($default_properties, $camus_properties)
+
+    # Make sure this camus job will at least attempt to limit the topics it is importing.
+    if (
+        !$template_properties['kafka.whitelist.topics'] and
+        !(
+            $template_properties['eventstreamconfig.uri'] and
+            ($template_properties['eventstreamconfig.stream_names'] or $template_properties['eventstreamconfig.settings_filters'])
+        )
+    ) {
+        fail("camus::job ${title} does not have camus_properties that will get a safe list of Kafka topics. Must set either kafka.whitelist.topics or eventstreamconfig.uri and either eventstreamconfig.stream_names or eventstreamconfig.settings_filters.")
+    }
 
     $properties_file = "${camus::config_directory}/${title}.properties"
     $properties_content = $ensure ? {
@@ -264,15 +287,15 @@ define camus::job (
         false   => '',
         default => "--check-emails-to ${check_email_target} ",
     }
-    $check_topic_whitelist_opt = $check_topic_whitelist ? {
+    $_check_java_opts = $check_java_opts ? {
         undef   => '',
-        default => "--check-java-opts '-Dkafka.whitelist.topics=\"${check_topic_whitelist}\"' ",
+        default => "--check-java-opts '${check_java_opts}' ",
     }
 
     $check_opts = $check ? {
         undef   => '',
         false   => '',
-        default => "--check ${check_jar_opt}${check_dry_run_opt}${check_email_enabled_opt}${check_topic_whitelist_opt}",
+        default => "--check ${check_jar_opt}${check_dry_run_opt}${check_email_enabled_opt}${_check_java_opts}",
     }
 
     $unit_command = "${script} --run --job-name camus-${title} ${camus_jar_opt} ${libjars_opt} ${dynamic_stream_configs_opt} ${stream_configs_constraints_opt} ${check_opts} ${properties_file}"

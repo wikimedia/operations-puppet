@@ -94,7 +94,7 @@ class profile::analytics::refinery::job::camus(
     # Import webrequest_* topics into /wmf/data/raw/webrequest
     # every 10 minutes, check runs and flag fully imported hours.
     camus::job { 'webrequest':
-        camus_properties      => {
+        camus_properties => {
             'kafka.whitelist.topics'          => 'webrequest_text,webrequest_upload',
             'mapreduce.job.queuename'         => 'essential',
             'camus.message.timestamp.field'   => 'dt',
@@ -106,14 +106,13 @@ class profile::analytics::refinery::job::camus(
             # Set HDFS umask so that webrequest files and directories created by Camus are not world readable.
             'fs.permissions.umask-mode'       => '027'
         },
-        check_topic_whitelist => 'webrequest_(upload|text)',
-        interval              => '*-*-* *:00/10:00',
+        interval         => '*-*-* *:00/10:00',
     }
 
     # Import legacy eventlogging_* topics into /wmf/data/raw/eventlogging
     # once every hour.
     camus::job { 'eventlogging':
-        camus_properties      => {
+        camus_properties => {
             'kafka.whitelist.topics'        => '^eventlogging_.+',
             # During migration to EventGate, events will have both meta.dt and dt.
             # meta.dt is set by EventGate and is more trustable than dt, which after
@@ -123,12 +122,12 @@ class profile::analytics::refinery::job::camus(
             'mapred.map.tasks'              => '100',
         },
         # TODO: Remove this once default has been changed to wmf10.
-        camus_jar             => "${profile::analytics::refinery::path}/artifacts/org/wikimedia/analytics/camus-wmf/camus-wmf-0.1.0-wmf10.jar",
+        camus_jar        => "${profile::analytics::refinery::path}/artifacts/org/wikimedia/analytics/camus-wmf/camus-wmf-0.1.0-wmf10.jar",
         # Don't need to write _IMPORTED flags for EventLogging data
-        check_dry_run         => true,
+        check_dry_run    => true,
         # Only check these topic, since they should have data every hour.
-        check_topic_whitelist => '^eventlogging_(NavigationTiming|VirtualPageView)',
-        interval              => '*-*-* *:05:00',
+        check_java_opts  => '-Dkafka.whitelist.topics=^eventlogging_(NavigationTiming|VirtualPageView)',
+        interval         => '*-*-* *:05:00',
     }
 
     # Used to determine the topic prefixes of topics used for the check_topic_whitelist
@@ -171,7 +170,7 @@ class profile::analytics::refinery::job::camus(
             },
             # Check the test topics and mediawiki.api-requests topics.  mediawiki.api-request should
             # always have data every hour in both datacenters.
-            'check_topic_whitelist' => "${check_topic_whitelist_prefixes}\\.(eventgate-analytics\\.test\\.event|mediawiki\\.api-request)",
+            'check_java_opts'  => "-Dkafka.whitelist.topics=${check_topic_whitelist_prefixes}\\.(eventgate-analytics\\.test\\.event|mediawiki\\.api-request)",
             'interval' => '*-*-* *:15:00',
         },
 
@@ -189,7 +188,7 @@ class profile::analytics::refinery::job::camus(
             },
             # Check the test topics and resource_change topics.  resource_change should
             # always have data every hour in both datacenters.
-            'check_topic_whitelist' => "${check_topic_whitelist_prefixes}\\.(eventgate-main\\.test\\.event|resource_change)",
+            'check_java_opts' => "-Dkafka.whitelist.topics=${check_topic_whitelist_prefixes}\\.(eventgate-main\\.test\\.event|resource_change)",
             'interval' => '*-*-* *:05:00',
         },
     }
@@ -201,13 +200,12 @@ class profile::analytics::refinery::job::camus(
         # We know that there are test topics for this event service should always have
         # events, as they are produced when k8s uses its readinessProbe for the service.
         # We should only check topics we know have data every hour.
-        $check_topic_whitelist = $parameters['check_topic_whitelist'] ? {
-            undef   => "(eqiad|codfw)\\.${event_service_name}\\.test\\.event",
-            default => $parameters['check_topic_whitelist']
+        $check_java_opts = $parameters['check_java_opts'] ? {
+            undef   => "-Dkafka.whitelist.topics='(eqiad|codfw)\\.${event_service_name}\\.test\\.event'",
+            default => $parameters['check_java_opts']
         }
 
         camus::job { "${event_service_name}_events":
-            ensure                     => $ensure_timers,
             camus_properties           => $parameters['camus_properties'],
             # Build kafka.whitelist.topics using EventStreamConfig API.
             dynamic_stream_configs     => true,
@@ -215,7 +213,7 @@ class profile::analytics::refinery::job::camus(
             stream_configs_constraints => "destination_event_service=${event_service_name}",
             # Don't need to write _IMPORTED flags for event data
             check_dry_run              => true,
-            check_topic_whitelist      => $check_topic_whitelist,
+            check_java_opts            => $parameters['check_java_opts'],
             interval                   => $parameters['interval'],
         }
     }
