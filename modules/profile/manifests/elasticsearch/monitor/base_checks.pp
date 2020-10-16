@@ -1,6 +1,6 @@
 class profile::elasticsearch::monitor::base_checks(
-    Integer $shard_size_warning = lookup('profile::elasticsearch::monitor::shard_size_warning', {'default_value' => 50}),
-    Integer $shard_size_critical = lookup('profile::elasticsearch::monitor::shard_size_critical', {'default_value' => 60}),
+    Integer $shard_size_warning = lookup('profile::elasticsearch::monitor::shard_size_warning', {'default_value' => 80}),
+    Integer $shard_size_critical = lookup('profile::elasticsearch::monitor::shard_size_critical', {'default_value' => 100}),
     String $threshold = lookup('profile::elasticsearch::monitor::threshold', {'default_value' => '>=0.15'}),
     Integer $timeout = lookup('profile::elasticsearch::monitor::timeout', {'default_value' => 4}),
 ) {
