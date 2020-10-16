@@ -2427,8 +2427,9 @@ node /^wdqs100[4-7]\.eqiad\.wmnet$/ {
     role(wdqs::public)
 }
 
-node /^wdqs101[1-3]\.eqiad\.wmnet$/ {
-    role(insetup)
+# T260083 brought wdqs101[1-3] into service with [2,3] public and [1] private
+node /^wdqs101[2-3]\.eqiad\.wmnet$/ {
+    role(wdqs::public)
 }
 
 node /^wdqs200[1237]\.codfw\.wmnet$/ {
@@ -2437,6 +2438,10 @@ node /^wdqs200[1237]\.codfw\.wmnet$/ {
 
 # Wikidata query service internal
 node /^wdqs100[38]\.eqiad\.wmnet$/ {
+    role(wdqs::internal)
+}
+
+node /^wdqs1011\.eqiad\.wmnet$/ {
     role(wdqs::internal)
 }
 

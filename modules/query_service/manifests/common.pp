@@ -23,10 +23,6 @@ class query_service::common(
 ) {
     include ::query_service::packages
 
-    # TODO: i dont think this is still true
-    if debian::codename::ge('buster') {
-        fail('Query service requires jdk 8 which is unavailable on debian >= buster')
-    }
     $autodeploy_log_dir = "/var/log/${deploy_name}-autodeploy"
 
     case $deploy_mode {

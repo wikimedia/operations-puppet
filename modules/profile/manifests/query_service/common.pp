@@ -13,8 +13,9 @@ class profile::query_service::common(
     Optional[String] $forward_rsyslog_host = lookup('profile::query_service::forward_rsyslog_host', { 'default_value' => undef }),
     Boolean $reload_wcqs_data = lookup('profile::query_service::reload_wcqs_data', { 'default_value' => false })
 ) {
-
     $deploy_user = 'deploy-service'
+
+    require ::profile::java::java_8
 
     if $forward_rsyslog_host {
         # This is necessary for instances in WMCS. Those instances can't migrate to
