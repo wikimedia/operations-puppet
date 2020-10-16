@@ -7,7 +7,7 @@ class role::analytics_cluster::superset {
     }
 
     include ::profile::superset
-    include ::profile::tlsproxy::service
+    include ::profile::tlsproxy::envoy
     include ::profile::base::firewall
     include ::profile::standard
     include ::profile::kerberos::client
