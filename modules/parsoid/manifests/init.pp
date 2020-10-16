@@ -36,16 +36,16 @@
 #   either mwapi_server or this variable. Do not set both! Default:
 #   'http://api.svc.eqiad.wmnet'
 class parsoid(
-    $port          = 8000,
-    $conf          = undef,
-    $no_workers    = 'ncpu',
-    $logging_name  = 'parsoid',
-    $statsd_prefix = 'parsoid',
-    $deployment    = 'scap3',
-    $mwapi_server  = '',
-    $mwapi_proxy   = 'http://api.svc.eqiad.wmnet',
-    $discovery     = undef,
-) {
+    Stdlib::Port $port = 8000,
+    Optional[Variant[Hash,String]]$conf = undef,
+    Variant[Integer, Enum['ncpu']] $no_workers = 'ncpu',
+    String $logging_name = 'parsoid',
+    String $statsd_prefix = 'parsoid',
+    String $deployment = 'scap3',
+    Optional[Stdlib::Httpurl] $mwapi_server = undef,
+    Variant[Stdlib::Httpurl, Enum['']] $mwapi_proxy = 'http://api.svc.eqiad.wmnet',
+    Optional[String] $discovery = undef,
+){
 
     service::node { 'parsoid':
         port              => $port,
