@@ -14,6 +14,7 @@ class profile::openstack::base::glance(
     Stdlib::Port $api_bind_port = lookup('profile::openstack::base::glance::api_bind_port'),
     Stdlib::Port $registry_bind_port = lookup('profile::openstack::base::glance::registry_bind_port'),
     Stdlib::Fqdn $primary_glance_image_store = lookup('profile::openstack::base::primary_glance_image_store'),
+    String $default_store = lookup('profile::openstack::base::default_glance_store'),
     ) {
 
     $keystone_admin_uri = "http://${keystone_fqdn}:${auth_port}"
@@ -33,6 +34,7 @@ class profile::openstack::base::glance(
         glance_image_dir    => $glance_image_dir,
         api_bind_port       => $api_bind_port,
         registry_bind_port  => $registry_bind_port,
+        default_store       => $default_store,
     }
     contain '::openstack::glance::service'
 

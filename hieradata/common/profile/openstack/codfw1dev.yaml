@@ -37,6 +37,7 @@ profile::openstack::codfw1dev::keystone_api_fqdn: 'openstack.codfw1dev.wikimedia
 #  images are moved to ceph we can remove this setting and the openstack_controllers
 #  will be true, identical peers.
 profile::openstack::codfw1dev::primary_glance_image_store: cloudcontrol2001-dev.wikimedia.org
+profile::openstack::codfw1dev::default_glance_store: file
 
 # List of designate hosts (generally labservicesxxxx).
 #  Be warned that there's one unique case here; memcached

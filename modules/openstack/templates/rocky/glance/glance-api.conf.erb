@@ -308,8 +308,8 @@ flavor=keystone
 connection =  mysql://<%= @db_user %>:<%= @db_pass %>@<%= @db_host %>/<%= @db_name %>
 
 [glance_store]
-stores = file
-default_store = file
+stores = rbd, file
+default_store = <%= @default_store %>
 default_backend = rbd
 
 [rbd]
