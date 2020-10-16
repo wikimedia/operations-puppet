@@ -32,8 +32,10 @@ packages:
     - apt-show-versions
     - apt-transport-https
     - augeas-tools
+    - byobu
     - ca-certificates
     - cloud-utils
+    - colordiff
     - coreutils
     - curl
     - debdeploy-client
@@ -50,10 +52,13 @@ packages:
     - gdisk
     - git
     - git-fat
+    - haveged
     - htop
     - httpry
+    - icdiff
     - iotop
     - iperf
+    - linux-perf
     - jfsutils
     - jq
     - ldap-utils
@@ -78,17 +83,16 @@ packages:
     - ncdu
     - nfs-client
     - ngrep
-    - nscd
     - nss-updatedb
     - ntp
     - numactl
     - openssh-server
     - openssl
-    - os-prober
     - parted
     - pigz
     - psmisc
     - prometheus-node-exporter
+    - prometheus-rsyslog-exporter
     - puppet
     - puppet-lint
     - pv
@@ -102,8 +106,16 @@ packages:
     - python-keystoneclient
     - python-novaclient
     - python-openstackclient
+    - python3-designateclient
+    - python3-glanceclient
+    - python3-keystoneclient
+    - python3-novaclient
+    - python3-openstackclient
+    - python3-prometheus-client
+    - python3-pyldap-client
     - quickstack
     - rsyslog
+    - rsyslog-kafka
     - ruby-safe-yaml
     - screen
     - snmp
