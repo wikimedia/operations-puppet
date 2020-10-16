@@ -4,14 +4,6 @@ class profile::parsoid::testing (
     Stdlib::Httpurl $default_api_proxy_uri = lookup('parsoid::testing::default_api_proxy_uri'),
 ) {
 
-    class { '::parsoid':
-        port       => $parsoid_port,
-        deployment => 'git',
-        no_workers => 1,
-        conf       => template('testreduce/parsoid-rt.config.yaml.erb'),
-    }
-
-    base::service_auto_restart { 'parsoid': }
 
     git::clone { 'mediawiki/services/parsoid':
         branch    => 'master',
@@ -35,8 +27,6 @@ class profile::parsoid::testing (
     } else {
         require_package('mariadb-client')
     }
-
-
 
     file { '/etc/my.cnf':
         content => template('role/mariadb/mysqld_config/parsoid_testing.my.cnf'),
