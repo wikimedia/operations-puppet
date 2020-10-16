@@ -290,12 +290,6 @@ node /^cp20(28|3[02468]|4[02])\.codfw\.wmnet$/ {
     role(cache::upload)
 }
 
-# Actual spares for now, in case of need for cp cluster before next
-# procurements arrive
-node /^cp20(0[39]|15|21)\.codfw\.wmnet$/ {
-    role(test)
-}
-
 #
 # esams caches
 #

@@ -1185,26 +1185,6 @@ host cp1090 {
     fixed-address cp1090.eqiad.wmnet;
 }
 
-host cp2003 {
-    hardware ethernet 44:A8:42:2D:05:76;
-    fixed-address cp2003.codfw.wmnet;
-}
-
-host cp2009 {
-    hardware ethernet 44:A8:42:2D:14:D3;
-    fixed-address cp2009.codfw.wmnet;
-}
-
-host cp2015 {
-    hardware ethernet 44:A8:42:2C:E3:FA;
-    fixed-address cp2015.codfw.wmnet;
-}
-
-host cp2021 {
-    hardware ethernet 44:A8:42:2D:20:05;
-    fixed-address cp2021.codfw.wmnet;
-}
-
 host cp2027 {
     hardware ethernet B0:26:28:DC:01:10;
     fixed-address cp2027.codfw.wmnet;
