@@ -4,38 +4,38 @@ auto lo
 iface lo inet loopback
 
 # in the PoC we are using this iface for control plane (ssh etc)
-auto eno1
-iface eno1 inet static
+auto <%= @nic_controlplane %>
+iface <%= @nic_controlplane %> inet static
     address <%= @host_addr %>
     netmask <%= @host_netm %>
     gateway <%= @host_gw %>
     dns-nameservers<% @nameservers.each do |nameserver| -%> <%= nameserver -%><% end %>
     dns-search <%= @site %>.wmnet
-    up ip token set ::<%= @host_addr %> dev eno1
-    up ip addr add <%= @host_prefixv6 %>:<%= scope.call_function('regsubst', [@host_addr, '\.', ':', 'G']) %>/64 dev eno1
+    up ip token set ::<%= @host_addr %> dev <%= @nic_controlplane %>
+    up ip addr add <%= @host_prefixv6 %>:<%= scope.call_function('regsubst', [@host_addr, '\.', ':', 'G']) %>/64 dev <%= @nic_controlplane %>
 
 # in the PoC we are using this iface for data plane (vlan-trunked)
-auto eno2
-iface eno2 inet manual
+auto <%= @nic_dataplane %>
+iface <%= @nic_dataplane %> inet manual
 
 auto vrf-cloudgw
 iface vrf-cloudgw inet manual
     pre-up ip link add vrf-cloudgw type vrf table cloudgw
 
-auto eno2.<%= @virt_vlan %>
-iface eno2.<%= @virt_vlan %> inet static
+auto <%= @nic_dataplane %>.<%= @virt_vlan %>
+iface <%= @nic_dataplane %>.<%= @virt_vlan %> inet static
     address <%= @virt_addr %>
     netmask <%= @virt_netm %>
-    post-up ip link set eno2.<%= @virt_vlan %> master vrf-cloudgw
+    post-up ip link set <%= @nic_dataplane %>.<%= @virt_vlan %> master vrf-cloudgw
     # route floating IPs to neutron
     post-up ip route add table cloudgw <%= @virt_floating %> nexthop via <%= @virt_peer %>
     # route internal VM network to neutron
     post-up ip route add table cloudgw <%= @virt_cidr %> nexthop via <%= @virt_peer %>
 
-auto eno2.<%= @wan_vlan %>
-iface eno2.<%= @wan_vlan %> inet static
+auto <%= @nic_dataplane %>.<%= @wan_vlan %>
+iface <%= @nic_dataplane %>.<%= @wan_vlan %> inet static
     address <%= @wan_addr %>
     netmask <%= @wan_netm %>
-    post-up ip link set eno2.<%= @wan_vlan %> master vrf-cloudgw
+    post-up ip link set <%= @nic_dataplane %>.<%= @wan_vlan %> master vrf-cloudgw
     # route default to the core router
     post-up ip route add table cloudgw default via <%= @wan_gw %>

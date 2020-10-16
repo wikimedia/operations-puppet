@@ -14,6 +14,8 @@ class profile::openstack::base::cloudgw (
     Stdlib::IP::Address $wan_addr     = lookup('profile::openstack::base::cloudgw::wan_addr',     {default_value => '127.0.0.4'}),
     Integer             $wan_netm     = lookup('profile::openstack::base::cloudgw::wan_netm',     {default_value => 8}),
     Stdlib::IP::Address $wan_gw       = lookup('profile::openstack::base::cloudgw::wan_gw',       {default_value => '127.0.0.4'}),
+    String              $nic_sshplane = lookup('profile::openstack::base::cloudgw::nic_controlplane', {default_value => 'eno1'}),
+    String              $nic_dataplane= lookup('profile::openstack::base::cloudgw::nic_dataplane',    {default_value => 'eno2'}),
 ) {
     # need nft >= 0.9.6 and kernel >= 5.6 to use some of the concatenated rules
     apt::pin { 'nft-from-buster-bpo':

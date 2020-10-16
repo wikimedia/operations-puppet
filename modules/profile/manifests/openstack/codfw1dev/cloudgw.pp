@@ -16,6 +16,8 @@ class profile::openstack::codfw1dev::cloudgw (
     Stdlib::IP::Address           $wan_addr       = lookup('profile::openstack::codfw1dev::cloudgw::wan_addr',         {default_value => '127.0.0.4'}),
     Integer                       $wan_netm       = lookup('profile::openstack::codfw1dev::cloudgw::wan_netm',         {default_value => 8}),
     Stdlib::IP::Address           $wan_gw         = lookup('profile::openstack::codfw1dev::cloudgw::wan_gw',           {default_value => '127.0.0.1'}),
+    String                        $nic_sshplane   = lookup('profile::openstack::codfw1dev::cloudgw::nic_controlplane', {default_value => 'eno1'}),
+    String                        $nic_dataplane  = lookup('profile::openstack::codfw1dev::cloudgw::nic_dataplane',    {default_value => 'eno2'}),
 ) {
     class { '::profile::openstack::base::cloudgw':
         host_addr     => $host_addr,
@@ -33,12 +35,14 @@ class profile::openstack::codfw1dev::cloudgw (
         wan_netm      => $wan_netm,
         wan_gw        => $wan_gw,
         all_phy_nics  => $all_phy_nics,
+        nic_sshplane  => $nic_sshplane,
+        nic_dataplane => $nic_dataplane,
     }
     contain '::profile::openstack::base::cloudgw'
 
-    $nic_host = 'eno1'
-    $nic_virt = "eno2.${virt_vlan}"
-    $nic_wan  = "eno2.${wan_vlan}"
+    $nic_host = $nic_sshplane
+    $nic_virt = "${nic_dataplane}.${virt_vlan}"
+    $nic_wan  = "${nic_dataplane}.${wan_vlan}"
 
     nftables::file { 'cloudgw':
         ensure  => present,
