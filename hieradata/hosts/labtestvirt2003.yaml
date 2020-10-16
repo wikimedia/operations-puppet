@@ -7,8 +7,8 @@ profile::openstack::codfw1dev::cloudgw::virt_subnet_cidr: 172.16.128.0/24
 
 # network settings
 profile::standard::enable_ip6_mapped: false
-profile::openstack::codfw1dev::cloudgw::nic_dataplane: eno1
-profile::openstack::codfw1dev::cloudgw::nic_controlplane: eno2
+profile::openstack::codfw1dev::cloudgw::nic_controlplane: eno1
+profile::openstack::codfw1dev::cloudgw::nic_dataplane: eno2
 profile::openstack::codfw1dev::cloudgw::all_phy_nics:
  - "eno1"
  - "eno2"
