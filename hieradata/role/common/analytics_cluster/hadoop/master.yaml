@@ -84,3 +84,5 @@ profile::hadoop::master::excluded_hosts:
   - 'analytics1049'
   - 'analytics1050.eqiad.wmnet'
   - 'analytics1050'
+  - 'analytics1051.eqiad.wmnet'
+  - 'analytics1051'
