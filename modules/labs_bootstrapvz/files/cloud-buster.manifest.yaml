@@ -112,7 +112,7 @@ packages:
     - python3-novaclient
     - python3-openstackclient
     - python3-prometheus-client
-    - python3-pyldap-client
+    - python3-pyldap
     - quickstack
     - rsyslog
     - rsyslog-kafka
