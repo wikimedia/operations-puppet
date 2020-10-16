@@ -24,7 +24,6 @@ class profile::cache::varnish::frontend (
 
     $packages = [
         'varnish',
-        'varnish-dbg',
         'varnish-modules',
         'libvmod-netmapper',
         'libvmod-re2',
