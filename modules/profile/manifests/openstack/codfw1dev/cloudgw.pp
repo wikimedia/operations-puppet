@@ -27,6 +27,7 @@ class profile::openstack::codfw1dev::cloudgw (
         virt_netm     => $virt_netm,
         virt_peer     => $virt_peer,
         virt_floating => $virt_floating,
+        virt_cidr     => $virt_subnet,
         wan_vlan      => $wan_vlan,
         wan_addr      => $wan_addr,
         wan_netm      => $wan_netm,

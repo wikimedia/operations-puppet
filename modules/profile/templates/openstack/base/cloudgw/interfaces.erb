@@ -29,6 +29,8 @@ iface eno2.<%= @virt_vlan %> inet static
     post-up ip link set eno2.<%= @virt_vlan %> master vrf-cloudgw
     # route floating IPs to neutron
     post-up ip route add table cloudgw <%= @virt_floating %> nexthop via <%= @virt_peer %>
+    # route internal VM network to neutron
+    post-up ip route add table cloudgw <%= @virt_cidr %> nexthop via <%= @virt_peer %>
 
 auto eno2.<%= @wan_vlan %>
 iface eno2.<%= @wan_vlan %> inet static

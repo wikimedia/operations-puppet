@@ -9,6 +9,7 @@ class profile::openstack::base::cloudgw (
     Integer             $virt_netm    = lookup('profile::openstack::base::cloudgw::virt_netm',    {default_value => 8}),
     Stdlib::IP::Address $virt_peer    = lookup('profile::openstack::base::cloudgw::virt_peer',    {default_value => '127.0.0.5'}),
     Stdlib::IP::Address $virt_floating= lookup('profile::openstack::base::cloudgw::virt_floating',{default_value => '127.0.0.5/24'}),
+    Stdlib::IP::Address $virt_cidr    = lookup('profile::openstack::base::cloudgw::virt_cidr',    {default_value => '127.0.0.6/24'}),
     Integer             $wan_vlan     = lookup('profile::openstack::base::cloudgw::wan_vlan',     {default_value => 2120}),
     Stdlib::IP::Address $wan_addr     = lookup('profile::openstack::base::cloudgw::wan_addr',     {default_value => '127.0.0.4'}),
     Integer             $wan_netm     = lookup('profile::openstack::base::cloudgw::wan_netm',     {default_value => 8}),
