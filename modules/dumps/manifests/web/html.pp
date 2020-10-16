@@ -40,6 +40,15 @@ class dumps::web::html(
         source => 'puppet:///modules/dumps/web/html/pagecounts-ez_index.html',
     }
 
+    file { "${miscdatasetsdir}/pageview-complete/index.html":
+        ensure => 'present',
+        path   => "${miscdatasetsdir}/pageview-complete/index.html",
+        mode   => '0644',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/dumps/web/html/pageview-complete_index.html',
+    }
+
     file { "${miscdatasetsdir}/analytics/index.html":
         ensure => 'present',
         path   => "${miscdatasetsdir}/analytics/index.html",

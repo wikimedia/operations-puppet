@@ -1,0 +1,65 @@
+<html>
+<!-- This file is maintained by puppet!! -->
+<!-- modules/dumps/files/web/html/pagecounts-ez_index.html -->
+	<head>
+		<title>Pageview complete dumps</title>
+		<link rel="stylesheet" type="text/css" href="/dumps.css" />
+	</head>
+	<body bgcolor="#ffffff">
+		<h1>Wikistats: Pageview complete dumps</h1>
+		<b>Maintained by the Wikimedia Analytics team</b>
+		<i><a href = "/other/pageview_complete">Link to the dumps</a></i>
+		<p>
+			Pageview complete is our best effort to provide a comprehensive timeseries of per-article pageview data
+			for Wikimedia projects. Data spans from December 2007 to the present with a uniform format and compression.
+		</p>
+		<p><b>Features of the dataset</b></p>
+		<ul>
+			<li>Unified, human-readable project names (e.g. es.wikisource instead of es.s)</li>
+			<li>Page IDs (from 2015 onwards) that allow this dataset to be joined with Wikidata and Mediawiki History</li>
+			<li>Corrected one-hour skewing problem</li>
+			<li>Where available, agent type and access method dimensions exposed.</li>
+			<li>From 2020 on, it includes numbers on agents detected through our bot detection filters</li>
+		</ul>
+		<p><b>Details on data segments</b></p>
+		<p>
+			Sets of daily files are derived from the best data available
+			at the time:
+			<ul>
+				<li>From 2007 to 2011: from <a href="/other/pagecounts-raw/">pagecounts-raw</a> (to be loaded during the second half of October 2020)
+				</li>
+				<li>From 2011 to 2015: from <a href="/other/pagecounts-ez/">pagecounts-ez</a>
+				</li>
+				<li>From 2015 to the present: from the latest <a href="https://meta.wikimedia.org/wiki/Research:Page_view">pageview definition</a>
+				</li>
+			</ul>
+		</p>
+		<p><b>Data format</b></p>
+		<p>
+			Compression of dataset is similar to that of pagecounts-ez: bzip files with hourly data embedded on each row, following this format:
+		</p>
+		<p>
+		  <ul>
+			<li>wiki code (subproject.project)</li>
+			<li>article title</li>
+			<li>page id</li>
+			<li>daily total</li>
+			<li>hourly counts</li>
+		  </ul>
+		</p>
+		<p>
+			Hourly counts can be deciphered as follows:
+			<dl>
+				<dt>Hour:</dt>
+				<dd>from 0 to 23, written as 0 = A, 1 = B ... 22 = W, 23 = X</dd>
+		    </dl>
+		</p>
+		<hr/>
+		<p>
+			<strong>All Analytics datasets are available under the <a href = "https://creativecommons.org/publicdomain/zero/1.0/" target = "_blank">Creative Commons CC0 dedication</a>.</strong>
+		</p>
+
+	</small>
+	</body>
+</html>
+
