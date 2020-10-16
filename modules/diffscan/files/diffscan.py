@@ -1,4 +1,7 @@
-#!/usr/bin/python2
+#!/usr/bin/env python3
+"""
+Tool for reporting the difference between multiple nmap scans
+"""
 
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -6,57 +9,44 @@
 # Copyright (c) 2015 Mozilla Corporation
 # Author: ameihm@mozilla.com
 
-import calendar
-import cPickle
-import errno
-import fcntl
-import getopt
+import pickle
 import os
 import re
-import shutil
-import subprocess
-import sys
-import tempfile
-import time
+import logging
 
-from string import Template
-
-# Edit the nmap_scanoptions variable below to configure generic options
-# that are passed by nmap to the script. This script generates email using
-# the sendmail command, so also ensure that command is in your path when
-# it is run.
-
-# Change this to suit your environment
-#
-# Be sure to include -vv so hosts that are down are reported in the
-# output for correct tracking.
-nmap_scanoptions = '-vv -sS -PE -PS22,25,80,443,3306,8443,9100 -T4 ' + \
-        '--privileged --min-hostgroup 256 --defeat-rst-ratelimit'
-
-nmap_topports = Template('--top-ports $topports')
-nmap_logoptions = Template('-oG $tmppath')
-nmap_inoptions = Template('-iL $inpath')
-nmap_portspec = Template('-p $portspec')
-
-append_path = ':/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:' + \
-        '/usr/local/sbin:/usr/lib'
+from argparse import ArgumentParser
+from contextlib import contextmanager
+from email.message import EmailMessage
+from fcntl import flock, LOCK_EX, LOCK_NB, LOCK_UN
+from pathlib import Path
+from time import time
+from smtplib import SMTP
+from socket import getfqdn
+from subprocess import CalledProcessError, DEVNULL, run
 
 
-class ScanData(object):
+LOG = logging.getLogger(__file__)
+
+
+class ScanData:
+    """Class for holding scan data"""
     def __init__(self):
-        self.scantime = time.gmtime()
+        self.scantime = time()
         self.hosts = {}
         self.dnsmap = {}
         self.uphosts = []
         self.downhosts = []
 
     def get_hosts(self):
-        return self.hosts.keys()
+        """return a list of hosts"""
+        return list(self.hosts.keys())
 
-    def get_host_ports(self, h):
-        return self.hosts[h]
+    def get_host_ports(self, hostname):
+        """Return a list of ports for a host"""
+        return self.hosts[hostname]
 
     def open_exists(self, addr, port, proto):
+        """check if a specific open port exists"""
         if addr not in self.hosts:
             return False
         cand = [port, proto]
@@ -65,22 +55,23 @@ class ScanData(object):
         return True
 
     def total_services(self):
-        ret = 0
-        for i in self.hosts:
-            ret += len(self.hosts[i])
-        return ret
+        """Return the total number of services"""
+        return sum([len(ports) for ports in self.hosts.values()])
 
-    def add_open(self, addr, port, proto, hn):
-        if proto != 'tcp' and proto != 'udp':
+    def add_open(self, addr, port, proto, hostname):
+        """add an open port"""
+        if proto not in ['tcp', 'udp']:
             raise Exception('unknown protocol %s' % proto)
         if addr not in self.hosts:
             self.hosts[addr] = []
-        self.dnsmap[addr] = hn
+        self.dnsmap[addr] = hostname
         self.hosts[addr].append([int(port), proto])
 
 
-class Alert(object):
+class Alert:
+    """Class to hold alerts"""
 
+    # pylint: disable=too-many-arguments
     def __init__(self, host, port, proto, dns, open_prev, closed_prev, statstr):
         self.host = host
         self.port = port
@@ -90,10 +81,6 @@ class Alert(object):
         self.closed_prev = closed_prev
         self.statstr = statstr
 
-    @staticmethod
-    def alert_header():
-        return 'STATUS HOST PORT PROTO OPREV CPREV DNS'
-
     def __str__(self):
         return '%s %s %s %s %s %s %s' % (
             self.statstr, self.host,
@@ -102,7 +89,8 @@ class Alert(object):
             self.dns)
 
 
-class ScanState(object):
+class ScanState:
+    """Object for scan data"""
     KEEP_SCANS = 7
 
     def __init__(self):
@@ -110,9 +98,9 @@ class ScanState(object):
         self._scanlist = []
         self._alerts_open = []
         self._alerts_closed = []
-        self._outfile = None
 
     def up_trend(self):
+        """Print up trends"""
         ret = ''
         for i in self._scanlist:
             if len(ret) == 0:
@@ -122,6 +110,7 @@ class ScanState(object):
         return ret
 
     def down_trend(self):
+        """Print down trends"""
         ret = ''
         for i in self._scanlist:
             if len(ret) == 0:
@@ -130,25 +119,23 @@ class ScanState(object):
                 ret += ',%d' % len(i.downhosts)
         return ret
 
-    def register_outfile(self, o):
-        self._outfile = o
-
-    def clear_outfile(self):
-        self._outfile = None
-
     def clear_alerts(self):
+        """Clear current alerts"""
         self._alerts_open = []
         self._alerts_closed = []
 
     def last_scan_total_services(self):
+        """Return total services for the last scan"""
         return self._lastscan.total_services()
 
     def previous_scan_total_services(self):
+        """Return total services for the previous scan"""
         if len(self._scanlist) > 1:
             return self._scanlist[1].total_services()
         return 0
 
     def set_last(self, last):
+        """Set the last scan"""
         self._lastscan = last
         if len(self._scanlist) == self.KEEP_SCANS:
             self._scanlist.pop()
@@ -156,349 +143,270 @@ class ScanState(object):
         self.clear_alerts()
 
     def calculate(self):
+        """Calculate open and closed ports"""
         self.calculate_new_open()
         self.calculate_new_closed()
 
     def prev_service_status(self, addr, port, proto):
+        """Return a count of open and closed ports from previous scan"""
         openprev = 0
         closedprev = 0
         if len(self._scanlist) <= 1:
             return (0, 0)
-        for s in self._scanlist[1:]:
-            if s.open_exists(addr, port, proto):
+        for scan in self._scanlist[1:]:
+            if scan.open_exists(addr, port, proto):
                 openprev += 1
             else:
                 closedprev += 1
         return (openprev, closedprev)
 
     def calculate_new_open(self):
+        """Calculate open ports"""
         if len(self._scanlist) <= 1:
             return
-        for i in self._lastscan.get_hosts():
-            for p in self._lastscan.get_host_ports(i):
+        for host in self._lastscan.get_hosts():
+            for port in self._lastscan.get_host_ports(host):
                 prevscan = self._scanlist[1]
-                if not prevscan.open_exists(i, p[0], p[1]):
+                if not prevscan.open_exists(host, port[0], port[1]):
                     statstr = 'OPEN'
-                    dns = self._lastscan.dnsmap[i]
+                    dns = self._lastscan.dnsmap[host]
                     # If this host isn't in the previous up or down list,
                     # note it as a new host
-                    if (i not in prevscan.uphosts) and \
-                       (i not in prevscan.downhosts):
+                    if (host not in prevscan.uphosts) and \
+                       (host not in prevscan.downhosts):
                         statstr = 'OPENNEWHOST'
                     openprev, closedprev = \
-                        self.prev_service_status(i, p[0], p[1])
+                        self.prev_service_status(host, port[0], port[1])
                     self._alerts_open.append(Alert(
-                        i, p[0], p[1], dns, openprev, closedprev, statstr))
+                        host, port[0], port[1], dns, openprev, closedprev, statstr))
 
     def calculate_new_closed(self):
+        """Calculate closed ports"""
         if len(self._scanlist) <= 1:
             return
         prevscan = self._scanlist[1]
-        for i in prevscan.get_hosts():
-            for p in prevscan.get_host_ports(i):
-                if not self._lastscan.open_exists(i, p[0], p[1]):
+        for host in prevscan.get_hosts():
+            for port in prevscan.get_host_ports(host):
+                if not self._lastscan.open_exists(host, port[0], port[1]):
                     statstr = 'CLOSED'
                     # See if the host existed in the current scan, if it did
                     # use that hostname, otherwise grab previous
-                    if i in self._lastscan.dnsmap:
-                        dns = self._lastscan.dnsmap[i]
+                    if host in self._lastscan.dnsmap:
+                        dns = self._lastscan.dnsmap[host]
                     else:
                         # If we didn't have a dns map entry for it, that means
                         # the host wasn't even up, note this in the status
                         statstr = 'CLOSEDDOWN'
-                        dns = prevscan.dnsmap[i]
+                        dns = prevscan.dnsmap[host]
                     openprev, closedprev = \
-                        self.prev_service_status(i, p[0], p[1])
+                        self.prev_service_status(host, port[0], port[1])
                     self._alerts_closed.append(Alert(
-                        i, p[0], p[1], dns, openprev, closedprev, statstr))
+                        host, port[0], port[1], dns, openprev, closedprev, statstr))
 
-    def print_open_alerts(self):
-        self._outfile.write('%s\n' % Alert.alert_header())
-        for i in self._alerts_open:
-            self._outfile.write('%s\n' % str(i))
+    @property
+    def open_alerts(self):
+        """open alerts"""
+        return self._alerts_open
 
-    def print_closed_alerts(self):
-        self._outfile.write('%s\n' % Alert.alert_header())
-        for i in self._alerts_closed:
-            self._outfile.write('%s\n' % str(i))
+    @property
+    def closed_alerts(self):
+        """closed alerts"""
+        return self._alerts_closed
 
     def outstanding_alerts(self):
-        if self._alerts_open or self._alerts_closed:
-            return True
-        return False
+        """Check for outstanding alerts"""
+        return self._alerts_open or self._alerts_closed
 
 
-lockfile = None
-state = None
-tmpfile = None
-debugging = False
-myhost = None
-recip = None
-groupname = None
-topports = 2000
-portspec = None
-nosmtp = False
-quiet = False
-
-statefile = './diffscan.state'
-outdir = './diffscan_out'
+def get_log_level(args_level):
+    """Configure logging"""
+    return {
+        None: logging.ERROR,
+        1: logging.WARN,
+        2: logging.INFO,
+        3: logging.DEBUG}.get(args_level, logging.DEBUG)
 
 
-def outdir_setup():
-    if not os.path.isdir(outdir):
-        os.mkdir(outdir, 0o755)
-    if not os.access(outdir, os.W_OK):
-        sys.stderr.write('%s not writable\n' % outdir)
-        sys.exit(1)
+def get_args():
+    """Parse arguments"""
+    parser = ArgumentParser(description=__doc__)
+    port_group = parser.add_mutually_exclusive_group()
+    port_group.add_argument('-T', '--topports', type=int)
+    port_group.add_argument('-p', '--portspec')
+    parser.add_argument('-E', '--report-email')
+    parser.add_argument('--min-hostgroup', type=int, default=256)
+    parser.add_argument('-W', '--working-dir', default=Path.cwd(), type=Path)
+    parser.add_argument('-v', '--verbose', action='count')
+    parser.add_argument('targets', type=Path, help='File containing network targets')
+    return parser.parse_args()
 
 
-def copy_nmap_out(p):
-    tval = int(calendar.timegm(time.gmtime()))
-    pidval = os.getpid()
-    fname = os.path.join(outdir, 'nmap-%d-%d.out' % (tval, pidval))
-    shutil.copyfile(p, fname)
+def load_scanstate(statefile):
+    """load the state from the previous scan"""
+    if statefile.is_file():
+        LOG.debug('Load state file from: %s', statefile)
+        try:
+            with statefile.open('rb') as state_fh:
+                return pickle.load(state_fh)
+        except OSError as error:
+            LOG.error('Unable to load state (%s): %s', statefile, error)
+            raise SystemExit(1) from error
+    LOG.debug('no previous state file: %s', statefile)
+    return ScanState()
 
 
-def load_scanstate():
-    try:
-        f = open(statefile, 'r')
-    except IOError as e:
-        if e.errno == errno.ENOENT:
-            return ScanState()
-        else:
-            raise
-    ret = cPickle.load(f)
-    f.close()
-    return ret
-
-
-def write_scanstate():
-    f = open(statefile, 'w')
-    cPickle.dump(state, f)
-    f.close()
+def write_scanstate(statefile, state):
+    """Save scanState to pickle file"""
+    LOG.debug('writing state file to: %s', statefile)
+    with statefile.open('wb') as state_fh:
+        pickle.dump(state, state_fh)
 
 
 def parse_output(path):
-    new = ScanData()
+    """Parse nmap output"""
+    new_scan = ScanData()
 
-    f = open(path, 'r')
-    while True:
-        buf = f.readline()
-        if buf is None:
-            break
-        if buf == '':
-            break
-        buf = buf.strip()
-        m = re.search(r'Host: (\S+) \(([^)]*)\).*Status: Up', buf)
-        if m is not None:
-            addr = m.group(1)
-            new.uphosts.append(addr)
-        m = re.search(r'Host: (\S+) \(([^)]*)\).*Status: Down', buf)
-        if m is not None:
-            addr = m.group(1)
-            new.downhosts.append(addr)
-        m = re.search(r'Host: (\S+) \(([^)]*)\).*Ports: (.*)$', buf)
-        if m is not None:
-            addr = m.group(1)
-            hn = m.group(2)
-            if len(hn) == 0:
-                hn = 'unknown'
-            p = [x.split('/') for x in m.group(3).split(',')]
-            for i in p:
-                if i[1] != 'open':
-                    continue
-                new.add_open(addr.strip(), i[0].strip(), i[2].strip(), hn)
-    f.close()
-
-    state.set_last(new)
+    with path.open() as path_fh:
+        for line in path_fh.readlines():
+            line = line.strip()
+            match = re.search(r'Host: (\S+) \(([^)]*)\).*Status: Up', line)
+            if match is not None:
+                addr = match.group(1)
+                new_scan.uphosts.append(addr)
+            match = re.search(r'Host: (\S+) \(([^)]*)\).*Status: Down', line)
+            if match is not None:
+                addr = match.group(1)
+                new_scan.downhosts.append(addr)
+            match = re.search(r'Host: (\S+) \(([^)]*)\).*Ports: (.*)$', line)
+            if match is not None:
+                addr = match.group(1)
+                hostname = match.group(2)
+                if len(hostname) == 0:
+                    hostname = 'unknown'
+                ports = [x.split('/') for x in match.group(3).split(',')]
+                for port in ports:
+                    if port[1] != 'open':
+                        continue
+                    new_scan.add_open(addr.strip(), port[0].strip(), port[2].strip(), hostname)
+    return new_scan
 
 
-def diffscan_fail_notify(errmsg):
-    if nosmtp:
-        return
-    buf = 'Subject: diffscan2 %s %s\n' % (groupname, myhost)
-    buf += 'From: diffscan2 <noreply@%s>\n' % myhost
-    buf += 'To: %s\n' % ','.join(recip)
-    buf += '\n'
-    buf += 'diffscan execution failed\n\n'
-    buf += '%s\n' % errmsg
-    sp = subprocess.Popen(['sendmail', '-t'], stdin=subprocess.PIPE)
-    sp.communicate(buf)
-
-
-def run_nmap(targets):
-    nmap_args = []
-    nmap_args += nmap_scanoptions.split()
-
-    tf = tempfile.mkstemp()
-    os.close(tf[0])
-    if portspec is not None:
-        nmap_args += nmap_portspec.substitute(portspec=portspec).split()
-    else:
-        nmap_args += nmap_topports.substitute(topports=topports).split()
-    nmap_args += nmap_logoptions.substitute(tmppath=tf[1]).split()
-    nmap_args += nmap_inoptions.substitute(inpath=targets).split()
-
-    nfd = open('/dev/null', 'w')
+@contextmanager
+def lock_file(path):
+    '''obtain an exclusive no blocking lock on file_path'''
     try:
-        ret = subprocess.call(['nmap', ] + nmap_args, stdout=nfd)
-    except Exception as e:
-        os.remove(tf[1])
-        diffscan_fail_notify('executing of nmap failed, %s' % str(e))
-        return False
-    nfd.close()
-
-    if ret != 0:
-        os.remove(tf[1])
-        diffscan_fail_notify('nmap failed with return code %d, exiting' % ret)
-        return False
-
-    parse_output(tf[1])
-
-    copy_nmap_out(tf[1])
-    os.remove(tf[1])
-    return True
-
-
-def usage():
-    sys.stdout.write(
-        'usage: diffscan.py [options] targets_file'
-        ' recipients groupname\n\n'
-        'options:\n\n'
-        '\t-h\t\tusage information\n'
-        '\t-m num\t\ttop ports to scan (2000, see nmap --top-ports)\n'
-        '\t-n\t\tno smtp, write output to stdout (recipient ignored)\n'
-        '\t-o path\t\tdirectory to save nmap output (./diffscan_out)\n'
-        '\t-p spec\t\tinstead of top ports use port spec (see nmap -p)\n'
-        '\t-s path\t\tpath to state file (./diffscan.state)\n'
-        '\t-q\t\tDon\'t send email if no changes \n\n')
-    sys.exit(0)
+        if not path.exists():
+            path.touch()
+        path_fh = path.open('r+')
+        flock(path_fh, LOCK_EX | LOCK_NB)
+        path_fh.seek(0)
+        path_fh.write('file locked by {} - PID:{}'.format(os.environ['USER'], os.getpid()))
+        path_fh.truncate()
+        path_fh.flush()
+        yield path_fh
+    except BlockingIOError as error:
+        raise SystemExit('{}\n{}'.format(error, path_fh.read())) from error
+    except OSError as error:
+        raise SystemExit('failed to acquire lock on: {}\n{}'.format(path_fh, error)) from error
+    finally:
+        flock(path_fh, LOCK_UN)
+        path_fh.close()
 
 
-def create_lock():
-    global lockfile
-
-    lfname = statefile + '.lock'
-    lockfile = open(lfname, 'w')
-    fcntl.lockf(lockfile, fcntl.LOCK_EX | fcntl.LOCK_NB)
-    lockfile.write(str(os.getpid()))
-    lockfile.flush()
-
-
-def release_lock():
-    lfname = statefile + '.lock'
-
-    lockfile.close()
-    os.remove(lfname)
+def get_nmap_args(args, outfile):
+    """Return a list of nmap args based on the diffscan args"""
+    nmap_args = ['nmap', '-vv', '-sS', '-PE', '-PS22,25,80,443,3306,8443,9100',
+                 '-T4', '--privileged', '--defeat-rst-ratelimit']
+    nmap_args += ['--min-hostgroup', str(args.min_hostgroup)]
+    if args.portspec:
+        nmap_args += ['-p', str(args.portspec)]
+    else:
+        topports = args.topports if args.topports else 2000
+        nmap_args += ['--top-ports', str(topports)]
+    nmap_args += ['-iL', str(args.targets)]
+    nmap_args += ['-oG', str(outfile)]
+    return nmap_args
 
 
-def domain():
-    global statefile
-    global state
-    global outdir
-    global tmpfile
-    global debugging
-    global myhost
-    global recip
-    global groupname
-    global topports
-    global portspec
-    global nosmtp
-    global quiet
+def report(state):
+    """produce output"""
+    return """
+New Open Service List
+---------------------
+STATUS HOST PORT PROTO OPREV CPREV DNS
+{open_alerts}
 
-    os.environ['PATH'] = os.environ['PATH'] + append_path
+New Closed Service List
+---------------------
+STATUS HOST PORT PROTO OPREV CPREV DNS
+{closed_alerts}
+
+OPREV: number of times service was open in last {max_scans}
+CPREV number of times service was closed in last {max_scans}:
+current total services: {curent_total_services}
+previous total services: {previous_total_services}
+up trend: {up_trend}
+down trend: {down_trend}""".format(
+        open_alerts='\n'.join(str(alert) for alert in state.open_alerts),
+        closed_alerts='\n'.join(str(alert) for alert in state.closed_alerts),
+        max_scans=state.KEEP_SCANS,
+        curent_total_services=state.last_scan_total_services(),
+        previous_total_services=state.previous_scan_total_services(),
+        up_trend=state.up_trend(),
+        down_trend=state.down_trend())
+
+
+def send_email(recipient, subject, body, server='localhost'):
+    """Send the body in an email to the recipient with subject"""
+    msg = EmailMessage()
+    msg['From'] = 'diffscan2 <noreply@{}>'.format(getfqdn())
+    msg['To'] = recipient
+    msg['Subject'] = subject
+    msg.set_content(body)
+    smtp = SMTP(server)
+    smtp.send_message(msg)
+    smtp.quit()
+
+
+def main():
+    """main entry point"""
+    args = get_args()
+    logging.basicConfig(level=get_log_level(args.verbose))
+    LOG.setLevel(get_log_level(args.verbose))
+
+    base_dir = args.working_dir
+    outdir = base_dir / 'diffscan_out'
+    lockfile = base_dir / 'diffscan.lock'
+    statefile = base_dir / 'diffscan.state'
 
     try:
-        opts, args = getopt.getopt(sys.argv[1:], 'dhm:no:p:s:q')
-    except getopt.GetoptError:
-        usage()
-    for o, a in opts:
-        if o == '-h':
-            usage()
-        elif o == '-o':
-            outdir = a
-        elif o == '-p':
-            portspec = a
-        elif o == '-d':
-            debugging = True
-        elif o == '-m':
-            topports = a
-        elif o == '-n':
-            nosmtp = True
-        elif o == '-s':
-            statefile = a
-        elif o == '-q':
-            quiet = True
-    if len(args) < 3:
-        usage()
-    targetfile = args[0]
-    recip = args[1].split(',')
-    groupname = args[2]
+        outdir.mkdir(0o770, True, True)
+    except OSError as error:
+        LOG.error('unable to create %s: %s', base_dir, error)
+        return 1
 
-    outdir_setup()
+    outfile = outdir / 'nmap-{}-{}.out'.format(int(time()), os.getpid())
+    nmap_args = get_nmap_args(args, outfile)
+    LOG.debug('nmap args: %s', ' '.join(nmap_args))
+    state = load_scanstate(statefile)
 
-    create_lock()
-
-    state = load_scanstate()
-
-    if not nosmtp:
-        tmpout = tempfile.mkstemp()
-        tmpfile = os.fdopen(tmpout[0], 'w')
+    with lock_file(lockfile):
+        try:
+            run(nmap_args, stdout=DEVNULL, check=True)
+        except CalledProcessError as error:
+            LOG.error('nmap failed to run: %s', error)
+            outfile.unlink()
+            return 1
+        new_scan = parse_output(outfile)
+        state.set_last(new_scan)
+        state.calculate()
+        write_scanstate(statefile, state)
+    if args.report_email and state.outstanding_alerts():
+        send_email(args.report_email, args.targets.name, report(state))
     else:
-        tmpfile = sys.stdout
-    state.register_outfile(tmpfile)
-
-    myhost = os.uname()[1]
-    tmpfile.write('Subject: diffscan2 %s %s\n' % (groupname, myhost))
-    tmpfile.write('From: diffscan2 <noreply@%s>\n' % myhost)
-    tmpfile.write('To: %s\n' % ','.join(recip))
-    tmpfile.write('\n')
-
-    tmpfile.write('diffscan2 results output\n\n')
-
-    if not run_nmap(targetfile):
-        if not nosmtp:
-            tmpfile.close()
-            os.remove(tmpout[1])
-        sys.exit(1)
-    state.calculate()
-    tmpfile.write('New Open Service List\n')
-    tmpfile.write('---------------------\n')
-    state.print_open_alerts()
-    tmpfile.write('\n')
-    tmpfile.write('New Closed Service List\n')
-    tmpfile.write('---------------------\n')
-    state.print_closed_alerts()
-
-    tmpfile.write('\n')
-    tmpfile.write('OPREV: number of times service was open in previous scans\n')
-    tmpfile.write('CPREV: number of times service was closed in previous scans\n')
-    tmpfile.write('maximum previous scans stored: %d\n' % state.KEEP_SCANS)
-    tmpfile.write('current total services: %d\n' % state.last_scan_total_services())
-    tmpfile.write('previous total services: %d\n' % state.previous_scan_total_services())
-    tmpfile.write('up trend: %s\n' % state.up_trend())
-    tmpfile.write('down trend: %s\n' % state.down_trend())
-
-    state.clear_outfile()
-    write_scanstate()
-
-    if not nosmtp:
-        tmpfile.close()
-
-        f = open(tmpout[1], 'r')
-        buf = f.read()
-        f.close()
-        if debugging:
-            sys.stdout.write(buf)
-        if not (quiet and not state.outstanding_alerts()):
-            sp = subprocess.Popen(['sendmail', '-t'], stdin=subprocess.PIPE)
-            sp.communicate(buf)
-        os.remove(tmpout[1])
-
-    release_lock()
+        print(report(state))
+    return 0
 
 
 if __name__ == '__main__':
-    domain()
-
-sys.exit(0)
+    raise SystemExit(main())
