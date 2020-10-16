@@ -24,7 +24,7 @@ class role::analytics_cluster::hadoop::ui {
     include ::profile::hue
 
     # TLS terminator/proxy for Hue
-    include ::profile::tlsproxy::service
+    include ::profile::tlsproxy::envoy
 
     include ::profile::kerberos::client
     include ::profile::kerberos::keytabs
