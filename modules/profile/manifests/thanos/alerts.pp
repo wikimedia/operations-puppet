@@ -4,7 +4,9 @@
 # NOTE to be included only from one host, icinga will generate different alerts
 # for all hosts that include this class.
 #
-class profile::thanos::alerts {
+class profile::thanos::alerts (
+    Array[String] $datacenters = lookup('datacenters'),
+) {
 
     # Thanos compact
 
@@ -174,6 +176,33 @@ class profile::thanos::alerts {
         critical        => 1,
         dashboard_links => ['https://grafana.wikimedia.org/d/b19644bfbf0ec1e108027cce268d99f7/thanos-sidecar'],
         notes_link      => 'https://wikitech.wikimedia.org/wiki/Thanos#Alerts',
+    }
+
+    monitoring::check_prometheus { 'thanos_sidecar_upload_failure':
+        description     => 'Thanos sidecar is failing to upload blocks',
+        query           => 'thanos_shipper_upload_failures_total',
+        prometheus_url  => 'https://thanos-query.discovery.wmnet',
+        method          => 'ge',
+        warning         => 1,
+        critical        => 1,
+        dashboard_links => ['https://grafana.wikimedia.org/d/b19644bfbf0ec1e108027cce268d99f7/thanos-sidecar'],
+        notes_link      => 'https://wikitech.wikimedia.org/wiki/Thanos#Alerts',
+    }
+
+    # Catch a whole datacenter not configured to be uploading blocks. For full coverage of all
+    # instances we'd need the <hostname>:<sidecar port> list and then check for absent() for all
+    # of them. See also https://phabricator.wikimedia.org/T265632
+    $datacenters.each |String $datacenter| {
+        monitoring::check_prometheus { "thanos_sidecar_not_uploading_${datacenter}":
+            description     => "Thanos sidecar is not configured to upload blocks in ${datacenter}",
+            query           => "absent(thanos_shipper_uploads_total{site=\"${datacenter}\"})",
+            prometheus_url  => 'https://thanos-query.discovery.wmnet',
+            method          => 'eq',
+            warning         => 1,
+            critical        => 1,
+            dashboard_links => ['https://grafana.wikimedia.org/d/b19644bfbf0ec1e108027cce268d99f7/thanos-sidecar'],
+            notes_link      => 'https://wikitech.wikimedia.org/wiki/Thanos#Alerts',
+        }
     }
 
     # Thanos query
