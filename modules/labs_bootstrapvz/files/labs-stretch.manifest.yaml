@@ -91,6 +91,13 @@ packages:
     - python-pycurl
     - python-redis
     - python-statsd
+    - python3-designateclient
+    - python3-glanceclient
+    - python3-keystoneclient
+    - python3-novaclient
+    - python3-openstackclient
+    - python3-prometheus-client
+    - python3-pyldap
     - rsyslog
     - screen
     - snmp
