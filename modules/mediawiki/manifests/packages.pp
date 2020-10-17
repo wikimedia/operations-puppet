@@ -5,7 +5,7 @@ class mediawiki::packages {
     include imagemagick::install
 
     ensure_packages([
-        'timidity', 'freepats', 'fluidsynth', 'fluid-soundfont-gs', 'fluid-soundfont-gm', 'firejail',
+        'fluidsynth', 'fluid-soundfont-gs', 'fluid-soundfont-gm', 'firejail',
         # vips is needed for (rare) non-Thumbor scaling of TIFF/PNG uploads (T199938)
         'tidy', 'libvips-tools',
         # PDF and DjVu
