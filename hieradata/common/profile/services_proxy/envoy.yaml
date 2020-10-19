@@ -204,6 +204,7 @@ profile::services_proxy::envoy::enabled_listeners:
   - wdqs-internal
   - ores
   - restbase
+  - cxserver
   - swift-eqiad
   - swift-codfw
   - search-chi-eqiad
