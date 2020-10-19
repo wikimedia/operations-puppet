@@ -2161,6 +2161,48 @@ dataCubes:
               type: map
               map: {"49":"ACK+URG+FIN","48":"ACK+URG","40":"PSH+URG","36":"RST+URG","34":"SYN+URG","33":"FIN+URG","29":"PSH+ACK+RST+FIN","28":"PSH+ACK+RST","26":"PSH+ACK+SYN","25":"PSH+ACK+FIN","24":"PSH+ACK","22":"RST+ACK+SYN","21":"RST+ACK+FIN","20":"RST+ACK","19":"SYN+ACK+FIN","18":"SYN+ACK","17":"FIN+ACK","12":"RST+PSH","10":"SYN+PSH","9":"FIN+PSH","6":"SYN+RST","5":"FIN+RST","3":"FIN+SYN","32":"URG","16":"ACK","8":"PSH","4":"RST","2":"SYN","1":"FIN"}
               retainMissingValue: true
+        exporter_name:
+          extractionFn:
+            type: lookup
+            retainMissingValue: true
+            lookup:
+              type: map
+              isOneToOne: true
+              map:
+                "208.80.154.196": "cr1-eqiad"
+                "208.80.154.197": "cr2-eqiad"
+                "208.80.154.198": "cr2-eqord"
+                "208.80.153.192": "cr1-codfw"
+                "208.80.153.193": "cr2-codfw"
+                "208.80.153.198": "cr2-eqdfw"
+                "91.198.174.244": "cr2-esams"
+                "91.198.174.245": "cr3-esams"
+                "91.198.174.246": "cr3-knams"
+                "198.35.26.192": "cr3-ulsfo"
+                "198.35.26.193": "cr4-ulsfo"
+                "103.102.166.130": "cr2-eqsin"
+                "103.102.166.131": "cr3-eqsin"
+        exporter_region:
+          extractionFn:
+            type: lookup
+            retainMissingValue: true
+            lookup:
+              type: map
+              isOneToOne: false
+              map:
+                "208.80.154.196": "eqiad"
+                "208.80.154.197": "eqiad"
+                "208.80.154.198": "eqord"
+                "208.80.153.192": "codfw"
+                "208.80.153.193": "codfw"
+                "208.80.153.198": "codfw"
+                "91.198.174.244": "esams"
+                "91.198.174.245": "esams"
+                "91.198.174.246": "esams"
+                "198.35.26.192": "ulsfo"
+                "198.35.26.193": "ulsfo"
+                "103.102.166.130": "eqsin"
+                "103.102.166.131": "eqsin"
     dimensions:
        - name: as_src
          title: AS src
@@ -2204,9 +2246,12 @@ dataCubes:
        - name: tcp_flags
          title: TCP flags
          formula: $tcp_flags.customTransform('tcp')
-       - name: peer_ip_src
-         title: Exporter IP
-         formula: $peer_ip_src
+       - name: exporter
+         title: Exporter
+         formula: $peer_ip_src.customTransform('exporter_name')
+       - name: region
+         title: Region
+         formula: $peer_ip_src.customTransform('exporter_region')
     defaultSelectedMeasures: [bps, pps]
     measures:
        - name: bytes
