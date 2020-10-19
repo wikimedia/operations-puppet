@@ -12,8 +12,8 @@ scap::dsh::scap_proxies:
 
 scap::dsh::scap_masters:
   - "deploy1001.eqiad.wmnet"
+  - "deploy1002.eqiad.wmnet"
   - "deploy2002.codfw.wmnet"
-
 
 scap::dsh::groups:
   jobrunner:

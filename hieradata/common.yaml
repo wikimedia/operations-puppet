@@ -1143,7 +1143,7 @@ hadoop_clusters:
       hadoop.proxyuser.superset.groups: '*'
       fs.permissions.umask-mode: '027'
 
-deployment_server: deploy1001.eqiad.wmnet
+deployment_server: deploy1002.eqiad.wmnet
 
 aptrepo_server: apt1001.wikimedia.org
 aptrepo_servers_failover:

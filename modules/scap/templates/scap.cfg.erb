@@ -7,9 +7,9 @@
 #
 # Values are selected based on the fully qualified domain name of the local
 # host from the most specific to the least specific. As an example, on the
-# host deploy1001.eqiad.wmnet lookups cascade in this order:
+# host deploy1002.eqiad.wmnet lookups cascade in this order:
 #
-#   [deploy1001.eqiad.wmnet] > [eqiad.wmnet] > [wmnet] > [global]
+#   [deploy1002.eqiad.wmnet] > [eqiad.wmnet] > [wmnet] > [global]
 #
 # Additional configuration can be given on the command line for most
 # applications by specifying a separate configuration file and/or using `-D`
@@ -122,7 +122,8 @@ canary_dashboard_url: https://logstash-beta.wmflabs.org/goto/ff3530979bc5a54b977
 
 # Restart php-fpm only when running from the deployment servers for now.
 # Further explanations at https://phabricator.wikimedia.org/T224857#5467370
-[deploy1001.eqiad.wmnet]
+[deploy1002.eqiad.wmnet]
+# Restart php-fpm if the opcache is critically low
 php_fpm: php7.2-fpm
 php_fpm_restart_script: /usr/local/sbin/check-and-restart-php
 php_fpm_unsafe_restart_script: /usr/local/sbin/restart-php7.2-fpm
