@@ -160,7 +160,7 @@ ldap-replicas-eqiad: A:ldap-replicas and A:eqiad
 ldap-replicas-codfw: A:ldap-replicas and A:codfw
 ldap-main: P{O:openldap::labs}
 ldap-all: A:ldap-corp or A:ldap-replicas or A:ldap-main
-logstash: P{C:logstash} or O:logstash::elasticsearch or O:logstash::elasticsearch7}
+logstash: P{C:logstash or O:logstash::elasticsearch or O:logstash::elasticsearch7}
 logstash-canary: P{logstash1007.eqiad.wmnet}
 lvs: P{O:lvs::balancer}
 lvs-canary: P{lvs4007.ulsfo.wmnet}
