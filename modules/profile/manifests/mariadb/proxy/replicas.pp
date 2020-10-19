@@ -1,6 +1,6 @@
 # load balancing between several replica dbs
 class profile::mariadb::proxy::replicas(
-    $servers = hiera('profile::mariadb::proxy::replicas::servers'),
+    $servers = lookup('profile::mariadb::proxy::replicas::servers'),
     ) {
 
     # This template is for stretch/HA1.7, may not work on earlier/later versions

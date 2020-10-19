@@ -2,7 +2,7 @@
 # These are mariadb servers acting as on-disk cache for parsed wikitext
 
 class profile::mariadb::parsercache (
-    $shard = hiera('mariadb::parsercache::shard')
+    $shard = lookup('mariadb::parsercache::shard')
     ){
     $mw_primary = mediawiki::state('primary_dc')
 

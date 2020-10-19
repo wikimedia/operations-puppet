@@ -1,9 +1,9 @@
 # proxy in with 2 hosts, active-passive (with failover) scenario
 class profile::mariadb::proxy::master (
-    $primary_name   = hiera('profile::mariadb::proxy::master::primary_name'),
-    $primary_addr   = hiera('profile::mariadb::proxy::master::primary_addr'),
-    $secondary_name = hiera('profile::mariadb::proxy::master::secondary_name'),
-    $secondary_addr = hiera('profile::mariadb::proxy::master::secondary_addr'),
+    $primary_name   = lookup('profile::mariadb::proxy::master::primary_name'),
+    $primary_addr   = lookup('profile::mariadb::proxy::master::primary_addr'),
+    $secondary_name = lookup('profile::mariadb::proxy::master::secondary_name'),
+    $secondary_addr = lookup('profile::mariadb::proxy::master::secondary_addr'),
     ) {
 
     # this template is for stretch/HA1.7, may not work on earlier/later versions

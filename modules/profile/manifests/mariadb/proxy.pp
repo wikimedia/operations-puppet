@@ -9,9 +9,9 @@
 #   - 'misc': firewall with holes to misc services: rt, librenms, gerrit
 #   - 'internal': firewall only to the internal network (10.x hosts)
 class profile::mariadb::proxy (
-    $pid      = hiera('profile::mariadb::proxy::pid', '/run/haproxy/haproxy.pid'),
-    $socket   = hiera('profile::mariadb::proxy::socket', '/run/haproxy/haproxy.sock'),
-    $firewall = hiera('profile::mariadb::proxy::firewall', 'internal')
+    $pid      = lookup('profile::mariadb::proxy::pid', {'default_value' => '/run/haproxy/haproxy.pid'}),
+    $socket   = lookup('profile::mariadb::proxy::socket', {'default_value' => '/run/haproxy/haproxy.sock'}),
+    $firewall = lookup('profile::mariadb::proxy::firewall', {'default_value' => 'internal'})
     ){
 
     class { 'haproxy':
