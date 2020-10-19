@@ -15,6 +15,7 @@ class profile::openstack::base::glance(
     Stdlib::Port $registry_bind_port = lookup('profile::openstack::base::glance::registry_bind_port'),
     Stdlib::Fqdn $primary_glance_image_store = lookup('profile::openstack::base::primary_glance_image_store'),
     Array[String] $glance_backends = lookup('profile::openstack::base::glance_backends'),
+    Boolean $active = lookup('profile::openstack::base::glance_active'),
     ) {
 
     $keystone_admin_uri = "http://${keystone_fqdn}:${auth_port}"
@@ -22,7 +23,7 @@ class profile::openstack::base::glance(
 
     class { '::openstack::glance::service':
         version             => $version,
-        active              => $::fqdn == $primary_glance_image_store,
+        active              => $active,
         keystone_admin_uri  => $keystone_admin_uri,
         keystone_public_uri => $keystone_public_uri,
         db_user             => $db_user,
@@ -46,19 +47,6 @@ class profile::openstack::base::glance(
         ensure => 'present',
         rule   => "saddr (${prod_networks} ${labs_networks}
                              ) proto tcp dport (9292) ACCEPT;",
-    }
-
-    class {'openstack::glance::image_sync':
-        active                => ($::fqdn == $primary_glance_image_store),
-        glance_image_dir      => $glance_image_dir,
-        openstack_controllers => $openstack_controllers,
-    }
-
-    # This is a no-op on the primary controller; on the spare master
-    #  it allows us to sync up glance images with rsync.
-    ferm::rule{'glancesync':
-        ensure => 'present',
-        rule   => "saddr (@resolve(${primary_glance_image_store}) @resolve(${primary_glance_image_store}, AAAA)) proto tcp dport (ssh) ACCEPT;",
     }
 
     openstack::db::project_grants { 'glance':

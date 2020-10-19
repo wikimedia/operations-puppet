@@ -23,6 +23,20 @@ class profile::openstack::codfw1dev::glance(
         registry_bind_port         => $registry_bind_port,
         primary_glance_image_store => $primary_glance_image_store,
         glance_backends            => $glance_backends,
+        active                     => $::fqdn == $primary_glance_image_store,
     }
     contain '::profile::openstack::base::glance'
+
+    # This is a no-op on the primary controller; on the spare master
+    #  it allows us to sync up glance images with rsync.
+    ferm::rule{'glancesync':
+        ensure => 'present',
+        rule   => "saddr (@resolve(${primary_glance_image_store}) @resolve(${primary_glance_image_store}, AAAA)) proto tcp dport (ssh) ACCEPT;",
+    }
+
+    class {'openstack::glance::image_sync':
+        active                => ($::fqdn == $primary_glance_image_store),
+        glance_image_dir      => $glance_image_dir,
+        openstack_controllers => $openstack_controllers,
+    }
 }

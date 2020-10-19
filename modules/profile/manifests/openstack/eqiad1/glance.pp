@@ -24,11 +24,18 @@ class profile::openstack::eqiad1::glance (
         registry_bind_port         => $registry_bind_port,
         primary_glance_image_store => $primary_glance_image_store,
         glance_backends            => $glance_backends,
+        active                     => true,
     }
     contain '::profile::openstack::base::glance'
 
     class {'openstack::glance::monitor':
         active         => ($::fqdn == $primary_glance_image_store),
         contact_groups => 'wmcs-team,admins',
+    }
+
+    class {'openstack::glance::image_sync':
+        active                => false,
+        glance_image_dir      => $glance_image_dir,
+        openstack_controllers => $openstack_controllers,
     }
 }
