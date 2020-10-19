@@ -3,7 +3,7 @@ class profile::wmcs::backup_glance_images(
     Stdlib::Unixpath     $data_dir        = lookup('profile::ceph::data_dir'),
     Stdlib::AbsolutePath $admin_keyring   = lookup('profile::ceph::admin_keyring'),
     String               $admin_keydata   = lookup('profile::ceph::admin_keydata'),
-    String               $ceph_vm_pool    = lookup('profile::ceph::client::rbd::pool'),
+    String               $ceph_image_pool = lookup('profile::ceph::client::rbd::pool'),
     String               $backup_interval = lookup('profile::wmcs::backy2::backup_time'),
 ) {
     class {'::backy2':

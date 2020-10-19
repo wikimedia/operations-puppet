@@ -13,6 +13,6 @@ clients = mwopenstackclients.Clients(envfile="/etc/novaobserver.yaml")
 glance = clients.glanceclient()
 images = glance.images.list()
 
-for image in images():
+for image in images:
     logging.info("Backing up %s (%s)" % (image.id, image.name))
     rbd2backy2.backup_volume(config["ceph_pool"], image.id, config["live_for_days"])
