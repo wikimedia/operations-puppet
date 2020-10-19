@@ -28,7 +28,15 @@ class rsyslog::receiver (
     $log_directory      = '/srv/syslog',
     $archive_directory  = '/srv/syslog/archive',
 ) {
-    require_package('rsyslog-gnutls')
+    if debian::codename::eq('buster') {
+        apt::package_from_component { 'rsyslog_receiver':
+            component => 'component/rsyslog',
+            packages  => ['rsyslog-gnutls', 'rsyslog-kafka', 'rsyslog'],
+            before    => Class['rsyslog'],
+        }
+    } else {
+        ensure_packages('rsyslog-gnutls')
+    }
 
     if ($log_directory == $archive_directory) {
         fail("rsyslog log and archive are the same: ${log_directory}")
