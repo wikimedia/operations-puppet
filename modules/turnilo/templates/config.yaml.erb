@@ -2207,6 +2207,7 @@ dataCubes:
        - name: peer_ip_src
          title: Exporter IP
          formula: $peer_ip_src
+    defaultSelectedMeasures: [bps, pps]
     measures:
        - name: bytes
          title: Bytes
@@ -2214,3 +2215,9 @@ dataCubes:
        - name: packets
          title: Packets
          formula: $main.sum($packets)
+       - name: bps
+         title: bps
+         formula: $main.sum($bytes)*8 / ($MillisecondsInInterval / 1000)
+       - name: pps
+         title: pps
+         formula: $main.sum($packets) / ($MillisecondsInInterval / 1000)
