@@ -41,6 +41,12 @@
 	"log_x_client_ip" : true, // This is a WMF etherpad lite customization. Patch is in gerrit
 	"disableIPlogging" : false,
 	"socketTransportProtocols" : ["xhr-polling", "jsonp-polling", "htmlfile"],
+        "commitRateLimiting": {
+        // duration of the rate limit window (seconds)
+        "duration": 10,
+        // maximum number of changes per IP to allow during the rate limit window
+         "points": 100
+        },
 	"loadTest": false,
 	"toolbar": {
 	  "left": [
