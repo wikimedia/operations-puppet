@@ -161,7 +161,7 @@ class ToolViews(object):
                     # Host based routing
                     tool = r["vhost"].split(".")[0]
 
-                if r['tool'] not in self.tools:
+                if tool not in self.tools:
                     if tool not in ('.well-known', 'index.php', 'robots.txt'):
                         logger.info('Unknown tool "%s"', tool)
                     # fourohfour is the default route handler
