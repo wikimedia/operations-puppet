@@ -532,7 +532,7 @@ node /^db20(80|81|82|83|84|91)\.codfw\.wmnet/ {
     role(mariadb::core)
 }
 
-# hosts with multiple shards
+# multi-instance hosts with multiple shards
 node /^db1(090|096|098|099|101|105|113|144|146)\.eqiad\.wmnet/ {
     role(mariadb::core_multiinstance)
 }
