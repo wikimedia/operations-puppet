@@ -141,6 +141,7 @@ Components: main
  component/memcached16
  component/mtail
  component/pdns-recursor
+ component/rsyslog
  component/spicerack
  component/varnish6
  component/wmf-sre-laptop
