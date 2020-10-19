@@ -36,9 +36,8 @@ profile::openstack::eqiad1::keystone_api_fqdn: 'openstack.eqiad1.wikimediacloud.
 #  images are moved to ceph we can remove this setting and the openstack_controllers
 #  will be true, identical peers.
 profile::openstack::eqiad1::primary_glance_image_store: cloudcontrol1003.wikimedia.org
-profile::openstack::eqiad1::glance_backends: 
+profile::openstack::eqiad1::glance_backends:
   - rbd
-  - file
 
 # List of designate hosts (generally labservicesxxxx).
 profile::openstack::eqiad1::designate_hosts:
