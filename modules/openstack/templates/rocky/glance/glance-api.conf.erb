@@ -69,7 +69,15 @@ workers = 1
 
 # Support rbd and local file backends.  Eventually we can
 #  change this to ceph-only
+<% if @glance_backends.include? 'file' -%>
+<% if @glance_backends.include? 'rbd' -%>
 enabled_backends = rbd:rbd, file:file
+<% else -%>
+enabled_backends = file:file
+<% end -%>
+<% else -%>
+enabled_backends = rbd:rbd
+<% end -%>
 
 # ================= Syslog Options ============================
 
@@ -308,9 +316,21 @@ flavor=keystone
 connection =  mysql://<%= @db_user %>:<%= @db_pass %>@<%= @db_host %>/<%= @db_name %>
 
 [glance_store]
+<% if @glance_backends.include? 'rbd' -%>
+<% if @glance_backends.include? 'file' -%>
 stores = rbd, file
-default_store = <%= @default_store %>
+default_store = rbd
 default_backend = rbd
+<% else -%>
+stores = rbd
+default_store = rbd
+default_backend = rbd
+<% end -%>
+<% else -%>
+stores = file
+default_store = file
+default_backend = file
+<% end -%>
 
 [rbd]
 store_description = "default rbd backend"

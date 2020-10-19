@@ -9,7 +9,7 @@ class openstack::glance::service::rocky(
     $keystone_public_uri,
     Stdlib::Port $api_bind_port,
     Stdlib::Port $registry_bind_port,
-    $default_store,
+    Array[String] $glance_backends,
 ) {
     require "openstack::serverpackages::rocky::${::lsbdistcodename}"
 

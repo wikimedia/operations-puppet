@@ -9,7 +9,7 @@ class profile::openstack::codfw1dev::glance(
     Stdlib::Port $api_bind_port = lookup('profile::openstack::codfw1dev::glance::api_bind_port'),
     Stdlib::Port $registry_bind_port = lookup('profile::openstack::codfw1dev::glance::registry_bind_port'),
     Stdlib::Fqdn $primary_glance_image_store = lookup('profile::openstack::codfw1dev::primary_glance_image_store'),
-    String $default_store = lookup('profile::openstack::codfw1dev::default_glance_store'),
+    Array[String] $glance_backends = lookup('profile::openstack::codfw1dev::glance_backends'),
     ) {
 
     class {'::profile::openstack::base::glance':
@@ -22,7 +22,7 @@ class profile::openstack::codfw1dev::glance(
         api_bind_port              => $api_bind_port,
         registry_bind_port         => $registry_bind_port,
         primary_glance_image_store => $primary_glance_image_store,
-        default_store              => $default_store,
+        glance_backends            => $glance_backends,
     }
     contain '::profile::openstack::base::glance'
 }

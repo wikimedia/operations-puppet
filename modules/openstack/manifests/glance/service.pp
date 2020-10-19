@@ -12,7 +12,7 @@ class openstack::glance::service(
     $keystone_public_uri,
     Stdlib::Port $api_bind_port,
     Stdlib::Port $registry_bind_port,
-    $default_store,
+    $glance_backends,
 ) {
 
     class { "openstack::glance::service::${version}":
@@ -26,7 +26,7 @@ class openstack::glance::service(
         keystone_public_uri => $keystone_public_uri,
         api_bind_port       => $api_bind_port,
         registry_bind_port  => $registry_bind_port,
-        default_store       => $default_store,
+        glance_backends     => $glance_backends,
     }
 
     file { $glance_data_dir:

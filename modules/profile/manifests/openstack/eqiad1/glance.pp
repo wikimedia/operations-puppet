@@ -9,7 +9,7 @@ class profile::openstack::eqiad1::glance (
     Stdlib::Port $api_bind_port = lookup('profile::openstack::eqiad1::glance::api_bind_port'),
     Stdlib::Port $registry_bind_port = lookup('profile::openstack::eqiad1::glance::registry_bind_port'),
     Stdlib::Fqdn $primary_glance_image_store = lookup('profile::openstack::eqiad1::primary_glance_image_store'),
-    String $default_store = lookup('profile::openstack::eqiad1::default_glance_store'),
+    Array[String] $glance_backends = lookup('profile::openstack::eqiad1::glance_backends'),
     ) {
 
     require ::profile::openstack::eqiad1::clientpackages
@@ -23,7 +23,7 @@ class profile::openstack::eqiad1::glance (
         api_bind_port              => $api_bind_port,
         registry_bind_port         => $registry_bind_port,
         primary_glance_image_store => $primary_glance_image_store,
-        default_store              => $default_store,
+        glance_backends            => $glance_backends,
     }
     contain '::profile::openstack::base::glance'
 
