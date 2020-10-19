@@ -370,7 +370,7 @@ sub cluster_fe_recv {
 		// otherwise there are potentially holes by which unrelated
 		// metawiki URLs can be accessed via w.wiki after the rewrite in
 		// text-backend.
-		if (req.url !~ "^/[23456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz$]*$") {
+		if (req.url !~ "^/_?[23456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz$]*$") {
 			return (synth(404, "Short URL Not Found"));
 		}
 	}
