@@ -11,8 +11,6 @@ class profile::tcpircbot(
         password => $passwords::logmsgbot::logmsgbot_password,
         cidr     => [
             '::ffff:127.0.0.1/128',             # loopback
-            '::ffff:10.64.0.196/128',           # deployment eqiad v4: tin
-            '2620:0:861:101:10:64:0:196/128',   # deployment eqiad v6: tin
             '::ffff:10.64.32.16/128',           # deployment eqiad v4: deploy1001
             '2620:0:861:103:10:64:32:16/128',   # deployment eqiad v6: deploy1001
             '::ffff:10.64.32.28/128',           # deployment eqiad v4: deploy1002
