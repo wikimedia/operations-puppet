@@ -1,2 +1,1 @@
 profile::prometheus::ops::ensure_rsync: absent
-profile::prometheus::pushgateway_host: 'prometheus1003.eqiad.wmnet'

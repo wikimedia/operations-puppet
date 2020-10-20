@@ -20,6 +20,10 @@ profile::prometheus::k8s::thanos: true
 # Thanos will ask Prometheus (via Thanos Sidecar) for last 15d only
 profile::prometheus::thanos::min_time: '-15d'
 
+# The single host that's running Pushgateway.
+# DNS prometheus-pushgateway.discovery.wmnet must match.
+profile::prometheus::pushgateway_host: 'prometheus1003.eqiad.wmnet'
+
 profile::lvs::realserver::use_conftool: true
 profile::lvs::realserver::pools:
   prometheus:

@@ -580,6 +580,24 @@ class profile::prometheus::ops (
         port       => 19194,
     }
 
+    # Job definition for alertmanager
+    $pushgateway_jobs = [
+      {
+        'job_name'        => 'pushgateway',
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/pushgateway_*.yaml"] },
+        ],
+      },
+    ]
+
+    prometheus::class_config{ "pushgateway_${::site}":
+        dest             => "${targets_path}/pushgateway_${::site}.yaml",
+        site             => $::site,
+        class_name       => 'prometheus::pushgateway',
+        port             => 9091,
+        class_parameters => { 'ensure' => present },
+    }
+
     # Job definition for cadvisor exporter
     $cadvisor_jobs = [
       {
@@ -1843,7 +1861,7 @@ class profile::prometheus::ops (
             $cloud_dev_pdns_jobs, $cloud_dev_pdns_rec_jobs, $bacula_jobs, $poolcounter_exporter_jobs,
             $apereo_cas_jobs, $atlas_exporter_jobs, $exported_blackbox_jobs, $cadvisor_jobs,
             $envoy_jobs, $webperf_jobs, $squid_jobs, $nic_saturation_exporter_jobs, $thanos_jobs, $netbox_jobs,
-            $wikidough_jobs, $chartmuseum_jobs, $es_exporter_jobs, $alertmanager_jobs
+            $wikidough_jobs, $chartmuseum_jobs, $es_exporter_jobs, $alertmanager_jobs, $pushgateway_jobs
         ),
         global_config_extra   => $config_extra,
     }
