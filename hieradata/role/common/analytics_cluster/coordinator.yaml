@@ -28,6 +28,7 @@ profile::hive::metastore::monitoring_enabled: true
 profile::hive::metastore::ferm_srange: '$ANALYTICS_NETWORKS'
 
 # Presto (Coordinator) Server settings
+profile::presto::server::use_puppet_ssl_certs: true
 profile::presto::monitoring_enabled: true
 profile::presto::use_kerberos: true
 profile::presto::cluster_name: analytics-presto
