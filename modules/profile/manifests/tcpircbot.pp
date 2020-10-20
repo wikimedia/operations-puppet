@@ -15,6 +15,8 @@ class profile::tcpircbot(
             '2620:0:861:101:10:64:0:196/128',   # deployment eqiad v6: tin
             '::ffff:10.64.32.16/128',           # deployment eqiad v4: deploy1001
             '2620:0:861:103:10:64:32:16/128',   # deployment eqiad v6: deploy1001
+            '::ffff:10.64.32.28/128',           # deployment eqiad v4: deploy1002
+            '2620:0:861:103:10:64:32:28/128',   # deployment eqiad v6: deploy1002
             '::ffff:10.192.32.24/128',          # deployment codfw v4: deploy2001
             '2620:0:860:103:10:192:32:24/128',  # deployment codfw v6: deploy2001
             '::ffff:10.64.16.77/128',           # maintenance eqiad v4: mwmaint1002
@@ -41,6 +43,7 @@ class profile::tcpircbot(
 
     $allowed_hosts = [
         'deploy1001.eqiad.wmnet',       # deployment eqiad
+        'deploy1002.eqiad.wmnet',       # deployment eqiad
         'deploy2001.codfw.wmnet',       # deployment codfw
         'puppetmaster1001.eqiad.wmnet', # puppet eqiad
         'puppetmaster2001.codfw.wmnet', # puppet codfw
