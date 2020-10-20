@@ -2753,7 +2753,7 @@ service::catalog:
       - dnsdisc: wdqs
         active_active: true
   wikifeeds:
-    description: A node webservice supporting featured wiki content feeds. termbox.svc.%{::site}.wmnet
+    description: A node webservice supporting featured wiki content feeds. wikifeeds.svc.%{::site}.wmnet
     encryption: true
     ip:
       codfw:
