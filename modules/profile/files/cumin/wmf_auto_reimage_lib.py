@@ -1005,7 +1005,7 @@ def check_uptime(host, minimum=0, maximum=None, installer=False):
 
 
 def run_httpbb(host):
-    """Run httpbb from the active deployment_server (deploy1001) on the given hosts.
+    """Run httpbb from the active deployment_server on the given hosts.
 
     Arguments:
     host -- the host against which the httpbb tests must be executed
