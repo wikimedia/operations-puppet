@@ -7,6 +7,7 @@ class profile::openstack::codfw1dev::pdns::recursor::service(
     $legacy_tld = lookup('profile::openstack::codfw1dev::pdns::legacy_tld'),
     $private_reverse_zones = lookup('profile::openstack::codfw1dev::pdns::private_reverse_zones'),
     $aliaser_extra_records = lookup('profile::openstack::codfw1dev::pdns::recursor_aliaser_extra_records'),
+    Array[Stdlib::IP::Address] $extra_allow_from = lookup('profile::openstack::codfw1dev::pdns::extra_allow_from', {default_value => []}),
     ) {
 
     # This iterates on $hosts and returns the entry in $hosts with the same
@@ -29,6 +30,7 @@ class profile::openstack::codfw1dev::pdns::recursor::service(
         legacy_tld            => $legacy_tld,
         private_reverse_zones => $private_reverse_zones,
         aliaser_extra_records => $aliaser_extra_records,
+        extra_allow_from      => $extra_allow_from,
     }
 
     class{'::profile::openstack::base::pdns::recursor::monitor::rec_control':}

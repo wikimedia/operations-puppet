@@ -9,6 +9,10 @@ profile::openstack::eqiad1::pdns::hosts:
   - 'ns1.openstack.eqiad1.wikimediacloud.org'
 profile::openstack::eqiad1::pdns::monitor_target_fqdn: 'tools-sgegrid-master.tools.eqiad.wmflabs'
 
+# make sure VMs with a floating IP can query the recursor (cloud-eqiad1-floating)
+profile::openstack::eqiad1::pdns::extra_allow_from:
+  - 185.15.56.0/25
+
 # Extra records that the Labs DNS recursor should respond to.
 # REMEMBER THE TRAILING DOT.
 profile::openstack::eqiad1::pdns::recursor_aliaser_extra_records:

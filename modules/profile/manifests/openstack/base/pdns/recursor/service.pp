@@ -29,10 +29,11 @@ class profile::openstack::base::pdns::recursor::service(
     $legacy_tld = lookup('profile::openstack::base::pdns::legacy_tld'),
     $private_reverse_zones = lookup('profile::openstack::base::pdns::private_reverse_zones'),
     $aliaser_extra_records = lookup('profile::openstack::base::pdns::recursor_aliaser_extra_records'),
+    Array[Stdlib::IP::Address] $extra_allow_from = lookup('profile::openstack::base::pdns::extra_allow_from', {default_value => []}),
     ) {
 
     include ::network::constants
-    $all_networks = flatten([$::network::constants::production_networks, $::network::constants::labs_networks])
+    $allow_from = flatten([$::network::constants::labs_networks, $extra_allow_from])
 
     $pdns_host_ip = ipresolve($pdns_host,4)
     $pdns_recursor_ip = ipresolve($pdns_recursor,4)
@@ -74,7 +75,7 @@ class profile::openstack::base::pdns::recursor::service(
 
     class { '::dnsrecursor':
             listen_addresses         => [$pdns_recursor_ip],
-            allow_from               => $all_networks,
+            allow_from               => $allow_from,
             additional_forward_zones => "${tld}=${pdns_host_ip}, ${legacy_tld}=${pdns_host_ip}, ${reverse_zone_rules}",
             auth_zones               => 'labsdb=/var/zones/labsdb',
             lua_hooks                => $lua_hooks,
@@ -94,16 +95,18 @@ class profile::openstack::base::pdns::recursor::service(
         observer_project_name => $observer_project,
     }
 
+    $ferm_srange = "(${allow_from.join(' ')})"
+
     ferm::service { 'recursor_udp_dns_rec':
         proto  => 'udp',
         port   => '53',
-        srange => '$LABS_NETWORKS',
+        srange => $ferm_srange,
     }
 
     ferm::service { 'recursor_tcp_dns_rec':
         proto  => 'tcp',
         port   => '53',
-        srange => '$LABS_NETWORKS',
+        srange => $ferm_srange,
     }
 
     ferm::rule { 'recursor_skip_dns_conntrack-out':

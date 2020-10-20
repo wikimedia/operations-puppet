@@ -6,6 +6,10 @@ profile::openstack::codfw1dev::pdns::hosts:
   - 'ns0.openstack.codfw1dev.wikimediacloud.org'
   - 'ns1.openstack.codfw1dev.wikimediacloud.org'
 
+# make sure VMs with a floating IP can query the recursor (cloud-codfw1dev-floating)
+profile::openstack::codfw1dev::pdns::extra_allow_from:
+  - 185.15.57.0/29
+
 # Extra records that the Labs DNS recursor should respond to.
 # Used for things that would ideally be in a .svc. DNS zone but
 # we do not have one. REMEMBER THE TRAILING DOT.
