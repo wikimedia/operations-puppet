@@ -1,5 +1,5 @@
 # db1077
 # Broken BBU T225391
 mariadb::shard: 'test-s4'
-mariadb::mysql_role: master
+profile::mariadb::mysql_role: master
 profile::base::notifications: disabled

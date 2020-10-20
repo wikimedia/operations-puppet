@@ -1,2 +1,2 @@
 # db1115
-mariadb::mysql_role: 'master'
+profile::mariadb::mysql_role: 'master'

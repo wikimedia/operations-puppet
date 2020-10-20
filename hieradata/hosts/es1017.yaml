@@ -1,2 +1,2 @@
 mariadb::shard: 'es3'
-mariadb::mysql_role: 'standalone'
+profile::mariadb::mysql_role: 'standalone'

@@ -1,4 +1,4 @@
 # db2129
 mariadb::shard: 's6'
-mariadb::mysql_role: 'master'
+profile::mariadb::mysql_role: 'master'
 mariadb::binlog_format: 'STATEMENT'
