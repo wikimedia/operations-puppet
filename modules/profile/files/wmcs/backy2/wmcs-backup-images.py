@@ -9,7 +9,7 @@ import rbd2backy2
 with open("/etc/wmcs_backup_images.yaml") as f:
     config = yaml.safe_load(f)
 
-clients = mwopenstackclients.Clients(envfile="/etc/novaobserver.yaml")
+clients = mwopenstackclients.Clients(envfile="/etc/novaadmin.yaml")
 glance = clients.glanceclient()
 images = glance.images.list()
 
