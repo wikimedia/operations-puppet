@@ -2,7 +2,8 @@
 class profile::mariadb::misc (
     Profile::Mariadb::Valid_section $shard = lookup('mariadb::shard'),
 ) {
-    include ::profile::mariadb::mysql_role
+    require profile::mariadb::mysql_role
+    require passwords::misc::scripts
 
     $is_master = $profile::mariadb::mysql_role::role == 'master'
     $read_only = $is_master ? {

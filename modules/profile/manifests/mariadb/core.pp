@@ -3,6 +3,7 @@ class profile::mariadb::core (
     String $binlog_format = lookup('mariadb::binlog_format', {'default_value' => 'ROW'}),
 ){
     require profile::mariadb::mysql_role
+    require passwords::misc::scripts
 
     $mysql_role = $profile::mariadb::mysql_role::role
 

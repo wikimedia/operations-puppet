@@ -5,7 +5,6 @@ class role::mariadb::core {
 
     include ::profile::standard
     include ::profile::base::firewall
-    include ::passwords::misc::scripts
     include ::role::mariadb::ferm
     include ::profile::mariadb::core
 }
