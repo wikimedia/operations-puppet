@@ -133,6 +133,7 @@ profile::services_proxy::envoy::enabled_listeners: []
 graphite_host: localhost
 profile::prometheus::mcrouter_exporter::mcrouter_port: 11213
 profile::prometheus::mcrouter_exporter::listen_port: 9151
+profile::prometheus::pushgateway_host: 'invalid'
 profile::mediawiki::mcrouter_wancache::prometheus_exporter: false
 profile::mediawiki::mcrouter_wancache::timeouts_until_tko: 10
 profile::mediawiki::mcrouter_wancache::gutter_ttl: 60
