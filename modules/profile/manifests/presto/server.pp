@@ -80,6 +80,10 @@ class profile::presto::server(
         if $use_puppet_ssl_certs {
             $keystore_password = $presto_clusters_secrets[$cluster_name]['ssl_keystore_password']
             $ssl_keystore_path = '/etc/presto/ssl/server.p12'
+            # Presto seems not picking up the JVM default truststore's cert
+            $ssl_truststore_path = '/etc/ssl/certs/java/cacerts'
+            $ssl_truststore_password = 'changeit'
+
             base::expose_puppet_certs{ '/etc/presto':
                 user         => 'root',
                 group        => 'presto',

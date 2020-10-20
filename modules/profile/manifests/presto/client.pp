@@ -20,30 +20,35 @@ class profile::presto::client(
     String $discovery_uri = hiera('profile::presto::discovery_uri'),
     Boolean $use_kerberos = hiera('profile::presto::use_kerberos', false),
     Optional[Hash[String, Hash[String, String]]] $presto_clusters_secrets = hiera('presto_clusters_secrets', {}),
-    Boolean $use_puppet_ssl_certs = lookup('profile::presto::client::use_puppet_ssl_certs', { 'default_value' => false }),
+    Boolean $use_puppet_ssl_certs = lookup('profile::presto::client::use_puppet_ssl_certs', { 'default_value' => true }),
 ) {
 
     if $presto_clusters_secrets[$cluster_name] {
-        $ssl_truststore_password = $presto_clusters_secrets[$cluster_name]['ssl_truststore_password']
+        if $use_puppet_ssl_certs {
+            # Presto seems not picking up the JVM default truststore's cert
+            $ssl_truststore_path = '/etc/ssl/certs/java/cacerts'
+            $ssl_truststore_password = 'changeit'
+        } else {
+            $ssl_truststore_password = $presto_clusters_secrets[$cluster_name]['ssl_truststore_password']
+            # Needed by the presto-cli tool to validate the coordinator's TLS cert
+            $ssl_truststore_path = '/etc/presto/truststore.jks'
+            # Needed by libs like presto-python-client to validate the coordinator's TLS cert
+            $ssl_ca_cert_path = '/etc/presto/ca.crt.pem'
 
-        # Needed by the presto-cli tool to validate the coordinator's TLS cert
-        $ssl_truststore_path = '/etc/presto/truststore.jks'
-        # Needed by libs like presto-python-client to validate the coordinator's TLS cert
-        $ssl_ca_cert_path = '/etc/presto/ca.crt.pem'
+            file { $ssl_truststore_path:
+                content => secret("certificates/presto_${cluster_name}/root_ca/truststore.jks"),
+                owner   => 'root',
+                group   => 'root',
+                mode    => '0444',
+                require => Package['presto-cli'],
+            }
 
-        file { $ssl_truststore_path:
-            content => secret("certificates/presto_${cluster_name}/root_ca/truststore.jks"),
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0444',
-            require => Package['presto-cli'],
-        }
-
-        file { $ssl_ca_cert_path:
-            content => secret("certificates/presto_${cluster_name}/root_ca/ca.crt.pem"),
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0444',
+            file { $ssl_ca_cert_path:
+                content => secret("certificates/presto_${cluster_name}/root_ca/ca.crt.pem"),
+                owner   => 'root',
+                group   => 'root',
+                mode    => '0444',
+            }
         }
 
         file { '/usr/local/bin/presto':
