@@ -757,6 +757,7 @@ sub vcl_pipe {
 	// for websockets over pipe
 	if (req.http.upgrade) {
 		set bereq.http.upgrade = req.http.upgrade;
+		set bereq.http.connection = req.http.connection;
 	}
 
 	// Similarly to pass-traffic, pipe-traffic should also pick backends
