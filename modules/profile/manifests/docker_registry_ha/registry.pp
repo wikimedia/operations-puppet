@@ -1,28 +1,28 @@
 class profile::docker_registry_ha::registry(
     # The following variables might be useful elsewhere too
-    $username = hiera('docker_registry_ha::username'),
-    $hash = hiera('docker_registry_ha::hash'),
+    String $username = lookup('docker_registry_ha::username'),
+    String $hash = lookup('docker_registry_ha::hash'),
     # Which machines are allowed to build images.
-    $image_builders = hiera('profile::docker_registry_ha::registry::image_builders', undef),
+    Optional[Array[Stdlib::Host]] $image_builders = lookup('profile::docker_registry_ha::registry::image_builders', { 'default_value' => undef }),
     # cache text nodes are allowed to connect via HTTP, if defined
-    $cache_nodes = hiera('cache::nodes', {}),
+    Hash $cache_nodes = lookup('cache::nodes', { 'default_value' => {} }),
     # Storage configuration
-    $certname = hiera('profile::docker_registry_ha::registry::certname', undef),
-    $swift_accounts = hiera('profile::swift::accounts'),
-    $swift_auth_url = hiera('profile::docker_registry_ha::registry::swift_auth_url'),
+    Optional[String] $certname = lookup('profile::docker_registry_ha::registry::certname', { 'default_value' => undef }),
+    Hash[String, Hash[String, String]] $swift_accounts = lookup('profile::swift::accounts'),
+    Stdlib::Httpsurl $swift_auth_url = lookup('profile::docker_registry_ha::registry::swift_auth_url'),
     # By default, the password will be extracted from swift, but can be overridden
-    $swift_account_keys = hiera('profile::swift::accounts_keys'),
-    $swift_container = hiera('profile::docker_registry_ha::registry::swift_container', undef),
-    $swift_replication_configuration = hiera('profile::docker_registry_ha::registry::swift_replication_configuration'),
-    $swift_replication_key = hiera('profile::docker_registry_ha::registry::swift_replication_key'),
-    $swift_password = hiera('profile::docker_registry_ha::registry::swift_password', undef),
-    $redis_host = hiera('profile::docker_registry_ha::registry::redis_host', undef),
-    $redis_port = hiera('profile::docker_registry_ha::registry::redis_port', undef),
-    $redis_password = hiera('profile::docker_registry_ha::registry::redis_password', undef),
-    $docker_registry_shared_secret = hiera('profile::docker_registry_ha::registry::shared_secret', undef),
-    $registry_read_only_mode = hiera('profile::docker_registry_ha::registry::read_only_mode', false),
-    $metrics_allowed_hosts = hiera('prometheus_nodes'),
-    Array[String] $deployment_hosts = hiera('deployment_hosts', []),
+    Hash[String, String] $swift_account_keys = lookup('profile::swift::accounts_keys'),
+    Optional[String] $swift_container = lookup('profile::docker_registry_ha::registry::swift_container', { 'default_value' => undef }),
+    String $swift_replication_configuration = lookup('profile::docker_registry_ha::registry::swift_replication_configuration'),
+    String $swift_replication_key = lookup('profile::docker_registry_ha::registry::swift_replication_key'),
+    Optional[String] $swift_password = lookup('profile::docker_registry_ha::registry::swift_password', { 'default_value' => undef }),
+    Optional[Stdlib::Host] $redis_host = lookup('profile::docker_registry_ha::registry::redis_host', { 'default_value' => undef }),
+    Optional[Stdlib::Port] $redis_port = lookup('profile::docker_registry_ha::registry::redis_port', { 'default_value' => undef }),
+    Optional[String] $redis_password = lookup('profile::docker_registry_ha::registry::redis_password', { 'default_value' => undef }),
+    Optional[String] $docker_registry_shared_secret = lookup('profile::docker_registry_ha::registry::shared_secret', { 'default_value' => undef }),
+    Boolean $registry_read_only_mode = lookup('profile::docker_registry_ha::registry::read_only_mode', { 'default_value' => false }),
+    Array[Stdlib::Host] $metrics_allowed_hosts = lookup('prometheus_nodes'),
+    Array[Stdlib::Host] $deployment_hosts = lookup('deployment_hosts', { 'default_value' => [] }),
 ) {
     # if this looks pretty similar to profile::docker::registry
     # is intended.
