@@ -33,6 +33,11 @@ webserver('<%= @webserver['host'] %>:<%= @webserver['port'] %>', '<%= @webserver
 -- note that we don't use DelayAction() as that is UDP-only
 addAction(MaxQPSIPRule(<%= @qps_max %>, 32, 64), DropAction())
 
+-- == Performance Tuning ==
+
+-- set the maximum number of TCP client threads (dnsdist's default is 10)
+setMaxTCPClientThreads(<%= @tcp_client_threads_max %>)
+
 -- == Privacy ==
 
 -- restrict the size of the in-memory ring buffers used for traffic inspection

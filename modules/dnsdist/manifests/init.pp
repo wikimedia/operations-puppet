@@ -35,6 +35,9 @@
 #  [*ringbuffer_max*]
 #    [int] maximum number of entries in the ring buffer. default: 10.
 #
+#  [*tcp_client_threads_max*]
+#    [int] maximum number of TCP client threads. default: 20.
+#
 #  [*enable_console*]
 #    [bool] whether to enable dnsdist's console. default: false.
 #
@@ -61,18 +64,19 @@ class dnsdist (
     Dnsdist::TLS_common                 $tls_common,
     Dnsdist::TLS_config                 $tls_config_doh,
     Dnsdist::TLS_config                 $tls_config_dot,
-    Array[String[1]]                    $doh_paths          = ['/', '/dns-query'],
-    Integer[1]                          $qps_max            = 40,
-    Boolean                             $enable_packetcache = true,
-    Integer[1]                          $packetcache_max    = 10000000,
-    Integer[1]                          $ringbuffer_max     = 10,
-    Boolean                             $enable_console     = false,
-    Optional[String]                    $console_key        = undef,
-    Boolean                             $enable_webserver   = false,
-    Optional[Dnsdist::Webserver_config] $webserver          = undef,
-    Boolean                             $enable_ecs         = true,
-    Boolean                             $enable_landing     = false,
-    Optional[String]                    $landing_text       = undef,
+    Array[String[1]]                    $doh_paths              = ['/', '/dns-query'],
+    Integer[1]                          $qps_max                = 40,
+    Boolean                             $enable_packetcache     = true,
+    Integer[1]                          $packetcache_max        = 10000000,
+    Integer[1]                          $ringbuffer_max         = 10,
+    Integer[1]                          $tcp_client_threads_max = 20,
+    Boolean                             $enable_console         = false,
+    Optional[String]                    $console_key            = undef,
+    Boolean                             $enable_webserver       = false,
+    Optional[Dnsdist::Webserver_config] $webserver              = undef,
+    Boolean                             $enable_ecs             = true,
+    Boolean                             $enable_landing         = false,
+    Optional[String]                    $landing_text           = undef,
 ) {
 
     if ($enable_console and $console_key == undef) {
