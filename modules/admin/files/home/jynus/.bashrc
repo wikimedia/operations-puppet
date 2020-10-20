@@ -5,9 +5,9 @@ case $- in
 esac
 
 if [ $(id -u) -eq 0 ]; then
-    PS1="\[\e[7;49;31m\]\u@\h:\w\[\e[0m\]\$ "
+    PS1="\$(if [ \$? == 0 ]; then echo ✔️; else echo ❌; fi) \[\e[7;49;31m\]\u@\h:\w\[\e[0m\]\$ "
 else
-    PS1="\[\e[1;31m\]\u@\h\[\e[0m\]:\[\e[01;34m\]\w\[\e[0m\]\$ "
+    PS1="\$(if [ \$? == 0 ]; then echo ✔️; else echo ❌; fi) \[\e[1;31m\]\u@\h\[\e[0m\]:\[\e[01;34m\]\w\[\e[0m\]\$ "
 fi
 alias mysqlbinlog='mysqlbinlog -vv --base64-output=DECODE-ROWS --skip-ssl'
 alias ls='ls --color=auto'
@@ -17,12 +17,11 @@ alias zarcillo='mysql.py -h db1115 -A zarcillo'
 function my() {
     local instances socket socket_count has_mysql skip_ssl
     local instance="${1}"
+    local single_socket="/run/mysqld/mysqld.sock"
 
     socket_count="$(find /run/mysqld/ -maxdepth 1 -iname "mysqld*.sock" | wc -l)"
-    if [[ "${socket_count}" -eq "0" ]]; then
-        socket="/tmp/mysql.sock"
-    elif [[ "${socket_count}" -eq "1" ]]; then
-        socket="/run/mysqld/mysqld.sock"
+    if [[ ( "${socket_count}" -eq "1" && -f $single_socket ) ]]; then
+        socket=$single_socket
     else
         if [[ -z "${instance}" ]]; then
             instances="$(find /run/mysqld/ -maxdepth 1 -iname "mysqld.*.sock" -printf '%P '| sed -E 's/mysqld\.([^.]+)\.sock/\1/g')"
