@@ -2527,12 +2527,6 @@ host dbstore1005 {
     fixed-address dbstore1005.eqiad.wmnet;
 }
 
-host deploy1001 {
-    hardware ethernet 18:66:DA:5F:CF:1F;
-    fixed-address deploy1001.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
-}
-
 host deploy1002 {
     hardware ethernet 4C:D9:8F:65:E5:ED ;
     fixed-address deploy1002.eqiad.wmnet;
