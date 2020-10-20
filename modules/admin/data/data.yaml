@@ -285,7 +285,7 @@ groups:
               aarora, zpapierski, knissen, jiawang, mholloway-shell, tarrow,
               itamar, phedenskog, aaron, dpifke, aklapper, jmads, andrew-wmde, daniram,
               rodolfovalentim, dcipoletti, chrisalbon, wikigit, nahidunlimited,
-              agaduran, edtadros, dvrandecic, razzi, cparle, klausman, lexnasser]
+              agaduran, edtadros, dvrandecic, razzi, cparle, klausman, lexnasser, sbisson]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product]
   analytics-admins:
@@ -2191,6 +2191,7 @@ users:
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDWBhtVz0rMyWOMkA/h5veSdmrzNd6SB4kktb98TjC1JtFDu5U8SggBFobAIOgy0DEIIo5rjtdQ2a+NB+zqP2jgYuJ4F4S6NPG4o3zWyNdaRRNit0/KC0U1UXhmHGk3WODAc5mbAMTtDRz6aJvo0GbK141AzKppD/QCOYkr7bMz6UcxRXe7DKGENYMvw+IiB98IdKg6ilO0k9YdBIRuF4GFDOlRnCCeJ8gzyukbHbGVMfMkW1jqWQeyzdBSUlxROzBQ74Ge5gy63rj8ypAXhJ3O5t8UCWUCX+wgsyCZwKaDt4C/ejt+N74hCeQ0aemzkFGHD6EvpFYZXiks2wGQiy3B sbisson@sbissons-MacBook-Air.local]
     uid: 11999
     email: sbisson@wikimedia.org
+    krb: present
   zhousquared:
     ensure: absent
     gid: 500
