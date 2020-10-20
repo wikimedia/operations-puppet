@@ -50,3 +50,54 @@ counter trafficserver_tls_client_ttfb_count by cache_status, http_status_family
   }
   trafficserver_tls_client_ttfb_bucket["+Inf"][$cache_status][$http_status_family]++
 }
+
+# histogram trafficserver_tls_client_total_time
+counter trafficserver_tls_client_total_time_bucket by le, cache_status, http_status_family
+counter trafficserver_tls_client_total_time_sum by cache_status, http_status_family
+counter trafficserver_tls_client_total_time_count by cache_status, http_status_family
+
+/time_total:(?P<client_total_time>[0-9]+)\t.*cache_status:(?P<cache_status>[a-z-]+)\t.*http_status:(?P<http_status_family>[1-9])[0-9][0-9]/ {
+  trafficserver_tls_client_total_time_sum[$cache_status][$http_status_family] += $client_total_time
+  trafficserver_tls_client_total_time_count[$cache_status][$http_status_family]++
+
+  $client_total_time < 45 {
+    trafficserver_tls_client_total_time_bucket["0.045"][$cache_status][$http_status_family]++
+  }
+  $client_total_time < 70 {
+    trafficserver_tls_client_total_time_bucket["0.07"][$cache_status][$http_status_family]++
+  }
+  $client_total_time < 100 {
+    trafficserver_tls_client_total_time_bucket["0.1"][$cache_status][$http_status_family]++
+  }
+  $client_total_time < 150 {
+    trafficserver_tls_client_total_time_bucket["0.15"][$cache_status][$http_status_family]++
+  }
+  $client_total_time < 250 {
+    trafficserver_tls_client_total_time_bucket["0.25"][$cache_status][$http_status_family]++
+  }
+  $client_total_time < 350 {
+    trafficserver_tls_client_total_time_bucket["0.35"][$cache_status][$http_status_family]++
+  }
+  $client_total_time < 500 {
+    trafficserver_tls_client_total_time_bucket["0.5"][$cache_status][$http_status_family]++
+  }
+  $client_total_time < 750 {
+    trafficserver_tls_client_total_time_bucket["0.75"][$cache_status][$http_status_family]++
+  }
+  $client_total_time < 1200 {
+    trafficserver_tls_client_total_time_bucket["1.2"][$cache_status][$http_status_family]++
+  }
+  $client_total_time < 3000 {
+    trafficserver_tls_client_total_time_bucket["3.0"][$cache_status][$http_status_family]++
+  }
+  $client_total_time < 10000 {
+    trafficserver_tls_client_total_time_bucket["10.0"][$cache_status][$http_status_family]++
+  }
+  $client_total_time < 30000 {
+    trafficserver_tls_client_total_time_bucket["30.0"][$cache_status][$http_status_family]++
+  }
+  $client_total_time < 60000 {
+    trafficserver_tls_client_total_time_bucket["60.0"][$cache_status][$http_status_family]++
+  }
+  trafficserver_tls_client_total_time_bucket["+Inf"][$cache_status][$http_status_family]++
+}
