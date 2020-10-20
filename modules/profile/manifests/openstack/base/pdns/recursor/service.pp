@@ -31,10 +31,14 @@ class profile::openstack::base::pdns::recursor::service(
     $aliaser_extra_records = lookup('profile::openstack::base::pdns::recursor_aliaser_extra_records'),
     Array[Stdlib::IP::Address] $extra_allow_from = lookup('profile::openstack::base::pdns::extra_allow_from', {default_value => []}),
     Array[Stdlib::IP::Address] $monitoring_hosts = lookup('monitoring_hosts', {default_value => []}),
+    Array[Stdlib::Fqdn]        $controllers      = lookup('profile::openstack::base::openstack_controllers',  {default_value => []}),
     ) {
 
     include ::network::constants
-    $allow_from = flatten([$::network::constants::labs_networks, $extra_allow_from, $monitoring_hosts])
+    $allow_from = flatten([$::network::constants::labs_networks, $extra_allow_from, $monitoring_hosts,
+                          $controllers.map |$host| { ipresolve($host, 4) },
+                          $controllers.map |$host| { ipresolve($host, 6)}
+                          ])
 
     $pdns_host_ip = ipresolve($pdns_host,4)
     $pdns_recursor_ip = ipresolve($pdns_recursor,4)

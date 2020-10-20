@@ -9,6 +9,7 @@ class profile::openstack::eqiad1::pdns::recursor::service(
     $private_reverse_zones = lookup('profile::openstack::eqiad1::pdns::private_reverse_zones'),
     $aliaser_extra_records = lookup('profile::openstack::eqiad1::pdns::recursor_aliaser_extra_records'),
     Array[Stdlib::IP::Address] $extra_allow_from = lookup('profile::openstack::eqiad1::pdns::extra_allow_from', {default_value => []}),
+    Array[Stdlib::Fqdn]        $controllers      = lookup('profile::openstack::eqiad1::openstack_controllers',  {default_value => []}),
     ) {
 
     # This iterates on $hosts and returns the entry in $hosts with the same
@@ -31,6 +32,7 @@ class profile::openstack::eqiad1::pdns::recursor::service(
         private_reverse_zones => $private_reverse_zones,
         aliaser_extra_records => $aliaser_extra_records,
         extra_allow_from      => $extra_allow_from,
+        controllers           => $controllers,
     }
 
     class{'::profile::openstack::base::pdns::recursor::monitor::rec_control':}
