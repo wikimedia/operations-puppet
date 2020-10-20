@@ -12,6 +12,7 @@ profile::presto::use_kerberos: true
 profile::presto::cluster_name: analytics-presto
 profile::presto::discovery_uri: https://an-coord1001.eqiad.wmnet:8281
 profile::presto::server::heap_max: 110G
+profile::presto::server::use_puppet_ssl_certs: true
 profile::presto::server::config_properties:
   # Set network-topology to legacy since we are not (yet?) running
   # presto co-located with HDFS nodes. If we were, we would
