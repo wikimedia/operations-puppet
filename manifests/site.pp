@@ -1401,7 +1401,7 @@ node /^ldap-eqiad-replica0[1-2]\.wikimedia\.org$/ {
 }
 
 node /^ldap-replica100[1-2]\.wikimedia\.org$/ {
-    role(insetup)
+    role(openldap::replica)
 }
 
 # Read-only ldap replicas in codfw
