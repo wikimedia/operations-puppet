@@ -11,10 +11,20 @@
 # [*monitoring_enabled*]
 #   Enable monitoring for Camus data imported.
 #
+# [*http_proxy_host*]
+#    If set, Java will be configured to use an HTTP proxy.
+#    Useful if you are using remove eventstreamconfig.
+#    Default: undef
+#
+# [*http_proxy_port*]
+#   Default: 8080
+#
 class profile::analytics::refinery::job::test::camus(
-    String $kafka_cluster_name = lookup('profile::analytics::refinery::job::camus::kafka_cluster_name', { 'default_value' => 'jumbo' }),
-    Boolean $monitoring_enabled = lookup('profile::analytics::refinery::job::camus::monitoring_enabled', { 'default_value' => false }),
-    Boolean $use_kerberos       = lookup('profile::analytics::refinery::job::camus::use_kerberos', { 'default_value' => false }),
+    String $kafka_cluster_name         = lookup('profile::analytics::refinery::job::camus::kafka_cluster_name', { 'default_value' => 'jumbo' }),
+    Boolean $monitoring_enabled        = lookup('profile::analytics::refinery::job::camus::monitoring_enabled', { 'default_value' => false }),
+    Optional[String] $http_proxy_host  = lookup('http_proxy_host', { 'default_value' => undef }),
+    Optional[Integer] $http_proxy_port = lookup('http_proxy_port', { 'default_value' => 8080 }),
+    Boolean $use_kerberos              = lookup('profile::analytics::refinery::job::camus::use_kerberos', { 'default_value' => false }),
 ) {
     require ::profile::hadoop::common
     require ::profile::analytics::refinery
@@ -24,7 +34,6 @@ class profile::analytics::refinery::job::test::camus(
 
     $hadoop_cluster_name = $::profile::hadoop::common::cluster_name
 
-    $env = "export PYTHONPATH=\${PYTHONPATH}:${profile::analytics::refinery::path}/python"
     $systemd_env = {
         'PYTHONPATH' => "\${PYTHONPATH}:${profile::analytics::refinery::path}/python",
     }
@@ -49,6 +58,8 @@ class profile::analytics::refinery::job::test::camus(
         # Email reports if CamusPartitionChecker finds errors.
         check_email_target  => $check_email_target,
         environment         => $systemd_env,
+        http_proxy_host     => $http_proxy_host,
+        http_proxy_port     => $http_proxy_port,
         use_kerberos        => $use_kerberos,
     }
 

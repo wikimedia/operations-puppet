@@ -15,6 +15,14 @@
 #   Run kinit before executing any command.
 #   Default: false
 #
+# [*http_proxy_host*]
+#    If set, Java will be configured to use an HTTP proxy.
+#    Useful if you are using remove eventstreamconfig.
+#    Default: undef
+#
+# [*http_proxy_port*]
+#   Default: 8080
+#
 # Description of Camus jobs declared here:
 #
 # - webrequest
@@ -46,10 +54,12 @@
 #   Ingests the netflow topic into /wmf/data/raw/netflow.
 #
 class profile::analytics::refinery::job::camus(
-    String $kafka_cluster_name    = lookup('profile::analytics::refinery::job::camus::kafka_cluster_name', { 'default_value' => 'jumbo-eqiad' }),
-    Boolean $monitoring_enabled   = lookup('profile::analytics::refinery::job::camus::monitoring_enabled', { 'default_value' => false }),
-    Boolean $use_kerberos         = lookup('profile::analytics::refinery::job::camus::use_kerberos', { 'default_value' => false }),
-    Wmflib::Ensure $ensure_timers = lookup('profile::analytics::refinery::job::camus::ensure_timers', { 'default_value' => 'present' }),
+    String $kafka_cluster_name         = lookup('profile::analytics::refinery::job::camus::kafka_cluster_name', { 'default_value' => 'jumbo-eqiad' }),
+    Boolean $monitoring_enabled        = lookup('profile::analytics::refinery::job::camus::monitoring_enabled', { 'default_value' => false }),
+    Boolean $use_kerberos              = lookup('profile::analytics::refinery::job::camus::use_kerberos', { 'default_value' => false }),
+    Optional[String] $http_proxy_host  = lookup('http_proxy_host', { 'default_value' => undef }),
+    Optional[Integer] $http_proxy_port = lookup('http_proxy_port', { 'default_value' => 8080 }),
+    Wmflib::Ensure $ensure_timers      = lookup('profile::analytics::refinery::job::camus::ensure_timers', { 'default_value' => 'present' }),
 ) {
     require ::profile::hadoop::common
     require ::profile::analytics::refinery
@@ -59,7 +69,6 @@ class profile::analytics::refinery::job::camus(
 
     $hadoop_cluster_name = $::profile::hadoop::common::cluster_name
 
-    $env = "export PYTHONPATH=\${PYTHONPATH}:${profile::analytics::refinery::path}/python"
     $systemd_env = {
         'PYTHONPATH' => "\${PYTHONPATH}:${profile::analytics::refinery::path}/python",
     }
@@ -86,6 +95,8 @@ class profile::analytics::refinery::job::camus(
         # Email reports if CamusPartitionChecker finds errors.
         check_email_target  => $check_email_target,
         environment         => $systemd_env,
+        http_proxy_host     => $http_proxy_host,
+        http_proxy_port     => $http_proxy_port,
         use_kerberos        => $use_kerberos,
         monitoring_enabled  => $monitoring_enabled,
     }

@@ -69,6 +69,14 @@
 # [*libjars*]
 #    Any additional jar files to pass to Hadoop when starting the MapReduce job.
 #
+# [*http_proxy_host*]
+#    If set, jobs will be configured to use an HTTP proxy.
+#    Useful if you are using remote eventstreamconfig.
+#    Default: undef
+#
+# [*http_proxy_port*]
+#   Default: 8080
+#
 # [*template*]
 #   Puppet path to camus.properties.erb template.  Default: camus/camus.properties.erb
 #
@@ -102,6 +110,8 @@ define camus::job (
     $check_email_target         = undef,
     $check_java_opts            = undef,
     $libjars                    = undef,
+    $http_proxy_host            = undef,
+    $http_proxy_port            = 8080,
     $template                   = 'camus/camus.properties.erb',
     $interval                   = undef,
     $environment                = undef,
@@ -252,24 +262,36 @@ define camus::job (
         default => "--libjars ${libjars}",
     }
 
+    if $http_proxy_host {
+        # CamusPartitionChecker runs as a local Java process, we'll need to manually
+        # place these opts on its java command.
+        $http_proxy_java_opts = " -Dhttp.proxyHost=${http_proxy_host} -Dhttp.proxyPort=${http_proxy_port} -Dhttps.proxyHost=${http_proxy_host} -Dhttps.proxyPort=${http_proxy_port}"
+        $http_proxy_environment = {
+            # These are needed for the camus CLI wrappers python integration with EventStreamConfig
+            # via --dynamic-stream-configs.  This will be removed in favor of Camus direct
+            # integration via eventstreamconfig.uri.
+            'http_proxy'  => "http://${http_proxy_host}:${http_proxy_port}",
+            'https_proxy' => "http://${http_proxy_host}:${http_proxy_port}",
+            # Camus runs as a Hadoop job, and needs these set in HADOOP_OPTS
+            # to properly use proxy in the task container.
+            'HADOOP_OPTS' => "'${http_proxy_java_opts}'"
+        }
+    } else {
+        $http_proxy_java_opts = ''
+        $http_proxy_environment = {}
+    }
+
     # Set $dynamic_stream_configs_opt and use http webproxy
     # so https://meta.wikimedia.org/w/api.php can be requested at runtime.
     if $dynamic_stream_configs {
         $dynamic_stream_configs_opt = '--dynamic-stream-configs'
-
         $stream_configs_constraints_opt = $stream_configs_constraints ? {
             undef => '',
             default => "--stream-configs-constraints=${stream_configs_constraints}"
         }
-
-        $http_proxy_environment = {
-            'http_proxy'  => 'http://webproxy.eqiad.wmnet:8080',
-            'https_proxy' => 'http://webproxy.eqiad.wmnet:8080',
-        }
     } else {
         $dynamic_stream_configs_opt = ''
         $stream_configs_constraints_opt = ''
-        $http_proxy_environment = {}
     }
 
 
@@ -288,9 +310,10 @@ define camus::job (
         false   => '',
         default => "--check-emails-to ${check_email_target} ",
     }
+
     $_check_java_opts = $check_java_opts ? {
-        undef   => '',
-        default => "--check-java-opts '${check_java_opts}' ",
+        undef   => $http_proxy_java_opts,
+        default => "--check-java-opts '${check_java_opts}${http_proxy_java_opts}' ",
     }
 
     $check_opts = $check ? {
