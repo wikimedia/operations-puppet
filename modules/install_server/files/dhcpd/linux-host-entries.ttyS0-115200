@@ -45,6 +45,11 @@ host archiva1002 {
     fixed-address archiva1002.wikimedia.org;
 }
 
+host an-test-client1001 {
+    hardware ethernet aa:00:00:6f:07:3c;
+    fixed-address an-test-client1001.eqiad.wmnet;
+}
+
 host analytics-tool1001 {
     hardware ethernet aa:00:00:ed:b1:fd;
     fixed-address analytics-tool1001.eqiad.wmnet;
