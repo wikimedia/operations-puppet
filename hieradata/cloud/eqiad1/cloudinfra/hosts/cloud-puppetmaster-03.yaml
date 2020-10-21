@@ -17,7 +17,7 @@ profile::openstack::eqiad1::puppetmaster::encapi::statsd_prefix: labs.cloudinfra
 profile::openstack::eqiad1::puppetmaster::servers:
   cloud-puppetmaster-03.cloudinfra.eqiad.wmflabs:
   - {loadfactor: 10, worker: cloud-puppetmaster-03.cloudinfra.eqiad.wmflabs}
-  - {loadfactor: 20, worker: cloud-puppetmaster-05.cloudinfra.eqiad.wmflabs}
+  - {loadfactor: 20, worker: cloud-puppetmaster-05.cloudinfra.eqiad1.wikimedia.cloud}
 profile::openstack::eqiad1::puppetmaster::web_hostname: puppetmaster.cloudinfra.wmflabs.org
 profile::openstack::eqiad1::puppetmaster_hostname: puppetmaster.cloudinfra.wmflabs.org
 profile::openstack::eqiad1::region: eqiad1-r
