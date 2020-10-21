@@ -1,5 +1,5 @@
 class profile::mariadb::dbstore_multiinstance (
-    Hash[String, Pattern[/^\d+[KMG]?$/]] $instances = lookup('profile::mariadb::dbstore_multiinstance::instances'),
+    Hash[String, Stdlib::Datasize] $instances = lookup('profile::mariadb::dbstore_multiinstance::instances'),
     Hash[String, Stdlib::Port] $section_ports = lookup('profile::mariadb::section_ports'),
 ) {
     require profile::mariadb::packages_wmf

@@ -1,5 +1,5 @@
 class profile::wmcs::db::wikireplicas::mariadb_multiinstance (
-    Hash[String, Pattern[/^\d+[KMG]?$/]] $instances = lookup('profile::wmcs::db::wikireplicas::mariadb_multiinstance::instances', ),
+    Hash[String, Stdlib::Datasize] $instances = lookup('profile::wmcs::db::wikireplicas::mariadb_multiinstance::instances', ),
     Array[String] $mysql_root_clients = lookup('mysql_root_clients', {default_value =>[]}),
     Hash[String,Stdlib::Port] $section_ports = lookup('profile::mariadb::section_ports', )
 ) {

@@ -5,7 +5,7 @@
 # a mariadb multi-instance environment that can be used as replica.
 #
 class profile::mariadb::misc::analytics::multiinstance (
-    Hash[String, Pattern[/^\d+[KMG]?$/]] $instances = lookup('profile::mariadb::misc::analytics::multiinstance::instances'),
+    Hash[String, Stdlib::Datasize] $instances = lookup('profile::mariadb::misc::analytics::multiinstance::instances'),
     Hash[String, Stdlib::Port] $section_ports = lookup('profile::mariadb::section_ports'),
 ) {
     require profile::mariadb::packages_wmf
