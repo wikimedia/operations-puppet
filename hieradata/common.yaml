@@ -792,7 +792,7 @@ hadoop_clusters:
       - an-master1001.eqiad.wmnet
       - an-master1002.eqiad.wmnet
     journalnode_hosts:
-      - analytics1052.eqiad.wmnet  # Row A3
+      - an-worker1080.eqiad.wmnet  # Row A4
       - an-worker1078.eqiad.wmnet  # Row A2
       - analytics1072.eqiad.wmnet  # ROW B2
       - an-worker1090.eqiad.wmnet  # Row C4
