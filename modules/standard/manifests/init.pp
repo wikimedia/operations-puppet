@@ -14,7 +14,7 @@ class standard(
         # e.g. ::profile::debmonitor::client
         contain admin
         include profile::cumin::target
-        include profile::debmonitor::client  # lint:ignore:wmf_styleguide
+        include profile::debmonitor::client
     }
 
     unless $facts['fqdn'] in $::ntp_peers[$::site] {

@@ -11,8 +11,8 @@
 #       include ::profile::debmonitor::client
 #
 class profile::debmonitor::client (
-    String $debmonitor_server = hiera('debmonitor'),
-) {
+    Stdlib::Host $debmonitor_server = lookup('debmonitor'),
+){
     $base_path = '/etc/debmonitor'
     $cert = "${base_path}/ssl/cert.pem"
     $private_key = "${base_path}/ssl/server.key"
