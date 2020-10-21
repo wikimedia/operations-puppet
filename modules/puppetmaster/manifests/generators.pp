@@ -1,4 +1,6 @@
-class puppetmaster::generators($ensure = 'present'){
+class puppetmaster::generators(
+    Wmflib::Ensure $ensure = 'present'
+){
 
     require_package('python3-requests')
 

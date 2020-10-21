@@ -3,11 +3,11 @@
 # Checkout the base git repo for operations/puppet
 #
 class puppetmaster::base_repo (
-    $gitdir='/var/lib/git',
-    $owner='root',
-    $group='root',
-    $gitowner='root',
-) {
+    Stdlib::Unixpath $gitdir='/var/lib/git',
+    String $owner='root',
+    String $group='root',
+    String $gitowner='root',
+){
 
     file { [$gitdir, "${gitdir}/operations"]:
         ensure => directory,

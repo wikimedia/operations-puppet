@@ -17,7 +17,7 @@ profile::base::puppet::puppet_major_version: 5
 profile::base::puppet::facter_major_version: 3
 profile::base::puppet::serialization_format: pson
 profile::base::legacy_cloud_search_domain: ''
-puppet_ca_server: ""
+puppet_ca_server: 'none'
 manage_puppet_ca_file: false
 
 profile::base::labs::unattended_wmf: 'present'

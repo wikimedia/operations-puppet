@@ -1,8 +1,8 @@
 
 class puppetmaster::ssl(
-            $server_name='puppet',
-) {
-    $ssldir = '/var/lib/puppet/server/ssl'
+    Stdlib::Fqdn $server_name='puppet',
+    Stdlib::Unixpath $ssldir = '/var/lib/puppet/server/ssl'
+){
 
     # TODO: Hack to make class pass tests
     if defined(Package['puppetmaster']) {

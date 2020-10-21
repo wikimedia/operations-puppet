@@ -1,11 +1,11 @@
 # Sets up the private repo dir and all the corresponding git hooks
 define puppetmaster::gitprivate (
-    $bare=false,
-    $owner='root',
-    $group='root',
-    $dir_mode='0750',
-    $origin=undef,
-    ){
+    Boolean $bare = false,
+    String $owner = 'root',
+    String $group = 'root',
+    Stdlib::Filemode $dir_mode = '0750',
+    Optional[String] $origin = undef,
+){
 
     if $bare {
         $init = '/usr/bin/git --bare init'

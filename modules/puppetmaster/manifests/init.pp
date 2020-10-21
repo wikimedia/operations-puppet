@@ -41,7 +41,7 @@ class puppetmaster(
     String[1]                        $server_name        = 'puppet',
     String[1]                        $bind_address       = '*',
     String[1]                        $verify_client      = 'optional',
-    Array                            $deny_from          = [],
+    Array[String]                    $deny_from          = [],
     String[1]                        $server_type        = 'standalone',
     Hash                             $config             = {},
     Array[String]                    $allow_from         = [

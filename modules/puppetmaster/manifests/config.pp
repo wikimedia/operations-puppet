@@ -3,9 +3,9 @@
 # This class handles the master part of /etc/puppet.conf.
 # Do not include directly.
 class puppetmaster::config(
-    $config,
-    $server_type,
-) {
+    Hash $config,
+    Enum['frontend', 'backend', 'standalone'] $server_type,
+){
 
     base::puppet::config { 'master':
         prio    => 20,

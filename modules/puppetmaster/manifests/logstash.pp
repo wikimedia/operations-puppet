@@ -11,10 +11,11 @@
 # - logstash_port: Port to send log events to
 # - timeout: Connection timeout for sending an event in seconds. Default is 5.
 class puppetmaster::logstash(
-    $logstash_host,
-    $logstash_port,
-    $timeout = 5,
-) {
+    Stdlib::Host $logstash_host,
+    Stdlib::Port $logstash_port,
+    Integer $timeout = 5,
+){
+
     file { '/etc/puppet/logstash.yaml':
         ensure  => present,
         owner   => 'puppet',

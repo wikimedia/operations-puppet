@@ -3,10 +3,11 @@
 # Simple class to allow syncing of the volatile and CA directories
 #
 class puppetmaster::rsync(
-    $server,
-    $cron_ensure='absent',
+    String $server,
+    Wmflib::Ensure $cron_ensure = 'absent',
     Array[String] $frontends = [],
-) {
+){
+
     rsync::server::module {
         default:
             read_only   => 'yes',

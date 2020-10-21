@@ -2,7 +2,7 @@
 # for the puppemaster module.
 
 class puppetmaster::monitoring (
-    $server_type = $::puppetmaster::server_type,
+    Enum['frontend', 'backend', 'standalone'] $server_type = $::puppetmaster::server_type,
 ){
 
     # monitor HTTPS on puppetmasters

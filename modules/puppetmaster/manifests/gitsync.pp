@@ -2,9 +2,9 @@
 #
 # Sync local operations/puppet.git checkout with upstream.
 class puppetmaster::gitsync(
-    $run_every_minutes = '10',
-    $private_only = false,
-) {
+    Integer $run_every_minutes = 10,
+    Boolean $private_only = false,
+){
 
     ensure_packages([
         'python3-git',

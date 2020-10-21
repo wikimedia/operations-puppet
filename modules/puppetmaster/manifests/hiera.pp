@@ -4,14 +4,14 @@
 #
 # == Parameters
 #
-# [*config*]
+# [*source*]
 # The configuration file source (must be contained in the puppetmaster
 # module). If undef, the file will just be created empty.
 #
 class puppetmaster::hiera (
-    $ensure = 'present',
-    $source = 'puppet:///modules/puppetmaster/prod.hiera.yaml',
-    ) {
+    Wmflib::Ensure $ensure = 'present',
+    Stdlib::Filesource $source = 'puppet:///modules/puppetmaster/prod.hiera.yaml',
+){
 
     file { '/etc/puppet/hiera.yaml':
         ensure => $ensure,

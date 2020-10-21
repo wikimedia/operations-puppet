@@ -14,10 +14,11 @@
 #   Path to puppet keys/certs in secrets repository.
 
 class puppetmaster::ca_server(
-    $master,
-    $server_name = 'puppet',
-    $cert_secret_path = 'puppetmaster',
+    Stdlib::Fqdn $master,
+    String $server_name = 'puppet',
+    String $cert_secret_path = 'puppetmaster',
 ){
+
     $ssldir = '/var/lib/puppet/server/ssl'
 
     file { "${ssldir}/certs/${server_name}.pem":

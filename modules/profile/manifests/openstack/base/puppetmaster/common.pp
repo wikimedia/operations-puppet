@@ -38,7 +38,7 @@ class profile::openstack::base::puppetmaster::common(
 
     # Update labs/private repo.
     class { 'puppetmaster::gitsync':
-        run_every_minutes => '1',
+        run_every_minutes => 1,
     }
 
     $labweb_ips = inline_template("@resolve((<%= @labweb_hosts.join(' ') %>))")

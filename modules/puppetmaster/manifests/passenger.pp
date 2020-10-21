@@ -14,11 +14,11 @@
 #        Adds a Deny from statement (order Allow,Deny), limiting access
 #        to the passenger service.
 class puppetmaster::passenger(
-    $bind_address,
-    $verify_client,
-    $allow_from,
-    $deny_from,
-) {
+    Variant[Stdlib::IP::Address, Enum['*']] $bind_address,
+    Enum['none','required','optional'] $verify_client,
+    Array[String] $allow_from,
+    Array[String] $deny_from,
+){
 
     include ::sslcert::dhparam
 
