@@ -169,10 +169,43 @@ class profile::analytics::refinery::job::camus(
                 # Set this to at least the number of topic-partitions you will be importing.
                 'mapred.map.tasks'              => '10',
             },
-            'check_java_opts'  => '-Dkafka.whitelist.topics=\"(eqiad|codfw)\\.eventgate-analytics-external\\.test\\.event\"',
             'interval' => '*-*-* *:30:00',
         },
+    }
 
+    # Declare each of the $event_service_jobs.
+    $event_service_jobs.each |String $event_service_name, Hash $parameters| {
+
+        # Override settings_filters to only check topics that have canary_events_enabled,
+        # unless check_java_opts is explicitly set in $the event_service_job hash declared above.
+        $check_java_opts = $parameters['check_java_opts'] ? {
+            undef   => "-Deventstreamconfig.settings_filters=destination_event_service:${event_service_name},canary_events_enabled:true",
+            default => $parameters['check_java_opts'],
+        }
+
+        $event_service_camus_properties = {
+            # Build kafka.whitelist.topics using EventStreamConfig API.
+            'eventstreamconfig.uri'              => 'https://meta.wikimedia.org/w/api.php',
+            # Only get topics for streams that have this destination_event_service set to event_service_name
+            'eventstreamconfig.settings_filters' => "destination_event_service:${event_service_name}",
+        }
+
+        camus::job { "${event_service_name}_events":
+            camus_properties => merge(
+                $event_service_camus_properties,
+                $parameters['camus_properties'],
+            ),
+            # Don't need to write _IMPORTED flags for event data
+            check_dry_run    => true,
+            check_java_opts  => $check_java_opts,
+            interval         => $parameters['interval'],
+        }
+    }
+
+    # DEPRECATED:
+    # These jobs use python based event stream config integration, and are being phased out
+    # in favor of the wikimedia-event-utiltiies event stream config integration above.
+    $event_service_jobs_deprecated = {
         'eventgate-analytics' => {
             'camus_properties' =>  {
                 'etl.destination.path'          => "hdfs://${hadoop_cluster_name}/wmf/data/raw/event",
@@ -204,9 +237,8 @@ class profile::analytics::refinery::job::camus(
             'interval' => '*-*-* *:05:00',
         },
     }
-
     # Declare each of the $event_service_jobs.
-    $event_service_jobs.each |String $event_service_name, Hash $parameters| {
+    $event_service_jobs_deprecated.each |String $event_service_name, Hash $parameters| {
 
         # Default to using .*$event_service_name.test.event for camus checker.
         # We know that there are test topics for this event service should always have
