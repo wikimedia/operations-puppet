@@ -1,11 +1,12 @@
-The Wikimedia Foundation operates some of the largest collaboratively edited
+The <b>Wikimedia Foundation</b> operates some of the largest collaboratively edited
 reference projects in the world, including Wikipedia. Our infrastructure powers
 some of the most highly-trafficked sites on the web, serving content in over a
-hundred languages to more than half a billion people each month. We use Puppet
-to manage our server configuration. This is our Puppet repository.
+hundred languages to more than half a billion people each month. We use the Puppet
+to manage our server configuration.
+Welcome to our <b>Puppet</b> repository!
 
 For an overview of how we use Puppet, and a review of the code conventions and
-patterns that apply to this repository, see:
+patterns that apply to this repository, refer to the link below:
 https://wikitech.wikimedia.org/wiki/Puppet_coding
 
 The code in this repository is authored and maintained by Wikimedia engineers
