@@ -13,13 +13,10 @@ sudo service parsoid-rt-client stop
 
 echo 'Updating deploy repo checkout ...'
 cd /srv/parsoid-testing
+
 # Ensure we are in the master branch -- the repo has been
 # left in a non-master checkout on occasion when a previous
 # git pull might have failed for whatever reason.
-git checkout master
-git pull
-
-echo 'Updating parsoid repo checkout ...'
 git checkout master
 git pull
 git log -n 1
@@ -27,15 +24,3 @@ git log -n 1
 # in node.js) linked up to its npm modules (still hanging out in
 # an otherwise-obsolete `deploy` repo).
 ln -s -f /srv/deployment/parsoid/deploy/node_modules
-
-# Restart phpfm to ensure we load the updated code
-echo 'Restarting phpfm'
-sudo systemctl restart php7.2-fpm.service
-
-echo 'Restarting parsoid ...'
-sudo service parsoid restart
-
-echo 'Starting parsoid-rt testreduce clients ...'
-sudo service parsoid-rt-client start
-
-echo 'All done!'
