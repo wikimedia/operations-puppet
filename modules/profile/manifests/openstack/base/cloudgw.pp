@@ -33,12 +33,14 @@ class profile::openstack::base::cloudgw (
 
     Exec['cloudgw-apt-get-update'] -> Package <| |>
 
-    # force installation of the latest kernel
+    # force installation of the latest kernel (pinned above)
     Package { 'linux-image-amd64':
         ensure => 'latest',
     }
 
+    # force installation of the latest nft (pinned above)
     class { '::nftables':
+        ensure_package => 'latest',
         ensure_service => 'present',
     }
 
