@@ -1,20 +1,9 @@
-require 'spec_helper'
-test_on = {
-  supported_os: [
-    {
-      'operatingsystem'        => 'Debian',
-      'operatingsystemrelease' => ['8', '9'],
-    }
-  ]
-}
+require_relative '../../../../rake_modules/spec_helper'
 
 describe 'service::node', :type => :define do
-  on_supported_os(test_on).each do |os, facts|
+  on_supported_os(WMFConfig.test_on).each do |os, facts|
     context "On #{os}" do
-      let(:facts) do
-        facts.merge({initsystem: 'systemd'})
-      end
-
+      let(:facts) { facts }
       let(:pre_condition) {
         ['class passwords::etcd { $accounts = {"conftool" => "abc"}}',
          'include ::passwords::etcd',
@@ -23,7 +12,6 @@ describe 'service::node', :type => :define do
         ]
       }
       let(:title) { 'my_service_name' }
-      let(:node_params) { {'cluster' => 'test', 'site' => 'eqiad', 'realm' => 'production'} }
       context 'when only port is given' do
         let(:params) { { :port => 1234 } }
 
