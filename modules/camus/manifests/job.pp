@@ -221,6 +221,7 @@ define camus::job (
 
     # Make sure this camus job will at least attempt to limit the topics it is importing.
     if (
+        !$dynamic_stream_configs and # NOTE: This is being deprecated in favor of eventstreamconfig.uri.
         !$template_properties['kafka.whitelist.topics'] and
         !(
             $template_properties['eventstreamconfig.uri'] and
