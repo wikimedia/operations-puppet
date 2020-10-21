@@ -1,21 +1,16 @@
-require 'spec_helper'
-test_on = {
-    supported_os: [
-        {
-            'operatingsystem'        => 'Debian',
-            'operatingsystemrelease' => ['9'],
-        }
-    ]
-}
+require_relative '../../../../rake_modules/spec_helper'
 
 default_file = '/etc/default/etcd'
 
 describe 'etcd::v3' do
-    on_supported_os(test_on).each do |os, facts|
+    on_supported_os(WMFConfig.test_on(9, 9)).each do |os, facts|
         context "On #{os}" do
-            let :facts do
-                facts.merge({ networking: { ip: '1.1.1.1'} })
+            let(:pre_condition) do
+              'class profile::base { $notifications_enabled = "1"}
+              include profile::base'
             end
+            let(:facts) { facts.merge({ networking: { ip: '1.1.1.1'} }) }
+
             # Srv discovery test
             context "srv discovery" do
                 let(:params) { {:srv_dns => '_etcd._tcp.example.org'} }
