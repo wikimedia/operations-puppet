@@ -126,7 +126,7 @@ class profile::analytics::refinery::job::camus(
         # Don't need to write _IMPORTED flags for EventLogging data
         check_dry_run    => true,
         # Only check these topic, since they should have data every hour.
-        check_java_opts  => '-Dkafka.whitelist.topics=^eventlogging_(NavigationTiming|VirtualPageView)',
+        check_java_opts  => '-Dkafka.whitelist.topics="^eventlogging_(NavigationTiming|VirtualPageView)"',
         interval         => '*-*-* *:05:00',
     }
 
@@ -158,7 +158,7 @@ class profile::analytics::refinery::job::camus(
                 # Set this to at least the number of topic-partitions you will be importing.
                 'mapred.map.tasks'              => '10',
             },
-            'check_java_opts'  => '-Dkafka.whitelist.topics=(eqiad|codfw)\\.eventgate-analytics-external\\.test\\.event',
+            'check_java_opts'  => '-Dkafka.whitelist.topics=\"(eqiad|codfw)\\.eventgate-analytics-external\\.test\\.event\"',
             'interval' => '*-*-* *:30:00',
         },
 
@@ -171,7 +171,7 @@ class profile::analytics::refinery::job::camus(
             },
             # Check the test topics and mediawiki.api-requests topics.  mediawiki.api-request should
             # always have data every hour in both datacenters.
-            'check_java_opts'  => "-Dkafka.whitelist.topics=${check_topic_whitelist_prefixes}\\.(eventgate-analytics\\.test\\.event|mediawiki\\.api-request)",
+            'check_java_opts'  => "-Dkafka.whitelist.topics=\"${check_topic_whitelist_prefixes}\\.(eventgate-analytics\\.test\\.event|mediawiki\\.api-request)\"",
             'interval' => '*-*-* *:15:00',
         },
 
@@ -189,7 +189,7 @@ class profile::analytics::refinery::job::camus(
             },
             # Check the test topics and resource_change topics.  resource_change should
             # always have data every hour in both datacenters.
-            'check_java_opts' => "-Dkafka.whitelist.topics=${check_topic_whitelist_prefixes}\\.(eventgate-main\\.test\\.event|resource_change)",
+            'check_java_opts' => "-Dkafka.whitelist.topics=\"${check_topic_whitelist_prefixes}\\.(eventgate-main\\.test\\.event|resource_change)\"",
             'interval' => '*-*-* *:05:00',
         },
     }
@@ -202,7 +202,7 @@ class profile::analytics::refinery::job::camus(
         # events, as they are produced when k8s uses its readinessProbe for the service.
         # We should only check topics we know have data every hour.
         $check_java_opts = $parameters['check_java_opts'] ? {
-            undef   => "-Dkafka.whitelist.topics='(eqiad|codfw)\\.${event_service_name}\\.test\\.event'",
+            undef   => "-Dkafka.whitelist.topics=\"(eqiad|codfw)\\.${event_service_name}\\.test\\.event\"",
             default => $parameters['check_java_opts']
         }
 
