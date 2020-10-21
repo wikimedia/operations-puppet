@@ -36,6 +36,7 @@ class profile::openstack::base::cloudgw (
     }
 
     # network config, routing, bonding + trunking, etc
+    $nic_controlplane = $nic_sshplane
     file { '/etc/network/interfaces':
         ensure  => present,
         content => template('profile/openstack/base/cloudgw/interfaces.erb'),
