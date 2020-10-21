@@ -14,7 +14,12 @@ describe 'bacula::client', :type => :class do
         :directorpassword => 'testdirectorpass',
       }
       }
-      let(:pre_condition) { "class {'base::puppet': ca_source => 'puppet:///files/puppet/ca.production.pem'}" }
+      let(:pre_condition) do
+        "class {'base::puppet': ca_source => 'puppet:///files/puppet/ca.production.pem'}
+        class profile::base ( $notifications_enabled = 1 ){}
+        include profile::base
+        "
+      end
 
       it { should contain_package('bacula-fd') }
       it { should contain_service('bacula-fd') }

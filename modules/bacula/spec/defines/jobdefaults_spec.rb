@@ -18,6 +18,8 @@ describe 'bacula::director::jobdefaults', :type => :define do
         sqlvariant          => 'mysql',
         max_dir_concur_jobs => '10',
       }
+      class profile::base ( $notifications_enabled = 1 ){}
+      include profile::base
       class {'base::puppet': ca_source => 'puppet:///files/puppet/ca.production.pem'}"
     end
 
