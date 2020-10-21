@@ -69,11 +69,11 @@ node 'an-test-coord1001.eqiad.wmnet' {
 # Hadoop nodes that will be part of the future
 # backup cluster.
 # T260411
-node /^analytics10(4[2-9]|5[01345]).eqiad.wmnet$/ {
+node /^analytics10(4[2-9]|5[013456]).eqiad.wmnet$/ {
     role(insetup)
 }
 
-# analytics1052,analytics1056-analytics1077 and an-worker10XX
+# analytics1052,analytics1057-analytics1077 and an-worker10XX
 # are Analytics Hadoop worker nodes.
 #
 # NOTE:  If you add, remove or move Hadoop nodes, you should edit
