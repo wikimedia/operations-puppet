@@ -1,50 +1,30 @@
-require 'spec_helper'
+require_relative '../../../../rake_modules/spec_helper'
 
-stretch_facts = {
-    # For wmflib.os_version()
-    :lsbdistid      => 'Debian',
-    :lsbdistrelease => '9.4',
+describe 'nrpe' do
+  on_supported_os(WMFConfig.test_on(9, 9)).each do |os, facts|
+    context "On #{os}" do
+      let(:facts) { facts }
+      let(:pre_condition) do
+        'class profile::base { $notifications_enabled = "1"}
+        include profile::base'
+      end
 
-    :initsystem => 'systemd',
-}
+      context "default run" do
+        it { should contain_package('nagios-nrpe-server') }
+        it { should contain_package('monitoring-plugins') }
+        it { should contain_package('monitoring-plugins-basic') }
+        it { should contain_package('monitoring-plugins-standard') }
+        it { should contain_file('/etc/nagios/nrpe_local.cfg') }
+        it { should contain_file('/usr/local/lib/nagios/plugins/') }
+        it { should contain_service('nagios-nrpe-server') }
+      end
+      context "Test allowed_hosts" do
+        let(:params) { { allowed_hosts: '10.10.10.10' } }
 
-describe 'nrpe', :type => :class do
-    let(:facts) { stretch_facts }
-    it { should contain_package('nagios-nrpe-server') }
-    it { should contain_package('monitoring-plugins') }
-    it { should contain_package('monitoring-plugins-basic') }
-    it { should contain_package('monitoring-plugins-standard') }
-    it { should contain_file('/etc/nagios/nrpe_local.cfg') }
-    it { should contain_file('/usr/local/lib/nagios/plugins/') }
-    it { should contain_service('nagios-nrpe-server') }
-end
-
-describe 'nrpe', :type => :class do
-    let(:facts) {
-        stretch_facts.merge({ :realm => 'production' })
-    }
-
-    it 'should generate valid content for nrpe_local.cfg in production' do
-        should contain_file('/etc/nagios/nrpe_local.cfg').with_content(/allowed_hosts=127.0.42.42/)
+        it 'should generate valid content for nrpe_local.cfg in labs with allowed_hosts defined' do
+          should contain_file('/etc/nagios/nrpe_local.cfg').with_content(/allowed_hosts=10.10.10.10/)
+        end
+      end
     end
-end
-
-describe 'nrpe', :type => :class do
-    let(:facts) {
-        stretch_facts.merge({ :realm => 'labs' })
-    }
-    it 'should generate valid content for nrpe_local.cfg in labs' do
-        should contain_file('/etc/nagios/nrpe_local.cfg').with_content(/allowed_hosts=10.68.42.42/)
-    end
-end
-
-describe 'nrpe', :type => :class do
-    let(:facts) {
-        stretch_facts.merge({ :realm => 'labs' })
-    }
-    let(:params) { { :allowed_hosts => '10.10.10.10' } }
-
-    it 'should generate valid content for nrpe_local.cfg in labs with allowed_hosts defined' do
-        should contain_file('/etc/nagios/nrpe_local.cfg').with_content(/allowed_hosts=10.10.10.10/)
-    end
+  end
 end
