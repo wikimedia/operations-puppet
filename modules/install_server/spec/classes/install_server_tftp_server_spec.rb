@@ -1,21 +1,31 @@
-require 'spec_helper'
+require_relative '../../../../rake_modules/spec_helper'
 
 describe 'install_server::tftp_server', :type => :class do
-    it { should compile }
-    it { should contain_package('atftpd').with_ensure('present') }
-    it do
-        should contain_file('/etc/default/atftpd').with({
-            'mode'   => '0444',
-            'owner'  => 'root',
-            'group'  => 'root',
+  on_supported_os(WMFConfig.test_on).each do |os, facts|
+    context "On #{os}" do
+      let(:facts){ facts }
+      let(:pre_condition) do
+        'class profile::base { $notifications_enabled = "1"}
+        include profile::base'
+     end
+
+      it { is_expected.to compile }
+      it { is_expected.to contain_package('atftpd').with_ensure('present') }
+      it do
+        is_expected.to contain_file('/etc/default/atftpd').with({
+          'mode'   => '0444',
+          'owner'  => 'root',
+          'group'  => 'root',
         })
-    end
-    it do
-        should contain_file('/srv/tftpboot').with({
-            'mode'    => '0444',
-            'owner'   => 'root',
-            'group'   => 'root',
-            'recurse' => 'remote',
+      end
+      it do
+        is_expected.to contain_file('/srv/tftpboot').with({
+          'mode'    => '0444',
+          'owner'   => 'root',
+          'group'   => 'root',
+          'recurse' => 'remote',
         })
+      end
     end
+  end
 end
