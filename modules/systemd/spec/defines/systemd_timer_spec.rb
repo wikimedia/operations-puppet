@@ -1,5 +1,11 @@
 require_relative '../../../../rake_modules/spec_helper'
 
+# The spec test fails on mac osx due to a missing /usr/bin/systemd-analyze
+# you can use the following script to fix this, i created this in
+# /usr/local/bin and thnen symlinked to /usr/bin which requires one to
+# temporarily disable System Integrity Protocol from Recovery Mode
+# https://phabricator.wikimedia.org/P13043
+
 describe 'systemd::timer' do
   on_supported_os(WMFConfig.test_on).each do |os, facts|
     context "On #{os}" do
