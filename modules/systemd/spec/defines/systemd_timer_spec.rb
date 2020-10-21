@@ -1,19 +1,15 @@
-require 'spec_helper'
-test_on = {
-  supported_os: [
-    {
-      'operatingsystem'        => 'Debian',
-      'operatingsystemrelease' => ['8', '9'],
-    }
-  ]
-}
+require_relative '../../../../rake_modules/spec_helper'
 
 describe 'systemd::timer' do
-  on_supported_os(test_on).each do |os, facts|
+  on_supported_os(WMFConfig.test_on).each do |os, facts|
     context "On #{os}" do
       let(:facts) { facts.merge(initsystem: 'systemd') }
       let(:title) { 'dummy'}
-      let(:pre_condition) { 'systemd::unit { "dummy.service": content => ""}' }
+      let(:pre_condition) do
+        'systemd::unit { "dummy.service": content => ""}
+        class profile::base { $notifications_enabled = "1"}
+        include profile::base'
+      end
 
       context 'when using an invalid time spec' do
         let(:params) {
