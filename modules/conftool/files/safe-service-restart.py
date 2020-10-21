@@ -34,6 +34,7 @@ class ServiceRestarter(ToolCliBase):
         self.services = args.services
         self.timeout = args.timeout
         self.grace_period = args.grace_period
+        self.force = args.force
 
     def announce(self):
         pass
@@ -45,6 +46,10 @@ class ServiceRestarter(ToolCliBase):
         """
         Finds if a service for a host is pooled or not.
         """
+        if self.force:
+            logger.info("Restarting services without depool/repool")
+            return self._restart_services()
+
         pooled = self._get_objects()
         if not pooled:
             logger.info(
@@ -255,6 +260,10 @@ def parse_args():
     parser.add_argument("--object-type", dest="object_type", default="node")
     parser.add_argument(
         "--debug", action="store_true", default=False, help="print debug info"
+    )
+    parser.add_argument(
+        "--force", action="store_true", default=False,
+        help="Perform an unsafe restart (skips depool/repool)",
     )
     parser.add_argument(
         "--schema",
