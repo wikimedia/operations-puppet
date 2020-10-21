@@ -28,6 +28,8 @@ class profile::analytics::refinery::job::test::camus(
 ) {
     require ::profile::hadoop::common
     require ::profile::analytics::refinery
+    # Used for EventStreamConfig integration.
+    require ::profile::analytics::refinery::event_service_config
 
     $kafka_config  = kafka_config($kafka_cluster_name)
     $kafka_brokers = $kafka_config['brokers']['string']
