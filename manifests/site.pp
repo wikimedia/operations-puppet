@@ -652,6 +652,13 @@ node 'db2093.codfw.wmnet' {
     role(mariadb::misc::db_inventory)
 }
 
+# Orchestrator central node (VM on ganeti)
+node 'dborch1001.eqiad.wmnet' {
+    role(insetup)
+}
+
+
+
 # eqiad backup sources
 ## s2 & s3, stretch
 node 'db1095.eqiad.wmnet' {
