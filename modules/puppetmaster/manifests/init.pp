@@ -40,7 +40,7 @@
 class puppetmaster(
     String[1]                        $server_name        = 'puppet',
     String[1]                        $bind_address       = '*',
-    String[1]                        $verify_client      = 'optional',
+    Httpd::SSLVerifyClient           $verify_client      = 'optional',
     Array[String]                    $deny_from          = [],
     String[1]                        $server_type        = 'standalone',
     Hash                             $config             = {},

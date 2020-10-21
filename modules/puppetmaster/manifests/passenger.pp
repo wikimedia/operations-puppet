@@ -15,12 +15,12 @@
 #        to the passenger service.
 class puppetmaster::passenger(
     Variant[Stdlib::IP::Address, Enum['*']] $bind_address,
-    Enum['none','required','optional'] $verify_client,
+    Httpd::SSLVerifyClient $verify_client,
     Array[String] $allow_from,
     Array[String] $deny_from,
 ){
 
-    include ::sslcert::dhparam
+    include sslcert::dhparam
 
     # Set a unicode capable locale to avoid "SERVER: invalid byte sequence in
     # US-ASCII" errors when puppetmaster is started with LANG that doesn't
