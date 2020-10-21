@@ -119,6 +119,11 @@ host chartmuseum2001 {
     fixed-address chartmuseum2001.codfw.wmnet;
 }
 
+host dborch1001 {
+    hardware ethernet aa:00:00:1d:b3:9b;
+    fixed-address dborch1001.eqiad.wmnet;
+}
+
 host dbmonitor1001 {
     hardware ethernet aa:00:00:d6:5c:05;
     fixed-address dbmonitor1001.wikimedia.org;
