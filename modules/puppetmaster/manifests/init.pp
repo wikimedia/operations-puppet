@@ -42,7 +42,7 @@ class puppetmaster(
     String[1]                        $bind_address       = '*',
     Httpd::SSLVerifyClient           $verify_client      = 'optional',
     Array[String]                    $deny_from          = [],
-    String[1]                        $server_type        = 'standalone',
+    Puppetmaster::Server_type        $server_type        = 'standalone',
     Hash                             $config             = {},
     Array[String]                    $allow_from         = [
                                                             '*.wikimedia.org',

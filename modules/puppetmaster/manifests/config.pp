@@ -4,7 +4,7 @@
 # Do not include directly.
 class puppetmaster::config(
     Hash $config,
-    Enum['frontend', 'backend', 'standalone'] $server_type,
+    Puppetmaster::Server_type $server_type,
 ){
 
     base::puppet::config { 'master':
