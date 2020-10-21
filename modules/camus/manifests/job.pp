@@ -265,7 +265,9 @@ define camus::job (
     if $http_proxy_host {
         # CamusPartitionChecker runs as a local Java process, we'll need to manually
         # place these opts on its java command.
-        $http_proxy_java_opts = " -Dhttp.proxyHost=${http_proxy_host} -Dhttp.proxyPort=${http_proxy_port} -Dhttps.proxyHost=${http_proxy_host} -Dhttps.proxyPort=${http_proxy_port}"
+        # NOTE: \s because systemd parsing is strange:
+        # https://askubuntu.com/a/1274956
+        $http_proxy_java_opts = " -Dhttp.proxyHost=${http_proxy_host}\\s-Dhttp.proxyPort=${http_proxy_port}\\s-Dhttps.proxyHost=${http_proxy_host}\\s-Dhttps.proxyPort=${http_proxy_port}"
         $http_proxy_environment = {
             # These are needed for the camus CLI wrappers python integration with EventStreamConfig
             # via --dynamic-stream-configs.  This will be removed in favor of Camus direct
