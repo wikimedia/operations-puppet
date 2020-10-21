@@ -22,7 +22,6 @@ profile::presto::discovery_uri: https://an-coord1001.eqiad.wmnet:8281
 profile::presto::use_kerberos: true
 
 profile::analytics::geoip::archive::archive_host: 'stat1007'
-profile::analytics::geoip::archive::ensure: 'absent'
 profile::analytics::geoip::archive::use_kerberos: true
 profile::analytics::search::jobs::use_kerberos: true
 

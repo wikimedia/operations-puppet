@@ -67,7 +67,3 @@ profile::java::java_packages:
   - version: '8'
     variant: 'jdk'
 profile::java::extra_args: 'JAVA_TOOL_OPTIONS="-Dfile.encoding=UTF-8"'
-
-profile::analytics::geoip::archive::archive_host: 'an-launcher1002'
-profile::analytics::geoip::archive::ensure: 'present'
-profile::analytics::geoip::archive::use_kerberos: true
