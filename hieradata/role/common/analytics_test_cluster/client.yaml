@@ -16,6 +16,8 @@ profile::oozie::client::oozie_host: 'an-test-coord1001.eqiad.wmnet'
 
 profile::swap::use_dumps_mounts: false
 
+profile::hive::site_hdfs::use_kerberos: true
+
 # Hive Client settings.
 # Hive configuration is common to multiple clients, but because of role based
 # hiera lookups, we need to repeat it in multiple places. If you change this,
