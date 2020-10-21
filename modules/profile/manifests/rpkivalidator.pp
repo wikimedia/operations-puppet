@@ -21,10 +21,11 @@
 #       include profile::rpkivalidator
 #
 class profile::rpkivalidator(
-  Optional[String] $http_proxy = hiera('http_proxy', undef),
-  Optional[Stdlib::Port] $rtr_port = hiera('rtr_port', 3323),
-  Optional[Array[Stdlib::Fqdn]] $prometheus_nodes = hiera('prometheus_nodes', undef),
-  ) {
+  Optional[String] $http_proxy = lookup('http_proxy', {'default_value' => undef}),
+  Stdlib::Port $rtr_port = lookup('rtr_port', {'default_value' => 3323}),
+  Optional[Array[Stdlib::Fqdn]] $prometheus_nodes = lookup('prometheus_nodes', {'default_value' => undef}),
+){
+
     # Remove the http:// prefix to only keep webproxy.%{::site}.wmnet:8080
     # As rsync doesn't like it
     if $http_proxy {
