@@ -10,10 +10,6 @@ define base::service_auto_restart(
 ) {
     include base::auto_restarts
 
-    # clean up old cron jobs
-    cron { "wmf_auto_restart_${title}":
-        ensure  => absent,
-    }
     $hour = fqdn_rand(23, "${title}_auto_restart")
     $minute = fqdn_rand(59, "${title}_auto_restart")
     systemd::timer::job { "wmf_auto_restart_${title}":
