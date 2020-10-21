@@ -26,8 +26,6 @@ profile::tlsproxy::service::check_service: "superset.wikimedia.org"
 profile::tlsproxy::service::notes_url: "https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster"
 profile::tlsproxy::service::contact_group: 'analytics'
 
-profile::superset::presto_cluster: analytics-presto
-
 profile::kerberos::keytabs::keytabs_metadata:
   - role: 'superset'
     owner: 'superset'

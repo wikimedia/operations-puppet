@@ -8,7 +8,6 @@ admin::groups:
 profile::superset::database_uri: mysql://superset_staging@an-coord1001.eqiad.wmnet/superset_staging?ssl_ca=/etc/ssl/certs/Puppet_Internal_CA.pem
 profile::superset::workers: 8
 profile::superset::ldap_proxy_enabled: true
-profile::superset::presto_cluster: analytics-presto
 profile::superset::proxy::x_forwarded_proto: 'http'
 profile::superset::enable_cas: false
 
