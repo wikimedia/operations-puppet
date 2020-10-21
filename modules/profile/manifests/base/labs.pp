@@ -2,6 +2,8 @@ class profile::base::labs(
     Wmflib::Ensure $unattended_wmf = lookup('profile::base::labs::unattended_wmf'),
     Wmflib::Ensure $unattended_distro = lookup('profile::base::labs::unattended_distro'),
     Boolean $send_puppet_failure_emails = lookup('send_puppet_failure_emails', {'default_value' => true}),
+    Boolean $cleanup_puppet_client_bucket = lookup('profile::base::labs::cleanup_puppet_client_bucket', {'default_value' => false}),
+    Integer $client_bucket_file_age = lookup('profile::base::labs::client_bucket_file_age', {'default_value' => 14}),
 ){
 
     include ::apt::noupgrade
@@ -62,6 +64,20 @@ class profile::base::labs(
         logging_enabled => false,
         user            => 'root',
         require         => File['/usr/local/sbin/puppet_alert.py'],
+    }
+
+    # clean up puppet client bucket (T165885)
+    systemd::timer::job { 'cleanup_puppet_client_bucket':
+        ensure             => $cleanup_puppet_client_bucket.bool2str('present','absent'),
+        description        => 'Delete old files from the puppet client bucket',
+        command            => "find /var/lib/puppet/clientbucket/ -type f -mtime +${client_bucket_file_age} -atime +${client_bucket_file_age} -delete",
+        interval           => {
+            'start'    => 'OnUnitInactiveSec',
+            'interval' => '24h',
+        },
+        logging_enabled    => false,
+        monitoring_enabled => false,
+        user               => 'root',
     }
 
     # Set a root password only if we're still governed by the official Labs
