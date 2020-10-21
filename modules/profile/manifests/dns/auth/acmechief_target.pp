@@ -1,6 +1,7 @@
 class profile::dns::auth::acmechief_target(
-    $acmechief_hosts=hiera('profile::dns::auth::acmechief_target::acmechief_hosts'),
-) {
+    Array[Stdlib::Host] $acmechief_hosts = lookup('profile::dns::auth::acmechief_target::acmechief_hosts'),
+){
+
     user { 'acme-chief':
         ensure => present,
         system => true,
