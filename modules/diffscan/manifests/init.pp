@@ -16,13 +16,17 @@
 #   An identifier to distinguish between several instances.
 #   Defaults to "default".
 #
+# [*base_dir*]
+#   The working directory to use
+#   Defaults to "default".
+#
 class diffscan(
     Array[Stdlib::IP::Address] $ipranges  = [],
     String                     $emailto   = '',
     String                     $groupname = 'default',
-    Stdlib::Host               $base_dir  = '/srv/diffscan',
+    Stdlib::Unixpath           $base_dir  = '/srv/diffscan',
 ) {
-    require_package('nmap')
+    ensure_packages(['nmap'])
 
     file { $base_dir:
         ensure => 'directory',
@@ -51,7 +55,7 @@ class diffscan(
         command     => $command,
         interval    => {
             'start'    => 'OnCalendar',
-            'interval' => '*-*-* 12:00:00',  # Every day at 12:00
+            'interval' => '*-*-* 00:00:00',  # Every day at 12:00
         },
     }
 }
