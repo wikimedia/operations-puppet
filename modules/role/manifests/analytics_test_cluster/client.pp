@@ -3,7 +3,7 @@
 #
 class role::analytics_test_cluster::client {
     system::role { 'analytics_test_cluster::client':
-        description => 'Analytics Hadoop test cluster\'s client',
+        description => 'Analytics Hadoop test client',
     }
 
     include ::profile::java
