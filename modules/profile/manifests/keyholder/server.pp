@@ -7,7 +7,7 @@
 # [*agents*] List of keyholder::agent instances to declare.
 class profile::keyholder::server(
     Hash $agents = lookup('profile::keyholder::server::agents', { 'default_value' => {}}),
-    Enum['yes','no'] $require_encrypted_keys = lookup('profile::keyholder::server::require_encrypted_keys', { 'default_value' => 'yes' }),
+    Stdlib::Yes_no $require_encrypted_keys = lookup('profile::keyholder::server::require_encrypted_keys', { 'default_value' => 'yes' }),
 ){
 
     class { '::keyholder':

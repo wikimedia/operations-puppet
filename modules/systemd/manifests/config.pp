@@ -6,10 +6,10 @@
 
 class systemd::config (
     Wmflib::Ensure $ensure = present,
-    Enum['yes', 'no'] $cpu_accounting = 'no',
-    Enum['yes', 'no'] $blockio_accounting = 'no',
-    Enum['yes', 'no'] $memory_accounting = 'no',
-    Enum['yes', 'no'] $ip_accounting = 'no',
+    Stdlib::Yes_no $cpu_accounting = 'no',
+    Stdlib::Yes_no $blockio_accounting = 'no',
+    Stdlib::Yes_no $memory_accounting = 'no',
+    Stdlib::Yes_no $ip_accounting = 'no',
 ){
     file { '/etc/systemd/system.conf':
         ensure  => $ensure,
