@@ -32,6 +32,7 @@ class mariadb::config(
     $semi_sync              = 'off',
     $replication_role       = 'standalone',
     $max_allowed_packet     = '16M',
+    $innodb_pool_size       = undef,
     ) {
 
     $server_id = inline_template(

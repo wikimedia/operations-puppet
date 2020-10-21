@@ -57,7 +57,11 @@ default-storage-engine = Aria
 
 transaction-isolation          = READ-COMMITTED
 innodb_file_per_table          = 1
-innodb_buffer_pool_size        = 20G
+<% if @innodb_pool_size.nil? -%>
+innodb_buffer_pool_size        = <%= (Float(@memorysize.split[0]) * 0.75).round %>G
+<% else -%>
+innodb_buffer_pool_size        = <%= @innodb_pool_size %>
+<% end -%>
 innodb_log_file_size           = 1G
 innodb_flush_log_at_trx_commit = 0
 innodb_flush_method            = O_DIRECT

@@ -1,4 +1,6 @@
-class profile::mariadb::misc::db_inventory{
+class profile::mariadb::misc::db_inventory(
+    Optional[String[1]] $innodb_pool_size = lookup('profile::mariadb::misc::db_inventory::innodb_pool_size', {'default_value' => undef}),
+) {
     include passwords::misc::scripts
 
     include profile::mariadb::mysql_role
@@ -17,13 +19,14 @@ class profile::mariadb::misc::db_inventory{
     profile::mariadb::ferm { $id: }
 
     class { 'mariadb::config':
-        basedir       => $profile::mariadb::packages_wmf::basedir,
-        config        => 'profile/mariadb/mysqld_config/db_inventory.my.cnf.erb',
-        datadir       => '/srv/sqldata',
-        tmpdir        => '/srv/tmp',
-        binlog_format => $binlog_format,
-        p_s           => 'on',
-        ssl           => 'puppet-cert',
+        basedir          => $profile::mariadb::packages_wmf::basedir,
+        config           => 'profile/mariadb/mysqld_config/db_inventory.my.cnf.erb',
+        datadir          => '/srv/sqldata',
+        tmpdir           => '/srv/tmp',
+        binlog_format    => $binlog_format,
+        p_s              => 'on',
+        ssl              => 'puppet-cert',
+        innodb_pool_size => $innodb_pool_size,
     }
 
     include profile::mariadb::monitor::prometheus

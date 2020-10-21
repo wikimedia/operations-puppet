@@ -1,2 +1,3 @@
 # db1115
 profile::mariadb::mysql_role: 'master'
+profile::mariadb::misc::db_inventory::innodb_pool_size: 20G
