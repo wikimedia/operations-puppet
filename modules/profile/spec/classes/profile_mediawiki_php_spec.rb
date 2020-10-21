@@ -27,6 +27,11 @@ describe 'profile::mediawiki::php' do
           :apc_shm_size => '128M'
         }
       }
+      let(:pre_condition) do
+        'class profile::base ( $notifications_enabled = 1 ){}
+        include profile::base'
+      end
+
       context "with default params" do
         it { is_expected.to compile.with_all_deps }
       end

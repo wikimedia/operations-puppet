@@ -17,11 +17,16 @@ describe 'profile::doc' do
         }
       }
       let(:facts) { facts }
-      let(:node_params) { {
-        'realm' => 'production',
-      } }
+      let(:node_params) do {
+        :site => 'eqiad',
+        :realm => 'production',
+        :initsystem => 'systemd',
+      }
+      end
       let(:pre_condition) do
-        'exec { "apt-get update": path => "/bin/true" }'
+        'class profile::base ( $notifications_enabled = 1 ){}
+        include profile::base
+        exec { "apt-get update": path => "/bin/true" }'
       end
       it { should compile }
     end
