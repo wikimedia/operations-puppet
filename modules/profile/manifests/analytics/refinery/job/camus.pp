@@ -158,6 +158,7 @@ class profile::analytics::refinery::job::camus(
                 # Set this to at least the number of topic-partitions you will be importing.
                 'mapred.map.tasks'              => '10',
             },
+            'check_java_opts'  => '-Dkafka.whitelist.topics=(eqiad|codfw)\\.eventgate-analytics-external\\.test\\.event',
             'interval' => '*-*-* *:30:00',
         },
 
