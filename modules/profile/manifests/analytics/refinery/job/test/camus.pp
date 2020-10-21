@@ -28,8 +28,6 @@ class profile::analytics::refinery::job::test::camus(
 ) {
     require ::profile::hadoop::common
     require ::profile::analytics::refinery
-    # Used for EventStreamConfig integration.
-    require ::profile::analytics::refinery::event_service_config
 
     $kafka_config  = kafka_config($kafka_cluster_name)
     $kafka_brokers = $kafka_config['brokers']['string']
@@ -112,12 +110,13 @@ class profile::analytics::refinery::job::test::camus(
                 'mapred.map.tasks'              => '1',
                 'eventstreamconfig.uri'         => 'https://meta.wikimedia.org/w/api.php',
                 # Here we explicitly restrict this test camus job to import only the test.event stream for eventgate-analytics.
-                'eventstreamconfig.settings_filters' => 'destination_event_service:eventgate-analytics,stream_names:eventgate-analytics.test.event'
+                'eventstreamconfig.stream_names' => 'eventgate-analytics.test.event',
+                'eventstreamconfig.settings_filters' => 'destination_event_service:eventgate-analytics',
             },
             # Add settings_filters to only check topics that have canary_events_enabled.
             # Here, this won't make a differences since we also specify stream_names for the test job.
             # This is mostly testing that the check_java_opts override works properly.
-            'check_java_opts' => '-Deventstreamconfig.settings_filters=destination_event_service:eventgate-analytics,stream_names:eventgate-analytics.test.event,canary_events_enabled:true',
+            'check_java_opts' => '-Deventstreamconfig.settings_filters=destination_event_service:eventgate-analytics,canary_events_enabled:true',
             'interval' => '*-*-* *:15:00',
         },
     }
