@@ -23,12 +23,19 @@ class profile::openstack::base::cloudgw (
         pin      => 'release n=buster-backports',
         priority => 1001,
         before   => Class['::nftables'],
-        notify   => Exec['apt-get-update'],
+        notify   => Exec['cloudgw-apt-get-update'],
     }
 
-    exec { 'apt-get-update':
+    exec { 'cloudgw-apt-get-update':
         command     => '/usr/bin/apt-get update',
         refreshonly => true,
+    }
+
+    Exec['cloudgw-apt-get-update'] -> Package <| |>
+
+    # force installation of the latest kernel
+    Package { 'linux-image-amd64':
+        ensure => 'latest',
     }
 
     class { '::nftables':
