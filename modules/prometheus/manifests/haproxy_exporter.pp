@@ -10,7 +10,7 @@
 
 class prometheus::haproxy_exporter (
     Stdlib::HTTPUrl $endpoint  = 'http://localhost:9100/?stats;csv',
-    Wmflib::UserIpPort $listen_port = 9901,
+    Stdlib::Port::User $listen_port = 9901,
 ) {
     require_package('prometheus-haproxy-exporter')
 

@@ -30,7 +30,7 @@
 #   precreate it and prepopulate it please
 #
 define service::docker(
-    Wmflib::UserIpPort $port,
+    Stdlib::Port::User $port,
     String $version,
     Wmflib::Ensure $ensure = present,
     Optional[String] $namespace = undef,

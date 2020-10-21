@@ -1,5 +1,5 @@
 define profile::ncredir::log(
-    Wmflib::UserIpPort $ncredirmtail_port,
+    Stdlib::Port::User $ncredirmtail_port,
     Stdlib::Absolutepath $fifo = "/var/log/nginx/ncredir.${title}.pipe",
     Stdlib::Absolutepath $socket = "/var/log/nginx/ncredir.${title}.socket",
     String $fifo_owner = 'www-data',

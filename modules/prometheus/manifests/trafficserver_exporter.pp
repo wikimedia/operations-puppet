@@ -18,7 +18,7 @@
 define prometheus::trafficserver_exporter (
     String $instance_name = 'backend',
     Stdlib::HTTPUrl $endpoint  = 'http://127.0.0.1/_stats',
-    Wmflib::UserIpPort $listen_port = 9122,
+    Stdlib::Port::User $listen_port = 9122,
     Boolean $verify_ssl_certificate = true,
 ) {
     require_package('prometheus-trafficserver-exporter')

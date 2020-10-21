@@ -7,7 +7,7 @@
 #
 class profile::netconsole::server (
     Wmflib::Ensure $ensure = lookup('profile::netconsole::server::ensure', {default_value => 'absent'}),
-    Wmflib::UserIpPort $port = lookup('profile::netconsole::server::port', {default_value => 6666}),
+    Stdlib::Port::User $port = lookup('profile::netconsole::server::port', {default_value => 6666}),
 ) {
     class { '::netconsole::server':
       ensure => $ensure,

@@ -1,7 +1,7 @@
 define profile::trafficserver::monitoring(
     Trafficserver::Paths $paths,
     Stdlib::Port $port,
-    Wmflib::UserIpPort $prometheus_exporter_port,
+    Stdlib::Port::User $prometheus_exporter_port,
     Optional[Trafficserver::Inbound_TLS_settings] $inbound_tls = undef,
     Boolean $default_instance = false,
     Boolean $acme_chief = false,

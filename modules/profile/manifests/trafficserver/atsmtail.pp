@@ -1,7 +1,7 @@
 define profile::trafficserver::atsmtail(
     String $instance_name,
     Stdlib::Absolutepath $atsmtail_progs,
-    Wmflib::UserIpPort $atsmtail_port,
+    Stdlib::Port::User $atsmtail_port,
     Systemd::Servicename $wanted_by,
     String $mtail_args = '',
 ) {

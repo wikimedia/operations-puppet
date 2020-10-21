@@ -4,7 +4,7 @@ class profile::ncredir(
     Hash[String, Hash[String, Any]] $shared_acme_certificates = lookup('shared_acme_certificates'),
     String $acme_chief_cert_prefix = lookup('profile::ncredir::acme_chief_cert_prefix', {default_value => 'non-canonical-redirect-'}),
     Boolean $monitoring = lookup('profile::ncredir::monitoring', {default_value => false}),
-    Wmflib::UserIpPort $mtail_access_log_port = lookup('profile::ncredir::mtail_access_log_port', {default_value => 3904}),
+    Stdlib::Port::User $mtail_access_log_port = lookup('profile::ncredir::mtail_access_log_port', {default_value => 3904}),
     String $mtail_args = lookup('profile::ncredir::mtail_args', {default_value => ''}),
     Array[String] $prometheus_nodes = lookup('prometheus_nodes', {default_value => []}),
     Integer[0] $hsts_max_age = lookup('profile::ncredir::hsts_max_age', {default_value => 106384710}),

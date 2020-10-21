@@ -2,7 +2,7 @@ class profile::mediawiki::php::monitoring(
     $prometheus_nodes = hiera('prometheus_nodes'),
     $auth_passwd = hiera('profile::mediawiki::php::monitoring::password'),
     $auth_salt = hiera('profile::mediawiki::php::monitoring::salt'),
-    Optional[Wmflib::UserIpPort] $fcgi_port = hiera('profile::php_fpm::fcgi_port', undef),
+    Optional[Stdlib::Port::User] $fcgi_port = hiera('profile::php_fpm::fcgi_port', undef),
     String $fcgi_pool = hiera('profile::mediawiki::fcgi_pool', 'www'),
     Boolean $monitor_page = hiera('profile::mediawiki::php::monitoring::monitor_page', true),
     Array[String] $deployment_nodes = hiera('deployment_hosts', []),

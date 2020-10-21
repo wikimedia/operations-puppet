@@ -21,9 +21,9 @@ class profile::trafficserver::backend (
     Array[TrafficServer::Log_format] $log_formats=lookup('profile::trafficserver::backend::log_formats', {default_value => []}),
     Array[TrafficServer::Log_filter] $log_filters=lookup('profile::trafficserver::backend::log_filters', {default_value => []}),
     Array[TrafficServer::Log] $logs=lookup('profile::trafficserver::backend::logs', {default_value => []}),
-    Wmflib::UserIpPort $prometheus_exporter_port=lookup('profile::trafficserver::backend::prometheus_exporter_port', {default_value => 9122}),
+    Stdlib::Port::User $prometheus_exporter_port=lookup('profile::trafficserver::backend::prometheus_exporter_port', {default_value => 9122}),
     Stdlib::Absolutepath $atsmtail_backend_progs=lookup('profile::trafficserver::backend::atsmtail_backend_progs', {default_value => '/etc/atsmtail-backend'}),
-    Wmflib::UserIpPort $atsmtail_backend_port=lookup('profile::trafficserver::backend::atsmtail_backend_port', {default_value => 3904}),
+    Stdlib::Port::User $atsmtail_backend_port=lookup('profile::trafficserver::backend::atsmtail_backend_port', {default_value => 3904}),
     String $mtail_args=lookup('profile::trafficserver::backend::mtail_args', {'default_value' => ''}),
     Boolean $systemd_hardening=lookup('profile::trafficserver::backend::systemd_hardening', {default_value => true}),
 ){

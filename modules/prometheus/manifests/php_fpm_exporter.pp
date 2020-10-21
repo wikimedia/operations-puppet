@@ -15,7 +15,7 @@
 #   Port on which to listen to
 
 class prometheus::php_fpm_exporter (
-    Wmflib::UserIpPort $port,
+    Stdlib::Port::User $port,
     Optional[String] $fcgi_endpoint = undef,
     Optional[Stdlib::Httpurl] $http_endpoint = undef,
 ) {

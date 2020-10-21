@@ -4,7 +4,7 @@
 class pybal::monitoring(
     String $config_host,
     Enum['etcd', 'http'] $config_source,
-    Wmflib::UserIpPort $etcd_port,
+    Stdlib::Port::User $etcd_port,
     Hash[String, Wmflib::Service] $services,
 ) {
     require ::pybal::configuration

@@ -2,7 +2,7 @@ class profile::mediawiki::webserver(
     Boolean $has_lvs = hiera('has_lvs'),
     Boolean $has_tls = lookup('profile::mediawiki::webserver::has_tls'),
     Boolean $stream_to_logstash = lookup('profile::mediawiki::webserver::stream_to_logstash', {'default_value' => false}),
-    Optional[Wmflib::UserIpPort] $fcgi_port = hiera('profile::php_fpm::fcgi_port', undef),
+    Optional[Stdlib::Port::User] $fcgi_port = hiera('profile::php_fpm::fcgi_port', undef),
     String $fcgi_pool = hiera('profile::mediawiki::fcgi_pool', 'www'),
     Mediawiki::Vhost_feature_flags $vhost_feature_flags = lookup('profile::mediawiki::vhost_feature_flags', {'default_value' => {}}),
     Array[String] $prometheus_nodes = lookup('prometheus_nodes'),

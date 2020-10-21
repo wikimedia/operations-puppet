@@ -15,7 +15,7 @@ class profile::trafficserver::tls (
     Array[TrafficServer::Log_filter] $log_filters=lookup('profile::trafficserver::tls::log_filters', {default_value => []}),
     Array[TrafficServer::Log] $logs=lookup('profile::trafficserver::tls::logs', {default_value => []}),
     Array[TrafficServer::Parent_rule] $parent_rules=lookup('profile::trafficserver::tls::parent_rules'),
-    Wmflib::UserIpPort $prometheus_exporter_port=lookup('profile::trafficserver::tls::prometheus_exporter_port', {default_value => 9322}),
+    Stdlib::Port::User $prometheus_exporter_port=lookup('profile::trafficserver::tls::prometheus_exporter_port', {default_value => 9322}),
     Optional[Array[String]] $unified_certs = lookup('profile::trafficserver::tls::unified_certs', {default_value => undef}),
     Boolean $unified_acme_chief = lookup('profile::trafficserver::tls::unified_acme_chief', {default_value => false}),
     Boolean $websocket_support = lookup('profile::trafficserver::tls::websocket_support', {default_value => false}),
@@ -27,7 +27,7 @@ class profile::trafficserver::tls (
     String $conftool_service=lookup('profile::trafficserver::tls::conftool_service', {default_value => 'ats-tls'}),
     Optional[Integer[0,2]] $res_track_memory=lookup('profile::trafficserver::tls::res_track_memory', {'default_value' => undef}),
     Stdlib::Absolutepath $atsmtail_progs=lookup('profile::trafficserver::tls::atsmtail_tls_progs', {'default_value' => '/etc/atsmtail-tls'}),
-    Wmflib::UserIpPort $atsmtail_port=lookup('profile::trafficserver::tls::atsmtail_tls_port', {'default_value' => 3905}),
+    Stdlib::Port::User $atsmtail_port=lookup('profile::trafficserver::tls::atsmtail_tls_port', {'default_value' => 3905}),
     String $mtail_args=lookup('profile::trafficserver::tls::mtail_args', {'default_value' => ''}),
 ){
     $errorpage = {

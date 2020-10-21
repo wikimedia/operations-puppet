@@ -15,7 +15,7 @@
 #
 class profile::mediawiki::jobrunner(
     $statsd = hiera('statsd'),
-    Optional[Wmflib::UserIpPort] $fcgi_port = hiera('profile::php_fpm::fcgi_port', undef),
+    Optional[Stdlib::Port::User] $fcgi_port = hiera('profile::php_fpm::fcgi_port', undef),
     String $fcgi_pool = hiera('profile::mediawiki::fcgi_pool', 'www'),
     Boolean $expose_endpoint = hiera('profile::mediawiki::jobrunner::expose_endpoint', false),
 ) {

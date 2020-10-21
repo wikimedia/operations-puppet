@@ -19,7 +19,7 @@ class profile::mediawiki::php(
     Boolean $enable_fpm = hiera('profile::mediawiki::php::enable_fpm'),
     Optional[Hash] $fpm_config = hiera('profile::mediawiki::php::fpm_config', undef),
     Wmflib::Php_version $php_version = hiera('profile::mediawiki::php::php_version', '7.0'),
-    Optional[Wmflib::UserIpPort] $port = hiera('profile::php_fpm::fcgi_port', undef),
+    Optional[Stdlib::Port::User] $port = hiera('profile::php_fpm::fcgi_port', undef),
     String $fcgi_pool = hiera('profile::mediawiki::fcgi_pool', 'www'),
     Integer $request_timeout = hiera('profile::mediawiki::php::request_timeout', 240),
     String $apc_shm_size = hiera('profile::mediawiki::apc_shm_size'),

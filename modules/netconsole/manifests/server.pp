@@ -6,7 +6,7 @@
 
 class netconsole::server (
     Wmflib::Ensure $ensure = present,
-    Wmflib::UserIpPort $port = 6666,
+    Stdlib::Port::User $port = 6666,
 ) {
     package { 'netcat-openbsd':
         ensure => present,
