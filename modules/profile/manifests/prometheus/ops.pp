@@ -584,6 +584,7 @@ class profile::prometheus::ops (
     $pushgateway_jobs = [
       {
         'job_name'        => 'pushgateway',
+        'honor_labels'    => true,
         'file_sd_configs' => [
           { 'files' => [ "${targets_path}/pushgateway_*.yaml"] },
         ],
