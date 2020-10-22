@@ -1,5 +1,5 @@
 class nftables (
-    Wmflib::Ensure $ensure_package = 'present',
+    String         $ensure_package = 'present',
     Wmflib::Ensure $ensure_service = 'absent',
 ) {
     requires_os('debian >= buster')
@@ -31,7 +31,7 @@ class nftables (
 
     # deploy the basic configuration file, i.e, the basic nftables ruleset skeleton
     file { $nft_main_file:
-        ensure  => $ensure_package,
+        ensure  => $ensure_service,
         source  => 'puppet:///modules/nftables/main.nft',
         require => File['/etc/nftables'],
         notify  => Systemd::Service['nftables'],
