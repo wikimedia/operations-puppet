@@ -313,15 +313,19 @@ define camus::job (
         default => "--check-emails-to ${check_email_target} ",
     }
 
-    $_check_java_opts = $check_java_opts ? {
-        undef   => $http_proxy_java_opts,
-        default => "--check-java-opts '${check_java_opts}${http_proxy_java_opts}' ",
+    if $check_java_opts or $http_proxy_java_opts {
+        $check_java_opt = $check_java_opts ? {
+            undef   => "--check-java-opts '${http_proxy_java_opts}'",
+            default => "--check-java-opts '${check_java_opts}${http_proxy_java_opts}' ",
+        }
+    } else {
+        $check_java_opt = ''
     }
 
     $check_opts = $check ? {
         undef   => '',
         false   => '',
-        default => "--check ${check_jar_opt}${check_dry_run_opt}${check_email_enabled_opt}${_check_java_opts}",
+        default => "--check ${check_jar_opt}${check_dry_run_opt}${check_email_enabled_opt}${check_java_opt}",
     }
 
     $unit_command = "${script} --run --job-name camus-${title} ${camus_jar_opt} ${libjars_opt} ${dynamic_stream_configs_opt} ${stream_configs_constraints_opt} ${check_opts} ${properties_file}"
