@@ -182,7 +182,9 @@ profile::cache::varnish::frontend::fe_vcl_config:
     # the +100 added in $::profile::cache::base::core_probe_timeout_ms
     varnish_probe_ms: 100
     keep: '1d'
-    large_objects_cutoff: 262144
+    # "Temporary" until we can find a better way to combine a smaller cutoff
+    # with pass_random behavior in cache_text.  See also: T266040
+    large_objects_cutoff: 1073741825
     # By setting 'public_clouds_shutdown' to true, all non-API requests from
     # IPs belonging to public clouds like EC2 get blocked with a 429 response
     # at the varnish-fe layer.
