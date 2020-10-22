@@ -23,10 +23,10 @@ class amd_rocm (
     Optional[String] $kfd_access_group = undef,
 ) {
 
-    $supported_versions = ['25', '26', '271', '33', '38']
+    $supported_versions = ['25', '26', '271', '33', '37', '38']
     # Starting with v3.5.0, the firmware has been split out of the dkms package
     # https://github.com/RadeonOpenCompute/ROCm/tree/63ed31781dab993baad65bc262cdcdabe83ca218#Upgrading-to-This-Release
-    $add_firmware_versions = ['38']
+    $add_firmware_versions = ['37', '38']
 
 
     if ! ($version in $supported_versions) {

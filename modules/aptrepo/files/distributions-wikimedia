@@ -75,6 +75,7 @@ Components: main
  component/thumbor
  component/vp9
  thirdparty/amd-rocm33
+ thirdparty/amd-rocm37
  thirdparty/amd-rocm38
  thirdparty/bigtop14
  thirdparty/ci
@@ -96,6 +97,7 @@ UDebComponents: main component/node10
 Update:
 # sorted list, leading whitespace matters!
  amd-rocm33
+ amd-rocm37
  amd-rocm38
  bigtop14
  confluent
@@ -149,6 +151,7 @@ Components: main
  thirdparty/amd-rocm26
  thirdparty/amd-rocm271
  thirdparty/amd-rocm33
+ thirdparty/amd-rocm37
  thirdparty/amd-rocm38
  thirdparty/ceph-nautilus-buster
  thirdparty/ci
@@ -171,6 +174,7 @@ Update:
  amd-rocm26
  amd-rocm271
  amd-rocm33
+ amd-rocm37
  amd-rocm38
  confluent
  elastic74
