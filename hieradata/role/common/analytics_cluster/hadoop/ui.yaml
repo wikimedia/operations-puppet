@@ -19,7 +19,7 @@ profile::hue::oozie_security_enabled: true
 profile::hue::enable_cas: false
 profile::hue::servername: 'hue.wikimedia.org'
 
-profile::oozie::client::oozie_host: 'an-coord1001.eqiad.wmnet'
+profile::oozie::client::oozie_service: 'analytics-oozie'
 
 # TLS Terminator settings
 profile::envoy::ensure: present

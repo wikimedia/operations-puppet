@@ -4,7 +4,7 @@ admin::groups:
  - analytics-admins
 
 profile::hadoop::common::hadoop_cluster_name: 'analytics-hadoop'
-profile::oozie::client::oozie_host: 'an-coord1001.eqiad.wmnet'
+profile::oozie::client::oozie_service: 'analytics-oozie'
 profile::hive::client::hive_service_name: 'analytics-hive'
 
 # Airflow settings and defaults.

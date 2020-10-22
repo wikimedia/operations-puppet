@@ -1,9 +1,10 @@
 # == Class profile::oozie::client
 #
 class profile::oozie::client(
-    Stdlib::Host $oozie_host = lookup('profile::oozie::client::oozie_host'),
+    Hash[String, Any] $oozie_services = lookup('oozie_services'),
+    String $oozie_service             = lookup('profile::oozie::client::oozie_service'),
 ) {
     class { '::cdh::oozie':
-        oozie_host => $oozie_host,
+        oozie_host => $oozie_services[$oozie_service]['oozie_host']
     }
 }

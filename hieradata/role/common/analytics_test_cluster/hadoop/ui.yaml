@@ -19,7 +19,7 @@ profile::hue::oozie_security_enabled: true
 profile::hue::enable_cas: false
 profile::hue::servername: 'hue.wikimedia.org'
 
-profile::oozie::client::oozie_host: 'an-test-coord1001.eqiad.wmnet'
+profile::oozie::client::oozie_service: 'analytics-test-oozie'
 
 profile::kerberos::keytabs::keytabs_metadata:
   - role: 'hue'

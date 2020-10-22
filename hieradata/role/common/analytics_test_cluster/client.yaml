@@ -14,7 +14,7 @@ profile::hive::client::hive_service_name: 'analytics-test-hive'
 
 profile::analytics::cluster::hdfs_mount::monitoring_user: 'analytics'
 
-profile::oozie::client::oozie_host: 'an-test-coord1001.eqiad.wmnet'
+profile::oozie::client::oozie_service: 'analytics-test-oozie'
 
 profile::swap::use_dumps_mounts: false
 

@@ -11,7 +11,7 @@ profile::hadoop::common::hadoop_cluster_name: 'analytics-test-hadoop'
 
 profile::hive::client::hive_service_name: 'analytics-test-hive'
 
-profile::oozie::client::oozie_host: 'an-test-coord1001.eqiad.wmnet'
+profile::oozie::client::oozie_service: 'analytics-test-oozie'
 
 # Set the hive-site.xml file with group ownership 'analytics' so systemd timers
 # can read the file.
