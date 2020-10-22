@@ -2160,7 +2160,36 @@ dataCubes:
             retainMissingValue: true
             lookup:
               type: map
-              map: {"49":"ACK+URG+FIN","48":"ACK+URG","40":"PSH+URG","36":"RST+URG","34":"SYN+URG","33":"FIN+URG","29":"PSH+ACK+RST+FIN","28":"PSH+ACK+RST","26":"PSH+ACK+SYN","25":"PSH+ACK+FIN","24":"PSH+ACK","22":"RST+ACK+SYN","21":"RST+ACK+FIN","20":"RST+ACK","19":"SYN+ACK+FIN","18":"SYN+ACK","17":"FIN+ACK","12":"RST+PSH","10":"SYN+PSH","9":"FIN+PSH","6":"SYN+RST","5":"FIN+RST","3":"FIN+SYN","32":"URG","16":"ACK","8":"PSH","4":"RST","2":"SYN","1":"FIN"}
+              map:
+                "1": "FIN"
+                "2": "SYN"
+                "3": "FIN+SYN"
+                "4": "RST"
+                "5": "FIN+RST"
+                "6": "SYN+RST"
+                "8": "PSH"
+                "9": "FIN+PSH"
+                "10": "SYN+PSH"
+                "12": "RST+PSH"
+                "16": "ACK"
+                "17": "FIN+ACK"
+                "18": "SYN+ACK"
+                "19": "SYN+ACK+FIN"
+                "20": "RST+ACK"
+                "21": "RST+ACK+FIN"
+                "22": "RST+ACK+SYN"
+                "24": "PSH+ACK"
+                "25": "PSH+ACK+FIN"
+                "26": "PSH+ACK+SYN"
+                "28": "PSH+ACK+RST"
+                "29": "PSH+ACK+RST+FIN"
+                "32": "URG"
+                "33": "FIN+URG"
+                "34": "SYN+URG"
+                "36": "RST+URG"
+                "40": "PSH+URG"
+                "48": "ACK+URG"
+                "49": "ACK+URG+FIN"
         exporter_name:
           extractionFn:
             type: lookup
