@@ -141,10 +141,12 @@ class profile::analytics::refinery::job::camus(
         interval         => '*-*-* *:05:00',
     }
 
-    # Used to determine the topic prefixes of topics used for the check_topic_whitelist
-    # on some event service jobs.  If a Datacenter is deactivated due to e.g. a
-    # datacenter switchover, you should comment out the deactive datacenter to avoid
-    # false alerts.
+    # Used to determine the topic prefixes of topics used for the CamusPartitionChecker
+    # kafka.whitelist.topics on the eventgate-main event serivce job.
+    # If a Datacenter is deactivated due to e.g. a datacenter switchover, you should comment
+    # out the deactive datacenter to avoid false alerts.
+    # In the future, if we can enable canary events for eventgate-main streams, we
+    # shouldn't need this anymore.
     $active_datacenters = [
         # 'eqiad',
         'codfw',
@@ -176,6 +178,24 @@ class profile::analytics::refinery::job::camus(
                 'mapred.map.tasks'              => '60',
             },
             'interval' => '*-*-* *:15:00',
+        },
+
+        'eventgate-main' => {
+            'camus_properties' =>  {
+                # eventgate-main handles event platform streams, as well as 'schemaless' mediawiki job
+                # streams.  We use a separate camus job (for now) to import mediawiki job
+                # events into a separate /wmf/data/raw/mediawiki_job etl.destination.path.
+                # We need to exclude the mediawiki job topics from this job.
+                'kafka.blacklist.topics'        => '^(eqiad|codfw)\\.mediawiki\\.job\\..*',
+                # Set this to at least the number of topic-partitions you will be importing.
+                'mapred.map.tasks'              => '40',
+            },
+            # Check the test topics and resource_change topics.
+            # resource_change and revision-create should always have data every hour.
+            # In the future, if we can enable canary events for more streams in eventgate-main,
+            # we can rely on those instead of this whitlelist for discovering the topics to check.
+            'check_java_opts' => "-Dkafka.whitelist.topics=\"^(eqiad|codfw)\\.eventgate-main\\.test\\.event|(${check_topic_whitelist_prefixes})\\.mediawiki\\.(resource_change|revision-create)\"",
+            'interval' => '*-*-* *:05:00',
         },
     }
 
@@ -210,53 +230,6 @@ class profile::analytics::refinery::job::camus(
             check_dry_run    => true,
             check_java_opts  => $check_java_opts,
             interval         => $parameters['interval'],
-        }
-    }
-
-    # DEPRECATED:
-    # These jobs use python based event stream config integration, and are being phased out
-    # in favor of the wikimedia-event-utiltiies event stream config integration above.
-    $event_service_jobs_deprecated = {
-        'eventgate-main' => {
-            'camus_properties' =>  {
-                'etl.destination.path'          => "hdfs://${hadoop_cluster_name}/wmf/data/raw/event",
-                'camus.message.timestamp.field' => 'meta.dt',
-                # eventgate-main handles event platform streams, as well as 'schemaless' mediawiki job
-                # streams.  We use a separate camus job (for now) to import mediawiki job
-                # events into a separate /wmf/data/raw/mediawiki_job etl.destination.path.
-                # We need to exclude the mediawiki job topics from this job.
-                'kafka.blacklist.topics'        => '^(eqiad|codfw)\\.mediawiki\\.job\\..*',
-                # Set this to at least the number of topic-partitions you will be importing.
-                'mapred.map.tasks'              => '40',
-            },
-            # Check the test topics and resource_change topics.  resource_change should
-            # always have data every hour in both datacenters.
-            'check_java_opts' => "-Dkafka.whitelist.topics=\"${check_topic_whitelist_prefixes}\\.(eventgate-main\\.test\\.event|resource_change)\"",
-            'interval' => '*-*-* *:05:00',
-        },
-    }
-    # Declare each of the $event_service_jobs.
-    $event_service_jobs_deprecated.each |String $event_service_name, Hash $parameters| {
-
-        # Default to using .*$event_service_name.test.event for camus checker.
-        # We know that there are test topics for this event service should always have
-        # events, as they are produced when k8s uses its readinessProbe for the service.
-        # We should only check topics we know have data every hour.
-        $check_java_opts = $parameters['check_java_opts'] ? {
-            undef   => "-Dkafka.whitelist.topics=\"(eqiad|codfw)\\.${event_service_name}\\.test\\.event\"",
-            default => $parameters['check_java_opts']
-        }
-
-        camus::job { "${event_service_name}_events":
-            camus_properties           => $parameters['camus_properties'],
-            # Build kafka.whitelist.topics using EventStreamConfig API.
-            dynamic_stream_configs     => true,
-            # Only get topics for streams that have this destination_event_service set to event_service_name
-            stream_configs_constraints => "destination_event_service=${event_service_name}",
-            # Don't need to write _IMPORTED flags for event data
-            check_dry_run              => true,
-            check_java_opts            => $parameters['check_java_opts'],
-            interval                   => $parameters['interval'],
         }
     }
 
