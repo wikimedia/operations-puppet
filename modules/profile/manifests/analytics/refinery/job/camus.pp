@@ -194,7 +194,9 @@ class profile::analytics::refinery::job::camus(
             # resource_change and revision-create should always have data every hour.
             # In the future, if we can enable canary events for more streams in eventgate-main,
             # we can rely on those instead of this whitlelist for discovering the topics to check.
-            'check_java_opts' => "-Dkafka.whitelist.topics=\"^(eqiad|codfw)\\.eventgate-main\\.test\\.event|(${check_topic_whitelist_prefixes})\\.mediawiki\\.(resource_change|revision-create)\"",
+            # NOTE: since this ends up in the systemd unit ExecStart command, we need
+            # extra backslash escapes.
+            'check_java_opts' => "-Dkafka.whitelist.topics=\"^(eqiad|codfw)\\\\.eventgate-main\\\\.test\\\\.event|(${check_topic_whitelist_prefixes})\\\\.mediawiki\\\\.(resource_change|revision-create)\"",
             'interval' => '*-*-* *:05:00',
         },
     }
