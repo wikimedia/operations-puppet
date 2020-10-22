@@ -196,7 +196,7 @@ class profile::analytics::refinery::job::camus(
             # we can rely on those instead of this whitlelist for discovering the topics to check.
             # NOTE: since this ends up in the systemd unit ExecStart command, we need
             # extra backslash escapes.
-            'check_java_opts' => "-Dkafka.whitelist.topics=\"^(eqiad|codfw)\\\\.eventgate-main\\\\.test\\\\.event|(${check_topic_whitelist_prefixes})\\\\.mediawiki\\\\.(resource_change|revision-create)\"",
+            'check_java_opts' => "-Dkafka.whitelist.topics=\"^(eqiad|codfw)\\\\.eventgate-main\\\\.test\\\\.event|${check_topic_whitelist_prefixes}\\\\.mediawiki\\\\.(resource_change|revision-create)\"",
             'interval' => '*-*-* *:05:00',
         },
     }
