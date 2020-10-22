@@ -15,6 +15,8 @@ cluster: analytics
 
 profile::hadoop::common::hadoop_cluster_name: 'analytics-hadoop'
 
+profile::hive::client::hive_service_name: 'analytics-hive'
+
 profile::oozie::client::oozie_host: 'an-coord1001.eqiad.wmnet'
 
 profile::presto::cluster_name: analytics-presto
@@ -29,21 +31,6 @@ profile::analytics::search::jobs::use_kerberos: true
 profile::statistics::explorer::misc_jobs::use_kerberos: true
 profile::statistics::explorer::misc_jobs::hosts_with_jobs:
   - 'stat1007'
-
-# Hive Client settings.
-# Hive configuration is common to multiple clients, but because of role based
-# hiera lookups, we need to repeat it in multiple places. If you change this,
-# make sure you change it in all the right places!
-profile::hive::client::server_host: an-coord1001.eqiad.wmnet
-profile::hive::client::server_port: 10000
-profile::hive::client::metastore_host: 'an-coord1001.eqiad.wmnet'
-
-# These kerberos configs are needed since some options needs to be in sync
-# between client and coordinator (or where hive server/metastore runs).
-profile::hive::client::hive_metastore_sasl_enabled: true
-profile::hive::client::hive_metastore_kerberos_principal: 'hive/_HOST@WIKIMEDIA'
-profile::hive::client::hive_server2_authentication: 'KERBEROS'
-profile::hive::client::hive_server2_authentication_kerberos_principal: 'hive/_HOST@WIKIMEDIA'
 
 profile::analytics::cluster::hdfs_mount::kerberos_enabled: true
 

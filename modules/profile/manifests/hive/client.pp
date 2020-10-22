@@ -3,28 +3,31 @@
 #
 # filtertags: labs-project-analytics labs-project-math
 class profile::hive::client(
-    $zookeeper_clusters                             = hiera('zookeeper_clusters'),
-    $hiveserver_host                                = hiera('profile::hive::client::server_host'),
-    $hiveserver_port                                = hiera('profile::hive::client::server_port'),
-    $metastore_host                                 = hiera('profile::hive::client::hive_metastore_host'),
-    $zookeeper_cluster_name                         = hiera('profile::hive::client::zookeeper_cluster_name', undef),
-    $hive_server_opts                               = hiera('profile::hive::client::hive_server_opts', undef),
-    $hive_metastore_opts                            = hiera('profile::hive::client::hive_metastore_opts', undef),
-    $java_home                                      = hiera('profile::hive::client::java_home', '/usr/lib/jvm/java-8-openjdk-amd64/jre'),
-    $hive_metastore_sasl_enabled                    = hiera('profile::hive::client::hive_metastore_sasl_enabled', undef),
-    $hive_metastore_kerberos_keytab_file            = hiera('profile::hive::client::hive_metastore_kerberos_keytab_file', undef),
-    $hive_metastore_kerberos_principal              = hiera('profile::hive::client::hive_metastore_kerberos_principal', undef),
-    $hive_server2_authentication                    = hiera('profile::hive::client::hive_server2_authentication', undef),
-    $hive_server2_authentication_kerberos_principal = hiera('profile::hive::client::hive_server2_authentication_kerberos_principal', undef),
-    $hive_server2_authentication_kerberos_keytab    = hiera('profile::hive::client::hive_server2_authentication_kerberos_keytab', undef),
-    Stdlib::Host $hive_metastore_jdbc_host          = lookup('profile::hive::client::hive_metastore_jdbc_host', { 'default_value' => 'localhost'}),
-    Integer $hive_metastore_jdbc_port               = lookup('profile::hive::client::hive_metastore_jdbc_port', { 'default_value' => 3306}),
-    $hive_metastore_jdbc_user                       = hiera('profile::hive::client::hive_metastore_jdbc_user', undef),
-    $hive_metastore_jdbc_password                   = hiera('profile::hive::client::hive_metastore_jdbc_password', undef),
-    $hive_metastore_database                        = hiera('profile::hive::client::hive_metastore_jdbc_database', undef),
-    $config_files_group_ownership                   = hiera('profile::hive::client::config_files_group_ownership', 'hdfs'),
+    Hash[String, Any] $zookeeper_clusters          = lookup('zookeeper_clusters'),
+    Hash[String, Any] $hive_services               = lookup('hive_services'),
+    String $hive_service_name                      = lookup('profile::hive::client::hive_service_name'),
+    Optional[String] $config_files_group_ownership = lookup('profile::hive::client::config_files_group_ownership', { 'default_value' => undef }),
+    Optional[String] $hive_metastore_jdbc_password = lookup('profile::hive::client::hive_metastore_jdbc_password', { 'default_value' => undef }),
 ) {
     require ::profile::hadoop::common
+
+    $hiveserver_host = $hive_services[$hive_service_name]['server_host']
+    $hiveserver_port = $hive_services[$hive_service_name]['server_port']
+    $metastore_host = $hive_services[$hive_service_name]['metastore_host']
+    $zookeeper_cluster_name = $hive_services[$hive_service_name]['zookeeper_cluster_name']
+    $hive_server_opts = $hive_services[$hive_service_name]['server_opts']
+    $hive_metastore_opts = $hive_services[$hive_service_name]['metastore_opts']
+    $java_home = $hive_services[$hive_service_name]['java_home']
+    $hive_metastore_sasl_enabled = $hive_services[$hive_service_name]['metastore_sasl_enabled']
+    $hive_metastore_kerberos_keytab_file = $hive_services[$hive_service_name]['metastore_kerberos_keytab_file']
+    $hive_metastore_kerberos_principal = $hive_services[$hive_service_name]['metastore_kerberos_principal']
+    $hive_server2_authentication = $hive_services[$hive_service_name]['server_authentication']
+    $hive_server2_authentication_kerberos_principal = $hive_services[$hive_service_name]['server_authentication_kerberos_principal']
+    $hive_server2_authentication_kerberos_keytab = $hive_services[$hive_service_name]['server_authentication_kerberos_keytab']
+    $hive_metastore_jdbc_host = $hive_services[$hive_service_name]['metastore_jdbc_host']
+    $hive_metastore_jdbc_port = $hive_services[$hive_service_name]['metastore_jdbc_port']
+    $hive_metastore_jdbc_user = $hive_services[$hive_service_name]['metastore_jdbc_user']
+    $hive_metastore_database = $hive_services[$hive_service_name]['metastore_jdbc_database']
 
     # The WMF webrequest table uses HCatalog's JSON Serde.
     # Automatically include this in Hive client classpaths.

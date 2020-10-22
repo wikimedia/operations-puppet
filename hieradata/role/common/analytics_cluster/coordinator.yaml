@@ -5,6 +5,8 @@ admin::groups:
 
 profile::hadoop::common::hadoop_cluster_name: 'analytics-hadoop'
 
+profile::hive::client::hive_service_name: 'analytics-hive'
+
 profile::oozie::client::oozie_host: 'an-coord1001.eqiad.wmnet'
 
 # Set the hive-site.xml file with group ownership 'analytics' so systemd timers
@@ -12,14 +14,6 @@ profile::oozie::client::oozie_host: 'an-coord1001.eqiad.wmnet'
 profile::hive::client::config_files_group_ownership: 'analytics'
 
 profile::analytics::cluster::hdfs_mount::monitoring_user: 'analytics'
-
-# Hive Client settings.
-# Hive configuration is common to multiple clients, but because of role based
-# hiera lookups, we need to repeat it in multiple places. If you change this,
-# make sure you change it in all the right places!
-profile::hive::client::server_host: an-coord1001.eqiad.wmnet
-profile::hive::client::server_port: 10000
-profile::hive::client::metastore_host: 'an-coord1001.eqiad.wmnet'
 
 # Hive Server Settings
 profile::hive::server::monitoring_enabled: true
@@ -109,10 +103,6 @@ profile::oozie::server::ferm_srange: '$ANALYTICS_NETWORKS'
 # settings look like they are properly configured.
 profile::oozie::server::use_admins_list: true
 profile::oozie::server::admin_users: ['otto', 'nuria', 'milimetric', 'mforns', 'fdans', 'joal', 'elukey', 'klausman', 'razzi']
-
-# Following Cloudera recommandations for ~20 users
-profile::hive::client::hive_metastore_opts: '-Xms4g -Xmx4g -XX:+UseG1GC -XX:+UseStringDeduplication -XX:MaxGCPauseMillis=1000 -Djava.net.preferIPv4Stack=false -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=[::]:9183:/etc/prometheus/hive_metastore_jmx_exporter.yaml'
-profile::hive::client::hive_server_opts: '-Xms8g -Xmx8g -XX:+UseG1GC -XX:+UseStringDeduplication -XX:MaxGCPauseMillis=1000 -Djava.net.preferIPv4Stack=false -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=[::]:10100:/etc/prometheus/hive_server_jmx_exporter.yaml'
 profile::oozie::server::jvm_opts: '-Xms2g -Xmx2g'
 
 # Build and install oozie sharelib for our custom spark2 package.
@@ -137,12 +127,6 @@ profile::oozie::server::use_kerberos: true
 profile::hive::server::use_kerberos: true
 profile::hadoop::spark2::use_kerberos: true
 profile::analytics::refinery::job::camus::use_kerberos: true
-profile::hive::client::hive_metastore_sasl_enabled: true
-profile::hive::client::hive_metastore_kerberos_keytab_file: '/etc/security/keytabs/hive/hive.keytab'
-profile::hive::client::hive_metastore_kerberos_principal: 'hive/_HOST@WIKIMEDIA'
-profile::hive::client::hive_server2_authentication: 'KERBEROS'
-profile::hive::client::hive_server2_authentication_kerberos_principal: 'hive/_HOST@WIKIMEDIA'
-profile::hive::client::hive_server2_authentication_kerberos_keytab: '/etc/security/keytabs/hive/hive.keytab'
 profile::oozie::server::oozie_service_kerberos_enabled: true
 profile::oozie::server::local_realm: 'ANALYTICS.EQIAD.WMFLABS'
 profile::oozie::server::oozie_service_keytab_file: '/etc/security/keytabs/oozie/HTTP-oozie.keytab'
