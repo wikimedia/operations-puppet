@@ -1,1 +1,1 @@
-profile::amd_gpu::rocm_version: '38'
+profile::amd_gpu::rocm_version: '37'
