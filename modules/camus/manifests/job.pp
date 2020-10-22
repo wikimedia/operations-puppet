@@ -33,16 +33,6 @@
 #   Path to camus.jar.  Default undef,
 #   (/srv/deployment/analytics/refinery/artifacts/camus-wmf.jar)
 #
-# [*dynamic_stream_configs*]
-#   If true, the value of kafka.whitelist.topics will be computed
-#   by the refinery camus wrapper at runtime by getting a list
-#   of active streams from the MediaWiki EventStreamConfig API.
-#   If this is set, http proxy will be configured via the environment variables.
-#
-# [*stream_configs_constraints*]
-#   If usinig dynamic_stream_configs, this will be passed as the constraints parameter.
-#   Use this to help restrict the topics a Camus job should import.
-#
 # [*check*]
 #   If true, CamusPartitionChecker will be run after the Camus run finishes.
 #   Default: undef, (false)
@@ -102,8 +92,6 @@ define camus::job (
     $user                       = 'analytics',
     $camus_name                 = "${title}-00",
     $camus_jar                  = undef,
-    $dynamic_stream_configs     = false,
-    $stream_configs_constraints = undef,
     $check                      = undef,
     $check_jar                  = undef,
     $check_dry_run              = undef,
@@ -231,7 +219,6 @@ define camus::job (
 
     # Make sure this camus job will at least attempt to limit the topics it is importing.
     if (
-        !$dynamic_stream_configs and # NOTE: This is being deprecated in favor of eventstreamconfig.uri.
         !$template_properties['kafka.whitelist.topics'] and
         !(
             $template_properties['eventstreamconfig.uri'] and
@@ -267,11 +254,6 @@ define camus::job (
         # place these opts on its java command.
         $http_proxy_java_opts = " -Dhttp.proxyHost=${http_proxy_host} -Dhttp.proxyPort=${http_proxy_port} -Dhttps.proxyHost=${http_proxy_host} -Dhttps.proxyPort=${http_proxy_port}"
         $http_proxy_environment = {
-            # These are needed for the camus CLI wrappers python integration with EventStreamConfig
-            # via --dynamic-stream-configs.  This will be removed in favor of Camus direct
-            # integration via eventstreamconfig.uri.
-            'http_proxy'  => "http://${http_proxy_host}:${http_proxy_port}",
-            'https_proxy' => "http://${http_proxy_host}:${http_proxy_port}",
             # Camus runs as a Hadoop job, and needs these set in HADOOP_OPTS
             # to properly use proxy in the task container.
             # NOTE: \s because systemd parsing is strange:
@@ -282,20 +264,6 @@ define camus::job (
         $http_proxy_java_opts = ''
         $http_proxy_environment = {}
     }
-
-    # Set $dynamic_stream_configs_opt and use http webproxy
-    # so https://meta.wikimedia.org/w/api.php can be requested at runtime.
-    if $dynamic_stream_configs {
-        $dynamic_stream_configs_opt = '--dynamic-stream-configs'
-        $stream_configs_constraints_opt = $stream_configs_constraints ? {
-            undef => '',
-            default => "--stream-configs-constraints=${stream_configs_constraints}"
-        }
-    } else {
-        $dynamic_stream_configs_opt = ''
-        $stream_configs_constraints_opt = ''
-    }
-
 
     $check_jar_opt = $check_jar ? {
         undef   => '',
@@ -328,7 +296,7 @@ define camus::job (
         default => "--check ${check_jar_opt}${check_dry_run_opt}${check_email_enabled_opt}${check_java_opt}",
     }
 
-    $unit_command = "${script} --run --job-name camus-${title} ${camus_jar_opt} ${libjars_opt} ${dynamic_stream_configs_opt} ${stream_configs_constraints_opt} ${check_opts} ${properties_file}"
+    $unit_command = "${script} --run --job-name camus-${title} ${camus_jar_opt} ${libjars_opt} ${check_opts} ${properties_file}"
 
     kerberos::systemd_timer { "camus-${title}":
         ensure                    => $ensure,
