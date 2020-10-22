@@ -1,0 +1,2 @@
+netmon_server: "%{alias('__master_for_role_netmon')}"
+
