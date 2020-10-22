@@ -89,7 +89,7 @@ class profile::analytics::refinery::job::camus(
         kafka_brokers       => $kafka_brokers,
         hadoop_cluster_name => $hadoop_cluster_name,
         # TODO upgrade this default to wmf10 once wmf10 is proved to work for eventlogging job.
-        camus_jar           => "${profile::analytics::refinery::path}/artifacts/org/wikimedia/analytics/camus-wmf/camus-wmf-0.1.0-wmf9.jar",
+        camus_jar           => "${profile::analytics::refinery::path}/artifacts/org/wikimedia/analytics/camus-wmf/camus-wmf-0.1.0-wmf12.jar",
         check_jar           => "${profile::analytics::refinery::path}/artifacts/org/wikimedia/analytics/refinery/refinery-camus-0.0.137.jar",
         check               => $monitoring_enabled,
         # Email reports if CamusPartitionChecker finds errors.
@@ -132,8 +132,6 @@ class profile::analytics::refinery::job::camus(
             # Set this to at least the number of topic/partitions you will be importing.
             'mapred.map.tasks'              => '100',
         },
-        # TODO: Remove this once default has been changed to wmf10.
-        camus_jar        => "${profile::analytics::refinery::path}/artifacts/org/wikimedia/analytics/camus-wmf/camus-wmf-0.1.0-wmf10.jar",
         # Don't need to write _IMPORTED flags for EventLogging data
         check_dry_run    => true,
         # Only check these topic, since they should have data every hour.
@@ -223,7 +221,6 @@ class profile::analytics::refinery::job::camus(
         }
 
         camus::job { "${event_service_name}_events":
-            camus_jar        => "${profile::analytics::refinery::path}/artifacts/org/wikimedia/analytics/camus-wmf/camus-wmf-0.1.0-wmf12.jar",
             camus_properties => merge(
                 $camus_properties_events,
                 $parameters['camus_properties'],
