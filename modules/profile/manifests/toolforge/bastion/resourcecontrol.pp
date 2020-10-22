@@ -10,6 +10,10 @@ class profile::toolforge::bastion::resourcecontrol(
         pkg_ensure             => 'latest',
     }
 
+    class { 'toolforge::bastion_proc_management':
+        project => $::labsproject,
+    }
+
     file {'/etc/security/limits.conf':
         ensure  => file,
         owner   => 'root',
