@@ -1,33 +1,27 @@
 # == Class geoip::data::archive
 #
 #
-# Sets up a cron job that grabs the latest version of the MaxMind database, puts it
-# in a timestamped directory in $archive_dir, and pushes its contents to hdfs.
-#
+# Sets up a cron job that grabs the latest version of the MaxMind database
+# and pushes its contents to hdfs.
 class geoip::data::archive(
     Stdlib::Unixpath $maxmind_db_source_dir = '/usr/share/GeoIP',
     Stdlib::Unixpath $hdfs_archive_dir = '/wmf/data/archive/geoip',
-    Stdlib::Unixpath $archive_dir = "${maxmind_db_source_dir}/archive",
     Boolean $use_kerberos = false,
-    Boolean $enable_timer = false,
+    Wmflib::Ensure $ensure = 'present',
 ){
 
-    # Puppet assigns 755 permissions to files and dirs, so the script can be ran
-    # manually without sudo.
-    file { $archive_dir:
-        ensure  => directory,
-        owner   => 'analytics-privatedata',
-        group   => 'analytics-privatedata-users',
-        require => [
-            User['analytics-privatedata'],
-            Group['analytics-privatedata-users']
-        ],
-    }
+    # This comment is here as a reminder to cleanup the local archive directory on stat1007
+    # at /usr/share/GeoIP/archive once T264152 is all done.
 
     $archive_script = '/usr/local/bin/geoip_archive.sh'
 
+    $archive_script_ensure = $ensure ? {
+        'present' => file,
+        default   => absent,
+    }
+
     file { $archive_script:
-        ensure  => file,
+        ensure  => $archive_script_ensure,
         owner   => 'root',
         group   => 'wikidev',
         mode    => '0555',
@@ -37,10 +31,11 @@ class geoip::data::archive(
     $archive_command = "${archive_script} ${maxmind_db_source_dir} ${hdfs_archive_dir}"
 
     kerberos::systemd_timer { 'archive-maxmind-geoip-database':
+        ensure                    => $ensure,
         description               => 'Archives Maxmind GeoIP files',
         command                   => $archive_command,
         interval                  => 'Tue *-*-* 05:30:00',
-        user                      => 'analytics-privatedata',
+        user                      => 'analytics',
         monitoring_contact_groups => 'analytics',
         use_kerberos              => $use_kerberos,
         require                   => [File[$archive_script], User['analytics']],
