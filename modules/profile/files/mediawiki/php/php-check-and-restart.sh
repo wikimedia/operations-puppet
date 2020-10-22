@@ -8,6 +8,10 @@ set -euo pipefail
 # (T240205), we can make an additional check about its status. If APCu
 # fragmentation is over 95%, we will issue a /apcu-free command
 
+# Due to more observations, opcache restarts due to max_cached_keys being reached
+# can cause a server to start erroring. We can trigger a restart 2000 keys earlier.
+# (T253673#6569013)
+
 # Service name
 SERVICE="$1"
 # Minimum opcache free MB.
@@ -31,4 +35,15 @@ if [ "${APCU_FRAGMENTATION%.*}" -ge "$APCU_FRAGMENTATION_LIMIT" ]; then
     /usr/local/bin/php7adm /apcu-free
 else
     echo "Fragmentation is at ${APCU_FRAGMENTATION%.*}%, nothing to do here"
+fi
+
+MAX_CACHED_KEYS=$(($(php7adm /opcache-info |jq .opcache_statistics.max_cached_keys  2>&1)-2000))
+NUM_CACHED_KEYS=$(php7adm /opcache-info |jq .opcache_statistics.num_cached_keys  2>&1)
+
+if [ "$NUM_CACHED_KEYS" -ge "$MAX_CACHED_KEYS" ]; then
+    echo "Restarting ${SERVICE}: Number of cached keys $NUM_CACHED_KEYS is over the $MAX_CACHED_KEYS limit"
+    "/usr/local/sbin/restart-$SERVICE"
+    exit 0
+else
+    echo "NOT restarting ${SERVICE}: Number of cached keys $NUM_CACHED_KEYS"
 fi
