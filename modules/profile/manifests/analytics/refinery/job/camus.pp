@@ -167,7 +167,7 @@ class profile::analytics::refinery::job::camus(
                 # Set this to at least the number of topic-partitions you will be importing.
                 'mapred.map.tasks'              => '10',
             },
-            'interval' => '*-*-* *:30:00',
+            'interval' => '*-*-* *:25:00',
         },
 
         'eventgate-analytics' => {
