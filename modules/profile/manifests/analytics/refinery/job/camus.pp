@@ -191,6 +191,7 @@ class profile::analytics::refinery::job::camus(
         }
 
         camus::job { "${event_service_name}_events":
+            camus_jar                  => "${profile::analytics::refinery::path}/artifacts/org/wikimedia/analytics/camus-wmf/camus-wmf-0.1.0-wmf12.jar",
             camus_properties => merge(
                 $event_service_camus_properties,
                 $parameters['camus_properties'],
@@ -250,7 +251,6 @@ class profile::analytics::refinery::job::camus(
         }
 
         camus::job { "${event_service_name}_events":
-            camus_jar                  => "${profile::analytics::refinery::path}/artifacts/org/wikimedia/analytics/camus-wmf/camus-wmf-0.1.0-wmf12.jar",
             camus_properties           => $parameters['camus_properties'],
             # Build kafka.whitelist.topics using EventStreamConfig API.
             dynamic_stream_configs     => true,
