@@ -1,0 +1,2 @@
+profile::orchestrator::monitoring::check_procs: true
+profile::orchestrator::monitoring::check_tcp: true

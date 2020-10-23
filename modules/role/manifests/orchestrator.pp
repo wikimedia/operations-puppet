@@ -6,4 +6,5 @@ class role::orchestrator {
     include profile::standard
     include profile::base::firewall
     include profile::orchestrator::server
+    include profile::orchestrator::monitoring
 }
