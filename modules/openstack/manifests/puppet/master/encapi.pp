@@ -52,12 +52,13 @@ class openstack::puppet::master::encapi(
     uwsgi::app { 'labspuppetbackend':
         settings  => {
             uwsgi => {
-                plugins     => 'python3',
-                'wsgi-file' => "/usr/local/lib/${python_version}/dist-packages/labspuppetbackend.py",
-                callable    => 'app',
-                master      => true,
-                http-socket => '0.0.0.0:8101',
-                env         => [
+                plugins             => 'python3',
+                'wsgi-file'         => "/usr/local/lib/${python_version}/dist-packages/labspuppetbackend.py",
+                callable            => 'app',
+                master              => true,
+                http-socket         => '0.0.0.0:8101',
+                reload-on-exception => true,
+                env                 => [
                     "MYSQL_HOST=${mysql_host}",
                     "MYSQL_DB=${mysql_db}",
                     "MYSQL_USERNAME=${mysql_username}",
