@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# TODO: add concurrency protection with poolcounter.
 import argparse
 import logging
 import shlex
@@ -13,6 +12,14 @@ from urllib import parse
 
 import requests
 
+# Optional poolcounter support
+try:
+    import poolcounter
+    from poolcounter.client import RequestType
+    pc_support = True
+except ImportError:
+    pc_support = False
+
 from conftool.cli.tool import ToolCliBase
 from conftool.drivers import BackendError
 
@@ -23,6 +30,8 @@ class ServiceRestarter(ToolCliBase):
 
     # Default error return-code from the script itself
     DEFAULT_RC = 127
+    # poolcounter namespace
+    POOLCOUNTER_NS = 'ServiceRestarter'
 
     def __init__(self, args):
         super().__init__(args)
@@ -41,6 +50,36 @@ class ServiceRestarter(ToolCliBase):
 
     def _run_action(self):
         pass
+
+    def _get_datacenter(self):
+        try:
+            with open('/etc/wikimedia-cluster') as fh:
+                key = fh.read().strip()
+            return key
+        except FileNotFoundError:
+            return 'default'
+
+    def get_poolcounter_key(self):
+        """
+        Returns the poolcounter key for this restart.
+        """
+        # The key will be composed as follows:
+        # {POOLCOUNTER_NS}::datacenter::pool1-pool2...
+        # pools will be ordered alphabetically
+        pattern = re.compile('/pools/(.*)_')
+        lvs_pools = set()
+        for uri in self.lvs_uris:
+            match = pattern.search(uri)
+            if match:
+                lvs_pools.add(match.group(1))
+        if not lvs_pools:
+            # All lvs urls were malformed.
+            raise ValueError('Unable to extract the pools for the lvs uri')
+        return "{ns}::{dc}::{key}".format(
+            ns=self.POOLCOUNTER_NS,
+            dc=self._get_datacenter(),
+            key='-'.join(sorted(lvs_pools))
+        )
 
     def run(self):
         """
@@ -304,6 +343,17 @@ def parse_args():
     parser.add_argument(
         "--pools", nargs="+", metavar="POOL", help="LVS services to depool"
     )
+    if pc_support:
+        parser.add_argument(
+            "--max-concurrency",
+            default=0, type=int,
+            help="Limits the maximum number of restarts happening concurrently across the cluster."
+        )
+        parser.add_argument(
+            '--poolcounter-config',
+            default="/etc/poolcounter-backends.yaml",
+            help="Path to the poolcounter configuration yaml file. See python-poolcounter's docs."
+        )
     simple_actions = parser.add_mutually_exclusive_group(required=True)
     simple_actions.add_argument(
         "--services", nargs="+", metavar="SVC", help="Systemd service to restart"
@@ -323,6 +373,31 @@ def parse_args():
     return parser.parse_args()
 
 
+def poolcounter_run(args, sr):
+    try:
+        key = sr.get_poolcounter_key()
+    except ValueError as e:
+        logger.error(e)
+        return sr.DEFAULT_RC
+    try:
+        pc = poolcounter.from_yaml(args.poolcounter_config, "service_restarter")
+    except Exception:
+        logger.error("Could not initialize poolcounter from file '%s'", args.poolcounter_config)
+    # Run at most args.max_concurrency restarts at the same time across the cluster.
+    # Only error out after 10 minutes.
+    if pc.run(
+            RequestType.LOCK_EXC,
+            key,
+            sr.run,
+            concurrency=args.max_concurrency,
+            max_queue=10000,
+            timeout=600,
+    ):
+        return 0
+    else:
+        return 2
+
+
 def main():
     args = parse_args()
     log_format = "%(asctime)s [%(levelname)s] %(message)s"
@@ -335,11 +410,18 @@ def main():
             logging.getLogger(lbl).setLevel(logging.WARNING)
     sr = ServiceRestarter(args)
     sr.setup()
+
     if args.depool:
         return sr.run_depool()
     if args.pool:
         return sr.run_pool()
-    return sr.run()
+    # If there is no poolcounter package installed,
+    # we don't accept --max-concurrency as a cli argument
+    # so guard the conditional with pc_support first.
+    if pc_support and args.max_concurrency != 0:
+        return poolcounter_run(args, sr)
+    else:
+        return sr.run()
 
 
 if __name__ == "__main__":
