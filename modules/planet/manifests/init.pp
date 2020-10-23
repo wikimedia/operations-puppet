@@ -67,8 +67,8 @@ class planet (
         domain_name => $domain_name,
     }
 
-    # creates one cron for updates per language
-    planet::cronjob { $languages_keys: }
+    # creates one systemd timer for updates per language
+    planet::updatejob { $languages_keys: }
 
     # creates one planet theme (css/logo) per language
     planet::theme { $languages_keys: }
