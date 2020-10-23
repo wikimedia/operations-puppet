@@ -167,6 +167,7 @@ Components: main
  thirdparty/kubeadm-k8s-1-16
  thirdparty/kubeadm-k8s-1-17
  thirdparty/matomo
+ thirdparty/orchestrator
  thirdparty/postgres96
 UDebComponents: main
 Update:
