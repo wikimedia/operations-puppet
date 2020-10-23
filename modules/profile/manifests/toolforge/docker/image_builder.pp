@@ -26,6 +26,14 @@ class profile::toolforge::docker::image_builder(
         directory => '/srv/images/toolforge',
     }
 
+    git::clone { 'cloud/toolforge/buildpacks':
+        ensure    => present,
+        directory => '/srv/buildpacks',
+    }
+
+    # Available in Toolforge's aptly repo
+    ensure_packages(['pack'])
+
     # Registry credentials require push privilages
     # uses strict_encode64 since encode64 adds newlines?!
     $docker_auth = inline_template("<%= require 'base64'; Base64.strict_encode64('${docker_username}:${docker_password}') -%>")
