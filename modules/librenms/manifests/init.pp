@@ -258,12 +258,4 @@ class librenms(
         ensure => link,
         target => "${install_dir}/syslog.php",
     }
-
-    # Obsoleted by https://docs.librenms.org/Support/Cleanup-options/
-    file { "${install_dir}/purge.py":
-        ensure => absent,
-    }
-    cron { 'purge-syslog-eventlog':
-        ensure  => absent,
-    }
 }
