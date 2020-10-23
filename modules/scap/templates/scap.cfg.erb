@@ -123,12 +123,11 @@ canary_dashboard_url: https://logstash-beta.wmflabs.org/goto/ff3530979bc5a54b977
 # Restart php-fpm only when running from the deployment servers for now.
 # Further explanations at https://phabricator.wikimedia.org/T224857#5467370
 [deploy1001.eqiad.wmnet]
-# Restart php-fpm if the opcache is critically low
 php_fpm: php7.2-fpm
 php_fpm_restart_script: /usr/local/sbin/check-and-restart-php
+php_fpm_unsafe_restart_script: /usr/local/sbin/restart-php7.2-fpm
 
 [deploy2001.codfw.wmnet]
-# Restart php-fpm if the opcache is critically low
 php_fpm: php7.2-fpm
 php_fpm_restart_script: /usr/local/sbin/check-and-restart-php
-
+php_fpm_unsafe_restart_script: /usr/local/sbin/restart-php7.2-fpm
