@@ -658,7 +658,7 @@ node 'db2093.codfw.wmnet' {
 
 # Orchestrator central node (VM on ganeti)
 node 'dborch1001.eqiad.wmnet' {
-    role(insetup)
+    role(orchestrator)
 }
 
 
