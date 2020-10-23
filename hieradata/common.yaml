@@ -664,9 +664,9 @@ oozie_services:
 # have a single place in hiera to check/modify.
 hive_services:
   analytics-test-hive:
-    server_host: an-test-coord1001.eqiad.wmnet
+    server_host: 'analytics-test-hive.eqiad.wmnet'
     server_port: 10000
-    metastore_host: 'an-test-coord1001.eqiad.wmnet'
+    metastore_host: 'analytics-test-hive.eqiad.wmnet'
     metastore_sasl_enabled: true
     metastore_kerberos_principal: 'hive/analytics-test-hive.eqiad.wmnet@WIKIMEDIA'
     server_authentication: 'KERBEROS'
