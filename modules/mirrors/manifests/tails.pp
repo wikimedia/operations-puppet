@@ -26,11 +26,13 @@ class mirrors::tails {
     }
 
     $rsync_cmd = "/usr/bin/rsync -rt --delete ${remote_path} ${local_dir}"
-    cron { 'update-tails-mirror':
-        ensure  => present,
-        command => "${rsync_cmd} 1>/dev/null 2>/dev/null",
-        user    => 'mirror',
-        hour    => '*',
-        minute  => '15',
+
+    systemd::timer::job { 'update-tails-mirror':
+        ensure      => 'present',
+        user        => 'root',
+        description => 'update the tails mirror with rsync',
+        command     => $rsync_cmd,
+        interval    => {'start' => 'OnUnitInactiveSec', 'interval' => 'hourly'},
     }
+
 }

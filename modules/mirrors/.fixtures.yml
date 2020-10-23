@@ -1,5 +1,0 @@
-fixtures:
-    symlinks:
-        mirrors: "#{source_dir}"
-        rsync: "../../../../rsync"
-        ssh: "../../../../ssh"

@@ -31,13 +31,13 @@ class mirrors::ubuntu {
         source => 'puppet:///modules/mirrors/update-ubuntu-mirror',
     }
 
-    cron { 'update-ubuntu-mirror':
-        ensure  => present,
-        command => '/usr/local/sbin/update-ubuntu-mirror 1>/dev/null 2>/var/lib/mirror/mirror.err.log',
-        user    => 'mirror',
-        hour    => '*/6',
-        minute  => '43',
-        require => File['/usr/local/sbin/update-ubuntu-mirror'],
+    systemd::timer::job { 'update-ubuntu-mirror':
+        ensure      => 'present',
+        user        => 'root',
+        description => 'update the Ubuntu mirror with rsync',
+        command     => '/usr/local/sbin/update-ubunut-mirror',
+        interval    => {'start' => 'OnUnitInactiveSec', 'interval' => '6h'},
+        require     => File['/usr/local/sbin/update-ubuntu-mirror'],
     }
 
     # serve via rsync
