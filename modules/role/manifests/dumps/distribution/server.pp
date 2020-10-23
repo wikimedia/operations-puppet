@@ -17,7 +17,6 @@ class role::dumps::distribution::server {
     include ::profile::dumps::distribution::monitoring
 
     include ::profile::dumps::distribution::datasets::cleanup
-    include ::profile::dumps::distribution::datasets::cleanup_miscdatasets
     include ::profile::dumps::distribution::datasets::dumpstatusfiles_sync
     include ::profile::dumps::distribution::datasets::rsync_config
     include ::profile::dumps::distribution::datasets::fetcher
