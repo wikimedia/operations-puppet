@@ -84,11 +84,17 @@ class puppetmaster::scripts(
     }
 
     # Clear out older reports
+    # remove cron to replace it with systemd timer
     cron { 'removeoldreports':
-        ensure  => present,
-        command => "find /var/lib/puppet/reports -type f -mmin +${keep_reports_minutes} -delete >/dev/null 2>&1",
-        user    => puppet,
-        hour    => [0, 8, 16], # Run every 8 hours, to prevent excess load
-        minute  => 27, # Run at a time when hopefully no other cron jobs are
+        ensure => 'absent',
     }
+
+    systemd::timer::job { 'remove_old_puppet_reports':
+        ensure      => 'present',
+        user        => 'puppet',
+        description => 'Clears out older puppet reports.',
+        command     => "/usr/bin/find /var/lib/puppet/reports -type f -mmin +${keep_reports_minutes} -delete",
+        interval    => {'start' => 'OnUnitInactiveSec', 'interval' => '8h'},
+    }
+
 }
