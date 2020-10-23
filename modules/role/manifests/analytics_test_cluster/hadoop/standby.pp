@@ -13,6 +13,8 @@ class role::analytics_test_cluster::hadoop::standby {
     include ::profile::hadoop::firewall::master
     include ::profile::analytics::cluster::users
     include ::profile::hadoop::backup::namenode
+    include ::profile::hive::client
+    include ::profile::hive::site_hdfs
     include ::profile::kerberos::client
     include ::profile::kerberos::keytabs
     include ::profile::base::firewall

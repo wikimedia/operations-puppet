@@ -17,8 +17,6 @@ class role::analytics_test_cluster::client {
     include ::profile::kerberos::client
     include ::profile::kerberos::keytabs
 
-    include ::profile::hive::site_hdfs
-
     include ::profile::analytics::cluster::gitconfig
 
     include ::profile::swap
