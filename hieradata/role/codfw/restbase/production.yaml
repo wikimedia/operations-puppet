@@ -25,3 +25,9 @@ profile::restbase::hosts:
 
 lvs::realserver::realserver_ips:
   - '10.2.1.17' # restbase.svc.codfw.wmnet
+# Temporary: use poolcounter in safe-service restart scripts
+profile::lvs::realserver::poolcounter_backends:
+  - label: pc1
+    fqdn: poolcounter2003.codfw.wmnet
+  - label: pc2
+    fqdn: poolcounter2004.codfw.wmnet

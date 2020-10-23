@@ -25,3 +25,9 @@ profile::restbase::hosts:
   - restbase1028.eqiad.wmnet
   - restbase1029.eqiad.wmnet
   - restbase1030.eqiad.wmnet
+# Temporary: use poolcounter in safe-service restart scripts
+profile::lvs::realserver::poolcounter_backends:
+  - label: pc1
+    fqdn: poolcounter1004.eqiad.wmnet
+  - label: pc2
+    fqdn: poolcounter1005.eqiad.wmnet
