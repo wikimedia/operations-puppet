@@ -47,12 +47,6 @@ class openstack::designate::dns_floating_ip_updater(
 
     if os_version('debian >= jessie') {
 
-        # TODO: Remove after change is applied
-        cron { 'floating-ip-ptr-record-updater':
-            ensure => absent,
-            user   => 'root',
-        }
-
         systemd::timer::job { 'designate_floating_ip_ptr_records_updater':
             ensure                    => $ensure,
             description               => 'Designate Floating IP PTR records updater',
