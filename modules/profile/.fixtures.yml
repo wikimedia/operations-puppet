@@ -23,6 +23,7 @@ fixtures:
         nrpe: "../../../../nrpe"
         phabricator: "../../../../phabricator"
         php: "../../../../php"
+        poolcounter: "../../../../poolcounter"
         rsync: "../../../../rsync"
         rsyslog: "../../../../rsyslog"
         scap: "../../../../scap"

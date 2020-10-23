@@ -1,1 +1,3 @@
 profile::lvs::realserver::use_conftool: true
+# Don't use poolcounter by default.
+profile::lvs::realserver::poolcounter_backends: null

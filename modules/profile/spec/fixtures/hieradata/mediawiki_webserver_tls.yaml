@@ -35,5 +35,9 @@ profile::lvs::realserver::pools:
 profile::lvs::realserver::use_conftool: false
 prometheus_nodes: []
 
-# Nginx TLS settings
 has_lvs: true
+profile::lvs::realserver::poolcounter_backends:
+  - label: test
+    fqdn: test.example.com
+  - label: test1
+    fqdn: test.example.com

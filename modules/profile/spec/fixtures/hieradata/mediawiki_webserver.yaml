@@ -34,3 +34,8 @@ profile::lvs::realserver::pools:
     service: php7.2-fpm
 profile::lvs::realserver::use_conftool: false
 prometheus_nodes: []
+profile::lvs::realserver::poolcounter_backends:
+  - label: test
+    fqdn: test.example.com
+  - label: test1
+    fqdn: test.example.com

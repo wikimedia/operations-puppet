@@ -26,6 +26,7 @@ define conftool::scripts::safe_service_restart(
     Array[String] $lvs_pools,
     Hash[String, Wmflib::Service] $services,
     Hash $lvs_class_hosts,
+    Integer $max_concurrency = 0,
 ) {
     # Only require the other conftool scrips if lvs pools are declared.
     if $lvs_pools != [] {

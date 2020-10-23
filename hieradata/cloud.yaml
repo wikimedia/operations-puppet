@@ -188,3 +188,9 @@ profile::swift::proxy::dispersion_account: ~
 profile::swift::proxy::rewrite_account: ~
 profile::swift::proxy::thumborhost: ~
 profile::swift::proxy::inactivedc_thumborhost: ~
+
+
+
+# Only added to make CI happy. cloud has no LVS
+profile::lvs::realserver::poolcounter_backends: ~
+profile::lvs::realserver::use_conftool: false

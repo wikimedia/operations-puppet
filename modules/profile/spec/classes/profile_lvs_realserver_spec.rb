@@ -19,7 +19,8 @@ describe 'profile::lvs::realserver' do
         let(:params) {
           {
             'pools' => {'text' => {'service' => 'nginx'}},
-            'use_conftool' => false
+            'use_conftool' => false,
+            'poolcounter_backends' => [],
           }
         }
         it { is_expected.to compile.with_all_deps }
@@ -37,6 +38,11 @@ describe 'profile::lvs::realserver' do
               'appservers-https' => {'services' => ['apache2', 'php', 'mcrouter', 'nginx']},
             },
             'use_conftool' => true,
+            'poolcounter_backends' => [
+              {'label' => 't', 'fqdn' => 'test.example.org'},
+              {'label' => 't1', 'fqdn' => 'test1.example.org'},
+            ]
+
           }
         }
         let(:pre_condition) {
@@ -51,6 +57,10 @@ describe 'profile::lvs::realserver' do
         }
         it { is_expected.to contain_file('/usr/local/sbin/restart-apache2')
                               .with_content(%r{http:\/\/lvs1016:9090\/pools\/apaches_80})
+                              .with_content(/--max-concurrency [1-9]/)
+        }
+        it { is_expected.to contain_class('poolcounter::client::python')
+                              .with_ensure('present')
         }
         it { is_expected.to contain_file('/usr/local/bin/depool-nginx')
                               .with_content(/\-\-depool/)
