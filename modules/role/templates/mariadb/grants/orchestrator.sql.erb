@@ -1,0 +1,4 @@
+-- dborch1001.eqiad.wmnet
+
+CREATE USER 'orchestrator_srv'@'10.64.32.13' IDENTIFIED BY '<%= @db_backend_password %>';
+GRANT ALL PRIVILEGES ON `orchestrator`.* TO 'orchestrator_srv'@'10.64.32.13';
