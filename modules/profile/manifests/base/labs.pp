@@ -1,8 +1,8 @@
 class profile::base::labs(
-    $unattended_wmf = hiera('profile::base::labs::unattended_wmf'),
-    $unattended_distro = hiera('profile::base::labs::unattended_distro'),
-    $send_puppet_failure_emails = hiera('send_puppet_failure_emails', true),
-    ) {
+    Wmflib::Ensure $unattended_wmf = lookup('profile::base::labs::unattended_wmf'),
+    Wmflib::Ensure $unattended_distro = lookup('profile::base::labs::unattended_distro'),
+    Boolean $send_puppet_failure_emails = lookup('send_puppet_failure_emails', {'default_value' => true}),
+){
 
     include ::apt::noupgrade
     class {'::apt::unattendedupgrades':
