@@ -39,11 +39,6 @@ class profile::toolforge::clush::master(
         mode   => '0555',
     }
 
-    # TODO: Remove after change is applied
-    cron { 'update_tools_clush':
-        ensure  => absent,
-    }
-
     systemd::timer::job { 'toolforge_clush_update':
         ensure                    => present,
         description               => 'Update list of Toolforge servers for clush',
