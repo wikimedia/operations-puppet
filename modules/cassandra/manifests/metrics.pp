@@ -93,11 +93,6 @@ class cassandra::metrics(
         require => Scap::Target['cassandra/metrics-collector'],
     }
 
-    cron { 'cassandra-metrics-collector':
-        ensure => absent,
-        user   => 'cassandra',
-    }
-
     systemd::service { 'cassandra-metrics-collector':
         ensure  => $ensure,
         content => systemd_template('cassandra-metrics-collector'),
