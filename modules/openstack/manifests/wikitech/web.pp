@@ -50,15 +50,6 @@ class openstack::wikitech::web(
             target => '/srv/mediawiki';
     }
 
-    # TODO: Remove after change is applied
-    cron { 'db-bak':
-        ensure => absent,
-    }
-
-    cron { 'backup-cleanup':
-        ensure => absent,
-    }
-
     systemd::timer::job { 'wikitech_run_jobs':
         ensure                    => present,
         description               => 'Run Wikitech runJobs.php maintenance script',
