@@ -39,6 +39,7 @@ class snapshot::dumps::configs(
                 fixeddumporder    => '1',
                 lbzip2threads     => '3',
                 lbzip2forhistory  => '1',
+                revinfostash      => '1',
                 wikis => {
                     ruwiki => {
                         pagesPerChunkHistory  => '224167,817876,1156226,1637503,2749993,1916957',
@@ -113,6 +114,7 @@ class snapshot::dumps::configs(
                 revsMargin        => '100',
                 maxrevs           => '20000',
                 lbzip2threads     => '10',
+                revinfostash      => '1',
                 wikis => {
                     enwiki => {
                         pagesPerChunkHistory  => "${enchunkhistory1},${enchunkhistory2}",
@@ -136,6 +138,7 @@ class snapshot::dumps::configs(
                 maxrevs              => '20000',
                 lbzip2threads        => '10',
                 emptyAbstracts       => '1',
+                revinfostash      => '1',
                 wikis => {
                     wikidatawiki => {
                         pagesPerChunkHistory  => "${wikidatachunkhistory1},${$wikidatachunkhistory2}",
@@ -189,6 +192,7 @@ class snapshot::dumps::configs(
                     simplewiki => {
                         pagesPerChunkHistory  => '20000,50000,90000,140000',
                         pagesPerChunkAbstract => '60000',
+                        revinfostash          => '1',
                     },
                     wikidatawiki => {
                         pagesPerChunkHistory  => '540000,30000,20000,30000',
