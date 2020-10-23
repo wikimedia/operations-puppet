@@ -2,3 +2,8 @@
 
 CREATE USER 'orchestrator_srv'@'10.64.32.13' IDENTIFIED BY '<%= @db_backend_password %>';
 GRANT ALL PRIVILEGES ON `orchestrator`.* TO 'orchestrator_srv'@'10.64.32.13';
+
+-- Grants for being able to discover hosts from dborch1001.eqiad.wmnet
+CREATE USER 'orchestrator'@'10.64.32.13' IDENTIFIED BY '<%= @db_topology_password %>';
+GRANT SUPER, PROCESS, REPLICATION SLAVE, REPLICATION CLIENT, RELOAD ON *.* TO 'orchestrator'@'10.64.32.13';
+GRANT SELECT ON mysql.slave_master_info TO 'orchestrator'@'10.64.32.13';

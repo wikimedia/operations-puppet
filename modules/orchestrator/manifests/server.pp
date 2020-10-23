@@ -1,9 +1,11 @@
 class orchestrator::server (
     Stdlib::Host $db_backend_host,
     String[1] $db_backend_password,
+    String[1] $db_topology_password,
     Stdlib::Port $db_backend_port = 3306,
     String[1] $db_backend_username = 'orchestrator_srv',
     String[1] $db_backend_database = 'orchestrator',
+    String[1] $db_topology_username = 'orchestrator',
 ) {
     apt::package_from_component { 'thirdparty-orchestrator-server':
         component => 'thirdparty/orchestrator',
@@ -25,6 +27,15 @@ class orchestrator::server (
         group   => 'root',
         mode    => '0400',
         content => template('orchestrator/orchestrator_srv.cnf.erb'),
+        notify  => Service['orchestrator'],
+    }
+
+    file { '/etc/mysql/orchestrator_topo.cnf':
+        ensure  => 'present',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0400',
+        content => template('orchestrator/orchestrator_topo.cnf.erb'),
         notify  => Service['orchestrator'],
     }
 
