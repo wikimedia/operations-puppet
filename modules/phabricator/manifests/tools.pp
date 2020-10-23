@@ -68,28 +68,6 @@ class phabricator::tools (
         require => Package[$deploy_target],
     }
 
-    # These bz_*_update jobs require the bugzilla_migration DB
-    # The equivalent rt_*_update crons which are not present
-    # at the moment require the rt_migration DB.
-
-    $bz_header = '/var/run/bz_header.flock'
-    cron { 'bz_header_update':
-        ensure  => absent,
-        command => "/usr/bin/flock -n ${bz_header} -c '/srv/phab/tools/bugzilla_update_user_header.py -a' >/dev/null 2>&1",
-        user    => root,
-        hour    => '0',
-        require => Package[$deploy_target],
-    }
-
-    $bz_comments = '/var/run/bz_comments.flock'
-    cron { 'bz_comment_update':
-        ensure  => absent,
-        command => "/usr/bin/flock -n ${bz_comments} -c '/srv/phab/tools/bugzilla_update_user_comments.py -a' >/dev/null 2>&1",
-        user    => root,
-        hour    => '1',
-        require => Package[$deploy_target],
-    }
-
     # clean up old tmp files (T150396)
     cron { 'phab_clean_tmp':
         ensure  => present,
