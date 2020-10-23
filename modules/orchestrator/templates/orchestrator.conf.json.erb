@@ -1,0 +1,10 @@
+{
+  "Debug": true,
+  "ListenAddress": "localhost:3000",
+
+  "MySQLOrchestratorHost": "<%= @db_backend_host %>",
+  "MySQLOrchestratorPort": <%= @db_backend_port %>,
+  "MySQLOrchestratorDatabase": "<%= @db_backend_database %>",
+  "MySQLOrchestratorCredentialsConfigFile": "/etc/mysql/orchestrator-backend.cnf",
+  "MySQLOrchestratorSSLCAFile": "/etc/ssl/certs/Puppet_Internal_CA.pem",
+}
