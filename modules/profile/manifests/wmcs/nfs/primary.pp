@@ -190,17 +190,4 @@ class profile::wmcs::nfs::primary(
             ensure => absent,
         }
     }
-
-    # TODO: evaluate if this logcleanup is actually running etc.
-    if($drbd_actual_role != 'primary') {
-        cron { 'logcleanup':
-            ensure      => absent,
-            environment => 'MAILTO=labs-admin@lists.wikimedia.org',
-            command     => '/usr/local/sbin/logcleanup --config /etc/logcleanup-config.yaml',
-            user        => 'root',
-            minute      => '0',
-            hour        => '14',
-            require     => [File['/usr/local/sbin/logcleanup'], File['/etc/logcleanup-config.yaml']],
-        }
-    }
 }
