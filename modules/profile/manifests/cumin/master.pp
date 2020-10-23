@@ -139,11 +139,20 @@ class profile::cumin::master (
     # Check aliases cron, splayed between the week across the Cumin masters
     $times = cron_splay($cumin_masters, 'weekly', 'cumin-check-aliases')
     cron { 'cumin-check-aliases':
+        ensure  => 'absent',
         command => '/usr/local/sbin/check-cumin-aliases',
         user    => 'root',
         weekday => $times['weekday'],
         hour    => $times['hour'],
         minute  => $times['minute'],
+    }
+
+    systemd::timer::job { 'cumin-check-aliases':
+        ensure      => 'present',
+        user        => 'root',
+        description => 'Checks the cumin aliases file for problems.',
+        command     => '/usr/local/sbin/check-cumin-aliases',
+        interval    => {'start' => 'OnCalendar', 'interval' => $times['OnCalendar']}
     }
 
     class { 'phabricator::bot':
