@@ -71,7 +71,7 @@ profile::presto::server::catalogs:
       hive.non-managed-table-writes-enabled: true
       hive.non-managed-table-creates-enabled: true
       hive.metastore.authentication.type: 'KERBEROS'
-      hive.metastore.service.principal: 'hive/an-test-coord1001.eqiad.wmnet@WIKIMEDIA'
+      hive.metastore.service.principal: 'hive/analytics-test-hive.eqiad.wmnet@WIKIMEDIA'
       hive.metastore.client.principal: 'presto/an-test-coord1001.eqiad.wmnet@WIKIMEDIA'
       hive.metastore.client.keytab: '/etc/security/keytabs/presto/presto.keytab'
       hive.hdfs.authentication.type: 'KERBEROS'
