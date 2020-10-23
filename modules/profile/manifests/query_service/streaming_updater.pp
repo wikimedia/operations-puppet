@@ -48,7 +48,7 @@ class profile::query_service::streaming_updater (
 
     class { 'query_service::monitor::updater':
         username           => $username,
-        updater_main_class => 'org.wikidata.query.rdf.tool.StreamingUpdate',
+        updater_main_class => 'org.wikidata.query.rdf.updater.consumer.StreamingUpdate',
     }
 
 }
