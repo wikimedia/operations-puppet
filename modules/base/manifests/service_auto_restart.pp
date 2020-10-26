@@ -17,15 +17,16 @@ define base::service_auto_restart(
     $hour = fqdn_rand(23, "${title}_auto_restart")
     $minute = fqdn_rand(59, "${title}_auto_restart")
     systemd::timer::job { "wmf_auto_restart_${title}":
-        ensure      => $ensure,
-        user        => 'root',
-        description => "Auto restart job: ${title}",
-        command     => "/usr/local/sbin/wmf-auto-restart -s ${title}",
-        interval    => {
+        ensure             => $ensure,
+        user               => 'root',
+        description        => "Auto restart job: ${title}",
+        command            => "/usr/local/sbin/wmf-auto-restart -s ${title}",
+        monitoring_enabled => false,
+        interval           => {
             'start'    => 'OnCalendar',
             'interval' => "Mon,Tue,Wed,Thu,Fri *-*-* ${hour}:${minute}:00",  # Mon..Fri not supported on jessie
         },
-        require     => File['/usr/local/sbin/wmf-auto-restart'],
+        require            => File['/usr/local/sbin/wmf-auto-restart'],
     }
 
     if $ensure == 'present' {
