@@ -3028,6 +3028,51 @@ host es1025 {
     fixed-address es1025.eqiad.wmnet;
 }
 
+host es1026 {
+    hardware ethernet  BC:97:E1:57:B0:42;
+    fixed-address es1026.eqiad.wmnet;
+}
+
+host es1027 {
+    hardware ethernet  BC:97:E1:54:34:2A;
+    fixed-address es1027.eqiad.wmnet;
+}
+
+host es1028 {
+    hardware ethernet BC:97:E1:57:FB:B4;
+    fixed-address es1028.eqiad.wmnet;
+}
+
+host es1029 {
+    hardware ethernet BC:97:E1:57:B0:8A;
+    fixed-address es1029.eqiad.wmnet;
+}
+
+host es1030 {
+    hardware ethernet BC:97:E1:54:93:4C;
+    fixed-address es1030.eqiad.wmnet;
+}
+
+host es1031 {
+    hardware ethernet BC:97:E1:54:69:76;
+    fixed-address es1031.eqiad.wmnet;
+}
+
+host es1032 {
+    hardware ethernet  BC:97:E1:57:BB:82;
+    fixed-address es1032.eqiad.wmnet;
+}
+
+host es1033 {
+    hardware ethernet BC:97:E1:54:90:10;
+    fixed-address es1033.eqiad.wmnet;
+}
+
+host es1034 {
+    hardware ethernet BC:97:E1:54:6F:5E;
+    fixed-address es1034.eqiad.wmnet;
+}
+
 host es2020 {
     hardware ethernet B0:26:28:F5:28:02;
     fixed-address es2020.codfw.wmnet;
