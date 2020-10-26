@@ -10,15 +10,15 @@ skip-external-locking
 skip-name-resolve
 temp-pool
 
-user      = mysql
-basedir   = <%= @basedir %>
-server_id = <%= @server_id %>
+user       = mysql
+basedir    = <%= @basedir %>
+server_id  = <%= @server_id %>
+report_host = <%= @fqdn %>
 
 # gtid_domain_id flag is needed for multisource replication and GTID.
-# # Strictly it is only needed on masters or servers that can potentially be
-# # masters but for consistency it should be set in all of them.
-# # https://mariadb.com/kb/en/mariadb/gtid/
-#
+# Strictly it is only needed on masters or servers that can potentially be
+# masters but for consistency it should be set in all of them.
+# https://mariadb.com/kb/en/mariadb/gtid/
 gtid_domain_id  = <%= @gtid_domain_id %>
 
 # Always start in read_only mode.

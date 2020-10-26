@@ -7,14 +7,15 @@ socket = <%= @socket %>
 
 [mysqld]
 
-user       = mysql
-socket     = <%= @socket %>
-port       = 3306
-extra_port = 3307
-basedir    = <%= @basedir %>
-datadir    = <%= @datadir %>
-tmpdir     = <%= @tmpdir %>
-server_id  = <%= @server_id %>
+user        = mysql
+socket      = <%= @socket %>
+port        = 3306
+extra_port  = 3307
+basedir     = <%= @basedir %>
+datadir     = <%= @datadir %>
+tmpdir      = <%= @tmpdir %>
+server_id   = <%= @server_id %>
+report_host = <%= @fqdn %>
 
 # Parsercache needs to be writeable (no masters).
 read_only = 0

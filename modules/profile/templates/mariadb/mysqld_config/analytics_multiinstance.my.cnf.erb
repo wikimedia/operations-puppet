@@ -6,16 +6,17 @@ socket = <%= @socket %>
 
 [mysqld]
 
-user       = mysql
-socket     = <%= @socket %>
-basedir    = <%= @basedir %>
-datadir    = <%= @datadir %>
-tmpdir     = <%= @tmpdir %>
-server_id  = <%= @server_id %>
+user        = mysql
+socket      = <%= @socket %>
+basedir     = <%= @basedir %>
+datadir     = <%= @datadir %>
+tmpdir      = <%= @tmpdir %>
+server_id   = <%= @server_id %>
+report_host = <%= @fqdn %>
 <% if @sql_mode != '' -%>
-sql-mode   = <%= @sql_mode %>
+sql-mode    = <%= @sql_mode %>
 <% end -%>
-read_only  = <%= @read_only %>
+read_only   = <%= @read_only %>
 
 # enable socket authentication
 plugin-load = unix_socket=auth_socket.so
