@@ -19,9 +19,6 @@ class prometheus::node_intel_microcode (
     }
 
     # Collect every hour
-    cron { 'prometheus_intel_microcode':
-        ensure => 'absent',
-    }
     systemd::timer::job { 'prometheus_intel_microcode':
         ensure      => $ensure,
         user        => 'root',
