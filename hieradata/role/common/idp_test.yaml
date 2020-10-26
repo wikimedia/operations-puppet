@@ -110,13 +110,14 @@ profile::idp::actuators:
   - prometheus
   - sso
   - ssoSessions
+profile::idp::server_name: https://idp-test.wikimedia.org
 profile::idp::idp_primary: idp-test1001.wikimedia.org
 profile::idp::idp_failover: idp-test2001.wikimedia.org
 profile::idp::is_staging_host: true
 profile::idp::memcached_enable: true
 profile::idp::memcached::mcrouter_cluster: 'idp-test'
 profile::idp::memcached::enable_tls: true
-profile::idp::u2f_jpa_enable: true
+profile::idp::u2f_jpa_enable: false
 profile::idp::u2f_jpa_server: m1-master.eqiad.wmnet
 profile::idp::u2f_jpa_db: cas_staging
 profile::prometheus::memcached_exporter::arguments: '--memcached.address=localhost:11000'

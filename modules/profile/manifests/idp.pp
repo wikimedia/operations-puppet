@@ -13,6 +13,7 @@ class profile::idp(
     Hash[String,Hash]      $services               = lookup('profile::idp::services'),
     Array[String[1]]       $ldap_attribute_list    = lookup('profile::idp::ldap_attributes'),
     Array[String]          $actuators              = lookup('profile::idp::actuators'),
+    Stdlib::HTTPSUrl       $server_name            = lookup('profile::idp::server_name'),
     Stdlib::Fqdn           $idp_primary            = lookup('profile::idp::idp_primary'),
     Boolean                $is_staging_host        = lookup('profile::idp::is_staging_host'),
     Boolean                $memcached_enable       = lookup('profile::idp::memcached_enable'),
@@ -63,7 +64,7 @@ class profile::idp(
     }
 
     class { 'apereo_cas':
-        server_name            => 'https://idp.wikimedia.org',
+        server_name            => $server_name,
         server_prefix          => '/',
         server_port            => 8080,
         server_enable_ssl      => false,
