@@ -94,6 +94,10 @@ define cfssl::cert (
         /usr/bin/cfssl gencert ${signer_args} ${_profile} ${csr_json_path} \
         | /usr/bin/cfssljson -bare ${_outdir}/${safe_title}
         | GEN_COMMAND
+    $sign_command = @("SIGN_COMMAND"/L)
+        /usr/bin/cfssl gencert ${signer_args} ${_profile} ${csr_pem_path} \
+        | /usr/bin/cfssljson -bare ${_outdir}/${safe_title}
+        | SIGN_COMMAND
 
     # TODO: would be nice to check its signed with the correct CA
     $test_command = @("TEST_COMMAND"/L)
@@ -108,7 +112,7 @@ define cfssl::cert (
         }
         if $auto_renew {
             exec {"renew certificate - ${title}":
-                command => $gen_command.regsubst('gencert', 'sign'),
+                command => $sign_command,
                 unless  => "/usr/bin/openssl x509 -in ${cert_path} -checkend ${renew_seconds}",
                 require => Exec["Generate cert ${title}"]
             }
