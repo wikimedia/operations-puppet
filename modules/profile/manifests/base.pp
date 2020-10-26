@@ -36,6 +36,7 @@ class profile::base(
     String $cluster = lookup('cluster'),
     Boolean $enable_adduser = lookup('profile::base::enable_adduser'),
     Wmflib::Ensure $hardware_monitoring = lookup('profile::base::hardware_monitoring', {'default_value' => 'present'}),
+    String $legacy_cloud_search_domain = lookup('profile::base::legacy_cloud_search_domain', {'default_value' => ''}),
 ) {
     # Sanity checks for cluster - T234232
     if ! has_key($wikimedia_clusters, $cluster) {
@@ -76,8 +77,9 @@ class profile::base(
     include network::constants
 
     class { 'base::resolving':
-        domain_search => $domain_search,
-        nameservers   => $nameservers,
+        domain_search              => $domain_search,
+        nameservers                => $nameservers,
+        legacy_cloud_search_domain => $legacy_cloud_search_domain,
     }
 
     class { 'rsyslog': }

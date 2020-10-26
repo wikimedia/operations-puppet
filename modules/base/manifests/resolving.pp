@@ -2,6 +2,7 @@ class base::resolving (
     $domain_search = $::domain,
     $labs_additional_domains = [],
     $nameservers = $::nameservers,
+    String $legacy_cloud_search_domain = '',
 ){
     if ! $nameservers {
         fail('Variable $nameservers is not defined!')

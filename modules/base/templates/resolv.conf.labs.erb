@@ -7,7 +7,7 @@ domain <%= @labsproject %>.<%= @labs_site %>.<%= @labs_tld %>
 
 # These eqiad.wmflabs and <project>.eqiad.wmflabs entries are hacked in to support legacy workflows
 # from before the move to .wikimedia.cloud
-search <%= @labsproject %>.<%= @labs_site %>.<%= @labs_tld %> <%= @labs_additional_domains.join(' ') %> <%= @labsproject %>.eqiad.wmflabs eqiad.wmflabs
+search <%= @labsproject %>.<%= @labs_site %>.<%= @labs_tld %> <%= @labs_additional_domains.join(' ') %> <% if @legacy_cloud_search_domain %> <%= @labsproject %>.<%= @legacy_cloud_search_domain %> <%= @legacy_cloud_search_domain %> <% end %>
 
 <% scope.lookupvar('::nameservers').each do |nsip| -%>
 nameserver <%= nsip %>
