@@ -45,9 +45,6 @@ class smart (
         source => "puppet:///modules/${module_name}/smart_data_dump.py",
     }
 
-    cron { 'export_smart_data_dump':
-        ensure  => 'absent',
-    }
     $minute = fqdn_rand(60, 'export_smart_data_dump')
     systemd::timer::job { 'export_smart_data_dump':
         ensure      => $ensure,
