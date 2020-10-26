@@ -31,9 +31,6 @@ class profile::mariadb::backup::transfer {
         require   => Package['wmfbackups-remote'],
     }
 
-    cron { 'regular_snapshot':
-        ensure  => 'absent',
-    }
     systemd::timer::job { 'regular_snapshot':
         ensure      => 'present',
         user        => 'root',
