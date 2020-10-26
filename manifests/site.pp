@@ -2317,18 +2317,13 @@ node 'cloudvirt1020.eqiad.wmnet' {
     role(wmcs::openstack::eqiad1::virt)
 }
 
-# To learn what will get scheduled on a given cloudvirt, consult
-# https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Host_aggregates
-node /^cloudvirt102[7-8]\.eqiad\.wmnet$/ {
-    role(wmcs::openstack::eqiad1::virt)
-}
 node 'cloudvirt1030.eqiad.wmnet' {
     role(wmcs::openstack::eqiad1::virt)
 }
 
 # cloudvirts using Ceph backend storage
 # https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Ceph
-node /^cloudvirt102[1-6]\.eqiad\.wmnet$/ {
+node /^cloudvirt102[1-8]\.eqiad\.wmnet$/ {
     role(wmcs::openstack::eqiad1::virt_ceph_and_backy)
 }
 
