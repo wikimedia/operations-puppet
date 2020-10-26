@@ -21,13 +21,6 @@ class profile::parsoid::testing (
         shared    => true,
     }
 
-    file { '/usr/local/bin/update_parsoid.sh':
-        source => 'puppet:///modules/parsoid/parsoid_testing.update_parsoid.sh',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-    }
-
     # mysql client and configuration to provide command line access to
     # parsoid testing database
     include ::passwords::testreduce::mysql
