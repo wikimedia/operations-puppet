@@ -14,7 +14,7 @@ groups:
               cy534, pnorman, mpany, deskana, arnad, nithum, banyek, imarlier, mkroetzsch,
               mtizzoni, panisson, paolotti, ciro, dartar, melodykramer, gtirloni, tbayer, pirroh,
               bawolff, dkg, juliaglen, cwdent, hpham, atgomez, dfoy, alaasarhan, onimisionipe,
-              tieu, flemmerich, jsamra, anomie, jmorgan, thargrove, joewalsh,
+              tieu, flemmerich, jsamra, anomie, jmorgan, thargrove, joewalsh, rodolfovalentim,
               drossi, fsalutari, demon, lulu, jkumalah, nathante, shiladsen, leila, rush]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
@@ -284,7 +284,7 @@ groups:
               kevinbazira, keepit-ssh, jiji, cohi, mstyles, accraze, snowick,
               aarora, zpapierski, knissen, jiawang, mholloway-shell, tarrow,
               itamar, phedenskog, aaron, dpifke, aklapper, jmads, andrew-wmde, daniram,
-              rodolfovalentim, dcipoletti, chrisalbon, wikigit, nahidunlimited,
+              dcipoletti, chrisalbon, wikigit, nahidunlimited,
               agaduran, edtadros, dvrandecic, razzi, cparle, klausman, lexnasser, sbisson]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product]
@@ -3693,16 +3693,12 @@ users:
     expiry_contact: mredi@wikimedia.org
     krb: present
   rodolfovalentim:
-    ensure: present
+    ensure: absent
     realname: Rodolfo Valentim
-    email: rodolfovieiravalentim@gmail.com
     uid: 24415
     gid: 500
-    ssh_keys:
-      - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBMEVYnja4N20DMdR0dt3utuZ01J3rHPAwS2/4kcLRgO rodolfo@inpiron5457'
-    expiry_date: 2020-10-31
-    expiry_contact: diego@wikimedia.org
-    krb: present
+    ssh_keys: []
+    krb: absent
   mbinder:
     ensure: present
     realname: Max Binder
