@@ -60,12 +60,12 @@ class profile::cache::kafka::eventlogging(
         $ssl_sigalgs_list         = undef
     }
 
-    # TEMPORARY HACK to aid in migration to kafka jumbo.
-    # this will be removed once varnishkafka instances use jumbo instead of analytics.
-    $force_protocol_version  = $kafka_cluster_name ? {
-        'analytics' => '0.9.0.1',
-        default     => undef,
-    }
+
+    # Sometimes we get junk data sent from bunk user agents.
+    # Any user agent regex patterns we want to exclude from eventlogging data can be put in this
+    # list, and varnishkafka will be configured not to send this data.
+    # See: https://phabricator.wikimedia.org/T266130
+    $user_agent_exclude_pattern = '^Fuzz Faster U Fool'
 
     varnishkafka::instance { 'eventlogging':
         brokers                     => $kafka_brokers,
@@ -76,8 +76,8 @@ class profile::cache::kafka::eventlogging(
         topic                       => 'eventlogging-client-side',
         varnish_name                => 'frontend',
         varnish_svc_name            => 'varnish-frontend',
-        # Only listen and log requests to /beacon/event(.gif)?
-        varnish_opts                => { 'q' => 'ReqURL ~ "^/(beacon/)?event(\.gif)?\?"' },
+        # Only listen and log requests to /beacon/event(.gif)? that are not from user agents we want to exclude.
+        varnish_opts                => { 'q' => "ReqURL ~ \"^/(beacon/)?event(\\.gif)?\\?\" and ReqHeader:user-agent !~ \"${user_agent_exclude_pattern}\"" },
         topic_request_required_acks => '1',
         #TLS/SSL config
         ssl_enabled                 => $ssl_enabled,
@@ -87,8 +87,7 @@ class profile::cache::kafka::eventlogging(
         ssl_certificate_location    => $ssl_certificate_location,
         ssl_cipher_suites           => $ssl_cipher_suites,
         ssl_curves_list             => $ssl_curves_list,
-        ssl_sigalgs_list            => $ssl_sigalgs_list,
-        force_protocol_version      => $force_protocol_version,
+        ssl_sigalgs_list            => $ssl_sigalgs_list
     }
 
     if $monitoring_enabled {
