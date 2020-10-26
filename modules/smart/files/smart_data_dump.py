@@ -390,7 +390,7 @@ DRIVER_HANDLERS = {
 
 def main():
     parser = argparse.ArgumentParser(description='Collect SMART information from all physical disks'
-                                                 'and report as Prometheus metrics')
+                                                 ' and report as Prometheus metrics')
     parser.add_argument('--outfile', metavar='FILE.prom',
                         help='Output file (stdout)')
     parser.add_argument('--syslog', action='store_true', default=False,

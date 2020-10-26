@@ -46,12 +46,19 @@ class smart (
     }
 
     cron { 'export_smart_data_dump':
-        ensure  => $ensure,
-        command => "/usr/local/sbin/smart-data-dump --syslog --outfile ${outfile}",
-        user    => 'root',
-        hour    => '*',
-        minute  => fqdn_rand(60, 'export_smart_data_dump'),
-        require => File['/usr/local/sbin/smart-data-dump'],
+        ensure  => 'absent',
+    }
+    $minute = fqdn_rand(60, 'export_smart_data_dump')
+    systemd::timer::job { 'export_smart_data_dump':
+        ensure      => $ensure,
+        user        => 'root',
+        description => 'Collect SMART information from all physical disks and report as Prometheus metrics',
+        command     => "/usr/local/sbin/smart-data-dump --syslog --outfile ${outfile}",
+        interval    => {
+            'start'    => 'OnCalendar',
+            'interval' => "*-*-* *:${minute}:00",
+        },
+        require     => File['/usr/local/sbin/smart-data-dump'],
     }
 
     # Cleanup outfile only on ensure=absent, since on ensure=present the file gets created by cron.
