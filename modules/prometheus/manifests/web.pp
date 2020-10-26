@@ -46,7 +46,7 @@ define prometheus::web (
     # Single prometheus apache site, will include /etc/prometheus-apache/*.conf
     if !defined(Httpd::Site['prometheus']) {
         httpd::site{ 'prometheus':
-            source  => 'puppet:///modules/prometheus/prometheus-apache.conf'
+            content => template('prometheus/prometheus-apache-vhost.erb'),
         }
     }
 }
