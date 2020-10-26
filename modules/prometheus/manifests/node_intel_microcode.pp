@@ -4,24 +4,30 @@
 # textfile collector.
 
 class prometheus::node_intel_microcode (
-    Wmflib::Ensure $ensure = 'present',
+    Wmflib::Ensure     $ensure  = 'present',
     Pattern[/\.prom$/] $outfile = '/var/lib/prometheus/node.d/intel_microcode.prom',
 ) {
-    require_package('iucode-tool')
+    ensure_packages(['iucode-tool'])
 
     file { '/usr/local/bin/prometheus-intel-microcode':
-        ensure => file,
-        mode   => '0555',
-        owner  => 'root',
-        group  => 'root',
-        source => 'puppet:///modules/prometheus/usr/local/bin/prometheus-intel-microcode',
+        ensure  => file,
+        mode    => '0555',
+        owner   => 'root',
+        group   => 'root',
+        source  => 'puppet:///modules/prometheus/usr/local/bin/prometheus-intel-microcode',
+        require => Package['iucode-tool'],
     }
 
     # Collect every hour
     cron { 'prometheus_intel_microcode':
-        ensure  => $ensure,
-        user    => 'root',
-        minute  => '42',
-        command => "/usr/local/bin/prometheus-intel-microcode ${outfile}",
+        ensure => 'absent',
+    }
+    systemd::timer::job { 'prometheus_intel_microcode':
+        ensure      => $ensure,
+        user        => 'root',
+        description => 'Intel microcode prometheus metrics exporter',
+        command     => "/usr/local/bin/prometheus-intel-microcode ${outfile}",
+        interval    => {'start' => 'OnUnitInactiveSec', 'interval' => 'hourly'},
+        require     => File['/usr/local/bin/prometheus-intel-microcode'],
     }
 }
