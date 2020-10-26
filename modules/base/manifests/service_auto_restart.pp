@@ -23,7 +23,7 @@ define base::service_auto_restart(
         command     => "/usr/local/sbin/wmf-auto-restart -s ${title}",
         interval    => {
             'start'    => 'OnCalendar',
-            'interval' => "Mon..Fri *-*-* ${hour}:${minute}:00",
+            'interval' => "Mon,Tue,Wed,Thu,Fri *-*-* ${hour}:${minute}:00",  # Mon..Fri not supported on jessie
         },
         require     => File['/usr/local/sbin/wmf-auto-restart'],
     }
