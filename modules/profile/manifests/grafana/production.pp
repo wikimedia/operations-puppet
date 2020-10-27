@@ -3,13 +3,25 @@
 # Grafana is a dashboarding web application.
 # It powers <https://grafana.wikimedia.org>.
 #
-class profile::grafana::production {
+class profile::grafana::production (
+    Stdlib::Fqdn $active_host = lookup('profile::grafana::active_host'),
+) {
     include ::profile::grafana
 
+    $on_active_host = $active_host == $::fqdn ? {
+        true  => present,
+        false => absent,
+    }
+
+    $not_on_active_host = $active_host == $::fqdn ? {
+        true  => absent,
+        false => present,
+    }
+
     rsync::quickdatacopy { 'var-lib-grafana':
-      ensure              => present,
-      source_host         => 'grafana1002.eqiad.wmnet',
-      dest_host           => 'grafana2001.codfw.wmnet',
+      ensure              => $not_on_active_host,
+      source_host         => $active_host,
+      dest_host           => $::fqdn,
       module_path         => '/var/lib/grafana',
       server_uses_stunnel => true,
     }
