@@ -33,7 +33,10 @@ class profile::mariadb::misc::db_inventory(
 
     mariadb::monitor_replication { $id: }
     mariadb::monitor_readonly { $id:
-        read_only     => !($is_master),
+        # XXX(kormat): while the orchestrator database is hosted on db2093,
+        # both nodes need to be read-write. T266003 for context.
+        # read_only     => !($is_master),
+        read_only => false,
     }
     profile::mariadb::replication_lag { $id: }
     class { 'mariadb::monitor_disk': }
