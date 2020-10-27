@@ -83,4 +83,6 @@ class profile::mariadb::backup::mydumper {
                     File['/srv/backups/dumps/ongoing'],
         ],
     }
+
+    class { 'toil::systemd_scope_cleanup': }  # T265323
 }
