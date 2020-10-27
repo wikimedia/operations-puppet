@@ -78,5 +78,4 @@ class pmacct(
     }
 
     base::service_auto_restart { 'nfacctd': }
-    base::service_auto_restart { 'pmacctd': }
 }
