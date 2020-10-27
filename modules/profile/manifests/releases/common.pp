@@ -26,8 +26,6 @@ class profile::releases::common(
         content  => template('role/releases/rsync_source_warning.motd.erb'),
     }
 
-    base::service_auto_restart { 'rsync': }
-
     $all_secondary_servers = join($secondary_servers, ' ')
     $all_releases_servers = "${primary_server} ${all_secondary_servers}"
     $all_releases_servers_array = split($all_releases_servers, ' ')
@@ -55,6 +53,10 @@ class profile::releases::common(
               module_path => '/var/lib/jenkins',
             }
         }
+    }
+
+    if $::fqdn == $primary_server {
+            base::service_auto_restart { 'rsync': }
     }
 
     class { '::httpd':
