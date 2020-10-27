@@ -96,7 +96,7 @@ class base::standard_packages {
         # As of September 2015, mcelog still does not support newer AMD processors.
         # See <https://www.mcelog.org/faq.html#18>.
         if $::processor0 !~ /AMD/ {
-          if os_version('debian == jessie') or os_version('debian == stretch') {
+          if os_version('debian <= stretch') and versioncmp($::kernelversion, '4.12') < 0 {
               require_package('mcelog')
               base::service_auto_restart { 'mcelog': }
           }
