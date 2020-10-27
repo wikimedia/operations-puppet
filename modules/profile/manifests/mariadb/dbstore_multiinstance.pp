@@ -70,8 +70,4 @@ disabled, use mariadb@<instance_name> instead'; exit 1\"",
     }
 
     class { 'mariadb::monitor_memory': }
-
-    cron { 'systemd_scope_cleanup':
-        ensure  => 'absent',
-    }
 }
