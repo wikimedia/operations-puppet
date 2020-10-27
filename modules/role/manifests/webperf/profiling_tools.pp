@@ -22,6 +22,6 @@ class role::webperf::profiling_tools {
 
     # Web server (for arclamp)
     class { '::httpd':
-        modules => ['authnz_ldap', 'php7.0', 'rewrite', 'mime', 'proxy', 'proxy_http'],
+        modules => ['headers', 'mime'],
     }
 }

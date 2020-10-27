@@ -33,4 +33,9 @@
         ReadmeName /lib/apaxy/footer.html
         IndexStyleSheet /lib/apaxy/style.css
     </Directory>
+
+    # Permit external tools such as speedscope.app to display logs
+    <Location /arclamp/logs>
+        Header set Access-Control-Allow-Origin '*'
+    </Location>
 </VirtualHost>
