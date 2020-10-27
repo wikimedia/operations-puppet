@@ -5,7 +5,7 @@ class wikistats::updates (
     Wmflib::Ensure $ensure,
 ){
 
-    require_package('php7.3-cli')
+    ensure_packages('php7.3-cli')
 
     file { '/var/log/wikistats':
         ensure => directory,

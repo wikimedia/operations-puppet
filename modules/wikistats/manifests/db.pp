@@ -4,7 +4,7 @@ class wikistats::db (
     Stdlib::Unixpath $backupdir = '/usr/lib/wikistats/backup',
 ){
 
-    require_package('php7.3-mysql')
+    ensure_packages('php7.3-mysql')
 
     # db backup
     cron { 'mysql-dump-wikistats':
