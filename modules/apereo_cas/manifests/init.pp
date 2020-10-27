@@ -84,7 +84,7 @@ class apereo_cas (
     } else {
         $ensure_rsync = 'absent'
         $ensure_sync_timer = 'present'
-        base::service_auto_restart { 'cas': }
+        base::service_auto_restart { 'tomcat9': }
     }
 
     $idp_nodes = [$idp_primary, $idp_failover].delete_undef_values
