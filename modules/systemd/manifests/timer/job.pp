@@ -97,40 +97,36 @@
 #   String containing a file path to be used as 'EnvironmentFile=' in the Systemd unit.
 #
 define systemd::timer::job(
-    String $description,
-    String $command,
-    # TODO: add type definition once we move past puppet 4.10, see https://tickets.puppetlabs.com/browse/PUP-7650
-    # Variant[Systemd::Timer::Schedule, Array[Systemd::Timer::Schedule, 1]] $interval,
-    $interval,
-    String $user,
-    Hash[String, String] $environment = {},
-    Boolean $monitoring_enabled = true,
-    String $monitoring_contact_groups = 'admins',
-    Boolean $logging_enabled = true,
-    String $logfile_basedir = '/var/log',
-    String $logfile_name = 'syslog.log',
-    Optional[String] $logfile_owner = undef,
-    String $logfile_group = 'root',
-    Enum['user', 'group', 'all'] $logfile_perms = 'all',
-    Boolean $syslog_force_stop = true,
-    Boolean $syslog_match_startswith = true,
-    Optional[String] $syslog_identifier = undef,
-    Wmflib::Ensure $ensure = 'present',
-    Optional[Integer] $max_runtime_seconds = undef,
-    Optional[Pattern[/\w+\.slice/]] $slice = undef,
-    Optional[Stdlib::Unixpath] $environment_file = undef,
+    Variant[
+        Systemd::Timer::Schedule,
+        Array[Systemd::Timer::Schedule, 1]] $interval,
+    String                                  $description,
+    String                                  $command,
+    String                                  $user,
+    Wmflib::Ensure                          $ensure                    = 'present',
+    Hash[String, String]                    $environment               = {},
+    Boolean                                 $monitoring_enabled        = true,
+    String                                  $monitoring_contact_groups = 'admins',
+    Boolean                                 $logging_enabled           = true,
+    String                                  $logfile_basedir           = '/var/log',
+    String                                  $logfile_name              = 'syslog.log',
+    String                                  $logfile_group             = 'root',
+    Enum['user', 'group', 'all']            $logfile_perms             = 'all',
+    Boolean                                 $syslog_force_stop         = true,
+    Boolean                                 $syslog_match_startswith   = true,
+    Optional[String]                        $logfile_owner             = undef,
+    Optional[String]                        $syslog_identifier         = undef,
+    Optional[Integer]                       $max_runtime_seconds       = undef,
+    Optional[Pattern[/\w+\.slice/]]         $slice                     = undef,
+    Optional[Stdlib::Unixpath]              $environment_file          = undef,
 ) {
     # Sanitize the title for use on the filesystem
     $safe_title = regsubst($title, '[^\w\-]', '_', 'G')
 
 
     $input_intervals = $interval ? {
-#        Systemd::Timer::Schedule           => [$interval],
-#        Array[Systemd::Timer::Schedule, 1] => $interval,
-        Hash    => [$interval],
-        Array   => $interval,
-        # TODO: we can get rid of the default as soon as $interval is properly typed
-        default => fail('Illegal value for $interval parameter'),
+        Systemd::Timer::Schedule => [$interval],
+        default                  => $interval,
     }
 
     # If we were provided with only OnUnitActive/OnUnitInactive intervals, which are times relative
@@ -188,7 +184,7 @@ define systemd::timer::job(
 
     if $monitoring_enabled {
         # T225268 - always provision NRPE plugin script
-        require ::systemd::timer::nrpe_plugin
+        require systemd::timer::nrpe_plugin
 
         nrpe::monitor_service { "check_${title}_status":
             ensure         => $ensure,
