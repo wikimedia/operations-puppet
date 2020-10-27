@@ -14,8 +14,6 @@ NODES                  Comma-separated list of nodes. '.eqiad.wmnet'
 Optional arguments:
 --api-token TOKEN      Jenkins API token. Defaults to JENKINS_API_TOKEN.
 --username USERNAME    Jenkins user name. Defaults to JENKINS_USERNAME.
---future               If present, will run the change through the future
-                        parser
 
 Examples:
 $ pcc latest mw1031,mw1032
@@ -30,28 +28,30 @@ Copyright 2014 Ori Livneh <ori@wikimedia.org>
 Licensed under the Apache license.
 """
 
-import argparse
 import json
+import logging
 import os
 import re
-import subprocess
-import time
+import shlex
 
-try:
-    import urllib2
-except ImportError:
-    import urllib.request as urllib2
+from argparse import ArgumentParser, RawDescriptionHelpFormatter
+from subprocess import CalledProcessError, check_output, run
+from time import sleep
+from urllib.request import urlopen
+from urllib3.exceptions import MaxRetryError
 
 try:
     import jenkinsapi
-except ImportError:
+except ImportError as error:
     raise SystemExit("""You need the `jenkinsapi` module. Try `pip install jenkinsapi`
-or `sudo apt-get install python3-jenkinsapi` (if available on your distro).""")
+or `sudo apt-get install python3-jenkinsapi` (if available on your distro).""") from error
 
 
+LOG = logging.getLogger('PCC')
 JENKINS_URL = 'https://integration.wikimedia.org/ci/'
-GERRIT_URL_FORMAT = ('https://gerrit.wikimedia.org/r/changes/'
-                     'operations%%2Fpuppet~production~%s/detail')
+GERRIT_PORT = 29418
+GERRIT_HOST = 'gerrit.wikimedia.org'
+GERRIT_BASE = 'https://{}/r/changes'.format(GERRIT_HOST)
 
 
 def format_console_output(text):
@@ -63,24 +63,33 @@ def format_console_output(text):
 
 
 def get_change_id(change='HEAD'):
-    """Get the change ID of a commit (defaults to HEAD)."""
-    commit_message = subprocess.check_output(['git', 'log', '-1', change],
-                                             universal_newlines=True)
+    """Get the change ID of a commit (defaults to HEAD).
+
+    Arguments:
+        change (str): either HEAD or sha1 git reference
+
+    Returns:
+        (str): the gerrit change id
+    """
+    commit_message = check_output(['git', 'log', '-1', change], universal_newlines=True)
     match = re.search('(?<=Change-Id: )(?P<id>.*)', commit_message)
     return match.group('id')
 
 
-def get_gerrit_blob(url):
+def get_gerrit_blob(change):
     """Return a json blob from a gerrit API endpoint
 
     Arguments:
-        url (str): The gerrit API url
+        change (str): Either a change id or a change number
 
     Returns
         dict: A dictionary representing the json blob returned by gerrit
 
     """
-    req = urllib2.urlopen(url)
+    url = "{}/?q={}&o=CURRENT_REVISION&o=CURRENT_COMMIT&o=COMMIT_FOOTERS".format(
+            GERRIT_BASE, change)
+    LOG.debug('fetch gerrit blob: %s', url)
+    req = urlopen(url)
     # To prevent against Cross Site Script Inclusion (XSSI) attacks, the JSON response
     # body starts with a magic prefix line: `)]}'` that must be stripped before feeding the
     # rest of the response body to a JSON
@@ -88,13 +97,28 @@ def get_gerrit_blob(url):
     return json.loads(req.read().split(b'\n', 1)[1])
 
 
-def get_change_number(change_id):
-    """Resolve a change ID to a change number via a Gerrit API lookup."""
-    res = get_gerrit_blob(GERRIT_URL_FORMAT % change_id)
-    return res['_number']
-
-
 def get_change(change):
+    """Resolve a change ID to a change number via a Gerrit API lookup.
+
+    Arguments:
+        change (str): either a gerrit change number or the change id
+
+    Returns:
+        (dict): change = {'number': (int), 'patchset': (int), 'id': (str)}
+    """
+    res = get_gerrit_blob(change)
+    LOG.debug('recived: %s', type(res))
+    for found in res:
+        if change in [found['change_id'], str(found['_number'])]:
+            return {
+                'number': found['_number'],
+                'patchset': found['revisions'][found['current_revision']]['_number'],
+                'id': found['change_id'],
+            }
+    return None
+
+
+def parse_change_arg(change):
     """Resolve a Gerrit change
 
     Arguments
@@ -104,14 +128,11 @@ def get_change(change):
         int: the change number or -1 to indicate a faliure
 
     """
-    if change.isdigit():
-        return int(change)
-    if change.startswith('I'):
-        return get_change_number(change)
-    if change in ('latest', 'last'):
-        change_id = get_change_id('HEAD')
-        return get_change_number(change_id)
-    return -1
+    if change.isdigit() or change.startswith('I'):
+        return get_change(change)
+    if change in ['last', 'latest']:
+        change = 'HEAD'
+    return get_change(get_change_id(change))
 
 
 def parse_nodes(string_list, default_suffix='.eqiad.wmnet'):
@@ -135,19 +156,17 @@ def parse_commit(change):
     """Parse a commit message looking for a Hosts: lines
 
     Arguments:
-        change (str): the change number to use
+        change (str): the change ID to use
 
     Returns:
         str: The lists of hosts or an empty string
 
     """
     hosts = []
-    commit_url = ('https://gerrit.wikimedia.org/r/changes/?q={}'
-                  '&o=CURRENT_REVISION&o=CURRENT_COMMIT&o=COMMIT_FOOTERS')
-    res = get_gerrit_blob(commit_url.format(change))
+    res = get_gerrit_blob(change)
 
     for result in res:
-        if result['_number'] != change:
+        if result['change_id'] != change:
             continue
         commit = result['revisions'][result['current_revision']]['commit_with_footers']
         break
@@ -164,11 +183,10 @@ def parse_commit(change):
 def get_args():
     """Parse Arguments"""
 
-    parser = argparse.ArgumentParser(description=__doc__,
-                                     formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument('change', type=get_change,
-                        help='The change number or change ID to test. '
-                             'Alternatively last or latest to test head')
+    parser = ArgumentParser(description=__doc__,
+                            formatter_class=RawDescriptionHelpFormatter)
+    parser.add_argument('change', help='The change number or change ID to test. '
+                        'Alternatively last or latest to test head')
     parser.add_argument('nodes', type=parse_nodes,
                         help='Either a Comma-separated list of nodes or a Host Variable Override. '
                              'Alternatively use `parse_commit` to parse')
@@ -176,18 +194,68 @@ def get_args():
                         help='Jenkins API token. Defaults to JENKINS_API_TOKEN.')
     parser.add_argument('--username', default=os.environ.get('JENKINS_USERNAME'),
                         help='Jenkins user name. Defaults to JENKINS_USERNAME.')
+    parser.add_argument('-F', '--post-fail', action='store_true',
+                        help="Post PCC report to gerrit on faliure and down vote verify status")
+    parser.add_argument('-C', '--post-crash', action='store_true',
+                        help="Post PCC report to gerrit when polling fails")
+    parser.add_argument('-v', '--verbose', action='count')
     return parser.parse_args()
 
 
-def main():
+def get_log_level(args_level):
+    """Configure logging"""
+    return {
+        None: logging.ERROR,
+        1: logging.WARN,
+        2: logging.INFO,
+        3: logging.DEBUG}.get(args_level, logging.DEBUG)
+
+
+def post_comment(change, comment, verify=None):
+    """Post a comment to the specificed gerrit change
+
+    Arguments:
+        change (dict): the gerrit change dict
+        comment (str): the comment to post
+        verify (bool,None): indicate how to vote on the verified status
+                            None: no vote
+                            True: +1
+                            False: -1
+    """
+
+    # pylint: disable=line-too-long
+    verified = ' --verified {}'.format({True: 1, False: -1}.get(verify)) if isinstance(verify, bool) else ''  # noqa: E501
+    command = 'ssh -p {port} {host} gerrit review {number},{patchset}{verified} -m \\"{comment}\\"'.format(  # noqa: E501
+            port=GERRIT_PORT,
+            host=GERRIT_HOST,
+            number=change['number'],
+            patchset=change['patchset'],
+            comment=comment,
+            verified=verified)
+    # pylint: enable=line-too-long
+    LOG.debug('post comment: %s', command)
+    try:
+        run(shlex.split(command), check=True)
+    except CalledProcessError as error:
+        LOG.error('failed to post comment: %s\n%s', comment, error)
+
+
+def main():  # pylint: disable=too-many-locals
     """Main Entry Point"""
     args = get_args()
-    if args.change == -1:
-        print("Unable to find change ID")
+    logging.basicConfig(level=get_log_level(args.verbose))
+    urllib_verbose = args.verbose - 1 if args.verbose else None
+    logging.getLogger("urllib3").setLevel(get_log_level(urllib_verbose))
+    change = parse_change_arg(args.change)
+    if change is None or not all(change.values()):
+        LOG.error("Unable to parse change: %s", args.change)
         return 1
+    LOG.debug('Change ID: %s', change['id'])
+    LOG.debug('Change number: %s,%s', change['number'], change['patchset'])
+
     if not args.api_token or not args.username:
-        print('You must either provide the --api-token and --username options'
-              ' or define JENKINS_API_TOKEN and JENKINS_USERNAME in your env.')
+        LOG.error('You must either provide the --api-token and --username options'
+                  ' or define JENKINS_API_TOKEN and JENKINS_USERNAME in your env.')
         return 1
 
     red, green, yellow, white = [('\x1b[9%sm{}\x1b[0m' % n).format for n in (1, 2, 3, 7)]
@@ -198,9 +266,10 @@ def main():
         password=args.api_token
     )
 
-    print(yellow('Compiling %(change)s on node(s) %(nodes)s...' % vars(args)))
+    print(yellow('Compiling {change_number} on node(s) {nodes}...'.format(
+        change_number=change['number'], nodes=args.nodes)))
     try:
-        nodes = parse_commit(args.change) if args.nodes == 'parse_commit' else args.nodes
+        nodes = parse_commit(change['id']) if args.nodes == 'parse_commit' else args.nodes
     except KeyError as error:
         print('Unable to find commit message: {}'.format(error))
         return 1
@@ -210,7 +279,7 @@ def main():
 
     job = jenkins.get_job('operations-puppet-catalog-compiler')
     build_params = {
-        'GERRIT_CHANGE_NUMBER': str(args.change),
+        'GERRIT_CHANGE_NUMBER': str(change['number']),
         'LIST_OF_NODES': nodes,
         'COMPILER_MODE': 'change',
     }
@@ -228,21 +297,31 @@ def main():
 
     running = True
     output = ''
-    while running:
-        time.sleep(1)
-        running = invocation.is_running()
-        new_output = build.get_console().rstrip('\n')
-        console_output = format_console_output(new_output[len(output):]).strip()
-        if console_output:
-            print(console_output)
-        output = new_output
+    try:
+        while running:
+            sleep(1)
+            running = invocation.is_running()
+            new_output = build.get_console().rstrip('\n')
+            console_output = format_console_output(new_output[len(output):]).strip()
+            if console_output:
+                print(console_output)
+            output = new_output
+    except MaxRetryError as error:
+        print(yellow(
+            'Warning: polling jenkins failed please check PCC manually:\n\tError: {}\n{}'.format(
+                error, build.baseurl)))
+        if args.post_crash:
+            post_comment(change, 'PCC Check manually: {}'.format(build.baseurl))
 
     # Puppet's exit code is not always meaningful, so we grep the output
     # for failures before declaring victory.
     if ('Run finished' in output and not re.search(r'[1-9]\d* (ERROR|FAIL)', output)):
         print(green('SUCCESS'))
+        post_comment(change, 'PCC SUCCESS: {}'.format(build.baseurl), True)
         return 0
     print(red('FAIL'))
+    if args.post_fail:
+        post_comment(change, 'PCC FAIL: {}'.format(build.baseurl), False)
     return 1
 
 
