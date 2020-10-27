@@ -26,6 +26,10 @@ class profile::grafana::production (
       server_uses_stunnel => true,
     }
 
+    class {'::grafana::ldap_sync':
+        ensure => $on_active_host,
+    }
+
     # On Grafana 5 and later, datasource configurations are stored in Puppet
     # as YAML and pushed to Grafana that way, which reads them at startup.
     file { '/etc/grafana/provisioning/datasources/production-datasources.yaml':
