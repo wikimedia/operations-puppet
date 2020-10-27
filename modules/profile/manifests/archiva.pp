@@ -53,6 +53,7 @@ class profile::archiva(
         logfile_name              => 'archiva-gitfat-link.log',
         syslog_identifier         => 'archiva-gitfat-link',
         user                      => 'archiva',
+        monitoring_enabled        => true,
         monitoring_contact_groups => $contact_groups,
     }
 

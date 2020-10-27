@@ -260,15 +260,14 @@ class acme_chief::server (
         false => 'absent'
     }
     systemd::timer::job {'acme-chief-certs-sync':
-        ensure             => $timer_ensure,
-        description        => 'Sync acme-chief certificates',
-        command            => '/usr/local/bin/acme-chief-certs-sync',
-        interval           => {
+        ensure      => $timer_ensure,
+        description => 'Sync acme-chief certificates',
+        command     => '/usr/local/bin/acme-chief-certs-sync',
+        interval    => {
             'start'    => 'OnCalendar',
             'interval' => '*-*-* *:00/30:00', # every 30 min
         },
-        user               => 'acme-chief',
-        monitoring_enabled => false,
-        require            => [User['acme-chief'], File['/etc/acme-chief/cert-sync.conf']],
+        user        => 'acme-chief',
+        require     => [User['acme-chief'], File['/etc/acme-chief/cert-sync.conf']],
     }
 }

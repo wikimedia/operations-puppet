@@ -8,13 +8,12 @@ class profile::openstack::base::keystone::fernet_keys(
         description               => 'Rotate keys for Keystone fernet tokens',
         command                   => '/usr/bin/keystone-manage fernet_rotate --keystone-user keystone --keystone-group keystone',
         interval                  => {
-        'start'    => 'OnCalendar',
-        'interval' => "*-*-* ${rotate_time}",
+            'start'    => 'OnCalendar',
+            'interval' => "*-*-* ${rotate_time}",
         },
         logging_enabled           => true,
-        monitoring_enabled        => false,
-        monitoring_contact_groups => 'wmcs-team',
         user                      => 'root',
+        monitoring_contact_groups => 'wmcs-team',
     }
 
     file { '/etc/keystone/fernet-keys':

@@ -105,7 +105,7 @@ define systemd::timer::job(
     String                                  $user,
     Wmflib::Ensure                          $ensure                    = 'present',
     Hash[String, String]                    $environment               = {},
-    Boolean                                 $monitoring_enabled        = true,
+    Boolean                                 $monitoring_enabled        = false,
     String                                  $monitoring_contact_groups = 'admins',
     Boolean                                 $logging_enabled           = true,
     String                                  $logfile_basedir           = '/var/log',

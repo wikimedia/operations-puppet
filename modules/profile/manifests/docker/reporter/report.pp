@@ -14,14 +14,11 @@ define profile::docker::reporter::report(
         'weekly' => "Mon *-*-* ${hour}:00:00"
     }
     systemd::timer::job { "docker-reporter-${title}-images":
-        description        => "Report on upgrades to ${title} images.",
-        command            => "/usr/bin/docker-report --filter-file /etc/docker-report/${title}_rules.ini docker-registry.wikimedia.org",
-        interval           => {'start' => 'OnCalendar', 'interval' => $interval},
-        user               => 'root',
-        environment        => {'http_proxy' => $proxy},
-        syslog_identifier  => "docker-report-${title}",
-        # TODO: enable monitoring
-        monitoring_enabled => false,
-
+        description       => "Report on upgrades to ${title} images.",
+        command           => "/usr/bin/docker-report --filter-file /etc/docker-report/${title}_rules.ini docker-registry.wikimedia.org",
+        interval          => {'start' => 'OnCalendar', 'interval' => $interval},
+        user              => 'root',
+        environment       => {'http_proxy' => $proxy},
+        syslog_identifier => "docker-report-${title}",
     }
 }

@@ -52,17 +52,16 @@ class profile::base::labs(
     }
 
     systemd::timer::job { 'send_puppet_failure_emails':
-        ensure             => $ensure_puppet_emails,
-        description        => 'Send emails about Puppet failures',
-        command            => '/usr/local/sbin/puppet_alert.py',
-        interval           => {
+        ensure          => $ensure_puppet_emails,
+        description     => 'Send emails about Puppet failures',
+        command         => '/usr/local/sbin/puppet_alert.py',
+        interval        => {
             'start'    => 'OnCalendar',
             'interval' => '*-*-* 08:15:00',
         },
-        logging_enabled    => false,
-        monitoring_enabled => false,
-        user               => 'root',
-        require            => File['/usr/local/sbin/puppet_alert.py'],
+        logging_enabled => false,
+        user            => 'root',
+        require         => File['/usr/local/sbin/puppet_alert.py'],
     }
 
     # Set a root password only if we're still governed by the official Labs

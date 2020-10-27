@@ -18,14 +18,13 @@ class prometheus::node_nic_firmware (
     }
 
     systemd::timer::job { 'prometheus-nic-firmware-textfile':
-        ensure             => $ensure,
-        description        => 'Update NIC firmware stats exported by node_exporter',
-        command            => "${exec} ${outfile}",
-        user               => 'root',
-        logging_enabled    => false,
-        monitoring_enabled => false,
-        require            => [File[$exec]],
-        interval           => {
+        ensure          => $ensure,
+        description     => 'Update NIC firmware stats exported by node_exporter',
+        command         => "${exec} ${outfile}",
+        user            => 'root',
+        logging_enabled => false,
+        require         => [File[$exec]],
+        interval        => {
             # We don't care about when this runs, as long as it runs every few minutes.
             # We also explicitly *don't* want to synchronize its execution across hosts,
             # as OnCalendar would do, and this should have some natural splay.

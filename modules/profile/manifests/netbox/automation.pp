@@ -57,17 +57,15 @@ class profile::netbox::automation (
     }
 
     systemd::timer::job { 'check_netbox_uncommitted_dns_changes':
-        ensure                    => $active_ensure,
-        description               => 'Run check for uncommitted DNS changes in Netbox and save state for NRPE',
-        command                   => '/srv/deployment/netbox-extras/dns/generate_dns_snippets.py commit --icinga-check "icinga-check"',
-        interval                  => {
+        ensure          => $active_ensure,
+        description     => 'Run check for uncommitted DNS changes in Netbox and save state for NRPE',
+        command         => '/srv/deployment/netbox-extras/dns/generate_dns_snippets.py commit --icinga-check "icinga-check"',
+        interval        => {
             'start'    => 'OnUnitInactiveSec',
             'interval' => '5m',
         },
-        logging_enabled           => false,
-        monitoring_enabled        => false,
-        monitoring_contact_groups => 'admins',
-        user                      => 'netbox',
+        logging_enabled => false,
+        user            => 'netbox',
     }
 
     $check_command = '/usr/lib/nagios/plugins/check_json_file'

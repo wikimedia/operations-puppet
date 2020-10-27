@@ -22,7 +22,6 @@ class mirrors::openstack {
             'interval' => '*-*-* 08:00:00', # daily at 08:00 UTC as requested
         },
         max_runtime_seconds => 72000, # kill if running after 20h
-        monitoring_enabled  => false,
         user                => 'mirror',
     }
 }

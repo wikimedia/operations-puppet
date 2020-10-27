@@ -57,6 +57,7 @@ class profile::piwik::instance (
         logfile_name              => 'matomo-archive.log',
         syslog_identifier         => 'matomo-archiver',
         user                      => $piwik_username,
+        monitoring_enabled        => true,
         monitoring_contact_groups => $contact_groups,
         require                   => Class['matomo'],
     }

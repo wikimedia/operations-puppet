@@ -35,16 +35,15 @@ class profile::mariadb::backup::transfer {
         ensure  => 'absent',
     }
     systemd::timer::job { 'regular_snapshot':
-        ensure             => 'present',
-        user               => 'root',
-        description        => 'Generate mysql snapshot backup batch',
-        command            => 'remote-backup-mariadb > /dev/null 2>&1',
-        monitoring_enabled => false,
-        interval           => {
+        ensure      => 'present',
+        user        => 'root',
+        description => 'Generate mysql snapshot backup batch',
+        command     => 'remote-backup-mariadb > /dev/null 2>&1',
+        interval    => {
             'start'    => 'OnCalendar',
             'interval' => 'Sun,Tue,Wed,Fri *-*-* 19:00:00',
         },
-        require            => [
+        require     => [
             File['/etc/wmfbackups/remote_backups.cnf'],
             Package['wmfbackups-remote'],
         ]

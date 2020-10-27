@@ -244,17 +244,15 @@ class profile::netbox (
         # This definitely should only be on one of the frontends
         if $report['run_interval'] {
             systemd::timer::job { "netbox_report_${repname}_run":
-                ensure                    => $active_ensure,
-                description               => "Run report ${reportclass} in Netbox",
-                command                   => "/srv/deployment/netbox/venv/bin/python /srv/deployment/netbox/deploy/src/netbox/manage.py runreport ${reportclass}",
-                interval                  => {
+                ensure          => $active_ensure,
+                description     => "Run report ${reportclass} in Netbox",
+                command         => "/srv/deployment/netbox/venv/bin/python /srv/deployment/netbox/deploy/src/netbox/manage.py runreport ${reportclass}",
+                interval        => {
                     'start'    => 'OnCalendar',
                     'interval' => $report['run_interval']
                 },
-                logging_enabled           => false,
-                monitoring_enabled        => false,
-                monitoring_contact_groups => 'admins',
-                user                      => 'netbox',
+                logging_enabled => false,
+                user            => 'netbox',
             }
         }
         else {

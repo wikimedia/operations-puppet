@@ -29,14 +29,13 @@ class prometheus::node_phpfpm_statustext (
 
     # Collect every minute
     systemd::timer::job { 'prometheus-phpfpm-statustext-textfile':
-        ensure             => $ensure,
-        description        => 'Update PHP-FPM worker count stats exported by node_exporter',
-        command            => "${exec} ${service} ${outfile}",
-        user               => 'root',
-        logging_enabled    => false,
-        monitoring_enabled => false,
-        require            => [File[$exec]],
-        interval           => {
+        ensure          => $ensure,
+        description     => 'Update PHP-FPM worker count stats exported by node_exporter',
+        command         => "${exec} ${service} ${outfile}",
+        user            => 'root',
+        logging_enabled => false,
+        require         => [File[$exec]],
+        interval        => {
             'start'    => 'OnUnitInactiveSec',
             'interval' => '60s',
         },
