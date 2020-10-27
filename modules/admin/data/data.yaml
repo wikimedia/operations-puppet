@@ -15,7 +15,7 @@ groups:
               mtizzoni, panisson, paolotti, ciro, dartar, melodykramer, gtirloni, tbayer, pirroh,
               bawolff, dkg, juliaglen, cwdent, hpham, atgomez, dfoy, alaasarhan, onimisionipe,
               tieu, flemmerich, jsamra, anomie, jmorgan, thargrove, joewalsh, rodolfovalentim,
-              drossi, fsalutari, demon, lulu, jkumalah, nathante, shiladsen, leila, rush]
+              drossi, fsalutari, demon, lulu, jkumalah, nathante, shiladsen, leila, rush, niedzielski]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -86,7 +86,7 @@ groups:
               jhuneidi, wmde-fisch, mvolz, brennen, cparle,
               urbanecm, awight, jakob, accraze, andrew-wmde,
               kevinbazira, mstyles, zpapierski, clarakosi, dpifke,
-              niedzielski, phuedx, samwilson, dmaza, tchanders,
+              phuedx, samwilson, dmaza, tchanders,
               wikigit, arlolra, daniel, bpirkle, cicalese, dancy, chrisalbon,
               jdl, holger, annet]
     privileges: ['ALL = (www-data,mwdeploy,l10nupdate) NOPASSWD: ALL',
@@ -132,7 +132,7 @@ groups:
   releasers-mobile:
     gid: 712
     description: people who upload mobile app releases
-    members: [brion, bsitzmann, dbrant, mholloway-shell, niedzielski, cooltey, sharvaniharan]
+    members: [brion, bsitzmann, dbrant, mholloway-shell, cooltey, sharvaniharan]
   releasers-parsoid:
     gid: 802
     description: people who upload parsoid releases (T150672)
@@ -186,7 +186,7 @@ groups:
     description: users with some sudo permissions on the CI masters (Jenkins, Zuul).
     members: [bd808, cscott, dduvall, krinkle, reedy, marktraceur,
               twentyafterfour, zfilipin, thcipriani, legoktm, gjg,
-              hashar, niedzielski, addshore, liw, jhuneidi, brennen,
+              hashar, addshore, liw, jhuneidi, brennen,
               jforrester, dancy]
     privileges: ['ALL = (jenkins) NOPASSWD: ALL',
                  'ALL = (jenkins-slave) NOPASSWD: ALL',
@@ -270,7 +270,7 @@ groups:
               bsitzmann, dbrant, nettrom, leizi, jmm,
               ezachte, mforns, reedy, west1, phuedx, awight,
               joal, akosiaris, jkatz, tonina, pearley, ktsouroupidou,
-              andyrussg, niedzielski, hoo, daniel, krinkle, tgr,
+              andyrussg, hoo, daniel, krinkle, tgr,
               ebernhardson, addshore, jminor, neilpquinn-wmf,
               dcausse, bd808, tjones, mobrovac, jdrewniak, ejegg, jdcc, ori,
               bmansurov, amire80, kartik, pcoombe, foks, kemayo,
@@ -465,7 +465,7 @@ groups:
     description: Service deploy users
     members: [bd808, eevans, mobrovac, ppchelko, twentyafterfour, thcipriani, dduvall,
               bsitzmann, mholloway-shell, kartik, halfak, ladsgroup, smalyshev, hoo, tgr,
-              ssastry, cscott, arlolra, jdlrobson, jforrester, niedzielski, bmansurov,
+              ssastry, cscott, arlolra, jdlrobson, jforrester, bmansurov,
               pmiazga, phuedx, mbsantos, mvolz, santhosh, nikerabbit, accraze,
               kevinbazira, clarakosi, chrisalbon, jgiannelos]
     privileges: []
@@ -1983,13 +1983,12 @@ users:
     ssh_keys: []
     uid: 2047
   niedzielski:
-    ensure: present
+    ensure: absent
     gid: 500
     name: niedzielski
     realname: Stephen Niedzielski
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDSPpX+9BTlBEOWYtHmbPKI6+AIda37IZLfnRV79UTyRBBWY4qxJZX/c4PZqVJ0hJteKHbQhaYAfz/6Socc9cZl5dE7ujimot4B9mw0VjTAKoCLVm4RydYZc2DXBMGQFN49bAyaQGur1g5qvDbabgRosYPbh1DkDCNKz8dc2n624B7RNb173UYU/Sm8itp1vQBrUyKodaNdaYukjQkuvQdS246MyURV9XQXBHHfjDZjUt6YS4sT3zXfrSGaOWtOJbljDr/A6SzS9IDVOri/+KS8RRpEbphqSotQSHzxoOCrak+VsCGYNLxkMvOOrm62XTelVR9KyXGk7OPTfV2fs4GB5gFjXzZC4za7AC9RjqzsWf1FryZYPZW7QPM9szYPx56Bj2OxD9PNnKswbCpok3wIe1xOroOYrYtYBmJME27CulYS4gUor6ZhM2BB09Mej0UMxQ5GG5YMQSatrKaZj5hv1uQBQZT0o1CRcyxR35TzFwKN3pLj/tfIDg9TBP7czfJwx76Mm9d6IdnqT+QwMgNZqaAHOoqPlC5ZtMgJva37QBMF86xda2RwmaNroulfCfb+tLybLPiPWqc8soIGEv4P4RRneI8rt7i7EZ25C6BF0NSByT1K5q9cEXYrjzBYbBhg9yyY8CgJNQOd5UGyMsQdB0Ni32c1cM6wXuvtBphwyQ== stephen@niedzielski.com]
+    ssh_keys: []
     uid: 11833
-    email: sniedzielski@wikimedia.org
   neilpquinn-wmf:
     ensure: present
     gid: 500
