@@ -21,4 +21,6 @@
   "DelayMasterPromotionIfSQLThreadNotUpToDate": true,
   "MasterFailoverDetachReplicaMasterHost": true,
   "RecoveryPeriodBlockSeconds": 10800
+
+  "DetectClusterAliasQuery": "SELECT shard FROM heartbeat.heartbeat ORDER BY ts DESC LIMIT 1"
 }

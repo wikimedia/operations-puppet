@@ -7,3 +7,6 @@ GRANT ALL PRIVILEGES ON `orchestrator`.* TO 'orchestrator_srv'@'10.64.32.13';
 CREATE USER 'orchestrator'@'10.64.32.13' IDENTIFIED BY '<%= @db_topology_password %>';
 GRANT SUPER, PROCESS, REPLICATION SLAVE, REPLICATION CLIENT, RELOAD ON *.* TO 'orchestrator'@'10.64.32.13';
 GRANT SELECT ON mysql.slave_master_info TO 'orchestrator'@'10.64.32.13';
+
+-- Grants for orchestrator user to be able to query heartbeat table for cluster alias discovery # T266485
+GRANT SELECT ON `heartbeat`.* TO 'orchestrator'@'10.64.32.13';
