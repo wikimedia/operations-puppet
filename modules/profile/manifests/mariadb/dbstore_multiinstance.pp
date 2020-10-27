@@ -70,4 +70,6 @@ disabled, use mariadb@<instance_name> instead'; exit 1\"",
     }
 
     class { 'mariadb::monitor_memory': }
+
+    class { 'toil::systemd_scope_cleanup': }  # T265323
 }
