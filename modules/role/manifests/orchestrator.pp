@@ -7,4 +7,5 @@ class role::orchestrator {
     include profile::base::firewall
     include profile::orchestrator::server
     include profile::orchestrator::monitoring
+    include profile::mariadb::client
 }
