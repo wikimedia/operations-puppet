@@ -27,7 +27,7 @@ class prometheus::node_intel_microcode (
         user        => 'root',
         description => 'Intel microcode prometheus metrics exporter',
         command     => "/usr/local/bin/prometheus-intel-microcode ${outfile}",
-        interval    => {'start' => 'OnUnitInactiveSec', 'interval' => 'hourly'},
+        interval    => {'start' => 'OnUnitInactiveSec', 'interval' => '1h'},
         require     => File['/usr/local/bin/prometheus-intel-microcode'],
     }
 }
