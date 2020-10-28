@@ -53,13 +53,6 @@ class profile::toolforge::k8s::haproxy (
     }
 
     # To get logging working, rsyslog needs to know what to do with it
-    file { '/var/log/haproxy':
-        ensure => directory,
-        owner  => 'root',
-        group  => 'adm',
-        mode   => '0750',
-    }
-
     logrotate::conf { 'haproxy':
         ensure => present,
         source => 'puppet:///modules/profile/toolforge/k8s/haproxy/haproxy.logrotate',
@@ -68,7 +61,6 @@ class profile::toolforge::k8s::haproxy (
     rsyslog::conf { 'haproxy':
           source   => 'puppet:///modules/profile/toolforge/k8s/haproxy/haproxy.rsyslog',
           priority => 49,
-          require  => File['/var/log/haproxy'],
     }
 
     service { 'haproxy':

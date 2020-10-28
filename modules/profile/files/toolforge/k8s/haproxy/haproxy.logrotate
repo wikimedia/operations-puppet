@@ -1,4 +1,4 @@
-/var/log/haproxy/haproxy.log {
+/var/log/haproxy.log {
     daily
     rotate 9
     missingok
