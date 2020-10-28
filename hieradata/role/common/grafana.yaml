@@ -1,13 +1,20 @@
 profile::grafana::domain: grafana.wikimedia.org
 profile::grafana::wpt_graphite_proxy_port: 33333
+profile::grafana::enable_cas: true
 profile::grafana::config:
+  auth.basic:
+    enabled: true # required by ldap_users_sync.py / API access
   auth.ldap:
-    enabled: true
-    allow_sign_up: true
-    config_file: /etc/grafana/ldap.toml
+    enabled: false
   auth.anonymous:
     enabled: true
     org_name: Wikimedia
+  auth:
+    disable_signout_menu: true
+  auth.proxy:
+    enabled: true
+    header_name: X-CAS-uid
+    auto_sign_up: false
   security:
     allow_embedding: true
   panels:
