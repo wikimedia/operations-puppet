@@ -63,6 +63,17 @@ class profile::wmcs::paws::k8s::haproxy (
         notify  => Service['haproxy'],
     }
 
+    # To get logging working, rsyslog needs to know what to do with it
+    logrotate::conf { 'haproxy':
+        ensure => present,
+        source => 'puppet:///modules/profile/wmcs/paws/k8s/haproxy/haproxy.logrotate',
+    }
+
+    rsyslog::conf { 'haproxy':
+          source   => 'puppet:///modules/profile/wmcs/paws/k8s/haproxy/haproxy.rsyslog',
+          priority => 49,
+    }
+
     service { 'haproxy':
         ensure    => 'running',
         subscribe => [
