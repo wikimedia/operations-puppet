@@ -347,7 +347,7 @@ UDebComponents:
 Suite: bigtop
 Architectures: amd64 source
 VerifyRelease: DBBF9D42B7B4BD70
-ListShellHook: grep-dctrl -e -S '^(avro-libs|bigtop-groovy|bigtop-jsvc|bigtop-tomcat|bigtop-utils|crunch|hadoop|hbase|hive|hue|impala|kite|llama|mahout|oozie|parquet|parquet-format|sentry|solr|flume-ng|spark-core|sqoop|sqoop2|whirr|zookeeper)$' || [ $? -eq 1 ]
+ListShellHook: grep-dctrl -e -S '^(avro-libs|bigtop-groovy|bigtop-jsvc|bigtop-tomcat|bigtop-utils|crunch|hadoop|hbase|hive|hue|impala|kite|llama|mahout|oozie|parquet|parquet-format|sentry|solr|flume-ng|spark-core|sqoop|sqoop2|whirr|zookeeper|flink)$' || [ $? -eq 1 ]
 
 Name: postgres
 Method: http://apt.postgresql.org/pub/repos/apt
