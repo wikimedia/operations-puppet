@@ -3945,6 +3945,46 @@ host clouddb2001-dev {
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
+host clouddb1013 {
+    hardware ethernet BC:97:E1:C2:91:50;
+    fixed-address clouddb1013.eqiad.wmnet;
+}
+
+host clouddb1014 {
+    hardware ethernet BC:97:E1:C2:BB:80;
+    fixed-address clouddb1014.eqiad.wmnet;
+}
+
+host clouddb1015 {
+    hardware ethernet BC:97:E1:C1:D3:B0;
+    fixed-address clouddb1015.eqiad.wmnet;
+}
+
+host clouddb1016 {
+    hardware ethernet BC:97:E1:C1:D4:A0;
+    fixed-address clouddb1016.eqiad.wmnet;
+}
+
+host clouddb1017 {
+    hardware ethernet BC:97:E1:C2:86:E0;
+    fixed-address clouddb1017.eqiad.wmnet;
+}
+
+host clouddb1018 {
+    hardware ethernet BC:97:E1:C2:90:70;
+    fixed-address clouddb1018.eqiad.wmnet;
+}
+
+host clouddb1019 {
+    hardware ethernet BC:97:E1:C2:D9:20;
+    fixed-address clouddb1019.eqiad.wmnet;
+}
+
+host clouddb1020 {
+    hardware ethernet BC:97:E1:C2:D9:80;
+    fixed-address clouddb1020.eqiad.wmnet;
+}
+
 host cloudweb2001-dev {
     hardware ethernet 30:e1:71:63:e6:c4;
     fixed-address cloudweb2001-dev.wikimedia.org;
