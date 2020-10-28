@@ -88,12 +88,11 @@ class profile::docker::builder(
     # Cleanup old images at the start of the month.
     if $prune_prod_images {
         systemd::timer::job { 'prune-production-images':
-            description        => 'Periodic job to prune old docker images',
-            command            => '/usr/local/bin/manage-production-images prune',
-            interval           => {'start' => 'OnCalendar', 'interval' => '*-*-01 04:00:00'},
-            user               => 'root',
-            monitoring_enabled => true,
-            logfile_basedir    => '/var/log'
+            description     => 'Periodic job to prune old docker images',
+            command         => '/usr/local/bin/manage-production-images prune',
+            interval        => {'start' => 'OnCalendar', 'interval' => '*-*-01 04:00:00'},
+            user            => 'root',
+            logfile_basedir => '/var/log'
         }
     }
 }
