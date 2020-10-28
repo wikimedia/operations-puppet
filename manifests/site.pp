@@ -869,15 +869,6 @@ node 'elastic2060.codfw.wmnet' {
 
 # External Storage, Shard 1 (es1) databases
 
-# new es1026-1034 servers in eqiad T260370
-node /^es102[6789]\.eqiad\.wmnet/ {
-    role(insetup)
-}
-
-node /^es103[01234]\.eqiad\.wmnet/ {
-    role(insetup)
-}
-
 ## eqiad servers
 node /^es101[268]\.eqiad\.wmnet/ {
     role(mariadb::core)
@@ -1013,7 +1004,7 @@ node /^failoid[12]001\.(eqiad|codfw)\.wmnet$/ {
 # Set them to spare individually as it will take take to transfer the data
 # eqiad hosts
 node /^es10(26|27|28|29|30|31|32|33|34)\.eqiad\.wmnet$/ {
-    role(spare::system)
+    role(insetup)
 }
 
 # Backup system, see T176505.
