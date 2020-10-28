@@ -869,6 +869,15 @@ node 'elastic2060.codfw.wmnet' {
 
 # External Storage, Shard 1 (es1) databases
 
+# new es1026-1034 servers in eqiad T260370
+node /^es102[6789]\.eqiad\.wmnet/ {
+    role(insetup)
+}
+
+node /^es103[01234]\.eqiad\.wmnet/ {
+    role(insetup)
+}
+
 ## eqiad servers
 node /^es101[268]\.eqiad\.wmnet/ {
     role(mariadb::core)
@@ -984,15 +993,6 @@ node 'es1023.eqiad.wmnet' {
 
 node 'es1025.eqiad.wmnet' {
     role(mariadb::core)
-}
-
-# new es1026-1034 servers in eqiad T260370
-node /^es102[6789]\.eqiad\.wmnet/ {
-    role(insetup)
-}
-
-node /^es103[01234]\.eqiad\.wmnet/ {
-    role(insetup)
 }
 
 ## codfw servers
