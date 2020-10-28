@@ -87,7 +87,6 @@ profile::restbase::seeds_ng:
 graphite_host: cloudmetrics1002.eqiad.wmnet
 profile::cassandra::allow_analytics: false
 profile::cassandra::disable_graphite_metrics: true
-profile::cassandra::metrics_whitelist: false
 profile::cassandra::metrics_blacklist:
     - .*\.metrics\.Table\..*$
 profile::cassandra::rack: rack1
