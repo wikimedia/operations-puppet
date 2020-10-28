@@ -41,10 +41,11 @@ class profile::java (
     Boolean                  $enable_dbg      = lookup('profile::java::enable_dbg'),
 ) {
 
-    if os_version('debian == stretch') {
-        $default_java_packages = [{'version' => '8', 'variant' => 'jdk'}]
-    } else {
-        $default_java_packages = [{'version' => '11', 'variant' => 'jdk'}]
+    $default_java_packages = $facts['os']['distro']['codename'] ? {
+        'jessie'  => [{'version' => '7', 'variant' => 'jdk'}],
+        'stretch' => [{'version' => '8', 'variant' => 'jdk'}],
+        'buster'  => [{'version' => '11', 'variant' => 'jdk'}],
+        default   => fail("${module_name} doesn't support ${facts['os']['distro']['codename']}")
     }
 
     $_java_packages = $java_packages.empty() ? {

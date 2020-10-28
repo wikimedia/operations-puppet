@@ -1,1 +1,1 @@
-type Java::Version = Enum['8', '11']
+type Java::Version = Enum['7', '8', '11']
