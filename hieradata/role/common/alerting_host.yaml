@@ -23,6 +23,7 @@ profile::alertmanager::active_host: alert1001.wikimedia.org
 profile::alertmanager::partners:
   - 'alert1001.wikimedia.org'
   - 'alert2001.wikimedia.org'
+profile::alertmanager::web::vhost: 'alerts.%{facts.domain}'
 
 profile::mariadb::wmfmariadbpy::role: 'library'
 profile::mariadb::backup::check::backups:

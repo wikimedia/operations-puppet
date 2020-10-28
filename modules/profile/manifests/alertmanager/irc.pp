@@ -7,6 +7,7 @@ class profile::alertmanager::irc (
     String              $irc_realname = lookup('profile::alertmanager::irc::realname'),
     String              $irc_nickname_password = lookup('profile::alertmanager::irc::nickname_password'),
     Array[Stdlib::Host] $prometheus_nodes = lookup('prometheus_nodes'),
+    String              $vhost = lookup('profile::alertmanager::web::vhost'),
 ) {
     if $active_host == $::fqdn {
         $irc_ensure = running
@@ -23,6 +24,7 @@ class profile::alertmanager::irc (
         irc_realname          => $irc_realname,
         irc_nickname_password => $irc_nickname_password,
         service_ensure        => $irc_ensure,
+        dashboard_url         => "https://${vhost}",
     }
 
     # API (webhook) + metrics access
