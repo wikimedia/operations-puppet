@@ -152,8 +152,8 @@ class GrafanaSyncer(object):
 
         for user in users:
             meta = self.ldap.uid_meta(user)
-            name = meta["cn"][0]
-            email = meta["mail"][0]
+            name = meta["cn"][0].decode('utf-8')
+            email = meta["mail"][0].decode('utf-8')
 
             if user not in existing_users:
                 LOG.debug(f"Creating user {user} name {name} email {email}")

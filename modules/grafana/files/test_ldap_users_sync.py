@@ -4,7 +4,7 @@ from unittest.mock import MagicMock
 import ldap_users_sync
 
 GRAFANA_USERS = [{"id": 1, "name": "admin", "email": "admin", "login": "admin"}]
-LDAP_USERS = {"user1": {"cn": ["user1"], "mail": ["user1@domain"]}}
+LDAP_USERS = {"user1": {"cn": [b"user1"], "mail": [b"user1@domain"]}}
 
 
 class MockResponse(object):
