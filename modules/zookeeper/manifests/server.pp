@@ -23,7 +23,7 @@ class zookeeper::server(
     $cleanup_cron_deploy = true,
     $default_template    = 'zookeeper/zookeeper.default.erb',
     $log4j_template      = 'zookeeper/log4j.properties.erb',
-    $force_java_11       = false,
+    $java_home           = undef,
 ) {
     # need zookeeper common package and config.
     Class['zookeeper'] -> Class['zookeeper::server']

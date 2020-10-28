@@ -8,6 +8,6 @@ JAVA_OPTS="<%= @java_opts %> -Dcom.sun.management.jmxremote.port=<%= @jmx_port %
 JMXDISABLE=true
 JAVA_OPTS="<%= @java_opts %>"
 <% end -%>
-<%if @force_java_11 -%>
-JAVA=/usr/lib/jvm/java-11-openjdk-amd64/bin/java
+<%if @java_home -%>
+JAVA=<%= @java_home %>/bin/java
 <% end -%>

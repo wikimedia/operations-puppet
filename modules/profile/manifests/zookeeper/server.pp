@@ -5,22 +5,28 @@
 #
 # filtertags: labs-project-deployment-prep labs-project-analytics
 class profile::zookeeper::server (
-    Hash $clusters                   = lookup('zookeeper_clusters'),
-    String $cluster_name             = lookup('profile::zookeeper::cluster_name'),
-    String $version                  = lookup('profile::zookeeper::zookeeper_version'),
-    Integer $max_client_connections  = lookup('profile::zookeeper::max_client_connections', {default_value => 1024}),
-    Integer $sync_limit              = lookup('profile::zookeeper::sync_limit', {default_value => 8}),
-    Boolean $monitoring_enabled      = lookup('profile::zookeeper::monitoring_enabled', {default_value => false}),
-    String $monitoring_contact_group = lookup('profile::zookeeper::monitoring_contact_group', {default_value => 'admins'}),
-    Boolean $is_critical             = lookup('profile::zookeeper::is_critical', {default_value => false}),
-    String $prometheus_instance      = lookup('profile::zookeeper::prometheus_instance', {default_value => 'ops'}),
-    Boolean $force_java_11           = lookup('profile::zookeeper::force_java_11', {default_value => false }),
+    Hash $clusters                       = lookup('zookeeper_clusters'),
+    String $cluster_name                 = lookup('profile::zookeeper::cluster_name'),
+    String $version                      = lookup('profile::zookeeper::zookeeper_version'),
+    Integer $max_client_connections      = lookup('profile::zookeeper::max_client_connections', {default_value => 1024}),
+    Integer $sync_limit                  = lookup('profile::zookeeper::sync_limit', {default_value => 8}),
+    Boolean $monitoring_enabled          = lookup('profile::zookeeper::monitoring_enabled', {default_value => false}),
+    String $monitoring_contact_group     = lookup('profile::zookeeper::monitoring_contact_group', {default_value => 'admins'}),
+    Boolean $is_critical                 = lookup('profile::zookeeper::is_critical', {default_value => false}),
+    String $prometheus_instance          = lookup('profile::zookeeper::prometheus_instance', {default_value => 'ops'}),
+    Optional[Stdlib::Unixpath] $override_java_home = lookup('profile::zookeeper::override_java_home', {default_value => undef }),
 ){
-
-    require_package('default-jdk')
-
+    require ::profile::java
     require ::profile::zookeeper::monitoring::server
     $extra_java_opts = $::profile::zookeeper::monitoring::server::java_opts
+
+    $java_home = pick($override_java_home, $profile::java::default_java_home)
+
+    # Safety check to avoid that Zookeeper runs on java 8 with Buster,
+    # since it will not work (jars are built using java 11).
+    if os_version('debian == buster') and !('11' in $java_home) {
+        fail('Zookeeper on buster needs to run with Java 11, please use $override_java_home.')
+    }
 
     # The zookeeper349 component for jessie-wikimedia has been created to
     # support a more flexible transition to Debian Stretch.
@@ -58,7 +64,7 @@ class profile::zookeeper::server (
         # and we filter out JAVA_TOOL_OPTIONS messages from stderr.
         cleanup_script_args => '-n 10 2>&1 > /dev/null | grep -v JAVA_TOOL_OPTIONS',
         java_opts           => "-Xms1g -Xmx1g ${extra_java_opts}",
-        force_java_11       => $force_java_11,
+        java_home           => $java_home,
     }
 
     if $monitoring_enabled {
