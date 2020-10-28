@@ -91,15 +91,14 @@ class profile::chartmuseum(
     $cmd_pull = '/usr/bin/git pull'
     $cmd_package = "/usr/bin/helm-chartctl --cm-url http://${listen_host}:${listen_port} walk ${charts_git}/charts stable"
     systemd::timer::job { 'helm-chartctl-package-all':
-        ensure             => present,
-        description        => 'Package and push new charts to local Chartmuseum instance',
-        command            => "/bin/sh -c 'cd ${charts_git} && ${cmd_pull} && ${cmd_package}'",
-        environment_file   => $defaults_file,
-        user               => 'chartmuseum',
-        logging_enabled    => false,
-        monitoring_enabled => true,
-        require            => [Class['chartmuseum'], Git::Clone['operations/deployment-charts'], Package['python3-docker-report'], File[$defaults_file]],
-        interval           => {
+        ensure           => present,
+        description      => 'Package and push new charts to local Chartmuseum instance',
+        command          => "/bin/sh -c 'cd ${charts_git} && ${cmd_pull} && ${cmd_package}'",
+        environment_file => $defaults_file,
+        user             => 'chartmuseum',
+        logging_enabled  => false,
+        require          => [Class['chartmuseum'], Git::Clone['operations/deployment-charts'], Package['python3-docker-report'], File[$defaults_file]],
+        interval         => {
             # We don't care about when this runs, as long as it runs every 2 minutes.
             # We also explicitly *don't* want to synchronize its execution across hosts,
             # as OnCalendar would do, and this should have some natural splay.

@@ -56,14 +56,13 @@ class helm(
     }
 
     systemd::timer::job { 'helm-repo-update':
-        ensure             => present,
-        description        => 'Update helm repositories indices',
-        command            => '/usr/bin/helm repo update',
-        environment        => {'HELM_HOME' => $helm_home},
-        user               => 'helm',
-        logging_enabled    => false,
-        monitoring_enabled => true,
-        interval           => {
+        ensure          => present,
+        description     => 'Update helm repositories indices',
+        command         => '/usr/bin/helm repo update',
+        environment     => {'HELM_HOME' => $helm_home},
+        user            => 'helm',
+        logging_enabled => false,
+        interval        => {
             # We don't care about when this runs, as long as it runs every minute.
             'start'    => 'OnUnitInactiveSec',
             'interval' => '60s',

@@ -26,17 +26,15 @@ class profile::kubernetes::deployment_server::helmfile(
     }
 
     systemd::timer::job { 'git_pull_charts':
-        ensure                    => present,
-        description               => 'Pull changes on deployment-charts repo',
-        command                   => '/bin/bash -c "cd /srv/deployment-charts && /usr/bin/git pull >/dev/null 2>&1"',
-        interval                  => {
+        ensure          => present,
+        description     => 'Pull changes on deployment-charts repo',
+        command         => '/bin/bash -c "cd /srv/deployment-charts && /usr/bin/git pull >/dev/null 2>&1"',
+        interval        => {
             'start'    => 'OnCalendar',
             'interval' => '*-*-* *:*:00', # every minute
         },
-        logging_enabled           => false,
-        monitoring_enabled        => true,
-        monitoring_contact_groups => 'admins',
-        user                      => 'root',
+        logging_enabled => false,
+        user            => 'root',
     }
 
     # General directory holding all configurations managed by puppet
