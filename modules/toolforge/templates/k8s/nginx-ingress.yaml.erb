@@ -203,6 +203,7 @@ subjects:
 # change: declare port 10254 for prometheus metrics
 # change: --default-backend-service=tool-fourohfour/fourohfour
 # change: 2 pod replicas instead of 1
+# change: change replicas to a template
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -212,7 +213,7 @@ metadata:
     app.kubernetes.io/name: ingress-nginx
     app.kubernetes.io/part-of: ingress-nginx
 spec:
-  replicas: 2
+  replicas: <%= @ingress_replicas %>
   selector:
     matchLabels:
       app.kubernetes.io/name: ingress-nginx
