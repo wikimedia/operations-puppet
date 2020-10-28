@@ -3,5 +3,5 @@
 # Installs the phabricator client, arcanist, from apt.
 #
 class phabricator::arcanist {
-    require_package('arcanist')
+    ensure_packages('arcanist')
 }

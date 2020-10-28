@@ -55,7 +55,7 @@ class profile::phabricator::aphlict (
     }
 
     # needed by deployment scripts only
-    require_package('php-cli')
+    ensure_packages('php-cli')
 
     # phabricator server needs to connect to the aphlict admin port
     ferm::service { 'phab_aphlict_admin_port':

@@ -57,7 +57,7 @@ class phabricator::aphlict(
 ) {
 
     # packages
-    require_package('nodejs')
+    ensure_packages('nodejs')
 
     # paths
     $phabdir = "${basedir}/phabricator/"
