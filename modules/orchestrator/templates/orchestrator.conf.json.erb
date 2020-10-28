@@ -5,11 +5,17 @@
   "EnableSyslog": true,
   "AuditToSyslog": true,
 
+<% if @db_backend == 'mysql' -%>
+  "BackendDB": "mysql",
   "MySQLOrchestratorHost": "<%= @db_backend_host %>",
   "MySQLOrchestratorPort": <%= @db_backend_port %>,
   "MySQLOrchestratorDatabase": "<%= @db_backend_database %>",
   "MySQLOrchestratorCredentialsConfigFile": "/etc/mysql/orchestrator_srv.cnf",
   "MySQLOrchestratorSSLCAFile": "/etc/ssl/certs/Puppet_Internal_CA.pem",
+<% elsif @db_backend == 'sqlite' -%>
+  "BackendDB": "sqlite",
+  "SQLite3DataFile": "/var/lib/orchestrator/orchestrator.db",
+<% end -%>
 
   "MySQLTopologyCredentialsConfigFile": "/etc/mysql/orchestrator_topo.cnf",
   "InstancePollSeconds": 5,

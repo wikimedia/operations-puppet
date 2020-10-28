@@ -1,12 +1,24 @@
 class orchestrator::server (
-    Stdlib::Host $db_backend_host,
-    String[1] $db_backend_password,
+    Enum['mysql', 'sqlite'] $db_backend,
     String[1] $db_topology_password,
+    String[1] $db_topology_username = 'orchestrator',
+    Optional[Stdlib::Host] $db_backend_host = undef,
+    Optional[String[1]] $db_backend_password = undef,
     Stdlib::Port $db_backend_port = 3306,
     String[1] $db_backend_username = 'orchestrator_srv',
     String[1] $db_backend_database = 'orchestrator',
-    String[1] $db_topology_username = 'orchestrator',
 ) {
+    if $db_backend == 'mysql' {
+        if !$db_backend_host {
+            fail("\$db_backend_host must be set if \$db_backend is 'mysql'")
+        }
+        if !$db_backend_password {
+            fail("\$db_backend_password must be set if \$db_backend is 'mysql'")
+        }
+    } elsif $db_backend == 'sqlite' {
+        require_package('sqlite3')
+    }
+
     apt::package_from_component { 'thirdparty-orchestrator-server':
         component => 'thirdparty/orchestrator',
         packages  => ['orchestrator']
