@@ -239,6 +239,7 @@ profile::idp::services:
           'cn=ops,ou=groups,dc=wikimedia,dc=org',
           'cn=nda,ou=groups,dc=wikimedia,dc=org',
           'cn=wmf,ou=groups,dc=wikimedia,dc=org',
+          'cn=grafana-admin,ou=groups,dc=wikimedia,dc=org',
         ]]
   orchestrator:
     class: 'org.apereo.cas.services.RegexRegisteredService'
