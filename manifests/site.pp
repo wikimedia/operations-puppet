@@ -2181,7 +2181,7 @@ node 'people1002.eqiad.wmnet', 'people2001.codfw.wmnet' {
 # Right now, both rt-server and rt-clients run on the same node
 # But, we are likely going to split them into different boxes soon.
 node 'scandium.eqiad.wmnet' {
-    role(insetup)
+    role(parsoid::testing)
 }
 
 node /schema[12]00[3-4].(eqiad|codfw).wmnet/ {
