@@ -1,2 +1,0 @@
-profile::tlsproxy::service::check_uri: '/'
-profile::tlsproxy::service::contact_group: 'admin'
