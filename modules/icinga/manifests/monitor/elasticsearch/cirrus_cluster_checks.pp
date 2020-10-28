@@ -1,5 +1,10 @@
 # == Class icinga::monitor::elasticsearch::cirrus_cluster_checks
-class icinga::monitor::elasticsearch::cirrus_cluster_checks{
+class icinga::monitor::elasticsearch::cirrus_cluster_checks(
+    Integer $shard_size_warning,
+    Integer $shard_size_critical,
+    String $threshold,
+    Integer $timeout,
+){
     $ports = [9243, 9443, 9643]
     $sites = ['eqiad', 'codfw']
     $scheme = 'https'
@@ -7,9 +12,13 @@ class icinga::monitor::elasticsearch::cirrus_cluster_checks{
     $sites.each |$site| {
         $host = "search.svc.${site}.wmnet"
         icinga::monitor::elasticsearch::base_checks { $host:
-            host   => $host,
-            scheme => $scheme,
-            ports  => $ports,
+            host                => $host,
+            scheme              => $scheme,
+            ports               => $ports,
+            shard_size_warning  => $shard_size_warning,
+            shard_size_critical => $shard_size_critical,
+            timeout             => $timeout,
+            threshold           => $threshold,
         }
 
         icinga::monitor::elasticsearch::cirrus_checks { $host:

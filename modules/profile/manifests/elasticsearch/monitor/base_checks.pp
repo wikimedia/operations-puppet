@@ -10,6 +10,7 @@ class profile::elasticsearch::monitor::base_checks(
         $ports + [$instance_params[1]['http_port']]
     }
 
+    # For monitoring of eqiad/codfw cirrus clusters, see icinga::monitor::elasticsearch::cirrus_cluster_checks
     icinga::monitor::elasticsearch::base_checks { $::hostname:
         ports               => $configured_ports,
         shard_size_warning  => $shard_size_warning,

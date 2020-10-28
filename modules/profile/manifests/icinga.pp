@@ -26,6 +26,10 @@ class profile::icinga(
     Hash[String, Hash]            $atlas_measurements    = lookup('ripeatlas_measurements'),
     Integer[1]                    $logs_keep_days        = lookup('profile::icinga::logs_keep_days'),
     Boolean                       $stub_contactgroups    = lookup('profile::icinga::stub_contactgroups', {'default_value' => false}),
+    Integer                       $shard_size_warning    = lookup('profile::elasticsearch::monitor::shard_size_warning', {'default_value' => 80}),
+    Integer                       $shard_size_critical   = lookup('profile::elasticsearch::monitor::shard_size_critical', {'default_value' => 100}),
+    String                        $threshold             = lookup('profile::elasticsearch::monitor::threshold', {'default_value' => '>=0.2'}),
+    Integer                       $timeout               = lookup('profile::elasticsearch::monitor::timeout', {'default_value' => 4}),
 ){
     $is_passive = !($::fqdn == $active_host)
 
@@ -65,7 +69,12 @@ class profile::icinga(
     class { 'icinga::monitor::certs': }
     class { 'icinga::monitor::commons': }
 
-    class { 'icinga::monitor::elasticsearch::cirrus_cluster_checks': }
+    class { 'icinga::monitor::elasticsearch::cirrus_cluster_checks':
+        shard_size_warning  => $shard_size_warning,
+        shard_size_critical => $shard_size_critical,
+        timeout             => $timeout,
+        threshold           => $threshold,
+    }
 
     # Experimental load-balancer monitoring for cloudelastic service using service-checker
     # This was isolated from lvs::monitor_services as cloudelastic use case deviates from
