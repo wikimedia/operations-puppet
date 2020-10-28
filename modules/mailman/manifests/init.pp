@@ -12,5 +12,4 @@ class mailman (
     }
 
     include mailman::scripts
-    include mailman::cron
 }
