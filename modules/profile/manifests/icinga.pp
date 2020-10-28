@@ -329,20 +329,18 @@ class profile::icinga(
     }
 
     systemd::timer::job { 'sync_check_icinga_contacts':
-        ensure                    => present,
-        description               => 'Automatically sync the Icinga contacts to the metamonitoring host',
-        command                   => '/usr/local/bin/sync-check-icinga-contacts',
-        interval                  => {
+        ensure          => present,
+        description     => 'Automatically sync the Icinga contacts to the metamonitoring host',
+        command         => '/usr/local/bin/sync-check-icinga-contacts',
+        interval        => {
             'start'    => 'OnCalendar',
             # Daily splayed by hostname at minute 19.
             # Depending on fqdn_rand seed there's the risk of not splaying
             # evenly throught the day.
             'interval' => "*-*-* ${sprintf('%02d', fqdn_rand(24, 1))}:19:00",
         },
-        logging_enabled           => false,
-        monitoring_enabled        => true,
-        monitoring_contact_groups => 'admins',
-        user                      => 'metamonitor',
-        require                   => File['/usr/local/bin/sync-check-icinga-contacts'],
+        logging_enabled => false,
+        user            => 'metamonitor',
+        require         => File['/usr/local/bin/sync-check-icinga-contacts'],
     }
 }
