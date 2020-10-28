@@ -5,7 +5,6 @@ class profile::parsoid::vd_server(
     Stdlib::Ensure::Service $service_ensure = lookup('profile::parsoid::vd_server::service_ensure'),
 ){
 
-    include ::testreduce
     include ::passwords::testreduce::mysql
 
     testreduce::server { 'parsoid-vd':

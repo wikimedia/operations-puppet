@@ -4,7 +4,7 @@
 class profile::parsoid::rt_server (
     Stdlib::Ensure::Service $service_ensure = lookup('profile::parsoid::rt_server::service_ensure'),
 ){
-    include ::testreduce
+
     include ::passwords::testreduce::mysql
 
     testreduce::server { 'parsoid-rt':

@@ -3,7 +3,7 @@ class profile::parsoid::vd_client (
     Stdlib::Port $parsoid_port = lookup('parsoid::testing::parsoid_port'),
     Stdlib::Ensure::Service $service_ensure = lookup('profile::parsoid::vd_client::service_ensure'),
 ) {
-    include ::testreduce
+
     include ::visualdiff
 
     testreduce::client { 'parsoid-vd-client':

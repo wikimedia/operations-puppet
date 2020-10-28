@@ -9,6 +9,7 @@ class role::parsoid::testreduce {
     include ::profile::base::firewall
 
     include ::profile::parsoid::testing
+    include ::profile::parsoid::testreduce
 
     include ::profile::parsoid::vd_client
     include ::profile::parsoid::vd_server

@@ -3,7 +3,6 @@ class profile::parsoid::rt_client(
     Stdlib::Port $parsoid_port = lookup('parsoid::testing::parsoid_port'),
     Stdlib::Ensure::Service $service_ensure = lookup('profile::parsoid::rt_client::service_ensure'),
 ){
-    include ::testreduce
 
     testreduce::client { 'parsoid-rt-client':
         instance_name  => 'parsoid-rt-client',

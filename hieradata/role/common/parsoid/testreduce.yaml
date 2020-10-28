@@ -24,3 +24,4 @@ profile::base::monitor_systemd: false
 profile::base::notifications: disabled
 profile::mediawiki::php::monitoring::monitor_opcache: false
 
+profile::parsoid::testreduce::install_node: true

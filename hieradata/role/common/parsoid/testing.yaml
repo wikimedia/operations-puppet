@@ -45,3 +45,5 @@ profile::parsoid::vd_client::service_ensure: 'running'
 profile::parsoid::vd_server::service_ensure: 'running'
 profile::parsoid::rt_client::service_ensure: 'running'
 profile::parsoid::rt_server::service_ensure: 'running'
+
+profile::parsoid::testreduce::install_node: false

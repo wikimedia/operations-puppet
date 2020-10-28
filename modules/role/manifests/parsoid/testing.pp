@@ -11,6 +11,7 @@ class role::parsoid::testing {
     include ::profile::base::firewall
 
     ## Parsoid
+    include ::profile::parsoid::testreduce
     include ::profile::parsoid::diffserver
     include ::profile::parsoid::rt_server
     include ::profile::parsoid::rt_client

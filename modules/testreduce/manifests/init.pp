@@ -2,7 +2,9 @@
 #
 # This file provides the testreduce code repository
 #
-class testreduce {
+class testreduce(
+    Boolean $install_node,
+){
 
     if os_version('debian == stretch') {
 
@@ -33,7 +35,9 @@ class testreduce {
         }
     }
 
-    ensure_packages(['nodejs', 'npm'])
+    if $install_node {
+        ensure_packages(['nodejs', 'npm'])
+    }
 
     group { 'testreduce':
         ensure => present,
