@@ -163,11 +163,12 @@ class otrs(
         },
     }
 
-    cron { 'otrs-cache-cleanup':
-        ensure  => 'present',
-        user    => 'otrs',
-        minute  => '50',
-        hour    => '*',
-        command => '/opt/otrs/bin/otrs.Console.pl Maint::Cache::Delete >/dev/null 2>&1',
+    systemd::timer::job { 'otrs-cache-cleanup':
+        ensure      => 'present',
+        user        => 'otrs',
+        description => 'Cleanup OTRS cache',
+        command     => '/opt/otrs/bin/otrs.Console.pl Maint::Cache::Delete',
+        interval    => {'start' => 'OnCalendar', 'interval' => 'hourly'},
     }
+
 }
