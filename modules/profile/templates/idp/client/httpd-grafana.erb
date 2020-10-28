@@ -10,6 +10,12 @@
     <%-end -%>
   <%-end -%>
 
+  # Dashboard links for unauthenticated users redirect to the read only virtual host.
+  RewriteEngine On
+  RewriteCond %{HTTP_COOKIE} !\bMOD_AUTH_CAS=
+  RewriteCond %{REQUEST_URI} ^/d/
+  RewriteRule ^(.*)$ https://<%= @vhost_settings['ro_vhost'] %>$1 [L,R=302]
+
   ProxyPreserveHost On
   ProxyPass / http://localhost:3000/
   ProxyPassReverse / http://localhost:3000/
