@@ -1,5 +1,5 @@
 #! /usr/bin/env ruby -S rspec
-require 'spec_helper'
+require_relative '../../../../rake_modules/spec_helper'
 
 describe 'pick_initscript' do
   it 'Returns false if no init script provided' do
