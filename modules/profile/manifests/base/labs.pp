@@ -31,6 +31,8 @@ class profile::base::labs(
         source => 'puppet:///modules/base/labs/nfs-common.default',
     }
 
+    # In order to send mail, we need /usr/bin/mail
+    require_package('bsd-mailx')
     file { '/usr/local/sbin/notify_maintainers.py':
         ensure => present,
         owner  => 'root',
