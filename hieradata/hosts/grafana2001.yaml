@@ -9,6 +9,8 @@ profile::grafana::config:
   auth.anonymous:
     enabled: true
     org_name: Wikimedia
+  auth:
+    disable_signout_menu: true
   auth.proxy:
     enabled: true
     header_name: X-CAS-uid
