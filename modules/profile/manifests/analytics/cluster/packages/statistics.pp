@@ -59,6 +59,7 @@ class profile::analytics::cluster::packages::statistics {
     require_package([
         # For embedded configurable-http-proxy
         'nodejs',
+        'npm',
         'libgslcblas0',
         'mariadb-client-10.3',
         'libyaml-cpp0.6',
