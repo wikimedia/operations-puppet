@@ -1402,13 +1402,6 @@ node /^ldap-corp[1-2]001\.wikimedia\.org$/ {
     role(openldap::corp)
 }
 
-# Read-only ldap replicas in eqiad, these were setup with a non-standard naming
-# scheme and will be renamed the next time they are reimaged (e.g. for the
-# buster upgrade)
-node /^ldap-eqiad-replica0[1-2]\.wikimedia\.org$/ {
-    role(openldap::replica)
-}
-
 node /^ldap-replica100[1-2]\.wikimedia\.org$/ {
     role(openldap::replica)
 }

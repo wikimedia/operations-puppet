@@ -455,18 +455,6 @@ host ldap-replica2004.wikimedia.org {
     fixed-address ldap-replica2004.wikimedia.org;
 }
 
-host ldap-eqiad-replica01.wikimedia.org {
-    hardware ethernet aa:00:00:7f:6d:5b;
-    fixed-address ldap-eqiad-replica01.wikimedia.org;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
-}
-
-host ldap-eqiad-replica02.wikimedia.org {
-    hardware ethernet aa:00:00:32:2c:7a;
-    fixed-address ldap-eqiad-replica02.wikimedia.org;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
-}
-
 host lists1001 {
     hardware ethernet aa:00:00:77:5e:7b;
     fixed-address lists1001.wikimedia.org;
