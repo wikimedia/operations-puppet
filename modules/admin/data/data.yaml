@@ -3744,7 +3744,7 @@ users:
     uid: 24996
     gid: 500
     ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINQaxbNSLlNDwRZ2YVLVQ6YswUjX2ID2xUDeDggbIVpM chrisalbon@MacBook-Pro-2.local
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIM4wHtKZtWhit4TLLznj74wTYg3mmCPlA1NG608zOdLd chrisalbon@deeplearning
     krb: present
   jgiannelos:
     ensure: present
