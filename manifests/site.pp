@@ -1577,10 +1577,12 @@ node /^mwdebug100[12]\.eqiad\.wmnet$/ {
 
 # Row A
 
-# mw1261 - mw1266 are in rack A5
+# rack A5
 node /^mw126[1-5]\.eqiad\.wmnet$/ {
     role(mediawiki::canary_appserver)
 }
+
+# rack A5
 node /^mw1266\.eqiad\.wmnet$/ {
     role(mediawiki::appserver)
 }
@@ -1609,54 +1611,54 @@ node /^mw1(39[3579]|40[13])\.eqiad\.wmnet$/ {
 
 # Row C
 
-# Rack C3
+# rack C3
 node /^mw140[57]\.eqiad\.wmnet$/ {
     role(mediawiki::appserver)
 }
 
-# mw1319-33 are in rack C6
+# rack C6
 node /^mw13(19|2[0-9]|3[0-3])\.eqiad\.wmnet$/ {
     role(mediawiki::appserver)
 }
 
-# Rack C8
+# rack C8
 node /^mw14(09|1[13])\.eqiad\.wmnet$/ {
     role(mediawiki::appserver)
 }
 
 # Row D
 
-#mw1349-mw1355 are in rack D1
+# rack D1
 node /^mw13(49|5[0-5])\.eqiad\.wmnet$/ {
     role(mediawiki::appserver)
 }
 
-#mw1363 is in rack D3
+# rack D3
 node /^mw1363\.eqiad\.wmnet$/ {
     role(mediawiki::appserver::api)
 }
 
-#mw1364-mw1365 are in rack D3
+# rack D3
 node /^mw136[45]\.eqiad\.wmnet$/ {
     role(mediawiki::appserver)
 }
 
-#mw1366-mw1373 are in rack D6
+# rack D6
 node /^mw13(6[6-9]|7[0-3])\.eqiad\.wmnet$/ {
     role(mediawiki::appserver)
 }
 
-#mw1374-mw1382 are in rack D6
+# rack D6
 node /^mw13(7[4-9]|8[0-2])\.eqiad\.wmnet$/ {
     role(mediawiki::appserver::api)
 }
 
-#mw1383 is in rack D8
+# rack D8
 node /^mw1383\.eqiad\.wmnet$/ {
     role(mediawiki::appserver::api)
 }
 
-#mw1384 is in rack D8
+# rack D8
 node /^mw1384\.eqiad\.wmnet$/ {
     role(mediawiki::appserver)
 }
@@ -1665,15 +1667,17 @@ node /^mw1384\.eqiad\.wmnet$/ {
 
 # Row A
 
-# mw1276 - mw1283 are in rack A7
+# rack A7
 node /^mw127[6-9]\.eqiad\.wmnet$/ {
     role(mediawiki::appserver::canary_api)
 }
+
+# rack A7
 node /^mw128[1-3]\.eqiad\.wmnet$/ {
     role(mediawiki::appserver::api)
 }
 
-# mw1312 is in rack A6
+# rack A6
 node 'mw1312.eqiad.wmnet' {
     role(mediawiki::appserver::api)
 }
@@ -1685,12 +1689,12 @@ node /^mw13(8[68]|9[02])\.eqiad\.wmnet$/ {
 
 # Row B
 
-# mw1284-1290,mw1297 are in rack B6
+# rack B6
 node /^mw12(8[4-9]|9[07])\.eqiad\.wmnet$/ {
     role(mediawiki::appserver::api)
 }
 
-# mw1313-17 are in rack B7
+# rack B7
 node /^mw13(1[3-7])\.eqiad\.wmnet$/ {
     role(mediawiki::appserver::api)
 }
@@ -1702,24 +1706,24 @@ node /^mw1(39[468]|40[024])\.eqiad\.wmnet$/ {
 
 # Row C
 
-# mw1339-48 are in rack C6
+# rack C6
 node /^mw13(39|4[0-8])\.eqiad\.wmnet$/ {
     role(mediawiki::appserver::api)
 }
 
-# Rack C3
+# rack C3
 node /^mw1406\.eqiad\.wmnet$/ {
     role(mediawiki::appserver::api)
 }
 
-# Rack C8
+# rack C8
 node /^mw14(08|1[02])\.eqiad\.wmnet$/ {
     role(mediawiki::appserver::api)
 }
 
 # Row D
 
-# mw1356-mw1362 are in rack D1
+# rack D1
 node /^mw13(5[6-9]|6[0-2])\.eqiad\.wmnet$/ {
     role(mediawiki::appserver::api)
 }
@@ -1734,26 +1738,26 @@ node 'mwmaint1002.eqiad.wmnet', 'mwmaint2001.codfw.wmnet' {
 
 # Row A
 
-# mw1307-mw1311 are in rack A6
+# rack A6
 node /^mw13(0[7-9]|1[01])\.eqiad\.wmnet$/ {
     role(mediawiki::jobrunner)
 }
 
 # Row B
 
-# mw1293-6,mw1298-mw1306 are in rack B6
+# rack B6
 node /^mw1(29[345689]|30[0-6])\.eqiad\.wmnet$/ {
     role(mediawiki::jobrunner)
 }
 
-# Rack B7
+# rack B7
 node 'mw1318.eqiad.wmnet' {
     role(mediawiki::jobrunner)
 }
 
 # Row C
 
-# mw1334-mw1338 are in rack C6
+# rack C6
 node /^mw133[4-8]\.eqiad\.wmnet$/ {
     role(mediawiki::jobrunner)
 }
@@ -1771,13 +1775,12 @@ node /^mwdebug200[12]\.codfw\.wmnet$/ {
 
 # Row A
 
-# mw2224-38 are in rack A3
-# mw2239-42 are in rack A4
+# rack A3 and rack A4
 node /^mw22(2[4-9]|3[0-9]|4[0-2])\.codfw\.wmnet$/ {
     role(mediawiki::appserver)
 }
 
-#mw2291-2300 are in rack A3
+# rack A3
 node /^mw2(29[1-9]|300)\.codfw\.wmnet$/ {
     role(mediawiki::appserver::api)
 }
@@ -1789,22 +1792,22 @@ node /^mw230[13579]\.codfw\.wmnet$/ {
 
 # Row B
 
-#mw2254-2258 are in rack B3
+# rack B3
 node /^mw225[4-8]\.codfw\.wmnet$/ {
     role(mediawiki::appserver)
 }
 
-#mw2268-70 are in rack B3
+# rack B3
 node /^mw22(6[8-9]|70)\.codfw\.wmnet$/ {
     role(mediawiki::appserver)
 }
 
-#mw2310-2316 are in rack B3
+# rack B3
 node /^mw23(1[0-6])\.codfw\.wmnet$/ {
     role(mediawiki::appserver)
 }
 
-#mw2317-24 are in rack B3
+# rack B3
 node /^mw23(1[7-9]|2[0-4])\.codfw\.wmnet$/ {
     role(mediawiki::appserver::api)
 }
@@ -1821,7 +1824,7 @@ node /^mw23(5[13579]|6[135])\.codfw\.wmnet$/ {
 
 # Row C
 
-# mw2335-mw2339 are in rack C3
+# rack C3
 node /^mw23(3[5-9])\.codfw\.wmnet$/ {
     role(mediawiki::appserver)
 }
@@ -1829,26 +1832,26 @@ node /^mw23(3[5-9])\.codfw\.wmnet$/ {
 # Row D
 
 # rack D3
-
 node /^mw2(27[12])\.codfw\.wmnet$/ {
     role(mediawiki::canary_appserver)
 }
 
-
+# rack D3
 node /^mw2(27[3-7]|36[79]|37[135])\.codfw\.wmnet$/ {
     role(mediawiki::appserver)
 }
 
-# Api
+# API
 
 # Row A
 
-# mw2215-2223 are in rack A3
+# rack A3
 
 node /^mw22(1[56])\.codfw\.wmnet$/ {
     role(mediawiki::appserver::canary_api)
 }
 
+# rack A3
 node /^mw22(1[7-9]|2[0123])\.codfw\.wmnet$/ {
     role(mediawiki::appserver::api)
 }
@@ -1858,19 +1861,19 @@ node /^mw230[2468]\.codfw\.wmnet$/ {
     role(mediawiki::appserver::api)
 }
 
-# mw2244-mw2245,mw2251-2253 are rack A4
-
+# rack A4
 node /^mw22(4[45])\.codfw\.wmnet$/ {
     role(mediawiki::appserver::canary_api)
 }
 
+# rack A4
 node /^mw22(5[1-3])\.codfw\.wmnet$/ {
     role(mediawiki::appserver::api)
 }
 
 # Row B
 
-# mw2261-mw2262 are in rack B3
+# rack B3
 node /^mw226[1-2]\.codfw\.wmnet$/ {
     role(mediawiki::appserver::api)
 }
@@ -1894,7 +1897,7 @@ node /^mw23(6[68]|7[0246])\.codfw\.wmnet$/ {
     role(mediawiki::appserver::api)
 }
 
-#mw2283-90 are in rack D4
+# rack D4
 node /^mw22(8[3-9]|90)\.codfw\.wmnet$/ {
     role(mediawiki::appserver::api)
 }
@@ -1903,26 +1906,24 @@ node /^mw22(8[3-9]|90)\.codfw\.wmnet$/ {
 
 # Row A
 
-# mw2243, mw2246-mw2250 are in rack A4
-
-# jobrunner canaries
+# rack A4 - jobrunner canaries
 node /^mw22(49|50)\.codfw\.wmnet$/ {
     role(mediawiki::jobrunner)
 }
 
-# jobrunners
+# rack A4 - jobrunners
 node /^mw22(4[3678])\.codfw\.wmnet$/ {
     role(mediawiki::jobrunner)
 }
 
 # Row B
 
-# mw2259-60 are in rack B3
+# rack B3
 node /^mw22(59|60)\.codfw\.wmnet$/ {
     role(mediawiki::jobrunner)
 }
 
-# mw2263-7 are in rack B3
+# rack B3
 node /^mw226[3-7]\.codfw\.wmnet$/ {
     role(mediawiki::jobrunner)
 }
@@ -1931,7 +1932,7 @@ node /^mw226[3-7]\.codfw\.wmnet$/ {
 
 # Row D
 
-# mw2278-80 are in rack D3, mw2281-2 are in rack D4
+# rack D4
 node /^mw22(7[8-9]|8[0-2])\.codfw\.wmnet$/ {
     role(mediawiki::jobrunner)
 }
