@@ -70,6 +70,10 @@ node 'an-test-client1001.eqiad.wmnet' {
     role(analytics_test_cluster::client)
 }
 
+node 'an-test-ui1001.eqiad.wmnet' {
+    role(insetup)
+}
+
 # Hadoop nodes that will be part of the future
 # backup cluster.
 # T260411

@@ -50,6 +50,11 @@ host an-test-client1001 {
     fixed-address an-test-client1001.eqiad.wmnet;
 }
 
+host an-test-ui1001 {
+    hardware ethernet aa:00:00:3b:5a:aa;
+    fixed-address an-test-ui1001.eqiad.wmnet;
+}
+
 host analytics-tool1001 {
     hardware ethernet aa:00:00:ed:b1:fd;
     fixed-address analytics-tool1001.eqiad.wmnet;
