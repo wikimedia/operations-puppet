@@ -19,6 +19,7 @@ meant to be run on the affected instance.
 """
 import calendar
 import logging
+import os
 import socket
 import sys
 import time
@@ -34,12 +35,15 @@ logger = logging.getLogger(__name__)
 
 
 def lastrun():
-    with open("/var/lib/puppet/state/last_run_summary.yaml") as datafile:
-        for line in datafile.readlines():
-            fields = line.strip().split(": ")
-            if fields[0] == "last_run":
-                return int(fields[1])
-    return 0
+    # last_run_summary.yaml reports the last run but it updates the stamp even on
+    #  failed runs. Instead, check to see the last time puppet actually did something.
+    try:
+        return os.path.getmtime("/var/lib/puppet/state/classes.txt")
+    except os.error:
+        logger.warning("Unable to determine last puppet run; classes.txt missing.")
+        # Returning 0 should imply that puppet has been broken since day one, which
+        #  is likely the case here!
+        return 0
 
 
 def main():
