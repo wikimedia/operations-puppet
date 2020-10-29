@@ -97,6 +97,11 @@ host an-airflow1001 {
     fixed-address an-airflow1001.eqiad.wmnet;
 }
 
+host an-test-druid1001 {
+    hardware ethernet aa:00:00:3c:aa:38;
+    fixed-address an-test-druid1001.eqiad.net;
+}
+
 host apt1001 {
     hardware ethernet aa:00:00:ff:c9:11;
     fixed-address apt1001.wikimedia.org;
