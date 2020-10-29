@@ -8,6 +8,7 @@ define java::cacert (
 ) {
     include java
     $keystore = $java::default_java_package['version'] ? {
+        '7'     => '-keystore /etc/ssl/certs/java/cacerts',
         '8'     => '-keystore /etc/ssl/certs/java/cacerts',
         default => '-cacerts',
     }
