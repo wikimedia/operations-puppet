@@ -100,7 +100,6 @@ profile::acme_chief::certificates:
         - '^ldap-(ro|labs)\.(eqiad|codfw)\.wikimedia\.org$'
         - '^seaborgium\.wikimedia\.org$'
         - '^serpens\.wikimedia\.org$'
-        - '^ldap-eqiad-replica0[12]\.wikimedia\.org$'
         - '^ldap-replica100[12]\.wikimedia\.org$'
         - '^ldap-replica200[1-4]\.wikimedia\.org$'
     ldap-codfw1dev:
