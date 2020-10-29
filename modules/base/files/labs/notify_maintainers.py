@@ -32,65 +32,67 @@ from keystoneclient.v3 import client as keystone_client
 # Don't bother to notify the novaadmin and nova-tools-bot user as it spams ops@
 # and noc@, respectively
 USER_IGNORE_LIST = [
-    'uid=novaadmin,ou=people,dc=wikimedia,dc=org',
-    'uid=nova-tools-bot,ou=people,dc=wikimedia,dc=org'
-    ]
+    "uid=novaadmin,ou=people,dc=wikimedia,dc=org",
+    "uid=nova-tools-bot,ou=people,dc=wikimedia,dc=org",
+]
 
 
 def connect(server, username, password):
-    conn = ldap.initialize('ldap://%s:389' % server)
+    conn = ldap.initialize("ldap://%s:389" % server)
     conn.protocol_version = ldap.VERSION3
     conn.start_tls_s()
     conn.simple_bind_s(username, password)
     return conn
 
 
-with open('/etc/wmflabs-project') as f:
+with open("/etc/wmflabs-project") as f:
     project_name = f.read().strip()
 
 
-with open('/etc/ldap.yaml') as f:
+with open("/etc/ldap.yaml") as f:
     ldap_config = yaml.safe_load(f)
 
 
-with open('/etc/novaobserver.yaml') as n:
+with open("/etc/novaobserver.yaml") as n:
     nova_observer_config = yaml.safe_load(n)
 
 
-ldap_conn = connect(ldap_config['servers'][0], ldap_config['user'], ldap_config['password'])
+ldap_conn = connect(
+    ldap_config["servers"][0], ldap_config["user"], ldap_config["password"]
+)
 
 
 def email_admins(subject, msg):
-    keystone_session = KeystoneSession(auth=KeystonePassword(
-        auth_url=nova_observer_config['OS_AUTH_URL'],
-        username=nova_observer_config['OS_USERNAME'],
-        password=nova_observer_config['OS_PASSWORD'],
-        project_name=nova_observer_config['OS_PROJECT_NAME'],
-        user_domain_name='default',
-        project_domain_name='default'
-    ))
-    keystoneclient = keystone_client.Client(session=keystone_session, interface='public')
+    keystone_session = KeystoneSession(
+        auth=KeystonePassword(
+            auth_url=nova_observer_config["OS_AUTH_URL"],
+            username=nova_observer_config["OS_USERNAME"],
+            password=nova_observer_config["OS_PASSWORD"],
+            project_name=nova_observer_config["OS_PROJECT_NAME"],
+            user_domain_name="default",
+            project_domain_name="default",
+        )
+    )
+    keystoneclient = keystone_client.Client(
+        session=keystone_session, interface="public"
+    )
     roleid = None
     for r in keystoneclient.roles.list():
-        if r.name == 'projectadmin':
+        if r.name == "projectadmin":
             roleid = r.id
             break
 
     assert roleid is not None
     for ra in keystoneclient.role_assignments.list(project=project_name, role=roleid):
-        dn = 'uid={},ou=people,{}'.format(ra.user['id'], ldap_config['basedn'])
+        dn = "uid={},ou=people,{}".format(ra.user["id"], ldap_config["basedn"])
         _email_member(dn, subject, msg)
 
 
 def email_members(subject, msg):
-    roledn = 'cn=%s,ou=groups,%s' % ('project-' + project_name,
-                                     ldap_config['basedn'])
+    roledn = "cn=%s,ou=groups,%s" % ("project-" + project_name, ldap_config["basedn"])
 
-    member_rec = ldap_conn.search_s(
-        roledn,
-        ldap.SCOPE_BASE
-    )
-    members = member_rec[0][1]['member']
+    member_rec = ldap_conn.search_s(roledn, ldap.SCOPE_BASE)
+    members = member_rec[0][1]["member"]
 
     for member in members:
         _email_member(member, subject, msg)
@@ -101,27 +103,28 @@ def _email_member(member, subject, body):
         return
 
     userrec = ldap_conn.search_s(member, ldap.SCOPE_BASE)
-    email = userrec[0][1]['mail'][0]
+    email = userrec[0][1]["mail"][0]
 
-    args = ['/usr/bin/mail', '-s', subject, email]
+    args = ["/usr/bin/mail", "-s", subject, email]
 
-    p = subprocess.Popen(args, stdout=subprocess.PIPE,
-                         stdin=subprocess.PIPE, stderr=subprocess.STDOUT)
+    p = subprocess.Popen(
+        args, stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=subprocess.STDOUT
+    )
     p.communicate(input=body)[0]
 
 
 def main():
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('-s', help='email subject', default=None)
-    parser.add_argument('-m', help='email message', default=None)
-    parser.add_argument('--admins-only', help='admins only', action='store_true')
+    parser.add_argument("-s", help="email subject", default=None)
+    parser.add_argument("-m", help="email message", default=None)
+    parser.add_argument("--admins-only", help="admins only", action="store_true")
     args = parser.parse_args()
 
     if args.m is None:
         # if stdin is empty we bail
         if sys.stdin.isatty():
-            sys.exit('no stdin and no message specified')
+            sys.exit("no stdin and no message specified")
         # Reading in the message
         args.m = sys.stdin.read()
 
@@ -134,5 +137,5 @@ def main():
         email_members(args.s, args.m)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

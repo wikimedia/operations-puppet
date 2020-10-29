@@ -55,7 +55,8 @@ def main():
         subject = "[Cloud VPS alert] Puppet failure on %s" % (fqdn,)
 
         logger.info(
-            "It has been %s seconds since last Puppet run. Sending nag emails.", NAG_INTERVAL
+            "It has been %s seconds since last Puppet run. Sending nag emails.",
+            NAG_INTERVAL,
         )
 
         body = """
