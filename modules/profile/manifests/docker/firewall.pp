@@ -12,12 +12,12 @@ class profile::docker::firewall {
     ferm::rule { 'docker-filter-preserve':
         prio  => '00',
         chain => "(${filter_chains})",
-        rule  => '@preserve',
+        rule  => '@preserve;',
     }
     ferm::rule { 'docker-nat-preserve':
         prio  => '00',
         table => 'nat',
         chain => "(${nat_chains})",
-        rule  => '@preserve',
+        rule  => '@preserve;',
     }
 }
