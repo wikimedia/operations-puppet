@@ -1436,6 +1436,9 @@ node /^logstash[12]02[345]\.(eqiad|codfw)\.wmnet$/ {
 node /^logstash[12]03[01]\.(eqiad|codfw)\.wmnet$/ {
     role(logstash7)
 }
+node 'logstash1032.eqiad.wmnet' {
+    role(spare::system)
+}
 
 # eqiad logstash collectors (Ganeti)
 node /^logstash100[7-9]\.eqiad\.wmnet$/ {
