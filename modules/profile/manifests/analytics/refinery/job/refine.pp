@@ -28,6 +28,7 @@
 # - netflow
 #   Infers schema from data and refines from
 #   /wmf/data/raw/netflow -> /wmf/data/wmf/netflow in the Hive wmf database.
+#   Requires a network infra config file.
 #
 class profile::analytics::refinery::job::refine(
     Boolean $use_kerberos         = lookup('profile::analytics::refinery::job::refine::use_kerberos', { 'default_value' => false }),
@@ -35,6 +36,7 @@ class profile::analytics::refinery::job::refine(
 ) {
     require ::profile::analytics::refinery
     require ::profile::hive::client
+    require ::profile::analytics::refinery::network_region_config
 
     # Update this when you want to change the version of the refinery job jar
     # being used for the refine job.
