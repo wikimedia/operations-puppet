@@ -823,6 +823,9 @@ node /^druid100[123]\.eqiad\.wmnet$/ {
 node /^an-druid100[12]\.eqiad\.wmnet$/ {
     role(druid::analytics::worker)
 }
+node /^an-test-druid1001\.eqiad\.wmnet$/ {
+    role(insetup)
+}
 
 # Druid public-eqiad servers.
 # These power AQS and wikistats 2.0 and contain non sensitive datasets.
