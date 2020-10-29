@@ -60,6 +60,7 @@ Components: main
  component/facter3
  component/git
  component/icu63
+ component/kubernetes-future
  component/lilypond
  component/mtail
  component/node10
