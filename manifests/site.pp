@@ -824,7 +824,7 @@ node /^an-druid100[12]\.eqiad\.wmnet$/ {
     role(druid::analytics::worker)
 }
 node /^an-test-druid1001\.eqiad\.wmnet$/ {
-    role(insetup)
+    role(druid::test_analytics::worker)
 }
 
 # Druid public-eqiad servers.
