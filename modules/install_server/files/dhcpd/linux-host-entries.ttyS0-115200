@@ -99,7 +99,7 @@ host an-airflow1001 {
 
 host an-test-druid1001 {
     hardware ethernet aa:00:00:3c:aa:38;
-    fixed-address an-test-druid1001.eqiad.net;
+    fixed-address an-test-druid1001.eqiad.wmnet;
 }
 
 host apt1001 {
