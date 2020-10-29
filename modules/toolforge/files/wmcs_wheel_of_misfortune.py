@@ -7,7 +7,9 @@ favorite parameters!
 """
 
 import argparse
+from bisect import bisect as _bisect
 from datetime import datetime, timezone
+from itertools import accumulate as _accumulate, repeat as _repeat
 import logging
 import os
 import random
@@ -120,9 +122,16 @@ killed process or as a maintainer of the tool that was.
 
 For further support, visit #wikimedia-cloud on freenode or
 <https://wikitech.wikimedia.org>
-""".format(procname=procname)
-        body = body_str.encode('utf-8')
-        args = [b"/usr/bin/mail", b"-s", subject.encode('utf-8'), our_user[1].encode('utf-8')]
+""".format(
+            procname=procname
+        )
+        body = body_str.encode("utf-8")
+        args = [
+            b"/usr/bin/mail",
+            b"-s",
+            subject.encode("utf-8"),
+            our_user[1].encode("utf-8"),
+        ]
         p = subprocess.Popen(
             args,
             stdout=subprocess.PIPE,
@@ -135,14 +144,41 @@ For further support, visit #wikimedia-cloud on freenode or
     return False
 
 
+# Copied from python 3.6. When we are not using Debian Stretch,
+# just use random.choices()
+def choices(population, weights=None, *, cum_weights=None, k=1):
+    """Return a k sized list of population elements chosen with replacement.
+    If the relative weights or cumulative weights are not specified,
+    the selections are made with equal probability.
+    """
+    n = len(population)
+    if cum_weights is None:
+        if weights is None:
+            _int = int
+            n += 0.0  # convert to float for a small speed improvement
+            return [
+                population[_int(random.random() * n)] for i in _repeat(None, k)
+            ]
+        cum_weights = list(_accumulate(weights))
+    elif weights is not None:
+        raise TypeError("Cannot specify both weights and cumulative weights")
+    if len(cum_weights) != n:
+        raise ValueError("The number of weights does not match the population")
+    bisect = _bisect
+    total = cum_weights[-1] + 0.0  # convert to float
+    hi = n - 1
+    return [
+        population[bisect(cum_weights, random.random() * total, 0, hi)]
+        for i in _repeat(None, k)
+    ]
+
+
 def spin_the_wheel(
     min_uid: int = 500, victims: int = 1, age: float = 259200.0
 ) -> List[psutil.Process]:
     lucky_contestants = []
     now = datetime.now(timezone.utc).timestamp()
-    for proc in psutil.process_iter(
-        ["pid", "name", "username", "uids", "create_time"]
-    ):
+    for proc in psutil.process_iter():
         uids = proc.uids()
         created = proc.create_time()
         time_ago = now - age
@@ -150,7 +186,7 @@ def spin_the_wheel(
             lucky_contestants.append(proc)
 
     ages = [now - x.create_time() for x in lucky_contestants]
-    return random.choices(lucky_contestants, weights=ages, k=victims)
+    return choices(lucky_contestants, weights=ages, k=victims)
 
 
 def slay(
@@ -159,7 +195,9 @@ def slay(
     project: str = "tools",
 ) -> None:
     for vic in victims:
-        logging.info("Killing %s", vic.info)
+        logging.info(
+            "Killing %s", vic.as_dict(attrs=["pid", "username", "uids", "name"])
+        )
         os.kill(vic.pid(), signal.SIGINT)
         # Give it a couple seconds to die honorably
         time.sleep(2)
@@ -217,17 +255,14 @@ def main():
     if args.dry_run:
         logging.info("I would kill:")
         for vic in victims:
-            logging.info(vic.info)
+            logging.info(vic.as_dict(attrs=["pid", "username", "uids", "name"]))
 
         sys.exit()
 
     with open("/etc/ldap.yaml") as f:
         ldap_config = yaml.safe_load(f)
     servers = ldap3.ServerPool(
-        [
-            ldap3.Server(s, connect_timeout=1)
-            for s in ldap_config["servers"]
-        ],
+        [ldap3.Server(s, connect_timeout=1) for s in ldap_config["servers"]],
         ldap3.ROUND_ROBIN,
         active=True,
         exhaust=True,
