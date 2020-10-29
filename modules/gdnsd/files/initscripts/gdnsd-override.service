@@ -1,0 +1,2 @@
+[Service]
+LimitNOFILE=infinity

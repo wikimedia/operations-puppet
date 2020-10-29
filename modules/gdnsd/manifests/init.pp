@@ -23,11 +23,12 @@ class gdnsd {
 
     # Ensure that 'restarts' are converted to seamless reloads; it never needs
     # a true restart under any remotely normal conditions.
-    service { 'gdnsd':
-        ensure     => 'running',
-        hasrestart => true,
-        hasstatus  => true,
-        restart    => 'service gdnsd reload',
-        require    => Package['gdnsd'],
+    systemd::service { 'gdnsd':
+        require        => Package['gdnsd'],
+        content        => file('gdnsd/initscripts/gdnsd-override.service'),
+        override       => true,
+        service_params => {
+            restart   => '/bin/systemctl reload gdnsd',
+        },
     }
 }
