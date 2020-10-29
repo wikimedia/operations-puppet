@@ -1496,7 +1496,7 @@ node /^maps10(0[5-9]|1[0])\.eqiad\.wmnet$/ {
     role(insetup)
 }
 
-node /^maps200[1-3]\.codfw\.wmnet/ {
+node /^maps20(0[1-3]|0[5-9]|10)\.codfw\.wmnet/ {
     role(maps::replica)
 }
 
