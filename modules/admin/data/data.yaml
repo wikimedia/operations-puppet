@@ -5,7 +5,7 @@ groups:
               handrade, howief, jdouglas, jgonera, jsahleen, mah, maryana, mglaser,
               mwalker, nimishg, rainman, ssmith, swalling, sumanah, werdna, rmoen,
               johnflewis, marc, jkrauska, akumar, mnoushad, spage, tnegrin, msyed, kleduc,
-              manybubbles, haithams, jzerebecki, ashwinpp, robla, asherman,
+              manybubbles, haithams, jzerebecki, ashwinpp, robla, asherman, dbarratt,
               laner, declerambaul, srijan, junikowski, krenair, jhobs, vbaranetsky,
               yurik, bsimmers, bcohn, hjiang, tomasz, csteipp, zareen, jgirault, ellery,
               psinger, midom, tparscal, dworley, moushira, lpintscher, gpaumier,
@@ -105,7 +105,7 @@ groups:
                  restricted folks use sudo to access www-data resources
     members: [bearloga, tjones, cparle, pearley, ktsouroupidou,
               ezachte, jamesur, jdlrobson, sguebo,
-              santhosh, amire80, foks, chelsyx, dbarratt, karen,
+              santhosh, amire80, foks, chelsyx, karen,
               kharlan, abi, nikkin, bmansurov, musikanimal, nahidunlimited]
     privileges: ['ALL = (www-data) NOPASSWD: ALL']
   cassandra-test-roots:
@@ -2751,14 +2751,12 @@ users:
     uid: 17744
     email: sharan@wikimedia.org
   dbarratt:
-    ensure: present
+    ensure: absent
     gid: 500
     name: dbarratt
     realname: David Barratt
-    ssh_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCrRP96tPtNAw4XAiTdDaxbwfDIwN5c4rCg3vArfDQSqOutIICgY30CGC1nadOmEqJxqAn6xQYnMgA94qb3pyPln/DLYtcseE185UHvqNqbOpXT+a9EnV/o1uHPP0/riQHF5k27SBUZS6RyAj14JkgbTutz5Z35aYfULTmhP3yMTdhd+/Fl3rA7d+bZdZCLwiikwJ0DY1dKXmSCKalFAub/FVjEGLpSLGu2gkKufx6sm4W+U0nBku9tLxBJ3B/rJdXVoudeAM3NWBJErPEqvyv3SYTnxthGIuqI9ZayjtzVNuuK5eETxdFVMwoxV1V/AvtqgSHxa9Tr1aTMkZZ8IdmP dbarratt@wikimedia.org
+    ssh_keys: []
     uid: 17204
-    email: dbarratt@wikimedia.org
   rho:
     ensure: present
     gid: 500
