@@ -52,7 +52,7 @@ class profile::analytics::refinery::job::test::data_purge(
     $druid_webrequest_sampled_retention_days = 60
     kerberos::systemd_timer { 'refinery-drop-webrequest-sampled-druid':
         description  => 'Drop Druid Webrequest sampled data from deep storage following data retention policies.',
-        command      => "${refinery_path}/bin/refinery-drop-druid-deep-storage-data --druid-host analytics1041.eqiad.wmnet -d ${druid_webrequest_sampled_retention_days} webrequest_sampled_128",
+        command      => "${refinery_path}/bin/refinery-drop-druid-deep-storage-data --druid-host an-test-druid1001.eqiad.wmnet -d ${druid_webrequest_sampled_retention_days} webrequest_sampled_128",
         interval     => '*-*-* 05:15:00',
         environment  => $systemd_env,
         use_kerberos => $use_kerberos,

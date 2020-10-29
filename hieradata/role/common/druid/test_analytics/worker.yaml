@@ -94,10 +94,10 @@ profile::druid::broker::properties:
   druid.emitter: composing
   druid.emitter.composing.emitters: ["logging","http"]
   druid.emitter.http.recipientBaseUrl: "http://127.0.0.1:8000/"
-  druid.processing.numThreads: 10
-  druid.processing.buffer.sizeBytes: 268435456 # 1024 * 1024 * 256
+  druid.processing.numThreads: 5
+  druid.processing.buffer.sizeBytes: 10485760 # 1024 * 1024 * 10
   # Set numMergeBuffers to use v2 groupBy engine
-  druid.processing.numMergeBuffers: 10
+  druid.processing.numMergeBuffers: 2
   druid.server.http.numThreads: 20
   druid.broker.http.numConnections: 20
   druid.broker.http.readTimeout: PT5M
@@ -128,11 +128,11 @@ profile::druid::historical::properties:
   druid.emitter: composing
   druid.emitter.composing.emitters: ["logging","http"]
   druid.emitter.http.recipientBaseUrl: "http://127.0.0.1:8000/"
-  druid.processing.numThreads: 10
-  druid.processing.buffer.sizeBytes: 268435456 # 1024 * 1024 * 256
+  druid.processing.numThreads: 5
+  druid.processing.buffer.sizeBytes: 10485760 # 1024 * 1024 * 10
   # Set numMergeBuffers to use v2 groupBy engine
-  druid.processing.numMergeBuffers: 10
-  druid.server.http.numThreads: 20
+  druid.processing.numMergeBuffers: 2
+  druid.server.http.numThreads: 5
   druid.server.maxSize: 52428800 # 50 GB
   druid.segmentCache.locations: '[{"path":"/srv/druid/segment-cache","maxSize"\:52428800}]'
   # For small clusters it is reccomended to only enable caching on brokers
