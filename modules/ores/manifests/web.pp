@@ -53,7 +53,6 @@ class ores::web(
             add-header           => [ 'Access-Control-Allow-Origin: *', "Server: ${::fqdn}", 'Access-Control-Allow-Headers: X-Wikimedia-Debug' ],
             max-requests         => 100,
             stats-push           => "statsd:${statsd_host}:${statsd_port},ores.${::hostname}.uwsgi",
-            memory-report        => true,
             skip-atexit-teardown => true,
         },
     }
