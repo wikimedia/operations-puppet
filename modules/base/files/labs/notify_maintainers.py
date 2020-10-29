@@ -110,7 +110,7 @@ def _email_member(member, subject, body):
     p = subprocess.Popen(
         args, stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=subprocess.STDOUT
     )
-    p.communicate(input=body)[0]
+    p.communicate(input=body.encode('utf8'))[0]
 
 
 def main():
