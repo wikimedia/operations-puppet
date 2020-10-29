@@ -48,7 +48,6 @@ profile::druid::common::zookeeper_cluster_name: druid-analytics-test-eqiad
 # so things like cluster name etc.. can be used in Druid's config as well.
 # The hadoop hdfs cdh extension is not included anymore.
 profile::druid::common::use_cdh_hadoop_config: true
-profile::druid::common::use_cdh: true
 
 # The default MySQL Druid metadata storage database name is just 'druid'.
 # Since the analytics-eqiad Druid cluster was originally the only one,
@@ -108,8 +107,8 @@ profile::druid::broker::properties:
   druid.sql.enable: true
   druid.monitoring.monitors: ["org.apache.druid.client.cache.CacheMonitor", "org.apache.druid.server.metrics.QueryCountStatsMonitor"]
 profile::druid::broker::env:
-  DRUID_HEAP_OPTS: "-Xmx10g -Xms5g"
-  DRUID_EXTRA_JVM_OPTS: "-XX:NewSize=4g -XX:MaxNewSize=4g -XX:MaxDirectMemorySize=12g -XX:+UseConcMarkSweepGC -XX:+PrintGCDetails -XX:+PrintGCTimeStamps"
+  DRUID_HEAP_OPTS: "-Xmx2g"
+  DRUID_EXTRA_JVM_OPTS: "-XX:+UseConcMarkSweepGC -XX:+PrintGCDetails -XX:+PrintGCTimeStamps"
 
 # --- Druid Coordinator
 profile::druid::coordinator::monitoring_enabled: true
@@ -119,8 +118,8 @@ profile::druid::coordinator::properties:
   druid.emitter.composing.emitters: ["logging","http"]
   druid.emitter.http.recipientBaseUrl: "http://127.0.0.1:8000/"
 profile::druid::coordinator::env:
-  DRUID_HEAP_OPTS: "-Xmx4g -Xms2g"
-  DRUID_EXTRA_JVM_OPTS: "-XX:NewSize=512m -XX:MaxNewSize=512m -XX:+UseG1GC -XX:+PrintGCDetails -XX:+PrintGCTimeStamps"
+  DRUID_HEAP_OPTS: "-Xmx1g"
+  DRUID_EXTRA_JVM_OPTS: "-XX:+UseG1GC -XX:+PrintGCDetails -XX:+PrintGCTimeStamps"
 
 
 # --- Druid Historical
@@ -134,16 +133,16 @@ profile::druid::historical::properties:
   # Set numMergeBuffers to use v2 groupBy engine
   druid.processing.numMergeBuffers: 10
   druid.server.http.numThreads: 20
-  druid.server.maxSize: 2748779069440 # 2.5 TB
-  druid.segmentCache.locations: '[{"path":"/srv/druid/segment-cache","maxSize"\:2748779069440}]'
+  druid.server.maxSize: 52428800 # 50 GB
+  druid.segmentCache.locations: '[{"path":"/srv/druid/segment-cache","maxSize"\:52428800}]'
   # For small clusters it is reccomended to only enable caching on brokers
   # See: http://druid.io/docs/latest/querying/caching.html
   druid.historical.cache.useCache: false
   druid.historical.cache.populateCache: false
   druid.monitoring.monitors: ["org.apache.druid.server.metrics.HistoricalMetricsMonitor", "org.apache.druid.server.metrics.QueryCountStatsMonitor", "org.apache.druid.client.cache.CacheMonitor"]
 profile::druid::historical::env:
-  DRUID_HEAP_OPTS: "-Xmx8g -Xms4g"
-  DRUID_EXTRA_JVM_OPTS: "-XX:NewSize=2g -XX:MaxNewSize=2g -XX:MaxDirectMemorySize=10g -XX:+UseConcMarkSweepGC -XX:+PrintGCDetails -XX:+PrintGCTimeStamps"
+  DRUID_HEAP_OPTS: "-Xmx2g"
+  DRUID_EXTRA_JVM_OPTS: "-XX:+UseConcMarkSweepGC -XX:+PrintGCDetails -XX:+PrintGCTimeStamps"
 
 
 # --- Druid MiddleManager
@@ -171,8 +170,8 @@ profile::druid::overlord::properties:
   druid.indexer.runner.type: remote
   druid.indexer.storage.type: metadata
 profile::druid::overlord::env:
-  DRUID_HEAP_OPTS: "-Xmx4g -Xms2g"
-  DRUID_EXTRA_JVM_OPTS: "-XX:NewSize=256m -XX:MaxNewSize=256m -XX:+UseConcMarkSweepGC -XX:+PrintGCDetails -XX:+PrintGCTimeStamps"
+  DRUID_HEAP_OPTS: "-Xmx1g"
+  DRUID_EXTRA_JVM_OPTS: "-XX:+UseConcMarkSweepGC -XX:+PrintGCDetails -XX:+PrintGCTimeStamps"
 
 profile::java::java_packages:
   - version: '8'

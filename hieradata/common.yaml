@@ -544,9 +544,9 @@ zookeeper_clusters:
   # colocated on druid hosts. This is mainly used as testing
   # environment for the Hadoop Test cluster jobs.
   # Temporarily removed due to hw refresh of the hadoop test cluster.
-  # druid-analytics-test-eqiad:
-  #  hosts:
-  #    analytics1041.eqiad.wmnet: '1001'
+  druid-analytics-test-eqiad:
+    hosts:
+      an-test-druid1001.eqiad.wmnet: '1001'
 
   # ZK Cluster dedicated to the Hadoop cluster (and its satellite systems)
   analytics-eqiad:
