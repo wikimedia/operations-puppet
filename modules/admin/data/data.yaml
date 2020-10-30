@@ -88,7 +88,7 @@ groups:
               kevinbazira, mstyles, zpapierski, clarakosi, dpifke,
               niedzielski, phuedx, samwilson, dmaza, tchanders,
               wikigit, arlolra, daniel, bpirkle, cicalese, dancy, chrisalbon,
-              jdl, holger]
+              jdl, holger, annet]
     privileges: ['ALL = (www-data,mwdeploy,l10nupdate) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /usr/sbin/apache2ctl',
                  'ALL = NOPASSWD: /etc/init.d/apache2',
@@ -3827,6 +3827,15 @@ users:
     gid: 500
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILVVotK5XPDEs+M1V7GoolJjktoGm0y1ffpyz9bd5A4m lsobanski@wikimedia.org
+  annet:
+    ensure: present
+    name: annet
+    realname: Anne Tomasevich
+    email: atomasevich@wikimedia.org
+    uid: 21849
+    gid: 500
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAG6XeNu2cHXzdcTYGlMcLldBAzYT3eEeoLwJzZCma29 atomasevich@MacBook-Pro.localdomain
 
 ldap_only_users:
   abartov:
