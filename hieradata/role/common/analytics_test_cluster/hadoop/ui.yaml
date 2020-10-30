@@ -9,7 +9,7 @@ profile::hive::client::hive_service_name: 'analytics-hive'
 
 profile::hue::database_host: 'an-test-coord1001.eqiad.wmnet'
 profile::hue::hive_server_host: 'an-test-coord1001.eqiad.wmnet'
-profile::hue::monitoring_enabled: true
+profile::hue::monitoring_enabled: false
 
 # Kerberos config
 profile::hue::kerberos_keytab: '/etc/security/keytabs/hue/hue.keytab'
@@ -18,6 +18,13 @@ profile::hue::kerberos_kinit_path: '/usr/bin/kinit'
 profile::hue::oozie_security_enabled: true
 profile::hue::enable_cas: false
 profile::hue::servername: 'hue.wikimedia.org'
+
+profile::hue::database_name: 'hue_test'
+profile::hue::use_hue4_settings: true
+profile::hue::enable_cas: false
+
+profile::cdh::apt::use_bigtop: true
+profile::analytics::cluster::packages::common::use_bigtop_settings: true
 
 profile::oozie::client::oozie_service: 'analytics-test-oozie'
 

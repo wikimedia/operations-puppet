@@ -71,7 +71,7 @@ node 'an-test-client1001.eqiad.wmnet' {
 }
 
 node 'an-test-ui1001.eqiad.wmnet' {
-    role(insetup)
+    role(analytics_test_cluster::hadoop::ui)
 }
 
 # Hadoop nodes that will be part of the future
