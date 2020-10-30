@@ -1,9 +1,8 @@
-# This role is used by testing services
-# Ex: Parsoid roundtrip testing, Parsoid & PHP parser visual diff testing
+# Parsoid testing, MW appserver plus parsoid testing setup
 class role::parsoid::testing {
 
     system::role { 'parsoid::testing':
-        description => 'Parsoid server (rt-testing, visual-diffing, etc.)'
+        description => 'Parsoid test server'
     }
 
     ## Basics
@@ -11,12 +10,6 @@ class role::parsoid::testing {
     include ::profile::base::firewall
 
     ## Parsoid
-    include ::profile::parsoid::testreduce
-    include ::profile::parsoid::diffserver
-    include ::profile::parsoid::rt_server
-    include ::profile::parsoid::rt_client
-    include ::profile::parsoid::vd_server
-    include ::profile::parsoid::vd_client
     include ::profile::parsoid::testing
 
     ## MediaWiki
