@@ -9,7 +9,7 @@ class orchestrator::server (
 ) {
     apt::package_from_component { 'thirdparty-orchestrator-server':
         component => 'thirdparty/orchestrator',
-        packages  => ['orchestrator', 'orchestrator-cli']
+        packages  => ['orchestrator']
     }
 
     file { '/etc/orchestrator.conf.json':
@@ -24,8 +24,8 @@ class orchestrator::server (
     file { '/etc/mysql/orchestrator_srv.cnf':
         ensure  => 'present',
         owner   => 'root',
-        group   => 'root',
-        mode    => '0400',
+        group   => 'orchestrator',
+        mode    => '0440',
         content => template('orchestrator/orchestrator_srv.cnf.erb'),
         notify  => Service['orchestrator'],
     }
@@ -33,8 +33,8 @@ class orchestrator::server (
     file { '/etc/mysql/orchestrator_topo.cnf':
         ensure  => 'present',
         owner   => 'root',
-        group   => 'root',
-        mode    => '0400',
+        group   => 'orchestrator',
+        mode    => '0440',
         content => template('orchestrator/orchestrator_topo.cnf.erb'),
         notify  => Service['orchestrator'],
     }
