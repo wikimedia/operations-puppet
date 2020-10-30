@@ -76,7 +76,9 @@ db-store: P{O:mariadb::dbstore_multiinstance}
 db-role-<%= role %>: P{P:mariadb::mysql_role%role = <%= role %>}
 <% end -%>
 <% @mariadb_sections.each do |section| -%>
+<% unless section.start_with?("test-") -%>
 db-section-<%= section %>: P{R:profile::mariadb::section%section = <%= section %>}
+<% end -%>
 <% end -%>
 db-backups: P{O:mariadb::backups}
 db-proxy: P{O:mariadb::proxy::master or O:mariadb::proxy::replicas}
