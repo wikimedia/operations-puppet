@@ -12,7 +12,7 @@ basedir    = <%= @basedir %>
 datadir    = <%= @datadir %>
 tmpdir     = <%= @tmpdir %>
 server_id  = <%= @server_id %>
-read_only  = 0
+read_only  = <%= @read_only %>
 
 # enable socket authentication
 plugin-load = unix_socket=auth_socket.so
