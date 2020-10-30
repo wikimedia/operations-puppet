@@ -29,5 +29,6 @@
   "MasterFailoverDetachReplicaMasterHost": true,
   "RecoveryPeriodBlockSeconds": 10800,
 
-  "DetectClusterAliasQuery": "SELECT shard FROM heartbeat.heartbeat ORDER BY ts DESC LIMIT 1"
+  "DetectClusterAliasQuery": "SELECT shard FROM heartbeat.heartbeat ORDER BY ts DESC LIMIT 1",
+  "DetectDataCenterQuery": "SELECT @@wsrep_cluster_name"
 }
