@@ -13,6 +13,6 @@ class profile::microsites::wdqs {
         ensure    => 'latest',
         source    => 'gerrit',
         directory => '/srv/org/wikidata/query',
-        branch    => 'master',
+        branch    => 'production',
     }
 }
