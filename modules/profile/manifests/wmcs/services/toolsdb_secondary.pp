@@ -3,16 +3,13 @@
 # This class sets up MariaDB for a secondary tools database.
 #
 class profile::wmcs::services::toolsdb_secondary (
+    Stdlib::Unixpath $socket = lookup('profile::wmcs::services::toolsdb::socket', {default_value => '/var/run/mysqld/mysqld.sock'})
 ) {
     require profile::wmcs::services::toolsdb_apt_pinning
 
     require profile::mariadb::packages_wmf
     include profile::mariadb::wmfmariadbpy
     class { '::mariadb::service': }
-    include ::passwords::misc::scripts
-
-    # FIXME: Add the socket location to make the transition easier.
-    $socket = '/var/run/mysqld/mysqld.sock'
 
     class { 'mariadb::config':
         config        => 'role/mariadb/mysqld_config/tools.my.cnf.erb',
