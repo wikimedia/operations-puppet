@@ -25,6 +25,7 @@ class profile::oozie::server(
     Stdlib::Unixpath $oozie_sharelib_archive                   = lookup('profile::oozie::server::oozie_sharelib_archive', { 'default_value' => '/usr/lib/oozie/oozie-sharelib-yarn' }),
     Array[String] $oozie_admin_users                           = lookup('profile::oozie::server::admin_users', { 'default_value' => ['hdfs'] }),
     Boolean $use_admins_list                                   = lookup('profile::oozie::server::use_admins_list', { 'default_value' => false }),
+    Array[String] $oozie_admin_groups                          = lookup('profile::oozie::server::admin_groups', { 'default_value' => [] }),
 ){
 
     require ::profile::oozie::client
@@ -39,6 +40,7 @@ class profile::oozie::server(
         smtp_from_email                             => "oozie@${::fqdn}",
         authorization_service_authorization_enabled => $use_admins_list,
         admin_users                                 => $oozie_admin_users,
+        admin_groups                                => $oozie_admin_groups,
         jvm_opts                                    => $jvm_opts,
         java_home                                   => $java_home,
         oozie_service_kerberos_enabled              => $oozie_service_kerberos_enabled,
