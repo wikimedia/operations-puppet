@@ -5,6 +5,5 @@ class role::wmcs::db::toolsdb_secondary {
     }
 
     include ::profile::mariadb::monitor
-    include ::role::mariadb::ferm
     include ::profile::wmcs::services::toolsdb_secondary
 }
