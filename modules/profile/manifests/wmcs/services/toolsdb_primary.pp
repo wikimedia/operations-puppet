@@ -11,6 +11,23 @@ class profile::wmcs::services::toolsdb_primary (
         socket      => $socket,
     }
 
+    # This should depend on labs_lvm::srv but the /srv/ vols were hand built
+    # on the first two toolsdb VMs to exactly match the physical servers.
+    # New ones should directly use that profile so we can add it here.
+    file { '/srv/labsdb':
+        ensure => directory,
+        mode   => '0755',
+        owner  => 'root',
+        group  => 'root',
+    }
+
+    file { '/srv/labsdb/binlogs':
+        ensure => directory,
+        mode   => '0755',
+        owner  => 'mysql',
+        group  => 'mysql',
+    }
+
     class { 'mariadb::config':
         config        => 'role/mariadb/mysqld_config/tools.my.cnf.erb',
         datadir       => '/srv/labsdb/data',

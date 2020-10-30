@@ -1,18 +1,10 @@
 class role::wmcs::db::toolsdb_secondary {
 
-    system::role { 'wmcs::db::toolsdb_secondary':
+    system::role { $name:
         description => 'Cloud user database secondary',
     }
 
     include ::profile::mariadb::monitor
     include ::role::mariadb::ferm
     include ::profile::wmcs::services::toolsdb_secondary
-
-    # FIXME: Add the socket location to make the transition easier.
-    $socket = '/var/run/mysqld/mysqld.sock'
-
-    class { 'profile::mariadb::monitor::prometheus':
-        socket      => $socket,
-    }
-
 }
