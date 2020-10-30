@@ -2173,12 +2173,11 @@ node 'people1002.eqiad.wmnet', 'people2001.codfw.wmnet' {
     role(microsites::peopleweb)
 }
 
-# scandium is a parsoid regression test server. it replaced ruthenium.
-# https://www.mediawiki.org/wiki/Parsoid/Round-trip_testing
-# Right now, both rt-server and rt-clients run on the same node
-# But, we are likely going to split them into different boxes soon.
+# scandium is a parsoid test server. it replaced ruthenium.
+# This is now just like an MW appserver plus parsoid repo.
+# roundtrip and visualdiff testing moved to testreduce1001 (T257906)
 node 'scandium.eqiad.wmnet' {
-    role(parsoid::testing)
+    role(insetup)
 }
 
 node /schema[12]00[3-4].(eqiad|codfw).wmnet/ {
@@ -2252,7 +2251,8 @@ node /^sretest100[1-2]\.eqiad\.wmnet$/ {
     role(sretest)
 }
 
-# visual diff testing (T257940)
+# parsoid visual diff and roundtrip testing (T257940)
+# also see scandium.eqiad.wmnet
 node 'testreduce1001.eqiad.wmnet' {
     role(parsoid::testreduce)
 }
