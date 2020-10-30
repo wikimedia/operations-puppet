@@ -24,9 +24,10 @@ class amd_rocm (
 ) {
 
     $supported_versions = ['25', '26', '271', '33', '37', '38']
-    # Starting with v3.5.0, the firmware has been split out of the dkms package
-    # https://github.com/RadeonOpenCompute/ROCm/tree/63ed31781dab993baad65bc262cdcdabe83ca218#Upgrading-to-This-Release
-    $add_firmware_versions = ['37', '38']
+    # Only add the dkms package (kernel module) for 3.3. Later versions only
+    # work with 5.x kernels, which in turn have a sufficiently-new amdgpu
+    # module
+    $add_dkms_versions = ['33']
 
 
     if ! ($version in $supported_versions) {
@@ -75,7 +76,6 @@ class amd_rocm (
         'rccl',
         'rocblas',
         'rocfft',
-        'rock-dkms',
         'rocm-cmake',
         'rocm-dev',
         'rocm-device-libs',
@@ -86,8 +86,8 @@ class amd_rocm (
         'rocm-utils',
         'rocrand',
     ]
-    $packages = $version in $add_firmware_versions ? {
-        true  => $basepkgs << 'rock-dkms-firmware',
+    $packages = $version in $add_dkms_versions ? {
+        true  => $basepkgs + ['rock-dkms'],
         false => $basepkgs,
     }
 
