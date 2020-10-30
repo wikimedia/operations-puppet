@@ -2177,7 +2177,7 @@ node 'people1002.eqiad.wmnet', 'people2001.codfw.wmnet' {
 # This is now just like an MW appserver plus parsoid repo.
 # roundtrip and visualdiff testing moved to testreduce1001 (T257906)
 node 'scandium.eqiad.wmnet' {
-    role(insetup)
+    role(parsoid::testing)
 }
 
 node /schema[12]00[3-4].(eqiad|codfw).wmnet/ {
