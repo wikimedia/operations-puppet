@@ -7,15 +7,16 @@ socket = <%= @socket %>
 
 [mysqld]
 
-user        = mysql
-socket      = <%= @socket %>
-port        = 3306
-extra_port  = 3307
-basedir     = <%= @basedir %>
-datadir     = <%= @datadir %>
-tmpdir      = <%= @tmpdir %>
-server_id   = <%= @server_id %>
-report_host = <%= @fqdn %>
+user               = mysql
+socket             = <%= @socket %>
+port               = 3306
+extra_port         = 3307
+basedir            = <%= @basedir %>
+datadir            = <%= @datadir %>
+tmpdir             = <%= @tmpdir %>
+server_id          = <%= @server_id %>
+report_host        = <%= @fqdn %>
+wsrep_cluster_name = <%= @site %> # For orchestrator. T266635
 
 # Parsercache needs to be writeable (no masters).
 read_only = 0

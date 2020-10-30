@@ -8,14 +8,17 @@ socket = <%= @socket %>
 [mysqld]
 
 # administrative options
-user       = mysql
-socket     = <%= @socket %>
-port       = 3306
-#extra-port = 3307
-basedir    = <%= @basedir %>
-datadir    = <%= @datadir %>
-tmpdir     = <%= @tmpdir %>
-server_id  = <%= @server_id %>
+user               = mysql
+socket             = <%= @socket %>
+port               = 3306
+#extra-port         = 3307
+basedir            = <%= @basedir %>
+datadir            = <%= @datadir %>
+tmpdir             = <%= @tmpdir %>
+server_id          = <%= @server_id %>
+report_host        = <%= @fqdn %>
+wsrep_cluster_name = <%= @site %> # For orchestrator. T266635
+
 # gtid_domain_id flag is needed for multisource replication and GTID.
 # Strictly it is only needed on masters or servers that can potentially be
 # masters but for consistency it should be set in all of them.

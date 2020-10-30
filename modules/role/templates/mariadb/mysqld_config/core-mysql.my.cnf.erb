@@ -7,14 +7,16 @@ socket = <%= @socket %>
 
 [mysqld]
 
-user       = mysql
-socket     = <%= @socket %>
-port       = 3306
+user               = mysql
+socket             = <%= @socket %>
+port               = 3306
 # no extra_port on MySQL
-basedir    = <%= @basedir %>
-datadir    = <%= @datadir %>
-tmpdir     = <%= @tmpdir %>
-server-id  = <%= @server_id %>
+basedir            = <%= @basedir %>
+datadir            = <%= @datadir %>
+tmpdir             = <%= @tmpdir %>
+server-id          = <%= @server_id %>
+report_host        = <%= @fqdn %>
+wsrep_cluster_name = <%= @site %> # For orchestrator. T266635
 
 # Always start in read_only mode.
 # Master selection will be handled by cluster control.
