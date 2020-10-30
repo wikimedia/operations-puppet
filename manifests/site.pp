@@ -127,12 +127,6 @@ node 'an-tool1005.eqiad.wmnet' {
     role(analytics_cluster::ui::staging)
 }
 
-# Analytics Hadoop client for the Testing cluster
-# T226844
-node 'an-tool1006.eqiad.wmnet' {
-    role(analytics_test_cluster::client)
-}
-
 # turnilo.wikimedia.org
 # https://wikitech.wikimedia.org/wiki/Analytics/Systems/Turnilo-Pivot
 node 'an-tool1007.eqiad.wmnet' {
