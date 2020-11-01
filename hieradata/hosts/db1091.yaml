@@ -1,2 +1,4 @@
 # db1091
+# RO FS because of a broken disk T225060
 mariadb::shard: 's1'
+profile::base::notifications: disabled
