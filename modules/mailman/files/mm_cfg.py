@@ -147,3 +147,4 @@ DEFAULT_DMARC_MODERATION_ACTION = 1
 
 DEFAULT_CHARSET = 'utf-8'
 VERBATIM_ENCODING = ['iso-2022-jp', 'utf-8']
+LC_DESCRIPTIONS['en'] = ('English', 'utf-8', 'ltr')
