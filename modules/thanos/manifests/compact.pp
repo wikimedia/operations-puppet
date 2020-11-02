@@ -66,6 +66,7 @@ class thanos::compact (
     systemd::service { $service_name:
         ensure         => $service_ensure,
         restart        => true,
+        override       => true,
         content        => systemd_template('thanos-compact'),
         service_params => {
             enable     => $service_enable,

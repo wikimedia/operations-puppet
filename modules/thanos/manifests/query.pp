@@ -29,6 +29,7 @@ class thanos::query (
     systemd::service { $service_name:
         ensure         => present,
         restart        => true,
+        override       => true,
         content        => systemd_template('thanos-query'),
         service_params => {
             enable     => true,

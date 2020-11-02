@@ -1,15 +1,4 @@
-[Unit]
-Description=Thanos compact
-Documentation=https://github.com/improbable-eng/thanos/
-
 [Service]
-Restart=always
-User=thanos
+ExecStart=
 ExecStart=/usr/bin/thanos compact --http-address <%= @http_address %> --data-dir <%= @data_dir %> --objstore.config-file <%= @objstore_config_file %> --retention.resolution-raw <%= @retention %> --retention.resolution-5m <%= @retention %> --retention.resolution-1h <%= @retention %> --compact.concurrency <%= @concurrency %> --wait
-ExecReload=/bin/kill -HUP $MAINPID
-TimeoutStopSec=20s
-SyslogIdentifier=%N
-
-[Install]
-WantedBy=multi-user.target
 

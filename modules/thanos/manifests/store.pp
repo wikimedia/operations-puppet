@@ -69,6 +69,7 @@ class thanos::store (
     systemd::service { $service_name:
         ensure         => present,
         restart        => true,
+        override       => true,
         content        => systemd_template('thanos-store'),
         service_params => {
             enable     => true,
