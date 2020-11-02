@@ -22,6 +22,16 @@ class snapshot::cron::wikidatadumps::json(
             weekday     => '1',
             require     => File[$scriptpath],
         }
+        cron { 'wikidatajson-lexemes-dump':
+            ensure      => 'present',
+            command     => "${scriptpath} lexemes",
+            environment => 'MAILTO=ops-dumps@wikimedia.org',
+            user        => $user,
+            minute      => '15',
+            hour        => '3',
+            weekday     => '3',
+            require     => File[$scriptpath],
+        }
     }
 }
 
