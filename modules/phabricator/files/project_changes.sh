@@ -277,6 +277,38 @@ SELECT CONCAT("https://phabricator.wikimedia.org/T", t.id) AS taskID, u.userName
 END
 )
 
+# echo "result_old_stalled_tasks"
+# see https://phabricator.wikimedia.org/T252522
+result_old_stalled_tasks=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -P $sql_port -u$sql_user $sql_name << END
+
+SELECT CONCAT("https://phabricator.wikimedia.org/T", mt.id) AS taskID,
+IF (mt.viewPolicy = "public", mt.title, "---restricted---") as taskTitle,
+FROM_UNIXTIME(mta1.dateCreated) AS stalled_date
+    FROM phabricator_maniphest.maniphest_task mt
+    JOIN phabricator_user.user u ON u.phid=mt.authorPHID
+    INNER JOIN phabricator_maniphest.maniphest_transaction mta1
+    WHERE mt.status = "stalled"
+    AND mt.phid NOT IN
+        (SELECT e.src FROM phabricator_maniphest.edge e
+        WHERE e.type = 41
+        AND e.dst="PHID-PROJ-bchzb6qpl3jhgs2oq6um")
+    AND mt.phid NOT IN
+        (SELECT e.src FROM phabricator_maniphest.edge e
+        WHERE e.type = 3)
+    AND mt.phid = mta1.objectPHID
+    AND mta1.transactionType = "status"
+    AND mta1.newValue = "\"stalled\""
+    AND FROM_UNIXTIME(mta1.dateCreated) <= (NOW() - INTERVAL 36 MONTH)
+    AND mt.phid NOT IN
+        (SELECT mta2.objectPHID FROM phabricator_maniphest.maniphest_transaction mta2
+        WHERE mta2.transactionType = "status"
+        AND mta2.newValue = "\"stalled\""
+        AND FROM_UNIXTIME(mta2.dateCreated) >= (NOW() - INTERVAL 36 MONTH))
+    ORDER BY mta1.dateCreated;
+
+END
+)
+
 # the actual email
 cat <<EOF | /usr/bin/mail -r "${sndr_address}" -s "Phabricator weekly project changes" ${rcpt_address}
 
@@ -340,6 +372,9 @@ OPEN TASKS THAT HAVE BEEN ASSIGNED TO THE SAME USER FOR MORE THAN FOUR YEARS:
 ${result_cookie_licked_tasks}
 Note: Tasks might have been un- and re-assigned to same user in the meantime.
 
+
+STALLED TASKS THAT HAVE BEEN STALLED FOR MORE THAN THREE YEARS:
+${result_old_stalled_tasks}
 
 Yours sincerely,
 Fab Rick Aytor
