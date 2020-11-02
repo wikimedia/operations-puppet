@@ -1,0 +1,1 @@
+profile::thanos::query_frontend::memcached_hosts: []
