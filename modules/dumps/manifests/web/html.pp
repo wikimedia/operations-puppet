@@ -40,9 +40,9 @@ class dumps::web::html(
         source => 'puppet:///modules/dumps/web/html/pagecounts-ez_index.html',
     }
 
-    file { "${miscdatasetsdir}/pageview_complete/index.html":
+    file { "${miscdatasetsdir}/pageview_complete/readme.html":
         ensure => 'present',
-        path   => "${miscdatasetsdir}/pageview_complete/index.html",
+        path   => "${miscdatasetsdir}/pageview_complete/readme.html",
         mode   => '0644',
         owner  => 'root',
         group  => 'root',
