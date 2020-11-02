@@ -29,11 +29,14 @@ class profile::maps::osm_master (
         'stretch' => 9.6,
     }
 
+    $max_senders = length($maps_hosts) + 1
+
     class { 'postgresql::master':
         root_dir            => '/srv/postgresql',
         includes            => [ 'tuning.conf', 'logging.conf' ],
         checkpoint_segments => 768,
         wal_keep_segments   => 768,
+        max_wal_senders     => $max_senders,
     }
 
     class { '::osm': }
