@@ -539,7 +539,7 @@ groups:
   analytics-search-users:
     gid: 771
     description: Group of users for managing search related analytics jobs
-    members: [ebernhardson, dcausse, gehel, bearloga, chelsyx, mstyles, zpapierski]
+    members: [ebernhardson, dcausse, gehel, bearloga, chelsyx, mstyles, zpapierski, tjones]
     privileges: ['ALL = (analytics-search) NOPASSWD: ALL']
     system_members: [analytics-search]
   parsoid-test-roots:
@@ -729,7 +729,7 @@ groups:
   airflow-search-admins:
     gid: 816
     description: administrators of the Apache Airflow service
-    members: [ebernhardson, dcausse, bearloga, chelsyx, mstyles, zpapierski]
+    members: [ebernhardson, dcausse, bearloga, chelsyx, mstyles, zpapierski, tjones]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service airflow-webserver *',
                  'ALL = NOPASSWD: /usr/sbin/service airflow-scheduler *',
                  'ALL = NOPASSWD: /usr/sbin/service airflow-kerberos *',
