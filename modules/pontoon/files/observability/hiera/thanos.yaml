@@ -11,6 +11,8 @@ profile::thanos::objstore_password: 'foo'
 
 profile::swift::stats_reporter_host: "%{alias('__master_for_role_thanos__frontend')}"
 
+profile::thanos::query_frontend::memcached_hosts: "%{alias('__hosts_for_role_thanos__frontend')}"
+
 
 profile::thanos::swift::accounts_keys:
   thanos_prod: 'foo'
