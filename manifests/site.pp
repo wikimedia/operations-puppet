@@ -2347,10 +2347,6 @@ node /^cloudvirt-wdqs100[123]\.eqiad\.wmnet$/ {
     role(wmcs::openstack::eqiad1::virt)
 }
 
-node 'testvm1001.eqiad.wmnet' {
-    role(mediawiki::appserver)
-}
-
 # Wikidata query service
 node /^wdqs100[4-7]\.eqiad\.wmnet$/ {
     role(wdqs::public)
