@@ -1,6 +1,7 @@
 profile::thanos::swift::cluster: thanos-prod
 profile::thanos::swift::proxy_service_host: 'thanos-swift.discovery.wmnet'
 profile::thanos::swift::hash_path_suffix: '2a95a2ab3b5e0195'
+profile::thanos::swift::memcached_size_mb: 128
 profile::thanos::swift::accounts:
   thanos_prod:
     access:       '.admin'

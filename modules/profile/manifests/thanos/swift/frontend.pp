@@ -4,6 +4,7 @@ class profile::thanos::swift::frontend (
     String $swift_cluster                    = lookup('profile::thanos::swift::cluster'),
     Stdlib::Fqdn $service_host               = lookup('profile::thanos::swift::proxy_service_host'),
     Array $memcached_servers                 = lookup('profile::thanos::swift::memcached_servers'),
+    Integer $memcached_size_mb               = lookup('profile::thanos::swift::memcached_size_mb'),
     String $hash_path_suffix                 = lookup('profile::thanos::swift::hash_path_suffix'),
     Hash[String, Hash] $swift_accounts       = lookup('profile::thanos::swift::accounts'),
     Hash[String, String] $swift_keys         = lookup('profile::thanos::swift::accounts_keys'),
@@ -46,7 +47,7 @@ class profile::thanos::swift::frontend (
     }
 
     class { '::memcached':
-        size          => 128,
+        size          => $memcached_size_mb,
         port          => 11211,
         # TODO: the following were implicit defaults from
         # MW settings, need to be reviewed.

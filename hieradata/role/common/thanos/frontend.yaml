@@ -38,6 +38,7 @@ profile::swift::stats_reporter_host: 'thanos-fe2001.codfw.wmnet'
 
 # Hit object storage only for data older than max_time
 profile::thanos::store::max_time: '-15d'
+profile::thanos::swift::memcached_size_mb: 768
 
 profile::prometheus::statsd_exporter::mappings:
   # Authentication subsystem (tempauth)
