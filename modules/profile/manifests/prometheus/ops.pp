@@ -1723,6 +1723,13 @@ class profile::prometheus::ops (
         ],
       },
       {
+        'job_name'        => 'thanos-query-frontend',
+        'scheme'          => 'http',
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/thanos_query-frontend_*.yaml" ]}
+        ],
+      },
+      {
         'job_name'        => 'thanos-sidecar',
         'scheme'          => 'http',
         'file_sd_configs' => [
@@ -1750,6 +1757,13 @@ class profile::prometheus::ops (
         site       => $::site,
         class_name => 'thanos::query',
         port       => 10902,
+    }
+
+    prometheus::class_config{ "thanos_query-frontend_${::site}":
+        dest       => "${targets_path}/thanos_query-frontend_${::site}.yaml",
+        site       => $::site,
+        class_name => 'thanos::query_frontend',
+        port       => 16902,
     }
 
     prometheus::resource_config{ "thanos_sidecar_${::site}":
