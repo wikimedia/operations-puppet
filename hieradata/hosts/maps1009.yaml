@@ -1,0 +1,2 @@
+cassandra::rack: b3
+do_paging: false

@@ -3,11 +3,24 @@ profile::maps::hosts:
   - 'maps1003.eqiad.wmnet'
   - 'maps1002.eqiad.wmnet'
   - 'maps1001.eqiad.wmnet'
+  - 'maps1005.eqiad.wmnet'
+  - 'maps1006.eqiad.wmnet'
+  - 'maps1007.eqiad.wmnet'
+  - 'maps1008.eqiad.wmnet'
+  - 'maps1009.eqiad.wmnet'
+  - 'maps1010.eqiad.wmnet'
+
 profile::redis::master::clients:
   - 'maps1004.eqiad.wmnet'
   - 'maps1003.eqiad.wmnet'
   - 'maps1002.eqiad.wmnet'
   - 'maps1001.eqiad.wmnet'
+  - 'maps1005.eqiad.wmnet'
+  - 'maps1006.eqiad.wmnet'
+  - 'maps1007.eqiad.wmnet'
+  - 'maps1008.eqiad.wmnet'
+  - 'maps1009.eqiad.wmnet'
+  - 'maps1010.eqiad.wmnet'
 
 profile::maps::apps::redis_server: 'redis://maps1004.eqiad.wmnet'
 profile::maps::apps::tilerator_enable: true
@@ -18,6 +31,11 @@ profile::cassandra::single_instance::seeds:
   - '10.64.32.117' # maps1003.eqiad.wmnet
   - '10.64.16.42'  # maps1002.eqiad.wmnet
   - '10.64.0.79'   # maps1001.eqiad.wmnet
+  - '10.64.0.12'   # maps1005.eqiad.wmnet
+  - '10.64.0.18'   # maps1006.eqiad.wmnet
+  - '10.64.16.6'   # maps1007.eqiad.wmnet
+  - '10.64.16.27'  # maps1008.eqiad.wmnet
+  - '10.64.48.6'   # maps1010.eqiad.wmnet
 
 profile::maps::osm_master::planet_sync_hours: '*/12'
 profile::maps::osm_master::disable_replication_cron: false
@@ -31,5 +49,17 @@ profile::maps::osm_master::replicas:
     ip_address: '10.64.16.42'
   maps1001:
     ip_address: '10.64.0.79'
+  maps1005:
+    ip_address: '10.64.0.12'
+  maps1006:
+    ip_address: '10.64.0.18'
+  maps1007:
+    ip_address: '10.64.16.6'
+  maps1008:
+    ip_address: '10.64.16.27'
+  maps1009:
+    ip_address: '10.64.32.8'
+  maps1010:
+    ip_address: '10.64.48.6'
 
 cassandra::target_version: '2.2'

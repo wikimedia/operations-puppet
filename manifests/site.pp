@@ -1551,7 +1551,7 @@ node /^lvs500[123]\.eqsin\.wmnet$/ {
     role(lvs::balancer)
 }
 
-node /^maps100[1-3]\.eqiad\.wmnet/ {
+node /^maps10(0[1-3]|0[5-9]|1[0])\.eqiad\.wmnet/ {
     role(maps::replica)
 }
 
