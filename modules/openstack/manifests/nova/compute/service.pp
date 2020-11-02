@@ -111,4 +111,12 @@ class openstack::nova::compute::service(
         notify  => Service['nova-compute'],
         require => Package['nova-compute'],
     }
+
+    file { '/etc/modprobe.d/kvm_intel.conf':
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0644',
+        source => 'puppet:///modules/openstack/nova/kvm_intel.conf',
+    }
 }

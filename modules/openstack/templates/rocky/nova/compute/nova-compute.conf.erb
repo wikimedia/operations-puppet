@@ -38,3 +38,7 @@ disk_cachemodes = "network=writeback"
 cpu_mode=custom
 cpu_model=<%= @libvirt_cpu_model %>
 <% end -%>
+
+# Export vmx and pcid flags to allow guests to run their own
+# hypervisor if needed.
+cpu_model_extra_flags = vmx,pcid
