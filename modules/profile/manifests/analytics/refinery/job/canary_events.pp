@@ -39,7 +39,7 @@ class profile::analytics::refinery::job::canary_events(
             # Actually produce canary events.
             '--dry_run=false',
         ],
-        interval     => '*-*-* *:30:00',
+        interval     => '*-*-* *:00/15:00',
         use_kerberos => $use_kerberos,
     }
 
