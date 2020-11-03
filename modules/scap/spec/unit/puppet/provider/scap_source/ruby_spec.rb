@@ -1,4 +1,4 @@
-require 'spec_helper'
+require_relative '../../../../../../../rake_modules/spec_helper'
 
 provider_class = Puppet::Type.type(:scap_source).provider(:default)
 

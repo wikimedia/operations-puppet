@@ -1,4 +1,4 @@
-require_relative '../../spec_helper'
+require_relative '../../../../../rake_modules/spec_helper'
 require_relative '../../../lib/puppet/provider/package/scap3'
 
 provider_class = Puppet::Type.type(:package).provider(:scap3)
@@ -11,25 +11,24 @@ describe provider_class do
     @resource[:install_options] = [{ 'owner' => 'mwdeploy' }]
 
     # Stub all filesystem operations
-    allow(FileUtils).to receive(:chown_R)
-    allow(FileUtils).to receive(:makedirs)
-    allow(FileUtils).to receive(:rm_rf)
+    FileUtils.stubs(:chown_R)
+    FileUtils.stubs(:makedirs)
+    FileUtils.stubs(:rm_rf)
 
     # Stub our mwdeploy user
-    allow(Etc).to receive(:getpwnam).with('mwdeploy').and_return(OpenStruct.new(uid: 666))
+    Etc.stubs(:getpwnam).with('mwdeploy').returns(OpenStruct.new(uid: 666))
 
     # Stub the existance of our deploy-local command
-    allow(@provider.class).to receive(:command)
-      .with(:scap)
-      .and_return('/usr/bin/scap')
+    @provider.class.stubs(:command).with(:scap).returns('/usr/bin/scap')
   end
 
   describe '#install' do
     it 'should specify the right repo' do
-      allow(FileUtils).to receive(:cd)
-      expect(@provider).to receive(:execute)
-        .with(['/usr/bin/scap', 'deploy-local', '--repo', 'foo/deploy', '-D', 'log_json:False'],
-              uid: 666, failonfail: true)
+      FileUtils.stubs(:cd)
+      @provider.expects(:execute).with(
+        ['/usr/bin/scap', 'deploy-local', '--repo', 'foo/deploy', '-D', 'log_json:False'],
+        uid: 666, failonfail: true
+      )
       @provider.install
     end
   end
@@ -39,9 +38,9 @@ describe provider_class do
 
     context 'when the package is installed' do
       before do
-        expect(@provider).to receive(:git)
-          .with('-C', '/srv/deployment/foo/deploy', 'tag', '--points-at', 'HEAD')
-          .and_return(tag)
+        @provider.expects(:git).with(
+          '-C', '/srv/deployment/foo/deploy', 'tag', '--points-at', 'HEAD'
+        ).returns(tag)
       end
 
       context 'and the tag exists' do
@@ -63,7 +62,7 @@ describe provider_class do
 
     context 'when the package is not installed' do
       before do
-        expect(@provider).to receive(:git) { raise Puppet::ExecutionFailure, 'fail' }
+        @provider.stubs(:git).raises(Puppet::ExecutionFailure, 'fail')
       end
 
       it 'returns ensure: absent' do
@@ -74,7 +73,7 @@ describe provider_class do
 
   describe '#uninstall' do
     it 'should delete the entire parent directory' do
-      expect(FileUtils).to receive(:rm_rf).with('/srv/deployment/foo')
+      FileUtils.expects(:rm_rf).with('/srv/deployment/foo')
       @provider.uninstall
     end
   end
