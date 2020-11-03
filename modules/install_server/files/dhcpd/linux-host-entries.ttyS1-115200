@@ -3981,7 +3981,7 @@ host clouddb1019 {
 }
 
 host clouddb1020 {
-    hardware ethernet BC:97:E1:C2:D9:80;
+    hardware ethernet BC:97:E1:C2:AD:80;
     fixed-address clouddb1020.eqiad.wmnet;
 }
 
