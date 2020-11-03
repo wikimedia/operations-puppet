@@ -48,7 +48,7 @@ task :debug do
   puts "Tasks that would be run: "
   puts t.tasks
 end
-puppetlabs_modules = ['stdlib', 'lvm']
+thirdparty_modules = ['stdlib', 'lvm', 'puppetdbquery']
 # Global tasks. Only the ones deemed useful are added here.
 namespace :global do
   desc "Build documentation"
@@ -68,7 +68,7 @@ namespace :global do
       next unless path.match('modules/(.+)/')
       module_name = Regexp.last_match(1)
       # don't test the puppetlabs modules
-      next if puppetlabs_modules.include?(module_name)
+      next if thirdparty_modules.include?(module_name)
       task module_name do
         spec_result = system("cd 'modules/#{module_name}' && rake spec")
         spec_failed << module_name unless spec_result
