@@ -1,10 +1,6 @@
 require_relative '../../../../rake_modules/spec_helper'
 
 describe 'base::resolving' do
-    it 'requires $nameservers' do
-        should compile.and_raise_error(
-            /Variable \$nameservers is not defined!/)
-    end
     context "when \$::nameservers are defined" do
       let(:facts) { {'domain' => 'example.com'} }
       let(:node_params){ {'nameservers' => ['1.2.3.4'], 'realm' => 'production'}}
@@ -28,7 +24,7 @@ describe 'base::resolving' do
       end
     end
     context "when realm is labs" do
-      let(:facts) { {'domain' => 'example.com', 'labsproject' => 'fun' } }
+      let(:facts) { {'labsproject' => 'fun' } }
       let(:node_params){
         {
           'nameservers' => ['1.2.3.4'],
@@ -40,9 +36,13 @@ describe 'base::resolving' do
       it { is_expected.to contain_file('/sbin/resolvconf').with_source('puppet:///modules/base/resolv/resolvconf.dummy') }
       it { is_expected.to contain_file('/etc/dhcp/dhclient-enter-hooks.d/nodnsupdate').with_source('puppet:///modules/base/resolv/nodnsupdate')}
       it "contains a correct resolv.conf" do
-        content = catalogue.resource('file', '/etc/resolv.conf').send(:parameters)[:content]
-
-        expect(content).to match(/search example.com fun.testdc.foo.bar testdc.foo.bar \nnameserver 1.2.3.4\noptions timeout:2 ndots:1/)
+        is_expected.to contain_file('/etc/resolv.conf').with_content(
+          /search fun.testdc.wikimedia.cloud\s+fun./
+        ).with_content(
+          /nameserver 1.2.3.4/
+        ).with_content(
+          /options timeout:1 ndots:1/
+        )
       end
     end
 end
