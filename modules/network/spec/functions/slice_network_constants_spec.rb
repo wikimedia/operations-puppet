@@ -1,4 +1,4 @@
-require 'spec_helper'
+require_relative '../../../../rake_modules/spec_helper'
 require 'puppetlabs_spec_helper/puppetlabs_spec/puppet_internals'
 require 'yaml'
 
