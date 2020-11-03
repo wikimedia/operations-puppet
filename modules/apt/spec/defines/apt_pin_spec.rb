@@ -1,13 +1,4 @@
-require 'spec_helper'
-
-test_on = {
-  supported_os: [
-    {
-      'operatingsystem'        => 'Debian',
-      'operatingsystemrelease' => ['8', '9', '10'],
-    }
-  ]
-}
+require_relative '../../../../rake_modules/spec_helper'
 
 describe 'apt::pin' do
   let(:pre_condition) {
@@ -18,7 +9,7 @@ describe 'apt::pin' do
     :pin => 'release o=Wikimedia',
     :priority => '1042',
   } }
-  on_supported_os(test_on).each do |os, _facts|
+  on_supported_os(WMFConfig.test_on).each do |os, _facts|
     context "#{os}" do
       let(:title) { 'mypackage' }
       it { should compile }
