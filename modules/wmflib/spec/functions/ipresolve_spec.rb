@@ -1,4 +1,4 @@
-require 'spec_helper'
+require_relative '../../../../rake_modules/spec_helper'
 
 describe 'ipresolve' do
   it "should resolve ipv4 addresses by default" do

@@ -1,4 +1,4 @@
-require 'spec_helper'
+require_relative '../../../../rake_modules/spec_helper'
 
 describe 'wmflib::dirtree' do
   it { is_expected.to run.with_params('/').and_return([]) }
