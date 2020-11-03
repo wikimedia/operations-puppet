@@ -51,7 +51,7 @@ class ores::web(
             logformat            => '[pid: %(pid)] %(addr) (%(user)) {%(vars) vars in %(pktsize) bytes} [%(ctime)] %(method) %(uri) => generated %(rsize) bytes in %(msecs) msecs (%(proto) %(status)) %(headers) headers in %(hsize) bytes (%(switches) switches on core %(core)) user agent "%(uagent)"',
             processes            => $web_workers,
             add-header           => [ 'Access-Control-Allow-Origin: *', "Server: ${::fqdn}", 'Access-Control-Allow-Headers: X-Wikimedia-Debug' ],
-            max-requests         => 200,
+            max-requests         => 100,
             stats-push           => "statsd:${statsd_host}:${statsd_port},ores.${::hostname}.uwsgi",
             memory-report        => true,
             skip-atexit-teardown => true,
