@@ -1,16 +1,7 @@
-require 'spec_helper'
-
-test_on = {
-  supported_os: [
-    {
-      'operatingsystem'        => 'Debian',
-      'operatingsystemrelease' => ['8', '10'],
-    }
-  ]
-}
+require_relative '../../../../rake_modules/spec_helper'
 
 describe 'zuul::server' do
-  on_supported_os(test_on).each do |os, facts|
+  on_supported_os(WMFConfig.test_on).each do |os, facts|
     context "On #{os} do" do
       let(:facts) { facts }
       let(:pre_condition) {
