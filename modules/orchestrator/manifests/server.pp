@@ -19,10 +19,7 @@ class orchestrator::server (
         require_package('sqlite3')
     }
 
-    apt::package_from_component { 'thirdparty-orchestrator-server':
-        component => 'thirdparty/orchestrator',
-        packages  => ['orchestrator']
-    }
+    ensure_packages('orchestrator')
 
     file { '/etc/orchestrator.conf.json':
         ensure  => 'present',
