@@ -284,7 +284,7 @@ SOFTWARE.
           if (re.test(message)) {
             // Extracting the report url
             var url = '';
-            re = /^Report: (https:.*)$/gm;
+            re = /^Report: (https:\S+)/;
             if (check = re.exec(message)) {
               url = check[1];
             }
