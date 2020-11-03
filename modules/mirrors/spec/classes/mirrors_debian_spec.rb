@@ -1,4 +1,4 @@
-require 'spec_helper'
+require_relative '../../../../rake_modules/spec_helper'
 
 describe 'mirrors::debian', :type => :class do
     let(:code) { "class passwords::mirrors {}"}
