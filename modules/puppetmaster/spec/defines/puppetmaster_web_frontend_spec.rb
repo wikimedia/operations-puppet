@@ -2,15 +2,6 @@
 
 require_relative '../../../../rake_modules/spec_helper'
 
-test_on = {
-  supported_os: [
-    {
-      'operatingsystem'        => 'Debian',
-      'operatingsystemrelease' => ['8', '9', '10'],
-    }
-  ]
-}
-
 describe 'puppetmaster::web_frontend' do
   # The title must match the fqdn used by
   # rspec to avoid caring about secrets
@@ -44,7 +35,7 @@ describe 'puppetmaster::web_frontend' do
   # Puppet::Util::Log.newdestination(:console)
   # let (:pre_condition) { "class {'::foobar' }" }
 
-  on_supported_os(test_on).each do |os, facts|
+  on_supported_os(WMFConfig.test_on).each do |os, facts|
     context "on #{os}" do
       let(:facts) { facts }
 
