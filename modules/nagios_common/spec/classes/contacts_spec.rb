@@ -1,4 +1,4 @@
-require 'spec_helper'
+require_relative '../../../../rake_modules/spec_helper'
 
 describe 'nagios_common::contacts' do
     it { is_expected.to compile }
