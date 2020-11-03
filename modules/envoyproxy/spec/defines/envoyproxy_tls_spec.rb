@@ -1,15 +1,7 @@
-require 'spec_helper'
-test_on = {
-  supported_os: [
-    {
-      'operatingsystem'        => 'Debian',
-      'operatingsystemrelease' => ['9', '10'],
-    }
-  ]
-}
+require_relative '../../../../rake_modules/spec_helper'
 
 describe 'envoyproxy::tls_terminator' do
-  on_supported_os(test_on).each do |os, facts|
+  on_supported_os(WMFConfig.test_on).each do |os, facts|
     context "On #{os}" do
       let(:facts) { facts.merge({:initsystem => 'systemd'})}
       let(:title) { '443' }
