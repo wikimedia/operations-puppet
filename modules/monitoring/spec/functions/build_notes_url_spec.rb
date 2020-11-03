@@ -1,4 +1,4 @@
-require 'spec_helper'
+require_relative '../../../../rake_modules/spec_helper'
 
 notes_url_https = 'https://notes.example.org'
 notes_url_http = 'http://notes.example.org'
