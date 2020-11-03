@@ -4,7 +4,7 @@
 # Copyright 2013 Antoine "hashar" Musso
 # Copyright 2013 Wikimedia Foundation Inc.
 
-require 'spec_helper'
+require_relative '../../../../rake_modules/spec_helper'
 
 describe 'git::userconfig', :type => :define do
   let(:title) { 'gitconfig' }

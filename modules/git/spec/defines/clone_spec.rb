@@ -1,4 +1,4 @@
-require 'spec_helper'
+require_relative '../../../../rake_modules/spec_helper'
 
 describe 'git::clone' do
     let(:title) { 'operations/puppet' }
