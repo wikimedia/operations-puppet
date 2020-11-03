@@ -1,5 +1,5 @@
 require 'rspec-puppet'
-require 'puppetlabs_spec_helper/module_spec_helper'
+require 'puppetlabs_spec_helper/puppet_spec_helper'
 require 'rspec-puppet-facts'
 require_relative 'fix_service_provider'
 
@@ -31,6 +31,7 @@ RSpec.configure do |c|
       end
     end
   end
+  c.mock_with :mocha
   c.formatter = :documentation
   c.setup_fixtures = false
   c.default_facts = default_facts
