@@ -1,7 +1,7 @@
-require 'spec_helper'
+require_relative '../../../../rake_modules/spec_helper'
 
 describe 'jenkins' do
-  on_supported_os(TEST_ON).each do |os, facts|
+  on_supported_os(WMFConfig.test_on).each do |os, facts|
     context "On #{os}" do
       let(:facts) {
         facts.merge({
