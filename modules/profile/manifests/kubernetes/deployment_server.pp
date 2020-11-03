@@ -8,14 +8,9 @@ class profile::kubernetes::deployment_server(
     include profile::kubernetes::deployment_server::helmfile
     class { '::helm': }
 
-    # The deployment script
-    # TODO: remove this when helmfile is used in production
+    # old deployment script
     file { '/usr/local/bin/scap-helm':
-        ensure => file,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        source => 'puppet:///modules/profile/kubernetes/scap-helm.sh',
+        ensure => absent,
     }
 
 

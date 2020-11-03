@@ -10,6 +10,12 @@ datacenters:
   - ulsfo
   - eqsin
 
+# List of kubernetes clusters installed in production.
+# the format is cluster_name => datacenter
+kubernetes_clusters:
+  eqiad: eqiad
+  codfw: codfw
+  staging: eqiad
 
 # Main statsd instance
 statsd: statsd.eqiad.wmnet:8125
@@ -1146,7 +1152,6 @@ mail_smarthost:
 wikimail_smarthost:
 - 'wiki-mail-eqiad.wikimedia.org'
 - 'wiki-mail-codfw.wikimedia.org'
-
 # These are our servers - they all peer to each other and sync to upstream NTP
 # pool servers.
 ntp_peers:
