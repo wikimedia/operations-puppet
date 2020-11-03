@@ -13,10 +13,11 @@ Facter.add(:java_version) do
 end
 
 Facter.add(:java) do
-  java_fact = {'version' => {}}
   setcode do
+    java_fact = nil
     java_version = Facter.fact(:java_version).value
-    unless java_fact['version'].nil?
+    unless java_version.nil?
+      java_fact = {'version' => {}}
       java_fact['version']['full'] = java_version
       tokens = java_version.split('.')
       java_fact['version']['major'] = tokens[0] == '1' ? tokens[1].to_i : tokens[0].to_i
