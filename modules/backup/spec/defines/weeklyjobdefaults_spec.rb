@@ -1,4 +1,4 @@
-require 'spec_helper'
+require_relative '../../../../rake_modules/spec_helper'
 
 describe 'backup::weeklyjobdefaults', :type => :define do
     let(:title) { 'something' }
