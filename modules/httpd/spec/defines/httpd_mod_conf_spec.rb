@@ -1,17 +1,9 @@
-require 'spec_helper'
-test_on = {
-  supported_os: [
-    {
-      'operatingsystem'        => 'Debian',
-      'operatingsystemrelease' => ['8', '9'],
-    }
-  ]
-}
+require_relative '../../../../rake_modules/spec_helper'
 
 describe 'httpd::mod_conf' do
   let(:pre_condition){ 'service { "apache2": ensure => running }'}
   let(:title) { 'foobar' }
-  on_supported_os(test_on).each do |os, facts|
+  on_supported_os(WMFConfig.test_on).each do |os, facts|
     context "On #{os}" do
       let(:facts) { facts }
       context 'with parameters defaults' do
