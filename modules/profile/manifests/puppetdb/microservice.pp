@@ -27,6 +27,7 @@ class profile::puppetdb::microservice (
         source => 'puppet:///modules/profile/puppetdb/puppetdb-microservice.py',
         owner  => 'root',
         mode   => '0644',
+        notify => Service['uwsgi-puppetdb-microservice'],
     }
     uwsgi::app { 'puppetdb-microservice':
         ensure   => $ensure,
