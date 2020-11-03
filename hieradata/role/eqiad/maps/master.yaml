@@ -1,5 +1,8 @@
 profile::maps::hosts:
   - 'maps1004.eqiad.wmnet'
+  - 'maps1003.eqiad.wmnet'
+  - 'maps1002.eqiad.wmnet'
+  - 'maps1001.eqiad.wmnet'
 profile::redis::master::clients:
   - 'maps1004.eqiad.wmnet'
   - 'maps1003.eqiad.wmnet'
