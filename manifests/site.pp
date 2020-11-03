@@ -1635,6 +1635,11 @@ node /^mwdebug100[12]\.eqiad\.wmnet$/ {
     role(mediawiki::canary_appserver)
 }
 
+# Debug server on buster (T245757)
+node 'mwdebug1003.eqiad.wmnet' {
+    role(insetup)
+}
+
 # Appservers (serving normal website traffic)
 
 # Row A
