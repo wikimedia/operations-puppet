@@ -73,46 +73,26 @@ class profile::kubernetes::deployment_server::helmfile(
                   content => "kube_env \"${svcname}\" \"${environment}\"",
                   require => File[$hfdir]
               }
-          } elsif $svcname != 'admin' and size($svcname) > 1 {
-              # TODO: remove in a subsequent patch
-              $hfenv="/srv/deployment-charts/helmfile.d/services/${environment}/${svcname}/.hfenv"
-              $hfdir="/srv/deployment-charts/helmfile.d/services/${environment}/${svcname}"
-              file { $hfenv:
-                  ensure => absent,
-              }
-              file { $hfdir:
-                  ensure => absent,
-              }
-          }else {
-              fail("unexpected servicename ${svcname}")
           }
-        }
-        $merged_services.map |String $svcname, Hash $data| {
-            unless $svcname == 'admin' {
-                # Remove legacy stuff
-                $secrets_dir="/srv/deployment-charts/helmfile.d/services/${environment}/${svcname}/private"
-                file { ["${secrets_dir}/general.yaml", "${secrets_dir}/secrets.yaml", $secrets_dir]:
-                    ensure => absent,
-                }
+          else {
+              $raw_data = deep_merge($default_secrets[$environment], $data[$environment])
+              # write private section only if there is any secret defined.
+              unless $raw_data.empty {
+                  # Substitute the value of any key in the form <somekey>: secret__<somevalue>
+                  # with <somekey>: secret(<somevalue>)
+                  # This allows to avoid having to copy/paste certs inside of yaml files directly,
+                  # for example.
+                  $secret_data = wmflib::inject_secret($raw_data)
 
-                $raw_data = deep_merge($default_secrets[$environment], $data[$environment])
-                # write private section only if there is any secret defined.
-                unless $raw_data.empty {
-                    # Substitute the value of any key in the form <somekey>: secret__<somevalue>
-                    # with <somekey>: secret(<somevalue>)
-                    # This allows to avoid having to copy/paste certs inside of yaml files directly,
-                    # for example.
-                    $secret_data = wmflib::inject_secret($raw_data)
-
-                    file { "${general_private_dir}/${svcname}/${environment}.yaml":
-                        owner   => $data['owner'],
-                        group   => $data['group'],
-                        mode    => $data['mode'],
-                        content => ordered_yaml($secret_data),
-                        require => "File[${general_private_dir}/${svcname}]"
-                    }
-                }
-            }
+                  file { "${general_private_dir}/${svcname}/${environment}.yaml":
+                      owner   => $data['owner'],
+                      group   => $data['group'],
+                      mode    => $data['mode'],
+                      content => ordered_yaml($secret_data),
+                      require => "File[${general_private_dir}/${svcname}]"
+                  }
+              }
+          }
         }
         $admin_services_secrets.map |String $svcname, Hash $data| {
           if $data[$environment] {
