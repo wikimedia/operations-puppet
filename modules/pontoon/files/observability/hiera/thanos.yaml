@@ -1,10 +1,7 @@
 profile::thanos::compact_host: "%{alias('__master_for_role_thanos__frontend')}"
 profile::thanos::frontends: "%{alias('__hosts_for_role_thanos__frontend')}"
 profile::thanos::backends: "%{alias('__hosts_for_role_thanos__backend')}"
-# wants port appended, can't use alias()
-profile::thanos::swift::memcached_servers:
-  - "pontoon-thanos-01.monitoring.eqiad1.wikimedia.cloud:11211"
-  - "pontoon-thanos-02.monitoring.eqiad1.wikimedia.cloud:11211"
+profile::thanos::swift::memcached_servers: "%{alias('__hosts_for_role_thanos__frontend')}"
 
 profile::thanos::objstore_password: 'foo'
 

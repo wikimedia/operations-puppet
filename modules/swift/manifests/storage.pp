@@ -3,7 +3,8 @@ class swift::storage (
     $statsd_port                      = 8125,
     $statsd_metric_prefix             = undef,
     $statsd_sample_rate_factor        = '1',
-    $memcached_servers                = ['127.0.0.1:11211'],
+    $memcached_servers                = ['127.0.0.1'],
+    $memcached_port                   = 11211,
     $container_replicator_concurrency = '1',
     $container_replicator_interval    = undef,
     $object_replicator_concurrency    = '3',
@@ -18,6 +19,8 @@ class swift::storage (
     ]:
         ensure => present,
     }
+
+    $memcached_addresses = $memcached_servers.map |$s| { "${s}:${memcached_port}" }
 
     class { 'rsync::server':
         log_file => '/var/log/rsyncd.log',

@@ -1,9 +1,9 @@
 profile::swift::proxy::proxy_service_host: 'ms-fe.svc.codfw.wmnet'
 profile::swift::proxy::memcached_servers: [
-  'ms-fe2005.codfw.wmnet:11211',
-  'ms-fe2006.codfw.wmnet:11211',
-  'ms-fe2007.codfw.wmnet:11211',
-  'ms-fe2008.codfw.wmnet:11211'
+  'ms-fe2005.codfw.wmnet',
+  'ms-fe2006.codfw.wmnet',
+  'ms-fe2007.codfw.wmnet',
+  'ms-fe2008.codfw.wmnet'
 # no trailing comma!
 ]
 

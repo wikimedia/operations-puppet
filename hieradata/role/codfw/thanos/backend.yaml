@@ -1,4 +1,4 @@
 profile::thanos::swift::memcached_servers:
-  - thanos-fe2001.codfw.wmnet:11211
-  - thanos-fe2002.codfw.wmnet:11211
-  - thanos-fe2003.codfw.wmnet:11211
+  - thanos-fe2001.codfw.wmnet
+  - thanos-fe2002.codfw.wmnet
+  - thanos-fe2003.codfw.wmnet
