@@ -3558,7 +3558,8 @@ users:
     email: jwang@wikimedia.org
     uid: 22970
     gid: 500
-    ssh_keys: []
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIO/frOG0PE86/AD1oQuusUixjEyC7Ex+eU16IO8M4biV jwang@Jennifers-MacBook-Pro.local
     krb: present
   hnowlan:
     ensure: present
