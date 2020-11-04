@@ -39,7 +39,7 @@ groups:
               ayounsi, herron, aborrero, bstorm, vgutierrez, jiji, cwhite,
               crusnov, cdanis, fsero, jbond, jeh, dzahn, phamhi, sukhe, pt1979,
               rzl, hnowlan, jayme, kormat, wkandek, ryankemper, lmata, klausman, lsobanski,
-              razzi]
+              razzi, dcaro]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   ops-adm-group:
     # No gid for this group on purpose, it's a system provided one
@@ -3836,6 +3836,15 @@ users:
     gid: 500
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAG6XeNu2cHXzdcTYGlMcLldBAzYT3eEeoLwJzZCma29 atomasevich@MacBook-Pro.localdomain
+  dcaro:
+    ensure: present
+    name: dcaro
+    realname: David Caro Estevez
+    email: dcaro@wikimedia.org
+    uid: 25603
+    gid: 500
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINrWIF528iRmgV89muq2ssjnMHfrgpzEMqOWCumafidg dcaro@magnum+prod
 
 ldap_only_users:
   abartov:
