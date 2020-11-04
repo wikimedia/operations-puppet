@@ -58,6 +58,7 @@ class openstack::puppet::master::encapi(
                 master              => true,
                 http-socket         => '0.0.0.0:8101',
                 reload-on-exception => true,
+                logto               => '/var/log/labspuppetbackend.log',
                 env                 => [
                     "MYSQL_HOST=${mysql_host}",
                     "MYSQL_DB=${mysql_db}",
