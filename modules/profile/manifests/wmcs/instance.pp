@@ -1,6 +1,6 @@
 # basic profile for every CloudVPS instance
 class profile::wmcs::instance(
-    Boolean      $mount_nfs      = lookup('mount_nfs',       {default_value => true}),
+    Boolean      $mount_nfs      = lookup('mount_nfs',       {default_value => false}),
     Boolean      $diamond_remove = lookup('diamond::remove', {default_value => false}),
     String       $sudo_flavor    = lookup('sudo_flavor',     {default_value => 'sudoldap'}),
     Stdlib::Fqdn $metrics_server = lookup('graphite_host',   {default_value => 'localhost'}),
@@ -54,7 +54,7 @@ class profile::wmcs::instance(
         }
     }
 
-    # Allows per-host overriding of NFS mounts
+    # Allows per-host placement of NFS mounts, defaults to false
     if $mount_nfs {
         require profile::wmcs::nfsclient
     }
