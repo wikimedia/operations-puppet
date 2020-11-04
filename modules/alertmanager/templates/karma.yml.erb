@@ -63,3 +63,7 @@ filters:
 
 karma:
   name: "Alerts for <%= @facts['domain'] %>"
+
+# Enable ack'ing alerts via silences. See also alertmanager::ack
+alertAcknowledgement:
+  enabled: true

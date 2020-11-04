@@ -5,7 +5,7 @@ class profile::alertmanager::web (
     String $vhost  = lookup('profile::alertmanager::web::vhost', {'default_value' => "alerts.${facts['domain']}"}),
     # lint:endignore
     Boolean $enable_sso  = lookup('profile::alertmanager::web::enable_sso', {'default_value' => true}),
-    Boolean $readonly  = lookup('profile::alertmanager::web::readonly', {'default_value' => true}),
+    Boolean $readonly  = lookup('profile::alertmanager::web::readonly', {'default_value' => false}),
     Array[Stdlib::Host] $prometheus_nodes = lookup('prometheus_nodes'),
 ) {
     $auth_header = $enable_sso ? {
