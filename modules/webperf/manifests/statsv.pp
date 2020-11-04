@@ -27,7 +27,7 @@ class webperf::statsv(
 ) {
     include ::webperf
 
-    require_package('python-kafka')
+    require_package('python3-kafka')
 
     scap::target { 'statsv/statsv':
         service_name => 'statsv',
@@ -35,21 +35,20 @@ class webperf::statsv(
     }
 
     # Uses $kafka_brokers and $statsd
-    file { '/lib/systemd/system/statsv.service':
-        ensure  => 'present',
+    systemd::unit { 'statsv':
+        ensure  => present,
         content => template('webperf/statsv.service.erb'),
-        require => Package['statsv/statsv'],
+        restart => true,
     }
 
     service { 'statsv':
-        ensure    => 'running',
-        provider  => 'systemd',
-        subscribe => File['/lib/systemd/system/statsv.service'],
+        ensure   => running,
+        provider => systemd,
     }
 
     nrpe::monitor_service { 'statsv':
         description  => 'statsv process',
-        nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1: -C python -a statsv',
+        nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1: -C python3 -a statsv',
         notes_url    => 'https://wikitech.wikimedia.org/wiki/Graphite#statsv',
     }
 }
