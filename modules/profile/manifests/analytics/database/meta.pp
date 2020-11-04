@@ -4,10 +4,11 @@
 # and other Analytics Cluster services.
 #
 class profile::analytics::database::meta(
-    $datadir            = hiera('profile::analytics::database::meta::datadir', '/var/lib/mysql'),
-    $tmpdir             = hiera('profile::analytics::database::meta::tmpdir', '/srv/tmp'),
-    $monitoring_enabled = hiera('profile::analytics::database::meta::monitoring_enabled', false),
-    $ferm_srange        = hiera('profile::analytics::database::meta::ferm_srange', '$DOMAIN_NETWORKS'),
+    $datadir            = lookup('profile::analytics::database::meta::datadir', { 'default_value' => '/var/lib/mysql' }),
+    $tmpdir             = lookup('profile::analytics::database::meta::tmpdir', { 'default_value' => '/srv/tmp' }),
+    $monitoring_enabled = lookup('profile::analytics::database::meta::monitoring_enabled', { 'default_value' => false }),
+    $ferm_srange        = lookup('profile::analytics::database::meta::ferm_srange', { 'default_value' => '$DOMAIN_NETWORKS' }),
+    $innodb_pool_size   = lookup('profile::analytics::database::meta::innodb_pool_size', { 'default_value' => '4G'}),
 ) {
 
     # Some CDH database init scripts need Java to run.
@@ -20,14 +21,15 @@ class profile::analytics::database::meta(
     $mariadb_socket = '/run/mysqld/mysqld.sock'
 
     class { '::mariadb::config':
-        config    => 'profile/analytics/database/meta/analytics-meta.my.cnf.erb',
-        socket    => $mariadb_socket,
-        port      => 3306,
-        datadir   => $datadir,
-        tmpdir    => $tmpdir,
-        basedir   => $basedir,
-        ssl       => 'puppet-cert',
-        read_only => false,
+        config           => 'profile/analytics/database/meta/analytics-meta.my.cnf.erb',
+        socket           => $mariadb_socket,
+        port             => 3306,
+        datadir          => $datadir,
+        tmpdir           => $tmpdir,
+        basedir          => $basedir,
+        ssl              => 'puppet-cert',
+        read_only        => false,
+        innodb_pool_size => $innodb_pool_size,
     }
 
     # If labs, automate mysql_install_db. Supported only for recent
