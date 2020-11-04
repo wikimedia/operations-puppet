@@ -267,7 +267,6 @@ profile::idp::idp_failover: idp2001.wikimedia.org
 profile::idp::max_session_length: 604800
 profile::idp::deploy_deb: true
 profile::idp::actuators:
-  - prometheus
   - sso
   - ssoSessions
 profile::idp::is_staging_host: false

@@ -107,7 +107,6 @@ profile::idp::ldap_attributes:
 profile::tlsproxy::instance::ssl_compatibility_mode: strong
 profile::idp::max_session_length: 604800
 profile::idp::actuators:
-  - prometheus
   - sso
   - ssoSessions
 profile::idp::server_name: https://idp-test.wikimedia.org
