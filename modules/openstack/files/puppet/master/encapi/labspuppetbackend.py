@@ -274,8 +274,7 @@ def get_node_config(project, fqdn):
 
     # If the VM thinks it's under .eqiad.wmflabs, give it
     #  a .eqiad1.wikimedia.cloud config anyway.
-    exp = re.compile(r'\.eqiad\.wmflabs$')
-    fqdn = exp.sub('.eqiad1.wikimedia.cloud', fqdn)
+    fqdn = re.sub(r'\.eqiad\.wmflabs$', '.eqiad1.wikimedia.cloud', fqdn)
 
     cur = g.db.cursor()
     roles = []
