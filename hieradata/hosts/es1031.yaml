@@ -1,2 +1,4 @@
 # es1031
+mariadb::shard: 'es3'
+profile::mariadb::mysql_role: 'standalone'
 profile::base::notifications: disabled
