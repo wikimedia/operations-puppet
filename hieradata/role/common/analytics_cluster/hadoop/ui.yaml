@@ -18,6 +18,7 @@ profile::hue::kerberos_kinit_path: '/usr/bin/kinit'
 profile::hue::oozie_security_enabled: true
 profile::hue::enable_cas: false
 profile::hue::servername: 'hue.wikimedia.org'
+profile::hue::hive_thrift_version: 5
 
 profile::oozie::client::oozie_service: 'analytics-oozie'
 

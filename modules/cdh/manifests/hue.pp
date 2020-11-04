@@ -143,6 +143,8 @@ class cdh::hue(
     $use_hue4_settings          = false,
     $auth_backend               = 'ldap',
 
+    $hive_thrift_version        = undef,
+
 ) {
     Class['cdh::hadoop'] -> Class['cdh::hue']
 
@@ -163,11 +165,9 @@ class cdh::hue(
     # internally by us. Some options are different, including the config
     # paths under /etc/hue.
     if $use_hue4_settings {
-        $hive_thrift_version = 5
         $config_directory = '/etc/hue'
         $gunicorn_work_class = 'sync'
     } else {
-        $hive_thrift_version = undef
         $gunicorn_work_class = undef
         $config_directory = "/etc/hue/conf.${cdh::hadoop::cluster_name}"
     }
