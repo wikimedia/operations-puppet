@@ -31,6 +31,12 @@ class openstack::puppet::master::encapi(
         source => 'puppet:///modules/openstack/puppet/master/encapi/labspuppetbackend.py',
     }
 
+    # Make sure we can write to our logfile
+    file { '/var/log/labspuppetbackend.log':
+        owner => 'www-data',
+        group => 'www-data',
+    }
+
     # The app will check that the requesting IP is in  ALLOWED_WRITERS
     #  before writing or deleting.
     $labweb_ips = $labweb_hosts.map |$host| { ipresolve($host, 4) }
