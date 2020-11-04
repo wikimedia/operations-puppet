@@ -22,22 +22,33 @@ class webperf::navtiming(
 ) {
     include ::webperf
 
-    require_package('python-kafka')
-    require_package('python-yaml')
+    require_package('python3-kafka')
+    require_package('python3-yaml')
+    require_package('python3-etcd')
+
+    # This matches the version pinned in setup.py in performance/navtiming.
+    # If changed here, it should be changed there, and vice-versa.
+    # (See comments on https://gerrit.wikimedia.org/r/c/performance/navtiming/+/622531)
+    apt::pin { 'python3-ua-parser':
+        pin      => 'version 0.10.0*',
+        package  => 'python3-ua-parser',
+        priority => '1001',
+        before   => Package['python3-ua-parser'],
+    }
+    package { 'python3-ua-parser':
+        ensure => present,
+    }
 
     scap::target { 'performance/navtiming':
         service_name => 'navtiming',
         deploy_user  => 'deploy-service',
     }
 
-    file { '/srv/webperf/navtiming.py':
-        ensure => absent
-    }
-
-    file { '/lib/systemd/system/navtiming.service':
+    systemd::unit { 'navtiming':
+        ensure  => present,
         # uses $statsd_host, $statsd_port, $kafka_brokers
         content => template('webperf/navtiming.systemd.erb'),
-        notify  => Service['navtiming'],
+        restart => true,
     }
 
     service { 'navtiming':

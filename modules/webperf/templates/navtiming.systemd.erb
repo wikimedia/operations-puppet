@@ -4,7 +4,7 @@ After=network-online.target
 
 [Service]
 WorkingDirectory=/srv/deployment/performance/navtiming
-ExecStart=/usr/bin/python /srv/deployment/performance/navtiming/run_navtiming.py \
+ExecStart=/usr/bin/python3 /srv/deployment/performance/navtiming/run_navtiming.py \
     --brokers <%= @kafka_brokers %> \
     --consumer-group navtiming \
     --statsd-host <%= @statsd_host %> \
