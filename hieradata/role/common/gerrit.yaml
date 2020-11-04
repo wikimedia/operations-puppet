@@ -24,9 +24,6 @@ profile::gerrit::backup_set: 'gerrit-repo-data'
 # SSL/TLS certs
 profile::gerrit::use_acmechief: true
 
-# Java
-profile::gerrit::java_version: 8
-
 ## Deployment
 profile::gerrit::scap_user: 'gerrit2'
 profile::gerrit::scap_key_name: 'gerrit'
