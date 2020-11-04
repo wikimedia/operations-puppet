@@ -13,4 +13,7 @@ tile_map.enabled: <%= @tile_map_enabled %>
 <%- unless @timelion_enabled.nil? or @timelion_enabled == :undef -%>
 timelion.enabled: <%= @timelion_enabled %>
 <%- end -%>
+<%- unless @kibana_index.nil? or @kibana_index == :undef -%>
+kibana.index: <%= @kibana_index %>
+<%- end -%>
 

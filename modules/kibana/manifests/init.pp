@@ -33,6 +33,7 @@ class kibana (
     Boolean $timelion_enabled        = false,      #T259000
     Optional[Boolean] $region_map_enabled = undef, #T259000
     Optional[Boolean] $tile_map_enabled   = undef, #T259000
+    Optional[String]  $kibana_index       = undef,
 ) {
     package { 'kibana':
         ensure => 'present',
