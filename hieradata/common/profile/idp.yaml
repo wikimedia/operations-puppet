@@ -17,3 +17,12 @@ profile::idp::u2f_jpa_username: cas
 profile::idp::u2f_jpa_password: changeme
 profile::idp::u2f_jpa_server: 127.0.0.1
 profile::idp::u2f_jpa_db: cas
+profile::idp::enable_cors: false
+profile::idp::cors_allowed_origins: []
+profile::idp::cors_allowed_headers: []
+profile::idp::cors_allowed_methods:
+  - 'GET'
+profile::idp::idp_failover: ~
+profile::idp::totp_signing_key: ~
+profile::idp::totp_encryption_key: ~
+profile::idp::u2f_token_expiry_days: ~

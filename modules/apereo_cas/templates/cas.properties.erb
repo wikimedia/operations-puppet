@@ -130,3 +130,26 @@ cas.authn.mfa.u2f.expireDevicesTimeUnit=DAYS
 cas.ticket.registry.memcached.servers=<%= @memcached_server %>:<%= @memcached_port %>
 cas.ticket.registry.memcached.transcoder=<%= @memcached_transcoder %>
 <%- end -%>
+
+<%- if @enable_cors -%>
+cas.httpWebRequest.cors.enabled=true
+cas.httpWebRequest.cors.allowCredentials=false
+<%# if cors is enabled but no origins provided allow all origins %>
+  <%- if @cors_allowed_origins.empty? -%>
+cas.httpWebRequest.cors.allowOrigins[0]=*
+  <%- else -%>
+    <%- @cors_allowed_origins.each_with_index do |origin, idx| -%>
+cas.httpWebRequest.cors.allowOrigins[<%= idx %>]=<%= origin %>
+    <%- end -%>
+  <%- end -%>
+  <%- if @cors_allowed_headers.empty? -%>
+cas.httpWebRequest.cors.allowHeaders[0]=*
+  <%- else -%>
+    <%- @cors_allowed_headers.each_with_index do |header, idx| -%>
+cas.httpWebRequest.cors.allowHeaders[<%= idx %>]=<%= header %>
+    <%- end -%>
+  <%- end -%>
+  <%- @cors_allowed_methods.each_with_index do |method, idx| -%>
+cas.httpWebRequest.cors.allowMethods[<%= idx %>]=<%= method %>
+  <%- end -%>
+<%- end -%>
