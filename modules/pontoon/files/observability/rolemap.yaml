@@ -52,7 +52,6 @@ thanos::backend:
 
 thanos::frontend:
   - pontoon-thanos-01.monitoring.eqiad1.wikimedia.cloud
-  - pontoon-thanos-02.monitoring.eqiad1.wikimedia.cloud
 
 cluster::management:
   - pontoon-cumin-01.monitoring.eqiad1.wikimedia.cloud
