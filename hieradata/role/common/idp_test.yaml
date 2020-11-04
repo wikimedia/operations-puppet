@@ -6,6 +6,7 @@ profile::tlsproxy::envoy::services:
   - server_names: ['*']
     port: 8080
 profile::tlsproxy::envoy::acme_cert_name: idp-test
+profile::idp::enable_cors: true
 profile::idp::services:
   icinga:
     class: 'org.apereo.cas.services.RegexRegisteredService'
