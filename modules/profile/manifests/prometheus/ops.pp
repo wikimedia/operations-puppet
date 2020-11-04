@@ -580,6 +580,13 @@ class profile::prometheus::ops (
         port       => 19194,
     }
 
+    prometheus::class_config{ "alertmanager_ack_${::site}":
+        dest       => "${targets_path}/alertmanager_ack_${::site}.yaml",
+        site       => $::site,
+        class_name => 'profile::alertmanager::ack',
+        port       => 19195,
+    }
+
     # Job definition for alertmanager
     $pushgateway_jobs = [
       {
