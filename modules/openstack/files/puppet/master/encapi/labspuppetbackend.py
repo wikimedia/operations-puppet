@@ -23,8 +23,7 @@ def _preprocess_prefix(prefix):
 
     # If the VM thinks it's under .eqiad.wmflabs, give it
     #  a .eqiad1.wikimedia.cloud config anyway.
-    exp = re.compile(r'\.eqiad\.wmflabs$')
-    prefix = exp.sub('.eqiad1.wikimedia.cloud', prefix)
+    prefix = re.sub(r'\.eqiad\.wmflabs$', '.eqiad1.wikimedia.cloud', prefix)
 
     return prefix
 
