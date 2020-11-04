@@ -961,7 +961,7 @@ service::catalog:
       scheduler: wrr
     monitoring:
       check_command: check_https_url!kartotherian.discovery.wmnet!/osm-intl/6/23/24.png
-      critical: true
+      critical: false
       sites:
         codfw:
           hostname: kartotherian.svc.codfw.wmnet
