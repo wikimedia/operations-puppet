@@ -112,7 +112,6 @@ class profile::analytics::search::airflow(
     base::service_auto_restart { 'airflow-webserver': }
 
     systemd::service { 'airflow-scheduler':
-        ensure  => 'absent',
         content => template('profile/analytics/search/airflow/scheduler.service.erb'),
         require => File[$log_dir, $run_dir, "${conf_dir}/${conf_file}", $airflow_wrapper],
     }
