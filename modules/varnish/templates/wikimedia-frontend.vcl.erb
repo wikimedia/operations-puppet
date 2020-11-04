@@ -776,7 +776,7 @@ sub wm_backend_response {
 	unset beresp.http.X-CDIS;
 
 	/* Don't cache private, no-cache, no-store objects. */
-	if (beresp.http.Cache-Control ~ "(private|no-cache|no-store)") {
+	if (beresp.http.Cache-Control ~ "(?i:private|no-cache|no-store)") {
 		set beresp.ttl = 0s;
 		// translated to hit-for-pass below
 	}
