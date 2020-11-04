@@ -35,11 +35,16 @@ class profile::analytics::jupyterhub(
         ]
     ),
     Hash $ldap_config                   = lookup('ldap', Hash, hash, {}),
-    Array[String] $allowed_posix_groups = lookup('admin::groups', default_value => ['wikidev']),
     Array[String] $admin_posix_groups   = lookup('profile::analytics::jupyterhub::admin_posix_groups', default_value => ['ops']),
     Optional[String] $http_proxy_host   = lookup('http_proxy_host', default_value => undef),
     Optional[Integer] $http_proxy_port  = lookup('http_proxy_port', default_value => undef),
 ) {
+    include profile::standard
+    $allowed_posix_groups = $profile::standard::admin_groups.empty ? {
+        true    => ['wikidev'],
+        default => $profile::standard::admin_groups
+    }
+
 
     class { 'jupyterhub::server':
         config => {

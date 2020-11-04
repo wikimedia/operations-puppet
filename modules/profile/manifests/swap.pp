@@ -12,10 +12,6 @@
 #   [*ldap_config*]
 #       LDAP production config containing the read-only endpoint to use.
 #
-#   [*posix_groups*]
-#       Users in these group will be allowed to log into JupyterHub.
-#       Default: admin::groups in production, project-$labsproject in Cloud VPS.
-#
 #   [*rsync_hosts_allow*]
 #       If given, an rsync server module will be set up to allow these hosts
 #       to rsync between home directories.
@@ -26,7 +22,6 @@ class profile::swap(
         'cn=wmf,ou=groups,dc=wikimedia,dc=org',
     ]),
     $ldap_config             = lookup('ldap', Hash, hash, {}),
-    $posix_groups            = hiera('admin::groups', undef),
     $rsync_hosts_allow       = hiera('profile::swap::rsync_hosts_allow', undef),
     $dumps_servers           = hiera('dumps_dist_nfs_servers'),
     $dumps_active_server     = hiera('dumps_dist_active_web'),
@@ -34,7 +29,6 @@ class profile::swap(
     $use_dumps_mounts        = lookup('profile::swap::use_dumps_mounts', { 'default_value' => true }),
     $deploy_research_cred    = lookup('profile::swap::deploy_research_cred', { 'default_value' => true }),
 ) {
-
     if $use_dumps_mounts {
         # Mount mediawiki dataset dumps. T176091
         class { '::statistics::dataset_mount':
@@ -43,14 +37,15 @@ class profile::swap(
         }
     }
 
-    # If posix groups are not given, then use labsproject in labs, or wikidev in production.
+    # If admin_groups not set in profile::standard, then use labsproject in labs, or wikidev in production.
     $default_posix_groups = $::realm ? {
         'labs'       => ["project-${::labsproject}"],
         'production' => ['wikidev'],
     }
-    $_posix_groups = $posix_groups ? {
-        undef   => $default_posix_groups,
-        default => $posix_groups
+    include profile::standard
+    $posix_groups = $profile::standard::admin_groups.empty ? {
+        true   => $default_posix_groups,
+        default => $profile::standard::admin_groups,
     }
 
     # Use a web_proxy in production, and include the researchers db password.
@@ -83,7 +78,7 @@ class profile::swap(
         # LDAP authenticate anyone in these groups.
         ldap_groups           => $ldap_groups,
         # But only allow those in these posix groups to log in to jupyterhub.
-        posix_groups          => $_posix_groups,
+        posix_groups          => $posix_groups,
         web_proxy             => $web_proxy,
     }
 
