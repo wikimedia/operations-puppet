@@ -5,7 +5,7 @@ profile::memcached::version: 'present'
 profile::memcached::threads: 16
 profile::memcached::growth_factor: 1.15
 profile::memcached::min_slab_size: 48
-profile::memcached::size: 241591
+profile::memcached::size: 240640
 profile::memcached::extended_options:
   - 'modern'
 profile::memcached::port: 11211
