@@ -201,7 +201,7 @@ def slay(
         os.kill(vic.pid, signal.SIGINT)
         # Give it a couple seconds to die honorably
         time.sleep(2)
-        if psutil.pid_exists(vic.pid:
+        if psutil.pid_exists(vic.pid):
             os.kill(vic.pid, signal.SIGKILL)
         email_user(vic.username(), conn, vic.name(), project)
 
