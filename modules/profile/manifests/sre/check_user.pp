@@ -5,6 +5,7 @@ class profile::sre::check_user (
     String $super_admin         = lookup('profile::sre::check_user::super_admin'),
     String $service_file_source = lookup('profile::sre::check_user::service_file'),
 ) {
+    ensure_packages(['python3-googleapi', 'python3-google-auth'])
 
     $service_file_path = '/etc/ssl/private/gsuite_service.json'
     $config = @("CONFIG")
