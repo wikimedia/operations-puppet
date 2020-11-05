@@ -13,6 +13,7 @@ it can be added to this list.
 See: https://phabricator.wikimedia.org/T259163
 """
 eventlogging_schemas_disabled = (
+    'ContentTranslationAbuseFilter',
     'SearchSatisfaction',
     'TemplateWizard',
     'Test',
