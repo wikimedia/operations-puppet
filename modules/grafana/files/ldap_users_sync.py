@@ -252,10 +252,9 @@ def main():
 
     syncer = GrafanaSyncer(grafana_api, ldap_api, commit=opts.commit, orgid=GRAFANA_ORG)
 
-    # Enforce 'admin' user as Org and Grafana admin
+    # Enforce 'admin' user as Org admin
     if opts.commit:
         syncer.set_role(1, "Admin")
-        syncer.set_grafana_admin(1, "Admin")
 
     all_ldap_uids = set()
 
