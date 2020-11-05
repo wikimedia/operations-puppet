@@ -24,7 +24,6 @@ class profile::sre::check_user (
             content => $config;
         '/usr/local/sbin/check_user':
             mode   => '0550',
-            source => 'puppet:///modules/profile/mail/check_user.py';
-
+            source => 'puppet:///modules/profile/sre/check_user.py';
     }
 }
