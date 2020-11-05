@@ -29,7 +29,12 @@ class profile::maps::osm_master (
         'stretch' => 9.6,
     }
 
-    $max_senders = length($maps_hosts) + 1
+    # We need 1 connection per host that is fully pooled. If we want
+    # to pool additional hosts, we need TWO connections per host (one
+    # for the backup thread, and one for the streaming of new logs
+    # thread). 6 will give us the overhead to allow for 3 new hosts to
+    # be added at once in case we need this.
+    $max_senders = length($maps_hosts) + 6
 
     class { 'postgresql::master':
         root_dir            => '/srv/postgresql',
