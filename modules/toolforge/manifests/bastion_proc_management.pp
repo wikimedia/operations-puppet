@@ -61,7 +61,7 @@ class toolforge::bastion_proc_management (
         command                   => $timer_cmd,
         interval                  => {
         'start'    => 'OnCalendar',
-        'interval' => '*-*-* *:30:00', # hourly at half-past
+        'interval' => '*-*-* 15:30:00', # daily at 15:30 UTC
         },
         monitoring_enabled        => true,
         monitoring_contact_groups => 'wmcs-team-email',
