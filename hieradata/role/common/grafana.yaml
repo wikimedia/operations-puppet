@@ -66,6 +66,5 @@ profile::idp::client::httpd::sites:
     proxied_as_https: true
     vhost_settings:
       ro_vhost: 'grafana.wikimedia.org'
-profile::grafana::enable_cas: false
 
 profile::grafana::active_host: 'grafana1002.eqiad.wmnet'
