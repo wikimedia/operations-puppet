@@ -21,6 +21,7 @@ profile::elasticsearch::dc_settings:
       - logstash1029.eqiad.wmnet
       - logstash1030.eqiad.wmnet
       - logstash1031.eqiad.wmnet
+      - logstash1032.eqiad.wmnet
 
 # prometheus-es-exporter should only run on one host per cluster
 profile::elasticsearch::logstash::es_exporter_host: 'logstash1026.eqiad.wmnet'
