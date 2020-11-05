@@ -14,7 +14,7 @@ class grafana::ldap_sync (
     systemd::timer::job{ 'grafana-ldap-users-sync':
         ensure      => $ensure,
         description => 'Sync users and roles from LDAP to Grafana',
-        command     => '/usr/local/bin/grafana-ldap-users-sync',
+        command     => '/usr/local/bin/grafana-ldap-users-sync --commit --delete-users',
         interval    => {
             'start'    => 'OnCalendar',
             'interval' => 'daily',
