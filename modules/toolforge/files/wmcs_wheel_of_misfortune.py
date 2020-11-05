@@ -24,6 +24,24 @@ import psutil
 import yaml
 
 
+# A list of shells and remote shells people actually use interactively
+SHELLS = (
+    "bash",
+    "csh",
+    "fish",
+    "zsh",
+    "tcsh",
+    "screen",
+    "tmux: server",  # tmux usually has this as its name in the proc object
+    "tmux",          # just in case
+    "ssh",
+    "mosh",
+    "mosh-server",
+    "systemd",   # Needed for the systemd mounted cgroups of a shell
+    "(sd-pam)",  # Related shell stuff
+)
+
+
 def get_group_members(group: str, conn: ldap3.Connection) -> List[str]:
     conn.search(
         "ou=servicegroups,dc=wikimedia,dc=org",
@@ -184,6 +202,10 @@ def spin_the_wheel(
     lucky_contestants = []
     now = datetime.now(timezone.utc).timestamp()
     for proc in psutil.process_iter():
+        # Ignore shells and remotes themselves
+        if proc.name() in SHELLS:
+            continue
+
         uids = proc.uids()
         created = proc.create_time()
         time_ago = now - age
