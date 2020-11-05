@@ -49,3 +49,13 @@ class SyncerTest(unittest.TestCase):
         self.grafana.patch.assert_called_with(
             unittest.mock.ANY, json={"role": "Editor"}
         )
+
+    def test_sync_user_once(self):
+        self.syncer.commit = True
+        self.syncer.sync_ldap_users(["user1"], "Editor")
+        self.ldap.uid_meta.assert_called_with("user1")
+
+        self.ldap.uid_meta.reset_mock()
+
+        self.syncer.sync_ldap_users(["user1"], "Editor")
+        self.ldap.uid_meta.assert_not_called()

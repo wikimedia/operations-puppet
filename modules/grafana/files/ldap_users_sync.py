@@ -14,15 +14,18 @@ import uuid
 import ldap
 import requests
 
-PROTECTED_LOGINS = ["admin"]  # Grafana users to never delete
-GROUP_ROLES = {
-    "wmf": "Editor",
-    "nda": "Editor",
-    "ops": "Admin",
-    "grafana-admin": "Admin",
-}
-GRAFANA_ORG = 1
 LOG = logging.getLogger(__name__)
+GRAFANA_ORG = 1
+PROTECTED_LOGINS = ["admin"]  # Grafana users to never delete
+# LDAP groups and their roles to sync.
+# Order matters: users synced first won't be synced again (e.g. a user in two
+# groups will have its role set according to which group comes first)
+GROUP_ROLES = [
+    {"group": "ops", "role": "Admin"},
+    {"group": "grafana-admin", "role": "Admin"},
+    {"group": "wmf", "role": "Editor"},
+    {"group": "nda", "role": "Editor"},
+]
 
 
 class WikimediaLDAP(object):
@@ -89,6 +92,7 @@ class GrafanaSyncer(object):
         self.ldap = ldap
         self.commit = commit
         self.orgid = orgid
+        self.seen_users = set()
 
     def grafana_users(self):
         res = {}
@@ -151,9 +155,12 @@ class GrafanaSyncer(object):
         existing_users = self.grafana_users()
 
         for user in users:
+            if user in self.seen_users:
+                LOG.debug(f"User {user} already synced, skipping")
+                continue
             meta = self.ldap.uid_meta(user)
-            name = meta["cn"][0].decode('utf-8')
-            email = meta["mail"][0].decode('utf-8')
+            name = meta["cn"][0].decode("utf-8")
+            email = meta["mail"][0].decode("utf-8")
 
             if user not in existing_users:
                 LOG.debug(f"Creating user {user} name {name} email {email}")
@@ -176,6 +183,8 @@ class GrafanaSyncer(object):
                 LOG.debug(f"Unsetting admin for {user}")
                 if self.commit:
                     self.set_grafana_admin(grafana_uid, False)
+
+            self.seen_users.add(user)
 
 
 def parse_args():
@@ -250,7 +259,9 @@ def main():
 
     all_ldap_uids = set()
 
-    for group, role in GROUP_ROLES.items():
+    for group_config in GROUP_ROLES:
+        group = group_config["group"]
+        role = group_config["role"]
         ldap_uids = ldap_api.group_uids(group)
         syncer.sync_ldap_users(ldap_uids, role)
 
