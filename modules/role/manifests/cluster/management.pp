@@ -19,7 +19,6 @@ class role::cluster::management {
     include profile::conftool::dbctl_client
     include profile::spicerack
     include profile::debdeploy
-    include profile::mediawiki::web_testing
     include profile::httpbb
     include profile::pwstore
 
