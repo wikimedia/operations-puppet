@@ -110,15 +110,20 @@ def email_user(
             procname, project
         )
         body_str = """
-Your process {procname} has been killed by the Wheel of Misfortune script.
+Your process `{procname}` has been killed by the Wheel of Misfortune script.
+
+You are receiving this email because you are listed as the shell user running
+the killed process or as a maintainer of the tool that was.
 
 Long-running processes and services are intended to be run on the either the
 Kubernetes environment or the job grid not on the bastion servers themselves. In
 order to ensure that login servers don't get heavily burdened by such processes,
 this script selects long-running processes at random for destruction.
 
-You are receiving this email because you are listed as the one running the
-killed process or as a maintainer of the tool that was.
+See <https://phabricator.wikimedia.org/T266300> for more information on this
+initative. You are invited to provide constructive feedback about the
+importance of particular types long running processes to your work in support
+of the Wikimedia movement.
 
 For further support, visit #wikimedia-cloud on freenode or
 <https://wikitech.wikimedia.org>
