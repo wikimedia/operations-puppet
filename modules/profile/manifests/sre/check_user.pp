@@ -2,8 +2,8 @@
 # @param super_admin the support admin account to impersonate
 # @param service_file_source the location in the secret module of the service account json file
 class profile::sre::check_user (
-    String $super_admin         = lookup('profile::sre::gsuite::super_admin'),
-    String $service_file_source = lookup('profile::sre::gsuite::service_file'),
+    String $super_admin         = lookup('profile::sre::check_user::super_admin'),
+    String $service_file_source = lookup('profile::sre::check_user::service_file'),
 ) {
 
     $service_file_path = '/etc/ssl/private/gsuite_service.json'
