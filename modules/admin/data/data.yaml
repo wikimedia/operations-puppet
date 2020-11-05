@@ -3843,8 +3843,7 @@ users:
     email: dcaro@wikimedia.org
     uid: 25603
     gid: 500
-    ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINrWIF528iRmgV89muq2ssjnMHfrgpzEMqOWCumafidg dcaro@magnum+prod
+    ssh_keys: []
 
 ldap_only_users:
   abartov:
