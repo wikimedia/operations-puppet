@@ -128,12 +128,12 @@ class GrafanaSyncer(object):
         r.raise_for_status()
         return update_user
 
-    def _set_role(self, uid, role):
+    def set_role(self, uid, role):
         r = self.api.patch(f"orgs/{self.orgid}/users/{uid}", json={"role": role})
         r.raise_for_status()
         return r.json()
 
-    def _set_grafana_admin(self, uid, status):
+    def set_grafana_admin(self, uid, status):
         r = self.api.put(
             f"admin/users/{uid}/permissions", json={"isGrafanaAdmin": status}
         )
@@ -166,16 +166,16 @@ class GrafanaSyncer(object):
 
             LOG.debug(f"Setting role {role} for {user}")
             if self.commit:
-                self._set_role(grafana_uid, role)
+                self.set_role(grafana_uid, role)
 
             if role == "Admin":  # special case, both grafana admin and org admin
                 LOG.debug(f"Setting admin for {user}")
                 if self.commit:
-                    self._set_grafana_admin(grafana_uid, True)
+                    self.set_grafana_admin(grafana_uid, True)
             else:
                 LOG.debug(f"Unsetting admin for {user}")
                 if self.commit:
-                    self._set_grafana_admin(grafana_uid, False)
+                    self.set_grafana_admin(grafana_uid, False)
 
 
 def parse_args():
@@ -242,6 +242,11 @@ def main():
     )
 
     syncer = GrafanaSyncer(grafana_api, ldap_api, commit=opts.commit, orgid=GRAFANA_ORG)
+
+    # Enforce 'admin' user as Org and Grafana admin
+    if opts.commit:
+        syncer.set_role(1, "Admin")
+        syncer.set_grafana_admin(1, "Admin")
 
     all_ldap_uids = set()
 
