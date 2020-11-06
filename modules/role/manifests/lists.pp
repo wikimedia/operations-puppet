@@ -9,7 +9,7 @@ class role::lists {
 
     include profile::lists
     include profile::locales::extended
-    $cgi = os_version('debian < stretch') ? {
+    $cgi = debian::codename::lt('stretch') ? {
         true    => 'cgi',
         default => 'cgid',
     }
