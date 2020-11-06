@@ -69,6 +69,12 @@ class haproxy(
         source => 'puppet:///modules/haproxy/generate_haproxy_default.sh',
     }
 
+    # The ExecStart script is different on buster compared to earlier debians
+    $exec_start = debian::codename::lt('buster') ? {
+        true    => '/usr/sbin/haproxy-systemd-wrapper',
+        default => '/usr/sbin/haproxy -Ws',
+    }
+
     # TODO: this should use the general systemd puppet abstraction instead
     file { '/lib/systemd/system/haproxy.service':
         ensure  => present,
