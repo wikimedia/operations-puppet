@@ -69,7 +69,7 @@ class openstack::nova::compute::service(
     }
 
     # Guest management on host startup/reboot
-    if os_version('debian >= stretch') {
+    if debian::codename::ge('stretch') {
 
         file { '/etc/default/libvirt-guests':
             owner  => 'root',

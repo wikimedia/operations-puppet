@@ -51,7 +51,7 @@ class openstack::glance::service::rocky(
             require => Package['glance'];
     }
 
-    if os_version('debian >= buster') {
+    if debian::codename::ge('buster') {
         # The Buster version of the Rocky packages seems to not create the 'glance' service user.
         group { 'glance':
             ensure => 'present',

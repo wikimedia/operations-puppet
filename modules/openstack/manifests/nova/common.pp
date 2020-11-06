@@ -81,7 +81,7 @@ class openstack::nova::common(
         source  => 'puppet:///modules/openstack/rocky/toozpatch/tooz-memcached.py';
     }
 
-    if os_version('debian >= buster') {
+    if debian::codename::ge('buster') {
         # The Buster version of the Rocky packages creates the nova user
         #  with a weird high-number uid.  Try to head it off by creating here
         #  ahead of time.

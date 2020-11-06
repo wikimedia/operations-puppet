@@ -45,7 +45,7 @@ class openstack::designate::service::rocky
         source => 'puppet:///modules/openstack/rocky/designate/hacks/impl_pdns4.py';
     }
 
-    if os_version('debian >= buster') {
+    if debian::codename::ge('buster') {
         # Hack around drastic failure of ThreadPoolExecutor with python 3.7
         # Upstream bug: https://bugs.launchpad.net/designate/+bug/1782647
         # This is only needed on buster, and is fixed in the upstream in S
@@ -57,6 +57,4 @@ class openstack::designate::service::rocky
             source => 'puppet:///modules/openstack/rocky/designate/hacks/processing.py';
         }
     }
-
-
 }
