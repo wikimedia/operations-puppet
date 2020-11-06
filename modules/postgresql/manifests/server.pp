@@ -39,7 +39,7 @@ class postgresql::server(
     Optional[Stdlib::Unixpath] $ssldir                     = undef,
 ) {
 
-    case $facts['os']['distro']['codename'] {
+    case debian::codename() {
         'stretch': {
             $_pgtop = 'ptop'
             $_pgversion_default = 9.6
@@ -69,7 +69,7 @@ class postgresql::server(
 
     # The contrib package got dropped from Postgres in 10, it's only a virtual
     # package and not needed starting with Buster
-    if os_version('debian < buster') {
+    if debian::codename::lt('buster') {
         package { "postgresql-contrib-${_pgversion}":
             ensure => $ensure,
         }
@@ -102,7 +102,7 @@ class postgresql::server(
             before  => Service[$service_name],
         }
 
-        ::base::expose_puppet_certs { '/etc/postgresql':
+        base::expose_puppet_certs { '/etc/postgresql':
             ensure          => $ensure,
             provide_private => true,
             user            => 'postgres',
