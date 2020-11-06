@@ -28,11 +28,14 @@
 #
 class geoip::data::maxmind(
   Stdlib::Unixpath $data_directory = '/usr/share/GeoIP',
-  String $user_id        = '999999',
-  String $license_key    = '000000000000',
-  Array $product_ids     = [506],
+  String $user_id                  = '999999',
+  String $license_key              = '000000000000',
+  Array $product_ids               = [506],
   Optional[Stdlib::Httpurl] $proxy = undef,
 ) {
+  # Version 3 on buster has different config keys to version 2
+  $legacy_format = debian::codename::lt('buster')
+
   package { 'geoipupdate':
     ensure => present,
   }

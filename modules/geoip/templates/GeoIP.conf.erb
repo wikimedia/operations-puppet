@@ -1,7 +1,7 @@
 # Managed by puppet
 
 LicenseKey <%= @license_key %>
-<%- if scope.function_os_version(['debian <= stretch']) -%>
+<%- if @legacy_format -%>
 UserId <%= @user_id %>
 ProductIds <%= @product_ids.join(' ') %>
 <%- else -%>
