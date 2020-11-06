@@ -30,7 +30,7 @@ class bacula::director(
                     $bconsolepassword=sha1($::uniqueid)) {
     # bacula-director depends on bacula-director-sqlvariant for
     # stretch and lower, but *NOT* on buster
-    if os_version('debian >= buster') {
+    if debian::codename::ge('buster') {
         package { 'bacula-director':
             ensure => installed,
         }

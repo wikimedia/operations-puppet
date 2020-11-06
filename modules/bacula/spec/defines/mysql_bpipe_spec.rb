@@ -1,16 +1,12 @@
 require_relative '../../../../rake_modules/spec_helper'
 
 describe 'bacula::client::mysql_bpipe', :type => :define do
-    let(:title) { 'something' }
-    let(:facts) do
-      {
-        :processorcount => 4,
-        'lsbdistrelease' => '10.1',
-        'lsbdistid' => 'Debian'
-      }
-    end
-    let(:pre_condition) do
-      "class {'bacula::client':
+  on_supported_os(WMFConfig.test_on).each do |os, facts|
+    context "on #{os}" do
+      let(:facts) { facts.merge(processorcount: 4) }
+      let(:title) { 'something' }
+      let(:pre_condition) do
+        "class {'bacula::client':
         director         => 'dir.example.com',
         catalog          => 'test',
         file_retention   => 5,
@@ -20,87 +16,89 @@ describe 'bacula::client::mysql_bpipe', :type => :define do
       class profile::base ( $notifications_enabled = 1 ){}
       include profile::base
       class {'base::puppet': ca_source => 'puppet:///files/puppet/ca.production.pem'}"
-    end
-    context 'with per database' do
+      end
+      context 'with per database' do
         let(:params) { {
-            :per_database          => true,
-            :xtrabackup            => false,
-            :pigz_level            => 'fast',
-            :is_slave              => false,
-            :mysqldump_innodb_only => false,
-            }
+          :per_database          => true,
+          :xtrabackup            => false,
+          :pigz_level            => 'fast',
+          :is_slave              => false,
+          :mysqldump_innodb_only => false,
+        }
         }
         it { should contain_file('/etc/bacula/scripts/something').with_content(/for database/) }
-    end
+      end
 
-    context 'with not per database' do
+      context 'with not per database' do
         let(:params) { {
-            :per_database          => false,
-            :xtrabackup            => false,
-            :pigz_level            => 'fast',
-            :is_slave              => false,
-            :mysqldump_innodb_only => false,
-            }
+          :per_database          => false,
+          :xtrabackup            => false,
+          :pigz_level            => 'fast',
+          :is_slave              => false,
+          :mysqldump_innodb_only => false,
+        }
         }
         it { should contain_file('/etc/bacula/scripts/something').with_content(/\$MYSQLDUMP --all-databases/) }
-    end
-    context 'with xtrabackup' do
+      end
+      context 'with xtrabackup' do
         let(:params) { {
-            :per_database          => false,
-            :xtrabackup            => true,
-            :pigz_level            => 'fast',
-            :is_slave              => false,
-            :mysqldump_innodb_only => false,
-            }
+          :per_database          => false,
+          :xtrabackup            => true,
+          :pigz_level            => 'fast',
+          :is_slave              => false,
+          :mysqldump_innodb_only => false,
+        }
         }
         it { should contain_file('/etc/bacula/scripts/something').with_content(/XTRABACKUP/) }
-    end
+      end
 
-    context 'with is_slave' do
+      context 'with is_slave' do
         let(:params) { {
-            :per_database          => false,
-            :xtrabackup            => false,
-            :pigz_level            => 'fast',
-            :is_slave              => true,
-            :mysqldump_innodb_only => false,
-            }
+          :per_database          => false,
+          :xtrabackup            => false,
+          :pigz_level            => 'fast',
+          :is_slave              => true,
+          :mysqldump_innodb_only => false,
+        }
         }
         it { should contain_file('/etc/bacula/scripts/something').with_content(/slave/) }
-    end
+      end
 
-    context 'with innodb_only' do
+      context 'with innodb_only' do
         let(:params) { {
-            :per_database          => false,
-            :xtrabackup            => false,
-            :pigz_level            => 'fast',
-            :is_slave              => false,
-            :mysqldump_innodb_only => true,
-            }
+          :per_database          => false,
+          :xtrabackup            => false,
+          :pigz_level            => 'fast',
+          :is_slave              => false,
+          :mysqldump_innodb_only => true,
+        }
         }
         it { should contain_file('/etc/bacula/scripts/something').with_content(/single-transcation/) }
-    end
+      end
 
-    context 'with local_dump_dir' do
+      context 'with local_dump_dir' do
         let(:params) { {
-            :per_database          => false,
-            :xtrabackup            => false,
-            :pigz_level            => 'fast',
-            :is_slave              => false,
-            :mysqldump_innodb_only => true,
-            :local_dump_dir        => '/var/backup',
-            }
+          :per_database          => false,
+          :xtrabackup            => false,
+          :pigz_level            => 'fast',
+          :is_slave              => false,
+          :mysqldump_innodb_only => true,
+          :local_dump_dir        => '/var/backup',
+        }
         }
         it { should contain_file('/etc/bacula/scripts/something').with_content(/\$TEE \$LOCALDUMPDIR/) }
-    end
-    context 'without local_dump_dir' do
+      end
+      context 'without local_dump_dir' do
         let(:params) { {
-            :per_database          => false,
-            :xtrabackup            => false,
-            :pigz_level            => 'fast',
-            :is_slave              => false,
-            :mysqldump_innodb_only => true,
-            }
+          :per_database          => false,
+          :xtrabackup            => false,
+          :pigz_level            => 'fast',
+          :is_slave              => false,
+          :mysqldump_innodb_only => true,
+        }
         }
         it { should contain_file('/etc/bacula/scripts/something').with_content(/^[\$TEE \$LOCALDUMPDIR]/) }
+      end
     end
+  end
 end

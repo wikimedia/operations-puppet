@@ -35,7 +35,7 @@ class bacula::storage(
 
     # before buster, bacula-sd depended on bacula-sd-sqlvariant.
     # Now there is only one package that substitutes all variants
-    if os_version('debian >= buster') {
+    if debian::codename::ge('buster') {
         $package = 'bacula-sd'
     } else {
         $package = "bacula-sd-${sqlvariant}"
