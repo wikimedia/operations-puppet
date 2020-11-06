@@ -6,23 +6,22 @@ class ores::base(
     # this to deb packages in the future if needed. We also install build tools
     # because they are needed by pip to install scikit.
     # FIXME: Use debian packages for all the packages needing compilation
-    require_package('virtualenv', 'python3-dev', 'build-essential',
-                    'gfortran', 'libopenblas-dev', 'liblapack-dev')
-
-    # Install scipy via debian package so we don't need to build it via pip
-    # takes forever and is quite buggy
-    require_package('python3-scipy')
-
-    # It requires the enchant debian package
-    require_package('enchant')
+    ensure_packages([
+        'virtualenv', 'python3-dev', 'build-essential', 'gfortran', 'libopenblas-dev', 'liblapack-dev',
+        # Install scipy via debian package so we don't need to build it via pip
+        # takes forever and is quite buggy
+        'python3-scipy',
+        # It requires the enchant debian package
+        'enchant',
+    ])
 
     # this package got renamed in buster
-    $hunspell_nl = os_version('debian < buster') ? {
+    $hunspell_nl = debian::codename::lt('buster') ? {
         true    => 'myspell-nl',
         default => 'hunspell-nl',
     }
     # Spellcheck packages for supported languages
-    require_package([
+    ensure_packages([
         'aspell-ar',
         'aspell-el',
         'aspell-pl',
@@ -61,9 +60,9 @@ class ores::base(
 
     # NOTE: aspell-id is imported in our apt up to Stretch:
     # https://apt.wikimedia.org/wikimedia/pool/thirdparty/a/aspell-id/
-    if os_version('debian >= buster') {
-        require_package('hunspell-id')
+    if debian::codename::ge('buster') {
+        ensure_packages('hunspell-id')
     } else {
-        require_package('aspell-id')
+        ensure_packages('aspell-id')
     }
 }
