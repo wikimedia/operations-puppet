@@ -45,7 +45,7 @@ class adduser (
         content => template('adduser/etc/adduser.conf.erb'),
     }
 
-    if os_version('debian > jessie') {
+    if debian::codename::gt('jessie') {
         systemd::sysuser { 'sysusers-base-config':
             content => ['usertype' => 'r', 'name' => '-', 'id' => "${first_system_uid}-${last_system_uid}"]
         }
