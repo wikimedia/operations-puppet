@@ -29,6 +29,13 @@
   "MasterFailoverDetachReplicaMasterHost": true,
   "RecoveryPeriodBlockSeconds": 10800,
   "ReasonableMaintenanceReplicationLagSeconds": 5,
+  "PromotionIgnoreHostnameFilters": [
+    "^labsdb",
+    "^clouddb",
+    "^db112[45]\.",
+    "^db209[45]\.",
+    "^dbstore"
+   ],
 
   "DetectClusterAliasQuery": "SELECT shard FROM heartbeat.heartbeat ORDER BY ts DESC LIMIT 1",
   "DetectDataCenterQuery": "SELECT @@wsrep_cluster_name"
