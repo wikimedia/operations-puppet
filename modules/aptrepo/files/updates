@@ -205,24 +205,6 @@ Architectures: amd64 source
 VerifyRelease: A6A19B38D3D831EF
 ListShellHook: grep-dctrl -e -S '^(cecil|cli-common|core-setup|fsharp|gtk-sharp2|libgdiplus|mod-mono|mono|mono-basic|mono-llvm|mono-tools|monodevelop|msbuild|nuget|nunit|referenceassemblies-pcl|xamarin-gtk-theme|xsp)$' || [ $? -eq 1 ]
 
-Name: thirdparty/kubeadm-k8s-kubernetes.io-1-15
-Method: https://apt.kubernetes.io/
-Suite: kubernetes-xenial
-Components: main>thirdparty/kubeadm-k8s-1-15
-UDebComponents:
-Architectures: amd64
-VerifyRelease: 6A030B21BA07F4FB
-ListShellHook: grep-dctrl \( -P 'kubeadm' -o -P 'kubelet' -o -P 'kubectl' -a -FVersion --lt 1.16 -a -FVersion --ge 1.15 \) || [ $? -eq 1 ]
-
-Name: thirdparty/kubeadm-k8s-kubernetes.io-1-16
-Method: https://apt.kubernetes.io/
-Suite: kubernetes-xenial
-Components: main>thirdparty/kubeadm-k8s-1-16
-UDebComponents:
-Architectures: amd64
-VerifyRelease: 6A030B21BA07F4FB
-ListShellHook: grep-dctrl \( -P 'kubeadm' -o -P 'kubelet' -o -P 'kubectl' -a -FVersion --lt 1.17 -a -FVersion --ge 1.16 \) || [ $? -eq 1 ]
-
 Name: thirdparty/kubeadm-k8s-kubernetes.io-1-17
 Method: https://apt.kubernetes.io/
 Suite: kubernetes-xenial
@@ -235,7 +217,7 @@ ListShellHook: grep-dctrl \( -P 'kubeadm' -o -P 'kubelet' -o -P 'kubectl' -a -FV
 Name: thirdparty/kubeadm-k8s-kubernetes.io
 Method: https://apt.kubernetes.io/
 Suite: kubernetes-xenial
-Components: main>thirdparty/kubeadm-k8s-1-15 main>thirdparty/kubeadm-k8s-1-16 main>thirdparty/kubeadm-k8s-1-17
+Components: main>thirdparty/kubeadm-k8s-1-17
 UDebComponents:
 Architectures: amd64
 VerifyRelease: 6A030B21BA07F4FB
@@ -244,11 +226,11 @@ ListShellHook: grep-dctrl \( -P 'kubernetes-cni' -o -P 'cri-tools' \) || [ $? -e
 Name: thirdparty/kubeadm-k8s-docker.com
 Method: https://download.docker.com/linux/debian/
 Suite: stretch
-Components: stable>thirdparty/kubeadm-k8s-1-15 stable>thirdparty/kubeadm-k8s-1-16 stable>thirdparty/kubeadm-k8s-1-17
+Components: stable>thirdparty/kubeadm-k8s-1-17
 UDebComponents:
 Architectures: amd64
 VerifyRelease: 7EA0A9C3F273FCD8
-ListShellHook: grep-dctrl \( -e -P '^docker-ce|docker-ce-cli|$' -a -FVersion --lt 5:19.03 -a -FVersion --ge 5:18.09 \) -o  \( -P 'containerd.io' -a -FVersion --eq 1.2.13-2 \) || [ $? -eq 1 ]
+ListShellHook: grep-dctrl \( -e -P '^docker-ce|docker-ce-cli|$' -a -FVersion --ge 5:18.09 \) -o  \( -P 'containerd.io' -a -FVersion --ge 1.2.13-2 \) || [ $? -eq 1 ]
 
 Name: thirdparty/helm3
 Method: https://baltocdn.com/helm/stable/debian
