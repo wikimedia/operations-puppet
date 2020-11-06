@@ -1,71 +1,29 @@
 class labs_bootstrapvz() {
 
-    package { 'nbd-client':
-        ensure => 'present',
+    $python_package = debian::codename::lt('buster') ? {
+        true    => 'bootstrap-vz',
+        default => 'python-bootstrap-vz',
     }
 
-    # This weird greater-than check is to deal with the fact that
-    #  Buster doesn't actually have a release number assigned
-    #  until it's released.  We need to remove that clause
-    #  sometime between Buster and Bullseye.
-    if os_version('debian == buster') or os_version('debian > buster')
-    {
-        # Until upstream packaging catches up, use our custom
-        #  package for this.
-        package { 'python-bootstrap-vz':
-            ensure => present,
-        }
-    } else {
-        package { 'bootstrap-vz':
-            ensure => present,
-        }
-    }
-
-    package { 'zerofree':
-        ensure => present,
-    }
-
-    package { 'kpartx':
-        ensure => present,
-    }
+    ensure_packages(['nbd-client', 'zerofree', 'kpartx', $python_package])
 
     $bootstrap_filepath = '/etc/bootstrap-vz/'
 
-    file { $bootstrap_filepath:
-        ensure => directory,
+    ['', 'manifests', 'firstscript', 'puppet'].each |$subdir| {
+        file {"${bootstrap_filepath}/${subdir}":
+            ensure => directory,
+        }
     }
 
-    file { "${bootstrap_filepath}/manifests":
-        ensure  => directory,
-        require => File[$bootstrap_filepath],
-    }
-
-    file { "${bootstrap_filepath}/firstscripts":
-        ensure  => directory,
-        require => File[$bootstrap_filepath],
-    }
-
-    file { "${bootstrap_filepath}/puppet":
-        ensure  => directory,
-        require => File[$bootstrap_filepath],
-    }
-
-    file { "${bootstrap_filepath}/manifests/labs-jessie.manifest.yaml":
-        mode    => '0444',
-        source  => 'puppet:///modules/labs_bootstrapvz/labs-jessie.manifest.yaml',
-        require => File["${bootstrap_filepath}/manifests"],
-    }
-
-    file { "${bootstrap_filepath}/manifests/labs-stretch.manifest.yaml":
-        mode    => '0444',
-        source  => 'puppet:///modules/labs_bootstrapvz/labs-stretch.manifest.yaml',
-        require => File["${bootstrap_filepath}/manifests"],
-    }
-
-    file { "${bootstrap_filepath}/manifests/cloud-buster.manifest.yaml":
-        mode    => '0444',
-        source  => 'puppet:///modules/labs_bootstrapvz/cloud-buster.manifest.yaml',
-        require => File["${bootstrap_filepath}/manifests"],
+    file {
+        default:
+            mode    => '0444';
+        "${bootstrap_filepath}/manifests/labs-jessie.manifest.yaml":
+            source  => 'puppet:///modules/labs_bootstrapvz/labs-jessie.manifest.yaml';
+        "${bootstrap_filepath}/manifests/labs-stretch.manifest.yaml":
+            source  => 'puppet:///modules/labs_bootstrapvz/labs-stretch.manifest.yaml';
+        "${bootstrap_filepath}/manifests/cloud-buster.manifest.yaml":
+            source  => 'puppet:///modules/labs_bootstrapvz/cloud-buster.manifest.yaml';
     }
 
     $projectregex = "s/${::labsproject}/_PROJECT_/g"
@@ -84,7 +42,7 @@ class labs_bootstrapvz() {
     ~> exec { "sed -i '${projectregex}' ${bootstrap_filepath}/access.conf":
     }
 
-    if os_version('debian < buster') {
+    if debian::codename::lt('buster') {
         exec { "cp /etc/nslcd.conf ${bootstrap_filepath}/nslcd.conf":
         }
 
