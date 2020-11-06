@@ -225,7 +225,7 @@ define service::node(
 
 
     if $use_nodejs10 {
-        if os_version('debian == stretch') {
+        if debian::codename::eq('stretch') {
             if !defined(Apt::Repository['wikimedia-node10']) {
                 apt::repository { 'wikimedia-node10':
                     uri        => 'http://apt.wikimedia.org/wikimedia',
@@ -245,7 +245,7 @@ define service::node(
             ensure => present,
         }
     }
-    if !defined(Package['nodejs-legacy']) and os_version('debian == jessie'){
+    if !defined(Package['nodejs-legacy']) and debian::codename::eq('jessie'){
         package { 'nodejs-legacy':
             ensure => present,
         }
