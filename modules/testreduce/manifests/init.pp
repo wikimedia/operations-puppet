@@ -6,7 +6,7 @@ class testreduce(
     Boolean $install_node,
 ){
 
-    if os_version('debian == stretch') {
+    if debian::codename::eq('stretch') {
 
         apt::repository { 'stretch-node10':
             uri        => 'http://apt.wikimedia.org/wikimedia',
