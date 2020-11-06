@@ -5,19 +5,20 @@
 class mariadb::packages_wmf (
     String[1] $package,
 ) {
-    require_package (
+    ensure_packages(
         $package,
         'percona-toolkit',
         'grc',
     )
 
     if debian::codename::ge('buster') {
-        require_package('mariadb-backup')
+        ensure_packages('mariadb-backup')
     }
 
     # Manual override until all hosts are in >10.1.44-1 or >10.4.13-1
     file { '/usr/local/bin/mbstream':
-        ensure => 'link',
-        target => "/opt/${package}/bin/mbstream",
+        ensure  => 'link',
+        target  => "/opt/${package}/bin/mbstream",
+        require => Package[$package]
     }
 }

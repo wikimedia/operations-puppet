@@ -80,18 +80,6 @@ class mariadb::config(
         }
     }
 
-    file { '/etc/mysql/my.cnf':
-        ensure  => absent,
-        require => File['/etc/mysql'],
-    }
-
-    file { '/usr/local/etc/my.cnf':
-        ensure => absent,
-    }
-    file { "${basedir}/my.cnf":
-        ensure => absent,
-    }
-
     # Include these manually. If we're testing on systems with tarballs
     # instead of debs, the user won't exist.
     group { 'mysql':
@@ -136,7 +124,7 @@ class mariadb::config(
     if ($ssl == 'on' or $ssl == 'puppet-cert') {
 
         # This creates also /etc/mysql/ssl
-        ::base::expose_puppet_certs { '/etc/mysql':
+        base::expose_puppet_certs { '/etc/mysql':
             ensure          => present,
             provide_private => true,
             user            => 'mysql',
@@ -163,14 +151,10 @@ class mariadb::config(
         }
     }
 
-    file { '/etc/mysql/ssl/server-cert.pem':
-        ensure => absent,
+    $cleanup_files = ['/etc/mysql/my.cnf', '/usr/local/etc/my.cnf', "${basedir}/my.cnf",
+                      '/etc/mysql/ssl/client-key.pem', '/etc/mysql/ssl/client-cert.pem',
+                      '/etc/mysql/ssl/server-cert.pem']
+    file {$cleanup_files:
+        ensure  => absent,
     }
-    file { '/etc/mysql/ssl/client-key.pem':
-        ensure => absent,
-    }
-    file { '/etc/mysql/ssl/client-cert.pem':
-        ensure => absent,
-    }
-
 }
