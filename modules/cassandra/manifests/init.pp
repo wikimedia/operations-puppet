@@ -141,7 +141,7 @@ class cassandra (
     # Cassandra fully supports opendjdk-11 only from 4.0,
     # and on Buster openjdk-8 is not available.
     # https://issues.apache.org/jira/browse/CASSANDRA-9608
-    if os_version('debian == buster') {
+    if debian::codename::eq('buster') {
         apt::package_from_component { 'openjdk-8':
             component => 'component/jdk8',
             packages  => ['openjdk-8-jdk'],
@@ -153,7 +153,7 @@ class cassandra (
         }
     }
 
-    if os_version('debian <= stretch') {
+    if debian::codename::le('stretch') {
         package { 'openjdk-8-jdk':
             ensure  => 'installed',
         }
@@ -174,9 +174,10 @@ class cassandra (
     # and it works nicely
     $package_version = $target_version ? {
         '2.1' => pick($version, '2.1.13'),
-        '2.2' => os_version('debian >= stretch') ? {
-            true  => pick($version, '2.2.6-wmf5'),
-            false => pick($version, '2.2.6-wmf3'), },
+        '2.2' => debian::codename::ge('stretch') ? {
+            true    => pick($version, '2.2.6-wmf5'),
+            default => pick($version, '2.2.6-wmf3'),
+        },
         '3.x' => pick($version, '3.11.4'),
         'dev' => pick($version, '3.11.4')
     }
@@ -214,15 +215,13 @@ class cassandra (
     # Make sure libjemalloc is installed if
     # we are going to use the JEMallocAllocator.
     if $memory_allocator == 'JEMallocAllocator' {
-      if os_version('debian <= stretch') {
-        package { 'libjemalloc1':
-          ensure => 'installed',
+        $libjemalloc = debian::codename::le('stretch') ? {
+            true    => 'libjemalloc1',
+            default => 'libjemalloc2',
         }
-      } else {
-        package { 'libjemalloc2':
-          ensure => 'installed',
+        package { $libjemalloc:
+            ensure => 'installed',
         }
-      }
     }
 
     # Create non-default cassandra instances if requested.
@@ -282,9 +281,11 @@ class cassandra (
             ensure => stopped,
         }
     }
-    # TODO: switch to iterators once we migrate to future parser
-    create_resources(cassandra::instance, $instances_to_create, $actual_defaults)
-
+    $instances_to_create.each |$instance, $params| {
+        cassandra::instance {$instance:
+            * => $actual_defaults + $params,
+        }
+    }
     cassandra::jbod_device { $jbod_devices: }
 
     # nodetool wrapper to handle multiple instances, for each instance there
