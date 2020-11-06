@@ -4,7 +4,7 @@
 # for interactive use in a shell.  Most actual libraries are in exec_environ.
 
 class profile::toolforge::shell_environ {
-    class {'::phabricator::arcanist': } # T139738
+    class {'phabricator::arcanist': } # T139738
 
     if debian::codename::eq('stretch') {
         include profile::toolforge::genpp::python_dev_stretch

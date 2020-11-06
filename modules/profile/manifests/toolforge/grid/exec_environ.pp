@@ -7,9 +7,9 @@
 
 class profile::toolforge::grid::exec_environ {
 
-    include ::profile::locales::all
+    include profile::locales::all
 
-    class {'::redis::client::python': }
+    class {'redis::client::python': }
 
     apt::repository { "mono-external-${::lsbdistcodename}":
         uri        => 'http://apt.wikimedia.org/wikimedia',
@@ -42,7 +42,7 @@ class profile::toolforge::grid::exec_environ {
     }
 
     # Packages in all OSs
-    require_package(
+    ensure_packages([
         'fish',                      # T219054, T241290
         'fonts-arabeyes',
         'fonts-arphic-ukai',
@@ -92,15 +92,12 @@ class profile::toolforge::grid::exec_environ {
         'qpdf',                      # T204422
         'unpaper',                   # T204422
         'zstd',                      # T225380
-    )
+    ])
 
     if debian::codename::ge('stretch') {
-        require_package(
+        ensure_packages([
             'fonts-noto-hinted',  # T184664
-            'fonts-noto-unhinted' # T184664
-        )
-
-        require_package(
+            'fonts-noto-unhinted', # T184664
             'fonts-beng',
             'fonts-deva',
             'fonts-gujr',
@@ -115,7 +112,7 @@ class profile::toolforge::grid::exec_environ {
             'fonts-sil-lateef',
             'fonts-ipafont-gothic',
             'fonts-ipafont-mincho',
-        )
+        ])
     }
 
     package { [
@@ -348,7 +345,7 @@ class profile::toolforge::grid::exec_environ {
         'fakechroot',                  # T138138
         ]:
         ensure => latest,
-        before => Class['::profile::locales::all'],
+        before => Class['profile::locales::all'],
     }
 
     file { '/etc/mysql/conf.d/override.my.cnf':
@@ -359,7 +356,7 @@ class profile::toolforge::grid::exec_environ {
         source => 'puppet:///modules/profile/toolforge/override.my.cnf',
     }
 
-    if $::lsbdistcodename == 'stretch' {
+    if debian::codename::eq('stretch') {
         include ::profile::toolforge::genpp::python_exec_stretch
         apt::repository { "php72-external-${::lsbdistcodename}": #T213666
             uri        => 'http://apt.wikimedia.org/wikimedia',
@@ -479,8 +476,7 @@ class profile::toolforge::grid::exec_environ {
     }
 
     # T65000
-    require_package('imagemagick')
-    require_package('webp')
+    ensure_packages(['imagemagick', 'webp'])
 
     file { '/etc/ImageMagick-6/policy.xml':
         ensure  => present,
@@ -488,9 +484,6 @@ class profile::toolforge::grid::exec_environ {
         group   => 'root',
         mode    => '0644',
         source  => 'puppet:///modules/imagemagick/policy.xml',
-        require => [
-            Class['packages::imagemagick'],
-            Class['packages::webp']
-        ]
+        require => Package['imagemagick', 'webp'],
     }
 }
