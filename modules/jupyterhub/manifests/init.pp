@@ -44,26 +44,20 @@ class jupyterhub (
     $systemd_slice         = 'user.slice',
 )
 {
-    require_package(
-        'virtualenv',
-        'python3-venv',
-        'python3-wheel',
+    ensure_packages([
+        'virtualenv', 'python3-venv', 'python3-wheel',
         # Packages for PDF exports
-        'pandoc',
-        'texlive-xetex',
-        'texlive-fonts-recommended',
-        'texlive-generic-recommended',
+        'pandoc', 'texlive-xetex', 'texlive-fonts-recommended', 'texlive-generic-recommended',
         # For pyhive and impyla
-        'libsasl2-dev',
-        'libsasl2-modules-gssapi-mit',
-    )
+        'libsasl2-dev', 'libsasl2-modules-gssapi-mit'
+    ])
 
     # jupyterhub can be included on profiles/roles that
     # already offer a nodejs configuration, like the stat100x hosts.
     # nodejs is needed for the embedded configurable-http-proxy.
     if !defined(Package['nodejs']) {
         # nodejs6 is EOL
-        if os_version('debian == stretch') {
+        if debian::codename::eq('stretch') {
             if !defined(Apt::Package_from_component['wikimedia-node10']){
                 apt::package_from_component { 'wikimedia-node10':
                     component => 'component/node10',
@@ -72,7 +66,7 @@ class jupyterhub (
             }
         } else {
             # For embedded configurable-http-proxy
-            require_package('nodejs')
+            ensure_packages('nodejs')
         }
     }
 
@@ -107,10 +101,9 @@ class jupyterhub (
         require => Git::Clone[$deploy_repository],
     }
 
-    if os_version('debian >= buster') {
-        $http_proxy_pid_file = '/tmp/jupyterhub-proxy.pid'
-    } else {
-        $http_proxy_pid_file = undef
+    $http_proxy_pid_file = debian::codename::ge('buster') ? {
+        true    => '/tmp/jupyterhub-proxy.pid',
+        default => undef,
     }
 
     file { "${config_path}/jupyterhub_config.py":
