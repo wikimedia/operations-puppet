@@ -1044,6 +1044,12 @@ node /^db11(51|52|53|54|55|56|57|58|59|60|61|62|63|64|65|66|67|68|69|70|71|72|73
     role(insetup)
 }
 
+# New hosts for x2 T267041 T264583
+# Set them to spare individually as it will take take to transfer the data
+node /^db21(42|43|44)\.codfw\.wmnet$/ {
+    role(insetup)
+}
+
 # Backup system, see T176505.
 # This is a reserved system. Ask Otto or Faidon.
 node 'flerovium.eqiad.wmnet' {
