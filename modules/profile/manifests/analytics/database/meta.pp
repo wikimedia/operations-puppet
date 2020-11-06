@@ -20,7 +20,7 @@ class profile::analytics::database::meta(
 
     $mariadb_socket = '/run/mysqld/mysqld.sock'
 
-    class { '::mariadb::config':
+    class { 'mariadb::config':
         config           => 'profile/analytics/database/meta/analytics-meta.my.cnf.erb',
         socket           => $mariadb_socket,
         port             => 3306,
@@ -34,7 +34,7 @@ class profile::analytics::database::meta(
 
     # If labs, automate mysql_install_db. Supported only for recent
     # Debian OS like Stretch.
-    if $::realm == 'labs' and os_version('debian >= stretch') {
+    if $::realm == 'labs' and debian::codename::ge('stretch') {
         exec { 'analytics_meta_mysql_install_db':
             command => "${basedir}/scripts/mysql_install_db",
             cwd     => $basedir,
@@ -44,7 +44,7 @@ class profile::analytics::database::meta(
         }
     }
 
-    class { '::mariadb::service':
+    class { 'mariadb::service':
         ensure  => 'running',
         manage  => true,
         enable  => true,

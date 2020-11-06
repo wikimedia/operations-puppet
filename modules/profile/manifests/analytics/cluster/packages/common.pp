@@ -21,9 +21,8 @@ class profile::analytics::cluster::packages::common(
     class { '::r_lang': }
 
     # Note: RMariaDB (https://github.com/rstats-db/RMariaDB) will replace RMySQL, but is currently not on CRAN
-    require_package('r-cran-rmysql')
-
-    require_package(
+    ensure_packages([
+        'r-cran-rmysql',  # RMariaDB (https://github.com/rstats-db/RMariaDB) will replace RMySQL, but is currently not on CRAN
         'ipython3',
         'python3-matplotlib',
         'python3-geoip',
@@ -53,22 +52,21 @@ class profile::analytics::cluster::packages::common(
         # For any package that requires gss-api libs,
         # like requests-kerberos (used by presto-python-client).
         'libkrb5-dev',
-
         # We hope to eventually replace all of the above python packages
         # with this one.  It is easier to maintain this single anaconda
         # based package than many different python debian packages.
         # See: https://wikitech.wikimedia.org/wiki/Analytics/Systems/Anaconda
         'anaconda-wmf',
-    )
+    ])
 
-    if os_version('debian == stretch') and $use_bigtop_settings {
+    if debian::codename::eq('stretch') and $use_bigtop_settings {
         # Apache BigTop 1.4+ ships with Hadoop 2.8+,
         # compatible with openssl 1.1.0 shipped by Stretch.
         # The -dev package is needed to create the libcrypto.so
         # symlink under /usr/lib/x86_64-linux-gnu.
-        require_package('libssl-dev')
-    } elsif os_version('debian == stretch') {
-        require_package('libssl1.0.2')
+        ensure_packages('libssl-dev')
+    } elsif debian::codename::eq('stretch') {
+        ensure_packages('libssl1.0.2')
 
         # Hadoop links incorrectly against libcrypto
         # https://issues.apache.org/jira/browse/HADOOP-12845.
@@ -89,14 +87,14 @@ class profile::analytics::cluster::packages::common(
             ensure => 'link',
             target => '/usr/lib/x86_64-linux-gnu/libcrypto.so.1.0.2',
         }
-    } elsif os_version('debian == buster') {
-        require_package('libssl1.1', 'libssl-dev')
+    } elsif debian::codename::eq('buster') {
+        ensure_packages(['libssl1.1', 'libssl-dev'])
     }
 
     # These packages need to be reviewed in the context of Debian Buster
     # to figure out if we need to rebuild them or simply copy them over in reprepro.
-    if os_version('debian <= stretch') {
-        require_package('python3-mmh3')
+    if debian::codename::le('stretch') {
+        ensure_packages('python3-mmh3')
     }
 
     # ores::base for ORES packages
