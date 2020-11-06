@@ -66,7 +66,7 @@ class dnsrecursor(
         before      => Service['pdns-recursor'],
     }
 
-    if os_version('debian == buster') and $enable_pdns43 {
+    if debian::codename::eq('buster') and $enable_pdns43 {
         apt::package_from_component { 'pdns-recursor':
             component => 'component/pdns-recursor',
         }
