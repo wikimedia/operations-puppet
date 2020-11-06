@@ -32,17 +32,23 @@ class systemd::slice::all_users (
         'libpam-systemd',
     ]
 
-    if os_version('debian == stretch') {
-        # we need systemd >= 239 for resource control using the user-.slice trick
-        # this version or higher is provided in component/systemd241
+    case debian::codename() {
+        'stretch': {
+            # we need systemd >= 239 for resource control using the user-.slice trick
+            # this version or higher is provided in component/systemd241
 
-        apt::package_from_component { 'systemd241':
-            component => 'component/systemd241',
-            packages  => $systemd_packages,
+            apt::package_from_component { 'systemd241':
+                component => 'component/systemd241',
+                packages  => $systemd_packages,
+            }
         }
-    } elsif os_version('debian >= buster') {
-        package { $systemd_packages:
-            ensure => present,
+        'buster': {
+            package { $systemd_packages:
+                ensure => present,
+            }
+        }
+        default: {
+            fail("codename (${debian::codename}): not supported")
         }
     }
 

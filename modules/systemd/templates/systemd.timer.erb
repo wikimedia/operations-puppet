@@ -8,7 +8,7 @@ AccuracySec=<%= @accuracy %>
 <%- @timer_intervals.each do |timer| -%>
 <%= timer['start'] %>=<%= timer['interval'] %>
 <%- end -%>
-<%- if scope.function_os_version(['debian >= stretch']) -%>
+<%- if @facts['os']['release']['major'].to_i >= 9 -%>
 RandomizedDelaySec=<%= @splay %>
 <%- end -%>
 
