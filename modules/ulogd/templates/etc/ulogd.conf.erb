@@ -25,11 +25,11 @@ end
 logfile=<%= @logfile %>
 loglevel=<%= log_levels.fetch(@log_level, 3) %>
 
-<%# 
+<%#
 The version of ulogd2 on buster dynamically loads modules so we don't need this
 https://git.netfilter.org/ulogd2/commit/?id=8f0fff33137807838b39a4dfd01438d6b25f7175
 -%>
-<%- if scope.call_function('os_version', ['debian <= stretch']) -%>
+<%- if @facts['os']['release']['major'].to_i < 10 -%>
 plugin="/usr/lib/x86_64-linux-gnu/ulogd/ulogd_inppkt_NFLOG.so"
 plugin="/usr/lib/x86_64-linux-gnu/ulogd/ulogd_inppkt_ULOG.so"
 plugin="/usr/lib/x86_64-linux-gnu/ulogd/ulogd_inppkt_UNIXSOCK.so"
