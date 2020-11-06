@@ -4,7 +4,7 @@
 #
 class profile::python37 {
 
-    if os_version('debian <= stretch') {
+    if debian::codename::le('stretch') {
         if ! defined( Apt::Package_from_component['component-pyall'] ) {
             apt::package_from_component { 'component-pyall':
                 component => 'component/pyall',
@@ -12,7 +12,7 @@ class profile::python37 {
             }
         }
     } else {
-        require_package('python3.7', 'libpython3.7')
+        ensure_packages(['python3.7', 'libpython3.7'])
     }
 
 }
