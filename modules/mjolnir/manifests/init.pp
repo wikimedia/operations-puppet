@@ -8,15 +8,12 @@ class mjolnir(
     Stdlib::Port $logstash_port
 ) {
 
-    require_package('virtualenv', 'zip')
-
     # Vary libsnappy package on  debian version.
-    if os_version('debian >= stretch') {
-        require_package('libsnappy1v5')
+    $libsnappy = debian::codename::lt('stretch') ? {
+        true    => 'libsnappy1',
+        default => 'libsnappy1v5',
     }
-    else {
-        require_package('libsnappy1')
-    }
+    ensure_packages('virtualenv', 'zip', $libsnappy)
 
     file { '/etc/mjolnir':
         ensure => 'directory',
