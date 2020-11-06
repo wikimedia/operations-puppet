@@ -7,9 +7,9 @@ class profile::ci::docker(
     $settings = lookup('profile::ci::docker::settings'),
 ) {
     # Let us elevate permissions to the user running a containerized process
-    require_package('acl')
+    ensure_packages('acl')
 
-    if os_version('debian < buster') {
+    if debian::codename::lt('buster') {
         apt::repository { 'thirdparty-ci':
             uri        => 'http://apt.wikimedia.org/wikimedia',
             dist       => "${::lsbdistcodename}-wikimedia",
@@ -17,7 +17,7 @@ class profile::ci::docker(
         }
     }
 
-    class { '::docker::configuration':
+    class { 'docker::configuration':
         settings => $settings,
     }
 
@@ -32,7 +32,7 @@ class profile::ci::docker(
         'buster'  => 'docker.io',
     }
 
-    class { '::docker':
+    class { 'docker':
         package_name => $docker_package,
         version      => $docker_version,
     }
