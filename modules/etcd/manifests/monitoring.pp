@@ -1,14 +1,9 @@
 # === Class etcd::monitoring
 #
 class etcd::monitoring {
-    require ::etcd
+    require etcd
 
-    # For now, this is not critical, but should probably be in the future.
-    nrpe::monitor_systemd_unit_state { 'etcd':
-        require => Service['etcd'],
-    }
-
-    if os_version('debian >= stretch') {
+    if debian::codename::ge('stretch') {
         $plugin_package = 'libmonitoring-plugin-perl'
         $plugin_file = 'etcd_cluster_health_stretch'
     } else {
@@ -16,7 +11,12 @@ class etcd::monitoring {
         $plugin_file = 'etcd_cluster_health'
     }
 
-    require_package($plugin_package)
+    ensure_packages($plugin_package)
+
+    # For now, this is not critical, but should probably be in the future.
+    nrpe::monitor_systemd_unit_state { 'etcd':
+        require => Service['etcd'],
+    }
 
     file { '/usr/local/bin/nrpe_etcd_cluster_health':
         ensure  => present,
@@ -24,7 +24,10 @@ class etcd::monitoring {
         owner   => 'root',
         group   => 'root',
         mode    => '0555',
-        require => Service['etcd'],
+        require => [
+            Package[$plugin_package],
+            Service['etcd'],
+        ]
     }
 
     sudo::user { 'nagios_check_etcd':
