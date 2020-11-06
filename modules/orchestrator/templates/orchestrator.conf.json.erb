@@ -28,6 +28,7 @@
   "DelayMasterPromotionIfSQLThreadNotUpToDate": true,
   "MasterFailoverDetachReplicaMasterHost": true,
   "RecoveryPeriodBlockSeconds": 10800,
+  "ReasonableMaintenanceReplicationLagSeconds": 5,
 
   "DetectClusterAliasQuery": "SELECT shard FROM heartbeat.heartbeat ORDER BY ts DESC LIMIT 1",
   "DetectDataCenterQuery": "SELECT @@wsrep_cluster_name"
