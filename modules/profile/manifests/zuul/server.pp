@@ -12,13 +12,13 @@ class profile::zuul::server(
         false   => 'absent',
         default => 'present',
     }
-    class { '::zuul::monitoring::server':
+    class { 'zuul::monitoring::server':
         ensure           => $monitoring_active,
         prometheus_nodes => $prometheus_nodes,
     }
     # This ensures that the mtail package is installed,
     # /etc/default/mtail exists, and systemd service is prepped.
-    class { '::mtail':
+    class { 'mtail':
       logs => ['/var/log/zuul/error.log'],
     }
 
@@ -26,7 +26,7 @@ class profile::zuul::server(
         false   => 'mask',
         default => true,
     }
-    class { '::zuul::server':
+    class { 'zuul::server':
         # Shared settings
         gerrit_server        => $conf_common['gerrit_server'],
         gerrit_user          => $conf_common['gerrit_user'],
@@ -44,7 +44,7 @@ class profile::zuul::server(
         email_server         => $email_server,
     }
 
-    if os_version('debian jessie') {
+    if debian::codename::eq('jessie') {
       $ic_clone_require = [Package['zuul']]
     } else {
       file { '/etc/zuul':
