@@ -2,7 +2,7 @@
 # Manages proxysql service on a host to allow connections to a mysql server
 
 class profile::proxysql {
-    include ::passwords::misc::scripts
+    include passwords::misc::scripts
 
     $admin_user = 'root'
     $admin_password = $::passwords::misc::scripts::mysql_root_pass
@@ -10,7 +10,7 @@ class profile::proxysql {
     $mysql_socket = '/run/proxysql/proxysql.sock'
     $mysql_port   = 3311
 
-    class { '::proxysql':
+    class { 'proxysql':
         admin_user     => $admin_user,
         admin_password => $admin_password,
         admin_socket   => $admin_socket,
@@ -29,7 +29,7 @@ class profile::proxysql {
     #   RuntimeDirectory=mysqld
     #   RuntimeDirectoryPreserve=yes
     # directly on the systemd unit
-    if !os_version('debian >= buster'){
+    if debian::codename::lt('buster'){
         systemd::tmpfile { 'proxysql':
             content => 'd /run/proxysql 0775 proxysql proxysql -',
         }
