@@ -32,18 +32,18 @@ class tendril (
     }
 
     # Temporary hack while jessie is supported
-    if os_version('debian <= jessie') {
+    if debian::codename::le('jessie') {
         $php_mysql_pkg = 'php5-mysql'
         $php_memcache_pkg = 'php5-memcache'
     } else {
         $php_mysql_pkg = 'php-mysql'
         $php_memcache_pkg = 'php-memcache'
     }
-    require_package(
+    ensure_packages([
         $php_mysql_pkg,
         $php_memcache_pkg, # do not install -memcached, it won't work
         'memcached', # memcached expected by default on localhost
-    )
+    ])
 
     group { 'mwdeploy':
         ensure => present,
