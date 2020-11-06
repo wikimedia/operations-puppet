@@ -10,11 +10,11 @@ class profile::cumin::master (
     $mariadb_roles = Profile::Mariadb::Role
     $mariadb_sections = Profile::Mariadb::Valid_section
 
-    ::keyholder::agent { 'cumin_master':
+    keyholder::agent { 'cumin_master':
         trusted_groups => ['root'],
     }
 
-    require_package([
+    ensure_packages([
         'clustershell',  # Installs nodeset CLI that is useful to mangle host lists.
         'cumin',
         'python3-dnspython',
@@ -74,9 +74,9 @@ class profile::cumin::master (
         group  => 'root',
     }
 
-    if os_version('debian == stretch') {
+    if debian::codename::eq('stretch') {
         $python_version = '3.5'
-    } elsif os_version('debian == buster') {
+    } elsif debian::codename::eq('buster') {
         $python_version = '3.7'
 
         apt::package_from_component { 'spicerack':
@@ -84,6 +84,8 @@ class profile::cumin::master (
             packages  => ['python3-tqdm'],
             priority  => 1002,
         }
+    } else {
+        fail("codename (${debian::codename()}): not supported")
     }
 
     file { "/usr/local/lib/python${python_version}/dist-packages/wmf_auto_reimage_lib.py":
@@ -144,7 +146,7 @@ class profile::cumin::master (
         minute  => $times['minute'],
     }
 
-    class { '::phabricator::bot':
+    class { 'phabricator::bot':
         username => 'ops-monitoring-bot',
         token    => $passwords::phabricator::ops_monitoring_bot_token,
         owner    => 'root',
