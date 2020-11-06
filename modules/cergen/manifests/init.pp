@@ -3,7 +3,7 @@
 #
 class cergen {
 
-    if os_version('debian == buster') {
+    if debian::codename::eq('buster') {
         apt::package_from_component { 'cergen':
             component => 'component/cergen',
             packages  => ['cergen']
