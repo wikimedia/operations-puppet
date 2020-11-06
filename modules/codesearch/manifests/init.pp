@@ -16,14 +16,14 @@ class codesearch(
         packages  => ['docker-ce'],
     }
 
-    require_package([
+    ensure_packages([
         'gunicorn3',
         'python3-flask',
         'python3-requests',
         'python3-yaml',
     ])
 
-    if os_version('debian == buster') {
+    if debian::codename::eq('buster') {
         # We need iptables 1.8.3+ for compatibility with docker
         # (see comments on <https://gerrit.wikimedia.org/r/565752>)
         apt::pin { 'iptables':
