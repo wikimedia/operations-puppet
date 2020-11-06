@@ -16,22 +16,22 @@ class profile::zookeeper::server (
     String $prometheus_instance          = lookup('profile::zookeeper::prometheus_instance', {default_value => 'ops'}),
     Optional[Stdlib::Unixpath] $override_java_home = lookup('profile::zookeeper::override_java_home', {default_value => undef }),
 ){
-    require ::profile::java
-    require ::profile::zookeeper::monitoring::server
-    $extra_java_opts = $::profile::zookeeper::monitoring::server::java_opts
+    require profile::java
+    require profile::zookeeper::monitoring::server
+    $extra_java_opts = $profile::zookeeper::monitoring::server::java_opts
 
     $java_home = pick($override_java_home, $profile::java::default_java_home)
 
     # Safety check to avoid that Zookeeper runs on java 8 with Buster,
     # since it will not work (jars are built using java 11).
-    if os_version('debian == buster') and !('11' in $java_home) {
+    if debian::codename::eq('buster') and !('11' in $java_home) {
         fail('Zookeeper on buster needs to run with Java 11, please use $override_java_home.')
     }
 
     # The zookeeper349 component for jessie-wikimedia has been created to
     # support a more flexible transition to Debian Stretch.
     if $version == '3.4.9-3~jessie' {
-        if os_version('debian == jessie') {
+        if debian::codename::eq('jessie') {
             apt::repository { 'wikimedia-zookeeper349':
                 uri        => 'http://apt.wikimedia.org/wikimedia',
                 dist       => 'jessie-wikimedia',
@@ -46,14 +46,14 @@ class profile::zookeeper::server (
         }
     }
 
-    class { '::zookeeper':
+    class { 'zookeeper':
         hosts                  => $clusters[$cluster_name]['hosts'],
         version                => $version,
         sync_limit             => $sync_limit,
         max_client_connections => $max_client_connections,
     }
 
-    class { '::zookeeper::server':
+    class { 'zookeeper::server':
         # If zookeeper runs in environments where JAVA_TOOL_OPTIONS is defined,
         # (like all the analytics hosts after T128295)
         # the zkCleanup.sh script will cause cronspam to root@ due to
