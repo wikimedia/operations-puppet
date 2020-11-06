@@ -4,21 +4,26 @@ class profile::tendril::webserver (
     $monitor_https = hiera('do_acme', true),
     $monitor_auth  = hiera('monitor_auth', true),
 ) {
-    # Temporary backwards compatibility
-    if debian::codename::gt('buster') {
-        fail("Please update ${module_name} to support newer php installed module")
-    } elsif debian::codename::eq('buster') {
-        $php_module = 'php7.3'
-        require_package('libapache2-mod-php','php-mysql')
-    } elsif debian::codename::eq('stretch') {
-        $php_module = 'php7.0'
-        require_package('libapache2-mod-php','php-mysql')
-    } else {
-        $php_module = 'php5'
-        require_package('libapache2-mod-php5', 'php5-mysql')
+    case debian::codename() {
+        'buster': {
+            $php_module = 'php7.3'
+            $packages = ['libapache2-mod-php','php-mysql']
+        }
+        'stretch': {
+            $php_module = 'php7.0'
+            $packages = ['libapache2-mod-php','php-mysql']
+        }
+        'jessie': {
+            $php_module = 'php5'
+            $packages = ['libapache2-mod-php5','php5-mysql']
+        }
+        default: {
+            fail("Please update ${module_name} to support newer php installed module")
+        }
     }
+    ensure_packages($packages)
 
-    class { '::httpd':
+    class { 'httpd':
         modules => ['rewrite',
                     'headers',
                     'ssl',
@@ -27,7 +32,7 @@ class profile::tendril::webserver (
     }
 
     # mod-php can only work with the prefork MPM
-    class { '::httpd::mpm':
+    class { 'httpd::mpm':
         mpm => 'prefork',
     }
 
