@@ -17,26 +17,26 @@ class role::simplelamp2 {
 
     $apache_modules_common = ['rewrite', 'headers']
 
-    require_package('libapache2-mod-php')
+    ensure_packages('libapache2-mod-php')
 
-    if os_version('debian == buster') {
-        $apache_php_module = 'php7.3'
-    } else {
-        $apache_php_module = 'php7.0'
+    # TODO: another use case for php_version fact
+    $apache_php_module = debian::codename::eq('buster') ? {
+        true    => 'php7.3',
+        default => 'php7.0',
     }
 
     $apache_modules = concat($apache_modules_common, $apache_php_module)
 
-    class { '::httpd':
+    class { 'httpd':
         modules => $apache_modules,
     }
 
-    class { '::memcached':
+    class { 'memcached':
         # TODO: the following were implicit defaults from
         # MW settings, need to be reviewed.
         growth_factor => 1.05,
         min_slab_size => 5,
     }
 
-    include ::profile::mariadb::generic_server
+    include profile::mariadb::generic_server
 }
