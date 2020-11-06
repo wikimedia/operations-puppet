@@ -23,8 +23,8 @@ class profile::mediawiki::mcrouter_wancache(
         class { '::memcached':
             size          => floor($facts['memorysize_mb'] * 0.25),
             port          => $onhost_port,
-            growth_factor => 1.05,
-            min_slab_size => 5,
+            growth_factor => 1.25,
+            min_slab_size => 48,
         }
         include ::profile::prometheus::memcached_exporter
     }
