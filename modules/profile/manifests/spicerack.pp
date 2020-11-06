@@ -35,23 +35,22 @@ class profile::spicerack(
     String $http_proxy = lookup('http_proxy'),
 ) {
     # Ensure pre-requisite profiles are included
-    require ::profile::conftool::client
-    require ::profile::cumin::master
-    require ::profile::ipmi::mgmt
-    require ::profile::access_new_install
+    require profile::conftool::client
+    require profile::cumin::master
+    require profile::ipmi::mgmt
+    require profile::access_new_install
 
-    include ::service::deploy::common
-    include ::passwords::redis
+    include service::deploy::common
+    include passwords::redis
 
     # Packages required by spicerack cookbooks
-    require_package('python3-dateutil', 'python3-requests')
+    ensure_packages(['python3-dateutil', 'python3-requests'])
 
-    if os_version('debian == buster') {
+    if debian::codename::eq('buster') {
         ensure_packages(['spicerack'])
     } else {
         apt::package_from_component { 'spicerack':
             component => 'component/spicerack',
-            packages  => ['spicerack']
         }
     }
 
@@ -63,7 +62,17 @@ class profile::spicerack(
         directory => $cookbooks_dir,
     }
 
-    # Install the global configuration, the directory is already created by the Debian package
+    # this directory is created by the debian package however we still manage it to force
+    # an auto require on all files under it this directory
+    file {'/etc/spicerack':
+        ensure  => directory,
+        owner   => 'root',
+        group   => 'ops',
+        mode    => '0550',
+        require => Package['spicerack'],
+    }
+
+
     file { '/etc/spicerack/config.yaml':
         ensure  => present,
         owner   => 'root',
