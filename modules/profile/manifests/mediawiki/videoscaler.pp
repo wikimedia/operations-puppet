@@ -1,10 +1,10 @@
 class profile::mediawiki::videoscaler()
 {
-    include ::mediawiki::users
+    include mediawiki::users
 
     # Backport of libvpx 1.7 and row-mt support, can be removed once
     # video scalers are migrated to Debian buster
-    if os_version('debian == stretch') {
+    if debian::codename::eq('stretch') {
 
         # ffmpeg has a dependency on the base version of the release, so e.g. (>= 7:3.2.14)
         # This isn't sufficient it make apt pull in our patched version, so explicitly add

@@ -35,7 +35,7 @@ class profile::mediawiki::php(
     Boolean $phpdbg = lookup('profile::mediawiki::php::phpdbg', {'default_value' => false}),
     ) {
 
-    if os_version('debian == stretch') {
+    if debian::codename::eq('stretch') {
         # We get our packages for our repositories again
         file { '/etc/apt/preferences.d/php_wikidiff2.pref':
             ensure => absent,
@@ -117,7 +117,7 @@ class profile::mediawiki::php(
         }
     }
     # Install the runtime
-    class { '::php':
+    class { 'php':
         ensure         => present,
         version        => $php_version,
         sapis          => $_sapis,
@@ -223,7 +223,7 @@ class profile::mediawiki::php(
     # You can check all configuration options at
     # http://php.net/manual/en/install.fpm.configuration.php
     if $enable_fpm {
-        class { '::php::fpm':
+        class { 'php::fpm':
             ensure => present,
             config => {
                 'emergency_restart_interval'  => '60s',
