@@ -9,11 +9,13 @@ class envoyproxy(
     # Variables for zone-aware routing, useful if that is used.
     $service_node = $::fqdn
     $service_zone = $::site
+    $envoy_directory = '/etc/envoy'
+    $dir_ensure = ensure_directory($ensure)
+
+    ensure_packages('python3-yaml')
     package { $pkg_name:
         ensure => $ensure
     }
-    $envoy_directory = '/etc/envoy'
-    $dir_ensure = ensure_directory($ensure)
 
     file { $envoy_directory:
         ensure => $dir_ensure,
@@ -54,13 +56,10 @@ class envoyproxy(
     #
     # It will also verify the new configuration and only put it in place if something
     # has changed.
-    require_package('python3-yaml')
     # Jessie has python 3.4, with no typing support.
-    if os_version('debian jessie') {
-        $build_source = 'puppet:///modules/envoyproxy/build_envoy_config.jessie.py'
-    }
-    else {
-        $build_source = 'puppet:///modules/envoyproxy/build_envoy_config.py'
+    $build_source = debian::codename::eq('jessie') ? {
+        true    => 'puppet:///modules/envoyproxy/build_envoy_config.jessie.py',
+        default => 'puppet:///modules/envoyproxy/build_envoy_config.py'
     }
     file { '/usr/local/sbin/build-envoy-config':
         ensure => $ensure,
@@ -94,11 +93,9 @@ class envoyproxy(
     }
 
 
-    if $use_override {
-        $tpl = 'envoyproxy/systemd.override.conf.erb'
-    }
-    else {
-        $tpl = 'envoyproxy/systemd.full.conf.erb'
+    $tpl = $use_override ? {
+        true    => 'envoyproxy/systemd.override.conf.erb',
+        default => 'envoyproxy/systemd.full.conf.erb',
     }
 
     # hot restarter script, taken from the envoy repository directly.
