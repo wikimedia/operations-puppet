@@ -7,7 +7,7 @@ class motd {
     # https://lists.debian.org/debian-devel/2014/12/msg00368.html
     #
     # This has been fixed since in stretch onwards.
-    if os_version('debian jessie') {
+    if debian::codename::eq('jessie') {
         file { '/etc/motd':
             ensure => link,
             target => '/var/run/motd',
