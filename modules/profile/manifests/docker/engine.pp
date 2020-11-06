@@ -16,7 +16,7 @@ class profile::docker::engine(
 ) {
 
     # On Buster and later we use Docker from Debian
-    if os_version('debian < buster') {
+    if debian::codename::lt('buster') {
         apt::repository { 'thirdparty-k8s':
             uri        => 'http://apt.wikimedia.org/wikimedia',
             dist       => "${::lsbdistcodename}-wikimedia",
@@ -28,23 +28,22 @@ class profile::docker::engine(
     # Docker config
     # Fetch the storage config from the related driver
     # I know this is horrible
-    if defined(Class['::profile::docker::storage::thinpool']) {
+    if defined(Class['profile::docker::storage::thinpool']) {
         $docker_storage_options = $::profile::docker::storage::thinpool::options
-    } elsif defined(Class['::profile::docker::storage::loopback']) {
+    } elsif defined(Class['profile::docker::storage::loopback']) {
         $docker_storage_options = $::profile::docker::storage::loopback::options
-
     } else {
         $docker_storage_options = $::profile::docker::storage::options
     }
 
     # We need to import one storage config
-    class { '::docker::configuration':
+    class { 'docker::configuration':
         settings => merge($settings, $docker_storage_options),
     }
 
     # Install docker, we should remove the "version" parameter when everything
     # is using Buster/Docker as packaged by Debian
-    class { '::docker':
+    class { 'docker':
         version      => $version,
         package_name => $packagename,
     }
