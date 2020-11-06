@@ -43,11 +43,12 @@ class thumbor (
     $logstash_port = 11514,
     $stl_support = undef,
 ) {
-    require_package('firejail')
-    require_package('python-logstash')
-    require_package('binutils') # The find_library() function in ctypes/Python uses objdump
+    ensure_packages([
+        'firejail', 'python-logstash',
+        'binutils', # The find_library() function in ctypes/Python uses objdump
+    ])
 
-    if (os_version('debian == stretch')) {
+    if debian::codename::eq('stretch') {
         apt::package_from_component { 'wikimedia-thumbor':
             component => 'component/thumbor',
             packages  => ['librsvg2-2', 'librsvg2-common', 'librsvg2-bin',
@@ -116,7 +117,7 @@ class thumbor (
         content => template('thumbor/haproxy.cfg.erb'),
     }
 
-    include ::haproxy::mtail
+    include haproxy::mtail
     # lint:endignore
 
     # Multi instance setup.
