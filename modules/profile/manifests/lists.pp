@@ -6,8 +6,8 @@ class profile::lists (
     Optional[Stdlib::IP::Address] $lists_ipv4 = lookup('profile::lists::ipv4', {'default_value' => undef}),
     Optional[Stdlib::IP::Address] $lists_ipv6 = lookup('profile::lists::ipv6', {'default_value' => undef}),
 ){
-    include ::network::constants
-    include ::privateexim::listserve
+    include network::constants
+    include privateexim::listserve
 
     # Disable mailman service on the sandby host
     $mailman_service_ensure = $facts['fqdn'] ? {
@@ -15,7 +15,7 @@ class profile::lists (
         default       => 'running',
     }
 
-    class { '::mailman':
+    class { 'mailman':
         lists_servername       => $lists_servername,
         mailman_service_ensure => $mailman_service_ensure,
     }
@@ -28,7 +28,7 @@ class profile::lists (
         ipv6 => $lists_ipv6,
     }
 
-    class { '::sslcert::dhparam': }
+    class { 'sslcert::dhparam': }
     acme_chief::cert{ 'lists':
         puppet_svc => 'apache2',
         key_group  => 'Debian-exim',
@@ -50,7 +50,7 @@ class profile::lists (
         pick($lists_ipv6, $facts['ipaddress6']),
     ]
 
-    class { '::exim4':
+    class { 'exim4':
         variant => 'heavy',
         config  => template('profile/exim/exim4.conf.mailman.erb'),
         filter  => template('profile/exim/system_filter.conf.mailman.erb'),
@@ -178,7 +178,7 @@ class profile::lists (
     }
 
     # in buster, the 'list' group has access to /var/log/mailman
-    if os_version('debian >= buster') {
+    if debian::codename::ge('buster') {
         user { 'mtail':
             ensure  => 'present',
             groups  => ['list'],
