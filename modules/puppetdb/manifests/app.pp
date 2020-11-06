@@ -25,9 +25,9 @@ class puppetdb::app(
     Optional[String]              $db_ro_host                 = undef,
     Optional[String]              $db_password                = undef,
 ) {
-    ## PuppetDB installation
+    # PuppetDB installation
 
-    require_package('puppetdb')
+    ensure_packages('puppetdb')
 
     file { $vardir:
         ensure => directory,
@@ -60,6 +60,10 @@ class puppetdb::app(
     }
 
     ## Configuration
+    file { '/etc/puppetdb':
+        ensure  => directory,
+        require => Package['puppetdb'],
+    }
     file { '/etc/puppetdb/conf.d':
         ensure  => directory,
         owner   => 'puppetdb',

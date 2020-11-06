@@ -2,21 +2,18 @@
 # Init settings for puppetdb
 ###########################################
 
-<%- if scope.function_os_version(['debian < buster']) -%>
-# Location of your Java binary (version 7 or higher)
-JAVA_BIN="/usr/bin/java"
-<%- end -%>
-
 # Modify this if you'd like to change the memory allocation, enable JMX, etc
 JAVA_ARGS="<%= @jvm_opts %>"
 
 # These normally shouldn't need to be edited if using OS packages
-<%- if scope.function_os_version(['debian >= buster']) -%>
+<%- if @facts['os']['release']['major'].to_i > 9 -%>
 CONFIG="/etc/puppetdb/conf.d"
 
 # Bootstrap path
 BOOTSTRAP_CONFIG="/etc/puppetdb/bootstrap.cfg"
 <%- else -%>
+# Location of your Java binary (version 7 or higher)
+JAVA_BIN="/usr/bin/java"
 USER="puppetdb"
 GROUP="puppetdb"
 INSTALL_DIR="/opt/puppetlabs/server/apps/puppetdb"

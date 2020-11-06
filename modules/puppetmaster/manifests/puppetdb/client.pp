@@ -5,13 +5,20 @@ class puppetmaster::puppetdb::client(
     Stdlib::Port        $port              = 443,
     Boolean             $command_broadcast = false,
 ) {
-    $puppetdb_terminus_package = os_version('debian >= buster') ? {
+    $puppetdb_terminus_package = debian::codename::ge('buster') ? {
         true    => 'puppet-terminus-puppetdb',
         default => 'puppetdb-termini',
     }
     $puppetdb_conf_template    = 'puppetmaster/puppetdb4.conf.erb'
 
-    require_package($puppetdb_terminus_package)
+    ensure_packages($puppetdb_terminus_package)
+
+    file { '/etc/puppet':
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+    }
 
     file { '/etc/puppet/puppetdb.conf':
         ensure  => present,
