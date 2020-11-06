@@ -3,9 +3,9 @@ class profile::mariadb::packages_client (
 ) {
     if $package != undef {
         $mariadb_client_package = $package
-    } elsif os_version('debian == buster') {
+    } elsif debian::codename::eq('buster') {
         $mariadb_client_package = 'wmf-mariadb104-client'
-    } elsif os_version('debian == stretch') {
+    } elsif debian::codename::eq('stretch') {
         $mariadb_client_package = 'wmf-mariadb101-client'
     } else {
         fail("Debian release ${facts['os']['distro']['codename']} is not supported")
