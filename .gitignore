@@ -23,6 +23,7 @@
 
 # local ruby configuration
 /.rbenv-version
+.ruby-version
 /Gemfile.lock
 /.bundle/
 
