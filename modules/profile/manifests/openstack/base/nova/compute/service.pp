@@ -12,7 +12,7 @@ class profile::openstack::base::nova::compute::service(
     Optional[String] $libvirt_rbd_uuid = lookup('profile::ceph::client::rbd::libvirt_rbd_uuid', {'default_value' => undef}),
     ) {
 
-    require_package('conntrack')
+    ensure_packages('conntrack')
 
     # If this node was previously a 'spare' node then it will have ferm installed
     #  which will interfere with various nova things
@@ -29,7 +29,7 @@ class profile::openstack::base::nova::compute::service(
         legacy_vlan_naming => $legacy_vlan_naming,
     }
 
-    if $::fqdn =~ /^labvirt100[0-9].eqiad.wmnet/ {
+    if $facts['fqdn'] =~ /^labvirt100[0-9].eqiad.wmnet/ {
         openstack::nova::compute::partition{ '/dev/sdb':
             before => File['/var/lib/nova/instances'],
         }
@@ -70,7 +70,7 @@ class profile::openstack::base::nova::compute::service(
     # For OpenStack configure unconditional flushes of the L1 cache during VMENTER
     # https://www.kernel.org/doc/html/latest/admin-guide/hw-vuln/l1tf.html
     # Functionality got backported to 4.9.168 (kernel ABI 4.9.0-9)
-    if os_version('debian == stretch') and (versioncmp($::kernelrelease, '4.9.0-9-amd64') >= 0) {
+    if debian::codename::eq('stretch') and (versioncmp($::kernelrelease, '4.9.0-9-amd64') >= 0) {
         kmod::options { 'kvm_intel':
             options => 'vmentry_l1d_flush=always',
         }
@@ -116,7 +116,7 @@ class profile::openstack::base::nova::compute::service(
         group  => 'libvirt',
     }
 
-    class {'::openstack::nova::compute::service':
+    class {'openstack::nova::compute::service':
         version              => $version,
         certpath             => $certpath,
         all_cloudvirts       => $all_cloudvirts,
@@ -125,5 +125,5 @@ class profile::openstack::base::nova::compute::service(
         libvirt_rbd_uuid     => $libvirt_rbd_uuid,
         enable_nova_rbd      => $enable_nova_rbd,
     }
-    contain '::openstack::nova::compute::service'
+    contain 'openstack::nova::compute::service'
 }

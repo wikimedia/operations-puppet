@@ -24,16 +24,16 @@ class profile::openstack::eqiad1::cumin::master(
     $project_ssh_priv_key_path = lookup('profile::openstack::eqiad1::cumin::project_ssh_priv_key_path'),
     $region = lookup('profile::openstack::eqiad1::region'),
     ) {
-        # TODO: simplify once hiera converts null properly to undef
+        # TODO: simplify once hiera converts null properly to undef (this can be fixed now)
         if $::labsproject and $project_ssh_priv_key_path and $project_ssh_priv_key_path != '' and $project_ssh_priv_key_path != 'undef' {
             $is_project = true
-            ::keyholder::agent { "cumin_openstack_${::labsproject}_master":
+            keyholder::agent { "cumin_openstack_${::labsproject}_master":
                 trusted_groups => ['root'],
                 priv_key_path  => $project_ssh_priv_key_path,
             }
         } else {
             $is_project = false
-            ::keyholder::agent { 'cumin_openstack_master':
+            keyholder::agent { 'cumin_openstack_master':
                 trusted_groups => ['wmcs-roots', 'root'],
             }
         }
@@ -92,9 +92,9 @@ class profile::openstack::eqiad1::cumin::master(
             require => File['/etc/cumin'],
         }
 
-        if os_version('debian == stretch') {
+        if debian::codename::eq('stretch') {
             $python_version = '3.5'
-        } elsif os_version('debian == buster') {
+        } elsif debian::codename::eq('buster') {
             $python_version = '3.7'
 
             apt::package_from_component { 'spicerack':
