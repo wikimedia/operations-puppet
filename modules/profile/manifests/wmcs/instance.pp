@@ -6,13 +6,13 @@ class profile::wmcs::instance(
     Stdlib::Fqdn $metrics_server = lookup('graphite_host',   {default_value => 'localhost'}),
 ) {
     # force sudo on buster
-    if $sudo_flavor == 'sudo' or os_version('debian >= buster') {
+    if $sudo_flavor == 'sudo' or debian::codename::ge('buster') {
         if ! defined(Class['Sudo']) {
-            class { '::sudo': }
+            class { 'sudo': }
         }
     } else {
         if ! defined(Class['Sudo::Sudoldap']) {
-            class { '::sudo::sudoldap': }
+            class { 'sudo::sudoldap': }
         }
     }
 
@@ -74,7 +74,7 @@ class profile::wmcs::instance(
     }
 
     # Still needed for Toolforge
-    if os_version('debian == stretch'){
+    if debian::codename::eq('stretch'){
         apt::repository { 'debian-backports':
             uri         => 'http://mirrors.wikimedia.org/debian/',
             dist        => 'stretch-backports',
@@ -90,7 +90,7 @@ class profile::wmcs::instance(
         $path_prefix  = $::labsproject
         $server_ip    = ipresolve($metrics_server, 4)
 
-        class { '::diamond':
+        class { 'diamond':
             path_prefix   => $path_prefix,
             keep_logs_for => '0',
             service       => true,
@@ -112,8 +112,9 @@ class profile::wmcs::instance(
         }
     }
 
-    class { '::prometheus::node_ssh_open_sessions': }
+    class { 'prometheus::node_ssh_open_sessions': }
 
+    # TODO: is this still the most uptodate function?
     hiera_include('classes', [])
 
     # Signal to rc.local that this VM is up and we don't need to run the firstboot

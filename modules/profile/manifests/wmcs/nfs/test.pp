@@ -36,9 +36,9 @@ class profile::wmcs::nfs::test(
   Stdlib::IP::Address $nfs_host1_ip = lookup('profile::wmcs::nfs::test::nfs_host1_ip'),
   Stdlib::IP::Address $nfs_host2_ip = lookup('profile::wmcs::nfs::test::nfs_host2_ip'),
 ) {
-    require ::profile::openstack::eqiad1::observerenv
+    require profile::openstack::eqiad1::observerenv
 
-    class {'::labstore':
+    class {'labstore':
         nfsd_threads => '8',
     }
 
@@ -62,7 +62,7 @@ class profile::wmcs::nfs::test(
         priority => 70,
     }
 
-    class {'::labstore::fileserver::exports':
+    class {'labstore::fileserver::exports':
         server_vols   => ['project', 'home'],
     }
 
@@ -127,7 +127,7 @@ class profile::wmcs::nfs::test(
     }
 
     # state via nfs-manage
-    if os_version('debian >= stretch') {
+    if debian::codename::ge('stretch') {
         service { 'nfs-server':
             enable => false,
         }

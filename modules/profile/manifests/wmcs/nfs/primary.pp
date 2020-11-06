@@ -10,8 +10,8 @@ class profile::wmcs::nfs::primary(
   Stdlib::IP::Address::V4 $cluster_ip = lookup('profile::wmcs::nfs::primary::cluster_ip'),
   Stdlib::IP::Address::V4 $subnet_gateway_ip = lookup('profile::wmcs::nfs::primary::subnet_gateway_ip'),
 ) {
-    require ::profile::openstack::eqiad1::clientpackages
-    require ::profile::openstack::eqiad1::observerenv
+    require profile::openstack::eqiad1::clientpackages
+    require profile::openstack::eqiad1::observerenv
 
     $drbd_expected_role = $facts['fqdn'] ? {
         $standby_server => 'secondary',
@@ -31,7 +31,7 @@ class profile::wmcs::nfs::primary(
         $drbd_actual_role = undef
     }
 
-    class {'::labstore':
+    class {'labstore':
         nfsd_threads => '300',
     }
 
@@ -58,7 +58,7 @@ class profile::wmcs::nfs::primary(
         priority => 70,
     }
 
-    class {'::labstore::fileserver::exports':
+    class {'labstore::fileserver::exports':
         server_vols => ['project', 'home', 'tools-home', 'tools-project'],
         drbd_role   => $drbd_actual_role,
     }
@@ -118,7 +118,7 @@ class profile::wmcs::nfs::primary(
     }
 
     # state via nfs-manage (TODO: cleanup from jessie deprecation)
-    if os_version('debian >= stretch') {
+    if debian::codename::ge('stretch') {
         service { 'nfs-server':
             enable => false,
         }
