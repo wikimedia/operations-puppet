@@ -17,10 +17,10 @@ class varnish::common(
     }
 
     # Python version
-    if os_version('debian == stretch') {
-        $python_version = '3.5'
-    } elsif os_version('debian == buster') {
-        $python_version = '3.7'
+    # TODO: use case for python_version fact
+    $python_version = debian::codename::eq('stretch') ? {
+        true    => '3.5',
+        default => '3.7',
     }
 
     file { '/usr/local/sbin/reload-vcl':
