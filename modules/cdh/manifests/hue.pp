@@ -231,7 +231,7 @@ class cdh::hue(
     # Needed to support Kerberos with GSS-API and SASLß
     package { 'libsasl2-modules-gssapi-mit': }
 
-    if (os_version('debian == buster')) {
+    if debian::codename::eq('buster') {
         apt::package_from_component { 'cloudera-deps':
             component => 'component/cloudera',
             packages  => ['libmysqlclient18']

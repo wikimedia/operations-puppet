@@ -7,12 +7,11 @@ define cdh::mysql_jdbc (
     String $link_path,
     Optional[Boolean] $use_mysql_jar = false,
 ) {
-    if os_version('debian <= stretch') {
+    if debian::codename::le('stretch') {
         $package_name = 'libmysql-java'
-        if $use_mysql_jar {
-            $jar_path = '/usr/share/java/mysql.jar'
-        } else {
-            $jar_path = '/usr/share/java/mysql-connector-java.jar'
+        $jar_path = $use_mysql_jar ? {
+            true    => '/usr/share/java/mysql.jar',
+            default => '/usr/share/java/mysql-connector-java.jar',
         }
     } else {
         $package_name = 'libmariadb-java'
