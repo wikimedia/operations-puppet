@@ -16,3 +16,9 @@ profile::tlsproxy::envoy::global_cert_name: "releases.discovery.wmnet"
 profile::releases::mediawiki::jenkins_service_ensure: 'stopped'
 profile::releases::mediawiki::jenkins_service_enable: 'mask'
 profile::releases::mediawiki::jenkins_service_monitor: false
+
+profile::java::java_packages:
+  - version: '11'
+    variant: 'jre-headless'
+  - version: '8'
+    variant: 'jdk'
