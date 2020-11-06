@@ -16,14 +16,14 @@ class profile::backup::director(
     String              $dbpass           = lookup('profile::backup::director::dbpass'),
     Array[Stdlib::Host] $prometheus_nodes = lookup('prometheus_nodes'),
 ){
-    include ::profile::base::firewall
+    include profile::base::firewall
 
     class { 'bacula::director':
         sqlvariant          => 'mysql',
         max_dir_concur_jobs => '10',
     }
 
-    if os_version('debian >= buster') {
+    if debian::codename::ge('buster') {
         $file_storage_production = 'FileStorageProduction'
         $file_storage_archive = 'FileStorageArchive'
         $file_storage_databases = 'FileStorageDatabases'
@@ -62,7 +62,7 @@ class profile::backup::director(
     }
 
     # Databases-only pool
-    if os_version('debian >= buster') {
+    if debian::codename::ge('buster') {
         bacula::director::pool { 'Databases':
             max_vols         => 80,
             storage          => "${onsite_sd}-${file_storage_databases}",
@@ -134,7 +134,7 @@ class profile::backup::director(
 
     # The console should be on the director
     class { 'bacula::console':
-        director   => $::fqdn,
+        director   => $facts['fqdn'],
     }
 
     nrpe::monitor_service { 'bacula_director':
@@ -145,7 +145,7 @@ class profile::backup::director(
 
     # install the general backup check and set it up to run every hour
     class { 'bacula::director::check': }
-    ::sudo::user { 'nagios_backup_freshness':
+    sudo::user { 'nagios_backup_freshness':
         user       => 'nagios',
         privileges => ['ALL = (bacula) NOPASSWD: /usr/bin/check_bacula.py'],
     }

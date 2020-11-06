@@ -4,10 +4,10 @@
 # of profile::backup::director. That's cause they are reused in other profile
 # classes in the same hierarchy and is consistent with our code guidelines
 class profile::backup::storage(
-    $director = hiera('profile::backup::director'),
+    $director = lookup('profile::backup::director'),
 ) {
-    include ::profile::base::firewall
-    include ::profile::standard
+    include profile::base::firewall
+    include profile::standard
 
 
     class { 'bacula::storage':
@@ -18,7 +18,7 @@ class profile::backup::storage(
 
     # Temporary conditional to handle the 2 separate storage layouts
 
-    if os_version('debian >= buster') {
+    if debian::codename::ge('buster') {
         # TODO: Remove once all jessies are gone
         # Downgrade TLS from 1.2 to 1
         file { '/etc/ssl/openssl.cnf':
