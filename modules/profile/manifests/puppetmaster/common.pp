@@ -50,7 +50,8 @@ class profile::puppetmaster::common (
     }
 
     # Don't attempt to use puppet-master service on stretch, we're using passenger.
-    if os_version('debian >= stretch') {
+    # TODO: I think we can probably drop this need to check for jessie pms in cloud
+    if debian::codename::ge('stretch') {
         service { 'puppet-master':
             ensure  => stopped,
             enable  => false,
