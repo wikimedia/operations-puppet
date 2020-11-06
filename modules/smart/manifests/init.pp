@@ -1,11 +1,11 @@
 class smart (
     $ensure = present,
 ) {
-    require_package(['python3-prometheus-client', 'bsdutils'])
+    ensure_packages(['python3-prometheus-client', 'bsdutils'])
 
     $outfile = '/var/lib/prometheus/node.d/device_smart.prom'
 
-    if $facts['is_virtual'] == true {
+    if $facts['is_virtual'] {
         fail('smart module is not supported on virtual hosts')
     }
 
@@ -16,7 +16,7 @@ class smart (
     # smartd doesn't support enumerating devices on cciss/hpsa controllers and
     # fails to start. Since alerting is done via metrics from smart-data-dump,
     # mask smartd when needed. See also T246997.
-    if os_version('debian >= buster') and 'hpsa' in $facts['raid'] {
+    if debian::codename::ge('buster') and 'hpsa' in $facts['raid'] {
         systemd::mask { 'smartd.service': }
     } else {
         base::service_auto_restart { 'smartd': }
