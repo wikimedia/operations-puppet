@@ -3,7 +3,8 @@ class profile::mediawiki::common(
     $logstash_syslog_port = hiera('logstash_syslog_port'),
     $log_aggregator = hiera('udp2log_aggregator'),
     $php_version = lookup('profile::mediawiki::php::php_version', {'default_value' => undef}),
-    $php_restarts = lookup('profile::mediawiki::php::restarts::ensure', {'default_value' => undef})
+    $php_restarts = lookup('profile::mediawiki::php::restarts::ensure', {'default_value' => undef}),
+    $enable_icu63 = lookup('profile::mediawiki::php::icu63', {'default_value' => false})
 ){
 
     # GeoIP is needed for MW
@@ -34,6 +35,17 @@ class profile::mediawiki::common(
             web => 'www-data'
         }
     }
+
+    if $enable_icu63 {
+        if os_version('debian == stretch') {
+            apt::repository{ 'icu63':
+                uri        => 'http://apt.wikimedia.org/wikimedia',
+                dist       => 'stretch-wikimedia',
+                components => 'component/icu63',
+            }
+        }
+    }
+
     # Install scap
     include ::profile::mediawiki::scap_client
     # Monitor mediawiki versions (T242023)
