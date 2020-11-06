@@ -18,11 +18,11 @@
 #   To avoid pulling multiple times when role is applied on muliple nodes for a standby-scenario.
 #
 class librenms(
-    Stdlib::Fqdn $active_server,
-    String $laravel_app_key,
-    Hash $config={},
-    Stdlib::Unixpath $install_dir='/srv/librenms',
-    Stdlib::Unixpath $rrd_dir="${install_dir}/rrd",
+    Stdlib::Fqdn     $active_server,
+    String           $laravel_app_key,
+    Hash             $config          = {},
+    Stdlib::Unixpath $install_dir     = '/srv/librenms',
+    Stdlib::Unixpath $rrd_dir         = "${install_dir}/rrd",
 ) {
 
     # NOTE: scap will manage the deploy user
@@ -143,9 +143,11 @@ class librenms(
     }
 
     # Package requirements from https://docs.librenms.org/Installation/Installation-Ubuntu-1804-Apache/
-    if os_version('debian == stretch') {
-        $php72_packages = ['php7.2-cli', 'php7.2-curl', 'php7.2-gd', 'php7.2-json', 'php7.2-mbstring', 'php7.2-mysql', 'php7.2-snmp',
-    'php7.2-xml', 'php7.2-zip', 'php7.2-ldap', 'libapache2-mod-php7.2']
+    if debian::codename::eq('stretch') {
+        $php72_packages = [
+            'php7.2-cli', 'php7.2-curl', 'php7.2-gd', 'php7.2-json', 'php7.2-mbstring', 'php7.2-mysql',
+            'php7.2-snmp', 'php7.2-xml', 'php7.2-zip', 'php7.2-ldap', 'libapache2-mod-php7.2'
+        ]
 
         apt::package_from_component { 'librenms_php72':
             component => 'component/php72',
@@ -176,12 +178,11 @@ class librenms(
             'whois',
         ])
 
-    include ::imagemagick::install
+    include imagemagick::install
 
-    if $active_server == $::fqdn {
-        $cron_ensure = 'present'
-    } else {
-        $cron_ensure = 'absent'
+    $cron_ensure = ($active_server == $::fqdn) ? {
+        true    => 'present',
+        default => 'absent',
     }
 
     systemd::service { 'librenms-ircbot':
