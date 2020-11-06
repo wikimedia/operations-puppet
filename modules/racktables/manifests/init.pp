@@ -5,12 +5,12 @@
 ## http://racktables.org/ and unzipped into /srv/org/wikimedia/racktables
 class racktables ($racktables_host, $racktables_db_host, $racktables_db) {
 
-    require_package('php-mysql', 'php-gd')
+    ensure_packages(['php-mysql', 'php-gd'])
 
-    if os_version('debian == buster') {
-        $php_ini = '/etc/php/7.3/apache2/php.ini'
-    } else {
-        $php_ini = '/etc/php/7.0/apache2/php.ini'
+    # TODO: another use case for a php_version fact
+    $php_ini = debian::codename::eq('buster') ? {
+        true    => '/etc/php/7.3/apache2/php.ini',
+        default => '/etc/php/7.0/apache2/php.ini',
     }
 
     file { [
