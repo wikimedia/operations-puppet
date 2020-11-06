@@ -32,6 +32,8 @@ class profile::analytics::refinery::job::canary_events(
         job_opts     => [
             # Only produce canary events for streams that have canary_events_enabled: true
             '--settings_filters=canary_events_enabled:true',
+            # Get schemas from internal schema.discovery.wmnet base URIs.
+            '--schema_base_uris=https://schema.discovery.wmnet/repositories/primary/jsonschema,https://schema.discovery.wmnet/repositories/secondary/jsonschema',
             # Get stream config from MediaWiki EventStreamConfig API.
             '--event_stream_config_uri=https://meta.wikimedia.org/w/api.php',
             # Read in event service name to URL mapping from this.
