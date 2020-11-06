@@ -4,18 +4,16 @@
 #
 class mediawiki::packages::fonts {
 
-    if os_version('debian == jessie') {
-        require_package('fonts-noto') # T184664
-    }
-
-    if os_version('debian > jessie') {
-        require_package(
+    if debian::codename::gt('jessie') {
+        ensure_packages([
             'fonts-noto-hinted',  # T184664
             'fonts-noto-unhinted' # T184664
-        )
+        ])
+    } else {
+        ensure_packages('fonts-noto') # T184664
     }
 
-    require_package(
+    ensure_packages([
         'fonts-arabeyes',
         'fonts-arphic-ukai',
         'fonts-arphic-uming',
@@ -73,7 +71,7 @@ class mediawiki::packages::fonts {
         'fonts-sil-lateef',
         'fonts-ipafont-gothic',
         'fonts-ipafont-mincho',
-    )
+    ])
 
     # On Ubuntu, fontconfig-config provided a config file which forced antialiasing. This is no
     # longer present in the versions in Debian, so provide it manually since otherwise some fonts
