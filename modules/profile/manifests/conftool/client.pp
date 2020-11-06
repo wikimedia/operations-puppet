@@ -28,23 +28,19 @@ class profile::conftool::client(
     String                 $pool_pwd_seed  = lookup('etcd::autogen_pwd_seed'),
     String                 $etcd_user      = lookup('profile::conftool::client::etcd_user', {'default_value' => '__auto__'})
 ) {
-    if os_version('debian >= stretch') {
-        $socks_pkg = 'python-socks'
-    } else {
-        $socks_pkg = 'python-pysocks'
+    $socks_pkg = debian::coename::ge('stretch') ? {
+        true    => 'python-socks',
+        default => 'python-pysocks',
     }
 
     $conftool_pkg = 'python3-conftool'
 
-    require_package(
-        $conftool_pkg,
-        $socks_pkg,
-    )
+    ensure_packages([$conftool_pkg, $socks_pkg])
 
-    require ::passwords::etcd
+    require passwords::etcd
 
     # This is the configuration shared by all users.
-    class { '::etcd::client::globalconfig':
+    class { 'etcd::client::globalconfig':
         srv_domain => $srv_domain,
         host       => $host,
         port       => $port,
@@ -74,11 +70,11 @@ class profile::conftool::client(
     }
 
     # This is the configuration for the user root will access.
-    ::etcd::client::config { '/root/.etcdrc':
+    etcd::client::config { '/root/.etcdrc':
         settings => conftool::cluster_credentials($user, $pwd, $pool_pwd_seed, $conftool_cluster)
     }
 
-    class  { '::conftool::config':
+    class  { 'conftool::config':
         namespace      => $namespace,
         tcpircbot_host => $tcpircbot_host,
         tcpircbot_port => $tcpircbot_port,
