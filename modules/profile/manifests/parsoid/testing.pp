@@ -14,17 +14,17 @@ class profile::parsoid::testing (
 
     # mysql client and configuration to provide command line access to
     # parsoid testing database
-    include ::passwords::testreduce::mysql
+    include passwords::testreduce::mysql
     $parsoid_cli_password = $passwords::testreduce::mysql::mysql_client_pass
     $parsoid_test_db_host = 'm5-master.eqiad.wmnet'
 
-    if os_version('debian <= stretch') {
+    if debian::codename::le('stretch') {
         package { [
             'mysql-client',
             ]: ensure => present,
         }
     } else {
-        require_package('mariadb-client')
+        ensure_packages('mariadb-client')
     }
 
     file { '/etc/my.cnf':
