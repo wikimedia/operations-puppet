@@ -26,19 +26,16 @@ import yaml
 
 # A list of shells and remote shells people actually use interactively
 SHELLS = (
-    "bash",
-    "csh",
-    "fish",
-    "zsh",
-    "tcsh",
-    "screen",
-    "tmux: server",  # tmux usually has this as its name in the proc object
-    "tmux",          # just in case
-    "ssh",
-    "mosh",
-    "mosh-server",
-    "systemd",   # Needed for the systemd mounted cgroups of a shell
-    "(sd-pam)",  # Related shell stuff
+    "/bin/bash",
+    "/bin/csh",
+    "/bin/tcsh",
+    "/bin/zsh",
+    "/usr/bin/fish",
+    "/usr/bin/screen",
+    "/usr/bin/tmux",
+    "/usr/sbin/sshd",
+    "/usr/bin/mosh-server",
+    "/lib/systemd/systemd",  # Needed for the systemd mounted cgroups of a shell
 )
 
 
@@ -203,7 +200,9 @@ def spin_the_wheel(
     now = datetime.now(timezone.utc).timestamp()
     for proc in psutil.process_iter():
         # Ignore shells and remotes themselves
-        if proc.name() in SHELLS:
+        # proc.exe() is blank surprisingly often, but apparently only in cases
+        # we don't care about
+        if proc.exe() in SHELLS:
             continue
 
         uids = proc.uids()
