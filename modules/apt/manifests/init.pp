@@ -5,6 +5,15 @@ class apt(
     Boolean $manage_apt_source = false,
     String  $mirror            = 'mirrors.wikimedia.org',
 ) {
+    if debian::codename::eq('jessie') {
+        $components = 'main backports thirdparty'
+    } else {
+        $components =  $facts['is_virtual'] ? {
+            true    => 'main',
+            default => 'main thirdparty/hwraid',
+        }
+    }
+
     exec { 'apt-get update':
         path        => '/usr/bin',
         timeout     => 240,
@@ -59,42 +68,26 @@ class apt(
 
     if $use_proxy {
         $http_proxy = "http://webproxy.${::site}.wmnet:8080"
-
-        if $::operatingsystem == 'Debian' {
-            apt::conf { 'security-debian-proxy':
-                ensure   => present,
-                priority => '80',
-                key      => 'Acquire::http::Proxy::security.debian.org',
-                value    => $http_proxy,
-                before   => File['/etc/apt/apt.conf'],
-            }
-            apt::conf { 'security-cdn-debian-proxy':
-                ensure   => present,
-                priority => '80',
-                key      => 'Acquire::http::Proxy::security-cdn.debian.org',
-                value    => $http_proxy,
-                before   => File['/etc/apt/apt.conf']
-            }
-            apt::conf { 'deb-debian-org':
-                ensure   => present,
-                priority => '80',
-                key      => 'Acquire::http::Proxy::deb.debian.org',
-                value    => $http_proxy,
-                before   => File['/etc/apt/apt.conf']
-            }
-        } else {
-            fail("Unknown operating system '${::operatingsystem}'.")
+        apt::conf { 'security-debian-proxy':
+            ensure   => present,
+            priority => '80',
+            key      => 'Acquire::http::Proxy::security.debian.org',
+            value    => $http_proxy,
+            before   => File['/etc/apt/apt.conf'],
         }
-    }
-
-    if os_version('debian jessie') {
-        $components = 'main backports thirdparty'
-    } else {
-        if $facts['is_virtual'] == false {
-            # RAID tools only needed on bare metal servers
-            $components = 'main thirdparty/hwraid'
-        } else {
-            $components = 'main'
+        apt::conf { 'security-cdn-debian-proxy':
+            ensure   => present,
+            priority => '80',
+            key      => 'Acquire::http::Proxy::security-cdn.debian.org',
+            value    => $http_proxy,
+            before   => File['/etc/apt/apt.conf']
+        }
+        apt::conf { 'deb-debian-org':
+            ensure   => present,
+            priority => '80',
+            key      => 'Acquire::http::Proxy::deb.debian.org',
+            value    => $http_proxy,
+            before   => File['/etc/apt/apt.conf']
         }
     }
 
@@ -105,7 +98,7 @@ class apt(
         comment_old => true,
     }
 
-    if os_version('debian >= buster'){
+    if debian::codename::ge('buster'){
         apt::repository { 'debian-backports':
             uri         => 'http://mirrors.wikimedia.org/debian/',
             dist        => "${::lsbdistcodename}-backports",
@@ -114,7 +107,7 @@ class apt(
         }
     }
 
-    if os_version('debian >= stretch') {
+    if debian::codename::ge('stretch') {
         apt::repository { 'debian-debug':
             uri        => 'http://deb.debian.org/debian-debug',
             dist       => "${::lsbdistcodename}-debug",
@@ -131,7 +124,7 @@ class apt(
         before   => File['/etc/apt/apt.conf'],
     }
 
-    if os_version('debian >= buster') {
+    if debian::codename::ge('buster') {
         apt::conf { 'apt-harden':
             ensure   => 'present',
             priority => '30',
@@ -139,16 +132,6 @@ class apt(
             value    => true,
             before   => File['/etc/apt/apt.conf'],
         }
-    }
-
-    # 00InstallRecommends already provides this.
-    # TODO: remove once merged.
-    apt::conf { 'no-recommends':
-        ensure   => 'absent',
-        priority => '90',
-        key      => 'APT::Install-Recommends',
-        value    => '0',
-        before   => File['/etc/apt/apt.conf'],
     }
 
     # This will munge /etc/apt/apt.conf that get's created during installation

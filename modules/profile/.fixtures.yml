@@ -5,6 +5,7 @@ fixtures:
         backup: "../../../../backup"
         base: "../../../../base"
         conftool: "../../../../conftool"
+        debian: "../../../../debian"
         deployment: "../../../../deployment"
         etcd: "../../../../etcd"
         envoyproxy: "../../../../envoyproxy"
