@@ -7,13 +7,13 @@ class puppet_compiler::packages {
         /10/    => '11',
         default => '8',
     }
-    require_package(
+    ensure_packages([
         'python-yaml', 'python-requests', 'python-jinja2', 'nginx',
         'ruby-httpclient', 'ruby-ldap', 'ruby-rgen', "openjdk-${java_version}-jdk"
-    )
-    if os_version('debian == buster') {
+        ])
+    if debian::codename::eq('buster') {
         # Required to resolve PUP-8715
-        require_package('ruby-multi-json')
+        ensure_packages('ruby-multi-json')
     }
     # Required to fix PUP-8187
     file {'/usr/lib/ruby/vendor_ruby/puppet/application/master.rb':
