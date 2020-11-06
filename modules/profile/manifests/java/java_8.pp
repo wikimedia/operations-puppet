@@ -13,7 +13,7 @@ class profile::java::java_8 {
     # way of deploying java across our puppet code base,
     # but for the moment a conditional is sufficient.
     if !defined(Package['openjdk-8-jdk']) {
-        if os_version('debian == buster') {
+        if debian::codename::eq('buster') {
             apt::package_from_component { 'openjdk-8':
                 component => 'component/jdk8',
                 packages  => ['openjdk-8-jdk'],
