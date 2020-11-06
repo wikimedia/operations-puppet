@@ -26,6 +26,7 @@ class mediawiki::web::prod_sites(String $fcgi_proxy) {
 
 
     # Included in main.conf
+    # If you add a new wiki here, you have to link it in main.conf (see above)
     mediawiki::web::vhost{
         default:
             ensure          => present,
@@ -116,6 +117,12 @@ class mediawiki::web::prod_sites(String $fcgi_proxy) {
                 ],
                 'late'  => []
             }
+            ;
+        'thankyou.wikipedia.org':
+            docroot         => '/srv/mediawiki/docroot/thankyou',
+            https_only      => true,
+            legacy_rewrites => false,
+            short_urls      => false,
             ;
         'vote.wikimedia.org':
             docroot         => '/srv/mediawiki/docroot/wikimedia.org',
