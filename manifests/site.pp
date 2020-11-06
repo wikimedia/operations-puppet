@@ -1038,6 +1038,12 @@ node /^es10(32|33|34)\.eqiad\.wmnet$/ {
     role(insetup)
 }
 
+# New hosts: 3 will be for x2, and the rest are to refresh db1074-db1095 T264584 T267043
+# Set them to spare individually as it will take take to transfer the data
+node /^db11(51|52|53|54|55|56|57|58|59|60|61|62|63|64|65|66|67|68|69|70|71|72|73|74|75)\.eqiad\.wmnet$/ {
+    role(insetup)
+}
+
 # Backup system, see T176505.
 # This is a reserved system. Ask Otto or Faidon.
 node 'flerovium.eqiad.wmnet' {
