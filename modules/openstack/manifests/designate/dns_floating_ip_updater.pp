@@ -18,7 +18,7 @@ class openstack::designate::dns_floating_ip_updater(
 ) {
 
     # Also requires openstack::clientpackages
-    require_package('python-ipaddress')
+    ensure_packages('python-ipaddress')
 
     $config = {
         'floating_ip_ptr_zone'                     => $floating_ip_ptr_zone,
@@ -45,25 +45,22 @@ class openstack::designate::dns_floating_ip_updater(
         require => Package['python-ipaddress']
     }
 
-    if os_version('debian >= jessie') {
-
-        systemd::timer::job { 'designate_floating_ip_ptr_records_updater':
-            ensure                    => $ensure,
-            description               => 'Designate Floating IP PTR records updater',
-            command                   => '/usr/local/sbin/wmcs-dns-floating-ip-updater',
-            interval                  => {
-                'start'    => 'OnCalendar',
-                'interval' => '*-*-* *:00/15:00', # Every 15 minutes
-            },
-            max_runtime_seconds       => 890,  # kill if running after 14m50s
-            logging_enabled           => false,
-            monitoring_enabled        => true,
-            monitoring_contact_groups => 'wmcs-team',
-            user                      => 'root',
-            require                   => [
-                File['/usr/local/sbin/wmcs-dns-floating-ip-updater'],
-                File['/etc/wmcs-dns-floating-ip-updater.yaml'],
-            ],
-        }
+    systemd::timer::job { 'designate_floating_ip_ptr_records_updater':
+        ensure                    => $ensure,
+        description               => 'Designate Floating IP PTR records updater',
+        command                   => '/usr/local/sbin/wmcs-dns-floating-ip-updater',
+        interval                  => {
+            'start'    => 'OnCalendar',
+            'interval' => '*-*-* *:00/15:00', # Every 15 minutes
+        },
+        max_runtime_seconds       => 890,  # kill if running after 14m50s
+        logging_enabled           => false,
+        monitoring_enabled        => true,
+        monitoring_contact_groups => 'wmcs-team',
+        user                      => 'root',
+        require                   => [
+            File['/usr/local/sbin/wmcs-dns-floating-ip-updater'],
+            File['/etc/wmcs-dns-floating-ip-updater.yaml'],
+        ],
     }
 }
