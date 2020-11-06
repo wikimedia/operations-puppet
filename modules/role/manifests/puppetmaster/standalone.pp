@@ -87,7 +87,7 @@ class role::puppetmaster::standalone(
     }
 
     if $storeconfigs == 'puppetdb' {
-        if os_version('debian <= stretch') {
+        if debian::codename::le('stretch') {
             apt::repository { 'wikimedia-puppetdb4':
                 uri        => 'http://apt.wikimedia.org/wikimedia',
                 dist       => "${::lsbdistcodename}-wikimedia",
@@ -104,7 +104,7 @@ class role::puppetmaster::standalone(
         $config = merge($base_config, $env_config)
     }
 
-    class { '::httpd':
+    class { 'httpd':
         modules => ['proxy',
                     'proxy_http',
                     'proxy_balancer',
@@ -112,9 +112,9 @@ class role::puppetmaster::standalone(
                     'rewrite',
                     'lbmethod_byrequests'],
     }
-    require_package('libapache2-mod-passenger')
+    ensure_packages('libapache2-mod-passenger')
 
-    class { '::puppetmaster':
+    class { 'puppetmaster':
         server_name         => $server_name,
         allow_from          => $allow_from,
         secure_private      => false,
@@ -126,7 +126,7 @@ class role::puppetmaster::standalone(
     }
 
     # Don't attempt to use puppet-master service on stretch, we're using passenger.
-    if os_version('debian >= stretch') {
+    if debian::codename::ge('stretch') {
         service { 'puppet-master':
             ensure  => stopped,
             enable  => false,
