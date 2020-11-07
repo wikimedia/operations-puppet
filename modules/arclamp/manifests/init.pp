@@ -41,9 +41,9 @@ class arclamp(
     Optional[String] $swift_key          = undef,
 ){
 
-    require_package('python-redis')
-    require_package('python-yaml')
-    require_package('python-swiftclient')
+    require_package('python3-redis')
+    require_package('python3-yaml')
+    require_package('python3-swiftclient')
 
     # Global setup
     group { 'xenon':
