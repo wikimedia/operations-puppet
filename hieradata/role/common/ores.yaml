@@ -12,8 +12,7 @@ profile::ores::celery::workers: 90
 # We think the queue size should be (total number of celery workers / 2)
 profile::ores::celery::queue_maxsize: 405
 
-# We think web workers should be (celery worker count + queue size)
-profile::ores::web::workers: 135
+profile::ores::web::workers: 50
 
 profile::ores::web::redis_host: "oresrdb.svc.%{::site}.wmnet"
 profile::ores::web::redis_queue_port: 6380
