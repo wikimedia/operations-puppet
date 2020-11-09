@@ -1,4 +1,4 @@
-# @summary fail to compile if the running debian codename against the codename passed using a specific operator.
+# @summary fail to compile if the running debian codename is not at least equal to the $codename passed
 # @param codename the codename you want to test against
 # @param operator the comparison operator to us i.e
 # @return [Boolean] result of the comparison
@@ -9,16 +9,9 @@
 #  debian::codename::compare('stretch', '>') # pass/no action
 #  debian::codename::compare('buster', '>=') # pass/no action
 #  debian::codename::compare('buster', '<=') # pass/no action
-function debian::codename::require (
-    String                                 $codename,
-    Enum['==', '>=', '>', '<', '<=', '!='] $operator = '==',
-    Optional[String]                       $msg      = undef,
+function debian::codename::require::min (
+    String           $codename,
+    Optional[String] $msg      = undef,
 ) {
-    unless debian::codename::compare($codename, $operator) {
-        $_msg = $msg ? {
-            undef   => "node codename does not meet requirement `${debian::codename()} ${operator} ${codename}`",
-            default => $msg,
-        }
-        fail($_msg)
-    }
+    debian::codename::require($codename, '>=', $msg)
 }
