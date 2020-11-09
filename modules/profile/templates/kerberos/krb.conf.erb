@@ -8,6 +8,7 @@
         proxiable = true
         ticket_lifetime = 2d
         renew_lifetime = 7d
+        dns_canonicalize_hostname = false
         <%- if @default_ccache_name -%>
         default_ccache_name = <%= @default_ccache_name %>
         <%- end -%>
