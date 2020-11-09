@@ -43,7 +43,7 @@ class openstack::nova::fullstack::monitor {
         nrpe_command  => '/usr/local/bin/check_flavor_properties',
         description   => 'all nova flavors are assigned necessary properties',
         require       => File['/usr/local/bin/check_flavor_properties'],
-        timeout       => 180,
+        timeout       => 500,
         contact_group => 'wmcs-team-email,wmcs-bots',
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Host_aggregates';
     }
