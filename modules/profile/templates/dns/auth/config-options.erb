@@ -39,7 +39,7 @@ listen = {
         # clients-per-thread: default is 256, but larger may be better if we're
         # expecting many lingering idle opportunistic connections, to avoid the
         # scenario described above.
-        tcp_clients_per_thread = 1024
+        tcp_clients_per_thread = 4096
     }
 
     # These are monitor listeners, so they only get one thread per protocol per
