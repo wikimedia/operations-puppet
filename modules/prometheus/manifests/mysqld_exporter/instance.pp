@@ -33,28 +33,30 @@ define prometheus::mysqld_exporter::instance (
 
     $my_cnf = "/var/lib/prometheus/.my.${title}.cnf"
     $service = "prometheus-mysqld-exporter@${title}"
-    $common_options = "${option_string}collect.global_status \
-${option_string}collect.global_variables \
-${option_string}collect.info_schema.processlist \
-${option_string}collect.slave_status"
 
     # prometheus collector option formatting changed since buster
-    # Also add sane default arguments in case none are provided
-    if debian::codename::ge('buster') {
+    if os_version('debian >= buster') {
         $option_string = '--'
-        $_general_options = "${common_options} ${option_string}no-collect.info_schema.tables"
     } else {
         $option_string = '-'
-        $_general_options = "${common_options} ${option_string}collect.info_schema.processlist.min_time 0 \
-${option_string}collect.info_schema.tables false"
     }
     $instance_options = "${option_string}web.listen-address \"${listen_address}\" \
 ${option_string}config.my-cnf \"${my_cnf}\""
 
-    # TODO: update arguments default to undef
-    $general_options = $arguments ?  {
-        ''      => $_general_options,
-        default => $arguments
+    # Add sane default arguments if none provided
+    if $arguments == '' {
+        $common_options = "${option_string}collect.global_status \
+${option_string}collect.global_variables \
+${option_string}collect.info_schema.processlist \
+${option_string}collect.slave_status"
+        if os_version('debian >= buster') {
+            $general_options = "${common_options} ${option_string}no-collect.info_schema.tables"
+        } else {
+            $general_options = "${common_options} ${option_string}collect.info_schema.processlist.min_time 0 \
+${option_string}collect.info_schema.tables false"
+        }
+    } else {
+        $general_options = $arguments
     }
 
     file { "/etc/default/prometheus-mysqld-exporter@${title}":

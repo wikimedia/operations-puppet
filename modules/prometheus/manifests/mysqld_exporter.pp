@@ -24,7 +24,7 @@ define prometheus::mysqld_exporter (
     $client_password = '',
     $arguments = '',
 ) {
-    ensure_packages('prometheus-mysqld-exporter')
+    require_package('prometheus-mysqld-exporter')
 
     file { '/var/lib/prometheus':
         ensure => directory,
@@ -49,7 +49,7 @@ define prometheus::mysqld_exporter (
 
     # Set default arguments
     if $arguments == '' {
-        if debian::codename::ge('buster') {
+        if os_version('debian >= buster') {
             $options = "--collect.global_status \
 --collect.global_variables \
 --collect.info_schema.processlist \
