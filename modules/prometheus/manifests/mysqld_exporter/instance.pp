@@ -18,53 +18,51 @@
 # [*listen_address*]
 #   ip/host and port, colon separated, where the prometheus exporter will listen for
 #   http metrics requests. Host can be omitted.
-#
-# [*arguments*]
-#   Additional command line arguments for prometheus-mysqld-exporter.
 
 define prometheus::mysqld_exporter::instance (
-    $client_socket = '/run/mysqld/mysqld.sock',
-    $client_user = 'prometheus',
-    $client_password = 'This is a fake passsword, but cannot be empty due to Debian #953040',
-    $listen_address = ':9104',
-    $arguments = '',
+    Stdlib::Unixpath $client_socket   = '/run/mysqld/mysqld.sock',
+    String           $client_user     = 'prometheus',
+    String           $client_password = 'This is a fake passsword, but cannot be empty due to Debian #953040',
+    String           $listen_address  = ':9104',
 ) {
+    # TODO: split listen address params
+    # Stdlib::IP:Address $listen_ip
+    # Stdlib::Port $listen_Port
+    # $listen_address = "${listen_ip}:${listen_port}"
     include prometheus::mysqld_exporter::common
 
     $my_cnf = "/var/lib/prometheus/.my.${title}.cnf"
     $service = "prometheus-mysqld-exporter@${title}"
+    $common_options = [
+        "web.listen-address \"${listen_address}\"",
+        "config.my-cnf \"${my_cnf}\"",
+        'collect.global_status',
+        'collect.global_variables',
+        'collect.info_schema.processlist',
+        'collect.slave_status',
+    ]
 
-    # prometheus collector option formatting changed since buster
     if debian::codename::ge('buster') {
-        $option_string = '--'
+        $option_switch = '--'
+        $version_specific_options = ['no-collect.info_schema.tables']
     } else {
-        $option_string = '-'
+        $option_switch = '-'
+        $version_specific_options = [
+            'collect.info_schema.processlist.min_time 0',
+            'collect.info_schema.tables false',
+        ]
     }
-    $instance_options = "${option_string}web.listen-address \"${listen_address}\" \
-${option_string}config.my-cnf \"${my_cnf}\""
 
-    # Add sane default arguments if none provided
-    if $arguments == '' {
-        $common_options = "${option_string}collect.global_status \
-${option_string}collect.global_variables \
-${option_string}collect.info_schema.processlist \
-${option_string}collect.slave_status"
-        if debian::codename::ge('buster') {
-            $general_options = "${common_options} ${option_string}no-collect.info_schema.tables"
-        } else {
-            $general_options = "${common_options} ${option_string}collect.info_schema.processlist.min_time 0 \
-${option_string}collect.info_schema.tables false"
-        }
-    } else {
-        $general_options = $arguments
-    }
+    $options_str = ($common_options + $version_specific_options).reduce('') |$memo, $value| {
+        "${memo} ${option_switch}${value}"
+    }.strip
 
     file { "/etc/default/prometheus-mysqld-exporter@${title}":
         ensure  => present,
         mode    => '0444',
         owner   => 'root',
         group   => 'root',
-        content => "ARGS='${instance_options} ${general_options}'",
+        content => "ARGS='${options_str}'",
         notify  => Service[$service],
     }
 
