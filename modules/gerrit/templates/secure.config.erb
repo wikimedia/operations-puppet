@@ -5,4 +5,6 @@
 <% if @prometheus_bearer_token %>
 [plugin "javamelody"]
     prometheusBearerToken = <%= @prometheus_bearer_token %>
+[plugin "metrics-reporter-prometheus"]
+    prometheusBearerToken = <%= @prometheus_bearer_token %>
 <% end %>

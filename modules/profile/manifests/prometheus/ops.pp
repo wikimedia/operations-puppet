@@ -147,10 +147,29 @@ class profile::prometheus::ops (
     ]
 
     $gerrit_jobs = [
+      # JVM metrics exposed by JavaMelody
       {
           'job_name'          => 'gerrit',
           'bearer_token_file' => '/srv/prometheus/ops/gerrit.token',
           'metrics_path'      => '/r/monitoring',
+          'params'            => { 'format' => ['prometheus'] },
+          'scheme'            => 'https',
+          'file_sd_configs' => [
+              { 'files' => [ "${targets_path}/gerrit.yaml" ] }
+          ],
+          'tls_config'        => {
+              'server_name'   => 'gerrit.wikimedia.org',
+          },
+      },
+      # Gerrit internal metrics
+      #
+      # https://gerrit.wikimedia.org/r/Documentation/metrics.html
+      # Exposed by the metrics-reporter-prometheus plugin at a different URL,
+      # the token is shared with the above job.
+      {
+          'job_name'          => 'gerrit-metrics',
+          'bearer_token_file' => '/srv/prometheus/ops/gerrit.token',
+          'metrics_path'      => '/r/plugins/metrics-reporter-prometheus/metrics',
           'params'            => { 'format' => ['prometheus'] },
           'scheme'            => 'https',
           'file_sd_configs' => [

@@ -199,6 +199,17 @@
     safe = true
 [mimetype "text/x-php"]
     safe = true
+
+# https://gerrit.wikimedia.org/r/plugins/metrics-reporter-prometheus/Documentation/config.md
+[plugin "metrics-reporter-prometheus"]
+# See metrics description at https://gerrit.wikimedia.org/r/Documentation/metrics.html
+# Actual metrics at https://gerrit.wikimedia.org/r/plugins/metrics-reporter-prometheus/metrics
+    excludeMetrics = ^change_submit_.*
+    excludeMetrics = ^http_server_rest_api_.*
+    excludeMetrics = ^plugin_latency_.*
+    excludeMetrics = ^reviewer_suggestion_.*
+    excludeMetrics = ^sequence_next_id_latency_.*
+
 [plugin "webhooks"]
     sslVerify = true
 [noteDb "changes"]
