@@ -13,7 +13,7 @@ class mjolnir(
         true    => 'libsnappy1',
         default => 'libsnappy1v5',
     }
-    ensure_packages('virtualenv', 'zip', $libsnappy)
+    ensure_packages(['virtualenv', 'zip', $libsnappy])
 
     file { '/etc/mjolnir':
         ensure => 'directory',
