@@ -10,32 +10,8 @@ class profile::envoy(
     # Envoy supports tcp fast open
     require ::profile::tcp_fast_open
 
-    if os_version('debian jessie') {
-        group { 'envoy':
-            ensure => present,
-        }
-        user { 'envoy':
-            ensure     => present,
-            gid        => 'envoy',
-            shell      => '/bin/false',
-            home       => '/nonexistent',
-            system     => true,
-            managehome => false,
-        }
-
-        $pkg_name = 'getenvoy-envoy'
-        apt::repository { 'getenvoy-jessie':
-            uri        => 'http://apt.wikimedia.org/wikimedia',
-            dist       => 'jessie-wikimedia',
-            components => 'thirdparty/envoyproxy',
-            before     => Package[$pkg_name]
-        }
-        # We need to install a full systemd unit as the package doesn't have one.
-        $use_override = false
-    } else {
-        $pkg_name = 'envoyproxy'
-        $use_override = true
-    }
+    $pkg_name = 'envoyproxy'
+    $use_override = true
     $admin_port = 9631
     class { '::envoyproxy':
         ensure          => $ensure,
