@@ -1881,7 +1881,7 @@ class profile::prometheus::ops (
             $mjolnir_jobs, $rsyslog_jobs, $php_jobs, $php_fpm_jobs, $icinga_jobs, $docker_registry_jobs,
             $gerrit_jobs, $routinator_jobs, $varnishkafka_jobs, $bird_jobs, $ncredir_jobs,
             $cloud_dev_pdns_jobs, $cloud_dev_pdns_rec_jobs, $bacula_jobs, $poolcounter_exporter_jobs,
-            $apereo_cas_jobs, $atlas_exporter_jobs, $exported_blackbox_jobs, $cadvisor_jobs,
+            $atlas_exporter_jobs, $exported_blackbox_jobs, $cadvisor_jobs,
             $envoy_jobs, $webperf_jobs, $squid_jobs, $nic_saturation_exporter_jobs, $thanos_jobs, $netbox_jobs,
             $wikidough_jobs, $chartmuseum_jobs, $es_exporter_jobs, $alertmanager_jobs, $pushgateway_jobs
         ),
