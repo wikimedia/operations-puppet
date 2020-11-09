@@ -2340,6 +2340,11 @@ node 'deploy1001.eqiad.wmnet', 'deploy1002.eqiad.wmnet', 'deploy2001.codfw.wmnet
     role(deployment_server)
 }
 
+# deployment server codfw T266363
+node 'deploy2002.codfw.wmnet' {
+    role(insetup)
+}
+
 # new url-downloaders (T224551)
 # https://wikitech.wikimedia.org/wiki/Url-downloader
 node /^urldownloader[12]00[12]\.wikimedia\.org/ {
