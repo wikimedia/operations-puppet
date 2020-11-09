@@ -25,7 +25,7 @@ class swift::swiftrepl (
     }
 
     file { '/var/log/swiftrepl':
-        ensure  => present, # don't clean up logs immediately, tidy{} eventually will
+        ensure  => directory, # don't clean up logs immediately, tidy{} eventually will
         owner   => 'swiftrepl',
         group   => 'swiftrepl',
         mode    => '0750',
