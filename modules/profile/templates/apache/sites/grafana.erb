@@ -5,8 +5,17 @@
   DocumentRoot /usr/share/grafana/public
 
 <% if @enable_cas %>
-  Redirect "/login" "https://grafana-rw.wikimedia.org"
-  ProxyPass /login !
+  RewriteEngine On
+
+  # User has clicked 'login' on a dashboard.
+  # Redirect to the same dashboard on the 'rw' vhost.
+  RewriteCond "%{REQUEST_URI}" "^/login"
+  RewriteCond "%{HTTP_REFERER}" "^https://grafana.wikimedia.org/d/(.*)"
+  RewriteRule "^" "https://grafana-rw.wikimedia.org/d/%1" [R=302,L]
+
+  # Direct /login visit, redirect to 'rw' homepage
+  RewriteCond "%{REQUEST_URI}" "^/login"
+  RewriteRule "^" "https://grafana-rw.wikimedia.org" [R=302,L]
 <% end %>
 
   ProxyPreserveHost On
