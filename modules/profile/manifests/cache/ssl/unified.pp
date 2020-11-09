@@ -47,7 +47,7 @@ class profile::cache::ssl::unified(
 
         $certs = $certs_hiera.empty? {
           true    => ['globalsign-2019-ecdsa-unified', 'globalsign-2019-rsa-unified',
-                      'digicert-2019a-ecdsa-unified', 'digicert-2019a-rsa-unified'],
+                      'digicert-2020-ecdsa-unified', 'digicert-2020-rsa-unified'],
           default => $certs_hiera,
         }
 
