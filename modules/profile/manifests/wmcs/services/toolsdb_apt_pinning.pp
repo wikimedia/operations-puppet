@@ -1,7 +1,7 @@
 class profile::wmcs::services::toolsdb_apt_pinning (
 ) {
     # if you are hitting this assert, you likely need to refresh package pins
-    requires_os('debian == stretch')
+    debian::codename::require('stretch')
 
     apt::pin { 'toolsdb_fixed_mariadb_version':
         package  => 'wmf-mariadb101',

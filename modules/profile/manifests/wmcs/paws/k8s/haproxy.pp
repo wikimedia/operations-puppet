@@ -9,7 +9,7 @@ class profile::wmcs::paws::k8s::haproxy (
     Array[Stdlib::Fqdn] $keepalived_peers       = lookup('profile::wmcs::paws::keepalived::peers',     {default_value => ['localhost']}),
     String              $keepalived_password    = lookup('profile::wmcs::paws::keepalived::password',  {default_value => 'notarealpassword'}),
 ) {
-    requires_os('debian >= buster')
+    debian::codename::require::min('buster')
 
     $cert_name = 'paws'
     acme_chief::cert { $cert_name:

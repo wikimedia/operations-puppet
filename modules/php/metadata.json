@@ -14,6 +14,7 @@
     ],
     "dependencies": [
         { "name": "puppetlabs/stdlib", "version_requirement": ">= 4.15.0" },
-        {"name": "wikimedia/wmflib", "version_requirement": ">= 1.0.0"}
+        {"name": "wikimedia/wmflib", "version_requirement": ">= 1.0.0"},
+        {"name": "wikimedia/debian", "version_requirement": ">= 1.0.0"}
     ]
 }

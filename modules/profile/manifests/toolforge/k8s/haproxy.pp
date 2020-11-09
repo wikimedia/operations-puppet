@@ -4,7 +4,7 @@ class profile::toolforge::k8s::haproxy (
     Array[Stdlib::Fqdn] $control_nodes = lookup('profile::toolforge::k8s::control_nodes',  {default_value => ['localhost']}),
     Stdlib::Port        $api_port      = lookup('profile::toolforge::k8s::apiserver_port', {default_value => 6443}),
 ) {
-    requires_os('debian >= buster')
+    debian::codename::require::min('buster')
 
     package { 'haproxy':
         ensure => present,

@@ -2,7 +2,7 @@ class nftables (
     String         $ensure_package = 'present',
     Wmflib::Ensure $ensure_service = 'absent',
 ) {
-    requires_os('debian >= buster')
+    debian::codename::require::min('buster')
 
     package { 'nftables':
         ensure => $ensure_package,

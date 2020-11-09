@@ -7,7 +7,7 @@ class kubeadm::calico_workaround (
     # calls, but otherwise it could work with the nf_tables backend.
     # We could pretty much do this the other way around: hack calico into
     # using iptables-nft (requires iptables 1.8.3)
-    requires_os('debian == buster')
+    debian::codename::require('buster')
 
     alternatives::select { 'iptables':
         path    => '/usr/sbin/iptables-legacy',

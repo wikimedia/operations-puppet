@@ -4,7 +4,7 @@
 # docker
 class profile::docker::firewall {
 
-    requires_os('debian == buster')
+    debian::codename::require('buster')
     # Values are from buster and docker.io 18.09.1+dfsg1-7.1+deb10u2
     $filter_chains = 'DOCKER DOCKER-USER DOCKER-ISOLATION-STAGE-1 DOCKER-ISOLATION-STAGE-2 FORWARD'
     $nat_chains = 'DOCKER PREROUTING OUTPUT POSTROUTING'

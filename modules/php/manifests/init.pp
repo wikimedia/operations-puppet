@@ -9,7 +9,7 @@ class php(
     Hash $config_by_sapi               = {},
     Hash $extensions                   = {}
 ) {
-    requires_os('debian >= stretch')
+    debian::codename::require::min('stretch')
 
     # We need php-common everywhere
     require_package("php${version}-common", "php${version}-opcache")

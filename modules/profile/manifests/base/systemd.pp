@@ -4,7 +4,7 @@ class profile::base::systemd(
     Stdlib::Yes_no $systemd_memory_accounting = lookup('profile::base::systemd::memory_accounting'),
     Stdlib::Yes_no $systemd_ip_accounting = lookup('profile::base::systemd::ip_accounting'),
 ) {
-    requires_os('debian >= buster')
+    debian::codename::require::min('buster')
 
     class { '::systemd::config':
         cpu_accounting     => $systemd_cpu_accounting,
