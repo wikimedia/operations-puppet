@@ -34,7 +34,7 @@ class profile::analytics::database::meta(
 
     # If labs, automate mysql_install_db. Supported only for recent
     # Debian OS like Stretch.
-    if $::realm == 'labs' and debian::codename::ge('stretch') {
+    if $::realm == 'labs' {
         exec { 'analytics_meta_mysql_install_db':
             command => "${basedir}/scripts/mysql_install_db",
             cwd     => $basedir,
