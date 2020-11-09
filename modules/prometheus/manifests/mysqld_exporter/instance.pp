@@ -35,7 +35,7 @@ define prometheus::mysqld_exporter::instance (
     $service = "prometheus-mysqld-exporter@${title}"
 
     # prometheus collector option formatting changed since buster
-    if os_version('debian >= buster') {
+    if debian::codename::ge('buster') {
         $option_string = '--'
     } else {
         $option_string = '-'
@@ -49,7 +49,7 @@ ${option_string}config.my-cnf \"${my_cnf}\""
 ${option_string}collect.global_variables \
 ${option_string}collect.info_schema.processlist \
 ${option_string}collect.slave_status"
-        if os_version('debian >= buster') {
+        if debian::codename::ge('buster') {
             $general_options = "${common_options} ${option_string}no-collect.info_schema.tables"
         } else {
             $general_options = "${common_options} ${option_string}collect.info_schema.processlist.min_time 0 \
