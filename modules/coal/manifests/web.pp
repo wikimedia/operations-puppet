@@ -8,9 +8,9 @@
 class coal::web {
     include ::coal::common
 
-    require_package('python-flask')
-    require_package('python-numpy')
-    require_package('python-requests')
+    require_package('python3-flask')
+    require_package('python3-numpy')
+    require_package('python3-requests')
 
     file { '/var/cache/coal_web':
         ensure => directory,

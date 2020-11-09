@@ -5,7 +5,7 @@ Description=Navigation Timing Whisper logger
 User=nobody
 Group=nogroup
 Restart=always
-ExecStart=/usr/bin/python /srv/deployment/performance/coal/run_coal.py \
+ExecStart=/srv/deployment/performance/coal/run_coal.py \
 	--brokers "<%= @kafka_brokers %>" \
 	--consumer-group "<%= @kafka_consumer_group %>" \
   <% @el_schemas.each do | schema | -%>
