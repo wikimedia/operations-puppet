@@ -41,7 +41,7 @@ node 'an-coord1001.eqiad.wmnet' {
 }
 
 node 'an-coord1002.eqiad.wmnet' {
-    role(insetup)
+    role(analytics_cluster::coordinator::replica)
 }
 
 node 'an-launcher1002.eqiad.wmnet' {
