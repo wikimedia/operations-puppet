@@ -19,6 +19,7 @@ server {
 
         # Enable browser access for pretty-autoindex javascript.
         add_header  Access-Control-Allow-Origin "<%= @allow_origin || "http://#{@server_name}" %>";
+        add_header  Cache-Control "public, max-age=60, s-maxage=60";
     }
 
     # Deny all files that start with . (e.g. .git).
