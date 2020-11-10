@@ -156,30 +156,8 @@ END
     end
 
     # OS / Server -dependant feature flags:
-    nginx_always_ok = true
-    dhe_ok = true
-    libssl_has_x25519 = true
     tls1_3 = os_major_release > 9
-    unless os_major_release > 7
-      nginx_always_ok = false
-      libssl_has_x25519 = false
-      if server == 'apache'
-        dhe_ok = false
-      end
-    end
-
-    if !dhe_ok && ciphersuite != 'compat'
-      function_notice([
-        'ssl_ciphersuite(): OS needs upgrade to Jessie!  Downgrading SSL ciphersuite to "compat"'
-      ])
-      ciphersuite = 'compat'
-    end
-
-    if dhe_ok
-      cipherlist = ciphersuites[ciphersuite].join(":")
-    else
-      cipherlist = ciphersuites[ciphersuite].reject{|x| x =~ /^(DHE|EDH)-/}.join(":")
-    end
+    cipherlist = ciphersuites[ciphersuite].join(":")
 
     output = []
 
@@ -199,9 +177,7 @@ END
       end
       # Note: missing config to restrict ECDH curves
       output.push('SSLHonorCipherOrder On')
-      if dhe_ok
-        output.push('SSLOpenSSLConfCmd DHParameters "/etc/ssl/dhparam.pem"')
-      end
+      output.push('SSLOpenSSLConfCmd DHParameters "/etc/ssl/dhparam.pem"')
       if do_hsts
         output.push("Header always set Strict-Transport-Security \"#{hsts_val}\"")
       end
@@ -218,21 +194,11 @@ END
         output.push("ssl_protocols #{protocols};")
       end
       output.push("ssl_ciphers #{cipherlist};")
-      if libssl_has_x25519
-        output.push("ssl_ecdh_curve X25519:prime256v1;")
-      else
-        output.push("ssl_ecdh_curve prime256v1;")
-      end
+      output.push("ssl_ecdh_curve X25519:prime256v1;")
       output.push('ssl_prefer_server_ciphers on;')
-      if dhe_ok
-        output.push('ssl_dhparam /etc/ssl/dhparam.pem;')
-      end
+      output.push('ssl_dhparam /etc/ssl/dhparam.pem;')
       if do_hsts
-        if nginx_always_ok
-            output.push("add_header Strict-Transport-Security \"#{hsts_val}\" always;")
-        else
-            output.push("add_header Strict-Transport-Security \"#{hsts_val}\";")
-        end
+        output.push("add_header Strict-Transport-Security \"#{hsts_val}\" always;")
       end
     end
     return output
