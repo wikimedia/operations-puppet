@@ -16,7 +16,7 @@ class mariadb::packages_client (
     }
 
     # TODO(kormat): this is likely not needed, and could be removed.
-    if os_version('debian >= buster') {
+    if debian::codename::ge('buster') {
         require_package('mariadb-backup')
     }
 }

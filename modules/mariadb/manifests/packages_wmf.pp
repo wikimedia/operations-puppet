@@ -11,7 +11,7 @@ class mariadb::packages_wmf (
         'grc',
     )
 
-    if os_version('debian >= buster') {
+    if debian::codename::ge('buster') {
         require_package('mariadb-backup')
     }
 

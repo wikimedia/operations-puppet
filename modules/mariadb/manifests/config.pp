@@ -74,7 +74,7 @@ class mariadb::config(
     #   RuntimeDirectory=mysqld
     #   RuntimeDirectoryPreserve=yes
     # directly on the systemd unit
-    if $socket == '/run/mysqld/mysqld.sock' and !os_version('debian >= buster'){
+    if $socket == '/run/mysqld/mysqld.sock' and debian::codename::lt('buster') {
         systemd::tmpfile { 'mysqld':
             content => 'd /run/mysqld 0775 root mysql -',
         }
