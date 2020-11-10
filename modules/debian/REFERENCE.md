@@ -17,7 +17,7 @@ this class will be called automatically
 * [`debian::codename::ge`](#debiancodenamege): Test if the running debian codename is greater then or equal to the codename passed
 * [`debian::codename::gt`](#debiancodenamegt): Test if the running debian codename is greater then the codename passed
 * [`debian::codename::le`](#debiancodenamele): Test if the running debian codename is less then or equal to the codename passed
-* [`debian::codename::lt`](#debiancodenamelt): Test if the running debian codname is less then the codname passed
+* [`debian::codename::lt`](#debiancodenamelt): Test if the running debian codename is less then the codename passed
 * [`debian::codename::ne`](#debiancodenamene): Test if the running debian codename is not equal to the codename passed
 * [`debian::codename::require`](#debiancodenamerequire): fail to compile if the running debian codename against the codename passed using a specific operator.
 
@@ -252,7 +252,7 @@ the codename you want to test against
 
 Type: Puppet Language
 
-Test if the running debian codname is less then the codname passed
+Test if the running debian codename is less then the codename passed
 
 #### Examples
 

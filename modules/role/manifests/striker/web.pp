@@ -6,7 +6,7 @@
 # filtertags: labs-project-striker
 class role::striker::web {
 
-    if debian::codname::ge('stretch') {
+    if debian::codename::ge('stretch') {
         ensure_packages('libapache2-mod-wsgi-py3')
         class { 'httpd':
             modules => ['alias', 'ssl', 'rewrite', 'headers', 'wsgi',
