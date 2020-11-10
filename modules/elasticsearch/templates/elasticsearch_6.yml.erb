@@ -448,3 +448,8 @@ reindex.remote.whitelist: "<%= @reindex_remote_whitelist %>"
 # Size the LTR cache to prevent churn under normal and AB testing scenarios
 ltr.caches.max_mem: <%=@ltr_cache_size%>
 <%- end -%>
+
+##
+# Adaptive replica selection uses a per-node score to select replicas, rather
+# than randomly choosing a replica. This became the default in elastic 7.
+cluster.routing.use_adaptive_replica_selection: true
