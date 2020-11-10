@@ -31,8 +31,8 @@ class Context:
       - status: "True"
         type: Ready
       nodeInfo:
-        kubeProxyVersion: v1.15.6
-        kubeletVersion: v1.15.6
+        kubeProxyVersion: v1.16.10
+        kubeletVersion: v1.16.10
     """
     example2_yaml = """
     apiVersion: v1
@@ -44,8 +44,8 @@ class Context:
       - status: "True"
         type: Ready
       nodeInfo:
-        kubeProxyVersion: v1.16.6
-        kubeletVersion: v1.16.6
+        kubeProxyVersion: v1.17.13
+        kubeletVersion: v1.17.13
     """
 
     def __init__(self):
@@ -87,12 +87,12 @@ def parse_args():
     )
     parser.add_argument(
         "--src-version",
-        default="1.15.6",
+        default="1.16.10",
         help="Source/original kubernetes version. Defaults to '%(default)s'",
     )
     parser.add_argument(
         "--dst-version",
-        default="1.16.9",
+        default="1.17.13",
         help="Destination/target kubernetes version. Defaults to '%(default)s'",
     )
     parser.add_argument(
