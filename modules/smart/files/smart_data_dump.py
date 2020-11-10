@@ -378,6 +378,8 @@ def get_metrics_cache(registry, namespace=''):
                                    registry=registry, labelnames=['device'])
     output['device_info'] = Gauge('info', 'Disk info', namespace=namespace,
                                   registry=registry, labelnames=['device', 'model', 'firmware'])
+    output['device_count'] = Gauge('device_count', 'Count of detected devices', namespace=namespace,
+                                   registry=registry)
     return output
 
 
@@ -439,6 +441,7 @@ def main():
     registry = CollectorRegistry()
     metrics = get_metrics_cache(registry, 'device_smart')
     collect_smart_metrics(physical_disks, metrics)
+    metrics['device_count'].set(len(physical_disks))
 
     if args.outfile:
         write_to_textfile(args.outfile, registry)
