@@ -133,8 +133,8 @@ Examples:
 END
               ) do |args|
 
-    Puppet::Parser::Functions.function(:os_version)
     Puppet::Parser::Functions.function(:notice)
+    os_major_release = lookupvar('operatingsystemmajrelease').to_i
 
     if args.length < 2 || args.length > 3
       fail(ArgumentError, 'ssl_ciphersuite() requires at least 2 arguments')
@@ -159,8 +159,8 @@ END
     nginx_always_ok = true
     dhe_ok = true
     libssl_has_x25519 = true
-    tls1_3 = function_os_version(['debian >= buster'])
-    unless function_os_version(['debian >= jessie'])
+    tls1_3 = os_major_release > 9
+    unless os_major_release > 7
       nginx_always_ok = false
       libssl_has_x25519 = false
       if server == 'apache'
