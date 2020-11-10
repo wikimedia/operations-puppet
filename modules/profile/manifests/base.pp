@@ -108,7 +108,7 @@ class profile::base(
             }
         }
     }
-    if os_version('debian <= buster') {
+    if debian::codename::le('buster') {
         class { 'toil::acct_handle_wtmp_not_rotated': }
     }
     class { 'base::environment':
