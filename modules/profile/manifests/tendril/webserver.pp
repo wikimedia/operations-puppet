@@ -5,12 +5,12 @@ class profile::tendril::webserver (
     $monitor_auth  = hiera('monitor_auth', true),
 ) {
     # Temporary backwards compatibility
-    if os_version('debian > buster') {
+    if debian::codename::gt('buster') {
         fail("Please update ${module_name} to support newer php installed module")
-    } elsif os_version('debian == buster') {
+    } elsif debian::codename::eq('buster') {
         $php_module = 'php7.3'
         require_package('libapache2-mod-php','php-mysql')
-    } elsif os_version('debian == stretch') {
+    } elsif debian::codename::eq('stretch') {
         $php_module = 'php7.0'
         require_package('libapache2-mod-php','php-mysql')
     } else {
