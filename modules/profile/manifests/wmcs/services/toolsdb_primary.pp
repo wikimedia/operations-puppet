@@ -1,5 +1,8 @@
 class profile::wmcs::services::toolsdb_primary (
-    Stdlib::Unixpath $socket = lookup('profile::wmcs::services::toolsdb::socket', {default_value => '/var/run/mysqld/mysqld.sock'})
+    Stdlib::Unixpath $socket = lookup('profile::wmcs::services::toolsdb::socket', {default_value => '/var/run/mysqld/mysqld.sock'}),
+    Boolean $rebuild = lookup('profile::wmcs::services::toolsdb::rebuild', {default_value => false}),
+    Optional[Stdlib::Fqdn] $primary_server = lookup('profile::wmcs::services::toolsdb::rebuild_primary'),
+    Optional[Stdlib::Fqdn] $secondary_server = lookup('profile::wmcs::services::toolsdb::rebuild_secondary'),
 ) {
     require profile::wmcs::services::toolsdb_apt_pinning
 
@@ -37,5 +40,14 @@ class profile::wmcs::services::toolsdb_primary (
         binlog_format => 'ROW',
         read_only     => 'OFF',
         socket        => $socket,
+    }
+    if $rebuild {
+        rsync::quickdatacopy { 'srv-labsdb-backup1':
+            ensure      => present,
+            auto_sync   => false,
+            source_host => $primary_server,
+            dest_host   => $secondary_server,
+            module_path => '/srv/labsdb/backup1',
+        }
     }
 }
