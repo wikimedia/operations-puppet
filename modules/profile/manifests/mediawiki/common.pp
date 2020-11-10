@@ -37,7 +37,7 @@ class profile::mediawiki::common(
     }
 
     if $enable_icu63 {
-        if os_version('debian == stretch') {
+        if debian::codename::eq('stretch') {
             apt::repository{ 'icu63':
                 uri        => 'http://apt.wikimedia.org/wikimedia',
                 dist       => 'stretch-wikimedia',
