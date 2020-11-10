@@ -174,7 +174,7 @@ class profile::base(
         hardware_monitoring      => $hardware_monitoring
     }
 
-    if $facts['is_virtual'] and os_version('debian <= buster') {
+    if $facts['is_virtual'] and debian::codename::le('buster') {
             class {'haveged': }
     } elsif !$facts['is_virtual'] {
         include profile::prometheus::nic_saturation_exporter
