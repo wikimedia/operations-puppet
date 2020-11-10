@@ -94,7 +94,7 @@ class profile::toolforge::grid::exec_environ {
         'zstd',                      # T225380
     )
 
-    if os_version('debian >= stretch') {
+    if debian::codename::ge('stretch') {
         require_package(
             'fonts-noto-hinted',  # T184664
             'fonts-noto-unhinted' # T184664

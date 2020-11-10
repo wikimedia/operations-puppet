@@ -6,7 +6,7 @@
 class profile::toolforge::shell_environ {
     class {'::phabricator::arcanist': } # T139738
 
-    if os_version('debian stretch') {
+    if debian::codename::eq('stretch') {
         include profile::toolforge::genpp::python_dev_stretch
     }
 

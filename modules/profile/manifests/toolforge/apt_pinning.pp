@@ -130,7 +130,7 @@ class profile::toolforge::apt_pinning {
         priority => '1001',
     }
     # sssd
-    if os_version('debian == buster') {
+    if debian::codename::eq('buster') {
         apt::pin { 'toolforge-sssd-pinning':
             package  => 'sssd*',
             pin      => 'version 1.16.3-3.1',
@@ -139,7 +139,7 @@ class profile::toolforge::apt_pinning {
     }
 
     # paws
-    if os_version('debian == stretch') {
+    if debian::codename::eq('stretch') {
         apt::pin { 'toolforge-kubeadm-pinning':
             package  => 'kubeadm',
             pin      => 'version 1.9.4-00',
