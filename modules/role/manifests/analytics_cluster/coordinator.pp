@@ -4,22 +4,13 @@
 # that stores meta data associated with those and other
 # Analytics Cluster services.
 #
-# This role is a launch pad for various cron based Hadoop jobs.
-# Many ingestion jobs need a starting point.  Oozie is a great
-# Hadoop job scheduler, but it is not better than cron
-# for some jobs that need to be launched at regular time
-# intervals.  Cron is used for those.  These crons
-# do not use local resources, instead, they launch
-# Hadoop jobs that run throughout the cluster.
-#
 # This roles sets up a node responsible to coordinate and orchestrate
-# a Hadoop cluster equipped with tools like Camus, Hive, Oozie and
-# the Analytics Refinery.
+# a Hadoop cluster equipped with tools like Camus, Hive, Oozie, Presto, etc..
 #
 class role::analytics_cluster::coordinator {
 
     system::role { 'analytics_cluster::coordinator':
-        description => 'Analytics Cluster host running various Hadoop services (Hive, Camus, Oozie, ..) and maintenance scripts'
+        description => 'Analytics Cluster host running various Hadoop services (Hive, Presto, Oozie, ..)'
     }
 
     include ::profile::analytics::cluster::gitconfig
@@ -49,10 +40,6 @@ class role::analytics_cluster::coordinator {
     include ::profile::oozie::server
     include ::profile::oozie::server::database
 
-    # Include a cron job to run hdfs balancer.
-    include ::profile::hadoop::balancer
-
-    # Various crons that launch Hadoop jobs.
     include ::profile::analytics::refinery
     include ::profile::analytics::cluster::repositories::statistics
 

@@ -123,7 +123,6 @@ profile::base::debdeploy::exclude_mounts:
 profile::analytics::refinery::job::refine::use_kerberos: true
 profile::analytics::refinery::job::data_purge::use_kerberos: true
 profile::analytics::cluster::hdfs_mount::kerberos_enabled: true
-profile::hadoop::balancer::ensure: 'absent'
 profile::oozie::server::use_kerberos: true
 profile::hive::server::use_kerberos: true
 profile::hadoop::spark2::use_kerberos: true
