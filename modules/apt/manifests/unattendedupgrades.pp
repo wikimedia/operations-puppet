@@ -77,14 +77,11 @@ class apt::unattendedupgrades(
     }
 
     # Clean up the apt cache to avoid filling the disk periodically T127374
-    # not using apt::conf because that changes integer values to strings
-    file { '/etc/apt/apt.conf.d/52apt-autoclean':
-        ensure  => present,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        content => "APT::Periodic::AutocleanInterval:: 7;\n",
-        notify  => Exec['apt-get update'],
+    apt::conf { 'apt-autoclean':
+        ensure   => present,
+        priority => '52',
+        key      => 'APT::Periodic::AutocleanInterval:',
+        value    => 7,
     }
 
     file { '/usr/local/sbin/report-pending-upgrades':
