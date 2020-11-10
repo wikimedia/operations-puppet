@@ -2,4 +2,5 @@
 # Buffer pool sizes/instance enabled
 profile::mariadb::dbstore_multiinstance::instances:
   s1: 192G
-  s6: 192G
+  s6: 141G
+# reduce s6 memory due to 100GB missing due to hw failure: T261405
