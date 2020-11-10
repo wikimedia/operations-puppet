@@ -20,7 +20,7 @@ function my() {
     local single_socket="/run/mysqld/mysqld.sock"
 
     socket_count="$(find /run/mysqld/ -maxdepth 1 -iname "mysqld*.sock" | wc -l)"
-    if [[ ( "${socket_count}" -eq "1" && -f $single_socket ) ]]; then
+    if [[ ( "${socket_count}" -eq "1" && -a $single_socket ) ]]; then
         socket=$single_socket
     else
         if [[ -z "${instance}" ]]; then
