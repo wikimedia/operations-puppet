@@ -202,13 +202,18 @@
 
 # https://gerrit.wikimedia.org/r/plugins/metrics-reporter-prometheus/Documentation/config.md
 [plugin "metrics-reporter-prometheus"]
-# See metrics description at https://gerrit.wikimedia.org/r/Documentation/metrics.html
-# Actual metrics at https://gerrit.wikimedia.org/r/plugins/metrics-reporter-prometheus/metrics
-    excludeMetrics = ^change_submit_.*
-    excludeMetrics = ^http_server_rest_api_.*
-    excludeMetrics = ^plugin_latency_.*
-    excludeMetrics = ^reviewer_suggestion_.*
-    excludeMetrics = ^sequence_next_id_latency_.*
+# The pattern matching is done against the Gerrit internal metrics listed at
+# https://gerrit.wikimedia.org/r/Documentation/metrics.html
+#
+# Metrics exposed by the plugin can be seen at:
+# https://gerrit.wikimedia.org/r/plugins/metrics-reporter-prometheus/metrics
+    excludeMetrics = ^change/submit.*
+    excludeMetrics = ^http/server/rest_api/.*
+    excludeMetrics = ^http/server/rest_api/.*
+    excludeMetrics = license/cla_check_count
+    excludeMetrics = ^plugin/latency.*
+    excludeMetrics = ^reviewer_suggestion/.*
+    excludeMetrics = ^sequence/next_id_latency.*
 
 [plugin "webhooks"]
     sslVerify = true
