@@ -4490,3 +4490,7 @@ ldap_only_users:
     email: jbolorinos-ctr@wikimedia.org
     expiry_date: 2021-06-30
     expiry_contact: spatton@wikimedia.org
+  dannys712:
+    ensure: present
+    realname: (known to Legal)
+    email: dannyS712.enwiki@gmail.com
