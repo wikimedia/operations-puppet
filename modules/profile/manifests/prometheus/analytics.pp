@@ -172,7 +172,7 @@ class profile::prometheus::analytics (
 
     prometheus::jmx_exporter_config{ "hive_analytics_${::site}":
         dest       => "${targets_path}/jmx_hive_analytics_${::site}.yaml",
-        class_name => 'role::analytics_cluster::coordinator',
+        class_name => 'profile::hive::server',
         site       => $::site,
     }
 
