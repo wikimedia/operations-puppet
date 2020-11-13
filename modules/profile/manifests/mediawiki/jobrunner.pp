@@ -14,6 +14,7 @@
 #    only be set to true if no TLS setup is used (as in deployment-prep).
 #
 class profile::mediawiki::jobrunner(
+    String $cluster = lookup('cluster'),
     $statsd = hiera('statsd'),
     Optional[Stdlib::Port::User] $fcgi_port = hiera('profile::php_fpm::fcgi_port', undef),
     String $fcgi_pool = hiera('profile::mediawiki::fcgi_pool', 'www'),
@@ -36,6 +37,11 @@ class profile::mediawiki::jobrunner(
     httpd::conf { 'fcgi_proxies':
         ensure  => present,
         content => template('mediawiki/apache/fcgi_proxies.conf.erb')
+    }
+
+    # Expose a SERVERGROUP variable to php-fpm
+    ::httpd::conf { 'wikimedia_cluster':
+        content => "SetEnvIf Request_URI \".\" SERVERGROUP=${cluster}\n"
     }
 
     class { '::httpd':
