@@ -176,12 +176,6 @@ class profile::prometheus::analytics (
         site       => $::site,
     }
 
-    prometheus::jmx_exporter_config{ "hive_analytics_test_${::site}":
-        dest       => "${targets_path}/jmx_hive_analytics_test_${::site}.yaml",
-        class_name => 'role::analytics_test_cluster::coordinator',
-        site       => $::site,
-    }
-
     prometheus::jmx_exporter_config{ "cassandra_aqs_${::site}":
         dest       => "${targets_path}/jmx_aqs_cassandra_${::site}.yaml",
         class_name => 'role::aqs',
