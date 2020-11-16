@@ -200,3 +200,6 @@ profile::lvs::realserver::use_conftool: false
 
 # Mariadb sections: create empty mapping to make puppet happy
 profile::mariadb::section_ports: {}
+
+profile::query_service::username: blazegraph
+
