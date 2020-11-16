@@ -136,16 +136,8 @@ class profile::cumin::master (
         source => 'puppet:///modules/profile/cumin/ssh_config',
     }
 
-    # Check aliases cron, splayed between the week across the Cumin masters
+    # Check aliases periodic job, splayed between the week across the Cumin masters
     $times = cron_splay($cumin_masters, 'weekly', 'cumin-check-aliases')
-    cron { 'cumin-check-aliases':
-        ensure  => 'absent',
-        command => '/usr/local/sbin/check-cumin-aliases',
-        user    => 'root',
-        weekday => $times['weekday'],
-        hour    => $times['hour'],
-        minute  => $times['minute'],
-    }
 
     systemd::timer::job { 'cumin-check-aliases':
         ensure      => 'present',
