@@ -29,8 +29,9 @@ class profile::lvs::realserver(
 
     if $use_conftool {
         require ::profile::conftool::client
-        # Install the python poolcounter client, if any backend is defined
-        if $poolcounter_backends {
+        # Install the python poolcounter client, if any backend is defined, but not on jessie:
+        # python3-poolcounter uses typing which is not available in python3.4
+        if $poolcounter_backends and debian::codename::gt('jessie'){
             $pc_ensure = 'present'
             $bc = $poolcounter_backends
             $all_nodes = $present_pools.map | $pool | { wmflib::service::get_pool_nodes($pool) }.flatten().unique()
