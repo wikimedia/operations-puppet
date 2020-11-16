@@ -20,6 +20,7 @@ profile::hive::server::monitoring_enabled: true
 profile::hive::server::ferm_srange: '$ANALYTICS_NETWORKS'
 profile::hive::metastore::monitoring_enabled: true
 profile::hive::metastore::ferm_srange: '$ANALYTICS_NETWORKS'
+profile::hive::server::use_kerberos: true
 
 # Build and install oozie sharelib for our custom spark2 package.
 profile::hadoop::spark2::install_oozie_sharelib: false
