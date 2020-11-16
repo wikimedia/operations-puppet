@@ -561,5 +561,8 @@ profile::mediawiki::mcrouter_wancache::shards:
         host: deployment-memc08
         port: 11211
 
-profile::prometheus::memcached_exporter::arguments: ''
 profile::query_service::federation_user_agent: 'Wikimedia Commons Query Service; test'
+profile::prometheus::memcached_exporter::arguments: ''
+
+# Somehow missing value on deployment-prep / labs
+etcd::autogen_pwd_seed: ''
