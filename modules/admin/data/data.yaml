@@ -4498,3 +4498,7 @@ ldap_only_users:
     ensure: present
     realname: Gabriele Modena
     email: gmodena@wikimedia.org
+  kassiameq:
+    ensure: present
+    realname: Kassia Echavarri-Queen
+    email: kechavarriqueen@wikimedia.org
