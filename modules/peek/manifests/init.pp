@@ -87,8 +87,4 @@ class peek (
         owner     => 'peek',
         group     => 'peek',
     }
-
-    file { '/var/lib/peek/git/peek.py':
-        mode => '0755',
-    }
 }
