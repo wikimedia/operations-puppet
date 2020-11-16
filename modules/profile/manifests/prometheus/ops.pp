@@ -146,40 +146,47 @@ class profile::prometheus::ops (
       },
     ]
 
-    $gerrit_jobs = [
-      # JVM metrics exposed by JavaMelody
-      {
-          'job_name'          => 'gerrit',
-          'bearer_token_file' => '/srv/prometheus/ops/gerrit.token',
-          'metrics_path'      => '/r/monitoring',
-          'params'            => { 'format' => ['prometheus'] },
-          'scheme'            => 'https',
-          'file_sd_configs' => [
-              { 'files' => [ "${targets_path}/gerrit.yaml" ] }
-          ],
-          'tls_config'        => {
-              'server_name'   => 'gerrit.wikimedia.org',
-          },
-      },
-      # Gerrit internal metrics
-      #
-      # https://gerrit.wikimedia.org/r/Documentation/metrics.html
-      # Exposed by the metrics-reporter-prometheus plugin at a different URL,
-      # the token is shared with the above job.
-      {
-          'job_name'          => 'gerrit-metrics',
-          'bearer_token_file' => '/srv/prometheus/ops/gerrit.token',
-          'metrics_path'      => '/r/plugins/metrics-reporter-prometheus/metrics',
-          'params'            => { 'format' => ['prometheus'] },
-          'scheme'            => 'https',
-          'file_sd_configs' => [
-              { 'files' => [ "${targets_path}/gerrit.yaml" ] }
-          ],
-          'tls_config'        => {
-              'server_name'   => 'gerrit.wikimedia.org',
-          },
-      },
-    ]
+    # Special setup for Gerrit, internal hostnames don't serve data, thus limit polling gerrit
+    # from eqiad and codfw only (as opposed to all sites).
+    # See also https://phabricator.wikimedia.org/T184086
+    if !($::site in ['eqiad', 'codfw']) {
+      $gerrit_jobs = []
+    } else {
+      $gerrit_jobs = [
+        # JVM metrics exposed by JavaMelody
+        {
+            'job_name'          => 'gerrit',
+            'bearer_token_file' => '/srv/prometheus/ops/gerrit.token',
+            'metrics_path'      => '/r/monitoring',
+            'params'            => { 'format' => ['prometheus'] },
+            'scheme'            => 'https',
+            'file_sd_configs' => [
+                { 'files' => [ "${targets_path}/gerrit.yaml" ] }
+            ],
+            'tls_config'        => {
+                'server_name'   => 'gerrit.wikimedia.org',
+            },
+        },
+        # Gerrit internal metrics
+        #
+        # https://gerrit.wikimedia.org/r/Documentation/metrics.html
+        # Exposed by the metrics-reporter-prometheus plugin at a different URL,
+        # the token is shared with the above job.
+        {
+            'job_name'          => 'gerrit-metrics',
+            'bearer_token_file' => '/srv/prometheus/ops/gerrit.token',
+            'metrics_path'      => '/r/plugins/metrics-reporter-prometheus/metrics',
+            'params'            => { 'format' => ['prometheus'] },
+            'scheme'            => 'https',
+            'file_sd_configs' => [
+                { 'files' => [ "${targets_path}/gerrit.yaml" ] }
+            ],
+            'tls_config'        => {
+                'server_name'   => 'gerrit.wikimedia.org',
+            },
+        },
+      ]
+    }
 
     # Add one job for each of mysql 'group' (i.e. their broad function)
     # Each job will look for new files matching the glob and load the job
