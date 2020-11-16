@@ -5,11 +5,11 @@
 class mariadb::packages_wmf (
     String[1] $package,
 ) {
-    ensure_packages(
+    ensure_packages([
         $package,
         'percona-toolkit',
         'grc',
-    )
+    ])
 
     if debian::codename::ge('buster') {
         ensure_packages('mariadb-backup')
