@@ -13,6 +13,8 @@
   # Dashboard links for unauthenticated users redirect to the read only virtual host.
   RewriteEngine On
   RewriteCond %{HTTP_COOKIE} !\bMOD_AUTH_CAS=
+  # Don't redirect (re)-auth requests
+  RewriteCond %{QUERY_STRING} !ticket=
   RewriteCond %{REQUEST_URI} ^/d/
   RewriteRule ^(.*)$ https://<%= @vhost_settings['ro_vhost'] %>$1 [L,R=302]
 
