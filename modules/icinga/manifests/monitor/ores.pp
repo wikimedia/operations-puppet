@@ -18,7 +18,7 @@ class icinga::monitor::ores (
     }
 
     @monitoring::host { 'ores.wmflabs.org':
-        ensure    => absent,
+        ensure    => 'present',
         host_fqdn => 'ores.wmflabs.org',
     }
 
@@ -27,7 +27,7 @@ class icinga::monitor::ores (
     }
 
     monitoring::service { 'ores_main_page':
-        ensure        => absent,
+        ensure        => 'present',
         description   => 'ORES home page',
         check_command => 'check_http',
         host          => 'ores.wmflabs.org',
@@ -41,7 +41,7 @@ class icinga::monitor::ores (
 
     # T121656
     monitoring::service { 'ores_worker_labs':
-        ensure        => absent,
+        ensure        => 'present',
         description   => 'ORES worker labs',
         check_command => 'check_ores_workers!oresweb',
         host          => 'ores.wmflabs.org',
