@@ -1,0 +1,36 @@
+<VirtualHost *:80>
+    ServerName <%= @vhost %>
+    ServerAdmin <%= 'root@' + @facts['domain'] %>
+
+    # Should never be seen, but apache needs this set to something
+    DocumentRoot /var/www/html
+
+    <Directory />
+        Options FollowSymLinks
+        AllowOverride None
+        Require all denied
+    </Directory>
+
+    <Location />
+        ProxyPass "http://localhost:9093/" retry=0
+        <If "%{REQUEST_METHOD} in { 'GET', 'HEAD' }">
+<% @ro_hosts.sort.each do |h| -%>
+            Require ip <%= h %>
+<% end -%>
+<% @rw_hosts.sort.each do |h| -%>
+            Require ip <%= h %>
+<% end -%>
+        </If>
+
+        <If "%{REQUEST_METHOD} in { 'POST', 'DELETE' }">
+<% @rw_hosts.sort.each do |h| -%>
+            Require ip <%= h %>
+<% end -%>
+        </If>
+
+        Require all denied
+    </Location>
+
+    ProxyRequests Off
+</VirtualHost>
+
