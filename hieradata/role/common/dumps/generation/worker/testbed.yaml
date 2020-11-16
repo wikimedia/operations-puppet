@@ -10,3 +10,5 @@ profile::mediawiki::apc_shm_size: 128M
 profile::base::debdeploy::filter_services:
   php7.2-fpm:
     - '*'
+# Enable icu63 component - T264991
+profile::mediawiki::php::icu63: true
