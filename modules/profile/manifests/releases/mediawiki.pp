@@ -26,7 +26,14 @@ class profile::releases::mediawiki (
         service_monitor => $jenkins_service_monitor,
     }
 
-    base::service_auto_restart { 'jenkins': }
+    $jenkins_restart_ensure = $jenkins_service_enable ? {
+        'mask'  => 'absent',
+        default => 'present',
+    }
+
+    base::service_auto_restart { 'jenkins':
+        ensure => $jenkins_restart_ensure,
+    }
 
     # Master connect to itself via the fqdn / primary IP ipaddress
     class { 'jenkins::slave':
