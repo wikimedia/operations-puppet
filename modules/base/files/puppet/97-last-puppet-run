@@ -1,20 +1,27 @@
 #!/bin/sh
 # Script that reports when Puppet last ran, in bold if more than an hour ago.
+# Also mentions if it has never run yet
 
 set -e
 
+PUPPET_STATE_DIR=/var/lib/puppet/state
+PUPPET_LAST_RUN_PATH="${PUPPET_STATE_DIR}/last_run_report.yaml"
 PATH=/bin:/usr/bin:/usr/local/bin
 LANG=C
-CONFIG_VERSION=$(grep -m1 -A1 '^configuration_version:' /var/lib/puppet/state/last_run_report.yaml| ruby -ryaml -e 'puts YAML.load(STDIN.read)["configuration_version"]')
-TSLASTPUPPETRUN=$(stat -c %Z /var/lib/puppet/state/classes.txt)
-NOW=$(date +%s)
-DELTAMIN=$(((NOW-TSLASTPUPPETRUN)/60))
-BOLD="\\033[1m"
-NORM="\\033[0m"
-LAST_RUN=$(date -d @"${TSLASTPUPPETRUN}")
-if [ $DELTAMIN -gt 60 ]; then
-	MSG="${BOLD}($DELTAMIN minutes ago)${NORM}. $(puppet-enabled || true)"
+BOLD='\033[1m'
+NORM='\033[0m'
+if [ -f "$PUPPET_LAST_RUN_PATH" ]; then
+    CONFIG_VERSION=$(grep -m1 -A1 '^configuration_version:' "$PUPPET_LAST_RUN_PATH"| ruby -ryaml -e 'puts YAML.load(STDIN.read)["configuration_version"]')
+    TSLASTPUPPETRUN=$(stat -c %Z "${PUPPET_STATE_DIR}/classes.txt")
+    NOW=$(date +%s)
+    DELTAMIN=$(((NOW-TSLASTPUPPETRUN)/60))
+    LAST_RUN=$(date -d @"${TSLASTPUPPETRUN}")
+    if [ $DELTAMIN -gt 60 ]; then
+        MSG="${BOLD}($DELTAMIN minutes ago)${NORM}. $(puppet-enabled || true)"
+    else
+        MSG="($DELTAMIN minutes ago). $(puppet-enabled || true)"
+    fi
+    printf "The last Puppet run was at %s %b\\nLast puppet commit: %s\\n" "${LAST_RUN}" "${MSG}" "${CONFIG_VERSION}"
 else
-	MSG="($DELTAMIN minutes ago). $(puppet-enabled || true)"
+    printf "Puppet %bdoes not seem to have run in this machine%b. Unable to find '%s'.\\n" "$BOLD" "$NORM" "$PUPPET_LAST_RUN_PATH"
 fi
-printf "The last Puppet run was at %s %b\\nLast puppet commit: %s\\n" "${LAST_RUN}" "${MSG}" "${CONFIG_VERSION}"
