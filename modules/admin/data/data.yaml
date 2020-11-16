@@ -285,7 +285,7 @@ groups:
               aarora, zpapierski, knissen, jiawang, mholloway-shell, tarrow,
               itamar, phedenskog, aaron, dpifke, aklapper, jmads, andrew-wmde, daniram,
               dcipoletti, chrisalbon, wikigit, nahidunlimited,
-              agaduran, edtadros, dvrandecic, razzi, cparle, klausman, lexnasser, sbisson]
+              agaduran, edtadros, dvrandecic, razzi, cparle, klausman, lexnasser, sbisson, fab]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product]
   analytics-admins:
@@ -1733,6 +1733,15 @@ users:
     realname: Fabian Kaelin
     ssh_keys: []
     uid: 2042
+  fab:
+    ensure: present
+    gid: 500
+    name: fab
+    realname: Fabian Kaelin
+    email: fkaelin@wikimedia.org
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHyKPeAQbIJzDPFnjM4i0gl4RbDUZRJB7aPhzTwtjpAH fab@wmf
+    uid: 27798
   ellery:
     ensure: absent
     gid: 500
