@@ -885,6 +885,12 @@ node 'es1029.eqiad.wmnet' {
     role(mariadb::core)
 }
 
+# es1032 will replace es1018 T261717
+node 'es1032.eqiad.wmnet' {
+    role(mariadb::core)
+}
+
+
 ## codfw servers
 # es2028
 node 'es2028.codfw.wmnet' {
@@ -923,6 +929,11 @@ node 'es1030.eqiad.wmnet' {
     role(mariadb::core)
 }
 
+# es1033 will replace es1015 T261717
+node 'es1033.eqiad.wmnet' {
+    role(mariadb::core)
+}
+
 ## codfw servers
 node 'es2026.codfw.wmnet' {
     role(mariadb::core)
@@ -954,6 +965,12 @@ node 'es1028.eqiad.wmnet' {
 node 'es1031.eqiad.wmnet' {
     role(mariadb::core)
 }
+
+# es1034 will replace es1019 T261717
+node 'es1034.eqiad.wmnet' {
+    role(mariadb::core)
+}
+
 
 node /^es101[49]\.eqiad\.wmnet/ {
     role(mariadb::core)
@@ -1029,13 +1046,6 @@ node /^es202[45]\.codfw\.wmnet/ {
 
 node /^failoid[12]001\.(eqiad|codfw)\.wmnet$/ {
     role(failoid)
-}
-
-# New external store hosts that will refresh existing es1, es2 and es3.
-# Set them to spare individually as it will take take to transfer the data
-# eqiad hosts
-node /^es10(32|33|34)\.eqiad\.wmnet$/ {
-    role(insetup)
 }
 
 # New hosts: 3 will be for x2, and the rest are to refresh db1074-db1095 T264584 T267043
