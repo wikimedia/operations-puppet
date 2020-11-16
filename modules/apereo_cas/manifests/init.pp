@@ -177,8 +177,11 @@ class apereo_cas (
         source => 'puppet:///modules/apereo_cas/memcached-dump.py',
     }
 
-    File["${config_dir}/log4j2.xml", $keystore_path, "${config_dir}/cas.properties"] {
-        notify => Service['tomcat9'],
+    # Don't automatically restart the live idp server
+    unless $is_idp_primary {
+        File["${config_dir}/log4j2.xml", $keystore_path,
+            "${config_dir}/cas.properties"
+        ] { notify => Service['tomcat9'] }
     }
 
     $services.each |String $service, Hash $config| {
