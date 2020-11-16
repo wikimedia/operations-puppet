@@ -26,7 +26,6 @@ User=<%= @service_user %>
 Group=<%= @service_group %>
 Type=simple
 ExecStart=<%= @airflow_wrapper %> webserver \
-        -p <%= @webserver_port %> \
         --pid <%= @run_dir %>/webserver.pid
 Restart=on-failure
 RestartSec=5s
