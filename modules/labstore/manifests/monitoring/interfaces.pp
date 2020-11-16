@@ -13,8 +13,6 @@ class labstore::monitoring::interfaces(
     $contact_groups='wmcs-team,admins',
     $int_throughput_warn = 93750000,  # 750Mbps
     $int_throughput_crit = 106250000, # 850Mbps
-    $load_warn = $::processorcount * 0.75,
-    $load_crit = $::processorcount * 1.25,
 ) {
 
     # In minutes, how long icinga will wait before considering HARD state, see also T188624
@@ -56,20 +54,6 @@ class labstore::monitoring::interfaces(
         retries         => $retries,
         method          => 'ge',
         contact_group   => $contact_groups,
-        notes_link      => 'https://wikitech.wikimedia.org/wiki/Portal:Data_Services/Admin/Labstore',
-        prometheus_url  => "http://prometheus.svc.${::site}.wmnet/ops",
-    }
-
-    # Monitor for high load consistently, is a 'catchall'
-    monitoring::check_prometheus { 'high_load':
-        description     => 'High 1m load average',
-        dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/labs-monitoring'],
-        query           => "quantile_over_time(.85, node_load1{instance=\"${::hostname}:9100\"}[10m])",
-        warning         => $load_warn,
-        critical        => $load_crit,
-        retries         => $retries,
-        method          => 'ge',
-        contact_group   => 'wmcs-team-email,wmcs-bots',
         notes_link      => 'https://wikitech.wikimedia.org/wiki/Portal:Data_Services/Admin/Labstore',
         prometheus_url  => "http://prometheus.svc.${::site}.wmnet/ops",
     }
