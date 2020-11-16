@@ -1,0 +1,23 @@
+# https://specs.openstack.org/openstack/neutron-specs/specs/kilo/report-ha-router-master.html
+# https://docs.openstack.org/mitaka/config-reference/networking/networking_options_reference.html#l3-agent
+[DEFAULT]
+# default but important
+# enough to be explicit
+agent_mode = legacy
+
+# These are WMF custom config values
+# T168580
+routing_source_ip = <%= @network_public_ip %>
+# T167357
+dmz_cidr = <%= @dmz_cidr %>
+
+router_delete_namespaces = true
+
+# neutron.agent.linux.interface.BridgeInterfaceDriver
+interface_driver = linuxbridge
+
+handle_internal_only_routers = True
+enable_metadata_proxy = True
+
+[AGENT]
+report_interval = <%= @report_interval %>
