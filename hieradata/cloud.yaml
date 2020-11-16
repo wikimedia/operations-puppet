@@ -197,3 +197,6 @@ profile::swift::proxy::inactivedc_thumborhost: ~
 # Only added to make CI happy. cloud has no LVS
 profile::lvs::realserver::poolcounter_backends: ~
 profile::lvs::realserver::use_conftool: false
+
+# Mariadb sections: create empty mapping to make puppet happy
+profile::mariadb::section_ports: {}
