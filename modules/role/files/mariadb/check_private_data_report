@@ -59,3 +59,19 @@ then
     echo "Private data detected at $HOSTNAME check: $REPORT_PATH" | /usr/bin/mail -s "Private data found at $HOSTNAME" $EMAILS
 	fi
 fi
+
+# This needs further refactoring, but for now it will work with the new hosts
+# Clouddb hosts are new and will replace the labsdb* ones, they run multi-instance rather than multi-source
+if [ "$HOSTNAME" == "clouddb1013" ] || [ "$HOSTNAME" == "clouddb1017" ]
+then
+	for SECTION in s1 s3
+	do
+		echo "Start time: $(date)" > "${REPORT_PATH}_${SECTION}"
+		$PRIVATE_DATA -S ${SOCKET}.${SECTION}.sock >> "${REPORT_PATH}_${SECTION}" 2>&1
+		DATA=$(/bin/egrep -v "^-- Non|^Start time|wmf_checksums|^-- Unfiltered" -c "${REPORT_PATH}_${SECTION}" | xargs)
+		if [ "$DATA" -gt "0" ]
+		then
+		echo "Private data detected at $HOSTNAME for $SECTION check: ${REPORT_PATH}_${SECTION}" | /usr/bin/mail -s "Private data found at $HOSTNAME" $EMAILS
+		fi
+	done
+fi
