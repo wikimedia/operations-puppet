@@ -58,8 +58,7 @@ class iegreview(
         deploy_user  => 'deploy-service',
     }
 
-    require_package('php-mysql')
-    require_package('php-curl')
+    ensure_packages(['php-mysql', 'php-curl'])
 
     httpd::site { $hostname:
         content => template('iegreview/apache.conf.erb'),
