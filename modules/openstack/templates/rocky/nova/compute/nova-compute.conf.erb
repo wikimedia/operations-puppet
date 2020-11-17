@@ -33,7 +33,8 @@ disk_cachemodes = "network=writeback"
 
 # Define custom CPU restriction to the lowest
 # common subset of features across all hypervisors.
-# Until we decom cloudvirt1001-1009, this is Ivy Bridge.
+# This varies by deployment depending on what hypervisors
+# are active.  Details at https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Ceph#CPU_Model_Type
 cpu_mode=custom
-cpu_model=IvyBridge-IBRS
+cpu_model=<%= @libvirt_cpu_model %>
 <% end -%>

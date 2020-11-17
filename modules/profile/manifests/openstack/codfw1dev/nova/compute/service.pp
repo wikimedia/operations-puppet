@@ -5,6 +5,7 @@ class profile::openstack::codfw1dev::nova::compute::service(
     $network_flat_interface_vlan = lookup('profile::openstack::codfw1dev::nova::network_flat_interface_vlan'),
     $network_flat_name = lookup('profile::openstack::codfw1dev::neutron::network_flat_name'),
     $physical_interface_mappings = lookup('profile::openstack::codfw1dev::nova::physical_interface_mappings'),
+    String $libvirt_cpu_model = lookup('profile::openstack::codfw1dev::nova::libvirt_cpu_model'),
     ) {
 
     require ::profile::openstack::codfw1dev::neutron::common
@@ -21,6 +22,7 @@ class profile::openstack::codfw1dev::nova::compute::service(
         network_flat_tagged_base_interface => $network_flat_tagged_base_interface,
         network_flat_interface_vlan        => $network_flat_interface_vlan,
         all_cloudvirts                     => unique(concat(query_nodes('Class[profile::openstack::codfw1dev::nova::compute::service]'), [$::fqdn])),
+        libvirt_cpu_model                  => $libvirt_cpu_model,
         require                            => Class['::profile::openstack::base::neutron::linuxbridge_agent'],
     }
     contain '::profile::openstack::base::nova::compute::service'

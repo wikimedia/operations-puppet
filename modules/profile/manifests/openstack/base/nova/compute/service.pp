@@ -6,6 +6,7 @@ class profile::openstack::base::nova::compute::service(
     $network_flat_interface_vlan = lookup('profile::openstack::base::nova::network_flat_interface_vlan'),
     Boolean $legacy_vlan_naming = lookup('legacy_vlan_naming', {default_value => true}),
     Array[Stdlib::Fqdn] $all_cloudvirts = lookup('profile::openstack::base::nova::all_cloudvirts'),
+    String $libvirt_cpu_model = lookup('profile::openstack::base::nova::libvirt_cpu_model'),
     Optional[Boolean] $enable_nova_rbd = lookup('profile::ceph::client::rbd::enable_nova_rbd', {'default_value' => false}),
     Optional[String] $ceph_rbd_pool = lookup('profile::ceph::client::rbd::pool', {'default_value' => undef}),
     Optional[String] $ceph_rbd_client_name = lookup('profile::ceph::client::rbd::client_name', {'default_value' => undef}),
@@ -118,6 +119,7 @@ class profile::openstack::base::nova::compute::service(
 
     class {'openstack::nova::compute::service':
         version              => $version,
+        libvirt_cpu_model    => $libvirt_cpu_model,
         certpath             => $certpath,
         all_cloudvirts       => $all_cloudvirts,
         ceph_rbd_pool        => $ceph_rbd_pool,

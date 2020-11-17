@@ -21,6 +21,7 @@ profile::openstack::codfw1dev::nova::physical_interface_mappings:
   cloudinstances2b: 'eth1.2105'
 
 profile::openstack::codfw1dev::nova::default_schedule_zone: 'nova'
+profile::openstack::codfw1dev::nova::libvirt_cpu_model: 'IvyBridge-IBRS'
 
 
 # The behavior formerly managed by the scheduler_pool is now
