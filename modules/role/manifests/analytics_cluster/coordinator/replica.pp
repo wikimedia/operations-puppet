@@ -3,7 +3,7 @@
 class role::analytics_cluster::coordinator::replica {
 
     system::role { 'analytics_cluster::coordinator::replica':
-        description => 'Analytics Cluster backup/replica host running various Hadoop services (Hive, etc..)'
+        description => 'Analytics Cluster backup/replica host running various Hadoop services (Hive, Meta DB, etc..)'
     }
 
     include ::profile::analytics::cluster::gitconfig
@@ -16,6 +16,8 @@ class role::analytics_cluster::coordinator::replica {
     # have any special analytics system users on it
     # for interacting with HDFS.
     include ::profile::analytics::cluster::users
+
+    include ::profile::analytics::database::meta
 
     # SQL-like queries to data stored in HDFS
     # include ::profile::hive::metastore
