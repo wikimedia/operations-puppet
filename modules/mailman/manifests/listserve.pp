@@ -38,5 +38,5 @@ class mailman::listserve (
     }
 
     # to create random passwords for list password resets
-    require_package('pwgen')
+    ensure_packages('pwgen')
 }
