@@ -284,7 +284,7 @@ groups:
               kevinbazira, keepit-ssh, jiji, cohi, mstyles, accraze, snowick,
               aarora, zpapierski, knissen, jiawang, mholloway-shell, tarrow,
               itamar, phedenskog, aaron, dpifke, aklapper, jmads, andrew-wmde, daniram,
-              dcipoletti, chrisalbon, wikigit, nahidunlimited,
+              dcipoletti, chrisalbon, wikigit, nahidunlimited, swagoel,
               agaduran, edtadros, dvrandecic, razzi, cparle, klausman, lexnasser, sbisson, fab]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product]
@@ -3862,6 +3862,15 @@ users:
     gid: 500
     ssh_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC3kiZBoCZU9sQS0ehfB47WOPPA5+3Tak+XnqFNxK4caYDE/BzyzVXu77AzhD20ouEE8ZN2NITJyDVOkWXh3CK4krZ6Nl7mvex7eYkR1Omi0EwIsbh/sQ26eZsjSi7AyUjvbpqv7E+Aok1wE5+8CqqX/EB3JNseHihPRB7f8XGBq/X7hj/EtKVgv/ZZfXF7pAUVOyzHejPmc6ki/vTZ1zxLBg9HruFD9K17mbFkcxc2n1k/x3MHKAS46ZJ4H1BHtKdhkqQkKcD2nwFG37Q7zwP3uayyaU3A1VU/lJsmNQ7JwBcjqGiVgF7sflLHAnxRTAFp60OA6eryr75OdsPEutUzG1OK1JuIPIPBCHttEVlkbcwIZLbAl/r+Z/eOTvzp4GaGdTwcQw7YgqdSUDjQ1wETDKNMAZxK1XGBPbLo+acyBU11+Th55zUdV38/M6RTv0lbDCZsDqy2UgT1ke/clLuMBoMv/XDExOALv3ILjQfARDh8LO19kxQD7UdaknT2gu3c7ymR6PFhQbYJnmTom2EH0gFHXfRVAgJf0rUyxW7BY5MER+F0M26bUdUV2nM4e0nUxKocx4HiDosRXXc9tTgNSTXqTnb4Z4IxH6ZAzOgsqT1D6sE4mGDboh+H/XST40I/WbMfCUPErNGZPbHeYR//Ki36zlQcsXrETUxf9NXM2w== zxane@Zxanes-MBP
+  swagoel:
+    ensure: present
+    name: swagoel
+    realname: Swati Goel
+    email: ms.swati.goel@gmail.com
+    uid: 27754
+    gid: 500
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOe8yGmiYe4TX6NLuqjO16X6vXJZnyoh6pdFS//eywhI swati@Swatis-Air.volcano.net
 
 ldap_only_users:
   abartov:
