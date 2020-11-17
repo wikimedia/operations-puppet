@@ -4570,3 +4570,7 @@ ldap_only_users:
     ensure: present
     realname: Stephanie Tran
     email: stran@wikimedia.org
+  janjaquemot:
+    ensure: present
+    realname: Jan Jaquemot
+    email: Jan.Jaquemot@wikimedia.de
