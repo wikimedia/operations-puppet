@@ -763,6 +763,11 @@ groups:
     members: [bearloga, neilpquinn-wmf, nettrom, mneisler, conniecc1, mayakpwiki, snowick, jiawang, jdl]
     privileges: ['ALL = (analytics-product) NOPASSWD: ALL']
     system_members: [analytics-product]
+  peek-admins:
+    gid: 821
+    description: People who can run any command as the peek user on peek servers
+    members: [reedy, sbassett]
+    privileges: ['ALL = (peek) NOPASSWD: ALL']
   reprepro:
     gid: 901
     system: true
