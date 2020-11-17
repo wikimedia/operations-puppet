@@ -11,7 +11,6 @@ describe 'puppetmaster::geoip' do
         include profile::base
         include profile::base::puppet
         include httpd
-        include puppetmaster
         include standard::prometheus
         '''
       }

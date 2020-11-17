@@ -3,6 +3,7 @@ class puppetmaster::geoip(
     Boolean $use_proxy = true,
 ){
 
+    include puppetmaster
     # Fetch the GeoIP databases into puppet's volatile dir, so that other hosts
     # can then just sync that directory into their own /usr/share/GeoIP via a
     # normal puppet File resource (see the geoip module for more)

@@ -121,9 +121,7 @@ class puppetmaster(
         }
     }
 
-    class { 'puppetmaster::ssl':
-        server_name => $server_name,
-    }
+    include puppetmaster::ssl
 
     class { 'puppetmaster::gitclone':
         secure_private      => $secure_private,
@@ -149,7 +147,7 @@ class puppetmaster(
     }
 
     if $enable_geoip {
-        class { 'puppetmaster::geoip': }
+        include puppetmaster::geoip
     }
     include puppetmaster::gitpuppet
     include puppetmaster::generators
