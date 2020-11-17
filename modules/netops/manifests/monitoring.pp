@@ -72,7 +72,7 @@ class netops::monitoring(
 
     # OOB interfaces -- no SNMP for these
     $oob = {
-        'mr1-eqiad.oob' => { ipv4 => '198.32.107.153',  ipv6 => '2607:f6f0:205::153', parents => ['mr1-eqiad'] },
+        'mr1-eqiad.oob' => { ipv4 => '149.97.228.94',  ipv6 => '2607:f6f0:1000:1194::2', parents => ['mr1-eqiad'] },
         'mr1-codfw.oob' => { ipv4 => '216.117.46.36', parents => ['mr1-codfw'] },
         'mr1-esams.oob' => { ipv4 => '164.138.24.90', parents => ['mr1-esams'] },
         'mr1-ulsfo.oob' => { ipv4 => '198.24.47.102',   ipv6 => '2607:fb58:9000:7::2',  parents => ['mr1-ulsfo'] },
