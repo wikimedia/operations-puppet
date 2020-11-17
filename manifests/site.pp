@@ -2196,7 +2196,7 @@ node /^rdb200[78]\.codfw\.wmnet$/ {
     role(insetup)
 }
 
-node /^(rdb2009|rd2010)\.codfw\.wmnet$/ {
+node /^(rdb2009|rdb2010)\.codfw\.wmnet$/ {
     role(insetup)
 }
 
