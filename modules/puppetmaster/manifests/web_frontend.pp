@@ -51,16 +51,12 @@ define puppetmaster::web_frontend(
     Optional[Array[Stdlib::Host]]           $canary_hosts            = [],
     Optional[Stdlib::Host]                  $locale_server           = undef,
 ){
-    include puppetmaster
-    require puppetmaster::ssl
-
-    $verify_client = $puppetmaster::verify_client
     $server_name = $title
     $ssl_settings = ssl_ciphersuite('apache', 'strong')
 
     if $server_name != $::fqdn {
         # The files called with secret() should be generated on the current
-        # $puppetmaster::ca_server with "puppet cert generate" and committed to
+        # puppetmaster::ca_server with "puppet cert generate" and committed to
         # the private repository.
         # We use the private repo for the public key as well as it gets
         # generated on the puppet ca server.

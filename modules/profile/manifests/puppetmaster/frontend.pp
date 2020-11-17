@@ -62,6 +62,10 @@ class profile::puppetmaster::frontend(
 
     require_package('libapache2-mod-passenger')
 
+    class { 'puppetmaster::ca_server':
+        master => $ca_server
+    }
+
     $common_config = {
         'ca'              => $ca,
         'ca_server'       => $ca_server,

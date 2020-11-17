@@ -7,10 +7,7 @@ describe 'puppetmaster::web_frontend' do
   # rspec to avoid caring about secrets
   let(:title) { 'foo.example.com' }
   let(:facts) { {} }
-  let(:pre_condition) do
-    "include httpd
-    exec {'compile puppet.conf': command => '/bin/true'}"
-  end
+  let(:pre_condition) { 'include httpd' }
   let(:params) do
     {
       workers: [
