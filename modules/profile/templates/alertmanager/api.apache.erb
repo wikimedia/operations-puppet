@@ -14,16 +14,27 @@
     <Location />
         ProxyPass "http://localhost:9093/" retry=0
         <If "%{REQUEST_METHOD} in { 'GET', 'HEAD' }">
-<% @ro_hosts.sort.each do |h| -%>
-            Require ip <%= h %>
+<% @ro_hosts.sort.each do |el| -%>
+            Require host <%= el %>
 <% end -%>
-<% @rw_hosts.sort.each do |h| -%>
+<% @rw_hosts.sort.each do |el| -%>
+            Require host <%= el %>
+<% end -%>
+
+<% @ro_ips.sort.each do |el| -%>
+            Require ip <%= el %>
+<% end -%>
+<% @rw_ips.sort.each do |el| -%>
             Require ip <%= h %>
 <% end -%>
         </If>
 
         <If "%{REQUEST_METHOD} in { 'POST', 'DELETE' }">
-<% @rw_hosts.sort.each do |h| -%>
+<% @rw_hosts.sort.each do |el| -%>
+            Require host <%= el %>
+<% end -%>
+
+<% @rw_ips.sort.each do |el| -%>
             Require ip <%= h %>
 <% end -%>
         </If>
