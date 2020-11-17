@@ -11,7 +11,7 @@ class noc {
 
     include ::noc::php_engine
 
-    require_package('libapache2-mod-php')
+    ensure_packages('libapache2-mod-php')
 
     httpd::site { 'noc.wikimedia.org':
         content => template('noc/noc.wikimedia.org.erb'),
