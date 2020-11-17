@@ -65,4 +65,16 @@ set titlestring=%F\ %r\ [%n]\ %LL\ %p%%
 highlight BadWhitespace ctermbg=darkgreen guibg=darkgreen
 match BadWhitespace / /
 
+" For https://github.com/fatih/vim-go
+let g:go_list_type = "quickfix"
+au Filetype go setl ts=4 | setl noexpandtab
+au FileType go nmap <leader>r <Plug>(go-run)
+au FileType go nmap <leader>R :GoRename<cr>
+au FileType go nmap <leader>b <Plug>(go-build)
+au FileType go nmap <leader>t <Plug>(go-test)
+au FileType go nmap <leader>i :GoInfo<cr>
+au FileType go nmap <leader>I :GoImports<cr>
+let g:go_highlight_operators = 1
+let g:go_fmt_fail_silently = 1
+
 let g:gitgutter_override_sign_column_highlight = 0
