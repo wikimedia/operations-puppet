@@ -93,7 +93,53 @@ ENFORCE_GLOBAL_UNIQUE = True
 
 # Enable custom logging. Please see the Django documentation for detailed guidance on configuring custom logs:
 #   https://docs.djangoproject.com/en/1.11/topics/logging/
-LOGGING = {}
+# See also: https://www.agiliq.com/blog/2017/12/configure-django-log-exceptions-production/
+LOGGING = {
+        'version': 1,
+        'disable_existing_loggers': False,
+        'filters': {
+                'require_debug_false': {
+                        '()': 'django.utils.log.RequireDebugFalse',
+                },
+                'require_debug_true': {
+                        '()': 'django.utils.log.RequireDebugTrue',
+                },
+        },
+        'formatters': {
+                'django.server': {
+                        '()': 'django.utils.log.ServerFormatter',
+                        'format': '[%(server_time)s] %(message)s',
+                }
+        },
+        'handlers': {
+                'console': {
+                        'level': 'INFO',
+                        'filters': ['require_debug_true'],
+                        'class': 'logging.StreamHandler',
+                },
+                'console_debug_false': {
+                        'level': 'ERROR',
+                        'filters': ['require_debug_false'],
+                        'class': 'logging.StreamHandler',
+                },
+                'django.server': {
+                        'level': 'INFO',
+                        'class': 'logging.StreamHandler',
+                        'formatter': 'django.server',
+                }
+        },
+        'loggers': {
+                'django': {
+                        'handlers': ['console', 'console_debug_false'],
+                        'level': 'INFO',
+                },
+                'django.server': {
+                        'handlers': ['django.server'],
+                        'level': 'INFO',
+                        'propagate': False,
+                }
+        }
+}
 
 # Setting this to True will permit only authenticated users to access any part of NetBox. By default, anonymous users
 # are permitted to access most data in NetBox (excluding secrets) but not make any changes.
