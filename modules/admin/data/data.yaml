@@ -4516,6 +4516,10 @@ ldap_only_users:
     ensure: present
     realname: Gabriele Modena
     email: gmodena@wikimedia.org
+  ijethrobt:
+    ensure: present
+    realname: Christopher Schilling
+    email: cschilling@wikimedia.org
   kassiameq:
     ensure: present
     realname: Kassia Echavarri-Queen
