@@ -102,9 +102,8 @@ https://en.wikipedia.org:
   assert_body_regex: >-
     "appID"\s*:\s*"AKK7J2GV64.org.wikimedia.wikipedia",\s*"paths":\s*\[\s*"/wiki/\*"
 
-# To be enabled once other patches in https://phabricator.wikimedia.org/T259312 are deployed.
-#https://thankyou.wikipedia.org:
-#- path: /apple-app-site-association
-#  assert_status: 200
-#  assert_body_regex: >-
-#    (?s)"appIDs".*"AKK7J2GV64.org.wikimedia.wikipedia".*"/wiki/\*".*"exclude"\s*:\s*true
+https://thankyou.wikipedia.org:
+- path: /apple-app-site-association
+  assert_status: 200
+  assert_body_regex: >-
+    (?s)"appIDs".*"AKK7J2GV64.org.wikimedia.wikipedia".*"/wiki/\*".*"exclude"\s*:\s*true
