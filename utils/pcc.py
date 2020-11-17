@@ -292,6 +292,7 @@ def main():  # pylint: disable=too-many-locals
         invocation.block(until='not_queued')
 
     build = invocation.get_build()
+    console_url = build.baseurl + '/console'
 
     print('Your build URL is %s' % white(build.baseurl))
 
@@ -317,11 +318,11 @@ def main():  # pylint: disable=too-many-locals
     # for failures before declaring victory.
     if ('Run finished' in output and not re.search(r'[1-9]\d* (ERROR|FAIL)', output)):
         print(green('SUCCESS'))
-        post_comment(change, 'PCC SUCCESS: {}'.format(build.baseurl), True)
+        post_comment(change, 'PCC SUCCESS: {}'.format(console_url), True)
         return 0
     print(red('FAIL'))
     if args.post_fail:
-        post_comment(change, 'PCC FAIL: {}'.format(build.baseurl), False)
+        post_comment(change, 'PCC FAIL: {}'.format(console_url), False)
     return 1
 
 
