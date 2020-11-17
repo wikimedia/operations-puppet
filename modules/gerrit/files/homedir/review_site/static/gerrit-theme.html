@@ -280,11 +280,12 @@ SOFTWARE.
           }
 
           // Reports from SonarQube
+          // https://github.com/kostajh/sonarqubebot/
           re = /(SUCCESS|FAILURE) Quality gate/;
           if (re.test(message)) {
             // Extracting the report url
             var url = '';
-            re = /^Report: (https:\S+)/;
+            re = /^Report: (https:\S+)/m;
             if (check = re.exec(message)) {
               url = check[1];
             }
