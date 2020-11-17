@@ -2196,6 +2196,10 @@ node /^rdb200[78]\.codfw\.wmnet$/ {
     role(insetup)
 }
 
+node /^(rdb2009|rd2010)\.codfw\.wmnet$/ {
+    role(insetup)
+}
+
 node /^registry[12]00[12]\.(eqiad|codfw)\.wmnet$/ {
     role(docker_registry_ha::registry)
 }
