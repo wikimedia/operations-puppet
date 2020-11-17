@@ -20,6 +20,9 @@
   "MySQLTopologyCredentialsConfigFile": "/etc/mysql/orchestrator_topo.cnf",
   "InstancePollSeconds": 5,
   "MySQLConnectTimeoutSeconds": 1,
+  "HostnameResolveMethod": "cname",
+  "MysqlHostnameResolveMethod": "@@report_host",
+  "DiscoverByShowSlaveHosts": true,
 
   "CandidateInstanceExpireMinutes": 60,
   "FailureDetectionPeriodBlockMinutes": 60,
