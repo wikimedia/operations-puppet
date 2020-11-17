@@ -4,11 +4,12 @@
 # and other Analytics Cluster services.
 #
 class profile::analytics::database::meta(
-    $datadir            = lookup('profile::analytics::database::meta::datadir', { 'default_value' => '/var/lib/mysql' }),
-    $tmpdir             = lookup('profile::analytics::database::meta::tmpdir', { 'default_value' => '/srv/tmp' }),
-    $monitoring_enabled = lookup('profile::analytics::database::meta::monitoring_enabled', { 'default_value' => false }),
-    $ferm_srange        = lookup('profile::analytics::database::meta::ferm_srange', { 'default_value' => '$DOMAIN_NETWORKS' }),
-    $innodb_pool_size   = lookup('profile::analytics::database::meta::innodb_pool_size', { 'default_value' => '4G'}),
+    Stdlib::Unixpath $datadir   = lookup('profile::analytics::database::meta::datadir', { 'default_value' => '/var/lib/mysql' }),
+    Stdlib::Unixpath $tmpdir    = lookup('profile::analytics::database::meta::tmpdir', { 'default_value' => '/srv/tmp' }),
+    Boolean $monitoring_enabled = lookup('profile::analytics::database::meta::monitoring_enabled', { 'default_value' => false }),
+    String $ferm_srange         = lookup('profile::analytics::database::meta::ferm_srange', { 'default_value' => '$DOMAIN_NETWORKS' }),
+    String $innodb_pool_size    = lookup('profile::analytics::database::meta::innodb_pool_size', { 'default_value' => '4G'}),
+    Boolean $is_mariadb_replica = lookup('profile::analytics::database::meta::is_mariadb_replica', { 'default_value' => false }),
 ) {
 
     # Some CDH database init scripts need Java to run.
@@ -20,6 +21,20 @@ class profile::analytics::database::meta(
 
     $mariadb_socket = '/run/mysqld/mysqld.sock'
 
+    # If it is the replica, set it as read-only
+    # and add monitoring for the replication state.
+    if $is_mariadb_replica {
+        $read_only = 1
+        if $monitoring_enabled {
+            mariadb::monitor_replication { 'analytics-meta-replica':
+                is_critical   => false,
+                contact_group => 'admins,analytics',
+            }
+        }
+    } else {
+        $read_only = 0
+    }
+
     class { 'mariadb::config':
         config           => 'profile/analytics/database/meta/analytics-meta.my.cnf.erb',
         socket           => $mariadb_socket,
@@ -28,7 +43,7 @@ class profile::analytics::database::meta(
         tmpdir           => $tmpdir,
         basedir          => $basedir,
         ssl              => 'puppet-cert',
-        read_only        => false,
+        read_only        => $read_only,
         innodb_pool_size => $innodb_pool_size,
     }
 

@@ -25,7 +25,7 @@ datadir   = <%= @datadir %>
 basedir   = <%= @basedir %>
 tmpdir    = <%= @tmpdir %>
 server_id = <%= @server_id %>
-read_only = <%= (@read_only == 'off' or not @read_only) ? 0 : 1 %>
+read_only = <%= @read_only %>
 
 # ssl
 ssl-ca=/etc/ssl/certs/Puppet_Internal_CA.pem
