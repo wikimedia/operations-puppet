@@ -13,7 +13,7 @@ profile::openstack::eqiad1::nova::instance_network_id: '7425e328-560c-4f00-8e99-
 profile::openstack::eqiad1::nova::physical_interface_mappings:
   cloudinstances2b: 'eth1.1105'
 
-profile::openstack::eqiad1::nova::libvirt_cpu_model: 'Haswell'
+profile::openstack::eqiad1::nova::libvirt_cpu_model: 'Haswell-noTSX-IBRS'
 
 # The behavior formerly managed by the scheduler_pool is now
 # handled by novas host aggregates.  Documentation can
