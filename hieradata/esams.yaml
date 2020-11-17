@@ -6,7 +6,7 @@ prometheus_nodes:
   - prometheus3001.esams.wmnet
 
 # Which of our redundant unified cert vendors to use in each DC
-public_tls_unified_cert_vendor: "lets-encrypt"
+public_tls_unified_cert_vendor: "digicert-2020"
 
 # Reasonable expected max RTT in ms to furthest core DC
 # (given worst alternate network paths, and plus a small fudge factor)
