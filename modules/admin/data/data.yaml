@@ -4511,3 +4511,7 @@ ldap_only_users:
     ensure: present
     realname: Kassia Echavarri-Queen
     email: kechavarriqueen@wikimedia.org
+  tobias-schumann-wmde-ext:
+    ensure: present
+    realname: Tobias Schumann
+    email: tobias.schumann_ext@wikimedia.de
