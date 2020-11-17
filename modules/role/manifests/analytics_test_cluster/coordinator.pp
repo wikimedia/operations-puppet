@@ -36,7 +36,6 @@ class role::analytics_test_cluster::coordinator {
     # SQL-like queries to data stored in HDFS
     include ::profile::hive::metastore
     include ::profile::hive::server
-    include ::profile::hive::metastore::database
 
     # (Faster) SQL-like queries to data stored in HDFS and elsewhere
     # coordinator only runs the Presto server as a coordinator process.
@@ -46,7 +45,6 @@ class role::analytics_test_cluster::coordinator {
 
     # The Hadoop job scheduler
     include ::profile::oozie::server
-    include ::profile::oozie::server::database
 
     # Include a weekly cron job to run hdfs balancer.
     include ::profile::hadoop::balancer

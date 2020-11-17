@@ -9,7 +9,6 @@ class role::cloud_analytics::coordinator {
 
     include ::profile::hive::metastore
     include ::profile::hive::server
-    include ::profile::hive::metastore::database
 
     # Include a weekly cron job to run hdfs balancer.
     include ::profile::hadoop::balancer
