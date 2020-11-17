@@ -12,7 +12,7 @@ define planet::updatejob (
         user            => 'planet',
         description     => 'Update feed content for a planet language version.',
         command         => $planet_cmd,
-        interval        => {'start' => 'OnUnitInactiveSec', 'interval' => 'hourly'},
+        interval        => {'start' => 'OnUnitActiveSec', 'interval' => 'hourly'},
         logfile_basedir => '/var/log/planet',
         logfile_name    => "update-${title}.log",
         require         => [
