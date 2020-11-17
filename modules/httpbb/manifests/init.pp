@@ -10,8 +10,8 @@ class httpbb(
     Stdlib::Unixpath $install_dir = '/srv/deployment/httpbb',
     Stdlib::Unixpath $tests_dir = '/srv/deployment/httpbb-tests',
 ){
-    require_package('python3-attr', 'python3-clustershell', 'python3-jsonschema',
-                    'python3-requests', 'python3-requests-toolbelt', 'python3-yaml')
+    ensure_packages(['python3-attr', 'python3-clustershell', 'python3-jsonschema',
+                    'python3-requests', 'python3-requests-toolbelt', 'python3-yaml'])
 
     git::clone { 'operations/software/httpbb':
         directory => $install_dir,
