@@ -47,14 +47,14 @@ class aptrepo (
     $authorized_keys = [],
 ) {
 
-    require_package(
+    ensure_packages([
         'reprepro',
         'dpkg-dev',
         'dctrl-tools',
         'gnupg',
         'python-apt',
         'bsd-mailx', # mail(1) is needed to send a notification mail after package imports
-    )
+    ])
 
     $deb822_validate_cmd = '/usr/bin/python -c "import apt_pkg; f=\'%\'; list(apt_pkg.TagFile(f))"'
 
