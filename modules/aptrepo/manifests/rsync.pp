@@ -8,13 +8,13 @@ class aptrepo::rsync (
     if $::fqdn == $primary_server {
 
         $ensure_ferm = 'absent'
-        $ensure_cron = 'present'
+        $ensure_job = 'present'
         $ensure_sync = 'absent'
 
     } else {
 
         $ensure_ferm = 'present'
-        $ensure_cron = 'absent'
+        $ensure_job = 'absent'
         $ensure_sync = 'present'
 
         include rsync::server
@@ -40,11 +40,19 @@ class aptrepo::rsync (
 
     $secondary_servers.each |String $secondary_server| {
         cron { "rsync-aptrepo-${secondary_server}":
-            ensure  => $ensure_cron,
+            ensure  => 'absent',
             user    => 'root',
             command => "rsync -avp --delete /srv/ rsync://${secondary_server}/install-srv > /dev/null",
             hour    => '*/6',
             minute  => '42',
+        }
+
+        systemd::timer::job { "rsync-aptrepo-${secondary_server}":
+            ensure      => $ensure_job,
+            user        => 'root',
+            description => 'rsync APT repo data from the primary to a secondary server',
+            command     => "/usr/bin/rsync -avp --delete /srv/ rsync://${secondary_server}/install-srv",
+            interval    => {'start' => 'OnUnitInactiveSec', 'interval' => '6h'},
         }
     }
 }
