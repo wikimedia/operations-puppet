@@ -9,11 +9,11 @@ class profile::base::linux419(
 ) {
     # only for stretch
     if $enable and debian::codename::eq('stretch') {
-        require_package('linux-image-4.19-amd64')
+        ensure_packages('linux-image-4.19-amd64')
 
         # real-hardware specific
         unless $facts['is_virtual'] {
-            require_package('rasdaemon')
+            ensure_packages('rasdaemon')
             base::service_auto_restart { 'rasdaemon': }
 
             # Mask mcelog systemd unit if this host is *running*
