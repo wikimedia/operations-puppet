@@ -75,9 +75,9 @@ my $log_path_str = join ' ', (
 my $loglines =  `tail -n 2500 -q $log_path_str`;
 
 my %consolidate_patterns = (
-  qr/Allowed memory size of/                         => '[mem]',
-  qr/Maximum execution time of 180 seconds exceeded/ => '[time]',
-  qr/Memcached::setMulti\(\): failed to set key/     => '[memcache]',
+  qr/Allowed memory size of/                               => '[mem]',
+  qr/the execution time limit of \d+ seconds was exceeded/ => '[time]',
+  qr/Memcached::setMulti\(\): failed to set key/           => '[memcache]',
 );
 
 # A pattern for extracting exception names and the invariant error messages /
