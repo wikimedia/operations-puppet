@@ -267,8 +267,9 @@ class profile::analytics::refinery::job::refine(
             output_path                     => '/wmf/data/wmf',
             database                        => 'wmf',
             transform_functions             => 'org.wikimedia.analytics.refinery.job.refine.augment_netflow',
-            spark_extra_files               => "${::profile::analytics::refinery::config_dir}/network_region_config.yaml",
         }),
+        # augment_netflow needs this to add network region / DC information.
+        spark_extra_files              => $::profile::analytics::refinery::network_region_config::network_region_config_file,
         monitoring_enabled             => false,
         refine_monitor_enabled         => false,
         refine_monitor_failure_enabled => true,
