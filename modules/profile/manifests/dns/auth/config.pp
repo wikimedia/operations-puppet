@@ -70,9 +70,12 @@ class profile::dns::auth::config(
         group  => 'root',
         mode   => '0755',
     }
+
+    # This is a file copy rather than a softlink, so that gdnsd's ev_stat
+    # watcher can notice changes to it.
     file { '/etc/gdnsd/geoip/GeoIP2-City.mmdb':
-        ensure => 'link',
-        target => '/usr/share/GeoIP/GeoIP2-City.mmdb',
+        ensure => 'present',
+        source => '/usr/share/GeoIP/GeoIP2-City.mmdb',
         before => Exec['authdns-local-update'],
     }
 
