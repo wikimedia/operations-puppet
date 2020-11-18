@@ -12,6 +12,8 @@ pybasedir = /usr/lib/python2.7/dist-packages
 #use_rootwrap_daemon = True ### FIXME may be used only in compute nodes?
 notification_driver = messagingv2
 
+use_syslog = True
+syslog_log_facility = LOG_LOCAL0
 default_log_levels = nova=WARN
 #debug = true
 
