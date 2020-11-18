@@ -3,6 +3,9 @@
 private = file://<%= config['private'] %>
 certificate = <%= config['certificate'] %>
 config = <%= config['config'] %>
+  <%- if config.has_key?('dbconfig') -%>
+dbconfig = <%= config['dbconfig'] %>
+  <%- end -%>
   <%- unless config.fetch('nets', nil) -%>
 nets = <%= config['nets'].join(',') %>
   <%- end -%>

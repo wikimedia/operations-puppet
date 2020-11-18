@@ -60,6 +60,7 @@ class profile::pki::server(
                 'private'     => $ca_key_file,
                 'certificate' => $ca_file,
                 'config'      => "${cfssl::signer_dir}/${safe_title}/cfssl.conf",
+                'dbconfig'    => "${cfssl::signer_dir}/${safe_title}/db.conf",
                 'nets'        => $config['nets'],
             }
         }
