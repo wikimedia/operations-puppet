@@ -54,5 +54,6 @@ profile::lvs::realserver::pools:
   mobileapps: {}
   api-gateway: {}
   push-notifications: {}
+  recommendation-api: {}
 prometheus::node_exporter::collectors_extra:
   - processes
