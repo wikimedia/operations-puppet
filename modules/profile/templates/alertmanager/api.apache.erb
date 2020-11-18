@@ -1,5 +1,9 @@
 <VirtualHost *:80>
     ServerName <%= @vhost %>
+<% if @vhost_alias -%>
+    ServerAlias <%= @vhost_alias %>
+<% end -%>
+
     ServerAdmin <%= 'root@' + @facts['domain'] %>
 
     # Should never be seen, but apache needs this set to something

@@ -1,3 +1,4 @@
+profile::alertmanager::api::vhost_alias: 'am*.%{facts.domain}'
 profile::alertmanager::api::ro: []
 profile::alertmanager::api::rw:
   - 'grafana1002.eqiad.wmnet'

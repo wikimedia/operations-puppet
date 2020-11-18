@@ -3,6 +3,7 @@
 class profile::alertmanager::api (
     # lint:ignore:wmf_styleguide - T260574
     String $vhost  = lookup('profile::alertmanager::api::vhost', {'default_value' => "alertmanager.${facts['domain']}"}),
+    Optional[String] $vhost_alias  = lookup('profile::alertmanager::api::vhost_alias', {'default_value' => undef}),
     # lint:endignore
     Array[Httpd::RequireHostIP] $ro = lookup('profile::alertmanager::api::ro'),
     Array[Httpd::RequireHostIP] $rw = lookup('profile::alertmanager::api::rw'),
