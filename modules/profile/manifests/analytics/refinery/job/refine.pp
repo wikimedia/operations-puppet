@@ -40,7 +40,7 @@ class profile::analytics::refinery::job::refine(
 
     # Update this when you want to change the version of the refinery job jar
     # being used for the refine job.
-    $refinery_version = '0.0.133'
+    $refinery_version = '0.0.139'
 
     # Use this value by default
     Profile::Analytics::Refinery::Job::Refine_job {
@@ -266,6 +266,8 @@ class profile::analytics::refinery::job::refine(
             input_path_regex_capture_groups => $netflow_input_path_regex_capture_groups,
             output_path                     => '/wmf/data/wmf',
             database                        => 'wmf',
+            transform_functions             => 'org.wikimedia.analytics.refinery.job.refine.augment_netflow',
+            spark_extra_files               => "${::profile::analytics::refinery::config_dir}/network_region_config.yaml",
         }),
         monitoring_enabled             => false,
         refine_monitor_enabled         => false,
