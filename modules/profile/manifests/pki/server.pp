@@ -42,6 +42,7 @@ class profile::pki::server(
                 signer_config => {'config_dir' => "${cfssl::signer_dir}/WMF_root_CA"},
                 profile       => 'intermediate',
                 require       => Cfssl::Signer['WMF_root_CA'],
+                notify        => Service['cfssl-multirootca'],
             }
             $ca_key_file = "${cfssl::ssl_dir}/${safe_title}/${safe_title}-key.pem"
             $ca_file = "${cfssl::ssl_dir}/${safe_title}/${safe_title}.pem"
