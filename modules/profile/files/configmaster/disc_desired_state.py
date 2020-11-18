@@ -117,6 +117,8 @@ DESIRED_STATE = [
     {'eqiad': {'pooled': True, 'references': [], 'ttl': 300}, 'tags': 'dnsdisc=push-notifications'},
     {'codfw': {'pooled': True, 'references': [], 'ttl': 300}, 'tags': 'dnsdisc=releases'},
     {'eqiad': {'pooled': True, 'references': [], 'ttl': 300}, 'tags': 'dnsdisc=releases'},
+    {'codfw': {'pooled': True, 'references': [], 'ttl': 300}, 'tags': 'dnsdisc=api-gateway'},
+    {'eqiad': {'pooled': True, 'references': [], 'ttl': 300}, 'tags': 'dnsdisc=api-gateway'},
 ]
 
 
@@ -155,7 +157,7 @@ def main():
         msg = ('Desired/Current discovery state differ\n'
                'The following objects do not have a desired state:\n\t{}\n'
                'Update the config of this script').format('\n\t'.join(diff))
-        print(msg)
+        print(msg + '\nDO NOT ACK THIS\n')
         sys.exit(WARNING)
     print('No discrepancies')
 
