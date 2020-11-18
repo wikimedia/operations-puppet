@@ -22,6 +22,9 @@ COLUMN_LABELS=(
   [5]="message"
 )
 
+# Minutes
+LOGSPAM_WINDOW=60
+
 # Our "view":
 function display {
   logspam_output=$(run_logspam)
@@ -42,12 +45,13 @@ function display {
   # Current date and pattern, plus some pointers to hotkeys:
   printf '[%s]' "$COLOR$(date '+%H:%M:%S %Z')$NORMAL"
   printf '  [%sp%sattern: %s]' "$BOLD" "$NORMAL" "$COLOR$filter$NORMAL"
+  printf '  [%sw%sindow: %d mins]' "$BOLD" "$NORMAL" "$LOGSPAM_WINDOW"
   printf '  [%s12345%s sort]  [%sq%suit] ' "$BOLD" "$NORMAL" "$BOLD" "$NORMAL"
 }
 
 function run_logspam {
   # shellcheck disable=SC2086
-  logspam "$filter" | \
+  logspam --window $LOGSPAM_WINDOW "$filter" | \
     sort $sort_dir $sort_type -t$'\t' -k "$sort_key" | \
     head -n "$(listing_height)"
 }
@@ -118,6 +122,14 @@ while [ -z "$quit" ]; do
         ticks="$MAXTICKS"
         ;;
 
+      w)
+        echo
+        read -r -p "Time window (minutes, 0 to disable): " -ei "$LOGSPAM_WINDOW" LOGSPAM_WINDOW
+        if [ -z "$LOGSPAM_WINDOW" ]; then
+            LOGSPAM_WINDOW=0
+        fi
+        ticks="$MAXTICKS"
+        ;;
       [qQ])
         quit="yep"
         ;;
