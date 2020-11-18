@@ -19,6 +19,7 @@ function do_remap()
         ["1"]                       = "mwdebug1001.eqiad.wmnet",
         ["mwdebug1001.eqiad.wmnet"] = "mwdebug1001.eqiad.wmnet",
         ["mwdebug1002.eqiad.wmnet"] = "mwdebug1002.eqiad.wmnet",
+        ["mwdebug1003.eqiad.wmnet"] = "mwdebug1003.eqiad.wmnet",
         ["mwdebug2001.codfw.wmnet"] = "mwdebug2001.codfw.wmnet",
         ["mwdebug2002.codfw.wmnet"] = "mwdebug2002.codfw.wmnet",
     }
