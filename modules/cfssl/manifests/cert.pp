@@ -95,7 +95,7 @@ define cfssl::cert (
         | /usr/bin/cfssljson -bare ${_outdir}/${safe_title}
         | GEN_COMMAND
     $sign_command = @("SIGN_COMMAND"/L)
-        /usr/bin/cfssl sign ${signer_args} ${_profile} ${csr_json_path} \
+        /usr/bin/cfssl sign ${signer_args} ${_profile} ${csr_pem_path} \
         | /usr/bin/cfssljson -bare ${_outdir}/${safe_title}
         | SIGN_COMMAND
 
