@@ -1634,14 +1634,9 @@ node /^ms-be20(1[6-9]|[2345][0-9])\.codfw\.wmnet$/ {
 
 ## DATACENTER: EQIAD
 
-# Debug servers
-node /^mwdebug100[12]\.eqiad\.wmnet$/ {
+# Debug servers - 1,2 are on stretch, 3 is on buster
+node /^mwdebug100[123]\.eqiad\.wmnet$/ {
     role(mediawiki::canary_appserver)
-}
-
-# Debug server on buster (T245757)
-node 'mwdebug1003.eqiad.wmnet' {
-    role(insetup)
 }
 
 # Appservers (serving normal website traffic)
