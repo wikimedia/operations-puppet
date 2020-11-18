@@ -319,6 +319,11 @@ host an-conf1003 {
     fixed-address an-conf1003.eqiad.wmnet;
 }
 
+host an-tool1010 {
+    hardware ethernet D0:94:66:5F:7C:96;
+    fixed-address an-tool1010.eqiad.wmnet;
+}
+
 host an-worker1078 {
     hardware ethernet F4:E9:D4:DB:AB:C0;
     fixed-address an-worker1078.eqiad.wmnet;
