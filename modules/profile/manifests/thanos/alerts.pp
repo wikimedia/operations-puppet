@@ -312,12 +312,48 @@ class profile::thanos::alerts (
         notes_link      => 'https://wikitech.wikimedia.org/wiki/Thanos#Alerts',
     }
 
+    # Thanos query-frontend
+
+    monitoring::check_prometheus { 'thanos_query-frontend_http_error_query':
+        description     => 'Thanos query-frontend has many failed HTTP instant queries requests',
+        query           => @(QUERY/L)
+        ( \
+          sum(rate(http_requests_total{code=~"5..", job=~"thanos-query.*", handler="query-frontend"}[5m])) \
+          / \
+          sum(rate(http_requests_total{job=~"thanos-query.*", handler="query-frontend"}[5m])) \
+        ) * 100
+        | - QUERY
+        ,
+        prometheus_url  => 'https://thanos-query.discovery.wmnet',
+        method          => 'ge',
+        warning         => 3,
+        critical        => 5,
+        dashboard_links => ['https://grafana-rw.wikimedia.org/d/aa7Rx0oMk/thanos-query-frontend'],
+        notes_link      => 'https://wikitech.wikimedia.org/wiki/Thanos#Alerts',
+    }
+
+    monitoring::check_prometheus { 'thanos_query-frontend_high_latency_query':
+        description     => 'Thanos query-frontend has high latency for queries',
+        query           => @(QUERY/L)
+        histogram_quantile(0.99, sum by (job, le) (rate(http_request_duration_seconds_bucket{job=~"thanos-query.*", handler="query-frontend"}[5m]))) \
+        and \
+        sum by (job) (rate(http_request_duration_seconds_bucket{job=~"thanos-query.*", handler="query-frontend"}[5m])) > 1
+        | - QUERY
+        ,
+        prometheus_url  => 'https://thanos-query.discovery.wmnet',
+        method          => 'ge',
+        warning         => 35,
+        critical        => 40,
+        dashboard_links => ['https://grafana-rw.wikimedia.org/d/aa7Rx0oMk/thanos-query-frontend'],
+        notes_link      => 'https://wikitech.wikimedia.org/wiki/Thanos#Alerts',
+    }
+
     # Absent metrics
 
-    ['compact', 'query', 'sidecar', 'store'].each |String $c| {
+    ['compact', 'query', 'query-frontend', 'sidecar', 'store'].each |String $c| {
         monitoring::check_prometheus { "thanos_component_${c}_absent":
             description     => "Thanos ${c} has disappeared from Prometheus discovery",
-            query           => "count(absent(up{job=~\"thanos-${c}.*\"} == 1))",
+            query           => "count(absent(up{job=~\"thanos-${c}\"} == 1))",
             prometheus_url  => 'https://thanos-query.discovery.wmnet',
             method          => 'ge',
             warning         => 1,
