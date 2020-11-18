@@ -167,6 +167,7 @@ profile::cache::varnish::frontend::runtime_params:
     - default_ttl=86400
     - http_max_hdr=128 # temp mitigation for T226840
     - idle_send_timeout=125
+    - nuke_limit=1000 # T266373
 profile::cache::varnish::frontend::fe_vcl_config:
     allowed_methods: '^(GET|HEAD|OPTIONS|POST|PURGE|PUT|DELETE)$'
     # accept "not upload" purge traffic
@@ -183,8 +184,8 @@ profile::cache::varnish::frontend::fe_vcl_config:
     varnish_probe_ms: 100
     keep: '1d'
     # "Temporary" until we can find a better way to combine a smaller cutoff
-    # with pass_random behavior in cache_text.  See also: T266040
-    large_objects_cutoff: 1073741825
+    # with pass_random behavior in cache_text.  See also: T266040 + T266373
+    large_objects_cutoff: 67108864
     # By setting 'public_clouds_shutdown' to true, all non-API requests from
     # IPs belonging to public clouds like EC2 get blocked with a 429 response
     # at the varnish-fe layer.
