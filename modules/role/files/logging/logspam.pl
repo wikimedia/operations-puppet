@@ -40,6 +40,16 @@ use open qw(:std :utf8);
 use List::Util qw(min max);
 use Time::Piece;
 use Time::Seconds;
+use Getopt::Long;
+
+my $window = 0; # minutes.  0 means no window defined
+
+if (!GetOptions("window=i" => \$window)) {
+    usage();
+}
+
+# Convert minutes to seconds
+$window *= 60;
 
 # By default, match all errors:
 my $filter_pattern = qr/.*/;
@@ -96,10 +106,20 @@ my $exception_pat = qr{
 
 }msx;
 
-# Count times each error message appears:
+# Count times each error message appears.
+# Values are Time::Piece objects.
 my (%error_count, %first_dates, %last_dates);
+
+my $now = localtime();
+
 while ($loglines =~ /$exception_pat/g) {
-  my $date = $1;
+  my $timestamp = Time::Piece->strptime($1, "%Y-%m-%d %T");
+
+  if ($window > 0) {
+      my $age = $now - $timestamp;
+      next if $age > $window;
+  }
+
   my $exception_class = $2;
   my $stack_trace = shorten($3);
   my $matched_line = $&; # (the whole match)
@@ -123,8 +143,8 @@ while ($loglines =~ /$exception_pat/g) {
   my $error_key = "$exception_class\t$stack_trace";
   $error_count{$error_key}++;
   # If a first-seen date isn't defined, set it:
-  $first_dates{$error_key} //= $date;
-  $last_dates{$error_key} = $date;
+  $first_dates{$error_key} //= $timestamp;
+  $last_dates{$error_key} = $timestamp;
 }
 
 # Set a hard limit of 20 characters for exceptions, for pathological cases:
@@ -210,8 +230,7 @@ sub condense_path {
   return $path;
 }
 
-
-=item display_time($datestamp, ...)
+=item display_time(Time::Piece object, ...)
 
 Condense datestamps in the format C<2020-01-01 00:00:00> for display.  Adds some
 glyphs to flag especially recent events.
@@ -222,7 +241,7 @@ sub display_time {
   state $now = localtime;
   return join "\t", map {
     # Indicate recency with a one or two character glyph:
-    my $t = Time::Piece->strptime($_, "%Y-%m-%d %T");
+    my $t = $_;
     my $age = $now - $t;
     my $glyph = ' ';
     $glyph = '.' if $age < 420;
@@ -230,6 +249,19 @@ sub display_time {
     $glyph = '!' if $age < 60;
     $t->strftime("%H%M $glyph");
   } @_;
+}
+
+=item usage()
+
+Print usage text and exit
+
+=cut
+
+sub usage {
+    print <<EOF;
+Usage: $0 [ --window MINUTES ] [ filter-pattern ... ]
+EOF
+    exit(1);
 }
 
 =back
