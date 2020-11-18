@@ -4764,6 +4764,30 @@ host ms-be1059 {
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
+host ms-be1060 {
+    hardware ethernet 2C:EA:7F:62:91:6B;
+    fixed-address ms-be1060.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
+}
+
+host ms-be1061 {
+    hardware ethernet 2C:EA:7F:62:94:0C;
+    fixed-address ms-be1061.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
+}
+
+host ms-be1062 {
+    hardware ethernet 2C:EA:7F:60:A2:7A;
+    fixed-address ms-be1062.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
+}
+
+host ms-be1063 {
+    hardware ethernet 2C:EA:7F:62:91:7B;
+    fixed-address ms-be1063.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
+}
+
 host ms-be2016 {
     hardware ethernet 3C:A8:2A:17:85:B8;
     fixed-address ms-be2016.codfw.wmnet;
