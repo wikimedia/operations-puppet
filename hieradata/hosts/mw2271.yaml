@@ -1,2 +1,0 @@
-profile::mediawiki::mcrouter_wancache::use_onhost_memcached: true
-profile::prometheus::memcached_exporter::arguments: '--memcached.address=localhost:11210'
