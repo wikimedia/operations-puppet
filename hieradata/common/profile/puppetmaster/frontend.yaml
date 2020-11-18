@@ -13,3 +13,7 @@ profile::puppetmaster::frontend: chain
 profile::puppetmaster::frontend::extra_auth_rules: ''
 profile::puppetmaster::frontend::secure_private: true
 profile::puppetmaster::frontend::ssl_ca_revocation_check: chain
+profile::puppetmaster::frontend::monitor_signed_certs: true
+profile::puppetmaster::frontend::signed_certs_warning: 2419200  # 4 weeks
+profile::puppetmaster::frontend::signed_certs_critical: 604800  # 1 weeks
+

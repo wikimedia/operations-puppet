@@ -10,6 +10,9 @@ class profile::puppetmaster::frontend(
     Boolean             $manage_ca_file          = lookup('manage_puppet_ca_file'),
     Array[String]       $allow_from              = lookup('profile::puppetmaster::frontend::allow_from'),
     String              $extra_auth_rules        = lookup('profile::puppetmaster::frontend::extra_auth_rules'),
+    Boolean             $monitor_signed_certs    = lookup('profile::puppetmaster::frontend::monitor_signed_certs'),
+    Integer             $signed_certs_warning    = lookup('profile::puppetmaster::frontend::signed_certs_warning'),
+    Integer             $signed_certs_critical   = lookup('profile::puppetmaster::frontend::signed_certs_critical'),
     Array[Stdlib::Host] $canary_hosts            = lookup('profile::puppetmaster::frontend::canary_hosts'),
     Hash[String, Puppetmaster::Backends] $servers          = lookup('puppetmaster::servers'),
     Hash[Stdlib::Host, Stdlib::Host]     $locale_servers   = lookup('puppetmaster::locale_servers'),
@@ -49,6 +52,28 @@ class profile::puppetmaster::frontend(
 
         # Ship cassandra-ca-manager (precursor of cergen)
         class { 'cassandra::ca_manager': }
+
+        # Ensure nagios can read the signed certs
+        $signed_cert_path = "${facts['puppet_config']['master']['ssldir']}/ca/signed"
+        file {$signed_cert_path:
+            ensure  => directory,
+            owner   => 'puppet',
+            group   => 'puppet',
+            mode    => '0644',
+            recurse => true,
+        }
+        $monitor_ensure = $monitor_signed_certs.bool2str($cron, 'absent')
+        file {'/usr/local/lib/nagios/plugins/nrpe_check_puppetca_expired_certs':
+            ensure => $monitor_ensure,
+            mode   => '0555',
+            source => 'puppet:///modules/profile/puppetmaster/nrpe_check_puppetca_expired_certs.sh',
+        }
+        nrpe::monitor_service {'puppetca_expired_certs':
+            ensure       => $monitor_ensure,
+            description  => 'Puppet CA expired certs',
+            nrpe_command => "/usr/local/lib/nagios/plugins/nrpe_check_puppetca_expired_certs ${signed_cert_path} ${signed_certs_warning} ${signed_certs_critical}",
+            notes_url    => 'https://wikitech.wikimedia.org/wiki/Puppet#Renew_agent_certificate',
+        }
     }
 
     class { '::httpd':
