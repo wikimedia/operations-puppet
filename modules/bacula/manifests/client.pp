@@ -51,6 +51,7 @@ class bacula::client(
         user            => 'bacula',
         group           => 'bacula',
         require         => Package['bacula-fd'],
+        notify          => Service['bacula-fd'],
     }
 
     file { '/etc/bacula/bacula-fd.conf':
