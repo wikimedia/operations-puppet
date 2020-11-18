@@ -2,7 +2,6 @@ class profile::kerberos::client (
     Stdlib::Fqdn $krb_realm_name = lookup('kerberos_realm_name'),
     Array[Stdlib::Fqdn] $krb_kdc_servers = lookup('kerberos_kdc_servers'),
     Stdlib::Fqdn $krb_kadmin_primary = lookup('kerberos_kadmin_server_primary'),
-    Boolean $dns_canonicalize_hostname = lookup('profile::kerberos::client::dns_canonicalize_hostname', { 'default_value' => false}),
     Optional[Boolean] $use_new_ccache = lookup('profile::kerberos::client::use_new_ccache', { 'default_value' => false}),
 ) {
 

@@ -2,22 +2,3 @@ profile::kerberos::kadminserver::enable_replication: true
 profile::kerberos::kadminserver::monitoring_enabled: true
 profile::kerberos::kdc::monitoring_enabled: true
 profile::kerberos::replication::monitoring_enabled: true
-
-# In T257412 the Analytics team came up with a new setting
-# for dns_canonicalize_hostname to allow daemons/services
-# (like hive) to have principals like:
-# hive/analytics-hive.eqiad.wmnet@WIKIMEDIA
-# as opposed to the more canonical ones like:
-# hive/an-coord1001.eqiad.wmnet@WIKIMEDIA
-# The goal is to have services that can share a principal,
-# and use DNS CNAMEs (like analytics-hive.eqiad.wmnet) to
-# achieve better availability/failover.
-# The only thing that complained for the new setting is
-# kprop, emitting the following error when trying to replicate
-# the krb database (to the other end where kpropd was listening):
-# /usr/sbin/kprop: Key table entry not found while getting initial credentials
-# After some research we didn't get precisely why kprop failed,
-# so the dns_canonicalize_hostname setting was reverted only for
-# this use case.
-# TODO: revisit the setting when upgrading to Debian 11 (Bullseye)
-profile::kerberos::client::dns_canonicalize_hostname: true
