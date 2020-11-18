@@ -1755,13 +1755,18 @@ node /^mw13(8[68]|9[02])\.eqiad\.wmnet$/ {
 
 # Row B
 
+# rack B5
+node 'mw1317.eqiad.wmnet' {
+    role(mediawiki::appserver::api)
+}
+
 # rack B6
 node /^mw12(8[4-9]|9[07])\.eqiad\.wmnet$/ {
     role(mediawiki::appserver::api)
 }
 
 # rack B7
-node /^mw13(1[3-7])\.eqiad\.wmnet$/ {
+node /^mw13(1[3-6])\.eqiad\.wmnet$/ {
     role(mediawiki::appserver::api)
 }
 
@@ -1811,13 +1816,13 @@ node /^mw13(0[7-9]|1[01])\.eqiad\.wmnet$/ {
 
 # Row B
 
-# rack B6
-node /^mw1(29[345689]|30[0-6])\.eqiad\.wmnet$/ {
+# rack B5
+node 'mw1318.eqiad.wmnet' {
     role(mediawiki::jobrunner)
 }
 
-# rack B7
-node 'mw1318.eqiad.wmnet' {
+# rack B6
+node /^mw1(29[345689]|30[0-6])\.eqiad\.wmnet$/ {
     role(mediawiki::jobrunner)
 }
 
