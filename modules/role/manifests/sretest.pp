@@ -10,7 +10,9 @@ class role::sretest {
         description => 'Host used for experiments by SREs',
     }
 
-    include ::profile::standard
-    include ::profile::base::firewall
-    include ::profile::docker::firewall
+    include profile::standard
+    include profile::base::firewall
+    if debian::codename::ge('buster') {
+        include profile::buster::firewall
+    }
 }
