@@ -165,6 +165,13 @@ network::subnets:
           ipv6: 2620:0:860:cabe::/64
         private1-kubesvc-codfw:
           ipv4: 10.192.72.0/24
+          ipv6: 2620:0:860:cabf::/64
+        private1-kubestagepods-codfw:
+          ipv4: 10.192.75.0/24
+          ipv6: 2620:0:860:babe::/64
+        private1-kubestagesvc-codfw:
+          ipv4: 10.192.76.0/24
+          ipv6: 2620:0:860:babf::/64
     esams:
       public:
         public1-esams:
