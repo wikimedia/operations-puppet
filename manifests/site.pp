@@ -919,11 +919,10 @@ node 'es1015.eqiad.wmnet' {
     role(mariadb::core)
 }
 
-node /^es101[13]\.eqiad\.wmnet/ {
+node /^es101[3]\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
 
-# es1026 will replace es1011 T261717
 node 'es1026.eqiad.wmnet' {
     role(mariadb::core)
 }
