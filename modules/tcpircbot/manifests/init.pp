@@ -29,7 +29,7 @@ class tcpircbot(
     $dir         = '/srv/tcpircbot',
 ) {
 
-    require_package(['python-irc', 'python-netaddr'])
+    ensure_packages(['python-irc', 'python-netaddr'])
 
     group { 'tcpircbot':
         ensure => present,
