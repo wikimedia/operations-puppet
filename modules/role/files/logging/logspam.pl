@@ -8,18 +8,28 @@ logspam - summarize exceptions from production logs
 
 =head1 USAGE
 
-    # Just get a list of recent exceptions:
+    logspam [ --window MINUTES ] [ filter-pattern ... ]
+
+=head2 EXAMPLES
+
+    # Just get a list of exceptions since the last log rotation:
     logspam
 
-    # A shell wrapper with some column sorting and filtering features:
+    # Get a list of exceptions matching a Perl regular expression:
+    logspam 'Use of.*'
+
+    # Get a list of exceptions for the last hour:
+    logspam --window 60
+
+    # A shell wrapper with interactive sorting and filtering: 
     logspam-watch
 
-    # Monitor logspam output every 10 seconds, sorted:
-    watch -n 10 sh -c "./bin/logspam | sort -nr"
+    # Monitor logspam output every 30 seconds, sorted:
+    watch -n 30 sh -c "./bin/logspam | sort -nr"
 
 =head1 DESCRIPTION
 
-This deduplicates recent exceptions from exception.log and error.log, then
+This deduplicates exceptions from exception.log and error.log, then
 prints them with a leading count of their occurrence and a snippet of the error
 message / stack trace.  In the interests of concision, it shortens exception
 names by removing any trailing "Exception" and condenses file paths.
@@ -35,18 +45,21 @@ use warnings;
 use strict;
 use 5.10.0;
 use utf8;
+# Avoid messages like: utf8 "\xD7" does not map to Unicode at ./modules/role/files/logging/logspam.pl line 124, <$logstream> line 129347.
+no warnings 'utf8';
 use open qw(:std :utf8);
 
 use List::Util qw(min max);
 use Time::Piece;
 use Time::Seconds;
 use Getopt::Long;
+use Pod::Usage;
 
 my $window = 0; # minutes.  0 means no window defined
 
-if (!GetOptions("window=i" => \$window)) {
-    usage();
-}
+GetOptions(
+  "window=i" => \$window,
+) or pod2usage();
 
 # Convert minutes to seconds
 $window *= 60;
@@ -77,12 +90,10 @@ my $mw_log_dir = '/srv/mw-log';
 $mw_log_dir = $ENV{MW_LOG_DIRECTORY}
   if defined $ENV{MW_LOG_DIRECTORY};
 
-# Be lazy and shell out to tail:
-my $log_path_str = join ' ', (
-  "${mw_log_dir}/exception.log",
-  "${mw_log_dir}/error.log",
-);
-my $loglines =  `tail -n 2500 -q $log_path_str`;
+my $cat_files_cmd = "cat ${mw_log_dir}/exception.log ${mw_log_dir}/error.log";
+
+open (my $logstream, "$cat_files_cmd |")
+  or die("$0: Failed to run '$cat_files_cmd'\n$!\n");
 
 my %consolidate_patterns = (
   qr/Allowed memory size of/                               => '[mem]',
@@ -90,26 +101,24 @@ my %consolidate_patterns = (
   qr/Memcached::setMulti\(\): failed to set key/           => '[memcache]',
 );
 
+my $timestamp_pat = qr{^([\d-]{10} [\d:]{8})};
+
 # A pattern for extracting exception names and the invariant error messages /
 # stack traces from errors looking like so:
 
 my $exception_pat = qr{
 
-  ^                            # Start of datestamped log line
-    ( [\d-]{10} [ ] [\d:]{8} ) # Datestamp
-    .*?                        # Remainder of line
+  ^                      # Start of exception line
 
-  ^                            # Start of exception line
-
-    \[                         # Yank out the class of our exception / error
+    \[                   # Yank out the class of our exception / error
       (Exception|Error)
       [ ]
       (.*?)
     \]
 
-    (.*?)                      # Error message
+    (.*?)                # Error message
 
-  $                            # EOL
+  $                      # EOL
 
 }msx;
 
@@ -118,41 +127,49 @@ my $exception_pat = qr{
 my (%error_count, %first_dates, %last_dates);
 
 my $now = localtime();
+my $timestamp;
 
-while ($loglines =~ /$exception_pat/g) {
-  my $timestamp = Time::Piece->strptime($1, "%Y-%m-%d %T");
-
-  if ($window > 0) {
-      my $age = $now - $timestamp;
-      next if $age > $window;
+while (<$logstream>) {
+  if (/$timestamp_pat/) {
+    $timestamp = Time::Piece->strptime($1, "%Y-%m-%d %T");
+    next;
   }
 
-  my $exception_class = $3;
-  my $stack_trace = shorten($4);
-  my $matched_line = $&; # (the whole match)
+  if (/$exception_pat/) {
+   if ($window > 0) {
+     my $age = $now - $timestamp;
+     next if $age > $window;
+   }
 
-  # Make sure any user-supplied filter matches:
-  next unless $matched_line =~ $filter_pattern;
+   my $exception_class = $2;
+   my $stack_trace = shorten($3);
+   my $matched_line = $&; # (the whole match)
 
-  # Condense some common errors:
-  for my $pattern (keys %consolidate_patterns) {
-    if ($stack_trace =~ $pattern) {
-      $exception_class = $consolidate_patterns{$pattern};
-      $stack_trace = $pattern;
-    }
+   # Make sure any user-supplied filter matches:
+   next unless $matched_line =~ $filter_pattern;
+
+   # Condense some common errors:
+   for my $pattern (keys %consolidate_patterns) {
+     if ($stack_trace =~ $pattern) {
+       $exception_class = $consolidate_patterns{$pattern};
+       $stack_trace = $pattern;
+     }
+   }
+
+   # Drop the namespace of the exception class and chop off the typical
+   # trailing "Exception":
+   $exception_class =~ s{[a-z] [a-z]+ \\}{}xgi;
+   $exception_class =~ s{Exception$}{};
+
+   my $error_key = "$exception_class\t$stack_trace";
+   $error_count{$error_key}++;
+
+   # If a first-seen date isn't defined, set it:
+   $first_dates{$error_key} //= $timestamp;
+   $last_dates{$error_key} = $timestamp;
   }
-
-  # Drop the namespace of the exception class and chop off the typical
-  # trailing "Exception":
-  $exception_class =~ s{[a-z] [a-z]+ \\}{}xgi;
-  $exception_class =~ s{Exception$}{};
-
-  my $error_key = "$exception_class\t$stack_trace";
-  $error_count{$error_key}++;
-  # If a first-seen date isn't defined, set it:
-  $first_dates{$error_key} //= $timestamp;
-  $last_dates{$error_key} = $timestamp;
 }
+close($logstream);
 
 # Set a hard limit of 20 characters for exceptions, for pathological cases:
 my $max_exception_len = 20;
@@ -211,7 +228,6 @@ sub shorten {
   return $stack_trace;
 }
 
-
 =item condense_path($path)
 
 Condense a typical file path by reducing to the first letter of each leading
@@ -258,19 +274,4 @@ sub display_time {
   } @_;
 }
 
-=item usage()
-
-Print usage text and exit
-
-=cut
-
-sub usage {
-    print <<EOF;
-Usage: $0 [ --window MINUTES ] [ filter-pattern ... ]
-EOF
-    exit(1);
-}
-
 =back
-
-=cut
