@@ -26,3 +26,5 @@ profile::pki::server::intermediates:
 profile::pki::client::certs:
   'foobar.example.com':
     label: Wikimedia_SRE_Internal
+  'foobar.pki':
+    label: Wikimedia_SRE_Internal
