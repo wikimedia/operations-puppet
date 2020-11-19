@@ -10,6 +10,7 @@ profile::idp::enable_cors: true
 profile::idp::cors_allow_credentials: true
 profile::idp::cors_allowed_origins:
   - 'https://alerts.wikimedia.org'
+  - 'https://thanos.wikimedia.org'
 profile::idp::services:
   icinga:
     class: 'org.apereo.cas.services.RegexRegisteredService'
