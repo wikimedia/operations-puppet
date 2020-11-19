@@ -1770,7 +1770,7 @@ service::catalog:
       - dnsdisc: push-notifications
         active_active: true
   recommendation-api-notls:
-    description: Service for recommendation API. recommendation-api.svc%{::site}.wmnet
+    description: Service for recommendation API. recommendation-api.svc.%{::site}.wmnet
     encryption: false
     ip:
       codfw:
@@ -1794,7 +1794,7 @@ service::catalog:
       scheduler: wrr
     monitoring:
       check_command: check_http_lvs_on_port!recommendation-api.discovery.wmnet!9632!/robots.txt
-      critical: true
+      critical: false
       sites:
         codfw:
           hostname: recommendation-api.svc.codfw.wmnet
@@ -1804,12 +1804,12 @@ service::catalog:
     sites:
       - eqiad
       - codfw
-    state: production
+    state: lvs_setup
     discovery:
       - dnsdisc: recommendation-api
         active_active: true
   recommendation-api:
-    description: Service for recommendation API. recommendation-api.svc%{::site}.wmnet
+    description: Service for recommendation API. recommendation-api.svc.%{::site}.wmnet
     encryption: true
     ip:
       codfw:
@@ -1843,7 +1843,7 @@ service::catalog:
     sites:
       - eqiad
       - codfw
-    state: monitoring_setup
+    state: production
     discovery:
       - dnsdisc: recommendation-api
         active_active: true
