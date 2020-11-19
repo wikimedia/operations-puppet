@@ -63,6 +63,7 @@ innodb_file_format             = barracuda
 <% end -%>
 innodb_purge_threads           = 1
 innodb_strict_mode             = 1
+innodb_change_buffering        = <%= @innodb_change_buffering %>
 
 # don't dump and load innodb buffer at start and stop
 # these servers will have the buffer pool in a bad state due to dumps

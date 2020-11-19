@@ -12,13 +12,14 @@ disabled, use mariadb@<instance_name> instead'; exit 1\"",
     require ::profile::mariadb::packages_wmf
 
     class { 'mariadb::config':
-        datadir       => false,
-        basedir       => $profile::mariadb::packages_wmf::basedir,
-        read_only     => 1,
-        config        => 'profile/wmcs/db/wikireplicas/wikireplicas_multiinstance.my.cnf.erb',
-        p_s           => 'on',
-        ssl           => 'puppet-cert',
-        binlog_format => 'ROW',
+        datadir                 => false,
+        basedir                 => $profile::mariadb::packages_wmf::basedir,
+        read_only               => 1,
+        config                  => 'profile/wmcs/db/wikireplicas/wikireplicas_multiinstance.my.cnf.erb',
+        p_s                     => 'on',
+        ssl                     => 'puppet-cert',
+        binlog_format           => 'ROW',
+        innodb_change_buffering => 'none',
     }
 
     file { '/etc/mysql/mysqld.conf.d':
