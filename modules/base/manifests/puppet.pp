@@ -5,7 +5,7 @@ class base::puppet(
     String                          $ca_server              = '',
     Stdlib::Host                    $server                 = 'puppet',
     Optional[String]                $certname               = undef,
-    Optional[String]                $dns_alt_names          = undef,
+    Array[Stdlib::Fqdn]             $dns_alt_names          = [],
     Optional[String]                $environment            = undef,
     Integer                         $interval               = 30,
     Integer[4,5]                    $puppet_major_version   = 5,

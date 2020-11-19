@@ -15,7 +15,7 @@ server = <%= @server %>
 <% if @certificate_revocation %>certificate_revocation = <%= @certificate_revocation %><% end %>
 <%- if @ca_server != '' -%>ca_server = <%= @ca_server %><%- end -%>
 <% if @certname %>certname = <%= @certname %><% end %>
-<% if @dns_alt_names %>dns_alt_names = <%= @dns_alt_names %><% end %>
+<% unless @dns_alt_names.empty? %>dns_alt_names = <%= @dns_alt_names.join(',') %><% end %>
 daemonize = false
 http_connect_timeout = 60
 http_read_timeout = 960
