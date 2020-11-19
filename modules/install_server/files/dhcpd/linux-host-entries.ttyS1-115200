@@ -5100,6 +5100,11 @@ host mwlog2001 {
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
 }
 
+host mwlog2002 {
+    hardware ethernet 2C:EA:7F:69:1B:36;
+    fixed-address mwlog2002.codfw.wmnet;
+}
+
 host mw1259 {
     hardware ethernet 18:03:73:f1:4f:82;
     fixed-address mw1259.eqiad.wmnet;
