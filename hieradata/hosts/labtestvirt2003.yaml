@@ -1,7 +1,20 @@
 profile::base::notifications: disabled
 profile::openstack::codfw1dev::cloudgw::dmz_cidr:
- - "172.16.128.0/24 . 10.0.0.0/8"
  - "172.16.128.0/24 . 208.80.155.0/22"
+ # the following should match what's in homer/public.git cloud-in4 filter
+ # there is no other access (NAT or not) to other 10.x.x.x services anyway
+ # VMs --> nfs-tools-project.svc.eqiad.wmnet
+ - "172.16.128.0/24 . 10.64.37.18/32"
+ # VMs --> wiki replicas (dbproxy1019 & dbproxy1018)
+ - "172.16.128.0/24 . 10.64.37.28/32"
+ - "172.16.128.0/24 . 10.64.37.27/32"
+ # VMs --> cloudmetrics1001 / cloudmetrics1002
+ - "172.16.128.0/24 . 10.64.37.13/32"
+ - "172.16.128.0/24 . 10.64.4.15/32"
+ # VMs --> relforge1001 / relforge1002
+ - "172.16.128.0/24 . 10.64.4.13/32"
+ - "172.16.128.0/24 . 10.64.37.21/32"
+
 profile::openstack::codfw1dev::cloudgw::routing_source_ip: 185.15.57.1
 profile::openstack::codfw1dev::cloudgw::virt_subnet_cidr: 172.16.128.0/24
 

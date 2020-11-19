@@ -10,9 +10,21 @@ profile::openstack::eqiad1::neutron::network_public_ip: '185.15.56.1'
 profile::openstack::eqiad1::neutron::dmz_cidr:
  - 172.16.0.0/21:91.198.174.0/24
  - 172.16.0.0/21:198.35.26.0/23
- - 172.16.0.0/21:10.0.0.0/8
  - 172.16.0.0/21:208.80.152.0/22
  - 172.16.0.0/21:103.102.166.0/24
+ # the following should match what's in homer/public.git cloud-in4 filter
+ # there is no other access (NAT or not) to other 10.x.x.x services anyway
+ # VMs --> nfs-tools-project.svc.eqiad.wmnet
+ - 172.16.0.0/21:10.64.37.18/32
+ # VMs --> wiki replicas (dbproxy1019 & dbproxy1018)
+ - 172.16.0.0/21:10.64.37.28/32
+ - 172.16.0.0/21:10.64.37.27/32
+ # VMs --> cloudmetrics1001 / cloudmetrics1002
+ - 172.16.0.0/21:10.64.37.13/32
+ - 172.16.0.0/21:10.64.4.15/32
+ # VMs --> relforge1001 / relforge1002
+ - 172.16.0.0/21:10.64.4.13/32
+ - 172.16.0.0/21:10.64.37.21/32
 profile::openstack::eqiad1::neutron::l3_agent_bridges:
   br-external:
     addif: 'eno50.1120'
