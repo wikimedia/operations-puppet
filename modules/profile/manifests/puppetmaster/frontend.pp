@@ -62,7 +62,7 @@ class profile::puppetmaster::frontend(
             mode    => '0644',
             recurse => true,
         }
-        $monitor_ensure = $monitor_signed_certs.bool2str($cron, 'absent')
+        $monitor_ensure = ($monitor_signed_certs and $ca).bool2str('present', 'absent')
         file {'/usr/local/lib/nagios/plugins/nrpe_check_puppetca_expired_certs':
             ensure => $monitor_ensure,
             mode   => '0555',
