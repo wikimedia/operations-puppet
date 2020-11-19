@@ -22,7 +22,6 @@ class profile::mediawiki::maintenance::cirrussearch {
     }
 
     profile::mediawiki::periodic_job { 'cirrus_sanitize_jobs':
-        ensure   => absent,
         command  => '/usr/local/bin/foreachwiki extensions/CirrusSearch/maintenance/SaneitizeJobs.php --push --refresh-freq=7200',
         interval => '0/2:10',
     }
