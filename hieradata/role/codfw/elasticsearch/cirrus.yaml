@@ -55,6 +55,19 @@ profile::elasticsearch::instances:
         # We should be able to run "OK" with 24 servers.
         recover_after_nodes: 24
 
+        # Report metrics for some of our largest indices
+        indices_to_monitor:
+         - commonswiki_file
+         - wikidatawiki_content
+         - enwiki_general
+         - enwiki_content
+         - viwiki_general
+         - commonswiki_general
+         - cebwiki_content
+         - metawiki_general
+         - dewiki_content
+         - frwiki_content
+
     production-search-omega-codfw:
         # codfw prod name
         cluster_name: production-search-omega-codfw

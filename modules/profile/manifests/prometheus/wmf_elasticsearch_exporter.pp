@@ -10,11 +10,14 @@
 #   Port used by the exporter for the listen socket
 # [*elasticsearch_port*]
 #   Port to monitor elasticsearch on
+# [*indices_to_monitor*]
+#   Array of elasticsearch indices or aliases to track metrics for
 #
 define profile::prometheus::wmf_elasticsearch_exporter(
     Array[Stdlib::Host] $prometheus_nodes,
     Stdlib::Port $prometheus_port,
     Stdlib::Port $elasticsearch_port,
+    Array[String] $indices_to_monitor,
 ){
 
     $prometheus_nodes_ferm = join($prometheus_nodes, ' ')
@@ -22,6 +25,7 @@ define profile::prometheus::wmf_elasticsearch_exporter(
     prometheus::wmf_elasticsearch_exporter { $title:
         prometheus_port    => $prometheus_port,
         elasticsearch_port => $elasticsearch_port,
+        indices_to_monitor => $indices_to_monitor,
     }
 
     ferm::service { "prometheus_wmf_elasticsearch_exporter_${prometheus_port}":

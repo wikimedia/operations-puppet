@@ -3,6 +3,7 @@
 define prometheus::wmf_elasticsearch_exporter(
     Stdlib::Port $prometheus_port,
     Stdlib::Port $elasticsearch_port,
+    Array[String] $indices_to_monitor,
 ) {
     include ::prometheus::wmf_elasticsearch_exporter::common
 

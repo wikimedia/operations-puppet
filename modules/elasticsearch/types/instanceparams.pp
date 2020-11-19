@@ -39,14 +39,15 @@ type Elasticsearch::InstanceParams = Struct[{
     'send_logs_to_logstash'              => Optional[Boolean],
     'tune_gc_new_size_ratio'             => Optional[Integer],
     'disktype'                           => Optional[Enum['ssd','hdd']],
+    'use_cms_gc'                         => Optional[Boolean],
+    'cms_gc_init_occupancy_fraction'     => Optional[Integer],
 
     # Dummy parameters consumed upstream of elasticsearch::instance,
     # but convenient to declare per-cluster
-    'certificate_name'                   => Optional[String],
-    'cluster_hosts'                      => Optional[Array[String]],
-    'tls_port'                           => Optional[Stdlib::Port],
-    'tls_ro_port'                        => Optional[Stdlib::Port],
-    'short_cluster_name'                 => Optional[String],
-    'use_cms_gc'                         => Optional[Boolean],
-    'cms_gc_init_occupancy_fraction'     => Optional[Integer],
+    'certificate_name'   => Optional[String],
+    'cluster_hosts'      => Optional[Array[String]],
+    'tls_port'           => Optional[Stdlib::Port],
+    'tls_ro_port'        => Optional[Stdlib::Port],
+    'short_cluster_name' => Optional[String],
+    'indices_to_monitor' => Optional[Array[String]],
 }]

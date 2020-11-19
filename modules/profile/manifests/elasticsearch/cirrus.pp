@@ -124,6 +124,10 @@ class profile::elasticsearch::cirrus(
     $::profile::elasticsearch::filtered_instances.reduce(9108) |$prometheus_port, $kv_pair| {
         $instance_params = $kv_pair[1]
         $http_port = $instance_params['http_port']
+        $indices_to_monitor = $instance_params['indices_to_monitor'] ? {
+            undef   => [],
+            default => $instance_params['indices_to_monitor']
+        }
 
         profile::prometheus::elasticsearch_exporter { "${::hostname}:${http_port}":
             prometheus_nodes   => $prometheus_nodes,
@@ -134,6 +138,7 @@ class profile::elasticsearch::cirrus(
             prometheus_nodes   => $prometheus_nodes,
             prometheus_port    => $prometheus_port + 1,
             elasticsearch_port => $http_port,
+            indices_to_monitor => $indices_to_monitor,
         }
         $prometheus_port + 2
     }

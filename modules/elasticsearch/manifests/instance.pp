@@ -147,16 +147,16 @@ define elasticsearch::instance(
     Boolean $curator_uses_unicast_hosts                      = true,
     Optional[Integer] $tune_gc_new_size_ratio                = undef,
     Optional[Enum['ssd','hdd']] $disktype                    = undef,
+    Boolean $use_cms_gc                                      = false,
+    Integer $cms_gc_init_occupancy_fraction                  = 75,
 
-    #  Dummy parameters consumed upstream of elasticsearch::instance,
+    # Dummy parameters consumed upstream of elasticsearch::instance,
     # but convenient to unify per-cluster configuration
     Optional[String] $certificate_name = undef,
     Array[String] $cluster_hosts       = [],
     Optional[Stdlib::Port] $tls_port = undef,
     Optional[Stdlib::Port] $tls_ro_port = undef,
-
-    Boolean $use_cms_gc = false,
-    Integer $cms_gc_init_occupancy_fraction = 75,
+    Optional[Array[String]] $indices_to_monitor = undef,
 ) {
 
     # Check arguments
