@@ -21,7 +21,7 @@ class docker_registry_ha (
     package {'docker-registry':
         ensure => present,
     }
-    require_package('python-swiftclient')
+    ensure_packages('python-swiftclient')
 
     user { 'docker-registry':
         ensure => present,
