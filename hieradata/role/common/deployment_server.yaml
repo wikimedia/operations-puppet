@@ -152,7 +152,6 @@ scap::sources:
 #    lvs_service: parsoid
   phabricator/deployment:
     repository: phabricator/deployment
-  recommendation-api/deploy: {}
   restbase/deploy: {}
   striker/deploy:
     repository: labs/striker/deploy

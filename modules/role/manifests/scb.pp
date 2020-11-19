@@ -20,7 +20,6 @@ class role::scb {
 
     include ::profile::nutcracker
 
-    include ::profile::recommendation_api
     include ::profile::graphoid
     include ::profile::apertium
 }

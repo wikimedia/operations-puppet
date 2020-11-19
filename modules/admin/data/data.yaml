@@ -590,8 +590,6 @@ groups:
     members: [eevans, mobrovac, ppchelko]
     privileges: ['ALL = NOPASSWD: /usr/bin/puppet agent *',
                'ALL = (proton) NOPASSWD: ALL',
-               'ALL = NOPASSWD: /usr/sbin/service recommendation_api *',
-               'ALL = (recommendation_api) NOPASSWD: ALL',
                'ALL = NOPASSWD: /usr/bin/firejail --join=*']
   notebook-roots:
     description: root access on experimental notebook servers (Deprecated)
@@ -655,12 +653,6 @@ groups:
                  'ALL = (ALL) NOPASSWD: /usr/local/sbin/maintain-views',
                  'ALL = (ALL) NOPASSWD: /usr/local/sbin/maintain-meta_p',
                  'ALL = (ALL) NOPASSWD: /usr/local/sbin/maintain-replica-indexes']
-  recommendation-admin:
-    description: Group of recommendation-api admins
-    gid: 794
-    members: [ppchelko, eevans, mobrovac, bmansurov]
-    privileges: ['ALL = NOPASSWD: /usr/sbin/service recommendation_api *',
-                 'ALL = (recommendation_api) NOPASSWD: ALL']
   mediawiki-testers:
     description: People who can strace and tcpdump on canary appservers for testing mediawiki
     gid: 797

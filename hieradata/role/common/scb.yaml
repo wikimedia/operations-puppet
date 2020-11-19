@@ -3,7 +3,6 @@ profile::standard::admin_groups:
   - sc-admins
   - apertium-admins
   - graphoid-admin
-  - recommendation-admin
 profile::lvs::realserver::pools:
   apertium:
     services:
@@ -11,9 +10,6 @@ profile::lvs::realserver::pools:
   graphoid:
     services:
       - graphoid
-  "recommendation-api":
-    services:
-      - "recommendation-api"
 
 ### BEGIN GRAPHOID
 profile::graphoid::allowed_domains:
@@ -45,9 +41,3 @@ profile::graphoid::error_headers:
 
 profile::nutcracker::memcached_pools: {}
 profile::nutcracker::monitor_port: 0 # we have nothing exposed via tcp
-
-# Recommendation API
-profile::recommendation_api::wdqs_uri: http://wdqs-internal.discovery.wmnet
-profile::recommendation_api::dbhost: m2-master.eqiad.wmnet
-profile::recommendation_api::dbname: recommendationapi
-profile::recommendation_api::dbuser: recommendationapiservice
