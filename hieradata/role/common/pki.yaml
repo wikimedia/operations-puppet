@@ -1,3 +1,5 @@
+profile::base::puppet::dns_alt_names:
+  - pki.discovery.wmnet
 profile::pki::client::ensure: present
 # this param is passed to the secret function
 profile::pki::server::ca_key_content: pki/Wikimedia_ROOT_CA.key
