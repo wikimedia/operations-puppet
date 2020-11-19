@@ -274,6 +274,11 @@ node /^conf100[456]\.eqiad\.wmnet$/ {
     role(configcluster_stretch)
 }
 
+# Test zookeeper in eqiad
+node 'zookeeper-test1001.eqiad.wmnet' {
+    role(insetup)
+}
+
 # Zookeeper and Etcd discovery service nodes in codfw
 node /^conf200[123]\.codfw\.wmnet$/ {
     role(configcluster)
