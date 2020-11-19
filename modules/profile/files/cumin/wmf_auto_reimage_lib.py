@@ -488,10 +488,10 @@ def validate_hosts(hosts, no_raise=False):
     True if the given hostnames have a signed certificate on the Puppet master, False otherwise
     """
     if len(hosts) == 1:
-        command = "puppet cert list '{host}' 2> /dev/null".format(host=hosts[0])
+        command = "puppet cert --disable_warnings deprecations list '{host}'".format(host=hosts[0])
     else:
-        command = "puppet cert list --all 2> /dev/null | egrep '({hosts})'".format(
-            hosts='|'.join(hosts))
+        command = ("puppet cert --disable_warnings deprecations list --all | "
+                   "egrep '({hosts})'".format(hosts='|'.join(hosts)))
 
     exit_code, worker = run_cumin(
         'validate_hosts', get_puppet_ca_master(), [command], ignore_exit=True)
@@ -607,7 +607,7 @@ def puppet_check_cert_to_sign(host, fingerprint):
     fingerprint -- the fingerprint of the certificate to validate. If set to CERT_DESTROY, destroy
                    a pending CSR.
     """
-    list_command = "puppet cert list '{host}' 2> /dev/null".format(host=host)
+    list_command = "puppet cert --disable_warnings deprecations list '{host}'".format(host=host)
     puppetmaster_host = get_puppet_ca_master()
 
     try:
@@ -617,7 +617,8 @@ def puppet_check_cert_to_sign(host, fingerprint):
         return 1
 
     if fingerprint == CERT_DESTROY:  # Remove a pending CSR
-        remove_command = 'puppet ca destroy {host}'.format(host=host)
+        remove_command = 'puppet ca --disable_warnings deprecations destroy {host}'.format(
+            host=host)
         run_cumin('puppet_check_cert_to_sign', puppetmaster_host, [remove_command])
         return 1
 
@@ -659,7 +660,7 @@ def puppet_wait_cert_and_sign(host, fingerprint):
     host        -- the host to monitor for a complete Puppet run
     fingerprint -- the certificate fingerprint to validate
     """
-    sign_command = "puppet cert sign '{host}'".format(host=host)
+    sign_command = "puppet cert --disable_warnings deprecations sign '{host}'".format(host=host)
     puppetmaster_host = get_puppet_ca_master()
     start = datetime.utcnow()
     timeout = 7200  # 2 hours
@@ -751,9 +752,9 @@ def puppet_remove_host(host):
     host -- the FQDN of the host for which the Puppet certificate has to be revoked
     """
     base_commands = (
-        "puppet node clean '{host}'",
-        "puppet node deactivate '{host}'",
-        "! puppet cert list '{host}'",  # Ensure removed
+        "puppet node --disable_warnings deprecations clean '{host}'",
+        "puppet node --disable_warnings deprecations deactivate '{host}'",
+        "! puppet cert --disable_warnings deprecations list '{host}'",  # Ensure removed
     )
     commands = [command.format(host=host) for command in base_commands]
     run_cumin('remove_from_puppet', get_puppet_ca_master(), commands)
