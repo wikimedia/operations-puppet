@@ -34,6 +34,8 @@ class Service:
     STATES = ('OK', 'WARNING', 'CRITICAL', 'UNKNOWN')
     CASTS = {
         'current_state': int,
+        'scheduled_downtime_depth': int,
+        'notifications_enabled': bool,
     }
 
     def __init__(self, data):
@@ -41,7 +43,6 @@ class Service:
         self.host = data['host_name']
         for key, func in Service.CASTS.items():
             data[key] = func(data[key])
-
         self.status = data
 
     def __str__(self):
@@ -64,6 +65,14 @@ class Service:
         """Return True if the service is in the optimal state."""
         return self.status['current_state'] == 0
 
+    @property
+    def downtimed(self):
+        return bool(self.status['scheduled_downtime_depth'])
+
+    @property
+    def notifications_enabled(self):
+        return self.status['notifications_enabled']
+
 
 class Host:
     """Object to represent an icinga host"""
@@ -72,6 +81,8 @@ class Host:
     STATES = ('UP', 'DOWN', 'UNREACHABLE')
     CASTS = {
         'current_state': int,
+        'scheduled_downtime_depth': int,
+        'notifications_enabled': bool,
     }
 
     def __init__(self, data):
@@ -83,7 +94,8 @@ class Host:
         self.status = data
 
     def __str__(self):
-        return '{s.name}: state={s.state}, optimal={s.optimal}'.format(s=self)
+        return '{s.name}: state={s.state}, optimal={s.optimal}, downtime={s.downtime}'.format(
+            s=self)
 
     def __json__(self):
         """Return a json representation of the service"""
@@ -92,6 +104,8 @@ class Host:
             'state': self.state,
             'optimal': self.optimal,
             'failed_services': self.failed_services,
+            'downtime': self.downtime,
+            'notifications_enabled': self.notifications_enabled,
         }
 
     to_json = __json__
@@ -111,6 +125,14 @@ class Host:
     def failed_services(self):
         """Return an list of all failed services"""
         return [service for service in self.services.values() if not service.optimal]
+
+    @property
+    def downtimed(self):
+        return bool(self.status['scheduled_downtime_depth'])
+
+    @property
+    def notifications_enabled(self):
+        return self.status['notifications_enabled']
 
     def has_service(self, name):
         """Return True if the host has a service matching `name`"""
@@ -151,6 +173,10 @@ class IcingaStatus:
     def get_hosts(self, names):
         """Return a dict of Hosts matching `names`"""
         return {name: self.hosts.get(name, False) for name in names}
+
+    def get_downtimed_hosts(self):
+        """Return a dict of the current hosts that have scheduled downtime"""
+        return {k: v for k, v in self.hosts.items() if v.downtimed}
 
     def get_service(self, name):
         """Return all Service objects matching `name`"""
