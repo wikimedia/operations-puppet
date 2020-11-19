@@ -33,35 +33,31 @@ class profile::mediawiki::php(
     Optional[Boolean] $enable_php_core_dumps = lookup('profile::mediawiki::php:::enable_php_core_dumps', {'default_value' => false}),
     Integer $slowlog_limit = lookup('profile::mediawiki::php::slowlog_limit', {'default_value' => 15}),
     Boolean $phpdbg = lookup('profile::mediawiki::php::phpdbg', {'default_value' => false}),
-    Boolean $enable_php72_component = lookup('profile::mediawiki::php::enable_php72_component', {'default_value' => false}),
-    ) {
+){
 
-    if debian::codename::eq('stretch') or $enable_php72_component {
+    file { '/etc/apt/preferences.d/php_wikidiff2.pref':
+        ensure => absent,
+        notify => Exec['apt_update_php'],
+    }
 
-        # We get our packages for our repositories again
-        file { '/etc/apt/preferences.d/php_wikidiff2.pref':
-            ensure => absent,
-            notify => Exec['apt_update_php'],
+    # Use component/php72. The core php7.2 package is imported from Ondrej Sury's repository,
+    # but it's rebuilt (along with a range of extensions) against Stretch only (while
+    # the repository also imports/forks a number of low level libraries to accomodate
+    # the PHP packages for jessie
+    if $php_version == '7.2' {
+        apt::repository { 'wikimedia-php72':
+            uri        => 'http://apt.wikimedia.org/wikimedia',
+            dist       => "${::lsbdistcodename}-wikimedia",
+            components => 'component/php72',
+            notify     => Exec['apt_update_php'],
+            before     => Package["php${php_version}-common", "php${php_version}-opcache"]
         }
-        # Use component/php72. The core php7.2 package is imported from Ondrej Sury's repository,
-        # but it's rebuilt (along with a range of extensions) against Stretch only (while
-        # the repository also imports/forks a number of low level libraries to accomodate
-        # the PHP packages for jessie
-        if $php_version == '7.2' {
-            apt::repository { 'wikimedia-php72':
-                uri        => 'http://apt.wikimedia.org/wikimedia',
-                dist       => "${::lsbdistcodename}-wikimedia",
-                components => 'component/php72',
-                notify     => Exec['apt_update_php'],
-                before     => Package["php${php_version}-common", "php${php_version}-opcache"]
-            }
-        }
+    }
 
-        # First installs can trip without this
-        exec {'apt_update_php':
-            command     => '/usr/bin/apt-get update',
-            refreshonly => true,
-        }
+    # First installs can trip without this
+    exec {'apt_update_php':
+        command     => '/usr/bin/apt-get update',
+        refreshonly => true,
     }
 
     $config_cli = {
