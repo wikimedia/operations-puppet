@@ -100,8 +100,15 @@ my $exception_pat = qr{
     .*?                        # Remainder of line
 
   ^                            # Start of exception line
-    \[Exception [ ] (.*?)\]    # Yank out the class of our exception
+
+    \[                         # Yank out the class of our exception / error
+      (Exception|Error)
+      [ ]
+      (.*?)
+    \]
+
     (.*?)                      # Error message
+
   $                            # EOL
 
 }msx;
@@ -120,8 +127,8 @@ while ($loglines =~ /$exception_pat/g) {
       next if $age > $window;
   }
 
-  my $exception_class = $2;
-  my $stack_trace = shorten($3);
+  my $exception_class = $3;
+  my $stack_trace = shorten($4);
   my $matched_line = $&; # (the whole match)
 
   # Make sure any user-supplied filter matches:
