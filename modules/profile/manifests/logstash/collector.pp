@@ -404,6 +404,11 @@ class profile::logstash::collector (
         priority => 50,
     }
 
+    logstash::conf { 'filter_openstack':
+        source   => 'puppet:///modules/profile/logstash/filter-openstack.conf',
+        priority => 50,
+    }
+
     logstash::conf { 'filter_ores':
         source   => 'puppet:///modules/profile/logstash/filter-ores.conf',
         priority => 50,
