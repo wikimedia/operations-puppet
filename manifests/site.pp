@@ -255,6 +255,11 @@ node /^cloudceph200[123]-dev\.wikimedia\.org/ {
     role(insetup)
 }
 
+#T267378
+node /^cloudcephmon200[12]-dev\.codfw\.wmnet$/ {
+    role(insetup)
+}
+
 node /^cloudstore100[89]\.wikimedia\.org/ {
     role(wmcs::nfs::secondary)
 }
