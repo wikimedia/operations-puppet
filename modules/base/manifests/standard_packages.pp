@@ -99,7 +99,11 @@ class base::standard_packages {
             $absent_packages = [
                 'libbind9-140', 'libdns162', 'libevent-2.0-5', 'libisc160', 'libisccc140', 'libisccfg140',
                 'liblwres141', 'libonig4', 'libdns-export162', 'libhunspell-1.4-0', 'libisc-export160',
-                'libgdbm3', 'libyaml-cpp0.5v5', 'libperl5.24', 'ruby2.3', 'libruby2.3', 'libunbound2', 'git-core'
+                'libgdbm3', 'libyaml-cpp0.5v5', 'libperl5.24', 'ruby2.3', 'libruby2.3', 'libunbound2', 'git-core',
+                'libboost-atomic1.62.0', 'libboost-chrono1.62.0', 'libboost-date-time1.62.0',
+                'libboost-filesystem1.62.0', 'libboost-iostreams1.62.0', 'libboost-locale1.62.0',
+                'libboost-log1.62.0', 'libboost-program-options1.62.0', 'libboost-regex1.62.0',
+                'libboost-system1.62.0', 'libboost-thread1.62.0', 'libmpfr4', 'libprocps6', 'libunistring0'
             ]
             # mcelog is broken with the Linux kernel used in buster
             $purged_packages = ['mcelog']
