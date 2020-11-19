@@ -1,5 +1,5 @@
 profile::pki::client::ensure: absent
-profile::pki::client::signer_host: pki.discovery.wmnet.
+profile::pki::client::signer_host: pki.discovery.wmnet
 profile::pki::client::signer_port: 8888
 profile::pki::client::ca_path: "%{facts.puppet_config.localcacert}"
 profile::pki::client::cert_path: "%{facts.puppet_config.hostcert}"
