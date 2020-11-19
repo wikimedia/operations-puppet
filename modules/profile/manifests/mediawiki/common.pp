@@ -1,10 +1,10 @@
 class profile::mediawiki::common(
-    $logstash_host = hiera('logstash_host'),
-    $logstash_syslog_port = hiera('logstash_syslog_port'),
-    $log_aggregator = hiera('udp2log_aggregator'),
-    $php_version = lookup('profile::mediawiki::php::php_version', {'default_value' => undef}),
-    $php_restarts = lookup('profile::mediawiki::php::restarts::ensure', {'default_value' => undef}),
-    $enable_icu63 = lookup('profile::mediawiki::php::icu63', {'default_value' => false})
+    Stdlib::Host $logstash_host = lookup('logstash_host'),
+    Stdlib::Port $logstash_syslog_port = lookup('logstash_syslog_port'),
+    String $log_aggregator = lookup('udp2log_aggregator'),
+    Optional[String] $php_version = lookup('profile::mediawiki::php::php_version', {'default_value' => undef}),
+    Optional[Wmflib::Ensure] $php_restarts = lookup('profile::mediawiki::php::restarts::ensure', {'default_value' => undef}),
+    Boolean $enable_icu63 = lookup('profile::mediawiki::php::icu63', {'default_value' => false})
 ){
 
     # GeoIP is needed for MW
