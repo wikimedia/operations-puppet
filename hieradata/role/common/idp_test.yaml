@@ -7,6 +7,7 @@ profile::tlsproxy::envoy::services:
     port: 8080
 profile::tlsproxy::envoy::acme_cert_name: idp-test
 profile::idp::enable_cors: true
+profile::idp::cors_allow_credentials: true
 profile::idp::cors_allowed_origins:
   - 'https://alerts.wikimedia.org'
 profile::idp::services:
