@@ -32,4 +32,14 @@ class profile::dns::auth::monitoring {
         port    => '5353',
         srange  => "(${network::constants::aggregate_networks.join(' ')})",
     }
+
+    # ensure exactly one copy of the daemon is running (there may be rare bugs
+    # that cause old copies of the daemon to linger, in which case we want to
+    # investigate them)
+    nrpe::monitor_service { 'gdnsd_proc':
+        description   => 'gdnsd daemon runs exactly once',
+        contact_group => 'admins',
+        nrpe_command  => '/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:1 -u gdnsd -a /usr/sbin/gdnsd',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/DNS',
+    }
 }
