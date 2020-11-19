@@ -69,10 +69,12 @@ class profile::puppetmaster::frontend(
             source => 'puppet:///modules/profile/puppetmaster/nrpe_check_puppetca_expired_certs.sh',
         }
         nrpe::monitor_service {'puppetca_expired_certs':
-            ensure       => $monitor_ensure,
-            description  => 'Puppet CA expired certs',
-            nrpe_command => "/usr/local/lib/nagios/plugins/nrpe_check_puppetca_expired_certs ${signed_cert_path} ${signed_certs_warning} ${signed_certs_critical}",
-            notes_url    => 'https://wikitech.wikimedia.org/wiki/Puppet#Renew_agent_certificate',
+            ensure         => $monitor_ensure,
+            description    => 'Puppet CA expired certs',
+            check_interval => 60,  # minutes
+            timeout        => 60,  # seconds
+            nrpe_command   => "/usr/local/lib/nagios/plugins/nrpe_check_puppetca_expired_certs ${signed_cert_path} ${signed_certs_warning} ${signed_certs_critical}",
+            notes_url      => 'https://wikitech.wikimedia.org/wiki/Puppet#Renew_agent_certificate',
         }
     }
 
