@@ -61,6 +61,7 @@ class apereo_cas (
     String                            $u2f_jpa_db                    = 'cas',
     Optional[Integer]                 $u2f_token_expiry_days         = undef,
     Boolean                           $enable_cors                   = false,
+    Boolean                           $cors_allow_credentials        = false,
     Array[Stdlib::HTTPSUrl]           $cors_allowed_origins          = [],
     Array[String]                     $cors_allowed_headers          = [],
     Array[Wmflib::HTTP::Method]       $cors_allowed_methods          = ['GET'],

@@ -18,6 +18,7 @@ profile::idp::u2f_jpa_password: changeme
 profile::idp::u2f_jpa_server: 127.0.0.1
 profile::idp::u2f_jpa_db: cas
 profile::idp::enable_cors: false
+profile::idp::cors_allow_credentials: false
 profile::idp::cors_allowed_origins: []
 profile::idp::cors_allowed_headers: []
 profile::idp::cors_allowed_methods:

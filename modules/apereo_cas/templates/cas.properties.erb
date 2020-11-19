@@ -133,7 +133,7 @@ cas.ticket.registry.memcached.transcoder=<%= @memcached_transcoder %>
 
 <%- if @enable_cors -%>
 cas.http-web-request.cors.enabled=true
-cas.http-web-request.cors.allowCredentials=false
+cas.http-web-request.cors.allowCredentials=<%= @cors_allow_credentials.to_s %>
 <%# if cors is enabled but no origins provided allow all origins %>
   <%- if @cors_allowed_origins.empty? -%>
 cas.http-web-request.cors.allowOrigins[0]=*
