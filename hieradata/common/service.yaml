@@ -1804,7 +1804,7 @@ service::catalog:
     sites:
       - eqiad
       - codfw
-    state: lvs_setup
+    state: service_setup
     discovery:
       - dnsdisc: recommendation-api
         active_active: true
