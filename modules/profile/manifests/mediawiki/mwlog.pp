@@ -1,5 +1,5 @@
 class profile::mediawiki::mwlog (
-  $log_directory = hiera('profile::mediawiki::mwlog::log_directory', '/srv/mw-log-kafka'),
+  Stdlib::Unixpath $log_directory = lookup('profile::mediawiki::mwlog::log_directory', {'default_value' => '/srv/mw-log-kafka'}),
 ) {
     $kafka_config = kafka_config('logging-eqiad')
     $topic_prefix = 'mwlog-'
