@@ -22,6 +22,7 @@ profile::analytics::refinery::job::camus::monitoring_enabled: true
 profile::analytics::refinery::job::hdfs_cleaner::use_kerberos: true
 profile::analytics::refinery::job::sqoop_mediawiki::use_kerberos: true
 profile::analytics::refinery::job::druid_load::use_kerberos: true
+profile::analytics::refinery::job::import_mediawiki_dumps::use_kerberos: true
 
 profile::hadoop::balancer::use_kerberos: true
 
