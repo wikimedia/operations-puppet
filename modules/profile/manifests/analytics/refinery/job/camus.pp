@@ -56,7 +56,7 @@
 class profile::analytics::refinery::job::camus(
     String $kafka_cluster_name         = lookup('profile::analytics::refinery::job::camus::kafka_cluster_name', { 'default_value' => 'jumbo-eqiad' }),
     Boolean $monitoring_enabled        = lookup('profile::analytics::refinery::job::camus::monitoring_enabled', { 'default_value' => false }),
-    Boolean $use_kerberos              = lookup('profile::analytics::refinery::job::camus::use_kerberos', { 'default_value' => false }),
+    Boolean $use_kerberos              = lookup('profile::analytics::refinery::job::camus::use_kerberos', { 'default_value' => true }),
     Optional[String] $http_proxy_host  = lookup('http_proxy_host', { 'default_value' => undef }),
     Optional[Integer] $http_proxy_port = lookup('http_proxy_port', { 'default_value' => 8080 }),
     Wmflib::Ensure $ensure_timers      = lookup('profile::analytics::refinery::job::camus::ensure_timers', { 'default_value' => 'present' }),

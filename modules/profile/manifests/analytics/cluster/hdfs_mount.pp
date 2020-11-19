@@ -4,7 +4,7 @@
 #
 class profile::analytics::cluster::hdfs_mount(
     $monitoring_enabled = lookup('profile::analytics::cluster::hdfs_mount::monitoring_enabled', { 'default_value' => false }),
-    $kerberos_enabled = lookup('profile::analytics::cluster::hdfs_mount::kerberos_enabled', { 'default_value' => false }),
+    $kerberos_enabled = lookup('profile::analytics::cluster::hdfs_mount::kerberos_enabled', { 'default_value' => true }),
     $monitoring_user = lookup('profile::analytics::cluster::hdfs_mount::monitoring_user', { 'default_value' => 'analytics-privatedata' }),
 ) {
     # Include Hadoop ecosystem client classes.

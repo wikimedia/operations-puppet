@@ -8,7 +8,7 @@
 # the analytics_cluster::mysql_password class.
 #
 class profile::hive::site_hdfs (
-    $use_kerberos = hiera('profile::hive::site_hdfs::use_kerberos', false),
+    $use_kerberos = hiera('profile::hive::site_hdfs::use_kerberos', true),
 ){
     Class['cdh::hive'] -> Class['profile::hive::site_hdfs']
 

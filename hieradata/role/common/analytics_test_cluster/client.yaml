@@ -18,16 +18,12 @@ profile::oozie::client::oozie_service: 'analytics-test-oozie'
 
 profile::swap::use_dumps_mounts: false
 
-profile::hive::site_hdfs::use_kerberos: true
-
 # Kerberos config
 profile::kerberos::keytabs::keytabs_metadata:
   - role: 'analytics'
     owner: 'analytics'
     group: 'analytics'
     filename: 'analytics.keytab'
-
-profile::analytics::cluster::hdfs_mount::kerberos_enabled: true
 
 profile::swap::push_published: false
 

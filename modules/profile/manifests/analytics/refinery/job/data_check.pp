@@ -5,7 +5,7 @@
 # - alert if REFINE_FAILED flags are found in various datasources.
 #
 class profile::analytics::refinery::job::data_check (
-    Boolean $use_kerberos         = lookup('profile::analytics::refinery::job::data_check::use_kerberos', { 'default_value' => false }),
+    Boolean $use_kerberos         = lookup('profile::analytics::refinery::job::data_check::use_kerberos', { 'default_value' => true }),
     Wmflib::Ensure $ensure_timers = lookup('profile::analytics::refinery::job::data_check::ensure_timers', { 'default_value' => 'present' }),
 ) {
     require ::profile::analytics::refinery

@@ -1,1 +1,1 @@
-profile::statistics::explorer::misc_jobs::use_kerberos: false
+profile::statistics::explorer::misc_jobs::use_kerberos: true

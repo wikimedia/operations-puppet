@@ -9,7 +9,7 @@
 #
 class profile::analytics::refinery::job::data_purge (
     Optional[String] $public_druid_host = lookup('profile::analytics::refinery::job::data_purge::public_druid_host', { 'default_value' => undef }),
-    Boolean $use_kerberos               = lookup('profile::analytics::refinery::job::data_purge::use_kerberos', { 'default_value' => false }),
+    Boolean $use_kerberos               = lookup('profile::analytics::refinery::job::data_purge::use_kerberos', { 'default_value' => true }),
     Wmflib::Ensure $ensure_timers       = lookup('profile::analytics::refinery::job::data_purge::ensure_timers', { 'default_value' => 'present' }),
 ) {
     require ::profile::analytics::refinery
