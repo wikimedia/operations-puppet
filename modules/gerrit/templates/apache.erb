@@ -62,6 +62,9 @@ MaxClients 50
     <%- end -%>
     <%= @ssl_settings.join("\n    ") %>
 
+    # T268260
+    RequestHeader set "X-Forwarded-Proto" expr=%{REQUEST_SCHEME}
+
     RedirectMatch ^/$ /r/
     RedirectMatch ^/r$ /r/
 
