@@ -5,6 +5,7 @@ class profile::kibana (
   Optional[Boolean] $tile_map_enabled   = lookup('profile::kibana::tile_map_enabled', {'default_value' => undef}),
   Optional[Boolean] $region_map_enabled = lookup('profile::kibana::region_map_enabled', {'default_value' => undef}),
   Optional[String]  $kibana_index       = lookup('profile::kibana::kibana_index', {'default_value' => undef}),
+  Optional[Boolean] $enable_warnings    = lookup('profile::kibana::enable_warnings', {'default_value' => undef}),
   ) {
     class { 'kibana':
       kibana_package     => $package_name,
@@ -12,5 +13,6 @@ class profile::kibana (
       tile_map_enabled   => $tile_map_enabled,
       region_map_enabled => $region_map_enabled,
       kibana_index       => $kibana_index,
+      enable_warnings    => $enable_warnings,
     }
 }

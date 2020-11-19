@@ -34,6 +34,7 @@ class kibana (
     Optional[Boolean] $region_map_enabled = undef, #T259000
     Optional[Boolean] $tile_map_enabled   = undef, #T259000
     Optional[String]  $kibana_index       = undef,
+    Optional[Boolean] $enable_warnings    = undef,
 ) {
     package { 'kibana':
         ensure => 'present',

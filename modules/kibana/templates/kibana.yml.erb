@@ -16,4 +16,6 @@ timelion.enabled: <%= @timelion_enabled %>
 <%- unless @kibana_index.nil? or @kibana_index == :undef -%>
 kibana.index: <%= @kibana_index %>
 <%- end -%>
-
+<%- unless @enable_warnings.nil? or @enable_warnings == :undef -%>
+security.showInsecureClusterWarning: <%= @enable_warnings %>
+<%- end -%>

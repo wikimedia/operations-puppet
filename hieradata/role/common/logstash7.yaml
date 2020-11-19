@@ -65,6 +65,7 @@ profile::kibana::httpd_proxy::ldap_groups:
   - cn=nda,ou=groups,dc=wikimedia,dc=org
   - cn=wmf,ou=groups,dc=wikimedia,dc=org
 profile::kibana::package_name: kibana-oss
+profile::kibana::enable_warnings: false  # requires kibana-oss >= 7.10
 
 profile::prometheus::statsd_exporter::relay_address: ''  # unset to disable relaying
 
