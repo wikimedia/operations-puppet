@@ -35,14 +35,15 @@ class base::standard_packages {
 
     # uninstall these packages
     package { [
-        'apport', 'apt-listchanges', 'command-not-found', 'command-not-found-data',
+        'apport', 'command-not-found', 'command-not-found-data',
         'ecryptfs-utils', 'mlocate', 'os-prober', 'python3-apport', 'wpasupplicant']:
             ensure => absent,
     }
 
     # purge these packages
+    # atop causes severe performance degradation T192551 debian:896767
     package { [
-            'atop', # atop causes severe performance degradation T192551 debian:896767
+            'atop', 'apt-listchanges',
         ]:
         ensure => purged,
     }
