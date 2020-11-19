@@ -14,20 +14,21 @@ define kerberos::exec(
     $creates = undef,
     $refreshonly = undef,
     $path = undef,
-    $use_kerberos = false,
 ) {
 
     require ::kerberos::wrapper
 
-    if $use_kerberos {
-        $wrapper = "${kerberos::wrapper::kerberos_run_command_script} ${user} "
-    } else {
+    # To ease testing in cloud/labs, there is a tunable that can be used
+    # to skip the wrapper command and avoid the Kerberos authentication.
+    if $::kerberos::wrapper::skip_wrapper {
         $wrapper = ''
+    } else {
+        $wrapper = "${kerberos::wrapper::kerberos_run_command_script} ${user} "
     }
 
     # 'unless' may contain a hdfs command that needs
     # authentication as well.
-    if $unless and $use_kerberos {
+    if $unless {
         $unless_command = "${wrapper}${unless}"
     } else {
         $unless_command = $unless

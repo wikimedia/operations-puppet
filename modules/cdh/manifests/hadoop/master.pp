@@ -8,23 +8,17 @@
 # can be spread on any nodes.
 #
 class cdh::hadoop::master(
-    $use_kerberos = false,
     $excluded_hosts = [],
 ) {
     Class['cdh::hadoop'] -> Class['cdh::hadoop::master']
 
     class { 'cdh::hadoop::namenode::primary':
-        use_kerberos   => $use_kerberos,
         excluded_hosts => $excluded_hosts,
     }
 
-    class { 'cdh::hadoop::resourcemanager':
-        use_kerberos => $use_kerberos,
-    }
+    class { 'cdh::hadoop::resourcemanager': }
 
-    class { 'cdh::hadoop::historyserver':
-        use_kerberos => $use_kerberos,
-    }
+    class { 'cdh::hadoop::historyserver': }
 
     # Install a check_active_namenode script, this can be run
     # from any Hadoop client, but we will only run it from master nodes.

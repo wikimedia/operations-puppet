@@ -17,7 +17,6 @@
 #
 class cdh::hadoop::users(
     $groups = ['hadoop'],
-    $use_kerberos = false,
 ) {
     Class['cdh::hadoop'] -> Class['cdh::hadoop::users']
 
@@ -29,11 +28,10 @@ class cdh::hadoop::users(
     }
 
     kerberos::exec { 'create_hdfs_user_directories':
-        command      => "/usr/local/bin/create_hdfs_user_directories.sh --verbose ${groups}",
-        unless       => "/usr/local/bin/create_hdfs_user_directories.sh --check-for-changes ${groups}",
-        user         => 'hdfs',
-        logoutput    => true,
-        timeout      => 120,
-        use_kerberos => $use_kerberos,
+        command   => "/usr/local/bin/create_hdfs_user_directories.sh --verbose ${groups}",
+        unless    => "/usr/local/bin/create_hdfs_user_directories.sh --check-for-changes ${groups}",
+        user      => 'hdfs',
+        logoutput => true,
+        timeout   => 120,
     }
 }

@@ -8,7 +8,6 @@
 class profile::hadoop::master::standby(
     $cluster_name             = lookup('profile::hadoop::common::hadoop_cluster_name'),
     $monitoring_enabled       = lookup('profile::hadoop::master::standby::monitoring_enabled', { 'default_value' => false }),
-    $use_kerberos             = lookup('profile::hadoop::master::standby::use_kerberos', { 'default_value' => false }),
     $excluded_hosts           = lookup('profile::hadoop::master::standby::excluded_hosts', { 'default_value' => [] }),
 ) {
     require ::profile::hadoop::common
@@ -20,7 +19,6 @@ class profile::hadoop::master::standby(
     }
 
     class { '::cdh::hadoop::namenode::standby':
-        use_kerberos   => $use_kerberos,
         excluded_hosts => $excluded_hosts,
     }
 
@@ -57,9 +55,7 @@ class profile::hadoop::master::standby(
         }
     }
 
-    class { '::cdh::hadoop::resourcemanager':
-        use_kerberos => $use_kerberos,
-    }
+    class { '::cdh::hadoop::resourcemanager': }
 
     # Include icinga alerts if production realm.
     if $monitoring_enabled {

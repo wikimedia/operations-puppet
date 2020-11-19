@@ -9,7 +9,6 @@
 # NOTE: Your JournalNodes should be running before this class is applied.
 #
 class cdh::hadoop::namenode::standby(
-    $use_kerberos = false,
     $excluded_hosts = [],
 ) {
 
@@ -19,7 +18,6 @@ class cdh::hadoop::namenode::standby(
     }
 
     class { 'cdh::hadoop::namenode':
-        use_kerberos   => $use_kerberos,
         standby        => true,
         excluded_hosts => $excluded_hosts,
     }

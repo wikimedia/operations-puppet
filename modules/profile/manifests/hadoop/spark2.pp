@@ -83,7 +83,6 @@ class profile::hadoop::spark2(
     Boolean $install_oozie_sharelib            = lookup('profile::hadoop::spark2::install_oozie_sharelib', {'default_value' => false}),
     Boolean $install_assembly                  = lookup('profile::hadoop::spark2::install_assembly', {'default_value' => false}),
     Hash[String, Any] $extra_settings          = lookup('profile::hadoop::spark2::extra_settings', {'default_value' => {}}),
-    Boolean $use_kerberos                      = lookup('profile::hadoop::spark2::use_kerberos', {'default_value' => false}),
     Stdlib::Port $driver_port                  = lookup('profile::hadoop::spark2::driver_port', {'default_value' => 12000}),
     Stdlib::Port $driver_blockmanager_port     = lookup('profile::hadoop::spark2::driver_blockmanager_port', {'default_value' => 13000}),
     Stdlib::Port $ui_port                      = lookup('profile::hadoop::spark2::ui_port', {'default_value' => 4040}),
@@ -158,13 +157,12 @@ class profile::hadoop::spark2(
         }
 
         kerberos::exec { 'spark2_oozie_sharelib_install':
-            command      => '/usr/local/bin/spark2_oozie_sharelib_install',
-            user         => 'oozie',
+            command => '/usr/local/bin/spark2_oozie_sharelib_install',
+            user    => 'oozie',
             # spark2_oozie_sharelib_install will exit 0 if the current installed
             # version of spark2 has a oozie sharelib installed already.
-            unless       => '/usr/local/bin/spark2_oozie_sharelib_install',
-            require      => File['/usr/local/bin/spark2_oozie_sharelib_install'],
-            use_kerberos => $use_kerberos,
+            unless  => '/usr/local/bin/spark2_oozie_sharelib_install',
+            require => File['/usr/local/bin/spark2_oozie_sharelib_install'],
         }
     }
 
@@ -177,13 +175,12 @@ class profile::hadoop::spark2(
         }
 
         kerberos::exec { 'spark2_upload_assembly':
-            command      => '/usr/local/bin/spark2_upload_assembly.sh',
-            user         => 'hdfs',
+            command => '/usr/local/bin/spark2_upload_assembly.sh',
+            user    => 'hdfs',
             # spark2_upload_assembly.sh will exit 0 if the current installed
             # version of spark2 has a spark2-assembly.zip file already uplaoded to HDFS.
-            unless       => '/usr/local/bin/spark2_upload_assembly.sh',
-            require      => Package['spark2'],
-            use_kerberos => $use_kerberos,
+            unless  => '/usr/local/bin/spark2_upload_assembly.sh',
+            require => Package['spark2'],
         }
     }
 

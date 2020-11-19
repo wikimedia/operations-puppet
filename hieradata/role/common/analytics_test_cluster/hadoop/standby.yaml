@@ -18,17 +18,15 @@ profile::analytics::cluster::packages::common::use_bigtop_settings: true
 # 1) it is one of the few with a hdfs keytab
 # 2) the hive-site.xml does not contain the password for the hive db (like on an-test-coord)
 profile::hive::client::hive_service_name: 'analytics-test-hive'
-profile::hive::site_hdfs::use_kerberos: true
 
 profile::hadoop::common::hadoop_cluster_name: 'analytics-test-hadoop'
+
+profile::hadoop::backup::namenode::use_kerberos: true
 
 # Deploy TLS keys and xml configuration files
 profile::hadoop::common::ensure_ssl_config: true
 
 profile::hadoop::master::standby::monitoring_enabled: true
-
-profile::hadoop::master::standby::use_kerberos: true
-profile::hadoop::backup::namenode::use_kerberos: true
 
 profile::hadoop::firewall::master::hdfs::ssl_enabled: true
 

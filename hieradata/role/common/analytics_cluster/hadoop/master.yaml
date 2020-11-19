@@ -16,7 +16,6 @@ profile::hadoop::common::hadoop_cluster_name: 'analytics-hadoop'
 
 profile::hadoop::master::use_kerberos: true
 profile::hadoop::mysql_password::use_kerberos: true
-profile::analytics::cluster::secrets::use_kerberos: true
 
 # Deploy TLS keys and xml configuration files
 profile::hadoop::common::ensure_ssl_config: true

@@ -9,7 +9,6 @@
 # this class is applied.
 #
 class cdh::hadoop::namenode(
-    $use_kerberos = false,
     $standby = false,
     $excluded_hosts = [],
 ) {

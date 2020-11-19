@@ -17,15 +17,14 @@ class cdh::hadoop::resourcemanager($use_kerberos = false) {
         cdh::hadoop::directory { '/var/log/hadoop-yarn':
             # sudo -u hdfs hdfs dfs -mkdir /var/log/hadoop-yarn
             # sudo -u hdfs hdfs dfs -chown yarn:mapred /var/log/hadoop-yarn
-            owner        => 'yarn',
-            group        => 'mapred',
-            mode         => '0755',
-            use_kerberos => $use_kerberos,
+            owner   => 'yarn',
+            group   => 'mapred',
+            mode    => '0755',
             # Make sure HDFS directories are created before
             # resourcemanager is installed and started, but after
             # the namenode.
-            require      => [Service['hadoop-hdfs-namenode'], Cdh::Hadoop::Directory['/var/log']],
-            before       => Package['hadoop-yarn-resourcemanager'],
+            require => [Service['hadoop-hdfs-namenode'], Cdh::Hadoop::Directory['/var/log']],
+            before  => Package['hadoop-yarn-resourcemanager'],
         }
     }
 

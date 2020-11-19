@@ -4,9 +4,12 @@ class profile::kerberos::client (
     Stdlib::Fqdn $krb_kadmin_primary = lookup('kerberos_kadmin_server_primary'),
     Boolean $dns_canonicalize_hostname = lookup('profile::kerberos::client::dns_canonicalize_hostname', { 'default_value' => false}),
     Optional[Boolean] $use_new_ccache = lookup('profile::kerberos::client::use_new_ccache', { 'default_value' => false}),
+    Boolean $skip_wrapper = lookup('profile::kerberos::client::skip_wrapper', { 'default_value' => false }),
 ) {
 
-    class { 'kerberos::wrapper': }
+    class { 'kerberos::wrapper':
+        skip_wrapper => $skip_wrapper,
+    }
 
     $run_command_script = $::kerberos::wrapper::kerberos_run_command_script
 

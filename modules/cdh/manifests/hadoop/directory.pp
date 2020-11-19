@@ -26,11 +26,6 @@
 # $owner        - HDFS directory owner. Default: hdfs
 # $group        - HDFS directory group owner. Default: hdfs
 # $mode         - HDFS directory mode. Default 0755
-# $use_kerberos - Configure whether Secure HDFS is used or not. Default: false
-#                 If $use_kerberos is enabled, a wrapper is launched which
-#                 gets a ticket for the service principal via a keytab. This
-#                 wrapper is not part of the cdh module, but can be found at
-#                 https://github.com/wikimedia/puppet/modules/kerberos.
 #
 define cdh::hadoop::directory (
     $path         = $title,
@@ -38,28 +33,25 @@ define cdh::hadoop::directory (
     $owner        = 'hdfs',
     $group        = 'hdfs',
     $mode         = '0755',
-    $use_kerberos = false,
 )
 {
     Class['cdh::hadoop'] -> Cdh::Hadoop::Directory[$title]
 
     if $ensure == 'present' {
         kerberos::exec { "cdh::hadoop::directory ${title}":
-            command      => "/usr/bin/hdfs dfs -mkdir -p ${path} && /usr/bin/hdfs dfs -chmod ${mode} ${path} && /usr/bin/hdfs dfs -chown ${owner}:${group} ${path}",
-            unless       => "/usr/bin/hdfs dfs -test -e ${path}",
-            user         => 'hdfs',
-            timeout      => 30,
-            use_kerberos => $use_kerberos,
+            command => "/usr/bin/hdfs dfs -mkdir -p ${path} && /usr/bin/hdfs dfs -chmod ${mode} ${path} && /usr/bin/hdfs dfs -chown ${owner}:${group} ${path}",
+            unless  => "/usr/bin/hdfs dfs -test -e ${path}",
+            user    => 'hdfs',
+            timeout => 30,
         }
     }
     else {
         kerberos::exec { "cdh::hadoop::directory ${title}":
-            command      => "/usr/bin/hdfs dfs -rm -R -skipTrash ${path}",
-            onlyif       => "/usr/bin/hdfs dfs -test -e ${path}",
-            user         => 'hdfs',
-            require      => Service['hadoop-hdfs-namenode'],
-            timeout      => 30,
-            use_kerberos => $use_kerberos,
+            command => "/usr/bin/hdfs dfs -rm -R -skipTrash ${path}",
+            onlyif  => "/usr/bin/hdfs dfs -test -e ${path}",
+            user    => 'hdfs',
+            require => Service['hadoop-hdfs-namenode'],
+            timeout => 30,
         }
     }
 }

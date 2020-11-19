@@ -32,7 +32,6 @@ class profile::hadoop::master(
     }
 
     class { '::cdh::hadoop::master':
-        use_kerberos   => $use_kerberos,
         excluded_hosts => $excluded_hosts,
     }
 

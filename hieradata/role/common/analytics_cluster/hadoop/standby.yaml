@@ -14,7 +14,6 @@ profile::hadoop::common::hadoop_cluster_name: 'analytics-hadoop'
 
 profile::hadoop::master::standby::monitoring_enabled: true
 
-profile::hadoop::master::standby::use_kerberos: true
 profile::hadoop::backup::namenode::use_kerberos: true
 
 # Deploy TLS keys and xml configuration files

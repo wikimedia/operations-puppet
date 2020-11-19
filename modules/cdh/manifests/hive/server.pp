@@ -6,7 +6,6 @@
 #
 # == Parameters
 # $port          - Port on which hive-server2 listens.  Default: undef
-# $use_kerberos  - Use kerberos auth to create HDFS directories.
 #
 class cdh::hive::server(
     $port             = undef,
@@ -26,21 +25,19 @@ class cdh::hive::server(
     # sudo -u hdfs hdfs dfs -chmod 0775 /user/hive
     # sudo -u hdfs hdfs dfs -chown hive:hadoop /user/hive
     cdh::hadoop::directory { '/user/hive':
-        owner        => 'hive',
-        group        => 'hadoop',
-        mode         => '0775',
-        use_kerberos => $use_kerberos,
-        require      => Package['hive'],
+        owner   => 'hive',
+        group   => 'hadoop',
+        mode    => '0775',
+        require => Package['hive'],
     }
     # sudo -u hdfs hdfs dfs -mkdir /user/hive/warehouse
     # sudo -u hdfs hdfs dfs -chmod 1777 /user/hive/warehouse
     # sudo -u hdfs hdfs dfs -chown hive:hadoop /user/hive/warehouse
     cdh::hadoop::directory { '/user/hive/warehouse':
-        owner        => 'hive',
-        group        => 'hadoop',
-        mode         => '1777',
-        use_kerberos => $use_kerberos,
-        require      => Cdh::Hadoop::Directory['/user/hive'],
+        owner   => 'hive',
+        group   => 'hadoop',
+        mode    => '1777',
+        require => Cdh::Hadoop::Directory['/user/hive'],
     }
 
     service { 'hive-server2':

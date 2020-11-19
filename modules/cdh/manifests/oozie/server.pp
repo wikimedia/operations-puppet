@@ -87,7 +87,6 @@ class cdh::oozie::server(
     $oozie_authentication_type                   = 'simple',
     $oozie_authentication_kerberos_principal     = "HTTP/localhost@${local_realm}",
     $oozie_authentication_kerberos_name_rules    = 'DEFAULT',
-    $use_kerberos                                = false,
     $spark_defaults_config_dir                   = undef,
     $oozie_sharelib_archive                      = '/usr/lib/oozie/oozie-sharelib-yarn',
 ) {
@@ -151,11 +150,10 @@ class cdh::oozie::server(
     # sudo -u hdfs hdfs dfs -chmod 0775 /user/oozie
     # sudo -u hdfs hdfs dfs -chown oozie:oozie /user/oozie
     cdh::hadoop::directory { '/user/oozie':
-        owner        => 'oozie',
-        group        => 'hadoop',
-        mode         => '0755',
-        use_kerberos => $use_kerberos,
-        require      => Package['oozie'],
+        owner   => 'oozie',
+        group   => 'hadoop',
+        mode    => '0755',
+        require => Package['oozie'],
     }
 
     $namenode_address = $::cdh::hadoop::ha_enabled ? {
