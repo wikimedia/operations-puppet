@@ -50,7 +50,7 @@ class package_builder(
         ensure => present,
     }
 
-    require_package([
+    ensure_packages([
         'cowbuilder',
         'build-essential',
         'fakeroot',
