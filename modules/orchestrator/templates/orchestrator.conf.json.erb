@@ -41,6 +41,7 @@
     "^db209[45]\\.",
     "^dbstore"
    ],
+   "ReplicationLagQuery": "SELECT ROUND(TIME_TO_SEC(TIMEDIFF(UTC_TIMESTAMP(6),ts))) FROM heartbeat.heartbeat WHERE ts>0 ORDER BY ts ASC LIMIT 1",
 
   "DetectClusterAliasQuery": "SELECT shard FROM heartbeat.heartbeat ORDER BY ts DESC LIMIT 1",
   "DetectDataCenterQuery": "SELECT @@wsrep_cluster_name"
