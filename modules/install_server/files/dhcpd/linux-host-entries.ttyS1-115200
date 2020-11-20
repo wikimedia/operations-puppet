@@ -88,60 +88,6 @@ host an-test-worker1003 {
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
-host analytics1042 {
-    hardware ethernet 44:A8:42:24:92:35;
-    fixed-address analytics1042.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
-}
-
-host analytics1043 {
-    hardware ethernet 44:A8:42:24:CC:34;
-    fixed-address analytics1043.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
-}
-
-host analytics1044 {
-    hardware ethernet 44:A8:42:24:9D:F7;
-    fixed-address analytics1044.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
-}
-
-host analytics1045 {
-    hardware ethernet 44:A8:42:24:FA:21;
-    fixed-address analytics1045.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
-}
-
-host analytics1046 {
-    hardware ethernet 44:A8:42:25:07:31;
-    fixed-address analytics1046.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
-}
-
-host analytics1047 {
-    hardware ethernet 44:A8:42:24:FB:52;
-    fixed-address analytics1047.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
-}
-
-host analytics1048 {
-    hardware ethernet 44:A8:42:24:9B:B3;
-    fixed-address analytics1048.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
-}
-
-host analytics1049 {
-    hardware ethernet 44:A8:42:24:D0:32;
-    fixed-address analytics1049.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
-}
-
-host analytics1050 {
-    hardware ethernet 44:A8:42:25:02:7B;
-    fixed-address analytics1050.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
-}
-
 host analytics1051 {
     hardware ethernet 44:A8:42:25:18:1D;
     fixed-address analytics1051.eqiad.wmnet;

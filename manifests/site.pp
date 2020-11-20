@@ -77,7 +77,7 @@ node 'an-test-ui1001.eqiad.wmnet' {
 # Hadoop nodes that will be part of the future
 # backup cluster.
 # T260411
-node /^analytics10(4[2-9]|5[0-7]).eqiad.wmnet$/ {
+node /^analytics10(5[1-7]).eqiad.wmnet$/ {
     role(insetup)
 }
 
