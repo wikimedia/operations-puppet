@@ -181,7 +181,6 @@ class profile::wmcs::nfs::primary(
                 'misc_project'  => { 'path' => '/srv/misc/shared/*/project', 'filter' => '*/tools/*' },
                 'tools_home'    => { 'path' => '/srv/tools/shared/tools/home/*' },
                 'tools_project' => { 'path' => '/srv/tools/shared/tools/project/*' },
-                'paws'          => { 'path' => '/srv/tools/shared/tools/project/paws/userhomes/*' },
             },
         }
     } else {
