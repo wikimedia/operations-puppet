@@ -1,7 +1,5 @@
 # = Class: statistics::performance
-class statistics::performance (
-    $use_kerberos = false,
-) {
+class statistics::performance {
     Class['::statistics'] -> Class['::statistics::performance']
 
     $working_path = $::statistics::working_path
@@ -26,7 +24,6 @@ class statistics::performance (
         logfile_group     => $group,
         syslog_force_stop => true,
         syslog_identifier => 'performance-asoranking',
-        use_kerberos      => $use_kerberos,
         slice             => 'user.slice',
         require           => Scap::Target['performance/asoranking'],
     }

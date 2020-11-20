@@ -129,8 +129,6 @@ profile::kerberos::keytabs::keytabs_metadata:
     filename: 'hdfs.keytab'
     parent_dir_grp: 'hadoop'
 
-profile::analytics::refinery::job::test::refine::use_kerberos: true
-
 profile::oozie::server::oozie_service_kerberos_enabled: true
 profile::oozie::server::local_realm: 'ANALYTICS.EQIAD.WMFLABS'
 profile::oozie::server::oozie_service_keytab_file: '/etc/security/keytabs/oozie/HTTP-oozie.keytab'

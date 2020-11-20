@@ -2,7 +2,6 @@ class dumps::web::fetches::stats(
     $src_hdfs = undef,
     $miscdatasetsdir = undef,
     $user = undef,
-    $use_kerberos = false,
 ) {
     # Each of these jobs have a readme.html file rendered by  dumps::web::html.
     # We need to make sure the rsync --delete does not delete these files
@@ -17,7 +16,6 @@ class dumps::web::fetches::stats(
         local_destination => "${miscdatasetsdir}/mediacounts/",
         interval          => '*-*-* *:41:00',
         user              => $user,
-        use_kerberos      => $use_kerberos,
     }
 
     # Copies over files with pageview statistics per page and project,
@@ -27,7 +25,6 @@ class dumps::web::fetches::stats(
         local_destination => "${miscdatasetsdir}/pageviews/",
         interval          => '*-*-* *:51:00',
         user              => $user,
-        use_kerberos      => $use_kerberos,
     }
 
     # Copies over files with unique devices statistics per project,
@@ -37,7 +34,6 @@ class dumps::web::fetches::stats(
         local_destination => "${miscdatasetsdir}/unique_devices/",
         interval          => '*-*-* *:31:00',
         user              => $user,
-        use_kerberos      => $use_kerberos,
     }
 
     # Copies over clickstream files from HDFS archive
@@ -46,7 +42,6 @@ class dumps::web::fetches::stats(
         local_destination => "${miscdatasetsdir}/clickstream/",
         interval          => '*-*-* *:04:00',
         user              => $user,
-        use_kerberos      => $use_kerberos,
     }
 
     # Copies over mediawiki history dumps from HDFS archive
@@ -60,7 +55,6 @@ class dumps::web::fetches::stats(
         local_destination     => "${miscdatasetsdir}/mediawiki_history/",
         interval              => '*-*-* 05:00:00',
         user                  => $user,
-        use_kerberos          => $use_kerberos,
         ignore_missing_source => true,
     }
 
@@ -70,7 +64,6 @@ class dumps::web::fetches::stats(
         local_destination => "${miscdatasetsdir}/geoeditors/",
         interval          => '*-*-* 06:00:00',
         user              => $user,
-        use_kerberos      => $use_kerberos,
     }
 
     # Copies over pageview complete daily dumps from HDFS archive
@@ -79,6 +72,5 @@ class dumps::web::fetches::stats(
         local_destination => "${miscdatasetsdir}/pageview_complete/",
         interval          => '*-*-* 05:00:00',
         user              => $user,
-        use_kerberos      => $use_kerberos,
     }
 }

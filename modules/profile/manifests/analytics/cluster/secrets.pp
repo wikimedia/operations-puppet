@@ -6,8 +6,6 @@
 # out of MySQL into Hadoop and uploading into Swift.
 #
 # == Parameters
-# [*use_kerberos*]
-#   If true, exec commands will be wrapped to kinit with kerberos.
 #
 # [*swift_group*]
 #   Group that the swift auth env file should be group owned by.

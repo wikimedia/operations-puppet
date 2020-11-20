@@ -43,7 +43,7 @@ define reportupdater::job(
     $interval = '*-*-* *:00:00',
     $monitoring_enabled = true,
     $ensure = present,
-    $use_kerberos = false,
+    $use_kerberos = true,
 )
 {
     Class['::reportupdater'] -> Reportupdater::Job[$title]
@@ -82,21 +82,42 @@ define reportupdater::job(
         default => "--config-path ${config_file}",
     }
 
-    kerberos::systemd_timer { "reportupdater-${title}":
-        ensure                    => $ensure,
-        description               => "Report Updater job for ${title}",
-        command                   => "/usr/bin/python3 ${::reportupdater::path}/update_reports.py ${config_path} -l info ${query_path} ${output_path}",
-        interval                  => $interval,
-        user                      => $::reportupdater::user,
-        monitoring_enabled        => $monitoring_enabled,
-        monitoring_contact_groups => 'analytics',
-        logfile_basedir           => $::reportupdater::log_path,
-        logfile_name              => 'syslog.log',
-        logfile_owner             => $::reportupdater::user,
-        logfile_group             => $::reportupdater::user,
-        logfile_perms             => 'all',
-        syslog_force_stop         => true,
-        syslog_identifier         => "reportupdater-${title}",
-        use_kerberos              => $use_kerberos,
+    if $use_kerberos {
+        kerberos::systemd_timer { "reportupdater-${title}":
+            ensure                    => $ensure,
+            description               => "Report Updater job for ${title}",
+            command                   => "/usr/bin/python3 ${::reportupdater::path}/update_reports.py ${config_path} -l info ${query_path} ${output_path}",
+            interval                  => $interval,
+            user                      => $::reportupdater::user,
+            monitoring_enabled        => $monitoring_enabled,
+            monitoring_contact_groups => 'analytics',
+            logfile_basedir           => $::reportupdater::log_path,
+            logfile_name              => 'syslog.log',
+            logfile_owner             => $::reportupdater::user,
+            logfile_group             => $::reportupdater::user,
+            logfile_perms             => 'all',
+            syslog_force_stop         => true,
+            syslog_identifier         => "reportupdater-${title}",
+        }
+    } else {
+        systemd::timer::job { "reportupdater-${title}":
+            ensure                    => $ensure,
+            description               => "Report Updater job for ${title}",
+            command                   => "/usr/bin/python3 ${::reportupdater::path}/update_reports.py ${config_path} -l info ${query_path} ${output_path}",
+            interval                  => {
+                'start'    => 'OnCalendar',
+                'interval' => $interval
+            },
+            user                      => $::reportupdater::user,
+            monitoring_enabled        => $monitoring_enabled,
+            monitoring_contact_groups => 'analytics',
+            logfile_basedir           => $::reportupdater::log_path,
+            logfile_name              => 'syslog.log',
+            logfile_owner             => $::reportupdater::user,
+            logfile_group             => $::reportupdater::user,
+            logfile_perms             => 'all',
+            syslog_identifier         => "reportupdater-${title}",
+            syslog_force_stop         => true,
+        }
     }
 }

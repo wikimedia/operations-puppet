@@ -5,7 +5,6 @@
 # can be found is mounted under /mnt/data
 #
 class profile::analytics::refinery::job::import_mediawiki_dumps (
-    Boolean $use_kerberos         = lookup('profile::analytics::refinery::job::import_mediawiki_dumps::use_kerberos', { 'default_value' => true }),
     Wmflib::Ensure $ensure_timers = lookup('profile::analytics::refinery::job::import_mediawiki_dumps::ensure_timers', { 'default_value' => 'present' }),
 ) {
 
@@ -16,7 +15,6 @@ class profile::analytics::refinery::job::import_mediawiki_dumps (
         log_file_name     => 'import_siteinfo_dumps.log',
         timer_description => 'Schedules daily an incremental import of the current month of siteinfo-namespaces jsondumps into HDFS',
         timer_interval    => '*-*-* 02:00:00',
-        use_kerberos      => $use_kerberos,
     }
 
     # Import pages-meta-history
@@ -26,7 +24,6 @@ class profile::analytics::refinery::job::import_mediawiki_dumps (
         log_file_name     => 'import_pages_history_dumps.log',
         timer_description => 'Schedules daily an incremental import of the current month of pages-meta-history xmldumps into HDFS',
         timer_interval    => '*-*-* 03:00:00',
-        use_kerberos      => $use_kerberos,
     }
 
     # Import pages-meta-current
@@ -36,7 +33,6 @@ class profile::analytics::refinery::job::import_mediawiki_dumps (
         log_file_name     => 'import_pages_current_dumps.log',
         timer_description => 'Schedules daily an incremental import of the current month of pages-meta-current xmldumps into HDFS',
         timer_interval    => '*-*-* 05:00:00',
-        use_kerberos      => $use_kerberos,
     }
 
 }

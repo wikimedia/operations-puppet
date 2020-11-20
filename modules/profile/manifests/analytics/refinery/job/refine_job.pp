@@ -46,8 +46,8 @@ define profile::analytics::refinery::job::refine_job (
     $refine_monitor_failure_enabled   = $monitoring_enabled,
     $monitor_interval                 = '*-*-* 04:15:00',
     $monitor_failure_interval         = '*-*-* 06:15:00',
-    $use_kerberos                     = false,
     $ensure                           = 'present',
+    $use_keytab                       = false,
 ) {
     require ::profile::analytics::refinery
     $refinery_path = $profile::analytics::refinery::path
@@ -78,7 +78,6 @@ define profile::analytics::refinery::job::refine_job (
         require            => Profile::Analytics::Refinery::Job::Config[$job_config_file],
         user               => $user,
         monitoring_enabled => $monitoring_enabled,
-        use_kerberos       => $use_kerberos,
     }
 
 
@@ -106,6 +105,13 @@ define profile::analytics::refinery::job::refine_job (
         'client' => $job_config_file,
         default  => "${job_name}.properties",
     }
+
+    # In DataFrameToHive we issue CREATE/ALTER sql statement to Hive if needed.
+    # Spark is not aware of this code and by default it retrieves Delegation Tokens
+    # only for HDFS/Hive-Metastore/HBase. When the JDBC connection to the Hive Server 2
+    # is established (with Kerberos enabled), some credentials will be needed to be able
+    # to login as $user. These credentials are explicitly provided as keytab, that is copied
+    # (securely) by Yarn to its distributed cache.
     profile::analytics::refinery::job::spark_job { $job_name:
         ensure     => $ensure,
         class      => $job_class,
@@ -114,13 +120,7 @@ define profile::analytics::refinery::job::refine_job (
         spark_opts => "--files /etc/hive/conf/hive-site.xml,${job_config_file},${driver_extra_hive_jars}${_spark_extra_files} --master yarn --deploy-mode ${deploy_mode} --queue ${queue} --driver-memory ${spark_driver_memory} --executor-memory ${spark_executor_memory} --conf spark.driver.extraClassPath=${driver_extra_classpath} --conf spark.dynamicAllocation.maxExecutors=${spark_max_executors} ${spark_extra_opts}",
         job_opts   => "--config_file ${config_file_path}",
         interval   => $interval,
-        # In DataFrameToHive we issue CREATE/ALTER sql statement to Hive if needed.
-        # Spark is not aware of this code and by default it retrieves Delegation Tokens
-        # only for HDFS/Hive-Metastore/HBase. When the JDBC connection to the Hive Server 2
-        # is established (with Kerberos enabled), some credentials will be needed to be able
-        # to login as $user. These credentials are explicitly provided as keytab, that is copied
-        # (securely) by Yarn to its distributed cache.
-        use_keytab => $use_kerberos,
+        use_keytab => $use_keytab,
     }
 
 

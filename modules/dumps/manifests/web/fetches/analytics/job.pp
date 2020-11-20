@@ -23,10 +23,6 @@
 # [*exclude*]
 #   Add --exclude $value if not undef.
 #
-# [*use_kerberos*]
-#   Authenticate via Kerberos before executing
-#   the systemd timer.
-#
 # [*ensure*]
 #   Ensure status of systemd timer.
 #
@@ -36,7 +32,6 @@ define dumps::web::fetches::analytics::job(
     String $interval,
     String $user,
     Boolean $delete = true,
-    Boolean $use_kerberos = false,
     Boolean $ignore_missing_source = false,
     Wmflib::Ensure $ensure = present,
     Optional[String] $exclude = undef,
@@ -79,11 +74,10 @@ define dumps::web::fetches::analytics::job(
     }
 
     kerberos::systemd_timer { "analytics-dumps-fetch-${title}":
-        description  => "Copy ${title} files from Hadoop HDFS.",
-        command      => "/usr/local/bin/rsync-analytics-${title}",
-        interval     => $interval,
-        user         => $user,
-        use_kerberos => $use_kerberos,
-        require      => File["/usr/local/bin/rsync-analytics-${title}"],
+        description => "Copy ${title} files from Hadoop HDFS.",
+        command     => "/usr/local/bin/rsync-analytics-${title}",
+        interval    => $interval,
+        user        => $user,
+        require     => File["/usr/local/bin/rsync-analytics-${title}"],
     }
 }

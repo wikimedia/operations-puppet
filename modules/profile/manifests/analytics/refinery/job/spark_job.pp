@@ -40,14 +40,13 @@ define profile::analytics::refinery::job::spark_job(
     $environment         = undef,
     $ensure              = 'present',
     $monitoring_enabled  = true,
-    $use_kerberos        = false,
     $use_keytab          = false,
 )
 {
     require ::profile::analytics::refinery
     $refinery_path = $profile::analytics::refinery::path
 
-    if $use_kerberos and $use_keytab {
+    if $use_keytab {
         $spark_keytab_extra_opts = "--principal ${user}/${facts['fqdn']}@WIKIMEDIA --keytab /etc/security/keytabs/${user}/${user}.keytab"
     } else {
         $spark_keytab_extra_opts = undef
@@ -69,7 +68,6 @@ define profile::analytics::refinery::job::spark_job(
         command                   => $script,
         interval                  => $interval,
         user                      => $user,
-        use_kerberos              => $use_kerberos,
         environment               => $environment,
         monitoring_enabled        => $monitoring_enabled,
         monitoring_contact_groups => 'analytics',

@@ -2,7 +2,7 @@
 # Installs and configures Hadoop YARN ResourceManager.
 # This will create YARN HDFS directories.
 #
-class cdh::hadoop::resourcemanager($use_kerberos = false) {
+class cdh::hadoop::resourcemanager {
 
     Class['cdh::hadoop'] -> Class['cdh::hadoop::resourcemanager']
 

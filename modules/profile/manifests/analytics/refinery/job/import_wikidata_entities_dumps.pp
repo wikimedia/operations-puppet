@@ -6,7 +6,6 @@
 #
 
 class profile::analytics::refinery::job::import_wikidata_entities_dumps (
-    Boolean $use_kerberos         = lookup('profile::analytics::refinery::job::import_wikidata_entities_dumps::use_kerberos', { 'default_value' => false }),
     Wmflib::Ensure $ensure_timers = lookup('profile::analytics::refinery::job::import_wikidata_entities_dumps::ensure_timers', { 'default_value' => 'present' }),
 ) {
 
@@ -20,7 +19,6 @@ class profile::analytics::refinery::job::import_wikidata_entities_dumps (
         hdfs_destination  => '/wmf/data/raw/wikidata/dumps/all_json',
         timer_description => 'Schedules daily an hdfs-rsync of the wikidata all-json dumps into HDFS',
         timer_interval    => '*-*-* 01:00:00',
-        use_kerberos      => $use_kerberos,
     }
 
     # Import all-ttl dumps
@@ -31,7 +29,6 @@ class profile::analytics::refinery::job::import_wikidata_entities_dumps (
         hdfs_destination  => '/wmf/data/raw/wikidata/dumps/all_ttl',
         timer_description => 'Schedules daily an hdfs-rsync of the wikidata all-ttl dumps into HDFS',
         timer_interval    => '*-*-* 01:30:00',
-        use_kerberos      => $use_kerberos,
     }
 
     # Import lexemes-ttl dumps
@@ -42,7 +39,6 @@ class profile::analytics::refinery::job::import_wikidata_entities_dumps (
         hdfs_destination  => '/wmf/data/raw/wikidata/dumps/lexemes_ttl',
         timer_description => 'Schedules daily an hdfs-rsync of the wikidata lexemes-ttl dumps into HDFS',
         timer_interval    => '*-*-* 02:00:00',
-        use_kerberos      => $use_kerberos,
     }
 
 }

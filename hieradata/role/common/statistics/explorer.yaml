@@ -23,9 +23,6 @@ profile::presto::cluster_name: analytics-presto
 profile::presto::discovery_uri: https://an-coord1001.eqiad.wmnet:8281
 profile::presto::use_kerberos: true
 
-profile::analytics::search::jobs::use_kerberos: true
-
-profile::statistics::explorer::misc_jobs::use_kerberos: true
 profile::statistics::explorer::misc_jobs::hosts_with_jobs:
   - 'stat1007'
 

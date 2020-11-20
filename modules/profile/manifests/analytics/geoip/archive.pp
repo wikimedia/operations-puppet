@@ -4,8 +4,7 @@
 # and pushes its contents to hdfs.
 #
 class profile::analytics::geoip::archive(
-    Boolean $use_kerberos        = lookup('profile::analytics::geoip::archive::use_kerberos'),
-    Wmflib::Ensure $ensure       = lookup('profile::analytics::geoip::archive::ensure', { 'default_value' => 'present' }),
+    Wmflib::Ensure $ensure = lookup('profile::analytics::geoip::archive::ensure', { 'default_value' => 'present' }),
 ) {
 
     $archive_script = '/usr/local/bin/geoip_archive.sh'
@@ -29,7 +28,6 @@ class profile::analytics::geoip::archive(
         interval                  => 'Tue *-*-* 05:30:00',
         user                      => 'analytics',
         monitoring_contact_groups => 'analytics',
-        use_kerberos              => $use_kerberos,
         require                   => [File[$archive_script], User['analytics']],
     }
 }

@@ -24,7 +24,6 @@ class profile::analytics::refinery::job::test::camus(
     Boolean $monitoring_enabled        = lookup('profile::analytics::refinery::job::camus::monitoring_enabled', { 'default_value' => false }),
     Optional[String] $http_proxy_host  = lookup('http_proxy_host', { 'default_value' => undef }),
     Optional[Integer] $http_proxy_port = lookup('http_proxy_port', { 'default_value' => 8080 }),
-    Boolean $use_kerberos              = lookup('profile::analytics::refinery::job::camus::use_kerberos', { 'default_value' => true }),
 ) {
     require ::profile::hadoop::common
     require ::profile::analytics::refinery
@@ -60,7 +59,6 @@ class profile::analytics::refinery::job::test::camus(
         environment         => $systemd_env,
         http_proxy_host     => $http_proxy_host,
         http_proxy_port     => $http_proxy_port,
-        use_kerberos        => $use_kerberos,
     }
 
     # Import webrequest_* topics into /wmf/data/raw/webrequest

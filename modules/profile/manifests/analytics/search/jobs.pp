@@ -3,9 +3,7 @@
 # Installs Analytics-related systemd-timer jobs
 # for the Search team.
 #
-class profile::analytics::search::jobs (
-    Boolean $use_kerberos = lookup('profile::analytics::search::jobs::use_kerberos', { 'default_value' => false }),
-) {
+class profile::analytics::search::jobs {
     require ::profile::analytics::refinery
 
     # Shortcut to refinery path
@@ -45,6 +43,5 @@ class profile::analytics::search::jobs (
         environment               => $systemd_env,
         interval                  => '*-*-* 03:30:00',
         user                      => 'analytics-search',
-        use_kerberos              => $use_kerberos,
     }
 }

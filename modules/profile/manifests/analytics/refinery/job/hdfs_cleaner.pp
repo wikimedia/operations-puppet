@@ -3,7 +3,6 @@
 # Deletes files and empty directories older than 31 days from HDFS /tmp dir.
 #
 class profile::analytics::refinery::job::hdfs_cleaner(
-    Boolean $use_kerberos         = lookup('profile::analytics::refinery::job::hdfs_cleaner::use_kerberos', { 'default_value' => true }),
     Wmflib::Ensure $ensure_timer  = lookup('profile::analytics::refinery::job::hdfs_cleaner::ensure_timer', { 'default_value' => 'present' }),
 ) {
     # Include refinery for HDFSCleaner class.
@@ -21,6 +20,5 @@ class profile::analytics::refinery::job::hdfs_cleaner(
         logfile_name    => 'hdfs-cleaner.log',
         logfile_basedir => '/var/log/hadoop-hdfs',
         user            => 'hdfs',
-        use_kerberos    => $use_kerberos,
     }
 }

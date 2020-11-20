@@ -7,11 +7,8 @@
 # == Parameters
 # $port          - Port on which hive-server2 listens.  Default: undef
 #
-class cdh::hive::server(
-    $port             = undef,
-    $use_kerberos     = false,
-)
-{
+class cdh::hive::server( $port = undef ) {
+
     # cdh::hive::server requires hadoop client and configs are installed.
     Class['cdh::hadoop'] -> Class['cdh::hive::server']
     Class['cdh::hive']   -> Class['cdh::hive::server']

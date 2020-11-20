@@ -12,8 +12,6 @@ profile::dumps::distribution::blocked_user_agent_regex: 'Mozilla\/5\.0 \(Linux; 
 # to the analytics-hadoop cluster.
 profile::hadoop::common::hadoop_cluster_name: 'analytics-hadoop'
 
-profile::dumps::distribution::datasets::fetcher::use_kerberos: true
-
 profile::analytics::cluster::hdfs_mount::monitorning_enabled: true
 profile::analytics::cluster::hdfs_mount::monitoring_user: 'dumpsgen'
 

@@ -104,7 +104,6 @@ define camus::job (
     $interval                   = undef,
     $environment                = undef,
     $monitoring_enabled         = true,
-    $use_kerberos               = false,
     $ensure                     = 'present',
 )
 {
@@ -314,6 +313,5 @@ define camus::job (
         logfile_perms             => 'all',
         syslog_force_stop         => true,
         syslog_identifier         => "camus-${title}",
-        use_kerberos              => $use_kerberos,
     }
 }

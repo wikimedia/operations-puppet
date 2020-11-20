@@ -39,56 +39,53 @@ class profile::reportupdater::jobs(
 
     # Set up a job to create browser reports on hive db.
     reportupdater::job { 'browser':
-        ensure       => $ensure_jobs,
-        output_dir   => 'metrics/browser',
-        use_kerberos => true,
+        ensure     => $ensure_jobs,
+        output_dir => 'metrics/browser',
     }
 
     reportupdater::job { 'interlanguage':
-        ensure       => $ensure_jobs,
-        output_dir   => 'metrics/interlanguage',
-        use_kerberos => true,
+        ensure     => $ensure_jobs,
+        output_dir => 'metrics/interlanguage',
     }
 
     reportupdater::job { 'pingback':
-        ensure       => $ensure_jobs,
-        output_dir   => 'metrics/pingback',
-        use_kerberos => true,
+        ensure     => $ensure_jobs,
+        output_dir => 'metrics/pingback',
     }
 
     reportupdater::job { 'reference-previews':
-        ensure       => $ensure_jobs,
-        output_dir   => 'metrics/reference-previews',
-        use_kerberos => true,
+        ensure     => $ensure_jobs,
+        output_dir => 'metrics/reference-previews',
     }
 
     reportupdater::job { 'wmcs':
-        ensure       => $ensure_jobs,
-        output_dir   => 'metrics/wmcs',
-        use_kerberos => true,
+        ensure     => $ensure_jobs,
+        output_dir => 'metrics/wmcs',
     }
 
     reportupdater::job { 'structured-data':
-        ensure       => $ensure_jobs,
-        output_dir   => 'metrics/structured-data',
-        use_kerberos => true,
+        ensure     => $ensure_jobs,
+        output_dir => 'metrics/structured-data',
     }
 
     # Set up various jobs to be executed by reportupdater
     # creating several reports on mysql research db.
     reportupdater::job { 'flow-beta-features':
-        ensure     => $ensure_jobs,
-        output_dir => 'metrics/beta-feature-enables',
+        ensure       => $ensure_jobs,
+        output_dir   => 'metrics/beta-feature-enables',
+        use_kerberos => false,
     }
 
     reportupdater::job { 'edit-beta-features':
-        ensure     => $ensure_jobs,
-        output_dir => 'metrics/beta-feature-enables',
+        ensure       => $ensure_jobs,
+        output_dir   => 'metrics/beta-feature-enables',
+        use_kerberos => false,
     }
 
     reportupdater::job { 'language':
-        ensure     => $ensure_jobs,
-        output_dir => 'metrics/beta-feature-enables',
+        ensure       => $ensure_jobs,
+        output_dir   => 'metrics/beta-feature-enables',
+        use_kerberos => false,
     }
 
     # Note:
@@ -97,41 +94,34 @@ class profile::reportupdater::jobs(
     # but their output directory is the same on purpose, to allow rsync
     # jobs to properly collect and merge data downstream.
     reportupdater::job { 'published_cx2_translations':
-        ensure       => $ensure_jobs,
-        config_file  => "${base_path}/jobs/reportupdater-queries/published_cx2_translations/config-hive.yaml",
-        output_dir   => 'metrics/published_cx2_translations',
-        use_kerberos => true,
+        ensure      => $ensure_jobs,
+        config_file => "${base_path}/jobs/reportupdater-queries/published_cx2_translations/config-hive.yaml",
+        output_dir  => 'metrics/published_cx2_translations',
     }
     reportupdater::job { 'published_cx2_translations_mysql':
-        ensure      => $ensure_jobs,
-        config_file => "${base_path}/jobs/reportupdater-queries/published_cx2_translations/config-mysql.yaml",
-        output_dir  => 'metrics/published_cx2_translations',
-        query_dir   => 'published_cx2_translations',
-        interval    => '*-*-* *:30:00',
+        ensure       => $ensure_jobs,
+        config_file  => "${base_path}/jobs/reportupdater-queries/published_cx2_translations/config-mysql.yaml",
+        output_dir   => 'metrics/published_cx2_translations',
+        query_dir    => 'published_cx2_translations',
+        interval     => '*-*-* *:30:00',
+        use_kerberos => false,
     }
 
     reportupdater::job { 'mt_engines':
-        ensure     => $ensure_jobs,
-        output_dir => 'metrics/mt_engines',
+        ensure       => $ensure_jobs,
+        output_dir   => 'metrics/mt_engines',
+        use_kerberos => false,
     }
 
     reportupdater::job { 'cx':
-        ensure     => $ensure_jobs,
-        output_dir => 'metrics/cx',
+        ensure       => $ensure_jobs,
+        output_dir   => 'metrics/cx',
+        use_kerberos => false,
     }
 
     reportupdater::job { 'ee':
-        ensure     => $ensure_jobs,
-        output_dir => 'metrics/echo',
-    }
-
-    reportupdater::job { 'ee-beta-features':
-        ensure     => absent,
-        output_dir => 'metrics/beta-feature-enables',
-    }
-
-    reportupdater::job { 'page-creation':
-        ensure     => absent,
-        output_dir => 'metrics/page-creation',
+        ensure       => $ensure_jobs,
+        output_dir   => 'metrics/echo',
+        use_kerberos => false,
     }
 }

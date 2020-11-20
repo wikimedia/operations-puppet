@@ -1,8 +1,6 @@
 # = Class: statistics::discovery
 # Maintainer: Mikhail Popov (bearloga)
-class statistics::discovery (
-    $use_kerberos = false,
-) {
+class statistics::discovery {
     Class['::statistics'] -> Class['::statistics::discovery']
 
     include ::passwords::mysql::research
@@ -73,7 +71,6 @@ class statistics::discovery (
         logfile_owner     => $user,
         logfile_group     => $group,
         syslog_force_stop => true,
-        use_kerberos      => $use_kerberos,
         slice             => 'user.slice',
         require           => [
             Class['::statistics::compute'],

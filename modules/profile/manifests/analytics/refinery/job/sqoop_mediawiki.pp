@@ -6,7 +6,6 @@
 # on a different node.)
 #
 class profile::analytics::refinery::job::sqoop_mediawiki (
-    Boolean $use_kerberos         = lookup('profile::analytics::refinery::job::sqoop_mediawiki::use_kerberos', { 'default_value' => true }),
     Wmflib::Ensure $ensure_timers = lookup('profile::analytics::refinery::job::sqoop_mediawiki::ensure_timers', { 'default_value' => 'present' }),
 ){
     require ::profile::analytics::refinery
@@ -74,13 +73,12 @@ class profile::analytics::refinery::job::sqoop_mediawiki (
     }
 
     kerberos::systemd_timer { 'refinery-sqoop-whole-mediawiki':
-        ensure       => $ensure_timers,
-        description  => 'Schedules sqoop to import whole MediaWiki databases into Hadoop monthly.',
-        command      => '/usr/local/bin/refinery-sqoop-whole-mediawiki',
-        interval     => '*-*-01 00:00:00',
-        user         => 'analytics',
-        use_kerberos => $use_kerberos,
-        require      => File['/usr/local/bin/refinery-sqoop-whole-mediawiki'],
+        ensure      => $ensure_timers,
+        description => 'Schedules sqoop to import whole MediaWiki databases into Hadoop monthly.',
+        command     => '/usr/local/bin/refinery-sqoop-whole-mediawiki',
+        interval    => '*-*-01 00:00:00',
+        user        => 'analytics',
+        require     => File['/usr/local/bin/refinery-sqoop-whole-mediawiki'],
     }
 
     ############################################################################
@@ -97,12 +95,11 @@ class profile::analytics::refinery::job::sqoop_mediawiki (
     }
 
     kerberos::systemd_timer { 'refinery-sqoop-mediawiki-private':
-        ensure       => $ensure_timers,
-        description  => 'Schedules sqoop to import MediaWiki databases (containing PII data) into Hadoop monthly.',
-        command      => '/usr/local/bin/refinery-sqoop-mediawiki-private',
-        interval     => '*-*-02 00:00:00',
-        user         => 'analytics',
-        use_kerberos => $use_kerberos,
-        require      => File['/usr/local/bin/refinery-sqoop-mediawiki-private'],
+        ensure      => $ensure_timers,
+        description => 'Schedules sqoop to import MediaWiki databases (containing PII data) into Hadoop monthly.',
+        command     => '/usr/local/bin/refinery-sqoop-mediawiki-private',
+        interval    => '*-*-02 00:00:00',
+        user        => 'analytics',
+        require     => File['/usr/local/bin/refinery-sqoop-mediawiki-private'],
     }
 }

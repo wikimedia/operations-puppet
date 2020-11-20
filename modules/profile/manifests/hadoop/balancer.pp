@@ -3,7 +3,6 @@
 # Runs hdfs balancer periodically to keep data balanced across all DataNodes
 #
 class profile::hadoop::balancer(
-    Boolean $use_kerberos   = lookup('profile::hadoop::balancer::use_kerberos', { 'default_value' => true }),
     Wmflib::Ensure $ensure  = lookup('profile::hadoop::balancer::ensure', { 'default_value' => 'present' }),
 ) {
     require ::profile::hadoop::common
@@ -25,6 +24,5 @@ class profile::hadoop::balancer(
         syslog_identifier => 'hdfs-balancer',
         require           => File['/usr/local/bin/hdfs-balancer'],
         user              => 'hdfs',
-        use_kerberos      => $use_kerberos,
     }
 }

@@ -50,8 +50,6 @@ define profile::analytics::refinery::job::java_job(
     Optional[Hash[String, String]] $environment = undef,
     String $ensure                              = 'present',
     Boolean $monitoring_enabled                 = true,
-    Boolean $use_kerberos                       = false,
-
 ) {
     if $proxy_host and !$proxy_port {
         error('If using $proxy_host, you must also provide $proxy_port')
@@ -77,7 +75,6 @@ define profile::analytics::refinery::job::java_job(
         command                   => $script,
         interval                  => $interval,
         user                      => $user,
-        use_kerberos              => $use_kerberos,
         environment               => $environment,
         monitoring_enabled        => $monitoring_enabled,
         monitoring_contact_groups => 'analytics',

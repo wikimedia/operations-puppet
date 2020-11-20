@@ -10,20 +10,15 @@ class profile::statistics::explorer::misc_jobs(
     Array[Stdlib::Host] $labstore_hosts  = lookup('labstore_hosts'),
     Stdlib::Host        $graphite_host   = lookup('graphite_host'),
     Hash[String,String] $wmde_secrets    = lookup('wmde_secrets'),
-    Boolean             $use_kerberos    = lookup('profile::statistics::explorer::misc_jobs::use_kerberos'),
     Array[String]       $hosts_with_jobs = lookup('profile::statistics::explorer::misc_jobs::hosts_with_jobs'),
 ) {
 
     if $::hostname in $hosts_with_jobs {
         # Discovery team statistics scripts and cron jobs
-        class { 'statistics::discovery':
-            use_kerberos => $use_kerberos
-        }
+        class { 'statistics::discovery': }
 
         # Performance team statistics scripts and cron jobs
-        class { 'statistics::performance':
-            use_kerberos => $use_kerberos
-        }
+        class { 'statistics::performance': }
 
         # WMDE releated statistics & analytics scripts.
         class { 'statistics::wmde':

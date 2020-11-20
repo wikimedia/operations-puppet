@@ -6,8 +6,8 @@
 #
 # This version is only for the Hadoop testing cluster
 #
-class profile::analytics::refinery::job::test::refine(
-    Boolean $use_kerberos = lookup('profile::analytics::refinery::job::test::refine::use_kerberos', { 'default_value' => false }),
+class profile::analytics::refinery::job::test::refine (
+    Boolean $use_kerberos_keytab  = lookup('profile::analytics::refinery::job::test::refine::use_kerberos_keytab', { 'default_value' => true }),
 ) {
     require ::profile::analytics::refinery
     require ::profile::hive::client
@@ -50,6 +50,6 @@ class profile::analytics::refinery::job::test::refine(
         # Use webproxy so that this job can access meta.wikimedia.org to retrive JSONSchemas.
         spark_extra_opts => '--driver-java-options=\'-Dhttp.proxyHost=webproxy.eqiad.wmnet -Dhttp.proxyPort=8080 -Dhttps.proxyHost=webproxy.eqiad.wmnet -Dhttps.proxyPort=8080\'',
         interval         => '*-*-* *:30:00',
-        use_kerberos     => $use_kerberos,
+        use_keytab       => $use_kerberos_keytab,
     }
 }

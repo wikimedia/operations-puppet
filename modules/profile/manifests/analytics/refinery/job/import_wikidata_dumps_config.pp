@@ -21,9 +21,6 @@
 #   The interval to be used for the timer.
 #   Format: DayOfWeek Year-Month-Day Hour:Minute:Second
 #
-# [*use_kerberos*]
-#   Whether the timer should use the kerberos-wrapper.
-#
 # [*script_path*]
 #   The path to be used for the import-script.
 #   Default: /usr/local/bin/${title}
@@ -35,7 +32,6 @@ define profile::analytics::refinery::job::import_wikidata_dumps_config(
     $hdfs_destination,
     $timer_description,
     $timer_interval,
-    $use_kerberos,
     $script_path = "/usr/local/bin/${title}",
     $ensure = 'present',
 ) {
@@ -49,13 +45,12 @@ define profile::analytics::refinery::job::import_wikidata_dumps_config(
     }
 
     kerberos::systemd_timer { $title:
-        ensure       => $ensure,
-        description  => $timer_description,
-        command      => $script_path,
-        interval     => $timer_interval,
-        user         => 'analytics',
-        use_kerberos => $use_kerberos,
-        require      => File[$script_path],
+        ensure      => $ensure,
+        description => $timer_description,
+        command     => $script_path,
+        interval    => $timer_interval,
+        user        => 'analytics',
+        require     => File[$script_path],
     }
 
 }

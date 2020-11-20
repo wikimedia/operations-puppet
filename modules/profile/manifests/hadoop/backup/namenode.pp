@@ -6,7 +6,6 @@
 #
 class profile::hadoop::backup::namenode(
     $monitoring_enabled = hiera('profile::hadoop::backup::namenode::monitoring_enabled', false),
-    $use_kerberos       = hiera('profile::hadoop::backup::namenode::use_kerberos', false),
 ) {
     require ::profile::hadoop::common
 
@@ -37,11 +36,10 @@ class profile::hadoop::backup::namenode(
     }
 
     kerberos::systemd_timer { 'hadoop-namenode-backup-fetchimage':
-        description  => 'Downloads the most recent fsimage from the NameNode and saves it in the specified local directory.',
-        command      => "/usr/bin/hdfs dfsadmin -fetchImage ${destination}",
-        interval     => '*-*-* 00:00:00',
-        user         => 'hdfs',
-        use_kerberos => $use_kerberos,
+        description => 'Downloads the most recent fsimage from the NameNode and saves it in the specified local directory.',
+        command     => "/usr/bin/hdfs dfsadmin -fetchImage ${destination}",
+        interval    => '*-*-* 00:00:00',
+        user        => 'hdfs',
     }
 
     $retention_days = 20

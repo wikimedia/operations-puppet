@@ -31,8 +31,8 @@
 #   Requires a network infra config file.
 #
 class profile::analytics::refinery::job::refine(
-    Boolean $use_kerberos         = lookup('profile::analytics::refinery::job::refine::use_kerberos', { 'default_value' => true }),
     Wmflib::Ensure $ensure_timers = lookup('profile::analytics::refinery::job::refine::ensure_timers', { 'default_value' => 'present' }),
+    Boolean $use_kerberos_keytab  = lookup('profile::analytics::refinery::job::refine::use_kerberos_keytab', { 'default_value' => true }),
 ) {
     require ::profile::analytics::refinery
     require ::profile::hive::client
@@ -96,8 +96,8 @@ class profile::analytics::refinery::job::refine(
         interval                 => '*-*-* *:20:00',
         monitor_interval         => '*-*-* 01:15:00',
         monitor_failure_interval => '*-*-* 01:45:00',
-        use_kerberos             => $use_kerberos,
         spark_executor_memory    => '4G',
+        use_keytab               => $use_kerberos_keytab,
     }
 
 
@@ -160,7 +160,7 @@ class profile::analytics::refinery::job::refine(
         interval                 => '*-*-* *:15:00',
         monitor_interval         => '*-*-* 00:30:00',
         monitor_failure_interval => '*-*-* 00:45:00',
-        use_kerberos             => $use_kerberos,
+        use_keytab               => $use_kerberos_keytab,
     }
 
 
@@ -194,8 +194,8 @@ class profile::analytics::refinery::job::refine(
         interval                       => '*-*-* *:30:00',
         monitor_interval               => '*-*-* 00:15:00',
         monitor_failure_interval       => '*-*-* 00:45:00',
-        use_kerberos                   => $use_kerberos,
         refine_monitor_failure_enabled => false,
+        use_keytab                     => $use_kerberos_keytab,
     }
 
 
@@ -248,7 +248,7 @@ class profile::analytics::refinery::job::refine(
         interval                 => '*-*-* *:25:00',
         monitor_interval         => '*-*-* 02:15:00',
         monitor_failure_interval => '*-*-* 02:45:00',
-        use_kerberos             => $use_kerberos,
+        use_keytab               => $use_kerberos_keytab,
     }
 
 
@@ -276,7 +276,7 @@ class profile::analytics::refinery::job::refine(
         refine_monitor_failure_enabled => true,
         interval                       => '*-*-* *:45:00',
         monitor_failure_interval       => '*-*-* 03:45:00',
-        use_kerberos                   => $use_kerberos,
+        use_keytab                     => $use_kerberos_keytab,
     }
 
 }

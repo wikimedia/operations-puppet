@@ -35,10 +35,6 @@
 #   Map of key value pairs to add to spark2-defaults.conf
 #   Default: {}
 #
-# [*use_kerberos*]
-#   Force kerberos authentication before executing HDFS commands.
-#   Default: false
-#
 # [*driver_port*]
 #   If specified, it will add two settings to the config:
 #   - spark.driver.port: $driver_port

@@ -44,4 +44,3 @@ profile::java::java_packages:
 profile::java::extra_args: 'JAVA_TOOL_OPTIONS="-Dfile.encoding=UTF-8"'
 
 profile::analytics::geoip::archive::ensure: 'present'
-profile::analytics::geoip::archive::use_kerberos: true

@@ -77,11 +77,6 @@
 #   the same identifier and rsyslog rules wouldn't work anymore.
 #   Default: undef
 #
-#  [*use_kerberos*]
-#   Force a kinit before executing the command to properly authenticate
-#   via Kerberos.
-#   Default: false
-#
 #  [*slice*]
 #    Run the systemd timer's service unit under a specific slice.
 #    By default the service unit will run under the system.slice.
@@ -102,7 +97,6 @@ define kerberos::systemd_timer(
     $logfile_perms = 'all',
     $syslog_force_stop = true,
     $syslog_match_startswith = true,
-    $use_kerberos = false,
     $syslog_identifier = undef,
     $ensure = present,
     Optional[Pattern[/\w+\.slice/]] $slice = undef,
@@ -110,10 +104,12 @@ define kerberos::systemd_timer(
 
     require ::kerberos::wrapper
 
-    if $use_kerberos {
-        $wrapper = "${kerberos::wrapper::kerberos_run_command_script} ${user} "
-    } else {
+    # To ease testing in cloud/labs, there is a tunable that can be used
+    # to skip the wrapper command and avoid the Kerberos authentication.
+    if $::kerberos::wrapper::skip_wrapper {
         $wrapper = ''
+    } else {
+        $wrapper = "${kerberos::wrapper::kerberos_run_command_script} ${user} "
     }
 
     $logging = $logfile_name ? {

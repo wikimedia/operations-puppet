@@ -17,9 +17,6 @@
 #   The interval to be used for the timer.
 #   Format: DayOfWeek Year-Month-Day Hour:Minute:Second
 #
-# [*use_kerberos*]
-#   Whether the timer should use the kerberos-wrapper.
-#
 # [*wiki_file*]
 #   The file containing the wikis to import.
 #   Format: csv with wiki database name as first column.
@@ -44,7 +41,6 @@ define profile::analytics::refinery::job::import_mediawiki_dumps_config(
     $log_file_name,
     $timer_description,
     $timer_interval,
-    $use_kerberos,
     $wiki_file = '/mnt/hdfs/wmf/refinery/current/static_data/mediawiki/grouped_wikis/labs_grouped_wikis.csv',
     $input_directory_base = '/mnt/data/xmldatadumps/public',
     $output_directory_base = '/wmf/data/raw/mediawiki/dumps',
@@ -66,13 +62,12 @@ define profile::analytics::refinery::job::import_mediawiki_dumps_config(
     }
 
     kerberos::systemd_timer { $title:
-        ensure       => $ensure,
-        description  => $timer_description,
-        command      => $script_path,
-        interval     => $timer_interval,
-        user         => 'analytics',
-        use_kerberos => $use_kerberos,
-        require      => File[$script_path],
+        ensure      => $ensure,
+        description => $timer_description,
+        command     => $script_path,
+        interval    => $timer_interval,
+        user        => 'analytics',
+        require     => File[$script_path],
     }
 
 }
