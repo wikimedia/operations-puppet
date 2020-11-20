@@ -4,6 +4,7 @@ class profile::wmcs::db::wikireplicas::views (
     String $view_pass = lookup('profile::wmcs::db::wikireplicas::views::maintainviews::db_pass'),
     String $idx_user  = lookup('profile::wmcs::db::wikireplicas::maintainindexes::user'),
     String $idx_pass  = lookup('profile::wmcs::db::wikireplicas::maintainindexes::db_pass'),
+    Optional[Hash[String, Stdlib::Datasize]] $instances = lookup('profile::wmcs::db::wikireplicas::mariadb_multiinstance::instances', { 'default_value' => undef }),
 ){
     require ::profile::wmcs::db::scriptconfig
 

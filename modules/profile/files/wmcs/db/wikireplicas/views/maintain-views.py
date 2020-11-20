@@ -29,8 +29,9 @@ import argparse
 import logging
 import re
 import sys
-import yaml
+from typing import Dict, List
 
+import yaml
 import pymysql
 
 
@@ -46,7 +47,7 @@ class SchemaOperations:
         self.views_missing_tables = []
 
     def write_execute(self, query):
-        """ Do operation or simulate
+        """Do operation or simulate
         :param query: str
         """
         logging.debug("SQL: %s", query)
@@ -54,7 +55,7 @@ class SchemaOperations:
             self.cursor.execute(query)
 
     def drop_view(self, view):
-        """ Drop an obsolete view
+        """Drop an obsolete view
         :param view: str
         :return: bool
         """
@@ -62,7 +63,7 @@ class SchemaOperations:
         return not self.table_exists(view, self.db_p)
 
     def tables(self, database):
-        """ Get list of tables in a database (views are included)
+        """Get list of tables in a database (views are included)
         :param database: str
         :returns: list
         """
@@ -79,7 +80,7 @@ class SchemaOperations:
         return [t[0] for t in dbtables]
 
     def user_exists(self, name):
-        """ Check if a user exists
+        """Check if a user exists
         :param name: str
         """
         self.cursor.execute(
@@ -93,7 +94,7 @@ class SchemaOperations:
         return bool(self.cursor.rowcount)
 
     def table_exists(self, table, database):
-        """ Determine whether a table of the given name exists in the database of
+        """Determine whether a table of the given name exists in the database of
         the given name.
         :param table: str
         :param database: str
@@ -103,7 +104,7 @@ class SchemaOperations:
         return table in self.tables(database=database)
 
     def database_exists(self, database):
-        """ Verify if a DB exists
+        """Verify if a DB exists
         :param database: str
         :return: bool
         """
@@ -118,7 +119,7 @@ class SchemaOperations:
         return bool(self.cursor.rowcount)
 
     def do_fullview(self, view):
-        """ Check whether the source table exists, and if so, create the view.
+        """Check whether the source table exists, and if so, create the view.
         :param view: str
         """
         if self.table_exists(view, self.db):
@@ -152,7 +153,7 @@ class SchemaOperations:
             self.views_missing_tables.append(view)
 
     def check_customview_source(self, view_name, source):
-        """ Check whether a custom view's particular source exists
+        """Check whether a custom view's particular source exists
         :param view_name: str
         :param source: str
         :return: tuple
@@ -188,7 +189,7 @@ class SchemaOperations:
         return ()
 
     def do_customview(self, view_name, view_details):
-        """ Process a custom view's sources, and if they're all present, and the
+        """Process a custom view's sources, and if they're all present, and the
         view's limit is not bigger than the database size, call create_customview.
         :param view_name: str
         :param view_details: str
@@ -281,7 +282,7 @@ class SchemaOperations:
             self.views_missing_tables.append(view_name)
 
     def create_customview(self, view_name, view_details, sources):
-        """ Creates or replaces a custom view from its sources.
+        """Creates or replaces a custom view from its sources.
         :param view_name: str
         :param view_details: dict
         :param sources: list
@@ -380,7 +381,7 @@ class SchemaOperations:
         self.write_execute(query)
 
     def execute(self, fullviews, customviews):
-        """ Begin checking/creating views for this schema.
+        """Begin checking/creating views for this schema.
         :param fullviews: list
         :param customviews: dict
         """
@@ -456,7 +457,8 @@ def read_dblist(db_list, mwroot):
             if dbs:
                 raise RuntimeError(
                     "Encountered a dblist expression inside dblist {}".format(
-                        db_list)
+                        db_list
+                    )
                 )
             dbs = eval_dblist(line, mwroot)
             break
@@ -471,7 +473,7 @@ def eval_dblist(expr, mwroot):
     terms = expr.split()
     # assume the expr is well formed and that the first element is always
     # a list name
-    dbs = set(read_dblist(terms.pop(0)))
+    dbs = set(read_dblist(terms.pop(0), mwroot))
     # assume the rest of the terms are well formed and (op, list) pairs
     for op, term in zip(*[iter(terms)] * 2):
         part = set(read_dblist(term, mwroot))
@@ -480,6 +482,63 @@ def eval_dblist(expr, mwroot):
         elif op == "-":
             dbs = dbs.difference(part)
     return sorted(list(dbs))
+
+
+def dbrun(
+    db_connections: Dict[str, pymysql.connections.Connection],
+    instance: str,
+    dbs_with_metadata: Dict[str, Dict],
+    dry_run: bool,
+    replace_all: bool,
+    drop: bool,
+    fullviews: List[str],
+    clean: bool,
+    customviews: Dict[str, Dict],
+    all_tables: List[str],
+) -> int:
+    exit_status = 0
+    with db_connections[instance].cursor() as cursor:
+        cursor.execute("SET NAMES 'utf8';")
+        cursor.execute("SET SESSION innodb_lock_wait_timeout=1;")
+        cursor.execute("SET SESSION lock_wait_timeout=60;")
+
+        for db, db_info in dbs_with_metadata.items():
+            ops = SchemaOperations(
+                dry_run,
+                replace_all,
+                db,
+                db_info.get("size", None),
+                cursor,
+            )
+
+            if not ops.user_exists(ops.definer):
+                logging.critical("Definer has not been created")
+                return 1
+
+            if drop:
+                ops.drop_public_database()
+                continue
+
+            ops.execute(fullviews, customviews)
+
+            if clean:
+                logging.info("cleanup is enabled")
+                live_tables = ops.tables(ops.db_p)
+                clean_tables = set(
+                    [t for t in live_tables if t not in all_tables]
+                    + [t for t in ops.views_missing_tables if t in live_tables]
+                )
+                logging.info("cleaning %s tables", len(clean_tables))
+                for dt in clean_tables:
+                    logging.info("Dropping view %s.%s", ops.db_p, dt)
+                    try:
+                        ops.drop_view(dt)
+                    except pymysql.err.MySQLError:
+                        exit_status = 1
+                        logging.exception(
+                            "Error dropping view %s.%s", ops.db_p, dt
+                        )
+    return exit_status
 
 
 def main():
@@ -545,12 +604,6 @@ def main():
     )
 
     argparser.add_argument(
-        "--mysql-socket",
-        help=("Path to MySQL socket file"),
-        default="/run/mysqld/mysqld.sock",
-    )
-
-    argparser.add_argument(
         "--debug", help="Turn on debug logging", action="store_true"
     )
 
@@ -596,21 +649,40 @@ def main():
         level=logging.DEBUG if args.debug else logging.INFO,
     )
 
-    dbh = pymysql.connect(
-        user=config["mysql_user"],
-        passwd=config["mysql_password"],
-        unix_socket=args.mysql_socket,
-        charset="utf8",
-    )
+    db_connections = {}
+    for instance in config["mysql_instances"]:
+        socket = (
+            "/run/mysqld/mysqld.sock"
+            if instance == "all"
+            else "/run/mysqld/mysqld.{}.sock".format(instance)
+        )
+        db_connections[instance] = pymysql.connect(
+            user=config["mysql_user"],
+            passwd=config["mysql_password"],
+            unix_socket=socket,
+            charset="utf8",
+        )
 
     # This will include private and deleted dbs at this stage
-    all_available_dbs = read_dblist("all", args.mediawiki_config)
-    all_available_dbs = all_available_dbs + config["add_to_all_dbs"]
+    if config["mysql_instances"][0] == "all":
+        all_available_dbs = (
+            read_dblist("all", args.mediawiki_config) + config["add_to_all_dbs"]
+        )
+    else:
+        all_available_dbs = []
+        for inst in config["mysql_instances"]:
+            all_available_dbs.append(read_dblist(inst, args.mediawiki_config))
+            if inst == "s7":
+                all_available_dbs.append(config["add_to_all_dbs"])
 
     # argparse will ensure we are declaring explicitly
     dbs = all_available_dbs
     if args.databases:
         dbs = [db for db in args.databases if db in all_available_dbs]
+
+    if not dbs:
+        logging.info("This server doesn't host that database")
+        return 0
 
     # purge all sensitive dbs so they are never attempted
     allowed_dbs = dbs
@@ -630,48 +702,47 @@ def main():
             if db in dbs_with_metadata:
                 dbs_with_metadata[db].update(meta)
 
-    with dbh.cursor() as cursor:
-        cursor.execute("SET NAMES 'utf8';")
-        cursor.execute("SET SESSION innodb_lock_wait_timeout=1;")
-        cursor.execute("SET SESSION lock_wait_timeout=60;")
+    if config["mysql_instances"][0] == "all":
+        return dbrun(
+            db_connections,
+            "all",
+            dbs_with_metadata,
+            args.dry_run,
+            args.replace_all,
+            args.drop,
+            fullviews,
+            args.clean,
+            customviews,
+            all_tables,
+        )
 
-        for db, db_info in dbs_with_metadata.items():
-            ops = SchemaOperations(
+    # At this point we are on a multi-instance replica
+    for inst in config["mysql_instances"]:
+        dbs_in_section = set(read_dblist(inst, args.mediawiki_config))
+        dbs_in_scope = set(dbs_with_metadata.keys())
+        instance_dbs = dbs_in_scope.union(dbs_in_section)
+        instance_dbs_with_metadata = {
+            db: meta
+            for (db, meta) in dbs_with_metadata.items()
+            if db in instance_dbs
+        }
+        if instance_dbs_with_metadata:
+            exit_status = dbrun(
+                db_connections,
+                inst,
+                instance_dbs_with_metadata,
                 args.dry_run,
                 args.replace_all,
-                db,
-                db_info.get("size", None),
-                cursor,
+                args.drop,
+                fullviews,
+                args.clean,
+                customviews,
+                all_tables,
             )
+            if exit_status != 0:
+                return exit_status
 
-            if not ops.user_exists(ops.definer):
-                logging.critical("Definer has not been created")
-                return 1
-
-            if args.drop:
-                ops.drop_public_database()
-                continue
-
-            ops.execute(fullviews, customviews)
-
-            if args.clean:
-                logging.info("cleanup is enabled")
-                live_tables = ops.tables(ops.db_p)
-                clean_tables = set(
-                    [t for t in live_tables if t not in all_tables]
-                    + [t for t in ops.views_missing_tables if t in live_tables]
-                )
-                logging.info("cleaning %s tables", len(clean_tables))
-                for dt in clean_tables:
-                    logging.info("Dropping view %s.%s", ops.db_p, dt)
-                    try:
-                        ops.drop_view(dt)
-                    except pymysql.err.MySQLError:
-                        exit_status = 1
-                        logging.exception(
-                            "Error dropping view %s.%s", ops.db_p, dt
-                        )
-    return exit_status
+        return exit_status
 
 
 if __name__ == "__main__":

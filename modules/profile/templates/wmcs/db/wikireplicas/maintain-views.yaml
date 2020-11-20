@@ -1,6 +1,14 @@
 port: 3306
 mysql_user: "<%= @view_user %>"
 mysql_password: "<%= @view_pass %>"
+mysql_instances:
+<%- if defined?(@instances) -%>
+  <%- @instances.each do |instance, buffer| %>
+  - <%= instance %>
+  <%- end %>
+<%- else -%>
+  - all
+<%- end -%>
 
 add_to_all_dbs:
  - centralauth
