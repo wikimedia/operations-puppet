@@ -1,6 +1,6 @@
-# == Define profile::analytics::refinery::job::import_wikidata_dumps_config
+# == Define profile::analytics::refinery::job::import_wikibase_dumps_config
 #
-# Renders a bash script allowing to import wikidata-dumps onto hdfs, and
+# Renders a bash script allowing to import wikibase-dumps onto hdfs, and
 # defines a kerberized monthly systemd timer launching the job.
 #
 # [*include_pattern*]
@@ -26,7 +26,7 @@
 #   Default: /usr/local/bin/${title}
 #
 
-define profile::analytics::refinery::job::import_wikidata_dumps_config(
+define profile::analytics::refinery::job::import_wikibase_dumps_config(
     $include_pattern,
     $local_source,
     $hdfs_destination,
@@ -38,7 +38,7 @@ define profile::analytics::refinery::job::import_wikidata_dumps_config(
 
     file { $script_path:
         ensure  => $ensure,
-        content => template('profile/analytics/refinery/job/refinery-import-wikidata-dumps.sh.erb'),
+        content => template('profile/analytics/refinery/job/refinery-import-wikibase-dumps.sh.erb'),
         mode    => '0550',
         owner   => 'analytics',
         group   => 'analytics',
