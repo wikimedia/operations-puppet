@@ -16,6 +16,19 @@ hierarchy:
   - name: "expand_path site"
     path: "%{::site}"
     lookup_key: 'wmflib::expand_path'
+  - name: "role"
+    paths:
+      - "role/%{::site}/%{::_role}.yaml"
+      - "role/common/%{::_role}.yaml"
+  - name: "private role"
+    datadir: "../spec/fixtures/private/hieradata"
+    paths:
+      - "role/%{::site}/%{::_role}.yaml"
+      - "role/common/%{::_role}.yaml"
   - name: "common"
+    lookup_key: 'wmflib::expand_path'
+    path: "common"
+  - name: "private common"
+    datadir: "../spec/fixtures/private/hieradata"
     lookup_key: 'wmflib::expand_path'
     path: "common"

@@ -10,6 +10,7 @@ site: eqiad
 cluster: misc
 puppet_config_dir: /etc/puppet
 use_puppetdb: false
+interface_primary: 'eth0'
 ipaddress6: 2001:db8::42
 initsystem: systemd
 ntp_peers:
@@ -43,7 +44,7 @@ puppet_config:
   localcacert: '/var/lib/puppet/ssl/certs/ca.pem'
   ssldir: '/var/lib/puppet/ssl'
   hostpubkey: "/var/lib/puppet/ssl/public_keys/%{facts.fqdn}.pem"
-  hostprivkey: "/var/lib/puppet/ssl/private_keys/%{facts.fqdn'}.pem"
+  hostprivkey: "/var/lib/puppet/ssl/private_keys/%{facts.fqdn}.pem"
   hostcert: "/var/lib/puppet/ssl/certs/%{facts.fqdn}.pem"
   master:
     localcacert: '/var/lib/puppet/server/ssl/certs/ca.pem'
