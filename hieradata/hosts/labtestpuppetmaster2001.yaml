@@ -1,9 +1,0 @@
-puppet_ca_server: labtestpuppetmaster2001.wikimedia.org
-profile::openstack::codfw1dev::puppetmaster::ca: labtestpuppetmaster2001.wikimedia.org
-
-manage_puppet_ca_file: false
-profile::puppetmaster::common::puppetdb_hosts: []
-profile::puppetmaster::common::command_broadcast: false
-puppetmaster::servers:
-  labtestpuppetmaster2001.wikimedia.org:
-    - { worker: labtestpuppetmaster2001.wikimedia.org, loadfactor: 10 }

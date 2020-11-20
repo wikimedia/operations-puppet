@@ -256,7 +256,7 @@ node /^cloudceph200[123]-dev\.wikimedia\.org/ {
 }
 
 #T267378
-node /^cloudcephmon200[12]-dev\.codfw\.wmnet$/ {
+node /^cloudcephmon200[1-3]-dev\.codfw\.wmnet$/ {
     role(insetup)
 }
 
@@ -1218,10 +1218,6 @@ node 'cloudcontrol2003-dev.wikimedia.org' {
 
 node 'cloudcontrol2004-dev.wikimedia.org' {
     role(wmcs::openstack::codfw1dev::control)
-}
-
-node 'labtestpuppetmaster2001.wikimedia.org' {
-    role(spare::system)
 }
 
 node 'cloudservices2002-dev.wikimedia.org' {
