@@ -273,11 +273,6 @@ smart_health_mpt:
   __regex: !ruby/regexp /^labnet1002.*/
   profile::base::check_smart: false
 
-puppetmaster_labtest:
-  __regex: !ruby/regexp /^labtestpuppetmaster2001.wikimedia.org$/
-  profile::base::puppet::facter_major_version: 2
-  profile::base::puppet::puppet_major_version: 4
-
 mediawiki_test_environment:
   __regex: !ruby/regexp /^mwdebug(1[0-9]+\.eqiad|2[0-9]+\.codfw)\.wmnet$/
   profile::base::environment: mediawiki_test
