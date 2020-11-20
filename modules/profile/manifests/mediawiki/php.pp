@@ -33,9 +33,10 @@ class profile::mediawiki::php(
     Optional[Boolean] $enable_php_core_dumps = lookup('profile::mediawiki::php:::enable_php_core_dumps', {'default_value' => false}),
     Integer $slowlog_limit = lookup('profile::mediawiki::php::slowlog_limit', {'default_value' => 15}),
     Boolean $phpdbg = lookup('profile::mediawiki::php::phpdbg', {'default_value' => false}),
+    Boolean $enable_php72_component = lookup('profile::mediawiki::php::enable_php72_component', {'default_value' => false}),
     ) {
 
-    if debian::codename::eq('stretch') {
+    if debian::codename::eq('stretch') or $enable_php72_component {
         # We get our packages for our repositories again
         file { '/etc/apt/preferences.d/php_wikidiff2.pref':
             ensure => absent,

@@ -1,1 +1,4 @@
 profile::mediawiki::mcrouter_wancache::use_onhost_memcached: false
+
+# Opt-in to enable the PHP 7.2 component on buster (T245757, T267248)
+profile::mediawiki::php::enable_php72_component: true
