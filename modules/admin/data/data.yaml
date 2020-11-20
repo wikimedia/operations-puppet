@@ -213,7 +213,7 @@ groups:
   contint-roots:
     gid: 720
     description: users who have full root on jenkins servers
-    members: &contint_roots_members [hashar, thcipriani, brennen, jforrester]
+    members: &contint_roots_members [hashar, thcipriani, brennen, jforrester, twentyafterfour]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   logstash-roots:
     gid: 722
