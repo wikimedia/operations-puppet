@@ -251,7 +251,7 @@ node /^chartmuseum[12]001\.(eqiad|codfw)\.wmnet$/ {
     role(chartmuseum)
 }
 
-node /^cloudceph200[123]-dev\.wikimedia\.org/ {
+node /^cloudcephosd200[123]-dev\.wikimedia\.org/ {
     role(insetup)
 }
 

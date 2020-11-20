@@ -643,19 +643,19 @@ host cloudbackup2002 {
     fixed-address cloudbackup2002.codfw.wmnet;
 }
 
-host cloudceph2001-dev {
+host cloudcephosd2001-dev {
     hardware ethernet 2C:EA:7F:3F:E7:15;
-    fixed-address cloudceph2001-dev.wikimedia.org;
+    fixed-address cloudcephosd2001-dev.wikimedia.org;
 }
 
-host cloudceph2002-dev {
+host cloudcephosd2002-dev {
     hardware ethernet 2C:EA:7F:3F:ED:D3;
-    fixed-address cloudceph2002-dev.wikimedia.org;
+    fixed-address cloudcephosd2002-dev.wikimedia.org;
 }
 
-host cloudceph2003-dev {
+host cloudcephosd2003-dev {
     hardware ethernet 2C:EA:7F:3F:DA:F7;
-    fixed-address cloudceph2003-dev.wikimedia.org;
+    fixed-address cloudcephosd2003-dev.wikimedia.org;
 }
 
 host cloudcephmon1001 {
