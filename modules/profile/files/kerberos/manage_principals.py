@@ -19,10 +19,12 @@ def parse_args(argv):
     p = argparse.ArgumentParser()
     p.add_argument('--realm', action='store', default="WIKIMEDIA",
                    help='The Kerberos realm for which the user principals will be generated')
-    p.add_argument('action', action='store', choices=['get', 'create', 'delete'],
+    p.add_argument('action', action='store',
+                   choices=['get', 'list', 'create', 'delete'],
                    help="Action to perform with the principal.")
     p.add_argument('principal', action='store',
-                   help="Name of the Kerberos Principal to use (without @REALM suffix).")
+                   help="Name of the Kerberos Principal to use (without @REALM suffix)."
+                   "The list command also works with wildcards like the char '*'.")
     p.add_argument('--email_address', action='store',
                    help="Email address of the user to send the temporary password to.")
 
@@ -63,6 +65,15 @@ def does_principal_exist(principal, realm):
         return True
     except subprocess.CalledProcessError:
         return False
+
+
+def list_principals(principal_pattern):
+    try:
+        subprocess.call(
+            ['/usr/sbin/kadmin.local', 'list_principals', principal_pattern])
+    except subprocess.CalledProcessError as e:
+        print("Error while running kadmin.local: " + str(e))
+        return -1
 
 
 def get_principal_info(principal, realm):
@@ -127,6 +138,8 @@ def main():
 
     if action == "get":
         get_principal_info(principal, realm)
+    elif action == 'list':
+        list_principals(principal)
     elif action == "create":
         if does_principal_exist(principal, realm):
             print("Principal already created (or an error occurred with kadmin), skipping.")
