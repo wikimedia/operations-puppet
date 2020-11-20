@@ -2024,6 +2024,11 @@ node 'mwlog2001.codfw.wmnet' {
     role(logging::mediawiki::udp2log)
 }
 
+# Nes mwlog node T267272
+node 'mwlog2002.codfw.wmnet' {
+    role(insetup)
+}
+
 # mw logging host eqiad
 node 'mwlog1001.eqiad.wmnet' {
     role(logging::mediawiki::udp2log)
