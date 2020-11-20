@@ -354,7 +354,7 @@ groups:
   phabricator-roots:
     gid: 748
     description: people who have full root on phabricator
-    members: [twentyafterfour, thcipriani]
+    members: [twentyafterfour, thcipriani, brennen]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   htmldumps-admin:
     gid: 749
