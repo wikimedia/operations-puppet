@@ -2,18 +2,18 @@
 # Analytics Query Service Restbase Service configuration
 #
 class profile::aqs (
-        $monitoring_enabled            = hiera('profile::aqs::monitoring_enabled', false),
-        $druid_properties              = hiera('profile::aqs::druid_properties', undef),
-        $druid_datasources             = hiera('profile::aqs::druid_datasources', undef),
-        $druid_uri_pattern             = hiera('profile::aqs::druid_uri_pattern'),
-        $cassandra_user                = hiera('profile::aqs::cassandra_user'),
-        $cassandra_password            = hiera('profile::aqs::cassandra_password'),
-        $cassandra_seeds               = hiera('profile::aqs::seeds'),
-        $rsyslog_port                  = hiera('rsyslog_port', 10514),
-        $cassandra_default_consistency = hiera('profile::aqs::cassandra_default_consistency'),
-        $cassandra_local_dc            = hiera('profile::aqs::cassandra_local_dc'),
-        $statsd_host                   = hiera('profile::aqs::statsd_host', undef),
-        $use_nodejs10                  = hiera('profile::aqs::use_nodejs10', false),
+        Boolean $monitoring_enabled                    = lookup('profile::aqs::monitoring_enabled', { 'default_value' => false }),
+        Optional[Hash[String, Any]] $druid_properties  = lookup('profile::aqs::druid_properties', { 'default_value' => undef }),
+        Optional[Hash[String, Any]] $druid_datasources = lookup('profile::aqs::druid_datasources', { 'default_value' => undef }),
+        String $druid_uri_pattern                      = lookup('profile::aqs::druid_uri_pattern'),
+        String $cassandra_user                         = lookup('profile::aqs::cassandra_user'),
+        String $cassandra_password                     = lookup('profile::aqs::cassandra_password'),
+        Array[Stdlib::Host] $cassandra_seeds           = lookup('profile::aqs::seeds'),
+        Stdlib::Port $rsyslog_port                     = lookup('rsyslog_port', { 'default_value' => 10514 }),
+        String $cassandra_default_consistency          = lookup('profile::aqs::cassandra_default_consistency'),
+        String $cassandra_local_dc                     = lookup('profile::aqs::cassandra_local_dc'),
+        Optional[Stdlib::Host] $statsd_host            = lookup('profile::aqs::statsd_host', { 'default_value' => undef }),
+        Boolean $use_nodejs10                          = lookup('profile::aqs::use_nodejs10', { 'default_value' => false }),
 ){
 
     class { '::aqs':
