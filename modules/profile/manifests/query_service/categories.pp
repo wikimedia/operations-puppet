@@ -11,16 +11,16 @@
 # per datasource (preventing configuration by role).
 class profile::query_service::categories(
     String $username = lookup('profile::query_service::username'),
-    Stdlib::Unixpath $package_dir = hiera('profile::query_service::package_dir'),
-    Stdlib::Unixpath $data_dir = hiera('profile::query_service::data_dir'),
-    Stdlib::Unixpath $log_dir = hiera('profile::query_service::log_dir'),
-    String $deploy_name = hiera('profile::query_service::deploy_name'),
-    Stdlib::Port $logstash_logback_port = hiera('logstash_logback_port'),
-    Boolean $use_deployed_config = hiera('profile::query_service::blazegraph_use_deployed_config', false),
-    Array[String] $options = hiera('profile::query_service::blazegraph_options'),
-    Array[String] $extra_jvm_opts = hiera('profile::query_service::blazegraph_extra_jvm_opts'),
-    Array[String] $prometheus_nodes = hiera('prometheus_nodes'),
-    String $contact_groups = hiera('contactgroups', 'admins'),
+    Stdlib::Unixpath $package_dir = lookup('profile::query_service::package_dir'),
+    Stdlib::Unixpath $data_dir = lookup('profile::query_service::data_dir'),
+    Stdlib::Unixpath $log_dir = lookup('profile::query_service::log_dir'),
+    String $deploy_name = lookup('profile::query_service::deploy_name'),
+    Stdlib::Port $logstash_logback_port = lookup('logstash_logback_port'),
+    Boolean $use_deployed_config = lookup('profile::query_service::blazegraph_use_deployed_config', {'default_value' => false}),
+    Array[String] $options = lookup('profile::query_service::blazegraph_options'),
+    Array[String] $extra_jvm_opts = lookup('profile::query_service::blazegraph_extra_jvm_opts'),
+    Array[String] $prometheus_nodes = lookup('prometheus_nodes'),
+    String $contact_groups = lookup('contactgroups', {'default_value' => 'admins'}),
     String $federation_user_agent = lookup('profile::query_service::federation_user_agent'),
 ) {
     require ::profile::query_service::common
