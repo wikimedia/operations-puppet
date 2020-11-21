@@ -14,12 +14,12 @@ define varnish::wikimedia_vcl(
         $dynamic_backend_caches = false
         $netmapper_dir = '/usr/share/varnish/tests'
     } else {
-        $dynamic_backend_caches = hiera('varnish::dynamic_backend_caches', true)
+        $dynamic_backend_caches = lookup('varnish::dynamic_backend_caches', {'default_value' => true})
         $netmapper_dir = '/var/netmapper'
     }
 
     # Hieradata switch to shut users out of a DC/cluster. T129424
-    $traffic_shutdown = hiera('cache::traffic_shutdown', false)
+    $traffic_shutdown = lookup('cache::traffic_shutdown', {'default_value' => false})
 
     if $generate_extra_vcl {
         $extra_vcl_name = regsubst($title, '^([^ ]+) .*$', '\1')
