@@ -1,6 +1,6 @@
 # maintenance needed on maintenance hosts for tendril
 class profile::tendril::maintenance(
-    $ensure = hiera('profile::tendril::maintenance::ensure'),
+    Wmflib::Ensure $ensure = lookup('profile::tendril::maintenance::ensure'),
     ) {
     # The role should install profile::mariadb::client
 

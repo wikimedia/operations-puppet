@@ -1,8 +1,8 @@
 # setup a webserver as required for Tendril and dbtree.
 # Add Apache sites and monitoring for http/https.
 class profile::tendril::webserver (
-    $monitor_https = hiera('do_acme', true),
-    $monitor_auth  = hiera('monitor_auth', true),
+    Boolean $monitor_https = lookup('do_acme', {'default_value' => true}),
+    Boolean $monitor_auth  = lookup('monitor_auth', {'default_value' => true}),
 ) {
     case debian::codename() {
         'buster': {

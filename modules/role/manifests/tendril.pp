@@ -16,7 +16,7 @@ class role::tendril {
 
     # Make tendril active-passive cross-datacenter until a local db backend is
     # available on codfw to avoid cross-dc queries or TLS is used to connect
-    if hiera('do_acme', true) {
+    if lookup('do_acme', {'default_value' => true}) {
         ferm::service { 'tendril-http-https':
             proto => 'tcp',
             port  => '(http https)',
