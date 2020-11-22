@@ -1,5 +1,5 @@
 fields:
-  program: "nova-compute"
+  program: 'nova'
 codec: "json_lines"
 ignore:
   - "@timestamp"
@@ -18,4 +18,22 @@ testcases:
         message: "2020-11-19 00:00:24.764 71430 WARNING nova.compute.resource_tracker [req-d65f64b7-cf9d-452b-b178-cb0bcad37b1b - - - - -] Instance 95af7a3c-8ae9-46ab-b9a0-b100ab3bec25 has been moved to another host cloudvirt1035(cloudvirt1035.eqiad.wmnet). There are allocations remaining against the source host that might need to be removed: {'resources': {'VCPU': 1, 'MEMORY_MB': 2048, 'DISK_GB': 20}}."
         logmessage: "Instance 95af7a3c-8ae9-46ab-b9a0-b100ab3bec25 has been moved to another host cloudvirt1035(cloudvirt1035.eqiad.wmnet). There are allocations remaining against the source host that might need to be removed: {'resources': {'VCPU': 1, 'MEMORY_MB': 2048, 'DISK_GB': 20}}."
         request_id: "d65f64b7-cf9d-452b-b178-cb0bcad37b1b"
-        program: "nova-compute"
+        program: "nova"
+        project: "-"
+        user: "-"
+  - input:
+      - >
+        {
+          "message":"2020-11-23 18:03:13.919 13834 WARNING nova.scheduler.host_manager [req-d53f32a1-2d47-463e-b031-d95fd678fd96 osstackcanary admin-monitoring - default default] No compute service record found for host cloudcontrol1003"
+        }
+    expected:
+      - pid: "13834"
+        module: "nova.scheduler.host_manager"
+        logdate: "2020-11-23 18:03:13.919"
+        loglevel: "WARNING"
+        message: "2020-11-23 18:03:13.919 13834 WARNING nova.scheduler.host_manager [req-d53f32a1-2d47-463e-b031-d95fd678fd96 osstackcanary admin-monitoring - default default] No compute service record found for host cloudcontrol1003"
+        logmessage: "No compute service record found for host cloudcontrol1003"
+        request_id: "d53f32a1-2d47-463e-b031-d95fd678fd96"
+        program: "nova"
+        project: "admin-monitoring"
+        user: "osstackcanary"
