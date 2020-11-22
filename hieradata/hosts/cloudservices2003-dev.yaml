@@ -6,7 +6,7 @@ prometheus_nodes:
     - prometheus2003.codfw.wmnet
     - prometheus2004.codfw.wmnet
 
-profile::openstack::codfw1dev::version: 'rocky'
+profile::openstack::codfw1dev::version: 'stein'
 
 profile::openstack::codfw1dev::pdns::recursor_service_name: ns-recursor1.openstack.codfw1dev.wikimediacloud.org
 
