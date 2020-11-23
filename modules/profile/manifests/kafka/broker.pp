@@ -143,38 +143,38 @@
 #   Default: 1
 #
 class profile::kafka::broker(
-    $kafka_cluster_name                = hiera('profile::kafka::broker::kafka_cluster_name'),
-    $statsd                            = hiera('statsd'),
+    String $kafka_cluster_name                             = lookup('profile::kafka::broker::kafka_cluster_name'),
+    String $statsd                                         = lookup('statsd'),
 
-    $plaintext                         = hiera('profile::kafka::broker::plaintext', true),
+    Boolean $plaintext                                     = lookup('profile::kafka::broker::plaintext', {'default_value' => true}),
 
-    $ssl_enabled                       = hiera('profile::kafka::broker::ssl_enabled', false),
-    $ssl_password                      = hiera('profile::kafka::broker::ssl_password', undef),
-    $inter_broker_ssl_enabled          = hiera('profile::kafka::broker::inter_broker_ssl_enabled', undef),
+    Boolean $ssl_enabled                                   = lookup('profile::kafka::broker::ssl_enabled', {'default_value' => false}),
+    Optional[String] $ssl_password                         = lookup('profile::kafka::broker::ssl_password', {'default_value' => undef}),
+    Optional[Boolean] $inter_broker_ssl_enabled            = lookup('profile::kafka::broker::inter_broker_ssl_enabled', {'default_value' => undef}),
 
-    $log_dirs                          = hiera('profile::kafka::broker::log_dirs', ['/srv/kafka/data']),
-    $auto_leader_rebalance_enable      = hiera('profile::kafka::broker::auto_leader_rebalance_enable', true),
-    $log_retention_hours               = hiera('profile::kafka::broker::log_retention_hours', 168),
-    $log_retention_bytes               = hiera('profile::kafka::broker::log_retention_bytes', undef),
-    $log_segment_bytes                 = hiera('profile::kafka::broker::log_segment_bytes', undef),
-    $num_recovery_threads_per_data_dir = hiera('profile::kafka::broker::num_recovery_threads_per_data_dir', undef),
-    $num_io_threads                    = hiera('profile::kafka::broker::num_io_threads', 1),
-    $num_replica_fetchers              = hiera('profile::kafka::broker::num_replica_fetchers', undef),
-    $nofiles_ulimit                    = hiera('profile::kafka::broker::nofiles_ulimit', 128000),
-    $inter_broker_protocol_version     = hiera('profile::kafka::broker::inter_broker_protocol_version', undef),
-    $group_initial_rebalance_delay     = hiera('profile::kafka::broker::group_initial_rebalance_delay', undef),
-    $log_message_format_version        = hiera('profile::kafka::broker::log_message_format_version', undef),
+    Array[Stdlib::Unixpath] $log_dirs                      = lookup('profile::kafka::broker::log_dirs', {'default_value' => ['/srv/kafka/data']}),
+    Boolean $auto_leader_rebalance_enable                  = lookup('profile::kafka::broker::auto_leader_rebalance_enable', {'default_value' => true}),
+    Integer $log_retention_hours                           = lookup('profile::kafka::broker::log_retention_hours', {'default_value' => 168}),
+    Optional[Integer] $log_retention_bytes                 = lookup('profile::kafka::broker::log_retention_bytes', {'default_value' => undef}),
+    Optional[Integer] $log_segment_bytes                   = lookup('profile::kafka::broker::log_segment_bytes', {'default_value' => undef}),
+    Optional[Integer] $num_recovery_threads_per_data_dir   = lookup('profile::kafka::broker::num_recovery_threads_per_data_dir', {'default_value' => undef}),
+    Integer $num_io_threads                                = lookup('profile::kafka::broker::num_io_threads', {'default_value' => 1}),
+    Optional[Integer] $num_replica_fetchers                = lookup('profile::kafka::broker::num_replica_fetchers', {'default_value' => undef}),
+    Integer $nofiles_ulimit                                = lookup('profile::kafka::broker::nofiles_ulimit', {'default_value' => 128000}),
+    Optional[String] $inter_broker_protocol_version        = lookup('profile::kafka::broker::inter_broker_protocol_version', {'default_value' => undef}),
+    Optional[Integer] $group_initial_rebalance_delay       = lookup('profile::kafka::broker::group_initial_rebalance_delay', {'default_value' => undef}),
+    Optional[String] $log_message_format_version           = lookup('profile::kafka::broker::log_message_format_version', {'default_value' => undef}),
 
     # This is set via top level hiera variable so it can be synchronized between roles and clients.
-    $message_max_bytes                 = hiera('kafka_message_max_bytes', 1048576),
-    $auth_acls_enabled                 = hiera('profile::kafka::broker::auth_acls_enabled', false),
-    $monitoring_enabled                = hiera('profile::kafka::broker::monitoring_enabled', false),
+    Integer $message_max_bytes                             = lookup('kafka_message_max_bytes', {'default_value' => 1048576}),
+    Boolean $auth_acls_enabled                             = lookup('profile::kafka::broker::auth_acls_enabled', {'default_value' => false}),
+    Boolean $monitoring_enabled                            = lookup('profile::kafka::broker::monitoring_enabled', {'default_value' => false}),
 
-    $scala_version                     = hiera('profile::kafka::broker::scala_version', '2.11'),
+    String $scala_version                                  = lookup('profile::kafka::broker::scala_version', {'default_value' => '2.11'}),
 
-    $max_heap_size                     = hiera('profile::kafka::broker::max_heap_size', undef),
-    $num_partitions                    = hiera('profile::kafka::broker::num_partitions', 1),
-    $custom_ferm_srange_components     = lookup('profile::kafka::broker::custom_ferm_srange_components', { 'default_value' => undef }),
+    Optional[String] $max_heap_size                        = lookup('profile::kafka::broker::max_heap_size', {'default_value' => undef}),
+    Integer $num_partitions                                = lookup('profile::kafka::broker::num_partitions', {'default_value' => 1}),
+    Optional[Array[String]] $custom_ferm_srange_components = lookup('profile::kafka::broker::custom_ferm_srange_components', { 'default_value' => undef }),
 ) {
     $config         = kafka_config($kafka_cluster_name)
     $cluster_name   = $config['name']
