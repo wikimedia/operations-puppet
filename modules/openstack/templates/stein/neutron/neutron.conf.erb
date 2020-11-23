@@ -1,5 +1,8 @@
 [DEFAULT]
 
+use_syslog = True
+syslog_log_facility = LOG_LOCAL4
+
 # set the wsgi loglevel to 'WARN' to filter out haproxy pings
 default_log_levels = neutron.wsgi=WARN
 
