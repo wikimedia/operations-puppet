@@ -7,7 +7,7 @@ class mediawiki::packages {
     ensure_packages([
         'timidity', 'freepats', 'fluidsynth', 'fluid-soundfont-gs', 'fluid-soundfont-gm', 'firejail',
         # vips is needed for (rare) non-Thumbor scaling of TIFF/PNG uploads (T199938)
-        'python-imaging', 'tidy', 'libvips-tools',
+        'tidy', 'libvips-tools',
         # PDF and DjVu
         'ghostscript', 'djvulibre-bin', 'librsvg2-bin', 'libtiff-tools', 'poppler-utils',
         # ploticus for EasyTimeline extension (T237304)
@@ -24,5 +24,12 @@ class mediawiki::packages {
         }
     } else {
         ensure_packages('lilypond')
+    }
+
+    # Used by captcha.py from ConfirmEdit extension (used to generate captchas)
+    if debian::codename::eq('stretch') {
+        ensure_packages('python-imaging')
+    } else {
+        ensure_packages('python-pil')
     }
 }
