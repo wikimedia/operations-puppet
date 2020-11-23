@@ -48,7 +48,7 @@ def create_user_principal(principal, password, realm):
         return -1
 
 
-def delete_user_principal(principal, realm):
+def delete_principal(principal, realm):
     try:
         if '@' + realm in principal:
             principal_to_del = principal
@@ -158,9 +158,13 @@ def main():
         if email_address:
             send_email(email_address, principal, password, realm)
     elif action == "delete":
-        ret = delete_user_principal(principal, realm)
+        ret = delete_principal(principal, realm)
         if ret == 0:
-            print("Principal successfully deleted. Make sure to update data.yaml in Puppet.")
+            delete_msg = "Principal successfully deleted."
+            if '/' not in principal:
+                delete_msg += (" Since the principal seems to be related to a user, "
+                               "make sure to update the krb flag in Puppet's data.yaml.")
+            print(delete_msg)
         else:
             sys.exit(1)
 
