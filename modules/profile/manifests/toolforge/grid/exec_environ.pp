@@ -69,7 +69,7 @@ class profile::toolforge::grid::exec_environ {
         'texlive-full',              # T197176
         'ttf-alee',
         'ttf-ubuntu-font-family',    # T32288, T103325 from stretch-wikimedia
-        'ttf-wqy-zenhei',
+        'fonts-wqy-zenhei',
         'xfonts-100dpi',
         'xfonts-75dpi',
         'xfonts-base',
