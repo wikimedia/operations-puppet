@@ -103,7 +103,8 @@ class base::standard_packages {
                 'libboost-atomic1.62.0', 'libboost-chrono1.62.0', 'libboost-date-time1.62.0',
                 'libboost-filesystem1.62.0', 'libboost-iostreams1.62.0', 'libboost-locale1.62.0',
                 'libboost-log1.62.0', 'libboost-program-options1.62.0', 'libboost-regex1.62.0',
-                'libboost-system1.62.0', 'libboost-thread1.62.0', 'libmpfr4', 'libprocps6', 'libunistring0'
+                'libboost-system1.62.0', 'libboost-thread1.62.0', 'libmpfr4', 'libprocps6', 'libunistring0',
+                'libbabeltrace-ctf1', 'libleatherman-data'
             ]
             # mcelog is broken with the Linux kernel used in buster
             $purged_packages = ['mcelog']
