@@ -133,6 +133,10 @@ profile::swift::storagehosts:
   - ms-be1057.eqiad.wmnet
   - ms-be1058.eqiad.wmnet
   - ms-be1059.eqiad.wmnet
+  - ms-be1060.eqiad.wmnet
+  - ms-be1061.eqiad.wmnet
+  - ms-be1062.eqiad.wmnet
+  - ms-be1063.eqiad.wmnet
   - ms-be2016.codfw.wmnet
   - ms-be2017.codfw.wmnet
   - ms-be2018.codfw.wmnet

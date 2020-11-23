@@ -1614,12 +1614,7 @@ node /^ms-fe100[6-8]\.eqiad\.wmnet$/ {
     include ::lvs::realserver
 }
 
-# 4 new ms-be hosts in eqiad T265093
-node /^ms-be106[0-3]\.eqiad\.wmnet$/ {
-    role(insetup)
-}
-
-node /^ms-be10(19|[2345][0-9])\.eqiad\.wmnet$/ {
+node /^ms-be10(19|[23456][0-9])\.eqiad\.wmnet$/ {
     role(swift::storage)
 }
 

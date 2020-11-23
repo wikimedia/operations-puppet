@@ -210,7 +210,7 @@ swift_servers_per_port:
 
 # Hosts with 24x HDD https://phabricator.wikimedia.org/T252216
 swift_24_drives:
-  __regex: !ruby/regexp /^ms-be2057\.codfw\.wmnet$/
+  __regex: !ruby/regexp /^ms-be(2057|106[0-3])\.(codfw|eqiad)\.wmnet$/
   swift_storage_drives:
     - '/dev/sdc'
     - '/dev/sdd'
