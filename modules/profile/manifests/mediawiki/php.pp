@@ -37,6 +37,7 @@ class profile::mediawiki::php(
     ) {
 
     if debian::codename::eq('stretch') or $enable_php72_component {
+
         # We get our packages for our repositories again
         file { '/etc/apt/preferences.d/php_wikidiff2.pref':
             ensure => absent,
@@ -49,7 +50,7 @@ class profile::mediawiki::php(
         if $php_version == '7.2' {
             apt::repository { 'wikimedia-php72':
                 uri        => 'http://apt.wikimedia.org/wikimedia',
-                dist       => 'stretch-wikimedia',
+                dist       => "${::lsbdistcodename}-wikimedia",
                 components => 'component/php72',
                 notify     => Exec['apt_update_php'],
                 before     => Package["php${php_version}-common", "php${php_version}-opcache"]
