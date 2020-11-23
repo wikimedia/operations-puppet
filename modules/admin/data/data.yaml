@@ -1742,6 +1742,7 @@ users:
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHyKPeAQbIJzDPFnjM4i0gl4RbDUZRJB7aPhzTwtjpAH fab@wmf
     uid: 27798
+    krb: present
   ellery:
     ensure: absent
     gid: 500
