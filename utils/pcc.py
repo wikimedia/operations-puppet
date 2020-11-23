@@ -198,6 +198,8 @@ def get_args():
                         help="Post PCC report to gerrit on faliure and down vote verify status")
     parser.add_argument('-C', '--post-crash', action='store_true',
                         help="Post PCC report to gerrit when polling fails")
+    parser.add_argument('-N', '--no-post-success', action='store_true',
+                        help="Do not post PCC report to gerrit")
     parser.add_argument('-v', '--verbose', action='count')
     return parser.parse_args()
 
@@ -318,7 +320,8 @@ def main():  # pylint: disable=too-many-locals
     # for failures before declaring victory.
     if ('Run finished' in output and not re.search(r'[1-9]\d* (ERROR|FAIL)', output)):
         print(green('SUCCESS'))
-        post_comment(change, 'PCC SUCCESS: {}'.format(console_url), True)
+        if not args.no_post_success:
+            post_comment(change, 'PCC SUCCESS: {}'.format(console_url), True)
         return 0
     print(red('FAIL'))
     if args.post_fail:
