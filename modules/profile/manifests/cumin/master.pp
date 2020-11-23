@@ -1,6 +1,7 @@
 class profile::cumin::master (
-    Stdlib::Host  $puppetdb_host = lookup('puppetdb_host'),
-    Array[String] $datacenters   = lookup('datacenters'),
+    Stdlib::Host  $puppetdb_host        = lookup('puppetdb_host'),
+    Array[String] $datacenters          = lookup('datacenters'),
+    Stdlib::Host  $kerberos_kadmin_host = lookup('kerberos_kadmin_server_primary')
 ) {
     include passwords::phabricator
     $cumin_log_path = '/var/log/cumin'

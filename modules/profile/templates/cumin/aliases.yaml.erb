@@ -148,6 +148,7 @@ kafka-mirror-maker-jumbo: A:kafka-jumbo and A:kafka-mirror-maker
 kafka-mirror-maker-main-codfw: A:kafka-main-codfw and A:kafka-mirror-maker
 kafka-mirror-maker-main-eqiad: A:kafka-main-eqiad and A:kafka-mirror-maker
 kerberos: P{O:kerberos::kdc}
+kerberos-kadmin: P{<%= @kerberos_kadmin_host %>}
 kubernetes-etcd: P{O:etcd::v3::kubernetes}
 kubernetes-masters: P{O:kubernetes::master}
 kubernetes-staging: P{O:etcd::v3::kubernetes::staging or O:kubernetes::staging::master or O:kubernetes::staging::worker}
