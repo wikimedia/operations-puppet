@@ -328,7 +328,7 @@ class profile::thanos::alerts (
         method          => 'ge',
         warning         => 3,
         critical        => 5,
-        dashboard_links => ['https://grafana-rw.wikimedia.org/d/aa7Rx0oMk/thanos-query-frontend'],
+        dashboard_links => ['https://grafana.wikimedia.org/d/aa7Rx0oMk/thanos-query-frontend'],
         notes_link      => 'https://wikitech.wikimedia.org/wiki/Thanos#Alerts',
     }
 
@@ -344,7 +344,7 @@ class profile::thanos::alerts (
         method          => 'ge',
         warning         => 35,
         critical        => 40,
-        dashboard_links => ['https://grafana-rw.wikimedia.org/d/aa7Rx0oMk/thanos-query-frontend'],
+        dashboard_links => ['https://grafana.wikimedia.org/d/aa7Rx0oMk/thanos-query-frontend'],
         notes_link      => 'https://wikitech.wikimedia.org/wiki/Thanos#Alerts',
     }
 
