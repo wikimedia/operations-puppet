@@ -5,7 +5,7 @@
 #
 # filtertags: labs-project-deployment-prep
 class profile::beta::mediawiki (
-    Array[String] $deployment_hosts = hiera('deployment_hosts', []),
+    Array[Stdlib::Host] $deployment_hosts = lookup('deployment_hosts', {'default_value' => []})
 ) {
     $ips = join($deployment_hosts, ' ')
     security::access::config { 'scap-allow-mwdeploy':

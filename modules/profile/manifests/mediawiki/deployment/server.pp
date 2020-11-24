@@ -16,7 +16,7 @@ class profile::mediawiki::deployment::server(
                         'origin'          => Optional[String],
                         'repository'      => Optional[String],
                         'scap_repository' => Optional[String]
-    }]] $sources  = hiera('scap::sources'),
+    }]] $sources  = lookup('scap::sources'),
 ) {
     # Class scap gets included via profile::mediawiki::common
     # Also a lot of needed things are called from there.
