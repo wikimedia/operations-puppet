@@ -56,12 +56,12 @@ class profile::analytics::refinery::job::druid_load(
         job_config        => {
             database         => 'wmf',
             timestamp_column => 'stamp_inserted',
-            dimensions       => 'as_dst,as_path,peer_as_dst,as_src,ip_dst,ip_proto,ip_src,peer_as_src,port_dst,port_src,tag2,tcp_flags,country_ip_src,country_ip_dst,peer_ip_src',
+            dimensions       => 'as_dst,as_path,peer_as_dst,as_src,ip_dst,ip_proto,ip_src,peer_as_src,port_dst,port_src,tag2,tcp_flags,country_ip_src,country_ip_dst,peer_ip_src,parsed_comms,net_cidr_src,net_cidr_dst,as_name_src,as_name_dst,ip_version,region',
             metrics          => 'bytes,packets',
         },
         # settings copied from webrequest_sampled_128 load job
         # as data-size is similar
-        hourly_shards     => 2,
+        hourly_shards     => 4,
         hourly_reduce_mem => '8192',
         daily_shards      => 32,
     }
