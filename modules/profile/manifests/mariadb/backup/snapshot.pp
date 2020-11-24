@@ -2,7 +2,7 @@
 # are placed on the right place at the provisioning server
 class profile::mariadb::backup::snapshot {
     require_package(
-        'wmfbackups',  # depends on either mariabackup or wmf-mariadb*
+        'wmfbackups',  # recommends either mariabackup or wmf-mariadb*
     )
     require profile::mariadb::packages_wmf  # needed for xbstream and --prepare
 

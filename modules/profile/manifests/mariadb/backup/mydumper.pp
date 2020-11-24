@@ -9,7 +9,7 @@ class profile::mariadb::backup::mydumper {
 
     require_package(
         'wmfbackups',  # we now install all software from debian package
-        # mydumper is installed as a dependency
+        'mydumper',  # mydumper is only a soft dependency, explicitly install it
     )
 
     group { 'dump':
