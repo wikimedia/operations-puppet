@@ -72,7 +72,9 @@ define cfssl::signer (
         notify           => Service[$serve_service],
     }
     $db_data_source = $db_driver ? {
-        'mysql' => "${db_user}:${db_pass}@tcp(${db_host}:3306)/${db_name}?parseTime=true",
+        # for now we need to unwrap the sensitive value otherwise it is not interpreted
+        # Related bug: PUP-8969
+        'mysql' => "${db_user}:${db_pass.unwrap}@tcp(${db_host}:3306)/${db_name}?parseTime=true",
         default => $sqlite_path,
     }
     $db_config = {'driver' => $db_driver, 'data_source' => $db_data_source}
@@ -86,10 +88,11 @@ define cfssl::signer (
             ensure => directory,
             mode   => '0550';
         $db_conf_file:
-            ensure  => file,
-            mode    => '0440',
-            content => $db_config.to_json(),
-            notify  => Service[$serve_service];
+            ensure    => file,
+            mode      => '0440',
+            show_diff => false,
+            content   => Sensitive($db_config.to_json()),
+            notify    => Service[$serve_service];
 
     }
     sqlite::db {"cfssl ${title} signer DB":
