@@ -1,0 +1,33 @@
+# OSD nodes have their own storage vlan; these hosts
+#  will have arbitrary cluster addresses in 192.168.4.0/22
+#
+# The 'public' address here does not refer to the WMF public vlan,
+#  but rather the ceph 'public' address which is used by clients
+#  (in the near-term, hypervisors) to access storage.  Do not be
+#  alarmed that the public addresses are on private IPs.
+#
+profile::ceph::osd::hosts:
+  'cloudcephosd2001-dev.codfw.wmnet':
+    public:
+      addr: '10.192.20.15'
+      iface: 'eno1'
+    cluster:
+      addr: '192.168.4.1'
+      prefix: '24'
+      iface: 'eno2'
+  'cloudcephosd2002-dev.codfw.wmnet':
+    public:
+      addr: '10.192.20.16'
+      iface: 'eno1'
+    cluster:
+      addr: '192.168.4.2'
+      prefix: '24'
+      iface: 'eno2'
+  'cloudcephosd2003-dev.codfw.wmnet':
+    public:
+      addr: '10.192.20.17'
+      iface: 'eno1'
+    cluster:
+      addr: '192.168.4.3'
+      prefix: '24'
+      iface: 'eno2'

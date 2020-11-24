@@ -252,12 +252,12 @@ node /^chartmuseum[12]001\.(eqiad|codfw)\.wmnet$/ {
 }
 
 node /^cloudcephosd200[123]-dev\.codfw\.wmnet/ {
-    role(insetup)
+    role(wmcs::ceph::osd)
 }
 
 #T267378
 node /^cloudcephmon200[1-3]-dev\.codfw\.wmnet$/ {
-    role(insetup)
+    role(wmcs::ceph::mon)
 }
 
 node /^cloudstore100[89]\.wikimedia\.org/ {
