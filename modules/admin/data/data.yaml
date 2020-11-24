@@ -4164,6 +4164,10 @@ ldap_only_users:
     ensure: present
     realname: Wes Moran
     email: westonnh@gmail.com
+  tillmletzko-wmde:
+    ensure: present
+    realname: Till Mletzko
+    email: till.mletzko@wikimedia.de
   tnegrin:
     ensure: present
     realname: Toby Negrin
