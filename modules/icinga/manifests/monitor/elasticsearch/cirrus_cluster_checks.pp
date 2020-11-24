@@ -45,7 +45,7 @@ class icinga::monitor::elasticsearch::cirrus_cluster_checks(
         # check, but T224425 makes it generate too much noise.
         # FIXME: reduce moving average to 10 minutes once T224425 is fixed.
         monitoring::graphite_threshold { "mediawiki_cirrus_update_rate_${site}":
-            description     => "Mediawiki Cirrussearch update rate - ${site}",
+            description     => "Mediawiki CirrusSearch update rate - ${site}",
             dashboard_links => ['https://grafana.wikimedia.org/d/JLK3I_siz/elasticsearch-indexing?panelId=44&fullscreen&orgId=1'],
             host            => $host,
             metric          => "movingAverage(transformNull(MediaWiki.CirrusSearch.${site}.updates.all.sent.rate),\"60minutes\")",
@@ -55,5 +55,16 @@ class icinga::monitor::elasticsearch::cirrus_cluster_checks(
             contact_group   => 'admins,team-discovery',
             notes_link      => 'https://wikitech.wikimedia.org/wiki/Search#No_updates',
         }
+    }
+
+    # Search is currently too busy - T262694
+    monitoring::graphite_threshold { 'mediawiki_cirrus_pool_counter_rejections_rate':
+        description     => 'Mediawiki CirrusSearch pool counter rejections rate',
+        dashboard_links => ['https://grafana.wikimedia.org/d/qrOStmdGk/elasticsearch-pool-counters?viewPanel=4&orgId=1'],
+        metric          => "aliasByNode(sum(movingAverage(consolidateBy(transformNull(MediaWiki.CirrusSearch.poolCounter.*.failureMs.sample_rate, 0), \"max\"), \"5minutes\")), 1, 2)",
+        warning         => 500,
+        critical        => 1000,
+        contact_group   => 'admins,team-discovery',
+        notes_link      => 'https://wikitech.wikimedia.org/wiki/Search#Pool_Counter_rejections_(search_is_currently_too_busy)',
     }
 }
