@@ -3,10 +3,10 @@
 # @param conf_dir location of the configuration directory
 # @param auth_key The sha256 hmac key
 class cfssl::client (
-    Stdlib::HTTPUrl  $signer,
-    String           $auth_key,
-    Wmflib::Ensure   $ensure    = 'present',
-    Cfssl::Loglevel  $log_level = 'info',
+    Stdlib::HTTPUrl      $signer,
+    Sensitive[String[1]] $auth_key,
+    Wmflib::Ensure       $ensure    = 'present',
+    Cfssl::Loglevel      $log_level = 'info',
 ) {
     include cfssl
     $conf_file = "${cfssl::conf_dir}/client-cfssl.conf"

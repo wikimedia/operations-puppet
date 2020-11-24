@@ -45,11 +45,12 @@ define cfssl::config (
         'remotes'   => $remotes,
     }.filter |$key, $value| { $value =~ Boolean or !$value.empty() }
     file{$_path:
-        ensure  => $ensure,
-        owner   => root,
-        group   => root,
-        mode    => '0440',
-        content => $config.to_json(),
+        ensure    => $ensure,
+        owner     => root,
+        group     => root,
+        mode      => '0440',
+        show_diff => false,
+        content   => $config.to_json(),
     }
 }
 

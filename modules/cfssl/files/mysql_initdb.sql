@@ -1,6 +1,4 @@
 -- https://github.com/cloudflare/cfssl/blob/1.3.0/certdb/mysql/migrations/001_CreateCertificates.sql
-DROP TABLE IF EXISTS certificates;
-DROP TABLE IF EXISTS ocsp_responses;
 CREATE TABLE certificates (
   serial_number            varbinary(128) NOT NULL,
   authority_key_identifier varbinary(128) NOT NULL,

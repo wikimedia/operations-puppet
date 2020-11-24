@@ -15,7 +15,7 @@ class profile::pki::server(
     Boolean                       $gen_csr         = lookup('profile::pki::server::gen_csr'),
     Cfssl::DB_driver              $db_driver       = lookup('profile::pki::server::db_driver'),
     String                        $db_user         = lookup('profile::pki::server::db_user'),
-    String                        $db_pass         = lookup('profile::pki::server::db_pass'),
+    Sensitive[String[1]]          $db_pass         = lookup('profile::pki::server::db_pass'),
     String                        $db_name         = lookup('profile::pki::server::db_name'),
     Stdlib::Host                  $db_host         = lookup('profile::pki::server::db_host'),
     Hash[String, Cfssl::Profile]  $profiles        = lookup('profile::pki::server::profiles'),
@@ -27,7 +27,7 @@ class profile::pki::server(
     class {'cfssl': }
     cfssl::signer {'WMF_root_CA':
         profiles         => $profiles,
-        ca_key_content   => secret($ca_key_content),
+        ca_key_content   => Sensitive(secret($ca_key_content)),
         ca_cert_content  => file($ca_cert_content),
         auth_keys        => $auth_keys,
         default_crl_url  => $crl_url,

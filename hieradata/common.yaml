@@ -1,5 +1,10 @@
 ## NOTE namespaced keys (i.e. with ::) will NOT be looked up here
 ## See also https://phabricator.wikimedia.org/T209265
+lookup_options:
+  profile::pki::server::db_pass:
+    convert_to: 'Sensitive'
+  profile::pki::client::auth_key:
+    convert_to: 'Sensitive'
 
 # General variables that once would have been in realm.pp
 cluster: misc
