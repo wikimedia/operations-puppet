@@ -17,13 +17,10 @@
 #  oslopolicy-list-redundant but they're included to provide
 #  context for the policies that follow
 "admin_or_owner": "rule:admin_required or rule:owner"
-"admin_or_token_subject": "rule:admin_required or rule:token_subject"
 "admin_required": "role:admin or is_admin:1"
 "owner": "user_id:%(user_id)s"
-"service_admin_or_token_subject": "rule:service_or_admin or rule:token_subject"
 "service_or_admin": "rule:admin_required or rule:service_role"
 "service_role": "role:service"
-"token_subject": "user_id:%(target.token.user_id)s"
 "projectadmin_role": "role:projectadmin"
 "projectadmin_or_admin": "rule:admin_required or rule:projectadmin_role"
 
