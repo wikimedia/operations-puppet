@@ -1,4 +1,5 @@
 class profile::thumbor(
+    Array[Stdlib::Host] $memcached_servers = lookup('thumbor_memcached_servers'),
     Array[String] $memcached_servers_nutcracker = lookup('thumbor_memcached_servers_nutcracker'),
     Stdlib::Port $logstash_port = lookup('logstash_logback_port'),
     Array[String] $swift_sharded_containers = lookup('profile::swift::proxy::shard_container_list', {'merge' => 'unique'}),
@@ -47,5 +48,13 @@ class profile::thumbor(
       proto  => 'tcp',
       port   => '3903',
       srange => "(@resolve((${prometheus_nodes_ferm})) @resolve((${prometheus_nodes_ferm}), AAAA))",
+    }
+
+    $thumbor_memcached_servers_ferm = join($memcached_servers, ' ')
+
+    ferm::service { 'memcached_memcached_role':
+        proto  => 'tcp',
+        port   => '11211',
+        srange => "(@resolve((${thumbor_memcached_servers_ferm})))",
     }
 }

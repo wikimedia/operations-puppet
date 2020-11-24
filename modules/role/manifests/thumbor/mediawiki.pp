@@ -34,12 +34,4 @@ class role::thumbor::mediawiki {
     class { '::profile::prometheus::statsd_exporter':
         relay_address => '',
     }
-
-    $thumbor_memcached_servers_ferm = join(lookup('thumbor_memcached_servers'), ' ')
-
-    ferm::service { 'memcached_memcached_role':
-        proto  => 'tcp',
-        port   => '11211',
-        srange => "(@resolve((${thumbor_memcached_servers_ferm})))",
-    }
 }
