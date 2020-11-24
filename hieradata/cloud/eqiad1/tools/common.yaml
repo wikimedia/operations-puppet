@@ -1,0 +1,17 @@
+# We don't usually store hiera data for the tools project here.
+# This is an exception, because we are trying to move the whole CloudVPS away
+# from the nscd stack to sssd. But that migration requires a reboot.
+# We rebooted the tools cluster to adopt sssd, but we don't want to force all
+# VMs in CloudVPS the same way.
+# Anyway, the default in Debian Buster is sssd, so when stretch goes away, all
+# the puppet code supporting nscd can be dropped.
+#
+# So, why this hiera here? Because the default is nscd. If the puppet enc
+# service fails or is unreliable for any reason, no hiera will be available
+# in the puppetmaster, and it will use default values, reverting the whole
+# tools cluster to nscd.
+#
+# So, again, we don't usually store hiera data for the tools project here
+# but decided to take this shortcut while we figure out the nscd mess.
+sudo_flavor: sudo
+profile::ldap::client::labs::client_stack: sssd
