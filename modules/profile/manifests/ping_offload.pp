@@ -5,7 +5,7 @@
 #   In order to reply to ICMP requests messages.
 #   Default: None
 class profile::ping_offload(
-  Hash[String, Stdlib::Compat::Ip_address] $target_ips = hiera('profile::ping_offload::target_ips', undef),
+  Optional[Hash[String, Stdlib::Compat::Ip_address]] $target_ips = lookup('profile::ping_offload::target_ips', {default_value => undef}),
   ) {
   $target_ips.each |$ip_descr, $iface_ip| {
     interface::ip { $ip_descr:
