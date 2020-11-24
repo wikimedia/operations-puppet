@@ -3961,6 +3961,10 @@ ldap_only_users:
     ensure: present
     realname: Delphine Menard
     email: dmenard@wikimedia.org
+  derick:
+    ensure: present
+    realname: Alangi Derick
+    email: xsavitar.wiki@aol.com
   egardner:
     ensure: present
     realname: Eric Gardner
