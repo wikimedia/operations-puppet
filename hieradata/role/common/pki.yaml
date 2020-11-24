@@ -2,29 +2,30 @@ profile::base::puppet::dns_alt_names:
   - pki.discovery.wmnet
 profile::pki::client::ensure: present
 # this param is passed to the secret function
-profile::pki::server::ca_key_content: pki/Wikimedia_ROOT_CA.key
+profile::pki::server::ca_key_content: 'pki/Wikimedia_ROOT_CA.key'
 # this param is passed to the file function
-profile::pki::server::ca_cert_content: profile/pki/Wikimedia_ROOT_CA.pem
-profile::pki::server::vhost: pki.discovery.wmnet
+profile::pki::server::ca_cert_content: 'profile/pki/Wikimedia_ROOT_CA.pem'
+profile::pki::server::vhost: 'pki.discovery.wmnet'
 profile::pki::server::profiles:
   intermediate:
     usages:
-      - cert sign
-      - crl sign
+      - 'cert sign'
+      - 'crl sign'
     ca_constraint:
       is_ca: true
       max_path_len: 1
-    expiry: 43800h
+    expiry: '43800h'
   ocsp:
     usages:
-      - digital signature
-      - ocsp signing
-    expiry: 43800h
-profile::pki::server::default_signer: Wikimedia_SRE_Internal
+      - 'digital signature'
+      - 'ocsp signing'
+    expiry: '43800h'
+profile::pki::server::default_signer: 'Wikimedia_SRE_Internal'
+profile::pki::server::db_driver: 'mysql'
 profile::pki::server::intermediates:
   "Wikimedia SRE Internal": {}
 profile::pki::client::certs:
   'foobar.example.com':
-    label: Wikimedia_SRE_Internal
+    label: 'Wikimedia_SRE_Internal'
   'foobar.pki':
-    label: Wikimedia_SRE_Internal
+    label: 'Wikimedia_SRE_Internal'
