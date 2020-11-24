@@ -5,7 +5,7 @@ rotate: True
 compress: False
 archive: False
 retention: 18
-<%= scope.function_template([File.dirname(__FILE__) + "/" + "stats_subtemplate.cnf.erb"]) %>
+stats_file: '/etc/wmfbackups/statistics.cnf'
 sections:
   s1:
     host: 'db1140.eqiad.wmnet'

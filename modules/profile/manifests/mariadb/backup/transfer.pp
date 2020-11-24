@@ -35,7 +35,7 @@ class profile::mariadb::backup::transfer {
         ensure      => 'present',
         user        => 'root',
         description => 'Generate mysql snapshot backup batch',
-        command     => 'remote-backup-mariadb > /dev/null 2>&1',
+        command     => 'remote-backup-mariadb',
         interval    => {
             'start'    => 'OnCalendar',
             'interval' => 'Sun,Tue,Wed,Fri *-*-* 19:00:00',
