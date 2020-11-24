@@ -908,32 +908,32 @@ host cloudvirt1024 {
 }
 
 host cloudvirt1025 {
-    hardware ethernet D0:94:66:62:A9:13;
+    hardware ethernet BC:97:E1:A7:43:92;
     fixed-address cloudvirt1025.eqiad.wmnet;
 }
 
 host cloudvirt1026 {
-    hardware ethernet D0:94:66:62:A8:B3;
+    hardware ethernet BC:97:E1:A7:45:8A;
     fixed-address cloudvirt1026.eqiad.wmnet;
 }
 
 host cloudvirt1027 {
-    hardware ethernet D0:94:66:62:A8:D7;
+    hardware ethernet BC:97:E1:A7:0B:0A;
     fixed-address cloudvirt1027.eqiad.wmnet;
 }
 
 host cloudvirt1028 {
-    hardware ethernet D0:94:66:62:D6:CF;
+    hardware ethernet BC:97:E1:A7:3B:D6;
     fixed-address cloudvirt1028.eqiad.wmnet;
 }
 
 host cloudvirt1029 {
-    hardware ethernet D0:94:66:62:A8:EF;
+    hardware ethernet BC:97:E1:A7:35:A6;
     fixed-address cloudvirt1029.eqiad.wmnet;
 }
 
 host cloudvirt1030 {
-    hardware ethernet D0:94:66:62:A9:07;
+    hardware ethernet BC:97:E1:A7:4B:96;
     fixed-address cloudvirt1030.eqiad.wmnet;
 }
 
