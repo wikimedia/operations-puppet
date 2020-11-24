@@ -212,6 +212,10 @@ def spin_the_wheel(
             lucky_contestants.append(proc)
 
     ages = [now - x.create_time() for x in lucky_contestants]
+    # The choices function does not like empty arrays
+    if not lucky_contestants:
+        return []
+
     return choices(lucky_contestants, weights=ages, k=victims)
 
 
