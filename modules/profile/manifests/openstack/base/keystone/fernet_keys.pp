@@ -20,6 +20,7 @@ class profile::openstack::base::keystone::fernet_keys(
         ensure => directory,
         owner  => 'keystone',
         group  => 'keystone',
+        mode   => '0770',
     }
 
     rsync::server::module { 'keystonefernetkeys':
