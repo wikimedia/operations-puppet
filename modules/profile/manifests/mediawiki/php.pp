@@ -35,11 +35,6 @@ class profile::mediawiki::php(
     Boolean $phpdbg = lookup('profile::mediawiki::php::phpdbg', {'default_value' => false}),
 ){
 
-    file { '/etc/apt/preferences.d/php_wikidiff2.pref':
-        ensure => absent,
-        notify => Exec['apt_update_php'],
-    }
-
     # Use component/php72. The core php7.2 package is imported from Ondrej Sury's repository,
     # but it's rebuilt (along with a range of extensions) against Stretch only (while
     # the repository also imports/forks a number of low level libraries to accomodate
