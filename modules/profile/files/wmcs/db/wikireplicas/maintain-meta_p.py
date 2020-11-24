@@ -29,48 +29,48 @@ import sys
 import yaml
 
 
-class SchemaOperations():
+class SchemaOperations:
     def __init__(self, dry_run, db, cursor):
         self.dry_run = dry_run
         self.db = db
         self.cursor = cursor
 
     def write_execute(self, query):
-        """ Do operation or simulate
+        """Do operation or simulate
         :param query: str
         """
-        logging.debug("SQL: {}".format(query.encode('utf-8')))
+        logging.debug("SQL: {}".format(query.encode("utf-8")))
         if not self.dry_run:
             self.cursor.execute(query)
 
 
 def force_to_unicode(text):
-    """ Ouput unicode or else
+    """Ouput unicode or else
     :param text: str
     """
-    return text if isinstance(text, unicode) else text.decode('utf8')
+    return text if isinstance(text, unicode) else text.decode("utf8")
 
 
 def parse_php_canonical(mfile):
-    """ Given the 'initializesettings.php' file pull out the
+    """Given the 'initializesettings.php' file pull out the
     list of canonical urls the hard way
     :param mfile: str
     """
 
-    with open(mfile, 'r') as f:
+    with open(mfile, "r") as f:
         fcontent = f.read()
-        data_structures = re.split('\n],', fcontent)
+        data_structures = re.split("\n],", fcontent)
         for d in data_structures:
             if "wgCanonicalServer' => [" in d:
                 rawCanonicalServer = d
 
     canonical_servers = {}
-    for line in rawCanonicalServer.split('\n'):
-        if '=>' in line:
-            key, value = line.split('=>')
+    for line in rawCanonicalServer.split("\n"):
+        if "=>" in line:
+            key, value = line.split("=>")
             key = key.rstrip().lstrip().strip("'")
-            if ',' in value:
-                value = value.split(',')[0]
+            if "," in value:
+                value = value.split(",")[0]
             value = value.strip().strip("'")
             canonical_servers[key] = value
     return canonical_servers
@@ -78,8 +78,11 @@ def parse_php_canonical(mfile):
 
 def seed_schema(ops):
 
-    ops.write_execute("CREATE DATABASE IF NOT EXISTS meta_p DEFAULT CHARACTER SET utf8;")
-    ops.write_execute("""CREATE TABLE IF NOT EXISTS meta_p.wiki (
+    ops.write_execute(
+        "CREATE DATABASE IF NOT EXISTS meta_p DEFAULT CHARACTER SET utf8;"
+    )
+    ops.write_execute(
+        """CREATE TABLE IF NOT EXISTS meta_p.wiki (
             dbname varchar(32) PRIMARY KEY,
             lang varchar(12) NOT NULL DEFAULT 'en',
             name text,
@@ -93,87 +96,95 @@ def seed_schema(ops):
             has_visualeditor numeric(1) NOT NULL DEFAULT 0,
             has_wikidata numeric(1) NOT NULL DEFAULT 0,
             is_sensitive numeric(1) NOT NULL DEFAULT 0);
-            """)
+            """
+    )
 
-    ops.write_execute("""CREATE OR REPLACE VIEW meta_p.legacy AS
+    ops.write_execute(
+        """CREATE OR REPLACE VIEW meta_p.legacy AS
         SELECT dbname, lang, family, NULL AS domain, size, 0 AS is_meta,
                is_closed, 0 AS is_multilang, (family='wiktionary') AS is_sensitive,
                NULL AS root_category, slice AS server, '/w/' AS script_path
-            FROM meta_p.wiki;""")
+            FROM meta_p.wiki;"""
+    )
 
-    ops.write_execute("""CREATE TABLE IF NOT EXISTS meta_p.properties_anon_whitelist (
-        pw_property varbinary(255) PRIMARY KEY);""")
+    ops.write_execute(
+        """CREATE TABLE IF NOT EXISTS meta_p.properties_anon_whitelist (
+        pw_property varbinary(255) PRIMARY KEY);"""
+    )
 
 
 def main():
 
     argparser = argparse.ArgumentParser(
-        "maintain-meta_p",
-        description="Maintain metadatabase of wiki's"
+        "maintain-meta_p", description="Maintain metadatabase of wiki's"
     )
 
     group = argparser.add_mutually_exclusive_group(required=True)
     group.add_argument(
-        '--databases',
-        help=("Specify database(s) to work on, instead of all. Multiple"
-              " values can be given space-separated."),
-        nargs="+"
+        "--databases",
+        help=(
+            "Specify database(s) to work on, instead of all. Multiple"
+            " values can be given space-separated."
+        ),
+        nargs="+",
     )
     group.add_argument(
-        '--all-databases',
-        help='Flag to run through all possible databases',
-        action='store_true',
+        "--all-databases",
+        help="Flag to run through all possible databases",
+        action="store_true",
     )
 
     argparser.add_argument(
         "--purge",
         help=("Truncate wiki table before updating"),
-        action="store_true"
+        action="store_true",
     )
 
     argparser.add_argument(
         "--dry-run",
-        help=("Give this parameter if you don't want the script to actually"
-              " make changes."),
-        action="store_true"
+        help=(
+            "Give this parameter if you don't want the script to actually"
+            " make changes."
+        ),
+        action="store_true",
     )
 
     # piggyback on maintain-views for now
     argparser.add_argument(
         "--config-location",
         help="Path to find the configuration file",
-        default="/etc/maintain-views.yaml"
+        default="/etc/maintain-views.yaml",
     )
 
     argparser.add_argument(
         "--mediawiki-config",
-        help=("Specify path to mediawiki-config checkout"
-              " values can be given space-separated."),
-        default="/usr/local/lib/mediawiki-config"
+        help=(
+            "Specify path to mediawiki-config checkout"
+            " values can be given space-separated."
+        ),
+        default="/usr/local/lib/mediawiki-config",
     )
 
     argparser.add_argument(
         "--mysql-socket",
         help=("Path to MySQL socket file"),
-        default="/run/mysqld/mysqld.sock"
+        default="/run/mysqld/mysqld.sock",
     )
 
     argparser.add_argument(
-        '--debug',
-        help='Turn on debug logging',
-        action='store_true'
+        "--debug", help="Turn on debug logging", action="store_true"
     )
 
     args = argparser.parse_args()
 
     logging.basicConfig(
-        format='%(asctime)s %(levelname)s %(message)s',
+        format="%(asctime)s %(levelname)s %(message)s",
         level=logging.DEBUG if args.debug else logging.INFO,
     )
 
     logging.debug(args)
 
-    with open(args.config_location, 'r') as stream:
+    with open(args.config_location, "r") as stream:
         try:
             config = yaml.safe_load(stream)
         except yaml.YAMLError as exc:
@@ -184,12 +195,10 @@ def main():
         user=config["mysql_user"],
         passwd=config["mysql_password"],
         unix_socket=args.mysql_socket,
-        charset="utf8"
+        charset="utf8",
     )
 
-    ops = SchemaOperations(args.dry_run,
-                           dbh,
-                           dbh.cursor())
+    ops = SchemaOperations(args.dry_run, dbh, dbh.cursor())
 
     seed_schema(ops)
     ops.write_execute("START TRANSACTION;")
@@ -197,16 +206,19 @@ def main():
     if args.purge:
         ops.write_execute("TRUNCATE meta_p.wiki;")
 
-    alldbs = '{}/dblists/all.dblist'.format(args.mediawiki_config)
-    dbs = {db: {"has_visualeditor": True}
-           for db in open(alldbs).read().splitlines()}
+    alldbs = "{}/dblists/all.dblist".format(args.mediawiki_config)
+    dbs = {
+        db: {"has_visualeditor": True}
+        for db in open(alldbs).read().splitlines()
+    }
 
     if args.databases:
         dbs = {k: v for k, v in dbs.iteritems() if k in args.databases}
 
     def read_list(fname, prop, val):
         fpath = os.path.join(
-            args.mediawiki_config, 'dblists', '{}.dblist'.format(fname))
+            args.mediawiki_config, "dblists", "{}.dblist".format(fname)
+        )
         if os.path.isfile(fpath):
             for db in open(fpath).read().splitlines():
                 if db in dbs:
@@ -226,7 +238,7 @@ def main():
     read_list("wikidataclient", "has_wikidata", True)
 
     # TODO: cloudweb2001-dev
-    for slice in ['s1', 's2', 's3', 's4', 's5', 's6', 's7', 's8']:
+    for slice in ["s1", "s2", "s3", "s4", "s5", "s6", "s7", "s8"]:
         read_list(slice, "slice", slice)
 
     for family in [
@@ -248,25 +260,29 @@ def main():
     # exposed through the API so we have to hardcode it here to match
     # what is in InitialiseSettings.php
     read_list("wiktionary", "sensitive", True)
-    if 'jbowiki' in dbs:
-        dbs['jbowiki']['sensitive'] = True
+    if "jbowiki" in dbs:
+        dbs["jbowiki"]["sensitive"] = True
 
     # Per T219374, temporarily changing to VariantSettings.php since that is
     # the current file for this information.  Fall back to the original file
     # when that file goes away.
-    initialise_settings = '{}/wmf-config/VariantSettings.php'.format(args.mediawiki_config)
+    initialise_settings = "{}/wmf-config/VariantSettings.php".format(
+        args.mediawiki_config
+    )
     if not os.path.isfile(initialise_settings):
-        initialise_settings = '{}/wmf-config/InitialiseSettings.php'.format(args.mediawiki_config)
+        initialise_settings = "{}/wmf-config/InitialiseSettings.php".format(
+            args.mediawiki_config
+        )
 
     canonical = parse_php_canonical(initialise_settings)
 
     for db, dbInfo in dbs.items():
 
         logging.debug("collecting action api info for {}".format(db))
-        if 'private' in dbInfo and dbInfo['private']:
+        if "private" in dbInfo and dbInfo["private"]:
             continue
 
-        elif 'deleted' in dbInfo and dbInfo['deleted']:
+        elif "deleted" in dbInfo and dbInfo["deleted"]:
             continue
 
         if db in canonical:
@@ -274,62 +290,71 @@ def main():
         else:
             matches = re.match("^(.*)(wik[it].*)", db)
             lang = matches.group(1)
-            url = canonical[dbInfo['family']].replace('$lang', lang)
+            url = canonical[dbInfo["family"]].replace("$lang", lang)
 
         if url:
-            canon = url.replace('_', '-')
-            dbInfo['url'] = canon
+            canon = url.replace("_", "-")
+            dbInfo["url"] = canon
             try:
                 url_tail = "/w/api.php?action=query&meta=siteinfo&siprop=general&format=json"
                 header = {"User-Agent": "Labsdb maintain-meta_p.py"}
                 r = requests.get(canon + url_tail, headers=header)
                 request = r.content
                 siteinfo = json.loads(request)
-                name = force_to_unicode(siteinfo['query']['general']['sitename'])
-                lang = force_to_unicode(siteinfo['query']['general']['lang'])
-                dbInfo['name'] = name
-                dbInfo['lang'] = lang
+                name = force_to_unicode(
+                    siteinfo["query"]["general"]["sitename"]
+                )
+                lang = force_to_unicode(siteinfo["query"]["general"]["lang"])
+                dbInfo["name"] = name
+                dbInfo["lang"] = lang
             except Exception as e:
-                logging.warning('failed request for {}: {}'.format(canon, e))
+                logging.warning("failed request for {}: {}".format(canon, e))
 
     for db, dbInfo in dbs.items():
 
         logging.debug("update meta_p for {}".format(db))
-        if 'deleted' in dbInfo and dbInfo['deleted']:
+        if "deleted" in dbInfo and dbInfo["deleted"]:
             continue
-        elif 'private' in dbInfo and dbInfo['private']:
+        elif "private" in dbInfo and dbInfo["private"]:
             continue
         # TODO: wikitech breaks here
-        elif 'slice' not in dbInfo:
+        elif "slice" not in dbInfo:
             continue
 
         fields = {
-            'has_flaggedrevs': int('has_flaggedrevs' in dbInfo and dbInfo['has_flaggedrevs']),
-            'has_visualeditor': int('has_visualeditor' in dbInfo and dbInfo['has_visualeditor']),
-            'has_wikidata': int('has_wikidata' in dbInfo and dbInfo['has_wikidata']),
-            'is_closed': int('closed' in dbInfo and dbInfo['closed']),
-            'is_sensitive': int('sensitive' in dbInfo and dbInfo['sensitive']),
-            'lang': 'en',
-            'size': 1,
-            'dbname': db,
-            'slice': dbInfo['slice'] + '.labsdb',
-            'url': None,
-            'family': None,
-            'name': None
+            "has_flaggedrevs": int(
+                "has_flaggedrevs" in dbInfo and dbInfo["has_flaggedrevs"]
+            ),
+            "has_visualeditor": int(
+                "has_visualeditor" in dbInfo and dbInfo["has_visualeditor"]
+            ),
+            "has_wikidata": int(
+                "has_wikidata" in dbInfo and dbInfo["has_wikidata"]
+            ),
+            "is_closed": int("closed" in dbInfo and dbInfo["closed"]),
+            "is_sensitive": int("sensitive" in dbInfo and dbInfo["sensitive"]),
+            "lang": "en",
+            "size": 1,
+            "dbname": db,
+            "slice": dbInfo["slice"] + ".labsdb",
+            "url": None,
+            "family": None,
+            "name": None,
         }
 
-        if 'url' in dbInfo:
-            fields['url'] = dbInfo['url']
-        if 'family' in dbInfo:
-            fields['family'] = dbInfo['family']
-        if 'lang' in dbInfo:
-            fields['lang'] = dbInfo['lang']
-        if 'name' in dbInfo:
-            fields['name'] = force_to_unicode(dbInfo['name'])
-        if 'size' in dbInfo:
-            fields['size'] = dbInfo['size']
+        if "url" in dbInfo:
+            fields["url"] = dbInfo["url"]
+        if "family" in dbInfo:
+            fields["family"] = dbInfo["family"]
+        if "lang" in dbInfo:
+            fields["lang"] = dbInfo["lang"]
+        if "name" in dbInfo:
+            fields["name"] = force_to_unicode(dbInfo["name"])
+        if "size" in dbInfo:
+            fields["size"] = dbInfo["size"]
 
-        ops.write_execute("""INSERT INTO meta_p.wiki
+        ops.write_execute(
+            """INSERT INTO meta_p.wiki
              (dbname, lang, name, family,
               url, size, slice, is_closed,
               has_flaggedrevs, has_visualeditor, has_wikidata,
@@ -359,17 +384,21 @@ def main():
               has_flaggedrevs=%(has_flaggedrevs)s,
               has_visualeditor=%(has_visualeditor)s,
               has_wikidata=%(has_wikidata)s,
-              is_sensitive=%(is_sensitive)s;""" % fields)
+              is_sensitive=%(is_sensitive)s;"""
+            % fields
+        )
 
     ops.write_execute("COMMIT;")
 
     ops.write_execute("START TRANSACTION;")
     ops.write_execute("DELETE FROM meta_p.properties_anon_whitelist;")
     # This is hardcoded for now
-    ops.write_execute("""INSERT INTO meta_p.properties_anon_whitelist
-        VALUES ('gadget-%'), ('language'), ('skin'), ('variant');""")
+    ops.write_execute(
+        """INSERT INTO meta_p.properties_anon_whitelist
+        VALUES ('gadget-%'), ('language'), ('skin'), ('variant');"""
+    )
     ops.write_execute("COMMIT;")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
