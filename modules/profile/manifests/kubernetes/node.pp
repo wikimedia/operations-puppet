@@ -84,7 +84,6 @@ class profile::kubernetes::node(
     }
 
     class { '::k8s::proxy':
-        master_host          => $master_fqdn,
         masquerade_all       => $masquerade_all,
         metrics_bind_address => $kubeproxy_metrics_bind_address,
         kubeconfig           => $kubeproxy_config,

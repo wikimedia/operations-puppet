@@ -1,9 +1,11 @@
+# Class that sets up and configures kube-proxy
 class k8s::proxy(
-    String $master_host,
     String $proxy_mode = 'iptables',
     Boolean $masquerade_all = true,
-    Optional[String] $metrics_bind_address = undef,
     String $kubeconfig = '/etc/kubernetes/kubeconfig',
+    Boolean $logtostderr = true,
+    Integer $v_log_level = 0,
+    Optional[String] $metrics_bind_address = undef,
 ) {
     require_package('kubernetes-node')
 
