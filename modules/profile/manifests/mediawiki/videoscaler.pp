@@ -17,5 +17,7 @@ class profile::mediawiki::videoscaler()
             component => 'component/vp9',
             packages  => $ffmpeg_packages,
         }
+    } else { # On Buster ffmpeg has row-mt by default and the correct libs get pulled in via Depends:
+        ensure_packages('ffmpeg')
     }
 }
