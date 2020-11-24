@@ -685,6 +685,7 @@ hive_services:
     java_home: '/usr/lib/jvm/java-8-openjdk-amd64/jre'
     metastore_opts: '-Xms4g -Xmx4g -XX:+UseG1GC -XX:+UseStringDeduplication -XX:MaxGCPauseMillis=1000 -Djava.net.preferIPv4Stack=false -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=[::]:9183:/etc/prometheus/hive_metastore_jmx_exporter.yaml'
     server_opts: '-Xms6g -Xmx6g -XX:+UseG1GC -XX:+UseStringDeduplication -XX:MaxGCPauseMillis=1000 -Djava.net.preferIPv4Stack=false -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=[::]:10100:/etc/prometheus/hive_server_jmx_exporter.yaml'
+    hive_cluster_delegation_token_store_class: 'org.apache.hadoop.hive.thrift.DBTokenStore'
 
   analytics-hive:
     server_host: an-coord1001.eqiad.wmnet

@@ -121,6 +121,8 @@ class cdh::hive(
     $hive_server2_authentication_kerberos_principal = undef,
     $hive_server2_authentication_kerberos_keytab    = undef,
 
+    $hive_cluster_delegation_token_store_class = undef,
+
     $config_files_group_ownership = 'hdfs',
 
 ) {

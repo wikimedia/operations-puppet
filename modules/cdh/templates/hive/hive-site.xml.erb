@@ -68,6 +68,12 @@ if (@metastore_host == @fqdn)
   </property>
 
 <% end -%>
+<% if @hive_cluster_delegation_token_store_class -%>
+  <property>
+    <name>hive.cluster.delegation.token.store</name>
+    <value><%= @hive_cluster_delegation_token_store_class %></value>
+  </property>
+<% end -%>
 
 <% if @hive_metastore_kerberos_keytab_file -%>
   <property>
