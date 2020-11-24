@@ -31,6 +31,7 @@ SHELLS = (
     "/bin/tcsh",
     "/bin/zsh",
     "/usr/bin/fish",
+    "/usr/bin/mysql",
     "/usr/bin/screen",
     "/usr/bin/tmux",
     "/usr/sbin/sshd",
