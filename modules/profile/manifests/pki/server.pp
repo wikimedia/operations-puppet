@@ -65,6 +65,11 @@ class profile::pki::server(
             auth_keys        => $auth_keys,
             default_crl_url  => $crl_url,
             default_ocsp_url => $ocsp_url,
+            db_driver        => $db_driver,
+            db_user          => $db_user,
+            db_pass          => $db_pass,
+            db_name          => $db_name,
+            db_host          => $db_host,
         }
         $memo + {
             $safe_title => {

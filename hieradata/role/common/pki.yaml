@@ -22,6 +22,7 @@ profile::pki::server::profiles:
     expiry: '43800h'
 profile::pki::server::default_signer: 'Wikimedia_SRE_Internal'
 profile::pki::server::db_driver: 'mysql'
+profile::pki::server::db_host: 'm1-master.eqiad.wmnet'
 profile::pki::server::intermediates:
   "Wikimedia SRE Internal": {}
 profile::pki::client::certs:
