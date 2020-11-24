@@ -27,6 +27,11 @@ define cfssl::signer (
     Wmflib::Ensure                $serve_ensure     = 'absent',
     Hash[String, Cfssl::Profile]  $profiles         = {},
     Hash[String, Cfssl::Auth_key] $auth_keys        = {},
+    Cfssl::DB_driver              $db_driver        = 'sqlite3',
+    String                        $db_user          = 'cfssl',
+    String                        $db_pass          = 'changeme',
+    String                        $db_name          = 'cfssl',
+    Stdlib::Host                  $db_host          = 'localhost',
     Optional[Stdlib::Unixpath]    $ca_key_file      = undef,
     Optional[Stdlib::Unixpath]    $ca_file          = undef,
     Optional[Stdlib::Unixpath]    $ca_bundle_file   = undef,
@@ -41,7 +46,7 @@ define cfssl::signer (
     $conf_file          = "${cfssl::signer_dir}/${safe_title}/cfssl.conf"
     $ca_dir             = "${conf_dir}/ca"
     $db_conf_file       = "${conf_dir}/db.conf"
-    $db_path            = "${conf_dir}/cfssl.db"
+    $sqlite_path        = "${conf_dir}/cfssl.db"
     $ocsp_response_path = "${ca_dir}/ocspdump.txt"
     $serve_service      = "cfssl-serve@${safe_title}"
     $ocsp_service       = "cfssl-ocsp@${safe_title}"
@@ -66,7 +71,11 @@ define cfssl::signer (
         path             => $conf_file,
         notify           => Service[$serve_service],
     }
-    $db_config = {'driver' => 'sqlite3', 'data_source' => $db_path}
+    $db_data_source = $db_driver ? {
+        'mysql' => "${db_user}:${db_pass}@tcp(${db_host}:3306)/${db_name}?parseTime=true",
+        default => $sqlite_path,
+    }
+    $db_config = {'driver' => $db_driver, 'data_source' => $db_data_source}
 
     file{
         default:
@@ -84,7 +93,7 @@ define cfssl::signer (
 
     }
     sqlite::db {"cfssl ${title} signer DB":
-        db_path    => $db_path,
+        db_path    => $sqlite_path,
         sql_schema => "${cfssl::sql_dir}/sqlite_initdb.sql",
         require    => File["${cfssl::sql_dir}/sqlite_initdb.sql"],
     }

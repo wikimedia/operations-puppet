@@ -23,5 +23,9 @@ class cfssl (
             ensure => file,
             mode   => '0440',
             source => 'puppet:///modules/cfssl/sqlite_initdb.sql';
+        "${sql_dir}/mysql_initdb.sql":
+            ensure => file,
+            mode   => '0440',
+            source => 'puppet:///modules/cfssl/mysql_initdb.sql';
     }
 }

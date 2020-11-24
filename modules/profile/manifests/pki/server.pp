@@ -13,6 +13,11 @@ class profile::pki::server(
     Array[Cfssl::Name]            $names           = lookup('profile::pki::server::names'),
     Cfssl::Key                    $key_params      = lookup('profile::pki::server::key_params'),
     Boolean                       $gen_csr         = lookup('profile::pki::server::gen_csr'),
+    Cfssl::DB_driver              $db_driver       = lookup('profile::pki::server::db_driver'),
+    String                        $db_user         = lookup('profile::pki::server::db_user'),
+    String                        $db_pass         = lookup('profile::pki::server::db_pass'),
+    String                        $db_name         = lookup('profile::pki::server::db_name'),
+    Stdlib::Host                  $db_host         = lookup('profile::pki::server::db_host'),
     Hash[String, Cfssl::Profile]  $profiles        = lookup('profile::pki::server::profiles'),
     Hash[String, Cfssl::Auth_key] $auth_keys       = lookup('profile::pki::server::auth_keys'),
     Hash[String, Hash]            $intermediates   = lookup('profile::pki::server::intermediates'),
@@ -27,6 +32,11 @@ class profile::pki::server(
         auth_keys        => $auth_keys,
         default_crl_url  => $crl_url,
         default_ocsp_url => $ocsp_url,
+        db_driver        => $db_driver,
+        db_user          => $db_user,
+        db_pass          => $db_pass,
+        db_name          => $db_name,
+        db_host          => $db_host,
     }
     $signers = $intermediates.reduce({}) |$memo, $value| {
         $intermediate = $value[0]

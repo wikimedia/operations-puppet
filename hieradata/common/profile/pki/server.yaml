@@ -8,4 +8,8 @@ profile::pki::server::key_params:
   algo: ecdsa
   size: 521
 profile::pki::server::gen_csr: false
+profile::pki::server::db_driver: sqlite3
+profile::pki::server::db_user: pki
+profile::pki::server::db_name: pki
+profile::pki::server::db_host: localhost
 profile::pki::server::profiles: {}
