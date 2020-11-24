@@ -8,14 +8,7 @@ class profile::wmcs::db::wikireplicas::views (
 ){
     require ::profile::wmcs::db::scriptconfig
 
-    package { [
-        'python-pymysql',
-        'python-requests',
-        'python-simplejson',
-        'python3-psutil'
-    ]:
-        ensure => present,
-    }
+    ensure_packages(['python3-pymysql', 'python3-requests', 'python3-simplejson', 'python3-psutil'])
 
     file { '/etc/maintain-views.yaml':
         ensure  => file,
@@ -61,7 +54,7 @@ class profile::wmcs::db::wikireplicas::views (
         owner   => 'root',
         group   => 'root',
         mode    => '0755',
-        require => [Package['python-simplejson', 'python-pymysql']],
+        require => [Package['python3-simplejson', 'python3-pymysql']],
     }
 
     file { '/usr/local/src/heartbeat-views.sql':

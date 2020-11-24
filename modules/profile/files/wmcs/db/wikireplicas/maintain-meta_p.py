@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#!/usr/bin/python3
 # -*- encoding: utf-8 -*-
 
 #  Based on work by Marc-André Pelletier, ported to Python by Alex Monk
@@ -48,7 +48,7 @@ def force_to_unicode(text):
     """Ouput unicode or else
     :param text: str
     """
-    return text if isinstance(text, unicode) else text.decode("utf8")
+    return text if isinstance(text, str) else text.decode("utf8")
 
 
 def parse_php_canonical(mfile):
@@ -213,7 +213,7 @@ def main():
     }
 
     if args.databases:
-        dbs = {k: v for k, v in dbs.iteritems() if k in args.databases}
+        dbs = {k: v for k, v in dbs.items() if k in args.databases}
 
     def read_list(fname, prop, val):
         fpath = os.path.join(
