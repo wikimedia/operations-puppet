@@ -19,6 +19,16 @@ route:
   group_by: ['alertname', 'cluster', 'scope']
   routes:
     - match:
+        team: 'dcops'
+      receiver: 'dcops-mail'
+    - match:
+        team: 'noc'
+      receiver: 'noc-ircmail'
+    - match:
+        team: 'netops'
+      receiver: 'netops-mail'
+
+    - match:
         severity: 'page'
       receiver: 'irc'
     - match:
@@ -31,3 +41,18 @@ receivers:
 - name: 'irc'
   webhook_configs:
     - url: 'http://<%= @active_host %>:19190/<%= @irc_channel %>'
+
+# team-based receivers
+- name: 'noc-ircmail'
+  webhook_configs:
+    - url: 'http://<%= @active_host %>:19190/wikimedia-operations'
+  email_configs:
+    - to: 'noc@<%= scope.lookupvar('::domain') %>'
+
+- name: 'netops-mail'
+  email_configs:
+    - to: 'ayounsi@<%= scope.lookupvar('::domain') %>'
+
+- name: 'dcops-mail'
+  email_configs:
+    - to: 'datacenterops@<%= scope.lookupvar('::domain') %>'
