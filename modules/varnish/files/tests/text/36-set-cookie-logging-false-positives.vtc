@@ -1,0 +1,64 @@
+varnishtest "Set-Cookie logging false positives: the cookie is never returned. See https://phabricator.wikimedia.org/P13386"
+
+server s1 {
+    # Cacheable response
+    rxreq
+    expect req.url == "/1"
+    txresp -hdr "Cache-Control: max-age=2" -hdr "Last-Modified: Wed, 21 Oct 2015 07:28:00 GMT" -bodylen 8
+
+    # Respond "Not Modified" to the conditional request under keep
+    # Despite claiming that the response has not been modified, include a
+    # session cookie. varnish logs the following:
+    # Nov 24 13:39:39 vtcpcc varnishd[7604]: Cacheable object with Set-Cookie found! beresp.status: 200 beresp.was_304: true bereq.http.Host: en.wikipedia.org bereq.url: /1 Cache-Control: max-age=2 Set-Cookie: enwikiSession=42 Server:  ReqId:  X-Cache-Int:
+    rxreq
+    expect req.url == "/1"
+    expect req.http.if-modified-since == "Wed, 21 Oct 2015 07:28:00 GMT"
+    txresp -status 304 -hdr "Set-Cookie: enwikiSession=42"
+
+    rxreq
+    expect req.url == "/1"
+    expect req.http.if-modified-since == <undef>
+    txresp -hdr "Cache-Control: max-age=2"
+} -start
+
+varnish v1 -arg "-p vcl_path=${vcl_path} -p vcc_err_unref=false -p vcc_allow_inline_c=true -p cc_command='${cc_command}'" -vcl+backend {
+   backend vtc_backend {
+       .host = "${s1_addr}"; .port = "${s1_port}";
+   }
+
+   include "${basepath}/usr/share/varnish/tests/wikimedia_misc-frontend.vcl";
+}
+
+# Attach the "wikimedia_misc" label to wikimedia_misc-frontend.vcl
+varnish v1 -cli "vcl.label wikimedia_misc vcl1"
+
+varnish v1 -vcl {
+    backend vtc_backend {
+        .host = "${s1_addr}"; .port = "${s1_port}";
+    }
+
+    include "${basepath}/usr/share/varnish/tests/wikimedia_text-frontend.vcl";
+} -start
+
+client c1 {
+    # cache miss
+    txreq -url "/1" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+    expect resp.status == 200
+    expect resp.http.x-cache ~ "miss"
+
+    # wait for object to expire
+    delay 3
+
+    # cache hit under grace, triggering a bgfetch to refresh the object
+    txreq -url "/1" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+    expect resp.status == 200
+    expect resp.http.x-cache ~ "hit"
+
+    # because of the session cookie returned to the bgfetch, this is now hit-for-pass
+    txreq -url "/1" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+    expect resp.status == 200
+    expect resp.http.x-cache ~ "pass"
+} -run
