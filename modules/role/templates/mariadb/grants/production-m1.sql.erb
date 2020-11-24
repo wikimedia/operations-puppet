@@ -222,3 +222,10 @@ GRANT INSERT, SELECT, UPDATE ON `dbbackups`.* TO `stats`@`10.64.32.107`;
 GRANT USAGE ON *.* TO `stats`@`10.64.32.26` IDENTIFIED BY '<%=@backup_stats_pass%>';
 GRANT INSERT, SELECT, UPDATE ON `dbbackups`.* TO `stats`@`10.64.32.26`;
 
+-- pki @ pki1001.eqiad.wmnet
+GRANT USAGE ON *.* TO 'pki'@'10.64.0.10' IDENTIFIED BY '<%=@pki_pass%>';
+GRANT SELECT, INSERT, UPDATE, DELETE, CREATE,ALTER ON `pki`.* TO 'pki'@'10.64.0.10';
+
+-- pki @ pki2001.codfw.wmnet
+GRANT USAGE ON *.* TO 'pki'@'10.192.0.35' IDENTIFIED BY '<%=@pki_pass%>';
+GRANT SELECT, INSERT, UPDATE, DELETE, CREATE,ALTER ON `pki`.* TO 'pki'@'10.192.0.35';
