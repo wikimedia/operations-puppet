@@ -9,8 +9,11 @@ describe 'apereo_cas' do
       let(:params) do
         {
           keystore_source: 'puppet:///modules/apereo_cas/thekeystore',
-          idp_primary: 'idp1001.wikimedia.org',  # theses need to resolve for the checks to pass
-          idp_failover: 'idp2001.wikimedia.org',
+          idp_nodes: [
+            # theses need to resolve for the checks to pass
+            'idp1001.wikimedia.org',
+            'idp2001.wikimedia.org',
+          ]
         }
       end
       let(:pre_condition) do

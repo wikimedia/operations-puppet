@@ -1,7 +1,6 @@
 #
 class apereo_cas (
-    Stdlib::Fqdn                      $idp_primary,
-    Optional[Stdlib::Fqdn]            $idp_failover                  = undef,
+    Array[Stdlib::Fqdn]               $idp_nodes,
     Optional[String[1]]               $tgc_signing_key               = undef,
     Optional[String[1]]               $tgc_encryption_key            = undef,
     Optional[String[1]]               $webflow_signing_key           = undef,
@@ -72,8 +71,6 @@ class apereo_cas (
     $config_dir = "${base_dir}/config"
     $services_dir = "${base_dir}/services"
 
-    $is_idp_primary = $facts['fqdn'] == $idp_primary
-
     ensure_packages(['cas', 'python3-memcache'])
 
     systemd::unit{'tomcat9':
@@ -82,11 +79,6 @@ class apereo_cas (
         content  => "[Service]\nReadWritePaths=${log_dir}\n",
     }
 
-    unless $is_idp_primary {
-        base::service_auto_restart { 'tomcat9': }
-    }
-
-    $idp_nodes = [$idp_primary, $idp_failover].delete_undef_values
     if $manage_user {
         # TODO: move to admin module
         user{$daemon_user:
@@ -147,13 +139,6 @@ class apereo_cas (
         owner  => 'root',
         group  => 'root',
         source => 'puppet:///modules/apereo_cas/memcached-dump.py',
-    }
-
-    # Don't automatically restart the live idp server
-    unless $is_idp_primary {
-        File["${config_dir}/log4j2.xml", $keystore_path,
-            "${config_dir}/cas.properties"
-        ] { notify => Service['tomcat9'] }
     }
 
     $services.each |String $service, Hash $config| {

@@ -14,7 +14,7 @@ class profile::idp(
     Array[String[1]]            $ldap_attribute_list    = lookup('profile::idp::ldap_attributes'),
     Array[String]               $actuators              = lookup('profile::idp::actuators'),
     Stdlib::HTTPSUrl            $server_name            = lookup('profile::idp::server_name'),
-    Stdlib::Fqdn                $idp_primary            = lookup('profile::idp::idp_primary'),
+    Array[Stdlib::Fqdn]         $idp_nodes              = lookup('profile::idp::idp_nodes'),
     Boolean                     $is_staging_host        = lookup('profile::idp::is_staging_host'),
     Boolean                     $memcached_enable       = lookup('profile::idp::memcached_enable'),
     Boolean                     $u2f_jpa_enable         = lookup('profile::idp::u2f_jpa_enable'),
@@ -27,7 +27,6 @@ class profile::idp(
     Array[Stdlib::HTTPSUrl]     $cors_allowed_origins   = lookup('profile::idp::cors_allowed_origins'),
     Array[String]               $cors_allowed_headers   = lookup('profile::idp::cors_allowed_headers'),
     Array[Wmflib::HTTP::Method] $cors_allowed_methods   = lookup('profile::idp::cors_allowed_methods'),
-    Optional[Stdlib::Fqdn]      $idp_failover           = lookup('profile::idp::idp_failover'),
     Optional[Integer]           $u2f_token_expiry_days  = lookup('profile::idp::u2f_token_expiry_days'),
 ){
 
@@ -83,8 +82,7 @@ class profile::idp(
         ldap_bind_pass         => $passwords::ldap::production::proxypass,
         ldap_bind_dn           => "cn=proxyagent,ou=profile,${ldap_config['base-dn']}",
         services               => $services,
-        idp_primary            => $idp_primary,
-        idp_failover           => $idp_failover,
+        idp_nodes              => $idp_nodes,
         java_opts              => $java_opts,
         max_session_length     => $max_session_length,
         actuators              => $actuators,
@@ -121,7 +119,7 @@ class profile::idp(
     }
     if $memcached_enable {
         class {'profile::idp::memcached':
-            idp_nodes => $apereo_cas::idp_nodes,
+            idp_nodes => $idp_nodes,
         }
     }
 
