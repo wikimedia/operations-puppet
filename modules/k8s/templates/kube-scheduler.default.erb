@@ -1,6 +1,18 @@
 ###
 ## kubernetes scheduler config
 #
-# Should be the default in 1.4 at least, but specify to ensure backwards compatibility
-DAEMON_ARGS="--leader-elect=true"
-#
+<%-
+daemon_args = [
+  "--logtostderr=#{@logtostderr}",
+  "--v=#{@v_log_level}",
+  # Should be the default in 1.4 at least, but specify to ensure backwards compatibility
+  "--leader-elect=true",
+]
+
+if @kubeconfig
+  daemon_args.push("--kubeconfig=#{@kubeconfig}")
+else
+  daemon_args.push("--master=http://127.0.0.1:8080")
+end
+-%>
+DAEMON_ARGS="<%= daemon_args.join(' ') %>"
