@@ -265,6 +265,11 @@ sub cluster_fe_recv_pre_purge {
 				unset req.http.Accept-Language;
 			}
 		}
+
+		// Custom rule to block traffic coming from bots running on clouds, hitting the Analytics AQS API.
+		if (req.http.User-Agent == "rest-client/2.1.0 (linux-gnu x86_64) ruby/2.5.8p224" && req.url ~ "^/api/rest_v1/metrics/pageviews") {
+			return (synth(403, "Scripted requests from your IP have been blocked, please see https://meta.wikimedia.org/wiki/User-Agent_policy. In case of further questions, please contact noc@wikimedia.org."));
+		}
 	}
 
 	// Normalize paths before purging
