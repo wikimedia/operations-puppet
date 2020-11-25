@@ -281,7 +281,7 @@ groups:
               itamar, phedenskog, aaron, dpifke, aklapper, jmads, andrew-wmde, daniram,
               dcipoletti, chrisalbon, wikigit, nahidunlimited, swagoel,
               agaduran, edtadros, dvrandecic, razzi, cparle, klausman, lexnasser, sbisson, fab,
-              dumisani, janstee]
+              dumisani, janstee, gmodena]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product]
   analytics-admins:
@@ -3886,6 +3886,15 @@ users:
     gid: 500
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHANABlTMFTI2RSUFDnz8yV+Ew74/zho1rXS7HHF+9/3 janstee@Jaimes-MBP
+  gmodena:
+    ensure: present
+    name: gmodena
+    realname: Gabriele Modena
+    email: gmodena@wikimedia.org
+    uid: 27570
+    gid: 500
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDjd61raR4jmiUPk6rt2PY/38YOj/n8VIY9hTbevGLL36IRpT9pRjSbywhWb1KLI/WqZX+FcntRe485zgysZja9jAL9VnvU50LLQMB8gnbIVvHjxIO3xhdmenBer17fH5tyIevs2UI4TeWzm7eZGkbJDxfR3rl6S09CQhfDVA4hj6Byi0ocNu3dtbRca9OuH0HMmso2bkiElUQc+KwX2VajGELb/z+mAAG2huvkJ8Z7rNWD/lpay2f/4MEtMLnU/9n2pRQQwbnj/T8HMj0DQT7/rOEvEKWgw72OuHscJ5qbFCpRL7O8UzZ4BX2QT8wYbyRvCBjTnMpqLDa7hJqKGR8WLIMr+BVYr7LDWTPUNGuPQUkB2NYU50mSLA9Azm37fbELW8fge8GsZNHnH0ZGP60TPtpI/Lz/7cwXTsr/Ttt07ztMyKI58nRyrsJdUjaB/NilLrX5HDJrcdyrnRzkvH394YhJXVKQJB53QSq7X5WHa60hju/bQUHuDqBcEUWTeIbSZXYVqtL+ioHQXyMEIUDa75O2I07DVQ7/MVNorudcO+sV+bStl01+1xSKFQX349QTOpZ6srNLwk9A1BB/7BZ9DTy2Ewno+O3jkqgE8n3nC3/F7Iq5TyUWB/6RDMTMzVYz3orojrB3+eGFMZ0fyrZMPeNuzSKkRCGM5ZSLv/wSuQ== gmodena@wikimedia.org
 
 ldap_only_users:
   abartov:
