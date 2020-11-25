@@ -70,7 +70,7 @@ if (@metastore_host == @fqdn)
 <% end -%>
 <% if @hive_cluster_delegation_token_store_class -%>
   <property>
-    <name>hive.cluster.delegation.token.store</name>
+    <name>hive.cluster.delegation.token.store.class</name>
     <value><%= @hive_cluster_delegation_token_store_class %></value>
   </property>
 <% end -%>
