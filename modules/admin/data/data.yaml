@@ -280,7 +280,8 @@ groups:
               aarora, zpapierski, knissen, jiawang, mholloway-shell, tarrow,
               itamar, phedenskog, aaron, dpifke, aklapper, jmads, andrew-wmde, daniram,
               dcipoletti, chrisalbon, wikigit, nahidunlimited, swagoel,
-              agaduran, edtadros, dvrandecic, razzi, cparle, klausman, lexnasser, sbisson, fab]
+              agaduran, edtadros, dvrandecic, razzi, cparle, klausman, lexnasser, sbisson, fab,
+              dumisani]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product]
   analytics-admins:
@@ -3867,6 +3868,15 @@ users:
     gid: 500
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOe8yGmiYe4TX6NLuqjO16X6vXJZnyoh6pdFS//eywhI swati@Swatis-Air.volcano.net
+  dumisani:
+    ensure: present
+    name: dumisani
+    realname: Dumisani Ndubane
+    email: dndubane@wikimedia.org
+    uid: 27436
+    gid: 500
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKvCFMCy3pSykDaNq++CC1o+WzmegoyGROM7N4uoGvnO dumisani@MacBook-Pro.local
 
 ldap_only_users:
   abartov:
