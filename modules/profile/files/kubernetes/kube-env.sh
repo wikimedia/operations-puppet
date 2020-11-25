@@ -36,3 +36,9 @@ __kube_env_ps1() {
 
 # HELM_HOME is the same for all users
 export HELM_HOME="/etc/helm"
+# Helm3 variables (we can share the same config home as filenames differ)
+export HELM_CONFIG_HOME="/etc/helm"
+# This contains helm plugins
+export HELM_DATA_HOME="/usr/share/helm"
+# This contains repository cache and plugin cache (which we don't use)
+export HELM_CACHE_HOME="/var/cache/helm"

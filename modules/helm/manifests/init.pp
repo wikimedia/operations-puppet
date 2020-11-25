@@ -1,9 +1,12 @@
 class helm(
     Stdlib::Unixpath $helm_home='/etc/helm',
+    Stdlib::Unixpath $helm_data='/usr/share/helm',
+    Stdlib::Unixpath $helm_cache='/var/cache/helm',
     Hash[String[1], Stdlib::Httpurl] $repositories={'stable' => 'https://helm-charts.wikimedia.org/stable/', 'wmf-stable' => 'https://helm-charts.wikimedia.org/stable'},
 ) {
     package { [
         'helm',
+        'helm3',
         'kubernetes-client',
         ]:
         ensure => installed,
@@ -32,7 +35,24 @@ class helm(
         mode    => '0775',
         recurse => true,
     }
+    # HELM_DATA_HOME for helm 3
+    file { $helm_data:
+        ensure  => directory,
+        owner   => 'helm',
+        group   => 'wikidev',
+        mode    => '0775',
+        recurse => true,
+    }
+    # HELM_CACHE_HOME for helm 3
+    file { $helm_cache:
+        ensure  => directory,
+        owner   => 'helm',
+        group   => 'wikidev',
+        mode    => '0775',
+        recurse => true,
+    }
 
+    # helm init is needed for helm 2 only
     exec { 'helm-init':
         command     => "/usr/bin/helm init --client-only --stable-repo-url ${repositories['stable']}",
         environment => "HELM_HOME=${helm_home}",
@@ -52,14 +72,32 @@ class helm(
                 user        => 'helm',
                 require     => [User['helm'], File[$helm_home],]
             }
+            # With helm 3, there is no such thing as local repository anymore
+            exec { "helm3-repo-add-${name}":
+                command     => "/usr/bin/helm3 repo add ${name} ${url}",
+                environment => {
+                    'HELM_CONFIG_HOME' => $helm_home,
+                    'HELM_DATA_HOME'   => $helm_data,
+                    'HELM_CACHE_HOME'  => $helm_cache,
+                },
+                unless      => "/usr/bin/helm3 repo list | /bin/grep -E -q '^${name}\\s+${url}'",
+                user        => 'helm',
+                require     => [User['helm'], File[$helm_home], File[$helm_cache]]
+            }
         }
     }
 
+    # This runs both, helm 2 and helm 3 repo updates
     systemd::timer::job { 'helm-repo-update':
         ensure          => present,
         description     => 'Update helm repositories indices',
-        command         => '/usr/bin/helm repo update',
-        environment     => {'HELM_HOME' => $helm_home},
+        command         => '/usr/bin/helm repo update; /usr/bin/helm3 repo update',
+        environment     => {
+            'HELM_HOME'        => $helm_home,
+            'HELM_CONFIG_HOME' => $helm_home,
+            'HELM_DATA_HOME'   => $helm_data,
+            'HELM_CACHE_HOME'  => $helm_cache,
+        },
         user            => 'helm',
         logging_enabled => false,
         interval        => {
