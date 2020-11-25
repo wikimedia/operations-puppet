@@ -119,6 +119,13 @@ class profile::hadoop::spark2(
         content => template('profile/hadoop/spark2-defaults.conf.erb'),
     }
 
+    file { '/etc/spark2/conf/log4j.properties':
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0644',
+        source => 'puppet:///modules/profile/hadoop/spark2/spark_log4j.properties',
+    }
+
     # If we want to override any Spark 1 yarn shuffle service to run Spark 2 instead.
     if $install_yarn_shuffle_jar {
         # Add Spark 2 spark-yarn-shuffle.jar to the Hadoop Yarn NodeManager classpath.
