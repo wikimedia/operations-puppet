@@ -259,6 +259,17 @@ profile::idp::services:
         'memberOf': ['java.util.HashSet', [
           'cn=ops,ou=groups,dc=wikimedia,dc=org',
         ]]
+  racktables:
+    class: 'org.apereo.cas.services.RegexRegisteredService'
+    id: 18
+    service_id: 'https://racktables.wikimedia.org(/.*)?'
+    attribute_release_policy:
+      '@class': 'org.apereo.cas.services.ReturnAllAttributeReleasePolicy'
+    access_strategy:
+      '@class': 'org.apereo.cas.services.DefaultRegisteredServiceAccessStrategy'
+      'requiredAttributes':
+        '@class': 'java.util.HashMap'
+        'memberOf': ['java.util.HashSet', ['cn=ops,ou=groups,dc=wikimedia,dc=org']]
 profile::idp::ldap_attributes:
   - cn
   - memberOf
