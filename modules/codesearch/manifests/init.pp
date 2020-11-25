@@ -98,11 +98,11 @@ class codesearch(
 
     systemd::timer::job { 'codesearch-write-config':
         description => 'Generate hound configuration files',
-        command     => "${clone_dir}/write_config.py",
-        user        => 'codesearch',
+        command     => "${clone_dir}/write_config.py --restart",
+        user        => 'root',
         interval    => {
             'start'    => 'OnCalendar',
-            'interval' => '*-*-* 00:00:00',  # Every day at midnight
+            'interval' => '*-*-* 06:00:00',  # Every day before Europe wakes up
         },
         require     => [
             Git::Clone['labs/codesearch'],
