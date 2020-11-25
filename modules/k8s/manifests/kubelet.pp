@@ -1,3 +1,4 @@
+#  Class that sets up and configures kubelet
 class k8s::kubelet(
     String $listen_address = '0.0.0.0',
     Optional[Stdlib::Port] $listen_port = undef,
@@ -10,6 +11,10 @@ class k8s::kubelet(
     String $cni_bin_dir = '/opt/cni/bin',
     String $cni_conf_dir = '/etc/cni/net.d',
     String $kubeconfig = '/etc/kubernetes/kubeconfig',
+    Boolean $allow_privileged = false,
+    Boolean $fqdn_as_hostname = true,
+    Boolean $logtostderr = true,
+    Integer $v_log_level = 0,
     Optional[Array[String]] $node_labels = [],
     Optional[Array[String]] $node_taints = [],
     Optional[Array[String]] $extra_params = undef,

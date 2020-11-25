@@ -1,26 +1,22 @@
 ###
 # kubernetes kubelet (minion) config
 
-# The address for the info server to serve on (set to 0.0.0.0 or "" for all interfaces)
-KUBELET_ADDRESS="--address=<%= @listen_address %>"
-
-# The port for the info server to serve on
-<%- if @listen_port -%>KUBELET_PORT="--port=<%= @listen_port %>"<%- end -%>
-
-# You may leave this blank to use the actual hostname
-KUBELET_HOSTNAME="--hostname-override=<%= @fqdn %>"
-
-# Docker endpoint to connect to
-# Default: unix:///var/run/docker.sock
-#DOCKER_ENDPOINT="--docker-endpoint=unix:///var/run/docker.sock"
-
-# Other options:
-# --container_runtime=rkt
-
 <%-
 daemon_args = [
   "--kubeconfig=#{@kubeconfig}",
+  "--logtostderr=#{@logtostderr}",
+  "--v=#{@v_log_level}",
+  "--address=#{@listen_address}",
+  "--allow-privileged=#{@allow_privileged}",
 ]
+
+if @fqdn_as_hostname
+  daemon_args.push("--hostname-override=#{@fqdn}")
+end
+
+if @listen_port
+  daemon_args.push("--port=#{@listen_port}")
+end
 
 if @pod_infra_container_image
 	daemon_args.push("--pod-infra-container-image=#{@pod_infra_container_image}")
