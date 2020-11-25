@@ -31,3 +31,9 @@ function my() {
 
     sudo mysql --disable-auto-rehash --socket="${socket}" --user=root --prompt="\u@$(hostname):${section:-default}[\d]> " --pager="grcat /etc/mysql/grcat.config | less -RSFXin"
 }
+
+function binlog() {
+    local datadir log pos
+    read datadir log ignore < <(echo $(sudo mysql -BNe 'select @@datadir; show master status'))
+    sudo mysqlbinlog --start-datetime="$(date -d '2 seconds ago' +"%Y:%m:%d %H:%M:%S")" ${datadir:?}${log:?} "$@"
+}
