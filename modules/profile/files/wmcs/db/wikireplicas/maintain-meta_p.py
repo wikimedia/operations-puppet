@@ -19,13 +19,14 @@
 #
 
 import argparse
+import json
 import logging
 import os
+import re
+import sys
+
 import pymysql
 import requests
-import re
-import simplejson as json
-import sys
 import yaml
 
 
@@ -168,11 +169,17 @@ def main():
     argparser.add_argument(
         "--mysql-socket",
         help=("Path to MySQL socket file"),
-        default="/run/mysqld/mysqld.sock",
+        default="",
     )
 
     argparser.add_argument(
         "--debug", help="Turn on debug logging", action="store_true"
+    )
+
+    argparser.add_argument(
+        "--bootstrap",
+        help="Creates tables, views and dbs if they don't exist",
+        action="store_true",
     )
 
     args = argparser.parse_args()
@@ -191,16 +198,31 @@ def main():
             logging.critical(exc)
             sys.exit(1)
 
+    if "all" in config["mysql_instances"]:
+        mysql_socket = "/run/mysqld/mysqld.sock"
+    elif "s7" in config["mysql_instances"]:
+        mysql_socket = "/run/mysqld/mysqld.s7.sock"
+    elif args.mysql_socket:
+        mysql_socket = args.mysql_socket
+    else:
+        logging.error(
+            "This should only run on legacy replicas or s7, "
+            "maybe you need to manually set a --mysql-socket for testing?"
+        )
+        sys.exit(1)
+
     dbh = pymysql.connect(
         user=config["mysql_user"],
         passwd=config["mysql_password"],
-        unix_socket=args.mysql_socket,
+        unix_socket=mysql_socket,
         charset="utf8",
     )
 
     ops = SchemaOperations(args.dry_run, dbh, dbh.cursor())
 
-    seed_schema(ops)
+    if args.bootstrap:
+        seed_schema(ops)
+
     ops.write_execute("START TRANSACTION;")
 
     if args.purge:

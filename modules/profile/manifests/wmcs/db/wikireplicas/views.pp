@@ -8,7 +8,7 @@ class profile::wmcs::db::wikireplicas::views (
 ){
     require ::profile::wmcs::db::scriptconfig
 
-    ensure_packages(['python3-pymysql', 'python3-requests', 'python3-simplejson', 'python3-psutil'])
+    ensure_packages(['python3-pymysql', 'python3-requests', 'python3-psutil'])
 
     file { '/etc/maintain-views.yaml':
         ensure  => file,
@@ -48,13 +48,20 @@ class profile::wmcs::db::wikireplicas::views (
         ],
     }
 
-    file { '/usr/local/sbin/maintain-meta_p':
-        ensure  => file,
-        source  => 'puppet:///modules/profile/wmcs/db/wikireplicas/maintain-meta_p.py',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0755',
-        require => [Package['python3-simplejson', 'python3-pymysql']],
+    if !$instances or ('s7' in $instances.keys) {
+        file { '/usr/local/sbin/maintain-meta_p':
+            ensure  => file,
+            source  => 'puppet:///modules/profile/wmcs/db/wikireplicas/maintain-meta_p.py',
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0755',
+            require => [Package['python3-pymysql', 'python3-yaml', 'python3-requests'],
+                        Git::Clone['operations/mediawiki-config'],],
+        }
+    } else {
+        file { '/usr/local/sbin/maintain-meta_p':
+            ensure  => absent,
+        }
     }
 
     file { '/usr/local/src/heartbeat-views.sql':
