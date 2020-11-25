@@ -13,6 +13,6 @@ class role::sretest {
     include profile::standard
     include profile::base::firewall
     if debian::codename::ge('buster') {
-        include profile::buster::firewall
+        include profile::docker::firewall
     }
 }
