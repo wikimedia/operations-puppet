@@ -114,11 +114,7 @@ profile::idp::webflow_encryption_key: changeit
 profile::idp::webflow_signing_key: changeit
 profile::idp::u2f_encryption_key: changeit
 profile::idp::u2f_signing_key: changeit
-profile::idp::gauth_encryption_key: changeit
-profile::idp::gauth_signing_key: changeit
 profile::idp::idp_primary: "%{facts.fqdn}"
-profile::idp::totp_encryption_key: ~
-profile::idp::totp_signing_key: ~
 profile::idp::memcached::ensure: present
 profile::idp::memcached::idp_nodes: []
 profile::idp::memcached::mcrouter_cluster: idp

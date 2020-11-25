@@ -28,18 +28,12 @@ class profile::idp(
     Array[String]               $cors_allowed_headers   = lookup('profile::idp::cors_allowed_headers'),
     Array[Wmflib::HTTP::Method] $cors_allowed_methods   = lookup('profile::idp::cors_allowed_methods'),
     Optional[Stdlib::Fqdn]      $idp_failover           = lookup('profile::idp::idp_failover'),
-    Optional[String]            $totp_signing_key       = lookup('profile::idp::totp_signing_key'),
-    Optional[String]            $totp_encryption_key    = lookup('profile::idp::totp_encryption_key'),
     Optional[Integer]           $u2f_token_expiry_days  = lookup('profile::idp::u2f_token_expiry_days'),
 ){
 
     include passwords::ldap::production
     class{ 'sslcert::dhparam': }
     include profile::tlsproxy::envoy
-
-    class { 'rsync::server':
-        wrap_with_stunnel => true,
-    }
 
     class {'tomcat':}
 
@@ -50,7 +44,6 @@ class profile::idp(
     $jmx_jar = '/usr/share/java/prometheus/jmx_prometheus_javaagent.jar'
     $java_opts = "-javaagent:${jmx_jar}=${facts['networking']['ip']}:${jmx_port}:${jmx_config}"
     $groovy_source = 'puppet:///modules/profile/idp/global_principal_attribute_predicate.groovy'
-    $devices_dir = '/srv/cas/devices'
     $log_dir = '/var/log/cas'
 
     $cas_daemon_user = 'tomcat'
@@ -70,7 +63,6 @@ class profile::idp(
         server_port            => 8080,
         server_enable_ssl      => false,
         tomcat_proxy           => true,
-        devices_dir            => $devices_dir,
         groovy_source          => $groovy_source,
         prometheus_nodes       => $prometheus_nodes,
         keystore_content       => secret('casserver/thekeystore'),
@@ -82,8 +74,6 @@ class profile::idp(
         webflow_encryption_key => $webflow_encryption_key,
         u2f_signing_key        => $u2f_signing_key,
         u2f_encryption_key     => $u2f_encryption_key,
-        totp_signing_key       => $totp_signing_key,
-        totp_encryption_key    => $totp_encryption_key,
         ldap_start_tls         => false,
         ldap_uris              => ["ldaps://${ldap_config[ro-server]}:636",
                                     "ldaps://${ldap_config[ro-server-fallback]}:636",],

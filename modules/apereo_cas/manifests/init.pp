@@ -20,12 +20,9 @@ class apereo_cas (
     Optional[Stdlib::Filesource]      $groovy_source                 = undef,
     Optional[Array[Stdlib::Host]]     $prometheus_nodes              = [],
     Optional[Array[String]]           $actuators                     = [],
-    Stdlib::Unixpath                  $devices_dir                   = '/srv/cas/devices',
     Stdlib::Unixpath                  $base_dir                      = '/etc/cas',
     Stdlib::Unixpath                  $log_dir                       = '/var/log/cas',
     Stdlib::Unixpath                  $tomcat_basedir                = "${log_dir}/tomcat",
-    Stdlib::Unixpath                  $u2f_devices_path              = "${devices_dir}/u2fdevices.json",
-    Stdlib::Unixpath                  $totp_devices_path             = "${devices_dir}/totpdevices.json",
     Stdlib::Unixpath                  $keystore_path                 = "${base_dir}/thekeystore",
     String[1]                         $keystore_password             = 'changeit',
     String[1]                         $key_password                  = 'changeit',
@@ -77,23 +74,21 @@ class apereo_cas (
 
     $is_idp_primary = $facts['fqdn'] == $idp_primary
 
+    ensure_packages(['cas', 'python3-memcache'])
+
     systemd::unit{'tomcat9':
         override => true,
         restart  => true,
-        content  => "[Service]\nReadWritePaths=${devices_dir}\nReadWritePaths=${log_dir}\n",
+        content  => "[Service]\nReadWritePaths=${log_dir}\n",
     }
 
-    if $is_idp_primary {
-        $ensure_rsync = 'present'
-        $ensure_sync_timer = 'absent'
-    } else {
-        $ensure_rsync = 'absent'
-        $ensure_sync_timer = 'present'
+    unless $is_idp_primary {
         base::service_auto_restart { 'tomcat9': }
     }
 
     $idp_nodes = [$idp_primary, $idp_failover].delete_undef_values
     if $manage_user {
+        # TODO: move to admin module
         user{$daemon_user:
             ensure   => 'present',
             comment  => 'apereo cas user',
@@ -101,28 +96,6 @@ class apereo_cas (
             shell    => '/usr/sbin/nologin',
             password => '!',
             system   => true,
-        }
-    }
-    systemd::timer::job { 'idp-u2f-sync':
-        ensure          => $ensure_sync_timer,
-        description     => 'Mirror U2F device data from failover host to active IDP server',
-        command         => "/usr/bin/rsync --delete --delete-after -aSOrd rsync://${idp_primary}/u2f_devices/* ${devices_dir}",
-        interval        => {
-            'start'    => 'OnCalendar',
-            'interval' => '*-*-* *:00:00', # Each hour
-        },
-        logging_enabled => false,
-        user            => $daemon_user,
-    }
-
-    if $idp_primary and $idp_failover {
-        rsync::server::module { 'u2f_devices':
-            ensure         => $ensure_rsync,
-            path           => $devices_dir,
-            read_only      => 'yes',
-            hosts_allow    => [$idp_failover],
-            auto_ferm      => true,
-            auto_ferm_ipv6 => true,
         }
     }
 
@@ -135,7 +108,7 @@ class apereo_cas (
     file{[$services_dir, $config_dir]:
         ensure => directory,
     }
-    file{[$devices_dir, $base_dir, $log_dir]:
+    file{[$base_dir, $log_dir]:
         ensure  => directory,
         owner   => $daemon_user,
         mode    => '0600',
@@ -167,8 +140,6 @@ class apereo_cas (
         content => $keystore_content,
         source  => $keystore_source,
     }
-
-    ensure_packages(['cas', 'python3-memcache'])
 
     file { '/usr/local/sbin/memcached-dump':
         ensure => present,

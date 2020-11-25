@@ -97,12 +97,6 @@ cas.authn.mfa.globalPrincipalAttributeNameTriggers=<%= @mfa_attribute_trigger %>
 cas.authn.mfa.globalPrincipalAttributeValueRegex=<%= @mfa_attribut_value.join('|') %>
 <%- end -%>
 
-<%- if @enable_totp -%>
-cas.authn.mfa.gauth.json.location=file://<%= @totp_devices_path %>
-<% if @totp_signing_key %>cas.authn.mfa.gauth.crypto.signing.key=<%= @totp_signing_key %><% end %>
-<% if @totp_encryption_key %>cas.authn.mfa.gauth.crypto.encryption.key=<%= @totp_encryption_key %><% end %>
-<%- end -%>
-
 <%- if @enable_u2f -%>
 <% if @u2f_signing_key %>cas.authn.mfa.u2f.crypto.signing.key=<%= @u2f_signing_key %><% end %>
 <% if @u2f_encryption_key %>cas.authn.mfa.u2f.crypto.encryption.key=<%= @u2f_encryption_key %><% end %>
@@ -112,8 +106,6 @@ cas.authn.mfa.u2f.jpa.password=<%= @u2f_jpa_password %>
 cas.authn.mfa.u2f.jpa.driver-class=org.mariadb.jdbc.Driver
 cas.authn.mfa.u2f.jpa.url=jdbc:mysql://<%= @u2f_jpa_server %>/<%= @u2f_jpa_db %>?useSSL=true&disableSslHostnameVerification=true
 cas.authn.mfa.u2f.jpa.dialect=org.hibernate.dialect.MariaDBDialect
-  <%- else -%>
-cas.authn.mfa.u2f.json.location=file://<%= @u2f_devices_path %>
   <%- end -%>
 <%- end -%>
 

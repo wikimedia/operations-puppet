@@ -6,11 +6,7 @@ profile::idp::webflow_encryption_key: changeit
 profile::idp::webflow_signing_key: changeit
 profile::idp::u2f_encryption_key: changeit
 profile::idp::u2f_signing_key: changeit
-profile::idp::gauth_encryption_key: changeit
-profile::idp::gauth_signing_key: changeit
 profile::idp::idp_primary: "%{facts.fqdn}"
-profile::idp::totp_encryption_key: ~
-profile::idp::totp_signing_key: ~
 profile::idp::memcached_enable: false
 profile::idp::u2f_jpa_enable: false
 profile::idp::u2f_jpa_username: cas
@@ -24,6 +20,4 @@ profile::idp::cors_allowed_headers: []
 profile::idp::cors_allowed_methods:
   - 'GET'
 profile::idp::idp_failover: ~
-profile::idp::totp_signing_key: ~
-profile::idp::totp_encryption_key: ~
 profile::idp::u2f_token_expiry_days: ~
