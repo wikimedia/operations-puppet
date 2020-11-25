@@ -18,6 +18,9 @@ profile::hue::kerberos_kinit_path: '/usr/bin/kinit'
 profile::hue::oozie_security_enabled: true
 profile::hue::enable_cas: false
 profile::hue::servername: 'hue.wikimedia.org'
+# The default Thrift version for Hue 4 is 11, that is not compatible
+# with Hive 2.x's version, so upstream suggests 7 as good value.
+profile::hue::hive_thrift_version: 7
 
 profile::hue::database_name: 'hue_test'
 profile::hue::use_hue4_settings: true
