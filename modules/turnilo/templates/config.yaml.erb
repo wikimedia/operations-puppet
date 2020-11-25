@@ -2211,7 +2211,7 @@ dataCubes:
                 "57": "URG+ACK+PSH+FIN"
                 "58": "URG+ACK+PSH+SYN"
                 "59": "URG+ACK+PSH+SYN+FIN"
-        exporter_name:
+        exporter_name_map:
           extractionFn:
             type: lookup
             retainMissingValue: true
@@ -2232,7 +2232,7 @@ dataCubes:
                 "198.35.26.193": "cr4-ulsfo"
                 "103.102.166.130": "cr2-eqsin"
                 "103.102.166.131": "cr3-eqsin"
-        exporter_region:
+        exporter_region_map:
           extractionFn:
             type: lookup
             retainMissingValue: true
@@ -2296,12 +2296,33 @@ dataCubes:
        - name: tcp_flags
          title: TCP flags
          formula: $tcp_flags.customTransform('tcp')
-       - name: exporter
-         title: Exporter
-         formula: $peer_ip_src.customTransform('exporter_name')
+       - name: exporter_name
+         title: Exporter name
+         formula: $peer_ip_src.customTransform('exporter_name_map')
+       - name: exporter_region
+         title: Exporter Region
+         formula: $peer_ip_src.customTransform('exporter_region_map')
+       - name: parsed_comms
+         title: Parsed Comms
+         formula: $parsed_comms
+       - name: net_cidr_src
+         title: Net CIDR src
+         formula: $net_cidr_src
+       - name: net_cidr_dst
+         title: Net CIDR dst
+         formula: $net_cidr_dst
+       - name: as_name_src
+         title: AS name src
+         formula: $as_name_src
+       - name: as_name_dst
+         title: AS name dst
+         formula: $as_name_dst
+       - name: ip_version
+         title: IP version
+         formula: $ip_version
        - name: region
          title: Region
-         formula: $peer_ip_src.customTransform('exporter_region')
+         formula: $region
     defaultSelectedMeasures: [bps, pps]
     measures:
        - name: bytes
