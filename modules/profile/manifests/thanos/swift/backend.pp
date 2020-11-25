@@ -35,6 +35,7 @@ class profile::thanos::swift::backend (
         object_replicator_interval       => $object_replicator_interval,
         servers_per_port                 => $servers_per_port,
         container_replicator_interval    => $container_replicator_interval,
+        backends                         => $thanos_backends,
     }
 
     class { '::toil::systemd_scope_cleanup': }

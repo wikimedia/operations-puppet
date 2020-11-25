@@ -11,6 +11,7 @@ class swift::storage (
     $object_replicator_interval       = undef,
     $object_server_default_workers    = undef,
     $servers_per_port                 = 3,
+    $backends                         = [],
 ) {
     package {
         [ 'swift-account',
@@ -29,7 +30,7 @@ class swift::storage (
     rsync::server::module { 'account':
         uid             => 'swift',
         gid             => 'swift',
-        max_connections => '5',
+        max_connections => Integer(length($backends) * 2),
         path            => '/srv/swift-storage/',
         read_only       => 'no',
         lock_file       => '/var/lock/account.lock',
@@ -37,7 +38,7 @@ class swift::storage (
     rsync::server::module { 'container':
         uid             => 'swift',
         gid             => 'swift',
-        max_connections => '5',
+        max_connections => Integer(length($backends) * 2),
         path            => '/srv/swift-storage/',
         read_only       => 'no',
         lock_file       => '/var/lock/container.lock',
@@ -45,7 +46,7 @@ class swift::storage (
     rsync::server::module { 'object':
         uid             => 'swift',
         gid             => 'swift',
-        max_connections => '20',
+        max_connections => Integer(length($backends) * 2),
         path            => '/srv/swift-storage/',
         read_only       => 'no',
         lock_file       => '/var/lock/object.lock',

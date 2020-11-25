@@ -18,6 +18,8 @@ class profile::swift::storage (
     Optional[Integer] $container_replicator_interval = lookup('profile::swift::storage::container_replicator_interval')
 ){
 
+    $site_backends = $swift_backends.filter |$host| { $host =~ Regexp("${::domain}$") }
+
     class { 'swift':
         hash_path_suffix => $hash_path_suffix,
     }
@@ -37,6 +39,7 @@ class profile::swift::storage (
         object_replicator_interval       => $object_replicator_interval,
         servers_per_port                 => $servers_per_port,
         container_replicator_interval    => $container_replicator_interval,
+        backends                         => $site_backends,
     }
 
     class { 'swift::container_sync':
