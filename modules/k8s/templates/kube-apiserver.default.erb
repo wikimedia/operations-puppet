@@ -4,49 +4,46 @@
 ## The following values are used to configure the kube-apiserver
 ##
 #
-<%- if @kube_api_port -%>
-## The port on the local server to listen on.
-KUBE_API_PORT="--port=<%= @kube_api_port %>"
-<%- end -%>
-#
-<%- if @kubelet_port -%>
-## Port minions listen on
-KUBELET_PORT="--kubelet-port=<%= @kubelet_port %>"
-<%- end -%>
-#
-## Comma separated list of nodes in the etcd cluster
-KUBE_ETCD_SERVERS="--etcd-servers=<%= @etcd_servers %>"
-#
-## Address range to use for services
-<%- if @service_cluster_ip_range %>
-KUBE_SERVICE_ADDRESSES="--service-cluster-ip-range=<%= @service_cluster_ip_range %>"
-<%- end -%>
-#
-<%- if @admission_control %>
-KUBE_ADMISSION_CONTROL="--admission-control=<%= @admission_control %>"
-<%- end -%>
+<%-
+daemon_args = [
+  "--logtostderr=#{@logtostderr}",
+  "--v=#{@v_log_level}",
+  "--allow-privileged=#{@allow_privileged}",
+  "--etcd-servers=#{@etcd_servers}",
+  "--token-auth-file=/etc/kubernetes/tokenauth",
+  "--tls-cert-file=#{@ssl_cert_path}",
+  "--tls-private-key-file=#{@ssl_key_path}",
+]
 
-DAEMON_ARGS=" \
---token-auth-file=/etc/kubernetes/tokenauth \
---storage-backend=<%= @storage_backend %> \
-<%- if @authz_mode == 'abac' -%>
---authorization-mode=ABAC \
---authorization-policy-file=/etc/kubernetes/abac \
-<%- elsif @authz_mode && @authz_mode != '' -%>
---authorization-mode=<%= @authz_mode %> \
-<%- end -%>
-<%- if @apiserver_count -%>
---apiserver-count=<%= @apiserver_count %> \
-<%- end -%>
-<%- if @service_node_port_range -%>
---service-node-port-range=<%= @service_node_port_range %> \
-<%- end -%>
-<%- if @runtime_config -%>
---runtime-config=<%= @runtime_config %> \
-<%- end -%>
---tls-cert-file=<%= @ssl_cert_path %> \
---tls-private-key-file=<%= @ssl_key_path %> \
-<%- if not @admission_control_params.empty? -%>
-<%= @admission_control_params %> \
-<%- end -%>
-"
+if @service_cluster_ip_range
+  daemon_args.push("--service-cluster-ip-range=#{@service_cluster_ip_range}")
+end
+if @service_node_port_range
+  daemon_args.push("--service-node-port-range=#{@service_node_port_range}")
+end
+
+
+if @authz_mode == 'abac'
+  daemon_args.push("--authorization-mode=ABAC")
+  daemon_args.push("--authorization-policy-file=/etc/kubernetes/abac")
+elsif @authz_mode && @authz_mode != ''
+  daemon_args.push("--authorization-mode=#{@authz_mode}")
+end
+
+if @apiserver_count
+  daemon_args.push("--apiserver-count=#{@apiserver_count}")
+end
+
+if @admission_control
+  daemon_args.push("--admission-control=#{@admission_control}")
+end
+if not @admission_control_params.empty?
+  daemon_args.push(@admission_control_params)
+end
+
+if @runtime_config
+  daemon_args.push("--runtime-config=#{@runtime_config}")
+end
+
+-%>
+DAEMON_ARGS="<%= daemon_args.join(' ') %>"

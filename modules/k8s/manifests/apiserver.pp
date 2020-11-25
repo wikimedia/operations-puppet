@@ -1,11 +1,8 @@
+# Class that sets up and configures kube-apiserver
 class k8s::apiserver(
     String $etcd_servers,
-    Optional[Stdlib::Unixpath] $ssl_cert_path=undef,
-    Optional[Stdlib::Unixpath] $ssl_key_path=undef,
-    Optional[Stdlib::Port] $kube_api_port = undef,
-    Optional[Stdlib::Port] $kubelet_port = undef,
-    Stdlib::IP::Address $service_cluster_ip_range = '192.168.0.0/17',
-    Optional[String] $service_node_port_range = undef,
+    Stdlib::Unixpath $ssl_cert_path,
+    Stdlib::Unixpath $ssl_key_path,
     Hash[String, String] $admission_controllers = {
         'NamespaceLifecycle' => '',
         'LimitRanger' => '',
@@ -13,8 +10,12 @@ class k8s::apiserver(
         'DefaultStorageClass' => '',
         'ResourceQuota' => '',
     },
-    String $authz_mode = 'abac',
-    String $storage_backend = 'etcd2',
+    String $authz_mode = 'RBAC',
+    Boolean $allow_privileged = false,
+    Boolean $logtostderr = true,
+    Integer $v_log_level = 0,
+    Optional[Stdlib::IP::Address] $service_cluster_ip_range = undef,
+    Optional[String] $service_node_port_range = undef,
     Optional[Integer] $apiserver_count = undef,
     Optional[String] $runtime_config = undef,
 ) {
