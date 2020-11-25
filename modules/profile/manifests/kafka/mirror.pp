@@ -87,19 +87,19 @@
 #   Prometheus nodes that should be allowed to query the JMX exporter.
 #
 class profile::kafka::mirror(
-    $enabled                  = hiera('profile::kafka::mirror::enabled', true),
-    $source_cluster_name      = hiera('profile::kafka::mirror::source_cluster_name'),
-    $destination_cluster_name = hiera('profile::kafka::mirror::destination_cluster_name'),
-    $properties               = hiera('profile::kafka::mirror::properties', {}),
-    $num_processes            = hiera('profile::kafka::mirror::num_processes', 1),
-    $consumer_ssl_enabled     = hiera('profile::kafka::mirror::consumer_ssl_enabled', false),
-    $producer_ssl_enabled     = hiera('profile::kafka::mirror::producer_ssl_enabled', false),
-    $ssl_password             = hiera('profile::kafka::mirror::ssl_password', undef),
-    $monitoring_enabled       = hiera('profile::kafka::mirror::monitoring_enabled', true),
-    $jmx_base_port            = hiera('profile::kafka:mirror:jmx_base_port', 9900),
-    $jmx_exporter_base_port   = hiera('profile::kafka::mirror:jmx_exporter_base_port', 7900),
-    $message_max_bytes        = hiera('kafka_message_max_bytes'),
-    $prometheus_nodes         = hiera('prometheus_nodes'),
+    Boolean $enabled                      = lookup('profile::kafka::mirror::enabled', {'default_value' => true}),
+    String $source_cluster_name           = lookup('profile::kafka::mirror::source_cluster_name'),
+    String $destination_cluster_name      = lookup('profile::kafka::mirror::destination_cluster_name'),
+    Hash[String, Any] $properties         = lookup('profile::kafka::mirror::properties', {'default_value' => {}}),
+    Integer $num_processes                = lookup('profile::kafka::mirror::num_processes', {'default_value' => 1}),
+    Boolean $consumer_ssl_enabled         = lookup('profile::kafka::mirror::consumer_ssl_enabled', {'default_value' => false}),
+    Boolean $producer_ssl_enabled         = lookup('profile::kafka::mirror::producer_ssl_enabled', {'default_value' => false}),
+    Optional[String] $ssl_password        = lookup('profile::kafka::mirror::ssl_password', {'default_value' => undef}),
+    Boolean $monitoring_enabled           = lookup('profile::kafka::mirror::monitoring_enabled', {'default_value' => true}),
+    Stdlib::Port $jmx_base_port           = lookup('profile::kafka:mirror:jmx_base_port', {'default_value' => 9900}),
+    Stdlib::Port $jmx_exporter_base_port  = lookup('profile::kafka::mirror:jmx_exporter_base_port', {'default_value' => 7900}),
+    Integer $message_max_bytes            = lookup('kafka_message_max_bytes'),
+    Array[Stdlib::Host] $prometheus_nodes = lookup('prometheus_nodes'),
 ) {
     $source_config            = kafka_config($source_cluster_name)
     $destination_config       = kafka_config($destination_cluster_name)
