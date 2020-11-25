@@ -3877,6 +3877,15 @@ users:
     gid: 500
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKvCFMCy3pSykDaNq++CC1o+WzmegoyGROM7N4uoGvnO dumisani@MacBook-Pro.local
+  janstee:
+    ensure: present
+    name: janstee
+    realname: Jaime L.K. Anstee
+    email: janstee@wikimedia.org
+    uid: 3720
+    gid: 500
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHANABlTMFTI2RSUFDnz8yV+Ew74/zho1rXS7HHF+9/3 janstee@Jaimes-MBP
 
 ldap_only_users:
   abartov:
@@ -4356,10 +4365,6 @@ ldap_only_users:
     ensure: present
     realname: Deb Zierten
     email: dzierten@wikimedia.org
-  janstee:
-    ensure: present
-    realname: Jaime Anstee
-    email: janstee@wikimedia.org
   annet:
     ensure: present
     realname: Anne Tomasevich
