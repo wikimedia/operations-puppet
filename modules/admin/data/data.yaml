@@ -145,6 +145,10 @@ groups:
     gid: 804
     description: people who upload wikidiff2 releases (T202473)
     members: [legoktm, wmde-fisch, thiemowmde]
+  releasers-wikibase:
+    gid: 807
+    description: people who upload wikibase releases (T268818)
+    members: [addshore, hoo, tarrow, wmde-leszek]
   releasers-blubber:
     gid: 808
     description: people who upload blubber releases

@@ -3,6 +3,7 @@ profile::standard::admin_groups:
   - releasers-mediawiki
   - releasers-mobile
   - releasers-parsoid
+  - releasers-wikibase
   - releasers-wikidiff2
   - contint-roots
 profile::releases::mediawiki::sitename: 'releases.wikimedia.org'
