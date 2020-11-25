@@ -331,23 +331,6 @@ host kubetcd2006 {
     fixed-address kubetcd2006.codfw.wmnet;
 }
 
-host kubestagetcd1001 {
-    hardware ethernet aa:00:00:3b:54:53;
-    fixed-address kubestagetcd1001.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-}
-
-host kubestagetcd1002 {
-    hardware ethernet aa:00:00:5c:31:1c;
-    fixed-address kubestagetcd1002.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-}
-
-host kubestagetcd1003 {
-    hardware ethernet aa:00:00:60:a7:fe;
-    fixed-address kubestagetcd1003.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-}
 
 host kubestagetcd1004 {
     hardware ethernet aa:00:00:75:c3:74;
@@ -362,6 +345,26 @@ host kubestagetcd1005 {
 host kubestagetcd1006 {
     hardware ethernet aa:00:00:30:d0:54;
     fixed-address kubestagetcd1006.eqiad.wmnet;
+}
+
+host kubestagetcd2001 {
+    hardware ethernet aa:00:00:3b:9d:f6;
+    fixed-address kubestagetcd2001.codfw.wmnet;
+}
+
+host kubestagetcd2002 {
+    hardware ethernet aa:00:00:00:a4:4e;
+    fixed-address kubestagetcd2002.codfw.wmnet;
+}
+
+host kubestagetcd2003 {
+    hardware ethernet aa:00:00:e8:a7:05;
+    fixed-address kubestagetcd2003.codfw.wmnet;
+}
+
+host kubestagemaster2001 {
+    hardware ethernet aa:00:00:85:fe:67;
+    fixed-address kubestagemaster2001.codfw.wmnet;
 }
 
 host kubernetes1005 {

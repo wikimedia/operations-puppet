@@ -1097,6 +1097,16 @@ node /^kubestagetcd100[456]\.eqiad\.wmnet$/ {
     role(etcd::v3::kubernetes::staging)
 }
 
+# etc cluster for kubernetes staging, v3, codfw
+node /^kubestagetcd200[123]\.codfw\.wmnet$/ {
+    role(etcd::v3::kubernetes::staging)
+}
+
+# kubernetes master for staging
+node 'kubestagemaster2001.codfw.wmnet' {
+    role(insetup)
+}
+
 # kubernetes masters
 node /^(acrab|acrux|argon|chlorine)\.(eqiad|codfw)\.wmnet$/ {
     role(kubernetes::master)
