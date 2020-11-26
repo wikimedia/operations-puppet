@@ -46,4 +46,4 @@ if @extra_params
 end
 
 -%>
-DAEMON_ARGS="<%= daemon_args.join(' ') %>"
+DAEMON_ARGS="<%= daemon_args.sort.join(' ') %>"

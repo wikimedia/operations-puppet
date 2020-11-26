@@ -46,4 +46,4 @@ if @runtime_config
 end
 
 -%>
-DAEMON_ARGS="<%= daemon_args.join(' ') %>"
+DAEMON_ARGS="<%= daemon_args.sort.join(' ') %>"
