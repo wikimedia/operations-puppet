@@ -46,7 +46,6 @@ class profile::idp(
     $log_dir = '/var/log/cas'
 
     $cas_daemon_user = 'tomcat'
-    $cas_manage_user = false
 
     if $is_staging_host {
         apt::repository{ 'component-idp-test':
@@ -87,7 +86,6 @@ class profile::idp(
         max_session_length     => $max_session_length,
         actuators              => $actuators,
         daemon_user            => $cas_daemon_user,
-        manage_user            => $cas_manage_user,
         log_dir                => $log_dir,
         memcached_enable       => $memcached_enable,
         memcached_port         => 11213,  # we use mcrouter which is on this port

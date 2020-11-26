@@ -44,7 +44,6 @@ class apereo_cas (
     Array[String[1]]                  $mfa_attribut_value            = ['mfa'],
     String                            $daemon_user                   = 'cas',
     Hash[String, Hash]                $services                      = {},
-    Boolean                           $manage_user                   = true,
     Optional[String[1]]               $java_opts                     = undef,
     Boolean                           $memcached_enable              = false,
     Stdlib::Port                      $memcached_port                = 11211,
@@ -77,18 +76,6 @@ class apereo_cas (
         override => true,
         restart  => true,
         content  => "[Service]\nReadWritePaths=${log_dir}\n",
-    }
-
-    if $manage_user {
-        # TODO: move to admin module
-        user{$daemon_user:
-            ensure   => 'present',
-            comment  => 'apereo cas user',
-            home     => $tomcat_basedir,
-            shell    => '/usr/sbin/nologin',
-            password => '!',
-            system   => true,
-        }
     }
 
     $groovy_file = '/etc/cas/global_principal_attribute_predicate.groovy'
