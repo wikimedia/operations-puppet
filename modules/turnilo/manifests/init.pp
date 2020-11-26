@@ -23,13 +23,14 @@
 #   Default: 'analytics/turnilo/deploy'
 #
 class turnilo(
-    $druid_clusters,
-    $port              = 9091,
-    $deployment_user   = 'analytics_deploy',
-    $scap_repo         = 'analytics/turnilo/deploy',
+    Array[Turnilo::Druid_cluster]     $druid_clusters,
+    Stdlib::Port                      $port             = 9091,
+    String                            $deployment_user  = 'analytics_deploy',
+    String                            $scap_repo        = 'analytics/turnilo/deploy',
+    Hash[Stdlib::IP::Address, String] $export_names_map = {},
 ) {
 
-    require_package(['nodejs', 'firejail'])
+    ensure_packages(['nodejs', 'firejail'])
 
     $scap_deployment_base_dir = '/srv/deployment'
     $turnilo_deployment_dir = "${scap_deployment_base_dir}/${scap_repo}"
@@ -52,11 +53,12 @@ class turnilo(
     }
 
     file { '/etc/firejail/turnilo.profile':
-        ensure => present,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
-        source => 'puppet:///modules/turnilo/turnilo.profile.firejail',
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        source  => 'puppet:///modules/turnilo/turnilo.profile.firejail',
+        require => Package['firejail'],
     }
 
     file { '/etc/turnilo':

@@ -2211,6 +2211,7 @@ dataCubes:
                 "57": "URG+ACK+PSH+FIN"
                 "58": "URG+ACK+PSH+SYN"
                 "59": "URG+ACK+PSH+SYN+FIN"
+<%- unless @export_names_map.empty? -%>
         exporter_name_map:
           extractionFn:
             type: lookup
@@ -2219,19 +2220,11 @@ dataCubes:
               type: map
               isOneToOne: true
               map:
-                "208.80.154.196": "cr1-eqiad"
-                "208.80.154.197": "cr2-eqiad"
-                "208.80.154.198": "cr2-eqord"
-                "208.80.153.192": "cr1-codfw"
-                "208.80.153.193": "cr2-codfw"
-                "208.80.153.198": "cr2-eqdfw"
-                "91.198.174.244": "cr2-esams"
-                "91.198.174.245": "cr3-esams"
-                "91.198.174.246": "cr3-knams"
-                "198.35.26.192": "cr3-ulsfo"
-                "198.35.26.193": "cr4-ulsfo"
-                "103.102.166.130": "cr2-eqsin"
-                "103.102.166.131": "cr3-eqsin"
+  <%- @export_names_map.each_pair do |ip, name| -%>
+                "<%= ip %>" : "<%= name %>"
+  <%- end -%>
+<%- end -%>
+<%- unless @export_names_map.empty? -%>
         exporter_region_map:
           extractionFn:
             type: lookup
@@ -2240,19 +2233,10 @@ dataCubes:
               type: map
               isOneToOne: false
               map:
-                "208.80.154.196": "eqiad"
-                "208.80.154.197": "eqiad"
-                "208.80.154.198": "eqord"
-                "208.80.153.192": "codfw"
-                "208.80.153.193": "codfw"
-                "208.80.153.198": "codfw"
-                "91.198.174.244": "esams"
-                "91.198.174.245": "esams"
-                "91.198.174.246": "esams"
-                "198.35.26.192": "ulsfo"
-                "198.35.26.193": "ulsfo"
-                "103.102.166.130": "eqsin"
-                "103.102.166.131": "eqsin"
+  <%- @export_names_map.each_pair do |ip, name| -%>
+                "<%= ip %>" : "<%= name[-3..-1] %>"
+  <%- end -%>
+<%- end -%>
     dimensions:
        - name: as_src
          title: AS src
@@ -2296,12 +2280,16 @@ dataCubes:
        - name: tcp_flags
          title: TCP flags
          formula: $tcp_flags.customTransform('tcp')
+<%- unless @export_names_map.empty? -%>
        - name: exporter_name
          title: Exporter name
          formula: $peer_ip_src.customTransform('exporter_name_map')
+<%- end -%>
+<%- unless @export_names_map.empty? -%>
        - name: exporter_region
          title: Exporter Region
          formula: $peer_ip_src.customTransform('exporter_region_map')
+<%- end -%>
        - name: parsed_comms
          title: Parsed Comms
          formula: $parsed_comms

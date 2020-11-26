@@ -207,3 +207,6 @@ profile::mariadb::section_ports: {}
 
 profile::query_service::username: blazegraph
 
+profile::druid::turnilo::port: 9091
+profile::druid::turnilo::monitoring_enabled: false
+profile::druid::turnilo::contact_group: 'analytics'

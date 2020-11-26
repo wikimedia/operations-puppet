@@ -17,13 +17,21 @@
 #   Default: 'analytics'
 #
 class profile::druid::turnilo(
-    $druid_clusters     = hiera('profile::druid::turnilo::druid_clusters'),
-    $port               = hiera('profile::druid::turnilo::port', 9091),
-    $monitoring_enabled = hiera('profile::druid::turnilo::monitoring_enabled', false),
-    $contact_group      = hiera('profile::druid::turnilo::contact_group', 'analytics'),
+    Array[Turnilo::Druid_cluster] $druid_clusters     = lookup('profile::druid::turnilo::druid_clusters'),
+    Stdlib::Port                  $port               = lookup('profile::druid::turnilo::port'),
+    Boolean                       $monitoring_enabled = lookup('profile::druid::turnilo::monitoring_enabled'),
+    String                        $contact_group      = lookup('profile::druid::turnilo::contact_group'),
 ) {
+    # Abuse the fact that we all ready have network device mappings in puppetdb via the netop::check
+    # resource with bgp => true matching routers and filter out fw's with bfd => false
+    # TODO: pull this data from netbox/puppet integration - T229397
+    $network_devices = query_resources(false, 'Netops::Check[~".*"]{bgp=true and bfd=true}', false)
+    $export_names_map = Hash($network_devices.map |$device| {
+        [$device['parameters']['ipv4'], $device['title']]
+    }.sort)
     class { 'turnilo':
-        druid_clusters => $druid_clusters,
+        druid_clusters   => $druid_clusters,
+        export_names_map => $export_names_map,
     }
 
     if $monitoring_enabled {

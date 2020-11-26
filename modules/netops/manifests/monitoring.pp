@@ -27,6 +27,16 @@ class netops::monitoring(
         os             => 'Junos',
         ospf           => true,
     }
+    #############################################################################################################
+    ###### WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING ######
+    ######                                                                                                 ######
+    ###### profile::druid::turnilo makes use of the information populated in $routers via query_resources. ######
+    ###### One needs to ensure any changes made here are compatible with the use case in that profile      ######
+    ###### specifically we use the following so the bgp and bfd attributes are significant:                ######
+    ######      query_resources(false, 'Netops::Check[~".*"]{bgp=true and bfd=true}'                       ######
+    ######                                                                                                 ######
+    ###### WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING ######
+    #############################################################################################################
     $routers = {
         # eqiad
         'cr1-eqiad'  => { ipv4 => '208.80.154.196',  ipv6 => '2620:0:861:ffff::1',  vrrp_peer => 'cr2-eqiad.wikimedia.org'},
