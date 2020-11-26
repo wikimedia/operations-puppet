@@ -1,6 +1,6 @@
 # Installs the puppet compiler and all the other software we need.
 class puppet_compiler(
-    $version = '0.7.2',  # The compiler* hosts override this in horizon
+    $version = '0.9.0',  # The compiler* hosts override this in horizon
     $workdir = '/srv/jenkins-workspace/puppet-compiler',
     $libdir  = '/var/lib/catalog-differ',
     $ensure  = 'present',
@@ -73,7 +73,7 @@ class puppet_compiler(
 
     # Install the compiler
     exec { 'install compiler':
-        command     => '/usr/bin/python setup.py install',
+        command     => '/usr/bin/python3 setup.py install',
         user        => 'root',
         cwd         => $compiler_dir,
         refreshonly => true,
