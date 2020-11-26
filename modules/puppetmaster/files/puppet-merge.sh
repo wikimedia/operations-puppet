@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e
+set -eu
 RED=$(tput bold; tput setaf 1)
 GREEN=$(tput bold; tput setaf 2)
 CYAN=$(tput bold; tput setaf 6)
@@ -135,12 +135,17 @@ fi
 lock $LABS_PRIVATE
 
 # if a specific sha1 was not requested push FETCH_HEAD on to the list of arguments
-if [ -z "${1}" ]
+if [ $# -gt 1 ]
 then
+  echo "Error: Too many arguments"
+  echo $usage
+  exit 1
+elif [ $# -eq 1 ]
+then
+  FETCH_SHA1=1
+else
   FETCH_SHA1=0
   ORIG_ARGS=( "$@" "FETCH_HEAD")
-else
-  FETCH_SHA1=1
 fi
 
 # From this point continue despite errors on remote masters. After a change
