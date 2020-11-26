@@ -75,11 +75,11 @@ class helm(
             # With helm 3, there is no such thing as local repository anymore
             exec { "helm3-repo-add-${name}":
                 command     => "/usr/bin/helm3 repo add ${name} ${url}",
-                environment => {
-                    'HELM_CONFIG_HOME' => $helm_home,
-                    'HELM_DATA_HOME'   => $helm_data,
-                    'HELM_CACHE_HOME'  => $helm_cache,
-                },
+                environment => [
+                    "HELM_CONFIG_HOME=${helm_home}",
+                    "HELM_DATA_HOME=${helm_data}",
+                    "HELM_CACHE_HOME=${helm_cache}",
+                ],
                 unless      => "/usr/bin/helm3 repo list | /bin/grep -E -q '^${name}\\s+${url}'",
                 user        => 'helm',
                 require     => [User['helm'], File[$helm_home], File[$helm_cache]]
