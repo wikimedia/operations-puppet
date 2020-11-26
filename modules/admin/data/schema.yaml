@@ -22,6 +22,8 @@ definitions:
           type: array
           items:
             type: string
+        approval:
+          type: string
       required:
         - members
       additionalProperties: false
