@@ -18,3 +18,11 @@ profile::tlsproxy::envoy::global_cert_name: "webserver-misc-apps.discovery.wmnet
 profile::miscweb::rsync::src_host: 'miscweb1002.eqiad.wmnet'
 profile::miscweb::rsync::dst_hosts:
   - 'miscweb2002.codfw.wmnet'
+
+profile::idp::client::httpd::sites:
+  'racktables.wikimedia.org':
+    vhost_content: 'profile/idp/client/httpd-racktables.erb'
+    document_root: '/srv/org/wikimedia/racktables/wwwroot'
+    required_groups:
+      - 'cn=ops,ou=groups,dc=wikimedia,dc=org'
+    proxied_as_https: true

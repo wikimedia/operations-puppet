@@ -10,7 +10,8 @@ class profile::racktables (
 ){
     system::role { 'racktables': description => 'Racktables server' }
 
-    include ::profile::standard
+    include profile::standard
+    include profile::idp::client::httpd
     include ::passwords::racktables
 
     class { '::racktables':

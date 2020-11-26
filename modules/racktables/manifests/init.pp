@@ -34,10 +34,6 @@ class racktables ($racktables_host, $racktables_db_host, $racktables_db) {
         content => template('racktables/racktables.config.erb'),
     }
 
-    httpd::site { 'racktables.wikimedia.org':
-        content => template('racktables/racktables.wikimedia.org.erb'),
-    }
-
     # Increase the default memory limit T102092
     file_line { 'racktables_php_memory':
         path   => $php_ini,

@@ -1,12 +1,6 @@
-#####################################################################
-### THIS FILE IS MANAGED BY PUPPET
-### puppet:///racktables/racktables.wikimedia.org.erb
-#####################################################################
-# vim: filetype=apache
-
 <VirtualHost *:80>
 
-    ServerName <%= @racktables_host %>
+    ServerName <%= @virtual_host %>
 
     RewriteEngine on
     RewriteCond %{HTTP:X-Forwarded-Proto} !https
@@ -14,7 +8,13 @@
     RewriteRule ^/(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,E=ProtoRedirect]
     Header always merge Vary X-Forwarded-Proto env=ProtoRedirect
 
-    DocumentRoot /srv/org/wikimedia/racktables/wwwroot
+    <%- @cas_settings.each_pair do |key, setting| -%>
+      <%- unless setting.nil? or setting == :undef -%>
+    <%= key %> <%= setting %>
+      <%-end -%>
+    <%-end -%>
+
+    DocumentRoot <%= @document_root %>
     <Directory />
         Options FollowSymLinks
         AllowOverride None
@@ -22,7 +22,16 @@
     <Directory /srv/org/wikimedia/racktables/wwwroot/>
         Options Indexes FollowSymLinks MultiViews
         AllowOverride None
-        Require all granted
+
+        <%- @cas_auth_settings.each_pair do |key, setting| -%>
+          <%- if setting.is_a?(Array) -%>
+            <%- setting.each do |_setting| -%>
+        <%= key %> <%= _setting %>
+            <%- end -%>
+          <%- else -%>
+        <%= key %> <%= setting %>
+          <%- end -%>
+        <%- end -%>
     </Directory>
 
     ErrorLog /var/log/apache2/error.log
