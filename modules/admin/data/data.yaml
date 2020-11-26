@@ -160,8 +160,9 @@ groups:
                  access to research mysql credentials.
                  If a user is added to this group it should not
                  need to be in analytics-users or analytics-privatedata-users.
-                 In case of doubt, please ask to the Analytics team.
-                 More info https://wikitech.wikimedia.org/wiki/Analytics/Data_access#Access_Groups
+                 Please note that we (Analytics) are trying to deprecate the group,
+                 if you need to add users to it please ping Luca/Andrew/Razzi first
+                 or comment in https://phabricator.wikimedia.org/T268801.
     members: [catrope, dduvall, mattflaschen, cooltey, marktraceur,
               jhernandez, daisy, etonkovidova, legoktm, risler,
               sbisson, matmarex, nikerabbit, dstrine, jdittrich, debt,
