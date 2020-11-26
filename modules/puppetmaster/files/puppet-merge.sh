@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -eu
+set -e
 RED=$(tput bold; tput setaf 1)
 GREEN=$(tput bold; tput setaf 2)
 CYAN=$(tput bold; tput setaf 6)
