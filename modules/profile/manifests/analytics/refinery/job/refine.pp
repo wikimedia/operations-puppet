@@ -27,7 +27,7 @@
 #
 # - netflow
 #   Infers schema from data and refines from
-#   /wmf/data/raw/netflow -> /wmf/data/wmf/netflow in the Hive wmf database.
+#   /wmf/data/raw/netflow -> /wmf/data/event/netflow in the Hive event database.
 #   Requires a network infra config file.
 #
 class profile::analytics::refinery::job::refine(
@@ -40,7 +40,7 @@ class profile::analytics::refinery::job::refine(
 
     # Update this when you want to change the version of the refinery job jar
     # being used for the refine job.
-    $refinery_version = '0.0.139'
+    $refinery_version = '0.0.140'
 
     # Use this value by default
     Profile::Analytics::Refinery::Job::Refine_job {
@@ -253,7 +253,7 @@ class profile::analytics::refinery::job::refine(
 
 
     # === Netflow data ===
-    # /wmf/data/raw/netflow -> /wmf/data/wmf
+    # /wmf/data/raw/netflow -> /wmf/data/event
     $netflow_input_path = '/wmf/data/raw/netflow'
     $netflow_input_path_regex = '(netflow)/hourly/(\\d+)/(\\d+)/(\\d+)/(\\d+)'
     $netflow_input_path_regex_capture_groups = 'table,year,month,day,hour'
@@ -265,8 +265,8 @@ class profile::analytics::refinery::job::refine(
             input_path                      => $netflow_input_path,
             input_path_regex                => $netflow_input_path_regex,
             input_path_regex_capture_groups => $netflow_input_path_regex_capture_groups,
-            output_path                     => '/wmf/data/wmf',
-            database                        => 'wmf',
+            output_path                     => '/wmf/data/event',
+            database                        => 'event',
             transform_functions             => 'org.wikimedia.analytics.refinery.job.refine.augment_netflow',
         }),
         # augment_netflow needs this to add network region / DC information.
