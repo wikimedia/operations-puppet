@@ -13,7 +13,7 @@ define cfssl::db (
     $db_data_source = $driver ? {
         # for now we need to unwrap the sensitive value otherwise it is not interpreted
         # Related bug: PUP-8969
-        'mysql' => "${username}:${password.unwrap}@tcp(${host}:3306)/${dbname}?parseTime=true",
+        'mysql' => "${username}:${password.unwrap}@tcp(${host}:3306)/${dbname}?parseTime=true&tls=true",
         default => $sqlite_path,
     }
     $db_config = {'driver' => $driver, 'data_source' => $db_data_source}
