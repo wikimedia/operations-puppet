@@ -67,6 +67,7 @@ class profile::mediawiki::maintenance {
     include ::profile::mediawiki::maintenance::readinglists
     include ::profile::mediawiki::maintenance::initsitestats
     include ::profile::mediawiki::maintenance::startupregistrystats
+    include ::profile::mediawiki::maintenance::computer_aided_tagging
 
     # Include the cache warmup script; requires node and conftool
     require ::profile::conftool::client
