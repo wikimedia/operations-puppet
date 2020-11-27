@@ -3,4 +3,4 @@
 # The "unit prefix" must consist of one or more valid characters (ASCII letters, digits, ":", "-",
 # "_", ".", and "\"). The total length of the unit name including the suffix must not exceed
 # 256 characters.
-type Systemd::Servicename = Pattern[/^[a-zA-Z0-9:_.\\-]{1,248}\.service$/]
+type Systemd::Servicename = Pattern[/^[a-zA-Z0-9@:_.\\-]{1,248}\.service$/]
