@@ -491,7 +491,7 @@ groups:
                  'ALL = NOPASSWD: /bin/journalctl *']
   datacenter-ops:
     gid: 765
-    description: Group of datacenter ops engineers, managed by Willy Pao T229124#5393773
+    description: Group of datacenter ops engineers
     members: [wpao, jclark]
     privileges: ['ALL = NOPASSWD: /usr/local/bin/install_console *',
                  'ALL = NOPASSWD: /usr/sbin/megacli *',
@@ -500,6 +500,7 @@ groups:
                  'ALL = NOPASSWD: /usr/bin/puppet agent -t -v',
                  'ALL = NOPASSWD: /bin/journalctl *',
                  'ALL = (syslog) NOPASSWD: ALL']
+    approval: Willy Pao
   perf-team:
     gid: 796
     description: performance team members with access to 'webperf' and 'xhgui' servers
