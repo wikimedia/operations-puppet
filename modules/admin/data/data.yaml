@@ -725,6 +725,7 @@ groups:
     gid: 813
     description: members of wikimedia security
     members: [reedy, dsharpe, sbassett]
+    approval: John Bennett
   gerrit-deployers:
     gid: 814
     description: deploy gerrit
