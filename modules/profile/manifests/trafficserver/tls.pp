@@ -243,7 +243,7 @@ class profile::trafficserver::tls (
         instance_name  => $instance_name,
         atsmtail_progs => $atsmtail_progs,
         atsmtail_port  => $atsmtail_port,
-        wanted_by      => "${service_name}.service",
+        wanted_by      => 'fifo-log-demux@analytics.service',
         mtail_args     => $mtail_args,
     }
 

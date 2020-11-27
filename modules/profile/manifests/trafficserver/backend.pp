@@ -154,7 +154,7 @@ class profile::trafficserver::backend (
         instance_name  => $instance_name,
         atsmtail_progs => $atsmtail_backend_progs,
         atsmtail_port  => $atsmtail_backend_port,
-        wanted_by      => 'trafficserver.service',
+        wanted_by      => 'fifo-log-demux@notpurge.service',
         mtail_args     => $mtail_args,
     }
 

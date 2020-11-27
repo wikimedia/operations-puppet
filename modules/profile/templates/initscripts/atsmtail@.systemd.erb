@@ -1,6 +1,9 @@
 [Unit]
 Description=mtail instance for Apache Traffic Server %i
 Documentation=https://wikitech.wikimedia.org/wiki/Apache_Traffic_Server
+# atsmtail depends on a given fifo-log-demux instance:
+#   atsmtail@tls     -> fifo-log-demux@analytics.service
+#   atsmtail@backend -> fifo-log-demux@notupurge.service
 Requires=<%= @wanted_by %>
 After=<%= @wanted_by %>
 
