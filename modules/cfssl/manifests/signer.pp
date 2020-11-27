@@ -25,13 +25,16 @@ define cfssl::signer (
     Stdlib::HTTPUrl               $default_crl_url  = "http://${host}:${port}/crl",
     Stdlib::HTTPUrl               $default_ocsp_url = "http://${host}:${ocsp_port}",
     Wmflib::Ensure                $serve_ensure     = 'absent',
-    Hash[String, Cfssl::Profile]  $profiles         = {},
-    Hash[String, Cfssl::Auth_key] $auth_keys        = {},
+    Boolean                       $manage_db        = true,
     Cfssl::DB_driver              $db_driver        = 'sqlite3',
     String                        $db_user          = 'cfssl',
     Sensitive[String[1]]          $db_pass          = Sensitive('changeme'),
     String                        $db_name          = 'cfssl',
     Stdlib::Host                  $db_host          = 'localhost',
+    Hash[String, Cfssl::Profile]  $profiles         = {},
+    Hash[String, Cfssl::Auth_key] $auth_keys        = {},
+    Optional[String]              $serve_service    = undef,
+    Optional[String]              $ocsp_service     = undef,
     Optional[Stdlib::Unixpath]    $ca_key_file      = undef,
     Optional[Stdlib::Unixpath]    $ca_file          = undef,
     Optional[Stdlib::Unixpath]    $ca_bundle_file   = undef,
@@ -48,8 +51,8 @@ define cfssl::signer (
     $db_conf_file       = "${conf_dir}/db.conf"
     $sqlite_path        = "${conf_dir}/cfssl.db"
     $ocsp_response_path = "${ca_dir}/ocspdump.txt"
-    $serve_service      = "cfssl-serve@${safe_title}"
-    $ocsp_service       = "cfssl-ocsp@${safe_title}"
+    $_serve_service      = pick($serve_service, "cfssl-serve@${safe_title}")
+    $_ocsp_service       = pick($ocsp_service, "cfssl-ocsp@${safe_title}")
 
     $_ca_key_file = $ca_key_file ? {
         undef   => "${ca_dir}/ca_key.pem",
@@ -69,36 +72,29 @@ define cfssl::signer (
         auth_keys        => $auth_keys,
         profiles         => $profiles,
         path             => $conf_file,
-        notify           => Service[$serve_service],
+        notify           => Service[$_serve_service],
     }
-    $db_data_source = $db_driver ? {
-        # for now we need to unwrap the sensitive value otherwise it is not interpreted
-        # Related bug: PUP-8969
-        'mysql' => "${db_user}:${db_pass.unwrap}@tcp(${db_host}:3306)/${db_name}?parseTime=true",
-        default => $sqlite_path,
+    if $manage_db {
+        cfssl::db {$safe_title:
+            driver         => $db_driver,
+            username       => $db_user,
+            password       => $db_pass,
+            dbname         => $db_name,
+            host           => $db_host,
+            notify_service => $_serve_service,
+            sqlite_path    => $sqlite_path,
+            conf_file      => $db_conf_file
+        }
     }
-    $db_config = {'driver' => $db_driver, 'data_source' => $db_data_source}
 
-    file{
-        default:
-            owner   => 'root',
-            group   => 'root',
-            require => Package[$cfssl::packages];
-        [$conf_dir, $ca_dir]:
-            ensure => directory,
-            mode   => '0550';
-        $db_conf_file:
-            ensure    => file,
-            mode      => '0440',
-            show_diff => false,
-            content   => Sensitive($db_config.to_json()),
-            notify    => Service[$serve_service];
 
-    }
-    sqlite::db {"cfssl ${title} signer DB":
-        db_path    => $sqlite_path,
-        sql_schema => "${cfssl::sql_dir}/sqlite_initdb.sql",
-        require    => File["${cfssl::sql_dir}/sqlite_initdb.sql"],
+    file{[$conf_dir, $ca_dir]:
+        ensure  => directory,
+        mode    => '0550',
+        owner   => 'root',
+        group   => 'root',
+        require => Package[$cfssl::packages];
+
     }
     if $ca_key_content and $ca_cert_content {
         file {
@@ -107,7 +103,7 @@ define cfssl::signer (
                 owner  => 'root',
                 group  => 'root',
                 mode   => '0400',
-                notify => Service[$serve_service];
+                notify => Service[$_serve_service];
             $_ca_key_file:
                 show_diff => false,
                 content   => $ca_key_content;
@@ -116,7 +112,7 @@ define cfssl::signer (
                 mode    => '0444';
         }
     }
-    systemd::service {$serve_service:
+    systemd::service {$_serve_service:
         ensure  => $serve_ensure,
         content => template('cfssl/cfssl.service.erb'),
         restart => true,
@@ -125,7 +121,7 @@ define cfssl::signer (
         true    => 'present',
         default => 'absent',
     }
-    systemd::service {$ocsp_service:
+    systemd::service {$_ocsp_service:
         ensure  => $ocsp_ensure,
         content => template('cfssl/cfssl-ocsp.service.erb'),
         restart => true,
