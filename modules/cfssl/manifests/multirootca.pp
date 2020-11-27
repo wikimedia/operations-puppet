@@ -11,10 +11,11 @@ class cfssl::multirootca (
 ) {
     include cfssl
     $config_file = "${cfssl::conf_dir}/multiroot.conf"
+    $service_name = 'cfssl-multirootca'
     file {$config_file:
         ensure  => $ensure,
         content => template('cfssl/multiroot.conf.erb'),
-        notify  => Service['cfssl-multirootca'],
+        notify  => Service[$service_name],
     }
     systemd::service {'cfssl-multirootca':
         content => template('cfssl/cfssl-multirootca.service.erb'),

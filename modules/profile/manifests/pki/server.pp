@@ -25,6 +25,18 @@ class profile::pki::server(
     $crl_url = "http://${vhost}/crl"
     $ocsp_url = "http://${vhost}/ocsp"
     class {'cfssl': }
+    $db_conf_file = "${cfssl::conf_dir}/db.conf"
+    $multirootca_service = 'cfssl-multirootca'
+    cfssl::db{'multirooca-db':
+        driver         => $db_driver,
+        username       => $db_user,
+        password       => $db_pass,
+        dbname         => $db_name,
+        host           => $db_host,
+        conf_file      => $db_conf_file,
+        notify_service => $multirootca_service,
+    }
+
     cfssl::signer {'WMF_root_CA':
         profiles         => $profiles,
         ca_key_content   => Sensitive(secret($ca_key_content)),
@@ -32,11 +44,10 @@ class profile::pki::server(
         auth_keys        => $auth_keys,
         default_crl_url  => $crl_url,
         default_ocsp_url => $ocsp_url,
-        db_driver        => $db_driver,
-        db_user          => $db_user,
-        db_pass          => $db_pass,
-        db_name          => $db_name,
-        db_host          => $db_host,
+        serve_service    => $multirootca_service,
+        db_conf_file     => $db_conf_file,
+        manage_db        => false,
+        manage_services  => false,
     }
     $signers = $intermediates.reduce({}) |$memo, $value| {
         $intermediate = $value[0]
@@ -65,18 +76,17 @@ class profile::pki::server(
             auth_keys        => $auth_keys,
             default_crl_url  => $crl_url,
             default_ocsp_url => $ocsp_url,
-            db_driver        => $db_driver,
-            db_user          => $db_user,
-            db_pass          => $db_pass,
-            db_name          => $db_name,
-            db_host          => $db_host,
+            serve_service    => $multirootca_service,
+            db_conf_file     => $db_conf_file,
+            manage_db        => false,
+            manage_services  => false,
         }
         $memo + {
             $safe_title => {
                 'private'     => $ca_key_file,
                 'certificate' => $ca_file,
                 'config'      => "${cfssl::signer_dir}/${safe_title}/cfssl.conf",
-                'dbconfig'    => "${cfssl::signer_dir}/${safe_title}/db.conf",
+                'dbconfig'    => $db_conf_file,
                 'nets'        => $config['nets'],
             }
         }

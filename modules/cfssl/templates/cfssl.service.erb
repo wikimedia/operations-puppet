@@ -5,7 +5,7 @@ Documentation=https://github.com/cloudflare/cfssl/tree/master/doc
 
 [Service]
 ExecStart=/usr/bin/cfssl serve \
-          -db-config <%= @db_conf_file %> \
+          -db-config <%= @_db_conf_file %> \
           -config <%= @conf_file %> \
           -address <%= @host %> \
           -port <%= @port %> \

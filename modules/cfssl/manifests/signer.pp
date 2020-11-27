@@ -26,6 +26,7 @@ define cfssl::signer (
     Stdlib::HTTPUrl               $default_ocsp_url = "http://${host}:${ocsp_port}",
     Wmflib::Ensure                $serve_ensure     = 'absent',
     Boolean                       $manage_db        = true,
+    Boolean                       $manage_services  = true,
     Cfssl::DB_driver              $db_driver        = 'sqlite3',
     String                        $db_user          = 'cfssl',
     Sensitive[String[1]]          $db_pass          = Sensitive('changeme'),
@@ -35,6 +36,7 @@ define cfssl::signer (
     Hash[String, Cfssl::Auth_key] $auth_keys        = {},
     Optional[String]              $serve_service    = undef,
     Optional[String]              $ocsp_service     = undef,
+    Optional[Stdlib::Unixpath]    $db_conf_file     = undef,
     Optional[Stdlib::Unixpath]    $ca_key_file      = undef,
     Optional[Stdlib::Unixpath]    $ca_file          = undef,
     Optional[Stdlib::Unixpath]    $ca_bundle_file   = undef,
@@ -48,9 +50,9 @@ define cfssl::signer (
     $conf_dir           = "${cfssl::signer_dir}/${safe_title}"
     $conf_file          = "${cfssl::signer_dir}/${safe_title}/cfssl.conf"
     $ca_dir             = "${conf_dir}/ca"
-    $db_conf_file       = "${conf_dir}/db.conf"
     $sqlite_path        = "${conf_dir}/cfssl.db"
     $ocsp_response_path = "${ca_dir}/ocspdump.txt"
+    $_db_conf_file       = pick($db_conf_file, "${conf_dir}/db.conf")
     $_serve_service      = pick($serve_service, "cfssl-serve@${safe_title}")
     $_ocsp_service       = pick($ocsp_service, "cfssl-ocsp@${safe_title}")
 
@@ -83,7 +85,7 @@ define cfssl::signer (
             host           => $db_host,
             notify_service => $_serve_service,
             sqlite_path    => $sqlite_path,
-            conf_file      => $db_conf_file
+            conf_file      => $_db_conf_file
         }
     }
 
@@ -112,18 +114,20 @@ define cfssl::signer (
                 mode    => '0444';
         }
     }
-    systemd::service {$_serve_service:
-        ensure  => $serve_ensure,
-        content => template('cfssl/cfssl.service.erb'),
-        restart => true,
-    }
-    $ocsp_ensure = ($ocsp_cert_path and $ocsp_key_path) ? {
-        true    => 'present',
-        default => 'absent',
-    }
-    systemd::service {$_ocsp_service:
-        ensure  => $ocsp_ensure,
-        content => template('cfssl/cfssl-ocsp.service.erb'),
-        restart => true,
+    if $manage_services {
+        systemd::service {$_serve_service:
+            ensure  => $serve_ensure,
+            content => template('cfssl/cfssl.service.erb'),
+            restart => true,
+        }
+        $ocsp_ensure = ($ocsp_cert_path and $ocsp_key_path) ? {
+            true    => 'present',
+            default => 'absent',
+        }
+        systemd::service {$_ocsp_service:
+            ensure  => $ocsp_ensure,
+            content => template('cfssl/cfssl-ocsp.service.erb'),
+            restart => true,
+        }
     }
 }
