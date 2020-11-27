@@ -118,6 +118,7 @@ groups:
     description: manage elasticsearch nodes
     members: [ebernhardson, dcausse, mstyles, zpapierski]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
+    approval: Guillaume Lederrey
   dataset-admins:
     gid: 710
     description: does work on dataset hosts
@@ -150,6 +151,7 @@ groups:
     description: manage cloudelastic nodes
     members: [ebernhardson, dcausse, bd808, mstyles, zpapierski, nskaggs]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
+    approval: Guillaume Lederrey
   udp2log-users:
     gid: 713
     description: general user tasks for udp2log (RT 5391)
@@ -421,11 +423,13 @@ groups:
                  'ALL = NOPASSWD: /usr/local/bin/pool',
                  'ALL = NOPASSWD: /bin/cat /var/log/nginx*',
                  'ALL = NOPASSWD: /usr/bin/jstack *']
+    approval: Guillaume Lederrey
   wdqs-roots:
     gid: 806
     description: Root level access for WikiData Query Service project
     members: [smalyshev, hoo, ebernhardson, dcausse, mstyles, zpapierski, addshore]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
+    approval: Guillaume Lederrey
   mailman-admins:
     gid: 757
     description: Admins for mailman
@@ -681,6 +685,7 @@ groups:
     description: users with root on WDQS test cluster
     members: [smalyshev]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
+    approval: Guillaume Lederrey
   sitemaps-admins:
     gid: 805
     description: People who upload files to sitemaps.wikimedia.org
