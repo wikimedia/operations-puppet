@@ -54,13 +54,13 @@ class profile::pki::server(
         $intermediate = $value[0]
         $config       = $value[1]
         $safe_title   = $intermediate.regsubst('\W', '_', 'G')
-        $ca_key_file  = pick($config['private'], "${cfssl::ssl_dir}/${safe_title}/${safe_title}-key.pem")
-        $ca_file      = pick($config['certificate'], "${cfssl::ssl_dir}/${safe_title}/${safe_title}.pem")
 
         if 'key_content' in $config and 'cert_content' in $config {
             # Pull key material from puppet
             $ca_key_content  = Sensitive(secret($config['key_content']))
             $ca_cert_content = file($config['cert_content'])
+            $ca_key_file     = "${cfssl::signer_dir}/ca/${safe_title}-key.pem"
+            $ca_file         = "${cfssl::signer_dir}/ca/${safe_title}.pem"
         } else {
             # Generate key material on the fly
             cfssl::cert{$intermediate:
@@ -73,7 +73,10 @@ class profile::pki::server(
             }
             $ca_key_content  = undef
             $ca_cert_content = undef
+            $ca_key_file    = "${cfssl::ssl_dir}/${safe_title}/${safe_title}-key.pem"
+            $ca_file        = "${cfssl::ssl_dir}/${safe_title}/${safe_title}.pem"
         }
+
         cfssl::signer {$intermediate:
             profiles         => $profiles,
             ca_key_file      => $ca_key_file,
