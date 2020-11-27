@@ -4,23 +4,24 @@
 # @param names The certificate authority names used for intermediates
 # @param key_params The key algorithm and size used for intermediates
 # @param gen_csr if true genrate a CSR.  this is only needed when bootstrapping
-# @param profiles a Hash of signing profiles
+# @param default_profiles a Hash of signing default_profiles
 # @param intermediates a list of intermediate CN's to create
 class profile::pki::server(
-    String                        $vhost           = lookup('profile::pki::server::vhost'),
-    String                        $ca_key_content  = lookup('profile::pki::server::ca_key_content'),
-    String                        $ca_cert_content = lookup('profile::pki::server::ca_cert_content'),
-    Array[Cfssl::Name]            $names           = lookup('profile::pki::server::names'),
-    Cfssl::Key                    $key_params      = lookup('profile::pki::server::key_params'),
-    Boolean                       $gen_csr         = lookup('profile::pki::server::gen_csr'),
-    Cfssl::DB_driver              $db_driver       = lookup('profile::pki::server::db_driver'),
-    String                        $db_user         = lookup('profile::pki::server::db_user'),
-    Sensitive[String[1]]          $db_pass         = lookup('profile::pki::server::db_pass'),
-    String                        $db_name         = lookup('profile::pki::server::db_name'),
-    Stdlib::Host                  $db_host         = lookup('profile::pki::server::db_host'),
-    Hash[String, Cfssl::Profile]  $profiles        = lookup('profile::pki::server::profiles'),
-    Hash[String, Cfssl::Auth_key] $auth_keys       = lookup('profile::pki::server::auth_keys'),
-    Hash[String, Hash]            $intermediates   = lookup('profile::pki::server::intermediates'),
+    String                        $vhost            = lookup('profile::pki::server::vhost'),
+    String                        $ca_key_content   = lookup('profile::pki::server::ca_key_content'),
+    String                        $ca_cert_content  = lookup('profile::pki::server::ca_cert_content'),
+    Array[Cfssl::Name]            $names            = lookup('profile::pki::server::names'),
+    Cfssl::Key                    $key_params       = lookup('profile::pki::server::key_params'),
+    Boolean                       $gen_csr          = lookup('profile::pki::server::gen_csr'),
+    Cfssl::DB_driver              $db_driver        = lookup('profile::pki::server::db_driver'),
+    String                        $db_user          = lookup('profile::pki::server::db_user'),
+    Sensitive[String[1]]          $db_pass          = lookup('profile::pki::server::db_pass'),
+    String                        $db_name          = lookup('profile::pki::server::db_name'),
+    Stdlib::Host                  $db_host          = lookup('profile::pki::server::db_host'),
+    Hash[String, Cfssl::Profile]  $root_ca_profiles = lookup('profile::pki::server::root_ca_profiles'),
+    Hash[String, Cfssl::Profile]  $default_profiles = lookup('profile::pki::server::default_profiles'),
+    Hash[String, Cfssl::Auth_key] $auth_keys        = lookup('profile::pki::server::auth_keys'),
+    Hash[String, Hash]            $intermediates    = lookup('profile::pki::server::intermediates'),
 ) {
     $crl_url = "http://${vhost}/crl"
     $ocsp_url = "http://${vhost}/ocsp"
@@ -37,8 +38,12 @@ class profile::pki::server(
         notify_service => $multirootca_service,
     }
 
+    $_root_ca_profiles = $root_ca_profiles.empty? {
+        true    => $default_profiles,
+        default => $root_ca_profiles,
+    }
     cfssl::signer {'WMF_root_CA':
-        profiles         => $profiles,
+        profiles         => $_root_ca_profiles,
         ca_key_content   => Sensitive(secret($ca_key_content)),
         ca_cert_content  => file($ca_cert_content),
         auth_keys        => $auth_keys,
@@ -54,6 +59,11 @@ class profile::pki::server(
         $intermediate = $value[0]
         $config       = $value[1]
         $safe_title   = $intermediate.regsubst('\W', '_', 'G')
+        $profiles     = pick($config['profiles'], $default_profiles)
+        $_root_ca_profiles = $config.has_key('profiles') ? {
+            true    => $config['profiles'],
+            default => $default_profiles,
+        }
 
         if 'key_content' in $config and 'cert_content' in $config {
             # Pull key material from puppet

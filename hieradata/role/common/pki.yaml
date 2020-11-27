@@ -6,7 +6,7 @@ profile::pki::server::ca_key_content: 'pki/ROOT/Wikimedia_ROOT_CA.key'
 # this param is passed to the file function
 profile::pki::server::ca_cert_content: 'profile/pki/ROOT/Wikimedia_ROOT_CA.pem'
 profile::pki::server::vhost: 'pki.discovery.wmnet'
-profile::pki::server::profiles:
+profile::pki::server::root_ca_profiles:
   intermediate:
     usages:
       - 'cert sign'
@@ -20,10 +20,17 @@ profile::pki::server::profiles:
       - 'digital signature'
       - 'ocsp signing'
     expiry: '43800h'
+profile::pki::server::default_profiles:
+  ocsp:
+    usages:
+      - 'digital signature'
+      - 'ocsp signing'
+    expiry: '43800h'
 profile::pki::server::default_signer: 'Wikimedia_SRE_Internal'
 profile::pki::server::db_driver: 'mysql'
 profile::pki::server::db_host: 'm1-master.eqiad.wmnet'
 profile::pki::server::intermediates:
+  "Wikimedia testing CA": {}
   "Wikimedia SRE Internal":
     # this param is passed to the secret function
     key_content: 'pki/intermediates/Wikimedia_SRE_Internal.pem'
