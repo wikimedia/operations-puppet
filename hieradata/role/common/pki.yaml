@@ -2,9 +2,9 @@ profile::base::puppet::dns_alt_names:
   - pki.discovery.wmnet
 profile::pki::client::ensure: present
 # this param is passed to the secret function
-profile::pki::server::ca_key_content: 'pki/Wikimedia_ROOT_CA.key'
+profile::pki::server::ca_key_content: 'pki/ROOT/Wikimedia_ROOT_CA.key'
 # this param is passed to the file function
-profile::pki::server::ca_cert_content: 'profile/pki/Wikimedia_ROOT_CA.pem'
+profile::pki::server::ca_cert_content: 'profile/pki/ROOT/Wikimedia_ROOT_CA.pem'
 profile::pki::server::vhost: 'pki.discovery.wmnet'
 profile::pki::server::profiles:
   intermediate:
@@ -24,7 +24,11 @@ profile::pki::server::default_signer: 'Wikimedia_SRE_Internal'
 profile::pki::server::db_driver: 'mysql'
 profile::pki::server::db_host: 'm1-master.eqiad.wmnet'
 profile::pki::server::intermediates:
-  "Wikimedia SRE Internal": {}
+  "Wikimedia SRE Internal":
+    # this param is passed to the secret function
+    key_content: 'pki/intermediates/Wikimedia_SRE_Internal.pem'
+    # this param is passed to the file function
+    cert_content: 'profile/pki/intermediates/Wikimedia_SRE_Internal.pem'
 profile::pki::client::certs:
   'foobar.example.com':
     label: 'Wikimedia_SRE_Internal'
