@@ -1,2 +1,3 @@
 mariadb::shard: 'es2'
 profile::mariadb::mysql_role: 'standalone'
+profile::base::notifications: disabled
