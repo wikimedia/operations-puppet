@@ -18,6 +18,7 @@ class cfssl (
             ensure  => directory,
             purge   => true,
             recurse => true,
+            force   => true,
             mode    => '0550';
         "${sql_dir}/sqlite_initdb.sql":
             ensure => file,
