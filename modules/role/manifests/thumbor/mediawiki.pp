@@ -35,7 +35,7 @@ class role::thumbor::mediawiki {
         relay_address => '',
     }
 
-    $thumbor_memcached_servers_ferm = join(hiera('thumbor_memcached_servers'), ' ')
+    $thumbor_memcached_servers_ferm = join(lookup('thumbor_memcached_servers'), ' ')
 
     ferm::service { 'memcached_memcached_role':
         proto  => 'tcp',
