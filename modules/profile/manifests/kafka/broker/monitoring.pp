@@ -11,10 +11,10 @@
 #   Hiera: profile::kafka::broker::replica_maxlag_critical
 #
 class profile::kafka::broker::monitoring (
-    $prometheus_nodes        = hiera('prometheus_nodes'),
-    $kafka_cluster_name      = hiera('profile::kafka::broker::kafka_cluster_name'),
-    $replica_maxlag_warning  = hiera('profile::kafka::broker::monitoring::replica_maxlag_warning', 10000),
-    $replica_maxlag_critical = hiera('profile::kafka::broker::monitoring::replica_maxlag_critical', 100000),
+    Array[Stdlib::Host] $prometheus_nodes = lookup('prometheus_nodes'),
+    String $kafka_cluster_name            = lookup('profile::kafka::broker::kafka_cluster_name'),
+    Integer $replica_maxlag_warning       = lookup('profile::kafka::broker::monitoring::replica_maxlag_warning', {'default_value' => 10000}),
+    Integer $replica_maxlag_critical      = lookup('profile::kafka::broker::monitoring::replica_maxlag_critical', {'default_value' => 100000}),
 ) {
     # Get fully qualified Kafka cluster name
     $config        = kafka_config($kafka_cluster_name)

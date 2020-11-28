@@ -3,9 +3,9 @@
 # Tools to monitor and expose metrics about a Kafka cluster
 #
 class profile::kafka::monitoring(
-    $config           = hiera('profile::kafka::monitoring::config'),
-    $clusters         = hiera('profile::kafka::monitoring::clusters'),
-    $prometheus_nodes = hiera('prometheus_nodes'),
+    Hash[String,Hash] $config             = lookup('profile::kafka::monitoring::config'),
+    Array[String] $clusters               = lookup('profile::kafka::monitoring::clusters'),
+    Array[Stdlib::Host] $prometheus_nodes = lookup('prometheus_nodes'),
 ) {
 
     profile::kafka::burrow { $clusters:
