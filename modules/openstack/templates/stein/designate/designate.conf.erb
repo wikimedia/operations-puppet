@@ -10,7 +10,7 @@ use_syslog = True
 syslog_log_facility = LOG_LOCAL0
 
 # set the usgi loglevel to 'WARN' to filter out haproxy pings
-default_log_levels = eventlet.wsgi=WARN
+default_log_levels = amqp=WARN,amqplib=WARN,boto=WARN,qpid=WARN,sqlalchemy=WARN,suds=INFO,oslo.messaging=INFO,oslo_messaging=INFO,iso8601=WARN,requests.packages.urllib3.connectionpool=WARN,urllib3.connectionpool=WARN,websocket=WARN,requests.packages.urllib3.util.retry=WARN,urllib3.util.retry=WARN,keystonemiddleware=WARN,routes.middleware=WARN,stevedore=WARN,taskflow=WARN,keystoneauth=WARN,oslo.cache=INFO,oslo_policy=INFO,dogpile.core.dogpile=INFO,eventlet.wsgi.server=WARN,kazoo.client=WARN,keystone=INFO,oslo_service.loopingcall=WARN
 
 # Show debugging output in logs (sets DEBUG log level output)
 #debug = false
