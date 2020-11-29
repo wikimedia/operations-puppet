@@ -1,8 +1,5 @@
 [DEFAULT]
 
-use_syslog = True
-syslog_log_facility = LOG_LOCAL0
-
 # Show more verbose log output (sets INFO log level output)
 verbose = False
 
@@ -42,10 +39,13 @@ limit_param_default = 25
 
 # Send logs to syslog (/dev/log) instead of to file specified
 # by `log_file`
-use_syslog = False
+use_syslog = True
 
 # Facility to use. If unset defaults to LOG_USER.
-#syslog_log_facility = LOG_LOCAL1
+syslog_log_facility = LOG_LOCAL0
+
+default_log_levels = amqp=WARN,amqplib=WARN,boto=WARN,qpid=WARN,sqlalchemy=WARN,suds=INFO,oslo.messaging=INFO,oslo_messaging=INFO,iso8601=WARN,requests.packages.urllib3.connectionpool=WARN,urllib3.connectionpool=WARN,websocket=WARN,requests.packages.urllib3.util.retry=WARN,urllib3.util.retry=WARN,keystonemiddleware=WARN,routes.middleware=WARN,stevedore=WARN,taskflow=WARN,keystoneauth=WARN,oslo.cache=INFO,dogpile.core.dogpile=INFO
+
 
 # ================= SSL Options ===============================
 
