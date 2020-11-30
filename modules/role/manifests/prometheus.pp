@@ -13,11 +13,6 @@ class role::prometheus {
 
     include ::profile::prometheus::pushgateway
 
-    # We only have a staging cluster in eqiad, don't poll it from both DCs
-    if $::site == 'eqiad' {
-        include ::profile::prometheus::k8s::staging
-    }
-
     include ::profile::standard
     include ::profile::base::firewall
 

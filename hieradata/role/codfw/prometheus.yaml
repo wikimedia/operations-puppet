@@ -3,3 +3,21 @@ prometheus::server::max_chunks_to_persist: 1048576
 lvs::realserver::realserver_ips:
  - 10.2.1.25
 profile::prometheus::ops::enable_thanos_upload: true
+# A hash containing configuration for kubernetes clusters.
+profile::prometheus::kubernetes::clusters:
+  k8s:
+    enabled: true
+    master_host: 'kubemaster.svc.codfw.wmnet'
+    port: 9906
+    class_name: role::kubernetes::worker
+  k8s-staging:
+    enabled: false
+    master_host: 'kubestagemaster.svc.codfw.wmnet'
+    port: 9907
+    class_name: role::kubernetes::staging::worker
+# In the private repo a stanza like the following is required
+# profile::prometheus::kubernetes::cluster_tokens:
+# k8s:
+#   client_token: eqiaddummy
+# k8s-staging:
+#   client_token: eqiaddummystaging
