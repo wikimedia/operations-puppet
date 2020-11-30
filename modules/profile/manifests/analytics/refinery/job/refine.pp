@@ -119,9 +119,11 @@ class profile::analytics::refinery::job::refine(
     # EventLogging streams that have been migrated to EventGate.
     $eventlogging_legacy_table_includelist = [
         'ContentTranslationAbuseFilter',
-        'Test',
-        'TemplateWizard',
+        'SpecialInvestigate',
+        'SpecialMuteSubmit',
         'SearchSatisfaction',
+        'TemplateWizard',
+        'Test',
     ]
     $eventlogging_legacy_table_includelist_regex = "^(${join($eventlogging_legacy_table_includelist, '|')})$"
 
