@@ -1,5 +1,5 @@
 class kubeadm::repo (
-    String $component = 'thirdparty/kubeadm-k8s-1-16',
+    String $component = 'thirdparty/kubeadm-k8s-1-17',
 ) {
     $repo_name = 'kubeadm-k8s-component-repo'
     apt::repository { $repo_name:
