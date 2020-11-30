@@ -167,7 +167,7 @@ groups:
                  or comment in https://phabricator.wikimedia.org/T268801.
     members: [catrope, dduvall, mattflaschen, cooltey, marktraceur,
               jhernandez, daisy, etonkovidova, legoktm, risler,
-              matmarex, nikerabbit, dstrine, jdittrich, debt,
+              matmarex, dstrine, jdittrich, debt,
               mlitn, sharvaniharan, kharlan]
   ldap-admins:
     gid: 715
