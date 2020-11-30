@@ -22,6 +22,11 @@
     # And use E-Tag/If-None-Match/304 to validate stored responses (T202734)
     Header set Cache-Control "s-maxage=60, must-revalidate, max-age=0"
 
+    # This domain contains only public information that should be consumable
+    # by other domains. This is needed to let the WikimediaDebug browser extension
+    # read the list of debug servers.
+    Header set Access-Control-Allow-Origin "*"
+
     ErrorLog /var/log/apache2/error.log
 
     # Possible values include: debug, info, notice, warn, error, crit,
