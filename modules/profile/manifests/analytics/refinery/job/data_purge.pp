@@ -71,7 +71,7 @@ class profile::analytics::refinery::job::data_purge (
     kerberos::systemd_timer { 'refinery-drop-pageview-actor-hourly-partitions':
         ensure       => $ensure_timers,
         description  => 'Drop pageview_actor_hourly data from HDFS following data retention policies.',
-        command      => "${refinery_path}/bin/refinery-drop-older-than --database='wmf' --tables='pageview_actor_hourly' --base-path='/wmf/data/wmf/pageview/actor/hourly' --path-format='year=(?P<year>[0-9]+)(/month=(?P<month>[0-9]+)(/day=(?P<day>[0-9]+)(/hour=(?P<hour>[0-9]+))?)?)?' --older-than='${refined_retention_days}' --skip-trash --execute='96f2d4a6800314113b9bf23822854d4d'",
+        command      => "${refinery_path}/bin/refinery-drop-older-than --database='wmf' --tables='pageview_actor' --base-path='/wmf/data/wmf/pageview/actor' --path-format='year=(?P<year>[0-9]+)(/month=(?P<month>[0-9]+)(/day=(?P<day>[0-9]+)(/hour=(?P<hour>[0-9]+))?)?)?' --older-than='${refined_retention_days}' --skip-trash --execute='da789e9fea7e42f2f9db1d28c508321e'",
         interval     => '*-*-* 00/4:50:00',
         environment  => $systemd_env,
         user         => 'analytics',
