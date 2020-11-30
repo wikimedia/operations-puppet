@@ -1,0 +1,16 @@
+[Unit]
+Description=Cloudflare SSL OCSP Refresh (<%= @title %>) 
+After=network.target remote-fs.target nss-lookup.target
+Documentation=https://github.com/cloudflare/cfssl/tree/master/doc
+
+[Service]
+ExecStart=/usr/bin/cfssl ocsprefresh \
+          -db-config <%= @_db_conf_file %> \
+          -responder <%= @cert_path %> \
+          -responder-key <%= @key_path %> \
+          -ca <%= @_ca_file %>
+Restart=always
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6 AF_NETLINK
+
+[Install]
+WantedBy=multi-user.target

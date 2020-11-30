@@ -3,8 +3,9 @@
 class cfssl (
     Stdlib::Unixpath $conf_dir   = '/etc/cfssl',
     Stdlib::Unixpath $signer_dir = "${conf_dir}/signers",
-    Stdlib::Unixpath $csr_dir = "${conf_dir}/csr",
-    Stdlib::Unixpath $ssl_dir = "${conf_dir}/ssl",
+    Stdlib::Unixpath $csr_dir    = "${conf_dir}/csr",
+    Stdlib::Unixpath $ocsp_dir   = "${conf_dir}/ocsp",
+    Stdlib::Unixpath $ssl_dir    = "${conf_dir}/ssl",
     Array[String]    $packages   = ['golang-cfssl']
 ) {
     ensure_packages(['golang-cfssl'])
@@ -14,7 +15,7 @@ class cfssl (
             owner   => 'root',
             group   => 'root',
             require => Package[$packages];
-        [$conf_dir, $sql_dir, $signer_dir, $csr_dir, $ssl_dir]:
+        [$conf_dir, $sql_dir, $signer_dir, $csr_dir, $ssl_dir, $ocsp_dir]:
             ensure  => directory,
             purge   => true,
             recurse => true,

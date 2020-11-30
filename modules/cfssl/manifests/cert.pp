@@ -1,6 +1,7 @@
 # @summary a resource for creating csr json files
 define cfssl::cert (
     Cfssl::Signer_config          $signer_config,
+    String                        $common_name   = $title,
     Array[Cfssl::Name]            $names         = [],
     Cfssl::Key                    $key           = {'algo' => 'ecdsa', 'size' => 521},
     Wmflib::Ensure                $ensure        = 'present',
@@ -46,7 +47,7 @@ define cfssl::cert (
         }
     }
     $csr = {
-        'CN'    => $title,
+        'CN'    => $common_name,
         'hosts' => $hosts,
         'key'   => $key,
         'names' => $_names,
