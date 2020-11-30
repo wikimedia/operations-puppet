@@ -72,7 +72,7 @@ class profile::base::labs(
     systemd::timer::job { 'cleanup_puppet_client_bucket':
         ensure             => $cleanup_puppet_client_bucket.bool2str('present','absent'),
         description        => 'Delete old files from the puppet client bucket',
-        command            => "find /var/lib/puppet/clientbucket/ -type f -mtime +${client_bucket_file_age} -atime +${client_bucket_file_age} -delete",
+        command            => "/usr/bin/find /var/lib/puppet/clientbucket/ -type f -mtime +${client_bucket_file_age} -atime +${client_bucket_file_age} -delete",
         interval           => {
             'start'    => 'OnUnitInactiveSec',
             'interval' => '24h',
