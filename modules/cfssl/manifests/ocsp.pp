@@ -49,7 +49,7 @@ define cfssl::ocsp (
     } else {
         cfssl::cert{$safe_cert_name:
             common_name   => $common_name,
-            label         => $title,
+            label         => $safe_title,
             hosts         => $additional_names,
             profile       => 'ocsp',
             outdir        => $outdir,
