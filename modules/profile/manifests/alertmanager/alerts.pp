@@ -34,7 +34,7 @@ class profile::alertmanager::alerts {
         method          => 'ge',
         warning         => 2,
         critical        => 2,
-        retries         => 5,
+        retries         => 45,
         dashboard_links => ['https://grafana.wikimedia.org/d/eea-9_sik/alertmanager'],
         notes_link      => 'https://wikitech.wikimedia.org/wiki/Alertmanager#Alerts',
     }
