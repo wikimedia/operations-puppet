@@ -25,7 +25,7 @@ define cfssl::ocsp (
 
     $_db_conf_file   = pick($db_conf_file, "${cfssl::conf_dir}/db.conf")
     $_ca_file        = pick($ca_file, "${cfssl::conf_dir}/ca/ca.pem")
-    $_responses_file = pick($responses_file, "${cfssl::dir}/${title}.ocsp")
+    $_responses_file = pick($responses_file, "${cfssl::ocsp_dir}/${safe_title}.ocsp")
 
     if ($key_content and !$cert_content) or ($cert_content and !$key_content) {
         fail('you must provide either both or neither key/cert_content')

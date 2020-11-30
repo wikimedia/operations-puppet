@@ -30,12 +30,14 @@ profile::pki::server::default_signer: 'Wikimedia_SRE_Internal'
 profile::pki::server::db_driver: 'mysql'
 profile::pki::server::db_host: 'm1-master.eqiad.wmnet'
 profile::pki::server::intermediates:
-  "Wikimedia testing CA": {}
   "Wikimedia SRE Internal":
+    ocsp_port: 10001
     # this param is passed to the secret function
     key_content: 'pki/intermediates/Wikimedia_SRE_Internal.pem'
     # this param is passed to the file function
     cert_content: 'profile/pki/intermediates/Wikimedia_SRE_Internal.pem'
+  "Wikimedia testing CA":
+    ocsp_port: 10002
 profile::pki::client::certs:
   'foobar.example.com':
     label: 'Wikimedia_SRE_Internal'

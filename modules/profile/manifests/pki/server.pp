@@ -107,6 +107,7 @@ class profile::pki::server(
             additional_names => [$facts['fqdn']],
             listen_port      => $config['ocsp_port'],
             db_conf_file     => $db_conf_file,
+            ca_file          => $ca_file,
         }
         $memo + {
             $safe_title => {
