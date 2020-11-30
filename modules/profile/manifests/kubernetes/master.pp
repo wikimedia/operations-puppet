@@ -9,6 +9,7 @@ class profile::kubernetes::master(
     $admission_controllers=hiera('profile::kubernetes::master::admission_controllers'),
     $expose_puppet_certs=hiera('profile::kubernetes::master::expose_puppet_certs'),
     $service_cert=hiera('profile::kubernetes::master::service_cert', undef),
+    $use_cergen=lookup('profile::kubernetes::master::use_cergen', { default_value => false }),
     $ssl_cert_path=hiera('profile::kubernetes::master::ssl_cert_path'),
     $ssl_key_path=hiera('profile::kubernetes::master::ssl_cert_path'),
     $authz_mode=hiera('profile::kubernetes::master::authz_mode'),
@@ -29,6 +30,7 @@ class profile::kubernetes::master(
             ensure       => present,
             group        => 'kube',
             skip_private => false,
+            use_cergen   => $use_cergen,
             before       => Class['::k8s::apiserver'],
         }
     }
