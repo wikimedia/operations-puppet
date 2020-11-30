@@ -671,9 +671,9 @@ def main():
     else:
         all_available_dbs = []
         for inst in config["mysql_instances"]:
-            all_available_dbs.append(read_dblist(inst, args.mediawiki_config))
+            all_available_dbs.extend(read_dblist(inst, args.mediawiki_config))
             if inst == "s7":
-                all_available_dbs.append(config["add_to_all_dbs"])
+                all_available_dbs.extend(config["add_to_all_dbs"])
 
     # argparse will ensure we are declaring explicitly
     dbs = all_available_dbs
