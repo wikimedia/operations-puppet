@@ -24,6 +24,8 @@ class role::ci::master {
     include ::profile::tlsproxy::envoy
     include ::profile::ci::website
 
+    include ::profile::prometheus::apache_exporter
+
     include ::profile::ci::docker
     include ::profile::ci::pipeline::publisher
     include ::profile::ci::shipyard
