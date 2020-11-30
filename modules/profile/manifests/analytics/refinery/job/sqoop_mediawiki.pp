@@ -72,13 +72,21 @@ class profile::analytics::refinery::job::sqoop_mediawiki (
         require => File['/usr/local/bin/refinery-sqoop-mediawiki', '/usr/local/bin/refinery-sqoop-mediawiki-production'],
     }
 
+    # Used to store sqoop-generated jar that is rebuilt at each script run
+    file { '/tmp/sqoop-jars':
+        ensure => directory,
+        mode   => '0755',
+        owner  => 'analytics',
+        group  => 'analytics',
+    }
+
     kerberos::systemd_timer { 'refinery-sqoop-whole-mediawiki':
         ensure      => $ensure_timers,
         description => 'Schedules sqoop to import whole MediaWiki databases into Hadoop monthly.',
         command     => '/usr/local/bin/refinery-sqoop-whole-mediawiki',
         interval    => '*-*-01 00:00:00',
         user        => 'analytics',
-        require     => File['/usr/local/bin/refinery-sqoop-whole-mediawiki'],
+        require     => [File['/usr/local/bin/refinery-sqoop-whole-mediawiki'], File['/tmp/sqoop-jars']],
     }
 
     ############################################################################
@@ -100,6 +108,6 @@ class profile::analytics::refinery::job::sqoop_mediawiki (
         command     => '/usr/local/bin/refinery-sqoop-mediawiki-private',
         interval    => '*-*-02 00:00:00',
         user        => 'analytics',
-        require     => File['/usr/local/bin/refinery-sqoop-mediawiki-private'],
+        require     => [File['/usr/local/bin/refinery-sqoop-mediawiki-private'], File['/tmp/sqoop-jars']],
     }
 }
