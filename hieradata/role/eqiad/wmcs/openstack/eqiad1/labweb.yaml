@@ -101,3 +101,5 @@ profile::mediawiki::php::enable_fpm: true
 profile::base::notifications: critical
 profile::mediawiki::php::php_version: "7.2"
 profile::mediawiki::apc_shm_size: 128M
+# Enable icu63 component - T264991
+profile::mediawiki::php::icu63: true
