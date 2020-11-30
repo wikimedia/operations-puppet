@@ -2388,13 +2388,8 @@ node /^thumbor200[1234]\.codfw\.wmnet/ {
 }
 
 # deployment servers
-node 'deploy1001.eqiad.wmnet', 'deploy1002.eqiad.wmnet', 'deploy2001.codfw.wmnet' {
+node /^deploy[12]00[12]\.(eqiad|codfw)\.wmnet$/ {
     role(deployment_server)
-}
-
-# deployment server codfw T266363
-node 'deploy2002.codfw.wmnet' {
-    role(insetup)
 }
 
 # new url-downloaders (T224551)
