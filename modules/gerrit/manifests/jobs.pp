@@ -7,7 +7,7 @@ class gerrit::jobs {
         ensure      => 'present',
         user        => 'root',
         description => 'Gerrit rotates their own logs, but does not clean them out. Delete old logs.',
-        command     => "find /var/log/gerrit/ -name \"*.gz\" -mtime +30 -delete",
+        command     => "/usr/bin/find /var/log/gerrit/ -name \"*.gz\" -mtime +30 -delete",
         interval    => {'start' => 'OnCalendar', 'interval' => 'daily'},
     }
 
