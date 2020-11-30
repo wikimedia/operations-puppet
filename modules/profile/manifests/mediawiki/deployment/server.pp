@@ -60,7 +60,7 @@ class profile::mediawiki::deployment::server(
 
     class {'::httpd': }
 
-    require_package('mysql-client')
+    ensure_packages('default-mysql-client')
 
     ferm::service { 'rsyncd_scap_master':
         proto  => 'tcp',
