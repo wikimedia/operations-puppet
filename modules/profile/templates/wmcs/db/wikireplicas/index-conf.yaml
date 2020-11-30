@@ -3,9 +3,9 @@ mysql_user: "<%= @idx_user %>"
 mysql_password: "<%= @idx_pass %>"
 mysql_instances:
 <%- if defined?(@instances) -%>
-  <%- @instances.each do |instance, buffer| %>
+  <%- @instances.each do |instance, buffer| -%>
   - <%= instance %>
-  <%- end %>
+  <%- end -%>
 <%- else -%>
   - all
 <%- end -%>
