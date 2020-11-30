@@ -28,7 +28,10 @@ class profile::hive::client(
     $hive_metastore_jdbc_port = $hive_services[$hive_service_name]['metastore_jdbc_port']
     $hive_metastore_jdbc_user = $hive_services[$hive_service_name]['metastore_jdbc_user']
     $hive_metastore_database = $hive_services[$hive_service_name]['metastore_jdbc_database']
-    $hive_cluster_delegation_token_store_class = $hive_services[$hive_service_name]['hive_cluster_delegation_token_store_class']
+    $hive_cluster_delegation_token_store_class = $hive_services[$hive_service_name]['hive_cluster_delegation_token_store_class'] ? {
+        undef   => 'org.apache.hadoop.hive.thrift.DBTokenStore',
+        default => $hive_services[$hive_service_name]['hive_cluster_delegation_token_store_class'],
+    }
 
     # The WMF webrequest table uses HCatalog's JSON Serde.
     # Automatically include this in Hive client classpaths.
