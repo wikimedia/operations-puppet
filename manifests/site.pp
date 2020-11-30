@@ -275,7 +275,7 @@ node /^conf100[456]\.eqiad\.wmnet$/ {
 }
 
 # Test zookeeper in eqiad
-node 'zookeeper-test1001.eqiad.wmnet' {
+node 'zookeeper-test1002.eqiad.wmnet' {
     role(insetup)
 }
 

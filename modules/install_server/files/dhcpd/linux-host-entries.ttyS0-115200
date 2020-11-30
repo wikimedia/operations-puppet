@@ -998,7 +998,7 @@ host xhgui2001 {
     fixed-address xhgui2001.codfw.wmnet;
 }
 
-host zookeeper-test1001 {
-    hardware ethernet aa:00:00:82:f1:e3;
-    fixed-address zookeeper-test1001.eqiad.wmnet;
+host zookeeper-test1002 {
+    hardware ethernet aa:00:00:88:02:d8;
+    fixed-address zookeeper-test1002.eqiad.wmnet;
 }
