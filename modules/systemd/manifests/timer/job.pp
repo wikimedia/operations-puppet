@@ -101,7 +101,7 @@ define systemd::timer::job(
         Systemd::Timer::Schedule,
         Array[Systemd::Timer::Schedule, 1]] $interval,
     String                                  $description,
-    String                                  $command,
+    Systemd::Command                        $command,
     String                                  $user,
     Wmflib::Ensure                          $ensure                    = 'present',
     Hash[String, String]                    $environment               = {},
