@@ -6,7 +6,6 @@ define cfssl::ocsp (
     Cfssl::Loglevel             $log_level        = 'info',
     Pattern[/\d+h/]             $refresh_interval = '96h',
     Array[Stdlib::Host]         $additional_names = [],
-    Optional[String]            $ca_label         = undef,
     Optional[Stdlib::Unixpath]  $responses_file   = undef,
     Optional[Stdlib::Unixpath]  $db_conf_file     = undef,
     Optional[Sensitive[String]] $key_content      = undef,
@@ -51,7 +50,7 @@ define cfssl::ocsp (
         cfssl::cert{$safe_cert_name:
             common_name   => $common_name,
             label         => $title,
-            names         => $additional_names,
+            hosts         => $additional_names,
             profile       => 'ocsp',
             outdir        => $outdir,
             signer_config => {'config_file' => $cfssl::client::conf_file},
@@ -61,12 +60,12 @@ define cfssl::ocsp (
         }
     }
     systemd::service{$refresh_service:
-        ensure  => running,
+        ensure  => present,
         content => template('cfssl/cfssl-ocsprefresh.service.erb'),
         restart => true,
     }
     systemd::service{$serve_service:
-        ensure  => running,
+        ensure  => present,
         content => template('cfssl/cfssl-ocspserve.service.erb'),
         restart => true,
     }

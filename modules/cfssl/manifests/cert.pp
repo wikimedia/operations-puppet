@@ -59,13 +59,15 @@ define cfssl::cert (
         mode    => '0400',
         content => $csr.to_json_pretty()
     }
-    file {$_outdir:
-        ensure  => ensure_directory($ensure),
-        owner   => $owner,
-        group   => $group,
-        mode    => '0440',
-        recurse => true,
-        purge   => true,
+    unless defined(File[$_outdir]) {
+        file {$_outdir:
+            ensure  => ensure_directory($ensure),
+            owner   => $owner,
+            group   => $group,
+            mode    => '0440',
+            recurse => true,
+            purge   => true,
+        }
     }
     $tls_config = ($tls_cert and $tls_key) ? {
         true    => "-mutual-tls-client-cert ${tls_cert} -mutual-tls-client-key ${tls_key}",

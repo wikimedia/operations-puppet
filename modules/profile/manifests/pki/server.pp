@@ -102,6 +102,12 @@ class profile::pki::server(
             manage_db        => false,
             manage_services  => false,
         }
+        cfssl::ocsp{$intermediate:
+            common_name      => 'ocsp.wikimedia.org',
+            additional_names => [$facts['fqdn']],
+            listen_port      => $config['ocsp_port'],
+            db_conf_file     => $db_conf_file,
+        }
         $memo + {
             $safe_title => {
                 'private'     => $ca_key_file,
