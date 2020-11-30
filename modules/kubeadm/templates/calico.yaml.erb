@@ -955,7 +955,7 @@ spec:
       priorityClassName: system-cluster-critical
       containers:
         - name: calico-kube-controllers
-          image: calico/kube-controllers:<%= @calico_version %>
+          image: docker-registry.tools.wmflabs.org/calico/kube-controllers:<%= @calico_version %>
           env:
             # Choose which controllers to run.
             - name: ENABLED_CONTROLLERS
