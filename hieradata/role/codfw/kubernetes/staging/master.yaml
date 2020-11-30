@@ -1,0 +1,12 @@
+profile::kubernetes::master::service_cluster_ip_range: 10.192.76.0/24
+profile::kubernetes::master::etcd_urls:
+ - https://kubestagetcd2001.codfw.wmnet:2379
+ - https://kubestagetcd2002.codfw.wmnet:2379
+ - https://kubestagetcd2003.codfw.wmnet:2379
+profile::kubernetes::master::prometheus_url: http://prometheus.svc.codfw.wmnet/k8s-staging
+#TODO: below entries are temporary and should be moved to common/ once eqiad staging is migrated as well
+profile::kubernetes::master::service_cert: "kubestagemaster.svc.%{::site}.wmnet"
+profile::kubernetes::master::ssl_cert_path: "/etc/ssl/localcerts/kubestagemaster.svc.%{::site}.wmnet.crt"
+profile::kubernetes::master::ssl_key_path: "/etc/ssl/private/kubestagemaster.svc.%{::site}.wmnet.key"
+profile::kubernetes::master::service_account_private_key_file: "/etc/ssl/private/kubestagemaster.svc.%{::site}.wmnet.key"
+profile::kubernetes::master::use_cergen: true

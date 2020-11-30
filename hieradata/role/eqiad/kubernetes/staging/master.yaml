@@ -1,0 +1,6 @@
+profile::kubernetes::master::service_cluster_ip_range: 10.64.76.0/24
+profile::kubernetes::master::etcd_urls:
+ - https://kubestagetcd1004.eqiad.wmnet:2379
+ - https://kubestagetcd1005.eqiad.wmnet:2379
+ - https://kubestagetcd1006.eqiad.wmnet:2379
+profile::kubernetes::master::prometheus_url: http://prometheus.svc.eqiad.wmnet/k8s-staging

@@ -1095,7 +1095,7 @@ node /^kubestagetcd200[123]\.codfw\.wmnet$/ {
 
 # kubernetes master for staging
 node 'kubestagemaster2001.codfw.wmnet' {
-    role(insetup)
+    role(kubernetes::staging::master)
 }
 
 # kubernetes masters
