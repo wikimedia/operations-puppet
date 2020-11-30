@@ -9,7 +9,7 @@ class k8s::infrastructure_config(
         mode   => '0755',
     }
 
-    $users = hiera('k8s_infrastructure_users')
+    $users = lookup('k8s_infrastructure_users')
     k8s::kubeconfig { '/etc/kubernetes/kubeconfig':
         master_host => $master_host,
         username    => $username,
