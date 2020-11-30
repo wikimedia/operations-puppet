@@ -8,9 +8,9 @@
 # we reduce the number of queries performed, and make their reliability better.
 
 class profile::conftool::state(
-    Wmflib::Ensure $ensure = hiera('profile::conftool::state::ensure'),
-    String $prefix = hiera('conftool_prefix'),
-    Integer $query_interval = hiera('profile::conftool::state::query_interval'),
+    Wmflib::Ensure $ensure = lookup('profile::conftool::state::ensure'),
+    String $prefix = lookup('conftool_prefix'),
+    Integer $query_interval = lookup('profile::conftool::state::query_interval'),
 ) {
     class { '::confd':
         ensure   => $ensure,

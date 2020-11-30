@@ -7,8 +7,8 @@
 #   sync_dir The directory to sync from in conftool-merge
 #
 class profile::conftool::master(
-    $sync_dir = hiera('profile::conftool::master::sync_dir'),
-    $git_dir  = hiera('profile::conftool::master::git_dir', '/var/lib/git')
+    Stdlib::Unixpath $sync_dir = lookup('profile::conftool::master::sync_dir'),
+    Stdlib::Unixpath $git_dir  = lookup('profile::conftool::master::git_dir', {'default_value' => '/var/lib/git'}),
 ) {
     # All the configuration we have for the client is needed by the master
     require ::profile::conftool::client
