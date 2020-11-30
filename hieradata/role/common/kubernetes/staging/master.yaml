@@ -21,4 +21,3 @@ profile::kubernetes::master::etcd_urls:
  - https://kubestagetcd1005.eqiad.wmnet:2379
  - https://kubestagetcd1006.eqiad.wmnet:2379
 profile::kubernetes::master::prometheus_url: http://prometheus.svc.eqiad.wmnet/k8s-staging
-profile::kubernetes::master::storage_backend: etcd3

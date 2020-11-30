@@ -3,4 +3,3 @@ profile::kubernetes::master::etcd_urls:
  - https://kubetcd1004.eqiad.wmnet:2379
  - https://kubetcd1005.eqiad.wmnet:2379
  - https://kubetcd1006.eqiad.wmnet:2379
-profile::kubernetes::master::storage_backend: etcd3

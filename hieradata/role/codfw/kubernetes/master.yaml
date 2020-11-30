@@ -3,4 +3,3 @@ profile::kubernetes::master::etcd_urls:
  - https://kubetcd2004.codfw.wmnet:2379
  - https://kubetcd2005.codfw.wmnet:2379
  - https://kubetcd2006.codfw.wmnet:2379
-profile::kubernetes::master::storage_backend: etcd3
