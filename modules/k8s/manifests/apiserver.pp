@@ -14,6 +14,7 @@ class k8s::apiserver(
     Boolean $allow_privileged = false,
     Boolean $logtostderr = true,
     Integer $v_log_level = 0,
+    Boolean $packages_from_future = false,
     Optional[Stdlib::IP::Address] $service_cluster_ip_range = undef,
     Optional[String] $service_node_port_range = undef,
     Optional[Integer] $apiserver_count = undef,
@@ -26,8 +27,15 @@ class k8s::apiserver(
         mode   => '0700',
     }
 
-    require_package('kubernetes-master')
-    require_package('kubernetes-client')
+    if $packages_from_future {
+        apt::package_from_component { 'apiserver-kubernetes-future':
+            component => 'component/kubernetes-future',
+            packages  => ['kubernetes-master', 'kubernetes-client'],
+        }
+    } else {
+        require_package('kubernetes-master')
+        require_package('kubernetes-client')
+    }
 
     $admission_control = join(keys($admission_controllers), ',')
     $admission_control_params = lstrip(join(values($admission_controllers), ' '))

@@ -5,9 +5,17 @@ class k8s::proxy(
     String $kubeconfig = '/etc/kubernetes/kubeconfig',
     Boolean $logtostderr = true,
     Integer $v_log_level = 0,
+    Boolean $packages_from_future = false,
     Optional[String] $metrics_bind_address = undef,
 ) {
-    require_package('kubernetes-node')
+    if $packages_from_future {
+        apt::package_from_component { 'proxy-kubernetes-future':
+            component => 'component/kubernetes-future',
+            packages  => ['kubernetes-node'],
+        }
+    } else {
+        require_package('kubernetes-node')
+    }
 
     file { '/etc/default/kube-proxy':
         ensure  => file,

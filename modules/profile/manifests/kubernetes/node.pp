@@ -20,6 +20,7 @@ class profile::kubernetes::node(
     $kubelet_node_taints = hiera('profile::kubernetes::node::kubelet_node_taints', []),
     $kubeproxy_username = hiera('profile::kubernetes::node::kubeproxy_username', undef),
     $kubeproxy_token = hiera('profile::kubernetes::node::kubeproxy_token', undef),
+    Boolean $packages_from_future = lookup('profile::kubernetes::node::packages_from_future', {default_value => false}),
     Boolean $rsyslog_hard_disable = lookup('profile::kubernetes::node::disable_rsyslog', {default_value => false}),
     Optional[String] $kubeproxy_metrics_bind_address = lookup('profile::kubernetes::node::kubeproxy_metrics_bind_address', {default_value => undef}),
 ) {
@@ -70,6 +71,7 @@ class profile::kubernetes::node(
         node_labels               => $kubelet_node_labels,
         node_taints               => $kubelet_node_taints,
         extra_params              => $kubelet_extra_params,
+        packages_from_future      => $packages_from_future,
         require                   => Class['::k8s::infrastructure_config'],
     }
 
@@ -87,6 +89,7 @@ class profile::kubernetes::node(
         masquerade_all       => $masquerade_all,
         metrics_bind_address => $kubeproxy_metrics_bind_address,
         kubeconfig           => $kubeproxy_config,
+        packages_from_future => $packages_from_future,
         require              => Class['::k8s::infrastructure_config'],
     }
 

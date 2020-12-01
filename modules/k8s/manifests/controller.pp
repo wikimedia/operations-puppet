@@ -3,6 +3,7 @@ class k8s::controller(
     Boolean $use_service_account_credentials=false,
     Boolean $logtostderr=true,
     Integer $v_log_level=0,
+    Boolean $packages_from_future = false,
     Optional[String] $service_account_private_key_file=undef,
     Optional[String] $kubeconfig=undef,
 ){
@@ -11,7 +12,14 @@ class k8s::controller(
         fail('Need service_account_private_key_file set if use_service_account_credentials is to be used')
     }
 
-    require_package('kubernetes-master')
+    if $packages_from_future {
+        apt::package_from_component { 'controller-kubernetes-future':
+            component => 'component/kubernetes-future',
+            packages  => ['kubernetes-master'],
+        }
+    } else {
+        require_package('kubernetes-master')
+    }
 
     file { '/etc/default/kube-controller-manager':
         ensure  => file,

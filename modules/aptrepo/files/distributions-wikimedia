@@ -135,6 +135,7 @@ Version: 10
 Architectures: source amd64 i386
 Components: main
 # sorted list, leading whitespace matters!
+ component/calico-future
  component/cergen
  component/ci
  component/cloudera
@@ -142,6 +143,7 @@ Components: main
  component/envoy-future
  component/idp-test
  component/jdk8
+ component/kubernetes-future
  component/memcached16
  component/mtail
  component/pdns-recursor
@@ -162,10 +164,10 @@ Components: main
  thirdparty/ci
  thirdparty/cloudera
  thirdparty/confluent
+ thirdparty/elastic710
  thirdparty/elastic74
  thirdparty/elastic78
  thirdparty/elastic79
- thirdparty/elastic710
  thirdparty/grafana
  thirdparty/hwraid
  thirdparty/kubeadm-k8s-1-15

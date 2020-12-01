@@ -2,10 +2,18 @@
 class k8s::scheduler(
     Boolean $logtostderr = true,
     Integer $v_log_level = 0,
+    Boolean $packages_from_future = false,
     Optional[String] $kubeconfig = undef,
 ) {
 
-    require_package('kubernetes-master')
+    if $packages_from_future {
+        apt::package_from_component { 'scheduler-kubernetes-future':
+            component => 'component/kubernetes-future',
+            packages  => ['kubernetes-master'],
+        }
+    } else {
+        require_package('kubernetes-master')
+    }
 
     file { '/etc/default/kube-scheduler':
         ensure  => file,

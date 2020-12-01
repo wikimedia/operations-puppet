@@ -16,6 +16,7 @@ class profile::kubernetes::master(
     $service_account_private_key_file=hiera('profile::kubernetes::master::service_account_private_key_file', undef),
     $prometheus_url=hiera('profile::kubernetes::master::prometheus_url', "http://prometheus.svc.${::site}.wmnet/k8s"),
     $runtime_config=hiera('profile::kubernetes::master::runtime_config', undef),
+    Boolean $packages_from_future = lookup('profile::kubernetes::master::packages_from_future', {default_value => false}),
 ){
     if $expose_puppet_certs {
         base::expose_puppet_certs { '/etc/kubernetes':
@@ -46,11 +47,15 @@ class profile::kubernetes::master(
         apiserver_count          => $apiserver_count,
         admission_controllers    => $admission_controllers,
         runtime_config           => $runtime_config,
+        packages_from_future     => $packages_from_future,
     }
 
-    class { '::k8s::scheduler': }
+    class { '::k8s::scheduler':
+        packages_from_future => $packages_from_future,
+    }
     class { '::k8s::controller':
         service_account_private_key_file => $service_account_private_key_file,
+        packages_from_future             => $packages_from_future,
     }
 
 

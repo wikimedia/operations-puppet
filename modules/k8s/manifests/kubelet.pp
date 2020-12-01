@@ -15,11 +15,19 @@ class k8s::kubelet(
     Boolean $fqdn_as_hostname = true,
     Boolean $logtostderr = true,
     Integer $v_log_level = 0,
+    Boolean $packages_from_future=false,
     Optional[Array[String]] $node_labels = [],
     Optional[Array[String]] $node_taints = [],
     Optional[Array[String]] $extra_params = undef,
 ) {
-    require_package('kubernetes-node')
+    if $packages_from_future {
+        apt::package_from_component { 'kubelet-kubernetes-future':
+            component => 'component/kubernetes-future',
+            packages  => ['kubernetes-node'],
+        }
+    } else {
+        require_package('kubernetes-node')
+    }
 
     # Needed on k8s nodes for kubectl proxying to work
     ensure_packages(['socat'])
