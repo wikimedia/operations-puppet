@@ -217,6 +217,15 @@ sub cluster_fe_recv_pre_purge {
 			}
 		}
 
+		# normalize all /static to the same hostname for caching
+		if (req.url ~ "^/static/") { set req.http.host = "<%= @vcl_config.fetch("static_host") %>"; }
+
+		# normalize all /w/static.php to the same wiki host for caching
+		# ignore urls without hash query as those are affected by multiversion
+		if (req.url ~ "^/w/(skins|resources|extensions)/.+\?[a-fA-F0-9]+$" ) {
+			set req.http.host = "<%= @vcl_config.fetch("static_host") %>";
+		}
+
 		// X-RB-NOREDIR: redirect=false optimization: T134464
 		// RB sends the same content regardless of ?redirect=false, but
 		// switches from 302 w/ Location (normal) to 200 w/o Location
@@ -349,15 +358,6 @@ sub cluster_fe_recv {
 	}
 
 	call mobile_redirect;
-
-	# normalize all /static to the same hostname for caching
-	if (req.url ~ "^/static/") { set req.http.host = "<%= @vcl_config.fetch("static_host") %>"; }
-
-	# normalize all /w/static.php to the same wiki host for caching
-	# ignore urls without hash query as those are affected by multiversion
-	if (req.url ~ "^/w/(skins|resources|extensions)/.+\?[a-fA-F0-9]+$" ) {
-		set req.http.host = "<%= @vcl_config.fetch("static_host") %>";
-	}
 
 	// shortener URLs can be validated and restricted here
 	if (req.http.host == "<%= @vcl_config.fetch('shortener_domain') %>") {

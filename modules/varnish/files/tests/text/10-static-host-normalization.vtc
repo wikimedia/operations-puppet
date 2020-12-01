@@ -1,0 +1,48 @@
+varnishtest "cache_text Host rewrite for static content"
+
+server s1 {
+    rxreq
+    # Ensure that "Host: fr.wikipedia.org" is rewritten to "Host: en.wikipedia.org"
+    expect req.http.host == "en.wikipedia.org"
+    txresp
+} -start
+
+varnish v1 -arg "-p vcl_path=${vcl_path} -p vcc_err_unref=false -p vcc_allow_inline_c=true -p cc_command='${cc_command}'" -vcl+backend {
+   backend vtc_backend {
+       .host = "${s1_addr}"; .port = "${s1_port}";
+   }
+
+   include "${basepath}/usr/share/varnish/tests/wikimedia_misc-frontend.vcl";
+}
+
+# Attach the "wikimedia_misc" label to wikimedia_misc-frontend.vcl
+varnish v1 -cli "vcl.label wikimedia_misc vcl1"
+
+varnish v1 -vcl {
+    backend vtc_backend {
+        .host = "${s1_addr}"; .port = "${s1_port}";
+    }
+
+    include "${basepath}/usr/share/varnish/tests/wikimedia_text-frontend.vcl";
+} -start
+
+client c1 {
+    txreq -url "/static/apple-touch/wikipedia.png" -hdr "Host: fr.wikipedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+    expect resp.status == 200
+
+    # Request for /static from a mobile User-Agent. Instead of getting a mobile
+    # redirect, the hostname is re-written from zh-classical.wikipedia.org to
+    # en.wikipedia.org and the response is served from cache.
+    txreq -url "/static/apple-touch/wikipedia.png" -hdr "User-Agent: nintendo" -hdr "Host: zh-classical.wikipedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+    expect resp.status == 200
+    expect resp.http.x-cache-status == "hit-front"
+
+    # Mobile redirect for Classical Chinese Wikipedia. This request does not
+    # reach server s1, we get a synth response from Varnish instead.
+    txreq -url "/wiki/維基大典:卷首" -hdr "User-Agent: nintendo" -hdr "Host: zh-classical.wikipedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+    expect resp.status == 302
+    expect resp.http.location == "https://zh-classical.m.wikipedia.org/wiki/%E7%B6%AD%E5%9F%BA%E5%A4%A7%E5%85%B8:%E5%8D%B7%E9%A6%96"
+} -run
