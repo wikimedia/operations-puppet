@@ -79,18 +79,18 @@
 #   Default: true
 #
 class profile::hadoop::spark2(
-    $install_yarn_shuffle_jar = hiera('profile::hadoop::spark2::install_yarn_shuffle_jar', true),
-    $install_oozie_sharelib   = hiera('profile::hadoop::spark2::install_oozie_sharelib', false),
-    $install_assembly         = hiera('profile::hadoop::spark2::install_assembly', false),
-    $extra_settings           = hiera('profile::hadoop::spark2::extra_settings', {}),
-    $use_kerberos             = hiera('profile::hadoop::spark2::use_kerberos', false),
-    $driver_port              = hiera('profile::hadoop::spark2::driver_port', 12000),
-    $driver_blockmanager_port = hiera('profile::hadoop::spark2::driver_blockmanager_port', 13000),
-    $ui_port                  = hiera('profile::hadoop::spark2::ui_port', 4040),
-    $port_max_retries         = hiera('profile::hadoop::spark2::port_max_retries', 100),
-    $executor_env_ld_lib_path = hiera('profile::hadoop::spark2::executor_env_ld_lib_path', '/usr/lib/hadoop/lib/native'),
-    $encryption_enabled       = hiera('profile::hadoop::spark2::encryption_enabled', true),
-    String $default_version   = lookup('profile::hadoop::spark::default_version', { 'default_value' => '2.4.4'}),
+    Boolean $install_yarn_shuffle_jar          = lookup('profile::hadoop::spark2::install_yarn_shuffle_jar', {'default_value' => true}),
+    Boolean $install_oozie_sharelib            = lookup('profile::hadoop::spark2::install_oozie_sharelib', {'default_value' => false}),
+    Boolean $install_assembly                  = lookup('profile::hadoop::spark2::install_assembly', {'default_value' => false}),
+    Hash[String, Any] $extra_settings          = lookup('profile::hadoop::spark2::extra_settings', {'default_value' => {}}),
+    Boolean $use_kerberos                      = lookup('profile::hadoop::spark2::use_kerberos', {'default_value' => false}),
+    Stdlib::Port $driver_port                  = lookup('profile::hadoop::spark2::driver_port', {'default_value' => 12000}),
+    Stdlib::Port $driver_blockmanager_port     = lookup('profile::hadoop::spark2::driver_blockmanager_port', {'default_value' => 13000}),
+    Stdlib::Port $ui_port                      = lookup('profile::hadoop::spark2::ui_port', {'default_value' => 4040}),
+    Integer $port_max_retries                  = lookup('profile::hadoop::spark2::port_max_retries', {'default_value' => 100}),
+    Stdlib::Unixpath $executor_env_ld_lib_path = lookup('profile::hadoop::spark2::executor_env_ld_lib_path', {'default_value' => '/usr/lib/hadoop/lib/native'}),
+    Boolean $encryption_enabled                = lookup('profile::hadoop::spark2::encryption_enabled', {'default_value' => true}),
+    String $default_version                    = lookup('profile::hadoop::spark::default_version', { 'default_value' => '2.4.4'}),
 ) {
     require ::profile::hadoop::common
 
