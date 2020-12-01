@@ -69,8 +69,8 @@ class profile::analytics::refinery::job::druid_load(
     # Note that some dimensions are not present, thus nullifying their values.
     profile::analytics::refinery::job::eventlogging_to_druid_job { 'netflow-sanitization':
         ensure_hourly    => 'absent',
-        daily_days_since => 91,
-        daily_days_until => 90,
+        daily_days_since => 61,
+        daily_days_until => 60,
         job_config       => {
             database         => 'wmf',
             table            => 'netflow',
