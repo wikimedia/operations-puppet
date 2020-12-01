@@ -5,5 +5,7 @@
 $pdo_dsn = 'mysql:host=<%= scope.lookupvar('racktables::racktables_db_host') %>;dbname=<%= scope.lookupvar('racktables::racktables_db') %>';
 $db_username = '<%= scope.lookupvar('passwords::racktables::racktables_db_user') %>';
 $db_password = '<%= scope.lookupvar('passwords::racktables::racktables_db_pass') %>';
+$user_auth_src = 'httpd';
+$require_local_account = FALSE;
 
 ?>
