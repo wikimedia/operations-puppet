@@ -147,6 +147,17 @@
     </property>
 
     <property>
+        <name>oozie.service.coord.default.max.timeout</name>
+        <value>571680</value>
+        <description>
+            Default maximum timeout for a coordinator action input check (in minutes).
+            oozie-default.xml sets this at 86400 (60days), but we have some jobs
+            that operate on a years worth of data.  Set this to 571680 (13 months, 365+31 days).
+            See also: https://phabricator.wikimedia.org/T264358
+        </description>
+    </property>
+
+    <property>
         <name>oozie.db.schema.name</name>
         <value><%= @jdbc_database %></value>
         <description>
