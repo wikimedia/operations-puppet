@@ -251,7 +251,7 @@ groups:
                  need to be in researchers or analytics-privatedata-users.
                  In case of doubt, please ask to the Analytics team.
                  More info https://wikitech.wikimedia.org/wiki/Analytics/Data_access#Access_Groups
-    members: [debt, jdittrich, kharlan, brion, mhurd, santhosh]
+    members: [brion, mhurd, santhosh]
     approval: Andrew Otto
   analytics-privatedata-users:
     gid: 731
