@@ -6,21 +6,21 @@ describe 'osm::planet_sync', :type => :define do
     context 'with ensure present' do
         let(:params) { {
             :use_proxy   => false,
-            :engine      => "osm2pgsql",
+            :engine      => "imposm3",
             :proxy_host  => 'proxy.example.org',
             :proxy_port  => 8080,
             :osmosis_dir => '/srv/osmosis',
-            :period      => 'minute',
+            :period      => 'hour',
         } }
 
-        context 'on Debian Stretch' do
+        context 'on Debian Buster' do
             let(:facts) { {
-                :lsbdistrelease => 'Stretch',
+                :lsbdistrelease => 'Buster',
                 :lsbdistid      => 'Debian',
                 :memorysize_mb  => 64 * 1024,
                 :processorcount => 4,
             }}
-            it { should contain_file('/usr/local/bin/replicate-osm').with_content(/--input-reader xml/) }
+            it { should contain_file('/etc/imposm/imposm_config.json') }
         end
     end
 end

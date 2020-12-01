@@ -1,0 +1,10 @@
+{
+    "cachedir": "<%= @expire_dir %>",
+    "diffdir": "<%= @imposm_diff_dir %>",
+    "connection": "postgis: dbname=gis host=/var/run/postgresql/ prefix=NONE",
+    "mapping": "<%= @imposm_mapping_file %>",
+    "replication_url": "https://planet.openstreetmap.org/replication/hour/",
+    "replication_interval": "12h",
+    "expiretiles_dir": "<%= @expire_dir %>",
+    "expiretiles_zoom": <%= @expire_levels %>
+}

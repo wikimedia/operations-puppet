@@ -1,0 +1,14 @@
+# NOTE: This file is managed by Puppet
+# Systemd unit for <%= @title %>
+[Unit]
+Description="imposm service for OSM sync"
+After=network.target
+
+[Service]
+User=osmupdater
+Group=osm
+SyslogIdentifier=imposm
+WorkingDirectory=<%= @imposm_cache_dir %>
+ExecStart=/usr/bin/imposm run -config <%= @imposm_config_file %> -expiretiles-zoom <%= @expire_levels %>
+[Install]
+WantedBy=multi-user.target

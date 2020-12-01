@@ -9,8 +9,9 @@ class profile::maps::osm_master (
     String $tileratorui_pass                    = lookup('profile::maps::osm_master::tileratorui_pass'),
     String $replication_pass                    = lookup('profile::maps::osm_master::replication_pass'),
     Hash[String, Struct[{ip_address => Stdlib::IP::Address}]] $postgres_replicas = lookup('profile::maps::osm_master::replicas', { 'default_value' => {}}),
-    Boolean $cleartables                        = lookup('profile::maps::osm_master::cleartables', { 'default_value' => false }),
+    String $osm_engine                         = lookup('profile::maps::osm_master::engine', { 'default_value' => 'osm2pgsql' }),
     Boolean $disable_replication_cron           = lookup('profile::maps::osm_master::disable_replication_cron', { 'default_value' => false }),
+    Boolean $disable_tile_generation_cron       = lookup('profile::maps::osm_master::disable_tile_generation_cron', { 'default_value' => false }),
     Boolean $disable_admin_cron                 = lookup('profile::maps::osm_master::disable_admin_cron', { 'default_value' => false }),
     String $tilerator_storage_id                = lookup('profile::maps::apps::tilerator_storage_id'),
     Boolean $use_proxy                          = lookup('profile::maps::apps::use_proxy'),
@@ -20,10 +21,7 @@ class profile::maps::osm_master (
 
     $maps_hosts_ferm = join($maps_hosts, ' ')
 
-    $db_name = $cleartables ? {
-        true    => 'ct',
-        default => 'gis',
-    }
+    $db_name = 'gis'
 
     $pgversion = $::lsbdistcodename ? {
         'buster'  => 11,
@@ -108,27 +106,9 @@ class profile::maps::osm_master (
         mode    => '0400',
         content => template('profile/maps/grants-tiles.sql.erb'),
     }
-    file { '/usr/local/bin/grants-populate-admin.sql':
-        owner  => 'postgres',
-        group  => 'postgres',
-        mode   => '0400',
-        source => 'puppet:///modules/profile/maps/grants-populate-admin.sql',
-    }
 
     # DB setup
     postgresql::spatialdb { $db_name: }
-    if $cleartables {
-        postgresql::db::extension { "${db_name}-fuzzystrmatch":
-          database => $db_name,
-          extname  => 'fuzzystrmatch',
-          require  => Postgresql::Db[$db_name],
-        }
-        postgresql::db::extension { "${db_name}-unaccent":
-          database => $db_name,
-          extname  => 'unaccent',
-          require  => Postgresql::Db[$db_name],
-        }
-    }
 
     # some additional logging for the postgres master to help diagnose import
     # performance issues
@@ -138,14 +118,6 @@ class profile::maps::osm_master (
         group  => 'root',
         mode   => '0444',
         source => 'puppet:///modules/profile/maps/logging.conf',
-    }
-
-    file { '/usr/local/bin/osm-initial-import':
-        ensure => 'present',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-        source => 'puppet:///modules/profile/maps/osm-initial-import',
     }
 
     if $postgres_replicas {
@@ -162,30 +134,30 @@ class profile::maps::osm_master (
         ],
     }
 
-    if $cleartables {
-        osm::cleartables_sync { $db_name:
-            ensure                   => present,
-            use_proxy                => $use_proxy,
-            proxy_host               => "webproxy.${::site}.wmnet",
-            proxy_port               => 8080,
-            postreplicate_command    => 'sudo -u tileratorui /usr/local/bin/notify-tilerator',
-            disable_replication_cron => $disable_replication_cron,
-        }
-    } else {
-        osm::planet_sync { $db_name:
-            ensure                   => present,
-            flat_nodes               => true,
-            expire_levels            => '15',
-            num_threads              => 4,
-            use_proxy                => $use_proxy,
-            proxy_host               => "webproxy.${::site}.wmnet",
-            proxy_port               => 8080,
-            period                   => $planet_sync_period,
-            day                      => $planet_sync_day,
-            hours                    => $planet_sync_hours,
-            minute                   => $planet_sync_minute,
-            postreplicate_command    => 'sudo -u tileratorui /usr/local/bin/notify-tilerator',
-            disable_replication_cron => $disable_replication_cron,
+    osm::planet_sync { $db_name:
+        ensure                       => present,
+        engine                       => $osm_engine,
+        flat_nodes                   => true,
+        expire_levels                => 15,
+        num_threads                  => 4,
+        use_proxy                    => $use_proxy,
+        proxy_host                   => "webproxy.${::site}.wmnet",
+        proxy_port                   => 8080,
+        period                       => $planet_sync_period,
+        day                          => $planet_sync_day,
+        hours                        => $planet_sync_hours,
+        minute                       => $planet_sync_minute,
+        postreplicate_command        => 'sudo -u tileratorui /usr/local/bin/notify-tilerator',
+        disable_replication_cron     => $disable_replication_cron,
+        disable_tile_generation_cron => $disable_tile_generation_cron,
+    }
+
+    if ($osm_engine == 'osm2pgsql') {
+        file { '/usr/local/bin/grants-populate-admin.sql':
+            owner  => 'postgres',
+            group  => 'postgres',
+            mode   => '0400',
+            source => 'puppet:///modules/profile/maps/grants-populate-admin.sql',
         }
         osm::populate_admin { $db_name:
             ensure             => present,

@@ -1,0 +1,125 @@
+#!/usr/bin/env bash
+
+set -e
+
+download_dir="/srv/downloads"
+kartotherian_dir="/srv/deployment/kartotherian/deploy"
+postgis_vt_util_sql_lib="${kartotherian_dir}/node_modules/@kartotherian/postgis-vt-util/lib.sql"
+modules_with_sql="@kartotherian/osm-bright-source @kartotherian/geoshapes"
+proxy=
+log_file=/var/log/osm-initial-import.log
+dump_date="latest"
+
+function show_help() {
+  echo "imposm-initial-import -d <date_of_import> [-x <proxy>]"
+  echo "  date_of_import: find the latest dump at https://planet.osm.org/pbf/"
+  echo "  proxy: proxy used to download PBF files"
+  echo ""
+  echo "WARNING: the import is going to run for a long, long time. You should probably run"
+  echo "         this from inside screen or similar"
+  echo ""
+  echo "  example:"
+  echo "      imposm-initial-import \\"
+  echo "        -d 160530 \\"
+  echo "        -x webproxy.eqiad.wmnet:8080"
+}
+
+while getopts "d:h:x:" opt; do
+  case "${opt}" in
+  d)  dump_date="${OPTARG}"
+      ;;
+  h)  show_help
+      exit 0
+      ;;
+  x)  proxy="${OPTARG}"
+      # for imposm
+      export HTTP_PROXY="${OPTARG}"
+      export HTTPS_PROXY="${OPTARG}"
+      # for curl
+      export http_proxy="${OPTARG}"
+      export https_proxy="${OPTARG}"
+      ;;
+  *)  show_help
+      exit 1
+  esac
+done
+
+filename="planet-${dump_date}.osm.pbf"
+
+function download_pbf() {
+  echo "starting download of PBF from planet.openstreetmap.org"
+  if [ ! -f "$download_dir/$filename.md5" ]; then
+    curl https://planet.openstreetmap.org/pbf/"${filename}".md5 -o "${download_dir}/${filename}.md5"
+  fi
+  if [ ! -f "$download_dir/$filename" ]; then
+    curl -L https://planet.openstreetmap.org/pbf/"${filename}" -o "${download_dir}/${filename}"
+  fi
+  echo "starting md5sum check"
+  md5sum -c "${filename}.md5"
+  if [ $? -ne 0 ] ; then
+    echo "Download of PBF file failed, md5sum is invalid"
+    exit 2
+  fi
+  echo "download of PBF from planet.openstreetmap.org completed"
+}
+
+function initial_osm_import() {
+  echo "starting initial OSM import"
+
+  sudo -u postgres psql -d gis -c 'CREATE EXTENSION IF NOT EXISTS postgis; CREATE EXTENSION IF NOT EXISTS hstore;' && \
+  sudo -u -E osmupdater imposm import \
+      -config /etc/imposm/imposm_config.json \
+      -overwritecache \
+      -read "${download_dir}/${filename}" \
+      -diff \
+      -write 2>&1 | tee "${log_file}"
+
+  if [ ${PIPESTATUS[0]} -ne 0 ]; then
+    echo "imposm3 failed to complete initial import"
+    exit 3
+  fi
+  echo "initial OSM import completed, ready for deploy"
+}
+
+function osm_production_deploy() {
+    echo "Starting OSM production deploy"
+    sudo -u osmimporter imposm import -config /etc/imposm/imposm_config.json -deployproduction
+    echo "Completed OSM production deploy"
+}
+
+function import_water_lines() {
+  echo "starting water line import"
+  # TODO: do we need to install water line polygons in this step? Should we make it separate?
+  sudo -u osmupdater /usr/local/bin/import_waterlines create
+  echo "water line import completed"
+
+}
+
+function custom_functions_and_indexes() {
+  echo "starting creation of custom functions and indexes"
+  sudo -u postgres psql -Xd gis -f ${postgis_vt_util_sql_lib}
+
+  for module in ${modules_with_sql}; do
+    echo "executing SQL in: ${kartotherian_dir}/node_modules/${module}/sql"
+    for sql_file in "${kartotherian_dir}"/node_modules/"${module}"/sql/*.sql; do
+      echo "  executing: ${sql_file}"
+      sudo -u postgres psql -Xd gis -f "${sql_file}"
+    done
+  done
+
+  sudo -u postgres psql -d gis -c 'SELECT populate_admin();'
+  echo "creation of custom functions and indexes completed"
+}
+
+function cleanup() {
+  echo "starting cleanup"
+  rm "${download_dir}/${filename}.md5"
+  rm "${download_dir}/${filename}"
+  echo "cleanup completed"
+}
+
+download_pbf
+initial_osm_import
+import_water_lines
+custom_functions_and_indexes
+cleanup

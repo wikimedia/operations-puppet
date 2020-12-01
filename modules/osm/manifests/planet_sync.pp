@@ -2,42 +2,57 @@
 # Definition: osm::planet_sync
 #
 # This definition provides a way to sync planet_osm in a gis enabled db
+# Important: it's required to select whitch replication tool will be used:
+# imposm3 or osm2pgsql
 #
 # Parameters:
-#   $pg_password
-#      PostgreSQL password
+#   $engine
+#       Engine to use for syncing - either osm2pgsql or imposm3
+#   $use_proxy
+#       present or absent, just like for standard resources
+#   $proxy_host
+#       present or absent, just like for standard resources
+#   $proxy_port
+#       present or absent, just like for standard resources
 #   $ensure
-#      present or absent, just like for standard resources
+#       present or absent, just like for standard resources
 #   $osmosis_dir
-#      Directory that stores osmosis data, including replication state
+#       [osm2pgsql] Directory that stores osmosis data, including replication state
 #   $expire_dir
-#      Directory for expiry files
+#       Directory for expiry files
+#   $download_dir
+#       Directory for downloaded files
 #   $period
-#      OSM replication interval: 'minute', 'hour' or 'day'
-#   $hour
-#      Hour for cronjob, format is the same as for cron resource
+#       OSM replication interval: 'minute', 'hour' or 'day'
+#   $hours
+#       Hour for cronjob, format is the same as for cron resource
+#   $day
+#       Day for cronjob, format is the same as for cron resource
 #   $minute
-#      Minute for cronjob, format is the same as for cron resource
-#   $proxy
-#      Web proxy for accessing the outside of the cluster
+#       Minute for cronjob, format is the same as for cron resource
 #   $flat_nodes
-#      Whether osm2pgsql --flat-nodes parameter should be used
+#      [osm2pgsql] Whether osm2pgsql --flat-nodes parameter should be used
 #   $expire_levels
-#      For which levels should expiry files be generated. Corresponds to
-#      osm2pgslq option -e and can be in format "<level>" or
-#      "<from level>-<to level>"
+#       For which levels should expiry files be generated.
+#       [imposm] corresponds to
+#       [osm2pgsql] Corresponds to osm2pgslq option -e and can be in format "<level>" or
+#       "<from level>-<to level>"
 #   $memory_limit
-#      Memory in megabytes osm2pgsql should occupy
+#       [osm2pgsql] Memory in megabytes osm2pgsql should occupy
 #   $num_threads
-#      Number of threads to use during sync
-#   $input_reader_format
-#      Format passed to osm2pgsql as --input-reader parameter. osm2pgsql < 0.90
-#      needs 'libxml2' (which is default) and osm2pgsql >= 0.90 needs 'xml'.
-#      osm2pgsql == 0.90 is used on jessie only at this point.
+#       [osm2pgsql] Number of threads to use during sync
 #   $postreplicate_command
-#      command to run after replication of OSM data
+#       command to run after replication of OSM data
+#   $input_reader_format
+#       [osm2pgsql] Format passed to osm2pgsql as --input-reader parameter. osm2pgsql < 0.90
+#       needs 'libxml2' (which is default) and osm2pgsql >= 0.90 needs 'xml'.
+#       osm2pgsql == 0.90 is used on jessie only at this point.
 #   $disable_replication_cron
-#      usefull to disable replication, for example during a full tile regeneration
+#       [imposm] disable OSM replication only because for imposm tile generation
+#       and OSM replication are decoupled
+#       [osm2pgsql] disables cron that executes OSM replication and tile generation
+#   $disable_tile_generation_cron
+#       [imposm] disable cron that only run tile generation
 #
 # Actions:
 #   sync with planet.osm
@@ -49,29 +64,30 @@
 # Sample Usage:
 #  osm::planet_sync { 'mydb': }
 define osm::planet_sync (
+    Enum['osm2pgsql', 'imposm3'] $engine,
     Boolean $use_proxy,
     String $proxy_host,
     Stdlib::Port $proxy_port,
     Wmflib::Ensure $ensure                  = present,
     String $osmosis_dir                     = '/srv/osmosis',
     String $expire_dir                      = '/srv/osm_expire',
+    String $download_dir                    = '/srv/downloads',
     String $period                          = 'minute',
     Variant[String, Array[Integer]] $hours  = [],
     Variant[String,Integer] $day            = '*',
     Variant[String,Integer] $minute         = '*/30',
     Boolean $flat_nodes                     = false,
-    String $expire_levels                   = '15',
+    Integer $expire_levels                  = 15,
     Integer $memory_limit                   = floor($::memorysize_mb) / 12,
     Integer $num_threads                    = $::processorcount,
-    String $input_reader_format             = 'xml',
     Optional[String] $postreplicate_command = undef,
+    String $input_reader_format             = 'xml',
     Boolean $disable_replication_cron       = false,
+    Boolean $disable_tile_generation_cron   = false,
 ) {
     include ::osm::users
 
-    $osm_log_dir = '/var/log/osmosis'
-
-    file { '/srv/downloads':
+    file { $download_dir:
         ensure => 'directory',
         owner  => 'osmupdater',
         group  => 'osm',
@@ -85,27 +101,48 @@ define osm::planet_sync (
         mode   => '0775',
     }
 
-    file { $osmosis_dir:
-        ensure => directory,
-        owner  => 'osmupdater',
-        group  => 'osm',
-        mode   => '0775',
+    $osm_log_dir = $engine ? {
+        'imposm3' => '/var/log/imposm',
+        'osm2pgsql' => '/var/log/osmosis'
     }
 
-    file { '/usr/local/bin/replicate-osm':
-        ensure  => present,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0555',
-        content => template('osm/replicate-osm.erb'),
+    $tile_generation_command = $engine ? {
+        'imposm3' => "${postreplicate_command} >> ${osm_log_dir}/imposm.log 2>&1",
+        'osm2pgsql' => "/usr/local/bin/replicate-osm >> ${osm_log_dir}/osm2pgsql.log 2>&1"
     }
 
-    file { "${osmosis_dir}/configuration.txt":
-        ensure  => present,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        content => template('osm/osmosis_configuration.txt.erb'),
+    case $engine {
+        'imposm3': {
+            class { 'osm::imposm3':
+                ensure                   => $ensure,
+                proxy_host               => $proxy_host,
+                proxy_port               => $proxy_port,
+                osm_log_dir              => $osm_log_dir,
+                expire_dir               => $expire_dir,
+                expire_levels            => $expire_levels,
+                disable_replication_cron => $disable_replication_cron,
+            }
+        }
+        'osm2pgsql': {
+            class { 'osm::osm2pgsql':
+                use_proxy             => $use_proxy,
+                proxy_host            => $proxy_host,
+                proxy_port            => $proxy_port,
+                osm_log_dir           => $osm_log_dir,
+                osmosis_dir           => $osmosis_dir,
+                flat_nodes            => $flat_nodes,
+                period                => $period,
+                expire_dir            => $expire_dir,
+                expire_levels         => $expire_levels,
+                memory_limit          => $memory_limit,
+                num_threads           => $num_threads,
+                input_reader_format   => $input_reader_format,
+                postreplicate_command => $postreplicate_command,
+            }
+        }
+        default: {
+            fail("Unsupported sync engine ${engine}")
+        }
     }
 
     file { $osm_log_dir:
@@ -115,26 +152,14 @@ define osm::planet_sync (
         mode   => '0755',
     }
 
-    logrotate::conf { 'planetsync':
-        ensure  => present,
-        content => template('osm/planetsync-logrotate.conf.erb'),
-    }
-
-    file { "${osmosis_dir}/nodes.bin":
-        ensure => present,
-        owner  => 'osmupdater',
-        group  => 'osm',
-        mode   => '0775',
-    }
-
-    $ensure_cron = $disable_replication_cron ? {
+    $ensure_cron = $disable_tile_generation_cron ? {
         true    => absent,
         default => $ensure,
     }
 
-    cron { "planet_sync-${name}":
+    cron { "planet_sync_tile_generation-${name}":
         ensure   => $ensure_cron,
-        command  => "/usr/local/bin/replicate-osm >> ${osm_log_dir}/osm2pgsql.log 2>&1",
+        command  => $tile_generation_command,
         user     => 'osmupdater',
         monthday => $day,
         hour     => $hours,

@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+set -e
+
+sudo -u osmimporter imposm import \
+    -config /etc/imposm/imposm_config.json \
+    -deployproduction
