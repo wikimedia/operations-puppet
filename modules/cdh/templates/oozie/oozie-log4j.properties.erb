@@ -13,9 +13,9 @@ log4j.appender.oozie.layout=org.apache.log4j.PatternLayout
 log4j.appender.oozie.layout.ConversionPattern=%d{ISO8601} %5p %c{1}:%L - SERVER[${oozie.instance.id}] %m%n
 # The FileNamePattern must end with "-%d{yyyy-MM-dd-HH}.gz" or "-%d{yyyy-MM-dd-HH}" and also start with the
 # value of log4j.appender.oozie.File
-log4j.appender.oozie.RollingPolicy.FileNamePattern=${log4j.appender.oozie.File}-%d{yyyy-MM-dd-HH}
+log4j.appender.oozie.RollingPolicy.FileNamePattern=${log4j.appender.oozie.File}-%d{yyyy-MM-dd-HH}.gz
 # The MaxHistory controls how many log files will be retained (336 hours / 24 hours per day = 14 days); -1 to disable
-log4j.appender.oozie.RollingPolicy.MaxHistory=336
+log4j.appender.oozie.RollingPolicy.MaxHistory=<%= @oozie_log4j_max_log_hours_retained %>
 
 # Uncomment the below two lines to use the DailyRollingFileAppender instead
 # The DatePattern must end with either "dd" or "HH"

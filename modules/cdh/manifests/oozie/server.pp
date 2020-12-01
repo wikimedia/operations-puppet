@@ -79,6 +79,7 @@ class cdh::oozie::server(
     $oozie_site_template                         = 'cdh/oozie/oozie-site.xml.erb',
     $oozie_env_template                          = 'cdh/oozie/oozie-env.sh.erb',
     $oozie_log4j_template                        = 'cdh/oozie/oozie-log4j.properties.erb',
+    $oozie_log4j_max_log_hours_retained          = 168,
     $oozie_service_kerberos_enabled              = false,
     $local_realm                                 = 'LOCALHOST',
     $oozie_service_keytab_file                   = '/etc/oozie/conf/oozie.keytab',
