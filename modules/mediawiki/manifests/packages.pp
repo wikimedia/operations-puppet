@@ -28,8 +28,8 @@ class mediawiki::packages {
 
     # Used by captcha.py from ConfirmEdit extension (used to generate captchas)
     if debian::codename::eq('stretch') {
-        ensure_packages('python-imaging')
+        ensure_packages(['python-imaging', 'python3-pil'])
     } else {
-        ensure_packages('python-pil')
+        ensure_packages(['python-pil', 'python3-pil'])
     }
 }
