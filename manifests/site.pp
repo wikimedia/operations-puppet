@@ -1577,11 +1577,6 @@ node 'maps2004.codfw.wmnet' {
     role(maps::master)
 }
 
-# New maps servers T260271
-node /^maps20(0[5-9]|1[0])\.codfw\.wmnet$/ {
-    role(insetup)
-}
-
 # Buster replacement for matomo1001 - T252740
 node 'matomo1002.eqiad.wmnet' {
     role(piwik)
