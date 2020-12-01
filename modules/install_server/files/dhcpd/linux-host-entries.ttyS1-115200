@@ -2927,12 +2927,6 @@ host es1017 {
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
-host es1018 {
-    hardware ethernet 44:A8:42:35:77:41;
-    fixed-address es1018.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
-}
-
 host es1019 {
     hardware ethernet 44:A8:42:35:72:8C;
     fixed-address es1019.eqiad.wmnet;
