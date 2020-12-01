@@ -14,7 +14,8 @@ class elasticsearch::packages (
     }
 
     # library for elasticsearch
-    ensure_packages(['python3-elasticsearch','python3-ipaddr'])
+    require_package('python-elasticsearch')
+    require_package('python-ipaddr')
 
     ### install and link additional log4j appender to send logs over GELF
 
