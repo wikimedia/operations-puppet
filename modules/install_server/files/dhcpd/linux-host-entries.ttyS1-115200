@@ -88,48 +88,6 @@ host an-test-worker1003 {
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
-host analytics1051 {
-    hardware ethernet 44:A8:42:25:18:1D;
-    fixed-address analytics1051.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
-}
-
-host analytics1052 {
-    hardware ethernet 44:A8:42:1D:83:E4;
-    fixed-address analytics1052.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
-}
-
-host analytics1053 {
-    hardware ethernet 54:9F:35:25:BF:BC;
-    fixed-address analytics1053.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
-}
-
-host analytics1054 {
-    hardware ethernet 44:A8:42:24:FB:5A;
-    fixed-address analytics1054.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
-}
-
-host analytics1055 {
-    hardware ethernet 44:A8:42:25:27:78;
-    fixed-address analytics1055.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
-}
-
-host analytics1056 {
-    hardware ethernet 44:A8:42:25:16:24;
-    fixed-address analytics1056.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
-}
-
-host analytics1057 {
-    hardware ethernet 44:A8:42:25:03:F0;
-    fixed-address analytics1057.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
-}
-
 host analytics1058 {
     hardware ethernet 18:66:DA:F7:E0:CC;
     fixed-address analytics1058.eqiad.wmnet;
