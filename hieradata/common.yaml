@@ -664,6 +664,12 @@ kafka_clusters:
         id: 2003
         rack: D
 
+  test-eqiad:
+    zookeeper_cluster_name: test-eqiad
+    brokers:
+      kafka-test1006.eqiad.wmnet:
+        id: 1006
+        rack: B
 
 # Oozie base configuration is common to multiple profiles, and must be kept
 # in sync. Instead of having it repated multiple times it is convenient to
