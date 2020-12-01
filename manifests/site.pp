@@ -279,6 +279,11 @@ node 'zookeeper-test1002.eqiad.wmnet' {
     role(insetup)
 }
 
+# Test kafka cluster
+node 'kafka-test1006.eqiad.wmnet' {
+    role(insetup)
+}
+
 # Zookeeper and Etcd discovery service nodes in codfw
 node /^conf200[123]\.codfw\.wmnet$/ {
     role(configcluster)

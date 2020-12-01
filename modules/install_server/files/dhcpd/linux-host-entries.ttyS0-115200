@@ -255,6 +255,11 @@ host irc2001 {
     fixed-address irc2001.wikimedia.org;
 }
 
+host kafka-test1006 {
+    hardware ethernet aa:00:00:d2:81:d8;
+    fixed-address kafka-test1006;
+}
+
 host kafkamon1001 {
     hardware ethernet aa:00:00:ed:c5:11;
     fixed-address kafkamon1001.eqiad.wmnet;
