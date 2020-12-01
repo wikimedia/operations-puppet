@@ -21,8 +21,15 @@ transport_url = rabbit://<%= @openstack_controllers.map{ |rabbit_host| "#{@rabbi
 
 # Schedule things that are for some reason not in the [scheduler] section
 ram_allocation_ratio=1.0
+initial_ram_allocation_ratio=1.0
+
 disk_allocation_ratio=1.5
+initial_disk_allocation_ratio=1.5
+
 cpu_allocation_ratio=4.0
+initial_cpu_allocation_ratio=4.0
+
+
 default_schedule_zone = <%= @default_schedule_zone %>
 
 # compute
@@ -48,7 +55,6 @@ enabled_apis = osapi_compute,metadata
 cores = 8
 instances = 8
 ram = 16384
-max_age = 30
 
 [api]
 auth_strategy = keystone
