@@ -736,7 +736,10 @@ node 'db2139.codfw.wmnet' {
 node 'db2141.codfw.wmnet' {
     role(mariadb::dbstore_multiinstance)
 }
-
+# Codfw new database nodes T267041
+node /^db214[234]\.codfw\.wmnet/ {
+    role(insetup)
+}
 
 # backup testing hosts
 node 'db1133.eqiad.wmnet' {
@@ -1525,6 +1528,11 @@ node /^logstash200[1-3]\.codfw\.wmnet$/ {
 node /^logstash200[4-6]\.codfw\.wmnet$/ {
     role(logstash)
     include ::lvs::realserver # lint:ignore:wmf_styleguide
+}
+
+#codfw new logstash nodes T267420
+node /^logstash203[345]\.codfw\.wmnet/ {
+    role(insetup)
 }
 
 node /lvs101[3456]\.eqiad\.wmnet/ {
