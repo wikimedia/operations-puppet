@@ -3,7 +3,7 @@
 
 global:
   smtp_smarthost: 'localhost:25'
-  smtp_from: 'alertmanager@<%= scope.lookupvar('::domain') %>'
+  smtp_from: 'sre-observability@<%= scope.lookupvar('::domain') %>'
   smtp_require_tls: false
 
 <% if @victorops_api_key %>
