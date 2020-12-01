@@ -7,3 +7,11 @@ profile::memcached::size: 2000
 profile::memcached::extended_options:
   - 'slab_reassign'
 profile::memcached::port: 11211
+
+profile::ceph::client::rbd::keyfile_group: 'glance'
+profile::ceph::client::rbd::client_name: 'codfw1dev-glance-images'
+profile::ceph::client::rbd::keyfile_owner: 'glance'
+profile::ceph::client::rbd::pool: 'codfw1dev-glance-images'
+profile::ceph::client::rbd::enable_v2_messenger: false
+
+profile::wmcs::backy2::cluster_name: ceph
