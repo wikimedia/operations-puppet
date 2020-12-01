@@ -2412,10 +2412,6 @@ node 'cloudvirt1020.eqiad.wmnet' {
     role(wmcs::openstack::eqiad1::virt)
 }
 
-node 'cloudvirt1030.eqiad.wmnet' {
-    role(wmcs::openstack::eqiad1::virt)
-}
-
 # cloudvirts using Ceph backend storage
 # https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Ceph
 node /^cloudvirt102[1-8]\.eqiad\.wmnet$/ {
@@ -2426,7 +2422,7 @@ node 'cloudvirt1029.eqiad.wmnet' {
     role(wmcs::openstack::eqiad1::virt_ceph)
 }
 
-node /^cloudvirt103[1-9]\.eqiad\.wmnet$/ {
+node /^cloudvirt103[0-9]\.eqiad\.wmnet$/ {
     role(wmcs::openstack::eqiad1::virt_ceph)
 }
 
