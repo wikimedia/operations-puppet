@@ -338,10 +338,6 @@ sub cluster_fe_recv {
 		return (synth(421, "Misdirected Request"));
 	}
 
-	if (req.url ~ "\?ok=.*$") {
-		set req.url = regsub(req.url, "^([^?]+)\?ok=.*$", "\1");
-	}
-
 	// Experiment on dealing with a buggy UA that's spamming requests in T141786
 	if (req.http.User-Agent ~ "Windows NT .*Chrome/41\.0\.2272\.76" && req.url == "/" && req.http.X-Connection-Properties ~ "SSL=TLSv1.1; C=ECDHE-ECDSA-AES128-SHA;") {
 		return (synth(401, "Buggy request, please report at https://phabricator.wikimedia.org/T141786"));
