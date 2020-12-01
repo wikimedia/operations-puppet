@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 """
@@ -17,54 +17,55 @@ basic html validation here as it should suffice.
 import argparse
 import re
 import sys
-import urllib2
+import urllib.request
 
 
-mobile_copyright = 'Content\sis\savailable\sunder \
-<a\sclass=\"external\"\srel=\"nofollow\" \
-href="(https:)?\/\/creativecommons.org/licenses/by-sa/3\.0/">\
-CC\sBY-SA\s3\.0</a>\sunless\sotherwise\snoted\.'
+mobile_copyright = (r'Content\sis\savailable\sunder '
+                    r'<a\sclass=\"external\"\srel=\"nofollow\" '
+                    r'href="(https:)?\/\/creativecommons.org/licenses/by-sa/3\.0/">'
+                    r'CC\sBY-SA\s3\.0</a>\sunless\sotherwise\snoted\.')
 
-mobile_terms = '<a\shref="(https:)?\/\/m\.wikimediafoundation\.org\/wiki\/Terms_of_Use">\
-Terms\sof\sUse</a>'
+mobile_terms = (r'<a\shref="(https:)?\/\/m\.wikimediafoundation\.org\/wiki\/Terms_of_Use">'
+                r'Terms\sof\sUse</a>')
 
-mobile_privacy = '<a\shref="(https:)?\/\/foundation\.wikimedia\.org\/wiki\/Privacy_policy"\sclass="extiw"\s\
-title="wmf:Privacy\spolicy">Privacy policy</a>'
+mobile_privacy = (r'<a\shref="(https:)?\/\/foundation\.wikimedia\.org\/wiki\/Privacy_policy"\s'
+                  r'class="extiw"\stitle="wmf:Privacy\spolicy">Privacy policy</a>')
 
-copyright = 'Text\sis\savailable\sunder\sthe\s<a\srel="license"\s+\
-href="(https:)?\/\/en.wikipedia.org\/wiki\/Wikipedia:\
-Text_of_Creative_Commons_Attribution-ShareAlike_3.0_Unported_License">\
-Creative\sCommons\sAttribution-ShareAlike\sLicense</a>\
-<a\srel="license"\shref="\/\/creativecommons.org\/licenses\/by-sa\/3\.0/"'
+copyright = (r'Text\sis\savailable\sunder\sthe\s<a\srel="license"\s+'
+             r'href="(https:)?\/\/en.wikipedia.org\/wiki\/Wikipedia:'
+             r'Text_of_Creative_Commons_Attribution-ShareAlike_3.0_Unported_License">'
+             r'Creative\sCommons\sAttribution-ShareAlike\sLicense</a>'
+             r'<a\srel="license"\shref="\/\/creativecommons.org\/licenses\/by-sa\/3\.0/"')
 
-terms = 'additional\sterms\smay\sapply\.  \
-By\susing\sthis\ssite,\syou\sagree\sto\sthe \
-<a\shref="(https:)?\/\/foundation\.wikimedia\.org\/wiki\/Terms_of_Use">Terms\sof\sUse</a>'
+terms = (r'additional\sterms\smay\sapply\.  '
+         r'By\susing\sthis\ssite,\syou\sagree\sto\sthe '
+         r'<a\shref="(https:)?\/\/foundation\.wikimedia\.org\/wiki\/Terms_of_Use">Terms\sof'
+         r'\sUse</a>')
 
-privacy = '<a\shref="(https:)?\/\/foundation\.wikimedia\.org/wiki/Privacy_policy">\
-Privacy\spolicy</a>'
+privacy = (r'<a\shref="(https:)?\/\/foundation\.wikimedia\.org/wiki/Privacy_policy">'
+           r'Privacy\spolicy</a>')
 
-enwb_privacy = '<a\shref="(https:)?\/\/foundation\.wikimedia\.org\/wiki\/Privacy_policy">\
-Privacy\sPolicy\.<\/a>'
+enwb_privacy = (r'<a\shref="(https:)?\/\/foundation\.wikimedia\.org\/wiki\/Privacy_policy">'
+                r'Privacy\sPolicy\.<\/a>')
 
-enwp_trademark = 'Wikipedia®\sis\sa\sregistered\strademark \
-of\sthe\s<a\shref="\/\/(www\.)?wikimediafoundation\.org/">\
-Wikimedia\sFoundation,\sInc\.</a>,\sa\snon-profit\sorganization\.'
+enwp_trademark = (r'Wikipedia®\sis\sa\sregistered\strademark '
+                  r'of\sthe\s<a\shref="\/\/(www\.)?wikimediafoundation\.org/">'
+                  r'Wikimedia\sFoundation,\sInc\.</a>,\sa\snon-profit\sorganization\.')
 
-enwb_copyright = 'Text\sis\savailable\sunder\sthe \
-<a\shref="\/\/creativecommons\.org\/licenses\/by-sa\/3\.0\/">\
-Creative\sCommons\sAttribution-ShareAlike\sLicense.</a>; \
-additional\sterms\smay\sapply\.'
+enwb_copyright = (r'Text\sis\savailable\sunder\sthe '
+                  r'<a\shref="\/\/creativecommons\.org\/licenses\/by-sa\/3\.0\/">'
+                  r'Creative\sCommons\sAttribution-ShareAlike\sLicense.</a>; '
+                  r'additional\sterms\smay\sapply\.')
 
 
 def log(msg, enabled):
     if enabled:
-        print msg
+        print(msg)
 
 
 def site_html(url):
-    html_content = urllib2.urlopen(url).readlines()
-    return '\n'.join(html_content)
+    html_content = urllib.request.urlopen(url).readlines()
+    return '\n'.join([line.decode() for line in html_content])
 
 
 def main():
@@ -99,7 +100,7 @@ def main():
     verbose = args.verbose
     ensures = ensure.get(args.ensure, [])
     if not ensures:
-        print "no html ensure list"
+        print("no html ensure list")
         sys.exit(3)
 
     log(site, verbose)
@@ -109,10 +110,10 @@ def main():
         count = len(re.findall(match, html, re.IGNORECASE))
         log(count, verbose)
         if not count:
-            print "%s html not found" % (match,)
+            print("%s html not found" % (match,))
             sys.exit(2)
 
-    print "all html is present."
+    print("all html is present.")
 
 
 if __name__ == '__main__':
