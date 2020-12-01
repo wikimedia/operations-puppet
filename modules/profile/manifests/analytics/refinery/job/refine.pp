@@ -120,7 +120,6 @@ class profile::analytics::refinery::job::refine(
     $eventlogging_legacy_table_includelist = [
         'ContentTranslationAbuseFilter',
         'SpecialInvestigate',
-        'SpecialMuteSubmit',
         'SearchSatisfaction',
         'TemplateWizard',
         'Test',
