@@ -9,17 +9,19 @@ class postgresql::slave::monitoring(
     $description = 'Postgres Replication Lag',
     $critical = 16777216, # 16Mb
     $warning = 1048576, # 1Mb
+    $retries = 3, # the default for nrpe::monitor_service
 ) {
 
     $icinga_command = "/usr/bin/check_postgres_hot_standby_delay \
 --host=${pg_master},localhost --dbuser=${pg_user} \
---dbpass=${pg_password} -dbname=${pg_database} \
+--dbpass=${pg_password} --dbname=${pg_database} \
 --warning=${warning} --critical=${critical}"
 
     nrpe::monitor_service { 'postgres-rep-lag':
         description  => $description,
         nrpe_command => $icinga_command,
         notes_url    => 'https://wikitech.wikimedia.org/wiki/Postgres#Monitoring',
+        retries      => $retries,
     }
 
 }
