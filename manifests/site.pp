@@ -276,7 +276,7 @@ node /^conf100[456]\.eqiad\.wmnet$/ {
 
 # Test zookeeper in eqiad
 node 'zookeeper-test1002.eqiad.wmnet' {
-    role(insetup)
+    role(zookeeper::test)
 }
 
 # Test kafka cluster

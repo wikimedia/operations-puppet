@@ -566,6 +566,11 @@ zookeeper_clusters:
       an-conf1002.eqiad.wmnet: '1002'
       an-conf1003.eqiad.wmnet: '1003'
 
+  # Test ZK cluster
+  test-eqiad:
+    hosts:
+      zookeeper-test1002.eqiad.wmnet: '1002'
+
 # Used to sync the setting between all Kafka clusters and clients.
 kafka_message_max_bytes: 4194304
 
