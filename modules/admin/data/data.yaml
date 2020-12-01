@@ -249,16 +249,17 @@ groups:
                  via stat100x.
                  If a user is added to this group it should not
                  need to be in researchers or analytics-privatedata-users.
-                 In case of doubt, please ask to the Analytics team.
-                 More info https://wikitech.wikimedia.org/wiki/Analytics/Data_access#Access_Groups
+                 Please note that we (Analytics) are trying to deprecate the group,
+                 if you need to add users to it please ping Luca/Andrew/Razzi first
+                 or comment in https://phabricator.wikimedia.org/T269150.
     members: [brion, mhurd, santhosh]
     approval: Andrew Otto
   analytics-privatedata-users:
     gid: 731
     description: Gives access to the Analytics (Hadoop) cluster as well as private data within.
-                 This will grant shell access on Hadoop client nodes and on
-                 Hadoop NameNodes.  Some files in HDFS have sensitive data in them.
-                 Those files are group readable by the analytics-privatedata-users group.
+                 This will grant shell access on Hadoop client nodes.
+                 Some files in Hadoop HDFS (storage) have sensitive data in them, and
+                 they are group readable by the analytics-privatedata-users group.
                  A kerberos account is only needed if the user will access Hadoop data
                  via tools on stat100x hosts. The user in fact might only want/need
                  to access data indirectly via Superset (via Presto) or query Wiki db replicas.
