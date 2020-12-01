@@ -7,6 +7,8 @@ type Profile::Mariadb::Valid_section = Enum[
     #'s11',
     # Mediawiki extension data
     'x1',
+    # MainStash data
+    'x2',
     # Mediawiki page content (External Storage)
     'es1', 'es2', 'es3', 'es4', 'es5',
     # Mediawiki ParcerCache

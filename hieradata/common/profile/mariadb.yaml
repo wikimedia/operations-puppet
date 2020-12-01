@@ -9,6 +9,7 @@ profile::mariadb::section_ports:
   s8: 3318
   s9: 3319
   x1: 3320
+  x2: 3330
   m1: 3321
   m2: 3322
   m3: 3323
