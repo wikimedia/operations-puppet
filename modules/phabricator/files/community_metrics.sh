@@ -171,7 +171,7 @@ epochnow=$(date +%s)
 # regex if we have zero open tasks (can happen for unbreaknow; see T159314):
 regex='^[0-9]+$'
 
-mediantasksopen_unbreaknow_epoch=$(echo $result_mediantasksopen_unbreaknow | cut -d " " -f3 | sed 's/.0000//' | sed 's/.5000//')
+mediantasksopen_unbreaknow_epoch=$(echo $result_mediantasksopen_unbreaknow | cut -d " " -f3 | sed 's/\.0000//' | sed 's/\.5000//')
 if [[ $mediantasksopen_unbreaknow_epoch =~ $regex ]] ; then
   diff_unbreaknow=$((epochnow-mediantasksopen_unbreaknow_epoch))
   mediantasksopen_unbreaknow=$(echo $((diff_unbreaknow/86400)))
@@ -179,23 +179,23 @@ else
   mediantasksopen_unbreaknow=0
 fi
 
-mediantasksopen_needstriage_epoch=$(echo $result_mediantasksopen_needstriage | cut -d " " -f3 | sed 's/.0000//' | sed 's/.5000//')
+mediantasksopen_needstriage_epoch=$(echo $result_mediantasksopen_needstriage | cut -d " " -f3 | sed 's/\.0000//' | sed 's/\.5000//')
 diff_needstriage=$((epochnow-mediantasksopen_needstriage_epoch))
 mediantasksopen_needstriage=$(echo $((diff_needstriage/86400)))
 
-mediantasksopen_high_epoch=$(echo $result_mediantasksopen_high | cut -d " " -f3 | sed 's/.0000//' | sed 's/.5000//')
+mediantasksopen_high_epoch=$(echo $result_mediantasksopen_high | cut -d " " -f3 | sed 's/\.0000//' | sed 's/\.5000//')
 diff_high=$((epochnow-mediantasksopen_high_epoch))
 mediantasksopen_high=$(echo $((diff_high/86400)))
 
-mediantasksopen_normal_epoch=$(echo $result_mediantasksopen_normal | cut -d " " -f3 | sed 's/.0000//' | sed 's/.5000//')
+mediantasksopen_normal_epoch=$(echo $result_mediantasksopen_normal | cut -d " " -f3 | sed 's/\.0000//' | sed 's/\.5000//')
 diff_normal=$((epochnow-mediantasksopen_normal_epoch))
 mediantasksopen_normal=$(echo $((diff_normal/86400)))
 
-mediantasksopen_low_epoch=$(echo $result_mediantasksopen_low | cut -d " " -f3 | sed 's/.0000//' | sed 's/.5000//')
+mediantasksopen_low_epoch=$(echo $result_mediantasksopen_low | cut -d " " -f3 | sed 's/\.0000//' | sed 's/\.5000//')
 diff_low=$((epochnow-mediantasksopen_low_epoch))
 mediantasksopen_low=$(echo $((diff_low/86400)))
 
-mediantasksopen_lowest_epoch=$(echo $result_mediantasksopen_lowest | cut -d " " -f3 | sed 's/.0000//' | sed 's/.5000//')
+mediantasksopen_lowest_epoch=$(echo $result_mediantasksopen_lowest | cut -d " " -f3 | sed 's/\.0000//' | sed 's/\.5000//')
 diff_lowest=$((epochnow-mediantasksopen_lowest_epoch))
 mediantasksopen_lowest=$(echo $((diff_lowest/86400)))
 
