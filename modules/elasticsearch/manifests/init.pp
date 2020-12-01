@@ -162,7 +162,7 @@ class elasticsearch (
         group   => 'root',
         mode    => '0755',
         source  => 'puppet:///modules/elasticsearch/es-tool.py',
-        require => [Package['python-elasticsearch'], Package['python-ipaddr']],
+        require => Package['python3-elasticsearch', 'python3-ipaddr'],
     }
 
     $services_names = $configured_instances.map |$instance_title, $instance_params| {

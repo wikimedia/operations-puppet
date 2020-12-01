@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 import argparse
 import ipaddr
@@ -9,7 +9,7 @@ import subprocess
 import sys
 import time
 
-from elasticsearch import Elasticsearch, TransportError
+from elasticsearch import Elasticsearch, TransportError, ElasticsearchException
 from subprocess import CalledProcessError
 
 
@@ -50,18 +50,18 @@ def cluster_status(columns=None):
 
 
 def set_setting(setting, value, settingtype="transient"):
-        es = Elasticsearch(args.server)
-        res = es.cluster.put_settings(
-            body={
-                settingtype: {
-                    setting: value
-                }
+    es = Elasticsearch(args.server)
+    res = es.cluster.put_settings(
+        body={
+            settingtype: {
+                setting: value
             }
-        )
-        if res["acknowledged"]:
-            return True
-        else:
-            return False
+        }
+    )
+    if res["acknowledged"]:
+        return True
+    else:
+        return False
 
 
 def set_allocation_state(status):
@@ -69,10 +69,10 @@ def set_allocation_state(status):
         try:
             if set_setting("cluster.routing.allocation.enable", status):
                 return True
-        except:
+        except ElasticsearchException:
             time.sleep(3)
-            print "failed! -- retrying (%d/%d)" % (attempt,
-                                                   REPLICATION_ENABLE_ATTEMPTS)
+            print("failed! -- retrying (%d/%d)" % (attempt,
+                                                   REPLICATION_ENABLE_ATTEMPTS))
     return False
 
 
@@ -110,28 +110,28 @@ def get_node_type(node):
 # Add new command functions here
 def es_ban_node():
     if args.node == "":
-        print "No node provided"
+        print("No node provided")
         return os.EX_UNAVAILABLE
 
     node_type = get_node_type(args.node)
 
     banned = get_banned_nodes(node_type)
     if args.node in banned:
-        print args.node + " already banned from allocation, nothing to do"
+        print(args.node + " already banned from allocation, nothing to do")
         return os.EX_OK
 
     banned.append(args.node)
     if set_banned_nodes(banned, node_type):
-        print "Banned " + args.node
+        print("Banned " + args.node)
         return os.EX_OK
     else:
-        print "Failed to ban " + args.node
+        print("Failed to ban " + args.node)
         return os.EX_UNAVAILABLE
 
 
 def es_health():
     health = cluster_health()
-    print health
+    print(health)
     if health != "green":
         return os.EX_UNAVAILABLE
     else:
@@ -146,16 +146,16 @@ def printu(string):
 def es_restart_fast(while_down):
     # Sanity checks
     if os.getuid() != 0:
-        print "Must be run as root"
+        print("Must be run as root")
         return os.EX_UNAVAILABLE
     if args.server != "localhost":
-        print "Must be run against localhost only"
+        print("Must be run against localhost only")
         return os.EX_UNAVAILABLE
 
     # Disable replication so we can make recovery easier
     printu("Disabling non-primary replication...")
     if not set_allocation_state("primaries"):
-        print "failed!"
+        print("failed!")
         return os.EX_UNAVAILABLE
     printu("ok\n")
 
@@ -164,24 +164,24 @@ def es_restart_fast(while_down):
         process_args = ["service", "elasticsearch", "stop"]
         subprocess.check_call(process_args, stdout=DEV_NULL)
     except CalledProcessError:
-        print "failed! Elasticserch is probably not stopped but you will ",
-        print "need to enable replication again with",
-        print "`es-tool start-replication`"
+        print("failed! Elasticserch is probably not stopped but you will ", end=' ')
+        print("need to enable replication again with", end=' ')
+        print("`es-tool start-replication`")
         return os.EX_UNAVAILABLE
     printu("ok\n")
 
     printu("Double checking elasticsearch is stopped...")
     end = time.time()
-    contains_re = re.compile("java.*elasticsearch-\\d+\\.\\d+\\.\\d\\.jar")
+    contains_re = re.compile(r"java.*elasticsearch-\\d+\\.\\d+\\.\\d\\.jar")
     while True:
         try:
-            ps = subprocess.Popen(["ps", "auxww"], stdout=subprocess.PIPE)
+            ps = subprocess.Popen(["ps", "auxww"], stdout=subprocess.PIPE, text=True)
             ps_out, _ = ps.communicate()
             if contains_re.search(ps_out):
                 if time.time() > end + 240:
-                    print "betrayal! Elasticserch never stopped! You will",
-                    print "need to enable replication again with",
-                    print "`es-tool start-replication`"
+                    print("betrayal! Elasticserch never stopped! You will", end=' ')
+                    print("need to enable replication again with", end=' ')
+                    print("`es-tool start-replication`")
                     return os.EX_UNAVAILABLE
                 else:
                     printu(".")
@@ -189,11 +189,11 @@ def es_restart_fast(while_down):
                 continue
             break
         except CalledProcessError:
-            print "failed to complete the check! Elasticsearch might be",
-            print "stopped or stopping so so you",
-            print "will have to start it again with `sudo service",
-            print "elasticsearch start and then reenable replication",
-            print "with `es-tool start-replication`"
+            print("failed to complete the check! Elasticsearch might be", end=' ')
+            print("stopped or stopping so so you", end=' ')
+            print("will have to start it again with `sudo service", end=' ')
+            print("elasticsearch start and then reenable replication", end=' ')
+            print("with `es-tool start-replication`")
 
             return os.EX_UNAVAILABLE
     printu("ok\n")
@@ -207,10 +207,10 @@ def es_restart_fast(while_down):
         process_args = ["service", "elasticsearch", "start"]
         subprocess.check_call(process_args, stdout=DEV_NULL)
     except CalledProcessError:
-        print "failed! Elasticsearch is probably still stopped so you",
-        print "will have to start it again with `sudo service",
-        print "elasticsearch start and then reenable replication",
-        print "with `es-tool start-replication`"
+        print("failed! Elasticsearch is probably still stopped so you", end=' ')
+        print("will have to start it again with `sudo service", end=' ')
+        print("elasticsearch start and then reenable replication", end=' ')
+        print("with `es-tool start-replication`")
         return os.EX_UNAVAILABLE
     printu("ok\n")
 
@@ -221,7 +221,7 @@ def es_restart_fast(while_down):
             if cluster_health():
                 printu("ok\n")
                 break
-        except:
+        except ElasticsearchException:
             pass
         printu(".")
         time.sleep(1)
@@ -233,8 +233,8 @@ def es_restart_fast(while_down):
     printu("Enabling all replication...")
 
     if not set_allocation_state("all"):
-        print "failed! -- You will still need to enable replication",
-        print "again with `es-tool start-replication`"
+        print("failed! -- You will still need to enable replication", end=' ')
+        print("again with `es-tool start-replication`")
         return os.EX_UNAVAILABLE
     else:
         printu("ok\n")
@@ -247,23 +247,23 @@ def es_restart_fast(while_down):
 
 
 def es_wait_for_green():
-    print "Waiting for green (you can ctrl+c here if you have to)...\n"
+    print("Waiting for green (you can ctrl+c here if you have to)...\n")
     while not is_cluster_healthy():
         try:
-            print '\n'.join(cluster_status(columns=('status',
+            print('\n'.join(cluster_status(columns=('status',
                                                     'initializing_shards',
                                                     'relocating_shards',
-                                                    'unassigned_shards')))
-        except:
+                                                    'unassigned_shards'))))
+        except ElasticsearchException:
             printu("Cannot print cluster status\n")
         time.sleep(60)
-    print "ok"
+    print("ok")
 
 
 def is_cluster_healthy():
     try:
         return cluster_health() == "green"
-    except:
+    except ElasticsearchException:
         printu("Error while checking for cluster health\n")
         return False
 
@@ -274,10 +274,10 @@ def es_upgrade_fast():
         try:
             subprocess.check_call(["apt-get", "update"], stdout=DEV_NULL)
         except CalledProcessError:
-            print "failed! Elasticsearch is still stopped so you",
-            print "will have to start it again with `sudo service",
-            print "elasticsearch start and then reenable replication",
-            print "with `es-tool start-replication`"
+            print("failed! Elasticsearch is still stopped so you", end=' ')
+            print("will have to start it again with `sudo service", end=' ')
+            print("elasticsearch start and then reenable replication", end=' ')
+            print("with `es-tool start-replication`")
             return os.EX_UNAVAILABLE
         printu("ok\n")
 
@@ -290,10 +290,10 @@ def es_upgrade_fast():
                 "install", "elasticsearch"]
             subprocess.check_call(process_args, stdout=DEV_NULL)
         except CalledProcessError:
-            print "failed! Elasticsearch is still stopped so you",
-            print "will have to start it again with `sudo service",
-            print "elasticsearch start and then reenable replication",
-            print "with `es-tool start-replication`"
+            print("failed! Elasticsearch is still stopped so you", end=' ')
+            print("will have to start it again with `sudo service", end=' ')
+            print("elasticsearch start and then reenable replication", end=' ')
+            print("with `es-tool start-replication`")
             return os.EX_UNAVAILABLE
         printu("ok\n")
 
@@ -302,40 +302,40 @@ def es_upgrade_fast():
 
 def es_start_replication():
     if set_allocation_state("all"):
-        print "All replication enabled"
+        print("All replication enabled")
         return os.EX_OK
     else:
-        print "Failed to set replication state"
+        print("Failed to set replication state")
         return os.EX_UNAVAILABLE
 
 
 def es_stop_replication():
     if set_allocation_state("primaries"):
-        print "Non-primary replication disabled"
+        print("Non-primary replication disabled")
         return os.EX_OK
     else:
-        print "Failed to set replication state"
+        print("Failed to set replication state")
         return os.EX_UNAVAILABLE
 
 
 def es_unban_node():
     if args.node == "":
-        print "No node provided"
+        print("No node provided")
         return os.EX_UNAVAILABLE
 
     node_type = get_node_type(args.node)
 
     banned = get_banned_nodes(node_type)
     if args.node not in banned:
-        print args.node + " not banned from allocation, nothing to do"
+        print(args.node + " not banned from allocation, nothing to do")
         return os.EX_OK
 
     banned.remove(args.node)
     if set_banned_nodes(banned, node_type):
-        print "Unbanned " + args.node
+        print("Unbanned " + args.node)
         return os.EX_OK
     else:
-        print "Failed to unban " + args.node
+        print("Failed to unban " + args.node)
         return os.EX_UNAVAILABLE
 
 
@@ -356,7 +356,7 @@ commands = {
 parser = argparse.ArgumentParser(
     description="Tool for Elasticsearch cluster maintenance")
 parser.add_argument("command", metavar='CMD', type=str,
-                    choices=commands.keys(),
+                    choices=list(commands.keys()),
                     help="Subcommand, one of: " + ",".join(commands))
 parser.add_argument("node", metavar='NODE', type=str, nargs="?", default="",
                     help="IP address or hostname, used by (un)ban-node")
@@ -372,5 +372,5 @@ args = parser.parse_args()
 try:
     sys.exit(commands[args.command]())
 except TransportError as te:
-    print te
+    print(te)
     sys.exit(os.EX_UNAVAILABLE)
