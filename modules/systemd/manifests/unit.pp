@@ -38,12 +38,12 @@
 # }
 #
 define systemd::unit(
-    String         $content,
-    Wmflib::Ensure $ensure   = present,
-    Boolean        $restart  = false,
-    Boolean        $override = false,
+    String $content,
+    Wmflib::Ensure $ensure=present,
+    Boolean $restart=false,
+    Boolean $override=false,
 ){
-    require systemd
+    require ::systemd
 
     if ($title =~ /^(.+)\.(\w+)$/ and $2 =~ Systemd::Unit_type){
         $unit_name = $title
@@ -73,12 +73,6 @@ define systemd::unit(
         owner   => 'root',
         group   => 'root',
         notify  => Exec[$exec_label],
-    }
-    unless $override {
-        # the validate_cmd works on a $tmpfile as such we can only test complete unit files
-        File[$path] {
-            validate_cmd => '/bin/systemd-analyze verify %'
-        }
     }
 
     exec { $exec_label:
