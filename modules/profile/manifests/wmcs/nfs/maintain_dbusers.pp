@@ -11,8 +11,8 @@ class profile::wmcs::nfs::maintain_dbusers (
     Hash                    $ldapconfig             = lookup('labsldapconfig', {'merge' => hash}),
     Hash                    $production_ldap_config = lookup('ldap', {'merge' => hash}),
     Stdlib::IP::Address::V4 $cluster_ip             = lookup('profile::wmcs::nfs::primary::cluster_ip'),
-    Hash[String,Stdlib::Port] $section_ports        = lookup('profile::mariadb::section_ports'),
 ){
+
     package { [
         'python3-ldap3',
         'python3-netifaces',
@@ -24,50 +24,6 @@ class profile::wmcs::nfs::maintain_dbusers (
     include passwords::mysql::labsdb
     include passwords::labsdbaccounts
 
-    $multiinstance_collected = $section_ports.keys.reduce({}) |$memo, $section|{
-        $memo + {
-            $section =>  query_nodes(
-                "(Class['role::wmcs::db::wikireplicas::web_multiinstance'] or Class['role::wmcs::db::wikireplicas::analytics_multiinstance']) and Profile::Mariadb::Section[${section}]"
-            )
-        }
-    }
-    $multiinstance_filtered = $multiinstance_collected.filter | $section, $hosts | {
-        !empty($hosts)
-    }
-
-    $multiinstance_connect_addresses = $multiinstance_filtered.map |$section, $hosts| {
-        $hosts.map | $host | {
-            "${host}:${section_ports[$section]}"
-        }
-    }
-
-    $legacy_hosts = {
-        '172.16.7.153' => {
-            'grant-type' => 'legacy',
-        },
-        'labsdb1009.eqiad.wmnet' => {
-            'grant-type' => 'role',
-        },
-        'labsdb1010.eqiad.wmnet' => {
-            'grant-type' => 'role',
-        },
-        'labsdb1011.eqiad.wmnet' => {
-            'grant-type' => 'role',
-        },
-        'labsdb1012.eqiad.wmnet' => {
-            'grant-type' => 'role',
-        },
-    }
-
-    if !empty($multiinstance_connect_addresses) {
-        $multiinstance_hosts = $multiinstance_connect_addresses.reduce({}) | $memo, $conn_str | {
-            $memo + {$conn_str => {'grant-type' => 'role'}}
-        }
-        $all_hosts = $multiinstance_hosts + $legacy_hosts
-    } else {
-        $all_hosts = $legacy_hosts
-    }
-
     $creds = {
         'ldap' => {
             'hosts'    => [
@@ -78,7 +34,23 @@ class profile::wmcs::nfs::maintain_dbusers (
             'password' => $ldapconfig['proxypass'],
         },
         'labsdbs' => {
-            'hosts'    => $all_hosts,
+            'hosts' => {
+                '172.16.7.153' => {
+                    'grant-type' => 'legacy',
+                },
+                'labsdb1009.eqiad.wmnet' => {
+                    'grant-type' => 'role',
+                },
+                'labsdb1010.eqiad.wmnet' => {
+                    'grant-type' => 'role',
+                },
+                'labsdb1011.eqiad.wmnet' => {
+                    'grant-type' => 'role',
+                },
+                'labsdb1012.eqiad.wmnet' => {
+                    'grant-type' => 'role',
+                },
+            },
             'username' => $::passwords::mysql::labsdb::user,
             'password' => $::passwords::mysql::labsdb::password,
         },
