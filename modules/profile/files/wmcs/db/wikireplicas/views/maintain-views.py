@@ -720,7 +720,7 @@ def main():
     for inst in config["mysql_instances"]:
         dbs_in_section = set(read_dblist(inst, args.mediawiki_config))
         dbs_in_scope = set(dbs_with_metadata.keys())
-        instance_dbs = dbs_in_scope.union(dbs_in_section)
+        instance_dbs = dbs_in_scope.intersection(dbs_in_section)
         instance_dbs_with_metadata = {
             db: meta
             for (db, meta) in dbs_with_metadata.items()
