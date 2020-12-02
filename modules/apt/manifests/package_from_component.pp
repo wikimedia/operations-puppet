@@ -58,7 +58,7 @@ define apt::package_from_component(
 
     ensure_packages($packages)
 
-    Package[$packages] -> [Apt::Repository["repository_${title}"], Exec["exec_apt_${title}"]]
+    Apt::Repository["repository_${title}"] -> Exec["exec_apt_${title}"] -> Package[$packages]
 
     exec {"exec_apt_${title}":
         command     => '/usr/bin/apt-get update',
