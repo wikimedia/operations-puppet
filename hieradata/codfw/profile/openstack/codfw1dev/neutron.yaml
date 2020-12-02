@@ -43,8 +43,10 @@ profile::openstack::codfw1dev::neutron::l3_conntrackd:
   cloudnet2003-dev:
     netns: 'qrouter-5712e22e-134a-40d3-a75a-1c9b441717ad'
     nic: 'ha-727a378d-35'
-    addr: 169.254.192.5
+    local_addr: '169.254.192.5'
+    remote_addr: '169.254.192.4'
   cloudnet2002-dev:
     netns: 'qrouter-5712e22e-134a-40d3-a75a-1c9b441717ad'
     nic: 'ha-5dc9c3b7-24'
-    addr: 169.254.192.4
+    local_addr: '169.254.192.4'
+    remote_addr: '169.254..192.5'

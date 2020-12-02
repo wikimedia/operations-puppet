@@ -44,21 +44,18 @@ class profile::openstack::base::neutron::l3_agent(
     #   node1:
     #     netns: qrouter-xxx-xxx
     #     nic: ha-xxx-xxx
-    #     addr: x.x.x.x
+    #     local_addr: x.x.x.x
+    #     remote_addr: x.x.x.x
     #   node2:
     #     netns: qrouter-xxx-xxx
     #     nic: ha-yyy-yyy
-    #     addr: y.y.y.y
-    $l3_conntrackd_conf.each | $conntrackd | {
-        if $conntrackd[1] == $::fqdn {
-            $conntrackd_netns         = $conntrackd[1]['netns']
-            $conntrackd_nic           = $conntrackd[1]['nic']
-            $conntrackd_local_address = $conntrackd[1]['addr']
-        }
-        if $conntrackd[1] != $::fqdn {
-            $conntrackd_remote_address = $conntrackd[1]['addr']
-        }
-    }
+    #     local_addr: y.y.y.y
+    #     remote_addr: y.y.y.y
+
+    $conntrackd_netns          = $l3_conntrackd_conf[$::hostname]['netns']
+    $conntrackd_nic            = $l3_conntrackd_conf[$::hostname]['nic']
+    $conntrackd_local_address  = $l3_conntrackd_conf[$::hostname]['local_addr']
+    $conntrackd_remote_address = $l3_conntrackd_conf[$::hostname]['remote_addr']
 
     class { 'conntrackd':
         conntrackd_cfg => template('profile/openstack/base/neutron/conntrackd.conf.erb'),

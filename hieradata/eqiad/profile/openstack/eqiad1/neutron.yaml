@@ -45,8 +45,10 @@ profile::openstack::eqiad1::neutron::l3_conntrackd:
   cloudnet1003:
     netns: 'qrouter-d93771ba-2711-4f88-804a-8df6fd03978a'
     nic: 'ha-37a86ebc-17'
-    addr: 169.254.192.9
+    local_addr: '169.254.192.9'
+    remote_addr: '169.254.192.6'
   cloudnet1004:
     netns: 'qrouter-d93771ba-2711-4f88-804a-8df6fd03978a'
     nic: 'ha-d8c86248-12'
-    addr: 169.254.192.6
+    local_addr: '169.254.192.6'
+    remote_addr: '169.254.192.9'
