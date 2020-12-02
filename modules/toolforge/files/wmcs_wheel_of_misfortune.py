@@ -229,12 +229,15 @@ def slay(
         logging.info(
             "Killing %s", vic.as_dict(attrs=["pid", "username", "uids", "name"])
         )
+        # Save aside proc info before you kill it for later emailing.
+        username = vic.username()
+        proc_name = vic.name()
         os.kill(vic.pid, signal.SIGINT)
         # Give it a couple seconds to die honorably
         time.sleep(2)
         if psutil.pid_exists(vic.pid):
             os.kill(vic.pid, signal.SIGKILL)
-        email_user(vic.username(), conn, vic.name(), project)
+        email_user(username, conn, proc_name, project)
 
 
 def main():
