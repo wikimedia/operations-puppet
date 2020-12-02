@@ -1,0 +1,32 @@
+<VirtualHost *:80>
+    ServerName <%= @virtual_host %>
+    ServerSignature Off
+
+    DocumentRoot <%= @document_root %>
+
+    <%- @cas_settings.each_pair do |key, setting| -%>
+      <%- unless setting.nil? or setting == :undef -%>
+    <%= key %> <%= setting %>
+      <%-end -%>
+    <%-end -%>
+
+    <Location />
+        <%- @cas_auth_settings.each_pair do |key, setting| -%>
+          <%- if setting.is_a?(Array) -%>
+            <%- setting.each do |_setting| -%>
+          <%= key %> <%= _setting %>
+            <%- end -%>
+          <%- else -%>
+          <%= key %> <%= setting %>
+          <%- end -%>
+        <%- end -%>
+    </Location>
+
+    CustomLog /var/log/apache2/<%= @virtual_host %>-access.log
+    ErrorLog /var/log/apache2/<%= @virtual_host %>-error.log
+    LogLevel warn
+
+    ProxyPass / http://localhost:<%= @vhost_settings['uwsgi_port'] %>/
+    ProxyPassReverse / http://localhost:<%= @vhost_settings['uwsgi_port'] %>/
+</VirtualHost>
+

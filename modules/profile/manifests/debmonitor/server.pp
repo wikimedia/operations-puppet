@@ -142,6 +142,21 @@ class profile::debmonitor::server (
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Debmonitor',
     }
 
+    class { '::httpd':
+        modules => ['proxy_http', 'proxy', 'auth_basic']
+    }
+
+    profile::idp::client::httpd::site {'debmonitor.wikimedia.org':
+        vhost_content    => 'profile/idp/client/httpd-debmonitor.erb',
+        proxied_as_https => true,
+        vhost_settings   => { 'uwsgi_port' => $port },
+        required_groups  => [
+            'cn=ops,ou=groups,dc=wikimedia,dc=org',
+            'cn=wmf,ou=groups,dc=wikimedia,dc=org',
+            'cn=nda,ou=groups,dc=wikimedia,dc=org',
+        ],
+    }
+
     # Maintenance script
     file { "${base_path}/run-django-command":
         ensure  => present,
