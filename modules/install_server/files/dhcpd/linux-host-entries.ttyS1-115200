@@ -3448,6 +3448,21 @@ host logstash2029 {
     fixed-address logstash2029.codfw.wmnet;
 }
 
+host logstash2033 {
+    hardware ethernet BC:97:E1:C0:2D:30;
+    fixed-address logstash2033.codfw.wmnet;
+}
+
+host logstash2034 {
+    hardware ethernet BC:97:E1:C0:41:A0;
+    fixed-address logstash2034.codfw.wmnet;
+}
+
+host logstash2035 {
+    hardware ethernet BC:97:E1:C0:41:90;
+    fixed-address logstash2035.codfw.wmnet;
+}
+
 host kafka-jumbo1001 {
     hardware ethernet 18:66:DA:FC:D5:30;
     fixed-address kafka-jumbo1001.eqiad.wmnet;
