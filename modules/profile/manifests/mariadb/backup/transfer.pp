@@ -32,6 +32,9 @@ class profile::mariadb::backup::transfer {
     }
 
     systemd::timer::job { 'regular_snapshot':
+        ensure      => 'absent',
+    }
+    systemd::timer::job { 'database-backups-snapshots':
         ensure      => 'present',
         user        => 'root',
         description => 'Generate mysql snapshot backup batch',
