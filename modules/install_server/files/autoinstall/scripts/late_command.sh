@@ -67,5 +67,6 @@ case `hostname` in \
 	;; \
 esac
 
-# Enable structured puppet facts on first puppet run, same as production - T169612
-in-target /usr/bin/puppet config set --section agent stringify_facts false
+in-target /usr/bin/puppet config set --section main vardir /var/lib/puppet
+in-target /usr/bin/puppet config set --section main rundir /var/run/puppet
+in-target /usr/bin/puppet config set --section main factpath /var/lib/puppet/lib/facter
