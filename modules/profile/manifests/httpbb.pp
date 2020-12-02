@@ -11,9 +11,6 @@ class profile::httpbb {
             ensure => directory
     }
 
-    httpbb::test_suite {'appserver/baseurls.yaml':
-        source => 'puppet:///modules/profile/httpbb/appserver/baseurls.yaml'
-    }
     httpbb::test_suite {'appserver/test_foundation.yaml':
         source => 'puppet:///modules/profile/httpbb/appserver/test_foundation.yaml'
     }
