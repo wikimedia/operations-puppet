@@ -35,7 +35,7 @@ class mirrors::ubuntu {
         ensure      => 'present',
         user        => 'root',
         description => 'update the Ubuntu mirror with rsync',
-        command     => '/usr/local/sbin/update-ubunut-mirror',
+        command     => '/usr/local/sbin/update-ubuntu-mirror',
         interval    => {'start' => 'OnUnitInactiveSec', 'interval' => '6h'},
         require     => File['/usr/local/sbin/update-ubuntu-mirror'],
     }
