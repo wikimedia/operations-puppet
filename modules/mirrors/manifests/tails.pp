@@ -32,7 +32,7 @@ class mirrors::tails {
         user        => 'root',
         description => 'update the tails mirror with rsync',
         command     => $rsync_cmd,
-        interval    => {'start' => 'OnUnitInactiveSec', 'interval' => 'hourly'},
+        interval    => {'start' => 'OnUnitInactiveSec', 'interval' => '1h'},
     }
 
 }
