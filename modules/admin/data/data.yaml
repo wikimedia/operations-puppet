@@ -292,7 +292,7 @@ groups:
               itamar, phedenskog, aaron, dpifke, aklapper, jmads, andrew-wmde, daniram,
               dcipoletti, chrisalbon, wikigit, nahidunlimited, swagoel,
               agaduran, edtadros, dvrandecic, razzi, cparle, klausman, lexnasser, sbisson, fab,
-              dumisani, janstee, gmodena, cdanis]
+              dumisani, janstee, gmodena, cdanis, wmde-leszek]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product]
     approval: Andrew Otto
@@ -613,7 +613,7 @@ groups:
     description: Group of WMDE analytics users
     gid: 784
     members: [addshore, goransm, ladsgroup, lucaswerkmeister-wmde, conniecc1, tarrow, itamar,
-              awight, wmde-fisch]
+              awight, wmde-fisch, wmde-leszek]
     privileges: ['ALL = (analytics-wmde) NOPASSWD: ALL']
   eventbus-admins:
     gid: 785
@@ -2166,6 +2166,7 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDDa1W3Y8nlp/EmGkMrbhe4hdFFcAbFUANdhTM6K8sl661rYriocfoxCLfzGfqDnSa7BddB0b1Zb6L845fquJRoLBZqeww0YyCgAdZ9rfrKmA5fnDoGWmHThz/dshS/52SI8fEw+FnW7/PMjSRNsozZ6Vz9PU1h9OdBCwwjFEbaeNkApXo/0Fn4EcuwPEqyvQa2VXlVlHZJ+Vu/BDfVPqeTl1CupBCu62+S7o9T0FAOxk+gNea5F5LMLSkCvczbJiB1tfaCf0ThPdVdtrx6AhKD7hxnL5mQbbV2hUK6txVz+8MwZe5uEH3TFRC0iGSDJP9QV0u8QZwRdONg+wnkVMer
     uid: 12300
     email: leszek.manicki@wikimedia.de
+    krb: present
   jminor:
     ensure: present
     gid: 500
