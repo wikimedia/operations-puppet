@@ -522,6 +522,13 @@ class profile::prometheus::ops (
         port       => 9117,
     }
 
+    # Special config for Apache on CI master
+    prometheus::class_config{ "apache_ci_${::site}":
+        dest       => "${targets_path}/apache_ci_master_${::site}.yaml",
+        site       => $::site,
+        class_name => 'role::ci::master',
+        port       => 9117,
+    }
 
     # Job definition for icinga_exporter
     $icinga_jobs = [
