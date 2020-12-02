@@ -1,0 +1,13 @@
+# redirects.dat
+http://wikimedia.org:
+- path: /research
+  assert_status: 301
+  assert_headers:
+      Location: https://wikimedia.qualtrics.com/SE/?SID=SV_6R04ammTX8uoJFP
+
+# Url shortner
+https://w.wiki:
+- path: /
+  assert_status: 301
+  assert_headers:
+      Location: https://meta.wikimedia.org/wiki/Special:UrlShortener

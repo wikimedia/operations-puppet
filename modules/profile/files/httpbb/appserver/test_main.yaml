@@ -1,5 +1,23 @@
 # This file tests some urls for wikis in the main.conf file
 
+https://en.wikipedia.org:
+- path: /wiki/Main_Page
+  assert_status: 200
+  assert_body_contains: Wikipedia, the free encyclopedia
+- path: /wiki/Special:Export/Pulsar
+  assert_status: 200
+  assert_body_contains: <model>wikitext</model>
+- path: /wiki/Barack_Obama
+  assert_status: 200
+  assert_body_contains: Barack Obama
+- path: /w/wiki.phtml?title=foo&action=info
+  assert_status: 200
+  assert_body_contains: Information for "Foo"
+- path: /apple-app-site-association
+  assert_status: 200
+  assert_body_regex: >-
+    "appID"\s*:\s*"AKK7J2GV64.org.wikimedia.wikipedia",\s*"paths":\s*\[\s*"/wiki/\*"
+
 https://www.mediawiki.org:
 - path: /wiki/User_hub
   assert_status: 200
@@ -55,6 +73,21 @@ https://es.wikibooks.org:
 - path: /wiki/Portada
   assert_status: 200
   assert_body_contains: Wikilibros
+# Short url support
+- path: /s/22u
+  assert_status: 301
+  assert_headers:
+      Location: https://es.wikibooks.org/wiki/Especial:ShortUrl/22u
+- path: /wiki/Especial:ShortUrl/22u
+  assert_status: 301
+  assert_headers:
+      Location: https://es.wikibooks.org/wiki/Wikichicos/Grandes_felinos
+
+https://ta.wikinews.org:
+- path: /s/9p5
+  assert_status: 301
+  assert_headers:
+      Location: https://ta.wikinews.org/wiki/%E0%AE%9A%E0%AE%BF%E0%AE%B1%E0%AE%AA%E0%AF%8D%E0%AE%AA%E0%AF%81:ShortUrl/9p5
 
 https://en.wikinews.org:
 - path: /wiki/Main_Page
@@ -62,9 +95,20 @@ https://en.wikinews.org:
   assert_body_contains: Wikinews, the free news source
 
 https://de.wikipedia.org:
+- path: /wiki/Wikipedia:Hauptseite
+  assert_status: 200
+  assert_body_contains: Wikipedia – Die freie Enzyklopädie
 - path: /wiki/Portal:Geographie
   assert_status: 200
   assert_body_contains: Portal:Geographie – Wikipedia
+
+# T75274 (Pages ending with .Z show garbage due to x-compress being sent)
+https://fr.wikipedia.org:
+- path: /wiki/K.A.Z
+  request_headers: {Accept-Encoding: "deflate, gzip"}
+  assert_status: 200
+  assert_headers: {Content-Encoding: gzip}
+  assert_body_contains: Kazuhito Iwaike
 
 https://it.wikiquote.org:
 - path: /wiki/Pagina_principale
@@ -78,6 +122,11 @@ https://en.wikisource.org:
 
 https://www.wikiversity.org:
 - path: /
+  assert_status: 200
+  assert_body_contains: Wikiversity
+
+https://en.wikiversity.org:
+- path: /wiki/Wikiversity:Main_Page
   assert_status: 200
   assert_body_contains: Wikiversity
 
@@ -95,15 +144,35 @@ https://en.wiktionary.org:
 - path: /wiki/Wiktionary:Main_Page
   assert_status: 200
   assert_body_contains: Wiktionary, the free dictionary
-
-https://en.wikipedia.org:
-- path: /apple-app-site-association
+- path: /wiki/fanfarone
   assert_status: 200
-  assert_body_regex: >-
-    "appID"\s*:\s*"AKK7J2GV64.org.wikimedia.wikipedia",\s*"paths":\s*\[\s*"/wiki/\*"
+  assert_body_contains: Wiktionary
 
 https://thankyou.wikipedia.org:
 - path: /apple-app-site-association
   assert_status: 200
   assert_body_regex: >-
     (?s)"appIDs".*"AKK7J2GV64.org.wikimedia.wikipedia".*"/wiki/\*".*"exclude"\s*:\s*true
+
+# Meta (uses wikimedia-common.incl)
+https://meta.wikimedia.org:
+- path: /wiki/List_of_Wikipedias
+  assert_status: 200
+  assert_body_contains: List of Wikipedias
+
+# Donate wiki
+https://donate.wikimedia.org:
+- path: /
+  assert_status: 302
+  assert_headers:
+      Location: https://donate.wikimedia.org/wiki/Special:FundraiserRedirector
+- path: /w/index.php?title=Special:LandingPage&country=IT&uselang=en
+  assert_status: 200
+  assert_body_contains: €
+
+# Assert the query string is kept in an HTTP->HTTPS redirect.
+http://donate.wikimedia.org:
+- path: /?foo
+  assert_status: 301
+  assert_headers:
+      Location: https://donate.wikimedia.org/?foo

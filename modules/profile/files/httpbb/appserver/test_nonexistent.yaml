@@ -1,0 +1,5 @@
+#  Nonexistent.conf - a non-existent domain per RFC 6761
+http://asdf.invalid:
+- path: /
+  assert_status: 200
+  assert_body_contains: Domain not configured
