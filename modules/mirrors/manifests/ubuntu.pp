@@ -33,7 +33,7 @@ class mirrors::ubuntu {
 
     systemd::timer::job { 'update-ubuntu-mirror':
         ensure      => 'present',
-        user        => 'root',
+        user        => 'mirror',
         description => 'update the Ubuntu mirror with rsync',
         command     => '/usr/local/sbin/update-ubuntu-mirror',
         interval    => {'start' => 'OnUnitInactiveSec', 'interval' => '6h'},

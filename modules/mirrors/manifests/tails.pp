@@ -29,7 +29,7 @@ class mirrors::tails {
 
     systemd::timer::job { 'update-tails-mirror':
         ensure      => 'present',
-        user        => 'root',
+        user        => 'mirror',
         description => 'update the tails mirror with rsync',
         command     => $rsync_cmd,
         interval    => {'start' => 'OnUnitInactiveSec', 'interval' => '1h'},
