@@ -1,5 +1,4 @@
 require_relative '../../../../rake_modules/spec_helper'
-
 describe 'systemd::unit' do
   on_supported_os(WMFConfig.test_on).each do |os, facts|
     context "On #{os}" do
@@ -8,7 +7,7 @@ describe 'systemd::unit' do
       let(:params) do
         {
           ensure: 'present',
-          content: 'dummy'
+          content: "[Unit]\n[Service]\nExecStart=/bin/true\n"
         }
       end
 
@@ -25,6 +24,11 @@ describe 'systemd::unit' do
           is_expected.to contain_exec('systemd daemon-reload for foobar.service')
                            .that_comes_before('Service[foobar]')
         end
+        it do
+          is_expected.to contain_file('/lib/systemd/system/foobar.service')
+                           .with_validate_cmd('/bin/systemd-analyze verify %')
+        end
+
         context 'when managing the service restarts' do
           let(:params) { super().merge(restart: true) }
 
@@ -42,7 +46,7 @@ describe 'systemd::unit' do
         describe 'then the systemd service' do
           it 'should define a unit file in the system directory' do
             is_expected.to contain_file('/lib/systemd/system/dummyservice.service')
-                             .with_content('dummy')
+                             .with_content("[Unit]\n[Service]\nExecStart=/bin/true\n")
                              .that_notifies(
                                "Exec[systemd daemon-reload for dummyservice.service]"
                              )
@@ -73,6 +77,7 @@ describe 'systemd::unit' do
                            .with_mode('0444')
                            .with_owner('root')
                            .with_group('root')
+                           .without_validate_cmd
         end
         it 'should contain a systemctl-reload exec' do
           is_expected.to contain_exec('systemd daemon-reload for usbstick.device')
