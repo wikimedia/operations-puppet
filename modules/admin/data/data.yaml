@@ -256,13 +256,18 @@ groups:
     approval: Andrew Otto
   analytics-privatedata-users:
     gid: 731
-    description: Gives access to the Analytics (Hadoop) cluster as well as private data within.
-                 This will grant shell access on Hadoop client nodes.
-                 Some files in Hadoop HDFS (storage) have sensitive data in them, and
-                 they are group readable by the analytics-privatedata-users group.
-                 A kerberos account is only needed if the user will access Hadoop data
-                 via tools on stat100x hosts. The user in fact might only want/need
-                 to access data indirectly via Superset (via Presto) or query Wiki db replicas.
+    description: This group is the main entry point to the Analytics cluster, since it gives
+                 access to the stat100x nodes. Any user added to this group will be exposed
+                 to some PII data (Wiki-replicas, Hadoop, etc..) so the following link needs
+                 to be reviewed https://wikitech.wikimedia.org/wiki/Analytics/Data_access#User_responsibilities
+                 There are two main use cases for this group.
+                 1) No kerberos principal - the user wants to have access to the Mariadb Wiki-replicas
+                    or to use one of the GPUs on the stat100x hosts.
+                 2) With kerberos principal - the user wants the above plus access to the private data
+                    stored in Hadoop (Webrequest, Eventlogging, Pageviews, etc..). In this case, the admin
+                    needs to follow https://wikitech.wikimedia.org/wiki/Analytics/Systems/Kerberos#Create_a_principal_for_a_real_user
+                 Often a user might want to have access to PII data on Turnilo or Superset, that requires
+                 membership to either the 'wmf' or the 'nda' LDAP groups.
                  In case of doubt, please ask to the Analytics team.
                  More info https://wikitech.wikimedia.org/wiki/Analytics/Data_access#Access_Groups
     members: &analytics_privatedata_users [milimetric, aude, jforrester,
