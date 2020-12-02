@@ -863,7 +863,7 @@ host cloudvirt1024 {
 }
 
 host cloudvirt1025 {
-    hardware ethernet BC:97:E1:A7:43:92;
+    hardware ethernet BC:97:E1:A7:43:94;
     fixed-address cloudvirt1025.eqiad.wmnet;
 }
 
