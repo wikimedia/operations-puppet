@@ -1,0 +1,5 @@
+profile::memcached::version: 'present'
+profile::memcached::port: 11211
+profile::memcached::size: 32768
+profile::memcached::extended_options:
+  - 'modern'

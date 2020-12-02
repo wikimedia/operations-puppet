@@ -12,7 +12,7 @@
 #   Memcached TCP listening port.
 #
 # [*size*]
-#   Memcached max memory allocated size.
+#   Memcached max memory allocated size, in megabytes.
 #
 # [*extended_options*]
 #   Extended options to enable various memcached features.

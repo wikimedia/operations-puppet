@@ -142,7 +142,7 @@ node 'an-tool1009.eqiad.wmnet' {
 }
 
 node 'an-tool1010.eqiad.wmnet' {
-    role(insetup)
+    role(analytics_cluster::ui::dashboards)
 }
 
 # Analytics/Search instance of Apache Airflow
