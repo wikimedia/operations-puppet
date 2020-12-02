@@ -1,0 +1,32 @@
+Sync {
+    Mode NOTRACK {
+        DisableInternalCache on
+        DisableExternalCache on
+        StartupResync on
+    }
+    TCP {
+        IPv4_address <%= @conntrackd_local_address %>
+        IPv4_Destination_Address <%= @conntrackd_remote_address %>
+        Port 3780
+        Interface <%= @conntrackd_nic %>
+        Checksum on
+        # 100 MB
+        SndSocketBuffer 100000000
+        RcvSocketBuffer 100000000
+    }
+    Options {
+        TCPWindowTracking off
+        ExpectationSync On
+    }
+}
+General {
+    LockFile /var/lock/conntrackd.lock
+    UNIX {
+        Path /var/run/conntrackd.sock
+    }
+    # 100 MB
+    NetlinkBufferSize 100000000
+    # 200 MB
+    SocketBufferSizeMaxGrown 200000000
+    Systemd on
+}
