@@ -188,14 +188,14 @@
 #    Default: '/var/lib/hadoop/data'
 #
 class profile::hadoop::common (
-    $zookeeper_clusters                    = hiera('zookeeper_clusters'),
-    $hadoop_clusters                       = hiera('hadoop_clusters'),
-    $cluster_name                          = hiera('profile::hadoop::common::hadoop_cluster_name'),
-    $hadoop_clusters_secrets               = hiera('hadoop_clusters_secrets', {}),
-    $config_override                       = hiera('profile::hadoop::common::config_override', {}),
-    $ensure_ssl_config                     = hiera('profile::hadoop::common::ensure_ssl_config', false),
-    String $datanode_mounts_prefix         = lookup('profile::hadoop::common::datanode_mounts_prefix', { 'default_value' => '/var/lib/hadoop/data'}),
-    Optional[Integer] $min_datanode_mounts = lookup('profile::hadoop::common::min_datanode_mounts', { 'default_value' => undef }),
+    Hash[String, Any] $zookeeper_clusters      = lookup('zookeeper_clusters'),
+    Hash[String, Any] $hadoop_clusters         = lookup('hadoop_clusters'),
+    String $cluster_name                       = lookup('profile::hadoop::common::hadoop_cluster_name'),
+    Hash[String, Any] $hadoop_clusters_secrets = lookup('hadoop_clusters_secrets', { 'default_value' => {} }),
+    Hash[String, Any] $config_override         = lookup('profile::hadoop::common::config_override', { 'default_value' => {} }),
+    Boolean $ensure_ssl_config                 = lookup('profile::hadoop::common::ensure_ssl_config', { 'default_value' => false }),
+    String $datanode_mounts_prefix             = lookup('profile::hadoop::common::datanode_mounts_prefix', { 'default_value' => '/var/lib/hadoop/data'}),
+    Optional[Integer] $min_datanode_mounts     = lookup('profile::hadoop::common::min_datanode_mounts', { 'default_value' => undef }),
 ) {
     # Properties that are not meant to have undef as default value (a hash key
     # without a correspondent value returns undef) should be listed in here.

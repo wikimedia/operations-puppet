@@ -16,11 +16,11 @@
 #    Default: []
 #
 class profile::hadoop::master(
-    $cluster_name             = hiera('profile::hadoop::common::hadoop_cluster_name'),
-    $monitoring_enabled       = hiera('profile::hadoop::master::monitoring_enabled', false),
-    $hadoop_user_groups       = hiera('profile::hadoop::master::hadoop_user_groups'),
-    $use_kerberos             = hiera('profile::hadoop::master::use_kerberos', false),
-    $excluded_hosts           = hiera('profile::hadoop::master::excluded_hosts', []),
+    String $cluster_name        = lookup('profile::hadoop::common::hadoop_cluster_name'),
+    Boolean $monitoring_enabled = lookup('profile::hadoop::master::monitoring_enabled', {'default_value' => false}),
+    String $hadoop_user_groups  = lookup('profile::hadoop::master::hadoop_user_groups'),
+    Boolean $use_kerberos       = lookup('profile::hadoop::master::use_kerberos', {'default_value' => false}),
+    Array $excluded_hosts       = lookup('profile::hadoop::master::excluded_hosts', {'default_value' => []}),
 ){
     require ::profile::hadoop::common
 
