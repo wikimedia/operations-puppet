@@ -62,7 +62,7 @@ class profile::chartmuseum(
     package { 'python3-docker-report':
         ensure => present,
     }
-    package { 'helm':
+    package { 'helm3':
         ensure => present,
     }
 
