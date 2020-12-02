@@ -17,6 +17,12 @@ class profile::httpbb {
     httpbb::test_suite {'appserver/test_main.yaml':
         source => 'puppet:///modules/profile/httpbb/appserver/test_main.yaml'
     }
+    httpbb::test_suite {'appserver/test_nonexistent.yaml':
+        source => 'puppet:///modules/profile/httpbb/appserver/test_nonexistent.yaml'
+    }
+    httpbb::test_suite {'appserver/test_redirects.yaml':
+        source => 'puppet:///modules/profile/httpbb/appserver/test_redirects.yaml'
+    }
     httpbb::test_suite {'appserver/test_remnant.yaml':
         source => 'puppet:///modules/profile/httpbb/appserver/test_remnant.yaml'
     }
@@ -28,6 +34,9 @@ class profile::httpbb {
     }
     httpbb::test_suite {'appserver/test_wikimania_wikimedia.yaml':
         source => 'puppet:///modules/profile/httpbb/appserver/test_wikimania_wikimedia.yaml'
+    }
+    httpbb::test_suite {'appserver/test_wwwportals.yaml':
+        source => 'puppet:///modules/profile/httpbb/appserver/test_wwwportals.yaml'
     }
     httpbb::test_suite {'miscweb/test_miscweb.yaml':
         source => 'puppet:///modules/profile/httpbb/miscweb/test_miscweb.yaml'
