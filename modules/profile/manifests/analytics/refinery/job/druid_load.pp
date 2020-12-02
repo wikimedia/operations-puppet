@@ -54,7 +54,7 @@ class profile::analytics::refinery::job::druid_load(
     profile::analytics::refinery::job::eventlogging_to_druid_job { 'netflow':
         job_config        => {
             database         => 'event',
-            datasource       => 'wmf_netflow',
+            druid_datasource => 'wmf_netflow',
             timestamp_column => 'stamp_inserted',
             dimensions       => 'as_dst,as_path,peer_as_dst,as_src,ip_dst,ip_proto,ip_src,peer_as_src,port_dst,port_src,tag2,tcp_flags,country_ip_src,country_ip_dst,peer_ip_src,parsed_comms,net_cidr_src,net_cidr_dst,as_name_src,as_name_dst,ip_version,region',
             metrics          => 'bytes,packets',
@@ -74,7 +74,7 @@ class profile::analytics::refinery::job::druid_load(
         job_config       => {
             database         => 'event',
             table            => 'netflow',
-            datasource       => 'wmf_netflow',
+            druid_datasource => 'wmf_netflow',
             timestamp_column => 'stamp_inserted',
             dimensions       => 'as_dst,as_path,peer_as_dst,as_src,peer_as_src,tag2,country_ip_src,country_ip_dst,peer_ip_src',
             metrics          => 'bytes,packets',
