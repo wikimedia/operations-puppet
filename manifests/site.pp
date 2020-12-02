@@ -1631,7 +1631,7 @@ node /^ms-fe200[6-8]\.codfw\.wmnet$/ {
 }
 
 # Newly provisioned ms-be hosts are safe to add to swift::storage at any time
-node /^ms-be20(1[6-9]|[2345][0-9])\.codfw\.wmnet$/ {
+node /^ms-be20(1[6-9]|[23456][0-9])\.codfw\.wmnet$/ {
     role(swift::storage)
 }
 
