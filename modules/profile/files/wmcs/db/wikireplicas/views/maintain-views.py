@@ -717,9 +717,9 @@ def main():
         )
 
     # At this point we are on a multi-instance replica
+    dbs_in_scope = set(dbs_with_metadata.keys())
     for inst in config["mysql_instances"]:
         dbs_in_section = set(read_dblist(inst, args.mediawiki_config))
-        dbs_in_scope = set(dbs_with_metadata.keys())
         instance_dbs = dbs_in_scope.intersection(dbs_in_section)
         instance_dbs_with_metadata = {
             db: meta
@@ -742,7 +742,7 @@ def main():
             if exit_status != 0:
                 return exit_status
 
-        return exit_status
+    return exit_status
 
 
 if __name__ == "__main__":
