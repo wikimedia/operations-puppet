@@ -88,22 +88,24 @@ class helm(
     }
 
     # This runs both, helm 2 and helm 3 repo updates
-    systemd::timer::job { 'helm-repo-update':
-        ensure          => present,
-        description     => 'Update helm repositories indices',
-        command         => '/usr/bin/helm repo update; /usr/bin/helm3 repo update',
-        environment     => {
-            'HELM_HOME'        => $helm_home,
-            'HELM_CONFIG_HOME' => $helm_home,
-            'HELM_DATA_HOME'   => $helm_data,
-            'HELM_CACHE_HOME'  => $helm_cache,
-        },
-        user            => 'helm',
-        logging_enabled => false,
-        interval        => {
-            # We don't care about when this runs, as long as it runs every minute.
-            'start'    => 'OnUnitInactiveSec',
-            'interval' => '60s',
-        },
+    ['helm', 'helm3'].each |String $helm_version| {
+        systemd::timer::job { "${helm_version}-repo-update":
+            ensure          => present,
+            description     => 'Update helm repositories indices',
+            command         => "/usr/bin/${helm_version} repo update",
+            environment     => {
+                'HELM_HOME'        => $helm_home,
+                'HELM_CONFIG_HOME' => $helm_home,
+                'HELM_DATA_HOME'   => $helm_data,
+                'HELM_CACHE_HOME'  => $helm_cache,
+            },
+            user            => 'helm',
+            logging_enabled => false,
+            interval        => {
+                # We don't care about when this runs, as long as it runs every minute.
+                'start'    => 'OnUnitInactiveSec',
+                'interval' => '60s',
+            },
+        }
     }
 }
