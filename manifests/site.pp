@@ -1609,13 +1609,13 @@ node /^ms-fe1005\.eqiad\.wmnet$/ {
     include ::lvs::realserver
 }
 
-node /^ms-fe100[6-8]\.eqiad\.wmnet$/ {
+node /^ms-fe1\d\d\d\.eqiad\.wmnet$/ {
     role(swift::proxy)
     include ::lvs::realserver
 }
 
 # Newly provisioned ms-be hosts are safe to add to swift::storage at any time
-node /^ms-be10(19|[23456][0-9])\.eqiad\.wmnet$/ {
+node /^ms-be1\d\d\d\.eqiad\.wmnet$/ {
     role(swift::storage)
 }
 
@@ -1625,13 +1625,13 @@ node /^ms-fe2005\.codfw\.wmnet$/ {
     include ::lvs::realserver
 }
 
-node /^ms-fe200[6-8]\.codfw\.wmnet$/ {
+node /^ms-fe2\d\d\d\.codfw\.wmnet$/ {
     role(swift::proxy)
     include ::lvs::realserver
 }
 
 # Newly provisioned ms-be hosts are safe to add to swift::storage at any time
-node /^ms-be20(1[6-9]|[23456][0-9])\.codfw\.wmnet$/ {
+node /^ms-be2\d\d\d\.codfw\.wmnet$/ {
     role(swift::storage)
 }
 
