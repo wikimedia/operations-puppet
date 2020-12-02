@@ -1,7 +1,7 @@
 profile::openstack::base::nova::instance_dev: 'thinvirt'
-profile::openstack::eqiad1::nova::network_flat_tagged_base_interface: eno4
-profile::openstack::eqiad1::nova::network_flat_interface: 'eno4.1105'
+profile::openstack::eqiad1::nova::network_flat_tagged_base_interface: eno2np1
+profile::openstack::eqiad1::nova::network_flat_interface: 'eno2np1.1105'
 profile::openstack::eqiad1::nova::physical_interface_mappings:
-  cloudinstances2b: 'eno4.1105'
+  cloudinstances2b: 'eno2np1.1105'
 
 profile::wmcs::backy2::backup_time: '*-*-* 17:00:00'
