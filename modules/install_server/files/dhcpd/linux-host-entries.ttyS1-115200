@@ -744,19 +744,16 @@ host cloudcontrol2004-dev {
 host cloudvirt2001-dev {
     hardware ethernet D0:94:66:93:97:77;
     fixed-address cloudvirt2001-dev.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host cloudvirt2002-dev {
     hardware ethernet D0:94:66:93:6D:A0;
     fixed-address cloudvirt2002-dev.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host cloudvirt2003-dev {
     hardware ethernet D0:94:66:93:F7:D8;
     fixed-address cloudvirt2003-dev.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host cloudelastic1001 {
