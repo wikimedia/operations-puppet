@@ -65,12 +65,14 @@ groups:
     # qchris is T252194
     members: &gerrit_root_members [twentyafterfour, hashar, thcipriani, qchris]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
+    approval: Tyler Cipriani
   gerrit-admin:
     gid: 704
     description: assist in managing gerrit server
     # qchris is RT 6720
     # Rest is the Release Engineering team
     members: [qchris, dduvall, zfilipin, brennen]
+    approval: Tyler Cipriani
   deployment:
     gid: 705
     description: replaces 'mortals' for software deployment
@@ -185,9 +187,11 @@ groups:
     gid: 718
     description: users with accounts on jenkins hosts
     members: []
+    approval: Tyler Cipriani
   contint-admins:
     gid: 719
     description: users with some sudo permissions on the CI masters (Jenkins, Zuul).
+    approval: Tyler Cipriani
     members: [bd808, cscott, dduvall, krinkle, reedy, marktraceur,
               twentyafterfour, zfilipin, thcipriani, legoktm, gjg,
               hashar, addshore, liw, jhuneidi, brennen,
@@ -219,6 +223,7 @@ groups:
     description: users who have full root on jenkins servers
     members: &contint_roots_members [hashar, thcipriani, brennen, jforrester, twentyafterfour]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
+    approval: Tyler Cipriani
   logstash-roots:
     gid: 722
     description: users with root access on logstash nodes (rt 6366, 6896)
