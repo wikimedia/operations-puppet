@@ -1,0 +1,29 @@
+service::catalog:
+  apaches:
+    description: Main wiki platform LVS service, text.%{::site}.wikimedia.org (Varnish)
+    encryption: false
+    ip:
+      eqiad:
+        default: 1.2.3.4
+      testsite:
+        default: 1.1.1.1
+      testsite1:
+        default: 8.8.8.8
+    lvs:
+      class: high-traffic1
+      conftool:
+        cluster: appserver
+        service: apache2
+      depool_threshold: '.5'
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+      scheduler: sh
+    port: 80
+    sites:
+    - testsite
+    - testsite1
+    - eqiad
+    state: production

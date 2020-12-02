@@ -1,0 +1,99 @@
+profile::envoy::ensure: 'present'
+cluster: 'test'
+service::catalog:
+  appservers-https:
+    description: Main MediaWiki application server cluster, appservers.svc.%{::site}.wmnet
+      (https)
+    encryption: true
+    ip: &appservers_ips
+      codfw:
+        default: 10.2.1.1
+      eqiad:
+        default: 10.2.2.1
+    lvs:
+      class: low-traffic
+      conftool:
+        cluster: appserver
+        service: nginx
+      depool_threshold: '.7'
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+        ProxyFetch:
+          url:
+          - https://en.wikipedia.org/wiki/Special:BlankPage
+      scheduler: wrr
+    monitoring:
+      check_command: check_https_url!en.wikipedia.org!/wiki/Special:BlankPage
+      critical: true
+      sites:
+        codfw:
+          hostname: appservers.svc.codfw.wmnet
+        eqiad:
+          hostname: appservers.svc.eqiad.wmnet
+    port: 443
+    sites:
+    - eqiad
+    - codfw
+    state: production
+    discovery:
+      - dnsdisc: appservers-ro
+        active_active: true
+      - dnsdisc: appservers-rw
+        active_active: false
+  text-https:
+    description: Main wiki platform LVS service, text.%{::site}.wikimedia.org (nginx)
+    encryption: true
+    ip:
+      codfw:
+        testlb: 208.80.153.225
+      eqiad:
+        testlb: 208.80.154.225
+      eqsin:
+        testlb: 103.102.166.225
+      esams:
+        testlb: 91.198.174.193
+      ulsfo:
+        testlb: 198.35.26.97
+    lvs:
+      class: high-traffic1
+      conftool:
+        cluster: cache_text
+        service: ats-tls
+      depool_threshold: '.5'
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+        ProxyFetch:
+          url:
+          - https://varnishcheck.wikimedia.org/from/pybal
+      scheduler: sh
+    monitoring:
+      check_command: check_https_url!en.wikipedia.org!/wiki/Special:BlankPage
+      critical: true
+      sites:
+        codfw:
+          hostname: text-lb.codfw.wikimedia.org
+        eqiad:
+          hostname: text-lb.eqiad.wikimedia.org
+        eqsin:
+          hostname: text-lb.eqsin.wikimedia.org
+        esams:
+          hostname: text-lb.esams.wikimedia.org
+        ulsfo:
+          hostname: text-lb.ulsfo.wikimedia.org
+    port: 443
+    sites:
+    - codfw
+    - eqiad
+    - esams
+    - ulsfo
+    - eqsin
+    state: production
+prometheus_nodes:
+  - prometheus1
+  - prometheus2

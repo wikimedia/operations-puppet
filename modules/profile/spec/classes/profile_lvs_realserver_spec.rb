@@ -1,10 +1,21 @@
-require_relative '../../../../rake_modules/spec_helper'
+require 'spec_helper'
+test_on = {
+  supported_os: [
+    {
+      'operatingsystem'        => 'Debian',
+      'operatingsystemrelease' => ['9', '10'],
+    }
+  ]
+}
 
 describe 'profile::lvs::realserver' do
-  on_supported_os(WMFConfig.test_on(9)).each do |os, facts|
+  on_supported_os(test_on).each do |os, facts|
     context "on #{os}" do
       let(:facts) { facts }
       context "without conftool" do
+        let(:node_params) { { :site => 'testsite', :realm => 'production',
+                              :test_name => 'lvs_realserver'} }
+
         let(:params) {
           {
             'pools' => {'text' => {'service' => 'nginx'}},
@@ -13,16 +24,13 @@ describe 'profile::lvs::realserver' do
           }
         }
         it { is_expected.to compile.with_all_deps }
-        it do
-          is_expected.to contain_class('lvs::realserver').with_realserver_ips([
-            '208.80.154.224',
-            '208.80.154.225',
-            '2620:0:861:ed1a::1',
-            '2620:0:861:ed1a::2'
-          ])
-        end
+        it { is_expected.to contain_class('lvs::realserver')
+                              .with_realserver_ips(["1.1.1.1", "2620:0:861:102:1:1:1:1"])
+        }
       end
       context "with conftool" do
+        let(:node_params) { { :site => 'eqiad', :realm => 'production',
+                              :test_name => 'lvs_realserver'} }
         let(:params) {
           {
             'pools' => {
@@ -42,7 +50,7 @@ describe 'profile::lvs::realserver' do
         }
         it { is_expected.to compile.with_all_deps }
         it { is_expected.to contain_class('lvs::realserver')
-                              .with_realserver_ips(['10.2.2.1'].sort)
+                              .with_realserver_ips(["8.8.8.8", "2620:0:861:102:8:8:8:8"].sort)
         }
         it { is_expected.to contain_conftool__scripts__safe_service_restart('nginx')
                               .with_lvs_pools(['appservers-https'])
