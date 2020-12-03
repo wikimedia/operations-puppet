@@ -2,7 +2,11 @@
 #
 # Disable puppet and ensure it's not running before returning
 #
-MESSAGE="${1:-"Disabled by disable-puppet"}"
+if [ -z "$1" ]; then
+    echo "A message is required."
+    exit 1
+fi
+MESSAGE="${1}"
 if [ -n "${SUDO_USER}" ]
 then
   MESSAGE="${MESSAGE} - ${SUDO_USER}"
