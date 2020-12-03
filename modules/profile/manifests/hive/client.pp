@@ -9,7 +9,7 @@ class profile::hive::client(
     Optional[String] $config_files_group_ownership = lookup('profile::hive::client::config_files_group_ownership', { 'default_value' => undef }),
     Optional[String] $hive_metastore_jdbc_password = lookup('profile::hive::client::hive_metastore_jdbc_password', { 'default_value' => undef }),
     Boolean $deploy_jdbc_settings                  = lookup('profile::hive::client::deploy_jdbc_settings', { 'default_value' => false }),
-    Boolean $force_metastore_host_use_hostname     = lookup('profile::hive::client::force_metastore_host_use_hostname', { 'default_value' => false }),
+    Optional[Stdlib::Host] $hive_metastore_host    = lookup('profile::hive::client::hive_metastore_host', { 'default_value' => undef }),
 ) {
     require ::profile::hadoop::common
 
@@ -27,9 +27,9 @@ class profile::hive::client(
     # This would work but then if an-coord1001 went down, the failover of the DNS CNAME
     # wouldn't be enough, since the hive server on 1002 would still point to the metastore
     # on 1001 (and a restart would be needed to pick up the new settings).
-    $metastore_host = $force_metastore_host_use_hostname ? {
-        true  => $::fqdn,
-        false => $hive_services[$hive_service_name]['metastore_host'],
+    $metastore_host = $hive_metastore_host ? {
+        undef   => $hive_services[$hive_service_name]['metastore_host'],
+        default => $hive_metastore_host,
     }
 
     $zookeeper_cluster_name = $hive_services[$hive_service_name]['zookeeper_cluster_name']
