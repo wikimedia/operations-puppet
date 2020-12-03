@@ -36,16 +36,16 @@
 #   statsd host:port
 #
 class profile::superset(
-    $workers            = hiera('profile::superset::workers', 1),
-    $database_uri       = hiera('profile::superset::database_uri', 'sqlite:////var/lib/superset/superset.db'),
-    $database_password  = hiera('profile::superset::database_password', undef),
-    $admin_user         = hiera('profile::superset::admin_user', 'admin'),
-    $admin_password     = hiera('profile::superset::admin_password', 'admin'),
-    $secret_key         = hiera('profile::superset::secret_key', 'not_really_a_secret_key'),
-    $ldap_proxy_enabled = hiera('profile::superset::ldap_proxy_enabled', false),
-    $statsd             = hiera('statsd', undef),
-    $gunicorn_app       = lookup('profile::superset::gunicorn_app', { 'default_value' => 'superset.app:create_app()' }),
-    Boolean $enable_cas = lookup('profile::superset::enable_cas'),
+    Integer $workers                    = lookup('profile::superset::workers', { 'default_value' => 1 }),
+    String $database_uri                = lookup('profile::superset::database_uri', { 'default_value' => 'sqlite:////var/lib/superset/superset.db' }),
+    Optional[String] $database_password = lookup('profile::superset::database_password', { 'default_value' => undef }),
+    String $admin_user                  = lookup('profile::superset::admin_user', { 'default_value' => 'admin' }),
+    String $admin_password              = lookup('profile::superset::admin_password', { 'default_value' => 'admin' }),
+    String $secret_key                  = lookup('profile::superset::secret_key', { 'default_value' => 'not_really_a_secret_key' }),
+    Boolean $ldap_proxy_enabled         = lookup('profile::superset::ldap_proxy_enabled', { 'default_value' => false }),
+    Optional[String] $statsd            = lookup('statsd', { 'default_value' => undef }),
+    String $gunicorn_app                = lookup('profile::superset::gunicorn_app', { 'default_value' => 'superset.app:create_app()' }),
+    Boolean $enable_cas                 = lookup('profile::superset::enable_cas'),
 ) {
 
     require_package('libmariadb3')
