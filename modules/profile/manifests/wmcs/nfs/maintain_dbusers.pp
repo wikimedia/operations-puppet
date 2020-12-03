@@ -63,12 +63,7 @@ class profile::wmcs::nfs::maintain_dbusers (
         $multiinstance_hosts = $multiinstance_connect_addresses.flatten().unique().reduce({}) | $memo, $conn_str | {
             $memo + {$conn_str => {'grant-type' => 'role'}}
         }
-        # There is a bug in the logic above. To find it, I am deliberately
-        # NOT using the $multiinstance_hosts value here and just outputting it.
-        # Since this uses results from puppet functions and puppetdb data,
-        # it needs to be tested live on the host to find the quirk.
-        notify { "The offending structure is ${multiinstance_hosts}": }
-        $all_hosts = $legacy_hosts
+        $all_hosts = $legacy_hosts + $multiinstance_hosts
     } else {
         $all_hosts = $legacy_hosts
     }

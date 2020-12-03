@@ -303,10 +303,21 @@ def harvest_cnf_files(config, account_type='tool'):
 
 def harvest_replica_accts(config):
     acct_db = get_accounts_db_conn(config)
-    labsdbs = [
-        pymysql.connect(host, config['labsdbs']['username'], config['labsdbs']['password'])
-        for host in config['labsdbs']['hosts']
-    ]
+    labsdbs = []
+    for host in config["labsdbs"]["hosts"]:
+        if ":" in host:
+            hostnm = host.split(":")[0]
+            port = int(host.split(":")[1])
+        else:
+            hostnm = host
+            port = 3306
+        labsdbs.append(
+            pymysql.connect(
+                hostnm,
+                config['labsdbs']['username'],
+                config['labsdbs']['password'],
+                port=port)
+        )
 
     with acct_db.cursor() as read_cur:
         read_cur.execute("""
@@ -404,11 +415,18 @@ def create_accounts(config):
     acct_db = get_accounts_db_conn(config)
     username_re = re.compile('^[spu][0-9]')
     for host in config['labsdbs']['hosts']:
+        if ":" in host:
+            hostnm = host.split(":")[0]
+            port = int(host.split(":")[1])
+        else:
+            hostnm = host
+            port = 3306
         try:
             labsdb = pymysql.connect(
-                host,
+                hostnm,
                 config['labsdbs']['username'],
-                config['labsdbs']['password'])
+                config['labsdbs']['password'],
+                port=port)
         except pymysql.err.OperationalError as exc:
             logging.warning("Could not connect to %s due to %s.  Skipping.",
                             host, exc)
@@ -469,10 +487,17 @@ def delete_account(config, account, account_type='tool'):
     acct_db = get_accounts_db_conn(config)
 
     for host in config['labsdbs']['hosts']:
+        if ":" in host:
+            hostnm = host.split(":")[0]
+            port = int(host.split(":")[1])
+        else:
+            hostnm = host
+            port = 3306
         labsdb = pymysql.connect(
-            host,
+            hostnm,
             config['labsdbs']['username'],
-            config['labsdbs']['password'])
+            config['labsdbs']['password'],
+            port=port)
         with acct_db.cursor() as cur:
             cur.execute("""
             SELECT mysql_username, password_hash, username, hostname, type,
