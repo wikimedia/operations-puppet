@@ -7,8 +7,8 @@ class profile::kubernetes::node(
     # $username is deprecated, was a flawed approach
     $username = hiera('profile::kubernetes::node::username', 'client-infrastructure'),
     $prometheus_nodes = hiera('prometheus_nodes', []),
-    $kubelet_config = hiera('profile::kubernetes::node::kubelet_config', '/etc/kubernetes/kubeconfig'),
-    $kubeproxy_config = hiera('profile::kubernetes::node::kubeproxy_config', '/etc/kubernetes/kubeconfig'),
+    $kubelet_config = hiera('profile::kubernetes::node::kubelet_config', '/etc/kubernetes/kubelet_config'),
+    $kubeproxy_config = hiera('profile::kubernetes::node::kubeproxy_config', '/etc/kubernetes/kubeproxy_config'),
     $prod_firewalls   = hiera('profile::kubernetes::node::prod_firewalls', true),
     $prometheus_url   = hiera('profile::kubernetes::node::prometheus_url', "http://prometheus.svc.${::site}.wmnet/k8s"),
     $kubelet_cluster_domain = hiera('profile::kubernetes::node::kubelet_cluster_domain', 'kube'),
@@ -44,9 +44,11 @@ class profile::kubernetes::node(
         group           => 'root',
     }
 
-    class { '::k8s::infrastructure_config':
-        master_host => $master_fqdn,
-        username    => $username,
+    file { '/etc/kubernetes':
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
     }
 
     # Funnily enough, this is not $kubelet_config cause we still need to support
@@ -72,7 +74,6 @@ class profile::kubernetes::node(
         node_taints               => $kubelet_node_taints,
         extra_params              => $kubelet_extra_params,
         packages_from_future      => $packages_from_future,
-        require                   => Class['::k8s::infrastructure_config'],
     }
 
     # Funnily enough, this is not $kubeproxy_config cause we still need to support
@@ -90,7 +91,6 @@ class profile::kubernetes::node(
         metrics_bind_address => $kubeproxy_metrics_bind_address,
         kubeconfig           => $kubeproxy_config,
         packages_from_future => $packages_from_future,
-        require              => Class['::k8s::infrastructure_config'],
     }
 
     # Set the host as a router for IPv6 in order to allow pods to have an IPv6
