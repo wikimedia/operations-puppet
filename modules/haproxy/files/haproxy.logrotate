@@ -1,6 +1,6 @@
 /var/log/haproxy/haproxy.log {
     daily
-    rotate 52
+    rotate 14
     missingok
     notifempty
     compress
