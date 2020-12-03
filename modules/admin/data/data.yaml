@@ -4589,3 +4589,7 @@ ldap_only_users:
     ensure: present
     realname: Jan Jaquemot
     email: Jan.Jaquemot@wikimedia.de
+  gengh:
+    ensure: present
+    realname: Genoveva Galarza
+    email: ggalarzaheredero@wikimedia.org
