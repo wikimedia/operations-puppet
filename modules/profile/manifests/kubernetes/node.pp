@@ -9,7 +9,6 @@ class profile::kubernetes::node(
     $prometheus_nodes = hiera('prometheus_nodes', []),
     $kubelet_config = hiera('profile::kubernetes::node::kubelet_config', '/etc/kubernetes/kubelet_config'),
     $kubeproxy_config = hiera('profile::kubernetes::node::kubeproxy_config', '/etc/kubernetes/kubeproxy_config'),
-    $prod_firewalls   = hiera('profile::kubernetes::node::prod_firewalls', true),
     $prometheus_url   = hiera('profile::kubernetes::node::prometheus_url', "http://prometheus.svc.${::site}.wmnet/k8s"),
     $kubelet_cluster_domain = hiera('profile::kubernetes::node::kubelet_cluster_domain', 'kube'),
     $kubelet_cluster_dns = hiera('profile::kubernetes::node::kubelet_cluster_dns', undef),
@@ -21,21 +20,17 @@ class profile::kubernetes::node(
     $kubeproxy_username = hiera('profile::kubernetes::node::kubeproxy_username', undef),
     $kubeproxy_token = hiera('profile::kubernetes::node::kubeproxy_token', undef),
     Boolean $packages_from_future = lookup('profile::kubernetes::node::packages_from_future', {default_value => false}),
-    Boolean $rsyslog_hard_disable = lookup('profile::kubernetes::node::disable_rsyslog', {default_value => false}),
     Optional[String] $kubeproxy_metrics_bind_address = lookup('profile::kubernetes::node::kubeproxy_metrics_bind_address', {default_value => undef}),
 ) {
-    # Local logging to syslog file must be disabled in Cloud/Toolforge
-    unless $rsyslog_hard_disable {
-        require ::profile::rsyslog::kubernetes
+    require ::profile::rsyslog::kubernetes
 
-        rsyslog::input::file { 'kubernetes-json':
-            path               => '/var/log/containers/*.log',
-            reopen_on_truncate => 'on',
-            addmetadata        => 'on',
-            addceetag          => 'on',
-            syslog_tag         => 'kubernetes',
-            priority           => 8,
-        }
+    rsyslog::input::file { 'kubernetes-json':
+        path               => '/var/log/containers/*.log',
+        reopen_on_truncate => 'on',
+        addmetadata        => 'on',
+        addceetag          => 'on',
+        syslog_tag         => 'kubernetes',
+        priority           => 8,
     }
 
     base::expose_puppet_certs { '/etc/kubernetes':
@@ -108,27 +103,24 @@ class profile::kubernetes::node(
     }
     # lint:endignore
 
-    # We can't use this for VMs because of the AAAA lookups
-    if $prod_firewalls {
-        $master_hosts_ferm = join($master_hosts, ' ')
-        ferm::service { 'kubelet-http':
-            proto  => 'tcp',
-            port   => '10250',
-            srange => "(@resolve((${master_hosts_ferm})) @resolve((${master_hosts_ferm}), AAAA))",
-        }
+    $master_hosts_ferm = join($master_hosts, ' ')
+    ferm::service { 'kubelet-http':
+        proto  => 'tcp',
+        port   => '10250',
+        srange => "(@resolve((${master_hosts_ferm})) @resolve((${master_hosts_ferm}), AAAA))",
+    }
 
-        if !empty($prometheus_nodes) {
-            $prometheus_ferm_nodes = join($prometheus_nodes, ' ')
-            ferm::service { 'kubelet-http-readonly-prometheus':
-                proto  => 'tcp',
-                port   => '10255',
-                srange => "(@resolve((${prometheus_ferm_nodes})) @resolve((${prometheus_ferm_nodes}), AAAA))"
-            }
-            ferm::service { 'kube-proxy-http-readonly-prometheus':
-                proto  => 'tcp',
-                port   => '10249',
-                srange => "(@resolve((${prometheus_ferm_nodes})) @resolve((${prometheus_ferm_nodes}), AAAA))"
-            }
+    if !empty($prometheus_nodes) {
+        $prometheus_ferm_nodes = join($prometheus_nodes, ' ')
+        ferm::service { 'kubelet-http-readonly-prometheus':
+            proto  => 'tcp',
+            port   => '10255',
+            srange => "(@resolve((${prometheus_ferm_nodes})) @resolve((${prometheus_ferm_nodes}), AAAA))"
+        }
+        ferm::service { 'kube-proxy-http-readonly-prometheus':
+            proto  => 'tcp',
+            port   => '10249',
+            srange => "(@resolve((${prometheus_ferm_nodes})) @resolve((${prometheus_ferm_nodes}), AAAA))"
         }
     }
     # Alert us if kubelet operational latencies exceed a certain threshold. TODO: reevaluate

@@ -225,9 +225,6 @@ profile::diffscan::groupname: Labs-to-public-v4
 # User for jenkins master-slave connections
 jenkins_agent_username: 'jenkins-deploy'
 
-# Don't use prod-style firewalls for k8s nodes
-profile::kubernetes::node::prod_firewalls: false
-
 mail_smarthost:
 - 'mx-out01.wmflabs.org'
 - 'mx-out02.wmflabs.org'
