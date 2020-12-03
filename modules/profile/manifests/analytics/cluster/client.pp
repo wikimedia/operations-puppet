@@ -28,6 +28,5 @@ class profile::analytics::cluster::client {
     require_package(
         'kafkacat',
         'jupyter-notebook',
-        's-nail',
     )
 }

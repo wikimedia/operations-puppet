@@ -117,8 +117,7 @@ class phabricator (
         'python3-pygments',
         'python-phabricator',
         'apachetop',
-        'subversion',
-        's-nail']:
+        'subversion']:
             ensure => present;
     }
 
