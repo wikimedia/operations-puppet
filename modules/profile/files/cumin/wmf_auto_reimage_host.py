@@ -198,11 +198,12 @@ def run(args, user, log_path):
 
     # Issue a reboot and wait for it and also for Puppet to complete
     if not args.no_reboot:
-        lib.run_puppet(args.host)  # Temporary hack until T269187 is fully fixed
         reboot_time = datetime.utcnow()
-        # Ensure the host is in the known hosts
         lib.print_line('Waiting 2 minutes to ensure PuppetDB is in sync')
         time.sleep(120)
+        lib.run_puppet(args.host)  # Temporary hack until T269187 is fully fixed
+        time.sleep(120)
+        # Ensure the host is in the known hosts
         lib.run_puppet([socket.getfqdn()], no_raise=True)
         lib.reboot_host(args.host)
         boot_time = datetime.utcnow()
