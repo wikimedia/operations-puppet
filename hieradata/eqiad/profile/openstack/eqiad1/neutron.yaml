@@ -47,8 +47,22 @@ profile::openstack::eqiad1::neutron::l3_conntrackd:
     nic: 'ha-37a86ebc-17'
     local_addr: '169.254.192.9'
     remote_addr: '169.254.192.6'
+    filter_ipv4:
+      # don't sync ct info for the following local addresses
+      - 169.254.0.1
+      - 169.254.192.9
+      - 169.254.192.6
+      - 172.16.0.1
+      - 185.15.56.10
   cloudnet1004:
     netns: 'qrouter-d93771ba-2711-4f88-804a-8df6fd03978a'
     nic: 'ha-d8c86248-12'
     local_addr: '169.254.192.6'
     remote_addr: '169.254.192.9'
+    filter_ipv4:
+      # don't sync ct info for the following local addresses
+      - 169.254.0.1
+      - 169.254.192.9
+      - 169.254.192.6
+      - 172.16.128.1
+      - 185.15.56.10

@@ -24,9 +24,27 @@ General {
     UNIX {
         Path /var/run/conntrackd.sock
     }
+    NetlinkEventsReliable on
     # 100 MB
     NetlinkBufferSize 100000000
     # 200 MB
-    SocketBufferSizeMaxGrown 200000000
+    NetlinkBufferSizeMaxGrowth 200000000
     Systemd on
+    LogFile /var/log/conntrackd.log
+
+    Filter From Userspace {
+        Protocol Ignore {
+            IPv6-ICMP
+            ICMP
+        }
+        Address Ignore {
+            IPv4_address 127.0.0.1
+            IPv6_address ::1
+            <%- if !@conntrackd_filter_ipv4.empty? -%>
+            <%- @conntrackd_filter_ipv4.each do |element| -%>
+            IPv4_address <%= element %>
+            <%- end -%>
+            <%- end -%>
+        }
+    }
 }

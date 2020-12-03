@@ -8,7 +8,7 @@ After=neutron-l3-agent.service
 [Service]
 Type=notify
 ExecStartPre=-/bin/rm -f /var/lock/conntrackd.lock
-ExecStart=/usr/bin/ip netns exec <%= @conntrackd_netns %> /usr/sbin/conntrackd -C /etc/conntrackd/conntrackd.conf
+ExecStart=/usr/bin/ip netns exec <%= @conntrackd_netns %> /usr/sbin/conntrackd -d -C /etc/conntrackd/conntrackd.conf
 Restart=on-failure
 ProtectSystem=full
 ProtectHome=true

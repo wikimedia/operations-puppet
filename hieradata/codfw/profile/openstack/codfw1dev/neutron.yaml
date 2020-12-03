@@ -45,8 +45,22 @@ profile::openstack::codfw1dev::neutron::l3_conntrackd:
     nic: 'ha-727a378d-35'
     local_addr: '169.254.192.5'
     remote_addr: '169.254.192.4'
+    filter_ipv4:
+      # don't sync ct info for the following local addresses
+      - 169.254.0.1
+      - 169.254.192.5
+      - 169.254.192.4
+      - 172.16.128.1
+      - 185.15.57.10
   cloudnet2002-dev:
     netns: 'qrouter-5712e22e-134a-40d3-a75a-1c9b441717ad'
     nic: 'ha-5dc9c3b7-24'
     local_addr: '169.254.192.4'
     remote_addr: '169.254.192.5'
+    filter_ipv4:
+      # don't sync ct info for the following local addresses
+      - 169.254.0.1
+      - 169.254.192.5
+      - 169.254.192.4
+      - 172.16.128.1
+      - 185.15.57.10
