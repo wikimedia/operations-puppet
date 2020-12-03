@@ -8,12 +8,6 @@ class profile::kubernetes::deployment_server(
     include profile::kubernetes::deployment_server::helmfile
     class { '::helm': }
 
-    # old deployment script
-    file { '/usr/local/bin/scap-helm':
-        ensure => absent,
-    }
-
-
     file { '/etc/kubernetes':
         ensure => directory,
         owner  => 'root',
