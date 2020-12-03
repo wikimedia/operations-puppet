@@ -1,8 +1,8 @@
 # Class that sets up and configures kube-proxy
 class k8s::proxy(
+    String $kubeconfig,
+    Boolean $masquerade_all,
     String $proxy_mode = 'iptables',
-    Boolean $masquerade_all = true,
-    String $kubeconfig = '/etc/kubernetes/kubeconfig',
     Boolean $logtostderr = true,
     Integer $v_log_level = 0,
     Boolean $packages_from_future = false,
