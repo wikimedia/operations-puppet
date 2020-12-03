@@ -11,6 +11,7 @@ class profile::releases::mediawiki (
     $jenkins_service_ensure = lookup('profile::releases::mediawiki::jenkins_service_ensure'),
     $jenkins_service_enable = lookup('profile::releases::mediawiki::jenkins_service_enable'),
     $jenkins_service_monitor = lookup('profile::releases::mediawiki::jenkins_service_monitor'),
+    $jenkins_java_home = lookup('profile::releases::mediawiki::jenkins_java_home'),
 ){
 
     include ::profile::java
@@ -24,6 +25,7 @@ class profile::releases::mediawiki (
         service_ensure  => $jenkins_service_ensure,
         service_enable  => $jenkins_service_enable,
         service_monitor => $jenkins_service_monitor,
+        java_home       => $jenkins_java_home,
     }
 
     $jenkins_restart_ensure = $jenkins_service_enable ? {

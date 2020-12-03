@@ -45,6 +45,11 @@
 # the jenkins ui, now must be set via system properties
 # Default: ${ITEM_ROOTDIR}/workspace
 #
+# [*java_home*]
+# Path to JAVA_HOME. Can be used to start the Jenkins server with a different
+# Java version.
+# Default: /usr/lib/jvm/java-8-openjdk-amd64/jre
+#
 class jenkins(
     String $prefix,
     Boolean $access_log = false,
@@ -56,7 +61,8 @@ class jenkins(
     Boolean $service_monitor = true,
     Stdlib::Filemode $umask = '0002',
     String $builds_dir = "\${ITEM_ROOTDIR}/builds",
-    String $workspaces_dir = "\${ITEM_ROOTDIR}/workspace"
+    String $workspaces_dir = "\${ITEM_ROOTDIR}/workspace",
+    Stdlib::Unixpath $java_home = '/usr/lib/jvm/java-8-openjdk-amd64/jre',
 )
 {
     user { 'jenkins':
@@ -80,7 +86,7 @@ class jenkins(
         packages  => ['jenkins']
     }
 
-    $java_path = '/usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java'
+    $java_path = "${java_home}/bin/java"
 
     file { '/var/lib/jenkins/.daemonrc':
         ensure  => 'absent',

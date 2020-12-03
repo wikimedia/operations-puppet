@@ -9,6 +9,7 @@ class profile::ci::jenkins(
     Boolean $service_monitor = lookup('profile::ci::jenkins::service_monitor'),
     Stdlib::Unixpath $builds_dir = lookup('profile::ci::jenkins::builds_dir'),
     Stdlib::Unixpath $workspaces_dir = lookup('profile::ci::jenkins::workspaces_dir'),
+    Stdlib::Unixpath $java_home = lookup('profile::ci::jenkins::java_home'),
 ) {
     include ::profile::java
     Class['::profile::java'] ~> Class['::jenkins']
@@ -24,6 +25,7 @@ class profile::ci::jenkins(
         service_monitor => $service_monitor,
         builds_dir      => $builds_dir,
         workspaces_dir  => $workspaces_dir,
+        java_home       => $java_home,
     }
 
     # Templates for Jenkins plugin Email-ext.

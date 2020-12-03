@@ -18,8 +18,13 @@ profile::releases::mediawiki::jenkins_service_ensure: 'stopped'
 profile::releases::mediawiki::jenkins_service_enable: 'mask'
 profile::releases::mediawiki::jenkins_service_monitor: false
 
+# The Jenkins server runs on Java8
+profile::releases::mediawiki::jenkins_java_home: '/usr/lib/jvm/java-8-openjdk-amd64/jre'
+
 profile::java::java_packages:
+  # The Jenkins agent runs on Java 11
   - version: '11'
     variant: 'jre-headless'
+  # The Jenkins master runs on Java 8
   - version: '8'
     variant: 'jdk'
