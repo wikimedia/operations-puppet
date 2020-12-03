@@ -101,9 +101,9 @@ $network_zone = $facts['ipaddress'] ? {
 if size($facts['numa']['nodes']) > 1 {
     if $::hostname =~ /^cp/ {
         # on cache hosts, set numa_networking on by default
-        $numa_networking = hiera('numa_networking', 'on')
+        $numa_networking = lookup('numa_networking', {'default_value' => 'on'})
     } else {
-        $numa_networking = hiera('numa_networking', 'off')
+        $numa_networking = lookup('numa_networking', {'default_value' => 'off'})
     }
 }
 else {
@@ -252,11 +252,11 @@ $private_tables = [
     'wikimedia_editor_tasks_targets_passed' ]
 
 # Route list for mail coming from MediaWiki mailer
-$wikimail_smarthost = hiera('wikimail_smarthost')
+$wikimail_smarthost = lookup('wikimail_smarthost')
 
 # Generic, default servers (order matters!)
-$mail_smarthost = hiera('mail_smarthost')
+$mail_smarthost = lookup('mail_smarthost')
 
-$acmechief_host = hiera('acmechief_host')
+$acmechief_host = lookup('acmechief_host')
 
-$ntp_peers = hiera('ntp_peers')
+$ntp_peers = lookup('ntp_peers')
