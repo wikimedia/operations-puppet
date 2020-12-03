@@ -16,9 +16,11 @@ class profile::kubernetes::deployment_server(
     }
 
     $envs = {
-        'eqiad' => 'kubemaster.svc.eqiad.wmnet',
-        'codfw' => 'kubemaster.svc.codfw.wmnet',
-        'staging' => 'neon.eqiad.wmnet',
+        'eqiad'         => 'kubemaster.svc.eqiad.wmnet',
+        'codfw'         => 'kubemaster.svc.codfw.wmnet',
+        'staging-eqiad' => 'kubestagemaster.svc.eqiad.wmnet',
+        'staging-codfw' => 'kubestagemaster.svc.codfw.wmnet',
+        'staging'       => 'neon.eqiad.wmnet',
     }
 
     $real_services = deep_merge($services, $tokens)
