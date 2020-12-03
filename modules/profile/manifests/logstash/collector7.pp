@@ -294,8 +294,8 @@ class profile::logstash::collector7 (
         priority => 20,
     }
 
-    logstash::conf { 'filter_syslog_network':
-        source   => 'puppet:///modules/profile/logstash/filter-syslog-network.conf',
+    logstash::conf { 'filter_netdev':
+        source   => 'puppet:///modules/profile/logstash/filter-netdev.conf',
         priority => 20,
     }
 
