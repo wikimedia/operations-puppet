@@ -35,3 +35,5 @@ profile::puppetdb::facts_blacklist:
   - '^network6_cali.*'
   - '^network6_tap.*'
   - '^lvm_vg_.*'
+profile::puppetdb::node_ttl: 14d
+profile::puppetdb::node_purge_ttl: 1d
