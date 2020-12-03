@@ -2,7 +2,11 @@
 #
 # Disable puppet and ensure it's not running before returning
 #
-MESSAGE="${1:-"Disabled by disable-puppet"} - ${SUDO_USER}"
+MESSAGE="${1:-"Disabled by disable-puppet"}"
+if [ -n "${SUDO_USER}" ]
+then
+  MESSAGE="${MESSAGE} - ${SUDO_USER}"
+fi
 ATTEMPTS=${2:-30}
 
 # shellcheck disable=SC1091
