@@ -1132,6 +1132,15 @@ class profile::prometheus::ops (
         },
     }
 
+    prometheus::jmx_exporter_config{ "zookeeper_test_${::site}":
+        dest       => "${targets_path}/jmx_zookeeper_test_${::site}.yaml",
+        class_name => 'role::zookeeper::test',
+        site       => $::site,
+        labels     => {
+            'cluster' => "test-${::site}",
+        },
+    }
+
     $etherpad_jobs = [
       {
         'job_name'        => 'etherpad',
