@@ -8,6 +8,7 @@ class profile::hive::client(
     String $hive_service_name                      = lookup('profile::hive::client::hive_service_name'),
     Optional[String] $config_files_group_ownership = lookup('profile::hive::client::config_files_group_ownership', { 'default_value' => undef }),
     Optional[String] $hive_metastore_jdbc_password = lookup('profile::hive::client::hive_metastore_jdbc_password', { 'default_value' => undef }),
+    Boolean $deploy_jdbc_settings                  = lookup('profile::hive::client::deploy_jdbc_settings', { 'default_value' => false }),
 ) {
     require ::profile::hadoop::common
 
@@ -80,6 +81,7 @@ class profile::hive::client(
         jdbc_username                                  => $hive_metastore_jdbc_user,
         jdbc_password                                  => $hive_metastore_jdbc_password,
         jdbc_database                                  => $hive_metastore_database,
+        deploy_jdbc_settings                           => $deploy_jdbc_settings,
         config_files_group_ownership                   => $config_files_group_ownership,
         hive_cluster_delegation_token_store_class      => $hive_cluster_delegation_token_store_class,
     }
