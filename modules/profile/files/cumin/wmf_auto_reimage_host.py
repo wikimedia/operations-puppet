@@ -201,8 +201,6 @@ def run(args, user, log_path):
         reboot_time = datetime.utcnow()
         lib.print_line('Waiting 2 minutes to ensure PuppetDB is in sync')
         time.sleep(120)
-        lib.run_puppet(args.host)  # Temporary hack until T269187 is fully fixed
-        time.sleep(120)
         # Ensure the host is in the known hosts
         lib.run_puppet([socket.getfqdn()], no_raise=True)
         lib.reboot_host(args.host)
