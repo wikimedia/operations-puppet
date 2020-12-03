@@ -137,6 +137,18 @@ profile::kubernetes::deployment_server::services:
     username: api-gateway
     group: wikidev
     mode: '0640'
+  apertium:
+    username: apertium
+    group: wikidev
+    mode: '0640'
+  linkrecommendation:
+    username: linkrecommendation
+    group: wikidev
+    mode: '0640'
+  sockpuppet-api:
+    username: sockpuppet-api
+    group: wikidev
+    mode: '0640'
 
 
 # Specified in the private repo in this form
@@ -200,6 +212,12 @@ profile::kubernetes::deployment_server::services:
 #  recommendation-api:
 #    token: dummy
 #  push-notifications:
+#    token: dummy
+#  apertium:
+#    token: dummy
+#  linkrecommendation:
+#    token: dummy
+#  sockpuppet-api:
 #    token: dummy
 #
 

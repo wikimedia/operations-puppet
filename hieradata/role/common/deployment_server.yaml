@@ -353,6 +353,24 @@ profile::kubernetes::deployment_server::services:
     namespace: api-gateway
     mode: '0640'
     owner: mwdeploy
+  apertium:
+    username: apertium
+    group: wikidev
+    namespace: apertium
+    mode: '0640'
+    owner: mwdeploy
+  linkrecommendation:
+    username: linkrecommendation
+    group: wikidev
+    namespace: linkrecommendation
+    mode: '0640'
+    owner: mwdeploy
+  sockpuppet-api:
+    username: sockpuppet-api
+    group: wikidev
+    namespace: sockpuppet-api
+    mode: '0640'
+    owner: mwdeploy
 
 # Default and environment specific generic values go here.
 # default:
