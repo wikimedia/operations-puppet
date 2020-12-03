@@ -20,6 +20,19 @@ class k8s::apiserver(
     Optional[Integer] $apiserver_count = undef,
     Optional[String] $runtime_config = undef,
 ) {
+
+    group { 'kube':
+        ensure => present,
+        system => true,
+    }
+    user { 'kube':
+        ensure => present,
+        gid    => 'kube',
+        system => true,
+        home   => '/nonexistent',
+        shell  => '/usr/sbin/nologin',
+    }
+
     file { '/etc/kubernetes':
         ensure => directory,
         owner  => 'kube',
