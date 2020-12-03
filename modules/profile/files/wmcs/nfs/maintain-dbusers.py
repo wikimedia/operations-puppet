@@ -326,6 +326,9 @@ def harvest_replica_accts(config):
         """)
         for row in read_cur:
             for labsdb in labsdbs:
+                sqlhost = labsdb.host
+                if labsdb.port != 3306:
+                    sqlhost = "{}:{}".format(labsdb.host, labsdb.port)
                 with labsdb.cursor() as labsdb_cur:
                     try:
                         labsdb_cur.execute("""
@@ -339,7 +342,7 @@ def harvest_replica_accts(config):
                             raise
                         logging.info(
                             'No acct found for %s %s in %s',
-                            row['type'], row['username'], labsdb.host)
+                            row['type'], row['username'], sqlhost)
                         status = 'absent'
                     with acct_db.cursor() as write_cur:
                         write_cur.execute("""
@@ -347,7 +350,7 @@ def harvest_replica_accts(config):
                         VALUES (%s, %s, %s)
                         ON DUPLICATE KEY UPDATE
                         status = %s
-                        """, (row['id'], labsdb.host, status, status))
+                        """, (row['id'], sqlhost, status, status))
     acct_db.commit()
 
 
