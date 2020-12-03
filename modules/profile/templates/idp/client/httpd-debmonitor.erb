@@ -22,7 +22,7 @@
         <%- end -%>
     </Location>
 
-    CustomLog /var/log/apache2/<%= @virtual_host %>-access.log
+    CustomLog /var/log/apache2/<%= @virtual_host %>-access.log wmf
     ErrorLog /var/log/apache2/<%= @virtual_host %>-error.log
     LogLevel warn
 
