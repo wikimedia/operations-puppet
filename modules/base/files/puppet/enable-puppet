@@ -8,6 +8,10 @@ if [ -z "$1" ]; then
 fi
 
 MESSAGE="$1"
+if [ -n "${SUDO_USER}" ]
+then
+  MESSAGE="${MESSAGE} - ${SUDO_USER}"
+fi
 
 # shellcheck disable=SC1091
 . /usr/local/share/bash/puppet-common.sh
