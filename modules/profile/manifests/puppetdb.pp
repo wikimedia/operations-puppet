@@ -1,3 +1,15 @@
+# @summary profile to configure puppetdb
+# @param gc_interval This controls how often, in minutes, to compact the database.
+#        The compaction process reclaims space and deletes unnecessary rows. If not
+#        supplied, the default is every 60 minutes. If set to zero, all database GC
+#        processes will be disabled.
+# @param node_ttl Mark as ‘expired’ nodes that haven’t seen any activity (no new catalogs,
+#        facts, or reports) in the specified amount of time. Expired nodes behave the same
+#        as manually-deactivated nodes.
+# @param node_purge_ttl Automatically delete nodes that have been deactivated or expired for
+#        the specified amount of time
+# @param report_ttl Automatically delete reports that are older than the specified amount of time.
+#
 class profile::puppetdb(
     Array[Stdlib::Host]                  $prometheus_nodes      = lookup('prometheus_nodes'),
     Hash[String, Puppetmaster::Backends] $puppetmasters         = lookup('puppetmaster::servers'),
@@ -13,6 +25,10 @@ class profile::puppetdb(
     Puppetdb::Loglevel                   $log_level             = lookup('profile::puppetdb::log_level'),
     Array[String]                        $facts_blacklist       = lookup('profile::puppetdb::facts_blacklist'),
     Enum['literal', 'regex']             $facts_blacklist_type  = lookup('profile::puppetdb::facts_blacklist_type'),
+    Integer[0]                           $gc_interval           = lookup('profile::puppetdb::gc_interval'),
+    Pattern[/\d+[dhms]/]                 $node_ttl              = lookup('profile::puppetdb::node_ttl'),
+    Pattern[/\d+[dhms]/]                 $node_purge_ttl        = lookup('profile::puppetdb::node_purge_ttl'),
+    Pattern[/\d+[dhms]/]                 $report_ttl            = lookup('profile::puppetdb::report_ttl'),
     Optional[Stdlib::Unixpath]           $ssldir                = lookup('profile::puppetdb::ssldir'),
 ) {
 
@@ -33,6 +49,10 @@ class profile::puppetdb(
         tmpfs_stockpile_queue => $tmpfs_stockpile_queue,
         facts_blacklist       => $facts_blacklist,
         facts_blacklist_type  => $facts_blacklist_type,
+        gc_interval           => $gc_interval,
+        node_ttl              => $node_ttl,
+        node_purge_ttl        => $node_purge_ttl,
+        report_ttl            => $report_ttl,
     }
 
     # Export JMX metrics to prometheus

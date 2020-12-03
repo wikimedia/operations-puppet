@@ -1,6 +1,17 @@
 # Class puppetmaster::puppetdb
 #
 # Sets up a puppetdb instance and the corresponding database server.
+# @param gc_interval This controls how often, in minutes, to compact the database.
+#        The compaction process reclaims space and deletes unnecessary rows. If not
+#        supplied, the default is every 20 minutes. If set to zero, all database GC
+#        processes will be disabled.
+# @param node_ttl Mark as ‘expired’ nodes that haven’t seen any activity (no new catalogs,
+#        facts, or reports) in the specified amount of time. Expired nodes behave the same
+#        as manually-deactivated nodes.
+# @param node_purge_ttl Automatically delete nodes that have been deactivated or expired for
+#        the specified amount of time
+# @param report_ttl Automatically delete reports that are older than the specified amount of time.
+#
 class puppetmaster::puppetdb(
     Stdlib::Host               $master,
     Stdlib::Port               $port                  = 443,
@@ -14,6 +25,11 @@ class puppetmaster::puppetdb(
     Boolean                    $tmpfs_stockpile_queue = false,
     Array[String]              $facts_blacklist       = [],
     Enum['literal', 'regex']   $facts_blacklist_type  = 'literal',
+    Integer[0]                 $gc_interval           = 20,
+    Pattern[/\d+[dhms]/]       $node_ttl              = '7d',
+    Pattern[/\d+[dhms]/]       $node_purge_ttl        = '14d',
+    Pattern[/\d+[dhms]/]       $report_ttl            = '1d',
+
 ){
 
     if $filter_job_id {
@@ -37,7 +53,7 @@ class puppetmaster::puppetdb(
     }
 
     $ssl_settings = ssl_ciphersuite('nginx', 'mid')
-    include ::sslcert::dhparam
+    include sslcert::dhparam
     nginx::site { 'puppetdb':
         ensure  => present,
         content => template('puppetmaster/nginx-puppetdb.conf.erb'),
@@ -53,7 +69,6 @@ class puppetmaster::puppetdb(
         db_rw_host            => $master,
         db_ro_host            => $::fqdn,
         db_password           => $puppetdb_pass,
-        perform_gc            => ($master == $::fqdn), # only the master must perform GC
         jvm_opts              => $jvm_opts,
         ssldir                => $ssldir,
         ca_path               => $ca_path,
@@ -61,5 +76,9 @@ class puppetmaster::puppetdb(
         tmpfs_stockpile_queue => $tmpfs_stockpile_queue,
         facts_blacklist       => $facts_blacklist,
         facts_blacklist_type  => $facts_blacklist_type,
+        gc_interval           => $gc_interval,
+        node_ttl              => $node_ttl,
+        node_purge_ttl        => $node_purge_ttl,
+        report_ttl            => $report_ttl,
     }
 }

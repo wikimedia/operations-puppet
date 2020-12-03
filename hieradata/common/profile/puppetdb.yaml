@@ -10,3 +10,7 @@ profile::puppetdb::log_level: info
 profile::puppetdb::tmpfs_stockpile_queue: false
 profile::puppetdb::facts_blacklist: []
 profile::puppetdb::facts_blacklist_type: 'literal'
+profile::puppetdb::gc_interval: 20
+profile::puppetdb::node_ttl: '7d'
+profile::puppetdb::node_purge_ttl: '14d'
+profile::puppetdb::report_ttl: '1d'

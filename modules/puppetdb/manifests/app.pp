@@ -5,22 +5,35 @@
 #
 # === Parameters
 #
-
+# @param gc_interval This controls how often, in minutes, to compact the database.
+#        The compaction process reclaims space and deletes unnecessary rows. If not
+#        supplied, the default is every 60 minutes. If set to zero, all database GC
+#        processes will be disabled.
+# @param node_ttl Mark as ‘expired’ nodes that haven’t seen any activity (no new catalogs,
+#        facts, or reports) in the specified amount of time. Expired nodes behave the same
+#        as manually-deactivated nodes.
+# @param node_purge_ttl Automatically delete nodes that have been deactivated or expired for
+#        the specified amount of time
+# @param report_ttl Automatically delete reports that are older than the specified amount of time.
+#
 class puppetdb::app(
     String                        $jvm_opts                   = '-Xmx4G',
     String                        $db_user                    = 'puppetdb',
-    String                        $db_driver                  = 'postgres',
+    Enum['hsqldb', 'postgres']    $db_driver                  = 'postgres',
     Stdlib::Unixpath              $ssldir                     = puppet_ssldir(),
     Stdlib::Unixpath              $ca_path                    = '/etc/ssl/certs/Puppet_Internal_CA.pem',
     Stdlib::Unixpath              $vardir                     = '/var/lib/puppetdb',
     Stdlib::Unixpath              $stockpile_queue_dir        = "${vardir}/stockpile/cmd/q",
     Boolean                       $tmpfs_stockpile_queue      = false,
-    Boolean                       $perform_gc                 = false,
     Integer                       $command_processing_threads = 16,
     Puppetdb::Loglevel            $log_level                  = 'info',
     Array[String]                 $facts_blacklist            = [],
     Enum['literal', 'regex']      $facts_blacklist_type       = 'literal',
-    Optional[String]              $db_rw_host                 = undef,
+    Integer[0]                    $gc_interval                = 20,
+    Pattern[/\d+[dhms]/]          $node_ttl                   = '7d',
+    Pattern[/\d+[dhms]/]          $node_purge_ttl             = '14d',
+    Pattern[/\d+[dhms]/]          $report_ttl                 = '1d',
+    Stdlib::Host                  $db_rw_host                 = $facts['fqdn'],
     Optional[Stdlib::IP::Address] $bind_ip                    = undef,
     Optional[String]              $db_ro_host                 = undef,
     Optional[String]              $db_password                = undef,
@@ -81,7 +94,7 @@ class puppetdb::app(
     $postgres_rw_db_subname = "//${db_rw_host}:5432/puppetdb?${postgres_uri}"
     $postgres_ro_db_subname = "//${db_ro_host}:5432/puppetdb?${postgres_uri}"
 
-    $default_db_settings = {
+    $db_driver_settings = {
         'postgres' => {
             'classname'   => 'org.postgresql.Driver',
             'subprotocol' => 'postgresql',
@@ -95,12 +108,15 @@ class puppetdb::app(
             'subname'     => 'file:/var/lib/puppetdb/db/puppet.hsql;hsqldb.tx=mvcc;sql.syntax_pgs=true',
         }
     }[$db_driver]
-    unless $default_db_settings {
-        fail("Unsupported db driver ${db_driver}")
-    }
-    $db_settings = $perform_gc ? {
-        true    => merge($default_db_settings, { 'report-ttl' => '1d', 'gc-interval' => '20' }),
-        default => $default_db_settings
+
+    $db_settings = ($facts['fqdn'] == $db_rw_host) ? {
+        false            => $db_driver_settings,
+        default          => $db_driver_settings + {
+            'report-ttl'     => $report_ttl,
+            'gc-interval'    => $gc_interval,
+            'node-ttl'       => $node_ttl,
+            'node-purge-ttl' => $node_purge_ttl,
+        }
     }
 
     puppetdb::config { 'database':
@@ -109,18 +125,14 @@ class puppetdb::app(
 
     #read db settings
     if $db_ro_host and $db_driver == 'postgres' {
-        $read_db_settings = merge(
-            $default_db_settings,
-            {'subname' => $postgres_ro_db_subname}
-        )
         puppetdb::config { 'read-database':
-            settings => $read_db_settings,
+            settings => $db_driver_settings + {'subname' => $postgres_ro_db_subname}
         }
     }
 
     puppetdb::config { 'global':
         settings => {
-            'vardir'         => '/var/lib/puppetdb',
+            'vardir'         => $vardir,
             'logging-config' => '/etc/puppetdb/logback.xml',
         },
     }
