@@ -1,7 +1,0 @@
-
-profile::mediawiki::vhost_feature_flags: {}
-profile::lvs::realserver::pools:
-  apaches:
-    service: php7.2-fpm
-profile::lvs::realserver::use_conftool: false
-statsd: "something:8080"

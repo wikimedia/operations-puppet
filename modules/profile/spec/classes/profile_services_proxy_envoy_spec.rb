@@ -1,16 +1,7 @@
-require 'spec_helper'
-
-test_on = {
-  supported_os: [
-    {
-      'operatingsystem'        => 'Debian',
-      'operatingsystemrelease' => ['9', '10'],
-    }
-  ]
-}
+require_relative '../../../../rake_modules/spec_helper'
 
 describe 'profile::services_proxy::envoy' do
-  on_supported_os(test_on).each do |os, facts|
+  on_supported_os(WMFConfig.test_on(9)).each do |os, facts|
     context "on #{os}" do
       let(:facts) { facts.merge({ initsystem: 'systemd' }) }
       let(:pre_condition) {
@@ -20,9 +11,6 @@ describe 'profile::services_proxy::envoy' do
         ]
       }
 
-      let(:node_params) {
-        {test_name: 'proxy_envoy', site: 'unicornia'}
-      }
       context 'with ensure present' do
         let(:params) {
           {

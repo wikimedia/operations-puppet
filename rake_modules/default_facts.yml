@@ -50,3 +50,9 @@ puppet_config:
     localcacert: '/var/lib/puppet/server/ssl/certs/ca.pem'
     ssldir: '/var/lib/puppet/server/ssl'
 uniqueid: abcdef12
+numa_networking: 'off'
+numa:
+  device_to_htset:
+    lo: []
+  device_to_node:
+    lo: ['a']

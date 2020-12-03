@@ -1,21 +1,7 @@
-require 'spec_helper'
-
-test_on = {
-  supported_os: [
-    {
-      'operatingsystem'        => 'Debian',
-      'operatingsystemrelease' => ['9'],
-    }
-  ]
-}
+require_relative '../../../../rake_modules/spec_helper'
 
 describe 'profile::mediawiki::httpd' do
-  before(:each) do
-    Puppet::Parser::Functions.newfunction(:secret, :type => :rvalue) {
-      'expected value'
-    }
-  end
-  on_supported_os(test_on).each do |os, facts|
+  on_supported_os(WMFConfig.test_on).each do |os, facts|
     context "on #{os}" do
       let(:facts){ facts }
       let(:pre_condition) {

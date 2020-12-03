@@ -1,26 +1,9 @@
-require 'spec_helper'
-
-test_on = {
-  supported_os: [
-    {
-      'operatingsystem'        => 'Debian',
-      'operatingsystemrelease' => ['9'],
-    }
-  ]
-}
+require_relative '../../../../rake_modules/spec_helper'
 
 describe 'profile::mediawiki::php' do
-  on_supported_os(test_on).each do |os, facts|
+  on_supported_os(WMFConfig.test_on(9)).each do |os, facts|
     context "on #{os}" do
       let(:facts){ facts }
-      let(:node_params) { {
-                            :site => 'eqiad',
-                            :realm => 'production',
-                            :test_name => 'mediawiki_php',
-                            :initsystem => 'systemd',
-                            :cluster => 'appserver',
-                            :numa_networking => 'off',
-                          } }
       let(:params) {
         {
           :enable_fpm => true,
