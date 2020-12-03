@@ -446,15 +446,41 @@ class profile::logstash::collector7 (
     # lint:endignore
 
     ## Outputs (90)
-
     logstash::output::elasticsearch { 'logstash':
         host            => '127.0.0.1',
-        guard_condition => '"es" in [tags]',
+        guard_condition => '"es" in [tags] and ![ecs]',
         index           => '%{[@metadata][index_name]}-%{+YYYY.MM.dd}',
         manage_indices  => true,
         priority        => 90,
         template        => '/etc/logstash/templates/logstash_7.0-1.json',
         require         => File['/etc/logstash/templates'],
+    }
+
+    # Generate a logstash output for each supported version.
+    #
+    # Installing a new template requires a new index in order for the changes to take effect.
+    # Depending on the index pattern rotation schedule, the new index could take an inordinate amount
+    # of time to actually rotate.  With a "%{YYYY.MM.dd}" date pattern, this means
+    # rotation occurs each day at 00:00 UTC.
+    # The concept of revision here works around this constraint to facilitate a shortened
+    # "deploy to observable effects" turnaround time and does not restrict us to frequent index rotations.
+    #
+    # Expects a template file conforming to "ecs_<VERSION>-<REVISION>.json" in "profile/files/logstash/templates/"
+    # The most recently built template can be found here: https://doc.wikimedia.org/ecs/#downloads
+    $ecs_versions = {
+        # version => revision
+        '1.7.0' => '1'
+    }
+    $ecs_versions.each |String $ecs_version, String $ecs_revision| {
+        logstash::output::elasticsearch { "ecs_${ecs_version}-${ecs_revision}":
+          host            => '127.0.0.1',
+          guard_condition => "\"es\" in [tags] and [ecs] == \"${ecs_version}\"",
+          index           => "ecs-${ecs_version}-${ecs_revision}-%{[@metadata][partition]}-%{+YYYY.MM.dd}",
+          manage_indices  => true,
+          priority        => 90,
+          template        => "/etc/logstash/templates/ecs_${ecs_version}-${ecs_revision}.json",
+          require         => File['/etc/logstash/templates'],
+        }
     }
 
     # TODO: cleanup -- T256418
