@@ -3,7 +3,7 @@
 require_relative '../../../../rake_modules/spec_helper'
 
 describe 'standard' do
-  on_supported_os.each do |os, facts|
+  on_supported_os(WMFConfig.test_on).each do |os, facts|
     context "on #{os}" do
       let(:facts) { facts }
       let(:pre_condition) do
