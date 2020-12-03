@@ -488,25 +488,27 @@ class profile::logstash::collector (
         priority => 75,
     }
 
-    ## Outputs (90)
-    # Template for Elasticsearch index creation
-    file { '/etc/logstash/elasticsearch-template.json':
-        ensure => present,
-        source => 'puppet:///modules/profile/logstash/elasticsearch-template.json',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
+    file {'/etc/logstash/templates':
+        ensure  => directory,
+        source  => 'puppet:///modules/profile/logstash/templates',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        recurse => true,
+        purge   => true,
+        force   => true,
     }
     # lint:endignore
 
+    ## Outputs (90)
     logstash::output::elasticsearch { 'logstash':
         host            => '127.0.0.1',
         guard_condition => '"es" in [tags]',
         index           => '%{[@metadata][index_name]}-%{+YYYY.MM.dd}',
         manage_indices  => true,
         priority        => 90,
-        template        => '/etc/logstash/elasticsearch-template.json',
-        require         => File['/etc/logstash/elasticsearch-template.json'],
+        template        => '/etc/logstash/templates/logstash_5.0-1.json',
+        require         => File['/etc/logstash/templates'],
     }
 
 
