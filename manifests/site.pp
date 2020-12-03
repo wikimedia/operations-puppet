@@ -1434,7 +1434,7 @@ node /^clouddb10(13|14|15|16)\.eqiad\.wmnet$/ {
     role(wmcs::db::wikireplicas::web_multiinstance)
 }
 
-node /^clouddb10(17|18|19)\.eqiad\.wmnet$/ {
+node /^clouddb10(17|18|19|20)\.eqiad\.wmnet$/ {
     role(wmcs::db::wikireplicas::analytics_multiinstance)
 }
 
@@ -2413,13 +2413,6 @@ node /^cloudvirt103[0-9]\.eqiad\.wmnet$/ {
 
 node /^cloudvirt101[2-8]\.eqiad\.wmnet$/ {
     role(wmcs::openstack::eqiad1::virt_ceph)
-}
-
-# New clouddb hosts that will replace labsdb hosts
-# Set them to spare individually as it will take time to transfer the data #T260441
-# Do not use clouddb1020 - sync up with Brooke before productionizing it
-node 'clouddb1020.eqiad.wmnet' {
-    role(spare::system)
 }
 
 # Private virt hosts for wdqs T221631
