@@ -25,7 +25,6 @@ class base::standard_packages {
     if debian::codename::gt('jessie') {
         ensure_packages('icdiff')
         ensure_packages('linux-perf')
-        ensure_packages('s-nail')
     }
 
     # pxz was removed in buster. In xz >= 5.2 (so stretch and later), xz has

@@ -55,7 +55,7 @@ define phabricator::logmail (
     Wmflib::Ensure $ensure = 'present',
 ) {
 
-    ensure_packages(['mariadb-client'])
+    ensure_packages(['mariadb-client', 'bsd-mailx'])
 
     file { "/etc/phab_${title}.conf":
         ensure  => present,
