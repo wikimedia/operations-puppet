@@ -3,19 +3,14 @@ class dumps::generation::server::statsender(
     $sender_address = undef,
     $user           = undef,
 )  {
-    $mail_package = debian::codename::ge('buster') ? {
-        true    => 's-nail',
-        default => 'heirloom-mailx',
-    }
-    ensure_packages($mail_package)
+    ensure_packages('s-nail')
 
     file { '/usr/local/bin/get_dump_stats.sh':
-        ensure  => 'present',
-        mode    => '0755',
-        owner   => 'root',
-        group   => 'root',
-        source  => 'puppet:///modules/dumps/generation/get_dump_stats.sh',
-        require => Package[$mail_package],
+        ensure => 'present',
+        mode   => '0755',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/dumps/generation/get_dump_stats.sh',
     }
 
     cron { 'dumps-stats-sender':
