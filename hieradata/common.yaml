@@ -682,9 +682,7 @@ hive_services:
   analytics-test-hive:
     server_host: 'analytics-test-hive.eqiad.wmnet'
     server_port: 10000
-    # The metastore node needs to be the FQDN of the host running
-    # the metastore daemon to deploy its db credentials.
-    metastore_host: 'an-test-coord1001.eqiad.wmnet'
+    metastore_host: 'analytics-test-hive.eqiad.wmnet'
     metastore_sasl_enabled: true
     metastore_kerberos_principal: 'hive/analytics-test-hive.eqiad.wmnet@WIKIMEDIA'
     server_authentication: 'KERBEROS'
