@@ -3,6 +3,7 @@
 # Ntp server profile
 class profile::ntp (
     Array[Stdlib::Host] $monitoring_hosts = lookup('monitoring_hosts'),
+    Boolean             $use_chrony       = lookup('profile::ntp::use_chrony')
 ){
     contain standard::ntp
     # A list of all global peers, used in the core sites' case below
@@ -68,7 +69,7 @@ class profile::ntp (
         default => 'tos minsane 2 orphan 13',
     }
 
-    if hiera('ntp::use_chrony', false) { # lint:ignore:wmf_styleguide
+    if $use_chrony {
         require ::network::constants
         $chrony_networks_acl = array_concat(['10.0.0.0/8'], $::network::constants::external_networks)
 

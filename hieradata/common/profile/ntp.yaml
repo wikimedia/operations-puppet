@@ -1,0 +1,1 @@
+profile::ntp::use_chrony: false
