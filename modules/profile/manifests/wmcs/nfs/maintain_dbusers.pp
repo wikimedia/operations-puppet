@@ -60,7 +60,7 @@ class profile::wmcs::nfs::maintain_dbusers (
     }
 
     if !empty($multiinstance_connect_addresses) {
-        $multiinstance_hosts = $multiinstance_connect_addresses.reduce({}) | $memo, $conn_str | {
+        $multiinstance_hosts = $multiinstance_connect_addresses.flatten().unique().reduce({}) | $memo, $conn_str | {
             $memo + {$conn_str => {'grant-type' => 'role'}}
         }
         # There is a bug in the logic above. To find it, I am deliberately
