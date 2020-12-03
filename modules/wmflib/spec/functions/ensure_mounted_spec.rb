@@ -1,20 +1,16 @@
 require_relative '../../../../rake_modules/spec_helper'
 
-describe "the ensure_mounted function" do
+describe "ensure_mounted" do
   it "should exist" do
     expect(Puppet::Parser::Functions.function("ensure_mounted")).to eq("function_ensure_mounted")
   end
 
   it "should raise a ParseError if there are less than 1 arguments" do
-    expect {
-      scope.function_ensure_mounted([])
-    }.to raise_error(ArgumentError)
+    is_expected.to run.with_params.and_raise_error(ArgumentError)
   end
 
   it "should raise a ParseError if there are more than 1 arguments" do
-    expect {
-      scope.function_ensure_mounted(['a', 'b'])
-    }.to raise_error(ArgumentError)
+    is_expected.to run.with_params('a', 'b').and_raise_error(ArgumentError)
   end
 
   it "should return 'mounted' for param 'present'" do
