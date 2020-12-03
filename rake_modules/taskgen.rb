@@ -445,7 +445,7 @@ class TaskGen < ::Rake::TaskLib
         desc "Run spec for module #{module_name}"
         task module_name do
           puts "---> spec:#{module_name}"
-          spec_result = system("cd 'modules/#{module_name}' && rake spec")
+          spec_result = system("cd 'modules/#{module_name}' && rake parallel_spec")
           unless spec_result
             @failed_specs << module_name
           end

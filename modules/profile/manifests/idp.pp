@@ -1,3 +1,5 @@
+# @summary profile to configure the idp
+# @param ldap_config a hash containing the ldap configeration
 class profile::idp(
     Hash                        $ldap_config            = lookup('ldap', Hash, hash, {}),
     Array[Stdlib::Host]         $prometheus_nodes       = lookup('prometheus_nodes'),

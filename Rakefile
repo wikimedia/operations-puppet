@@ -70,7 +70,7 @@ namespace :global do
       # don't test the puppetlabs modules
       next if thirdparty_modules.include?(module_name)
       task module_name do
-        spec_result = system("cd 'modules/#{module_name}' && rake spec")
+        spec_result = system("cd 'modules/#{module_name}' && rake parallel_spec")
         spec_failed << module_name unless spec_result
       end
       spec_tasks << "spec:#{module_name}"

@@ -7,6 +7,7 @@ gem 'rspec-puppet', '~> 2.7.9'
 gem 'rspec-puppet-facts', '~> 1.7', require: false
 gem 'puppetlabs_spec_helper', '< 2.0.0'
 gem 'safe_yaml', '~> 1.0.5'
+gem 'parallel_tests'
 # required by lvm spec_helper
 gem 'puppet-blacksmith', '~> 4.1.2'
 # required by puppetdbquery
