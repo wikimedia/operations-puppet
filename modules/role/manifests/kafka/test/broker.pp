@@ -8,9 +8,7 @@ class role::kafka::test::broker {
 
     include profile::base::firewall
     include profile::kafka::broker
-
-    # TODO eventually this will mirror specific topics from jumbo-eqiad
-    # include profile::kafka::mirror
+    include profile::kafka::mirror
 
     include ::profile::standard
 }

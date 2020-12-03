@@ -1,4 +1,4 @@
-cluster: test-eqiad
+cluster: kafka_test
 
 profile::kafka::broker::kafka_cluster_name: test-eqiad
 
@@ -11,3 +11,27 @@ profile::kafka::broker::monitoring::replica_maxlag_warning: 1000000
 profile::kafka::broker::monitoring::replica_maxlag_critical: 5000000
 
 profile::kafka::broker::max_heap_size: '2g'
+
+profile::kafka::mirror::source_cluster_name: jumbo-eqiad
+profile::kafka::mirror::destination_cluster_name: test-eqiad
+
+profile::kafka::mirror::monitoring_enabled: false
+
+profile::kafka::mirror::properties:
+  whitelist: '^(eqiad|codfw)\.mediawiki\.revision-create$'
+  num_streams: 3
+  offset_commit_interval_ms: 5000
+  heap_opts: '-Xmx2G -Xms2G'
+  producer_properties:
+    "batch.size": 65536
+
+
+profile::kafka::mirror::consumer_ssl_enabled: true
+profile::kafka::mirror::producer_ssl_enabled: true
+
+# Kafka doesn't support Java 11 for versions
+# lower than 2.1
+# https://issues.apache.org/jira/browse/KAFKA-7264
+profile::java::java_packages:
+  - version: '8'
+    variant: 'jdk'

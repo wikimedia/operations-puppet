@@ -468,6 +468,16 @@ wikimedia_clusters:
     sites:
       eqiad: []
       codfw: []
+  kafka_test:
+    description: "Kafka Test Cluster"
+    id: 91
+    sites:
+      eqiad: []
+  zookeeper_test:
+    description: "Zookeeper Test Cluster"
+    id: 92
+    sites:
+      eqiad: []
 
 puppetmaster: "puppet"
 puppet_ca_server: puppetmaster1001.eqiad.wmnet

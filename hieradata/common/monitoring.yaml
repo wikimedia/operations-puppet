@@ -94,6 +94,14 @@ monitoring::groups:
   kafka_jumbo_eqiad:
     description: Kafka jumbo cluster in eqiad
 
+# Kafka test
+  kafka_test_eqiad:
+    description: Kafka test cluster in eqiad
+
+# Zookeeper test
+  zookeeper_test_eqiad:
+    description: Zookeeper test cluster in eqiad
+
 # Kafka main
   kafka_main_eqiad:
     description: Kafka main cluster in eqiad
