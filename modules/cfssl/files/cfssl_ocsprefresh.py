@@ -45,7 +45,7 @@ def ocsprefresh(dbconfig, responder_cert, responder_key, ca_file):
                f"-responder {responder_cert} -responder-key {responder_key} "
                f"-ca {ca_file}")
     logging.debug('running %s', command)
-    check_call(shlex.join(command))
+    check_call(shlex.split(command))
 
 
 def ocspdump(dbconfig, responses_file):
@@ -61,7 +61,7 @@ def ocspdump(dbconfig, responses_file):
     responses_file = Path(responses_file)
     command = f"'/usr/bin/cfssl ocspdump -db_config {dbconfig}"
     logging.debug('running %s', command)
-    responses = check_output(shlex.join(command))
+    responses = check_output(shlex.split(command))
     logging.debug('read current responses file: %s', responses_file)
     with responses_file.open('rb+') as responses_fh:
         if responses == responses_fh.read_bytes():
@@ -94,7 +94,7 @@ def main():
         return 1
     try:
         if ocspdump(dbconfig, args.responses_file):
-            check_call(shlex.join(f"/usr/bin/systemctl restart {args.restart_service}"))
+            check_call(shlex.split(f"/usr/bin/systemctl restart {args.restart_service}"))
     except CalledProcessError as error:
         logging.error('ocspdump failed: %s', error)
         return 1
