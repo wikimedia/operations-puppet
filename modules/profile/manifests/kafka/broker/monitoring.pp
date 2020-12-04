@@ -7,14 +7,19 @@
 #   Hiera: profile::kafka::broker::replica_maxlag_warning
 #
 # [*replica_maxlag_critical*]
-#   Mac messages a replica can lag before a critical alert is generated.
+#   Max messages a replica can lag before a critical alert is generated.
 #   Hiera: profile::kafka::broker::replica_maxlag_critical
 #
+# [*is_critical]
+#   Whether or not to generate critical alerts.
+#   Hiera: profile::kafka::broker::monitoring::is_critical
+
 class profile::kafka::broker::monitoring (
     Array[Stdlib::Host] $prometheus_nodes = lookup('prometheus_nodes'),
     String $kafka_cluster_name            = lookup('profile::kafka::broker::kafka_cluster_name'),
     Integer $replica_maxlag_warning       = lookup('profile::kafka::broker::monitoring::replica_maxlag_warning', {'default_value' => 10000}),
     Integer $replica_maxlag_critical      = lookup('profile::kafka::broker::monitoring::replica_maxlag_critical', {'default_value' => 100000}),
+    Boolean $is_critical                  = lookup('profile::kafka::broker::monitoring::is_critical', {'default_value' => false}),
 ) {
     # Get fully qualified Kafka cluster name
     $config        = kafka_config($kafka_cluster_name)
@@ -50,7 +55,7 @@ class profile::kafka::broker::monitoring (
     nrpe::monitor_service { 'kafka':
         description  => 'Kafka Broker Server',
         nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "Kafka /etc/kafka/server.properties"',
-        critical     => true,
+        critical     => $is_critical,
         notes_url    => 'https://wikitech.wikimedia.org/wiki/Kafka/Administration',
     }
 
