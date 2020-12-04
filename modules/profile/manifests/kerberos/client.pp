@@ -50,5 +50,13 @@ class profile::kerberos::client (
         source   => 'puppet:///modules/profile/kerberos/client/motd.sh',
     }
 
+    file {'/etc/profile.d/kerberos_ticket_info.sh':
+        ensure => 'present',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+        source => 'puppet:///modules/profile/kerberos/client/kerberos_ticket_info.sh',
+    }
+
     require_package ('krb5-user')
 }
