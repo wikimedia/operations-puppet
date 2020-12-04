@@ -15,13 +15,13 @@ define cfssl::ocsp (
     include cfssl
     include cfssl::client
 
-    $safe_title      = $title.regsubst('\W', '_', 'G')
-    $outdir          = "${cfssl::ssl_dir}/ocsp"
-    $refresh_service = "cfssl-ocsprefresh@${safe_title}"
-    $serve_service   = "cfssl-ocspserve@${safe_title}"
-    $safe_cert_name  = "OCSP ${title} ${common_name}".regsubst('[^\w\-]', '_', 'G')
-    $key_path        = "${outdir}/${safe_cert_name}-key.pem"
-    $cert_path       = "${outdir}/${safe_cert_name}.pem"
+    $safe_title     = $title.regsubst('\W', '_', 'G')
+    $outdir         = "${cfssl::ssl_dir}/ocsp"
+    $refresh_timer  = "cfssl-ocsprefresh-${safe_title}"
+    $serve_service  = "cfssl-ocspserve@${safe_title}"
+    $safe_cert_name = "OCSP ${title} ${common_name}".regsubst('[^\w\-]', '_', 'G')
+    $key_path       = "${outdir}/${safe_cert_name}-key.pem"
+    $cert_path      = "${outdir}/${safe_cert_name}.pem"
 
     $_db_conf_file   = pick($db_conf_file, "${cfssl::conf_dir}/db.conf")
     $_ca_file        = pick($ca_file, "${cfssl::conf_dir}/ca/ca.pem")
@@ -36,7 +36,8 @@ define cfssl::ocsp (
             group   => 'root',
             mode    => '0444',
             content => $cert_content,
-            notify  => Service[$refresh_service, $serve_service],
+            notify  => Service[$serve_service],
+            #before  => Systemd::Timer::Job[$refresh_timer],
         }
         file {$key_path:
             owner     => 'root',
@@ -44,7 +45,8 @@ define cfssl::ocsp (
             mode      => '0400',
             show_diff => false,
             content   => $key_content,
-            notify    => Service[$refresh_service, $serve_service],
+            notify    => Service[$serve_service],
+            #before    => Systemd::Timer::Job[$refresh_timer],
         }
     } else {
         cfssl::cert{$safe_cert_name:
@@ -56,17 +58,26 @@ define cfssl::ocsp (
             signer_config => {'config_file' => $cfssl::client::conf_file},
             tls_cert      => $facts['puppet_config']['hostcert'],
             tls_key       => $facts['puppet_config']['hostprivkey'],
-            notify        => Service[$refresh_service, $serve_service],
+            notify        => Service[$serve_service],
+            #before        => Systemd::Timer::Job[$refresh_timer],
         }
     }
-    systemd::service{$refresh_service:
-        ensure  => present,
-        content => template('cfssl/cfssl-ocsprefresh.service.erb'),
-        restart => true,
-    }
+    $refresh_command = @("CMD"/L)
+    /usr/local/sbin/cfssl-ocsprefresh \
+        --responder-cert ${cert_path} --responder-key ${key_path} \
+        --ca-file ${_ca_file} --responses_file ${_responses_file} \
+        --restart-service ${serve_service} ${safe_title}
+    | CMD
+
     systemd::service{$serve_service:
         ensure  => present,
         content => template('cfssl/cfssl-ocspserve.service.erb'),
         restart => true,
     }
+    #systemd::timer::job{$refresh_timer:
+    #    ensure   => present,
+    #    user     => 'root',
+    #    interval => {'start' => 'OnUnitInactiveSec', 'interval' => '1h'},
+    #    command  => $refresh_command,
+    #}
 }
