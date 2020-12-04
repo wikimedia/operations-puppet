@@ -41,7 +41,7 @@ def ocsprefresh(dbconfig, responder_cert, responder_key, ca_file):
         responder_key (str):  path to the responder private key
         ca_file (str):        path to the ca_file
     """
-    command = (f"'/usr/bin/cfssl ocsprefresh -db_config {dbconfig}"
+    command = (f"/usr/bin/cfssl ocsprefresh -db-config {dbconfig} "
                f"-responder {responder_cert} -responder-key {responder_key} "
                f"-ca {ca_file}")
     logging.debug('running %s', command)
@@ -59,17 +59,16 @@ def ocspdump(dbconfig, responses_file):
         bool: indicate if the ocspresponse file has been updated
     """
     responses_file = Path(responses_file)
-    command = f"'/usr/bin/cfssl ocspdump -db_config {dbconfig}"
+    command = f"/usr/bin/cfssl ocspdump -db-config {dbconfig}"
     logging.debug('running %s', command)
     responses = check_output(shlex.split(command))
     logging.debug('read current responses file: %s', responses_file)
-    with responses_file.open('rb+') as responses_fh:
-        if responses == responses_fh.read_bytes():
-            logging.debug('No update required')
-            return False
-        responses_fh.seek(0)
-        logging.debug('Updating response file: %s', responses_file)
-        responses_fh.write_bytes(responses)
+    # TODO: this is false on every run as we re-sign each time
+    if responses == responses_file.read_bytes():
+        logging.debug('No update required')
+        return False
+    logging.debug('Updating response file: %s', responses_file)
+    responses_file.write_bytes(responses)
     return True
 
 
