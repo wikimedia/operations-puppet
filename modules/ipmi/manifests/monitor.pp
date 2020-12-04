@@ -1,7 +1,7 @@
 class ipmi::monitor (
     Wmflib::Ensure $ensure = 'present'
 ) {
-    require_package('freeipmi-tools')
+    ensure_packages(['freeipmi-tools'])
 
     # ipmi_devintf needs to be loaded for the checks to work properly (T167121)
     file { '/usr/local/lib/nagios/plugins/check_ipmi_sensor':
