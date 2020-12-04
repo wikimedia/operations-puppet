@@ -37,6 +37,7 @@ define cfssl::ocsp (
             mode    => '0444',
             content => $cert_content,
             notify  => Service[$serve_service],
+            before  => Systemd::Timer::Job[$refresh_timer],
         }
         file {$key_path:
             owner     => 'root',
@@ -45,6 +46,7 @@ define cfssl::ocsp (
             show_diff => false,
             content   => $key_content,
             notify    => Service[$serve_service],
+            before    => Systemd::Timer::Job[$refresh_timer],
         }
     } else {
         cfssl::cert{$safe_cert_name:
@@ -57,25 +59,26 @@ define cfssl::ocsp (
             tls_cert      => $facts['puppet_config']['hostcert'],
             tls_key       => $facts['puppet_config']['hostprivkey'],
             notify        => Service[$serve_service],
+            before        => Systemd::Timer::Job[$refresh_timer],
         }
     }
     $refresh_command = @("CMD"/L)
-    /usr/local/sbin/cfssl-ocsprefresh \
+        /usr/local/sbin/cfssl-ocsprefresh \
         --responder-cert ${cert_path} --responder-key ${key_path} \
         --ca-file ${_ca_file} --responses_file ${_responses_file} \
-        --restart-service ${serve_service} ${safe_title}
-    | CMD
+        --restart-service '${serve_service}' ${safe_title} \
+        | CMD
 
     systemd::service{$serve_service:
         ensure  => present,
         content => template('cfssl/cfssl-ocspserve.service.erb'),
         restart => true,
     }
-    # systemd::timer::job{$refresh_timer:
-    #     ensure      => present,
-    #     description => "OCSP Refresh job - ${title}",
-    #     user        => 'root',
-    #     interval    => {'start' => 'OnUnitInactiveSec', 'interval' => '1h'},
-    #     command     => $refresh_command,
-    # }
+    systemd::timer::job{$refresh_timer:
+        ensure      => present,
+        description => "OCSP Refresh job - ${title}",
+        user        => 'root',
+        interval    => {'start' => 'OnUnitInactiveSec', 'interval' => '1h'},
+        command     => $refresh_command,
+    }
 }
