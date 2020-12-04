@@ -26,6 +26,10 @@ manage_puppet_ca_file: false
 
 profile::base::labs::unattended_wmf: 'present'
 profile::base::labs::unattended_distro: 'present'
+profile::puppetdb::gc_interval: 20
+profile::puppetdb::node_ttl: '7d'
+profile::puppetdb::node_purge_ttl: '14d'
+profile::puppetdb::report_ttl: '1d'
 profile::puppetdb::database::users: {}
 profile::puppetdb::database::shared_buffers: '768MB'
 profile::puppetdb::database::replication_lag_crit: 16777216
