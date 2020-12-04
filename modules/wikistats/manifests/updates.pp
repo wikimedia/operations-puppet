@@ -24,7 +24,7 @@ class wikistats::updates (
     }
 
     # fetch new wiki data
-    wikistats::cronjob::update {
+    wikistats::job::update {
         'wp' : ensure => $ensure, hour => 0;  # Wikipedias
         'lx' : ensure => $ensure, hour => 1;  # LXDE
         'si' : ensure => $ensure, hour => 1;  # Wikisite
@@ -59,7 +59,7 @@ class wikistats::updates (
       }
 
     # dump xml data
-    wikistats::cronjob::xmldump {
+    wikistats::job::xmldump {
         'wp' : ensure => $ensure, db_pass => $db_pass, table => 'wikipedias',   minute => 3;
         'wt' : ensure => $ensure, db_pass => $db_pass, table => 'wiktionaries', minute => 5;
         'wq' : ensure => $ensure, db_pass => $db_pass, table => 'wikiquotes',   minute => 7;
@@ -91,8 +91,8 @@ class wikistats::updates (
     }
 
     # imports (fetching lists of wikis itself)
-    wikistats::cronjob::import {
-        'miraheze':  ensure => $ensure, weekday => 5 ; # https://phabricator.wikimedia.org/T153930
-        'neoseeker': ensure => $ensure, weekday => 7 ; # https://phabricator.wikimedia.org/T1262113
+    wikistats::job::import {
+        'miraheze':  ensure => $ensure, weekday => 'Friday' ; # https://phabricator.wikimedia.org/T153930
+        'neoseeker': ensure => $ensure, weekday => 'Sunday' ; # https://phabricator.wikimedia.org/T1262113
     }
 }

@@ -39,7 +39,7 @@
 #
 class wikistats (
     Stdlib::Fqdn $wikistats_host,
-    Wmflib::Ensure $cron_ensure,
+    Wmflib::Ensure $jobs_ensure,
 ){
 
     group { 'wikistatsuser':
@@ -104,7 +104,7 @@ class wikistats (
         db_pass => $db_pass,
     }
 
-    # scripts and crons to update data and dump XML files
+    # location to dump as XML files
     file { '/var/www/wikistats/xml':
         ensure => directory,
         owner  => 'wikistatsuser',
@@ -114,7 +114,7 @@ class wikistats (
 
     class { 'wikistats::updates':
         db_pass => $db_pass,
-        ensure  => $cron_ensure,
+        ensure  => $jobs_ensure,
     }
 }
 

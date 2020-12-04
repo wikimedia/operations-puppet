@@ -1,2 +1,2 @@
-profile::wikistats::cron_ensure: 'absent'
+profile::wikistats::jobs_ensure: 'absent'
 profile::base::labs::cleanup_puppet_client_bucket: true
