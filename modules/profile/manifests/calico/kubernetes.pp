@@ -4,27 +4,36 @@
 # This follows http://docs.projectcalico.org/v2.0/getting-started/kubernetes/installation/#manual-installation
 
 class profile::calico::kubernetes(
-    Array[String] $etcd_endpoints = lookup('profile::calico::kubernetes::etcd_endpoints'),
-    $bgp_peers = lookup('profile::calico::kubernetes::bgp_peers'),
     String $calico_version = lookup('profile::calico::kubernetes::calico_version'),
-    Stdlib::Host $registry = lookup('profile::calico::kubernetes::docker::registry'),
+    String $calico_cni_username = lookup('profile::calico::kubernetes::calico_cni::username', {default_value => 'calico-cni'}),
+    String $calico_cni_token = lookup('profile::calico::kubernetes::calico_cni::token'),
+    String $calicoctl_username = lookup('profile::calico::kubernetes::calicoctl::username', {default_value => 'calicoctl'}),
+    String $calicoctl_token = lookup('profile::calico::kubernetes::calicoctl::token'),
+    Stdlib::Host $master_fqdn = lookup('profile::kubernetes::master_fqdn'),
     Stdlib::Unixpath $kubeconfig = lookup('profile::kubernetes::node::kubelet_config'),
-    String $datastore_type = lookup('profile::calico::kubernetes::calico_datastore_type', {default_value => 'etcdv2'}),
+    Array[Stdlib::Host] $bgp_peers = lookup('profile::calico::kubernetes::bgp_peers'),
     Array[Stdlib::Host] $prometheus_nodes = lookup('prometheus_nodes', {default_value => []}),
+    Optional[Stdlib::Host] $registry = lookup('profile::calico::kubernetes::docker::registry', {default_value => 'docker-registry.discovery.wmnet'}),
+    Optional[Array[String]] $etcd_endpoints = lookup('profile::calico::kubernetes::etcd_endpoints', {default_value => undef}),
 ){
 
     class { '::calico':
-        etcd_endpoints => $etcd_endpoints,
-        calico_version => $calico_version,
-        datastore_type => $datastore_type,
-        registry       => $registry,
+        master_fqdn        => $master_fqdn,
+        calicoctl_username => $calicoctl_username,
+        calicoctl_token    => $calicoctl_token,
+        calico_version     => $calico_version,
+        registry           => $registry,
+        etcd_endpoints     => $etcd_endpoints,
     }
 
     class { '::calico::cni':
-        kubeconfig     => $kubeconfig,
-        datastore_type => $datastore_type,
+        master_fqdn         => $master_fqdn,
+        calico_cni_username => $calico_cni_username,
+        calico_cni_token    => $calico_cni_token,
+        kubeconfig          => $kubeconfig,
     }
 
+    # TODO: We need to configure BGP peers in calico datastore (helm chart) as well.
     $bgp_peers_ferm = join($bgp_peers, ' ')
     $prometheus_nodes_ferm = join($prometheus_nodes, ' ')
 
@@ -35,7 +44,12 @@ class profile::calico::kubernetes(
     }
     ferm::service { 'calico-felix-prometheus':
         proto  => 'tcp',
-        port   => '9091', # prometheus
+        port   => '9091', # Prometheus metrics port of calico node pods (running in host network namespace)
+        srange => "(@resolve((${prometheus_nodes_ferm})) @resolve((${prometheus_nodes_ferm}), AAAA))",
+    }
+    ferm::service { 'calico-typha-prometheus':
+        proto  => 'tcp',
+        port   => '9093', # Prometheus metrics port of calico typha pods (running in host network namespace)
         srange => "(@resolve((${prometheus_nodes_ferm})) @resolve((${prometheus_nodes_ferm}), AAAA))",
     }
 }
