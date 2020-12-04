@@ -292,7 +292,7 @@ groups:
               itamar, phedenskog, aaron, dpifke, aklapper, jmads, andrew-wmde, daniram,
               dcipoletti, chrisalbon, wikigit, nahidunlimited, swagoel,
               agaduran, edtadros, dvrandecic, razzi, cparle, klausman, lexnasser, sbisson, fab,
-              dumisani, janstee, gmodena, cdanis, wmde-leszek]
+              dumisani, janstee, gmodena, cdanis, wmde-leszek, jakob]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product]
     approval: Andrew Otto
@@ -613,7 +613,7 @@ groups:
     description: Group of WMDE analytics users
     gid: 784
     members: [addshore, goransm, ladsgroup, lucaswerkmeister-wmde, conniecc1, tarrow, itamar,
-              awight, wmde-fisch, wmde-leszek]
+              awight, wmde-fisch, wmde-leszek, jakob]
     privileges: ['ALL = (analytics-wmde) NOPASSWD: ALL']
   eventbus-admins:
     gid: 785
@@ -3363,6 +3363,7 @@ users:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAENSef8ugACShtUryIYbII3C0bwJ8DC5byfveXRIrUS jawa@C269
     uid: 10133
     email: jakob.warkotsch@wikimedia.de
+    krb: present
   alaasarhan:
     ensure: absent
     gid: 500
