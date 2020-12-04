@@ -74,7 +74,7 @@ class gerrit::jetty(
         '-XX:HeapDumpPath=/srv/gerrit',
     ]
 
-    require_package([
+    ensure_packages([
         'python3',
         'python3-virtualenv',
         'virtualenv',
