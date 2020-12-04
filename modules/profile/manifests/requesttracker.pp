@@ -3,6 +3,7 @@
 class profile::requesttracker {
 
     include ::passwords::misc::rt
+    include profile::idp::client::httpd
 
     require_package('libapache2-mod-perl2', 'libapache2-mod-scgi')
     $cgi_module = 'scgi'
