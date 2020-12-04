@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Check Cumin aliases configuration file for inconsistencies.
 
-Suitable to be used as a cron job, it will exit with zero exit code and doesn't produce any output
-if no inconsistency is found, with a positive integer printing the differences on error.
+Suitable to be used as a cron job, it will print no output if no inconsistency is found,
+and other report the errors to correct.
 """
 import time
 import sys
@@ -27,11 +27,7 @@ def main():
       - the sum of all DC-related aliases should return all hosts.
       - the sum of all the other aliases should return all hosts.
 
-    Returns:
-        int: zero on success, positive integer on failure.
-
     """
-    ret = 0
     config = Config()
     dc_hosts = NodeSet()
     alias_hosts = NodeSet()
@@ -42,12 +38,10 @@ def main():
             match = query.Query(config).execute('A:' + alias)
         except InvalidQueryError as e:
             print('Unable to execute query for alias {alias}: {msg}'.format(alias=alias, msg=e))
-            ret = 1
             continue
 
         if not match and alias not in OPTIONAL_ALIASES:
             print('Alias {alias} matched 0 hosts'.format(alias=alias))
-            ret = 1
 
         if alias in DCS:
             dc_hosts |= match
@@ -56,20 +50,15 @@ def main():
 
         time.sleep(2)  # Go gentle on PuppetDB
 
-    base_ret = 2
     for hosts, name in ((dc_hosts, 'DC'), (alias_hosts, 'Other')):
         if all_hosts - hosts:
             print('{name} aliases do not cover all hosts: {hosts}'.format(
                 name=name, hosts=(all_hosts - hosts)))
-            ret += base_ret
         elif dc_hosts - all_hosts:
             print('{name} aliases have unknown hosts: {hosts}'.format(
                 name=name, hosts=(hosts - all_hosts)))
-            ret += base_ret * 2
 
-        base_ret *= 4
-
-    return ret
+    return 0
 
 
 if __name__ == '__main__':
