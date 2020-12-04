@@ -4,7 +4,7 @@ class mw_rc_irc::irc_echo(
     $ircpassword,
 ) {
 
-        require_package('python-irc')
+    ensure_packages(['python-irc'])
 
     file { '/etc/udpmxircecho-config.json':
         content => ordered_json({

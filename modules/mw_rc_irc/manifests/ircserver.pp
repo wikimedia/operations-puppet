@@ -3,7 +3,7 @@
 # suitable for a general ircd deployment
 class mw_rc_irc::ircserver {
 
-    require_package('ircd-ratbox', 'irssi')
+    ensure_packages(['ircd-ratbox', 'irssi'])
 
     # public part of the ircd config
     file { '/usr/etc/ircd.conf':
