@@ -15,7 +15,8 @@ groups:
               mtizzoni, panisson, paolotti, ciro, dartar, melodykramer, gtirloni, tbayer, pirroh,
               bawolff, dkg, juliaglen, cwdent, hpham, atgomez, dfoy, alaasarhan, onimisionipe,
               tieu, flemmerich, jsamra, anomie, jmorgan, thargrove, joewalsh, rodolfovalentim,
-              drossi, fsalutari, demon, lulu, jkumalah, nathante, shiladsen, leila, rush, niedzielski]
+              drossi, fsalutari, demon, lulu, jkumalah, nathante, shiladsen, leila, rush, niedzielski,
+              dstrine]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -178,7 +179,7 @@ groups:
                  or comment in https://phabricator.wikimedia.org/T268801.
     members: [catrope, dduvall, mattflaschen, cooltey, marktraceur,
               jhernandez, daisy, etonkovidova, risler,
-              matmarex, dstrine, jdittrich, debt,
+              matmarex, jdittrich, debt,
               mlitn, sharvaniharan, kharlan]
   ldap-admins:
     gid: 715
@@ -2373,12 +2374,11 @@ users:
     uid: 2362
     email: dereckson@espace-win.org
   dstrine:
-    ensure: present
+    ensure: absent
     gid: 500
     name: dstrine
     realname: David Strine
-    ssh_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC3N4d9IDAb//Aq4NG4I2L5EXPpJDHnTg/+O1tOsuNWJUV9NvaNjzB5aZZ3hnZOS5OoTU6Lf0d8FWV5zmmVVj+RSGxxd4RrLFqFKlkbDJAyyGBsqKlYwMv0lgd/etbgx/5beW4zj6Y1wxG9pd+dpaDVDnG1JQEy7u3kaqRAylm1t5o0zMtxEhcOmxXM3hRI4h/YGC472bD4tP5pBb066zFgdEpNzRUKSAJwpx/WOqI7nhsPtXpzWsBXS7FwW1UvMUxpOLTTtfJv61u8f/Y20GPDiS2mUSG5ifNhQg0nhLIdLK6FZO5LGBKzbZ2oDYtM66ZrY7ClATaku3Hm1ZKO6SJR dstrine@wikimedia.org
+    ssh_keys: []
     uid: 14098
     email: dstrine@wikimedia.org
   foks:
@@ -4063,6 +4063,10 @@ ldap_only_users:
     ensure: present
     realname: Alangi Derick
     email: xsavitar.wiki@aol.com
+  dstrine:
+    ensure: present
+    realname: David Strine
+    email: dstrine@wikimedia.org
   egardner:
     ensure: present
     realname: Eric Gardner
