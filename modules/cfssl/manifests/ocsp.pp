@@ -75,9 +75,10 @@ define cfssl::ocsp (
         restart => true,
     }
     systemd::timer::job{$refresh_timer:
-        ensure   => present,
-        user     => 'root',
-        interval => {'start' => 'OnUnitInactiveSec', 'interval' => '1h'},
-        command  => $refresh_command,
+        ensure      => present,
+        description => "OCSP Refresh job - ${title}",
+        user        => 'root',
+        interval    => {'start' => 'OnUnitInactiveSec', 'interval' => '1h'},
+        command     => $refresh_command,
     }
 }
