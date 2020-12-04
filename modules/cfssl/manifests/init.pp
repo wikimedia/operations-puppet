@@ -32,5 +32,9 @@ class cfssl (
             ensure => file,
             mode   => '0440',
             source => 'puppet:///modules/cfssl/mysql_initdb.sql';
+        '/usr/local/sbin/cfssl-ocsprefresh':
+            ensure => file,
+            mode   => '0550',
+            source => 'puppet:///modules/cfssl/cfssl_ocsprefresh.py';
     }
 }
