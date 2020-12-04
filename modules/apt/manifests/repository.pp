@@ -48,7 +48,7 @@ define apt::repository(
         }
     }
 
-    require_package('gnupg')
+    ensure_packages(['gnupg'])
 
     if $keyfile {
         file { "/var/lib/apt/keys/${name}.gpg":
