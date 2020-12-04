@@ -23,8 +23,8 @@ class profile::pki::server(
     Hash[String, Cfssl::Auth_key] $auth_keys        = lookup('profile::pki::server::auth_keys'),
     Hash[String, Hash]            $intermediates    = lookup('profile::pki::server::intermediates'),
 ) {
-    $crl_url = "http://${vhost}/crl"
-    $ocsp_url = "http://${vhost}/ocsp"
+    $crl_base_url = "http://${vhost}/crl"
+    $ocsp_base_url = "http://${vhost}/ocsp"
     class {'cfssl': }
     $db_conf_file = "${cfssl::conf_dir}/db.conf"
     $multirootca_service = 'cfssl-multirootca'
@@ -47,8 +47,8 @@ class profile::pki::server(
         ca_key_content   => Sensitive(secret($ca_key_content)),
         ca_cert_content  => file($ca_cert_content),
         auth_keys        => $auth_keys,
-        default_crl_url  => $crl_url,
-        default_ocsp_url => $ocsp_url,
+        default_crl_url  => $crl_base_url,
+        default_ocsp_url => $ocsp_base_url,
         serve_service    => $multirootca_service,
         db_conf_file     => $db_conf_file,
         manage_db        => false,
@@ -87,6 +87,8 @@ class profile::pki::server(
             $ca_file        = "${cfssl::ssl_dir}/${safe_title}/${safe_title}.pem"
         }
 
+        $crl_url = "${crl_base_url}/${safe_title}"
+        $ocsp_url = "${ocsp_base_url}/${safe_title}"
         cfssl::signer {$intermediate:
             profiles         => $profiles,
             ca_key_file      => $ca_key_file,
@@ -123,5 +125,13 @@ class profile::pki::server(
         tls_cert => $facts['puppet_config']['hostcert'],
         tls_key  => $facts['puppet_config']['hostprivkey'],
         signers  => $signers,
+    }
+
+    class {'httpd':
+        modules => ['proxy_http']
+    }
+    httpd::site{$vhost:
+        ensure  => present,
+        content => template('profile/pki/server/pki.discovery.wmnet.conf.erb')
     }
 }
