@@ -1,4 +1,4 @@
-profile::openstack::base::nova::instance_dev: '/dev/mapper/cloudvirt2001--dev--vg-data'
+profile::openstack::base::nova::instance_dev: 'thinvirt'
 profile::openstack::codfw1dev::nova::network_flat_tagged_base_interface: eno1
 profile::openstack::codfw1dev::nova::network_flat_interface: 'eno1.2105'
 profile::openstack::codfw1dev::nova::physical_interface_mappings:

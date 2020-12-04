@@ -1378,11 +1378,7 @@ node 'cloudcontrol2001-dev.wikimedia.org' {
     role(wmcs::openstack::codfw1dev::control)
 }
 
-node /cloudvirt2001-dev\.codfw\.wmnet/ {
-    role(wmcs::openstack::codfw1dev::virt)
-}
-
-node /cloudvirt200[2-3]\-dev\.codfw\.wmnet/ {
+node /cloudvirt200[1-3]\-dev\.codfw\.wmnet/ {
     role(wmcs::openstack::codfw1dev::virt_ceph)
 }
 
