@@ -10,6 +10,7 @@ class role::wmcs::openstack::codfw1dev::control {
     include ::profile::openstack::codfw1dev::envscripts
     include ::profile::openstack::codfw1dev::keystone::bootstrap
     include ::profile::openstack::codfw1dev::glance
+    include ::profile::ceph::client::rbd_glance
 
     # For testing purposes:
     include ::profile::openstack::codfw1dev::barbican

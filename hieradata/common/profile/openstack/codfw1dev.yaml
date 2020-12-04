@@ -38,6 +38,7 @@ profile::openstack::codfw1dev::keystone_api_fqdn: 'openstack.codfw1dev.wikimedia
 #  will be true, identical peers.
 profile::openstack::codfw1dev::primary_glance_image_store: cloudcontrol2001-dev.wikimedia.org
 profile::openstack::codfw1dev::glance_backends:
+  - rbd
   - file
 
 # List of designate hosts (generally labservicesxxxx).
