@@ -15,9 +15,6 @@ class role::wmcs::openstack::codfw1dev::control {
     # For testing purposes:
     include ::profile::openstack::codfw1dev::barbican
 
-    # NOTE: ceph is not enabled in this role. Starting in Queens
-    #       ceph-common is a dependency for the nova-common package
-    include ::profile::ceph::common
     include ::profile::openstack::codfw1dev::nova::common
     include ::profile::openstack::codfw1dev::nova::conductor::service
     include ::profile::openstack::codfw1dev::nova::scheduler::service
