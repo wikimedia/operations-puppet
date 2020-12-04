@@ -143,11 +143,11 @@ class profile::mediawiki::deployment::server(
     # tig is a ncurses-based git utility which is useful for
     #   determining the state of git repos during deployments.
     # php-readline T126262
-    require_package('percona-toolkit', 'tig', 'php-readline')
+    ensure_packages(['percona-toolkit', 'tig', 'php-readline'])
 
     # benchmarking tools for sessionstorage testing (T230178)
-    require_package('siege', 'wrk', 'lua-cjson')
+    ensure_packages(['siege', 'wrk', 'lua-cjson'])
 
     # World famous Emacs editor
-    require_package('emacs-nox')
+    ensure_packages(['emacs-nox'])
 }
