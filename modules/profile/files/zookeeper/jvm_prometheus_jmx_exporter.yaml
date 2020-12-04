@@ -4,6 +4,8 @@ lowercaseOutputName: false
 whitelistObjectNames:
   - 'org.apache.ZooKeeperService:name0=*,name1=*,name2=*'
   - 'org.apache.ZooKeeperService:name0=*,name1=*,name2=*,name3=InMemoryDataTree'
+  - 'org.apache.ZooKeeperService:name0=*'
+  - 'org.apache.ZooKeeperService:name0=*,name1=InMemoryDataTree'
 rules:
   - pattern: org.apache.ZooKeeperService<name0=.*><>(\w+)
     name: org_apache_ZooKeeperService_$1
