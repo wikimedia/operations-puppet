@@ -9,8 +9,8 @@
 
 <%- @intermediates.each_pair do |intermediate, config| -%>
   # <%= intermediate %>
-  ProxyPass /ocsp/<%= intermediate.gsub(/\W/, '_') %>  http://localhost:<%= config['ocsp_port'] %>/
-  ProxyPassReverse /ocsp/<%= intermediate.gsub(/\W/, '_') %>  http://localhost:<%= config['ocsp_port'] %>/
+  ProxyPass /ocsp/<%= intermediate.gsub(/\W/, '_') %>/  http://localhost:<%= config['ocsp_port'] %>/
+  ProxyPassReverse /ocsp/<%= intermediate.gsub(/\W/, '_') %>/  http://localhost:<%= config['ocsp_port'] %>/
 <%- end -%>
 
   LogLevel warn
