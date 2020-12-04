@@ -15,12 +15,15 @@ class cfssl (
             owner   => 'root',
             group   => 'root',
             require => Package[$packages];
-        [$conf_dir, $sql_dir, $signer_dir, $csr_dir, $ssl_dir, $ocsp_dir]:
+        [$conf_dir, $sql_dir, $signer_dir, $csr_dir, $ssl_dir]:
             ensure  => directory,
             purge   => true,
             recurse => true,
             force   => true,
             mode    => '0550';
+        $ocsp_dir:
+            ensure => directory,
+            mode   => '0550';
         "${sql_dir}/sqlite_initdb.sql":
             ensure => file,
             mode   => '0440',
