@@ -32,6 +32,7 @@ class profile::kubernetes::master(
             group        => 'kube',
             skip_private => false,
             use_cergen   => $use_cergen,
+            chain        => false,
             before       => Class['::k8s::apiserver'],
         }
     }
