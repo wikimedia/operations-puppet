@@ -1114,13 +1114,6 @@ class profile::prometheus::ops (
         site              => $::site,
     }
 
-    prometheus::jmx_exporter_config { "wdqs_streaming_updater_${::site}":
-        dest              => "${targets_path}/jmx_wdqs_updater_${::site}.yaml",
-        class_name        => 'profile::query_service::streaming_updater',
-        instance_selector => 'wdqs-updater',
-        site              => $::site,
-    }
-
     prometheus::jmx_exporter_config{ "zookeeper_${::site}_old":
         dest       => "${targets_path}/jmx_zookeeper_${::site}_old.yaml",
         class_name => 'role::configcluster',
