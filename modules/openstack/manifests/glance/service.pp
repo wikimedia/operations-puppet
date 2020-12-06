@@ -54,7 +54,7 @@ class openstack::glance::service(
         require => Package['glance'],
     }
 
-    rsyslog::conf { 'swift':
+    rsyslog::conf { 'glance':
         source   => 'puppet:///modules/openstack/glance/glance.rsyslog.conf',
         priority => 40,
     }
