@@ -40,17 +40,17 @@
 #    Default: {}
 #
 class profile::presto::server(
-    String $cluster_name        = hiera('profile::presto::cluster_name'),
-    String $discovery_uri       = hiera('profile::presto::discovery_uri'),
-    Hash   $node_properties     = hiera('profile::presto::server::node_properties',   {}),
-    Hash   $config_properties   = hiera('profile::presto::server::config_properties', {}),
-    Hash   $catalogs            = hiera('profile::presto::server::catalogs',          {}),
-    Hash   $log_properties      = hiera('profile::presto::server::log_properties',    {}),
-    String $heap_max            = hiera('profile::presto::server::heap_max',          '2G'),
-    String $ferm_srange         = hiera('profile::presto::server::ferm_srange',       '$DOMAIN_NETWORKS'),
-    Boolean $use_kerberos       = hiera('profile::presto::use_kerberos', false),
+    String $cluster_name        = lookup('profile::presto::cluster_name'),
+    String $discovery_uri       = lookup('profile::presto::discovery_uri'),
+    Hash   $node_properties     = lookup('profile::presto::server::node_properties', { 'default_value' => {} }),
+    Hash   $config_properties   = lookup('profile::presto::server::config_properties', { 'default_value' => {} }),
+    Hash   $catalogs            = lookup('profile::presto::server::catalogs', { 'default_value' => {} }),
+    Hash   $log_properties      = lookup('profile::presto::server::log_properties', { 'default_value' => {} }),
+    String $heap_max            = lookup('profile::presto::server::heap_max', { 'default_value' => '2G' }),
+    String $ferm_srange         = lookup('profile::presto::server::ferm_srange', { 'default_value' => '$DOMAIN_NETWORKS' }),
+    Boolean $use_kerberos       = lookup('profile::presto::use_kerberos', { 'default_value' => false }),
     Boolean $monitoring_enabled = lookup('profile::presto::monitoring_enabled', { 'default_value' => false }),
-    Optional[Hash[String, Hash[String, String]]] $presto_clusters_secrets = hiera('presto_clusters_secrets', {}),
+    Optional[Hash[String, Hash[String, String]]] $presto_clusters_secrets = lookup('presto_clusters_secrets', { 'default_value' => {} }),
 ) {
 
     $default_node_properties = {

@@ -15,10 +15,10 @@
 #    Default: {}
 #
 class profile::presto::client(
-    String $cluster_name = hiera('profile::presto::cluster_name'),
-    String $discovery_uri = hiera('profile::presto::discovery_uri'),
-    Boolean $use_kerberos = hiera('profile::presto::use_kerberos', false),
-    Optional[Hash[String, Hash[String, String]]] $presto_clusters_secrets = hiera('presto_clusters_secrets', {}),
+    String $cluster_name = lookup('profile::presto::cluster_name'),
+    String $discovery_uri = lookup('profile::presto::discovery_uri'),
+    Boolean $use_kerberos = lookup('profile::presto::use_kerberos', { 'default_value' => false }),
+    Optional[Hash[String, Hash[String, String]]] $presto_clusters_secrets = lookup('presto_clusters_secrets', { 'default_value' => {} }),
 ) {
 
     if $presto_clusters_secrets[$cluster_name] {
