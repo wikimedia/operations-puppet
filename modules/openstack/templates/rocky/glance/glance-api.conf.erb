@@ -270,10 +270,10 @@ s3_store_create_bucket_on_put = False
 rbd_store_ceph_conf = /etc/ceph/ceph.conf
 
 # RADOS user to authenticate as (only applicable if using cephx)
-rbd_store_user = eqiad1-glance-images
+rbd_store_user = <%= @ceph_pool %>
 
 # RADOS pool in which images are stored
-rbd_store_pool = eqiad1-glance-images
+rbd_store_pool = <%= @ceph_pool %>
 
 # Images will be chunked into objects of this size (in megabytes).
 # For best performance, this should be a power of two
@@ -339,8 +339,8 @@ default_backend = file
 [rbd]
 store_description = "default rbd backend"
 rbd_store_chunk_size = 8
-rbd_store_pool = eqiad1-glance-images
-rbd_store_user = eqiad1-glance-images
+rbd_store_pool = <%= @ceph_pool %>
+rbd_store_user = <%= @ceph_pool %>
 rbd_store_ceph_conf = /etc/ceph/ceph.conf
 rados_connect_timeout = 0
 

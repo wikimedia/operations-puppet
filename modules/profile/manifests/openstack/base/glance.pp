@@ -15,6 +15,7 @@ class profile::openstack::base::glance(
     Stdlib::Port $registry_bind_port = lookup('profile::openstack::base::glance::registry_bind_port'),
     Stdlib::Fqdn $primary_glance_image_store = lookup('profile::openstack::base::primary_glance_image_store'),
     Array[String] $glance_backends = lookup('profile::openstack::base::glance_backends'),
+    String $ceph_pool = lookup('profile::openstack::base::glance::ceph_pool'),
     Boolean $active = lookup('profile::openstack::base::glance_active'),
     ) {
 
@@ -36,6 +37,7 @@ class profile::openstack::base::glance(
         api_bind_port       => $api_bind_port,
         registry_bind_port  => $registry_bind_port,
         glance_backends     => $glance_backends,
+        ceph_pool           => $ceph_pool,
     }
     contain '::openstack::glance::service'
 

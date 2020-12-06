@@ -10,6 +10,7 @@ class openstack::glance::service::rocky(
     Stdlib::Port $api_bind_port,
     Stdlib::Port $registry_bind_port,
     Array[String] $glance_backends,
+    String $ceph_pool,
 ) {
     require "openstack::serverpackages::rocky::${::lsbdistcodename}"
 

@@ -10,6 +10,7 @@ class profile::openstack::eqiad1::glance (
     Stdlib::Port $registry_bind_port = lookup('profile::openstack::eqiad1::glance::registry_bind_port'),
     Stdlib::Fqdn $primary_glance_image_store = lookup('profile::openstack::eqiad1::primary_glance_image_store'),
     Array[String] $glance_backends = lookup('profile::openstack::eqiad1::glance_backends'),
+    String $ceph_pool = lookup('profile::openstack::eqiad1::glance::ceph_pool'),
     ) {
 
     require ::profile::openstack::eqiad1::clientpackages
@@ -24,6 +25,7 @@ class profile::openstack::eqiad1::glance (
         registry_bind_port         => $registry_bind_port,
         primary_glance_image_store => $primary_glance_image_store,
         glance_backends            => $glance_backends,
+        ceph_pool                  => $ceph_pool,
         active                     => true,
     }
     contain '::profile::openstack::base::glance'
