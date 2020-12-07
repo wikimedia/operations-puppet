@@ -20,11 +20,9 @@ profile::kafka::mirror::monitoring_enabled: false
 
 profile::kafka::mirror::properties:
   whitelist: '^(eqiad|codfw)\.mediawiki\.revision-create$'
-  num_streams: 3
+  num_streams: 1
   offset_commit_interval_ms: 5000
   heap_opts: '-Xmx2G -Xms2G'
-  producer_properties:
-    "batch.size": 65536
 
 
 profile::kafka::mirror::consumer_ssl_enabled: true
