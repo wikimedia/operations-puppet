@@ -292,7 +292,7 @@ groups:
               itamar, phedenskog, aaron, dpifke, aklapper, jmads, andrew-wmde, daniram,
               dcipoletti, chrisalbon, wikigit, nahidunlimited, swagoel,
               agaduran, edtadros, dvrandecic, razzi, cparle, klausman, lexnasser, sbisson, fab,
-              dumisani, janstee, gmodena, cdanis, wmde-leszek, jakob]
+              dumisani, janstee, gmodena, cdanis, wmde-leszek, jakob, migr]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product]
     approval: Andrew Otto
@@ -613,7 +613,7 @@ groups:
     description: Group of WMDE analytics users
     gid: 784
     members: [addshore, goransm, ladsgroup, lucaswerkmeister-wmde, conniecc1, tarrow, itamar,
-              awight, wmde-fisch, wmde-leszek, jakob]
+              awight, wmde-fisch, wmde-leszek, jakob, migr]
     privileges: ['ALL = (analytics-wmde) NOPASSWD: ALL']
   eventbus-admins:
     gid: 785
@@ -3923,6 +3923,16 @@ users:
     krb: present
     ssh_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDjd61raR4jmiUPk6rt2PY/38YOj/n8VIY9hTbevGLL36IRpT9pRjSbywhWb1KLI/WqZX+FcntRe485zgysZja9jAL9VnvU50LLQMB8gnbIVvHjxIO3xhdmenBer17fH5tyIevs2UI4TeWzm7eZGkbJDxfR3rl6S09CQhfDVA4hj6Byi0ocNu3dtbRca9OuH0HMmso2bkiElUQc+KwX2VajGELb/z+mAAG2huvkJ8Z7rNWD/lpay2f/4MEtMLnU/9n2pRQQwbnj/T8HMj0DQT7/rOEvEKWgw72OuHscJ5qbFCpRL7O8UzZ4BX2QT8wYbyRvCBjTnMpqLDa7hJqKGR8WLIMr+BVYr7LDWTPUNGuPQUkB2NYU50mSLA9Azm37fbELW8fge8GsZNHnH0ZGP60TPtpI/Lz/7cwXTsr/Ttt07ztMyKI58nRyrsJdUjaB/NilLrX5HDJrcdyrnRzkvH394YhJXVKQJB53QSq7X5WHa60hju/bQUHuDqBcEUWTeIbSZXYVqtL+ioHQXyMEIUDa75O2I07DVQ7/MVNorudcO+sV+bStl01+1xSKFQX349QTOpZ6srNLwk9A1BB/7BZ9DTy2Ewno+O3jkqgE8n3nC3/F7Iq5TyUWB/6RDMTMzVYz3orojrB3+eGFMZ0fyrZMPeNuzSKkRCGM5ZSLv/wSuQ== gmodena@wikimedia.org
+  migr:
+    ensure: present
+    name: migr
+    realname: Michael Grosse
+    email: michael.grosse@wikimedia.de
+    uid: 20428
+    gid: 500
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDHeb+5e8uIqGZK2Lajx/i5g7HPfLBOMkWcte6hguv2iAtvd7yYgj8WiaEiCyFewJGD5DW0rv2m0BCXbEFoAx1Kd6i1F71gVMldv6plxCL/iQqs2HOD7rzQNvAAcx1gySULbIlvO5dyGGURe2xmH3ESKS5Mst1oD99OfBUP39hepdNbacW0ToFKmWMnrwWVRnDjbPPRMJm0pC+oHO46+E5E+lIHZn8+9F/YCWAHS96EaLRtsvfCz1McTO016GI5b5qWjcMGPyeS9fWNp+5Lhvbyv2+XR5434AfchHwmVkrk95AJpJAn8WtAoGNd+3BoiqqC5AyPuXlKGobSHOlgGvm1bFNxwVz6obPI2iFhxKngW5t3O/0CwD7F2tdENQX7p6xm2NZJGRRHT3x00pPcQyFdejiFaWkvFY6iC3zbqzC5seRUDCtIBSV3cLmb/PnnQ3p5rcef73tQxiQZlF55jhBzuqbpdderFETsfrdSA9PUHcddbJktEbavzMpyBOFDWcPgfyr+3kzRoercglad2Qke9JkZZreijsbgHwbTiosMtugJGp6+kW4OqIZycJf0cc+O2mAfKM8GFtpFhys9JhJyc2NEqDKoRQ2ucHUYq27r0dqBFtVVGnmvPuaRl17oDFGBqOV9YxVJ0bP6Zr50kSJ65mpAdUxUKF/yG7e4l49knQ== migr@C220
+    krb: present
 
 ldap_only_users:
   abartov:
@@ -4101,10 +4111,6 @@ ldap_only_users:
     ensure: present
     realname: Megan Hernandez
     email: mhernandez@wikimedia.org
-  migr:
-    ensure: present
-    realname: Michael Grosse
-    email: michael.grosse@wikimedia.de
   mraish:
     ensure: present
     realname: Michael Raish
