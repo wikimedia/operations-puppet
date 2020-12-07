@@ -3893,6 +3893,7 @@ users:
     gid: 500
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOe8yGmiYe4TX6NLuqjO16X6vXJZnyoh6pdFS//eywhI swati@Swatis-Air.volcano.net
+    krb: present
   dumisani:
     ensure: present
     name: dumisani
