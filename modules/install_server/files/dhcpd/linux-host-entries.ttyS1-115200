@@ -4302,7 +4302,6 @@ host mc1034 {
 host mc1035 {
     hardware ethernet 1c:98:ec:29:8c:2c;
     fixed-address mc1035.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
 }
 
 host mc1036 {
@@ -4418,7 +4417,6 @@ host mc2034 {
 host mc2035 {
     hardware ethernet 94:18:82:79:a3:8c;
     fixed-address mc2035.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
 }
 
 host mc2036 {
