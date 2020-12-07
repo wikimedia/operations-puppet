@@ -1,2 +1,0 @@
-profile::kubernetes::node::packages_from_future: true
-profile::calico::kubernetes::calico_version: 3

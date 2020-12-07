@@ -1,0 +1,17 @@
+profile::kubernetes::node::packages_from_future: true
+profile::calico::kubernetes::calico_version: 3
+profile::calico::kubernetes::etcd_endpoints:
+- https://kubestagetcd2001.codfw.wmnet:2379
+- https://kubestagetcd2002.codfw.wmnet:2379
+- https://kubestagetcd2003.codfw.wmnet:2379
+profile::calico::kubernetes::bgp_peers:
+- kubestage2001.codfw.wmnet
+- kubestage2002.codfw.wmnet
+- cr1-codfw.wikimedia.org
+- cr2-codfw.wikimedia.org
+profile::kubernetes::master_fqdn: kubestagemaster.svc.codfw.wmnet
+profile::kubernetes::master_hosts:
+- kubestagemaster.svc.codfw.wmnet
+profile::kubernetes::node::prometheus_url: http://prometheus.svc.codfw.wmnet/k8s-staging
+profile::kubernetes::node::kubelet_cluster_dns: "10.192.76.3"
+profile::rsyslog::kubernetes::kubernetes_url: https://kubestagemaster.svc.codfw.wmnet:6443
