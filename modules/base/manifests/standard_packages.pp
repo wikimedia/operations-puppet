@@ -1,7 +1,7 @@
 class base::standard_packages {
 
     ensure_packages ([
-        'acct', 'apt-transport-https', 'byobu', 'colordiff', 'curl', 'debian-goodies', 'dnsutils', 'dstat',
+        'acct', 'byobu', 'colordiff', 'curl', 'debian-goodies', 'dnsutils', 'dstat',
         'ethtool', 'gdb', 'gdisk', 'git-fat', 'git', 'htop', 'httpry', 'iotop', 'iperf', 'jq',
         'libtemplate-perl', 'lldpd', 'lshw', 'molly-guard', 'moreutils', 'net-tools', 'numactl', 'ncdu',
         'ngrep', 'pigz', 'psmisc', 'pv', 'python3', 'quickstack', 'screen', 'strace', 'sysstat', 'tcpdump',
@@ -29,9 +29,11 @@ class base::standard_packages {
     }
 
     # pxz was removed in buster. In xz >= 5.2 (so stretch and later), xz has
-    # builtin threading support using the -T option, so pxz was removed
+    #      builtin threading support using the -T option, so pxz was removed
+    # apt-transport-https is a transition package in Buster, apt has HTTPS support by default
     if debian::codename::lt('buster') {
         ensure_packages('pxz')
+        ensure_packages('apt-transport-https')
     }
 
     # uninstall these packages
@@ -106,7 +108,7 @@ class base::standard_packages {
                 'libboost-filesystem1.62.0', 'libboost-iostreams1.62.0', 'libboost-locale1.62.0',
                 'libboost-log1.62.0', 'libboost-program-options1.62.0', 'libboost-regex1.62.0',
                 'libboost-system1.62.0', 'libboost-thread1.62.0', 'libmpfr4', 'libprocps6', 'libunistring0',
-                'libbabeltrace-ctf1', 'libleatherman-data'
+                'libbabeltrace-ctf1', 'libleatherman-data', 'apt-transport-https'
             ]
             # mcelog is broken with the Linux kernel used in buster
             $purged_packages = ['mcelog']
