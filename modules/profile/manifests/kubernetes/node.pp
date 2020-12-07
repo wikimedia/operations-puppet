@@ -4,21 +4,19 @@ class profile::kubernetes::node(
     $infra_pod = hiera('profile::kubernetes::infra_pod'),
     $use_cni = hiera('profile::kubernetes::use_cni'),
     $masquerade_all = hiera('profile::kubernetes::node::masquerade_all', true),
-    # $username is deprecated, was a flawed approach
-    $username = hiera('profile::kubernetes::node::username', 'client-infrastructure'),
     $prometheus_nodes = hiera('prometheus_nodes', []),
-    $kubelet_config = hiera('profile::kubernetes::node::kubelet_config', '/etc/kubernetes/kubelet_config'),
-    $kubeproxy_config = hiera('profile::kubernetes::node::kubeproxy_config', '/etc/kubernetes/kubeproxy_config'),
+    Stdlib::Unixpath $kubelet_config = lookup('profile::kubernetes::node::kubelet_config', {default_value => '/etc/kubernetes/kubelet_config'}),
+    Stdlib::Unixpath $kubeproxy_config = lookup('profile::kubernetes::node::kubeproxy_config', {default_value => '/etc/kubernetes/kubeproxy_config'}),
     $prometheus_url   = hiera('profile::kubernetes::node::prometheus_url', "http://prometheus.svc.${::site}.wmnet/k8s"),
     $kubelet_cluster_domain = hiera('profile::kubernetes::node::kubelet_cluster_domain', 'kube'),
     $kubelet_cluster_dns = hiera('profile::kubernetes::node::kubelet_cluster_dns', undef),
-    $kubelet_username = hiera('profile::kubernetes::node::kubelet_username', undef),
-    $kubelet_token = hiera('profile::kubernetes::node::kubelet_token', undef),
+    String $kubelet_username = lookup('profile::kubernetes::node::kubelet_username', {default_value => 'kubelet'}),
+    String $kubelet_token = lookup('profile::kubernetes::node::kubelet_token'),
     $kubelet_extra_params = hiera('profile::kubernetes::node::kubelet_extra_params', undef),
     $kubelet_node_labels = hiera('profile::kubernetes::node::kubelet_node_labels', []),
     $kubelet_node_taints = hiera('profile::kubernetes::node::kubelet_node_taints', []),
-    $kubeproxy_username = hiera('profile::kubernetes::node::kubeproxy_username', undef),
-    $kubeproxy_token = hiera('profile::kubernetes::node::kubeproxy_token', undef),
+    String $kubeproxy_username = lookup('profile::kubernetes::node::kubeproxy_username', {default_value => 'system:kube-proxy'}),
+    String $kubeproxy_token = lookup('profile::kubernetes::node::kubeproxy_token'),
     Boolean $packages_from_future = lookup('profile::kubernetes::node::packages_from_future', {default_value => false}),
     Optional[String] $kubeproxy_metrics_bind_address = lookup('profile::kubernetes::node::kubeproxy_metrics_bind_address', {default_value => undef}),
 ) {
@@ -46,16 +44,11 @@ class profile::kubernetes::node(
         mode   => '0755',
     }
 
-    # Funnily enough, this is not $kubelet_config cause we still need to support
-    # labs which doesn't use/support this. TODO Fix this
-    if ($kubelet_username and $kubelet_token) {
-        k8s::kubeconfig { '/etc/kubernetes/kubelet_config':
-            master_host => $master_fqdn,
-            username    => $kubelet_username,
-            token       => $kubelet_token,
-        }
+    k8s::kubeconfig { $kubelet_config:
+        master_host => $master_fqdn,
+        username    => $kubelet_username,
+        token       => $kubelet_token,
     }
-
     class { '::k8s::kubelet':
         listen_address            => '0.0.0.0',
         cni                       => $use_cni,
@@ -71,16 +64,11 @@ class profile::kubernetes::node(
         packages_from_future      => $packages_from_future,
     }
 
-    # Funnily enough, this is not $kubeproxy_config cause we still need to support
-    # labs which doesn't use/support this. TODO Fix this
-    if ($kubeproxy_username and $kubeproxy_token) {
-        k8s::kubeconfig { '/etc/kubernetes/kubeproxy_config':
-            master_host => $master_fqdn,
-            username    => $kubeproxy_username,
-            token       => $kubeproxy_token,
-        }
+    k8s::kubeconfig { $kubeproxy_config:
+        master_host => $master_fqdn,
+        username    => $kubeproxy_username,
+        token       => $kubeproxy_token,
     }
-
     class { '::k8s::proxy':
         masquerade_all       => $masquerade_all,
         metrics_bind_address => $kubeproxy_metrics_bind_address,

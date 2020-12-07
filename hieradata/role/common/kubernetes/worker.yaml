@@ -24,16 +24,10 @@ profile::calico::kubernetes::docker::registry: docker-registry.discovery.wmnet
 #profile::calico::kubernetes::calico_cni::token
 #profile::calico::kubernetes::calicoctl::token
 profile::kubernetes::node::masquerade_all: false
-# This is deprecated, will be removed soon
-profile::kubernetes::node::username: 'kubelet'
-profile::kubernetes::node::kubelet_username: kubelet
 # Defined in the private repo
 #profile::kubernetes::node::kubelet_token:
-profile::kubernetes::node::kubeproxy_username: system:kube-proxy
 # Defined in the private repo
 #profile::kubernetes::node::kubeproxy_token:
-profile::kubernetes::node::kubelet_config: /etc/kubernetes/kubelet_config
-profile::kubernetes::node::kubeproxy_config: /etc/kubernetes/kubeproxy_config
 profile::kubernetes::node::kubeproxy_metrics_bind_address: 0.0.0.0
 profile::rsyslog::kubernetes::enable: true
 # We don't need conftool safe restart scripts on k8s.

@@ -30,19 +30,13 @@ profile::calico::kubernetes::docker::registry: docker-registry.discovery.wmnet
 #profile::calico::kubernetes::calico_cni::token
 #profile::calico::kubernetes::calicoctl::token
 profile::kubernetes::node::masquerade_all: false
-# This is deprecated, will be removed soon
-profile::kubernetes::node::username: 'kubelet'
 profile::kubernetes::node::prometheus_url: http://prometheus.svc.eqiad.wmnet/k8s-staging
-profile::kubernetes::node::kubelet_username: kubelet
 profile::kubernetes::node::kubelet_cluster_dns: "10.64.76.3"
 profile::kubernetes::node::kubelet_cluster_domain: 'cluster.local'
 # Defined in the private repo
 #profile::kubernetes::node::kubelet_token:
-profile::kubernetes::node::kubeproxy_username: system:kube-proxy
 # Defined in the private repo
 #profile::kubernetes::node::kubeproxy_token:
-profile::kubernetes::node::kubelet_config: /etc/kubernetes/kubelet_config
-profile::kubernetes::node::kubeproxy_config: /etc/kubernetes/kubeproxy_config
 profile::kubernetes::node::kubeproxy_metrics_bind_address: 0.0.0.0
 profile::rsyslog::kubernetes::kubernetes_url: https://neon.eqiad.wmnet:6443
 profile::rsyslog::kubernetes::enable: true
