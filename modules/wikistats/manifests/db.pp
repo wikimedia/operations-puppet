@@ -3,7 +3,7 @@ class wikistats::db (
     String $db_pass,
     Stdlib::Unixpath $backupdir = '/usr/lib/wikistats/backup',
     Stdlib::Unixpath $mysqldump = '/usr/bin/mysqldump',
-    String $dumpfile = 'wikistats_db_$(date +%Y%m%d).sql',
+    String $dumpfile = 'wikistats_db_$$(date +%%Y%m%%d).sql',
 ){
 
     ensure_packages('php7.3-mysql')
