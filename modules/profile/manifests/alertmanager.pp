@@ -5,12 +5,16 @@ class profile::alertmanager (
     String              $irc_channel = lookup('profile::alertmanager::irc::channel'),
     Optional[String]    $victorops_api_key = lookup('profile::alertmanager::victorops_api_key'),
     Array $prometheus_all_nodes = lookup('prometheus_all_nodes'),
+    # lint:ignore:wmf_styleguide - T260574
+    String $vhost  = lookup('profile::alertmanager::web::vhost', {'default_value' => "alerts.${facts['domain']}"}),
+    # lint:endignore
 ) {
     class { '::alertmanager':
         irc_channel       => $irc_channel,
         active_host       => $active_host,
         partners          => $partners,
         victorops_api_key => $victorops_api_key,
+        vhost             => $vhost,
     }
 
     # All Prometheus servers need access to Alertmanager to send alerts

@@ -3,6 +3,7 @@ class alertmanager (
     Array[Stdlib::Host] $partners,
     String $irc_channel,
     Optional[String] $victorops_api_key = undef,
+    Optional[String] $vhost = undef,
 ) {
     require_package('prometheus-alertmanager')
 
@@ -46,6 +47,17 @@ class alertmanager (
         content      => template('alertmanager/alertmanager.yml.erb'),
         notify       => Exec['alertmanager-reload'],
         validate_cmd => '/usr/bin/amtool check-config %',
+    }
+
+    # Custom email template -- adapted from upstream to adjust for "alert dashboard" links.
+    file { '/etc/prometheus/alertmanager_templates/email.tmpl':
+        ensure    => present,
+        owner     => 'prometheus',
+        group     => 'root',
+        mode      => '0440',
+        show_diff => false,
+        content   => template('alertmanager/email.tmpl.erb'),
+        notify    => Exec['alertmanager-reload'],
     }
 
     exec { 'alertmanager-reload':
