@@ -55,5 +55,6 @@ profile::lvs::realserver::pools:
   api-gateway: {}
   push-notifications: {}
   recommendation-api: {}
+  apertium: {}
 prometheus::node_exporter::collectors_extra:
   - processes
