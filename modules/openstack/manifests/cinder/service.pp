@@ -29,12 +29,18 @@ class openstack::cinder::service(
     }
 
     rsyslog::conf { 'cinder':
-        source   => 'puppet:///modules/openstack/glance/glance.rsyslog.conf',
+        source   => 'puppet:///modules/openstack/cinder/cinder.rsyslog.conf',
         priority => 40,
     }
 
     # The cinder packages create this user, but with a weird, non-system ID.
     #  Instead, create the user ahead of time with a proper uid.
+    group { 'cinder':
+        ensure => 'present',
+        name   => 'cinder',
+        system => true,
+    }
+
     user { 'cinder':
         ensure     => 'present',
         name       => 'cinder',
