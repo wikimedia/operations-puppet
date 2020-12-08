@@ -3,7 +3,7 @@
 # This profile configures Ceph monitor hosts with the mon and mgr daemons
 class profile::ceph::mon(
     Array[Stdlib::Fqdn]  $prometheus_nodes = lookup('prometheus_nodes'),
-    Array[Stdlib::Fqdn]  $openstack_controllers = lookup('profile::openstack::eqiad1::openstack_controllers'),
+    Array[Stdlib::Fqdn]  $openstack_controllers = lookup('profile::ceph::openstack_controllers'),
     Hash[String,Hash]    $mon_hosts        = lookup('profile::ceph::mon::hosts'),
     Hash[String,Hash]    $osd_hosts        = lookup('profile::ceph::osd::hosts'),
     Stdlib::AbsolutePath $admin_keyring    = lookup('profile::ceph::admin_keyring'),
