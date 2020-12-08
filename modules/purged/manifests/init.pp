@@ -45,4 +45,8 @@ class purged (
         subscribe => Package['purged'],
         restart   => true,
     }
+
+    base::service_auto_restart { 'purged':
+        ensure => $ensure,
+    }
 }
