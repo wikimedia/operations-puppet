@@ -7,6 +7,5 @@ class role::idp_test {
     include ::profile::standard
     include ::profile::base::firewall
     include ::profile::idp
-    include ::profile::backup::host
     include ::profile::java
 }

@@ -38,8 +38,6 @@ class profile::idp(
 
     class {'tomcat':}
 
-    backup::set { 'idp': }
-
     $jmx_port = 9200
     $jmx_config = '/etc/prometheus/cas_jmx_exporter.yaml'
     $jmx_jar = '/usr/share/java/prometheus/jmx_prometheus_javaagent.jar'
