@@ -10,6 +10,7 @@ profile::superset::workers: 8
 profile::superset::ldap_proxy_enabled: true
 profile::superset::proxy::x_forwarded_proto: 'http'
 profile::superset::enable_cas: false
+profile::superset::cache_uri: 'localhost'
 
 profile::druid::turnilo::port: 9091
 profile::druid::turnilo::druid_clusters:
@@ -26,3 +27,9 @@ profile::kerberos::keytabs::keytabs_metadata:
     owner: 'superset'
     group: 'superset'
     filename: 'superset.keytab'
+
+profile::memcached::version: 'present'
+profile::memcached::port: 11211
+profile::memcached::size: 256
+profile::memcached::extended_options:
+  - 'modern'

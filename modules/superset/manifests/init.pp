@@ -79,11 +79,17 @@ class superset(
     $deployment_user   = 'analytics_deploy',
     $gunicorn_app      = 'superset:app',
     $enable_cas        = false,
+    $cache_uri         = undef,
 ) {
     require_package(
         'virtualenv',
         'firejail',
     )
+
+    if $cache_uri {
+        require_package('python3-pylibmc')
+    }
+
     if $worker_class == 'gevent' {
         require_package('python-gevent')
     }

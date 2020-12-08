@@ -35,6 +35,10 @@
 # [*statsd*]
 #   statsd host:port
 #
+# [*cache_uri*]
+#   If set, used to configure the superset cache.
+#   Multiple backends are available but only memcached is supported here.
+
 class profile::superset(
     Integer $workers                    = lookup('profile::superset::workers', { 'default_value' => 1 }),
     String $database_uri                = lookup('profile::superset::database_uri', { 'default_value' => 'sqlite:////var/lib/superset/superset.db' }),
@@ -46,6 +50,7 @@ class profile::superset(
     Optional[String] $statsd            = lookup('statsd', { 'default_value' => undef }),
     String $gunicorn_app                = lookup('profile::superset::gunicorn_app', { 'default_value' => 'superset.app:create_app()' }),
     Boolean $enable_cas                 = lookup('profile::superset::enable_cas'),
+    Optional[String] $cache_uri         = lookup('profile::superset::cache_uri', { 'default_value' => undef })
 ) {
 
     require_package('libmariadb3')
@@ -110,6 +115,7 @@ class profile::superset(
         statsd           => $statsd,
         gunicorn_app     => $gunicorn_app,
         enable_cas       => $enable_cas,
+        cache_uri        => $cache_uri,
     }
 
     monitoring::service { 'superset':

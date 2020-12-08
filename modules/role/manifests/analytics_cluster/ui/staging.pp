@@ -12,4 +12,5 @@ class role::analytics_cluster::ui::staging {
     include ::profile::standard
     include ::profile::kerberos::client
     include ::profile::kerberos::keytabs
+    include ::profile::memcached::instance
 }
