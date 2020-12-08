@@ -205,7 +205,7 @@ class PrometheusBlazeGraphExporter(object):
                 metric_family.add_metric([], value)
 
         triple_metric = GaugeMetricFamily('blazegraph_triples', 'Count of triples in Blazegraph')
-        lag_metric = CounterMetricFamily('blazegraph_lastupdated', 'Last update timestamp')
+        lag_metric = GaugeMetricFamily('blazegraph_lastupdated', 'Last update timestamp')
 
         try:
             sparql_query = """ prefix schema: <http://schema.org/>
