@@ -260,6 +260,12 @@ host kafka-test1006 {
     fixed-address kafka-test1006.eqiad.wmnet;
 }
 
+host kafka-test1007 {
+    hardware ethernet aa:00:00:0d:7b:f4;
+    fixed-address kafka-test1007.eqiad.wmnet;
+}
+
+
 host kafkamon1001 {
     hardware ethernet aa:00:00:ed:c5:11;
     fixed-address kafkamon1001.eqiad.wmnet;

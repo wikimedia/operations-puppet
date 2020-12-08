@@ -280,7 +280,7 @@ node 'zookeeper-test1002.eqiad.wmnet' {
 }
 
 # Test kafka cluster
-node 'kafka-test1006.eqiad.wmnet' {
+node /^kafka-test100[67]\.eqiad\.wmnet/ {
     role(kafka::test::broker)
 }
 
