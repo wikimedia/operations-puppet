@@ -1,0 +1,2 @@
+profile::openstack::base::cinder::db_name: 'cinder'
+profile::openstack::base::cinder::db_user: 'cinder'
