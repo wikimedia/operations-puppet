@@ -15,3 +15,5 @@ profile::openstack::codfw1dev::fernet_key_sync_time: '09:00:00'
 
 profile::openstack::codfw1dev::galera::server_id: 2
 profile::backup::enable: true
+
+profile::wmcs::backy2::backup_time: '*-*-* 9:00:00'
