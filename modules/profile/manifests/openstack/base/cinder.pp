@@ -11,6 +11,8 @@ class profile::openstack::base::cinder(
     Stdlib::Fqdn $db_host = lookup('profile::openstack::base::cinder::db_host'),
     Stdlib::Port $api_bind_port = lookup('profile::openstack::base::cinder::api_bind_port'),
     String $ceph_pool = lookup('profile::openstack::base::cinder::ceph_pool'),
+    String $rabbit_user = lookup('profile::openstack::base::nova::rabbit_user'),
+    String $rabbit_pass = lookup('profile::openstack::base::nova::rabbit_pass'),
     Boolean $active = lookup('profile::openstack::base::cinder_active'),
     ) {
 
@@ -30,6 +32,8 @@ class profile::openstack::base::cinder(
         ceph_pool             => $ceph_pool,
         api_bind_port         => $api_bind_port,
         ldap_user_pass        => $ldap_user_pass,
+        rabbit_user           => $rabbit_user,
+        rabbit_pass           => $rabbit_pass,
     }
 
     include ::network::constants

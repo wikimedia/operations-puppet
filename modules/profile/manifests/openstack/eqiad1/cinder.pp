@@ -6,6 +6,7 @@ class profile::openstack::eqiad1::cinder(
     Stdlib::Fqdn $db_host = lookup('profile::openstack::eqiad1::cinder::db_host'),
     Stdlib::Port $api_bind_port = lookup('profile::openstack::eqiad1::cinder::api_bind_port'),
     String $ceph_pool = lookup('profile::openstack::eqiad1::cinder::ceph_pool'),
+    String $rabbit_pass = lookup('profile::openstack::eqiad1::nova::rabbit_pass'),
     String $ldap_user_pass = lookup('profile::openstack::eqiad1::cinder::ldap_user_pass'),
     ) {
 
@@ -18,6 +19,7 @@ class profile::openstack::eqiad1::cinder(
         api_bind_port         => $api_bind_port,
         ceph_pool             => $ceph_pool,
         ldap_user_pass        => $ldap_user_pass,
+        rabbit_pass           => $rabbit_pass,
         active                => true,
     }
 }

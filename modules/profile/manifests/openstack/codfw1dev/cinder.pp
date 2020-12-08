@@ -6,6 +6,7 @@ class profile::openstack::codfw1dev::cinder(
     Stdlib::Fqdn $db_host = lookup('profile::openstack::codfw1dev::cinder::db_host'),
     Stdlib::Port $api_bind_port = lookup('profile::openstack::codfw1dev::cinder::api_bind_port'),
     String $ceph_pool = lookup('profile::openstack::codfw1dev::cinder::ceph_pool'),
+    String $rabbit_pass = lookup('profile::openstack::codfw1dev::nova::rabbit_pass'),
     String $ldap_user_pass = lookup('profile::openstack::codfw1dev::cinder::ldap_user_pass'),
     ) {
 
@@ -18,6 +19,7 @@ class profile::openstack::codfw1dev::cinder(
         api_bind_port         => $api_bind_port,
         ceph_pool             => $ceph_pool,
         ldap_user_pass        => $ldap_user_pass,
+        rabbit_pass           => $rabbit_pass,
         active                => true,
     }
 }

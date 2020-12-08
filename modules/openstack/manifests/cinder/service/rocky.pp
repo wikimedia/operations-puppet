@@ -8,6 +8,8 @@ class openstack::cinder::service::rocky(
     $keystone_admin_uri,
     $keystone_public_uri,
     String $ceph_pool,
+    String $rabbit_user,
+    String $rabbit_pass,
     Stdlib::Port $api_bind_port,
 ) {
     require "openstack::serverpackages::rocky::${::lsbdistcodename}"

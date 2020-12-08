@@ -10,6 +10,8 @@ class openstack::cinder::service(
     $keystone_admin_uri,
     $keystone_public_uri,
     String $ceph_pool,
+    String $rabbit_user,
+    String $rabbit_pass,
     Stdlib::Port $api_bind_port,
 ) {
     class { "openstack::cinder::service::${version}":
@@ -23,6 +25,8 @@ class openstack::cinder::service(
         keystone_public_uri   => $keystone_public_uri,
         api_bind_port         => $api_bind_port,
         ceph_pool             => $ceph_pool,
+        rabbit_user           => $rabbit_user,
+        rabbit_pass           => $rabbit_pass,
     }
 
     service { 'cinder-scheduler':
