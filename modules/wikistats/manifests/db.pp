@@ -1,22 +1,40 @@
 # the database server setup for the wikistats site
 class wikistats::db (
     String $db_pass,
+    String $db_name = 'wikistats',
     Stdlib::Unixpath $backupdir = '/usr/lib/wikistats/backup',
+    String $dumpname = 'wikistats_db',
     Stdlib::Unixpath $mysqldump = '/usr/bin/mysqldump',
-    String $dumpfile = 'wikistats_db_$$(date +%%Y%m%%d).sql',
 ){
 
     ensure_packages('php7.3-mysql')
 
     # db backup
-    systemd::timer::job { 'wikistats-mysqldump':
+
+    file { '/usr/local/bin/wikistats/dbdump.sh':
+        ensure => 'present',
+        owner  => 'wikistatsuser',
+        group  => 'root',
+        mode   => '0554',
+        source => 'puppet:///modules/wikistats/dbdump.sh',
+    }
+
+    file { '/etc/wikistats/dbdump.cfg':
+        ensure  => 'present',
+        owner   => 'wikistatsuser',
+        group   => 'wikistatsuser',
+        mode    => '0444',
+        content => template('wikistats/dbdump.cfg.erb'),
+    }
+
+    systemd::timer::job { 'wikistats-dbdump':
         ensure            => 'present',
         user              => 'root',
         description       => 'create a database backup with mysqldump',
-        command           => "${mysqldump} -u root wikistats > ${backupdir}/${dumpfile} && /bin/gzip ${backupdir}/${dumpfile}",
+        command           => '/usr/local/bin/wikistats/dumpdb.sh',
         logging_enabled   => true,
         logfile_basedir   => '/var/log/wikistats/',
-        logfile_name      => 'mysqldump.log',
+        logfile_name      => 'dbdump.log',
         syslog_identifier => 'wikistats',
         interval          => {'start' => 'OnCalendar', 'interval' => '*-*-* 0:15:00'},
     }
