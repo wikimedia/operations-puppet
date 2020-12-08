@@ -1,3 +1,24 @@
-<%- @users.each do |k, v| -%>
-<%= v['token'] %>,<%= k %>,<%= v['id'] %>,<%= v['type'] %>
+<%#
+  This generates a "static-token-file" as described in:
+  https://kubernetes.io/docs/reference/access-authn-authz/authentication/#static-token-file
+  The token file is a csv file with a minimum of 3 columns:
+  token, user name, user uid, followed by optional group names.
+
+  TODO: Remove the packages_from_future gate after migrating all clusters to kubernetes 1.16
+  TODO: Remove the groups gate after migrating all user stanzas from type to groups
+-%>
+<%-
+  @users.each do |k, v|
+  if @packages_from_future
+    uid = k
+  else
+    uid = v['id']
+  end
+  if v.has_key? 'groups'
+    entry = "#{v['token']},#{k},#{uid},\"#{v['groups']}\""
+  else
+    entry = "#{v['token']},#{k},#{uid},#{v['type']}"
+  end
+-%>
+<%= entry %>
 <%- end -%>
