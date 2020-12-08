@@ -25,11 +25,23 @@ class openstack::cinder::service(
 
     service { 'cinder-scheduler':
         ensure  => $active,
-        require => Package['glance'],
+        require => Package['cinder-scheduler'],
     }
 
     rsyslog::conf { 'cinder':
         source   => 'puppet:///modules/openstack/glance/glance.rsyslog.conf',
         priority => 40,
+    }
+
+    # The cinder packages create this user, but with a weird, non-system ID.
+    #  Instead, create the user ahead of time with a proper uid.
+    user { 'cinder':
+        ensure     => 'present',
+        name       => 'cinder',
+        comment    => 'cinder system user',
+        gid        => 'cinder',
+        managehome => true,
+        before     => Package['cinder-scheduler', 'cinder-api'],
+        system     => true,
     }
 }
