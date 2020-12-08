@@ -36,6 +36,14 @@ exclude_servers:
    - ".*"
  video:
    - "encoding.*$"
+ wmf-research-tools:
+   - "^.*-test.*$"
+   - "^.*-prototype.*$"
+   - "^.*-build.*$"
+ recommendation-api:
+   - "^.*-test.*$"
+   - "^.*-prototype.*$"
+   - "^.*-build.*$"
 
 project_assignments:
   admin: ignore
@@ -63,6 +71,7 @@ project_assignments:
   download: cloudvirt1025
   ign2commons: cloudvirt1025
   metricsinfra: cloudvirt1025
+  wmf-research-tools: cloudvirt1026
   ALLOTHERS: cloudvirt1024
 
 live_for_days: 5
