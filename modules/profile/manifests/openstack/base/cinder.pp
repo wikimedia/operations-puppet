@@ -26,6 +26,7 @@ class profile::openstack::base::cinder(
         db_pass               => $db_pass,
         db_name               => $db_name,
         db_host               => $db_host,
+        ceph_pool             => $ceph_pool,
         api_bind_port         => $api_bind_port,
     }
 
