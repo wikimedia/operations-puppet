@@ -7,6 +7,7 @@ class profile::openstack::base::cinder(
     String $db_user = lookup('profile::openstack::base::cinder::db_user'),
     String $db_name = lookup('profile::openstack::base::cinder::db_name'),
     String $db_pass = lookup('profile::openstack::base::cinder::db_pass'),
+    String $ldap_user_pass = lookup('profile::openstack::base::cinder::ldap_user_pass'),
     Stdlib::Fqdn $db_host = lookup('profile::openstack::base::cinder::db_host'),
     Stdlib::Port $api_bind_port = lookup('profile::openstack::base::cinder::api_bind_port'),
     String $ceph_pool = lookup('profile::openstack::base::cinder::ceph_pool'),
@@ -28,6 +29,7 @@ class profile::openstack::base::cinder(
         db_host               => $db_host,
         ceph_pool             => $ceph_pool,
         api_bind_port         => $api_bind_port,
+        ldap_user_pass        => $ldap_user_pass,
     }
 
     include ::network::constants

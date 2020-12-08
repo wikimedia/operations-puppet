@@ -4,7 +4,7 @@
 bind_host = <%= @ipaddress %>
 
 # Port the bind the API server to
-bind_port = <%= @api_bind_port %>
+osapi_volume_listen_port = <%= @api_bind_port %>
 
 # IP address of this host (host address value)
 my_ip = <%= @ipaddress %>
@@ -168,7 +168,7 @@ transport_url = rabbit://<%= @openstack_controllers.map{ |rabbit_host| "#{@rabbi
 # Deprecated group/name - [DEFAULT]/sql_connection
 # Deprecated group/name - [DATABASE]/sql_connection
 # Deprecated group/name - [sql]/connection
-connection =  mysql://<%= @db_user %>:<%= @db_pass %>@<%= @db_host %>/<%= @db_name %>
+connection =  mysql+pymysql://<%= @db_user %>:<%= @db_pass %>@<%= @db_host %>/<%= @db_name %>
 
 
 [healthcheck]
@@ -205,7 +205,7 @@ project_domain_id = default
 project_name = admin
 region_name = <%= @region %>
 user_domain_id = default
-username = novaadmin
+username = cinder
 
 
 [nova]
