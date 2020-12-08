@@ -15,6 +15,7 @@ class profile::openstack::codfw1dev::cinder(
         db_pass               => $db_pass,
         db_host               => $db_host,
         api_bind_port         => $api_bind_port,
+        ceph_pool             => $ceph_pool,
         active                => true,
     }
 }
