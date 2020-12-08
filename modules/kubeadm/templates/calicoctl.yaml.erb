@@ -19,7 +19,7 @@ spec:
   serviceAccountName: calicoctl
   containers:
   - name: calicoctl
-    image: calico/ctl:<%= @calico_version %>
+    image: docker-registry.tools.wmflabs.org/calico/ctl:<%= @calico_version %>
     command: ["/bin/sh", "-c", "while true; do sleep 3600; done"]
     env:
     - name: DATASTORE_TYPE
