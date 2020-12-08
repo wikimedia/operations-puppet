@@ -22,9 +22,7 @@ class webperf::navtiming(
 ) {
     include ::webperf
 
-    require_package('python3-kafka')
-    require_package('python3-yaml')
-    require_package('python3-etcd')
+    ensure_packages(['python3-kafka', 'python3-yaml', 'python3-etcd'])
 
     # This matches the version pinned in setup.py in performance/navtiming.
     # If changed here, it should be changed there, and vice-versa.

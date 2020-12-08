@@ -73,5 +73,5 @@ class profile::webperf::site (
         user    => 'nobody',
     }
 
-    require_package('libapache2-mod-uwsgi')
+    ensure_packages(['libapache2-mod-uwsgi'])
 }
