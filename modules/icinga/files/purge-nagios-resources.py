@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
 # Script that purges Nagios resources for which the corresponding host entry
 # does not exist.
@@ -14,7 +14,7 @@ def readHostsFile(path):
     hosts = set([])
 
     inDefinition = False
-    for line in file(path, 'r'):
+    for line in open(path, 'r'):
         line = line.strip()
         if not inDefinition and line.startswith("define host"):
             inDefinition = True
@@ -31,7 +31,7 @@ def filterServices(sourcePath, newFile, hosts):
     purgeResource = False
     buffer = []
 
-    for line in file(sourcePath, 'r'):
+    for line in open(sourcePath, 'r'):
         strippedLine = line.strip()
 
         if not inDefinition and strippedLine.startswith("define "):
@@ -43,7 +43,7 @@ def filterServices(sourcePath, newFile, hosts):
                 inDefinition = False
                 if purgeResource:
                     # Comment out
-                    buffer = ['#' + l for l in buffer]
+                    buffer = ['#' + li for li in buffer]
                 newFile.writelines(buffer)
                 buffer = []
                 purgeResource = False
