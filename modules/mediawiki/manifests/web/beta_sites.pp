@@ -90,7 +90,6 @@ class mediawiki::web::beta_sites {
         'wikimedia':
             server_name     => 'misc-sites',
             server_aliases  => [
-                'zero.wikimedia.beta.wmflabs.org',
                 'commons.wikimedia.beta.wmflabs.org',
                 'deployment.wikimedia.beta.wmflabs.org',
                 'meta.wikimedia.beta.wmflabs.org',
