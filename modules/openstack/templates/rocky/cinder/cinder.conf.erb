@@ -273,3 +273,6 @@ rados_connect_timeout = -1
 glance_api_version = 2
 rbd_user = volumes
 rbd_secret_uuid = 79fb0a3c-8357-44af-9f96-ead736f28d83
+
+[client.volumes]
+keyring = /etc/ceph/ceph.client.<%= @ceph_pool %>.keyring
