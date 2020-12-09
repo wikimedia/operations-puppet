@@ -1,3 +1,4 @@
+profile::redis::multidc::version_override: 2
 profile::memcached::version: 'present'
 profile::memcached::threads: 16
 profile::memcached::growth_factor: 1.15

@@ -46,6 +46,9 @@ redis::shards:
       shard15:
         host: 10.64.48.155
         port: 6379
+      shard16:
+        host: 10.64.48.156
+        port: 6379
     codfw:
       shard01:
         host: 10.192.0.83
@@ -91,4 +94,7 @@ redis::shards:
         port: 6379
       shard15:
         host: 10.192.48.77
+        port: 6379
+      shard16:
+        host: 10.192.48.78
         port: 6379
