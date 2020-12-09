@@ -4,4 +4,6 @@ class profile::parsoid::testreduce(
     class { 'testreduce':
         install_node => $install_node,
     }
+
+    ensure_packages(['make'])
 }
