@@ -82,6 +82,7 @@ class cdh::hive(
     $jdbc_port                   = 3306,
     $jdbc_driver                 = 'com.mysql.jdbc.Driver',
     $jdbc_protocol               = 'mysql',
+    $jdbc_tls_settings           = 'useSSL=true&amp;enabledTLSProtocols=TLSv1.2',
     $deploy_jdbc_settings        = false,
 
     $variable_substitute_depth   = undef,
@@ -177,13 +178,24 @@ class cdh::hive(
         require => Package['hive'],
     }
 
-    # Make sure hive-site.xml is not world readable on the
-    # metastore host.  On the metastore host, hive-site.xml
-    # will contain database connection credentials.
-    $hive_site_mode = $deploy_jdbc_settings ? {
-        true  => '0440',
-        false => '0444',
+    if $deploy_jdbc_settings {
+        # Make sure hive-site.xml is not world readable on the
+        # metastore host.  On the metastore host, hive-site.xml
+        # will contain database connection credentials.
+        $hive_site_mode = '0440'
+
+        $base_jdbc_connection_url = "jdbc:${jdbc_protocol}://${jdbc_host}:${jdbc_port}/${jdbc_database}"
+        # If the Metastore does not connect to the database on localhost,
+        # force TLS to encrypt traffic and to verify the target db-host.
+        if $jdbc_host != 'localhost' {
+            $jdbc_connection_url = "${base_jdbc_connection_url}?${jdbc_tls_settings}"
+        } else {
+            $jdbc_connection_url = $base_jdbc_connection_url
+        }
+    } else {
+        $hive_site_mode = '0444'
     }
+
     # variable needed to generate hive-env.sh.erb template
     $java_logging_config_file = "${config_directory}/java-logging.properties"
     file { "${config_directory}/hive-env.sh":

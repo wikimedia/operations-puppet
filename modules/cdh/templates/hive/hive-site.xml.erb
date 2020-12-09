@@ -21,7 +21,7 @@
 
   <property>
     <name>javax.jdo.option.ConnectionURL</name>
-    <value><%= "jdbc:#{@jdbc_protocol}://#{@jdbc_host}:#{@jdbc_port}/#{@jdbc_database}" %></value>
+    <value><%= @jdbc_connection_url %></value>
     <description>JDBC connect string for a JDBC metastore</description>
   </property>
 
