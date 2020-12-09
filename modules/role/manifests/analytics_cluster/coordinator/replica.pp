@@ -20,7 +20,7 @@ class role::analytics_cluster::coordinator::replica {
     include ::profile::analytics::database::meta
 
     # SQL-like queries to data stored in HDFS
-    # include ::profile::hive::metastore
+    include ::profile::hive::metastore
     include ::profile::hive::server
 
     include ::profile::kerberos::client

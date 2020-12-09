@@ -6,6 +6,7 @@ profile::standard::admin_groups:
 profile::hadoop::common::hadoop_cluster_name: 'analytics-hadoop'
 
 profile::hive::client::hive_service_name: 'analytics-replicated-hive'
+profile::hive::client::deploy_jdbc_settings: true
 
 profile::oozie::client::oozie_service: 'analytics-oozie'
 

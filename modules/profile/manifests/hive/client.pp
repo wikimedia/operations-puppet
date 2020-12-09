@@ -93,7 +93,7 @@ class profile::hive::client(
         hive_server2_authentication                    => $hive_server2_authentication,
         hive_server2_authentication_kerberos_principal => $hive_server2_authentication_kerberos_principal,
         hive_server2_authentication_kerberos_keytab    => $hive_server2_authentication_kerberos_keytab,
-        jdbc_host                                      => $hive_metastore_jdbc_user,
+        jdbc_host                                      => $hive_metastore_jdbc_host,
         jdbc_port                                      => $hive_metastore_jdbc_port,
         jdbc_username                                  => $hive_metastore_jdbc_user,
         jdbc_password                                  => $hive_metastore_jdbc_password,
