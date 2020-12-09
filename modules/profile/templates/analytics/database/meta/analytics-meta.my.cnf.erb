@@ -64,6 +64,9 @@ plugin-load = unix_socket=auth_socket.so
 # is deprecated.
 explicit_defaults_for_timestamp = on
 
+# If running as replica, do not replicate the following databases
+replicate_wild_ignore_table=superset\_staging.%
+
 max_connections = 250
 
 [mysqldump]
