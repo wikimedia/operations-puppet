@@ -6191,7 +6191,6 @@ host mw2242 {
 host mw2243 {
     hardware ethernet 14:18:77:66:A3:E8;
     fixed-address mw2243.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host mw2244 {
