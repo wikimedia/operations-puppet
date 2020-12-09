@@ -279,71 +279,79 @@ def get_replica_path(account_type, name):
 def harvest_cnf_files(config, account_type='tool'):
     accounts_to_create = find_tools(config) if account_type == 'tool' \
         else find_tools_users(config)
-    acct_db = get_accounts_db_conn(config)
-    cur = acct_db.cursor()
     try:
-        for account_name, _ in accounts_to_create:
-            replica_path = get_replica_path(account_type, account_name)
-            if os.path.exists(replica_path):
-                mysql_user, pwd_hash = read_replica_cnf(replica_path)
-                cur.execute("""
-                INSERT INTO account (mysql_username, type, username, password_hash)
-                VALUES (%s, %s, %s, %s)
-                ON DUPLICATE KEY UPDATE
-                password_hash = %s
-                """, (mysql_user, account_type, account_name, pwd_hash, pwd_hash)
-                           )
-            else:
-                logging.info('Found no replica.my.cnf to harvest for %s %s',
-                             account_type, account_name)
-        acct_db.commit()
+        acct_db = get_accounts_db_conn(config)
+        cur = acct_db.cursor()
+        try:
+            for account_name, _ in accounts_to_create:
+                replica_path = get_replica_path(account_type, account_name)
+                if os.path.exists(replica_path):
+                    mysql_user, pwd_hash = read_replica_cnf(replica_path)
+                    cur.execute("""
+                    INSERT INTO account (mysql_username, type, username, password_hash)
+                    VALUES (%s, %s, %s, %s)
+                    ON DUPLICATE KEY UPDATE
+                    password_hash = %s
+                    """, (mysql_user, account_type, account_name, pwd_hash, pwd_hash)
+                            )
+                else:
+                    logging.info('Found no replica.my.cnf to harvest for %s %s',
+                                 account_type, account_name)
+            acct_db.commit()
+        finally:
+            cur.close()
     finally:
-        cur.close()
+        acct_db.close
 
 
 def harvest_replica_accts(config):
-    acct_db = get_accounts_db_conn(config)
-    labsdbs = []
-    for host in config["labsdbs"]["hosts"]:
-        if ":" in host:
-            hostnm = host.split(":")[0]
-            port = int(host.split(":")[1])
-        else:
-            hostnm = host
-            port = 3306
-        labsdbs.append(
-            pymysql.connect(
-                hostnm,
-                config['labsdbs']['username'],
-                config['labsdbs']['password'],
-                port=port)
-        )
+    try:
+        acct_db = get_accounts_db_conn(config)
+        labsdbs = []
+        for host in config["labsdbs"]["hosts"]:
+            if ":" in host:
+                hostnm = host.split(":")[0]
+                port = int(host.split(":")[1])
+            else:
+                hostnm = host
+                port = 3306
+            labsdbs.append(
+                pymysql.connect(
+                    hostnm,
+                    config['labsdbs']['username'],
+                    config['labsdbs']['password'],
+                    port=port)
+            )
 
-    with acct_db.cursor() as read_cur:
-        read_cur.execute("""
-        SELECT id, mysql_username, type, username
-        FROM account
-        """)
-        for row in read_cur:
-            for labsdb in labsdbs:
-                sqlhost = labsdb.host
-                if labsdb.port != 3306:
-                    sqlhost = "{}:{}".format(labsdb.host, labsdb.port)
-                with labsdb.cursor() as labsdb_cur:
+        with acct_db.cursor() as read_cur:
+            read_cur.execute("""
+            SELECT id, mysql_username, type, username
+            FROM account
+            """)
+            for row in read_cur:
+                for labsdb in labsdbs:
+                    sqlhost = labsdb.host
+                    if labsdb.port != 3306:
+                        sqlhost = "{}:{}".format(labsdb.host, labsdb.port)
                     try:
-                        labsdb_cur.execute("""
-                        SHOW GRANTS FOR %s@'%%'
-                        """, (row['mysql_username']))
-                        labsdb_cur.fetchone()
-                        status = 'present'
-                    except pymysql.err.InternalError as e:
-                        # Error code for when no grants exist for this username
-                        if e.args[0] != 1141:
-                            raise
-                        logging.info(
-                            'No acct found for %s %s in %s',
-                            row['type'], row['username'], sqlhost)
-                        status = 'absent'
+                        with labsdb.cursor() as labsdb_cur:
+                            try:
+                                labsdb_cur.execute("""
+                                SHOW GRANTS FOR %s@'%%'
+                                """, (row['mysql_username']))
+                                labsdb_cur.fetchone()
+                                status = 'present'
+                            except pymysql.err.InternalError as e:
+                                # Error code for when no grants exist for this username
+                                if e.args[0] != 1141:
+                                    raise
+                                logging.info(
+                                    'No acct found for %s %s in %s',
+                                    row['type'], row['username'], sqlhost)
+                                status = 'absent'
+                    finally:
+                        labsdb.close()
+
                     with acct_db.cursor() as write_cur:
                         write_cur.execute("""
                         INSERT INTO account_host (account_id, hostname, status)
@@ -351,7 +359,9 @@ def harvest_replica_accts(config):
                         ON DUPLICATE KEY UPDATE
                         status = %s
                         """, (row['id'], sqlhost, status, status))
-    acct_db.commit()
+        acct_db.commit()
+    finally:
+        acct_db.close()
 
 
 def populate_new_accounts(config, account_type='tool'):
@@ -360,123 +370,132 @@ def populate_new_accounts(config, account_type='tool'):
     """
     all_accounts = find_tools(config) if account_type == 'tool' \
         else find_tools_users(config)
-    acct_db = get_accounts_db_conn(config)
-    with acct_db.cursor() as cur:
-        cur.execute("""
-        SELECT username FROM account WHERE type=%s
-        """, account_type)
-        cur_accounts = set([r['username'] for r in cur])
-
-        new_accounts = [t for t in all_accounts if t[0] not in cur_accounts]
-
-        logging.debug('Found %s new %s accounts: %s',
-                      len(new_accounts), account_type,
-                      ', '.join([t[0] for t in new_accounts]))
-        for new_account, new_account_id in new_accounts:
-            # if a homedir for this account does not exist yet, just ignore it
-            # home directory creation (for tools) is currently handled by maintain-kubeusers,
-            # and we do not want to race. Tool accounts that get passed over like this will be
-            # picked up on the next round
-            replica_path = get_replica_path(account_type, new_account)
-            if not os.path.exists(os.path.dirname(replica_path)):
-                logging.debug('Skipping %s account %s, since no home directory exists yet',
-                              account_type, new_account)
-                continue
-            pwd = generate_new_pw()
-            mysql_username = 's%d' % new_account_id if account_type == 'tool' \
-                else 'u%d' % new_account_id
+    try:
+        acct_db = get_accounts_db_conn(config)
+        with acct_db.cursor() as cur:
             cur.execute("""
-            INSERT INTO account (mysql_username, type, username, password_hash)
-            VALUES (%s, %s, %s, %s)
-            """, (
-                mysql_username,
-                account_type,
-                new_account,
-                mysql_hash(pwd)
-            ))
-            acct_id = cur.lastrowid
-            for hostname in config['labsdbs']['hosts']:
+            SELECT username FROM account WHERE type=%s
+            """, account_type)
+            cur_accounts = set([r['username'] for r in cur])
+
+            new_accounts = [t for t in all_accounts if t[0] not in cur_accounts]
+
+            logging.debug('Found %s new %s accounts: %s',
+                          len(new_accounts), account_type,
+                          ', '.join([t[0] for t in new_accounts]))
+            for new_account, new_account_id in new_accounts:
+                # if a homedir for this account does not exist yet, just ignore it
+                # home directory creation (for tools) is currently handled by maintain-kubeusers,
+                # and we do not want to race. Tool accounts that get passed over like this will be
+                # picked up on the next round
+                replica_path = get_replica_path(account_type, new_account)
+                if not os.path.exists(os.path.dirname(replica_path)):
+                    logging.debug('Skipping %s account %s, since no home directory exists yet',
+                                  account_type, new_account)
+                    continue
+                pwd = generate_new_pw()
+                mysql_username = 's%d' % new_account_id if account_type == 'tool' \
+                    else 'u%d' % new_account_id
                 cur.execute("""
-                INSERT INTO account_host (account_id, hostname, status)
-                VALUES (%s, %s, %s)
-                """, (acct_id, hostname, 'absent'))
-            # Do this *before* the commit to the db has succeeded
-            write_replica_cnf(
-                replica_path,
-                new_account_id,
-                mysql_username,
-                pwd
-            )
-            acct_db.commit()
-            logging.info('Wrote replica.my.cnf for %s %s', account_type, new_account)
+                INSERT INTO account (mysql_username, type, username, password_hash)
+                VALUES (%s, %s, %s, %s)
+                """, (
+                    mysql_username,
+                    account_type,
+                    new_account,
+                    mysql_hash(pwd)
+                ))
+                acct_id = cur.lastrowid
+                for hostname in config['labsdbs']['hosts']:
+                    cur.execute("""
+                    INSERT INTO account_host (account_id, hostname, status)
+                    VALUES (%s, %s, %s)
+                    """, (acct_id, hostname, 'absent'))
+                # Do this *before* the commit to the db has succeeded
+                write_replica_cnf(
+                    replica_path,
+                    new_account_id,
+                    mysql_username,
+                    pwd
+                )
+                acct_db.commit()
+                logging.info('Wrote replica.my.cnf for %s %s', account_type, new_account)
+    finally:
+        acct_db.close()
 
 
 def create_accounts(config):
     """
     Find hosts with accounts in absent state, and creates them.
     """
-    acct_db = get_accounts_db_conn(config)
-    username_re = re.compile('^[spu][0-9]')
-    for host in config['labsdbs']['hosts']:
-        if ":" in host:
-            hostnm = host.split(":")[0]
-            port = int(host.split(":")[1])
-        else:
-            hostnm = host
-            port = 3306
-        try:
-            labsdb = pymysql.connect(
-                hostnm,
-                config['labsdbs']['username'],
-                config['labsdbs']['password'],
-                port=port)
-        except pymysql.err.OperationalError as exc:
-            logging.warning("Could not connect to %s due to %s.  Skipping.",
-                            host, exc)
-            continue
+    try:
+        acct_db = get_accounts_db_conn(config)
+        username_re = re.compile('^[spu][0-9]')
+        for host in config['labsdbs']['hosts']:
+            if ":" in host:
+                hostnm = host.split(":")[0]
+                port = int(host.split(":")[1])
+            else:
+                hostnm = host
+                port = 3306
+            try:
+                labsdb = pymysql.connect(
+                    hostnm,
+                    config['labsdbs']['username'],
+                    config['labsdbs']['password'],
+                    port=port)
+            except pymysql.err.OperationalError as exc:
+                logging.warning("Could not connect to %s due to %s.  Skipping.",
+                                host, exc)
+                continue
 
-        grant_type = config['labsdbs']['hosts'][host]['grant-type']
-        with acct_db.cursor() as cur:
-            cur.execute("""
-            SELECT mysql_username, password_hash, username, hostname, type,
-                   account_host.id as account_host_id
-            FROM account JOIN account_host on account.id = account_host.account_id
-            WHERE hostname = %s AND status = 'absent'
-            """, (host, ))
-            for row in cur:
-                with labsdb.cursor() as labsdb_cur:
-                    create_acct_string = ACCOUNT_CREATION_SQL[grant_type].format(
-                        username=row['mysql_username'],
-                        password_hash=row['password_hash'].decode('utf-8'),
-                        max_connections=10,
-                    )
-                    try:
-                        labsdb_cur.execute(create_acct_string)
-                    except pymysql.err.InternalError as err:
-                        # When on a "legacy" server, it is possible there is an old
-                        # account that will need cleanup before we create it anew.
-                        if err.args[0] == 1396 and grant_type == 'legacy' and \
-                                username_re.match(row['mysql_username']):
-                            labsdb_cur.execute(
-                                "DROP USER '{username}'@'%';".format(
-                                    username=row['mysql_username']
-                                ))
-                            labsdb_cur.execute(create_acct_string)
-                        else:
-                            # Fail properly if this was any other problem
-                            raise
+            grant_type = config['labsdbs']['hosts'][host]['grant-type']
+            with acct_db.cursor() as cur:
+                cur.execute("""
+                SELECT mysql_username, password_hash, username, hostname, type,
+                    account_host.id as account_host_id
+                FROM account JOIN account_host on account.id = account_host.account_id
+                WHERE hostname = %s AND status = 'absent'
+                """, (host, ))
+                for row in cur:
+                    with labsdb.cursor() as labsdb_cur:
+                        try:
+                            create_acct_string = ACCOUNT_CREATION_SQL[grant_type].format(
+                                username=row['mysql_username'],
+                                password_hash=row['password_hash'].decode('utf-8'),
+                                max_connections=10,
+                            )
+                            try:
+                                labsdb_cur.execute(create_acct_string)
+                            except pymysql.err.InternalError as err:
+                                # When on a "legacy" server, it is possible there is an old
+                                # account that will need cleanup before we create it anew.
+                                if err.args[0] == 1396 and grant_type == 'legacy' and \
+                                        username_re.match(row['mysql_username']):
+                                    labsdb_cur.execute(
+                                        "DROP USER '{username}'@'%';".format(
+                                            username=row['mysql_username']
+                                        ))
+                                    labsdb_cur.execute(create_acct_string)
+                                else:
+                                    # Fail properly if this was any other problem
+                                    raise
 
-                    labsdb.commit()
+                            labsdb.commit()
+                        finally:
+                            labsdb.close()
 
-                with acct_db.cursor() as write_cur:
-                    write_cur.execute("""
-                    UPDATE account_host
-                    SET status='present'
-                    WHERE id = %s
-                    """, (row['account_host_id'],))
-                    acct_db.commit()
-                    logging.info('Created account in %s for %s %s',
-                                 host, row['type'], row['username'])
+                    with acct_db.cursor() as write_cur:
+                        write_cur.execute("""
+                        UPDATE account_host
+                        SET status='present'
+                        WHERE id = %s
+                        """, (row['account_host_id'],))
+                        acct_db.commit()
+                        logging.info('Created account in %s for %s %s',
+                                     host, row['type'], row['username'])
+    finally:
+        acct_db.close()
 
 
 def delete_account(config, account, account_type='tool'):
@@ -487,53 +506,60 @@ def delete_account(config, account, account_type='tool'):
     - Removes them from accounts db
     - Drops users from labsdbs
     """
-    acct_db = get_accounts_db_conn(config)
+    try:
+        acct_db = get_accounts_db_conn(config)
 
-    for host in config['labsdbs']['hosts']:
-        if ":" in host:
-            hostnm = host.split(":")[0]
-            port = int(host.split(":")[1])
-        else:
-            hostnm = host
-            port = 3306
-        labsdb = pymysql.connect(
-            hostnm,
-            config['labsdbs']['username'],
-            config['labsdbs']['password'],
-            port=port)
-        with acct_db.cursor() as cur:
-            cur.execute("""
-            SELECT mysql_username, password_hash, username, hostname, type,
-                   account_host.id as account_host_id
-            FROM account JOIN account_host on account.id = account_host.account_id
-            WHERE hostname = %s AND username = %s AND type = %s AND status = 'present'
-            """, (host, account, account_type))
-            for row in cur:
-                with labsdb.cursor() as labsdb_cur:
-                    labsdb_cur.execute("DROP USER %s" % row['mysql_username'])
-                    labsdb.commit()
-                with acct_db.cursor() as write_cur:
-                    write_cur.execute("""
-                    DELETE FROM account_host
-                    WHERE id = %s
-                    """, (row['account_host_id'],))
-                    acct_db.commit()
-                    logging.info('Deleted %s account in %s for %s',
-                                 row['type'], host, row['username'])
+        for host in config['labsdbs']['hosts']:
+            if ":" in host:
+                hostnm = host.split(":")[0]
+                port = int(host.split(":")[1])
+            else:
+                hostnm = host
+                port = 3306
+            labsdb = pymysql.connect(
+                hostnm,
+                config['labsdbs']['username'],
+                config['labsdbs']['password'],
+                port=port)
+            with acct_db.cursor() as cur:
+                cur.execute("""
+                SELECT mysql_username, password_hash, username, hostname, type,
+                    account_host.id as account_host_id
+                FROM account JOIN account_host on account.id = account_host.account_id
+                WHERE hostname = %s AND username = %s AND type = %s AND status = 'present'
+                """, (host, account, account_type))
+                for row in cur:
+                    try:
+                        with labsdb.cursor() as labsdb_cur:
+                            labsdb_cur.execute("DROP USER %s" % row['mysql_username'])
+                            labsdb.commit()
+                        with acct_db.cursor() as write_cur:
+                            write_cur.execute("""
+                            DELETE FROM account_host
+                            WHERE id = %s
+                            """, (row['account_host_id'],))
+                            acct_db.commit()
+                            logging.info('Deleted %s account in %s for %s',
+                                         row['type'], host, row['username'])
+                    finally:
+                        labsdb.close()
 
-    # Now we get rid of the file
-    replica_file_path = get_replica_path(account_type, account)
-    subprocess.check_output(['/usr/bin/chattr', '-i', replica_file_path])
-    os.remove(replica_file_path)
-    logging.info('Deleted %s', replica_file_path)
+        # Now we get rid of the file
+        replica_file_path = get_replica_path(account_type, account)
+        subprocess.check_output(['/usr/bin/chattr', '-i', replica_file_path])
+        os.remove(replica_file_path)
+        logging.info('Deleted %s', replica_file_path)
 
-    # Now we get rid of the account itself
-    with acct_db.cursor() as write_cur:
-        write_cur.execute("""
-        DELETE FROM account
-        WHERE type=%s AND username=%s
-        """, (account_type, account))
-        acct_db.commit()
+        # Now we get rid of the account itself
+        with acct_db.cursor() as write_cur:
+            write_cur.execute("""
+            DELETE FROM account
+            WHERE type=%s AND username=%s
+            """, (account_type, account))
+            acct_db.commit()
+
+    finally:
+        acct_db.close()
 
 
 def is_active_nfs(config):
