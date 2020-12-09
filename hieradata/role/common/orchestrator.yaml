@@ -4,3 +4,4 @@ profile::base::domain_search:
   - eqiad.wmnet
   - codfw.wmnet
 profile::orchestrator::server::db_backend_host: db2093.codfw.wmnet
+monitor_screens: false
