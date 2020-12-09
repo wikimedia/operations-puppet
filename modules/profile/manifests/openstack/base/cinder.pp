@@ -13,6 +13,7 @@ class profile::openstack::base::cinder(
     String $ceph_pool = lookup('profile::openstack::base::cinder::ceph_pool'),
     String $rabbit_user = lookup('profile::openstack::base::nova::rabbit_user'),
     String $rabbit_pass = lookup('profile::openstack::base::nova::rabbit_pass'),
+    String $libvirt_rbd_uuid = lookup('profile::ceph::client::rbd::libvirt_rbd_uuid'),
     Boolean $active = lookup('profile::openstack::base::cinder_active'),
     ) {
 
@@ -34,6 +35,7 @@ class profile::openstack::base::cinder(
         ldap_user_pass        => $ldap_user_pass,
         rabbit_user           => $rabbit_user,
         rabbit_pass           => $rabbit_pass,
+        libvirt_rbd_uuid      => $libvirt_rbd_uuid,
     }
 
     include ::network::constants

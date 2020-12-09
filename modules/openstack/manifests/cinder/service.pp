@@ -12,6 +12,7 @@ class openstack::cinder::service(
     String $ceph_pool,
     String $rabbit_user,
     String $rabbit_pass,
+    String $libvirt_rbd_uuid,
     Stdlib::Port $api_bind_port,
 ) {
     class { "openstack::cinder::service::${version}":
@@ -27,6 +28,7 @@ class openstack::cinder::service(
         ceph_pool             => $ceph_pool,
         rabbit_user           => $rabbit_user,
         rabbit_pass           => $rabbit_pass,
+        libvirt_rbd_uuid      => $libvirt_rbd_uuid,
     }
 
     service { 'cinder-scheduler':

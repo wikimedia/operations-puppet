@@ -11,6 +11,7 @@ class openstack::cinder::service::rocky(
     String $rabbit_user,
     String $rabbit_pass,
     Stdlib::Port $api_bind_port,
+    String $libvirt_rbd_uuid,
 ) {
     require "openstack::serverpackages::rocky::${::lsbdistcodename}"
 

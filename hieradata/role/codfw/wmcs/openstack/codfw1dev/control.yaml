@@ -15,3 +15,5 @@ profile::ceph::client::rbd::pool: 'codfw1dev-glance-images'
 profile::ceph::client::rbd::enable_v2_messenger: false
 
 profile::wmcs::backy2::cluster_name: ceph
+
+profile::ceph::client::rbd::libvirt_rbd_uuid: 'e6500406-304c-4a21-a5d0-8214a827a10d'
