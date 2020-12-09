@@ -199,9 +199,10 @@ connection =  mysql+pymysql://<%= @db_user %>:<%= @db_pass %>@<%= @db_host %>/<%
 [keystone_authtoken]
 auth_type = password
 www_authenticate_url = <%= @keystone_admin_uri %>
+auth_url = <%= @keystone_admin_uri %>
 password = <%= @ldap_user_pass %>
 project_domain_id = default
-project_name = admin
+project_name = service
 region_name = <%= @region %>
 user_domain_id = default
 username = cinder
@@ -214,7 +215,7 @@ username = cinder
 #
 
 # Name of nova region to use. Useful if keystone manages more than one region. (string value)
-#region_name = <None>
+region_name = <%= @region %>
 
 # Type of the nova endpoint to use.  This endpoint will be looked up in the keystone catalog and should be one of public, internal or admin.
 # (string value)

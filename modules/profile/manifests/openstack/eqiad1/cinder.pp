@@ -8,6 +8,7 @@ class profile::openstack::eqiad1::cinder(
     String $ceph_pool = lookup('profile::openstack::eqiad1::cinder::ceph_pool'),
     String $rabbit_pass = lookup('profile::openstack::eqiad1::nova::rabbit_pass'),
     String $ldap_user_pass = lookup('profile::openstack::eqiad1::cinder::ldap_user_pass'),
+    String $region = lookup('profile::openstack::eqiad1::region'),
     String $ceph_client_keydata = lookup('profile::ceph::client::rbd::cinder_client_keydata'),
     ) {
 
@@ -15,6 +16,7 @@ class profile::openstack::eqiad1::cinder(
         version               => $version,
         openstack_controllers => $openstack_controllers,
         keystone_fqdn         => $keystone_fqdn,
+        region                => $region,
         db_pass               => $db_pass,
         db_host               => $db_host,
         api_bind_port         => $api_bind_port,

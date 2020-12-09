@@ -6,7 +6,7 @@ class openstack::cinder::service::rocky(
     $db_host,
     $ldap_user_pass,
     $keystone_admin_uri,
-    $keystone_public_uri,
+    $region,
     String $ceph_pool,
     String $rabbit_user,
     String $rabbit_pass,

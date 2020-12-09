@@ -3,7 +3,7 @@ class profile::openstack::base::cinder(
     Array[Stdlib::Fqdn] $openstack_controllers = lookup('profile::openstack::base::openstack_controllers'),
     Stdlib::Fqdn $keystone_fqdn = lookup('profile::openstack::base::keystone_api_fqdn'),
     Stdlib::Port $auth_port = lookup('profile::openstack::base::keystone::auth_port'),
-    Stdlib::Port $public_port = lookup('profile::openstack::base::keystone::public_port'),
+    String $region = lookup('profile::openstack::base::region'),
     String $db_user = lookup('profile::openstack::base::cinder::db_user'),
     String $db_name = lookup('profile::openstack::base::cinder::db_name'),
     String $db_pass = lookup('profile::openstack::base::cinder::db_pass'),
@@ -18,14 +18,13 @@ class profile::openstack::base::cinder(
     ) {
 
     $keystone_admin_uri = "http://${keystone_fqdn}:${auth_port}"
-    $keystone_public_uri = "http://${keystone_fqdn}:${public_port}"
 
     class { '::openstack::cinder::service':
         version               => $version,
         active                => $active,
         openstack_controllers => $openstack_controllers,
         keystone_admin_uri    => $keystone_admin_uri,
-        keystone_public_uri   => $keystone_public_uri,
+        region                => $region,
         db_user               => $db_user,
         db_pass               => $db_pass,
         db_name               => $db_name,
