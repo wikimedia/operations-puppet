@@ -16,33 +16,42 @@ testcases:
           "program": "ulogd"
         }
     expected:
-      - action: "drop"
-        dest_port: "44734"
-        destination_ip: "2620:0:860:101:10:192:0:27"
-        direction: "in"
-        ethertype: "86:dd"
-        facility: "local7"
-        host: "puppetmaster2001"
-        in_interface: "eno1"
-        ip_protocol: "ipv6"
-        len: "60"
-        level: "%{SEVERITY_LABEL}"
-        logsource: "puppetmaster2001"
-        message: "[fw-in-drop] IN=eno1 OUT= MAC=18:66:da:63:1d:37:64:87:88:f2:73:c6:86:dd SRC=2620:0:860:104:10:192:48:66 DST=2620:0:860:101:10:192:0:27 LEN=60 TC=0 HOPLIMIT=63 FLOWLBL=858078 PROTO=TCP SPT=8141 DPT=44734 SEQ=4059713878 ACK=0 WINDOW=0 RST URGP=0 MARK=0 "
-        normalized_message: "[fw-in-drop] IN=eno1 OUT= MAC=18:66:da:63:1d:37:64:87:88:f2:73:c6:86:dd SRC=2620:0:860:104:10:192:48:66 DST=2620:0:860:101:10:192:0:27 LEN=60 TC=0 HOPLIMIT=63 FLOWLBL=858078 PROTO=TCP SPT=8141 DPT=44734 SEQ=4059713878 ACK=0 WINDOW=0 RST URGP=0 MARK=0 "
-        program: "ulogd"
-        protocol: "TCP"
-        severity: "info"
-        source_ip: "2620:0:860:104:10:192:48:66"
-        source_port: "8141"
-        tags: [
-         "syslog",
-         "es",
-         "normalized_message_untrimmed",
-        ]
-        timestamp: "2020-05-05T10:34:50.874093+00:00"
-        ttl: "63"
-        type: "syslog"
+      - destination:
+          ip: "2620:0:860:101:10:192:0:27"
+          port: "44734"
+        ecs:
+          version: "1.7.0"
+        event:
+          action: "drop"
+        host:
+          name: "puppetmaster2001"
+        labels:
+          len: "60"
+          ttl: "63"
+        log:
+          level: "INFO"
+          original: "[fw-in-drop] IN=eno1 OUT= MAC=18:66:da:63:1d:37:64:87:88:f2:73:c6:86:dd SRC=2620:0:860:104:10:192:48:66 DST=2620:0:860:101:10:192:0:27 LEN=60 TC=0 HOPLIMIT=63 FLOWLBL=858078 PROTO=TCP SPT=8141 DPT=44734 SEQ=4059713878 ACK=0 WINDOW=0 RST URGP=0 MARK=0 "
+          syslog:
+            facility:
+              code: 23
+              name: "local7"
+            priority: 190
+            severity:
+              code: 6
+              name: "informational"
+        network:
+          direction: "in"
+          protocol: "TCP"
+          type: "ipv6"
+        observer:
+          ingress:
+            interface:
+              name: "eno1"
+        service:
+          type: "ulogd"
+        source:
+          ip: "2620:0:860:104:10:192:48:66"
+          port: "8141"
 
   - input:
       - >
@@ -56,30 +65,39 @@ testcases:
           "program": "ulogd"
         }
     expected:
-      - action: "drop"
-        dest_port: "45868"
-        destination_ip: "10.64.16.67"
-        direction: "in"
-        ethertype: "08:00"
-        facility: "local7"
-        host: "mw1302"
-        in_interface: "eno1"
-        ip_protocol: "ipv4"
-        len: "40"
-        level: "%{SEVERITY_LABEL}"
-        logsource: "mw1302"
-        message: "[fw-in-drop] IN=eno1 OUT= MAC=14:18:77:61:49:df:5c:5e:ab:3d:87:c2:08:00 SRC=10.2.2.30 DST=10.64.16.67 LEN=40 TOS=00 PREC=0x00 TTL=63 ID=0 DF PROTO=TCP SPT=9243 DPT=45868 SEQ=705563702 ACK=0 WINDOW=0 RST URGP=0 MARK=0"
-        normalized_message: "[fw-in-drop] IN=eno1 OUT= MAC=14:18:77:61:49:df:5c:5e:ab:3d:87:c2:08:00 SRC=10.2.2.30 DST=10.64.16.67 LEN=40 TOS=00 PREC=0x00 TTL=63 ID=0 DF PROTO=TCP SPT=9243 DPT=45868 SEQ=705563702 ACK=0 WINDOW=0 RST URGP=0 MARK=0"
-        program: "ulogd"
-        protocol: "TCP"
-        severity: "info"
-        source_ip: "10.2.2.30"
-        source_port: "9243"
-        tags: [
-          "syslog",
-          "es",
-          "normalized_message_untrimmed",
-        ]
-        timestamp: "2020-05-05T10:34:50.333969+00:00"
-        ttl: "63"
-        type: "syslog"
+      - destination:
+          ip: "10.64.16.67"
+          port: "45868"
+        ecs:
+          version: "1.7.0"
+        event:
+          action: "drop"
+        host:
+          name: "mw1302"
+        labels:
+          len: "40"
+          ttl: "63"
+        log:
+          level: "INFO"
+          original: "[fw-in-drop] IN=eno1 OUT= MAC=14:18:77:61:49:df:5c:5e:ab:3d:87:c2:08:00 SRC=10.2.2.30 DST=10.64.16.67 LEN=40 TOS=00 PREC=0x00 TTL=63 ID=0 DF PROTO=TCP SPT=9243 DPT=45868 SEQ=705563702 ACK=0 WINDOW=0 RST URGP=0 MARK=0"
+          syslog:
+            facility:
+              code: 23
+              name: "local7"
+            priority: 190
+            severity:
+              code: 6
+              name: "informational"
+        network:
+          direction: "in"
+          protocol: "TCP"
+          type: "ipv4"
+        observer:
+          ingress:
+            interface:
+              name: "eno1"
+        service:
+          type: "ulogd"
+        source:
+          ip: "10.2.2.30"
+          port: "9243"
