@@ -21,6 +21,9 @@ class openstack::cinder::service::rocky(
     package { 'cinder-scheduler':
         ensure => 'present',
     }
+    package { 'cinder-volume':
+        ensure => 'present',
+    }
 
     file {
         '/etc/cinder/cinder.conf':
@@ -29,8 +32,8 @@ class openstack::cinder::service::rocky(
             group     => 'nogroup',
             mode      => '0440',
             show_diff => false,
-            notify    => Service['cinder-scheduler', 'nova-api'],
-            require   => Package['cinder-api', 'cinder-scheduler'];
+            notify    => Service['cinder-scheduler', 'nova-api', 'cinder-volume', 'cinder-api'],
+            require   => Package['cinder-api', 'cinder-scheduler', 'cinder-volume'];
         '/etc/cinder/policy.json':
             ensure  => 'absent';
         '/etc/cinder/policy.yaml':

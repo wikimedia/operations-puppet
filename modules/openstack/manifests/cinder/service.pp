@@ -36,6 +36,16 @@ class openstack::cinder::service(
         require => Package['cinder-scheduler'],
     }
 
+    service { 'cinder-api':
+        ensure  => $active,
+        require => Package['cinder-api'],
+    }
+
+    service { 'cinder-volume':
+        ensure  => $active,
+        require => Package['cinder-volume'],
+    }
+
     rsyslog::conf { 'cinder':
         source   => 'puppet:///modules/openstack/cinder/cinder.rsyslog.conf',
         priority => 40,
@@ -55,7 +65,7 @@ class openstack::cinder::service(
         comment    => 'cinder system user',
         gid        => 'cinder',
         managehome => true,
-        before     => Package['cinder-scheduler', 'cinder-api'],
+        before     => Package['cinder-scheduler', 'cinder-api', 'cinder-volume'],
         system     => true,
     }
 }

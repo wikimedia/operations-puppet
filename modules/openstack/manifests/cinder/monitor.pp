@@ -30,4 +30,13 @@ class openstack::cinder::monitor(
         contact_group => $contact_groups,
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Troubleshooting',
     }
+
+    nrpe::monitor_service { 'check_cinder_volume_process':
+        ensure        => $ensure,
+        critical      => $critical,
+        description   => 'cinder-volume process',
+        nrpe_command  => "/usr/lib/nagios/plugins/check_procs -c 1: --ereg-argument-array '^/usr/bin/python.* /usr/bin/cinder-volume'",
+        contact_group => $contact_groups,
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Troubleshooting',
+    }
 }
