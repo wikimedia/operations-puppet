@@ -10,7 +10,7 @@ osapi_volume_listen_port = <%= @api_bind_port %>
 my_ip = <%= @ipaddress %>
 
 # Availability zone of this node. Can be overridden per volume backend with the option "backend_availability_zone". (string value)
-#storage_availability_zone = nova
+storage_availability_zone = nova
 
 # Default availability zone for new volumes. If not set, the storage_availability_zone option value is used as the default for new volumes.
 # (string value)
@@ -272,7 +272,7 @@ rbd_max_clone_depth = 5
 rbd_store_chunk_size = 4
 rados_connect_timeout = -1
 glance_api_version = 2
-rbd_user = volumes
+rbd_user = <%= @ceph_pool %>
 rbd_secret_uuid = <%= @libvirt_rbd_uuid %>
 
 [client.volumes]
