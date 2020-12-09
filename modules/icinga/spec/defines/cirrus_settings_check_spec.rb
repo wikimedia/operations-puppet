@@ -50,8 +50,8 @@ describe 'icinga::monitor::elasticsearch::cirrus_settings_check', :type => :defi
       it { is_expected.to contain_file('/etc/elasticsearch/my_cluster_name/cirrus_check_settings.yaml')
             .with_content(<<-EOM
 - "$.search.remote.gamma.seeds":
-- host1:9900
-- host2:9900
+  - host1:9900
+  - host2:9900
 
 EOM
             )
