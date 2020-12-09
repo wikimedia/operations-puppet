@@ -29,7 +29,7 @@ class openstack::cinder::service::rocky(
             group     => 'nogroup',
             mode      => '0440',
             show_diff => false,
-            notify    => Service['apache2', 'cinder-scheduler', 'nova-api'],
+            notify    => Service['cinder-scheduler', 'nova-api'],
             require   => Package['cinder-api', 'cinder-scheduler'];
         '/etc/cinder/policy.json':
             ensure  => 'absent';
