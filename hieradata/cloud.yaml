@@ -226,6 +226,14 @@ profile::swift::proxy::rewrite_account: ~
 profile::swift::proxy::thumborhost: ~
 profile::swift::proxy::inactivedc_thumborhost: ~
 
+profile::memcached::threads: ~
+profile::memcached::version: 'present'
+profile::memcached::growth_factor: 1.05
+profile::memcached::min_slab_size: 48
+profile::memcached::max_seq_reqs: 200
+profile::memcached::size: ~
+profile::memcached::extended_options: []
+profile::memcached::port: 11211
 
 
 # Only added to make CI happy. cloud has no LVS

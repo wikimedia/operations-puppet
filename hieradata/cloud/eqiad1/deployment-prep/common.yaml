@@ -113,6 +113,8 @@ logstash_logback_port: 11514
 
 profile::memcached::version: 'present'
 profile::memcached::growth_factor: 1.05
+profile::memcached::max_seq_reqs: 200
+profile::memcached::threads: ~
 profile::memcached::min_slab_size: 5
 profile::memcached::size: 3000
 profile::memcached::extended_options:

@@ -16,6 +16,7 @@
 #
 # [*extended_options*]
 #   Extended options to enable various memcached features.
+#   Default: []
 #
 # [*max_seq_reqs*]
 #   Maximum number of sequential requests (over the same TCP conn)
@@ -39,14 +40,14 @@
 #   Default: undef (memcached's default is 4)
 #
 class profile::memcached::instance (
-    String $version                 = lookup('profile::memcached::version'),
-    Stdlib::Port $port              = lookup('profile::memcached::port'),
-    Integer $size                   = lookup('profile::memcached::size'),
-    Array[String] $extended_options = lookup('profile::memcached::extended_options', {merge => unique}),
-    Integer $max_seq_reqs           = lookup('profile::memcached::max_seq_reqs', {'default_value' => 200}),
-    Integer $min_slab_size          = lookup('profile::memcached::min_slab_size', {'default_value' => 48}),
-    Float $growth_factor            = lookup('profile::memcached::growth_factor', {'default_value' => 1.25}),
-    Optional[Integer] $threads      = lookup('profile::memcached::threads', {'default_value' => undef}),
+    String            $version          = lookup('profile::memcached::version'),
+    Stdlib::Port      $port             = lookup('profile::memcached::port'),
+    Integer           $size             = lookup('profile::memcached::size'),
+    Array[String]     $extended_options = lookup('profile::memcached::extended_options'),
+    Integer           $max_seq_reqs     = lookup('profile::memcached::max_seq_reqs'),
+    Integer           $min_slab_size    = lookup('profile::memcached::min_slab_size'),
+    Float             $growth_factor    = lookup('profile::memcached::growth_factor'),
+    Optional[Integer] $threads          = lookup('profile::memcached::threads'),
 ) {
     include ::profile::prometheus::memcached_exporter
 

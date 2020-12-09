@@ -1,0 +1,10 @@
+profile::standard::admin_groups:
+  - perf-roots
+profile::memcached::threads: ~
+profile::memcached::version: 'present'
+profile::memcached::growth_factor: 1.25
+profile::memcached::min_slab_size: 48
+profile::memcached::max_seq_reqs: 200
+profile::memcached::size: ~
+profile::memcached::extended_options: []
+profile::memcached::port: 11211

@@ -2,3 +2,11 @@ cluster: wmcs
 contactgroups: wmcs-team
 mgmt_contactgroups: wmcs-team-email
 raid::md::cron_ensure: absent
+
+profile::memcached::version: 'present'
+profile::memcached::growth_factor: 1.05
+profile::memcached::min_slab_size: 5
+profile::memcached::extended_options:
+  - 'slab_reassign'
+profile::memcached::size: 2000
+profile::memcached::port: 11211
