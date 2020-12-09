@@ -104,6 +104,8 @@ class Host:
             'state': self.state,
             'optimal': self.optimal,
             'failed_services': self.failed_services,
+            'downtimed': self.downtimed,
+            'notifications_enabled': self.notifications_enabled,
         }
 
     to_json = __json__
