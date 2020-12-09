@@ -44,7 +44,7 @@ class racktables ($racktables_host, $racktables_db_host, $racktables_db) {
 
     # Authentication is provided by CAS and only ops are allowed access
     file_line {'make everyone admin':
-        path    => '/srv/org/wikimedia/racktables/wwwroot/inc/secret.php',
+        path    => '/srv/org/wikimedia/racktables/wwwroot/inc/auth.php',
         line    => "\t\t\t\$remote_username = 'admin'",
         match   => '^\s+\$remote_username\s+=\s+\$_SERVER\[\'REMOTE_USER\'\];',
         replace => true,
