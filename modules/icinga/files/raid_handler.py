@@ -1,8 +1,8 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 """Nagios/Icinga Event Handler for RAID checks"""
 
 import argparse
-import configparser
+import ConfigParser
 import logging
 import re
 import subprocess
@@ -128,7 +128,7 @@ def get_raid_status(host, raid_type):
 def get_phabricator_client():
     """Return a Phabricator client instance"""
 
-    parser = configparser.SafeConfigParser()
+    parser = ConfigParser.SafeConfigParser()
     parser_mode = 'phabricator_bot'
     parser.read(PHABRICATOR_CONFIG_FILE)
 
@@ -160,9 +160,9 @@ def get_phabricator_project_ids(phab_client, datacenter):
         raise RuntimeError("Unable to find PHID")
 
     logger.debug("Found PHIDs '{}' for project '{}' and Operations".format(
-        list(projects.data.keys()), project_name))
+        projects.data.keys(), project_name))
 
-    return list(projects.data.keys())
+    return projects.data.keys()
 
 
 def open_phabricator_task(
