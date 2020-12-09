@@ -104,7 +104,7 @@ class Host:
             'state': self.state,
             'optimal': self.optimal,
             'failed_services': self.failed_services,
-            'downtime': self.downtime,
+            'downtimed': self.downtimed,
             'notifications_enabled': self.notifications_enabled,
         }
 
