@@ -10,9 +10,5 @@ class role::mediawiki::memcached{
     include profile::memcached::instance
     include profile::memcached::memkeys
     include profile::memcached::performance
-
-    # Trying out buster on one shard (T252391)
-    if debian::codename::eq('jessie') {
-        include profile::redis::multidc
-    }
+    include profile::redis::multidc
 }
