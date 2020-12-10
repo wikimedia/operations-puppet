@@ -30,8 +30,8 @@ class wikistats::db (
     systemd::timer::job { 'wikistats-dbdump':
         ensure            => 'present',
         user              => 'root',
-        description       => 'create a database backup with mysqldump',
-        command           => '/usr/local/bin/wikistats/dumpdb.sh',
+        description       => 'create a database backup',
+        command           => '/usr/local/bin/wikistats/dbdump.sh',
         logging_enabled   => true,
         logfile_basedir   => '/var/log/wikistats/',
         logfile_name      => 'dbdump.log',
