@@ -92,7 +92,7 @@ class otrs(
         'default-mysql-client',
 
     ]
-    require_package($packages)
+    ensure_packages($packages)
 
     user { 'otrs':
         home       => '/var/lib/otrs',
