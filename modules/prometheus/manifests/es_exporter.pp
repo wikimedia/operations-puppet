@@ -26,4 +26,6 @@ class prometheus::es_exporter {
         override => true,
         restart  => true,
     }
+
+    base::service_auto_restart { 'prometheus-es-exporter': }
 }
