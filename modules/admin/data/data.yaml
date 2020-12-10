@@ -91,7 +91,7 @@ groups:
               kevinbazira, mstyles, zpapierski, clarakosi, dpifke,
               phuedx, samwilson, dmaza, tchanders,
               wikigit, arlolra, daniel, bpirkle, cicalese, dancy, chrisalbon,
-              jdl, holger, annet, jgiannelos]
+              jdl, holger, annet, jgiannelos, kharlan]
     privileges: ['ALL = (www-data,mwdeploy,l10nupdate) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /usr/sbin/apache2ctl',
                  'ALL = NOPASSWD: /etc/init.d/apache2',
