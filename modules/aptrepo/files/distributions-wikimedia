@@ -80,6 +80,7 @@ Components: main
  thirdparty/amd-rocm37
  thirdparty/amd-rocm38
  thirdparty/bigtop14
+ thirdparty/bigtop15
  thirdparty/ci
  thirdparty/cloudera
  thirdparty/confluent
@@ -102,6 +103,7 @@ Update:
  amd-rocm37
  amd-rocm38
  bigtop14
+ bigtop15
  confluent
  elastic55
  elastic56

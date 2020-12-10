@@ -9,12 +9,12 @@
 # will be prefered.
 #
 class profile::cdh::apt (
-    $pin_release = hiera('profile::cdh::apt::pin_release', true),
-    $use_bigtop  = hiera('profile::cdh::apt::use_bigtop', false),
+    Boolean $pin_release = lookup('profile::cdh::apt::pin_release', { 'default_value' => true }),
+    Optional[String] $bigtop_component = lookup('profile::cdh::apt::bigtop_component', { 'default_value' => undef }),
 ){
 
-    if $use_bigtop {
-        $thirdparty_component_name = 'bigtop14'
+    if $bigtop_component {
+        $thirdparty_component_name = $bigtop_component
     } else {
         $thirdparty_component_name = 'cloudera'
     }
