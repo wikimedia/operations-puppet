@@ -273,7 +273,7 @@ rbd_store_chunk_size = 4
 rados_connect_timeout = -1
 glance_api_version = 2
 rbd_user = <%= @ceph_pool %>
-rbd_secret_uuid = <%= @libvirt_rbd_uuid %>
+rbd_secret_uuid = <%= @libvirt_rbd_cinder_uuid %>
 
 [client.volumes]
 keyring = /etc/ceph/ceph.client.<%= @ceph_pool %>.keyring

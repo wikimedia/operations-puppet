@@ -4,17 +4,20 @@
 # using the native kernel driver or librbd. This includes some extras for integration
 # with nova/libvirt/qemu
 class profile::ceph::client::rbd_libvirt(
-    Boolean             $enable_v2_messenger = lookup('profile::ceph::client::rbd::enable_v2_messenger'),
-    Hash[String,Hash]   $mon_hosts           = lookup('profile::ceph::mon::hosts'),
-    Stdlib::IP::Address $cluster_network     = lookup('profile::ceph::cluster_network'),
-    Stdlib::IP::Address $public_network      = lookup('profile::ceph::public_network'),
-    Stdlib::Unixpath    $data_dir            = lookup('profile::ceph::data_dir'),
-    String              $client_name         = lookup('profile::ceph::client::rbd::client_name'),
-    String              $fsid                = lookup('profile::ceph::fsid'),
-    String              $keydata             = lookup('profile::ceph::client::rbd::keydata'),
-    String              $keyfile_group       = lookup('profile::ceph::client::rbd::keyfile_group'),
-    String              $keyfile_owner       = lookup('profile::ceph::client::rbd::keyfile_owner'),
-    String              $libvirt_rbd_uuid    = lookup('profile::ceph::client::rbd::libvirt_rbd_uuid'),
+    Boolean             $enable_v2_messenger     = lookup('profile::ceph::client::rbd::enable_v2_messenger'),
+    Hash[String,Hash]   $mon_hosts               = lookup('profile::ceph::mon::hosts'),
+    Stdlib::IP::Address $cluster_network         = lookup('profile::ceph::cluster_network'),
+    Stdlib::IP::Address $public_network          = lookup('profile::ceph::public_network'),
+    Stdlib::Unixpath    $data_dir                = lookup('profile::ceph::data_dir'),
+    String              $client_name             = lookup('profile::ceph::client::rbd::client_name'),
+    String              $cinder_client_name      = lookup('profile::ceph::client::rbd::cinder_client_name'),
+    String              $fsid                    = lookup('profile::ceph::fsid'),
+    String              $keydata                 = lookup('profile::ceph::client::rbd::keydata'),
+    String              $cinder_keydata          = lookup('profile::ceph::client::rbd::cinder_client_keydata'),
+    String              $keyfile_group           = lookup('profile::ceph::client::rbd::keyfile_group'),
+    String              $keyfile_owner           = lookup('profile::ceph::client::rbd::keyfile_owner'),
+    String              $libvirt_rbd_uuid        = lookup('profile::ceph::client::rbd::libvirt_rbd_uuid'),
+    String              $libvirt_rbd_cinder_uuid = lookup('profile::ceph::client::rbd::libvirt_rbd_cinder_uuid'),
 ) {
 
     class { 'ceph::common':
@@ -41,6 +44,7 @@ class profile::ceph::client::rbd_libvirt(
         show_diff => false,
         require   => Package['ceph-common'],
     }
+
     #TODO libvirt dependency
     file { '/etc/ceph/libvirt-secret.xml':
         ensure    => present,
@@ -48,6 +52,15 @@ class profile::ceph::client::rbd_libvirt(
         owner     => 'root',
         group     => 'root',
         content   => template('profile/ceph/libvirt-secret.xml.erb'),
+        show_diff => false,
+        require   => Package['ceph-common'],
+    }
+    file { '/etc/ceph/libvirt-cinder-secret.xml':
+        ensure    => present,
+        mode      => '0400',
+        owner     => 'root',
+        group     => 'root',
+        content   => template('profile/ceph/libvirt-cinder-secret.xml.erb'),
         show_diff => false,
         require   => Package['ceph-common'],
     }
@@ -64,5 +77,18 @@ class profile::ceph::client::rbd_libvirt(
         unless    => "/usr/bin/virsh secret-get-value --secret ${libvirt_rbd_uuid} | grep -q ${keydata}",
         logoutput => false,
         require   => Exec['check-virsh-secret'],
+    }
+
+    exec { 'check-virsh-secret-cinder':
+        command   => '/usr/bin/virsh secret-define --file /etc/ceph/libvirt-cinder-secret.xml',
+        unless    => "/usr/bin/virsh secret-list | grep -q ${libvirt_rbd_uuid}",
+        logoutput => false,
+        require   => File['/etc/ceph/libvirt-cinder-secret.xml'],
+    }
+    exec { 'set-virsh-secret-cinder':
+        command   => "/usr/bin/virsh secret-set-value --secret ${libvirt_rbd_cinder_uuid} --base64 ${cinder_keydata}",
+        unless    => "/usr/bin/virsh secret-get-value --secret ${libvirt_rbd_cinder_uuid} | grep -q ${cinder_keydata}",
+        logoutput => false,
+        require   => Exec['check-virsh-secret-cinder'],
     }
 }

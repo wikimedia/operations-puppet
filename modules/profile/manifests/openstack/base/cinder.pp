@@ -13,28 +13,28 @@ class profile::openstack::base::cinder(
     String $ceph_pool = lookup('profile::openstack::base::cinder::ceph_pool'),
     String $rabbit_user = lookup('profile::openstack::base::nova::rabbit_user'),
     String $rabbit_pass = lookup('profile::openstack::base::nova::rabbit_pass'),
-    String $libvirt_rbd_uuid = lookup('profile::ceph::client::rbd::libvirt_rbd_uuid'),
+    String $libvirt_rbd_cinder_uuid = lookup('profile::ceph::client::rbd::libvirt_rbd_cinder_uuid'),
     Boolean $active = lookup('profile::openstack::base::cinder_active'),
     ) {
 
     $keystone_admin_uri = "http://${keystone_fqdn}:${auth_port}"
 
     class { '::openstack::cinder::service':
-        version               => $version,
-        active                => $active,
-        openstack_controllers => $openstack_controllers,
-        keystone_admin_uri    => $keystone_admin_uri,
-        region                => $region,
-        db_user               => $db_user,
-        db_pass               => $db_pass,
-        db_name               => $db_name,
-        db_host               => $db_host,
-        ceph_pool             => $ceph_pool,
-        api_bind_port         => $api_bind_port,
-        ldap_user_pass        => $ldap_user_pass,
-        rabbit_user           => $rabbit_user,
-        rabbit_pass           => $rabbit_pass,
-        libvirt_rbd_uuid      => $libvirt_rbd_uuid,
+        version                 => $version,
+        active                  => $active,
+        openstack_controllers   => $openstack_controllers,
+        keystone_admin_uri      => $keystone_admin_uri,
+        region                  => $region,
+        db_user                 => $db_user,
+        db_pass                 => $db_pass,
+        db_name                 => $db_name,
+        db_host                 => $db_host,
+        ceph_pool               => $ceph_pool,
+        api_bind_port           => $api_bind_port,
+        ldap_user_pass          => $ldap_user_pass,
+        rabbit_user             => $rabbit_user,
+        rabbit_pass             => $rabbit_pass,
+        libvirt_rbd_cinder_uuid => $libvirt_rbd_cinder_uuid,
     }
 
     include ::network::constants
