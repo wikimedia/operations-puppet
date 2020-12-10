@@ -150,56 +150,60 @@ def main():
             sys.exit(1)
 
     db_connections = {}
-    for instance in config["mysql_instances"]:
-        socket = (
-            "/run/mysqld/mysqld.sock"
-            if instance == "all"
-            else "/run/mysqld/mysqld.{}.sock".format(instance)
-        )
-        db_connections[instance] = pymysql.connect(
-            user=config["mysql_user"],
-            passwd=config["mysql_password"],
-            unix_socket=socket,
-            charset="utf8",
-        )
+    try:
+        for instance in config["mysql_instances"]:
+            socket = (
+                "/run/mysqld/mysqld.sock"
+                if instance == "all"
+                else "/run/mysqld/mysqld.{}.sock".format(instance)
+            )
+            db_connections[instance] = pymysql.connect(
+                user=config["mysql_user"],
+                passwd=config["mysql_password"],
+                unix_socket=socket,
+                charset="utf8",
+            )
 
-    for instance in config["mysql_instances"]:
-        for index in config["indexes"]:
-            with db_connections[instance].cursor() as cursor:
-                cursor.execute("SET NAMES 'utf8';")
-                cursor.execute("SET SESSION innodb_lock_wait_timeout=1;")
-                cursor.execute("SET SESSION lock_wait_timeout=60;")
-                dbs = dbs_with_table(
-                    cursor, index["table"], database=args.database
-                )
-                for db_name in dbs:
-                    with db_connections[instance].cursor() as change_cursor:
-                        existing_index = current_index_columns(
-                            change_cursor, db_name, index
-                        )
-                        if not existing_index:
-                            write_index(
-                                change_cursor,
-                                db_name,
-                                index,
-                                args.dryrun,
-                                args.debug,
+        for instance in config["mysql_instances"]:
+            for index in config["indexes"]:
+                with db_connections[instance].cursor() as cursor:
+                    cursor.execute("SET NAMES 'utf8';")
+                    cursor.execute("SET SESSION innodb_lock_wait_timeout=1;")
+                    cursor.execute("SET SESSION lock_wait_timeout=60;")
+                    dbs = dbs_with_table(
+                        cursor, index["table"], database=args.database
+                    )
+                    for db_name in dbs:
+                        with db_connections[instance].cursor() as change_cursor:
+                            existing_index = current_index_columns(
+                                change_cursor, db_name, index
                             )
-                        elif existing_index == index["columns"]:
-                            logging.debug(
-                                "Skipping %s -- already exists", index["name"]
-                            )
-                        else:
-                            drop_index(
-                                change_cursor, db_name, index, args.dryrun
-                            )
-                            write_index(
-                                change_cursor,
-                                db_name,
-                                index,
-                                args.dryrun,
-                                args.debug,
-                            )
+                            if not existing_index:
+                                write_index(
+                                    change_cursor,
+                                    db_name,
+                                    index,
+                                    args.dryrun,
+                                    args.debug,
+                                )
+                            elif existing_index == index["columns"]:
+                                logging.debug(
+                                    "Skipping %s -- already exists", index["name"]
+                                )
+                            else:
+                                drop_index(
+                                    change_cursor, db_name, index, args.dryrun
+                                )
+                                write_index(
+                                    change_cursor,
+                                    db_name,
+                                    index,
+                                    args.dryrun,
+                                    args.debug,
+                                )
+    finally:
+        for _, conn in db_connections.items():
+            conn.close()
 
 
 if __name__ == "__main__":

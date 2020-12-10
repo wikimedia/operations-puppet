@@ -650,87 +650,64 @@ def main():
     )
 
     db_connections = {}
-    for instance in config["mysql_instances"]:
-        socket = (
-            "/run/mysqld/mysqld.sock"
-            if instance == "all"
-            else "/run/mysqld/mysqld.{}.sock".format(instance)
-        )
-        db_connections[instance] = pymysql.connect(
-            user=config["mysql_user"],
-            passwd=config["mysql_password"],
-            unix_socket=socket,
-            charset="utf8",
-        )
+    try:
+        for instance in config["mysql_instances"]:
+            socket = (
+                "/run/mysqld/mysqld.sock"
+                if instance == "all"
+                else "/run/mysqld/mysqld.{}.sock".format(instance)
+            )
+            db_connections[instance] = pymysql.connect(
+                user=config["mysql_user"],
+                passwd=config["mysql_password"],
+                unix_socket=socket,
+                charset="utf8",
+            )
 
-    # This will include private and deleted dbs at this stage
-    if config["mysql_instances"][0] == "all":
-        all_available_dbs = (
-            read_dblist("all", args.mediawiki_config) + config["add_to_all_dbs"]
-        )
-    else:
-        all_available_dbs = []
-        for inst in config["mysql_instances"]:
-            all_available_dbs.extend(read_dblist(inst, args.mediawiki_config))
-            if inst == "s7":
-                all_available_dbs.extend(config["add_to_all_dbs"])
+        # This will include private and deleted dbs at this stage
+        if config["mysql_instances"][0] == "all":
+            all_available_dbs = (
+                read_dblist("all", args.mediawiki_config) + config["add_to_all_dbs"]
+            )
+        else:
+            all_available_dbs = []
+            for inst in config["mysql_instances"]:
+                all_available_dbs.extend(read_dblist(inst, args.mediawiki_config))
+                if inst == "s7":
+                    all_available_dbs.extend(config["add_to_all_dbs"])
 
-    # argparse will ensure we are declaring explicitly
-    dbs = all_available_dbs
-    if args.databases:
-        dbs = [db for db in args.databases if db in all_available_dbs]
+        # argparse will ensure we are declaring explicitly
+        dbs = all_available_dbs
+        if args.databases:
+            dbs = [db for db in args.databases if db in all_available_dbs]
 
-    if not dbs:
-        logging.info("This server doesn't host that database")
-        return 0
+        if not dbs:
+            logging.info("This server doesn't host that database")
+            return 0
 
-    # purge all sensitive dbs so they are never attempted
-    allowed_dbs = dbs
-    for db_list in sensitive_db_lists:
-        pdbs = read_dblist(db_list, args.mediawiki_config)
-        allowed_dbs = [x for x in allowed_dbs if x not in pdbs]
+        # purge all sensitive dbs so they are never attempted
+        allowed_dbs = dbs
+        for db_list in sensitive_db_lists:
+            pdbs = read_dblist(db_list, args.mediawiki_config)
+            allowed_dbs = [x for x in allowed_dbs if x not in pdbs]
 
-    logging.debug("Removing %s dbs as sensitive", len(dbs) - len(allowed_dbs))
-    if not allowed_dbs:
-        logging.error("None of the specified dbs are allowed")
-        return 1
+        logging.debug("Removing %s dbs as sensitive", len(dbs) - len(allowed_dbs))
+        if not allowed_dbs:
+            logging.error("None of the specified dbs are allowed")
+            return 1
 
-    # assign all metadata from lists
-    dbs_with_metadata = {x: {} for x in allowed_dbs}
-    for db_list, meta in dbs_metadata.items():
-        for db in read_dblist(db_list, args.mediawiki_config):
-            if db in dbs_with_metadata:
-                dbs_with_metadata[db].update(meta)
+        # assign all metadata from lists
+        dbs_with_metadata = {x: {} for x in allowed_dbs}
+        for db_list, meta in dbs_metadata.items():
+            for db in read_dblist(db_list, args.mediawiki_config):
+                if db in dbs_with_metadata:
+                    dbs_with_metadata[db].update(meta)
 
-    if config["mysql_instances"][0] == "all":
-        return dbrun(
-            db_connections,
-            "all",
-            dbs_with_metadata,
-            args.dry_run,
-            args.replace_all,
-            args.drop,
-            fullviews,
-            args.clean,
-            customviews,
-            all_tables,
-        )
-
-    # At this point we are on a multi-instance replica
-    dbs_in_scope = set(dbs_with_metadata.keys())
-    for inst in config["mysql_instances"]:
-        dbs_in_section = set(read_dblist(inst, args.mediawiki_config))
-        instance_dbs = dbs_in_scope.intersection(dbs_in_section)
-        instance_dbs_with_metadata = {
-            db: meta
-            for (db, meta) in dbs_with_metadata.items()
-            if db in instance_dbs
-        }
-        if instance_dbs_with_metadata:
-            exit_status = dbrun(
+        if config["mysql_instances"][0] == "all":
+            return dbrun(
                 db_connections,
-                inst,
-                instance_dbs_with_metadata,
+                "all",
+                dbs_with_metadata,
                 args.dry_run,
                 args.replace_all,
                 args.drop,
@@ -739,10 +716,37 @@ def main():
                 customviews,
                 all_tables,
             )
-            if exit_status != 0:
-                return exit_status
 
-    return exit_status
+        # At this point we are on a multi-instance replica
+        dbs_in_scope = set(dbs_with_metadata.keys())
+        for inst in config["mysql_instances"]:
+            dbs_in_section = set(read_dblist(inst, args.mediawiki_config))
+            instance_dbs = dbs_in_scope.intersection(dbs_in_section)
+            instance_dbs_with_metadata = {
+                db: meta
+                for (db, meta) in dbs_with_metadata.items()
+                if db in instance_dbs
+            }
+            if instance_dbs_with_metadata:
+                exit_status = dbrun(
+                    db_connections,
+                    inst,
+                    instance_dbs_with_metadata,
+                    args.dry_run,
+                    args.replace_all,
+                    args.drop,
+                    fullviews,
+                    args.clean,
+                    customviews,
+                    all_tables,
+                )
+                if exit_status != 0:
+                    break
+
+        return exit_status
+    finally:
+        for _, conn in db_connections.items():
+            conn.close()
 
 
 if __name__ == "__main__":
