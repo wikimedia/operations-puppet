@@ -38,11 +38,13 @@ class PrometheusBlazeGraphExporter(object):
     scrape_duration = Summary(
         'blazegraph_scrape_duration_seconds', 'Blazegraph exporter scrape duration')
 
-    def __init__(self, blazegraph_port):
+    def __init__(self, nginx_port, blazegraph_port, namespace):
 
         self.url = 'http://localhost:{port}/bigdata'.format(port=blazegraph_port)
+        self.nginx_base_url = 'http://localhost:{nginx_port}/bigdata'.format(nginx_port=nginx_port)
         self.counters = []
-        self.sparql_endpoint = '{base_url}/namespace/wdq/sparql'.format(base_url=self.url)
+        self.sparql_endpoint = '{nginx_base_url}/namespace/{namespace}/sparql'.format(
+                                nginx_base_url=self.nginx_base_url, namespace=namespace)
 
     def query_to_metric(self, qname):
         return qname.replace(' ', '_').replace('/', '.').lstrip('.')
@@ -263,10 +265,14 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('-l', '--listen', metavar='ADDRESS',
                         help='Listen on this address', default=':9193')
-    parser.add_argument('-p', '--port', metavar='PORT',
+    parser.add_argument('--nginx-port', metavar='NGINX_PORT',
+                        help='Nginx port to query for namespace metrics', default='80', type=int)
+    parser.add_argument('--blazegraph-port', metavar='BLAZEGRAPH_PORT',
                         help='Blazegraph port to query for metrics', default='9999', type=int)
     parser.add_argument('-d', '--debug', action='store_true',
                         help='Enable debug logging')
+    parser.add_argument('-n', '--namespace', metavar='BLAZEGRAPH_NAMESPACE',
+                        help='Blazegraph namespace to use for namespace specific metrics.')
     args = parser.parse_args()
 
     if args.debug:
@@ -276,9 +282,11 @@ def main():
 
     address, listen_port = args.listen.split(':', 1)
 
-    log.info('Starting blazegraph_exporter on %s:%s', address, listen_port)
+    log.info('Starting blazegraph_exporter on %s:%s with namespace set to %s',
+             address, listen_port, args.namespace)
 
-    REGISTRY.register(PrometheusBlazeGraphExporter(args.port))
+    REGISTRY.register(PrometheusBlazeGraphExporter(
+                      args.nginx_port, args.blazegraph_port, args.namespace))
     start_http_server(int(listen_port), addr=address)
 
     try:

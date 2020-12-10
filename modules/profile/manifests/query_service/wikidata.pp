@@ -38,6 +38,7 @@ class profile::query_service::wikidata(
     require ::profile::query_service::gui
 
     $instance_name = "${deploy_name}-blazegraph"
+    $nginx_port = 80
     $blazegraph_port = 9999
     $prometheus_port = 9193
     $prometheus_agent_port = 9102
@@ -60,6 +61,7 @@ class profile::query_service::wikidata(
         monitoring_enabled     => $monitoring_enabled,
         sparql_query_stream    => $sparql_query_stream,
         event_service_endpoint => $event_service_endpoint,
+        nginx_port             => $nginx_port,
         blazegraph_port        => $blazegraph_port,
         prometheus_port        => $prometheus_port,
         prometheus_agent_port  => $prometheus_agent_port,

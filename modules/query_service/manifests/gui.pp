@@ -11,7 +11,7 @@
 # - $deploy_mode: deployment mode. e.g scap3, manual etc
 # - enable_ldf: boolean flag for enabling or disabling ldf
 # - $max_query_time_millis: maximum query time in milliseconds
-# - $ns: The blazegraph namespace to expose over http at /sparql
+# - $blazegraph_main_ns: The blazegraph namespace to expose over http at /sparql
 class query_service::gui(
     String $package_dir,
     String $data_dir,

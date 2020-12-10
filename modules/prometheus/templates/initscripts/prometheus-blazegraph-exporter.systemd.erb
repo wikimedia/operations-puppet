@@ -4,7 +4,7 @@ Description=Prometheus Blazegraph Exporter (<%= @title %>)
 [Service]
 Restart=always
 User=prometheus
-ExecStart=/usr/local/bin/prometheus-blazegraph-exporter --listen :<%= @prometheus_port %> --port <%= @blazegraph_port %>
+ExecStart=/usr/local/bin/prometheus-blazegraph-exporter --listen :<%= @prometheus_port %> --blazegraph-port <%= @blazegraph_port %> --nginx-port <%= @nginx_port %> --namespace <%= $blazegraph_main_ns %>
 
 [Install]
 WantedBy=multi-user.target

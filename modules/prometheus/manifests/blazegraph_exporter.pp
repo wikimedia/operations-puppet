@@ -1,7 +1,9 @@
 define prometheus::blazegraph_exporter (
+    $nginx_port,
     $blazegraph_port,
     $prometheus_port,
     $prometheus_nodes,
+    $blazegraph_main_ns,
 ) {
     $prometheus_ferm_nodes = join($prometheus_nodes, ' ')
     $ferm_srange = "(@resolve((${prometheus_ferm_nodes})) @resolve((${prometheus_ferm_nodes}), AAAA))"

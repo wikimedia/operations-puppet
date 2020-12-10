@@ -27,6 +27,7 @@ class profile::query_service::categories(
     include ::profile::query_service::monitor::categories
 
     $instance_name = "${deploy_name}-categories"
+    $nginx_port = 80
     $blazegraph_port = 9990
     $prometheus_port = 9194
     $prometheus_agent_port = 9103
@@ -52,6 +53,7 @@ class profile::query_service::categories(
         monitoring_enabled     => true, # ????
         sparql_query_stream    => undef,
         event_service_endpoint => undef,
+        nginx_port             => $nginx_port,
         blazegraph_port        => $blazegraph_port,
         prometheus_port        => $prometheus_port,
         prometheus_agent_port  => $prometheus_agent_port,

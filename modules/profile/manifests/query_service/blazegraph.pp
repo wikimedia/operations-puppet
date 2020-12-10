@@ -12,6 +12,7 @@ define profile::query_service::blazegraph (
     Array[String] $prometheus_nodes,
     String $contact_groups,
     Boolean $monitoring_enabled,
+    Stdlib::Port $nginx_port,
     Stdlib::Port $blazegraph_port,
     Stdlib::Port $prometheus_port,
     Stdlib::Port $prometheus_agent_port,
@@ -60,9 +61,11 @@ define profile::query_service::blazegraph (
     }
 
     prometheus::blazegraph_exporter { $instance_name:
-        blazegraph_port  => $blazegraph_port,
-        prometheus_port  => $prometheus_port,
-        prometheus_nodes => $prometheus_nodes,
+        nginx_port         => $nginx_port,
+        blazegraph_port    => $blazegraph_port,
+        prometheus_port    => $prometheus_port,
+        prometheus_nodes   => $prometheus_nodes,
+        blazegraph_main_ns => $blazegraph_main_ns,
     }
 
     query_service::blazegraph { $instance_name:
