@@ -1,5 +1,6 @@
 # https://github.com/prymitive/karma/blob/master/docs/CONFIGURATION.md
 alertmanager:
+  interval: 10s
   servers:
     - name: "<%= @facts['domain']  %>"
       uri: "http://localhost:9093"
