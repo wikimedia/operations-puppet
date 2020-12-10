@@ -2,7 +2,7 @@
 # See http://wikitech.wikimedia.org/view/PoolCounter
 
 class poolcounter {
-    require_package('poolcounter')
+    ensure_packages(['poolcounter'])
 
     service { 'poolcounter':
         ensure  => 'running',
