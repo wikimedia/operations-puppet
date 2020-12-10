@@ -109,6 +109,7 @@ profile::kafka::broker::custom_ferm_srange_components:
   - '(@resolve((logstash2030.codfw.wmnet)) @resolve((logstash2030.codfw.wmnet), AAAA))'
   - '(@resolve((logstash2031.codfw.wmnet)) @resolve((logstash2031.codfw.wmnet), AAAA))'
   - '(@resolve((kafka-test1006.eqiad.wmnet)) @resolve((kafka-test1006.eqiad.wmnet), AAAA))'
+  - '(@resolve((kafka-test1007.eqiad.wmnet)) @resolve((kafka-test1007.eqiad.wmnet), AAAA))'
 
 # Kafka doesn't support Java 11 for versions
 # lower than 2.1

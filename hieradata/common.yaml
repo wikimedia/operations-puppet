@@ -680,6 +680,9 @@ kafka_clusters:
       kafka-test1006.eqiad.wmnet:
         id: 1006
         rack: B
+      kafka-test1007.eqiad.wmnet:
+        id: 1007
+        rack: B
 
 # Oozie base configuration is common to multiple profiles, and must be kept
 # in sync. Instead of having it repated multiple times it is convenient to
