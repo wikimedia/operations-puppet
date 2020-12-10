@@ -148,7 +148,7 @@ groups:
   releasers-wikibase:
     gid: 807
     description: people who upload wikibase releases (T268818)
-    members: [addshore, hoo, tarrow, wmde-leszek]
+    members: [addshore, hoo, tarrow, wmde-leszek, toan]
   releasers-blubber:
     gid: 808
     description: people who upload blubber releases
@@ -3943,6 +3943,15 @@ users:
     ssh_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDww6LwxZbh9bX4srcYZ911tFdXmUpXUD4tpIDnSQ3BTti8uDxcUfJ5Z2FSEYpolOYareiTOAcsk7QUVMxVm3oS6ineVLBTSvVtjaaR+4Me4BGba/GmNhwaw6V/bKaYHNmDZRlOJzKQOgOQN4MZogA0Pc2H2GPFWpwZ+FEZH8ljTI2A7M2O2cE5I8iwYk4PLaihkqVud8SFe8dzW7BMfLj0RPxek4u7y2/HpLw4gIygcvWDKIl6MTOPdO63ZQuLYxtVReoq1PayKUce4jR8dYzl+Wq09/O8RguhRw7MD/86AfG3YkIguXwAKZvYaZbk3DGLNArKPJUhZ9CiqDIh6w7yyWSTS/gNUBtN7HwjMsAcF8D8xed1Al10v7paX9iO3kasAEUYXJPt1jvcnV7feFZe2Wx04SD5RG3jLyW98VjjFy9fCujZ7HwWFiyqo8+lwLFkpFLDEp2az68aB3Z04fIKKGwjOQe6n63QUcUF08Eg6GrAhe/vRq1xF/qnMpWNb90=
     krb: present
+  toan:
+    ensure: present
+    realname: Tobias Andersson
+    email: tobias.andersson@wikimedia.de
+    uid: 24354
+    gid: 500
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJnJucB0FLTr5RIaUfy/oFP95U7afCiTXJWTVTvH5kRF toan@C342
+
 ldap_only_users:
   abartov:
     ensure: present
@@ -4505,10 +4514,6 @@ ldap_only_users:
     ensure: present
     realname: Antonino Hemmer
     email: ahemmer@wikimedia.org
-  toan:
-    ensure: present
-    realname: Tobias Andersson
-    email: tobias.andersson@wikimedia.de
   ngkountas:
     ensure: present
     realname: Nik Gkountas
