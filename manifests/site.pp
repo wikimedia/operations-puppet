@@ -1371,7 +1371,7 @@ node /kubestage100[12]\.eqiad\.wmnet/ {
 
 # codfw new kubernetes staging nodes T252185
 node /kubestage200[12]\.codfw\.wmnet/ {
-    role(insetup)
+    role(kubernetes::staging::worker)
 }
 
 node 'cloudcontrol2001-dev.wikimedia.org' {
