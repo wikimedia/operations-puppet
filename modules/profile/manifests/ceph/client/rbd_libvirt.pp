@@ -81,7 +81,7 @@ class profile::ceph::client::rbd_libvirt(
 
     exec { 'check-virsh-secret-cinder':
         command   => '/usr/bin/virsh secret-define --file /etc/ceph/libvirt-cinder-secret.xml',
-        unless    => "/usr/bin/virsh secret-list | grep -q ${libvirt_rbd_uuid}",
+        unless    => "/usr/bin/virsh secret-list | grep -q ${libvirt_rbd_cinder_uuid}",
         logoutput => false,
         require   => File['/etc/ceph/libvirt-cinder-secret.xml'],
     }
