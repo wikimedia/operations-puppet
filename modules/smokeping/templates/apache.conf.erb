@@ -1,9 +1,7 @@
 <VirtualHost *:80>
     ServerName smokeping.wikimedia.org
     ServerAdmin noc@wikimedia.org
-    <Location />
-        Require all denied
-    </Location>
+    Redirect / https://smokeping.wikimedia.org
 </VirtualHost>
 
 <VirtualHost *:443>
