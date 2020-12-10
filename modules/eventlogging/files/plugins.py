@@ -14,6 +14,10 @@ See: https://phabricator.wikimedia.org/T259163
 """
 eventlogging_schemas_disabled = (
     'ContentTranslationAbuseFilter',
+    'HelpPanel',
+    'HomepageModule',
+    'HomepageVisit',
+    'NewcomerTask',
     'SpecialInvestigate',
     'SearchSatisfaction',
     'TemplateWizard',
