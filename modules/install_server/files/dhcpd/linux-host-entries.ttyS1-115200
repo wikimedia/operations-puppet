@@ -3806,25 +3806,23 @@ host cloudservices1004 {
 host labstore1004 {
     hardware ethernet 14:18:77:61:02:e6;
     fixed-address labstore1004.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host labstore1005 {
     hardware ethernet 14:18:77:5d:2d:d2;
     fixed-address labstore1005.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host labstore1006 {
     hardware ethernet e0:07:1b:f0:9b:28;
     fixed-address labstore1006.wikimedia.org;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
 }
 
 host labstore1007 {
     hardware ethernet e0:07:1b:f0:cc:a8;
     fixed-address labstore1007.wikimedia.org;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
 }
 
 host cloudstore1008 {
