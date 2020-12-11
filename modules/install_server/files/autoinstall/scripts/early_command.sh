@@ -5,8 +5,7 @@ set -e
 ## redo network configuration statically
 IFACE=$(ip -4 route list 0/0 | sed -r 's/.*dev ([^ ]*) .*/\1/' | head -1)
 IP="$(ip address show dev $IFACE | egrep '^[[:space:]]+inet ' | cut -d ' ' -f 6 | cut -d '/' -f 1)"
-
-IP6_SLACC="$(ip -o -6 addr show dev ${IFACE} | awk '/global/ {print $4; exit}')"
+IP6_SLACC="$(ip -o -6 addr show dev ${IFACE} | tr -s ' ' | cut -d ' ' -f4 | head -1)"
 if [ -z "${IP6_SLACC}" ]
 then
   # No global ipv6 address
