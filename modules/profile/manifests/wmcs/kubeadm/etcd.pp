@@ -3,6 +3,7 @@ class profile::wmcs::kubeadm::etcd (
     Array[Stdlib::Fqdn] $checker_hosts = lookup('profile::wmcs::kubeadm::checker_hosts',{default_value => ['tools-checker-03.tools.eqiad.wmflabs']}),
     Array[Stdlib::Fqdn] $control_nodes = lookup('profile::wmcs::kubeadm::control_nodes',{default_value => ['localhost']}),
     Boolean             $bootstrap     = lookup('profile::etcd::cluster_bootstrap',     {default_value => false}),
+    Integer             $latency_ms    = lookup('profile::wmcs::kubeadm::etcd_latency_ms', {default_value => 10}),
 ) {
     if $bootstrap {
         $cluster_state = 'new'
@@ -63,6 +64,7 @@ class profile::wmcs::kubeadm::etcd (
     class { '::etcd::v3':
         member_name      => $::fqdn,
         cluster_state    => $cluster_state,
+        max_latency_ms   => $latency_ms,
         peers_list       => $peers_list,
         client_cert      => $etcd_cert_pub,
         client_key       => $etcd_cert_priv,
