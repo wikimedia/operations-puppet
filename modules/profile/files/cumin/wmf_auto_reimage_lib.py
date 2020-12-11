@@ -882,8 +882,7 @@ def wait_puppet_run(host, start=None):
         try:
             exit_code, worker = run_cumin('wait_puppet_run', host, [command])
             for _, output in worker.get_results():
-                last_run = datetime.utcfromtimestamp(float(
-                    output.message().decode().splitlines()[-1].strip()))
+                last_run = datetime.utcfromtimestamp(float(output.message().decode().strip()))
 
             if last_run > start:
                 break
@@ -989,7 +988,7 @@ def check_uptime(host, minimum=0, maximum=None, installer=False):
         exit_code, worker = run_cumin(
             'check_uptime', host, ['cat /proc/uptime'], installer=installer)
         for _, output in worker.get_results():
-            uptime = float(output.message().decode().splitlines()[-1].strip().split()[0])
+            uptime = float(output.message().decode().strip().split()[0])
     except ValueError:
         message = "Unable to determine uptime of host '{host}': {uptime}".format(
             host=host, uptime=output.message().decode())
