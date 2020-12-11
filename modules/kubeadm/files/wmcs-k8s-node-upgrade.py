@@ -90,7 +90,7 @@ def parse_args():
     parser.add_argument(
         "--domain",
         default="eqiad1.wikimedia.cloud",
-        help="The CloudVPS domain for building FQDNs. Typical value is 'eqiad1.wikimedia.cloud'."
+        help="The CloudVPS domain for building FQDNs. Typical value is 'eqiad1.wikimedia.cloud'. "
         "Defaults to '%(default)s'",
     )
     parser.add_argument(
@@ -109,7 +109,7 @@ def parse_args():
         action="append",
         help="Hostname of target node to upgrade. Can be specified multiple times for multiple "
         "nodes in the same script run. Can be combined with the '--file' option. The FQDN will "
-        "be built using the project and domain argument. Example: -n tools-k8s-worker-1 -n"
+        "be built using the project and domain argument. Example: -n tools-k8s-worker-1 -n "
         "tools-k8s-worker-2",
     )
     parser.add_argument(
@@ -134,7 +134,7 @@ def parse_args():
     parser.add_argument(
         "--debug",
         action="store_true",
-        help="To active debug mode",
+        help="To activate debug mode",
     )
 
     return parser.parse_args()
