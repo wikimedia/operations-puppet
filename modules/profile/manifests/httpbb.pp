@@ -7,6 +7,7 @@ class profile::httpbb {
             '/srv/deployment/httpbb-tests/appserver',
             '/srv/deployment/httpbb-tests/miscweb',
             '/srv/deployment/httpbb-tests/releases',
+            '/srv/deployment/httpbb-tests/doc',
         ]:
             ensure => directory
     }
