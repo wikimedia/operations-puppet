@@ -59,7 +59,7 @@ class calico(
         '3': {
             apt::package_from_component { 'calico-future':
                 component => 'component/calico-future',
-                packages  => ['calicoctl'],
+                packages  => ['calicoctl', 'calico-cni'],
             }
 
             # Create a kubeconfig for calicoctl to use.

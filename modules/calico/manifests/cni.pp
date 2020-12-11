@@ -39,11 +39,6 @@ class calico::cni(
             }
         }
         '3': {
-            apt::package_from_component { 'calico-future':
-                component => 'component/calico-future',
-                packages  => ['calico-cni'],
-            }
-
             # With calico 3, we generate a dedicated kubeconfig
             # TODO: Remove kubeconfig parameter after migration to calico 3
             #       and rename this to $kubeconfig.
