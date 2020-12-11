@@ -301,7 +301,7 @@ groups:
               itamar, phedenskog, aaron, dpifke, aklapper, jmads, andrew-wmde, daniram,
               dcipoletti, chrisalbon, wikigit, nahidunlimited, swagoel,
               agaduran, edtadros, dvrandecic, razzi, cparle, klausman, lexnasser, sbisson, fab,
-              dumisani, janstee, gmodena, cdanis, wmde-leszek, jakob, migr]
+              dumisani, janstee, gmodena, cdanis, wmde-leszek, jakob, migr, gtzatchkova]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product]
     approval: Andrew Otto
@@ -620,7 +620,7 @@ groups:
     description: Group of WMDE analytics users
     gid: 784
     members: [addshore, goransm, ladsgroup, lucaswerkmeister-wmde, conniecc1, tarrow, itamar,
-              awight, wmde-fisch, wmde-leszek, jakob, migr]
+              awight, wmde-fisch, wmde-leszek, jakob, migr, gtzatchkova]
     privileges: ['ALL = (analytics-wmde) NOPASSWD: ALL']
   eventbus-admins:
     gid: 785
@@ -3934,7 +3934,15 @@ users:
     ssh_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDHeb+5e8uIqGZK2Lajx/i5g7HPfLBOMkWcte6hguv2iAtvd7yYgj8WiaEiCyFewJGD5DW0rv2m0BCXbEFoAx1Kd6i1F71gVMldv6plxCL/iQqs2HOD7rzQNvAAcx1gySULbIlvO5dyGGURe2xmH3ESKS5Mst1oD99OfBUP39hepdNbacW0ToFKmWMnrwWVRnDjbPPRMJm0pC+oHO46+E5E+lIHZn8+9F/YCWAHS96EaLRtsvfCz1McTO016GI5b5qWjcMGPyeS9fWNp+5Lhvbyv2+XR5434AfchHwmVkrk95AJpJAn8WtAoGNd+3BoiqqC5AyPuXlKGobSHOlgGvm1bFNxwVz6obPI2iFhxKngW5t3O/0CwD7F2tdENQX7p6xm2NZJGRRHT3x00pPcQyFdejiFaWkvFY6iC3zbqzC5seRUDCtIBSV3cLmb/PnnQ3p5rcef73tQxiQZlF55jhBzuqbpdderFETsfrdSA9PUHcddbJktEbavzMpyBOFDWcPgfyr+3kzRoercglad2Qke9JkZZreijsbgHwbTiosMtugJGp6+kW4OqIZycJf0cc+O2mAfKM8GFtpFhys9JhJyc2NEqDKoRQ2ucHUYq27r0dqBFtVVGnmvPuaRl17oDFGBqOV9YxVJ0bP6Zr50kSJ65mpAdUxUKF/yG7e4l49knQ== migr@C220
     krb: present
-
+  gtzatchkova:
+    ensure: present
+    realname: Guergana Tzatchkova
+    email: guergana.tzatchkova@wikimedia.de
+    uid: 24953
+    gid: 500
+    ssh_keys:
+      - AAAAB3NzaC1yc2EAAAADAQABAAABgQDww6LwxZbh9bX4srcYZ911tFdXmUpXUD4tpIDnSQ3BTti8uDxcUfJ5Z2FSEYpolOYareiTOAcsk7QUVMxVm3oS6ineVLBTSvVtjaaR+4Me4BGba/GmNhwaw6V/bKaYHNmDZRlOJzKQOgOQN4MZogA0Pc2H2GPFWpwZ+FEZH8ljTI2A7M2O2cE5I8iwYk4PLaihkqVud8SFe8dzW7BMfLj0RPxek4u7y2/HpLw4gIygcvWDKIl6MTOPdO63ZQuLYxtVReoq1PayKUce4jR8dYzl+Wq09/O8RguhRw7MD/86AfG3YkIguXwAKZvYaZbk3DGLNArKPJUhZ9CiqDIh6w7yyWSTS/gNUBtN7HwjMsAcF8D8xed1Al10v7paX9iO3kasAEUYXJPt1jvcnV7feFZe2Wx04SD5RG3jLyW98VjjFy9fCujZ7HwWFiyqo8+lwLFkpFLDEp2az68aB3Z04fIKKGwjOQe6n63QUcUF08Eg6GrAhe/vRq1xF/qnMpWNb90=
+    krb: present
 ldap_only_users:
   abartov:
     ensure: present
@@ -4512,10 +4520,6 @@ ldap_only_users:
   kuz:
     ensure: absent
     realname: Andrew Kuznetsov
-  gtzatchkova:
-    ensure: present
-    realname: Guergana Tzatchkova
-    email: guergana.tzatchkova@wikimedia.de
   demon:
     ensure: present
     realname: Chad Horohoe
