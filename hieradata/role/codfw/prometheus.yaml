@@ -11,7 +11,7 @@ profile::prometheus::kubernetes::clusters:
     port: 9906
     class_name: role::kubernetes::worker
   k8s-staging:
-    enabled: false
+    enabled: true
     master_host: 'kubestagemaster.svc.codfw.wmnet'
     port: 9907
     class_name: role::kubernetes::staging::worker
