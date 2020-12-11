@@ -4,7 +4,7 @@ profile::standard::admin_groups:
   - analytics-admins
 
 # Testing Apache BigTop in T244499
-profile::cdh::apt::bigtop_component: 'bigtop15'
+profile::cdh::apt::bigtop_component: 'bigtop14'
 profile::analytics::cluster::packages::common::use_bigtop_settings: true
 
 profile::hadoop::common::hadoop_cluster_name: 'analytics-test-hadoop'
