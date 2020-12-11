@@ -58,6 +58,6 @@ class openstack::glance::service(
 
     rsyslog::conf { 'glance':
         source   => 'puppet:///modules/openstack/glance/glance.rsyslog.conf',
-        priority => 40,
+        priority => 20,
     }
 }
