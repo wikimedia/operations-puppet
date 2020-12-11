@@ -309,6 +309,8 @@ def stage_prechecks():
         return
 
     check_current_node_versions(ctx.args.src_version)
+    if ctx.skip is True:
+        return
 
     node_fqdn = ctx.current_node_fqdn
     # if kubeadm is already installed in the dst version, that's OK.
