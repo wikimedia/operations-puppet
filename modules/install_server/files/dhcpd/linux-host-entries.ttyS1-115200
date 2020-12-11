@@ -4439,6 +4439,26 @@ host mc-gp2003 {
     fixed-address mc-gp2003.codfw.wmnet;
 }
 
+host ml-serve2001 {
+    hardware ethernet BC:97:E1:9F:68:A0;
+    fixed-address ml-serve2001.codfw.wmnet;
+}
+
+host ml-serve2002 {
+    hardware ethernet BC:97:E1:9F:6F:72;
+    fixed-address ml-serve2002.codfw.wmnet;
+}
+
+host ml-serve2003 {
+    hardware ethernet BC:97:E1:9F:4C:38;
+    fixed-address ml-serve2003.codfw.wmnet;
+}
+
+host ml-serve2004 {
+    hardware ethernet BC:97:E1:9F:47:B8;
+    fixed-address ml-serve2004.codfw.wmnet;
+}
+
 host sodium {
     hardware ethernet f4:e9:d4:94:c5:90;
     fixed-address sodium.wikimedia.org;
