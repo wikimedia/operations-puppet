@@ -11,7 +11,6 @@ class k8s::kubelet(
     String $tls_key = '/var/lib/kubernetes/ssl/private_keys/server.key',
     String $cni_bin_dir = '/opt/cni/bin',
     String $cni_conf_dir = '/etc/cni/net.d',
-    Boolean $allow_privileged = false,
     Boolean $fqdn_as_hostname = true,
     Boolean $logtostderr = true,
     Integer $v_log_level = 0,
