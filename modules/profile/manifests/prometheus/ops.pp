@@ -1300,6 +1300,13 @@ class profile::prometheus::ops (
         port       => 3903,
     }
 
+    prometheus::class_config{ "mtail_zuul_${::site}":
+        dest       => "${targets_path}/mtail_zuul_${::site}.yaml",
+        site       => $::site,
+        class_name => 'profile::zuul::server',
+        port       => 3903,
+    }
+
     $ldap_jobs = [
       {
         'job_name'        => 'ldap',
