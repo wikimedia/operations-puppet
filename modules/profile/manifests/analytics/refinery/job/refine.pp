@@ -121,7 +121,6 @@ class profile::analytics::refinery::job::refine(
         'ContentTranslationAbuseFilter',
         'HelpPanel',
         'HomepageModule',
-        'HomepageVisit',
         'NewcomerTask',
         'SpecialInvestigate',
         'SearchSatisfaction',

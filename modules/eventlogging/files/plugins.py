@@ -16,7 +16,6 @@ eventlogging_schemas_disabled = (
     'ContentTranslationAbuseFilter',
     'HelpPanel',
     'HomepageModule',
-    'HomepageVisit',
     'NewcomerTask',
     'SpecialInvestigate',
     'SearchSatisfaction',
