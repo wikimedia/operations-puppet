@@ -173,7 +173,7 @@ groups:
                  if you need to add users to it please ping Luca/Andrew/Razzi first
                  or comment in https://phabricator.wikimedia.org/T268801.
     members: [catrope, dduvall, mattflaschen, cooltey, marktraceur,
-              jhernandez, daisy, etonkovidova, legoktm, risler,
+              jhernandez, daisy, etonkovidova, risler,
               matmarex, dstrine, jdittrich, debt,
               mlitn, sharvaniharan, kharlan]
   ldap-admins:
