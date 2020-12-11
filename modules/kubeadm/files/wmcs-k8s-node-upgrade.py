@@ -124,7 +124,9 @@ def parse_args():
         help="Dry run: only show what this script would do, but don't do it for real",
     )
     parser.add_argument(
-        "--debug", action="store_true", help="To active debug mode",
+        "--debug",
+        action="store_true",
+        help="To active debug mode",
     )
 
     return parser.parse_args()
