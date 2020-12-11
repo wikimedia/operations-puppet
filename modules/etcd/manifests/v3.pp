@@ -71,6 +71,7 @@ class etcd::v3 (
     String $cluster_name = $::domain,
     Stdlib::Port $adv_client_port = 2379,
     Integer $max_latency_ms = 10,
+    Integer $snapshot_count = 10000,
     Enum['new', 'existing'] $cluster_state = 'existing',
     Stdlib::Compat::String $srv_dns = undef,
     Stdlib::Compat::String $peers_list = undef,

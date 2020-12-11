@@ -1,9 +1,10 @@
 class profile::wmcs::kubeadm::etcd (
-    Array[Stdlib::Fqdn] $peer_hosts    = lookup('profile::wmcs::kubeadm::etcd_nodes',   {default_value => ['localhost']}),
-    Array[Stdlib::Fqdn] $checker_hosts = lookup('profile::wmcs::kubeadm::checker_hosts',{default_value => ['tools-checker-03.tools.eqiad.wmflabs']}),
-    Array[Stdlib::Fqdn] $control_nodes = lookup('profile::wmcs::kubeadm::control_nodes',{default_value => ['localhost']}),
-    Boolean             $bootstrap     = lookup('profile::etcd::cluster_bootstrap',     {default_value => false}),
-    Integer             $latency_ms    = lookup('profile::wmcs::kubeadm::etcd_latency_ms', {default_value => 10}),
+    Array[Stdlib::Fqdn] $peer_hosts     = lookup('profile::wmcs::kubeadm::etcd_nodes',   {default_value => ['localhost']}),
+    Array[Stdlib::Fqdn] $checker_hosts  = lookup('profile::wmcs::kubeadm::checker_hosts',{default_value => ['tools-checker-03.tools.eqiad.wmflabs']}),
+    Array[Stdlib::Fqdn] $control_nodes  = lookup('profile::wmcs::kubeadm::control_nodes',{default_value => ['localhost']}),
+    Boolean             $bootstrap      = lookup('profile::etcd::cluster_bootstrap',     {default_value => false}),
+    Integer             $latency_ms     = lookup('profile::wmcs::kubeadm::etcd_latency_ms', {default_value => 10}),
+    Integer             $snapshot_count = lookup('profile::wmcs::kubeadm::etcd_snapshot_count', {default_value => 10000}),
 ) {
     if $bootstrap {
         $cluster_state = 'new'
@@ -65,6 +66,7 @@ class profile::wmcs::kubeadm::etcd (
         member_name      => $::fqdn,
         cluster_state    => $cluster_state,
         max_latency_ms   => $latency_ms,
+        snapshot_count   => $snapshot_count,
         peers_list       => $peers_list,
         client_cert      => $etcd_cert_pub,
         client_key       => $etcd_cert_priv,
