@@ -73,7 +73,8 @@ in-target /usr/bin/puppet config set --section main factpath /var/lib/puppet/lib
 
 # Configure ipv6 (sorry this is not pretty)
 IFACE=$(ip -4 route list 0/0 | cut -d ' ' -f 5 | head -1)
-IP="$(ip -o -4 address show dev $IFACE | tr -s ' ' | cut -d ' ' -f 4 | cut -d '/' -f 1)"
+# IPv4 with : not '.'
+IP="$(ip -o -4 address show dev $IFACE | tr -s ' ' | cut -d ' ' -f 4 | cut -d '/' -f 1| tr '.' ':')"
 IP6_SLACC="$(ip -o -6 addr show dev ${IFACE} | tr -s ' ' | cut -d ' ' -f4 | head -1)"
 
 printf '\tpre-up /sbin/ip token set ::%s dev %s\n' "${IP}" "${IFACE}" >> /target/etc/network/interfaces
@@ -90,6 +91,6 @@ else
 fi
 if [ "${PREFIX}" != "NO_IPV6" ]
 then
-  IP6="${PREFIX}$(printf '%s' ${IP} | tr '.' ':')"
+  IP6="${PREFIX}${IP}"
   printf '\tup ip addr add %s dev %s\n' "${IP6}" "${IFACE}" >> /target/etc/network/interfaces
 fi
