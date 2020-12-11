@@ -96,6 +96,7 @@ scap::sources:
     repository: operations/software/gerrit
   gervert/deploy:
     repository: operations/software/gerrit/tools/gervert/deploy
+  integration/docroot: {}
   phabricator/deployment:
     repository: phabricator/deployment
 
