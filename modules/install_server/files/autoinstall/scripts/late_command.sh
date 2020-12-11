@@ -75,19 +75,19 @@ in-target /usr/bin/puppet config set --section main factpath /var/lib/puppet/lib
 IFACE=$(ip -4 route list 0/0 | cut -d ' ' -f 5 | head -1)
 # IPv4 with : not '.'
 IP="$(ip -o -4 address show dev $IFACE | tr -s ' ' | cut -d ' ' -f 4 | cut -d '/' -f 1| tr '.' ':')"
-IP6_SLACC="$(ip -o -6 addr show dev ${IFACE} | tr -s ' ' | cut -d ' ' -f4 | head -1)"
+IP6_SLAAC="$(ip -o -6 addr show dev ${IFACE} | tr -s ' ' | cut -d ' ' -f4 | head -1)"
 
 printf '\tpre-up /sbin/ip token set ::%s dev %s\n' "${IP}" "${IFACE}" >> /target/etc/network/interfaces
-if [ -z "${IP6_SLACC}" ]
+if [ -z "${IP6_SLAAC}" ]
 then
   # No global ipv6 address
   PREFIX="NO_IPV6"
-elif test "${IP6_SLACC#*::}" != "${IP6_SLACC}"
+elif test "${IP6_SLAAC#*::}" != "${IP6_SLAAC}"
 then
   # Current address is compressed
-  PREFIX="${IP6_SLACC%%::*}::"
+  PREFIX="${IP6_SLAAC%%::*}::"
 else
-  PREFIX="$(printf '%s' "${IP6_SLACC}" | cut -d: -f1,2,3,4):"
+  PREFIX="$(printf '%s' "${IP6_SLAAC}" | cut -d: -f1,2,3,4):"
 fi
 if [ "${PREFIX}" != "NO_IPV6" ]
 then
