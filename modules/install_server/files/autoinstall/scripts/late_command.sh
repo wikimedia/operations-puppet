@@ -70,3 +70,26 @@ esac
 in-target /usr/bin/puppet config set --section main vardir /var/lib/puppet
 in-target /usr/bin/puppet config set --section main rundir /var/run/puppet
 in-target /usr/bin/puppet config set --section main factpath /var/lib/puppet/lib/facter
+
+# Configure ipv6 (sorry this is not pretty)
+IFACE=$(ip -4 route list 0/0 | cut -d ' ' -f 5 | head -1)
+IP="$(ip -o -4 address show dev $IFACE | tr -s ' ' | cut -d ' ' -f 4 | cut -d '/' -f 1)"
+IP6_SLACC="$(ip -o -6 addr show dev ${IFACE} | tr -s ' ' | cut -d ' ' -f4 | head -1)"
+
+printf '\tpre-up /sbin/ip token set ::%s dev %s\n' "${IP}" "${IFACE}" >> /target/etc/network/interfaces
+if [ -z "${IP6_SLACC}" ]
+then
+  # No global ipv6 address
+  PREFIX="NO_IPV6"
+elif test "${IP6_SLACC#*::}" != "${IP6_SLACC}"
+then
+  # Current address is compressed
+  PREFIX="${IP6_SLACC%%::*}::"
+else
+  PREFIX="$(printf '%s' "${IP6_SLACC}" | cut -d: -f1,2,3,4):"
+fi
+if [ "${PREFIX}" != "NO_IPV6" ]
+then
+  IP6="${PREFIX}$(printf '%s' ${IP} | tr '.' ':')"
+  printf '\tup ip addr add %s dev %s\n' "${IP6}" "${IFACE}" >> /target/etc/network/interfaces
+fi

@@ -5,28 +5,10 @@ set -e
 ## redo network configuration statically
 IFACE=$(ip -4 route list 0/0 | sed -r 's/.*dev ([^ ]*) .*/\1/' | head -1)
 IP="$(ip address show dev $IFACE | egrep '^[[:space:]]+inet ' | cut -d ' ' -f 6 | cut -d '/' -f 1)"
-IP6_SLACC="$(ip -o -6 addr show dev ${IFACE} | tr -s ' ' | cut -d ' ' -f4 | head -1)"
-if [ -z "${IP6_SLACC}" ]
-then
-  # No global ipv6 address
-  PREFIX="NO_IPV6"
-elif test "${IP6_SLACC#*::}" != "${IP6_SLACC}"
-then
-  # Current address is compressed
-  PREFIX="${IP6_SLACC%%::*}::"
-else
-  PREFIX="$(printf '%s' "${IP6_SLACC}" | cut -d: -f1,2,3,4):"
-fi
-
 cat > /tmp/static_net.cfg <<EOF
 d-i netcfg/get_ipaddress string $IP
 d-i netcfg/disable_autoconfig boolean true
 EOF
-if [ "${PREFIX}" != "NO_IPV6" ]
-then
-  IP6="${PREFIX}$(printf '%s' ${IP} | tr '.' ':')"
-  printf 'd-i netcfg/get_ipaddress string %s/64\n' "${IP6}" >> /tmp/static_net.cfg
-fi
 debconf-set-selections /tmp/static_net.cfg
 kill-all-dhcp; netcfg
 
