@@ -192,6 +192,17 @@ datasources:
    withCredentials: false
    version: 1
 
+ - name: codfw prometheus/k8s-staging
+   type: prometheus
+   access: proxy
+   orgId: 1
+   url: http://prometheus.svc.codfw.wmnet/k8s-staging
+   database:
+   isDefault: false
+   editable: false
+   withCredentials: false
+   version: 1
+
 # External graphite instance used by performance-team for recording the
 # results of synthetic measurements.
 # See also https://phabricator.wikimedia.org/T231870.
