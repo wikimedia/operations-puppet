@@ -17,6 +17,9 @@ import subprocess
 import logging
 import yaml
 
+DEFAULT_SRC_VERSION = "1.16.10"
+DEFAULT_DST_VERSION = "1.17.13"
+
 
 class Context:
     # don't panic, these yaml are here just to have some example data in case
@@ -31,9 +34,12 @@ class Context:
       - status: "True"
         type: Ready
       nodeInfo:
-        kubeProxyVersion: v1.16.10
-        kubeletVersion: v1.16.10
-    """
+        kubeProxyVersion: v{}
+        kubeletVersion: v{}
+    """.format(
+        DEFAULT_SRC_VERSION, DEFAULT_SRC_VERSION
+    )
+
     example2_yaml = """
     apiVersion: v1
     kind: Node
@@ -44,9 +50,11 @@ class Context:
       - status: "True"
         type: Ready
       nodeInfo:
-        kubeProxyVersion: v1.17.13
-        kubeletVersion: v1.17.13
-    """
+        kubeProxyVersion: v{}
+        kubeletVersion: v{}
+    """.format(
+        DEFAULT_DST_VERSION, DEFAULT_DST_VERSION
+    )
 
     def __init__(self):
         self.args = None
@@ -87,12 +95,12 @@ def parse_args():
     )
     parser.add_argument(
         "--src-version",
-        default="1.16.10",
+        default=DEFAULT_SRC_VERSION,
         help="Source/original kubernetes version. Defaults to '%(default)s'",
     )
     parser.add_argument(
         "--dst-version",
-        default="1.17.13",
+        default=DEFAULT_DST_VERSION,
         help="Destination/target kubernetes version. Defaults to '%(default)s'",
     )
     parser.add_argument(
