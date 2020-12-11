@@ -12,3 +12,11 @@ profile::kubernetes::master::service_account_private_key_file: "/etc/ssl/private
 profile::kubernetes::master::use_cergen: true
 profile::kubernetes::master::packages_from_future: true
 profile::kubernetes::master::allow_privileged: true
+profile::kubernetes::master::admission_controllers:
+  NamespaceLifecycle: ''
+  LimitRanger: ''
+  ServiceAccount: "--service-account-key-file=/etc/ssl/private/kubestagemaster.svc.%{::site}.wmnet.key"
+  DefaultStorageClass: ''
+  DefaultTolerationSeconds: ''
+  ResourceQuota: ''
+  PodSecurityPolicy: ''
