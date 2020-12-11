@@ -5,8 +5,8 @@
 # More details in: T212259
 #
 class profile::kafkatee::webrequest::analytics(
-    $kafka_cluster_name = hiera('profile::kafkatee::webrequest::analytics::kafka_cluster_name', 'jumbo-eqiad'),
-    $kafka_target_topic = hiera('profile::kafkatee::webrequest::analytics::kafka_target_topic', 'webrequest_test_text'),
+    String $kafka_cluster_name = lookup('profile::kafkatee::webrequest::analytics::kafka_cluster_name', {'default_value' => 'jumbo-eqiad'}),
+    String $kafka_target_topic = lookup('profile::kafkatee::webrequest::analytics::kafka_target_topic', {'default_value' => 'webrequest_test_text'}),
 ) {
     require_package('kafkacat')
 

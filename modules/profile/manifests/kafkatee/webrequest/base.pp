@@ -5,7 +5,7 @@
 # this class, and configure the outputs there.
 #
 class profile::kafkatee::webrequest::base(
-    $output_config = hiera('profile::kafkatee::webrequest::base::output_config', true),
+    Boolean $output_config = lookup('profile::kafkatee::webrequest::base::output_config', {'default_value' => true}),
 ) {
     $kafka_config = kafka_config('jumbo-eqiad')
 
