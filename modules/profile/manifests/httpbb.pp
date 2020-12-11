@@ -8,6 +8,7 @@ class profile::httpbb {
             '/srv/deployment/httpbb-tests/miscweb',
             '/srv/deployment/httpbb-tests/releases',
             '/srv/deployment/httpbb-tests/doc',
+            '/srv/deployment/httpbb-tests/parse',
         ]:
             ensure => directory
     }
@@ -47,6 +48,9 @@ class profile::httpbb {
     }
     httpbb::test_suite {'doc/test_doc.yaml':
         source => 'puppet:///modules/profile/httpbb/doc/test_doc.yaml'
+    }
+    httpbb::test_suite {'parse/test_parse.yaml':
+        source => 'puppet:///modules/profile/httpbb/parse/test_parse.yaml'
     }
 
     systemd::timer::job { 'git_pull_httpbb':

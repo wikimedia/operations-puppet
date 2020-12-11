@@ -1,0 +1,26 @@
+# tests for parsoid appservers
+# hosts: parse*, wtp*
+http://en.wikipedia.org:
+- path: /w/rest.php/en.wikipedia.org/v3/page/html/Hospet
+  assert_status: 302
+- path: /w/rest.php/en.wikipedia.org/v3/page/html/Hospet/992733907
+  assert_status: 200
+  assert_body_contains: data-parsoid
+http://de.wikipedia.org:
+- path: /w/rest.php/de.wikipedia.org/v3/page/html/Karnataka
+  assert_status: 302
+- path: /w/rest.php/de.wikipedia.org/v3/page/html/Karnataka/206238030
+  assert_status: 200
+  assert_body_contains: data-parsoid
+http://es.wikipedia.org:
+- path: /w/rest.php/es.wikipedia.org/v3/page/html/Bangalore
+  assert_status: 302
+- path: /w/rest.php/es.wikipedia.org/v3/page/html/Bangalore/129309635
+  assert_status: 200
+  assert_body_contains: data-parsoid
+http://it.wikipedia.org:
+- path: /w/rest.php/it.wikipedia.org/v3/page/html/Mysore
+  assert_status: 302
+- path: /w/rest.php/it.wikipedia.org/v3/page/html/Mysore/112864552
+  assert_status: 200
+  assert_body_contains: data-parsoid
