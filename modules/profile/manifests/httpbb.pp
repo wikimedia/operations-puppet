@@ -44,6 +44,9 @@ class profile::httpbb {
     httpbb::test_suite {'releases/test_releases.yaml':
         source => 'puppet:///modules/profile/httpbb/releases/test_releases.yaml'
     }
+    httpbb::test_suite {'doc/test_doc.yaml':
+        source => 'puppet:///modules/profile/httpbb/doc/test_doc.yaml'
+    }
 
     systemd::timer::job { 'git_pull_httpbb':
         ensure          => present,
