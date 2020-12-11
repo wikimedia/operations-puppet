@@ -204,17 +204,25 @@ def stage_refresh():
 
 
 def check_package_versions(node_fqdn, package, already_dst_ok=False):
-    # validate that the installed package version is the right one
-    cmd = "apt-cache policy {} | grep Installed".format(package)
+    # get policy information
+    cmd = "apt-cache policy {} | egrep Installed\\|Candidate".format(package)
     output = ssh(node_fqdn, cmd, capture_output=True)
     if ctx.args.dry_run:
-        output = "Installed: {}".format(ctx.args.src_version)
+        output = "Installed: {}\nCandidate: {}".format(
+            ctx.args.src_version, ctx.args.dst_version
+        )
     if output is None:
         logging.warning("couldn't check {} version in {}".format(package, node_fqdn))
         ctx.skip = True
         return
 
-    version = output.strip().split()[1]
+    # this should be something like ['Installed:', '123', 'Candidate:', '234']
+    info_array = output.strip().split()
+    installed = info_array[1]
+    candidate = info_array[3]
+
+    # validate that the installed package version is the right one
+    version = installed
     logging.debug(
         "{}: {} installed: {} src_version: {}".format(
             ctx.current_node, package, version, ctx.args.src_version
@@ -238,15 +246,7 @@ def check_package_versions(node_fqdn, package, already_dst_ok=False):
         return
 
     # validate that the candidate package version is the right one
-    cmd = "apt-cache policy {} | grep Candidate".format(package)
-    output = ssh(node_fqdn, cmd, capture_output=True)
-    if ctx.args.dry_run:
-        output = "Candidate: {}".format(ctx.args.dst_version)
-    if output is None:
-        logging.warning("couldn't check {} version in {}".format(package, node_fqdn))
-        ctx.skip = True
-        return
-    version = output.strip().split()[1]
+    version = candidate
     logging.debug(
         "{}: {} candidate: {} dst_version: {}".format(
             ctx.current_node, package, version, ctx.args.dst_version
