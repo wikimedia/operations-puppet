@@ -79,6 +79,9 @@ redis::shards:
         host: 172.16.5.2
         port: 6379
 scap::dsh::groups:
+  ci-docroot:
+    hosts:
+      - doc.devtools.eqiad1.wikimedia.cloud
   librenms:
     hosts: []
   mediawiki-api-canaries:
