@@ -27,6 +27,9 @@ class puppetmaster::scripts(
     CA_SERVER="${ca_server}"
     | CONF
 
+    # export and sanitize facts for puppet compiler
+    ensure_packages(['python3-requests', 'python3-yaml'])
+
     file{'/etc/puppet-merge.conf':
         ensure  => file,
         owner   => 'root',
@@ -50,8 +53,6 @@ class puppetmaster::scripts(
         source => 'puppet:///modules/puppetmaster/puppet-merge.py',
     }
 
-    # export and sanitize facts for puppet compiler
-    require_package('python3-requests', 'python3-yaml')
     file {'/usr/local/bin/puppet-facts-export-puppetdb':
         ensure => present,
         owner  => 'root',

@@ -69,6 +69,9 @@ class puppetmaster(
     $gitdir = '/var/lib/git'
     $volatiledir = '/var/lib/puppet/volatile'
 
+    # This is required to talk to our custom enc
+    ensure_packages(['ruby-httpclient'])
+
     # Require /etc/puppet.conf to be in place,
     # so the postinst scripts do the right things.
     class { 'puppetmaster::config':
@@ -163,8 +166,6 @@ class puppetmaster(
 
     $hiera_source = "puppet:///modules/puppetmaster/${hiera_config}.hiera.yaml"
 
-    # This is required to talk to our custom enc
-    require_package('ruby-httpclient')
     class { 'puppetmaster::hiera':
         source => $hiera_source,
     }

@@ -11,8 +11,7 @@
 
 class puppetmaster::labsrootpass {
 
-    require_package('pwgen')
-    require_package('whois')
+    ensure_packages(['pwgen', 'whois'])
 
     file { '/usr/local/sbin/make-labs-root-password':
         ensure => 'present',
