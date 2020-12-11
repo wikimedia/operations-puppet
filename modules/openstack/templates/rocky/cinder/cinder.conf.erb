@@ -66,7 +66,7 @@ quota_gigabytes = 20
 quota_backups = 0
 
 # Total amount of storage, in gigabytes, allowed for backups per project (integer value)
-quota_backup_gigabytes = 20
+#quota_backup_gigabytes = 20
 
 # Max size allowed per volume, in gigabytes (integer value)
 #per_volume_size_limit = -1
@@ -206,6 +206,7 @@ project_name = service
 region_name = <%= @region %>
 user_domain_id = default
 username = cinder
+memcached_servers = <%= @openstack_controllers.map{|host| "#{host}:11211"}.join(",") %>
 
 
 [nova]
