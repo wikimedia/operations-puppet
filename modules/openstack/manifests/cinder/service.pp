@@ -48,7 +48,7 @@ class openstack::cinder::service(
 
     rsyslog::conf { 'cinder':
         source   => 'puppet:///modules/openstack/cinder/cinder.rsyslog.conf',
-        priority => 40,
+        priority => 20,
     }
 
     # The cinder packages create this user, but with a weird, non-system ID.
