@@ -162,6 +162,7 @@ Components: main
  thirdparty/amd-rocm37
  thirdparty/amd-rocm38
  thirdparty/bigtop14
+ thirdparty/bigtop15
  thirdparty/ceph-nautilus-buster
  thirdparty/ci
  thirdparty/cloudera
@@ -187,6 +188,7 @@ Update:
  amd-rocm37
  amd-rocm38
  bigtop14
+ bigtop15
  confluent
  elastic74
  elastic78
