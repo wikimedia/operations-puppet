@@ -63,6 +63,7 @@ class Context:
         self.control_fqdn = ""
         self.current_node = ""
         self.current_node_fqdn = ""
+        self.current_node_yaml = {}
 
 
 # our global data, to easily share stuff between different stages
@@ -156,6 +157,23 @@ def ssh(host, cmd, capture_output=False):
         return r.stdout.decode("utf-8")
 
 
+def refresh_current_node_yaml(version):
+    cmd = "sudo -i kubectl get node {} -o yaml".format(ctx.current_node)
+    output = ssh(ctx.control_fqdn, cmd, capture_output=True)
+    if ctx.args.dry_run:
+        output = (
+            ctx.example1_yaml if version in ctx.args.src_version else ctx.example2_yaml
+        )
+    if output is None:
+        logging.error(
+            "unable to get node yaml for {}, skipping".format(ctx.current_node)
+        )
+        ctx.skip = True
+        return
+
+    ctx.current_node_yaml = yaml.safe_load(output)
+
+
 def stage_generate_node_list():
     logging.info("stage: generating node list")
     if ctx.args.file:
@@ -246,18 +264,7 @@ def check_package_versions(node_fqdn, package, already_dst_ok=False):
 
 def check_current_node_ready():
     # validate that kubernetes sees the node as Ready
-    cmd = "sudo -i kubectl get node {} -o yaml".format(ctx.current_node)
-    output = ssh(ctx.control_fqdn, cmd, capture_output=True)
-    if ctx.args.dry_run:
-        output = ctx.example1_yaml
-    if output is None:
-        logging.error(
-            "unable to get node yaml for {}, skipping".format(ctx.current_node)
-        )
-        ctx.skip = True
-        return
-    status_yaml = yaml.safe_load(output)
-    conditions = status_yaml["status"]["conditions"]
+    conditions = ctx.current_node_yaml["status"]["conditions"]
     for condition in conditions:
         if condition.get("type") == "Ready" and condition.get("status") == "True":
             logging.debug("node {} is ready".format(ctx.current_node))
@@ -269,20 +276,7 @@ def check_current_node_ready():
 
 def check_current_node_versions(version):
     # validate that kubernetes sees the right version of kubelet and kube-proxy
-    cmd = "sudo -i kubectl get node {} -o yaml".format(ctx.current_node)
-    output = ssh(ctx.control_fqdn, cmd, capture_output=True)
-    if ctx.args.dry_run:
-        output = (
-            ctx.example1_yaml if version in ctx.args.src_version else ctx.example2_yaml
-        )
-    if output is None:
-        logging.error(
-            "unable to get node yaml for {}, skipping".format(ctx.current_node)
-        )
-        ctx.skip = True
-        return
-    status_yaml = yaml.safe_load(output)
-    info = status_yaml["status"]["nodeInfo"]
+    info = ctx.current_node_yaml["status"]["nodeInfo"]
     if version in info.get("kubeletVersion") and version in info.get(
         "kubeProxyVersion"
     ):
@@ -303,6 +297,10 @@ def stage_prechecks():
         return
 
     logging.info("stage: prechecks for node {}".format(ctx.current_node))
+
+    refresh_current_node_yaml(ctx.args.src_version)
+    if ctx.skip is True:
+        return
 
     check_current_node_ready()
     if ctx.skip is True:
@@ -382,6 +380,10 @@ def stage_postchecks():
         return
 
     logging.info("stage: postchecks for node {}".format(ctx.current_node))
+
+    refresh_current_node_yaml(ctx.args.dst_version)
+    if ctx.skip is True:
+        return
 
     check_current_node_versions(ctx.args.dst_version)
 
