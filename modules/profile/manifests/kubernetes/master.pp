@@ -17,6 +17,7 @@ class profile::kubernetes::master(
     $prometheus_url=hiera('profile::kubernetes::master::prometheus_url', "http://prometheus.svc.${::site}.wmnet/k8s"),
     $runtime_config=hiera('profile::kubernetes::master::runtime_config', undef),
     Boolean $packages_from_future = lookup('profile::kubernetes::master::packages_from_future', {default_value => false}),
+    Boolean $allow_privileged = lookup('profile::kubernetes::master::allow_privileged', {default_value => false}),
 ){
     if $expose_puppet_certs {
         base::expose_puppet_certs { '/etc/kubernetes':
@@ -47,6 +48,7 @@ class profile::kubernetes::master(
         admission_controllers    => $admission_controllers,
         runtime_config           => $runtime_config,
         packages_from_future     => $packages_from_future,
+        allow_privileged         => $allow_privileged,
     }
 
     class { '::k8s::scheduler':

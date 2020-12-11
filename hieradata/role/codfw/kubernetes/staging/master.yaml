@@ -11,3 +11,4 @@ profile::kubernetes::master::ssl_key_path: "/etc/ssl/private/kubestagemaster.svc
 profile::kubernetes::master::service_account_private_key_file: "/etc/ssl/private/kubestagemaster.svc.%{::site}.wmnet.key"
 profile::kubernetes::master::use_cergen: true
 profile::kubernetes::master::packages_from_future: true
+profile::kubernetes::master::allow_privileged: true
