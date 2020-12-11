@@ -91,7 +91,7 @@ class puppetmaster::scripts(
 
     systemd::timer::job { 'remove_old_puppet_reports':
         ensure      => 'present',
-        user        => 'puppet',
+        user        => 'root',
         description => 'Clears out older puppet reports.',
         command     => "/usr/bin/find /var/lib/puppet/reports -type f -mmin +${keep_reports_minutes} -delete",
         interval    => {'start' => 'OnUnitInactiveSec', 'interval' => '8h'},
