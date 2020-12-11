@@ -259,7 +259,7 @@ class icinga(
         mode   => '0550',
     }
 
-    require_package('python3-yaml')
+    ensure_packages(['python3-yaml', 'patch', 'python3-clustershell'])
 
     # Script to generate the contacts configuration for the Icinga meta-monitoring
     file { '/usr/local/bin/generate-check-icinga-contacts':
@@ -280,7 +280,6 @@ class icinga(
         source => 'puppet:///modules/icinga/sync_check_icinga_contacts.sh',
     }
 
-    require_package('python3-clustershell')
     # Script to parse and query the status.dat file
     file { '/usr/local/bin/icinga-status':
         ensure  => present,
@@ -311,7 +310,6 @@ class icinga(
         require => File[$patches_dir]
     }
 
-    require_package('patch')
     exec { 'apply disable_autocomplete.patch':
         command => "/usr/bin/patch --forward /usr/share/icinga/htdocs/menu.html ${patches_dir}/disable_autocomplete.patch",
         unless  => "/usr/bin/patch --reverse --dry-run -f /usr/share/icinga/htdocs/menu.html ${patches_dir}/disable_autocomplete.patch",

@@ -109,7 +109,7 @@ class icinga::plugins(
 
     # for "check_lastmod" - Check if any website has recently been updated
     # Originally added to check if Planet content updates working (T203208)
-    require_package('python3-requests', 'python3-rfc3986')
+    ensure_packages(['python3-requests', 'python3-rfc3986'])
 
     # Wikidata dispatcher monitoring
     file { '/usr/lib/nagios/plugins/check_wikidata_crit':
