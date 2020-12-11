@@ -7,7 +7,7 @@
 #
 # [*keep_reports_minutes*]
 #   Number of minutes to keep older reports for before deleting them.
-#   The cron to remove these is run only every 8 hours, however,
+#   The job to remove these is run only every 8 hours, however,
 #   to prevent excess load on the prod puppetmasters.
 class puppetmaster::scripts(
     Integer      $keep_reports_minutes = 960, # 16 hours
@@ -84,15 +84,6 @@ class puppetmaster::scripts(
     }
 
     # Clear out older reports
-    # remove cron to replace it with systemd timer
-    cron { 'removeoldreports':
-        ensure  => absent,
-        command => "find /var/lib/puppet/reports -type f -mmin +${keep_reports_minutes} -delete >/dev/null 2>&1",
-        user    => puppet,
-        hour    => [0, 8, 16], # Run every 8 hours, to prevent excess load
-        minute  => 27, # Run at a time when hopefully no other cron jobs are
-    }
-
     systemd::timer::job { 'remove_old_puppet_reports':
         ensure      => 'present',
         user        => 'root',
