@@ -1,0 +1,5 @@
+{
+   "volume": ["name", "status", "metadata"],
+   "snapshot": ["name", "status", "metadata"],
+   "backup": ["name", "status", "metadata"]
+}
