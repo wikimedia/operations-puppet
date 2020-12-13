@@ -28,10 +28,4 @@ class profile::openstack::codfw1dev::glance(
         active                     => true,
     }
     contain '::profile::openstack::base::glance'
-
-    class {'openstack::glance::image_sync':
-        active                => false,
-        glance_image_dir      => $glance_image_dir,
-        openstack_controllers => $openstack_controllers,
-    }
 }

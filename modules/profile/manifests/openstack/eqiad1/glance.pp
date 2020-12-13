@@ -34,10 +34,4 @@ class profile::openstack::eqiad1::glance (
         active         => ($::fqdn == $primary_glance_image_store),
         contact_groups => 'wmcs-team,admins',
     }
-
-    class {'openstack::glance::image_sync':
-        active                => false,
-        glance_image_dir      => $glance_image_dir,
-        openstack_controllers => $openstack_controllers,
-    }
 }
