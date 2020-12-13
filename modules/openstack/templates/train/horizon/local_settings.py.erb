@@ -570,7 +570,12 @@ SPECIAL_USERS = ['novaadmin', 'novaobserver']
 
 # We don't display the network-selection dialog during VM creation;
 #  instead just use this network.
-LAUNCH_INSTANCE_DEFAULTS = {"network_id": "<%= @instance_network_id %>"}
+LAUNCH_INSTANCE_DEFAULTS = {"network_id": "<%= @instance_network_id %>",
+                            "hide_create_volume": True,
+                            "create_volume": False,
+                            "disable_instance_snapshot": True,
+                            "disable_volume": True,
+                            "disable_volume_snapshot": True}
 
 # This is documented as the default, but I've found it to be unset in
 #  testing.  It's needed for the above setting to get picked up
