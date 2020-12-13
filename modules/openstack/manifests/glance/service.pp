@@ -6,7 +6,6 @@ class openstack::glance::service(
     $db_name,
     $db_host,
     $glance_data_dir,
-    $glance_image_dir,
     $ldap_user_pass,
     $keystone_admin_uri,
     $keystone_public_uri,
@@ -37,13 +36,6 @@ class openstack::glance::service(
         group   => 'glance',
         require => Package['glance'],
         mode    => '0755',
-    }
-
-    # Glance expects some images that are actually in /srv/glance/images to
-    #  be in /a/glance/images instead.  This link should keep everyone happy.
-    file {'/a':
-        ensure => link,
-        target => '/srv',
     }
 
     service { 'glance-api':

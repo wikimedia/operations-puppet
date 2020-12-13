@@ -5,7 +5,6 @@ class profile::openstack::codfw1dev::glance(
     String $db_pass = lookup('profile::openstack::codfw1dev::glance::db_pass'),
     Stdlib::Fqdn $db_host = lookup('profile::openstack::codfw1dev::glance::db_host'),
     String $ldap_user_pass = lookup('profile::openstack::codfw1dev::ldap_user_pass'),
-    Stdlib::Absolutepath $glance_image_dir = lookup('profile::openstack::base::glance::image_dir'),
     Stdlib::Port $api_bind_port = lookup('profile::openstack::codfw1dev::glance::api_bind_port'),
     Stdlib::Port $registry_bind_port = lookup('profile::openstack::codfw1dev::glance::registry_bind_port'),
     Stdlib::Fqdn $primary_glance_image_store = lookup('profile::openstack::codfw1dev::primary_glance_image_store'),
