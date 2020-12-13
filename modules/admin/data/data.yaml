@@ -323,11 +323,25 @@ groups:
     description: Full root on EventLogging servers. (Deprecated)
     members: []
     privileges: []
+  platform-engineering:
+    description: People in the Platform Engineering team.
+    gid: 824
+    # ariel, hnowlan, tstarling not included because of ops membership
+    members: &platform_engineering_members [bpirkle, cicalese, clarakosi,
+              daniel, eevans, gmodena, holger, kevinbazira, nikkin,
+              ppchelko]
   snapshot-admins:
     gid: 743
     description: People who can sudo into the dumpsgen user on snapshot hosts.
-    members: [hoo]
+    members: [*platform_engineering_members, hoo]
     privileges: ['ALL = (dumpsgen) NOPASSWD: ALL']
+    approval: Mandy Mooney, Will Doran, Mat Nadrofsky
+  dumpsdata-admins:
+    gid: 825
+    description: People who can sudo into the dumpsgen user on dumpsdata hosts.
+    members: [*platform_engineering_members]
+    privileges: ['ALL = (dumpsgen) NOPASSWD: ALL']
+    approval: Mandy Mooney, Will Doran, Mat Nadrofsky
   restbase-roots:
     gid: 744
     description: people who have full root on restbase nodes
