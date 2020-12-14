@@ -1,5 +1,7 @@
-# web server hosting https://docs.wikimedia.org
-class profile::doc {
+# web server hosting https://doc.wikimedia.org
+class profile::doc (
+    Stdlib::Unixpath $wmf_doc_path = lookup('profile::doc::wmf_doc_path', {'default_value' => '/srv/docroot/org/wikimedia/doc'}),
+) {
 
     scap::target { 'integration/docroot':
         deploy_user => 'deploy-ci-docroot',
@@ -18,6 +20,11 @@ class profile::doc {
     class { '::httpd::mpm':
         mpm    => 'worker',
         source => 'puppet:///modules/profile/doc/httpd_worker.conf'
+    }
+
+    httpd::conf { 'wmf_doc_path':
+        priority => 40,
+        content  => "Define WMF_DOC_PATH ${wmf_doc_path}",
     }
 
     # Apache configuration for doc.wikimedia.org
