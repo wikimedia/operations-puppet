@@ -94,7 +94,20 @@ c.JupyterHub.port = PORT
 # Do not kill servers when the hub restarts
 c.JupyterHub.cleanup_servers = False
 
+<% if @krb_credential_cache -%>
+import systemdspawner
+class CustomSystemdSpawnerEnv(systemdspawner.SystemdSpawner):
+
+    def get_env(self):
+        env = super().get_env()
+        env['KRB5CCNAME'] = ("<%= @krb_credential_cache %>"
+                             .format(str(pwd.getpwnam(self.user.name).pw_uid)))
+        return env
+
+c.JupyterHub.spawner_class = CustomSystemdSpawnerEnv
+<% else -%>
 c.JupyterHub.spawner_class = 'systemdspawner.SystemdSpawner'
+<% end -%>
 # This is enough, since we'll put a jupyterhub-singleuser script in
 # here from the LocalAuthenticator. This also enables users to install
 # things via pip easily and have them be immediately available

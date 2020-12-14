@@ -16,18 +16,28 @@
 #       If given, an rsync server module will be set up to allow these hosts
 #       to rsync between home directories.
 #
+#   [*krb_credential_cache*]
+#       If given, the Systemd Spawner class will be extended to add the KRB5CCNAME
+#       environment variable to the default environment for the ephemeral systemd units
+#       used for user kernels. The krb_credential_cache must be a string containing the
+#       literal "{}", used as placeholder for the user id. For example: "/run/user/{}/krb_cred"
+#       If you change this remember to check what value is set for the default credential cache
+#       in profile::kerberos::client.
+#       Default: undef (if not provided the jvm will look for /tmp/krb5_{}).
+#
 class profile::swap(
-    $ldap_groups             = hiera('profile::swap::allowed_ldap_groups', [
+    Array[String] $ldap_groups = lookup('profile::swap::allowed_ldap_groups', { 'default_value' => [
         'cn=nda,ou=groups,dc=wikimedia,dc=org',
         'cn=wmf,ou=groups,dc=wikimedia,dc=org',
-    ]),
-    $ldap_config             = lookup('ldap', Hash, hash, {}),
-    $rsync_hosts_allow       = hiera('profile::swap::rsync_hosts_allow', undef),
-    $dumps_servers           = hiera('dumps_dist_nfs_servers'),
-    $dumps_active_server     = hiera('dumps_dist_active_web'),
-    $push_published          = lookup('profile::swap::push_published', { 'default_value' => true }),
-    $use_dumps_mounts        = lookup('profile::swap::use_dumps_mounts', { 'default_value' => true }),
-    $deploy_research_cred    = lookup('profile::swap::deploy_research_cred', { 'default_value' => true }),
+    ]}),
+    Optional[Hash] $ldap_config = lookup('ldap', Hash, hash, {}),
+    Optional[Array[Stdlib::Host]] $rsync_hosts_allow = hiera('profile::swap::rsync_hosts_allow', undef),
+    Array[Stdlib::Host] $dumps_servers = lookup('dumps_dist_nfs_servers'),
+    Stdlib::Host $dumps_active_server = lookup('dumps_dist_active_web'),
+    Boolean $push_published = lookup('profile::swap::push_published', { 'default_value' => true }),
+    Boolean $use_dumps_mounts = lookup('profile::swap::use_dumps_mounts', { 'default_value' => true }),
+    Boolean $deploy_research_cred = lookup('profile::swap::deploy_research_cred', { 'default_value' => true }),
+    Optional[String] $krb_credential_cache = lookup('profile::swap::krb_credential_cache', {'default_value' => undef }),
 ) {
     if $use_dumps_mounts {
         # Mount mediawiki dataset dumps. T176091
@@ -80,6 +90,7 @@ class profile::swap(
         # But only allow those in these posix groups to log in to jupyterhub.
         posix_groups          => $posix_groups,
         web_proxy             => $web_proxy,
+        krb_credential_cache  => $krb_credential_cache,
     }
 
     # Files deleted via the notebook interface are moved to a special

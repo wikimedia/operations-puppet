@@ -34,6 +34,15 @@
 #   daemons running on the same host.
 #   Default: user.slice
 #
+# [*krb_credential_cache*]
+#   If given, the Systemd Spawner class will be extended to add the KRB5CCNAME
+#   environment variable to the default environment for the ephemeral systemd units
+#   used for user kernels. The krb_credential_cache must be a string containing the
+#   literal "{}", used as placeholder for the user id. For example: "/run/user/{}/krb_cred"
+#   If you change this remember to check what value is set for the default credential cache
+#   in profile::kerberos::client.
+#   Default: undef (if not provided the jvm will look for /tmp/krb5_{}).
+#
 class jupyterhub (
     $port                  = 8000,
     $web_proxy             = undef,
@@ -42,6 +51,7 @@ class jupyterhub (
     $ldap_bind_dn_template = undef,
     $posix_groups          = ['wikidev'],
     $systemd_slice         = 'user.slice',
+    $krb_credential_cache  = undef,
 )
 {
     ensure_packages([
