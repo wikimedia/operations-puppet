@@ -42,6 +42,14 @@ class profile::calico::kubernetes(
         port   => '179', # BGP
         srange => "(@resolve((${bgp_peers_ferm})) @resolve((${bgp_peers_ferm}), AAAA))",
     }
+    # All nodes need to talk to typha and it runs as hostNetwork pod
+    # TODO: If and when we move to a layered BGP hierarchy, revisit the use of
+    # $bgp_peers.
+    ferm::service { 'calico-typha':
+        proto  => 'tcp',
+        port   => '5473',
+        srange => "(@resolve((${bgp_peers_ferm})) @resolve((${bgp_peers_ferm}), AAAA))",
+    }
     ferm::service { 'calico-felix-prometheus':
         proto  => 'tcp',
         port   => '9091', # Prometheus metrics port of calico node pods (running in host network namespace)
