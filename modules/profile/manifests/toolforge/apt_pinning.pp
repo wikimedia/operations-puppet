@@ -133,7 +133,7 @@ class profile::toolforge::apt_pinning {
     if debian::codename::eq('buster') {
         apt::pin { 'toolforge-sssd-pinning':
             package  => 'sssd*',
-            pin      => 'version 1.16.3-3.1',
+            pin      => 'version 1.16.3-3.2',
             priority => '1001',
         }
     }
