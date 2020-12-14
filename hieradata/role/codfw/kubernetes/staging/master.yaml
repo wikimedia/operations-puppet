@@ -15,7 +15,7 @@ profile::kubernetes::master::allow_privileged: true
 profile::kubernetes::master::admission_controllers:
   NamespaceLifecycle: ''
   LimitRanger: ''
-  ServiceAccount: "--service-account-key-file=/etc/ssl/private/kubestagemaster.svc.%{::site}.wmnet.key"
+  ServiceAccount: "--service-account-key-file=/etc/ssl/private/kubestagemaster.svc.%{::site}.wmnet.crt"
   DefaultStorageClass: ''
   DefaultTolerationSeconds: ''
   ResourceQuota: ''
