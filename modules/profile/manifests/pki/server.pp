@@ -105,7 +105,7 @@ class profile::pki::server(
             manage_services  => false,
         }
         cfssl::ocsp{$intermediate:
-            common_name      => 'ocsp.discovery.wmnet',
+            common_name      => 'pki.discovery.wmnet',
             additional_names => [$facts['fqdn']],
             listen_port      => $config['ocsp_port'],
             db_conf_file     => $db_conf_file,
