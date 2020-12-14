@@ -280,12 +280,8 @@ node 'zookeeper-test1002.eqiad.wmnet' {
 }
 
 # Test kafka cluster
-node /^kafka-test100[67]\.eqiad\.wmnet/ {
+node /^kafka-test10(10|0[6-9])\.eqiad\.wmnet/ {
     role(kafka::test::broker)
-}
-
-node /^kafka-test10(10|0[89])\.eqiad\.wmnet/ {
-    role(insetup)
 }
 
 # Zookeeper and Etcd discovery service nodes in codfw
