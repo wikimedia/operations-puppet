@@ -17,10 +17,6 @@ class profile::netbox (
     Stdlib::Fqdn $nb_service_hostname = lookup('profile::netbox::service_hostname'),
     Optional[Array[String]] $slaves = lookup('profile::netbox::slaves', {'default_value' => undef}),
 
-    Stdlib::Fqdn $redis_host = lookup('profile::netbox::redis::host'),
-    Stdlib::Port $redis_port = lookup('profile::netbox::redis::port'),
-    String $redis_password = lookup('profile::netbox::redis::password'),
-
     String $nb_token = lookup('profile::netbox::tokens::read_write'),
     String $nb_ro_token = lookup('profile::netbox::tokens::read_only'),
 
@@ -61,6 +57,9 @@ class profile::netbox (
     Optional[String] $swift_container = lookup('netbox::swift_container', {'default_value' => undef}),
     Optional[String] $swift_url_key = lookup('netbox::swift_url_key', {'default_value' => undef}),
 
+    String $local_redis_port = lookup('netbox::redis::port', {'default_value' => '6380'}),
+    Integer $local_redis_maxmem = lookup('netbox::redis::maxmem', {'default_value' => 1610612736}),
+
     Hash $ldap_config = lookup('ldap', Hash, hash, {}),
 
     Boolean $do_backups = lookup('profile::netbox::backup', {'default_value' => true})
@@ -81,26 +80,24 @@ class profile::netbox (
 
     # rsyslog forwards json messages sent to localhost along to logstash via kafka
     class { '::profile::rsyslog::udp_json_logback_compat': }
-
     class { '::netbox':
-        service_hostname => $nb_service_hostname,
-        directory        => '/srv/deployment/netbox/deploy/src',
-        db_host          => $db_primary,
-        db_password      => $db_password,
-        secret_key       => $secret_key,
-        ldap_password    => $proxypass,
-        extras_path      => $extras_path,
-        swift_auth_url   => $swift_auth_url,
-        swift_user       => $swift_user,
-        swift_key        => $swift_key,
-        swift_ca         => $nb_swift_ca_cert,
-        swift_container  => $swift_container,
-        swift_url_key    => $swift_url_key,
-        ldap_server      => $ldap_config['ro-server'],
-        include_ldap     => $include_ldap,
-        redis_host       => $redis_host,
-        redis_port       => $redis_port,
-        redis_password   => $redis_password,
+        service_hostname   => $nb_service_hostname,
+        directory          => '/srv/deployment/netbox/deploy/src',
+        db_host            => $db_primary,
+        db_password        => $db_password,
+        secret_key         => $secret_key,
+        ldap_password      => $proxypass,
+        extras_path        => $extras_path,
+        swift_auth_url     => $swift_auth_url,
+        swift_user         => $swift_user,
+        swift_key          => $swift_key,
+        swift_ca           => $nb_swift_ca_cert,
+        swift_container    => $swift_container,
+        swift_url_key      => $swift_url_key,
+        ldap_server        => $ldap_config['ro-server'],
+        include_ldap       => $include_ldap,
+        local_redis_port   => $local_redis_port,
+        local_redis_maxmem => $local_redis_maxmem,
     }
     $ssl_settings = ssl_ciphersuite('apache', 'strong', true)
     class { '::sslcert::dhparam': }

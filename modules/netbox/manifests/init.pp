@@ -46,6 +46,12 @@
 # [*ensure*]
 #   installs/removes config files
 #
+# [*local_redis_port*]
+#   The port (as a string) that the required local Redis instance should listen on
+#
+# [*local_redis_maxmem*]
+#   The amount of memory in bytes that the local Redis instance should use
+#
 # [*ldap_server*]
 #   The LDAP server to specify in the configuration
 #
@@ -68,21 +74,6 @@
 # [*swift_ca*]
 #   The path to the CA that signs the SWIFT api endpoint.
 #
-# [*redis_host*]
-#   The hostname of the Redis instance to use for caching.
-#
-# [*redis_port*]
-#   The port of the Redis instance to use for caching.
-#
-# [*redis_password*]
-#   The password to authenticate to Redis with.
-#
-# [*redis_database*]
-#   The database to select in the Redis host.
-#
-# [*redis_cache_database*]
-#   The database to select in the Redis host for caching.
-#
 #
 class netbox(
     Stdlib::Fqdn $service_hostname,
@@ -98,7 +89,10 @@ class netbox(
     Stdlib::Unixpath $venv_path = '/srv/deployment/netbox/venv',
     Stdlib::Unixpath $directory = '/srv/deployment/netbox/deploy/src',
     Stdlib::Unixpath $extras_path = '/srv/deployment/netbox-extras',
-    Wmflib::Ensure $ensure='present',
+    Wmflib::Ensure $ensure = 'present',
+    String $local_redis_port = '6380',
+    # default: 1.5 Gibibytes
+    Integer $local_redis_maxmem = 1610612736,
     Optional[Stdlib::Fqdn] $ldap_server = undef,
     Boolean $include_ldap = false,
     Variant[Stdlib::HTTPUrl, Boolean, Undef] $swift_auth_url = undef,
@@ -107,13 +101,8 @@ class netbox(
     Optional[String] $swift_container = undef,
     Optional[String] $swift_url_key = undef,
     Optional[Stdlib::Unixpath] $swift_ca = undef,
-    Stdlib::Fqdn $redis_host = undef,
-    Stdlib::Port $redis_port = undef,
-    String $redis_password = undef,
-    Integer $redis_database = 0,
-    Integer $redis_cache_database = 1,
 ) {
-    require_package('virtualenv', 'python3-pip', 'python3-pynetbox')
+    ensure_packages(['virtualenv', 'python3-pip', 'python3-pynetbox'])
     $home_path = '/var/lib/netbox'
 
     file { $home_path:
@@ -122,6 +111,28 @@ class netbox(
         group  => 'netbox',
         mode   => '0755',
     }
+
+    # Configure REDIS to be memory-only (no persistance) and to only accept local
+    # connections
+    redis::instance { $local_redis_port:
+      settings => {
+        # below setting prevents persistance
+        save                     => '""',
+        bind                     => '127.0.0.1 ::1',
+        maxmemory                => $local_redis_maxmem,
+        maxmemory_policy         => 'volitile-lru',
+        maxmemory_samples        => 5,
+        lazyfree-lazy-eviction   => 'yes',
+        lazyfree-lazy-expire     => 'yes',
+        lazyfree-lazy-server-del => 'yes',
+        lua-time-limit           => 5000,
+        databases                => 3,
+        protected-mode           => 'yes',
+        dbfilename               => '""',
+        appendfilename           => '""',
+      }
+    }
+    ::prometheus::redis_exporter { $local_redis_port: }
 
     user { 'netbox':
         ensure  => $ensure,
@@ -194,13 +205,20 @@ class netbox(
           'ALL=(root) NOPASSWD: /usr/sbin/service uwsgi-netbox start',
           'ALL=(root) NOPASSWD: /usr/sbin/service uwsgi-netbox status',
           'ALL=(root) NOPASSWD: /usr/sbin/service uwsgi-netbox stop',
+          'ALL=(root) NOPASSWD: /usr/sbin/service rq-netbox restart',
+          'ALL=(root) NOPASSWD: /usr/sbin/service rq-netbox start',
+          'ALL=(root) NOPASSWD: /usr/sbin/service rq-netbox status',
+          'ALL=(root) NOPASSWD: /usr/sbin/service rq-netbox stop',
+
       ],
       core_limit      => '30G',
+      subscribe       => File['/etc/netbox/configuration.py'],
   }
 
   systemd::service { 'rq-netbox':
-      ensure  => $ensure,
-      content => file('netbox/rq-netbox.service'),
+    ensure    => $ensure,
+    content   => file('netbox/rq-netbox.service'),
+    subscribe => File['/etc/netbox/configuration.py'],
   }
 
   base::service_auto_restart { 'uwsgi-netbox': }

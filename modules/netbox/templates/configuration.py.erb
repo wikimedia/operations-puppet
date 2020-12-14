@@ -212,23 +212,30 @@ PASSTHROUGH = {
 <% end %>
 }
 
-
-<% if @redis_host %>
+RQ_DEFAULT_TIMEOUT = 300
 WEBHOOKS_ENABLED = True
 REDIS = {
     'webhooks': {
-        'HOST': '<%= @redis_host %>',
-        'PORT': <%= @redis_port %>,
-        'PASSWORD': '<%= @redis_password %>',
-        'DATABASE': <%= @redis_database %>,
+        'HOST': 'localhost',
+        'PORT': <%= @local_redis_port %>,
+        'DATABASE': 0
         'DEFAULT_TIMEOUT': 300,
     },
     'caching': {
-        'HOST': '<%= @redis_host %>',
-        'PORT': <%= @redis_port %>,
-        'PASSWORD': '<%= @redis_password %>',
-        'DATABASE': <%= @redis_cache_database %>,
+        'HOST': 'localhost',
+        'PORT': <%= @local_redis_port %>,
+        'DATABASE': 1
         'DEFAULT_TIMEOUT': 300,
     },
+    'tasks': {
+        'HOST': 'localhost',
+        'PORT': <%= @local_redis_port %>,
+        'DATABASE': 2
+    },
 }
+
+<% if @include_ldap %>
+# This is for Netbox 2.9
+# REMOTE_AUTH_BACKEND = 'netbox.authentication.LDAPBackend'
+#
 <% end %>
