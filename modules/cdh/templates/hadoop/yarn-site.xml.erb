@@ -127,18 +127,24 @@ end
     <name>yarn.resourcemanager.hostname.<%= host_to_id(host) %></name>
     <value><%= host %></value>
   </property>
-<% end # @resourcemanager_hosts.each -%>
 
   <!--
   Set YARN ResourceManager WebApp address to the primary resourcemanager
-  to work around https://issues.apache.org/jira/browse/YARN-2713
+  to avoid NPE on Hadoop 2.10+: https://issues.apache.org/jira/browse/YARN-8056
   -->
+  <property>
+    <name>yarn.resourcemanager.webapp.address.<%= host_to_id(host) %></name>
+    <value><%= host %>:8088</value>
+  </property>
+<% end # @resourcemanager_hosts.each -%>
+
+<% else -%>
+
   <property>
     <name>yarn.resourcemanager.webapp.address</name>
     <value><%= @primary_resourcemanager_host %>:8088</value>
   </property>
 
-<% else -%>
   <property>
     <name>yarn.resourcemanager.hostname</name>
     <value><%= @primary_resourcemanager_host %></value>
