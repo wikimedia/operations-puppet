@@ -41,6 +41,8 @@ def _initial_backup(pool, volume, expire):
                 volume,
                 "-e",
                 expire,
+                "-t",
+                "full_backup",
             ]
         )
 
@@ -88,6 +90,8 @@ def _differential_backup(pool, volume, last_snap, backy_snap_version_uid, expire
                 volume,
                 "-e",
                 expire,
+                "-t",
+                "differential_backup",
             ]
         )
 
