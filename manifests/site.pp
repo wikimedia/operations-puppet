@@ -1298,13 +1298,8 @@ node /^(phab1001\.eqiad|phab2001\.codfw)\.wmnet$/ {
 }
 
 # PKI server
-node 'pki2001.codfw.wmnet' {
+node /pki[12]001\.(eqiad|codfw)\.wmnet/ {
     role(pki)
-}
-
-# New pki server T259826
-node 'pki1001.eqiad.wmnet' {
-    role(insetup)
 }
 
 node /kafka-main100[4-5]\.eqiad\.wmnet/ {
