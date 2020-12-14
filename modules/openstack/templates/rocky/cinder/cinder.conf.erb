@@ -16,6 +16,15 @@ storage_availability_zone = nova
 # (string value)
 #default_availability_zone = <None>
 
+# This needs to be created on the command line
+#  and bound to QOS rules:
+#
+# openstack volume qos create --property iops_sec=5000 --property total_bytes_sec=200000000 --property write_iops_sec=500 standard-iops
+# openstack volume type create standard
+# openstack volume qos associate (those two)
+
+default_volume_type = standard
+
 # The strategy to use for auth. Supports noauth or keystone. (string value)
 # Possible values:
 # noauth - Do not perform authentication
