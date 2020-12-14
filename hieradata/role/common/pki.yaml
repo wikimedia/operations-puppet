@@ -45,7 +45,8 @@ profile::pki::client::certs:
     label: 'Wikimedia_SRE_Internal'
   'example.discovery.wmnet':
     label: 'Wikimedia_testing_CA'
-    hosts: "%{facts.fqdn}"
+    hosts: 
+      - "%{facts.fqdn}"
     key:
       algo: 'rsa'
       size: 2048
