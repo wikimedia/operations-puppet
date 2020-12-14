@@ -269,8 +269,12 @@ def check_ssh_keys(yamldata):
             )
 
             for i in ssh:
-                key_type = i.split()[0]
-                production_key = i.split()[1]
+                parts = i.split()
+                if len(parts) < 2:
+                    log += "Malformed SSH key for " + username + "\n"
+                    continue
+                key_type = parts[0]
+                production_key = parts[1]
 
                 if key_type == "ssh-dss":
                     log += username + " uses outdated DSA key for production access\n"
