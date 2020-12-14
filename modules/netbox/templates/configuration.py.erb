@@ -235,7 +235,5 @@ REDIS = {
 }
 
 <% if @include_ldap %>
-# This is for Netbox 2.9
-# REMOTE_AUTH_BACKEND = 'netbox.authentication.LDAPBackend'
-#
+REMOTE_AUTH_BACKEND = 'netbox.authentication.LDAPBackend'
 <% end %>
