@@ -4204,79 +4204,66 @@ host maps2010 {
 host mc1019 {
     hardware ethernet 1c:98:ec:29:27:04;
     fixed-address mc1019.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
 }
 
 host mc1020 {
     hardware ethernet 1c:98:ec:29:7c:f4;
     fixed-address mc1020.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
 }
 
 host mc1021 {
     hardware ethernet 1c:98:ec:29:8c:48;
     fixed-address mc1021.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
 }
 
 host mc1022 {
     hardware ethernet 1c:98:ec:29:07:cc;
     fixed-address mc1022.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
 }
 
 host mc1023 {
     hardware ethernet 14:02:ec:32:47:3c;
     fixed-address mc1023.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
 }
 
 host mc1024 {
     hardware ethernet 1c:98:ec:29:8c:1c;
     fixed-address mc1024.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
 }
 
 host mc1025 {
     hardware ethernet 1c:98:ec:29:1a:30;
     fixed-address mc1025.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
 }
 
 host mc1026 {
     hardware ethernet 1c:98:ec:29:8c:34;
     fixed-address mc1026.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
 }
 
 host mc1027 {
     hardware ethernet 1c:98:ec:29:8c:58;
     fixed-address mc1027.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
 }
 
 host mc1028 {
     hardware ethernet 1c:98:ec:29:7c:e4;
     fixed-address mc1028.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
 }
 
 host mc1029 {
     hardware ethernet 1c:98:ec:29:1a:68;
     fixed-address mc1029.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
 }
 
 host mc1030 {
     hardware ethernet 1c:98:ec:29:9c:00;
     fixed-address mc1030.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
 }
 
 host mc1031 {
     hardware ethernet 1c:98:ec:29:07:f4;
     fixed-address mc1031.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
 }
 
 host mc1032 {
@@ -4287,7 +4274,6 @@ host mc1032 {
 host mc1033 {
     hardware ethernet 1c:98:ec:29:ac:20;
     fixed-address mc1033.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
 }
 
 host mc1034 {
@@ -4323,73 +4309,61 @@ host mc-gp1003 {
 host mc2019 {
     hardware ethernet 94:18:82:79:36:ac;
     fixed-address mc2019.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
 }
 
 host mc2020 {
     hardware ethernet 94:18:82:79:63:38;
     fixed-address mc2020.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
 }
 
 host mc2021 {
     hardware ethernet 94:18:82:75:af:8c;
     fixed-address mc2021.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
 }
 
 host mc2022 {
     hardware ethernet 94:18:82:79:a3:c4;
     fixed-address mc2022.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
 }
 
 host mc2023 {
     hardware ethernet 94:18:82:79:a3:48;
     fixed-address mc2023.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
 }
 
 host mc2024 {
     hardware ethernet 94:18:82:79:36:74;
     fixed-address mc2024.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
 }
 
 host mc2025 {
     hardware ethernet 94:18:82:79:83:88;
     fixed-address mc2025.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
 }
 
 host mc2026 {
     hardware ethernet 94:18:82:79:93:08;
     fixed-address mc2026.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
 }
 
 host mc2027 {
     hardware ethernet 94:18:82:79:93:a0;
     fixed-address mc2027.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
 }
 
 host mc2029 {
     hardware ethernet 94:18:82:79:93:68;
     fixed-address mc2029.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
 }
 
 host mc2030 {
     hardware ethernet 94:18:82:79:93:54;
     fixed-address mc2030.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
 }
 
 host mc2031 {
     hardware ethernet 94:18:82:75:af:94;
     fixed-address mc2031.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
 }
 
 host mc2032 {
@@ -4400,7 +4374,6 @@ host mc2032 {
 host mc2033 {
     hardware ethernet 94:18:82:79:93:88;
     fixed-address mc2033.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
 }
 
 host mc2034 {
@@ -4421,7 +4394,6 @@ host mc2036 {
 host mc2037 {
     hardware ethernet 14:02:EC:07:90:08;
     fixed-address mc2037.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
 }
 
 host mc-gp2001 {
