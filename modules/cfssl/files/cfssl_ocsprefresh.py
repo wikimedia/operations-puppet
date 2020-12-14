@@ -64,9 +64,13 @@ def ocspdump(dbconfig, responses_file):
     responses = check_output(shlex.split(command))
     logging.debug('read current responses file: %s', responses_file)
     # TODO: this is false on every run as we re-sign each time
-    if responses == responses_file.read_bytes():
-        logging.debug('No update required')
-        return False
+    try:
+        if responses == responses_file.read_bytes():
+            logging.debug('No update required')
+            return False
+    except FileNotFoundError:
+        logging.warning('No current responses file')
+        pass
     logging.debug('Updating response file: %s', responses_file)
     responses_file.write_bytes(responses)
     return True
