@@ -41,12 +41,12 @@ profile::pki::server::intermediates:
 profile::pki::client::certs:
   'foobar.example.com':
     label: 'Wikimedia_SRE_Internal'
-  'foobar.pki':
-    label: 'Wikimedia_SRE_Internal'
   'example.discovery.wmnet':
     label: 'Wikimedia_testing_CA'
-    hosts: 
-      - "%{facts.fqdn}"
+    hosts:
+      - "%{facts.networking.fqdn}"
+      - "%{facts.networking.ip}"
+      - "%{facts.networking.ip6}"
     key:
       algo: 'rsa'
       size: 2048
