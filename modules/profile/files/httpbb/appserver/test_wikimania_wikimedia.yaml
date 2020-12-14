@@ -38,10 +38,6 @@ https://www.wikimedia.org:
   assert_headers:
     Location: https://foundation.wikimedia.org/wiki/Main_Page
 
-https://zero.wikimedia.org:
-- path: /wiki/Main_Page
-  assert_status: 404
-
 https://legalteam.wikimedia.org:
 - path: /wiki/Main_Page
   assert_status: 200
