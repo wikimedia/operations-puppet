@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import pwd
 import sys
 import socket
 import subprocess
@@ -69,6 +70,13 @@ def main():
         sys.exit(1)
 
     principal = "%s/%s@%s" % (run_as_user, fqdn, realm_name)
+
+    # Explicitly set KRB5CCNAME since it is a variable preserved by sudo.
+    # If the user that issues the sudo command has KRB5CCNAME set,
+    # then its value gets carried over and the sudoed user is forced to reuse
+    # it.
+    user_id = str(pwd.getpwnam(run_as_user).pw_uid)
+    os.environ['KRB5CCNAME'] = "/tmp/krb_" + user_id
 
     logger.info(
         "kerberos-run-command: User {} executes as user {} the command {}"
