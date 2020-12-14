@@ -135,12 +135,12 @@ class profile::pki::server(
         content => template('profile/pki/server/pki.discovery.wmnet.conf.erb')
     }
     ferm::service{'csr_and_ocsp_responder':
-        protoc => 'tcp',
+        proto  => 'tcp',
         port   => '80',
         srange => '$DOMAIN_NETWORKS',
     }
     ferm::service{'multirootca':
-        protoc => 'tcp',
+        proto  => 'tcp',
         port   => '8888',
         srange => '$DOMAIN_NETWORKS',
     }
