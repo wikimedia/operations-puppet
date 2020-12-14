@@ -1,4 +1,4 @@
-puppetmaster: puppetmaster-1001.devtools.eqiad.wmflabs
+puppetmaster: puppetmaster-1001.devtools.eqiad1.wikimedia.cloud
 
 phabricator_server: phabricator-stage-1001.devtools.eqiad.wmflabs
 phabricator_servers:
