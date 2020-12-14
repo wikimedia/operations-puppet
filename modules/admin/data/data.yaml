@@ -4606,3 +4606,7 @@ ldap_only_users:
     ensure: present
     realname: Genoveva Galarza
     email: ggalarzaheredero@wikimedia.org
+  mattcleinman:
+    ensure: present
+    realname: Matt Cleinman
+    email: mcleinman@wikimedia.org
