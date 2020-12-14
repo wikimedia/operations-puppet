@@ -1,0 +1,3 @@
+# See T255262
+profile::swap::krb_credential_cache: '/run/user/{}/krb_cred'
+profile::kerberos::client::use_new_ccache: true
