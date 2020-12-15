@@ -83,6 +83,11 @@ class profile::reportupdater::jobs(
         output_dir => 'metrics/visualeditor',
     }
 
+    reportupdater::job { 'templatewizard':
+        ensure     => $ensure_jobs,
+        output_dir => 'metrics/templatewizard',
+    }
+
     # Set up various jobs to be executed by reportupdater
     # creating several reports on mysql research db.
     reportupdater::job { 'flow-beta-features':
