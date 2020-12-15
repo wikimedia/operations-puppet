@@ -3,7 +3,7 @@ http://wikimedia.org:
 - path: /research
   assert_status: 301
   assert_headers:
-      Location: https://research.wikimedia.org
+      Location: https://research.wikimedia.org/
 
 # Url shortner
 https://w.wiki:
