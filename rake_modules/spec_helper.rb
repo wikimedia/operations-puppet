@@ -1,3 +1,8 @@
+
+RSpec.configure do |c|
+  c.mock_with :rspec
+end
+
 require 'rspec-puppet'
 require 'puppetlabs_spec_helper/puppet_spec_helper'
 require 'rspec-puppet-facts'
@@ -26,7 +31,6 @@ RSpec.configure do |c|
       end
     end
   end
-  c.mock_with :mocha
   c.color = true
   c.setup_fixtures = false
   c.default_facts = default_facts

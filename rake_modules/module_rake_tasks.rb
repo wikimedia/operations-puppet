@@ -1,3 +1,4 @@
+require 'puppetlabs_spec_helper/rake_tasks'
 private_repo = 'https://gerrit.wikimedia.org/r/labs/private'
 fixture_path = File.join(__dir__, '..', 'spec', 'fixtures')
 private_modules_path = File.join(fixture_path, 'private')

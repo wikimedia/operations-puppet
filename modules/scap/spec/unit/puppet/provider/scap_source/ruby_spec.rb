@@ -1,18 +1,13 @@
 require_relative '../../../../../../../rake_modules/spec_helper'
 
-provider_class = Puppet::Type.type(:scap_source).provider(:default)
+# provider_class = Puppet::Type.type(:scap_source).provider(:default)
 
-describe provider_class do
-  let :params do
-    {}
-  end
+describe Puppet::Type.type(:scap_source).provider(:default) do
   let :resource do
-    Puppet::Type::Scap_source.new({
-      :name => 'somename',
-    }.merge(params))
+    Puppet::Type::Scap_source.new(name: 'somename')
   end
   let :provider do
-    provider_class.new(resource)
+    Puppet::Type.type(:scap_source).provider(:default).new(resource)
   end
 
   context 'Origin is Gerrit' do

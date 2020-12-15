@@ -2,16 +2,16 @@ require_relative '../../../../rake_modules/spec_helper'
 
 resource_class = Puppet::Type.type(:scap_source)
 
-describe resource_class do
+describe Puppet::Type.type(:scap_source) do
   describe 'when validating attributes' do
     [:scap_repository, :origin, :owner, :group, :base_path].each do |param|
       it "should have a #{param} parameter" do
-        expect(described_class.attrtype(param)).to eq(:param)
+        expect(resource_class.attrtype(param)).to eq(:param)
       end
     end
     [:ensure, :repository].each do |property|
       it "should have a #{property} property" do
-        expect(described_class.attrtype(property)).to eq(:property)
+        expect(resource_class.attrtype(property)).to eq(:property)
       end
     end
   end

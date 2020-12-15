@@ -37,6 +37,7 @@ require 'shellwords'
 require 'puppet-strings/tasks/generate'
 $LOAD_PATH.unshift File.expand_path('.')
 require 'rake_modules/taskgen'
+require_relative 'rake_modules/module_rake_tasks.rb'
 
 pattern_end = 'spec/{aliases,classes,defines,functions,hosts,integration,plans,tasks,type_aliases,types,unit}/**/*_spec.rb'
 
