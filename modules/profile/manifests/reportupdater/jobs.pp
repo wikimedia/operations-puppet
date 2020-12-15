@@ -73,6 +73,11 @@ class profile::reportupdater::jobs(
         output_dir => 'metrics/structured-data',
     }
 
+    reportupdater::job { 'visualeditor':
+        ensure     => $ensure_jobs,
+        output_dir => 'metrics/visualeditor',
+    }
+
     # Set up various jobs to be executed by reportupdater
     # creating several reports on mysql research db.
     reportupdater::job { 'flow-beta-features':
