@@ -88,7 +88,7 @@ def get_db_connection(dbconfig):
     match = pattern.search(config['data_source'])
     ssl = {'ca': '/etc/ssl/certs/Puppet_Internal_CA.pem', 'check_hostname': False}
     return (pymysql.connect(host=match['host'],
-                            port=match['port'],
+                            port=int(match['port']),
                             user=match['user'],
                             password=match['pass'],
                             db=match['db'],
