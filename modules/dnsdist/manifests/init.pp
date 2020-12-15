@@ -47,6 +47,9 @@
 #  [*enable_webserver*]
 #    [bool] whether to enable dnsdist's web server. default: false.
 #
+#  [*drop_querytype_any*]
+#    [bool] whether to drop queries with qtype=ANY. default: true.
+#
 #  [*webserver*]
 #    [Dnsdist::Webserver_config] web server configuration. default: undef.
 #
@@ -73,6 +76,7 @@ class dnsdist (
     Boolean                             $enable_console         = false,
     Optional[String]                    $console_key            = undef,
     Boolean                             $enable_webserver       = false,
+    Boolean                             $drop_querytype_any     = true,
     Optional[Dnsdist::Webserver_config] $webserver              = undef,
     Boolean                             $enable_ecs             = true,
     Boolean                             $enable_landing         = false,
