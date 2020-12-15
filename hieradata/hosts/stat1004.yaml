@@ -1,3 +1,4 @@
 # See T255262
 profile::swap::krb_credential_cache: '/run/user/{}/krb_cred'
 profile::kerberos::client::use_new_ccache: true
+profile::presto::client::krb5_credential_cache_path: '/run/user/$(id -u)/krb_cred'

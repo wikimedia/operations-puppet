@@ -11,6 +11,7 @@ profile::analytics::cluster::packages::common::use_bigtop_settings: true
 # See T255262
 profile::swap::krb_credential_cache: '/run/user/{}/krb_cred'
 profile::kerberos::client::use_new_ccache: true
+profile::presto::client::krb5_credential_cache_path: '/run/user/$(id -u)/krb_cred'
 
 profile::hadoop::common::hadoop_cluster_name: 'analytics-test-hadoop'
 

@@ -18,6 +18,7 @@ class profile::presto::client(
     String $cluster_name = lookup('profile::presto::cluster_name'),
     String $discovery_uri = lookup('profile::presto::discovery_uri'),
     Boolean $use_kerberos = lookup('profile::presto::use_kerberos', { 'default_value' => false }),
+    String $krb5_credential_cache_path = lookup('profile::presto::client::krb5_credential_cache_path', { 'default_value' => '/tmp/krb5cc_$(id -u)' }),
     Optional[Hash[String, Hash[String, String]]] $presto_clusters_secrets = lookup('presto_clusters_secrets', { 'default_value' => {} }),
 ) {
 

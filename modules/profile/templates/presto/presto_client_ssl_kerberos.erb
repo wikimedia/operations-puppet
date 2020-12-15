@@ -8,6 +8,6 @@
 --krb5-config-path /etc/krb5.conf \
 --krb5-principal $(whoami)@WIKIMEDIA  \
 --krb5-remote-service-name presto \
---krb5-credential-cache-path /tmp/krb5cc_$(id -u) \
+--krb5-credential-cache-path <%= @krb5_credential_cache_path %> \
 <%- end -%>
 $@
