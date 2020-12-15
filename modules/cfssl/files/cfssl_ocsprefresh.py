@@ -91,7 +91,7 @@ def get_db_connection(dbconfig):
                             port=int(match['port']),
                             user=match['user'],
                             password=match['pass'],
-                            db=match['db'],
+                            db='information_schema',
                             charset="utf8mb4",
                             ssl=ssl),
             match['db'])
@@ -128,7 +128,7 @@ def update_required(responses_file: Path, dbconfig: str, primary: bool) -> bool:
     logging.debug('%s last updated: %s', responses_file, last_update)
     (db_conn, db_name) = get_db_connection(dbconfig)
     try:
-        return last_update < get_db_update_time(dbconfig, db_name, table_name)
+        return last_update < get_db_update_time(db_conn, db_name, table_name)
     finally:
         db_conn.close()
 
