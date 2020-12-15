@@ -14,10 +14,11 @@ Facter.add(:lldp) do
 
     document.elements.each('lldp/interface') do |interface|
       eth = interface.attributes['name']
-      lldp[eth] = {}
+      lldp[eth] ||= {'neighbors' => []}
 
       interface.elements.each('chassis/name') do |switch|
         lldp[eth]['neighbor'] = switch.text
+        lldp[eth]['neighbors'] << switch.text
       end
       interface.elements.each('port') do |port|
         lldp[eth]['port'] = port.elements['id'].text
