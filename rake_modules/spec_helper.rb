@@ -28,7 +28,6 @@ RSpec.configure do |c|
   end
   c.mock_with :mocha
   c.color = true
-  c.formatter = :documentation
   c.setup_fixtures = false
   c.default_facts = default_facts
   c.module_path = [

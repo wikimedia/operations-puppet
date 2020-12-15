@@ -27,6 +27,7 @@
 # * tox - run the tox tests if needed.
 #
 require 'git'
+require 'parallel_tests'
 require 'set'
 require 'rake'
 require 'rake/tasklib'
@@ -36,6 +37,8 @@ require 'shellwords'
 require 'puppet-strings/tasks/generate'
 $LOAD_PATH.unshift File.expand_path('.')
 require 'rake_modules/taskgen'
+
+pattern_end = 'spec/{aliases,classes,defines,functions,hosts,integration,plans,tasks,type_aliases,types,unit}/**/*_spec.rb'
 
 private_repo = 'https://gerrit.wikimedia.org/r/labs/private'
 fixture_path = File.join(__dir__, 'spec', 'fixtures')
@@ -90,6 +93,22 @@ namespace :global do
   desc "Run all spec tests found in modules"
   multitask :spec => spec_tasks do
     raise "Modules that failed to pass the spec tests: #{spec_failed.join ', '}" unless spec_failed.empty?
+  end
+
+  desc 'run Global rspec using parralel_spec'
+  task :parallel_spec do
+    spec_modules = Set.new
+    FileList['modules/**/spec'].each do |path|
+      next unless path.match('modules/([^\/]+)/')
+      module_name = Regexp.last_match(1)
+      # don't test the puppetlabs modules
+      next if thirdparty_modules.include?(module_name)
+      spec_modules << module_name
+    end
+    pattern = "modules/{#{spec_modules.to_a.join(',')}}/#{pattern_end}"
+    args = ['-t', 'rspec', '--']
+    args.concat(Rake::FileList[pattern].to_a)
+    ParallelTests::CLI.new.run(args)
   end
 
   desc 'Run the wmf style guide check on all files, or on a single module (with module=<module-name>)'
