@@ -1,6 +1,7 @@
 # filtertags: labs-project-deployment-prep
-class role::mediawiki::jobrunner {
-    system::role { 'mediawiki::jobrunner': }
+# like role::mediawiki::jobrunner but without LVS and envoy
+class role::beta::mediawiki::jobrunner {
+    system::role { 'beta::mediawiki::jobrunner': }
 
     include ::profile::base::firewall
 
@@ -15,8 +16,4 @@ class role::mediawiki::jobrunner {
 
     # restart php-fpm if the opcache available is too low
     include ::profile::mediawiki::php::restarts
-
-    # not included in beta
-    include ::profile::lvs::realserver
-    include ::profile::tlsproxy::envoy
 }
