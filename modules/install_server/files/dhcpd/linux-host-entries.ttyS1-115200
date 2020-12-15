@@ -5081,7 +5081,6 @@ host mw1264 {
 host mw1265 {
     hardware ethernet 14:18:77:61:38:14;
     fixed-address mw1265.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host mw1266 {
@@ -8054,4 +8053,3 @@ host wtp1048 {
     fixed-address wtp1048.eqiad.wmnet;
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
-
