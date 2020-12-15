@@ -3,7 +3,7 @@
 # Sets up Prometheus based monitoring (only jvm) for the druid broker.
 #
 class profile::druid::monitoring::broker(
-    $prometheus_nodes        = hiera('prometheus_nodes'),
+    Array[Stdlib::Host] $prometheus_nodes = lookup('prometheus_nodes'),
 ) {
     $jmx_exporter_config_file = '/etc/prometheus/druid_broker_jmx_exporter.yaml'
     $prometheus_jmx_exporter_broker_port = 8182
