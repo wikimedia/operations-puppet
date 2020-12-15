@@ -37,7 +37,11 @@ describe 'scap::target' do
           :additional_services_names => ['test_service3'],
         } }
 
-        it { should raise_error(/service_name must be set if additional_services_names is set/) }
+        it do
+          is_expected.to raise_error(
+            Puppet::Error, /service_name must be set if additional_services_names is set/
+          )
+        end
       end
     end
   end
