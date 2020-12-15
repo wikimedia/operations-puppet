@@ -55,3 +55,5 @@ profile::lvs::realserver::pools:
   apertium: {}
 prometheus::node_exporter::collectors_extra:
   - processes
+# Remove once the clusters have been reinitialized
+profile::kubernetes::node::cni_config: /etc/kubernetes/kubelet_config

@@ -10,7 +10,7 @@ class profile::calico::kubernetes(
     String $calicoctl_username = lookup('profile::calico::kubernetes::calicoctl::username', {default_value => 'calicoctl'}),
     String $calicoctl_token = lookup('profile::calico::kubernetes::calicoctl::token'),
     Stdlib::Host $master_fqdn = lookup('profile::kubernetes::master_fqdn'),
-    Stdlib::Unixpath $kubeconfig = lookup('profile::kubernetes::node::kubelet_config', {default_value => '/etc/kubernetes/kubelet_config'}),
+    Stdlib::Unixpath $kubeconfig = lookup('profile::kubernetes::node::cni_config', {default_value => '/etc/cni/net.d/calico-kubeconfig'}),
     Array[Stdlib::Host] $bgp_peers = lookup('profile::calico::kubernetes::bgp_peers'),
     Array[Stdlib::Host] $prometheus_nodes = lookup('prometheus_nodes', {default_value => []}),
     Optional[Stdlib::Host] $registry = lookup('profile::calico::kubernetes::docker::registry', {default_value => 'docker-registry.discovery.wmnet'}),
