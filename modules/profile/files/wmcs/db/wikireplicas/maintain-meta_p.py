@@ -211,215 +211,218 @@ def main():
         )
         sys.exit(1)
 
-    dbh = pymysql.connect(
-        user=config["mysql_user"],
-        passwd=config["mysql_password"],
-        unix_socket=mysql_socket,
-        charset="utf8",
-    )
-
-    ops = SchemaOperations(args.dry_run, dbh, dbh.cursor())
-
-    if args.bootstrap:
-        seed_schema(ops)
-
-    ops.write_execute("START TRANSACTION;")
-
-    if args.purge:
-        ops.write_execute("TRUNCATE meta_p.wiki;")
-
-    alldbs = "{}/dblists/all.dblist".format(args.mediawiki_config)
-    dbs = {
-        db: {"has_visualeditor": True}
-        for db in open(alldbs).read().splitlines()
-    }
-
-    if args.databases:
-        dbs = {k: v for k, v in dbs.items() if k in args.databases}
-
-    def read_list(fname, prop, val):
-        fpath = os.path.join(
-            args.mediawiki_config, "dblists", "{}.dblist".format(fname)
-        )
-        if os.path.isfile(fpath):
-            for db in open(fpath).read().splitlines():
-                if db in dbs:
-                    dbs[db][prop] = val
-        else:
-            logging.warning('DBList "%s" not found', fpath)
-
-    read_list("closed", "closed", True)
-    read_list("deleted", "deleted", True)
-    read_list("small", "size", 1)
-    read_list("medium", "size", 2)
-    read_list("large", "size", 3)
-    read_list("private", "private", True)
-    read_list("special", "family", "special")
-    read_list("flaggedrevs", "has_flaggedrevs", True)
-    read_list("visualeditor-nondefault", "has_visualeditor", False)
-    read_list("wikidataclient", "has_wikidata", True)
-
-    # TODO: cloudweb2001-dev
-    for slice in ["s1", "s2", "s3", "s4", "s5", "s6", "s7", "s8"]:
-        read_list(slice, "slice", slice)
-
-    for family in [
-        "wikibooks",
-        "wikidata",
-        "wikinews",
-        "wikiquote",
-        "wikisource",
-        "wikiversity",
-        "wikivoyage",
-        "wiktionary",
-        "wikimania",
-        "wikimedia",
-        "wikipedia",
-    ]:
-        read_list(family, "family", family)
-
-    # case sensitivity of titles isn't in a .dblist, nor is it
-    # exposed through the API so we have to hardcode it here to match
-    # what is in InitialiseSettings.php
-    read_list("wiktionary", "sensitive", True)
-    if "jbowiki" in dbs:
-        dbs["jbowiki"]["sensitive"] = True
-
-    # Per T219374, temporarily changing to VariantSettings.php since that is
-    # the current file for this information.  Fall back to the original file
-    # when that file goes away.
-    initialise_settings = "{}/wmf-config/VariantSettings.php".format(
-        args.mediawiki_config
-    )
-    if not os.path.isfile(initialise_settings):
-        initialise_settings = "{}/wmf-config/InitialiseSettings.php".format(
-            args.mediawiki_config
+    try:
+        dbh = pymysql.connect(
+            user=config["mysql_user"],
+            passwd=config["mysql_password"],
+            unix_socket=mysql_socket,
+            charset="utf8",
         )
 
-    canonical = parse_php_canonical(initialise_settings)
+        ops = SchemaOperations(args.dry_run, dbh, dbh.cursor())
 
-    for db, dbInfo in dbs.items():
+        if args.bootstrap:
+            seed_schema(ops)
 
-        logging.debug("collecting action api info for {}".format(db))
-        if "private" in dbInfo and dbInfo["private"]:
-            continue
+        ops.write_execute("START TRANSACTION;")
 
-        elif "deleted" in dbInfo and dbInfo["deleted"]:
-            continue
+        if args.purge:
+            ops.write_execute("TRUNCATE meta_p.wiki;")
 
-        if db in canonical:
-            url = canonical[db]
-        else:
-            matches = re.match("^(.*)(wik[it].*)", db)
-            lang = matches.group(1)
-            url = canonical[dbInfo["family"]].replace("$lang", lang)
-
-        if url:
-            canon = url.replace("_", "-")
-            dbInfo["url"] = canon
-            try:
-                url_tail = "/w/api.php?action=query&meta=siteinfo&siprop=general&format=json"
-                header = {"User-Agent": "Labsdb maintain-meta_p.py"}
-                r = requests.get(canon + url_tail, headers=header)
-                request = r.content
-                siteinfo = json.loads(request)
-                name = force_to_unicode(
-                    siteinfo["query"]["general"]["sitename"]
-                )
-                lang = force_to_unicode(siteinfo["query"]["general"]["lang"])
-                dbInfo["name"] = name
-                dbInfo["lang"] = lang
-            except Exception as e:
-                logging.warning("failed request for {}: {}".format(canon, e))
-
-    for db, dbInfo in dbs.items():
-
-        logging.debug("update meta_p for {}".format(db))
-        if "deleted" in dbInfo and dbInfo["deleted"]:
-            continue
-        elif "private" in dbInfo and dbInfo["private"]:
-            continue
-        # TODO: wikitech breaks here
-        elif "slice" not in dbInfo:
-            continue
-
-        fields = {
-            "has_flaggedrevs": int(
-                "has_flaggedrevs" in dbInfo and dbInfo["has_flaggedrevs"]
-            ),
-            "has_visualeditor": int(
-                "has_visualeditor" in dbInfo and dbInfo["has_visualeditor"]
-            ),
-            "has_wikidata": int(
-                "has_wikidata" in dbInfo and dbInfo["has_wikidata"]
-            ),
-            "is_closed": int("closed" in dbInfo and dbInfo["closed"]),
-            "is_sensitive": int("sensitive" in dbInfo and dbInfo["sensitive"]),
-            "lang": "en",
-            "size": 1,
-            "dbname": db,
-            "slice": dbInfo["slice"] + ".labsdb",
-            "url": None,
-            "family": None,
-            "name": None,
+        alldbs = "{}/dblists/all.dblist".format(args.mediawiki_config)
+        dbs = {
+            db: {"has_visualeditor": True}
+            for db in open(alldbs).read().splitlines()
         }
 
-        if "url" in dbInfo:
-            fields["url"] = dbInfo["url"]
-        if "family" in dbInfo:
-            fields["family"] = dbInfo["family"]
-        if "lang" in dbInfo:
-            fields["lang"] = dbInfo["lang"]
-        if "name" in dbInfo:
-            fields["name"] = force_to_unicode(dbInfo["name"])
-        if "size" in dbInfo:
-            fields["size"] = dbInfo["size"]
+        if args.databases:
+            dbs = {k: v for k, v in dbs.items() if k in args.databases}
 
-        ops.write_execute(
-            """INSERT INTO meta_p.wiki
-             (dbname, lang, name, family,
-              url, size, slice, is_closed,
-              has_flaggedrevs, has_visualeditor, has_wikidata,
-              is_sensitive)
-              VALUES
-              ('%(dbname)s',
-              '%(lang)s',
-              '%(name)s',
-              '%(family)s',
-              '%(url)s',
-              %(size)s,
-              '%(slice)s',
-              %(is_closed)s,
-              %(has_flaggedrevs)s,
-              %(has_visualeditor)s,
-              %(has_wikidata)s,
-              %(is_sensitive)s)
-              ON DUPLICATE KEY UPDATE
-              dbname='%(dbname)s',
-              lang='%(lang)s',
-              name='%(name)s',
-              family='%(family)s',
-              url='%(url)s',
-              size=%(size)s,
-              slice='%(slice)s',
-              is_closed=%(is_closed)s,
-              has_flaggedrevs=%(has_flaggedrevs)s,
-              has_visualeditor=%(has_visualeditor)s,
-              has_wikidata=%(has_wikidata)s,
-              is_sensitive=%(is_sensitive)s;"""
-            % fields
+        def read_list(fname, prop, val):
+            fpath = os.path.join(
+                args.mediawiki_config, "dblists", "{}.dblist".format(fname)
+            )
+            if os.path.isfile(fpath):
+                for db in open(fpath).read().splitlines():
+                    if db in dbs:
+                        dbs[db][prop] = val
+            else:
+                logging.warning('DBList "%s" not found', fpath)
+
+        read_list("closed", "closed", True)
+        read_list("deleted", "deleted", True)
+        read_list("small", "size", 1)
+        read_list("medium", "size", 2)
+        read_list("large", "size", 3)
+        read_list("private", "private", True)
+        read_list("special", "family", "special")
+        read_list("flaggedrevs", "has_flaggedrevs", True)
+        read_list("visualeditor-nondefault", "has_visualeditor", False)
+        read_list("wikidataclient", "has_wikidata", True)
+
+        # TODO: cloudweb2001-dev
+        for slice in ["s1", "s2", "s3", "s4", "s5", "s6", "s7", "s8"]:
+            read_list(slice, "slice", slice)
+
+        for family in [
+            "wikibooks",
+            "wikidata",
+            "wikinews",
+            "wikiquote",
+            "wikisource",
+            "wikiversity",
+            "wikivoyage",
+            "wiktionary",
+            "wikimania",
+            "wikimedia",
+            "wikipedia",
+        ]:
+            read_list(family, "family", family)
+
+        # case sensitivity of titles isn't in a .dblist, nor is it
+        # exposed through the API so we have to hardcode it here to match
+        # what is in InitialiseSettings.php
+        read_list("wiktionary", "sensitive", True)
+        if "jbowiki" in dbs:
+            dbs["jbowiki"]["sensitive"] = True
+
+        # Per T219374, temporarily changing to VariantSettings.php since that is
+        # the current file for this information.  Fall back to the original file
+        # when that file goes away.
+        initialise_settings = "{}/wmf-config/VariantSettings.php".format(
+            args.mediawiki_config
         )
+        if not os.path.isfile(initialise_settings):
+            initialise_settings = "{}/wmf-config/InitialiseSettings.php".format(
+                args.mediawiki_config
+            )
 
-    ops.write_execute("COMMIT;")
+        canonical = parse_php_canonical(initialise_settings)
 
-    ops.write_execute("START TRANSACTION;")
-    ops.write_execute("DELETE FROM meta_p.properties_anon_whitelist;")
-    # This is hardcoded for now
-    ops.write_execute(
-        """INSERT INTO meta_p.properties_anon_whitelist
-        VALUES ('gadget-%'), ('language'), ('skin'), ('variant');"""
-    )
-    ops.write_execute("COMMIT;")
+        for db, dbInfo in dbs.items():
+
+            logging.debug("collecting action api info for {}".format(db))
+            if "private" in dbInfo and dbInfo["private"]:
+                continue
+
+            elif "deleted" in dbInfo and dbInfo["deleted"]:
+                continue
+
+            if db in canonical:
+                url = canonical[db]
+            else:
+                matches = re.match("^(.*)(wik[it].*)", db)
+                lang = matches.group(1)
+                url = canonical[dbInfo["family"]].replace("$lang", lang)
+
+            if url:
+                canon = url.replace("_", "-")
+                dbInfo["url"] = canon
+                try:
+                    url_tail = "/w/api.php?action=query&meta=siteinfo&siprop=general&format=json"
+                    header = {"User-Agent": "Labsdb maintain-meta_p.py"}
+                    r = requests.get(canon + url_tail, headers=header)
+                    request = r.content
+                    siteinfo = json.loads(request)
+                    name = force_to_unicode(
+                        siteinfo["query"]["general"]["sitename"]
+                    )
+                    lang = force_to_unicode(siteinfo["query"]["general"]["lang"])
+                    dbInfo["name"] = name
+                    dbInfo["lang"] = lang
+                except Exception as e:
+                    logging.warning("failed request for {}: {}".format(canon, e))
+
+        for db, dbInfo in dbs.items():
+
+            logging.debug("update meta_p for {}".format(db))
+            if "deleted" in dbInfo and dbInfo["deleted"]:
+                continue
+            elif "private" in dbInfo and dbInfo["private"]:
+                continue
+            # TODO: wikitech breaks here
+            elif "slice" not in dbInfo:
+                continue
+
+            fields = {
+                "has_flaggedrevs": int(
+                    "has_flaggedrevs" in dbInfo and dbInfo["has_flaggedrevs"]
+                ),
+                "has_visualeditor": int(
+                    "has_visualeditor" in dbInfo and dbInfo["has_visualeditor"]
+                ),
+                "has_wikidata": int(
+                    "has_wikidata" in dbInfo and dbInfo["has_wikidata"]
+                ),
+                "is_closed": int("closed" in dbInfo and dbInfo["closed"]),
+                "is_sensitive": int("sensitive" in dbInfo and dbInfo["sensitive"]),
+                "lang": "en",
+                "size": 1,
+                "dbname": db,
+                "slice": dbInfo["slice"] + ".labsdb",
+                "url": None,
+                "family": None,
+                "name": None,
+            }
+
+            if "url" in dbInfo:
+                fields["url"] = dbInfo["url"]
+            if "family" in dbInfo:
+                fields["family"] = dbInfo["family"]
+            if "lang" in dbInfo:
+                fields["lang"] = dbInfo["lang"]
+            if "name" in dbInfo:
+                fields["name"] = force_to_unicode(dbInfo["name"])
+            if "size" in dbInfo:
+                fields["size"] = dbInfo["size"]
+
+            ops.write_execute(
+                """INSERT INTO meta_p.wiki
+                (dbname, lang, name, family,
+                url, size, slice, is_closed,
+                has_flaggedrevs, has_visualeditor, has_wikidata,
+                is_sensitive)
+                VALUES
+                ('%(dbname)s',
+                '%(lang)s',
+                '%(name)s',
+                '%(family)s',
+                '%(url)s',
+                %(size)s,
+                '%(slice)s',
+                %(is_closed)s,
+                %(has_flaggedrevs)s,
+                %(has_visualeditor)s,
+                %(has_wikidata)s,
+                %(is_sensitive)s)
+                ON DUPLICATE KEY UPDATE
+                dbname='%(dbname)s',
+                lang='%(lang)s',
+                name='%(name)s',
+                family='%(family)s',
+                url='%(url)s',
+                size=%(size)s,
+                slice='%(slice)s',
+                is_closed=%(is_closed)s,
+                has_flaggedrevs=%(has_flaggedrevs)s,
+                has_visualeditor=%(has_visualeditor)s,
+                has_wikidata=%(has_wikidata)s,
+                is_sensitive=%(is_sensitive)s;"""
+                % fields
+            )
+
+        ops.write_execute("COMMIT;")
+
+        ops.write_execute("START TRANSACTION;")
+        ops.write_execute("DELETE FROM meta_p.properties_anon_whitelist;")
+        # This is hardcoded for now
+        ops.write_execute(
+            """INSERT INTO meta_p.properties_anon_whitelist
+            VALUES ('gadget-%'), ('language'), ('skin'), ('variant');"""
+        )
+        ops.write_execute("COMMIT;")
+    finally:
+        dbh.close()
 
 
 if __name__ == "__main__":
