@@ -27,6 +27,9 @@ route:
     - match:
         team: 'netops'
       receiver: 'netops-mail'
+    - match:
+        team: 'peering'
+      receiver: 'peering-mail'
 
     - match:
         severity: 'page'
@@ -56,3 +59,7 @@ receivers:
 - name: 'dcops-mail'
   email_configs:
     - to: 'datacenterops@<%= scope.lookupvar('::domain') %>'
+
+- name: 'peering-mail'
+  email_configs:
+    - to: 'peering@<%= scope.lookupvar('::domain') %>'
