@@ -29,6 +29,8 @@ class icinga(
     Boolean $stub_contactgroups = false,
 ) {
 
+    ensure_packages(['icinga', 'python3-yaml', 'patch', 'python3-clustershell'])
+
     file { $cfg_files:
       ensure => 'file',
       mode   => '0444',
@@ -150,10 +152,6 @@ class icinga(
         notify => Service['icinga'],
     }
 
-    package { 'icinga':
-        ensure => 'present',
-    }
-
     file { '/etc/icinga/cgi.cfg':
         source  => 'puppet:///modules/icinga/cgi.cfg',
         owner   => $icinga_user,
@@ -258,8 +256,6 @@ class icinga(
         group  => 'root',
         mode   => '0550',
     }
-
-    ensure_packages(['python3-yaml', 'patch', 'python3-clustershell'])
 
     # Script to generate the contacts configuration for the Icinga meta-monitoring
     file { '/usr/local/bin/generate-check-icinga-contacts':

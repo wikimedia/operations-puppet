@@ -5,9 +5,9 @@ class icinga::plugins(
     String $icinga_user,
     String $icinga_group,
 ){
-    package { 'nagios-nrpe-plugin':
-        ensure => present,
-    }
+
+    ensure_packages(['nagios-nrpe-plugin', 'python3-requests', 'python3-rfc3986'])
+
     file { '/usr/lib/nagios':
         ensure => directory,
         owner  => $icinga_user,
@@ -106,10 +106,6 @@ class icinga::plugins(
         group  => 'root',
         mode   => '0755',
     }
-
-    # for "check_lastmod" - Check if any website has recently been updated
-    # Originally added to check if Planet content updates working (T203208)
-    ensure_packages(['python3-requests', 'python3-rfc3986'])
 
     # Wikidata dispatcher monitoring
     file { '/usr/lib/nagios/plugins/check_wikidata_crit':
