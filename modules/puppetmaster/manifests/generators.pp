@@ -13,12 +13,4 @@ class puppetmaster::generators(
         source  => 'puppet:///modules/puppetmaster/naggen2.py',
         require => Package['python3-requests'],
     }
-
-    file {'/usr/local/bin/sshknowngen':
-        ensure  => absent,
-    }
-
-    file {'/usr/local/bin/prometheus-ganglia-gen':
-        ensure  => absent,
-    }
 }
