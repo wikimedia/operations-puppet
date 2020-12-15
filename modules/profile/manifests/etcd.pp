@@ -35,17 +35,17 @@
 #   Integer. The port peers will use. Defaults to 2380
 class profile::etcd(
     # Configuration
-    $cluster_name = hiera('profile::etcd::cluster_name'),
-    $cluster_bootstrap = hiera('profile::etcd::cluster_bootstrap', false),
-    $discovery = hiera('profile::etcd::discovery'),
-    $use_client_certs = hiera('profile::etcd::use_client_certs'),
-    $use_proxy = hiera('profile::etcd::use_proxy'),
-    $allow_from = hiera('profile::etcd::allow_from'),
-    $do_backup = hiera('profile::etcd::do_backup'),
-    $client_port = hiera('etcd::client_port', 2379),
-    $peer_port = hiera('etcd::peer_port', 2380),
-    $heartbeat_interval = hiera('profile::etcd::heartbeat_interval', 100),
-    $election_timeout = hiera('profile::etcd::election_timeout', 1000),
+    String $cluster_name = lookup('profile::etcd::cluster_name'),
+    Boolean $cluster_bootstrap = lookup('profile::etcd::cluster_bootstrap', {default_value => false}),
+    String $discovery = lookup('profile::etcd::discovery'),
+    Boolean $use_client_certs = lookup('profile::etcd::use_client_certs'),
+    Boolean $use_proxy = lookup('profile::etcd::use_proxy'),
+    String $allow_from = lookup('profile::etcd::allow_from'),
+    Boolean $do_backup = lookup('profile::etcd::do_backup'),
+    Stdlib::Port $client_port = lookup('etcd::client_port', {default_value => 2379}),
+    Stdlib::Port $peer_port = lookup('etcd::peer_port', {default_value => 2380}),
+    Integer $heartbeat_interval = lookup('profile::etcd::heartbeat_interval', {default_value => 100}),
+    Integer $election_timeout = lookup('profile::etcd::election_timeout', {default_value => 1000}),
 ){
     # Parameters mangling
     $cluster_state = $cluster_bootstrap ? {
