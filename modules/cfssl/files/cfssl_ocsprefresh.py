@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
-"""Script used to refresh the ocsp database and regenerate the ocsp responses"""
+"""Script used to refresh the ocsp database and regenerate the ocsp responses
+This script will regenerate the OCSP responses for a specific CA if any CA has
+issued a new certificate.  This means that there will be spurious updates however
+for now this is an acceptable trade off.
+"""
 import json
 import logging
 import pymysql
@@ -61,24 +65,12 @@ def ocspdump(dbconfig, responses_file):
         dbconfig (str):       path to the dbconfig
         responses_file (str): path to the responder public certificate
 
-    Returns:
-        bool: indicate if the ocspresponse file has been updated
     """
     command = f"/usr/bin/cfssl ocspdump -db-config {dbconfig}"
     logging.debug('running %s', command)
     responses = check_output(shlex.split(command))
-    logging.debug('read current responses file: %s', responses_file)
-    # TODO: this is false on every run as we re-sign each time
-    try:
-        if responses == responses_file.read_bytes():
-            logging.debug('No update required')
-            return False
-    except FileNotFoundError:
-        logging.warning('No current responses file')
-        pass
     logging.debug('Updating response file: %s', responses_file)
     responses_file.write_bytes(responses)
-    return True
 
 
 def get_db_connection(dbconfig):
@@ -176,8 +168,8 @@ def main():
             logging.error('ocsprefresh failed: %s', error)
             return 1
     try:
-        if ocspdump(dbconfig, responses_file):
-            check_call(shlex.split(f"/usr/bin/systemctl restart {args.restart_service}"))
+        ocspdump(dbconfig, responses_file)
+        check_call(shlex.split(f"/usr/bin/systemctl restart {args.restart_service}"))
     except CalledProcessError as error:
         logging.error('ocspdump failed: %s', error)
         return 1
