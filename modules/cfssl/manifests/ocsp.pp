@@ -27,6 +27,12 @@ define cfssl::ocsp (
     $_ca_file        = pick($ca_file, "${cfssl::conf_dir}/ca/ca.pem")
     $_responses_file = pick($responses_file, "${cfssl::ocsp_dir}/${safe_title}.ocsp")
 
+    ensure_packages(['python3-pymysql'])
+    ensure_resource('file', '/usr/local/sbin/cfssl-ocsprefresh', {
+                      ensure => file,
+                      mode   => '0550',
+                      source => 'puppet:///modules/cfssl/cfssl_ocsprefresh.py'})
+
     if ($key_content and !$cert_content) or ($cert_content and !$key_content) {
         fail('you must provide either both or neither key/cert_content')
     } elsif $key_content and $cert_content {
