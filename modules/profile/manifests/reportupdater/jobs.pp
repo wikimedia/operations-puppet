@@ -43,6 +43,11 @@ class profile::reportupdater::jobs(
         output_dir => 'metrics/browser',
     }
 
+    reportupdater::job { 'codemirror':
+        ensure     => $ensure_jobs,
+        output_dir => 'metrics/codemirror',
+    }
+
     reportupdater::job { 'interlanguage':
         ensure     => $ensure_jobs,
         output_dir => 'metrics/interlanguage',
