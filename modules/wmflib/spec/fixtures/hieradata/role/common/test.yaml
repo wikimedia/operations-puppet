@@ -1,5 +1,0 @@
-admin::groups:
-  - FooBar
-an_hash:
-  test: true
-mysql::innodb_threads: 50

@@ -5,7 +5,6 @@ require_relative 'fix_service_provider'
 
 include RspecPuppetFacts
 ENV['PUPPET_NOAPP_MANAGEMENT'] = 'true'
-private_repo = 'https://gerrit.wikimedia.org/r/labs/private'
 fixture_path = File.join(__dir__, '..', 'spec', 'fixtures')
 private_modules_path = File.join(fixture_path, 'private')
 facts_path = File.join(__dir__, 'default_facts.yml')
@@ -16,10 +15,6 @@ default_facts = {
 if File.exist?(facts_path) && File.readable?(facts_path)
   default_facts.merge!(YAML.safe_load(File.read(facts_path)))
 end
-
-# considered abusing fixtures for this but it ultimately just does the following
-# https://github.com/puppetlabs/puppetlabs_spec_helper/blob/master/lib/puppetlabs_spec_helper/tasks/fixtures.rb#L148
-system('git', 'clone', private_repo, private_modules_path)
 
 RSpec.configure do |c|
   c.before(:each) do
@@ -32,6 +27,7 @@ RSpec.configure do |c|
     end
   end
   c.mock_with :mocha
+  c.color = true
   c.formatter = :documentation
   c.setup_fixtures = false
   c.default_facts = default_facts
@@ -40,7 +36,6 @@ RSpec.configure do |c|
     File.join(private_modules_path, 'modules')
   ].join(':')
   c.hiera_config = File.join(__dir__, 'hiera.yaml')
-  puts c.module_path
 end
 # create a monkey patch to disable app_management.
 # while app_management is enabled the site keyword

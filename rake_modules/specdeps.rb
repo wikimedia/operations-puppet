@@ -31,7 +31,7 @@ class SpecDependencies
     modules.each do |mod|
       specs.add(mod) if Dir.exists?("modules/#{mod}/spec")
       if @deps.include?mod
-        @deps[mod].each{ |m| specs.add(m) }
+        @deps[mod].each{ |m| specs.add(m) if Dir.exists?("modules/#{m}/spec") }
       end
     end
     specs.to_a

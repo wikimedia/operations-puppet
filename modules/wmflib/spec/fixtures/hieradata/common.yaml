@@ -1,2 +1,0 @@
-cluster: misc
-mysql::innodb_threads: 15

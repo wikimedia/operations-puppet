@@ -1,7 +1,2 @@
-require 'rake'
-
-require 'rspec/core/rake_task'
-
-RSpec::Core::RakeTask.new(:spec) do |t|
-  t.pattern = 'spec/*/*_rspec.rb'
-end
+require 'puppetlabs_spec_helper/rake_tasks'
+require_relative '../../rake_modules/module_rake_tasks.rb'
