@@ -33,15 +33,15 @@ route:
 
     - match:
         severity: 'page'
-      receiver: 'irc'
+      receiver: 'sre-irc'
     - match:
         severity: 'critical'
-      receiver: 'irc'
+      receiver: 'sre-irc'
 
 receivers:
 - name: 'default'
 
-- name: 'irc'
+- name: 'sre-irc'
   webhook_configs:
     - url: 'http://<%= @active_host %>:19190/<%= @irc_channel %>'
 
