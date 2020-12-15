@@ -178,7 +178,4 @@ class puppetmaster(
         owner  => 'root',
         group  => 'root',
     }
-    file { '/usr/local/bin/puppet-wildcardsign':
-        ensure => absent,
-    }
 }
