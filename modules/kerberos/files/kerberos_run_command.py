@@ -76,7 +76,7 @@ def main():
     # then its value gets carried over and the sudoed user is forced to reuse
     # it.
     user_id = str(pwd.getpwnam(run_as_user).pw_uid)
-    os.environ['KRB5CCNAME'] = "/tmp/krb_" + user_id
+    os.environ['KRB5CCNAME'] = "/tmp/krb5cc_" + user_id
 
     logger.info(
         "kerberos-run-command: User {} executes as user {} the command {}"
