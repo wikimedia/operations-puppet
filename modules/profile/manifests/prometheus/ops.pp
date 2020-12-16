@@ -1063,6 +1063,13 @@ class profile::prometheus::ops (
         ],
       },
       {
+        'job_name'        => 'jmx_wdqs_streaming_updater',
+        'scheme'          => 'http',
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/jmx_wdqs_streaming_updater_*.yaml" ]}
+        ],
+      },
+      {
         'job_name'        => 'jmx_zookeeper',
         'scheme'          => 'http',
         'file_sd_configs' => [
