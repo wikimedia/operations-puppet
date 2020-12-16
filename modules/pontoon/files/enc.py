@@ -4,6 +4,7 @@ import logging
 import os
 import sys
 import yaml
+import fcntl
 
 
 log = logging.getLogger()
@@ -54,7 +55,12 @@ def update_hiera(pontoon, config_path, hiera_path):
 
     if config_mtime > hiera_mtime:
         with open(hiera_path, "w") as f:
-            yaml.dump(pontoon.role_variables(), f)
+            try:
+                fcntl.flock(f, fcntl.LOCK_EX)
+                yaml.dump(pontoon.role_variables(), f)
+                f.flush()
+            finally:
+                fcntl.flock(f, fcntl.LOCK_UN)
 
 
 if __name__ == "__main__":
