@@ -82,7 +82,7 @@ class profile::phabricator::main (
 
     String                      $http_srange        = lookup('profile::phabricator::main::http_srange'),
 
-    Boolean                     $manage_scap_user       = lookup('profile::phabricator::main::manage_scap_user',
+    Boolean                     $manage_scap_user   = lookup('profile::phabricator::main::manage_scap_user',
                                                       { 'default_value' => true }),
 ) {
 
@@ -90,6 +90,7 @@ class profile::phabricator::main (
         'production' => 'wikimedia.org',
         default      => 'wmflabs.org',
     }
+
     mailalias { 'root':
         recipient => "root@${mail_alias}",
     }
