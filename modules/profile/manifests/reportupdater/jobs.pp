@@ -63,6 +63,11 @@ class profile::reportupdater::jobs(
         output_dir => 'metrics/reference-previews',
     }
 
+    reportupdater::job { 'templatedata':
+        ensure     => $ensure_jobs,
+        output_dir => 'metrics/templatedata',
+    }
+
     reportupdater::job { 'wmcs':
         ensure     => $ensure_jobs,
         output_dir => 'metrics/wmcs',
