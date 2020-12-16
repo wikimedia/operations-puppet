@@ -91,7 +91,7 @@ groups:
               kevinbazira, mstyles, zpapierski, clarakosi, dpifke,
               phuedx, samwilson, dmaza, tchanders,
               wikigit, arlolra, daniel, bpirkle, cicalese, dancy, chrisalbon,
-              jdl, holger, annet, jgiannelos, kharlan]
+              jdl, holger, annet, jgiannelos, kharlan, stran]
     privileges: ['ALL = (www-data,mwdeploy,l10nupdate) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /usr/sbin/apache2ctl',
                  'ALL = NOPASSWD: /etc/init.d/apache2',
@@ -3951,6 +3951,14 @@ users:
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJnJucB0FLTr5RIaUfy/oFP95U7afCiTXJWTVTvH5kRF toan@C342
     krb: present
+  stran:
+    ensure: present
+    realname: Stephanie Tran
+    email: stran@wikimedia.org
+    uid: 27904
+    gid: 500
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC9NUdOb4+i0s1qwJjc02Nl8uPVxA+gH4ddDwQbu335/raSV9scp1bZzqAM/r5w7xiqkrmnfLWzBgiRWzfHPD1hmKFwKW5Mr2xDDym90UN9qhujqdw9VTkq28VDNRNQ8BWurT8Ec30D79L6kiF+RpT9i8LcX91HBpJJ864A4oNyovjgvAQ+Zt5aASlNC2QJAnGIzIeSlWgOL2ds4fMu/k4Vz4fvobY21HZJupNZbpZSCfcF4oinH/gQhLk2M9VY/O5eyqPuJZlvCQ1iaF2rISnszFwxq/vZpCueLZVfXU2/AGxzdGzH5UU7jFBkCbXDgkp/+xAYqn92u8ZxBsiWwQgCPSrlsCC9hbQ1jfW1EBj63u2hXmAyg1v/RJfXU6vtioNdBCKK0hOfOMMQttKc8OetME3YZfCB3CFwaLwozTcl8yk1bg5bHjWfz7l5abGeMM4I9kiQmwrZw3aKa3l/rC5F0Y+Zjgim4HNWMBPBX9lBG1bMN87vcSdp4K/nRQKyBgTbsyxTXo3j4T9KYaWiZ13xWL9k7koQp2SorDk2maGnqw1sXv8D5vE4kacIHdePAAotnwaZqmUMb6QrALqHTHuL4OV1nXSInlyvMrmH6zq4XmvgfWNNrRFdWo74+95a+0nqoU9RMgUHHx4kX6bz02+1yzsYbp1CvJxNPUkzOxBJ1Q== stran@wikimedia.org
 
 ldap_only_users:
   abartov:
@@ -4599,10 +4607,6 @@ ldap_only_users:
     ensure: present
     realname: Tobias Schumann
     email: tobias.schumann_ext@wikimedia.de
-  stran:
-    ensure: present
-    realname: Stephanie Tran
-    email: stran@wikimedia.org
   janjaquemot:
     ensure: present
     realname: Jan Jaquemot
