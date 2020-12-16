@@ -52,7 +52,7 @@ class profile::wmcs::services::toolsdb_secondary (
             auto_sync   => false,
             source_host => $primary_server,
             dest_host   => $secondary_server,
-            module_path => '/srv/labsdb/backup1',
+            module_path => '/srv/labsdb',
         }
     }
 }
