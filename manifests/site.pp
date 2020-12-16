@@ -1310,7 +1310,7 @@ node /^(phab1001\.eqiad|phab2001\.codfw)\.wmnet$/ {
 }
 
 # PKI server
-node /pki[12]001\.(eqiad|codfw)\.wmnet/ {
+node /^pki[12]001\.(eqiad|codfw)\.wmnet/ {
     role(pki)
 }
 
