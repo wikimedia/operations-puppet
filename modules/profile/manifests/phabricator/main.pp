@@ -247,14 +247,30 @@ class profile::phabricator::main (
         }
     ]
 
-    class { '::phabricator':
+    # Collect an array of all ipaddresses
+    # in reality $facts['networking']['ipaddress6'] will be the address traffic is sourced from but it
+    # does no harm adding all of them
+    # TODO: move this to a general function i.e. network::ipaddresses(ipv4=true, ipv6=true)
+    $trusted_proxies = $facts['networking']['interfaces'].reduce([]) |$memo, $value| {
+        $bindings = $value[1].has_key('bindings') ? {
+            true    => $value[1]['bindings'].map |$binding| { $binding['address'] },
+            default => [],
+        }
+        $bindings6 = $value[1].has_key('bindings6') ? {
+            true    => $value[1]['bindings6'].map |$binding| { $binding['address'] },
+            default => [],
+        }
+        $memo + $bindings + $bindings6
+    }.sort
+
+    class { 'phabricator':
         deploy_target      => $deploy_target,
         deploy_user        => $deploy_user,
         phabdir            => $phab_root_dir,
         serveraliases      => [ $altdom,
                               'bugzilla.wikimedia.org',
                               'bugs.wikimedia.org' ],
-        trusted_proxies    => $cache_nodes['text'][$::site],
+        trusted_proxies    => $trusted_proxies,
         mysql_admin_user   => $mysql_admin_user,
         mysql_admin_pass   => $mysql_admin_pass,
         libraries          => [ "${phab_root_dir}/libext/Sprint/src",
