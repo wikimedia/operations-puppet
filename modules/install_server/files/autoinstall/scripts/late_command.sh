@@ -92,5 +92,5 @@ fi
 if [ "${PREFIX}" != "NO_IPV6" ]
 then
   IP6="${PREFIX}${IP}"
-  printf '\tup ip addr add %s\64 dev %s\n' "${IP6}" "${IFACE}" >> /target/etc/network/interfaces
+  printf '\tup ip addr add %s/64 dev %s\n' "${IP6}" "${IFACE}" >> /target/etc/network/interfaces
 fi
