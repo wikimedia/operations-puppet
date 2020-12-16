@@ -1,1 +1,1 @@
-type Network::Context = Enum['varnish', 'ferm']
+type Network::Context = Enum['varnish', 'ferm', 'phabricator']
