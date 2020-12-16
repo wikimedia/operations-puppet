@@ -38,11 +38,17 @@ graphite_host: 'none'
 profile::cassandra::allow_analytics: false
 profile::cassandra::disable_graphite_metrics: true
 profile::cassandra::client_ips:
-  # Add kubernetes pod IPs here
+  # Add the kubernetes pod IPs here
+  # eqiad
   - 10.64.64.0/21
   - 2620:0:861:cabe::/64
+  # staging-eqiad
   - 10.64.75.0/24
   - 2620:0:861:babe::/64
+  # staging-codfw
+  - 10.192.75.0/24
+  - 2620:0:860:babe::/64
+  # codfw
   - 10.192.64.0/21
   - 2620:0:860:cabe::/64
 
