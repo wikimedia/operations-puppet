@@ -4616,3 +4616,7 @@ ldap_only_users:
     ensure: present
     realname: Matt Cleinman
     email: mcleinman@wikimedia.org
+  mosa:
+    ensure: present
+    realname: Mohammed Sadat Abdulai
+    email: mohammed.sadat_ext@wikimedia.de
