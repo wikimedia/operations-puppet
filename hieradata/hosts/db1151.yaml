@@ -1,3 +1,5 @@
 # db1151
-# future x2 host
+mariadb::shard: 'x2'
+mariadb::binlog_format: 'ROW'
+profile::mariadb::mysql_role: 'master'
 profile::base::notifications: disabled

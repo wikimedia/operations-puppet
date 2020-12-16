@@ -597,6 +597,15 @@ node /^db2(115|131)\.codfw\.wmnet/ {
 
 # x2 shard
 # eqiad
+# x1 eqiad master
+node 'db1151.eqiad.wmnet' {
+    role(mariadb::core)
+}
+
+# x2 eqiad slaves
+node /^db11(52|53)\.eqiad\.wmnet$/ {
+    role(mariadb::core)
+}
 
 # codfw
 # x2 codfw master
@@ -608,7 +617,6 @@ node 'db2142.codfw.wmnet' {
 node /^db21(43|44)\.codfw\.wmnet$/ {
     role(mariadb::core)
 }
-
 
 ## m1 shard
 # See also multiinstance misc hosts db1117 and db2078 below
@@ -1071,9 +1079,9 @@ node /^failoid[12]001\.(eqiad|codfw)\.wmnet$/ {
     role(failoid)
 }
 
-# New hosts: 3 will be for x2, and the rest are to refresh db1074-db1095 T264584 T267043
+# New hosts to refresh db1074-db1095 T264584 T267043
 # Set them to spare individually as it will take take to transfer the data
-node /^db11(51|52|53|54|55|56|57|58|59|60|61|62|63|64|65|66|67|68|69|70|71|72|73|74|75)\.eqiad\.wmnet$/ {
+node /^db11(54|55|56|57|58|59|60|61|62|63|64|65|66|67|68|69|70|71|72|73|74|75)\.eqiad\.wmnet$/ {
     role(insetup)
 }
 
