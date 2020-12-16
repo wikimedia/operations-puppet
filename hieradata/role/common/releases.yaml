@@ -1,6 +1,7 @@
 profile::standard::admin_groups:
   - releasers-blubber
   - releasers-mediawiki
+  - releasers-mwcli
   - releasers-mobile
   - releasers-parsoid
   - releasers-wikibase

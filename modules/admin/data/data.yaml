@@ -153,6 +153,10 @@ groups:
     gid: 808
     description: people who upload blubber releases
     members: [dduvall, jhuneidi, liw, thcipriani]
+  releasers-mwcli:
+    gid: 822
+    description: people who upload mw-cli releases (T250241)
+    members: [jhuneidi, brennen]
   cloudelastic-roots:
     gid: 809
     description: manage cloudelastic nodes
