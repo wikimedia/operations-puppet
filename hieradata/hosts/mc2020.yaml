@@ -1,0 +1,9 @@
+profile::redis::multidc::version_override: 2
+profile::memcached::version: 'present'
+profile::memcached::threads: 16
+profile::memcached::growth_factor: 1.15
+profile::memcached::min_slab_size: 48
+profile::memcached::size: 109568  # multiple of 1024
+profile::memcached::extended_options:
+  - 'modern'
+profile::memcached::port: 11211
