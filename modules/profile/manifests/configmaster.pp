@@ -66,6 +66,8 @@ class profile::configmaster(
         services => wmflib::service::fetch(true),
     }
 
+    # TLS termination
+    include profile::tlsproxy::envoy
     httpd::conf { 'configmaster_port':
         content => "Listen 80\n"
     }
