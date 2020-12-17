@@ -79,6 +79,12 @@ sub cluster_fe_backend_response {
         set beresp.http.X-CDIS = "pass";
         return(pass(beresp.ttl));
     }
+
+    // The docker client fails if the response has no Content-Length. Disable
+    // streaming for docker. T270270
+    if (bereq.http.user-agent ~ "^docker") {
+        set beresp.do_stream = false;
+    }
 }
 
 sub cluster_fe_deliver { }
