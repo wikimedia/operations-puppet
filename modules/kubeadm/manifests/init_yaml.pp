@@ -9,6 +9,9 @@ class kubeadm::init_yaml (
     String                        $kubernetes_version = '1.17.13',
     String                        $node_token = undef,
     Optional[String]              $encryption_key = undef,
+    Optional[Integer]             $etcd_heartbeat_interval = undef,
+    Optional[Integer]             $etcd_election_timeout = undef,
+    Optional[Integer]             $etcd_snapshot_ct = undef,
 ) {
     # because /etc/kubernetes
     require ::kubeadm::core
