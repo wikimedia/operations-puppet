@@ -305,7 +305,7 @@ groups:
               itamar, phedenskog, aaron, dpifke, aklapper, jmads, andrew-wmde, daniram,
               dcipoletti, chrisalbon, wikigit, nahidunlimited, swagoel,
               agaduran, edtadros, dvrandecic, razzi, cparle, klausman, lexnasser, sbisson, fab,
-              dumisani, janstee, gmodena, cdanis, wmde-leszek, jakob, migr, gtzatchkova, toan]
+              dumisani, janstee, gmodena, cdanis, wmde-leszek, jakob, migr, gtzatchkova, toan, mttp]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product]
     approval: Andrew Otto
@@ -3963,6 +3963,13 @@ users:
     gid: 500
     ssh_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC9NUdOb4+i0s1qwJjc02Nl8uPVxA+gH4ddDwQbu335/raSV9scp1bZzqAM/r5w7xiqkrmnfLWzBgiRWzfHPD1hmKFwKW5Mr2xDDym90UN9qhujqdw9VTkq28VDNRNQ8BWurT8Ec30D79L6kiF+RpT9i8LcX91HBpJJ864A4oNyovjgvAQ+Zt5aASlNC2QJAnGIzIeSlWgOL2ds4fMu/k4Vz4fvobY21HZJupNZbpZSCfcF4oinH/gQhLk2M9VY/O5eyqPuJZlvCQ1iaF2rISnszFwxq/vZpCueLZVfXU2/AGxzdGzH5UU7jFBkCbXDgkp/+xAYqn92u8ZxBsiWwQgCPSrlsCC9hbQ1jfW1EBj63u2hXmAyg1v/RJfXU6vtioNdBCKK0hOfOMMQttKc8OetME3YZfCB3CFwaLwozTcl8yk1bg5bHjWfz7l5abGeMM4I9kiQmwrZw3aKa3l/rC5F0Y+Zjgim4HNWMBPBX9lBG1bMN87vcSdp4K/nRQKyBgTbsyxTXo3j4T9KYaWiZ13xWL9k7koQp2SorDk2maGnqw1sXv8D5vE4kacIHdePAAotnwaZqmUMb6QrALqHTHuL4OV1nXSInlyvMrmH6zq4XmvgfWNNrRFdWo74+95a+0nqoU9RMgUHHx4kX6bz02+1yzsYbp1CvJxNPUkzOxBJ1Q== stran@wikimedia.org
+  mttp:
+    ensure: present
+    realname: Mike Pham
+    email: mpham@wikimedia.org
+    uid: 28311
+    gid: 500
+    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
 
 ldap_only_users:
   abartov:
@@ -4631,7 +4638,3 @@ ldap_only_users:
     ensure: present
     realname: Svantje Lilienthal
     email: svantje.lilienthal@wikimedia.de
-  mttp:
-    ensure: present
-    realname: Mike Pham
-    email: mpham@wikimedia.org
