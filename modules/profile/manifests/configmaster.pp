@@ -101,7 +101,7 @@ class profile::configmaster(
         check_interval => 240, # 4h
         retry_interval => 240,
     }
-    $ssh_fingerprints = query_facts('', ['ssh'])
+    $ssh_fingerprints = query_facts('', ['ssh', 'networking'])
     file{"${document_root}/ssh-fingerprints.txt":
         ensure  => file,
         mode    => '0644',
