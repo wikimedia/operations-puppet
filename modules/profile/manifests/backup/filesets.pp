@@ -30,10 +30,6 @@ class profile::backup::filesets() {
     bacula::director::fileset { 'srv-org-wikimedia':
         includes => [ '/srv/org/wikimedia' ]
     }
-    bacula::director::fileset { 'srv-docroot-org-wikimedia-doc':
-        # Legacy, replaced by /srv/doc .  T149924
-        includes => [ '/srv/docroot/org/wikimedia/doc' ]
-    }
     bacula::director::fileset { 'srv-doc':
         includes => [ '/srv/doc' ]
     }
