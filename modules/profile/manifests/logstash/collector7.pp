@@ -433,6 +433,17 @@ class profile::logstash::collector7 (
         priority => 75,
     }
 
+    file {'/etc/logstash/filter_scripts':
+        ensure  => directory,
+        source  => 'puppet:///modules/profile/logstash/filter_scripts',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        recurse => true,
+        purge   => true,
+        force   => true,
+    }
+
     file {'/etc/logstash/templates':
         ensure  => directory,
         source  => 'puppet:///modules/profile/logstash/templates',
