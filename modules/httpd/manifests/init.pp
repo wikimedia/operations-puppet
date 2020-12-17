@@ -1,42 +1,35 @@
 # extra_pkgs: An Array of Debian package names of Apache modules which are
 #             not pulled in by the "apache" base package.
 class httpd(
-    Array[String] $modules = [],
-    Wmflib::Ensure $legacy_compat = present,
-    Enum['daily', 'weekly'] $period='daily',
-    Integer $rotate=30,
-    Boolean $enable_forensic_log = false,
-    Array[String] $extra_pkgs = [],
-    Boolean $purge_manual_config = true,
+    Array[String]           $modules              = [],
+    Wmflib::Ensure          $legacy_compat        = present,
+    Enum['daily', 'weekly'] $period               = 'daily',
+    Integer                 $rotate               = 30,
+    Boolean                 $enable_forensic_log  = false,
+    Array[String]           $extra_pkgs           = [],
+    Boolean                 $purge_manual_config  = true,
+    Boolean                 $remove_default_ports = false,
 ) {
     # Package and service. Links is needed for the status page below
     $base_pkgs = ['apache2', 'links']
-    require_package($base_pkgs + $extra_pkgs)
+    ensure_packages($base_pkgs + $extra_pkgs)
 
-    # Puppet restarts are reloads in apache, as typically that's enough
-    service { 'apache2':
-        ensure     => running,
-        enable     => true,
-        provider   => 'debian',
-        hasrestart => true,
-        restart    => '/usr/sbin/service apache2 reload',
-    }
-
-    # When it's not, as is the case for module insertion, have a safe hard restart option
-    exec { 'apache2_test_config_and_restart':
-        command     => '/usr/sbin/service apache2 restart',
-        onlyif      => '/usr/sbin/apache2ctl configtest',
-        before      => Service['apache2'],
-        refreshonly => true,
+    if $remove_default_ports {
+        file{'/etc/apache2/ports.conf':
+            ensure  => absent,
+            notify  => Service['apache2'],
+            require => Package['apache2'],
+        }
     }
 
     # Ensure the directories for apache config files are in place.
     ['conf', 'env', 'sites'].each |$conf_type| {
         file { "/etc/apache2/${conf_type}-available":
-            ensure => directory,
-            owner  => 'root',
-            group  => 'root',
-            mode   => '0755',
+            ensure  => directory,
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0755',
+            require => Package['apache2'],
         }
         file { "/etc/apache2/${conf_type}-enabled":
             ensure  => directory,
@@ -45,14 +38,16 @@ class httpd(
             mode    => '0755',
             recurse => $purge_manual_config,
             purge   => $purge_manual_config,
+            require => Package['apache2'],
             notify  => Service['apache2'],
         }
     }
 
     file_line { 'load_env_enabled':
-        line  => 'for f in /etc/apache2/env-enabled/*.sh; do [ -r "$f" ] && . "$f" >&2; done || true',
-        match => 'env-enabled',
-        path  => '/etc/apache2/envvars',
+        line    => 'for f in /etc/apache2/env-enabled/*.sh; do [ -r "$f" ] && . "$f" >&2; done || true',
+        match   => 'env-enabled',
+        path    => '/etc/apache2/envvars',
+        require => Package['apache2'],
     }
 
     # Default boilerplate configs
@@ -113,11 +108,12 @@ class httpd(
     # Forensic logging (logs requests at both beginning and end of request processing)
     if $enable_forensic_log {
         file { '/var/log/apache2/forensic':
-            ensure => directory,
-            owner  => 'root',
-            group  => 'adm',
-            mode   => '0750',
-            before => Httpd::Conf['log_forensic'],
+            ensure  => directory,
+            owner   => 'root',
+            group   => 'adm',
+            mode    => '0750',
+            before  => Httpd::Conf['log_forensic'],
+            require => Package['apache2'],
         }
 
         httpd::mod_conf { 'log_forensic':
@@ -150,6 +146,25 @@ class httpd(
                 "set rule/schedule ${period}",
                 "set rule/rotate ${rotate}",
             ],
+            require => Package['apache2'],
         }
+    }
+
+    # When it's not, as is the case for module insertion, have a safe hard restart option
+    exec { 'apache2_test_config_and_restart':
+        command     => '/usr/sbin/service apache2 restart',
+        onlyif      => '/usr/sbin/apache2ctl configtest',
+        before      => Service['apache2'],
+        refreshonly => true,
+    }
+
+    # Puppet restarts are reloads in apache, as typically that's enough
+    service { 'apache2':
+        ensure     => running,
+        enable     => true,
+        provider   => 'debian',
+        hasrestart => true,
+        restart    => '/usr/sbin/service apache2 reload',
+        require    => Package['apache2'],
     }
 }
