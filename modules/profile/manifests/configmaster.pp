@@ -22,12 +22,12 @@ class profile::configmaster(
         mode   => '0755',
     }
 
-    file {"${nda_dir}/README.md":
+    file {"${nda_dir}/README.html":
         ensure  => file,
         owner   => 'root',
         group   => 'root',
         mode    => '0755',
-        content => 'Folder containing NDA protected content',
+        content => '<html><head><title>NDA</title><body>Folder containing NDA protected content</body></html>',
     }
 
     # The contents of these files are managed by puppet-merge, but user
