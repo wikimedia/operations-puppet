@@ -80,7 +80,7 @@ groups:
               gilles, gjg, halfak, hashar, hoo,
               kartik, krinkle, marktraceur, milimetric, mlitn,
               andyrussg, nikerabbit, reedy, ssastry, phedenskog,
-              tgr, ejegg, twentyafterfour, legoktm, catrope,
+              tgr, ejegg, twentyafterfour, catrope,
               mobrovac, nuria, thcipriani, joal, eevans,
               mforns, dcausse, bsitzmann, mholloway-shell, dduvall,
               ladsgroup, zfilipin, addshore, niharika29, ppchelko,
@@ -129,7 +129,7 @@ groups:
   releasers-mediawiki:
     gid: 711
     description: people who upload mediawiki releases
-    members: [catrope, hashar, legoktm, reedy, thcipriani, twentyafterfour, brennen,
+    members: [catrope, hashar, reedy, thcipriani, twentyafterfour, brennen,
               jforrester]
     privileges: ['ALL = (jenkins) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /usr/sbin/service jenkins *']
@@ -144,7 +144,7 @@ groups:
   releasers-wikidiff2:
     gid: 804
     description: people who upload wikidiff2 releases (T202473)
-    members: [legoktm, wmde-fisch, thiemowmde]
+    members: [wmde-fisch, thiemowmde]
   releasers-wikibase:
     gid: 807
     description: people who upload wikibase releases (T268818)
@@ -197,7 +197,7 @@ groups:
     description: users with some sudo permissions on the CI masters (Jenkins, Zuul).
     approval: Tyler Cipriani
     members: [bd808, cscott, dduvall, krinkle, reedy, marktraceur,
-              twentyafterfour, zfilipin, thcipriani, legoktm, gjg,
+              twentyafterfour, zfilipin, thcipriani, gjg,
               hashar, addshore, liw, jhuneidi, brennen,
               jforrester, dancy]
     privileges: ['ALL = (jenkins) NOPASSWD: ALL',
@@ -324,7 +324,7 @@ groups:
   eventlogging-admins:
     gid: 733
     description: Login access for EventLogging deployment and investigation
-    members: [*analytics_admins_members, legoktm]
+    members: [*analytics_admins_members]
   eventlogging-roots:
     gid: 739
     description: Full root on EventLogging servers. (Deprecated)
@@ -608,7 +608,7 @@ groups:
   labnet-users:
     description: unprivileged access on labnet servers
     gid: 781
-    members: [thcipriani, hashar, dduvall, twentyafterfour, zfilipin, legoktm, liw]
+    members: [thcipriani, hashar, dduvall, twentyafterfour, zfilipin, liw]
   ores-admin:
     description: ORES admins
     gid: 782
@@ -707,7 +707,7 @@ groups:
     # Allow this for CI users. There is no gid on purpose, to allow reusing the package provided one
     posix_name: docker # Use posix_name to avoid potential conflicts with other uses of the docker group
     description: Allow releng team to be in the docker group for contint. No gid on purpose
-    members: [*ops_members, dduvall, gjg, hashar, thcipriani, twentyafterfour, zfilipin, legoktm, addshore, reedy, liw, jhuneidi, krinkle, brennen, jforrester, dancy]
+    members: [*ops_members, dduvall, gjg, hashar, thcipriani, twentyafterfour, zfilipin, addshore, reedy, liw, jhuneidi, krinkle, brennen, jforrester, dancy]
     system_members: [jenkins-slave]
   builder-docker:
     # There is no gid on purpose, same as above
