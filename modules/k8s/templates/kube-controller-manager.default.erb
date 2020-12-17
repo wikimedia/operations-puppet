@@ -7,15 +7,12 @@ daemon_args = [
   "--v=#{@v_log_level}",
   # Should be the default in 1.4 at least, but specify to ensure backwards compatibility
   "--leader-elect=true",
+  "--service-account-private-key-file=#{@service_account_private_key_file}",
+  "--root-ca-file=/etc/ssl/certs/Puppet_Internal_CA.pem",
 ]
 
-
-if @service_account_private_key_file
-  daemon_args.push("--service-account-private-key-file=#{@service_account_private_key_file}")
-  daemon_args.push("--root-ca-file=/etc/ssl/certs/Puppet_Internal_CA.pem")
-  if @use_service_account_credentials
-    daemon_args.push("--use-service-account-credentials")
-  end
+if @use_service_account_credentials
+  daemon_args.push("--use-service-account-credentials")
 end
 
 if @kubeconfig

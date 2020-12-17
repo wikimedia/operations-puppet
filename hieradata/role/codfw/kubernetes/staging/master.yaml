@@ -20,3 +20,5 @@ profile::kubernetes::master::admission_controllers:
   DefaultTolerationSeconds: ''
   ResourceQuota: ''
   PodSecurityPolicy: ''
+# Define in the private repo
+# profile::kubernetes::master::controllermanager_token:
