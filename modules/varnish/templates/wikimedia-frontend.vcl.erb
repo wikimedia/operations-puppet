@@ -850,8 +850,8 @@ sub wm_backend_response {
 	// from 150-1000.  See also:
 	// https://webmasters.stackexchange.com/questions/31750/what-is-recommended-minimum-object-size-for-gzip-performance-benefits
 	//
-	// Explicitly skip HEAD request due to the issue described in T270270
-	if (bereq.method !~ "HEAD" && beresp.http.content-type ~ "json|text|html|script|xml|icon|ms-fontobject|ms-opentype|x-font|sla"
+	// Explicitly skip docker-registry due to the issues described in T270270
+	if (bereq.http.Host != "docker-registry.wikimedia.org" && beresp.http.content-type ~ "json|text|html|script|xml|icon|ms-fontobject|ms-opentype|x-font|sla"
 		&& (!beresp.http.Content-Length || std.integer(beresp.http.Content-Length, 0) >= 860)) {
 			set beresp.do_gzip = true;
 	}
