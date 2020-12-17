@@ -4627,3 +4627,7 @@ ldap_only_users:
     ensure: present
     realname: Svantje Lilienthal
     email: svantje.lilienthal@wikimedia.de
+  mttp:
+    ensure: present
+    realname: Mike Pham
+    email: mpham@wikimedia.org
