@@ -26,8 +26,9 @@ profile::hue::database_name: 'hue_test'
 profile::hue::use_hue4_settings: true
 profile::hue::enable_cas: false
 
-profile::cdh::apt::bigtop_component: 'bigtop15'
-profile::analytics::cluster::packages::common::use_bigtop_settings: true
+# Testing Apache BigTop in T244499
+# profile::cdh::apt::bigtop_component: 'bigtop15'
+# profile::analytics::cluster::packages::common::use_bigtop_settings: true
 
 profile::oozie::client::oozie_service: 'analytics-test-oozie'
 

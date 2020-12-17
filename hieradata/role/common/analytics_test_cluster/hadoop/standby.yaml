@@ -11,8 +11,8 @@ profile::standard::admin_groups_no_ssh:
   - analytics-search-users
 
 # Testing Apache BigTop in T244499
-profile::cdh::apt::bigtop_component: 'bigtop15'
-profile::analytics::cluster::packages::common::use_bigtop_settings: true
+# profile::cdh::apt::bigtop_component: 'bigtop15'
+# profile::analytics::cluster::packages::common::use_bigtop_settings: true
 
 # We add hive settings to this node since:
 # 1) it is one of the few with a hdfs keytab
