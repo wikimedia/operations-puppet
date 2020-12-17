@@ -283,7 +283,7 @@ profile::idp::services:
         'memberOf': ['java.util.HashSet', ['cn=ops,ou=groups,dc=wikimedia,dc=org']]
   config-master:
     class: 'org.apereo.cas.services.RegexRegisteredService'
-    id: 16
+    id: 20
     service_id: 'https://config-master.wikimedia.org(/.*)?'
     attribute_release_policy:
       '@class': 'org.apereo.cas.services.ReturnAllAttributeReleasePolicy'
