@@ -1,5 +1,6 @@
 class profile::configmaster(
     $conftool_prefix = lookup('conftool_prefix'),
+    $abuse_networks  = lookup('abuse_networks')
 ) {
 
     $server_aliases = [
@@ -26,8 +27,18 @@ class profile::configmaster(
         ensure  => file,
         owner   => 'root',
         group   => 'root',
-        mode    => '0755',
+        mode    => '0444',
         content => '<html><head><title>NDA</title><body>Folder containing NDA protected content</body></html>',
+    }
+
+    # Dump a list of abuse_networks for NDA users to view
+    # unfortunately this does not preserve the comments
+    file {"${nda_dir}/absue_networks.yaml":
+        ensure  => file,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => $abuse_networks.to_yaml,
     }
 
     # The contents of these files are managed by puppet-merge, but user
