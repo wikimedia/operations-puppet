@@ -204,6 +204,7 @@ class profile::prometheus::alerts (
         retries         => 2,
         # Icinga will query the site-local Prometheus 'global' instance
         prometheus_url  => "http://prometheus.svc.${::site}.wmnet/global",
+        notes_link      => 'https://puppetboard.wikimedia.org/nodes?status=failed',
     }
 
     monitoring::check_prometheus { 'widespread-puppet-agent-no-resources':
