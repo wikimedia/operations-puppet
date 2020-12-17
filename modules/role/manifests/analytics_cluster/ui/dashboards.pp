@@ -1,7 +1,7 @@
 # Class: role::analytics_cluster::ui::dashboards
 #
-# Currently hosts memcached used by Superset.
-# Eventually will host Turnilo and Superset as well.
+# Currently hosts memcached and Superset.
+# Eventually will host Turnilo as well.
 #
 class role::analytics_cluster::ui::dashboards {
     system::role { 'analytics_cluster::ui::dashboards':
@@ -10,5 +10,9 @@ class role::analytics_cluster::ui::dashboards {
 
     include ::profile::base::firewall
     include ::profile::standard
-    include profile::memcached::instance
+    include ::profile::superset
+    include ::profile::tlsproxy::envoy
+    include ::profile::kerberos::client
+    include ::profile::kerberos::keytabs
+    include ::profile::memcached::instance
 }
