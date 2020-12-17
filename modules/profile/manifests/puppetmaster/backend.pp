@@ -19,6 +19,8 @@ class profile::puppetmaster::backend(
 
 ) {
 
+    ensure_packages(['libapache2-mod-passenger'])
+
     $common_config = {
         'ca'              => false,
         'ca_server'       => $ca_server,
@@ -26,17 +28,16 @@ class profile::puppetmaster::backend(
     }
     $base_config = merge($config, $common_config)
 
-    class { '::profile::puppetmaster::common':
+    class { 'profile::puppetmaster::common':
         base_config => $base_config,
     }
 
-    class { '::httpd':
-        modules => ['passenger'],
+    class { 'httpd':
+        remove_default_ports => true,
+        modules              => ['passenger'],
     }
 
-    require_package('libapache2-mod-passenger')
-
-    class { '::puppetmaster':
+    class { 'puppetmaster':
         server_type         => 'backend',
         config              => $::profile::puppetmaster::common::config,
         secure_private      => $secure_private,
@@ -58,5 +59,5 @@ class profile::puppetmaster::backend(
         port   => 8141,
         srange => "(@resolve((${puppetmaster_frontend_ferm})) @resolve((${puppetmaster_frontend_ferm}), AAAA))"
     }
-    require ::profile::conftool::client
+    require profile::conftool::client
 }

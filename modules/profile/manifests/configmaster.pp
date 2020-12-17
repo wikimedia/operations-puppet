@@ -66,6 +66,9 @@ class profile::configmaster(
         services => wmflib::service::fetch(true),
     }
 
+    httpd::conf { 'configmaster_port':
+        content => "Listen 80\n"
+    }
     profile::idp::client::httpd::site{'config-master.wikimedia.org':
         document_root    => $document_root,
         server_aliases   => $server_aliases,

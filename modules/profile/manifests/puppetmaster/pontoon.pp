@@ -5,6 +5,7 @@ class profile::puppetmaster::pontoon (
     String                        $storeconfigs = lookup('profile::puppetmaster::common::storeconfigs', {'default_value' => '' }),
     Optional[Array[Stdlib::Host]] $puppetdb_hosts = lookup('profile::puppetmaster::common::puppetdb_hosts', {'default_value' => undef}),
 ) {
+    ensure_packages('libapache2-mod-passenger')
     class { 'pontoon::enc':
         stack => $stack,
     }
@@ -50,18 +51,13 @@ class profile::puppetmaster::pontoon (
         $config = merge($base_config, $env_config)
     }
 
-    class { '::httpd':
-        modules => [
-            'proxy',
-            'proxy_http',
-            'proxy_balancer',
-            'passenger',
-            'rewrite',
-            'lbmethod_byrequests'],
+    class { 'httpd':
+        remove_default_ports => true,
+        modules              => ['proxy', 'proxy_http', 'proxy_balancer',
+                                'passenger', 'rewrite', 'lbmethod_byrequests'],
     }
-    require_package('libapache2-mod-passenger')
 
-    class { '::puppetmaster':
+    class { 'puppetmaster':
         server_name         => $::fqdn,
         allow_from          => ['10.0.0.0/8', '172.16.0.0/21'],
         secure_private      => false,

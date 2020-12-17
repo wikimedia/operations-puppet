@@ -20,6 +20,8 @@ class profile::puppetmaster::frontend(
     Optional[String[1]] $mcrouter_ca_secret      = lookup('profile::puppetmaster::frontend::mcrouter_ca_secret',
                                                           {'default_value' => undef}),
 ) {
+    ensure_packages('libapache2-mod-passenger')
+
     backup::set { 'var-lib-puppet-ssl': }
     backup::set { 'var-lib-puppet-volatile': }
     if $manage_ca_file {
@@ -78,16 +80,11 @@ class profile::puppetmaster::frontend(
         }
     }
 
-    class { '::httpd':
-        modules => ['proxy',
-                    'proxy_http',
-                    'proxy_balancer',
-                    'passenger',
-                    'rewrite',
-                    'lbmethod_byrequests'],
+    class { 'httpd':
+        remove_default_ports => true,
+        modules              => ['proxy', 'proxy_http', 'proxy_balancer',
+                                'passenger', 'rewrite', 'lbmethod_byrequests'],
     }
-
-    require_package('libapache2-mod-passenger')
 
     class { 'puppetmaster::ca_server':
         master => $ca_server
@@ -148,7 +145,7 @@ class profile::puppetmaster::frontend(
 
     # Run the rsync servers on all puppetmaster frontends, and activate
     # crons syncing from the master
-    class { '::puppetmaster::rsync':
+    class { 'puppetmaster::rsync':
         server      => $ca_server,
         cron_ensure => $cron,
         frontends   => keys($servers),
