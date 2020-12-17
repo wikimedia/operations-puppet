@@ -50,20 +50,20 @@ node 'an-launcher1002.eqiad.wmnet' {
 
 # Analytics Hadoop test cluster
 node 'an-test-master1001.eqiad.wmnet' {
-    role(insetup)
+    role(analytics_test_cluster::hadoop::master)
 }
 
 node 'an-test-master1002.eqiad.wmnet' {
-    role(insetup)
+    role(analytics_test_cluster::hadoop::standby)
 }
 
 node /^an-test-worker100[1-3]\.eqiad\.wmnet$/ {
-    role(insetup)
+    role(analytics_test_cluster::hadoop::worker)
 }
 
 # new an-test-coord1001  T255518
 node 'an-test-coord1001.eqiad.wmnet' {
-    role(insetup)
+    role(analytics_test_cluster::coordinator)
 }
 
 node 'an-test-client1001.eqiad.wmnet' {
