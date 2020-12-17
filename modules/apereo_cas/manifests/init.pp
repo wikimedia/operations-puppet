@@ -84,8 +84,13 @@ class apereo_cas (
             source => $groovy_source,
         }
     }
-    file{[$services_dir, $config_dir]:
+    file{$config_dir:
         ensure => directory,
+    }
+    file{$services_dir:
+        ensure  => directory,
+        recurse => true,
+        purge   => true,
     }
     file{[$base_dir, $log_dir]:
         ensure  => directory,
