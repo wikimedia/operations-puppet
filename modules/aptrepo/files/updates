@@ -395,3 +395,12 @@ Architectures: amd64
 GetInRelease: no
 VerifyRelease: 81E2E78B66FED89E
 ListShellHook: grep-dctrl -X -S matomo || [ $? -eq 1 ]
+
+Name: pyall
+Method: http://people.debian.org/~paravoid/python-all
+Components: main>thirdparty/pyall
+Suite: buster
+UDebComponents:
+Architectures: amd64
+VerifyRelease: 1C0576B1761693CB
+ListShellHook: grep-dctrl -e -S '^python3\.[568]$' || [ $? -eq 1 ]
