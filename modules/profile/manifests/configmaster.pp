@@ -8,7 +8,7 @@ class profile::configmaster(
         'config-master.esams.wmnet',
         'config-master.ulsfo.wmnet',
         'config-master.eqsin.wmnet',
-        'config-master.wikimedia.org',
+        'pybal-config',
     ]
 
     $document_root = '/srv/config-master'
@@ -55,7 +55,7 @@ class profile::configmaster(
         services => wmflib::service::fetch(true),
     }
 
-    profile::idp::client::httpd::site{'pybal-config':
+    profile::idp::client::httpd::site{'config-master.wikimedia.org':
         document_root    => $document_root,
         server_aliases   => $server_aliases,
         protected_uri    => $protected_uri,
