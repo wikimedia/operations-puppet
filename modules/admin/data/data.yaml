@@ -4623,3 +4623,7 @@ ldap_only_users:
     ensure: present
     realname: Mohammed Sadat Abdulai
     email: mohammed.sadat_ext@wikimedia.de
+  lilients:
+    ensure: present
+    realname: Svantje Lilienthal
+    email: svantje.lilienthal@wikimedia.de
