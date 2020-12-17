@@ -35,6 +35,11 @@ server {
 
     # Tell everyone we're v2, not v1!
     add_header 'Docker-Distribution-Api-Version' 'registry/2.0' always;
+    # And we vary response based on what you send in Accept
+    # See:
+    #  https://docs.docker.com/registry/spec/manifest-v2-1/
+    #  https://docs.docker.com/registry/spec/manifest-v2-2/
+    add_header 'Vary' 'Accept' always;
 
     location / {
       root <%= @homepage %>;
@@ -101,7 +106,7 @@ server {
       <%- end -%>
       }
 
-      add_header 'Docker-Distribution-Api-Version' 'registry/2.0' always;
+
 
       proxy_pass http://registry;
       proxy_redirect off;
