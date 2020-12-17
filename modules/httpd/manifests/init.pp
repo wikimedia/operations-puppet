@@ -15,8 +15,10 @@ class httpd(
     ensure_packages($base_pkgs + $extra_pkgs)
 
     if $remove_default_ports {
+        # the file is included in apache.conf so just empty it
         file{'/etc/apache2/ports.conf':
-            ensure  => absent,
+            ensure  => file,
+            content => "# Puppet: default ports are not used\n",
             notify  => Service['apache2'],
             require => Package['apache2'],
         }
