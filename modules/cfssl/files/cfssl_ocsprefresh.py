@@ -3,10 +3,10 @@
 This script will regenerate the OCSP responses for a specific CA if any CA has
 issued a new certificate.  This means that there will be spurious updates however
 for now this is an acceptable trade off.
+
 """
 import json
 import logging
-import pymysql
 import shlex
 
 from argparse import ArgumentParser
@@ -16,9 +16,15 @@ from pathlib import Path
 from socket import getfqdn, gethostbyname_ex
 from subprocess import CalledProcessError, check_call, check_output
 
+import pymysql
+
 
 def get_args():
-    """Parse arguments"""
+    """Parse arguments
+
+    Returns:
+        `argparse.Namespace`: The parsed argparser Namespace
+    """
     parser = ArgumentParser(description=__doc__)
     parser.add_argument('-v', '--verbose', action='count')
     parser.add_argument('-c', '--config', default='/etc/cfssl/multiroot.conf')
@@ -33,7 +39,14 @@ def get_args():
 
 
 def get_log_level(args_level):
-    """Configure logging"""
+    """Convert an integer to a logging log level
+
+    Parameters:
+        args_level (int): The log level as an integer
+
+    Returns:
+        `logging.loglevel`: the logging loglevel
+    """
     return {
         None: logging.ERROR,
         1: logging.WARN,
@@ -58,7 +71,7 @@ def ocsprefresh(dbconfig, responder_cert, responder_key, ca_file):
 
 
 def ocspdump(dbconfig, responses_file):
-    """Call cfssl ocspdump and indicate if there is new data return true
+    """Call cfssl ocspdump with correct parameters
 
     Parameters:
         dbconfig (str):       path to the dbconfig
@@ -73,6 +86,16 @@ def ocspdump(dbconfig, responses_file):
 
 
 def get_db_update_time(db_conn, db_name, table_name):
+    """Select the last update time of a `db_name.table_name`
+
+    Paramters:
+        db_conn (`pymysql.connections.Connection`): A pymysql connection
+        db_name (str): The database name to query
+        db_table (str): The database name to query
+
+    Returns
+        `datetime.datetime`: The date of the last update
+    """
     sql = ('SELECT `UPDATE_TIME` FROM information_schema.tables '
            'WHERE `TABLE_SCHEMA` = %s AND `TABLE_NAME` = %s')
     with db_conn.cursor() as cursor:
@@ -83,9 +106,11 @@ def get_db_update_time(db_conn, db_name, table_name):
 
 
 def update_required(responses_file: Path, dbconfig: str, primary: bool) -> bool:
-    """Check if we need to regenerate the responses file.  On the primary server we should check
-    the certificates table to see if there re any new certificates.  otherwise we should check the
-    ocsp responses table to see if something else has update the table
+    """Check if we need to regenerate the responses file.
+
+    On the primary server we should check the certificates table to see if there
+    are any new certificates.  otherwise we should check the ocsp responses
+    table to see if there has been an update
 
     Arguments:
         response_file (`pathlib.Path`): path to the responses file
@@ -123,8 +148,13 @@ def is_primary(cname: str) -> bool:
     return getfqdn() == gethostbyname_ex(cname)[0]
 
 
+# pylint: disable=R0911
 def main():
-    """main entry point"""
+    """main entry point
+
+    Returns:
+        int: an int representing the exit code
+    """
     args = get_args()
     logging.basicConfig(level=get_log_level(args.verbose))
 
@@ -145,6 +175,9 @@ def main():
     except KeyError:
         logging.error('%s unable to find dbconfig', args.signer)
         return 1
+    except pymysql.Error as error:
+        logging.error('%s issue with SQL query: %s', args.signer, error)
+        return 1
 
     if primary:
         # only regenerate the responses if we are on the primary
@@ -159,6 +192,7 @@ def main():
     except CalledProcessError as error:
         logging.error('ocspdump failed: %s', error)
         return 1
+    return 0
 
 
 if __name__ == '__main__':
