@@ -3,10 +3,10 @@
 import logging
 import re
 import socket
-import yaml
 
 import mwopenstackclients
 import rbd2backy2
+import yaml
 
 
 def exclude_server(config, project, servername):
