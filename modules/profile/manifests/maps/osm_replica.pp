@@ -20,7 +20,7 @@ class profile::maps::osm_replica(
         pg_password => $replication_pass,
         critical    => 16777216, # 16Mb
         warning     => 2097152, # 2Mb
-        retries     => 10, # compensate for spikes in lag when OSM database resync is underway.
+        retries     => 15, # compensate for spikes in lag when OSM database resync is underway.
     }
 
     $prometheus_command = "/usr/bin/prometheus_postgresql_replication_lag -m ${master} -P ${replication_pass}"
