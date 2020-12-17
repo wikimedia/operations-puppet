@@ -2,7 +2,7 @@ class profile::configmaster(
     $conftool_prefix = lookup('conftool_prefix'),
 ) {
 
-    $vhostnames = [
+    $server_aliases = [
         'config-master.eqiad.wmnet',
         'config-master.codfw.wmnet',
         'config-master.esams.wmnet',
@@ -11,27 +11,37 @@ class profile::configmaster(
         'config-master.wikimedia.org',
     ]
 
-    $root_dir = '/srv/config-master'
+    $document_root = '/srv/config-master'
+    $protected_uri = '/nda'
+    $nda_dir       = "${document_root}${protected_uri}"
 
-    file { $root_dir:
+    file { [$document_root, $nda_dir]:
         ensure => directory,
         owner  => 'root',
         group  => 'root',
         mode   => '0755',
     }
 
+    file {"${nda_dir}/README.md":
+        ensure  => file,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0755',
+        content => 'Folder containing NDA protected content',
+    }
+
     # The contents of these files are managed by puppet-merge, but user
-    # gitpuppet can't/shouldn't be able to create files under $root_dir.
+    # gitpuppet can't/shouldn't be able to create files under $document_root.
     # So puppet makes sure the file at least exists, and then puppet-merge
     # can write.
-    file { "${root_dir}/puppet-sha1.txt":
+    file { "${document_root}/puppet-sha1.txt":
         ensure => present,
         owner  => 'gitpuppet',
         group  => 'gitpuppet',
         mode   => '0644',
     }
 
-    file { "${root_dir}/labsprivate-sha1.txt":
+    file { "${document_root}/labsprivate-sha1.txt":
         ensure => present,
         owner  => 'gitpuppet',
         group  => 'gitpuppet',
@@ -41,16 +51,21 @@ class profile::configmaster(
     # Write pybal pools
     class { '::pybal::web':
         ensure   => present,
-        root_dir => $root_dir,
+        root_dir => $document_root,
         services => wmflib::service::fetch(true),
     }
 
-    httpd::site { 'config-master':
-        ensure   => present,
-        priority => 50,
-        content  => template('profile/configmaster/config-master.conf.erb'),
-        notify   => Service['apache2'],
-        require  => File[$root_dir],
+    profile::idp::client::httpd::site{'pybal-config':
+        document_root    => $document_root,
+        server_aliases   => $server_aliases,
+        protected_uri    => $protected_uri,
+        vhost_content    => 'profile/configmaster/config-master.conf.erb',
+        proxied_as_https => true,
+        required_groups  => [
+            'cn=ops,ou=groups,dc=wikimedia,dc=org',
+            'cn=wmf,ou=groups,dc=wikimedia,dc=org',
+            'cn=nda,ou=groups,dc=wikimedia,dc=org',
+        ],
     }
 
     ferm::service { 'pybal_conf-http':
@@ -76,7 +91,7 @@ class profile::configmaster(
         retry_interval => 240,
     }
     $ssh_fingerprints = query_facts('', ['ssh'])
-    file{"${root_dir}/ssh-fingerprints.txt":
+    file{"${document_root}/ssh-fingerprints.txt":
         ensure  => file,
         mode    => '0644',
         owner   => 'root',
@@ -84,7 +99,7 @@ class profile::configmaster(
         content => template('profile/configmaster/ssh-fingerprints.txt.erb')
     }
     ['ecdsa', 'ed25519', 'rsa'].each |String $type| {
-        file{"${root_dir}/known_hosts.${type}":
+        file{"${document_root}/known_hosts.${type}":
             ensure  => file,
             mode    => '0644',
             owner   => 'root',
