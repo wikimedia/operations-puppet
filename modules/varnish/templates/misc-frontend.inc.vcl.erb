@@ -59,6 +59,13 @@ sub cluster_fe_ratelimit {
             return (synth(429, "Too many requests. Please comply with the User-Agent policy to get a higher rate limit: https://meta.wikimedia.org/wiki/User-Agent_policy"));
         }
     }
+    // vscode-phabricator is too aggressive in caching users https://phabricator.wikimedia.org/T270482 (private task)
+    if (req.http.User-Agent ~ "^vscode-phabricator" && req.http.Host == "phabricator.wikimedia.org") {
+        // UA-policy violations: 30/10s (3/s long term, with 30 burst)
+        if (vsthrottle.is_denied("vscode-phab-ua-policy:" + req.http.X-Client-IP, 30, 10s)) {
+            return (synth(429, "vscode-phabricator fetches users too aggressively: https://phabricator.wikimedia.org/T271528"));
+        }
+    }
 }
 
 sub cluster_fe_miss {
