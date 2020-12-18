@@ -3804,7 +3804,7 @@ host labstore1004 {
 }
 
 host labstore1005 {
-    hardware ethernet 14:18:77:5d:2d:d2;
+    hardware ethernet f4:e9:d4:89:94:c0;
     fixed-address labstore1005.eqiad.wmnet;
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
