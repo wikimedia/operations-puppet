@@ -203,7 +203,7 @@ def _differential_backup(
     snapref = "%s/%s@%s" % (pool, volume, snapname)
     subprocess.run([RBD, "snap", "create", snapref])
 
-    with NamedTemporaryFile(delete=False) as blockdiff:
+    with NamedTemporaryFile() as blockdiff:
         subprocess.run(
             [
                 RBD,
