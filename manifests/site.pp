@@ -855,7 +855,11 @@ node 'doc1001.eqiad.wmnet' {
     role(doc)
 }
 
-node 'doc1002.eqiad.wmnet', 'doc2001.codfw.wmnet' {
+node 'doc1002.eqiad.wmnet' {
+    role(doc)
+}
+
+node 'doc2001.codfw.wmnet' {
     role(insetup)
 }
 
