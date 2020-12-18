@@ -208,7 +208,7 @@ profile::trafficserver::backend::mapping_rules:
       replacement: https://eventgate-analytics-external.discovery.wmnet:4692 # TLS port
     - type: map
       target: http://superset.wikimedia.org
-      replacement: https://analytics-tool1004.eqiad.wmnet
+      replacement: https://an-tool1010.eqiad.wmnet
     - type: map
       target: http://thanos.wikimedia.org
       replacement: https://thanos-sso.discovery.wmnet
