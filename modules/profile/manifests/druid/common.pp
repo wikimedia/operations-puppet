@@ -10,15 +10,15 @@
 # the hiera zookeeper_cluster_name and zookeeper_clusters hiera variables.
 #
 class profile::druid::common(
-    $druid_cluster_name             = hiera('profile::druid::common::druid_cluster_name'),
-    $zookeeper_cluster_name         = hiera('profile::druid::common::zookeeper_cluster_name'),
-    $private_properties             = hiera('profile::druid::common::private_properties', {}),
-    $properties                     = hiera('profile::druid::common::properties', {}),
-    $zookeeper_clusters             = hiera('zookeeper_clusters'),
-    $metadata_storage_database_name = hiera('profile::druid::common:metadata_storage_database_name', 'druid'),
-    $java_home                      = hiera('profile::druid::common::java_home', '/usr/lib/jvm/java-8-openjdk-amd64'),
-    $use_cdh_hadoop_config          = hiera('profile::druid::common::use_cdh_hadoop_config', false),
-    $use_cdh                        = hiera('profile::druid::common::use_cdh', false),
+    String $druid_cluster_name             = lookup('profile::druid::common::druid_cluster_name'),
+    String $zookeeper_cluster_name         = lookup('profile::druid::common::zookeeper_cluster_name'),
+    Hash[String, Any] $private_properties  = lookup('profile::druid::common::private_properties', {'default_value' => {}}),
+    Hash[String, Any] $properties          = lookup('profile::druid::common::properties', {'default_value' => {}}),
+    Hash[String, Any] $zookeeper_clusters  = lookup('zookeeper_clusters'),
+    String $metadata_storage_database_name = lookup('profile::druid::common:metadata_storage_database_name', {'default_value' => 'druid'}),
+    Stdlib::Unixpath $java_home            = lookup('profile::druid::common::java_home', {'default_value' => '/usr/lib/jvm/java-8-openjdk-amd64'}),
+    Boolean $use_cdh_hadoop_config         = lookup('profile::druid::common::use_cdh_hadoop_config', {'default_value' => false}),
+    Boolean $use_cdh                       = lookup('profile::druid::common::use_cdh', {'default_value' => false}),
 ) {
 
     # Need Java before Druid is installed.
