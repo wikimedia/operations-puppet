@@ -855,6 +855,10 @@ node 'doc1001.eqiad.wmnet' {
     role(doc)
 }
 
+node 'doc1002.eqiad.wmnet', 'doc2001.codfw.wmnet' {
+    role(insetup)
+}
+
 # Druid analytics-eqiad (non public) servers.
 # These power internal backends and queries.
 # https://wikitech.wikimedia.org/wiki/Analytics/Data_Lake#Druid
