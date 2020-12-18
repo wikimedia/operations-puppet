@@ -4,11 +4,13 @@ import argparse
 import json
 import logging
 import os
+import re
 from dataclasses import dataclass
 from itertools import chain
 from typing import Any, Dict, List, Optional
 
 import mwopenstackclients
+import yaml
 from rbd2backy2 import BackupEntry, cleanup, get_backups
 
 # This holds cached openstack information
@@ -17,6 +19,8 @@ RED = "\033[91m"
 GREEN = "\033[92m"
 END = "\033[0m"
 BOLD = "\033[1m"
+
+Regex = str
 
 
 def red(mystr: str) -> str:
@@ -33,6 +37,37 @@ def bold(mystr: str) -> str:
 
 def indent_lines(lines: str) -> str:
     return "\n".join(("    " + line) for line in lines.splitlines())
+
+
+@dataclass
+class BackupsConfig:
+    ceph_pool: str
+    exclude_servers: Dict[str, List[Regex]]
+    # project name | ALLOTHERS -> hostname
+    project_assignments: Dict[str, str]
+    live_for_days: int
+    config_file: str
+
+    @classmethod
+    def from_file(cls, config_file: str = "/etc/wmcs_backup_instances.yaml"):
+        with open(config_file) as f:
+            config = yaml.safe_load(f)
+
+        config["config_file"] = config_file
+        return cls(**config)
+
+    def get_host_for_project(self, project: str) -> str:
+        return self.project_assignments.get(
+            project, self.project_assignments["ALLOTHERS"]
+        )
+
+    def get_host_for_vm(self, project: str, vm_name: Optional[str]) -> str:
+        if vm_name is not None:
+            for vm_regex in self.exclude_servers.get(project, []):
+                if re.match(vm_regex, vm_name):
+                    return f"excluded_from_backups (matches {vm_regex})"
+
+        return self.get_host_for_project(project=project)
 
 
 @dataclass
@@ -95,13 +130,14 @@ class VMBackup:
         )
 
 
-@dataclass
+@dataclass(unsafe_hash=True)
 class VMBackups:
     full_backups: List[BackupEntry]
     differential_backups: List[BackupEntry]
     vm_id: str
     project: Optional[str]
     vm_info: Dict[str, Any]
+    config: BackupsConfig
     size_mb: int = 0
     size_percent: Optional[float] = None
 
@@ -228,16 +264,18 @@ class VMBackups:
             f"vm_info={self.vm_info}, "
             f"size_mb={self.size_mb}, "
             f"size_percent={self.size_percent}, "
+            f"config={self.config}, "
             f"full_backups={self.full_backups}, "
             f"differential_backups={self.differential_backups}"
             ")"
         )
 
 
-@dataclass
+@dataclass(unsafe_hash=True)
 class ProjectBackups:
     vms_backups: Dict[str, VMBackups]
     project: Optional[str]
+    config: BackupsConfig
     size_mb: int = 0
     size_percent: Optional[int] = None
 
@@ -249,6 +287,7 @@ class ProjectBackups:
                 vm_id=backup.vm_id,
                 project=self.project,
                 vm_info=backup.vm_info,
+                config=self.config,
             )
 
         was_added = self.vms_backups[backup.vm_id].add_backup(backup)
@@ -285,6 +324,7 @@ class ProjectBackups:
             f"project={self.project}, "
             f"size_mb={self.size_mb}, "
             f"size_percent={self.size_percent}, "
+            f"config={self.config}, "
             f"vms_backups={self.vms_backups}"
             ")"
         )
@@ -305,9 +345,10 @@ class ProjectBackups:
         return total_removed
 
 
-@dataclass
+@dataclass(unsafe_hash=True)
 class BackupsState:
     projects_backups: Dict[str, ProjectBackups]
+    config: BackupsConfig
     size_mb: int = 0
 
     def add_vm_backup(self, vm_backup: VMBackup) -> bool:
@@ -319,6 +360,7 @@ class BackupsState:
             self.projects_backups[vm_backup.project] = ProjectBackups(
                 vms_backups={},
                 project=vm_backup.project,
+                config=self.config,
             )
 
         was_added = self.projects_backups[vm_backup.project].add_vm_backup(
@@ -421,27 +463,34 @@ class BackupsState:
         )
 
 
-def get_current_state(from_cache: bool = False) -> BackupsState:
+def get_servers_info(from_cache: bool) -> Dict[str, Dict[str, Any]]:
     if not from_cache or not os.path.exists(CACHE_FILE):
         openstackclients = mwopenstackclients.Clients(
             envfile="/etc/novaobserver.yaml"
         )
         logging.debug("Getting instances...")
-        server_id_to_server_dict = {
+        server_id_to_server_info = {
             server.id: server.to_dict()
             for server in openstackclients.allinstances()
         }
         with open(CACHE_FILE, "w") as cache_fd:
-            cache_fd.write(json.dumps(server_id_to_server_dict))
+            cache_fd.write(json.dumps(server_id_to_server_info))
 
     else:
-        server_id_to_server_dict = json.load(open(CACHE_FILE, "r"))
+        server_id_to_server_info = json.load(open(CACHE_FILE, "r"))
+
+    return server_id_to_server_info
+
+
+def get_current_state(from_cache: bool = False) -> BackupsState:
+    config = BackupsConfig.from_file()
+    server_id_to_server_dict = get_servers_info(from_cache)
 
     logging.debug("Getting backup entries...")
     backup_entries = get_backups()
 
     logging.debug("Creating project level summaries")
-    projects_backups = BackupsState(projects_backups={})
+    projects_backups = BackupsState(projects_backups={}, config=config)
     for backup_entry in backup_entries:
         vm_backup = VMBackup.from_entry_and_servers(
             entry=backup_entry, servers=server_id_to_server_dict
@@ -551,6 +600,32 @@ if __name__ == "__main__":
         ).remove_invalids(
             force=args.force,
             noop=args.noop,
+        )
+    )
+
+    where_parser = subparser.add_parser(
+        "where",
+        help=(
+            "Show where are stored the backups for the given project and/or "
+            "VM name. Note that it might be that a specific VM is excluded "
+            "from backups, pass a VM name to check if a specific VM is being "
+            "backed up."
+        ),
+    )
+    where_parser.add_argument(
+        "project",
+        help="Project name to look for",
+    )
+    where_parser.add_argument(
+        "--vm",
+        help="VM name to look for in specific (to see if it's excluded)",
+        default=None,
+    )
+    where_parser.set_defaults(
+        func=lambda: print(
+            BackupsConfig.from_file().get_host_for_vm(
+                project=args.project, vm_name=args.vm
+            )
         )
     )
 
