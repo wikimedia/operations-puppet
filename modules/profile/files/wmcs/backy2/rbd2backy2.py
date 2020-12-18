@@ -12,6 +12,58 @@ BACKY = "/usr/bin/backy2"
 
 
 @dataclass
+class RBDSnapshot:
+    image: str
+    snapshot: str
+    pool: str
+
+    @classmethod
+    def from_rbd_ls_line(cls, pool: str, rbd_ls_line: str):
+        """
+        Parses one line from the command:
+        >> rbd ls -l <pool_name>
+
+        Example of line:
+
+        009f0826-b09c-49a2-96d9-c93c690fc6b8_disk@2020-12-04T02:01:19\
+            \t300 GiB\t2\texcl
+        """
+        if "@" not in rbd_ls_line:
+            raise Exception(
+                f"Unable to extract snapshot from line: {rbd_ls_line}"
+            )
+
+        full_name = rbd_ls_line.split(maxsplit=1)[0]
+        image, snapshot = full_name.split("@")
+        return cls(image=image, snapshot=snapshot, pool=pool)
+
+    @classmethod
+    def from_rbd_snap_ls_line(
+        cls, pool: str, image_name: str, rbd_snap_ls_line: str
+    ):
+        """
+        Parses one line from the command:
+        >> rbd snap ls <pool>/<image_name>
+
+        Example of line:
+            60784 2020-12-04T05:03:23 20 GiB           Fri Dec  4 05:03:23 2020
+        """
+        _, snapshot_name, _ = rbd_snap_ls_line.split(maxsplit=2)
+
+        return cls(image=image_name, snapshot=snapshot_name, pool=pool)
+
+    def remove(self, noop: bool = True) -> None:
+        args = [RBD, "snap", "remove", str(self)]
+        if noop:
+            logging.info("NOOP: Would have executed %s", args)
+        else:
+            logging.debug(subprocess.check_output(args))
+
+    def __str__(self) -> str:
+        return f"{self.pool}/{self.image}@{self.snapshot}"
+
+
+@dataclass
 class BackupEntry:
     date: datetime.datetime
     name: str
@@ -288,4 +340,30 @@ def get_backups():
     return [
         BackupEntry.from_ls_line(ls_line.decode("utf8"))
         for ls_line in backup.splitlines()
+    ]
+
+
+def get_snapshots_for_image(pool: str, image_name: str) -> List[RBDSnapshot]:
+    raw_lines = subprocess.check_output(
+        [RBD, "snap", "ls", f"{pool}/{image_name}"]
+    )
+    return [
+        RBDSnapshot.from_rbd_snap_ls_line(
+            pool=pool,
+            image_name=image_name,
+            rbd_snap_ls_line=line.decode("utf8"),
+        )
+        # skip the header
+        for line in raw_lines.splitlines()[1:]
+    ]
+
+
+def get_snapshots_for_pool(pool: str) -> List[RBDSnapshot]:
+    raw_lines = subprocess.check_output([RBD, "ls", "-l", pool])
+    return [
+        RBDSnapshot.from_rbd_ls_line(
+            pool=pool, rbd_snap_ls_line=line.decode("utf8")
+        )
+        # skip the header
+        for line in raw_lines.splitlines()[1:]
     ]

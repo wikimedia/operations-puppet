@@ -5,13 +5,20 @@ import json
 import logging
 import os
 import re
+import sys
 from dataclasses import dataclass
 from itertools import chain
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Set
 
 import mwopenstackclients
 import yaml
-from rbd2backy2 import BackupEntry, cleanup, get_backups
+from rbd2backy2 import (
+    BackupEntry,
+    RBDSnapshot,
+    cleanup,
+    get_backups,
+    get_snapshots_for_image,
+)
 
 # This holds cached openstack information
 CACHE_FILE = "./backups.cache"
@@ -134,8 +141,8 @@ class VMBackup:
 
 @dataclass(unsafe_hash=True)
 class VMBackups:
-    full_backups: List[BackupEntry]
-    differential_backups: List[BackupEntry]
+    full_backups: List[VMBackup]
+    differential_backups: List[VMBackup]
     vm_id: str
     project: Optional[str]
     vm_info: Dict[str, Any]
@@ -509,7 +516,7 @@ def summary(current_state: BackupsState) -> None:
 def show_project(current_state: BackupsState, project: str) -> None:
     if project not in current_state.projects_backups:
         backup_host = current_state.config.get_host_for_vm(project=project)
-        print(
+        logging.warning(
             f"Project {project} not found in this host, are you sure you are "
             f"in {backup_host}? It might also be that there's no backup yet."
         )
@@ -549,6 +556,85 @@ def print_excess_backups_per_vm(
                 )
 
     print("#" * 75)
+
+
+def print_snapshots_without_backup(current_state: BackupsState) -> None:
+    for snapshot in get_snapshots_without_backup(current_state):
+        print(str(snapshot))
+
+
+def get_snapshots_without_backup(
+    current_state: BackupsState,
+) -> List[RBDSnapshot]:
+    snapshots = []
+    for project_backups in current_state.projects_backups.values():
+        for vm_backups in project_backups.vms_backups.values():
+            vm_images: Set[str] = {
+                vm_backup.backup_entry.name
+                for vm_backup in chain(
+                    vm_backups.full_backups, vm_backups.differential_backups
+                )
+            }
+            all_snapshots_for_vm = chain(
+                *[
+                    get_snapshots_for_image(
+                        pool=current_state.config.ceph_pool,
+                        image_name=image_name,
+                    )
+                    for image_name in vm_images
+                ]
+            )
+            snapshots_with_backup: Set[str] = {
+                vm_backup.backup_entry.snapshot_name
+                for vm_backup in chain(
+                    vm_backups.full_backups, vm_backups.differential_backups
+                )
+            }
+            logging.debug(
+                "Got the following snapshots with backups (%s): %s",
+                next(
+                    chain(
+                        vm_backups.full_backups,
+                        vm_backups.differential_backups,
+                    )
+                ).backup_entry.name,
+                snapshots_with_backup,
+            )
+            for snapshot in all_snapshots_for_vm:
+                if snapshot.snapshot not in snapshots_with_backup:
+                    snapshots.append(snapshot)
+
+    return snapshots
+
+
+def remove_snapshots_without_backup(
+    current_state: BackupsState, noop: bool
+) -> None:
+    failed_snapshots = []
+    to_remove = get_snapshots_without_backup(current_state)
+    for snapshot in to_remove:
+        logging.info(f"Removing snapshot {snapshot}...")
+        try:
+            snapshot.remove(noop=noop)
+            if noop:
+                logging.info(
+                    f"       Done, {snapshot} would have been removed"
+                )
+            else:
+                logging.info(f"       Done, {snapshot} removed")
+        except Exception as error:
+            logging.error(
+                f"ERROR: failed removing snapshot {snapshot}: {error}"
+            )
+            failed_snapshots.append((snapshot, error))
+
+    logging.info(
+        "Removed %d snapshots, %d failed.",
+        len(to_remove) - len(failed_snapshots),
+        len(failed_snapshots),
+    )
+    if failed_snapshots:
+        sys.exit(1)
 
 
 if __name__ == "__main__":
@@ -653,10 +739,50 @@ if __name__ == "__main__":
         default=None,
     )
     where_parser.set_defaults(
-        func=lambda: print(
+        func=lambda: logging.info(
             BackupsConfig.from_file().get_host_for_vm(
                 project=args.project, vm_name=args.vm
             )
+        )
+    )
+
+    get_unmatched_snapshots_parser = subparser.add_parser(
+        "get-unmatched-snapshots",
+        help=(
+            "Get a list of the rbd snapshots that don't have a backup, for "
+            "each vm backed up in this host. Note that if there's a snapshot "
+            "for a vm that is not backed up in this host it will not be "
+            "checked."
+        ),
+    )
+    get_unmatched_snapshots_parser.set_defaults(
+        func=lambda: print_snapshots_without_backup(
+            current_state=get_current_state(from_cache=args.from_cache)
+        )
+    )
+
+    remove_unmatched_snapshots_parser = subparser.add_parser(
+        "remove-unmatched-snapshots",
+        help=(
+            "Get and remove the rbd snapshots that don't have a backup, for "
+            "each vm backed up in this host. Note that if there's a snapshot "
+            "for a vm that is not backed up in this host it will not be "
+            "checked."
+        ),
+    )
+    remove_unmatched_snapshots_parser.add_argument(
+        "-n",
+        "--noop",
+        action="store_true",
+        help=(
+            "If set, will not really remove anything, just tell you what "
+            "would be removed."
+        ),
+    )
+    remove_unmatched_snapshots_parser.set_defaults(
+        func=lambda: remove_snapshots_without_backup(
+            current_state=get_current_state(from_cache=args.from_cache),
+            noop=args.noop,
         )
     )
 
