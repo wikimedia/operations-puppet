@@ -50,8 +50,8 @@ setRingBuffersSize(<%= @ringbuffer_max %>)
 
 -- == DNS over HTTPS (DoH) ==
 
--- TLS configuration for DoH
-tlsOptionsDOH = {
+-- DoH Configuration Options
+optionsDOH = {
   minTLSVersion='<%= @tls_config_doh['min_tls_version'] %>',
 <% if @tls_config_doh.has_key?('ciphers_tls13') -%>
   ciphersTLS13='<%= @tls_config_doh['ciphers_tls13'].join(':') %>',
@@ -65,8 +65,8 @@ tlsOptionsDOH = {
 }
 
 -- enable DoH (default port is 443)
-addDOHLocal('0.0.0.0', '<%= @tls_common['cert_chain_path'] %>', '<%= @tls_common['cert_privkey_path'] %>', { '<%= @doh_paths.join("', '") %>' }, tlsOptionsDOH)
-addDOHLocal('[::]', '<%= @tls_common['cert_chain_path'] %>', '<%= @tls_common['cert_privkey_path'] %>', { '<%= @doh_paths.join("', '") %>' }, tlsOptionsDOH)
+addDOHLocal('0.0.0.0', '<%= @tls_common['cert_chain_path'] %>', '<%= @tls_common['cert_privkey_path'] %>', { '<%= @doh_paths.join("', '") %>' }, optionsDOH)
+addDOHLocal('[::]', '<%= @tls_common['cert_chain_path'] %>', '<%= @tls_common['cert_privkey_path'] %>', { '<%= @doh_paths.join("', '") %>' }, optionsDOH)
 
 <% if @enable_landing -%>
 -- static pages for the DoH frontend (/)
@@ -84,8 +84,8 @@ dohFE1:setResponsesMap(staticMap)
 
 -- == DNS over TLS (DoT) ==
 
--- TLS configuration for DoT
-tlsOptionsDOT = {
+-- DoT Configuration Options
+optionsDOT = {
   minTLSVersion='<%= @tls_config_dot['min_tls_version'] %>',
 <% if @tls_config_dot.has_key?('ciphers_tls13') -%>
   ciphersTLS13='<%= @tls_config_dot['ciphers_tls13'].join(':') %>',
@@ -99,5 +99,5 @@ tlsOptionsDOT = {
 }
 
 -- enable DoT (default port is 853)
-addTLSLocal('0.0.0.0', '<%= @tls_common['cert_chain_path'] %>', '<%= @tls_common['cert_privkey_path'] %>', tlsOptionsDOT)
-addTLSLocal('[::]', '<%= @tls_common['cert_chain_path'] %>', '<%= @tls_common['cert_privkey_path'] %>', tlsOptionsDOT)
+addTLSLocal('0.0.0.0', '<%= @tls_common['cert_chain_path'] %>', '<%= @tls_common['cert_privkey_path'] %>', optionsDOT)
+addTLSLocal('[::]', '<%= @tls_common['cert_chain_path'] %>', '<%= @tls_common['cert_privkey_path'] %>', optionsDOT)
