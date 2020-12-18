@@ -1,11 +1,11 @@
 # Class: profile::druid::middlemanager
 #
 class profile::druid::middlemanager(
-    $properties         = hiera('profile::druid::middlemanager::properties', {}),
-    $env                = hiera('profile::druid::middlemanager::env', {}),
-    $daemon_autoreload  = hiera('profile::druid::daemons_autoreload', true),
-    $ferm_srange        = hiera('profile::druid::ferm_srange', '$DOMAIN_NETWORKS'),
-    $monitoring_enabled = hiera('profile::druid::middlemanager::monitoring_enabled', false),
+    Hash[String, Any] $properties = lookup('profile::druid::middlemanager::properties', {'default_value' => {}}),
+    Hash[String, String] $env     = lookup('profile::druid::middlemanager::env', {'default_value' => {}}),
+    Boolean $daemon_autoreload    = lookup('profile::druid::daemons_autoreload', {'default_value' => true}),
+    String $ferm_srange           = lookup('profile::druid::ferm_srange', {'default_value' => '$DOMAIN_NETWORKS'}),
+    Boolean $monitoring_enabled   = lookup('profile::druid::middlemanager::monitoring_enabled', {'default_value' => false}),
 ) {
 
     require ::profile::druid::common
