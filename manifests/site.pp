@@ -1447,10 +1447,14 @@ node /^clouddb10(17|18|19|20)\.eqiad\.wmnet$/ {
     role(wmcs::db::wikireplicas::analytics_multiinstance)
 }
 
-node /labstore100[45]\.eqiad\.wmnet/ {
+node /labstore1004\.eqiad\.wmnet/ {
     role(wmcs::nfs::primary)
     # Do not enable yet
     # include ::profile::base::firewall
+}
+
+node /labstore1005\.eqiad\.wmnet/ {
+    role(insetup)
 }
 
 # The following nodes pull data periodically
