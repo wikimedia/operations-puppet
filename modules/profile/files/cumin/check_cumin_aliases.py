@@ -12,7 +12,10 @@ from cumin.backends import InvalidQueryError
 
 
 # Hardcoded DC aliases to verify them.
-DCS = ('eqiad', 'codfw', 'esams', 'ulsfo', 'eqsin')
+DCS = {'eqiad', 'codfw', 'esams', 'ulsfo', 'eqsin'}
+
+# Aliases that are allowed to match zero hosts.
+OPTIONAL_ALIASES = {'spare'}
 
 
 def main():
@@ -20,7 +23,7 @@ def main():
 
     Note:
     Those are the performed checks
-      - each alias should return some hosts.
+      - each alias should return some hosts, unless listed in OPTIONAL_ALIASES.
       - the sum of all DC-related aliases should return all hosts.
       - the sum of all the other aliases should return all hosts.
 
@@ -42,7 +45,7 @@ def main():
             ret = 1
             continue
 
-        if not match:
+        if not match and alias not in OPTIONAL_ALIASES:
             print('Alias {alias} matched 0 hosts'.format(alias=alias))
             ret = 1
 
