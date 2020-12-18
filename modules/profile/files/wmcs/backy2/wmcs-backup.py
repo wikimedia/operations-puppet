@@ -61,7 +61,9 @@ class BackupsConfig:
             project, self.project_assignments["ALLOTHERS"]
         )
 
-    def get_host_for_vm(self, project: str, vm_name: Optional[str]) -> str:
+    def get_host_for_vm(
+        self, project: str, vm_name: Optional[str] = None
+    ) -> str:
         if vm_name is not None:
             for vm_regex in self.exclude_servers.get(project, []):
                 if re.match(vm_regex, vm_name):
@@ -504,6 +506,20 @@ def summary(current_state: BackupsState) -> None:
     print(str(current_state))
 
 
+def show_project(current_state: BackupsState, project: str) -> None:
+    if project not in current_state.projects_backups:
+        backup_host = current_state.config.get_host_for_vm(project=project)
+        print(
+            f"Project {project} not found in this host, are you sure you are "
+            f"in {backup_host}? It might also be that there's no backup yet."
+        )
+        return
+
+    print(("#" * 75))
+    print(str(current_state.projects_backups[project]))
+    print(("#" * 75))
+
+
 def print_excess_backups_per_vm(
     current_state: BackupsState, excess: int = 3
 ) -> None:
@@ -553,6 +569,21 @@ if __name__ == "__main__":
     )
     summary_parser.set_defaults(
         func=lambda: summary(get_current_state(from_cache=args.from_cache))
+    )
+
+    show_project_parser = subparser.add_parser(
+        "show-project",
+        help="Show details of the backups of a project (in this host).",
+    )
+    show_project_parser.add_argument(
+        "project",
+        help="Project name to show info for",
+    )
+    show_project_parser.set_defaults(
+        func=lambda: show_project(
+            current_state=get_current_state(from_cache=args.from_cache),
+            project=args.project,
+        )
     )
 
     show_excess_parser = subparser.add_parser(
