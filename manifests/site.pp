@@ -850,17 +850,14 @@ node /^dns[12345]00[12]\.wikimedia\.org$/ {
     role(dnsbox)
 }
 
-# https://doc.wikimedia.org (T211974)
+# production https://doc.wikimedia.org (T211974)
 node 'doc1001.eqiad.wmnet' {
     role(doc)
 }
 
-node 'doc1002.eqiad.wmnet' {
+# upcoming https://doc.wikimedia.org (T211974) on buster (T247653)
+node 'doc1002.eqiad.wmnet', 'doc2001.codfw.wmnet' {
     role(doc)
-}
-
-node 'doc2001.codfw.wmnet' {
-    role(insetup)
 }
 
 # Druid analytics-eqiad (non public) servers.
