@@ -16,9 +16,9 @@
 #   A map of headers that will be sent with each reply in case of an error. If not set, above headers will be used. Default: false
 #
 class profile::graphoid(
-    $allowed_domains = hiera('profile::graphoid::allowed_domains'),
-    $headers       = hiera('profile::graphoid::headers'),
-    $error_headers = hiera('profile::graphoid::error_headers'),
+    $allowed_domains = lookup('profile::graphoid::allowed_domains'),
+    $headers       = lookup('profile::graphoid::headers'),
+    $error_headers = lookup('profile::graphoid::error_headers'),
 ) {
     $domain_map    = {}
     $timeout       = 5000
