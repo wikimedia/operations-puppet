@@ -31,7 +31,7 @@ class profile::swap(
         'cn=wmf,ou=groups,dc=wikimedia,dc=org',
     ]}),
     Optional[Hash] $ldap_config = lookup('ldap', Hash, hash, {}),
-    Optional[Array[Stdlib::Host]] $rsync_hosts_allow = hiera('profile::swap::rsync_hosts_allow', undef),
+    Optional[Array[Stdlib::Host]] $rsync_hosts_allow = lookup('profile::swap::rsync_hosts_allow', {'default_value' => undef}),
     Array[Stdlib::Host] $dumps_servers = lookup('dumps_dist_nfs_servers'),
     Stdlib::Host $dumps_active_server = lookup('dumps_dist_active_web'),
     Boolean $push_published = lookup('profile::swap::push_published', { 'default_value' => true }),
