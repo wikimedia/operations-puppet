@@ -158,14 +158,11 @@ class logstash (
         notify  => Service['logstash'],
     }
 
-    file { '/etc/logstash/conf.d':
-        ensure  => directory,
-        recurse => true,
-        purge   => true,
-        force   => true,
+    file { '/etc/logstash/conf.d/README':
+        ensure  => present,
         owner   => 'logstash',
         group   => 'logstash',
-        source  => 'puppet:///modules/logstash/conf.d',
+        source  => 'puppet:///modules/logstash/conf.d/README',
         require => Package['logstash'],
     }
 

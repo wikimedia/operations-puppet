@@ -276,179 +276,33 @@ class profile::logstash::collector7 (
 
     # move files into module?
     # lint:ignore:puppet_url_without_modules
-    logstash::conf { 'filter_strip_ansi_color':
-        source   => 'puppet:///modules/profile/logstash/filter-strip-ansi-color.conf',
-        priority => 15,
+    file { '/etc/logstash/conf.d':
+      ensure  => directory,
+      source  => 'puppet:///modules/profile/logstash/filters',
+      owner   => 'logstash',
+      group   => 'logstash',
+      mode    => '0440',
+      recurse => true,
+      purge   => true,
+      force   => true,
     }
 
-    # Enforce a maximum length on "message" and "msg" fields
-    logstash::conf { 'filter_truncate':
-        source   => 'puppet:///modules/profile/logstash/filter-truncate.conf',
-        priority => 15,
-    }
-
-    ## Input specific processing (20)
-
-    logstash::conf { 'filter_syslog':
-        source   => 'puppet:///modules/profile/logstash/filter-syslog.conf',
-        priority => 20,
-    }
-
-    logstash::conf { 'filter_netdev':
-        source   => 'puppet:///modules/profile/logstash/filter-netdev.conf',
-        priority => 20,
-    }
-
-    logstash::conf { 'filter_udp2log':
-        source   => 'puppet:///modules/profile/logstash/filter-udp2log.conf',
-        priority => 20,
-    }
-
-    logstash::conf { 'filter_gelf':
-        source   => 'puppet:///modules/profile/logstash/filter-gelf.conf',
-        priority => 20,
-    }
-
-    logstash::conf { 'filter_log4j':
-        source   => 'puppet:///modules/profile/logstash/filter-log4j.conf',
-        priority => 20,
-    }
-
-    logstash::conf { 'filter_logback':
-        source   => 'puppet:///modules/profile/logstash/filter-logback.conf',
-        priority => 20,
-    }
-
-    logstash::conf { 'filter_json_lines':
-        source   => 'puppet:///modules/profile/logstash/filter-json-lines.conf',
-        priority => 20,
-    }
-
-    # rsyslog-shipper processing might tweak/adjust some generic syslog fields
-    # thus process this filter after all inputs
-    logstash::conf { 'filter_rsyslog_shipper':
-        source   => 'puppet:///modules/profile/logstash/filter-rsyslog-shipper.conf',
-        priority => 25,
-    }
-
-    # Process nested JSON from Docker -> Kubernetes -> rsyslog
-    logstash::conf { 'filter_kubernetes_docker':
-        source   => 'puppet:///modules/profile/logstash/filter-kubernetes-docker.conf',
-        priority => 30,
-    }
-
-    ## Application specific processing (50)
-
-    logstash::conf { 'filter_mediawiki':
-        source   => 'puppet:///modules/profile/logstash/filter-mediawiki.conf',
-        priority => 50,
-    }
-
-    logstash::conf { 'filter_striker':
-        source   => 'puppet:///modules/profile/logstash/filter-striker.conf',
-        priority => 50,
-    }
-
-    logstash::conf { 'filter_openstack':
-        source   => 'puppet:///modules/profile/logstash/filter-openstack.conf',
-        priority => 50,
-    }
-
-    logstash::conf { 'filter_ores':
-        source   => 'puppet:///modules/profile/logstash/filter-ores.conf',
-        priority => 50,
-    }
-
-    logstash::conf { 'filter_mjolnir':
-        source   => 'puppet:///modules/profile/logstash/filter-mjolnir.conf',
-        priority => 50,
-    }
-
-    logstash::conf { 'filter_webrequest':
-        source   => 'puppet:///modules/profile/logstash/filter-webrequest.conf',
-        priority => 50,
-    }
-
-    logstash::conf { 'filter_apache2_error':
-        source   => 'puppet:///modules/profile/logstash/filter-apache2-error.conf',
-        priority => 50,
-    }
-
-    logstash::conf { 'filter_rsyslog_multiline':
-        source   => 'puppet:///modules/profile/logstash/filter-rsyslog-multiline.conf',
-        priority => 50,
-    }
-
-    logstash::conf { 'filter_eventlogging':
-        source   => 'puppet:///modules/profile/logstash/filter-eventlogging.conf',
-        priority => 50,
-    }
-
-    logstash::conf { 'filter_icinga':
-        source   => 'puppet:///modules/profile/logstash/filter-icinga.conf',
-        priority => 50,
-    }
-
-    logstash::conf { 'filter_ulogd':
-        source   => 'puppet:///modules/profile/logstash/filter-ulogd.conf',
-        priority => 50,
-    }
-
-    logstash::conf { 'filter_clienterror':
-        source   => 'puppet:///modules/profile/logstash/filter-clienterror.conf',
-        priority => 50,
-    }
-
-    logstash::conf { 'filter_w3creportingapi':
-        source   => 'puppet:///modules/profile/logstash/filter-w3creportingapi.conf',
-        priority => 50,
-    }
-
-    ## Global post-processing (70)
-
-    logstash::conf { 'filter_add_normalized_message':
-        source   => 'puppet:///modules/profile/logstash/filter-add-normalized-message.conf',
-        priority => 70,
-    }
-
-    logstash::conf { 'filter_normalize_log_levels':
-        source   => 'puppet:///modules/profile/logstash/filter-normalize-log-levels.conf',
-        priority => 70,
-    }
-
-    logstash::conf { 'filter_de_dot':
-        source   => 'puppet:///modules/profile/logstash/filter-de_dot.conf',
-        priority => 70,
-    }
-
-    logstash::conf { 'filter_es_index_name':
-        source   => 'puppet:///modules/profile/logstash/filter-es-index-name.conf',
-        priority => 70,
-    }
-
-    ## Throttles (rate limiting) (75) (rate limit after filtering for consistency with field conventions)
-
-    logstash::conf { 'filter_throttle':
-        source   => 'puppet:///modules/profile/logstash/filter-throttle.conf',
-        priority => 75,
-    }
-
-    file {'/etc/logstash/filter_scripts':
+    file { '/etc/logstash/filter_scripts':
         ensure  => directory,
         source  => 'puppet:///modules/profile/logstash/filter_scripts',
-        owner   => 'root',
-        group   => 'root',
+        owner   => 'logstash',
+        group   => 'logstash',
         mode    => '0444',
         recurse => true,
         purge   => true,
         force   => true,
     }
 
-    file {'/etc/logstash/templates':
+    file { '/etc/logstash/templates':
         ensure  => directory,
         source  => 'puppet:///modules/profile/logstash/templates',
-        owner   => 'root',
-        group   => 'root',
+        owner   => 'logstash',
+        group   => 'logstash',
         mode    => '0444',
         recurse => true,
         purge   => true,

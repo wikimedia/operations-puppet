@@ -17,10 +17,12 @@ testcases:
     expected:
       - report_body:
           type: "tcp.connectionrefused"
+        normalized_message: "%{message}"
         tags:
           - "w3creportingapi"
           - "kafka"
           - "input-kafka-networkerror-eqiad"
           - "es"
           - "throttle-exempt"
+          - "normalized_message_untrimmed"
         type: "network-error"

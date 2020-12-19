@@ -22,13 +22,15 @@ testcases:
         clientport: "41868"
         facility: "local7"
         host: "mw1369"
-        level: "error"
+        level: "ERROR"
         logsource: "mw1369"
         message: "AH01071: Got error 'Primary script unknown\\n'"
+        normalized_message: "AH01071: Got error 'Primary script unknown\\n'"
         program: "apache2"
         severity: "err"
         tags:
           - syslog
           - es
+          - normalized_message_untrimmed
         thread: "140710242121472"
         type: "apache2"

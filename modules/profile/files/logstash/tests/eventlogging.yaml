@@ -26,8 +26,10 @@ testcases:
         host: "host"
         level: "ERROR"
         message: "foo"
+        normalized_message: "foo"
         raw_event: "foo"
         tags:
           - "eventlogging_EventError"
           - "es"
+          - "normalized_message_untrimmed"
         type: "eventlogging"

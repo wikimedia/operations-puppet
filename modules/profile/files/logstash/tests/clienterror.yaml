@@ -13,5 +13,6 @@ testcases:
     expected:
       - dummy: "key"
         level: "ERROR"
-        tags: ["es", "throttle-exempt"]
+        normalized_message: "%{message}"
+        tags: ["es", "throttle-exempt", "normalized_message_untrimmed"]
         type: "clienterror"
