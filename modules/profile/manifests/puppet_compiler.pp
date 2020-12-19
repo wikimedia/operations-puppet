@@ -1,5 +1,5 @@
 class profile::puppet_compiler(
-    $cloud_puppetmaster = hiera('profile::puppet_compiler::cloud_puppetmaster')
+    $cloud_puppetmaster = lookup('profile::puppet_compiler::cloud_puppetmaster')
 ) {
 
     case $::realm {
