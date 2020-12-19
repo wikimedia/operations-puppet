@@ -1,6 +1,6 @@
 # maintenance needed on maintenance hosts for mediawiki databases
 class profile::mariadb::maintenance(
-    $ensure = hiera('profile::mariadb::maintenance::ensure'),
+    $ensure = lookup('profile::mariadb::maintenance::ensure'),
     ) {
     # The role should install profile::mariadb::client
 
