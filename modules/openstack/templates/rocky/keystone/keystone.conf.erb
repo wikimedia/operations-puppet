@@ -5,8 +5,12 @@ syslog_log_facility = LOG_LOCAL0
 
 debug = false
 verbose = false
-log_file = keystone.log
-log_dir = /var/log/keystone
+
+# Uncomment these two to get isolated keystone logfiles.
+#  As is, logs will only go to syslog.
+#log_file = keystone.log
+#log_dir = /var/log/keystone
+
 # Login info for wikitech, for project page updates
 wiki_host=<%= @osm_host %>
 wiki_page_prefix=<%= @wiki_status_page_prefix %>
