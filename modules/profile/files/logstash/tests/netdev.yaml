@@ -1,0 +1,45 @@
+fields:
+  ecs.version: "1.7.0"
+  host.name: "re0.cr2-eqiad"
+  service.type: "netdev"
+codec: "json_lines"
+ignore:
+  - "@timestamp"
+testcases:
+  - input:
+      - >
+        {
+          "log.original": "PFE_FW_SYSLOG_ETH_IP: FW: xe-3/0/4.1103 A 044f:0800 de:ad:be:ee:ee:ff -> de:ad:be:ee:ff:ff  tcp 127.0.0.1 127.0.1.1  9999 65535 (1 packets)"
+        }
+    expected:
+      - labels:
+          console: "re0"
+        observer:
+          ingress:
+            interface:
+              name: "xe-3/0/4.1103"
+        event:
+          action: "A"
+        network:
+          vlan:
+            name: "044f:0800"
+          transport: "tcp"
+        source:
+          mac: "de:ad:be:ee:ee:ff"
+          ip: "127.0.0.1"
+          port: "9999"
+          packets: "1"
+        destination:
+          mac: "de:ad:be:ee:ff:ff"
+          ip: "127.0.1.1"
+          port: "65535"
+        log:
+          original: "PFE_FW_SYSLOG_ETH_IP: FW: xe-3/0/4.1103 A 044f:0800 de:ad:be:ee:ee:ff -> de:ad:be:ee:ff:ff  tcp 127.0.0.1 127.0.1.1  9999 65535 (1 packets)"
+        service:
+          type: "netdev"
+        host:
+          name: "cr2-eqiad"
+        ecs:
+          version: "1.7.0"
+        tags:
+          - "firewall"
