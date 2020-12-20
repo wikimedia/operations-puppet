@@ -6,11 +6,11 @@
 # haver finer control over how Druid accepts queries.
 #
 class profile::druid::broker(
-    $properties         = hiera('profile::druid::broker::properties', {}),
-    $env                = hiera('profile::druid::broker::env', {}),
-    $ferm_srange        = hiera('profile::druid::broker::ferm_srange', '$DOMAIN_NETWORKS'),
-    $daemon_autoreload  = hiera('profile::druid::daemons_autoreload', true),
-    $monitoring_enabled = hiera('profile::druid::broker::monitoring_enabled', false),
+    Hash[String, Any] $properties = lookup('profile::druid::broker::properties', {'default_value' => {}}),
+    Hash[String, String] $env     = lookup('profile::druid::broker::env', {'default_value' => {}}),
+    String $ferm_srange           = lookup('profile::druid::broker::ferm_srange', {'default_value' => '$DOMAIN_NETWORKS'}),
+    Boolean $daemon_autoreload    = lookup('profile::druid::daemons_autoreload', {'default_value' => true}),
+    Boolean $monitoring_enabled   = lookup('profile::druid::broker::monitoring_enabled', {'default_value' => false}),
 ) {
 
     require ::profile::druid::common
