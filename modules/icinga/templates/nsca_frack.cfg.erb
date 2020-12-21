@@ -1240,12 +1240,6 @@ define service {
 
 define service {
     use                      passive-service
-    service_description      check_ipn_redir
-    hostgroup_name           fundraising-listener
-}
-
-define service {
-    use                      passive-service
     service_description      check_listener_gc
     hostgroup_name           fundraising-listener
 }
