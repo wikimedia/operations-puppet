@@ -201,6 +201,7 @@ Update:
  hwraid-stretch
  postgres
  matomo
+ pyall
  thirdparty/ceph-nautilus-buster
  thirdparty/helm3
  thirdparty/kubeadm-k8s-kubernetes.io-1-15
@@ -208,7 +209,6 @@ Update:
  thirdparty/kubeadm-k8s-kubernetes.io-1-17
  thirdparty/kubeadm-k8s-kubernetes.io
  thirdparty/kubeadm-k8s-docker.com
- thirdparty/pyall
 # NOTE:  Cloudera does not (yet) provide Stretch/Buster packages.  We use the Jessie ones,
 # along with a fake equivs to satisfy hadoop-mapreduce's (unnecessary) dependency on libssl1.0.0
 # which is not available in Stretch.  Once Cloudera releases Stretch/Buster packages, we can
