@@ -10,12 +10,20 @@ class profile::openstack::base::galera::node(
     ) {
 
     $socket = '/var/run/mysqld/mysqld.sock'
+    $datadir = '/srv/sqldata'
+    file { $datadir:
+        ensure => directory,
+        owner  => 'mysql',
+        group  => 'mysql',
+        mode   => '0755',
+    }
 
     class {'::galera':
         cluster_nodes => $openstack_controllers,
         server_id     => $server_id,
         enabled       => $enabled,
         port          => $listen_port,
+        datadir       => $datadir,
         socket        => $socket,
     }
 
