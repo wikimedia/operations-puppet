@@ -80,7 +80,6 @@ class puppetmaster(
     }
 
     package { [
-        'puppet-master',
         'vim-puppet',
         'rails',
         'ruby-json',
