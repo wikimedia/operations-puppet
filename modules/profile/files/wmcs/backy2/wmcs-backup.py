@@ -8,7 +8,7 @@ import re
 import sys
 from dataclasses import dataclass
 from itertools import chain
-from typing import Any, Dict, List, Optional, Set
+from typing import Any, ClassVar, Dict, List, Optional, Set
 
 import mwopenstackclients
 import yaml
@@ -21,7 +21,8 @@ from rbd2backy2 import (
 )
 
 # This holds cached openstack information
-CACHE_FILE = "./backups.cache"
+IMAGES_CACHE_FILE = "./backups.images.cache"
+INSTANCES_CACHE_FILE = "./backups.instances.cache"
 RED = "\033[91m"
 GREEN = "\033[92m"
 END = "\033[0m"
@@ -47,21 +48,31 @@ def indent_lines(lines: str) -> str:
 
 
 @dataclass
-class BackupsConfig:
+class MinimalConfig:
     ceph_pool: str
-    exclude_servers: Dict[str, List[Regex]]
-    # project name | ALLOTHERS -> hostname
-    project_assignments: Dict[str, str]
-    live_for_days: int
     config_file: str
+    ceph_pool: str
+    live_for_days: int
+    CONFIG_FILE: ClassVar[str] = "/etc/wmcs_backup_instances.yaml"
 
     @classmethod
-    def from_file(cls, config_file: str = "/etc/wmcs_backup_instances.yaml"):
+    def from_file(cls, config_file: Optional[str] = None):
+        if config_file is None:
+            config_file = cls.CONFIG_FILE
+
         with open(config_file) as f:
             config = yaml.safe_load(f)
 
         config["config_file"] = config_file
         return cls(**config)
+
+
+@dataclass
+class InstanceBackupsConfig(MinimalConfig):
+    exclude_servers: Dict[str, List[Regex]]
+    # project name | ALLOTHERS -> hostname
+    project_assignments: Dict[str, str]
+    CONFIG_FILE: ClassVar[str] = "/etc/wmcs_backup_instances.yaml"
 
     def get_host_for_project(self, project: str) -> str:
         return self.project_assignments.get(
@@ -77,6 +88,122 @@ class BackupsConfig:
                     return f"excluded_from_backups (matches {vm_regex})"
 
         return self.get_host_for_project(project=project)
+
+
+@dataclass
+class ImageBackupsConfig(MinimalConfig):
+    CONFIG_FILE: ClassVar[str] = "/etc/wmcs_backup_images.yaml"
+
+
+@dataclass
+class ImageBackup:
+    image_id: str
+    image_name: str
+    image_info: Dict[str, Any]
+    backup_entry: BackupEntry
+    size_mb: int
+    size_percent: Optional[float] = None
+
+    @classmethod
+    def from_entry_and_images(
+        cls, entry: BackupEntry, images: Dict[str, Dict[str, Any]]
+    ):
+        image_id = entry.name.split("_", 1)[0]
+        if image_id not in images:
+            logging.warning("Unable to find image with id %s", image_id)
+
+        image_dict = images.get(image_id, None)
+        image_info = image_dict if image_dict is not None else {}
+        return cls(
+            backup_entry=entry,
+            image_id=image_id,
+            image_name=image_info.get("name", "no name"),
+            image_info=image_info,
+            size_mb=entry.size_mb,
+        )
+
+    def remove(self, noop: bool = True) -> None:
+        self.backup_entry.remove(noop=noop)
+
+    def __str__(self) -> str:
+        percent_str = (
+            f"({self.size_percent:.2f}% of total) "
+            if self.size_percent
+            else ""
+        )
+        return (
+            f"created:{self.backup_entry.date.strftime('%Y-%m-%d %H:%M:%S')} "
+            f"expires:{self.backup_entry.date.strftime('%Y-%m-%d %H:%M:%S')} "
+            f"{green('VALID') if self.backup_entry.valid else red('INVALID')} "
+            f"{'PROTECTED' if self.backup_entry.valid else 'UNPROTECTED'} "
+            f"size:{self.size_mb}MB {percent_str}"
+            f"name:{self.backup_entry.name} "
+            f"snapshot:{self.backup_entry.snapshot_name} "
+            f"uid:{self.backup_entry.uid} "
+            f"tags:{self.backup_entry.tags}"
+        )
+
+    def __repr__(self) -> str:
+        return (
+            "ImageBackup("
+            f"image_id={self.image_id}, "
+            f"size_mb={self.size_mb}, "
+            f"size_percent={self.size_percent}, "
+            f"backup_entry={self.backup_entry}, "
+            f"image_info={self.image_info}"
+            ")"
+        )
+
+
+@dataclass(unsafe_hash=True)
+class ImageBackups:
+    backups: List[ImageBackup]
+    image_id: str
+    image_name: Optional[str]
+    image_info: Dict[str, Any]
+    config: ImageBackupsConfig
+    size_mb: int = 0
+    size_percent: Optional[float] = None
+
+    def add_backup(self, backup: ImageBackup) -> bool:
+        if backup.image_id != self.image_id:
+            raise Exception(
+                "Invalid backup, non-matching image_id "
+                f"(backup.image_id={backup.image_id}, "
+                f"self.image_id={self.image_id})"
+            )
+
+        was_added = False
+        if backup not in self.backups:
+            self.backups.append(backup)
+            was_added = True
+
+        if was_added:
+            self.size_mb += backup.backup_entry.size_mb
+
+        return was_added
+
+    def update_usages(self, total_size_mb: int) -> None:
+        for backup in self.backups:
+            backup.size_percent = backup.size_mb * 100 / total_size_mb
+
+    def __str__(self) -> str:
+        # we don't have diff backups
+        backups_strings = sorted(
+            bold("FULL") + f" {entry}" for entry in self.backups
+        )
+        return (
+            bold("Image:")
+            + f" {self.image_name}(id:{self.image_id})\n"
+            + f"Total Size: {self.size_mb}MB"
+            + (
+                f"\nSize percent: {self.size_percent:.2f}%"
+                if self.size_percent
+                else ""
+            )
+            + "\nBackups:\n    "
+            + "\n    ".join(backups_strings)
+        )
 
 
 @dataclass
@@ -146,7 +273,7 @@ class VMBackups:
     vm_id: str
     project: Optional[str]
     vm_info: Dict[str, Any]
-    config: BackupsConfig
+    config: InstanceBackupsConfig
     size_mb: int = 0
     size_percent: Optional[float] = None
 
@@ -284,7 +411,7 @@ class VMBackups:
 class ProjectBackups:
     vms_backups: Dict[str, VMBackups]
     project: Optional[str]
-    config: BackupsConfig
+    config: InstanceBackupsConfig
     size_mb: int = 0
     size_percent: Optional[int] = None
 
@@ -355,15 +482,15 @@ class ProjectBackups:
 
 
 @dataclass(unsafe_hash=True)
-class BackupsState:
+class InstanceBackupsState:
     projects_backups: Dict[str, ProjectBackups]
-    config: BackupsConfig
+    config: InstanceBackupsConfig
     size_mb: int = 0
 
     def add_vm_backup(self, vm_backup: VMBackup) -> bool:
         """
-        Returns True if it was added to the BackupsState, False if it was
-        already there.
+        Returns True if it was added to the InstanceBackupsState, False if it
+        was already there.
         """
         if vm_backup.project not in self.projects_backups:
             self.projects_backups[vm_backup.project] = ProjectBackups(
@@ -442,7 +569,7 @@ class BackupsState:
 
     def __repr__(self) -> str:
         return (
-            "BackupsState("
+            "InstanceBackupsState("
             f"size_mb={self.size_mb}, "
             f"projects_backups={self.projects_backups}"
             ")"
@@ -472,8 +599,58 @@ class BackupsState:
         )
 
 
+@dataclass(unsafe_hash=True)
+class ImageBackupsState:
+    image_backups: Dict[str, ImageBackups]
+    config: ImageBackupsConfig
+    size_mb: int = 0
+
+    def add_image_backup(self, image_backup: ImageBackup) -> bool:
+        """
+        Returns True if it was added to the ImageBackupsState, False if it
+        was already there.
+        """
+        if image_backup.image_id not in self.image_backups:
+            self.image_backups[image_backup.image_id] = ImageBackups(
+                config=self.config,
+                backups=[],
+                image_name=image_backup.image_name,
+                image_id=image_backup.image_id,
+                image_info=image_backup.image_info,
+            )
+
+        was_added = self.image_backups[image_backup.image_id].add_backup(
+            image_backup
+        )
+
+        if was_added:
+            self.size_mb += image_backup.size_mb
+            return True
+        else:
+            return False
+
+    def update_usages(self) -> None:
+        for project_backups in self.image_backups.values():
+            project_backups.size_percent = (
+                project_backups.size_mb * 100 / self.size_mb
+            )
+            project_backups.update_usages(total_size_mb=self.size_mb)
+
+    def __str__(self) -> str:
+        self.update_usages()
+        return (
+            f"Total Size: {self.size_mb}MB\n"
+            f"Number of images: {len(self.image_backups)}"
+            "\nImage backups:\n"
+            + ("\n" + "#" * 80).join(
+                f"\n{backup}" for backup in self.image_backups.values()
+            )
+            + "\n" + ("#" * 80)
+        )
+
+
 def get_servers_info(from_cache: bool) -> Dict[str, Dict[str, Any]]:
-    if not from_cache or not os.path.exists(CACHE_FILE):
+    if not from_cache or not os.path.exists(INSTANCES_CACHE_FILE):
         openstackclients = mwopenstackclients.Clients(
             envfile="/etc/novaobserver.yaml"
         )
@@ -482,24 +659,62 @@ def get_servers_info(from_cache: bool) -> Dict[str, Dict[str, Any]]:
             server.id: server.to_dict()
             for server in openstackclients.allinstances()
         }
-        with open(CACHE_FILE, "w") as cache_fd:
+        with open(INSTANCES_CACHE_FILE, "w") as cache_fd:
             cache_fd.write(json.dumps(server_id_to_server_info))
 
     else:
-        server_id_to_server_info = json.load(open(CACHE_FILE, "r"))
+        logging.debug("Getting instances from cache...")
+        server_id_to_server_info = json.load(open(INSTANCES_CACHE_FILE, "r"))
 
     return server_id_to_server_info
 
 
-def get_current_state(from_cache: bool = False) -> BackupsState:
-    config = BackupsConfig.from_file()
+def get_images_info(from_cache: bool) -> Dict[str, Dict[str, Any]]:
+    if not from_cache or not os.path.exists(IMAGES_CACHE_FILE):
+        logging.debug("Getting images from the server...")
+        clients = mwopenstackclients.Clients(envfile="/etc/novaadmin.yaml")
+        image_id_to_image_info = {
+            image.id: image for image in clients.glanceclient().images.list()
+        }
+        with open(IMAGES_CACHE_FILE, "w") as cache_fd:
+            logging.debug("Getting images from cache...")
+            cache_fd.write(json.dumps(image_id_to_image_info))
+
+    else:
+        image_id_to_image_info = json.load(open(IMAGES_CACHE_FILE, "r"))
+
+    return image_id_to_image_info
+
+
+def get_current_images_state(from_cache: bool = False) -> ImageBackupsState:
+    config = ImageBackupsConfig.from_file()
+
+    image_id_to_image_dict = get_images_info(from_cache)
+    logging.debug("Getting backup entries...")
+    backup_entries = get_backups()
+
+    logging.debug("Creating image summaries")
+    image_backups_state = ImageBackupsState(config=config, image_backups={})
+    for backup_entry in backup_entries:
+        image_backups_state.add_image_backup(
+            ImageBackup.from_entry_and_images(
+                entry=backup_entry, images=image_id_to_image_dict
+            )
+        )
+    return image_backups_state
+
+
+def get_current_instances_state(
+    from_cache: bool = False,
+) -> InstanceBackupsState:
+    config = InstanceBackupsConfig.from_file()
     server_id_to_server_dict = get_servers_info(from_cache)
 
     logging.debug("Getting backup entries...")
     backup_entries = get_backups()
 
     logging.debug("Creating project level summaries")
-    projects_backups = BackupsState(projects_backups={}, config=config)
+    projects_backups = InstanceBackupsState(projects_backups={}, config=config)
     for backup_entry in backup_entries:
         vm_backup = VMBackup.from_entry_and_servers(
             entry=backup_entry, servers=server_id_to_server_dict
@@ -509,11 +724,11 @@ def get_current_state(from_cache: bool = False) -> BackupsState:
     return projects_backups
 
 
-def summary(current_state: BackupsState) -> None:
+def summary(current_state: InstanceBackupsState) -> None:
     print(str(current_state))
 
 
-def show_project(current_state: BackupsState, project: str) -> None:
+def show_project(current_state: InstanceBackupsState, project: str) -> None:
     if project not in current_state.projects_backups:
         backup_host = current_state.config.get_host_for_vm(project=project)
         logging.warning(
@@ -528,7 +743,7 @@ def show_project(current_state: BackupsState, project: str) -> None:
 
 
 def print_excess_backups_per_vm(
-    current_state: BackupsState, excess: int = 3
+    current_state: InstanceBackupsState, excess: int = 3
 ) -> None:
     for project in current_state.projects_backups.values():
         print("#" * 75 + f" {project.project}")
@@ -558,13 +773,15 @@ def print_excess_backups_per_vm(
     print("#" * 75)
 
 
-def print_snapshots_without_backup(current_state: BackupsState) -> None:
+def print_snapshots_without_backup(
+    current_state: InstanceBackupsState,
+) -> None:
     for snapshot in get_snapshots_without_backup(current_state):
         print(str(snapshot))
 
 
 def get_snapshots_without_backup(
-    current_state: BackupsState,
+    current_state: InstanceBackupsState,
 ) -> List[RBDSnapshot]:
     snapshots = []
     for project_backups in current_state.projects_backups.values():
@@ -608,7 +825,7 @@ def get_snapshots_without_backup(
 
 
 def remove_snapshots_without_backup(
-    current_state: BackupsState, noop: bool
+    current_state: InstanceBackupsState, noop: bool
 ) -> None:
     failed_snapshots = []
     to_remove = get_snapshots_without_backup(current_state)
@@ -637,27 +854,22 @@ def remove_snapshots_without_backup(
         sys.exit(1)
 
 
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--debug", action="store_true")
-    parser.add_argument(
-        "--from-cache",
-        action="store_true",
-        help=(
-            "If set, will try to load the list of servers from the cache file "
-            f"{CACHE_FILE} instead of doing a request to openstack."
-        ),
+def _add_instances_parser(subparser: argparse.ArgumentParser) -> None:
+    instances_parser = subparser.add_parser(
+        "instances", help="Handle intances backups"
     )
-    subparser = parser.add_subparsers()
+    instances_subparser = instances_parser.add_subparsers()
 
-    summary_parser = subparser.add_parser(
+    summary_parser = instances_subparser.add_parser(
         "summary", help="Show a list of all backups."
     )
     summary_parser.set_defaults(
-        func=lambda: summary(get_current_state(from_cache=args.from_cache))
+        func=lambda: summary(
+            get_current_instances_state(from_cache=args.from_cache)
+        )
     )
 
-    show_project_parser = subparser.add_parser(
+    show_project_parser = instances_subparser.add_parser(
         "show-project",
         help="Show details of the backups of a project (in this host).",
     )
@@ -667,12 +879,14 @@ if __name__ == "__main__":
     )
     show_project_parser.set_defaults(
         func=lambda: show_project(
-            current_state=get_current_state(from_cache=args.from_cache),
+            current_state=get_current_instances_state(
+                from_cache=args.from_cache
+            ),
             project=args.project,
         )
     )
 
-    show_excess_parser = subparser.add_parser(
+    show_excess_parser = instances_subparser.add_parser(
         "show-excess",
         help=(
             "Shows the backups in excess of the givent number (default 3), "
@@ -682,11 +896,11 @@ if __name__ == "__main__":
     show_excess_parser.add_argument("-e", "--excess", default=3, type=int)
     show_excess_parser.set_defaults(
         func=lambda: print_excess_backups_per_vm(
-            get_current_state(from_cache=args.from_cache)
+            get_current_instances_state(from_cache=args.from_cache)
         )
     )
 
-    show_excess_parser = subparser.add_parser(
+    show_excess_parser = instances_subparser.add_parser(
         "remove-invalids",
         help=(
             "Remove any invalid backups, if there's a valid one for that "
@@ -712,7 +926,7 @@ if __name__ == "__main__":
         ),
     )
     show_excess_parser.set_defaults(
-        func=lambda: get_current_state(
+        func=lambda: get_current_instances_state(
             from_cache=args.from_cache
         ).remove_invalids(
             force=args.force,
@@ -720,7 +934,7 @@ if __name__ == "__main__":
         )
     )
 
-    where_parser = subparser.add_parser(
+    where_parser = instances_subparser.add_parser(
         "where",
         help=(
             "Show where are stored the backups for the given project and/or "
@@ -740,13 +954,13 @@ if __name__ == "__main__":
     )
     where_parser.set_defaults(
         func=lambda: logging.info(
-            BackupsConfig.from_file().get_host_for_vm(
+            InstanceBackupsConfig.from_file().get_host_for_vm(
                 project=args.project, vm_name=args.vm
             )
         )
     )
 
-    get_unmatched_snapshots_parser = subparser.add_parser(
+    get_unmatched_snapshots_parser = instances_subparser.add_parser(
         "get-unmatched-snapshots",
         help=(
             "Get a list of the rbd snapshots that don't have a backup, for "
@@ -757,11 +971,13 @@ if __name__ == "__main__":
     )
     get_unmatched_snapshots_parser.set_defaults(
         func=lambda: print_snapshots_without_backup(
-            current_state=get_current_state(from_cache=args.from_cache)
+            current_state=get_current_instances_state(
+                from_cache=args.from_cache
+            )
         )
     )
 
-    remove_unmatched_snapshots_parser = subparser.add_parser(
+    remove_unmatched_snapshots_parser = instances_subparser.add_parser(
         "remove-unmatched-snapshots",
         help=(
             "Get and remove the rbd snapshots that don't have a backup, for "
@@ -781,10 +997,46 @@ if __name__ == "__main__":
     )
     remove_unmatched_snapshots_parser.set_defaults(
         func=lambda: remove_snapshots_without_backup(
-            current_state=get_current_state(from_cache=args.from_cache),
+            current_state=get_current_instances_state(
+                from_cache=args.from_cache
+            ),
             noop=args.noop,
         )
     )
+
+
+def _add_images_parser(subparser: argparse.ArgumentParser) -> None:
+    images_parser = subparser.add_parser(
+        "images", help="Handle images backups"
+    )
+
+    images_subparser = images_parser.add_subparsers()
+
+    summary_parser = images_subparser.add_parser(
+        "summary", help="Show a list of all backups."
+    )
+    summary_parser.set_defaults(
+        func=lambda: summary(
+            print(str(get_current_images_state(from_cache=args.from_cache)))
+        )
+    )
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--debug", action="store_true")
+    parser.add_argument(
+        "--from-cache",
+        action="store_true",
+        help=(
+            "If set, will try to load the list of servers from the cache file "
+            f"({IMAGES_CACHE_FILE} for images, and {INSTANCES_CACHE_FILE} for "
+            " instances) instead of doing a request to openstack."
+        ),
+    )
+    subparser = parser.add_subparsers()
+    _add_instances_parser(subparser)
+    _add_images_parser(subparser)
 
     args = parser.parse_args()
     if args.debug:
