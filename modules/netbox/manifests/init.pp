@@ -120,7 +120,7 @@ class netbox(
         save                     => '""',
         bind                     => '127.0.0.1 ::1',
         maxmemory                => $local_redis_maxmem,
-        maxmemory_policy         => 'volitile-lru',
+        maxmemory_policy         => 'volatile-lru',
         maxmemory_samples        => 5,
         lazyfree-lazy-eviction   => 'yes',
         lazyfree-lazy-expire     => 'yes',
