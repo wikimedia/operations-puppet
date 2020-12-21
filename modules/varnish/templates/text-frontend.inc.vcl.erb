@@ -1,14 +1,5 @@
 // Varnish VCL include file for text frontends
 
-acl abuse_nets {
-	"95.85.68.0"/22;
-	"185.223.160.0"/23;
-	"185.250.42.0"/23;
-	"185.251.14.0"/23;
-	"185.251.70.0"/23;
-	"185.252.186.0"/23;
-}
-
 include "geoip.inc.vcl";
 include "normalize_path.inc.vcl";
 
@@ -154,7 +145,7 @@ sub cluster_fe_vcl_switch {
 }
 
 sub cluster_fe_recv_pre_purge {
-	if (std.ip(req.http.X-Client-IP, "192.0.2.1") ~ abuse_nets) {
+	if (std.ip(req.http.X-Client-IP, "192.0.2.1") ~ text_abuse_nets) {
 		return (synth(403, "Abuse"));
 	}
 
