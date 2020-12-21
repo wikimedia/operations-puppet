@@ -7262,6 +7262,36 @@ host puppetmaster2003 {
     fixed-address puppetmaster2003.codfw.wmnet;
 }
 
+host rdb1005 {
+    hardware ethernet 14:18:77:33:46:B1;
+    fixed-address rdb1005.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
+}
+
+host rdb1006 {
+    hardware ethernet 14:18:77:33:3C:ED;
+    fixed-address rdb1006.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
+}
+
+host rdb1009 {
+    hardware ethernet D0:94:66:5F:53:88;
+    fixed-address rdb1009.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
+}
+
+host rdb1010 {
+    hardware ethernet D0:94:66:5F:59:80;
+    fixed-address rdb1010.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
+}
+
+host rdb1012 {
+    hardware ethernet 2C:EA:7F:65:B7:38;
+    fixed-address rdb1012.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
+}
+
 host rdb2004 {
     hardware ethernet B0:83:FE:E4:5E:1A;
     fixed-address rdb2004.codfw.wmnet;
@@ -7301,30 +7331,6 @@ host rdb2009 {
 host rdb2010 {
     hardware ethernet 2C:EA:7F:65:4D:FB;
     fixed-address rdb2010.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
-}
-
-host rdb1005 {
-    hardware ethernet 14:18:77:33:46:B1;
-    fixed-address rdb1005.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
-}
-
-host rdb1006 {
-    hardware ethernet 14:18:77:33:3C:ED;
-    fixed-address rdb1006.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
-}
-
-host rdb1009 {
-    hardware ethernet D0:94:66:5F:53:88;
-    fixed-address rdb1009.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
-}
-
-host rdb1010 {
-    hardware ethernet D0:94:66:5F:59:80;
-    fixed-address rdb1010.eqiad.wmnet;
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
