@@ -2904,12 +2904,6 @@ host elastic2060 {
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
-host es1013 {
-    hardware ethernet 44:A8:42:33:E8:EB;
-    fixed-address es1013.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
-}
-
 host es1015 {
     hardware ethernet 44:A8:42:35:7B:F5;
     fixed-address es1015.eqiad.wmnet;

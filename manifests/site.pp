@@ -955,15 +955,10 @@ node 'es2032.codfw.wmnet' {
 # External Storage, Shard 2 (es2) databases
 
 ## eqiad servers
-node /^es101[3]\.eqiad\.wmnet/ {
-    role(mariadb::core)
-}
-
 node 'es1026.eqiad.wmnet' {
     role(mariadb::core)
 }
 
-# es1030 will replace es1013 T261717
 node 'es1030.eqiad.wmnet' {
     role(mariadb::core)
 }
