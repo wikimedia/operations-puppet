@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
 
 import argparse
+import datetime
 import json
 import logging
 import os
 import re
+import socket
 import sys
 from dataclasses import dataclass
 from itertools import chain
@@ -23,6 +25,7 @@ from rbd2backy2 import (
 # This holds cached openstack information
 IMAGES_CACHE_FILE = "./backups.images.cache"
 INSTANCES_CACHE_FILE = "./backups.instances.cache"
+OPENSTACK_ENV_FILE = "/etc/novaobserver.yaml"
 RED = "\033[91m"
 GREEN = "\033[92m"
 END = "\033[0m"
@@ -123,7 +126,12 @@ class ImageBackup:
         )
 
     def remove(self, noop: bool = True) -> None:
+        maybe_snapshot = self.backup_entry.get_snapshot(
+            pool=self.config.ceph_pool
+        )
         self.backup_entry.remove(noop=noop)
+        if maybe_snapshot is not None:
+            maybe_snapshot.remove(noop=noop)
 
     def __str__(self) -> str:
         percent_str = (
@@ -141,17 +149,6 @@ class ImageBackup:
             f"snapshot:{self.backup_entry.snapshot_name} "
             f"uid:{self.backup_entry.uid} "
             f"tags:{self.backup_entry.tags}"
-        )
-
-    def __repr__(self) -> str:
-        return (
-            "ImageBackup("
-            f"image_id={self.image_id}, "
-            f"size_mb={self.size_mb}, "
-            f"size_percent={self.size_percent}, "
-            f"backup_entry={self.backup_entry}, "
-            f"image_info={self.image_info}"
-            ")"
         )
 
 
@@ -212,12 +209,13 @@ class VMBackup:
     project: Optional[str]
     vm_info: Dict[str, Any]
     backup_entry: BackupEntry
+    snapshot_entry: Optional[RBDSnapshot]
     size_mb: int
     size_percent: Optional[float] = None
 
     @classmethod
     def from_entry_and_servers(
-        cls, entry: BackupEntry, servers: Dict[str, Dict[str, Any]]
+        cls, entry: BackupEntry, servers: Dict[str, Dict[str, Any]], pool: str
     ):
         vm_id = entry.name.split("_", 1)[0]
         if vm_id not in servers:
@@ -226,14 +224,101 @@ class VMBackup:
         server_info = server_dict if server_dict is not None else {}
         return cls(
             backup_entry=entry,
+            snapshot_entry=None,
             vm_id=vm_id,
             vm_info=server_info,
             project=server_info.get("tenant_id", None),
             size_mb=entry.size_mb,
         )
 
-    def remove(self, noop: bool = True) -> None:
+    @classmethod
+    def create_diff_backup(
+        cls,
+        pool: str,
+        vm_id: str,
+        vm_info: Dict[str, Dict[str, Any]],
+        project: str,
+        reference_backup: "VMBackup",
+        live_for_days: int,
+        noop: bool = True,
+    ):
+        image_name = f"{vm_id}_disk"
+        snapshot_name = datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
+        expire_date = datetime.datetime.now() + datetime.timedelta(
+            days=live_for_days,
+        )
+
+        if reference_backup.vm_id != vm_id:
+            raise Exception(
+                "Invalid reference backup passed for vm id {vm_id}: "
+                f"{reference_backup}"
+            )
+
+        new_entry = BackupEntry.create_diff_backup(
+            image_name=image_name,
+            snapshot_name=snapshot_name,
+            pool=pool,
+            rbd_reference_snapshot=reference_backup.backup_entry.get_snapshot(
+                pool=pool
+            ),
+            backy_reference_uid=reference_backup.backup_entry.uid,
+            expire=expire_date,
+            noop=noop,
+        )
+
+        return cls(
+            vm_id=vm_id,
+            vm_info=vm_info,
+            project=project,
+            backup_entry=new_entry,
+            snapshot_entry=None,
+            size_mb=new_entry.size_mb,
+        )
+
+    def load_snapshot(self, pool: str) -> Optional[RBDSnapshot]:
+        self.snapshot = self.backup_entry.get_snapshot(pool=pool)
+        return self.snapshot
+
+    @classmethod
+    def create_full_backup(
+        cls,
+        pool: str,
+        vm_id: str,
+        vm_info: Dict[str, Dict[str, Any]],
+        project: str,
+        live_for_days: int,
+        noop: bool = True,
+    ):
+        image_name = f"{vm_id}_disk"
+        snapshot_name = datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
+        expire_date = datetime.datetime.now() + datetime.timedelta(
+            days=live_for_days
+        )
+
+        new_entry = BackupEntry.create_full_backup(
+            image_name=image_name,
+            snapshot_name=snapshot_name,
+            pool=pool,
+            expire=expire_date,
+            noop=noop,
+        )
+
+        return cls(
+            vm_id=vm_id,
+            vm_info=vm_info,
+            project=project,
+            backup_entry=new_entry,
+            snapshot_entry=new_entry.get_snapshot(pool=pool),
+            size_mb=new_entry.size_mb,
+        )
+
+    def remove(self, pool: str, noop: bool = True) -> None:
+        maybe_snapshot = self.backup_entry.get_snapshot(
+            pool=self.config.ceph_pool
+        )
         self.backup_entry.remove(noop=noop)
+        if maybe_snapshot is not None:
+            maybe_snapshot.remove(noop=noop)
 
     def __str__(self) -> str:
         percent_str = (
@@ -253,23 +338,10 @@ class VMBackup:
             f"tags:{self.backup_entry.tags}"
         )
 
-    def __repr__(self) -> str:
-        return (
-            "VMBackup("
-            f"vm_id={self.vm_id}, "
-            f"project={self.project}, "
-            f"size_mb={self.size_mb}, "
-            f"size_percent={self.size_percent}, "
-            f"backup_entry={self.backup_entry}, "
-            f"vm_info={self.vm_info}"
-            ")"
-        )
-
 
 @dataclass(unsafe_hash=True)
 class VMBackups:
-    full_backups: List[VMBackup]
-    differential_backups: List[VMBackup]
+    backups: List[VMBackup]
     vm_id: str
     project: Optional[str]
     vm_info: Dict[str, Any]
@@ -277,7 +349,139 @@ class VMBackups:
     size_mb: int = 0
     size_percent: Optional[float] = None
 
-    def add_backup(self, backup: VMBackup) -> bool:
+    """
+    The way the backups work is:
+
+        You have an image on RBD that you want to backup.
+        For the first time, you create a snapshot, and do a backup of it (full
+        backup).
+
+        The second time, as most of the blocks are already backed up, we can
+        speed up the process and only tell backy about the new changed blocks,
+        for that:
+            * We create a new snapshot of the image
+            * We do a diff between the previous snapshot, and the new one
+            * We pass that to backy, so it will download only the changed
+              blocks (needs also the id of the backup matching the previous
+              snapshot)
+            * We remove the old snapshot as we will use the new for future
+              diffs instead
+
+        This is what we call a differential backup, note that this backup
+        contains the whole of the blocks, so we can safely remove any other
+        backup and this will still be complete.
+
+    So, summarizing, on RBD side, all we need is 1 image, and 1 snapshot per
+    image (+1 temporary one while doing the diff backup).
+
+    On backy side, we have a bunch of backups, all of them are independent and
+    can be deleted/restored without the need for the others but in the backend,
+    hidden from us, might reference the same data blocks.
+    """
+
+    def create_next_backup(self, noop: bool = True) -> VMBackup:
+        """
+        It also cleans up any expired backups if everything went well.
+        """
+        last_backup_with_snapshot = next(
+            (
+                backup
+                for backup in sorted(
+                    self.backups,
+                    key=lambda backup: backup.backup_entry.date,
+                    reverse=True,
+                )
+                if backup.backup_entry.get_snapshot(pool=self.config.ceph_pool)
+                is not None
+            ),
+            None,
+        )
+
+        if (
+            last_backup_with_snapshot is None
+            or not last_backup_with_snapshot.backup_entry.valid
+        ):
+            if (
+                last_backup_with_snapshot
+                and not last_backup_with_snapshot.valid
+            ):
+                logging.info(
+                    "Forcing a full backup as the previous one is not valid."
+                )
+            else:
+                logging.info(
+                    "Forcing a full backup as there's no previous one with a "
+                    "snapshot."
+                )
+
+            new_backup = VMBackup.create_full_backup(
+                pool=self.config.ceph_pool,
+                vm_id=self.vm_id,
+                vm_info=self.vm_info,
+                project=self.project,
+                live_for_days=self.config.live_for_days,
+                noop=noop,
+            )
+
+        else:
+            new_backup = VMBackup.create_diff_backup(
+                pool=self.config.ceph_pool,
+                vm_id=self.vm_id,
+                vm_info=self.vm_info,
+                project=self.project,
+                reference_backup=last_backup_with_snapshot,
+                live_for_days=self.config.live_for_days,
+                noop=noop,
+            )
+
+        self.add_backup(backup=new_backup, noop=noop)
+        self.cleanup_expired_backups(noop=noop)
+        return new_backup
+
+    def cleanup_expired_backups(
+        self, force: bool = False, noop: bool = True
+    ) -> None:
+        logging.info(
+            "Cleaning up expired backups for VM %s.%s(%s)",
+            self.project,
+            self.vm_info.get("name", "unknown name"),
+            self.vm_id,
+        )
+        last_valid_date = datetime.datetime.now() - datetime.timedelta(
+            days=self.config.live_for_days
+        )
+        to_delete = []
+        for backup in sorted(
+            self.backups,
+            key=lambda backup: backup.backup_entry.date,
+        ):
+            if backup.backup_entry.date < last_valid_date:
+                if force or len(self.backups) > len(to_delete) + 1:
+                    to_delete.append(backup)
+                elif len(self.backups) > len(to_delete) + 1:
+                    logging.warning(
+                        (
+                            "Skipping removal of expired backup %s.%s(%s), as "
+                            "there's no other backups and force was False."
+                        ),
+                        self.project,
+                        self.vm_info.get("name", "unknown name"),
+                        self.vm_id,
+                    )
+
+        for backup in to_delete:
+            logging.debug("Removing expired backup %s...", backup)
+            self._remove_backup(backup=backup, noop=noop)
+
+        logging.info(
+            "Cleaned up %d expired backups for VM %s.%s(%s)",
+            len(to_delete),
+            self.project,
+            self.vm_info.get("name", "unknown name"),
+            self.vm_id,
+        )
+
+    def add_backup(self, backup: VMBackup, noop: bool) -> bool:
         if backup.vm_id != self.vm_id:
             raise Exception(
                 "Invalid backup, non-matching vm_id "
@@ -285,14 +489,9 @@ class VMBackups:
             )
 
         was_added = False
-        if "differential_backup" in backup.backup_entry.tags:
-            if backup not in self.differential_backups:
-                self.differential_backups.append(backup)
-                was_added = True
-        else:
-            if backup not in self.full_backups:
-                self.full_backups.append(backup)
-                was_added = True
+        if backup not in self.backups:
+            self.backups.append(backup)
+            was_added = True
 
         if was_added:
             self.size_mb += backup.backup_entry.size_mb
@@ -300,11 +499,17 @@ class VMBackups:
         return was_added
 
     def update_usages(self, total_size_mb: int) -> None:
-        for backup in self.full_backups:
+        for backup in self.backups:
             backup.size_percent = backup.size_mb * 100 / total_size_mb
 
-        for backup in self.differential_backups:
-            backup.size_percent = backup.size_mb * 100 / total_size_mb
+    def _remove_backup(self, backup: VMBackup, noop: bool = True) -> None:
+        if backup in self.backups:
+            self.backups.pop(self.backups.index(backup))
+            self.size_mb -= backup.size_mb
+            backup.remove(pool=self.config.ceph_pool, noop=noop)
+
+        else:
+            raise Exception(f"Backup {backup} is not known to {self}")
 
     def remove_invalids(self, force: bool, noop: bool = True) -> int:
         logging.info(
@@ -315,9 +520,7 @@ class VMBackups:
             self.vm_id,
         )
         if not force and not any(
-            backup
-            for backup in chain(self.full_backups, self.differential_backups)
-            if backup.backup_entry.valid
+            backup for backup in self.backups if backup.backup_entry.valid
         ):
             logging.warning(
                 "Skipping VM backups for %s.%s(%s), not enough valid backups.",
@@ -327,9 +530,7 @@ class VMBackups:
             )
             return 0
         elif force and not any(
-            backup
-            for backup in chain(self.full_backups, self.differential_backups)
-            if backup.backup_entry.valid
+            backup for backup in self.backups if backup.backup_entry.valid
         ):
             logging.warning(
                 (
@@ -342,43 +543,24 @@ class VMBackups:
             )
 
         remove_count = 0
-        valid_full_backups = [
-            backup for backup in self.full_backups if backup.backup_entry.valid
+        valid_backups = [
+            backup for backup in self.backups if backup.backup_entry.valid
         ]
-        for backup in self.full_backups:
+        for backup in self.backups:
             if backup.backup_entry.valid:
                 continue
 
             old_size = backup.size_mb
-            backup.remove(noop=noop)
+            backup.remove(pool=self.config.ceph_pool, noop=noop)
             self.size_mb = self.size_mb - old_size + backup.size_mb
             remove_count += 1
 
-        self.full_backups = valid_full_backups
-
-        valid_differential_backups = [
-            backup
-            for backup in self.differential_backups
-            if backup.backup_entry.valid
-        ]
-        for backup in self.differential_backups:
-            if backup.backup_entry.valid:
-                continue
-
-            old_size = backup.size_mb
-            backup.remove(noop=noop)
-            self.size_mb = self.size_mb - old_size + backup.size_mb
-            remove_count += 1
-
-        self.differential_backups = valid_differential_backups
+        self.backups = valid_backups
 
         return remove_count
 
     def __str__(self) -> str:
-        backups_strings = sorted(
-            [bold("FULL") + f" {entry}" for entry in self.full_backups]
-            + [f"DIFF {entry}" for entry in self.differential_backups]
-        )
+        backups_strings = sorted([f" {entry}" for entry in self.backups])
         return (
             bold("VM:")
             + f" {self.vm_info.get('name', 'unknown name')}(id:{self.vm_id})\n"
@@ -392,20 +574,6 @@ class VMBackups:
             + "\n    ".join(backups_strings)
         )
 
-    def __repr__(self) -> str:
-        return (
-            "VMBackups("
-            f"vm_id={self.vm_id}, "
-            f"project={self.project}, "
-            f"vm_info={self.vm_info}, "
-            f"size_mb={self.size_mb}, "
-            f"size_percent={self.size_percent}, "
-            f"config={self.config}, "
-            f"full_backups={self.full_backups}, "
-            f"differential_backups={self.differential_backups}"
-            ")"
-        )
-
 
 @dataclass(unsafe_hash=True)
 class ProjectBackups:
@@ -415,18 +583,19 @@ class ProjectBackups:
     size_mb: int = 0
     size_percent: Optional[int] = None
 
-    def add_vm_backup(self, backup: VMBackup) -> bool:
+    def add_vm_backup(self, backup: VMBackup, noop: bool) -> bool:
         if backup.vm_id not in self.vms_backups:
             self.vms_backups[backup.vm_id] = VMBackups(
-                full_backups=[],
-                differential_backups=[],
+                backups=[],
                 vm_id=backup.vm_id,
                 project=self.project,
                 vm_info=backup.vm_info,
                 config=self.config,
             )
 
-        was_added = self.vms_backups[backup.vm_id].add_backup(backup)
+        was_added = self.vms_backups[backup.vm_id].add_backup(
+            backup, noop=noop
+        )
         if was_added:
             self.size_mb += backup.backup_entry.size_mb
 
@@ -454,17 +623,6 @@ class ProjectBackups:
             )
         )
 
-    def __repr__(self) -> str:
-        return (
-            "ProjectBackups("
-            f"project={self.project}, "
-            f"size_mb={self.size_mb}, "
-            f"size_percent={self.size_percent}, "
-            f"config={self.config}, "
-            f"vms_backups={self.vms_backups}"
-            ")"
-        )
-
     def remove_invalids(self, force: bool, noop: bool):
         logging.info(
             "%sRemoving invalids for project %s",
@@ -480,6 +638,22 @@ class ProjectBackups:
 
         return total_removed
 
+    def create_vm_backup(
+        self, vm_info: Dict[str, Dict[str, Any]], noop: bool = True
+    ) -> VMBackup:
+        vm_id = vm_info["id"]
+        if vm_id not in self.vms_backups:
+            self.vms_backups[vm_id] = VMBackups(
+                backups=[],
+                vm_id=vm_id,
+                project=self.project,
+                config=self.config,
+            )
+
+        new_backup = self.vms_backups[vm_id].create_next_backup(noop=noop)
+        self.add_vm_backup(new_backup, noop=noop)
+        return new_backup
+
 
 @dataclass(unsafe_hash=True)
 class InstanceBackupsState:
@@ -487,7 +661,64 @@ class InstanceBackupsState:
     config: InstanceBackupsConfig
     size_mb: int = 0
 
-    def add_vm_backup(self, vm_backup: VMBackup) -> bool:
+    def create_vm_backup(
+        self, vm_name: str, project_name: str, noop: bool = True
+    ) -> bool:
+        this_hostname = socket.gethostname()
+        assigned_hostname = self.config.get_host_for_vm(
+            project=project_name, vm_name=vm_name
+        )
+        if assigned_hostname != this_hostname:
+            raise Exception(
+                f"VM {vm_name} should be backed up on host "
+                f"{assigned_hostname} not this host {this_hostname}."
+            )
+
+        vm_info = None
+        logging.debug("Trying to find VM in locally known vms...")
+        if project_name in self.projects_backups:
+            project = self.projects_backups[project_name]
+            for vm_backups in project.vms_backups.values():
+                if vm_name == vm_backups.vm_info.get("name", "no name"):
+                    vm_info = vm_backups.vm_info
+                    logging.debug("VM found locally: %s", vm_info)
+                    break
+
+        maybe_candidate = ""
+        if vm_info is None:
+            logging.debug("Trying to find VM in remotely known vms...")
+            server_id_to_server_dict = get_servers_info(from_cache=True)
+            for server_dict in server_id_to_server_dict.values():
+                if vm_name == server_dict.get(
+                    "name", "no name"
+                ) and project_name == server_dict.get("tenant_id", None):
+                    vm_info = server_dict
+                    logging.debug("VM found remotely: %s", vm_info)
+                    break
+                elif vm_name == server_dict.get("name", "no name"):
+                    maybe_candidate = server_dict
+
+        if vm_info is None:
+            maybe_str = (
+                f", found a similar VM:\n{maybe_candidate}"
+                if maybe_candidate
+                else ""
+            )
+            raise Exception(f"Unknown VM {vm_name}{maybe_str}")
+
+        if project_name not in self.projects_backups:
+            self.projects_backups[project_name] = ProjectBackups(
+                vms_backups={},
+                project=project_name,
+                config=self.config,
+            )
+
+        new_backup = self.projects_backups[project_name].create_vm_backup(
+            vm_info=vm_info, noop=noop
+        )
+        self.size_mb += new_backup.size_mb
+
+    def add_vm_backup(self, vm_backup: VMBackup, noop: bool) -> bool:
         """
         Returns True if it was added to the InstanceBackupsState, False if it
         was already there.
@@ -500,7 +731,7 @@ class InstanceBackupsState:
             )
 
         was_added = self.projects_backups[vm_backup.project].add_vm_backup(
-            vm_backup
+            vm_backup, noop=noop
         )
         if was_added:
             self.size_mb += vm_backup.size_mb
@@ -566,14 +797,6 @@ class InstanceBackupsState:
 
         out_str += ("#" * 75) + "\n"
         return out_str
-
-    def __repr__(self) -> str:
-        return (
-            "InstanceBackupsState("
-            f"size_mb={self.size_mb}, "
-            f"projects_backups={self.projects_backups}"
-            ")"
-        )
 
     def remove_invalids(self, force: bool, noop: bool = True):
         logging.info("%sRemoving invalids", "NOOP:" if noop else "")
@@ -645,14 +868,15 @@ class ImageBackupsState:
             + ("\n" + "#" * 80).join(
                 f"\n{backup}" for backup in self.image_backups.values()
             )
-            + "\n" + ("#" * 80)
+            + "\n"
+            + ("#" * 80)
         )
 
 
 def get_servers_info(from_cache: bool) -> Dict[str, Dict[str, Any]]:
     if not from_cache or not os.path.exists(INSTANCES_CACHE_FILE):
         openstackclients = mwopenstackclients.Clients(
-            envfile="/etc/novaobserver.yaml"
+            envfile=OPENSTACK_ENV_FILE
         )
         logging.debug("Getting instances...")
         server_id_to_server_info = {
@@ -706,6 +930,7 @@ def get_current_images_state(from_cache: bool = False) -> ImageBackupsState:
 
 def get_current_instances_state(
     from_cache: bool = False,
+    noop: bool = True,
 ) -> InstanceBackupsState:
     config = InstanceBackupsConfig.from_file()
     server_id_to_server_dict = get_servers_info(from_cache)
@@ -717,9 +942,11 @@ def get_current_instances_state(
     projects_backups = InstanceBackupsState(projects_backups={}, config=config)
     for backup_entry in backup_entries:
         vm_backup = VMBackup.from_entry_and_servers(
-            entry=backup_entry, servers=server_id_to_server_dict
+            entry=backup_entry,
+            servers=server_id_to_server_dict,
+            pool=config.ceph_pool,
         )
-        projects_backups.add_vm_backup(vm_backup)
+        projects_backups.add_vm_backup(vm_backup, noop=True)
 
     return projects_backups
 
@@ -748,17 +975,9 @@ def print_excess_backups_per_vm(
     for project in current_state.projects_backups.values():
         print("#" * 75 + f" {project.project}")
         for vm_backups in project.vms_backups.values():
-            if (
-                len(vm_backups.full_backups)
-                + len(vm_backups.differential_backups)
-                > 3
-            ):
+            if len(vm_backups.backups) > 3:
                 candidate_backups_strings = sorted(
-                    [f"FULL {entry}" for entry in vm_backups.full_backups]
-                    + [
-                        f"DIFF {entry}"
-                        for entry in vm_backups.differential_backups
-                    ],
+                    [f"{entry}" for entry in vm_backups.backups]
                 )
                 print(
                     str(
@@ -787,10 +1006,7 @@ def get_snapshots_without_backup(
     for project_backups in current_state.projects_backups.values():
         for vm_backups in project_backups.vms_backups.values():
             vm_images: Set[str] = {
-                vm_backup.backup_entry.name
-                for vm_backup in chain(
-                    vm_backups.full_backups, vm_backups.differential_backups
-                )
+                vm_backup.backup_entry.name for vm_backup in vm_backups.backups
             }
             all_snapshots_for_vm = chain(
                 *[
@@ -803,18 +1019,11 @@ def get_snapshots_without_backup(
             )
             snapshots_with_backup: Set[str] = {
                 vm_backup.backup_entry.snapshot_name
-                for vm_backup in chain(
-                    vm_backups.full_backups, vm_backups.differential_backups
-                )
+                for vm_backup in vm_backups.backups
             }
             logging.debug(
                 "Got the following snapshots with backups (%s): %s",
-                next(
-                    chain(
-                        vm_backups.full_backups,
-                        vm_backups.differential_backups,
-                    )
-                ).backup_entry.name,
+                vm_backups.backups[0].backup_entry.name,
                 snapshots_with_backup,
             )
             for snapshot in all_snapshots_for_vm:
@@ -1001,6 +1210,38 @@ def _add_instances_parser(subparser: argparse.ArgumentParser) -> None:
                 from_cache=args.from_cache
             ),
             noop=args.noop,
+        )
+    )
+
+    backup_vm_parser = instances_subparser.add_parser(
+        "backup-vm",
+        help=(
+            "Trigger a backup for the given VM, removing old backups and "
+            "snapshots if needed"
+        ),
+    )
+    backup_vm_parser.add_argument(
+        "project_name",
+        help="Project the VM is in",
+    )
+    backup_vm_parser.add_argument(
+        "vmname",
+        help="VM name to backup",
+    )
+    backup_vm_parser.add_argument(
+        "-n",
+        "--noop",
+        action="store_true",
+        help=(
+            "If set, will not really do anything, just tell you what "
+            "would be done."
+        ),
+    )
+    backup_vm_parser.set_defaults(
+        func=lambda: get_current_instances_state(
+            from_cache=args.from_cache
+        ).create_vm_backup(
+            noop=args.noop, vm_name=args.vmname, project_name=args.project_name
         )
     )
 

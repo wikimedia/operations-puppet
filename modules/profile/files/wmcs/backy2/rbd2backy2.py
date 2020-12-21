@@ -5,10 +5,31 @@ import logging
 import subprocess
 from dataclasses import dataclass
 from tempfile import NamedTemporaryFile
-from typing import List
+from typing import List, Optional
 
 RBD = "/usr/bin/rbd"
 BACKY = "/usr/bin/backy2"
+
+
+def run_command(
+    args: List[str], stdout: Optional[str] = None, noop: bool = False
+) -> str:
+    if noop:
+        logging.info("NOOP: Would have run %s", args)
+        return ""
+
+    logging.debug("Running command %s", args)
+    if stdout:
+        result = subprocess.run(args, stdout=stdout)
+        if result.returncode != 0:
+            raise Exception(
+                f"Command execution returned != 0:\n"
+                f"command:{args}"
+            )
+
+        return ""
+    else:
+        return subprocess.check_output(args).decode("utf8")
 
 
 @dataclass
@@ -52,12 +73,29 @@ class RBDSnapshot:
 
         return cls(image=image_name, snapshot=snapshot_name, pool=pool)
 
+    @classmethod
+    def create(
+        cls, pool: str, image: str, snapshot: str, noop: bool = True
+    ) -> None:
+        new_snapshot = RBDSnapshot(
+            pool=pool,
+            image=image,
+            snapshot=snapshot,
+        )
+        run_command([RBD, "snap", "create", str(new_snapshot)], noop=noop)
+        return new_snapshot
+
     def remove(self, noop: bool = True) -> None:
         args = [RBD, "snap", "remove", str(self)]
         if noop:
             logging.info("NOOP: Would have executed %s", args)
         else:
             logging.debug(subprocess.check_output(args))
+
+    def get_date(self) -> datetime.datetime:
+        return (
+            datetime.datetime.strptime(self.snapshot, "%Y-%m-%dT%H:%M:%S"),
+        )
 
     def __str__(self) -> str:
         return f"{self.pool}/{self.image}@{self.snapshot}"
@@ -115,37 +153,246 @@ class BackupEntry:
             expire=datetime.datetime.strptime(expire, "%Y-%m-%d %H:%M:%S"),
         )
 
-    def remove(self, noop: bool = True) -> None:
-        args = [
-            BACKY,
-            "rm",
-            # remove the backup even if it's 'too young'
-            "--force",
-            self.uid,
-        ]
-        if noop:
-            logging.info("NOOP: Would have executed %s", args)
-        else:
-            logging.debug(subprocess.check_output(args))
+    @classmethod
+    def create_full_backup(
+        cls,
+        pool: str,
+        image_name: str,
+        snapshot_name: str,
+        expire: datetime.datetime,
+        noop: bool = True,
+    ):
+        """
+        Creates a full backup, that is:
+            * rbd snapshot of an image/volume
+            * backy backup
 
-    def __str__(self) -> str:
-        return self.__repr__()
+        The snapshot will be needed for later incremental backups.
 
-    def __repr__(self) -> str:
-        return (
-            "BackupEntry("
-            f"date={self.date}, "
-            f"name={self.name}, "
-            f"snapshot_name={self.snapshot_name}, "
-            f"size_mb={self.size_mb}, "
-            f"size_bytes={self.size_bytes}, "
-            f"uid={self.uid}, "
-            f"valid={self.valid}, "
-            f"protected={self.protected}, "
-            f"tags={self.tags}, "
-            f"expire={self.expire}"
-            ")"
+        Returns the new backup.
+        """
+        logging.info(
+            "Creating full backup of pool:%s, image_name:%s, snapshot_name:%s",
+            pool,
+            image_name,
+            snapshot_name,
         )
+        new_snapshot = RBDSnapshot.create(
+            pool=pool,
+            image=image_name,
+            snapshot=snapshot_name,
+            noop=noop,
+        )
+        with NamedTemporaryFile() as blockdiff:
+            logging.debug(
+                (
+                    "Capturing a diff in blockdiff(%s) and then hand that "
+                    "over to backy for context"
+                ),
+                blockdiff.name,
+            )
+            run_command(
+                [
+                    RBD,
+                    "diff",
+                    "--whole-object",
+                    str(new_snapshot),
+                    "--format=json",
+                ],
+                stdout=blockdiff,
+                noop=noop,
+            )
+            run_command(
+                [
+                    BACKY,
+                    "backup",
+                    "--snapshot-name",
+                    new_snapshot.snapshot,
+                    "--rbd",
+                    blockdiff.name,
+                    f"rbd://{new_snapshot}",
+                    image_name,
+                    # this expire is to avoid getting removed when not using
+                    # --force
+                    "--expire",
+                    expire.strftime("%Y-%m-%d %H:%M:%S"),
+                    "--tag",
+                    "full_backup",
+                ],
+                noop=noop,
+            )
+
+        backupline = run_command(
+            [
+                BACKY,
+                "--machine-output",
+                "--skip-header",
+                "ls",
+                "--snapshot-name",
+                new_snapshot.snapshot,
+                image_name,
+            ],
+            noop=noop,
+        )
+        if noop:
+            # dummy object so nothing breaks in case we are in noop mode
+            return cls(
+                date=datetime.datetime.now(),
+                name=image_name,
+                snapshot_name=snapshot_name,
+                size_mb=42,
+                size_bytes=42 * 1024,
+                uid="dummy-uuid-noop",
+                valid=True,
+                protected=False,
+                tags=["full_backup"],
+                expire=expire,
+            )
+
+        else:
+            return cls.from_ls_line(ls_line=backupline.splitlines()[-1])
+
+    @classmethod
+    def create_diff_backup(
+        cls,
+        pool: str,
+        image_name: str,
+        snapshot_name: str,
+        rbd_reference_snapshot: RBDSnapshot,
+        backy_reference_uid: str,
+        expire: datetime.datetime,
+        noop: bool = True,
+    ) -> "BackupEntry":
+        """
+        Creates a differential backup, that is:
+            * Create a new snapshot
+            * Dump the diff between the new and old snapshots
+            * Create backup using the diff and the backup with the given UID
+            * Remove the old snapshot
+
+        We keep the new snapshot to use it as reference to create a future
+        differential backup.
+        """
+        logging.info(
+            (
+                "Creating differential backup of pool:%s image_name:%s"
+                " from rbd snapshot %s and backy2 version %s"
+            ),
+            pool,
+            image_name,
+            rbd_reference_snapshot,
+            backy_reference_uid,
+        )
+        new_snapshot = RBDSnapshot.create(
+            pool=pool,
+            image=image_name,
+            snapshot=snapshot_name,
+            noop=noop,
+        )
+        with NamedTemporaryFile() as blockdiff:
+            run_command(
+                [
+                    RBD,
+                    "diff",
+                    "--whole-object",
+                    str(new_snapshot),
+                    "--from-snap",
+                    rbd_reference_snapshot.snapshot,
+                    "--format=json",
+                ],
+                stdout=blockdiff,
+                noop=noop,
+            )
+
+            run_command(
+                [
+                    BACKY,
+                    "backup",
+                    "--snapshot-name",
+                    new_snapshot.snapshot,
+                    "--rbd",
+                    blockdiff.name,
+                    "--from-version",
+                    backy_reference_uid,
+                    f"rbd://{new_snapshot}",
+                    image_name,
+                    # this expire is to avoid getting removed when not using
+                    # --force
+                    "--expire",
+                    expire.strftime("%Y-%m-%d %H:%M:%S"),
+                    "--tag",
+                    "differential_backup",
+                ],
+                noop=noop,
+            )
+
+            # Now that we have the new backup we don't need the old snapshot.
+            # Delete it.
+            rbd_reference_snapshot.remove(noop=noop)
+
+        backupline = run_command(
+            [
+                BACKY,
+                "--machine-output",
+                "--skip-header",
+                "ls",
+                "--snapshot-name",
+                rbd_reference_snapshot.snapshot,
+                image_name,
+            ],
+            noop=noop,
+        )
+        if noop:
+            # dummy object so nothing breaks in case we are in noop mode
+            return cls(
+                date=datetime.datetime.now(),
+                name=image_name,
+                snapshot_name=snapshot_name,
+                size_mb=42,
+                size_bytes=42 * 1024,
+                uid="dummy-uuid-noop",
+                valid=True,
+                protected=False,
+                tags=["differential_backup"],
+                expire=expire,
+            )
+
+        else:
+            return cls.from_ls_line(ls_line=backupline.splitlines()[-1])
+
+    def remove(self, noop: bool = True) -> None:
+        run_command(
+            [
+                BACKY,
+                "rm",
+                # remove the backup even if it's 'too young'
+                "--force",
+                self.uid,
+            ],
+            noop=noop,
+        )
+
+    def get_snapshot(self, pool: str) -> Optional[RBDSnapshot]:
+        # We can't ls just one snapshot
+        raw_lines = run_command(
+            [RBD, "snap", "ls", f"{pool}/{self.name}"], noop=False
+        )
+        all_snapshots = [
+            RBDSnapshot.from_rbd_snap_ls_line(
+                pool=pool,
+                image_name=self.name,
+                rbd_snap_ls_line=line,
+            )
+            # skip the header
+            for line in raw_lines.splitlines()[1:]
+        ]
+        for snapshot in all_snapshots:
+            if snapshot.snapshot == self.snapshot_name:
+                logging.debug(f"Found snapshot {snapshot} for backup {self}")
+                return snapshot
+
+        logging.debug(f"Did not find any snapshot for backup {self}")
+        return None
 
 
 # These are utility functions for interacting with backy2 and/or RBD
@@ -190,7 +437,12 @@ def _initial_backup(pool, volume, expire):
 
 
 def _differential_backup(
-    pool, volume, last_snap, backy_snap_version_uid, expire
+    pool: str,
+    volume: str,
+    last_snap: str,
+    backy_snap_version_uid: str,
+    expire: str,
+    noop: bool = False,
 ):
     snapname = datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
 
@@ -201,10 +453,10 @@ def _differential_backup(
     )
 
     snapref = "%s/%s@%s" % (pool, volume, snapname)
-    subprocess.run([RBD, "snap", "create", snapref])
+    run_command([RBD, "snap", "create", snapref], noop=noop)
 
     with NamedTemporaryFile() as blockdiff:
-        subprocess.run(
+        run_command(
             [
                 RBD,
                 "diff",
@@ -215,14 +467,16 @@ def _differential_backup(
                 "--format=json",
             ],
             stdout=blockdiff,
+            noop=noop,
         )
 
         # Now that we have the diff we don't need the old snapshot.  Delete it.
-        subprocess.run(
-            [RBD, "snap", "rm", "%s/%s@%s" % (pool, volume, last_snap)]
+        run_command(
+            [RBD, "snap", "rm", "%s/%s@%s" % (pool, volume, last_snap)],
+            noop=noop,
         )
 
-        subprocess.run(
+        run_command(
             [
                 BACKY,
                 "backup",
@@ -238,7 +492,8 @@ def _differential_backup(
                 expire,
                 "-t",
                 "differential_backup",
-            ]
+            ],
+            noop=noop,
         )
 
 
