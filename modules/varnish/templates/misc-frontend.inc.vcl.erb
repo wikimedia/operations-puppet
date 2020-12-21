@@ -16,7 +16,11 @@ sub cluster_fe_vcl_switch {
 	}
 }
 
-sub cluster_fe_recv_pre_purge { }
+sub cluster_fe_recv_pre_purge {
+	if (std.ip(req.http.X-Client-IP, "192.0.2.1") ~ phabricator_abusers && req.http.Host == "phabricator.wikimedia.org") {
+		return (synth(403, "Requests from your IP have been blocked, please contact noc@wikimedia.org"));
+    }
+}
 
 sub cluster_fe_recv {
     // STS-preload checker doesn't like [45]xx responses, but 3xx is OK, so
