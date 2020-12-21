@@ -41,6 +41,7 @@
     {"index" : "mjolnir-kafka-bulk-daemon", "value": "kafka" },
     {"index" : "mjolnir-kafka-msearch-daemon", "value": "kafka" },
     {"index" : "ulogd", "value": "kafka local" },
+    {"index" : "haproxy", "value" : "kafka local" },
     {"index" : "nova-api", "value" : "local" },
     {"index" : "nova-compute", "value" : "kafka local" },
     {"index" : "nova-conductor", "value" : "kafka local" },
