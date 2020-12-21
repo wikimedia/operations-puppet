@@ -143,8 +143,14 @@ class profile::mediawiki::deployment::server(
     # tig is a ncurses-based git utility which is useful for
     #   determining the state of git repos during deployments.
     # php-readline T126262
-    ensure_packages(['percona-toolkit', 'tig', 'php-readline'])
+    ensure_packages(['percona-toolkit', 'tig'])
 
+    # Make sure to install php-readline from the component/php72, otherwise this picks up
+    # the 7.3 version from default buster
+    apt::package_from_component { 'php-readline':
+        component => 'component/php72',
+        packages  => ['php-readline']
+    }
     # benchmarking tools for sessionstorage testing (T230178)
     ensure_packages(['siege', 'wrk', 'lua-cjson'])
 
