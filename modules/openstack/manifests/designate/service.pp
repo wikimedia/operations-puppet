@@ -267,4 +267,9 @@ class openstack::designate::service(
         content   => secret('ssh/instance-puppet-user/instance-puppet-user_privkey.pem'),
         show_diff => false,
     }
+
+    rsyslog::conf { 'designate':
+        source   => 'puppet:///modules/openstack/designate/designate.rsyslog.conf',
+        priority => 20,
+    }
 }
