@@ -212,13 +212,11 @@ class netbox(
 
       ],
       core_limit      => '30G',
-      subscribe       => File['/etc/netbox/configuration.py'],
   }
 
   systemd::service { 'rq-netbox':
-    ensure    => $ensure,
-    content   => file('netbox/rq-netbox.service'),
-    subscribe => File['/etc/netbox/configuration.py'],
+    ensure  => $ensure,
+    content => file('netbox/rq-netbox.service'),
   }
 
   base::service_auto_restart { 'uwsgi-netbox': }
