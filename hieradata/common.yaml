@@ -878,6 +878,7 @@ hadoop_clusters:
       hadoop.proxyuser.presto.groups: '*'
       hadoop.proxyuser.superset.hosts: '*'
       hadoop.proxyuser.superset.groups: '*'
+      fs.permissions.umask-mode: '027'
 
   analytics-hadoop:
     zookeeper_cluster_name: analytics-eqiad
