@@ -169,15 +169,6 @@ Architectures: amd64
 VerifyRelease: D27D666CD88E42B4
 ListShellHook: grep-dctrl \( -S 'elasticsearch-oss' -a -F Version --eq 7.10.0 \) -o \( -S 'kibana-oss' -a -F Version --eq 7.10.0 \) -o \( -S 'logstash-oss' -a -F Version --eq 7.10.0 \) || [ $? -eq 1 ]
 
-Name: tor-stretch
-Method: http://deb.torproject.org/torproject.org/
-Components: main>thirdparty/tor
-UDebComponents:
-Suite: stretch
-Architectures: amd64 source
-VerifyRelease: 74A941BA219EC810
-ListShellHook: grep-dctrl -X -S tor || [ $? -eq 1 ]
-
 Name: grafana
 Method: https://packages.grafana.com/oss/deb
 Components: main>thirdparty/grafana

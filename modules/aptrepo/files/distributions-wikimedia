@@ -114,7 +114,6 @@ Update:
  hwraid-stretch
  matomo
  mono-project-stretch
- tor-stretch
  thirdparty/docker-ci
 # NOTE:  Cloudera does not (yet) provide Stretch packages.  We use the Jessie ones,
 # along with a fake equivs to satisfy hadoop-mapreduce's (unnecessary) dependency on libssl1.0.0
