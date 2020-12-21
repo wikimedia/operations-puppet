@@ -7,6 +7,9 @@
 #   It will work only if 'log /dev/log local0 info' is set. This implementation
 #   will simply direct *all* haproxy logs.
 #
+#   Enabling this setting will also direct logs go logstash.wikimedia.org, making
+#   them visible to all staff and NDAs.
+#
 # [*monitor*]
 #   If set to false, monitoring will not be set up for icinga. Defaults to true.
 #   Useful for places where monitoring is not appropriate or impossible via icinga
