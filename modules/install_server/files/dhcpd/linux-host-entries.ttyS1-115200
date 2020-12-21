@@ -7284,6 +7284,12 @@ host rdb1010 {
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
+host rdb1011 {
+    hardware ethernet 2C:EA:7F:65:73:E5;
+    fixed-address rdb1011.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
+}
+
 host rdb1012 {
     hardware ethernet 2C:EA:7F:65:B7:38;
     fixed-address rdb1012.eqiad.wmnet;

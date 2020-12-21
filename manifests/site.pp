@@ -2208,6 +2208,10 @@ node /^(rdb1006|rdb1010)\.eqiad\.wmnet$/ {
     role(redis::misc::slave)
 }
 
+node /^(rdb1011|rdb1012)\.eqiad\.wmnet$/ {
+    role(insetup)
+}
+
 node /^rdb200[35]\.codfw\.wmnet$/ {
     role(redis::misc::master)
 }
