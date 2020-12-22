@@ -388,7 +388,7 @@ VerifyRelease: 81E2E78B66FED89E
 ListShellHook: grep-dctrl -X -S matomo || [ $? -eq 1 ]
 
 Name: pyall
-Method: http://people.debian.org/~paravoid/python-all
+Method: https://people.debian.org/~paravoid/python-all
 Components: main>thirdparty/pyall
 Suite: buster
 UDebComponents:
