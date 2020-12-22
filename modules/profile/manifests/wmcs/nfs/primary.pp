@@ -53,6 +53,13 @@ class profile::wmcs::nfs::primary(
         mode   => '0755',
     }
 
+    file{'/srv/scratch':
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+    }
+
     class {'labstore':
         nfsd_threads => 300,
     }

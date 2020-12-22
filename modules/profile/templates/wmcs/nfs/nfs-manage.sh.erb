@@ -53,6 +53,9 @@ case $CMD in
 
         # If our promtheus directory size script is running, kill it
         killall -q -0 prometheus-directory-size && killall -q prometheus-directory-size
+        sleep 2
+        # If it isn't down, kill it again
+        killall -q -0 prometheus-directory-size && killall -q -9 prometheus-directory-size
 
         <% @drbd_resource_config.each do |resource, config| %>
         umount -f <%= config['device'] %> <%= config['mount_path'] -%>
@@ -62,6 +65,7 @@ case $CMD in
         /bin/ip a del <%= @cluster_ip %>/24 dev <%= @monitor_iface %>
         /usr/sbin/drbd-overview
         echo "done!"
+        echo "If there are unmount errors above, running 'nfs-manage down' again will warn and display errors, but it will work."
         ;;
     status)
         /usr/sbin/drbd-overview
