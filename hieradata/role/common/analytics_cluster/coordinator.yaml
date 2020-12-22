@@ -22,6 +22,10 @@ profile::hive::server::ferm_srange: '$ANALYTICS_NETWORKS'
 profile::hive::metastore::monitoring_enabled: true
 profile::hive::metastore::ferm_srange: '$ANALYTICS_NETWORKS'
 
+# Override to force the Hive Server 2 on an-coord1001 to use its local
+# Metastore.
+profile::hive::client::hive_metastore_host: 'an-coord1001.eqiad.wmnet'
+
 # Presto (Coordinator) Server settings
 profile::presto::monitoring_enabled: true
 profile::presto::use_kerberos: true

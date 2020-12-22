@@ -7,6 +7,9 @@ profile::hadoop::common::hadoop_cluster_name: 'analytics-hadoop'
 
 profile::hive::client::hive_service_name: 'analytics-hive'
 profile::hive::client::deploy_jdbc_settings: true
+# Override to force the Hive Server 2 on an-coord1001 to use its local
+# Metastore.
+profile::hive::client::hive_metastore_host: 'an-coord1002.eqiad.wmnet'
 
 profile::oozie::client::oozie_service: 'analytics-oozie'
 

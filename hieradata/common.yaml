@@ -710,6 +710,8 @@ hive_services:
   analytics-test-hive:
     server_host: 'analytics-test-hive.eqiad.wmnet'
     server_port: 10000
+    # Please note that this value is overridden by the coordinators to force
+    # them to use their local Metastore. Check the coordinators' role for more info.
     metastore_host: 'analytics-test-hive.eqiad.wmnet'
     metastore_jdbc_host: 'an-test-coord1001.eqiad.wmnet'
     metastore_sasl_enabled: true
@@ -726,6 +728,8 @@ hive_services:
   analytics-hive:
     server_host: analytics-hive.eqiad.wmnet
     server_port: 10000
+    # Please note that this value is overridden by the coordinators to force
+    # them to use their local Metastore. Check the coordinators' role for more info.
     metastore_host: 'analytics-hive.eqiad.wmnet'
     metastore_jdbc_host: 'an-coord1001.eqiad.wmnet'
     metastore_sasl_enabled: true
