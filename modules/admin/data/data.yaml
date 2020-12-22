@@ -16,7 +16,7 @@ groups:
               bawolff, dkg, juliaglen, cwdent, hpham, atgomez, dfoy, alaasarhan, onimisionipe,
               tieu, flemmerich, jsamra, anomie, jmorgan, thargrove, joewalsh, rodolfovalentim,
               drossi, fsalutari, demon, lulu, jkumalah, nathante, shiladsen, leila, rush, niedzielski,
-              dstrine, kaldari, dcipoletti]
+              dstrine, kaldari, dcipoletti, mhurd]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -260,14 +260,8 @@ groups:
   analytics-users:
     gid: 7080
     description: Gives generic client access to the Analytics cluster
-                 via stat100x.
-                 If a user is added to this group it should not
-                 need to be in researchers or analytics-privatedata-users.
-                 Please note that we (Analytics) are trying to deprecate the group,
-                 if you need to add users to it please ping Luca/Andrew/Razzi first
-                 or comment in https://phabricator.wikimedia.org/T269150.
-    members: [brion, mhurd, santhosh]
-    approval: Andrew Otto
+                 via stat100x. Deprecated.
+    members: []
   analytics-privatedata-users:
     gid: 731
     description: This group is the main entry point to the Analytics cluster, since it gives
@@ -720,12 +714,12 @@ groups:
     description: Allow ops team to be in the docker group for builder. No gid on purpose
     members: *ops_members
   gpu-testers:
-    description: People with access to Analytics hosts with GPUs.
+    description: People with access to Analytics hosts with GPUs (deprecated).
     gid: 810
-    members: &gpu_testers_members [santhosh]
+    members: []
   gpu-users:
     description: Use the standard system provided render group to allow Analytics users to access the GPU on the host.
-    members: [*gpu_testers_members, *analytics_admins_members, *ops_members, *analytics_privatedata_users]
+    members: [*analytics_admins_members, *ops_members, *analytics_privatedata_users]
     posix_name: render
     privileges: ['ALL = NOPASSWD: /usr/sbin/radeontop']
   sessionstore-roots:
@@ -1599,12 +1593,11 @@ users:
     ssh_keys: []
     uid: 5001
   mhurd:
-    ensure: present
+    ensure: absent
     gid: 500
     name: mhurd
     realname: Monte Hurd
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDQBxj8NTkCNQZse19j6fqa7zFF3kETfX/59zjBeAu2sfbP4xOSzSlJjcIEmqDbruX2HGbX51amWOW5WGFtWw1T+zBnbaMXtTEm1U7EtEwGPF7wq5FAxCO8X1qtAXM0Rsz4+5ka6bcKBxD9mAqPeIDirfPjJR1L4BDY9H5aPOuVYj9lna8Ln6tmFdqk5W+czMfIZVR7fn71nL+3xllNpQY/8utviYo5+J5sihHZ9h4DeAGYOrZoAgf4LVBeKcmqtyaOTZar8ZOTCF9ttV7pZ2bNw5vCtQbN7WqyDgpYjXAPW+7T/JUMXdxRxGlpS9XyBzIqqBxytu3Kto45lhJgNTxp
-        mhurd@Monte-Hurds-WMF-MacBook-Air.local]
+    ssh_keys: []
     uid: 3010
     email: mhurd@wikimedia.org
   dbrant:
@@ -4147,6 +4140,10 @@ ldap_only_users:
     ensure: present
     realname: Megan Hernandez
     email: mhernandez@wikimedia.org
+  mhurd:
+    ensure: present
+    realname: Monte Hurd
+    email: mhurd@wikimedia.org
   mraish:
     ensure: present
     realname: Michael Raish
