@@ -39,14 +39,6 @@ class aptrepo::rsync (
     }
 
     $secondary_servers.each |String $secondary_server| {
-        cron { "rsync-aptrepo-${secondary_server}":
-            ensure  => 'absent',
-            user    => 'root',
-            command => "rsync -avp --delete /srv/ rsync://${secondary_server}/install-srv > /dev/null",
-            hour    => '*/6',
-            minute  => '42',
-        }
-
         systemd::timer::job { "rsync-aptrepo-${secondary_server}":
             ensure      => $ensure_job,
             user        => 'root',
