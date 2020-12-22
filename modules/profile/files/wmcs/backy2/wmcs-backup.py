@@ -184,6 +184,91 @@ class ImageBackups:
         for backup in self.backups:
             backup.size_percent = backup.size_mb * 100 / total_size_mb
 
+    def delete_expired(self, noop: bool) -> None:
+        oldest_date = datetime.datetime.now() - datetime.timedelta(
+            days=self.config.live_for_days,
+        )
+        to_delete = [
+            backup
+            for backup in self.backups
+            if backup.backup_entry.date < oldest_date
+        ]
+
+        logging.debug(
+            "%sRemoving %d backups for image %s(%s)",
+            'NOOP:' if noop else '',
+            len(to_delete),
+            self.image_name,
+            self.image_id,
+        )
+        for backup in to_delete:
+            backup.remove(noop=noop)
+            self.backups.pop(self.backups.index(backup))
+
+    def get_dangling_snapshots(self):
+        """
+        This returns the list of snapshots for this image that are not being
+        used for backups.
+
+        Note that we only need one snapshot for the backups for every image,
+        in order to be able to get hints when doing differential backups, and
+        this snapshot has to be the oldest one that has a matching backups for
+        that image.
+        """
+        dangling_snapshots: List[RBDSnapshot] = []
+
+        # Get the latest known backup with a valid snapshot
+        all_snapshots_for_image = get_snapshots_for_image(
+            pool=self.config.ceph_pool,
+            image_name=self.image_id
+        )
+        last_snapshot_with_backup = None
+        for backup in sorted(
+            self.backups,
+            key=lambda backup: backup.backup_entry.date,
+            reverse=True,
+        ):
+            logging.debug(
+                "    Checking %s...", backup.backup_entry.snapshot_name
+            )
+            if any(
+                True
+                for snapshot in all_snapshots_for_image
+                if snapshot.snapshot == backup.backup_entry.snapshot_name
+            ):
+                last_snapshot_with_backup = (
+                    backup.backup_entry.get_snapshot(
+                        pool=self.config.ceph_pool
+                    )
+                )
+                break
+
+        if last_snapshot_with_backup:
+            logging.debug(
+                "Got the following snapshots for image(%s): %s",
+                self.backups[0].backup_entry.name,
+                last_snapshot_with_backup,
+            )
+        else:
+            logging.debug(
+                (
+                    "Got no snapshots with backup for image(%s), knows "
+                    "snapshots: %s"
+                ),
+                self.backups[0].backup_entry.name,
+                all_snapshots_for_image
+            )
+
+        # Get all the other snapshots
+        for snapshot in all_snapshots_for_image:
+            if (
+                last_snapshot_with_backup is None
+                or snapshot.snapshot != last_snapshot_with_backup.snapshot
+            ):
+                dangling_snapshots.append(snapshot)
+
+        return dangling_snapshots
+
     def __str__(self) -> str:
         # we don't have diff backups
         backups_strings = sorted(
@@ -893,6 +978,55 @@ class InstanceBackupsState:
             total_removed,
         )
 
+    def print_dangling_snapshots(self) -> None:
+        for snapshot in self.get_dangling_snapshots():
+            print(str(snapshot))
+
+    def get_dangling_snapshots(self) -> List[RBDSnapshot]:
+        """
+        This returns the list of snapshots for every VM that are not being
+        used for backups.
+
+        Note that we only need one snapshot for the backups for every VM, in
+        order to be able to get hints when doing differential backups.
+
+        This snapshot has to be the oldest one that has a matching backups for
+        that image/vm.
+        """
+        dangling_snapshots = []
+        for project_backups in self.projects_backups.values():
+            for vm_backups in project_backups.vms_backups.values():
+                dangling_snapshots.extend(vm_backups.get_dangling_snapshots())
+
+        return dangling_snapshots
+
+    def remove_dangling_snapshots(self, noop: bool) -> None:
+        failed_snapshots = []
+        to_remove = self.get_dangling_snapshots()
+        for snapshot in to_remove:
+            logging.info(f"Removing snapshot {snapshot}...")
+            try:
+                snapshot.remove(noop=noop)
+                if noop:
+                    logging.info(
+                        f"       Done, {snapshot} would have been removed"
+                    )
+                else:
+                    logging.info(f"       Done, {snapshot} removed")
+            except Exception as error:
+                logging.error(
+                    f"ERROR: failed removing snapshot {snapshot}: {error}"
+                )
+                failed_snapshots.append((snapshot, error))
+
+        logging.info(
+            "Removed %d snapshots, %d failed.",
+            len(to_remove) - len(failed_snapshots),
+            len(failed_snapshots),
+        )
+        if failed_snapshots:
+            sys.exit(1)
+
 
 @dataclass(unsafe_hash=True)
 class ImageBackupsState:
@@ -930,6 +1064,58 @@ class ImageBackupsState:
                 project_backups.size_mb * 100 / self.size_mb
             )
             project_backups.update_usages(total_size_mb=self.size_mb)
+
+    def delete_expired(self, noop: bool) -> None:
+        for image_backup in self.image_backups:
+            image_backup.delete_expired(noop=noop)
+
+    def print_dangling_snapshots(self) -> None:
+        for snapshot in self.get_dangling_snapshots():
+            print(str(snapshot))
+
+    def get_dangling_snapshots(self) -> List[RBDSnapshot]:
+        """
+        This returns the list of snapshots for every image that are not being
+        used for backups.
+
+        Note that we only need one snapshot for the backups for every image, in
+        order to be able to get hints when doing differential backups.
+
+        This snapshot has to be the oldest one that has a matching backups for
+        that image/vm.
+        """
+        dangling_snapshots = []
+        for image_backups in self.image_backups.values():
+            dangling_snapshots.extend(image_backups.get_dangling_snapshots())
+
+        return dangling_snapshots
+
+    def remove_dangling_snapshots(self, noop: bool) -> None:
+        failed_snapshots = []
+        to_remove = self.get_dangling_snapshots()
+        for snapshot in to_remove:
+            logging.info(f"Removing snapshot {snapshot}...")
+            try:
+                snapshot.remove(noop=noop)
+                if noop:
+                    logging.info(
+                        f"       Done, {snapshot} would have been removed"
+                    )
+                else:
+                    logging.info(f"       Done, {snapshot} removed")
+            except Exception as error:
+                logging.error(
+                    f"ERROR: failed removing snapshot {snapshot}: {error}"
+                )
+                failed_snapshots.append((snapshot, error))
+
+        logging.info(
+            "Removed %d snapshots, %d failed.",
+            len(to_remove) - len(failed_snapshots),
+            len(failed_snapshots),
+        )
+        if failed_snapshots:
+            sys.exit(1)
 
     def __str__(self) -> str:
         self.update_usages()
@@ -1064,64 +1250,6 @@ def print_excess_backups_per_vm(
     print("#" * 75)
 
 
-def print_dangling_snapshots(
-    current_state: InstanceBackupsState,
-) -> None:
-    for snapshot in get_dangling_snapshots(current_state):
-        print(str(snapshot))
-
-
-def get_dangling_snapshots(
-    current_state: InstanceBackupsState,
-) -> List[RBDSnapshot]:
-    """
-    This returns the list of snapshots for every image that are not being used
-    for backups.
-
-    Note that we only need one snapshot for the backups for every image, in
-    order to be able to get hints when doing differential backups.
-
-    This snapshot has to be the oldest one that has a matching backups for that
-    image/vm.
-    """
-    dangling_snapshots = []
-    for project_backups in current_state.projects_backups.values():
-        for vm_backups in project_backups.vms_backups.values():
-            dangling_snapshots.extend(vm_backups.get_dangling_snapshots())
-
-    return dangling_snapshots
-
-
-def remove_dangling_snapshots(
-    current_state: InstanceBackupsState, noop: bool
-) -> None:
-    failed_snapshots = []
-    to_remove = get_dangling_snapshots(current_state)
-    for snapshot in to_remove:
-        logging.info(f"Removing snapshot {snapshot}...")
-        try:
-            snapshot.remove(noop=noop)
-            if noop:
-                logging.info(
-                    f"       Done, {snapshot} would have been removed"
-                )
-            else:
-                logging.info(f"       Done, {snapshot} removed")
-        except Exception as error:
-            logging.error(
-                f"ERROR: failed removing snapshot {snapshot}: {error}"
-            )
-            failed_snapshots.append((snapshot, error))
-
-    logging.info(
-        "Removed %d snapshots, %d failed.",
-        len(to_remove) - len(failed_snapshots),
-        len(failed_snapshots),
-    )
-    if failed_snapshots:
-        sys.exit(1)
-
-
 def _add_instances_parser(subparser: argparse.ArgumentParser) -> None:
     instances_parser = subparser.add_parser(
         "instances", help="Handle intances backups"
@@ -1238,11 +1366,9 @@ def _add_instances_parser(subparser: argparse.ArgumentParser) -> None:
         ),
     )
     get_dangling_snapshots_parser.set_defaults(
-        func=lambda: print_dangling_snapshots(
-            current_state=get_current_instances_state(
-                from_cache=args.from_cache
-            )
-        )
+        func=lambda: get_current_instances_state(
+            from_cache=args.from_cache
+        ).print_dangling_snapshots()
     )
 
     remove_dangling_snapshots_parser = instances_subparser.add_parser(
@@ -1264,12 +1390,9 @@ def _add_instances_parser(subparser: argparse.ArgumentParser) -> None:
         ),
     )
     remove_dangling_snapshots_parser.set_defaults(
-        func=lambda: remove_dangling_snapshots(
-            current_state=get_current_instances_state(
-                from_cache=args.from_cache
-            ),
-            noop=args.noop,
-        )
+        func=lambda: get_current_instances_state(
+            from_cache=args.from_cache
+        ).remove_dangling_snapshots(noop=args.noop)
     )
 
     backup_vm_parser = instances_subparser.add_parser(
@@ -1318,6 +1441,46 @@ def _add_images_parser(subparser: argparse.ArgumentParser) -> None:
     summary_parser.set_defaults(
         func=lambda: summary(
             print(str(get_current_images_state(from_cache=args.from_cache)))
+        )
+    )
+
+    delete_expired_parser = images_subparser.add_parser(
+        "delete-expired", help="Delete all expired backups"
+    )
+    delete_expired_parser.add_argument(
+        "-n",
+        "--noop",
+        action="store_true",
+        help=(
+            "If set, will not really do anything, just tell you what "
+            "would be done."
+        ),
+    )
+    delete_expired_parser.set_defaults(
+        func=lambda: summary(
+            get_current_images_state(
+                from_cache=args.from_cache
+            ).delete_expired(noop=args.noop)
+        )
+    )
+
+    remove_dangling_snapshots_parser = images_subparser.add_parser(
+        "remove-dangling-snapshots", help="Remave all dangling snapshots"
+    )
+    remove_dangling_snapshots_parser.add_argument(
+        "-n",
+        "--noop",
+        action="store_true",
+        help=(
+            "If set, will not really do anything, just tell you what "
+            "would be done."
+        ),
+    )
+    remove_dangling_snapshots_parser.set_defaults(
+        func=lambda: summary(
+            get_current_images_state(
+                from_cache=args.from_cache
+            ).remove_dangling_snapshots(noop=args.noop)
         )
     )
 
