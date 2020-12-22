@@ -3,6 +3,7 @@
 # Script to enable puppet if disabled by a specific message.
 # If "--force" is specified as a message, enabling will be unconditional
 FORCE=0
+ATTEMPTS=2
 if [ -z "$1" ]; then
     echo "A message is required, or --force to force execution."
     exit 1
