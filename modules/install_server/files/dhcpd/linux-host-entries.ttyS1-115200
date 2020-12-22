@@ -3792,7 +3792,7 @@ host cloudservices1004 {
 }
 
 host labstore1004 {
-    hardware ethernet 14:18:77:61:02:e6;
+    hardware ethernet f4:e9:d4:89:8d:90;
     fixed-address labstore1004.eqiad.wmnet;
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
