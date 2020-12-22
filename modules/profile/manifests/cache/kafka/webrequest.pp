@@ -24,12 +24,12 @@
 #   True if the varnishkafka instance should be monitored.  Default: false
 #
 class profile::cache::kafka::webrequest(
-    $cache_cluster      = hiera('cache::cluster'),
-    $statsd             = hiera('statsd'),
-    $kafka_cluster_name = hiera('profile::cache::kafka::webrequest::kafka_cluster_name'),
-    $ssl_enabled        = hiera('profile::cache::kafka::webrequest::ssl_enabled', false),
-    $monitoring_enabled = hiera('profile::cache::kafka::webrequest::monitoring_enabled', false),
-    $atskafka_enabled   = lookup('profile::cache::kafka::webrequest::atskafka_enabled', {'default_value' => false}),
+    String $cache_cluster       = lookup('cache::cluster'),
+    String $statsd              = lookup('statsd'),
+    String $kafka_cluster_name  = lookup('profile::cache::kafka::webrequest::kafka_cluster_name'),
+    Boolean $ssl_enabled        = lookup('profile::cache::kafka::webrequest::ssl_enabled', {'default_value' => false}),
+    Boolean $monitoring_enabled = lookup('profile::cache::kafka::webrequest::monitoring_enabled', {'default_value' => false}),
+    Boolean $atskafka_enabled   = lookup('profile::cache::kafka::webrequest::atskafka_enabled', {'default_value' => false}),
 ) {
     $kafka_config     = kafka_config($kafka_cluster_name)
 
