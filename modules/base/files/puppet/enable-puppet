@@ -30,4 +30,6 @@ if [ "${FORCE}" -ne 1 ]; then
         grep -Fxq "$MESSAGE" || exit 1
 fi
 
+wait_for_puppet "$ATTEMPTS"
+
 puppet agent --enable
