@@ -23,8 +23,7 @@ def run_command(
         result = subprocess.run(args, stdout=stdout)
         if result.returncode != 0:
             raise Exception(
-                f"Command execution returned != 0:\n"
-                f"command:{args}"
+                f"Command execution returned != 0:\n" f"command:{args}"
             )
 
         return ""
@@ -599,14 +598,12 @@ def get_backups():
 
 
 def get_snapshots_for_image(pool: str, image_name: str) -> List[RBDSnapshot]:
-    raw_lines = subprocess.check_output(
-        [RBD, "snap", "ls", f"{pool}/{image_name}"]
-    )
+    raw_lines = run_command([RBD, "snap", "ls", f"{pool}/{image_name}"])
     return [
         RBDSnapshot.from_rbd_snap_ls_line(
             pool=pool,
             image_name=image_name,
-            rbd_snap_ls_line=line.decode("utf8"),
+            rbd_snap_ls_line=line,
         )
         # skip the header
         for line in raw_lines.splitlines()[1:]
