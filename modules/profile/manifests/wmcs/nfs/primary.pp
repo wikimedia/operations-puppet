@@ -1,6 +1,5 @@
 class profile::wmcs::nfs::primary(
   $observer_pass = hiera('profile::openstack::eqiad1::observer_password'),
-  $monitor_iface = hiera('profile::wmcs::nfs::primary::monitor_iface', 'eth0'),
   $data_iface    = hiera('profile::wmcs::nfs::primary::data_iface', 'eth1'),
   $backup_servers = hiera('profile::wmcs::nfs::primary::backup_servers'),
   Hash[String, Hash[String, Variant[Integer,String]]] $drbd_resource_config = lookup('profile::wmcs::nfs::primary::drbd_resource_config'),
@@ -13,6 +12,7 @@ class profile::wmcs::nfs::primary(
     require profile::openstack::eqiad1::clientpackages
     require profile::openstack::eqiad1::observerenv
 
+    $monitor_iface = $facts['networking']['primary']
     $drbd_expected_role = $facts['fqdn'] ? {
         $standby_server => 'secondary',
         default         => 'primary',
@@ -29,6 +29,28 @@ class profile::wmcs::nfs::primary(
         }
     } else {
         $drbd_actual_role = undef
+    }
+
+    # Make sure the mountpoints are there
+    file{'/srv/test':
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0777',
+    }
+
+    file{'/srv/tools':
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+    }
+
+    file{'/srv/misc':
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
     }
 
     class {'labstore':
