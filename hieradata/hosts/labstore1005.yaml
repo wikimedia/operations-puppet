@@ -1,2 +1,1 @@
-profile::wmcs::nfs::primary::monitor_iface: enp133s0f0
 profile::wmcs::nfs::primary::data_iface: eno2
