@@ -135,3 +135,6 @@ profile::mariadb::backup::check::db_user: backupcheck
 profile::mariadb::backup::check::db_database: dbbackups
 profile::mariadb::backup::check::warn_size_percentage: 5
 profile::mariadb::backup::check::crit_size_percentage: 15
+
+profile::klaxon::klaxon_config:
+  admin_contact_email: root@wikimedia.org

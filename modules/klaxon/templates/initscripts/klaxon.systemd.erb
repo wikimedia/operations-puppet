@@ -1,0 +1,23 @@
+# NOTE: This file is managed by Puppet.
+[Unit]
+Description="klaxon manual paging webapp"
+After=network.target
+
+[Service]
+User=klaxon
+Group=klaxon
+
+PrivateTmp=true
+
+Restart=always
+RestartSec=2s
+TimeoutStopSec=10
+WorkingDirectory=<%= @install_dir %>
+EnvironmentFile=<%= @environ_file %>
+# Klaxon keeps an in-memory cache of data fetched from the VictorOps API, so using the 'gthread'
+# execution model (or another one that allows workers to share an address space) is important.
+ExecStart=/usr/bin/gunicorn --worker-class gthread --workers 1 --threads 8 --bind [::]:<%= @port %> 'klaxon:create_app()'
+SyslogIdentifier=klaxon
+
+[Install]
+WantedBy=multi-user.target

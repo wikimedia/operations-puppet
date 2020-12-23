@@ -1,0 +1,4 @@
+# This file is maintained by Puppet
+<% @config.each do |key,value| %>
+KLAXON_<%= key.upcase %>=<%= value -%>
+<% end -%>

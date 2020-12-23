@@ -32,6 +32,7 @@ class role::alerting_host {
         include profile::alertmanager::web
         include profile::alertmanager::ack
         include profile::alertmanager::api
+        include profile::klaxon
     }
 
     class { 'httpd::mpm':
