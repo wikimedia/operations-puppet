@@ -1,5 +1,6 @@
-class openstack::nova::api::service::rocky
-{
+class openstack::nova::api::service::rocky(
+    Stdlib::Port $api_bind_port,
+) {
     # simple enough to don't require per-debian release split
     require "openstack::serverpackages::rocky::${::lsbdistcodename}"
 

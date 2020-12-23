@@ -1,5 +1,6 @@
-class openstack::nova::api::service::stein
-{
+class openstack::nova::api::service::stein(
+    Stdlib::Port $api_bind_port,
+) {
     # simple enough to don't require per-debian release split
     require "openstack::serverpackages::stein::${::lsbdistcodename}"
 
@@ -22,6 +23,15 @@ class openstack::nova::api::service::stein
         mode    => '0644',
         source  => 'puppet:///modules/openstack/nova/userdata.txt',
         require => Package['nova-api'],
+    }
+
+    file { '/etc/init.d/nova-api':
+        content => template('openstack/stein/nova/api/nova-api'),
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0755',
+        notify  => Service['nova-api'],
+        require => Package['nova-api'];
     }
 
     # Hack in regex validation for instance names.

@@ -3,9 +3,12 @@
 class openstack::nova::api::service(
     $version,
     $active,
+    Stdlib::Port $api_bind_port,
     ) {
 
-    class { "openstack::nova::api::service::${version}": }
+    class { "openstack::nova::api::service::${version}":
+        api_bind_port => $api_bind_port,
+    }
 
     service { 'nova-api':
         ensure    => $active,
