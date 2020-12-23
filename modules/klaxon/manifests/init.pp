@@ -12,6 +12,7 @@ class klaxon(
 
     # TODO: a better deployment model.
     git::clone { 'operations/software/klaxon':
+        ensure    => latest,
         directory => $install_dir,
         branch    => 'master',
     }
