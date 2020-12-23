@@ -23,4 +23,15 @@ class openstack::nova::api::service::rocky
         source  => 'puppet:///modules/openstack/nova/userdata.txt',
         require => Package['nova-api'],
     }
+
+    # Hack in regex validation for instance names.
+    #  Context can be found in T207538
+    file { '/usr/lib/python3/dist-packages/nova/api/openstack/compute/servers.py':
+        ensure  => 'present',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
+        source  => 'puppet:///modules/openstack/rocky/nova/hacks/servers.py',
+        require => Package['nova-api'];
+    }
 }

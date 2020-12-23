@@ -42,6 +42,7 @@ from nova import context as nova_context
 from nova import exception
 from nova.i18n import _
 from nova.image import api as image_api
+from nova import network as network_api
 from nova import objects
 from nova.objects import service as service_obj
 from nova.policies import servers as server_policies
@@ -49,10 +50,42 @@ from nova import utils
 
 TAG_SEARCH_FILTERS = ('tags', 'tags-any', 'not-tags', 'not-tags-any')
 DEVICE_TAGGING_MIN_COMPUTE_VERSION = 14
+PARTIAL_CONSTRUCT_FOR_CELL_DOWN_MIN_VERSION = '2.69'
+PAGING_SORTING_PARAMS = ('sort_key', 'sort_dir', 'limit', 'marker')
 
 CONF = nova.conf.CONF
 
 LOG = logging.getLogger(__name__)
+
+INVALID_FLAVOR_IMAGE_EXCEPTIONS = (
+    exception.BadRequirementEmulatorThreadsPolicy,
+    exception.CPUThreadPolicyConfigurationInvalid,
+    exception.ImageCPUPinningForbidden,
+    exception.ImageCPUThreadPolicyForbidden,
+    exception.ImageNUMATopologyAsymmetric,
+    exception.ImageNUMATopologyCPUDuplicates,
+    exception.ImageNUMATopologyCPUOutOfRange,
+    exception.ImageNUMATopologyCPUsUnassigned,
+    exception.ImageNUMATopologyForbidden,
+    exception.ImageNUMATopologyIncomplete,
+    exception.ImageNUMATopologyMemoryOutOfRange,
+    exception.ImageNUMATopologyRebuildConflict,
+    exception.ImageSerialPortNumberExceedFlavorValue,
+    exception.ImageSerialPortNumberInvalid,
+    exception.ImageVCPULimitsRangeExceeded,
+    exception.ImageVCPUTopologyRangeExceeded,
+    exception.InvalidCPUAllocationPolicy,
+    exception.InvalidCPUThreadAllocationPolicy,
+    exception.InvalidEmulatorThreadsPolicy,
+    exception.InvalidNUMANodesNumber,
+    exception.InvalidRequest,
+    exception.MemoryPageSizeForbidden,
+    exception.MemoryPageSizeInvalid,
+    exception.PciInvalidAlias,
+    exception.PciRequestAliasNotDefined,
+    exception.RealtimeConfigurationInvalid,
+    exception.RealtimeMaskNotFoundOrInvalid,
+)
 
 
 class ServersController(wsgi.Controller):
@@ -68,7 +101,7 @@ class ServersController(wsgi.Controller):
 
         link = [l for l in robj.obj['server']['links'] if l['rel'] == 'self']
         if link:
-            robj['Location'] = utils.utf8(link[0]['href'])
+            robj['Location'] = link[0]['href']
 
         # Convenience return
         return robj
@@ -77,9 +110,11 @@ class ServersController(wsgi.Controller):
 
         super(ServersController, self).__init__(**kwargs)
         self.compute_api = compute.API()
+        self.network_api = network_api.API()
 
     @wsgi.expected_errors((400, 403))
-    @validation.query_schema(schema_servers.query_params_v226, '2.26')
+    @validation.query_schema(schema_servers.query_params_v266, '2.66')
+    @validation.query_schema(schema_servers.query_params_v226, '2.26', '2.65')
     @validation.query_schema(schema_servers.query_params_v21, '2.1', '2.25')
     def index(self, req):
         """Returns a list of server names and ids for a given user."""
@@ -92,7 +127,8 @@ class ServersController(wsgi.Controller):
         return servers
 
     @wsgi.expected_errors((400, 403))
-    @validation.query_schema(schema_servers.query_params_v226, '2.26')
+    @validation.query_schema(schema_servers.query_params_v266, '2.66')
+    @validation.query_schema(schema_servers.query_params_v226, '2.26', '2.65')
     @validation.query_schema(schema_servers.query_params_v21, '2.1', '2.25')
     def detail(self, req):
         """Returns a list of server details for a given user."""
@@ -104,6 +140,32 @@ class ServersController(wsgi.Controller):
             raise exc.HTTPBadRequest(explanation=err.format_message())
         return servers
 
+    @staticmethod
+    def _is_cell_down_supported(req, search_opts):
+        cell_down_support = api_version_request.is_supported(
+            req, min_version=PARTIAL_CONSTRUCT_FOR_CELL_DOWN_MIN_VERSION)
+
+        if cell_down_support:
+            # NOTE(tssurya): Minimal constructs would be returned from the down
+            # cells if cell_down_support is True, however if filtering, sorting
+            # or paging is requested by the user, then cell_down_support should
+            # be made False and the down cells should be skipped (depending on
+            # CONF.api.list_records_by_skipping_down_cells) as there is no
+            # way to return correct results for the down cells in those
+            # situations due to missing keys/information.
+            # NOTE(tssurya): Since there is a chance that
+            # remove_invalid_options function could have removed the paging and
+            # sorting parameters, we add the additional check for that from the
+            # request.
+            pag_sort = any(
+                ps in req.GET.keys() for ps in PAGING_SORTING_PARAMS)
+            # NOTE(tssurya): ``nova list --all_tenants`` is the only
+            # allowed filter exception when handling down cells.
+            filters = list(search_opts.keys()) not in ([u'all_tenants'], [])
+            if pag_sort or filters:
+                cell_down_support = False
+        return cell_down_support
+
     def _get_servers(self, req, is_detail):
         """Returns a list of servers, based on any search options specified."""
 
@@ -113,6 +175,8 @@ class ServersController(wsgi.Controller):
         context = req.environ['nova.context']
         remove_invalid_options(context, search_opts,
                 self._get_server_search_options(req))
+
+        cell_down_support = self._is_cell_down_supported(req, search_opts)
 
         for search_opt in search_opts:
             if (search_opt in
@@ -155,15 +219,32 @@ class ServersController(wsgi.Controller):
                 msg = _("Invalid filter field: changes-since.")
                 raise exc.HTTPBadRequest(explanation=msg)
 
+        if 'changes-before' in search_opts:
+            try:
+                search_opts['changes-before'] = timeutils.parse_isotime(
+                    search_opts['changes-before'])
+                changes_since = search_opts.get('changes-since')
+                if changes_since and search_opts['changes-before'] < \
+                        search_opts['changes-since']:
+                    msg = _('The value of changes-since must be'
+                            ' less than or equal to changes-before.')
+                    raise exc.HTTPBadRequest(explanation=msg)
+            except ValueError:
+                msg = _("Invalid filter field: changes-before.")
+                raise exc.HTTPBadRequest(explanation=msg)
+
         # By default, compute's get_all() will return deleted instances.
         # If an admin hasn't specified a 'deleted' search option, we need
         # to filter out deleted instances by setting the filter ourselves.
-        # ... Unless 'changes-since' is specified, because 'changes-since'
-        # should return recently deleted instances according to the API spec.
+        # ... Unless 'changes-since' or 'changes-before' is specified,
+        # because those will return recently deleted instances according to
+        # the API spec.
 
         if 'deleted' not in search_opts:
-            if 'changes-since' not in search_opts:
-                # No 'changes-since', so we only want non-deleted servers
+            if 'changes-since' not in search_opts and \
+                    'changes-before' not in search_opts:
+                # No 'changes-since' or 'changes-before', so we only
+                # want non-deleted servers
                 search_opts['deleted'] = False
         else:
             # Convert deleted filter value to a valid boolean.
@@ -185,30 +266,13 @@ class ServersController(wsgi.Controller):
                     search_opts[tag_filter] = search_opts[
                         tag_filter].split(',')
 
-        # If tenant_id is passed as a search parameter this should
-        # imply that all_tenants is also enabled unless explicitly
-        # disabled. Note that the tenant_id parameter is filtered out
-        # by remove_invalid_options above unless the requestor is an
-        # admin.
-
-        # TODO(gmann): 'all_tenants' flag should not be required while
-        # searching with 'tenant_id'. Ref bug# 1185290
-        # +microversions to achieve above mentioned behavior by
-        # uncommenting below code.
-
-        # if 'tenant_id' in search_opts and 'all_tenants' not in search_opts:
-            # We do not need to add the all_tenants flag if the tenant
-            # id associated with the token is the tenant id
-            # specified. This is done so a request that does not need
-            # the all_tenants flag does not fail because of lack of
-            # policy permission for compute:get_all_tenants when it
-            # doesn't actually need it.
-            # if context.project_id != search_opts.get('tenant_id'):
-            #    search_opts['all_tenants'] = 1
-
         all_tenants = common.is_all_tenants(search_opts)
         # use the boolean from here on out so remove the entry from search_opts
-        # if it's present
+        # if it's present.
+        # NOTE(tssurya): In case we support handling down cells
+        # we need to know further down the stack whether the 'all_tenants'
+        # filter was passed with the true value or not, so we pass the flag
+        # further down the stack.
         search_opts.pop('all_tenants', None)
 
         elevated = None
@@ -220,9 +284,7 @@ class ServersController(wsgi.Controller):
             elevated = context.elevated()
         else:
             # As explained in lp:#1185290, if `all_tenants` is not passed
-            # we must ignore the `tenant_id` search option. As explained
-            # in a above code comment, any change to this behavior would
-            # require a microversion bump.
+            # we must ignore the `tenant_id` search option.
             search_opts.pop('tenant_id', None)
             if context.project_id:
                 search_opts['project_id'] = context.project_id
@@ -252,8 +314,9 @@ class ServersController(wsgi.Controller):
         try:
             instance_list = self.compute_api.get_all(elevated or context,
                     search_opts=search_opts, limit=limit, marker=marker,
-                    expected_attrs=expected_attrs,
-                    sort_keys=sort_keys, sort_dirs=sort_dirs)
+                    expected_attrs=expected_attrs, sort_keys=sort_keys,
+                    sort_dirs=sort_dirs, cell_down_support=cell_down_support,
+                    all_tenants=all_tenants)
         except exception.MarkerNotFound:
             msg = _('marker [%s] not found') % marker
             raise exc.HTTPBadRequest(explanation=msg)
@@ -265,20 +328,26 @@ class ServersController(wsgi.Controller):
         if is_detail:
             instance_list._context = context
             instance_list.fill_faults()
-            response = self._view_builder.detail(req, instance_list)
+            response = self._view_builder.detail(
+                req, instance_list, cell_down_support=cell_down_support)
         else:
-            response = self._view_builder.index(req, instance_list)
-        req.cache_db_instances(instance_list)
+            response = self._view_builder.index(
+                req, instance_list, cell_down_support=cell_down_support)
         return response
 
-    def _get_server(self, context, req, instance_uuid, is_detail=False):
+    def _get_server(self, context, req, instance_uuid, is_detail=False,
+                    cell_down_support=False):
         """Utility function for looking up an instance by uuid.
 
         :param context: request context for auth
-        :param req: HTTP request. The instance is cached in this request.
+        :param req: HTTP request.
         :param instance_uuid: UUID of the server instance to get
         :param is_detail: True if you plan on showing the details of the
             instance in the response, False otherwise.
+        :param cell_down_support: True if the API (and caller) support
+                                  returning a minimal instance
+                                  construct if the relevant cell is
+                                  down.
         """
         expected_attrs = ['flavor', 'numa_topology']
         if is_detail:
@@ -290,8 +359,8 @@ class ServersController(wsgi.Controller):
                                                             expected_attrs)
         instance = common.get_instance(self.compute_api, context,
                                        instance_uuid,
-                                       expected_attrs=expected_attrs)
-        req.cache_db_instance(instance)
+                                       expected_attrs=expected_attrs,
+                                       cell_down_support=cell_down_support)
         return instance
 
     @staticmethod
@@ -385,8 +454,106 @@ class ServersController(wsgi.Controller):
         """Returns server details by server id."""
         context = req.environ['nova.context']
         context.can(server_policies.SERVERS % 'show')
-        instance = self._get_server(context, req, id, is_detail=True)
-        return self._view_builder.show(req, instance)
+        cell_down_support = api_version_request.is_supported(
+            req, min_version=PARTIAL_CONSTRUCT_FOR_CELL_DOWN_MIN_VERSION)
+        show_server_groups = api_version_request.is_supported(
+            req, min_version='2.71')
+
+        instance = self._get_server(
+            context, req, id, is_detail=True,
+            cell_down_support=cell_down_support)
+        return self._view_builder.show(
+            req, instance, cell_down_support=cell_down_support,
+            show_server_groups=show_server_groups)
+
+    @staticmethod
+    def _process_bdms_for_create(
+            context, target, server_dict, create_kwargs,
+            supports_device_tagging):
+        """Processes block_device_mapping(_v2) req parameters for server create
+
+        :param context: The nova auth request context
+        :param target: The target dict for ``context.can`` policy checks
+        :param server_dict: The POST /servers request body "server" entry
+        :param create_kwargs: dict that gets populated by this method and
+            passed to nova.comptue.api.API.create()
+        :param supports_device_tagging: True if a suitable microversion was
+            provided for bdm tags during server create, False otherwise
+        :raises: webob.exc.HTTPBadRequest if the request parameters are invalid
+        :raises: nova.exception.Forbidden if a policy check fails
+        """
+        block_device_mapping_legacy = server_dict.get('block_device_mapping',
+                                                      [])
+        block_device_mapping_v2 = server_dict.get('block_device_mapping_v2',
+                                                  [])
+
+        if block_device_mapping_legacy and block_device_mapping_v2:
+            expl = _('Using different block_device_mapping syntaxes '
+                     'is not allowed in the same request.')
+            raise exc.HTTPBadRequest(explanation=expl)
+
+        if block_device_mapping_legacy:
+            for bdm in block_device_mapping_legacy:
+                if 'delete_on_termination' in bdm:
+                    bdm['delete_on_termination'] = strutils.bool_from_string(
+                        bdm['delete_on_termination'])
+            create_kwargs[
+                'block_device_mapping'] = block_device_mapping_legacy
+            # Sets the legacy_bdm flag if we got a legacy block device mapping.
+            create_kwargs['legacy_bdm'] = True
+        elif block_device_mapping_v2:
+            # Have to check whether --image is given, see bug 1433609
+            image_href = server_dict.get('imageRef')
+            image_uuid_specified = image_href is not None
+            try:
+                block_device_mapping = [
+                    block_device.BlockDeviceDict.from_api(bdm_dict,
+                        image_uuid_specified)
+                    for bdm_dict in block_device_mapping_v2]
+            except exception.InvalidBDMFormat as e:
+                raise exc.HTTPBadRequest(explanation=e.format_message())
+            create_kwargs['block_device_mapping'] = block_device_mapping
+            # Unset the legacy_bdm flag if we got a block device mapping.
+            create_kwargs['legacy_bdm'] = False
+
+        block_device_mapping = create_kwargs.get("block_device_mapping")
+        if block_device_mapping:
+            context.can(server_policies.SERVERS % 'create:attach_volume',
+                        target)
+            for bdm in block_device_mapping:
+                if bdm.get('tag', None) and not supports_device_tagging:
+                    msg = _('Block device tags are not yet supported.')
+                    raise exc.HTTPBadRequest(explanation=msg)
+
+    def _process_networks_for_create(
+            self, context, target, server_dict, create_kwargs,
+            supports_device_tagging):
+        """Processes networks request parameter for server create
+
+        :param context: The nova auth request context
+        :param target: The target dict for ``context.can`` policy checks
+        :param server_dict: The POST /servers request body "server" entry
+        :param create_kwargs: dict that gets populated by this method and
+            passed to nova.comptue.api.API.create()
+        :param supports_device_tagging: True if a suitable microversion was
+            provided for VIF tags during server create, False otherwise
+        :raises: webob.exc.HTTPBadRequest if the request parameters are invalid
+        :raises: nova.exception.Forbidden if a policy check fails
+        """
+        requested_networks = server_dict.get('networks', None)
+
+        if requested_networks is not None:
+            requested_networks = self._get_requested_networks(
+                requested_networks, supports_device_tagging)
+
+        # Skip policy check for 'create:attach_network' if there is no
+        # network allocation request.
+        if requested_networks and len(requested_networks) and \
+                not requested_networks.no_allocate:
+            context.can(server_policies.SERVERS % 'create:attach_network',
+                        target)
+
+        create_kwargs['requested_networks'] = requested_networks
 
     @wsgi.response(202)
     @wsgi.expected_errors((400, 403, 409))
@@ -399,7 +566,8 @@ class ServersController(wsgi.Controller):
     @validation.schema(schema_servers.base_create_v242, '2.42', '2.51')
     @validation.schema(schema_servers.base_create_v252, '2.52', '2.56')
     @validation.schema(schema_servers.base_create_v257, '2.57', '2.62')
-    @validation.schema(schema_servers.base_create_v263, '2.63')
+    @validation.schema(schema_servers.base_create_v263, '2.63', '2.66')
+    @validation.schema(schema_servers.base_create_v267, '2.67')
     def create(self, req, body):
         """Creates a new server for a given user."""
         context = req.environ['nova.context']
@@ -446,13 +614,11 @@ class ServersController(wsgi.Controller):
         # 'max_count' to be 'min_count'.
         min_count = int(server_dict.get('min_count', 1))
         max_count = int(server_dict.get('max_count', min_count))
-        return_id = server_dict.get('return_reservation_id', False)
         if min_count > max_count:
             msg = _('min_count must be <= max_count')
             raise exc.HTTPBadRequest(explanation=msg)
         create_kwargs['min_count'] = min_count
         create_kwargs['max_count'] = max_count
-        create_kwargs['return_reservation_id'] = return_id
 
         availability_zone = server_dict.pop("availability_zone", None)
 
@@ -495,72 +661,15 @@ class ServersController(wsgi.Controller):
         supports_device_tagging = (min_compute_version >=
                                    DEVICE_TAGGING_MIN_COMPUTE_VERSION)
 
-        block_device_mapping_legacy = server_dict.get('block_device_mapping',
-                                                      [])
-        block_device_mapping_v2 = server_dict.get('block_device_mapping_v2',
-                                                  [])
-
-        if block_device_mapping_legacy and block_device_mapping_v2:
-            expl = _('Using different block_device_mapping syntaxes '
-                     'is not allowed in the same request.')
-            raise exc.HTTPBadRequest(explanation=expl)
-
-        if block_device_mapping_legacy:
-            for bdm in block_device_mapping_legacy:
-                if 'delete_on_termination' in bdm:
-                    bdm['delete_on_termination'] = strutils.bool_from_string(
-                        bdm['delete_on_termination'])
-            create_kwargs[
-                'block_device_mapping'] = block_device_mapping_legacy
-            # Sets the legacy_bdm flag if we got a legacy block device mapping.
-            create_kwargs['legacy_bdm'] = True
-        elif block_device_mapping_v2:
-            image_href = server_dict.get('imageRef')
-            image_uuid_specified = image_href is not None
-            try:
-                block_device_mapping = [
-                    block_device.BlockDeviceDict.from_api(bdm_dict,
-                        image_uuid_specified)
-                    for bdm_dict in block_device_mapping_v2]
-            except exception.InvalidBDMFormat as e:
-                raise exc.HTTPBadRequest(explanation=e.format_message())
-            create_kwargs['block_device_mapping'] = block_device_mapping
-            # Unset the legacy_bdm flag if we got a block device mapping.
-            create_kwargs['legacy_bdm'] = False
-
-        block_device_mapping = create_kwargs.get("block_device_mapping")
-        if block_device_mapping:
-            context.can(server_policies.SERVERS % 'create:attach_volume',
-                        target)
-            for bdm in block_device_mapping:
-                if bdm.get('tag', None) and not supports_device_tagging:
-                    msg = _('Block device tags are not yet supported.')
-                    raise exc.HTTPBadRequest(explanation=msg)
+        self._process_bdms_for_create(
+            context, target, server_dict, create_kwargs,
+            supports_device_tagging)
 
         image_uuid = self._image_from_req_data(server_dict, create_kwargs)
 
-        # NOTE(cyeoh): Although upper layer can set the value of
-        # return_reservation_id in order to request that a reservation
-        # id be returned to the client instead of the newly created
-        # instance information we do not want to pass this parameter
-        # to the compute create call which always returns both. We use
-        # this flag after the instance create call to determine what
-        # to return to the client
-        return_reservation_id = create_kwargs.pop('return_reservation_id',
-                                                  False)
-
-        requested_networks = server_dict.get('networks', None)
-
-        if requested_networks is not None:
-            requested_networks = self._get_requested_networks(
-                requested_networks, supports_device_tagging)
-
-        # Skip policy check for 'create:attach_network' if there is no
-        # network allocation request.
-        if requested_networks and len(requested_networks) and \
-                not requested_networks.no_allocate:
-            context.can(server_policies.SERVERS % 'create:attach_network',
-                        target)
+        self._process_networks_for_create(
+            context, target, server_dict, create_kwargs,
+            supports_device_tagging)
 
         flavor_id = self._flavor_id_from_req_data(body)
         try:
@@ -568,19 +677,21 @@ class ServersController(wsgi.Controller):
                     flavor_id, ctxt=context, read_deleted="no")
 
             supports_multiattach = common.supports_multiattach_volume(req)
+            supports_port_resource_request = \
+                common.supports_port_resource_request(req)
             (instances, resv_id) = self.compute_api.create(context,
-                            inst_type,
-                            image_uuid,
-                            display_name=name,
-                            display_description=description,
-                            availability_zone=availability_zone,
-                            forced_host=host, forced_node=node,
-                            metadata=server_dict.get('metadata', {}),
-                            admin_password=password,
-                            requested_networks=requested_networks,
-                            check_server_group_quota=True,
-                            supports_multiattach=supports_multiattach,
-                            **create_kwargs)
+                inst_type,
+                image_uuid,
+                display_name=name,
+                display_description=description,
+                availability_zone=availability_zone,
+                forced_host=host, forced_node=node,
+                metadata=server_dict.get('metadata', {}),
+                admin_password=password,
+                check_server_group_quota=True,
+                supports_multiattach=supports_multiattach,
+                supports_port_resource_request=supports_port_resource_request,
+                **create_kwargs)
         except (exception.QuotaError,
                 exception.PortLimitExceeded) as error:
             raise exc.HTTPForbidden(
@@ -604,16 +715,15 @@ class ServersController(wsgi.Controller):
         except UnicodeDecodeError as error:
             msg = "UnicodeError: %s" % error
             raise exc.HTTPBadRequest(explanation=msg)
-        except (exception.CPUThreadPolicyConfigurationInvalid,
-                exception.ImageNotActive,
+        except (exception.ImageNotActive,
                 exception.ImageBadRequest,
                 exception.ImageNotAuthorized,
+                exception.ImageUnacceptable,
                 exception.FixedIpNotFoundForAddress,
                 exception.FlavorNotFound,
                 exception.FlavorDiskTooSmall,
                 exception.FlavorMemoryTooSmall,
                 exception.InvalidMetadata,
-                exception.InvalidRequest,
                 exception.InvalidVolume,
                 exception.MultiplePortsNotApplicable,
                 exception.InvalidFixedIpAndMaxCountRequest,
@@ -634,41 +744,30 @@ class ServersController(wsgi.Controller):
                 exception.InvalidBDMEphemeralSize,
                 exception.InvalidBDMFormat,
                 exception.InvalidBDMSwapSize,
+                exception.VolumeTypeNotFound,
                 exception.AutoDiskConfigDisabledByImage,
-                exception.ImageCPUPinningForbidden,
-                exception.ImageCPUThreadPolicyForbidden,
-                exception.ImageNUMATopologyIncomplete,
-                exception.ImageNUMATopologyForbidden,
-                exception.ImageNUMATopologyAsymmetric,
-                exception.ImageNUMATopologyCPUOutOfRange,
-                exception.ImageNUMATopologyCPUDuplicates,
-                exception.ImageNUMATopologyCPUsUnassigned,
-                exception.ImageNUMATopologyMemoryOutOfRange,
-                exception.InvalidNUMANodesNumber,
                 exception.InstanceGroupNotFound,
-                exception.MemoryPageSizeInvalid,
-                exception.MemoryPageSizeForbidden,
-                exception.PciRequestAliasNotDefined,
-                exception.RealtimeConfigurationInvalid,
-                exception.RealtimeMaskNotFoundOrInvalid,
                 exception.SnapshotNotFound,
                 exception.UnableToAutoAllocateNetwork,
                 exception.MultiattachNotSupportedOldMicroversion,
-                exception.CertificateValidationFailed) as error:
+                exception.CertificateValidationFailed,
+                exception.CreateWithPortResourceRequestOldVersion) as error:
+            raise exc.HTTPBadRequest(explanation=error.format_message())
+        except INVALID_FLAVOR_IMAGE_EXCEPTIONS as error:
             raise exc.HTTPBadRequest(explanation=error.format_message())
         except (exception.PortInUse,
                 exception.InstanceExists,
                 exception.NetworkAmbiguous,
                 exception.NoUniqueMatch,
                 exception.MultiattachSupportNotYetAvailable,
+                exception.VolumeTypeSupportNotYetAvailable,
                 exception.CertificateValidationNotYetAvailable) as error:
             raise exc.HTTPConflict(explanation=error.format_message())
 
         # If the caller wanted a reservation_id, return it
-        if return_reservation_id:
+        if server_dict.get('return_reservation_id', False):
             return wsgi.ResponseObject({'reservation_id': resv_id})
 
-        req.cache_db_instances(instances)
         server = self._view_builder.create(req, instances[0])
 
         if CONF.api.enable_instance_password:
@@ -707,6 +806,8 @@ class ServersController(wsgi.Controller):
         ctxt.can(server_policies.SERVERS % 'update',
                  target={'user_id': instance.user_id,
                          'project_id': instance.project_id})
+        show_server_groups = api_version_request.is_supported(
+                 req, min_version='2.71')
 
         server = body['server']
 
@@ -723,8 +824,19 @@ class ServersController(wsgi.Controller):
         try:
             instance = self.compute_api.update_instance(ctxt, instance,
                                                         update_dict)
-            return self._view_builder.show(req, instance,
-                                           extend_address=False)
+            return self._view_builder.show(
+                                      req, instance,
+                                      extend_address=False,
+                                      show_AZ=False,
+                                      show_config_drive=False,
+                                      show_extended_attr=False,
+                                      show_host_status=False,
+                                      show_keypair=False,
+                                      show_srv_usg=False,
+                                      show_sec_grp=False,
+                                      show_extended_status=False,
+                                      show_extended_volumes=False,
+                                      show_server_groups=show_server_groups)
         except exception.InstanceNotFound:
             msg = _("Instance could not be found")
             raise exc.HTTPNotFound(explanation=msg)
@@ -802,6 +914,18 @@ class ServersController(wsgi.Controller):
                     target={'user_id': instance.user_id,
                             'project_id': instance.project_id})
 
+        # We could potentially move this check to conductor and avoid the
+        # extra API call to neutron when we support move operations with ports
+        # having resource requests.
+        if (common.instance_has_port_with_resource_request(
+                    instance_id, self.network_api) and not
+                common.supports_port_resource_request_during_move(req)):
+            msg = _("The resize action on a server with ports having "
+                    "resource requests, like a port with a QoS minimum "
+                    "bandwidth policy, is not supported with this "
+                    "microversion")
+            raise exc.HTTPBadRequest(explanation=msg)
+
         try:
             self.compute_api.resize(context, instance, flavor_id, **kwargs)
         except exception.InstanceUnknownCell as e:
@@ -809,7 +933,8 @@ class ServersController(wsgi.Controller):
         except exception.QuotaError as error:
             raise exc.HTTPForbidden(
                 explanation=error.format_message())
-        except exception.InstanceIsLocked as e:
+        except (exception.InstanceIsLocked,
+                exception.AllocationMoveFailed) as e:
             raise exc.HTTPConflict(explanation=e.format_message())
         except exception.InstanceInvalidState as state_error:
             common.raise_http_conflict_for_instance_invalid_state(state_error,
@@ -826,8 +951,9 @@ class ServersController(wsgi.Controller):
                 exception.CannotResizeDisk,
                 exception.CannotResizeToSameFlavor,
                 exception.FlavorNotFound,
-                exception.NoValidHost,
-                exception.PciRequestAliasNotDefined) as e:
+                exception.NoValidHost) as e:
+            raise exc.HTTPBadRequest(explanation=e.format_message())
+        except INVALID_FLAVOR_IMAGE_EXCEPTIONS as e:
             raise exc.HTTPBadRequest(explanation=e.format_message())
         except exception.Invalid:
             msg = _("Invalid instance image.")
@@ -844,7 +970,8 @@ class ServersController(wsgi.Controller):
             raise exc.HTTPNotFound(explanation=msg)
         except exception.InstanceUnknownCell as e:
             raise exc.HTTPNotFound(explanation=e.format_message())
-        except exception.InstanceIsLocked as e:
+        except (exception.InstanceIsLocked,
+                exception.AllocationDeleteFailed) as e:
             raise exc.HTTPConflict(explanation=e.format_message())
         except exception.InstanceInvalidState as state_error:
             common.raise_http_conflict_for_instance_invalid_state(state_error,
@@ -977,27 +1104,43 @@ class ServersController(wsgi.Controller):
             raise exc.HTTPBadRequest(explanation=msg)
         except exception.QuotaError as error:
             raise exc.HTTPForbidden(explanation=error.format_message())
-        except (exception.ImageNotActive,
-                exception.ImageUnacceptable,
+        except (exception.AutoDiskConfigDisabledByImage,
+                exception.CertificateValidationFailed,
                 exception.FlavorDiskTooSmall,
                 exception.FlavorMemoryTooSmall,
+                exception.ImageNotActive,
+                exception.ImageUnacceptable,
                 exception.InvalidMetadata,
-                exception.AutoDiskConfigDisabledByImage,
-                exception.CertificateValidationFailed) as error:
+                ) as error:
+            raise exc.HTTPBadRequest(explanation=error.format_message())
+        except INVALID_FLAVOR_IMAGE_EXCEPTIONS as error:
             raise exc.HTTPBadRequest(explanation=error.format_message())
 
         instance = self._get_server(context, req, id, is_detail=True)
 
-        view = self._view_builder.show(req, instance, extend_address=False)
+        # NOTE(liuyulong): set the new key_name for the API response.
+        # from microversion 2.54 onwards.
+        show_keypair = api_version_request.is_supported(
+                           req, min_version='2.54')
+        show_server_groups = api_version_request.is_supported(
+                           req, min_version='2.71')
+
+        view = self._view_builder.show(req, instance, extend_address=False,
+                                       show_AZ=False,
+                                       show_config_drive=False,
+                                       show_extended_attr=False,
+                                       show_host_status=False,
+                                       show_keypair=show_keypair,
+                                       show_srv_usg=False,
+                                       show_sec_grp=False,
+                                       show_extended_status=False,
+                                       show_extended_volumes=False,
+                                       show_server_groups=show_server_groups)
 
         # Add on the admin_password attribute since the view doesn't do it
         # unless instance passwords are disabled
         if CONF.api.enable_instance_password:
             view['server']['adminPass'] = password
-
-        if api_version_request.is_supported(req, min_version='2.54'):
-            # NOTE(liuyulong): set the new key_name for the API response.
-            view['server']['key_name'] = instance.key_name
 
         if include_user_data:
             view['server']['user_data'] = instance.user_data
@@ -1085,6 +1228,8 @@ class ServersController(wsgi.Controller):
             opt_list += ('ip6',)
         if api_version_request.is_supported(req, min_version='2.26'):
             opt_list += TAG_SEARCH_FILTERS
+        if api_version_request.is_supported(req, min_version='2.66'):
+            opt_list += ('changes-before',)
         return opt_list
 
     def _get_instance(self, context, instance_uuid):
@@ -1162,10 +1307,12 @@ class ServersController(wsgi.Controller):
 
 
 def remove_invalid_options(context, search_options, allowed_search_options):
-    """Remove search options that are not valid for non-admin API/context."""
-    if context.is_admin:
+    """Remove search options that are not permitted unless policy allows."""
+
+    if context.can(server_policies.SERVERS % 'allow_all_filters',
+                   fatal=False):
         # Only remove parameters for sorting and pagination
-        for key in ('sort_key', 'sort_dir', 'limit', 'marker'):
+        for key in PAGING_SORTING_PARAMS:
             search_options.pop(key, None)
         return
     # Otherwise, strip out all unknown options
