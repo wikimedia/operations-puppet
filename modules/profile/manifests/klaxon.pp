@@ -24,5 +24,6 @@ class profile::klaxon (
         ],
         # This is the common prefix of all login-required handlers in Klaxon.
         protected_uri   => '/protected/',
+        vhost_settings  => { port => $port },
     }
 }

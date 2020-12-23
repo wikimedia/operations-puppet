@@ -56,8 +56,8 @@
     LogLevel warn
 
     ProxyPass /health_check !
-    ProxyPass / http://localhost:<%= @port %>/
-    ProxyPassReverse / http://localhost:<%= @port %>/
+    ProxyPass / http://localhost:<%= @vhost_settings['port'] %>/
+    ProxyPassReverse / http://localhost:<%= @vhost_settings['port'] %>/
 </VirtualHost>
 
 <VirtualHost *:80>
