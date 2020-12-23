@@ -10,7 +10,7 @@ class openstack::barbican::service(
     String $keystone_public_uri,
     Stdlib::Port $bind_port,
 ) {
-    class { 'openstack::barbican::service::rocky':
+    class { "openstack::barbican::service::${version}":
         db_user             => $db_user,
         db_pass             => $db_pass,
         db_name             => $db_name,
