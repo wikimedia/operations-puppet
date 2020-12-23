@@ -41,12 +41,12 @@ class klaxon(
     }
 
     systemd::service { 'klaxon':
-        ensure  => 'present',
-        content => systemd_template('klaxon'),
-        restart => true,
-        require => [
+        ensure    => 'present',
+        content   => systemd_template('klaxon'),
+        restart   => true,
+        subscribe => Exec['git_pull_operations/software/klaxon'],
+        require   => [
           User['klaxon'],
-          Git::Clone['operations/software/klaxon'],
           File[$environ_file],
         ],
     }
