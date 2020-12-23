@@ -48,5 +48,12 @@ class openstack::cinder::service::stein(
             group   => 'cinder',
             mode    => '0644',
             require => Package['cinder-api'];
+        '/etc/init.d/cinder-api':
+            content => template('openstack/stein/cinder/cinder-api'),
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0755',
+            notify  => Service['cinder-api'],
+            require => Package['cinder-api'];
     }
 }
