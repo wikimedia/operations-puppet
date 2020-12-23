@@ -13,7 +13,10 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
+from six.moves import http_client
+
 from keystoneauth1.identity import v3
+from keystone.common import rbac_enforcer
 from keystoneauth1 import session as keystone_session
 from keystone import exception
 from keystone.common import provider_api
@@ -26,8 +29,7 @@ from oslo_messaging.notify import notifier
 
 # These imports are for the id monkeypatch at the bottom of this
 #  file.  Including up here to make flake8 happy
-from keystone.resource import controllers as resource_controllers
-from keystone.common import controller
+import keystone.api.projects
 from keystone.common import validation
 from keystone.resource import schema
 
@@ -35,7 +37,9 @@ import designatemakedomain
 from . import ldapgroups
 from . import pageeditor
 
+ENFORCER = rbac_enforcer.RBACEnforcer
 PROVIDERS = provider_api.ProviderAPIs
+
 
 LOG = logging.getLogger('nova.%s' % __name__)
 
@@ -420,34 +424,40 @@ class KeystoneHooks(notifier.Driver):
 #   ID returned to Horizon.  So, instead, monkeypatch the function
 #   that creates the project and modify the ID.
 #
-@controller.protected()
-def create_project(self, request, project):
+def post(self):
+    """Create project.
+
+    POST /v3/projects
+    """
     LOG.warn("Monkypatch in action!  Hacking the new project id to equal "
              "the new project name.")
 
+    project = self.request_body_json.get('project', {})
+    target = {'project': project}
+    ENFORCER.enforce_call(
+        action='identity:create_project', target_attr=target
+    )
     validation.lazy_validate(schema.project_create, project)
-    ref = self._assign_unique_id(self._normalize_dict(project))
+    project = self._assign_unique_id(project)
+    if not project.get('is_domain'):
+        project = self._normalize_domain_id(project)
+        # Our API requires that you specify the location in the hierarchy
+        # unambiguously. This could be by parent_id or, if it is a top
+        # level project, just by providing a domain_id.
 
-    if not ref.get('is_domain'):
-        ref = self._normalize_domain_id(request, ref)
         # This is the only line that's different
-        ref['id'] = project['name']
-
-    # Our API requires that you specify the location in the hierarchy
-    # unambiguously. This could be by parent_id or, if it is a top level
-    # project, just by providing a domain_id.
-    if not ref.get('parent_id'):
-        ref['parent_id'] = ref.get('domain_id')
-
+        project['id'] = project['name']
+    if not project.get('parent_id'):
+        project['parent_id'] = project.get('domain_id')
+    project = self._normalize_dict(project)
     try:
         ref = PROVIDERS.resource_api.create_project(
-            ref['id'],
-            ref,
-            initiator=request.audit_initiator)
+            project['id'],
+            project,
+            initiator=self.audit_initiator)
     except (exception.DomainNotFound, exception.ProjectNotFound) as e:
         raise exception.ValidationError(e)
+    return self.wrap_member(ref), http_client.CREATED
 
-    return resource_controllers.ProjectV3.wrap_member(request.context_dict, ref)
 
-
-resource_controllers.ProjectV3.create_project = create_project
+keystone.api.projects.ProjectResource.post = post
