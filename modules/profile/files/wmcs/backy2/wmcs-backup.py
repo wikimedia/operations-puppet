@@ -120,7 +120,7 @@ class ImageBackup:
         return cls(
             backup_entry=entry,
             image_id=image_id,
-            image_name=image_info.get("name", "no name"),
+            image_name=image_info.get("name", "no_name"),
             image_info=image_info,
             size_mb=entry.size_mb,
         )
@@ -196,7 +196,7 @@ class ImageBackups:
 
         logging.debug(
             "%sRemoving %d backups for image %s(%s)",
-            'NOOP:' if noop else '',
+            "NOOP:" if noop else "",
             len(to_delete),
             self.image_name,
             self.image_id,
@@ -219,8 +219,7 @@ class ImageBackups:
 
         # Get the latest known backup with a valid snapshot
         all_snapshots_for_image = get_snapshots_for_image(
-            pool=self.config.ceph_pool,
-            image_name=self.image_id
+            pool=self.config.ceph_pool, image_name=self.image_id
         )
         last_snapshot_with_backup = None
         for backup in sorted(
@@ -236,10 +235,8 @@ class ImageBackups:
                 for snapshot in all_snapshots_for_image
                 if snapshot.snapshot == backup.backup_entry.snapshot_name
             ):
-                last_snapshot_with_backup = (
-                    backup.backup_entry.get_snapshot(
-                        pool=self.config.ceph_pool
-                    )
+                last_snapshot_with_backup = backup.backup_entry.get_snapshot(
+                    pool=self.config.ceph_pool
                 )
                 break
 
@@ -256,7 +253,7 @@ class ImageBackups:
                     "snapshots: %s"
                 ),
                 self.backups[0].backup_entry.name,
-                all_snapshots_for_image
+                all_snapshots_for_image,
             )
 
         # Get all the other snapshots
@@ -660,8 +657,7 @@ class VMBackups:
         }
         if len(vm_images) > 1:
             raise Exception(
-                "VMs with more than one image are not supported: "
-                f"{self}"
+                "VMs with more than one image are not supported: " f"{self}"
             )
 
         # Get the latest known backup with a valid snapshot
@@ -683,10 +679,8 @@ class VMBackups:
                 for snapshot in all_snapshots_for_vm
                 if snapshot.snapshot == backup.backup_entry.snapshot_name
             ):
-                last_snapshot_with_backup = (
-                    backup.backup_entry.get_snapshot(
-                        pool=self.config.ceph_pool
-                    )
+                last_snapshot_with_backup = backup.backup_entry.get_snapshot(
+                    pool=self.config.ceph_pool
                 )
                 break
 
@@ -703,7 +697,7 @@ class VMBackups:
                     "snapshots: %s"
                 ),
                 self.backups[0].backup_entry.name,
-                all_snapshots_for_vm
+                all_snapshots_for_vm,
             )
 
         # Get all the other snapshots
@@ -836,7 +830,7 @@ class InstanceBackupsState:
         if project_name in self.projects_backups:
             project = self.projects_backups[project_name]
             for vm_backups in project.vms_backups.values():
-                if vm_name == vm_backups.vm_info.get("name", "no name"):
+                if vm_name == vm_backups.vm_info.get("name", "no_name"):
                     vm_info = vm_backups.vm_info
                     logging.debug("VM found locally: %s", vm_info)
                     break
@@ -847,12 +841,12 @@ class InstanceBackupsState:
             server_id_to_server_dict = get_servers_info(from_cache=True)
             for server_dict in server_id_to_server_dict.values():
                 if vm_name == server_dict.get(
-                    "name", "no name"
+                    "name", "no_name"
                 ) and project_name == server_dict.get("tenant_id", None):
                     vm_info = server_dict
                     logging.debug("VM found remotely: %s", vm_info)
                     break
-                elif vm_name == server_dict.get("name", "no name"):
+                elif vm_name == server_dict.get("name", "no_name"):
                     maybe_candidate = server_dict
 
         if vm_info is None:
@@ -870,10 +864,19 @@ class InstanceBackupsState:
                 config=self.config,
             )
 
+        logging.debug("#" * 80)
+        logging.info(
+            "%sCreating backup for vm %s.%s(%s)",
+            "NOOP:" if noop else "",
+            vm_info.get("tenant_id", "no_project"),
+            vm_info.get("name", "no_name"),
+            vm_info["id"],
+        )
         new_backup = self.projects_backups[project_name].create_vm_backup(
             vm_info=vm_info, noop=noop
         )
         self.size_mb += new_backup.size_mb
+        logging.debug("#" * 80)
 
     def add_vm_backup(self, vm_backup: VMBackup, noop: bool) -> bool:
         """
@@ -1026,6 +1029,32 @@ class InstanceBackupsState:
         )
         if failed_snapshots:
             sys.exit(1)
+
+    def get_assigned_vms(
+        self, from_cache: bool = True
+    ) -> List[Dict[str, Any]]:
+        assigned_vms: List[Dict[str, Any]] = []
+        this_hostname = socket.gethostname()
+        server_id_to_server_dict = get_servers_info(from_cache)
+        for server_info in server_id_to_server_dict.values():
+            project = server_info.get("tenant_id", "no_project")
+            name = server_info.get("name", "no_name")
+            if this_hostname == self.config.get_host_for_vm(
+                project=project, vm_name=name
+            ):
+                assigned_vms.append(server_info)
+
+        return assigned_vms
+
+    def backup_assigned_vms(
+        self, from_cache: bool = True, noop: bool = True
+    ) -> None:
+        for server_info in self.get_assigned_vms(from_cache):
+            self.create_vm_backup(
+                vm_name=server_info.get("name", "no_name"),
+                project_name=server_info.get("tenant_id", "no_project"),
+                noop=noop,
+            )
 
 
 @dataclass(unsafe_hash=True)
@@ -1425,6 +1454,48 @@ def _add_instances_parser(subparser: argparse.ArgumentParser) -> None:
         ).create_vm_backup(
             noop=args.noop, vm_name=args.vmname, project_name=args.project_name
         )
+    )
+
+    get_assigned_vms_parser = instances_subparser.add_parser(
+        "get-assigned-vms",
+        help=(
+            "Show the list of vms handled by this host. Note that it only "
+            "shows known VMs, if it was deleted from openstack it will not "
+            "show up, though you might be able to see it's backups (without "
+            "name) in the summary."
+        ),
+    )
+    get_assigned_vms_parser.set_defaults(
+        func=lambda: print(
+            "\n".join(
+                (
+                    f"{vm_info.get('tenant_id', 'no_project')}"
+                    f":{vm_info.get('name', 'no_name')}"
+                )
+                for vm_info in get_current_instances_state(
+                    from_cache=args.from_cache
+                ).get_assigned_vms(from_cache=args.from_cache)
+            )
+        )
+    )
+
+    backup_assigned_vms_parser = instances_subparser.add_parser(
+        "backup-assigned-vms",
+        help="Creates a backup for each VM assigned to the host it run in.",
+    )
+    backup_assigned_vms_parser.add_argument(
+        "-n",
+        "--noop",
+        action="store_true",
+        help=(
+            "If set, will not really do anything, just tell you what "
+            "would be done."
+        ),
+    )
+    backup_assigned_vms_parser.set_defaults(
+        func=lambda: get_current_instances_state(
+            from_cache=args.from_cache
+        ).backup_assigned_vms(from_cache=args.from_cache, noop=args.noop)
     )
 
 
