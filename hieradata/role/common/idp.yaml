@@ -296,6 +296,17 @@ profile::idp::services:
           'cn=nda,ou=groups,dc=wikimedia,dc=org',
           'cn=wmf,ou=groups,dc=wikimedia,dc=org',
         ]]
+  klaxon:
+    class: 'org.apereo.cas.services.RegexRegisteredService'
+    id: 21
+    service_id: 'https://klaxon.wikimedia.org(/.*)?'
+    attribute_release_policy:
+      '@class': 'org.apereo.cas.services.ReturnAllAttributeReleasePolicy'
+    access_strategy:
+      '@class': 'org.apereo.cas.services.DefaultRegisteredServiceAccessStrategy'
+    # No requiredAttributes is defined for klaxon.wikimedia.org as access is
+    # controlled via local mod_auth_cas Apache config for specific subtrees
+
 profile::idp::ldap_attributes:
   - cn
   - memberOf
