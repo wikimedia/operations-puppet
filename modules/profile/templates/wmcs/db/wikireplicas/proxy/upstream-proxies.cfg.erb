@@ -1,6 +1,6 @@
 # Note: This file is managed by puppet.
 <% @haproxy_vips.each_pair do |section, ip| -%>
-listen mariadb-<%= @section %>
+listen mariadb-<%= section %>
     bind <%= @ip %>:3306
     mode tcp
     option tcplog
@@ -9,5 +9,5 @@ listen mariadb-<%= @section %>
     log /dev/log local0 crit
     option tcpka
     option mysql-check user haproxy
-    server <%= @section_backends[section] %> <%= @section_backends[section] %>:<%= @section_ports[section] %> weight 1 %> check inter 3s fall 20 rise 99999999
+    server <%= @section_backends[section] %>-<%= section %> <%= @section_backends[section] %>:<%= @section_ports[section] %> weight 1 check inter 3s fall 20 rise 99999999
 <% end -%>
