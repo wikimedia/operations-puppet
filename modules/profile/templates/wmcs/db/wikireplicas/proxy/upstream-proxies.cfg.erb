@@ -9,7 +9,5 @@ listen mariadb-<%= @section %>
     log /dev/log local0 crit
     option tcpka
     option mysql-check user haproxy
-<% @section_backends[section].each do |name, backend| -%>
-    server <%= name %> <%= backend %>:<%= @section_ports[section] %> weight 1 %> check inter 3s fall 20 rise 99999999
-<% end -%>
+    server <%= @section_backends[section] %> <%= @section_backends[section] %>:<%= @section_ports[section] %> weight 1 %> check inter 3s fall 20 rise 99999999
 <% end -%>

@@ -1,5 +1,5 @@
 class profile::wmcs::db::wikireplicas::proxy (
-    Hash[String,Stdlib::IP::Address::V4] $haproxy_vips = lookup('profile::wmcs::db::wikireplicas::vips', {default_value => ['8.8.8.8']}),
+    Hash[String,Stdlib::IP::Address::V4] $haproxy_vips = lookup('profile::wmcs::db::wikireplicas::vips', {default_value => {'s1' => '8.8.8.8'}}),
     Hash[String,Stdlib::Port] $section_ports = lookup('profile::mariadb::section_ports'),
     Hash[String,Stdlib::Fqdn] $section_backends = lookup('profile::wmcs::db::wikireplicas::section_backends', {default_value => {'s1' => 'db1.local'}}),
 ) {
