@@ -210,8 +210,16 @@ profile::swift::proxy::inactivedc_thumborhost: ~
 profile::lvs::realserver::poolcounter_backends: ~
 profile::lvs::realserver::use_conftool: false
 
-# Mariadb sections: create empty mapping to make puppet happy
-profile::mariadb::section_ports: {}
+# Mariadb sections: needed for proxy setup
+profile::mariadb::section_ports:
+  s1: 3311
+  s2: 3312
+  s3: 3313
+  s4: 3314
+  s5: 3315
+  s6: 3316
+  s7: 3317
+  s8: 3318
 
 profile::query_service::username: blazegraph
 
