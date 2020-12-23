@@ -9,7 +9,7 @@
 # [*cron_active*] Whether to activate the daily account consistency check or not.
 #
 class profile::openldap::management(
-    Boolean $cron_active         = hiera('profile::openldap::management::cron_active'),
+    Boolean $cron_active         = lookup('profile::openldap::management::cron_active'),
     Hash $production_ldap_config = lookup('ldap', Hash, hash, {}),
 ) {
     require ::profile::ldap::client::labs
