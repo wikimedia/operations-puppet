@@ -10,7 +10,7 @@ import socket
 import sys
 from dataclasses import dataclass
 from itertools import chain
-from typing import Any, ClassVar, Dict, List, Optional, Set
+from typing import Any, ClassVar, Dict, List, Optional, Set, Tuple
 
 import mwopenstackclients
 import yaml
@@ -88,6 +88,7 @@ class InstanceBackupsConfig(MinimalConfig):
         if vm_name is not None:
             for vm_regex in self.exclude_servers.get(project, []):
                 if re.match(vm_regex, vm_name):
+                    # maybe raise an exception instead
                     return f"excluded_from_backups (matches {vm_regex})"
 
         return self.get_host_for_project(project=project)
@@ -396,7 +397,7 @@ class VMBackup:
 
     def remove(self, pool: str, noop: bool = True) -> None:
         maybe_snapshot = self.backup_entry.get_snapshot(
-            pool=self.config.ceph_pool
+            pool=pool
         )
         self.backup_entry.remove(noop=noop)
         if maybe_snapshot is not None:
@@ -553,7 +554,7 @@ class VMBackups:
 
         for backup in to_delete:
             logging.debug("Removing expired backup %s...", backup)
-            self._remove_backup(backup=backup, noop=noop)
+            self.remove_backup(backup=backup, noop=noop)
 
         logging.info(
             "Cleaned up %d expired backups for VM %s.%s(%s)",
@@ -584,7 +585,14 @@ class VMBackups:
         for backup in self.backups:
             backup.size_percent = backup.size_mb * 100 / total_size_mb
 
-    def _remove_backup(self, backup: VMBackup, noop: bool = True) -> None:
+    def remove(self, noop: bool = True) -> None:
+        for backup in self.backups:
+            backup.remove(pool=self.config.ceph_pool, noop=noop)
+
+        self.backups = []
+        self.size_mb = 0
+
+    def remove_backup(self, backup: VMBackup, noop: bool = True) -> None:
         if backup in self.backups:
             self.backups.pop(self.backups.index(backup))
             self.size_mb -= backup.size_mb
@@ -710,6 +718,22 @@ class VMBackups:
 
         return dangling_snapshots
 
+    def remove_vm_backup(self, vm_backup: VMBackup, noop: bool = True) -> None:
+        if vm_backup.vm_id not in self.vm_id:
+            raise Exception(
+                f"The given backup is for VM {vm_backup.vm_id} but it "
+                "does not match the current VM Backup: "
+                f"{self.vm_id}"
+            )
+
+        if vm_backup in self.backups:
+            raise Exception(
+                f"The given backup was not found in the system:\n{vm_backup}"
+            )
+
+        self.backups.pop(self.backups.index(vm_backup))
+        vm_backup.remove(noop=noop)
+
     def __str__(self) -> str:
         backups_strings = sorted([f" {entry}" for entry in self.backups])
         return (
@@ -804,6 +828,25 @@ class ProjectBackups:
         new_backup = self.vms_backups[vm_id].create_next_backup(noop=noop)
         self.add_vm_backup(new_backup, noop=noop)
         return new_backup
+
+    def remove_vm_backup(self, vm_backup: VMBackup, noop: bool = True) -> None:
+        if vm_backup.project != self.project:
+            raise Exception(
+                f"The given backup is for project {vm_backup.project} but it "
+                f"does not match the current project {self.project}"
+            )
+
+        if vm_backup.vm_id not in self.vms_backups:
+            raise Exception(
+                f"The given backup is for VM {vm_backup.vm_id} but it "
+                "does not match the current backed up VMs: "
+                f"{self.vms_backups.keys()}"
+            )
+
+        project_backups = self.projects_backups[vm_backup.project]
+        project_backups.remove_vm_backup(vm_backup, noop=noop)
+        self.vms_backups[vm_backup.vm_id].remove(noop=noop)
+        self.size_mb = self.size_mb - vm_backup.size_mb
 
 
 @dataclass(unsafe_hash=True)
@@ -958,7 +1001,7 @@ class InstanceBackupsState:
         out_str += ("#" * 75) + "\n"
         return out_str
 
-    def remove_invalids(self, force: bool, noop: bool = True):
+    def remove_invalids(self, force: bool, noop: bool = True) -> None:
         logging.info("%sRemoving invalids", "NOOP:" if noop else "")
         total_removed = 0
         for project in self.projects_backups.values():
@@ -980,6 +1023,17 @@ class InstanceBackupsState:
             "Would have deleted" if noop else "Deleted",
             total_removed,
         )
+
+    def remove_vm_backup(self, vm_backup: VMBackup, noop: bool = True) -> None:
+        if vm_backup.project not in self.projects:
+            raise Exception(
+                f"The given backup is for project {vm_backup.project} but it "
+                "does not match any of the known ones: "
+                f"{self.projects_backups.keys()}"
+            )
+
+        project_backups = self.projects_backups[vm_backup.project]
+        project_backups.remove_vm_backup(vm_backup, noop=noop)
 
     def print_dangling_snapshots(self) -> None:
         for snapshot in self.get_dangling_snapshots():
@@ -1055,6 +1109,40 @@ class InstanceBackupsState:
                 project_name=server_info.get("tenant_id", "no_project"),
                 noop=noop,
             )
+
+    def remove_unhandled_backups(
+        self, from_cache: bool = True, noop: bool = True
+    ) -> None:
+        logging.info(
+            "%sSearching for unhandled backups...", "NOOP:" if noop else ""
+        )
+        handled_vm_ids_projects: Set[Tuple[str, str]] = {
+            (vm_info["id"], vm_info.get("tenant_id", "no_project"))
+            for vm_info in self.get_assigned_vms(from_cache)
+        }
+        backups_removed = 0
+        for project_backups in self.projects_backups.values():
+            for vm_backups in project_backups.vms_backups.values():
+                vm_id_project = (vm_backups.vm_id, project_backups.project)
+                if vm_id_project not in handled_vm_ids_projects:
+                    logging.info(
+                        "%sRemoving unhandled VM backups:\n%s",
+                        "NOOP:" if noop else "",
+                        indent_lines(str(vm_backups)),
+                    )
+                    backups_removed += len(vm_backups.backups)
+                    vm_backups.remove(noop=noop)
+
+        logging.info(
+            "%sRemoved %d backups.", "NOOP:" if noop else "", backups_removed
+        )
+        if backups_removed > 0:
+            logging.info(
+                "Cleaning up leftover backy blocks (this frees the space)..."
+            )
+            cleanup(noop=noop)
+        else:
+            logging.info("No backups removed, skipping cleanup")
 
 
 @dataclass(unsafe_hash=True)
@@ -1496,6 +1584,29 @@ def _add_instances_parser(subparser: argparse.ArgumentParser) -> None:
         func=lambda: get_current_instances_state(
             from_cache=args.from_cache
         ).backup_assigned_vms(from_cache=args.from_cache, noop=args.noop)
+    )
+
+    remove_unhandled_backups_parser = instances_subparser.add_parser(
+        "remove-unhandled-backups",
+        help=(
+            "Remove any backups that don't match any handled VM. This might "
+            "happen if a machine is now backed up in another host or was "
+            "deleted."
+        ),
+    )
+    remove_unhandled_backups_parser.add_argument(
+        "-n",
+        "--noop",
+        action="store_true",
+        help=(
+            "If set, will not really do anything, just tell you what "
+            "would be done."
+        ),
+    )
+    remove_unhandled_backups_parser.set_defaults(
+        func=lambda: get_current_instances_state(
+            from_cache=args.from_cache
+        ).remove_unhandled_backups(from_cache=args.from_cache, noop=args.noop)
     )
 
 
