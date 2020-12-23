@@ -43,11 +43,6 @@ class openstack::glance::service(
         require => Package['glance'],
     }
 
-    service { 'glance-registry':
-        ensure  => $active,
-        require => Package['glance'],
-    }
-
     rsyslog::conf { 'glance':
         source   => 'puppet:///modules/openstack/glance/glance.rsyslog.conf',
         priority => 20,

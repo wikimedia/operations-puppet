@@ -70,4 +70,9 @@ class openstack::glance::service::rocky(
             system     => true,
         }
     }
+
+    service { 'glance-registry':
+        ensure  => true,
+        require => Package['glance'],
+    }
 }
