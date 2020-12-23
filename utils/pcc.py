@@ -54,12 +54,23 @@ GERRIT_HOST = 'gerrit.wikimedia.org'
 GERRIT_BASE = 'https://{}/r/changes'.format(GERRIT_HOST)
 
 
+red, green, yellow, blue, white = [('\x1b[9%sm{}\x1b[0m' % n).format for n in (1, 2, 3, 4, 7)]
+
+
 def format_console_output(text):
     """Colorize log output."""
-    return (re.sub(r'((?<=\n) +|(?<=Finished: )\w+)', '', text, re.M)
-            .replace('\n', '\x1b[0m\n')
-            .replace('INFO:', '\x1b[94mINFO:')
-            .replace('ERROR:', '\x1b[91mINFO:'))
+    newlines = []
+    for line in text.splitlines():
+        line = line.strip()
+        if 'INFO' in line:
+            newlines.append(blue(line))
+        elif 'WARNING' in line:
+            newlines.append(yellow(line))
+        elif 'ERROR' in line or 'CRITICAL' in line:
+            newlines.append(red(line))
+        else:
+            newlines.append(line)
+    return '\n'.join(newlines)
 
 
 def get_change_id(change='HEAD'):
@@ -260,8 +271,6 @@ def main():  # pylint: disable=too-many-locals
                   ' or define JENKINS_API_TOKEN and JENKINS_USERNAME in your env.')
         return 1
 
-    red, green, yellow, white = [('\x1b[9%sm{}\x1b[0m' % n).format for n in (1, 2, 3, 7)]
-
     jenkins = jenkinsapi.jenkins.Jenkins(
         baseurl=JENKINS_URL,
         username=args.username,
@@ -316,16 +325,23 @@ def main():  # pylint: disable=too-many-locals
         if args.post_crash:
             post_comment(change, 'PCC Check manually: {}'.format(build.baseurl))
 
+    node_status = {}
+    node_status_matcher = re.compile(r'(?P<count>\d+)\s+(?P<mode>(?:DIFF|NOOP|FAIL))')
+    for match in node_status_matcher.finditer(output):
+        # as the information we are intrested is at the end we only care about the last matches
+        node_status[match['mode']] = match['count']
+    node_status_str = ' '.join(['{} {}'.format(k, v) for k, v in node_status.items()])
+
     # Puppet's exit code is not always meaningful, so we grep the output
     # for failures before declaring victory.
     if ('Run finished' in output and not re.search(r'[1-9]\d* (ERROR|FAIL)', output)):
-        print(green('SUCCESS'))
+        print(green('SUCCESS ({})'.format(node_status_str)))
         if not args.no_post_success:
-            post_comment(change, 'PCC SUCCESS: {}'.format(console_url), True)
+            post_comment(change, 'PCC SUCCESS ({}): {}'.format(node_status_str, console_url), True)
         return 0
-    print(red('FAIL'))
+    print(red('FAIL ({})'.format(node_status_str)))
     if args.post_fail:
-        post_comment(change, 'PCC FAIL: {}'.format(console_url), False)
+        post_comment(change, 'PCC FAIL ({}): {}'.format(node_status_str, console_url), False)
     return 1
 
 
