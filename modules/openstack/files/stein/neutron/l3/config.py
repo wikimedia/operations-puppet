@@ -18,7 +18,6 @@ from neutron_lib import constants
 from oslo_config import cfg
 
 from neutron._i18n import _
-from neutron.conf.agent import common as config
 
 
 OPTS = [
@@ -58,12 +57,10 @@ OPTS = [
                        "False for all agents if all routers must have an "
                        "external network gateway.")),
     cfg.StrOpt('gateway_external_network_id', default='',
-               help=_("When external_network_bridge is set, each L3 agent can "
-                      "be associated with no more than one external network. "
-                      "This value should be set to the UUID of that external "
-                      "network. To allow L3 agent support multiple external "
-                      "networks, both the external_network_bridge and "
-                      "gateway_external_network_id must be left empty."),
+               help=_("To allow the L3 agent to support multiple external "
+                      "networks, gateway_external_network_id must be left "
+                      "empty. Otherwise this value should be set to the UUID "
+                      "of the single external network to be used."),
                deprecated_for_removal=True),
     cfg.StrOpt('ipv6_gateway', default='',
                help=_("With IPv6, the network used for the external gateway "
@@ -109,13 +106,7 @@ OPTS = [
                       '(by default), the user executing the L3 agent will be '
                       'passed. If "root" specified, because radvd is spawned '
                       'as root, no "username" parameter will be passed.')),
-    cfg.StrOpt('routing_source_ip', default='',
-               help=_('WMF defined src nat IP option')),
-    cfg.StrOpt('dmz_cidr', default='',
-               help=_('WMF defined src nat exclusions "src_range:dst_range,<repeat>')),
 ]
-
-OPTS += config.EXT_NET_BRIDGE_OPTS
 
 
 def register_l3_agent_config_opts(opts, cfg=cfg.CONF):
